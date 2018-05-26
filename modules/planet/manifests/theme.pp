@@ -18,9 +18,21 @@ define planet::theme {
         file { "/etc/rawdog/theme/wikimedia/${title}":
             ensure  => 'directory',
         }
-        file { "/var/www/planet/${title}/style.css":
+        file { "/var/www/planet/${title}/main.css":
             ensure => 'present',
             source => 'puppet:///modules/planet/theme/rawdog_style.css';
+        }
+        file { "/var/www/planet/${title}/bootstrap.css":
+            ensure => 'present',
+            source => 'puppet:///modules/planet/theme/bootstrap.css';
+        }
+        file { "/var/www/planet/${title}/bootstrap.min.js":
+            ensure => 'present',
+            source => 'puppet:///modules/planet/theme/bootstrap.min.js';
+        }
+        file { "/var/www/planet/${title}/jquery.min.js":
+            ensure => 'present',
+            source => 'puppet:///modules/planet/theme/jquery.min.js';
         }
         file { "/var/www/planet/${title}/Wikimedia_Community_Logo.svg":
             ensure => 'present',

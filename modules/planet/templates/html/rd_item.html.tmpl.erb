@@ -1,15 +1,38 @@
-<!-- PAGE-BEGIN-ITEM -->
-<div class="item" id="parent__hash__" >
-    <div class="itemheader feed-__feed_hash__ feed-__feed_id__" id="header__hash__" onclick="toggle('item__guid__');">
-        <h4 class="itemtitle unread"><a class="rightArrow">>> </a><a href="__url__" class="titleName">__title_no_link__</a></h4>
-        <p class="itembyline">
-          __if_author__by __author____endif__
-          in __feed_title__
-          __if_date__at __date____endif__
-        </p>
-    </div>
-    __if_description__<div class="itemdescription" id="item__guid__">
-        __description__
-    </div>__endif__
+<div class="channelgroup __feedclass__">
+	<div class="row itemRow">
+    	<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 ">
+		    <div class="box" class="item feed-__feed_hash__ feed-__feed-id__" id="item-__hash__">
+			    <div class="row" style="border-bottom:1px solid #BDC3C7; margin-bottom:1%;">
+			    	<table class="table borderless table-condensed">
+			    		<tr>
+			    			<td style="vertical-align:bottom;">
+			    				<div class="row" style="margin-top:15px;">
+					    			<div class="col-md-8">
+							    		<a href="__blogurl__">__name__ __if_handle__(__handle__)__endif__</a>
+							    	</div>
+							    	<div class="col-md-4 dtdate">
+							    		<a href="__url__">__date__ UTC</a>
+							    	</div>
+							    </div>
+			    			</td>
+			    		</tr>
+			    		<tr>
+			    			<td style="vertical-align:bottom;">
+			    				<div class="row">
+							    	<div class="col-md-12 col-xs-12">
+							    		<h4><a class="boxh2" href="__url__">__title_no_link__</a></h4>
+							    	</div>
+							    </div>
+			    			</td>
+			    		</tr>
+			    	</table>
+				</div>
+				<div class="row">
+					<div class="col-md-12 col-xs-12 descript">
+						__description__
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
 </div>
-<!-- PAGE-END-ITEM -->
