@@ -4,11 +4,9 @@ class mediawiki::maintenance::wikidata( $ensure = present, $ensure_testwiki = pr
     $dispatch_log_file = '/var/log/wikidata/dispatchChanges-wikidatawiki.log'
     $test_dispatch_log_file = '/var/log/wikidata/dispatchChanges-testwikidatawiki.log'
 
-    # Starts a dispatcher instance every 3 minutes
-    # They will run for a maximum of about 10 minutes, so we can only have 4 concurrent instances.
-    # This handles inserting jobs into client job queue, which then process the changes
-    # This will process up to --batch-size * (60 / --dispatch-interval) changes per minute,
-    # to a single wiki (only counting changes that affect the wiki).
+    # Starts a dispatcher instance every 3 minutes:
+    # This handles inserting jobs into client job queue, which then processes the changes.
+    # They will run for a limited time, so we can only have runTimeInMinutes/3m concurrent instances.
     # The settings for dispatchChanges.php can be found in mediawiki-config.
     # Docs for the settings can be found in https://phabricator.wikimedia.org/diffusion/EWBA/browse/master/docs/options.wiki by searching for "dispatchChanges.php"
     # All settings can still be overridden at run time if required.
