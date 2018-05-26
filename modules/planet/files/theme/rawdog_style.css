@@ -1,208 +1,222 @@
-/* Alternate stylesheet for rawdog. But you can still customise it as you like.
- * The .xmlbutton was stolen from the default stylesheet.
- * Samuel Hym <Samuel.Hym@gmail.com> */
+/*@import url(//fonts.googleapis.com/css?family=Oxygen:400,700,300);*/
+
+html{
+    font-family: 'Oxygen', sans-serif;
+}
 
 body {
-    font-family: Georgia,Serif;
-    margin: 1em;
-}
-
-a {
-    text-decoration: none;
-}
-
-a:link {
-    color: #08b;
-}
-
-a:visited, a:hover {
-    color: #a03;
-}
-
-#header {
-    text-transform: uppercase;
-    text-align: center;
-    border: 1px solid #ddd;
-    color: #888;
-}
-
-h2, h3 {
-    font-size: 90%;
-    color: #888;
+  background-color: #eff0f1;
+  font-family: 'Oxygen', sans-serif;
 }
 
 h2 {
-    margin-top: 1em;
-    font-size: 1.5em;
+	font-size: 22px;
 }
 
 h3 {
-    margin-top: 1em;
+	font-size: 20px;
 }
 
-#items {
-    padding: 5px 15px 5px 230px;
+.navbar-default {
+  border-bottom:2px solid #3daee9;
 }
 
-.item {
-    padding: 0.6em;
+.modal .modal-body {
+    max-height: 420px;
+    overflow-y: auto;
 }
 
-.itemheader {
-    font-size: 120%;
-    /*text-align: center;*/
-    color: #2a4b8d;
+.box {
+    background-color: #ffffff;
+    border-radius: 3px;
+    box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12);
+    padding: 10px 25px;
+    display: block;
+    margin-bottom: 20px;
+    overflow: hidden;
 }
 
-.itemheader a, .itemheader a:visited {
-    text-decoration: none;
-    color: #b32424;
+.boxh2{
+    color: #2980b9;
+    font-size: 20px;
 }
 
-.itemheader a:hover {
-    color: #b32424;
+blockquote{
+    font-size: 15px;
+    border-left-color: #FDBC4B;
 }
-
-.itemtitle{
-    margin: -6px 5px 5px 5px;
-    float: left;
+/*
+.btn-mat > p {
+    color: #717171;
+    font-size: 16px;
+    padding-top: 10px;
+    text-align: justify;
 }
-
-.itembyline {
-    font-size: 70%;
-    text-align: right;
-    margin: 0;
+.btn-mat {
+    background-color: #eff0f1;
+    border-radius: 2px;
+    box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12);
+    color: #000000;
+    transition: all 0.5s ease 0s;
 }
-
-.itemdescription {
-    display: none;
-    border: 1px solid #ccc;
-    padding: 10px;
+.btn-mat:hover {
+    background-color: #d7d8d8;
+    box-shadow: 0 2px 3px 0 rgba(0, 0, 0, 0.16), 0 2px 5px 0 rgba(0, 0, 0, 0.12);
+    color: #000000;
+    transition: all 0.5s ease 0s;
 }
+*/
 
-#feedstats {
-    float: center;
+.btn-mat{
+    background-color: #FFF;
+    border-radius: 3px;
+    box-shadow: 1px 1px .5px rgba(0,0,0,0.2);
+    color: #000;
+    transition: all 0.5s ease 0s;
+    border: solid 1px rgba(0,0,0,0.2);
+    background: linear-gradient(to bottom, #eff0f1, #e7e8e9);
+    text-transform: capitalize;
 }
-
-#feeds {
-    margin: 10px 0;
-    border: 1px solid gray;
-    border-spacing: 0;
-}
-
-#feedsheader TH {
-    background-color: #eee;
-    border-bottom: 1px solid gray;
-    padding: 5px;
-    margin: 0;
-}
-
-.feedsrow TD {
-    padding: 5px 10px;
-    margin: 0;
-}
-
-.read a.titleName,
-.read {
-    color: #14866d;
-}
-
-.unread a.titleName,
-.unread {
-    color: #00af89;
-}
-
-.rightArrow {
-  color: #b32424;
-}
-
-.xmlbutton {
-    border: 1px solid;
-    border-color: #FC9 #630 #330 #F96;
-    padding: 0 3px;
-    font: bold 10px sans-serif;
+.btn-mat:hover{
+    background: linear-gradient(to bottom, #3daee9, #1998da);
     color: #FFF;
-    background: #F60;
-    text-decoration: none;
-    margin: 0;
 }
 
-#toTopButton {
-    color:#ccc;
-    position: fixed;
-    bottom: 5px;
-    left: 5px;
-}
-#toTopButton:hover {
-    color: #a03;
+.blueline
+{
+    border-color: #3daee9;
+    background-color: #3daee9;
+    color: #3daee9;
 }
 
-#floatingNav {
-    position: fixed;
-    float: right;
-    bottom: 50%;
-    right: 10px;
+.dayform{
+    padding-bottom:10px;
+    border-bottom:1px solid #3daee9;
+    margin-bottom: 15px;
 }
 
-#floatingNav:hover {
-    background-color: #fafafa;
-    cursor: pointer;
+.dayform h3{
+	font-size: 24px;
 }
 
-#floatingNav, #navNext, #navPrev, #markStatus {
-    color:#eee;
-    font-size:200%;
-    margin: 0px;
-    -webkit-transition: background-color 100ms linear;
-    -moz-transition: background-color 100ms linear;
-    -o-transition: background-color 100ms linear;
-    -ms-transition: background-color 100ms linear;
-    transition: background-color 100ms linear;
+.bluebor{
+    border-bottom-color: #3daee9;
 }
 
-#floatingNav:hover, #navNext:hover, #navPrev:hover, #markStatus:hover{
-    color:#555;
-    -webkit-transition: background-color 100ms linear;
-    -moz-transition: background-color 100ms linear;
-    -o-transition: background-color 100ms linear;
-    -ms-transition: background-color 100ms linear;
-    transition: background-color 100ms linear;
+@font-face {
+    font-family: 'icomoon';
+    src:url('fonts/icomoon.eot?-4v22cy');
+    src:url('fonts/icomoon.eot?#iefix-4v22cy') format('embedded-opentype'),
+        url('fonts/icomoon.woff?-4v22cy') format('woff'),
+        url('fonts/icomoon.ttf?-4v22cy') format('truetype'),
+        url('fonts/icomoon.svg?-4v22cy#icomoon') format('svg');
+    font-weight: normal;
+    font-style: normal;
 }
 
-#beggining {
-    display:none;
-    position:absolute;
-    text-align:center;
-    top:70%;
-    width:300px;
-    height:55px;
-    z-index:15;
-    top:100%;
-    left:50%;
-    margin:-150px 0 0 -150px;
-    color:#fafafa;
-    background:#555;
+[class^="icon-"], [class*=" icon-"] {
+    font-family: 'icomoon';
+    speak: none;
+    font-style: normal;
+    font-weight: normal;
+    font-variant: normal;
+    text-transform: none;
+    line-height: 1;
+
+    /* Better Font Rendering =========== */
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
 }
 
-.menu {
-    position: absolute;
-    top: 180px;
-    left: 0px;
-    margin: 5px;
-    padding: 10px;
-    border: 2px solid #ccc;
-    /* background: #666; */
-    width: 150px; /* ie5win fudge begins */
-    voice-family: "\"}\"";
-    voice-family: inherit;
-    width: 120px;
-    font-size: 12px;
+.icon-kdeArrowLeft:before {
+    content: "\e600";
 }
 
-html>body .menu {
-    width: 195px; /* ie5win fudge ends */
+.icon-kdeArrowRight:before {
+    content: "\e601";
 }
 
-.menuitem {
-    margin-top: 15px;
+.icon-kdeLogo {
+    /*content: "\e602";*/
+    background-image: url('Wikimedia_Community_Logo.svg');
+}
+
+.icon-kdeMenuIcon:before {
+    content: "\e603";
+    color: white;
+}
+
+.dtdate{
+    text-align: left;
+  }
+
+@media (min-width: 768px) {
+  .dtdate{
+    text-align: right;
+  }
+  .consizeit{
+        width: 10%;
+    }
+}
+
+.imcent{
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.borderless tbody tr td, .borderless tbody tr th, .borderless thead tr th {
+    border: none;
+}
+
+.table-condensed>thead>tr>th, .table-condensed>tbody>tr>th, .table-condensed>tfoot>tr>th, .table-condensed>thead>tr>td, .table-condensed>tbody>tr>td, .table-condensed>tfoot>tr>td{
+    padding: 1px;
+}
+
+video {
+    max-width: 100%;
+}
+
+/* Properly position iframe videos players (like youtube) within its parent container */
+iframe {
+    display: block;
+    width: 100%;
+    border: none;
+}
+/* https://cfxdesign.com/how-to-make-the-wordpress-video-shortcode-responsive/ */
+.wp-video, video.wp-video-shortcode, .mejs-container, .mejs-overlay.load {
+	width: 100% !important;
+	height: 100% !important;
+}
+
+/*ul.navbar-nav {
+        margin: 10px;
+}*/
+a.navbar-brand {
+        float: none;
+        text-align: justify;
+}
+
+@media (min-width: 1000px) {
+    ul.navbar-nav {
+        margin: -5em;
+    }
+    .itemRow {
+        margin-right: -295px;
+    }
+}
+.logo {
+    width: 7%;
+    vertical-align: top;
+    padding: 10px 10px 10px 10px;
+}
+@media only screen and (max-width: 50em) {
+  .logo {
+    width: 13%;
+  }
+}
+span.logoText {
+  float: left;
+  clear: both;
+  padding-bottom: 1em;
 }

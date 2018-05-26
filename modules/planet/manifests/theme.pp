@@ -18,9 +18,21 @@ define planet::theme {
         file { "/etc/rawdog/theme/wikimedia/${title}":
             ensure  => 'directory',
         }
-        file { "/var/www/planet/${title}/style.css":
+        file { "/var/www/planet/${title}/main.css":
             ensure => 'present',
             source => 'puppet:///modules/planet/theme/rawdog_style.css';
+        }
+        file { "/var/www/planet/${title}/bootstrap.css":
+            ensure => 'present',
+            source => 'puppet:///modules/planet/theme/bootstrap.css';
+        }
+        file { "/var/www/planet/${title}/bootstrap.min.js":
+            ensure => 'present',
+            source => 'puppet:///modules/planet/theme/bootstrap.min.js';
+        }
+        file { "/var/www/planet/${title}/jquery.min.js":
+            ensure => 'present',
+            source => 'puppet:///modules/planet/theme/jquery.min.js';
         }
         file { "/var/www/planet/${title}/Wikimedia_Community_Logo.svg":
             ensure => 'present',
@@ -33,6 +45,25 @@ define planet::theme {
         file { "/etc/rawdog/theme/wikimedia/${title}/rd_item.tmpl":
             ensure  => 'present',
             content => template('planet/html/rd_item.html.tmpl.erb');
+        }
+        file { "/var/www/planet/${title}/fonts":
+            ensure  => 'directory',
+        }
+        file { "/var/www/planet/${title}/fonts/icomoon.eot":
+            ensure => 'present',
+            source => 'puppet:///modules/planet/theme/icomoon.eot';
+        }
+        file { "/var/www/planet/${title}/fonts/icomoon.svg":
+            ensure => 'present',
+            source => 'puppet:///modules/planet/theme/icomoon.svg';
+        }
+        file { "/var/www/planet/${title}/fonts/icomoon.ttf":
+            ensure => 'present',
+            source => 'puppet:///modules/planet/theme/icomoon.ttf';
+        }
+        file { "/var/www/planet/${title}/fonts/icomoon.woff":
+            ensure => 'present',
+            source => 'puppet:///modules/planet/theme/icomoon.woff';
         }
     } else {
         $theme_path = '/usr/share/planet-venus/theme/wikimedia'
