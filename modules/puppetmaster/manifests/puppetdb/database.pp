@@ -31,6 +31,7 @@ class puppetmaster::puppetdb::database(
         group   => 'root',
         mode    => '0444',
         content => template('puppetmaster/puppetdb/tuning.conf.erb'),
+        require => Package["postgresql-${pgversion}"]
     }
 
     sysctl::parameters { 'postgres_shmem':
