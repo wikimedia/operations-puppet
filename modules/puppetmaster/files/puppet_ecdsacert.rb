@@ -139,8 +139,7 @@ class PuppetECDSAGen
     http = Net::HTTP.new(@config[:puppetca], 8140)
     http.use_ssl = true
 
-    # TODO: fix this
-    http.verify_mode = OpenSSL::SSL::VERIFY_NONE
+    http.ca_file = "/usr/local/share/ca-certificates/Puppet_Internal_CA.crt"
 
     http
   end
