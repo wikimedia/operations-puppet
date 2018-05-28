@@ -83,9 +83,9 @@
     shard: s6
     role: slave
   targets:
+  - db1061:9104
   - db1085:9104
   - db1088:9104
-  - db1093:9104
   - db1096:13316
   - db1098:13316
   - db1113:13316
@@ -93,7 +93,7 @@
     shard: s6
     role: master
   targets:
-  - db1061:9104
+  - db1093:9104
 
 - labels:
     shard: s7

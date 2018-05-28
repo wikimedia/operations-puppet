@@ -417,12 +417,12 @@ node /^db20(38|59|66)\.codfw\.wmnet/ {
 
 # s6 core production dbs on eqiad
 # eqiad master
-node 'db1061.eqiad.wmnet' {
+node 'db1093.eqiad.wmnet' {
     role(mariadb::core)
 }
 
 # See also db1096 db1098 and db1113 below
-node /^db10(85|88|93)\.eqiad\.wmnet/ {
+node /^db10(61|85|88)\.eqiad\.wmnet/ {
     role(mariadb::core)
 }
 
