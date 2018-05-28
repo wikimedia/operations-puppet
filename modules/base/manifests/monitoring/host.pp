@@ -89,9 +89,22 @@ class base::monitoring::host(
         source => 'puppet:///modules/base/monitoring/check-fresh-files-in-dir.py',
     }
 
+    file { '/usr/local/lib/nagios/plugins/check_duplicateip.sh':
+        ensure  => present,
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0555',
+        content => template('base/check_duplicateip.sh.erb'),
+    }
+
     ::sudo::user { 'nagios_puppetrun':
         user       => 'nagios',
         privileges => ['ALL = NOPASSWD: /usr/local/lib/nagios/plugins/check_puppetrun'],
+    }
+
+    ::sudo::user { 'nagios_check_duplicateip':
+        user       => 'nagios',
+        privileges => ['ALL = NOPASSWD: /usr/local/lib/nagios/plugins/check_duplicateip.sh'],
     }
 
     # Check for disk usage on the root partition for labs instances
@@ -130,6 +143,13 @@ class base::monitoring::host(
     ::nrpe::monitor_service { 'check_dhclient':
         description  => 'dhclient process',
         nrpe_command => '/usr/lib/nagios/plugins/check_procs -w 0:0 -c 0:0 -C dhclient',
+    }
+    ::nrpe::monitor_service { 'check_duplicateip':
+        description    => 'Duplicate IP',
+        nrpe_command   => '/usr/bin/sudo /usr/local/lib/nagios/plugins/check_duplicateip.sh',
+        check_interval => 5,
+        retry_interval => 1,
+        require        => File['/usr/local/lib/nagios/plugins/check_duplicateip.sh'],
     }
     if ($::initsystem == 'systemd') {
         $ensure_monitor_systemd = $monitor_systemd ? {

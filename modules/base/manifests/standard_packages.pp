@@ -10,6 +10,7 @@ class base::standard_packages {
         'acct',
         'ack-grep',
         'apt-transport-https',
+        'arping',
         'debian-goodies',
         'dnsutils',
         'dstat',
