@@ -1,9 +1,10 @@
 # Phabricator cluster (shards m3)
 [mysqld@<%= @title %>]
-datadir=<%= @datadir_instance %>
-tmpdir=<%= @tmpdir_instance %>
-socket=<%= @socket_instance %>
-port=<%= @port %>
+datadir = <%= @datadir_instance %>
+tmpdir = <%= @tmpdir_instance %>
+socket = <%= @socket_instance %>
+port = <%= @port %>
+extra-port = <%= Integer(@port) + 20 %>
 <% if @innodb_buffer_pool_size -%>
 innodb_buffer_pool_size = <%= @innodb_buffer_pool_size %>
 <% end -%>
