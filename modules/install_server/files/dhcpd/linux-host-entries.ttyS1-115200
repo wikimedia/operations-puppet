@@ -3921,8 +3921,6 @@ host maps-test2003 {
 host maps-test2004 {
     hardware ethernet d4:be:d9:f0:87:c7;
     fixed-address maps-test2004.codfw.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
-    filename "lpxelinux.0";
 }
 
 host mc1019 {
