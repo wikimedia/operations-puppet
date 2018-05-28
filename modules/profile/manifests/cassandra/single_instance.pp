@@ -4,6 +4,7 @@ class profile::cassandra::single_instance(
   $graphite_host = hiera('profile::cassandra::single_instance::graphite_host'),
   $dc = hiera('profile::cassandra::single_instance::dc'),
   $super_pass = hiera('profile::cassandra::single_instance::super_pass'),
+  $jmx_exporter_enabled = hiera('profile::cassandra::single_instance::jmx_exporter_enabled'),
 ) {
 
   class { '::cassandra':
@@ -15,6 +16,7 @@ class profile::cassandra::single_instance(
       commitlog_directory    => '/srv/cassandra/commitlog',
       saved_caches_directory => '/srv/cassandra/saved_caches',
       super_password         => $super_pass,
+      jmx_exporter_enabled   => $jmx_exporter_enabled,
     }
   }
   class { '::cassandra::metrics':
