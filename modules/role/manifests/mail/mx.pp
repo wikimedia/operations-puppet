@@ -1,5 +1,7 @@
 # filtertags: labs-project-deployment-prep
 class role::mail::mx(
+    $cert_name=hiera('role::mail::mx::cert_name', $facts['hostname']),
+    $cert_subjects=hiera('role::mail::mx::cert_subjects', $facts['fqdn']),
     $verp_domains = [
         'wikimedia.org'
     ],
@@ -24,8 +26,8 @@ class role::mail::mx(
         before => Class['exim4'],
     }
 
-    letsencrypt::cert::integrated { $facts['hostname']:
-        subjects   => $facts['fqdn'],
+    letsencrypt::cert::integrated { $cert_name:
+        subjects   => $cert_subjects,
         key_group  => 'Debian-exim',
         puppet_svc => 'nginx',
         system_svc => 'nginx',
