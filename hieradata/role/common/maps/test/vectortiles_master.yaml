@@ -19,6 +19,7 @@ cluster: 'maps-test-vectortiles'
 
 profile::cassandra::single_instance::graphite_host: 'graphite-in.eqiad.wmnet'
 
+cassandra::target_version: '2.2'
 cassandra::metrics::blacklist:
   - .*\.metrics\.Table\..*$
 
