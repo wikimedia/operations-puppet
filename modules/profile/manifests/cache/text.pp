@@ -94,8 +94,5 @@ class profile::cache::text(
 
     # ResourceLoader browser cache hit rate and request volume stats.
     ::varnish::logging::rls { 'rls':
-        statsd_server => $statsd_host,
     }
-
-
 }
