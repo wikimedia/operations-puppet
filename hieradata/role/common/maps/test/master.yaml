@@ -18,6 +18,7 @@ admin::groups:
 cluster: 'maps-test'
 
 profile::cassandra::single_instance::graphite_host: 'graphite-in.eqiad.wmnet'
+profile::cassandra::single_instance::jmx_exporter_enabled: true
 
 cassandra::target_version: '2.2'
 cassandra::metrics::blacklist:
