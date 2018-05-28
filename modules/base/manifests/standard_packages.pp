@@ -47,6 +47,7 @@ class base::standard_packages {
         'wipe',
         'xfsprogs',
         'zsh',
+        'arping',
     ])
 
     package { 'tzdata': ensure => latest }
