@@ -91,10 +91,12 @@ END
 # see https://phabricator.wikimedia.org/T133649
 result_archived_projects_open_tasks=$(MYSQL_PWD=${sql_pass} /usr/bin/mysql -h $sql_host -u$sql_user $sql_name << END
 
-SELECT p.name, count(p.name) AS n
+SELECT sub.parentProject AS parentProject, p.name AS projectName, count(p.name) AS n
     FROM phabricator_maniphest.edge edg
     JOIN phabricator_maniphest.maniphest_task t
     JOIN phabricator_project.project p
+    LEFT JOIN (SELECT p3.name AS parentProject, p3.phid FROM phabricator_project.project p3) sub
+    ON sub.phid = p.parentProjectPHID
     WHERE edg.dst LIKE 'PHID-PROJ-%'
     AND edg.src LIKE 'PHID-TASK-%'
     AND p.phid = edg.dst
