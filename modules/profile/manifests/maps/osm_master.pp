@@ -23,8 +23,13 @@ class profile::maps::osm_master (
         default => 'gis',
     }
 
+    $pgversion = $::lsbdistcodename ? {
+        'stretch' => '9.6',
+        'jessie'  => '9.4',
+        'trusty'  => '9.3',
+    }
+
     class { '::postgresql::master':
-        pgversion           => '9.4',
         root_dir            => '/srv/postgresql',
         includes            => [ 'tuning.conf', 'logging.conf' ],
         checkpoint_segments => 768,
@@ -106,7 +111,7 @@ class profile::maps::osm_master (
 
     # some additional logging for the postgres master to help diagnose import
     # performance issues
-    file { '/etc/postgresql/9.4/main/logging.conf':
+    file { "/etc/postgresql/${pgversion}/main/logging.conf":
         ensure => 'present',
         owner  => 'root',
         group  => 'root',

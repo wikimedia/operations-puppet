@@ -9,7 +9,6 @@ class profile::maps::osm_slave(
 
     class { '::postgresql::slave':
         master_server => $master,
-        pgversion     => '9.4',
         root_dir      => '/srv/postgresql',
         includes      => 'tuning.conf',
     }

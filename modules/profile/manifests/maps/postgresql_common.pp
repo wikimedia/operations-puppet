@@ -9,12 +9,18 @@
 #                    (should only be overriden for tests or VMs on lab).
 class profile::maps::postgresql_common(
     $shared_buffers = hiera('profile::maps::postgresql_common::shared_buffers', '7680MB'),
-    $maintenance_work_mem = hiera('profile::maps::postgresql_common::maintenance_work_mem', '4GB')
+    $maintenance_work_mem = hiera('profile::maps::postgresql_common::maintenance_work_mem', '4GB'),
 ) {
     class { '::postgresql::postgis': }
 
+    $pgversion = $::lsbdistcodename ? {
+        'stretch' => '9.6',
+        'jessie'  => '9.4',
+        'trusty'  => '9.3',
+    }
+
     # Tuning
-    file { '/etc/postgresql/9.4/main/tuning.conf':
+    file { "/etc/postgresql/${pgversion}/main/tuning.conf":
         ensure  => 'present',
         owner   => 'root',
         group   => 'root',
@@ -34,7 +40,7 @@ class profile::maps::postgresql_common(
     # Ensure postgresql logs as maps-admin to allow maps-admin to read them
     # Rely on logrotate's copytruncate policy for postgres for the rest of the
     # log file
-    file { '/var/log/postgresql/postgresql-9.4-main.log':
+    file { "/var/log/postgresql/postgresql-${pgversion}-main.log":
         group => 'maps-admins',
     }
 }
