@@ -1,11 +1,11 @@
 # = Class: statistics::packages
 # Various packages useful for statistics crunching on stat-type hosts
+#
+# TODO: refactor this and profile::analytics::packages class.
+#
 class statistics::packages {
-    include ::geoip
-    include ::imagemagick::install
 
-    # ORES dependency packages.
-    include ::ores::base
+    include ::imagemagick::install
 
     require_package([
         'openjdk-8-jdk',
@@ -58,24 +58,15 @@ class statistics::packages {
         'libapache2-mod-python',
         'python-geoip',             'python3-geoip',
         'python-mysqldb',           'python3-mysqldb',
-        'python-yaml',              'python3-yaml',
-        'python-dateutil',          'python3-dateutil',
-        'python-numpy',             'python3-numpy',
-        'python-scipy',             'python3-scipy',
         'python-boto',              'python3-boto',  # Amazon S3 access (to get zero sms logs)
-        'python-pandas',            'python3-pandas',
-        'python-requests',          'python3-requests',
         'python-unidecode',         'python3-unidecode',
         'python-ua-parser',         'python3-ua-parser',
         'python-matplotlib',        'python3-matplotlib',
         'python-netaddr',           'python3-netaddr',
-        'python-kafka',             'python3-kafka',
-        'python-confluent-kafka',   'python3-confluent-kafka',
         'python-pymysql',           'python3-pymysql',
         'python-virtualenv',        'python3-virtualenv', # T84378
         'python-dev',               'python3-dev',        # T83316
-        'python-protobuf',
-        'python3-protobuf',
+        'python-protobuf',          'python3-protobuf',
         # WMF maintains python-google-api at
         # https://gerrit.wikimedia.org/r/#/admin/projects/operations/debs/python-google-api
         'python-google-api',        'python3-google-api', # T190767
@@ -96,10 +87,6 @@ class statistics::packages {
         'libcairo2-dev',
         'libxt-dev',
     ])
-
-    # R Packages
-    include ::r_lang
-    require_package('r-cran-rmysql') # Note: RMariaDB (https://github.com/rstats-db/RMariaDB) will replace RMySQL, but is currently not on CRAN
 
     # Dictionary packages
     require_package([
