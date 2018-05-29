@@ -6,6 +6,7 @@
 # for the published_datasets_path.
 class profile::reportupdater::jobs::hadoop {
 
+    require ::profile::analytics::cluster::packages::hadoop
     require ::profile::analytics::cluster::client
     require ::statistics::compute
 
