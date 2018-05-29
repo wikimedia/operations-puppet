@@ -6,7 +6,7 @@ class role::configcluster_stretch {
     include ::profile::base::firewall
 
     # Temporary to ease the migration process
-    if $::hostname =~ /conf100[45]/ {
+    if $::hostname =~ /conf100[456]/ {
         include ::profile::zookeeper::server
         include ::profile::zookeeper::firewall
     }
