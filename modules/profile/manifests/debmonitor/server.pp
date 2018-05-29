@@ -30,7 +30,7 @@ class profile::debmonitor::server (
     $config_path = "${base_path}/deploy"
     $venv_path = "${base_path}/venv"
     $static_path = "${base_path}/static/"
-    $directory = "${config_path}/debmonitor"
+    $directory = "${config_path}/src"
     $ssl_config = ssl_ciphersuite('nginx', 'strong')
 
     # Configuration file for the Django-based WebUI and API
