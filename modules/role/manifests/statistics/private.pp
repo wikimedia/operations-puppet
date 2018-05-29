@@ -3,6 +3,7 @@ class role::statistics::private {
         description => 'Statistics private data host and general compute node'
     }
 
+    include ::standard
     include ::profile::statistics::private
 
     # Run Hadoop/Hive reportupdater jobs here.
