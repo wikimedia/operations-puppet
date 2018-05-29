@@ -147,10 +147,6 @@
 #  [*java_home*]
 #    Sets the JAVA_HOME env. variable in hadoop-env.sh
 #
-#  [*include_ores*]
-#    Deploy Ores class (and hence packages) alongside with the Hadoop ones.
-#    This is mostly only for testing Ores on Hadoop worker nodes.
-#
 class profile::hadoop::common (
     $zookeeper_clusters                       = hiera('zookeeper_clusters'),
     $zookeeper_cluster_name                   = hiera('profile::hadoop::common::zookeeper_cluster_name'),
@@ -185,7 +181,6 @@ class profile::hadoop::common (
     $yarn_scheduler_minimum_allocation_mb     = hiera('profile::hadoop::common::yarn_scheduler_minimum_allocation_mb', undef),
     $yarn_scheduler_maximum_allocation_mb     = hiera('profile::hadoop::common::yarn_scheduler_maximum_allocation_mb', undef),
     $java_home                                = hiera('profile::hadoop::common::java_home', '/usr/lib/jvm/java-8-openjdk-amd64/jre'),
-    $include_ores                             = hiera('profile::hadoop::common::include_ores', false),
 ) {
     # Include Wikimedia's thirdparty/cloudera apt component
     # as an apt source on all Hadoop hosts.  This is needed
@@ -194,11 +189,6 @@ class profile::hadoop::common (
 
     # Need Java before Hadoop is installed.
     require ::profile::java::analytics
-
-    if $include_ores {
-        # ores::base for ORES packages
-        require ::ores::base
-    }
 
     # Force apt-get update to run before we try to install packages.
     # CDH Packages are in the thirdparty/cloudera apt component,
