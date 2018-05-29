@@ -1,3 +1,0 @@
-# Temporary override for conf1001 to avoid paging while swapping
-# the host with conf1004
-profile::zookeeper::is_critical: false
