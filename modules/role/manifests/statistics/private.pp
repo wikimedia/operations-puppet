@@ -3,6 +3,7 @@ class role::statistics::private {
         description => 'Statistics private data host and general compute node'
     }
 
+    include ::standard
     include ::profile::statistics::private
 
     # Run Hadoop/Hive reportupdater jobs here.
@@ -12,6 +13,8 @@ class role::statistics::private {
     # clients so that analysts can access Hadoop
     # from here.
     include ::profile::analytics::cluster::client
+
+    include ::profile::analytics::cluster::packages::hadoop
 
     # Include analytics/refinery deployment target.
     include ::profile::analytics::refinery

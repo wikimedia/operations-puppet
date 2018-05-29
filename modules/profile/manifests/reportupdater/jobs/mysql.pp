@@ -8,6 +8,7 @@
 class profile::reportupdater::jobs::mysql {
     require statistics
     require statistics::compute
+    require ::profile::analytics::cluster::packages::statistics
 
     # Set up reportupdater to be executed on this machine
     class { 'reportupdater':

@@ -1,11 +1,10 @@
 # == Class statistics::compute
+#
 # Class containing common stuff for a statisitics compute node.
 #
 class statistics::compute {
     Class['::statistics']       -> Class['::statistics::compute']
     Class['::statistics::user'] -> Class['::statistics::compute']
-
-    include ::statistics::packages
 
     $working_path = $::statistics::working_path
     $published_datasets_path = "${working_path}/published-datasets"
