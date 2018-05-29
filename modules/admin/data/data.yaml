@@ -675,7 +675,7 @@ groups:
   maps-test-roots:
     gid: 803
     description: users with root on maps test cluster
-    members: []
+    members: [smalyshev]
     privileges: ['ALL = (ALL) NOPASSWD: ALL']
 
   contint-docker:
