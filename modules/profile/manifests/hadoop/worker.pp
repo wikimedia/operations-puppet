@@ -11,6 +11,7 @@ class profile::hadoop::worker(
     $monitoring_enabled = hiera('profile::hadoop::worker::monitoring_enabled', false),
     $ferm_srange        = hiera('profile::hadoop::worker::ferm_srange', '$DOMAIN_NETWORKS'),
 ) {
+    require ::profile::analytics::cluster::packages
     require ::profile::hadoop::common
 
     # hive::client is nice to have for jobs launched
@@ -46,41 +47,6 @@ class profile::hadoop::worker(
     # launch sqoop jobs.
     class { '::cdh::sqoop': }
 
-    # Install MaxMind databases for geocoding UDFs
-    class { '::geoip': }
-
-    # Need R for Spark2R.
-    class { '::r_lang': }
-    # Note: RMariaDB (https://github.com/rstats-db/RMariaDB) will replace RMySQL, but is currently not on CRAN
-    require_package('r-cran-rmysql')
-
-    # Install packages that are useful for distributed
-    # computation in Hadoop, and thus should be available on
-    # any Hadoop nodes.
-    require_package(
-        'python-pandas',
-        'python-scipy',
-        'python-requests',
-        'python-matplotlib',
-        'python-dateutil',
-        'python-sympy',
-        'python-docopt',
-        'python3-tabulate',
-        'python3-scipy',
-        'python3-enchant',
-        'python3-tz',
-        'python3-nltk',
-        'python3-nose',
-        'python3-setuptools',
-        'python3-requests',
-        'python3-mmh3',
-        'python3-docopt',
-        'libgomp1',
-        'python-numpy',
-        'python3-numpy',
-        'python3-sklearn',
-        'python3-sklearn-lib'
-    )
 
     # This allows Hadoop daemons to talk to each other.
     ferm::service{ 'hadoop-access':
