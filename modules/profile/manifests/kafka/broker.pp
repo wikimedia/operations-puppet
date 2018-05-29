@@ -189,19 +189,16 @@ class profile::kafka::broker(
     $ssl_port           = 9093
     $ssl_listener       = "SSL://:${ssl_port}"
 
-    # Conditionally set $listeners and $ssl_client_auth
+    # Conditionally set $listeners
     # based on values of $ssl_enabled and $plaintext.
     if $ssl_enabled and $plaintext {
         $listeners = [$plaintext_listener, $ssl_listener]
-        $ssl_client_auth       = 'requested'
     }
     elsif $plaintext {
         $listeners             = [$plaintext_listener]
-        $ssl_client_auth       = 'none'
     }
     elsif $ssl_enabled {
         $listeners             = [$ssl_listener]
-        $ssl_client_auth       = 'required'
     }
     else {
         fail('Must set at least one of $plaintext or $ssl_enabled to true.')
@@ -281,6 +278,18 @@ class profile::kafka::broker(
     if $auth_acls_enabled {
         $authorizer_class_name = 'kafka.security.auth.SimpleAclAuthorizer'
 
+        # Conditionally set $ssl_client_auth
+        # based on values of $auth_acls_enabled, $ssl_enabled and $plaintext.
+        if $ssl_enabled and $plaintext {
+            $ssl_client_auth       = 'requested'
+        }
+        elsif $plaintext {
+            $ssl_client_auth       = 'none'
+        }
+        elsif $ssl_enabled {
+            $ssl_client_auth       = 'required'
+        }
+
         # If both auth ACLs AND plaintext is enabled, we need to allow some basic ANONYMOUS
         # user operations to un-authenticated clients will work.
         if $plaintext {
@@ -299,6 +308,7 @@ class profile::kafka::broker(
     }
     else {
         $authorizer_class_name = undef
+        $ssl_client_auth       = undef
     }
 
     # Be nice, and manage /srv/kafka if it is the prefix for kafka data directories.
