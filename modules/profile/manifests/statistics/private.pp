@@ -8,7 +8,9 @@ class profile::statistics::private(
     $dumps_servers       = hiera('dumps_dist_nfs_servers'),
     $dumps_active_server = hiera('dumps_dist_active_web'),
 ) {
-    include ::standard
+
+    require ::profile::analytics::cluster::packages::common
+
     include ::deployment::umask_wikidev
 
     include ::profile::backup::host

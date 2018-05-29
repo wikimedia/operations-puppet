@@ -3,7 +3,9 @@
 class profile::statistics::explorer(
     $statistics_servers = hiera('statistics_servers'),
 ) {
-    class { '::standard': }
+
+    require ::profile::analytics::cluster::packages::common
+
     class { '::deployment::umask_wikidev': }
 
     class { '::statistics':
