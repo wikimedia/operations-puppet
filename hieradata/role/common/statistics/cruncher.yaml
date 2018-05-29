@@ -4,3 +4,6 @@ admin::groups:
   - statistics-admins
   - statistics-users
   - researchers
+
+# Include Ores packages and classes for testing
+profile::hadoop::common::include_ores: true
