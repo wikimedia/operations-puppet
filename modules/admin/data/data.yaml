@@ -672,10 +672,10 @@ groups:
     gid: 801
     description: People who have shell access to snapshot hosts and bastions only.
     members: [springle]
-  maps-test-roots:
+  wdqs-test-roots:
     gid: 803
     description: users with root on maps test cluster
-    members: []
+    members: [smalyshev]
     privileges: ['ALL = (ALL) NOPASSWD: ALL']
 
   contint-docker:
