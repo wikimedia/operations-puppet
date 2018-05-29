@@ -150,6 +150,7 @@ class puppetdb::app(
         'ssl-key'     => '/etc/puppetdb/ssl/server.key',
         'ssl-cert'    => '/etc/puppetdb/ssl/cert.pem',
         'ssl-ca-cert' => $ca_path,
+        'host'        => '127.0.0.1',
     }
     if $bind_ip {
         $actual_jetty_settings = merge($jetty_settings, {'ssl-host' => $bind_ip})
