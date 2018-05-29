@@ -231,6 +231,8 @@ class profile::kafka::broker(
         # https://phabricator.wikimedia.org/T182993#4208208
         $ssl_java_opts                  = '-Djdk.tls.namedGroups=secp256r1'
 
+        $super_users                    = ["User:CN=kafka_${cluster_name}_broker"]
+
         file { $ssl_location:
             ensure => 'directory',
             owner  => 'kafka',
@@ -272,6 +274,31 @@ class profile::kafka::broker(
         $ssl_enabled_protocols          = undef
         $ssl_cipher_suites              = undef
         $ssl_java_opts                  = undef
+        $super_users                    = undef
+    }
+
+    # Enable ACL based authorization.
+    if $auth_acls_enabled {
+        $authorizer_class_name = 'kafka.security.auth.SimpleAclAuthorizer'
+
+        # If both auth ACLs AND plaintext is enabled, we need to allow some basic ANONYMOUS
+        # user operations to un-authenticated clients will work.
+        if $plaintext {
+            $kafka_acls_command = "/usr/bin/kafka-acls --authorizer-properties zookeeper.connect=${config['zookeeper']['url']}"
+            exec { 'kafka_acls_for_User:ANONYMOUS':
+                # Add Describe and Create permissions on kafka-cluster for ANONYMOUS user...
+                command => "${kafka_acls_command} --add --allow-principal User:ANONYMOUS --cluster --operation Create --operation Describe",
+                # unless ANONYMOUS user already has these permissions.
+                # --list cluster ACLs, grep for the desired ANONYMOUS user permissions
+                # and ensure that both matches are present (there should be 2 matches, one for
+                # Create and one for Describe).
+                unless  => "/usr/bin/test $(${kafka_acls_command} --list --cluster | /bin/grep -c -e 'User:ANONYMOUS has Allow permission for operations: Create from hosts: *' -e 'User:ANONYMOUS has Allow permission for operations: Describe from hosts: *') -eq 2",
+                require => Class['::confluent::kafka::broker'],
+            }
+        }
+    }
+    else {
+        $authorizer_class_name = undef
     }
 
     # Be nice, and manage /srv/kafka if it is the prefix for kafka data directories.
@@ -299,22 +326,6 @@ class profile::kafka::broker(
     }
     else {
         $monitoring_java_opts = undef
-    }
-
-    if $auth_acls_enabled {
-        $authorizer_class_name = 'kafka.security.auth.SimpleAclAuthorizer'
-    }
-    else {
-        $authorizer_class_name = undef
-    }
-
-    # If both auth ACLs AND SSL are enabled, then we need to set super.users
-    # so that the brokers can authenticate with each other.
-    if $auth_acls_enabled and $ssl_enabled {
-        $super_users = ["User:CN=kafka_${cluster_name}_broker"]
-    }
-    else {
-        $super_users = undef
     }
 
     $java_opts = "${monitoring_java_opts} ${ssl_java_opts}"
@@ -352,22 +363,6 @@ class profile::kafka::broker(
         message_max_bytes                => $message_max_bytes,
         authorizer_class_name            => $authorizer_class_name,
         super_users                      => $super_users,
-    }
-
-    # If both auth ACLs AND plaintext is enabled, we need to allow some basic ANONYMOUS
-    # user operations to un authenticated clients will work.
-    if $auth_acls_enabled and $plaintext {
-        $kafka_acls_command = "/usr/bin/kafka-acls --authorizer-properties zookeeper.connect=${config['zookeeper']['url']}"
-        exec { 'kafka_acls_for_User:ANONYMOUS':
-            # Add Describe and Create permissions on kafka-cluster for ANONYMOUS user...
-            command => "${kafka_acls_command} --add --allow-principal User:ANONYMOUS --cluster --operation Create --operation Describe",
-            # unless ANONYMOUS user already has these permissions.
-            # --list cluster ACLs, grep for the desired ANONYMOUS user permissions
-            # and ensure that both matches are present (there should be 2 matches, one for
-            # Create and one for Describe).
-            unless  => "/usr/bin/test $(${kafka_acls_command} --list --cluster | /bin/grep -c -e 'User:ANONYMOUS has Allow permission for operations: Create from hosts: *' -e 'User:ANONYMOUS has Allow permission for operations: Describe from hosts: *') -eq 2",
-            require => Class['::confluent::kafka::broker'],
-        }
     }
 
     $ferm_srange = $::realm ? {
