@@ -1,11 +1,11 @@
 # = Class: statistics::packages
 # Various packages useful for statistics crunching on stat-type hosts
+#
+# TODO: refactor this and profile::analytics::packages class.
+#
 class statistics::packages {
-    include ::geoip
-    include ::imagemagick::install
 
-    # ORES dependency packages.
-    include ::ores::base
+    include ::imagemagick::install
 
     require_package([
         'openjdk-8-jdk',
@@ -96,10 +96,6 @@ class statistics::packages {
         'libcairo2-dev',
         'libxt-dev',
     ])
-
-    # R Packages
-    include ::r_lang
-    require_package('r-cran-rmysql') # Note: RMariaDB (https://github.com/rstats-db/RMariaDB) will replace RMySQL, but is currently not on CRAN
 
     # Dictionary packages
     require_package([
