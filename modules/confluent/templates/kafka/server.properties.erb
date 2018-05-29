@@ -51,13 +51,12 @@ replica.fetch.max.bytes=<%= @message_max_bytes %>
 replica.fetch.max.bytes=<%= @replica_fetch_max_bytes %>
 <% end -%>
 <% end -%>
-<%if @authorizer_class_name -%>
 ######################### ACL handling ##################################
+<%if @authorizer_class_name -%>
 authorizer.class.name=<%= @authorizer_class_name %>
+<% end -%>
 <%if @allow_everyone_if_no_acl_found -%>
 allow.everyone.if.no.acl.found=<%= @allow_everyone_if_no_acl_found %>
-<% end -%>
-
 <% end -%>
 <% if @super_users -%>
 super.users=<%= Array(@super_users).join(';') %>
