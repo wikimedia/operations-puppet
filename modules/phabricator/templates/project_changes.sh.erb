@@ -136,6 +136,20 @@ SELECT CONCAT("https://phabricator.wikimedia.org/p/", u.userName) AS userName, c
 END
 )
 
+# echo "result_new_user_assignees"
+# see https://phabricator.wikimedia.org/T195780
+result_new_user_assignees=$(MYSQL_PWD=${sql_pass} /usr/bin/mysql -h $sql_host -u$sql_user $sql_name << END
+SELECT DISTINCT CONCAT("https://phabricator.wikimedia.org/p/", u.userName) AS userName
+    FROM phabricator_maniphest.maniphest_task t
+    JOIN phabricator_user.user u ON u.userName = t.ownerOrdering
+    WHERE t.dateModified > UNIX_TIMESTAMP(DATE_SUB(NOW(), INTERVAL 1 WEEK))
+    AND u.dateCreated > UNIX_TIMESTAMP(DATE_SUB(NOW(), INTERVAL 6 WEEK))
+    AND t.ownerOrdering IS NOT NULL
+    ORDER BY userName;
+
+END
+)
+
 # the actual email
 cat <<EOF | /usr/bin/mail -r "${sndr_address}" -s "Phabricator weekly project changes" ${rcpt_address}
 
@@ -167,6 +181,10 @@ ${result_archived_projects_open_tasks}
 
 DISABLED USER ACCOUNTS WITH OPEN TASKS ASSIGNED:
 ${result_inactive_users_assigned_tasks}
+
+
+USER ACCOUNTS WHO BECAME AN ASSIGNEE LAST WEEK AND HAD LESS THAN 5 TASKS EVER ASSIGNED:
+${result_new_user_assignees}
 
 
 Yours sincerely,
