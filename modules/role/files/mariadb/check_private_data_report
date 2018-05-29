@@ -1,8 +1,10 @@
 #!/bin/bash
 set -e
 
+EMAILS="marostegui@wikimedia.org jcrespo@wikimedia.org"
 PRIVATE_DATA="/usr/local/sbin/check_private_data.py"
 REPORT_PATH="/var/log/private_data_report_${HOSTNAME}.log"
+SOCKET="/run/mysqld/mysqld"
 
 if [ ! -f "$PRIVATE_DATA" ]
 then
@@ -12,19 +14,48 @@ fi
 
 # run the script
 
-if [ "$HOSTNAME" == "db1069" ]
+# db1124 and db2094 replicate s1 s3 s5 and s8 in a multi-instance setup
+
+if [ "$HOSTNAME" == "db1124" ] || [ "$HOSTNAME" == "db2094" ]
 then
-    echo "This script will not work on db1069 as it has multiple instances"
-    exit 1
+	for SECTION in s1 s3 s5 s8
+	do
+		echo "Start time: $(date)" > "${REPORT_PATH}_${SECTION}"
+		$PRIVATE_DATA -S ${SOCKET}.${SECTION}.sock >> "${REPORT_PATH}_${SECTION}" 2>&1
+		DATA=$(/bin/egrep -v "^-- Non|^Start time|wmf_checksums|^-- Unfiltered" -c "${REPORT_PATH}_${SECTION}" | xargs)
+		if [ "$DATA" -gt "0" ]
+		then
+		echo "Private data detected at $HOSTNAME for $SECTION check: ${REPORT_PATH}_${SECTION}" | /usr/bin/mail -s "Private data found at $HOSTNAME" $EMAILS
+		fi
+	done
 fi
 
-echo "Start time: $(date)" > "$REPORT_PATH"
+# db1125 and db2095 replicate s2 s4 s6 and s7 in a multi-instance setup
 
-$PRIVATE_DATA >> "$REPORT_PATH" 2>&1
-
-DATA=$(/bin/egrep -v "^-- Non|^Start time|wmf_checksums|^-- Unfiltered" -c "$REPORT_PATH")
-
-if [ "$DATA" -gt "0" ]
+if [ "$HOSTNAME" == "db1125" ] || [ "$HOSTNAME" == "db2095" ]
 then
-    echo "Private data detected at $HOSTNAME check: $REPORT_PATH" | /usr/bin/mail -s "Private data found at $HOSTNAME" marostegui@wikimedia.org jcrespo@wikimedia.org
+	for SECTION in s2 s4 s6 s7
+	do
+		echo "Start time: $(date)" > "${REPORT_PATH}_${SECTION}"
+		$PRIVATE_DATA -S ${SOCKET}.${SECTION}.sock >> "${REPORT_PATH}_${SECTION}" 2>&1
+		DATA=$(/bin/egrep -v "^-- Non|^Start time|wmf_checksums|^-- Unfiltered" -c "${REPORT_PATH}_${SECTION}" | xargs)
+		if [ "$DATA" -gt "0" ]
+		then
+		echo "Private data detected at $HOSTNAME for $SECTION check: ${REPORT_PATH}_${SECTION}" | /usr/bin/mail -s "Private data found at $HOSTNAME" $EMAILS
+		fi
+	done
+fi
+
+# labs hosts replicate all the sections in a multi-source setup
+
+if [ "$HOSTNAME" == "labsdb1009" ] || [ "$HOSTNAME" == "labsdb1010" ] || [ "$HOSTNAME" == "labsdb1011" ]
+then
+	echo "Start time: $(date)" > "$REPORT_PATH"
+	$PRIVATE_DATA >> "$REPORT_PATH" 2>&1
+	DATA=$(/bin/egrep -v "^-- Non|^Start time|wmf_checksums|^-- Unfiltered" -c "$REPORT_PATH" | xargs)
+
+	if [ "$DATA" -gt "0" ]
+	then
+    echo "Private data detected at $HOSTNAME check: $REPORT_PATH" | /usr/bin/mail -s "Private data found at $HOSTNAME" $EMAILS
+	fi
 fi
