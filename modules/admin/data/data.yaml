@@ -261,7 +261,7 @@ groups:
               jdlrobson, chelsyx, ovasileva, flemmerich, mkroetzsch, filippo, pmiazga, faidon,
               ironholds, piccardi, fdans, eevans, anomie, demon, ladsgroup, musikanimal,
               kaldari, goransm, ema, dsaez, shiladsen, rho, mirrys, slaporte, jk, cy534,
-              ayounsi, mepps, mmiller, seddon]
+              ayounsi, mepps, mmiller, seddon, gilles]
   analytics-admins:
     gid: 732
     description: Admin access to analytics cluster.
