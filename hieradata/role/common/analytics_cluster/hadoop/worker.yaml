@@ -26,6 +26,3 @@ profile::hadoop::worker::ferm_srange: '(($ANALYTICS_NETWORKS $DRUID_PUBLIC_HOSTS
 
 prometheus::node_exporter::collectors_extra:
   - meminfo_numa
-
-# Include Ores packages and classes for testing
-profile::hadoop::common::include_ores: true
