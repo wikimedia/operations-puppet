@@ -1,5 +1,8 @@
 # = Class: statistics::packages
 # Various packages useful for statistics crunching on stat-type hosts
+#
+# TODO: refactor this and profile::analytics::packages class.
+#
 class statistics::packages {
     include ::geoip
     include ::imagemagick::install
