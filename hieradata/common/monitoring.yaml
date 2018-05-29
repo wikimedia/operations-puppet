@@ -271,6 +271,38 @@ monitoring::groups:
 # Network
   network:
     description: Networking equipment (routers/switches/etc.)
+  asw1-eqsin:
+    description: Equipment with asw1-eqsin as uplink
+  asw2-a5-eqiad:
+    description: Equipment with asw2-a5-eqiad as uplink
+  asw2-a-eqiad:
+    description: Equipment with asw2-a-eqiad as uplink
+  asw2-b-eqiad:
+    description: Equipment with asw2-b-eqiad as uplink
+  asw2-c-eqiad:
+    description: Equipment with asw2-c-eqiad as uplink
+  asw2-d-eqiad:
+    description: Equipment with asw2-d-eqiad as uplink
+  asw2-ulsfo:
+    description: Equipment with asw2-ulsfo as uplink
+  asw-a-codfw:
+    description: Equipment with asw-a-codfw as uplink
+  asw-a-eqiad:
+    description: Equipment with asw-a-eqiad as uplink
+  asw-b-codfw:
+    description: Equipment with asw-b-codfw as uplink
+  asw-b-eqiad:
+    description: Equipment with asw-b-eqiad as uplink
+  asw-c-codfw:
+    description: Equipment with asw-c-codfw as uplink
+  asw-c-eqiad:
+    description: Equipment with asw-c-eqiad as uplink
+  asw-d-codfw:
+    description: Equipment with asw-d-codfw as uplink
+  asw-esams:
+    description: Equipment with asw-esams as uplink
+  csw2-esams:
+    description: Equipment with csw2-esams as uplink
 
 # Thumbor
   thumbor_eqiad:
