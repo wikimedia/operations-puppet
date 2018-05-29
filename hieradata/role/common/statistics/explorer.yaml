@@ -3,6 +3,3 @@ admin::groups:
   - analytics-privatedata-users
   - analytics-admins
 cluster: analytics
-
-# Include Ores packages and classes for testing
-profile::hadoop::common::include_ores: true

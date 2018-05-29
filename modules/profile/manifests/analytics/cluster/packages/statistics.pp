@@ -1,11 +1,16 @@
-# = Class: statistics::packages
-# Various packages useful for statistics crunching on stat-type hosts
-class statistics::packages {
-    include ::geoip
-    include ::imagemagick::install
+# == Class profile::analytics::cluster::packages::statistics
+#
+# Specific packages that should be installed on analytics statistics
+# nodes (no Hadoop client related packages).
+#
+# If the stat node need to be capable of using Hadoop, please also include
+# profile::analytics::cluster::packages::hadoop
+#
+class profile::analytics::cluster::packages::statistics {
 
-    # ORES dependency packages.
-    include ::ores::base
+    include ::profile::analytics::cluster::packages::common
+
+    class { '::imagemagick::install': }
 
     require_package([
         'openjdk-8-jdk',
@@ -56,26 +61,15 @@ class statistics::packages {
     require_package ([
         'virtualenv',
         'libapache2-mod-python',
-        'python-geoip',             'python3-geoip',
         'python-mysqldb',           'python3-mysqldb',
-        'python-yaml',              'python3-yaml',
-        'python-dateutil',          'python3-dateutil',
-        'python-numpy',             'python3-numpy',
-        'python-scipy',             'python3-scipy',
         'python-boto',              'python3-boto',  # Amazon S3 access (to get zero sms logs)
-        'python-pandas',            'python3-pandas',
-        'python-requests',          'python3-requests',
-        'python-unidecode',         'python3-unidecode',
         'python-ua-parser',         'python3-ua-parser',
-        'python-matplotlib',        'python3-matplotlib',
         'python-netaddr',           'python3-netaddr',
-        'python-kafka',             'python3-kafka',
-        'python-confluent-kafka',   'python3-confluent-kafka',
         'python-pymysql',           'python3-pymysql',
         'python-virtualenv',        'python3-virtualenv', # T84378
         'python-dev',               'python3-dev',        # T83316
-        'python-protobuf',
-        'python3-protobuf',
+        'python-protobuf',          'python3-protobuf',
+        'python-unidecode',         'python3-unidecode',
         # WMF maintains python-google-api at
         # https://gerrit.wikimedia.org/r/#/admin/projects/operations/debs/python-google-api
         'python-google-api',        'python3-google-api', # T190767
@@ -96,10 +90,6 @@ class statistics::packages {
         'libcairo2-dev',
         'libxt-dev',
     ])
-
-    # R Packages
-    include ::r_lang
-    require_package('r-cran-rmysql') # Note: RMariaDB (https://github.com/rstats-db/RMariaDB) will replace RMySQL, but is currently not on CRAN
 
     # Dictionary packages
     require_package([

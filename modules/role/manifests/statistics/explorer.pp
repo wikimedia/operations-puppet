@@ -8,7 +8,9 @@ class role::statistics::explorer {
         description => 'Statistics & Analytics cluster explorer (private data access, no local compute)'
     }
 
+    include ::standard
     include ::profile::statistics::explorer
     include ::profile::analytics::cluster::client
     include ::profile::analytics::refinery
+    include ::profile::analytics::cluster::packages::hadoop
 }
