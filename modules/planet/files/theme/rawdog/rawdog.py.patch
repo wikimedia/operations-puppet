@@ -1,0 +1,82 @@
+diff --git a/modules/planet/files/rawdog/rawdog.py b/modules/planet/files/rawdog/rawdog.py
+index eed0995491..a9454e3a10 100644
+--- a/modules/planet/files/rawdog/rawdog.py
++++ b/modules/planet/files/rawdog/rawdog.py
+@@ -899,6 +899,7 @@ class Config:
+             "feeddefaults" : {},
+             "defines" : {},
+             "outputfile" : "output.html",
++            "oldpages" : 5,
+             "maxarticles" : 200,
+             "maxage" : 0,
+             "expireage" : 24 * 60 * 60,
+@@ -1012,6 +1013,8 @@ class Config:
+                 load_plugins(dir, self)
+         elif l[0] == "outputfile":
+             self["outputfile"] = l[1]
++        elif l[0] == "oldpages":
++            self["oldpages"] = l[1]
+         elif l[0] == "maxarticles":
+             self["maxarticles"] = int(l[1])
+         elif l[0] == "maxage":
+@@ -1737,7 +1740,7 @@ __feeditems__
+ 
+         return bits
+ 
+-    def write_output_file(self, articles, article_dates, config):
++    def write_output_file(self, articles, article_dates, config, oldpage=0):
+         """Write a regular rawdog HTML output file."""
+         f = StringIO()
+         dw = DayWriter(f, config)
+@@ -1752,13 +1755,23 @@ __feeditems__
+         dw.close()
+         call_hook("output_items_end", self, config, f)
+ 
++        if oldpage != config["oldpages"]:
++                        filename = config["outputfile"].split("/")[-1:][0] # get the filename only
++                        filename = filename.split(".html")
++            outputfile = filename[0] + str(oldpage+1) + ".html"
++            f.write('<p><a class="btn btn-mat" href="'+outputfile+'">Older blog entries</a></p>')
++
+         bits = self.get_main_template_bits(config)
+         bits["items"] = f.getvalue()
+         f.close()
+         bits["num_items"] = str(len(articles))
+         call_hook("output_bits", self, config, bits)
+         s = fill_template(self.get_template(config, "page"), bits)
+-        outputfile = config["outputfile"]
++        if oldpage > 0:
++            filename = config["outputfile"].split(".html")
++            outputfile = filename[0] + str(oldpage) + ".html"
++        else:
++            outputfile = config["outputfile"]
+         if outputfile == "-":
+             write_ascii(sys.stdout, s, config)
+         else:
+@@ -1788,8 +1801,9 @@ __feeditems__
+         if not call_hook("output_sort_articles", self, config, article_list):
+             article_list.sort()
+ 
+-        if config["maxarticles"] != 0:
+-            article_list = article_list[:config["maxarticles"]]
++        # for multiple pages split further down
++        # if config["maxarticles"] != 0:
++        #    article_list = article_list[:config["maxarticles"]]
+ 
+         if config["splitstate"]:
+             wanted = {}
+@@ -1829,8 +1843,13 @@ __feeditems__
+ 
+         config.log("Selected ", len(articles), " of ", numarticles, " articles to write; ignored ", dup_count, " duplicates")
+ 
+-        if not call_hook("output_write_files", self, config, articles, article_dates):
+-            self.write_output_file(articles, article_dates, config)
++        for page in range(0, config["oldpages"]+1):
++            print "on page: " + str(page)
++            if config["maxarticles"] != 0:
++                pageArticles = articles[config["maxarticles"]*page:config["maxarticles"]*(page+1)]
++ 
++            if not call_hook("output_write_files", self, config, pageArticles, article_dates):
++                self.write_output_file(pageArticles, article_dates, config, page)
+ 
+         config.log("Finished write")
