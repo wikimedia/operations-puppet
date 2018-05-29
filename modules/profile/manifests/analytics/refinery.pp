@@ -10,26 +10,10 @@ class profile::analytics::refinery {
     # by the CDH packages.
     require ::profile::hadoop::common
 
+    require ::profile::analytics::cluster::packages::hadoop
+
     # Clone mediawiki/event-schemas so refinery can use them.
     class { '::eventschemas': }
-
-    if ! defined(Class['Geoip']) {
-        # Include geoip for geolocating
-        class { '::geoip': }
-    }
-
-    # Some refinery python scripts use docopt for CLI parsing.
-    if !defined(Package['python-docopt']) {
-        package { 'python-docopt':
-            ensure => 'installed',
-        }
-    }
-    # refinery python module uses dateutil
-    if !defined(Package['python-dateutil']) {
-        package { 'python-dateutil':
-            ensure => 'installed',
-        }
-    }
 
     # The analytics/refinery repo will deployed to this node via Scap3.
     # The analytics user/groups are deployed/managed by Scap.

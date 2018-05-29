@@ -8,8 +8,10 @@ class profile::statistics::private(
     $dumps_servers       = hiera('dumps_dist_nfs_servers'),
     $dumps_active_server = hiera('dumps_dist_active_web'),
 ) {
-    include ::standard
-    include ::deployment::umask_wikidev
+
+    require ::profile::analytics::cluster::packages::statistics
+
+    class {'::deployment::umask_wikidev': }
 
     include ::profile::backup::host
     backup::set { 'home' : }
@@ -19,7 +21,7 @@ class profile::statistics::private(
     }
 
     # include stuff common to statistics compute nodes
-    include ::statistics::compute
+    class { '::statistics::compute': }
 
     class { '::statistics::dataset_mount':
         dumps_servers       => $dumps_servers,
@@ -55,14 +57,14 @@ class profile::statistics::private(
 
     # The eventlogging codebase is useful for scripting
     # EventLogging consumers.  Install this but don't run any daemons.
-    include ::eventlogging
+    class { '::eventlogging': }
 
     # EventLogging Analytics data logs are not private, but they
     # are rsynced here for convenience and backup redundancy.
-    include ::statistics::rsync::eventlogging
+    class { '::statistics::rsync::eventlogging': }
 
     # rsync mediawiki logs from logging hosts
-    include ::statistics::rsync::mediawiki
+    class { '::statistics::rsync::mediawiki': }
 
     # WMDE releated statistics & analytics scripts.
     class { '::statistics::wmde':
@@ -72,7 +74,7 @@ class profile::statistics::private(
     }
 
     # Discovery team statistics scripts and cron jobs
-    include ::statistics::discovery
+    class { '::statistics::discovery': }
 
     # Class to save old versions of the geoip MaxMind database, which are useful
     # for historical geocoding.
