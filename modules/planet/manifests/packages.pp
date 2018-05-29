@@ -23,6 +23,16 @@ class planet::packages {
             ensure => 'present',
         }
 
+        file { '/var/www/rawdog.py.patch':
+            source  => 'puppet:///modules/planet/theme/rawdog/rawdog.py.patch',
+            require => Package['rawdog'],
+        }
+
+        exec { 'rawdog.py.patch':
+            command   => 'patch < /var/www/rawdog.py.patch',
+            subscribe => File['/var/www/rawdog.py.patch'],
+        }
+
         # PyTidyLib 0.2.1 or later (optional but strongly recommended)
         # python-libxml2 is needed for the xml archive plugin we will use
         # for rawdog.
