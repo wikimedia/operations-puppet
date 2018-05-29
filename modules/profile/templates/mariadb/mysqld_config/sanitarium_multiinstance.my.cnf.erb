@@ -16,11 +16,7 @@ ssl-verify-server-cert
 user      = mysql
 read_only = 1
 basedir   = <%= @basedir %>
-<% if @hostname == 'db1125' %>
-server_id = 1171978766
-<% else %>
 server_id = <%= @server_id %>
-<% end %>
 
 # gtid_domain_id flag is needed for multisource replication and GTID.
 # # Strictly it is only needed on masters or servers that can potentially be
