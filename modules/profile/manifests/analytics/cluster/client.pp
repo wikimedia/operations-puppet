@@ -6,6 +6,7 @@
 class profile::analytics::cluster::client(
     $monitoring_enabled = hiera('profile::analytics::cluster::client::monitoring_enabled', false),
 ) {
+    require ::profile::analytics::cluster::packages
 
     # Include Hadoop ecosystem client classes.
     require ::profile::hadoop::common
@@ -44,22 +45,14 @@ class profile::analytics::cluster::client(
         }
     }
 
-    # These packages are useful, install them.
+    # Install other useful packages for client nodes.
+    # Packages that should exist on both clients and workers
+    # belong in the profile::analytics::cluster::packages class.
     require_package(
         'kafkacat',
         'heirloom-mailx',
-        'python-docopt',
-        'python3-docopt',
-        # Really nice pure python hdfs client
-        'snakebite',
+        'jupyter-notebook',
     )
-
-    if os_version('debian >= stretch') {
-        require_package('jupyter-notebook')
-    }
-    else {
-        require_package('ipython-notebook')
-    }
 
     # Maven to build jars for Hadoop.
     class { '::maven': }
