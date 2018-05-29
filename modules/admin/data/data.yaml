@@ -672,6 +672,11 @@ groups:
     gid: 801
     description: People who have shell access to snapshot hosts and bastions only.
     members: [springle]
+  wdqs-test-roots:
+    gid: 803
+    description: users with root on WDQS test cluster
+    members: []
+    privileges: ['ALL = (ALL) NOPASSWD: ALL']
 
   contint-docker:
     # Generally speaking, avoiding direct docker access is the most prudent course of action, but if
