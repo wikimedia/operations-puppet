@@ -14,6 +14,7 @@ admin::groups:
   - maps-admins
   - kartotherian-admin
   - tilerator-admin
+  - maps-test-roots
 
 cluster: 'maps-test-vectortiles'
 
