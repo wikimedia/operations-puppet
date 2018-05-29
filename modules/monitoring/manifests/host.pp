@@ -88,12 +88,20 @@ define monitoring::host (
         } else {
             $mgmt_host = undef
         }
+        # Populate a network related hostgroup for directly connected to switches
+        # hosts
+        if $facts['lldp_parent'] and $facts['lldp_parent'] =~ /asw|csw/ {
+            $hostgroups = "${hostgroup},${facts['lldp_parent']}"
+        } else {
+            $hostgroups = $hostgroup
+        }
     } else {
         $icon_image      = undef
         $vrml_image      = undef
         $statusmap_image = undef
         $real_parents    = $parents
         $mgmt_host = undef
+        $hostgroups = $hostgroup
     }
     $host = {
         "${title}" => {
@@ -101,7 +109,7 @@ define monitoring::host (
             host_name             => $title,
             parents               => $real_parents,
             address               => $nagios_address,
-            hostgroups            => $hostgroup,
+            hostgroups            => $hostgroups,
             check_command         => 'check_ping!500,20%!2000,100%',
             check_period          => '24x7',
             max_check_attempts    => 2,
