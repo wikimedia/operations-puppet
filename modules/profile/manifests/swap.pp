@@ -32,8 +32,6 @@ class profile::swap(
     $dumps_active_server = hiera('dumps_dist_active_web'),
 
 ) {
-    # Lots of handy packages for analysis.
-    class { '::statistics::packages': }
 
     # Mount mediawiki dataset dumps. T176091
     class { '::statistics::dataset_mount':

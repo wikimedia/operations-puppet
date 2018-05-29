@@ -5,8 +5,8 @@ class profile::statistics::cruncher(
     $dumps_servers       = hiera('dumps_dist_nfs_servers'),
     $dumps_active_server = hiera('dumps_dist_active_web'),
 ) {
-    include ::standard
-    include ::base::firewall
+
+    require ::profile::analytics::cluster::packages::statistics
 
     include ::deployment::umask_wikidev
 

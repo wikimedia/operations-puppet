@@ -48,7 +48,7 @@ own, trusted CRAN mirror to install from. The work and discussion for setting
 up a Wikimedia-hosted mirror of CRAN is tracked in Phabricator ticket
 [T170995](https://phabricator.wikimedia.org/T170995).
 
-In **_Production_** (e.g. in **statistics::packages**), use
+In **_Production_** use
 
 ```Puppet
 include ::r_lang
