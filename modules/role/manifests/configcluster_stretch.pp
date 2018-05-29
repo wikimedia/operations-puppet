@@ -5,11 +5,9 @@ class role::configcluster_stretch {
     include ::standard
     include ::profile::base::firewall
 
-    # Temporary to ease the migration process
-    if $::hostname =~ /conf100[45]/ {
-        include ::profile::zookeeper::server
-        include ::profile::zookeeper::firewall
-    }
+    include ::profile::zookeeper::server
+    include ::profile::zookeeper::firewall
+
     include ::profile::etcd::v3
     include ::profile::etcd::tlsproxy
     # Replication is not active during the setup phase.

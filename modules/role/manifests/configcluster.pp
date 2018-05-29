@@ -3,7 +3,7 @@ class role::configcluster {
     include ::base::firewall
 
     # Temporary to ease the migration process
-    if $::hostname !~ /conf100[12]/ {
+    if $::hostname !~ /conf100[123]/ {
         include ::profile::zookeeper::server
         include ::profile::zookeeper::firewall
     }
