@@ -2327,7 +2327,7 @@ users:
     name: ciro
     realname: Ciro Cattuto
     ssh_keys:
-      - ssh-dss AAAAB3NzaC1kc3MAAACBAJMN2HY4SvYvpse+DMZPY2Rn2W0Uy2Og01tug+vpF96RwN4bad7Z0ryRNno4LcnlaWtl5D6yhLDbibxZSNFn1pXN/Iqj3Took4YJsyXuLkFFN5IYY/ETWphRDqGXIYFWwG9oVLayKk+5wfPz8STBsajXLcliU67YmPyC5tk2IX49AAAAFQDoPyrcuaMbMvHNynsZWXM5h6lF9wAAAIAGd8MyyN9sMosoow783UgLyM0cF0XjdIl0Pzk9Ry5qmYtOp/hWEJRM9bC2I7R+ZhLzoqm1eOJGw8lNbt1PRa3woafJLtget9fPJujn9Csa1jMP2hHjzjSX6C8jtLPGHMVlWu0dgNOfelhcnidP3atjo4bp+gEvXNBRB/W9ZwNNZQAAAIBDPtyrwmvbI3vjwVwOIbFV66B4CTzRzIucmfRjrdKcwHe3eG7K597yP+kUFpMdUq8GlWFeHRpLDZd7nGZ2fXkZZz1ar95EpxPf7Q842We17B6EXgQNr9yZgso3x378eoUGJP9TKgR9ZSZ4iK4S4qIcstflhMheOxb5fZ5ckg2bfw==
+      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC/Pki/HbI+fqyhaGv8QY59C4Uw2VlyyTYKCj8biJzahWvXLfqBVO6DWbdZ4S8p3a7CKW/uxN8y8Oe0NkCG5/MhE/sTr4PjJGBNC7I3OqUbSzrbf33ezxxlHAsNo3N8jKuGdFL7psYINKpSef6DfOnjhYmeW2OuBrqk0uq5Wtbf4kG3XWiGChw3E5/ijq3NF9Hs7fND8UEFAukicz+hHLpN1eX3cAVpP6IUs++YqDZG4/nkNGbP0FUIZPespmib8rU7xgRn9fROh5NpPWavldBRo4XrPdE5L9bhDyAft8Z3wyLJH0iRmfBFbgtC6lqHo8lPPGWXxsU+saeu/olvPx3R
     uid: 15247
     email: ciro.cattuto@isi.it
     expiry_date: 2018-07-26
