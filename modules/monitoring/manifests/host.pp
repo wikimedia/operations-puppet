@@ -30,6 +30,14 @@ define monitoring::host (
         default => hiera('nagios_group',"${cluster_name}_${::site}")
     }
 
+    # Populate a network related hostgroup for directly connected to switches
+    # hosts
+    if $facts['lldp_parent'] and $facts['lldp_parent'] =~ /asw|csw/ {
+        $hostgroups = "${hostgroup},${facts}['lldp_parent']"
+    } else {
+        $hostgroups = $hostgroup
+    }
+
     $real_contact_groups = $critical ? {
         true    => "${contact_group},sms,admins",
         default => $contact_group,
@@ -101,7 +109,7 @@ define monitoring::host (
             host_name             => $title,
             parents               => $real_parents,
             address               => $nagios_address,
-            hostgroups            => $hostgroup,
+            hostgroups            => $hostgroups,
             check_command         => 'check_ping!500,20%!2000,100%',
             check_period          => '24x7',
             max_check_attempts    => 2,
