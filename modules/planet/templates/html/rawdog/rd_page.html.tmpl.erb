@@ -6,7 +6,7 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="mobile-web-app-capable" content="yes">
-        <link rel="stylesheet" href="bootstrap.css" type="text/css" />
+        <link rel="stylesheet" href="bootstrap.min.css" type="text/css" />
         <link rel="stylesheet" href="main.css" type="text/css" />
         <title><%= @title %>.planet.wikimedia.org</title>
         <link rel="alternate" type="application/rss+xml" title="Planet <%= scope.lookupvar('planet::languages')[@title]['wikimedia'] %> <%= @title %>" href="https://<%= @title %>.planet.wikimedia.org/rss20.xml" />
@@ -14,85 +14,79 @@
 
     <body>
         <!-- Fixed navbar -->
-        <nav class="navbar navbar-default navbar-static-top">
-            <div class="container-fluid">
-                <div>
-                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-                        <span class="sr-only">Toggle navigation</span>
-                        <span class="icon-kdeMenuIcon"></span>
-                    </button>
-                    <a class="navbar-brand" href="./index.html">
-                        <span>
-                            <img class="logo" src="Wikimedia_Community_Logo.svg" alt="Wikimedia Community Logo" align="left" />
-                            <span class="logoText"><%= @title %>.planet.wikimedia</span>
-                        </span>
-                    </a>
-                </div>
-                <div id="navbar" class="navbar-collapse collapse">
-                    <ul class="nav navbar-nav">
-                        <li><a href="#peeps" data-toggle="modal" data-target="#peeps"><%= scope.lookupvar('planet::languages')[@title]['subscriptions'] %></a>
-                        <li class="dropdown">
-                          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><%= scope.lookupvar('planet::languages')[@title]['subscribe'] %> <span class="caret"></span></a>
-                          <ul class="dropdown-menu" role="menu">
-                            <li><a href="https://<%= @title %>.planet.wikimedia.org/rss20.xml">RSS</a></li>
-                          </ul>
-                        </li>
-                        <li class="dropdown">
-                          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><%= scope.lookupvar('planet::languages')[@title]['wikimedia'] %> <span class="caret"></span></a>
-                          <ul class="dropdown-menu" role="menu">
-                            <li><a href="https://ar.planet.wikimedia.org/">ar</a></li>
-                            <li><a href="https://cs.planet.wikimedia.org/">cs</a></li>
-                            <li><a href="https://de.planet.wikimedia.org/">de</a></li>
-                            <li><a href="https://el.planet.wikimedia.org/">el</a></li>
-                            <li><a href="https://en.planet.wikimedia.org/">en</a></li>
-                            <li><a href="https://es.planet.wikimedia.org/">es</a></li>
-                            <li><a href="https://fr.planet.wikimedia.org/">fr</a></li>
-                            <li><a href="https://gmq.planet.wikimedia.org/">gmq</a></li>
-                            <li><a href="https://id.planet.wikimedia.org/">id</a></li>
-                            <li><a href="https://it.planet.wikimedia.org/">it</a></li>
-                            <li><a href="https://pl.planet.wikimedia.org/">pl</a></li>
-                            <li><a href="https://pt.planet.wikimedia.org/">pt</a></li>
-                            <li><a href="https://ro.planet.wikimedia.org/">ro</a></li>
-                            <li><a href="https://ru.planet.wikimedia.org/">ru</a></li>
-                            <li><a href="https://uk.planet.wikimedia.org/">uk</a></li>
-                            <li><a href="https://zh.planet.wikimedia.org/">zh</a></li>
-                          </ul>
-                        </li>
-                        <li class="dropdown">
-                          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><%= scope.lookupvar('planet::languages')[@title]['planetarium'] %> <span class="caret"></span></a>
-                          <ul class="dropdown-menu" role="menu">
-                            <li><a href="http://planet.apache.org/">Planet Apache</a></li>
-                            <li><a href="http://planet.debian.net/">Planet Debian</a></li>
-                            <li><a href="https://planet.freedesktop.org/">Planet freedesktop.org</a></li>
-                            <li><a href="http://planet.gnome.org/">Planet GNOME</a></li>
-                            <li><a href="http://planet.apache.org/">more...</a></li>
-                          </ul>
-                        </li>
-                    </ul>
-                </div>
-                <!--/.nav-collapse -->
+        <nav class="navbar navbar-expand-lg navbar-dark navbar-survival101">
+            <a class="navbar-brand" href="./index.html">
+                <img class="logo" src="Wikimedia_Community_Logo.svg" alt="Wikimedia Community Logo" align="left" height="40" width="40"/>
+                <%= @title %>.planet.wikimedia
+            </a>
+           <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor02" aria-controls="navbarColor02" aria-expanded="false" aria-label="Toggle navigation">
+             <span class="navbar-toggler-icon"></span>
+           </button>
+            <div id="navbarColor02" class="navbar-collapse collapse">
+                <ul class="navbar-nav mr-auto">
+                    <li><a class="nav-link" href="#peeps" data-toggle="modal" data-target="#peeps"><%= scope.lookupvar('planet::languages')[@title]['subscriptions'] %></a></li>
+                    <li class="dropdown nav-item">
+                      <a href="#" class="dropdown-toggle nav-link" data-toggle="dropdown" role="button" aria-expanded="false"><%= scope.lookupvar('planet::languages')[@title]['subscribe'] %> <span class="caret"></span></a>
+                      <ul class="dropdown-menu" role="menu">
+                        <li class="dropdown-item"><a href="https://<%= @title %>.planet.wikimedia.org/rss20.xml">RSS</a></li>
+                      </ul>
+                    </li>
+                    <li class="dropdown nav-item">
+                      <a href="#" class="dropdown-toggle nav-link" data-toggle="dropdown" role="button" aria-expanded="false"><%= scope.lookupvar('planet::languages')[@title]['wikimedia'] %> <span class="caret"></span></a>
+                      <ul class="dropdown-menu" role="menu">
+                        <li class="dropdown-item"><a href="https://ar.planet.wikimedia.org/">ar</a></li>
+                        <li class="dropdown-item"><a href="https://cs.planet.wikimedia.org/">cs</a></li>
+                        <li class="dropdown-item"><a href="https://de.planet.wikimedia.org/">de</a></li>
+                        <li class="dropdown-item"><a href="https://el.planet.wikimedia.org/">el</a></li>
+                        <li class="dropdown-item"><a href="https://en.planet.wikimedia.org/">en</a></li>
+                        <li class="dropdown-item"><a href="https://es.planet.wikimedia.org/">es</a></li>
+                        <li class="dropdown-item"><a href="https://fr.planet.wikimedia.org/">fr</a></li>
+                        <li class="dropdown-item"><a href="https://gmq.planet.wikimedia.org/">gmq</a></li>
+                        <li class="dropdown-item"><a href="https://id.planet.wikimedia.org/">id</a></li>
+                        <li class="dropdown-item"><a href="https://it.planet.wikimedia.org/">it</a></li>
+                        <li class="dropdown-item"><a href="https://pl.planet.wikimedia.org/">pl</a></li>
+                        <li class="dropdown-item"><a href="https://pt.planet.wikimedia.org/">pt</a></li>
+                        <li class="dropdown-item"><a href="https://ro.planet.wikimedia.org/">ro</a></li>
+                        <li class="dropdown-item"><a href="https://ru.planet.wikimedia.org/">ru</a></li>
+                        <li class="dropdown-item"><a href="https://uk.planet.wikimedia.org/">uk</a></li>
+                        <li class="dropdown-item"><a href="https://zh.planet.wikimedia.org/">zh</a></li>
+                      </ul>
+                    </li>
+                    <li class="dropdown nav-item">
+                      <a href="#" class="dropdown-toggle nav-link" data-toggle="dropdown" role="button" aria-expanded="false"><%= scope.lookupvar('planet::languages')[@title]['planetarium'] %> <span class="caret"></span></a>
+                      <ul class="dropdown-menu" role="menu">
+                        <li class="dropdown-item"><a href="http://planet.apache.org/">Planet Apache</a></li>
+                        <li class="dropdown-item"><a href="http://planet.debian.net/">Planet Debian</a></li>
+                        <li class="dropdown-item"><a href="https://planet.freedesktop.org/">Planet freedesktop.org</a></li>
+                        <li class="dropdown-item"><a href="http://planet.gnome.org/">Planet GNOME</a></li>
+                        <li class="dropdown-item"><a href="http://planet.apache.org/">more...</a></li>
+                      </ul>
+                    </li>
+                </ul>
             </div>
+            <!--/.nav-collapse -->
         </nav>
 
         <div class="container" id="twocolumncontainer">
-          <div class="row" id="twocolumn">
-            <div class="col-md-9 col-lg-9">
-
-             __items__
-
+            <div class="row" id="twocolumn">
+                <div class="col-lg-9 col-xl-9">
+                    __items__
+                </div>
             </div>
-          </div> <!-- twocolumn -->
-        </div> <!--  id="twocolumncontainer" -->
+            <!-- twocolumn -->
+        </div>
 
+        <!-- id="twocolumncontainer" -->
         <hr class="blueline" />
+
         <div id="footer">
             <div class="container">
                 <p class="footer-block">
                     Planet Wikimedia is made from the blogs of Wikimedia contributors. <br />
                     The opinions it contains are those of the contributor.
                 </p>
-                <p class="footer-block">
-                    <a href="https://wikimediafoundation.org/wiki/Privacy_policy">Privacy Policy</a> | This site is powered by <a href="http://offog.org/code/rawdog.html">Rawdog</a>
+                <p class="footer-block"> <a href="https://wikimediafoundation.org/wiki/Privacy_policy">Privacy Policy</a> |
+                    This site is powered by <a href="http://offog.org/code/rawdog.html">Rawdog</a>
                 </p>
             </div>
         </div>
@@ -102,25 +96,25 @@
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
-                        </button>
-                        <h2 class="modal-title" id="myModalLabel"><%= scope.lookupvar('planet::languages')[@title]['subscriptions'] %></h2>
+                         <h2 class="modal-title" id="myModalLabel"><%= scope.lookupvar('planet::languages')[@title]['subscriptions'] %></h2>
+                         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                     </div>
                     <div class="modal-body">
                         __feeds__
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-default" data-dismiss="modal">Dismiss</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Dismiss</button>
                     </div>
                 </div>
             </div>
         </div>
 
         <script src="js/jquery.min.js"></script>
+        <script src="js/popper.min.js"></script>
         <script src="js/bootstrap.min.js"></script>
         <script type="text/javascript">
             $(document).ready(function() {
-                $("img").addClass("img img-responsive imcent");
+                $("img").addClass("img img-fluid imcent");
             });
         </script>
     </body>

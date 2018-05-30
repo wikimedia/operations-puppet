@@ -195,24 +195,9 @@ a.navbar-brand {
 }
 
 @media (min-width: 1000px) {
-    ul.navbar-nav {
-        margin: -5em;
-    }
     .itemRow {
         margin-right: -295px;
     }
-}
-
-.logo {
-    width: 7%;
-    vertical-align: top;
-    padding: 10px 10px 10px 10px;
-}
-
-@media only screen and (max-width: 50em) {
-  .logo {
-    width: 13%;
-  }
 }
 
 span.logoText {
@@ -227,4 +212,20 @@ span.logoText {
     margin-top: -20px;
     padding-top: 2em;
     padding-bottom: 1em;
+}
+
+.navbar-survival101 {
+    background-color:#2B6DAD;
+}
+
+.navbar-survival101 .navbar-brand img {
+    vertical-align: baseline;
+}
+
+.navbar-expand-lg .navbar-nav .nav-link {
+    color: #fff;
+}
+
+nav.navbar {
+    margin-bottom: 1em;
 }
