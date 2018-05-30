@@ -1135,7 +1135,7 @@ node /kubestage100[12]\.eqiad\.wmnet/ {
 }
 
 node /labcontrol100[34]\.wikimedia\.org/ {
-    role(test)
+    role(wmcs::openstack::eqiad1::control)
 }
 
 node 'labcontrol1001.wikimedia.org' {
