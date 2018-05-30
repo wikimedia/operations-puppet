@@ -19,6 +19,7 @@ class profile::puppetmaster::frontend(
       '*.codfw.wmnet',
       '*.eqsin.wmnet'],
     $extra_auth_rules = '',
+    $mcrouter_ca_secret = hiera('profile::puppetmaster::frontend::mcrouter_ca_secret'),
 ) {
     backup::set { 'var-lib-puppet-ssl': }
     backup::set { 'var-lib-puppet-volatile': }
@@ -36,7 +37,9 @@ class profile::puppetmaster::frontend(
         # Ensure cergen is present for managing TLS keys and
         # x509 certificates signed by the Puppet CA.
         class { '::cergen': }
-
+        class { '::cergen::mcrouter_ca':
+            ca_secret => $mcrouter_ca_secret,
+        }
     }
 
     class { '::puppetmaster::ca_server':
