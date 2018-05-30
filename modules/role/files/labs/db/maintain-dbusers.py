@@ -48,22 +48,26 @@ In normal usage, just a continuous process running `populate_new_accounts` and
 TODO:
   - Support for maintaining per-tool restrictions (number of connections + time)
 """
-import sys
-import ldap3
-import logging
+
 import argparse
-import string
-import io
-import yaml
 import configparser
-import os
-import time
-import pymysql
+from hashlib import sha1
+import io
+import logging
 import random
 import re
-from hashlib import sha1
+import string
 import subprocess
+import sys
+import os
+import time
+import yaml
+
+import ldap3
+import pymysql
 import netifaces
+from systemd import journal, daemon
+
 
 PROJECT = 'tools'
 PASSWORD_LENGTH = 16
@@ -118,20 +122,20 @@ def write_replica_cnf(file_path, uid, mysql_username, pwd):
     replica_buffer = io.StringIO()
     replica_config.write(replica_buffer)
 
-    f = os.open(file_path, os.O_CREAT | os.O_WRONLY | os.O_NOFOLLOW)
+    c_file = os.open(file_path, os.O_CREAT | os.O_WRONLY | os.O_NOFOLLOW)
     try:
-        os.write(f, replica_buffer.getvalue().encode('utf-8'))
+        os.write(c_file, replica_buffer.getvalue().encode('utf-8'))
         # uid == gid
-        os.fchown(f, uid, uid)
-        os.fchmod(f, 0o400)
+        os.fchown(c_file, uid, uid)
+        os.fchmod(c_file, 0o400)
 
         # Prevent removal or modification of the credentials file by users
         subprocess.check_output(['/usr/bin/chattr', '+i', file_path])
-    except:
+    except Exception:
         os.remove(file_path)
         raise
     finally:
-        os.close(f)
+        os.close(c_file)
 
 
 def read_replica_cnf(file_path):
@@ -278,7 +282,7 @@ def harvest_cnf_files(config, account_type='tool'):
     acct_db = get_accounts_db_conn(config)
     cur = acct_db.cursor()
     try:
-        for account_name, uid in accounts_to_create:
+        for account_name, _ in accounts_to_create:
             replica_path = get_replica_path(account_type, account_name)
             if os.path.exists(replica_path):
                 mysql_user, pwd_hash = read_replica_cnf(replica_path)
@@ -288,7 +292,7 @@ def harvest_cnf_files(config, account_type='tool'):
                 ON DUPLICATE KEY UPDATE
                 password_hash = %s
                 """, (mysql_user, account_type, account_name, pwd_hash, pwd_hash)
-                )
+                           )
             else:
                 logging.info('Found no replica.my.cnf to harvest for %s %s',
                              account_type, account_name)
@@ -516,7 +520,7 @@ def is_active_nfs(config):
     return False
 
 
-if __name__ == '__main__':
+def main():
     argparser = argparse.ArgumentParser()
 
     argparser.add_argument(
@@ -576,9 +580,14 @@ if __name__ == '__main__':
     )
     args = argparser.parse_args()
 
-    loglvl = logging.DEBUG if args.debug else logging.INFO
-    logging.basicConfig(format='%(message)s',
-                        level=loglvl)
+    log_lvl = logging.DEBUG if args.debug else logging.INFO
+    if daemon.booted():
+        logging.basicConfig(format='%(message)s',
+                            level=log_lvl,
+                            handlers=[journal.JournaldLogHandler()])
+    else:
+        logging.basicConfig(format='%(message)s',
+                            level=log_lvl)
 
     with open(args.config) as f:
         config = yaml.safe_load(f)
@@ -603,3 +612,7 @@ if __name__ == '__main__':
             logging.error('Need to provide username to delete')
             sys.exit(1)
         delete_account(config, args.extra_args, args.account_type)
+
+
+if __name__ == '__main__':
+    main()
