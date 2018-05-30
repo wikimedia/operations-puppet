@@ -14,12 +14,7 @@ class puppetmaster::generators($ensure = 'present'){
     }
 
     file {'/usr/local/bin/sshknowngen':
-        ensure  => $ensure,
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0555',
-        source  => 'puppet:///modules/puppetmaster/sshknowngen',
-        require => Package[$packages],
+        ensure  => absent,
     }
 
     file {'/usr/local/bin/prometheus-ganglia-gen':
