@@ -7,11 +7,6 @@
 #
 # filtertags: labs-common
 class role::labs::mediawiki_vagrant {
-    if !os_version('debian jessie') {
-        # T180377
-        notify{'Currently this role is only supported on Debian Jessie.':}
-    }
-
     include ::vagrant
     include ::vagrant::lxc
     include ::vagrant::mediawiki
