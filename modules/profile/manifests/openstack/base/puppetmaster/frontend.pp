@@ -71,12 +71,13 @@ class profile::openstack::base::puppetmaster::frontend(
     }
 
     class { '::profile::puppetmaster::frontend':
-        ca_server        => $puppetmaster_ca,
-        web_hostname     => $puppetmaster_webhostname,
-        config           => $config,
-        secure_private   => false,
-        servers          => $puppetmasters,
-        extra_auth_rules => template("profile/openstack/base/puppetmaster/${extra_auth_rules_template}"),
+        ca_server          => $puppetmaster_ca,
+        web_hostname       => $puppetmaster_webhostname,
+        config             => $config,
+        secure_private     => false,
+        servers            => $puppetmasters,
+        extra_auth_rules   => template("profile/openstack/base/puppetmaster/${extra_auth_rules_template}"),
+        mcrouter_ca_secret => undef,
     }
 
     # The above profile will make a standard vhost for $web_hostname.

@@ -1,0 +1,11 @@
+mcrouter_ca:
+  is_authority: true
+  path_length: 0
+  subject:
+    country_name: US
+    STATE_OR_PROVINCE_NAME: CA
+  key:
+    name: ca
+    key_size: 2048
+    algorithm: rsa
+    password: <%= @ca_secret %>
