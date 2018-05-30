@@ -20,3 +20,4 @@ mediawiki::hhvm::extra_fcgi:
 role::lvs::realserver::pools:
   hhvm:
     lvs_name: jobrunner
+base::microcode: true
