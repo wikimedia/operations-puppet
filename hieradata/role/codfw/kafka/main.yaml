@@ -36,4 +36,5 @@ profile::kafka::mirror::properties:
 # 
 # ---- TODO: Remove the below while enabling SSL: T193778 ----
 #
+profile::kafka::broker::auth_acls_enabled: false
 profile::kafka::broker::inter_broker_ssl_enabled: false
