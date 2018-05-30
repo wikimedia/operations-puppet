@@ -24,7 +24,7 @@ define planet::theme {
         }
         file { "/var/www/planet/${title}/bootstrap.css":
             ensure => 'present',
-            source => 'puppet:///modules/planet/theme/rawdog/bootstrap.css';
+            source => 'puppet:///modules/planet/theme/rawdog/bootstrap.min.css';
         }
         file { "/var/www/planet/${title}/bootstrap.min.js":
             ensure => 'present',
@@ -33,6 +33,10 @@ define planet::theme {
         file { "/var/www/planet/${title}/jquery.min.js":
             ensure => 'present',
             source => 'puppet:///modules/planet/theme/rawdog/jquery.min.js';
+        }
+        file { "/var/www/planet/${title}/popper.min.js":
+            ensure => 'present',
+            source => 'puppet:///modules/planet/theme/rawdog/popper.min.js';
         }
         file { "/var/www/planet/${title}/Wikimedia_Community_Logo.svg":
             ensure => 'present',
