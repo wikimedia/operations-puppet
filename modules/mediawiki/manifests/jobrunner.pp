@@ -68,14 +68,12 @@ class mediawiki::jobrunner (
     # $service_ensure
     base::service_unit { 'jobrunner':
         systemd        => systemd_template('jobrunner'),
-        upstart        => upstart_template('jobrunner'),
         service_params => $params,
         mask           => !$running,
     }
 
     base::service_unit { 'jobchron':
         systemd        => systemd_template('jobchron'),
-        upstart        => upstart_template('jobchron'),
         service_params => $params,
         mask           => !$running,
     }

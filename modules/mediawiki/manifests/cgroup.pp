@@ -24,7 +24,6 @@ class mediawiki::cgroup {
     base::service_unit { 'mw-cgroup':
         ensure  => present,
         systemd => systemd_template('mw-cgroup'),
-        upstart => upstart_template('mw-cgroup'),
         refresh => false,
     }
 
