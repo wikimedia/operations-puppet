@@ -35,15 +35,6 @@ class profile::mediawiki::deployment::server(
     $deployable_networks = $::network::constants::deployable_networks
     $deployable_networks_ferm = join($deployable_networks, ' ')
 
-    if os_version('debian == jessie') {
-        apt::repository { 'wikimedia-git':
-            uri        => 'http://apt.wikimedia.org/wikimedia',
-            dist       => "${::lsbdistcodename}-wikimedia",
-            components => 'component/git',
-        }
-    }
-
-    # Firewall rules
     ferm::service { 'rsyncd_scap_master':
         proto  => 'tcp',
         port   => '873',
