@@ -134,10 +134,6 @@ class network::constants {
                     '2620:0:861:107:10:64:48:117', # kafka-jumbo1006.eqiad.wmnet
                 ],
             'zookeeper_hosts_main' => [
-                    '10.64.32.180',                       # conf1002.eqiad.wmnet
-                    '2620:0:861:103:d6ae:52ff:fe7c:c9ec', # conf1002.eqiad.wmnet
-                    '10.64.48.111',                       # conf1003.eqiad.wmnet
-                    '2620:0:861:107:d6ae:52ff:fe7c:b5ed', # conf1003.eqiad.wmnet
                     '10.64.0.23',                         # conf1004.eqiad.wmnet
                     '2620:0:861:101:10:64:0:23',          # conf1004.eqiad.wmnet
                     '10.64.16.29',                        # conf1005.eqiad.wmnet
