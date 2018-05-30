@@ -27,13 +27,11 @@ class mediawiki::cgroup {
         refresh => false,
     }
 
-    if os_version('debian >= jessie') {
-        grub::bootparam { 'cgroup_enable':
-            value => 'memory',
-        }
+    grub::bootparam { 'cgroup_enable':
+        value => 'memory',
+    }
 
-        grub::bootparam { 'swapaccount':
-            value => '1',
-        }
+    grub::bootparam { 'swapaccount':
+        value => '1',
     }
 }
