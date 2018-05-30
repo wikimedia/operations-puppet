@@ -23,6 +23,7 @@ class role::labs::db::maintain_dbusers {
     package { [
         'python3-ldap3',
         'python3-netifaces',
+        'python3-systemd',
     ]:
         ensure => present,
     }
