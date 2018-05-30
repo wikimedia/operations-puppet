@@ -1,0 +1,19 @@
+profile::openstack::eqiad1::region: 'eqiad1-r'
+profile::openstack::eqiad1::version: 'mitaka'
+profile::openstack::eqiad1::nova_controller: 'labcontrol1003.wikimedia.org'
+profile::openstack::eqiad1::nova_controller_standby: 'labcontrol1003.wikimedia.org'
+profile::openstack::eqiad1::nova_api_host: 'labnet1003.eqiad.wmnet'
+profile::openstack::eqiad1::designate_host: 'null.example.com'
+profile::openstack::eqiad1::designate_host_standby: 'null.example.com'
+profile::openstack::eqiad1::puppetmaster_hostname: 'labs-puppetmaster.wikimedia.org'
+profile::openstack::eqiad1::osm_host: 'wikitech.wikimedia.org'
+profile::openstack::eqiad1::rabbit_monitor_user: 'monitoring'
+profile::openstack::eqiad1::rabbit_file_handles: 8192
+profile::openstack::eqiad1::ldap_hosts: ['ldap-labs.eqiad.wikimedia.org', 'ldap-labs.codfw.wikimedia.org']
+profile::openstack::eqiad1::labweb_hosts:
+  - null1.example.com
+  - null2.example.com
+profile::openstack::eqiad1::statsd_host: 'labmon1001.eqiad.wmnet'
+profile::openstack::eqiad1::statsd_host_standby: 'labmon1002.eqiad.wmnet'
+
+
