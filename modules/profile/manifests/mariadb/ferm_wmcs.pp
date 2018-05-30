@@ -3,8 +3,10 @@
 #  run on hosts with public IPs)
 
 class profile::mariadb::ferm_wmcs(
-    $nova_controller = hiera('profile::openstack::main::nova_controller'),
-    $nova_controller_standby = hiera('profile::openstack::main::nova_controller_standby'),
+    $eqiad1_nova_controller = hiera('profile::openstack::eqiad1::nova_controller'),
+    $eqiad1_nova_controller_standby = hiera('profile::openstack::eqiad1::nova_controller_standby'),
+    $main_nova_controller = hiera('profile::openstack::main::nova_controller'),
+    $main_nova_controller_standby = hiera('profile::openstack::main::nova_controller_standby'),
     $designate_host = hiera('profile::openstack::main::designate_host'),
     $designate_host_standby = hiera('profile::openstack::main::designate_host_standby'),
     $labweb_hosts = hiera('profile::openstack::main::labweb_hosts'),
@@ -13,11 +15,18 @@ class profile::mariadb::ferm_wmcs(
     ) {
     $port = '3306'
 
-    ferm::service{ 'nova_controller':
+    ferm::service{ 'eqiad1_nova_controller':
         proto   => 'tcp',
         port    => $port,
         notrack => true,
-        srange  => "(@resolve(${nova_controller}) @resolve(${nova_controller_standby}))",
+        srange  => "(@resolve(${eqiad1_nova_controller}) @resolve(${eqiad1_nova_controller_standby}))",
+    }
+
+    ferm::service{ 'main_nova_controller':
+        proto   => 'tcp',
+        port    => $port,
+        notrack => true,
+        srange  => "(@resolve(${main_nova_controller}) @resolve(${main_nova_controller_standby}))",
     }
 
     ferm::service{ 'designate':
