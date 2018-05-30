@@ -584,7 +584,7 @@ def main():
     if daemon.booted():
         logging.basicConfig(format='%(message)s',
                             level=log_lvl,
-                            handlers=[journal.JournaldLogHandler()])
+                            handlers=[journal.JournalHandler()])
     else:
         logging.basicConfig(format='%(message)s',
                             level=log_lvl)
