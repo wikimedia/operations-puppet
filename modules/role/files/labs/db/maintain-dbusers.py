@@ -404,10 +404,16 @@ def create_accounts(config):
     acct_db = get_accounts_db_conn(config)
     username_re = re.compile('^[spu][0-9]')
     for host in config['labsdbs']['hosts']:
-        labsdb = pymysql.connect(
-            host,
-            config['labsdbs']['username'],
-            config['labsdbs']['password'])
+        try:
+            labsdb = pymysql.connect(
+                host,
+                config['labsdbs']['username'],
+                config['labsdbs']['password'])
+        except pymysql.err.OperationalError as exc:
+            logging.warning("Could not connect to %s due to %s.  Skipping.",
+                            host, exc)
+            continue
+
         grant_type = config['labsdbs']['hosts'][host]['grant-type']
         with acct_db.cursor() as cur:
             cur.execute("""
