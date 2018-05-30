@@ -25,5 +25,4 @@ profile::zookeeper::zookeeper_version: '3.4.9-3'
 profile::zookeeper::firewall::srange: '(($HADOOP_MASTERS $KAFKA_BROKERS_ANALYTICS $KAFKA_BROKERS_JUMBO $KAFKA_BROKERS_MAIN $ZOOKEEPER_HOSTS_MAIN @resolve(kafkamon1001.eqiad.wmnet) @resolve(kafkamon2001.codfw.wmnet)))'
 profile::zookeeper::monitoring_enabled: true
 # Page if a zookeeper server in this cluster goes down.
-# Temporary disabled to avoid unnecessary pages during the migration
-# profile::zookeeper::is_critical: true
+profile::zookeeper::is_critical: true
