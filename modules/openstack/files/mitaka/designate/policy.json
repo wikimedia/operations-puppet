@@ -93,12 +93,12 @@
     "update_zone_transfer_accept": "rule:admin",
     "delete_zone_transfer_accept": "rule:admin",
 
-    "create_recordset": "rule:zone_primary_or_admin",
+    "create_recordset": "rule:admin_or_projectadmin",
     "get_recordsets": "",
     "get_recordset": "",
     "find_recordsets": "",
     "find_recordset": "",
-    "update_recordset": "rule:zone_primary_or_admin",
-    "delete_recordset": "rule:zone_primary_or_admin",
+    "update_recordset": "rule:admin_or_projectadmin",
+    "delete_recordset": "rule:admin_or_projectadmin",
     "count_recordset": ""
 }
