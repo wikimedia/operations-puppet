@@ -1,7 +1,7 @@
-planet-venus module
+planet module
 ===================
 
-planet-venus is an RSS feed aggregator
+rawdog (formerly: planet-venus) is an RSS feed aggregator
 
 this module sets up multiple language version with a WMF config
 
@@ -11,11 +11,12 @@ for details see:
 
 [meta - requests for feeds](http://meta.wikimedia.org/wiki/Planet_Wikimedia)
 
-[upstream source](http://www.intertwingly.net/code/venus/)
+[upstream source](https://offog.org/code/rawdog/)
 
-[upstream package](http://packages.ubuntu.com/search?keywords=planet-venus&searchon=names)
+[upstream package](https://packages.debian.org/stretch/rawdog)
+[our package](https://apt.wikimedia.org/wikimedia/pool/main/r/rawdog/)
 
-to install planet-venus:
+to install planet (rawdog):
 
  include 'role::planet'
 

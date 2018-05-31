@@ -1,4 +1,4 @@
-# defined type: a config dir and file for a planet-venus or rawdog language version
+# defined type: a config dir and file for a planet language version
 define planet::config (
     $domain_name = $domain_name,
 ){
