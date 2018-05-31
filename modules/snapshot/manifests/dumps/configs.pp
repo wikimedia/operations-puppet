@@ -28,8 +28,8 @@ class snapshot::dumps::configs(
                 skipdblist        => "${dblistsdir}/skipnone.dblist",
                 keep              => '8',
                 chunksEnabled     => '1',
-                chunksForAbstract => '4',
-                chunksForPagelogs => '4',
+                chunksForAbstract => '6',
+                chunksForPagelogs => '6',
                 checkpointTime    => '720',
                 recombineHistory  => '0',
                 revsPerJob        => '1500000',
@@ -39,52 +39,40 @@ class snapshot::dumps::configs(
                 fixeddumporder    => '1',
                 wikis => {
                     ruwiki => {
-                        pagesPerChunkHistory  => '311181,1142420,1627923,3122803',
-                        pagesPerChunkAbstract => '1200000',
+                        pagesPerChunkHistory  => '204180,713334,1020881,1460226,2071097,1997756',
                     },
                     eswiki => {
-                        pagesPerChunkHistory  => '229078,854374,2324057,3860337',
-                        pagesPerChunkAbstract => '1500000',
+                        pagesPerChunkHistory  => '143637,453697,1022338,2461188,2343955,2079372',
                     },
                     dewiki => {
-                        pagesPerChunkHistory  => '425449,1451596,3087456,4274631',
-                        pagesPerChunkAbstract => '2000000',
+                        pagesPerChunkHistory  => '262468,833472,1824108,2546227,2875893,2015418',
                     },
                     ptwiki => {
-                        pagesPerChunkHistory  => '158756,789502,1361027,2669897',
-                        pagesPerChunkAbstract => '1000000',
+                        pagesPerChunkHistory  => '95099,347371,986019,1093673,1840534,1392584',
                     },
                     plwiki => {
-                        pagesPerChunkHistory  => '235373,514490,957079,1923498',
-                        pagesPerChunkAbstract => '800000',
+                        pagesPerChunkHistory  => '169750,340912,545648,775198,1238885,1228962',
                     },
                     nlwiki => {
-                        pagesPerChunkHistory  => '224145,552515,1098243,2570924',
-                        pagesPerChunkAbstract => '1000000',
+                        pagesPerChunkHistory  => '123351,327622,547504,892061,1623038,1554657',
                     },
                     frwiki => {
-                        pagesPerChunkHistory  => '412303,1235589,2771967,5313378',
-                        pagesPerChunkAbstract => '1900000',
+                        pagesPerChunkHistory  => '275787,651758,1589336,2075474,2901773,4250595',
                     },
                     itwiki => {
-                        pagesPerChunkHistory  => '442893,1049883,1381705,2929437',
-                        pagesPerChunkAbstract => '1200000',
+                        pagesPerChunkHistory  => '277091,780781,902023,1188047,1865256,2470232',
                     },
                     jawiki => {
-                        pagesPerChunkHistory  => '168815,480631,943865,1760565',
-                        pagesPerChunkAbstract => '800000',
+                        pagesPerChunkHistory  => '106178,244607,452382,738003,993022,1262938',
                     },
                     commonswiki => {
-                        pagesPerChunkHistory  => '6457504,9672260,12929298,17539944',
-                        pagesPerChunkAbstract => '11000000',
+                        pagesPerChunkHistory  => '7049914,9227378,11916955,13452135,15431846,12516670',
                     },
                     zhwiki => {
-                        pagesPerChunkHistory  => '231819,564192,1300322,3112369',
-                        pagesPerChunkAbstract => '1300000',
+                        pagesPerChunkHistory  => '162886,381758,609973,1616469,1960353,1437788',
                     },
                     metawiki => {
-                        pagesPerChunkHistory  => '823386,2594392,3242670,3284506',
-                        pagesPerChunkAbstract => '2500000',
+                        pagesPerChunkHistory  => '321600,1887125,2144409,2584802,2550664,1127385',
                     },
                 },
             },
