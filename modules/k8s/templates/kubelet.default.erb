@@ -10,9 +10,6 @@ KUBELET_ADDRESS="--address=<%= @listen_address %>"
 # You may leave this blank to use the actual hostname
 KUBELET_HOSTNAME="--hostname-override=<%= @fqdn %>"
 
-# location of the api-server
-KUBELET_API_SERVER="--api-servers=https://<%= @master_host %>:6443"
-
 # Docker endpoint to connect to
 # Default: unix:///var/run/docker.sock
 #DOCKER_ENDPOINT="--docker-endpoint=unix:///var/run/docker.sock"
@@ -26,6 +23,7 @@ KUBELET_API_SERVER="--api-servers=https://<%= @master_host %>:6443"
 <%-
 daemon_args = [
   "--kubeconfig=#{@kubeconfig}",
+  "--require-kubeconfig",
 ]
 
 if @pod_infra_container_image
