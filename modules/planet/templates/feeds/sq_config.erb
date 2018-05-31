@@ -1,30 +1,10 @@
-# ! This file is managed by puppet !
-# sq.planet.wm - Planet Venus configuration file
+# planet rawdog feeds in Albanian language (sq.planet.wikimedia.org)
+include ../config
+template /etc/rawdog/theme/wikimedia/sq/rd_page.tmpl
+itemtemplate /etc/rawdog/theme/wikimedia/sq/rd_item.tmpl
+outputfile /var/www/planet/sq/index.html
+outputxml /var/www/planet/sq/rss20.xml
+#
 
-# Documentation: <file:///usr/share/doc/planet-venus>
-# Examples:      <file:///usr/share/planet-venus/example>
-# Filters:       <file:///usr/share/planet-venus/filter>
-# Themes:        <file:///usr/share/planet-venus/theme>
-
-# Global configuration
-
-[Planet]
-
-name            = sq.planet.wikimedia
-link            = https://sq.planet.<%= @domain_name %>/
-owner_name      = planet
-owner_email     = planet@wikimedia.org
-output_theme    = /usr/share/planet-venus/theme/wikimedia/sq
-cache_directory = /var/cache/planet/sq/
-output_dir      = /var/www/planet/sq/
-feed_timeout    = 20
-items_per_page  = 60
-log_level       = DEBUG
-
-# Subscription configuration
-
-[https://gretadoci.wordpress.com/category/home/feed/]
-name=Përdoruesja:Margott
-
-[https://elioqoshi.me/sq/tag/wiki-sq/feed/]
-name=Përdoruesi:ElioQoshi
+feed 1h https://gretadoci.wordpress.com/category/home/feed/
+feed 1h https://elioqoshi.me/sq/tag/wiki-sq/feed/
