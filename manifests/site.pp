@@ -2016,7 +2016,7 @@ node 'thorium.eqiad.wmnet' {
     # - https://analytics.wikimedia.org (Analytics dashboards and datasets)
     # - https://datasets.wikimedia.org (deprecated, redirects to analytics.wm.org/datasets/archive)
     # - https://metrics.wikimedia.org (https://metrics.wmflabs.org/ (Wikimetrics))
-    # - https://pivot.wikimedia.org (Imply's Pivot UI for Druid data)
+    # - https://pivot.wikimedia.org (Now only a redirect to Turnilo)
     # - https://turnilo.wikimedia.org (UI for Druid data, will replace Pivot)
 
     # - https://hue.wikimedia.org (Hadoop User Experience GUI)
