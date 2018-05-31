@@ -96,5 +96,8 @@ class base::kernel(
     $enable_microcode = hiera('base::microcode', false) # lint:ignore:wmf_styleguide
     if $enable_microcode and $facts['is_virtual'] == false and $::processor0 !~ /AMD/ {
         require_package('intel-microcode')
+        # The lint:ignore hint won't be necessary anymore once base::kernel
+        # will be turned into a profile
+        include ::profile::prometheus::intel_microcode # lint:ignore:wmf_styleguide
     }
 }
