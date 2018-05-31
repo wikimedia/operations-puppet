@@ -1,4 +1,4 @@
-#!/bin/env python3
+#!/usr/bin/env python3
 #
 # Generates the cergen yaml file for the mcrouter CA, then runs it
 #
@@ -24,7 +24,7 @@ def hosts_from_puppetdb(configfile):
     r = requests.post(puppetdb_url,
                       json={'query': ["and", ['=', 'type', 'Class'], ["=", "title", "Mediawiki"]]},
                       verify=True)
-    if r.status_code != requests.code.ok:
+    if r.status_code != requests.codes.ok:
         raise ValueError("Got non-OK status code from puppetdb: %d", r.status_code)
     hosts = set([el['certname'] for el in r.json()])
     return list(hosts)
