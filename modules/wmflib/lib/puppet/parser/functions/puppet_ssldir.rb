@@ -47,7 +47,7 @@ module Puppet::Parser::Functions
     return default if lookupvar('::settings::certname') =~ /\.wikimedia\.org$/
 
     puppetmaster = lookupvar('puppetmaster')
-    if puppetmaster == ''
+    if puppetmaster == '' || puppetmaster.nil?
       default
     elsif [lookupvar('hostname'), 'localhost', '', nil].include?puppetmaster
       self_master
