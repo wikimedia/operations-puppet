@@ -39,7 +39,6 @@ class profile::kubernetes::node(
     }
 
     class { '::k8s::kubelet':
-        master_host               => $master_fqdn,
         listen_address            => '0.0.0.0',
         cni                       => $use_cni,
         pod_infra_container_image => $infra_pod,

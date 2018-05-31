@@ -1,5 +1,4 @@
 class k8s::kubelet(
-    $master_host,
     $listen_address = '0.0.0.0',
     $listen_port = undef,
     $pod_infra_container_image = 'gcr.io/google_containers/pause:2.0',
