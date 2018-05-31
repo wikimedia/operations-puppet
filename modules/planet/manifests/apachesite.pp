@@ -1,4 +1,4 @@
-# defined type: an apache site config for a planet-venus language version
+# defined type: an apache site config for a planet language version
 define planet::apachesite (
     $domain_name = $domain_name,
 ){
