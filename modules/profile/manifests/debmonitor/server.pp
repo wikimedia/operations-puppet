@@ -103,4 +103,9 @@ class profile::debmonitor::server (
     nginx::site { 'debmonitor':
         content => template('profile/debmonitor/server/nginx.conf.erb'),
     }
+
+    monitoring::service { 'debmonitor-http':
+        description   => 'debmonitor.wikimedia.org',
+        check_command => 'check_http_unauthorized!debmonitor.wikimedia.org!/',
+    }
 }
