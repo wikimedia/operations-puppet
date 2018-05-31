@@ -96,5 +96,6 @@ class base::kernel(
     $enable_microcode = hiera('base::microcode', false) # lint:ignore:wmf_styleguide
     if $enable_microcode and $facts['is_virtual'] == false and $::processor0 !~ /AMD/ {
         require_package('intel-microcode')
+        include prometheus::node_intel_microcode # lint:ignore:wmf_styleguide
     }
 }
