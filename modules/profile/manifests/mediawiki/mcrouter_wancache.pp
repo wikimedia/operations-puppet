@@ -1,7 +1,6 @@
 # Class profile::mcrouter_wancache
 #
 # Configures a mcrouter instance for multi-datacenter caching
-# TODO: fix notrack defs
 # TODO: use a non-root user
 class profile::mediawiki::mcrouter_wancache(
     Hash $servers_by_datacenter_category = hiera('mcrouter::shards'),
@@ -59,26 +58,26 @@ class profile::mediawiki::mcrouter_wancache(
         }
         file { '/etc/mcrouter/ssl/ca.pem':
             ensure => present,
-            source => 'puppet:///modules/profile/mcrouter/ssl/ca.pem',
+            source => secret('mcrouter/mcrouter_ca/ca.crt.pem')
             owner  => 'root',
             group  => 'root',
             mode   => '0444',
         }
 
         file { '/etc/mcrouter/ssl/cert.pem':
-            ensure => present,
-            source => secret("mcrouter/ssl/${::ipaddress}.cert.pem"),
-            owner  => 'root',
-            group  => 'root',
-            mode   => '0444',
+            ensure  => present,
+            content => secret("mcrouter/${::fqdn}/${::fqdn}.crt.pem"),
+            owner   => 'root',
+            group   => 'root',
+            mode    => '0444',
         }
 
         file { '/etc/mcrouter/ssl/key.pem':
-            ensure => present,
-            source => secret("mcrouter/ssl/${::ipaddress}.key.pem"),
-            owner  => 'root',
-            group  => 'root',
-            mode   => '0400',
+            ensure  => present,
+            content => secret("mcrouter/${::fqdn}/${::fqdn}.key.private.pem"),
+            owner   => 'root',
+            group   => 'root',
+            mode    => '0400',
         }
 
         $ssl_options = {
