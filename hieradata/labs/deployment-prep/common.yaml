@@ -223,6 +223,10 @@ scap::dsh::groups:
         hosts:
           - deployment-restbase01.deployment-prep.eqiad.wmflabs
           - deployment-restbase02.deployment-prep.eqiad.wmflabs
+    librenms:
+        hosts:
+          - deployment-netbox.deployment-prep.eqiad.wmflabs
+
 
 "profile::etcd::tlsproxy::read_only": false
 profile::etcd::tlsproxy::listen_port: 2379
