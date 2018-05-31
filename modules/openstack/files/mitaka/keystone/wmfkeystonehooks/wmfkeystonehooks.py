@@ -58,6 +58,9 @@ wmfkeystone_opts = [
     cfg.StrOpt('admin_role_name',
                default='projectadmin',
                help='Name of project-local admin role'),
+    cfg.StrOpt('bastion_project_id',
+               default='bastion',
+               help='ID of bastion project needed for ssh access'),
     cfg.StrOpt('ldap_base_dn',
                default='dc=wikimedia,dc=org',
                help='ldap dn for posix groups'),
@@ -116,6 +119,21 @@ class KeystoneHooks(notifier.Driver):
         if not assignments:
             assignments = self._get_current_assignments(project_id)
         ldapgroups.sync_ldap_project_group(project_id, assignments)
+
+    def _add_to_bastion(self, user_id):
+        roledict = self._get_role_dict()
+
+        # First make sure the user isn't already assigned to bastion
+        assignments = self._get_current_assignments(CONF.wmfhooks.bastion_project_id)
+        if (user_id in assignments[CONF.wmfhooks.user_role_name]):
+            LOG.debug("%s is already a member of %s" %
+                      (user_id, CONF.wmfhooks.bastion_project_id))
+            return
+
+        LOG.debug("Adding %s to %s" % (user_id, CONF.wmfhooks.bastion_project_id))
+        self.assignment_api.add_role_to_user_and_project(user_id,
+                                                         CONF.wmfhooks.bastion_project_id,
+                                                         roledict[CONF.wmfhooks.user_role_name])
 
     def _on_project_delete(self, project_id):
         ldapgroups.delete_ldap_project_group(project_id)
@@ -250,6 +268,15 @@ class KeystoneHooks(notifier.Driver):
         if event_type == 'identity.role_assignment.created':
             project_id = message['payload']['project']
             self._on_member_update(project_id)
+            if project_id != CONF.wmfhooks.bastion_project_id:
+                # If a user is added to a project, they will probably
+                #  want to ssh.  And for that, they will need to belong
+                #  to the bastion project.
+                # So, add them.  Note that this is a one-way trip; we don't
+                #  purge a user from bastion just because they've beeen
+                #  removed from every project.
+                user_id = message['payload']['user']
+                self._add_to_bastion(user_id)
 
         if event_type == 'identity.role_assignment.deleted':
             project_id = message['payload']['project']
