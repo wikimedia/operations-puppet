@@ -237,7 +237,7 @@ def certs_fetch_ocsp(out_temp, args):
                             (cert, ocsp_text))
         this_up = ossl_parse_stamp(res.group(1))
         next_up = ossl_parse_stamp(res.group(2))
-        ocsp_validate_window(cert, now_dt, this_up, next_up, o_start, o_start)
+        ocsp_validate_window(cert, now_dt, this_up, next_up, o_start, o_end)
         if next_up > cert_notafter_compare:
             cert_notafter_compare = next_up
 
