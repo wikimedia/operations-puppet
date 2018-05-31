@@ -36,7 +36,9 @@ class profile::analytics::refinery::job::refine {
         input_capture       => 'datacenter,table,year,month,day,hour',
         output_base_path    => '/wmf/data/event',
         output_database     => 'event',
-        table_blacklist     => '^mediawiki_page_properties_change|mediawiki_recentchange$',
+        # Temporarily blacklist revision_score until
+        # https://phabricator.wikimedia.org/T195979 is resolved upstream.
+        table_blacklist     => '^mediawiki_page_properties_change|mediawiki_recentchange|mediawiki_revision_score$',
         # Deduplicate eventbus based data based on meta.id field
         transform_functions => 'org.wikimedia.analytics.refinery.job.refine.deduplicate_eventbus',
         minute              => 20,
