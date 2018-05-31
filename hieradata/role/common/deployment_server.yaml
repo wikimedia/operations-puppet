@@ -187,6 +187,10 @@ scap::sources:
     repository: search/MjoLniR/deploy
   statsv/statsv:
     repository: analytics/statsv
+  performance/coal:
+    repository: performance/coal
+  performance/navtiming:
+    repository: performance/navtiming
   "docker-pkg/deploy":
     repository: operations/docker-images/docker-pkg/deploy
   puppetboard/deploy:
