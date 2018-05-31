@@ -1,14 +1,8 @@
-# defined type: a cronjob for planet-venus or rawdog feed updates per language
+# defined type: a cronjob for planet feed updates per language
 define planet::cronjob {
 
-    if os_version('debian == stretch') {
-        $planet_bin = '/usr/bin/rawdog'
-        $planet_cmd = "-d /etc/rawdog/${title}/ -v -u -w"
-    } else {
-        $planet_bin = '/usr/bin/planet'
-        $planet_cmd = "-v /usr/share/planet-venus/wikimedia/${title}/config.ini"
-    }
-
+    $planet_bin = '/usr/bin/rawdog'
+    $planet_cmd = "-d /etc/rawdog/${title}/ -v -u -w"
     $planet_logfile = "/var/log/planet/${title}-planet.log"
 
     # randomize the minute crons run, using $title as seed
