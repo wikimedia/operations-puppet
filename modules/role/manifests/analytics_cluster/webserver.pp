@@ -10,8 +10,8 @@ class role::analytics_cluster::webserver {
     include ::profile::superset
 
     include ::profile::hue
-    include ::profile::druid::pivot
-    # Turnilo will likely replace pivot.
+
+    # Turnilo replace Pivot - T194427
     include ::profile::druid::turnilo
 
     include ::profile::base::firewall
