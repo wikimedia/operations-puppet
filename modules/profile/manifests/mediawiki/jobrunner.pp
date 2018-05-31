@@ -4,7 +4,7 @@ class profile::mediawiki::jobrunner(
     $queue_servers = hiera('profile::mediawiki::jobrunner::queue_servers'),
     $aggr_servers  = hiera('profile::mediawiki::jobrunner::aggr_servers'),
     $load_factor   = hiera('profile::mediawiki::load_factor', 1.0),
-    $runners = hiera('profile::mediawiki::jobrunner::runners'),
+    $runners = hiera('profile::mediawiki::jobrunner::runners', {}),
 ) {
     # Parameters we don't need to override
     $port = 9005

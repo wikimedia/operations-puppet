@@ -2,9 +2,6 @@ cluster: videoscaler
 admin::groups:
   - deployment
   - perf-roots
-profile::mediawiki::jobrunner::runners:
-  transcode: 10
-  transcode_prioritized: 8
 nutcracker::verbosity: "4"
 mediawiki::hhvm::extra_fcgi:
   hhvm:
