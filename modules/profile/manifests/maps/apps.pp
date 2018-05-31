@@ -52,6 +52,10 @@ class profile::maps::apps(
     }
 
     # those fonts are needed for the new maps style (brighmed)
-    ensure_packages(['fonts-noto', 'fonts-noto-cjk', 'fonts-noto-unhinted'])
+    ensure_packages(['fonts-noto', 'fonts-noto-cjk'])
+
+    if os_version('debian >= stretch') {
+        ensure_packages(['fonts-noto-unhinted'])
+    }
 
 }
