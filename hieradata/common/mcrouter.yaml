@@ -1,38 +1,41 @@
+mcrouter::port: 11213
+mcrouter::has_ssl: true
+mcrouter::ssl_port: 11214
 mcrouter::shards:
   proxies:
     eqiad:
       A:
         host: 10.64.0.64 # mw1269, A7
-        port: 11213
+        port: 11214
         ssl: true
       B:
         host: 10.64.16.51 # mw1286, B7
-        port: 11213
+        port: 11214
         ssl: true
       C:
         host: 10.64.32.42 # mw1321, C6
-        port: 11213
+        port: 11214
         ssl: true
       D:
         host: 10.64.48.87 # mw1252, D5
-        port: 11213
+        port: 11214
         ssl: true
     codfw:
       A:
         host: 10.192.0.61 # mw2235, A3
-        port: 11213
+        port: 11214
         ssl: true
       B:
         host: 10.192.16.54 # mw2255, B3
-        port: 11213
+        port: 11214
         ssl: true
       C:
         host: 10.192.32.102 # mw2214, C4
-        port: 11213
+        port: 11214
         ssl: true
       D:
         host: 10.192.48.109 # mw2287, D5
-        port: 11213
+        port: 11214
         ssl: true
   wancache:
     eqiad:
