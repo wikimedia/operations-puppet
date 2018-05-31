@@ -103,4 +103,9 @@ class profile::debmonitor::server (
     nginx::site { 'debmonitor':
         content => template('profile/debmonitor/server/nginx.conf.erb'),
     }
+
+    monitoring::service { 'puppetboard-http':
+        description   => 'puppetboard.wikimedia.org',
+        check_command => 'check_http_unauthorized!puppetboard.wikimedia.org!/',
+    }
 }
