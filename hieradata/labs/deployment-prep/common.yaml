@@ -374,6 +374,9 @@ scap::sources:
   dumps/dumps:
     repository: operations/dumps
 
+  performance/coal: {}
+  performance/navtiming: {}
+
 prometheus_nodes:
   - deployment-prometheus01.deployment-prep.eqiad.wmflabs
 profile::recommendation_api::wdqs_uri: http://wdqs-test.wmflabs.org
