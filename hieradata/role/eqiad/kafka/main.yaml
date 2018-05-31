@@ -31,14 +31,3 @@ profile::kafka::mirror::properties:
     # These may not be necessary after upgrading Kafka MirrorMaker to 1.x
     "request.timeout.ms": 120000
     "batch.size": 65536
-
-
-# 
-# ---- TODO: Remove the below while enabling SSL: T193778 ----
-#
-
-# Enable basic ACL handling via Zookeeper stored rules
-# More info https://phabricator.wikimedia.org/T167304#3478277
-profile::kafka::broker::auth_acls_enabled: false
-
-profile::kafka::broker::inter_broker_ssl_enabled: false
