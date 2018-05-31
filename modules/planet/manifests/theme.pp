@@ -22,7 +22,7 @@ define planet::theme {
             ensure => 'present',
             source => 'puppet:///modules/planet/theme/rawdog/rawdog_style.css';
         }
-        file { "/var/www/planet/${title}/bootstrap.css":
+        file { "/var/www/planet/${title}/bootstrap.min.css":
             ensure => 'present',
             source => 'puppet:///modules/planet/theme/rawdog/bootstrap.min.css';
         }
