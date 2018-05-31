@@ -20,7 +20,6 @@
 
 import os
 import re
-import sys
 import errno
 import argparse
 import ConfigParser
@@ -47,7 +46,7 @@ def parse_options():
                         type=file_exists, metavar="FILE",
                         help="Specify config file")
 
-    args, argv = parser.parse_known_args()
+    args, _ = parser.parse_known_args()
     defaults = {}
     if args.config:
         config = ConfigParser.SafeConfigParser()
@@ -136,7 +135,8 @@ def cert_get_issuer_filename(cert, cadir):
 
     issuer_subject = cert_x509_option_kv(cert, "issuer")
     issuer_hash = cert_x509_option(cert, "issuer_hash")
-    for issuer in glob.glob(os.path.join(cadir, issuer_hash + '.[0-9]')):
+    issuer_glob = os.path.join(cadir, issuer_hash + '.[0-9]')
+    for issuer in glob.glob(issuer_glob):
         if cert_x509_option_kv(issuer, "subject") == issuer_subject:
             return issuer
     raise Exception("No matching issuer file found at %s for %s" %
@@ -237,7 +237,7 @@ def certs_fetch_ocsp(out_temp, args):
                             (cert, ocsp_text))
         this_up = ossl_parse_stamp(res.group(1))
         next_up = ossl_parse_stamp(res.group(2))
-        ocsp_validate_window(cert, now_dt, this_up, next_up, o_start, o_start)
+        ocsp_validate_window(cert, now_dt, this_up, next_up, o_start, o_end)
         if next_up > cert_notafter_compare:
             cert_notafter_compare = next_up
 
