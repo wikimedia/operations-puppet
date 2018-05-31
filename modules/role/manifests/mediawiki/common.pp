@@ -4,7 +4,7 @@ class role::mediawiki::common {
     include ::profile::mediawiki::common
     include ::profile::mediawiki::nutcracker
     # mcrouter testing (T151466)
-    if $::realm == 'labs' {
+    if ($::realm == 'labs' || $::hostname =~ /^mwdebug/ ) {
         include ::profile::mediawiki::mcrouter_wancache
     }
 }
