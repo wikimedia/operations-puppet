@@ -9,7 +9,7 @@
 #   Default: 9091
 #
 # [*monitoring_enabled*]
-#   Enable monitoring for the Pivot service.
+#   Enable monitoring for the Turnilo service.
 #   Default: false
 #
 # [*contact_group*]
