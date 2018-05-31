@@ -25,12 +25,12 @@
 # stubs and then tables so inconsistencies between stubs and tables aren't too huge
 1 max continue none <%= @stages['smallwikis']['rest'] -%> --job xmlstubsdump; <%= @stages['smallwikis']['rest'] %> --job tables
 # stubs, recombines, tables for big wikis
-4 max continue none <%= @stages['bigwikis']['rest'] -%> --job xmlstubsdump,xmlstubsdumprecombine; <%= @stages['bigwikis']['rest'] -%> --job tables
+6 max continue none <%= @stages['bigwikis']['rest'] -%> --job xmlstubsdump,xmlstubsdumprecombine; <%= @stages['bigwikis']['rest'] -%> --job tables
 
 # regular articles
 1 max continue none <%= @stages['smallwikis']['rest'] -%> --job articlesdump
 # regular articles, recombines for big wikis
-4 max continue none <%= @stages['bigwikis']['rest'] -%> --job articlesdump,articlesdumprecombine
+6 max continue none <%= @stages['bigwikis']['rest'] -%> --job articlesdump,articlesdumprecombine
 
 # regular articles multistream
 1 max continue none <%= @stages['smallwikis']['rest'] -%> --job articlesmultistreamdump
@@ -40,17 +40,17 @@
 # articles plus meta pages
 1 max continue none <%= @stages['smallwikis']['rest'] -%> --job metacurrentdump
 # articles, recombine plus meta pages for big wikis
-4 max continue none <%= @stages['bigwikis']['rest'] -%> --job metacurrentdump,metacurrentdumprecombine
+6 max continue none <%= @stages['bigwikis']['rest'] -%> --job metacurrentdump,metacurrentdumprecombine
 <% end -%>
 
 <% if @stagestype == 'full' %>
 # all remaining jobs
 1 max continue none <%= @stages['smallwikis']['rest'] %>
-4 max continue none <%= @stages['bigwikis']['rest'] %>
+6 max continue none <%= @stages['bigwikis']['rest'] %>
 <% elsif @stagestype == 'partial' %>
 # all remaining jobs except for the history revs
 1 max continue none <%= @stages['smallwikis']['rest'] %> <%= @stages['skipjob_args'] %>
-4 max continue none <%= @stages['bigwikis']['rest'] %> <%= @stages['skipjob_args'] %>
+6 max continue none <%= @stages['bigwikis']['rest'] %> <%= @stages['skipjob_args'] %>
 <% end -%>
 
 <% if @stagestype == 'full_enwiki' or @stagestype == 'partial_enwiki' %>
