@@ -350,6 +350,14 @@ scap::sources:
   jobrunner/jobrunner:
     repository: mediawiki/services/jobrunner
 
+  # webperf
+  statsv/statsv:
+    repository: analytics/statsv
+  performance/coal:
+    repository: performance/coal
+  performance/navtiming:
+    repository: performance/navtiming
+
   # Proton / chromium-render
   proton/deploy:
     repository: mediawiki/services/chromium-render/deploy
