@@ -6,8 +6,6 @@ profile::mediawiki::jobrunner::load_factor: 0.7
 profile::mediawiki::jobrunner::runners:
   basic: 10
   gwt: 1
-  translate: 1
-  upload: 7
 # TODO: obtain these as profile parameters
 nutcracker::verbosity: "4"
 mediawiki::hhvm::extra_fcgi:
