@@ -107,8 +107,8 @@ if $realm == 'labs' {
 # Note: $settings::storeconfigs_backend is a ruby symbol, thus it
 # would never match in the equality below. So cast the variable to string. See
 # https://tickets.puppetlabs.com/browse/PUP-6682
-# lint:ignore:only_variable_string
-$use_puppetdb = ("${settings::storeconfigs_backend}" == 'puppetdb')
+# lint:ignore:only_variable_string lint:ignore:quoted_booleans
+$use_puppetdb = ("${settings::storeconfigs}" == 'true')
 # lint:endignore
 
 # TODO: SMTP settings
