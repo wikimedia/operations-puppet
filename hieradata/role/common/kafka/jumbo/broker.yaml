@@ -37,7 +37,8 @@ profile::kafka::mirror::destination_cluster_name: jumbo-eqiad
 profile::kafka::mirror::monitoring_enabled: true
 profile::kafka::mirror::properties:
   # Blacklist change-prop topics.  We don't need them in jumbo.
-  whitelist: '^(?!.*change-prop\.|.*changeprop\.|.*cpjobqueue\.).+$'
+  # Also blacklist cirrusSearch related jobs.  These have unexplained HUGE messages.
+  whitelist: '^(?!.*change-prop\.|.*changeprop\.|.*cpjobqueue\.|.*mediawiki\.job\.cirrus\.).+$'
   num_streams: 12
   offset_commit_interval_ms: 5000
   heap_opts: '-Xmx2G -Xms2G'
