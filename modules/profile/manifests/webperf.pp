@@ -22,8 +22,10 @@ class profile::webperf(
         statsd            => $statsd,
     }
 
-    # Use brokers from this Kafka cluster to consume metrics.
-    $kafka_config  = kafka_config('jumbo-eqiad')
+    # EventLogging is on the jumbo kafka. Unlike the main one, this
+    # is not yet mirrored to other data centers, so for prod,
+    # assume eqiad.
+    $kafka_config  = kafka_config('jumbo', 'eqiad')
     $kafka_brokers = $kafka_config['brokers']['string']
 
     # Aggregate client-side latency measurements collected via the
