@@ -1,4 +1,4 @@
-# adds a system user for a planet-venus install
+# adds a system user for a planet install
 class planet::user {
 
     group { 'planet':

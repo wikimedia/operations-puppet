@@ -1,7 +1,7 @@
-# planet RSS feed aggregator 2.0 (planet-venus)
+# planet RSS feed aggregator 3.0 (rawdog)
 # this sets up multiple Planet Wikimedia feed aggregators
 # see https://meta.wikimedia.org/wiki/Planet_Wikimedia
-# http://planet.wikimedia.org/ - new planet (planet-venus)
+# http://planet.wikimedia.org/
 #
 # see role/planet.pp for language and translation config
 #
@@ -32,11 +32,7 @@ class planet (
         meta_link   => $meta_link,
     }
 
-    if os_version('debian >= stretch') {
-        $logo_file = '/var/www/planet/planet-wm2.png'
-    } else {
-        $logo_file = '/usr/share/planet-venus/theme/common/images/planet-wm2.png'
-    }
+    $logo_file = '/var/www/planet/planet-wm2.png'
 
     # TODO change this to be one per language
     file { $logo_file:
