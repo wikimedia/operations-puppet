@@ -13,7 +13,7 @@ define planet::rawdogplugin {
         owner   => 'planet',
         group   => 'planet',
         mode    => '0755',
-        content => template('planet/feeds_rawdog/plugins/rss.py.erb'),
+        content => template('planet/feeds/plugins/rss.py.erb'),
     }
 
 }
