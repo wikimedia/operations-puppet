@@ -22,7 +22,7 @@ class profile::statistics::web(
     class { '::statistics::sites::analytics': }
     # Proxy to securely access Yarn (authentication via LDAP)
     class { '::statistics::sites::yarn': }
-    # Proxy to securely access Pivot (authentication via LDAP)
+    # Simple redirect to turnilo.wikimedia.org
     class { '::statistics::sites::pivot': }
         # Proxy to securely access Turnilo (authentication via LDAP)
     class { '::statistics::sites::turnilo': }

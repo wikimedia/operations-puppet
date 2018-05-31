@@ -131,8 +131,6 @@ scap::sources:
 #    lvs_service: kartotherian
   logstash/plugins:
     repository: operations/software/logstash/plugins
-  analytics/pivot/deploy:
-    repository: analytics/pivot/deploy
   analytics/turnilo/deploy:
     repository: analytics/turnilo/deploy
   mathoid/deploy: {}
