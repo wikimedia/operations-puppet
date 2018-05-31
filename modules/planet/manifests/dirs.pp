@@ -28,7 +28,7 @@ class planet::dirs {
             mode    => '0444',
             owner   => 'planet',
             group   => 'planet',
-            content => template('planet/feeds_rawdog/global.erb'),
+            content => template('planet/feeds/global.erb'),
         }
 
     } else {
