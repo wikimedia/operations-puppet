@@ -226,6 +226,9 @@ scap::dsh::groups:
     librenms:
         hosts:
           - deployment-netbox.deployment-prep.eqiad.wmflabs
+    webperf:
+        hosts:
+          - deployment-webperf01.deployment-prep.eqiad.wmflabs
 
 
 "profile::etcd::tlsproxy::read_only": false
