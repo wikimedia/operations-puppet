@@ -36,11 +36,7 @@ profile::kafka::mirror::properties:
 # 
 # ---- TODO: Remove the below while enabling SSL: T193778 ----
 #
-# Enable SSL/TLS for Kafka.  This requires
-# that keystore and truststore files, and
-# profile::kafka::broker::ssl_password, are committed in
-# the expected location in ops/puppet/private.
-profile::kafka::broker::ssl_enabled: false
+
 # Enable basic ACL handling via Zookeeper stored rules
 # More info https://phabricator.wikimedia.org/T167304#3478277
 profile::kafka::broker::auth_acls_enabled: false
