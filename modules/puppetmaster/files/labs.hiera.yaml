@@ -2,6 +2,7 @@
   - httpyaml
   - mwyaml
   - nuyaml
+  - role
 :nuyaml:
   :datadir: /etc/puppet/hieradata
 :mwyaml:
@@ -26,3 +27,5 @@
   - "secret/common"
   - "private/common"
   - "httpyaml/%{::labsproject}/node/%{::fqdn}"
+:role_hierarchy:
+  - "common"
