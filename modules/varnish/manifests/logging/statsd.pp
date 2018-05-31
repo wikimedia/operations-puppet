@@ -55,6 +55,8 @@ define varnish::logging::statsd(
         },
     }
 
+    base::service_auto_restart { $service_unit_name: }
+
     nrpe::monitor_service { 'varnishstatsd':
         ensure       => present,
         description  => 'Varnish traffic logger - varnishstatsd',
