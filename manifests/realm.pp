@@ -241,7 +241,7 @@ $wikimail_smarthost = $realm ? {
         default => [ 'wiki-mail-eqiad.wikimedia.org', 'wiki-mail-codfw.wikimedia.org' ],
     },
     'labs'       => $::labsproject ? {
-        'deployment-prep' => [ 'deployment-mx.eqiad.wmflabs' ],
+        'deployment-prep' => [ 'deployment-mx02.deployment-prep.eqiad.wmflabs' ],
         default           => [ 'mx1001.wikimedia.org', 'mx2001.wikimedia.org' ],
     },
 }
