@@ -523,3 +523,92 @@ jenkins_agent_username: 'jenkins-slave'
 
 # HTTP proxy (can be used as an env variable)
 http_proxy: "http://webproxy.%{::site}.wmnet:8080"
+
+# scap::source declarations.  These are created
+# by the scap::server class.  Each source listed here
+# will be cloned on the scap deploy server.
+scap::sources:
+  3d2png/deploy:
+    repository: 3d2png/deploy
+  analytics/refinery:
+    repository: analytics/refinery
+    scap_repository: analytics/refinery/scap
+  changeprop/deploy:
+    repository: mediawiki/services/change-propagation/deploy
+  citoid/deploy: {}
+  cpjobqueue/deploy:
+    repository: mediawiki/services/change-propagation/jobqueue-deploy
+  cxserver/deploy: {}
+  dumps/dumps:
+    repository: operations/dumps
+    scap_repository: operations/dumps/scap
+  electron-render/deploy: {}
+  eventlogging/eventbus:
+    repository: eventlogging
+    scap_repository: eventlogging/scap/eventbus
+  eventlogging/analytics:
+    repository: eventlogging
+    scap_repository: eventlogging/scap/analytics
+  eventstreams/deploy:
+    repository: mediawiki/services/eventstreams/deploy
+  analytics/superset/deploy:
+    repository: analytics/superset/deploy
+  gerrit/gerrit:
+    repository: operations/software/gerrit
+  graphoid/deploy: {}
+  iegreview/iegreview:
+    repository: iegreview
+    origin: phabricator
+  jobrunner/jobrunner:
+    repository: mediawiki/services/jobrunner
+  kartotherian/deploy:
+    repository: maps/kartotherian/deploy
+  logstash/plugins:
+    repository: operations/software/logstash/plugins
+  analytics/pivot/deploy:
+    repository: analytics/pivot/deploy
+  mathoid/deploy: {}
+  mobileapps/deploy: {}
+  ores/deploy: {}
+  parsoid/deploy: {}
+  phabricator/deployment:
+    repository: phabricator/deployment
+  recommendation-api/deploy: {}
+  restbase/deploy: {}
+  servermon/servermon:
+    repository: operations/software/servermon
+  striker/deploy:
+    repository: labs/striker/deploy
+  horizon/deploy:
+    repository: openstack/horizon/deploy
+  tilerator/deploy:
+    repository: maps/tilerator/deploy
+  scholarships/scholarships:
+    repository: wikimedia/wikimania-scholarships
+  wikimedia/discovery/analytics:
+    repository: discovery/analytics
+  wdqs/wdqs:
+    repository: wikidata/query/deploy
+  zotero/translation-server:
+    lvs_service: zotero
+  zotero/translators:
+    lvs_service: zotero
+  cassandra/logstash-logback-encoder:
+    repository: operations/software/logstash-logback-encoder
+  cassandra/twcs:
+    # Time-window compaction strategy for Cassandra
+    repository: operations/software/cassandra-twcs
+  cassandra/metrics-collector:
+    repository: operations/software/cassandra-metrics-collector
+  librenms/librenms:
+    repository: operations/software/librenms
+  netbox/deploy:
+    repository: operations/software/netbox-deploy
+  search/mjolnir/deploy:
+    repository: search/MjoLniR/deploy
+  statsv/statsv:
+    repository: analytics/statsv
+  "docker-pkg/deploy":
+    repository: operations/docker-images/docker-pkg/deploy
+  puppetboard/deploy:
+    repository: operations/software/puppetboard/deploy
