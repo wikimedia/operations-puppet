@@ -13,59 +13,22 @@ end
         "basic": {
             "runners": <%= runners_for('basic')  %>,
             "include": [
-                "*"
-            ],
-            "exclude": [
-                "AssembleUploadChunks",
-                "TranslationsUpdateJob",
-                "PublishStashedFile",
-                "gwtoolsetGWTFileBackendCleanupJob",
-                "gwtoolsetUploadMediafileJob",
-                "gwtoolsetUploadMetadataJob",
-                "uploadFromUrl",
-                "webVideoTranscode",
-                "webVideoTranscodePrioritized",
-            ],
-            "low-priority": [
+                "EchoNotificationJob", // T192945
+                "cirrusSearchCheckerJob",
+                "cirrusSearchDeleteArchive",
+                "cirrusSearchDeletePages",
+                "cirrusSearchElasticaWrite",
+                "cirrusSearchIncomingLinkCount",
                 "cirrusSearchLinksUpdate",
-                "refreshLinks",
-                "refreshLinksDynamic",
-                "refreshLinksPrioritized",
-                "htmlCacheUpdate",
+                "cirrusSearchLinksUpdatePrioritized",
+                "cirrusSearchMassIndex",
+                "cirrusSearchOtherIndex",
             ]
         },
         "gwt": {
             "runners": <%=  runners_for('gwt')  %>,
             "include": [
-                "gwtoolsetUploadMetadataJob",
-                "gwtoolsetUploadMediafileJob",
-                "gwtoolsetGWTFileBackendCleanupJob"
-            ]
-        },
-        "transcode": {
-            "runners": <%= runners_for('transcode')  %>,
-            "include": [
-                "webVideoTranscode"
-            ]
-        },
-        "transcode_prioritized": {
-            "runners": <%= runners_for('transcode_prioritized') %>,
-            "include": [
-                "webVideoTranscodePrioritized"
-            ]
-        },
-        "translate": {
-            "runners": <%= runners_for('translate') %>,
-            "include": [
-                "TranslationsUpdateJob"
-            ]
-        },
-        "upload": {
-            "runners": <%= runners_for('upload') %>,
-            "include": [
-                "AssembleUploadChunks",
-                "PublishStashedFile",
-                "uploadFromUrl"
+                "gwtoolsetUploadMediafileJob", // T192946
             ]
         }
     },
@@ -73,20 +36,15 @@ end
     "limits": {
         // How many times to let jobs be executed before abandoning
         "attempts": {
-            "*": 3,
-            // make rename jobs try harder for T141731
-            "LocalPageMoveJob": 6,
-            "renameUser": 6
+            "*": 3
         },
         // How long jobs can be claimed before being recycled
         "claimTTL": {
-            "*": 3600,
-            "webVideoTranscode": 86400
+            "*": 3600
         },
         // runJobs.php process time limits
         "real": {
-            "*": 300,
-            "webVideoTranscode": 86400
+            "*": 300
         },
         // runJobs.php memory limits
         "memory": {

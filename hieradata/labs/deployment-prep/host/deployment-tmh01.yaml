@@ -1,3 +1,0 @@
-profile::mediawiki::jobrunner::runners:
-  transcode: 2
-  transcode_prioritized: 2
