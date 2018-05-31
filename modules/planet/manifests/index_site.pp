@@ -1,4 +1,4 @@
-# sets up the planet-venus index/portal site
+# sets up the planet index/portal site
 class planet::index_site (
     $domain_name,
     $meta_link,

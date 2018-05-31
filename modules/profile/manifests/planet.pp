@@ -1,4 +1,4 @@
-# sets up a planet RSS feed aggregator (planet-venus aka planet 2.0)
+# sets up a planet RSS feed aggregator (planet-rawdog aka planet 3.0)
 #
 # $domain_name: domain name used, e.g. wikimedia.org or wmflabs.org
 #
@@ -10,10 +10,10 @@
 #                    list all planet languages and translations for index.html.tmpl here.
 #                    configurations, directories and cronjobs are auto-created from this hash.
 #
-class profile::planet::venus (
-    $domain_name = hiera('profile::planet::venus::domain_name'),
-    $meta_link = hiera('profile::planet::venus::meta_link'),
-    $http_proxy = hiera('profile::planet::venus::http_proxy'),
+class profile::planet (
+    $domain_name = hiera('profile::planet::domain_name'),
+    $meta_link = hiera('profile::planet::meta_link'),
+    $http_proxy = hiera('profile::planet::http_proxy'),
     $languages = {
         ar => {
             'subscribe'     => '&#1575;&#1588;&#1578;&#1585;&#1603;',
