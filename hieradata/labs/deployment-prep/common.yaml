@@ -161,7 +161,8 @@ mediawiki_memcached_servers:
       shard02:
         host: 10.68.23.49  # deployment-memc05
         port: 11211
-profile::mediawiki::mcrouter_wancache::port: 11213
+mcrouter::port: 11213
+mcrouter::has_ssl: false
 profile::memcached::version: 'present'
 profile::memcached::growth_factor: '1.05'
 profile::memcached::size: '3000'

@@ -3,9 +3,9 @@
 # Configures a mcrouter instance for multi-datacenter caching
 class profile::mediawiki::mcrouter_wancache(
     Hash $servers_by_datacenter_category = hiera('mcrouter::shards'),
-    Integer $port = hiera('profile::mediawiki::mcrouter_wancache::port'),
-    Boolean $has_ssl = hiera('profile::mediawiki::mcrouter_wancache::has_ssl'),
-    Integer $ssl_port = hiera('profile::mediawiki::mcrouter_wancache::ssl_port', $port + 1),
+    Integer $port = hiera('mcrouter::port'),
+    Boolean $has_ssl = hiera('mcrouter::has_ssl'),
+    Integer $ssl_port = hiera('mcrouter::ssl_port', $port + 1),
 ) {
     $servers_by_datacenter = $servers_by_datacenter_category['wancache']
     $proxies_by_datacenter = pick($servers_by_datacenter_category['proxies'], {})
