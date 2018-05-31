@@ -23,6 +23,16 @@ tls_advertise_hosts =
 log_selector = +address_rewrite +all_parents +delivery_size +deliver_time +incoming_interface +incoming_port +smtp_confirmation +smtp_protocol_error +smtp_syntax_error
 message_logs = false
 
+# ACL
+acl_smtp_rcpt = acl_check_rcpt
+
+begin acl
+
+acl_check_rcpt:
+
+	# Accept from local interfaces
+	accept hosts = @[]
+
 begin routers
 
 # Catch unqualified e-mail addresses from MediaWiki
