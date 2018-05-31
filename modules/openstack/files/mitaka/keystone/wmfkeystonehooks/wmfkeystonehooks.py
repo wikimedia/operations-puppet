@@ -122,9 +122,7 @@ class KeystoneHooks(notifier.Driver):
             assignments = self._get_current_assignments(project_id)
         ldapgroups.sync_ldap_project_group(project_id, assignments)
 
-    def _add_to_bastion(self, user_id):
-        roledict = self._get_role_dict()
-
+    def _add_to_bastion(self, roledict, user_id):
         # First make sure the user isn't already assigned to bastion
         assignments = self._get_current_assignments(CONF.wmfhooks.bastion_project_id)
         if user_id in assignments[CONF.wmfhooks.user_role_name]:
@@ -269,6 +267,7 @@ class KeystoneHooks(notifier.Driver):
 
         if event_type == 'identity.role_assignment.created':
             project_id = message['payload']['project']
+            role_id = message['payload']['role']
             self._on_member_update(project_id)
             if (project_id != CONF.wmfhooks.bastion_project_id and
                     project_id != CONF.wmfhooks.toolforge_project_id):
@@ -278,8 +277,12 @@ class KeystoneHooks(notifier.Driver):
                 # So, add them.  Note that this is a one-way trip; we don't
                 #  purge a user from bastion just because they've beeen
                 #  removed from every project.
-                user_id = message['payload']['user']
-                self._add_to_bastion(user_id)
+                roledict = self._get_role_dict()
+
+                # Only add users to bastion; skip other roles like 'observer'
+                if role_id == roledict[CONF.wmfhooks.user_role_name]:
+                    user_id = message['payload']['user']
+                    self._add_to_bastion(roledict, user_id)
 
         if event_type == 'identity.role_assignment.deleted':
             project_id = message['payload']['project']
