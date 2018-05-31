@@ -309,7 +309,7 @@ node 'db2048.codfw.wmnet' {
 }
 
 # codfw replicas
-node /^db20(55|62|70|71|72)\.codfw\.wmnet/ {
+node /^db20(55|62|70|71|72|92)\.codfw\.wmnet/ {
     role(mariadb::core)
 }
 
@@ -601,13 +601,7 @@ node 'db1102.eqiad.wmnet' {
     role(mariadb::sanitarium_multiinstance)
 }
 
-# Temporary sanitarium hosts
-#
 node 'db1116.eqiad.wmnet' {
-    role(mariadb::sanitarium_multiinstance)
-}
-
-node 'db2092.codfw.wmnet' {
     role(mariadb::sanitarium_multiinstance)
 }
 

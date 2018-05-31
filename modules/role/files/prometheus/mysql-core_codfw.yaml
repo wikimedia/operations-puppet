@@ -9,6 +9,7 @@
   - db2072:9104
   - db2088:13311
   - db2085:13311
+  - db2092:9104
 - labels:
     shard: s1
     role: master
