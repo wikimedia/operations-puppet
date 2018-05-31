@@ -14,9 +14,6 @@ profile::hue::database_host: 'analytics1003.eqiad.wmnet'
 profile::hue::hive_server_host: 'analytics1003.eqiad.wmnet'
 profile::hue::monitoring_enabled: true
 
-profile::druid::pivot::druid_broker: 'druid1001.eqiad.wmnet:8082'
-profile::druid::pivot::monitoring_enabled: true
-
 profile::druid::turnilo::port: 9091
 profile::druid::turnilo::druid_clusters: 
   - name: druid-analytics-eqiad
