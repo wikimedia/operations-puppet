@@ -373,6 +373,10 @@ scap::sources:
   # Xml/sql dumps
   dumps/dumps:
     repository: operations/dumps
+  performance/coal:
+    repository: performance/coal
+  performance/navtiming:
+    repository: performance/navtiming
 
 prometheus_nodes:
   - deployment-prometheus01.deployment-prep.eqiad.wmflabs
