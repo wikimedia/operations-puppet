@@ -18,7 +18,7 @@
 # == Parameters
 #
 # [*repository*]
-#   Repository name in gerrit/phabricator.  Default: $title
+#   Repository name in gerrit/phabricator.  Default: "mediawiki/services/$title"
 #
 # [*scap_repository*]
 #   String or boolean.
@@ -60,7 +60,7 @@
 #
 # == Usage
 #
-#   # Clones the 'repo/without/external/scap' repsitory into
+#   # Clones the 'repo/without/external/scap' respository to
 #   # /srv/deployment/repo/without/external/scap.
 #
 #   scap::source { 'repo/without/external/scap': }
