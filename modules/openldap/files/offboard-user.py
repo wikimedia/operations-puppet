@@ -26,6 +26,10 @@ except ImportError:
     print "Unable to import Python LDAP"
     sys.exit(1)
 
+def set_cookie(lc_object, pctrls, pagesize):
+    cookie = pctrls[0].cookie
+    lc_object.cookie = cookie
+    return cookie
 
 def offboard_ldap(uid, remove_all_groups, turn_volunteer, dry_run):
     ldap_conn = ldap.initialize('ldaps://ldap-labs.eqiad.wikimedia.org:636')
@@ -49,6 +53,8 @@ delete: member
 member: {user_dn}
 
 """
+
+    lc = ldap.controls.SimplePagedResultsControl(criticality=False, size=1024, cookie='')
 
     # TODO: add more groups after validating priv. status
     privileged_groups = ['cn=nda,ou=groups,dc=wikimedia,dc=org',
@@ -80,16 +86,26 @@ member: {user_dn}
     project_admins = []
 
     for ou in group_ous:
-        ldapdata = ldap_conn.search_s(
-            ou,
-            ldap.SCOPE_SUBTREE,
-            "(objectclass=groupOfNames)",
-            attrlist=['member'],
-        )
+        while True:
+            ldapdata = ldap_conn.search_ext(
+                ou,
+                ldap.SCOPE_SUBTREE,
+                "(objectclass=groupOfNames)",
+                attrlist=['member'],
+                serverctrls=[lc]
+            )
 
-        for i in ldapdata:
-            if user_dn in i[1]['member']:
-                memberships.append(i[0])
+            rtype, rdata, rmsgid, serverctrls = ldap_conn.result3(ldapdata)
+            for dn, attrs in rdata:
+                if user_dn in attrs['member']:
+                    memberships.append(dn)
+
+            page_control = [c for c in serverctrls
+                            if c.controlType == ldap.controls.SimplePagedResultsControl.controlType]
+
+            cookie = set_cookie(lc, page_control, 1024)
+            if not cookie:
+                break
 
     ldapdata = ldap_conn.search_s(
         projects_dn,
