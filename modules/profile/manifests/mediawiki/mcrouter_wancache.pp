@@ -86,6 +86,15 @@ class profile::mediawiki::mcrouter_wancache(
             'cert'    => '/etc/mcrouter/ssl/cert.pem',
             'key'     => '/etc/mcrouter/ssl/key.pem',
         }
+
+        # We can allow any other mcrouter to connect via SSL here
+        ferm::rule { 'mcrouter_ssl':
+            desc    => 'Allow connections to mcrouter via SSL',
+            proto   => 'tcp',
+            notrack => true,
+            port    => $ssl_port,
+            srange  => '$DOMAIN_NETWORKS',
+        }
     }
     else {
         $ssl_options = undef
