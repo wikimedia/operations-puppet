@@ -400,6 +400,7 @@ class toollabs::exec_environ {
         'pstoedit',                    # T59000
         'rrdtool',                     # T59004
         'socat',                       # T59005
+        'sqlite3',                     # T196006
         'supybot',                     # T63088.
         'tabix',                       # T63501
         'texinfo',                     # T58994
