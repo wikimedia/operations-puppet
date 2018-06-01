@@ -27,4 +27,5 @@ bridge_mappings = <%= bmap_string -%>
 enable_vxlan = True
 # local_ip = OVERLAY_INTERFACE_IP_ADDRESS
 local_ip = <%= @ipaddress %>
-l2_population = True
+# Notes on this being disabled are in ml2_conf.conf
+# l2_population = True

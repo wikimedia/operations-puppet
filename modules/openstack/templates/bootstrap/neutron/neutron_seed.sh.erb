@@ -82,6 +82,7 @@ neutron floatingip-associate <floating_ip_id> <port_id>
 
 # Adding a provider created VXLAN net to existing router
 # id must be allowed in vxlan range and free
+# NOTE: l2pop is not functional with gateway HA as of Mitaka
 neutron net-create --provider:network_type=vxlan --provider:segmentation_id=2 project-name
 
 neutron subnet-create --name project-name-v4 --ip-version 4 --allocation-pool start=172.16.130.10,end=172.16.130.250 --gateway 172.16.130.1 --dns-nameserver 208.80.153.51 project-name 172.16.130/24

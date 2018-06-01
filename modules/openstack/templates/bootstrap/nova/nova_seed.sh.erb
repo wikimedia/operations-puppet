@@ -25,3 +25,5 @@ openstack endpoint create --region <%= @region %> compute admin http://<%= @ipad
 
 su -s /bin/sh -c "nova-manage api_db sync" nova; echo $?
 su -s /bin/sh -c "nova-manage db sync" nova; echo $?
+
+openstack compute service list

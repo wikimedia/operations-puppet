@@ -11,7 +11,11 @@ type_drivers = flat, vxlan
 tenant_network_types =
 
 # l2population is a sort of meta driver to
-# make overlay intelligently handle broadcast
+# make overlay (VXLAN) intelligently handle broadcast
+# it is disabled for now as we have discovered
+# bugs as recent as Mitaka that cause HA gateway
+# failover to not update the l2pop driver causing
+# instances to contact the incorrect MAC
 mechanism_drivers = linuxbridge
 extension_drivers = port_security
 
