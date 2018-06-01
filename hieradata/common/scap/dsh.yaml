@@ -13,6 +13,7 @@ scap::dsh::scap_proxies:
 
 scap::dsh::scap_masters:
   - "tin.eqiad.wmnet"
+  - "deploy1001.eqiad.wmnet"
   - "deploy2001.codfw.wmnet"
 
 
