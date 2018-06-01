@@ -1,10 +1,30 @@
-# planet rawdog feeds in Bulgarian language (bg.planet.wikimedia.org)
-include ../config
-template /etc/rawdog/theme/wikimedia/bg/rd_page.tmpl
-itemtemplate /etc/rawdog/theme/wikimedia/bg/rd_item.tmpl
-outputfile /var/www/planet/bg/index.html
-outputxml /var/www/planet/bg/rss20.xml
-#
+# ! This file is managed by puppet !
+# bg.planet.wm - Planet Venus configuration file
 
-feed 1h https://blog.wikimedia.bg/feed/
-feed 1h https://vodnokon4e-asen33.blogspot.it/feeds/posts/default/-/%D0%A3%D0%B8%D0%BA%D0%B8%D0%BF%D0%B5%D0%B4%D0%B8%D1%8F/
+# Documentation: <file:///usr/share/doc/planet-venus>
+# Examples:      <file:///usr/share/planet-venus/example>
+# Filters:       <file:///usr/share/planet-venus/filter>
+# Themes:        <file:///usr/share/planet-venus/theme>
+
+# Global configuration
+
+[Planet]
+
+name            = bg.planet.wikimedia
+link            = https://bg.planet.<%= @domain_name %>/
+owner_name      = planet
+owner_email     = planet@wikimedia.org
+output_theme    = /usr/share/planet-venus/theme/wikimedia/bg
+cache_directory = /var/cache/planet/bg/
+output_dir      = /var/www/planet/bg/
+feed_timeout    = 20
+items_per_page  = 60
+log_level       = DEBUG
+
+# Subscription configuration
+
+[https://blog.wikimedia.bg/feed/]
+name=Уикимедия България
+
+[https://vodnokon4e-asen33.blogspot.it/feeds/posts/default/-/%D0%A3%D0%B8%D0%BA%D0%B8%D0%BF%D0%B5%D0%B4%D0%B8%D1%8F/]
+name=Потребител:Vodnokon4e

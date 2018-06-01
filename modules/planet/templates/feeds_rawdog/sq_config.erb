@@ -1,0 +1,10 @@
+# planet rawdog feeds in Albanian language (sq.planet.wikimedia.org)
+include ../config
+template /etc/rawdog/theme/wikimedia/sq/rd_page.tmpl
+itemtemplate /etc/rawdog/theme/wikimedia/sq/rd_item.tmpl
+outputfile /var/www/planet/sq/index.html
+outputxml /var/www/planet/sq/rss20.xml
+#
+
+feed 1h https://gretadoci.wordpress.com/category/home/feed/
+feed 1h https://elioqoshi.me/sq/tag/wiki-sq/feed/

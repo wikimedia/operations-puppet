@@ -1,0 +1,12 @@
+# planet rawdog feeds in Czech language (cs.planet.wikimedia.org)
+include ../config
+template /etc/rawdog/theme/wikimedia/cs/rd_page.tmpl
+itemtemplate /etc/rawdog/theme/wikimedia/cs/rd_item.tmpl
+outputfile /var/www/planet/cs/index.html
+outputxml /var/www/planet/cs/rss20.xml
+#
+
+feed 1h https://blog.wikimedia.cz/feed/atom/
+feed 1h https://wikipediste.blogspot.com/feeds/posts/default
+feed 1h https://okinokynko.blogspot.com/feeds/posts/default/-/wiki
+feed 1h https://okinokynko.blogspot.com/feeds/posts/default/-/Wikipedie
