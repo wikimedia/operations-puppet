@@ -85,7 +85,7 @@ class mcrouter(
 
     systemd::service { 'mcrouter':
         ensure   => $ensure,
-        content  => "[Service]\nLimitNOFILE=64000\n",
+        content  => "[Service]\nLimitNOFILE=64000\nUser=mcrouter\n",
         override => true,
         restart  => true,
     }
