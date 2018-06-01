@@ -32,13 +32,8 @@ class profile::mariadb::misc::eventlogging::database (
 
     class { 'mariadb::service': }
 
-    if os_version('debian >= stretch') {
-        $mariadb_basedir = '/opt/wmf-mariadb101'
-        $mariadb_socket = '/run/mysqld/mysqld.sock'
-    } else {
-        $mariadb_basedir = '/opt/wmf-mariadb10'
-        $mariadb_socket = '/tmp/mysql.sock'
-    }
+    $mariadb_basedir = '/opt/wmf-mariadb101'
+    $mariadb_socket = '/run/mysqld/mysqld.sock'
 
     # History context: there used to be a distinction between
     # EL master and slaves, namely that only the master was not
@@ -66,12 +61,5 @@ class profile::mariadb::misc::eventlogging::database (
         shard    => $shard,
         prompt   => "EVENTLOGGING ${shard}",
         password => $passwords::misc::scripts::mysql_root_pass,
-    }
-
-    class { 'mariadb::heartbeat':
-        shard      => $shard,
-        datacenter => $::site,
-        enabled    => $master,
-        socket     => $mariadb_socket,
     }
 }
