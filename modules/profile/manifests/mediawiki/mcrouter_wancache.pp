@@ -88,7 +88,7 @@ class profile::mediawiki::mcrouter_wancache(
         }
 
         # We can allow any other mcrouter to connect via SSL here
-        ferm::rule { 'mcrouter_ssl':
+        ferm::service { 'mcrouter_ssl':
             desc    => 'Allow connections to mcrouter via SSL',
             proto   => 'tcp',
             notrack => true,
