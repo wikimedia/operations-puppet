@@ -71,7 +71,7 @@ hadoop-standby: P{O:analytics_cluster::hadoop::standby}
 hadoop-worker: P{O:analytics_cluster::hadoop::worker}
 hadoop-worker-canary: P{analytics1030.eqiad.wmnet}
 icinga: P{O:icinga}
-installserver: P{O:installserver::http}
+installserver: P{O:installserver}
 jobqueue-redis-codfw: (A:jobqueue-redis-master or A:jobqueue-redis-slave) and A:codfw
 jobqueue-redis-eqiad: (A:jobqueue-redis-master or A:jobqueue-redis-slave) and A:eqiad
 jobqueue-redis-master: P{O:jobqueue_redis::master}
