@@ -83,7 +83,7 @@ groups:
                  restricted folks use sudo to access apache / www-data resources
     members: [dartar, bearloga, tjones, cparle,
               ezachte, jamesur, jdlrobson, smalyshev,
-              leila, santhosh, amire80, foks, chelsyx, dbarratt]
+              leila, santhosh, amire80, foks, chelsyx, dbarratt, bmansurov]
     privileges: ['ALL = (www-data,apache) NOPASSWD: ALL']
   cassandra-test-roots:
     gid: 708
@@ -658,7 +658,7 @@ groups:
   maintenance-log-readers:
     description: People who can read syslog and dmesg on mediawiki maintenance servers
     gid: 799
-    members: [hoo, bmansurov]
+    members: [hoo]
     privileges: ['ALL = NOPASSWD: /bin/journalctl *',
                  'ALL = NOPASSWD: /bin/dmesg *',
                  'ALL = (syslog) NOPASSWD: ALL']
