@@ -45,7 +45,7 @@ dataCubes:
     # * autofill-dimensions-only - Introspect the datasource, automatically generate dimensions only
     # * autofill-measures-only - Introspect the datasource, automatically generate measures only
     # * autofill-all - (default) Introspect the datasource, automatically generate dimensions and measures
-    introspection: autofill-all
+    introspection: none
 
     # The list of attribute overrides in case introspection get something wrong
     attributeOverrides:
@@ -183,7 +183,7 @@ dataCubes:
     # * autofill-dimensions-only - Introspect the datasource, automatically generate dimensions only
     # * autofill-measures-only - Introspect the datasource, automatically generate measures only
     # * autofill-all - (default) Introspect the datasource, automatically generate dimensions and measures
-    introspection: autofill-all
+    introspection: none
 
     # The list of attribute overrides in case introspection get something wrong
     attributeOverrides:
@@ -290,14 +290,13 @@ dataCubes:
       #   formula: $main.filter($country == 'United States').sum($revenue)
 
 
-  - name: pageviews-daily
-    title: pageviews-daily
+  - name: pageviews_daily
+    title: pageviews_daily
     clusterName: druid-analytics-eqiad
     source: pageviews-daily
     # The refresh rule describes how often the data cube looks for new data. Default: 'query'/PT1M (every minute)
     refreshRule:
       rule: query
-
 
     #defaultTimezone: Etc/UTC # <- default
     #defaultDuration: P1D # <- default
@@ -468,8 +467,8 @@ dataCubes:
       #   formula: $main.filter($country == 'United States').sum($revenue)
 
 
-  - name: mediawiki-history-beta
-    title: mediawiki-history-beta
+  - name: mediawiki_history_beta
+    title: mediawiki_history_beta
     clusterName: druid-analytics-eqiad
     source: mediawiki-history-beta
     # The refresh rule describes how often the data cube looks for new data. Default: 'query'/PT1M (every minute)
@@ -498,7 +497,7 @@ dataCubes:
     # * autofill-dimensions-only - Introspect the datasource, automatically generate dimensions only
     # * autofill-measures-only - Introspect the datasource, automatically generate measures only
     # * autofill-all - (default) Introspect the datasource, automatically generate dimensions and measures
-    introspection: autofill-all
+    introspection: none
 
     # The list of attribute overrides in case introspection get something wrong
     attributeOverrides:
@@ -916,7 +915,7 @@ dataCubes:
     # * autofill-dimensions-only - Introspect the datasource, automatically generate dimensions only
     # * autofill-measures-only - Introspect the datasource, automatically generate measures only
     # * autofill-all - (default) Introspect the datasource, automatically generate dimensions and measures
-    introspection: autofill-all
+    introspection: none
 
     # The list of attribute overrides in case introspection get something wrong
     attributeOverrides:
@@ -1082,7 +1081,7 @@ dataCubes:
     # * autofill-dimensions-only - Introspect the datasource, automatically generate dimensions only
     # * autofill-measures-only - Introspect the datasource, automatically generate measures only
     # * autofill-all - (default) Introspect the datasource, automatically generate dimensions and measures
-    introspection: autofill-all
+    introspection: none
 
     # The list of attribute overrides in case introspection get something wrong
     attributeOverrides:
@@ -1220,7 +1219,7 @@ dataCubes:
     # * autofill-dimensions-only - Introspect the datasource, automatically generate dimensions only
     # * autofill-measures-only - Introspect the datasource, automatically generate measures only
     # * autofill-all - (default) Introspect the datasource, automatically generate dimensions and measures
-    introspection: autofill-all
+    introspection: none
 
     # The list of attribute overrides in case introspection get something wrong
     attributeOverrides:
@@ -1327,7 +1326,7 @@ dataCubes:
       #   formula: $main.filter($country == 'United States').sum($revenue)
 
 
-  - name: unique-devices-per-domain-daily
+  - name: unique_devices_per_domain_daily
     title: unique-devices-per-domain-daily
     clusterName: druid-analytics-eqiad
     source: unique-devices-per-domain-daily
@@ -1358,7 +1357,7 @@ dataCubes:
     # * autofill-dimensions-only - Introspect the datasource, automatically generate dimensions only
     # * autofill-measures-only - Introspect the datasource, automatically generate measures only
     # * autofill-all - (default) Introspect the datasource, automatically generate dimensions and measures
-    introspection: autofill-all
+    introspection: none
 
     # The list of attribute overrides in case introspection get something wrong
     attributeOverrides:
@@ -1465,8 +1464,8 @@ dataCubes:
       #   formula: $main.filter($country == 'United States').sum($revenue)
 
 
-  - name: pageviews-hourly
-    title: pageviews-hourly
+  - name: pageviews_hourly
+    title: pageviews_hourly
     clusterName: druid-analytics-eqiad
     source: pageviews-hourly
     # The refresh rule describes how often the data cube looks for new data. Default: 'query'/PT1M (every minute)
@@ -1686,7 +1685,7 @@ dataCubes:
     # * autofill-dimensions-only - Introspect the datasource, automatically generate dimensions only
     # * autofill-measures-only - Introspect the datasource, automatically generate measures only
     # * autofill-all - (default) Introspect the datasource, automatically generate dimensions and measures
-    introspection: autofill-all
+    introspection: none
 
     # The list of attribute overrides in case introspection get something wrong
     attributeOverrides:
@@ -1856,7 +1855,7 @@ dataCubes:
     # * autofill-dimensions-only - Introspect the datasource, automatically generate dimensions only
     # * autofill-measures-only - Introspect the datasource, automatically generate measures only
     # * autofill-all - (default) Introspect the datasource, automatically generate dimensions and measures
-    introspection: autofill-all
+    introspection: none
 
     # The list of attribute overrides in case introspection get something wrong
     attributeOverrides:
@@ -1963,8 +1962,8 @@ dataCubes:
       #   formula: $main.filter($country == 'United States').sum($revenue)
 
 
-  - name: virtualpageviews-hourly
-    title: virtualpageviews-hourly
+  - name: virtualpageviews_hourly
+    title: virtualpageviews_hourly
     clusterName: druid-analytics-eqiad
     source: virtualpageviews-hourly
     # The refresh rule describes how often the data cube looks for new data. Default: 'query'/PT1M (every minute)
@@ -1994,7 +1993,7 @@ dataCubes:
     # * autofill-dimensions-only - Introspect the datasource, automatically generate dimensions only
     # * autofill-measures-only - Introspect the datasource, automatically generate measures only
     # * autofill-all - (default) Introspect the datasource, automatically generate dimensions and measures
-    introspection: autofill-all
+    introspection: none
 
     # The list of attribute overrides in case introspection get something wrong
     attributeOverrides:
@@ -2149,8 +2148,8 @@ dataCubes:
       #   formula: $main.filter($country == 'United States').sum($revenue)
 
 
-  - name: webrequest
-    title: webrequest
+  - name: webrequest_sampled_128
+    title: webrequest_sampled_128
     clusterName: druid-analytics-eqiad
     source: webrequest
     # The refresh rule describes how often the data cube looks for new data. Default: 'query'/PT1M (every minute)
@@ -2180,7 +2179,7 @@ dataCubes:
     # * autofill-dimensions-only - Introspect the datasource, automatically generate dimensions only
     # * autofill-measures-only - Introspect the datasource, automatically generate measures only
     # * autofill-all - (default) Introspect the datasource, automatically generate dimensions and measures
-    introspection: autofill-all
+    introspection: none
 
     # The list of attribute overrides in case introspection get something wrong
     attributeOverrides:
@@ -2278,6 +2277,22 @@ dataCubes:
       - name: x_cache
         title: X Cache
         formula: $x_cache
+
+      - name: as_number
+        title: AS number
+        formula: $as_number
+
+      - name: isp
+        title: ISP
+        formula: $isp
+
+      - name: continent
+        title: Continent
+        formula: $continent
+
+      - name: country
+        title: Country
+        formula: $country
 
       # This is the place where you might want to add derived dimensions.
       #
