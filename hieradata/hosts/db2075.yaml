@@ -1,6 +1,2 @@
-# Buffer pool sizes/instance enabled
-profile::mariadb::sanitarium_multiinstance::num_instances: 4
-profile::mariadb::sanitarium_multiinstance::s2: '76G'
-profile::mariadb::sanitarium_multiinstance::s4: '76G'
-profile::mariadb::sanitarium_multiinstance::s6: '76G'
-profile::mariadb::sanitarium_multiinstance::s7: '76G'
+mariadb::shard: 's5'
+profile::base::notifications_enabled: '0'

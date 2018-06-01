@@ -7,7 +7,6 @@
     shard: s2
     role: slave
   targets:
-  - db2075:13312
   - db2095:13312
 - labels:
     shard: s3
@@ -18,7 +17,6 @@
     shard: s4
     role: slave
   targets:
-  - db2075:13314
   - db2095:13314
 - labels:
     shard: s5
@@ -29,13 +27,11 @@
     shard: s6
     role: slave
   targets:
-  - db2075:13316
   - db2095:13316
 - labels:
     shard: s7
     role: slave
   targets:
-  - db2075:13317
   - db2095:13317
 - labels:
     shard: s8

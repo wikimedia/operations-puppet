@@ -412,7 +412,7 @@ node 'db2052.codfw.wmnet' {
 }
 
 # See also db2084 and db2089 below
-node /^db20(38|59|66)\.codfw\.wmnet/ {
+node /^db20(38|59|66|75)\.codfw\.wmnet/ {
     role(mariadb::core)
 }
 
@@ -628,10 +628,6 @@ node 'db1116.eqiad.wmnet' {
 }
 
 node 'db1120.eqiad.wmnet' {
-    role(mariadb::sanitarium_multiinstance)
-}
-
-node 'db2075.codfw.wmnet' {
     role(mariadb::sanitarium_multiinstance)
 }
 
