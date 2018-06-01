@@ -1046,6 +1046,12 @@ node /^(phab1001\.eqiad|phab2001\.codfw)\.wmnet$/ {
     interface::add_ip6_mapped { 'main': }
 }
 
+# temp replacement for phab1001 during upgrade (T196019)
+node 'phab1002.eqiad.wmnet' {
+    role(spare::system)
+    interface::add_ip6_mapped { 'main': }
+}
+
 node 'iron.wikimedia.org' {
     system::role { 'misc':
         description => 'Experimental Yubico two factor authentication bastion',
