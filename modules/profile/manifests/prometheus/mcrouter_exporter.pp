@@ -1,5 +1,5 @@
 class profile::prometheus::mcrouter_exporter (
-    Integer $mcrouter_port = hiera('profile::prometheus::mcrouter_exporter::mcrouter_port'),
+    Integer $mcrouter_port = hiera('mcrouter::port'),
     $prometheus_nodes = hiera('prometheus_nodes'),
 ) {
     prometheus::mcrouter_exporter { 'default':
