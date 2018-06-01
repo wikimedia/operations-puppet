@@ -293,7 +293,7 @@ dataCubes:
   - name: pageviews_daily
     title: pageviews_daily
     clusterName: druid-analytics-eqiad
-    source: pageviews-daily
+    source: pageviews_daily
     # The refresh rule describes how often the data cube looks for new data. Default: 'query'/PT1M (every minute)
     refreshRule:
       rule: query
@@ -470,7 +470,7 @@ dataCubes:
   - name: mediawiki_history_beta
     title: mediawiki_history_beta
     clusterName: druid-analytics-eqiad
-    source: mediawiki-history-beta
+    source: mediawiki_history_beta
     # The refresh rule describes how often the data cube looks for new data. Default: 'query'/PT1M (every minute)
     refreshRule:
       rule: query
@@ -1327,9 +1327,9 @@ dataCubes:
 
 
   - name: unique_devices_per_domain_daily
-    title: unique-devices-per-domain-daily
+    title: unique_devices_per_domain_daily
     clusterName: druid-analytics-eqiad
-    source: unique-devices-per-domain-daily
+    source: unique_devices_per_domain_daily
     # The refresh rule describes how often the data cube looks for new data. Default: 'query'/PT1M (every minute)
     refreshRule:
       rule: query
@@ -1467,7 +1467,7 @@ dataCubes:
   - name: pageviews_hourly
     title: pageviews_hourly
     clusterName: druid-analytics-eqiad
-    source: pageviews-hourly
+    source: pageviews_hourly
     # The refresh rule describes how often the data cube looks for new data. Default: 'query'/PT1M (every minute)
     refreshRule:
       rule: query
@@ -1965,7 +1965,7 @@ dataCubes:
   - name: virtualpageviews_hourly
     title: virtualpageviews_hourly
     clusterName: druid-analytics-eqiad
-    source: virtualpageviews-hourly
+    source: virtualpageviews_hourly
     # The refresh rule describes how often the data cube looks for new data. Default: 'query'/PT1M (every minute)
     refreshRule:
       rule: query
@@ -2151,7 +2151,7 @@ dataCubes:
   - name: webrequest_sampled_128
     title: webrequest_sampled_128
     clusterName: druid-analytics-eqiad
-    source: webrequest
+    source: webrequest_sampled_128
     # The refresh rule describes how often the data cube looks for new data. Default: 'query'/PT1M (every minute)
     refreshRule:
       rule: query
