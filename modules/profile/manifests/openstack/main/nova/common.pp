@@ -26,6 +26,7 @@ class profile::openstack::main::nova::common(
     class {'profile::openstack::base::nova::common::nova_network':
         version                  => $version,
         nova_controller          => $nova_controller,
+        keystone_host            => $nova_controller,
         nova_api_host            => $nova_api_host,
         dmz_cidr                 => $dmz_cidr,
         dhcp_domain              => $dhcp_domain,
