@@ -134,7 +134,9 @@ class role::logstash::collector (
         srange  => '$DOMAIN_NETWORKS',
     }
 
+    # disabled for troubleshooting T193766 -herron
     monitoring::service { "${::hostname} logstash_syslog_tls":
+        ensure        => absent,
         description   => 'Logstash syslog TLS listener on port 16514',
         check_command => "check_ssl_on_host_port!${::fqdn}!${::fqdn}!16514",
     }
