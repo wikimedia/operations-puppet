@@ -50,10 +50,11 @@ class profile::mediawiki::mcrouter_wancache(
     )
     if $has_ssl {
         file { '/etc/mcrouter/ssl':
-            ensure => directory,
-            owner  => 'mcrouter',
-            group  => 'root',
-            mode   => '0750',
+            ensure  => directory,
+            owner   => 'mcrouter',
+            group   => 'root',
+            mode    => '0750',
+            require => Package['mcrouter'],
         }
         file { '/etc/mcrouter/ssl/ca.pem':
             ensure  => present,
