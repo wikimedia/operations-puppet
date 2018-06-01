@@ -14,4 +14,6 @@ class profile::prometheus::mcrouter_exporter (
         port   => '9151',
         srange => $ferm_srange,
     }
+
+    base::service_auto_restart { 'prometheus-mcrouter-exporter': }
 }
