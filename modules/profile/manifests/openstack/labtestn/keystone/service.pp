@@ -2,6 +2,7 @@ class profile::openstack::labtestn::keystone::service(
     $version = hiera('profile::openstack::labtestn::version'),
     $region = hiera('profile::openstack::labtestn::region'),
     $nova_controller = hiera('profile::openstack::labtestn::nova_controller'),
+    $glance_host = hiera('profile::openstack::labtest::nova_controller'),
     $osm_host = hiera('profile::openstack::labtestn::osm_host'),
     $db_host = hiera('profile::openstack::labtest::keystone::db_host'),
     $token_driver = hiera('profile::openstack::labtestn::keystone::token_driver'),
@@ -83,4 +84,11 @@ class profile::openstack::labtestn::keystone::service(
         public_port => $public_port,
     }
     contain '::openstack::keystone::monitor::services'
+
+    # allow foreign glance host to call back to admin auth port
+    # to validate issued tokens
+    ferm::rule{'glance_35357':
+        ensure => 'present',
+        rule   => "saddr @resolve(${glance_host}) proto tcp dport (35357) ACCEPT;",
+    }
 }
