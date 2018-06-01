@@ -53,5 +53,13 @@ class toollabs::mailrelay inherits toollabs
         source => 'puppet:///modules/toollabs/maintainers',
     }
 
+    file { '/etc/aliases':
+        ensure => file,
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0644',
+        source => 'puppet:///modules/toollabs/aliases',
+    }
+
     diamond::collector::extendedexim { 'extended_exim_collector': }
 }
