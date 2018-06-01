@@ -12,7 +12,6 @@ scap::dsh::scap_proxies:
   - "mw2290.codfw.wmnet" # D4 codfw
 
 scap::dsh::scap_masters:
-  - "tin.eqiad.wmnet"
   - "deploy1001.eqiad.wmnet"
   - "deploy2001.codfw.wmnet"
 
@@ -34,7 +33,7 @@ scap::dsh::groups:
       - {'cluster': 'jobrunner', 'service': 'apache2'}
       - {'cluster': 'testserver', 'service': 'apache2'}
     hosts:
-      - tin.eqiad.wmnet
+      - deploy1001.eqiad.wmnet
       - deploy2001.codfw.wmnet
       - terbium.eqiad.wmnet
       - mwmaint1001.eqiad.wmnet
