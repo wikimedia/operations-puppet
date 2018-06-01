@@ -89,4 +89,22 @@ class mcrouter(
         override => true,
         restart  => true,
     }
+
+    # Logging management
+    logrotate::rule { 'mcrouter':
+        ensure       => present,
+        file_glob    => '/var/log/mcrouter.log',
+        frequency    => 'daily',
+        compress     => true,
+        missing_ok   => true,
+        not_if_empty => true,
+        rotate       => 7,
+        postrotate   => 'service rsyslog rotate >/dev/null 2>&1 || true'
+    }
+    rsyslog::conf { 'mcrouter':
+        source   => 'puppet:///modules/mcrouter/mcrouter.rsyslog.conf',
+        priority => 20,
+        require  => File['/etc/logrotate.d/mcrouter'],
+        before   => Service['mcrouter'],
+    }
 }
