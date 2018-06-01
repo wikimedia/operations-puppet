@@ -1,6 +1,6 @@
 # = class: scap::master
 #
-# Sets up a scap master (currently tin and deploy2001)
+# Sets up a scap master (currently deploy1001 and deploy2001)
 class scap::master(
     $common_path        = '/srv/mediawiki',
     $common_source_path = '/srv/mediawiki-staging',
