@@ -443,6 +443,24 @@ class role::prometheus::ops {
         port             => 8000,
     }
 
+    # mcrouter
+    # Job definition for mcrouter_exporter
+    $mcrouter_jobs = [
+      {
+        'job_name'        => 'mcrouter',
+        'scheme'          => 'http',
+        'file_sd_configs' => [
+          { 'files' => [ "${targets_path}/mcrouter_*.yaml" ]}
+        ],
+      },
+    ]
+    prometheus::class_config{ "mcrouter_${::site}":
+        dest       => "${targets_path}/mcrouter_${::site}.yaml",
+        site       => $::site,
+        class_name => 'profile::prometheus::mcrouter_exporter',
+        port       => 9151,
+    }
+
     $pdu_jobs = [
       {
         'job_name'        => 'pdu',
@@ -918,7 +936,7 @@ class role::prometheus::ops {
         memory_chunks         => $memory_chunks,
         scrape_configs_extra  => array_concat(
             $mysql_jobs, $varnish_jobs, $memcached_jobs, $hhvm_jobs,
-            $apache_jobs, $etcd_jobs, $etcdmirror_jobs, $pdu_jobs,
+            $apache_jobs, $etcd_jobs, $etcdmirror_jobs, $mcrouter_jobs, $pdu_jobs,
             $nginx_jobs, $pybal_jobs, $blackbox_jobs, $jmx_exporter_jobs,
             $redis_jobs, $mtail_jobs, $ldap_jobs, $ircd_jobs, $pdns_rec_jobs,
             $etherpad_jobs, $elasticsearch_jobs, $wmf_elasticsearch_jobs,
