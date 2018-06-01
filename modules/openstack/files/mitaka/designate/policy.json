@@ -2,7 +2,7 @@
     "admin": "role:admin or is_admin:True",
     "member": "tenant:%(tenant_id)s",
     "admin_or_member": "rule:admin or role:user or role:projectadmin",
-    "admin_or_projectadmin": "rule:admin or role:projectadmin",
+    "admin_or_projectadmin": "rule:admin or role:projectadmin or role:designateadmin",
     "target": "tenant:%(target_tenant_id)s",
     "member_or_target":"rule:target or rule:member",
     "admin_or_member_or_target":"rule:member_or_target or rule:admin",
