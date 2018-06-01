@@ -67,11 +67,4 @@ class profile::mariadb::misc::eventlogging::database (
         prompt   => "EVENTLOGGING ${shard}",
         password => $passwords::misc::scripts::mysql_root_pass,
     }
-
-    class { 'mariadb::heartbeat':
-        shard      => $shard,
-        datacenter => $::site,
-        enabled    => $master,
-        socket     => $mariadb_socket,
-    }
 }
