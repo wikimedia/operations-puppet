@@ -1,9 +1,9 @@
 class profile::prometheus::mcrouter_exporter (
-    Integer $mcrouter_port = hiera('profile::prometheus::mcrouter_exporter::mcrouter_port'),
+    Integer $mcrouter_port = hiera('mcrouter::port'),
     $prometheus_nodes = hiera('prometheus_nodes'),
 ) {
     prometheus::mcrouter_exporter { 'default':
-        args => "-mcrouter.address localhost:${mcrouter_port}",
+        arguments => "-mcrouter.address localhost:${mcrouter_port}",
     }
 
     $prometheus_ferm_nodes = join($prometheus_nodes, ' ')

@@ -6,5 +6,6 @@ class role::mediawiki::common {
     # mcrouter testing (T151466)
     if ($::realm == 'labs' or $::hostname =~ /^mwdebug/ ) {
         include ::profile::mediawiki::mcrouter_wancache
+        include ::profile::prometheus::mcrouter_exporter
     }
 }
