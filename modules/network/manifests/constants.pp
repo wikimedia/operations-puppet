@@ -27,6 +27,14 @@ class network::constants {
     # $frack_networks will always contain just the fundraising networks
     $frack_networks = slice_network_constants('frack')
 
+    if $::realm == 'labs' and $::labsproject == 'deployment-prep' {
+        $extra_labs_cumin_masters = ['10.68.21.105'] # deployment-cumin.deployment-prep.eqiad.wmflabs
+    } elsif $::realm == 'labs' and $::labsproject == 'integration' {
+        $extra_labs_cumin_masters = ['10.68.18.238'] # integration-cumin.integration.eqiad.wmflabs
+    } else {
+        $extra_labs_cumin_masters = []
+    }
+
     $special_hosts = {
         'production' => {
             'bastion_hosts' => [
@@ -214,10 +222,10 @@ class network::constants {
                     '',  # deployment-terbium.deployment-prep.eqiad.wmflabs ?
                     '',  # deployment-wasat.deployment-prep.eqiad.wmflabs ?
                 ],
-            'cumin_masters' => [  # As seen by labs instances
+            'cumin_masters' => array_concat([  # As seen by labs instances
                     '10.68.18.66',  # bastion-restricted-01.eqiad.wmflabs
                     '10.68.18.68',  # bastion-restricted-02.eqiad.wmflabs
-                ],
+                ], $extra_labs_cumin_masters),
             'cumin_real_masters' => [  # Where Cumin can be run
                     '208.80.154.158',               # labpuppetmaster1001.wikimedia.org
                     '2620:0:861:2:208:80:154:158',  # labpuppetmaster1001.wikimedia.org
