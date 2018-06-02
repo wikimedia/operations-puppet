@@ -7,6 +7,7 @@ class profile::puppetdb(
     $ssldir = hiera('profile::puppetdb::ssldir', undef),
     $ca_path = hiera('profile::puppetdb::ca_path', undef),
     $puppetboard_hosts = hiera('profile::puppetdb::puppetboard_hosts', ''),
+    $extra_cumin_masters = hiera('profile::puppetdb::extra_cumin_masters', undef),
 ) {
 
     # Prometheus JMX agent for the Puppetdb's JVM
@@ -44,10 +45,17 @@ class profile::puppetdb(
         srange  => "@resolve((${puppetmasters_ferm}))",
     }
 
+    if $extra_cumin_masters {
+        $extra_cumin_masters_string = join($extra_cumin_masters, " ")
+        $cumin_srange = "($CUMIN_MASTERS @resolve((${extra_cumin_masters_string})))""
+    } else {
+        $cumin_srange = '$CUMIN_MASTERS'
+    }
+
     ferm::service { 'puppetdb-cumin':
         proto  => 'tcp',
         port   => 443,
-        srange => '$CUMIN_MASTERS',
+        srange => $cumin_srange,
     }
 
     if !empty($puppetboard_hosts) {
