@@ -214,10 +214,10 @@ class network::constants {
                     '',  # deployment-terbium.deployment-prep.eqiad.wmflabs ?
                     '',  # deployment-wasat.deployment-prep.eqiad.wmflabs ?
                 ],
-            'cumin_masters' => [  # As seen by labs instances
+            'cumin_masters' => concat([  # As seen by labs instances
                     '10.68.18.66',  # bastion-restricted-01.eqiad.wmflabs
                     '10.68.18.68',  # bastion-restricted-02.eqiad.wmflabs
-                ],
+                ], hiera('network::extra_labs_cumin_masters', [])),
             'cumin_real_masters' => [  # Where Cumin can be run
                     '208.80.154.158',               # labpuppetmaster1001.wikimedia.org
                     '2620:0:861:2:208:80:154:158',  # labpuppetmaster1001.wikimedia.org
