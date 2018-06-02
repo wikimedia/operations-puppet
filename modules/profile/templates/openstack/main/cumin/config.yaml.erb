@@ -5,6 +5,15 @@ default_backend: openstack
 environment:
     SSH_AUTH_SOCK: /run/keyholder/proxy.sock
 
+<%- if @puppetdb_host %>
+puppetdb:
+    host: <%= @puppetdb_host %>
+    port: 443
+    api_version: 4
+    urllib3_disable_warnings:
+        - SubjectAltNameWarning  # Temporary fix for T158757
+<%- end -%>
+
 clustershell:
     ssh_options:
         - '-F <%= @ssh_config_path %>'
