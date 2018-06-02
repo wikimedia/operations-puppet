@@ -22,6 +22,7 @@ class profile::openstack::main::cumin::master(
     $nova_dhcp_domain = hiera('profile::openstack::main::nova::dhcp_domain'),
     $aliases = hiera('profile::openstack::main::cumin::aliases'),
     $project_ssh_priv_key_path = hiera('profile::openstack::main::cumin::project_ssh_priv_key_path'),
+    $puppetdb_host  = hiera('puppetdb_host'),
     ) {
         validate_hash($aliases)
 
