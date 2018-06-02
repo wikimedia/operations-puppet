@@ -127,4 +127,12 @@ class profile::mediawiki::deployment::server(
         mode   => '0555',
         source => 'puppet:///modules/profile/mediawiki/deployment/server/apache-fast-test',
     }
+
+    rsync::quickdatacopy { 'home-tin':
+      ensure      => present,
+      auto_sync   => false,
+      source_host => 'tin.eqiad.wmnet',
+      dest_host   => 'deploy1001.eqiad.wmnet',
+      module_path => '/home',
+    }
 }
