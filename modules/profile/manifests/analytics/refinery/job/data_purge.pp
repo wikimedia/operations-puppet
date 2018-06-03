@@ -78,7 +78,7 @@ class profile::analytics::refinery::job::data_purge {
     # keep this many days of druid webrequest sampled
     $druid_webrequest_sampled_retention_days = 60
     cron {'refinery-drop-webrequest-sampled-druid':
-        command     => "${env} && ${refinery_path}/bin/refinery-drop-druid-deep-storage-data -d ${druid_webrequest_sampled_retention_days} webrequest >> ${druid_webrequest_log_file}",
+        command     => "${env} && ${refinery_path}/bin/refinery-drop-druid-deep-storage-data -d ${druid_webrequest_sampled_retention_days} webrequest_sampled_128 >> ${druid_webrequest_log_file}",
         environment => "MAILTO=${mail_to}",
         user        => 'hdfs',
         minute      => '15',
