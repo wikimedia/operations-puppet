@@ -2786,8 +2786,6 @@ host flerovium {
 host francium {
     hardware ethernet C8:1F:66:BF:88:52;
     fixed-address francium.eqiad.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/trusty-installer/";
-    filename "lpxelinux.0";
 }
 
 host furud {
