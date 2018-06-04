@@ -41,3 +41,4 @@ profile::hadoop::backup::namenode::monitoring_enabled: true
 # 2) After a month a checkpoint is deleted.
 profile::hadoop:common::hdfs_trash_checkpoint_interval: 1440
 profile::hadoop::common::hdfs_trash_interval: 43200
+base::microcode: true
