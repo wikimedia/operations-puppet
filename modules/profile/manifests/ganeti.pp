@@ -15,24 +15,6 @@ class profile::ganeti (
         source => 'puppet:///modules/profile/ganeti/ganeti.pub',
     }
 
-    # The DSS private key
-    file { '/root/.ssh/id_dsa':
-        ensure    => absent,
-        owner     => 'root',
-        group     => 'root',
-        mode      => '0400',
-        content   => secret('ganeti/id_dsa'),
-        show_diff => false,
-    }
-    # This is here for completeness
-    file { '/root/.ssh/id_dsa.pub':
-        ensure => absent,
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0400',
-        source => 'puppet:///modules/profile/ganeti/id_dsa.pub',
-    }
-
     # The RSA private key
     file { '/root/.ssh/id_rsa':
         ensure    => present,
