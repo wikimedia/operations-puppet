@@ -149,6 +149,9 @@ lvs::configuration::lvs_service_ips:
   wdqs-internal: &ip_block042
     eqiad: 10.2.2.41
     codfw: 10.2.1.41
+  videoscaler: &ip_block043
+    eqiad: 10.2.2.5
+    codfw: 10.2.1.5
 
 lvs::configuration::lvs_services:
   text:
