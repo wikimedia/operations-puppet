@@ -46,7 +46,7 @@ Puppet::Type.type(:volume_group).provide :lvm do
     end
 
     def destroy
-        vgremove(@resource[:name])
+        vgremove('--force', @resource[:name])
     end
 
     def exists?
