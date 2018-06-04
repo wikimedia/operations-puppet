@@ -17,7 +17,7 @@ class profile::ganeti (
 
     # The DSS private key
     file { '/root/.ssh/id_dsa':
-        ensure    => present,
+        ensure    => absent,
         owner     => 'root',
         group     => 'root',
         mode      => '0400',
@@ -26,7 +26,7 @@ class profile::ganeti (
     }
     # This is here for completeness
     file { '/root/.ssh/id_dsa.pub':
-        ensure => present,
+        ensure => absent,
         owner  => 'root',
         group  => 'root',
         mode   => '0400',
