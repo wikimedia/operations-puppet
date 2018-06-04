@@ -23,4 +23,10 @@ class role::mediawiki::videoscaler {
         ],
         notify  => Service['apache2'],
     }
+
+    # TODO: change role used in beta
+    if hiera('has_lvs', true) {
+        include ::role::lvs::realserver
+        include ::profile::mediawiki::jobrunner_tls
+    }
 }
