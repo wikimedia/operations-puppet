@@ -14,6 +14,9 @@
 # [*jobrunner_host*]
 #   The address of the LVS end point for jobrunners.
 #
+# [*videoscaler_host*]
+#   The address of the LVS end point for videoscalers.
+#
 # [*kafka_msg_max_bytes*]
 #   The maximum allowed message size in Kafka. This value *must* match the
 #   brokers' configuration of the same name.
@@ -21,6 +24,7 @@
 class profile::cpjobqueue(
     $redis_path          = hiera('profile::cpjobqueue::redis_path'),
     $jobrunner_host      = hiera('profile::cpjobqueue::jobrunner_host'),
+    $videoscaler_host    = hiera('profile::cpjobqueue::videoscaler_host'),
     $kafka_msg_max_bytes = hiera('kafka_message_max_bytes'),
 ) {
 
@@ -41,6 +45,7 @@ class profile::cpjobqueue(
             redis_path      => $redis_path,
             redis_pass      => $::passwords::redis::main_password,
             jobrunner_uri   => "${jobrunner_host}/rpc/RunSingleJob.php",
+            videoscaler_uri => "${videoscaler_host}/rpc/RunSingleJob.php",
             kafka_max_bytes => $kafka_msg_max_bytes,
         },
         auto_refresh      => false,
