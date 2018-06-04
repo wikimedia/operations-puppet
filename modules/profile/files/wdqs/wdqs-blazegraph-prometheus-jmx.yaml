@@ -2,5 +2,6 @@
 lowercaseOutputLabelNames: true
 lowercaseOutputName: false
 startDelaySeconds: 10
-# we are only interested in standard JVM metrics, so let's blacklist everything
-blacklistObjectNames: ["*:*"]
+whitelistObjectNames:
+  - 'metrics:name=*'
+  - 'org.wikidata.query.rdf.blazegraph.throttling.ThrottlingFilter:*'
