@@ -149,12 +149,12 @@ codfw:
     mw2281.codfw.wmnet: [apache2,nginx]
     mw2282.codfw.wmnet: [apache2,nginx]
   videoscaler:
-    mw2118.codfw.wmnet: [apache2]
-    mw2119.codfw.wmnet: [apache2]
-    mw2152.codfw.wmnet: [apache2]
-    mw2246.codfw.wmnet: [apache2]
-    mw2259.codfw.wmnet: [apache2]
-    mw2260.codfw.wmnet: [apache2]
+    mw2118.codfw.wmnet: [apache2,nginx]
+    mw2119.codfw.wmnet: [apache2,nginx]
+    mw2152.codfw.wmnet: [apache2,nginx]
+    mw2246.codfw.wmnet: [apache2,nginx]
+    mw2259.codfw.wmnet: [apache2,nginx]
+    mw2260.codfw.wmnet: [apache2,nginx]
   testserver:
     mwdebug2001.codfw.wmnet: [apache2]
     mwdebug2002.codfw.wmnet: [apache2]
