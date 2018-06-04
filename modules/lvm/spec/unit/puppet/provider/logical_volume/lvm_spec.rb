@@ -13,6 +13,7 @@ describe provider_class do
   LV      VG       Attr       LSize   Pool Origin Data%  Meta%  Move Log Cpy%Sync Convert
   lv_root VolGroup -wi-ao----  18.54g
   lv_swap VolGroup -wi-ao---- 992.00m
+  data    data     -wi-ao---- 992.00m
   EOS
 
   describe 'self.instances' do
@@ -27,6 +28,30 @@ describe provider_class do
     end
   end
 
+  describe 'when checking existence' do
+    it "should return 'true', lv 'data' in vg 'data' exists" do
+      @resource.expects(:[]).with(:name).returns('data')
+      @resource.expects(:[]).with(:volume_group).returns('data').at_least_once
+      @provider.class.stubs(:lvs).with('data').returns(lvs_output)
+      expect(@provider.exists?).to be > 10
+    end
+    it "should return 'nil', lv 'data' in vg 'myvg' does not exist" do
+      @resource.expects(:[]).with(:name).returns('data')
+      @resource.expects(:[]).with(:volume_group).returns('myvg').at_least_once
+      @provider.class.stubs(:lvs).with('myvg').returns(lvs_output)
+      expect(@provider.exists?).to be_nil
+    end
+  end
+
+  describe 'when inspecting' do
+    it "strips zeros from lvs output" do
+      @resource.expects(:[]).with(:name).returns('mylv').at_least_once
+      @resource.expects(:[]).with(:volume_group).returns('myvg').at_least_once
+      @resource.expects(:[]).with(:size).returns('2.5g').at_least_once
+      @provider.expects(:lvs).with('--noheading', '--unit', 'g', '/dev/myvg/mylv').returns(' 2.50g').at_least_once
+      expect(@provider.size).to eq('2.5G')
+    end
+  end
   describe 'when creating' do
     context 'with size' do
       it "should execute 'lvcreate' with a '--size' option" do
@@ -153,6 +178,16 @@ describe provider_class do
             @provider.expects(:blkid).with('/dev/myvg/mylv').never
             @provider.size = '2000000k'
           end
+          it "should not report an error from 'blkid' if resizing a filesystem with no filesystem present" do
+            @resource.expects(:[]).with(:name).returns('mylv').at_least_once
+            @resource.expects(:[]).with(:volume_group).returns('myvg').at_least_once
+            @resource.expects(:[]).with(:size).returns('1g').at_least_once
+            @provider.expects(:lvcreate).with('-n', 'mylv', '--size', '1g', 'myvg')
+            @provider.create
+            @provider.expects(:lvs).with('--noheading', '--unit', 'g', '/dev/myvg/mylv').returns(' 1.00g').at_least_once
+            @provider.expects(:lvs).with('--noheading', '-o', 'vg_extent_size', '--units', 'k', '/dev/myvg/mylv').returns(' 1000.00k')
+            expect { @provider.size = '1100000k' }.not_to raise_error(Puppet::ExecutionFailure, /blkid/)
+          end
         end
       end
       context "not in extent portions" do
@@ -165,7 +200,7 @@ describe provider_class do
           @provider.create
           @provider.expects(:lvs).with('--noheading', '--unit', 'g', '/dev/myvg/mylv').returns(' 1.00g').at_least_once
           @provider.expects(:lvs).with('--noheading', '-o', 'vg_extent_size', '--units', 'k', '/dev/myvg/mylv').returns(' 1000.00k')
-          proc { @provider.size = '1.15g' }.should raise_error(Puppet::Error, /extent/)
+          proc { @provider.size = '1.15g' }.should raise_error(Puppet::Error)
         end
       end
     end
@@ -203,17 +238,28 @@ describe provider_class do
 
   describe 'when destroying' do
     it "should execute 'dmsetup' and 'lvremove'" do
-      @resource.expects(:[]).with(:volume_group).returns('myvg').twice
-      @resource.expects(:[]).with(:name).returns('mylv').twice
+      @resource.expects(:[]).with(:volume_group).returns('myvg').times(3)
+      @resource.expects(:[]).with(:name).returns('mylv').times(3)
+      @provider.expects(:blkid).with('/dev/myvg/mylv')
       @provider.expects(:dmsetup).with('remove', 'myvg-mylv')
       @provider.expects(:lvremove).with('-f', '/dev/myvg/mylv')
       @provider.destroy
     end
     it "should execute 'dmsetup' and 'lvremove' and properly escape names with dashes" do
-      @resource.expects(:[]).with(:volume_group).returns('my-vg').twice
-      @resource.expects(:[]).with(:name).returns('my-lv').twice
+      @resource.expects(:[]).with(:volume_group).returns('my-vg').times(3)
+      @resource.expects(:[]).with(:name).returns('my-lv').times(3)
+      @provider.expects(:blkid).with('/dev/my-vg/my-lv')
       @provider.expects(:dmsetup).with('remove', 'my--vg-my--lv')
       @provider.expects(:lvremove).with('-f', '/dev/my-vg/my-lv')
+      @provider.destroy
+    end
+    it "should execute 'swapoff', 'dmsetup', and 'lvremove' when lvm is of type swap" do
+      @resource.expects(:[]).with(:volume_group).returns('myvg').times(4)
+      @resource.expects(:[]).with(:name).returns('mylv').times(4)
+      @provider.expects(:blkid).with('/dev/myvg/mylv').returns('TYPE="swap"')
+      @provider.expects(:swapoff).with('/dev/myvg/mylv')
+      @provider.expects(:dmsetup).with('remove', 'myvg-mylv')
+      @provider.expects(:lvremove).with('-f', '/dev/myvg/mylv')
       @provider.destroy
     end
   end

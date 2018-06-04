@@ -55,7 +55,6 @@ Puppet::Type.type(:filesystem).provide :aix do
         self.size= (@resource[:size])
       end
     end
-      
   end
 
   def attribute_flag(pvalue)
@@ -139,7 +138,7 @@ Puppet::Type.type(:filesystem).provide :aix do
     when 'M'
       sprintf('%gM', Float(blocks.to_i/2/1024))
     when 'G'
-      sprintf('%gM', Float(blocks.to_i/2/1024/1024))
+      sprintf('%gG', Float(blocks.to_i/2/1024/1024))
     else
       blocks
     end

@@ -52,8 +52,8 @@ describe 'lvm_vgs facts' do
   context 'when there is lvm support' do
     context 'when there are no vgs' do
       it 'should be set to 0' do
-        Facter::Util::Resolution.stubs('exec') # All other calls
-        Facter::Util::Resolution.expects('exec').at_least(1).with('vgs -o name --noheadings 2>/dev/null').returns(nil)
+        Facter::Core::Execution.stubs(:execute) # All other calls
+        Facter::Core::Execution.expects(:execute).at_least(1).with('vgs -o name --noheadings 2>/dev/null', timeout: 30).returns(nil)
         Facter.fact(:lvm_support).expects(:value).at_least(1).returns(true)
         Facter.value(:lvm_vgs).should == 0
       end
@@ -61,10 +61,10 @@ describe 'lvm_vgs facts' do
 
     context 'when there are vgs' do
       it 'should list vgs' do
-        Facter::Util::Resolution.stubs('exec') # All other calls
-        Facter::Util::Resolution.expects('exec').at_least(1).with('vgs -o name --noheadings 2>/dev/null').returns("vg0\nvg1")
-        Facter::Util::Resolution.expects('exec').at_least(1).with('vgs -o pv_name vg0 2>/dev/null').returns("  PV\n  /dev/pv3\n  /dev/pv2")
-        Facter::Util::Resolution.expects('exec').at_least(1).with('vgs -o pv_name vg1 2>/dev/null').returns("  PV\n  /dev/pv0")
+        Facter::Core::Execution.stubs(:execute) # All other calls
+        Facter::Core::Execution.expects(:execute).at_least(1).with('vgs -o name --noheadings 2>/dev/null', timeout: 30).returns("vg0\nvg1")
+        Facter::Core::Execution.expects(:execute).at_least(1).with('vgs -o pv_name vg0 2>/dev/null', timeout: 30).returns("  PV\n  /dev/pv3\n  /dev/pv2")
+        Facter::Core::Execution.expects(:execute).at_least(1).with('vgs -o pv_name vg1 2>/dev/null', timeout: 30).returns("  PV\n  /dev/pv0")
         Facter.fact(:lvm_support).expects(:value).at_least(1).returns(true)
         Facter.value(:lvm_vgs).should == 2
         Facter.value(:lvm_vg_0).should == 'vg0'
@@ -92,8 +92,8 @@ describe 'lvm_pvs facts' do
   context 'when there is lvm support' do
     context 'when there are no pvs' do
       it 'should be set to 0' do
-        Facter::Util::Resolution.stubs('exec') # All other calls
-        Facter::Util::Resolution.expects('exec').at_least(1).with('pvs -o name --noheadings 2>/dev/null').returns(nil)
+        Facter::Core::Execution.stubs('execute') # All other calls
+        Facter::Core::Execution.expects('execute').at_least(1).with('pvs -o name --noheadings 2>/dev/null', timeout: 30).returns(nil)
         Facter.fact(:lvm_support).expects(:value).at_least(1).returns(true)
         Facter.value(:lvm_pvs).should == 0
       end
@@ -101,8 +101,8 @@ describe 'lvm_pvs facts' do
 
     context 'when there are pvs' do
       it 'should list pvs' do
-        Facter::Util::Resolution.stubs('exec') # All other calls
-        Facter::Util::Resolution.expects('exec').at_least(1).with('pvs -o name --noheadings 2>/dev/null').returns("pv0\npv1")
+        Facter::Core::Execution.stubs('execute') # All other calls
+        Facter::Core::Execution.expects('execute').at_least(1).with('pvs -o name --noheadings 2>/dev/null', timeout: 30).returns("pv0\npv1")
         Facter.fact(:lvm_support).expects(:value).at_least(1).returns(true)
         Facter.value(:lvm_pvs).should == 2
         Facter.value(:lvm_pv_0).should == 'pv0'

@@ -39,6 +39,7 @@ describe provider_class do
       @resource.expects(:[]).with(:options)
       @provider.expects(:execute).with(['mkswap', '/dev/myvg/mylv'])
       @resource.expects(:[]).with(:mkfs_cmd)
+      @provider.expects(:execute).with(['swapon', '/dev/myvg/mylv'])
       @provider.create
     end
     it "should create an ext4 journal correctly" do
