@@ -198,7 +198,7 @@ function database_update() {
     cat cleartables.yaml wikidata.yaml | ./yaml2json.py > "${BASE_DIR}/cleartables.json"
 
     osm2pgsql $osm2pgsql_common_opts $osm2pgsql_update_opts --append --slim \
-      -d $DATABASE --output multi --style cleartables.json "${BASE_DIR}/cleartables.json" \
+      -d $DATABASE --output multi --style "${BASE_DIR}/cleartables.json" \
       -G "${file}"
 
     # Something should be done to create expire lists and process them
