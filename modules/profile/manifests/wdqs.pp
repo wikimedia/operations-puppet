@@ -4,7 +4,7 @@ class profile::wdqs (
     String $package_dir = hiera('profile::wdqs::package_dir'),
     String $data_dir = hiera('profile::wdqs::data_dir'),
     String $endpoint = hiera('profile::wdqs::endpoint'),
-    String $blazegraph_options = hiera('profile::wdqs::blazegraph_options'),
+    Array[String] $blazegraph_options = hiera('profile::wdqs::blazegraph_options'),
     String $blazegraph_heap_size = hiera('profile::wdqs::blazegraph_heap_size'),
     String $blazegraph_config_file = hiera('profile::wdqs::blazegraph_config_file'),
     String $updater_options = hiera('profile::wdqs::updater_options'),

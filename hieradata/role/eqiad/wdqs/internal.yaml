@@ -1,1 +1,4 @@
-profile::wdqs::blazegraph_options: '-Dhttp.proxyHost=webproxy.eqiad.wmnet -Dhttp.proxyPort=8080 -XX:+ExitOnOutOfMemoryError'
+profile::wdqs::blazegraph_options:
+  - '-Dhttp.proxyHost=webproxy.eqiad.wmnet'
+  - '-Dhttp.proxyPort=8080'
+  - '-XX:+ExitOnOutOfMemoryError'
