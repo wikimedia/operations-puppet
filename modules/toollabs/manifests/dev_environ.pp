@@ -90,7 +90,6 @@ class toollabs::dev_environ {
         'rlwrap',                      # T87368
         'ruby-dev',                    # T120287
         'sbt',
-        'sqlite3',
         'subversion',
         'tcl8.5-dev',
         'tig',
