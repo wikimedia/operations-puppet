@@ -24,7 +24,7 @@ class wdqs(
     String $data_dir = '/srv/wdqs',
     String $log_dir = '/var/log/wdqs',
     String $endpoint = '',
-    String $blazegraph_options = '',
+    Array[String] $blazegraph_options = [],
     String $blazegraph_heap_size = '32g',
     String $blazegraph_config_file = 'RWStore.properties',
     Array[String] $extra_jvm_opts = [],

@@ -6,7 +6,7 @@ profile::wdqs::endpoint: ''
 profile::wdqs::updater_options: '-n wdq -s -l en'
 profile::wdqs::rc_updater_options: ''
 profile::wdqs::blazegraph_config_file: 'RWStore.properties'
-profile::wdqs::blazegraph_options: ''
+profile::wdqs::blazegraph_options: []
 profile::wdqs::blazegraph_heap_size: '8g'
 profile::wdqs::enable_ldf: true
 profile::wdqs::cluster_names: []
