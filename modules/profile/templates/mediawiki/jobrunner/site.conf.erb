@@ -8,8 +8,8 @@
 </VirtualHost>
 
 <VirtualHost *:<%= @local_only_port %>>
-    ServerName jobrunner.svc.<%= scope['::site'] %>.wmnet
-    ServerAlias jobrunner.discovery.wmnet
+    ServerName <%= scope['cluster'] %>.svc.<%= scope['::site'] %>.wmnet
+    ServerAlias <%= scope['cluster'] %>.discovery.wmnet
     DocumentRoot "/srv/mediawiki"
     # Only selected paths are allowed here
     # TODO: move monitoring directly to RunSingleJob.php when it's ready?

@@ -2,12 +2,13 @@
 #
 # Sets up the TLS proxy to the jobrunner rpc endpoints
 #
-class profile::mediawiki::jobrunner_tls {
+class profile::mediawiki::jobrunner_tls(
+    $certname=hiera('profile::mediawiki::jobrunner_tls::certname'),
+) {
     require ::profile::mediawiki::jobrunner
 
     class { '::tlsproxy::nginx_bootstrap': }
 
-    $certname = "jobrunner.svc.${::site}.wmnet"
     tlsproxy::localssl { 'unified':
         server_name    => $certname,
         certs          => [$certname],
@@ -27,7 +28,7 @@ class profile::mediawiki::jobrunner_tls {
 
     monitoring::service { 'jobrunner https':
         description    => 'Nginx local proxy to apache',
-        check_command  => 'check_https_url!jobrunner.discovery.wmnet!/rpc/RunJobs.php',
+        check_command  => "check_https_url!${certname}!/rpc/RunJobs.php",
         retries        => 2,
         retry_interval => 2,
     }

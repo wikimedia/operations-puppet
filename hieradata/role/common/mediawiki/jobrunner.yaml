@@ -21,3 +21,4 @@ role::lvs::realserver::pools:
   hhvm:
     lvs_name: jobrunner
 base::microcode: true
+profile::mediawiki::jobrunner_tls::certname: "jobrunner.svc.%{::site}.wmnet"
