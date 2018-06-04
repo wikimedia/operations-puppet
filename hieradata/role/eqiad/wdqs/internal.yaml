@@ -1,4 +1,8 @@
 profile::wdqs::blazegraph_options:
   - '-Dhttp.proxyHost=webproxy.eqiad.wmnet'
   - '-Dhttp.proxyPort=8080'
+  # decrease ban time and increase ban threshold, since we don't want too much impact on the internal cluster
+  - '-Dwdqs.throttling-filter.ban-duration-in-minutes=1'
+  - '-Dwdqs.throttling-filter.throttle-bucket-capacity=100000'
+  - '-Dwdqs.throttling-filter.throttle-bucket-refill-amount=100000'
   - '-XX:+ExitOnOutOfMemoryError'
