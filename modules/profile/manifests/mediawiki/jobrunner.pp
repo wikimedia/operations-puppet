@@ -1,5 +1,6 @@
 class profile::mediawiki::jobrunner(
     $statsd = hiera('statsd'),
+    $cluster = hiera('cluster'),
     $queue_servers = hiera('profile::mediawiki::jobrunner::queue_servers'),
     $aggr_servers  = hiera('profile::mediawiki::jobrunner::aggr_servers'),
     $load_factor   = hiera('profile::mediawiki::load_factor', 1.0),
