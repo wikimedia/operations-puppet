@@ -10,7 +10,7 @@ groups:
               yurik, bsimmers, bcohn, hjiang, tomasz, csteipp, zareen, jgirault, ellery,
               psinger, midom, tparscal, dworley, moushira, lpintscher, gpaumier,
               nschaaf, zhousquared, gwicke, dpatrick, samwalton9, samtar, akrausetud, jgonsior,
-              yuvipanda, shrlak, joewalsh, madhuvishy]
+              yuvipanda, shrlak, joewalsh, madhuvishy, groovier]
   absent_ldap:
     description: meta group for absented users which had privileged LDAP access in the past
     members: [adavenport, siddharth11]
@@ -134,7 +134,7 @@ groups:
               nikerabbit, dstrine, mpany, jsamra, katie,
               jdittrich, chelsyx, ovasileva, mtizzoni, panisson, paolotti, ciro, debt,
               fdans, mlitn, niharika29, goransm, pmiazga, dsaez, shiladsen, cicalese,
-              mirrys, sharvaniharan, groovier, mmiller]
+              mirrys, sharvaniharan, mmiller]
   ldap-admins:
     gid: 715
     description: ldap admins
@@ -2671,16 +2671,12 @@ users:
     uid: 12454
     email: jonas.kress@wikimedia.de
   groovier:
-    ensure: present
+    ensure: absent
     gid: 500
     name: groovier
     realname: Vinitha Savithri
-    ssh_keys:
-    - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDV/vIMvgqEGnLjLdjKf0oX1tnwHWYtWgludaHE1O3bzKhfPZtQ8J1EcCQd76k08276IVc1qgkO7TQeU86Z7c5a1XnNU/eqfatBOVD9511Mz4v8PwifqSqgyJCkp07p/z464zaS1FNOZPth7FvmWqU0EsherNvauqnADkKhZJGzRszjNDhTMXKGu5LyxXNk463oSHiIS3dIUiPSsiaFPW9Mge2sjGTDCTKJaOnjHMWig+XgRopU7L/OY8ZRbgbD/tojClaUeq5ITexaDTwgv1e1G7RW4th0Ed4Bh/i5zc1FY+J1or5GdGUpAUDEC9mSpdxiwsW5bmtagxlbypm0fb1K3GUD1Sg9ShO5FEDXlmx+acOTmPUmZXwU0iNufiY29EqDRNwkL1XMmrQge+pkbKInV1ReanmD03PJr/RLo2pntczcPrw+SBCAoUjNkSUyTUBx5DO4G3e0AZ520Pyxt0tWFEI42eLDKLUTLEjVLM2ZZHrgeIMN9wKPNIHFWTrdShh+qVVMpXAIXbqi0WfTqu61srGPQMDibM9vMsbBHSGBvyTBwRoMEQX2LpCwGXH4Cr6UGmsPF7OBnsW0RTernuTCZi50Z8JygBuQHQ09A4otukbjvor+P/nOlUcZtYMDtWqErn7rzErkS1InPrDBUAAV1w6MjZCG2CX0cSuCqDFeWQ== vinithacse@gmail.com
+    ssh_keys: []
     uid: 18102
-    email: vinithacse@gmail.com
-    expiry_date: 2018-05-31
-    expiry_contact: nuria@wikimedia.org
   imarlier:
     ensure: present
     gid: 500
