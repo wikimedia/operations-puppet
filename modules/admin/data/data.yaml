@@ -675,9 +675,8 @@ groups:
   wdqs-test-roots:
     gid: 803
     description: users with root on WDQS test cluster
-    members: []
+    members: [smalyshev]
     privileges: ['ALL = (ALL) NOPASSWD: ALL']
-
   contint-docker:
     # Generally speaking, avoiding direct docker access is the most prudent course of action, but if
     # needed the docker group does have elevated privileges allowing users to interact with docker
