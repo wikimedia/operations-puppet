@@ -24,7 +24,7 @@ discovery::services:
     lvs: jobrunner
     active_active: false
   videoscaler:
-    lvs: jobrunner
+    lvs: videoscaler
     active_active: false
   swift-rw:
     lvs: swift

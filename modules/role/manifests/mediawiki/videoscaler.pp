@@ -27,10 +27,7 @@ class role::mediawiki::videoscaler {
     # TODO: change role used in beta
     # lint:ignore:wmf_styleguide
     if hiera('has_lvs', true) {
-        require ::lvs::configuration
-        class { '::lvs::realserver':
-            realserver_ips => $::lvs::configuration::service_ips['videoscaler'][$::site]
-        }
+        include ::role::lvs::realserver
         include ::profile::mediawiki::jobrunner_tls
     }
     # lint:endignore
