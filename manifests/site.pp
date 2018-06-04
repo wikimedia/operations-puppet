@@ -1058,7 +1058,7 @@ node /^(phab1001\.eqiad|phab2001\.codfw)\.wmnet$/ {
 
 # temp replacement for phab1001 during upgrade (T196019)
 node 'phab1002.eqiad.wmnet' {
-    role(spare::system)
+    role(phabricator)
     # lint:ignore:wmf_styleguide
     interface::add_ip6_mapped { 'main': }
     # lint:endignore
