@@ -4,7 +4,7 @@ Puppet::Type.type(:filesystem).provide :lvm do
     commands :blkid => 'blkid'
 
     def create
-        mkfs(@resource[:fs_type])
+        mkfs(@resource[:fs_type], @resource[:name])
     end
 
     def exists?
@@ -21,8 +21,8 @@ Puppet::Type.type(:filesystem).provide :lvm do
         nil
     end
 
-    def mkfs(fs_type)
-        mkfs_params = { "reiserfs" => "-q" }
+    def mkfs(fs_type, name)
+        mkfs_params = { "reiserfs" => "-q"  , "xfs" => "-f" }
 
         mkfs_cmd = @resource[:mkfs_cmd] != nil ?
                      [@resource[:mkfs_cmd]] :
@@ -33,7 +33,7 @@ Puppet::Type.type(:filesystem).provide :lvm do
                      ["mkfs.#{fs_type}"]
                    end
        
-        mkfs_cmd << @resource[:name]
+        mkfs_cmd << name
 
         if mkfs_params[fs_type]
             mkfs_cmd << mkfs_params[fs_type]
@@ -45,6 +45,11 @@ Puppet::Type.type(:filesystem).provide :lvm do
         end
 
         execute mkfs_cmd
+        if fs_type == 'swap'
+            swap_cmd = ["swapon"]
+            swap_cmd << name
+            execute swap_cmd
+        end
     end
 
 end

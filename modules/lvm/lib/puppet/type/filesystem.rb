@@ -38,12 +38,12 @@ Puppet::Type.newtype(:filesystem) do
   newparam(:ag_size) do
     desc "Specify the allocation group size in megabytes, AIX only."
     newvalues(/\d+/)
-  end   
-          
+  end
+
   newparam(:large_files) do
     desc "Large file enabled file system.  AIX only"
     newvalues(:true, :false)
-  end       
+  end
 
   newparam(:compress) do
     desc "Data compression, LZ or no. AIX only"
@@ -53,8 +53,8 @@ Puppet::Type.newtype(:filesystem) do
   newparam(:frag) do
     desc "JFS fragment size in bytes. AIX only"
     newvalues(/\d+/)
-  end 
-   
+  end
+
   newparam(:nbpi) do
     desc "Bytes per inode. AIX only"
     newvalues(/\d+/)

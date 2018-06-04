@@ -1,4 +1,4 @@
-Puppet::Type.type(:physical_volume).provide(:iax) do
+Puppet::Type.type(:physical_volume).provide(:aix) do
     desc "Manages LVM physical volumes"
     #defaultof :operatingsystem => AIX
     #confine :operatingsystem => AIX

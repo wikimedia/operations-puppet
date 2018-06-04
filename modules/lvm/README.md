@@ -104,8 +104,33 @@ lvm::volume_groups:
         mountpath: /var/backups
         mountpath_require: true
 ```
-
-
+or to just build the VG if it does not exist
+```yaml
+---
+lvm::volume_groups:
+  myvg:
+    createonly: true
+    physical_volumes:
+      /dev/sda2:
+        unless_vg: 'myvg'
+      /dev/sda3:
+        unless_vg: 'myvg'
+    logical_volumes:
+      opt:
+        size: 20G
+      tmp:
+        size: 1G
+      usr:
+        size: 3G
+      var:
+        size: 15G
+      home:
+        size: 5G
+      backup:
+        size: 5G
+        mountpath: /var/backups
+        mountpath_require: true
+```
 
 Except that in the latter case you cannot specify create options.
 If you want to omit the file system type, but still specify the size of the
@@ -119,8 +144,8 @@ resources out yourself.
 ## Optional Values
   The `unless_vg` (physical_volume) and `createonly` (volume_group) will check 
   to see if "myvg" exists.  If "myvg" does exist then they will not modify
-  the physical volume or volume_group.  This is usefull if you environment
-  is build with certain disks but they change while the server grows, shrinks
+  the physical volume or volume_group.  This is useful if your environment
+  is built with certain disks but they change while the server grows, shrinks
   or moves.
  
   Example:
@@ -193,6 +218,7 @@ resources out yourself.
 * createonly (Parameter) Default value: false - If set to true the volume group will be created if it does not exist. If the volume group does exist no action will be taken. Defaults to `false`.  Allowed Values:
    - `true`
    - `false`
+* followsymlinks (Parameter) - If set to true all current and wanted values of the physical_volumes property will be followed to their real files on disk if they are in fact symlinks. This is useful to have Puppet determine what the actual PV device is if the property value is a symlink, like '/dev/disk/by-path/xxxx -> ../../sda'. Defaults to `false`.
 * physical_volumes (Property) - The list of physical volumes to be included in the volume group; this will automatically set these as dependencies, but they must be defined elsewhere using the physical_volume resource type.
 
 ## AIX Specific Type Documentation
@@ -207,9 +233,9 @@ parameters documented above also apply to AIX systems.
 * accounting (Parameter) - Specify accounting subsystem support, Allowed Values:
     * `true`
     * `false`
-* ag_size (Parameter) - Specify the allocation group size in megabytes,   Allowed Values:
+* ag_size (Parameter) - Specify the allocation group size in megabytes, Allowed Values:
     * `/\d+/`
-* agblksize (Parameter) - JFS2 block size in bytes,   Allowed Values: 
+* agblksize (Parameter) - JFS2 block size in bytes, Allowed Values:
     * `/\d+/`
 * atboot (Parameter) - Specify whether the file system is mounted at boot time, Allowed Values:
     * `true`

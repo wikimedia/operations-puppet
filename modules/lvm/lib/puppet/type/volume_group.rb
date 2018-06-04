@@ -12,8 +12,44 @@ Puppet::Type.newtype(:volume_group) do
              using the physical_volume resource type."
 
         def insync?(is)
-          should.sort == is.sort
+          if @resource.parameter(:followsymlinks).value == :true then
+            real_should = []
+            real_is = []
+            should.each do |s|
+              if File.symlink?(s)
+                device = File.expand_path(File.readlink(s), File.dirname(s))
+                debug("resolved symlink '"+s+"' to device '"+ device+"'")
+                real_should.push device
+              else
+                real_should.push s
+              end
+            end
+            is.each do |s|
+              if File.symlink?(s)
+                device = File.expand_path(File.readlink(s), File.dirname(s))
+                debug("resolved symlink '"+s+"' to device '"+ device+"'")
+                real_is.push device
+              else
+                real_is.push s
+              end
+            end
+
+            real_should.sort == real_is.sort
+          else
+            should.sort == is.sort
+          end
         end
+    end
+
+    newparam(:followsymlinks, :boolean => true) do
+      desc "If set to true all current and wanted values of the physical_volumes property
+        will be followed to their real files on disk if they are in fact symlinks. This is
+        useful to have Puppet determine what the actual PV device is if the property value
+        is a symlink, like '/dev/disk/by-path/xxxx -> ../../sda'. Defaults to `False`."
+      newvalues(:true, :false)
+      aliasvalue(:yes, :true)
+      aliasvalue(:no, :false)
+      defaultto :false
     end
 
     newparam(:createonly, :boolean => true) do

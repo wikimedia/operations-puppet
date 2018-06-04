@@ -2,39 +2,33 @@
 #
 define lvm::logical_volume (
   $volume_group,
-  $size              = undef,
-  $initial_size      = undef,
-  $ensure            = present,
-  $options           = 'defaults',
-  $pass              = '2',
-  $dump              = '1',
-  $fs_type           = 'ext4',
-  $mkfs_options      = undef,
-  $mountpath         = "/${name}",
-  $mountpath_require = false,
-  $mounted           = true,
-  $createfs          = true,
-  $extents           = undef,
-  $stripes           = undef,
-  $stripesize        = undef,
-  $readahead         = undef,
-  $range             = undef,
-  $size_is_minsize   = undef,
-  $type              = undef,
-  $thinpool          = undef,
-  $poolmetadatasize  = undef,
-  $mirror            = undef,
-  $mirrorlog         = undef,
-  $no_sync           = undef,
-  $region_size       = undef,
-  $alloc             = undef,
+  $size                             = undef,
+  $initial_size                     = undef,
+  Enum['absent', 'present'] $ensure = present,
+  $options                          = 'defaults',
+  $pass                             = '2',
+  $dump                             = '0',
+  $fs_type                          = 'ext4',
+  $mkfs_options                     = undef,
+  Stdlib::Absolutepath $mountpath   = "/${name}",
+  Boolean $mountpath_require        = false,
+  Boolean $mounted                  = true,
+  Boolean $createfs                 = true,
+  $extents                          = undef,
+  $stripes                          = undef,
+  $stripesize                       = undef,
+  $readahead                        = undef,
+  $range                            = undef,
+  $size_is_minsize                  = undef,
+  $type                             = undef,
+  $thinpool                         = false,
+  $poolmetadatasize                 = undef,
+  $mirror                           = undef,
+  $mirrorlog                        = undef,
+  $no_sync                          = undef,
+  $region_size                      = undef,
+  $alloc                            = undef,
 ) {
-
-  validate_bool($mountpath_require)
-
-  if ($name == undef) {
-    fail("lvm::logical_volume \$name can't be undefined")
-  }
 
   $lvm_device_path = "/dev/${volume_group}/${name}"
 
@@ -68,13 +62,13 @@ define lvm::logical_volume (
   }
 
   if $ensure == 'present' and $createfs {
-    Logical_volume[$name] ->
-    Filesystem[$lvm_device_path] ->
-    Mount[$mount_title]
-  } elsif $ensure != 'present' and $createfs {
-    Mount[$mount_title] ->
-    Filesystem[$lvm_device_path] ->
     Logical_volume[$name]
+    -> Filesystem[$lvm_device_path]
+    -> Mount[$mount_title]
+  } elsif $ensure != 'present' and $createfs {
+    Mount[$mount_title]
+    -> Filesystem[$lvm_device_path]
+    -> Logical_volume[$name]
   }
 
   logical_volume { $name:
@@ -107,23 +101,7 @@ define lvm::logical_volume (
   }
 
   if $createfs or $ensure != 'present' {
-    if $fs_type == 'swap' {
-      if $ensure == 'present' {
-        exec { "swapon for '${mount_title}'":
-          path      => [ '/bin', '/usr/bin', '/sbin' ],
-          command   => "swapon ${lvm_device_path}",
-          unless    => "grep `readlink -f ${lvm_device_path}` /proc/swaps",
-          subscribe => Mount[$mount_title],
-        }
-      } else {
-        exec { "swapoff for '${mount_title}'":
-          path    => [ '/bin', '/usr/bin', '/sbin' ],
-          command => "swapoff ${lvm_device_path}",
-          onlyif  => "grep `readlink -f ${lvm_device_path}` /proc/swaps",
-          notify  => Mount[$mount_title],
-        }
-      }
-    } else {
+    if $fs_type != 'swap' {
       exec { "ensure mountpoint '${fixed_mountpath}' exists":
         path    => [ '/bin', '/usr/bin' ],
         command => "mkdir -p ${fixed_mountpath}",
@@ -131,6 +109,7 @@ define lvm::logical_volume (
         before  => Mount[$mount_title],
       }
     }
+
     mount { $mount_title:
       ensure  => $mount_ensure,
       name    => $fixed_mountpath,
