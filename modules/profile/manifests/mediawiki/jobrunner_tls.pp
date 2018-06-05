@@ -2,24 +2,29 @@
 #
 # Sets up the TLS proxy to the jobrunner rpc endpoints
 #
-class profile::mediawiki::jobrunner_tls(
-    $cluster=hiera('cluster'),
-    $timeout=hiera('profile::mediawiki::jobrunner_tls::timeout', 180),
-) {
+class profile::mediawiki::jobrunner_tls {
     require ::profile::mediawiki::jobrunner
 
-    $certname = "${cluster}.svc.${::site}.wmnet"
     class { '::tlsproxy::nginx_bootstrap': }
 
-    tlsproxy::localssl { 'unified':
-        server_name    => $certname,
-        certs          => [$certname],
-        certs_active   => [$certname],
-        default_server => true,
-        do_ocsp        => false,
-        upstream_ports => [$::profile::mediawiki::jobrunner::local_only_port],
-        access_log     => false,
-        read_timeout   => $timeout,
+    {'jobrunner' => 300, 'videoscaler' => 86400].each |$sitename, $timeout| {
+        $certname = "${sitename}.svc.${::site}.wmnet"
+        tlsproxy::localssl { $sitename:
+            server_name    => $certname,
+            certs          => [$certname],
+            certs_active   => [$certname],
+            default_server => ($sitename == 'jobrunner'),
+            do_ocsp        => false,
+            upstream_ports => [$::profile::mediawiki::jobrunner::local_only_port],
+            access_log     => false,
+            read_timeout   => $timeout,
+        }
+        monitoring::service { "${sitename} https":
+            description    => 'Nginx local proxy to apache',
+            check_command  => "check_https_url!${certname}!/rpc/RunJobs.php",
+            retries        => 2,
+            retry_interval => 2,
+        }
     }
 
     ::ferm::service { 'mediawiki-jobrunner-https':
@@ -28,12 +33,4 @@ class profile::mediawiki::jobrunner_tls(
         notrack => true,
         srange  => '$DOMAIN_NETWORKS',
     }
-
-    monitoring::service { 'jobrunner https':
-        description    => 'Nginx local proxy to apache',
-        check_command  => "check_https_url!${certname}!/rpc/RunJobs.php",
-        retries        => 2,
-        retry_interval => 2,
-    }
-
 }
