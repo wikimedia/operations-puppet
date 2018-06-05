@@ -17,7 +17,6 @@
     role: slave
   targets:
   - db1102:13312
-  - db1120:13312
   - db1125:13312
 - labels:
     shard: s3
@@ -30,28 +29,24 @@
     role: slave
   targets:
   - db1102:13314
-  - db1120:13314
   - db1125:13314
 - labels:
     shard: s5
     role: slave
   targets:
   - db1116:13315
-  - db1120:13315
   - db1124:13315
 - labels:
     shard: s6
     role: slave
   targets:
   - db1102:13316
-  - db1120:13316
   - db1125:13316
 - labels:
     shard: s7
     role: slave
   targets:
   - db1102:13317
-  - db1120:13317
   - db1125:13317
 - labels:
     shard: s8
