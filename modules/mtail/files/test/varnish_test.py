@@ -122,7 +122,7 @@ class VarnishBackendTest(unittest.TestCase):
                       sum_samples)
         self.assertIn(('status=200,method=GET,backend=be_wdqs_svc_eqiad_wmnet', 1.229273),
                       sum_samples)
-        self.assertIn(('status=200,method=GET,backend=be_phab1001_eqiad_wmnet', 1.245995),
+        self.assertIn(('status=200,method=GET,backend=be_phab1003_eqiad_wmnet', 1.245995),
                       sum_samples)
         self.assertIn(('status=200,method=GET,backend=be_labmon1001_eqiad_wmnet', 0.049231),
                       sum_samples)

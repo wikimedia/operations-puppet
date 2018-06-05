@@ -81,7 +81,7 @@ profile::trafficserver::backend::mapping_rules:
       #replacement: http://vega.codfw.wmnet
     - type: map
       target: http://bugzilla.wikimedia.org
-      replacement: http://phab1001.eqiad.wmnet
+      replacement: http://phab1003.eqiad.wmnet
       #replacement: http://phab2001.codfw.wmnet
     - type: map
       target: http://config-master.wikimedia.org
@@ -121,7 +121,7 @@ profile::trafficserver::backend::mapping_rules:
       replacement: http://gerrit.wikimedia.org
     - type: map
       target: http://git.wikimedia.org
-      replacement: http://phab1001.eqiad.wmnet
+      replacement: http://phab1003.eqiad.wmnet
       #replacement: http://phab2001.codfw.wmnet
     - type: map
       target: http://grafana-labs-admin.wikimedia.org
@@ -192,15 +192,15 @@ profile::trafficserver::backend::mapping_rules:
       #replacement: http://webperf2001.codfw.wmnet
     - type: map
       target: ws://phabricator.wikimedia.org/ws/
-      replacement: ws://phab1001-aphlict.eqiad.wmnet:22280/ws/
+      replacement: ws://phab1003-aphlict.eqiad.wmnet:22280/ws/
       #replacement: ws://phab2001-aphlict.codfw.wmnet:22280/ws/
     - type: map
       target: http://phabricator.wikimedia.org
-      replacement: http://phab1001.eqiad.wmnet
+      replacement: http://phab1003.eqiad.wmnet
       #replacement: http://phab2001.codfw.wmnet
     - type: map
       target: http://phab.wmfusercontent.org
-      replacement: http://phab1001.eqiad.wmnet
+      replacement: http://phab1003.eqiad.wmnet
       #replacement: http://phab2001.codfw.wmnet
     - type: map
       target: http://pivot.wikimedia.org

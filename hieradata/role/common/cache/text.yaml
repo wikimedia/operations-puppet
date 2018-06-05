@@ -140,14 +140,14 @@ cache::app_directors:
       # codfw: 'gerrit2001.wikimedia.org'
   phabricator:
     backends:
-      eqiad: 'phab1001.eqiad.wmnet'
+      eqiad: 'phab1003.eqiad.wmnet'
       # codfw: 'phab2001.codfw.wmnet'
   phab_aphlict:
     be_opts:
       port: 22280
       max_connections: 1000
     backends:
-      eqiad: 'phab1001-aphlict.eqiad.wmnet'
+      eqiad: 'phab1003-aphlict.eqiad.wmnet'
       # codfw: 'phab2001-aphlict.codfw.wmnet'
   planet:
     backends:
