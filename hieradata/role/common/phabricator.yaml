@@ -5,11 +5,12 @@ admin::groups:
 apache::logrotate::period: "daily"
 apache::logrotate::rotate: 3
 
-phabricator_active_server: 'phab1001'
-phabricator_active_server_fqdn: 'phab1001.eqiad.wmnet'
+phabricator_active_server: 'phab1002'
+phabricator_active_server_fqdn: 'phab1002.eqiad.wmnet'
 
 phabricator_servers:
   - phab1001.eqiad.wmnet
+  - phab1002.eqiad.wmnet
   - phab2001.codfw.wmnet
 
 profile::base::domain_search:
