@@ -17,13 +17,11 @@ define profile::mariadb::ferm (
         srange  => '$INTERNAL',
     }
 
-    # auxiliary port
+    # auxiliary port. FIXME for non-standard ports
     if $port == '3306' {
-        $extra_port = 3307
-    } else {
-        $extra_port = 20 + $port
-    }
-    ferm::rule { "${title}_mariadb_dba":
-        rule => "saddr (\$MYSQL_ROOT_CLIENTS) proto tcp dport (${extra_port}) ACCEPT",
+        # for DBA purposes
+        ferm::rule { 'mariadb_dba':
+            rule => 'saddr ($MYSQL_ROOT_CLIENTS) proto tcp dport (3307) ACCEPT;',
+        }
     }
 }

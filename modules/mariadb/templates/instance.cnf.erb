@@ -1,9 +1,8 @@
 [mysqld@<%= @title %>]
-datadir = <%= @datadir_instance %>
-tmpdir = <%= @tmpdir_instance %>
-socket = <%= @socket_instance %>
-port = <%= @port %>
-extra-port = <%= Integer(@port) + 20 %>
+datadir=<%= @datadir_instance %>
+tmpdir=<%= @tmpdir_instance %>
+socket=<%= @socket_instance %>
+port=<%= @port %>
 <% if @innodb_buffer_pool_size -%>
 innodb_buffer_pool_size = <%= @innodb_buffer_pool_size %>
 <% end -%>
