@@ -29,4 +29,4 @@ prometheus::node_exporter::collectors_extra:
 
 # Include Ores packages and classes for testing
 profile::hadoop::common::include_ores: true
-base::microcode: true
+profile::base::enable_microcode: true
