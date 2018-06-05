@@ -25,6 +25,10 @@ class puppetmaster::puppetdb(
 
     $ssl_settings = ssl_ciphersuite('nginx', 'mid')
     include ::sslcert::dhparam
+
+    $puppetmasters_hiera = hiera('puppetmaster::servers')
+    $puppetmasters = inline_template('<%= @puppetmasters_hiera.values.flatten(1).map { |p| p[\'worker\'] }.sort.join(\' \') %>')
+
     ::nginx::site { 'puppetdb':
         ensure  => present,
         content => template('puppetmaster/nginx-puppetdb.conf.erb'),

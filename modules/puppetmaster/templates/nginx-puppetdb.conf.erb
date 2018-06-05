@@ -24,11 +24,32 @@ server {
 
     root /dev/null;
 
+    client_max_body_size 30m;
+
+    # Don't be fussy about who can do this
+    location /pdb/query/v4/ {
+        proxy_pass http://127.0.0.1:<%= @jetty_port %>/pdb/query/v4/;
+        proxy_set_header    X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header    X-Real-IP $remote_addr;
+    }
+
     location / {
+        if ($ssl_client_verify != "SUCCESS") {
+            return 401;
+        }
+
+        set $authorised 0;
+<%- @puppetmasters.split(' ').each do |host| -%>
+        if ($ssl_client_s_dn = 'CN=<%= host %>') {
+            set $authorised 1;
+        }
+<%- end -%>
+        if ($authorised = 0) {
+            return 403;
+        }
         proxy_pass http://127.0.0.1:<%= @jetty_port %>/;
         proxy_set_header    X-Forwarded-For $proxy_add_x_forwarded_for;
         proxy_set_header    X-Real-IP $remote_addr;
-        client_max_body_size 30m;
     }
 }
 
