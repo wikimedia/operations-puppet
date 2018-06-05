@@ -1,0 +1,14 @@
+[Unit]
+Description=VarnishKafka <%= @name.gsub(/^varnishkafka-/, '') %>
+After=network.target local-fs.target <%= @varnish_svc_name %>.service
+Requires=<%= @varnish_svc_name %>.service
+BindsTo=<%= @varnish_svc_name %>.service
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/varnishkafka -S "/etc/varnishkafka/<%= @name %>.conf"
+ExecReload=/bin/kill -HUP $MAINPID
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target
