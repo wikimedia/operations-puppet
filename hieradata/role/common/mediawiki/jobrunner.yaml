@@ -9,7 +9,7 @@ profile::mediawiki::jobrunner::runners:
 # TODO: obtain these as profile parameters
 nutcracker::verbosity: "4"
 mediawiki::hhvm::extra_fcgi:
-  max_execution_time: 1200
+  max_execution_time: 86400
   curl:
     "namedPools.cirrus-codfw":
       size: 30
@@ -18,4 +18,6 @@ mediawiki::hhvm::extra_fcgi:
 role::lvs::realserver::pools:
   hhvm:
     lvs_name: jobrunner
+  nginx:
+    lvs_name: videoscaler
 profile::base::enable_microcode: true
