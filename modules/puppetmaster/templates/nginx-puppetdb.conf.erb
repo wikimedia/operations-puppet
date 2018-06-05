@@ -1,4 +1,8 @@
 # This file is managed by puppet. Do not edit
+log_format  show_client_cert '$remote_addr - $ssl_client_s_dn - $ssl_client_verify - $remote_user [$time_local] "$request" '
+    '$status $body_bytes_sent "$http_referer" '
+    '"$http_user_agent" "$upstream_response_time"';
+
 server {
 
     listen <%= @port %> ssl default_server;
@@ -9,9 +13,13 @@ server {
     ssl_certificate_key /etc/nginx/ssl/server.key;
     ssl_session_cache shared:SSL:50m;
     ssl_session_timeout 5m;
+
+    ssl_verify_client optional;
+    ssl_client_certificate /var/lib/puppet/ssl/certs/ca.pem;
+
     <%= @ssl_settings.join("\n    ") %>
 
-    access_log   /var/log/nginx/puppetdb_access.log;
+    access_log   /var/log/nginx/puppetdb_access.log show_client_cert;
     error_log    /var/log/nginx/puppetdb_error.log;
 
     root /dev/null;
