@@ -131,14 +131,12 @@ aft_article_revision_feedback_select_rollup,arfsr_count,K
 archive,ar_id,K
 archive,ar_namespace,K
 archive,ar_title,K
-archive,ar_text,F
 archive,ar_comment,F
 archive,ar_comment_id,F
 archive,ar_user,K
 archive,ar_user_text,K
 archive,ar_timestamp,K
 archive,ar_minor_edit,K
-archive,ar_flags,K
 archive,ar_rev_id,K
 archive,ar_text_id,K
 archive,ar_deleted,K
