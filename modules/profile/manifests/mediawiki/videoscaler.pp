@@ -4,16 +4,6 @@ class profile::mediawiki::videoscaler()
 
     require_package('ffmpeg')
 
-    # Change the apache2.conf Timeout setting
-    augeas { 'apache timeout':
-        incl    => '/etc/apache2/apache2.conf',
-        lens    => 'Httpd.lns',
-        changes => [
-            'set /files/etc/apache2/apache2.conf/directive[self::directive="Timeout"]/arg 86400',
-        ],
-        notify  => Service['apache2'],
-    }
-
     # monitor orphaned HHVM threads/requests that are no longer in apache
     # see https://phabricator.wikimedia.org/T153488
     file { '/usr/local/lib/nagios/plugins/check_leaked_hhvm_threads':
