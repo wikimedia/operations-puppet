@@ -55,7 +55,7 @@ class raid (
     }
 
     if 'hpsa' in $facts['raid'] {
-        require_package('hpssacli')
+        require_package('hpssacli', 'hpssaducli')
 
         file { '/usr/local/lib/nagios/plugins/check_hpssacli':
             ensure => present,
