@@ -14,6 +14,8 @@ class profile::puppetdb(
     $prometheus_jmx_exporter_port = 9400
     $prometheus_java_opts = "-javaagent:/usr/share/java/prometheus/jmx_prometheus_javaagent.jar=${::ipaddress}:${prometheus_jmx_exporter_port}:${jmx_exporter_config_file}"
 
+    $puppetmasters_str = inline_template('<%= @puppetmasters.values.flatten(1).map { |p| p[\'worker\'] }.sort.join(\' \')%>')
+
     # The JVM heap size has been raised to 6G for T170740
     class { '::puppetmaster::puppetdb':
         master                 => $master,
@@ -21,6 +23,7 @@ class profile::puppetdb(
         puppetdb_major_version => $puppetdb_major_version,
         ssldir                 => $ssldir,
         ca_path                => $ca_path,
+        puppetmasters          => split($puppetmasters_str, ' ')
     }
 
     # Export JMX metrics to prometheus
@@ -35,13 +38,11 @@ class profile::puppetdb(
     # Firewall rules
 
     # Only the TLS-terminating nginx proxy will be exposed
-    $puppetmasters_ferm = inline_template('<%= @puppetmasters.values.flatten(1).map { |p| p[\'worker\'] }.sort.join(\' \')%>')
-
     ferm::service { 'puppetdb':
         proto   => 'tcp',
         port    => 443,
         notrack => true,
-        srange  => "@resolve((${puppetmasters_ferm}))",
+        srange  => "@resolve((${puppetmasters_str}))",
     }
 
     ferm::service { 'puppetdb-cumin':

@@ -3,6 +3,7 @@
 # Sets up a puppetdb instance and the corresponding database server.
 class puppetmaster::puppetdb(
     $master,
+    $puppetmasters,
     $port       = 443,
     $jetty_port = 8080,
     $jvm_opts   ='-Xmx4G',
