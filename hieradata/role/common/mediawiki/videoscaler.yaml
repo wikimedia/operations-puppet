@@ -17,4 +17,4 @@ base::microcode: true
 role::lvs::realserver::pools:
   hhvm:
     lvs_name: videoscaler
-profile::mediawiki::jobrunner_tls::certname: "videoscaler.svc.%{::site}.wmnet"
+profile::mediawiki::jobrunner_tls::timeout: 86400

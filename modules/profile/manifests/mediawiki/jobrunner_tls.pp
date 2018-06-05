@@ -4,6 +4,7 @@
 #
 class profile::mediawiki::jobrunner_tls(
     $cluster=hiera('cluster'),
+    $timeout=hiera('profile::mediawiki::jobrunner_tls::timeout', 180),
 ) {
     require ::profile::mediawiki::jobrunner
 
@@ -18,6 +19,7 @@ class profile::mediawiki::jobrunner_tls(
         do_ocsp        => false,
         upstream_ports => [$::profile::mediawiki::jobrunner::local_only_port],
         access_log     => false,
+        read_timeout   => $timeout,
     }
 
     ::ferm::service { 'mediawiki-jobrunner-https':
