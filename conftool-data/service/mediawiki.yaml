@@ -41,6 +41,14 @@ videoscaler:
     datacenters:
       - eqiad
       - codfw
+  nginx:
+    port: 443
+    default_values:
+      "pooled": "yes"
+      "weight": 0
+    datacenters:
+      - eqiad
+      - codfw
 jobrunner:
   apache2:
     port: 80
