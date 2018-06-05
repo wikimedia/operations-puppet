@@ -34,7 +34,7 @@ server {
 	  <%- end -%>
 	<%- end -%>
 
-	keepalive_timeout 60;
+	keepalive_timeout <%= @keepalive_timeout %>;
 
 <% if !@acme_subjects.empty? -%>
 	include /etc/acme/challenge-nginx.conf;
@@ -49,9 +49,10 @@ server {
 		proxy_set_header Connection close; # should be default
 <% end -%>
 
-		# this should be in sync with Varnish's first_byte_timeout
-		# and PHP's max_execution_time
-		proxy_read_timeout 180s;
+		# this should be in sync with the backend timeout - in the case of
+                # edge TLS terminator, with Varnish's first_byte_timeout,
+		# apache's timeout and php's timeouts
+		proxy_read_timeout <%= @read_timeout %>s;
 
 		proxy_set_header Host $host;
 		proxy_set_header X-Client-IP $remote_addr;
