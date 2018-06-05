@@ -1,0 +1,290 @@
+# Note: This file is managed by Puppet.
+
+#######################################################################
+#                                                                     #
+#                varnishkafka configuration file                      #
+#                       Varnish 3 specific                            #
+#                                                                     #
+#######################################################################
+#                                                                     #
+# Syntax:                                                             #
+# <property-name> = <value>                                           #
+#                                                                     #
+# Boolean property values:                                            #
+#   >0, "true", "yes", "on" - interpreted as true                     #
+#  everything else          - interpreted as false                    #
+#                                                                     #
+#######################################################################
+                                                                      #
+                                                                      #
+                                                                      #
+#######################################################################
+#                                                                     #
+# Varnish log formatting                                              #
+#                                                                     #
+# format.type - format output type, one of:                           #
+#  string     - ASCII string output                                   #
+#  json       - JSON output                                           #
+#                                                                     #
+#                                                                     #
+# format - format string                                              #
+#  %X                                                                 #
+#   where 'X' is one of the standard varnishncsa(1) formatters.       #
+#   Example: %u                                                       #
+#                                                                     #
+#                                                                     #
+#  %{VAR}X                                                            #
+#    Name-Value tokens where X is 'x', 'i' or 'o' and 'VAR' is the    #
+#    Name to extract the value for.                                   #
+#    Example: %{User-Agent}i                                          #
+#                                                                     #
+#                                                                     #
+#  %{?DEFAULT@FIELD!OPTION!OPTION..}X                                 #
+#    where 'X' is any formatter,                                      #
+#                                                                     #
+#    'DEFAULT' is the default string to use if no tag was matched,    #
+#     the default default string is "-".                              #
+#                                                                     #
+#    'FIELD' is the field name to use with the JSON formatter.        #
+#     i.e., "%{@host}l" will be JSON encoded as: {"host":"1.2.3.4"}   #
+#                                                                     #
+#    'OPTION' is one or more of the formatting options:               #
+#        escape - escape non-printable characters to \<octalcode>     #
+#                 and \t\n\r\v\f " to their canonical                 #
+#                 backslashed notations (\t\n\r\v\f\"\ ).             #
+#        num    - for typed formatters, such as JSON, try to encode   #
+#                 the value as a number.                              #
+#                                                                     #
+#                                                                     #
+#    This syntax can be combined with %{VAR}X.                        #
+#    Example: %{User-Agent?Mozilla!escape}i                           #
+#             %{?nouser}u                                             #
+#             %{!escape}q                                             #
+#             %{@host}l                                               #
+#                                                                     #
+#                                                                     #
+#                                                                     #
+#  Additional formatter specials:                                     #
+#    %{<strftime-format>}t - format timestamp according to supplied   #
+#                            strftime(3) compatible format string.    #
+#    %{Varnish:xid}x       - transaction id of client request.        #
+#                            Same value as X-Varnish header           #
+#                                                                     #
+#                                                                     #
+#                                                                     #
+#  Non %-prefixed strings are copied verbatim to the                  #
+#  output log string.                                                 #
+#    Example: "User: %u;"   would render "User: snaps;"               #
+#                                                                     #
+#                                                                     #
+#######################################################################
+
+# Where to output varnish log lines:
+#  kafka  - (default) send to kafka broker
+#  stdout - just print to stdout (behave like varnishncsa)
+#  null   - (test) collect all tags specified by format but dont output anything
+output = <%= @output %>
+
+# Log formatter
+format.type = <%= @format_type %>
+format = <%= @format %>
+
+# Optional secondary formatting.
+#   'output = kafka':  The rendered 'format.key' will be provided as the
+#                      Kafka message Key
+#   'output = string': Print string to stdout.
+# Supports the same formatting and type as 'format' and 'format.type'.
+<% if @format_key -%>
+format.key.type = <%= @format_key_type %>
+format.key = <%= @format_key %>
+<% else -%>
+# format.key.type = <%= @format_key_type %>
+# format.key = %l
+<% end -%>
+
+# Start for sequence number (%n)
+# Either a number, or the string "time" which will set it to the current
+# unix time in seconds multiplied by 1,000,000.
+# Defaults to 0.
+sequence.number = <%= @sequence_number %>
+
+
+#
+# TUNING
+#
+
+# The maximum accepted log tag (field) size.
+# Larger tags will be truncated to this size.
+# Defaults to 2048
+tag.size.max = <%= @tag_size_max %>
+
+# Size of per logline scratch buffer.
+# The scratch buffer is used as a temporary storage space while
+# collecting tags for the log line.  If the scratch size is too small the
+# logline tag match will be incomplete.  log.line.scratch.size depicts the
+# size of the "static" always-available memory allocated with each logline.
+# It should be configured to fit all matched tag-values (prior to formatting)
+# for a normal request.  If the scratch buffer gets full vk will start
+# allocating tmpbufs, a tmpbuf only lives for the current request and is then
+# freed, so it is a little more costly than using thestatic scratch pad.
+# Defaults to 4096 bytes.
+logline.scratch.size = <%= @logline_scratch_size %>
+
+
+# Logline cache hash tuning
+# 'log.hash.size * log.hash.max' dictates the maximum number of cached logline
+# entries in memory.
+
+# Number of hash buckets (keyed by log id).
+# Higher number yields more performance at the expense of memory.
+# Set this to avg_requests_per_second / 5.
+# Defaults to 5000
+logline.hash.size = <%= @logline_hash_size %>
+
+# Maximum number of loglines per hash bucket
+# Higher number yields less memory consumption at the expense of performance.
+# Set this to avg_requests_per_second / log.hash.size.
+# Defaults to 5
+logline.hash.max = <%= @logline_hash_max %>
+
+
+# EXPERIMENTAL
+# log.data.copy indicates if the log tag data read from VSL files should be copied
+# instantly when read (true). If this is set to false the data is assumed to be
+# persistent (for the duration of collecting and formatting a single request)
+# and no copies will be made, thus improving performance.
+#
+# NOTE:
+#   Must be set to true for offline files (-r file..) due to the way
+#   libvarnishapi reads its data.
+logline.data.copy = <%= @logline_data_copy %>
+
+
+#
+# varnishkafka log messages configuration
+# Debugging, error reporting, etc, not to be confused with varnish logs.
+#
+
+# varnishkafka log level (1 = emergencies .. 7 = debug)
+log.level = 6
+
+# specify log output (multiples allowed)
+
+log.stderr = false
+log.syslog = true
+
+# Maximum number of error logs produced per log.rate.period seconds
+# This setting is applied per error type.
+# log.rate.max defaults to 100
+# log.rate.period defaults to 60
+#log.rate.max = 100
+#log.rate.period = 60
+
+# Kafka: log message delivery failures (requires required.acks > 0)
+log.kafka.msg.error = true
+
+#
+# JSON Statistics
+#
+# Statistics is collected from varnishkafka itself as well as librdkafka
+# Each JSON object has a top level key of either 'varnishkafka' or
+# 'kafka' to indicate which type of statistics the object contains.
+# Each line is a valid JSON object.
+#
+
+# Statistics output interval
+# Defaults to 60 seconds, use 0 to disable.
+log.statistics.interval = <%= @log_statistics_interval %>
+
+# Statistics output file
+# Defaults to /tmp/varnishkafka.stats.json
+log.statistics.file = <%= @log_statistics_file %>
+
+
+# daemonize varnishkafka (boolean)
+daemonize = false
+
+
+
+#######################################################################
+#                                                                     #
+# Standard varnish VSL command line arguments                         #
+#                                                                     #
+# Syntax:                                                             #
+#  varnish.arg.<c> = <value>, where <c> is a command line option.     #
+#                                                                     #
+# See varnishncsa(1) and varnishlog(1) for valid options.             #
+#                                                                     #
+#######################################################################
+
+<% @varnish_opts.keys.sort.each do |key| -%>
+# -<%= key %> <%= @varnish_opts[key] %>
+varnish.arg.<%= key %> = <%= @varnish_opts[key] %>
+<% end -%>
+
+<% if @varnish_name -%>
+# varnish instance name
+varnish.arg.n = <%= @varnish_name %>
+<% end -%>
+
+<% if @output == 'kafka' -%>
+#######################################################################
+#                                                                     #
+# Kafka configuration                                                 #
+#                                                                     #
+# Kafka configuration properties are prefixed with "kafka."           #
+# and topic properties are prefixed with "kafka.topic.".              #
+#                                                                     #
+# For the full range of Kafka handle and topic configuration          #
+# properties, see:                                                    #
+#  http://github.com/edenhill/librdkafka/blob/master/CONFIGURATION.md #
+#                                                                     #
+# And the Apache Kafka configuration reference:                       #
+#  http://kafka.apache.org/08/configuration.html                      #
+#                                                                     #
+#######################################################################
+
+# Initial list of kafka brokers
+kafka.metadata.broker.list = <%= Array(@brokers).sort.join(',') %>
+
+# Maximum number of messages allowed on the local producer queue
+# Defaults to 1000000
+kafka.queue.buffering.max.messages = <%= @queue_buffering_max_messages %>
+
+# Maximum time, in milliseconds, for buffering data on the producer queue.
+# Defaults to 1000 (1 second)
+kafka.queue.buffering.max.ms = <%= @queue_buffering_max_ms %>
+
+# Maximum number of messages batched in one MessageSet.
+# Defaults to 1000
+kafka.batch.num.messages = <%= @batch_num_messages %>
+
+# Maximum number of retries per messageset.
+kafka.message.send.max.retries = <%= @message_send_max_retries %>
+
+# Use compression when sending to Kafka..  Default is none.
+# Valid values are 'none', 'gzip', and 'snappy'.
+kafka.compression.codec = <%= @compression_codec %>
+
+#
+# Topic configuration
+#
+
+# Topic to produce messages to
+kafka.topic = <%= @topic %>
+
+# Partition (-1: random, else one of the available partitions)
+kafka.partition = <%= @partition %>
+
+# Required number of acks
+kafka.topic.request.required.acks = <%= @topic_request_required_acks %>
+
+# Local message timeout (milliseconds)
+kafka.topic.message.timeout.ms = <%= @topic_message_timeout_ms %>
+
+# The ack timeout of the producer request in milliseconds
+kafka.topic.request.timeout.ms = <%= @topic_request_timeout_ms %>
+
+# SO_SNDBUFF Socket send buffer size. System default is used if 0.
+kafka.socket.send.buffer.bytes = <%= @socket_send_buffer_bytes %>
+<% end -%>

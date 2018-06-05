@@ -1,0 +1,11 @@
+<%= @log_statistics_file %> {
+  daily
+  rotate 4
+  create 0644 varnishlog root
+  missingok
+  compress
+  delaycompress
+  postrotate
+    service varnishkafka-<%= @name %> reload >/dev/null
+  endscript
+}
