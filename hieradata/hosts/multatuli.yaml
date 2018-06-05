@@ -1,1 +1,1 @@
-base::microcode: true
+profile::base::enable_microcode: true

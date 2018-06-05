@@ -8,6 +8,7 @@
 
 class base::kernel(
     $overlayfs,
+    $enable_microcode,
     ) {
     if os_version('ubuntu == trusty') {
         # This directory is shipped by systemd, but trusty's upstart job for
@@ -93,8 +94,7 @@ class base::kernel(
         }
     }
 
-    $enable_microcode = hiera('base::microcode', false) # lint:ignore:wmf_styleguide
-    if $enable_microcode and $facts['is_virtual'] == false and $::processor0 !~ /AMD/ {
+    if $enable_microcode {
         require_package('intel-microcode')
     }
 }
