@@ -36,4 +36,4 @@ profile::hadoop::firewall::master::analytics_druid_srange: '(($ANALYTICS_NETWORK
 # 2) After a month a checkpoint is deleted.
 profile::hadoop:common::hdfs_trash_checkpoint_interval: 1440
 profile::hadoop::common::hdfs_trash_interval: 43200
-base::microcode: true
+profile::base::enable_microcode: true

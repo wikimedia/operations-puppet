@@ -1,7 +1,7 @@
 cluster: cache_text
 cache::cluster: text
 cache::lua_support: true
-base::microcode: true
+profile::base::enable_microcode: true
 admin::groups:
   - perf-roots
   - varnish-log-readers
