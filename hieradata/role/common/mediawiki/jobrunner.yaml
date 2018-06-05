@@ -4,7 +4,7 @@ admin::groups:
   - perf-roots
 profile::mediawiki::jobrunner::load_factor: 0.7
 profile::mediawiki::jobrunner::runners:
-  basic: 10
+  basic: 4
   gwt: 1
 # TODO: obtain these as profile parameters
 nutcracker::verbosity: "4"
