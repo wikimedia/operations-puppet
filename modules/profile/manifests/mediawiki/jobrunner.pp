@@ -11,7 +11,8 @@ class profile::mediawiki::jobrunner(
     $local_only_port = 9006
 
     # The jobrunner script that submits jobs to hhvm
-    $active = ($::mw_primary == $::site)
+    $active = ($::mw_primary == $::site and $runners != {})
+
     class { '::mediawiki::jobrunner':
         port          => $port,
         running       => $active,
