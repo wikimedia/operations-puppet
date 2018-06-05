@@ -14,4 +14,6 @@ profile::base::enable_microcode: true
 role::lvs::realserver::pools:
   hhvm:
     lvs_name: videoscaler
+  nginx:
+    lvs_name: jobrunner
 profile::mediawiki::jobrunner_tls::timeout: 86400
