@@ -48,6 +48,17 @@
 # [*access_log*]
 #   Boolean. If true, sets up the access log for the localssl virtualhost.
 #   Do NOT enable on the cache nodes. Defaults to false
+#
+# [*keepalive_timeout*]
+#   Timeout (in seconds) for HTTP keepalive connections. The zero value disables
+#   keep-alive client connections. Defaults to 60 seconds.
+#
+# [*read_timeout*]
+#   Timeout (in seconds) for reading a response from the proxied server. The
+#   timeout is set only between two successive read operations, not for the
+#   transmission of the whole response. If the proxied server does not transmit
+#   anything within this time, the connection is closed.  It should be set to
+#   a value that corresponds to the backend timeout. Defaults to 180 seconds.
 
 define tlsproxy::localssl(
     $certs          = [],
@@ -61,6 +72,8 @@ define tlsproxy::localssl(
     $do_ocsp        = false,
     $skip_private   = false,
     $access_log     = false,
+    Integer $keepalive_timeout = 60,
+    Integer $read_timeout = 180,
 ) {
     if (!empty($certs) and !empty($acme_subjects)) or (empty($certs) and empty($acme_subjects)) {
         fail('Specify either certs or acme_subjects, not both and not neither.')
