@@ -288,7 +288,7 @@ class confluent::kafka::broker(
     $socket_receive_buffer_bytes         = 1048576,
     $socket_request_max_bytes            = undef,
 
-    $log_message_timestamp_type          = 'LogAppendTime',
+    $log_message_timestamp_type          = 'CreateTime',
     $log_flush_interval_messages         = undef,
     $log_flush_interval_ms               = undef,
 
