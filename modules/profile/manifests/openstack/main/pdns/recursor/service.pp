@@ -10,6 +10,7 @@ class profile::openstack::main::pdns::recursor::service(
 
     class {'::profile::openstack::base::pdns::recursor::service':
         nova_controller       => $nova_controller,
+        keystone_host         => $nova_controller,
         observer_password     => $observer_password,
         pdns_host             => $pdns_host,
         pdns_recursor         => $pdns_recursor,
