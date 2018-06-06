@@ -557,7 +557,7 @@ node 'db2044.codfw.wmnet' {
 
 # See also multiinstance misc hosts db1117 and db2078 below
 
-node 'db1059.eqiad.wmnet' {
+node 'db1072.eqiad.wmnet' {
     class { '::role::mariadb::misc::phabricator':
         master => true,
     }
@@ -566,7 +566,7 @@ node 'db1059.eqiad.wmnet' {
 node 'db1053.eqiad.wmnet' {
     role(mariadb::misc::phabricator)
 }
-node 'db1072.eqiad.wmnet' {
+node 'db1059.eqiad.wmnet' {
     role(mariadb::misc::phabricator)
 }
 
