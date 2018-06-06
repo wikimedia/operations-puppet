@@ -24,8 +24,8 @@ class profile::openstack::labtestn::keystone::service(
     $labs_hosts_range = hiera('profile::openstack::labtestn::labs_hosts_range'),
     $nova_controller_standby = hiera('profile::openstack::labtestn::nova_controller_standby'),
     $nova_api_host = hiera('profile::openstack::labtestn::nova_api_host'),
-    $designate_host = hiera('profile::openstack::labtestn::designate_host'),
-    $designate_host_standby = hiera('profile::openstack::labtestn::designate_host_standby'),
+    $designate_host = hiera('profile::openstack::labtest::designate_host'),
+    $designate_host_standby = hiera('profile::openstack::labtest::designate_host_standby'),
     $labweb_hosts = hiera('profile::openstack::labtestn::labweb_hosts'),
     $puppetmaster_hostname = hiera('profile::openstack::labtestn::puppetmaster_hostname'),
     $auth_port = hiera('profile::openstack::base::keystone::auth_port'),
@@ -85,10 +85,17 @@ class profile::openstack::labtestn::keystone::service(
     }
     contain '::openstack::keystone::monitor::services'
 
-    # allow foreign glance host to call back to admin auth port
+    # allow foreign glance to call back to admin auth port
     # to validate issued tokens
-    ferm::rule{'glance_35357':
+    ferm::rule{'labtest_glance_35357':
         ensure => 'present',
         rule   => "saddr @resolve(${glance_host}) proto tcp dport (35357) ACCEPT;",
+    }
+
+    # allow foreign designate(and co) to call back to admin auth port
+    # to validate issued tokens
+    ferm::rule{'labtest_designate_35357':
+        ensure => 'present',
+        rule   => "saddr @resolve(${designate_host}) proto tcp dport (35357) ACCEPT;",
     }
 }
