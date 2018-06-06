@@ -27,6 +27,25 @@ Facter.add('interface_primary') do
   end
 end
 
+# Returns a hash with the v4 and v6 gateway addresses if any.
+# Eg. { "ipv4"=>"10.64.48.1", "ipv6"=>"fe80::1" }
+Facter.add('default_routes') do
+  confine :kernel => :linux
+  setcode do
+    intf = Facter.fact('interface_primary').value
+    default_routes = {}
+
+    gw_route4 = Facter::Util::Resolution.exec('ip -4 route list 0/0')
+    /.* via (?<v4gateway>[^\s]+) .*/ =~ gw_route4
+    default_routes['ipv4'] = v4gateway
+    gw_route6 = Facter::Util::Resolution.exec("ip -6 route list ::/0 dev #{intf}")
+    /.* via (?<v6gateway>[^\s]+) .*/ =~ gw_route6
+    default_routes['ipv6'] = v6gateway
+
+    default_routes
+  end
+end
+
 Facter.add('ipaddress') do
   confine :kernel => :linux
   has_weight 100
