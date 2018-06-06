@@ -182,4 +182,13 @@ define scap::target(
         }
     }
 
+    # Initialize LFS in case any repositories will need it.
+    if defined(File["/var/lib/${deploy_user}"]) {
+        exec { "${deploy_user}: install LFS":
+            command => '/usr/bin/git lfs install',
+            unless  => "/bin/grep -qw lfs /var/lib/${deploy_user}/.gitconfig 2> /dev/null",
+            user    => $deploy_user,
+            require => [File["/var/lib/${deploy_user}"], Package['git-lfs']]
+        }
+    }
 }
