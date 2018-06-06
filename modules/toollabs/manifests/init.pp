@@ -11,7 +11,7 @@ class toollabs (
     include ::labs_lvm
     include ::toollabs::base
 
-    package { ['nano', 'at']:
+    package { ['nano']:
         ensure => latest,
     }
 
