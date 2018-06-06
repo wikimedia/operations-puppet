@@ -11,6 +11,7 @@ class profile::mediawiki::jobrunner_tls {
         $certname = "${sitename}.svc.${::site}.wmnet"
         tlsproxy::localssl { $sitename:
             server_name    => $certname,
+            server_alias   => "${sitename}.discovery.wmnet",
             certs          => [$certname],
             certs_active   => [$certname],
             default_server => ($sitename == 'jobrunner'),
