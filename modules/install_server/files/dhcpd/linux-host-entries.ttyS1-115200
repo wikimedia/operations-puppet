@@ -340,6 +340,11 @@ host auth2001 {
     filename "lpxelinux.0";
 }
 
+host backup1001 {
+    hardware ethernet D0:94:66:5F:8C:FD;
+    fixed-address backup1001.eqiad.wmnet;
+}
+
 host baham {
     hardware ethernet D4:AE:52:B3:90:36;
     fixed-address baham.wikimedia.org;
