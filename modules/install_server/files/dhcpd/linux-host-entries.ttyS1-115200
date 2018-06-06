@@ -3372,8 +3372,8 @@ host labtestnet2002 {
 host labtestnet2003 {
     hardware ethernet 18:66:DA:7E:B3:EE;
     fixed-address labtestnet2003.codfw.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/trusty-installer/";
-    filename "lpxelinux.0";
+    option pxelinux.pathprefix "trusty-installer/";
+    filename "trusty-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host labtestneutron2001 {
