@@ -621,10 +621,10 @@ node 'db1102.eqiad.wmnet' {
     role(mariadb::sanitarium_multiinstance)
 }
 
-# Temporary sanitarium hosts
+# Old temporary sanitarium hosts now ready to be productionized
 #
 node 'db1116.eqiad.wmnet' {
-    role(mariadb::sanitarium_multiinstance)
+    role(spare::system)
 }
 
 node 'db1120.eqiad.wmnet' {
