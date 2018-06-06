@@ -970,12 +970,17 @@ node 'labtestmetal2001.codfw.wmnet' {
     role(wmcs::openstack::labtestn::virt)
 }
 
+node 'labtestnet2001.codfw.wmnet' {
+    role(wmcs::openstack::labtest::net)
+}
+
 node 'labtestnet2002.codfw.wmnet' {
     role(wmcs::openstack::labtest::net_standby)
 }
 
-node 'labtestnet2001.codfw.wmnet' {
-    role(wmcs::openstack::labtest::net)
+# new labtestnet, will be pushed into service via T196000 and this line removed
+node 'labtestnet2003.codfw.wmnet' {
+    role(spare::system)
 }
 
 node 'labtestcontrol2001.wikimedia.org' {
