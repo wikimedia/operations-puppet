@@ -1,10 +1,34 @@
 class strongswan (
     $puppet_certname = '',
     $hosts           = [],
+    $mtu_hosts       = undef,
 )
 {
     package { 'strongswan':
         ensure => present,
+    }
+
+    if $mtu_hosts and $hosts {
+        $hosts.each | $dest_host | {
+            $dest_ip4 = ipresolve($dest_host,4)
+            $dest_ip6 = ipresolve($dest_host,6)
+            if $dest_ip4 {
+                interface::route { "${dest_ip4}_MTU_${mtu_hosts}":
+                    mtu     => $mtu_hosts,
+                    address => $dest_ip4,
+                    nexthop => $facts['default_routes']['ipv4']
+
+                }
+            }
+            if $dest_ip6 {
+                interface::route { "${dest_ip6}_MTU_${mtu_hosts}":
+                    mtu       => $mtu_hosts,
+                    address   => $dest_ip6,
+                    interface => $facts['interface_primary'],
+                    nexthop   => $facts['default_routes']['ipv6']
+                }
+            }
+        }
     }
 
     if os_version('debian >= jessie') {
