@@ -1153,8 +1153,7 @@ users:
     gid: 500
     name: phuedx
     realname: Sam Smith
-    ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCvYfZZpSqxDkb2bmQYveCh4JPA3nEMhRsY3ogX2CwEaqd4hutrSDiubn9hdzrzHG38mahv8U/Cqx/zid+XplIUxfd/YdM9Fc6cJgjNJhhjHHuNuzQ2OWRjjjNa7qA7LObjcqiScLNmNbtKjHgQ5u/I10G2CsoafqCcbZRAszs4tLGguH7SognfSsCTCuHf0aB5kX0yEwP7y6ZbZ3KCJx2h25JtXkOGLnw04x0mPTNFZL5xXzjZF06do8opsmK5EgBdU4A2y4FyFHOnrkvdQH4Q6odc3nlT/QLlFZEv0Sra/9F9lH0p7zZlVhvvLGsGZNY8dzKFuFWVLdZSns9vBuFt
-        samsmith@wikimedia.org]
+    ssh_keys: [ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOewMJtrNQl63S0DAa2MYxu3Zg9IxtOHW9si5IuyL+PO samsmith@wikimedia.org]
     uid: 3926
     email: samsmith@wikimedia.org
 #T109386
