@@ -4,5 +4,5 @@ class role::toollabs::bastion {
     include ::toollabs::base
     include ::toollabs::bastion
 
-    system::role { 'toollabs::bastion': description => 'Tool Labs bastion' }
+    system::role { 'toollabs::bastion': description => 'Toolforge bastion' }
 }
