@@ -630,7 +630,7 @@ node /^db2(094|095)\.codfw\.wmnet/ {
 
 # old sanitarium
 node 'db1095.eqiad.wmnet' {
-    role(mariadb::sanitarium_multisource)
+    role(spare::system)
 }
 
 node 'db1102.eqiad.wmnet' {
