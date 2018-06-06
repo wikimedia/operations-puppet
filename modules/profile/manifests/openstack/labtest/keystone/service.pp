@@ -32,6 +32,11 @@ class profile::openstack::labtest::keystone::service(
     $labtestn_nova_controller_standby = hiera('profile::openstack::labtestn::nova_controller_standby'),
     ) {
 
+    #
+    # not having keystone service since the daemon runs on labtestn, while the
+    # database does lives here (by now)
+    #
+
     class{'::profile::openstack::base::keystone::db':
         labs_hosts_range      => $labs_hosts_range,
         puppetmaster_hostname => $puppetmaster_hostname,
@@ -41,53 +46,6 @@ class profile::openstack::labtest::keystone::service(
     contain '::profile::openstack::base::keystone::db'
 
     require ::profile::openstack::labtest::clientlib
-    class {'::profile::openstack::base::keystone::service':
-        version                     => $version,
-        nova_controller             => $nova_controller,
-        osm_host                    => $osm_host,
-        db_host                     => $db_host,
-        token_driver                => $token_driver,
-        db_pass                     => $db_pass,
-        nova_db_pass                => $nova_db_pass,
-        ldap_hosts                  => $ldap_hosts,
-        ldap_user_pass              => $ldap_user_pass,
-        wiki_status_consumer_token  => $wiki_status_consumer_token,
-        wiki_status_consumer_secret => $wiki_status_consumer_secret,
-        wiki_status_access_token    => $wiki_status_access_token,
-        wiki_status_access_secret   => $wiki_status_access_secret,
-        wiki_consumer_token         => $wiki_consumer_token,
-        wiki_consumer_secret        => $wiki_consumer_secret,
-        wiki_access_token           => $wiki_access_token,
-        wiki_access_secret          => $wiki_access_secret,
-        wmflabsdotorg_admin         => $wmflabsdotorg_admin,
-        wmflabsdotorg_pass          => $wmflabsdotorg_pass,
-        wmflabsdotorg_project       => $wmflabsdotorg_project,
-        labs_hosts_range            => $labs_hosts_range,
-        nova_controller_standby     => $nova_controller_standby,
-        nova_api_host               => $nova_api_host,
-        designate_host              => $designate_host,
-        designate_host_standby      => $designate_host_standby,
-        labweb_hosts                => $labweb_hosts,
-        require                     => Class['profile::openstack::base::keystone::db'],
-    }
-    contain '::profile::openstack::base::keystone::service'
-
-    class {'::profile::openstack::base::keystone::hooks':
-        version => $version,
-    }
-    contain '::profile::openstack::base::keystone::hooks'
-
-    class {'::openstack::keystone::monitor::services':
-        active      => $::fqdn == $nova_controller,
-        auth_port   => $auth_port,
-        public_port => $public_port,
-    }
-    contain '::openstack::keystone::monitor::services'
-
-    class {'::openstack::keystone::monitor::projects_and_users':
-        active => $::fqdn == $nova_controller,
-    }
-    contain '::openstack::keystone::monitor::projects_and_users'
 
     # Since the DB for keystone is local and we want keystone
     # in the other codfw deployment to access we add this rule
