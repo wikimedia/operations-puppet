@@ -70,7 +70,7 @@ groups:
               mobrovac, nuria, thcipriani, joal, eevans, mforns, dcausse,
               bsitzmann, mholloway-shell, dduvall, dereckson,
               ladsgroup, bawolff, zfilipin, addshore, niharika29, ppchelko, pmiazga,
-              musikanimal, jdrewniak, pnorman, sbisson, imarlier]
+              musikanimal, jdrewniak, pnorman, sbisson, imarlier, jforrester]
     privileges: ['ALL = (www-data,apache,mwdeploy,l10nupdate) NOPASSWD: ALL',
                  'ALL = NOPASSWD: /sbin/restart hhvm',
                  'ALL = NOPASSWD: /sbin/start hhvm',
@@ -425,7 +425,7 @@ groups:
   mobileapps-admin:
     description: Group of mobileapps admins
     gid: 759
-    members: [bsitzmann, mholloway-shell, mobrovac]
+    members: [bsitzmann, mholloway-shell, mobrovac, jforrester]
     privileges: ['ALL = NOPASSWD: /usr/sbin/service mobileapps *',
                  'ALL = (mobileapps) NOPASSWD: ALL']
   mw-log-readers:
@@ -444,7 +444,7 @@ groups:
     description: Service deploy users
     members: [bd808, eevans, mobrovac, ppchelko, demon, twentyafterfour, thcipriani, dduvall,
               bsitzmann, mholloway-shell, kartik, halfak, ladsgroup, smalyshev, hoo, tgr,
-              ssastry, cscott, arlolra, jdlrobson, maxsem, awight]
+              ssastry, cscott, arlolra, jdlrobson, maxsem, awight, jforrester]
     privileges: []
 
   deploy-aqs:
