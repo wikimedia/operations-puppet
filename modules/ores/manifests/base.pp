@@ -51,4 +51,9 @@ class ores::base(
     else {
         require_package('myspell-en-us')
     }
+
+    # Install git-lfs for the deploy-service user.
+    Scap::Target {
+        lfs => true,
+    }
 }

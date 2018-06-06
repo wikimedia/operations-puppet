@@ -34,6 +34,10 @@
 #   An array of additional sudo rules pertaining to the service to install on
 #   the target node. Default: []
 #
+# [*lfs*]
+#   Set to true if a target should have git-lfs globally installed.
+#   Default: false
+#
 # Usage:
 #
 #   scap::target { 'eventlogging/eventlogging':
@@ -54,6 +58,7 @@ define scap::target(
     $package_name = $title,
     $manage_user = true,
     $sudo_rules = [],
+    $lfs = false,
 ) {
     # Include scap3 package and ssh ferm rules.
     include scap
@@ -182,4 +187,17 @@ define scap::target(
         }
     }
 
+    # Install git large file system (LFS) for repositories which need it.
+    if $lfs {
+        if os_version('debian >= stretch') and defined(File["/var/lib/${deploy_user}"]) {
+            exec { "${deploy_user}: install LFS":
+                command => '/usr/bin/git lfs install',
+                unless  => "/bin/grep -qw lfs /var/lib/${deploy_user}/.gitconfig 2> /dev/null",
+                user    => $deploy_user,
+                require => [File["/var/lib/${deploy_user}"], Package['git-lfs']]
+            }
+        } else {
+            notice("Cannot install git-lfs, may not support the intended repos.")
+        }
+    }
 }
