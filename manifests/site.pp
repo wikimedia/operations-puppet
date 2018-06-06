@@ -541,16 +541,16 @@ node 'db1065.eqiad.wmnet' {
         master => true,
     }
 }
-node 'db1051.eqiad.wmnet' {
-    class { '::role::mariadb::misc':
-        shard  => 'm2',
-    }
-}
 
 node 'db2044.codfw.wmnet' {
     class { '::role::mariadb::misc':
         shard => 'm2',
     }
+}
+
+# Spare host, peding decommission: T195484
+node 'db1051.eqiad.wmnet' {
+    role(spare::system)
 }
 
 ## m3 shard
