@@ -98,6 +98,10 @@ class profile::base(
         enable_microcode => $do_enable_microcode,
     }
 
+    if $do_enable_microcode {
+        class { 'prometheus::node_intel_microcode': }
+    }
+
     class { '::base::debdeploy': }
 
     if $facts['has_ipmi'] {
