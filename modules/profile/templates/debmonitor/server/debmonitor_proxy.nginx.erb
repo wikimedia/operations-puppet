@@ -1,0 +1,14 @@
+proxy_pass http://debmonitor;
+proxy_http_version 1.1;
+proxy_read_timeout 30s;
+
+proxy_set_header Host $host;
+proxy_set_header Connection close; # should be default
+
+# Don't clobber the Server header from the backend.
+proxy_pass_header Server;
+
+proxy_redirect off;
+proxy_buffering off;
+proxy_request_buffering on;
+proxy_buffer_size 8k;

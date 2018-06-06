@@ -100,6 +100,16 @@ class profile::debmonitor::server (
         before       => Service['nginx'],
     }
 
+    # Static file Nginx configuration, including CSP header
+    nginx::snippet { 'debmonitor_static':
+        content => template('profile/debmonitor/server/debmonitor_static.nginx.erb'),
+    }
+
+    # Common Proxy settings
+    nginx::snippet { 'debmonitor_proxy':
+        content => template('profile/debmonitor/server/debmonitor_proxy.nginx.erb'),
+    }
+
     nginx::site { 'debmonitor':
         content => template('profile/debmonitor/server/nginx.conf.erb'),
     }

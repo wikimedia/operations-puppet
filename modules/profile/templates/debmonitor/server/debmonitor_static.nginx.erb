@@ -1,0 +1,5 @@
+location /static {
+    root <%= @base_path -%>;
+    add_header Content-Security-Policy "base-uri 'self'; block-all-mixed-content; default-src 'self'; font-src 'self' data:; frame-ancestors 'none'; frame-src 'none'; img-src 'self' data:; object-src 'none'; require-sri-for script style; script-src 'self' 'nonce-5gPBYLCFQfsc4J23yP3S2pzTYkyAyGM7'; style-src 'self' 'nonce-Fgzc2wNfvP7YHSM88WfiyFDRkNbm5x76'"
+    try_files $uri =404;
+}
