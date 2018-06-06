@@ -41,7 +41,7 @@ db-core-eqiad: A:db-core and A:eqiad
 db-dbproxy: P{O:mariadb::proxy::master}
 db-dbstore: P{O:mariadb::backup or O:mariadb::dbstore or O:mariadb::dbstore_multiinstance}
 db-labsdb: P{O:labs::db::replica}
-db-misc-servers: P{O:mariadb::sanitarium_multisource or O:mariadb::sanitarium_multiinstance}
+db-misc-servers: P{O:mariadb::sanitarium_multiinstance}
 db-parsercache: P{O:mariadb::parsercache}
 db-wmcs: P{O:postgres::master or O:labs::db::master}
 dbmonitor: P{O:tendril}
