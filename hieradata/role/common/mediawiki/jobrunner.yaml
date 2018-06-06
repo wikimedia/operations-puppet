@@ -2,22 +2,28 @@ cluster: jobrunner
 admin::groups:
   - deployment
   - perf-roots
-profile::mediawiki::jobrunner::load_factor: 0.7
-profile::mediawiki::jobrunner::runners:
-  basic: 4
-  gwt: 1
-# TODO: obtain these as profile parameters
+
 nutcracker::verbosity: "4"
 mediawiki::hhvm::extra_fcgi:
-  max_execution_time: 86400
+  hhvm:
+    server:
+      connection_timeout_seconds: 86400
   curl:
     "namedPools.cirrus-codfw":
       size: 30
     "namedPools.cirrus-eqiad":
       size: 30
+  max_execution_time: 86400
+
 role::lvs::realserver::pools:
   hhvm:
     lvs_name: jobrunner
   nginx:
     lvs_name: videoscaler
 profile::base::enable_microcode: true
+
+# Old jobrunner, will be removed soon
+profile::mediawiki::jobrunner::load_factor: 0.7
+profile::mediawiki::jobrunner::runners:
+  basic: 1
+  gwt: 1

@@ -2,18 +2,22 @@ cluster: videoscaler
 admin::groups:
   - deployment
   - perf-roots
+
 nutcracker::verbosity: "4"
 mediawiki::hhvm::extra_fcgi:
   hhvm:
     server:
       connection_timeout_seconds: 86400
-      thread_count: 15
+  curl:
+    "namedPools.cirrus-codfw":
+      size: 30
+    "namedPools.cirrus-eqiad":
+      size: 30
   max_execution_time: 86400
-profile::mediawiki::jobrunner::load_factor: 0.5
-profile::base::enable_microcode: true
+
 role::lvs::realserver::pools:
   hhvm:
     lvs_name: videoscaler
   nginx:
     lvs_name: jobrunner
-profile::mediawiki::jobrunner_tls::timeout: 86400
+profile::base::enable_microcode: true
