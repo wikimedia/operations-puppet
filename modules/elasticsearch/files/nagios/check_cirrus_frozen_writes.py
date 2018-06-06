@@ -39,10 +39,12 @@ def check_frozen_writes(base_url, timeout, warning_delay, critical_delay):
             icinga_output('CRITICAL', since)
             return EX_CRITICAL
 
-    except ConnectionError:
-        log_unknown('Could not connect to Elasticsearch')
-    except (HTTPError, ValueError) as e:
+    except ConnectionError as e:
+        log_unknown('Could not connect to Elasticsearch: ' + e.message)
+    except HTTPError as e:
         log_unknown(e.message)
+    except ValueError as ve:
+        log_unknown(ve)
     return EX_UNKNOWN
 
 
