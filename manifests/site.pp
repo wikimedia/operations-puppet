@@ -523,6 +523,7 @@ node /^db20(33|69)\.codfw\.wmnet/ {
 
 ## m1 shard
 
+# See also multiinstance misc hosts db1117 and db2078 below
 node 'db1063.eqiad.wmnet' {
     class { '::role::mariadb::misc':
         shard  => 'm1',
@@ -531,14 +532,16 @@ node 'db1063.eqiad.wmnet' {
 }
 
 ## m2 shard
-node 'db1051.eqiad.wmnet' {
+
+# See also multiinstance misc hosts db1117 and db2078 below
+
+node 'db1065.eqiad.wmnet' {
     class { '::role::mariadb::misc':
         shard  => 'm2',
         master => true,
     }
 }
-
-node 'db1065.eqiad.wmnet' {
+node 'db1051.eqiad.wmnet' {
     class { '::role::mariadb::misc':
         shard  => 'm2',
     }
@@ -551,6 +554,9 @@ node 'db2044.codfw.wmnet' {
 }
 
 ## m3 shard
+
+# See also multiinstance misc hosts db1117 and db2078 below
+
 node 'db1059.eqiad.wmnet' {
     class { '::role::mariadb::misc::phabricator':
         master => true,
@@ -569,7 +575,7 @@ node 'db2042.codfw.wmnet' {
     role(mariadb::misc::phabricator)
 }
 
-# m4 shard
+## m4 shard
 
 node 'db1107.eqiad.wmnet' {
     role(mariadb::misc::eventlogging::master)
@@ -581,7 +587,10 @@ node 'db1108.eqiad.wmnet' {
     role(mariadb::misc::eventlogging::replica)
 }
 
-# m5 shard
+## m5 shard
+
+# See also multiinstance misc hosts db1117 and db2078 below
+
 node 'db1073.eqiad.wmnet' {
     class { '::role::mariadb::misc':
         shard  => 'm5',
