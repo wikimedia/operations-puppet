@@ -1,4 +1,5 @@
 class profile::openstack::base::keystone::service(
+    $daemon_active = hiera('profile::openstack::base::keystone::daemon_active'),
     $version = hiera('profile::openstack::base::version'),
     $region = hiera('profile::openstack::base::region'),
     $nova_controller = hiera('profile::openstack::base::nova_controller'),
@@ -42,8 +43,15 @@ class profile::openstack::base::keystone::service(
     $prod_networks = join($::network::constants::production_networks, ' ')
     $labs_networks = join($::network::constants::labs_networks, ' ')
 
+    if ($daemon_active) {
+       # support for a 2 controller nodes deployment
+        $active = ($::fqdn == $nova_controller)
+    } else {
+        $active = 'False'
+    }
+
     class {'::openstack::keystone::service':
-        active                      => ($::fqdn == $nova_controller),
+        active                      => $active,
         version                     => $version,
         nova_controller             => $nova_controller,
         osm_host                    => $osm_host,
