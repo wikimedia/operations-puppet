@@ -11,18 +11,33 @@
 define admin::groupmembers(
     $default_member='root',
 )
-    {
+{
 
     $gdata = $::admin::data['groups'][$name]
     $members = $gdata['members']
+    $system_members = $gdata['system_members']
 
-    if !empty($members) {
-        # Note: The flatten here isn't strictly necessary since ruby's join does
-        # this anyway internally, but let's be pedantic
-        $joined_user_list = join(flatten($members),',')
-    } else {
+    # Be specific with puppet array concatenation, don't
+    # want to accidentally concat nil into list of strings.
+    # Note: The flatten here isn't strictly necessary since ruby's join does
+    # this anyway internally, but let's be pedantic
+    if !empty($members) and !empty($system_members) {
+        # Ensure both human and system users are members of this group.
+        $joined_user_list = join(flatten(concat($members, $system_members)), ',')
+    }
+    elsif !empty($members) {
+        # Else ensure just humans are members of this group.
+        $joined_user_list = join(flatten($members), ',')
+    }
+    elsif !empty($system_members) {
+        # Else ensure just system users are members of this group.
+        $joined_user_list = join(flatten($system_members), ',')
+    }
+    # Else both member lists are empty, use $default_member only.
+    else {
         $joined_user_list = $default_member
     }
+
 
     if has_key($gdata, 'posix_name') {
         $group_name = $gdata['posix_name']
