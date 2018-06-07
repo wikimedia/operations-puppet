@@ -10,7 +10,7 @@ groups:
               yurik, bsimmers, bcohn, hjiang, tomasz, csteipp, zareen, jgirault, ellery,
               psinger, midom, tparscal, dworley, moushira, lpintscher, gpaumier,
               nschaaf, zhousquared, gwicke, dpatrick, samwalton9, samtar, akrausetud, jgonsior,
-              yuvipanda, shrlak, joewalsh, madhuvishy, groovier]
+              yuvipanda, shrlak, joewalsh, madhuvishy, groovier, khorn]
   absent_ldap:
     description: meta group for absented users which had privileged LDAP access in the past
     members: [adavenport, siddharth11]
@@ -63,7 +63,7 @@ groups:
     description: replaces 'mortals' for software deployment
     members: [dr0ptp4kt, anomie, aude, awight, awjrichards, bd808,
               brion, cscott, daniel, demon, ebernhardson, esanders, gilles,
-              gjg, halfak, hashar, hoo, kaldari, kartik, khorn, krinkle,
+              gjg, halfak, hashar, hoo, kaldari, kartik, krinkle,
               maxsem, mattflaschen, marktraceur, milimetric, mlitn, andyrussg,
               nikerabbit, reedy, ssastry, samwilson,
               tgr, phuedx, ejegg, twentyafterfour, legoktm, catrope,
@@ -1051,14 +1051,12 @@ users:
     uid: 3033
     email: kmistry@wikimedia.org
   khorn:
-    ensure: present
+    ensure: absent
     gid: 500
     name: khorn
     realname: Katie Horn
-    ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCo0sPfXSU/XsJzevSa8p9rODZabOwVbv2zx0htASdEB++TaMk5k7s3rTznNjTzD8mgia9h9+Dl/9lUBnLeiWeEPDLYO+KiITs4pZ+akL/4ilWl+CJ+59C8Wm0apsezQwaMEuPGzdx+3MVrqwhRdl7Fg9DOMYIz1n5O2Jrr2QnD9TamWFw+yYhmZBkl/Ci9rbU/T72A1cL+D2UVFk08B+FH1d48XDMoaUppLbV29/fc0Fz4f0gZkLYBKmOo+xpZ8SXkVieP443a0uGyfy2FSljnqF42dP21XO2tqaAtf9q2i2sq8fnB072C7oIYleVKLfLvxk6C7mYvzTN8A3m4RCLJ
-        khorn@wikimedia.org]
+    ssh_keys: []
     uid: 2049
-    email: khorn@wikimedia.org
   krinkle:
     ensure: present
     gid: 500
@@ -3067,3 +3065,7 @@ ldap_only_users:
     ensure: present
     realname: John Bennett
     email: jbennett@wikimedia.org
+  khorn:
+    ensure: present
+    realname: Katie Horn
+    email: khorn@wikimedia.org
