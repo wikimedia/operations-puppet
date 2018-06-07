@@ -1,4 +1,5 @@
 class profile::openstack::base::keystone::service(
+    $daemon_active = hiera('profile::openstack::base::keystone::daemon_active'),
     $version = hiera('profile::openstack::base::version'),
     $region = hiera('profile::openstack::base::region'),
     $nova_controller = hiera('profile::openstack::base::nova_controller'),
@@ -43,7 +44,7 @@ class profile::openstack::base::keystone::service(
     $labs_networks = join($::network::constants::labs_networks, ' ')
 
     class {'::openstack::keystone::service':
-        active                      => ($::fqdn == $nova_controller),
+        active                      => $daemon_active,
         version                     => $version,
         nova_controller             => $nova_controller,
         osm_host                    => $osm_host,
