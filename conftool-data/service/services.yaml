@@ -280,3 +280,12 @@ labweb:
     default_values:
       pooled: 'yes'
       weight: 10
+proton:
+  proton:
+    port: 24766
+    datacenters:
+      - eqiad
+      - codfw
+    defaults_values:
+      pooled: 'yes'
+      weight: '10'
