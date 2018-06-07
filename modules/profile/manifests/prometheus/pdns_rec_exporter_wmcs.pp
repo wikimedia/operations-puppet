@@ -6,6 +6,8 @@ class profile::prometheus::pdns_rec_exporter_wmcs (
         ensure  => running,
     }
 
+    base::service_auto_restart { 'prometheus-pdns-rec-exporter': }
+
     ferm::service { 'prometheus-pdns-rec-exporter':
         proto  => 'tcp',
         port   => '9199',
