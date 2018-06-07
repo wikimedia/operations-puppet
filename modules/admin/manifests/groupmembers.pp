@@ -26,7 +26,7 @@ define admin::groupmembers(
     if !empty($all_members) {
         $joined_user_list = join($all_members,',')
     } else {
-        $joined_user_list = join($default_member)
+        $joined_user_list = join($default_member,',')
     }
 
     if has_key($gdata, 'posix_name') {
