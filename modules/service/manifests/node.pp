@@ -280,7 +280,6 @@ define service::node(
             auto_refresh    => $auto_refresh,
             deployment_vars => $deployment_vars,
             deployment_user => $deployment_user,
-            before          => Scap::Target[$repo],
         }
     } else {
         service::node::config { $title:
