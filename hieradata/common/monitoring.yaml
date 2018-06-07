@@ -188,6 +188,12 @@ monitoring::groups:
   parsoid_codfw:
     description: codfw parsoid servers
 
+# Proton
+  proton_eqiad:
+    description: eqiad proton servers
+  proton_codfw:
+    description: codfw proton servers
+
 # RedisDB
   redis_eqiad:
     description: eqiad Redis
