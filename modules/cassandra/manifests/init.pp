@@ -163,8 +163,8 @@ class cassandra (
     $package_version = $target_version ? {
         '2.1' => hiera('cassandra::version', '2.1.13'),
         '2.2' => hiera('cassandra::version', '2.2.6-wmf1'),
-        '3.x' => hiera('cassandra::version', '3.11.0-wmf5'),
-        'dev' => hiera('cassandra::version', '3.11.0-wmf5')
+        '3.x' => hiera('cassandra::version', '3.11.2'),
+        'dev' => hiera('cassandra::version', '3.11.2')
     }
 
     # Cassandra 3.x is installed using the newer component convention, (and
