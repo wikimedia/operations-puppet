@@ -312,3 +312,6 @@ eqiad:
     ores1007.eqiad.wmnet: [ores]
     ores1008.eqiad.wmnet: [ores]
     ores1009.eqiad.wmnet: [ores]
+  proton:
+    proton1001.eqiad.wmnet: [proton]
+    proton1002.eqiad.wmnet: [proton]
