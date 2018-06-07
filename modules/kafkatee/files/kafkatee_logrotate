@@ -1,0 +1,13 @@
+# NOTE: This file is managed by Puppet.
+
+/var/log/kafkatee.log {
+  daily
+  rotate 7
+  create 0644 root adm
+  missingok
+  compress
+  delaycompress
+  postrotate
+    invoke-rc.d rsyslog rotate >/dev/null
+  endscript
+}
