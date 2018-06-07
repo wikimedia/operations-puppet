@@ -1,0 +1,108 @@
+<%
+(jmx_host, jmx_port) = @jmx.split(':')
+# if an attribute has these settings, they will be added to any
+# Ganglia output writter settings.
+valid_ganglia_settings = ['slope', 'units', 'tmax', 'dmax', 'sendMetadata']
+# if an attribute has these settings, they will be added to any
+# statsd output writter settings.
+valid_statsd_settings  = ['bucketType']
+-%>
+
+{ "servers":
+  [ { "host": "<%= jmx_host %>"
+    , "port": <%= jmx_port %>
+<% if @jmx_alias -%>
+    , "alias": "<%= @jmx_alias %>"
+<% end -%>
+<% if @jmx_username -%>
+    , "username": "<%= @jmx_username %>"
+<% end -%>
+<% if @jmx_password -%>
+    , "password": "<%= @jmx_password %>"
+<% end -%>
+    , "queries":
+      [
+<% # each attr gets it own obj chunk because it could have a different slope and unit. -%>
+<% @objects.each_with_index do |object, obj_index| -%>
+<%   object['attrs'].keys.sort.each_with_index do |attr_name, attr_index| -%>
+      <% if obj_index == 0 && attr_index == 0 -%>  <% else -%>, <% end -%>{ "obj": "<%= object["name"] %>"
+        , "attr": [ "<%= attr_name %>" ]
+<%     if object.has_key? "resultAlias" -%>
+        , "resultAlias": "<%= object["resultAlias"] %>"
+<%     end -%>
+        , "outputWriters":
+          [
+<%     if @outfile -%>
+            { "@class": "com.googlecode.jmxtrans.model.output.KeyOutWriter"
+            , "settings":
+              { "outputFile": "<%= @outfile %>"
+<%       if object.has_key? 'typeNames' -%>
+              , "typeNames": <%= object['typeNames'].inspect %>
+<%       end -%>
+              }
+            }
+<%     end -%>
+<%     if @ganglia -%>
+<%       (ganglia_host, ganglia_port) = @ganglia.split(':') -%>
+          <% if @outfile -%>, <% else -%>  <% end -%>{ "@class" : "com.googlecode.jmxtrans.model.output.GangliaWriter"
+            , "settings":
+              { "host": "<%= ganglia_host %>"
+              , "port": <%= ganglia_port %>
+<%       if object.has_key? 'typeNames' -%>
+              , "typeNames": <%= object['typeNames'].inspect %>
+<%       end -%>
+<%       object['attrs'][attr_name].keys.select { |key| valid_ganglia_settings.include? key }.sort.each do |key| -%>
+<%         value = object['attrs'][attr_name][key] -%>
+<%         value.upcase! if key == 'slope'         -%>
+<%  # render each key: value pair.  If value is an integer, then render it without enclosing quotes. -%>
+              , "<%= key %>": <%= (value.to_i.to_s == value) ? value : "\"#{value}\"" %>
+<%       end # each key -%>
+<%       if @ganglia_group_name -%>
+              , "groupName": "<%= ganglia_group_name %>"
+<%       end -%>
+              }
+            }
+<%     end -%>
+<%     if @graphite -%>
+<%       (graphite_host, graphite_port) = @graphite.split(':') -%>
+          <% if @outfile || @ganglia -%>, <% else -%>  <% end -%>{ "@class" : "com.googlecode.jmxtrans.model.output.GraphiteWriter"
+            , "settings":
+              { "host": "<%= graphite_host %>"
+              , "port": <%= graphite_port %>
+<%       if object.has_key? 'typeNames' -%>
+              , "typeNames": <%= object['typeNames'].inspect %>
+<%       end -%>
+<%       if @graphite_root_prefix -%>
+              , "rootPrefix": "<%= @graphite_root_prefix %>"
+<%       end -%>
+              }
+            }
+<%     end -%>
+<%     if @statsd -%>
+<%       (statsd_host, statsd_port) = @statsd.split(':') -%>
+          <% if @outfile || @ganglia -%>, <% else -%>  <% end -%>{ "@class" : "com.googlecode.jmxtrans.model.output.StatsDWriter"
+            , "settings":
+              { "host": "<%= statsd_host %>"
+              , "port": <%= statsd_port %>
+<%       if object.has_key? 'typeNames' -%>
+              , "typeNames": <%= object['typeNames'].inspect %>
+<%       end -%>
+<%       object['attrs'][attr_name].keys.select { |key| valid_statsd_settings.include? key }.sort.each do |key| -%>
+<%         value = object['attrs'][attr_name][key] -%>
+<%  # render each key: value pair.  If value is an integer, then render it without enclosing quotes. -%>
+              , "<%= key %>": <%= (value.to_i.to_s == value) ? value : "\"#{value}\"" %>
+<%       end # each key -%>
+<%       if @statsd_root_prefix -%>
+              , "rootPrefix": "<%= @statsd_root_prefix %>"
+<%       end -%>
+              }
+            }
+<%     end -%>
+          ]
+        }
+<%   end # object['attrs'].keys.sort.each_with_index -%>
+<% end # @objects.each_with_index -%>
+      ]
+    }
+  ]
+}
