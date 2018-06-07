@@ -1,22 +1,22 @@
 # = Class: statistics::discovery
+# Maintainer: Mikhail Popov (bearloga)
 class statistics::discovery {
     Class['::statistics'] -> Class['::statistics::discovery']
 
     include ::passwords::mysql::research
 
     $working_path = $::statistics::working_path
-    # Homedir for everything Wikimedia Discovery Analytics related
+    # Homedir for everything Search Platform (formerly Discovery) related
     $dir = "${working_path}/discovery"
     # Path in which daily runs will log to
     $log_dir = "${dir}/log"
     # Path in which the R library will reside
     $rlib_dir = "${dir}/r-library"
 
-
-    $user = 'discovery-stats'
+    $user = 'analytics-search'
     # Setting group to 'analytics-privatedata-users' so that Discovery's Analysts
     # (as members of analytics-privatedata-users) have some privileges, and so
-    # the discovery-stats user can access private data in Hive.
+    # the user can access private data in Hive. Also refer to T174110#4265908.
     $group ='analytics-privatedata-users'
 
     user { $user:
@@ -71,9 +71,8 @@ class statistics::discovery {
     # - It's ~9/10p Pacific time, so we're not likely to hinder people's work
     #   on analytics cluster, although we use `nice` & `ionice` as a courtesy.
 
-    # Disabled for now until T174110 is resolved
     cron { 'wikimedia-discovery-golden':
-        ensure  => absent,
+        ensure  => present,
         command => "cd ${dir}/golden && sh main.sh >> ${log_dir}/golden-daily.log 2>&1",
         hour    => '5',
         minute  => '0',
