@@ -120,12 +120,16 @@ class profile::mediawiki::deployment::server(
     } else {
         require_package('php5-readline') # bug T126262
     }
-    # helper scripts for apache changes
+
+    # Perl helper script for apache changes
+    require_package('libwww-perl')
+
     file  { '/usr/local/bin/apache-fast-test':
         owner  => 'root',
         group  => 'root',
         mode   => '0555',
         source => 'puppet:///modules/profile/mediawiki/deployment/server/apache-fast-test',
+        require => Package['libwww-perl],
     }
 
     rsync::quickdatacopy { 'home-tin':
