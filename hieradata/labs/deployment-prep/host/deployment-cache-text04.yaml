@@ -45,6 +45,8 @@ cluster: cache_text
     - ca.wikipedia.beta.wmflabs.org
     - ca.m.wikipedia.beta.wmflabs.org
     - ca.zero.wikipedia.beta.wmflabs.org
+    - crh.wikipedia.beta.wmflabs.org
+    - crh.m.wikipedia.beta.wmflabs.org
     - de.wikipedia.beta.wmflabs.org
     - de.m.wikipedia.beta.wmflabs.org
     - de.zero.wikipedia.beta.wmflabs.org
@@ -92,6 +94,8 @@ cluster: cache_text
     - sq.wikipedia.beta.wmflabs.org
     - sq.m.wikipedia.beta.wmflabs.org
     - sq.zero.wikipedia.beta.wmflabs.org
+    - sr.wikipedia.beta.wmflabs.org
+    - sr.m.wikipedia.beta.wmflabs.org
     - uk.wikipedia.beta.wmflabs.org
     - uk.m.wikipedia.beta.wmflabs.org
     - uk.zero.wikipedia.beta.wmflabs.org
