@@ -15,16 +15,11 @@ define admin::groupmembers(
 
     $gdata = $::admin::data['groups'][$name]
     $members = $gdata['members']
-    $system_members = $gdata['system_members']
 
-    # This contains all human members, as well as any system account
-    # members of this group.
-    # Note: The flatten here isn't strictly necessary since ruby's join does
-    # this anyway internally, but let's be pedantic
-    $all_members = flatten(concat($members, $system_members))
-
-    if !empty($all_members) {
-        $joined_user_list = join($all_members,',')
+    if !empty($members) {
+        # Note: The flatten here isn't strictly necessary since ruby's join does
+        # this anyway internally, but let's be pedantic
+        $joined_user_list = join(flatten($members),',')
     } else {
         $joined_user_list = $default_member
     }
