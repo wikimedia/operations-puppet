@@ -11,6 +11,10 @@ class role::statistics::explorer {
     include ::standard
     include ::profile::statistics::explorer
     include ::profile::analytics::cluster::client
+    # This is a Hadoop client, and should
+    # have any special analytics system users on it
+    # for interacting with HDFS.
+    include ::profile::analytics::cluster::users
     include ::profile::analytics::refinery
     include ::profile::analytics::cluster::packages::hadoop
 }
