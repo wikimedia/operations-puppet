@@ -23,6 +23,15 @@ class ores::web(
         'ALL=(root) NOPASSWD: /usr/sbin/service celery-ores-worker *',
     ]
 
+
+    # Ores is controlled via a custom systemd unit (uwsgi-ores),
+    # so avoid the generic uwsgi sysvinit script shipped in the
+    # Debian package
+    exec { 'mask_default_uwsgi_ores':
+        command => '/bin/systemctl mask uwsgi.service',
+        creates => '/etc/systemd/system/uwsgi.service',
+    }
+
     service::uwsgi { 'ores':
         port            => $port,
         sudo_rules      => $sudo_rules,
