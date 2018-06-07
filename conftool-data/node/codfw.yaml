@@ -322,3 +322,6 @@ codfw:
     ores2007.codfw.wmnet: [ores]
     ores2008.codfw.wmnet: [ores]
     ores2009.codfw.wmnet: [ores]
+  proton:
+    proton2001.codfw.wmnet: [proton]
+    proton2002.codfw.wmnet: [proton]
