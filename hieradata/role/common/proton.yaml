@@ -2,3 +2,6 @@ cluster: proton
 
 admin::groups:
   - sc-admins
+
+role::lvs::realserver::pools:
+    proton: {}
