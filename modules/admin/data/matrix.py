@@ -1,4 +1,4 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python3
 #
 # Given a list of users, generate a table of groups they belong to
 # Idea by Greg Grossmeier on T135187
@@ -69,18 +69,18 @@ else:
     ROW_SEPARATOR = '\t'
     GROUP_BEGIN = ''
 
-with open('data.yaml', 'r') as f:
+with open('data.yaml', 'r', encoding='utf-8') as f:
     admins = yaml.safe_load(f)
 
-all_users = admins.get('users').keys()
+all_users = list(admins.get('users'))
 unknown = set(users) - set(all_users)
 if unknown:
-    print 'Unknown user(s):', ', '.join(unknown)
+    print('Unknown user(s):', ', '.join(unknown))
     sys.exit(1)
 
 if args.wikitext:
-    print '\n{| class="wikitable"'
-print HEADER_SEPARATOR.join([TOP_LEFT] + users)
+    print('\n{| class="wikitable"')
+print(HEADER_SEPARATOR.join([TOP_LEFT] + users))
 
 groups = admins.get('groups', {})
 for group_name in sorted(groups.keys()):
@@ -91,10 +91,10 @@ for group_name in sorted(groups.keys()):
         continue
 
     members = set(users) & set(group_members)
-    print GROUP_BEGIN + ROW_SEPARATOR.join(
+    print(GROUP_BEGIN + ROW_SEPARATOR.join(
         [group_name] +
         ['OK' if u in members else ' '
-            for u in users])
+            for u in users]))
 
 if args.wikitext:
-    print '|}'
+    print('|}')
