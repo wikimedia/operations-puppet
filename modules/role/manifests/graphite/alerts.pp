@@ -6,7 +6,6 @@
 #
 class role::graphite::alerts {
 
-    include ::mediawiki::monitoring::graphite
     include ::graphite::monitoring::graphite
 
     $kafka_config = kafka_config('analytics')
