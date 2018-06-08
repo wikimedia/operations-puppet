@@ -1,6 +1,8 @@
 [general]
-dbhost = <%= @dbhost %>
-dbslave = <%= @dbslave %>
+dbhost = <%= @dbmaster_host %>
+dbport = <%= @dbmaster_port %>
+dbslave = <%= @dbslave_host %>
+slaveport = <%= @dbslave_port %>
 file_upload_timeout = 360
 
 [phmanifest]

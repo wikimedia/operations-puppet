@@ -6,7 +6,9 @@ class profile::phabricator::main (
     $domain = hiera('phabricator_domain', 'phabricator.wikimedia.org'),
     $altdom = hiera('phabricator_altdomain', 'phab.wmfusercontent.org'),
     $mysql_host = hiera('phabricator::mysql::master', 'localhost'),
+    $mysql_port = hiera('phabricator::mysql::master::port', 3306)
     $mysql_slave = hiera('phabricator::mysql::slave', 'localhost'),
+    $mysql_slave_port = hiera('phabricator::mysql::slave::port', 3323),
     $phab_root_dir = '/srv/phab',
     $deploy_target = 'phabricator/deployment',
     $phab_app_user = hiera('phabricator_app_user', undef),
@@ -204,8 +206,10 @@ class profile::phabricator::main (
 
     class { '::phabricator::tools':
         directory       => "${phab_root_dir}/tools",
-        dbhost          => $mysql_host,
-        dbslave         => $mysql_slave,
+        dbmaster_host   => $mysql_host,
+        dbmaster_port   => $mysql_port,
+        dbslave_host    => $mysql_slave,
+        dbslave_port    => $mysql_slave_port,
         manifest_user   => $passwords::mysql::phabricator::manifest_user,
         manifest_pass   => $passwords::mysql::phabricator::manifest_pass,
         app_user        => $passwords::mysql::phabricator::app_user,
