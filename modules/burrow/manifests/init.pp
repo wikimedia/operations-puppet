@@ -33,8 +33,8 @@
 #
 # [*kafka_api_version*]
 #   Kafka api version to use with the cluster.
-#   Current maximum supported one is 0.11.0
-#   Default: '0.11.0'
+#   Current maximum supported one is 1.0.0
+#   Default: '1.0.0'
 #
 # [*alert_whitelist*]
 #   Regex related to a whitelist of consumer groups that can trigger
@@ -76,7 +76,7 @@ define burrow (
     $smtp_server_port = 25,
     $kafka_brokers_port = 9092,
     $zookeeper_port = 2181,
-    $kafka_api_version='0.11.0',
+    $kafka_api_version='1.0.0',
     $client_id = 'burrow-client',
     $httpserver_port = 8000,
     $lagcheck_intervals = 10,
