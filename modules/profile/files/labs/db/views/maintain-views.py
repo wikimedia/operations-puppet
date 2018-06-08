@@ -358,11 +358,11 @@ class SchemaOperations():
         if not self.database_exists(self.db_p):
             # Can't use pymysql to build this
             self.write_execute(
-                "CREATE DATABASE `{}`;".format(self.db_p)
-            )
-            self.write_execute(
                 "GRANT SELECT, SHOW VIEW ON `{}`.* TO 'labsdbuser';".format(
                     self.db_p.replace('_', '\\_'))
+            )
+            self.write_execute(
+                "CREATE DATABASE `{}`;".format(self.db_p)
             )
 
         logging.info("Full views for %s:", self.db)
