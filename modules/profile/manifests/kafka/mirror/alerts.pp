@@ -120,6 +120,8 @@ define profile::kafka::mirror::alerts(
         method         => 'gt',
         warning        => $warning_lag,
         critical       => $critical_lag,
+        retry_interval => 10,
+        retries        => 3,
         prometheus_url => $source_prometheus_url,
     }
 }
