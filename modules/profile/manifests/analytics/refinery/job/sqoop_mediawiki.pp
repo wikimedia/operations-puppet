@@ -37,21 +37,23 @@ class profile::analytics::refinery::job::sqoop_mediawiki {
     $orm_jar_file               = "${::profile::analytics::refinery::path}/artifacts/mediawiki-tables-sqoop-orm.jar"
 
     cron { 'refinery-sqoop-mediawiki':
-        command  => "${env} && /usr/bin/python3 ${profile::analytics::refinery::path}/bin/sqoop-mediawiki-tables -j sqoop-mediawiki-monthly-$(/bin/date --date=\"$(/bin/date +\\%Y-\\%m-15) -1 month\" +'\\%Y-\\%m') -l -H ${labs_db_host} -d ${$output_directory_labs} -w ${wiki_file_labs} -t archive,ipblocks,logging,page,pagelinks,redirect,revision,user,user_groups -r ${orm_jar_file} -u ${labs_db_user} -p ${db_password_labs} -F 20010101000000 -T \$(/bin/date '+\\%Y\\%m01000000') -s snapshot -x \$(/bin/date --date=\"$(/bin/date +\\%Y-\\%m-15) -1 month\" +'\\%Y-\\%m') -m ${num_mappers} -a avrodata -k ${num_processors} -o ${labs_log_file}",
-        user     => 'hdfs',
-        minute   => '0',
-        hour     => '0',
+        command     => "${env} && /usr/bin/python3 ${profile::analytics::refinery::path}/bin/sqoop-mediawiki-tables -j sqoop-mediawiki-monthly-$(/bin/date --date=\"$(/bin/date +\\%Y-\\%m-15) -1 month\" +'\\%Y-\\%m') -l -H ${labs_db_host} -d ${$output_directory_labs} -w ${wiki_file_labs} -t archive,ipblocks,logging,page,pagelinks,redirect,revision,user,user_groups -r ${orm_jar_file} -u ${labs_db_user} -p ${db_password_labs} -F 20010101000000 -T \$(/bin/date '+\\%Y\\%m01000000') -s snapshot -x \$(/bin/date --date=\"$(/bin/date +\\%Y-\\%m-15) -1 month\" +'\\%Y-\\%m') -m ${num_mappers} -a avrodata -k ${num_processors} -o ${labs_log_file}",
+        user        => 'hdfs',
+        minute      => '0',
+        hour        => '0',
         # Start on the fifth day of every month.
-        monthday => '5',
+        monthday    => '5',
+        environment => 'MAILTO=analytics-alerts@wikimedia.org',
     }
 
     cron { 'refinery-sqoop-mediawiki-private':
-        command  => "${env} && /usr/bin/python3 ${profile::analytics::refinery::path}/bin/sqoop-mediawiki-tables -j sqoop-mediawiki-monthly-private-$(/bin/date --date=\"$(/bin/date +\\%Y-\\%m-15) -1 month\" +'\\%Y-\\%m') -H ${private_db_host} -d ${$output_directory_private} -w ${wiki_file_private} -t cu_changes -r ${orm_jar_file} -u ${private_db_user} -p ${db_password_private} -F \$(/bin/date --date=\"$(/bin/date +\\%Y-\\%m-15) -1 month\" +'\\%Y\\%m01000000') -T \$(/bin/date '+\\%Y\\%m01000000') -s month -x \$(/bin/date --date=\"$(/bin/date +\\%Y-\\%m-15) -1 month\" +'\\%Y-\\%m') -m ${num_mappers} -a avrodata -k ${num_processors} -o ${private_log_file}",
-        user     => 'hdfs',
-        minute   => '0',
-        hour     => '0',
+        command     => "${env} && /usr/bin/python3 ${profile::analytics::refinery::path}/bin/sqoop-mediawiki-tables -j sqoop-mediawiki-monthly-private-$(/bin/date --date=\"$(/bin/date +\\%Y-\\%m-15) -1 month\" +'\\%Y-\\%m') -H ${private_db_host} -d ${$output_directory_private} -w ${wiki_file_private} -t cu_changes -r ${orm_jar_file} -u ${private_db_user} -p ${db_password_private} -F \$(/bin/date --date=\"$(/bin/date +\\%Y-\\%m-15) -1 month\" +'\\%Y\\%m01000000') -T \$(/bin/date '+\\%Y\\%m01000000') -s month -x \$(/bin/date --date=\"$(/bin/date +\\%Y-\\%m-15) -1 month\" +'\\%Y-\\%m') -m ${num_mappers} -a avrodata -k ${num_processors} -o ${private_log_file}",
+        user        => 'hdfs',
+        minute      => '0',
+        hour        => '0',
         # Start on the second day of every month.
-        monthday => '2',
+        monthday    => '2',
+        environment => 'MAILTO=analytics-alerts@wikimedia.org',
     }
 }
 
