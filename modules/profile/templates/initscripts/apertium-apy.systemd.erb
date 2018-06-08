@@ -1,11 +1,13 @@
 # NOTE: This file is managed by Puppet
 # Systemd unit for apertium-apy
 [Unit]
-Description="apertium-apy service"
+Description=Translation server and API for Apertium
+Documentation=http://wiki.apertium.org/wiki/Apertium-apy
+After=network.target
 
 [Service]
 User=<%= @uid %>
-Group=<%= @gid %>
+
 Restart=always
 RestartSec=2s
 # Apertium seems to leak fds, or the current default limit is not enough
@@ -17,7 +19,13 @@ TimeoutStopSec=60
 # https://www.python.org/dev/peps/pep-3143/#correct-daemon-behaviour
 # it only seems to do the first. So we abuse it a bit to get standard behaviour
 # and better logging
-ExecStart=/usr/bin/python3 /usr/share/apertium-apy/servlet.py -j<%= @num_of_processes %> -m<%= @max_idle_seconds %> --daemon --log-path <%= @log_dir %> /usr/share/apertium/modes
+ExecStart=/usr/bin/apertium-apy -j<%= @num_of_processes %> -m<%= @max_idle_seconds %> --daemon --log-path <%= @log_dir %> /usr/share/apertium/modes
+
+# Restart the service if it doesn't do a watchdog ping within 10 seconds:
+WatchdogSec=10s
+
+# No reason to have access to shared tmp files:
+PrivateTmp=yes
 
 [Install]
 WantedBy=multi-user.target
