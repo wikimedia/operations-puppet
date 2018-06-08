@@ -2,7 +2,7 @@
 class contint::packages::php {
 
     if os_version('ubuntu == trusty || debian == jessie') {
-      include ::mediawiki::packages::php5
+      include ::contint::packages::php5
 
       require_package( [
           'php5-dev',  # phpize
