@@ -97,5 +97,5 @@ class netbox(
       ],
   }
 
-
+  base::service_auto_restart { 'uwsgi-netbox': }
 }
