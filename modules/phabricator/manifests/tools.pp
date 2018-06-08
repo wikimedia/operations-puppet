@@ -4,8 +4,10 @@
 # and perform administrative tasks.
 #
 class phabricator::tools (
-    $dbhost                = 'localhost',
-    $dbslave               = 'localhost',
+    $dbmaster_host         = 'localhost',
+    $dbmaster_port         = 3306,
+    $dbslave_host          = 'localhost',
+    $dbslave_port          = 3323,
     $directory             = '/srv/phab/tools',
     $deploy_target         = 'phabricator/deployment',
     $manifest_user         = '',
