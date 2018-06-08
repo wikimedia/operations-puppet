@@ -4,7 +4,7 @@ class role::wmcs::openstack::eqiad1::control {
     include ::profile::base::firewall
     include ::profile::openstack::eqiad1::observerenv
     include ::profile::openstack::eqiad1::rabbitmq
-    # include ::profile::openstack::eqiad1::keystone::service
+    include ::profile::openstack::eqiad1::keystone::service
     # include ::profile::openstack::eqiad1::glance
     # include ::profile::openstack::eqiad1::nova::common
     # include ::profile::openstack::eqiad1::nova::conductor::service
