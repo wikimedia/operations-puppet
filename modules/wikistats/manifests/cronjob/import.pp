@@ -6,7 +6,7 @@ define wikistats::cronjob::import() {
 
     cron { "cron-wikistats-import-${name}":
         ensure  => present,
-        command => "/usr/local/bin/wikistats/import_${project}_combined.sh > /var/log/wikistats/import_${project}.log 2>&1",
+        command => "/usr/local/bin/wikistats/import_${project}.sh > /var/log/wikistats/import_${project}.log 2>&1",
         user    => 'wikistatsuser',
         weekday => $weekday,
         hour    => '11',
