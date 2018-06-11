@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
 # VCL reloader for Varnish, adapted to current WMF-specific needs!
@@ -55,13 +55,13 @@ def parse_options():
 
 def do_cmd(cmd):
     """echo + exec cmd with normal output, raises on rv!=0"""
-    print 'Executing: "{}"'.format(" ".join(cmd))
+    print('Executing: "{}"'.format(" ".join(cmd)))
     subprocess.check_call(cmd)
 
 
 def get_cmd_output(cmd):
     """echo + exec cmd, return stdout. raises on rv!=0 w/ stderr in msg"""
-    print 'Executing: "{}"'.format(" ".join(cmd))
+    print('Executing: "{}"'.format(" ".join(cmd)))
     p = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     (p_out, p_err) = p.communicate()
     if p.returncode != 0:
@@ -77,7 +77,7 @@ def auto_discard(vadm_cmd):
 
     vcl_list_cmd = vadm_cmd + ['vcl.list']
     for line in get_cmd_output(vcl_list_cmd).splitlines():
-        match = re.match(r'^available\s+\S+\s+[0-9]+\s+(boot|vcl-\S+)$', line)
+        match = re.match(r'^available\s+\S+\s+[0-9]+\s+(boot|vcl-\S+)$', line.decode("utf-8"))
         if match:
             vcl_discard_cmd = vadm_cmd + ['vcl.discard', match.group(1)]
             do_cmd(vcl_discard_cmd)
@@ -85,7 +85,7 @@ def auto_discard(vadm_cmd):
 
 def main():
     args = parse_options()
-    os.umask(022)
+    os.umask(0o022)
 
     vadm_cmd = ['/usr/bin/varnishadm']
     if args.instance_name != '':
