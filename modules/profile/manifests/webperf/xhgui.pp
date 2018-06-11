@@ -14,4 +14,5 @@ class profile::webperf::xhgui {
         srange => '$INTERNAL',
     }
 
+    class { '::mongodb': }
 }
