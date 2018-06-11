@@ -364,6 +364,11 @@ host bast2001 {
     filename "lpxelinux.0";
 }
 
+host bast2002 {
+    hardware ethernet D0:94:66:5F:4B:B8;
+    fixed-address bast2002.wikimedia.org;
+}
+
 host bast3002 {
     hardware ethernet a4:ba:db:30:d7:70;
     fixed-address bast3002.wikimedia.org;
