@@ -29,7 +29,6 @@ class tilerator(
     $redis_server,
     $redis_pass,
     $cassandra_servers,
-    $style,
     $storage_id,
     $contact_groups    = 'admins',
 ) {
@@ -59,7 +58,6 @@ class tilerator(
             redis_server       => $redis_url,
             ui_only            => false,
             daemon_only        => true,
-            style              => $style,
             storage_id         => $storage_id,
         },
         contact_groups    => $contact_groups,
