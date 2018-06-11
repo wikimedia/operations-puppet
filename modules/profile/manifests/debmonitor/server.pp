@@ -20,7 +20,7 @@ class profile::debmonitor::server (
 
     # Debmonitor depends on 'mysqlclient' Python package that in turn requires a MySQL connector
     # Make is required by the deploy system
-    require_package(['libmariadb2', 'make', 'python3-pip', 'virtualenv'])
+    require_package(['libldap-2.4-2', 'libmariadb2', 'make', 'python3-pip', 'virtualenv'])
 
     class { '::sslcert::dhparam': }
 
