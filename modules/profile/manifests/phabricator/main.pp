@@ -23,7 +23,8 @@ class profile::phabricator::main (
     $passive_server = hiera('phabricator_server_failover', undef),
     $logmail = hiera('phabricator_logmail', false),
     $aphlict_enabled = hiera('phabricator_aphlict_enabled', false),
-    $rate_limits = hiera('profile::phabricator::main::rate_limits')
+    $rate_limits = hiera('profile::phabricator::main::rate_limits'),
+    $phd_taskmasters = hiera('phabricator_phd_taskmasters', 10)
 ){
 
     mailalias { 'root':
@@ -179,7 +180,7 @@ class profile::phabricator::main (
             'metamta.domain'                         => $domain,
             'metamta.reply-handler-domain'           => $domain,
             'repository.default-local-path'          => '/srv/repos',
-            'phd.taskmasters'                        => 10,
+            'phd.taskmasters'                        => $phd_taskmasters,
             'events.listeners'                       => [],
             'diffusion.allow-http-auth'              => true,
             'diffusion.ssh-host'                     => $phab_diffusion_ssh_host,
