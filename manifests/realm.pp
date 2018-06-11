@@ -138,7 +138,7 @@ $private_wikis = [
     'execwiki',
     'fdcwiki',
     'grantswiki',
-    'idprivatewikimedia',
+    'id_internalwikimedia',
     'iegcomwiki',
     'ilwikimedia',
     'internalwiki',
