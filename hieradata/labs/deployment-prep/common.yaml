@@ -381,7 +381,7 @@ prometheus_nodes:
 profile::recommendation_api::wdqs_uri: http://wdqs-test.wmflabs.org
 
 # Eventstreams config
-profile::eventstreams::kafka_cluster_name: jumbo
+profile::eventstreams::kafka_cluster_name: main
 profile::eventstreams::streams:
   page-create:
     topics: ["%{::site}.mediawiki.page-create"]
