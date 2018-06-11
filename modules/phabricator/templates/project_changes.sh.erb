@@ -8,12 +8,13 @@ declare rcpt_address='<%= Array(@rcpt_address).join(',') %>'
 declare sndr_address='<%= @sndr_address %>'
 
 declare sql_host='<%= scope['::profile::phabricator::main::mysql_slave'] %>'
+declare sql_port='<%= scope['::profile::phabricator::main::mysql_slave_port'] %>'
 declare sql_user='<%= scope.lookupvar('passwords::mysql::phabricator::metrics_user') %>'
 declare sql_name='phabricator_project'
 declare sql_pass='<%= scope.lookupvar('passwords::mysql::phabricator::metrics_pass') %>'
 
 #echo "result_creations_and_name_changes"
-result_creations_and_name_changes=$(MYSQL_PWD=${sql_pass} /usr/bin/mysql -h $sql_host -u $sql_user $sql_name << END
+result_creations_and_name_changes=$(MYSQL_PWD=${sql_pass} /usr/bin/mysql -h $sql_host -P $sql_port -u $sql_user $sql_name << END
 
 SELECT project_transaction1.oldValue, project_transaction1.newValue, parent.name AS parentProject, user.userName
     FROM project_transaction project_transaction1
@@ -35,7 +36,7 @@ END
 )
 
 #echo "result_color_changes"
-result_color_changes=$(MYSQL_PWD=${sql_pass} /usr/bin/mysql -h $sql_host -u$sql_user $sql_name << END
+result_color_changes=$(MYSQL_PWD=${sql_pass} /usr/bin/mysql -h $sql_host -P $sql_port -u$sql_user $sql_name << END
 
 SELECT project_transaction.oldValue, project_transaction.newValue, project.name
     FROM project_transaction
@@ -48,7 +49,7 @@ END
 )
 
 #echo "result_policy_locking_archiving_changes"
-result_policy_locking_archiving_changes=$(MYSQL_PWD=${sql_pass} /usr/bin/mysql -h $sql_host -u$sql_user $sql_name << END
+result_policy_locking_archiving_changes=$(MYSQL_PWD=${sql_pass} /usr/bin/mysql -h $sql_host -P $sql_port -u$sql_user $sql_name << END
 
 SELECT project_transaction.oldValue, project_transaction.newValue,
     project_transaction.transactionType, project.name
@@ -68,7 +69,7 @@ END
 )
 
 #echo "result_column_changes"
-result_column_changes=$(MYSQL_PWD=${sql_pass} /usr/bin/mysql -h $sql_host -u$sql_user $sql_name << END
+result_column_changes=$(MYSQL_PWD=${sql_pass} /usr/bin/mysql -h $sql_host -P $sql_port -u$sql_user $sql_name << END
 
 SELECT prj.name AS projectName, cl.name AS columnName, cltr.oldValue, cltr.newValue, usr.userName
     FROM phabricator_project.project_columntransaction cltr
@@ -89,7 +90,7 @@ END
 
 #echo "result_archived_projects_open_tasks"
 # see https://phabricator.wikimedia.org/T133649
-result_archived_projects_open_tasks=$(MYSQL_PWD=${sql_pass} /usr/bin/mysql -h $sql_host -u$sql_user $sql_name << END
+result_archived_projects_open_tasks=$(MYSQL_PWD=${sql_pass} /usr/bin/mysql -h $sql_host -P $sql_port -u$sql_user $sql_name << END
 
 SELECT sub.parentProject AS parentProject, p.name AS projectName, count(p.name) AS n
     FROM phabricator_maniphest.edge edg
@@ -123,7 +124,7 @@ END
 
 # echo "result_inactive_users_assigned_tasks"
 # see https://phabricator.wikimedia.org/T157740
-result_inactive_users_assigned_tasks=$(MYSQL_PWD=${sql_pass} /usr/bin/mysql -h $sql_host -u$sql_user $sql_name << END
+result_inactive_users_assigned_tasks=$(MYSQL_PWD=${sql_pass} /usr/bin/mysql -h $sql_host -P $sql_port -u$sql_user $sql_name << END
 SELECT CONCAT("https://phabricator.wikimedia.org/p/", u.userName) AS userName, count(u.userName) AS n
     FROM phabricator_maniphest.maniphest_task t
     JOIN phabricator_user.user u
@@ -138,7 +139,7 @@ END
 
 # echo "result_new_user_assignees"
 # see https://phabricator.wikimedia.org/T195780
-result_new_user_assignees=$(MYSQL_PWD=${sql_pass} /usr/bin/mysql -h $sql_host -u$sql_user $sql_name << END
+result_new_user_assignees=$(MYSQL_PWD=${sql_pass} /usr/bin/mysql -h $sql_host -P $sql_port -u$sql_user $sql_name << END
 SELECT DISTINCT CONCAT("https://phabricator.wikimedia.org/p/", u.userName) AS userName
     FROM phabricator_maniphest.maniphest_task t
     JOIN phabricator_user.user u ON u.userName = t.ownerOrdering

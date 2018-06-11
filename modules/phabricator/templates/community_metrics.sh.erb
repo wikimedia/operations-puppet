@@ -10,12 +10,13 @@ declare rcpt_address='<%= Array(@rcpt_address).join(',') %>'
 declare sndr_address='<%= @sndr_address %>'
 
 declare sql_host='<%= scope['::profile::phabricator::main::mysql_slave'] %>'
+declare sql_port='<%= scope['::profile::phabricator::main::mysql_slave_port'] %>'
 declare sql_user='<%= scope.lookupvar('passwords::mysql::phabricator::metrics_user') %>'
 declare sql_name='phabricator_maniphest'
 declare sql_pass='<%= scope.lookupvar('passwords::mysql::phabricator::metrics_pass') %>'
 
 #echo "result_activedifferentialusers"
-result_activedifferentialusers=$(MYSQL_PWD=${sql_pass} /usr/bin/mysql -h $sql_host -u $sql_user phabricator_differential << END
+result_activedifferentialusers=$(MYSQL_PWD=${sql_pass} /usr/bin/mysql -h $sql_host -P $sql_port -u $sql_user phabricator_differential << END
 
 SELECT COUNT(DISTINCT authorPHID) FROM differential_transaction WHERE
     FROM_UNIXTIME(dateCreated,'%Y%m')=date_format(NOW() - INTERVAL 1 MONTH,'%Y%m');
@@ -24,7 +25,7 @@ END
 )
 
 #echo "result_activemaniphestusers"
-result_activemaniphestusers=$(MYSQL_PWD=${sql_pass} /usr/bin/mysql -h $sql_host -u $sql_user $sql_name << END
+result_activemaniphestusers=$(MYSQL_PWD=${sql_pass} /usr/bin/mysql -h $sql_host -P $sql_port -u $sql_user $sql_name << END
 
 SELECT COUNT(DISTINCT authorPHID) FROM maniphest_transaction WHERE
     FROM_UNIXTIME(dateCreated,'%Y%m')=date_format(NOW() - INTERVAL 1 MONTH,'%Y%m');
@@ -33,7 +34,7 @@ END
 )
 
 #echo "result_authors"
-result_authors=$(MYSQL_PWD=${sql_pass} /usr/bin/mysql -h $sql_host -u$sql_user $sql_name << END
+result_authors=$(MYSQL_PWD=${sql_pass} /usr/bin/mysql -h $sql_host -P $sql_port -u$sql_user $sql_name << END
 
 SELECT COUNT(DISTINCT authorPHID) FROM maniphest_task WHERE
     FROM_UNIXTIME(dateCreated,'%Y%m')=date_format(NOW() - INTERVAL 1 MONTH,'%Y%m');
@@ -42,7 +43,7 @@ END
 )
 
 #echo "result_resolvers"
-result_resolvers=$(MYSQL_PWD=${sql_pass} /usr/bin/mysql -h $sql_host -u$sql_user $sql_name << END
+result_resolvers=$(MYSQL_PWD=${sql_pass} /usr/bin/mysql -h $sql_host -P $sql_port -u$sql_user $sql_name << END
 
 SELECT COUNT(DISTINCT authorPHID) FROM maniphest_transaction WHERE (transactionType="mergedinto" OR
     (transactionType="status" AND (oldValue="\"open\"" OR oldValue="\"stalled\"") AND
@@ -53,7 +54,7 @@ END
 )
 
 #echo "result_projectsboardmove"
-result_projectsboardmove=$(MYSQL_PWD=${sql_pass} /usr/bin/mysql -h $sql_host -u$sql_user $sql_name << END
+result_projectsboardmove=$(MYSQL_PWD=${sql_pass} /usr/bin/mysql -h $sql_host -P $sql_port -u$sql_user $sql_name << END
 
 SELECT COUNT(DISTINCT (edge.dst)) FROM phabricator_maniphest.edge INNER JOIN phabricator_maniphest.maniphest_transaction WHERE FROM_UNIXTIME(maniphest_transaction.dateModified,'%Y%m')=date_format(NOW() - INTERVAL 1 MONTH,'%Y%m') AND maniphest_transaction.transactionType = "core:columns" AND edge.type = 41 AND edge.src = maniphest_transaction.objectPHID AND edge.dst = SUBSTR(maniphest_transaction.newValue, INSTR(maniphest_transaction.newValue, 'PHID-PROJ-'), 30);
 
@@ -61,7 +62,7 @@ END
 )
 
 #echo "result_taskscreated"
-result_taskscreated=$(MYSQL_PWD=${sql_pass} /usr/bin/mysql -h $sql_host -u$sql_user $sql_name << END
+result_taskscreated=$(MYSQL_PWD=${sql_pass} /usr/bin/mysql -h $sql_host -P $sql_port -u$sql_user $sql_name << END
 
 SELECT COUNT(*) AS '' FROM maniphest_task WHERE
     FROM_UNIXTIME(dateCreated,'%Y%m')=date_format(NOW() - INTERVAL 1 MONTH,'%Y%m');
@@ -70,7 +71,7 @@ END
 )
 
 #echo "result_tasksclosed"
-result_tasksclosed=$(MYSQL_PWD=${sql_pass} /usr/bin/mysql -h $sql_host -u$sql_user $sql_name << END
+result_tasksclosed=$(MYSQL_PWD=${sql_pass} /usr/bin/mysql -h $sql_host -P $sql_port -u$sql_user $sql_name << END
 
 SELECT COUNT(DISTINCT objectPHID) FROM maniphest_transaction JOIN maniphest_task WHERE
     (maniphest_transaction.transactionType="mergedinto" OR
@@ -85,7 +86,7 @@ END
 )
 
 #echo "result_tasksopen"
-result_tasksopen=$(MYSQL_PWD=${sql_pass} /usr/bin/mysql -h $sql_host -u$sql_user $sql_name << END
+result_tasksopen=$(MYSQL_PWD=${sql_pass} /usr/bin/mysql -h $sql_host -P $sql_port -u$sql_user $sql_name << END
 
 SELECT COUNT(*) AS '' FROM maniphest_task WHERE (status = "open" OR status = "stalled");
 
@@ -93,7 +94,7 @@ END
 )
 
 #echo "results_mediantasksopen_unbreaknow"
-result_mediantasksopen_unbreaknow=$(MYSQL_PWD=${sql_pass} /usr/bin/mysql -h $sql_host -u$sql_user $sql_name << END
+result_mediantasksopen_unbreaknow=$(MYSQL_PWD=${sql_pass} /usr/bin/mysql -h $sql_host -P $sql_port -u$sql_user $sql_name << END
 
 SELECT avg(t1.dateCreated) as '' FROM (SELECT @rownum:=@rownum+1 as row_number, d.dateCreated FROM maniphest_task d, (SELECT @rownum:=0) r WHERE (d.priority = "100" AND d.status = "open") ORDER BY d.dateCreated) as t1, (SELECT COUNT(*) AS total_rows FROM maniphest_task d WHERE (d.priority = "100" AND d.status = "open")) as t2 WHERE 1 AND t1.row_number IN ( floor((total_rows+1)/2), floor((total_rows+2)/2));
 
@@ -101,7 +102,7 @@ END
 )
 
 #echo "rm_needstriage"
-result_mediantasksopen_needstriage=$(MYSQL_PWD=${sql_pass} /usr/bin/mysql -h $sql_host -u$sql_user $sql_name << END
+result_mediantasksopen_needstriage=$(MYSQL_PWD=${sql_pass} /usr/bin/mysql -h $sql_host -P $sql_port -u$sql_user $sql_name << END
 
 SELECT avg(t1.dateCreated) as '' FROM (SELECT @rownum:=@rownum+1 as row_number, d.dateCreated FROM maniphest_task d, (SELECT @rownum:=0) r WHERE (d.priority = "90" AND d.status = "open") ORDER BY d.dateCreated) as t1, (SELECT COUNT(*) AS total_rows FROM maniphest_task d WHERE (d.priority = "90" AND d.status = "open")) as t2 WHERE 1 AND t1.row_number IN ( floor((total_rows+1)/2), floor((total_rows+2)/2));
 
@@ -109,7 +110,7 @@ END
 )
 
 #echo "rm_high"
-result_mediantasksopen_high=$(MYSQL_PWD=${sql_pass} /usr/bin/mysql -h $sql_host -u$sql_user $sql_name << END
+result_mediantasksopen_high=$(MYSQL_PWD=${sql_pass} /usr/bin/mysql -h $sql_host -P $sql_port -u$sql_user $sql_name << END
 
 SELECT avg(t1.dateCreated) as '' FROM (SELECT @rownum:=@rownum+1 as row_number, d.dateCreated FROM maniphest_task d, (SELECT @rownum:=0) r WHERE (d.priority = "80" AND d.status = "open") ORDER BY d.dateCreated) as t1, (SELECT COUNT(*) AS total_rows FROM maniphest_task d WHERE (d.priority = "80" AND d.status = "open")) as t2 WHERE 1 AND t1.row_number IN ( floor((total_rows+1)/2), floor((total_rows+2)/2));
 
@@ -117,7 +118,7 @@ END
 )
 
 #echo "rm_normal"
-result_mediantasksopen_normal=$(MYSQL_PWD=${sql_pass} /usr/bin/mysql -h $sql_host -u$sql_user $sql_name << END
+result_mediantasksopen_normal=$(MYSQL_PWD=${sql_pass} /usr/bin/mysql -h $sql_host -P $sql_port -u$sql_user $sql_name << END
 
 SELECT avg(t1.dateCreated) as '' FROM (SELECT @rownum:=@rownum+1 as row_number, d.dateCreated FROM maniphest_task d, (SELECT @rownum:=0) r WHERE (d.priority = "50" AND d.status = "open") ORDER BY d.dateCreated) as t1, (SELECT COUNT(*) AS total_rows FROM maniphest_task d WHERE (d.priority = "50" AND d.status = "open")) as t2 WHERE 1 AND t1.row_number IN ( floor((total_rows+1)/2), floor((total_rows+2)/2));
 
@@ -125,7 +126,7 @@ END
 )
 
 #echo "rm_low"
-result_mediantasksopen_low=$(MYSQL_PWD=${sql_pass} /usr/bin/mysql -h $sql_host -u$sql_user $sql_name << END
+result_mediantasksopen_low=$(MYSQL_PWD=${sql_pass} /usr/bin/mysql -h $sql_host -P $sql_port -u$sql_user $sql_name << END
 
 SELECT avg(t1.dateCreated) as '' FROM (SELECT @rownum:=@rownum+1 as row_number, d.dateCreated FROM maniphest_task d, (SELECT @rownum:=0) r WHERE (d.priority = "25" AND d.status = "open") ORDER BY d.dateCreated) as t1, (SELECT COUNT(*) AS total_rows FROM maniphest_task d WHERE (d.priority = "25" AND d.status = "open")) as t2 WHERE 1 AND t1.row_number IN ( floor((total_rows+1)/2), floor((total_rows+2)/2));
 
@@ -133,7 +134,7 @@ END
 )
 
 #echo "rm_lowest"
-result_mediantasksopen_lowest=$(MYSQL_PWD=${sql_pass} /usr/bin/mysql -h $sql_host -u$sql_user $sql_name << END
+result_mediantasksopen_lowest=$(MYSQL_PWD=${sql_pass} /usr/bin/mysql -h $sql_host -P $sql_port -u$sql_user $sql_name << END
 
 SELECT avg(t1.dateCreated) as '' FROM (SELECT @rownum:=@rownum+1 as row_number, d.dateCreated FROM maniphest_task d, (SELECT @rownum:=0) r WHERE (d.priority = "10" AND d.status = "open") ORDER BY d.dateCreated) as t1, (SELECT COUNT(*) AS total_rows FROM maniphest_task d WHERE (d.priority = "10" AND d.status = "open")) as t2 WHERE 1 AND t1.row_number IN ( floor((total_rows+1)/2), floor((total_rows+2)/2));
 
@@ -141,7 +142,7 @@ END
 )
 
 #echo "number of accounts created"
-result_accounts_created=$(MYSQL_PWD=${sql_pass} /usr/bin/mysql -h $sql_host -u$sql_user phabricator_user << END
+result_accounts_created=$(MYSQL_PWD=${sql_pass} /usr/bin/mysql -h $sql_host -P $sql_port -u$sql_user phabricator_user << END
 
 SELECT COUNT(id) as '' FROM user WHERE FROM_UNIXTIME(dateCreated,'%Y%m')=date_format(NOW() - INTERVAL 1 MONTH,'%Y%m');
 
