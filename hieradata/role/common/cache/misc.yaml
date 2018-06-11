@@ -71,6 +71,7 @@ cache::app_directors:
   eventstreams:
     be_opts:
       port: 8092
+      max_connections: 25  # https://phabricator.wikimedia.org/T196553
     backends:
       eqiad: 'eventstreams.svc.eqiad.wmnet'
       codfw: 'eventstreams.svc.codfw.wmnet'
