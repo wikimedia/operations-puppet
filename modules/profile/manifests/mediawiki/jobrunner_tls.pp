@@ -21,7 +21,7 @@ class profile::mediawiki::jobrunner_tls {
             read_timeout   => $timeout,
         }
         monitoring::service { "${sitename} https":
-            description    => 'Nginx local proxy to apache',
+            description    => "Nginx local proxy to ${sitename}",
             check_command  => "check_https_url!${certname}!/rpc/RunJobs.php",
             retries        => 2,
             retry_interval => 2,
