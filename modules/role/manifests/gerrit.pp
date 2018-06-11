@@ -11,6 +11,6 @@ class role::gerrit {
     include ::profile::gerrit::server
 
     class { '::httpd':
-        modules => ['rewrite', 'headers', 'proxy', 'proxy_http', 'ssl'],
+        modules => ['rewrite', 'headers', 'proxy', 'proxy_http', 'remoteip', 'ssl'],
     }
 }

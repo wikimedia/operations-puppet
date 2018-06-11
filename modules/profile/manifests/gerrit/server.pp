@@ -5,12 +5,14 @@ class profile::gerrit::server(
     $ipv4 = hiera('gerrit::service::ipv4'),
     $ipv6 = hiera('gerrit::service::ipv6', undef),
     $host = hiera('gerrit::server::host'),
+    $avatars_host = hiera('gerrit::server::avatars_host', undef),
     $slave_hosts = hiera('gerrit::server::slave_hosts'),
     $master_host = hiera('gerrit::server::master_host'),
     $bacula = hiera('gerrit::server::bacula'),
     $gerrit_servers = join(hiera('gerrit::servers'), ' '),
     $config = hiera('gerrit::server::config'),
     $log_host = hiera('logstash_host'),
+    $cache_text_nodes = hiera('cache::text::nodes', []),
 ) {
 
     interface::alias { 'gerrit server':
@@ -66,13 +68,15 @@ class profile::gerrit::server(
     }
 
     class { '::gerrit':
-        host        => $host,
-        ipv4        => $ipv4,
-        ipv6        => $ipv6,
-        slave       => $slave,
-        slave_hosts => $slave_hosts,
-        config      => $config,
-        log_host    => $log_host,
+        host             => $host,
+        ipv4             => $ipv4,
+        ipv6             => $ipv6,
+        slave            => $slave,
+        slave_hosts      => $slave_hosts,
+        config           => $config,
+        log_host         => $log_host,
+        avatars_host     => $avatars_host,
+        cache_text_nodes => $cache_text_nodes,
     }
 
     class { '::gerrit::replication_key':

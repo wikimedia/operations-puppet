@@ -2,10 +2,12 @@
 class gerrit::proxy(
     $ipv4,
     $ipv6,
-    $host         = $::gerrit::host,
-    $slave_hosts  = $::gerrit::slave_hosts,
-    $slave        = false,
-    $maint_mode   = false,
+    $host             = $::gerrit::host,
+    $slave_hosts      = $::gerrit::slave_hosts,
+    $slave            = false,
+    $maint_mode       = false,
+    $avatars_host     = $::gerrit::avatars_host,
+    $cache_text_nodes = $::gerrit::cache_text_nodes,
     ) {
 
     if $slave {
@@ -30,6 +32,14 @@ class gerrit::proxy(
 
     httpd::site { $tls_host:
         content => template('gerrit/apache.erb'),
+    }
+
+    if $avatars_host != undef {
+      $trusted_proxies = $cache_text_nodes[$::site]
+
+      httpd::site { $avatars_host:
+          content => template('gerrit/avatars_apache.erb'),
+      }
     }
 
     # Let Apache only listen on the service IP.

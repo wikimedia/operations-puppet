@@ -7,6 +7,8 @@ class gerrit(
     $slave_hosts = [],
     $slave = false,
     $log_host = undef,
+    $avatars_host = undef,
+    $cache_text_nodes = [],
 ) {
 
     class { '::gerrit::jetty':
@@ -19,12 +21,14 @@ class gerrit(
     }
 
     class { '::gerrit::proxy':
-        require     => Class['gerrit::jetty'],
-        host        => $host,
-        ipv4        => $ipv4,
-        ipv6        => $ipv6,
-        slave_hosts => $slave_hosts,
-        slave       => $slave,
+        require          => Class['gerrit::jetty'],
+        host             => $host,
+        ipv4             => $ipv4,
+        ipv6             => $ipv6,
+        slave_hosts      => $slave_hosts,
+        slave            => $slave,
+        avatars_host     => $avatars_host,
+        cache_text_nodes => $cache_text_nodes,
     }
 
     if !$slave {
