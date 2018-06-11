@@ -136,7 +136,8 @@ def cert_get_issuer_filename(cert, cadir):
 
     issuer_subject = cert_x509_option_kv(cert, "issuer")
     issuer_hash = cert_x509_option(cert, "issuer_hash")
-    for issuer in glob.glob(os.path.join(cadir, issuer_hash + '.[0-9]')):
+    issuer_glob = glob.glob(os.path.join(cadir, issuer_hash + '.[0-9]'))
+    for issuer in issuer_glob:
         if cert_x509_option_kv(issuer, "subject") == issuer_subject:
             return issuer
     raise Exception("No matching issuer file found at %s for %s" %
