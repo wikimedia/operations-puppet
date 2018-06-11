@@ -101,6 +101,9 @@ class base::standard_packages {
     # See <http://www.mcelog.org/faq.html#18>.
     if $facts['is_virtual'] == false and $::processor0 !~ /AMD/ {
         require_package('mcelog')
+        if os_version('debian >= jessie') {
+            base::service_auto_restart { 'mcelog': }
+        }
     }
 
     # for HP servers only - install the backplane health service and CLI
