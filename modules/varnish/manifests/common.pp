@@ -43,7 +43,7 @@ class varnish::common(
     }
 
     file { '/usr/share/varnish/reload-vcl':
-        source => 'puppet:///modules/varnish/reload-vcl',
+        source => 'puppet:///modules/varnish/reload-vcl.py',
         owner  => 'root',
         group  => 'root',
         mode   => '0555',

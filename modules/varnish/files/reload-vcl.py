@@ -4,6 +4,7 @@
 # VCL reloader for Varnish, adapted to current WMF-specific needs!
 #
 # Copyright 2018 Brandon Black
+# Copyright 2018 Emanuele Rocca
 # Copyright 2018 Wikimedia Foundation, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -54,20 +55,18 @@ def parse_options():
 
 def do_cmd(cmd):
     """echo + exec cmd with normal output, raises on rv!=0"""
-    print 'Executing: %s' % cmd
-    subprocess.check_call(cmd, shell=True)
+    print 'Executing: "{}"'.format(" ".join(cmd))
+    subprocess.check_call(cmd)
 
 
 def get_cmd_output(cmd):
     """echo + exec cmd, return stdout. raises on rv!=0 w/ stderr in msg"""
-
-    print 'Executing: %s' % cmd
-    p = subprocess.Popen(cmd, shell=True,
-                         stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    print 'Executing: "{}"'.format(" ".join(cmd))
+    p = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     (p_out, p_err) = p.communicate()
     if p.returncode != 0:
         raise Exception("Command %s failed with exit code %i, stderr:\n%s" %
-                        (" ".join(args), p.returncode, p_err))
+                        (" ".join(cmd), p.returncode, p_err))
     return p_out
 
 
@@ -75,27 +74,33 @@ def auto_discard(vadm_cmd):
     # sleep is insurance against unknown varnish bugs if we move too fast from
     # "use" to "discard" and trip some race.
     time.sleep(1)
-    for line in get_cmd_output('%s vcl.list' % vadm_cmd).splitlines():
+
+    vcl_list_cmd = vadm_cmd + ['vcl.list']
+    for line in get_cmd_output(vcl_list_cmd).splitlines():
         match = re.match(r'^available\s+\S+\s+[0-9]+\s+(boot|vcl-\S+)$', line)
         if match:
-            do_cmd('%s vcl.discard %s' % (vadm_cmd, match.group(1)))
+            vcl_discard_cmd = vadm_cmd + ['vcl.discard', match.group(1)]
+            do_cmd(vcl_discard_cmd)
 
 
 def main():
     args = parse_options()
     os.umask(022)
 
+    vadm_cmd = ['/usr/bin/varnishadm']
     if args.instance_name != '':
-        args.instance_name = ' -n ' + args.instance_name
-    vadm_cmd = '/usr/bin/varnishadm%s' % args.instance_name
-    vcl_label = 'vcl-%s' % str(uuid.uuid4())
+        vadm_cmd += ['-n', args.instance_name]
 
-    do_cmd('%s vcl.load %s %s' % (vadm_cmd, vcl_label, args.vcl_file))
+    vcl_label = 'vcl-%s' % str(uuid.uuid4())
+    vcl_load_cmd = vadm_cmd + ['vcl.load', vcl_label, args.vcl_file]
+
+    do_cmd(vcl_load_cmd)
 
     if not args.compile_only:
         # First sleep is T157430
         time.sleep(args.delay)
-        do_cmd('%s vcl.use %s' % (vadm_cmd, vcl_label))
+        vcl_use_cmd = vadm_cmd + ['vcl.use', vcl_label]
+        do_cmd(vcl_use_cmd)
 
         if args.autodiscard:
             auto_discard(vadm_cmd)
