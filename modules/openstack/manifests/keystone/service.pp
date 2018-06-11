@@ -73,8 +73,15 @@ class openstack::keystone::service(
         'python-mwclient',
     ]
 
+    if os_version('debian jessie') and ($version == 'mitaka') {
+        $install_options = '-t jessie-backports'
+    } else {
+        $install_options = ''
+    }
+
     package { $packages:
-        ensure => 'present',
+        ensure          => 'present',
+        install_options => $install_options,
     }
 
     group {'keystone':
