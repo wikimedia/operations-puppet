@@ -59,4 +59,27 @@ class profile::debmonitor::client (
         mode    => '0440',
         content => template('profile/debmonitor/client/debmonitor.conf.erb'),
     }
+
+    # Install the package after the configuration file and the exposed Puppet certs are in place.
+    package { 'debmonitor-client':
+        ensure  => installed,
+        require => [
+            File['/etc/debmonitor.conf'],
+            Base::Expose_puppet_certs[$base_path],
+        ],
+    }
+
+    # Setup the daily reconciliation cron in case any debmonitor update fails.
+    if os_version('debian >= jessie') {
+        $cron = '/usr/bin/systemd-cat -t "debmonitor-client" /usr/bin/debmonitor-client'
+    } else {
+        $cron = '/usr/bin/debmonitor-client 2>&1 > /dev/null'
+    }
+
+    cron { 'debmonitor-client':
+        command => $cron,
+        user    => 'debmonitor',
+        hour    => fqdn_rand(23, $title),
+        minute  => fqdn_rand(59, $title),
+    }
 }
