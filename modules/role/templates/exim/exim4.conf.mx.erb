@@ -353,7 +353,7 @@ remote_smtp:
 
 remote_smtp_signed:
 	driver = smtp
-	dkim_domain = wikimedia.org
+	dkim_domain = <%= @dkim_domain %>
 	dkim_selector = wikimedia
 	dkim_private_key = ${if exists{/etc/exim4/dkim/${dkim_domain}-${dkim_selector}.key}{/etc/exim4/dkim/${dkim_domain}-${dkim_selector}.key}{0}}
 	dkim_canon = relaxed
@@ -365,7 +365,7 @@ bulk_smtp:
 	driver = smtp
 	interface = WIKI_INTERFACE
 	helo_data = ${lookup dnsdb{ptr=$sending_ip_address}{$value}{wiki-mail.wikimedia.org}}
-	dkim_domain = wikimedia.org
+	dkim_domain = <%= @dkim_domain %>
 	dkim_selector = wiki-mail
 	dkim_private_key = ${if exists{/etc/exim4/dkim/${dkim_domain}-${dkim_selector}.key}{/etc/exim4/dkim/${dkim_domain}-${dkim_selector}.key}{0}}
 	dkim_canon = relaxed

@@ -5,6 +5,7 @@ class profile::mail::mx (
     $prometheus_nodes         = hiera('prometheus_nodes', []),
     $cert_name                = hiera('profile::mail::mx::cert_name', $facts['hostname']),
     $cert_subjects            = hiera('profile::mail::mx::cert_subjects', $facts['fqdn']),
+    $dkim_domain              = hiera('profile::mail::mx::dkim_domain', 'wikimedia.org'),
 ) {
     mailalias { 'root':
         recipient => 'root@wikimedia.org',
@@ -96,14 +97,14 @@ class profile::mail::mx (
     }
 
     exim4::dkim { 'wikimedia.org':
-        domain   => 'wikimedia.org',
+        domain   => $dkim_domain,
         selector => 'wikimedia',
-        content  => secret('dkim/wikimedia.org-wikimedia.key'),
+        content  => secret("dkim/${dkim_domain}-wikimedia.key"),
     }
     exim4::dkim { 'wiki-mail':
-        domain   => 'wikimedia.org',
+        domain   => $dkim_domain,
         selector => 'wiki-mail',
-        content  => secret('dkim/wikimedia.org-wiki-mail.key'),
+        content  => secret("dkim/${dkim_domain}-wiki-mail.key"),
     }
 
     monitoring::service { 'smtp':
