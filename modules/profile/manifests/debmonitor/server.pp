@@ -116,11 +116,11 @@ class profile::debmonitor::server (
 
     monitoring::service { 'debmonitor-http':
         description   => 'debmonitor.wikimedia.org',
-        check_command => 'check_http_unauthorized!debmonitor.wikimedia.org!/',
+        check_command => "check_http_redirect!debmonitor.wikimedia.org!/!301!https://${public_server_name}/",
     }
 
     monitoring::service { 'debmonitor-https':
         description   => 'debmonitor.discovery.wmnet',
-        check_command => 'check_https_unauthorized!debmonitor.discovery.wmnet!/',
+        check_command => 'check_https_unauthorized!debmonitor.discovery.wmnet!/!400',
     }
 }
