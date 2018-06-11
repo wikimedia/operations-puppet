@@ -1214,13 +1214,13 @@ node /labstore100[12]\.eqiad\.wmnet/ {
 node 'labstore1003.eqiad.wmnet' {
     role(labs::nfs::misc)
     # Do not enable yet
-    # include ::base::firewall
+    # include ::profile::base::firewall
 }
 
 node /labstore100[45]\.eqiad\.wmnet/ {
     role(labs::nfs::secondary)
     # Do not enable yet
-    # include ::base::firewall
+    # include ::profile::base::firewall
 }
 
 node /labstore100[67]\.wikimedia\.org/ {
@@ -1234,13 +1234,13 @@ node /labstore200[1-2]\.codfw\.wmnet/ {
 node 'labstore2003.codfw.wmnet' {
     role(labs::nfs::secondary_backup::tools)
     # Do not enable yet
-    # include ::base::firewall
+    # include ::profile::base::firewall
 }
 
 node 'labstore2004.codfw.wmnet' {
     role(labs::nfs::secondary_backup::misc)
     # Do not enable yet
-    # include ::base::firewall
+    # include ::profile::base::firewall
 }
 
 node 'lawrencium.eqiad.wmnet' {
