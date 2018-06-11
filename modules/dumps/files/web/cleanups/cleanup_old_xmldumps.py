@@ -135,6 +135,7 @@ def get_keeps(keeps_conffile):
     with open(keeps_conffile, "r") as fhandle:
         lines = fhandle.readlines()
     for line in lines:
+        line = line.rstrip()
         if not line or line.startswith('#'):
             continue
         if ':' not in line:
