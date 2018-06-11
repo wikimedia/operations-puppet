@@ -20,7 +20,6 @@
 
 import os
 import re
-import sys
 import errno
 import argparse
 import ConfigParser
@@ -47,7 +46,7 @@ def parse_options():
                         type=file_exists, metavar="FILE",
                         help="Specify config file")
 
-    args, argv = parser.parse_known_args()
+    args, _ = parser.parse_known_args()
     defaults = {}
     if args.config:
         config = ConfigParser.SafeConfigParser()
