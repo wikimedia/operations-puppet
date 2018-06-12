@@ -419,6 +419,10 @@ sub vcl_pipe {
 	if (req.http.upgrade) {
 		set bereq.http.upgrade = req.http.upgrade;
 	}
+
+	// Similarly to pass-traffic, pipe-traffic should also pick backends
+	// randomly to avoid focus on a single node
+	set req.backend_hint = cache_local_random.backend();
 }
 
 sub vcl_backend_fetch {
