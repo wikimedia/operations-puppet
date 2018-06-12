@@ -1,0 +1,78 @@
+<VirtualHost *:80>
+    ServerName <%= @server_name %>
+    DocumentRoot <%= @docroot %>
+    
+    AllowEncodedSlashes <%= @encoded_slashes %>
+
+    RewriteEngine On
+<% if @https_only %>
+    RewriteCond %{HTTP:X-Forwarded-Proto} !https
+    RewriteRule ^/(.*)$ https://<%= @server_name %>/$1 [R=301,L,NE]
+    RewriteRule . - [E=RW_PROTO:%{HTTP:X-Forwarded-Proto}]    
+<%- else -%>
+    RewriteRule . - [E=RW_PROTO:%{HTTP:X-Forwarded-Proto}]
+    RewriteCond %{ENV:RW_PROTO} !=https
+    RewriteRule . - [E=RW_PROTO:http]    
+<%- end -%>
+
+    <%= @additional_rewrites['early'].join("\n") %>
+
+    ### Common rewrite rules for all wikis
+
+    # Redirect /wiki, /w to the fcgi backend
+    ProxyPass       /wiki                fcgi://127.0.0.1:9000<%= @docroot %>/w/index.php retry=0
+    ProxyPass       /w/thumb_handler.php fcgi://127.0.0.1:9000<%= @docroot %>/w/thumb_handler.php retry=0
+    ProxyPass       /w/extensions        !
+    ProxyPassMatch  ^/w/(.*\.(php|hh))$  fcgi://127.0.0.1:9000<%= @docroot %>/w/$1 retry=0
+    RewriteRule     ^/$                  fcgi://127.0.0.1:9000<%= @docroot %>/w/index.php    [P]
+    RewriteRule     ^/robots\.txt$       fcgi://127.0.0.1:9000<%= @docroot %>/w/robots.php   [P]
+    RewriteRule     ^/favicon\.ico$      fcgi://127.0.0.1:9000<%= @docroot %>/w/favicon.php  [P]
+    # /w/wiki.phtml is severely underperforming on HHVM
+    RewriteRule     ^/w/wiki.phtml$      /w/index.php [L,QSA,NE]
+
+    # Primary wiki redirector:
+    Alias /wiki <%= @docroot %>/w/index.php
+<%- if @public_rewrites -%>    
+    # Make robots.txt editable via Mediawiki:robots.txt
+    RewriteRule ^/robots\.txt$ /w/robots.php [L]
+    # Primary wiki redirector:
+    RewriteRule ^/$ /w/index.php
+    # Configurable favicon
+    RewriteRule ^/favicon\.ico$ /w/favicon.php [L]
+    # Configurable apple-touch-icon.png
+    RewriteRule ^/apple-touch-icon\.png$ /w/touch.php [L]
+<%- end -%>
+
+    # Multiversion static files (T99096)
+    RewriteRule ^/w/skins/.*$ /w/static.php [PT]
+    RewriteRule ^/w/resources/.*$ /w/static.php [PT]
+    RewriteRule ^/w/extensions/.*$ /w/static.php [PT]
+
+    # Common API-related rewrites
+    # API listing
+    RewriteRule ^/api$ %{ENV:RW_PROTO}://<%= @server_name %>/api/ [R=301]
+    RewriteRule ^/api/$ /w/extract2.php?template=API_listing_template [L]
+
+    # Math compatibility mode
+    RewriteCond %{ENV:RW_PROTO} !=""
+    RewriteRule ^/math/(.*) %{ENV:RW_PROTO}://upload.wikimedia.<%= @domain_suffix %>/math/$1 [R=301]
+    RewriteRule ^/math/(.*) https://upload.wikimedia.<%= @domain_suffix %>/math/$1 [R=301]
+
+<%- if @short_urls -%>
+    # ShortUrl support, for wikis where it's enabled
+    RewriteRule ^/s/.*$     /w/index.php
+<%- end -%>
+<%- if @legacy_rewrites -%>
+    # UseMod compatibility URLs
+    RewriteCond %{QUERY_STRING} ([^&;]+)
+    RewriteRule ^/wiki\.cgi$ %{ENV:RW_PROTO}://<%= @server_name %>/w/index.php?title=%1 [R=301,L]
+    RewriteRule ^/wiki\.cgi$ %{ENV:RW_PROTO}://<%= @server_name %>/w/index.php [R=301,L]
+    # Early phase 2 compatibility URLs
+    RewriteRule ^/wiki\.phtml$ %{ENV:RW_PROTO}://%{SERVER_NAME}/w/index.php [R=301,L]
+<%- end -%>
+<%= @additional_rewrites['late'].join("\n") %>
+
+<%- @variant_aliases.each do |v| -%>
+    Alias /<%= v %> <%= @docroot %>/w/index.php
+<%- end -%>
+</VirtualHost>
