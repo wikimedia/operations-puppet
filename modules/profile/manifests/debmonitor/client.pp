@@ -22,7 +22,7 @@ class profile::debmonitor::client (
     if !defined(File[$base_path]) {
         # Create directory for the exposed Puppet certs.
         file { $base_path:
-            ensure => present,
+            ensure => directory,
             owner  => 'debmonitor',
             group  => 'debmonitor',
             mode   => '0555',
