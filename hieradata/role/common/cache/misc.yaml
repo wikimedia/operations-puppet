@@ -107,6 +107,10 @@ cache::app_directors:
   dbtree:
     backends:
       eqiad: 'terbium.eqiad.wmnet'
+  gerrit:
+    backends:
+      eqiad: 'cobalt.wikimedia.org'
+      # codfw: 'gerrit2001.wikimedia.org'
   phabricator:
     backends:
       eqiad: 'phab1001.eqiad.wmnet'
@@ -201,6 +205,8 @@ cache::req_handling:
   etherpad.wikimedia.org:
     director: 'etherpad1001'
     caching: 'websockets'
+  gerrit.wmfusercontent.org:
+    director: 'gerrit'
   git.wikimedia.org:
     director: 'phabricator'
   grafana-admin.wikimedia.org:
