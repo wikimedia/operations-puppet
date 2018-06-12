@@ -2074,7 +2074,7 @@ node 'stat1006.eqiad.wmnet' {
 
 
 node /^snapshot1001\.eqiad\.wmnet/ {
-    role(dumps::generation::worker::testbed)
+    role(spare::system)
 }
 
 node /^snapshot100[5-6]\.eqiad\.wmnet/ {

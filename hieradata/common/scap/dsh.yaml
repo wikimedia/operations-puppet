@@ -39,7 +39,6 @@ scap::dsh::groups:
       - mwmaint1001.eqiad.wmnet
       - wasat.codfw.wmnet
       - labtestweb2001.wikimedia.org
-      - snapshot1001.eqiad.wmnet
       - snapshot1005.eqiad.wmnet
       - snapshot1006.eqiad.wmnet
       - snapshot1007.eqiad.wmnet
