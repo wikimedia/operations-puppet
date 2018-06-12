@@ -47,7 +47,7 @@ class profile::openstack::base::keystone::service(
         # support for a 2 controller nodes deployment
         $active = ($::fqdn == $nova_controller)
     } else {
-        $active = 'False'
+        $active = false
     }
 
     class {'::openstack::keystone::service':
