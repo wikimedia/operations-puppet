@@ -90,6 +90,7 @@
 
     # Does not obey robots.txt; causing operational issues, 2014-06-23
     BrowserMatch "ArchiveTeam ArchiveBot" bad_browser
+    BrowserMatch "Firefox/[0-9A-F]{4}" bad_browser
     <Location />
         <RequireAll>
             Require all granted
