@@ -1,0 +1,2 @@
+profile::planet::domain_name: 'wmflabs.org'
+profile::planet::http_proxy: ''
