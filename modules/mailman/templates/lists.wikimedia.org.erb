@@ -27,6 +27,10 @@
         # Set up a collection for IP addresses
         SecAction "id:1000,phase:1,initcol:IP=%{REMOTE_ADDR},pass,nolog"
 
+        # Whitelist IPv4 addresses of monitoring hosts einsteinium and tegmen
+        SecRule REMOTE_ADDR "208.80.155.119" "id:1001,allow"
+        SecRule REMOTE_ADDR "208.80.153.74"  "id:1002,allow"
+
         # Increment per IP subscribe counter and set expiration to 60 minutes
         SecRule REQUEST_METHOD "POST" "id:1100,chain,pass,nolog"
         SecRule REQUEST_URI "\/mailman\/subscribe.*" "setvar:IP.subscribecount=+1,expirevar:IP.subscribecount=3600"
