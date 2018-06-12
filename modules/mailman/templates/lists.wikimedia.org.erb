@@ -51,6 +51,13 @@
         SecRule REQUEST_METHOD "POST" chain
         SecRule REQUEST_URI "\/mailman\/subscribe.*"
 
+        # Increment per IP request counter and set expiration to 5 minutes
+        SecRule REQUEST_URI "\/mailman.*" "id:1110,setvar:IP.requestcount=+1,expirevar:IP.requestcount=300"
+
+        # Throw a 429 if more than 50 requests to mailman URLs from the same IP within 5 minutes
+        SecRule IP:requestcount "@gt 50" "id:1111,chain,deny,status:429,log,msg:'IP address %{REMOTE_ADDR} has been rate limited'"
+        SecRule REQUEST_URI "\/mailman.*"
+
         # Give a friendly-ish error message when rate limiting
         ErrorDocument 429 "You are doing that too often. Please try again later."
 
