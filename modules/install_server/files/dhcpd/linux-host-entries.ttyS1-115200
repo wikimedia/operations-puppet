@@ -6723,6 +6723,11 @@ host snapshot1008 {
     fixed-address snapshot1008.eqiad.wmnet;
 }
 
+host snapshot1009 {
+    hardware ethernet D0:94:66:59:DD:CE;
+    fixed-address snapshot1009.eqiad.wmnet;
+}
+
 host stat1004 {
     hardware ethernet 14:18:77:33:4C:E9;
     fixed-address stat1004.eqiad.wmnet;
