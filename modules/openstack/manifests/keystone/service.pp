@@ -74,7 +74,7 @@ class openstack::keystone::service(
     ]
 
     if os_version('debian jessie') and ($version == 'mitaka') {
-        $install_options = '-t jessie-backports'
+        $install_options = ['-t', 'jessie-backports']
     } else {
         $install_options = ''
     }
