@@ -2101,6 +2101,10 @@ node /^snapshot1008\.eqiad\.wmnet/ {
     role(dumps::generation::worker::dumper_misc_crons_only)
 }
 
+node /^snapshot1009\.eqiad\.wmnet/ {
+    role(dumps::generation::worker::testbed)
+}
+
 # mediawiki maintenance servers (https://wikitech.wikimedia.org/wiki/Terbium)
 node 'terbium.eqiad.wmnet', 'wasat.codfw.wmnet' {
     role(mediawiki_maintenance)
