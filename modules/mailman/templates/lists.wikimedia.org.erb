@@ -61,29 +61,24 @@
         # Give a friendly-ish error message when rate limiting
         ErrorDocument 429 "You are doing that too often. Please try again later."
 
-        # Deny subscription requests from IPs found on blocklist within 24 hours (cached hits)
+        # Deny subscription and listinfo requests from IPs found on blocklist within 24 hours (cached hits)
         SecRule IP:spam "@gt 0" "id:1300,phase:1,chain,deny,status:403,msg:'Cached blocklist hit for %{REMOTE_ADDR}'"
-        SecRule REQUEST_METHOD "POST" chain
-        SecRule REQUEST_URI "\/mailman\/subscribe.*"
+        SecRule REQUEST_URI "\/mailman\/(subscribe|listinfo).*"
 
-        # Deny subscription requests from IPs listed on b.barracudacentral.org blocklist
-        SecRule REQUEST_METHOD "POST" "id:1301,chain,deny,status:403,log,msg:'%{REMOTE_ADDR} listed on b.barracudacentral.org blocklist'"
-        SecRule REQUEST_URI "\/mailman\/subscribe.*" chain
+        # Deny subscription and listinfo requests from IPs listed on b.barracudacentral.org blocklist
+        SecRule REQUEST_URI "\/mailman\/(subscribe|listinfo).*" "id:1301,chain,deny,status:403,log,msg:'%{REMOTE_ADDR} listed on b.barracudacentral.org blocklist'"
         SecRule REMOTE_ADDR "@rbl b.barracudacentral.org" "setvar:IP.spam=1,expirevar:IP.spam=86400"
 
-        # Deny subscription requests from IPs listed on xbl.spamhaus.org blocklist
-        SecRule REQUEST_METHOD "POST" "id:1302,chain,deny,status:403,log,msg:'%{REMOTE_ADDR} listed on xbl.spamhaus.org blocklist'"
-        SecRule REQUEST_URI "\/mailman\/subscribe.*" chain
+        # Deny subscription and listinfo requests from IPs listed on xbl.spamhaus.org blocklist
+        SecRule REQUEST_URI "\/mailman\/(subscribe|listinfo).*" "id:1302,chain,deny,status:403,log,msg:'%{REMOTE_ADDR} listed on xbl.spamhaus.org blocklist'"
         SecRule REMOTE_ADDR "@rbl xbl.spamhaus.org" "setvar:IP.spam=1,expirevar:IP.spam=86400"
 
-        # Deny subscription requests from IPs listed on bl.mailspike.net blocklist
-        SecRule REQUEST_METHOD "POST" "id:1303,chain,deny,status:403,log,msg:'%{REMOTE_ADDR} listed on z.mailspike.net blocklist'"
-        SecRule REQUEST_URI "\/mailman\/subscribe.*" chain
+        # Deny subscription and listinfo requests from IPs listed on bl.mailspike.net blocklist
+        SecRule REQUEST_URI "\/mailman\/(subscribe|listinfo).*" "id:1303,chain,deny,status:403,log,msg:'%{REMOTE_ADDR} listed on z.mailspike.net blocklist'"
         SecRule REMOTE_ADDR "@rbl bl.mailspike.net" "setvar:IP.spam=1,expirevar:IP.spam=86400"
 
-        # Deny subscription requests from IPs listed on problems.dnsbl.sorbs.net blocklist
-        SecRule REQUEST_METHOD "POST" "id:1304,chain,deny,status:403,log,msg:'%{REMOTE_ADDR} listed on problems.dnsbl.sorbs.net blocklist'"
-        SecRule REQUEST_URI "\/mailman\/subscribe.*" chain
+        # Deny subscription and listinfo requests from IPs listed on problems.dnsbl.sorbs.net blocklist
+        SecRule REQUEST_URI "\/mailman\/(subscribe|listinfo).*" "id:1304,chain,deny,status:403,log,msg:'%{REMOTE_ADDR} listed on problems.dnsbl.sorbs.net blocklist'"
         SecRule REMOTE_ADDR "@rbl problems.dnsbl.sorbs.net" "setvar:IP.spam=1,expirevar:IP.spam=86400"
 
     </IfModule>
