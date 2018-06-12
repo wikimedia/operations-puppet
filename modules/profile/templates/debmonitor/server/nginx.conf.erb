@@ -1,5 +1,5 @@
 upstream debmonitor {
-    server 127.0.0.1:<%= @port -%> max_fails=0;
+    server 127.0.0.1:<%= @port -%> max_fails=0 fail_timeout=60s;
 }
 
 server {
