@@ -422,7 +422,7 @@ sub vcl_pipe {
 
 	// Similarly to pass-traffic, pipe-traffic should also pick backends
 	// randomly to avoid focus on a single node
-	set req.backend_hint = cache_local_random.backend();
+	set bereq.backend = cache_local_random.backend();
 }
 
 sub vcl_backend_fetch {
