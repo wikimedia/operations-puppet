@@ -74,6 +74,13 @@ class openstack::keystone::service(
     ]
 
     if os_version('debian jessie') and ($version == 'mitaka') {
+        # bug: keystone requires this version of python-routes, but there are
+        # no versioned depends of the package itself
+        apt::pin { 'jessie_mitaka_pinning_python_routes':
+            package  => 'python-routes',
+            pin      => 'version 2.2-1~bpo8+1',
+            priority => '1002',
+        }
         $install_options = ['-t', 'jessie-backports']
     } else {
         $install_options = ''
