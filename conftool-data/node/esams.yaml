@@ -7,7 +7,6 @@ esams:
     cp3040.esams.wmnet: [varnish-fe, varnish-be, nginx]
     cp3041.esams.wmnet: [varnish-fe, varnish-be, nginx]
     cp3042.esams.wmnet: [varnish-fe, varnish-be, nginx]
-    cp3043.esams.wmnet: [varnish-fe, varnish-be, nginx]
   cache_upload:
     cp3034.esams.wmnet: [varnish-fe, varnish-be, nginx]
     cp3035.esams.wmnet: [varnish-fe, varnish-be, nginx]
