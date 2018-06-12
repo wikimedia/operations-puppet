@@ -4,6 +4,18 @@ user     = root
 password = <%= @password %>
 <% end -%>
 
+<% if @labsdb_password -%>
+[clientlabsdb]
+user     = root
+password = <%= @labsdb_password %>
+<% end -%>
+
+<% if @replication_password -%>
+[clientreplication]
+user     = <%= @replication_user %>
+password = <%= @replication_password %>
+<% end -%>
+
 [mysql]
 <% if @prompt -%>
 prompt = '\u@<%= @prompt %>[\d]> '
