@@ -29,6 +29,7 @@ cache::upload::nodes:
     - 'cp3037.esams.wmnet'
     - 'cp3038.esams.wmnet'
     - 'cp3039.esams.wmnet'
+    - 'cp3043.esams.wmnet' # on loan from cache_text
     - 'cp3044.esams.wmnet'
     - 'cp3045.esams.wmnet'
     - 'cp3046.esams.wmnet'
