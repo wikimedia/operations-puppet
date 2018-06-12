@@ -1,4 +1,4 @@
-# maintenance needed on maintenance hosts for tendril
+# maintenance needed on maintenance hosts for mediawiki databases
 class profile::mariadb::maintenance(
     $ensure = hiera('profile::mariadb::maintenance::ensure'),
     ) {
