@@ -21,7 +21,7 @@ profile::cassandra::single_instance::graphite_host: 'graphite-in.eqiad.wmnet'
 profile::cassandra::single_instance::jmx_exporter_enabled: true
 
 cassandra::target_version: '2.2'
-cassandra::version: '2.2.6-wmf4'
+cassandra::version: '2.2.6-wmf5'
 cassandra::metrics::blacklist:
   - .*\.metrics\.Table\..*$
 
