@@ -66,6 +66,10 @@ class profile::mediawiki::maintenance(
         require_package('php5-readline')
     }
 
+    # GNU version of 'time' provides extra info like peak resident memory
+    # anomie needs it, as opposed to the shell built-in time command
+    require_package('time')
+
     # T112660 - kafka support
     # The eventlogging code is useful for scripting
     # EventLogging consumers.  Install this but don't
