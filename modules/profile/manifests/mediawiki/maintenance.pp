@@ -74,4 +74,11 @@ class profile::mediawiki::maintenance(
     # to your PYTHONPATH or sys.path.
     include ::eventlogging
 
+    rsync::quickdatacopy { 'home-terbium':
+      ensure      => present,
+      auto_sync   => false,
+      source_host => 'terbium.eqiad.wmnet',
+      dest_host   => 'mwmaint1001.eqiad.wmnet',
+      module_path => '/home',
+    }
 }
