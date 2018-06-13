@@ -12,8 +12,8 @@ admin::groups:
 profile::elasticsearch::rack: ''
 profile::elasticsearch::row: ''
 profile::elasticsearch::ferm_srange: ''
+profile::elasticsearch::instances: {}
 profile::elasticsearch::dc_settings: {}
-profile::elasticsearch::base_config_dir: /etc/elasticsearch
 profile::elasticsearch::base_data_dir: '/var/lib/elasticsearch'
 profile::elasticsearch::common_settings:
     awareness_attributes: ''

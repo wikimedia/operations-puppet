@@ -9,8 +9,8 @@ admin::groups:
 # node config in hieradata/role/common/collector.yaml
 profile::elasticsearch::rack: ''
 profile::elasticsearch::row: ''
+profile::elasticsearch::instances: {}
 profile::elasticsearch::dc_settings: {}
-profile::elasticsearch::base_config_dir: '/etc/elasticsearch'
 profile::elasticsearch::base_data_dir: '/var/lib/elasticsearch'
 profile::elasticsearch::common_settings:
     auto_create_index: true

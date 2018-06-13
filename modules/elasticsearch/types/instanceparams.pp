@@ -1,3 +1,6 @@
+# There are additional parameters to elasticsearch::instance that
+# are not mentioned here. Those are not to be set per-instance and
+# instead are globaly set and flow from the elasticsearch class.
 type Elasticsearch::InstanceParams = Struct[{
     # the following parameters are injected by the main elasticsearch class
     'cluster_name'       => Optional[String],

@@ -11,6 +11,7 @@
 #
 #
 class profile::elasticsearch(
+    Hash[String, Elasticsearch::InstanceParams] $instances = hiera('profile::elasticsearch::instances'),
     Elasticsearch::InstanceParams $dc_settings = hiera('profile::elasticsearch::dc_settings'),
     Elasticsearch::InstanceParams $common_settings = hiera('profile::elasticsearch::common_settings'),
     Stdlib::AbsolutePath $base_data_dir = hiera('profile::elasticsearch::base_data_dir'),
@@ -20,9 +21,6 @@ class profile::elasticsearch(
     String $rack = hiera('profile::elasticsearch::rack'),
     String $row = hiera('profile::elasticsearch::row'),
 ) {
-    # Will become a parameter in followup patch
-    $instances = {}
-
     # Rather than asking hiera to magically merge these settings for us, we
     # explicitly take two sets of defaults for global defaults and per-dc
     # defaults. Per cluster overrides are then provided in $instances.
@@ -40,7 +38,7 @@ class profile::elasticsearch(
     # Also accessed from profile::elasticsearch::* for firewalls, proxies, etc.
     $configured_instances = empty($instances) ? {
         true    => {
-            'default' => $settings
+            'default' => $defaults_for_single_instance + $settings,
         },
         default => $instances.reduce({}) |$agg, $kv_pair| {
             $instance_title = $kv_pair[0]
@@ -50,6 +48,7 @@ class profile::elasticsearch(
         }
     }
 
+    # Accessed from profile::elasticsearch::* for firewalls, proxies, etc.
     $configured_instances.each |$instance_title, $instance_params| {
         $transport_tcp_port = pick_default($instance_params['transport_tcp_port'], 9300)
         $elastic_nodes_ferm = join(pick_default($instance_params['cluster_hosts'], [$::fqdn]), ' ')
@@ -74,12 +73,12 @@ class profile::elasticsearch(
 
     # Install
     class { '::elasticsearch':
-        version                 => 5,
-        default_instance_params => $settings,
-        base_data_dir           => $base_data_dir,
-        logstash_host           => $logstash_host,
-        logstash_gelf_port      => $logstash_gelf_port,
-        rack                    => $rack,
-        row                     => $row,
+        version            => 5,
+        instances          => $configured_instances,
+        base_data_dir      => $base_data_dir,
+        logstash_host      => $logstash_host,
+        logstash_gelf_port => $logstash_gelf_port,
+        rack               => $rack,
+        row                => $row,
     }
 }
