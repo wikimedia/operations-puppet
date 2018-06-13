@@ -78,6 +78,11 @@ class gerrit::jetty(
         key_name    => 'gerrit',
     }
 
+    git::clone { 'All-Avatars':
+        ensure    => 'latest',
+        directory => '/var/www/gerrit-avatars',
+    }
+
     file { '/srv/gerrit':
         ensure => directory,
         owner  => 'gerrit2',
