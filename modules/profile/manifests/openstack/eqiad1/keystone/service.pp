@@ -32,9 +32,13 @@ class profile::openstack::eqiad1::keystone::service(
     $public_port = hiera('profile::openstack::base::keystone::public_port'),
     ) {
 
-    #
-    # this deployment is meant to share the keystone db with main deployment
-    #
+    class{'::profile::openstack::base::keystone::db':
+        labs_hosts_range      => $labs_hosts_range,
+        puppetmaster_hostname => $puppetmaster_hostname,
+        designate_host        => $designate_host,
+        osm_host              => $osm_host,
+    }
+    contain '::profile::openstack::base::keystone::db'
 
     require ::profile::openstack::eqiad1::clientlib
     class {'::profile::openstack::base::keystone::service':

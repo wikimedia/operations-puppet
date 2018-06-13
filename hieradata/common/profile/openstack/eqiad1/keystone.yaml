@@ -1,1 +1,1 @@
-profile::openstack::eqiad1::keystone::daemon_active: false
+profile::openstack::eqiad1::keystone::daemon_active: true
