@@ -84,4 +84,8 @@ class profile::openstack::eqiad1::keystone::service(
         public_port => $public_port,
     }
     contain '::openstack::keystone::monitor::services'
+
+    file { '/etc/cron.hourly/keystone':
+        ensure => absent,
+    }
 }
