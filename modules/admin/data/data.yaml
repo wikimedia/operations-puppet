@@ -1204,7 +1204,7 @@ users:
     ssh_keys:
         - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAID3cCf8KZ1UqZvUjg3HbaDvV/X1isC2L30cKBpw/3cFH demon@wmf
     uid: 1145
-    email: chorohoe@wikimedia.org
+    email: chad@anyonecanedit.com
   qchris:
     ensure: present
     gid: 500
