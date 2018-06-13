@@ -110,7 +110,7 @@
 # [*inter_broker_protocol_version*]
 #   Default: undef
 #
-# [* group_initial_rebalance_delay*]
+# [*group_initial_rebalance_delay*]
 #   The time, in milliseconds, that the `GroupCoordinator` will delay the initial consumer rebalance.
 #   Default: undef
 #
@@ -214,47 +214,49 @@ class profile::kafka::broker(
         }
 
         # Distribute Java keystore and truststore for this broker.
-        $ssl_location                   = '/etc/kafka/ssl'
+        $ssl_location                = '/etc/kafka/ssl'
 
-        $ssl_keystore_secrets_path      = "certificates/kafka_${cluster_name}_broker/kafka_${cluster_name}_broker.keystore.jks"
-        $ssl_keystore_location          = "${ssl_location}/kafka_${cluster_name}_broker.keystore.jks"
+        $ssl_keystore_secrets_path   = "certificates/kafka_${cluster_name}_broker/kafka_${cluster_name}_broker.keystore.jks"
+        $ssl_keystore_location       = "${ssl_location}/kafka_${cluster_name}_broker.keystore.jks"
 
-        $ssl_truststore_secrets_path    = "certificates/kafka_${cluster_name}_broker/truststore.jks"
-        $ssl_truststore_location        = "${ssl_location}/truststore.jks"
+        $ssl_truststore_secrets_path = "certificates/kafka_${cluster_name}_broker/truststore.jks"
+        $ssl_truststore_location     = "${ssl_location}/truststore.jks"
 
-        $ssl_enabled_protocols          = 'TLSv1.2'
-        $ssl_cipher_suites              = 'TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384'
+        $ssl_enabled_protocols       = 'TLSv1.2'
+        $ssl_cipher_suites           = 'TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384'
 
         # https://phabricator.wikimedia.org/T182993#4208208
-        $ssl_java_opts                  = '-Djdk.tls.namedGroups=secp256r1'
+        $ssl_java_opts               = '-Djdk.tls.namedGroups=secp256r1'
 
-        $super_users           = ["User:CN=kafka_${cluster_name}_broker"]
+        $super_users                 = ["User:CN=kafka_${cluster_name}_broker"]
 
-        file { $ssl_location:
-            ensure => 'directory',
-            owner  => 'kafka',
-            group  => 'kafka',
-            mode   => '0555',
+        if !defined(File[$ssl_location]) {
+            file { $ssl_location:
+                ensure  => 'directory',
+                owner   => 'kafka',
+                group   => 'kafka',
+                mode    => '0555',
+                # Install certificates after confluent-kafka package has been
+                # installed and /etc/kafka already exists.
+                require => Class['::confluent::kafka::common'],
+            }
         }
         file { $ssl_keystore_location:
             content => secret($ssl_keystore_secrets_path),
             owner   => 'kafka',
             group   => 'kafka',
             mode    => '0440',
-            # Install certificates after confluent-kafka package has been
-            # installed and /etc/kafka already exists...
-            require => Class['::confluent::kafka::common'],
-            # But before Kafka broker is started.
             before  => Class['::confluent::kafka::broker'],
         }
 
-        file { $ssl_truststore_location:
-            content => secret($ssl_truststore_secrets_path),
-            owner   => 'kafka',
-            group   => 'kafka',
-            mode    => '0444',
-            require => Class['::confluent::kafka::common'],
-            before  => Class['::confluent::kafka::broker'],
+        if !defined(File[$ssl_truststore_location]) {
+            file { $ssl_truststore_location:
+                content => secret($ssl_truststore_secrets_path),
+                owner   => 'kafka',
+                group   => 'kafka',
+                mode    => '0444',
+                before  => Class['::confluent::kafka::broker'],
+            }
         }
 
         # Use a custom java.security on this host, so that we can restrict the allowed

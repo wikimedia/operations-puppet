@@ -27,5 +27,4 @@ bootstrap.servers=<%= Array(@source_brokers).join(',') %>
 
 <% @consumer_properties.keys.sort.each do |key| -%>
 <%= key %>=<%=@consumer_properties[key] %>
-
 <% end -%>

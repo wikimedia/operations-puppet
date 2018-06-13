@@ -5,8 +5,38 @@
 # Consumer or Producer properties you need to set should be provided in $properties,
 # with keys that match the confluent::kafka::mirror::instance define parameters.
 #
-# TODO:
-# - TLS configuration
+# == SSL Configuration
+#
+# To configure SSL for Kafka MirrorMaker, you need the following files distributable by our Puppet
+# secret() function.
+#
+# - A keystore.jks file   - Contains the key and certificate for the Kafka clients
+# - A truststore.jks file - Contains the CA certificate that signed the Kafka client certificate
+#
+# It is expected that the CA certificate in the truststore will also be used to sign
+# all Kafka client certificates.  These should be checked into the Puppet private repository's
+# secret module at
+#
+#   - secrets/certificates/kafka_mirror_maker/kafka_mirror_maker.keystore.jks
+#   - secrets/certificates/kafka_mirror_maker/truststore.jks
+#
+# The same certificate will be used for all Kafka MirrorMaker instances.  The expected
+# DN is CN=kafka_mirror_maker.
+#
+# This layout is built to work with certificates generated using cergen like
+#    cergen --base-path /srv/private/modules/secret/secrets/certificates ...
+#
+# Once these are in the Puppet private repository's secret module, set
+# $consumer_ssl_enabled and/or $producer_ssl_enabled to true and  $ssl_password to the password
+# used when genrating the key, keystore, and truststore.
+#
+# See https://wikitech.wikimedia.org/wiki/Cergen for more details.
+#
+# When you enable SSL for MirrorMaker, User:CN=kafka_mirror_maker should be granted
+# consumer and/or producer privileges via ACLs.  This will not be done for you.
+# Run the following command to add them.
+#
+#  kafka acls --add --allow-principal User:CN=kafka_mirror_maker --topic '*' --group '*' --producer --consumer
 #
 # == Parameters
 #
@@ -25,6 +55,19 @@
 #
 # [*num_processes*]
 #   Number of (systemd based) processes to spawn for this MirrorMaker.  Default: 1
+#
+# [*consumer_ssl_enabled*]
+#   If true, an SSL will be used to consume from the source cluster. Default: false
+#
+# [*producer_ssl_enabled*]
+#   If true, an SSL will be used to produce to the destination cluster  Default: false
+#
+# [*ssl_password*]
+#   Password for keystores and keys.  You should
+#   set this in hiera in the operations puppet private repository.
+#   Hiera: profile::kafka::mirror::ssl_password  This expects
+#   that all keystore, truststores, and keys use the same password.
+#   Default: undef
 #
 # [*monitoring_enabled*]
 #   If true, monitoring (via prometheus) will be enabled for this MirrorMaker instance.
@@ -49,6 +92,9 @@ class profile::kafka::mirror(
     $destination_cluster_name = hiera('profile::kafka::mirror::destination_cluster_name'),
     $properties               = hiera('profile::kafka::mirror::properties', {}),
     $num_processes            = hiera('profile::kafka::mirror::num_processes', 1),
+    $consumer_ssl_enabled     = hiera('profile::kafka::mirror::consumer_ssl_enabled', false),
+    $producer_ssl_enabled     = hiera('profile::kafka::mirror::producer_ssl_enabled', false),
+    $ssl_password             = hiera('profile::kafka::mirror::ssl_password', undef),
     $monitoring_enabled       = hiera('profile::kafka::mirror::monitoring_enabled', true),
     $jmx_base_port            = hiera('profile::kafka:mirror:jmx_base_port', 9900),
     $jmx_exporter_base_port   = hiera('profile::kafka::mirror:jmx_exporter_base_port', 7900),
@@ -63,6 +109,112 @@ class profile::kafka::mirror(
     # be named $mirror_instance_name@$process_num.
     $mirror_instance_name = "${source_config['name']}_to_${destination_config['name']}"
 
+
+    # All MirrorMaker instances use the same certificate.
+    $certificate_name = 'kafka_mirror_maker'
+    $ssl_location     = '/etc/kafka/ssl'
+
+    # Consumer and Producer use the same SSL properties.
+    if $consumer_ssl_enabled or $producer_ssl_enabled {
+        $ssl_keystore_secrets_path      = "certificates/${certificate_name}/${certificate_name}.keystore.jks"
+        $ssl_keystore_location          = "${ssl_location}/${certificate_name}.keystore.jks"
+
+        $ssl_truststore_secrets_path    = "certificates/${certificate_name}/truststore.jks"
+        $ssl_truststore_location        = "${ssl_location}/truststore.jks"
+
+        # https://phabricator.wikimedia.org/T182993#4208208
+        $ssl_java_opts                  = '-Djdk.tls.namedGroups=secp256r1 '
+
+        if !defined(File[$ssl_location]) {
+            file { $ssl_location:
+                ensure  => 'directory',
+                owner   => 'kafka',
+                group   => 'kafka',
+                mode    => '0555',
+                # Install certificates after confluent-kafka package has been
+                # installed and /etc/kafka already exists.
+                require => Class['::confluent::kafka::common'],
+            }
+        }
+        file { $ssl_keystore_location:
+            content => secret($ssl_keystore_secrets_path),
+            owner   => 'kafka',
+            group   => 'kafka',
+            mode    => '0440',
+        }
+        File[$ssl_keystore_location] -> Confluent::Kafka::Mirror::Instance <| |>
+
+
+        if !defined(File[$ssl_truststore_location]) {
+            file { $ssl_truststore_location:
+                content => secret($ssl_truststore_secrets_path),
+                owner   => 'kafka',
+                group   => 'kafka',
+                mode    => '0444',
+            }
+        }
+        File[$ssl_truststore_location] -> Confluent::Kafka::Mirror::Instance <| |>
+
+
+        # These will be used for consumer and/or producer properties.
+        $ssl_properties = {
+            'security.protocol'       => 'SSL',
+            'ssl.truststore.location' => $ssl_truststore_location,
+            'ssl.truststore.password' => $ssl_password,
+            'ssl.keystore.location'   => $ssl_keystore_location,
+            'ssl.keystore.password'   => $ssl_password,
+            'ssl.key.password'        => $ssl_password,
+            'ssl.enabled.protocols'   => 'TLSv1.2',
+            'ssl.cipher.suites'       => 'TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384',
+        }
+    }
+    else {
+        $ssl_properties = {}
+        $ssl_java_opts  = ''
+    }
+
+    if $consumer_ssl_enabled {
+        $consumer_ssl_properties = $ssl_properties
+        $source_brokers          = split($source_config['brokers']['ssl_string'], ',')
+    }
+    else {
+        $consumer_ssl_properties = {}
+        $source_brokers          = split($source_config['brokers']['string'], ',')
+    }
+
+    if $producer_ssl_enabled {
+        $producer_ssl_properties = $ssl_properties
+        $destination_brokers     = split($destination_config['brokers']['ssl_string'], ',')
+    }
+    else {
+        $producer_ssl_properties = {}
+        $destination_brokers     = split($destination_config['brokers']['string'], ',')
+    }
+
+    # The requests not only contain the message but also a small metadata overhead.
+    # So if we want to produce a kafka_message_max_bytes payload the max request size should be
+    # a bit higher.  In Kafka 0.11+, there is a bit more metadata, and I've seen a request
+    # of size 5272680 even though max.message.bytes is 4Mb.  Increase request size + 1.5 MB.
+    $producer_request_max_size = $message_max_bytes + 1572864
+
+    # Merge other consumer and producer properties together with the ssl configuration.
+    $consumer_properties = merge(
+        {
+            # RoundRobin results in more balanced consumer assignment when dealing
+            # with many single partition topics.
+            'partition.assignment.strategy' => 'org.apache.kafka.clients.consumer.RoundRobinAssignor',
+            'max.partition.fetch.bytes'     => $producer_request_max_size
+        },
+        $consumer_ssl_properties
+    )
+
+    $producer_properties = merge(
+        {
+            'max.request.size' => $producer_request_max_size
+        },
+        $producer_ssl_properties
+    )
+
     # Iterate and instantiate $num_processes MirrorMaker processes using these configs.
     range(0, $num_processes - 1).each |$process| {
 
@@ -75,7 +227,7 @@ class profile::kafka::mirror(
             $jmx_exporter_config_file = "/etc/kafka/mirror/${mirror_process_name}/prometheus_jmx_exporter.yaml"
 
             # Use this in your JAVA_OPTS you pass to the Kafka MirrorMaker process
-            $java_opts = "-javaagent:/usr/share/java/prometheus/jmx_prometheus_javaagent.jar=${::ipaddress}:${prometheus_jmx_exporter_port}:${jmx_exporter_config_file}"
+            $prometheus_java_opts = "-javaagent:/usr/share/java/prometheus/jmx_prometheus_javaagent.jar=${::ipaddress}:${prometheus_jmx_exporter_port}:${jmx_exporter_config_file}"
 
             # Declare a prometheus jmx_exporter instance.
             # This will render the config file, declare the jmx_exporter_instance,
@@ -103,33 +255,17 @@ class profile::kafka::mirror(
             # elsewhere, usually in profile::prometheus::alerts.
         }
         else {
-            $java_opts = ''
-        }
-
-        # The requests not only contain the message but also a small metadata overhead.
-        # So if we want to produce a kafka_message_max_bytes payload the max request size should be
-        # a bit higher.  In Kafka 0.11+, there is a bit more metadata, and I've seen a request
-        # of size 5272680 even though max.message.bytes is 4Mb.  Increase request size + 1.5 MB.
-        $producer_request_max_size = $message_max_bytes + 1572864
-        $producer_properties = {
-            'max.request.size' => $producer_request_max_size,
-        }
-
-        $consumer_properties = {
-            # RoundRobin results in more balanced consumer assignment when dealing
-            # with many single partition topics.
-            'partition.assignment.strategy' => 'org.apache.kafka.clients.consumer.RoundRobinAssignor',
-            'max.partition.fetch.bytes'     => $producer_request_max_size
+            $prometheus_java_opts = ''
         }
 
         # Minimum defaults for configuring a MirrorMaker instance.
         $default_parameters = {
             'enabled'             => $enabled,
-            'source_brokers'      => split($source_config['brokers']['string'], ','),
-            'destination_brokers' => split($destination_config['brokers']['string'], ','),
+            'source_brokers'      => $source_brokers,
+            'destination_brokers' => $destination_brokers,
             'producer_properties' => $producer_properties,
             'consumer_properties' => $consumer_properties,
-            'java_opts'           => $java_opts,
+            'java_opts'           => "${ssl_java_opts}${prometheus_java_opts}",
             # TODO: the following should be removed once we no longer use jmxtrans for
             # mirror maker monitoring and these params are removed from
             # confluent::kafka::mirror::instance
