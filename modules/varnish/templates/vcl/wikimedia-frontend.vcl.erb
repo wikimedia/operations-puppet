@@ -358,14 +358,15 @@ sub vcl_recv {
 	}
 
 	// The idea here is to block our worst clients (in TLS terms: those
-	// using DES-CBC3-SHA, which is not forward-secret, and the bulk of
-	// which are also IE[78]/XP).  This will remain in place until the
+	// using AES128-SHA, which is not forward-secret.
+	// This will remain in place until the
 	// future removal of protocol-level support.
-	if (req.http.X-Connection-Properties ~ "C=DES-CBC3-SHA;" && req.url != "/sec-warning" && req.url != "/test-sec-warning" && req.url !~ "^/static/images/") {
-		set req.http.Location = "https://" + req.http.Host + "/sec-warning";
-		return (synth(302, "Browser Connection Security Redirect"));
+	if (req.http.X-Connection-Properties ~ "C=AES128-SHA;"
+		&& req.url ~ "^/wiki/" && req.url !~ ":" && req.method == "GET"
+		&& std.random(0,100) < 1.0) {
+		return (synth(418, "Browser Connection Security AES128-SHA intercepted request"));
 	}
-	if (req.url == "/sec-warning" || req.url == "/test-sec-warning") {
+	if (req.url == "/sec-warning") {
 		return (synth(200, "Browser Connection Security Warning"));
 	}
 
@@ -559,11 +560,13 @@ sub vcl_synth {
 		call https_error_redirect;
 		call cluster_fe_err_synth;
 
-		// Browser sec warning
-		if (resp.reason == "Browser Connection Security Redirect") {
-			set resp.http.Location = req.http.Location;
-			set resp.http.Content-Length = "0"; // T64245
-			return(deliver);
+		// Browser sec warning (AES128-SHA intercepted request)
+		if (resp.reason == "Browser Connection Security AES128-SHA intercepted request") {
+			set resp.http.Connection = "keep-alive";
+			set resp.http.Cache-Control = "max-age=0, must-revalidate, no-cache, no-store";
+			set resp.http.Content-Type = "text/html; charset=utf-8";
+			call browser_sec_synth;
+			return (deliver);
 		}
 		// Browser sec warning
 		if (resp.reason == "Browser Connection Security Warning") {
