@@ -563,11 +563,13 @@ node 'db1072.eqiad.wmnet' {
     }
 }
 
+# To be decomm: T194634
 node 'db1053.eqiad.wmnet' {
-    role(mariadb::misc::phabricator)
+    role(spare::system)
 }
+# To be decomm: T196606
 node 'db1059.eqiad.wmnet' {
-    role(mariadb::misc::phabricator)
+    role(spare::system)
 }
 
 # codfw
