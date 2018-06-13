@@ -16,6 +16,7 @@ class cacheproxy::instance_pair (
     $fe_transient_gb=0,
     $be_transient_gb=0,
     $backend_warming=false,
+    $separate_vcl=[],
 ) {
     # ideally this could be built with "map"...
     # also, in theory all caches sites should be listed here for flexibility,
@@ -77,6 +78,7 @@ class cacheproxy::instance_pair (
         instance_name   => '',
         layer           => 'backend',
         vcl             => "${cache_type}-backend",
+        separate_vcl    => $separate_vcl.map |$vcl| { "${vcl}-backend" },
         extra_vcl       => $be_extra_vcl,
         ports           => [ '3128' ],
         admin_port      => 6083,
@@ -95,6 +97,7 @@ class cacheproxy::instance_pair (
         instance_name      => 'frontend',
         layer              => 'frontend',
         vcl                => "${cache_type}-frontend",
+        separate_vcl       => $separate_vcl.map |$vcl| { "${vcl}-frontend" },
         extra_vcl          => $fe_extra_vcl,
         ports              => [ '80', '3120', '3121', '3122', '3123', '3124', '3125', '3126', '3127' ],
         admin_port         => 6082,
