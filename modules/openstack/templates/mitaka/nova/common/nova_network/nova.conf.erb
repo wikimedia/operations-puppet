@@ -24,7 +24,7 @@ compute_monitors=virt_driver
 # glance
 image_service=nova.image.glance.GlanceImageService
 remove_unused_base_images=True
-glance_api_servers=<%= @nova_controller %>:9292
+glance_api_servers=<%= @glance_host %>:9292
 
 # APIs
 s3_host=<%= @nova_controller %>

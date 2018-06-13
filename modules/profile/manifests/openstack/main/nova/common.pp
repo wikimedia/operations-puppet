@@ -1,6 +1,7 @@
 class profile::openstack::main::nova::common(
     $version = hiera('profile::openstack::main::version'),
     $nova_controller = hiera('profile::openstack::main::nova_controller'),
+    $glance_host = hiera('profile::openstack::main::glance_host'),
     $nova_api_host = hiera('profile::openstack::main::nova_api_host'),
     $dmz_cidr = hiera('profile::openstack::main::nova::dmz_cidr'),
     $dhcp_domain = hiera('profile::openstack::main::nova::dhcp_domain'),
@@ -27,6 +28,7 @@ class profile::openstack::main::nova::common(
         version                  => $version,
         nova_controller          => $nova_controller,
         keystone_host            => $nova_controller,
+        glance_host              => $glance_host,
         nova_api_host            => $nova_api_host,
         dmz_cidr                 => $dmz_cidr,
         dhcp_domain              => $dhcp_domain,

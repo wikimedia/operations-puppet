@@ -2,7 +2,7 @@ class profile::openstack::labtestn::keystone::service(
     $version = hiera('profile::openstack::labtestn::version'),
     $region = hiera('profile::openstack::labtestn::region'),
     $nova_controller = hiera('profile::openstack::labtestn::nova_controller'),
-    $glance_host = hiera('profile::openstack::labtest::nova_controller'),
+    $glance_host = hiera('profile::openstack::labtestn::glance_host'),
     $osm_host = hiera('profile::openstack::labtestn::osm_host'),
     $db_host = hiera('profile::openstack::labtest::keystone::db_host'),
     $token_driver = hiera('profile::openstack::labtestn::keystone::token_driver'),

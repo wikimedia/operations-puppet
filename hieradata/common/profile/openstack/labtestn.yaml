@@ -1,6 +1,7 @@
 profile::openstack::labtestn::version: 'mitaka'
 profile::openstack::labtestn::nova_controller: 'labtestcontrol2003.wikimedia.org'
 profile::openstack::labtestn::nova_controller_standby: 'labtestcontrol2003.wikimedia.org'
+profile::openstack::labtestn::glance_host: 'labtestcontrol2003.wikimedia.org'
 profile::openstack::labtestn::nova_api_host: 'labtestcontrol2003.wikimedia.org'
 # attempt to use designate from labtest
 profile::openstack::labtestn::designate_host: 'labtestservices2001.wikimedia.org'
