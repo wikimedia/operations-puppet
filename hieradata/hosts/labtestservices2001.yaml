@@ -1,3 +1,3 @@
 # role(openldap::labtest)
 # /etc/ldap/acls.conf
-labs_keystone_host: 'labtestcontrol2001.wikimedia.org'
+labs_keystone_host: 'labtestcontrol2003.wikimedia.org'
