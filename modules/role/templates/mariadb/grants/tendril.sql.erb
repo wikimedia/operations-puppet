@@ -14,3 +14,6 @@ GRANT CREATE TEMPORARY TABLES, SELECT ON `tendril`.* TO '<%= @tendril_user_web %
 -- Grants for 'tendril_web'@'208.80.155.119'
 GRANT USAGE ON *.* TO '<%= @tendril_user_web %>'@'208.80.155.119' IDENTIFIED BY '<%= @tendril_pass_web %>';
 GRANT CREATE TEMPORARY TABLES, SELECT ON `tendril`.* TO '<%= @tendril_user_web %>'@'208.80.155.119';
+-- Grants for 'tendril_web'@'10.64.16.62'
+GRANT USAGE ON *.* TO '<%= @tendril_user_web %>'@'10.64.16.62' IDENTIFIED BY '<%= @tendril_pass_web %>';
+GRANT CREATE TEMPORARY TABLES, SELECT ON `tendril`.* TO '<%= @tendril_user_web %>'@'10.64.16.62';
