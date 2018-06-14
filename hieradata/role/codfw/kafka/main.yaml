@@ -2,6 +2,9 @@
 profile::kafka::mirror::source_cluster_name: main-eqiad
 profile::kafka::mirror::destination_cluster_name: main-codfw
 profile::kafka::mirror::monitoring_enabled: true
+# Enable TLS consumer.  The consumer reaches out across DataCenters to main-eqiad,
+# so we want to encrypt all messages that MirrorMaker is mirroring.
+profile::kafka::mirror::consumer_ssl_enabled: true
 # This many individual MirrorMaker processes with these settings will be started.
 # This allows us to spawn multiple processes of the same MirrorMaker on the same
 # hosts, allowing us to more easily scale up the number of producer clients.
