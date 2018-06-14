@@ -38,11 +38,6 @@ profile::cassandra::instances:
     "a": { listen_address: 10.64.48.122, jmx_exporter_enabled: true }
     "b": { listen_address: 10.64.48.123, jmx_exporter_enabled: true }
 
-
-# Override for T184795, should be removed as soon as all the others
-# cassandra 2.2 use cases (like maps-test) are ready to upgrade.
-cassandra::version: '2.2.6-wmf3'
-
 profile::cassandra::settings:
   dc: "%{::site}"
   cluster_name: "Analytics Query Service Storage"
