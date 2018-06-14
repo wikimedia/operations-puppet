@@ -12,18 +12,12 @@ profile::kafka::mirror::consumer_ssl_enabled: true
 profile::kafka::mirror::num_processes:  1
 profile::kafka::mirror::properties:
   # Replicate only codfw prefixed topics to main-eqiad cluster.
-  # Until https://phabricator.wikimedia.org/T167039 is finished,
-  # blacklist mediawiki.job and change-prop topics.
-  # NOTE: mediawiki.job topics need to remain blacklisted until
-  # we enable cross DC MirrorMaker TLS.  See also https://phabricator.wikimedia.org/T191464.
-  whitelist: '^codfw\.(?!.*mediawiki\.job|.*change-prop).+'
+  whitelist: '^codfw\..+'
   # This is the number of consumer threads per process for this mirror maker.
   # The total number of consumer threads per host will be num_processes * num_streams.
-  # There should be approximately as many consumer threads as there are partitions
-  # assigned to this MirrorMaker instance.  Without job queue and change prop, this
-  # is only about 10 total.  1  * 4 * 3 (nodes) is 12, so that should be fine.
-  # When we re-add change-prop and job-queue, this or/and num_processes should be increased.
-  num_streams: 4
+  # Roughly, there should be approximately as many consumer threads as there are active
+  # partitions assigned to this MirrorMaker instance.
+  num_streams: 12
   offset_commit_interval_ms: 5000
   heap_opts: '-Xmx2G -Xms2G'
   producer_properties:
