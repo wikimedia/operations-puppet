@@ -41,6 +41,8 @@ def parse_options():
     parser = argparse.ArgumentParser(description="VCL Reloader")
     parser.add_argument('--file', '-f', dest="vcl_file", type=file_exists,
                         metavar="FILE", help="VCL file", required=True)
+    parser.add_argument('--separate-vcls', '-s', dest="separate_vcl_files", type=file_exists,
+                        metavar="FILES", help="Separate VCL files", nargs='+', default=[])
     parser.add_argument('--instance_name', '-n', dest="instance_name",
                         help="name of varnish instance", default='')
     parser.add_argument('--delay', '-d', type=int, default=5,
@@ -83,6 +85,15 @@ def auto_discard(vadm_cmd):
             do_cmd(vcl_discard_cmd)
 
 
+def load(vadm_cmd, filename):
+    """Load the given VCL file. Return generated vcl_id."""
+    vcl_id = 'vcl-%s' % str(uuid.uuid4())
+    vcl_load_cmd = vadm_cmd + ['vcl.load', vcl_id, filename]
+
+    do_cmd(vcl_load_cmd)
+    return vcl_id
+
+
 def main():
     args = parse_options()
     os.umask(0o022)
@@ -91,16 +102,24 @@ def main():
     if args.instance_name != '':
         vadm_cmd += ['-n', args.instance_name]
 
-    vcl_label = 'vcl-%s' % str(uuid.uuid4())
-    vcl_load_cmd = vadm_cmd + ['vcl.load', vcl_label, args.vcl_file]
+    main_vcl_id = load(vadm_cmd, args.vcl_file)
 
-    do_cmd(vcl_load_cmd)
+    separate_vcl_ids = []
+    if args.separate_vcl_files:
+        separate_vcl_ids = [load(vadm_cmd, vcl_file) for vcl_file in args.separate_vcl_files]
 
     if not args.compile_only:
         # First sleep is T157430
         time.sleep(args.delay)
-        vcl_use_cmd = vadm_cmd + ['vcl.use', vcl_label]
+        vcl_use_cmd = vadm_cmd + ['vcl.use', main_vcl_id]
         do_cmd(vcl_use_cmd)
+
+        for vcl_file, vcl_id in zip(args.separate_vcl_files, separate_vcl_ids):
+            # Generate VCL label from filename:
+            # /etc/varnish/wikimedia_text-frontend.vcl -> wikimedia_text-frontend
+            separate_vcl_label = os.path.basename(vcl_file).split('.')[0]
+            vcl_label_cmd = vadm_cmd + ['vcl.label', separate_vcl_label, vcl_id]
+            do_cmd(vcl_label_cmd)
 
         if args.autodiscard:
             auto_discard(vadm_cmd)
