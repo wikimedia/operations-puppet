@@ -7,7 +7,7 @@ class profile::openstack::labtestn::keystone::service(
     $db_host = hiera('profile::openstack::labtest::keystone::db_host'),
     $token_driver = hiera('profile::openstack::labtestn::keystone::token_driver'),
     $db_pass = hiera('profile::openstack::labtest::keystone::db_pass'),
-    $nova_db_pass = hiera('profile::openstack::labtest::nova::db_pass'),
+    $nova_db_pass = hiera('profile::openstack::labtestn::nova::db_pass'),
     $ldap_hosts = hiera('profile::openstack::labtestn::ldap_hosts'),
     $ldap_user_pass = hiera('profile::openstack::labtestn::ldap_user_pass'),
     $wiki_status_consumer_token = hiera('profile::openstack::labtestn::keystone::wiki_status_consumer_token'),
