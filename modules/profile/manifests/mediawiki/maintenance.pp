@@ -1,6 +1,7 @@
 # mediawiki maintenance server
 class profile::mediawiki::maintenance(
     $maintenance_server = hiera('maintenance_server'),
+    $new_maint_server   = hiera('new_maint_server'),
 ) {
 
     # FIXME - remove this after terbium/wasat have been replace by mwmaint*
@@ -21,11 +22,18 @@ class profile::mediawiki::maintenance(
         default => 'absent',
     }
 
+    $wikidata_ensure = $::fqdn ? {
+        $maintenance_server => 'absent',
+        $new_maint_server   => 'present',
+        undef               => 'absent',
+        default             => 'absent',
+    }
+
     # Mediawiki maintenance scripts (cron jobs)
     class { 'mediawiki::maintenance::pagetriage': ensure => $ensure }
     class { 'mediawiki::maintenance::translationnotifications': ensure => $ensure }
     class { 'mediawiki::maintenance::updatetranslationstats': ensure => $ensure }
-    class { 'mediawiki::maintenance::wikidata': ensure => $ensure, ensure_testwiki => $ensure }
+    class { 'mediawiki::maintenance::wikidata': ensure => $wikidata_ensure, ensure_testwiki => $wikidata_ensure }
     class { 'mediawiki::maintenance::echo_mail_batch': ensure => $ensure }
     class { 'mediawiki::maintenance::parsercachepurging': ensure => $ensure }
     class { 'mediawiki::maintenance::cleanup_upload_stash': ensure => $ensure }

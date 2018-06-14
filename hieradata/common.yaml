@@ -496,6 +496,7 @@ kafka_clusters:
 deployment_server: deploy1001.eqiad.wmnet
 
 maintenance_server: terbium.eqiad.wmnet
+new_maint_server: mwmaint1001.eqiad.wmnet
 
 install_server: install1002.wikimedia.org
 install_server_failover: install2002.wikimedia.org
