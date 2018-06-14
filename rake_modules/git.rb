@@ -44,7 +44,7 @@ class GitOps
 
   def uncommitted_changes?
     # Checks if there is any uncommitted change
-    @git.diff('HEAD').size.positive?
+    @git.diff('HEAD').size > 0 # rubocop:disable Style/NumericPredicate
   end
 
   def exec_in_rewind
