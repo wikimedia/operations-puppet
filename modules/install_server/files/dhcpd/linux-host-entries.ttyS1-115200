@@ -3745,6 +3745,16 @@ host lvs2006 {
     fixed-address lvs2006.codfw.wmnet;
 }
 
+host lvs2009 {
+    hardware ethernet 00:0A:F7:EF:EE:00;
+    fixed-address lvs2009.codfw.wmnet;
+}
+
+host lvs2010 {
+    hardware ethernet 00:0A:F7:F0:02:40;
+    fixed-address lvs2010.codfw.wmnet;
+}
+
 host lvs3001 {
     hardware ethernet 90:b1:1c:45:56:0d;
     fixed-address lvs3001.esams.wmnet;
