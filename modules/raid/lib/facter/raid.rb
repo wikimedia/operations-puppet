@@ -8,7 +8,7 @@ Facter.add('raid') do
     end
 
     if FileTest.exist?('/dev/megadev0') ||
-       Dir.glob('/sys/bus/pci/drivers/megaraid_sas/00*').length > 0
+       Dir.glob('/sys/bus/pci/drivers/megaraid_sas/00*').length > 0 # rubocop:disable Style/NumericPredicate
       raids.push('megaraid')
     end
 

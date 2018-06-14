@@ -44,7 +44,7 @@ class Apr1Md5
     md5_t = ::Digest::MD5.digest("#{password}#{@salt}#{password}")
 
     l = password.length
-    while l > 0
+    while l > 0 # rubocop:disable Style/NumericPredicate
       slice_size = (l > DIGEST_LENGTH) ? DIGEST_LENGTH : l
       primary << md5_t[0, slice_size]
       l -= DIGEST_LENGTH

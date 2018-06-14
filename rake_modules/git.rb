@@ -44,7 +44,7 @@ class GitOps
 
   def uncommitted_changes?
     # Checks if there is any uncommitted change
-    @git.diff('HEAD').size > 0
+    @git.diff('HEAD').size.positive?
   end
 
   def exec_in_rewind

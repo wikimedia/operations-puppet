@@ -143,7 +143,7 @@ unless enabled
     exit 1
 end
 
-if failcount > 0
+if failcount > 0 # rubocop:disable Style/NumericPredicate
     report = YAML.load_file(reportfile)
     failed_resources = report["resource_statuses"].select { |_, r| r["failed"] }.map { |_, r| r["resource"] }
     failed_resources = failed_resources[0..PRINT_FAILED_RESOURCES_NO]
