@@ -112,7 +112,7 @@ class profile::kafka::mirror(
 
     # All MirrorMaker instances use the same certificate.
     $certificate_name = 'kafka_mirror_maker'
-    $ssl_location     = '/etc/kafka/ssl'
+    $ssl_location     = '/etc/kafka/mirror/ssl'
 
     # Consumer and Producer use the same SSL properties.
     if $consumer_ssl_enabled or $producer_ssl_enabled {
