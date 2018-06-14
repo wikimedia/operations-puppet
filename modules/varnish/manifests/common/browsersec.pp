@@ -13,9 +13,10 @@ class varnish::common::browsersec {
     $error_browsersec_html = template('mediawiki/errorpage.html.erb')
 
     file { '/etc/varnish/browsersec.inc.vcl':
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0444',
-        content => template('varnish/browsersec.inc.vcl.erb'),
+        owner     => 'root',
+        group     => 'root',
+        mode      => '0444',
+        content   => template('varnish/browsersec.inc.vcl.erb'),
+        show_diff => false,
     }
 }
