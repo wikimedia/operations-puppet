@@ -38,6 +38,12 @@ profile::cassandra::instances:
     "a": { listen_address: 10.64.48.122, jmx_exporter_enabled: true }
     "b": { listen_address: 10.64.48.123, jmx_exporter_enabled: true }
 
+
+# Override after T197062. The 2.2.6-wmf5 version depends on python-cassandra,
+# but the most up to date version in jessie-backports is very far from what
+# we have in Stretch. This mismatch breaks cqlsh on Jessie.
+cassandra::version: '2.2.6-wmf3'
+
 profile::cassandra::settings:
   dc: "%{::site}"
   cluster_name: "Analytics Query Service Storage"
