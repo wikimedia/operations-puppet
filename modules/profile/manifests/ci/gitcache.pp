@@ -32,6 +32,24 @@ class profile::ci::gitcache {
         require   => File['/srv/git/mediawiki'],
     }
 
+    git::clone { 'mediawiki/extensions/AbuseFilter':
+        directory => '/srv/git/mediawiki/extensions/AbuseFilter.git',
+        bare      => true,
+        require   => File['/srv/git/mediawiki/extensions'],
+    }
+
+    git::clone { 'mediawiki/extensions/MobileFrontend':
+        directory => '/srv/git/mediawiki/extensions/MobileFrontend.git',
+        bare      => true,
+        require   => File['/srv/git/mediawiki/extensions'],
+    }
+
+    git::clone { 'mediawiki/extensions/Translate':
+        directory => '/srv/git/mediawiki/extensions/Translate.git',
+        bare      => true,
+        require   => File['/srv/git/mediawiki/extensions'],
+    }
+
     git::clone { 'mediawiki/extensions/VisualEditor':
         directory => '/srv/git/mediawiki/extensions/VisualEditor.git',
         bare      => true,
