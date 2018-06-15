@@ -226,7 +226,7 @@ class profile::kafka::broker(
         $ssl_cipher_suites           = 'TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384'
 
         # https://phabricator.wikimedia.org/T182993#4208208
-        $ssl_java_opts               = '-Djdk.tls.namedGroups=secp256r1'
+        $ssl_java_opts               = '-Djdk.tls.namedGroups=secp256r1 -XX:+UseAES -XX:+UseAESIntrinsics'
 
         $super_users                 = ["User:CN=kafka_${cluster_name}_broker"]
 
