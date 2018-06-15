@@ -31,8 +31,19 @@ define varnish::instance(
     # then set a sane mininum of 2s
     $vcl_reload_delay_s = max(2, ceiling((($vcl_config['varnish_probe_ms'] * 5) + (100 * 4)) / 1000.0))
 
+    # Build $reload_vcl_opts
     $vcl_file_opt = "-f /etc/varnish/wikimedia_${vcl}.vcl"
-    $reload_vcl_opts = "${instance_opt} ${vcl_file_opt} -d ${vcl_reload_delay_s} -a"
+
+    $separate_vcl_filenames = $separate_vcl.map |$vcl_name| { "/etc/varnish/wikimedia_${vcl_name}.vcl" }
+
+    if (size($separate_vcl_filenames) > 0) {
+        $separate_vcl_string = sprintf(' -s %s', join($separate_vcl_filenames, ' '))
+    }
+    else {
+        $separate_vcl_string = ''
+    }
+
+    $reload_vcl_opts = "${instance_opt} ${vcl_file_opt} -d ${vcl_reload_delay_s} -a${separate_vcl_string}"
 
     # Install VCL include files shared by all instances
     require ::varnish::common::vcl
@@ -151,18 +162,25 @@ define varnish::instance(
         $capabilities = 'CAP_SETUID CAP_SETGID CAP_CHOWN CAP_NET_BIND_SERVICE'
     }
 
+    # Array of VCL files required by Varnish systemd::service.
+    # load-new-vcl-file below subscribes to these too, reload-vcl needs to be
+    # run when they change.
+    $vcl_files = array_concat([
+        File["/etc/varnish/${vcl}.inc.vcl"],
+        File["/etc/varnish/wikimedia_${vcl}.vcl"],
+        File["/etc/varnish/wikimedia-common_${vcl}.inc.vcl"],
+        File[suffix(prefix($extra_vcl, '/etc/varnish/'),'.inc.vcl')],
+    ], $separate_vcl_filenames.map |$vcl_name| { File[$vcl_name] })
+
     systemd::service { "varnish${instancesuffix}":
         content        => systemd_template('varnish'),
         service_params => {
             tag     => 'varnish_instance',
             enable  => true,
-            require => [
+            require => array_concat([
                 Package['varnish'],
-                File["/etc/varnish/${vcl}.inc.vcl"],
-                File["/etc/varnish/wikimedia_${vcl}.vcl"],
-                File["/etc/varnish/wikimedia-common_${vcl}.inc.vcl"],
                 Mount['/var/lib/varnish'],
-            ],
+            ], $vcl_files),
         },
     }
 
@@ -202,14 +220,11 @@ define varnish::instance(
 
     exec { "load-new-vcl-file${instancesuffix}":
         require     => Service["varnish${instancesuffix}"],
-        subscribe   => [
+        subscribe   => array_concat([
                 Class['varnish::common::vcl'],
                 Class['varnish::common::errorpage'],
                 Class['varnish::common::browsersec'],
-                File[suffix(prefix($extra_vcl, '/etc/varnish/'),'.inc.vcl')],
-                File["/etc/varnish/wikimedia_${vcl}.vcl"],
-                File["/etc/varnish/wikimedia-common_${vcl}.inc.vcl"],
-            ],
+            ], $vcl_files),
         command     => "/usr/share/varnish/reload-vcl ${reload_vcl_opts} || (touch ${vcl_failed_file}; false)",
         unless      => "test -f ${vcl_failed_file}",
         path        => '/bin:/usr/bin',
