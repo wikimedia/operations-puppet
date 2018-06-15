@@ -105,6 +105,14 @@ class icinga::plugins {
         mode   => '0755',
     }
 
+    # Wikidata dispatcher monitoring 
+    file { '/usr/lib/nagios/plugins/check_wikidata_crit':
+        source => 'puppet:///modules/icinga/check_wikidata_crit',
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0755',
+    }
+
     class { '::nagios_common::commands':
     }
 
@@ -155,6 +163,14 @@ class icinga::plugins {
     nagios_common::check_command::config { 'check_wikitech_static_version.cfg':
         ensure     => present,
         content    => template('icinga/check_commands/check_wikitech_static_version.cfg.erb'),
+        config_dir => '/etc/icinga',
+        owner      => 'icinga',
+        group      => 'icinga',
+    }
+
+    nagios_common::check_command::config { 'check_wikidata_crit.cfg':
+        ensure     => present,
+        content    => template('icinga/check_commands/check_wikidata_crit.cfg.erb'),
         config_dir => '/etc/icinga',
         owner      => 'icinga',
         group      => 'icinga',
