@@ -78,6 +78,8 @@ def get_instances(project, observer_pass, keystone_host, keystone_port):
 
     hosts = []
     for instance in client.servers.list():
+        if instance.status == 'SHUTOFF':
+            continue
         hosts.append({
             'ip': [
                 str(ip['addr']) for ip in instance.addresses['public']
