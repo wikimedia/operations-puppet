@@ -14,6 +14,12 @@ class noc {
     include ::apache::mod::rewrite
     include ::apache::mod::headers
 
+    if os_version('debian >= stretch') {
+        require_package('libapache2-mod-php')
+    } else {
+        require_package('libapache2-mod-php5')
+    }
+
     apache::site { 'noc.wikimedia.org':
         content => template('noc/noc.wikimedia.org.erb'),
     }
