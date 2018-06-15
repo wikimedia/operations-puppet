@@ -5,8 +5,9 @@ describe 'elasticsearch', :type => :class do
     let(:params) { { :cluster_name  => 'my_cluster_name',
                      :publish_host  => '127.0.0.1',
     } }
-    let(:facts) { { :lsbdistrelease => 'ubuntu',
-                    :lsbdistid      => 'trusty'
+    let(:facts) { { :lsbdistrelease => 'debian',
+                    :lsbdistid      => 'jessie',
+                    :initsystem     => 'systemd',
     } }
 
     it { should_not contain_package('liblogstash-gelf-java') }
@@ -17,8 +18,9 @@ describe 'elasticsearch', :type => :class do
                      :logstash_host => 'logstash.example.net',
                      :publish_host  => '127.0.0.1',
     } }
-    let(:facts) { { :lsbdistrelease => 'ubuntu',
-                    :lsbdistid      => 'trusty'
+    let(:facts) { { :lsbdistrelease => 'debian',
+                    :lsbdistid      => 'jessie',
+                    :initsystem     => 'systemd',
     } }
 
     it { should contain_package('liblogstash-gelf-java').with({ :ensure => 'present' }) }

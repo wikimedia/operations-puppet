@@ -18,4 +18,3 @@ profile::elasticsearch::cirrus::certificate_name: 'relforge.svc.eqiad.wmnet'
 has_lvs: false
 
 profile::elasticsearch::cirrus::storage_device: md1
-elasticsearch::data_dir: '/srv/elasticsearch/relforge-eqiad'

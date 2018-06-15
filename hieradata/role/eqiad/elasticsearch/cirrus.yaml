@@ -57,5 +57,3 @@ profile::elasticsearch::cirrus::certificate_name: 'search.svc.eqiad.wmnet'
 
 # Allow reindex from codfw to eqiad
 profile::elasticsearch::reindex_remote_whitelist: 'search.svc.codfw.wmnet:9243'
-
-elasticsearch::data_dir: '/srv/elasticsearch/production-search-eqiad'

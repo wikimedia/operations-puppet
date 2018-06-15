@@ -10,7 +10,8 @@
 # - $heap_memory:   amount of memory to allocate to elasticsearch.  Defaults to
 #       "2G".  Should be set to about half of ram or a 30G, whichever is
 #       smaller.
-# - $data_dir: Where elasticsearch stores its data.
+# - $base_data_dir: Base path to where elasticsearch stores its data. Actual
+#       data path will be $base_data_dir/$cluster_name.
 #       Default: /srv/elasticsearch
 # - $plugins_dir: value for path.plugins.  Defaults to /srv/deployment/elasticsearch/plugins.
 # - $plugins_mandatory: list of mandatory plugins.  Defaults to undef.
@@ -90,8 +91,9 @@
 #
 class elasticsearch(
     $cluster_name,
+    $node_name = $hostname,
     $heap_memory = '2G',
-    $data_dir = '/srv/elasticsearch',
+    $base_data_dir = '/srv/elasticsearch',
     $plugins_dir = '/usr/share/elasticsearch/plugins',
     $plugins_mandatory = undef,
     $minimum_master_nodes = 1,
@@ -165,7 +167,8 @@ class elasticsearch(
     }
 
     class { '::elasticsearch::packages':
-        java_package => $java_package,
+        java_package          => $java_package,
+        send_logs_to_logstash => $send_logs_to_logstash,
     }
 
     $curator_hosts = $curator_uses_unicast_hosts ? {
@@ -179,17 +182,18 @@ class elasticsearch(
         content => template('elasticsearch/curator_cluster.yaml.erb')
     }
 
-    # Package defaults this to 0750, which is annoying
-    # for debugging. There are no secrets here so make
-    # visible.
-    file { '/etc/elasticsearch':
+    # These are implied from the systemd unit
+    $config_dir = "/etc/elasticsearch/${cluster_name}"
+    $data_dir = "${base_data_dir}/${cluster_name}"
+
+    file { $config_dir:
         ensure => directory,
         owner  => 'root',
         group  => 'root',
         mode   => '0755',
     }
 
-    file { '/etc/elasticsearch/elasticsearch.yml':
+    file { "${config_dir}/elasticsearch.yml":
         ensure  => file,
         owner   => 'root',
         group   => 'root',
@@ -197,10 +201,12 @@ class elasticsearch(
         mode    => '0444',
         require => Package['elasticsearch'],
     }
-    file { '/etc/elasticsearch/logging.yml':
+
+    file { "${config_dir}/logging.yml":
         ensure => absent,
     }
-    file { '/etc/elasticsearch/log4j2.properties':
+    # log4j2.properties is used by elasticsearch 5.x
+    file { "${config_dir}/log4j2.properties":
         ensure  => file,
         owner   => 'root',
         group   => 'root',
@@ -208,7 +214,7 @@ class elasticsearch(
         mode    => '0444',
         require => Package['elasticsearch'],
     }
-    file { '/etc/elasticsearch/jvm.options':
+    file { "${config_dir}/jvm.options":
         ensure  => file,
         owner   => 'root',
         group   => 'root',
@@ -219,7 +225,7 @@ class elasticsearch(
 
     # elasticsearch refuses to start without the "scripts" directory, even if
     # we do not actually use any scripts.
-    file { '/etc/elasticsearch/scripts':
+    file { "${config_dir}/scripts":
         ensure  => directory,
         owner   => 'root',
         group   => 'root',
@@ -266,17 +272,22 @@ class elasticsearch(
     # config files because you need to be somewhat careful when restarting it.
     # So, for now at least, we'll be restarting it manually.
 
-    # Keep service running
-    service { 'elasticsearch':
-        ensure  => running,
-        enable  => true,
-        require => [
+    systemd::unit { "elasticsearch_${version}@.service":
+        ensure  => present,
+        content => systemd_template("elasticsearch_${version}@"),
+    }
+    service { "elasticsearch_${version}@${cluster_name}":
+        ensure   => 'running',
+        provider => 'systemd',
+        enable   => true,
+        tag      => 'elasticsearch',
+        require  => [
             Package['elasticsearch'],
-            File['/etc/elasticsearch/elasticsearch.yml'],
-            File['/etc/elasticsearch/logging.yml'],
-            File['/etc/elasticsearch/log4j2.properties'],
-            File['/etc/elasticsearch/jvm.options'],
-            File['/etc/default/elasticsearch'],
+            Systemd::Unit["elasticsearch_${version}@.service"],
+            File["${config_dir}/elasticsearch.yml"],
+            File["${config_dir}/logging.yml"],
+            File["${config_dir}/log4j2.properties"],
+            File["${config_dir}/jvm.options"],
             File[$data_dir],
         ],
     }

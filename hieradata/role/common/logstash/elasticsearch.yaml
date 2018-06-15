@@ -25,4 +25,4 @@ logstash::cluster_hosts:
   - logstash1007.eqiad.wmnet
   - logstash1008.eqiad.wmnet
   - logstash1009.eqiad.wmnet
-elasticsearch::data_dir: '/var/lib/elasticsearch/production-logstash-eqiad'
+elasticsearch::base_data_dir: '/var/lib/elasticsearch'

@@ -17,8 +17,12 @@ class profile::elasticsearch::cirrus(
 
     package {'wmf-elasticsearch-search-plugins':
         ensure => present,
-        before => Service['elasticsearch'],
     }
+
+    # Since the elasticsearch service is dynamically named after the cluster
+    # name, and because there can be multiple elasticsearch services on the
+    # same node we need to use collectors.
+    Package['wmf-elasticsearch-search-plugins'] -> Service <| tag == 'elasticsearch' |>
 
     ferm::service { 'elastic-http':
         proto   => 'tcp',
