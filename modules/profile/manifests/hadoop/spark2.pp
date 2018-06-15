@@ -19,32 +19,35 @@
 #   Set this to true on a single Hadoop client node (probably whichever one runs
 #   Oozie server).
 #
+# [*deploy_hive_config*]
+#   If true, the Hadoop Hive client config will be deployed in order to allow
+#   to the spark deb package to add the proper symlinks and allow tools like
+#   spark2-shell to use the Hive databases.
+#   Default: true
+#
 class profile::hadoop::spark2(
     $install_yarn_shuffle_jar = hiera('profile::hadoop::spark2::install_yarn_shuffle_jar', true),
     $install_oozie_sharelib   = hiera('profile::hadoop::spark2::install_oozie_sharelib', false),
 ) {
     require ::profile::hadoop::common
 
-    # The deb package creates as post-install step a symlink like
-    # /etc/spark/conf/hive-site.xml -> /etc/hive/conf.analytics/hive-site.xml
-    # This package needs to be installed after the deploy of the Hive configuration.
-    # (should be guaranteed by the puppet evaluation order).
-    if defined(Class['::profile::hive::client']) {
-        Class['::profile::hive::client'] -> Class['::profile::hadoop::spark2']
-    }
+    require_package('spark2')
 
-    package { 'spark2':
-        ensure => 'present',
+    # Ensure that a symlink to hive-site.xml exists so that
+    # spark2 will automatically get Hive support.
+    if defined(Class['::cdh::hive']) {
+        file { '/etc/spark2/conf/hive-site.xml':
+            ensure => 'link',
+            target => "${::cdh::hive::config_directory}/hive-site.xml",
+        }
     }
-
 
     # If we want to override any Spark 1 yarn shuffle service to run Spark 2 instead.
     if $install_yarn_shuffle_jar {
         # Add Spark 2 spark-yarn-shuffle.jar to the Hadoop Yarn NodeManager classpath.
         file { '/usr/local/bin/spark2_yarn_shuffle_jar_install':
-            source  => 'puppet:///modules/profile/hadoop/spark2_yarn_shuffle_jar_install.sh',
-            mode    => '0744',
-            require => Package['spark2'],
+            source => 'puppet:///modules/profile/hadoop/spark2_yarn_shuffle_jar_install.sh',
+            mode   => '0744',
         }
         exec { 'spark2_yarn_shuffle_jar_install':
             command => '/usr/local/bin/spark2_yarn_shuffle_jar_install',
@@ -64,7 +67,7 @@ class profile::hadoop::spark2(
             owner   => 'oozie',
             group   => 'root',
             mode    => '0744',
-            require => [Class['::profile::oozie::server'], Package['spark2']],
+            require => Class['::profile::oozie::server'],
         }
 
         exec { 'spark2_oozie_sharelib_install':
