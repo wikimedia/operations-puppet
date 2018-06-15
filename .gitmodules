@@ -1,12 +1,6 @@
 [submodule "modules/zookeeper"]
 	path = modules/zookeeper
 	url = https://gerrit.wikimedia.org/r/operations/puppet/zookeeper
-[submodule "modules/jmxtrans"]
-	path = modules/jmxtrans
-	url = https://gerrit.wikimedia.org/r/operations/puppet/jmxtrans
-[submodule "modules/kafkatee"]
-	path = modules/kafkatee
-	url = https://gerrit.wikimedia.org/r/operations/puppet/kafkatee
 [submodule "modules/nginx"]
 	path = modules/nginx
 	url = https://gerrit.wikimedia.org/r/operations/puppet/nginx

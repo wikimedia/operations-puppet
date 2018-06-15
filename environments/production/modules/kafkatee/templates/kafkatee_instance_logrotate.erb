@@ -1,0 +1,13 @@
+# NOTE: This file is managed by Puppet.
+
+<%= @log_statistics_file %> {
+  weekly
+  rotate 4
+  create 0644 kafkatee root
+  missingok
+  compress
+  delaycompress
+  postrotate
+    service kafkatee-<%= @title %> reload
+  endscript
+}
