@@ -20,8 +20,9 @@ class PrometheusWMFElasticsearchExporter(object):
     scrape_duration = Summary(
         'wmf_elasticsearch_scrape_duration_seconds', 'WMF Elasticsearch exporter scrape duration')
 
-    base_url = 'http://localhost:9200'
-    latency_url = base_url + '/_nodes/latencyStats'
+    def __init__(self, elasticsearch_port):
+        self.base_url = 'http://localhost:%d' % (elasticsearch_port)
+        self.latency_url = self.base_url + '/_nodes/latencyStats'
 
     @scrape_duration.time()
     def collect(self):
@@ -52,6 +53,8 @@ def main():
                         help='Listen on this address', default=':9109')
     parser.add_argument('-d', '--debug', action='store_true',
                         help='Enable debug logging')
+    parser.add_argument('-p', '--port', type=int, default=9200,
+                        help='Port to connect to elasticsearch on localhost')
     args = parser.parse_args()
 
     if args.debug:
@@ -63,7 +66,7 @@ def main():
 
     log.info('Starting prometheus-wmf-elasticsearch-exporter on %s:%s', address, port)
 
-    REGISTRY.register(PrometheusWMFElasticsearchExporter())
+    REGISTRY.register(PrometheusWMFElasticsearchExporter(args.port))
     start_http_server(int(port), addr=address)
 
     try:

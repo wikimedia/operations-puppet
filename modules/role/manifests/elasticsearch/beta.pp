@@ -5,7 +5,6 @@
 # filtertags: labs-project-deployment-prep labs-project-search labs-project-math
 class role::elasticsearch::beta {
     include ::profile::elasticsearch::cirrus
-    include ::profile::prometheus::elasticsearch_exporter
 
     system::role { 'elasticsearch::beta':
         ensure      => 'present',

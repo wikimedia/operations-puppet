@@ -12,6 +12,7 @@ class profile::elasticsearch::cirrus(
     String $ferm_srange = hiera('profile::elasticsearch::cirrus::ferm_srange'),
     String $certificate_name = hiera('profile::elasticsearch::cirrus::certificate_name'),
     String $storage_device = hiera('profile::elasticsearch::cirrus::storage_device'),
+    Array[String] $prometheus_nodes = hiera('prometheus_nodes'),
 ) {
     include ::profile::elasticsearch
 
@@ -60,5 +61,17 @@ class profile::elasticsearch::cirrus(
     # Install the hot threads collector
     elasticsearch::log::hot_threads_cluster { $cluster_name:
         http_port => $http_port,
+    }
+
+    # Install prometheus data collection
+    profile::prometheus::elasticsearch_exporter { "${::hostname}:${http_port}":
+        prometheus_nodes   => $prometheus_nodes,
+        prometheus_port    => 9108,
+        elasticsearch_port => $http_port,
+    }
+    profile::prometheus::wmf_elasticsearch_exporter { "${::hostname}:${http_port}":
+        prometheus_nodes   => $prometheus_nodes,
+        prometheus_port    => 9109,
+        elasticsearch_port => $http_port,
     }
 }

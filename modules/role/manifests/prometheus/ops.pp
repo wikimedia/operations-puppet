@@ -874,11 +874,11 @@ class role::prometheus::ops {
             ],
         },
     ]
-    prometheus::class_config { "elasticsearch_${::site}":
-        dest       => "${targets_path}/elasticsearch_${::site}.yaml",
-        site       => $::site,
-        class_name => 'profile::prometheus::elasticsearch_exporter',
-        port       => '9108',
+    prometheus::resource_config { "elasticsearch_${::site}":
+        dest           => "${targets_path}/elasticsearch_${::site}.yaml",
+        site           => $::site,
+        define_name    => 'prometheus::elasticsearch_exporter',
+        port_parameter => 'prometheus_port',
     }
 
     $wmf_elasticsearch_jobs = [
@@ -890,11 +890,11 @@ class role::prometheus::ops {
             ],
         },
     ]
-    prometheus::class_config { "wmf_elasticsearch_${::site}":
-        dest       => "${targets_path}/wmf_elasticsearch_${::site}.yaml",
-        site       => $::site,
-        class_name => 'profile::prometheus::wmf_elasticsearch_exporter',
-        port       => '9109',
+    prometheus::resource_config { "wmf_elasticsearch_${::site}":
+        dest           => "${targets_path}/wmf_elasticsearch_${::site}.yaml",
+        site           => $::site,
+        define_name    => 'prometheus::wmf_elasticsearch_exporter',
+        port_parameter => 'prometheus_port',
     }
 
     # Job definition for haproxy_exporter

@@ -6,8 +6,6 @@ class role::elasticsearch::relforge {
     include ::standard
     include ::profile::base::firewall
     include ::profile::elasticsearch::cirrus
-    include ::profile::prometheus::elasticsearch_exporter
-    include ::profile::prometheus::wmf_elasticsearch_exporter
     include ::elasticsearch::nagios::check
     include ::profile::mjolnir::kafka_msearch_daemon
 
@@ -15,7 +13,6 @@ class role::elasticsearch::relforge {
         ensure      => 'present',
         description => 'elasticsearch relforge',
     }
-
 
     # the relforge cluster is serving labs, it should never be connected from
     # production, except from mwmaint hosts to import production indices.

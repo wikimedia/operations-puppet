@@ -3,7 +3,10 @@
 #
 # Provisions Elasticsearch backend node for a Logstash cluster.
 #
-class profile::elasticsearch::logstash {
+class profile::elasticsearch::logstash(
+    Wmflib::IpPort $http_port = hiera('profile::elasticsearch::http_port'),
+    Array[String] $prometheus_nodes = hiera('prometheus_nodes'),
+) {
     include ::profile::elasticsearch
 
     # the logstash cluster has 3 data nodes, and each shard has 3 replica (each
@@ -21,4 +24,10 @@ class profile::elasticsearch::logstash {
         group  => 'root',
         mode   => '0755',
     } -> Class['elasticsearch']
+
+    profile::prometheus::elasticsearch_exporter { "${::hostname}:${http_port}":
+        prometheus_nodes   => $prometheus_nodes,
+        prometheus_port    => 9108,
+        elasticsearch_port => $http_port,
+    }
 }
