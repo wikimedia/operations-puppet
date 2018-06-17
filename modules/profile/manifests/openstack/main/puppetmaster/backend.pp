@@ -13,6 +13,7 @@ class profile::openstack::main::puppetmaster::backend(
     $encapi_statsd_prefix = hiera('profile::openstack::main::puppetmaster::encapi::statsd_prefix'),
     $statsd_host = hiera('profile::openstack::main::statsd_host'),
     $labweb_hosts = hiera('profile::openstack::main::labweb_hosts'),
+    $nova_controller = hiera('profile::openstack::main::nova_controller'),
     ) {
 
     require ::profile::openstack::main::clientlib
@@ -32,5 +33,6 @@ class profile::openstack::main::puppetmaster::backend(
         encapi_statsd_prefix     => $encapi_statsd_prefix,
         statsd_host              => $statsd_host,
         labweb_hosts             => $labweb_hosts,
+        nova_controller          => $nova_controller,
     }
 }

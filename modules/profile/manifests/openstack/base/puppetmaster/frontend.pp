@@ -14,6 +14,7 @@ class profile::openstack::base::puppetmaster::frontend(
     $statsd_host = hiera('profile::openstack::base::statsd_host'),
     $labweb_hosts = hiera('profile::openstack::base::labweb_hosts'),
     $cert_secret_path = hiera('profile::openstack::base::puppetmaster::cert_secret_path'),
+    $nova_controller = hiera('profile::openstack::base::nova_controller'),
     ) {
 
     include ::network::constants
@@ -48,6 +49,7 @@ class profile::openstack::base::puppetmaster::frontend(
         encapi_statsd_prefix     => $encapi_statsd_prefix,
         statsd_host              => $statsd_host,
         labweb_hosts             => $labweb_hosts,
+        nova_controller          => $nova_controller,
     }
 
     if ! defined(Class['puppetmaster::certmanager']) {

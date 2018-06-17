@@ -12,6 +12,7 @@ class profile::openstack::base::puppetmaster::common(
     $encapi_statsd_prefix = hiera('profile::openstack::base::puppetmaster::common::encapi_statsd_prefix'),
     $statsd_host = hiera('profile::openstack::base::puppetmaster::common::statsd_host'),
     $labweb_hosts = hiera('profile::openstack::base::labweb_hosts'),
+    $nova_controller = hiera('profile::openstack::base::nova_controller'),
     ) {
 
     # array of puppetmasters
@@ -34,6 +35,7 @@ class profile::openstack::base::puppetmaster::common(
         labs_instance_range => $labs_instance_range,
         puppetmasters       => $puppetmasters,
         labweb_hosts        => $labweb_hosts,
+        nova_controller     => $nova_controller,
     }
 
     # Update git checkout.  This is done via a cron
@@ -56,7 +58,7 @@ class profile::openstack::base::puppetmaster::common(
     ferm::rule{'puppetbackend':
         ensure => 'present',
         rule   => "saddr (@resolve(${designate_host})
-                          ${labweb_ips} ${labweb_aaaa})
+                          ${labweb_ips} ${labweb_aaaa} @resolve(${nova_controller}))
                           proto tcp dport 8101 ACCEPT;",
     }
 

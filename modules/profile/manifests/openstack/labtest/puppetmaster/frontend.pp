@@ -14,6 +14,7 @@ class profile::openstack::labtest::puppetmaster::frontend(
     $statsd_host = hiera('profile::openstack::labtest::statsd_host'),
     $labweb_hosts = hiera('profile::openstack::labtest::labweb_hosts'),
     $cert_secret_path = hiera('profile::openstack::labtest::puppetmaster::cert_secret_path'),
+    $nova_controller = hiera('profile::openstack::labtest::nova_controller'),
     ) {
 
     require ::profile::openstack::labtest::clientlib
@@ -33,5 +34,6 @@ class profile::openstack::labtest::puppetmaster::frontend(
         statsd_host              => $statsd_host,
         labweb_hosts             => $labweb_hosts,
         cert_secret_path         => $cert_secret_path,
+        nova_controller          => $nova_controller,
     }
 }
