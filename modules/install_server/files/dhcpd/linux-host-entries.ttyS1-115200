@@ -3253,6 +3253,20 @@ host labstore1007 {
     filename "lpxelinux.0";
 }
 
+host labstore1008 {
+    hardware ethernet d0:94:66:26:d5:6a;
+    fixed-address labstore1008.wikimedia.org;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
+    filename "lpxelinux.0";
+}
+
+host labstore 1009 {
+    hardware ethernet d0:94:66:2d:94:3b;
+    fixed-address labstore1009.wikimedia.org;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
+    filename "lpxelinux.0";
+}
+
 host labstore2001 {
     hardware ethernet 78:2b:cb:76:1c:d2;
     fixed-address labstore2001.codfw.wmnet;
