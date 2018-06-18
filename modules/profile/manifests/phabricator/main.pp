@@ -175,7 +175,7 @@ class profile::phabricator::main (
             'phabricator.base-uri'                   => "https://${domain}",
             'security.alternate-file-domain'         => "https://${altdom}",
             'mysql.host'                             => $mysql_host,
-            'phpmailer.smtp-host'                    => inline_template('<%= @mail_smarthost.join(";") %>'),
+            'phpmailer.smtp-host'                    => 'localhost',
             'metamta.default-address'                => "no-reply@${domain}",
             'metamta.domain'                         => $domain,
             'metamta.reply-handler-domain'           => $domain,
