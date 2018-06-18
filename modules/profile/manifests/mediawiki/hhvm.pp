@@ -41,13 +41,14 @@ class profile::mediawiki::hhvm(
         auto_prepend_file => '/srv/mediawiki/wmf-config/PhpAutoPrepend.php',
         hhvm              =>
         {
-            xenon          => {
+            xenon             => {
                 period => to_seconds('10 minutes'),
             },
-            error_handling => {
+            enable_reusable_tc => true,
+            error_handling     => {
                 call_user_handler_on_fatals => true,
             },
-            server         => {
+            server             => {
                 source_root           => '/srv/mediawiki/docroot',
                 error_document500     => '/srv/mediawiki/errorpages/hhvm-fatal-error.php',
                 error_document404     => '/srv/mediawiki/errorpages/404.php',
@@ -56,8 +57,8 @@ class profile::mediawiki::hhvm(
                 thread_count          => $max_threads,
                 ip                    => '127.0.0.1',
             },
-            pcre_cache_type => 'lru',
-            mysql           => {
+            pcre_cache_type    => 'lru',
+            mysql              => {
                 connect_timeout => 3000,
             },
         },

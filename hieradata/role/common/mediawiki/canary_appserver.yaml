@@ -8,11 +8,6 @@ admin::groups:
   - deployment
   - perf-roots
   - mediawiki-testers
-mediawiki::hhvm::extra_fcgi:
-  # https://phabricator.wikimedia.org/T180183
-  auto_prepend_file: /srv/mediawiki/wmf-config/PhpAutoPrepend.php
-  hhvm:
-    enable_reusable_tc: true
 apache::logrotate::rotate: 12
 nutcracker::verbosity: "4"
 role::mediawiki::webserver::tls: true
