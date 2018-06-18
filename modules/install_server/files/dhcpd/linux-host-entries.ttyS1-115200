@@ -3560,7 +3560,7 @@ host labvirt1018 {
 }
 
 host labvirt1019 {
-    hardware ethernet 30:e1:71:6d:5a:f0;
+    hardware ethernet e0:07:1b:f0:ec:88;
     fixed-address labvirt1019.eqiad.wmnet;
     option pxelinux.pathprefix "jessie-installer/";
     filename "jessie-installer/debian-installer/amd64/pxelinux.0";
@@ -7128,4 +7128,3 @@ host wtp2020 {
     option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
     filename "lpxelinux.0";
 }
-
