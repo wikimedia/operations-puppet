@@ -5,7 +5,7 @@ class profile::ci::kubernetes_config(
     $token = hiera('profile::ci::kubernetes_config::token')
 ) {
     # the file is visible to jenkins-slave and to contint-admins
-    k8s::kubeconfig { '/etc/kubernetes/ci- staging.config':
+    k8s::kubeconfig { '/etc/kubernetes/ci-staging.config':
         master_host => $master,
         username    => $user,
         token       => $token,
