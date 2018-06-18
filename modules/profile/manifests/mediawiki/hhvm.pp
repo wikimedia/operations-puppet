@@ -38,7 +38,8 @@ class profile::mediawiki::hhvm(
 
     $fcgi_settings =  {
         # See https://docs.hhvm.com/hhvm/configuration/INI-settings
-        hhvm  =>
+        auto_prepend_file => '/srv/mediawiki/wmf-config/PhpAutoPrepend.php',
+        hhvm              =>
         {
             xenon          => {
                 period => to_seconds('10 minutes'),
@@ -60,7 +61,7 @@ class profile::mediawiki::hhvm(
                 connect_timeout => 3000,
             },
         },
-        curl  => {
+        curl              => {
             namedPools   => 'cirrus-eqiad,cirrus-codfw',
             # ugly hack to work around colision in the hash
             'namedPools.cirrus-codfw' => {
