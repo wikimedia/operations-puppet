@@ -96,6 +96,7 @@ while [ $i -lt $shards ]; do
 				--entity-type item \
 				--entity-type property \
 				--no-cache \
+				--dbgroupdefault dump \
 				--part-id $i-$batch \
 				$firstPageIdParam \
 				$lastPageIdParam 2>> $errorLog | gzip -9 > $tempDir/wikidata$dumpFormat-$dumpName.$i-batch$batch.gz

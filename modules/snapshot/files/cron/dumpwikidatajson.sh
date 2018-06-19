@@ -70,6 +70,7 @@ while [ $i -lt $shards ]; do
 				--entity-type item \
 				--entity-type property \
 				--no-cache \
+				--dbgroupdefault dump \
 				$firstPageIdParam \
 				$lastPageIdParam; \
 				[ $lastRun -eq 0 ] && echo ',' || true ) \
