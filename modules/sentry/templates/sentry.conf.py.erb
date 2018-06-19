@@ -92,7 +92,7 @@ SESSION_COOKIE_SECURE = True
 #################
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = '<%= @mail_smarthost[0] %>'
+EMAIL_HOST = 'localhost'
 SERVER_EMAIL = 'sentry@<%= @server_name %>'
 
 # see http://sentry.readthedocs.org/en/latest/beacon.html
