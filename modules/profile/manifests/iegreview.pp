@@ -13,7 +13,7 @@ class profile::iegreview {
         # Misc MySQL shard
         mysql_host => 'm2-master.eqiad.wmnet',
         mysql_db   => 'iegreview',
-        smtp_host  => $::mail_smarthost[0],
+        smtp_host  => 'localhost',
     }
 
     ferm::service { 'iegreview_http':
