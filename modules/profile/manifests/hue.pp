@@ -34,7 +34,7 @@ class profile::hue (
     class { '::cdh::hue':
         # We always host hive-server on the same node as hive-metastore.
         hive_server_host           => $hive_server_host,
-        smtp_host                  => $::mail_smarthost[0],
+        smtp_host                  => 'localhost',
         database_host              => $database_host,
         database_user              => $database_user,
         database_engine            => $database_engine,
