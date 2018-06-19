@@ -25,7 +25,7 @@ fileperms=0644
 [reporting]
 adminmail=<%= @config[@configtype]['global']['adminmail'] %>
 mailfrom=root@wikimedia.org
-smtpserver=<%= @mail_smarthost[0] %>
+smtpserver=localhost
 # 15 minutes is long enough to decide a lock is expired, right?
 staleage=900
 skipprivatetables=1
