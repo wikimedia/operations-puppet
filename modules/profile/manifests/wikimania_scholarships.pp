@@ -13,7 +13,7 @@ class profile::wikimania_scholarships {
         # Misc MySQL shard
         mysql_host   => 'm2-master.eqiad.wmnet',
         mysql_db     => 'scholarships',
-        smtp_host    => $::mail_smarthost[0],
+        smtp_host    => 'localhost',
     }
 
     ferm::service { 'scholarships_http':
