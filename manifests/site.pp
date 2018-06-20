@@ -1085,16 +1085,8 @@ node 'iron.wikimedia.org' {
 }
 
 # Analytics Kafka Brokers
-node /kafka10(12|13|14)\.eqiad\.wmnet/ {
-    # analytics_a role includes profile::kafka::mirror
-    # that mirrors from main-eqiad -> analytics Kafka.
-    role(kafka::analytics_a)
-    interface::add_ip6_mapped { 'main': }
-}
-node /kafka10(20|22|23)\.eqiad\.wmnet/ {
-    # analytics_b role includes profile::kafka::mirror
-    # that mirrors from main-eqiad -> jumbo-eqiad Kafka.
-    role(kafka::analytics_b)
+node /kafka10(12|13|14|20|22|23)\.eqiad\.wmnet/ {
+    role(kafka::analytics)
     interface::add_ip6_mapped { 'main': }
 }
 
