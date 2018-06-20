@@ -53,5 +53,4 @@ This hash is similar to the `kafka_clusters` one, except that it contains
 configuration information for zookeeper, rather than Kafka.  The `zookeeper_clusters`
 hash should be keyed by zookeeper cluster names, and a key corresponding
 to each `zookeeper_cluster_name` in `kafka_clusters` should exist and specific
-the zookeeper hosts in that cluster.  See role::zookeeper::client (TODO move that into
-a profile) class documentation for more information.
+the zookeeper hosts in that cluster.
