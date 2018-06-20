@@ -81,12 +81,11 @@ class profile::analytics::refinery::job::camus(
         kafka_brokers => $kafka_brokers_analytics,
     }
 
-
     # Import eventbus mediawiki.job queue topics into /wmf/data/raw/mediawiki_job
     # once every hour.
     camus::job { 'mediawiki_job':
         minute        => '10',
-        kafka_brokers => $kafka_brokers_analytics,
+        kafka_brokers => $kafka_brokers_jumbo,
     }
 
     # Import netflow queue topics into /wmf/data/raw/netflow
