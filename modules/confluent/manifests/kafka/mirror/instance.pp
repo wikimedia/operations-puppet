@@ -5,13 +5,6 @@
 #
 # == Parameters
 #
-# [*source_zookeeper_url*]
-#   The URL that the source Kafka cluster users for coordination.
-#   The MirrorMaker consumer users this to look up source cluster
-#   metadata and start consuming. NOTE: This parameter is deprecated.
-#   0.11 does not require zookeeper for consumer.  Use $source_brokers instead.
-#   TODO: Remove this parameter once all clusters are upgraded and using newer mirror maker.
-#
 # [*source_brokers*]
 #   Array of Kafka broker hosts in your source cluster.  These brokers
 #   will be used for bootstrapping the consumer configs and metadata.
@@ -30,16 +23,6 @@
 #   Other Consumer related properties to set in this MirrorMaker
 #   instance's consumer.properties file.
 #   See: http://kafka.apache.org/documentation.html#oldconsumerconfigs
-#
-# [*new_conusumer*]
-#   If true, the new consumer client will be used, committing offsets
-#   to Kafka instead of Zookeeper.  This is the default in later versions.
-#   This option is not compatible with $blacklist, and if used, a $whitelist
-#   that excludes internal topics (^__.*) must be given as well, at least
-#   until MirrorMaker version has been updated.  If you use this, you must
-#   specify $source_brokers instead of $source_zookeeper_url.
-#   TODO: remove this option after version is updated.
-#   Default: false
 #
 # [*acks*]
 #   Required number of acks for a produce request. Default: all (all replicas)
@@ -61,12 +44,7 @@
 #   If false, kafka mirror-maker service will not be started.  Default: true.
 #
 # [*whitelist*]
-#   Java regex matching topics to mirror. You must set either this or
-#   $blacklist.  Default: '.*'
-#
-# [*blacklist*]
-#   Java regex matching topics to not mirror.  Default: undef
-#   You must set either this or $topic_whitelist
+#   Java regex matching topics to mirror.  Default: '.*'
 #
 # [*num_streams*]
 #   Number of consumer threads.  Default: 1
@@ -100,15 +78,11 @@
 #
 define confluent::kafka::mirror::instance(
     $destination_brokers,
+    $source_brokers,
     $jmx_port,
-
-    # TODO: make source_brokers required when we remove $source_zookeeper_url after upgrading mirror maker
-    $source_brokers               = undef,
-    $source_zookeeper_url         = undef,
 
     $group_id                     = "kafka-mirror-${title}",
     $consumer_properties          = {},
-    $new_consumer                 = false,
 
     # Producer Settings
     $acks                         = 'all',
@@ -119,7 +93,6 @@ define confluent::kafka::mirror::instance(
     $enabled                      = true,
 
     $whitelist                    = '.*',
-    $blacklist                    = undef,
 
     $num_streams                  = 1,
     $offset_commit_interval_ms    = 10000,
@@ -134,18 +107,6 @@ define confluent::kafka::mirror::instance(
 )
 {
     require ::confluent::kafka::common
-
-    if (!$whitelist and !$blacklist) or ($whitelist and $blacklist) {
-        fail('Must set only one of $whitelist or $blacklist.')
-    }
-
-    # TODO remove new_consumer checks after kafka 0.11+ update.
-    if ($new_consumer and $blacklist) {
-        fail('Cannot use $new_consumer with $blacklist, specify $whitelist instead.')
-    }
-    if ($new_consumer and $source_zookeeper_url) {
-        fail('Must specify $source_brokers instead of $source_zookeeper_url when using $new_consumer.')
-    }
 
     # Install a catch-all systemd service to ease stopping and starting
     # of all MirrorMaker processes on this host.

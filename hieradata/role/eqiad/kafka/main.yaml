@@ -25,9 +25,6 @@ profile::kafka::mirror::properties:
   # When we re-add change-prop and job-queue, this or/and num_processes should be increased.
   num_streams: 4
   offset_commit_interval_ms: 5000
-  # TODO: remove this once we use a newer version of MirrorMaker
-  # and it is no longer an option.
-  new_consumer: true
   heap_opts: '-Xmx2G -Xms2G'
   producer_properties:
     # See: https://phabricator.wikimedia.org/T189464#4102048
