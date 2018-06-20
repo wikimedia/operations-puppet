@@ -91,6 +91,7 @@ node 'bast2001.wikimedia.org' {
     interface::add_ip6_mapped { 'main': }
 }
 
+# new Bastion in Texas - to be setup (T196665)
 node 'bast2002.wikimedia.org' {
     role(spare::system)
 }
@@ -692,6 +693,11 @@ node /^dbmonitor[12]001\.wikimedia\.org$/ {
 
 node /^debmonitor[12]001\.(codfw|eqiad)\.wmnet$/ {
     role(debmonitor::server)
+}
+
+# new DNS servers in codfw - to be setup (T196493)
+node /^dns200[12]\.wikimedia\.org$/ {
+    role(spare::system)
 }
 
 node /^dns400[12]\.wikimedia\.org$/ {
