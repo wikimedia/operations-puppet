@@ -266,10 +266,6 @@ class profile::kafka::mirror(
             'producer_properties' => $producer_properties,
             'consumer_properties' => $consumer_properties,
             'java_opts'           => "${ssl_java_opts}${prometheus_java_opts}",
-            # TODO: the following should be removed once we no longer use jmxtrans for
-            # mirror maker monitoring and these params are removed from
-            # confluent::kafka::mirror::instance
-            'monitoring_enabled'  => false,
             'jmx_port'            => $jmx_base_port + $process,
             'group_id'            => "kafka-mirror-${mirror_instance_name}",
         }

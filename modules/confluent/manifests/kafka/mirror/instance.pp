@@ -80,10 +80,6 @@
 # [*java_opts*]
 #   Extra Java options.  Default: undef
 #
-# [*monitoring_enabled*]
-#   If true, both ::jmxtrans and ::alerts will be defined
-#   on this node for this MirrorMaker instance.  Default: true
-#
 # == Usage
 #
 #   # Mirror the 'main' Kafka cluster
@@ -129,8 +125,6 @@ define confluent::kafka::mirror::instance(
     $offset_commit_interval_ms    = 10000,
     $heap_opts                    = undef,
     $java_opts                    = undef,
-
-    $monitoring_enabled           = true,
 
     $consumer_properties_template = 'confluent/kafka/mirror/consumer.properties.erb',
     $producer_properties_template = 'confluent/kafka/mirror/producer.properties.erb',
@@ -207,26 +201,5 @@ define confluent::kafka::mirror::instance(
             File["/etc/kafka/mirror/${mirror_name}/producer.properties"],
             File["/etc/default/kafka-mirror-${mirror_name}"],
         ],
-    }
-
-    if $monitoring_enabled {
-        # Include Kafka Mirror Jmxtrans class
-        # to send Kafka MirrorMaker metrics to statsd.
-        # metrics will look like:
-        # kafka.mirror.$mirror_name.kafka-mirror. ...
-        $group_prefix = "kafka.mirror.${mirror_name}."
-        confluent::kafka::mirror::jmxtrans { $mirror_name:
-            group_prefix => $group_prefix,
-            statsd       => hiera('statsd', undef),
-            jmx_port     => $jmx_port,
-            require      => Systemd::Service["kafka-mirror-${mirror_name}"],
-        }
-
-        # Monitor kafka in production
-        if $::realm == 'production' {
-            confluent::kafka::mirror::alerts { $mirror_name:
-                group_prefix => $group_prefix,
-            }
-        }
     }
 }
