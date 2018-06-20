@@ -57,8 +57,6 @@ class role::kafka::analytics::broker {
     }
 
     class { '::confluent::kafka::common':
-        # TODO: These should be removed once they are
-        # the default in ::confluent::kafka module
         scala_version => '2.11.7',
         kafka_version => '0.9.0.1-1',
     }
