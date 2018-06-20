@@ -156,7 +156,11 @@ def labsdb_check_labsdb1005():
 @check('/dumps')
 def dumps_read_check():
     dumpdir = "/public/dumps/public/enwiki"
-    dumps = os.listdir(dumpdir)
+    # dir names in here are YYYYMMDD, 'latest', and maybe some junk
+    # this ensures we get the oldest run of the YYYYMMDD ones,
+    # which should have a status.html file that is no longer being
+    # updated
+    dumps = sorted(os.listdir(dumpdir))
     statuspath = os.path.join(dumpdir, dumps[0], 'status.html')
     with open(statuspath) as f:
         content = f.read()
