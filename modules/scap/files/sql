@@ -2,79 +2,25 @@
 
 # This file is managed by Puppet (modules/scap/files/sql).
 
-# Read configuration.
-. /etc/profile.d/mediawiki.sh
-MWMULTIDIR=$MEDIAWIKI_DEPLOYMENT_DIR/multiversion
-
-# Database that the user wants to read, or a special parameter.
-db=$1
-shift
-
-if [ -z "$db" ] || [ "$db" = "--help" ]; then
-    echo 'Usage: sql [--write | --group group] <dbname> [mysqloptions]'
-    exit 0
-elif [ "$db" = "--write" ]; then
-    hostcode="echo \$lb->getServerName(0);"
-
-    # Database will be the next parameter
-    db=$1
-    shift
-elif [ "$db" = "--group" ]; then
-    # Explicitly asked for a group
-    group=$1
-    shift
-
-    if echo $group | grep -qvP '^[a-z]+\z'; then
-        echo "group must be a string containing only lowercase letters"
-        exit 1
-    fi
-    hostcode="\$index = \$lb->getReaderIndex('"$group"'); if(\$index === false) exit(101); echo \$lb->getServerName(\$index);"
-
-    # Database is the next param
-    db=$1
-    shift
-else
-    hostcode="echo \$lb->getServerName(\$lb->getReaderIndex());"
-fi
-
-# Look up MySQL host to connect to.  For centralauth the host cannot
-# be determined this way, so we need to use fawiki instead as it is
-# located on the same server in both production and labs.
-# wikishared is hosted on x1 (i.e. without any local wikis), just use
-# meta to lookup the password.
-if [ "$db" = "centralauth" ]; then
-    lookupdb="fawiki"
-elif [ "$db" = "wikishared" ]; then
-    lookupdb="metawiki"
-else
-    lookupdb="$db"
-fi
-
-if [ "$db" = "wikishared" ]; then
-    lbcode="\$lb = wfGetLBFactory()->getExternalLB('extension1');"
-else
-    lbcode="\$lb = wfGetLB();"
-fi
-host=`echo $lbcode $hostcode | /usr/local/bin/mwscript eval.php --wiki="$lookupdb"`
-
-exitCode=$?
-if [ $exitCode -ne 0 ]; then
-    # PHP error, probably an invalid DB or group
-    if [ $exitCode -eq 101 ]; then
-        echo "Error looking up group \"$group\"" 1>&2
-    else
-        echo "Error looking up DB \"$db\"" 1>&2
-    fi
-    exit 1
-fi
-
-port=3306
-if echo "$host" | grep -qP ':\d+\z'; then
-    port=`echo "$host" | sed 's/.*://'`
-    host=`echo "$host" | sed 's/:[0-9]\+$//'`
-fi
-
-pass=`echo 'echo \$wgDBadminpassword;' | /usr/local/bin/mwscript eval.php --wiki="$lookupdb"`
-
-# Execute mysql.
-exec mysql -u wikiadmin -p$pass -h "$host" --port $port -D $db "$@"
+case "$1" in
+    "" | --help)
+        exec mwscript mysql.php --wiki=metawiki --help
+        ;;
+    --write | --group)
+        echo "A DB name or --wiki must be the first parameter to sql" >&2
+        echo "Example: sql enwiki --write" >&2
+        ;;
+    --*)
+        # If the user is passing options, assume they know what they're doing
+        exec mwscript mysql.php "$@"
+        ;;
+    *)
+        # --wikidb works for any DB that MW can figure out a hostname for.
+        # We can pass any valid wiki for --wiki, it doesn't need to be in the
+        # same section. This works for centralauth, and even for the mystery
+        # DBs in s3 that aren't known to MW at all, like jamestemp and katesdb.
+        db="$1"
+        shift
+        exec mwscript mysql.php --wiki=metawiki --wikidb="$db" "$@"
+        ;;
+esac
