@@ -28,6 +28,8 @@ class profile::prometheus::alerts {
         method          => 'gt',
         warning         => 180,
         critical        => 200,
+        retry_interval  => 15,
+        retries         => 4,
         contact_group   => 'analytics',
         dashboard_links => ['https://grafana.wikimedia.org/dashboard/db/druid?refresh=1m&panelId=46&fullscreen&orgId=1&var-cluster=druid_analytics&var-druid_datasource=All']
     }
@@ -39,6 +41,8 @@ class profile::prometheus::alerts {
         method          => 'gt',
         warning         => 180,
         critical        => 200,
+        retry_interval  => 15,
+        retries         => 4,
         contact_group   => 'analytics',
         dashboard_links => ['https://grafana.wikimedia.org/dashboard/db/druid?refresh=1m&panelId=46&fullscreen&orgId=1&var-cluster=druid_public&var-druid_datasource=All']
     }
