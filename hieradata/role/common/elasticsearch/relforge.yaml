@@ -3,55 +3,52 @@ cluster: relforge
 admin::groups:
   - elasticsearch-roots
 
-# We should be able to run "OK" with a single server.
-profile::elasticsearch::recover_after_nodes: 1
-profile::elasticsearch::recover_after_time: '1m'
-
 profile::elasticsearch::cirrus::ferm_srange: '$LABS_NETWORKS'
 
 # T130329
 profile::base::check_disk_options: -w 15% -c 10% -W 6% -K 3% -l -e -A -i "/srv/sd[a-b][1-3]" --exclude-type=tracefs
 
-profile::elasticsearch::awareness_attributes: ''
 profile::elasticsearch::rack: ''
 profile::elasticsearch::row: ''
-profile::elasticsearch::search_shard_count_limit: 1000
-
-# Allow reindex from eqiad or codfw to relforge
-profile::elasticsearch::reindex_remote_whitelist: 'search.svc.eqiad.wmnet:9243,search.svc.codfw.wmnet:9243'
-
-# By default elasticsearch sets this to ((# of available_processors * 3) / 2) + 1,
-# which works out to 49 for our servers. When search is stalled on IO it makes sense
-# to have more threads than cores, but we never see our servers stalled out on IO.
-# We have seen (T169498) servers completely exhaust their CPU though, so setting
-# this to match cpu counts to prevent overcommit of CPU resources.
-profile::elasticsearch::search_thread_pool_executors: 32
-
-# Make the full cpu resources available for indexing
-profile::elasticsearch::bulk_thread_pool_executors: 32
-profile::elasticsearch::bulk_thread_pool_capacity: 1000,
-
-# Increase the per-node cache for compiled LTR models from default 10MB
-profile::elasticsearch::ltr_cache_size: '100mb'
-
-profile::elasticsearch::http_port: 9200
-profile::elasticsearch::cirrus::tls_port: 9243
-profile::elasticsearch::transport_tcp_port: 9300
-
-
-profile::elasticsearch::auto_create_index: false
-
 profile::elasticsearch::base_data_dir: /srv/elasticsearch
+profile::elasticsearch::common_settings:
+    heap_memory: '30G'
+    awareness_attributes: ''
+    # We should be able to run "OK" with a single server.
+    recover_after_nodes: 1
+    recover_after_time: '1m'
 
-# We need these plugins to be loaded in order to work properly. This will keep
-# elasticsearch from starting if these plugins are not available.
-profile::elasticsearch::plugins_mandatory:
-  - experimental-highlighter
-  - extra
-  - analysis-icu
+    search_shard_count_limit: 1000
 
-profile::elasticsearch::filter_cache_size: '20%'
-profile::elasticsearch::script_max_compilations_per_minute: 10000
+    # Allow reindex from eqiad or codfw to relforge
+    reindex_remote_whitelist: 'search.svc.eqiad.wmnet:9243,search.svc.codfw.wmnet:9243'
+
+    # By default elasticsearch sets this to ((# of available_processors * 3) /
+    # 2) + 1, which works out to 49 for our servers. When search is stalled on
+    # IO it makes sense to have more threads than cores, but we never see our
+    # servers stalled out on IO.  We have seen (T169498) servers completely
+    # exhaust their CPU though, so setting this to match cpu counts to prevent
+    # overcommit of CPU resources.
+    search_thread_pool_executors: 32
+
+    # Make the full cpu resources available for indexing
+    bulk_thread_pool_executors: 32
+    bulk_thread_pool_capacity: 1000,
+
+    # Increase the per-node cache for compiled LTR models from default 10MB
+    ltr_cache_size: '100mb'
+
+    http_port: 9200
+    tls_port: 9243
+    transport_tcp_port: 9300
+    auto_create_index: false
+    plugins_mandatory:
+      - experimental-highlighter
+      - extra
+      - analysis-icu
+    filter_cache_size: '20%'
+    script_max_compilations_per_minute: 10000
+
 
 # MjoLniR daemon configuration
 profile::mjolnir::kafka_msearch_daemon::kafka_cluster: jumbo-eqiad

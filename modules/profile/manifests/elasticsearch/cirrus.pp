@@ -6,11 +6,7 @@
 # For documentation of parameters, see the elasticsearch profile.
 #
 class profile::elasticsearch::cirrus(
-    String $cluster_name = hiera('profile::elasticsearch::cluster_name'),
-    Wmflib::IpPort $http_port = hiera('profile::elasticsearch::http_port'),
-    Wmflib::IpPort $tls_port = hiera('profile::elasticsearch::cirrus::tls_port'),
     String $ferm_srange = hiera('profile::elasticsearch::cirrus::ferm_srange'),
-    String $certificate_name = hiera('profile::elasticsearch::cirrus::certificate_name'),
     String $storage_device = hiera('profile::elasticsearch::cirrus::storage_device'),
     Array[String] $prometheus_nodes = hiera('prometheus_nodes'),
 ) {
@@ -25,17 +21,38 @@ class profile::elasticsearch::cirrus(
     # same node we need to use collectors.
     Package['wmf-elasticsearch-search-plugins'] -> Service <| tag == 'elasticsearch' |>
 
-    ferm::service { 'elastic-http':
-        proto   => 'tcp',
-        port    => $http_port,
-        notrack => true,
-        srange  => $ferm_srange,
-    }
+    # Alternatively we could pass these again?
+    # certificate_name and tls_port aren't even
+    # elasticsearch::instance params,
 
-    ferm::service { 'elastic-https':
-        proto  => 'tcp',
-        port   => $tls_port,
-        srange => $ferm_srange,
+    $::profile::elasticsearch::configured_instances.each |$instance_title, $instance_params| {
+        $cluster_name = $instance_params['cluster_name']
+        $certificate_name = $instance_params['certificate_name']
+        $http_port = $instance_params['http_port']
+        $tls_port = $instance_params['tls_port']
+
+        ferm::service { "elastic-http-${http_port}":
+            proto   => 'tcp',
+            port    => $http_port,
+            notrack => true,
+            srange  => $ferm_srange,
+        }
+
+        ferm::service { "elastic-https-${tls_port}":
+            proto  => 'tcp',
+            port   => $tls_port,
+            srange => $ferm_srange,
+        }
+
+        elasticsearch::tlsproxy { $cluster_name:
+            certificate_name => $certificate_name,
+            upstream_port    => $http_port,
+            tls_port         => $tls_port,
+        }
+
+        elasticsearch::log::hot_threads_cluster { $cluster_name:
+            http_port => $http_port,
+        }
     }
 
     file { '/etc/udev/rules.d/elasticsearch-readahead.rules':
@@ -52,26 +69,21 @@ class profile::elasticsearch::cirrus(
         refreshonly => true,
     }
 
-    elasticsearch::tlsproxy { $cluster_name:
-        certificate_name => $certificate_name,
-        upstream_port    => $http_port,
-        tls_port         => $tls_port,
-    }
-
-    # Install the hot threads collector
-    elasticsearch::log::hot_threads_cluster { $cluster_name:
-        http_port => $http_port,
-    }
-
     # Install prometheus data collection
-    profile::prometheus::elasticsearch_exporter { "${::hostname}:${http_port}":
-        prometheus_nodes   => $prometheus_nodes,
-        prometheus_port    => 9108,
-        elasticsearch_port => $http_port,
-    }
-    profile::prometheus::wmf_elasticsearch_exporter { "${::hostname}:${http_port}":
-        prometheus_nodes   => $prometheus_nodes,
-        prometheus_port    => 9109,
-        elasticsearch_port => $http_port,
+    $::profile::elasticsearch::configured_instances.reduce(9108) |$prometheus_port, $kv_pair| {
+        $instance_params = $kv_pair[1]
+        $http_port = $instance_params['http_port']
+
+        profile::prometheus::elasticsearch_exporter { "${::hostname}:${http_port}":
+            prometheus_nodes   => $prometheus_nodes,
+            prometheus_port    => $prometheus_port,
+            elasticsearch_port => $http_port,
+        }
+        profile::prometheus::wmf_elasticsearch_exporter { "${::hostname}:${http_port}":
+            prometheus_nodes   => $prometheus_nodes,
+            prometheus_port    => $prometheus_port + 1,
+            elasticsearch_port => $http_port,
+        }
+        $prometheus_port + 2
     }
 }

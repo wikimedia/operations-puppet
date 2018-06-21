@@ -1,59 +1,64 @@
-# eqiad prod name
-profile::elasticsearch::cluster_name: production-search-eqiad
-
-# ES-specific: Not default
-profile::elasticsearch::unicast_hosts: # this is also the list of master eligible nodes
-  - elastic1030.eqiad.wmnet
-  - elastic1036.eqiad.wmnet
-  - elastic1040.eqiad.wmnet
-
 role::lvs::realserver::pools:
   search: {}
 
-profile::elasticsearch::cluster_hosts:
-  - elastic1017.eqiad.wmnet
-  - elastic1018.eqiad.wmnet
-  - elastic1019.eqiad.wmnet
-  - elastic1020.eqiad.wmnet
-  - elastic1022.eqiad.wmnet
-  - elastic1023.eqiad.wmnet
-  - elastic1024.eqiad.wmnet
-  - elastic1025.eqiad.wmnet
-  - elastic1026.eqiad.wmnet
-  - elastic1027.eqiad.wmnet
-  - elastic1028.eqiad.wmnet
-  - elastic1029.eqiad.wmnet
-  - elastic1030.eqiad.wmnet
-  - elastic1031.eqiad.wmnet
-  - elastic1032.eqiad.wmnet
-  - elastic1033.eqiad.wmnet
-  - elastic1034.eqiad.wmnet
-  - elastic1035.eqiad.wmnet
-  - elastic1036.eqiad.wmnet
-  - elastic1037.eqiad.wmnet
-  - elastic1038.eqiad.wmnet
-  - elastic1039.eqiad.wmnet
-  - elastic1040.eqiad.wmnet
-  - elastic1041.eqiad.wmnet
-  - elastic1042.eqiad.wmnet
-  - elastic1043.eqiad.wmnet
-  - elastic1044.eqiad.wmnet
-  - elastic1045.eqiad.wmnet
-  - elastic1046.eqiad.wmnet
-  - elastic1047.eqiad.wmnet
-  - elastic1048.eqiad.wmnet
-  - elastic1049.eqiad.wmnet
-  - elastic1050.eqiad.wmnet
-  - elastic1051.eqiad.wmnet
-  - elastic1052.eqiad.wmnet
+profile::elasticsearch::dc_settings:
+    # eqiad prod name
+    cluster_name: production-search-eqiad
 
-# TODO at what point do we need to update this number?
-profile::elasticsearch::expected_nodes: 35
+    # ES-specific: Not default
+    unicast_hosts: # this is also the list of master eligible nodes
+      - elastic1030.eqiad.wmnet
+      - elastic1036.eqiad.wmnet
+      - elastic1040.eqiad.wmnet
 
-# We should be able to run "OK" with 24 servers.
-profile::elasticsearch::recover_after_nodes: 24
 
-profile::elasticsearch::cirrus::certificate_name: 'search.svc.eqiad.wmnet'
+    cluster_hosts:
+      - elastic1017.eqiad.wmnet
+      - elastic1018.eqiad.wmnet
+      - elastic1019.eqiad.wmnet
+      - elastic1020.eqiad.wmnet
+      - elastic1022.eqiad.wmnet
+      - elastic1023.eqiad.wmnet
+      - elastic1024.eqiad.wmnet
+      - elastic1025.eqiad.wmnet
+      - elastic1026.eqiad.wmnet
+      - elastic1027.eqiad.wmnet
+      - elastic1028.eqiad.wmnet
+      - elastic1029.eqiad.wmnet
+      - elastic1030.eqiad.wmnet
+      - elastic1031.eqiad.wmnet
+      - elastic1032.eqiad.wmnet
+      - elastic1033.eqiad.wmnet
+      - elastic1034.eqiad.wmnet
+      - elastic1035.eqiad.wmnet
+      - elastic1036.eqiad.wmnet
+      - elastic1037.eqiad.wmnet
+      - elastic1038.eqiad.wmnet
+      - elastic1039.eqiad.wmnet
+      - elastic1040.eqiad.wmnet
+      - elastic1041.eqiad.wmnet
+      - elastic1042.eqiad.wmnet
+      - elastic1043.eqiad.wmnet
+      - elastic1044.eqiad.wmnet
+      - elastic1045.eqiad.wmnet
+      - elastic1046.eqiad.wmnet
+      - elastic1047.eqiad.wmnet
+      - elastic1048.eqiad.wmnet
+      - elastic1049.eqiad.wmnet
+      - elastic1050.eqiad.wmnet
+      - elastic1051.eqiad.wmnet
+      - elastic1052.eqiad.wmnet
 
-# Allow reindex from codfw to eqiad
-profile::elasticsearch::reindex_remote_whitelist: 'search.svc.codfw.wmnet:9243'
+    # TODO at what point do we need to update this number?
+    expected_nodes: 35
+
+    # We should be able to run "OK" with 24 servers.
+    recover_after_nodes: 24
+
+    # This doesn't really go here, it's only used in the elasticsearch::cirrus
+    # profile and not from the elasticsearch profile directly. Need better
+    # way to declare per-cluster values for sub-profiles.
+    certificate_name: 'search.svc.eqiad.wmnet'
+
+    # Allow reindex from codfw to eqiad
+    reindex_remote_whitelist: 'search.svc.codfw.wmnet:9243'

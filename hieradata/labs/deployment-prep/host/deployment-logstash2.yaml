@@ -1,22 +1,19 @@
 profile::base::remote_syslog: []
 
 # ES-specific
-elasticsearch::auto_create_index: true
-elasticsearch::cluster_name: labs-logstash-eqiad
-elasticsearch::expected_nodes: 1
-elasticsearch::heap_memory: '5G'
-elasticsearch::minimum_master_nodes: 1
-elasticsearch::recover_after_nodes: 1
-elasticsearch::recover_after_time: '1m'
-elasticsearch::graylog_hosts: undef
-# Needed to keep from trying to join cirrussearch cluster
-elasticsearch::unicast_hosts:
-  - deployment-logstash2.deployment-prep.eqiad.wmflabs
-elasticsearch::auto_create_index: '+logstash-*,-*'
-
-# Logstash specific
-logstash::cluster_hosts:
-  - deployment-logstash2.deployment-prep.eqiad.wmflabs
+elasticsearch::default_instance_params:
+    cluster_name: labs-logstash-eqiad
+    expected_nodes: 1
+    heap_memory: '5G'
+    minimum_master_nodes: 1
+    recover_after_nodes: 1
+    recover_after_time: '1m'
+    # Needed to keep from trying to join cirrussearch cluster
+    unicast_hosts:
+      - deployment-logstash2.deployment-prep.eqiad.wmflabs
+    auto_create_index: '+logstash-*,-*'
+    cluster_hosts:
+      - deployment-logstash2.deployment-prep.eqiad.wmflabs
 
 # Kibana
 role::kibana::vhost: logstash-beta.wmflabs.org

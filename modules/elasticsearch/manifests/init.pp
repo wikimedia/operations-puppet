@@ -3,237 +3,61 @@
 # This class installs/configures/manages the elasticsearch service.
 #
 # == Parameters:
-# - $cluster_name:  name of the cluster for this elasticsearch instance to join
-#       never name your cluster "elasticsearch" because that is the default
-#       and you don't want servers without any configuration to join your
-#       cluster.
-# - $heap_memory:   amount of memory to allocate to elasticsearch.  Defaults to
-#       "2G".  Should be set to about half of ram or a 30G, whichever is
-#       smaller.
-# - $base_data_dir: Base path to where elasticsearch stores its data. Actual
-#       data path will be $base_data_dir/$cluster_name.
-#       Default: /srv/elasticsearch
-# - $plugins_dir: value for path.plugins.  Defaults to /srv/deployment/elasticsearch/plugins.
-# - $plugins_mandatory: list of mandatory plugins.  Defaults to undef.
-# - $minimum_master_nodes:  how many master nodes must be online for this node
-#       to believe that the Elasticsearch cluster is functioning correctly.
-#       Defaults to 1.  Should be set to number of master eligible nodes in
-#       cluster / 2 + 1.
-# - $master_eligible:  is this node eligible to be a master node?  Defaults to
-#       true.
-# - $holds_data: should this node hold data?  Defaults to true.
-# - $auto_create_index: should the cluster automatically create new indices?
-#       Defaults to false.
-# - $expected_nodes: after a full cluster restart the cluster will immediately
-#       start after this many nodes rejoin.  Defaults to 1 but shouldn't stay
-#       that way in production.  Should be set to the number of nodes in the
-#       cluster.
-# - $recover_after_nodes: after a full cluster restart once this many nodes
-#       join the cluster it will wait $recover_after_time for this for
-#       $expected_nodes to join.   If they don't it'll start anyway. Defaults to
-#       1 but shouldn't stay that way in production.  Set this to however many
-#       nodes would allow the cluster to limp along and continue working. Note
-#       that if the cluster does come up without all the nodes it'll have to
-#       create new replicas which is inefficient if the other node does come
-#       back.
-# - $recover_after_time: see $recover_after_nodes.  Defaults to a minute
-#       because that feels like a decent amount of time to wait for the
-#       remaining nodes to catch up.
-# - $awareness_attributes: attributes used for allocation awareness, comma
-#       separated.  Defaults to undef meaning none.
-# - $row: row this node is on.  Can be used for allocation awareness.  Defaults
-#       to undef meaning don't set it.
-# - $rack: rack this node is on.  Can be used for allocation awareness.
-#       Defaults to undef meaning don't set it.
-# - $unicast_hosts: hosts to seed Elasticsearch's unicast discovery mechanism.
-#       Add all the hosts in the cluster to this list.
-# - $bind_networks: networks to bind (both transport and http connectors)
-#       see https://www.elastic.co/guide/en/elasticsearch/reference/current/modules-network.html#network-interface-values
-# - $publish_host: host to publish (both transport and http connectors)
-#       see https://www.elastic.co/guide/en/elasticsearch/reference/current/modules-network.html
-# - $filter_cache_size: size of the filter cache.  See
-#       www.elasticsearch.org/guide/en/elasticsearch/reference/current/index-modules-cache.html
-#       for possible values.  Default is 10% like the Elasticsearch default.
-# - $bulk_thread_pool_capacity: queue depth for bulk actions of each node.
-# - $bulk_thread_pool_executors: number of executors for bulk actions on each
-#       node.
-# - $search_thread_pool_executors: number of executors for search actions on
-#       each node.
-# - $load_fixed_bitset_filters_eagerly: set to false to disable loading
-#        bitsets in memory when opening indices will slowdown queries but can
-#        significantly reduce heap usage.
-# - $gelf_hosts: array of hosts to which logs will be sent. Can be either a hostname
-#        or an array of hostnames. In the later case, one is choosen at random.
-#        If `undef` no logs will be shipped.
-# - $gelf_port: port on which the logs will be sent
-# - $gc_log: set to true to activate garbage collection logs
-#        Default: true
-# - $curator_uses_unicast_hosts: should curator try to connect to hosts
-#        configured for unicast discovery or only to localhost. Curator
-#        configuration allows to configure multiple hosts instead of just
-#        localhost, which make sense for robustness. In some cases, we do not
-#        want the API exposed outside of localhost, so using just localhost
-#        is useful in those cases.
-#        Default: true (use all hosts defined in unicast_hosts)
-# - $reindex_remote_whitelist: set to a comma delimited list of allowed remote
-#        host and port combinations (e.g. otherhost:9243, another:9243,
-#        127.0.10.*:9243, localhost:*). Scheme is ignored by the whitelist - only host
-#        and port are used. Defaults to undef, which means no remote reindex can occur.
-# - $script_max_compilations_per_minute: integer, max number of script
-#        compilations per minute, defaults to undef (see T171579).
-# - $ltr_cache_size: string, Size of memory cache for LTR plugin.
+# - $default_instance_params: Parameter overrides for ::elasticsearch::instance
+# - $java_package: Name of package containing appropriate JDK. Default: openjdk-8-jdk.
+# - $version: Version of elasticsearch to configure. Either 2 or 5. Default: 5.
+# - $logstash_host: Host to send logs to
+# - $logstash_gelf_port: Tcp port on $logstash_host to send gelf formatted logs to.
 #
 # == Sample usage:
 #
 #   class { "elasticsearch":
-#       cluster_name = 'labs-search'
+#       default_instance_params => {
+#           cluster_name => "labs-search",
+#       }
 #   }
 #
-class elasticsearch(
-    $cluster_name,
-    $node_name = $hostname,
-    $heap_memory = '2G',
-    $base_data_dir = '/srv/elasticsearch',
-    $plugins_dir = '/usr/share/elasticsearch/plugins',
-    $plugins_mandatory = undef,
-    $minimum_master_nodes = 1,
-    $master_eligible = true,
-    $holds_data = true,
-    $auto_create_index = false,
-    $expected_nodes = 1,
-    $recover_after_nodes = 1,
-    $recover_after_time = '1s',
-    $awareness_attributes = undef,
-    $row = undef,
-    $rack = undef,
-    $unicast_hosts = [],
-    $bind_networks = ['_local_', '_site_'],
-    $publish_host = $facts['ipaddress'],
-    $filter_cache_size = '10%',
-    $bulk_thread_pool_executors = undef,
-    $bulk_thread_pool_capacity = undef,
-    $search_thread_pool_executors = undef,
-    $load_fixed_bitset_filters_eagerly = true,
-    $logstash_host = undef,
-    $logstash_gelf_port = 12201,
-    $send_logs_to_logstash = true,
-    $gc_log = true,
-    $java_package = 'openjdk-8-jdk',
-    $version = 5,
-    $search_shard_count_limit = 1000,
-    $curator_uses_unicast_hosts = true,
-    $reindex_remote_whitelist = undef,
-    $script_max_compilations_per_minute = undef,
-    $ltr_cache_size = undef,
-    $http_port = 9200,
-    $transport_tcp_port = 9300,
+class elasticsearch (
+    Elasticsearch::InstanceParams $default_instance_params = {},
+    String $java_package                                   = 'openjdk-8-jdk',
+    Integer $version                                       = 5,
+    String $base_data_dir                                  = '/srv/elasticsearch',
+    Optional[String] $logstash_host                        = undef,
+    Optional[Wmflib::IpPort] $logstash_gelf_port           = 12201,
+    Optional[String] $rack                                 = undef,
+    Optional[String] $row                                  = undef,
 ) {
-
     # Check arguments
-    if $cluster_name == 'elasticsearch' {
-        fail('$cluster_name must not be set to "elasticsearch"')
-    }
-
     case $version {
         5: {}
         default: { fail("Unsupported elasticsearch version: ${version}") }
     }
 
-    validate_bool($gc_log)
-
-    if $script_max_compilations_per_minute != undef and $script_max_compilations_per_minute < 0 {
-        fail('script_max_compilations_per_minute should be > 0')
-    }
-
-    if $send_logs_to_logstash and $logstash_host == undef {
-        fail('Need a logstash_host to send logs to logstash')
-    }
-
-    if $logstash_host {
-        validate_string($logstash_host)
-    }
-
-    $gc_log_flags = $gc_log ? {
-        true    => [
-            "-Xloggc:/var/log/elasticsearch/${cluster_name}_jvm_gc.%p.log",
-            '-XX:+PrintGCDetails',
-            '-XX:+PrintGCDateStamps',
-            '-XX:+PrintGCTimeStamps',
-            '-XX:+PrintTenuringDistribution',
-            '-XX:+PrintGCCause',
-            '-XX:+PrintGCApplicationStoppedTime',
-            '-XX:+UseGCLogFileRotation',
-            '-XX:NumberOfGCLogFiles=10',
-            '-XX:GCLogFileSize=20M',
-        ],
-        default => [],
-    }
-
     class { '::elasticsearch::packages':
         java_package          => $java_package,
-        send_logs_to_logstash => $send_logs_to_logstash,
-    }
-
-    $curator_hosts = $curator_uses_unicast_hosts ? {
-        true    => concat($unicast_hosts, '127.0.0.1'),
-        default => [ '127.0.0.1' ],
+        # Hack to be resolved in followup patch
+        send_logs_to_logstash => pick_default($default_instance_params['send_logs_to_logstash'], true),
     }
 
     class { '::elasticsearch::curator': }
-    elasticsearch::curator::config { $cluster_name:
-        ensure  => present,
-        content => template('elasticsearch/curator_cluster.yaml.erb')
-    }
 
-    # These are implied from the systemd unit
-    $config_dir = "/etc/elasticsearch/${cluster_name}"
-    $data_dir = "${base_data_dir}/${cluster_name}"
-
-    file { $config_dir:
-        ensure => directory,
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0755',
-    }
-
-    file { "${config_dir}/elasticsearch.yml":
-        ensure  => file,
-        owner   => 'root',
-        group   => 'root',
-        content => template("elasticsearch/elasticsearch_${version}.yml.erb"),
-        mode    => '0444',
-        require => Package['elasticsearch'],
-    }
-
-    file { "${config_dir}/logging.yml":
+    # Remove any confusion about if this is used
+    file { '/etc/default/elasticsearch':
         ensure => absent,
     }
-    # log4j2.properties is used by elasticsearch 5.x
-    file { "${config_dir}/log4j2.properties":
-        ensure  => file,
-        owner   => 'root',
-        group   => 'root',
-        content => template('elasticsearch/log4j2.properties.erb'),
-        mode    => '0444',
-        require => Package['elasticsearch'],
-    }
-    file { "${config_dir}/jvm.options":
-        ensure  => file,
-        owner   => 'root',
-        group   => 'root',
-        content => template('elasticsearch/jvm.options.erb'),
-        mode    => '0444',
-        require => Package['elasticsearch'],
-    }
 
-    # elasticsearch refuses to start without the "scripts" directory, even if
-    # we do not actually use any scripts.
-    file { "${config_dir}/scripts":
-        ensure  => directory,
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0444',
-        require => Package['elasticsearch'],
+    # These files are created when the server is using the default cluster_name
+    # and are never written to when the server is using the correct cluster name
+    # thus leaving old files with no useful information named in such a way that
+    # someone might think they contain useful logs.
+    file { '/var/log/elasticsearch/elasticsearch.log':
+        ensure => absent,
+    }
+    file { '/var/log/elasticsearch/elasticsearch_index_indexing_slowlog.log':
+        ensure => absent,
+    }
+    file { '/var/log/elasticsearch/elasticsearch_index_search_slowlog.log':
+        ensure => absent,
     }
 
     logrotate::rule { 'elasticsearch':
@@ -245,31 +69,6 @@ class elasticsearch(
         not_if_empty  => true,
         rotate        => 7,
         compress      => true,
-    }
-
-    file { $data_dir:
-      ensure  => directory,
-      owner   => 'elasticsearch',
-      group   => 'elasticsearch',
-      mode    => '0755',
-      require => Package['elasticsearch'],
-    }
-    # GC logs rotation is done by the JVM, but on JVM restart, the logs left by
-    # the previous instance are left alone. This cron takes care of cleaning up
-    # GC logs older than 30 days.
-    cron { 'elasticsearch-gc-log-cleanup':
-        ensure  => present,
-        minute  => 12,
-        hour    => 2,
-        command => "find /var/log/elasticsearch -name '${cluster_name}_jvm_gc.*.log*' -mtime +30 -delete",
-    }
-    # Note that we don't notify the Elasticsearch service of changes to its
-    # config files because you need to be somewhat careful when restarting it.
-    # So, for now at least, we'll be restarting it manually.
-
-    # Remove any confusion about if this is being used
-    file { '/etc/default/elasticsearch':
-        ensure => absent,
     }
 
     # since we are using our own systemd unit, ensure that the service
@@ -284,35 +83,23 @@ class elasticsearch(
         ensure  => present,
         content => systemd_template("elasticsearch_${version}@"),
     }
-    service { "elasticsearch_${version}@${cluster_name}":
-        ensure   => 'running',
-        provider => 'systemd',
-        enable   => true,
-        tag      => 'elasticsearch',
-        require  => [
-            Package['elasticsearch'],
-            Systemd::Unit["elasticsearch_${version}@.service"],
-            File["${config_dir}/elasticsearch.yml"],
-            File["${config_dir}/logging.yml"],
-            File["${config_dir}/log4j2.properties"],
-            File["${config_dir}/jvm.options"],
-            File[$data_dir],
-        ],
+
+    $defaults_for_single_instance = {
+        http_port          => 9200,
+        transport_tcp_port => 9300,
     }
 
-    # Make sure that some pesky, misleading log files aren't kept around
-    # These files are created when the server is using the default cluster_name
-    # and are never written to when the server is using the correct cluster name
-    # thus leaving old files with no useful information named in such a way that
-    # someone might think they contain useful logs.
-    file { '/var/log/elasticsearch/elasticsearch.log':
-        ensure => absent,
-    }
-    file { '/var/log/elasticsearch/elasticsearch_index_indexing_slowlog.log':
-        ensure => absent,
-    }
-    file { '/var/log/elasticsearch/elasticsearch_index_search_slowlog.log':
-        ensure => absent,
+    elasticsearch::instance { $default_instance_params['cluster_name']:
+        version            => $version,
+        logstash_host      => $logstash_host,
+        logstash_gelf_port => $logstash_gelf_port,
+        base_data_dir      => $base_data_dir,
+        rack               => $rack,
+        row                => $row,
+        *                  => merge(
+            $defaults_for_single_instance,
+            $default_instance_params,
+        )
     }
 
     # Cluster management tool

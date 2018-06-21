@@ -1,19 +1,19 @@
-# eqiad prod name
-profile::elasticsearch::cluster_name: relforge-eqiad
+profile::elasticsearch::dc_settings:
+    # eqiad prod name
+    cluster_name: relforge-eqiad
 
-# ES-specific: Not default
-profile::elasticsearch::unicast_hosts:
-  - relforge1002.eqiad.wmnet
+    # ES-specific: Not default
+    unicast_hosts:
+      - relforge1002.eqiad.wmnet
 
-profile::elasticsearch::cluster_hosts:
-  - relforge1001.eqiad.wmnet
-  - relforge1002.eqiad.wmnet
+    cluster_hosts:
+      - relforge1001.eqiad.wmnet
+      - relforge1002.eqiad.wmnet
 
-profile::elasticsearch::expected_nodes: 2
-profile::elasticsearch::heap_memory: '30G'
-profile::elasticsearch::minimum_master_nodes: 1
+    expected_nodes: 2
+    minimum_master_nodes: 1
 
-profile::elasticsearch::cirrus::certificate_name: 'relforge.svc.eqiad.wmnet'
+    certificate_name: 'relforge.svc.eqiad.wmnet'
 
 has_lvs: false
 

@@ -15,18 +15,19 @@ k8s_admin_users:
 
 # Elasticsearch
 elasticsearch::version: 5
-elasticsearch::auto_create_index: true
-elasticsearch::cluster_name: labs-tools
-elasticsearch::curator_uses_unicast_hosts: false
-elasticsearch::expected_nodes: 3
-elasticsearch::heap_memory: '8G'
-elasticsearch::minimum_master_nodes: 2
-elasticsearch::recover_after_nodes: 2
-elasticsearch::recover_after_time: 1m
-elasticsearch::unicast_hosts:
-  - tools-elastic-01.tools.eqiad.wmflabs
-  - tools-elastic-02.tools.eqiad.wmflabs
-  - tools-elastic-03.tools.eqiad.wmflabs
+elasticsearch::default_instance_settings:
+    auto_create_index: true
+    cluster_name: labs-tools
+    curator_uses_unicast_hosts: false
+    expected_nodes: 3
+    heap_memory: '8G'
+    minimum_master_nodes: 2
+    recover_after_nodes: 2
+    recover_after_time: 1m
+    unicast_hosts:
+      - tools-elastic-01.tools.eqiad.wmflabs
+      - tools-elastic-02.tools.eqiad.wmflabs
+      - tools-elastic-03.tools.eqiad.wmflabs
 
 kubelet::pod_infra_container_image: 'docker-registry.tools.wmflabs.org/pause:2.0'
 profile::kubernetes::node::kubelet_extra_params:

@@ -9,40 +9,43 @@ admin::groups:
 # ES-specific
 # NOTE: cluster_name must be kept in sync with the backend
 # node config in hieradata/role/common/logstash/elasticsearch.yaml
-profile::elasticsearch::auto_create_index: true
-profile::elasticsearch::cluster_name: production-logstash-eqiad
-profile::elasticsearch::expected_nodes: 3
-profile::elasticsearch::heap_memory: '4G'
 profile::elasticsearch::rack: ''
 profile::elasticsearch::row: ''
-profile::elasticsearch::awareness_attributes: ''
-# The ES nodes that are run on the same box as Logstash+Kibana are only used
-# as client nodes to communicate with the backing cluster.
-profile::elasticsearch::holds_data: false
-profile::elasticsearch::minimum_master_nodes: 2
-profile::elasticsearch::recover_after_nodes: 2
-profile::elasticsearch::recover_after_time: '1m'
-profile::elasticsearch::unicast_hosts:
-  - logstash1004.eqiad.wmnet
-  - logstash1005.eqiad.wmnet
-  - logstash1006.eqiad.wmnet
+profile::elasticsearch::ferm_srange: ''
+profile::elasticsearch::dc_settings: {}
+profile::elasticsearch::base_config_dir: /etc/elasticsearch
 profile::elasticsearch::base_data_dir: '/var/lib/elasticsearch'
-profile::elasticsearch::http_port: 9200
-profile::elasticsearch::transport_tcp_port: 9300
-profile::elasticsearch::send_logs_to_logstash: false
-profile::elasticsearch::curator_uses_unicast_hosts: false
+profile::elasticsearch::common_settings:
+    awareness_attributes: ''
+    auto_create_index: true
+    cluster_name: production-logstash-eqiad
+    expected_nodes: 3
+    heap_memory: '4G'
+    # The ES nodes that are run on the same box as Logstash+Kibana are only used
+    # as client nodes to communicate with the backing cluster.
+    holds_data: false
+    minimum_master_nodes: 2
+    recover_after_nodes: 2
+    recover_after_time: '1m'
+    unicast_hosts:
+      - logstash1004.eqiad.wmnet
+      - logstash1005.eqiad.wmnet
+      - logstash1006.eqiad.wmnet
+    cluster_hosts:
+      - logstash1004.eqiad.wmnet
+      - logstash1005.eqiad.wmnet
+      - logstash1006.eqiad.wmnet
+      - logstash1007.eqiad.wmnet
+      - logstash1008.eqiad.wmnet
+      - logstash1009.eqiad.wmnet
+    auto_create_index: true
+    send_logs_to_logstash: false
+    curator_uses_unicast_hosts: false
+    http_port: 9200
+    transport_tcp_port: 9300
 
 # Logstash specific
 logstash::heap_memory: 1g
-
-
-profile::elasticsearch::cluster_hosts:
-  - logstash1004.eqiad.wmnet
-  - logstash1005.eqiad.wmnet
-  - logstash1006.eqiad.wmnet
-  - logstash1007.eqiad.wmnet
-  - logstash1008.eqiad.wmnet
-  - logstash1009.eqiad.wmnet
 
 role::logstash::collector::statsd_host: statsd.eqiad.wmnet
 

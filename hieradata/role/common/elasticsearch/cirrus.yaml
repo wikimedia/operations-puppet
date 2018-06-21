@@ -3,43 +3,61 @@ cluster: elasticsearch
 admin::groups:
   - elasticsearch-roots
 
-# More than 30G isn't very useful
-profile::elasticsearch::heap_memory: '30G'
-
-# Don't run if more than 1 master missing
-profile::elasticsearch::minimum_master_nodes: 2
-
-# wait that long for all nodes to restart. If not all nodes are present after
-# `recover_after_time`, recover anyway, as long as at least
-# `recover_after_nodes` are present.
-profile::elasticsearch::recover_after_time: '5m'
-
 # T130329
 profile::base::check_disk_options: -w 15% -c 10% -W 6% -K 3% -l -e -A -i "/srv/sd[a-b][1-3]" --exclude-type=tracefs
 
 profile::elasticsearch::cirrus::storage_device: md1
-
-profile::elasticsearch::awareness_attributes: 'row'
-
 profile::elasticsearch::cirrus::ferm_srange: '$DOMAIN_NETWORKS'
+profile::elasticsearch::instances: {}
+profile::elasticsearch::base_config_dir: /etc/elasticsearch
+profile::elasticsearch::base_data_dir: /srv/elasticsearch
+profile::elasticsearch::common_settings:
+    awareness_attributes: 'row'
+    # We need these plugins to be loaded in order to work properly. This will keep
+    # elasticsearch from starting if these plugins are not available.
+    plugins_mandatory:
+      - experimental-highlighter
+      - extra
+      - analysis-icu
 
-# mwgrep queries one copy of each shard in the cluster, which is currently just
-# over 3k shards. For it to work we need to increase the limit from default 1k
-profile::elasticsearch::search_shard_count_limit: 5000
+    # More than 30G isn't very useful
+    heap_memory: '30G'
 
-# By default elasticsearch sets this to ((# of available_processors * 3) / 2) + 1,
-# which works out to 49 for our servers. When search is stalled on IO it makes sense
-# to have more threads than cores, but we never see our servers stalled out on IO.
-# We have seen (T169498) servers completely exhaust their CPU though, so setting
-# this to match cpu counts to prevent overcommit of CPU resources.
-profile::elasticsearch::search_thread_pool_executors: 32
+    # Don't run if more than 1 master missing
+    minimum_master_nodes: 2
 
-# Increase the per-node cache for compiled LTR models from default 10MB
-profile::elasticsearch::ltr_cache_size: '100mb'
+    # wait that long for all nodes to restart. If not all nodes are present after
+    # `recover_after_time`, recover anyway, as long as at least
+    # `recover_after_nodes` are present.
+    recover_after_time: '5m'
 
-profile::elasticsearch::http_port: 9200
-profile::elasticsearch::cirrus::tls_port: 9243
-profile::elasticsearch::transport_tcp_port: 9300
+    # mwgrep queries one copy of each shard in the cluster, which is currently
+    # just over 3k shards. For it to work we need to increase the limit from
+    # default 1k
+    search_shard_count_limit: 5000
+
+    # By default elasticsearch sets this to ((# of available_processors * 3) /
+    # 2) + 1, which works out to 49 for our servers. When search is stalled on
+    # IO it makes sense to have more threads than cores, but we never see our
+    # servers stalled out on IO.  We have seen (T169498) servers completely
+    # exhaust their CPU though, so setting this to match cpu counts to prevent
+    # overcommit of CPU resources.
+    search_thread_pool_executors: 32
+
+    # Increase the per-node cache for compiled LTR models from default 10MB
+    ltr_cache_size: '100mb'
+
+    http_port: 9200
+    tls_port: 9243
+    transport_tcp_port: 9300
+
+    # Let apifeatureusage create their indices
+    auto_create_index: '+apifeatureusage-*,-*'
+
+    script_max_compilations_per_minute: 10000
+    bulk_thread_pool_executors: 6
+    bulk_thread_pool_capacity: 1000
+    filter_cache_size: '20%'
 
 # Msearch daemons read same topic in same consumer group in all dcs. They
 # toggle themselves on/off based on load of the local elasticsearch cluster.
@@ -60,20 +78,3 @@ profile::mjolnir::kafka_bulk_daemon::group_id: "cirrussearch_updates_%{::site}"
 profile::mjolnir::kafka_bulk_daemon::topics:
   - eqiad.cirrussearch.page-index-update
   - codfw.cirrussearch.page-index-update
-
-# Let apifeatureusage create their indices
-profile::elasticsearch::auto_create_index: '+apifeatureusage-*,-*'
-
-profile::elasticsearch::base_data_dir: /srv/elasticsearch
-
-# We need these plugins to be loaded in order to work properly. This will keep
-# elasticsearch from starting if these plugins are not available.
-profile::elasticsearch::plugins_mandatory:
-  - experimental-highlighter
-  - extra
-  - analysis-icu
-
-profile::elasticsearch::script_max_compilations_per_minute: 10000
-profile::elasticsearch::bulk_thread_pool_executors: 6
-profile::elasticsearch::bulk_thread_pool_capacity: 1000
-profile::elasticsearch::filter_cache_size: '20%'
