@@ -7,10 +7,13 @@
     gitBasicAuthPolicy = HTTP_LDAP
 [cache]
     directory = cache
+[cache "changeid_project"]
+    memoryLimit = 2048
 [cache "ldap_groups_byinclude"]
     maxAge = 1 hour
 [cache "ldap_usernames"]
     maxAge = 1 hour
+    memoryLimit = 2048
 [cache "projects"]
     memoryLimit = 2048
     loadOnStartup = true
