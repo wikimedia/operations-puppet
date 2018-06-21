@@ -54,7 +54,11 @@
 #
 # [*has_spec*]
 #   If the service specifies a swagger spec, use it to thoroughly
-#   monitor it
+#   monitor it. Default: false
+#
+# [*monitor_to*]
+#   The maximum amount of time the service can take to respond to monitoring
+#   requests. It only has an effect if has_spec == true. Default: 5
 #
 # [*repo*]
 #   The name of the repo to use for deployment. Default: ${title}/deploy
@@ -159,6 +163,7 @@ define service::node(
     $no_file         = 10000,
     $healthcheck_url = '/_info',
     $has_spec        = false,
+    $monitor_to      = 5,
     $repo            = "${title}/deploy",
     $starter_module  = './src/app.js',
     $entrypoint      = '',

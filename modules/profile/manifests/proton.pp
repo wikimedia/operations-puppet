@@ -12,6 +12,7 @@ class profile::proton(
     service::node { 'proton':
         port              => 24766,
         has_spec          => true,
+        monitor_to        => 10,
         healthcheck_url   => '',
         deployment        => 'scap3',
         deployment_config => true,
