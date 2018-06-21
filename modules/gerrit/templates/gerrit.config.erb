@@ -14,6 +14,19 @@
 [cache "ldap_usernames"]
     maxAge = 1 hour
     memoryLimit = 2048
+# to be removed when we upgrade to 2.16 / 3.0
+[cache "groups"]
+    # this is what upstream use to make it unlimited
+    # in 2.16 / 3.0
+    memoryLimit = 9223372036854775807
+[cache "groups_byname"]
+    # this is what upstream use to make it unlimited
+    # in 2.16 / 3.0
+    memoryLimit = 9223372036854775807
+[cache "groups_byuuid"]
+    # this is what upstream use to make it unlimited
+    # in 2.16 / 3.0
+    memoryLimit = 9223372036854775807
 [cache "projects"]
     memoryLimit = 2048
     loadOnStartup = true
