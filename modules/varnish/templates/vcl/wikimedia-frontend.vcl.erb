@@ -363,7 +363,7 @@ sub vcl_recv {
 	// future removal of protocol-level support.
 	if (req.http.X-Connection-Properties ~ "C=AES128-SHA;"
 		&& req.url ~ "^/wiki/" && req.url !~ ":" && req.method == "GET"
-		&& std.random(0,100) < 1.0) {
+		&& std.random(0,100) < 4.0) {
 		return (synth(418, "Browser Connection Security AES128-SHA intercepted request"));
 	}
 	if (req.url == "/sec-warning") {
