@@ -444,7 +444,8 @@ groups:
     description: Service deploy users
     members: [bd808, eevans, mobrovac, ppchelko, demon, twentyafterfour, thcipriani, dduvall,
               bsitzmann, mholloway-shell, kartik, halfak, ladsgroup, smalyshev, hoo, tgr,
-              ssastry, cscott, arlolra, jdlrobson, maxsem, awight, jforrester]
+              ssastry, cscott, arlolra, jdlrobson, maxsem, awight, jforrester, niedzielski,
+              pmiazga, phuedx]
     privileges: []
 
   deploy-aqs:
