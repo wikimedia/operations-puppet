@@ -3260,7 +3260,7 @@ host labstore1008 {
     filename "lpxelinux.0";
 }
 
-host labstore 1009 {
+host labstore1009 {
     hardware ethernet d0:94:66:2d:94:3b;
     fixed-address labstore1009.wikimedia.org;
     option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
