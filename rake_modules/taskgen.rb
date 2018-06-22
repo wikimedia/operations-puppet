@@ -1,3 +1,4 @@
+require 'fileutils'
 require 'git'
 require 'set'
 require 'rake'
@@ -22,7 +23,8 @@ class TaskGen < ::Rake::TaskLib
       :syntax,
       :rubocop,
       :spec,
-      :tox
+      :tox,
+      :dhcp
     ]
     @git = GitOps.new(path)
     @changed_files = @git.changes_in_head
@@ -103,6 +105,39 @@ class TaskGen < ::Rake::TaskLib
       config.pattern = changed
     end
     [:puppet_lint]
+  end
+
+  def setup_dhcp
+    changed = @changed_files.select{ |x| File.fnmatch("modules/install_server/files/dhcpd/*", x) }
+    return [] if changed.empty?
+    unless File.exists?('/usr/sbin/dhcpd')
+      puts 'dhcp: skipping tests as dhcpd is not available'
+      return []
+    end
+    desc 'Check dhcp configuration is correct'
+    task :dhcp do
+      failures = 0
+      Dir.mktmpdir do |dir|
+        FileUtils.cp_r("modules/install_server/files/dhcpd", dir)
+        dhcp_config_dir = File.join dir, "dhcpd"
+        dhcp_config_file = File.join dhcp_config_dir, "dhcpd.conf"
+        dhcp_config = File.read(dhcp_config_file)
+        dhcp_config.gsub!(%r{/etc/dhcp}, dhcp_config_dir)
+
+        File.open(dhcp_config_file, "w") {|file| file.puts dhcp_config }
+        begin
+          puts "dhcp configuration: BEGIN TEST"
+          puts "=============================="
+          failures = 1 unless system('/usr/sbin/dhcpd', '-t', '-cf', dhcp_config_file)
+        rescue
+          failures = 1
+        end
+      end
+      abort("dhcp configuration: NOT OK") if failures == 1
+      puts "dhcp configuration: END TEST"
+      puts "=============================="
+    end
+    [:dhcp]
   end
 
   def setup_wmf_styleguide_delta
