@@ -116,6 +116,7 @@ class elasticsearch(
     $load_fixed_bitset_filters_eagerly = true,
     $logstash_host = undef,
     $logstash_gelf_port = 12201,
+    $send_logs_to_logstash = true,
     $gc_log = true,
     $java_package = 'openjdk-8-jdk',
     $version = 5,
@@ -144,7 +145,9 @@ class elasticsearch(
         fail('script_max_compilations_per_minute should be > 0')
     }
 
-    $send_logs_to_logstash = $logstash_host != undef
+    if $send_logs_to_logstash and $logstash_host == undef {
+        fail('Need a logstash_host to send logs to logstash')
+    }
 
     if $logstash_host {
         validate_string($logstash_host)

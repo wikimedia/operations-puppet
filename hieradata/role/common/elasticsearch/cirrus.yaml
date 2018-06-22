@@ -60,3 +60,20 @@ profile::mjolnir::kafka_bulk_daemon::group_id: "cirrussearch_updates_%{::site}"
 profile::mjolnir::kafka_bulk_daemon::topics:
   - eqiad.cirrussearch.page-index-update
   - codfw.cirrussearch.page-index-update
+
+# Let apifeatureusage create their indices
+profile::elasticsearch::auto_create_index: '+apifeatureusage-*,-*'
+
+profile::elasticsearch::base_data_dir: /srv/elasticsearch
+
+# We need these plugins to be loaded in order to work properly. This will keep
+# elasticsearch from starting if these plugins are not available.
+profile::elasticsearch::plugins_mandatory:
+  - experimental-highlighter
+  - extra
+  - analysis-icu
+
+profile::elasticsearch::script_max_compilations_per_minute: 10000
+profile::elasticsearch::bulk_thread_pool_executors: 6
+profile::elasticsearch::bulk_thread_pool_capacity: 1000
+profile::elasticsearch::filter_cache_size: '20%'

@@ -9,30 +9,34 @@ admin::groups:
 # ES-specific
 # NOTE: cluster_name must be kept in sync with the backend
 # node config in hieradata/role/common/logstash/elasticsearch.yaml
-elasticsearch::auto_create_index: true
-elasticsearch::cluster_name: production-logstash-eqiad
-elasticsearch::expected_nodes: 3
-elasticsearch::heap_memory: '4G'
+profile::elasticsearch::auto_create_index: true
+profile::elasticsearch::cluster_name: production-logstash-eqiad
+profile::elasticsearch::expected_nodes: 3
+profile::elasticsearch::heap_memory: '4G'
+profile::elasticsearch::rack: ''
+profile::elasticsearch::row: ''
+profile::elasticsearch::awareness_attributes: ''
 # The ES nodes that are run on the same box as Logstash+Kibana are only used
 # as client nodes to communicate with the backing cluster.
-elasticsearch::holds_data: false
-elasticsearch::master_eligible: false
-elasticsearch::minimum_master_nodes: 2
-elasticsearch::recover_after_nodes: 2
-elasticsearch::recover_after_time: '1m'
-elasticsearch::unicast_hosts:
+profile::elasticsearch::holds_data: false
+profile::elasticsearch::minimum_master_nodes: 2
+profile::elasticsearch::recover_after_nodes: 2
+profile::elasticsearch::recover_after_time: '1m'
+profile::elasticsearch::unicast_hosts:
   - logstash1004.eqiad.wmnet
   - logstash1005.eqiad.wmnet
   - logstash1006.eqiad.wmnet
-elasticsearch::base_data_dir: '/var/lib/elasticsearch'
-elasticsearch::http_port: 9200
-elasticsearch::transport_tcp_port: 9300
+profile::elasticsearch::base_data_dir: '/var/lib/elasticsearch'
+profile::elasticsearch::http_port: 9200
+profile::elasticsearch::transport_tcp_port: 9300
+profile::elasticsearch::send_logs_to_logstash: false
+profile::elasticsearch::curator_uses_unicast_hosts: false
 
 # Logstash specific
 logstash::heap_memory: 1g
 
 
-logstash::cluster_hosts:
+profile::elasticsearch::cluster_hosts:
   - logstash1004.eqiad.wmnet
   - logstash1005.eqiad.wmnet
   - logstash1006.eqiad.wmnet

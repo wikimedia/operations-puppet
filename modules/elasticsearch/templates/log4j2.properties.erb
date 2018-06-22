@@ -70,7 +70,7 @@ appender.index_indexing_slow_log_file.append = true
 appender.index_indexing_slow_log_file.layout.type = PatternLayout
 appender.index_indexing_slow_log_file.layout.pattern = [%d{ISO8601}][%-5p][%-25c] %m%n
 
-<% if @logstash_host %>
+<% if @send_logs_to_logstash %>
 # ship_to_logstash needs to also be added to rootLogger and slow loggers to actually ship logs
 appender.ship_to_logstash.name = ship_to_logstash
 appender.ship_to_logstash.type = Gelf

@@ -29,6 +29,7 @@ profile::elasticsearch::search_thread_pool_executors: 32
 
 # Make the full cpu resources available for indexing
 profile::elasticsearch::bulk_thread_pool_executors: 32
+profile::elasticsearch::bulk_thread_pool_capacity: 1000,
 
 # Increase the per-node cache for compiled LTR models from default 10MB
 profile::elasticsearch::ltr_cache_size: '100mb'
@@ -37,9 +38,25 @@ profile::elasticsearch::http_port: 9200
 profile::elasticsearch::cirrus::tls_port: 9243
 profile::elasticsearch::transport_tcp_port: 9300
 
+
+profile::elasticsearch::auto_create_index: false
+
+profile::elasticsearch::base_data_dir: /srv/elasticsearch
+
+# We need these plugins to be loaded in order to work properly. This will keep
+# elasticsearch from starting if these plugins are not available.
+profile::elasticsearch::plugins_mandatory:
+  - experimental-highlighter
+  - extra
+  - analysis-icu
+
+profile::elasticsearch::filter_cache_size: '20%'
+profile::elasticsearch::script_max_compilations_per_minute: 10000
+
 # MjoLniR daemon configuration
 profile::mjolnir::kafka_msearch_daemon::kafka_cluster: jumbo-eqiad
 profile::mjolnir::kafka_msearch_daemon::input_topic: mjolnir.msearch-relforge-request
 profile::mjolnir::kafka_msearch_daemon::output_topic: mjolnir.msearch-relforge-response
 profile::mjolnir::kafka_msearch_daemon::num_workers: 5
 profile::mjolnir::kafka_msearch_daemon::max_concurrent_searches: 10
+
