@@ -1,18 +1,23 @@
 <?php
-/* disabled until after migration because chase is using the
-   x-forwarded-for header for other purposes during migration.
-*/
 
-/*
 if (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {
   $_SERVER['REMOTE_ADDR'] = $_SERVER['HTTP_X_FORWARDED_FOR'];
 }
-*/
 
 if (!empty($_SERVER['HTTP_X_FORWARDED_PROTO'])
     && $_SERVER['HTTP_X_FORWARDED_PROTO'] == 'https') {
   $_SERVER['HTTPS'] = true;
 }
+
+PhabricatorStartup::addRateLimit(new PhabricatorClientRateLimit())
+  ->setLimitKey('rate')
+  ->setClientKey($_SERVER['REMOTE_ADDR'])
+  ->setLimit(<%= @request_rate_limit %>);
+
+PhabricatorStartup::addRateLimit(new PhabricatorClientConnectionLimit())
+  ->setLimitKey('conn')
+  ->setClientKey($_SERVER['REMOTE_ADDR'])
+  ->setLimit(<%= @client_connection_limit %>);
 
 class redirector {
   protected $config;

@@ -38,3 +38,9 @@ phabricator_cluster_search:
         roles:
           read: true
           write: true
+
+# Number of requests per minute for logged out users (per client IP)
+# logged in users are permitted 4x the request rate of logged-out users
+phabricator::request_rate_limit: 8
+# This is the number of concurrent connections per client IP:
+phabricator::connection_limit: 4
