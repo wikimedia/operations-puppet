@@ -103,6 +103,18 @@ class role::prometheus::tools {
                 }
             ]
             },
+            # Cloud Services Tools
+            # PAWS
+            {
+            'job_name'      => 'paws-hub',
+            'scheme'        => 'https',
+            'metrics_path'  => '/paws/hub/metrics',
+            'static_config' => [
+                {
+                    'targets' => [ 'paws.wmflabs.org' ]
+                }
+            ]
+            },
         ]
     }
 
