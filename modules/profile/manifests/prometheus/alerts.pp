@@ -54,13 +54,6 @@ class profile::prometheus::alerts {
         contact_group   => 'analytics',
         topic_blacklist => '.*(change-prop|\.job\.|changeprop).*',
     }
-    # main-eqiad -> analytics-eqiad (called 'eqiad' for history reasons).
-    # This will be removed once the analytics Kafka cluster is decommed.
-    profile::kafka::mirror::alerts { 'main-eqiad_to_eqiad':
-        #  For now, alert analytics admins, until alerts are more stable.
-        contact_group   => 'analytics',
-        topic_blacklist => '.*(change-prop|\.job\.).*',
-    }
 
     # Cross DC main-eqiad <-> main-codfw MirrorMakers.
     profile::kafka::mirror::alerts { 'main-eqiad_to_main-codfw':
