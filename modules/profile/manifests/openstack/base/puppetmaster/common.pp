@@ -36,6 +36,7 @@ class profile::openstack::base::puppetmaster::common(
         puppetmasters       => $puppetmasters,
         labweb_hosts        => $labweb_hosts,
         nova_controller     => $nova_controller,
+        designate_host      => $designate_host,
     }
 
     # Update git checkout.  This is done via a cron
