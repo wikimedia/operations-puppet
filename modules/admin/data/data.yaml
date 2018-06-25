@@ -70,7 +70,7 @@ groups:
               mobrovac, nuria, thcipriani, joal, eevans, mforns, dcausse,
               bsitzmann, mholloway-shell, dduvall, dereckson,
               ladsgroup, bawolff, zfilipin, addshore, niharika29, ppchelko, pmiazga,
-              musikanimal, jdrewniak, pnorman, sbisson, imarlier, jforrester]
+              musikanimal, jdrewniak, pnorman, sbisson, imarlier, jforrester, mbsantos]
     privileges: ['ALL = (www-data,apache,mwdeploy,l10nupdate) NOPASSWD: ALL',
                  'ALL = NOPASSWD: /sbin/restart hhvm',
                  'ALL = NOPASSWD: /sbin/start hhvm',
@@ -360,7 +360,7 @@ groups:
   maps-admins:
     gid: 753
     description: admin for maps clusters
-    members: [maxsem, eevans, pnorman, sbisson, catrope, mholloway-shell]
+    members: [maxsem, eevans, pnorman, sbisson, catrope, mholloway-shell, mbsantos]
     # TODO: Revisit this when moving into production
     privileges: ['ALL = NOPASSWD: /usr/sbin/service cassandra *',
                  'ALL = NOPASSWD: /bin/systemctl mask cassandra.service',
@@ -377,7 +377,7 @@ groups:
   kartotherian-admin:
     description: Group of kartotherian admins
     gid: 754
-    members: [maxsem, pnorman, sbisson, catrope, mholloway-shell]
+    members: [maxsem, pnorman, sbisson, catrope, mholloway-shell, mbsantos]
     privileges: ['ALL = NOPASSWD: /usr/sbin/service kartotherian *',
                  'ALL = NOPASSWD: /bin/systemctl mask kartotherian.service',
                  'ALL = NOPASSWD: /bin/systemctl unmask kartotherian.service',
@@ -412,7 +412,7 @@ groups:
   tilerator-admin:
     description: Group of tilerator admins
     gid: 758
-    members: [maxsem, pnorman, sbisson, catrope, mholloway-shell]
+    members: [maxsem, pnorman, sbisson, catrope, mholloway-shell, mbsantos]
     privileges: ['ALL = NOPASSWD: /usr/sbin/service tilerator *',
                  'ALL = NOPASSWD: /bin/systemctl mask tilerator.service',
                  'ALL = NOPASSWD: /bin/systemctl unmask tilerator.service',
@@ -425,7 +425,7 @@ groups:
   mobileapps-admin:
     description: Group of mobileapps admins
     gid: 759
-    members: [bsitzmann, mholloway-shell, mobrovac, jforrester]
+    members: [bsitzmann, mholloway-shell, mobrovac, jforrester, mbsantos]
     privileges: ['ALL = NOPASSWD: /usr/sbin/service mobileapps *',
                  'ALL = (mobileapps) NOPASSWD: ALL']
   mw-log-readers:
@@ -445,7 +445,7 @@ groups:
     members: [bd808, eevans, mobrovac, ppchelko, demon, twentyafterfour, thcipriani, dduvall,
               bsitzmann, mholloway-shell, kartik, halfak, ladsgroup, smalyshev, hoo, tgr,
               ssastry, cscott, arlolra, jdlrobson, maxsem, awight, jforrester, niedzielski,
-              pmiazga, phuedx]
+              pmiazga, phuedx, mbsantos]
     privileges: []
 
   deploy-aqs:
