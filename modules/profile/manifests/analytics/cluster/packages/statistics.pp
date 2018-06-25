@@ -61,18 +61,21 @@ class profile::analytics::cluster::packages::statistics {
     require_package ([
         'virtualenv',
         'libapache2-mod-python',
-        'python-mysqldb',           'python3-mysqldb',
-        'python-boto',              'python3-boto',  # Amazon S3 access (to get zero sms logs)
-        'python-ua-parser',         'python3-ua-parser',
-        'python-netaddr',           'python3-netaddr',
-        'python-pymysql',           'python3-pymysql',
-        'python-virtualenv',        'python3-virtualenv', # T84378
-        'python-dev',               'python3-dev',        # T83316
-        'python-protobuf',          'python3-protobuf',
-        'python-unidecode',         'python3-unidecode',
+        'python-mysqldb',               'python3-mysqldb',
+        'python-boto',                  'python3-boto',  # Amazon S3 access (to get zero sms logs)
+        'python-ua-parser',             'python3-ua-parser',
+        'python-netaddr',               'python3-netaddr',
+        'python-pymysql',               'python3-pymysql',
+        'python-virtualenv',            'python3-virtualenv', # T84378
+        'python-dev',                   'python3-dev',        # T83316
+        'python-protobuf',              'python3-protobuf',
+        'python-unidecode',             'python3-unidecode',
         # WMF maintains python-google-api at
         # https://gerrit.wikimedia.org/r/#/admin/projects/operations/debs/python-google-api
-        'python-google-api',        'python3-google-api', # T190767
+        'python-google-api',            'python3-google-api',           # T190767
+        'pythonpython-oauth2client',    'python3-oauth2client',         # T197896
+        'python-oauthlib',              'python3-oauthlib',             # T197896
+        'python-requests-oauthlib',     'python3-requests-oauthlib',    # T197896
     ])
 
     # FORTRAN packages (T89414)
