@@ -1,7 +1,7 @@
 class profile::openstack::base::glance(
     $version = hiera('profile::openstack::base::version'),
     $nova_controller = hiera('profile::openstack::base::nova_controller'),
-    $nova_controller_standby = hiera('profile::openstack::base::nova_controller_stanbdy'),
+    $nova_controller_standby = hiera('profile::openstack::base::nova_controller_standby'),
     $keystone_host = hiera('profile::openstack::base::keystone_host'),
     $auth_port = hiera('profile::openstack::base::keystone::auth_port'),
     $public_port = hiera('profile::openstack::base::keystone::public_port'),
