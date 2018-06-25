@@ -695,9 +695,10 @@ node /^debmonitor[12]001\.(codfw|eqiad)\.wmnet$/ {
     role(debmonitor::server)
 }
 
-# new DNS servers in codfw - to be setup (T196493)
 node /^dns200[12]\.wikimedia\.org$/ {
-    role(spare::system)
+    role(recursor)
+
+    interface::add_ip6_mapped { 'main': }
 }
 
 node /^dns400[12]\.wikimedia\.org$/ {
