@@ -12,8 +12,6 @@ class standard::ntp {
             'hydrogen.wikimedia.org',     # eqiad recdns
         ],
         codfw => [
-            'acamar.wikimedia.org',       # codfw recdns
-            'achernar.wikimedia.org',     # codfw recdns
             'dns2001.wikimedia.org',
             'dns2002.wikimedia.org',
         ],
