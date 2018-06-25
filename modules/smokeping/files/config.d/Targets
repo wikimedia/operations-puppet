@@ -190,15 +190,15 @@ menu = bast2001
 title = bast2001.wikimedia.org [A5]
 host = bast2001.wikimedia.org
 
-+++ acamar
-menu = acamar
-title = acamar.wikimedia.org [A5]
-host = acamar.wikimedia.org
++++ dns2001
+menu = dns2001
+title = dns2001.wikimedia.org [C5]
+host = dns2001.wikimedia.org
 
-+++ achernar
-menu = achernar
-title = achernar.wikimedia.org [B5]
-host = achernar.wikimedia.org
++++ dns2002
+menu = dns2002
+title = dns2002.wikimedia.org [D5]
+host = dns2002.wikimedia.org
 
 +++ tegmen
 menu = tegmen
