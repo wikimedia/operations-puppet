@@ -2785,6 +2785,15 @@ users:
       - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQC8dbGveSAbYpf9dfFbSbNcIlxnQwhBOZJ+y8MIIX650ujHRofwZEcnUFDIGqEHCMO6clYuFFxN8GUcBzSQI+R9IoIH+GSmx3SIdMVtjMmgwkqPdSjmmrhfUsnSO/2g1jM+Kj33CC4iuW7rEhZdkOaFiRoJDn71kHf2JPwHUnFPVAVYuzrxugXtyErcbEGTNFc08NA3CEr/hIckBSTqnfFJ3+j1BgQaehT+Af3Kl04zgdaEWqpWzoCtrtBH4B0SqMUkUUe5yyVibqXbkmoJwXj6BmdO0FXIyclz4Or7N+/meqLtF9X+iKHB1IReCeNslcNFo0wIs9e9ykznvi/of4+vYk2oW+0uz6L2HsgHcyLx1txiaEEHIVd9BPsUU9bc7xgxzRTpmJe1gRmnrdQ/8N9R2zsVfjI4G7FBi0hbuumxhPn40jijjswCwL7GthE7uH2j8XoH57V7HP8UPFyCafLTKPXX0BIxMATY6w7BiDRjqcnznfhp4Zu9irDqAzSfjaFc0mbEDT2L3xU1ePLzA0zm6x2YZ0WUjWkPobxjc2RkoDijhVU33h2UOJYv5lrJrZG/eNkOIjM5D0pG/CAK9KM98L4UtPNhwhv7G3o7fvw9DCshqDu1+3vRfe0iYzz0Xc5qcophoOBgVnf1bcKnu5QbMFoqN+T/Skwtev+nIwTuAQ== josephseddpm@DESKTOP-5C4F4VN
     uid: 16261
     email: jseddon@wikimedia.org
+  mbsantos:
+    ensure: present
+    realname: Mateus Batista Santos
+    name: mbsantos
+    gid: 500
+    ssh_keys:
+      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDNASXlpQe9lamZ5WvX2bvZvI65edok3MjgmhIvMgUfh7GU1v1/PNEieICsaWfZe0LEl5khZrpSRJi9eCif78pjzGOBjNMhD4diC8Drhgp/mUBYw3UECwD2QeWOP1hrgfSo3cvfAE0MmRixyQAI2G+6+sCNXpmme+fqYQvUB+myJ++XBqk6W+D/x+5E8ApBc0HETw1SZvgrR8mknnj8kic+2YIOYl9qQFCJoDwYy6ILif/f8jJB9u9GNoe239delNTsGpFvO+xP6hkzbXodFBsseSl/H2IixoreSUbsXR0A/rjKhbAuIGD4FJ4utdvg4+muCeYi+FnvaPThMObZU8IH msantos@wikimedia.org
+    uid: 19579
+    email: mbsantos@wikimedia.org
 ldap_only_users:
   abartov:
     ensure: present
