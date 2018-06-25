@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<configuration>
+<configuration scan="true"  scanPeriod="5 minutes">
 
     <!-- ugly trick to ensure ${HOSTNAME} is evaluated -->
     <property scope="context" name="hostname" value="${HOSTNAME}" />
 
-    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+
+    <appender name="stdout" class="ch.qos.logback.core.ConsoleAppender">
         <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
             <pattern><%= @pattern %></pattern>
             <outputPatternAsHeader>true</outputPatternAsHeader>
@@ -17,12 +18,18 @@
         <customFields>{"program":"<%= @title %>"}</customFields>
     </appender>
 
-    <logger name="org.wikidata.query.rdf" level="info"/>
+    <appender name="async" class="ch.qos.logback.core.AsyncAppender">
+        <neverBlock>true</neverBlock>
+        <appender-ref ref="logstash" />
+        <appender-ref ref="stdout" />
+    </appender>
 
     <root level="warn">
-        <appender-ref ref="STDOUT"/>
-        <appender-ref ref="logstash"/>
+        <appender-ref ref="async"/>
     </root>
+
+    <logger name="org.wikidata.query.rdf" level="info"/>
+
     <!-- Temporarily shut up warnings about "No vocabulary entry for namespace" for T175948 -->
     <logger name="com.bigdata.rdf.internal.InlineURIHandler" level="ERROR"/>
 
