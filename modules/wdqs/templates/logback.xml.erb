@@ -12,7 +12,7 @@
         </encoder>
     </appender>
 
-    <appender name="async-stdout" class="ch.qos.logback.core.AsyncAppender">
+    <appender name="async-stdout" class="ch.qos.logback.classic.AsyncAppender">
         <neverBlock>true</neverBlock>
         <appender-ref ref="stdout" />
     </appender>
@@ -23,7 +23,7 @@
         <customFields>{"program":"<%= @title %>"}</customFields>
     </appender>
 
-    <appender name="async-logstash" class="ch.qos.logback.core.AsyncAppender">
+    <appender name="async-logstash" class="ch.qos.logback.classic.AsyncAppender">
         <neverBlock>true</neverBlock>
         <appender-ref ref="logstash" />
     </appender>
