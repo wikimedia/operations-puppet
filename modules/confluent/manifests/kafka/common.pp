@@ -34,7 +34,7 @@ class confluent::kafka::common(
         apt::repository { 'thirdparty-confluent':
             uri        => 'http://apt.wikimedia.org/wikimedia',
             dist       => "${::lsbdistcodename}-wikimedia",
-            components => 'thirdparty',
+            components => 'thirdparty/confluent',
         }
 
         # If $kafka_version was given,
