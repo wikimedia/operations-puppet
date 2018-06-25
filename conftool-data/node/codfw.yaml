@@ -211,8 +211,6 @@ codfw:
     ms-fe2007.codfw.wmnet: [swift-fe, nginx]
     ms-fe2008.codfw.wmnet: [swift-fe, nginx]
   dns:
-    acamar.wikimedia.org: [pdns_recursor]
-    achernar.wikimedia.org: [pdns_recursor]
     dns2001.wikimedia.org: [pdns_recursor]
     dns2002.wikimedia.org: [pdns_recursor]
   maps:
