@@ -73,7 +73,7 @@ class profile::analytics::cluster::packages::statistics {
         # WMF maintains python-google-api at
         # https://gerrit.wikimedia.org/r/#/admin/projects/operations/debs/python-google-api
         'python-google-api',            'python3-google-api',           # T190767
-        'pythonpython-oauth2client',    'python3-oauth2client',         # T197896
+        'python-oauth2client',          'python3-oauth2client',         # T197896
         'python-oauthlib',              'python3-oauthlib',             # T197896
         'python-requests-oauthlib',     'python3-requests-oauthlib',    # T197896
     ])
