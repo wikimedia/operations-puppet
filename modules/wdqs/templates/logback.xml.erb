@@ -12,20 +12,25 @@
         </encoder>
     </appender>
 
+    <appender name="async-stdout" class="ch.qos.logback.core.AsyncAppender">
+        <neverBlock>true</neverBlock>
+        <appender-ref ref="stdout" />
+    </appender>
+
     <appender name="logstash" class="net.logstash.logback.appender.LogstashSocketAppender">
         <host><%= @logstash_host %></host>
         <port><%= @logstash_port %></port>
         <customFields>{"program":"<%= @title %>"}</customFields>
     </appender>
 
-    <appender name="async" class="ch.qos.logback.core.AsyncAppender">
+    <appender name="async-logstash" class="ch.qos.logback.core.AsyncAppender">
         <neverBlock>true</neverBlock>
         <appender-ref ref="logstash" />
-        <appender-ref ref="stdout" />
     </appender>
 
     <root level="warn">
-        <appender-ref ref="async"/>
+        <appender-ref ref="async-stdout"/>
+        <appender-ref ref="async-logstash"/>
     </root>
 
     <logger name="org.wikidata.query.rdf" level="info"/>
