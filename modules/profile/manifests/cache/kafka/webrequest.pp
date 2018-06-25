@@ -175,10 +175,10 @@ class profile::cache::kafka::webrequest(
 
         # Generate an alert if too many delivery report errors per minute
         # (logster only reports once a minute)
-        monitoring::graphite_threshold { 'varnishkafka-kafka_drerr':
+        monitoring::graphite_threshold { 'varnishkafka-webrequest-kafka_drerr':
             ensure          => 'present',
-            description     => 'Varnishkafka Delivery Errors per minute',
-            dashboard_links => ['https://grafana.wikimedia.org/dashboard/db/varnishkafka?panelId=20&fullscreen&orgId=1'],
+            description     => 'Varnishkafka Webrequest Delivery Errors per minute',
+            dashboard_links => ['https://grafana.wikimedia.org/dashboard/db/varnishkafka?panelId=20&fullscreen&orgId=1&var-instance=webrequest&var-host=All'],
             metric          => "derivative(transformNull(${graphite_metric_prefix}.varnishkafka.kafka_drerr, 0))",
             warning         => 0,
             critical        => 5000,

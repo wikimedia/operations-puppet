@@ -17,9 +17,13 @@
 #   set this explicitly to a fully qualified kafka cluster name (with DC suffix) that
 #   is located in the same DC as the active statsd instance.
 #
+# [*monitoring_enabled*]
+#   True if the varnishkafka instance should be monitored.  Default: false
+#
 class profile::cache::kafka::statsv(
     $cache_cluster      = hiera('cache::cluster'),
-    $kafka_cluster_name = hiera('profile::cache::kafka::statsv::kafka_cluster_name')
+    $kafka_cluster_name = hiera('profile::cache::kafka::statsv::kafka_cluster_name'),
+    $monitoring_enabled = hiera('profile::cache::kafka::statsv::monitoring_enabled', false),
 )
 {
     $kafka_config  = kafka_config($kafka_cluster_name)
@@ -44,18 +48,38 @@ class profile::cache::kafka::statsv(
     # before the instances as well, or they fail to start initially...
     Service <| tag == 'varnish_instance' |> -> Varnishkafka::Instance['statsv']
 
-    # Generate icinga alert if varnishkafka is not running.
-    nrpe::monitor_service { 'varnishkafka-statsv':
-        description   => 'statsv Varnishkafka log producer',
-        nrpe_command  => "/usr/lib/nagios/plugins/check_procs -c 1 -a '/usr/bin/varnishkafka -S /etc/varnishkafka/statsv.conf'",
-        contact_group => 'admins,analytics',
-        require       => Class['::varnishkafka'],
-    }
+    if $monitoring_enabled {
+        # Generate icinga alert if varnishkafka is not running.
+        nrpe::monitor_service { 'varnishkafka-statsv':
+            description   => 'statsv Varnishkafka log producer',
+            nrpe_command  => "/usr/lib/nagios/plugins/check_procs -c 1 -a '/usr/bin/varnishkafka -S /etc/varnishkafka/statsv.conf'",
+            contact_group => 'admins,analytics',
+            require       => Class['::varnishkafka'],
+        }
 
-    # Sets up Logster to read from the Varnishkafka instance stats JSON file
-    # and report metrics to statsd.
-    varnishkafka::monitor::statsd { 'statsv':
-        graphite_metric_prefix => "varnishkafka.${::hostname}.statsv.${cache_cluster}",
-        statsd_host_port       => hiera('statsd'),
+        $graphite_metric_prefix = "varnishkafka.${::hostname}.statsv.${cache_cluster}"
+
+        # Generate an alert if too many delivery report errors per minute
+        # (logster only reports once a minute)
+        monitoring::graphite_threshold { 'varnishkafka-statsv-kafka_drerr':
+            ensure          => 'present',
+            description     => 'Varnishkafka Statsv Delivery Errors per minute',
+            dashboard_links => ['https://grafana.wikimedia.org/dashboard/db/varnishkafka?panelId=20&fullscreen&orgId=1&var-instance=statsv&var-host=All'],
+            metric          => "derivative(transformNull(${graphite_metric_prefix}.varnishkafka.kafka_drerr, 0))",
+            warning         => 0,
+            critical        => 5000,
+            # But only alert if a large percentage of the examined datapoints
+            # are over the threshold.
+            percentage      => 80,
+            from            => '10min',
+            require         => Logster::Job['varnishkafka-statsv'],
+        }
+
+        # Sets up Logster to read from the Varnishkafka instance stats JSON file
+        # and report metrics to statsd.
+        varnishkafka::monitor::statsd { 'statsv':
+            graphite_metric_prefix => $graphite_metric_prefix,
+            statsd_host_port       => hiera('statsd'),
+        }
     }
 }
