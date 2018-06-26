@@ -4,6 +4,7 @@ proxy_read_timeout 30s;
 
 proxy_set_header Host $host;
 proxy_set_header Connection close; # should be default
+proxy_set_header Content-Security-Policy "base-uri 'self'; block-all-mixed-content; default-src 'self'; font-src 'self' data:; frame-ancestors 'none'; frame-src 'none'; img-src 'self' data:; object-src 'none'; require-sri-for script style; script-src 'self' 'nonce-5gPBYLCFQfsc4J23yP3S2pzTYkyAyGM7'; style-src 'self' 'nonce-Fgzc2wNfvP7YHSM88WfiyFDRkNbm5x76'";
 
 # Don't clobber the Server header from the backend.
 proxy_pass_header Server;
