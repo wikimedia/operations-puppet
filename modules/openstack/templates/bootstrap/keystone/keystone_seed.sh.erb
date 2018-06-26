@@ -84,18 +84,43 @@ openstack user list
 /usr/bin/openstack role create --or-show user
 openstack role list
 
-# enable puppet and pull in full config with ldap
+# enable puppet and pull in full config with LDAP
 sudo puppet agent --enable && sudo puppet agent --test
 
-# [In another window] make sure novaadmin can get a token
-# this ensures LDAP auth is working.
-> source /root/novaenv.sh
-> openstack token issue
+sudo puppet agent --disable
+
+# Find the admin_token config
+grep admin_token /etc/keystone/bootstrap/keystone.conf.bootstrap
+
+# add to the /etc/keystone/keystone.conf [DEFAULT] section
+## [DEFAULT]
+## admin_token = asdf
+vim /etc/keystone/keystone.conf
+source /etc/keystone/bootstrap/admintoken
+
+# Edit the policy file to allow the admin user
+# to modify grants
+vim /etc/keystone/policy.conf
+
+Change:
+
+    "identity:list_grants": "rule:admin_required",
+    "identity:create_grant": "rule:admin_required",
+
+To:
+
+    "identity:list_grants": "",
+    "identity:create_grant": "",
 
 service keystone restart
-# This should now show ldap users
+
+# This needs to show ldap users (including novaadmin)
 openstack user list
+# tell openstack that the novaadmin user (from ldap)
+# is an admin user in the admin project
 openstack role add --project admin --user novaadmin admin
+
+sudo puppet agent --enable && sudo puppet agent --test
 
 # exit
 # source /root/novaenv.sh
@@ -103,3 +128,4 @@ openstack token issue
 openstack user list
 openstack endpoint list
 openstack domain list
+
