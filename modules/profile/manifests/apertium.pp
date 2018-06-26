@@ -103,6 +103,7 @@ class profile::apertium {
         'giella-sme',
         'hfst',
         'lttoolbox',
+        'python3-streamparser',
     ]
 
     # Use python3-tornado 4.4.3-1 since newer verions of apertium-apy require it
