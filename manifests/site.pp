@@ -639,7 +639,7 @@ node 'db1095.eqiad.wmnet' {
 }
 
 node 'db1102.eqiad.wmnet' {
-    role(mariadb::sanitarium_multiinstance)
+    role(spare::system)
 }
 
 # Old temporary sanitarium hosts now ready to be productionized
