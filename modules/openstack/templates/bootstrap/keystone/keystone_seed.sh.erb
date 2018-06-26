@@ -62,7 +62,19 @@ openstack endpoint list
 openstack project create --domain default --description "Admin Project" admin
 openstack project list
 
-# This will be empty
+# more surgery because we have special conditions that require that
+# project ID == project name.  This should naturally happen if all keystone
+# hooks are firing but it may not be the case during initial bootstrap.
+
+# get current admin project UUID
+openstack project list | grep admin | awk '{print $2}'
+
+service keystone stop
+mysqldump keystone > /tmp/keystone.backup_admin
+cat /tmp/keystone.backup_admin | sed -e "s/${admin_project_uuid}/admin/g" | mysql keystone
+service keystone start
+
+# This will be empty because we are not looking at LDAP yet
 openstack user list
 /usr/bin/openstack role create --or-show _member_
 /usr/bin/openstack role create --or-show admin
@@ -75,14 +87,19 @@ openstack role list
 # enable puppet and pull in full config with ldap
 sudo puppet agent --enable && sudo puppet agent --test
 
-# This should now show ldap users
+# [In another window] make sure novaadmin can get a token
+# this ensures LDAP auth is working.
+> source /root/novaenv.sh
+> openstack token issue
+
 service keystone restart
+# This should now show ldap users
 openstack user list
 openstack role add --project admin --user novaadmin admin
 
 # exit
 # source /root/novaenv.sh
+openstack token issue
 openstack user list
 openstack endpoint list
 openstack domain list
-openstack token issue
