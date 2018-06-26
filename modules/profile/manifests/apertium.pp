@@ -120,7 +120,6 @@ class profile::apertium {
     # lint:ignore:arrow_alignment
     base::service_unit { 'apertium-apy':
         ensure  => present,
-        upstart => upstart_template('apertium-apy'),
         systemd => systemd_template('apertium-apy'),
         refresh => true,
         service_params => {
