@@ -134,7 +134,7 @@ groups:
               nikerabbit, dstrine, mpany, jsamra, katie,
               jdittrich, chelsyx, ovasileva, mtizzoni, panisson, paolotti, ciro, debt,
               fdans, mlitn, niharika29, goransm, pmiazga, dsaez, shiladsen, cicalese,
-              mirrys, sharvaniharan, mmiller]
+              mirrys, sharvaniharan, mmiller, amire80]
   ldap-admins:
     gid: 715
     description: ldap admins
