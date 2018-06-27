@@ -1328,8 +1328,13 @@ node 'maps-test2001.codfw.wmnet' {
     role(maps::test::master)
 }
 
-node /^maps-test200[23]\.codfw\.wmnet/ {
+node 'maps-test2002.codfw.wmnet' {
     role(maps::test::slave)
+}
+
+node 'maps-test2003.codfw.wmnet' {
+    # testing reimage of current maps style to stretch
+    role(maps::test::master)
 }
 
 node 'maps-test2004.codfw.wmnet' {

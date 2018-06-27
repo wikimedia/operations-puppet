@@ -7,11 +7,11 @@ profile::maps::apps::redis_server: 'redis://maps-test2004.codfw.wmnet'
 
 profile::cassandra::single_instance::dc: 'codfw'
 profile::cassandra::single_instance::seeds:
-  - '10.192.16.35'
+  - '10.192.16.35' # maps-test2004
 
 profile::maps::osm_master::slaves:
   maps-test2004:
-    ip_address: 10.192.16.35
+    ip_address: '10.192.16.35' # maps-test2004
 
 profile::maps::osm_master::planet_sync_period: 'minute'
 profile::maps::osm_master::planet_sync_hour:   '*'
