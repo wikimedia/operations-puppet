@@ -73,8 +73,8 @@ class grafana(
     if $ldap {
         file { '/etc/grafana/ldap.toml':
             owner   => 'root',
-            group   => 'root',
-            mode    => '0400',
+            group   => 'grafana',
+            mode    => '0440',
             content => template('grafana/ldap.toml.erb'),
         }
     }

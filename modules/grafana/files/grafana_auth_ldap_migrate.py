@@ -96,6 +96,7 @@ def migrate(infile, connection):
             except Exception as e:
                 print('Failed to migrate user: %s, %s' %
                       (user['login'], e))
+    conn.commit()
     return stats
 
 
