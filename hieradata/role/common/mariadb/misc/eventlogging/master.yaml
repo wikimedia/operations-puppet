@@ -1,3 +1,4 @@
 monitor_screens: false
 profile::mariadb::misc::eventlogging::database::shard: 'm4'
 profile::mariadb::misc::eventlogging::database::master: true
+profile::base::enable_microcode: true

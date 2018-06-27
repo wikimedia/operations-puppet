@@ -1,2 +1,3 @@
 admin::groups:
   - wmcs-admin
+profile::base::enable_microcode: true
