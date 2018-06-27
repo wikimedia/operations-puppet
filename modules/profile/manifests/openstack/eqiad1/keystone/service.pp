@@ -37,7 +37,7 @@ class profile::openstack::eqiad1::keystone::service(
         ferm::service { 'keystone_local_db':
             proto  => 'tcp',
             port   => '3306',
-            srange =>  '@resolve(labcontrol1004.wikimedia.org)',
+            srange =>  "@resolve(${nova_controller_standby})",
         }
     }
 
