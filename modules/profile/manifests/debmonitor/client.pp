@@ -36,10 +36,13 @@ class profile::debmonitor::client (
     }
 
     user { 'debmonitor':
-        ensure => present,
-        gid    => 'debmonitor',
-        shell  => '/bin/bash',
-        system => true,
+        ensure     => present,
+        gid        => 'debmonitor',
+        shell      => '/bin/false',
+        home       => '/nonexistent',
+        managehome => false,
+        system     => true,
+        comment    => 'DebMonitor system user',
     }
 
     ::base::expose_puppet_certs { $base_path:
