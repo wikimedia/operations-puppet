@@ -9,16 +9,14 @@ if !defined('$cluster') {
 
 # Node definitions (alphabetic order)
 
+# to be decommisioned - replaced by dns2001 (T198286)
 node 'acamar.wikimedia.org' {
-    role(recursor)
-
-    interface::add_ip6_mapped { 'main': }
+    role(spare::system)
 }
 
+# to be decommisioned - replaced by dns2002 (T198286)
 node 'achernar.wikimedia.org' {
-    role(recursor)
-
-    interface::add_ip6_mapped { 'main': }
+    role(spare::system)
 }
 
 # url-downloaders
