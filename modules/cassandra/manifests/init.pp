@@ -160,9 +160,14 @@ class cassandra (
     }
 
     # We pin the version to a specific one
+    # The 2.2.6-wmf5 package has been tested on Debian Stretch
+    # and it works nicely, but it gives some problems with Jessie
+    # as described in T197062.
     $package_version = $target_version ? {
         '2.1' => hiera('cassandra::version', '2.1.13'),
-        '2.2' => hiera('cassandra::version', '2.2.6-wmf5'),
+        '2.2' => os_version('debian >= stretch') ? {
+            true  => hiera('cassandra::version', '2.2.6-wmf5'),
+            false => hiera('cassandra::version', '2.2.6-wmf3'), },
         '3.x' => hiera('cassandra::version', '3.11.2'),
         'dev' => hiera('cassandra::version', '3.11.2')
     }
