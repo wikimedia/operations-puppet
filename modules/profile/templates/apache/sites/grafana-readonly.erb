@@ -12,10 +12,4 @@
 
   # Automatically log in all visitors as anonymous.
   RequestHeader set X-WEBAUTH-USER "Anonymous"
-
-  <Proxy *>
-    <Limit POST PUT DELETE>
-      Require all denied
-    </Limit>
-  </Proxy>
 </VirtualHost>

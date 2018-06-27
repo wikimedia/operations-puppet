@@ -32,15 +32,6 @@ profile::grafana::ldap:
       search_base_dns: ["ou=people,dc=wikimedia,dc=org"]
       bind_dn: cn=proxyagent,ou=profile,dc=wikimedia,dc=org
       bind_password: "%{hiera('profile::grafana::ldap::bind_password')}"
-    codfw:
-      host: ldap-labs.codfw.wikimedia.org
-      port: 636
-      use_ssl: true
-      ssl_skip_verify: false
-      search_filter: (cn=%s)
-      search_base_dns: ["ou=people,dc=wikimedia,dc=org"]
-      bind_dn: cn=proxyagent,ou=profile,dc=wikimedia,dc=org
-      bind_password: "%{hiera('profile::grafana::ldap::bind_password')}"
   servers.attributes:
     name: givenName
     surname: sn
