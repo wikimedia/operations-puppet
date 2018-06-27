@@ -4,7 +4,7 @@
 #
 class profile::grafana (
     $readonly_domain=hiera('profile::grafana::readonly_domain'),
-    $admin_domain=hiera('profile::grafana::admin_domain'),
+    $admin_domain=hiera('profile::grafana::admin_domain', undef),
     $secret_key=hiera('profile::grafana::secret_key'),
     $admin_password=hiera('profile::grafana::admin_password'),
     $ldap_editor_description=hiera('profile::grafana::ldap_editor_description'),
@@ -181,14 +181,16 @@ class profile::grafana (
         check_command => "check_http_url!${readonly_domain}!/",
     }
 
-    httpd::site { $admin_domain:
-        content => template('profile/apache/sites/grafana-admin.erb'),
-        require => Class['::grafana'],
-    }
+    if $admin_domain {
+        httpd::site { $admin_domain:
+            content => template('profile/apache/sites/grafana-admin.erb'),
+            require => Class['::grafana'],
+        }
 
-    monitoring::service { 'grafana-admin':
-        description   => $admin_domain,
-        check_command => "check_http_unauthorized!${admin_domain}!/",
+        monitoring::service { 'grafana-admin':
+            description   => $admin_domain,
+            check_command => "check_http_unauthorized!${admin_domain}!/",
+        }
     }
 
     backup::set { 'var-lib-grafana':
