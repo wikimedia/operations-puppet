@@ -1,18 +1,32 @@
+<%-
+# Don't be discouraged by this. It's a mess but grafana said they are gonna
+# get away from toml so maybe we will get rid of this soon
+def quoted(a)
+  # Is it an integer, true or false a ? We also check for Fixnum here since Ruby
+  # < 2.4 would expose that unfortunately
+  if [Integer, Fixnum, TrueClass, FalseClass].include?(a.class) then
+    a
+  # or just a string ? Double quote it then
+  else
+    "\"#{a}\""
+  end
+end
+%>
 <% @ldap['servers'].each do |_, server| -%>
 [[servers]]
 <%- server.each do |k ,v| -%>
-  <%= k %> = "<%= v %>"
+  <%= k %> = <%= quoted(v) %>
 <%- end -%>
 <%- end -%>
 
 [servers.attributes]
 <%- @ldap['servers.attributes'].each do |k, v| -%>
-  <%= k %> = "<%= v %>"
+  <%= k %> = <%= quoted(v) %>
 <%- end -%>
 
 <%- @ldap['servers.group_mappings'].each do |_, group| -%>
 [[servers.group_mappings]]
 <%- group.each do |k ,v| -%>
-  <%= k %> = "<%= v %>"
+  <%= k %> = <%= quoted(v) %>
 <%- end -%>
 <%- end -%>
