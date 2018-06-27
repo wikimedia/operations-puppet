@@ -3175,7 +3175,7 @@ host labnet1003 {
 }
 
 host labnet1004 {
-    hardware ethernet e0:07:1b:ef:15:d4;
+    hardware ethernet e0:07:1b:ef:15:d0;
     fixed-address labnet1004.eqiad.wmnet;
     option pxelinux.pathprefix "jessie-installer/";
     filename "jessie-installer/debian-installer/amd64/pxelinux.0";
