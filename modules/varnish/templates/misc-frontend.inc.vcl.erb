@@ -26,7 +26,7 @@ sub cluster_fe_recv_pre_purge {
 }
 
 sub cluster_fe_recv {
-    if (req.http.Host == "grafana.wikimedia.org" || req.http.host == "grafana-admin.wikimedia.org"
+    if (req.http.Host == "grafana.wikimedia.org"
         || req.http.Host == "grafana-labs.wikimedia.org" || req.http.host == "grafana-labs-admin.wikimedia.org") {
         // X-WEBAUTH-USER is set by Apache's mod_authnz_ldap on the request it
         // proxies to the grafana backend. We discard any user-set X-WEBAUTH-USER

@@ -20,7 +20,7 @@ class role::graphite::base(
     $storage_dir      = '/var/lib/carbon',
     $auth             = true,
     $hostname         = 'graphite.wikimedia.org',
-    $cors_origins     = [ 'https://(grafana|grafana-admin).wikimedia.org' ],
+    $cors_origins     = [ 'https://grafana.wikimedia.org' ],
     $c_relay_settings = {},
     $cluster_servers  = undef,
 ) {

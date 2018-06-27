@@ -132,9 +132,13 @@ class profile::grafana (
         require => Package['grafana'],
     }
 
+    # Note: As of 2018-06-27 parts of this are no longer true, at least for
+    # production. Production now creates accounts natively in grafana via LDAP
+    # integration.
+    #
     # We disable account creation, because accounts are created
     # automagically based on the X-WEBAUTH-USER, which is either set
-    # to the LDAP user (if accessing the site via the grafana-admin vhost)
+    # to the LDAP user (if accessing the site via the admin grafana vhost)
     # or 'Anonymous'. But we need to have an 'Anonymous' user in the first
     # place. To accomplish that, we use a small Python script that directly
     # directly inserts the user into Grafana's sqlite database.
@@ -167,8 +171,8 @@ class profile::grafana (
 
     # Serve Grafana via two different vhosts:
     #
-    # - grafana.wikimedia.org (read-only, but accessible to all)
-    # - grafana-admin.wikimedia.org (read/write, but requires LDAP)
+    # - $readonly_domain (read-only, but accessible to all)
+    # - $admin_domain (read/write, but requires LDAP)
     #
 
     httpd::site { $readonly_domain:
