@@ -6,15 +6,15 @@ keystone --version
 sudo puppet agent --disable 'keystone bootstrap'
 source /etc/keystone/bootstrap/admintoken
 
-service keystone stop
+sudo service keystone stop
 # replace puppet files with originals
-cp /etc/keystone/original/* /etc/keystone
+sudo cp /etc/keystone/original/* /etc/keystone
 # Then the slimmed down bootstrap setup
-cp /etc/keystone/bootstrap/keystone.conf.bootstrap /etc/keystone/keystone.conf
+sudo cp /etc/keystone/bootstrap/keystone.conf.bootstrap /etc/keystone/keystone.conf
+# populate db
+sudo su -s /bin/sh -c "keystone-manage db_sync" keystone
 
-su -s /bin/sh -c "keystone-manage db_sync" keystone
-
-service keystone restart
+sudo service keystone restart
 
 # Shenangians with "domain" handling in Liberty vs Mitaka
 openstack domain create --description "Default Domain" Default
@@ -39,11 +39,11 @@ openstack domain create --description "Default Domain" Default
 
 openstack domain list
 # Get the "UUID" for the default domain
-$DUUID=openstack domain list | grep Default | cut -d ' ' -f 2 
+DUUID=$(openstack domain list | grep Default | cut -d ' ' -f 2)
 service keystone stop
-mysqldump keystone > /tmp/keystone.backup
-cat /tmp/keystone.backup | sed -e "s/${DUUID}/default/g" | mysql keystone
-service keystone start
+sudo mysqldump keystone > /tmp/keystone.backup
+cat /tmp/keystone.backup | sed -e "s/${DUUID}/default/g" | sudo mysql keystone
+sudo service keystone start
 openstack domain list
 # (Valid output:)
 # | default | Default | True    | Default Domain | 
@@ -67,26 +67,25 @@ openstack project list
 # hooks are firing but it may not be the case during initial bootstrap.
 
 # get current admin project UUID
-openstack project list | grep admin | awk '{print $2}'
+admin_project_uuid=$(openstack project list | grep admin | awk '{print $2}')
 
-service keystone stop
-mysqldump keystone > /tmp/keystone.backup_admin
-cat /tmp/keystone.backup_admin | sed -e "s/${admin_project_uuid}/admin/g" | mysql keystone
-service keystone start
+sudo service keystone stop
+sudo mysqldump keystone > /tmp/keystone.db
+cat /tmp/keystone.db | sed -e "s/${admin_project_uuid}/admin/g" | sudo mysql keystone
+sudo service keystone start
 
 # This will be empty because we are not looking at LDAP yet
 openstack user list
-/usr/bin/openstack role create --or-show _member_
-/usr/bin/openstack role create --or-show admin
-/usr/bin/openstack role create --or-show observer
-/usr/bin/openstack role create --or-show projectadmin
-/usr/bin/openstack role create --or-show glanceadmin
-/usr/bin/openstack role create --or-show user
+openstack role create --or-show _member_
+openstack role create --or-show admin
+openstack role create --or-show observer
+openstack role create --or-show projectadmin
+openstack role create --or-show glanceadmin
+openstack role create --or-show user
 openstack role list
 
 # enable puppet and pull in full config with LDAP
 sudo puppet agent --enable && sudo puppet agent --test
-
 sudo puppet agent --disable
 
 # Find the admin_token config
@@ -100,7 +99,7 @@ source /etc/keystone/bootstrap/admintoken
 
 # Edit the policy file to allow the admin user
 # to modify grants
-vim /etc/keystone/policy.conf
+sudo vim /etc/keystone/policy.json
 
 Change:
 
@@ -112,10 +111,11 @@ To:
     "identity:list_grants": "",
     "identity:create_grant": "",
 
-service keystone restart
+sudo service keystone restart
 
 # This needs to show ldap users (including novaadmin)
-openstack user list
+PYTHONIOENCODING=utf-8 openstack user list | wc -l
+PYTHONIOENCODING=utf-8 openstack user list | grep novaadmin
 # tell openstack that the novaadmin user (from ldap)
 # is an admin user in the admin project
 openstack role add --project admin --user novaadmin admin
