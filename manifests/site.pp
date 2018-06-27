@@ -1180,7 +1180,7 @@ node 'labnet1001.eqiad.wmnet' {
 
 # role spare until pushed into service via T165779
 node /labnet100[34]\.eqiad\.wmnet/ {
-    role(spare::system)
+    role(wmcs::openstack::eqiad1::net)
 }
 
 
