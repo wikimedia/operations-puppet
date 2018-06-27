@@ -38,7 +38,7 @@ class profile::debmonitor::client (
     user { 'debmonitor':
         ensure     => present,
         gid        => 'debmonitor',
-        shell      => '/bin/false',
+        shell      => '/bin/bash',
         home       => '/nonexistent',
         managehome => false,
         system     => true,
