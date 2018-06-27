@@ -32,6 +32,15 @@ class profile::openstack::eqiad1::keystone::service(
     $public_port = hiera('profile::openstack::base::keystone::public_port'),
     ) {
 
+    # until eqiad1 db is m5
+    if ($db_host == $::fqdn) {
+        ferm::service { 'keystone_local_db':
+            proto  => 'tcp',
+            port   => '3306',
+            srange =>  'labcontrol1004.wikimedia.org',
+        }
+    }
+
     class{'::profile::openstack::base::keystone::db':
         labs_hosts_range      => $labs_hosts_range,
         puppetmaster_hostname => $puppetmaster_hostname,
