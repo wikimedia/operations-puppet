@@ -1,7 +1,7 @@
 # == Class: profile::performance::site
 #
-# This profile provisions <http://performance.wikimedia.org>, a static site with
-# web performance dashboards.
+# This profile provisions <https://performance.wikimedia.org>,
+# a static site with web performance dashboards.
 #
 class profile::performance::site {
 
@@ -36,8 +36,11 @@ class profile::performance::site {
         srange => '$CACHE_MISC',
     }
 
-    httpd::site { 'performance.wikimedia.org':
-        content => template('profile/performance/site/performance.wikimedia.org.erb'),
+    $server_name = 'performance.wikimedia.org'
+    $xenondata_host = 'mwlog1001.eqiad.wmnet'
+    $xhgui_host = 'tungsten.eqiad.wmnet'
+    httpd::site { 'performance-wikimedia-org':
+        content => template('profile/performance/site/performance-website.erb'),
         require => Git::Clone['performance/docroot'],
     }
 

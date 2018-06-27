@@ -1,7 +1,7 @@
 # Apache configuration for performance.wikimedia.org
 # This file is managed by Puppet.
 <VirtualHost *:80>
-    ServerName performance.wikimedia.org
+    ServerName <%= @server_name %>
 
     DocumentRoot /srv/org/wikimedia/performance/public_html
 
@@ -21,12 +21,14 @@
         Require all granted
     </Directory>
 
-    ProxyPass /xenon http://mwlog1001.eqiad.wmnet/xenon
-    ProxyPassReverse /xenon http://mwlog1001.eqiad.wmnet/xenon
+<% if @xenondata_host -%>
+    ProxyPass /xenon http://<%= @xenondata_host %>/xenon
+    ProxyPassReverse /xenon http://<%= @xenondata_host %>/xenon
+<% end -%>
 
-    ProxyPass /xhgui http://tungsten.eqiad.wmnet/xhgui/
-    ProxyPassReverse /xhgui http://tungsten.eqiad.wmnet/xhgui/
+<% if @xhgui_host -%>
+    ProxyPass /xhgui http://<%= @xhgui_host %>/xhgui/
+    ProxyPassReverse /xhgui http://<%= @xhgui_host %>/xhgui/
+<% end -%>
 
-    ProxyPass /xhprof http://tungsten.eqiad.wmnet/xhprof/
-    ProxyPassReverse /xhprof http://tungsten.eqiad.wmnet/xhprof/
 </VirtualHost>
