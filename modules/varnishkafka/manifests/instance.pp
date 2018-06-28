@@ -97,6 +97,13 @@
 #                                     be used for SSL communication with brokers.  This must match
 #                                     at least one of the cipher suites allowed by the brokers.
 #
+# $ssl_curves_list                  - Colon separated string of supported curves/named groups.
+#                                     This must match at least one of the named groups supported
+#                                      by the broker. More details in SSL_CTX_set1_curves_list(3)
+#
+# $ssl_sigalgs_list                 - Colon separared string of supported signature algorithms.
+#                                     This must match at least one of the signature algorithms
+#                                     supported by the broker. More details in SSL_set1_client_sigalgs(3)
 define varnishkafka::instance(
     $brokers                        = ['localhost:9092'],
     $topic                          = 'varnish',
@@ -144,6 +151,8 @@ define varnishkafka::instance(
     $ssl_key_location               = undef,
     $ssl_certificate_location       = undef,
     $ssl_cipher_suites              = undef,
+    $ssl_curves_list                = undef,
+    $ssl_sigalgs_list               = undef,
 ) {
     require ::varnishkafka
 

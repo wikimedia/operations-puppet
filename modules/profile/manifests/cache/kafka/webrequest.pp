@@ -104,6 +104,8 @@ class profile::cache::kafka::webrequest(
         $ssl_key_location         = $::profile::cache::kafka::certificate::ssl_key_location
         $ssl_certificate_location = $::profile::cache::kafka::certificate::ssl_certificate_location
         $ssl_cipher_suites        = $::profile::cache::kafka::certificate::ssl_cipher_suites
+        $ssl_curves_list          = $::profile::cache::kafka::certificate::ssl_curves_list
+        $ssl_sigalgs_list         = $::profile::cache::kafka::certificate::ssl_sigalgs_list
     }
     else {
         $kafka_brokers = $kafka_config['brokers']['array']
@@ -113,6 +115,8 @@ class profile::cache::kafka::webrequest(
         $ssl_key_location         = undef
         $ssl_certificate_location = undef
         $ssl_cipher_suites        = undef
+        $ssl_curves_list          = undef
+        $ssl_sigalgs_list         = undef
     }
 
     varnishkafka::instance { 'webrequest':
@@ -153,6 +157,8 @@ class profile::cache::kafka::webrequest(
         ssl_key_location             => $ssl_key_location,
         ssl_certificate_location     => $ssl_certificate_location,
         ssl_cipher_suites            => $ssl_cipher_suites,
+        ssl_curves_list              => $ssl_curves_list,
+        ssl_sigalgs_list             => $ssl_sigalgs_list,
     }
 
     if $monitoring_enabled {

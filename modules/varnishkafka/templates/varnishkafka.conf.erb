@@ -282,4 +282,10 @@ kafka.ssl.certificate.location=<%= @ssl_certificate_location %>
 <% if @ssl_cipher_suites -%>
 kafka.ssl.cipher.suites=<%= @ssl_cipher_suites %>
 <% end -%>
+<% if @ssl_curves_list -%>
+kafka.ssl.curves.list=<%= @ssl_curves_list %>
+<% end -%>
+<% if @ssl_sigalgs_list -%>
+kafka.ssl.sigalgs.list=<%= @ssl_sigalgs_list %>
+<% end -%>
 <% end -%>

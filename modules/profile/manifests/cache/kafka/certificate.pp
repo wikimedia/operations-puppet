@@ -28,6 +28,9 @@ class profile::cache::kafka::certificate(
     $ssl_key_password  = hiera('profile::cache::kafka::certificate::ssl_key_password', undef),
     $certificate_name = hiera('profile::cache::kafka::certificate::certificate_name', 'varnishkafka'),
     $use_puppet_internal_ca = hiera('profile::cache::kafka::certificate::use_puppet_internal_ca', true),
+    $ssl_cipher_suites = hiera('profile::cache::kafka::certificate::ssl_cipher_suites', 'ECDHE-ECDSA-AES256-GCM-SHA384'),
+    $ssl_curves_list = hiera('profile::cache::kafka::certificate::ssl_curves_list', undef),
+    $ssl_sigalgs_list = hiera('profile::cache::kafka::certificate::ssl_sigalgs_list', undef),
 ) {
     # TLS/SSL configuration
     $ssl_location = '/etc/varnishkafka/ssl'
@@ -38,7 +41,6 @@ class profile::cache::kafka::certificate(
 
     $ssl_certificate_secrets_path = "certificates/${certificate_name}/${certificate_name}.crt.pem"
     $ssl_certificate_location = "${ssl_location}/${certificate_name}.crt.pem"
-    $ssl_cipher_suites = 'ECDHE-ECDSA-AES256-GCM-SHA384'
 
     file { $ssl_location:
         ensure => 'directory',
