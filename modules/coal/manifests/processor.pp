@@ -19,22 +19,22 @@
 #   Directory where coal's logs should be written by rsyslog
 #
 # [*graphite_host*]
-#   Hostname to which graphite metrics are sent.  
-#   Defaults to graphite-in.eqiad.wmnet
+#   Hostname to which graphite metrics are sent.
+#   Default: "localhost".
 #
 # [*graphite_port*]
-#   Port for graphite metrics. Defaults to 2003 (standard plain-text port)
+#   Port for graphite metrics. Default: 2003.
 #
 # [*graphite_prefix*]
 #   Beginning of the graphite metric path.  Defaults to "coal", which results
-#   in metrics like "coal.domInteractive"
+#   in metrics like "coal.responseStart"
 #
 class coal::processor(
     $kafka_brokers,
     $kafka_consumer_group = "coal_${::site}",
     $el_schemas = ['NavigationTiming', 'SaveTiming'],
     $log_dir = '/var/log/coal',
-    $graphite_host = 'graphite-in.eqiad.wmnet',
+    $graphite_host = 'localhost',
     $graphite_port = 2003,
     $graphite_prefix = 'coal'
 ) {

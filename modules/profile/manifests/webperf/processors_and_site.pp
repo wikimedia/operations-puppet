@@ -1,5 +1,6 @@
 class profile::webperf::processors_and_site(
-    $statsd = hiera('statsd')
+    $statsd = hiera('statsd'),
+    $graphite_host = hiera('graphite_host')
 ){
     $statsd_parts = split($statsd, ':')
     $statsd_host = $statsd_parts[0]
@@ -40,6 +41,7 @@ class profile::webperf::processors_and_site(
     # Make a valid target for coal, and set up what's needed for the consumer
     # Consumes from the jumbo-eqiad cluster, just like navtiming
     class { '::coal::processor':
-        kafka_brokers => $kafka_brokers
+        kafka_brokers => $kafka_brokers,
+        graphite_host => $graphite_host,
     }
 }

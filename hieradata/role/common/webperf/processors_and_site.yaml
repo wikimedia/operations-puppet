@@ -1,3 +1,5 @@
 admin::groups:
   - perf-team
   - eventlogging-admins
+
+graphite_host: 'graphite-in.eqiad.wmnet'
