@@ -2,8 +2,15 @@ class openstack::neutron::service(
     $version,
     ) {
 
+    if os_version('debian jessie') and ($version == 'mitaka') {
+        $install_options = ['-t', 'jessie-backports']
+    } else {
+        $install_options = ''
+    }
+
     package {'neutron-server':
-        ensure => 'present',
+        ensure          => 'present',
+        install_options => $install_options,
     }
 
     service {'neutron-server':

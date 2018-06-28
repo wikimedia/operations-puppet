@@ -11,7 +11,7 @@ class openstack::jessie_mitaka_client_pinning {
 
     apt::pin { 'jessie_mitaka_pinning_python_designateclient':
         package  => 'python-designateclient',
-        pin      => 'version 1.0.3-1',
+        pin      => 'version 2.1.0-2~bpo8+1',
         priority => '1002',
     }
 
