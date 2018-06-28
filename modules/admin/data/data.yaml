@@ -3092,3 +3092,7 @@ ldap_only_users:
     ensure: present
     realname: Kosta Harlan
     email: kharlan@wikimedia.org
+  tarrow:
+    ensure: present
+    realname: Thomas Arrow
+    email: thomas.arrow@wikimedia.de
