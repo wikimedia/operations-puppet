@@ -55,20 +55,35 @@ case "$1" in
             fi
             ;;
         mount)
-
-            msg "mounting $2"
-            # mount understands to look in /etc/fstab
-            /usr/bin/timeout --preserve-status -k 10s 20s /bin/mount -v $2
+           if [ "${2}" == "all" ]; then
+               msg 'attempting to mount all present in /etc/fstab'
+               /bin/mount -a
+               $0 list check
+            else
+                msg "mounting $2"
+                # mount understands to look in /etc/fstab so it is possible
+                # to only pass the mount path in that case and the mount
+                # options will be filled in
+                /usr/bin/timeout --preserve-status -k 10s 20s /bin/mount -v $2
+                $0 check $2
+            fi
             ;;
         umount)
-
             to_umount $2
+            $0 check $2
             ;;
         clean)
-
             # If defined in /etc/fstab unmount for NFS
-            for mount_point in $(/bin/findmnt -n --fstab -t nfs | /usr/bin/awk '{print $1}'); do
+            for mount_point in $(/bin/findmnt -n --fstab -t nfs | /usr/bin/awk '{print $1}' | egrep '^\/'); do
                 to_umount $mount_point;
+            done
+            ;;
+        list)
+            for mount_point in $(/bin/findmnt -n --fstab -t nfs | /usr/bin/awk '{print $1}' | egrep '^\/'); do
+                echo $mount_point;
+                if [ "${2}" == "check" ]; then
+                    $0 check $mount_point
+                fi
             done
             ;;
         kill-active)
@@ -86,8 +101,11 @@ case "$1" in
             fi
             ;;
         *)
-            /bin/echo 'check | mount | umount | kill-active <mount_path>'
-            /bin/echo 'warning: kill-active command kills all processes that are actively accessing <mount_path>'
-            /bin/echo 'clean' -- remove all mounts defined in /etc/fstab
+            /bin/echo 'list   [check]                - list locally defined NFS mount paths'
+            /bin/echo 'check  <mount_path>           - validate ls returns successfully'
+            /bin/echo 'mount  [ all | <mount_path> ] - mount a path defined in /etc/fstab'
+            /bin/echo 'umount <mount_path>           - umount a path defined in /etc/fstab'
+            /bin/echo 'clean                         - remove all mounts defined in /etc/fstab'
+            /bin/echo 'kill-active <mount_path>      - WARNING: kills procs actively accessing a mount path'
             ;;
 esac
