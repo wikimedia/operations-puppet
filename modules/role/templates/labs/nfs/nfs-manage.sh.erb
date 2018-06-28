@@ -26,6 +26,10 @@ case $CMD in
             exit 1
         fi
 
+        # T157478 - Investigate if --force should be the default for nfs-manage up
+        # In case DRBD is confused about the integrity of its data and you
+        # know for /sure/ that you want the current node to take control
+        # you can issue: /sbin/drbdadm primary all --force
         /sbin/drbdadm primary all
         /bin/ip address add <%= @cluster_ip %>/24 dev <%= @monitor_iface %>
 
