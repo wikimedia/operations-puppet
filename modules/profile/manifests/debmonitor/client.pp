@@ -73,7 +73,7 @@ class profile::debmonitor::client (
     if os_version('debian >= jessie') {
         $cron = '/usr/bin/systemd-cat -t "debmonitor-client" /usr/bin/debmonitor-client'
     } else {
-        $cron = '/usr/bin/debmonitor-client 2>&1 > /dev/null'
+        $cron = '/usr/bin/debmonitor-client > /dev/null 2>&1'
     }
 
     cron { 'debmonitor-client':
