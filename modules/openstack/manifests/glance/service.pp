@@ -13,8 +13,15 @@ class openstack::glance::service(
     $keystone_public_uri,
 ) {
 
+    if os_version('debian jessie') and ($version == 'mitaka') {
+        $install_options = ['-t', 'jessie-backports']
+    } else {
+        $install_options = ''
+    }
+
     package { 'glance':
-        ensure  => 'present',
+        ensure          => 'present',
+        install_options => $install_options,
     }
 
     file { $glance_data:
