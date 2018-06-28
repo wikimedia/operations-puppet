@@ -1,0 +1,1 @@
+profile::openstack::eqiad1::glance::db_host: 'labcontrol1003.wikimedia.org'
