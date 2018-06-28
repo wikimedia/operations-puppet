@@ -3095,4 +3095,4 @@ ldap_only_users:
   tarrow:
     ensure: present
     realname: Thomas Arrow
-    email: thomas.arrow@wikimedia.de
+    email: thomas.arrow_ext@wikimedia.de
