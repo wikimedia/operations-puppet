@@ -1,9 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<configuration scan="true"  scanPeriod="5 minutes">
+<configuration scan="true"  scanPeriod="5 minutes" packagingData="false">
 
     <!-- ugly trick to ensure ${HOSTNAME} is evaluated -->
     <property scope="context" name="hostname" value="${HOSTNAME}" />
 
+    <%- if @evaluators -%>
+    <evaluator name="SYNTAX_ERROR">
+      <expression>
+      throwable != null &amp;&amp; throwable.getCause() != null &amp;&amp;
+      throwable instanceof java.util.concurrent.ExecutionException &amp;&amp;
+      throwable.getCause() instanceof org.openrdf.query.MalformedQueryException</expression>
+    </evaluator>
+    <evaluator name="QUERY_TIMEOUT">
+      <expression>
+      throwable != null &amp;&amp; throwable instanceof java.util.concurrent.TimeoutException
+      </expression>
+    </evaluator>
+    <%- end -%>
 
     <appender name="stdout" class="ch.qos.logback.core.ConsoleAppender">
         <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
