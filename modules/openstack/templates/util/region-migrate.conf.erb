@@ -1,8 +1,8 @@
 [common]
 dnsdomain = <%= @site %>.wmnet
-keystone_url = "http://<%= @nova_controller %>:35357/v3"
+keystone_url = http://<%= @nova_controller %>:35357/v3
 user = novaadmin
-password = "<%= @ldap_user_pass %>"
+password = <%= @ldap_user_pass %>
 
 [source]
 region = <%= @site %>
@@ -10,7 +10,7 @@ region = <%= @site %>
 [dest]
 db_username = nova
 db_name = nova
-db_password = "<%= @nova_db_pass %>"
+db_password = <%= @nova_db_pass %>
 
 <% if @site == "eqiad" -%>
 
