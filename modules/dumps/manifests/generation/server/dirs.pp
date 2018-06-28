@@ -20,6 +20,7 @@ class dumps::generation::server::dirs(
     $cirrussearchdir              = "${miscdatasetsdir}/cirrussearch"
     $xlationdir                   = "${miscdatasetsdir}/contenttranslation"
     $categoriesrdfdir             = "${miscdatasetsdir}/categoriesrdf"
+    $categoriesrdfdailydir        = "${miscdatasetsdir}/categoriesrdf/daily"
     $globalblocksdir              = "${miscdatasetsdir}/globalblocks"
     $medialistsdir                = "${miscdatasetsdir}/imageinfo"
     $incrsdir                     = "${miscdatasetsdir}/incr"
@@ -39,7 +40,7 @@ class dumps::generation::server::dirs(
 
     # subdirs for various generated dumps
     file { [ $cirrussearchdir, $xlationdir, $categoriesrdfdir,
-        $globalblocksdir, $medialistsdir, $incrsdir,
+        $categoriesrdfdailydir, $globalblocksdir, $medialistsdir, $incrsdir,
         $mediatitlesdir, $pagetitlesdir]:
 
         ensure => 'directory',
