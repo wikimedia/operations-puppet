@@ -48,7 +48,7 @@ profile::grafana::ldap:
     nda:
       group_dn: cn=nda,ou=groups,dc=wikimedia,dc=org
       org_role: Editor
-    wmde:
+    grafana-admin:
       group_dn: cn=grafana-admin,ou=groups,dc=wikimedia,dc=org
       org_role: Editor
 
