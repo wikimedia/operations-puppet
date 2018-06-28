@@ -10,7 +10,10 @@ class profile::piwik::instance (
     $trusted_hosts     = hiera('profile::piwik::trusted_hosts',
         ['piwik.wikimedia.org', 'wikimediafoundation.org']),
 ) {
-    class { 'piwik':
+    # Piwik has been rebranded to Matomo, but the core stays the same.
+    # We are going to keep profile/roles with the Piwik naming for a bit
+    # more since it is harmless.
+    class { 'matomo':
         database_password  => $database_password,
         admin_username     => $admin_username,
         admin_password     => $admin_password,

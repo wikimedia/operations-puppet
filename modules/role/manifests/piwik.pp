@@ -10,6 +10,6 @@ class role::piwik {
     include ::profile::piwik::database
 
     system::role { 'piwik':
-        description => 'Analytics piwik server',
+        description => 'Analytics Piwik/Matomo server',
     }
 }

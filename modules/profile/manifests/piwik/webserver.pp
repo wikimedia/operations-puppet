@@ -3,6 +3,8 @@
 # Apache webserver instance configured with mpm-prefork and mod_php.
 # This configuration should be improved with something more up to date like
 # mpm-event and php-fpm/hhmv.
+# Piwik has been rebranded to 'Matomo', but to avoid too many changes
+# we are going to just keep the previous name.
 #
 class profile::piwik::webserver(
     $prometheus_nodes = hiera('prometheus_nodes')

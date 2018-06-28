@@ -1,10 +1,10 @@
-# Apache configuration for Piwik.
+# Apache configuration for Matomo (formerly Piwik).
 # This file is managed by Puppet.
 <VirtualHost *:80>
   ServerName piwik.wikimedia.org
-  DocumentRoot /usr/share/piwik
+  DocumentRoot /usr/share/matomo
 
-  <Directory "/usr/share/piwik">
+  <Directory "/usr/share/matomo">
     php_admin_flag engine on
 
     AuthName "<%= @auth_ldap['name'] %>"
@@ -30,11 +30,11 @@
     Require all denied
   </Files>
 
-  <Directory "/usr/share/piwik/misc">
+  <Directory "/usr/share/matomo/misc">
     Require all denied
   </Directory>
 
-  <Directory "/usr/share/piwik/vendor">
+  <Directory "/usr/share/matomo/vendor">
     Require all denied
   </Directory>
 

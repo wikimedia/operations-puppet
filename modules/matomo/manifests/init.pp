@@ -1,19 +1,19 @@
-# == Class: piwik
+# == Class: matomo
 #
-# Piwik is an open-source analytics platform.
+# Matomo (formerly Piwik) is an open-source analytics platform.
 #
-# https://piwik.org/
+# https://matomo.org/
 #
-# Piwik's installation is meant to be executed manually using its UI,
+# Matomo's installation is meant to be executed manually using its UI,
 # to initialize the database and generate the related config file.
 # Therefore each new deployment from scratch will require some manual work,
 # please keep it mind.
 #
 # Misc:
 # Q: Where did the deb package come from?
-# A: http://debian.piwik.org, imported to jessie-wikimedia.
+# A: https://debian.piwik.org, imported to jessie-wikimedia.
 #
-class piwik (
+class matomo (
     $database_host      = 'localhost',
     $database_password  = undef,
     $database_username  = 'piwik',
@@ -25,27 +25,27 @@ class piwik (
     $archive_cron_url   = undef,
     $archive_cron_email = undef,
 ) {
-    require_package('piwik')
+    require_package('matomo')
 
     $database_name = 'piwik'
     $database_table_prefix = 'piwik_'
     $proxy_client_headers = ['HTTP_X_FORWARDED_FOR']
 
-    file { '/etc/piwik/config.ini.php':
+    file { '/etc/matomo/config.ini.php':
         ensure  => present,
-        content => template('piwik/config.ini.php.erb'),
+        content => template('matomo/config.ini.php.erb'),
         owner   => $piwik_username,
         group   => $piwik_username,
         mode    => '0750',
-        require => Package['piwik'],
+        require => Package['matomo'],
     }
 
-    file { '/var/log/piwik':
+    file { '/var/log/matomo':
         ensure  => 'directory',
         owner   => $piwik_username,
         group   => $piwik_username,
         mode    => '0755',
-        require => Package['piwik'],
+        require => Package['matomo'],
     }
 
     # Install a cronjob to run the Archive task periodically
@@ -53,8 +53,8 @@ class piwik (
     # Running it once a day to avoid performance penalties on high
     # trafficated websites (https://piwik.org/docs/setup-auto-archiving/#important-tips-for-medium-to-high-traffic-websites)
     if $archive_cron_url and $archive_cron_email {
-        $cmd = "[ -e /usr/share/piwik/console ] && [ -x /usr/bin/php ] && nice /usr/bin/php /usr/share/piwik/console core:archive --url=\"${archive_cron_url}\" >> /var/log/piwik/piwik-archive.log"
-        cron { 'piwik_archiver':
+        $cmd = "[ -e /usr/share/matomo/console ] && [ -x /usr/bin/php ] && nice /usr/bin/php /usr/share/matomo/console core:archive --url=\"${archive_cron_url}\" >> /var/log/piwik/piwik-archive.log"
+        cron { 'matomo_archiver':
             command     => $cmd,
             user        => $piwik_username,
             environment => "MAILTO=${archive_cron_email}",
@@ -63,7 +63,7 @@ class piwik (
             month       => '*',
             monthday    => '*',
             weekday     => '*',
-            require     => File['/var/log/piwik'],
+            require     => File['/var/log/matomo'],
         }
     }
 }
