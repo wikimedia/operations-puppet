@@ -5,7 +5,7 @@ user = novaadmin
 password = "<%= @ldap_user_pass %>"
 
 [source]
-region = "%{::site}"
+region = <%= @site %>
 
 [dest]
 db_username = nova
