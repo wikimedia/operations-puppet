@@ -29,15 +29,6 @@ class openstack::util::admin_scripts(
         source => "puppet:///modules/openstack/${version}/admin_scripts/region-migrate",
     }
 
-    # Config for the above script
-    file { '/root/region-migrate.conf':
-        ensure  => 'present',
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0500',
-        content => template('openstack/util/region-migrate.conf.erb'),
-    }
-
     # Script to migrate (with suspension) instances between compute nodes
     file { '/root/live-migrate':
         ensure => 'present',
