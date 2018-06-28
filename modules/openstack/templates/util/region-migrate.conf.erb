@@ -1,0 +1,27 @@
+[common]
+dnsdomain = <%= @site %>.wmnet
+keystone_url = "http://<%= @nova_controller %>:35357/v3"
+user = novaadmin
+password = "<%= @ldap_user_pass %>"
+
+[source]
+region = "%{::site}"
+
+[dest]
+db_username = nova
+db_name = nova
+db_password = "<%= @nova_db_pass %>"
+
+<% if @site == "eqiad" -%>
+
+region = eqiad1-r
+db_hostname = m5-master.eqiad.wmnet
+network_id = ToBeDetermined
+
+<% elsif @site == "codfw" -%>
+
+region = codfw1dev-r
+db_hostname = labtestcontrol2003.wikimedia.org
+network_id = 05a5494a-184f-4d5c-9e98-77ae61c56daa
+
+<% end %>

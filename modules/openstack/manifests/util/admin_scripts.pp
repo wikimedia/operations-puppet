@@ -19,6 +19,25 @@ class openstack::util::admin_scripts(
         source => "puppet:///modules/openstack/${version}/admin_scripts/cold-nova-migrate",
     }
 
+    # Script to migrate from nova-network region to neutron region
+    #  (hopefully this will only be needed transitionally)
+    file { '/root/region-migrate':
+        ensure => 'present',
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0755',
+        source => "puppet:///modules/openstack/${version}/admin_scripts/region-migrate",
+    }
+
+    # Config for the above script
+    file { '/root/region-migrate.conf':
+        ensure  => 'present',
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0500',
+        content => template('openstack/util/region-migrate.conf.erb'),
+    }
+
     # Script to migrate (with suspension) instances between compute nodes
     file { '/root/live-migrate':
         ensure => 'present',

@@ -1,0 +1,280 @@
+#!/usr/bin/python
+"""
+
+Copy a VM from one region to another.
+
+The actual way we do this is terrible: we create a new
+VM in the destination region, and then supplant it with the
+contents of the source VM.  This has the advantage of
+being much faster and using less disk space than the
+traditional VM->snapshot->image->VM path that's documented
+elsewhere.
+
+Actually copying a VM's state in nova from the database
+turns out to be a tangled web as well; much simpler to just
+let nova create us a new vessel.
+
+This script assumes that both regions share the same
+glance and keystone, and that there are ssh keys set
+up between the source and destination hypervisor.
+
+The target hypervisor will be selected by the nova scheduler
+running in the target region.
+
+- activate glance image if needed
+- create new dummy VM, determine its location
+- stop dummy VM
+- copy source VM files over dummy files
+- update a few nova database entries
+- restart dummy VM
+- deactivate glance image
+"""
+
+import configparser
+import argparse
+import requests
+import subprocess
+import time
+
+import glanceclient
+from keystoneclient.auth.identity import generic
+from keystoneclient import session as keystone_session
+from novaclient import client
+
+
+class NovaInstance(object):
+
+    def __init__(self,
+                 instance_id,
+                 common_config,
+                 source_config,
+                 dest_config):
+
+        self.dnsdomain = common_config['dnsdomain']
+        self.instance_id = instance_id
+        self.source_config = source_config
+        self.dest_config = dest_config
+        self.common_config = common_config
+
+        source_auth = generic.Password(
+            auth_url=self.common_config['keystone_url'],
+            username=self.common_config['user'],
+            password=self.common_config['password'],
+            user_domain_name='Default',
+            project_domain_name='Default',
+            project_name='admin')
+        source_session = keystone_session.Session(auth=source_auth)
+        self.source_novaclient = client.Client('2', session=source_session, region_name=source_config['region'])
+
+        self.refresh_instance()
+        self.project_id = self.source_instance.tenant_id
+        self.user_id = self.source_instance.user_id
+
+        dest_auth = generic.Password(
+            auth_url=self.common_config['keystone_url'],
+            username=self.common_config['user'],
+            password=self.common_config['password'],
+            user_domain_name='Default',
+            project_domain_name='Default',
+            project_name='admin')
+        self.dest_session = keystone_session.Session(auth=dest_auth)
+        self.dest_novaclient = client.Client('2', session=self.dest_session, region_name=dest_config['region'])
+
+    # Returns True if the status changed, otherwise False
+    @staticmethod
+    def activate_image(dest_session, image_id, deactivate=False):
+        token = dest_session.get_token()
+
+        glanceendpoint = dest_session.get_endpoint(service_type='image')
+        gclient = glanceclient.Client('1', glanceendpoint, token=token)
+        image = gclient.images.get(image_id)
+
+        # Because the glance devs can't be bothered to update their python
+        #  bindings when new features are added, we have to do this the
+        #  old-fashioned way.
+        print("Needed image is %s" % image.status)
+        if deactivate:
+            action = 'deactivate'
+            if image.status == 'deactivated':
+                # Nothing to do
+                return False
+            print("deactivating image %s" % image_id)
+        else:
+            action = 'reactivate'
+            if image.status == 'active':
+                # Nothing to do
+                return False
+            print("activating image %s" % image_id)
+
+        url = "%s/v2/images/%s/actions/%s" % (glanceendpoint, image_id, action)
+
+        resp = requests.post(url, headers={'X-Auth-Token': token})
+        if resp:
+            return True
+        else:
+            raise Exception("Image manipulation got status: " + resp.status_code)
+
+    def refresh_instance(self, source=True):
+        if source:
+            self.source_instance = self.source_novaclient.servers.get(self.instance_id)
+        else:
+            self.dest_instance = self.dest_novaclient.servers.get(self.dest_instance_id)
+
+    def wait_for_status(self, desiredstatus, source=True):
+        oldstatus = ""
+        if source:
+            watched_instance = self.source_instance
+        else:
+            watched_instance = self.dest_instance
+
+        while watched_instance.status != desiredstatus:
+            if watched_instance.status != oldstatus:
+                oldstatus = watched_instance.status
+                print("Current status for %s is %s; waiting for it to change to %s." % (
+                    watched_instance.id, watched_instance.status, desiredstatus))
+
+            time.sleep(1)
+            self.refresh_instance(source)
+            if source:
+                watched_instance = self.source_instance
+            else:
+                watched_instance = self.dest_instance
+
+    def make_destination_vm(self, name, image_id, flavor_id):
+        # we need a project-scoped session to create the VM in the right project
+        create_auth = generic.Password(
+            auth_url=self.common_config['keystone_url'],
+            username=self.common_config['user'],
+            password=self.common_config['password'],
+            user_domain_name='Default',
+            project_domain_name='Default',
+            project_name=self.project_id)
+        create_session = keystone_session.Session(auth=create_auth)
+        self.create_novaclient = client.Client('2', session=create_session, region_name=self.dest_config['region'])
+
+        nics = [{"net-id": self.dest_config['network_id'], "v4-fixed-ip": ''}]
+        inst = self.create_novaclient.servers.create(name, image_id, flavor_id, nics=nics)
+        self.dest_instance_id = inst.id
+
+        self.refresh_instance(False)
+        self.wait_for_status('ACTIVE', source=False)
+        self.dest_host = self.dest_instance._info['OS-EXT-SRV-ATTR:host']
+
+        print("dest_instance_id: %s on %s" % (self.dest_instance_id, self.dest_host))
+
+    def migrate(self):
+        source_host = self.source_instance._info['OS-EXT-SRV-ATTR:host']
+        print("Source instance %s is now on host %s with state %s" % (
+            self.instance_id,
+            source_host,
+            self.source_instance.status))
+
+        name = self.source_instance.name
+        image_id = self.source_instance.image['id']
+        flavor_id = self.source_instance.flavor['id']
+
+        activated_image = self.activate_image(self.dest_session, image_id)
+
+        self.make_destination_vm(name, image_id, flavor_id)
+
+        sshargs = ["ssh", "-i", "/root/.ssh/compute-hosts-key",
+                   "nova@%s.codfw.wmnet" % self.dest_host, "true"]
+        r = subprocess.call(sshargs)
+        if r:
+            print("Remote execution failed; this whole enterprise is doomed.")
+            print("We leaked a VM with ID %s" % self.dest_instance_id)
+            exit(1)
+
+        try:
+            self.source_instance.stop()
+        except:
+            print("exception caught while stopping source VM; maybe it's already stopped?")
+        self.dest_instance.stop()
+
+        self.wait_for_status('SHUTOFF', source=True)
+        self.wait_for_status('SHUTOFF', source=False)
+
+        instancebasedir = "/var/lib/nova/instances"
+        source_instancedir = "%s/%s" % (instancebasedir, self.instance_id)
+        dest_instancedir = "%s/%s" % (instancebasedir, self.dest_instance_id)
+
+        # ssh to the source host, and rsync from there to the dest
+        #  using the shared nova key.
+        #
+        # Don't bother to rsync the console log.  Nova can't read
+        #  it, and we don't need it.
+        args = ["ssh", "-i", "/root/.ssh/compute-hosts-key",
+                "nova@%s.%s" % (source_host, self.dnsdomain),
+                "/usr/bin/rsync -S -avz -e \"ssh -o StrictHostKeyChecking=no "
+                "-o UserKnownHostsFile=/dev/null -i "
+                "/var/lib/nova/.ssh/id_rsa\" --progress "
+                "--exclude=console.log "
+                "%s/* nova@%s.%s:%s" %
+                (source_instancedir, self.dest_host, self.dnsdomain, dest_instancedir)]
+        print(" ".join(args))
+        r = subprocess.call(args)
+        if r:
+            print("rsync to new host failed.")
+            return(1)
+
+        print("Instance copied.  Now updating nova db...")
+        host_moved = True
+
+        args = ["mysql", "--user=%s" % self.dest_config['db_username'],
+                "--password=%s" % self.dest_config['db_password'],
+                "--host", self.dest_config['db_hostname'], self.dest_config['db_name'],
+                "-e",
+                "update instances set user_id=\"%s\" "
+                "where uuid=\"%s\";" %
+                (self.user_id, self.dest_instance_id)]
+        r = subprocess.call(args)
+
+        if r:
+            print("Failed to update the instance's db record.")
+
+        self.dest_instance.start()
+        self.wait_for_status('ACTIVE', source=False)
+
+        # Note:  It'll be a long time until this instance deals
+        #  with its confusion over having a new IP -- ssh
+        #  won't work for several minutes more.
+
+        if activated_image:
+            self.activate_image(self.dest_session, image_id, deactivate=True)
+
+        if host_moved:
+            # TODO: should we automatically delete the original VM or
+            #  just leave it stopped?
+            pass
+
+        print("Instance %s is now on host %s with status %s" % (
+            self.dest_instance_id,
+            self.dest_instance._info['OS-EXT-SRV-ATTR:host'],
+            self.dest_instance.status))
+
+
+if __name__ == "__main__":
+    config = configparser.ConfigParser()
+    config.read('region-migrate.conf')
+    if 'source' not in config.sections():
+        print("config requires a 'source' section")
+        exit(1)
+    if 'dest' not in config.sections():
+        print("config requires a 'dest' section")
+        exit(1)
+
+    argparser = argparse.ArgumentParser('region-migrate',
+                                        description="Move an instance to a "
+                                        "different region")
+    argparser.add_argument(
+        'instanceid',
+        help='instance id to migrate',
+    )
+    args = argparser.parse_args()
+
+    instance = NovaInstance(args.instanceid,
+                            config['common'],
+                            config['source'],
+                            config['dest'])
+
+    instance.migrate()
