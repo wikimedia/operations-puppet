@@ -1963,12 +1963,12 @@ node /^relforge100[1-2]\.eqiad\.wmnet/ {
 
 # restbase eqiad cluster
 node /^restbase10(0[789]|1[012345678])\.eqiad\.wmnet$/ {
-    role(restbase::production_ng)
+    role(restbase::production)
 }
 
 # restbase codfw cluster
 node /^restbase20(0[1-9]|1[012])\.codfw\.wmnet$/ {
-    role(restbase::production_ng)
+    role(restbase::production)
 }
 
 # cassandra/restbase dev cluster

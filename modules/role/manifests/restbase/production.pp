@@ -1,9 +1,8 @@
-# == Class role::restbase::dev_cluster
+# == Class role::restbase::production
 #
-# Configures the restbase dev cluster
+# Configures the production cluster
 class role::restbase::production {
-    # Just includes base, no LVS etc.
     include ::role::restbase::base
     include ::role::lvs::realserver
-    system::role { 'restbase': description => 'Restbase (production)' }
+    system::role { 'restbase': description => 'Restbase (production with Cassandra 3.x)' }
 }
