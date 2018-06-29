@@ -93,6 +93,8 @@ class profile::cache::kafka::eventlogging(
     }
 
     if $monitoring_enabled {
+        # Aggregated alarms for delivery errors are defined in icinga::monitor::analytics
+
         # Generate icinga alert if varnishkafka is not running.
         nrpe::monitor_service { 'varnishkafka-eventlogging':
             description   => 'eventlogging Varnishkafka log producer',
@@ -101,29 +103,11 @@ class profile::cache::kafka::eventlogging(
             require       => Varnishkafka::Instance['eventlogging'],
         }
 
-        $graphite_metric_prefix = "varnishkafka.${::hostname}.eventlogging.${cache_cluster}"
-
         # Sets up Logster to read from the Varnishkafka instance stats JSON file
         # and report metrics to statsd.
         varnishkafka::monitor::statsd { 'eventlogging':
-            graphite_metric_prefix => $graphite_metric_prefix,
+            graphite_metric_prefix => "varnishkafka.${::hostname}.eventlogging.${cache_cluster}",
             statsd_host_port       => $statsd,
-        }
-
-        # Generate an alert if too many delivery report errors per minute
-        # (logster only reports once a minute)
-        monitoring::graphite_threshold { 'varnishkafka-eventlogging-kafka_drerr':
-            ensure          => 'present',
-            description     => 'Varnishkafka Eventlogging Delivery Errors per minute',
-            dashboard_links => ['https://grafana.wikimedia.org/dashboard/db/varnishkafka?panelId=20&fullscreen&orgId=1&var-instance=eventlogging&var-host=All'],
-            metric          => "derivative(transformNull(${graphite_metric_prefix}.varnishkafka.kafka_drerr, 0))",
-            warning         => 0,
-            critical        => 5000,
-            # But only alert if a large percentage of the examined datapoints
-            # are over the threshold.
-            percentage      => 80,
-            from            => '10min',
-            require         => Logster::Job['varnishkafka-eventlogging'],
         }
     }
 

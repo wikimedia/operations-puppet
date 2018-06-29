@@ -38,6 +38,7 @@ class role::icinga {
     include ::profile::bird::anycast_monitoring
     include ::profile::prometheus::alerts
     include ::profile::maps::alerts
+    include ::profile::cache::kafka::alerts
 
     class { '::icinga::monitor::etcd_mw_config': }
 
