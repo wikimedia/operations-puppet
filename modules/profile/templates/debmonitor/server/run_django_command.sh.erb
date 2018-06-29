@@ -1,0 +1,22 @@
+#!/bin/bash
+# Wrapper to execute Django management commands in the Debmonitor environment
+
+set -e
+
+if [[ -z "${1}" ]]; then
+    echo "Usage: ${0} COMMAND"
+    echo "Try '${0} help' for a list of available commands"
+    exit 1
+fi
+COMMAND="${1}"
+
+# Activate Python virtualenv
+source "<%= @venv_path -%>/bin/activate"
+
+# Set environment variables for Debmonitor
+export DJANGO_SETTINGS_MODULE="<%= @settings_module -%>"
+export DEBMONITOR_CONFIG="<%= @config_path -%>"
+
+cd "<%= @directory -%>"
+
+python manage.py "${COMMAND}"

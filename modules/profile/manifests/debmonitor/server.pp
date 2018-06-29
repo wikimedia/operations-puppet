@@ -26,18 +26,22 @@ class profile::debmonitor::server (
 
     $ldap_password = $passwords::ldap::production::proxypass
     $port = 8001
+    $deploy_user = 'deploy-debmonitor'
     $base_path = '/srv/deployment/debmonitor'
-    $config_path = "${base_path}/deploy"
+    $deploy_path = "${base_path}/deploy"
     $venv_path = "${base_path}/venv"
     $static_path = "${base_path}/static/"
-    $directory = "${config_path}/src"
+    $config_path = "${base_path}/config.json"
+    $directory = "${deploy_path}/src"
     $ssl_config = ssl_ciphersuite('nginx', 'strong')
+    $settings_module = 'debmonitor.settings.prod'
+    $hosts = query_nodes('Class[Role::Debmonitor::Server]')
 
     # Configuration file for the Django-based WebUI and API
-    file { "${base_path}/config.json":
+    file { $config_path:
         ensure  => present,
-        owner   => 'deploy-debmonitor',
-        group   => 'www-data',
+        owner   => $deploy_user,
+        group   => $deploy_user,
         mode    => '0440',
         content => template('profile/debmonitor/server/config.json.erb'),
         before  => Uwsgi::App['debmonitor'],
@@ -48,7 +52,7 @@ class profile::debmonitor::server (
     service::uwsgi { 'debmonitor':
         port            => $port,
         no_workers      => 4,
-        deployment_user => 'deploy-debmonitor',
+        deployment_user => $deploy_user,
         config          => {
             need-plugins => 'python3',
             chdir        => $directory,
@@ -62,9 +66,9 @@ class profile::debmonitor::server (
                 'LC_ALL=C.UTF-8',
                 'PYTHONENCODING=utf-8',
                 # Tell Debmonitor which configuration file to read
-                "DEBMONITOR_CONFIG=${base_path}/config.json",
+                "DEBMONITOR_CONFIG=${config_path}",
                 # Tell Debmonitor which settings module to load
-                'DJANGO_SETTINGS_MODULE=debmonitor.settings.prod',
+                "DJANGO_SETTINGS_MODULE=${settings_module}",
             ],
         },
         healthcheck_url => '/',
@@ -122,5 +126,24 @@ class profile::debmonitor::server (
     monitoring::service { 'debmonitor-https':
         description   => 'debmonitor.discovery.wmnet',
         check_command => 'check_https_unauthorized!debmonitor.discovery.wmnet!/!400',
+    }
+
+    # Maintenance script
+    file { "${base_path}/run-django-command":
+        ensure  => present,
+        owner   => $deploy_user,
+        group   => $deploy_user,
+        mode    => '0554',
+        content => template('profile/debmonitor/server/run_django_command.sh.erb'),
+    }
+
+    # Maintenance cron
+    $times = cron_splay($hosts, 'weekly', 'debmonitor-maintenance-gc')
+    cron { 'debmonitor-maintenance-gc':
+        command => "/usr/bin/systemd-cat -t 'debmonitor-maintenance' ${base_path}/run-django-command debmonitorgc",
+        user    => $deploy_user,
+        weekday => $times['weekday'],
+        hour    => $times['hour'],
+        minute  => $times['minute'],
     }
 }

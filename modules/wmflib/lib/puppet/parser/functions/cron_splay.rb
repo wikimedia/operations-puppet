@@ -32,7 +32,7 @@ fields suffixed with '-a' and '-b' as shown in the example below.
 
 *Examples:*
 
-    $times = fqdn_splay($hosts, 'weekly', 'foo-static-seed')
+    $times = cron_splay($hosts, 'weekly', 'foo-static-seed')
     cron { 'foo':
         minute   => $times['minute'],
         hour     => $times['hour'],
@@ -40,7 +40,7 @@ fields suffixed with '-a' and '-b' as shown in the example below.
     }
 
     # Semi-weekly operation hits every 3.5 days using dual crontab entries
-    $times = fqdn_splay($hosts, 'semiweekly', 'bar')
+    $times = cron_splay($hosts, 'semiweekly', 'bar')
     cron { 'bar-a':
         minute   => $times['minute-a'],
         hour     => $times['hour-a'],
