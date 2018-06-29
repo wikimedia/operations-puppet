@@ -1,2 +1,2 @@
 mariadb::shard: 's7'
-mariadb::binlog_format: 'STATEMENT'
+profile::base::notifications_enabled: '0'
