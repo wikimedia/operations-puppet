@@ -97,3 +97,5 @@ profile::openstack::main::wikitech::web::db_name: 'labswiki'
 
 # Horizon things:
 profile::openstack::main::horizon::maintenance_mode: false
+
+contactgroups: wmcs-team,admins

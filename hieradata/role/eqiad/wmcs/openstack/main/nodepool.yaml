@@ -1,3 +1,5 @@
 admin::groups:
   - contint-users
   - contint-admins
+
+contactgroups: wmcs-team,admins

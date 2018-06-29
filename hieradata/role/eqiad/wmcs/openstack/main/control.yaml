@@ -1,2 +1,4 @@
 admin::groups:
   - wmcs-roots
+
+contactgroups: wmcs-team,admins
