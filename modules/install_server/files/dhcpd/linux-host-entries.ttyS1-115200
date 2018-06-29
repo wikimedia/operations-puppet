@@ -2907,6 +2907,11 @@ host graphite2002 {
     filename "lpxelinux.0";
 }
 
+host graphite2003 {
+    hardware ethernet D0:94:66:5F:85:61;
+    fixed-address graphite2003.codfw.wmnet;
+}
+
 host helium {
     hardware ethernet 78:2b:cb:09:0f:c8;
     fixed-address helium.eqiad.wmnet;
