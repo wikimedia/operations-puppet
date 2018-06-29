@@ -4,8 +4,9 @@ class role::wmcs::openstack::eqiad1::net {
     include ::standard
     include ::profile::openstack::eqiad1::clientlib
     include ::profile::openstack::eqiad1::observerenv
-    # include ::profile::openstack::eqiad1::neutron::common
-    # include ::profile::openstack::eqiad1::neutron::l3_agent
+    include ::profile::openstack::eqiad1::neutron::common
+    # still partial
+    include ::profile::openstack::eqiad1::neutron::l3_agent
     # include ::profile::openstack::eqiad1::neutron::dhcp_agent
     # include ::profile::openstack::eqiad1::neutron::metadata_agent
 }

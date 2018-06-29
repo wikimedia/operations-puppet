@@ -1,4 +1,4 @@
-class profile::openstack::eqiad1::neutron::common (
+class profile::openstack::eqiad1::neutron::common(
     $version = hiera('profile::openstack::eqiad1::version'),
     $region = hiera('profile::openstack::eqiad1::region'),
     $db_pass = hiera('profile::openstack::eqiad1::neutron::db_pass'),
