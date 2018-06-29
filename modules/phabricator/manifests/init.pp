@@ -138,7 +138,7 @@ class phabricator (
         # jessie - PHP (5.5/5.6) packages and Apache module
         package { [
             'php5-apcu',
-            'php5-mysql',
+            'php5-mysqlnd',
             'php5-gd',
             'php5-mailparse',
             'php5-dev',
