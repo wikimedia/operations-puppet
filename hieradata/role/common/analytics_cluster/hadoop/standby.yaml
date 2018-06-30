@@ -22,7 +22,7 @@ profile::hadoop::logstash::enabled: false
 profile::hadoop::common::yarn_heapsize: 2048
 
 # Used to set up jvm heap size usage thresholds
-profile::hadoop::standby::namenode_heapsize: 6144
+profile::hadoop::standby::namenode_heapsize: 8192
 
 # Prometheus JMX Exporter config templates.
 profile::hadoop::common::hadoop_namenode_opts: "-Xms8192m -Xmx8192m -XX:+UseParNewGC -XX:+UseConcMarkSweepGC -XX:CMSInitiatingOccupancyFraction=70 -XX:+CMSParallelRemarkEnabled -javaagent:/usr/share/java/prometheus/jmx_prometheus_javaagent.jar=%{::ipaddress}:10080:/etc/prometheus/hdfs_namenode_jmx_exporter.yaml"

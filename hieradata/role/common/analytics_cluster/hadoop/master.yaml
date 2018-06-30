@@ -18,7 +18,7 @@ profile::hadoop::logstash::enabled: false
 profile::hadoop::common::yarn_heapsize: 2048
 
 # Used to set up jvm heap size usage thresholds
-profile::hadoop::master::namenode_heapsize: 6144
+profile::hadoop::master::namenode_heapsize: 8192
 
 # Ensure that users in these posix groups have home directories in HDFS.
 profile::hadoop::master::hadoop_user_groups: "analytics-users analytics-privatedata-users analytics-admins analytics-search-users"
