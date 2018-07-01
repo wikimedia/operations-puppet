@@ -23,6 +23,7 @@ class profile::phabricator::main (
     $passive_server = hiera('phabricator_server_failover', undef),
     $logmail = hiera('phabricator_logmail', false),
     $aphlict_enabled = hiera('phabricator_aphlict_enabled', false),
+    $rate_limits = hiera('profile::phabricator::main::rate_limits')
 ){
 
     mailalias { 'root':
@@ -322,6 +323,7 @@ class profile::phabricator::main (
         field_index => '4rRUkCdImLQU',
         phab_host   => $domain,
         alt_host    => $altdom,
+        rate_limits => $rate_limits,
         require     => Package[$deploy_target],
     }
 

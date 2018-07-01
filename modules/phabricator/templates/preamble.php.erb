@@ -12,12 +12,12 @@ if (!empty($_SERVER['HTTP_X_FORWARDED_PROTO'])
 PhabricatorStartup::addRateLimit(new PhabricatorClientRateLimit())
   ->setLimitKey('rate')
   ->setClientKey($_SERVER['REMOTE_ADDR'])
-  ->setLimit(<%= @request_rate_limit %>);
+  ->setLimit(<%= @rate_limits['request'] %>);
 
 PhabricatorStartup::addRateLimit(new PhabricatorClientConnectionLimit())
   ->setLimitKey('conn')
   ->setClientKey($_SERVER['REMOTE_ADDR'])
-  ->setLimit(<%= @client_connection_limit %>);
+  ->setLimit(<%= @rate_limits['connection'] %>);
 
 class redirector {
   protected $config;

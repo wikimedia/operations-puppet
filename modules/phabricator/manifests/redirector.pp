@@ -13,7 +13,8 @@ define phabricator::redirector(
     $rootdir     = '/srv/phab',
     $field_index = '',
     $phab_host   = 'phabricator.wikimedia.org',
-    $alt_host    = 'phab.wmfusercontent.org'
+    $alt_host    = 'phab.wmfusercontent.org',
+    $rate_limits = {'request' => 0, 'connection' => 0}
 ) {
     $preamble = "${phabricator::confdir}/preamble.php"
     $redirect_config = "${phabricator::confdir}/redirect_config.json"
