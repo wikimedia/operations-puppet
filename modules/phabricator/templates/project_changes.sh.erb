@@ -145,6 +145,7 @@ SELECT DISTINCT CONCAT("https://phabricator.wikimedia.org/p/", u.userName) AS us
     JOIN phabricator_user.user u ON u.userName = t.ownerOrdering
     WHERE t.dateModified > UNIX_TIMESTAMP(DATE_SUB(NOW(), INTERVAL 1 WEEK))
     AND u.dateCreated > UNIX_TIMESTAMP(DATE_SUB(NOW(), INTERVAL 6 WEEK))
+    AND u.isDisabled = 0
     AND t.ownerOrdering IS NOT NULL
     ORDER BY userName;
 
