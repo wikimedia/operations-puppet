@@ -2,7 +2,18 @@ class profile::mediawiki::videoscaler()
 {
     include ::mediawiki::users
 
-    require_package('ffmpeg')
+    # Backport of libvpx 1.7 and row-mt support, can be removed once
+    # video scalers are migrated to Debian buster
+    apt::repository { 'ffmpeg-vp9':
+        uri        => 'http://apt.wikimedia.org/wikimedia',
+        dist       => 'stretch-wikimedia',
+        components => 'component/vp9',
+    }
+
+    package { 'ffmpeg':
+        ensure  => present,
+        require => [ Apt::Repository['ffmpeg-vp9'], Exec['apt-get update']],
+    }
 
     # monitor orphaned HHVM threads/requests that are no longer in apache
     # see https://phabricator.wikimedia.org/T153488
