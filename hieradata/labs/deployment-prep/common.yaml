@@ -5,7 +5,7 @@ profile::base::purge_apt_sources: true
 has_lvs: false
 "puppetmaster::scripts::keep_reports_minutes": 360
 puppetmaster::autosigner: true
-service::configuration::mwapi_uri: http://deployment-mediawiki-07.deployment-prep.eqiad.wmflabs/w/api.php
+service::configuration::mwapi_host: http://deployment-mediawiki-07.deployment-prep.eqiad.wmflabs
 service::configuration::restbase_uri: http://deployment-restbase02.deployment-prep.eqiad.wmflabs:7231
 #service::configuration::http_proxy:
 service::configuration::statsd_host: labmon1001.eqiad.wmnet

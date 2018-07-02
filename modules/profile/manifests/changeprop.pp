@@ -11,7 +11,6 @@ class profile::changeprop(
 ) {
 
     include ::passwords::redis
-    include ::service::configuration
     require ::profile::changeprop::packages
 
     $kafka_config = kafka_config('main')
@@ -28,7 +27,6 @@ class profile::changeprop(
         deployment_config => true,
         deployment_vars   => {
             broker_list     => $broker_list,
-            mwapi_uri       => $::service::configuration::mwapi_uri,
             restbase_uri    => $restbase_uri,
             ores_uris       => $ores_uris,
             eventbus_uri    => $eventbus_uri,

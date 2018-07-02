@@ -1,6 +1,6 @@
 <%
 cvars = {
-  'mwapi'     => scope.lookupvar('service::configuration::mwapi_uri'),
+  'mwapi'     => scope.lookupvar('service::configuration::mwapi_host'),
   'restbase'  => scope.lookupvar('service::configuration::restbase_uri'),
   'gelf_host' => scope.lookupvar('service::configuration::logstash_host'),
   'gelf_port' => scope.lookupvar('service::configuration::logstash_port'),
@@ -72,7 +72,7 @@ services:
       # the template used for contacting the MW API
       mwapi_req:
         method: post
-        uri: <%= cvars['mwapi'] %>
+        uri: <%= cvars['mwapi'] %>/w/api.php
         headers:
           host: '{{request.params.domain}}'
           user-agent: '{{user-agent}}'

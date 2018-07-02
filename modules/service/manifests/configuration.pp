@@ -4,9 +4,9 @@
 #
 # === Parameters
 #
-# [*mwapi_uri*]
-#   The host/IP where to reach the MW API. Default:
-#   http://api-rw.discovery.wmnet/w/api.php
+# [*mwapi_host*]
+#   The host/IP where to reach the MW appservers. Default:
+#   http://api-rw.discovery.wmnet
 #
 # [*restbase_uri*]
 #   The host/IP where to reach RESTBase. Default:
@@ -43,7 +43,7 @@
 #   Default: false
 #
 class service::configuration(
-    $mwapi_uri     = 'http://api-rw.discovery.wmnet/w/api.php',
+    $mwapi_host     = 'http://api-rw.discovery.wmnet',
     $restbase_uri  = 'http://restbase.discovery.wmnet:7231',
     $pdfrender_key = 'secret',
     $http_proxy    = undef,

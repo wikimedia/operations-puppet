@@ -2,7 +2,7 @@
 # Do not modify it by hand
 <%-
 cvars = {
-  'mwapi'     => scope.lookupvar('service::configuration::mwapi_uri'),
+  'mwapi'     => scope.lookupvar('service::configuration::mwapi_host'),
   'restbase'  => scope.lookupvar('service::configuration::restbase_uri'),
   'gelf_host' => scope.lookupvar('service::configuration::logstash_host'),
   'gelf_port' => scope.lookupvar('service::configuration::logstash_port'),
@@ -34,7 +34,8 @@ module: <%= @starter_module %>
 entrypoint: '<%= @entrypoint %>'
 port: <%= @port %>
 proxy: <%= cvars['proxy'] %>
-mwapi_uri: <%= cvars['mwapi'] %>
+mwapi_host: <%= cvars['mwapi'] %>
+mwapi_uri: <%= cvars['mwapi'] %>/w/api.php
 restbase_uri: <%= cvars['restbase'] %>
 <%- unless @deployment_vars.empty? -%>
 # deployment variables
