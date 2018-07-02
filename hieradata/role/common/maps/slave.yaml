@@ -26,5 +26,8 @@ profile::cassandra::single_instance::jmx_exporter_enabled: false
 cassandra::metrics::blacklist:
   - .*\.metrics\.Table\..*$
 
+profile::maps::apps::kartotherian_style: '''@kartotherian/osm-bright-style'''
+profile::maps::apps::tilerator_style: '''@kartotherian/osm-bright-style'''
+
 profile::maps::apps::kartotherian_storage_id: v4
 profile::maps::apps::tilerator_storage_id: v4
