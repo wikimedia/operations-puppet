@@ -1,3 +1,2 @@
 mariadb::shard: 'es1'
 mariadb::mysql_role: 'standalone'
-profile::base::notifications_enabled: '0'
