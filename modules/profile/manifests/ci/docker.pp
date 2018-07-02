@@ -12,6 +12,9 @@ class profile::ci::docker(
         components => 'thirdparty/ci',
     }
 
+    class { '::docker::configuration':
+        settings => $settings,
+    }
     class { '::docker':
         package_name => 'docker-ce',
         version      => '17.12.1~ce-0~debian',
@@ -19,9 +22,6 @@ class profile::ci::docker(
             Apt::Repository['thirdparty-ci'],
             Exec['apt-get update']
         ],
-    }
-    class { '::docker::configuration':
-        settings => $settings,
     }
     # Ensure jenkins-deploy membership in the docker group
     exec { 'jenkins user docker membership':

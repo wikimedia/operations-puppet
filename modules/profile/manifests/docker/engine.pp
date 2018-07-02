@@ -23,11 +23,6 @@ class profile::docker::engine(
         }
     }
 
-    # Install docker
-    class { '::docker':
-        version => $version,
-    }
-
     # Docker config
     # Fetch the storage config from the related driver
     # I know this is horrible
@@ -43,6 +38,10 @@ class profile::docker::engine(
     # We need to import one storage config
     class { '::docker::configuration':
         settings => merge($settings, $docker_storage_options),
+    }
+    # Install docker
+    class { '::docker':
+        version => $version,
     }
 
     # Enable memory cgroup

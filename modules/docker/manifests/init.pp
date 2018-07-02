@@ -15,6 +15,7 @@ class docker(
     $version,
     $package_name='docker-engine',
 ){
+    require ::docker::configuration
     package { $package_name:
         ensure => $version,
     }
