@@ -8,7 +8,7 @@ class puppetmaster::puppetdb(
     $jvm_opts   ='-Xmx4G',
     $puppetdb_major_version=undef,
     $ssldir = undef,
-    $ca_path = undef,
+    $ca_path = '/etc/ssl/certs/Puppet_Internal_CA.pem',
 ) {
     requires_os('debian >= jessie')
 
