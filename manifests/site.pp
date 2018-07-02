@@ -65,6 +65,11 @@ node 'auth2001.codfw.wmnet' {
     role('yubiauth_server')
 }
 
+node 'authdns2001.wikimedia.org' {
+    role(authdns::server)
+    interface::add_ip6_mapped { 'main': }
+}
+
 node 'baham.wikimedia.org' {
     role(authdns::server)
     interface::add_ip6_mapped { 'main': }
