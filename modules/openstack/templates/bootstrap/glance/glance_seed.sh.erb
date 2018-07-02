@@ -1,17 +1,48 @@
-su -s /bin/sh -c "glance-manage db_sync" glance
+#!/bin/bash
 
-service glance-registry restart
-service glance-api restart
+# this script is not meant to be run as is. Is rather a guide on how to
+# bootstrap glance as of Openstack Mitaka.
+# it assumes a working observer env and also a working keystone deployment
 
-openstack endpoint create --publicurl http://<%= @nova_controller %>:9292 --internalurl http://<%= @nova_controller %>:9292 --adminurl http://<%= @nova_controller %>:9292 --region <%= @region %> image
+#
+# glance database
+#
+# You can do this as user. Create databases if they don't exists already.
+# sudo mysql -u root
+# mysql> CREATE DATABASE glance;
+# mysql> GRANT ALL PRIVILEGES ON glance.* TO 'glance'@'%' IDENTIFIED BY 'passwd';
+# mysql> GRANT ALL PRIVILEGES ON glance.* TO 'glance'@'<%= @nova_controller %>' IDENTIFIED BY 'passwd';
+# mysql> GRANT ALL PRIVILEGES ON glance.* TO 'glance'@'<%= @nova_controller_standby %>' IDENTIFIED BY 'passwd';
 
-openstack service create --name glance --description "OpenStack Image service" image
+# sync db, create tables, etc
+sudo glance-manage db_sync
+# or something like:
+# su -s /bin/sh -c "glance-manage db_sync" glance
 
+sudo service glance-registry restart
+sudo service glance-api restart
+
+#
+# services and endpoints
+#
+# You cna do this as root.
+source novaenv.sh
+openstack service create --name glance --description "OpenStack Image service" image
+openstack endpoint create --region <%= @region %> image public http://<%= @nova_controller %>:9292
+openstack endpoint create --region <%= @region %> image internal http://<%= @nova_controller %>:9292
+openstack endpoint create --region <%= @region %> image admin http://<%= @nova_controller %>:9292
 openstack role add --user novaadmin --project admin glanceadmin
 
-# http://cdimage.debian.org/cdimage/openstack/current-8/
-
-wget http://cdimage.debian.org/cdimage/openstack/current-8/debian-8-openstack-amd64.qcow2
-
-# --visibility=public
-glance image-create --name "jessie" --disk-format=qcow2 --container-format=bare --property=architecture=x86_64 --progress --file ./debian-8-openstack-amd64.qcow2
+#
+# add initial image
+#
+# download this as user!
+# http://cdimage.debian.org/cdimage/openstack/current-9/
+wget http://cdimage.debian.org/cdimage/openstack/current-9/debian-9-openstack-amd64.qcow2
+# then, again with root
+source novaenv.sh
+glance image-create --name "stretch" --disk-format=qcow2 \
+	--container-format=bare --property=architecture=x86_64 \
+	--progress --file ./debian-9-openstack-amd64.qcow2
+# probably use --visibility=public, or later you can use
+openstack image set $UID --public
