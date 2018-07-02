@@ -116,7 +116,7 @@ if __name__ == '__main__':
 
     logging.basicConfig(
         format='%(asctime)s %(levelname)s %(message)s',
-        level=logging.DEBUG if args.debug else logging.INFO)
+        level=logging.DEBUG if args.debug else logging.WARNING)
 
     logging.debug(args)
 
