@@ -1,101 +1,51 @@
 # == Class: mediawiki::jobrunner
 #
-# jobrunner continuously processes the MediaWiki job queue by dispatching
-# workers to perform tasks and monitoring their success or failure.
-#
-class mediawiki::jobrunner (
-    $queue_servers,
-    $aggr_servers  = $queue_servers,
-    $statsd_server = undef,
-    $port          = 9005,
-    $concurrency   = 1,
-    $running       = true,
-    $runners       = 0,
-) {
-
-    include ::passwords::redis
-
-    # a rule for the `jobrunner` service:
-    #
-    #     ALL=(root) NOPASSWD: /usr/sbin/service jobrunner *
-    #
-    # will be added by scap::target as a result of defining `service_name`
-    scap::target { 'jobrunner/jobrunner':
-        deploy_user  => 'mwdeploy',
-        manage_user  => false,
-        service_name => 'jobrunner',
-        sudo_rules   => [
-            'ALL=(root) NOPASSWD: /usr/sbin/service jobchron *'
-        ],
+# Temporary class to clean up the jobrunner scripts
+class mediawiki::jobrunner {
+    # Remove most of what is created by the scap target
+    sudo::user { 'scap_mwdeploy_jobrunner':
+        ensure     => absent,
+        privileges => [],
+    }
+    file { '/srv/deployment/jobrunner':
+        ensure  => absent,
+        recurse => true,
+        purge   => true,
+        force   => true,
     }
 
-    $dispatcher = template('mediawiki/jobrunner/dispatcher.erb')
-
     file { '/etc/default/jobrunner':
-        content => template('mediawiki/jobrunner/jobrunner.default.erb'),
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0444',
-        notify  => Service['jobrunner'],
+        ensure => absent,
     }
 
 
     file { '/etc/jobrunner':
-        ensure => directory,
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0555',
-        before => Service['jobrunner'],
-    }
-
-    file { '/etc/jobrunner/jobrunner.conf':
-        content => template('mediawiki/jobrunner/jobrunner.conf.erb'),
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0444',
-        notify  => Service['jobrunner', 'jobchron'],
-    }
-
-    $params = {
-        ensure => $running ? {
-            true    => 'running',
-            default => 'stopped'
-        },
-        enable => $running,
+        ensure  => absent,
+        recurse => true,
+        purge   => true,
+        force   => true,
     }
 
     # We declare the service, but override its status with
     # $service_ensure
     base::service_unit { 'jobrunner':
-        systemd        => systemd_template('jobrunner'),
-        service_params => $params,
-        mask           => !$running,
+        ensure         => absent,
+        systemd        => 'test',
+        service_params => {},
     }
 
     base::service_unit { 'jobchron':
-        systemd        => systemd_template('jobchron'),
-        service_params => $params,
-        mask           => !$running,
+        ensure         => absent,
+        systemd        => 'test',
+        service_params => {},
     }
 
-    if $::initsystem == 'systemd' {
-        rsyslog::conf { 'jobrunner':
-            source   => 'puppet:///modules/mediawiki/jobrunner.rsyslog.conf',
-            priority => 20,
-            require  => [
-              File['/etc/logrotate.d/mediawiki_jobrunner'],
-              File['/etc/logrotate.d/mediawiki_jobchron'],
-            ],
-        }
+    file { ['/etc/logrotate.d/mediawiki_jobrunner', '/etc/logrotate.d/mediawiki_jobchron']:
+        ensure => absent
     }
 
-    logrotate::conf { 'mediawiki_jobchron':
-        ensure  => present,
-        content => template('mediawiki/jobrunner/logrotate-jobchron.conf.erb'),
-    }
-
-    logrotate::conf { 'mediawiki_jobrunner':
-        ensure  => present,
-        content => template('mediawiki/jobrunner/logrotate.conf.erb'),
+    rsyslog::conf { 'jobrunner':
+        ensure   => absent,
+        priority => 20,
     }
 }
