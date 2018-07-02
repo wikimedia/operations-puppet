@@ -21,9 +21,3 @@ role::lvs::realserver::pools:
   nginx:
     lvs_name: videoscaler
 profile::base::enable_microcode: true
-
-# Old jobrunner, will be removed soon
-profile::mediawiki::jobrunner::load_factor: 0.1
-profile::mediawiki::jobrunner::runners:
-  basic: 1
-  gwt: 1

@@ -124,8 +124,6 @@ scap::sources:
   iegreview/iegreview:
     repository: iegreview
     origin: phabricator
-  jobrunner/jobrunner:
-    repository: mediawiki/services/jobrunner
   kartotherian/deploy:
     repository: maps/kartotherian/deploy
 #    lvs_service: kartotherian

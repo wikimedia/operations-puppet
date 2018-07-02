@@ -5,10 +5,6 @@ class profile::mediawiki::jobrunner(
     $port = 9005
     $local_only_port = 9006
 
-    # The jobrunner script that submits jobs to hhvm
-    class { '::mediawiki::jobrunner':
-    }
-
     # Special HHVM setup
     # The apache2 systemd unit in stretch enables PrivateTmp by default
     # This makes "systemctl reload apache" fail with error code 226/EXIT_NAMESPACE

@@ -1,7 +1,0 @@
-# TODO: extract this information from redis::shards
-profile::mediawiki::jobrunner::queue_servers:
-  - rdb2005.codfw.wmnet:6379
-  - rdb2005.codfw.wmnet:6380
-  - rdb2005.codfw.wmnet:6381
-profile::mediawiki::jobrunner::aggr_servers:
-  - rdb2005.codfw.wmnet:6378
