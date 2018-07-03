@@ -1,11 +1,11 @@
 # == Class: coal::web
 #
-# Run the web portion of the coal service (provides metrics for
-# performance.wikimedia.org)
+# The web API for data collected by coal::processor.
 #
-class coal::web() {
-
-    # Include common things for coal
+# The API is exposed from, and used by, profile::webperf::site.
+# Canonically at <https://performance.wikimedia.org>.
+#
+class coal::web {
     include ::coal::common
 
     require_package('python-flask')

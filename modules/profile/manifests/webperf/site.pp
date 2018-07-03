@@ -1,4 +1,4 @@
-# == Class: profile::performance::site
+# == Class: profile::webperf::site
 #
 # This profile provisions <https://performance.wikimedia.org>,
 # a static site with web performance dashboards.
@@ -18,13 +18,13 @@
 #   For example "xhgui.example" or "127.0.0.3:8000".
 #   Optional. If undefined, the "/xhgui" path is not proxied.
 #
-class profile::performance::site (
-    $server_name = hiera('profile::performance::site::server_name'),
-    $xenondata_host = hiera('profile::performance::site::xenondata_host', undef),
-    $xhgui_host = hiera('profile::performance::site::xhgui_host', undef)
+class profile::webperf::site (
+    $server_name = hiera('profile::webperf::site::server_name'),
+    $xenondata_host = hiera('profile::webperf::site::xenondata_host', undef),
+    $xhgui_host = hiera('profile::webperf::site::xhgui_host', undef)
 ) {
 
-    require ::profile::performance::coal
+    require ::profile::webperf::coal_web
 
     file { '/srv/org':
         ensure => directory,

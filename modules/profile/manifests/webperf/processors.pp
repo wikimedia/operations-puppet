@@ -1,7 +1,21 @@
-class profile::webperf::processors_and_site(
+# == Class: profile::webperf::processors
+#
+# Provision the webperf data processors. Consumes from Kafka (incl. EventLogging),
+# and produces to StatsD and Graphite.
+#
+# Contact: performance-team@wikimedia.org
+# See also: <https://wikitech.wikimedia.org/wiki/Webperf>
+#
+# Services:
+#
+# - statsv
+# - navtiming
+# - coal
+#
+class profile::webperf::processors(
     $statsd = hiera('statsd'),
     $graphite_host = hiera('graphite_host')
-){
+) {
     $statsd_parts = split($statsd, ':')
     $statsd_host = $statsd_parts[0]
     $statsd_port = $statsd_parts[1]

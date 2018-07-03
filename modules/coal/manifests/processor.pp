@@ -1,18 +1,22 @@
 # == Class: coal::processor
 #
-# Configure and run the processor side of the coal service.  Reads from Kafka,
-# writes to graphite
+# Install and run the coal processor service, which collects median
+# values from incoming RUM performance data (Extension:NavigationTiming).
+# Consumes from Kafka EventLogging, produces to Graphite.
+#
+# Contact: performance-team@wikimedia.org
+# See also: <https://wikitech.wikimedia.org/wiki/Webperf>
 #
 # === Parameters
 #
 # [*kafka_brokers*]
-#   List of kafka brokers to use for bootstrapping
+#   List of Kafka brokers to use for bootstrapping
 #
 # [*kafka_consumer_group*]
 #   Name of the consumer group to use for Kafka
 #
 # [*el_schemas*]
-#   Event Logging schemas that should be read from Kafka.  Topic names are
+#   EventLogging schemas that should be read from Kafka.  Topic names are
 #   derived from these values (eventlogging_$schema)
 #
 # [*log_dir*]
