@@ -396,6 +396,8 @@ prometheus_nodes:
   - deployment-prometheus01.deployment-prep.eqiad.wmflabs
 profile::recommendation_api::wdqs_uri: http://wdqs-test.wmflabs.org
 
+profile::performance::site::server_name: performance-beta.wmflabs.org
+
 # Eventstreams config
 profile::eventstreams::kafka_cluster_name: main
 profile::eventstreams::streams:

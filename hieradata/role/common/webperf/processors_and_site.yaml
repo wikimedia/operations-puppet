@@ -2,4 +2,8 @@ admin::groups:
   - perf-team
   - eventlogging-admins
 
-graphite_host: 'graphite-in.eqiad.wmnet'
+graphite_host: graphite-in.eqiad.wmnet
+
+profile::performance::site::server_name: performance.wikimedia.org
+profile::performance::site::xenondata_host: mwlog1001.eqiad.wmnet
+profile::performance::site::xhgui_host: tungsten.eqiad.wmnet

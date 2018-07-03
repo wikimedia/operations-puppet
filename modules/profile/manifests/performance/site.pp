@@ -3,7 +3,26 @@
 # This profile provisions <https://performance.wikimedia.org>,
 # a static site with web performance dashboards.
 #
-class profile::performance::site {
+# === Parameters
+#
+# [*server_name*]
+#   Server name for the Apache VirtualHost of this site.
+#
+# [*xenondata_host*]
+#   HTTP host address where Xenon data is served (hostname or IP, port allowed).
+#   For example "prof.example" or "127.0.0.2:8000".
+#   Optional. If undefined, the "/xenon" path is not proxied.
+#
+# [*xhgui_host*]
+#   HTTP host address where the XHGui application is served (hostname or IP, port allowed).
+#   For example "xhgui.example" or "127.0.0.3:8000".
+#   Optional. If undefined, the "/xhgui" path is not proxied.
+#
+class profile::performance::site (
+    $server_name = hiera('profile::performance::site::server_name'),
+    $xenondata_host = hiera('profile::performance::site::xenondata_host', undef),
+    $xhgui_host = hiera('profile::performance::site::xhgui_host', undef)
+) {
 
     require ::profile::performance::coal
 
@@ -36,9 +55,6 @@ class profile::performance::site {
         srange => '$CACHES',
     }
 
-    $server_name = 'performance.wikimedia.org'
-    $xenondata_host = 'mwlog1001.eqiad.wmnet'
-    $xhgui_host = 'tungsten.eqiad.wmnet'
     httpd::site { 'performance-wikimedia-org':
         content => template('profile/performance/site/performance-website.erb'),
         require => Git::Clone['performance/docroot'],
