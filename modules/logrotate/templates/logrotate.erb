@@ -34,7 +34,10 @@
     <%= @actual_size %>
 <% end -%>
 <% if @no_create -%>
-    nocreate
+  nocreate
+<% end -%>
+<% if @create -%>
+  create <%= @create %>
 <% end -%>
 <% if @su -%>
     su <%= @su %>

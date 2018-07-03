@@ -30,6 +30,7 @@ define logrotate::rule (
     $no_create      = false,
     $post_rotate    = undef,
     $su             = undef,
+    $create         = undef,
 ) {
 
     $valid_frequencies = [ 'daily', 'weekly', 'monthly', 'yearly' ]

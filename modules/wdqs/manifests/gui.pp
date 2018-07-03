@@ -122,7 +122,7 @@ class wdqs::gui(
         not_if_empty => true,
         rotate       => 3,
         compress     => true,
-        su           => "${username} wikidev",
+        create       => "0640 ${username} wikidev",
     }
 
     logrotate::rule { 'wdqs-reload-dcat':
@@ -133,7 +133,7 @@ class wdqs::gui(
         not_if_empty => true,
         rotate       => 3,
         compress     => true,
-        su           => "${username} wikidev",
+        create       => "0640 ${username} wikidev",
     }
 
 }
