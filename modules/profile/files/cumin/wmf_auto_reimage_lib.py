@@ -209,12 +209,14 @@ def setup_logging(logger, user, log_path):
     logger.setLevel(logging.INFO)
 
 
-def print_line(message, host=None, skip_time=False):
+def print_line(message, host=None, skip_time=False, level=logging.INFO):
     """Print and flush a message do stdout.
 
     Arguments:
-    message -- the message to print
-    host    -- the host to which the message belongs. [optional]
+    message   -- the message to print
+    host      -- the host to which the message belongs to. [optional]
+    skip_time -- whether to not print the datetime at the start of the line [optional]
+    level     -- level to use to log the message, one of logging's module levels [optional]
     """
     parts = []
 
@@ -228,7 +230,7 @@ def print_line(message, host=None, skip_time=False):
 
     print(' | '.join(parts), file=safe_stdout)
     safe_stdout.flush()
-    logger.info(message)
+    logger.log(level, message)
 
 
 def get_mgmt(host):
@@ -801,7 +803,7 @@ def set_pxe_boot(host, mgmt, retries=0):
         if retries == 0:
             # We're on the first call of the function, after all the eventual recursive calls
             print_line(('WARNING: unable to verify that PXE was set, the host might reboot in the '
-                        'current OS'), host=host)
+                        'current OS'), host=host, level=logging.WARNING)
 
 
 def check_bios_bootparams(host, mgmt):
@@ -823,7 +825,7 @@ def check_bios_bootparams(host, mgmt):
 
     else:
         print_line(('WARNING: unable to verify that BIOS boot parameters are back to normal, got:\n'
-                    '{params}').format(params=bootparams), host=host)
+                    '{params}').format(params=bootparams), host=host, level=logging.WARNING)
 
 
 def wait_puppet_run(host, start=None):
