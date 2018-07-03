@@ -43,7 +43,7 @@ def parse_args():
     if not args.force:
         if args.sequential and len(args.hosts) > 5:
             parser.error('More than 5 sequential hosts specified and --force not set')
-        elif len(args.hosts) > 3:
+        elif not args.sequential and len(args.hosts) > 3:
             parser.error(("More than 3 parallel hosts specified and --force not set. Before using "
                           "the --force parameter, ensure that there aren't too many hosts in the "
                           "same rack."))
