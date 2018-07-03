@@ -7,22 +7,9 @@
 class profile::redis::jobqueue_slave {
     require ::profile::redis::slave
     file { '/usr/local/bin/restart-redis-if-slave':
-        ensure => present,
-        source => 'puppet:///modules/profile/redis/restart-redis-if-slave.sh',
-        mode   => '0555',
-        owner  => 'root',
-        group  => 'root',
+        ensure => absent,
     }
-    $instance_str = join($::profile::redis::slave::instances, ' ')
-
-    $restart_hour = $::site ? {
-        'codfw' => 2,
-        default => 1,
-    }
-
     cron { 'jobqueue-redis-conditional-restart':
-        command => "/usr/local/bin/restart-redis-if-slave ${instance_str}",
-        hour    => $restart_hour,
-        minute  => 0,
+        ensure => absent
     }
 }
