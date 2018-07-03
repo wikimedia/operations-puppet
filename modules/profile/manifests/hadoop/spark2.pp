@@ -36,10 +36,18 @@ class profile::hadoop::spark2(
     # Ensure that a symlink to hive-site.xml exists so that
     # spark2 will automatically get Hive support.
     if defined(Class['::cdh::hive']) {
+        $hive_enabled = true
         file { '/etc/spark2/conf/hive-site.xml':
             ensure => 'link',
             target => "${::cdh::hive::config_directory}/hive-site.xml",
         }
+    }
+    else {
+        $hive_enabled = false
+    }
+
+    file { '/etc/spark2/conf/spark-defaults.conf':
+        content => template('profile/hadoop/spark2-defaults.conf.erb'),
     }
 
     # If we want to override any Spark 1 yarn shuffle service to run Spark 2 instead.
