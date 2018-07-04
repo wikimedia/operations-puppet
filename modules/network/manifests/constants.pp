@@ -188,8 +188,6 @@ class network::constants {
                     '2620:0:862:102:10:20:0:107',         # cp3007.esams.wmnet
                     '10.20.0.108',                        # cp3008.esams.wmnet
                     '2620:0:862:102:10:20:0:108',         # cp3008.esams.wmnet
-                    '10.20.0.109',                        # cp3009.esams.wmnet
-                    '2620:0:862:102:10:20:0:109',         # cp3009.esams.wmnet
                     '10.20.0.110',                        # cp3010.esams.wmnet
                     '2620:0:862:102:10:20:0:110',         # cp3010.esams.wmnet
                 ],
