@@ -1,3 +1,6 @@
+#!/bin/sh
+cat <<'MOTD'
+
 | |        / /     /   | |  _  \  |  \ | | | | |  \ | | /  ___|
 | |  __   / /     / /| | | |_| |  |   \| | | | |   \| | | |
 | | /  | / /     / / | | |  _  /  | |\   | | | | |\   | | |  _
@@ -10,3 +13,4 @@ mwmaint1001.eqiad.wmnet instead.
 All the data in your home on terbium has been copied to $HOME/home-terbium
 on the new server, and will be synced one last time before terbium gets
 decommissioned.
+MOTD

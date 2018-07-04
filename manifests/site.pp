@@ -2137,7 +2137,7 @@ node 'terbium.eqiad.wmnet' {
     # lint:ignore:wmf_styleguide
     motd::script{ 'terbium_decom':
         ensure   => present,
-        priority => 5,
+        priority => 1,
         source   => 'puppet:///modules/role/terbium_decommission.txt'
     }
     # lint:endignore
