@@ -1762,13 +1762,11 @@ node 'mw2152.codfw.wmnet' {
 # mw logging host codfw
 node 'mwlog2001.codfw.wmnet' {
     role(logging::mediawiki::udp2log)
-    include ::role::xenon
 }
 
 # mw logging host eqiad
 node 'mwlog1001.eqiad.wmnet' {
     role(logging::mediawiki::udp2log)
-    include ::role::xenon
 }
 
 node 'mx1001.wikimedia.org' {

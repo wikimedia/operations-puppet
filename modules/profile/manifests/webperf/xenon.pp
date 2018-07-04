@@ -1,9 +1,13 @@
-# == Class: role::xenon
+# == Class: profile::webperf::xenon
 #
-# Aggregates and graphs stack trace snapshots from MediaWiki
-# application servers, showing where time is spent.
+# Aggregate stack traces from MediaWiki application servers,
+# and help see where time is spent, with flame graphs.
 #
-class role::xenon {
+# Stacks are received using a Redis instance, and periodically written to disk
+# in text files and SVG files. These files are exposed over HTTP for use
+# by profile::webperf::site at <https://performance.wikimedia.org/xenon/>.
+#
+class profile::webperf::xenon {
     include ::xenon
 
     class { '::httpd':

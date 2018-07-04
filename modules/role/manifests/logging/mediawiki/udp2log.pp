@@ -15,6 +15,7 @@ class role::logging::mediawiki::udp2log(
 
     include ::standard
     include ::profile::base::firewall
+    include ::profile::webperf::xenon
 
     class { '::udp2log':
         monitor          => $monitor,
