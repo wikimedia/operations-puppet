@@ -1,9 +1,11 @@
 class profile::openstack::main::nova::api::service(
+    $version = hiera('profile::openstack::main::version'),
     $nova_api_host = hiera('profile::openstack::main::nova_api_host'),
     ) {
 
     require ::profile::openstack::main::nova::common
     class {'profile::openstack::base::nova::api::service':
+        version       => $version,
         nova_api_host => $nova_api_host,
     }
 

@@ -1,4 +1,5 @@
 class profile::openstack::base::nova::api::service(
+    $version = hiera('profile::openstack::base::version'),
     $nova_api_host = hiera('profile::openstack::base::nova_api_host'),
     ) {
 
@@ -6,7 +7,8 @@ class profile::openstack::base::nova::api::service(
     $labs_networks = join($::network::constants::labs_networks, ' ')
 
     class {'::openstack::nova::api::service':
-        active => ($::fqdn == $nova_api_host),
+        version => $version,
+        active  => ($::fqdn == $nova_api_host),
     }
     contain '::openstack::nova::api::service'
 
