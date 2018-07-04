@@ -3249,8 +3249,6 @@ host labsdb1005 {
 host labsdb1006 {
     hardware ethernet d4:be:d9:f0:21:31;
     fixed-address labsdb1006.eqiad.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
-    filename "lpxelinux.0";
 }
 
 host labsdb1007 {
