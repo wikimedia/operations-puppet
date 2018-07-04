@@ -81,6 +81,7 @@ class role::graphite::production {
         'graphite1003.eqiad.wmnet',
         'graphite2001.codfw.wmnet',
         'graphite2002.codfw.wmnet',
+        'graphite2003.codfw.wmnet',
     ]
     $graphite_hosts_ferm = join($graphite_hosts, ' ')
 

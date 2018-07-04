@@ -1061,6 +1061,10 @@ node 'graphite2001.codfw.wmnet' {
     role(graphite::primary)
 }
 
+node 'graphite2003.codfw.wmnet' {
+    role(graphite::primary)
+}
+
 # graphite additional machine, for additional space
 node 'graphite2002.codfw.wmnet' {
     role(graphite::production)
