@@ -40,4 +40,14 @@ class mediawiki::web::prod_sites {
         source   => 'puppet:///modules/mediawiki/apache/sites/foundation.conf',
         priority => 9,
     }
+
+    $sites_available = '/etc/apache2/sites-available'
+    # Included in main.conf
+    $main_conf_sites = [
+        'mediawiki.org',
+        'test.wikidata.org',
+    ]
+    mediawiki::web::site { $main_conf_sites:
+        before => Apache::Site['main.conf']
+    }
 }
