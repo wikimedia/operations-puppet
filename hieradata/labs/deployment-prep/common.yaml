@@ -208,7 +208,6 @@ scap::dsh::groups:
         hosts:
             - deployment-jobrunner03.deployment-prep.eqiad.wmflabs
             - deployment-mediawiki-09.deployment-prep.eqiad.wmflabs
-            - deployment-mediawiki06.deployment-prep.eqiad.wmflabs
             - deployment-mediawiki-07.deployment-prep.eqiad.wmflabs
             - deployment-tin.deployment-prep.eqiad.wmflabs
             - deployment-mira.deployment-prep.eqiad.wmflabs
