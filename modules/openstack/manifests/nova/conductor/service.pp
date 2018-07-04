@@ -4,11 +4,19 @@
 # http://blog.russellbryant.net/2012/11/19/a-new-nova-service-nova-conductor/
 
 class openstack::nova::conductor::service(
+    $version,
     $active,
     ) {
 
+    if os_version('debian jessie') and ($version == 'mitaka') {
+        $install_options = ['-t', 'jessie-backports']
+    } else {
+        $install_options = ''
+    }
+
     package { 'nova-conductor':
-        ensure  => 'present',
+        ensure          => 'present',
+        install_options => $install_options,
     }
 
     service { 'nova-conductor':
