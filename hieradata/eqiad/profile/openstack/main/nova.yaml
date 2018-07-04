@@ -18,15 +18,14 @@ profile::openstack::main::nova::live_migration_uri: 'qemu://%s.eqiad.wmnet/syste
 #  internal infrastructure use so should never be part of
 #  the default pool.
 #
-# 1018, 1021 and 1022 are running but held back as spares
-#  in case a different labvirt fails (and as transitional
-#  capacity during the upcoming Neutron migration)
+# 1018 is running but held back as spare
+#  in case a different labvirt fails
+#
+# 1021 and 1022 are allocated to eqiad1, the new Neutron region
 #
 # 1015 is in the penalty box because it's running way too many VMs.
-#
-# 1001 is depooled so I can use it as a test box for Kernel updates.
-#  Once it's rebooted and stable it can be repooled.
 profile::openstack::main::nova::scheduler_pool:
+  - labvirt1001
   - labvirt1002
   - labvirt1003
   - labvirt1004
