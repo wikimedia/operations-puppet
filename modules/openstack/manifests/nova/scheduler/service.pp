@@ -3,10 +3,17 @@
 class openstack::nova::scheduler::service(
     $active,
     $version,
-){
+    ){
+
+    if os_version('debian jessie') and ($version == 'mitaka') {
+        $install_options = ['-t', 'jessie-backports']
+    } else {
+        $install_options = ''
+    }
 
     package { 'nova-scheduler':
-        ensure  => 'present',
+        ensure          => 'present',
+        install_options => $install_options,
     }
 
     file { '/usr/lib/python2.7/dist-packages/nova/scheduler/filters/scheduler_pool_filter.py':
