@@ -54,12 +54,18 @@ class graphite::web(
     $cluster_servers   = undef,
 ) {
     include ::graphite
+    include ::apache::mod::uwsgi # lint:ignore:wmf_styleguide
 
     validate_bool($remote_user_auth)
 
     require_package('memcached')
     require_package('python-memcache')
-    require_package('graphite-web')
+
+    # graphite >= 1.0 is in backports (>= stretch)
+    package { 'graphite-web':
+        ensure          => 'present',
+        install_options => ['-t', "${::lsbdistcodename}-backports"],
+    }
 
     file { '/etc/graphite/cors.py':
         source  => 'puppet:///modules/graphite/cors.py',
@@ -82,8 +88,14 @@ class graphite::web(
         require => Package['graphite-web'],
     }
 
+    # django 1.9 compat, remove once the jessie -> stretch migration is completed
+    $syncdb_command = $::lsbdistcodename ? {
+        stretch  => '/usr/bin/graphite-manage migrate --syncdb --noinput',
+        default  => '/usr/bin/graphite-manage syncdb --noinput',
+    }
+
     exec { 'graphite_syncdb':
-        command     => '/usr/bin/graphite-manage syncdb --noinput',
+        command     => $syncdb_command,
         user        => 'www-data',
         subscribe   => File['/etc/graphite/local_settings.py'],
         refreshonly => true,
