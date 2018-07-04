@@ -2097,7 +2097,12 @@ node /^snapshot1001\.eqiad\.wmnet/ {
     role(spare::system)
 }
 
-node /^snapshot100[5-6]\.eqiad\.wmnet/ {
+node /^snapshot1005\.eqiad\.wmnet/ {
+    # until repaired (T198792)
+    role(dumps::generation::worker::testbed)
+}
+
+node /^snapshot1006\.eqiad\.wmnet/ {
     # NOTE: New snapshot hosts must also be manually added
     # to hiera/common.yaml:dataset_clients_snapshots,
     # hieradata/hosts/ with a file named after the host,
@@ -2122,7 +2127,8 @@ node /^snapshot1008\.eqiad\.wmnet/ {
 }
 
 node /^snapshot1009\.eqiad\.wmnet/ {
-    role(dumps::generation::worker::testbed)
+    # until snapshot1005 is repaired (T198792)
+    role(dumps::generation::worker::dumper)
 }
 
 node 'wasat.codfw.wmnet' {
