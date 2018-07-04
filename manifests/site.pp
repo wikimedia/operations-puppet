@@ -1526,9 +1526,7 @@ node /^mw12(2[1-9]|3[0-5])\.eqiad\.wmnet$/ {
 # Former imagescaler temp. used as terbium stand-in (T192185)
 node 'mwmaint1001.eqiad.wmnet' {
     role(mediawiki_maintenance)
-    # lint:ignore:wmf_styleguide
     interface::add_ip6_mapped { 'main': }
-    # lint:endignore
 }
 
 # Former imagescalers (replaced by thumbor) T192457
@@ -2127,10 +2125,22 @@ node /^snapshot1009\.eqiad\.wmnet/ {
     role(dumps::generation::worker::testbed)
 }
 
-# mediawiki maintenance servers (https://wikitech.wikimedia.org/wiki/Terbium)
-node 'terbium.eqiad.wmnet', 'wasat.codfw.wmnet' {
+node 'wasat.codfw.wmnet' {
     role(mediawiki_maintenance)
     interface::add_ip6_mapped { 'main': }
+}
+
+# mediawiki maintenance servers (https://wikitech.wikimedia.org/wiki/Terbium)
+node 'terbium.eqiad.wmnet' {
+    role(mediawiki_maintenance)
+    interface::add_ip6_mapped { 'main': }
+    # lint:ignore:wmf_styleguide
+    motd::script{ 'terbium_decom':
+        ensure   => present,
+        priority => 5,
+        source   => 'puppet:///modules/role/terbium_decommission.txt'
+    }
+    # lint:endignore
 }
 
 # Thumbor servers for MediaWiki image scaling
