@@ -8,7 +8,6 @@ class profile::labs::monitoring (
         'python-keystoneauth1',
         'python-keystoneclient',
         'python-novaclient',
-        'libapache2-mod-uwsgi',
         'rsync',
     ]
 
