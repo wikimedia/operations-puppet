@@ -15,14 +15,14 @@ import os
 
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'graphite.settings')
 
-from django.contrib.auth.models import User
-
 # django 1.7 compatibility
 import django
 try:
     django.setup()
 except AttributeError:
     pass
+
+from django.contrib.auth.models import User
 
 
 def check_admin(args):
