@@ -233,11 +233,6 @@ node /^cp20(06|1[28]|25)\.codfw\.wmnet$/ {
     role(cache::misc)
 }
 
-node /^cp300[3-6]\.esams\.wmnet$/ {
-    # ex-cache_maps, to be decommed
-    role(spare::system)
-}
-
 node /^cp30(0[789]|10)\.esams\.wmnet$/ {
     interface::add_ip6_mapped { 'main': }
     role(cache::misc)
