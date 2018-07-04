@@ -8,8 +8,15 @@ class openstack::nova::common::base(
         'nova-common',
     ]
 
+    if os_version('debian jessie') and ($version == 'mitaka') {
+        $install_options = ['-t', 'jessie-backports']
+    } else {
+        $install_options = ''
+    }
+
     package { $packages:
-        ensure => 'present',
+        ensure          => 'present',
+        install_options => $install_options,
     }
 
     # For some reason the Mitaka nova-common package installs

@@ -8,7 +8,7 @@ class role::wmcs::openstack::eqiad1::control {
     include ::profile::openstack::eqiad1::neutron::common
     include ::profile::openstack::eqiad1::neutron::service
     include ::profile::openstack::eqiad1::glance
-    # include ::profile::openstack::eqiad1::nova::common
+    include ::profile::openstack::eqiad1::nova::common
     # include ::profile::openstack::eqiad1::nova::conductor::service
     # include ::profile::openstack::eqiad1::nova::scheduler::service
     # include ::profile::ldap::client::labs
