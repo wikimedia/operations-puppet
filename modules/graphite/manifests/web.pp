@@ -54,12 +54,12 @@ class graphite::web(
     $cluster_servers   = undef,
 ) {
     include ::graphite
-    include ::apache::mod::uwsgi # lint:ignore:wmf_styleguide
 
     validate_bool($remote_user_auth)
 
     require_package('memcached')
     require_package('python-memcache')
+    require_package('libapache2-mod-uwsgi')
 
     # graphite >= 1.0 is in backports (>= stretch)
     package { 'graphite-web':
