@@ -24,10 +24,12 @@ class role::graphite::production {
                 'default'   => [
                   'graphite1001.eqiad.wmnet:1903',
                   'graphite2001.codfw.wmnet:1903',
+                  'graphite2003.codfw.wmnet:1903',
                 ],
                 'big_users' => [
                   'graphite1003.eqiad.wmnet:1903',
                   'graphite2002.codfw.wmnet:1903',
+                  'graphite2003.codfw.wmnet:1903',
                 ]
             },
             cluster_routes   => [
