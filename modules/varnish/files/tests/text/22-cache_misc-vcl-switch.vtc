@@ -11,8 +11,8 @@ varnish v1 -arg "-p cc_command='exec cc -fpic -shared -Wl,-x -L/usr/local/lib/ -
    include "/usr/share/varnish/tests/wikimedia_misc-frontend.vcl";
 }
 
-# Attach the "wikimedia_misc-frontend" label to wikimedia_misc-frontend.vcl
-varnish v1 -cli "vcl.label wikimedia_misc-frontend vcl1"
+# Attach the "wikimedia_misc" label to wikimedia_misc-frontend.vcl
+varnish v1 -cli "vcl.label wikimedia_misc vcl1"
 
 # Load cache_text VCL as usual
 varnish v1 -vcl {
@@ -23,7 +23,7 @@ varnish v1 -vcl {
     sub vcl_recv {
         if (req.http.Host == "phab.wmfusercontent.org") {
             # Switch to misc-specific VCL
-            return (vcl(wikimedia_misc-frontend));
+            return (vcl(wikimedia_misc));
         }
     }
 
