@@ -1,0 +1,21 @@
+<VirtualHost *:80>
+    ServerName donate.wikimedia.org
+    ServerAlias donate.wikipedia.org
+
+    RewriteEngine On
+    RewriteRule . - [E=RW_PROTO:%{HTTP:X-Forwarded-Proto}]
+    RewriteCond %{ENV:RW_PROTO} !=https
+    RewriteRule . - [E=RW_PROTO:http]
+
+    # Push to SSL
+    RewriteCond %{HTTP:X-Forwarded-Proto} !https
+    RewriteRule (.) https://donate.wikimedia.org%{REQUEST_URI} [R=301]
+
+    RewriteRule ^/$ https://donate.wikimedia.org/wiki/Special:FundraiserRedirector [R=302,L]
+
+    # Don't allow rewriting robots.txt
+    RewriteRule ^/robots.txt$ - [L]
+
+    Include "sites-enabled/wikimedia-common.incl"
+    Include "sites-enabled/wikimedia-legacy.incl"
+</VirtualHost>
