@@ -66,6 +66,10 @@ kafka.whitelist.topics=eventlogging_.+
 # Name of the client as seen by kafka
 kafka.client.name=camus-eventlogging-00
 
+# If camus offsets and kafka offsets mismatch
+# then camus should start from the earliest offset.
+kafka.move.to.earliest.offset=true
+
 # Fetch Request Parameters
 #kafka.fetch.buffer.size=
 #kafka.fetch.request.correlationid=

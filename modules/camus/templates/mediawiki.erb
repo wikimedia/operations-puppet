@@ -83,6 +83,9 @@ kafka.client.name=camus-mediawiki-00
 kafka.client.buffer.size=20971520
 kafka.client.so.timeout=60000
 
+# If camus offsets and kafka offsets mismatch
+# then camus should start from the earliest offset.
+kafka.move.to.earliest.offset=true
 
 # Controls the submitting of counts to Kafka
 # Default value set to true
