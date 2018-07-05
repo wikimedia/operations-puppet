@@ -1,9 +1,9 @@
 class profile::openstack::main::nodepool::service(
-    $nova_controller = hiera('profile::openstack::main::nova_controller'),
+    $keystone_host = hiera('profile::openstack::main::keystone_host'),
     ) {
 
     class {'::profile::openstack::base::nodepool::service':
-        nova_controller => $nova_controller,
+        keystone_host => $keystone_host,
     }
 
     class {'::profile::openstack::base::nodepool::monitor':}
