@@ -1,0 +1,4 @@
+    # UseMod compatibility URLs
+    RewriteCond %{QUERY_STRING} ([^&;]+)
+    RewriteRule ^/wiki\.cgi$ %{ENV:RW_PROTO}://%{SERVER_NAME}/w/index.php?title=%1 [R=301,L]
+    RewriteRule ^/wiki\.cgi$ %{ENV:RW_PROTO}://%{SERVER_NAME}/w/index.php [R=301,L]
