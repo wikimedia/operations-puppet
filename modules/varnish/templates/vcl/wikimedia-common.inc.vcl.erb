@@ -2,6 +2,9 @@
 // layer-common code for all clusters
 
 import std;
+<% if @vcl_config.fetch('alternate_domains', {}).length > 0 and not @is_separate_vcl -%>
+import re2;
+<% end -%>
 
 # this is needed by geoip.inc.vcl and zero.inc.vcl, and in general is the only
 #   way to sanely do Set-Cookie in the face of multiple independent cookies
@@ -224,6 +227,23 @@ include "directors.<%= @inst %>.vcl";
 
 } # end wm_common_directors_init
 
+sub wm_common_domains_init {
+<% if @vcl_config.fetch('alternate_domains', {}).length > 0 and not @is_separate_vcl -%>
+       // Domains for which we need to switch to an alternate VCL file T164609
+       new alternate_domains = re2.set(anchor=both, case_sensitive=false, literal=false);
+<%
+       @vcl_config['alternate_domains'].keys.sort.each do |reqhost|
+       if not @vcl_config['alternate_domains'][reqhost].fetch("regex_key", false)
+           reqhost = '\Q' + reqhost + '\E'
+       end
+-%>
+       alternate_domains.add("<%= reqhost %>");
+<%  end #reqhost loop -%>
+
+       alternate_domains.compile();
+<%  end #alternate_domains if -%>
+} # end wm_common_domains_init
+
 # Functions
 
 sub wm_common_recv_pass {
@@ -244,7 +264,13 @@ sub wm_common_recv_pass {
 
     caching = []
     caching_default = false
-    @vcl_config['req_handling'].keys.sort.each do |reqhost|
+    if @is_separate_vcl
+	req_handling = @vcl_config['alternate_domains']
+    else
+	req_handling = @vcl_config['req_handling']
+    end
+
+    req_handling.keys.sort.each do |reqhost|
         if reqhost == 'default'
             host_cmp = %Q[x] # unused below
         elsif reqhost =~ /^[-.A-Za-z0-9]+$/
@@ -255,7 +281,7 @@ sub wm_common_recv_pass {
 
         need_host = false
         host_action = false
-        options = @vcl_config['req_handling'][reqhost]
+        options = req_handling[reqhost]
         if options.has_key?('caching')
             host_action = uc_action(options['caching'])
             need_host = true
