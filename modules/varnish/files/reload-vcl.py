@@ -72,6 +72,21 @@ def get_cmd_output(cmd):
     return p_out
 
 
+def filename2label(vcl_file):
+    """Generate VCL label from filename. The resulting VCL label must not
+    include layer-specific information (frontend vs backend) as it is
+    referenced by layer-independent VCL code.
+
+    /etc/varnish/wikimedia_text-frontend.vcl -> wikimedia_text
+    """
+    # /etc/varnish/wikimedia_text-frontend.vcl -> wikimedia_text-frontend
+    separate_vcl_label = os.path.basename(vcl_file).split('.')[0]
+
+    # Get rid of layer information
+    # wikimedia_text-{frontend,backend} -> wikimedia_text
+    return re.sub(r'-(frontend|backend)$', '', separate_vcl_label)
+
+
 def auto_discard(vadm_cmd):
     # sleep is insurance against unknown varnish bugs if we move too fast from
     # "use" to "discard" and trip some race.
@@ -116,8 +131,8 @@ def main():
 
         for vcl_file, vcl_id in zip(args.separate_vcl_files, separate_vcl_ids):
             # Generate VCL label from filename:
-            # /etc/varnish/wikimedia_text-frontend.vcl -> wikimedia_text-frontend
-            separate_vcl_label = os.path.basename(vcl_file).split('.')[0]
+            # /etc/varnish/wikimedia_text-frontend.vcl -> wikimedia_text
+            separate_vcl_label = filename2label(vcl_file)
             vcl_label_cmd = vadm_cmd + ['vcl.label', separate_vcl_label, vcl_id]
             do_cmd(vcl_label_cmd)
 
