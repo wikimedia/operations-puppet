@@ -20,5 +20,6 @@ class profile::analytics::database::meta::backup(
         dest   => $dest,
         minute => 0,
         lvname => 'mysql',
+        socket => '/run/mysqld/mysqld.sock',
     }
 }
