@@ -117,17 +117,17 @@ def main():
     if args.instance_name != '':
         vadm_cmd += ['-n', args.instance_name]
 
-    main_vcl_id = load(vadm_cmd, args.vcl_file)
-
+    # Load separate VCL files
     separate_vcl_ids = []
     if args.separate_vcl_files:
         separate_vcl_ids = [load(vadm_cmd, vcl_file) for vcl_file in args.separate_vcl_files]
 
+    # Label separate VCL files before the main VCL file is compiled. Label
+    # names are referenced in the main VCL file itself and must thus be
+    # available for it to compile properly.
     if not args.compile_only:
-        # First sleep is T157430
+        # T157430
         time.sleep(args.delay)
-        vcl_use_cmd = vadm_cmd + ['vcl.use', main_vcl_id]
-        do_cmd(vcl_use_cmd)
 
         for vcl_file, vcl_id in zip(args.separate_vcl_files, separate_vcl_ids):
             # Generate VCL label from filename:
@@ -135,6 +135,16 @@ def main():
             separate_vcl_label = filename2label(vcl_file)
             vcl_label_cmd = vadm_cmd + ['vcl.label', separate_vcl_label, vcl_id]
             do_cmd(vcl_label_cmd)
+
+    # Load main VCL file
+    main_vcl_id = load(vadm_cmd, args.vcl_file)
+
+    # Use main VCL file
+    if not args.compile_only:
+        # T157430
+        time.sleep(args.delay)
+        vcl_use_cmd = vadm_cmd + ['vcl.use', main_vcl_id]
+        do_cmd(vcl_use_cmd)
 
         if args.autodiscard:
             auto_discard(vadm_cmd)
