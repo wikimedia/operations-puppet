@@ -58,11 +58,10 @@ class wdqs(
     }
 
     file { $log_dir:
-        ensure  => directory,
-        owner   => $username,
-        group   => 'wikidev',
-        mode    => '0775',
-        require => User[$username],
+        ensure => directory,
+        owner  => $username,
+        group  => 'root',
+        mode   => '0775',
     }
 
     # Blazegraph tries to log to this file, redirect to log dir
