@@ -2,7 +2,7 @@ OS_USERNAME: "<%= @observer_user %>"
 OS_PROJECT_DOMAIN_ID: "default"
 OS_USER_DOMAIN_ID: "default"
 OS_PASSWORD: "<%= @observer_password %>"
-OS_AUTH_URL: "http://<%= @nova_controller %>:5000/v3"
+OS_AUTH_URL: "http://<%= @keystone_host %>:5000/v3"
 OS_REGION_NAME: "<%= @region %>"
 OS_TENANT_NAME: "observer"
 OS_NO_CACHE: 1

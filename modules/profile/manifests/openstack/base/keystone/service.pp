@@ -3,6 +3,7 @@ class profile::openstack::base::keystone::service(
     $version = hiera('profile::openstack::base::version'),
     $region = hiera('profile::openstack::base::region'),
     $nova_controller = hiera('profile::openstack::base::nova_controller'),
+    $keystone_host = hiera('profile::openstack::base::keystone_host'),
     $osm_host = hiera('profile::openstack::base::osm_host'),
     $db_name = hiera('profile::openstack::base::keystone::db_name'),
     $db_user = hiera('profile::openstack::base::keystone::db_user'),
@@ -54,6 +55,7 @@ class profile::openstack::base::keystone::service(
         active                      => $active,
         version                     => $version,
         nova_controller             => $nova_controller,
+        keystone_host               => $keystone_host,
         osm_host                    => $osm_host,
         db_name                     => $db_name,
         db_user                     => $db_user,
@@ -83,6 +85,7 @@ class profile::openstack::base::keystone::service(
     class {'::openstack::util::envscripts':
         ldap_user_pass        => $ldap_user_pass,
         nova_controller       => $nova_controller,
+        keystone_host         => $nova_controller,
         region                => $region,
         nova_db_pass          => $nova_db_pass,
         wmflabsdotorg_admin   => $wmflabsdotorg_admin,

@@ -2,6 +2,7 @@ class profile::openstack::labtestn::keystone::service(
     $version = hiera('profile::openstack::labtestn::version'),
     $region = hiera('profile::openstack::labtestn::region'),
     $nova_controller = hiera('profile::openstack::labtestn::nova_controller'),
+    $keystone_host = hiera('profile::openstack::labtestn::keystone_host'),
     $glance_host = hiera('profile::openstack::labtestn::glance_host'),
     $osm_host = hiera('profile::openstack::labtestn::osm_host'),
     $db_host = hiera('profile::openstack::labtest::keystone::db_host'),
@@ -45,6 +46,7 @@ class profile::openstack::labtestn::keystone::service(
         version                     => $version,
         region                      => $region,
         nova_controller             => $nova_controller,
+        keystone_host               => $keystone_host,
         osm_host                    => $osm_host,
         db_host                     => $db_host,
         token_driver                => $token_driver,
@@ -79,7 +81,7 @@ class profile::openstack::labtestn::keystone::service(
     contain '::profile::openstack::base::keystone::hooks'
 
     class {'::openstack::keystone::monitor::services':
-        active      => $::fqdn == $nova_controller,
+        active      => $::fqdn == $keystone_host,
         auth_port   => $auth_port,
         public_port => $public_port,
     }

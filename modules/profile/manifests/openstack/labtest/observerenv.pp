@@ -1,10 +1,10 @@
 class profile::openstack::labtest::observerenv(
-    $nova_controller = hiera('profile::openstack::labtest::nova_controller'),
+    $keystone_host = hiera('profile::openstack::labtest::keystone_host'),
     $observer_password = hiera('profile::openstack::labtest::observer_password'),
   ) {
 
     class {'::profile::openstack::base::observerenv':
-        nova_controller   => $nova_controller ,
+        keystone_host     => $keystone_host ,
         observer_password => $observer_password,
     }
     contain '::profile::openstack::base::observerenv'

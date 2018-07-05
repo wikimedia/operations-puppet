@@ -1,6 +1,7 @@
 class profile::openstack::main::keystone::service(
     $version = hiera('profile::openstack::main::version'),
     $nova_controller = hiera('profile::openstack::main::nova_controller'),
+    $keystone_host = hiera('profile::openstack::main::keystone_host'),
     $osm_host = hiera('profile::openstack::main::osm_host'),
     $db_host = hiera('profile::openstack::main::keystone::db_host'),
     $token_driver = hiera('profile::openstack::main::keystone::token_driver'),
@@ -37,6 +38,7 @@ class profile::openstack::main::keystone::service(
     class {'::profile::openstack::base::keystone::service':
         version                     => $version,
         nova_controller             => $nova_controller,
+        keystone_host               => $keystone_host,
         osm_host                    => $osm_host,
         db_host                     => $db_host,
         token_driver                => $token_driver,
@@ -68,7 +70,7 @@ class profile::openstack::main::keystone::service(
     }
 
     class {'::openstack::keystone::cleanup':
-        active  => $::fqdn == $nova_controller,
+        active  => $::fqdn == $keystone_host,
         db_user => $db_user,
         db_pass => $db_pass,
         db_host => $db_host,
@@ -76,14 +78,14 @@ class profile::openstack::main::keystone::service(
     }
 
     class {'::openstack::monitor::spreadcheck':
-        active          => $::fqdn == $nova_controller,
-        nova_controller => $nova_controller,
-        nova_user       => $spread_check_user,
-        nova_password   => $spread_check_password,
+        active        => $::fqdn == $nova_controller,
+        keystone_host => $keystone_host,
+        nova_user     => $spread_check_user,
+        nova_password => $spread_check_password,
     }
 
     class {'::openstack::keystone::monitor::services':
-        active         => $::fqdn == $nova_controller,
+        active         => $::fqdn == $keystone_host,
         critical       => true,
         auth_port      => $auth_port,
         public_port    => $public_port,
@@ -92,7 +94,7 @@ class profile::openstack::main::keystone::service(
     contain '::openstack::keystone::monitor::services'
 
     class {'::openstack::keystone::monitor::projects_and_users':
-        active         => $::fqdn == $nova_controller,
+        active         => $::fqdn == $keystone_host,
         contact_groups => 'wmcs-team,admins',
     }
     contain '::openstack::keystone::monitor::projects_and_users'

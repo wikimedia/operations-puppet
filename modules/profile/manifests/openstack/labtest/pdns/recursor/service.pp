@@ -1,6 +1,6 @@
 class profile::openstack::labtest::pdns::recursor::service(
     $nova_controller = hiera('profile::openstack::labtest::nova_controller'),
-    $keystone_host = hiera('profile::openstack::labtestn::nova_controller'),
+    $keystone_host = hiera('profile::openstack::labtestn::keystone_host'),
     $observer_password = hiera('profile::openstack::labtest::observer_password'),
     $pdns_host = hiera('profile::openstack::labtest::pdns::host'),
     $pdns_recursor = hiera('profile::openstack::labtest::pdns::recursor'),

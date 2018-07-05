@@ -2,6 +2,7 @@
 class openstack::util::envscripts(
     $ldap_user_pass,
     $nova_controller,
+    $keystone_host,
     $region,
     $nova_db_pass,
     $wmflabsdotorg_admin,

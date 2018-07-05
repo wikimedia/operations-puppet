@@ -1,6 +1,6 @@
 class openstack::horizon::source_deploy(
     $version,
-    $nova_controller,
+    $keystone_host,
     $wmflabsdotorg_admin,
     $wmflabsdotorg_pass,
     $dhcp_domain,

@@ -1,6 +1,7 @@
 class profile::openstack::labtest::keystone::service(
     $version = hiera('profile::openstack::labtest::version'),
     $nova_controller = hiera('profile::openstack::labtest::nova_controller'),
+    $keystone_host = hiera('profile::openstack::labtest::keystone_host'),
     $osm_host = hiera('profile::openstack::labtest::osm_host'),
     $db_host = hiera('profile::openstack::labtest::keystone::db_host'),
     $token_driver = hiera('profile::openstack::labtest::keystone::token_driver'),

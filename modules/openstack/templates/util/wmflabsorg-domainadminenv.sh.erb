@@ -4,7 +4,7 @@ export OS_USERNAME="<%= @wmflabsdotorg_admin %>"
 export OS_PROJECT_DOMAIN_ID="default"
 export OS_USER_DOMAIN_ID="default"
 export OS_PASSWORD="<%= @wmflabsdotorg_pass %>"
-export OS_AUTH_URL="http://<%= @nova_controller %>:35357/v3"
+export OS_AUTH_URL="http://<%= @keystone_host %>:35357/v3"
 export OS_REGION_NAME="<%= @region %>"
 export OS_TENANT_NAME="<%= @wmflabsdotorg_project %>"
 export OS_NO_CACHE=1

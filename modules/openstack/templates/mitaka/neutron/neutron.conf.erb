@@ -53,7 +53,7 @@ connection = mysql://<%= @db_user %>:<%= @db_pass %>@<%= @db_host %>/neutron
 
 [keystone_authtoken]
 region_name = <%= @region %>
-auth_host = <%= @nova_controller %>
+auth_host = <%= @keystone_host %>
 auth_protocol = http
 # Change to neutron user
 admin_user = novaadmin
@@ -64,7 +64,7 @@ admin_tenant_name = admin
 
 [nova]
 region_name = <%= @region %>
-auth_url = http://<%= @nova_controller %>:5000/v3
+auth_url = http://<%= @keystone_host %>:5000/v3
 auth_type = v3password
 password = <%= @ldap_user_pass %>
 project_domain_name = default

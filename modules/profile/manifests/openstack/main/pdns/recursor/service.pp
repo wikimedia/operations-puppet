@@ -1,5 +1,6 @@
 class profile::openstack::main::pdns::recursor::service(
     $nova_controller = hiera('profile::openstack::main::nova_controller'),
+    $keystone_host = hiera('profile::openstack::main::keystone_host'),
     $observer_password = hiera('profile::openstack::main::observer_password'),
     $pdns_host = hiera('profile::openstack::main::pdns::host'),
     $pdns_recursor = hiera('profile::openstack::main::pdns::recursor'),
@@ -10,7 +11,7 @@ class profile::openstack::main::pdns::recursor::service(
 
     class {'::profile::openstack::base::pdns::recursor::service':
         nova_controller       => $nova_controller,
-        keystone_host         => $nova_controller,
+        keystone_host         => $keystone_host,
         observer_password     => $observer_password,
         pdns_host             => $pdns_host,
         pdns_recursor         => $pdns_recursor,

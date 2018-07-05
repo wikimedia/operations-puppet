@@ -1,6 +1,6 @@
 class profile::openstack::base::horizon::dashboard_source_deploy(
     $version = hiera('profile::openstack::base::version'),
-    $nova_controller = hiera('profile::openstack::base::nova_controller'),
+    $keystone_host = hiera('profile::openstack::base::keystone_host'),
     $wmflabsdotorg_admin = hiera('profile::openstack::base::designate::wmflabsdotorg_admin'),
     $wmflabsdotorg_pass = hiera('profile::openstack::base::designate::wmflabsdotorg_pass'),
     $dhcp_domain = hiera('profile::openstack::base::nova::dhcp_domain'),
@@ -11,7 +11,7 @@ class profile::openstack::base::horizon::dashboard_source_deploy(
 
     class { '::openstack::horizon::source_deploy':
         version             => $version,
-        nova_controller     => $nova_controller,
+        keystone_host       => $keystone_host,
         wmflabsdotorg_admin => $wmflabsdotorg_admin,
         wmflabsdotorg_pass  => $wmflabsdotorg_pass,
         dhcp_domain         => $dhcp_domain,

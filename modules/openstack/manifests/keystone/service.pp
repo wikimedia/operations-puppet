@@ -5,6 +5,7 @@ class openstack::keystone::service(
     $active,
     $version,
     $nova_controller,
+    $keystone_host,
     $osm_host,
     $db_name,
     $db_user,

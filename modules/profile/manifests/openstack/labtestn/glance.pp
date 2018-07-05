@@ -1,6 +1,7 @@
 class profile::openstack::labtestn::glance(
     $version = hiera('profile::openstack::labtestn::version'),
     $nova_controller = hiera('profile::openstack::labtestn::nova_controller'),
+    $keystone_host = hiera('profile::openstack::labtestn::keystone_host'),
     $nova_controller_standby = hiera('profile::openstack::labtestn::nova_controller_standby'),
     $db_pass = hiera('profile::openstack::labtestn::glance::db_pass'),
     $db_host = hiera('profile::openstack::labtestn::glance::db_host'),
@@ -13,7 +14,7 @@ class profile::openstack::labtestn::glance(
         version                 => $version,
         nova_controller         => $nova_controller,
         nova_controller_standby => $nova_controller_standby,
-        keystone_host           => $nova_controller,
+        keystone_host           => $keystone_host,
         db_pass                 => $db_pass,
         db_host                 => $db_host,
         ldap_user_pass          => $ldap_user_pass,

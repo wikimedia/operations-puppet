@@ -3,6 +3,7 @@ class profile::openstack::eqiad1::keystone::service(
     $version = hiera('profile::openstack::eqiad1::version'),
     $region = hiera('profile::openstack::eqiad1::region'),
     $nova_controller = hiera('profile::openstack::eqiad1::nova_controller'),
+    $keystone_host = hiera('profile::openstack::eqiad1::keystone_host'),
     $osm_host = hiera('profile::openstack::eqiad1::osm_host'),
     $db_host = hiera('profile::openstack::eqiad1::keystone::db_host'),
     $token_driver = hiera('profile::openstack::eqiad1::keystone::token_driver'),
@@ -55,6 +56,7 @@ class profile::openstack::eqiad1::keystone::service(
         version                     => $version,
         region                      => $region,
         nova_controller             => $nova_controller,
+        keystone_host               => $keystone_host,
         osm_host                    => $osm_host,
         db_host                     => $db_host,
         token_driver                => $token_driver,
@@ -88,7 +90,7 @@ class profile::openstack::eqiad1::keystone::service(
     contain '::profile::openstack::base::keystone::hooks'
 
     class {'::openstack::keystone::monitor::services':
-        active      => $::fqdn == $nova_controller,
+        active      => $::fqdn == $keystone_host,
         auth_port   => $auth_port,
         public_port => $public_port,
     }

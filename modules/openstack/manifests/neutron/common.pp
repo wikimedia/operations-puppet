@@ -1,6 +1,7 @@
 class openstack::neutron::common(
     $version,
     $nova_controller,
+    $keystone_host,
     $db_pass,
     $db_user,
     $db_host,

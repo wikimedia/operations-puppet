@@ -3,7 +3,7 @@
 # are spread out enough among the labvirt* hosts
 class openstack::monitor::spreadcheck(
     $active,
-    $nova_controller,
+    $keystone_host,
     $nova_user,
     $nova_password,
 ) {

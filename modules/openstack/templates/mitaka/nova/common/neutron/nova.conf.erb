@@ -78,8 +78,8 @@ auth_host = <%= @nova_controller %>
 auth_protocol = http
 admin_user = novaadmin
 admin_tenant_name = admin
-auth_uri = http://<%= @nova_controller %>:5000
-auth_url = http://<%= @nova_controller %>:35357
+auth_uri = http://<%= @keystone_host %>:5000
+auth_url = http://<%= @keystone_host %>:35357
 auth_type = password
 project_domain_name = default
 user_domain_name = default
@@ -120,9 +120,9 @@ weight_setting = cpu.percent=-1.0
 service_metadata_proxy = true
 metadata_proxy_shared_secret = <%= @metadata_proxy_shared_secret %>
 url = http://<%= @nova_controller %>:9696
-auth_url = http://<%= @nova_controller %>:5000/v3
+auth_url = http://<%= @keystone_host %>:5000/v3
 # set this?
-#admin_auth_url = http://<%= @nova_controller %>:35357/v2.0
+#admin_auth_url = http://<%= @keystone_host %>:35357/v2.0
 auth_type = v3password
 password = <%= @ldap_user_pass %>
 project_domain_name = default
