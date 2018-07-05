@@ -20,4 +20,11 @@ class profile::openstack::base::observerenv(
         owner  => 'root',
         group  => 'root',
     }
+
+    file { '/usr/local/sbin/openstack-cvps':
+        source => 'puppet:///modules/profile/openstack/base/openstack-cvps.sh',
+        mode   => '0555',
+        owner  => 'root',
+        group  => 'root',
+    }
 }
