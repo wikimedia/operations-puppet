@@ -48,6 +48,6 @@ class mediawiki::web::prod_sites {
         'test.wikidata.org',
     ]
     mediawiki::web::site { $main_conf_sites:
-        before => Apache::Site['main.conf']
+        before => Apache::Site['main']
     }
 }
