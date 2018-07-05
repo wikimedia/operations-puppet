@@ -15,7 +15,7 @@
 #
 class profile::openstack::main::cumin::master(
     $keystone_protocol = hiera('profile::openstack::base::keystone::auth_protocol'),
-    $keystone_host = hiera('profile::openstack::main::nova_controller'),
+    $keystone_host = hiera('profile::openstack::main::keystone_host'),
     $keystone_port = hiera('profile::openstack::base::keystone::public_port'),
     $observer_username = hiera('profile::openstack::base::observer_user'),
     $observer_password = hiera('profile::openstack::main::observer_password'),
