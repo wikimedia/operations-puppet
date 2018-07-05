@@ -19,8 +19,8 @@ temp-pool
 log_basename=analytics-meta
 
 user      = mysql
-socket    = /tmp/mysql.sock
-port      = 3306
+socket    = <%= @socket %>
+port      = <%= @port %>
 datadir   = <%= @datadir %>
 basedir   = <%= @basedir %>
 tmpdir    = <%= @tmpdir %>
@@ -41,6 +41,9 @@ innodb_buffer_pool_instances   = 4
 
 query_cache_type        = 1
 query_cache_size        = 16M
+
+# enable socket authentication
+plugin-load = unix_socket=auth_socket.so
 
 [mysqldump]
 

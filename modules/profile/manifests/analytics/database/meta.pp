@@ -20,8 +20,12 @@ class profile::analytics::database::meta(
         default      => 'role/mariadb/mysqld_config/analytics-meta.my.cnf.erb',
     }
 
+    $mariadb_socket = '/run/mysqld/mysqld.sock'
+
     class { '::mariadb::config':
         config    => $config_template,
+        socket    => '/run/mysqld/mysqld.sock',
+        port      => 3306,
         datadir   => '/var/lib/mysql',
         read_only => false,
         require   => Class['mariadb::packages_wmf'],
