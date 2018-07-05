@@ -7,18 +7,13 @@
 # and then finally ensures grants and permissions are
 # set so that configured hosts can properly connect to this database.
 #
-class profile::oozie::server::database (
-    $db_root_username = hiera('profile::oozie::server::database::db_root_username', undef),
-    $db_root_password = hiera('profile::oozie::server::database::db_root_password', undef),
-){
+class profile::oozie::server::database {
     # Install a database server (MariaDB)
     require ::profile::analytics::database::meta
 
     # Ensure that the oozie db is created.
     class { '::cdh::oozie::database::mysql':
-        db_root_username => $db_root_username,
-        db_root_password => $db_root_password,
-        require          => Class['profile::analytics::database::meta'],
+        require => Class['profile::analytics::database::meta'],
     }
 
     # NOTE: on 2016-02-23, Otto and Joal
