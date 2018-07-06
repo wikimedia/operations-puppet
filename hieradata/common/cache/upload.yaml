@@ -34,7 +34,6 @@ cache::upload::nodes:
     - 'cp3045.esams.wmnet'
     - 'cp3046.esams.wmnet'
     - 'cp3047.esams.wmnet'
-    - 'cp3048.esams.wmnet'
     - 'cp3049.esams.wmnet'
   ulsfo:
     - 'cp4021.ulsfo.wmnet'
