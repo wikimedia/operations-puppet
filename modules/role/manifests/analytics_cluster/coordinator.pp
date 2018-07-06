@@ -22,8 +22,6 @@ class role::analytics_cluster::coordinator {
         description => 'Analytics Cluster host running various Hadoop services (Hive, Camus, Oozie, ..) and maintenance scripts'
     }
 
-    include ::profile::analytics::data::sanitization
-
     include ::profile::analytics::cluster::client
     include ::profile::analytics::database::meta
 

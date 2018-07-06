@@ -15,8 +15,8 @@ class profile::mariadb::misc::eventlogging::sanitization(
 ) {
     # The eventlogging purging whitelist is provided by another profile
     # since it is shared with the Hive Eventlogging sanitization workflow.
-    require ::profile::analytics::data::sanitization
-    $whitelist_path = $::profile::analytics::data::sanitization::eventlogging_whitelist_path
+    require ::profile::analytics::refinery::repository
+    $whitelist_path = '/srv/deployment/analytics/refinery/static_data/eventlogging/whitelist.yaml'
 
     if !defined(Group['eventlog']) {
         group { 'eventlog':
