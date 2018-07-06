@@ -76,6 +76,9 @@ discovery::services:
   ores:
     lvs: ores
     active_active: true
+  proton:
+    lvs: proton
+    active_active: true
   pdfrender:
     lvs: pdfrender
     active_active: true
