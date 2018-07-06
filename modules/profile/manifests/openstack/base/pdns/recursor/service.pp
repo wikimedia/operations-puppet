@@ -32,7 +32,7 @@ class profile::openstack::base::pdns::recursor::service(
     ) {
 
     include ::network::constants
-    $all_networks = $::network::constants::all_networks
+    $all_networks = flatten([$::network::constants::production_networks, $::network::constants::labs_networks])
 
     $pdns_host_ip = ipresolve($pdns_host,4)
     $pdns_recursor_ip = ipresolve($pdns_recursor,4)
