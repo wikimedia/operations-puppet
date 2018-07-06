@@ -356,7 +356,7 @@ module Puppet::Parser::Functions
     raise Puppet::ParseError, 'compile_redirects() takes one argument' if args.length != 1
     Puppet::Parser::Functions.autoloader.loadall
     input = case args.first
-            when %r{^puppet://.*} then Puppet::FileServing::Content.indirection.find($&).content
+            when %r{^puppet://.*} then Puppet::FileServing::Content.indirection.find($&).content.force_encoding("utf-8")
             when %r{^/} then function_file(args)
             else args.first
             end
