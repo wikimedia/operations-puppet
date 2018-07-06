@@ -3,7 +3,7 @@
 # Please use separate .cnf templates for each type of server.
 
 [client]
-port   = 3306
+port   = <%= @port %>
 socket = <%= @socket %>
 <% if @ssl == 'on' or @ssl == 'puppet-cert' %>
 # ssl
@@ -21,7 +21,7 @@ temp-pool
 
 user      = mysql
 socket    = <%= @socket %>
-port      = 3306
+port      = <%= @port %>
 basedir   = <%= @basedir %>
 datadir   = <%= @datadir %>
 tmpdir    = <%= @tmpdir %>
@@ -57,7 +57,7 @@ default-storage-engine = Aria
 
 transaction-isolation          = READ-COMMITTED
 innodb_file_per_table          = 1
-innodb_buffer_pool_size        = 10G
+innodb_buffer_pool_size        = 20G
 innodb_log_file_size           = 1G
 innodb_flush_log_at_trx_commit = 0
 innodb_flush_method            = O_DIRECT
