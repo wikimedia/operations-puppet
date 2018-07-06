@@ -1,0 +1,61 @@
+# Local user groups assimilated by AffCom to chapters are also added in this vhost.
+<VirtualHost *:80>
+    ServerName wikimedia-chapter
+
+    ServerAlias ar.wikimedia.org
+    ServerAlias am.wikimedia.org
+    ServerAlias bd.wikimedia.org
+    ServerAlias be.wikimedia.org
+    ServerAlias br.wikimedia.org
+    ServerAlias ca.wikimedia.org
+    ServerAlias cn.wikimedia.org
+    ServerAlias co.wikimedia.org
+    ServerAlias dk.wikimedia.org
+    ServerAlias ec.wikimedia.org
+    ServerAlias ee.wikimedia.org
+    ServerAlias fi.wikimedia.org
+    ServerAlias hi.wikimedia.org
+    ServerAlias id.wikimedia.org
+    ServerAlias id-internal.wikimedia.org
+    ServerAlias il.wikimedia.org
+    ServerAlias mai.wikimedia.org
+    ServerAlias mk.wikimedia.org
+    ServerAlias mx.wikimedia.org
+    ServerAlias nl.wikimedia.org
+    ServerAlias no.wikimedia.org
+    ServerAlias noboard-chapters.wikimedia.org
+    ServerAlias nyc.wikimedia.org
+    ServerAlias nz.wikimedia.org
+    ServerAlias pa-us.wikimedia.org
+    ServerAlias pl.wikimedia.org
+    ServerAlias pt.wikimedia.org
+    ServerAlias romd.wikimedia.org
+    ServerAlias rs.wikimedia.org
+    ServerAlias ru.wikimedia.org
+    ServerAlias se.wikimedia.org
+    ServerAlias tr.wikimedia.org
+    ServerAlias ua.wikimedia.org
+    ServerAlias us.wikimedia.org
+    ServerAlias wb.wikimedia.org
+
+    UseCanonicalName off
+
+    RewriteEngine On
+    RewriteRule . - [E=RW_PROTO:%{HTTP:X-Forwarded-Proto}]
+    RewriteCond %{ENV:RW_PROTO} !=https
+    RewriteRule . - [E=RW_PROTO:http]
+    RewriteMap lowercase int:tolower
+
+    # Uploads to the host-specific directory
+    # First grab the subdomain from HTTP_HOST
+    RewriteCond %{HTTP_HOST} ([a-z\-]+)\.wikimedia\.org
+    # Now use it
+    RewriteRule ^/upload/(.*)$ %{ENV:RW_PROTO}://upload.wikimedia.org/wikimedia.org/%1/$1 [R=302]
+
+    # www. prefix
+    RewriteCond %{HTTP_HOST} ^www.([a-z]+).wikimedia.org$
+    RewriteRule ^(.*)$ %{ENV:RW_PROTO}://%1.wikimedia.org$1 [R=301,L]
+
+    Include "sites-enabled/wikimedia-common.incl"
+    Include "sites-enabled/wikimedia-legacy.incl"
+</VirtualHost>

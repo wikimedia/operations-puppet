@@ -43,7 +43,7 @@ class mediawiki_exp::web::prod_sites {
 
     # wikimediafoundation wiki, already a single wiki
     apache::site { 'foundation':
-        source   => 'puppet:///modules/mediawiki_exp/apache/sites/foundation.conf',
+        content  => template('mediawiki_exp/apache/sites/foundation.conf.erb'),
         priority => 9,
     }
 
@@ -103,5 +103,20 @@ class mediawiki_exp::web::prod_sites {
 
     mediawiki_exp::web::site { 'wikimaniateam.wikimedia.org':
         before => Apache::Site['wikimania']
+    }
+    mediawiki_exp::web::site {[
+        'wikimedia-chapter',
+        'login.wikimedia.org',
+        'www.wikimedia.org'
+    ]:
+        before => Apache::Site['wikimedia']
+    }
+    $other_wikis = [
+        'transitionteam.wikimedia.org', 'iegcom.wikimedia.org',
+        'legalteam.wikimedia.org', 'zero.wikimedia.org'
+    ]
+    mediawiki_exp::web::site { $other_wikis:
+        template_name => 'private-https',
+        before        => Apache::Site['wikimedia'],
     }
 }
