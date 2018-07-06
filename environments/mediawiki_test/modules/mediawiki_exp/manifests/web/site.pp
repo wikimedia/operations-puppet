@@ -5,9 +5,11 @@
 # if needed (while allowing us to see a diff in the puppet compiler).
 #
 # This define is transitional and should NOT be used outside of the mediawiki::web hierarchy
-define mediawiki_exp::web::site() {
+define mediawiki_exp::web::site(
+    String $template_name = $title,
+) {
     file { "/etc/apache2/sites-available/${title}.conf":
-        content => template("mediawiki_exp/apache/sites/included/${title}.conf.erb"),
+        content => template("mediawiki_exp/apache/sites/included/${template_name}.conf.erb"),
         owner   => 'root',
         group   => 'root',
         mode    => '0444',

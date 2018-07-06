@@ -67,8 +67,23 @@ class mediawiki_exp::web::prod_sites {
         '_wikisource.org',
         'commons.wikimedia.org',
     ]
-
     mediawiki_exp::web::site { $remnant_conf_sites:
         before => Apache::Site['remnant']
+    }
+    $small_private_wikis = [
+        'internal.wikimedia.org', 'grants.wikimedia.org', 'fdc.wikimedia.org',
+        'board.wikimedia.org', 'boardgovcom', 'spcom.wikimedia.org',
+        'affcom.wikimedia.org', 'searchcom.wikimedia.org',
+        'office.wikimedia.org', 'chair.wikimedia.org',
+        'auditcom.wikimedia.org', 'otrs-wiki.wikimedia.org',
+        'exec.wikimedia.org', 'collab.wikimedia.org',
+        'movementroles.wikimedia.org', 'checkuser.wikimedia.org',
+        'steward.wikimedia.org', 'ombudsmen.wikimedia.org',
+        'projectcom.wikimedia.org', 'techconduct.wikimedia.org',
+        'electcom.wikimedia.org', 'advisors.wikimedia.org'
+    ]
+    mediawiki_exp::web::site { $small_private_wikis:
+        template_name => 'private-https',
+        before        => Apache::Site['remnant'],
     }
 }
