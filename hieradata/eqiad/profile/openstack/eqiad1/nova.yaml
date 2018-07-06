@@ -1,4 +1,5 @@
 profile::openstack::eqiad1::nova::db_host: 'labcontrol1003.wikimedia.org'
+profile::openstack::eqiad1::nova::dhcp_domain: 'eqiad.wmflabs'
 profile::openstack::eqiad1::nova::scheduler_pool:
   - nonexistent1
   - nonexistent2

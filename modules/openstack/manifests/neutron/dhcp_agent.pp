@@ -3,8 +3,15 @@ class openstack::neutron::dhcp_agent(
     $dhcp_domain,
     ) {
 
-    package {'neutron-dhcp-agent':
-        ensure => 'present',
+    if os_version('debian jessie') and ($version == 'mitaka') {
+        $install_options = ['-t', 'jessie-backports']
+    } else {
+        $install_options = ''
+    }
+
+    package { 'neutron-dhcp-agent':
+        ensure          => 'present',
+        install_options => $install_options,
     }
 
     file { '/etc/neutron/dhcp_agent.ini':
