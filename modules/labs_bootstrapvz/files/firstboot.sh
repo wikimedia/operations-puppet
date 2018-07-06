@@ -64,26 +64,13 @@ then
 fi
 # At this point, all (the rest of) our disk are belong to LVM.
 
-# If we're getting ahead of the dnsmasq config, loop until our hostname is
-#  actually ready for us.  Five minutes, total.
-for run in {1..30}
-do
-    hostname=`hostname`
-    if [ "$hostname" != 'localhost' ]
-    then
-        break
-    fi
-
-    echo `date`
-    echo "Waiting for hostname to return the actual hostname."
-    sleep 10
-    ifdown eth0
-    ifup eth0
-    /sbin/dhclient -1 eth0
-done
-
+# Get hostname and domain from metadata
+hostname=`curl http://169.254.169.254/openstack/latest/meta_data.json/ | sed -r 's/^.*hostname\": \"//'  | sed -r 's/\".*$//g'`
 project=`curl http://169.254.169.254/openstack/latest/meta_data.json/ | sed -r 's/^.*project_id\": \"//'  | sed -r 's/\".*$//g'`
 ip=`curl http://169.254.169.254/1.0/meta-data/local-ipv4 2> /dev/null`
+
+# from here on out make sure our hostname is the hostname from metadata:
+hostnamectl set-hostname $hostname
 
 # domain is the last two domain sections, e.g. eqiad.wmflabs
 domain=`hostname -d | sed -r 's/.*\.([^.]+\.[^.]+)$/\1/'`

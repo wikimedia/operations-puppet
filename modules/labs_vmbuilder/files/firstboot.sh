@@ -45,9 +45,11 @@ then
 fi
 # At this point, all (the rest of) our disk are belong to LVM.
 
+hostname=`curl http://169.254.169.254/openstack/latest/meta_data.json/ | sed -r 's/^.*hostname\": \"//'  | sed -r 's/\".*$//g'`
 project=`curl http://169.254.169.254/openstack/latest/meta_data.json/ | sed -r 's/^.*project_id\": \"//'  | sed -r 's/\".*$//g'`
 ip=`curl http://169.254.169.254/1.0/meta-data/local-ipv4 2> /dev/null`
-hostname=`hostname`
+
+hostnamectl set-hostname $hostname
 
 # domain is the last two domain sections, e.g. eqiad.wmflabs
 domain=`hostname -d | sed -r 's/.*\.([^.]+\.[^.]+)$/\1/'`
