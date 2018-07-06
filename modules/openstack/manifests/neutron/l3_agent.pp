@@ -5,8 +5,15 @@ class openstack::neutron::l3_agent(
     $enabled=true,
     ) {
 
-    package {'neutron-l3-agent':
-        ensure => 'present',
+    if os_version('debian jessie') and ($version == 'mitaka') {
+        $install_options = ['-t', 'jessie-backports']
+    } else {
+        $install_options = ''
+    }
+
+    package { 'neutron-l3-agent':
+        ensure          => 'present',
+        install_options => $install_options,
     }
 
     class {'openstack::neutron::l3_agent_hacks':

@@ -28,17 +28,17 @@ class profile::openstack::eqiad1::neutron::l3_agent(
 
     require ::profile::openstack::eqiad1::clientlib
     require ::profile::openstack::eqiad1::neutron::common
-    # class {'::profile::openstack::base::neutron::l3_agent':
-    #    version           => $version,
-    #    dmz_cidr          => $dmz_cidr,
-    #    network_public_ip => $network_public_ip,
-    #}
-    #contain '::profile::openstack::base::neutron::l3_agent'
+    class {'::profile::openstack::base::neutron::l3_agent':
+        version           => $version,
+        dmz_cidr          => $dmz_cidr,
+        network_public_ip => $network_public_ip,
+    }
+    contain '::profile::openstack::base::neutron::l3_agent'
 
-    #class {'::profile::openstack::base::neutron::linuxbridge_agent':
-    #    version         => $version,
-    #    bridges         => $bridges,
-    #    bridge_mappings => $bridge_mappings,
-    #}
-    #contain '::profile::openstack::base::neutron::linuxbridge_agent'
+    class {'::profile::openstack::base::neutron::linuxbridge_agent':
+        version         => $version,
+        bridges         => $bridges,
+        bridge_mappings => $bridge_mappings,
+    }
+    contain '::profile::openstack::base::neutron::linuxbridge_agent'
 }
