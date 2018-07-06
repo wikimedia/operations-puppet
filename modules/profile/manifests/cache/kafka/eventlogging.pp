@@ -74,6 +74,7 @@ class profile::cache::kafka::eventlogging(
         # EventLogging clientIp logging has been removed as part of T128407.
         format                      => '%q	%l	%n	%{%FT%T}t	%{X-Client-IP}o	"%{User-agent}i"',
         format_type                 => 'string',
+        compression_codec           => 'snappy',
         topic                       => 'eventlogging-client-side',
         varnish_name                => 'frontend',
         varnish_svc_name            => 'varnish-frontend',
