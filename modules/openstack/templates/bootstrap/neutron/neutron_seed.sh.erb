@@ -1,98 +1,97 @@
+#
+# NOTE: This is heavily tailored for the eqiad1 deployment
+#
+
+# docs
+#
 # https://docs.openstack.org/mitaka/install-guide-ubuntu/launch-instance.html#launch-instance
 # https://docs.openstack.org/mitaka/networking-guide/deploy-lb-provider.html
-# https://docs.openstack.org/mitaka/install-guide-ubuntu/launch-instance.html#launch-instance
 # https://docs.openstack.org/mitaka/install-guide-ubuntu/launch-instance-provider.html
 # https://docs.openstack.org/mitaka/install-guide-ubuntu/launch-instance-selfservice.html
 # https://docs.openstack.org/horizon/latest/user/configure-access-and-security-for-instances.html
+# https://wikitech.wikimedia.org/wiki/Portal:Cloud_VPS/Admin/Bootstrap
+# https://wikitech.wikimedia.org/wiki/Portal:Cloud_VPS/Admin/Deployment_sanity_checklist
 
-
+#
+# initial setup
+#
 # CREATE DATABASE neutron;
 # GRANT ALL PRIVILEGES ON neutron.* TO 'neutron'@'<%= @ipaddress %>' IDENTIFIED BY '<%= @db_pass %>';
 # GRANT ALL PRIVILEGES ON neutron.* TO 'neutron'@'%'  IDENTIFIED BY '<%= @db_pass %>';
-
 openstack service create --name neutron --description "OpenStack Networking" network
-
 openstack endpoint create --region <%= @region %> network public http://<%= @ipaddress %>:9696
-
 openstack endpoint create --region <%= @region %> network internal http://<%= @ipaddress %>:9696
-
 openstack endpoint create --region <%= @region %> network admin http://<%= @ipaddress %>:9696
-
-su -s /bin/sh -c "neutron-db-manage --config-file /etc/neutron/neutron.conf --config-file /etc/neutron/plugins/ml2/ml2_conf.ini upgrade head" neutron
-
-# List loaded extensions
+sudo neutron-db-manage --config-file /etc/neutron/neutron.conf --config-file /etc/neutron/plugins/ml2/ml2_conf.ini upgrade head
 neutron ext-list
-# agents and status
+# enable agents in net servers and check with:
 neutron agent-list
 
-# Initial setup of a flat network with a LAN nework with subnet
-# a WAN network with 2 subnets (provider and floating)
-
+#
+# transport WAN<-->VMs net, subnets, routers
+#
 # provider:physical_network=<physical_network> has to match the
 # configuration in the ml2 plugin (linux bridge)
-neutron net-create <provider_flat_network_name> --router:external=true \
-    --provider:network_type=flat --provider:physical_network=<physical_network> --shared
+neutron net-create 'wan-transport-eqiad' --router:external=true \
+	--provider:network_type=flat --provider:physical_network=br-external --shared
 
-neutron net-list
+neutron subnet-create --gateway 10.64.22.1 --name cloud-instances-transport1-b-eqiad \
+	--ip-version 4 --disable-dhcp wan-transport-eqiad 10.64.22.0/24
 
-# This is the provider network VLAN where the gateway is the actual
-# VLAN gateway.
-# <WAN_provider_subnet_remote_gateway> is an IP
-neutron subnet-create --gateway <WAN_provider_subnet_remote_gateway> --name <WAN_provider_transport_subnet_name> \
-    --ip-version 4 --disable-dhcp <provider_flat_network_name> <WAN_provider_network_cidr>
+neutron subnet-create --no-gateway --name cloud-eqiad1-floating --ip-version 4 \
+	--disable-dhcp --allocation-pool start=185.15.56.10,end=185.15.56.30 wan-transport-eqiad 185.15.56.0/25
 
-# This is the floating IP allocation pool (no gateway and disable dhcp)
-neutron subnet-create --name <WAN_floating_ip_subnet_name>  --no-gateway \
-    --ip-version 4 --disable-dhcp \
-    --allocation-pool start=<WAN_floating_ip_network_start>,end=<WAN_floating_ip_network_stop> \
-    <provider_flat_network_name> <WAN_floating_ip_network_cidr>
+# on net servers
+systemctl restart neutron-linuxbridge-agent
+systemctl restart neutron-l3-agent
+systemctl restart neutron-dhcp-agent
+systemctl restart neutron-metadata-agent
+# on control server
+systemctl restart neutron-server
 
-neutron subnet-list
+neutron router-creanete cloudinstances1b-gw --distributed False --ha True
 
-# Now the network and subnet exist.  We must create a router to transport
-# traffic between the LAN and WAN subnet(s).
+#
+# LAN for VMs nets & subnets
+#
+neutron net-create lan-flat-cloudinstances2b --router:external=false --provider:network_type=flat \
+	--provider:physical_network=cloudinstances2b --shared
 
-neutron router-create <router_name>
-openstack router list
+neutron subnet-create --name cloud-instances2-b-eqiad --ip-version 4 \
+	--allocation-pool start=172.16.0.10,end=172.16.7.254 --gateway 172.16.0.1 \
+	--dns-nameserver 208.80.154.254 lan-flat-cloudinstances2b 172.16.0.0/21
+#
+# Main routing configuration
+#
+# NOTE: you need neutron-l3-agents for this
 
 # we have to use the router-gateway-set mechanism rather just adding
 # a port in the external network/subet and doing router-interface-add here
-neutron router-gateway-set \
-   --fixed-ip subnet_id=<WAN_provider_subnet_id>,ip_address=<WAN_provider_subnet_l3_router_IP> \
-   <router_id> <WAN_external_network_id>
+neutron router-gateway-set --fixed-ip subnet_id=cloud-instances-transport1-b-eqiad,ip_address=10.64.22.4 \
+	cloudinstances2b-gw wan-transport-eqiad
 
-# Add the LAN interface
-neutron router-interface-add <router_id> <LAN_subnet_id>
+# the addr should be now present in the qrouter netns in one of the net servers
+#ip netns exec qrouter-xxxxxxxxxxxxxxx ip a | grep 10.64.22.4
+#    inet 10.64.22.4/24 scope global qg-ca4cb8c7-bf
+
+# connect router to LAN
+neutron router-interface-add cloudinstances2b-gw cloud-instances2-b-eqiad
+neutron net-update --port-security-enabled=false lan-flat-cloudinstances2b
+
+#
+# checks and tests
+#
 neutron port-list
 neutron port-show <port_id>
-
-# should show HA states
-# Also seen on the l3-agent itself at
-#   /var/lib/neutron/ha_confs/<router-id>/state
-neutron l3-agent-list-hosting-router <router-id>
-
+neutron net-list
+openstack subnet list
+openstack router list
+neutron l3-agent-list-hosting-router cloudinstances2b-gw
+# create a VM and attach it to a network
+openstack server create --flavor 2 --image <image> --nic net-id=lan-flat-cloudinstances2 test-instance
 # Adding a floating IP to an instance from the CLI
 neutron floatingip-create --subnet <WAN_floating_subnet_external_id> <WAN_external_network_id> 
-
 # Get the port id from the port attached to the instance
 neutron port-list | grep <fixed-ip of instance>
-
 #Associate the floating IP with the port
 neutron floatingip-associate <floating_ip_id> <port_id>
-
-# Adding a provider created VXLAN net to existing router
-# id must be allowed in vxlan range and free
-# NOTE: l2pop is not functional with gateway HA as of Mitaka
-neutron net-create --provider:network_type=vxlan --provider:segmentation_id=2 project-name
-
-neutron subnet-create --name project-name-v4 --ip-version 4 --allocation-pool start=172.16.130.10,end=172.16.130.250 --gateway 172.16.130.1 --dns-nameserver 208.80.153.51 project-name 172.16.130/24
-openstack router list
-# the router will automatically assign itself the "gateway" IP indicated
-# when creating the subnet above
-router-interface-add <id> <subnet>
-
-neutron net-list
-openstack server create --flavor 2 --image <image> <instance> --nic net-id=<net uuid>
-
-# optional mass turning off of port-security mode for a network
-neutron net-update --port-security-enabled=false <net uuid>
