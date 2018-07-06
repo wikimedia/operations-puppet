@@ -58,7 +58,7 @@ class mediawiki_exp::web::prod_sites {
         'wikiversity.org',
         'wikivoyage.org'
     ]
-    mediawiki::web::site { $main_conf_sites:
+    mediawiki_exp::web::site { $main_conf_sites:
         before => Apache::Site['main']
     }
 }
