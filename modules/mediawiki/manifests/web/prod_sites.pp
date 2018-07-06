@@ -46,17 +46,6 @@ class mediawiki::web::prod_sites {
     $main_conf_sites = [
         'mediawiki.org',
         'test.wikidata.org',
-        'wikidata.org',
-        'wiktionary.org',
-        'wikiquote.org',
-        'donate.wikimedia.org',
-        'vote.wikimedia.org',
-        'wikipedia.org',
-        'wikibooks.org',
-        'wikisource.org',
-        'wikinews.org',
-        'wikiversity.org',
-        'wikivoyage.org'
     ]
     mediawiki::web::site { $main_conf_sites:
         before => Apache::Site['main']
