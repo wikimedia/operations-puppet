@@ -58,4 +58,6 @@ define prometheus::mysqld_exporter::instance (
         ensure  => running,
         require => File['/lib/systemd/system/prometheus-mysqld-exporter@.service'],
     }
+
+    base::service_auto_restart { $service: }
 }

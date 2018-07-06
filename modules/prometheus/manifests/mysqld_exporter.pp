@@ -61,4 +61,6 @@ define prometheus::mysqld_exporter (
         require => [Package['prometheus-mysqld-exporter'],
                     File['/var/lib/prometheus/.my.cnf']],
     }
+
+    base::service_auto_restart { 'prometheus-mysqld-exporter': }
 }
