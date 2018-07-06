@@ -6,6 +6,7 @@ class profile::openstack::labtestn::neutron::common(
     $keystone_host = hiera('profile::openstack::labtestn::keystone_host'),
     $ldap_user_pass = hiera('profile::openstack::labtestn::ldap_user_pass'),
     $rabbit_pass = hiera('profile::openstack::labtestn::neutron::rabbit_pass'),
+    $tld = hiera('profile::openstack::labtestn::neutron::tld'),
     ) {
 
     require ::profile::openstack::labtestn::clientlib
@@ -18,6 +19,7 @@ class profile::openstack::labtestn::neutron::common(
         region          => $region,
         ldap_user_pass  => $ldap_user_pass,
         rabbit_pass     => $rabbit_pass,
+        tld             => $tld,
     }
     contain '::profile::openstack::base::neutron::common'
 }

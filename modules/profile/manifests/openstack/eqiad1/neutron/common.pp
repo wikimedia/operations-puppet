@@ -6,6 +6,7 @@ class profile::openstack::eqiad1::neutron::common(
     $keystone_host = hiera('profile::openstack::eqiad1::keystone_host'),
     $ldap_user_pass = hiera('profile::openstack::eqiad1::ldap_user_pass'),
     $rabbit_pass = hiera('profile::openstack::eqiad1::neutron::rabbit_pass'),
+    $tld = hiera('profile::openstack::eqiad1::neutron::tld'),
     ) {
 
     require ::profile::openstack::eqiad1::clientlib
@@ -18,6 +19,7 @@ class profile::openstack::eqiad1::neutron::common(
         region          => $region,
         ldap_user_pass  => $ldap_user_pass,
         rabbit_pass     => $rabbit_pass,
+        tld             => $tld,
     }
     contain '::profile::openstack::base::neutron::common'
 }

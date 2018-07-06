@@ -9,6 +9,7 @@ class openstack::neutron::common(
     $ldap_user_pass,
     $rabbit_user,
     $rabbit_pass,
+    $tld,
     ) {
 
     if os_version('debian jessie') and ($version == 'mitaka') {
