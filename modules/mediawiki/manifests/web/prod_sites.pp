@@ -47,6 +47,7 @@ class mediawiki::web::prod_sites {
         'mediawiki.org',
         'test.wikidata.org',
     ]
+
     mediawiki::web::site { $main_conf_sites:
         before => Apache::Site['main']
     }

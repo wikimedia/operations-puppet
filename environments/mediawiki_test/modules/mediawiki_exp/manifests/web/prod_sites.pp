@@ -61,4 +61,14 @@ class mediawiki_exp::web::prod_sites {
     mediawiki_exp::web::site { $main_conf_sites:
         before => Apache::Site['main']
     }
+
+    $remnant_conf_sites = [
+        'meta.wikimedia.org',
+        '_wikisource.org',
+        'commons.wikimedia.org',
+    ]
+
+    mediawiki_exp::web::site { $remnant_conf_sites:
+        before => Apache::Site['remnant']
+    }
 }
