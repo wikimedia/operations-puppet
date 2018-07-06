@@ -5,37 +5,43 @@ class mediawiki_exp::web::prod_sites {
         content  => compile_redirects('puppet:///modules/mediawiki_exp/apache/sites/redirects/redirects.dat'),
         priority => 2,
     }
-
+    # Main wikis
     apache::site { 'main':
         source   => 'puppet:///modules/mediawiki_exp/apache/sites/main.conf',
         priority => 3,
     }
 
+    # Other wikis
     apache::site { 'remnant':
         source   => 'puppet:///modules/mediawiki_exp/apache/sites/remnant.conf',
         priority => 4,
     }
 
+    # Search vhost
     apache::site { 'search.wikimedia':
         source   => 'puppet:///modules/mediawiki_exp/apache/sites/search.wikimedia.conf',
         priority => 5,
     }
 
+    # Old secure redirects
     apache::site { 'secure.wikimedia':
         source   => 'puppet:///modules/mediawiki_exp/apache/sites/secure.wikimedia.conf',
         priority => 6,
     }
 
+    # Wikimania sites, plus one wiki for wikimaniateam
     apache::site { 'wikimania':
         source   => 'puppet:///modules/mediawiki_exp/apache/sites/wikimania.conf',
         priority => 7,
     }
 
+    # Some other wikis, plus loginwiki, and www.wikimedia.org
     apache::site { 'wikimedia':
         source   => 'puppet:///modules/mediawiki_exp/apache/sites/wikimedia.conf',
         priority => 8,
     }
 
+    # wikimediafoundation wiki, already a single wiki
     apache::site { 'foundation':
         source   => 'puppet:///modules/mediawiki_exp/apache/sites/foundation.conf',
         priority => 9,
@@ -77,6 +83,7 @@ class mediawiki_exp::web::prod_sites {
     mediawiki_exp::web::site { $remnant_conf_sites:
         before => Apache::Site['remnant']
     }
+
     $small_private_wikis = [
         'internal.wikimedia.org', 'grants.wikimedia.org', 'fdc.wikimedia.org',
         'board.wikimedia.org', 'boardgovcom.wikimedia.org', 'spcom.wikimedia.org',
@@ -92,5 +99,9 @@ class mediawiki_exp::web::prod_sites {
     mediawiki_exp::web::site { $small_private_wikis:
         template_name => 'private-https',
         before        => Apache::Site['remnant'],
+    }
+
+    mediawiki_exp::web::site { 'wikimaniateam.wikimedia.org':
+        before => Apache::Site['wikimania']
     }
 }
