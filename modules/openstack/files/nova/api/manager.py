@@ -25,13 +25,12 @@ class MetadataManager(manager.Manager):
     just adds an iptables filter rule for the metadata service.
     """
     def __init__(self, *args, **kwargs):
-        pass
+        super(MetadataManager, self).__init__(*args, **kwargs)
         # Hack fix:
         # This attempts to dynamically manage iptables for the sole
         # purpose of ensuring the metadata API endpoint is allowed.
         # We will manage this safely elsewhere, and pursue fixing
         # this behavior upstream.
 
-        # super(MetadataManager, self).__init__(*args, **kwargs)
         # self.network_driver = driver.load_network_driver()
         # self.network_driver.metadata_accept()
