@@ -16,6 +16,18 @@ class openstack::nova::api::service(
         install_options => $install_options,
     }
 
+    # TEMP HOTPATCH for T198950
+    if os_version('debian jessie') and ($version == 'mitaka') {
+        file { '/usr/lib/python2.7/dist-packages/nova/api/manager.py':
+            ensure  => 'present',
+            owner   => 'root',
+            group   => 'root',
+            mode    => '0644',
+            source  => 'puppet:///modules/openstack/nova/api/manager.py',
+            require => Package['nova-api'],
+        }
+    }
+
     service { 'nova-api':
         ensure    => $active,
         subscribe => [
