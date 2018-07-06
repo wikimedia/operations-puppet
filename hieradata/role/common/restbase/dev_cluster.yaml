@@ -49,39 +49,7 @@ profile::restbase::hosts:
 ## Metrics
 graphite_host: 'graphite1003.eqiad.wmnet'
 profile::cassandra::allow_analytics: false
-profile::cassandra::metrics_whitelist:
-    - .*\.metrics\.Table\.local_group_.*\.meta\.CoordinatorReadLatency\..*$
-    - .*\.metrics\.Table\.local_group_.*\.meta\.CoordinatorScanLatency\..*$
-    - .*\.metrics\.Table\.local_group_.*\.meta\.EstimatedColumnCountHistogram\..*$
-    - .*\.metrics\.Table\.local_group_.*\.meta\.EstimatedRowCount\..*$
-    - .*\.metrics\.Table\.local_group_.*\.meta\.EstimatedRowSizeHistogram\..*$
-    - .*\.metrics\.Table\.local_group_.*\.meta\.LiveDiskSpaceUsed\..*$
-    - .*\.metrics\.Table\.local_group_.*\.meta\.LiveSSTableCount\..*$
-    - .*\.metrics\.Table\.local_group_.*\.meta\.LiveScannedHistogram\..*$
-    - .*\.metrics\.Table\.local_group_.*\.meta\.MaxRowSize\..*$
-    - .*\.metrics\.Table\.local_group_.*\.meta\.MeanRowSize\..*$
-    - .*\.metrics\.Table\.local_group_.*\.meta\.MinRowSize\..*$
-    - .*\.metrics\.Table\.local_group_.*\.meta\.PendingCompactions\..*$
-    - .*\.metrics\.Table\.local_group_.*\.meta\.PendingFlushes\..*$
-    - .*\.metrics\.Table\.local_group_.*\.meta\.RangeLatency\..*$
-    - .*\.metrics\.Table\.local_group_.*\.meta\.ReadLatency\..*$
-    - .*\.metrics\.Table\.local_group_.*\.meta\.SSTablesPerReadHistogram\..*$
-    - .*\.metrics\.Table\.local_group_.*\.meta\.TombstoneScannedHistogram\..*$
-    - .*\.metrics\.Table\.local_group_.*\.meta\.TotalDiskSpaceUsed\..*$
-    - .*\.metrics\.Table\.local_group_.*\.meta\.WriteLatency\..*$
-profile::cassandra::metrics_blacklist:
-      - .*\.15MinuteRate$
-      - .*\.5MinuteRate$
-      - .*\.98percentile$
-      - .*\.999percentile$
-      - .*\.max$
-      - .*\.mean$
-      - .*\.meanRate$
-      - .*\.min$
-      - .*\.stddev$
-      - .*\.metrics\.Keyspace\..*$
-      - .*\.metrics\.Client\..*$
-      - .*\.metrics\.ColumnFamily\..*$
+profile::cassandra::disable_graphite_metrics: true
 
 ## Monitoring
 # skip Icinga monitoring on dev servers (T189050)

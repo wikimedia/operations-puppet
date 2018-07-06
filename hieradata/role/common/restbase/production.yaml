@@ -29,40 +29,8 @@ profile::restbase::cassandra_tls:
 #
 graphite_host: 'graphite1003.eqiad.wmnet'
 profile::cassandra::allow_analytics: false
+profile::cassandra::disable_graphite_metrics: true
 
-profile::cassandra::metrics_whitelist:
-  - .*\.metrics\.Table\..*\.meta\.CoordinatorReadLatency\..*$
-  - .*\.metrics\.Table\..*\.meta\.CoordinatorScanLatency\..*$
-  - .*\.metrics\.Table\..*\.meta\.EstimatedColumnCountHistogram\..*$
-  - .*\.metrics\.Table\..*\.meta\.EstimatedRowCount\..*$
-  - .*\.metrics\.Table\..*\.meta\.EstimatedRowSizeHistogram\..*$
-  - .*\.metrics\.Table\..*\.meta\.LiveDiskSpaceUsed\..*$
-  - .*\.metrics\.Table\..*\.meta\.LiveSSTableCount\..*$
-  - .*\.metrics\.Table\..*\.meta\.LiveScannedHistogram\..*$
-  - .*\.metrics\.Table\..*\.meta\.MaxRowSize\..*$
-  - .*\.metrics\.Table\..*\.meta\.MeanRowSize\..*$
-  - .*\.metrics\.Table\..*\.meta\.MinRowSize\..*$
-  - .*\.metrics\.Table\..*\.meta\.PendingCompactions\..*$
-  - .*\.metrics\.Table\..*\.meta\.PendingFlushes\..*$
-  - .*\.metrics\.Table\..*\.meta\.RangeLatency\..*$
-  - .*\.metrics\.Table\..*\.meta\.ReadLatency\..*$
-  - .*\.metrics\.Table\..*\.meta\.SSTablesPerReadHistogram\..*$
-  - .*\.metrics\.Table\..*\.meta\.TombstoneScannedHistogram\..*$
-  - .*\.metrics\.Table\..*\.meta\.TotalDiskSpaceUsed\..*$
-  - .*\.metrics\.Table\..*\.meta\.WriteLatency\..*$
-profile::cassandra::metrics_blacklist:
-  - .*\.15MinuteRate$
-  - .*\.5MinuteRate$
-  - .*\.98percentile$
-  - .*\.999percentile$
-  - .*\.mean$
-  - .*\.meanRate$
-  - .*\.min$
-  - .*\.stddev$
-  - .*\.metrics\.Table\..*\.meta\..*$
-  - .*\.metrics\.Keyspace\..*$
-  - .*\.metrics\.Client\..*$
-  - .*\.metrics\.ColumnFamily\..*$
 ## Instances
 profile::cassandra::instances:
   "restbase1007.eqiad.wmnet":
