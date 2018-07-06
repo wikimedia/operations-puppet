@@ -1420,7 +1420,6 @@
     "operations",
     "source:puppet.git",
     "readonly",
-    "featured"
   ],
   "templating": {
     "enable": true,
