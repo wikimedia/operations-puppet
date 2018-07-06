@@ -66,6 +66,13 @@ class mediawiki_exp::web::prod_sites {
         'meta.wikimedia.org',
         '_wikisource.org',
         'commons.wikimedia.org',
+        'incubator.wikimedia.org',
+        'species.wikimedia.org',
+        'usabiltiy.wikimedia.org',
+        'strategy.wikimedia.org',
+        'advisory.wikimedia.org',
+        'quality.wikimedia.org',
+        'outreach.wikimedia.org'
     ]
     mediawiki_exp::web::site { $remnant_conf_sites:
         before => Apache::Site['remnant']

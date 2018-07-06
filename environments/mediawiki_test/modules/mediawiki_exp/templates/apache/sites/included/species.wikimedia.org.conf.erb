@@ -1,0 +1,13 @@
+<VirtualHost *:80>
+    ServerName species.wikimedia.org
+
+    RewriteEngine On
+    RewriteRule . - [E=RW_PROTO:%{HTTP:X-Forwarded-Proto}]
+    RewriteCond %{ENV:RW_PROTO} !=https
+    RewriteRule . - [E=RW_PROTO:http]
+
+    Include "sites-enabled/wikimedia-common.incl"
+    Include "sites-enabled/wikimedia-legacy.incl"
+    # Uploads are offsite
+    RewriteRule ^/upload/(.*)$ %{ENV:RW_PROTO}://upload.wikimedia.org/wikipedia/species/$1 [R=302]
+</VirtualHost>
