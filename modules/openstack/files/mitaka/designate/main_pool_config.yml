@@ -26,7 +26,7 @@
     - host: 208.80.155.117
       port: 5354
     options:
-      connection: mysql://pdns:ZBSfvrSYpR0U@208.80.154.12/pdns
+      connection: mysql://pdns:<password>@208.80.154.12/pdns
       host: 208.80.154.12
       port: '53'
     type: powerdns
