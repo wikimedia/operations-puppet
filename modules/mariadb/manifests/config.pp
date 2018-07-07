@@ -13,7 +13,7 @@
 
 class mariadb::config(
     $config                 = 'mariadb/default.my.cnf.erb',
-    $prompt                 = '\u@\h(\d)> ',
+    $prompt                 = '\u@\h(\d)>\_',
     $password               = 'undefined',
     $basedir                = '/opt/wmf-mariadb10',
     $datadir                = '/srv/sqldata',
