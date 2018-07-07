@@ -21,9 +21,9 @@
         Require all granted
     </Directory>
 
-<% if @xenondata_host -%>
-    ProxyPass /xenon http://<%= @xenondata_host %>/xenon
-    ProxyPassReverse /xenon http://<%= @xenondata_host %>/xenon
+<% if @arclamp_host -%>
+    ProxyPass /xenon http://<%= @arclamp_host %>/xenon
+    ProxyPassReverse /xenon http://<%= @arclamp_host %>/xenon
 <% end -%>
 
 <% if @xhgui_host -%>

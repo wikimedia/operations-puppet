@@ -15,7 +15,7 @@ class role::logging::mediawiki::udp2log(
 
     include ::standard
     include ::profile::base::firewall
-    include ::profile::webperf::xenon
+    include ::profile::webperf::arclamp
 
     class { '::udp2log':
         monitor          => $monitor,
@@ -95,5 +95,24 @@ class role::logging::mediawiki::udp2log(
         group  => 'root',
         mode   => '0555',
         source => 'puppet:///modules/role/logging/fatalmonitor',
+    }
+
+    # Redis is used to receive Xenon stack traces from MediaWiki app servers,
+    # for processing by Arc Lamp (see profile::webperf::arclamp).
+    redis::instance { '6379':
+        settings => {
+            maxmemory                   => '1Mb',
+            stop_writes_on_bgsave_error => 'no',
+            bind                        => '0.0.0.0',
+        },
+    }
+
+    # The Redis for Arc Lamp and Arc Lamp itself are currently
+    # part of the same role (this role), so make sure that
+    # Redis starts before Arc Lamp.
+    Service['redis-server'] ~> Service['xenon-log']
+
+    ferm::rule { 'xenon_redis':
+        rule => 'saddr ($DOMAIN_NETWORKS) proto tcp dport 6379 ACCEPT;',
     }
 }

@@ -400,7 +400,7 @@ prometheus_nodes:
 profile::recommendation_api::wdqs_uri: http://wdqs-test.wmflabs.org
 
 profile::webperf::site::server_name: performance-beta.wmflabs.org
-profile::webperf::site::xenondata_host: deployment-fluorine02.deployment-prep.eqiad.wmflabs
+profile::webperf::site::arclamp_host: deployment-fluorine02.deployment-prep.eqiad.wmflabs
 
 # Eventstreams config
 profile::eventstreams::kafka_cluster_name: main

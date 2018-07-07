@@ -8,7 +8,7 @@
 # [*server_name*]
 #   Server name for the Apache VirtualHost of this site.
 #
-# [*xenondata_host*]
+# [*arclamp_host*]
 #   HTTP host address where Xenon data is served (hostname or IP, port allowed).
 #   For example "prof.example" or "127.0.0.2:8000".
 #   Optional. If undefined, the "/xenon" path is not proxied.
@@ -20,7 +20,7 @@
 #
 class profile::webperf::site (
     $server_name = hiera('profile::webperf::site::server_name'),
-    $xenondata_host = hiera('profile::webperf::site::xenondata_host', undef),
+    $arclamp_host = hiera('profile::webperf::site::arclamp_host', undef),
     $xhgui_host = hiera('profile::webperf::site::xhgui_host', undef)
 ) {
 

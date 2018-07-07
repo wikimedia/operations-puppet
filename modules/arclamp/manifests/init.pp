@@ -1,9 +1,11 @@
-# == Class: xenon
+# == Class: arclamp
 #
-# Xenon is an HHVM extension that periodically captures a stack trace of
-# PHP code. MediaWiki servers send the captured trace via Redis pub/sub.
-# This class implements an aggregator that stores captured traces to disk
-# and generates SVG flame graphs from them.
+# Aggregate captured stack traces from MediaWiki application servers,
+# write them to disk, and generate SVG flame graphs.
+#
+# The aggregator reads captured traces from a Redis instance using pub/sub.
+# MediaWiki servers capture these traces from Xenon, which is the built-in
+# sampling profiler for HHVM.
 #
 # === Parameters
 #
@@ -11,22 +13,22 @@
 #   Description
 #
 # [*redis_host*]
-#   Address of Redis server that is publishing Xenon traces.
+#   Address of Redis server that is publishing stack traces.
 #   Default: '127.0.0.1'.
 #
 # [*redis_port*]
-#   Port of Redis server that is publishing Xenon traces.
+#   Port of Redis server that is publishing stack traces.
 #   Default: 6379.
 #
 # === Examples
 #
-#  class { 'xenon':
+#  class { 'arclamp':
 #      ensure     => present,
 #      redis_host => 'mwlog.example.net',
 #      redis_port => 6379,
 #  }
 #
-class xenon(
+class arclamp(
     $ensure = present,
     $redis_host = '127.0.0.1',
     $redis_port = 6379,
@@ -80,7 +82,7 @@ class xenon(
 
     file { '/usr/local/bin/xenon-log':
         ensure => $ensure,
-        source => 'puppet:///modules/xenon/xenon-log',
+        source => 'puppet:///modules/arclamp/xenon-log',
         owner  => 'root',
         group  => 'root',
         mode   => '0555',
@@ -97,7 +99,7 @@ class xenon(
 
     file { '/usr/local/bin/flamegraph.pl':
         ensure => $ensure,
-        source => 'puppet:///modules/xenon/flamegraph.pl',
+        source => 'puppet:///modules/arclamp/flamegraph.pl',
         owner  => 'root',
         group  => 'root',
         mode   => '0555',
@@ -110,7 +112,7 @@ class xenon(
 
     file { '/usr/local/bin/xenon-generate-svgs':
         ensure => $ensure,
-        source => 'puppet:///modules/xenon/xenon-generate-svgs',
+        source => 'puppet:///modules/arclamp/xenon-generate-svgs',
         owner  => 'root',
         group  => 'root',
         mode   => '0555',
@@ -130,7 +132,7 @@ class xenon(
 
     file { '/usr/local/bin/xenon-grep':
         ensure => $ensure,
-        source => 'puppet:///modules/xenon/xenon-grep',
+        source => 'puppet:///modules/arclamp/xenon-grep',
         owner  => 'root',
         group  => 'root',
         mode   => '0555',

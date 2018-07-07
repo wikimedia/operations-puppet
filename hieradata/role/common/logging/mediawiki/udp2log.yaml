@@ -1,6 +1,11 @@
-role::logging::mediawiki::udp2log::logstash_host: 'logstash.svc.eqiad.wmnet'
 admin::groups:
   - deployment
   - restricted
   - mw-log-readers
+
 monitor_screens: false
+
+role::logging::mediawiki::udp2log::logstash_host: 'logstash.svc.eqiad.wmnet'
+
+profile::webperf::arclamp::redis_host: '127.0.0.1'
+profile::webperf::arclamp::redis_port: 6379
