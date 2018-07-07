@@ -6,4 +6,4 @@ profile::openstack::eqiad1::nova::network_flat_interface: 'eth1.1105'
 profile::openstack::eqiad1::nova::physical_interface_mappings:
   cloudinstances2b: 'eth1.1105'
 profile::openstack::eqiad1::nova::scheduler_pool:
-  - cloudvirt1021.eqiad.wmnet
+  - cloudvirt1021
