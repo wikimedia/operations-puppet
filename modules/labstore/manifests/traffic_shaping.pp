@@ -1,7 +1,7 @@
 class labstore::traffic_shaping(
     $nfs_write = '8500kbps',
     $nfs_read = '1000kbps',
-    $nfs_dumps_read = '15000kbps',
+    $nfs_dumps_read = '5000kbps',
     $egress = '30000kbps',
     $interface = $facts['interface_primary'],
 ) {
