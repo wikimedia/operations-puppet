@@ -20,6 +20,7 @@ class profile::analytics::cluster::packages::common {
     require_package(
         'python-sympy',
         'python-matplotlib',      'python3-matplotlib',
+        'python-tk',              'python3-tk',
         'python-geoip',           'python3-geoip',
         'python-pandas',          'python3-pandas',
         'python-scipy',           'python3-scipy',
