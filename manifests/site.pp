@@ -2208,6 +2208,9 @@ node /^labvirt102[0-2]\.eqiad\.wmnet$/ {
     include ::standard
 }
 
+node 'cloudvirt1021.eqiad.wmnet' {
+    role(wmcs::openstack::eqiad1::virt)
+}
 
 # Wikidata query service
 node /^wdqs100[3-5]\.eqiad\.wmnet$/ {

@@ -418,6 +418,13 @@ host chromium {
     fixed-address chromium.wikimedia.org;
 }
 
+host cloudvirt1021 {
+    hardware ethernet 18:66:DA:BB:31:72;
+    fixed-address cloudvirt1021.eqiad.wmnet;
+    option pxelinux.pathprefix "jessie-installer/";
+    filename "jessie-installer/debian-installer/amd64/pxelinux.0";
+}
+
 host cobalt {
     hardware ethernet 14:18:77:33:4A:30;
     fixed-address cobalt.wikimedia.org;
@@ -3528,13 +3535,6 @@ host labvirt1019 {
 host labvirt1020 {
     hardware ethernet e0:07:1b:f0:7b:28;
     fixed-address labvirt1020.eqiad.wmnet;
-    option pxelinux.pathprefix "jessie-installer/";
-    filename "jessie-installer/debian-installer/amd64/pxelinux.0";
-}
-
-host labvirt1021 {
-    hardware ethernet 18:66:DA:BB:31:72;
-    fixed-address labvirt1021.eqiad.wmnet;
     option pxelinux.pathprefix "jessie-installer/";
     filename "jessie-installer/debian-installer/amd64/pxelinux.0";
 }
