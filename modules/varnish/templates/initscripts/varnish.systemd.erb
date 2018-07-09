@@ -28,6 +28,9 @@ Environment="MALLOC_CONF=<%= @jemalloc_conf %>"
 # rsyslog will see this in $programname
 SyslogIdentifier=varnish<%= @instancesuffix %>
 ExecReload=/usr/share/varnish/reload-vcl <%= @reload_vcl_opts %>
+# reload-vcl must be executed on startup to load separate VCL files.
+# See https://varnish-cache.org/docs/5.1/users-guide/vcl-separate.html
+ExecStartPost=/usr/share/varnish/reload-vcl <%= @reload_vcl_opts %>
 ExecStart=/usr/sbin/varnishd \
 -P %t/%p.pid \
 <%= @ports.map { |p| "-a :"+p.to_s }.join(" ") -%> \
