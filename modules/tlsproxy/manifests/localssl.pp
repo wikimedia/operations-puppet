@@ -30,6 +30,10 @@
 # [*upstream_ports*]
 #   TCP ports array to proxy to. Defaults to ['80']
 #
+# [*tls_port*]
+#   TCP port to listen on as HTTPS.  This listener will proxy all traffic
+#   to @upsteam_ports. Default is 443.
+#
 # [*redir_port*]
 #   TCP port to listen on as plain HTTP.  This listener will redirect GET/HEAD
 #   to HTTPS with 301 and deny all other methods with 403.  It does not proxy
@@ -68,6 +72,7 @@ define tlsproxy::localssl(
     $server_aliases = [],
     $default_server = false,
     $upstream_ports = ['80'],
+    $tls_port       = 443,
     $redir_port     = undef,
     $do_ocsp        = false,
     $skip_private   = false,

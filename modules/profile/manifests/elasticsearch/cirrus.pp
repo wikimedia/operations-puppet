@@ -12,7 +12,7 @@ class profile::elasticsearch::cirrus(
     String $storage_device = hiera('profile::elasticsearch::cirrus::storage_device'),
 ) {
     $http_port = 9200
-    $tls_port = 9423
+    $tls_port = 9243
 
     include ::profile::elasticsearch
 
@@ -26,6 +26,12 @@ class profile::elasticsearch::cirrus(
         port    => $http_port,
         notrack => true,
         srange  => $ferm_srange,
+    }
+
+    ferm::service { 'elastic-https':
+        proto  => 'tcp',
+        port   => $tls_port,
+        srange => $ferm_srange,
     }
 
     file { '/etc/udev/rules.d/elasticsearch-readahead.rules':
@@ -42,9 +48,10 @@ class profile::elasticsearch::cirrus(
         refreshonly => true,
     }
 
-    class { '::elasticsearch::https':
+    elasticsearch::tlsproxy { $cluster_name:
         certificate_name => $certificate_name,
-        ferm_srange      => $ferm_srange,
+        upstream_port    => $http_port,
+        tls_port         => $tls_port,
     }
 
     # Install the hot threads collector
