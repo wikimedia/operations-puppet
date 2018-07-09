@@ -28,6 +28,7 @@ class profile::analytics::cluster::packages::statistics {
         'libwww-perl',            # For wikistats stuff
         'libcgi-pm-perl',         # For wikistats stuff
         'libjson-perl',           # For wikistats stuff
+        'libtext-csv-xs-perl',    # T199131
         'sqlite3',                # For storing and interacting with intermediate results
         'libproj-dev',            # Requested by lzia for rgdal
         'libbz2-dev',             # for compiling some python libs. T84378
