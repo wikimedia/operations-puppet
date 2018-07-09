@@ -243,6 +243,8 @@ network::subnets:
         labs-instances1-b-eqiad:
           ipv4: 10.68.16.0/21
           ipv6: 2620:0:861:202::/64
+        cloud-instances2-b-eqiad:
+          ipv4: 172.16.0.0/21
         labs-instances1-c-eqiad:
           ipv4: 10.68.32.0/24
           ipv6: 2620:0:861:203::/64
@@ -257,6 +259,8 @@ network::subnets:
         labs-instances1-b-codfw:
           ipv4: 10.196.16.0/21
           ipv6: 2620:0:860:202::/64
+        cloud-instances2-b-codfw:
+          ipv4: 172.16.128.0/21
         labs-instances1-c-codfw:
           ipv4: 10.196.32.0/24
           ipv6: 2620:0:860:203::/64
