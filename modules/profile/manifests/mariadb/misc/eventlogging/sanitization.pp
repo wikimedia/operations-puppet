@@ -87,7 +87,6 @@ class profile::mariadb::misc::eventlogging::sanitization(
         environment => 'MAILTO=analytics-alerts@wikimedia.org',
         require     => [
             File['/usr/local/bin/eventlogging_cleaner'],
-            File[$whitelist_path],
             File[$log_directory_path],
             User['eventlogcleaner'],
         ]
