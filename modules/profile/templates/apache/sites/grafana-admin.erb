@@ -17,6 +17,8 @@
   # Automatically log in all visitors as anonymous.
   RequestHeader set X-WEBAUTH-USER "Anonymous"
 
+  RewriteRule (.+) https://<%= @readonly_domain %>/$1 [R,L]
+
   <Proxy *>
     <Limit POST PUT DELETE>
       Require all denied
