@@ -183,24 +183,23 @@ sub wm_common_directors_init {
 <% if @dynamic_backend_caches -%>
 include "directors.<%= @inst %>.vcl";
 <% else -%>
-<% @backend_caches.keys.sort.each do |director_name|
-director = @backend_caches[director_name]
-backends = director['backends'] -%>
+<% @backend_caches.keys.sort.each do |director_name| -%>
 	new <%= director_name %> = directors.shard();
 	new <%= director_name %>_random = directors.random();
-<%
+<% if @varnish_testing -%>
+	// "vtc_backend" is the backend name we use in all VTC tests
+	<%= director_name %>.add_backend(vtc_backend);
+	<%= director_name %>_random.add_backend(vtc_backend, 100);
+<% else
+	director = @backend_caches[director_name]
+	backends = director['backends']
 	backends.each do |backend|
 		name = 'be_' + backend.gsub(/[-.]/, '_')
-
-		# Override backend name for test VCL files. This way we can use
-		# "vtc_backend" as the backend name in our VTC tests.
-		if @varnish_testing
-			name = "vtc_backend";
-		end
 -%>
 	<%= director_name %>.add_backend(<%= name %>);
 	<%= director_name %>_random.add_backend(<%= name %>, 100);
 <% 	end #backends loop -%>
+<% end #if @varnish_testing -%>
 	<%= director_name %>.reconfigure();
 
 <% end #director loop -%>
