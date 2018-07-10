@@ -206,7 +206,7 @@ if [ -z ${sha1} ]; then # Only loop through the other servers if called without 
         su - $git_user -c "ssh -t -t <%= worker -%> true ${fetch_head_sha1} 2>&1"
     fi
     if [ $? -eq 0 ]; then
-        echo "${GREEN}OK${RESET}: puppet-merge on <%= worker %> succeded"
+        echo "${GREEN}OK${RESET}: puppet-merge on <%= worker %> succeeded"
     else
         echo "${RED}ERROR${RESET}: puppet-merge on <%= worker %> failed"
     fi
