@@ -33,7 +33,7 @@ my $timeout_limit = 3; # how many timeouts to tolerate before dropping a server
 my $timeout = 10; # seconds before LWP gives up on a web request
 my $pad_length = 25; # server hostname column width in report
 my $default_staging_server = 'mwdebug1001.eqiad.wmnet';
-
+my $has_errors = 0; # if we found errors
 # get a list of servers to test
 my $servers;
 if ($ARGV[1]) {
@@ -91,6 +91,7 @@ for my $host (sort keys %{$servers}) {
         }
     }
     unless ($servers->{$host} > 1) {
+        $has_errors++;
         print "[31mno IP found for $host[0m\n";
         delete $servers->{$host};
     }
@@ -110,7 +111,7 @@ if (scalar @queue) {
         "     pybal       fetch full webserver list from live pybal configuration\n" .
         "     eqiad|codfw fetch full webserver list for a specific datacenter\n" .
         "     host1 host2 host3\n\n";
-    exit;
+    exit 2;
 }
 
 # spawn worker threads to do api web requests, then reap them
@@ -140,12 +141,14 @@ for my $url (sort keys %{$urls}) {
     }
     if (defined $highlight) {
         print "[31m$url\n$report[0m";
+        $has_errors++;
     } else {
         print "$url\n * $previous_result\n"; # short form output
     }
 }
 
-exit;
+# If has_errors is not zero, exit with exit code 1
+exit ($has_errors > 0);
 
 
 

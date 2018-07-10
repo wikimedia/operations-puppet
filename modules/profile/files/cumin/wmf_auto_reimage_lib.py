@@ -917,9 +917,14 @@ def run_apache_fast_test(host):
     """
     command = 'apache-fast-test ~oblivian/baseurls {host}'.format(host=host)
     deployment_host = resolve_dns(DEPLOYMENT_DOMAIN, 'CNAME')
-    run_cumin('run_apache_fast_test', deployment_host, [command], timeout=120)
-
-    print_line('Tested with Apache fast-test', host=host)
+    try:
+        run_cumin('run_apache_fast_test', deployment_host, [command], timeout=120)
+        print_line('Successfully tested with Apache fast-test', host=host)
+    except RuntimeError:
+        # We don't want to fail upon this failure, this is just a validation test
+        # for the user.
+        print_line('WARNING: failed to run Apache fast-test, check cumin logs', host=host,
+                   level=logging.WARNING)
 
 
 def print_repool_message(previous, rename_from=None, rename_to=None):
