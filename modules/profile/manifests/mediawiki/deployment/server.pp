@@ -112,14 +112,5 @@ class profile::mediawiki::deployment::server(
         require_package('php5-readline') # bug T126262
     }
 
-    # Perl helper script for apache changes
-    require_package('libwww-perl')
-
-    file  { '/usr/local/bin/apache-fast-test':
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0555',
-        source => 'puppet:///modules/profile/mediawiki/deployment/server/apache-fast-test',
-    }
 
 }

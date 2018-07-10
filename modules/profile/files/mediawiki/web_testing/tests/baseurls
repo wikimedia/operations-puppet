@@ -1,0 +1,30 @@
+## Set of various urls we want to check on a new host when reimaged
+## This is an ever-expanding list of different urls, with no ambition to
+## be complete or fairly representatvie of our web configuration
+#  Nonexistent.conf - a non-existent domain per RFC 6761
+http://pinkunicorn.invalid
+# wwwportals
+http://www.wikipedia.org/wiki/it:Saturno_(astronomia)
+http://zero.wikipedia.org/
+https://en.wiktionary.org/wiki/fanfarone
+#main
+https://en.wikipedia.org/wiki/Main_Page
+# redirects.conf
+http://wikimedia.org/research
+# some other things
+https://en.wikipedia.org/wiki/Special:Export/Pulsar
+https://en.wikiversity.org/wiki/Wikiversity:Main_Page
+https://en.wikipedia.org/wiki/Barack_Obama
+https://de.wikipedia.org/wiki/Wikipedia:Hauptseite
+https://fr.wikipedia.org/wiki/K.A.Z
+#Url Shortener
+https://w.wiki
+#ShortUrl support
+https://es.wikibooks.org/s/22u
+https://ta.wikinews.org/s/9p5
+# donate wiki
+https://donate.wikimedia.org/
+https://donate.wikimedia.org/w/index.php?title=Special:FundraiserLandingPage&country=IT&uselang=en
+# Meta (uses wikimedia-common.incl)
+https://meta.wikimedia.org/wiki/List_of_Wikipedias
+https://en.wikipedia.org/w/wiki.phtml?title=foo&action=info

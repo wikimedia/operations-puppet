@@ -16,6 +16,7 @@ class role::cluster::management {
     include ::profile::conftool::client
     include ::profile::switchdc
     include ::profile::debdeploy
+    include ::profile::mediawiki::web_testing
     include ::standard
     include ::base::firewall
 }
