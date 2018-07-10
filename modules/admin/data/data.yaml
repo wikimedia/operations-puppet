@@ -10,7 +10,8 @@ groups:
               yurik, bsimmers, bcohn, hjiang, tomasz, csteipp, zareen, jgirault, ellery,
               psinger, midom, tparscal, dworley, moushira, lpintscher, gpaumier,
               nschaaf, zhousquared, gwicke, dpatrick, samwalton9, samtar, akrausetud, jgonsior,
-              yuvipanda, shrlak, joewalsh, madhuvishy, groovier, khorn, ironholds]
+              yuvipanda, shrlak, joewalsh, madhuvishy, groovier, khorn, ironholds, katie,
+              cy534]
   absent_ldap:
     description: meta group for absented users which had privileged LDAP access in the past
     members: [adavenport, siddharth11]
@@ -131,7 +132,7 @@ groups:
               daisy, mholloway-shell, ebernhardson, niedzielski,
               neilpquinn-wmf, tbayer, dbrant, maxsem,
               jminor, etonkovidova, sbisson, addshore, matmarex, elukey,
-              nikerabbit, dstrine, mpany, jsamra, katie,
+              nikerabbit, dstrine, mpany, jsamra,
               jdittrich, chelsyx, ovasileva, mtizzoni, panisson, paolotti, ciro, debt,
               fdans, mlitn, niharika29, goransm, pmiazga, dsaez, shiladsen, cicalese,
               mirrys, sharvaniharan, mmiller, amire80]
@@ -250,7 +251,7 @@ groups:
                  Those files are group readable by the analytics-privatedata-users group.
     members: [dartar, milimetric, dfoy, aude, jforrester, nithum, imarlier,
               halfak, dr0ptp4kt, bearloga, elukey, ppchelko, bawolff, mneisler,
-              nuria, otto, deskana, arnad, jgreen, katie,
+              nuria, otto, deskana, arnad, jgreen,
               bsitzmann, dbrant, nettrom, leila, cwdent,
               ezachte, mforns, reedy, west1, phuedx, awight,
               joal, jamesur, akosiaris, jkatz,
@@ -260,7 +261,7 @@ groups:
               bmansurov, atgomez, amire80, kartik, pcoombe, foks, mpany, jsamra,
               jdlrobson, chelsyx, ovasileva, flemmerich, mkroetzsch, filippo, pmiazga, faidon,
               piccardi, fdans, eevans, anomie, demon, ladsgroup, musikanimal,
-              kaldari, goransm, ema, dsaez, shiladsen, rho, mirrys, slaporte, jk, cy534,
+              kaldari, goransm, ema, dsaez, shiladsen, rho, mirrys, slaporte, jk,
               ayounsi, mepps, mmiller, seddon, gilles]
     system_members: [analytics-search]
   analytics-admins:
@@ -2216,7 +2217,7 @@ users:
       - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDbRaAUzTfgxalgYGZ7ztelMGXC7vDJ4VwFtFlMt9IvApeYViRh+eIwcr2+94cwextv5fuFD/UWAhk38KKsEnr2SDu1BhTeqlXM1Tfibb8vfq5SrUXzANh61HgqAt9XIyWPXhOFGBJWGZKIHE9DJaDZn5xCmkwz+KPe0smxa0QLHgJTs/Z0sHYu5wcJYPQ/D+b1lBQAPHMUzCIDz8t6ctFysb/pPubX7kbnILao+Q60D7L85+6jgPx2mGFHfsv4LiZP80BhsbrLjwOpuILy3A8jS9aJ9WI0q6Yap9vuRXa8D0DNiymeoGo5X6ye0vdtfe4NZuV9eru3BWBjbSFmRwXP MJP@MJPwork.local
     uid: 15095
     email: maximilian.pany@gmail.com
-    expiry_date: 2018-06-30
+    expiry_date: 2018-09-30
     expiry_contact: mhernandez@wikimedia.org
   jsamra:
     ensure: present
@@ -2689,16 +2690,12 @@ users:
     uid: 18334
     email: imarlier@wikimedia.org
   cy534:
-    ensure: present
+    ensure: absent
     gid: 500
     name: cy534
     realname:  Christian Covington
-    ssh_keys:
-    - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDBxzztOka1AJvg4W3N4OnYbvr4nz+iDg3mgWlG8f0jbIc1tY9Ned8yfxd8mK+/K/TGMRBGxIwanODE+tvvKHOsULtYrlElIbd25eZY1PAAhWalrhbVZefPHgW3OLuA60FKcZeggJAiOYs9Q4jV0m8ZngIgVPSkrbF/Kr9Jg+HSERDaFmZL/CDy4f9QHsPBU+E6R0C5A06wnCmPwPE3aUhhBwahwxqgkftBywepszho3GTuDYRtS1XuCBobVpmCqkArchY9938AfBb4gI6sf+0ooaxt5e3O9QU1iLphGoRxEfe+u33Crqcf7HXfGnE750q4auNA4UpPJseOLhW7o43zKwJKrR/kb4s5qx91nq0P1HOChHEFrbzPQlAfnGrz3Cw8SLD38+eUryHpVwIw2WNr43a584Qye+CVzWCylcSjEzLsN+PCG4hlukAcWok+W8gQjfTgUCCpMuWG42Wb5GwAGlTtiy8iqLqYSLauWDP5DMm6bYUKFOgzHYseUYZ4CbvCol6SSuy61qt7BHveIvK4G60OkqdJ7LVB62scm714/VkrHJzX0pu3k7C0/89evHKZ1CuN3KNIQn7fMdVpY41kn7wNxHC/VYO2f2v8cmFxv0Ewr31ILPU2zUJz0+Pj0Bpd92ePtre6FJP76IOBHyGjchGFTn+2qwStMuIQ0uFKHw== christian@christian-XPS-15-9550
+    ssh_keys: []
     uid: 18627
-    email: christian.t.covington@gmail.com
-    expiry_date: 2018-06-30
-    expiry_contact: mhernandez@wikimedia.org
   mneisler:
     ensure: present
     gid: 500
@@ -2736,16 +2733,12 @@ users:
     uid: 18837
     email: vgutierrez@wikimedia.org
   katie:
-    ensure: present
+    ensure: absent
     gid: 500
     name: katie
     realname: Katie Lin
-    ssh_keys:
-    - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC5FwLyUfc5hYG83CGA7eXsIk1ZfvldzJEoYcxYRLycK1L2AXKxv6Hpk+D5zgVE3nrNSEhMSZBJFtLfBzqHOH96e3EdUQp12CqWnok5Y73piVofjKFm5Qi2HdTdDtnm4IuOOYsFVG82za5oE24lbqMR6qsJrxDpS/B6VbAcPRQ15p90sj/S0h0wWbxCzC6Zrmjdb/V1+VCNAw7Qflxg+GMA5XiCXdScnJIWQEEONJhmCEzhuZmg2cyY19FOJiKoyd2AD7lFRlLH0OQQCzDCMcKtCmz++NCuqd+agD9/ApFp0k8XsMhJvGPYt6x9BM/24JPyVL40TXU4N9X2In4+1iXX katielin@mbp15-2.local
+    ssh_keys: []
     uid: 18876
-    email: katielin2532@gmail.com
-    expiry_date: 2018-06-30
-    expiry_contact: mhernandez@wikimedia.org
   samwilson:
     ensure: present
     gid: 500
