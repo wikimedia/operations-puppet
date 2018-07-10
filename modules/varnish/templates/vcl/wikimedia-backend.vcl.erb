@@ -8,7 +8,6 @@ include "<%= @varnish_include_path %><%= @vcl %>.inc.vcl";
 
 sub vcl_init {
 	call wm_common_directors_init;
-	call wm_common_domains_init;
 }
 
 sub set_backend__ {
@@ -40,13 +39,8 @@ sub set_backend__ {
 
     def_action = 'return (synth(404, "Domain not served here"));'
     if_stmts = []
-    if @is_separate_vcl
-	req_handling = @vcl_config['alternate_domains']
-    else
-	req_handling = @vcl_config['req_handling']
-    end
-    req_handling.keys.sort.each do |reqhost|
-        options = req_handling[reqhost]
+    @vcl_config['req_handling'].keys.sort.each do |reqhost|
+        options = @vcl_config['req_handling'][reqhost]
         host_action = set_director(options['director'], options['debug_director'])
         if options.has_key?('subpaths')
             path_ifs = []

@@ -145,13 +145,6 @@ sub text_normalize_path {
 
 // fe+be common recv code
 sub text_common_recv {
-<% if @vcl_config.fetch('alternate_domains', {}).length > 0 -%>
-       // Switch to cache_misc VCL if the request is for a site listed in
-       // cache::alternate_domains
-       if (alternate_domains.match(req.http.Host)) {
-               return (vcl(wikimedia_misc));
-       }
-<% end -%>
 	if (req.method != "GET" && req.method != "HEAD") {
 		return (pass);
 	}

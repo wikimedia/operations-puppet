@@ -6,7 +6,6 @@ class profile::cache::text(
     $nodes = hiera('cache::text::nodes'),
     $statsd_host = hiera('statsd'),
     $req_handling = hiera('cache::req_handling'),
-    $alternate_domains = hiera('cache::alternate_domains'),
     $app_directors = hiera('cache::app_directors'),
     $app_def_be_opts = hiera('cache::app_def_be_opts'),
     $cache_route_table = hiera('cache::route_table'),
@@ -50,14 +49,13 @@ class profile::cache::text(
     }
 
     $common_vcl_config = {
-        'allowed_methods'   => '^(GET|HEAD|OPTIONS|POST|PURGE|PUT|DELETE)$',
-        'purge_host_regex'  => $::profile::cache::base::purge_host_not_upload_re,
-        'static_host'       => $static_host,
-        'top_domain'        => $top_domain,
-        'shortener_domain'  => $shortener_domain,
-        'pass_random'       => true,
-        'req_handling'      => $req_handling,
-        'alternate_domains' => $alternate_domains,
+        'allowed_methods'  => '^(GET|HEAD|OPTIONS|POST|PURGE|PUT|DELETE)$',
+        'purge_host_regex' => $::profile::cache::base::purge_host_not_upload_re,
+        'static_host'      => $static_host,
+        'top_domain'       => $top_domain,
+        'shortener_domain' => $shortener_domain,
+        'pass_random'      => true,
+        'req_handling'     => $req_handling,
     }
 
     $be_vcl_config = merge($common_vcl_config, {
