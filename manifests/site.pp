@@ -30,6 +30,7 @@ node /^(actinium|alcyone|alsafi|aluminium)\.wikimedia\.org$/ {
 # - YARN ResourceManager
 node 'analytics1001.eqiad.wmnet' {
     role(analytics_cluster::hadoop::master)
+    interface::add_ip6_mapped { 'main': }
 }
 
 # analytics1002 is the Hadoop standby NameNode and ResourceManager.
