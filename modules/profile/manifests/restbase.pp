@@ -60,6 +60,9 @@
 # [*pdfrender_uri*]
 #   PDF Render service URI. Format: http://pdfrender.svc.eqiad.wmnet:5252
 #
+# [*proton_uri*]
+#   Proton PDF Render service URI. Format: http://proton.discovery.wmnet:24766
+#
 # [*citoid_uri*]
 #   Citoid service URI. Format: http://citoid.svc.eqiad.wmnet:1970
 #
@@ -87,6 +90,7 @@ class profile::restbase(
     $aqs_uri        = hiera('profile::restbase::aqs_uri'),
     $eventlogging_service_uri = hiera('profile::restbase::eventlogging_service_uri'),
     $pdfrender_uri  = hiera('profile::restbase::pdfrender_uri'),
+    $proton_uri     = hiera('profile::restbase::proton_uri'),
     $citoid_uri     = hiera('profile::restbase::citoid_uri'),
     $cxserver_uri   = hiera('profile::restbase::cxserver_uri'),
     $recommendation_uri = hiera('profile::restbase::recommendation_uri'),
@@ -127,6 +131,7 @@ class profile::restbase(
             eventlogging_service_uri => $eventlogging_service_uri,
             pdfrender_uri            => $pdfrender_uri,
             pdfrender_key            => $pdfrender_key,
+            proton_uri               => $proton_uri,
             cxserver_uri             => $cxserver_uri,
             recommendation_uri       => $recommendation_uri,
             aqs_uri                  => $aqs_uri,
