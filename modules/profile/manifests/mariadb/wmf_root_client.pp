@@ -33,4 +33,11 @@ class profile::mariadb::wmf_root_client {
         content => template('profile/mariadb/mysqld_config/root.my.cnf.erb'),
     }
 
+    file { '/usr/local/sbin/mysql.py':
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0544',
+        source  => 'puppet:///modules/profile/mariadb/mysql.py',
+        require => File['/root/.my.cnf'],
+    }
 }
