@@ -4,7 +4,7 @@
 # with hadoop and other Analytics Cluster services.
 #
 class profile::analytics::cluster::client(
-    $monitoring_enabled = hiera('profile::analytics::cluster::client::monitoring_enabled', false),
+    $monitoring_enabled = hiera('profile::analytics::cluster::client::monitoring_enabled', true),
 ) {
     require ::profile::analytics::cluster::packages::hadoop
 
