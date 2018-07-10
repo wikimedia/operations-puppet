@@ -8,5 +8,5 @@ class role::wmcs::openstack::eqiad1::net {
     # still partial
     include ::profile::openstack::eqiad1::neutron::l3_agent
     include ::profile::openstack::eqiad1::neutron::dhcp_agent
-    # include ::profile::openstack::eqiad1::neutron::metadata_agent
+    include ::profile::openstack::eqiad1::neutron::metadata_agent
 }
