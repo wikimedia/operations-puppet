@@ -248,7 +248,7 @@ sub slurp_http_doc {
 sub slurp_local_file {
     my $file = shift;
     local $/ = undef;
-    open FILE, $file or die "can't open file '$file': $!";
+    open FILE, $file or open FILE, "/usr/local/share/apache-tests/$file" or die "can't open file '$file': $!";
     binmode FILE;
     my $content = <FILE>;
     close FILE;
