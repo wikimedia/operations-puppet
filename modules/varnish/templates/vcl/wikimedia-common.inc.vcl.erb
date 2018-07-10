@@ -198,10 +198,11 @@ backends = director['backends'] -%>
 			name = "vtc_backend";
 		end
 -%>
-		<%= director_name %>.add_backend(<%= name %>);
-		<%= director_name %>_random.add_backend(<%= name %>, 100);
+	<%= director_name %>.add_backend(<%= name %>);
+	<%= director_name %>_random.add_backend(<%= name %>, 100);
 <% 	end #backends loop -%>
 	<%= director_name %>.reconfigure();
+
 <% end #director loop -%>
 
 <% end #dynamic_backend_caches -%>
@@ -217,8 +218,8 @@ backends = director['backends'] -%>
 		end
 -%>
 	new <%= director_name %> = directors.random();
+	<%= director_name %>.add_backend(<%= name %>, 100);
 
-		<%= director_name %>.add_backend(<%= name %>, 100);
 <% end # @site if-condition -%>
 <% end # app_directors loop -%>
 
