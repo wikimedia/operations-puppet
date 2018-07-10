@@ -52,6 +52,7 @@ node 'analytics1003.eqiad.wmnet' {
 # This is used for Hadoop network topology awareness.
 node /analytics10(2[89]|3[0-9]|4[0-9]|5[0-9]|6[0-9]|7[0-7]).eqiad.wmnet/ {
     role(analytics_cluster::hadoop::worker)
+    interface::add_ip6_mapped { 'main': }
 }
 
 # Analytics Query Service
