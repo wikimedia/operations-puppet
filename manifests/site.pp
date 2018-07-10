@@ -131,6 +131,7 @@ node 'bast5001.wikimedia.org' {
 
 node 'bohrium.eqiad.wmnet' {
     role(piwik)
+    interface::add_ip6_mapped { 'main': }
 }
 
 # VM with webserver for misc. static sites
@@ -725,6 +726,7 @@ node /^dns500[12]\.wikimedia\.org$/ {
 # https://wikitech.wikimedia.org/wiki/Analytics/Data_Lake#Druid
 node /^druid100[123].eqiad.wmnet$/ {
     role(druid::analytics::worker)
+    interface::add_ip6_mapped { 'main': }
 }
 
 # Druid public-eqiad servers.
@@ -732,6 +734,7 @@ node /^druid100[123].eqiad.wmnet$/ {
 # https://wikitech.wikimedia.org/wiki/Analytics/Data_Lake#Druid
 node /^druid100[456].eqiad.wmnet$/ {
     role(druid::public::worker)
+    interface::add_ip6_mapped { 'main': }
 }
 
 # nfs server for dumps generation, also rsyncs
@@ -1374,6 +1377,7 @@ node /^mc20(19|2[0-9]|3[0-6])\.codfw\.wmnet/ {
 # archiva.wikimedia.org
 node 'meitnerium.wikimedia.org' {
     role(archiva)
+    interface::add_ip6_mapped { 'main': }
 }
 
 # OTRS - ticket.wikimedia.org
@@ -2063,6 +2067,7 @@ node 'thorium.eqiad.wmnet' {
     #
     # This node is not intended for data processing.
     role(analytics_cluster::webserver)
+    interface::add_ip6_mapped { 'main': }
 }
 
 # Failoid service (Ganeti VM)
