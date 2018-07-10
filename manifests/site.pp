@@ -58,6 +58,7 @@ node /analytics10(2[89]|3[0-9]|4[0-9]|5[0-9]|6[0-9]|7[0-7]).eqiad.wmnet/ {
 # Analytics Query Service
 node /aqs100[456789]\.eqiad\.wmnet/ {
     role(aqs)
+    interface::add_ip6_mapped { 'main': }
 }
 
 node 'auth1001.eqiad.wmnet' {
