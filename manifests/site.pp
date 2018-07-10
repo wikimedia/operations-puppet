@@ -2071,10 +2071,12 @@ node 'tureis.codfw.wmnet' {
 # for local data processing.
 node 'stat1004.eqiad.wmnet' {
     role(statistics::explorer)
+    interface::add_ip6_mapped { 'main': }
 }
 
 node 'stat1005.eqiad.wmnet' {
     role(statistics::private)
+    interface::add_ip6_mapped { 'main': }
 }
 
 # stat1006 is a general purpose number cruncher for
@@ -2083,6 +2085,7 @@ node 'stat1005.eqiad.wmnet' {
 # query results for further processing on this node.
 node 'stat1006.eqiad.wmnet' {
     role(statistics::cruncher)
+    interface::add_ip6_mapped { 'main': }
 }
 
 
