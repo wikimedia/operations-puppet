@@ -50,15 +50,13 @@ class profile::prometheus::alerts {
     # Monitor throughput and dropped messages on MirrorMaker instances.
     # main-eqiad -> jumbo MirrorMaker
     profile::kafka::mirror::alerts { 'main-eqiad_to_jumbo-eqiad':
-        #  For now, alert analytics admins, until alerts are more stable.
+        #  For now, alert analytics admins.  Change this back to admins soon.
         contact_group   => 'analytics',
         topic_blacklist => '.*(change-prop|\.job\.|changeprop).*',
     }
 
     # Cross DC main-eqiad <-> main-codfw MirrorMakers.
     profile::kafka::mirror::alerts { 'main-eqiad_to_main-codfw':
-        #  For now, alert analytics admins, until alerts are more stable.
-        contact_group         => 'analytics',
         prometheus_url        => 'http://prometheus.svc.codfw.wmnet/ops',
         source_prometheus_url => 'http://prometheus.svc.eqiad.wmnet/ops',
         # Less data (resource_change) from main eqiad -> codfw.
@@ -66,7 +64,6 @@ class profile::prometheus::alerts {
     }
     profile::kafka::mirror::alerts { 'main-codfw_to_main-eqiad':
         #  For now, alert analytics admins, until alerts are more stable.
-        contact_group         => 'analytics',
         prometheus_url        => 'http://prometheus.svc.eqiad.wmnet/ops',
         source_prometheus_url => 'http://prometheus.svc.codfw.wmnet/ops',
     }
