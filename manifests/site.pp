@@ -32,14 +32,15 @@ node 'analytics1001.eqiad.wmnet' {
     role(analytics_cluster::hadoop::master)
 }
 
-
 # analytics1002 is the Hadoop standby NameNode and ResourceManager.
 node 'analytics1002.eqiad.wmnet' {
     role(analytics_cluster::hadoop::standby)
+    interface::add_ip6_mapped { 'main': }
 }
 
 node 'analytics1003.eqiad.wmnet' {
     role(analytics_cluster::coordinator)
+    interface::add_ip6_mapped { 'main': }
 }
 
 # analytics1028-analytics1077 are Hadoop worker nodes.
