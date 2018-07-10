@@ -10,6 +10,7 @@ class role::authdns::data {
     $nameservers = [
             'radon.wikimedia.org',
             'baham.wikimedia.org',
+            'authdns2001.wikimedia.org',
             'eeden.wikimedia.org',
     ]
 
