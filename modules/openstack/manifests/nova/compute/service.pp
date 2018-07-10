@@ -11,6 +11,12 @@ class openstack::nova::compute::service(
     require openstack::nova::compute::audit
     include openstack::nova::compute::kmod
 
+    if os_version('debian jessie') and ($version == 'mitaka') {
+        $install_options = ['-t', 'jessie-backports']
+    } else {
+        $install_options = ''
+    }
+
     # Libvirt package is different in subtle ways across Ubuntu and Jessie
     $libvirt_service = $facts['lsbdistcodename'] ? {
         'trusty' => 'libvirt-bin',
@@ -32,7 +38,8 @@ class openstack::nova::compute::service(
     # Without qemu-system, apt will install qemu-kvm by default,
     # which is somewhat broken.
     package { 'qemu-system':
-        ensure  => 'present',
+        ensure          => 'present',
+        install_options => $install_options,
     }
 
     package { [
@@ -44,8 +51,9 @@ class openstack::nova::compute::service(
         'libvirt-bin',
         'dnsmasq-base',
     ]:
-        ensure  => 'present',
-        require => Package['qemu-system'],
+        ensure          => 'present',
+        install_options => $install_options,
+        require         => Package['qemu-system'],
     }
 
     # use exec to set the shell to not shadow the manage
