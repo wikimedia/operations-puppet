@@ -19,4 +19,13 @@ class profile::mediawiki::web_testing {
         recurse => true,
         purge   => true,
     }
+
+    # Little automation to use on the cumin masters for deploying an apache config change
+    file { '/usr/local/bin/deploy-apache-change':
+        ensure => present,
+        source => 'puppet:///modules/profile/mediawiki/web_testing/deploy_apache_change.sh',
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0555',
+    }
 }
