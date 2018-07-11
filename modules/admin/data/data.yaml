@@ -2785,6 +2785,17 @@ users:
       - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDNASXlpQe9lamZ5WvX2bvZvI65edok3MjgmhIvMgUfh7GU1v1/PNEieICsaWfZe0LEl5khZrpSRJi9eCif78pjzGOBjNMhD4diC8Drhgp/mUBYw3UECwD2QeWOP1hrgfSo3cvfAE0MmRixyQAI2G+6+sCNXpmme+fqYQvUB+myJ++XBqk6W+D/x+5E8ApBc0HETw1SZvgrR8mknnj8kic+2YIOYl9qQFCJoDwYy6ILif/f8jJB9u9GNoe239delNTsGpFvO+xP6hkzbXodFBsseSl/H2IixoreSUbsXR0A/rjKhbAuIGD4FJ4utdvg4+muCeYi+FnvaPThMObZU8IH msantos@wikimedia.org
     uid: 19579
     email: mbsantos@wikimedia.org
+  pirroh:
+    ensure: present
+    realname: Michele Catasta
+    name: pirroh
+    gid: 500
+    ssh_keys:
+      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQCwms9/RJYJkac1m4+rV0FCg4c2DKjxpJbrp2PNSfTx/xePfssZA3Y6h8hzqMTKFdX1WCBmMD5z1d3YsKL9FZ/6RFE+jBweaCCo9tMMGFQwnj2t6Z/ZOUVR2gnUBTKdUzVGhdcAW5PFnE5WosgXnTm5hLNMWKa18lYcFa9nlgduI6TXNZyA4UpEiZOThw1pUtnlMeVA0ysU6MWmofOu1yHvief+2P1ep7sSMWVaJq9mDeoRNpm3py4hFW+cCxnReJWDG4GPu48y/5mBrhx+5rKEMWURppmL69GXP3qchRAOn26+1gjqmNY0KVuJimkB4sdFIARmN+O6Z6SxBKdCCtBwhZNwkfO72YyF4qS/1BWVSFMRIyJdtSUf6lMefQWkMccaRLspShYzdEGEiN8J7Zml9wO/PdF1WcV0J8Q/ZCmp0x2FS0Hp4jQkrosxaVTkqjXTdh6SWW8SuST5QYkgjeTCP066og68Q28bWpzUaUINrs8XJ6Fq4/WUqsitH/Xbi1laHUY27h5oGY9Mbm1AJ/5oeVAHy0XeOHqfhpS74RxCnm/yk3DRbsnXnxwM1zoayJR3wxu/bct4jkD8R29nl0UPgpzHHmGWmiZ2y+Syga/JnKkgJ3b534sKiPIzl7Gu3SrOExfepmLSPWQ9bLrna4pZ7RHEUajW0gb8lhlinTufOw== pirroh@cs.stanford.edu
+    uid: 19707
+    email: pirroh@cs.stanford.edu
+    expiry_date: 2018-11-18
+    expiry_contact: mredi@wikimedia.org
 ldap_only_users:
   abartov:
     ensure: present
