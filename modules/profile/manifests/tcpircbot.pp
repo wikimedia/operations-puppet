@@ -17,8 +17,6 @@ class profile::tcpircbot(
             '2620:0:861:103:10:64:32:16/128',   # deployment eqiad v6: deploy1001
             '::ffff:10.192.32.24/128',          # deployment codfw v4: deploy2001
             '2620:0:860:103:10:192:32:24/128',  # deployment codfw v6: deploy2001
-            '::ffff:10.64.32.13/128',           # maintenance eqiad v4: terbium
-            '2620:0:861:103:10:64:32:13/64',    # maintenance eqiad v6: terbium
             '::ffff:10.64.16.62/128',           # maintenance eqiad v4: mwmaint1001
             '2620:0:861:102:10:64:16:62/64',    # maintenance eqiad v6: mwmaint1001
             '::ffff:10.192.48.45/128',          # maintenance codfw v4: wasat
