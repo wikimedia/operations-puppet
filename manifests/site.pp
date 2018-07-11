@@ -74,9 +74,9 @@ node 'authdns2001.wikimedia.org' {
     interface::add_ip6_mapped { 'main': }
 }
 
+# to be decom'ed - replaced by authdns2001 (T199247)
 node 'baham.wikimedia.org' {
-    role(authdns::server)
-    interface::add_ip6_mapped { 'main': }
+    role(spare::system)
 }
 
 # to be decom'ed - replaced by bast1002 (T183412)
