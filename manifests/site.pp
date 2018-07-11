@@ -2208,7 +2208,7 @@ node /^labvirt102[0-2]\.eqiad\.wmnet$/ {
     include ::standard
 }
 
-node 'cloudvirt1021.eqiad.wmnet' {
+node /^cloudvirt102[1-2].eqiad.wmnet$/ {
     role(wmcs::openstack::eqiad1::virt)
 }
 

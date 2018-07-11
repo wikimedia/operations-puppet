@@ -425,6 +425,13 @@ host cloudvirt1021 {
     filename "jessie-installer/debian-installer/amd64/pxelinux.0";
 }
 
+host cloudvirt1022 {
+    hardware ethernet D0:94:66:07:8F:0A;
+    fixed-address cloudvirt1022.eqiad.wmnet;
+    option pxelinux.pathprefix "jessie-installer/";
+    filename "jessie-installer/debian-installer/amd64/pxelinux.0";
+}
+
 host cobalt {
     hardware ethernet 14:18:77:33:4A:30;
     fixed-address cobalt.wikimedia.org;
@@ -3533,13 +3540,6 @@ host labvirt1019 {
 host labvirt1020 {
     hardware ethernet e0:07:1b:f0:7b:28;
     fixed-address labvirt1020.eqiad.wmnet;
-    option pxelinux.pathprefix "jessie-installer/";
-    filename "jessie-installer/debian-installer/amd64/pxelinux.0";
-}
-
-host labvirt1022 {
-    hardware ethernet D0:94:66:07:8F:0A;
-    fixed-address labvirt1022.eqiad.wmnet;
     option pxelinux.pathprefix "jessie-installer/";
     filename "jessie-installer/debian-installer/amd64/pxelinux.0";
 }
