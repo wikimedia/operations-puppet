@@ -137,6 +137,10 @@
 # [*monitoring_enabled*]
 #   Enable monitoring and alerts for this broker.  Default: false
 #
+# [*max_heap_size*]
+#   Value for -Xms and -Xmx to pass to the JVM. Example: '8g'
+#   Default: undef
+#
 class profile::kafka::broker(
     $kafka_cluster_name                = hiera('profile::kafka::broker::kafka_cluster_name'),
     $statsd                            = hiera('statsd'),
@@ -167,6 +171,8 @@ class profile::kafka::broker(
 
     $scala_version                     = hiera('profile::kafka::broker::scala_version', '2.11'),
     $kafka_version                     = hiera('profile::kafka::broker::kafka_version', undef),
+
+    $max_heap_size                     = hiera('profile::kafka::broker::max_heap_size', undef),
 ) {
     $config         = kafka_config($kafka_cluster_name)
     $cluster_name   = $config['name']
@@ -324,6 +330,12 @@ class profile::kafka::broker(
 
     $java_opts = "${monitoring_java_opts} ${ssl_java_opts}"
 
+    if $max_heap_size {
+        $heap_opts = "-Xms${max_heap_size} -Xmx${max_heap_size}"
+    } else {
+        $heap_opts = undef
+    }
+
     class { '::confluent::kafka::broker':
         log_dirs                         => $log_dirs,
         brokers                          => $config['brokers']['hash'],
@@ -337,6 +349,7 @@ class profile::kafka::broker(
 
         jvm_performance_opts             => $jvm_performance_opts,
         java_opts                        => $java_opts,
+        heap_opts                        => $heap_opts,
         listeners                        => $listeners,
 
         security_inter_broker_protocol   => $security_inter_broker_protocol,

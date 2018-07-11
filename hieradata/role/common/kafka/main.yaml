@@ -36,3 +36,5 @@ profile::kafka::broker::group_initial_rebalance_delay: 10000
 
 # Temporary to avoid too many open file crashes
 profile::kafka::broker::nofiles_ulimit: 'infinity'
+
+profile::kafka::broker::max_heap_size: '2g'
