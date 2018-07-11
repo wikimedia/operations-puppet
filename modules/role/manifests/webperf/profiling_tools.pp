@@ -7,6 +7,7 @@ class role::webperf::profiling_tools {
 
     include ::standard
     include ::profile::base::firewall
+    include ::profile::webperf::arclamp
 
     system::role { 'webperf::profiling_tools':
         description => 'profiling tools host'
@@ -22,7 +23,8 @@ class role::webperf::profiling_tools {
         mpm => 'prefork'
     }
 
+    # Web server (for xhgui, and arclamp)
     class { '::httpd':
-        modules => ['authnz_ldap', 'php7.0', 'rewrite'],
+        modules => ['authnz_ldap', 'php7.0', 'rewrite', 'mime', 'proxy', 'proxy_http'],
     }
 }

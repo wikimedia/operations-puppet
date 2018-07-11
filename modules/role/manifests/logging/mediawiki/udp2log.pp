@@ -97,6 +97,14 @@ class role::logging::mediawiki::udp2log(
         source => 'puppet:///modules/role/logging/fatalmonitor',
     }
 
+    # Web server (site added by profile::webperf::arclamp).
+    # The httpd class must be here (in a role) instead of in arlamp profile,
+    # so other roles (eg. webperf::profiling_tools) may have multiple
+    # profiles that add sites.
+    class { '::httpd':
+        modules => ['mime', 'proxy', 'proxy_http'],
+    }
+
     # Redis is used to receive Xenon stack traces from MediaWiki app servers,
     # for processing by Arc Lamp (see profile::webperf::arclamp).
     redis::instance { '6379':

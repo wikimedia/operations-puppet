@@ -24,10 +24,6 @@ class profile::webperf::arclamp (
         redis_port => $redis_port,
     }
 
-    class { '::httpd':
-        modules => ['mime', 'proxy', 'proxy_http'],
-    }
-
     httpd::site { 'xenon':
         content => template('profile/webperf/arclamp/httpd.conf.erb'),
     }
