@@ -4,6 +4,9 @@ class role::statistics::private {
     }
 
     include ::standard
+
+    include ::profile::analytics::cluster::gitconfig
+
     include ::profile::statistics::private
 
     # Run Hadoop/Hive reportupdater jobs here.

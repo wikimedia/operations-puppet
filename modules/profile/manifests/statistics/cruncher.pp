@@ -8,6 +8,8 @@ class profile::statistics::cruncher(
 
     require ::profile::analytics::cluster::packages::statistics
 
+    include ::profile::analytics::cluster::gitconfig
+
     include ::deployment::umask_wikidev
 
     include ::profile::backup::host
