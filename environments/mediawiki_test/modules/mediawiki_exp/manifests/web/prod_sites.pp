@@ -72,7 +72,7 @@ class mediawiki_exp::web::prod_sites {
     }
     $small_private_wikis = [
         'internal.wikimedia.org', 'grants.wikimedia.org', 'fdc.wikimedia.org',
-        'board.wikimedia.org', 'boardgovcom', 'spcom.wikimedia.org',
+        'board.wikimedia.org', 'boardgovcom.wikimedia.org', 'spcom.wikimedia.org',
         'affcom.wikimedia.org', 'searchcom.wikimedia.org',
         'office.wikimedia.org', 'chair.wikimedia.org',
         'auditcom.wikimedia.org', 'otrs-wiki.wikimedia.org',
