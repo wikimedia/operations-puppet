@@ -33,3 +33,6 @@ profile::kafka::broker::num_io_threads: 4
 profile::kafka::broker::inter_broker_protocol_version: 1.1.0
 
 profile::kafka::broker::group_initial_rebalance_delay: 10000
+
+# Temporary to avoid too many open file crashes
+profile::kafka::broker::nofiles_ulimit: ''
