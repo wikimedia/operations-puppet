@@ -5,7 +5,6 @@
 #
 class role::logstash::elasticsearch {
     include ::standard
-    include ::elasticsearch::monitor::diamond
     include ::profile::prometheus::elasticsearch_exporter
     include ::profile::base::firewall
 

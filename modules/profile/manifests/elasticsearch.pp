@@ -120,7 +120,6 @@ class profile::elasticsearch(
         ferm_srange      => $ferm_srange,
         certificate_name => $certificate_name,
     }
-    class { '::elasticsearch::monitor::diamond': }
     class { '::elasticsearch::log::hot_threads': }
 
 }
