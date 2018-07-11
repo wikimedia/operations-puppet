@@ -578,7 +578,7 @@ class role::prometheus::ops {
       {
         'job_name'        => 'jmx_kafka',
         'scheme'          => 'http',
-        'scrape_timeout'  => '25s',
+        'scrape_timeout'  => '45s',
         'file_sd_configs' => [
           { 'files' => [ "${targets_path}/jmx_kafka_broker_*.yaml" ]}
         ],
