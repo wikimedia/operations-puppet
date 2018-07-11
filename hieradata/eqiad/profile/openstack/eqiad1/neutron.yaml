@@ -4,8 +4,8 @@ profile::openstack::eqiad1::neutron::network_flat_interface_external: 'eth1.1120
 profile::openstack::eqiad1::neutron::network_flat_interface_vlan_external: '1120'
 profile::openstack::eqiad1::neutron::rabbit_user: 'neutron'
 profile::openstack::eqiad1::neutron::network_flat_name: 'cloudinstances2b'
-# tbd
-profile::openstack::eqiad1::neutron::network_public_ip: '127.0.0.1'
+# T193496
+profile::openstack::eqiad1::neutron::network_public_ip: '185.15.56.1'
 profile::openstack::eqiad1::neutron::dmz_cidr: '208.80.155.0/22,10.0.0.0/8'
 profile::openstack::eqiad1::neutron::tld: 'wmflabs'
 profile::openstack::eqiad1::neutron::l3_agent_bridges:
