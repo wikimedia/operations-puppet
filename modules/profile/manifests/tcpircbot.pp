@@ -43,7 +43,7 @@ class profile::tcpircbot(
         'deploy2001.codfw.wmnet',       # deployment codfw
         'puppetmaster1001.eqiad.wmnet', # puppet eqiad
         'puppetmaster2001.codfw.wmnet', # puppet codfw
-        'terbium.eqiad.wmnet',          # maintenance eqiad
+        'mwmaint1001.eqiad.wmnet',      # maintenance eqiad
         'wasat.codfw.wmnet',            # maintenance codfw
         'neodymium.eqiad.wmnet',        # cluster mgmt eqiad
         'sarin.codfw.wmnet',            # cluster mgmt codfw
