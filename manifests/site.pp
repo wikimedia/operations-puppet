@@ -1299,6 +1299,10 @@ node /^lvs10(0[789]|1[012])\.eqiad\.wmnet$/ {
     role(spare::system)
 }
 
+node 'lvs1015.eqiad.wmnet' {
+    role(spare::system)
+}
+
 node 'lvs1016.eqiad.wmnet' {
     role(lvs::balancer)
 }
