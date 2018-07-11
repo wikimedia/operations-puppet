@@ -11,6 +11,9 @@ pybasedir = /usr/lib/python2.7/dist-packages
 # keystone
 auth_strategy = keystone
 
+# Prevent '.novalocal' from being appended to every hostname
+dhcp_domain =
+
 # compute
 compute_driver=libvirt.LibvirtDriver
 #notification_topics=notifications ### FIXME unknown yet
