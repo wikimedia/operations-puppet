@@ -48,7 +48,7 @@ class profile::releases::mediawiki (
     ferm::service { 'releases_http':
         proto  => 'tcp',
         port   => '80',
-        srange => '$CACHE_MISC',
+        srange => '$CACHES',
     }
 
     backup::set { 'srv-org-wikimedia': }

@@ -19,7 +19,7 @@ class profile::iegreview {
     ferm::service { 'iegreview_http':
         proto  => 'tcp',
         port   => '80',
-        srange => '$CACHE_MISC',
+        srange => '$CACHES',
     }
 }
 # vim:sw=4 ts=4 sts=4 et:

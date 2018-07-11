@@ -6,7 +6,7 @@ class role::noc::site {
     ferm::service { 'noc-http':
         proto  => 'tcp',
         port   => 'http',
-        srange => '$CACHE_MISC',
+        srange => '$CACHES',
     }
 
     include ::noc

@@ -88,7 +88,7 @@ class profile::debmonitor::server (
     ferm::service { 'nginx-http':
         proto  => 'tcp',
         port   => '80',
-        srange => '$CACHE_MISC',
+        srange => '$CACHES',
     }
 
     # Internal endpoint: incoming updates from all production hosts via debmonitor CLI

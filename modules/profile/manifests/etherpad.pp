@@ -25,7 +25,7 @@ class profile::etherpad {
     ferm::service { 'etherpad_service':
         proto  => 'tcp',
         port   => '9001',
-        srange => '$CACHE_MISC',
+        srange => '$CACHES',
     }
 
     diamond::collector { 'EtherpadStatus':

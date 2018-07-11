@@ -67,6 +67,6 @@ class profile::ci::firewall (
     ferm::service { 'ci_http':
         proto  => 'tcp',
         port   => '80',
-        srange => '$CACHE_MISC',
+        srange => '$CACHES',
     }
 }

@@ -19,6 +19,6 @@ class superset::proxy {
     ferm::service { 'superset-http':
         proto  => 'tcp',
         port   => '80',
-        srange => '$CACHE_MISC',
+        srange => '$CACHES',
     }
 }

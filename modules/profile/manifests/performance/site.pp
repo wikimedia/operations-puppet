@@ -33,7 +33,7 @@ class profile::performance::site {
     ferm::service { 'performance-website-global':
         proto  => 'tcp',
         port   => '80',
-        srange => '$CACHE_MISC',
+        srange => '$CACHES',
     }
 
     $server_name = 'performance.wikimedia.org'

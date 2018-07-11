@@ -197,7 +197,7 @@ class profile::planet (
     ferm::service { 'planet-http':
         proto  => 'tcp',
         port   => '80',
-        srange => '$CACHE_MISC',
+        srange => '$CACHES',
     }
 
 }

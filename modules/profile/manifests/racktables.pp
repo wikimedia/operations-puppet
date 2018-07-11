@@ -16,7 +16,7 @@ class profile::racktables (
     ferm::service { 'racktables-http':
         proto  => 'tcp',
         port   => '80',
-        srange => '$CACHE_MISC',
+        srange => '$CACHES',
     }
 
     class { '::racktables':

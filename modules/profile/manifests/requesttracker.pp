@@ -19,7 +19,7 @@ class profile::requesttracker {
     ferm::service { 'rt-http':
         proto  => 'tcp',
         port   => '80',
-        srange => '$CACHE_MISC',
+        srange => '$CACHES',
     }
 }
 

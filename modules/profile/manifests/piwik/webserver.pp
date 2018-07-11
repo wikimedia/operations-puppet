@@ -63,6 +63,6 @@ class profile::piwik::webserver(
     ferm::service { 'piwik_http':
         proto  => 'tcp',
         port   => '80',
-        srange => '$CACHE_MISC',
+        srange => '$CACHES',
     }
 }

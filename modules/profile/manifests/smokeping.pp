@@ -21,7 +21,7 @@ class profile::smokeping (
     ferm::service { 'smokeping-http':
         proto  => 'tcp',
         port   => '80',
-        srange => '$CACHE_MISC',
+        srange => '$CACHES',
     }
 
     backup::set { 'smokeping': }

@@ -167,29 +167,191 @@ class network::constants {
                     '10.64.48.171',                       # druid1006.eqiad.wmnet
                     '2620:0:861:107:1a66:daff:feac:75cd', # druid1006.eqiad.wmnet
                 ],
-            'cache_misc' => [
+            'caches' => [
                     '10.64.32.97',                        # cp1045.eqiad.wmnet
                     '2620:0:861:103:10:64:32:97',         # cp1045.eqiad.wmnet
+                    '10.64.32.100',                       # cp1048.eqiad.wmnet
+                    '2620:0:861:103:10:64:32:100',        # cp1048.eqiad.wmnet
+                    '10.64.32.101',                       # cp1049.eqiad.wmnet
+                    '2620:0:861:103:10:64:32:101',        # cp1049.eqiad.wmnet
+                    '10.64.32.102',                       # cp1050.eqiad.wmnet
+                    '2620:0:861:103:10:64:32:102',        # cp1050.eqiad.wmnet
                     '10.64.32.103',                       # cp1051.eqiad.wmnet
                     '2620:0:861:103:10:64:32:103',        # cp1051.eqiad.wmnet
+                    '10.64.32.104',                       # cp1052.eqiad.wmnet
+                    '2620:0:861:103:10:64:32:104',        # cp1052.eqiad.wmnet
+                    '10.64.32.105',                       # cp1053.eqiad.wmnet
+                    '2620:0:861:103:10:64:32:105',        # cp1053.eqiad.wmnet
+                    '10.64.32.106',                       # cp1054.eqiad.wmnet
+                    '2620:0:861:103:10:64:32:106',        # cp1054.eqiad.wmnet
+                    '10.64.32.107',                       # cp1055.eqiad.wmnet
+                    '2620:0:861:103:10:64:32:107',        # cp1055.eqiad.wmnet
                     '10.64.0.95',                         # cp1058.eqiad.wmnet
                     '2620:0:861:101:10:64:0:95',          # cp1058.eqiad.wmnet
                     '10.64.0.98',                         # cp1061.eqiad.wmnet
                     '2620:0:861:101:10:64:0:98',          # cp1061.eqiad.wmnet
+                    '10.64.0.99',                         # cp1062.eqiad.wmnet
+                    '2620:0:861:101:10:64:0:99',          # cp1062.eqiad.wmnet
+                    '10.64.0.100',                        # cp1063.eqiad.wmnet
+                    '2620:0:861:101:10:64:0:100',         # cp1063.eqiad.wmnet
+                    '10.64.0.101',                        # cp1064.eqiad.wmnet
+                    '2620:0:861:101:10:64:0:101',         # cp1064.eqiad.wmnet
+                    '10.64.0.102',                        # cp1065.eqiad.wmnet
+                    '2620:0:861:101:10:64:0:102',         # cp1065.eqiad.wmnet
+                    '10.64.0.103',                        # cp1066.eqiad.wmnet
+                    '2620:0:861:101:10:64:0:103',         # cp1066.eqiad.wmnet
+                    '10.64.0.104',                        # cp1067.eqiad.wmnet
+                    '2620:0:861:101:10:64:0:104',         # cp1067.eqiad.wmnet
+                    '10.64.0.105',                        # cp1068.eqiad.wmnet
+                    '2620:0:861:101:10:64:0:105',         # cp1068.eqiad.wmnet
+                    '10.64.48.105',                       # cp1071.eqiad.wmnet
+                    '2620:0:861:107:10:64:48:105',        # cp1071.eqiad.wmnet
+                    '10.64.48.106',                       # cp1072.eqiad.wmnet
+                    '2620:0:861:107:10:64:48:106',        # cp1072.eqiad.wmnet
+                    '10.64.48.107',                       # cp1073.eqiad.wmnet
+                    '2620:0:861:107:10:64:48:107',        # cp1073.eqiad.wmnet
+                    '10.64.48.108',                       # cp1074.eqiad.wmnet
+                    '2620:0:861:107:10:64:48:108',        # cp1074.eqiad.wmnet
+                    '10.64.32.81',                        # cp1099.eqiad.wmnet
+                    '2620:0:861:103:10:64:32:81',         # cp1099.eqiad.wmnet
+                    '10.192.0.122',                       # cp2001.codfw.wmnet
+                    '2620:0:860:101:10:192:0:122',        # cp2001.codfw.wmnet
+                    '10.192.0.123',                       # cp2002.codfw.wmnet
+                    '2620:0:860:101:10:192:0:123',        # cp2002.codfw.wmnet
+                    '10.192.0.125',                       # cp2004.codfw.wmnet
+                    '2620:0:860:101:10:192:0:125',        # cp2004.codfw.wmnet
+                    '10.192.0.126',                       # cp2005.codfw.wmnet
+                    '2620:0:860:101:10:192:0:126',        # cp2005.codfw.wmnet
                     '10.192.0.127',                       # cp2006.codfw.wmnet
                     '2620:0:860:101:10:192:0:127',        # cp2006.codfw.wmnet
+                    '10.192.16.133',                      # cp2007.codfw.wmnet
+                    '2620:0:860:102:10:192:16:133',       # cp2007.codfw.wmnet
+                    '10.192.16.134',                      # cp2008.codfw.wmnet
+                    '2620:0:860:102:10:192:16:134',       # cp2008.codfw.wmnet
+                    '10.192.16.136',                      # cp2010.codfw.wmnet
+                    '2620:0:860:102:10:192:16:136',       # cp2010.codfw.wmnet
+                    '10.192.16.137',                      # cp2011.codfw.wmnet
+                    '2620:0:860:102:10:192:16:137',       # cp2011.codfw.wmnet
                     '10.192.16.138',                      # cp2012.codfw.wmnet
                     '2620:0:860:102:10:192:16:138',       # cp2012.codfw.wmnet
+                    '10.192.32.112',                      # cp2013.codfw.wmnet
+                    '2620:0:860:103:10:192:32:112',       # cp2013.codfw.wmnet
+                    '10.192.32.113',                      # cp2014.codfw.wmnet
+                    '2620:0:860:103:10:192:32:113',       # cp2014.codfw.wmnet
+                    '10.192.32.115',                      # cp2016.codfw.wmnet
+                    '2620:0:860:103:10:192:32:115',       # cp2016.codfw.wmnet
+                    '10.192.32.116',                      # cp2017.codfw.wmnet
+                    '2620:0:860:103:10:192:32:116',       # cp2017.codfw.wmnet
                     '10.192.32.117',                      # cp2018.codfw.wmnet
                     '2620:0:860:103:10:192:32:117',       # cp2018.codfw.wmnet
+                    '10.192.48.23',                       # cp2019.codfw.wmnet
+                    '2620:0:860:104:10:192:48:23',        # cp2019.codfw.wmnet
+                    '10.192.48.24',                       # cp2020.codfw.wmnet
+                    '2620:0:860:104:10:192:48:24',        # cp2020.codfw.wmnet
+                    '10.192.48.26',                       # cp2022.codfw.wmnet
+                    '2620:0:860:104:10:192:48:26',        # cp2022.codfw.wmnet
+                    '10.192.48.27',                       # cp2023.codfw.wmnet
+                    '2620:0:860:104:10:192:48:27',        # cp2023.codfw.wmnet
+                    '10.192.48.28',                       # cp2024.codfw.wmnet
+                    '2620:0:860:104:10:192:48:28',        # cp2024.codfw.wmnet
                     '10.192.48.29',                       # cp2025.codfw.wmnet
                     '2620:0:860:104:10:192:48:29',        # cp2025.codfw.wmnet
+                    '10.192.48.30',                       # cp2026.codfw.wmnet
+                    '2620:0:860:104:10:192:48:30',        # cp2026.codfw.wmnet
                     '10.20.0.107',                        # cp3007.esams.wmnet
                     '2620:0:862:102:10:20:0:107',         # cp3007.esams.wmnet
                     '10.20.0.108',                        # cp3008.esams.wmnet
                     '2620:0:862:102:10:20:0:108',         # cp3008.esams.wmnet
                     '10.20.0.110',                        # cp3010.esams.wmnet
                     '2620:0:862:102:10:20:0:110',         # cp3010.esams.wmnet
+                    '10.20.0.165',                        # cp3030.esams.wmnet
+                    '2620:0:862:102:10:20:0:165',         # cp3030.esams.wmnet
+                    '10.20.0.166',                        # cp3031.esams.wmnet
+                    '2620:0:862:102:10:20:0:166',         # cp3031.esams.wmnet
+                    '10.20.0.167',                        # cp3032.esams.wmnet
+                    '2620:0:862:102:10:20:0:167',         # cp3032.esams.wmnet
+                    '10.20.0.168',                        # cp3033.esams.wmnet
+                    '2620:0:862:102:10:20:0:168',         # cp3033.esams.wmnet
+                    '10.20.0.169',                        # cp3034.esams.wmnet
+                    '2620:0:862:102:10:20:0:169',         # cp3034.esams.wmnet
+                    '10.20.0.170',                        # cp3035.esams.wmnet
+                    '2620:0:862:102:10:20:0:170',         # cp3035.esams.wmnet
+                    '10.20.0.171',                        # cp3036.esams.wmnet
+                    '2620:0:862:102:10:20:0:171',         # cp3036.esams.wmnet
+                    '10.20.0.172',                        # cp3037.esams.wmnet
+                    '2620:0:862:102:10:20:0:172',         # cp3037.esams.wmnet
+                    '10.20.0.173',                        # cp3038.esams.wmnet
+                    '2620:0:862:102:10:20:0:173',         # cp3038.esams.wmnet
+                    '10.20.0.174',                        # cp3039.esams.wmnet
+                    '2620:0:862:102:10:20:0:174',         # cp3039.esams.wmnet
+                    '10.20.0.175',                        # cp3040.esams.wmnet
+                    '2620:0:862:102:10:20:0:175',         # cp3040.esams.wmnet
+                    '10.20.0.176',                        # cp3041.esams.wmnet
+                    '2620:0:862:102:10:20:0:176',         # cp3041.esams.wmnet
+                    '10.20.0.177',                        # cp3042.esams.wmnet
+                    '2620:0:862:102:10:20:0:177',         # cp3042.esams.wmnet
+                    '10.20.0.178',                        # cp3043.esams.wmnet
+                    '2620:0:862:102:10:20:0:178',         # cp3043.esams.wmnet
+                    '10.20.0.179',                        # cp3044.esams.wmnet
+                    '2620:0:862:102:10:20:0:179',         # cp3044.esams.wmnet
+                    '10.20.0.180',                        # cp3045.esams.wmnet
+                    '2620:0:862:102:10:20:0:180',         # cp3045.esams.wmnet
+                    '10.20.0.181',                        # cp3046.esams.wmnet
+                    '2620:0:862:102:10:20:0:181',         # cp3046.esams.wmnet
+                    '10.20.0.182',                        # cp3047.esams.wmnet
+                    '2620:0:862:102:10:20:0:182',         # cp3047.esams.wmnet
+                    '10.20.0.184',                        # cp3049.esams.wmnet
+                    '2620:0:862:102:10:20:0:184',         # cp3049.esams.wmnet
+                    '10.128.0.121',                       # cp4021.ulsfo.wmnet
+                    '2620:0:863:101:10:128:0:121',        # cp4021.ulsfo.wmnet
+                    '10.128.0.122',                       # cp4022.ulsfo.wmnet
+                    '2620:0:863:101:10:128:0:122',        # cp4022.ulsfo.wmnet
+                    '10.128.0.123',                       # cp4023.ulsfo.wmnet
+                    '2620:0:863:101:10:128:0:123',        # cp4023.ulsfo.wmnet
+                    '10.128.0.124',                       # cp4024.ulsfo.wmnet
+                    '2620:0:863:101:10:128:0:124',        # cp4024.ulsfo.wmnet
+                    '10.128.0.125',                       # cp4025.ulsfo.wmnet
+                    '2620:0:863:101:10:128:0:125',        # cp4025.ulsfo.wmnet
+                    '10.128.0.126',                       # cp4026.ulsfo.wmnet
+                    '2620:0:863:101:10:128:0:126',        # cp4026.ulsfo.wmnet
+                    '10.128.0.127',                       # cp4027.ulsfo.wmnet
+                    '2620:0:863:101:10:128:0:127',        # cp4027.ulsfo.wmnet
+                    '10.128.0.128',                       # cp4028.ulsfo.wmnet
+                    '2620:0:863:101:10:128:0:128',        # cp4028.ulsfo.wmnet
+                    '10.128.0.129',                       # cp4029.ulsfo.wmnet
+                    '2620:0:863:101:10:128:0:129',        # cp4029.ulsfo.wmnet
+                    '10.128.0.130',                       # cp4030.ulsfo.wmnet
+                    '2620:0:863:101:10:128:0:130',        # cp4030.ulsfo.wmnet
+                    '10.128.0.131',                       # cp4031.ulsfo.wmnet
+                    '2620:0:863:101:10:128:0:131',        # cp4031.ulsfo.wmnet
+                    '10.128.0.132',                       # cp4032.ulsfo.wmnet
+                    '2620:0:863:101:10:128:0:132',        # cp4032.ulsfo.wmnet
+                    '10.132.0.101',                       # cp5001.eqsin.wmnet
+                    '2001:df2:e500:101:10:132:0:101',     # cp5001.eqsin.wmnet
+                    '10.132.0.102',                       # cp5002.eqsin.wmnet
+                    '2001:df2:e500:101:10:132:0:102',     # cp5002.eqsin.wmnet
+                    '10.132.0.103',                       # cp5003.eqsin.wmnet
+                    '2001:df2:e500:101:10:132:0:103',     # cp5003.eqsin.wmnet
+                    '10.132.0.104',                       # cp5004.eqsin.wmnet
+                    '2001:df2:e500:101:10:132:0:104',     # cp5004.eqsin.wmnet
+                    '10.132.0.105',                       # cp5005.eqsin.wmnet
+                    '2001:df2:e500:101:10:132:0:105',     # cp5005.eqsin.wmnet
+                    '10.132.0.107',                       # cp5007.eqsin.wmnet
+                    '2001:df2:e500:101:10:132:0:107',     # cp5007.eqsin.wmnet
+                    '10.132.0.108',                       # cp5008.eqsin.wmnet
+                    '2001:df2:e500:101:10:132:0:108',     # cp5008.eqsin.wmnet
+                    '10.132.0.109',                       # cp5009.eqsin.wmnet
+                    '2001:df2:e500:101:10:132:0:109',     # cp5009.eqsin.wmnet
+                    '10.132.0.110',                       # cp5010.eqsin.wmnet
+                    '2001:df2:e500:101:10:132:0:110',     # cp5010.eqsin.wmnet
+                    '10.132.0.111',                       # cp5011.eqsin.wmnet
+                    '2001:df2:e500:101:10:132:0:111',     # cp5011.eqsin.wmnet
+                    '10.132.0.112',                       # cp5012.eqsin.wmnet
+                    '2001:df2:e500:101:10:132:0:112',     # cp5012.eqsin.wmnet
+                    '10.132.0.106',                       # cp5006.eqsin.wmnet
+                    '2001:df2:e500:101:10:132:0:106',     # cp5006.eqsin.wmnet
+                    '208.80.154.42',                      # pinkunicorn.wikimedia.org
+                    '2620:0:861:1:208:80:154:42',         # pinkunicorn.wikimedia.org
                 ],
             },
         'labs' => {
@@ -221,7 +383,7 @@ class network::constants {
                     '208.80.155.120',               # labpuppetmaster1002.wikimedia.org
                     '2620:0:861:4:208:80:155:120',  # labpuppetmaster1002.wikimedia.org
                 ],
-            'cache_misc' => [ # So that roles with CACHE_MISC in ferm rules can be used in labs
+            'caches' => [ # So that roles with CACHES in ferm rules can be used in labs
                     '10.68.21.68', # novaproxy-01.project-proxy.eqiad.wmflabs
                 ],
             }

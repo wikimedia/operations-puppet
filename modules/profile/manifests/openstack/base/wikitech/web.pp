@@ -88,6 +88,6 @@ class profile::openstack::base::wikitech::web(
     ferm::service { 'wikitech_http':
         proto  => 'tcp',
         port   => '80',
-        srange => '$CACHE_MISC',
+        srange => '$CACHES',
     }
 }

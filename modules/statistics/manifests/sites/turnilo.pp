@@ -26,7 +26,7 @@ class statistics::sites::turnilo($turnilo_port = 9091) {
     ferm::service { 'turnilo-http':
         proto  => 'tcp',
         port   => '80',
-        srange => '$CACHE_MISC',
+        srange => '$CACHES',
     }
 
 }

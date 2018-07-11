@@ -19,7 +19,7 @@ class profile::wikimania_scholarships {
     ferm::service { 'scholarships_http':
         proto  => 'tcp',
         port   => '80',
-        srange => '$CACHE_MISC',
+        srange => '$CACHES',
     }
 
 }

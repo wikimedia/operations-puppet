@@ -45,7 +45,7 @@ class profile::otrs(
     ferm::service { 'otrs_http':
         proto  => 'tcp',
         port   => '80',
-        srange => '$CACHE_MISC',
+        srange => '$CACHES',
     }
 
     $smtp_ferm = join($::mail_smarthost, ' ')

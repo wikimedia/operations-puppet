@@ -4,7 +4,7 @@ class profile::microsites::peopleweb {
     ferm::service { 'people-http':
         proto  => 'tcp',
         port   => '80',
-        srange => '$CACHE_MISC',
+        srange => '$CACHES',
     }
 
     class { '::httpd':

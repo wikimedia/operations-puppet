@@ -8,6 +8,6 @@ class profile::microsites::httpd {
     ferm::service { 'microsites_http':
         proto  => 'tcp',
         port   => '80',
-        srange => '$CACHE_MISC',
+        srange => '$CACHES',
     }
 }

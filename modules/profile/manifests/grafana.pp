@@ -102,7 +102,7 @@ class profile::grafana (
     ferm::service { 'grafana_http':
         proto  => 'tcp',
         port   => '80',
-        srange => '$CACHE_MISC',
+        srange => '$CACHES',
     }
 
     # LDAP configuration. Interpolated into the Apache site template
