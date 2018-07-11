@@ -4941,6 +4941,11 @@ host mwmaint1001 {
     fixed-address mwmaint1001.eqiad.wmnet;
 }
 
+host mwmaint2001 {
+    hardware ethernet 14:02:ec:3f:47:8c;
+    fixed-address mwmaint2001.codfw.wmnet;
+}
+
 host mw1298 {
     hardware ethernet 14:18:77:61:38:FA;
     fixed-address mw1298.eqiad.wmnet;
@@ -6736,13 +6741,6 @@ host tin {
 host tungsten {
     hardware ethernet 78:2b:cb:0a:04:12;
     fixed-address tungsten.eqiad.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
-    filename "lpxelinux.0";
-}
-
-host wasat {
-    hardware ethernet 14:02:ec:3f:47:8c;
-    fixed-address wasat.codfw.wmnet;
     option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
     filename "lpxelinux.0";
 }

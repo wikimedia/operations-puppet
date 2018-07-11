@@ -2140,7 +2140,7 @@ node /^snapshot1009\.eqiad\.wmnet/ {
     role(dumps::generation::worker::dumper)
 }
 
-node 'wasat.codfw.wmnet' {
+node 'mwmaint2001.codfw.wmnet' {
     role(mediawiki_maintenance)
     interface::add_ip6_mapped { 'main': }
 }
