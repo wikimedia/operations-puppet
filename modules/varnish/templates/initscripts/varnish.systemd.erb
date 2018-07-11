@@ -28,14 +28,17 @@ Environment="MALLOC_CONF=<%= @jemalloc_conf %>"
 # rsyslog will see this in $programname
 SyslogIdentifier=varnish<%= @instancesuffix %>
 ExecReload=/usr/share/varnish/reload-vcl <%= @reload_vcl_opts %>
-# reload-vcl must be executed on startup to load separate VCL files.
-# See https://varnish-cache.org/docs/5.1/users-guide/vcl-separate.html
-ExecStartPost=/usr/share/varnish/reload-vcl <%= @reload_vcl_opts %>
+# We start varnishd(1) without specifying a VCL file (-f ''). Use reload-vcl in
+# ExecStartPost to load and label separate VCL files first, and the main one
+# last. This is necessary given that the main VCL file might reference the
+# label of separate VCLs, and would otherwise fail to compile if loaded
+# directly with -f.
+ExecStartPost=/usr/share/varnish/reload-vcl <%= @reload_vcl_opts %> --start-child
 ExecStart=/usr/sbin/varnishd \
 -P %t/%p.pid \
 <%= @ports.map { |p| "-a :"+p.to_s }.join(" ") -%> \
 -T 127.0.0.1:<%= @admin_port -%> \
-<%= @vcl_file_opt -%> \
+-f '' \
 -p thread_pool_min=250 -p thread_pool_max=<%= @processorcount * 250 -%> -p thread_pool_timeout=120 \
 -p vsl_reclen=2048 \
 -p workspace_backend=128k \

@@ -51,6 +51,8 @@ def parse_options():
                         help="test compilation, but do not use")
     parser.add_argument('--autodiscard', '-a', action='store_true',
                         help="auto-discard all unused boot/reload VCLs")
+    parser.add_argument('--start-child', action='store_true',
+                        help="start varnish child process")
 
     return parser.parse_args()
 
@@ -148,6 +150,9 @@ def main():
 
         if args.autodiscard:
             auto_discard(vadm_cmd)
+
+        if args.start_child:
+            do_cmd(vadm_cmd + ["start"])
 
 
 if __name__ == '__main__':
