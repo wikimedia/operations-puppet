@@ -57,3 +57,8 @@
   targets:
   - labsdb1005:9104
 
+- labels:
+    shard: labcontrol
+    role: standalone
+  targets:
+  - labcontrol1003:9104

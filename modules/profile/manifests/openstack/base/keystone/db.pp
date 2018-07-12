@@ -3,6 +3,7 @@ class profile::openstack::base::keystone::db(
     $puppetmaster_hostname = hiera('profile::openstack::base::puppetmaster_hostname'),
     $designate_host = hiera('profile::openstack::base::designate_host'),
     $osm_host = hiera('profile::openstack::base::osm_host'),
+    $prometheus_nodes = hiera('prometheus_nodes'),
     ) {
 
     package {'mysql-server':
@@ -15,6 +16,27 @@ class profile::openstack::base::keystone::db(
         mode    => '0644',
         content => template("profile/openstack/base/keystone/db/${::lsbdistcodename}.my.cnf.erb"),
         require => Package['mysql-server'],
+    }
+
+    # prometheus monitoring
+    prometheus::mysqld_exporter { 'default':
+        client_password => '',
+        client_socket   => '/var/run/mysqld/mysqld.sock',
+        arguments       => "-collect.global_status \
+-collect.global_variables \
+-collect.info_schema.processlist \
+-collect.info_schema.processlist.min_time 0 \
+-collect.slave_status \
+-collect.info_schema.tables false \
+"
+    }
+
+    $prometheus_ferm_nodes = join($prometheus_nodes, ' ')
+
+    ferm::service { 'prometheus-mysqld-exporter':
+        proto  => 'tcp',
+        port   => '9104',
+        srange => "@resolve((${prometheus_ferm_nodes}))",
     }
 
     # mysql monitoring and administration from root clients/tendril
