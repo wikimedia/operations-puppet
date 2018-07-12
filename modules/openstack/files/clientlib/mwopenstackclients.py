@@ -104,14 +104,15 @@ class Clients(object):
                 session=session, interface='public', connect_retries=5)
         return self.keystoneclients[project]
 
-    def novaclient(self, project=None):
+    def novaclient(self, project=None, region=None):
         if not project:
             project = self.project
 
         if project not in self.novaclients:
             session = self.session(project)
             self.novaclients[project] = nova_client.Client(
-                '2', session=session, connect_retries=5)
+                '2', session=session, connect_retries=5,
+                region_name=region)
         return self.novaclients[project]
 
     def glanceclient(self, project=None):
