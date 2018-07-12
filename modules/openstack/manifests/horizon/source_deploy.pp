@@ -5,9 +5,10 @@ class openstack::horizon::source_deploy(
     $wmflabsdotorg_pass,
     $dhcp_domain,
     $ldap_user_pass,
+    $all_regions,
     $venv_dir      = '/srv/deployment/horizon/venv',
     $webserver_hostname = 'horizon.wikimedia.org',
-    $maintenance_mode = false
+    $maintenance_mode = false,
 ) {
     require_package(
         'python-wheel',

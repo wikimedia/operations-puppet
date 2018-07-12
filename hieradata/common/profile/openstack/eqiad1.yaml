@@ -19,3 +19,4 @@ profile::openstack::eqiad1::observer_password: 'Fs6Dq2RtG8KwmM2Z'
 profile::openstack::eqiad1::labs_hosts_range: '10.64.20.0/24'
 profile::openstack::eqiad1::glance_host: 'labcontrol1003.wikimedia.org'
 profile::openstack::eqiad1::keystone_host: 'labcontrol1003.wikimedia.org'
+profile::openstack::eqiad1::all_regions: ['eqiad', 'eqiad1-r']
