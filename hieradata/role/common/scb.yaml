@@ -68,7 +68,7 @@ profile::citoid::zotero_host: "zotero.svc.%{::site}.wmnet"
 # doing so would be disruptive to clients, as their stored offsets
 # would no longer make sense after the failover, and cause them to
 # miss messages.
-profile::eventstreams::kafka_cluster_name: main-codfw
+profile::eventstreams::kafka_cluster_name: main-eqiad
 profile::eventstreams::monitoring_enabled: true
 # Stream configuration for Public EventStreams service
 # Maps stream route names to composite Kafka topics.
