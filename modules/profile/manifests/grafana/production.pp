@@ -7,7 +7,8 @@ class profile::grafana::production {
     include ::profile::grafana
 
     grafana::dashboard { 'varnish-http-errors':
-        source => 'puppet:///modules/grafana/dashboards/varnish-http-errors',
+        ensure  => absent,
+        content => '',
     }
 
     grafana::dashboard { 'varnish-aggregate-client-status-codes':
