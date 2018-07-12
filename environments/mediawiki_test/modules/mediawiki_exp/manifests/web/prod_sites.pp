@@ -68,7 +68,7 @@ class mediawiki_exp::web::prod_sites {
         'commons.wikimedia.org',
         'incubator.wikimedia.org',
         'species.wikimedia.org',
-        'usabiltiy.wikimedia.org',
+        'usabilty.wikimedia.org',
         'strategy.wikimedia.org',
         'advisory.wikimedia.org',
         'quality.wikimedia.org',
