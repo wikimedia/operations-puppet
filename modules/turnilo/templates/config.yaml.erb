@@ -12,7 +12,7 @@ clusters:
 <% end # cluster.keys.each -%>
 
 <% end # @druid_clusters.each -%>
- 
+
 dataCubes:
   - name: mediawiki_geoeditors_monthly
     title: mediawiki_geoeditors_monthly
@@ -2194,6 +2194,14 @@ dataCubes:
       # special: unique
       # ^ (optional) any kind of special significance associated with this attribute
 
+      # see: https://github.com/allegro/turnilo/blob/master/docs/configuration.md#custom-transformations
+      # these dimensions are going to be read as strings unless we say otherwise
+
+      - name: response_size
+        type: NUMBER
+
+      - name: time_firstbyte
+        type: NUMBER
 
     # The list of dimensions defined in the UI. The order here will be reflected in the UI
     dimensions:
@@ -2248,10 +2256,12 @@ dataCubes:
 
       - name: response_size
         title: Response Size
+        kind: number
         formula: $response_size
 
       - name: time_firstbyte
         title: Time Firstbyte
+        kind: number
         formula: $time_firstbyte
 
       - name: uri_host
