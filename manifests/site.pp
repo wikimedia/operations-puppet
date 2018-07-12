@@ -580,10 +580,6 @@ node 'db1072.eqiad.wmnet' {
 node 'db1053.eqiad.wmnet' {
     role(spare::system)
 }
-# To be decomm: T196606
-node 'db1059.eqiad.wmnet' {
-    role(spare::system)
-}
 
 # codfw
 node 'db2042.codfw.wmnet' {
