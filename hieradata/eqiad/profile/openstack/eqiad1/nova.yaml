@@ -7,3 +7,4 @@ profile::openstack::eqiad1::nova::physical_interface_mappings:
   cloudinstances2b: 'eth1.1105'
 profile::openstack::eqiad1::nova::scheduler_pool:
   - cloudvirt1021
+  - cloudvirt1022
