@@ -4,8 +4,15 @@ class openstack::neutron::metadata_agent(
     $metadata_proxy_shared_secret,
     ) {
 
+    if os_version('debian jessie') and ($version == 'mitaka') {
+        $install_options = ['-t', 'jessie-backports']
+    } else {
+        $install_options = ''
+    }
+
     package {'neutron-metadata-agent':
-        ensure => 'present',
+        ensure          => 'present',
+        install_options => $install_options,
     }
 
     file { '/etc/neutron/metadata_agent.ini':
