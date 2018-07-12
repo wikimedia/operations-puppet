@@ -205,10 +205,10 @@ menu = tegmen
 title = tegmen.wikimedia.org [C5]
 host = tegmen.wikimedia.org
 
-+++ wasat
-menu = wasat
-title = wasat.codfw.wmnet [D5]
-host = wasat.codfw.wmnet
++++ mwmaint2001
+menu = mwmaint2001
+title = mwmaint2001.codfw.wmnet [D5]
+host = mwmaint2001.codfw.wmnet
 
 ++ frack
 menu = frack
