@@ -156,7 +156,7 @@ EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 OPENSTACK_HOST = "<%= @keystone_host %>"
 AVAILABLE_REGIONS = [
 <% @all_regions.each do |region| -%>
-    ("http://%s:5000/v3" % OPENSTACK_HOST, <%=region%>),
+    ("http://%s:5000/v3" % OPENSTACK_HOST, "<%=region%>"),
 <% end -%>
 ]
 
