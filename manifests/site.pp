@@ -2109,15 +2109,8 @@ node 'mwmaint2001.codfw.wmnet' {
 
 # mediawiki maintenance servers (https://wikitech.wikimedia.org/wiki/Terbium)
 node 'terbium.eqiad.wmnet' {
-    role(mediawiki_maintenance)
+    role(spare::system)
     interface::add_ip6_mapped { 'main': }
-    # lint:ignore:wmf_styleguide
-    motd::script{ 'terbium_decom':
-        ensure   => present,
-        priority => 1,
-        source   => 'puppet:///modules/role/terbium_decommission.txt'
-    }
-    # lint:endignore
 }
 
 # Thumbor servers for MediaWiki image scaling
