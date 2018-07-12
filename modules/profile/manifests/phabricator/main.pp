@@ -165,6 +165,7 @@ class profile::phabricator::main (
         libraries        => [ "${phab_root_dir}/libext/Sprint/src",
                               "${phab_root_dir}/libext/security/src",
                               "${phab_root_dir}/libext/misc",
+                              "${phab_root_dir}/libext/ava/src",
                               "${phab_root_dir}/libext/translations/src" ],
         settings         => {
             'cluster.search'                         => $cluster_search,
