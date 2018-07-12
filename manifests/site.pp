@@ -303,11 +303,11 @@ node 'dataset1001.wikimedia.org' {
 
 # s1 (enwiki) core production dbs on eqiad
 # eqiad master
-node 'db1052.eqiad.wmnet' {
+node 'db1067.eqiad.wmnet' {
     role(mariadb::core)
 }
 # eqiad replicas
-node /^db1(067|080|083|089|106|114|119)\.eqiad\.wmnet/ {
+node /^db1(052|080|083|089|106|114|119)\.eqiad\.wmnet/ {
     role(mariadb::core)
 }
 
