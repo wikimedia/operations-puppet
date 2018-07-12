@@ -7,7 +7,8 @@
 
 set -e
 
-INDEX_FILE_PREFIX="/var/run/icinga/etcd_mw_config_lastindex"
+INDEX_DIR="/var/run/icinga/"
+INDEX_FILE_PREFIX="${INDEX_DIR}/etcd_mw_config_lastindex"
 DATACENTERS=("eqiad" "codfw")
 
 function update_etcd_last_index() {
@@ -41,6 +42,12 @@ function update_etcd_last_index() {
         echo -n "${index}" > "${index_file}"
     fi
 }
+
+
+if [[ ! -d "${INDEX_DIR}" ]]; then
+    echo "Index directory ${INDEX_DIR} does not exist, aborting."
+    exit 1
+fi
 
 # Loop through all etcd clusters (one per datacenter)
 exit_code=0
