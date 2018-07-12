@@ -43,7 +43,7 @@ def cergen_manifests(hosts):
             #  mcrouter seems not to work with ecdsa certs
             'key': {'key_size': 2048, 'algorithm': 'rsa'},
             'alt_names': [ip],
-            'key_usage': ['digital_signature', 'content_commitment', 'key_enchipherment']
+            'key_usage': ['digital_signature', 'content_commitment', 'key_encipherment']
         }
 
     return {name: definition_for(socket.gethostbyname(name)) for name in hosts}
