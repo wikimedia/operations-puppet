@@ -17,6 +17,7 @@ class profile::wdqs (
     Boolean $high_query_time_port = hiera('profile::wdqs::high_query_time_port'),
     Array[String] $prometheus_nodes = hiera('prometheus_nodes'),
     String $contact_groups = hiera('contactgroups', 'admins'),
+    Boolean $fetch_constraints = hiera('profile::wdqs::fetch_constraints'),
 ) {
     require ::profile::prometheus::blazegraph_exporter
 
@@ -62,18 +63,26 @@ class profile::wdqs (
         source           => 'puppet:///modules/profile/wdqs/wdqs-updater-prometheus-jmx.yaml',
     }
 
+    $kafka_brokers = kafka_config('main')['brokers']['string']
+    $base_kafka_options = "--kafka ${kafka_brokers} --consumer ${::hostname}"
+    $joined_cluster_names = join($cluster_names, ',')
 
-    if( $use_kafka_for_updates ) {
-        $kafka_brokers = kafka_config('main')['brokers']['string']
-        if( count($cluster_names) > 0 ) {
-            $joined_cluster_names = join($cluster_names, ',')
-            $extra_updater_options = "--kafka ${kafka_brokers} --consumer ${::hostname} --clusters ${joined_cluster_names}"
-        } else {
-            $extra_updater_options = "--kafka ${kafka_brokers} --consumer ${::hostname}"
-        }
-    } else {
-        $extra_updater_options = $rc_options
+    $kafka_poller_options = count($cluster_names) ? {
+        0       => $base_kafka_options,
+        default => "${base_kafka_options} --clusters ${joined_cluster_names}",
     }
+
+    $poller_options = $use_kafka_for_updates ? {
+        true    => $kafka_poller_options,
+        default => $rc_options,
+    }
+
+    $fetch_constraints_options = $fetch_constraints ? {
+        true    => '--constraints',
+        default => '',
+    }
+
+    $extra_updater_options = "${poller_options} ${fetch_constraints_options}"
 
     class { 'wdqs::updater':
         options        => "${updater_options} -- ${extra_updater_options}",
