@@ -154,11 +154,11 @@ EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 # EMAIL_HOST_PASSWORD = 'top-secret!'
 
 OPENSTACK_HOST = "<%= @keystone_host %>"
-AVAILABLE_REGIONS = [
-<% @all_regions.each do |region| -%>
-    ("http://%s:5000/v3" % OPENSTACK_HOST, "<%=region%>"),
-<% end -%>
-]
+# AVAILABLE_REGIONS = [
+# <% @all_regions.each do |region| -%>
+#     ("http://%s:5000/v3" % OPENSTACK_HOST, "<%=region%>"),
+# <% end -%>
+# ]
 
 OPENSTACK_KEYSTONE_URL = "http://%s:5000/v3" % OPENSTACK_HOST
 OPENSTACK_KEYSTONE_DEFAULT_ROLE = "user"
