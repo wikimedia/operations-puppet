@@ -90,6 +90,19 @@ def filename2label(vcl_file):
 
 
 def auto_discard(vadm_cmd):
+    """
+    Discard loaded VCLs such as:
+        available   auto/warm          0 vcl-$(uuid)
+
+    Do *not* try discarding the currently active VCL, eg:
+        active      auto/warm          3 vcl-$(uuid)
+
+    as well as VCLs with a label pointing to them:
+        available   auto/warm          0 vcl-$(uuid) (1 label)
+
+    and labels referenced somewhere:
+        available  label/warm          0 wikimedia_misc -> vcl-$(uuid) (1 return(vcl))
+    """
     # sleep is insurance against unknown varnish bugs if we move too fast from
     # "use" to "discard" and trip some race.
     time.sleep(1)
@@ -137,6 +150,13 @@ def main():
             separate_vcl_label = filename2label(vcl_file)
             vcl_label_cmd = vadm_cmd + ['vcl.label', separate_vcl_label, vcl_id]
             do_cmd(vcl_label_cmd)
+
+            # Manually set separate VCL files as warm. We do not care
+            # particularly about VCL staying in the warm state as we do
+            # automatically discard old ones anyways. This is a workaround for
+            # https://github.com/varnishcache/varnish-cache/issues/2560
+            vcl_set_warm_cmd = vadm_cmd + ['vcl.state', vcl_id, 'warm']
+            do_cmd(vcl_set_warm_cmd)
 
     # Load main VCL file
     main_vcl_id = load(vadm_cmd, args.vcl_file)
