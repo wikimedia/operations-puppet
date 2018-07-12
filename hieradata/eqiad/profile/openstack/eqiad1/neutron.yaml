@@ -16,3 +16,6 @@ profile::openstack::eqiad1::neutron::l3_agent_bridges:
 profile::openstack::eqiad1::neutron::l3_agent_bridge_mappings:
   br-external: 'br-external'
   cloudinstances2b: 'br-internal'
+profile::openstack::eqiad1::neutron::report_interval: '30'
+profile::openstack::eqiad1::neutron::agent_down_time: '64'
+profile::openstack::eqiad1::neutron::log_agent_heartbeats: 'True'

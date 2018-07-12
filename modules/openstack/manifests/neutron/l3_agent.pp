@@ -2,6 +2,7 @@ class openstack::neutron::l3_agent(
     $version,
     $dmz_cidr,
     $network_public_ip,
+    $report_interval,
     $enabled=true,
     ) {
 

@@ -10,6 +10,8 @@ class openstack::neutron::common(
     $rabbit_user,
     $rabbit_pass,
     $tld,
+    $log_agent_heartbeats,
+    $agent_down_time,
     ) {
 
     if os_version('debian jessie') and ($version == 'mitaka') {

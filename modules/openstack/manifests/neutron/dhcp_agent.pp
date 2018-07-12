@@ -1,6 +1,7 @@
 class openstack::neutron::dhcp_agent(
     $version,
     $dhcp_domain,
+    $report_interval,
     ) {
 
     if os_version('debian jessie') and ($version == 'mitaka') {

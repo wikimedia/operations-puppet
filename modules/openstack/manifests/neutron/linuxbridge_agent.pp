@@ -1,5 +1,6 @@
 class openstack::neutron::linuxbridge_agent(
     $version,
+    $report_interval,
     $bridges={},
     $bridge_mappings={},
     $physical_interface_mappings={},

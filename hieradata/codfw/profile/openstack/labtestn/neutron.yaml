@@ -15,3 +15,6 @@ profile::openstack::labtestn::neutron::l3_agent_bridges:
 profile::openstack::labtestn::neutron::l3_agent_bridge_mappings:
   br-external: 'br-external'
   cloudinstances2b: 'br-internal'
+profile::openstack::labtestn::neutron::report_interval: '30'
+profile::openstack::labtestn::neutron::agent_down_time: '64'
+profile::openstack::labtestn::neutron::log_agent_heartbeats: 'True'

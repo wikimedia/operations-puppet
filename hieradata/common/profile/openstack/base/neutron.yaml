@@ -5,3 +5,6 @@ profile::openstack::base::neutron::bridges: {}
 profile::openstack::base::neutron::bridge_mappings: {}
 profile::openstack::base::neutron::physical_interface_mappings: {}
 profile::openstack::base::neutron::tld: 'wmflabs'
+profile::openstack::base::neutron::report_interval: '30'
+profile::openstack::base::neutron::agent_down_time: '64'
+profile::openstack::base::neutron::log_agent_heartbeats: 'True'

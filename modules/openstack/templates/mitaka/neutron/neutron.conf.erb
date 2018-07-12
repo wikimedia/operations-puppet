@@ -44,8 +44,11 @@ rpc_backend = rabbit
 notify_nova_on_port_status_changes = True
 notify_nova_on_port_data_changes = True
 
+agent_down_time = <%= @agent_down_time %>
+
 [agent]
 root_helper = sudo neutron-rootwrap /etc/neutron/rootwrap.conf
+log_agent_heartbeats = <%= @log_agent_heartbeats %>
 
 [cors]
 [cors.subdomain]

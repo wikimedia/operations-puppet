@@ -10,20 +10,24 @@ class profile::openstack::base::neutron::common(
     $rabbit_user = hiera('profile::openstack::base::neutron::rabbit_user'),
     $rabbit_pass = hiera('profile::openstack::base::neutron::rabbit_pass'),
     $tld = hiera('profile::openstack::base::neutron::tld'),
+    $agent_down_time = hiera('profile::openstack::base::neutron::agent_down_time'),
+    $log_agent_heartbeats = hiera('profile::openstack::base::neutron::log_agent_heartbeats'),
     ) {
 
     class {'::openstack::neutron::common':
-        version         => $version,
-        nova_controller => $nova_controller,
-        keystone_host   => $keystone_host,
-        db_pass         => $db_pass,
-        db_user         => $db_user,
-        db_host         => $db_host,
-        region          => $region,
-        ldap_user_pass  => $ldap_user_pass,
-        rabbit_pass     => $rabbit_pass,
-        rabbit_user     => $rabbit_user,
-        tld             => $tld,
+        version              => $version,
+        nova_controller      => $nova_controller,
+        keystone_host        => $keystone_host,
+        db_pass              => $db_pass,
+        db_user              => $db_user,
+        db_host              => $db_host,
+        region               => $region,
+        ldap_user_pass       => $ldap_user_pass,
+        rabbit_pass          => $rabbit_pass,
+        rabbit_user          => $rabbit_user,
+        tld                  => $tld,
+        agent_down_time      => $agent_down_time,
+        log_agent_heartbeats => $log_agent_heartbeats,
     }
     contain '::openstack::neutron::common'
 }
