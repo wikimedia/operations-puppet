@@ -5,7 +5,7 @@
 # Cluster/VLAN.
 #
 class profile::analytics::cluster::gitconfig {
-    git::systemconfig { 'analytics-git-proxy-config':
+    class { 'git::systemconfig':
         settings => {
             # https://wikitech.wikimedia.org/wiki/HTTP_proxy
             'http'  => {

@@ -12,7 +12,7 @@
 #
 # Example usage:
 #
-# git::systemconfig{ 'gitconf for analytics repositories':
+# class { 'git::systemconfig':
 #    # https://wikitech.wikimedia.org/wiki/HTTP_proxy
 #    'http'  => {
 #        'proxy' => "http://webproxy.${::site}.wmnet:8080"
