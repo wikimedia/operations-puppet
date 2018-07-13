@@ -9,6 +9,5 @@ class role::wmcs::openstack::labtestn::services {
 
     # This designate uses the same designate DB as the labtest designate;
     # we want DNS to know about the state of both regions in a single place.
-    include ::profile::openstack::labtestn::cloudrepo
     include ::profile::openstack::labtestn::designate::service
 }
