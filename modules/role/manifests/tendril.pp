@@ -1,5 +1,6 @@
 # manifests/role/tendril.pp
-# tendril: MariaDB Analytics
+# tendril: MariaDB Analytics (tendril.wikimedia.org)
+# dbtree: Mariadb topology (dbtree.wikimedia.org)
 
 class role::tendril {
     include ::profile::base::firewall
@@ -41,6 +42,8 @@ class role::tendril {
             port  => '(http https)',
         }
     }
+
+    class { '::dbtree': }
 
     # Run cron jobs needed for maintenance (but only on a single host/dc)
     include ::profile::tendril::maintenance
