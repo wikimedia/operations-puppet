@@ -416,6 +416,13 @@ host chromium {
     fixed-address chromium.wikimedia.org;
 }
 
+host cloudnet1003 {
+    hardware ethernet e0:07:1b:ef:f5:98;
+    fixed-address cloudnet1003.eqiad.wmnet;
+    option pxelinux.pathprefix "jessie-installer/";
+    filename "jessie-installer/debian-installer/amd64/pxelinux.0";
+}
+
 host cloudvirt1021 {
     hardware ethernet 18:66:DA:BB:31:72;
     fixed-address cloudvirt1021.eqiad.wmnet;
@@ -3110,13 +3117,6 @@ host labnet1002 {
     fixed-address labnet1002.eqiad.wmnet;
     option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/trusty-installer/";
     filename "lpxelinux.0";
-}
-
-host labnet1003 {
-    hardware ethernet e0:07:1b:ef:f5:98;
-    fixed-address labnet1003.eqiad.wmnet;
-    option pxelinux.pathprefix "jessie-installer/";
-    filename "jessie-installer/debian-installer/amd64/pxelinux.0";
 }
 
 host labnet1004 {

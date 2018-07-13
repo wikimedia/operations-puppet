@@ -1185,6 +1185,10 @@ node 'labnet1001.eqiad.wmnet' {
     role(wmcs::openstack::main::net)
 }
 
+node /^cloudnet100[3-4].eqiad.wmnet$/ {
+    role(wmcs::openstack::eqiad1::net)
+}
+
 node /labnet100[34]\.eqiad\.wmnet/ {
     role(wmcs::openstack::eqiad1::net)
 }
