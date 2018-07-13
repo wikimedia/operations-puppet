@@ -454,6 +454,10 @@ dataCubes:
         title: View Count
         formula: $main.sum($view_count)
 
+      - name: percentage_of_bots_requests
+       title: Percentage of identified bot requests
+       formula: $main.filter($agent_type=="spider").sum($view_count)/$main.sum($view_count)* 100
+
       # This is the place where you might want to add derived measures (a.k.a Post Aggregators).
       #
       # Here are some examples of possible derived measures:
@@ -1640,6 +1644,10 @@ dataCubes:
       - name: view_count
         title: View Count
         formula: $main.sum($view_count)
+
+      - name: percentage_of_bots_requests
+        title: Percentage of idenfied bot requests
+        formula: $main.filter($agent_type=="spider").sum($view_count)/$main.sum($view_count)* 100
 
       # This is the place where you might want to add derived measures (a.k.a Post Aggregators).
       #
