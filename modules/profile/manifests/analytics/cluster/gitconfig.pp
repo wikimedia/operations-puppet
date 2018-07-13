@@ -1,13 +1,11 @@
 # == Class profile::analytic::cluster::gitconfig
 #
-# Set global git config properties to be picked up
+# Set system level git config properties to be picked up
 # by all the git::clones done whithin the Analytics
 # Cluster/VLAN.
 #
 class profile::analytics::cluster::gitconfig {
-
-    git::userconfig { 'root':
-        homedir  => '/root',
+    git::systemconfig { 'analytics-git-proxy-config':
         settings => {
             # https://wikitech.wikimedia.org/wiki/HTTP_proxy
             'http'  => {
