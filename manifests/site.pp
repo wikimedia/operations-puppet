@@ -339,11 +339,6 @@ node 'db1060.eqiad.wmnet' {
     role(spare::system)
 }
 
-# To be decommissioned: T197063
-node 'db1054.eqiad.wmnet' {
-    role(spare::system)
-}
-
 # s2 (large wikis) core production dbs on codfw
 # codfw master
 node 'db2035.codfw.wmnet' {
