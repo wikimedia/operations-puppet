@@ -129,3 +129,5 @@ service::configuration::log_dir: "/var/log"
 admin::groups:
   - restbase-roots
   - restbase-admins
+
+profile::base::enable_microcode: true
