@@ -1250,11 +1250,6 @@ host dataset1001 {
     filename "lpxelinux.0";
 }
 
-host db1051 {
-    hardware ethernet 90:B1:1C:2A:B0:2C;
-    fixed-address db1051.eqiad.wmnet;
-}
-
 host db1052 {
     hardware ethernet 90:B1:1C:2A:C4:D4;
     fixed-address db1052.eqiad.wmnet;

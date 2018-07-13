@@ -561,11 +561,6 @@ node 'db2044.codfw.wmnet' {
     }
 }
 
-# Spare host, peding decommission: T195484
-node 'db1051.eqiad.wmnet' {
-    role(spare::system)
-}
-
 ## m3 shard
 
 # See also multiinstance misc hosts db1117 and db2078 below
