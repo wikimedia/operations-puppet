@@ -21,7 +21,7 @@ $dump -h m3-slave \
     --databases $($my -h m3-slave -e "$sql" | tr '\n' ' ') | \
     pigz > /srv/backups/m3-phabricator-phlegal-$(date +%Y%m%d%H%M%S).sql.gz
 
-$dump -h m5-slave --databases ceilometer glance keystone neutron nova \
+$dump -h m5-slave --databases glance keystone neutron nova \
     designate designate_pool_manager nodepooldb | \
     pigz > /srv/backups/m5-$(date +%Y%m%d%H%M%S).sql.gz
 
