@@ -2852,8 +2852,6 @@ ldap_only_users:
     ensure: present
     realname: Jean-Rene Branaa
     email: jbranaa@wikimedia.org
-    expiry_date: 2018-06-30
-    expiry_contact: greg@wikimedia.org
   jbuatti:
     ensure: present
     realname: James Buatti
