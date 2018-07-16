@@ -978,18 +978,18 @@ node /^labtestvirt2003\.codfw\.wmnet$/ {
 node 'labtestmetal2001.codfw.wmnet' {
     role(wmcs::openstack::labtestn::virt)
 }
-# needs to be deprecate by labtestnet2003 (T193081)
+
+# to be decom (T193081)
 node 'labtestnet2001.codfw.wmnet' {
-    role(wmcs::openstack::labtest::net)
+    role(spare::system)
 }
 
 node 'labtestnet2002.codfw.wmnet' {
-    role(wmcs::openstack::labtest::net_standby)
+    role(wmcs::openstack::labtest::net)
 }
 
 node 'labtestnet2003.codfw.wmnet' {
-    # needs to deprecate labtestnet2001 (T193081)
-    role(test)
+    role(wmcs::openstack::labtest::net_standby)
 }
 
 node 'labtestcontrol2001.wikimedia.org' {
