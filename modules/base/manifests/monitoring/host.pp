@@ -219,4 +219,21 @@ class base::monitoring::host(
         method          => 'ge',
         prometheus_url  => "http://prometheus.svc.${::site}.wmnet/ops",
     }
+
+    # Alert on reported fs available being bigger than fs size
+    # Ideally this would be in check_disk instead, see also https://phabricator.wikimedia.org/T199436
+    monitoring::check_prometheus { 'filesystem_avail_bigger_than_size':
+        description     => 'Filesystem available is greater than filesystem size',
+        dashboard_links => ["https://grafana.wikimedia.org/dashboard/db/host-overview?orgId=1&var-server=${::hostname}&var-datasource=${::site}%20prometheus%2Fops"],
+        query           => "node_filesystem_avail{instance=\"${::hostname}:9100\"} > node_filesystem_size",
+        # The query returns node_filesystem_avail metrics that match the condition. warning/critical
+        # are required but placeholders in this case.
+        warning         => 1,
+        critical        => 2,
+        check_interval  => 60,
+        retry_interval  => 5,
+        retries         => 3,
+        method          => 'ge',
+        prometheus_url  => "http://prometheus.svc.${::site}.wmnet/ops",
+    }
 }
