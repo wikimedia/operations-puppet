@@ -3098,3 +3098,7 @@ ldap_only_users:
     ensure: present
     realname: Thomas Arrow
     email: thomas.arrow_ext@wikimedia.de
+  bpirkle:
+    ensure: present
+    realname: Bill Pirkle
+    email: bpirkle@wikimedia.org
