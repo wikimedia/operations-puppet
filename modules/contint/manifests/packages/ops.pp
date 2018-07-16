@@ -5,11 +5,11 @@
 class contint::packages::ops {
 
     # Python test suite for operations/software/conftool
-    package { ['etcd', 'python-etcd']:
+    package { ['etcd', 'python3-etcd']:
         ensure => latest,
     }
 
-    package { ['python-conftool']:
+    package { ['python3-conftool']:
         ensure => latest,
     }
 

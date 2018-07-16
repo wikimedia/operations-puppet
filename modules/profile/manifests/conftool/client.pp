@@ -25,10 +25,18 @@ class profile::conftool::client(
         $socks_pkg = 'python-pysocks'
     }
 
+    if os_version('ubuntu <= trusty') {
+        $conftool_pkg = 'python-conftool'
+    }
+    else {
+        $conftool_pkg = 'python3-conftool'
+    }
+
     require_package(
-        'python-conftool',
+        $conftool_pkg,
         $socks_pkg,
     )
+
     require ::passwords::etcd
 
     class { '::etcd::client::globalconfig':
