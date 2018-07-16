@@ -7,6 +7,7 @@ class profile::openstack::labtest::nova::network::service(
     $network_flat_tagged_base_interface = hiera('profile::openstack::labtest::nova::network_flat_tagged_base_interface'),
     $network_flat_interface_vlan = hiera('profile::openstack::labtest::nova::network_flat_interface_vlan'),
     $network_public_ip = hiera('profile::openstack::labtest::nova::network_public_ip'),
+    $keystone_host = hiera('profile::openstack::labtest::keystone_host'),
     ) {
 
     require ::profile::openstack::labtest::nova::common
@@ -21,6 +22,13 @@ class profile::openstack::labtest::nova::network::service(
         network_public_ip                  => $network_public_ip,
     }
     contain '::profile::openstack::base::nova::network::service'
+
+    # shared keystone with labtestn deployment
+    ferm::service { 'labtest-labtestn-shared-keystone-nova-network':
+        proto  => 'tcp',
+        port   => '8774',
+        srange => '$keystone_host',
+    }
 
     class {'::openstack::nova::network::monitor':}
     contain '::openstack::nova::network::monitor'
