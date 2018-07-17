@@ -10,6 +10,7 @@ After=network.target
 User=<%= @xmldumpsuser %>
 WorkingDirectory=<%= @repodir %>
 ExecStart=/bin/bash <%= @repodir -%>/monitor --configfile <%= @confsdir -%>/wikidump.conf.dumps:monitor --basedir <%= @repodir %>
+SyslogIdentifier=%N
 
 [Install]
 WantedBy=multi-user.target
