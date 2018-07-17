@@ -8,6 +8,7 @@ ExecStart=/bin/bash <%= @package_dir %>/runBlazegraph.sh -f <%= @config_file %>
 User=<%= @username %>
 StandardOutput=journal+console
 Restart=always
+SyslogIdentifier=%N
 
 TasksMax=10000
 
