@@ -42,7 +42,7 @@ class profile::debmonitor::server (
     file { $config_path:
         ensure  => present,
         owner   => $deploy_user,
-        group   => $deploy_user,
+        group   => 'www-data',
         mode    => '0440',
         content => template('profile/debmonitor/server/config.json.erb'),
         before  => Uwsgi::App['debmonitor'],
