@@ -180,7 +180,7 @@ rewrite	*wikipedia.ee	//et.wikipedia.org
 
 rewrite	*wikimedia.jp.net	//www.wikimedia.org
 
-rewrite	*wikimedia.lt	//wikimediafoundation.org
+rewrite	*wikimedia.lt	//foundation.wikimedia.org
 rewrite	*wikipedia.lt	//lt.wikipedia.org
 
 # Wikipedia
@@ -296,10 +296,10 @@ rewrite	voyagewiki.com	//www.wikivoyage.org
 rewrite	voyagewiki.org	//www.wikivoyage.org
 
 # wikimediafoundation
-rewrite	*wikimediafoundation.com	//wikimediafoundation.org
-rewrite	*wikimediafoundation.net	//wikimediafoundation.org
-rewrite	*wikimediafoundation.info	//wikimediafoundation.org
-rewrite	*.wikimediafoundation.org	//wikimediafoundation.org
+rewrite	*wikimediafoundation.com	//foundation.wikimedia.org
+rewrite	*wikimediafoundation.net	//foundation.wikimedia.org
+rewrite	*wikimediafoundation.info	//foundation.wikimedia.org
+rewrite	*.wikimediafoundation.org	//foundation.wikimedia.org
 
 # Commons
 
@@ -409,17 +409,17 @@ funnel	coffee.wikimedia.org	//en.wikipedia.org/wiki/Hyper_Text_Coffee_Pot_Contro
 funnel	moon.wikimedia.org	//meta.wikimedia.org/wiki/Wikipedia_to_the_Moon
 
 # wikipediazero.org - T82495
-funnel	*wikipediazero.org	//wikimediafoundation.org/wiki/Wikipedia_Zero
+funnel	*wikipediazero.org	//foundation.wikimedia.org/wiki/Wikipedia_Zero
 
 # jobs/careers - T82975
-rewrite	*careers.wikimedia.org	//wikimediafoundation.org/wiki/Job_openings
-rewrite	*careers.wikipedia.org	//wikimediafoundation.org/wiki/Job_openings
-rewrite	*jobs.wikimedia.org	//wikimediafoundation.org/wiki/Job_openings
-rewrite	*jobs.wikipedia.org	//wikimediafoundation.org/wiki/Job_openings
-override	*careers.wikimedia.org/	//wikimediafoundation.org/wiki/Work_with_us
-override	*careers.wikipedia.org/	//wikimediafoundation.org/wiki/Work_with_us
-override	*jobs.wikimedia.org/	//wikimediafoundation.org/wiki/Work_with_us
-override	*jobs.wikipedia.org/	//wikimediafoundation.org/wiki/Work_with_us
+rewrite	*careers.wikimedia.org	//foundation.wikimedia.org/wiki/Job_openings
+rewrite	*careers.wikipedia.org	//foundation.wikimedia.org/wiki/Job_openings
+rewrite	*jobs.wikimedia.org	//foundation.wikimedia.org/wiki/Job_openings
+rewrite	*jobs.wikipedia.org	//foundation.wikimedia.org/wiki/Job_openings
+override	*careers.wikimedia.org/	//foundation.wikimedia.org/wiki/Work_with_us
+override	*careers.wikipedia.org/	//foundation.wikimedia.org/wiki/Work_with_us
+override	*jobs.wikimedia.org/	//foundation.wikimedia.org/wiki/Work_with_us
+override	*jobs.wikipedia.org/	//foundation.wikimedia.org/wiki/Work_with_us
 
 # pywikipedia.org (T60803).
 funnel	*pywikipedia.org	//tools.wmflabs.org/pywikibot/
