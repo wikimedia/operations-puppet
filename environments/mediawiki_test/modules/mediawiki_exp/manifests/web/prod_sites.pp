@@ -35,15 +35,15 @@ class mediawiki_exp::web::prod_sites {
         priority => 7,
     }
 
-    # Some other wikis, plus loginwiki, and www.wikimedia.org
-    apache::site { 'wikimedia':
-        source   => 'puppet:///modules/mediawiki_exp/apache/sites/wikimedia.conf',
-        priority => 8,
-    }
-
     # wikimediafoundation wiki, already a single wiki
     apache::site { 'foundation':
         content  => template('mediawiki_exp/apache/sites/foundation.conf.erb'),
+        priority => 8,
+    }
+
+    # Some other wikis, plus loginwiki, and www.wikimedia.org
+    apache::site { 'wikimedia':
+        source   => 'puppet:///modules/mediawiki_exp/apache/sites/wikimedia.conf',
         priority => 9,
     }
 

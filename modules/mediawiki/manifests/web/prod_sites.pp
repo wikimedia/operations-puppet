@@ -31,13 +31,13 @@ class mediawiki::web::prod_sites {
         priority => 7,
     }
 
-    apache::site { 'wikimedia':
-        source   => 'puppet:///modules/mediawiki/apache/sites/wikimedia.conf',
+    apache::site { 'foundation':
+        source   => 'puppet:///modules/mediawiki/apache/sites/foundation.conf',
         priority => 8,
     }
 
-    apache::site { 'foundation':
-        source   => 'puppet:///modules/mediawiki/apache/sites/foundation.conf',
+    apache::site { 'wikimedia':
+        source   => 'puppet:///modules/mediawiki/apache/sites/wikimedia.conf',
         priority => 9,
     }
 
