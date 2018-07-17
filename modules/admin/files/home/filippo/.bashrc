@@ -29,7 +29,8 @@ function config_interactive() {
     BRIGHT="$(tput bold)"
     RED="$(tput setaf 1)"
     WHITE="$(tput setaf 7)"
-    export PS1='\[$BRIGHT\]\[$RED\]\h\[$RESET\]:\w\[$BRIGHT\]\[$WHITE\]\$\[$RESET\] '
+    TITLEBAR='\e]0;\h:\w\a'
+    export PS1='\[$TITLEBAR\]\[$BRIGHT\]\[$RED\]\h\[$RESET\]:\w\[$BRIGHT\]\[$WHITE\]\$\[$RESET\] '
 }
 
 if [ -n "$PS1" ]; then
