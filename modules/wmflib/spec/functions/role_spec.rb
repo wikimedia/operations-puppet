@@ -1,7 +1,7 @@
 require 'spec_helper'
 describe 'role' do
   before :each do
-    allow(scope).to receive(:is_nodescope?).and_return(true)
+    scope.stubs(:is_nodescope?).returns(true)
   end
 
   let(:pre_condition) {"
