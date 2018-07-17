@@ -31,6 +31,7 @@ class profile::openstack::labtestn::keystone::service(
     $puppetmaster_hostname = hiera('profile::openstack::labtestn::puppetmaster_hostname'),
     $auth_port = hiera('profile::openstack::base::keystone::auth_port'),
     $public_port = hiera('profile::openstack::base::keystone::public_port'),
+    $labtest_nova_controller = hiera('profile::openstack::labtest::nova_controller'),
     ) {
 
     class{'::profile::openstack::base::keystone::db':
@@ -99,5 +100,10 @@ class profile::openstack::labtestn::keystone::service(
     ferm::rule{'labtest_designate_35357':
         ensure => 'present',
         rule   => "saddr @resolve(${designate_host}) proto tcp dport (35357) ACCEPT;",
+    }
+
+    ferm::rule { 'labtest_nova_35357':
+        ensure => 'present',
+        rule   => "saddr @resolve(${labtest_nova_controller}) proto tcp dport (35357) ACCEPT;",
     }
 }
