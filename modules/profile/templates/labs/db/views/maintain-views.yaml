@@ -36,6 +36,7 @@ fullviews:
   - category
   - categorylinks
   - change_tag
+  - change_tag_def
   - cn_assignments
   - cn_known_devices
   - cn_known_mobile_carriers
