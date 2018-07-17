@@ -975,12 +975,10 @@ def check_uptime(host, minimum=0, maximum=None, installer=False):
 def run_apache_fast_test(host):
     """Run apache-fast-test from the active deployment_server (deploy1001) on the given hosts.
 
-    TODO: move out of oblivian's home
-
     Arguments:
     host -- the host against which the apache fast test must be executed
     """
-    command = 'apache-fast-test ~oblivian/baseurls {host}'.format(host=host)
+    command = 'apache-fast-test /usr/local/share/apache-tests/baseurls {host}'.format(host=host)
     deployment_host = resolve_dns(DEPLOYMENT_DOMAIN, 'CNAME')
     try:
         run_cumin('run_apache_fast_test', deployment_host, [command], timeout=120)
