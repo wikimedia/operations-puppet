@@ -44,7 +44,7 @@ modules:
       no_follow_redirects: false
       fail_if_not_ssl: true
       fail_if_not_matches_regexp:
-        - 'href="https://(m\.)?foundation\.wikimedia\.org/wiki/Terms_of_Use"'
+        - 'href="https://foundation\.(m\.)?wikimedia\.org/wiki/Terms_of_Use"'
       tls_config:
         insecure_skip_verify: false
   # Mimick check_http_url_at_address_for_string!tools.wmflabs.org!/!Magnus
