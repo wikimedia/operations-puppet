@@ -10,7 +10,7 @@ server s1 {
     txresp
 
     rxreq
-    expect req.http.x-dt-host == "wikimediafoundation.org"
+    expect req.http.x-dt-host == "foundation.wikimedia.org"
     txresp
 
     rxreq
@@ -51,7 +51,7 @@ client c1 {
     txreq -url "/" -hdr "Host: m.wikidata.org" -hdr "X-Forwarded-Proto: https"
     rxresp
 
-    txreq -url "/" -hdr "Host: m.wikimediafoundation.org" -hdr "X-Forwarded-Proto: https"
+    txreq -url "/" -hdr "Host: foundation.m.wikimedia.org" -hdr "X-Forwarded-Proto: https"
     rxresp
 
     txreq -url "/" -hdr "Host: it.m.wikipedia.org" -hdr "X-Forwarded-Proto: https"

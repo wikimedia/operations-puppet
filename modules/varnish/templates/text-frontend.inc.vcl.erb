@@ -108,7 +108,7 @@ sub cluster_fe_recv_pre_purge {
 				// as well as (m|zero).<project>.org by <project>.org
 				//
 				// Example:
-				// m.wikimediafoundation.org -> wikimediafoundation.org
+				// foundation.m.wikimedia.org -> foundation.wikimedia.org
 				// it.m.wikipedia.org -> it.wikipedia.org
 				// en.zero.wikipedia.org -> en.wikipedia.org
 				set req.http.x-dt-host = regsub(req.http.host, "^([a-z0-9-]+\.)?(m|zero)\.", "\1");

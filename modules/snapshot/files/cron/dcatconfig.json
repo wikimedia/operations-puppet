@@ -5,13 +5,13 @@
     "uri": "https://www.wikidata.org/about",
     "catalog-homepage": "https://www.wikidata.org",
     "catalog-issued": "2012-10-30",
-    "catalog-license": "http://creativecommons.org/publicdomain/zero/1.0/",
+    "catalog-license": "https://creativecommons.org/publicdomain/zero/1.0/",
     "catalog-i18n": "https://www.wikidata.org/w/index.php?title=MediaWiki:DCAT.json&action=raw",
     "keywords": ["data store", "semantic", "knowledgebase", "Wikimedia", "user generated content", "UGC", "Wikipedia", "Wikidata"],
     "themes": ["1428", "441", "2191", "384", "7374"],
     "publisher": {
         "name": "Wikimedia Foundation",
-        "homepage": "http://wikimediafoundation.org/",
+        "homepage": "https://foundation.wikimedia.org/",
         "email": "info@wikimedia.org",
         "publisherType": "NonProfitOrganisation"
     },
@@ -30,7 +30,7 @@
             "ttl": "text/turtle",
             "html": "text/html"
         },
-        "license": "http://creativecommons.org/publicdomain/zero/1.0/"
+        "license": "https://creativecommons.org/publicdomain/zero/1.0/"
     },
     "api-info": {
         "accessURL": "https://www.wikidata.org/w/api.php",
@@ -38,7 +38,7 @@
             "json": "application/json",
             "xml": "application/xml"
         },
-        "license": "http://creativecommons.org/publicdomain/zero/1.0/"
+        "license": "https://creativecommons.org/publicdomain/zero/1.0/"
     },
     "dump-info": {
         "accessURL": "https://dumps.wikimedia.org/wikidatawiki/entities/$1",
@@ -59,6 +59,6 @@
             "gzip": "gz",
             "bzip2": "bz2"
         },
-        "license": "http://creativecommons.org/publicdomain/zero/1.0/"
+        "license": "https://creativecommons.org/publicdomain/zero/1.0/"
     }
 }

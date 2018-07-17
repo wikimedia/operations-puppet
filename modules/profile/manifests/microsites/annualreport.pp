@@ -1,6 +1,6 @@
 # sets up the WMF annual report site
 # https://annual.wikimedia.org/
-# http://wikimediafoundation.org/wiki/Annual_Report
+# https://foundation.wikimedia.org/wiki/Annual_Report
 # T599 - https://15.wikipedia.org (aka. annual report 2015)
 class profile::microsites::annualreport {
 

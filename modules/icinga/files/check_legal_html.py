@@ -28,7 +28,7 @@ CC\sBY-SA\s3\.0</a>\sunless\sotherwise\snoted\.'
 mobile_terms = '<a\shref="(https:)?\/\/m\.wikimediafoundation\.org\/wiki\/Terms_of_Use">\
 Terms\sof\sUse</a>'
 
-mobile_privacy = '<a\shref="(https:)?\/\/wikimediafoundation\.org\/wiki\/Privacy_policy"\sclass="extiw"\s\
+mobile_privacy = '<a\shref="(https:)?\/\/foundation\.wikimedia\.org\/wiki\/Privacy_policy"\sclass="extiw"\s\
 title="wmf:Privacy\spolicy">Privacy</a>'
 
 copyright = 'Text\sis\savailable\sunder\sthe\s<a\srel="license"\s+\
@@ -39,16 +39,16 @@ Creative\sCommons\sAttribution-ShareAlike\sLicense</a>\
 
 terms = 'additional\sterms\smay\sapply\.  \
 By\susing\sthis\ssite,\syou\sagree\sto\sthe \
-<a\shref="(https:)?\/\/wikimediafoundation.org\/wiki\/Terms_of_Use">Terms\sof\sUse</a>'
+<a\shref="(https:)?\/\/foundation\.wikimedia\.org\/wiki\/Terms_of_Use">Terms\sof\sUse</a>'
 
-privacy = '<a\shref="(https:)?\/\/wikimediafoundation.org/wiki/Privacy_policy">\
+privacy = '<a\shref="(https:)?\/\/foundation\.wikimedia\.org/wiki/Privacy_policy">\
 Privacy\spolicy</a>'
 
-enwb_privacy = '<a\shref="(https:)?\/\/wikimediafoundation\.org\/wiki\/Privacy_policy">\
+enwb_privacy = '<a\shref="(https:)?\/\/foundation\.wikimedia\.org\/wiki\/Privacy_policy">\
 Privacy\sPolicy\.<\/a>'
 
 enwp_trademark = 'Wikipedia®\sis\sa\sregistered\strademark \
-of\sthe\s<a\shref="\/\/www\.wikimediafoundation\.org/">\
+of\sthe\s<a\shref="\/\/www\.foundation\.wikimedia\.org/">\
 Wikimedia\sFoundation,\sInc\.</a>,\sa\snon-profit\sorganization\.'
 
 enwb_copyright = 'Text\sis\savailable\sunder\sthe \

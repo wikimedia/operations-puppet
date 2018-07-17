@@ -25,7 +25,7 @@
     ExpiresActive On
 
     # Redirect wiki which was previously at this location
-    RewriteRule ^/wiki/(.*)$ %{ENV:RW_PROTO}://wikimediafoundation.org/wiki/$1 [R=301,L]
+    RewriteRule ^/wiki/(.*)$ %{ENV:RW_PROTO}://foundation.wikimedia.org/wiki/$1 [R=301,L]
 
     # /api/ rewrites
     Include "sites-enabled/api-rewrites.incl"
