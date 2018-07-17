@@ -17,18 +17,21 @@ from collections import defaultdict
 from datetime import datetime
 from logging import FileHandler
 
-from conftool import configuration, kvobject, loader
-from conftool.drivers import BackendError
-
 import cumin
 import dns.resolver
+import requests
 
+from conftool import configuration, kvobject, loader
+from conftool.drivers import BackendError
 from cumin import query, transport, transports
 from phabricator import Phabricator
 
 
 ICINGA_DOMAIN = 'icinga.wikimedia.org'
 DEPLOYMENT_DOMAIN = 'deployment.eqiad.wmnet'
+DEBMONITOR_URL = 'https://debmonitor.discovery.wmnet/hosts/{host}'
+DEBMONITOR_CERT = '/etc/debmonitor/ssl/cert.pem'
+DEBMONITOR_KEY = '/etc/debmonitor/ssl/server.key'
 INTERNAL_TLD = 'wmnet'
 MANAGEMENT_DOMAIN = 'mgmt'
 CERT_DESTROY = 'destroy'
@@ -754,6 +757,21 @@ def puppet_remove_host(host):
     commands = [command.format(host=host) for command in base_commands]
     run_cumin('remove_from_puppet', get_puppet_ca_master(), commands)
     print_line('Removed from Puppet', host=host)
+
+
+def debmonitor_remove_host(host):
+    """Remove a host from Debmonitor.
+
+    Arguments:
+    host -- the FQDN of the host to remove from Debmonitor
+    """
+    response = requests.delete(
+        DEBMONITOR_URL.format(host=host), cert=(DEBMONITOR_CERT, DEBMONITOR_KEY))
+    if response.status_code == requests.codes['no_content']:
+        print_line('Removed from Debmonitor', host=host)
+    else:
+        print_line('WARNING: Unable to remove from Debmonitor, got: {code}'.format(
+            code=response.status_code), host=host, level=logging.WARNING)
 
 
 def ipmitool_command(mgmt, ipmi_command):

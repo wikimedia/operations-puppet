@@ -132,6 +132,7 @@ def run(args, user, log_path):
             cert_fingerprint = lib.puppet_generate_cert(args.host)
     else:
         lib.puppet_remove_host(args.host)  # Cleanup Puppet
+        lib.debmonitor_remove_host(args.host)
 
         # Reboot into PXE mode to start the reimage
         lib.set_pxe_boot(args.host, args.mgmt)
