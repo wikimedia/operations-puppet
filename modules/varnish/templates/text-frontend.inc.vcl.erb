@@ -178,7 +178,7 @@ sub cluster_fe_recv {
 
 	if (req.http.Host == "wikimediafoundation.org") {
 		set req.http.Location = "https://foundation.wikimedia.org" + req.url;
-		return (synth(301, "Foundation Wiki Moved"));
+		return (synth(302, "Foundation Wiki Moved"));
 	}
 
 	call mobile_redirect;
@@ -348,7 +348,7 @@ sub cluster_fe_err_synth {
 	}
 
 	if (resp.reason == "Foundation Wiki Moved") {
-		set resp.reason = "Moved Permanently";
+		set resp.reason = "Found";
 		set resp.http.Location = req.http.Location;
 		set resp.http.Connection = "keep-alive";
 		set resp.http.Content-Length = "0"; // BZ #62245
