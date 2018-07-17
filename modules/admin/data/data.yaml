@@ -2935,11 +2935,9 @@ ldap_only_users:
     realname: Robin Schoenbaechler
     email: rschoenbaechler@wikimedia.org
   siddharth11:
-    ensure: present
+    ensure: absent
     realname: Siddarth Parmar
     email: sparmar@wikimedia.org
-    expiry_date: 2018-07-20
-    expiry_contact: rstallman@wikimedia.org
   spatton:
     ensure: present
     realname: Sam Patton
