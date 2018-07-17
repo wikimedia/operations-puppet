@@ -36,6 +36,7 @@ class profile::debmonitor::server (
     $ssl_config = ssl_ciphersuite('nginx', 'strong')
     $settings_module = 'debmonitor.settings.prod'
     $hosts = query_nodes('Class[Role::Debmonitor::Server]')
+    $proxy_hosts = query_nodes('Class[Role::Cluster::Management]')
 
     # Configuration file for the Django-based WebUI and API
     file { $config_path:
