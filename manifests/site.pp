@@ -979,9 +979,9 @@ node 'labtestmetal2001.codfw.wmnet' {
     role(wmcs::openstack::labtestn::virt)
 }
 
-# to be decom (T193081)
+# needs to be deprecate by labtestnet2003 (T193081)
 node 'labtestnet2001.codfw.wmnet' {
-    role(spare::system)
+    role(wmcs::openstack::labtest::net)
 }
 
 node 'labtestnet2002.codfw.wmnet' {
