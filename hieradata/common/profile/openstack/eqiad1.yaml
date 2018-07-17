@@ -1,7 +1,7 @@
 profile::openstack::eqiad1::region: 'eqiad1-r'
 profile::openstack::eqiad1::version: 'mitaka'
 profile::openstack::eqiad1::nova_controller: 'labcontrol1003.wikimedia.org'
-profile::openstack::eqiad1::nova_controller_standby: 'labcontrol1004.wikimedia.org'
+profile::openstack::eqiad1::nova_controller_standby: 'cloudcontrol1004.wikimedia.org'
 profile::openstack::eqiad1::nova_api_host: 'labcontrol1003.wikimedia.org'
 profile::openstack::eqiad1::designate_host: 'labservices1001.wikimedia.org'
 profile::openstack::eqiad1::designate_host_standby: 'labservices1002.wikimedia.org'
