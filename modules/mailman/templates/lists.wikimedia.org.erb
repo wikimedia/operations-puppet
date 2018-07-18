@@ -30,6 +30,9 @@
         # Whitelist IPv4 addresses of monitoring hosts einsteinium and tegmen
         SecRule REMOTE_ADDR "208.80.155.119" "id:1001,allow"
         SecRule REMOTE_ADDR "208.80.153.74"  "id:1002,allow"
+        # Whitelist hackathon IP addresses (added 2018-07-18)
+        SecRule REMOTE_ADDR "197.101.76.150" "id:1003,allow"
+        SecRule REMOTE_ADDR "197.101.76.159" "id:1004,allow"
 
         # Increment per IP subscribe counter and set expiration to 60 minutes
         SecRule REQUEST_METHOD "POST" "id:1100,chain,pass,nolog"
