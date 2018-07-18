@@ -9,6 +9,7 @@ After=network.target
 [Service]
 User=root
 ExecStart=/bin/bash /usr/local/bin/rsync-to-peers.sh --xmldumpsdir <%= @xmldumpsdir %>  --xmlremotedirs <%= @xmlremotedirs -%> --miscdumpsdir <%= @miscdumpsdir %>  --miscremotedirs <%= @miscremotedirs -%>
+
 SyslogIdentifier=%N
 
 [Install]
