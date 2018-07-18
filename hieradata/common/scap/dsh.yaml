@@ -33,7 +33,7 @@ scap::dsh::groups:
       - {'cluster': 'jobrunner', 'service': 'apache2'}
       - {'cluster': 'testserver', 'service': 'apache2'}
     hosts:
-      # - snapshot1005.eqiad.wmnet (T198792)
+      - snapshot1005.eqiad.wmnet
       - deploy1001.eqiad.wmnet
       - deploy2001.codfw.wmnet
       - terbium.eqiad.wmnet

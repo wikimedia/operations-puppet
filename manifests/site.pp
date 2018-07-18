@@ -2101,7 +2101,6 @@ node /^snapshot1001\.eqiad\.wmnet/ {
 }
 
 node /^snapshot1005\.eqiad\.wmnet/ {
-    # until repaired (T198792)
     role(dumps::generation::worker::testbed)
 }
 
@@ -2130,7 +2129,6 @@ node /^snapshot1008\.eqiad\.wmnet/ {
 }
 
 node /^snapshot1009\.eqiad\.wmnet/ {
-    # until snapshot1005 is repaired (T198792)
     role(dumps::generation::worker::dumper)
 }
 
