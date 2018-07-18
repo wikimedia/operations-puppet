@@ -176,7 +176,7 @@ sub cluster_fe_recv {
 		return (synth(401, "Buggy request, please report at https://phabricator.wikimedia.org/T141786"));
 	}
 
-	if (req.http.Host == "wikimediafoundation.org") {
+	if (req.http.Host ~ "^(www\.)?wikimediafoundation\.org$") {
 		set req.http.Location = "https://foundation.wikimedia.org" + req.url;
 		return (synth(302, "Foundation Wiki Moved"));
 	}
