@@ -37,14 +37,25 @@ class openstack::designate::service(
     $designate_host_ip = ipresolve($designate_host,4)
     $puppetmaster_hostname_ip = ipresolve($puppetmaster_hostname,4)
 
-    require_package(
+    $packages = [
         'designate-sink',
         'designate-common',
         'designate',
         'designate-api',
         'designate-doc',
         'designate-central',
-    )
+    ]
+
+    if os_version('debian jessie') and ($version == 'mitaka') {
+        $install_options = ['-t', 'jessie-backports']
+    } else {
+        $install_options = ''
+    }
+
+    package { $packages:
+        ensure          => 'present',
+        install_options => $install_options,
+    }
 
     file { '/usr/lib/python2.7/dist-packages/wmf_sink':
         owner   => 'root',
