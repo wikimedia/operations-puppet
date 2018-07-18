@@ -7,6 +7,7 @@ rootwrap_config = /etc/nova/rootwrap.conf
 log_dir=/var/log/nova
 pybasedir = /usr/lib/python2.7/dist-packages
 #use_rootwrap_daemon = True ### FIXME may be used only in compute nodes?
+notification_driver = messagingv2
 
 # keystone
 auth_strategy = keystone
