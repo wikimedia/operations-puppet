@@ -10,6 +10,7 @@ class mediawiki::packages {
     package { [
         'python-imaging',
         'tidy',
+        'libvips-tools',
     ]:
         ensure => present,
     }
