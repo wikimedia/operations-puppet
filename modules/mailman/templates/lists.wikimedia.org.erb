@@ -38,8 +38,8 @@
         SecRule REQUEST_METHOD "POST" "id:1100,chain,pass,nolog"
         SecRule REQUEST_URI "\/mailman\/subscribe.*" "setvar:IP.subscribecount=+1,expirevar:IP.subscribecount=3600"
 
-        # Throw a 429 if more than 1 POST requests to subscription URL from the same IP within 60 minutes
-        SecRule IP:subscribecount "@gt 1" "id:1101,chain,deny,status:429,log,msg:'IP address %{REMOTE_ADDR} has been rate limited'"
+        # Throw a 429 if more than 5 POST requests to subscription URL from the same IP within 60 minutes
+        SecRule IP:subscribecount "@gt 5" "id:1101,chain,deny,status:429,log,msg:'IP address %{REMOTE_ADDR} has been rate limited'"
         SecRule REQUEST_METHOD "POST" chain
         SecRule REQUEST_URI "\/mailman\/subscribe.*"
 
@@ -53,8 +53,8 @@
         SecRule REQUEST_METHOD "POST" "id:1201,phase:2,chain,pass,nolog"
         SecRule REQUEST_URI "\/mailman\/subscribe.*" "setvar:USER.subscribecount=+1,expirevar:USER.subscribecount=3600"
 
-        # Throw a 429 if more than 1 POST requests to subscription URL with the same email within 60 minutes
-        SecRule USER:subscribecount "@gt 1" "id:1202,chain,deny,status:429,log,msg:'Email address %{ARGS.email} (collapsed to %{TX.1}%{TX.2}) has been rate limited'"
+        # Throw a 429 if more than 5 POST requests to subscription URL with the same email within 60 minutes
+        SecRule USER:subscribecount "@gt 5" "id:1202,chain,deny,status:429,log,msg:'Email address %{ARGS.email} (collapsed to %{TX.1}%{TX.2}) has been rate limited'"
         SecRule REQUEST_METHOD "POST" chain
         SecRule REQUEST_URI "\/mailman\/subscribe.*"
 
