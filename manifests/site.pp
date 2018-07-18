@@ -985,7 +985,7 @@ node 'labtestnet2001.codfw.wmnet' {
 }
 
 node 'labtestnet2002.codfw.wmnet' {
-    role(wmcs::openstack::labtest::net)
+    role(wmcs::openstack::labtest::net_standby)
 }
 
 node 'labtestnet2003.codfw.wmnet' {
