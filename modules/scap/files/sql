@@ -2,6 +2,9 @@
 
 # This file is managed by Puppet (modules/scap/files/sql).
 
+# hhvm -dhhvm.server.light_process_count=0 would also work, see T199152
+export PHP=php7.0
+
 case "$1" in
     "" | --help)
         exec mwscript mysql.php --wiki=metawiki --help
@@ -13,6 +16,10 @@ case "$1" in
     --*)
         # If the user is passing options, assume they know what they're doing
         exec mwscript mysql.php "$@"
+        ;;
+    wikishared)
+        # Back compat access to 'wikishared' on the extension1 cluster.
+        exec mwscript mysql.php --wiki=metawiki --wikidb=wikishared --cluster=extension1 "$@"
         ;;
     *)
         # --wikidb works for any DB that MW can figure out a hostname for.
