@@ -1,0 +1,13 @@
+version: 1
+
+root:
+    handlers: [logstash]
+    level: WARNING
+
+handlers:
+    logstash:
+        class: logstash.TCPLogstashHandler
+        host: <%= @logstash_host %>
+        port: <%= @logstash_port %>
+        version: 1
+        message_type: mjolnir

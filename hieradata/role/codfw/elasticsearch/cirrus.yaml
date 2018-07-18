@@ -60,3 +60,7 @@ profile::base::dns_alt_names: 'search.svc.codfw.wmnet'
 profile::elasticsearch::reindex_remote_whitelist: 'search.svc.eqiad.wmnet:9243'
 
 profile::elasticsearch::cirrus::storage_device: dm-0
+
+# Bulk updates daemon needs a unique group id per dc
+profile::mjolnir::kafka_cluster: main-codfw
+profile::mjolnir::kafka_bulk_daemon::group_id: cirrussearch_updates_codfw

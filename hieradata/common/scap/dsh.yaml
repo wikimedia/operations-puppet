@@ -79,6 +79,9 @@ scap::dsh::groups:
       - restbase-dev1001.eqiad.wmnet
       - restbase-dev1002.eqiad.wmnet
       - restbase-dev1003.eqiad.wmnet
+  cirrus:
+    conftool:
+        - {'cluster': 'elasticsearch', 'service': 'elasticsearch', 'datacenters': ['eqiad', 'codfw']}
   discovery-analytics:
     hosts:
       - stat1005.eqiad.wmnet

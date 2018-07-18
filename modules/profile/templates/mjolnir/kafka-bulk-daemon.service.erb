@@ -1,0 +1,20 @@
+[Unit]
+Description=MjoLniR kafka bulk daemon
+After=network.target
+
+[Service]
+User=nobody
+Group=nogroup
+ExecStart=/srv/deployment/search/mjolnir/venv/bin/mjolnir-utilities.py kafka_bulk_daemon \
+        --brokers <%= @kafka_config['brokers']['string'] %> \
+        --es-clusters localhost:9200 \
+        --group-id <%= @group_id %> \
+        --topic <%= @topics.join(' ') %>
+
+StandardInput=null
+StandardOutput=journal
+StandardError=journal
+RestartSec=2
+
+[Install]
+WantedBy=multi-user.target

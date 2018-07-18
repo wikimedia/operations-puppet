@@ -1,0 +1,15 @@
+[Unit]
+Description=MjoLniR kafka msearch daemon
+After=network.target
+
+[Service]
+User=nobody
+Group=nogroup
+ExecStart=/srv/deployment/search/mjolnir/venv/bin/mjolnir-utilities.py kafka_msearch_daemon --brokers <%= @kafka_config['brokers']['string'] %>
+StandardInput=null
+StandardOutput=journal
+StandardError=journal
+RestartSec=2
+
+[Install]
+WantedBy=multi-user.target

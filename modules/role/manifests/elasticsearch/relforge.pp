@@ -9,7 +9,7 @@ class role::elasticsearch::relforge {
     include ::profile::prometheus::elasticsearch_exporter
     include ::profile::prometheus::wmf_elasticsearch_exporter
     include ::elasticsearch::nagios::check
-    include ::profile::mjolnir::kafka_daemon
+    include ::profile::mjolnir::kafka_msearch_daemon
 
     system::role { 'elasticsearch::relforge':
         ensure      => 'present',
