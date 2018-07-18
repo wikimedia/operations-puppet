@@ -2,6 +2,7 @@ class profile::openstack::labtestn::designate::service(
     $version = hiera('profile::openstack::labtestn::version'),
     $designate_host = hiera('profile::openstack::labtestn::designate_host'),
     $nova_controller = hiera('profile::openstack::labtestn::nova_controller'),
+    $keystone_host = hiera('profile::openstack::labtestn::nova_controller'),
     $puppetmaster_hostname = hiera('profile::openstack::labtestn::puppetmaster_hostname'),
     $db_pass = hiera('profile::openstack::labtestn::designate::db_pass'),
     $db_host = hiera('profile::openstack::labtestn::designate::db_host'),
@@ -21,7 +22,7 @@ class profile::openstack::labtestn::designate::service(
     class{'::profile::openstack::base::designate::service':
         version                    => $version,
         designate_host             => $designate_host,
-        keytone_host               => $nova_controller,
+        keystone_host              => $keystone_host,
         db_pass                    => $db_pass,
         db_host                    => $db_host,
         domain_id_internal_forward => $domain_id_internal_forward,
