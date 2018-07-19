@@ -7,6 +7,7 @@ class profile::ci::jenkins(
     $service_ensure = hiera('profile::ci::jenkins::service_ensure'),
     $service_enable = hiera('profile::ci::jenkins::service_enable'),
     $service_monitor = hiera('profile::ci::jenkins::monitor'),
+    $builds_dir = hiera('profile::ci::jenkins::builds_dir'),
 ) {
     # Load the Jenkins module, that setup a Jenkins master
     class { '::jenkins':
@@ -17,6 +18,7 @@ class profile::ci::jenkins(
         service_ensure  => $service_ensure,
         service_enable  => $service_enable,
         service_monitor => $service_monitor,
+        builds_dir      => $builds_dir,
     }
     # Nodepool spawns non ephemeral slaves which causes config-history plugin
     # to fill up entries until it reaches the limit of 32k inodes. T126552

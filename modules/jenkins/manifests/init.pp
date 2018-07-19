@@ -31,6 +31,11 @@
 # [*umask*]
 # Control permission bits of files created by Jenkins. Passed to systemd.
 # Default: '0002'
+#
+# [*builds_dir*]
+# Change location of build records. This option was formerly set in the
+# jenkins ui, now must be set via system properties
+# Default: ${ITEM_ROOTDIR}/builds
 class jenkins(
     $prefix,
     $access_log = false,
@@ -40,7 +45,8 @@ class jenkins(
     $service_ensure  = 'running',
     $service_enable = true,
     $service_monitor = true,
-    $umask = '0002'
+    $umask = '0002',
+    $builds_dir = '${ITEM_ROOTDIR}/builds' # lint:ignore:single_quote_string_with_variables
 )
 {
     include ::jenkins::common
@@ -137,6 +143,7 @@ class jenkins(
         # Disable auto discovery T178608
         '-Dhudson.udp=-1',
         '-Dhudson.DNSMultiCast.disabled=true',
+        "-Djenkins.model.Jenkins.buildsDir='${builds_dir}'"
     ], ' ')
 
     $real_service_ensure = $service_ensure ? {
