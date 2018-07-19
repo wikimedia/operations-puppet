@@ -7,42 +7,18 @@ class mediawiki::packages {
 
     include ::imagemagick::install
 
-    package { [
-        'python-imaging',
-        'tidy',
-        'libvips-tools',
-    ]:
-        ensure => present,
-    }
+    # vips is needed for (rare) non-Thumbor scaling of TIFF/PNG uploads (T199938)
+    require_package('python-imaging', 'tidy', 'libvips-tools')
 
     # Pear
-    package { [
-        'php-pear',
-        'php-mail',
-        'php-mail-mime',
-    ]:
-        ensure => present,
-    }
+    require_package('php-pear', 'php-mail', 'php-mail-mime')
 
     # PDF and DjVu
-    package { [
-        'ghostscript',
-        'djvulibre-bin',
-        'librsvg2-bin',
-        'libtiff-tools',
-        'poppler-utils',
-    ]:
-        ensure => present,
-    }
+    require_package('ghostscript', 'djvulibre-bin', 'librsvg2-bin', 'libtiff-tools', 'poppler-utils')
 
     # Score
-    package { [
-        'lilypond',
-        'timidity',
-        'freepats',
-    ]:
-        ensure => present,
-    }
+    require_package('lilypond', 'timidity', 'freepats')
+
     # timidity recommends timidity-daemon, but we don't need it.
     package { 'timidity-daemon':
       ensure => absent,
