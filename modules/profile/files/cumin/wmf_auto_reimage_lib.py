@@ -1005,10 +1005,10 @@ def print_repool_message(previous, rename_from=None, rename_to=None):
     commands = []
     is_rename = rename_from is not None and rename_to is not None
 
-    for state, tags_list in previous.iteritems():
+    for state, tags_list in previous.items():
         for tags in tags_list:
             items = []
-            for key, value in tags.iteritems():
+            for key, value in tags.items():
                 if is_rename and value == rename_from:
                     value = rename_to
                 items.append('='.join((key, value)))
@@ -1033,7 +1033,7 @@ def get_phabricator_post_message(retcodes):
     """
     successful = []
     failed = []
-    for retcode, hosts in retcodes.iteritems():
+    for retcode, hosts in retcodes.items():
         if retcode == 0:
             successful += hosts
         else:
