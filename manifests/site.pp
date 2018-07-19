@@ -622,17 +622,18 @@ node /^db2(094|095)\.codfw\.wmnet/ {
     role(mariadb::sanitarium_multiinstance)
 }
 
-# old sanitarium
+# old sanitarium, temp. test-s1
 node 'db1095.eqiad.wmnet' {
-    role(spare::system)
+    role(mariadb::core_test)
 }
 
 node 'db1102.eqiad.wmnet' {
-    role(spare::system)
+    role(mariadb::core_test)
 }
 
 # Old temporary sanitarium hosts now ready to be productionized
 #
+# reserved for x1
 node 'db1116.eqiad.wmnet' {
     role(spare::system)
 }
