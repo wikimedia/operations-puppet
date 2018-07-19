@@ -59,7 +59,6 @@ class contint::packages::labs {
         'libimage-exiftool-perl',
         'libjpeg-turbo-progs',
         'libogg0',
-        'libvips-tools',
         'libvorbisenc2',
         'netpbm',
         'oggvideotools',
