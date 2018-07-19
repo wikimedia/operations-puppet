@@ -2158,14 +2158,6 @@ node 'deploy1001.eqiad.wmnet', 'deploy2001.codfw.wmnet' {
     interface::add_ip6_mapped { 'main': }
 }
 
-# former deployment server, ready for decom (T185275)
-node 'tin.eqiad.wmnet' {
-    role(spare::system)
-    # lint:ignore:wmf_styleguide
-    interface::add_ip6_mapped { 'main': }
-    # lint:endignore
-}
-
 # test system for performance team (T117888)
 node 'tungsten.eqiad.wmnet' {
     role(xhgui::app)
