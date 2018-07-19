@@ -63,7 +63,7 @@ def check_cumin_output(host, cmds, expected_output):
     _, worker = lib.run_cumin(NAME, host, cmds, ignore_exit=True)
 
     for _, output in worker.get_results():
-        return output.message() == expected_output
+        return output.message().decode('utf-8') == expected_output
 
     return False
 

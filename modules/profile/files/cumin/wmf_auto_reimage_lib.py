@@ -1,7 +1,5 @@
 #!/usr/bin/env python3
 """Library for the wmf-auto-reimage and wmf-auto-reimage-host scripts."""
-from __future__ import print_function
-
 import argparse
 import configparser
 import getpass
@@ -492,7 +490,7 @@ def validate_hosts(hosts, no_raise=False):
     output = ''
     for _, output in worker.get_results():
         for host in hosts:
-            if '+ "{host}"'.format(host=host) in output.message():
+            if '+ "{host}"'.format(host=host) in output.message().decode('utf-8'):
                 missing.remove(host)
 
     if missing:
@@ -604,8 +602,9 @@ def puppet_check_cert_to_sign(host, fingerprint):
         return 1
 
     for _, output in worker.get_results():
-        if host in output.message():
-            cert_line = output.message()
+        message = output.message().decode('utf-8')
+        if host in message:
+            cert_line = message
             break
     else:
         cert_line = ''
@@ -670,7 +669,7 @@ def puppet_wait_cert_and_sign(host, fingerprint):
 
     _, worker = run_cumin('puppet_wait_cert_and_sign', puppetmaster_host, [sign_command])
     for _, output in worker.get_results():
-        if fingerprint in output.message():
+        if fingerprint in output.message().decode('utf-8'):
             break
     else:
         print_line('Expected fingerprint {fingerprint} not found in signing message:\n{msg}'.format(
@@ -695,7 +694,7 @@ def puppet_generate_cert(host):
                           installer=True, ignore_exit=True, timeout=300)
 
     for _, output in worker.get_results():
-        for line in output.message().splitlines():
+        for line in output.message().decode('utf-8').splitlines():
             if 'Certificate Request fingerprint' in line:
                 fingerprint = line.split()[-1]
                 print_line(
@@ -716,7 +715,7 @@ def detect_init_system(host):
     """
     _, worker = run_cumin('detect_init', host, ['ps --no-headers -o comm 1'], installer=True)
     for _, output in worker.get_results():
-        init_system = output.message()
+        init_system = output.message().decode('utf-8')
         break
 
     return init_system
@@ -784,7 +783,7 @@ def ipmitool_command(mgmt, ipmi_command):
     ensure_ipmi_password()
     command = ['ipmitool', '-I', 'lanplus', '-H', mgmt, '-U', 'root', '-E'] + ipmi_command
     logger.info('Running IPMI command: {command}'.format(command=command))
-    return subprocess.check_output(command)
+    return subprocess.check_output(command).decode('utf-8')
 
 
 def set_pxe_boot(host, mgmt, retries=0):
@@ -874,7 +873,7 @@ def wait_puppet_run(host, start=None):
         try:
             exit_code, worker = run_cumin('wait_puppet_run', host, [command])
             for _, output in worker.get_results():
-                last_run = datetime.utcfromtimestamp(float(output.message()))
+                last_run = datetime.utcfromtimestamp(float(output.message().decode('utf-8')))
 
             if last_run > start:
                 break
@@ -955,7 +954,7 @@ def check_uptime(host, minimum=0, maximum=None, installer=False):
         exit_code, worker = run_cumin(
             'check_uptime', host, ['cat /proc/uptime'], installer=installer)
         for _, output in worker.get_results():
-            uptime = float(output.message().strip().split()[0])
+            uptime = float(output.message().decode('utf-8').strip().split()[0])
     except ValueError:
         message = "Unable to determine uptime of host '{host}': {uptime}".format(
             host=host, uptime=output.message())
