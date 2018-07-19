@@ -50,7 +50,8 @@ class profile::openstack::main::cumin::master(
 
         # Explicitely require cumin's suggested packages to enable OpenStack backend,
         # --install-suggests would recursively install many more unwanted dependencies.
-        package { ['cumin', 'python3-keystoneauth1', 'python3-keystoneclient', 'python3-novaclient']:
+        # Install clustershell as it provides nodeset CLI that is useful to mangle host lists.
+        package { ['clustershell', 'cumin', 'python3-keystoneauth1', 'python3-keystoneclient', 'python3-novaclient']:
             ensure => present,
         }
 

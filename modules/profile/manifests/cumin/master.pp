@@ -10,6 +10,7 @@ class profile::cumin::master (
     }
 
     require_package([
+        'clustershell',  # Installs nodeset CLI that is useful to mangle host lists.
         'cumin',
         'python3-dnspython',
         'python3-phabricator',
