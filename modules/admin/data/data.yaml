@@ -105,7 +105,7 @@ groups:
     description: people who upload mediawiki releases
     members: [catrope, demon, hashar, legoktm, reedy, thcipriani]
     privileges: ['ALL = (jenkins) NOPASSWD: ALL',
-                 'ALL = NOPASSWD: /usr/bin/service jenkins *']
+                 'ALL = NOPASSWD: /usr/sbin/service jenkins *']
   releasers-mobile:
     gid: 712
     description: people who upload mobile app releases
