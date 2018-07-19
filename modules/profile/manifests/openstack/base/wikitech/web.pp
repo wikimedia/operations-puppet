@@ -19,7 +19,6 @@ class profile::openstack::base::wikitech::web(
         'fontconfig-config',
         'libimage-exiftool-perl',
         'libjpeg-turbo-progs',
-        'libvips-tools',
         'netpbm',
     ]:
         ensure => present,
