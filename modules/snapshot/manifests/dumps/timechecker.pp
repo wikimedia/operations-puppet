@@ -8,10 +8,13 @@ class snapshot::dumps::timechecker(
               'zhwiki', 'enwiki', 'wikidatawiki']
     $wikis_list = join($wikis, ',')
 
+    $apachedir = $snapshot::dumps::dirs::apachedir
+    $dblist = "${apachedir}/dblists/all.dblist"
+
     cron { 'dumps-timechecker':
         ensure      => 'present',
         environment => 'MAILTO=ops-dumps@wikimedia.org',
-        command     => "cd ${repodir}; python show_runtimes.py -d ${dumpsbasedir} -W ${wikis_list}",
+        command     => "cd ${repodir}; python show_runtimes.py -d ${dumpsbasedir} -W ${wikis_list}; python show_runtimes.py -d ${dumpsbasedir} -j meta-history-bz2 -s 40 -w ${dblist}",
         user        => $xmldumpsuser,
         minute      => '10',
         hour        => '1',
