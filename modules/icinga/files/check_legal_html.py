@@ -48,7 +48,7 @@ enwb_privacy = '<a\shref="(https:)?\/\/foundation\.wikimedia\.org\/wiki\/Privacy
 Privacy\sPolicy\.<\/a>'
 
 enwp_trademark = 'Wikipedia®\sis\sa\sregistered\strademark \
-of\sthe\s<a\shref="\/\/www\.foundation\.wikimedia\.org/">\
+of\sthe\s<a\shref="\/\/(www\.)?wikimediafoundation\.org/">\
 Wikimedia\sFoundation,\sInc\.</a>,\sa\snon-profit\sorganization\.'
 
 enwb_copyright = 'Text\sis\savailable\sunder\sthe \

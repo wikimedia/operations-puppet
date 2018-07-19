@@ -11,7 +11,7 @@ ui.logo:
 
 ui.footer-items:
   - {name: 'Content licensed under Creative Commons Attribution-ShareAlike 3.0 (CC-BY-SA) unless otherwise noted; code licensed under GNU General Public License (GPL) or other open source licenses. By using this site, you agree to the Terms of Use, Privacy Policy, and Code of Conduct.'}
-  - {href: 'https://foundation.wikimedia.org/', name: Wikimedia Foundation}
+  - {href: 'https://wikimediafoundation.org/', name: Wikimedia Foundation}
   - {href: 'https://foundation.wikimedia.org/wiki/Special:MyLanguage/Privacy_policy', name: Privacy Policy}
   - {href: 'https://www.mediawiki.org/wiki/Special:MyLanguage/Code_of_Conduct', name: Code of Conduct}
   - {href: 'https://foundation.wikimedia.org/wiki/Terms_of_Use/Phabricator', name: Terms of Use}
