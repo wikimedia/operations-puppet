@@ -1,6 +1,7 @@
 class profile::openstack::base::puppetmaster::frontend(
     $labs_instance_range = hiera('profile::openstack::base::nova::fixed_range'),
     $designate_host = hiera('profile::openstack::base::designate_host'),
+    $second_region_designate_host = hiera('profile::openstack::base::second_region_designate_host'),
     $puppetmasters = hiera('profile::openstack::base::puppetmaster::servers'),
     $puppetmaster_ca = hiera('profile::openstack::base::puppetmaster::ca'),
     $puppetmaster_hostname = hiera('profile::openstack::base::puppetmaster_hostname'),
@@ -106,7 +107,7 @@ class profile::openstack::base::puppetmaster::frontend(
 
     ferm::rule{'puppetcertcleaning':
         ensure => 'present',
-        rule   => "saddr (@resolve(${designate_host}))
+        rule   => "saddr (@resolve((${designate_host} ${second_region_designate_host})))
                         proto tcp dport 22 ACCEPT;",
     }
 }
