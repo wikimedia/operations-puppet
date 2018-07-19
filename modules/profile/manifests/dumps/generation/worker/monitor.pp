@@ -3,4 +3,9 @@ class profile::dumps::generation::worker::monitor {
         xmldumpsuser  => 'dumpsgen',
         xmldumpsgroup => 'dumpsgen',
     }
+    $xmldumpsmount = '/mnt/dumpsdata'
+    class { '::snapshot::dumps::timechecker':
+        xmldumpsuser => 'dumpsgen',
+        dumpsbasedir => "${xmldumpsmount}/xmldatadumps/public",
+    }
 }
