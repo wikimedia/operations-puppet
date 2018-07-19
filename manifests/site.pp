@@ -566,11 +566,6 @@ node 'db1072.eqiad.wmnet' {
     }
 }
 
-# To be decomm: T194634
-node 'db1053.eqiad.wmnet' {
-    role(spare::system)
-}
-
 # codfw
 node 'db2042.codfw.wmnet' {
     role(mariadb::misc::phabricator)
