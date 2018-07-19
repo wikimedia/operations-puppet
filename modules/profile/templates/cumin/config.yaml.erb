@@ -9,8 +9,6 @@ puppetdb:
     host: <%= @puppetdb_host %>
     port: 443
     api_version: 4
-    urllib3_disable_warnings:
-        - SubjectAltNameWarning  # Temporary fix for T158757
 
 clustershell:
     ssh_options:
