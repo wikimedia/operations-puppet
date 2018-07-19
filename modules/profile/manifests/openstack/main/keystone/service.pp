@@ -29,6 +29,7 @@ class profile::openstack::main::keystone::service(
     $nova_api_host = hiera('profile::openstack::main::nova_api_host'),
     $designate_host = hiera('profile::openstack::main::designate_host'),
     $designate_host_standby = hiera('profile::openstack::main::designate_host_standby'),
+    $second_region_designate_host = hiera('profile::openstack::main::second_region_designate_host'),
     $labweb_hosts = hiera('profile::openstack::main::labweb_hosts'),
     $auth_port = hiera('profile::openstack::base::keystone::auth_port'),
     $public_port = hiera('profile::openstack::base::keystone::public_port'),
