@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 
 # Script that can be run from the labspuppetmaster that can generate a
 # list of all hosts that have NFS enabled, filtered by share.
@@ -38,7 +38,7 @@ def get_all_hosts(share):
 
     projects = []
 
-    for project, mounts in nfs_config['private'].iteritems():
+    for project, mounts in nfs_config['private'].items():
         if share == 'all' or share in mounts['mounts']:
             projects.append('O{project:%s}' % project)
 
@@ -58,7 +58,7 @@ def exclude_disabled_hosts(hosts):
         # Query to find hosts/host prefixes with NFS explicitly disabled through hiera
         resp = requests.get('https://tools.wmflabs.org/openstack-browser/api/hierakey/mount_nfs')
         for servers in resp.json()['servers'].values():
-            for prefix, nfs_enabled in servers.iteritems():
+            for prefix, nfs_enabled in servers.items():
                 if not nfs_enabled:
                     skipped_host_prefixes.append(prefix)
 
