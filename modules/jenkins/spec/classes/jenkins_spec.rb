@@ -75,5 +75,9 @@ EOF
                     .with_content(/SimpleAccessLogger.+\\$/)
             end
         end
+        it 'escapes build_dir dollar token for systemd' do
+            should contain_file('/lib/systemd/system/jenkins.service')
+                .with_content(%r%\$\${ITEM_ROOTDIR}/builds%)
+        end
     end
 end

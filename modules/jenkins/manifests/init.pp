@@ -126,6 +126,8 @@ class jenkins(
         $jenkins_access_log_arg = undef
     }
 
+    $builds_dir_for_systemd = regsubst( $builds_dir, '\$', '$$', 'G' )
+
     $java_args = join([
         # Allow graphs etc. to work even when an X server is present
         '-Djava.awt.headless=true',
@@ -143,7 +145,7 @@ class jenkins(
         # Disable auto discovery T178608
         '-Dhudson.udp=-1',
         '-Dhudson.DNSMultiCast.disabled=true',
-        "-Djenkins.model.Jenkins.buildsDir='${builds_dir}'"
+        "-Djenkins.model.Jenkins.buildsDir=${builds_dir_for_systemd}"
     ], ' ')
 
     $real_service_ensure = $service_ensure ? {
