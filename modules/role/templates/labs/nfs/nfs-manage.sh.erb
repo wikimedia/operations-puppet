@@ -12,6 +12,17 @@
 #         floating IP assignment
 # status - Display mount and drbd status
 
+# T169570
+echo "This cannot be run as a script currently"
+echo "These steps can be followed to handle failover manually..."
+echo "Except the 'down' process on the current primary fails at:"
+echo " /usr/local/sbin/nfs-manage-binds"
+echo "A reboot taking the current primary offline and allowing the"
+echo "use of '/sbin/drbdadm primary all --force' on the secondary "
+echo "is the current terrible process in use."
+echo "T169570 and T157478 are the issues to address this."
+exit 1
+
 CMD="$1"
 
 case $CMD in
