@@ -106,7 +106,7 @@ def wait_for_childrens(procs):
         if not procs:
             break
 
-        for host, proc in procs.items():
+        for host, proc in procs.copy().items():
             ret = proc.poll()
             if ret is None:
                 continue
