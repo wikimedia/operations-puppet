@@ -44,3 +44,5 @@ profile::kafka::mirror::properties:
   heap_opts: '-Xmx2G -Xms2G'
   producer_properties:
     "batch.size": 65536
+
+profile::kafka::broker::max_heap_size: '2g'
