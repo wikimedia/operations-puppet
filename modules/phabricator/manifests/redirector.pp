@@ -16,20 +16,26 @@ define phabricator::redirector(
     $alt_host    = 'phab.wmfusercontent.org',
     $rate_limits = {'request' => 0, 'connection' => 0}
 ) {
+    require phabricator
+
     $preamble = "${phabricator::confdir}/preamble.php"
     $redirect_config = "${phabricator::confdir}/redirect_config.json"
+
+    file { $preamble:
+        content => template('phabricator/preamble.php.erb'),
+        notify  => Service['apache2'],
+    }
 
     file { "${rootdir}/phabricator/support/preamble.php":
         ensure => 'link',
         target => $preamble
     }
-    file { $preamble:
-        content => template('phabricator/preamble.php.erb'),
-    }
 
     file { $redirect_config:
         content => template('phabricator/redirect_config.json.erb'),
+        notify  => Service['apache2'],
     }
+
     file { "${rootdir}/phabricator/support/redirect_config.json":
         ensure => 'link',
         target => $redirect_config,
