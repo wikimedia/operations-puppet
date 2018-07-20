@@ -1271,11 +1271,6 @@ host db1052 {
     filename "lpxelinux.0";
 }
 
-host db1056 {
-    hardware ethernet 90:B1:1C:2A:B0:06;
-    fixed-address db1056.eqiad.wmnet;
-}
-
 host db1061 {
     hardware ethernet C8:1F:66:B8:1B:38;
     fixed-address db1061.eqiad.wmnet;
