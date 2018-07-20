@@ -334,11 +334,6 @@ node /^db1(074|076|122)\.eqiad\.wmnet/ {
     role(mariadb::core)
 }
 
-# To be decommissioned: T193732
-node 'db1060.eqiad.wmnet' {
-    role(spare::system)
-}
-
 # s2 (large wikis) core production dbs on codfw
 # codfw master
 node 'db2035.codfw.wmnet' {
