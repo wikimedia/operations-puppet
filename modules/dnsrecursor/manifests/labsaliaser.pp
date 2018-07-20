@@ -39,7 +39,7 @@ class dnsrecursor::labsaliaser(
     cron { 'labs-ip-alias-dump':
         ensure  => 'present',
         user    => 'root',
-        command => 'if ! `/usr/local/bin/labs-ip-alias-dump.py --check-changes-only`; then /usr/local/bin/labs-ip-alias-dump.py; /usr/bin/rec_control reload-lua-script; fi  > /dev/null',
+        command => 'if ! `/usr/local/bin/labs-ip-alias-dump.py --check-changes-only`; then /usr/local/bin/labs-ip-alias-dump.py; /usr/bin/rec_control reload-lua-script; fi  > /dev/null 2>&1',
         minute  => 30,
         require => File[
             '/usr/local/bin/labs-ip-alias-dump.py',
