@@ -628,11 +628,11 @@ node 'db1102.eqiad.wmnet' {
 
 # Old temporary sanitarium hosts now ready to be productionized
 #
-# reserved for x1
 node 'db1116.eqiad.wmnet' {
     role(spare::system)
 }
 
+# reserved for x1
 node 'db1120.eqiad.wmnet' {
     role(spare::system)
 }
