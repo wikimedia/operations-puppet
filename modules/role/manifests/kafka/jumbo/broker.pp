@@ -13,10 +13,6 @@ class role::kafka::jumbo::broker {
     include base::firewall
     include profile::kafka::broker
 
-    # This is temporary until T182993 is completed
-    include ::role::ipsec
-    class { '::ferm::ipsec_allow': }
-
     # Mirror main-eqiad -> jumbo-eqiad
     include profile::kafka::mirror
 }

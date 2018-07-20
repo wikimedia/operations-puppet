@@ -147,8 +147,6 @@ class role::kafka::analytics::broker {
         srange  => '($PRODUCTION_NETWORKS $FRACK_NETWORKS)',
     }
 
-    include ::ferm::ipsec_allow
-
     # In case of mediawiki spikes we've been seeing up to 300k connections,
     # so raise the connection table size on Kafka brokers (default is 256k)
     sysctl::parameters { 'kafka_conntrack':
