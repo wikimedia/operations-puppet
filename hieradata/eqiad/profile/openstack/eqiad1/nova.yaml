@@ -1,4 +1,4 @@
-profile::openstack::eqiad1::nova::db_host: 'labcontrol1003.wikimedia.org'
+profile::openstack::eqiad1::nova::db_host: 'cloudcontrol1004.wikimedia.org'
 profile::openstack::eqiad1::nova::dhcp_domain: 'eqiad.wmflabs'
 profile::openstack::eqiad1::nova::network_flat_tagged_base_interface: 'eth1'
 profile::openstack::eqiad1::nova::network_flat_interface_vlan: '1105'

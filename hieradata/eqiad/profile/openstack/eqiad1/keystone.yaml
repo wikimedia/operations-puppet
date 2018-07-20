@@ -1,2 +1,2 @@
-profile::openstack::eqiad1::keystone::db_host: 'labcontrol1003.wikimedia.org'
+profile::openstack::eqiad1::keystone::db_host: 'cloudcontrol1004.wikimedia.org'
 profile::openstack::eqiad1::keystone::token_driver: 'normal'
