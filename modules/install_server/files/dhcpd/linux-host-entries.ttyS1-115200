@@ -3062,9 +3062,9 @@ host labcontrol1002 {
     filename "lpxelinux.0";
 }
 
-host labcontrol1003 {
+host cloudcontrol1003 {
     hardware ethernet 30:e1:71:5f:6e:5c;
-    fixed-address labcontrol1003.wikimedia.org;
+    fixed-address cloudcontrol1003.wikimedia.org;
     option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
     filename "lpxelinux.0";
 }

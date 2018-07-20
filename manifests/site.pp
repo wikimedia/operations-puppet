@@ -1135,10 +1135,6 @@ node /kubestage100[12]\.eqiad\.wmnet/ {
     interface::add_ip6_mapped { 'main': }
 }
 
-node 'labcontrol1003.wikimedia.org' {
-    role(wmcs::openstack::eqiad1::control)
-}
-
 node 'labcontrol1001.wikimedia.org' {
     role(wmcs::openstack::main::control)
 }
@@ -1171,7 +1167,7 @@ node 'labnet1001.eqiad.wmnet' {
     role(wmcs::openstack::main::net)
 }
 
-node 'cloudcontrol1004.wikimedia.org' {
+node /^cloudcontrol100[3-4].wikimedia.org$/ {
     role(wmcs::openstack::eqiad1::control)
 }
 

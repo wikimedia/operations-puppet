@@ -61,4 +61,4 @@
     shard: labcontrol
     role: standalone
   targets:
-  - labcontrol1003:9104
+  - cloudcontrol1003:9104
