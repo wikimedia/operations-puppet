@@ -496,6 +496,26 @@ class toollabs::exec_environ {
             ]:
             ensure => latest,
         }
+    } elsif $::lsbdistcodename == 'stretch' {
+        include ::toollabs::genpp::python_exec_stretch
+
+        package { [
+            'hhvm',                         # T78783
+            'libboost-python1.62.0',
+            'libmpc3',
+            'libprotobuf10',
+            'libbytes-random-secure-perl', # T123824
+            'libvips42',
+            'nodejs-legacy',               # T1102
+            'mariadb-client',              # For /usr/bin/mysql
+            'php5-readline',               # T136519.
+            'opencv-data',                 # T142321
+            'python-flake8',
+            'python3-flake8',
+            'tcl-thread',
+          ]:
+          ensure => latest,
+        }
     }
 
     package { 'misctools':
