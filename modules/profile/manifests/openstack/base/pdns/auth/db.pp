@@ -1,5 +1,6 @@
 class profile::openstack::base::pdns::auth::db(
     $designate_host = hiera('profile::openstack::base::designate_host'),
+    $second_region_designate_host = hiera('profile::openstack::base::second_region_designate_host'),
     $pdns_db_pass = hiera('profile::openstack::base::pdns:db_pass'),
     $pdns_admin_db_pass = hiera('profile::openstack::base::pdns::db_admin_pass'),
     ) {
@@ -53,6 +54,6 @@ class profile::openstack::base::pdns::auth::db(
     ferm::service { 'mysql_designate':
         proto  => 'tcp',
         port   => '3306',
-        srange => $designate_host_ip,
+        srange => "@resolve((${designate_host} ${second_region_designate_host}))"
     }
 }
