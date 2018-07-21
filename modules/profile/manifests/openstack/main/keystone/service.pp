@@ -63,7 +63,7 @@ class profile::openstack::main::keystone::service(
         nova_api_host                => $nova_api_host,
         designate_host               => $designate_host,
         designate_host_standby       => $designate_host_standby,
-        second_region_designate_host => $designate_host_standby,
+        second_region_designate_host => $second_region_designate_host,
         labweb_hosts                 => $labweb_hosts,
     }
 
