@@ -90,13 +90,15 @@ class profile::openstack::base::pdns::recursor::service(
     }
 
     ferm::service { 'recursor_udp_dns_rec':
-        proto => 'udp',
-        port  => '53',
+        proto  => 'udp',
+        port   => '53',
+        srange => '$LABS_NETWORKS',
     }
 
     ferm::service { 'recursor_tcp_dns_rec':
-        proto => 'tcp',
-        port  => '53',
+        proto  => 'tcp',
+        port   => '53',
+        srange => '$LABS_NETWORKS',
     }
 
     ferm::rule { 'recursor_skip_dns_conntrack-out':
