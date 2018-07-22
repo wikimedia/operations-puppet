@@ -143,7 +143,7 @@ done
 ###############
 # send email
 ###############
-cat <<EOF | /usr/bin/mail -r "${sender_address}" -s "XML Dumps FAQ monthly update" "xmldatadumps-l@wikimedia.org"
+cat <<EOF | /usr/bin/mail -r "${sender_address}" -s "XML Dumps FAQ monthly update" "xmldatadumps-l@lists.wikimedia.org"
 
 Greetings XML Dump users and contributors!
 
