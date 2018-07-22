@@ -74,6 +74,9 @@ class snapshot::dumps::configs(
                     metawiki => {
                         pagesPerChunkHistory  => '321600,1887125,2144409,2584802,2550664,1127385',
                     },
+                    hewiki => {
+                        pagesPerChunkHistory  => '54634,150485,262147,348019,456051,338308',
+                    },
                 },
             },
             en => {
