@@ -105,7 +105,7 @@
 #
 # [*nofiles_ulimit*]
 #   Hiera: profile::kafka::broker::nofiles_ulimit
-#   Default: 8192
+#   Default: 128000
 #
 # [*inter_broker_protocol_version*]
 #   Default: undef
@@ -159,7 +159,7 @@ class profile::kafka::broker(
     $num_recovery_threads_per_data_dir = hiera('profile::kafka::broker::num_recovery_threads_per_data_dir', undef),
     $num_io_threads                    = hiera('profile::kafka::broker::num_io_threads', 1),
     $num_replica_fetchers              = hiera('profile::kafka::broker::num_replica_fetchers', undef),
-    $nofiles_ulimit                    = hiera('profile::kafka::broker::nofiles_ulimit', 65536),
+    $nofiles_ulimit                    = hiera('profile::kafka::broker::nofiles_ulimit', 128000),
     $inter_broker_protocol_version     = hiera('profile::kafka::broker::inter_broker_protocol_version', undef),
     $group_initial_rebalance_delay     = hiera('profile::kafka::broker::group_initial_rebalance_delay', undef),
     $log_message_format_version        = hiera('profile::kafka::broker::log_message_format_version', undef),
