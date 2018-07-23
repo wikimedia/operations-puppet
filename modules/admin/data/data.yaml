@@ -3098,3 +3098,7 @@ ldap_only_users:
     ensure: present
     realname: Bill Pirkle
     email: bpirkle@wikimedia.org
+  patspena:
+    ensure: present
+    realname: Pats Pena
+    email: ppena@wikimedia.org
