@@ -1,9 +1,11 @@
 class profile::dumps::generation::worker::common(
-    $nfs_server = lookup('dumps_nfs_server'),
+    $dumps_nfs_server = lookup('dumps_nfs_server'),
+    $cron_nfs_server = lookup('dumps_cron_nfs_server'),
     $managed_subdirs = lookup('dumps_managed_subdirs'),
     $datadir_mount_type = lookup('dumps_datadir_mount_type'),
     $extra_mountopts = lookup('profile::dumps::generation::worker::common::nfs_extra_mountopts'),
     $php = lookup('profile::dumps::generation::worker::common::php'),
+    $dumps_misc_cronrunner = lookup('profile::dumps::generation::worker::common::dumps_misc_cronrunner'),
 ) {
     # mw packages and dependencies
     require ::profile::mediawiki::scap_proxy
@@ -16,6 +18,12 @@ class profile::dumps::generation::worker::common(
 
     class { '::dumpsuser': }
 
+    if ($dumps_misc_cronrunner) {
+        $nfs_server = $cron_nfs_server
+    }
+    else {
+        $nfs_server = $dumps_nfs_server
+    }
     snapshot::dumps::datamount { 'dumpsdatamount':
         mountpoint      => $xmldumpsmount,
         mount_type      => $datadir_mount_type,

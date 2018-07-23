@@ -1,0 +1,16 @@
+#####################################################################
+### THIS FILE IS MANAGED BY PUPPET
+#####################################################################
+
+[Unit]
+Description=Dumps rsyncer service
+After=network.target
+
+[Service]
+User=root
+ExecStart=/bin/bash /usr/local/bin/rsync-to-peers.sh --do_tarball --do_rsync_xml --xmldumpsdir <%= @xmldumpsdir %>  --xmlremotedirs <%= @xmlremotedirs -%>
+
+SyslogIdentifier=%N
+
+[Install]
+WantedBy=multi-user.target

@@ -79,7 +79,7 @@ druid-public: P{O:druid::public::worker}
 druid: A:druid-analytics or A:druid-public
 druid-canary: P{druid1003.eqiad.wmnet}
 druid-testcluster: P{O:druid::test_analytics::worker}
-dumps: P{O:dumps::generation::server::primary or O:dumps::generation::server::fallback or O:dumps::web::htmldumps}
+dumps: P{O:dumps::generation::server:alldumps or O:dumps::generation::server::misccrons or O:dumps::generation::server::xmldumps or O:dumps::generation::server::xmlfallback or O:dumps::web::htmldumps}
 elastic: P{O:elasticsearch::cirrus}
 elastic-canary: P{elastic1051.eqiad.wmnet}
 elastic-codfw: A:elastic and A:codfw

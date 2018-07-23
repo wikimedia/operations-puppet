@@ -1,4 +1,4 @@
-class profile::dumps::generation::server::rsync(
+class profile::dumps::generation::server::rsync_firewall(
     $rsync_clients = lookup('profile::dumps::rsync_internal_clients'),
 ) {
     # By default the resolve() function in ferm performs only an IPv4/A DNS

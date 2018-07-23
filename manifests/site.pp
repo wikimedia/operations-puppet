@@ -841,7 +841,7 @@ node /^druid100[456]\.eqiad\.wmnet$/ {
 # nfs server for dumps generation, also rsyncs
 # data to fallback nfs server(s)
 node /^dumpsdata1001\.eqiad\.wmnet$/ {
-    role(dumps::generation::server::primary)
+    role(dumps::generation::server::alldumps)
 }
 
 # temporary: for reimaging and new role
@@ -852,7 +852,7 @@ node /^dumpsdata1002\.eqiad\.wmnet$/ {
 # fallback nfs server for dumps generation, also
 # will rsync data to web servers
 node /^dumpsdata1003\.eqiad\.wmnet$/ {
-    role(dumps::generation::server::fallback)
+    role(dumps::generation::server::xmlfallback)
 }
 
 node /^elastic101[8-9]\.eqiad\.wmnet/ {
@@ -1967,13 +1967,11 @@ node 'stat1007.eqiad.wmnet' {
 node /^snapshot100[569]\.eqiad\.wmnet/ {
     role(dumps::generation::worker::dumper)
 }
-
 node /^snapshot1007\.eqiad\.wmnet/ {
     role(dumps::generation::worker::dumper_monitor)
 }
-
 node /^snapshot1008\.eqiad\.wmnet/ {
-    role(dumps::generation::worker::dumper_misc_crons_only)
+    role(dumps::generation::worker::dumper_misc_crons)
 }
 
 # Thumbor servers for MediaWiki image scaling

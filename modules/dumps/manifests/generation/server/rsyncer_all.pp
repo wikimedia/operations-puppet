@@ -1,8 +1,10 @@
-class dumps::generation::server::rsyncer(
+class dumps::generation::server::rsyncer_all(
     $xmldumpsdir = undef,
     $xmlremotedirs = undef,
     $miscdumpsdir = undef,
     $miscremotedirs = undef,
+    $miscsubdirs = undef,
+    $miscremotesubs = undef,
 )  {
     file { '/usr/local/bin/rsync-to-peers.sh':
         ensure => 'present',
@@ -15,7 +17,7 @@ class dumps::generation::server::rsyncer(
     systemd::service { 'dumps-rsyncer':
         ensure    => 'present',
         restart   => true,
-        content   => systemd_template('dumps-rsync-peers'),
+        content   => systemd_template('dumps-rsync-peers-all'),
         subscribe => File['/usr/local/bin/rsync-to-peers.sh'],
     }
 }

@@ -16,3 +16,19 @@ profile::dumps::rsync_internal_clients:
   ipv6: []
 
 profile::dumps::generation_worker_cron_php: /usr/bin/php7.2
+profile::dumps::single_backend: false
+
+# the servers below maintain copies of either xml or misc dumps
+# 'public' ones are public-facing, the 'internal' ones
+# are for generation fallback use
+profile::dumps::public:
+    - labstore1006.wikimedia.org
+    - labstore1007.wikimedia.org
+profile::dumps::internal:
+    - dumpsdata1003.eqiad.wmnet
+# root of xml/sql dumps tree we want to rsync (public contents only)
+profile::dumps::xmldumpsdir: '/data/xmldatadumps/public'
+# root of misc dumps we want to rsync
+profile::dumps::miscdumpsdir: '/data/otherdumps'
+# subdirectories of misc dumps we want to rsync to fallback generation servers
+profile::dumps::miscsubdirs: 'incr,categoriesrdf'

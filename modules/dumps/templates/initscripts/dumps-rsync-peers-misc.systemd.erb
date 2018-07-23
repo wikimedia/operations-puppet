@@ -3,12 +3,12 @@
 #####################################################################
 
 [Unit]
-Description=Dumps rsyncer service
+Description=Dumps misc rsyncer service
 After=network.target
 
 [Service]
 User=root
-ExecStart=/bin/bash /usr/local/bin/rsync-to-peers.sh --xmldumpsdir <%= @xmldumpsdir %>  --xmlremotedirs <%= @xmlremotedirs -%> --miscdumpsdir <%= @miscdumpsdir %>  --miscremotedirs <%= @miscremotedirs -%>
+ExecStart=/bin/bash /usr/local/bin/rsync-to-peers.sh --do_rsync_misc --do_rsync_miscsubs --miscdumpsdir <%= @miscdumpsdir %>  --miscremotedirs <%= @miscremotedirs %> --miscsubdirs <%= @miscsubdirs %> --miscremotesubs <%= @miscremotesubs %>
 
 SyslogIdentifier=%N
 
