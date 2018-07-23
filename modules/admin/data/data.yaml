@@ -3102,3 +3102,7 @@ ldap_only_users:
     ensure: present
     realname: Pats Pena
     email: ppena@wikimedia.org
+  nray:
+    ensure: present
+    realname: Nicholas Ray
+    email: nray@wikimedia.org
