@@ -5,7 +5,7 @@
 class role::elasticsearch::relforge {
     include ::standard
     include ::base::firewall
-    include ::profile::elasticsearch
+    include ::profile::elasticsearch::cirrus
     include ::profile::prometheus::elasticsearch_exporter
     include ::profile::prometheus::wmf_elasticsearch_exporter
     include ::elasticsearch::nagios::check

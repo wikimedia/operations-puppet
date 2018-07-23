@@ -13,9 +13,9 @@ profile::elasticsearch::expected_nodes: 2
 profile::elasticsearch::heap_memory: '30G'
 profile::elasticsearch::minimum_master_nodes: 1
 
-profile::elasticsearch::certificate_name: 'relforge.svc.eqiad.wmnet'
-profile::base::dns_alt_names:             'relforge.svc.eqiad.wmnet'
+profile::elasticsearch::cirrus::certificate_name: 'relforge.svc.eqiad.wmnet'
+profile::base::dns_alt_names: 'relforge.svc.eqiad.wmnet'
 
 has_lvs: false
 
-profile::elasticsearch::storage_device: dm-0
+profile::elasticsearch::cirrus::storage_device: dm-0

@@ -240,7 +240,7 @@ profile::etcd::tlsproxy::tls_upstream: false
 "profile::elasticsearch::heap_memory": 4G
 "profile::elasticsearch::recover_after_nodes": 3
 "profile::elasticsearch::bulk_thread_pool_executors": 5
-"profile::elasticsearch::ferm_srange": ''
+"profile::elasticsearch::cirrus::ferm_srange": ''
 "profile::elasticsearch::awareness_attributes": ''
 "profile::elasticsearch::rack": ''
 "profile::elasticsearch::row": ''
@@ -264,7 +264,7 @@ profile::elasticsearch::ltr_cache_size: '100mb'
 # this to match cpu counts to prevent overcommit of CPU resources.
 profile::elasticsearch::search_thread_pool_executors: 4
 
-profile::elasticsearch::storage_device: dm-0
+profile::elasticsearch::cirrus::storage_device: dm-0
 
 role::logstash::collector::statsd_host: labmon1001.eqiad.wmnet
 role::logstash::apifeatureusage::elastic_hosts:

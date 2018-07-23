@@ -53,10 +53,10 @@ profile::elasticsearch::expected_nodes: 36
 # We should be able to run "OK" with 11 servers.
 profile::elasticsearch::recover_after_nodes: 11
 
-profile::elasticsearch::certificate_name: 'search.svc.codfw.wmnet'
-profile::base::dns_alt_names:             'search.svc.codfw.wmnet'
+profile::elasticsearch::cirrus::certificate_name: 'search.svc.codfw.wmnet'
+profile::base::dns_alt_names: 'search.svc.codfw.wmnet'
 
 # Allow reindex from eqiad to codfw
 profile::elasticsearch::reindex_remote_whitelist: 'search.svc.eqiad.wmnet:9243'
 
-profile::elasticsearch::storage_device: dm-0
+profile::elasticsearch::cirrus::storage_device: dm-0

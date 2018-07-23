@@ -2,19 +2,11 @@
 # This class configures elasticsearch
 #
 # == Parameters:
-# [*ferm_srange*]
-#   The network range that should be allowed access to elasticsearch. This
-#   needs to be customized for elasticsearch clusters serving non production
-#   traffic. The relforge cluster is an example.
-#   Default: $DOMAIN_NETWORKS
-# [*storage_device*]
-#   The name of the block device used to storage elasticsearch data.
 #
-# For documentation of other parameters, see the elasticsearch class.
+# For documentation of parameters, see the elasticsearch class.
 #
 class profile::elasticsearch(
     $cluster_name = hiera('profile::elasticsearch::cluster_name'),
-    $ferm_srange = hiera('profile::elasticsearch::ferm_srange'),
     $cluster_hosts = hiera('profile::elasticsearch::cluster_hosts'),
     $unicast_hosts = hiera('profile::elasticsearch::unicast_hosts'),
     $minimum_master_nodes = hiera('profile::elasticsearch::minimum_master_nodes'),
@@ -27,22 +19,13 @@ class profile::elasticsearch(
     $awareness_attributes = hiera('profile::elasticsearch::awareness_attributes'),
     $bulk_thread_pool_executors = hiera('profile::elasticsearch::bulk_thread_pool_executors', 6),
     $search_thread_pool_executors = hiera('profile::elasticsearch::search_thread_pool_executors'),
-    $certificate_name = hiera('profile::elasticsearch::certificate_name', $::fqdn),
     $recover_after_time = hiera('profile::elasticsearch::recover_after_time', '1s'),
     $recover_after_nodes = hiera('profile::elasticsearch::recover_after_nodes', 1),
     $search_shard_count_limit = hiera('profile::elasticsearch::search_shard_count_limit'),
     $reindex_remote_whitelist = hiera('profile::elasticsearch::reindex_remote_whitelist'),
-    $storage_device = hiera('profile::elasticsearch::storage_device'),
     $ltr_cache_size = hiera('profile::elasticsearch::ltr_cache_size'),
 ) {
     $master_eligible = $::fqdn in $unicast_hosts
-
-    ferm::service { 'elastic-http':
-        proto   => 'tcp',
-        port    => '9200',
-        notrack => true,
-        srange  => $ferm_srange,
-    }
 
     $elastic_nodes_ferm = join($cluster_hosts, ' ')
 
@@ -51,25 +34,6 @@ class profile::elasticsearch(
         port    => '9300',
         notrack => true,
         srange  => "@resolve((${elastic_nodes_ferm}))",
-    }
-
-    package {'wmf-elasticsearch-search-plugins':
-        ensure => present,
-        before => Service['elasticsearch'],
-    }
-
-    file { '/etc/udev/rules.d/elasticsearch-readahead.rules':
-        ensure  => present,
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0444',
-        content => "SUBSYSTEM==\"block\", KERNEL==\"${storage_device}\", ACTION==\"add|change\", ATTR{bdi/read_ahead_kb}=\"128\"",
-        notify  => Exec['elasticsearch_udev_reload'],
-    }
-
-    exec { 'elasticsearch_udev_reload':
-        command     => '/sbin/udevadm control --reload && /sbin/udevadm trigger',
-        refreshonly => true,
     }
 
     apt::repository { 'wikimedia-elastic':
@@ -114,13 +78,5 @@ class profile::elasticsearch(
         reindex_remote_whitelist           => $reindex_remote_whitelist,
         script_max_compilations_per_minute => 10000,
         ltr_cache_size                     => $ltr_cache_size,
-    }
-
-    class { '::elasticsearch::https':
-        ferm_srange      => $ferm_srange,
-        certificate_name => $certificate_name,
-    }
-    elasticsearch::log::hot_threads_cluster { $cluster_name:
-        http_port => 9200,
     }
 }
