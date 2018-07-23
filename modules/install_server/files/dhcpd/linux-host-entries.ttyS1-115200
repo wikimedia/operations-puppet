@@ -5172,11 +5172,6 @@ host mw1348 {
         fixed-address mw1348.eqiad.wmnet;
 }
 
-host mw2017 {
-    hardware ethernet 78:2b:cb:2e:3c:1f;
-    fixed-address mw2017.codfw.wmnet;
-}
-
 host mw2135 {
     hardware ethernet B0:83:FE:DE:FA:62;
     fixed-address mw2135.codfw.wmnet;

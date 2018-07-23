@@ -1563,13 +1563,6 @@ node /^mwdebug200[12]\.codfw\.wmnet$/ {
 }
 
 
-# Hosts to decommission (if any)
-
-node 'mw2017.codfw.wmnet' {
-    role(spare::system)
-}
-
-
 # Appservers
 
 # Row A
