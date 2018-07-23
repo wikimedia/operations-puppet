@@ -1,7 +1,7 @@
 define elasticsearch::curator::config(
-    $ensure  = present,
-    $content = undef,
-    $source  = undef,
+    Wmflib::Ensure $ensure  = present,
+    Optional[String] $content = undef,
+    Optional[String] $source  = undef,
 ) {
     file { "/etc/curator/${title}.yaml":
         ensure  => $ensure,

@@ -1,7 +1,10 @@
-class elasticsearch::curator (
-    $hosts,
-) {
-
+# = Class: elasticsearch::curator
+#
+# This class installs elasticsearch-curator and all of the curator
+# actions. Individual clusters to manage must be defined with
+# elasticsearch::curator::cluster.
+#
+class elasticsearch::curator {
     require_package('elasticsearch-curator')
 
     file { '/etc/curator/':
@@ -13,11 +16,10 @@ class elasticsearch::curator (
         purge   => true,
     }
     elasticsearch::curator::config {
-        'config':
-            content => template('elasticsearch/curator/config.yaml.erb');
         'disable-shard-allocation':
             source => 'puppet:///modules/elasticsearch/curator/disable-shard-allocation.yaml';
         'enable-shard-allocation':
             source => 'puppet:///modules/elasticsearch/curator/enable-shard-allocation.yaml';
     }
 }
+

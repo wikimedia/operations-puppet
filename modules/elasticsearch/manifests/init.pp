@@ -171,8 +171,10 @@ class elasticsearch(
         default => [ '127.0.0.1' ],
     }
 
-    class { '::elasticsearch::curator':
-        hosts => $curator_hosts,
+    class { '::elasticsearch::curator': }
+    elasticsearch::curator::config { $cluster_name:
+        ensure  => present,
+        content => template('elasticsearch/curator_cluster.yaml.erb')
     }
 
     # Package defaults this to 0750, which is annoying

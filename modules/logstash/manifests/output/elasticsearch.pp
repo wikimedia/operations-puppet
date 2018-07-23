@@ -56,12 +56,13 @@ define logstash::output::elasticsearch(
         default => 'absent'
     }
 
-    # curator config template require a list of hosts
-    $hosts = [ $host ]
+    # curator cluster config template require a list of hosts
+    $cluster_name = $title
+    $curator_hosts = [ $host ]
 
     elasticsearch::curator::config {
         "config-${title}":
-            content => template('elasticsearch/curator/config.yaml.erb');
+            content => template('elasticsearch/curator_cluster.yaml.erb');
         "cleanup_${title}":
             content => template('logstash/curator/cleanup.yaml.erb')
     }

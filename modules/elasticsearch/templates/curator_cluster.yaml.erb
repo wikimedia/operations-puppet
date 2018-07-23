@@ -1,7 +1,7 @@
 ---
 client:
   hosts:
-<% @hosts.each do |host| -%>
+<% @curator_hosts.each do |host| -%>
     - <%= host %>
 <% end -%>
   port: 9200
@@ -12,6 +12,6 @@ client:
 
 logging:
   loglevel: INFO
-  logfile: /var/log/elasticsearch/curator.log
+  logfile: /var/log/elasticsearch/curator-<%= @cluster_name %>.log
   logformat: default
   blacklist: ['elasticsearch', 'urllib3']
