@@ -122,6 +122,8 @@ class elasticsearch(
     $reindex_remote_whitelist = undef,
     $script_max_compilations_per_minute = undef,
     $ltr_cache_size = undef,
+    $http_port = 9200,
+    $transport_tcp_port = 9300,
 ) {
 
     # Check arguments

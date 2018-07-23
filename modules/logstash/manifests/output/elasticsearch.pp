@@ -57,6 +57,7 @@ define logstash::output::elasticsearch(
     }
 
     # curator cluster config template require a list of hosts
+    $http_port = $port
     $cluster_name = $title
     $curator_hosts = [ $host ]
 

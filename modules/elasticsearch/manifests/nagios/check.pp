@@ -8,10 +8,13 @@
 #   unassigned).
 #   Default: '>=0.1'
 class elasticsearch::nagios::check(
-    $threshold = '>=0.15',
+    String $threshold = '>=0.15',
+    Array[Wmflib::IpPort] $http_ports = [9200],
 ) {
-    monitoring::service { 'elasticsearch shards':
-        check_command => "check_elasticsearch_shards_threshold!${threshold}",
-        description   => 'ElasticSearch health check for shards',
+    $http_ports.each |$http_port| {
+        monitoring::service { "elasticsearch shards ${http_port}":
+            check_command => "check_elasticsearch_shards_threshold!${http_port}!${threshold}",
+            description   => "ElasticSearch health check for shards on ${http_port}",
+        }
     }
 }

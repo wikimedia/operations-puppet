@@ -37,6 +37,10 @@ profile::elasticsearch::search_thread_pool_executors: 32
 # Increase the per-node cache for compiled LTR models from default 10MB
 profile::elasticsearch::ltr_cache_size: '100mb'
 
+profile::elasticsearch::http_port: 9200
+profile::elasticsearch::cirrus::tls_port: 9243
+profile::elasticsearch::transport_tcp_port: 9300
+
 profile::base::enable_microcode: true
 
 profile::mjolnir::kafka_bulk_daemon::topics:

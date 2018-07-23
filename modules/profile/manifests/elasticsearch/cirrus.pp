@@ -7,13 +7,12 @@
 #
 class profile::elasticsearch::cirrus(
     String $cluster_name = hiera('profile::elasticsearch::cluster_name'),
+    Wmflib::IpPort $http_port = hiera('profile::elasticsearch::http_port'),
+    Wmflib::IpPort $tls_port = hiera('profile::elasticsearch::cirrus::tls_port'),
     String $ferm_srange = hiera('profile::elasticsearch::cirrus::ferm_srange'),
     String $certificate_name = hiera('profile::elasticsearch::cirrus::certificate_name'),
     String $storage_device = hiera('profile::elasticsearch::cirrus::storage_device'),
 ) {
-    $http_port = 9200
-    $tls_port = 9243
-
     include ::profile::elasticsearch
 
     package {'wmf-elasticsearch-search-plugins':

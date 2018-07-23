@@ -24,6 +24,8 @@ class profile::elasticsearch(
     $search_shard_count_limit = hiera('profile::elasticsearch::search_shard_count_limit'),
     $reindex_remote_whitelist = hiera('profile::elasticsearch::reindex_remote_whitelist'),
     $ltr_cache_size = hiera('profile::elasticsearch::ltr_cache_size'),
+    $http_port = hiera('profile::elasticsearch::http_port'),
+    $transport_tcp_port = hiera('profile::elasticsearch::transport_tcp_port'),
 ) {
     $master_eligible = $::fqdn in $unicast_hosts
 
@@ -31,7 +33,7 @@ class profile::elasticsearch(
 
     ferm::service { 'elastic-inter-node':
         proto   => 'tcp',
-        port    => '9300',
+        port    => $transport_tcp_port,
         notrack => true,
         srange  => "@resolve((${elastic_nodes_ferm}))",
     }
@@ -81,5 +83,7 @@ class profile::elasticsearch(
         reindex_remote_whitelist           => $reindex_remote_whitelist,
         script_max_compilations_per_minute => 10000,
         ltr_cache_size                     => $ltr_cache_size,
+        http_port                          => $http_port,
+        transport_tcp_port                 => $transport_tcp_port,
     }
 }

@@ -25,6 +25,8 @@ elasticsearch::unicast_hosts:
   - logstash1005.eqiad.wmnet
   - logstash1006.eqiad.wmnet
 elasticsearch::data_dir: '/var/lib/elasticsearch'
+elasticsearch::http_port: 9200
+elasticsearch::transport_tcp_port: 9300
 
 # Logstash specific
 logstash::heap_memory: 1g
