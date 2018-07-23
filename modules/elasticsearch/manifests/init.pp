@@ -130,7 +130,7 @@ class elasticsearch(
     }
 
     case $version {
-        2, 5: {}
+        5: {}
         default: { fail("Unsupported elasticsearch version: ${version}") }
     }
 
@@ -195,45 +195,24 @@ class elasticsearch(
         mode    => '0444',
         require => Package['elasticsearch'],
     }
-    if $version == 2 {
-        # logging.yml is used by elasticsearch 2.x
-        file { '/etc/elasticsearch/logging.yml':
-            ensure  => file,
-            owner   => 'root',
-            group   => 'root',
-            content => template('elasticsearch/logging.yml.erb'),
-            mode    => '0444',
-            require => Package['elasticsearch'],
-        }
-        # Needs to be defined so the service definition can depend on
-        # it being setup in elasticsearch 5
-        file { '/etc/elasticsearch/log4j2.properties':
-            ensure => absent,
-        }
-        file { '/etc/elasticsearch/jvm.options':
-            ensure => absent,
-        }
-    } else {
-        file { '/etc/elasticsearch/logging.yml':
-            ensure => absent,
-        }
-        # log4j2.properties is used by elasticsearch 5.x
-        file { '/etc/elasticsearch/log4j2.properties':
-            ensure  => file,
-            owner   => 'root',
-            group   => 'root',
-            content => template('elasticsearch/log4j2.properties.erb'),
-            mode    => '0444',
-            require => Package['elasticsearch'],
-        }
-        file { '/etc/elasticsearch/jvm.options':
-            ensure  => file,
-            owner   => 'root',
-            group   => 'root',
-            content => template('elasticsearch/jvm.options.erb'),
-            mode    => '0444',
-            require => Package['elasticsearch'],
-        }
+    file { '/etc/elasticsearch/logging.yml':
+        ensure => absent,
+    }
+    file { '/etc/elasticsearch/log4j2.properties':
+        ensure  => file,
+        owner   => 'root',
+        group   => 'root',
+        content => template('elasticsearch/log4j2.properties.erb'),
+        mode    => '0444',
+        require => Package['elasticsearch'],
+    }
+    file { '/etc/elasticsearch/jvm.options':
+        ensure  => file,
+        owner   => 'root',
+        group   => 'root',
+        content => template('elasticsearch/jvm.options.erb'),
+        mode    => '0444',
+        require => Package['elasticsearch'],
     }
 
     # elasticsearch refuses to start without the "scripts" directory, even if
