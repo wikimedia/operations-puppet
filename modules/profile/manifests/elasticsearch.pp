@@ -120,6 +120,7 @@ class profile::elasticsearch(
         ferm_srange      => $ferm_srange,
         certificate_name => $certificate_name,
     }
-    class { '::elasticsearch::log::hot_threads': }
-
+    elasticsearch::log::hot_threads_cluster { $cluster_name:
+        http_port => 9200,
+    }
 }
