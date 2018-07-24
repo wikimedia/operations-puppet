@@ -6,7 +6,7 @@ class profile::cache::text(
     $nodes = hiera('cache::text::nodes'),
     $statsd_host = hiera('statsd'),
     $req_handling = hiera('cache::req_handling'),
-    $alternate_domains = hiera('cache::alternate_domains'),
+    $alternate_domains = hiera('cache::alternate_domains', {}),
     $app_directors = hiera('cache::app_directors'),
     $app_def_be_opts = hiera('cache::app_def_be_opts'),
     $cache_route_table = hiera('cache::route_table'),
