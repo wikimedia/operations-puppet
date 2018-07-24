@@ -39,6 +39,11 @@ class role::syslog::centralserver (
         source => 'puppet:///modules/mtail/programs/kernel.mtail',
     }
 
+    mtail::program { 'systemd':
+        ensure => present,
+        source => 'puppet:///modules/mtail/programs/systemd.mtail',
+    }
+
     $prometheus_nodes_ferm = join($prometheus_nodes, ' ')
     ferm::service { 'mtail':
         proto  => 'tcp',
