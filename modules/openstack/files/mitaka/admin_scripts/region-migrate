@@ -235,9 +235,12 @@ class NovaInstance(object):
         self.dest_instance.start()
         self.wait_for_status('ACTIVE', source=False)
 
-        # Note:  It'll be a long time until this instance deals
-        #  with its confusion over having a new IP -- ssh
-        #  won't work for several minutes more.
+        print("Waiting for the copied VM to boot and adjust to the new ip")
+        time.sleep(60)
+
+        print("Rebooting to acquire the new hostname")
+        self.dest_instance.reboot()
+        self.wait_for_status('ACTIVE', source=False)
 
         if activated_image:
             self.activate_image(self.dest_session, image_id, deactivate=True)
