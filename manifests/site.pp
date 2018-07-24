@@ -786,11 +786,11 @@ node /^es201[45]\.codfw\.wmnet/ {
 # External Storage, Shard 3 (es3) databases
 
 ## eqiad servers
-node 'es1014.eqiad.wmnet' {
+node 'es1017.eqiad.wmnet' {
     role(mariadb::core)
 }
 
-node /^es101[79]\.eqiad\.wmnet/ {
+node /^es101[49]\.eqiad\.wmnet/ {
     role(mariadb::core)
 }
 

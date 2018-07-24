@@ -161,13 +161,13 @@
     shard: es3
     role: slave
   targets:
-  - es1017:9104
+  - es1014:9104
   - es1019:9104
 - labels:
     shard: es3
     role: master
   targets:
-  - es1014:9104
+  - es1017:9104
 - labels:
     shard: test-s4
     role: slave
