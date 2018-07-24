@@ -513,12 +513,12 @@ class toollabs::exec_environ {
           # Python libraries on apt.wm.o or tools apt repo
           # Other python package requirements are added
           # using the genpp tool
-          'python-flask-oauth',
+          # python-flask-oauth is not in Debian
           'python-mwparserfromhell',     # T65539
-          'python-oursql',               # For danilo et al.
+          # python-oursql is not in Debian
           'python-socketio-client',      # T86015
-          'python-wikitools',
-          'python-mwclient',             # for morebots et al
+          #python-wikitools is apparently not in Debian (at least stretch)
+          #python-mwclient is apparently not in Debian (at least stretch)
           'python-pymysql',              # T189052
           'python3-pymysql',             # T189052
 
@@ -647,11 +647,9 @@ class toollabs::exec_environ {
           'libnfnetlink0',
           'libnspr4',
           'libnss3',
-          'libnss3-1d',
+          #libnss3-1d is not in stretch
           'libotf0',
           'libpcsclite1',
-          'libpng3',
-          'libproj0',                    # T58995
           'libquadmath0',
           'librsvg2-bin',                # T60516
           'libsvn1',
@@ -758,12 +756,14 @@ class toollabs::exec_environ {
             'hhvm',                        # T78783
             'libboost-python1.55.0',
             'libmpc3',
+            'libproj0',
             'libprotobuf9',
             'libbytes-random-secure-perl', # T123824
             'libvips38',
             'nodejs-legacy',               # T1102
             'mariadb-client',              # For /usr/bin/mysql
             'openjdk-7-jre-headless',
+            'libpng12-0',
             'php5-cli',
             'php5-common',
             'php5-curl',
@@ -793,11 +793,13 @@ class toollabs::exec_environ {
             'hhvm',                         # T78783
             'libboost-python1.62.0',
             'libmpc3',
+            'libproj12',
             'libprotobuf10',
             'libbytes-random-secure-perl', # T123824
             'libvips42',
             'nodejs-legacy',               # T1102
             'mariadb-client',              # For /usr/bin/mysql
+            'libpng16-16',
             # PHP libraries (Stretch is on php7)
             'php-cli',
             'php-common',
@@ -809,9 +811,9 @@ class toollabs::exec_environ {
             'php-mysqlnd',
             'php-pgsql',                  # For access to OSM db
             'php-redis',
-            'php-sqlite',
+            'php-sqlite3',
             'php-xdebug',                 # T72313
-            'php-xhprof',                 # T179343
+            # php-xhprof isn't available in stretch
             'php-xsl',
             'php-readline',               # T136519.
             'opencv-data',                 # T142321
