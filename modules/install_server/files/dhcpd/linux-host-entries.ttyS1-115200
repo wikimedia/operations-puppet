@@ -1257,13 +1257,6 @@ host contint2001 {
     filename "lpxelinux.0";
 }
 
-host dataset1001 {
-    hardware ethernet 78:2b:cb:76:42:ee;
-    fixed-address dataset1001.wikimedia.org;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
-    filename "lpxelinux.0";
-}
-
 host db1052 {
     hardware ethernet 90:B1:1C:2A:C4:D4;
     fixed-address db1052.eqiad.wmnet;
@@ -4102,13 +4095,6 @@ host mc2036 {
 host sodium {
     hardware ethernet f4:e9:d4:94:c5:90;
     fixed-address sodium.wikimedia.org;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
-    filename "lpxelinux.0";
-}
-
-host ms1001 {
-    hardware ethernet 78:2b:cb:0a:13:f3;
-    fixed-address ms1001.wikimedia.org;
     option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
     filename "lpxelinux.0";
 }

@@ -294,11 +294,6 @@ node 'darmstadtium.eqiad.wmnet' {
     role(docker::registry)
 }
 
-# decomm coming soon
-node 'dataset1001.wikimedia.org' {
-    role(spare::system)
-}
-
 # MariaDB 10
 
 # s1 (enwiki) core production dbs on eqiad
@@ -1362,11 +1357,6 @@ node 'multatuli.wikimedia.org' {
     role(test)
 
     interface::add_ip6_mapped { 'main': }
-}
-
-# decomm coming soon
-node 'ms1001.wikimedia.org' {
-    role(spare::system)
 }
 
 node 'ms1002.eqiad.wmnet' {
