@@ -1,0 +1,7 @@
+Jul 24 08:11:49 thumbor1003 kernel: [12676821.995914] thumbor invoked oom-killer: gfp_mask=0x24000c0(GFP_KERNEL), nodemask=0-1, order=0, oom_score_adj=0
+Jul 24 08:31:43 scb1003 kernel: [12489707.312048] Chrome_IOThread invoked oom-killer: gfp_mask=0x24000c0(GFP_KERNEL), nodemask=0-1, order=0, oom_score_adj=0
+Jul 24 09:44:11 thumbor1001 kernel: [12683587.684358] thumbor invoked oom-killer: gfp_mask=0x24000c0(GFP_KERNEL), nodemask=0-1, order=0, oom_score_adj=0
+Jul 24 07:36:01 thumbor1003 kernel: [12674673.520226] rsvg-convert[39547]: segfault at 30 ip 00007f2a5710c24f sp 00007ffcdaa60210 error 4 in libcairo.so.2.11400.0[7f2a570b3000+110000]
+Jul 24 07:36:30 sca2004 kernel: [1718044.702571] HTML5 Parser[20315]: segfault at 0 ip 00007ff6fe45c0e7 sp 00007ff6e91fe7a0 error 6 in libmozalloc.so[7ff6fe45b000+2000]
+Jul 24 07:36:35 thumbor1002 kernel: [12674662.267249] rsvg-convert[38025]: segfault at 30 ip 00007f63c47c4228 sp 00007ffdab60a0c0 error 4 in libcairo.so.2.11400.0[7f63c476b000+110000]
+Jul 24 07:36:37 thumbor1003 kernel: [12674709.979677] rsvg-convert[40326]: segfault at 30 ip 00007fa82186f24f sp 00007fff81705770 error 4 in libcairo.so.2.11400.0[7fa821816000+110000]
