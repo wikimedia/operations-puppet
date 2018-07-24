@@ -299,6 +299,8 @@ sub recv_fe_ip_processing {
 
 sub vcl_init {
 	call wm_common_directors_init;
+	call wm_common_domains_init;
+
 	// again, netmapper only used in frontends, for recv_fe_ip_processing
 	// args here are map-name (for .map()), data file, and seconds between mtime checks for reload
 	netmapper.init("trusted_proxies", "<%= @netmapper_dir %>/trusted_proxies.json", 89);

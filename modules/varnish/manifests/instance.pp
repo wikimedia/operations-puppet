@@ -97,6 +97,7 @@ define varnish::instance(
             inst            => $inst,
             app_directors   => $app_directors,
             app_def_be_opts => $app_def_be_opts,
+            is_separate_vcl => $vcl_name in $separate_vcl,
         }
 
         varnish::wikimedia_vcl { "/etc/varnish/wikimedia_${vcl_name}.vcl":
@@ -107,6 +108,7 @@ define varnish::instance(
             vcl             => $vcl_name,
             app_directors   => $app_directors,
             app_def_be_opts => $app_def_be_opts,
+            is_separate_vcl => $vcl_name in $separate_vcl,
         }
 
         # These versions of wikimedia-common_${vcl_name}.vcl and wikimedia_${vcl_name}.vcl
@@ -123,6 +125,7 @@ define varnish::instance(
             inst            => $inst,
             app_directors   => $app_directors,
             app_def_be_opts => $app_def_be_opts,
+            is_separate_vcl => $vcl_name in $separate_vcl,
         }
 
         varnish::wikimedia_vcl { "/usr/share/varnish/tests/wikimedia_${vcl_name}.vcl":
@@ -134,6 +137,7 @@ define varnish::instance(
             vcl             => $vcl_name,
             app_directors   => $app_directors,
             app_def_be_opts => $app_def_be_opts,
+            is_separate_vcl => $vcl_name in $separate_vcl,
         }
 
         varnish::wikimedia_vcl { "/etc/varnish/${vcl_name}.inc.vcl":
