@@ -73,11 +73,11 @@ class RSS_Feed:
     def __init__(self):
         self.options = {
             "outputxml": "rss20.xml",
-            "xmltitle": "Wikimedia Planet <% @languages_keys %>",
-            "xmllink": "https://<% @languages_keys %>.planet.wikimedia.org/",
-            "xmllanguage": "<% @languages_keys %>",
-            "xmlurl": "https://<% @languages_keys %>.planet.wikimedia.org/rss20.xml",
-            "xmldescription": "Wikimedia Planet <% @languages_keys %> - https://<% @languages_keys %>planet.wikimedia.org/",
+            "xmltitle": "Wikimedia Planet - <%= @title %>",
+            "xmllink": "https://<%= @title %>.planet.wikimedia.org/",
+            "xmllanguage": "<%= @title %>",
+            "xmlurl": "https://<%= @title %>.planet.wikimedia.org/rss20.xml",
+            "xmldescription": "Wikimedia Planet - <%= @title %> - https://<%= @title %>planet.wikimedia.org/",
             "xmlownername": "Wikimedia",
             "xmlowneremail": "",
             "xmlmaxarticles": "",
