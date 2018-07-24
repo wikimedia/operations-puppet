@@ -25,3 +25,6 @@ profile::maps::osm_master::slaves:
     ip_address: 10.64.32.117
   maps1004:
     ip_address: 10.64.48.154
+
+# disabling updates while vacuum is running: https://phabricator.wikimedia.org/T200228
+profile::maps::osm_master::disable_replication_cron: true
