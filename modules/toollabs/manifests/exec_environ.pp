@@ -434,7 +434,7 @@ class toollabs::exec_environ {
           'mono-complete',
           'mono-fastcgi-server',         # T85142
           'mono-vbnc',                   # T186846
-          'npm',                         # T1102
+          # 'npm' is only in the wikimedia repos and not for stretch
           'nodejs',
           'r-base',
           'ruby',
@@ -761,6 +761,7 @@ class toollabs::exec_environ {
             'libbytes-random-secure-perl', # T123824
             'libvips38',
             'nodejs-legacy',               # T1102
+            'npm',
             'mariadb-client',              # For /usr/bin/mysql
             'openjdk-7-jre-headless',
             'libpng12-0',
@@ -826,6 +827,7 @@ class toollabs::exec_environ {
         }
     }
 
+    # misctools is in the aptly repo -- need to build that stuff for stretch
     package { 'misctools':
         ensure => latest,
     }
