@@ -3,6 +3,7 @@ dnsdomain = <%= @site %>.wmnet
 keystone_url = http://<%= @keystone_host %>:35357/v3
 user = novaadmin
 password = <%= @ldap_user_pass %>
+ssh_root_key_path = /home/andrew/vps_root_key
 
 [source]
 region = <%= @site %>

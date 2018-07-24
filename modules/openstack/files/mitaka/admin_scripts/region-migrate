@@ -114,6 +114,36 @@ class NovaInstance(object):
         else:
             raise Exception("Image manipulation got status: " + resp.status_code)
 
+    def ssh_test(self, source=True):
+        if source:
+            instance = self.source_instance
+            target_ip = instance.addresses['public'][0]['addr']
+        else:
+            instance = self.dest_instance
+            target_ip = instance.addresses['flatcloudinstancesb'][0]['addr']
+
+        if instance.status != 'ACTIVE':
+            print ("We can't test ssh to an instance with state %s" % instance.status)
+            return False
+
+        rootkeyfile = self.common_config['ssh_root_key_path']
+
+        sshargs = ["ssh", "-i", rootkeyfile, "-oStrictHostKeyChecking=no",
+                   "root@%s" % target_ip, "hostname"]
+        try:
+            r = subprocess.check_output(sshargs)
+        except:
+            print("exception caught while attempting ssh to %s" % target_ip)
+            return False
+
+        if r.strip() != instance.name:
+            print("ssh test to %s failed.  Returned hostname %s but expected %s" % (target_ip, r.strip(), instance.name))
+            return False
+        else:
+            print("verified ssh for %s, returned hostname %s" % (target_ip, r))
+
+        return True
+
     def refresh_instance(self, source=True):
         if source:
             self.source_instance = self.source_novaclient.servers.get(self.instance_id)
@@ -173,10 +203,28 @@ class NovaInstance(object):
         image_id = self.source_instance.image['id']
         flavor_id = self.source_instance.flavor['id']
 
+        if self.source_instance.status == 'ACTIVE':
+            # Verify that we can connect to this VM, then shut it off.
+
+            if not self.ssh_test():
+                print("Failed to ssh to source VM.")
+                exit(1)
+
+            try:
+                self.source_instance.stop()
+            except:
+                print("exception caught while stopping source VM")
+                exit(1)
+        elif self.source_instance.status == 'SHUTOFF':
+            print("Source VM is already shut off.")
+        else:
+            print("Source VM has status %s" % self.source_instance.status)
+
         activated_image = self.activate_image(self.dest_session, image_id)
 
         self.make_destination_vm(name, image_id, flavor_id)
 
+        # Make sure we have a working key for copying instances
         sshargs = ["ssh", "-i", "/root/.ssh/compute-hosts-key",
                    "nova@%s.codfw.wmnet" % self.dest_host, "true"]
         r = subprocess.call(sshargs)
@@ -185,10 +233,6 @@ class NovaInstance(object):
             print("We leaked a VM with ID %s" % self.dest_instance_id)
             exit(1)
 
-        try:
-            self.source_instance.stop()
-        except:
-            print("exception caught while stopping source VM; maybe it's already stopped?")
         self.dest_instance.stop()
 
         self.wait_for_status('SHUTOFF', source=True)
@@ -244,6 +288,17 @@ class NovaInstance(object):
 
         if activated_image:
             self.activate_image(self.dest_session, image_id, deactivate=True)
+
+        for i in xrange(11):
+            if self.ssh_test(source=False):
+                break
+            else:
+                print("Failed to ssh to new VM. Retrying after a wait...")
+                time.sleep(30)
+
+        if i == 10:
+            print("all ssh tests failed, giving up.  Leaks abound.")
+            exit(1)
 
         if host_moved:
             # TODO: should we automatically delete the original VM or
