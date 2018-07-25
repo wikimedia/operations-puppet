@@ -53,6 +53,10 @@ sub mobile_redirect {
 	}
 }
 
+sub cluster_fe_vcl_switch {
+	call text_common_vcl_switch;
+}
+
 sub cluster_fe_recv_pre_purge {
 	if (std.ip(req.http.X-Client-IP, "192.0.2.1") ~ abuse_nets) {
 		return (synth(403, "Abuse"));

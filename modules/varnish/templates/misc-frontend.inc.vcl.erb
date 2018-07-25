@@ -1,6 +1,8 @@
 include "misc-common.inc.vcl";
 include "zero.inc.vcl";
 
+sub cluster_fe_vcl_switch { }
+
 sub cluster_fe_recv_pre_purge {
     // Block WP Zero users from accessing Phabricator uploads to prevent abuse
     // (T168142)

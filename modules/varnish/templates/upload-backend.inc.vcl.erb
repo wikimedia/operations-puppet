@@ -24,6 +24,8 @@ sub pick_stevedore {
 	}
 }
 
+sub cluster_be_vcl_switch { }
+
 sub cluster_be_recv_pre_purge {
 	if (req.method == "PURGE") {
 		call upload_normalize_path;

@@ -2,6 +2,10 @@
 
 include "text-common.inc.vcl";
 
+sub cluster_be_vcl_switch {
+	call text_common_vcl_switch;
+}
+
 sub cluster_be_recv_pre_purge {
 	if (req.method == "PURGE") {
 		call text_normalize_path;

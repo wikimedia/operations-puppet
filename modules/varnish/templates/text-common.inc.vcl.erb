@@ -143,8 +143,7 @@ sub text_normalize_path {
 	}
 }
 
-// fe+be common recv code
-sub text_common_recv {
+sub text_common_vcl_switch {
 <% if @vcl_config.fetch('alternate_domains', {}).length > 0 -%>
        // Switch to cache_misc VCL if the request is for a site listed in
        // cache::alternate_domains
@@ -152,6 +151,10 @@ sub text_common_recv {
                return (vcl(wikimedia_misc));
        }
 <% end -%>
+}
+
+// fe+be common recv code
+sub text_common_recv {
 	if (req.method != "GET" && req.method != "HEAD") {
 		return (pass);
 	}

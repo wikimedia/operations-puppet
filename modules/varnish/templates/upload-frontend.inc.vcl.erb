@@ -22,6 +22,8 @@ acl fb_nets {
 	"2a03:2880::0"/32;
 }
 
+sub cluster_fe_vcl_switch { }
+
 sub cluster_fe_recv_pre_purge {
 	// Normalize paths before purging
 	call upload_normalize_path;

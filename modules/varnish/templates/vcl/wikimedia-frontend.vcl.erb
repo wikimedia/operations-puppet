@@ -325,6 +325,9 @@ sub vcl_recv {
 		// This unwraps proxy-style URLs and sanitizes the Host header (lowercase, no port, no funny chars)
 		call normalize_request;
 
+		// Possibly switch to separate VCL
+		call cluster_fe_vcl_switch;
+
 		// IP processing is req->req mangling that shouldn't be re-done on restart
 		call recv_fe_ip_processing;
 	}
