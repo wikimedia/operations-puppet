@@ -498,6 +498,11 @@ node 'db1064.eqiad.wmnet' {
     role(mariadb::core)
 }
 
+node 'db1120.eqiad.wmnet' {
+    role(mariadb::core)
+}
+
+
 # codfw
 # x1 codfw master
 node 'db2034.codfw.wmnet' {
@@ -610,11 +615,6 @@ node 'db1102.eqiad.wmnet' {
 # Old temporary sanitarium hosts now ready to be productionized
 #
 node 'db1116.eqiad.wmnet' {
-    role(spare::system)
-}
-
-# reserved for x1
-node 'db1120.eqiad.wmnet' {
     role(spare::system)
 }
 
