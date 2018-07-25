@@ -315,15 +315,6 @@ class TaskGen < ::Rake::TaskLib
             raise "Tox tests for redirects.dat failed!" unless res
           end
         end
-        webperf_files = filter_files_by("modules/webperf/files/*.*")
-        unless webperf_files.empty?
-          desc 'Run tox for webperf'
-          task :webperf do
-            res = system("tox -e webperf")
-            raise 'Tests for webperf failed!' unless res
-          end
-          tasks << 'tox:webperf'
-        end
         mtail_files = filter_files_by("modules/mtail/files/**")
         unless mtail_files.empty?
           desc 'Run tox for mtail'
