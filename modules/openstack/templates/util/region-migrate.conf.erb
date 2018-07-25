@@ -4,6 +4,8 @@ keystone_url = http://<%= @keystone_host %>:35357/v3
 user = novaadmin
 password = <%= @ldap_user_pass %>
 ssh_root_key_path = /home/andrew/vps_root_key
+vps_domain = codfw.labtest
+dns_server = labtest-ns0.wikimedia.org
 
 [source]
 region = <%= @site %>

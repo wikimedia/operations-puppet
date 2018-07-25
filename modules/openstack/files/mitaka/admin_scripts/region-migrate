@@ -114,6 +114,41 @@ class NovaInstance(object):
         else:
             raise Exception("Image manipulation got status: " + resp.status_code)
 
+    def dns_test(self, source=True, accept_multiples=False):
+        if source:
+            instance = self.source_instance
+            target_ip = instance.addresses['public'][0]['addr']
+        else:
+            instance = self.dest_instance
+            target_ip = instance.addresses['flatcloudinstancesb'][0]['addr']
+
+        nameserver = self.common_config['dns_server']
+        fqdn = "%s.%s.%s" % (instance.name, self.project_id, self.common_config['vps_domain'])
+
+        digargs = ["dig", "@%s" % nameserver, "+short", fqdn]
+        try:
+            r = subprocess.check_output(digargs)
+        except:
+            print("exception caught while attempting dig for %s" % fqdn)
+            return False
+
+        ips = r.strip().split('\n')
+        print(ips)
+        if accept_multiples:
+            if target_ip not in ips:
+                print("Got wrong ip %s for %s, should include %s" % (r, fqdn, target_ip))
+                return False
+        else:
+            if len(ips) > 1:
+                print("Got multiple IPs for %s" % fqdn)
+                return False
+
+        if ips[0] != target_ip:
+            print("Got wrong ip %s for %s, should be %s" % (r, fqdn, target_ip))
+            return False
+
+        return True
+
     def ssh_test(self, source=True):
         if source:
             instance = self.source_instance
@@ -202,6 +237,11 @@ class NovaInstance(object):
         name = self.source_instance.name
         image_id = self.source_instance.image['id']
         flavor_id = self.source_instance.flavor['id']
+
+        # Make sure that our dns tests are working
+        if not self.dns_test():
+            print("DNS test failed, bailing out")
+            exit(1)
 
         if self.source_instance.status == 'ACTIVE':
             # Verify that we can connect to this VM, then shut it off.
@@ -300,10 +340,28 @@ class NovaInstance(object):
             print("all ssh tests failed, giving up.  Leaks abound.")
             exit(1)
 
+        # Check that the new VM is showing up in dns
+        if not self.dns_test(source=False, accept_multiples=True):
+            print("The new instance isn't appearing in DNS")
+            exit(1)
+
         if host_moved:
-            # TODO: should we automatically delete the original VM or
-            #  just leave it stopped?
+            # self.source_instance.delete()
             pass
+        else:
+            # we need to do some kind of clever cleanup here
+            pass
+
+        for i in xrange(11):
+            if self.dns_test(source=False):
+                break
+            else:
+                print("waiting to recheck DNS")
+                time.sleep(30)
+
+        if i == 10:
+            print("all dns tests failed, giving up.  We probably leaked a DNS record for the source VM.")
+            exit(1)
 
         print("Instance %s is now on host %s with status %s" % (
             self.dest_instance_id,
