@@ -342,6 +342,15 @@ class TaskGen < ::Rake::TaskLib
           end
           tasks << 'tox:nagios_common'
         end
+        grafana_files = filter_files_by("modules/grafana/files/**")
+        unless grafana_files.empty?
+          desc 'Run tox for grafana'
+          task :grafana do
+            res = system("tox -e grafana")
+            raise 'Tests for grafana failed!' unless res
+          end
+          tasks << 'tox:grafana'
+        end
         tox_files = filter_files_by("*.py")
         unless tox_files.empty?
           desc 'Run flake8 on python files via tox'
