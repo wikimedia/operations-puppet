@@ -65,6 +65,7 @@ class package_builder(
         'apache2-dev',
         'ivy-debian-helper',
         'maven-debian-helper',
+        'haveged',
         $php_dev,
         $dh_php,
     ])
