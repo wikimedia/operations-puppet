@@ -426,6 +426,8 @@ class toollabs::exec_environ {
           # Please keep all packages in each group sorted in alphabetical order
           # Locales (T60500)
           # language-packs not available in Debian
+          # To add all locales, this needs to all be in a role so that the include
+          # works
 
           # Language Runtimes
           'gcj-jre',                     # T58995
@@ -689,7 +691,7 @@ class toollabs::exec_environ {
           'fakechroot',                  # T138138
           ]:
           ensure => latest,
-          before => Class['::profile::locales::all'],
+          before => Class['::profile::locales::extended'],
       }
     }
 
