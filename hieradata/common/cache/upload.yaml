@@ -48,4 +48,4 @@ cache::upload::nodes:
     - 'cp5003.eqsin.wmnet'
     - 'cp5004.eqsin.wmnet'
     - 'cp5005.eqsin.wmnet'
-#    - 'cp5006.eqsin.wmnet' # borked for now
+    - 'cp5006.eqsin.wmnet'
