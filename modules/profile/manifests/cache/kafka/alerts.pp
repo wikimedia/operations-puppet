@@ -17,7 +17,7 @@ class profile::cache::kafka::alerts {
 
     monitoring::graphite_threshold { 'varnishkafka-webrequest-text-kafka_drerr':
         ensure          => 'present',
-        description     => 'Varnishkafka Webrequest Delivery Errors per second',
+        description     => 'cache_text: Varnishkafka Webrequest Delivery Errors per second',
         dashboard_links => ['https://grafana.wikimedia.org/dashboard/db/varnishkafka?panelId=20&fullscreen&orgId=1&var-instance=webrequest&var-host=All'],
         metric          => 'sumSeries(perSecond(varnishkafka.*.webrequest.text.varnishkafka.kafka_drerr))',
         warning         => 1,
@@ -56,7 +56,7 @@ class profile::cache::kafka::alerts {
 
     monitoring::graphite_threshold { 'varnishkafka-webrequest-upload-kafka_drerr':
         ensure          => 'present',
-        description     => 'Varnishkafka Webrequest Delivery Errors per second',
+        description     => 'cache_upload: Varnishkafka Webrequest Delivery Errors per second',
         dashboard_links => ['https://grafana.wikimedia.org/dashboard/db/varnishkafka?panelId=20&fullscreen&orgId=1&var-instance=webrequest&var-host=All'],
         metric          => 'sumSeries(perSecond(varnishkafka.*.webrequest.upload.varnishkafka.kafka_drerr))',
         warning         => 1,
@@ -69,7 +69,7 @@ class profile::cache::kafka::alerts {
 
     monitoring::graphite_threshold { 'varnishkafka-webrequest-misc-kafka_drerr':
         ensure          => 'present',
-        description     => 'Varnishkafka Webrequest Delivery Errors per second',
+        description     => 'cache_misc: Varnishkafka Webrequest Delivery Errors per second',
         dashboard_links => ['https://grafana.wikimedia.org/dashboard/db/varnishkafka?panelId=20&fullscreen&orgId=1&var-instance=webrequest&var-host=All'],
         metric          => 'sumSeries(perSecond(varnishkafka.*.webrequest.misc.varnishkafka.kafka_drerr))',
         warning         => 1,
