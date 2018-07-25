@@ -128,4 +128,5 @@ class tilerator::ui(
         mode    => '0555',
         content => template('tilerator/notify-tilerator.erb'),
     }
+
 }

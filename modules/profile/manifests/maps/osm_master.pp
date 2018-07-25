@@ -12,6 +12,7 @@ class profile::maps::osm_master (
     $postgres_slaves          = hiera('profile::maps::osm_master::slaves', undef),
     $cleartables              = hiera('profile::maps::osm_master::cleartables', false),
     $disable_replication_cron = hiera('profile::maps::osm_master::disable_replication_cron', false),
+    $tilerator_storage_id     = hiera('profile::maps::apps::tilerator_storage_id'),
 ) {
 
     require ::profile::maps::postgresql_common
@@ -164,6 +165,10 @@ class profile::maps::osm_master (
         osm::populate_admin { $db_name:
             ensure => present,
         }
+    }
+
+    class { 'tilerator::regen':
+        storage_id => $tilerator_storage_id,
     }
 
     class { 'osm::prometheus':
