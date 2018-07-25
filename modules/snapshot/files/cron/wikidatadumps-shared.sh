@@ -111,3 +111,13 @@ function getContinueBatchNumber {
 		batch=`echo $tempFiles | awk '{ print $(NF) }' | sed -r 's/.*batch([0-9]+).gz/\1/'`
 	fi
 }
+
+# Move file from temp under name $1 to target under name $2 and then link it as latest under name $3
+function moveLinkFile {
+	tempFile=$1
+	targetFile=$2
+	latestFile=$3
+	mv "$tempDir/$tempFile" "$targetDir/$targetFile"
+	ln -fs "$today/$targetFile" "$targetDirBase/$latestFile"
+	putDumpChecksums "$targetDir/$targetFile"
+}

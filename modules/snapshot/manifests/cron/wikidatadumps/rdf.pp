@@ -3,6 +3,8 @@ class snapshot::cron::wikidatadumps::rdf(
     $filesonly = false,
 ) {
     $scriptpath = '/usr/local/bin/dumpwikidatardf.sh'
+    # serdi for translating ttl to nt
+    require_package('serdi')
     file { $scriptpath:
         mode    => '0755',
         owner   => 'root',
@@ -14,7 +16,7 @@ class snapshot::cron::wikidatadumps::rdf(
     if !$filesonly {
         cron { 'wikidatardf-dumps':
             ensure      => 'present',
-            command     => "${scriptpath} all ttl; ${scriptpath} truthy nt",
+            command     => "${scriptpath} all ttl nt; ${scriptpath} truthy nt",
             environment => 'MAILTO=ops-dumps@wikimedia.org',
             user        => $user,
             minute      => '0',

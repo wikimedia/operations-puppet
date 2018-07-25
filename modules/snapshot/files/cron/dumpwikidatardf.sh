@@ -11,10 +11,11 @@
 . /usr/local/bin/wikidatadumps-shared.sh
 
 if [[ "$1" == '--help' ]]; then
-	echo -e "Usage: $0 [--continue] all|truthy ttl|nt\n"
+	echo -e "Usage: $0 [--continue] all|truthy ttl|nt [nt|ttl]\n"
 	echo -e "\t--continue\tAttempt to continue a previous dump run."
 	echo -e "\tall|truthy\tType of dump to produce."
 	echo -e "\tttl|nt\t\tOutput format."
+	echo -e "\t[nt|ttl]\t\tOutput format for extra dump, converted from above (optional)."
 
 	exit
 fi
@@ -45,15 +46,24 @@ if [ -z "$dumpFlavor" ]; then
 fi
 
 dumpFormat=$2
+extraFormat=$3
 
 if [[ "$dumpFormat" != "ttl" ]] && [[ "$dumpFormat" != "nt" ]]; then
 	echo "Unknown format: $dumpFormat"
 	exit 1
 fi
 
+if [ -n "$extraFormat" ]; then
+	declare -A serdiDumpFormats
+	serdiDumpFormats=(["ttl"]="turtle" ["nt"]="ntriples")
+	extraIn=${serdiDumpFormats[$dumpFormat]}
+	extraOut=${serdiDumpFormats[$extraFormat]}
+	if [ -z "$extraIn" -o -z "$extraOut" -o "$extraIn" = "$extraOut" ]; then
+		extraFormat=""
+	fi
+fi
+
 filename=wikidata-$today-$dumpName-BETA
-targetFileGzip=$targetDir/$filename.$dumpFormat.gz
-targetFileBzip2=$targetDir/$filename.$dumpFormat.bz2
 failureFile=/tmp/dumpwikidata$dumpFormat-$dumpName-failure
 mainLogFile=/var/log/wikidatadump/dumpwikidata$dumpFormat-$filename-main.log
 
@@ -132,18 +142,51 @@ while [ $i -lt $shards ]; do
 		exit 1
 	fi
 	cat $tempFiles >> $tempDir/wikidata$dumpFormat-$dumpName.gz
-	rm $tempFiles
 	let i++
 done
 
-mv $tempDir/wikidata$dumpFormat-$dumpName.gz $targetFileGzip
-ln -fs "$today/$filename.$dumpFormat.gz" "$targetDirBase/latest-$dumpName.$dumpFormat.gz"
-putDumpChecksums $targetFileGzip
+if [ -n "$extraFormat" ]; then
+	# Convert primary format to extra format
+	i=0
+	while [ $i -lt $shards ]; do
+		getTempFiles "$tempDir/wikidata$dumpFormat-$dumpName.$i-batch*.gz"
+		(
+			set -o pipefail
+			for tempFile in $tempFiles; do
+				extraFile=${tempFile/wikidata$dumpFormat/wikidata$extraFormat}
+				gzip -dc $tempFile | serdi -i $extraIn -o $extraOut -b -q - | gzip -9 > $extraFile
+				exitCode=$?
+				if [ $exitCode -gt 0 ]; then
+					echo -e "\n\n(`date --iso-8601=minutes`) Converting $tempFile failed with exit code $exitCode" >> $errorLog
+				fi
+			done
+		) &
+		let i++
+	done
+	wait
+fi
 
-gzip -dc $targetFileGzip | bzip2 -c > $tempDir/wikidata$dumpFormat-$dumpName.bz2
-mv $tempDir/wikidata$dumpFormat-$dumpName.bz2 $targetFileBzip2
-ln -fs "$today/$filename.$dumpFormat.bz2" "$targetDirBase/latest-$dumpName.$dumpFormat.bz2"
-putDumpChecksums $targetFileBzip2
+i=0
+while [ $i -lt $shards ]; do
+	getTempFiles "$tempDir/wikidata$dumpFormat-$dumpName.$i-batch*.gz"
+	rm -f $tempFiles
+	if [ -n "$extraFormat" ]; then
+		getTempFiles "$tempDir/wikidata$extraFormat-$dumpName.$i-batch*.gz"
+		cat $tempFiles >> $tempDir/wikidata$extraFormat-$dumpName.gz
+		rm -f $tempFiles
+	fi
+	let i++
+done
+
+moveLinkFile wikidata$dumpFormat-$dumpName.gz $filename.$dumpFormat.gz latest-$dumpName.$dumpFormat.gz
+gzip -dc "$targetDir/$filename.$dumpFormat.gz" | bzip2 -c > $tempDir/wikidata$dumpFormat-$dumpName.bz2
+moveLinkFile wikidata$dumpFormat-$dumpName.bz2 $filename.$dumpFormat.bz2 latest-$dumpName.$dumpFormat.bz2
+
+if [ -n "$extraFormat" ]; then
+	moveLinkFile wikidata$extraFormat-$dumpName.gz $filename.$extraFormat.gz latest-$dumpName.$extraFormat.gz
+	gzip -dc "$targetDir/$filename.$extraFormat.gz" | bzip2 -c > $tempDir/wikidata$extraFormat-$dumpName.bz2
+	moveLinkFile wikidata$extraFormat-$dumpName.bz2 $filename.$extraFormat.bz2 latest-$dumpName.$extraFormat.bz2
+fi
 
 pruneOldLogs
 runDcat
