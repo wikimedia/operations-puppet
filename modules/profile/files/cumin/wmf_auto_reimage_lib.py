@@ -229,7 +229,7 @@ def print_line(message, host=None, skip_time=False, level=logging.INFO):
 
     parts.append(message)
 
-    print(' | '.join(parts), file=safe_stdout)
+    print(' | '.join(parts), file=safe_stdout)  # noqa: E999 TODO: remove once tox:pep8 uses python3
     safe_stdout.flush()
     logger.log(level, message)
 
