@@ -707,8 +707,6 @@ host cp1074 {
 host cp1075 {
     hardware ethernet 00:0A:F7:EF:F8:30;
     fixed-address cp1075.eqiad.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
-    filename "lpxelinux.0";
 }
 
 host cp1099 {
