@@ -462,7 +462,7 @@ class toollabs::exec_environ {
           'libdigest-crc-perl',
           'libdigest-hmac-perl',
           'libfile-nfslock-perl',
-          'libgd-gd2-perl',              # T69199.
+          'libgd-perl',              # T69199.
           'libhtml-format-perl',
           'libhtml-html5-entities-perl',
           'libhtml-parser-perl',
@@ -508,7 +508,6 @@ class toollabs::exec_environ {
           'libxml-parser-perl',
           'libxml-simple-perl',
           'libxml-xpathengine-perl',     # For Checkwiki.
-          'perl-modules',
 
           # Python libraries on apt.wm.o or tools apt repo
           # Other python package requirements are added
@@ -690,7 +689,7 @@ class toollabs::exec_environ {
           'fakechroot',                  # T138138
           ]:
           ensure => latest,
-          before => Class['::profile::locales::extended'],
+          before => Class['::profile::locales::all'],
       }
     }
 
@@ -765,6 +764,7 @@ class toollabs::exec_environ {
             'mariadb-client',              # For /usr/bin/mysql
             'openjdk-7-jre-headless',
             'libpng12-0',
+            'perl-modules',
             'php5-cli',
             'php5-common',
             'php5-curl',
@@ -801,6 +801,7 @@ class toollabs::exec_environ {
             'nodejs-legacy',               # T1102
             'mariadb-client',              # For /usr/bin/mysql
             'libpng16-16',
+            'perl-modules-5.24',
             # PHP libraries (Stretch is on php7)
             'php-cli',
             'php-common',
@@ -809,13 +810,13 @@ class toollabs::exec_environ {
             'php-imagick',                # T71078.
             'php-intl',                   # T57652
             'php-mcrypt',
-            'php-mysqlnd',
+            'php-mysql',
             'php-pgsql',                  # For access to OSM db
             'php-redis',
             'php-sqlite3',
             'php-xdebug',                 # T72313
             # php-xhprof isn't available in stretch
-            'php-xsl',
+            'php-xml',
             'php-readline',               # T136519.
             'opencv-data',                 # T142321
             'openjdk-8-jre-headless',
