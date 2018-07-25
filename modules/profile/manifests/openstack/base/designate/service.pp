@@ -26,6 +26,7 @@ class profile::openstack::base::designate::service(
     $osm_host = hiera('profile::openstack::base::osm_host'),
     $labweb_hosts = hiera('profile::openstack::base::labweb_hosts'),
     $monitoring_host = hiera('profile::openstack::base::monitoring_host'),
+    $region = hiera('profile::openstack::base::region'),
     ) {
 
     $primary_pdns_ip = ipresolve($primary_pdns,4)
@@ -58,6 +59,7 @@ class profile::openstack::base::designate::service(
         rabbit_host                => $nova_controller,
         keystone_public_port       => $keystone_public_port,
         keystone_auth_port         => $keystone_auth_port,
+        region                     => $region,
     }
     contain '::openstack::designate::service'
 

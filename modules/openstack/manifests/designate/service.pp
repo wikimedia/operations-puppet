@@ -28,6 +28,7 @@ class openstack::designate::service(
     $rabbit_host,
     $keystone_public_port,
     $keystone_auth_port,
+    $region,
     ) {
 
     $keystone_host_ip   = ipresolve($keystone_host,4)

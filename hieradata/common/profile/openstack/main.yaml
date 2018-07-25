@@ -1,3 +1,4 @@
+profile::openstack::main::region: 'eqiad'
 profile::openstack::main::version: 'mitaka'
 # WARNING:  Glance base images are rsynced from the primary host to the spare with
 #  --delete.  Make sure to back-up or otherwise keep track

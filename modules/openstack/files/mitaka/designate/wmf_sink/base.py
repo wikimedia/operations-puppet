@@ -198,7 +198,8 @@ class BaseAddressWMFHandler(BaseAddressHandler):
                     serviceid = service.id
                     break
 
-            endpoints = keystone.endpoints.list(service=serviceid)
+            endpoints = keystone.endpoints.list(service=serviceid,
+                                                region=cfg.CONF[self.name].region)
             for endpoint in endpoints:
                 if endpoint.interface == 'public':
                     self.proxy_endpoint = endpoint.url

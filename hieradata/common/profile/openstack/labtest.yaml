@@ -1,3 +1,4 @@
+profile::openstack::labtest::region: 'codfw'
 profile::openstack::labtest::version: 'mitaka'
 profile::openstack::labtest::nova_controller: 'labtestcontrol2001.wikimedia.org'
 profile::openstack::labtest::nova_controller_standby: 'labtestcontrol2001.wikimedia.org'
