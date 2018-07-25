@@ -493,6 +493,83 @@ kafka_clusters:
         id: 1006
         rack: D
 
+# Hadoop base configuration is common to multiple profiles, and must be kept
+# in sync. Instead of having it repated multiple times it is convenient to
+# have a single place in hiera to check/modify.
+hadoop_clusters:
+  analytics-hadoop:
+    zookeeper_cluster_name: main-eqiad
+    resourcemanager_hosts:
+      - analytics1001.eqiad.wmnet
+      - analytics1002.eqiad.wmnet
+    namenode_hosts:
+      - analytics1001.eqiad.wmnet
+      - analytics1002.eqiad.wmnet
+    journalnode_hosts:
+      - analytics1052.eqiad.wmnet  # Row A3
+      - analytics1072.eqiad.wmnet  # ROW B2
+      - analytics1028.eqiad.wmnet  # Row C2
+      - analytics1035.eqiad.wmnet  # Row D2
+      - analytics1069.eqiad.wmnet  # Row D8
+    # analytics* Dell R720s have mounts on disks sdb - sdm.
+    # (sda is hardware raid on the 2 2.5 drives in the flex bays.)
+    datanode_mounts:
+      - /var/lib/hadoop/data/b
+      - /var/lib/hadoop/data/c
+      - /var/lib/hadoop/data/d
+      - /var/lib/hadoop/data/e
+      - /var/lib/hadoop/data/f
+      - /var/lib/hadoop/data/g
+      - /var/lib/hadoop/data/h
+      - /var/lib/hadoop/data/i
+      - /var/lib/hadoop/data/j
+      - /var/lib/hadoop/data/k
+      - /var/lib/hadoop/data/l
+      - /var/lib/hadoop/data/m
+    # The datanode daemon by default begins the shutdown procedure as soon as
+    # on volume/disk failure is registered. In our use case we want to keep the
+    # datanode working in case of one/two (two is very unlikey on the same host)
+    # disk failures.
+    datanode_volumes_failed_tolerated: 2
+    mapreduce_reduce_shuffle_parallelcopies: 10
+    mapreduce_task_io_sort_mb: 200
+    mapreduce_task_io_sort_factor: 10
+
+    # Configure memory based on these recommendations and then adjusted:
+    # http://docs.hortonworks.com/HDPDocuments/HDP2/HDP-2.0.6.0/bk_installing_manually_book/content/rpm-chap1-11.html
+
+    # These Map/Reduce and YARN ApplicationMaster master settings are
+    # settable per job.
+    # All worker nodes are currently Dell R720s with 64G of RAM and 24 cores
+    # or R730dxs with 128G of RAM and 48 cores.
+
+    # Choosing 2G for default application container size.
+    # Map container size and JVM max heap size (-XmX)
+    mapreduce_map_memory_mb: 2048
+    mapreduce_map_java_opts: '-Xmx1638m'  # 0.8 * 2G
+
+    # Reduce container size and JVM max heap size (-Xmx)
+    mapreduce_reduce_memory_mb: 4096         # 2 * 2G
+    mapreduce_reduce_java_opts: '-Xmx3276m'  # 0.8 * 2 * 2G
+
+    # Yarn ApplicationMaster container size and  max heap size (-Xmx)
+    yarn_app_mapreduce_am_resource_mb: 4096          # 2 * 2G
+    yarn_app_mapreduce_am_command_opts: '-Xmx3276m'  # 0.8 * 2 * 2G
+
+    # Save 12G for OS and other processes.
+    # R720s will have 52G for YARN with room for 26 2G containers.
+    # R730dxs will have 116G for YARN with room for 52 2G containers.
+    # The value of profile::hadoop::common::yarn_nodemanager_resource_memory_mb is set in regex.yaml.
+
+    # Setting minimum_allocations to 0 to allow Impala to submit small reservation requests.
+    # TODO: do we need to set this anymore?  We don't use Impala.
+    yarn_scheduler_minimum_allocation_mb: 0
+    # Allow a job to request up to the smallest value of yarn_nodemanager_resource_memory_mb
+    # in the cluster. The smallest value is 52G on the R720s (analytics1069 and below).
+    yarn_scheduler_maximum_allocation_mb: 53248
+    yarn_scheduler_minimum_allocation_vcores:   0
+    yarn_scheduler_maximum_allocation_vcores:   32
+
 deployment_server: deploy1001.eqiad.wmnet
 
 maintenance_server:  mwmaint1001.eqiad.wmnet

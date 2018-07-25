@@ -227,14 +227,6 @@ smart_health_mpt:
   __regex: !ruby/regexp /^(maps-test|lvs100[1-6]|labnet1002).*/
   profile::base::check_smart: false
 
-# Vary Hadoop yarn_nodemanager_resource_memory_mb based on available RAM.
-hadoop_worker_64G_memory:
-  __regex: !ruby/regexp /^analytics10(2[89]|3[0-9]|4[0-9]|5[0-9]|6[0-9]).eqiad.wmnet$/
-  profile::hadoop::common::yarn_nodemanager_resource_memory_mb: 53248   # 64G - 12G
-hadoop_worker_128G_memory:
-  __regex: !ruby/regexp /^analytics10(7[0-9]).eqiad.wmnet$/
-  profile::hadoop::common::yarn_nodemanager_resource_memory_mb: 118784  # 128G - 12G
-
 puppetdb4_servers:
   __regex: !ruby/regexp /^puppetdb[12]001\.(eqiad|codfw)\.wmnet$/
   profile::puppetdb::database::users:

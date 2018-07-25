@@ -12,10 +12,22 @@ admin::groups:
 profile::hadoop::master::monitoring_enabled: true
 profile::hadoop::logstash::enabled: false
 
-# This is the heap zize of YARN daemons ResourceManager and NodeManagers.
-# This setting is used to configure the max heap size for both.
-# The default is 1000m, we increase it to 2048m in production.
-profile::hadoop::common::yarn_heapsize: 2048
+profile::hadoop::common::hadoop_cluster_name: 'analytics-hadoop'
+
+profile::hadoop::common::config_override:
+  # This is the heap zize of YARN daemons ResourceManager and NodeManagers.
+  # This setting is used to configure the max heap size for both.
+  # The default is 1000m, we increase it to 2048m in production.
+  yarn_heapsize: 2048
+  # Prometheus JMX Exporter config templates.
+  hadoop_namenode_opts: "-Xms8192m -Xmx8192m -XX:+UseParNewGC -XX:+UseConcMarkSweepGC -XX:CMSInitiatingOccupancyFraction=70 -XX:+CMSParallelRemarkEnabled -javaagent:/usr/share/java/prometheus/jmx_prometheus_javaagent.jar=%{::ipaddress}:10080:/etc/prometheus/hdfs_namenode_jmx_exporter.yaml"
+  yarn_resourcemanager_opts: "-Xms2048m -javaagent:/usr/share/java/prometheus/jmx_prometheus_javaagent.jar=%{::ipaddress}:10083:/etc/prometheus/yarn_resourcemanager_jmx_exporter.yaml"
+  mapreduce_history_java_opts: "-Xms4096m -Xmx4096m -javaagent:/usr/share/java/prometheus/jmx_prometheus_javaagent.jar=%{::ipaddress}:10086:/etc/prometheus/mapreduce_history_jmx_exporter.yaml"
+  # The HDFS Trash is configured in this way:
+  # 1) Once every day a checkpoint is made (that contains all the trash for a day).
+  # 2) After a month a checkpoint is deleted.
+  hdfs_trash_checkpoint_interval: 1440
+  hdfs_trash_interval: 43200
 
 # Used to set up jvm heap size usage thresholds
 profile::hadoop::master::namenode_heapsize: 8192
@@ -23,17 +35,8 @@ profile::hadoop::master::namenode_heapsize: 8192
 # Ensure that users in these posix groups have home directories in HDFS.
 profile::hadoop::master::hadoop_user_groups: "analytics-users analytics-privatedata-users analytics-admins analytics-search-users"
 
-# Prometheus JMX Exporter config templates.
-profile::hadoop::common::hadoop_namenode_opts: "-Xms8192m -Xmx8192m -XX:+UseParNewGC -XX:+UseConcMarkSweepGC -XX:CMSInitiatingOccupancyFraction=70 -XX:+CMSParallelRemarkEnabled -javaagent:/usr/share/java/prometheus/jmx_prometheus_javaagent.jar=%{::ipaddress}:10080:/etc/prometheus/hdfs_namenode_jmx_exporter.yaml"
-profile::hadoop::common::yarn_resourcemanager_opts: "-Xms2048m -javaagent:/usr/share/java/prometheus/jmx_prometheus_javaagent.jar=%{::ipaddress}:10083:/etc/prometheus/yarn_resourcemanager_jmx_exporter.yaml"
-profile::hadoop::common::mapreduce_history_java_opts: "-Xms4096m -Xmx4096m -javaagent:/usr/share/java/prometheus/jmx_prometheus_javaagent.jar=%{::ipaddress}:10086:/etc/prometheus/mapreduce_history_jmx_exporter.yaml"
 
 profile::hadoop::firewall::master::analytics_srange: '$ANALYTICS_NETWORKS'
 profile::hadoop::firewall::master::analytics_druid_srange: '(($ANALYTICS_NETWORKS $DRUID_PUBLIC_HOSTS))'
 
-# The HDFS Trash is configured in this way:
-# 1) Once every day a checkpoint is made (that contains all the trash for a day).
-# 2) After a month a checkpoint is deleted.
-profile::hadoop::common::hdfs_trash_checkpoint_interval: 1440
-profile::hadoop::common::hdfs_trash_interval: 43200
 profile::base::enable_microcode: true

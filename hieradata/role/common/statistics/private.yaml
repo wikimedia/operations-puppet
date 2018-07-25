@@ -10,3 +10,5 @@ admin::groups:
   - analytics-search-users
   - analytics-wmde-users
 profile::statistics::private::graphite_host: 'graphite-in.eqiad.wmnet'
+
+profile::hadoop::common::hadoop_cluster_name: 'analytics-hadoop'

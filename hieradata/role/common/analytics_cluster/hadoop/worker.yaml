@@ -4,6 +4,8 @@ cluster: analytics
 admin::groups:
   - analytics-admins
 
+profile::hadoop::common::hadoop_cluster_name: 'analytics-hadoop'
+
 profile::hadoop::worker::monitoring_enabled: true
 profile::hadoop::logstash::enabled: false
 
@@ -12,15 +14,16 @@ profile::hadoop::logstash::enabled: false
 profile::base::check_disk_options: '-w 6% -c 3% -W 6% -K 3% -l -e -A -i "/var/lib/hadoop/data"'
 profile::base::check_raid_policy: 'WriteBack'
 
-# Increased Heap sizes for Datanode/Nodemanager Hadoop daemons from 2G to 4G
-# in https://phabricator.wikimedia.org/T178876
-profile::hadoop::common::yarn_heapsize: 4096
-profile::hadoop::common::hadoop_heapsize: 4096
-
-# Prometheus JMX Exporter config templates.
-profile::hadoop::common::hadoop_datanode_opts: "-Xms4096m -javaagent:/usr/share/java/prometheus/jmx_prometheus_javaagent.jar=%{::ipaddress}:51010:/etc/prometheus/hdfs_datanode_jmx_exporter.yaml"
-profile::hadoop::common::hadoop_journalnode_opts: "-javaagent:/usr/share/java/prometheus/jmx_prometheus_javaagent.jar=%{::ipaddress}:10485:/etc/prometheus/hdfs_journalnode_jmx_exporter.yaml"
-profile::hadoop::common::yarn_nodemanager_opts: "-Xms4096m -javaagent:/usr/share/java/prometheus/jmx_prometheus_javaagent.jar=%{::ipaddress}:8141:/etc/prometheus/yarn_nodemanager_jmx_exporter.yaml"
+profile::hadoop::common::config_override:
+  # Increased Heap sizes for Datanode/Nodemanager Hadoop daemons from 2G to 4G
+  # in https://phabricator.wikimedia.org/T178876
+  yarn_heapsize: 4096
+  hadoop_heapsize: 4096
+  # Prometheus JMX Exporter config templates.
+  hadoop_datanode_opts: "-Xms4096m -javaagent:/usr/share/java/prometheus/jmx_prometheus_javaagent.jar=%{::ipaddress}:51010:/etc/prometheus/hdfs_datanode_jmx_exporter.yaml"
+  hadoop_journalnode_opts: "-javaagent:/usr/share/java/prometheus/jmx_prometheus_javaagent.jar=%{::ipaddress}:10485:/etc/prometheus/hdfs_journalnode_jmx_exporter.yaml"
+  yarn_nodemanager_opts: "-Xms4096m -javaagent:/usr/share/java/prometheus/jmx_prometheus_javaagent.jar=%{::ipaddress}:8141:/etc/prometheus/yarn_nodemanager_jmx_exporter.yaml"
+  yarn_nodemanager_os_reserved_memory_mb: 12000
 
 profile::hadoop::worker::ferm_srange: '(($ANALYTICS_NETWORKS $DRUID_PUBLIC_HOSTS))'
 

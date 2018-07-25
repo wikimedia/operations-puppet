@@ -13,6 +13,23 @@
 #  [*zookeeper_clusters*]
 #    List of available/configured Zookeeper clusters and their properties.
 #
+#  [*hadoop_clusters*]
+#    List of available/configured Hadoop clusters and their properties.
+#
+#  [*hadoop_cluster_name*]
+#    The Hadoop cluster name to pick up config properties from.
+#    Default: 'cdh'
+#
+#  [*config_override*]
+#    Hash of Hadoop properties that override the ones defined in the
+#    hadoop_clusters's variable configuration.
+#    Default: {}
+#
+# == Hadoop properties
+#
+#  These properties can be added to either hadoop_clusters or config_override's
+#  hashes, and they configure specific Hadoop functionality.
+#
 #  [*zookeeper_cluster_name*]
 #    The zookeeper cluster name to use.
 #
@@ -21,7 +38,6 @@
 #
 #  [*cluster_name*]
 #    Name of the Hadoop cluster.
-#    Default:'cdh'
 #
 #  [*namenode_hosts*]
 #    List of hostnames acting as HDFS Namenodes for the cluster.
@@ -130,9 +146,9 @@
 #    Yarn scheduler specific setting.
 #    Default: undef
 #
-#  [*yarn_nodemanager_resource_memory_mb*]
-#    Map-reduce specific setting.  If not set, but reserved_memory_mb and total_memory_mb are,
-#    This will be set to total_memory_mb - reserved_memory_mb.
+#  [*yarn_nodemanager_os_reserved_memory_mb*]
+#    Map-reduce specific setting. If set, yarn_nodemanager_resource_memory_mb will
+#    be set as total_memory_on_host - yarn_nodemanager_os_reserved_memory_mb.
 #    Default: undef
 #
 #  [*yarn_scheduler_minimum_allocation_mb*]
@@ -148,40 +164,60 @@
 #    Sets the JAVA_HOME env. variable in hadoop-env.sh
 #
 class profile::hadoop::common (
-    $zookeeper_clusters                       = hiera('zookeeper_clusters'),
-    $zookeeper_cluster_name                   = hiera('profile::hadoop::common::zookeeper_cluster_name'),
-    $resourcemanager_hosts                    = hiera('profile::hadoop::common::resourcemanager_hosts'),
-    $cluster_name                             = hiera('profile::hadoop::common::cluster_name', 'cdh'),
-    $namenode_hosts                           = hiera('profile::hadoop::common::namenode_hosts'),
-    $journalnode_hosts                        = hiera('profile::hadoop::common::journalnode_hosts'),
-    $datanode_mounts                          = hiera('profile::hadoop::common::datanode_mounts', undef),
-    $datanode_volumes_failed_tolerated        = hiera('profile::hadoop::common::datanode_volumes_failed_tolerated', undef),
-    $hdfs_trash_checkpoint_interval           = hiera('profile::hadoop::common::hdfs_trash_checkpoint_interval', undef),
-    $hdfs_trash_interval                      = hiera('profile::hadoop::common::hdfs_trash_interval', undef),
-    $mapreduce_reduce_shuffle_parallelcopies  = hiera('profile::hadoop::common::mapreduce_reduce_shuffle_parallelcopies', undef),
-    $mapreduce_task_io_sort_mb                = hiera('profile::hadoop::common::mapreduce_task_io_sort_mb', undef),
-    $mapreduce_task_io_sort_factor            = hiera('profile::hadoop::common::mapreduce_task_io_sort_factor', undef),
-    $mapreduce_map_memory_mb                  = hiera('profile::hadoop::common::mapreduce_map_memory_mb', undef),
-    $mapreduce_map_java_opts                  = hiera('profile::hadoop::common::mapreduce_map_java_opts', undef),
-    $mapreduce_reduce_memory_mb               = hiera('profile::hadoop::common::mapreduce_reduce_memory_mb', undef),
-    $mapreduce_reduce_java_opts               = hiera('profile::hadoop::common::mapreduce_reduce_java_opts', undef),
-    $yarn_heapsize                            = hiera('profile::hadoop::common::yarn_heapsize', undef),
-    $yarn_nodemanager_opts                    = hiera('profile::hadoop::common::yarn_nodemanager_opts', undef),
-    $yarn_resourcemanager_opts                = hiera('profile::hadoop::common::yarn_resourcemanager_opts', undef),
-    $hadoop_heapsize                          = hiera('profile::hadoop::common::hadoop_heapsize', undef),
-    $hadoop_datanode_opts                     = hiera('profile::hadoop::common::hadoop_datanode_opts', undef),
-    $hadoop_journalnode_opts                  = hiera('profile::hadoop::common::hadoop_journalnode_opts', undef),
-    $hadoop_namenode_opts                     = hiera('profile::hadoop::common::hadoop_namenode_opts', undef),
-    $yarn_app_mapreduce_am_resource_mb        = hiera('profile::hadoop::common::yarn_app_mapreduce_am_resource_mb', undef),
-    $yarn_app_mapreduce_am_command_opts       = hiera('profile::hadoop::common::yarn_app_mapreduce_am_command_opts', undef),
-    $mapreduce_history_java_opts              = hiera('profile::hadoop::common::mapreduce_history_java_opts', undef),
-    $yarn_scheduler_minimum_allocation_vcores = hiera('profile::hadoop::common::yarn_scheduler_minimum_allocation_vcores', undef),
-    $yarn_scheduler_maximum_allocation_vcores = hiera('profile::hadoop::common::yarn_scheduler_maximum_allocation_vcores', undef),
-    $yarn_nodemanager_resource_memory_mb      = hiera('profile::hadoop::common::yarn_nodemanager_resource_memory_mb', undef),
-    $yarn_scheduler_minimum_allocation_mb     = hiera('profile::hadoop::common::yarn_scheduler_minimum_allocation_mb', undef),
-    $yarn_scheduler_maximum_allocation_mb     = hiera('profile::hadoop::common::yarn_scheduler_maximum_allocation_mb', undef),
-    $java_home                                = hiera('profile::hadoop::common::java_home', '/usr/lib/jvm/java-8-openjdk-amd64/jre'),
+    $zookeeper_clusters = hiera('zookeeper_clusters'),
+    $hadoop_clusters    = hiera('hadoop_clusters'),
+    $cluster_name       = hiera('profile::hadoop::common::hadoop_cluster_name'),
+    $config_override    = hiera('profile::hadoop::common::config_override', {}),
 ) {
+
+    # Properties that are not meant to have undef as default value (a hash key
+    # without a correspondent value returns undef) should be listed in here.
+    $hadoop_default_config = {
+        'java_home'    => '/usr/lib/jvm/java-8-openjdk-amd64/jre',
+
+    }
+
+    # The final Hadoop configuration is obtained merging three hashes:
+    # 1) Hadoop properties with a default value different than undef
+    # 2) Hadoop properies meant to be shared among all Hadoop daemons/services
+    # 3) Hadoop properties that might get overridden by specific Hadoop role/profiles.
+    $hadoop_config = $hadoop_default_config + $hadoop_clusters[$cluster_name] + $config_override
+
+    $zookeeper_cluster_name                   = $hadoop_config['zookeeper_cluster_name']
+    $resourcemanager_hosts                    = $hadoop_config['resourcemanager_hosts']
+    $namenode_hosts                           = $hadoop_config['namenode_hosts']
+    $journalnode_hosts                        = $hadoop_config['journalnode_hosts']
+    $datanode_mounts                          = $hadoop_config['datanode_mounts']
+    $datanode_volumes_failed_tolerated        = $hadoop_config['datanode_volumes_failed_tolerated']
+    $hdfs_trash_checkpoint_interval           = $hadoop_config['hdfs_trash_checkpoint_interval']
+    $hdfs_trash_interval                      = $hadoop_config['hdfs_trash_interval']
+    $mapreduce_reduce_shuffle_parallelcopies  = $hadoop_config['mapreduce_reduce_shuffle_parallelcopies']
+    $mapreduce_task_io_sort_mb                = $hadoop_config['mapreduce_task_io_sort_mb']
+    $mapreduce_task_io_sort_factor            = $hadoop_config['mapreduce_task_io_sort_factor']
+    $mapreduce_map_memory_mb                  = $hadoop_config['mapreduce_map_memory_mb']
+    $mapreduce_map_java_opts                  = $hadoop_config['mapreduce_map_java_opts']
+    $mapreduce_reduce_memory_mb               = $hadoop_config['mapreduce_reduce_memory_mb']
+    $mapreduce_reduce_java_opts               = $hadoop_config['mapreduce_reduce_java_opts']
+    $yarn_heapsize                            = $hadoop_config['yarn_heapsize']
+    $yarn_nodemanager_opts                    = $hadoop_config['yarn_nodemanager_opts']
+    $yarn_resourcemanager_opts                = $hadoop_config['yarn_resourcemanager_opts']
+    $hadoop_heapsize                          = $hadoop_config['hadoop_heapsize']
+    $hadoop_datanode_opts                     = $hadoop_config['hadoop_datanode_opts']
+    $hadoop_journalnode_opts                  = $hadoop_config['hadoop_journalnode_opts']
+    $hadoop_namenode_opts                     = $hadoop_config['hadoop_namenode_opts']
+    $yarn_app_mapreduce_am_resource_mb        = $hadoop_config['yarn_app_mapreduce_am_resource_mb']
+    $yarn_app_mapreduce_am_command_opts       = $hadoop_config['yarn_app_mapreduce_am_command_opts']
+    $mapreduce_history_java_opts              = $hadoop_config['mapreduce_history_java_opts']
+    $yarn_scheduler_minimum_allocation_vcores = $hadoop_config['yarn_scheduler_minimum_allocation_vcores']
+    $yarn_scheduler_maximum_allocation_vcores = $hadoop_config['yarn_scheduler_maximum_allocation_vcores']
+    $yarn_nodemanager_resource_memory_mb      = $hadoop_config['yarn_nodemanager_os_reserved_memory_mb'] ? {
+            undef   => undef,
+            default => floor($facts['memorysize_mb']) - $hadoop_config['yarn_nodemanager_os_reserved_memory_mb'],
+    }
+    $yarn_scheduler_minimum_allocation_mb     = $hadoop_config['yarn_scheduler_minimum_allocation_mb']
+    $yarn_scheduler_maximum_allocation_mb     = $hadoop_config['yarn_scheduler_maximum_allocation_mb']
+    $java_home                                = $hadoop_config['java_home']
+
     # Include Wikimedia's thirdparty/cloudera apt component
     # as an apt source on all Hadoop hosts.  This is needed
     # to install CDH packages from our apt repo mirror.

@@ -11,6 +11,8 @@ prometheus::node_exporter::collectors_extra:
 # to prefer the cdh version (we do it only for Hadoop nodes).
 profile::cdh::apt::pin_release: false
 
+profile::hadoop::common::hadoop_cluster_name: 'analytics-hadoop'
+
 # Druid nodes get their own Zookeeper cluster to isolate them
 # from the production ones.
 # Configure the zookeeper profile.

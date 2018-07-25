@@ -5,3 +5,5 @@ admin::groups:
   - statistics-privatedata-users
   - analytics-privatedata-users
 profile::swap::rsync_hosts_allow: notebook*.*.wmnet
+
+profile::hadoop::common::hadoop_cluster_name: 'analytics-hadoop'
