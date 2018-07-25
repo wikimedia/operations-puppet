@@ -226,6 +226,12 @@ class profile::backup::director(
         includes => [ '/srv/backup/hadoop/namenode' ]
     }
 
+    bacula::director::fileset { 'netbox':
+        includes => [ '/srv/deployment/netbox/deploy/netbox/netbox/media/',
+                      '/srv/deployment/netbox/deploy/netbox/netbox/reports/',
+                    ]
+    }
+
     # The console should be on the director
     class { 'bacula::console':
         director   => $::fqdn,
