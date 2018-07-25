@@ -25,6 +25,7 @@ class profile::netbox (
     # Have backups because Netbox is used as a source of truth (T190184)
     include ::profile::backup::host
     backup::set { 'netbox': }
+    class { '::postgresql::backup': }
 
     # Used for LDAP auth
     include passwords::ldap::wmf_cluster

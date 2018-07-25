@@ -229,6 +229,7 @@ class profile::backup::director(
     bacula::director::fileset { 'netbox':
         includes => [ '/srv/deployment/netbox/deploy/netbox/netbox/media/',
                       '/srv/deployment/netbox/deploy/netbox/netbox/reports/',
+                      '/srv/postgres-backup/'
                     ]
     }
 
