@@ -1,17 +1,11 @@
 # defined type: a config dir and file for a planet language version
 define planet::config (
     $domain_name = $domain_name,
+    $config_path = '/etc/rawdog',
+    $config_file = 'config',
+    $feed_src    = 'feeds',
 ){
 
-    if os_version('debian >= stretch') {
-        $config_path = '/etc/rawdog'
-        $config_file = 'config'
-        $feed_src = 'feeds_rawdog'
-    } else {
-        $config_path = '/usr/share/planet-venus/wikimedia'
-        $config_file = 'config.ini'
-        $feed_src = 'feeds'
-    }
 
     file { "${config_path}/${title}":
         ensure => 'directory',
