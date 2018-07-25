@@ -156,7 +156,7 @@ class profile::hadoop::common (
     $journalnode_hosts                        = hiera('profile::hadoop::common::journalnode_hosts'),
     $datanode_mounts                          = hiera('profile::hadoop::common::datanode_mounts', undef),
     $datanode_volumes_failed_tolerated        = hiera('profile::hadoop::common::datanode_volumes_failed_tolerated', undef),
-    $hdfs_trash_checkpoint_interval           = hiera('profile::hadoop:common::hdfs_trash_checkpoint_interval', undef),
+    $hdfs_trash_checkpoint_interval           = hiera('profile::hadoop::common::hdfs_trash_checkpoint_interval', undef),
     $hdfs_trash_interval                      = hiera('profile::hadoop::common::hdfs_trash_interval', undef),
     $mapreduce_reduce_shuffle_parallelcopies  = hiera('profile::hadoop::common::mapreduce_reduce_shuffle_parallelcopies', undef),
     $mapreduce_task_io_sort_mb                = hiera('profile::hadoop::common::mapreduce_task_io_sort_mb', undef),

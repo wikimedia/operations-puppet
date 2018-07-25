@@ -34,6 +34,6 @@ profile::hadoop::firewall::master::analytics_druid_srange: '(($ANALYTICS_NETWORK
 # The HDFS Trash is configured in this way:
 # 1) Once every day a checkpoint is made (that contains all the trash for a day).
 # 2) After a month a checkpoint is deleted.
-profile::hadoop:common::hdfs_trash_checkpoint_interval: 1440
+profile::hadoop::common::hdfs_trash_checkpoint_interval: 1440
 profile::hadoop::common::hdfs_trash_interval: 43200
 profile::base::enable_microcode: true
