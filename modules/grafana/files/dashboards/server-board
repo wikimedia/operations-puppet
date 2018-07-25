@@ -1419,7 +1419,7 @@
   "tags": [
     "operations",
     "source:puppet.git",
-    "readonly",
+    "readonly"
   ],
   "templating": {
     "enable": true,
