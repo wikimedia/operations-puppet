@@ -934,10 +934,12 @@ node 'labpuppetmaster1002.wikimedia.org' {
 # and the powerdns auth and recursive services for instances.
 node 'labservices1001.wikimedia.org' {
     role(wmcs::openstack::main::services_primary)
+    interface::add_ip6_mapped { 'main': }
 }
 
 node 'labservices1002.wikimedia.org' {
     role(wmcs::openstack::main::services_secondary)
+    interface::add_ip6_mapped { 'main': }
 }
 
 node /^labtestneutron200[1-2]\.codfw.wmnet$/ {
