@@ -2,7 +2,7 @@
 # tendril: MariaDB Analytics
 
 class role::tendril {
-    include ::base::firewall
+    include ::profile::base::firewall
     include ::standard
 
     interface::add_ip6_mapped { 'main': }
