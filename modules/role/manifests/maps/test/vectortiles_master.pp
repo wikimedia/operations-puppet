@@ -1,12 +1,7 @@
 # Sets up a maps server master
 class role::maps::test::vectortiles_master {
     include ::standard
-
-    # TODO: move to profile::base::firewall once https://gerrit.wikimedia.org/r/#/c/383519/ is merged
-    # lint:ignore:wmf_styleguide
-    include ::base::firewall
-    # lint:endignore
-
+    include ::profile::base::firewall
     include ::profile::maps::apps
     include ::profile::maps::cassandra
     include ::profile::maps::osm_master
