@@ -313,7 +313,7 @@ sub vcl_recv {
 	// Hieradata switch to shut users out of a DC/cluster. T129424
 	// We refuse to authorize the request and describe the reason in the
 	// response payload. https://tools.ietf.org/html/rfc7231#section-6.5.3
-	error 403 "This server has been disabled, you probably ended up here because of hardcoded IPs or broken DNS caching";
+	return (synth(403, "This server has been disabled, you probably ended up here because of hardcoded IPs or broken DNS caching"));
 <% end -%>
 
 	// no injection from outside our stack allowed for these
