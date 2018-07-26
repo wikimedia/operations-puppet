@@ -58,7 +58,6 @@ class profile::eventstreams(
         deployment        => 'scap3',
         deployment_config => true,
         deployment_vars   => {
-            log_level      => 'info',
             site           => $::site,
             broker_list    => $broker_list,
             rdkafka_config => $rdkafka_config,
