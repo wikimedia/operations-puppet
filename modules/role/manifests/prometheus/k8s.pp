@@ -8,7 +8,7 @@ class role::prometheus::k8s {
     }
 
     include ::standard
-    include ::base::firewall
+    include ::profile::base::firewall
     include ::profile::prometheus::k8s
 
     # We only have a staging cluster in eqiad, don't poll it from both DCs

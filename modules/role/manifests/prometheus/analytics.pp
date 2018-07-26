@@ -8,7 +8,7 @@ class role::prometheus::analytics {
     }
 
     include ::standard
-    include ::base::firewall
+    include ::profile::base::firewall
 
     $targets_path = '/srv/prometheus/analytics/targets'
     $storage_retention = hiera('prometheus::server::storage_retention', '4032h0m0s')
