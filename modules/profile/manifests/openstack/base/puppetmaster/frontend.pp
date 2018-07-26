@@ -37,20 +37,21 @@ class profile::openstack::base::puppetmaster::frontend(
     }
 
     class {'profile::openstack::base::puppetmaster::common':
-        labs_instance_range      => $labs_instance_range,
-        designate_host           => $designate_host,
-        puppetmaster_webhostname => $puppetmaster_webhostname,
-        puppetmaster_hostname    => $puppetmaster_hostname,
-        puppetmasters            => $puppetmasters,
-        baremetal_servers        => $baremetal_servers,
-        encapi_db_host           => $encapi_db_host,
-        encapi_db_name           => $encapi_db_name,
-        encapi_db_user           => $encapi_db_user,
-        encapi_db_pass           => $encapi_db_pass,
-        encapi_statsd_prefix     => $encapi_statsd_prefix,
-        statsd_host              => $statsd_host,
-        labweb_hosts             => $labweb_hosts,
-        nova_controller          => $nova_controller,
+        labs_instance_range          => $labs_instance_range,
+        designate_host               => $designate_host,
+        second_region_designate_host => $second_region_designate_host,
+        puppetmaster_webhostname     => $puppetmaster_webhostname,
+        puppetmaster_hostname        => $puppetmaster_hostname,
+        puppetmasters                => $puppetmasters,
+        baremetal_servers            => $baremetal_servers,
+        encapi_db_host               => $encapi_db_host,
+        encapi_db_name               => $encapi_db_name,
+        encapi_db_user               => $encapi_db_user,
+        encapi_db_pass               => $encapi_db_pass,
+        encapi_statsd_prefix         => $encapi_statsd_prefix,
+        statsd_host                  => $statsd_host,
+        labweb_hosts                 => $labweb_hosts,
+        nova_controller              => $nova_controller,
     }
 
     if ! defined(Class['puppetmaster::certmanager']) {

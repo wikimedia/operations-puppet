@@ -10,6 +10,7 @@ class openstack::puppet::master::encapi(
     $labweb_hosts,
     $nova_controller,
     $designate_host,
+    $second_region_designate_host,
 ) {
     require_package('python3-pymysql',
                     'python3-statsd',
@@ -37,6 +38,7 @@ class openstack::puppet::master::encapi(
     $labweb_ips_v6 = $labweb_hosts.map |$host| { ipresolve($host, 6) }
     $allowed_writers = join(flatten([$labweb_ips, $labweb_ips_v6,
         ipresolve($nova_controller, 4),
+        ipresolve($second_region_designate_host, 4),
         ipresolve($designate_host, 4)]),',')
 
     # We override service_settings because the default includes autoload
