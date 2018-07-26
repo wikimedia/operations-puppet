@@ -2303,7 +2303,7 @@ users:
       - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC5+qOyQlchRnrwpMI0ojTd5WbXlAY2YrYqt0tap9/4u/9X+FqHcnRsHtsrwcAdUVJE3NJRWyqsz/yhmXQyFBNQ9qGvfGZRanIZAIVACgWttjhNvZxB/u/Em1AxsetH61fv/IrlquBR1heO8zzpNPBC0DA5Xirnxz27RAok046JL1zf56/of+iHAsqoN6rJsF1SaOjXQg+w6yCyurP/mfbLYc83kTYEQChtj7ys82Bn2m3v9EWDk2g302k3L2zIgUJb4a32I1HwZBgRig4+GfD/HJVQyUa6Era53QNfORp5Zrf45x0KMnce2mo2Nwytxhd/y7pYzS7n9jRiaxOYF2LD Michele@macbook-pro-di-michele-tizzoni-2.local
     uid: 15221
     email: michele.tizzoni@isi.it
-    expiry_date: 2018-07-26
+    expiry_date: 2019-01-26
     expiry_contact: dario@wikimedia.org, dandreescu@wikimedia.org
   panisson:
     ensure: present
@@ -2314,7 +2314,7 @@ users:
       - ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEAsBQKrAubJDt58PL86InNxz0/BEYRJoWbrJw6FCI8B6/GUkGRWiL17Kt7XhiB/6ShNtD6/Md4puA/fB08LJ+GUYxV58eVLpWfdCSTu25AIC2lAiFXwWcFKX7YY4xMYWPCiMkXInODLut8s2o7IuJsikB88m29scZxEVdkxEEupvuf78V7obBjcXGTwed4qMgAzcKjuj3TJZ3DNfGzlylos3NAYGPZ2O0dVIIaGnjsft/quuFKpZHGJe9Td/JUcZ3ddgG8/gO9QXsmNJ4xDUCLdnfen8eI01gfUG5Oe1dJpNw+H2k3HlTefSDUKPrT2SQo9x/tKcstxlKXRxGXaCYt8w== panisson@nbdotti33
     uid: 15217
     email: andre.panisson@isi.it
-    expiry_date: 2018-07-26
+    expiry_date: 2019-01-26
     expiry_contact: dario@wikimedia.org, dandreescu@wikimedia.org
   paolotti:
     ensure: present
@@ -2325,7 +2325,7 @@ users:
       - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQD6lmYG3kuDwouTAy19p33dHldzI1Y4JrMv46Ga23FFSKVR3R2yv7Eu6YFt2Gm7W+TUHkE3EjMlNvLFxtxQMqeoWRK8ahuqQruUAocO55jOmhJvIRW6OP3wGABznwaIM7PWvZPmyuUpZj1zKuhnK5EnVPv9v/9258eCltJtvD8sSpA9CNm6h+RpQFSvvgtnUw0qr8t5RiOr3KK0mXuO1YHQI9LO12Fl+LoszlyV7dF1tChNyN6hYX7QBgNDDhRXahkTmUSEmXMqIhO1wW+GiRyYFIjMBfXA/+HHcCgZzg74qnlU2Pb9QXWQrFwx3vK/KMLchl7iV5H9gfLSX4jzC5eZ daniela.paolotti@gmail.com
     uid: 15237
     email: daniela.paolotti@isi.it
-    expiry_date: 2018-07-26
+    expiry_date: 2019-01-26
     expiry_contact: dario@wikimedia.org, dandreescu@wikimedia.org
   ciro:
     ensure: present
@@ -2336,7 +2336,7 @@ users:
       - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC/Pki/HbI+fqyhaGv8QY59C4Uw2VlyyTYKCj8biJzahWvXLfqBVO6DWbdZ4S8p3a7CKW/uxN8y8Oe0NkCG5/MhE/sTr4PjJGBNC7I3OqUbSzrbf33ezxxlHAsNo3N8jKuGdFL7psYINKpSef6DfOnjhYmeW2OuBrqk0uq5Wtbf4kG3XWiGChw3E5/ijq3NF9Hs7fND8UEFAukicz+hHLpN1eX3cAVpP6IUs++YqDZG4/nkNGbP0FUIZPespmib8rU7xgRn9fROh5NpPWavldBRo4XrPdE5L9bhDyAft8Z3wyLJH0iRmfBFbgtC6lqHo8lPPGWXxsU+saeu/olvPx3R
     uid: 15247
     email: ciro.cattuto@isi.it
-    expiry_date: 2018-07-26
+    expiry_date: 2019-01-26
     expiry_contact: dario@wikimedia.org, dandreescu@wikimedia.org
   psinger:
     ensure: absent
