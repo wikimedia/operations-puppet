@@ -9,7 +9,7 @@
 # filtertags: labs-project-discovery-stats
 class role::discovery::bayes {
     # include ::standard
-    # include ::base::firewall
+    # include ::profile::base::firewall
     include ::profile::discovery_computing::bayesian_statistics
 
     system::role { 'role::discovery::bayes':

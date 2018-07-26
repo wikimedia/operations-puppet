@@ -11,7 +11,7 @@
 # filtertags: labs-project-discovery-stats
 class role::discovery::allstar_cruncher {
     # include ::standard
-    # include ::base::firewall
+    # include ::profile::base::firewall
     include ::profile::discovery_computing::forecasting
     # ^ includes ::profile::discovery_computing::bayesian_statistics
     include ::profile::discovery_computing::machine_learning

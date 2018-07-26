@@ -9,7 +9,7 @@
 # filtertags: labs-project-discovery-stats
 class role::discovery::learner {
     # include ::standard
-    # include ::base::firewall
+    # include ::profile::base::firewall
     include ::profile::discovery_computing::machine_learning
 
     system::role { 'role::discovery::learner':

@@ -9,7 +9,7 @@
 # filtertags: labs-project-discovery-stats
 class role::discovery::forecaster {
     # include ::standard
-    # include ::base::firewall
+    # include ::profile::base::firewall
     include ::profile::discovery_computing::forecasting
 
     system::role { 'role::discovery::forecaster':
