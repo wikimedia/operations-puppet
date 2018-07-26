@@ -61,6 +61,7 @@ class profile::openstack::base::puppetmaster::common(
     ferm::rule{'puppetbackend':
         ensure => 'present',
         rule   => "saddr (@resolve((${designate_host} ${second_region_designate_host}))
+                          @resolve((${designate_host} ${second_region_designate_host}), AAAA)
                           ${labweb_ips} ${labweb_aaaa} @resolve(${nova_controller}))
                           proto tcp dport 8101 ACCEPT;",
     }

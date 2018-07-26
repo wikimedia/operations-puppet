@@ -39,7 +39,9 @@ class openstack::puppet::master::encapi(
     $allowed_writers = join(flatten([$labweb_ips, $labweb_ips_v6,
         ipresolve($nova_controller, 4),
         ipresolve($second_region_designate_host, 4),
-        ipresolve($designate_host, 4)]),',')
+        ipresolve($second_region_designate_host, 6),
+        ipresolve($designate_host, 4),
+        ipresolve($designate_host, 6)]),',')
 
     # We override service_settings because the default includes autoload
     #  which insists on using python2
