@@ -12,7 +12,7 @@ class profile::backup::director(
     $dbhost = hiera('profile::backup::director::database'),
     $dbpass = hiera('profile::backup::director::dbpass'),
 ){
-    include ::base::firewall
+    include ::profile::base::firewall
 
     class { 'bacula::director':
         sqlvariant          => 'mysql',

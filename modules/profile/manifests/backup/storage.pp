@@ -6,7 +6,7 @@
 class profile::backup::storage(
     $director = hiera('profile::backup::director'),
 ) {
-    include ::base::firewall
+    include ::profile::base::firewall
     include ::standard
 
     mount { '/srv/baculasd1' :
