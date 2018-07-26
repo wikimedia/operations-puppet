@@ -11,7 +11,8 @@ chmod go-rwx /target/root/.ssh/authorized_keys
 # openssh-server: to make the machine accessible
 # puppet: because we'll need it soon anyway
 # lldpd: announce the machine on the network
-apt-install openssh-server puppet lldpd
+# nvme-cli: on machines with NVMe drives, this allows late_command to change LBA format
+apt-install openssh-server puppet lldpd nvme-cli
 
 # Change /etc/motd to read the auto-install date
 chroot /target /bin/sh -c 'echo $(cat /etc/issue.net) auto-installed on $(date). > /etc/motd.tail'
@@ -19,11 +20,23 @@ chroot /target /bin/sh -c 'echo $(cat /etc/issue.net) auto-installed on $(date).
 # Disable IPv6 privacy extensions before the first boot
 [ -f /target/etc/sysctl.d/10-ipv6-privacy.conf ] && rm -f /target/etc/sysctl.d/10-ipv6-privacy.conf
 
-# optimized mkfs for all cache nodes
 case `hostname` in \
+	cp107[5-9]|cp108[0-9]|cp1090)
+		# new cache nodes (mid-2018) use a single nvme drive (Samsung
+		# pm1725a) for storage, which needs its LBA format changed to
+		# 4K block size before manually partitioning and formatting.
+		# mkfs options are tweaked for our use-case with the whole FS
+		# filled by a single-digit count of files and no need for extra
+		# integrity in case of drive failure, and no journalling
+		/usr/sbin/nvme format /dev/nvme0n1 -l 2
+		echo ';' | /sbin/sfdisk /dev/nvme0n1
+		/sbin/mke2fs -F -F -t ext4 -O bigalloc,sparse_super2,^has_journal,^ext_attr,^dir_nlink,^dir_index,^extra_isize -b 4096 -C 16M -N 16 -I 128 -E num_backup_sb=0,packed_meta_blocks=1 -m 0 -L cache-store /dev/nvme0n1p1
+		;; \
 	cp[1-9]*)
-		mke2fs -F -F -t ext4 -T huge -m 0 -L sda3-varnish /dev/sda3
-		mke2fs -F -F -t ext4 -T huge -m 0 -L sdb3-varnish /dev/sdb3
+		# older cache node storage are all partitioned by partman to
+		# match this numbering and we just need to do the 2x mkfs
+		/sbin/mke2fs -F -F -t ext4 -T huge -m 0 -L sda3-varnish /dev/sda3
+		/sbin/mke2fs -F -F -t ext4 -T huge -m 0 -L sdb3-varnish /dev/sdb3
 		;; \
 esac
 
