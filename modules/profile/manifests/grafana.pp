@@ -17,7 +17,7 @@ class profile::grafana (
 
     include ::passwords::ldap::production
 
-    include ::base::firewall
+    include ::profile::base::firewall
 
     $base_config = {
         # Configuration settings for /etc/grafana/grafana.ini.
