@@ -11,15 +11,17 @@
 #
 # filtertags: labs-project-signwriting labs-project-editor-engagement
 class role::simplelap{
-    include ::apache
-    include ::apache::mod::rewrite
 
     if os_version('debian >= stretch') {
-        include ::apache::mod::php7
+        $php_module = 'php7.0'
         require_package('php-cli')
     } else {
-        include ::apache::mod::php5
+        $php_module = 'php5'
         require_package('php5-cli')
+    }
+
+    class { '::httpd':
+        modules => ['rewrite', $php_module],
     }
 
 }
