@@ -22,6 +22,7 @@
 #     regex for finding device IRQs in /proc/interrupts.  It must contain a
 #     single '%%d' to match the queue number in the IRQ name.  For example,
 #     for bnx2x this is 'eth0-fp-%%d', and for bnx2 and tg3 it is 'eth0-%%d'.
+#     For bnxt_en it seems to be 'eth0-TxRx-%%d'.
 #     The double-percent form is due to ConfigParser limitations.
 #
 # qdisc - This specifies an optional transmit qdisc (and its parameters) as a
@@ -44,8 +45,8 @@
 #
 # The Transmit Packet Steering (XPS) queue support is limited.  There are only
 # two XPS cases currently covered: generic support for assuming 1:1 tx:rx
-# mapping if the queue counts look even (which works for at least bnx2), and
-# special support for bnx2x:
+# mapping if the queue counts look even (which works for at least bnx2 and
+# bnxt_en), and special support for bnx2x:
 #
 # For cards driven by bnx2x which appear to have a set of tx queues that match
 # up with 3x CoS bands multiplied by the rx queue count, we enable XPS and
@@ -313,7 +314,7 @@ def main():
     tx_queue_map = None
     if driver == 'bnx2x':
         tx_queue_map = get_bnx2x_cos_queue_map(tx_queues, rx_queues)
-    # Some cards are very simple (e.g. bnx2); assume if counts match
+    # Some cards are very simple (e.g. bnx2, bnxt_en); assume if counts match
     #   then the queues must map 1:1
     elif len(tx_queues) == len(rx_queues):
         tx_queue_map = {rxq: [rxq] for rxq in rx_queues}

@@ -35,11 +35,25 @@ class cacheproxy::performance {
         len       => 10000,
     }
 
-    # Max for bnx2x/BCM57800, seems to eliminate the spurious rx drops under heavy traffic
+    # Max out ring buffers, seems to eliminate the spurious drops under heavy traffic
+    $ring_size = $facts['net_driver'][$iface_primary]['driver'] ? {
+        'bnx2x'   => 4078,
+        'bnxt_en' => 2047,
+        'bnx2'    => 255, # only cp1008, this is defaults and we don't care much
+    }
+
     interface::ring { "${name} rxring":
         interface => $iface_primary,
         setting   => 'rx',
-        value     => 4078,
+        value     => $ring_size,
+    }
+
+    if $facts['net_driver'][$iface_primary]['driver'] == 'bnxt_en' {
+        interface::ring { "${name} txring":
+            interface => $iface_primary,
+            setting   => 'tx',
+            value     => $ring_size,
+        }
     }
 
     # Disable LRO to avoid merging important headers for flow control and such
