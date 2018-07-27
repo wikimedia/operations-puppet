@@ -36,7 +36,6 @@ scap::dsh::groups:
       - snapshot1005.eqiad.wmnet
       - deploy1001.eqiad.wmnet
       - deploy2001.codfw.wmnet
-      - terbium.eqiad.wmnet
       - mwmaint1001.eqiad.wmnet
       - mwmaint2001.codfw.wmnet
       - labtestweb2001.wikimedia.org
