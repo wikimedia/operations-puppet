@@ -65,11 +65,11 @@ class profile::openstack::base::keystone::db(
 
     ferm::rule{'mysql_puppetmaster':
         ensure => 'present',
-        rule   => "saddr @resolve(${puppetmaster_hostname}) proto tcp dport (3306) ACCEPT;",
+        rule   => "saddr (@resolve(${puppetmaster_hostname}) @resolve(${puppetmaster_hostname}, AAAA)) proto tcp dport (3306) ACCEPT;",
     }
 
     ferm::rule{'mysql_wikitech':
         ensure => 'present',
-        rule   => "saddr @resolve(${osm_host}) proto tcp dport (3306) ACCEPT;",
+        rule   => "saddr (@resolve(${osm_host}) @resolve(${osm_host}, AAAA)) proto tcp dport (3306) ACCEPT;",
     }
 }
