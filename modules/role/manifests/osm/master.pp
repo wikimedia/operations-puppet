@@ -16,6 +16,7 @@ class role::osm::master(
     $osm_slave    = undef,
     $osm_slave_v4 = undef,
     $osm_slave_v6 = undef,
+    $osmupdater_pass = hiera('osm::postgresql_osmupdater_pass'),
 ) {
     include role::osm::common
     include postgresql::postgis
@@ -29,6 +30,12 @@ class role::osm::master(
         type     => 'local',
         method   => 'peer',
     }
+    postgresql::user { 'osmupdater':
+        user     => 'osmupdater',
+        password => $osmupdater_pass,
+        database => 'gis',
+    }
+
 
     class { 'postgresql::master':
         includes => 'tuning.conf',
