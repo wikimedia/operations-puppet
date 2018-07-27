@@ -6,7 +6,7 @@ class role::puppetmaster::frontend {
     }
 
     include ::standard
-    include ::base::firewall
+    include ::profile::base::firewall
 
     include ::profile::backup::host
 
