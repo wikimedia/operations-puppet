@@ -28,7 +28,7 @@ case `hostname` in \
 		# mkfs options are tweaked for our use-case with the whole FS
 		# filled by a single-digit count of files and no need for extra
 		# integrity in case of drive failure, and no journalling
-		/usr/sbin/nvme format /dev/nvme0n1 -l 2
+		in-target /usr/sbin/nvme format /dev/nvme0n1 -l 2
 		echo ';' | /sbin/sfdisk /dev/nvme0n1
 		/sbin/mke2fs -F -F -t ext4 -O bigalloc,sparse_super2,^has_journal,^ext_attr,^dir_nlink,^dir_index,^extra_isize -b 4096 -C 16M -N 16 -I 128 -E num_backup_sb=0,packed_meta_blocks=1 -m 0 -L cache-store /dev/nvme0n1p1
 		;; \
