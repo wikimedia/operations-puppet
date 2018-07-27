@@ -54,6 +54,6 @@ class profile::openstack::base::glance(
     #  it allows us to sync up glance images with rsync.
     ferm::rule{'glancesync':
         ensure => 'present',
-        rule   => "saddr @resolve(${nova_controller}) proto tcp dport (ssh) ACCEPT;",
+        rule   => "saddr (@resolve(${nova_controller}) @resolve(${nova_controller}, AAAA)) proto tcp dport (ssh) ACCEPT;",
     }
 }

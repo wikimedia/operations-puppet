@@ -62,7 +62,7 @@ class profile::openstack::base::puppetmaster::common(
         ensure => 'present',
         rule   => "saddr (@resolve((${designate_host} ${second_region_designate_host}))
                           @resolve((${designate_host} ${second_region_designate_host}), AAAA)
-                          ${labweb_ips} ${labweb_aaaa} @resolve(${nova_controller}))
+                          ${labweb_ips} ${labweb_aaaa} @resolve(${nova_controller}) @resolve(${nova_controller}, AAAA))
                           proto tcp dport 8101 ACCEPT;",
     }
 

@@ -54,8 +54,8 @@ class profile::openstack::labtest::keystone::service(
     # in the other codfw deployment to access we add this rule
     ferm::rule{'keystone_for_cross_region':
         ensure => 'present',
-        rule   => "saddr (@resolve(${labtestn_nova_controller})
-                          @resolve(${labtestn_nova_controller_standby})
+        rule   => "saddr (@resolve(${labtestn_nova_controller}) @resolve(${labtestn_nova_controller}, AAAA)
+                          @resolve(${labtestn_nova_controller_standby}) @resolve(${labtestn_nova_controller_standby}, AAAA)
                           ) proto tcp dport (3306) ACCEPT;",
     }
 }

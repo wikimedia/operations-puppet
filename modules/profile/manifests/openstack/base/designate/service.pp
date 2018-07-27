@@ -67,7 +67,7 @@ class profile::openstack::base::designate::service(
     # Open designate API to Labs web UIs and the commandline on labcontrol
     ferm::rule { 'designate-api':
         rule => "saddr (@resolve(${osm_host}) 
-                       ${labweb_ips} @resolve(${nova_controller})
+                       ${labweb_ips} @resolve(${nova_controller}) @resolve(${nova_controller}, AAAA)
                        @resolve(${monitoring_host})) proto tcp dport (9001) ACCEPT;",
     }
 

@@ -105,8 +105,9 @@ class profile::openstack::base::keystone::service(
     # keystone admin API only for openstack services that might need it
     ferm::rule{'keystone_admin':
         ensure => 'present',
-        rule   => "saddr (${labs_hosts_range} @resolve(${nova_controller_standby}) @resolve(${nova_api_host})
+        rule   => "saddr (${labs_hosts_range} @resolve(${nova_controller_standby}) @resolve(${nova_controller_standby}, AAAA) @resolve(${nova_api_host})
                              @resolve(${designate_host}) @resolve(${designate_host_standby}) @resolve(${second_region_designate_host})
+                             @resolve(${designate_host}, AAAA) @resolve(${designate_host_standby}, AAAA)
                              ${labweb_ips}
                              @resolve(${osm_host})
                              ) proto tcp dport (35357) ACCEPT;",
