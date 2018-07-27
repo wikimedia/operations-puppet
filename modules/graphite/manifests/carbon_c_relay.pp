@@ -41,10 +41,10 @@ class graphite::carbon_c_relay( $c_relay_settings ) {
         ensure   => stopped,
     }
 
-    base::service_unit { $frontend_service_name:
+    systemd::service { $frontend_service_name:
         ensure  => present,
-        upstart => upstart_template('frontend-relay'),
-        systemd => systemd_template('frontend-relay'),
+        restart => true,
+        content => systemd_template('frontend-relay'),
     }
 
     file { '/etc/carbon/frontend-relay.conf':
@@ -55,10 +55,10 @@ class graphite::carbon_c_relay( $c_relay_settings ) {
         notify  => Service[$frontend_service_name],
     }
 
-    base::service_unit { $local_service_name:
+    systemd::service { $local_service_name:
         ensure  => present,
-        upstart => upstart_template('local-relay'),
-        systemd => systemd_template('local-relay'),
+        restart => true,
+        content => systemd_template('local-relay'),
     }
 
     file { '/etc/carbon/local-relay.conf':
