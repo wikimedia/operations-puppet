@@ -973,10 +973,12 @@ node 'labtestnet2003.codfw.wmnet' {
 
 node 'labtestcontrol2001.wikimedia.org' {
     role(wmcs::openstack::labtest::control)
+    interface::add_ip6_mapped { 'main': }
 }
 
 node 'labtestcontrol2003.wikimedia.org' {
     role(wmcs::openstack::labtestn::control)
+    interface::add_ip6_mapped { 'main': }
 }
 
 node 'labtestpuppetmaster2001.wikimedia.org' {
@@ -1120,6 +1122,7 @@ node /kubestage100[12]\.eqiad\.wmnet/ {
 
 node 'labcontrol1001.wikimedia.org' {
     role(wmcs::openstack::main::control)
+    interface::add_ip6_mapped { 'main': }
 }
 
 # labcontrol1002 is a hot spare for 1001.
@@ -1130,6 +1133,7 @@ node 'labcontrol1001.wikimedia.org' {
 #  'keystone endpoint-create' and 'keystone endpoint-delete.'
 node 'labcontrol1002.wikimedia.org' {
     role(wmcs::openstack::main::control)
+    interface::add_ip6_mapped { 'main': }
 }
 
 # This is the labtest server that implements wikitech, horizon, and striker.
@@ -1152,6 +1156,7 @@ node 'labnet1001.eqiad.wmnet' {
 
 node /^cloudcontrol100[3-4].wikimedia.org$/ {
     role(wmcs::openstack::eqiad1::control)
+    interface::add_ip6_mapped { 'main': }
 }
 
 node /^cloudnet100[3-4].eqiad.wmnet$/ {
