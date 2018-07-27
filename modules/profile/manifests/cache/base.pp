@@ -136,11 +136,7 @@ class profile::cache::base(
     $filesystems = unique($storage_parts)
     varnish::setup_filesystem { $filesystems: }
     Varnish::Setup_filesystem <| |> -> Varnish::Instance <| |>
-
-    $file_storage_args = join([
-        "-s main1=file,/srv/${storage_parts[0]}/varnish.main1,${storage_size}G",
-        "-s main2=file,/srv/${storage_parts[1]}/varnish.main2,${storage_size}G",
-    ], ' ')
+    $file_storage_args = join($filesystems.map |$idx, $store| { "-s main${$idx + 1}=file,/srv/${store}/varnish.main${$idx + 1},${storage_size}G" }, ' ')
 
     ###########################################################################
     # Purging

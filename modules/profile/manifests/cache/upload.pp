@@ -70,7 +70,11 @@ class profile::cache::upload(
     # See T145661 for storage binning rationale
     $sda = $::profile::cache::base::storage_parts[0]
     $sdb = $::profile::cache::base::storage_parts[1]
-    $ssm = $::profile::cache::base::storage_size * 2 * 1024
+    if $sda == $sdb {
+        $ssm = $::profile::cache::base::storage_size * 1024
+    } else {
+        $ssm = $::profile::cache::base::storage_size * 2 * 1024
+    }
     $bin0_size = floor($ssm * 0.04)
     $bin1_size = floor($ssm * 0.23)
     $bin2_size = floor($ssm * 0.40)
