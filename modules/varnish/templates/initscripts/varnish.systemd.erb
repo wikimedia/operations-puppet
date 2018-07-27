@@ -20,7 +20,9 @@ PIDFile=%t/%p.pid
 Restart=on-failure
 KillMode=process
 <% if @vcl_config.fetch("enable_geoiplookup", false) -%>
-Environment="CC_COMMAND=exec cc -fpic -shared -Wl,-x -L/usr/local/lib/ -o %%o %%s -lmaxminddb"
+Environment="CC_COMMAND=exec gcc -std=gnu99 -g -O2 -fstack-protector-strong -Wformat -Werror=format-security -Wall -pthread -fpic -shared -Wl,-x -L/usr/local/lib/ -o %%o %%s -lmaxminddb"
+<% else -%>
+Environment="CC_COMMAND=exec gcc -std=gnu99 -g -O2 -fstack-protector-strong -Wformat -Werror=format-security -Wall -pthread -fpic -shared -Wl,-x -o %%o %%s"
 <% end -%>
 <% if @jemalloc_conf -%>
 Environment="MALLOC_CONF=<%= @jemalloc_conf %>"
@@ -52,7 +54,7 @@ ExecStart=/usr/sbin/varnishd \
 -p gzip_memlevel=9 \
 <%= @runtime_params -%> \
 <%= @instance_opt -%> \
-<% if @vcl_config.fetch("enable_geoiplookup", false) -%>-p cc_command=${CC_COMMAND}<% end %>
+-p cc_command=${CC_COMMAND}
 
 [Install]
 WantedBy=multi-user.target
