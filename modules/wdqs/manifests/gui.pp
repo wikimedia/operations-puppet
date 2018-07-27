@@ -97,8 +97,13 @@ class wdqs::gui(
     # Category dumps start on Sat 20:00. By Mon, they should be done.
     # We want random time so that hosts don't reboot at the same time, but we
     # do not want them to be too far from one another.
+    $ensure_reload_categories = $enable_reload_categories ? {
+        true    => 'present',
+        default => 'absent',
+    }
+
     cron { 'reload-categories':
-        ensure  => $enable_reload_categories,
+        ensure  => $ensure_reload_categories,
         command => "/usr/local/bin/reloadCategories.sh >> ${reload_categories_log}",
         user    => $username,
         weekday => 1,
