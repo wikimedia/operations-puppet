@@ -6,8 +6,10 @@
 #
 
 class toolserver_legacy {
-    include ::apache
-    include ::apache::mod::rewrite
+
+    class { '::httpd':
+        modules => ['rewrite'],
+    }
 
     $ssl_settings = ssl_ciphersuite('apache', 'compat')
 
@@ -20,7 +22,7 @@ class toolserver_legacy {
     }
     # Monitored externally by icinga::monitor::certs due to this being run in labs...
 
-    apache::site { 'www.toolserver.org':
+    httpd::site { 'www.toolserver.org':
         content => template('toolserver_legacy/www.toolserver.org.erb'),
     }
 
