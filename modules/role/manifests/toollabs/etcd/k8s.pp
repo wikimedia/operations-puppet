@@ -3,7 +3,7 @@ class role::toollabs::etcd::k8s {
 
     include ::toollabs::base
     include ::etcd
-    include ::base::firewall
+    include ::profile::base::firewall
 
     include ::role::toollabs::etcd::expose_metrics
 

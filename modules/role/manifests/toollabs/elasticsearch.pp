@@ -6,7 +6,7 @@
 class role::toollabs::elasticsearch {
 
     include ::toollabs::base
-    include ::base::firewall
+    include ::profile::base::firewall
     include ::elasticsearch
 
     file { '/usr/share/elasticsearch/plugins':
