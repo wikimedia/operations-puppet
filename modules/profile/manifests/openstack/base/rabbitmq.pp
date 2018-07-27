@@ -47,7 +47,7 @@ class profile::openstack::base::rabbitmq(
 
     ferm::rule{'rabbit_for_designate':
         ensure => 'present',
-        rule   =>  "saddr @resolve(${designate_host}) proto tcp dport 5672 ACCEPT;",
+        rule   =>  "saddr (@resolve(${designate_host}) @resolve(${designate_host}, AAAA)) proto tcp dport 5672 ACCEPT;",
     }
 
     ferm::rule{'rabbit_for_nova_api':
