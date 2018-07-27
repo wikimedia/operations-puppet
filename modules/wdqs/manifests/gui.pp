@@ -24,6 +24,7 @@ class wdqs::gui(
     Boolean $use_git_deploy = true,
     Boolean $enable_ldf = true,
     Integer $max_query_time_millis = 60000,
+    Boolean $enable_reload_categories = true,
 ) {
 
     $alias_map = "${data_dir}/aliases.map"
@@ -97,7 +98,7 @@ class wdqs::gui(
     # We want random time so that hosts don't reboot at the same time, but we
     # do not want them to be too far from one another.
     cron { 'reload-categories':
-        ensure  => present,
+        ensure  => $enable_reload_categories,
         command => "/usr/local/bin/reloadCategories.sh >> ${reload_categories_log}",
         user    => $username,
         weekday => 1,
