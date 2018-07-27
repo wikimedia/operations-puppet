@@ -20,6 +20,8 @@ class role::simplelap{
         require_package('php5-cli')
     }
 
+    require_package("libapache2-mod-${php_module}")
+
     class { '::httpd':
         modules => ['rewrite', $php_module],
     }
