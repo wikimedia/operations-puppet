@@ -60,7 +60,7 @@ class profile::openstack::base::keystone::db(
 
     ferm::rule{'mysql_designate':
         ensure => 'present',
-        rule   => "saddr @resolve((${designate_host} ${second_region_designate_host})) @resolve((${designate_host} ${second_region_designate_host}), AAAA) proto tcp dport (3306) ACCEPT;",
+        rule   => "saddr (@resolve((${designate_host} ${second_region_designate_host})) @resolve((${designate_host} ${second_region_designate_host}), AAAA)) proto tcp dport (3306) ACCEPT;",
     }
 
     ferm::rule{'mysql_puppetmaster':
