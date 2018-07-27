@@ -12,10 +12,11 @@ class role::simplestatic (
     # This role is expected to be used only in labs
     requires_realm('labs')
 
-    include ::apache::mod::rewrite
-    include ::apache::mod::headers
+    class { '::httpd':
+        modules => ['rewrite', 'headers'],
+    }
 
-    apache::site { 'simplestatic':
+    httpd::site { 'simplestatic':
         ensure  => present,
         content => template('role/apache/sites/simplestatic.erb'),
     }
