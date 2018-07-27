@@ -18,5 +18,5 @@ class role::cluster::management {
     include ::profile::debdeploy
     include ::profile::mediawiki::web_testing
     include ::standard
-    include ::base::firewall
+    include ::profile::base::firewall
 }
