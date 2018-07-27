@@ -3,11 +3,6 @@ class profile::mediawiki::maintenance(
     $maintenance_server = hiera('maintenance_server'),
 ) {
 
-    # FIXME - remove this after terbium/wasat have been replace by mwmaint*
-    if  os_version('debian == jessie') {
-        include ::mediawiki::packages::php5 # lint:ignore:wmf_styleguide
-    }
-
     # Deployment
     include ::scap::scripts
 
