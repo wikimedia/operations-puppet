@@ -1,23 +1,7 @@
 # https://dbtree.wikimedia.org/
 class dbtree {
 
-    # dbtree requires apache, which should be provided by the httpd
-    # class in a role and is currently directly in the tendril module
-
-    if os_version('debian >= stretch') {
-        # Please note dbtree doesn't currently work on stretch's php
-        require_package('libapache2-mod-php',
-                        'php-mysql',
-        )
-    } else {
-        require_package('libapache2-mod-php5',
-                        'php5-mysql',
-        )
-    }
-
-    httpd::site { 'dbtree.wikimedia.org':
-        content => template('dbtree/dbtree.wikimedia.org.erb'),
-    }
+    # dbtree requires apache which is provided by profile::tendril::webserver
 
     # dbtree config
     include passwords::tendril
@@ -50,12 +34,4 @@ class dbtree {
         content => template('dbtree/dbtree.config.php.erb'),
         require => Git::Clone['operations/software/dbtree']
     }
-
-    # Monitoring
-    monitoring::service { 'http-dbtree':
-        description   => 'HTTP-dbtree',
-        check_command => 'check_http_url!dbtree.wikimedia.org!http://dbtree.wikimedia.org'
-    }
-
 }
-
