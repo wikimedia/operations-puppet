@@ -3,7 +3,7 @@ class profile::mariadb::proxy::master (
     $primary_name   = hiera('profile::mariadb::proxy::master::primary_name'),
     $primary_addr   = hiera('profile::mariadb::proxy::master::primary_addr'),
     $secondary_name = hiera('profile::mariadb::proxy::master::secondary_name'),
-    $secondary_addr = hiera('profile::mariadb::proxy::master::seconady_addr'),
+    $secondary_addr = hiera('profile::mariadb::proxy::master::secondary_addr'),
     ) {
 
     # this template is for stretch/HA1.7, may not work on earlier/later versions
