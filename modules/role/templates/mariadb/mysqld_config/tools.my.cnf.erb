@@ -83,7 +83,10 @@ innodb_stats_sample_pages      = 16
 innodb_stats_method            = nulls_unequal
 
 # Enable innodb_large_prefix #T179614
-innodb_file_format = Barracuda
+<% if @basedir == '/opt/wmf-mariadb10' or @basedir == '/opt/wmf-mariadb101' -%>
+## force default file format for MariaDB < 10.2
+innodb_file_format             = barracuda
+<% end -%>
 innodb_strict_mode             = 1
 innodb_large_prefix = 1
 

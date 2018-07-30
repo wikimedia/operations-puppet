@@ -56,7 +56,10 @@ innodb_io_capacity             = 1000
 innodb_stats_sample_pages      = 16
 innodb_stats_method            = nulls_unequal
 innodb_locks_unsafe_for_binlog = 1
+<% if @basedir == '/opt/wmf-mariadb10' or @basedir == '/opt/wmf-mariadb101' -%>
+# force default file format for MariaDB < 10.2
 innodb_file_format             = barracuda
+<% end -%>
 innodb_strict_mode             = 1
 
 # don't dump and load innodb buffer at start and stop

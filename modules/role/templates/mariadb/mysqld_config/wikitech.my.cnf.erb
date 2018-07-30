@@ -64,7 +64,10 @@ innodb_log_file_size           = 200M
 innodb_flush_log_at_trx_commit = 1
 innodb_flush_method            = O_DIRECT
 innodb_thread_concurrency      = 0
+<% if @basedir == '/opt/wmf-mariadb10' or @basedir == '/opt/wmf-mariadb101' -%>
+# force default file format for MariaDB < 10.2
 innodb_file_format             = barracuda
+<% end -%>
 innodb_strict_mode             = 1
 aria_pagecache_buffer_size     = 128M
 
