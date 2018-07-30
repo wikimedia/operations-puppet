@@ -1,7 +1,6 @@
 standard::has_default_mail_relay: false
 
 profile::grafana::readonly_domain: grafana.wikimedia.org
-profile::grafana::admin_domain: grafana-admin.wikimedia.org
 profile::grafana::ldap_editor_description: nda/ops/wmf/grafana-admin
 profile::grafana::ldap_edit_groups:
   - cn=ops,ou=groups,dc=wikimedia,dc=org
