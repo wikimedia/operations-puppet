@@ -126,11 +126,12 @@ class profile::cache::base(
     # everything from here down is related to backend storage/weight config
 
     $storage_size = $::hostname ? {
-        /^cp1008$/          => 117, # Intel X-25M 160G (test host!)
-        /^cp30(0[789]|10)$/ => 460, # Intel M320 600G via H710
-        /^cp[45]0[0-9]{2}$/ => 730, # Intel S3710 800G (new default 2017+)
-        /^cp[0-9]{4}$/      => 360, # Intel S3700 400G (old default pre-2017)
-        default             => 6,   # 6 is the bare min, for e.g. virtuals
+        /^cp1008$/                 => 117,  # Intel X-25M 160G (test host!)
+        /^cp30(0[789]|10)$/        => 460,  # Intel M320 600G via H710 (esams misc)
+        /^cp[45]0[0-9]{2}$/        => 730,  # Intel S3710 800G (ulsfo + eqsin)
+        /^cp10(7[5-9]|8[0-9]|90)$/ => 1459, # Samsung PM1725a 1.6T (new eqiad nodes)
+        /^cp[0-9]{4}$/             => 360,  # Intel S3700 400G (codfw, esams text/upload, legacy eqiad)
+        default                    => 6,    # 6 is the bare min, for e.g. virtuals
     }
 
     $filesystems = unique($storage_parts)
