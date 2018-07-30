@@ -836,6 +836,30 @@ class role::prometheus::ops {
         port       => '9142',
     }
 
+    $logstash_jobs= [
+        {
+            'job_name'        => 'logstash',
+            'scheme'          => 'http',
+            'file_sd_configs' => [
+                { 'files' => [ "${targets_path}/logstash_*.yaml" ]}
+            ],
+            # logstash auto-generates long random plugin_ids by default, so
+            # drop plugin_ids matching the default random plugin_id format
+            'metric_relabel_configs' => [
+                { 'source_labels' => ['plugin_id'],
+                    'regex'  => '(\w{40}-\d+)',
+                    'action' => 'drop',
+                },
+            ],
+        },
+    ]
+    prometheus::class_config { "logstash_${::site}":
+        dest       => "${targets_path}/logstash_${::site}.yaml",
+        site       => $::site,
+        class_name => 'profile::prometheus::logstash_exporter',
+        port       => '9198',
+    }
+
     $pdns_rec_jobs = [
       {
         'job_name'        => 'pdnsrec',
@@ -955,7 +979,7 @@ class role::prometheus::ops {
             $redis_jobs, $mtail_jobs, $ldap_jobs, $ircd_jobs, $pdns_rec_jobs,
             $etherpad_jobs, $elasticsearch_jobs, $wmf_elasticsearch_jobs,
             $blazegraph_jobs, $nutcracker_jobs, $postgresql_jobs,
-            $kafka_burrow_jobs
+            $kafka_burrow_jobs, $logstash_jobs
         ),
         global_config_extra   => $config_extra,
     }
