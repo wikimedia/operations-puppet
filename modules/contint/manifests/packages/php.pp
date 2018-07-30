@@ -35,7 +35,7 @@ class contint::packages::php {
 
     if os_version('debian >= jessie') {
         $php7_packages = [
-            # PHP 7.0 version of packages in mediawiki::packages::php5
+            # PHP 7.0 version of Mediawiki packages
             'php7.0-cli',
             'php7.0-common',
             # Note: Missing luasandbox and wikidiff2
