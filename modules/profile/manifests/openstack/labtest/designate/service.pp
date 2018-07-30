@@ -17,6 +17,7 @@ class profile::openstack::labtest::designate::service(
     $osm_host = hiera('profile::openstack::labtest::osm_host'),
     $labweb_hosts = hiera('profile::openstack::labtest::labweb_hosts'),
     $region = hiera('profile::openstack::labtest::region'),
+    $second_region_designate_host = hiera('profile::openstack::labtest::second_region_designate_host')
     ) {
 
     require ::profile::openstack::labtest::clientlib
@@ -41,4 +42,14 @@ class profile::openstack::labtest::designate::service(
         region                     => $region,
     }
     contain '::profile::openstack::base::designate::service'
+
+    # Memcached for coordination between pool managers
+    class { '::memcached':
+    }
+
+    ferm::service { 'designate_memcached':
+        proto  => 'tcp',
+        port   => '11211',
+        srange => "(@resolve(${second_region_designate_host}))"
+    }
 }
