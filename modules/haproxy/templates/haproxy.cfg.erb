@@ -1,7 +1,5 @@
 # Note: This file is managed by puppet.
 
-# ha proxy configuration for forwarding to puppet
-
 global
 	log 127.0.0.1	local0
 	log 127.0.0.1	local1 notice
@@ -23,10 +21,3 @@ defaults
 	contimeout	50000
 	clitimeout	500000
 	srvtimeout	500000
-
-listen	puppet
-	bind :8140
-	mode tcp
-	balance roundrobin
-	server <%= @endpoint_hostname %> <%= @endpoint_ip %>
-	acl esams src 91.198.174.0/24
