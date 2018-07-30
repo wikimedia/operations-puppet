@@ -3,6 +3,15 @@
 # See: https://github.com/wikimedia/varnishkafka
 #
 class varnishkafka {
+    if os_version('debian == stretch') {
+        apt::pin { 'librdkafka1':
+            pin      => 'release a=stretch-backports',
+            package  => 'librdkafka1',
+            priority => '1001',
+            before   => Package['varnishkafka'],
+        }
+    }
+
     package { 'varnishkafka':
         ensure => present,
     }
