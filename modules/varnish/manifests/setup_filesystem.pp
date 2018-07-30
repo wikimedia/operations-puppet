@@ -3,7 +3,12 @@ define varnish::setup_filesystem() {
         $custom_mount_opts = ',comment=cloudconfig'
     }
     elsif os_version('debian >= jessie') {
-        $custom_mount_opts = ',nobarrier,data=writeback'
+        if $title =~ /^nvme/ {
+            $custom_mount_opts = ',nobarrier'
+        }
+        else {
+            $custom_mount_opts = ',nobarrier,data=writeback'
+        }
     }
     else {
         # nodiratime is redundant, but I'm hoping to avoid
