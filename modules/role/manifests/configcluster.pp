@@ -1,6 +1,6 @@
 class role::configcluster {
     include ::standard
-    include ::base::firewall
+    include ::profile::base::firewall
 
     # Temporary to ease the migration process
     if $::hostname !~ /conf100[123]/ {
