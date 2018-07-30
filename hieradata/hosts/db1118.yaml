@@ -1,4 +1,4 @@
 mariadb::shard: 'test-s1'
 # Importing mariadb data instead: T199224
-mariadb::package: 'wmf-mariadb103'
+# mariadb::package: 'wmf-mysql80'
 profile::base::notifications_enabled: '0'
