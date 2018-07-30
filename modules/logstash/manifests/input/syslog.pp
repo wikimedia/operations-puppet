@@ -8,6 +8,7 @@
 # - $ensure: Whether the config should exist.
 # - $port: port to listen for syslog input on
 # - $priority: Configuration loading priority. Default '10'.
+# - $plugin_id: Name associated with Logstash metrics
 #
 # == Sample usage:
 #
@@ -16,9 +17,10 @@
 #    }
 #
 define logstash::input::syslog(
-    $ensure   = present,
-    $port     = 514,
-    $priority = 10,
+    $ensure    = present,
+    $port      = 514,
+    $priority  = 10,
+    $plugin_id = "input/syslog/${port}",
 ) {
     logstash::conf { "input-syslog-${title}":
         ensure   => $ensure,

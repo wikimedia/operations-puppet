@@ -12,6 +12,7 @@
 # - $ssl_enable: Enable/disable ssl support in logstash input. Default false.
 # - $ssl_cert: Path to ssl certificate file. Requred when ssl is enabled.
 # - $ssl_key: Path to ssl key file. Required when ssl is enabled.
+# - $plugin_id: Name associated with Logstash metrics
 #
 # == Sample usage:
 #
@@ -29,6 +30,7 @@ define logstash::input::tcp(
     Boolean          $ssl_enable = false,
     Optional[String] $ssl_cert   = undef,
     Optional[String] $ssl_key    = undef,
+    String           $plugin_id  = "input/tcp/${port}",
 ) {
 
     # Ensure cert/key params look like filesystem paths when ssl is enabled.

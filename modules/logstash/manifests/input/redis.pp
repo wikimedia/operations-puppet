@@ -13,6 +13,7 @@
 # - $key: Name of a redis list or channel. Default 'logstash'
 # - $password: Password to authenticate with. Default undef.
 # - $priority: Configuration loading priority. Default '10'.
+# - $plugin_id: Name associated with Logstash metrics
 #
 # == Sample usage:
 #
@@ -29,6 +30,7 @@ define logstash::input::redis(
     $key        = 'logstash',
     $password   = undef,
     $priority   = 10,
+    $plugin_id  = "input/redis/${port}",
 ) {
     logstash::conf { "input-redis-${title}":
         ensure   => $ensure,

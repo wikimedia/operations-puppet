@@ -4,5 +4,8 @@ input {
     type  => "gelf"
     port  => <%= @port %>
     remap => false
+<%- unless @plugin_id.empty? -%>
+    id   => "<%= @plugin_id %>"
+<%- end -%>
   }
 }

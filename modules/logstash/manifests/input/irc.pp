@@ -15,6 +15,7 @@
 # - $nick: IRC nickname. Default: logstash
 # - $real: IRC Real name. Default: 'logstash'
 # - $priority: Configuration loading priority. Default '10'.
+# - $plugin_id: Name associated with Logstash metrics
 #
 # == Sample usage:
 #
@@ -33,6 +34,7 @@ define logstash::input::irc(
     $nick      = 'logstash',
     $real      = 'logstash',
     $priority  = 10,
+    $plugin_id = "input/irc/${title}",
 ) {
     logstash::conf { "input-irc-${title}":
         ensure   => $ensure,

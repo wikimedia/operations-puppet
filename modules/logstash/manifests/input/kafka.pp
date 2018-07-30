@@ -14,6 +14,7 @@
 # - $bootstrap_servers: Kafka servers to boostrap from. This list should be
 #      a string in the form of `host1:port1,host2:port2. For more info, see:
 #      https://www.elastic.co/guide/en/logstash/current/plugins-inputs-kafka.html
+# - $plugin_id: Name associated with Logstash metrics
 #
 # == Sample usage:
 #
@@ -28,6 +29,7 @@ define logstash::input::kafka(
     $tags              = [$title],
     $topic             = $title,
     $type              = 'kafka',
+    $plugin_id         = "input/kafka/${title}",
 ) {
     logstash::conf { "input-kafka-${title}":
         ensure   => $ensure,

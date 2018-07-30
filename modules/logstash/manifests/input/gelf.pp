@@ -8,6 +8,7 @@
 # - $port: port to listen for gelf input on
 # - $priority: Configuration loading priority. Default '10'.
 # - $ensure: Whether the config should exist.
+# - $plugin_id: Name associated with Logstash metrics
 #
 # == Sample usage:
 #
@@ -16,9 +17,10 @@
 #   }
 #
 define logstash::input::gelf(
-    $ensure   = present,
-    $port     = 12201,
-    $priority = 10,
+    $ensure    = present,
+    $port      = 12201,
+    $priority  = 10,
+    $plugin_id = "input/gelf/${port}",
 ) {
     logstash::conf { "input-gelf-${title}":
         ensure   => $ensure,

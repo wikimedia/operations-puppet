@@ -8,5 +8,8 @@ input {
     password  => "<%= @password %>"
 <%- end -%>
     tags      => [ "redis" ]
+<%- unless @plugin_id.empty? -%>
+    id        => "<%= @plugin_id %>"
+<%- end -%>
   }
 }

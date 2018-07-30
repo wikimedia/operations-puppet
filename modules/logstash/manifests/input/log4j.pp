@@ -11,6 +11,7 @@
 # - $host: Log4j host to contact. Default 0.0.0.0
 # - $port: Log4j socket port. Default 4560
 # - $priority: Configuration loading priority. Default '10'.
+# - $plugin_id: Name associated with Logstash metrics
 #
 # == Sample usage:
 #
@@ -25,6 +26,7 @@ define logstash::input::log4j(
     $host       = '0.0.0.0',
     $port       = 4560,
     $priority   = 10,
+    $plugin_id  = "input/log4j/${port}",
 ) {
     logstash::conf { "input-log4j-${title}":
         ensure   => $ensure,
