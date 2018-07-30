@@ -29,6 +29,16 @@ class cacheproxy::performance {
         },
     }
 
+    # Turn on scsi_mod.use_blk_mq at boot.  Our newest nvme drives don't need
+    # this (blk_mq is implicit in the nvme driver, which doesn't use the scsi
+    # layer), but I stumbled on it while looking at them, at it's apparently a
+    # good idea on scsi SSDs as well, so this is mainly for our SSD nodes.
+    # Be careful about copypasta of this to other hardware which might have
+    # at least some rotational disks, as there have been past regressions and
+    # this can only be turned on for all of the scsi layer, not by-device.
+    # It will eventually be the default, probably in 4.19 or later.
+    grub::bootparam { 'scsi_mod.use_blk_mq': value  => 'y' }
+
     # Larger TX queue len for 10Gbps+
     interface::txqueuelen { $name:
         interface => $iface_primary,
