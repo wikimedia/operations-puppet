@@ -118,12 +118,13 @@ profile::restbase::cassandra_tls: {}
 profile::restbase::hosts:
   - deployment-restbase01.deployment-prep.eqiad.wmflabs
   - deployment-restbase02.deployment-prep.eqiad.wmflabs
-profile::restbase::seeds:
+profile::restbase::seeds_ng:
   - deployment-restbase01.deployment-prep.eqiad.wmflabs
   - deployment-restbase02.deployment-prep.eqiad.wmflabs
 # Cassandra (profile::cassandra)
 graphite_host: labmon1001.eqiad.wmnet
 profile::cassandra::allow_analytics: false
+profile::cassandra::disable_graphite_metrics: true
 profile::cassandra::metrics_whitelist: false
 profile::cassandra::metrics_blacklist:
     - .*\.metrics\.Table\..*$
@@ -134,7 +135,7 @@ profile::cassandra::instances:
 profile::cassandra::settings:
   listen_address: '%{::ipaddress}'
   logstash_host: deployment-logstash2.deployment-prep.eqiad.wmflabs
-  target_version: '2.2'
+  target_version: '3.x'
   additional_jvm_opts:
     - '-javaagent:/usr/share/java/prometheus/jmx_prometheus_javaagent.jar=7800:/etc/cassandra/prometheus_jmx_exporter.yaml'
   default_instance_params:
