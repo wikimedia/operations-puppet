@@ -2374,7 +2374,7 @@ users:
       - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCTzLfXEWbB8g/rN0l9Jiva80PTQ0LOIGzANPQ2DFkPdwvutxWesEfkcI6wbUWQJdmRzhaUyCFetHdzcBMf71h3JczYX6AvtNetsTcXG8Fc4J0qajglF16Uso7/CFIA5XEkmGa15YWXQ63Y6Tlx18ARhY5f+sMPlJUn/Zxi9jd9gc+7AjwlxrTyhkKgzr2HmlVAxphbZmF7yfB3m4d0STyH4RlphVx+7zTCC4zGyDT9vwBqhQxZ0VKRllpu+lMXdR5gJiURAqgBEp5G5cDg1mN70PjRo8ZG+DgrFmLQKLRgzl6a4U9IFg6YhaE7TiGtz25e9Weo4mjoTPZAsjpEkE73 markus.kroetzsch@tu-dresden.de
     uid: 1023
     email: markus.kroetzsch@tu-dresden.de
-    expiry_date: 2018-07-29
+    expiry_date: 2019-01-26
     expiry_contact: leila@wikimedia.org
   akrausetud:
     ensure: absent
