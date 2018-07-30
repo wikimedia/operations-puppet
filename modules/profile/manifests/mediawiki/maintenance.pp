@@ -55,11 +55,7 @@ class profile::mediawiki::maintenance(
     class { 'mediawiki::maintenance::updatequerypages': ensure => $ensure }
 
     # Readline support for PHP maintenance scripts (T126262)
-    if  os_version('debian >= stretch') {
-        require_package('php-readline')
-    } else {
-        require_package('php5-readline')
-    }
+    require_package('php-readline')
 
     # GNU version of 'time' provides extra info like peak resident memory
     # anomie needs it, as opposed to the shell built-in time command
