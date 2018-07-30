@@ -13,7 +13,8 @@ class haproxy(
         ensure => present,
     }
 
-    if $socket == '/run/haproxy/haproxy.sock' or $socket == '/run/haproxy/haproxy.pid' {
+    # FIXME: Migrate to systemd::tmpfile
+    if $socket == '/run/haproxy/haproxy.sock' or $pid == '/run/haproxy/haproxy.pid' {
         file { '/run/haproxy':
             ensure => directory,
             mode   => '0775',
