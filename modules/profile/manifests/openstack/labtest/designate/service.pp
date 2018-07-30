@@ -50,6 +50,6 @@ class profile::openstack::labtest::designate::service(
     ferm::service { 'designate_memcached':
         proto  => 'tcp',
         port   => '11211',
-        srange => "(@resolve(${second_region_designate_host}))"
+        srange => "(@resolve(${second_region_designate_host}) @resolve(${second_region_designate_host}, AAAA))"
     }
 }
