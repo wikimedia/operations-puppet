@@ -794,8 +794,6 @@ host cp2011 {
 host cp2012 {
     hardware ethernet 44:A8:42:2D:15:01;
     fixed-address cp2012.codfw.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
-    filename "lpxelinux.0";
 }
 
 host cp2013 {
