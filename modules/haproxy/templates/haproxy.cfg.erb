@@ -9,6 +9,8 @@ global
 	#quiet
 	user haproxy
 	group haproxy
+	stats socket <%= @socket %> mode 666 level user
+
 
 defaults
 	log	global
