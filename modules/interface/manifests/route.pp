@@ -36,7 +36,7 @@ define interface::route($address, $nexthop, $ipversion=4, $interface=undef, $mtu
     # But show command needs '-6' to display v6 routes
     # When a /32 or /128 prefix lenght is present, 'ip route show' strips it
     $v6switch = $ipversion ?  { 6 => '-6', 4 => '' }
-    $show_command = "ip ${v6switch} route show ${prefix} | grep -q ${address}"
+    $show_command = "ip ${v6switch} route show ${prefix} | grep -q via"
     exec { $route_command:
         path   => '/bin:/usr/bin',
         unless => $show_command,
