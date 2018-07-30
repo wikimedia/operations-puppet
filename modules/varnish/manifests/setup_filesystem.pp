@@ -2,6 +2,10 @@ define varnish::setup_filesystem() {
     if $::realm == 'labs' {
         $custom_mount_opts = ',comment=cloudconfig'
     }
+    elsif os_version('debian >= stretch') {
+        # Starting with the stretch installs, we're not using a journal at all
+        $custom_mount_opts = ',nobarrier'
+    }
     elsif os_version('debian >= jessie') {
         $custom_mount_opts = ',nobarrier,data=writeback'
     }
