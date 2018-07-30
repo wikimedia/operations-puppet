@@ -6,11 +6,13 @@ class dbtree {
 
     if os_version('debian >= stretch') {
         # Please note dbtree doesn't currently work on stretch's php
-        require_package('libapache2-mod-php')
-        require_package('php-mysql')
+        require_package('libapache2-mod-php',
+                        'php-mysql',
+        )
     } else {
-        require_package('libapache2-mod-php5')
-        require_package('php5-mysql')
+        require_package('libapache2-mod-php5',
+                        'php5-mysql',
+        )
     }
 
     httpd::site { 'dbtree.wikimedia.org':
@@ -23,11 +25,12 @@ class dbtree {
     $tendril_pass_web = $passwords::tendril::db_pass_web
 
 
-
     file { ['/srv/dbtree']:
-        ensure => 'directory',
-        owner  => 'mwdeploy',
-        group  => 'mwdeploy',
+        ensure  => 'directory',
+        owner   => 'mwdeploy',
+        group   => 'www-data',
+        mode    => '0755',
+        require => User['mwdeploy'],
     }
 
     git::clone { 'operations/software/dbtree':

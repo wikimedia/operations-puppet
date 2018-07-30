@@ -49,10 +49,25 @@ class tendril (
         'memcached', # memcached expected by default on localhost
     )
 
+    group { 'mwdeploy':
+        ensure => present,
+        system => true,
+    }
+
+    user { 'mwdeploy':
+        ensure     => present,
+        shell      => '/bin/bash',
+        home       => '/var/lib/mwdeploy',
+        system     => true,
+        managehome => true,
+    }
+
     file { '/srv/tendril':
-        ensure => 'directory',
-        owner  => 'www-data',
-        group  => 'www-data',
+        ensure  => 'directory',
+        owner   => 'mwdeploy',
+        group   => 'www-data',
+        mode    => '0755',
+        require => User['mwdeploy'],
     }
     file { '/srv/tendril/web/robots.txt':
         ensure  => present,
