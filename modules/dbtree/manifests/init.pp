@@ -1,8 +1,8 @@
 # https://dbtree.wikimedia.org/
 class dbtree {
 
-    # dbtree requires apache, which should be provided by the role
-    # include ::apache # lint:ignore:wmf_styleguide
+    # dbtree requires apache, which should be provided by the httpd
+    # class in a role and is currently directly in the tendril module
 
     if os_version('debian >= stretch') {
         # Please note dbtree doesn't currently work on stretch's php
