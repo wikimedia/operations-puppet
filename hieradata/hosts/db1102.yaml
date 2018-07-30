@@ -1,2 +1,3 @@
 mariadb::shard: 'test-s1'
+mariadb::package: 'wmf-mariadb103'
 profile::base::notifications_enabled: '0'
