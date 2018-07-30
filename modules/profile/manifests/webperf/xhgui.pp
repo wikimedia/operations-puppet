@@ -2,6 +2,8 @@
 # built on MongoDB and used by the performance team
 class profile::webperf::xhgui {
 
+    require_package('libapache2-mod-php7.0')
+
     ferm::service { 'webperf-xhgui-http':
         proto  => 'tcp',
         port   => '80',
