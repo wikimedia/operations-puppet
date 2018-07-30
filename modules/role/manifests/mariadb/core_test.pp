@@ -52,7 +52,8 @@ class role::mariadb::core_test {
         # override => "[Service]\nLimitNOFILE=200000",
     }
 
-    if $package in ['wmf-mariadb', 'wmf-mariadb10', 'wmf-mariadb101', 'wmf-mariadb102'] {
+    if $package in ['wmf-mariadb', 'wmf-mariadb10', 'wmf-mariadb101',
+                    'wmf-mariadb102', 'wmf-mariadb103'] {
         $config_template = 'production.my.cnf.erb'
     } else {
         $config_template = 'core-mysql.my.cnf.erb'
