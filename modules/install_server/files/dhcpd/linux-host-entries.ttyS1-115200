@@ -834,8 +834,6 @@ host cp2017 {
 host cp2018 {
     hardware ethernet 44:A8:42:2D:0A:0F;
     fixed-address cp2018.codfw.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
-    filename "lpxelinux.0";
 }
 
 host cp2019 {
@@ -883,8 +881,6 @@ host cp2024 {
 host cp2025 {
     hardware ethernet 44:A8:42:2D:14:DF;
     fixed-address cp2025.codfw.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
-    filename "lpxelinux.0";
 }
 
 host cp2026 {
