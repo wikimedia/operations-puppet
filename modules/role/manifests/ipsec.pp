@@ -43,6 +43,7 @@ class role::ipsec ($hosts = undef) {
     # progressively push to more sites
     $mtu_value = $::site ? {
       ulsfo => 1450,
+      codfw => 1450,
       default => undef,
     }
     class { '::strongswan':
