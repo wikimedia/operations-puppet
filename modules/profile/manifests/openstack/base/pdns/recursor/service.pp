@@ -29,6 +29,7 @@ class profile::openstack::base::pdns::recursor::service(
     $tld = hiera('profile::openstack::base::pdns::tld'),
     $private_reverse = hiera('profile::openstack::base::pdns::private_reverse'),
     $aliaser_extra_records = hiera('profile::openstack::base::pdns::recursor_aliaser_extra_records'),
+    $use_metal_resolver = hiera('profile::openstack::base::pdns::use_metal_resolver'),
     ) {
 
     include ::network::constants
@@ -43,8 +44,17 @@ class profile::openstack::base::pdns::recursor::service(
 
     #  We need to alias some public IPs to their corresponding private IPs.
     $alias_file = '/etc/powerdns/labs-ip-alias.lua'
-    $metal_resolver = '/etc/powerdns/metaldns.lua'
-    $lua_hooks = [$alias_file, $metal_resolver]
+    if $use_metal_resolver {
+        $metal_resolver = '/etc/powerdns/metaldns.lua'
+        $lua_hooks = [$alias_file, $metal_resolver]
+
+        class { '::dnsrecursor::metalresolver':
+            metal_resolver => $metal_resolver,
+            tld            => $tld
+        }
+    } else {
+        $lua_hooks = [$alias_file]
+    }
 
     file { '/var/zones':
         ensure => directory,
@@ -82,11 +92,6 @@ class profile::openstack::base::pdns::recursor::service(
         extra_records         => $aliaser_extra_records,
         alias_file            => $alias_file,
         observer_project_name => $observer_project,
-    }
-
-    class { '::dnsrecursor::metalresolver':
-        metal_resolver => $metal_resolver,
-        tld            => $tld
     }
 
     ferm::service { 'recursor_udp_dns_rec':
