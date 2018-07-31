@@ -97,18 +97,17 @@ for name in sorted(aliases.keys()):
         )
 
 output += """
-function postresolve (dq)
-    local records = dq:getRecords()
-    for key,val in pairs(records)
+function postresolve (remoteip, domain, qtype, records, origrcode)
+    for key,val in ipairs(records)
     do
-        content = val:getContent()
-        if (aliasmapping[content] and val.type == pdns.A) then
-            val:changeContent(aliasmapping[content])
+        if (aliasmapping[val.content] and val.qtype == pdns.A) then
+            val.content = aliasmapping[val.content]
+            setvariable()
         end
     end
-    dq:setRecords(records)
-    return true
+    return origrcode, records
 end
+
 """
 
 if 'extra_records' in config:
@@ -124,15 +123,14 @@ if 'extra_records' in config:
         )
 
     output += """
-function preresolve(dq)
-    for k, v in pairs(extra_records) do
-        if dq.qname:equal(k)
-        then
-            dq:addAnswer(pdns.A, v, 300)
-            return true
-        end
+function preresolve(remoteip, domain, qtype)
+    if extra_records[domain]
+    then
+        return 0, {
+            {qtype=pdns.A, content=extra_records[domain], ttl=300, place="1"},
+        }
     end
-    return false
+    return -1, {}
 end
 """
 

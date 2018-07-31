@@ -28,12 +28,18 @@ class dnsrecursor::labsaliaser(
         content => ordered_yaml($config),
     }
 
+    if os_version('ubuntu trusty') {
+        $dumpfile = 'puppet:///modules/dnsrecursor/labs-ip-alias-dump.py.trusty'
+    } else {
+        $dumpfile = 'puppet:///modules/dnsrecursor/labs-ip-alias-dump.py'
+    }
+
     file { '/usr/local/bin/labs-ip-alias-dump.py':
         ensure => present,
         owner  => 'root',
         group  => 'root',
         mode   => '0550',
-        source => 'puppet:///modules/dnsrecursor/labs-ip-alias-dump.py',
+        source => $dumpfile,
     }
 
     cron { 'labs-ip-alias-dump':
