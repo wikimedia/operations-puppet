@@ -6124,13 +6124,6 @@ host phab2001 {
     filename "lpxelinux.0";
 }
 
-host poolcounter1002 {
-    hardware ethernet 78:2b:cb:08:ac:78;
-    fixed-address poolcounter1002.eqiad.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
-    filename "lpxelinux.0";
-}
-
 host prometheus1003 {
     hardware ethernet 18:66:DA:7F:0D:96;
     fixed-address prometheus1003.eqiad.wmnet;

@@ -1856,10 +1856,6 @@ node /poolcounter[12]00[13]\.(codfw|eqiad)\.wmnet/ {
     role(poolcounter::server)
 }
 
-node 'poolcounter1002.eqiad.wmnet' {
-    role(spare::system)
-}
-
 node /^prometheus200[34]\.codfw\.wmnet$/ {
     role(prometheus)
 }
