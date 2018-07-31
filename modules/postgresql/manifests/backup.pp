@@ -15,7 +15,10 @@
 # postgresql-client, pg_dumpall, gzip, find
 #
 # Sample Usage:
-# postgresql::backup { 'pg-backup-netbox': }
+# class { '::postgresql::backup': } (in a profile class)
+#
+# And add /srv/postgres-backup or your custom path to a Bacula fileset.
+# (modules/profile/manifests/backup/director.pp)
 #
 class postgresql::backup(
     String $path = '/srv/postgres-backup',
@@ -31,7 +34,7 @@ class postgresql::backup(
 
     cron { 'postgres-dump':
         ensure  => 'present',
-        command => "pq_dumpall | gzip > ${path}/psql-all-dbs-`date \"+%Y%m%d\"`.sql.gz",
+        command => "/usr/bin/pg_dumpall | gzip > ${path}/psql-all-dbs-`date \"+%Y%m%d\"`.sql.gz",
         user    => 'postgres',
         hour    => fqdn_rand(23, $title),
         minute  => fqdn_rand(59, $title),
