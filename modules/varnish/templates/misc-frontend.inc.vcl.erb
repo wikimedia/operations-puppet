@@ -19,10 +19,6 @@ sub cluster_fe_recv_pre_purge {
             call tag_carrier_cleanup;
         }
     }
-
-    if (req.http.Host == "stream.wikimedia.org" && req.url ~ "^/socket.io/") {
-        return (synth(404, "socket.io not supported any longer"));
-    }
 }
 
 sub cluster_fe_recv {
