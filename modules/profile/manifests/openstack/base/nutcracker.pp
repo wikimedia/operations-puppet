@@ -18,7 +18,7 @@ class profile::openstack::base::nutcracker(
     class { '::memcached':
     }
 
-    $labweb_ips_ferm = inline_template("@resolve((<%= @labweb_hosts.join(' ') %>)) @resolve((<%= @labweb_hosts.join(' ') %>), AAAA)")
+    $labweb_ips_ferm = inline_template("(@resolve((<%= @labweb_hosts.join(' ') %>)) @resolve((<%= @labweb_hosts.join(' ') %>), AAAA))")
     ferm::service { 'horizon_memcached':
         proto  => 'tcp',
         port   => '11000',
