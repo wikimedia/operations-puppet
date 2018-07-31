@@ -42,7 +42,7 @@ class postgresql::backup(
 
     cron { 'postgres-rotate-dump':
         ensure  => 'present',
-        command => "find ${path} -type -f -name '*.sql.gz' -mtime +${rotate_days} -delete",
+        command => "find ${path} -type f -name '*.sql.gz' -mtime +${rotate_days} -delete",
         user    => 'postgres',
         hour    => fqdn_rand(23, $title),
         minute  => fqdn_rand(59, $title),
