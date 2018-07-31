@@ -15,10 +15,12 @@
 # postgresql-client, pg_dumpall, gzip, find
 #
 # Sample Usage:
-# class { '::postgresql::backup': } (in a profile class)
 #
-# And add /srv/postgres-backup or your custom path to a Bacula fileset.
-# (modules/profile/manifests/backup/director.pp)
+# class { '::postgresql::backup': }
+# backup::set { 'postgresql': }
+#
+# Or add your custom Bacula fileset in
+# modules/profile/manifests/backup/director.pp)
 #
 class postgresql::backup(
     String $path = '/srv/postgres-backup',

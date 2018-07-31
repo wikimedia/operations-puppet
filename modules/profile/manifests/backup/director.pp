@@ -226,6 +226,10 @@ class profile::backup::director(
         includes => [ '/srv/backup/hadoop/namenode' ]
     }
 
+    bacula::director::fileset { 'postgresql':
+        includes => [ '/srv/postgres-backup/' ]
+    }
+
     bacula::director::fileset { 'netbox':
         includes => [ '/srv/deployment/netbox/deploy/netbox/netbox/media/',
                       '/srv/deployment/netbox/deploy/netbox/netbox/reports/',
