@@ -64,9 +64,10 @@ class profile::openstack::base::designate::service(
     contain '::openstack::designate::service'
 
     $labweb_ips = inline_template("@resolve((<%= @labweb_hosts.join(' ') %>))")
+    $labweb_ip6s = inline_template("@resolve((<%= @labweb_hosts.join(' ') %>), AAAA)")
     # Open designate API to Labs web UIs and the commandline on labcontrol
     ferm::rule { 'designate-api':
-        rule => "saddr (@resolve(${osm_host}) 
+        rule => "saddr (@resolve(${osm_host}) ${labweb_ip6s}
                        ${labweb_ips} @resolve(${nova_controller}) @resolve(${nova_controller}, AAAA)
                        @resolve(${monitoring_host})) proto tcp dport (9001) ACCEPT;",
     }

@@ -19,10 +19,11 @@ class profile::openstack::base::nutcracker(
     }
 
     $labweb_ips_ferm = inline_template("@resolve((<%= @labweb_hosts.join(' ') %>))")
+    $labweb_ip6s_ferm = inline_template("@resolve((<%= @labweb_hosts.join(' ') %>), AAAA)")
     ferm::service { 'horizon_memcached':
         proto  => 'tcp',
         port   => '11000',
-        srange => $labweb_ips_ferm
+        srange => "${labweb_ips_ferm} ${labweb_ip6s_ferm}"
     }
 
     # Why doesn't profile::mediawiki::nutcracker handle this?
