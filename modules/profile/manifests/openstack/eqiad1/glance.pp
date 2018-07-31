@@ -7,6 +7,7 @@ class profile::openstack::eqiad1::glance (
     $db_host = hiera('profile::openstack::eqiad1::glance::db_host'),
     $ldap_user_pass = hiera('profile::openstack::eqiad1::ldap_user_pass'),
     $labs_hosts_range = hiera('profile::openstack::eqiad1::labs_hosts_range'),
+    $glance_image_dir = hiera('profile::openstack::base::glance::image_dir'),
     ) {
 
     require ::profile::openstack::eqiad1::clientlib
@@ -21,4 +22,11 @@ class profile::openstack::eqiad1::glance (
         labs_hosts_range        => $labs_hosts_range,
     }
     contain '::profile::openstack::base::glance'
+
+    class {'openstack::glance::image_sync':
+        active                  => ($::fqdn == $nova_controller),
+        version                 => $version,
+        glance_image_dir        => $glance_image_dir,
+        nova_controller_standby => $nova_controller_standby,
+    }
 }
