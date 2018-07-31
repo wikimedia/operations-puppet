@@ -907,8 +907,6 @@ host cp3030 {
 host cp3031 {
     hardware ethernet 44:a8:42:0a:50:34;
     fixed-address cp3031.esams.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
-    filename "lpxelinux.0";
 }
 
 host cp3032 {
@@ -998,8 +996,6 @@ host cp3043 {
 host cp3044 {
     hardware ethernet 44:a8:42:09:fb:4e;
     fixed-address cp3044.esams.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
-    filename "lpxelinux.0";
 }
 
 host cp3045 {
