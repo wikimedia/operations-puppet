@@ -2,6 +2,7 @@
 class role::puppetmaster::puppetdb {
     include ::standard
     include ::profile::base::firewall
+    include ::profile::backup::host
     include ::profile::puppetdb::database
     include ::profile::puppetdb
 
