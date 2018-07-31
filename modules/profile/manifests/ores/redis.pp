@@ -7,7 +7,7 @@ class profile::ores::redis(
     $prometheus_nodes = hiera('prometheus_nodes'),
 ){
     include ::standard
-    include ::base::firewall
+    include ::profile::base::firewall
 
     $instances = ['6379', '6380']
 
