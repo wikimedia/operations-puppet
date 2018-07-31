@@ -30,7 +30,7 @@ case `hostname` in \
 		# integrity in case of drive failure, and no journalling
 		in-target /usr/sbin/nvme format /dev/nvme0n1 -l 2
 		echo ';' | /usr/sbin/sfdisk /dev/nvme0n1
-		/sbin/mke2fs -F -F -t ext4 -O bigalloc,sparse_super2,^has_journal,^ext_attr,^dir_nlink,^dir_index,^extra_isize -b 4096 -C 16M -N 16 -I 128 -E num_backup_sb=0,packed_meta_blocks=1 -m 0 -L cache-store /dev/nvme0n1p1
+		/sbin/mke2fs -F -F -t ext4 -O bigalloc,sparse_super2,^resize_inode,^has_journal,^ext_attr,^extra_isize,^dir_nlink,^dir_index,^filetype -b 4096 -N 16 -I 128 -C 16k -E num_backup_sb=0,packed_meta_blocks=1 -m 0 -L cache-store /dev/nvme0n1p1
 		;; \
 	cp[1-9]*)
 		# older cache node storage are all partitioned by partman to
