@@ -341,12 +341,18 @@ class NovaInstance(object):
             exit(1)
 
         # Check that the new VM is showing up in dns
-        if not self.dns_test(source=False, accept_multiples=True):
+        for i in xrange(21):
+            if self.dns_test(source=False, accept_multiples=True):
+                break
+
+            time.sleep(30)
+
+        if i == 20:
             print("The new instance isn't appearing in DNS")
             exit(1)
 
         if host_moved:
-            # self.source_instance.delete()
+            self.source_instance.delete()
             pass
         else:
             # we need to do some kind of clever cleanup here
