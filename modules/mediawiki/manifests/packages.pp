@@ -14,7 +14,7 @@ class mediawiki::packages {
     require_package('ghostscript', 'djvulibre-bin', 'librsvg2-bin', 'libtiff-tools', 'poppler-utils')
 
     # Score
-    require_package('lilypond', 'timidity', 'freepats')
+    require_package('lilypond', 'timidity', 'freepats', 'fluidsynth', 'fluid-soundfont-gs', 'fluid-soundfont-gm')
 
     # Math rendering
     require_package('dvipng', 'gsfonts', 'make', 'ocaml', 'ploticus', 'texvc')
