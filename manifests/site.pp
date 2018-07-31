@@ -2107,12 +2107,6 @@ node 'mwmaint2001.codfw.wmnet' {
     interface::add_ip6_mapped { 'main': }
 }
 
-# mediawiki maintenance servers (https://wikitech.wikimedia.org/wiki/Terbium)
-node 'terbium.eqiad.wmnet' {
-    role(spare::system)
-    interface::add_ip6_mapped { 'main': }
-}
-
 # Thumbor servers for MediaWiki image scaling
 node /^thumbor100[1234]\.eqiad\.wmnet/ {
     role(thumbor::mediawiki)

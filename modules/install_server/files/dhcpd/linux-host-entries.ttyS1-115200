@@ -6646,11 +6646,6 @@ host tegmen {
     filename "lpxelinux.0";
 }
 
-host terbium {
-    hardware ethernet 90:B1:1C:25:9D:72;
-    fixed-address terbium.eqiad.wmnet;
-}
-
 host tungsten {
     hardware ethernet 78:2b:cb:0a:04:12;
     fixed-address tungsten.eqiad.wmnet;
