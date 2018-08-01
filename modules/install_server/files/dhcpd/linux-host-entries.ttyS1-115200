@@ -5897,13 +5897,6 @@ host netmon2001 {
     fixed-address netmon2001.wikimedia.org;
 }
 
-host notebook1001 {
-    hardware ethernet 90:b1:1c:12:8f:9a;
-    fixed-address notebook1001.eqiad.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
-    filename "lpxelinux.0";
-}
-
 host notebook1003 {
     hardware ethernet D0:94:66:1B:49:A6;
     fixed-address notebook1003.eqiad.wmnet;
