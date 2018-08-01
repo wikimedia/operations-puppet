@@ -39,15 +39,9 @@ class role::ipsec ($hosts = undef) {
             }
         }
     }
-    # Change the MTU for cp* everywhere except eqiad
+    # Change the MTU for all cp* servers, ignore the rest (mc*, etc)
     if $::hostname =~ /^cp/ {
-        $mtu_value = $::site ? {
-          ulsfo => 1450,
-          codfw => 1450,
-          esams => 1450,
-          eqsin => 1450,
-          default => undef,
-        }
+        $mtu_value = 1450
     } else {
         $mtu_value = undef
     }
