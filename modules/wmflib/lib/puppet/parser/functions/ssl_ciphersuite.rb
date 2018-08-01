@@ -63,13 +63,13 @@ require 'puppet/util/package'
 
 module Puppet::Parser::Functions
   # Basic list chunks, used to construct bigger lists
+  # Note we only support forward-secret ciphers at this point
   # General preference ordering for fullest combined list:
-  # 1) Kx:   (EC)DHE > RSA    (Forward Secrecy)
-  # 2) Mac:  AEAD > ALL       (AES-GCM/CHAPOLY > Others)
-  # 3) Auth: ECDSA > RSA      (Perf, mostly)
-  # 4) Enc:  CHAPOLY > AESGCM (Old client perf, sec)
-  # 5) Enc:  AES256 > AES128  (sec, batch attacks?)
-  # 6) Kx:   ECDHE > DHE      (Perf, mostly)
+  # 1) Mac:  AEAD > ALL       (AES-GCM/CHAPOLY > Others)
+  # 2) Auth: ECDSA > RSA      (Perf, mostly)
+  # 3) Enc:  CHAPOLY > AESGCM (Old client perf, sec)
+  # 4) Enc:  AES256 > AES128  (sec, batch attacks?)
+  # 5) Kx:   ECDHE > DHE      (Perf, mostly)
   #
   # After all of that, the fullest list of reasonably-acceptable mid/compat
   # ciphers has been filtered further to reduce pointless clutter:
@@ -80,11 +80,6 @@ module Puppet::Parser::Functions
   # AES256 performance differentials.  SHA-2 HMAC variants were filtered
   # similarly, as all clients that would negotiate x-SHA256 also negotiate x-SHA
   # and there's no effective security difference between the two.
-  # *) The 'compat' list has been reduced to just AES128-SHA after the removal
-  # of 3DES in Nov 2017.  There are other possible entries here (AES256 and/or
-  # GCM), but in practice very few clients ever negotiate them anyways.  All
-  # such clients fall back to AES128-SHA, and things are so bad at this level
-  # it's not worth worrying about slight cipher strength gains.
   basic = {
     # Forward-Secret + AEAD
     'strong' => [
@@ -105,9 +100,8 @@ module Puppet::Parser::Functions
       'ECDHE-RSA-AES128-SHA',
       'DHE-RSA-AES128-SHA', # Android 2.x, openssl-0.9.8, etc
     ],
-    # not-forward-secret compat for ancient stuff
+    # Currently empty, but some "mid" above may move here in later commits
     'compat' => [
-      'AES128-SHA',   # Mostly evil proxies, also ancient devices
     ],
   }
 
