@@ -6,6 +6,10 @@ class profile::ci::docker(
     $jenkins_agent_username = hiera('jenkins_agent_username'),
     $settings = hiera('profile::ci::docker::settings'),
 ) {
+    # Having blubber on all docker nodes will give us a broad pool for all
+    # jobs that require similar image building workloads
+    require_package('blubber')
+
     apt::repository { 'thirdparty-ci':
         uri        => 'http://apt.wikimedia.org/wikimedia',
         dist       => "${::lsbdistcodename}-wikimedia",
