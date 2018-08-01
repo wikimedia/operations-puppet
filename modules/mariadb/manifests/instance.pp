@@ -5,6 +5,7 @@
 # * tmpdir: datadir mysql config, by default /srv/tmp.title
 # * socket: socket mysql config, by default /run/mysqld/mysqld.title.sock
 # * innodb_buffer_pool_size: config of the same name, it controls how much
+# * is_critical: config flag to decide whether we page or not for this alert
 #   memory the instace uses. By default (or if it is configured as false,
 #   , it is unconfigured, and it will default to the one on the common
 #   config template (or the mysql default, if not configured there). When
@@ -16,6 +17,7 @@ define mariadb::instance(
     $socket  = 'undefined',
     $innodb_buffer_pool_size = false,
     $template = 'mariadb/instance.cnf.erb',
+    $is_critical = false,
 ) {
     if $datadir == 'undefined' {
         $datadir_instance = "/srv/sqldata.${title}"
@@ -57,7 +59,8 @@ define mariadb::instance(
     # TODO: Allow non-defaults replication monitoring, such as
     # allowing it to be critical
     mariadb::monitor_replication{ $title:
-        socket => $socket_instance,
+        socket      => $socket_instance,
+        is_critical => $is_critical,
     }
     mariadb::monitor_readonly{ $title:
         port      => $port,
