@@ -12,11 +12,11 @@ class tilerator::regen (
     $statefile = "${statefile_dir}/expire.state"
 
     file { '/usr/local/bin/notify-tilerator-regen':
-        ensure  => present,
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0555',
-        content => 'puppet:///modules/tilerator/notify-tilerator-regen.sh',
+        ensure => present,
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0555',
+        source => 'puppet:///modules/tilerator/notify-tilerator-regen.sh',
     }
 
     file { $tilerator_log_dir:

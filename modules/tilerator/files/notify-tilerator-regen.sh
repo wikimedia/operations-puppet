@@ -15,7 +15,7 @@ fi
 
 /usr/bin/flock -xn "${osmosis_dir}/replicate-osm.lck" \
     /usr/bin/nodejs /srv/deployment/tilerator/deploy/node_modules/tilerator/scripts/tileshell.js \
-        --config config.dev.yaml \
+        --config /etc/tileratorui/config.yaml \
         -j.fromZoom $from_zoom \
         -j.beforeZoom $before_zoom \
         -j.generatorId $generator_id \
