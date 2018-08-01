@@ -312,7 +312,7 @@ node 'db1067.eqiad.wmnet' {
     role(mariadb::core)
 }
 # eqiad replicas
-node /^db1(052|080|083|089|106|114|119)\.eqiad\.wmnet/ {
+node /^db1(080|083|089|106|114|119)\.eqiad\.wmnet/ {
     role(mariadb::core)
 }
 
@@ -652,6 +652,12 @@ node 'dbstore2001.codfw.wmnet' {
 node 'dbstore2002.codfw.wmnet' {
     role(mariadb::dbstore_multiinstance)
 }
+
+# To be decommissioned - T199861
+node 'db1052.eqiad.wmnet' {
+    role(spare::system)
+}
+
 
 # Proxies for misc databases
 node /^dbproxy10(01|02|03|04|05|06|07|08|09)\.eqiad\.wmnet$/ {
