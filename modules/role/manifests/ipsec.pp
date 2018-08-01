@@ -39,12 +39,20 @@ class role::ipsec ($hosts = undef) {
             }
         }
     }
-    # First iteration, only change the MTU in ulsfo, then if all good
-    # progressively push to more sites
-    $mtu_value = $::site ? {
-      ulsfo => 1450,
-      default => undef,
+    # First iteration, only change the MTU for cp* in ulsfo+codfw
+    # then if all good progressively push to more sites
+
+    if $::hostname =~ /^cp/ {
+        $mtu_value = $::site ? {
+          ulsfo => 1450,
+          codfw => 1450,
+          default => undef,
+        }
     }
+    else {
+        $mtu_value = undef
+    }
+
     class { '::strongswan':
         puppet_certname => $puppet_certname,
         hosts           => $targets,
