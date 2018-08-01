@@ -1038,7 +1038,7 @@ node /labweb100[12]\.wikimedia\.org/ {
 
 # Primary graphite machines
 node 'graphite1001.eqiad.wmnet' {
-    role(graphite::primary)
+    role(graphite::production)
     # TODO: move the roles below to ::role::alerting::host
     include ::role::graphite::alerts
     include ::role::restbase::alerts
@@ -1053,16 +1053,16 @@ node 'graphite1003.eqiad.wmnet' {
 
 # replacement to graphite1001, which is old and needs decom
 node 'graphite1004.eqiad.wmnet' {
-    role(graphite::primary)
+    role(graphite::production)
 }
 
 # Primary graphite machines
 node 'graphite2001.codfw.wmnet' {
-    role(graphite::primary)
+    role(graphite::production)
 }
 
 node 'graphite2003.codfw.wmnet' {
-    role(graphite::primary)
+    role(graphite::production)
 }
 
 # graphite additional machine, for additional space

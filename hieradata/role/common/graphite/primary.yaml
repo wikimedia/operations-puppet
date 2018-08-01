@@ -1,4 +1,0 @@
-admin::groups:
-  - perf-roots
-  - graphite-admins
-graphite::web::uwsgi_processes: 16
