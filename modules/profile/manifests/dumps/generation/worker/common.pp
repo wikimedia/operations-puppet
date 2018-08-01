@@ -9,6 +9,7 @@ class profile::dumps::generation::worker::common(
     require ::profile::mediawiki::scap_proxy
     require ::profile::mediawiki::common
     require ::profile::mediawiki::nutcracker
+    require ::profile::mediawiki::mcrouter_wancache
 
     $xmldumpsmount = '/mnt/dumpsdata'
 
