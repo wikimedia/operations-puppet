@@ -2,7 +2,6 @@
 #
 # Packages needed for mediawiki
 class mediawiki::packages {
-    include ::mediawiki::packages::math
     include ::mediawiki::packages::tex
 
     include ::imagemagick::install
@@ -23,6 +22,9 @@ class mediawiki::packages {
     package { 'timidity-daemon':
       ensure => absent,
     }
+
+    # Math rendering
+    require_package('dvipng', 'gsfonts', 'make', 'ocaml', 'ploticus', 'texvc')
 
     require_package('firejail')
 }
