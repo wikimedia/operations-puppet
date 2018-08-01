@@ -39,17 +39,16 @@ class role::ipsec ($hosts = undef) {
             }
         }
     }
-    # First iteration, only change the MTU for cp* in ulsfo+codfw
-    # then if all good progressively push to more sites
-
+    # Change the MTU for cp* everywhere except eqiad
     if $::hostname =~ /^cp/ {
         $mtu_value = $::site ? {
           ulsfo => 1450,
           codfw => 1450,
+          esams => 1450,
+          eqsin => 1450,
           default => undef,
         }
-    }
-    else {
+    } else {
         $mtu_value = undef
     }
 
