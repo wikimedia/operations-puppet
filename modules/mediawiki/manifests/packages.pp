@@ -2,8 +2,6 @@
 #
 # Packages needed for mediawiki
 class mediawiki::packages {
-    include ::mediawiki::packages::tex
-
     include ::imagemagick::install
 
     # vips is needed for (rare) non-Thumbor scaling of TIFF/PNG uploads (T199938)
@@ -25,6 +23,11 @@ class mediawiki::packages {
 
     # Math rendering
     require_package('dvipng', 'gsfonts', 'make', 'ocaml', 'ploticus', 'texvc')
+
+    # TeX rendering
+    require_package('texlive', 'texlive-bibtex-extra', 'texlive-science', 'texlive-font-utils')
+    require_package('texlive-fonts-extra', 'texlive-generic-extra', 'texlive-lang-all', 'texlive-pictures')
+    require_package('texlive-latex-extra', 'texlive-pstricks', 'texlive-publishers')
 
     require_package('firejail')
 }
