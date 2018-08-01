@@ -1,23 +1,15 @@
 define varnish::setup_filesystem() {
     if $::realm == 'labs' {
-        $custom_mount_opts = ',comment=cloudconfig'
+        $mount_options = 'noatime,comment=cloudconfig'
     }
-    elsif os_version('debian >= jessie') {
-        if $title =~ /^nvme/ {
-            $custom_mount_opts = ',nobarrier'
-        }
-        else {
-            $custom_mount_opts = ',nobarrier,data=writeback'
-        }
+    elsif os_version('debian >= stretch') {
+        # Starting with stretch, we don't use the journal at mke2fs time
+        $mount_options = 'noatime,nobarrier'
     }
     else {
-        # nodiratime is redundant, but I'm hoping to avoid
-        #  pointless puppet-triggered remount attempts on
-        #  the legacy boxes here...
-        $custom_mount_opts = ',nodiratime,nobarrier,logbufs=8'
+        # Legacy jessie installs, remove when all are stretch
+        $mount_options = 'noatime,nobarrier,data=writeback'
     }
-
-    $mount_options = "noatime${custom_mount_opts}"
 
     if $::realm == 'labs' and $::site == 'eqiad' {
       include ::labs_lvm
