@@ -47,8 +47,27 @@ class mediawiki::web::prod_sites {
         'mediawiki.org',
         'test.wikidata.org',
     ]
-
     mediawiki::web::site { $main_conf_sites:
         before => Apache::Site['main']
+    }
+
+
+    mediawiki::web::site { 'wikimaniateam.wikimedia.org':
+        before => Apache::Site['wikimania']
+    }
+    mediawiki::web::site {[
+        'wikimedia-chapter',
+        'login.wikimedia.org',
+        'www.wikimedia.org'
+    ]:
+        before => Apache::Site['wikimedia']
+    }
+    $other_wikis = [
+        'transitionteam.wikimedia.org', 'iegcom.wikimedia.org',
+        'legalteam.wikimedia.org', 'zero.wikimedia.org'
+    ]
+    mediawiki::web::site { $other_wikis:
+        template_name => 'private-https',
+        before        => Apache::Site['wikimedia'],
     }
 }
