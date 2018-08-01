@@ -36,6 +36,12 @@
 # Change location of build records. This option was formerly set in the
 # jenkins ui, now must be set via system properties
 # Default: ${ITEM_ROOTDIR}/builds
+#
+# [*workspaces_dir*]
+# Change location of master node workspaces. This option was formerly set in
+# the jenkins ui, now must be set via system properties
+# Default: ${ITEM_ROOTDIR}/workspace
+#
 class jenkins(
     $prefix,
     $access_log = false,
@@ -46,7 +52,8 @@ class jenkins(
     $service_enable = true,
     $service_monitor = true,
     $umask = '0002',
-    $builds_dir = '${ITEM_ROOTDIR}/builds' # lint:ignore:single_quote_string_with_variables
+    $builds_dir = "\${ITEM_ROOTDIR}/builds",
+    $workspaces_dir = "\${ITEM_ROOTDIR}/workspace"
 )
 {
     include ::jenkins::common
@@ -127,6 +134,7 @@ class jenkins(
     }
 
     $builds_dir_for_systemd = regsubst( $builds_dir, '\$', '$$', 'G' )
+    $workspaces_dir_for_systemd = regsubst( $workspaces_dir, '\$', '$$', 'G' )
 
     $java_args = join([
         # Allow graphs etc. to work even when an X server is present
@@ -145,7 +153,8 @@ class jenkins(
         # Disable auto discovery T178608
         '-Dhudson.udp=-1',
         '-Dhudson.DNSMultiCast.disabled=true',
-        "-Djenkins.model.Jenkins.buildsDir=${builds_dir_for_systemd}"
+        "-Djenkins.model.Jenkins.buildsDir=${builds_dir_for_systemd}",
+        "-Djenkins.model.Jenkins.workspacesDir=${workspaces_dir_for_systemd}"
     ], ' ')
 
     $real_service_ensure = $service_ensure ? {
