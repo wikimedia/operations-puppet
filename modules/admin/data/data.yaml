@@ -11,7 +11,7 @@ groups:
               psinger, midom, tparscal, dworley, moushira, lpintscher, gpaumier,
               nschaaf, zhousquared, gwicke, dpatrick, samwalton9, samtar, akrausetud, jgonsior,
               yuvipanda, shrlak, joewalsh, madhuvishy, groovier, khorn, ironholds, katie,
-              cy534]
+              cy534, pnorman]
   absent_ldap:
     description: meta group for absented users which had privileged LDAP access in the past
     members: [adavenport, siddharth11]
@@ -71,7 +71,7 @@ groups:
               mobrovac, nuria, thcipriani, joal, eevans, mforns, dcausse,
               bsitzmann, mholloway-shell, dduvall, dereckson,
               ladsgroup, bawolff, zfilipin, addshore, niharika29, ppchelko, pmiazga,
-              musikanimal, jdrewniak, pnorman, sbisson, imarlier, jforrester, mbsantos]
+              musikanimal, jdrewniak, sbisson, imarlier, jforrester, mbsantos]
     privileges: ['ALL = (www-data,apache,mwdeploy,l10nupdate) NOPASSWD: ALL',
                  'ALL = NOPASSWD: /sbin/restart hhvm',
                  'ALL = NOPASSWD: /sbin/start hhvm',
@@ -362,7 +362,7 @@ groups:
   maps-admins:
     gid: 753
     description: admin for maps clusters
-    members: [maxsem, eevans, pnorman, sbisson, catrope, mholloway-shell, mbsantos]
+    members: [maxsem, eevans, sbisson, catrope, mholloway-shell, mbsantos]
     # TODO: Revisit this when moving into production
     privileges: ['ALL = NOPASSWD: /usr/sbin/service cassandra *',
                  'ALL = NOPASSWD: /bin/systemctl mask cassandra.service',
@@ -379,7 +379,7 @@ groups:
   kartotherian-admin:
     description: Group of kartotherian admins
     gid: 754
-    members: [maxsem, pnorman, sbisson, catrope, mholloway-shell, mbsantos]
+    members: [maxsem, sbisson, catrope, mholloway-shell, mbsantos]
     privileges: ['ALL = NOPASSWD: /usr/sbin/service kartotherian *',
                  'ALL = NOPASSWD: /bin/systemctl mask kartotherian.service',
                  'ALL = NOPASSWD: /bin/systemctl unmask kartotherian.service',
@@ -414,7 +414,7 @@ groups:
   tilerator-admin:
     description: Group of tilerator admins
     gid: 758
-    members: [maxsem, pnorman, sbisson, catrope, mholloway-shell, mbsantos]
+    members: [maxsem, sbisson, catrope, mholloway-shell, mbsantos]
     privileges: ['ALL = NOPASSWD: /usr/sbin/service tilerator *',
                  'ALL = NOPASSWD: /bin/systemctl mask tilerator.service',
                  'ALL = NOPASSWD: /bin/systemctl unmask tilerator.service',
@@ -2528,16 +2528,12 @@ users:
     uid: 16664
     email: goran.milovanovic_ext@wikimedia.de
   pnorman:
-    ensure: present
+    ensure: absent
     gid: 500
     name: pnorman
     realname: Paul Norman
-    ssh_keys:
-      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQCy7wnX7ck41mKRzXvt5n/2UVEDkK1T9L5iyDFAWgDAbjgWqjBgnfHVq88lX1d/WOUNjNzF1WnRWn1vk6gKk3eoNlIbEcIvfLGYB+e6yGsE9KZWyvcpWcIBhhe9YH4d7nY34ScUIH42bZkXh2iGu5VpQVm8G5Wf9iqSwKFHSAy+Bl3jclaHSPfUmGxTbjC2e20Xns8BvybEW4dBjb79/eHNR1K/9f5JHeLM9ZE3wKVYC07kSnsYCGVWWr2zqyjpmBl2hQe/0C0pvx2AoTzEYK58BZZUkui3aIihSDiDMxDujNypUtePyoCq14t8dLSkIfOh0kRKAVmC/6oVwzSFbvZ7yjyU5ApsUK1DqCmFw/yz9M/nRuAs3qkXwFC1XUyjNBiVBEbWKDGxBx08TjZPKSvbtQD3DaU7RvXJUh3hsDcrgfky6ZlfV9y1bRp7heHVAShVWrsTwoQt/PF6uZ2ud71Ri51bV9qlHdT/BmF+UJ86LSPzTHSKt57GEXguVVPCGgfjFm+WugW4SOC+Bx/IEQC7+hfgXZjr6CQt+zCOExBS6IpknDBIzuvdbrNKG1auBn6nJKCAURRR3q71tCGlihjV39u5ZEmGqacsIYDA1SSTGqUGq5MuaVoVuS0rBPwFjO1enhqDT6wl9qBVuHUDlis9XQ2wOyLT3yqG0sGYxpNF0w== pnorman@pippin
+    ssh_keys: []
     uid: 16082
-    email: penorman@mac.com
-    expiry_date: 2018-07-31
-    expiry_contact: abaso@wikimedia.org
   ayounsi:
     ensure: present
     gid: 500
