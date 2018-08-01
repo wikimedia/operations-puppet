@@ -45,6 +45,8 @@ class profile::mariadb::backup::mydumper {
 
     $user = $passwords::mysql::dump::user
     $password = $passwords::mysql::dump::pass
+    $stats_user = $passwords::mysql::dump::stats_user
+    $stats_password = $passwords::mysql::dump::stats_pass
     file { '/etc/mysql/backups.cnf':
         ensure  => present,
         owner   => 'dump',

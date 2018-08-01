@@ -2,9 +2,12 @@
 
 import argparse
 import datetime
+import logging
 import os
+import pymysql
 import re
 import shutil
+import socket
 import subprocess
 import sys
 from multiprocessing.pool import ThreadPool
@@ -26,6 +29,147 @@ DATE_FORMAT = '%Y-%m-%d--%H-%M-%S'
 # FIXME: backups will stop working on Jan 1st 2100
 DUMPNAME_REGEX = 'dump\.([a-z0-9\-]+)\.(20\d\d-[01]\d-[0123]\d\--\d\d-\d\d-\d\d)'
 DUMPNAME_FORMAT = 'dump.{0}.{1}'  # where 0 is the section and 1 the date
+TLS_TRUSTED_CA = '/etc/ssl/certs/Puppet_Internal_CA.pem'
+
+
+class BackupStatistics:
+    """
+    Virtual class that defines the interface to generate
+    and store the backup statistics.
+    """
+    host = None
+    port = 3306
+    user = None
+    password = None
+    dump_name = None
+
+    def __init__(self, dump_name, section, source, config):
+        self.dump_name = dump_name
+        self.section = section
+        self.source = source
+        self.host = config.get('host', DEFAULT_HOST)
+        self.port = config.get('port', DEFAULT_PORT)
+        self.database = config['database']
+        self.user = config.get('user', DEFAULT_USER)
+        self.password = config['password']
+
+    def start(self):
+        pass
+
+    def gather_metrics(self):
+        pass
+
+    def fail(self):
+        pass
+
+    def finish(self):
+        pass
+
+
+class DisabledBackupStatistics(BackupStatistics):
+    """
+    Dummy class that does nothing when statistics are requested to be
+    generated and stored.
+    """
+    def __init__(self):
+        pass
+
+
+class DatabaseBackupStatistics(BackupStatistics):
+    """
+    Generates statistics and stored them on a MySQL/MariaDB database over TLS
+    """
+
+    def set_status(self, status):
+        """
+        Updates or inserts the backup entry at the backup statistics
+        database, with the given status (ongoing, finished, failed).
+        If it is ongoing, it is considered a new entry (in which case,
+        section and source are required parameters.
+        Otherwise, it supposes an existing entry with the given name
+        exists, and it tries to update it.
+        Returns True if it was successful, False otherwise.
+        """
+        logger = logging.getLogger('backup')
+        db = pymysql.connect(host=self.host, port=self.port, database=self.database,
+                             user=self.user, password=self.password,
+                             ssl={'ca': TLS_TRUSTED_CA})
+        if db is None:
+            logger.error('We could not connect to {} to store the stats'.format(self.host))
+            return False
+        with db.cursor(pymysql.cursors.DictCursor) as cursor:
+            if status == 'ongoing':
+                if self.section is None or self.source is None:
+                    logger.error('A new backup requires a section and a source parameters')
+                    return False
+                host = socket.getfqdn()
+                query = "INSERT INTO backups (name, status, section, source, host, type," \
+                        "start_date, end_date) " \
+                        "VALUES (%s, 'ongoing', %s, %s, %s, 'dump', now(), NULL)"
+                try:
+                    result = cursor.execute(query, (self.dump_name, self.section, self.source,
+                                            host))
+                except (pymysql.err.ProgrammingError, pymysql.err.InternalError):
+                    logger.error('A MySQL error occurred while trying to insert the entry '
+                                 'for the new backup')
+                    return False
+                if result is None:
+                    logger.error('We could not store the information on the database')
+                    return False
+                db.commit()
+            elif status in ('finished', 'failed'):
+                query = "SELECT id, status FROM backups WHERE name = %s"
+                try:
+                    result = cursor.execute(query, (self.dump_name,))
+                except (pymysql.err.ProgrammingError, pymysql.err.InternalError):
+                    logger.error('A MySQL error occurred while finding the entry for the '
+                                 'backup')
+                    return False
+                if result is None:
+                    logger.error('We could not update the database backup statistics server')
+                    return False
+                data = cursor.fetchall()
+                if len(data) != 1:
+                    logger.error('We could not find the existing statistics for the finished '
+                                 'dump')
+                    return False
+                elif data[0]['status'] == status:
+                    logger.warning('We are already on the {} state'.format(status))
+                    return True
+                else:
+                    backup_id = str(data[0]['id'])
+                    query = "UPDATE backups SET status = %s, end_date = now() WHERE id = %s"
+                    try:
+                        result = cursor.execute(query, (status, backup_id))
+                    except (pymysql.err.ProgrammingError, pymysql.err.InternalError):
+                        logger.error('A MySQL error occurred while trying to update the '
+                                     'entry for the new backup')
+                        return False
+
+                    if result is None:
+                        logger.error('We could not set as finished the current dump')
+                        return False
+                    db.commit()
+                    return True
+            else:
+                logger.error('Invalid status: {}'.format(status))
+                return False
+
+    def gather_metrics(self):
+        """
+        Gathers the file name list and sizes for the generated files and stores it on the given
+        statistics mysql database. Not yet implemented.
+        """
+        pass
+
+    def start(self):
+        self.set_status('ongoing')
+
+    def fail(self):
+        self.set_status('failed')
+
+    def finish(self):
+        self.set_status('finished')
 
 
 def get_mydumper_cmd(name, config):
@@ -38,10 +182,7 @@ def get_mydumper_cmd(name, config):
     # check parameters better to avoid unintended effects
     cmd = ['/usr/bin/mydumper']
     cmd.extend(['--compress', '--events', '--triggers', '--routines'])
-    if 'backup_dir' in config:
-        backup_dir = config['backup_dir']
-    else:
-        backup_dir = ONGOING_BACKUP_DIR
+    backup_dir = config.get('backup_dir', ONGOING_BACKUP_DIR)
 
     log_file = os.path.join(backup_dir, 'log.{}'.format(name))
     cmd.extend(['--logfile', log_file])
@@ -50,21 +191,12 @@ def get_mydumper_cmd(name, config):
     output_dir = os.path.join(backup_dir, dump_name)
     cmd.extend(['--outputdir', output_dir])
 
-    if 'rows' in config:
-        rows = int(config['rows'])
-    else:
-        rows = DEFAULT_ROWS
+    rows = int(config.get('rows', DEFAULT_ROWS))
     cmd.extend(['--rows', str(rows)])
     cmd.extend(['--threads', str(config['threads'])])
-    if 'host' in config:
-        host = config['host']
-    else:
-        host = DEFAULT_HOST
+    host = config.get('host', DEFAULT_HOST)
     cmd.extend(['--host', host])
-    if 'port' in config:
-        port = int(config['port'])
-    else:
-        port = DEFAULT_PORT
+    port = int(config.get('port', DEFAULT_PORT))
     cmd.extend(['--port', str(port)])
     if 'regex' in config and config['regex'] is not None:
         cmd.extend(['--regex', config['regex']])
@@ -80,14 +212,24 @@ def get_mydumper_cmd(name, config):
 def logical_dump(name, config, rotate):
     """
     Perform the logical backup of the given instance,
-    with the given settings. Once finished sucesfully, consolidate the
+    with the given settings. Once finished successfully, consolidate the
     number of files if asked, and move it to the "latest" dir. Archive
     any previous dump of the same name
     """
 
+    logger = logging.getLogger('backup')
     (cmd, dump_name, log_file) = get_mydumper_cmd(name, config)
+    logger.debug(cmd)
 
-    # print(cmd)
+    if 'statistics' in config:  # Enable statistics gathering?
+        stats = DatabaseBackupStatistics(dump_name=dump_name, section=name,
+                                         config=config['statistics'],
+                                         source=config['host'] + ':' + str(config['port']))
+    else:
+        stats = DisabledBackupStatistics()
+
+    stats.start()
+
     process = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     subprocess.Popen.wait(process)
     out, err = process.communicate()
@@ -95,31 +237,34 @@ def logical_dump(name, config, rotate):
         sys.stdout.buffer.write(out)
     errors = err.decode("utf-8")
     if len(errors) > 0:
+        logger.error('The mydumper stderr was not empty')
         sys.stderr.write(errors)
 
     # Check backup finished correctly
     if ' CRITICAL ' in errors:
+        stats.fail()
         return 3
 
     with open(log_file, 'r') as output:
         log = output.read()
     if ' [ERROR] ' in log:
+        stats.fail()
         return 4
 
-    if 'backup_dir' in config:
-        backup_dir = config['backup_dir']
-    else:
-        backup_dir = ONGOING_BACKUP_DIR
+    backup_dir = config.get('backup_dir', ONGOING_BACKUP_DIR)
     output_dir = os.path.join(backup_dir, dump_name)
     metadata_file_path = os.path.join(output_dir, 'metadata')
     with open(metadata_file_path, 'r') as metadata_file:
         metadata = metadata_file.read()
     if 'Finished dump at: ' not in metadata:
+        stats.fail()
         return 5
 
     # Backups seems ok, start consolidating it to fewer files
     if 'archive' in config and config['archive']:
         archive_databases(output_dir, config['threads'])
+
+    stats.gather_metrics()
 
     if rotate:
         # This is not a manual backup, peform rotations
@@ -127,6 +272,7 @@ def logical_dump(name, config, rotate):
         move_dumps(name, FINAL_BACKUP_DIR, ARCHIVE_BACKUP_DIR)
         os.rename(output_dir, os.path.join(FINAL_BACKUP_DIR, dump_name))
 
+    stats.finish()
     return 0
 
 
@@ -177,7 +323,8 @@ def tar_and_remove(source, name, files):
     cmd.extend(['--create', '--remove-files', '--file', tar_file, '--directory', source])
     cmd.extend(files)
 
-    # print(cmd)
+    logger = logging.getLogger('backup')
+    logger.debug(cmd)
     process = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     subprocess.Popen.wait(process)
     out, err = process.communicate()
@@ -264,8 +411,39 @@ def parse_options():
                         help=('Only backup tables matching this regular expression,'
                               'with format: database.table. Default: all tables'),
                         default=None)
-
-    return parser.parse_args()
+    parser.add_argument('--stats-host',
+                        help='Host where the statistics database is.',
+                        default=None)
+    parser.add_argument('--stats-port',
+                        type=int,
+                        help='Port where the statistics database is. Default: {}'
+                        .format(DEFAULT_PORT),
+                        default=DEFAULT_PORT)
+    parser.add_argument('--stats-user',
+                        help='User for the statistics database.',
+                        default=None)
+    parser.add_argument('--stats-password',
+                        help='Password used for the statistics database.',
+                        default=None)
+    parser.add_argument('--stats-database',
+                        help='MySQL schema that contains the statistics database.',
+                        default=None)
+    options = parser.parse_args().__dict__
+    # nest --stats-X option into a hash 'statistics' if --stats-host is set and not null
+    if 'stats_host' in options and options['stats_host'] is not None:
+        statistics = dict()
+        statistics['host'] = options['stats_host']
+        del options['stats_host']
+        statistics['port'] = options['stats_port']
+        del options['stats_port']
+        statistics['user'] = options['stats_user']
+        del options['stats_user']
+        statistics['password'] = options['stats_password']
+        del options['stats_password']
+        statistics['database'] = options['stats_database']
+        del options['stats_database']
+        options['statistics'] = statistics
+    return options
 
 
 def parse_config_file(config_path):
@@ -285,19 +463,22 @@ def parse_config_file(config_path):
         host: 's2-master.eqiad.wmnet'
         archive: True
     """
+    logger = logging.getLogger('backup')
     try:
         config_file = yaml.load(open(config_path))
     except yaml.YAMLError:
-        print('Error opening or parsing the YAML file {}'.format(config_path))
+        logger.error('Error opening or parsing the YAML file {}'.format(config_path))
         sys.exit(1)
     if not isinstance(config_file, dict) or 'sections' not in config_file:
-        print('Error reading sections from file {}'.format(config_path))
+        logger.error('Error reading sections from file {}'.format(config_path))
         sys.exit(2)
 
     default_options = config_file.copy()
-    # If individual thread configuration is set for each backup, it could have strang effects
+    # If individual thread configuration is set for each backup, it could have strange effects
     if 'threads' not in default_options:
         default_options['threads'] = DEFAULT_THREADS
+    if 'port' not in default_options:
+        default_options['port'] = DEFAULT_PORT
 
     del default_options['sections']
 
@@ -317,11 +498,12 @@ def parse_config_file(config_path):
 
 def main():
 
+    logger = logging.getLogger('backup')
     options = parse_options()
-    if options.section is None:
+    if options['section'] is None:
         # no section name, read the config file, validate it and
         # execute it, including rotation of old dumps
-        config = parse_config_file(options.config_file)
+        config = parse_config_file(options['config_file'])
         result = dict()
         backup_pool = ThreadPool(CONCURRENT_BACKUPS)
         for section, section_config in config.items():
@@ -336,11 +518,11 @@ def main():
     else:
         # a section name was given, only dump that one,
         # but perform no rotation
-        result = logical_dump(options.section, options.__dict__, False)
+        result = logical_dump(options['section'], options, False)
         if 0 == result:
-            print('Backup {} generated correctly.'.format(options.section))
+            logger.info('Backup {} generated correctly.'.format(options['section']))
         else:
-            print('Error while performing backup of {}'.format(options.section))
+            logger.critical('Error while performing backup of {}'.format(options['section']))
         sys.exit(result)
 
 
