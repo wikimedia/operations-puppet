@@ -1,0 +1,12 @@
+<VirtualHost *:80>
+    ServerName <%= @title %>
+
+    AllowEncodedSlashes On
+
+    RewriteEngine On
+    RewriteCond %{HTTP:X-Forwarded-Proto} !https
+    RewriteRule ^/(.*)$ https://<%= @title %>/$1 [R=301,L,NE]
+
+    Include "sites-enabled/wikimedia-common.incl"
+</VirtualHost>
+

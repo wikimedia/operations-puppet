@@ -1,0 +1,12 @@
+
+# Wikimaniateam wiki
+<VirtualHost *:80>
+    ServerName wikimaniateam.wikimedia.org
+
+    Include "sites-enabled/wikimedia-common.incl"
+
+    RewriteEngine On
+    RewriteCond %{HTTP:X-Forwarded-Proto} !https
+    RewriteRule ^/(.*)$ https://wikimaniateam.wikimedia.org/$1 [R=301,L,NE]
+</VirtualHost>
+

@@ -1,0 +1,10 @@
+<VirtualHost *:80>
+    ServerName vote.wikimedia.org
+
+    RewriteEngine On
+    Include "sites-enabled/wikimedia-common.incl"
+
+    # Push to SSL
+    RewriteCond %{HTTP:X-Forwarded-Proto} !https
+    RewriteRule (.) https://vote.wikimedia.org%{REQUEST_URI} [R=301]
+</VirtualHost>

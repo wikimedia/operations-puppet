@@ -1,0 +1,63 @@
+<VirtualHost *:80>
+    ServerName wikipedia
+    ServerAlias *.wikipedia.org
+    UseCanonicalName off
+    DocumentRoot "/srv/mediawiki/docroot/wikipedia.org"
+
+    AllowEncodedSlashes On
+
+    RewriteEngine On
+
+    ProxyPass       /wiki                fcgi://127.0.0.1:9000/srv/mediawiki/docroot/wikipedia.org/w/index.php    retry=0
+    ProxyPass       /w/thumb_handler.php fcgi://127.0.0.1:9000/srv/mediawiki/docroot/wikipedia.org/w/thumb_handler.php retry=0
+    ProxyPass       /w/extensions        !
+    ProxyPassMatch  ^/w/(.*\.(php|hh))$  fcgi://127.0.0.1:9000/srv/mediawiki/docroot/wikipedia.org/w/$1           retry=0
+    ProxyPassMatch  ^/zh(-(hans|hant|cn|hk|my|sg|tw))|sr(-(ec|el)) fcgi://127.0.0.1:9000/srv/mediawiki/docroot/wikipedia.org/w/index.php    retry=0
+    RewriteRule     ^/w/wiki\.phtml$     /w/index.php [L,QSA,NE]
+
+
+    RewriteRule . - [E=RW_PROTO:%{HTTP:X-Forwarded-Proto}]
+    RewriteCond %{ENV:RW_PROTO} !=https
+    RewriteRule . - [E=RW_PROTO:http]
+
+    # ShortURL redirect T80309
+    RewriteRule ^/s/.*$ /w/index.php
+
+    # The rest are served by the upload cluster
+    # First grab the subdomain from HTTP_HOST
+    RewriteCond %{HTTP_HOST} ([a-z\-]+)\.wikipedia\.org
+    # Now use it
+    RewriteRule ^/upload/(.*)$ %{ENV:RW_PROTO}://upload.wikimedia.org/wikipedia/%1/$1 [R=302]
+
+    # Primary wiki redirector:
+    Alias /wiki /srv/mediawiki/docroot/wikipedia.org/w/index.php
+    RewriteRule ^/w/$ /w/index.php
+
+    Include "sites-enabled/api-rewrites.incl"
+    Include "sites-enabled/public-wiki-rewrites.incl"
+    Include "sites-enabled/wikimedia-legacy.incl"
+
+    # Early phase 2 compatibility URLs
+    RewriteRule ^/wiki\.phtml$ %{ENV:RW_PROTO}://%{SERVER_NAME}/w/index.php [R=301,L]
+
+    # and is for the others...
+    RewriteRule ^/math/(.*) %{ENV:RW_PROTO}://upload.wikimedia.org/math/$1 [R=301]
+
+    # moved wikistats off NFS
+    RewriteRule ^/wikistats(/(.*$)|$) %{ENV:RW_PROTO}://stats.wikimedia.org/$2 [R=302,L]
+
+    # Variant aliases
+    Alias /sr /srv/mediawiki/docroot/wikipedia.org/w/index.php
+    Alias /sr-ec /srv/mediawiki/docroot/wikipedia.org/w/index.php
+    Alias /sr-el /srv/mediawiki/docroot/wikipedia.org/w/index.php
+    Alias /zh /srv/mediawiki/docroot/wikipedia.org/w/index.php
+    Alias /zh-hans /srv/mediawiki/docroot/wikipedia.org/w/index.php
+    Alias /zh-hant /srv/mediawiki/docroot/wikipedia.org/w/index.php
+    Alias /zh-cn /srv/mediawiki/docroot/wikipedia.org/w/index.php
+    Alias /zh-hk /srv/mediawiki/docroot/wikipedia.org/w/index.php
+    Alias /zh-my /srv/mediawiki/docroot/wikipedia.org/w/index.php
+    Alias /zh-mo /srv/mediawiki/docroot/wikipedia.org/w/index.php
+    Alias /zh-sg /srv/mediawiki/docroot/wikipedia.org/w/index.php
+    Alias /zh-tw /srv/mediawiki/docroot/wikipedia.org/w/index.php
+
+</VirtualHost>
