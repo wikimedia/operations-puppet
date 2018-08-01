@@ -115,10 +115,9 @@ class CheckService(object):
     def _mwdeploy_query(self):
         """Return a query that tracks MediaWiki deploy problems."""
         query = ('host:("%(host)s") '
-                 'AND ((type:mediawiki '
-                 'AND (channel:exception '
-                 'OR channel:error)) '
-                 'OR type:hhvm)') % vars(self)
+                 'AND ((type:mediawiki AND '
+                 '(channel:(fatal OR exception OR error))) '
+                 'OR (type:hhvm AND NOT level:INFO))') % vars(self)
 
         return {
             "size": 0,
@@ -151,7 +150,6 @@ class CheckService(object):
                         {
                             "terms": {
                                 "level": [
-                                    "INFO",
                                     "DEBUG"
                                 ]
                             }
@@ -160,22 +158,6 @@ class CheckService(object):
                             "match": {
                                 "message": {
                                     "query": "SlowTimer",
-                                    "type": "phrase"
-                                }
-                            }
-                        },
-                        {
-                            "match": {
-                                "message": {
-                                    "query": "Invalid host name",
-                                    "type": "phrase"
-                                }
-                            }
-                        },
-                        {
-                            "match": {
-                                "message": {
-                                    "query": "LuaSandbox/Engine.php",
                                     "type": "phrase"
                                 }
                             }
