@@ -282,4 +282,15 @@ class role::logstash::collector (
         sender          => 'apache2',
         increment       => [ '%{level}' ],
     }
+
+    # Alerting
+    monitoring::check_prometheus { 'logstash-udp-loss':
+        description     => 'Packet loss for UDP',
+        dashboard_links => ['https://grafana.wikimedia.org/dashboard/db/logstash'],
+        query           => "rate(node_netstat_Udp_InErrors{instance=~\"${::hostname}:}\"}[5m])",
+        warning         => 30,
+        critical        => 80,
+        method          => 'ge',
+        prometheus_url  => "http://prometheus.svc.${::site}.wmnet/ops",
+    }
 }
