@@ -22,6 +22,15 @@ cache::upload::nodes:
     - 'cp1073.eqiad.wmnet'
     - 'cp1074.eqiad.wmnet'
     - 'cp1099.eqiad.wmnet'
+    # ^-old-new-v
+    - 'cp1076.eqiad.wmnet'
+    - 'cp1078.eqiad.wmnet'
+    - 'cp1080.eqiad.wmnet'
+    - 'cp1082.eqiad.wmnet'
+    - 'cp1084.eqiad.wmnet'
+    - 'cp1086.eqiad.wmnet'
+    - 'cp1088.eqiad.wmnet'
+    - 'cp1090.eqiad.wmnet'
   esams:
     - 'cp3034.esams.wmnet'
     - 'cp3035.esams.wmnet'
