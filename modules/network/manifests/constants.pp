@@ -398,6 +398,7 @@ class network::constants {
                     '10.68.21.205',  # deployment-tin.deployment-prep.eqiad.wmflabs
                     '10.68.20.135',  # deployment-mira.deployment-prep.eqiad.wmflabs
                     '10.68.23.38',   # deployment-deploy01.deployment-prep.eqiad.wmflabs
+                    '10.68.23.98',   # deployment-deploy02.deployment-prep.eqiad.wmflabs
                 ],
             'maintenance_hosts' => [
                     '',  # deployment-terbium.deployment-prep.eqiad.wmflabs ?
