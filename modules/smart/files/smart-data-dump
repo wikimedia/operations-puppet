@@ -142,6 +142,8 @@ def noraid_list_pd():
             continue
         if name.startswith('drbd') or name.startswith('nbd'):
             continue
+        # lsblk will report "nvme0n1", but smartctl wants the base "nvme0" device
+        name = re.sub(r'^(nvme[0-9])n[0-9]$', r'\1', name)
         yield PD(driver='noraid', smart_args=['-d', 'auto', '/dev/%s' % name],
                  disk_id=name)
 
