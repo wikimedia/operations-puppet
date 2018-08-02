@@ -706,6 +706,76 @@ host cp1076 {
     fixed-address cp1076.eqiad.wmnet;
 }
 
+host cp1077 {
+    hardware ethernet 00:0A:F7:F0:10:10;
+    fixed-address cp1077.eqiad.wmnet;
+}
+
+host cp1078 {
+    hardware ethernet 00:0A:F7:F0:23:70;
+    fixed-address cp1078.eqiad.wmnet;
+}
+
+host cp1079 {
+    hardware ethernet 00:0A:F7:EF:F8:10;
+    fixed-address cp1079.eqiad.wmnet;
+}
+
+host cp1080 {
+    hardware ethernet 00:0A:F7:EF:EB:0A;
+    fixed-address cp1080.eqiad.wmnet;
+}
+
+host cp1081 {
+    hardware ethernet 00:0A:F7:F0:22:20;
+    fixed-address cp1081.eqiad.wmnet;
+}
+
+host cp1082 {
+    hardware ethernet 00:0A:F7:EF:F0:C0;
+    fixed-address cp1082.eqiad.wmnet;
+}
+
+host cp1083 {
+    hardware ethernet 00:0A:F7:EF:E5:20;
+    fixed-address cp1083.eqiad.wmnet;
+}
+
+host cp1084 {
+    hardware ethernet 00:0A:F7:F0:07:30;
+    fixed-address cp1084.eqiad.wmnet;
+}
+
+host cp1085 {
+    hardware ethernet 00:0A:F7:F0:23:80;
+    fixed-address cp1085.eqiad.wmnet;
+}
+
+host cp1086 {
+    hardware ethernet 00:0A:F7:F0:22:00;
+    fixed-address cp1086.eqiad.wmnet;
+}
+
+host cp1087 {
+    hardware ethernet 00:0A:F7:EF:FB:90;
+    fixed-address cp1087.eqiad.wmnet;
+}
+
+host cp1088 {
+    hardware ethernet 00:0A:F7:F0:0D:00;
+    fixed-address cp1088.eqiad.wmnet;
+}
+
+host cp1089 {
+    hardware ethernet 00:0A:F7:F0:08:A0;
+    fixed-address cp1089.eqiad.wmnet;
+}
+
+host cp1090 {
+    hardware ethernet 00:0A:F7:EF:F1:E0;
+    fixed-address cp1090.eqiad.wmnet;
+}
+
 host cp1099 {
     hardware ethernet 90:B1:1C:3B:C7:2C;
     fixed-address cp1099.eqiad.wmnet;
