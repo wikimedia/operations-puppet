@@ -6,11 +6,9 @@
 class profile::archiva(
     $enable_backup = hiera('profile::archiva::enable_backup', false),
 ) {
-    require_package('openjdk-7-jdk')
+    require_package('default-jdk')
 
-    class { '::archiva':
-        require => Package['openjdk-7-jdk'],
-    }
+    class { '::archiva': }
 
     # Set up a reverse proxy for the archiva service.
     class { '::archiva::proxy': }
