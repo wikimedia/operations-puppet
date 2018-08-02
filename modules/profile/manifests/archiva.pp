@@ -10,9 +10,6 @@ class profile::archiva(
 
     class { '::archiva': }
 
-    # Set up a reverse proxy for the archiva service.
-    class { '::archiva::proxy': }
-
     class { '::archiva::gitfat': }
 
     # Bacula backups for /var/lib/archiva.
@@ -26,20 +23,5 @@ class profile::archiva(
     ferm::service { 'archiva_rsync':
         proto => 'tcp',
         port  => '873',
-    }
-
-    ferm::service { 'archiva_https':
-        proto => 'tcp',
-        port  => 443,
-    }
-
-    ferm::service { 'archiva_http':
-        proto => 'tcp',
-        port  => 80,
-    }
-
-    monitoring::service { 'https_archiva':
-        description   => 'HTTPS',
-        check_command => 'check_ssl_http_letsencrypt!archiva.wikimedia.org',
     }
 }

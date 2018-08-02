@@ -1,1 +1,2 @@
 profile::archiva::enable_backup: true
+profile::archiva::proxy::ssl_enabled: true

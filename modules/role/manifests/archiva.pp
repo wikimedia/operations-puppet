@@ -10,5 +10,6 @@ class role::archiva {
     include ::standard
     include ::profile::base::firewall
     include ::profile::archiva
+    include ::profile::archiva::proxy
 }
 
