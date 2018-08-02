@@ -208,8 +208,6 @@ deployment_server: deployment-deploy01.deployment-prep.eqiad.wmflabs
 "scap::deployment_server": deployment-deploy01.deployment-prep.eqiad.wmflabs
 
 scap::dsh::scap_masters:
-    - deployment-tin.deployment-prep.eqiad.wmflabs
-    - deployment-mira.deployment-prep.eqiad.wmflabs
     - deployment-deploy01.deployment-prep.eqiad.wmflabs
     - deployment-deploy02.deployment-prep.eqiad.wmflabs
 scap::dsh::groups:
@@ -218,8 +216,6 @@ scap::dsh::groups:
             - deployment-jobrunner03.deployment-prep.eqiad.wmflabs
             - deployment-mediawiki-09.deployment-prep.eqiad.wmflabs
             - deployment-mediawiki-07.deployment-prep.eqiad.wmflabs
-            - deployment-tin.deployment-prep.eqiad.wmflabs
-            - deployment-mira.deployment-prep.eqiad.wmflabs
             - deployment-snapshot01.deployment-prep.eqiad.wmflabs
             - deployment-deploy01.deployment-prep.eqiad.wmflabs
             - deployment-deploy02.deployment-prep.eqiad.wmflabs
