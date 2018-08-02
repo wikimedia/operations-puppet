@@ -16,6 +16,45 @@ import sys
 import time
 
 
+class QueryResult:
+    """
+    Stores the successful (including data returned, if any) or unsuccessful (including error code
+    and message) result of a MySQL query.
+    """
+    success = None
+    connection = None
+    query = None
+    errno = None
+    errmsg = None
+    numrows = None
+    fields = None
+    data = None
+
+
+class SuccessfulQueryResult(QueryResult):
+    def __init__(self, connection, query, numrows, fields, data):
+        """
+        Create a QueryResult Object of a successful query
+        """
+        self.success = True
+        self.connection = connection
+        self.query = query
+        self.numrows = numrows
+        self.fields = fields
+        self.data = data
+
+
+class FailedQueryResult(QueryResult):
+    def __init__(self, connection, query, errno, errmsg):
+        """
+        Create a QueryResult object of a failed query
+        """
+        self.success = False
+        self.connection = connection
+        self.errno = errno
+        self.errmsg = errmsg
+
+
 class WMFMariaDB:
     """
     Wrapper class to connect to MariaDB instances within the Wikimedia
@@ -23,12 +62,37 @@ class WMFMariaDB:
     unique, clean way to do stuff on the databases.
     """
 
-    connection = None
+    __connection = None
     host = None
+    socket = None
     port = None
     database = None
+    query_limit = None
+    vendor = None
     __last_error = None
     __debug = False
+
+    def name(self):
+        if self.host == 'localhost':
+            address = '{}[socket={}]'.format(self.host, self.socket)
+        else:
+            address = '{}:{}'.format(self.host, self.port)
+        if self.database is None:
+            database = '(none)'
+        else:
+            database = self.database
+        return '{}/{}'.format(address, database)
+
+    def is_same_instance_as(self, other_instance):
+        """
+        Returns True if the current WMFMariaDB is connected to the same one than the one given.
+        False otherwise (not the same, they are not WMFMariaDB objects, etc.)
+        """
+        return self is not None and self.host is not None and \
+            other_instance is not None and other_instance.host is not None and \
+            self.host == other_instance.host and self.port == other_instance.port and \
+            ((self.socket is None and other_instance.socket is None) or
+             self.socket == other_instance.socket)
 
     @staticmethod
     def get_credentials(host, port, database):
@@ -47,13 +111,27 @@ class WMFMariaDB:
                 user = os.getlogin()
             if port == 3306:
                 mysql_sock = config['client']['socket']
-            else:
+            elif port >= 3311 and port <= 3319:
                 mysql_sock = '/run/mysqld/mysqld.s' + str(port)[-1:] + '.sock'
+            elif port == 3320:
+                mysql_sock = '/run/mysqld/mysqld.x1.sock'
+            else:
+                mysql_sock = '/run/mysqld/mysqld.m' + str(port)[-1:] + '.sock'
             ssl = None
             password = None
             charset = None
+        elif host == '127.0.0.1':
+            # connect to localhost throught the port without ssl
+            config = configparser.ConfigParser(interpolation=None,
+                                               allow_no_value=True)
+            config.read('/root/.my.cnf')
+            user = config['client']['user']
+            password = config['client']['password']
+            ssl = None
+            mysql_sock = None
+            charset = None
         elif not host.startswith('labsdb'):
-            # connect to a production remote host, use ssl
+            # connect to a production remote host, use ssl and prod pass
             config = configparser.ConfigParser(interpolation=None,
                                                allow_no_value=True)
             config.read('/root/.my.cnf')
@@ -63,10 +141,10 @@ class WMFMariaDB:
             mysql_sock = None
             charset = None
         else:
-            # connect to a labs remote host, use ssl
+            # connect to a labs remote host, use ssl and labs pass
             config = configparser.ConfigParser(interpolation=None)
             config.read('/root/.my.cnf')
-            user = config['labsdb']['user']
+            user = config['clientlabsdb']['user']
             password = config['labsdb']['password']
             ssl = {'ca': '/etc/ssl/certs/Puppet_Internal_CA.pem'}
             mysql_sock = None
@@ -92,8 +170,13 @@ class WMFMariaDB:
         """last_error getter"""
         return self.__last_error
 
+    @property
+    def connection(self):
+        """connection getter"""
+        return self.__connection
+
     @staticmethod
-    def resolve(host):
+    def resolve(host, port=3306):
         """
         Return the full qualified domain name for a database hostname. Normally
         this return the hostname itself, except in the case where the
@@ -101,11 +184,17 @@ class WMFMariaDB:
         completed as a best effort.
         If the original address is an IPv4 or IPv6 address, leave it as is
         """
+        if ':' in host:
+            # we do not support ipv6 yet
+            host, port = host.split(':')
+            port = int(port)
+
         try:
             ipaddress.ip_address(host)
-            return host
+            return (host, port)
         except ValueError:
             pass
+
         if '.' not in host and host != 'localhost':
             domain = ''
             if re.match('^[a-z]+1[0-9][0-9][0-9]$', host) is not None:
@@ -123,42 +212,47 @@ class WMFMariaDB:
                 if '.' in localhost_fqdn and len(localhost_fqdn) > 1:
                     domain = localhost_fqdn[localhost_fqdn.index('.'):]
             host = host + domain
-        return host
+        return (host, port)
 
-    def __init__(self, host, port=3306, database=None, debug=False,
-                 connect_timeout=10.0):
+    def __init__(self, host='localhost', port=3306, database=None, debug=False,
+                 connect_timeout=10.0, query_limit=None, vendor=None):
         """
         Try to connect to a mysql server instance and returns a python
         connection identifier, which you can use to send one or more queries.
         """
-
         self.debug = debug
-        host = WMFMariaDB.resolve(host)
+
+        (host, port) = WMFMariaDB.resolve(host, port)
         (user, password, socket, ssl, charset) = WMFMariaDB.get_credentials(
             host, port, database)
 
-        if self.debug:
-            if host == 'localhost':
-                address = '{}[socket={}]'.format(host, socket)
-            else:
-                address = '{}:{}'.format(host, port)
-            print('Connecting to {}/{}'.format(address, database))
         try:
-            self.connection = pymysql.connect(
+            self.__connection = pymysql.connect(
                 host=host, port=port, user=user, password=password,
                 db=database, charset='utf8mb4', unix_socket=socket, ssl=ssl,
-                connect_timeout=connect_timeout)
-        except (pymysql.err.OperationalError,
-                pymysql.err.InternalError,
-                FileNotFoundError) as e:  # noqa
-            self.connection = None
+                connect_timeout=connect_timeout, autocommit=True)
+        except (pymysql.err.OperationalError, pymysql.err.InternalError, OSError) as e:
+            self.__connection = None
             self.__last_error = [e.args[0], e.args[1]]
             if self.debug:
                 print('ERROR {}: {}'.format(e.args[0], e.args[1]))
         self.host = host
+        self.socket = socket
         self.port = int(port)
         self.database = database
         self.connect_timeout = connect_timeout
+        if vendor is None or vendor not in ('MySQL', 'MariaDB'):
+            result = self.execute('SELECT version()')
+            if not result.success or 'MariaDB' in result.data[0][0]:
+                self.vendor = 'MariaDB'
+            else:
+                self.vendor = 'MySQL'
+        else:
+            self.vendor = vendor
+        if query_limit is not None:
+            self.set_query_limit(query_limit)  # we ignore it silently if it fails
+        if self.debug:
+            print('Connected to {}'.format(self.name()))
 
     def change_database(self, database):
         """
@@ -167,32 +261,54 @@ class WMFMariaDB:
         # cursor = self.connection.cursor()
         # cursor.execute('use `{}`'.format(database))
         # cursor.close()
-        if self.connection is None:
+        if self.__connection is None:
             print('ERROR: There is no connection active; could not change db')
-            return
+            return -1
         try:
-            self.connection.select_db(database)
+            self.__connection.select_db(database)
         except (pymysql.err.OperationalError, pymysql.err.InternalError) as e:
             self.__last_error = [e.args[0], e.args[1]]
             if self.debug:
                 print('ERROR {}: {}'.format(e.args[0], e.args[1]))
-            return
+            return -2
         self.database = database
         if self.debug:
             print('Changed database to \'{}\''.format(self.database))
 
-    def execute(self, command, dryrun=False):
+    def set_query_limit(self, query_limit):
+        """
+        Changes the default query limit to the given value, in seconds. Fractional
+        time, e.g. 0.1, 1.5 are allowed. Set to 0 or None to disable the query
+        limit. Handles transparently the differences between MariaDB and MySQL
+        syntax.
+        """
+        if query_limit is None or not query_limit or query_limit == 0:
+            self.query_limit = 0
+        elif self.vendor == 'MariaDB':
+            self.query_limit = float(query_limit)
+        else:
+            self.query_limit = int(query_limit * 1000.0)
+
+        if self.vendor == 'MariaDB':
+            result = self.execute('SET SESSION max_statement_time = {}'.format(self.query_limit))
+        else:
+            result = self.execute('SET SESSION max_execution_time = {}'.format(self.query_limit))
+        return result.success  # many versions will not accept query time restrictions
+
+    def execute(self, command, timeout=None, dryrun=False):
         """
         Sends a single query to a previously connected server instance, returns
         if that query was successful, and the rows read if it was a SELECT
         """
-
         # we are not connected, abort immediately
-        if self.connection is None:
-            return {"query": command, "host": self.host, "port": self.port,
-                    "database": self.database, "success": False,
-                    "errno": self.last_error[0], "errmsg": self.last_error[1]}
-        cursor = self.connection.cursor()
+        if self.__connection is None:
+            return FailedQueryResult(connection=self, query=command,
+                                     errno=-1, errmsg='Could not execute, we are disconnected')
+        cursor = self.__connection.cursor()
+        if timeout is not None:
+            original_query_limit = self.query_limit
+            self.set_query_limit(timeout)
+
         try:
             if dryrun:
                 print(("We will *NOT* execute \'{}\' on {}:{}/{} because"
@@ -203,34 +319,31 @@ class WMFMariaDB:
                 if self.debug:
                     print('Executing \'{}\''.format(command))
                 cursor.execute(command)
-        except (pymysql.err.ProgrammingError, pymysql.err.OperationalError) as e:
+        except (pymysql.err.ProgrammingError, pymysql.err.OperationalError,
+                pymysql.err.InternalError) as e:
             cursor.close()
-            query = command
-            host = self.host
-            port = self.port
-            database = self.database
             self.__last_error = [e.args[0], e.args[1]]
             if self.debug:
                 print('ERROR {}: {}'.format(e.args[0], e.args[1]))
-            return {"query": query, "host": host, "port": port,
-                    "database": database, "success": False,
-                    "errno": self.last_error[0], "errmsg": self.last_error[1]}
+            result = FailedQueryResult(connection=self, query=command,
+                                       errno=self.last_error[0], errmsg=self.last_error[1])
+            if timeout is not None:
+                self.set_query_limit(original_query_limit)
+            return result
 
-        rows = None
+        data = None
         fields = None
-        query = command
-        host = self.host
-        port = self.port
-        database = self.database
         if cursor.rowcount > 0:
-            rows = cursor.fetchall()
-            fields = tuple([x[0] for x in cursor.description])
+            data = cursor.fetchall()
+            if cursor.description:
+                fields = tuple([x[0] for x in cursor.description])
         numrows = cursor.rowcount
         cursor.close()
+        if timeout is not None:
+            self.set_query_limit(original_query_limit)
 
-        return {"query": query, "host": host, "port": port,
-                "database": database, "success": True, "numrows": numrows,
-                "rows": rows, "fields": fields}
+        return SuccessfulQueryResult(connection=self, query=command,
+                                     numrows=numrows, fields=fields, data=data)
 
     def disconnect(self):
         """
@@ -241,9 +354,9 @@ class WMFMariaDB:
         if self.debug:
             print('Disconnecting from {}:{}/{}'.format(self.port, self.host,
                                                        self.database))
-        if self.connection is not None:
-            self.connection.close()
-            self.connection = None
+        if self.__connection is not None:
+            self.__connection.close()
+            self.__connection = None
 
 
 def parse_args():
@@ -292,8 +405,8 @@ def parse_args():
 def get_var(conn, name, scope='GLOBAL', type='VARIABLES'):
     if scope in ['GLOBAL', 'SESSION'] and type in ['VARIABLES', 'STATUS']:
         result = conn.execute("SHOW {} {} like '{}'".format(scope, type, name))
-        if result["success"]:
-            return result["rows"][0][1]
+        if result.success:
+            return result.data[0][1]
     return None
 
 
@@ -308,14 +421,15 @@ def get_replication_status(conn, connection_name=None):
     None will be returned if no replication channels are found (or none are found
     with the given name).
     """
+    # FIXME: Support MySQL too
     if connection_name is None:
         result = conn.execute("SHOW ALL SLAVES STATUS")
     else:
         result = conn.execute("SHOW SLAVE '{}' STATUS".format(connection_name))
-    if result["success"] and result["numrows"] > 0:
+    if result.success and result.numrows > 0:
         status = list()
-        for channel in result["rows"]:
-            status.append(dict(zip(result["fields"], channel)))
+        for channel in result.data:
+            status.append(dict(zip(result.fields, channel)))
         return status
     else:
         return None
@@ -341,9 +455,9 @@ def get_heartbeat_status(conn, shard=None, primary_dc='eqiad', db='heartbeat', t
         AND shard = '{}'
         """.format(db, table, primary_dc, shard)
     result = conn.execute(query)
-    if result["success"] and result["numrows"] > 0:
+    if result.success and result.numrows > 0:
         status = dict()
-        for channel in result["rows"]:
+        for channel in result.data:
             if channel[1] is not None:
                 status[channel[0].decode('utf-8')] = int(channel[1])/1000000
         if len(status) == 0:
