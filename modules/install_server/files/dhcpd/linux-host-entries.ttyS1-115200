@@ -701,6 +701,11 @@ host cp1075 {
     fixed-address cp1075.eqiad.wmnet;
 }
 
+host cp1076 {
+    hardware ethernet 00:0A:F7:F0:0D:40;
+    fixed-address cp1076.eqiad.wmnet;
+}
+
 host cp1099 {
     hardware ethernet 90:B1:1C:3B:C7:2C;
     fixed-address cp1099.eqiad.wmnet;
