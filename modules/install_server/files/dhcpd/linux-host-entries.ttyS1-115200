@@ -416,9 +416,44 @@ host chromium {
     fixed-address chromium.wikimedia.org;
 }
 
+host cloudcontrol1003 {
+    hardware ethernet 30:e1:71:5f:6e:5c;
+    fixed-address cloudcontrol1003.wikimedia.org;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
+    filename "lpxelinux.0";
+}
+
 host cloudcontrol1004 {
     hardware ethernet 30:e1:71:60:f0:50;
     fixed-address cloudcontrol1004.wikimedia.org;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
+    filename "lpxelinux.0";
+}
+
+host cloudelastic1001 {
+    hardware ethernet F4:E9:D4:DA:25:40;
+    fixed-address cloudelastic1001.wikimedia.org;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
+    filename "lpxelinux.0";
+}
+
+host cloudelastic1002 {
+    hardware ethernet F4:E9:D4:DA:93:30;
+    fixed-address cloudelastic1002.wikimedia.org;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
+    filename "lpxelinux.0";
+}
+
+host cloudelastic1003 {
+    hardware ethernet F4:E9:D4:DA:2A:40;
+    fixed-address cloudelastic1003.wikimedia.org;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
+    filename "lpxelinux.0";
+}
+
+host cloudelastic1004 {
+    hardware ethernet F4:E9:D4:DB:61:D0;
+    fixed-address cloudelastic1004.wikimedia.org;
     option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
     filename "lpxelinux.0";
 }
@@ -3059,13 +3094,6 @@ host labcontrol1002 {
     hardware ethernet 18:03:73:f5:2c:2b;
     fixed-address labcontrol1002.wikimedia.org;
     option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/trusty-installer/";
-    filename "lpxelinux.0";
-}
-
-host cloudcontrol1003 {
-    hardware ethernet 30:e1:71:5f:6e:5c;
-    fixed-address cloudcontrol1003.wikimedia.org;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
     filename "lpxelinux.0";
 }
 
