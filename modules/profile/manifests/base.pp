@@ -15,7 +15,7 @@ class profile::base(
     $ssh_server_settings = hiera('profile::base::ssh_server_settings', {}),
     $nrpe_allowed_hosts = hiera('profile::base::nrpe_allowed_hosts', '127.0.0.1,208.80.154.14,208.80.153.74,208.80.155.119'),
     $group_contact = hiera('contactgroups', 'admins'),
-    $check_disk_options = hiera('profile::base::check_disk_options', '-w 6% -c 3% -W 6% -K 3% -l -e -A -i "/srv/sd[a-b][1-3]" --exclude-type=tracefs'),
+    $check_disk_options = hiera('profile::base::check_disk_options', '-w 6% -c 3% -W 6% -K 3% -l -e -A -i "/srv/sd[a-b][1-3]" -i "/srv/nvme[0-9]n[0-9]p[0-9]" --exclude-type=tracefs'),
     $check_disk_critical = hiera('profile::base::check_disk_critical', false),
     # TODO/puppet4: revert to using "undef"
     $check_raid_policy = hiera('profile::base::check_raid_policy', ''),
