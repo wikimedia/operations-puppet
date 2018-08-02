@@ -20,6 +20,12 @@ class role::logstash::collector (
         nrpe_command => '/usr/lib/nagios/plugins/check_procs -c 1:1 -u logstash -C java -a logstash',
     }
 
+    sysctl::parameters { 'logstash_receive_skbuf':
+        values => {
+            'net.core.rmem_default' => 4194304,
+        },
+    }
+
     ## Inputs (10)
 
     logstash::input::udp2log { 'mediawiki':
