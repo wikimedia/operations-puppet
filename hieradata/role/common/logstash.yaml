@@ -27,10 +27,6 @@ elasticsearch::unicast_hosts:
 elasticsearch::data_dir: '/var/lib/elasticsearch'
 
 # Logstash specific
-# TODO: the multiline filter that is used in several places in the
-# current configuration isn't thread safe and can cause crashes or
-# garbled output when used with more than one thread worker.
-logstash::pipeline_workers: 1
 logstash::heap_memory: 256m
 
 
