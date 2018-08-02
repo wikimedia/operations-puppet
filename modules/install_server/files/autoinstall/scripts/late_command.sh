@@ -11,8 +11,14 @@ chmod go-rwx /target/root/.ssh/authorized_keys
 # openssh-server: to make the machine accessible
 # puppet: because we'll need it soon anyway
 # lldpd: announce the machine on the network
-# nvme-cli: on machines with NVMe drives, this allows late_command to change LBA format
-apt-install openssh-server puppet lldpd nvme-cli
+# lsb-release: allows conditionals in this script on in-target release codename
+apt-install openssh-server puppet lldpd lsb-release
+
+# nvme-cli: on machines with NVMe drives, this allows late_command to change
+# LBA format below, but this package doesn't exist in jessie
+if [ "$(chroot /target /usr/bin/lsb_release --codename --short)" != "jessie" ]; then
+	apt-install nvme-cli
+fi
 
 # Change /etc/motd to read the auto-install date
 chroot /target /bin/sh -c 'echo $(cat /etc/issue.net) auto-installed on $(date). > /etc/motd.tail'
@@ -49,7 +55,6 @@ esac
 # where actually needed. stretch doesn't install nfs-common/rpcbind
 # any longer (T106477)
 # (the upgrade is to grab our updated firmware packages first for initramfs)
-apt-install lsb-release
 if [ "$(chroot /target /usr/bin/lsb_release --codename --short)" = "jessie" ]; then
 	in-target apt-get -y upgrade
 	apt-install linux-meta-4.9
