@@ -328,6 +328,11 @@ host auth2001 {
     filename "lpxelinux.0";
 }
 
+host authdns1001 {
+    hardware ethernet D0:94:66:5F:53:A8;
+    fixed-address authdns1001.wikimedia.org;
+}
+
 host authdns2001 {
     hardware ethernet D0:94:66:5F:81:7F;
     fixed-address authdns2001.wikimedia.org;
