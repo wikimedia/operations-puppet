@@ -52,6 +52,7 @@
         Require user pediapress
     </Directory>
 
+    
     # Force https and use http auth for geowiki's private data
     <Directory "<%= scope.lookupvar('::statistics::sites::stats::geowiki_private_directory') %>">
         RewriteEngine On

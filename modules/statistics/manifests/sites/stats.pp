@@ -1,21 +1,9 @@
 # == Class statistics::sites::stats
 #
-# stats.wikimedia.org
+# stats.wikimedia.org's httpd configuration
 #
-# === Parameters
-#
-# [*geowiki_private_data_bare_host*]
-#   Hostname used to rsync the geowiki private repository.
-#
-class statistics::sites::stats (
-    $geowiki_private_data_bare_host,
-) {
+class statistics::sites::stats {
     require ::statistics::web
-
-    class { '::geowiki':
-        private_data_bare_host => $geowiki_private_data_bare_host
-    }
-    require ::geowiki::private_data
 
     $wikistats_web_directory       = '/srv/stats.wikimedia.org'
     $wikistats_v2_link             = "${wikistats_web_directory}/htdocs/v2"
@@ -34,21 +22,14 @@ class statistics::sites::stats (
     }
 
     # add htpasswd file for private geowiki data
+    # TODO: remove this when the geowiki site is removed.
     file { $geowiki_private_htpasswd_file:
+        ensure    => 'present',
         owner     => 'root',
         group     => 'www-data',
         mode      => '0640',
         content   => secret('apache/htpasswd.stats-geowiki'),
         show_diff => false,
-    }
-
-    # link geowiki checkout from docroot
-    file { $geowiki_private_directory:
-        ensure => 'link',
-        target => "${::geowiki::private_data_path}/datafiles",
-        owner  => 'root',
-        group  => 'www-data',
-        mode   => '0750',
     }
 
     apache::site { 'stats.wikimedia.org':

@@ -2,7 +2,6 @@ cluster: analytics
 admin::groups:
   - statistics-web-users
   - statistics-admins
-profile::statistics::web::geowiki_host: 'stat1006.eqiad.wmnet'
 
 profile::hadoop::common::hadoop_cluster_name: 'analytics-hadoop'
 

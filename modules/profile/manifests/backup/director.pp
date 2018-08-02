@@ -85,6 +85,8 @@ class profile::backup::director(
     bacula::director::fileset { 'a-backup':
         includes => [ '/a/backup' ]
     }
+    # TODO: remove this when geowiki site is no longer needed.
+    # https://phabricator.wikimedia.org/T190059
     bacula::director::fileset { 'a-geowiki-data-private-bare':
         includes => [ '/srv/geowiki/data-private-bare' ]
     }

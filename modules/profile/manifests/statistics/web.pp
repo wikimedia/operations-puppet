@@ -2,7 +2,6 @@
 #
 class profile::statistics::web(
     $statistics_servers = hiera('statistics_servers'),
-    $geowiki_host       = hiera('profile::statistics::web::geowiki_host'),
 ) {
 
     include ::deployment::umask_wikidev
@@ -16,9 +15,7 @@ class profile::statistics::web(
 
     # # include statistics web sites
     class { '::statistics::sites::metrics': }
-    class { '::statistics::sites::stats':
-        geowiki_private_data_bare_host => $geowiki_host,
-    }
+    class { '::statistics::sites::stats': }
     class { '::statistics::sites::analytics': }
     # Proxy to securely access Yarn (authentication via LDAP)
     class { '::statistics::sites::yarn': }
