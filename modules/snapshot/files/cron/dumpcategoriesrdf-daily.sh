@@ -12,6 +12,7 @@
 
 targetDirBase="${categoriesDirBase}/daily"
 timestampsDir="${targetDirBase}/lastdump"
+fullTimestampsDir="${categoriesDirBase}/lastdump"
 targetDir="${targetDirBase}/${today}"
 fileSuffix="sparql.gz"
 
@@ -24,7 +25,7 @@ cat "$dbList" | while read wiki; do
 		filename="${wiki}-${today}-daily"
 		targetFile="${targetDir}/${filename}.${fileSuffix}"
 		tsFile="${timestampsDir}/${wiki}-daily.last"
-		fullTsFile="${timestampsDir}/${wiki}-categories.last"
+		fullTsFile="${fullTimestampsDir}/${wiki}-categories.last"
 		# get latest timestamps
 		if [ -f "$fullTsFile" ]; then
 			fullTs=`cat $fullTsFile`
