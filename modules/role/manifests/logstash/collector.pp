@@ -287,7 +287,7 @@ class role::logstash::collector (
     monitoring::check_prometheus { 'logstash-udp-loss':
         description     => 'Packet loss for UDP',
         dashboard_links => ['https://grafana.wikimedia.org/dashboard/db/logstash'],
-        query           => "rate(node_netstat_Udp_InErrors{instance=~\"${::hostname}:}\"}[5m])",
+        query           => "rate(node_netstat_Udp_InErrors{instance=~\"${::hostname}:.*}\"}[5m])",
         warning         => 30,
         critical        => 80,
         method          => 'ge',
