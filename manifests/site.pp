@@ -1050,6 +1050,11 @@ node 'graphite1003.eqiad.wmnet' {
     role(graphite::production)
 }
 
+# replacement to graphite1001, which is old and needs decom
+node 'graphite1004.eqiad.wmnet' {
+    role(spare::system)
+}
+
 # Primary graphite machines
 node 'graphite2001.codfw.wmnet' {
     role(graphite::primary)

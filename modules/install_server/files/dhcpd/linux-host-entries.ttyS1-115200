@@ -2888,6 +2888,11 @@ host graphite1003 {
     filename "lpxelinux.0";
 }
 
+host graphite1004 {
+    hardware ethernet D0:94:66:61:45:3F;
+    fixed-address graphite1004.eqiad.wmnet;
+}
+
 host graphite2001 {
     hardware ethernet B0:83:FE:DF:24:CA;
     fixed-address graphite2001.codfw.wmnet;
