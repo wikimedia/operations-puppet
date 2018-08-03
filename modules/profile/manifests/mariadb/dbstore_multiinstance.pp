@@ -20,6 +20,7 @@ disabled, use mariadb@<instance_name> instead'; exit 1\"",
     class { 'mariadb::config':
         datadir       => false,
         basedir       => $basedir,
+        read_only     => 1,
         config        => 'role/mariadb/mysqld_config/dbstore_multiinstance.my.cnf.erb',
         p_s           => 'on',
         ssl           => 'puppet-cert',
