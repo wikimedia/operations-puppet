@@ -594,19 +594,19 @@ def icinga_check(options):
     ok_msg.append('Version {}'.format(status['version']))
     ok_msg.append('Uptime {}s'.format(status['uptime']))
 
-    # check processes
-    if options.num_processes is not None:
-        if 'mysqld_processes' not in status:
-            unknown_msg.append("Process monitoring was requested, but it wasn't configured")
-        else:
-            num_processes = len(status['mysqld_processes'])
-            if num_processes != options.num_processes:
-                crit_msg.append('{} mysqld process(es) running, expected {}'.format(
-                        num_processes, options.num_processes))
-            else:
-                ok_msg.append('{} mysqld process(es)'.format(len(status['mysqld_processes'])))
-    elif 'mysqld_processes' in status:
-        ok_msg.append('{} mysqld process(es)'.format(len(status['mysqld_processes'])))
+    # # check processes
+    # if options.num_processes is not None:
+    #     if 'mysqld_processes' not in status:
+    #         unknown_msg.append("Process monitoring was requested, but it wasn't configured")
+    #     else:
+    #         num_processes = len(status['mysqld_processes'])
+    #         if num_processes != options.num_processes:
+    #             crit_msg.append('{} mysqld process(es) running, expected {}'.format(
+    #                     num_processes, options.num_processes))
+    #         else:
+    #             ok_msg.append('{} mysqld process(es)'.format(len(status['mysqld_processes'])))
+    # elif 'mysqld_processes' in status:
+    #     ok_msg.append('{} mysqld process(es)'.format(len(status['mysqld_processes'])))
 
     # check read only is correct
     if options.read_only is not None:
@@ -619,25 +619,25 @@ def icinga_check(options):
     else:
         ok_msg.append('read_only: {}'.format(status['read_only']))
 
-    # check lag
-    if 'heartbeat' in status:
-        for connection_name, lag in status['heartbeat'].items():
-            if options.crit_lag and lag >= options.crit_lag:
-                crit_msg.append('{} lag is {:.2f}s'.format(connection_name, lag))
-            elif options.crit_lag and lag >= options.warn_lag:
-                warn_msg.append('{} lag is {:.2f}s'.format(connection_name, lag))
-            else:
-                ok_msg.append('{} lag: {:.2f}s'.format(connection_name, lag))
-
-    # check crit_connections
-    if (options.crit_connections is not None and
-            status['threads_connected'] >= options.crit_connections):
-        crit_msg.append('{} client(s)'.format(status['threads_connected']))
-    elif (options.warn_connections is not None and
-            status['threads_connected'] >= options.warn_connections):
-        warn_msg.append('{} client(s)'.format(status['threads_connected']))
-    else:
-        ok_msg.append('{} client(s)'.format(status['threads_connected']))
+    # # check lag
+    # if 'heartbeat' in status:
+    #     for connection_name, lag in status['heartbeat'].items():
+    #         if options.crit_lag and lag >= options.crit_lag:
+    #             crit_msg.append('{} lag is {:.2f}s'.format(connection_name, lag))
+    #         elif options.crit_lag and lag >= options.warn_lag:
+    #             warn_msg.append('{} lag is {:.2f}s'.format(connection_name, lag))
+    #         else:
+    #             ok_msg.append('{} lag: {:.2f}s'.format(connection_name, lag))
+    #
+    # # check crit_connections
+    # if (options.crit_connections is not None and
+    #         status['threads_connected'] >= options.crit_connections):
+    #     crit_msg.append('{} client(s)'.format(status['threads_connected']))
+    # elif (options.warn_connections is not None and
+    #         status['threads_connected'] >= options.warn_connections):
+    #     warn_msg.append('{} client(s)'.format(status['threads_connected']))
+    # else:
+    #     ok_msg.append('{} client(s)'.format(status['threads_connected']))
 
     # QPS and latencies (cannot yet generate alarms)
     # Note the monitoring will create ~10 QPS more than if monitoring wasn't active
