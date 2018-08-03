@@ -59,4 +59,8 @@ define mariadb::instance(
     mariadb::monitor_replication{ $title:
         socket => $socket_instance,
     }
+    mariadb::monitor_readonly{ $title:
+        port      => $port,
+        read_only => 1,
+    }
 }
