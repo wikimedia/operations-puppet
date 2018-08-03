@@ -17,7 +17,7 @@
 #
 class logstash(
     $heap_memory      = '192m',
-    $pipeline_workers = 1,
+    $pipeline_workers = $::processorcount,
     $java_package     = 'openjdk-8-jdk',
 ) {
     require_package($java_package)
