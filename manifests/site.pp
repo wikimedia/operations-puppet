@@ -70,6 +70,10 @@ node 'auth1001.eqiad.wmnet' {
     role('yubiauth_server')
 }
 
+node 'auth1002.eqiad.wmnet' {
+    role('yubiauth_server')
+}
+
 node 'auth2001.codfw.wmnet' {
     role('yubiauth_server')
 }

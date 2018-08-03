@@ -321,6 +321,11 @@ host auth1001 {
     filename "lpxelinux.0";
 }
 
+host auth1002 {
+    hardware ethernet D0:94:66:5F:55:90;
+    fixed-address auth1002.eqiad.wmnet;
+}
+
 host auth2001 {
     hardware ethernet 14:18:77:33:1D:1C;
     fixed-address auth2001.codfw.wmnet;
