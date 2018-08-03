@@ -36,7 +36,7 @@ class postgresql::backup(
 
     cron { 'postgres-dump':
         ensure  => 'present',
-        command => "/usr/bin/pg_dumpall | gzip > ${path}/psql-all-dbs-$(date '+%Y%m%d').sql.gz",
+        command => "/usr/bin/pg_dumpall | /bin/gzip > ${path}/psql-all-dbs-$(date +\\%Y\\%m\\%d).sql.gz",
         user    => 'postgres',
         hour    => fqdn_rand(23, $title),
         minute  => fqdn_rand(59, $title),
