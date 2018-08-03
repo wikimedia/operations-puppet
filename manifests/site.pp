@@ -156,6 +156,11 @@ node 'californium.wikimedia.org' {
     interface::add_ip6_mapped { 'main': }
 }
 
+# Replacement to Lithium T195416
+node 'centrallog1001.eqiad.wmnet' {
+    role(syslog::centralserver)
+}
+
 # DNS recursor
 node 'chromium.wikimedia.org' {
     role(recursor)

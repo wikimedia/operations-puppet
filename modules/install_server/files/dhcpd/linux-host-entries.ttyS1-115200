@@ -421,6 +421,11 @@ host californium {
     filename "lpxelinux.0";
 }
 
+host centrallog1001 {
+    hardware ethernet D0:94:66:61:18:AF;
+    fixed-address centrallog1001.eqiad.wmnet;
+}
+
 host chromium {
     hardware ethernet 78:2b:cb:08:aa:48;
     fixed-address chromium.wikimedia.org;
