@@ -103,7 +103,8 @@ class WMFMariaDB:
         if host == 'localhost':
             # connnect to localhost using plugin_auth:
             config = configparser.ConfigParser(interpolation=None,
-                                               allow_no_value=True)
+                                               allow_no_value=True,
+                                               strict=False)
             config.read('/etc/my.cnf')
             if os.getuid() == 0:
                 user = 'root'
