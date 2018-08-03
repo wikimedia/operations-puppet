@@ -61,6 +61,11 @@ node /aqs100[456789]\.eqiad\.wmnet/ {
     interface::add_ip6_mapped { 'main': }
 }
 
+node 'archiva1001.wikimedia.org' {
+    role(spare::system)
+    interface::add_ip6_mapped { 'main': }
+}
+
 node 'auth1001.eqiad.wmnet' {
     role('yubiauth_server')
 }
