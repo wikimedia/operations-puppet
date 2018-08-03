@@ -41,6 +41,11 @@ host aluminium {
     filename "lpxelinux.0";
 }
 
+host archiva1001 {
+    hardware ethernet aa:00:00:ca:1f:fb;
+    fixed-address archiva1001.wikimedia.org;
+}
+
 host argon {
     hardware ethernet aa:00:00:fe:6b:df;
     fixed-address argon.eqiad.wmnet;
