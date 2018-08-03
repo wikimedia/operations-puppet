@@ -73,6 +73,7 @@ class role::mariadb::core {
     }
 
     $replication_is_critical = ($mw_primary == $::site)
+    $read_only = !($mw_primary == $::site and $mysql_role == 'master')
     $contact_group = $replication_is_critical ? {
         true  => 'dba',
         false => 'admins',
@@ -83,6 +84,10 @@ class role::mariadb::core {
         is_critical   => $replication_is_critical,
         contact_group => $contact_group,
         socket        => $socket,
+    }
+    mariadb::monitor_readonly { [ $shard ]:
+        read_only   => $read_only,
+        is_critical => false,
     }
 
     class { 'mariadb::monitor_disk':
