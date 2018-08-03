@@ -1,0 +1,24 @@
+-- https://docs.trafficserver.apache.org/en/latest/admin-guide/files/logging.config.en.html
+-- This file is managed by Puppet.
+-- vim: syntax=lua
+
+-- Squid log format
+
+-- 1496502378.291 1308 ::1 TCP_MISS/200 30944 GET http://deployment-mediawiki05.deployment-prep.eqiad.wmflabs/wiki/Main_Page - DIRECT/deployment-mediawiki05.deployment-prep.eqiad.wmflabs text/html
+-- 1496502399.078 0 ::1 TCP_HIT/200 30903 GET http://deployment-mediawiki05.deployment-prep.eqiad.wmflabs/wiki/Main_Page - NONE/- text/html
+squid = format {
+    Format = '%<cqtq> %<ttms> %<chi> %<crc>/%<pssc> %<psql> %<cqhm> %<cquc> %<caun> %<phr>/%<pqsn> %<psct>'
+}
+
+-- Extended log format
+
+-- ::1 - - [03/Jun/2017:15:11:47 -0000] "GET http://deployment-mediawiki05.deployment-prep.eqiad.wmflabs/wiki/Main_Page HTTP/1.1" 200 30182 000 0 0 0 174 722 0 0 0
+-- ::1 - - [03/Jun/2017:15:12:03 -0000] "GET http://deployment-mediawiki05.deployment-prep.eqiad.wmflabs/wiki/Main_Page HTTP/1.1" 200 30182 000 0 0 0 174 722 0 0 0
+extended = format {
+    Format = '%<chi> - %<caun> [%<cqtn>] "%<cqtx>" %<pssc> %<pscl> %<sssc> %<sscl> %<cqcl> %<pqcl> %<cqhl> %<pshl> %<pqhl> %<sshl> %<tts>'
+}
+
+log.<%= @log_method %> {
+    Format = <%= @log_format %>,
+    Filename = '<%= @log_filename %>'
+}

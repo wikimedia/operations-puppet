@@ -1,0 +1,6 @@
+# https://docs.trafficserver.apache.org/en/latest/admin-guide/files/remap.config.en.html
+# This file is managed by Puppet.
+
+<% @mapping_rules.each do |rule| -%>
+<%= rule['type'] %> <%= rule['target'] %> <%= rule['replacement'] %> <%= rule.fetch('params', []).join(' ') %>
+<% end -%>

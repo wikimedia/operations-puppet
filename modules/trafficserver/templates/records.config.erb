@@ -1,0 +1,22 @@
+# https://docs.trafficserver.apache.org/en/latest/admin-guide/files/records.config.en.html
+# This file is managed by Puppet.
+
+# traffic_manager TCP ports
+CONFIG proxy.config.http.server_ports STRING <%= @port %> <%= @port %>:ipv6
+CONFIG proxy.config.admin.synthetic_port INT <%= @synthetic_port %>
+# traffic_server TCP port
+CONFIG proxy.config.process_manager.mgmt_port INT <%= @mgmt_port %>
+
+CONFIG proxy.config.admin.user_id STRING <%= @user %>
+CONFIG proxy.config.http.cache.required_headers INT 0
+CONFIG proxy.config.url_remap.pristine_host_hdr INT 1
+CONFIG proxy.config.disable_configuration_modification INT 1
+
+# logging: send diags to stdout/stderr (systemd journal)
+CONFIG proxy.config.diags.output.status STRING O
+CONFIG proxy.config.diags.output.note STRING O
+CONFIG proxy.config.diags.output.warning STRING O
+CONFIG proxy.config.diags.output.error STRING E
+CONFIG proxy.config.diags.output.fatal STRING E
+CONFIG proxy.config.diags.output.alert STRING E
+CONFIG proxy.config.diags.output.emergency STRING E
