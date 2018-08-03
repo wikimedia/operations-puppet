@@ -3098,3 +3098,7 @@ ldap_only_users:
     ensure: present
     realname: Nicholas Ray
     email: nray@wikimedia.org
+  bmueller:
+    ensure: present
+    realname: Birgit Mueller
+    email: birgit.mueller@wikimedia.de
