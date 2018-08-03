@@ -696,6 +696,12 @@ node /^debmonitor[12]001\.(codfw|eqiad)\.wmnet$/ {
     role(debmonitor::server)
 }
 
+node /^dns100[12]\.wikimedia\.org$/ {
+    role(recursor)
+
+    interface::add_ip6_mapped { 'main': }
+}
+
 node /^dns200[12]\.wikimedia\.org$/ {
     role(recursor)
 

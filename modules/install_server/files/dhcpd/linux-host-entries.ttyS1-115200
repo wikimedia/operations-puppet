@@ -2109,6 +2109,16 @@ host druid1006 {
     fixed-address druid1006.eqiad.wmnet;
 }
 
+host dns1001 {
+    hardware ethernet D0:94:66:5F:5A:1D;
+    fixed-address dns1001.wikimedia.org;
+}
+
+host dns1002 {
+    hardware ethernet D0:94:66:5F:6E:82;
+    fixed-address dns1002.wikimedia.org;
+}
+
 host dns2001 {
     hardware ethernet D0:94:66:5F:6A:40;
     fixed-address dns2001.wikimedia.org;
