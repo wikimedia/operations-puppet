@@ -38,15 +38,15 @@ class postgresql::backup(
         ensure  => 'present',
         command => "/usr/bin/pg_dumpall | /bin/gzip > ${path}/psql-all-dbs-$(date +\\%Y\\%m\\%d).sql.gz",
         user    => 'postgres',
-        hour    => fqdn_rand(23, $title),
-        minute  => fqdn_rand(59, $title),
+        hour    => fqdn_rand(23, 'pgdump'),
+        minute  => fqdn_rand(59, 'pgdump'),
     }
 
-    cron { 'postgres-rotate-dump':
+    cron { 'rotate-postgres-dump':
         ensure  => 'present',
         command => "find ${path} -type f -name '*.sql.gz' -mtime +${rotate_days} -delete",
         user    => 'postgres',
-        hour    => fqdn_rand(23, $title),
-        minute  => fqdn_rand(59, $title),
+        hour    => fqdn_rand(23, 'pgclean'),
+        minute  => fqdn_rand(59, 'pgclean'),
     }
 }
