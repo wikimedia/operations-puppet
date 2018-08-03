@@ -148,7 +148,7 @@ class WMFMariaDB:
             config = configparser.ConfigParser(interpolation=None)
             config.read('/root/.my.cnf')
             user = config['clientlabsdb']['user']
-            password = config['labsdb']['password']
+            password = config['clientlabsdb']['password']
             ssl = {'ca': '/etc/ssl/certs/Puppet_Internal_CA.pem'}
             mysql_sock = None
             charset = None
