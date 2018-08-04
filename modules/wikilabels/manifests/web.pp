@@ -44,7 +44,7 @@ class wikilabels::web (
         service_settings => '--die-on-term --autoload',
         settings         => {
             uwsgi => {
-                plugins     => 'python3',
+                plugins     => 'python3,router_redirect',
                 'wsgi-file' => "${config_path}/labels_web.py",
                 master      => true,
                 chdir       => $config_path,
@@ -53,6 +53,9 @@ class wikilabels::web (
                 processes   => $facts['processorcount'] * 4,
                 die-on-term => true,
                 harakiri    => 30,
+                # lint:ignore:single_quote_string_with_variables
+                route-if    => 'equal:${HTTP_X_FORWARDED_PROTO};http redirect-permanent:https://${HTTP_HOST}${REQUEST_URI}',
+                # lint:endignore
             }
         },
     }
