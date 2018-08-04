@@ -3,7 +3,7 @@ class role::eventlogging::analytics {
         description => 'eventlogging host'
     }
     include ::standard
-    include ::base::firewall
+    include ::profile::base::firewall
 
     include ::role::eventlogging::analytics::processor
     include ::role::eventlogging::analytics::mysql

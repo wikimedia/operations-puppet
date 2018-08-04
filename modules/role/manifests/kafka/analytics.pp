@@ -9,5 +9,5 @@ class role::kafka::analytics {
     include ::role::kafka::analytics::broker
 
     include ::standard
-    include ::base::firewall
+    include ::profile::base::firewall
 }
