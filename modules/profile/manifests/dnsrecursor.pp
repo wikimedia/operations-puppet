@@ -4,7 +4,7 @@ class profile::dnsrecursor (
   $advertise_vips = hiera('profile::bird::advertise_vips', undef)
   ) {
     include ::network::constants
-    include ::base::firewall
+    include ::profile::base::firewall
     include ::lvs::configuration
 
     class { '::dnsrecursor':
