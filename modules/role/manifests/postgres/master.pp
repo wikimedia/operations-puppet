@@ -2,7 +2,7 @@ class role::postgres::master {
     include role::postgres::common
     include ::postgresql::postgis
     include ::passwords::postgres
-    include ::base::firewall
+    include ::profile::base::firewall
     include ::profile::prometheus::postgres_exporter
 
     class { 'postgresql::master':
