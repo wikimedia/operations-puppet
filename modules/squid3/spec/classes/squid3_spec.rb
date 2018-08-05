@@ -1,6 +1,12 @@
 require 'spec_helper'
 
 describe 'squid3', :type => :class do
+    let :facts do
+        {
+            :lsbdistrelease => '14.04',
+            :lsbdistid => 'Ubuntu',
+        }
+    end
     it 'should have squid' do
         contain_package('squid3').with_ensure('present')
         contain_service('squid3').with_ensure('running')

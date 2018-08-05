@@ -21,14 +21,19 @@ class squid3(
 ) {
     validate_re($ensure, '^(present|absent)$')
 
-    file { '/etc/squid3/squid.conf':
+    if os_version('debian >= stretch') {
+        $squid = 'squid'
+    } else {
+        $squid = 'squid3'
+    }
+    file { "/etc/${squid}/squid.conf":
         ensure  => $ensure,
         mode    => '0444',
         owner   => 'root',
         group   => 'root',
         source  => $config_source,
         content => $config_content,
-        require => Package['squid3'],
+        require => Package[$squid],
     }
 
     logrotate::conf { 'squid3':
@@ -36,13 +41,13 @@ class squid3(
         source => 'puppet:///modules/squid3/squid3-logrotate',
     }
 
-    package { 'squid3':
+    package { $squid:
         ensure => $ensure,
     }
 
-    service { 'squid3':
+    service { $squid:
         ensure    => ensure_service($ensure),
-        require   => File['/etc/squid3/squid.conf'],
-        subscribe => File['/etc/squid3/squid.conf'],
+        require   => File["/etc/${squid}/squid.conf"],
+        subscribe => File["/etc/${squid}/squid.conf"],
     }
 }
