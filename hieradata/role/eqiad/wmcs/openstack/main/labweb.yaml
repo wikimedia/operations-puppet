@@ -96,6 +96,6 @@ profile::openstack::main::wikitech::web::webserver_hostname_aliases: 'wikitech.m
 profile::openstack::main::wikitech::web::db_name: 'labswiki'
 
 # Horizon things:
-profile::openstack::main::horizon::maintenance_mode: false
+profile::openstack::main::horizon::maintenance_mode: true
 
 contactgroups: wmcs-team,admins
