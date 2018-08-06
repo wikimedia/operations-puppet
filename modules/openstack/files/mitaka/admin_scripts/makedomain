@@ -14,19 +14,40 @@ Note that this only works with the keystone v2.0 API.
 """
 
 import argparse
-import ldap
 import os
-import socket
-import subprocess
 import time
-import yaml
 
 from keystoneclient.auth.identity import generic
 from keystoneclient import session as keystone_session
 from designateclient.v2 import client
 
 
-def createdomain(url, user, password, project, domain, ttl=120):
+def deleteDomain(url, user, password, project, domain, all=False, ttl=120):
+    auth = generic.Password(
+        auth_url=url,
+        username=user,
+        password=password,
+        user_domain_name='Default',
+        project_domain_name='Default',
+        tenant_name=project)
+
+    targetSession = keystone_session.Session(auth=auth)
+    targetClient = client.Client(session=targetSession)
+
+    domains = targetClient.zones.list()
+    for thisdomain in domains:
+        if all:
+            print("Deleting %s" % thisdomain['name'])
+            targetClient.zones.delete(thisdomain['id'])
+        else:
+            if thisdomain['name'] == domain:
+                targetClient.zones.delete(thisdomain['id'])
+                return
+    if not all:
+        print("Domain %s not found" % domain)
+
+
+def createDomain(url, user, password, project, domain, ttl=120):
     auth = generic.Password(
         auth_url=url,
         username=user,
@@ -53,7 +74,6 @@ def createdomain(url, user, password, project, domain, ttl=120):
     #  is needed since wmflabs.org lives in that project and
     #  designate prevents subdomain creation elsewhere.
     zone = createClient.zones.create(domain, email='root@wmflabs.org', ttl=ttl)
-    newzoneid = zone['id']
     status = 'PENDING'
     # Wait for the domain to actually exist before we transfer it
     while status == 'PENDING':
@@ -65,11 +85,12 @@ def createdomain(url, user, password, project, domain, ttl=120):
     transferId = transferRequest['id']
     transferKey = transferRequest['key']
 
-    transferConfirm = targetClient.zone_transfers.accept_request(transferId, transferKey)
+    targetClient.zone_transfers.accept_request(transferId, transferKey)
+
 
 if __name__ == "__main__":
     argparser = argparse.ArgumentParser('makesubdomain',
-                                        description='''Create a subdomain of wmflabs.org in a project''')
+                                        description="Create a subdomain of wmflabs.org")
 
     argparser.add_argument(
         '--designate-user',
@@ -94,16 +115,42 @@ if __name__ == "__main__":
     argparser.add_argument(
         '--domain',
         help='domain to create',
-        required=True,
+    )
+    argparser.add_argument(
+        '--delete',
+        action='store_true',
+        help='delete domain rather than create',
+    )
+    argparser.add_argument(
+        '--all',
+        action='store_true',
+        help='with --delete, delete all domains in a project'
     )
 
     args = argparser.parse_args()
 
-    if not args.domain.endswith('.'):
-        args.domain = "%s." % args.domain
+    if args.delete and args.all:
+        if args.domain:
+            print "--domain should not be specified unless if --delete and --all are true"
+            exit(1)
+    else:
+        if not args.domain:
+            print "--domain must be specified unless you are doing --delete --all"
+            exit(1)
+        else:
+            if not args.domain.endswith('.'):
+                args.domain = "%s." % args.domain
 
-    createdomain(args.keystone_url,
-                 args.designate_user,
-                 args.designate_pass,
-                 args.project,
-                 args.domain)
+    if args.delete:
+            deleteDomain(args.keystone_url,
+                         args.designate_user,
+                         args.designate_pass,
+                         args.project,
+                         args.domain,
+                         args.all)
+    else:
+        createDomain(args.keystone_url,
+                     args.designate_user,
+                     args.designate_pass,
+                     args.project,
+                     args.domain)
