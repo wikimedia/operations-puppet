@@ -1,7 +1,7 @@
 esams:
   cache_text:
     cp3030.esams.wmnet: [varnish-fe, varnish-be, nginx]
-    cp3031.esams.wmnet: [varnish-fe, varnish-be, nginx]
+    # cp3031.esams.wmnet: [varnish-fe, varnish-be, nginx] hw issues: T200806
     cp3032.esams.wmnet: [varnish-fe, varnish-be, nginx]
     cp3033.esams.wmnet: [varnish-fe, varnish-be, nginx]
     cp3040.esams.wmnet: [varnish-fe, varnish-be, nginx]

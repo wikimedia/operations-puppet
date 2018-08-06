@@ -28,7 +28,7 @@ cache::text::nodes:
     - 'cp1089.eqiad.wmnet'
   esams:
     - 'cp3030.esams.wmnet'
-    - 'cp3031.esams.wmnet'
+    # - 'cp3031.esams.wmnet' hw issues: T200806
     - 'cp3032.esams.wmnet'
     - 'cp3033.esams.wmnet'
     - 'cp3040.esams.wmnet'
