@@ -5,5 +5,5 @@ listen mariadb
     option tcpka
     option mysql-check user haproxy
 <% @servers.each_pair do |name, config| -%>
-    server <%= name %> <%= config["address"] %> weight <%= config.key?("weight") ? config["weight"] : 1 %> check inter 3s fall 3 rise 99999999
+    server <%= name %> <%= config["address"] %> weight <%= config.key?("weight") ? config["weight"] : 1 %> check inter 3s fall 20 rise 99999999
 <% end -%>
