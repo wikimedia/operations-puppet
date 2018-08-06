@@ -66,10 +66,10 @@ host = msw1-eqiad.mgmt.eqiad.wmnet
 menu = Hosts
 title = Sampled Hosts
 
-+++ bast1002
-menu = bast1002
-title = bast1002.wikimedia.org [C4]
-host = bast1002.wikimedia.org
+#+++ bast1002
+#menu = bast1002
+#title = bast1002.wikimedia.org [C4]
+#host = bast1002.wikimedia.org
 
 +++ hydrogen
 menu = hydrogen
