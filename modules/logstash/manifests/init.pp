@@ -7,6 +7,10 @@
 # == Parameters:
 # - $heap_memory: amount of memory to allocate to logstash.
 # - $pipeline_workers: number of worker threads to run to process filters
+# - $java_package: which java package to install
+# - $gc_log: turn off/on garbage collector plain text logs
+# - $jmx_exporter_port: if defined, what port to listen on
+# - $jmx_exporter_config: if defined, what's the path to jmx_exporter's config
 #
 # == Sample usage:
 #
@@ -20,6 +24,8 @@ class logstash (
     Integer $pipeline_workers = $::processorcount,
     String $java_package      = 'openjdk-8-jdk',
     Boolean $gc_log           = true,
+    Integer $jmx_exporter_port = undef,
+    String $jmx_exporter_config = undef,
 ) {
     require_package($java_package)
 

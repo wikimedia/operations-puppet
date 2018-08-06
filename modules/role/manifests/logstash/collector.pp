@@ -6,18 +6,38 @@
 #
 # == Parameters:
 # - $statsd_host: Host to send statsd data to.
+# - $prometheus_nodes: List of prometheus nodes to allow connections from
 #
 # filtertags: labs-project-deployment-prep
 class role::logstash::collector (
     $statsd_host,
+    $prometheus_nodes = hiera('prometheus_nodes', []), # lint:ignore:wmf_styleguide
 ) {
     include ::role::logstash::elasticsearch
-    include ::logstash
     include ::profile::base::firewall
 
     nrpe::monitor_service { 'logstash':
         description  => 'logstash process',
         nrpe_command => '/usr/lib/nagios/plugins/check_procs -c 1:1 -u logstash -C java -a logstash',
+    }
+
+    $jmx_exporter_port = 7800
+    $config_dir = '/etc/prometheus'
+    $jmx_exporter_config_file = "${config_dir}/logstash_jmx_exporter.yaml"
+
+    # Prometheus JVM metrics
+    profile::prometheus::jmx_exporter { "logstash_collector_${::hostname}":
+        hostname         => $::hostname,
+        port             => $jmx_exporter_port,
+        prometheus_nodes => $prometheus_nodes,
+        config_file      => $jmx_exporter_config_file,
+        config_dir       => $config_dir,
+        source           => 'puppet:///modules/role/logstash/jmx_exporter.yaml',
+    }
+
+    class { '::logstash':
+        jmx_exporter_port   => $jmx_exporter_port,
+        jmx_exporter_config => $jmx_exporter_config_file,
     }
 
     sysctl::parameters { 'logstash_receive_skbuf':
