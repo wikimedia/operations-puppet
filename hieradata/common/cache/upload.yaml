@@ -25,7 +25,7 @@ cache::upload::nodes:
     # ^-old-new-v
     - 'cp1076.eqiad.wmnet'
     - 'cp1078.eqiad.wmnet'
-    - 'cp1080.eqiad.wmnet'
+    # - 'cp1080.eqiad.wmnet' hw issues: T201174
     - 'cp1082.eqiad.wmnet'
     - 'cp1084.eqiad.wmnet'
     - 'cp1086.eqiad.wmnet'

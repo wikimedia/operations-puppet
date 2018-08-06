@@ -159,7 +159,7 @@ eqiad:
     # ^-old-new-v
     cp1076.eqiad.wmnet: [varnish-fe, varnish-be, nginx]
     cp1078.eqiad.wmnet: [varnish-fe, varnish-be, nginx]
-    cp1080.eqiad.wmnet: [varnish-fe, varnish-be, nginx]
+    # cp1080.eqiad.wmnet: [varnish-fe, varnish-be, nginx] hw issues: T201174
     cp1082.eqiad.wmnet: [varnish-fe, varnish-be, nginx]
     cp1084.eqiad.wmnet: [varnish-fe, varnish-be, nginx]
     cp1086.eqiad.wmnet: [varnish-fe, varnish-be, nginx]
