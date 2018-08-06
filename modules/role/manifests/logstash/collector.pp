@@ -294,8 +294,8 @@ class role::logstash::collector (
         description     => 'Packet loss ratio for UDP',
         dashboard_links => ['https://grafana.wikimedia.org/dashboard/db/logstash'],
         query           => "sum(rate(node_netstat_Udp_InErrors{instance=\"${::hostname}:9100\"}[5m]))/(sum(rate(node_netstat_Udp_InErrors{instance=\"${::hostname}:9100\"}[5m]))+sum(rate(node_netstat_Udp_InDatagrams{instance=\"${::hostname}:9100\"}[5m])))",
-        warning         => 0.01,
-        critical        => 0.05,
+        warning         => 0.05,
+        critical        => 0.10,
         method          => 'ge',
         prometheus_url  => "http://prometheus.svc.${::site}.wmnet/ops",
     }
