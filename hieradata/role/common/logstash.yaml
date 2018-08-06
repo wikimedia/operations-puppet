@@ -27,7 +27,7 @@ elasticsearch::unicast_hosts:
 elasticsearch::data_dir: '/var/lib/elasticsearch'
 
 # Logstash specific
-logstash::heap_memory: 256m
+logstash::heap_memory: 512m
 
 
 logstash::cluster_hosts:
