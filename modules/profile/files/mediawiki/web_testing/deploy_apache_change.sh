@@ -53,7 +53,7 @@ echo "Things seem OK from our test."
 if [ "$apply" == "yes" ]; then
     # Run puppet everywhere, 5 hosts at a time, which is very conservative.
     echo "Should we run apply the puppet change on all servers?"
-    sudo cumin -b 5 -p 99 "$targets" "run-puppet-agent -e 'apache change ongoing --${USER}'"
+    sudo cumin -b 30 -p 99 "$targets" "run-puppet-agent -e 'apache change ongoing --${USER}'"
 else
     # Enable puppet everywhere when you feel comfortable
     echo  "Should puppet be reenabled on all servers?"
