@@ -299,4 +299,13 @@ class role::logstash::collector (
         method          => 'ge',
         prometheus_url  => "http://prometheus.svc.${::site}.wmnet/ops",
     }
+
+    # Paper over periodic UDP packet loss - T200960
+    cron { 'logstash_daily_bandaid':
+        ensure  => present,
+        command => 'systemctl restart logstash',
+        user    => 'root',
+        hour    => fqdn_rand(23, 'logstash_daily_bandaid'),
+        minute  => fqdn_rand(59, 'logstash_daily_bandaid'),
+    }
 }
