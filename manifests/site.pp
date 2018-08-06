@@ -2169,7 +2169,7 @@ node /^labvirt101[0-9].eqiad.wmnet/ {
     include ::standard
 }
 
-node /^labvirt102[0-2]\.eqiad\.wmnet$/ {
+node /^labvirt1020\.eqiad\.wmnet$/ {
     role(wmcs::openstack::main::virt)
     include ::standard
 }
