@@ -158,9 +158,6 @@ class toollabs (
         content => $active_proxy,
     }
 
-    $active_redis = hiera('active_redis')
-    $active_redis_ip = ipresolve($active_redis, 4, $::nameservers[0])
-
     # Silence e-mails sent when regular users try to sudo (T95882)
     file { '/etc/sudoers.d/40-tools-sudoers-no-warning':
         ensure => file,
