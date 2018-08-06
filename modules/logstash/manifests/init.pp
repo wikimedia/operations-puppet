@@ -15,10 +15,11 @@
 #       pipeline_workers => 3,
 #   }
 #
-class logstash(
-    $heap_memory      = '192m',
-    $pipeline_workers = $::processorcount,
-    $java_package     = 'openjdk-8-jdk',
+class logstash (
+    String $heap_memory       = '192m',
+    Integer $pipeline_workers = $::processorcount,
+    String $java_package      = 'openjdk-8-jdk',
+    Boolean $gc_log           = true,
 ) {
     require_package($java_package)
 
@@ -30,6 +31,22 @@ class logstash(
     # This creates the deploy-service user on targets
     scap::target { 'logstash/plugins':
         deploy_user => 'deploy-service',
+    }
+
+    $gc_log_flags = $gc_log ? {
+        true    => [
+            '-Xloggc:/var/log/logstash/logstash_jvm_gc.%p.log',
+            '-XX:+PrintGCDetails',
+            '-XX:+PrintGCDateStamps',
+            '-XX:+PrintGCTimeStamps',
+            '-XX:+PrintTenuringDistribution',
+            '-XX:+PrintGCCause',
+            '-XX:+PrintGCApplicationStoppedTime',
+            '-XX:+UseGCLogFileRotation',
+            '-XX:NumberOfGCLogFiles=10',
+            '-XX:GCLogFileSize=20M',
+        ],
+        default => [],
     }
 
     $plugin_zip_path = '/srv/deployment/logstash/plugins/target/releases/plugins-latest.zip'

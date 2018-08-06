@@ -77,3 +77,8 @@
 # log GC status to a file with time stamps
 # ensure the directory exists
 #-Xloggc:${LS_GC_LOG_FILE}
+
+# Custom flags for GC logging.
+<% @gc_log_flags.each do |gc_log_flag| -%>
+<%= gc_log_flag %>
+<% end -%>
