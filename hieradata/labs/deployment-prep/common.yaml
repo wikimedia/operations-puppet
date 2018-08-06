@@ -197,8 +197,8 @@ profile::mediawiki::jobrunner::runners:
 "hhvm::base_jit_size": 183500800
 "role::logging::mediawiki::log_directory": /data/project/logs
 "beta::syncsiteresources::user": www-data
-"role::url_downloader::url_downloader_ip": 10.68.16.135 # deployment-urldownloader
-"zotero::http_proxy": deployment-urldownloader.deployment-prep.eqiad.wmflabs:8080
+"role::url_downloader::url_downloader_ip": 10.68.19.117 # deployment-urldownloader02
+"zotero::http_proxy": deployment-urldownloader02.deployment-prep.eqiad.wmflabs:8080
 deployment_server: deployment-deploy01.deployment-prep.eqiad.wmflabs
 "scap::deployment_server": deployment-deploy01.deployment-prep.eqiad.wmflabs
 
