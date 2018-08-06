@@ -1,0 +1,19 @@
+{
+    "name": "wikimedia-php",
+    "version": "0.0.1",
+    "author": "Giuseppe Lavagetto",
+    "license": "Apache-2.0",
+    "summary": "A module for installing and configuring php (CLI and FPM) on modern Debian systems",
+    "source": "https://gerrit.wikimedia.org/r/plugins/gitiles/operations/puppet/+/production/modules/php/",
+    "tags": ["php", "php-fpm", "web"],
+    "operatingsystem_support": [
+        {
+            "operatingsystem": "Debian",
+            "operatingsystemrelease": ["9"]
+        }
+    ],
+    "dependencies": [
+        { "name": "puppetlabs/stdlib", "version_requirement": ">= 4.15.0" },
+        {"name": "wikimedia/wmflib", "version_requirement": ">= 1.0.0"}
+    ]
+}

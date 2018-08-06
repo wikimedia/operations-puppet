@@ -1,0 +1,9 @@
+{
+    "name": "wikimedia-wmflib",
+    "version": "1.0.0",
+    "author": "Wikimedia Foundation Inc.",
+    "license": "TBD",
+    "summary": "A basic library of common functions used in the wikimedia puppet tree",
+    "source": "https://gerrit.wikimedia.org/r/plugins/gitiles/operations/puppet/+/production/modules/wmflib/",
+    "dependencies": [{ "name": "puppetlabs/stdlib", "version_requirement": ">= 4.15.0" }]
+}

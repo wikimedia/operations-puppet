@@ -1,0 +1,5 @@
+fixtures:
+    symlinks:
+        php: "#{source_dir}"
+        stdlib: "../../../../stdlib"
+        wmflib: "../../../../wmflib"
