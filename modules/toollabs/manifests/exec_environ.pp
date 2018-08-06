@@ -35,7 +35,7 @@ class toollabs::exec_environ {
         'fonts-unfonts-core',
         'fonts-unfonts-extra',
         'texlive-fonts-recommended',
-        'texlive-full',
+        'texlive-full',              # T197176
         'ttf-alee',
         'ttf-ubuntu-font-family',    # Not in Debian. T32288, T103325
         'ttf-wqy-zenhei',
