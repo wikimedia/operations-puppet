@@ -98,9 +98,14 @@ class mediawiki::web::prod_sites {
         'projectcom.wikimedia.org', 'techconduct.wikimedia.org',
         'electcom.wikimedia.org', 'advisors.wikimedia.org'
     ]
-    mediawiki::web::site { $small_private_wikis:
-        template_name => 'private-https',
-        before        => Apache::Site['remnant'],
+    mediawiki::web::vhost { $small_private_wikis:
+        ensure          => present,
+        docroot         => '/srv/mediawiki/docroot/wikimedia.org',
+        legacy_rewrites => false,
+        https_only      => true,
+        declare_site    => false,
+        short_urls      => true,
+        before          => Apache::Site['remnant'],
     }
 
     mediawiki::web::site { 'wikimaniateam.wikimedia.org':
