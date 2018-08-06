@@ -43,11 +43,12 @@ cat "$dbList" | while read wiki; do
 		# if dump is more recent than last daily, we have to generate diff between dump and now
 		if [ "$fullTs" -gt "$lastTs" ]; then
 			dumpTs=${fullTs:0:8}
+			fromTargetFile="${targetDir}/fromDump${dumpTs}-${filename}.${fileSuffix}"
 			if [ "$dryrun" == "true" ]; then
 				# get only day TS
-				echo "$php $multiVersionScript maintenance/categoryChangesAsRdf.php --wiki=$wiki -s $fullTs -e $ts 2> /var/log/categoriesrdf/${filename}-daily.log | $gzip > fromDump${dumpTs}-${targetFile}"
+				echo "$php $multiVersionScript maintenance/categoryChangesAsRdf.php --wiki=$wiki -s $fullTs -e $ts 2> /var/log/categoriesrdf/${filename}-daily.log | $gzip > $fromTargetFile"
 			else
-				$php "$multiVersionScript" maintenance/categoryChangesAsRdf.php --wiki="$wiki" -s $fullTs -e $ts 2> "/var/log/categoriesrdf/${filename}-daily.log" | "$gzip" > "fromDump${dumpTs}-${targetFile}"
+				$php "$multiVersionScript" maintenance/categoryChangesAsRdf.php --wiki="$wiki" -s $fullTs -e $ts 2> "/var/log/categoriesrdf/${filename}-daily.log" | "$gzip" > "$fromTargetFile"
 			fi
 		fi
 		# create daily diff
