@@ -114,6 +114,9 @@ def main():
     # Set Icinga downtime for the host to be upgraded
     icinga_downtime(args.host, "Software upgrade and reboot", 1200)
 
+    # Disable puppet
+    lib.disable_puppet([args.host], '{} --{}'.format(NAME, user))
+
     # Depool and wait a bit for the host to be drained
     if args.depool_cmd:
         if not run_cumin(args.host, [args.depool_cmd]):
@@ -137,6 +140,12 @@ def main():
     boot_time = datetime.utcnow()
 
     lib.wait_reboot(args.host, start=reboot_time)
+
+    # Enable puppet
+    lib.enable_puppet([args.host], '{} --{}'.format(NAME, user))
+
+    # Run puppet
+    lib.run_puppet([args.host])
 
     lib.wait_puppet_run(args.host, start=boot_time)
 

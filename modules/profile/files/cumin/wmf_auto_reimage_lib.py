@@ -560,6 +560,14 @@ def conftool_depool(host, pooled='inactive'):
     return previous
 
 
+def disable_puppet(hosts, message):
+    run_cumin('disable_puppet', ','.join(hosts), ["disable-puppet '{}'".format(message)])
+
+
+def enable_puppet(hosts, message):
+    run_cumin('enable_puppet', ','.join(hosts), ["enable-puppet '{}'".format(message)])
+
+
 def run_puppet(hosts, no_raise=False):
     """Run Puppet on the given hosts
 
