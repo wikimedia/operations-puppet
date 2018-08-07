@@ -71,15 +71,15 @@ title = Sampled Hosts
 #title = bast1002.wikimedia.org [C4]
 #host = bast1002.wikimedia.org
 
-+++ hydrogen
-menu = hydrogen
-title = hydrogen.wikimedia.org [A4]
-host = hydrogen.wikimedia.org
++++ dns1001
+menu = dns1001
+title = dns1001.wikimedia.org [A1]
+host = dns1001.wikimedia.org
 
-+++ chromium
-menu = chromium
-title = chromium.wikimedia.org [B4]
-host = chromium.wikimedia.org
++++ dns1002
+menu = dns1002
+title = dns1002.wikimedia.org [D1]
+host = dns1002.wikimedia.org
 
 +++ radon
 menu = radon
