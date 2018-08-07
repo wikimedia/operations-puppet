@@ -192,7 +192,7 @@ def get_running_user():
 
 
 def setup_logging(logger, user, log_path):
-    """Set up the logger instance and return the log file path.
+    """Set up the logger instance
 
     Arguments:
     logger   -- a logging.Logger instance
@@ -261,10 +261,13 @@ def get_mgmt(host):
 
 
 def get_mgmts(hosts):
-    """Ask for the managment FQDN in case it's not automatically deductible.
+    """Ask for the managment FQDNs of the given hosts in case it's not automatically deductible.
 
     Arguments:
     hosts -- the list of hosts to get the management console FQDN
+
+    Returns:
+    dictionary with the hostnames as keys and the managment FQDNs as values
     """
     mgmts = {}
     for host in hosts:
@@ -338,7 +341,7 @@ def phabricator_task_update(phab_client, task_id, message):
 
 
 def resolve_dns(name, record):
-    """Resolve and return a DNS record for name."""
+    """Resolve and return a DNS record for name. Return None if the target hostname is invalid."""
     target = str(dns.resolver.query(name, record)[0]).rsplit(
         ' ', 1)[-1].rstrip('.')
     if not is_hostname_valid(target):
@@ -469,13 +472,16 @@ def run_cumin(label, hosts_query, commands, timeout=30, installer=False, ignore_
 
 
 def validate_hosts(hosts, no_raise=False):
-    """Check that all hostnames have a signed certificate on the Puppet master.
+    """Check that the given hosts have a signed certificate on the Puppet master.
 
     Raise RuntimeError if any host is not valid and no_raise is False
 
     Arguments:
     hosts    -- the list of hosts to depool
     no_raise -- do not raise on failure, just log [optional, default: False]
+
+    Returns:
+    True if the given hostnames have a signed certificate on the Puppet master, False otherwise
     """
     if len(hosts) == 1:
         command = "puppet cert list '{host}' 2> /dev/null".format(host=hosts[0])
@@ -555,7 +561,7 @@ def conftool_depool(host, pooled='inactive'):
 
 
 def run_puppet(hosts, no_raise=False):
-    """Run Puppet on hosts and return the list of successful ones.
+    """Run Puppet on the given hosts
 
     Arguments:
     hosts    -- the list of hosts where to run Puppet
@@ -633,6 +639,8 @@ def puppet_remove_local_cert(host, installer=False):
 
 def puppet_wait_cert_and_sign(host, fingerprint):
     """Poll the puppetmaster looking for a new key to sign for the given host.
+
+    Return False if the Puppet certificate is already signed, True otherwise.
 
     Arguments:
     host        -- the host to monitor for a complete Puppet run
@@ -890,7 +898,7 @@ def wait_puppet_run(host, start=None):
 
 
 def reboot_host(host):
-    """Reboot hosts and return the list of successful ones.
+    """Reboot the given host.
 
     Arguments:
     host  -- the host to be rebooted
@@ -900,7 +908,7 @@ def reboot_host(host):
 
 
 def wait_reboot(host, start=None, installer_key=False, debian_installer=False):
-    """Wait that the hosts are back online after a reboot.
+    """Wait for the given host to be back online after a reboot.
 
     Arguments:
     host             -- the host to monitor
@@ -990,7 +998,7 @@ def run_apache_fast_test(host):
 
 
 def print_repool_message(previous, rename_from=None, rename_to=None):
-    """Print and return a message with the commands to repool the depooled hosts.
+    """Print a message with the commands to repool the depooled hosts.
 
     Arguments:
     previous    -- a dictionary with state: [list of tags dictionaries] for each state
