@@ -108,9 +108,16 @@ class mediawiki::web::prod_sites {
         before          => Apache::Site['remnant'],
     }
 
-    mediawiki::web::site { 'wikimaniateam.wikimedia.org':
-        before => Apache::Site['wikimania']
+    mediawiki::web::vhost { 'wikimaniateam.wikimedia.org':
+        ensure          => present,
+        docroot         => '/srv/mediawiki/docroot/wikimedia.org',
+        legacy_rewrites => false,
+        https_only      => true,
+        declare_site    => false,
+        short_urls      => true,
+        before          => Apache::Site['wikimania'],
     }
+
     mediawiki::web::site {[
         'wikimedia-chapter',
         'login.wikimedia.org',
@@ -118,12 +125,18 @@ class mediawiki::web::prod_sites {
     ]:
         before => Apache::Site['wikimedia']
     }
+
     $other_wikis = [
         'transitionteam.wikimedia.org', 'iegcom.wikimedia.org',
         'legalteam.wikimedia.org', 'zero.wikimedia.org'
     ]
-    mediawiki::web::site { $other_wikis:
-        template_name => 'private-https',
-        before        => Apache::Site['wikimedia'],
+    mediawiki::web::vhost { $other_wikis:
+        ensure          => present,
+        docroot         => '/srv/mediawiki/docroot/wikimedia.org',
+        legacy_rewrites => false,
+        https_only      => true,
+        declare_site    => false,
+        short_urls      => true,
+        before          => Apache::Site['wikimedia'],
     }
 }
