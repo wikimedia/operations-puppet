@@ -6303,7 +6303,7 @@ host rdb1009 {
 }
 
 host rdb1010 {
-    hardware ethernet 84:2b:2b:77:21:c3;
+    hardware ethernet D0:94:66:5F:59:80;
     fixed-address rdb1010.eqiad.wmnet;
 }
 
