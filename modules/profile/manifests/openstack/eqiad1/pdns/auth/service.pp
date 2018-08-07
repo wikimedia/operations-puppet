@@ -8,10 +8,14 @@ class profile::openstack::eqiad1::pdns::auth::service(
     $host_ip = ipresolve($host,4)
     $host_secondary_ip = ipresolve($host_secondary,4)
 
+    # We're patching in our ipv4 address for db_host here;
+    #  for unclear reasons 'localhost' doesn't work properly
+    #  with the version of Mariadb installed on Jessie.
     class {'::profile::openstack::base::pdns::auth::service':
         host           => $host,
         host_secondary => $host_secondary,
         db_pass        => $db_pass,
+        db_host        => ipresolve($host,4),
     }
 
     class {'::profile::openstack::base::pdns::auth::monitor::pdns_control':}
