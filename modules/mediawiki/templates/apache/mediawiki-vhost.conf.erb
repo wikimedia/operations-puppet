@@ -1,7 +1,13 @@
 <VirtualHost *:80>
     ServerName <%= @server_name %>
     DocumentRoot <%= @docroot %>
-    
+<%- if @server_aliases -%>
+<%-  @server_aliases.each do |server_alias| -%>
+    ServerAlias <%= server_alias %>
+<% end -%>
+    UseCanonicalName Off
+<%- end -%>
+
     AllowEncodedSlashes <%= @encoded_slashes %>
 
     RewriteEngine On

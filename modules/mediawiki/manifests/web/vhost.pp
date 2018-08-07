@@ -10,6 +10,8 @@
 #
 # [*server_name*] The ServerName of the vhost. Defaults to the resource title
 #
+# [*server_aliases*] Array of server aliases, or undef. Defaults to undef
+#
 # [*legacy_rewrites*] Wether or not legacy rewrites should be added
 #
 # [*public_rewrites*] Rewrites for favicon, robots.txt necessary for public wikis
@@ -33,6 +35,7 @@ define mediawiki::web::vhost(
     String $docroot,
     Wmflib::Ensure $ensure = present,
     String $server_name = $title,
+    Optional[Array[String]] $server_aliases = undef,
     Boolean $public_rewrites = true,
     Boolean $legacy_rewrites = true,
     Boolean $short_urls = false,
