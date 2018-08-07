@@ -56,19 +56,14 @@ profile::citoid::zotero_host: "zotero.svc.%{::site}.wmnet"
 
 
 ### BEGIN EVENTSTREAMS ###
-# Run eventstreams in both eqiad and codfw from the Kafka main-eqiad cluster.
-# Message offsets are not guarunteed to be the same in main-eqiad and in
-# main-codfw.  Connected HTTP SSE clients use the Kafka message offsets
-# to resume from where they left off after disconnects.  We should make sure
-# that the offsets they use will work no matter what datacenter
-# stream.wikimedia.org routes them to.  Therefore, we must back the entire
-# service off of the same Kafka cluster, even if the service processes
-# are running in different datacenters.  We *can* failover to a different
-# Kafka cluster, e.g. main-codfw, if we really need to.  But note that
-# doing so would be disruptive to clients, as their stored offsets
-# would no longer make sense after the failover, and cause them to
-# miss messages.
-# XXX: Moved to main cluster in each DC due to T199813
+# EventStreams is configured in discovery.yaml to be active/active.
+# It runs in both primary datacenters and is backed by the local
+# 'main' Kafka cluster there.  If eqiad is the active Mediawiki
+# DC, then the EventStreams instance in codfw consuming
+# from main-codfw relies on MirrorMaker to replicate events
+# from main-eqiad. This should usually be fine. If MirrorMaker
+# is down, events will be delayed, but clients will get these
+# events delivered when MirrorMaker resumes.
 profile::eventstreams::kafka_cluster_name: main
 profile::eventstreams::monitoring_enabled: true
 # Stream configuration for Public EventStreams service
