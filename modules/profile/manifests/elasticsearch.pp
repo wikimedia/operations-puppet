@@ -43,6 +43,9 @@ class profile::elasticsearch(
         before     => Class['::elasticsearch'],
     }
 
+    # ensure that apt is refreshed before installing elasticsearch
+    Exec['apt-get update'] -> Class['::elasticsearch']
+
     # Install
     class { '::elasticsearch':
         # Production elasticsearch needs these plugins to be loaded in order
