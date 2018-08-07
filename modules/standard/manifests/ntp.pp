@@ -8,8 +8,6 @@ class standard::ntp {
     #   and sync to upstream NTP pool servers.
     $wmf_peers = {
         eqiad => [
-            'chromium.wikimedia.org',     # eqiad recdns
-            'hydrogen.wikimedia.org',     # eqiad recdns
             'dns1001.wikimedia.org',
             'dns1002.wikimedia.org',
         ],
