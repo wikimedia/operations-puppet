@@ -10,6 +10,8 @@
     CustomLog /var/log/apache2/<%= @server_name %>.access.log wmf
 
     Alias "/style-guide" "/srv/org/wikimedia/design-style-guide"
+    # T200304
+    RedirectMatch 301 /style-guide/(w|wiki)/(.*) "/style-guide/"
 
     <Directory />
         Options FollowSymLinks
