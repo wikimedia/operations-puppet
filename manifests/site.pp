@@ -978,6 +978,18 @@ node 'labservices1002.wikimedia.org' {
     interface::add_ip6_mapped { 'main': }
 }
 
+# cloudservices1003/1004 hosts openstack-designate
+# and the powerdns auth and recursive services for instances in eqiad1.
+node 'cloudservices1003.wikimedia.org' {
+    role(wmcs::openstack::eqiad1::services_primary)
+    interface::add_ip6_mapped { 'main': }
+}
+
+node 'cloudservices1004.wikimedia.org' {
+    role(wmcs::openstack::eqiad1::services_secondary)
+    interface::add_ip6_mapped { 'main': }
+}
+
 node /^labtestneutron200[1-2]\.codfw.wmnet$/ {
     role(wmcs::openstack::labtestn::net)
 }
