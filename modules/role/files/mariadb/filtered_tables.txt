@@ -579,7 +579,6 @@ reading_list_project,rlp_id,K
 reading_list_project,rlp_project,K
 recentchanges,rc_id,K
 recentchanges,rc_timestamp,K
-recentchanges,rc_cur_time,K
 recentchanges,rc_user,K
 recentchanges,rc_user_text,K
 recentchanges,rc_namespace,K
@@ -593,8 +592,6 @@ recentchanges,rc_cur_id,K
 recentchanges,rc_this_oldid,K
 recentchanges,rc_last_oldid,K
 recentchanges,rc_type,K
-recentchanges,rc_moved_to_ns,K
-recentchanges,rc_moved_to_title,K
 recentchanges,rc_patrolled,K
 recentchanges,rc_ip,F
 recentchanges,rc_old_len,K
