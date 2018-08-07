@@ -82,8 +82,3 @@
 <% @gc_log_flags.each do |gc_log_flag| -%>
 <%= gc_log_flag %>
 <% end -%>
-
-# Spool inputs to disk. Helps with non backpressure-aware protocols and slow
-# pipelines. See also T200960.
-queue.type: persisted
-queue.drain: true
