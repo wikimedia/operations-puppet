@@ -163,6 +163,11 @@ node 'chromium.wikimedia.org' {
     interface::add_ip6_mapped { 'main': }
 }
 
+# two new cloudvirt systems, need to be pushed into production T199125
+node /^cloudvirt102[34].eqiad.wmnet$/ {
+    role(spare::system)
+}
+
 # All gerrit servers (swap master status in hiera)
 node 'cobalt.wikimedia.org', 'gerrit2001.wikimedia.org' {
     role(gerrit)
