@@ -1,2 +1,5 @@
-mariadb::shard: 'test-s1'
+# Buffer pool sizes/instance enabled
+profile::mariadb::dbstore_multiinstance::num_instances: 2
+profile::mariadb::dbstore_multiinstance::s4: '185G'
+profile::mariadb::dbstore_multiinstance::s5: '185G'
 profile::base::notifications_enabled: '0'

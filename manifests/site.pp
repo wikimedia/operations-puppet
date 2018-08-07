@@ -622,15 +622,6 @@ node /^db2(094|095)\.codfw\.wmnet/ {
     role(mariadb::sanitarium_multiinstance)
 }
 
-# old sanitarium, temp. test-s1
-node 'db1095.eqiad.wmnet' {
-    role(mariadb::core_test)
-}
-
-node 'db1102.eqiad.wmnet' {
-    role(mariadb::core_test)
-}
-
 # Old temporary sanitarium hosts now ready to be productionized
 #
 node 'db1116.eqiad.wmnet' {
@@ -644,6 +635,15 @@ node 'db1115.eqiad.wmnet' {
 
 node 'db2093.codfw.wmnet' {
     role(mariadb::misc::tendril)
+}
+
+# eqiad backup sources
+node 'db1095.eqiad.wmnet' {
+    role(mariadb::dbstore_multiinstance)
+}
+
+node 'db1102.eqiad.wmnet' {
+    role(mariadb::dbstore_multiinstance)
 }
 
 node 'dbstore1001.eqiad.wmnet' {

@@ -182,7 +182,5 @@
     shard: test-s1
     role: slave
   targets:
-  - db1095:9104
-  - db1102:9104
   - db1118:9104
 
