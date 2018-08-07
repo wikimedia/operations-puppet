@@ -2068,6 +2068,13 @@ node 'thorium.eqiad.wmnet' {
     interface::add_ip6_mapped { 'main': }
 }
 
+# new tor relay server to replace radium T196701
+node 'torrelay1001.wikimedia.org' {
+    role(spare::system)
+    interface::add_ip6_mapped { 'main': }
+}
+
+
 # Failoid service (Ganeti VM)
 node 'tureis.codfw.wmnet' {
     role(failoid)
