@@ -181,8 +181,6 @@ eqiad:
     kubernetes1003.eqiad.wmnet: [mathoid]
     kubernetes1004.eqiad.wmnet: [mathoid]
   dns:
-    chromium.wikimedia.org: [pdns_recursor]
-    hydrogen.wikimedia.org: [pdns_recursor]
     dns1001.wikimedia.org: [pdns_recursor]
     dns1002.wikimedia.org: [pdns_recursor]
   cache_misc:
