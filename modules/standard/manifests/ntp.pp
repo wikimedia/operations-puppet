@@ -10,6 +10,8 @@ class standard::ntp {
         eqiad => [
             'chromium.wikimedia.org',     # eqiad recdns
             'hydrogen.wikimedia.org',     # eqiad recdns
+            'dns1001.wikimedia.org',
+            'dns1002.wikimedia.org',
         ],
         codfw => [
             'dns2001.wikimedia.org',
