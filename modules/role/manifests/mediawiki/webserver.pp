@@ -10,8 +10,6 @@ class role::mediawiki::webserver {
     # FIXME: These should all be merged into the generic sites class!
     if $::realm == 'labs' {
         include ::mediawiki::web::beta_sites
-    } elsif $::environment == 'mediawiki_test' { # include the mediawiki config from another module in test
-        class { '::mediawiki_exp::web::prod_sites': }
     } else {
         include ::mediawiki::web::prod_sites
     }
