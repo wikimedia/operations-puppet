@@ -302,7 +302,7 @@ class role::logstash::collector (
 
     # Paper over periodic UDP packet loss - T200960
     cron { 'logstash_daily_bandaid':
-        ensure  => present,
+        ensure  => absent,
         command => 'systemctl restart logstash',
         user    => 'root',
         hour    => fqdn_rand(23, 'logstash_daily_bandaid'),
