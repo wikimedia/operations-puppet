@@ -1,0 +1,17 @@
+profile::openstack::eqiad1::pdns::tld: 'wmflabs'
+profile::openstack::eqiad1::pdns::private_reverse: '16.172.in-addr.arpa'
+profile::openstack::eqiad1::pdns::host: 'labs-ns2.wikimedia.org'
+profile::openstack::eqiad1::pdns::host_secondary: 'labs-ns2.wikimedia.org'
+profile::openstack::eqiad1::pdns::recursor: 'labs-recursor2.wikimedia.org'
+profile::openstack::eqiad1::pdns::recursor_secondary: 'labs-recursor2.wikimedia.org'
+profile::openstack::eqiad1::pdns::monitor_target_fqdn: 'tools-grid-master.tools.eqiad.wmflabs'
+profile::openstack::eqiad1::pdns::use_metal_resolver: True
+
+# Extra records that the Labs DNS recursor should respond to.
+# Used for things that would ideally be in a .svc. DNS zone but
+# we do not have one. REMEMBER THE TRAILING DOT.
+profile::openstack::eqiad1::pdns::recursor_aliaser_extra_records:
+  tools-db.tools.eqiad.wmflabs.: 10.64.37.9 # labsdb1005.eqiad.wmnet / tools-db
+  tools-redis.tools.eqiad.wmflabs.: 10.68.22.56 # tools-redis-1001.tools.eqiad.wmflabs
+  tools-redis.eqiad.wmflabs.: 10.68.22.56 # tools-redis-1001.tools.eqiad.wmflabs
+  puppet.: 208.80.154.158 # labpuppetmaster1001.wikimedia.org
