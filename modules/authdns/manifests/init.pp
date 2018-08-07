@@ -13,6 +13,15 @@ class authdns(
     require ::authdns::scripts
     require ::geoip::data::puppet
 
+    if os_version('debian == stretch') {
+        apt::pin { 'gdnsd':
+            pin      => 'release a=stretch-backports',
+            package  => 'gdnsd',
+            priority => '1001',
+            before   => Package['gdnsd'],
+        }
+    }
+
     package { 'gdnsd':
         ensure => installed,
     }
