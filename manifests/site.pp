@@ -1951,8 +1951,13 @@ node /^rdb100[1357]\.eqiad\.wmnet$/ {
     role(jobqueue_redis::master)
 }
 
-node /^rdb100[24689]\.eqiad\.wmnet/ {
+node /^rdb100[2468]\.eqiad\.wmnet/ {
     role(jobqueue_redis::slave)
+}
+
+# two new rdb nodes, need to be pressed into service T196685
+node /^rdb10(09|10)\.eqiad\.wmnet/ {
+    role(spare::system)
 }
 
 
