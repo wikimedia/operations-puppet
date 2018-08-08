@@ -37,9 +37,14 @@ GRANT PROCESS, REPLICATION CLIENT, SELECT, SHOW DATABASES
     ON *.* TO '<%= @tendril_user %>'@'10.%'
     IDENTIFIED BY '<%= @tendril_pass %>';
 
--- Grants for 'repl'@'10.%' (replication)
+-- Grants for 'repl'@'10.64.%' (replication eqiad)
 GRANT REPLICATION SLAVE
-    ON *.* TO 'repl'@'10.%'
+    ON *.* TO 'repl'@'10.64.%'
+    IDENTIFIED BY '<%= @repl_pass %>';
+
+-- Grants for 'repl'@'10.192.%' (replication codfw)
+GRANT REPLICATION SLAVE
+    ON *.* TO 'repl'@'10.192.%'
     IDENTIFIED BY '<%= @repl_pass %>';
 
 -- Grants for 'prometheus'@'localhost' (prometheus monitoring)
