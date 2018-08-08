@@ -127,15 +127,6 @@ eqiad:
     mw1332.eqiad.wmnet: [apache2,nginx]
     mw1333.eqiad.wmnet: [apache2,nginx]
   cache_text:
-    cp1052.eqiad.wmnet: [varnish-fe, varnish-be, nginx]
-    cp1053.eqiad.wmnet: [varnish-fe, varnish-be, nginx]
-    cp1054.eqiad.wmnet: [varnish-fe, varnish-be, nginx]
-    cp1055.eqiad.wmnet: [varnish-fe, varnish-be, nginx]
-    cp1065.eqiad.wmnet: [varnish-fe, varnish-be, nginx]
-    cp1066.eqiad.wmnet: [varnish-fe, varnish-be, nginx]
-    cp1067.eqiad.wmnet: [varnish-fe, varnish-be, nginx]
-    cp1068.eqiad.wmnet: [varnish-fe, varnish-be, nginx]
-    # ^-old-new-v
     cp1075.eqiad.wmnet: [varnish-fe, varnish-be, nginx]
     cp1077.eqiad.wmnet: [varnish-fe, varnish-be, nginx]
     cp1079.eqiad.wmnet: [varnish-fe, varnish-be, nginx]
@@ -145,18 +136,6 @@ eqiad:
     cp1087.eqiad.wmnet: [varnish-fe, varnish-be, nginx]
     cp1089.eqiad.wmnet: [varnish-fe, varnish-be, nginx]
   cache_upload:
-    cp1048.eqiad.wmnet: [varnish-fe, varnish-be, nginx]
-    cp1049.eqiad.wmnet: [varnish-fe, varnish-be, nginx]
-    cp1050.eqiad.wmnet: [varnish-fe, varnish-be, nginx]
-    cp1062.eqiad.wmnet: [varnish-fe, varnish-be, nginx]
-    cp1063.eqiad.wmnet: [varnish-fe, varnish-be, nginx]
-    cp1064.eqiad.wmnet: [varnish-fe, varnish-be, nginx]
-    cp1071.eqiad.wmnet: [varnish-fe, varnish-be, nginx]
-    cp1072.eqiad.wmnet: [varnish-fe, varnish-be, nginx]
-    cp1073.eqiad.wmnet: [varnish-fe, varnish-be, nginx]
-    cp1074.eqiad.wmnet: [varnish-fe, varnish-be, nginx]
-    cp1099.eqiad.wmnet: [varnish-fe, varnish-be, nginx]
-    # ^-old-new-v
     cp1076.eqiad.wmnet: [varnish-fe, varnish-be, nginx]
     cp1078.eqiad.wmnet: [varnish-fe, varnish-be, nginx]
     # cp1080.eqiad.wmnet: [varnish-fe, varnish-be, nginx] hw issues: T201174

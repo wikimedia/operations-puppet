@@ -11,18 +11,6 @@ cache::upload::nodes:
     - 'cp2024.codfw.wmnet'
     - 'cp2026.codfw.wmnet'
   eqiad:
-    - 'cp1048.eqiad.wmnet'
-    - 'cp1049.eqiad.wmnet'
-    - 'cp1050.eqiad.wmnet'
-    - 'cp1062.eqiad.wmnet'
-    - 'cp1063.eqiad.wmnet'
-    - 'cp1064.eqiad.wmnet'
-    - 'cp1071.eqiad.wmnet'
-    - 'cp1072.eqiad.wmnet'
-    - 'cp1073.eqiad.wmnet'
-    - 'cp1074.eqiad.wmnet'
-    - 'cp1099.eqiad.wmnet'
-    # ^-old-new-v
     - 'cp1076.eqiad.wmnet'
     - 'cp1078.eqiad.wmnet'
     # - 'cp1080.eqiad.wmnet' hw issues: T201174

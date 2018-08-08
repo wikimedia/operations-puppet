@@ -9,15 +9,6 @@ cache::text::nodes:
     - 'cp2019.codfw.wmnet'
     - 'cp2023.codfw.wmnet'
   eqiad:
-    - 'cp1052.eqiad.wmnet'
-    - 'cp1053.eqiad.wmnet'
-    - 'cp1054.eqiad.wmnet'
-    - 'cp1055.eqiad.wmnet'
-    - 'cp1065.eqiad.wmnet'
-    - 'cp1066.eqiad.wmnet'
-    - 'cp1067.eqiad.wmnet'
-    - 'cp1068.eqiad.wmnet'
-    # ^-old-new-v
     - 'cp1075.eqiad.wmnet'
     - 'cp1077.eqiad.wmnet'
     - 'cp1079.eqiad.wmnet'
