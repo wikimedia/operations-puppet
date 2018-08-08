@@ -126,11 +126,7 @@ class mediawiki::web::prod_sites {
     }
 
 
-    mediawiki::web::site {[
-        'wikimedia-chapter',
-        'login.wikimedia.org',
-        'www.wikimedia.org'
-    ]:
+    mediawiki::web::site { ['www.wikimedia.org', 'login.wikimedia.org']:
         before => Apache::Site['wikimedia']
     }
 
@@ -139,14 +135,67 @@ class mediawiki::web::prod_sites {
         'legalteam.wikimedia.org', 'zero.wikimedia.org',
         'fixcopyright.wikimedia.org'
     ]
-    mediawiki::web::vhost { $other_wikis:
-        ensure          => present,
-        docroot         => '/srv/mediawiki/docroot/wikimedia.org',
-        legacy_rewrites => false,
-        https_only      => true,
-        declare_site    => false,
-        short_urls      => true,
-        before          => Apache::Site['wikimedia'],
+    mediawiki::web::vhost {
+        default:
+            ensure          => present,
+            docroot         => '/srv/mediawiki/docroot/wikimedia.org',
+            legacy_rewrites => false,
+            declare_site    => false,
+            short_urls      => true,
+            before          => Apache::Site['wikimedia'],
+            ;
+        $other_wikis:
+            https_only => true,
+            short_urls => true,
+            ;
+        'wikimedia-chapter':
+            server_aliases      => [
+                'ar.wikimedia.org',
+                'am.wikimedia.org',
+                'bd.wikimedia.org',
+                'be.wikimedia.org',
+                'br.wikimedia.org',
+                'ca.wikimedia.org',
+                'cn.wikimedia.org',
+                'co.wikimedia.org',
+                'dk.wikimedia.org',
+                'ec.wikimedia.org',
+                'ee.wikimedia.org',
+                'fi.wikimedia.org',
+                'hi.wikimedia.org',
+                'id.wikimedia.org',
+                'id-internal.wikimedia.org',
+                'il.wikimedia.org',
+                'mai.wikimedia.org',
+                'mk.wikimedia.org',
+                'mx.wikimedia.org',
+                'nl.wikimedia.org',
+                'no.wikimedia.org',
+                'noboard-chapters.wikimedia.org',
+                'nyc.wikimedia.org',
+                'nz.wikimedia.org',
+                'pa-us.wikimedia.org',
+                'pl.wikimedia.org',
+                'pt.wikimedia.org',
+                'romd.wikimedia.org',
+                'rs.wikimedia.org',
+                'ru.wikimedia.org',
+                'se.wikimedia.org',
+                'tr.wikimedia.org',
+                'ua.wikimedia.org',
+                'us.wikimedia.org',
+                'wb.wikimedia.org',
+            ],
+            legacy_rewrites     => true,
+            upload_rewrite      => 'wikimedia.org',
+            additional_rewrites => {
+                'early' => [
+                    '# www. prefix',
+                    'RewriteCond %{HTTP_HOST} ^www.([a-z\-]+)\.wikimedia\.org$',
+                    'RewriteRule ^(.*)$ %{ENV:RW_PROTO}://%1.wikimedia.org$1 [R=301,L]'
+                ],
+                'late'  => []
+            }
     }
 
     ### END wikimedia
