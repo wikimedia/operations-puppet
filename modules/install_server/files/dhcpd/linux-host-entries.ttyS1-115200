@@ -983,8 +983,6 @@ host cp2021 {
 host cp2022 {
     hardware ethernet 44:A8:42:2D:1E:80;
     fixed-address cp2022.codfw.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
-    filename "lpxelinux.0";
 }
 
 host cp2023 {
