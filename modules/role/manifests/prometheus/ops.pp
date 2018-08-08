@@ -576,6 +576,13 @@ class role::prometheus::ops {
 
     $jmx_exporter_jobs = [
       {
+        'job_name'        => 'jmx_logstash',
+        'scheme'          => 'http',
+        'file_sd_configs' => [
+          { 'files' => [ "${targets_path}/jmx_logstash_*.yaml" ]}
+        ],
+      },
+      {
         'job_name'        => 'jmx_kafka',
         'scheme'          => 'http',
         'scrape_timeout'  => '45s',
@@ -619,6 +626,12 @@ class role::prometheus::ops {
         ],
       },
     ]
+
+    prometheus::jmx_exporter_config{ "logstash_${::site}":
+        dest       => "${targets_path}/jmx_logstash_${::site}.yaml",
+        class_name => 'role::logstash',
+        site       => $::site,
+    }
 
     # Collect all declared kafka_broker_.* jmx_exporter_instances
     # from any uses of profile::kafka::broker::monitoring.
