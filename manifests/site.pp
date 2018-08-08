@@ -206,30 +206,35 @@ node /^boron\.eqiad\.wmnet$/ {
 }
 
 # cp1008: prod-like SSL test host
+# to be replaced with cp1099 in the near future
 node 'cp1008.wikimedia.org' {
     role(cache::canary)
     include ::role::authdns::testns
     interface::add_ip6_mapped { 'main': }
 }
 
+# cache_misc still in use, but not for much longer!
+# these will go to decom list once it's gone
 node /^cp10(45|5[18]|61)\.eqiad\.wmnet$/ {
     interface::add_ip6_mapped { 'main': }
     role(cache::misc)
 }
 
-node 'cp1046.eqiad.wmnet', 'cp1047.eqiad.wmnet', 'cp1059.eqiad.wmnet', 'cp1060.eqiad.wmnet' {
-    # ex-cache_maps, earmarked for experimentation...
+# 18 total systems here for decom (old eqiad caches not in use):
+# cp104[6789], cp1050, cp105[2345], cp1059, cp1060, cp106[2345678]
+# 4          + 1     + 4          + 1     + 1     + 7 = 18
+node /^cp10(4[6789]|5[023459]|6[02345678])\.eqiad\.wmnet$/ {
+    role(spare::system)
+}
+
+# ATS Test Cluster - do not decom
+node /^cp107[1-4]\.eqiad\.wmnet$/ {
     role(test)
 }
 
-node /^cp10(4[89]|50|6[234]|7[1-4]|99)\.eqiad\.wmnet$/ {
-    interface::add_ip6_mapped { 'main': }
-    role(cache::upload)
-}
-
-node /^cp10(5[2-5]|6[5-8])\.eqiad\.wmnet$/ {
-    interface::add_ip6_mapped { 'main': }
-    role(cache::text)
+# new canary, to replace cp1008 in future work
+node /^cp1099\.eqiad\.wmnet$/ {
+    role(test)
 }
 
 node /^cp10(7[579]|8[13579])\.eqiad\.wmnet$/ {
@@ -252,11 +257,13 @@ node /^cp20(0[258]|1[147]|2[0246])\.codfw\.wmnet$/ {
     role(cache::upload)
 }
 
+# ATS Test Cluster - do not decom
 node /^cp20(0[39]|15|21)\.codfw\.wmnet$/ {
-    # ex-cache_maps, earmarked for experimentation...
     role(test)
 }
 
+# Once cache_misc is gone, these will be spares for codfw text/upload
+# above until next codfw cache hardware refresh
 node /^cp20(06|1[28]|25)\.codfw\.wmnet$/ {
     interface::add_ip6_mapped { 'main': }
     role(cache::misc)
