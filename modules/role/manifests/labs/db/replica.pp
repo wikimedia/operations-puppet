@@ -63,4 +63,8 @@ class role::labs::db::replica {
         binlog_format => 'ROW',
     }
 
+    mariadb::monitor_readonly{ 'wikireplica':
+        port      => 3306,
+        read_only => 1,
+    }
 }
