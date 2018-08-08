@@ -156,11 +156,9 @@ node 'centrallog1001.eqiad.wmnet' {
     role(syslog::centralserver)
 }
 
-# DNS recursor
+# to be decommisioned - replaced by dns1002 (T201522)
 node 'chromium.wikimedia.org' {
-    role(recursor)
-
-    interface::add_ip6_mapped { 'main': }
+    role(spare::system)
 }
 
 # two new cloudvirt systems, need to be pushed into production T199125
@@ -950,10 +948,9 @@ node 'heze.codfw.wmnet' {
     role(backup::offsite)
 }
 
-# DNS recursor
+# to be decommisioned - replaced by dns1001 (T201522)
 node 'hydrogen.wikimedia.org' {
-    role(recursor)
-    interface::add_ip6_mapped { 'main': }
+    role(spare::system)
 }
 
 # irc.wikimedia.org
