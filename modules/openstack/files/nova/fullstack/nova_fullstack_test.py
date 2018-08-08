@@ -322,7 +322,7 @@ def main():
 
     argparser.add_argument(
         '--keystone-url',
-        default="http://labcontrol1001.wikimedia.org:35357/v3",
+        default="http://cloudcontrol1003.wikimedia.org:35357/v3",
         help='Auth url for token and service discovery',
     )
 

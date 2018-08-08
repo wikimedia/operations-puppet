@@ -95,7 +95,7 @@ def get_instance_ips(project, observer_pass):
     client = novaclient.Client(
         "2.0",
         session=KeystoneSession(auth=KeystonePassword(
-            auth_url="http://labcontrol1001.wikimedia.org:5000/v3",
+            auth_url="http://cloudcontrol1003.wikimedia.org:5000/v3",
             username="novaobserver",
             password=observer_pass,
             project_name=project,

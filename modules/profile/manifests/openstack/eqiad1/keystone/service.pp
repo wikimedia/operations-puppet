@@ -32,25 +32,9 @@ class profile::openstack::eqiad1::keystone::service(
     $puppetmaster_hostname = hiera('profile::openstack::eqiad1::puppetmaster_hostname'),
     $auth_port = hiera('profile::openstack::base::keystone::auth_port'),
     $public_port = hiera('profile::openstack::base::keystone::public_port'),
+    $main_nova_controller = hiera('profile::openstack::main::nova_controller'),
+    $glance_host = hiera('profile::openstack::eqiad1::glance_host'),
     ) {
-
-    # until eqiad1 db is m5
-    if ($db_host == $::fqdn) {
-        ferm::service { 'keystone_local_db':
-            proto  => 'tcp',
-            port   => '3306',
-            srange =>  "(@resolve(${nova_controller_standby}) @resolve(${nova_controller_standby}, AAAA))",
-        }
-    }
-
-    class{'::profile::openstack::base::keystone::db':
-        labs_hosts_range             => $labs_hosts_range,
-        puppetmaster_hostname        => $puppetmaster_hostname,
-        designate_host               => $designate_host,
-        second_region_designate_host => $second_region_designate_host,
-        osm_host                     => $osm_host,
-    }
-    contain '::profile::openstack::base::keystone::db'
 
     require ::profile::openstack::eqiad1::clientlib
     class {'::profile::openstack::base::keystone::service':
@@ -98,6 +82,27 @@ class profile::openstack::eqiad1::keystone::service(
         public_port => $public_port,
     }
     contain '::openstack::keystone::monitor::services'
+
+    # allow foreign glance to call back to admin auth port
+    # to validate issued tokens
+    ferm::rule{'main_glance_35357':
+        ensure => 'present',
+        rule   => "saddr @resolve(${glance_host}) proto tcp dport (35357) ACCEPT;",
+    }
+
+    # allow foreign designate(and co) to call back to admin auth port
+    # to validate issued tokens
+    ferm::rule{'main_designate_35357':
+        ensure => 'present',
+        rule   => "saddr @resolve(${designate_host}) proto tcp dport (35357) ACCEPT;",
+    }
+
+    ferm::rule { 'main_nova_35357':
+        ensure => 'present',
+        rule   => "saddr (@resolve(${main_nova_controller})
+                          @resolve(${main_nova_controller}, AAAA))
+                   proto tcp dport (35357) ACCEPT;",
+    }
 
     file { '/etc/cron.hourly/keystone':
         ensure => absent,

@@ -15,8 +15,8 @@ GLANCE_PUBLIC_URL="http://labcontrol1001.wikimedia.org:9292"
 GLANCE_ADMIN_URL=$GLANCE_PUBLIC_URL
 GLANCE_INTERNAL_URL=$GLANCE_PUBLIC_URL
 
-KEYSTONE_PUBLIC_URL="http://labcontrol1001.wikimedia.org:5000/v2.0"
-KEYSTONE_ADMIN_URL="http://labcontrol1001.wikimedia.org:35357/v2.0"
+KEYSTONE_PUBLIC_URL="http://cloudcontrol1003.wikimedia.org:5000/v2.0"
+KEYSTONE_ADMIN_URL="http://cloudcontrol1003.wikimedia.org:35357/v2.0"
 KEYSTONE_INTERNAL_URL=$KEYSTONE_PUBLIC_URL
 
 # Create required services

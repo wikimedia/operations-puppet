@@ -99,7 +99,7 @@ if __name__ == "__main__":
     argparser.add_argument(
         '--nova-url',
         help='url for nova auth',
-        default='http://labcontrol1001.wikimedia.org:35357/v2.0'
+        default='http://cloudcontrol1003.wikimedia.org:35357/v2.0'
     )
     argparser.add_argument(
         '--nova-project',
