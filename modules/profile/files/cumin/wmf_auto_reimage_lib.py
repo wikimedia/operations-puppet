@@ -496,13 +496,13 @@ def validate_hosts(hosts, no_raise=False):
     output = ''
     for _, output in worker.get_results():
         for host in hosts:
-            if '+ "{host}"'.format(host=host) in output.message().decode('utf-8'):
+            if '+ "{host}"'.format(host=host) in output.message().decode():
                 missing.remove(host)
 
     if missing:
         message = ('Signed cert on Puppet not found for hosts {missing} '
                    'and no_raise={no_raise}:\n{output}').format(
-            missing=missing, output=output, no_raise=no_raise)
+            missing=missing, output=output.message().decode(), no_raise=no_raise)
 
         if no_raise:
             logger.warning(message)
@@ -616,7 +616,7 @@ def puppet_check_cert_to_sign(host, fingerprint):
         return 1
 
     for _, output in worker.get_results():
-        message = output.message().decode('utf-8')
+        message = output.message().decode()
         if host in message:
             cert_line = message
             break
@@ -685,11 +685,11 @@ def puppet_wait_cert_and_sign(host, fingerprint):
 
     _, worker = run_cumin('puppet_wait_cert_and_sign', puppetmaster_host, [sign_command])
     for _, output in worker.get_results():
-        if fingerprint in output.message().decode('utf-8'):
+        if fingerprint in output.message().decode():
             break
     else:
         print_line('Expected fingerprint {fingerprint} not found in signing message:\n{msg}'.format(
-            fingerprint=fingerprint, msg=output.message()), host=host)
+            fingerprint=fingerprint, msg=output.message().decode()), host=host)
         puppet_remove_host(host)
         print_line('Restart Puppetmasters ASAP!!!')
         raise RuntimeError('Aborting due to puppet cert fingerprint mismatch')
@@ -710,7 +710,7 @@ def puppet_generate_cert(host):
                           installer=True, ignore_exit=True, timeout=300)
 
     for _, output in worker.get_results():
-        for line in output.message().decode('utf-8').splitlines():
+        for line in output.message().decode().splitlines():
             if 'Certificate Request fingerprint' in line:
                 fingerprint = line.split()[-1]
                 print_line(
@@ -718,7 +718,7 @@ def puppet_generate_cert(host):
                 return fingerprint
 
     raise RuntimeError(
-        'Unable to find certificate fingerprint in:\n{msg}'.format(msg=output.message()))
+        'Unable to find certificate fingerprint in:\n{msg}'.format(msg=output.message().decode()))
 
 
 def detect_init_system(host):
@@ -731,7 +731,7 @@ def detect_init_system(host):
     """
     _, worker = run_cumin('detect_init', host, ['ps --no-headers -o comm 1'], installer=True)
     for _, output in worker.get_results():
-        init_system = output.message().decode('utf-8')
+        init_system = output.message().decode()
         break
 
     return init_system
@@ -799,7 +799,7 @@ def ipmitool_command(mgmt, ipmi_command):
     ensure_ipmi_password()
     command = ['ipmitool', '-I', 'lanplus', '-H', mgmt, '-U', 'root', '-E'] + ipmi_command
     logger.info('Running IPMI command: {command}'.format(command=command))
-    return subprocess.check_output(command).decode('utf-8')
+    return subprocess.check_output(command).decode()
 
 
 def set_pxe_boot(host, mgmt, retries=0):
@@ -889,7 +889,7 @@ def wait_puppet_run(host, start=None):
         try:
             exit_code, worker = run_cumin('wait_puppet_run', host, [command])
             for _, output in worker.get_results():
-                last_run = datetime.utcfromtimestamp(float(output.message().decode('utf-8')))
+                last_run = datetime.utcfromtimestamp(float(output.message().decode()))
 
             if last_run > start:
                 break
@@ -970,10 +970,10 @@ def check_uptime(host, minimum=0, maximum=None, installer=False):
         exit_code, worker = run_cumin(
             'check_uptime', host, ['cat /proc/uptime'], installer=installer)
         for _, output in worker.get_results():
-            uptime = float(output.message().decode('utf-8').strip().split()[0])
+            uptime = float(output.message().decode().strip().split()[0])
     except ValueError:
         message = "Unable to determine uptime of host '{host}': {uptime}".format(
-            host=host, uptime=output.message())
+            host=host, uptime=output.message().decode())
         logger.error(message)
         raise RuntimeError(message)
 
