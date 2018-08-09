@@ -32,7 +32,7 @@ class profile::netbox (
     $proxypass = $passwords::ldap::wmf_cluster::proxypass
 
     # Define master postgres server
-    $master = 'netmon1002.wikimedia.org'
+    $master = $active_server
 
     # Inspired by modules/puppetmaster/manifests/puppetdb/database.pp
     if $master == $::fqdn {
