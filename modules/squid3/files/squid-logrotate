@@ -1,0 +1,22 @@
+#####################################################################
+### THIS FILE IS MANAGED BY PUPPET
+#####################################################################
+#
+#	Logrotate fragment for squid
+#
+/var/log/squid/*.log {
+        daily
+        compress
+        delaycompress
+        size 300M
+        rotate 2
+        missingok
+        nocreate
+        sharedscripts
+        prerotate
+                test ! -x /usr/sbin/sarg-reports || /usr/sbin/sarg-reports
+        endscript
+        postrotate
+                test ! -e /var/run/squid.pid || /usr/sbin/squid -k rotate
+        endscript
+}

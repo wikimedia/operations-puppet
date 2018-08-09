@@ -38,7 +38,7 @@ class squid3(
 
     logrotate::conf { 'squid3':
         ensure => $ensure,
-        source => 'puppet:///modules/squid3/squid3-logrotate',
+        source => "puppet:///modules/squid3/${squid}-logrotate",
     }
 
     package { $squid:
