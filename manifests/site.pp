@@ -227,6 +227,7 @@ node /^cp10(4[6789]|5[023459]|6[02345678])\.eqiad\.wmnet$/ {
 
 # ATS Test Cluster
 node /^cp107[1-4]\.eqiad\.wmnet$/ {
+    interface::add_ip6_mapped { 'main': }
     role(trafficserver::backend)
 }
 
@@ -257,6 +258,7 @@ node /^cp20(0[258]|1[147]|2[0246])\.codfw\.wmnet$/ {
 
 # ATS Test Cluster
 node /^cp20(0[39]|15|21)\.codfw\.wmnet$/ {
+    interface::add_ip6_mapped { 'main': }
     role(trafficserver::backend)
 }
 
