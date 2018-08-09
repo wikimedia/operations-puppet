@@ -16,6 +16,7 @@ class profile::analytics::refinery::job::data_purge {
     $banner_activity_log_file   = "${profile::analytics::refinery::log_dir}/drop-banner-activity.log"
     $el_sanitization_log_file   = "${profile::analytics::refinery::log_dir}/eventlogging-sanitization.log"
     $query_clicks_log_file      = "${profile::analytics::refinery::log_dir}/drop-query-clicks.log"
+    $el_saltrotate_log_file     = "${profile::analytics::refinery::log_dir}/eventlogging-saltrotate.log"
 
 
     # Shortcut to refinery path
@@ -108,6 +109,18 @@ class profile::analytics::refinery::job::data_purge {
         user        => 'hdfs',
         minute      => '0',
         hour        => '2',
+    }
+
+    # create and rotate cryptographic salts for EventLogging sanitization
+    # cron runs once a day, at midnight, to coincide with salt rotation time
+    # given that hdfs stores modified dates without milliseconds
+    # 1 minute margin is given to avoid timestamp comparison problems
+    cron {'refinery-eventlogging-saltrotate':
+        command     => "${env} && ${refinery_path}/bin/saltrotate --verbose -p '3 months' /user/hdfs/eventlogging-sanitization-salt.txt >> ${$el_saltrotate_log_file}",
+        environment => "MAILTO=${mail_to}",
+        user        => 'hdfs',
+        minute      => '1',
+        hour        => '0',
     }
 
     # sanitize event database into event_sanitized
