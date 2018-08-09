@@ -426,11 +426,6 @@ host centrallog1001 {
     fixed-address centrallog1001.eqiad.wmnet;
 }
 
-host chromium {
-    hardware ethernet 78:2b:cb:08:aa:48;
-    fixed-address chromium.wikimedia.org;
-}
-
 host cloudcontrol1003 {
     hardware ethernet 30:e1:71:5f:6e:5c;
     fixed-address cloudcontrol1003.wikimedia.org;
@@ -2723,11 +2718,6 @@ host heze {
     fixed-address heze.codfw.wmnet;
     option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
     filename "lpxelinux.0";
-}
-
-host hydrogen {
-    hardware ethernet 78:2b:cb:09:0c:21;
-    fixed-address hydrogen.wikimedia.org;
 }
 
 host iron {

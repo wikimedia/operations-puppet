@@ -156,11 +156,6 @@ node 'centrallog1001.eqiad.wmnet' {
     role(syslog::centralserver)
 }
 
-# to be decommisioned - replaced by dns1002 (T201522)
-node 'chromium.wikimedia.org' {
-    role(spare::system)
-}
-
 # two new cloudvirt systems, need to be pushed into production T199125
 node /^cloudvirt102[34].eqiad.wmnet$/ {
     role(spare::system)
@@ -948,11 +943,6 @@ node 'helium.eqiad.wmnet' {
 # Bacula storage
 node 'heze.codfw.wmnet' {
     role(backup::offsite)
-}
-
-# to be decommisioned - replaced by dns1001 (T201522)
-node 'hydrogen.wikimedia.org' {
-    role(spare::system)
 }
 
 # irc.wikimedia.org
