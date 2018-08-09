@@ -4,18 +4,11 @@
 # Quarry web frontends and Quarry query runners.
 class profile::quarry::base(
     $clone_path = hiera('profile::quarry::base::clone_path'),
+    $venv_path = hiera('profile::quarry::base::venv_path'),
     $result_path_parent = hiera('profile::quarry::base::result_path_parent'),
     $result_path = hiera('profile::quarry::base::result_path'),
 ) {
-    include ::redis::client::python
-
-    package { [
-        'python-celery',
-        'python-sqlalchemy',
-        'python-unicodecsv',
-        'python-translitcodec',
-        'python-xlsxwriter',
-    ]:
+    package { 'python3-venv':
         ensure => latest,
     }
 
@@ -37,5 +30,23 @@ class profile::quarry::base(
         require   => [File[$clone_path], User['quarry']],
         owner     => 'quarry',
         group     => 'www-data',
+    }
+
+    exec { 'quarry-venv':
+        command => "/usr/bin/python3 -m venv ${venv_path}",
+        creates => $venv_path,
+        require => Git::Clone['analytics/quarry/web'],
+    }
+
+    exec { 'quarry-venv-update-pip-wheel':
+        command     => "${venv_path}/bin/pip install -U pip wheel",
+        subscribe   => Exec['quarry-venv'],
+        refreshonly => true,
+    }
+
+    exec { 'quarry-venv-requirements':
+        command     => "${venv_path}/bin/pip install -r ${clone_path}/requirements.txt",
+        subscribe   => Exec['quarry-venv-update-pip-wheel'],
+        refreshonly => true,
     }
 }

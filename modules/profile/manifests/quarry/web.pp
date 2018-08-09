@@ -5,20 +5,22 @@
 # Deployment is handled using fabric
 class profile::quarry::web(
     $clone_path = hiera('profile::quarry::base::clone_path'),
+    $venv_path = hiera('profile::quarry::base::venv_path'),
 ) {
-    require_package('python-flask', 'python-mwoauth')
+    require ::profile::quarry::base
 
     uwsgi::app { 'quarry-web':
         require          => Git::Clone['analytics/quarry/web'],
         service_settings => '--die-on-term --autoload',
         settings         => {
             uwsgi => {
-                'plugins'   => 'python',
+                'plugins'   => 'python3',
                 'socket'    => '/run/uwsgi/quarry-web.sock',
                 'wsgi-file' => "${clone_path}/quarry.wsgi",
                 'master'    => true,
                 'processes' => 8,
                 'chdir'     => $clone_path,
+                'venv'      => $venv_path,
             },
         },
     }
