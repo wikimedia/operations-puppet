@@ -225,9 +225,9 @@ node /^cp10(4[6789]|5[023459]|6[02345678])\.eqiad\.wmnet$/ {
     role(spare::system)
 }
 
-# ATS Test Cluster - do not decom
+# ATS Test Cluster
 node /^cp107[1-4]\.eqiad\.wmnet$/ {
-    role(test)
+    role(trafficserver::backend)
 }
 
 # new canary, to replace cp1008 in future work
@@ -255,7 +255,7 @@ node /^cp20(0[258]|1[147]|2[0246])\.codfw\.wmnet$/ {
     role(cache::upload)
 }
 
-# ATS Test Cluster - do not decom
+# ATS Test Cluster
 node /^cp20(0[39]|15|21)\.codfw\.wmnet$/ {
     role(trafficserver::backend)
 }
