@@ -1,0 +1,7 @@
+profile::trafficserver::backend::mapping_rules:
+- type: map
+  target: http://phabricator.wikimedia.org
+  replacement: http://phab1001.eqiad.wmnet
+- type: map
+  target: /
+  replacement: http://appservers.svc.eqiad.wmnet

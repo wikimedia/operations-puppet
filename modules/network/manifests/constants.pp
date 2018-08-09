@@ -248,6 +248,8 @@ class network::constants {
                     '2620:0:860:101:10:192:0:122',        # cp2001.codfw.wmnet
                     '10.192.0.123',                       # cp2002.codfw.wmnet
                     '2620:0:860:101:10:192:0:123',        # cp2002.codfw.wmnet
+                    '10.192.0.124',                       # cp2003.codfw.wmnet
+                    '2620:0:860:101:10:192:0:124',        # cp2003.codfw.wmnet
                     '10.192.0.125',                       # cp2004.codfw.wmnet
                     '2620:0:860:101:10:192:0:125',        # cp2004.codfw.wmnet
                     '10.192.0.126',                       # cp2005.codfw.wmnet

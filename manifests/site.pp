@@ -256,7 +256,11 @@ node /^cp20(0[258]|1[147]|2[0246])\.codfw\.wmnet$/ {
 }
 
 # ATS Test Cluster - do not decom
-node /^cp20(0[39]|15|21)\.codfw\.wmnet$/ {
+node 'cp2003.codfw.wmnet' {
+    role(trafficserver::backend)
+}
+
+node /^cp20(09|15|21)\.codfw\.wmnet$/ {
     role(test)
 }
 
