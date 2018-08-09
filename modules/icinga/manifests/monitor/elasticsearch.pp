@@ -7,7 +7,7 @@ class icinga::monitor::elasticsearch {
         host          => 'search.svc.eqiad.wmnet',
         check_command => "check_elasticsearch_shards_threshold!${threshold}",
         description   => 'ElasticSearch health check for shards',
-        critical      => true,
+        critical      => false,
         contact_group => 'admins,team-discovery',
     }
 
@@ -15,7 +15,7 @@ class icinga::monitor::elasticsearch {
         host          => 'search.svc.codfw.wmnet',
         check_command => "check_elasticsearch_shards_threshold!${threshold}",
         description   => 'ElasticSearch health check for shards',
-        critical      => true,
+        critical      => false,
         contact_group => 'admins,team-discovery',
     }
 
