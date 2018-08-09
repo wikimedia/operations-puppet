@@ -260,6 +260,8 @@ class network::constants {
                     '2620:0:860:102:10:192:16:133',       # cp2007.codfw.wmnet
                     '10.192.16.134',                      # cp2008.codfw.wmnet
                     '2620:0:860:102:10:192:16:134',       # cp2008.codfw.wmnet
+                    '10.192.16.135',                      # cp2009.codfw.wmnet
+                    '2620:0:860:102:10:192:16:135',       # cp2009.codfw.wmnet
                     '10.192.16.136',                      # cp2010.codfw.wmnet
                     '2620:0:860:102:10:192:16:136',       # cp2010.codfw.wmnet
                     '10.192.16.137',                      # cp2011.codfw.wmnet
@@ -270,6 +272,8 @@ class network::constants {
                     '2620:0:860:103:10:192:32:112',       # cp2013.codfw.wmnet
                     '10.192.32.113',                      # cp2014.codfw.wmnet
                     '2620:0:860:103:10:192:32:113',       # cp2014.codfw.wmnet
+                    '10.192.32.114',                      # cp2015.codfw.wmnet
+                    '2620:0:860:103:10:192:32:114',       # cp2015.codfw.wmnet
                     '10.192.32.115',                      # cp2016.codfw.wmnet
                     '2620:0:860:103:10:192:32:115',       # cp2016.codfw.wmnet
                     '10.192.32.116',                      # cp2017.codfw.wmnet
@@ -280,6 +284,8 @@ class network::constants {
                     '2620:0:860:104:10:192:48:23',        # cp2019.codfw.wmnet
                     '10.192.48.24',                       # cp2020.codfw.wmnet
                     '2620:0:860:104:10:192:48:24',        # cp2020.codfw.wmnet
+                    '10.192.48.25',                       # cp2021.codfw.wmnet
+                    '2620:0:860:104:10:192:48:25',        # cp2021.codfw.wmnet
                     '10.192.48.26',                       # cp2022.codfw.wmnet
                     '2620:0:860:104:10:192:48:26',        # cp2022.codfw.wmnet
                     '10.192.48.27',                       # cp2023.codfw.wmnet
