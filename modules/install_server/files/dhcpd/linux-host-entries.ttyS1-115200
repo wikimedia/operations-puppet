@@ -732,7 +732,7 @@ host cp1079 {
 }
 
 host cp1080 {
-    hardware ethernet 00:0A:F7:EF:EB:0A;
+    hardware ethernet 00:0A:F7:EF:EB:A0;
     fixed-address cp1080.eqiad.wmnet;
 }
 
