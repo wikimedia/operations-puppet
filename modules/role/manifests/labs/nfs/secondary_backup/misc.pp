@@ -17,7 +17,7 @@ class role::labs::nfs::secondary_backup::misc {
         local_lv            => 'misc-project',
         local_snapshot      => 'misc-project-backup',
         local_snapshot_size => '2T',
-        weekday             => 'wednesday',
+        weekday             => 'Wed',
         hour                => 20,
     }
 

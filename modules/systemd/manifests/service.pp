@@ -28,7 +28,6 @@ define systemd::service(
     Boolean $override = false,
     $service_params = {},
 ){
-
     if $unit_type == 'service' {
         $label = $title
         $provider = undef

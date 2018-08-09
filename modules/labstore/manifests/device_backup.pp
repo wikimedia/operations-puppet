@@ -11,30 +11,22 @@ define labstore::device_backup (
     $hour=0,
     $minute=0,
 ) {
-
     include ::labstore::bdsync
     $remote_ip = ipresolve($remotehost, 4)
 
-    $day = {
-        'sunday'    => 0,
-        'monday'    => 1,
-        'tuesday'   => 2,
-        'wednesday' => 3,
-        'thursday'  => 4,
-        'friday'    => 5,
-        'saturday'  => 6,
+    $block_sync='/usr/local/sbin/block_sync'
+
+    systemd::service { 'block_sync.service':
+        ensure  => 'present',
+        content => template('labstore/device_backup/device_backup.systemd.erb'),
     }
 
-    $block_sync='/usr/local/sbin/block_sync'
-    cron { "block_sync-${remote_vg}/${remote_lv}=>${local_vg}/${local_lv}":
-        ensure      => 'present',
-        user        => 'root',
-        command     => "${block_sync} ${remote_ip} ${remote_vg} ${remote_lv} ${remote_snapshot} ${local_vg} ${local_lv} ${local_snapshot} ${local_snapshot_size}",
-        weekday     => $day[$weekday],
-        hour        => $hour,
-        minute      => $minute,
-        environment => 'MAILTO=cloud-admin@lists.wikimedia.org',
-        require     => File['/usr/local/sbin/snapshot-manager'],
+    systemd::timer { 'block_sync':
+        timer_intervals => [{
+            'start'    => 'OnCalendar',
+            'interval' => sprintf('%s *-*-* %02d:%02d:00', $weekday, $hour, $minute)
+            }],
+        unit_name       => 'block_sync',
     }
 
     file { '/usr/local/sbin/snapshot-manager':
