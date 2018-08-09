@@ -14,7 +14,7 @@ sleep 30
 
 # Restart varnish and wipe storage
 /usr/sbin/service varnish stop
-rm -f /srv/sd*/varnish*
+rm -f /srv/*/varnish*
 # Wait for the FS to catch up and realize there's enough free space for
 # fallocate: T149881
 sync
