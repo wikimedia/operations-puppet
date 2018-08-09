@@ -36,6 +36,22 @@
 # [*log_filename*]
 #   The filename to use for event log entries. (default: 'event').
 #
+# [*outbound_tlsv1*]
+#   Whether or not to enable TLSv1 for outbound TLS. Disabled by default (default: 0).
+#
+# [*outbound_tlsv1_1*]
+#   Whether or not to enable TLSv1.1 for outbound TLS. Disabled by default (default: 0).
+#
+# [*outbound_tlsv1_2*]
+#   Whether or not to enable TLSv1.2 for outbound TLS. Enabled by default (default: 1).
+#
+# [*outbound_tls_cipher_suite*]
+#   The set of encryption, digest, authentication, and key exchange algorithms
+#   which Traffic Server will use for outbound TLS connections. Default to the
+#   empty string, in which case the values chosen by Traffic Server for
+#   proxy.config.ssl.server.cipher_suite will be used. See
+#   https://docs.trafficserver.apache.org/en/7.1.x/admin-guide/files/records.config.en.html
+#
 # [*mapping_rules*]
 #   An array of Trafficserver::Mapping_rules, each representing a mapping rule. (default: []).
 #   See https://docs.trafficserver.apache.org/en/latest/admin-guide/files/remap.config.en.html
@@ -64,6 +80,10 @@ class trafficserver(
     Enum['ascii', 'binary', 'pipe'] $log_method = 'pipe',
     Enum['squid', 'extended'] $log_format = 'squid',
     String $log_filename = 'event',
+    Integer[0, 1] $outbound_tlsv1 = 0,
+    Integer[0, 1] $outbound_tlsv1_1 = 0,
+    Integer[0, 1] $outbound_tlsv1_2 = 1,
+    String $outbound_tls_cipher_suite = '',
     Array[Trafficserver::Mapping_rule] $mapping_rules = [],
 ) {
 

@@ -4,5 +4,6 @@ profile::trafficserver::backend::mapping_rules:
   replacement: http://phab1001.eqiad.wmnet
 - type: map
   target: /
-  replacement: http://appservers.svc.eqiad.wmnet
+  replacement: https://appservers.svc.eqiad.wmnet
 profile::base::enable_microcode: true
+profile::trafficserver::backend::outbound_tls_cipher_suite: '-ALL:ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384'

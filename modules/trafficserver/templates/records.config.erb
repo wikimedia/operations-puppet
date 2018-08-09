@@ -20,3 +20,11 @@ CONFIG proxy.config.diags.output.error STRING E
 CONFIG proxy.config.diags.output.fatal STRING E
 CONFIG proxy.config.diags.output.alert STRING E
 CONFIG proxy.config.diags.output.emergency STRING E
+
+# Outbound TLS settings
+CONFIG proxy.config.ssl.client.TLSv1 INT <%= @outbound_tlsv1 %>
+CONFIG proxy.config.ssl.client.TLSv1_1 INT <%= @outbound_tlsv1_1 %>
+CONFIG proxy.config.ssl.client.TLSv1_2 INT <%= @outbound_tlsv1_2 %>
+<% if @outbound_tls_cipher_suite != '' -%>
+CONFIG proxy.config.ssl.client.cipher_suite STRING <%= @outbound_tls_cipher_suite %>
+<% end -%>
