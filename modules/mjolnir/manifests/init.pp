@@ -7,7 +7,7 @@ class mjolnir(
     String $logstash_host,
     Wmflib::IpPort $logstash_port
 ) {
-    require_package('virtualenv', 'zip')
+    require_package('virtualenv', 'zip', 'libsnappy1v5')
 
     file { '/etc/mjolnir':
         ensure => 'directory',
