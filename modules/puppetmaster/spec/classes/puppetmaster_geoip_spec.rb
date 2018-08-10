@@ -22,6 +22,7 @@ describe 'puppetmaster::geoip' do
         exec{"apt-get update": path => "/usr/bin" }
         include profile::base
         include profile::base::puppet
+        include httpd
         include puppetmaster
         '''
     }

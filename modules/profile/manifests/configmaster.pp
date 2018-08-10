@@ -45,7 +45,7 @@ class profile::configmaster(
         services => wmflib::service::fetch()
     }
 
-    apache::site { 'config-master':
+    httpd::site { 'config-master':
         ensure   => present,
         priority => 50,
         content  => template('profile/configmaster/config-master.conf.erb'),

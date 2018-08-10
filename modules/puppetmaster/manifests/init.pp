@@ -102,26 +102,22 @@ class puppetmaster(
     # Part dependent on the server_type
     case $server_type {
         'frontend': {
-            include ::apache::mod::proxy
-            include ::apache::mod::proxy_http
-            include ::apache::mod::proxy_balancer
-            include ::apache::mod::lbmethod_byrequests
 
-            apache::site { 'puppetmaster.wikimedia.org':
+            httpd::site { 'puppetmaster.wikimedia.org':
                 ensure => absent,
             }
 
-            apache::site { 'puppetmaster-backend':
+            httpd::site { 'puppetmaster-backend':
                 content      => template('puppetmaster/puppetmaster-backend.conf.erb'),
             }
         }
         'backend': {
-            apache::site { 'puppetmaster-backend':
+            httpd::site { 'puppetmaster-backend':
                 content => template('puppetmaster/puppetmaster-backend.conf.erb'),
             }
         }
         default: {
-            apache::site { 'puppetmaster.wikimedia.org':
+            httpd::site { 'puppetmaster.wikimedia.org':
                 content => template('puppetmaster/puppetmaster.erb'),
             }
         }

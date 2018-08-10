@@ -29,6 +29,12 @@ class profile::puppetmaster::backend(
         base_config => $base_config,
     }
 
+    class { '::httpd':
+        modules => ['passenger'],
+    }
+
+    require_package('libapache2-mod-passenger')
+
     class { '::puppetmaster':
         server_type         => 'backend',
         config              => $::profile::puppetmaster::common::config,

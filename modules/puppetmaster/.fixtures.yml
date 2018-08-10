@@ -10,6 +10,6 @@ fixtures:
         ssh: "../../../../ssh"
         stdlib: "../../../../stdlib"
         wmflib: "../../../../wmflib"
-        apache: "../../../../apache"
+        httpd: "../../../../httpd"
         sslcert: "../../../../sslcert"
         monitoring: "../../../../monitoring"

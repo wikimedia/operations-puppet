@@ -19,26 +19,26 @@ class puppetmaster::passenger(
     $allow_from,
     $deny_from,
 ) {
-    include ::apache::mod::passenger
+
     include ::sslcert::dhparam
 
     # Set a unicode capable locale to avoid "SERVER: invalid byte sequence in
     # US-ASCII" errors when puppetmaster is started with LANG that doesn't
     # support non-ASCII encoding.
     # See <https://tickets.puppetlabs.com/browse/PUP-1386#comment-62325>
-    apache::env { 'use-utf-locale':
-        ensure => present,
-        vars   => {
-            'LANG' => 'en_US.UTF-8',
-        },
+    $vars = { 'LANG' => 'en_US.UTF-8' }
+    httpd::conf { 'use-utf-locale':
+        ensure    => present,
+        conf_type => 'env',
+        content   => shell_exports($vars),
     }
 
-    apache::conf { 'passenger':
+    httpd::conf { 'passenger':
         content  => template('puppetmaster/passenger.conf.erb'),
         priority => 10,
     }
 
-    apache::conf { 'puppetmaster_ports':
+    httpd::conf { 'puppetmaster_ports':
         content => template('puppetmaster/ports.conf.erb'),
     }
 
@@ -65,7 +65,7 @@ class puppetmaster::passenger(
         service { 'puppetmaster':
             ensure => stopped,
             enable => false,
-            before => Service['apache2'],
+            before => Class['::httpd'],
         }
         # We also make sure puppet master can not be manually started
         file { '/etc/default/puppetmaster':
@@ -80,7 +80,7 @@ class puppetmaster::passenger(
         }
     }
 
-    # Rotate apache logs is now managed via the apache::logrotate class
+    # Rotate apache logs is now managed via the httpd class
     logrotate::conf { 'passenger':
         ensure => absent,
     }

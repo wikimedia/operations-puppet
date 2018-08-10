@@ -65,7 +65,7 @@ define puppetmaster::web_frontend(
             owner     => 'puppet',
             group     => 'puppet',
             mode      => '0640',
-            before    => Apache::Site[$server_name],
+            before    => Httpd::Site[$server_name],
             show_diff => false,
         }
 
@@ -74,11 +74,11 @@ define puppetmaster::web_frontend(
             owner     => 'puppet',
             group     => 'puppet',
             mode      => '0640',
-            before    => Apache::Site[$server_name],
+            before    => Httpd::Site[$server_name],
             show_diff => false,
         }
     }
-    apache::site { $server_name:
+    httpd::site { $server_name:
         ensure   => present,
         content  => template('puppetmaster/web-frontend.conf.erb'),
         priority => $priority,

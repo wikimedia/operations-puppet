@@ -57,6 +57,17 @@ class profile::puppetmaster::frontend(
         class { 'cassandra::ca_manager': }
     }
 
+    class { '::httpd':
+        modules => ['proxy',
+                    'proxy_http',
+                    'proxy_balancer',
+                    'passenger',
+                    'rewrite',
+                    'lbmethod_byrequests'],
+    }
+
+    require_package('libapache2-mod-passenger')
+
     class { 'puppetmaster::ca_server':
         master => $ca_server
     }
@@ -89,7 +100,6 @@ class profile::puppetmaster::frontend(
         ca_server           => $ca_server,
         ssl_verify_depth    => $profile::puppetmaster::common::ssl_verify_depth,
     }
-    class { 'apache::mod::rewrite': }
 
     $locale_server = $locale_servers[$facts['fqdn']]
     # Main site to respond to

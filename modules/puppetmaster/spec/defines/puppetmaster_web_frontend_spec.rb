@@ -16,6 +16,7 @@ describe 'puppetmaster::web_frontend' do
   # rspec to avoid caring about secrets
   let(:title) { 'foo.example.com' }
   let(:facts) { {} }
+  let(:pre_condition) { 'include httpd' }
   let(:params) do
     {
       workers: [
@@ -50,7 +51,7 @@ describe 'puppetmaster::web_frontend' do
       describe 'check default config' do
         it { is_expected.to compile.with_all_deps }
         it do
-          is_expected.to contain_apache__site('foo.example.com').with(
+          is_expected.to contain_httpd__site('foo.example.com').with(
             ensure: 'present',
             priority: '90'
           ).with_content(
@@ -93,7 +94,7 @@ describe 'puppetmaster::web_frontend' do
           end
           it { is_expected.to compile.with_all_deps }
           it do
-            is_expected.to contain_apache__site('foo.example.com').with(
+            is_expected.to contain_httpd__site('foo.example.com').with(
               ensure: 'present',
               priority: '90'
             ).with_content(

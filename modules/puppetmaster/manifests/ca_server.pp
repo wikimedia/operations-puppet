@@ -25,7 +25,7 @@ class puppetmaster::ca_server(
         owner     => 'puppet',
         group     => 'puppet',
         mode      => '0640',
-        before    => Apache::Site[$server_name],
+        before    => Httpd::Site[$server_name],
         show_diff => false,
     }
 
@@ -34,7 +34,7 @@ class puppetmaster::ca_server(
         owner     => 'puppet',
         group     => 'puppet',
         mode      => '0640',
-        before    => Apache::Site[$server_name],
+        before    => Httpd::Site[$server_name],
         show_diff => false,
     }
 }
