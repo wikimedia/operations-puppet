@@ -8,6 +8,6 @@ profile::conftool::master::sync_dir: "/etc/conftool/data"
 profile::discovery::path: "/srv/config-master/discovery"
 profile::discovery::watch_interval: 60
 profile::puppetmaster::frontend::prevent_cherrypicks: false
-
+profile::base::enable_microcode: true
 
 contactgroups: wmcs-team,admins
