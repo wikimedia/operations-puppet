@@ -348,6 +348,8 @@ cache::alternate_domains:
     director: 'krypton'
   servermon.wikimedia.org:
     director: 'netmon1003'
+  sitemaps.wikimedia.org:
+    director: 'webserver_misc_static'
   smokeping.wikimedia.org:
     director: 'netmon1002'
   static-bugzilla.wikimedia.org:
