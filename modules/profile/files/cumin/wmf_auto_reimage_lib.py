@@ -493,16 +493,18 @@ def validate_hosts(hosts, no_raise=False):
         'validate_hosts', get_puppet_ca_master(), [command], ignore_exit=True)
 
     missing = hosts[:]
-    output = ''
+    output = None
     for _, output in worker.get_results():
         for host in hosts:
             if '+ "{host}"'.format(host=host) in output.message().decode():
                 missing.remove(host)
 
     if missing:
+        output_string = '' if output is None else output.message().decode()
+
         message = ('Signed cert on Puppet not found for hosts {missing} '
                    'and no_raise={no_raise}:\n{output}').format(
-            missing=missing, output=output.message().decode(), no_raise=no_raise)
+            missing=missing, output=output_string, no_raise=no_raise)
 
         if no_raise:
             logger.warning(message)
