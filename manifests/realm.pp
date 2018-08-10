@@ -74,13 +74,18 @@ $network_zone = $facts['ipaddress'] ? {
 # Hiera->Global to configure various classes for NUMA-aware networking
 # 2 possible values:
 # --
-# off: default, no NUMA awareness
-# on: try confine network stuff to the NUMA node of the adapter
+# off: no NUMA awareness
+# on:  try confine network stuff to the NUMA node of the adapter
 # --
 # If facter detects no true NUMA (single-node), the hiera-configured setting
 # will be forced to "off" here in the global
 if size($facts['numa']['nodes']) > 1 {
-    $numa_networking = hiera('numa_networking', 'off')
+    if $::hostname =~ /^cp/ {
+        # on cache hosts, set numa_networking on by default
+        $numa_networking = hiera('numa_networking', 'on')
+    } else {
+        $numa_networking = hiera('numa_networking', 'off')
+    }
 }
 else {
     $numa_networking = 'off'
