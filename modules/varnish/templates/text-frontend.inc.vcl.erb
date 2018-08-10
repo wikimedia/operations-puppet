@@ -54,6 +54,15 @@ sub mobile_redirect {
 }
 
 sub cluster_fe_vcl_switch {
+	// Rewrite sitemap requests for itwiki into the sitemaps backend.
+	// sitemaps is part of alternate_domains, so this rewrite has to happen
+	// in the frontend before VCL switching.  We'll update the conditional
+	// later if we add more maps for more sites.
+	if (req.http.Host == "it.wikipedia.org" && req.url ~ "^/sitemap") {
+		set req.url = "/" + req.http.Host + req.url;
+		set req.http.Host = "sitemaps.wikimedia.org";
+	}
+
 	call text_common_vcl_switch;
 }
 
