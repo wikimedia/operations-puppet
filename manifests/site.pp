@@ -1002,11 +1002,6 @@ node 'labtestmetal2001.codfw.wmnet' {
     role(wmcs::openstack::labtestn::virt)
 }
 
-# to be decom (T193081)
-node 'labtestnet2001.codfw.wmnet' {
-    role(spare::system)
-}
-
 node 'labtestnet2002.codfw.wmnet' {
     role(wmcs::openstack::labtest::net)
 }
