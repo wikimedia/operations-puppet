@@ -5,3 +5,4 @@ profile::trafficserver::backend::mapping_rules:
 - type: map
   target: /
   replacement: http://appservers.svc.eqiad.wmnet
+profile::base::enable_microcode: true
