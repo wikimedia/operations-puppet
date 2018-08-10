@@ -2,7 +2,7 @@
 #
 class role::restbase::base{
     include ::passwords::cassandra
-    include ::base::firewall
+    include ::profile::base::firewall
     include ::standard
 
     include ::profile::cassandra
