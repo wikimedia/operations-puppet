@@ -4,6 +4,6 @@ class role::labs::monitoring {
     include ::role::labs::prometheus
     include ::profile::grafana
     include standard
-    include ::base::firewall
+    include ::profile::base::firewall
     include ::profile::labs::monitoring
 }
