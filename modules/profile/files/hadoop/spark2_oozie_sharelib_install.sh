@@ -65,10 +65,9 @@ set -x
 /usr/bin/hdfs dfs -test -e /user/hive/hive-site.xml && /usr/bin/hdfs dfs -cp /user/hive/hive-site.xml $spark2_sharelib_dir/ || echo "Warning: could not install hive-site.xml into ${spark2_sharelib_dir}.  You might have to do this manually."
 
 # For unknown reasons, oozie admin -sharelibupdate is really flaky.
-# Sometimes it succeeds, sometimes it does nothing.  This script will
-# attempt to run it, but you might need to manually do so until
-# -shareliblist shows $spark2_sharelib in the output.
-oozie admin –sharelibupdate
-oozie admin -shareliblist | grep -q $spark2_sharelib || \
+# Sometimes it succeeds, sometimes it does nothing. We use the Oozie REST API
+# directly instead.
+/usr/bin/curl $OOZIE_URL/v2/admin/update_sharelib | jq .
+/usr/bin/oozie admin -shareliblist | grep -q $spark2_sharelib || \
     echo "${spark2_sharelib} was built but flaky \`oozie admin –sharelibupdate\` did not not work as expected. This will require some manual intervention!"
 
