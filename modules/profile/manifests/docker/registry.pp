@@ -4,8 +4,8 @@ class profile::docker::registry(
     $hash = hiera('docker::registry::hash'),
     # Which machines are allowed to build images.
     $image_builders = hiera('profile::docker::registry::image_builders', undef),
-    # cache misc nodes are allowed to connect via HTTP, if defined
-    $hnodes = hiera('cache::misc::nodes', {}),
+    # cache text nodes are allowed to connect via HTTP, if defined
+    $hnodes = hiera('cache::text::nodes', {}),
     # Storage configuration
     $storage_backend = hiera('profile::docker::registry::storage_backend', 'filebackend'),
     $certname = hiera('profile::docker::registry::certname', undef),
