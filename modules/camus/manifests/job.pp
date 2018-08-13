@@ -31,6 +31,16 @@
 #   $check is false.  Default: undef,
 #   (/srv/deployment/analytics/refinery/artifacts/refinery-camus.jar)
 #
+# [*check_dry_run*]
+#   If true, no _IMPORTED flags will be written to HDFS during the CamusPartitionChecker run.
+#
+# [*check_email_enabled*]
+#   If true, any errors encountered by CamusPartitionChecker will be sent as an email report
+#   to analytics-alerts@wikimedia.org
+#
+# [*check_topic_whitelist*]
+#   If given, only topics matching this regex will be checked by the CamusPartitionChecker.
+#
 # [*libjars*]
 #    Any additional jar files to pass to Hadoop when starting the MapReduce job.
 #
@@ -50,19 +60,22 @@
 #
 define camus::job (
     $kafka_brokers,
-    $script             = '/srv/deployment/analytics/refinery/bin/camus',
-    $user               = 'hdfs',
-    $camus_jar          = undef,
-    $check              = undef,
-    $check_jar          = undef,
-    $libjars            = undef,
-    $template           = "camus/${title}.erb",
-    $template_variables = {},
-    $hour               = undef,
-    $minute             = undef,
-    $month              = undef,
-    $monthday           = undef,
-    $weekday            = undef,
+    $script                 = '/srv/deployment/analytics/refinery/bin/camus',
+    $user                   = 'hdfs',
+    $camus_jar              = undef,
+    $check                  = undef,
+    $check_jar              = undef,
+    $check_dry_run          = undef,
+    $check_email_enabled    = undef,
+    $check_topic_whitelist  = undef,
+    $libjars                = undef,
+    $template               = "camus/${title}.erb",
+    $template_variables     = {},
+    $hour                   = undef,
+    $minute                 = undef,
+    $month                  = undef,
+    $monthday               = undef,
+    $weekday                = undef,
 )
 {
     require ::camus
@@ -84,15 +97,29 @@ define camus::job (
         default => "--libjars ${libjars}",
     }
 
-    $check_opt = $check ? {
+    $check_jar_opt = $check_jar ? {
         undef   => '',
-        default => $check_jar ? {
-            undef   => '--check',
-            default => "--check --check-jar ${check_jar}",
-        }
+        default => "--check-jar ${check_jar} ",
+    }
+    $check_dry_run_opt = $check_dry_run ? {
+        true    => '--check-dry-run ',
+        default => '',
+    }
+    $check_email_enabled_opt = $check_email_enabled ? {
+        true    => '--check-emails-to analytics-alerts@wikimedia.org ',
+        default => '',
+    }
+    $check_topic_whitelist_opt = $check_topic_whitelist ? {
+        undef   => '',
+        default => "--check-java-opts '-Dkafka.whitelist.topics=\"${check_topic_whitelist}\"' ",
     }
 
-    $command = "${script} --run --job-name camus-${title} ${camus_jar_opt} ${libjars_opt} ${check_opt} ${properties_file} >> ${log_file} 2>&1"
+    $check_opts = $check ? {
+        undef   => '',
+        default => "--check ${check_jar_opt}${check_dry_run_opt}${check_email_enabled_opt}${check_topic_whitelist_opt}",
+    }
+
+    $command = "${script} --run --job-name camus-${title} ${camus_jar_opt} ${libjars_opt} ${check_opts} ${properties_file} >> ${log_file} 2>&1"
 
     cron { "camus-${title}":
         command  => $command,
