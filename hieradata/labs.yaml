@@ -22,6 +22,7 @@ profile::base::labs::unattended_distro: 'present'
 profile::openstack::main::version: 'mitaka'
 profile::openstack::base::region: "%{::site}"
 profile::openstack::main::nova_controller: 'labcontrol1001.wikimedia.org'
+profile::openstack::main::keystone_host: 'cloudcontrol1003.wikimedia.org'
 profile::openstack::base::observer_user: 'novaobserver'
 # publicly available read-only credentials
 profile::openstack::main::observer_password: 'Fs6Dq2RtG8KwmM2Z'
