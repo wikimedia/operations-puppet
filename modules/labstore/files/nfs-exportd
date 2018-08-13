@@ -30,7 +30,7 @@ import subprocess
 import keystoneauth1
 from keystoneclient.auth.identity.v3 import Password as KeystonePassword
 from keystoneclient.session import Session as KeystoneSession
-from keystoneclient.v3 import client as keystoneclient
+from keystoneclient.v3 import client as keystone_client
 
 from novaclient import client as novaclient
 
@@ -93,7 +93,7 @@ def get_instance_ips(project, observer_pass):
 
     This uses the Nova API to fetch this data
     """
-    session=KeystoneSession(auth=KeystonePassword(
+    session = KeystoneSession(auth=KeystonePassword(
         auth_url="http://cloudcontrol1003.wikimedia.org:5000/v3",
         username="novaobserver",
         password=observer_pass,
@@ -101,7 +101,7 @@ def get_instance_ips(project, observer_pass):
         user_domain_name='default',
         project_domain_name='default'
     ))
-    keystoneclient = keystoneclient.Client(session-session, interface='public')
+    keystoneclient = keystone_client.Client(session-session, interface='public')
     region_recs = keystoneclient.regions.list()
     regions = [region.id for region in region_recs]
 
