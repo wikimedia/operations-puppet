@@ -397,10 +397,12 @@ scap::sources:
 
 prometheus_nodes:
   - deployment-prometheus01.deployment-prep.eqiad.wmflabs
+
+arclamp_host: deployment-webperf12.deployment-prep.eqiad.wmflabs
+
 profile::recommendation_api::wdqs_uri: http://wdqs-test.wmflabs.org
 
 profile::webperf::site::server_name: performance-beta.wmflabs.org
-profile::webperf::site::arclamp_host: deployment-webperf12.deployment-prep.eqiad.wmflabs
 
 # Eventstreams config
 profile::eventstreams::kafka_cluster_name: main

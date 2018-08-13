@@ -5,5 +5,4 @@ admin::groups:
 graphite_host: graphite-in.eqiad.wmnet
 
 profile::webperf::site::server_name: performance.wikimedia.org
-profile::webperf::site::arclamp_host: mwlog1001.eqiad.wmnet
 profile::webperf::site::xhgui_host: tungsten.eqiad.wmnet

@@ -20,7 +20,7 @@
 #
 class profile::webperf::site (
     $server_name = hiera('profile::webperf::site::server_name'),
-    $arclamp_host = hiera('profile::webperf::site::arclamp_host', undef),
+    $arclamp_host = hiera('arclamp_host', undef),
     $xhgui_host = hiera('profile::webperf::site::xhgui_host', undef)
 ) {
 
