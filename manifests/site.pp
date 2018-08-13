@@ -1055,7 +1055,7 @@ node 'graphite1003.eqiad.wmnet' {
 
 # replacement to graphite1001, which is old and needs decom
 node 'graphite1004.eqiad.wmnet' {
-    role(spare::system)
+    role(graphite::primary)
 }
 
 # Primary graphite machines
