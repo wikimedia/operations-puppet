@@ -3108,3 +3108,7 @@ ldap_only_users:
     ensure: present
     realname: Birgit Mueller
     email: birgit.mueller@wikimedia.de
+  lea-wmde:
+    ensure: present
+    realname: Lea Voget
+    email: lea.voget@wikimedia.de
