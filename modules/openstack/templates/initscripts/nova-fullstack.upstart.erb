@@ -18,6 +18,7 @@ respawn limit 10 60
 script
     export OS_USERNAME="osstackcanary"
     export OS_PASSWORD="<%= @password %>"
+    export OS_REGION_NAME="<%= @region %>"
     /usr/local/sbin/nova-fullstack \
                                        --ssh-timeout <%= @ssh_timeout %> \
                                        --puppet-timeout <%= @puppet_timeout %> \

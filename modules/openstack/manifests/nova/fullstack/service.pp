@@ -7,6 +7,7 @@
 class openstack::nova::fullstack::service(
     $active,
     $password,
+    $region,
     $interval = 300,
     $max_pool = 7,
     $creation_timeout = 900,
