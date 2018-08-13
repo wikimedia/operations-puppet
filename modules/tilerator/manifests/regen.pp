@@ -47,7 +47,7 @@ class tilerator::regen (
         user     => 'tileratorui',
         hour     => '12',
         minute   => '0',
-        monthday => '1',
+        monthday => '15',
     }
 
 }
