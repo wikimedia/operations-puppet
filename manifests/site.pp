@@ -1269,10 +1269,6 @@ node 'labstore2004.codfw.wmnet' {
     # include ::profile::base::firewall
 }
 
-node 'lawrencium.eqiad.wmnet' {
-    role(spare::system)
-}
-
 node 'lithium.eqiad.wmnet' {
     role(syslog::centralserver)
 }

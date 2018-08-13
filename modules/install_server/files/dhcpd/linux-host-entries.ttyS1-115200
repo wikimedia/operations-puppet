@@ -3276,11 +3276,6 @@ host labweb1002 {
     fixed-address labweb1002.wikimedia.org;
 }
 
-host lawrencium {
-    hardware ethernet 90:B1:1C:23:23:BF;
-    fixed-address lawrencium.eqiad.wmnet;
-}
-
 host lithium {
     hardware ethernet C8:1F:66:BF:7F:EA;
     fixed-address lithium.eqiad.wmnet;
