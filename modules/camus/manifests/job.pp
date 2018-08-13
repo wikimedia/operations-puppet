@@ -57,6 +57,7 @@
 # [*month*]
 # [*monthday*]
 # [*weekday*]
+# [*ensure*]
 #
 define camus::job (
     $kafka_brokers,
@@ -76,6 +77,7 @@ define camus::job (
     $month                  = undef,
     $monthday               = undef,
     $weekday                = undef,
+    $ensure                 = 'present',
 )
 {
     require ::camus
@@ -122,6 +124,7 @@ define camus::job (
     $command = "${script} --run --job-name camus-${title} ${camus_jar_opt} ${libjars_opt} ${check_opts} ${properties_file} >> ${log_file} 2>&1"
 
     cron { "camus-${title}":
+        ensure   => $ensure,
         command  => $command,
         user     => $user,
         hour     => $hour,

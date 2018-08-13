@@ -28,11 +28,13 @@ class profile::analytics::refinery::job::camus(
     # for a particular camus::job instance by setting the parameter on
     # the camus::job declaration.
     Camus::Job {
-        script             => "export PYTHONPATH=\${PYTHONPATH}:${profile::analytics::refinery::path}/python && ${profile::analytics::refinery::path}/bin/camus",
-        kafka_brokers      => $kafka_brokers,
-        camus_jar          => "${profile::analytics::refinery::path}/artifacts/org/wikimedia/analytics/camus-wmf/camus-wmf-0.1.0-wmf7.jar",
-        check_jar          => "${profile::analytics::refinery::path}/artifacts/org/wikimedia/analytics/refinery/refinery-camus-0.0.35.jar",
-        template_variables => {
+        script              => "export PYTHONPATH=\${PYTHONPATH}:${profile::analytics::refinery::path}/python && ${profile::analytics::refinery::path}/bin/camus",
+        kafka_brokers       => $kafka_brokers,
+        camus_jar           => "${profile::analytics::refinery::path}/artifacts/org/wikimedia/analytics/camus-wmf/camus-wmf-0.1.0-wmf7.jar",
+        check_jar           => "${profile::analytics::refinery::path}/artifacts/org/wikimedia/analytics/refinery/refinery-camus-0.0.69.jar",
+        # Email reports if CamusPartitionChecker finds errors.
+        check_email_enabled => true,
+        template_variables  => {
             'hadoop_cluster_name' => $::profile::hadoop::common::cluster_name
         }
     }
@@ -44,25 +46,39 @@ class profile::analytics::refinery::job::camus(
         check         => true,
         minute        => '*/10',
         kafka_brokers => $kafka_brokers_jumbo,
+
     }
 
     # Import eventlogging_* topics into /wmf/data/raw/eventlogging
     # once every hour.
     camus::job { 'eventlogging':
-        minute        => '5',
-        kafka_brokers => $kafka_brokers_jumbo,
+        minute                => '5',
+        kafka_brokers         => $kafka_brokers_jumbo,
+        check                 => true,
+        # Don't need to write _IMPORTED flags for EventLogging data
+        check_dry_run         => true,
+        # Only check these topic, since they should have data every hour.
+        check_topic_whitelist => 'eventlogging_(NavigationTiming|VirtualPageView)',
     }
 
     # Import eventbus topics into /wmf/data/raw/eventbus
     # once every hour.
     camus::job { 'eventbus':
-        minute        => '5',
-        kafka_brokers => $kafka_brokers_jumbo,
+        minute                => '5',
+        kafka_brokers         => $kafka_brokers_jumbo,
+        check                 => true,
+        # Don't need to write _IMPORTED flags for EventBus data
+        check_dry_run         => true,
+        # Only check this topic, since it should always have data for every hour
+        # (except during DC switchover).
+        check_topic_whitelist => 'eqiad.mediawiki.revision-create',
     }
 
     # Import mediawiki_* topics into /wmf/data/raw/mediawiki
     # once every hour.  This data is expected to be Avro binary.
     camus::job { 'mediawiki':
+        # Currently not used, should be re-enabled if mediawiki-analytics move to Kafa jumbo-eqiad.
+        ensure        => 'absent',
         check         => true,
         minute        => '15',
         # refinery-camus contains some custom decoder classes which
