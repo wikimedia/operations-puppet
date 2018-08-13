@@ -108,7 +108,7 @@ def get_instance_ips(project, observer_pass, regions):
             client = novaclient.Client(
                 "2.0",
                 session=session,
-                region=region,
+                region_name=region,
             )
             for instance in client.servers.list():
                 # Only provide internal IPs!
