@@ -446,6 +446,7 @@ def main():
         sys.exit(1)
 
     pw = os.environ.get('OS_PASSWORD')
+    region = os.environ.get('OS_REGION_NAME')
     user = os.environ.get('OS_USERNAME') or args.user
     project = os.environ.get('OS_TENANT_NAME') or args.project
     if not all([user, pw, project]):
@@ -472,7 +473,7 @@ def main():
                                 project_name=project)
 
         sess = keystone_session.Session(auth=auth)
-        nova_conn = nova_client.Client('2', session=sess)
+        nova_conn = nova_client.Client('2', session=sess, region_name=region)
 
         prepend = args.prepend
         epoch = int(time.time())
