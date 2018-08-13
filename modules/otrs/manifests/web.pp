@@ -25,9 +25,9 @@ class otrs::web {
         source => 'puppet:///modules/otrs/mpm_prefork.conf',
     }
 
-    # this site's misc-lb caching proxies hostnames
-    $cache_misc_nodes = hiera('cache::misc::nodes')
-    $trusted_proxies = $cache_misc_nodes[$::site]
+    # this site's cache_text proxies hostnames
+    $cache_text_nodes = hiera('cache::text::nodes')
+    $trusted_proxies = $cache_text_nodes[$::site]
 
     httpd::site { 'ticket.wikimedia.org':
         content => template('otrs/ticket.wikimedia.org.erb'),

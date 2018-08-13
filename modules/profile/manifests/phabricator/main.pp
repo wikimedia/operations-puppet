@@ -2,7 +2,7 @@
 #
 # filtertags: labs-project-deployment-prep labs-project-phabricator
 class profile::phabricator::main (
-    $cache_misc_nodes = hiera('cache::misc::nodes', []),
+    $cache_text_nodes = hiera('cache::text::nodes', []),
     $domain = hiera('phabricator_domain', 'phabricator.wikimedia.org'),
     $altdom = hiera('phabricator_altdomain', 'phab.wmfusercontent.org'),
     $mysql_host = hiera('phabricator::mysql::master', 'localhost'),
@@ -160,7 +160,7 @@ class profile::phabricator::main (
         serveraliases    => [ $altdom,
                               'bugzilla.wikimedia.org',
                               'bugs.wikimedia.org' ],
-        trusted_proxies  => $cache_misc_nodes[$::site],
+        trusted_proxies  => $cache_text_nodes[$::site],
         mysql_admin_user => $mysql_admin_user,
         mysql_admin_pass => $mysql_admin_pass,
         libraries        => [ "${phab_root_dir}/libext/Sprint/src",
