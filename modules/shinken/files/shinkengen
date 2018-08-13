@@ -65,6 +65,7 @@ class ConfigObject():
 def get_instances(project, observer_pass, keystone_host, keystone_port):
     client = novaclient.Client(
         "2.0",
+        region_name='eqiad',
         session=KeystoneSession(auth=KeystonePassword(
             auth_url="http://{host}:{port}/v3".format(host=keystone_host,
                                                       port=keystone_port),
