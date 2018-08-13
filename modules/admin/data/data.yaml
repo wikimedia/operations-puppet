@@ -2964,6 +2964,10 @@ ldap_only_users:
     ensure: present
     realname: Merlijn van Deen
     email: valhallasw@arctus.nl
+  varnent:
+    ensure: present
+    realname: Gregory Varnum
+    email: gvarnum@wikimedia.org
   wikigit:
     ensure: present
     realname: Moriel Schottlender
