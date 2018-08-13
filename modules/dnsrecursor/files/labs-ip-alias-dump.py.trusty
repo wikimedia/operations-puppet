@@ -47,6 +47,9 @@ session = new_session(config['observer_project_name'])
 keystoneClient = keystone_client.Client(
     session=session, interface='public', connect_retries=5)
 
+region_recs = keystoneClient.regions.list()
+regions = [region.id for region in region_recs]
+
 projects = []
 for tenant in keystoneClient.projects.list():
     projects.append(tenant.name)
@@ -59,30 +62,32 @@ for project in projects:
         continue
 
     project_session = new_session(project)
-    client = novaclient.Client('2', session=project_session, connect_retries=5)
+    for region in regions:
+        client = novaclient.Client('2', session=project_session,
+                                   connect_retries=5, region_name=region)
 
-    for server in client.servers.list():
-        serverAddresses = {}
-        try:
-            private = [
-                str(ip['addr']) for ip in server.addresses['public']
-                if ip['OS-EXT-IPS:type'] == 'fixed'
-            ]
-            public = [
-                str(ip['addr']) for ip in server.addresses['public']
-                if ip['OS-EXT-IPS:type'] == 'floating'
-            ]
-            if public:
-                # Match all possible public IPs to all possible private ones
-                # Technically there can be more than one floating IP and more
-                # than one private IP Although this is never practically the
-                # case...
-                aliases[server.name] = list(itertools.product(public, private))
-        except KeyError:
-            # This can happen if a server doesn't (yet) have any addresses,
-            # while it's being constructed.  In which case we simply
-            # harmlessly ignore it.
-            pass
+        for server in client.servers.list():
+            serverAddresses = {}
+            try:
+                private = [
+                    str(ip['addr']) for ip in server.addresses['public']
+                    if ip['OS-EXT-IPS:type'] == 'fixed'
+                ]
+                public = [
+                    str(ip['addr']) for ip in server.addresses['public']
+                    if ip['OS-EXT-IPS:type'] == 'floating'
+                ]
+                if public:
+                    # Match all possible public IPs to all possible private ones
+                    # Technically there can be more than one floating IP and more
+                    # than one private IP Although this is never practically the
+                    # case...
+                    aliases[server.name] = list(itertools.product(public, private))
+            except KeyError:
+                # This can happen if a server doesn't (yet) have any addresses,
+                # while it's being constructed.  In which case we simply
+                # harmlessly ignore it.
+                pass
 
 output = 'aliasmapping = {}\n'
 # Sort to prevent flapping around due to random ordering
