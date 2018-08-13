@@ -28,7 +28,7 @@ if certproject not in projects:
 # the cert name will always be lowercase.  So we need to lower()
 #  the instance name for proper comparison
 instances = [instance.name.lower()
-             for instance in clients.novaclient(certproject).servers.list()]
+             for instance in clients.novaclient(certproject, region='eqiad').servers.list()]
 if certhostname not in instances:
     sys.exit('certname %s is not for a real instance' % certname)
 
