@@ -27,6 +27,8 @@
 #
 # [*declare_site*] Wether to declare the site as enabled in the configuration of httpd or not.
 #
+# [*domain_suffix*] Suffix to use in redirects et al (prod/beta/staging use)
+#
 define mediawiki::web::vhost(
     String $docroot,
     Wmflib::Ensure $ensure = present,
@@ -40,6 +42,7 @@ define mediawiki::web::vhost(
     Array $variant_aliases = [],
     Integer[0, 99] $priority = 50,
     Boolean $declare_site = false,
+    String $domain_suffix = 'org',
 ) {
     $content = template('mediawiki/apache/mediawiki-vhost.conf.erb')
 
