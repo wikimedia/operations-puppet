@@ -33,7 +33,25 @@ class profile::openstack::main::keystone::service(
     $labweb_hosts = hiera('profile::openstack::main::labweb_hosts'),
     $auth_port = hiera('profile::openstack::base::keystone::auth_port'),
     $public_port = hiera('profile::openstack::base::keystone::public_port'),
+    $region = hiera('profile::openstack::main::region'),
     ) {
 
     require ::profile::openstack::main::clientlib
+
+    class {'::openstack::util::envscripts':
+        ldap_user_pass        => $ldap_user_pass,
+        nova_controller       => $nova_controller,
+        keystone_host         => $keystone_host,
+        region                => $region,
+        nova_db_pass          => $nova_db_pass,
+        wmflabsdotorg_admin   => $wmflabsdotorg_admin,
+        wmflabsdotorg_pass    => $wmflabsdotorg_pass,
+        wmflabsdotorg_project => $wmflabsdotorg_project,
+    }
+    contain '::openstack::util::envscripts'
+
+    class {'::openstack::util::admin_scripts':
+        version => $version,
+    }
+    contain '::openstack::util::admin_scripts'
 }
