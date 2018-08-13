@@ -12,7 +12,7 @@ profile::wdqs::enable_ldf: true
 profile::wdqs::max_query_time_millis: 60000
 profile::wdqs::high_query_time_port: true
 profile::wdqs::fetch_constraints: true
-profile::wdqs::enable_reload_categories: false
+profile::wdqs::load_categories: 'none'
 profile::wdqs::nodes:
   - 'wdqs1003.eqiad.wmnet'
   - 'wdqs1004.eqiad.wmnet'

@@ -24,7 +24,7 @@ class wdqs::gui(
     Boolean $use_git_deploy = true,
     Boolean $enable_ldf = true,
     Integer $max_query_time_millis = 60000,
-    Boolean $enable_reload_categories = true,
+    Enum['none', 'daily', 'weekly'] $load_categories = 'none',
 ) {
 
     $alias_map = "${data_dir}/aliases.map"
@@ -94,14 +94,19 @@ class wdqs::gui(
       privileges => [ 'ALL = NOPASSWD: /bin/systemctl reload nginx' ],
     }
 
-    # Category dumps start on Sat 20:00. By Mon, they should be done.
-    # We want random time so that hosts don't reboot at the same time, but we
-    # do not want them to be too far from one another.
-    $ensure_reload_categories = $enable_reload_categories ? {
-        true    => 'present',
+    $ensure_reload_categories = $load_categories ? {
+        'weekly' => 'present',
+        default  => 'absent',
+    }
+
+    $ensure_daily_categories = $load_categories ? {
+        'daily' => 'present',
         default => 'absent',
     }
 
+    # Category dumps start on Sat 20:00. By Mon, they should be done.
+    # We want random time so that hosts don't reboot at the same time, but we
+    # do not want them to be too far from one another.
     cron { 'reload-categories':
         ensure  => $ensure_reload_categories,
         command => "/usr/local/bin/reloadCategories.sh >> ${reload_categories_log}",
@@ -109,6 +114,16 @@ class wdqs::gui(
         weekday => 1,
         minute  => fqdn_rand(60),
         hour    => fqdn_rand(2),
+    }
+
+    # Categories daily dump starts at 5:00. Currently it is done by 5:05, but just in case
+    # it ever takes longer, start at 6:00.
+    cron { 'load-categories-daily':
+        ensure  => $ensure_daily_categories,
+        command => "/usr/local/bin/reloadCategoriesDaily.sh >> ${reload_categories_log}",
+        user    => $username,
+        minute  => fqdn_rand(60),
+        hour    => 6,
     }
 
     cron { 'reload-dcatap':

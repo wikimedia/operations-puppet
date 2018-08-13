@@ -18,7 +18,7 @@ class profile::wdqs (
     Array[String] $prometheus_nodes = hiera('prometheus_nodes'),
     String $contact_groups = hiera('contactgroups', 'admins'),
     Boolean $fetch_constraints = hiera('profile::wdqs::fetch_constraints'),
-    Boolean $enable_reload_categories = hiera('profile::wdqs::enable_reload_categories'),
+    Enum['none', 'daily', 'weekly'] $load_categories = hiera('profile::wdqs::load_categories'),
 ) {
     require ::profile::prometheus::blazegraph_exporter
 
@@ -96,13 +96,13 @@ class profile::wdqs (
 
     # Service Web proxy
     class { '::wdqs::gui':
-        logstash_host            => $logstash_host,
-        package_dir              => $package_dir,
-        data_dir                 => $data_dir,
-        use_git_deploy           => $use_git_deploy,
-        enable_ldf               => $enable_ldf,
-        max_query_time_millis    => $max_query_time_millis,
-        enable_reload_categories => $enable_reload_categories,
+        logstash_host         => $logstash_host,
+        package_dir           => $package_dir,
+        data_dir              => $data_dir,
+        use_git_deploy        => $use_git_deploy,
+        enable_ldf            => $enable_ldf,
+        max_query_time_millis => $max_query_time_millis,
+        load_categories       => $load_categories,
     }
 
     # Firewall
