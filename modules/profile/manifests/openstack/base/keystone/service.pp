@@ -85,7 +85,7 @@ class profile::openstack::base::keystone::service(
     class {'::openstack::util::envscripts':
         ldap_user_pass        => $ldap_user_pass,
         nova_controller       => $nova_controller,
-        keystone_host         => $nova_controller,
+        keystone_host         => $keystone_host,
         region                => $region,
         nova_db_pass          => $nova_db_pass,
         wmflabsdotorg_admin   => $wmflabsdotorg_admin,
