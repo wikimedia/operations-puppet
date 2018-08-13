@@ -78,7 +78,7 @@ host=<%= @glance_host %>
 api_servers = http://<%= @glance_host %>:9292
 
 [keystone_authtoken]
-auth_host = <%= @nova_controller %>
+auth_host = <%= @keystone_host %>
 auth_protocol = http
 admin_user = novaadmin
 admin_tenant_name = admin

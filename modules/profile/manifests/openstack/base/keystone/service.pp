@@ -47,7 +47,7 @@ class profile::openstack::base::keystone::service(
 
     if ($daemon_active) {
         # support for a 2 controller nodes deployment
-        $active = ($::fqdn == $nova_controller)
+        $active = ($::fqdn == $keystone_host)
     } else {
         $active = false
     }
@@ -55,7 +55,6 @@ class profile::openstack::base::keystone::service(
     class {'::openstack::keystone::service':
         active                      => $active,
         version                     => $version,
-        nova_controller             => $nova_controller,
         keystone_host               => $keystone_host,
         osm_host                    => $osm_host,
         db_name                     => $db_name,

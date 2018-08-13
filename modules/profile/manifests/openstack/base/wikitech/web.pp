@@ -1,6 +1,5 @@
 class profile::openstack::base::wikitech::web(
     $osm_host = hiera('profile::openstack::base::wikitech::web::osm_host'),
-    $nova_controller = hiera('profile::openstack::base::nova_controller'),
     $webserver_hostname_aliases = hiera('profile::openstack::base::wikitech::webserver_hostname_aliases'),
     $wikidb = hiera('profile::openstack::base::wikitech::db_name'),
     $wikitech_nova_ldap_proxyagent_pass = hiera('profile::openstack::base::ldap_proxyuser_pass'),
