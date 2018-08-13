@@ -87,7 +87,7 @@ class Project:
         )
 
 
-def get_instance_ips(project, observer_pass):
+def get_instance_ips(project, observer_pass, regions):
     """
     Return a list of Instance internal IPs for a given project
 
@@ -101,9 +101,6 @@ def get_instance_ips(project, observer_pass):
         user_domain_name='default',
         project_domain_name='default'
     ))
-    keystoneclient = keystone_client.Client(session-session, interface='public')
-    region_recs = keystoneclient.regions.list()
-    regions = [region.id for region in region_recs]
 
     ips = []
     for region in regions:
@@ -137,6 +134,20 @@ def get_projects_with_nfs(mounts_config, observer_pass):
     :returns: list
     """
     projects = []
+
+    # Special one-off session just to grab the list of regions
+    session = KeystoneSession(auth=KeystonePassword(
+        auth_url="http://cloudcontrol1003.wikimedia.org:5000/v3",
+        username="novaobserver",
+        password=observer_pass,
+        project_name='observer',
+        user_domain_name='default',
+        project_domain_name='default'
+    ))
+    keystoneclient = keystone_client.Client(session=session, interface='public')
+    region_recs = keystoneclient.regions.list()
+    regions = [region.id for region in region_recs]
+
     for name, config in mounts_config['private'].iteritems():
         if 'mounts' in config:
             mounts = [k for k, v in config['mounts'].iteritems()
@@ -147,7 +158,7 @@ def get_projects_with_nfs(mounts_config, observer_pass):
                 continue
         else:
             continue
-        ips = get_instance_ips(name, observer_pass)
+        ips = get_instance_ips(name, observer_pass, regions)
         if ips:
             project = Project(name, config['gid'], ips, mounts)
             projects.append(project)
