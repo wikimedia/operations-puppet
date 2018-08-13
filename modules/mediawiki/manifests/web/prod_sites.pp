@@ -11,11 +11,6 @@ class mediawiki::web::prod_sites {
         priority => 3,
     }
 
-    # Other wikis
-    apache::site { 'remnant':
-        source   => 'puppet:///modules/mediawiki/apache/sites/remnant.conf',
-        priority => 4,
-    }
 
     # Search vhost
     apache::site { 'search.wikimedia':
@@ -50,23 +45,46 @@ class mediawiki::web::prod_sites {
         before => Apache::Site['main']
     }
 
+    ### BEGIN remnant
+    # Other wikis
+    apache::site { 'remnant':
+        source   => 'puppet:///modules/mediawiki/apache/sites/remnant.conf',
+        priority => 4,
+    }
+
     # Remnant related wikis
     $remnant_conf_sites = [
         'meta.wikimedia.org',
         '_wikisource.org',
         'commons.wikimedia.org',
-        'incubator.wikimedia.org',
         'species.wikimedia.org',
         'usability.wikimedia.org',
-        'strategy.wikimedia.org',
-        'advisory.wikimedia.org',
-        'quality.wikimedia.org',
-        'outreach.wikimedia.org'
     ]
     mediawiki::web::site { $remnant_conf_sites:
         before => Apache::Site['remnant']
     }
 
+    $remnant_simple_wikis = [
+        'outreach.wikimedia.org',
+        'advisory.wikimedia.org',
+        'quality.wikimedia.org',
+        'strategy.wikimedia.org',
+        'incubator.wikimedia.org',
+    ]
+
+    mediawiki::web::vhost {
+        default:
+            ensure          => present,
+            short_urls      => true,
+            docroot         => '/srv/mediawiki/docroot/wikimedia.org',
+            legacy_rewrites => true,
+            declare_site    => false,
+            before          => Apache::Site['remnant'],
+            ;
+        $remnant_simple_wikis:
+            public_rewrites => true,
+            ;
+    }
     # private wikis in remnant.conf; they all change just by ServerName
     $small_private_wikis = [
         'internal.wikimedia.org', 'grants.wikimedia.org', 'fdc.wikimedia.org',
@@ -90,6 +108,7 @@ class mediawiki::web::prod_sites {
         before          => Apache::Site['remnant'],
     }
 
+    ### END remnant
 
     ### BEGIN wikimania
     # Wikimania sites, plus one wiki for wikimaniateam
