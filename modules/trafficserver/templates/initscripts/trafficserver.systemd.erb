@@ -5,9 +5,10 @@ After=network.service systemd-networkd.service network-online.target
 
 [Service]
 ExecStart=/usr/bin/traffic_manager --nosyslog
-ExecReload=/usr/bin/traffic_ctl config reload
 Restart=always
 RestartSec=1
+ExecReload=/usr/bin/traffic_server -C verify_config
+ExecReload=/usr/bin/traffic_ctl config reload
 
 LimitNOFILE=500000
 LimitMEMLOCK=90000

@@ -99,17 +99,12 @@ class trafficserver(
     }
 
     ## Config files
-    exec { 'verify_config':
-        command     => '/usr/bin/traffic_server -C verify_config',
-        refreshonly => true,
-    }
-
     file {
         default:
           * => {
               owner  => $user,
               mode   => '0400',
-              notify => [ Exec['verify_config'], Service['trafficserver'] ],
+              notify => Service['trafficserver'],
           };
 
         '/etc/trafficserver/records.config':
@@ -140,9 +135,9 @@ class trafficserver(
     systemd::service { 'trafficserver':
         ensure         => present,
         content        => systemd_template('trafficserver'),
+        restart        => true,
         service_params => {
-            hasrestart => true,
-            restart    => '/usr/bin/traffic_ctl config reload',
+            restart    => 'systemctl reload trafficserver',
         },
         subscribe      => Package[$ext_pkgs],
     }
