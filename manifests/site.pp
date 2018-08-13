@@ -669,12 +669,6 @@ node 'dbstore2002.codfw.wmnet' {
     role(mariadb::dbstore_multiinstance)
 }
 
-# To be decommissioned - T199861
-node 'db1052.eqiad.wmnet' {
-    role(spare::system)
-}
-
-
 # Proxies for misc databases
 node /^dbproxy10(01|02|03|04|05|06|07|08|09)\.eqiad\.wmnet$/ {
     role(mariadb::proxy::master)
