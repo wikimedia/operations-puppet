@@ -90,7 +90,7 @@ class graphite::web(
 
     # django 1.9 compat, remove once the jessie -> stretch migration is completed
     $syncdb_command = $::lsbdistcodename ? {
-        stretch  => '/usr/bin/graphite-manage migrate --syncdb --noinput',
+        stretch  => '/usr/bin/graphite-manage migrate --run-syncdb --noinput',
         default  => '/usr/bin/graphite-manage syncdb --noinput',
     }
 
