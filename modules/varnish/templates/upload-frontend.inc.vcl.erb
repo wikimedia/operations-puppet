@@ -90,8 +90,8 @@ sub cluster_fe_ratelimit {
 		}
 	}
 
-	if (req.http.User-agent ~ "AlexaWiki-Bot/1.0") {
-		return (synth(429, "Hey you are melting our thumbnailing infrastructure, please contact ops@wikimedia.org"));
+	if (req.http.User-agent ~ "AlexaWiki-Bot/1.0" && req.url ~ "1500px") {
+		return (synth(429, "Blocking just URIs containing substring 1500px temporarily to hold things steady until solution implemented, see emails"));
 	}
 }
 
