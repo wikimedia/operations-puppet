@@ -58,7 +58,6 @@ class mediawiki::web::prod_sites {
         '_wikisource.org',
         'commons.wikimedia.org',
         'species.wikimedia.org',
-        'usability.wikimedia.org',
     ]
     mediawiki::web::site { $remnant_conf_sites:
         before => Apache::Site['remnant']
@@ -83,6 +82,9 @@ class mediawiki::web::prod_sites {
             ;
         $remnant_simple_wikis:
             public_rewrites => true,
+            ;
+        'usability.wikimedia.org':
+            short_urls => false,
             ;
     }
     # private wikis in remnant.conf; they all change just by ServerName
