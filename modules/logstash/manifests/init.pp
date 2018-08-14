@@ -66,7 +66,12 @@ class logstash (
     }
 
     file { '/etc/default/logstash':
-        ensure => absent,
+        content => template('logstash/default.erb'),
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0444',
+        require => Package['logstash'],
+        notify  => Service['logstash'],
     }
 
     file { '/etc/logstash/jvm.options':

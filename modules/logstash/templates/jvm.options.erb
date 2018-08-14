@@ -82,7 +82,3 @@
 <% @gc_log_flags.each do |gc_log_flag| -%>
 <%= gc_log_flag %>
 <% end -%>
-
-<% if @jmx_exporter_port and @jmx_exporter_config -%>
--javaagent:/usr/share/java/prometheus/jmx_prometheus_javaagent.jar=<%= "#{scope.lookupvar('::ipaddress')}:#{@jmx_exporter_port}" %>:<%= @jmx_exporter_config %>
-<% end -%>
