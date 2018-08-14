@@ -30,7 +30,7 @@
             "SEARCH": "ou=people,dc=wikimedia,dc=org"
         },
         "GROUP_SEARCH": "dc=wikimedia,dc=org",
-        "REQUIRE_GROUP": "cn=ops,ou=groups,dc=wikimedia,dc=org",
+        "REQUIRE_GROUP": ["cn=wmf,ou=groups,dc=wikimedia,dc=org", "cn=nda,ou=groups,dc=wikimedia,dc=org"],
         "CACHE_GROUPS": true,
         "CACHE_TIMEOUT": 900,
         "FIND_GROUP_PERMS": true,
@@ -39,7 +39,7 @@
             "email": "mail"
         },
         "USER_FLAGS_BY_GROUP": {
-            "is_active": "cn=ops,ou=groups,dc=wikimedia,dc=org",
+            "is_active": ["cn=wmf,ou=groups,dc=wikimedia,dc=org", "cn=nda,ou=groups,dc=wikimedia,dc=org"],
             "is_staff": "cn=ops,ou=groups,dc=wikimedia,dc=org",
             "is_superuser": "cn=ops,ou=groups,dc=wikimedia,dc=org"
         },
