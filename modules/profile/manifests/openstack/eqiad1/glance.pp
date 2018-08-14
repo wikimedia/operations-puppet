@@ -29,4 +29,9 @@ class profile::openstack::eqiad1::glance (
         glance_image_dir        => $glance_image_dir,
         nova_controller_standby => $nova_controller_standby,
     }
+
+    class {'openstack::glance::monitor':
+        active         => ($::fqdn == $nova_controller),
+        contact_groups => 'wmcs-team,admins',
+    }
 }
