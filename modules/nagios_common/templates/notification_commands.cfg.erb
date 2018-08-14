@@ -36,6 +36,15 @@ define command{
     command_line    /usr/bin/printf "%b" "Notification Type: $NOTIFICATIONTYPE$\n\nService: $SERVICEDESC$\nHost: $HOSTALIAS$\nAddress: $HOSTADDRESS$\nState: $SERVICESTATE$\n\nDate/Time: $LONGDATETIME$\n\nNotes URLs: $SERVICENOTESURL$\n\nAdditional Info:\n\n$SERVICEOUTPUT$" | sed -r -e 's/%27(https)/\1/g' -e 's/%27(\+|$$)/ /g' |  /usr/bin/mail -s "** $NOTIFICATIONTYPE$ alert - $HOSTALIAS$/$SERVICEDESC$ is $SERVICESTATE$ **" $CONTACTEMAIL$
     }
 
+# 'notify-by-email-per-service' command definition
+# This is like notify-by-email, except that it uses the same subject line for
+# notifications from the same servicedesc, regardless of hostname or alert state.
+# This allows easy grouping in e-mail clients of state changes from the same alert.
+define command{
+    command_name    notify-by-email-per-service
+    command_line    /usr/bin/printf "%b" "Notification Type: $NOTIFICATIONTYPE$\n\nService: $SERVICEDESC$\nHost: $HOSTALIAS$\nAddress: $HOSTADDRESS$\nState: $SERVICESTATE$\n\nDate/Time: $LONGDATETIME$\n\nNotes URLs: $SERVICENOTESURL$\n\nAdditional Info:\n\n$SERVICEOUTPUT$" | sed -r -e 's/%27(https)/\1/g' -e 's/%27(\+|$$)/ /g' |  /usr/bin/mail -s "** Alert - $SERVICEDESC$ **" $CONTACTEMAIL$
+    }
+
 # 'notify-by-sms-gateway' command definitions
 define command{
     command_name    host-notify-by-sms-gateway
