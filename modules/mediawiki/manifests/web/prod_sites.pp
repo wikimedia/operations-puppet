@@ -57,7 +57,6 @@ class mediawiki::web::prod_sites {
         'meta.wikimedia.org',
         '_wikisource.org',
         'commons.wikimedia.org',
-        'species.wikimedia.org',
     ]
     mediawiki::web::site { $remnant_conf_sites:
         before => Apache::Site['remnant']
@@ -78,14 +77,22 @@ class mediawiki::web::prod_sites {
             docroot         => '/srv/mediawiki/docroot/wikimedia.org',
             legacy_rewrites => true,
             declare_site    => false,
+            public_rewrites => true,
             before          => Apache::Site['remnant'],
             ;
         $remnant_simple_wikis:
-            public_rewrites => true,
             ;
         'usability.wikimedia.org':
-            short_urls => false,
+            short_urls      => false,
             ;
+        'species.wikimedia.org':
+            additional_rewrites => {
+                'early' => [],
+                'late'  => [
+                    '# Uploads are offsite',
+                    '    RewriteRule ^/upload/(.*)$ %{ENV:RW_PROTO}://upload.wikimedia.org/wikipedia/species/$1 [R=302]'
+                ]
+            }
     }
     # private wikis in remnant.conf; they all change just by ServerName
     $small_private_wikis = [
