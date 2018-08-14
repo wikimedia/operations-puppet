@@ -89,10 +89,6 @@ sub cluster_fe_ratelimit {
 			}
 		}
 	}
-
-	if (req.http.User-agent ~ "AlexaWiki-Bot/1.0") {
-		return (synth(429, "Hey you are melting our thumbnailing infrastructure, please contact ops@wikimedia.org"));
-	}
 }
 
 sub cluster_fe_miss {
