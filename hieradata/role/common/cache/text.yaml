@@ -378,6 +378,7 @@ cache::alternate_domains:
   yarn.wikimedia.org:
     director: 'thorium'
 cache::fe_transient_gb: 5
+cache::be_transient_gb: 0
 # Profile::cache::base
 profile::cache::base::zero_site: 'https://zero.wikimedia.org'
 profile::cache::base::purge_host_only_upload_re: '^(upload|maps)\.wikimedia\.org$'
