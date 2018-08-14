@@ -59,7 +59,7 @@ profile::base::dns_alt_names: 'search.svc.codfw.wmnet'
 # Allow reindex from eqiad to codfw
 profile::elasticsearch::reindex_remote_whitelist: 'search.svc.eqiad.wmnet:9243'
 
-profile::elasticsearch::cirrus::storage_device: dm-0
+profile::elasticsearch::cirrus::storage_device: md1
 
 # Bulk updates daemon needs a unique group id per dc
 profile::mjolnir::kafka_cluster: main-codfw
