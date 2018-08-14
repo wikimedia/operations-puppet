@@ -17,7 +17,7 @@ class Clients(object):
     def __init__(
         self,
         envfile="",
-        username="", password="", url="", project=""
+        username="", password="", url="", project="", region=""
     ):
         """
         Read config from one of:
@@ -47,6 +47,7 @@ class Clients(object):
                 self.password = env['OS_PASSWORD']
                 self.url = env['OS_AUTH_URL']
                 self.project = env['OS_TENANT_NAME']
+                self.region = env['OS_REGION_NAME']
         else:
             if username:
                 self.username = username
@@ -57,6 +58,11 @@ class Clients(object):
                 self.password = password
             else:
                 self.password = os.environ.get('OS_PASSWORD', None)
+
+            if region:
+                self.region = region
+            else:
+                self.region = os.environ.get('OS_REGION_NAME', None)
 
             if url:
                 self.url = url
@@ -108,6 +114,9 @@ class Clients(object):
         if not project:
             project = self.project
 
+        if not region:
+            region = self.region
+
         if project not in self.novaclients:
             session = self.session(project)
             self.novaclients[project] = nova_client.Client(
@@ -122,7 +131,7 @@ class Clients(object):
         if project not in self.glanceclients:
             session = self.session(project)
             self.glanceclients[project] = glanceclient.Client(
-                '1', session=session, connect_retries=5)
+                '1', session=session, connect_retries=5, region=self.region)
         return self.glanceclients[project]
 
     def allprojects(self):
