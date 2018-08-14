@@ -53,16 +53,12 @@ if [ -f /etc/bashrc ]; then
 fi
 
 umask 002
-export CVS_RSH=ssh
-export CVSROOT=:ext:timstarling@cvs.sourceforge.net/cvsroot/wikipedia
-export RSYNC_RSH=ssh
-export RCMD_CMD=ssh
-export FANOUT=20
+
 export EDITOR=vim
 
-if [ -e /usr/local/lib/mw-deployment-vars.sh ]; then
-	. /usr/local/lib/mw-deployment-vars.sh
-	export ENWIKI_VERSION=$(php -r '$a = json_decode(file_get_contents("/srv/mediawiki-staging/wikiversions.json")); print $a->enwiki;')
+if [ -e /etc/profile.d/mediawiki.sh ]; then
+	. /etc/profile.d/mediawiki.sh
+	export ENWIKI_VERSION=$(php -r '$a = json_decode(file_get_contents("/srv/mediawiki/wikiversions.json")); print $a->enwiki;')
 	if [ -e $MEDIAWIKI_STAGING_DIR ]; then
 		export WIKI=$MEDIAWIKI_STAGING_DIR/$ENWIKI_VERSION
 	else
@@ -97,18 +93,18 @@ function cdp() {
 	cd $dir
 }
 
-function cvsd() {
-	cvs -d$CVSROOT "$@"
-}
-
-alias sshauth="export SSH_AUTH_SOCK=~/.stuff"
 alias sshp="ssh -o PasswordAuthentication=yes"
-alias ack=ack-grep
-alias dshroot="dsh -o-oUser=root"
+
+if [ -e /usr/bin/ack-grep ]; then
+    alias ack=ack-grep
+fi
+
 alias tawk='awk -F'\''	'\'''
 
 function genpass() {
 	tr -cd [:alnum:] < /dev/urandom | head -c10
 	echo
 }
-
+function calc() {
+	perl -e "print $*; print \"\\n\""
+}
