@@ -2,6 +2,6 @@
 # Use LS_JAVA_OPTS to add jmx_exporter when launching logstash as a daemon.
 # Using /etc/logstash/jvm.options is not going to work because that file is used for all logstash jvm
 # invocations, resulting in attempts to double-bind while e.g. launching logstash-plugin.
-LS_JAVA_OPTS="$LS_JAVA_OPTS -javaagent:/usr/share/java/prometheus/jmx_prometheus_javaagent.jar=<%= "#{scope.lookupvar('::ipaddress')}:#{@jmx_exporter_port}" %>:<%= @jmx_exporter_config %>"
+LS_JAVA_OPTS="-javaagent:/usr/share/java/prometheus/jmx_prometheus_javaagent.jar=<%= "#{scope.lookupvar('::ipaddress')}:#{@jmx_exporter_port}" %>:<%= @jmx_exporter_config %>"
 <% end -%>
 
