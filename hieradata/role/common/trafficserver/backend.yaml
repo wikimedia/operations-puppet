@@ -5,5 +5,7 @@ profile::trafficserver::backend::mapping_rules:
 - type: map
   target: /
   replacement: https://appservers.svc.eqiad.wmnet
+profile::trafficserver::backend::default_lua_scripts:
+    - set-x-cache
 profile::base::enable_microcode: true
 profile::trafficserver::backend::outbound_tls_cipher_suite: '-ALL:ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384'
