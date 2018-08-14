@@ -118,11 +118,15 @@ class Clients(object):
             region = self.region
 
         if project not in self.novaclients:
+            self.novaclients[project] = {}
+
+        if region not in self.novaclients[project]:
             session = self.session(project)
-            self.novaclients[project] = nova_client.Client(
+            self.novaclients[project][region] = nova_client.Client(
                 '2', session=session, connect_retries=5,
                 region_name=region)
-        return self.novaclients[project]
+
+        return self.novaclients[project][region]
 
     def glanceclient(self, project=None):
         if not project:
