@@ -1903,6 +1903,36 @@ host dbproxy1011 {
     fixed-address dbproxy1011.eqiad.wmnet;
 }
 
+host dbproxy1012 {
+    hardware ethernet D0:94:66:5F:48:2A;
+    fixed-address dbproxy1012.eqiad.wmnet;
+}
+
+host dbproxy1013 {
+    hardware ethernet D0:94:66:5F:52:BC;
+    fixed-address dbproxy1013.eqiad.wmnet;
+}
+
+host dbproxy1014 {
+    hardware ethernet D0:94:66:5F:4B:10;
+    fixed-address dbproxy1014.eqiad.wmnet;
+}
+
+host dbproxy1015 {
+    hardware ethernet ;
+    fixed-address dbproxy1015.eqiad.wmnet;
+}
+
+host dbproxy1016 {
+    hardware ethernet D0:94:66:5E:C7:EA;
+    fixed-address dbproxy1016.eqiad.wmnet;
+}
+
+host dbproxy1017 {
+    hardware ethernet D0:94:66:61:4A:D2;
+    fixed-address dbproxy1017.eqiad.wmnet;
+}
+
 host dbstore1001 {
     hardware ethernet C8:1F:66:B8:2A:04;
     fixed-address dbstore1001.eqiad.wmnet;

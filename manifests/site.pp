@@ -684,6 +684,11 @@ node 'dbproxy1011.eqiad.wmnet' {
     role(mariadb::proxy::master)
 }
 
+# new dbproxy hosts to be pressed into service by DBA team T196690
+node /^dbproxy101[2-7]\.eqiad\.wmnet$/ {
+    role(spare::system)
+}
+
 node /^dbmonitor[12]001\.wikimedia\.org$/ {
     role(tendril)
 }
