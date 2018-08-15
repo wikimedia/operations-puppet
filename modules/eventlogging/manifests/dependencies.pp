@@ -12,6 +12,16 @@
 # use the eventlogging class.
 #
 class eventlogging::dependencies {
+    # Use newer  librdkafka versions from stretch backports
+    if os_version('debian == stretch') {
+        apt::pin { 'librdkafka1':
+            pin      => 'release a=stretch-backports',
+            package  => 'librdkafka1',
+            priority => '1001',
+            before   => Package['varnishkafka'],
+        }
+    }
+
     # Install all eventlogging dependencies from .debs.
     require_package([
         'python-dateutil',
