@@ -5,6 +5,7 @@ define dumps::web::fetches::job(
     $source,
     $destination,
     $delete      = true,
+    $exclude     = undef,
     $user        = undef,
     $mailto      = 'ops-dumps@wikimedia.org',
     $hour        = undef,
@@ -24,11 +25,16 @@ define dumps::web::fetches::job(
         default => ''
     }
 
+    $exclude_option = $exclude ? {
+        undef   => '',
+        default => " --exclude ${exclude}"
+    }
+
     cron { "dumps-fetch-${title}":
         ensure      => 'present',
         # Run command via bash instead of sh so that $source can be fancier
         # wildcards or globs (e.g. /path/to/{dir1,dir1}/ok/data/ )
-        command     => "bash -c '/usr/bin/rsync -rt ${delete_option} --chmod=go-w ${source}/ ${destination}/'",
+        command     => "bash -c '/usr/bin/rsync -rt ${delete_option}${exclude_option} --chmod=go-w ${source}/ ${destination}/'",
         environment => "MAILTO=${mailto}",
         user        => $user,
         require     => User[$user],
