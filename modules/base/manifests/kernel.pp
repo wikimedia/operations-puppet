@@ -82,6 +82,28 @@ class base::kernel(
       default: {}
     }
 
+    # Settings to mitigate fragmentsmack. The low settings need to be applied
+    # before the high settings, otherwise the new high settings are lower than
+    # the current kernel defaults which results in sysctl rejecting the value
+    # The latest kernel update for stretch also pushes these settings by default
+    # in the kernel, so at some point this can be removed in puppet
+    sysctl::parameters { 'ipfrag_low':
+        values   => {
+            'net.ipv4.ipfrag_low_thresh'  => '196608',
+            'net.ipv6.ip6frag_low_thresh' => '196608',
+        },
+        priority => 10,
+        before   => Sysctl::Parameters['ipfrag_high']
+    }
+
+    sysctl::parameters { 'ipfrag_high':
+        values   => {
+            'net.ipv4.ipfrag_high_thresh'  => '262144',
+            'net.ipv6.ip6frag_high_thresh' => '262144',
+        },
+        priority => 11,
+    }
+
     # By default trusty allows the creation of user namespaces by unprivileged users
     # (Debian defaulted to disallowing these since the feature was introduced for security reasons)
     # Unprivileged user namespaces are not something we need in general (and especially
