@@ -1,11 +1,23 @@
+profile::base::enable_microcode: true
 profile::trafficserver::backend::mapping_rules:
-- type: map
-  target: http://phabricator.wikimedia.org
-  replacement: http://phab1001.eqiad.wmnet
-- type: map
-  target: /
-  replacement: https://appservers.svc.eqiad.wmnet
+    - type: map
+      target: http://phabricator.wikimedia.org/ws/
+      replacement: http://phab1001-aphlict.eqiad.wmnet:22280/ws/
+    - type: map
+      target: http://phabricator.wikimedia.org
+      replacement: http://phab1001.eqiad.wmnet
+    - type: map
+      target: http://upload.wikimedia.org
+      replacement: https://swift-rw.discovery.wmnet
+    - type: regex_map
+      target: 'http://(.*)/api/rest_v1'
+      replacement: https://restbase.discovery.wmnet/api/rest_v1
+    - type: regex_map
+      target: 'http://(.*)/w/api.php'
+      replacement: https://api-rw.discovery.wmnet/w/api.php
+    - type: map
+      target: /
+      replacement: https://appservers-rw.discovery.wmnet
 profile::trafficserver::backend::default_lua_scripts:
     - set-x-cache
-profile::base::enable_microcode: true
 profile::trafficserver::backend::outbound_tls_cipher_suite: '-ALL:ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384'
