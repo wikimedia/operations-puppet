@@ -12,6 +12,13 @@ class coal::web {
     require_package('python-numpy')
     require_package('python-requests')
 
+    file { '/var/cache/coal_web':
+        ensure => directory,
+        owner  => 'www-data',
+        group  => 'www-data',
+        mode   => '0755',
+    }
+
     systemd::tmpfile { 'coal_web':
         content => 'd /var/cache/coal_web 0755 www-data www-data 1d -',
     }
