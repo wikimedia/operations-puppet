@@ -18,4 +18,4 @@ profile::base::dns_alt_names: 'relforge.svc.eqiad.wmnet'
 
 has_lvs: false
 
-profile::elasticsearch::cirrus::storage_device: dm-0
+profile::elasticsearch::cirrus::storage_device: md1
