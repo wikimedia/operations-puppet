@@ -56,6 +56,17 @@
 #   An array of Trafficserver::Mapping_rules, each representing a mapping rule. (default: []).
 #   See https://docs.trafficserver.apache.org/en/latest/admin-guide/files/remap.config.en.html
 #
+# [*storage*]
+#   An array of Trafficserver::Storage_elements. (default: []).
+#
+#   Partitions can be specified by setting the 'devname' key, while files or
+#   directories use 'pathname'. For example:
+#
+#     { 'devname'  => 'sda3' }
+#     { 'pathname' => '/srv/storage/', 'size' => '10G' }
+#
+#   See https://docs.trafficserver.apache.org/en/latest/admin-guide/files/storage.config.en.html
+#
 # === Examples
 #
 #  class { 'trafficserver':
@@ -69,7 +80,10 @@
 #                         'replacement' => 'http://krypton.eqiad.wmnet/', },
 #                       { 'type'        => 'map',
 #                         'target'      => '/',
-#                         'replacement' => 'http://deployment-mediawiki05.deployment-prep.eqiad.wmflabs/' }, ]
+#                         'replacement' => 'http://deployment-mediawiki05.deployment-prep.eqiad.wmflabs/' }, ],
+#    storage       => [ { 'pathname' => '/srv/storage/', 'size' => '10G' },
+#                       { 'devname'  => 'sda3', 'volume' => 1 },
+#                       { 'devname'  => 'sdb3', 'volume' => 2, 'id' => 'cache.disk.1' }, ],
 #  }
 #
 class trafficserver(
@@ -85,6 +99,7 @@ class trafficserver(
     Integer[0, 1] $outbound_tlsv1_2 = 1,
     String $outbound_tls_cipher_suite = '',
     Array[Trafficserver::Mapping_rule] $mapping_rules = [],
+    Array[Trafficserver::Storage_element] $storage = [],
 ) {
 
     ## Packages
@@ -96,6 +111,16 @@ class trafficserver(
 
     package { $ext_pkgs:
         ensure => present,
+    }
+
+    # Change the ownership of all raw devices so that the trafficserver user
+    # has read/write access to them
+    $storage.each |Trafficserver::Storage_element $element| {
+        if has_key($element, 'devname') {
+            udev::rule { $element['devname']:
+                content => template('trafficserver/udev_storage.rules.erb'),
+            }
+        }
     }
 
     ## Config files

@@ -21,3 +21,8 @@ profile::trafficserver::backend::mapping_rules:
 profile::trafficserver::backend::default_lua_scripts:
     - set-x-cache
 profile::trafficserver::backend::outbound_tls_cipher_suite: '-ALL:ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384'
+profile::trafficserver::backend::storage_elements:
+    - devname: sda3
+      id: disk.0
+    - devname: sdb3
+      id: disk.1

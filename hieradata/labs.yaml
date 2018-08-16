@@ -85,6 +85,10 @@ profile::cache::text::top_domain: 'beta.wmflabs.org'
 profile::cache::base::storage_parts:
   - vdb
   - vdb
+profile::trafficserver::backend::storage_elements:
+  - devname: vdb
+  - pathname: /var/cache/trafficserver
+    size: 256M
 varnish::dynamic_backend_caches: false
 # Worst path rtt through our network, used in prod to determine timeouts. Not
 # particularly useful in labs, but necessary as the setting has no default
