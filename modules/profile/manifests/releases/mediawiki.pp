@@ -40,9 +40,14 @@ class profile::releases::mediawiki (
         content => template('releases/apache-jenkins.conf.erb'),
     }
 
-    monitoring::service { 'http':
-        description   => 'HTTP',
-        check_command => 'check_http',
+    monitoring::service { 'http_releases':
+        description   => "HTTP ${sitename}",
+        check_command => "check_http_url!${sitename}!/",
+    }
+
+    monitoring::service { 'http_releases_jenkins':
+        description   => "HTTP ${sitename_jenkins}",
+        check_command => "check_http_url!${sitename_jenkins}!/",
     }
 
     ferm::service { 'releases_http':
