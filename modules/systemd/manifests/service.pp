@@ -31,6 +31,9 @@ define systemd::service(
     if $unit_type == 'service' {
         $label = $title
         $provider = undef
+    } elsif ($title =~ /^(.+)\.(\w+)$/ and $2 =~ Systemd::Unit_type){
+        $label = $title
+        $provider = 'systemd'
     } else {
         # Use a fully specified label for the unit.
         $label = "${title}.${unit_type}"

@@ -21,12 +21,12 @@ define labstore::device_backup (
         content => template('labstore/device_backup/device_backup.systemd.erb'),
     }
 
-    systemd::timer { 'block_sync':
+    systemd::timer { 'block_sync.timer':
         timer_intervals => [{
             'start'    => 'OnCalendar',
             'interval' => sprintf('%s *-*-* %02d:%02d:00', $weekday, $hour, $minute)
             }],
-        unit_name       => 'block_sync',
+        unit_name       => 'block_sync.service',
     }
 
     file { '/usr/local/sbin/snapshot-manager':
