@@ -13,9 +13,8 @@ describe 'systemd::timer' do
   end
   context 'when using a valid time spec' do
     let(:pre_condition) {
-'systemd::service { "dummy.service":
+'systemd::unit { "dummy.service":
                   content => "",
-                  service_params => { "provider" => "systemd" }
 }'}
     let(:params) {
       {
@@ -34,9 +33,8 @@ describe 'systemd::timer' do
   end
   context 'when using a valid calendar spec' do
     let(:pre_condition) {
-'systemd::service { "dummy.service":
+'systemd::unit { "dummy.service":
                   content => "",
-                  service_params => { "provider" => "systemd" }
 }'}
     let(:params) {
       {
@@ -45,7 +43,7 @@ describe 'systemd::timer' do
     }
     it { is_expected.to compile.with_all_deps }
   end
-  context 'when referring to an inexistent service' do
+  context 'when referring to an inexistent unit' do
     let(:params) {
       {
         :timer_intervals => [{'start' => 'OnBootSec', 'interval' => '3 hour 10 sec'}]

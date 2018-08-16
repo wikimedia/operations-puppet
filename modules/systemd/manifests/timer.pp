@@ -32,6 +32,6 @@ define systemd::timer(
         ensure    => $ensure,
         unit_type => 'timer',
         content   => template('systemd/systemd.timer.erb'),
-        require   => Systemd::Service[$unit_name],
+        require   => Systemd::Unit[$unit_name],
     }
 }
