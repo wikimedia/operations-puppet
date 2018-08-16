@@ -1921,9 +1921,9 @@ node 'radium.wikimedia.org' {
     interface::add_ip6_mapped { 'main': }
 }
 
+# to be decom'ed - replaced by authdns1001 (T202040)
 node 'radon.wikimedia.org' {
-    role(authdns::server)
-    interface::add_ip6_mapped { 'main': }
+    role(spare::system)
 }
 
 node /^rdb100[1357]\.eqiad\.wmnet$/ {
