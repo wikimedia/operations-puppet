@@ -18,18 +18,19 @@
 class mediawiki (
     $log_aggregator = 'udplog:8420',
     $forward_syslog = undef,
-    ) {
+) {
 
     include ::mediawiki::cgroup
     include ::mediawiki::packages
     include ::mediawiki::scap
     include ::mediawiki::users
     include ::mediawiki::syslog
-    include ::mediawiki::php
     include ::mediawiki::mwrepl
 
-
+    # lint:ignore:wmf_styleguide
     include ::profile::mediawiki::hhvm
+    include ::profile::mediawiki::php
+    # lint:endignore
 
     # This profile is used to contain the convert command of imagemagick using
     file { '/etc/firejail/mediawiki-imagemagick.profile':

@@ -41,7 +41,7 @@ class php(
         'session'               => {
             'save_path' => '/tmp',
         },
-        'max_upload_filesize'   => '100M',
+        'upload_max_filesize'   => '100M',
     }
 
     # Let's install the packages and configure PHP for each of the selected
