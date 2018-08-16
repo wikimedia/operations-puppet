@@ -1918,15 +1918,15 @@ host dbproxy1014 {
     fixed-address dbproxy1014.eqiad.wmnet;
 }
 
-# host dbproxy1015 {
-#    hardware ethernet ;
-#     fixed-address dbproxy1015.eqiad.wmnet;
-# }
+host dbproxy1015 {
+   hardware ethernet D0:94:66:5E:C7:EA;
+    fixed-address dbproxy1015.eqiad.wmnet;
+}
 
-# host dbproxy1016 {
-#     hardware ethernet ;
-#     fixed-address dbproxy1016.eqiad.wmnet;
-# }
+host dbproxy1016 {
+    hardware ethernet D0:94:66:5F:49:D0;
+    fixed-address dbproxy1016.eqiad.wmnet;
+}
 
 host dbproxy1017 {
     hardware ethernet D0:94:66:61:4A:D2;
