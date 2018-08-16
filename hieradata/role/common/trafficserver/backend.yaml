@@ -11,7 +11,7 @@ profile::trafficserver::backend::mapping_rules:
       replacement: https://swift-rw.discovery.wmnet
     - type: regex_map
       target: 'http://(.*)/api/rest_v1'
-      replacement: https://restbase.discovery.wmnet/api/rest_v1
+      replacement: http://restbase.discovery.wmnet:7231/api/rest_v1
     - type: regex_map
       target: 'http://(.*)/w/api.php'
       replacement: https://api-rw.discovery.wmnet/w/api.php
