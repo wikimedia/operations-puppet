@@ -61,7 +61,7 @@ class profile::webperf::site (
     }
 
     cron { 'warm_up_coal_cache':
-        command => "/bin/bash -c 'for period in day week month year ; do /usr/bin/curl -H ${server_name} -o /dev/null \"${::fqdn}/coal/v1/metrics?period=\$period\" ; done'",
+        command => "/bin/bash -c 'for period in day week month year ; do /usr/bin/curl -s -H ${server_name} -o /dev/null \"${::fqdn}/coal/v1/metrics?period=\$period\" ; done'",
         minute  => [0, 30],
         user    => 'nobody',
     }
