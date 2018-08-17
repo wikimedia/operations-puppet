@@ -58,6 +58,13 @@ class openstack::horizon::source_deploy(
         notify => Service['apache2'],
     }
 
+    file { '/etc/openstack-dashboard/neutron_policy.json':
+        source => "puppet:///modules/openstack/${version}/neutron/policy.json",
+        owner  => 'root',
+        mode   => '0444',
+        notify => Service['apache2'],
+    }
+
     # A user and group to run this as
     group { 'horizon':
         ensure => present,
