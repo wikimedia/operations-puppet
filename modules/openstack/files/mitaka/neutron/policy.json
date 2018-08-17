@@ -152,11 +152,11 @@
     "get_agent-loadbalancers": "rule:admin_only",
     "get_loadbalancer-hosting-agent": "rule:admin_only",
 
-    "create_floatingip": "rule:regular_user",
+    "create_floatingip": "rule:admin_or_projectadmin",
     "create_floatingip:floating_ip_address": "rule:admin_only",
-    "update_floatingip": "rule:admin_only",
-    "delete_floatingip": "rule:admin_only",
-    "get_floatingip": "rule:admin_only",
+    "update_floatingip": "rule:admin_or_projectadmin",
+    "delete_floatingip": "rule:admin_or_projectadmin",
+    "get_floatingip": "rule:regular_user",
 
     "create_network_profile": "rule:admin_only",
     "update_network_profile": "rule:admin_only",
