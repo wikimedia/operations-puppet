@@ -24,7 +24,7 @@
     "update_subnet": "rule:admin_or_network_owner",
     "delete_subnet": "rule:admin_or_network_owner",
 
-    "create_subnetpool": "",
+    "create_subnetpool": "rule:admin_only",
     "create_subnetpool:shared": "rule:admin_only",
     "create_subnetpool:is_default": "rule:admin_only",
     "get_subnetpool": "rule:regular_user",
@@ -32,14 +32,14 @@
     "update_subnetpool:is_default": "rule:admin_only",
     "delete_subnetpool": "rule:admin_only",
 
-    "create_address_scope": "",
+    "create_address_scope": "rule:admin_or_projectadmin",
     "create_address_scope:shared": "rule:admin_only",
     "get_address_scope": "rule:regular_user",
     "update_address_scope": "rule:admin_only",
     "update_address_scope:shared": "rule:admin_only",
     "delete_address_scope": "rule:admin_only",
 
-    "create_network": "",
+    "create_network": "rule:admin_only",
     "get_network": "rule:regular_user",
     "get_network:router:external": "rule:regular_user",
     "get_network:segments": "rule:admin_only",
@@ -66,7 +66,7 @@
     "delete_network": "rule:admin_only",
 
     "network_device": "field:port:device_owner=~^network:",
-    "create_port": "",
+    "create_port": "rule:admin_or_projectadmin",
     "create_port:device_owner": "not rule:network_device or rule:context_is_advsvc or rule:admin_or_network_owner",
     "create_port:mac_address": "rule:context_is_advsvc or rule:admin_or_network_owner",
     "create_port:fixed_ips": "rule:context_is_advsvc or rule:admin_or_network_owner",
@@ -110,7 +110,7 @@
     "create_router:external_gateway_info:external_fixed_ips": "rule:admin_only",
     "update_router:external_gateway_info:external_fixed_ips": "rule:admin_only",
 
-    "create_firewall": "",
+    "create_firewall": "rule:admin_or_projectadmin",
     "get_firewall": "rule:admin_only",
     "create_firewall:shared": "rule:admin_only",
     "get_firewall:shared": "rule:admin_only",
@@ -118,7 +118,7 @@
     "update_firewall:shared": "rule:admin_only",
     "delete_firewall": "rule:admin_only",
 
-    "create_firewall_policy": "",
+    "create_firewall_policy": "rule:admin_or_projectadmin",
     "get_firewall_policy": "rule:regular_user",
     "create_firewall_policy:shared": "rule:admin_only",
     "update_firewall_policy": "rule:admin_only",
@@ -127,7 +127,7 @@
     "insert_rule": "rule:admin_only",
     "remove_rule": "rule:admin_only",
 
-    "create_firewall_rule": "",
+    "create_firewall_rule": "rule:admin_or_projectadmin",
     "get_firewall_rule": "rule:regular_user",
     "update_firewall_rule": "rule:admin_only",
     "delete_firewall_rule": "rule:admin_only",
@@ -201,7 +201,7 @@
     "get_rule_type": "rule:regular_user",
 
     "restrict_wildcard": "(not field:rbac_policy:target_tenant=*) or rule:admin_only",
-    "create_rbac_policy": "",
+    "create_rbac_policy": "rule:admin_or_projectadmin",
     "create_rbac_policy:target_tenant": "rule:restrict_wildcard",
     "update_rbac_policy": "rule:admin_only",
     "update_rbac_policy:target_tenant": "rule:restrict_wildcard and rule:admin_or_owner",
