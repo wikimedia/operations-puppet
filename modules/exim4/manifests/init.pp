@@ -1,6 +1,6 @@
 # == Class: exim4
 #
-# This class installs & manages Exim4 for Debian, http://exim.org/
+# This class installs & manages Exim4 for Debian, https://exim.org/
 #
 # == Parameters
 #

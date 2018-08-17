@@ -7,7 +7,7 @@ not just WMF wikis, but any mediawiki
 
 currently it runs on instance wikistats-01
 
-this is http://wikistats.wmflabs.org and will likely
+this is https://wikistats.wmflabs.org and will likely
 stay a labs project forever while it has real users
 results from it are used for WMF projects like
 statistic tables inside Wikipedia

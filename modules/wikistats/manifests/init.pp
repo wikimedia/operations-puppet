@@ -4,7 +4,7 @@
 # as many public mediawiki installs as possible
 # not just WMF wikis, but any mediawiki
 #
-# this is http://wikistats.wmflabs.org and will likely
+# this is https://wikistats.wmflabs.org and will likely
 # forever stay a labs project but be semi production
 # results from it are used for WMF projects since
 #

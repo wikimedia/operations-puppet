@@ -98,7 +98,7 @@ class base::standard_packages {
 
     # real-hardware specific
     # As of September 2015, mcelog still does not support newer AMD processors.
-    # See <http://www.mcelog.org/faq.html#18>.
+    # See <https://www.mcelog.org/faq.html#18>.
     if $facts['is_virtual'] == false and $::processor0 !~ /AMD/ {
         require_package('mcelog', 'intel-microcode')
         if os_version('debian >= jessie') {
