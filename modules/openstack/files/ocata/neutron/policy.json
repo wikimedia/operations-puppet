@@ -93,7 +93,7 @@
     "delete_port": "rule:context_is_advsvc or rule:admin_owner_or_network_owner",
 
     "get_router:ha": "rule:admin_only",
-    "create_router": "rule:regular_user",
+    "create_router": "rule:admin_only",
     "create_router:external_gateway_info:enable_snat": "rule:admin_only",
     "create_router:distributed": "rule:admin_only",
     "create_router:ha": "rule:admin_only",
