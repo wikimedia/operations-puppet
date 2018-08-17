@@ -5,7 +5,7 @@ class profile::openstack::main::pdns::recursor::service(
     $pdns_host = hiera('profile::openstack::main::pdns::host'),
     $pdns_recursor = hiera('profile::openstack::main::pdns::recursor'),
     $tld = hiera('profile::openstack::main::pdns::tld'),
-    $private_reverse = hiera('profile::openstack::main::pdns::private_reverse'),
+    $private_reverse_zones = hiera('profile::openstack::main::pdns::private_reverse_zones'),
     $aliaser_extra_records = hiera('profile::openstack::main::pdns::recursor_aliaser_extra_records'),
     $use_metal_resolver = hiera('profile::openstack::main::pdns::use_metal_resolver'),
     ) {
@@ -17,7 +17,7 @@ class profile::openstack::main::pdns::recursor::service(
         pdns_host             => $pdns_host,
         pdns_recursor         => $pdns_recursor,
         tld                   => $tld,
-        private_reverse       => $private_reverse,
+        private_reverse_zones => $private_reverse_zones,
         aliaser_extra_records => $aliaser_extra_records,
         use_metal_resolver    => $use_metal_resolver,
     }

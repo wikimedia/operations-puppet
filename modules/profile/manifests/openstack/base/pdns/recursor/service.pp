@@ -27,7 +27,7 @@ class profile::openstack::base::pdns::recursor::service(
     $pdns_host = hiera('profile::openstack::base::pdns::host'),
     $pdns_recursor = hiera('profile::openstack::base::pdns::recursor'),
     $tld = hiera('profile::openstack::base::pdns::tld'),
-    $private_reverse = hiera('profile::openstack::base::pdns::private_reverse'),
+    $private_reverse_zones = hiera('profile::openstack::base::pdns::private_reverse_zones'),
     $aliaser_extra_records = hiera('profile::openstack::base::pdns::recursor_aliaser_extra_records'),
     $use_metal_resolver = hiera('profile::openstack::base::pdns::use_metal_resolver'),
     ) {
@@ -73,10 +73,12 @@ class profile::openstack::base::pdns::recursor::service(
         require => File['/var/zones']
     }
 
+    $reverse_zone_rules = inline_template("<% @private_reverse_zones.each do |zone| %><%= zone %>=${pdns_host_ip} <% end %>")
+
     class { '::dnsrecursor':
             listen_addresses         => [$pdns_recursor_ip],
             allow_from               => $all_networks,
-            additional_forward_zones => "${tld}=${pdns_host_ip}, ${private_reverse}=${pdns_host_ip}",
+            additional_forward_zones => "${tld}=${pdns_host_ip}, ${reverse_zone_rules}",
             auth_zones               => 'labsdb=/var/zones/labsdb',
             lua_hooks                => $lua_hooks,
             max_negative_ttl         => 900,

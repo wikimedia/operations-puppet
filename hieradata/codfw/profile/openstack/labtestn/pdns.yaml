@@ -1,5 +1,7 @@
 profile::openstack::labtestn::pdns::tld: 'labtest'
-profile::openstack::labtestn::pdns::private_reverse: '16.172.in-addr.arpa'
+profile::openstack::labtestn::pdns::private_reverse_zones:
+  - '16.172.in-addr.arpa'
+  - '196.10.in-addr.arpa'
 profile::openstack::labtestn::pdns::host: 'labtest-ns1.wikimedia.org'
 profile::openstack::labtestn::pdns::host_secondary: 'labtest-ns1.wikimedia.org'
 profile::openstack::labtestn::pdns::recursor: 'labtest-recursor1.wikimedia.org'
