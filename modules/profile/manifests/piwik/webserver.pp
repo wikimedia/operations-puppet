@@ -11,11 +11,6 @@ class profile::piwik::webserver(
 ){
     include ::profile::prometheus::apache_exporter
 
-    class { '::apache::mod::authnz_ldap': }
-    class { '::apache::mod::headers': }
-    class { '::apache::mod::php5': }
-    class { '::apache::mod::rewrite': }
-
     class { '::passwords::ldap::production': }
 
     # LDAP configuration. Interpolated into the Apache site template
@@ -32,12 +27,16 @@ class profile::piwik::webserver(
         ],
     }
 
-    class { '::apache::mpm':
+    class { '::httpd':
+        modules => ['authnz_ldap', 'headers', 'php5', 'rewrite'],
+    }
+
+    class { '::httpd::mpm':
         mpm    => 'prefork',
         source => 'puppet:///modules/profile/piwik/mpm_prefork.conf',
     }
 
-    apache::site { 'piwik.wikimedia.org':
+    httpd::site { 'piwik.wikimedia.org':
         content => template('profile/piwik/piwik.wikimedia.org.erb'),
     }
 
