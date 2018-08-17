@@ -1,5 +1,5 @@
 profile::openstack::eqiad1::pdns::tld: 'wmflabs'
-profile::openstack::main::pdns::private_reverse_zones:
+profile::openstack::eqiad1::pdns::private_reverse_zones:
   - '68.10.in-addr.arpa'
   - '16.172.in-addr.arpa'
 profile::openstack::eqiad1::pdns::host: 'labs-ns2.wikimedia.org'
