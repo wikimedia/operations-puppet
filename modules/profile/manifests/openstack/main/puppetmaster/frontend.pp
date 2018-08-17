@@ -1,7 +1,7 @@
 class profile::openstack::main::puppetmaster::frontend(
     $labs_instance_range = hiera('profile::openstack::main::nova::fixed_range'),
     $designate_host = hiera('profile::openstack::main::designate_host'),
-    $second_region_designate_host = hiera('profile::openstack::labtest::second_region_designate_host'),
+    $second_region_designate_host = hiera('profile::openstack::main::second_region_designate_host'),
     $puppetmasters = hiera('profile::openstack::main::puppetmaster::servers'),
     $puppetmaster_ca = hiera('profile::openstack::main::puppetmaster::ca'),
     $puppetmaster_hostname = hiera('profile::openstack::main::puppetmaster_hostname'),

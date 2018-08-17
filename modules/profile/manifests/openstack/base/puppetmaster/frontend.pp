@@ -108,7 +108,8 @@ class profile::openstack::base::puppetmaster::frontend(
 
     ferm::rule{'puppetcertcleaning':
         ensure => 'present',
-        rule   => "saddr (@resolve((${designate_host} ${second_region_designate_host})))
+        rule   => "saddr (@resolve((${designate_host} ${second_region_designate_host}))
+                         @resolve((${designate_host} ${second_region_designate_host}), AAAA))
                         proto tcp dport 22 ACCEPT;",
     }
 }
