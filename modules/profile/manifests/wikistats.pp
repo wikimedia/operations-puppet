@@ -6,8 +6,6 @@ class profile::wikistats (
     $wikistats_host = hiera('profile::wikistats::wikistats_host'),
 ) {
 
-    class { '::apache::mod::rewrite': }
-
     class { '::wikistats':
         wikistats_host => $wikistats_host,
     }
