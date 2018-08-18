@@ -1,8 +1,6 @@
 # A http proxy in front of Zuul status page
 class profile::ci::proxy_zuul {
 
-  require ::profile::ci::proxy_common
-
   file {
     '/etc/apache2/conf.d/zuul_proxy':
       ensure => absent,

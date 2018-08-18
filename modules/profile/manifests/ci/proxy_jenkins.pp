@@ -14,8 +14,6 @@ class profile::ci::proxy_jenkins (
     $prefix = hiera('profile::ci::proxy_jenkins::prefix'),
 ) {
 
-  require ::profile::ci::proxy_common
-
   # run jenkins behind Apache and have pretty URLs / proxy port 80
   # https://wiki.jenkins-ci.org/display/JENKINS/Running+Jenkins+behind+Apache
 

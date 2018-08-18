@@ -19,7 +19,10 @@ class role::ci::master {
     include ::profile::ci::proxy_jenkins
 
     include ::profile::ci::slave
+
+    include ::profile::ci::httpd
     include ::profile::ci::website
+
     include ::profile::ci::docker
     include ::profile::ci::pipeline::publisher
     include ::profile::ci::shipyard
