@@ -28,6 +28,13 @@ class openstack::util::admin_scripts(
         mode   => '0755',
         source => "puppet:///modules/openstack/${version}/admin_scripts/region-migrate",
     }
+    file { '/root/region-migrate-security-groups':
+        ensure => 'present',
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0755',
+        source => "puppet:///modules/openstack/${version}/admin_scripts/region-migrate-security-groups",
+    }
 
     # Script to migrate (with suspension) instances between compute nodes
     file { '/root/live-migrate':
