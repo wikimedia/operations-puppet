@@ -27,8 +27,21 @@ class profile::piwik::webserver(
         ],
     }
 
+    if os_version('debian >= stretch') {
+        $php_module = 'php7.0'
+        $php_ini = '/etc/php/7.0/apache2/php.ini'
+    } else {
+        $php_module = 'php5'
+        $php_ini = '/etc/php5/apache2/php.ini'
+    }
+
+    package { "libapache2-mod-${php_module}":
+        ensure => 'present',
+    }
+
     class { '::httpd':
-        modules => ['authnz_ldap', 'headers', 'php5', 'rewrite'],
+        modules => ['authnz_ldap', 'headers', $php_module, 'rewrite'],
+        require => Package["libapache2-mod-${php_module}"],
     }
 
     class { '::httpd::mpm':
@@ -48,14 +61,14 @@ class profile::piwik::webserver(
     file_line { 'enable_php_opcache':
         line   => 'opcache.enable=1',
         match  => '^;?opcache.enable\s*\=',
-        path   => '/etc/php5/apache2/php.ini',
+        path   => $php_ini,
         notify => Class['::httpd'],
     }
 
     file_line { 'php_memory_limit':
         line   => 'memory_limit = 256M',
         match  => '^;?memory_limit\s*\=',
-        path   => '/etc/php5/apache2/php.ini',
+        path   => $php_ini,
         notify => Class['::httpd'],
     }
 
