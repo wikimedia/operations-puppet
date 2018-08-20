@@ -46,6 +46,21 @@ host archiva1001 {
     fixed-address archiva1001.wikimedia.org;
 }
 
+host analytics-tool1001 {
+    hardware ethernet aa:00:00:ed:b1:fd;
+    fixed-address analytics-tool1001.eqiad.wmnet;
+}
+
+host analytics-tool1002 {
+    hardware ethernet aa:00:00:a0:6f:1d;
+    fixed-address analytics-tool1002.eqiad.wmnet;
+}
+
+host analytics-tool1003 {
+    hardware ethernet aa:00:00:51:fa:c4;
+    fixed-address analytics-too11003.eqiad.wmnet;
+}
+
 host argon {
     hardware ethernet aa:00:00:fe:6b:df;
     fixed-address argon.eqiad.wmnet;
