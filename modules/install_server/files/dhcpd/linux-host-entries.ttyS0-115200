@@ -58,7 +58,7 @@ host analytics-tool1002 {
 
 host analytics-tool1003 {
     hardware ethernet aa:00:00:51:fa:c4;
-    fixed-address analytics-too11003.eqiad.wmnet;
+    fixed-address analytics-tool1003.eqiad.wmnet;
 }
 
 host argon {
