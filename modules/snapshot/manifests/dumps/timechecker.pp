@@ -3,9 +3,10 @@ class snapshot::dumps::timechecker(
     $xmldumpsuser = undef,
 )  {
     $repodir = $snapshot::dumps::dirs::repodir
-    $wikis = ['dewiki', 'commonswiki', 'frwiki', 'eswiki', 'itwiki', 'jawiki',
-              'metawiki', 'nlwiki', 'plwiki', 'ptwiki', 'ruwiki',
-              'zhwiki', 'enwiki', 'wikidatawiki']
+    $wikis = ['arwiki', 'dewiki', 'commonswiki', 'frwiki', 'eswiki',
+              'hewiki', 'huwiki', 'itwiki', 'jawiki', 'metawiki',
+              'nlwiki', 'plwiki', 'ptwiki', 'ruwiki', 'zhwiki',
+              'enwiki', 'wikidatawiki']
     $wikis_list = join($wikis, ',')
 
     $apachedir = $snapshot::dumps::dirs::apachedir

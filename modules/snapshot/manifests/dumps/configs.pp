@@ -77,6 +77,12 @@ class snapshot::dumps::configs(
                     hewiki => {
                         pagesPerChunkHistory  => '54634,150485,262147,348019,456051,338308',
                     },
+                    huwiki => {
+                        pagesPerChunkHistory  => '58601,139602,207871,286244,424120,457034',
+                    },
+                    arwiki => {
+                        pagesPerChunkHistory  => '186249,444457,797927,988530,1342181,970511',
+                    },
                 },
             },
             en => {
