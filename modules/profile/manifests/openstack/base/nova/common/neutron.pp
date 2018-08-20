@@ -5,6 +5,7 @@ class profile::openstack::base::nova::common::neutron(
     $db_host = hiera('profile::openstack::base::nova::db_host'),
     $db_name = hiera('profile::openstack::base::nova::db_name'),
     $compute_workers = hiera('profile::openstack::base::nova::compute_workers'),
+    $metadata_workers = hiera('profile::openstack::base::nova::metadata_workers'),
     $nova_controller = hiera('profile::openstack::base::nova_controller'),
     $keystone_host = hiera('profile::openstack::base::keystone_host'),
     $glance_host = hiera('profile::openstack::base::glance_host'),
@@ -31,6 +32,7 @@ class profile::openstack::base::nova::common::neutron(
         glance_host                  => $glance_host,
         metadata_proxy_shared_secret => $metadata_proxy_shared_secret,
         compute_workers              => $compute_workers,
+        metadata_workers             => $metadata_workers,
     }
     contain '::openstack::nova::common::neutron'
 }
