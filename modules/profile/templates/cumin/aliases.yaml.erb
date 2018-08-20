@@ -24,7 +24,7 @@ cp-eqiad: A:cp and A:eqiad
 cp-esams: A:cp and A:esams
 cp-ulsfo: A:cp and A:ulsfo
 cp-eqsin: A:cp and A:eqsin
-<% [ 'text', 'upload', 'misc' ].each do |cache| -%>
+<% [ 'text', 'upload' ].each do |cache| -%>
 cp-<%= cache %>: P{O:cache::<%= cache %>}
 <% @datacenters.each do |dc| -%>
 cp-<%= cache %>_<%= dc %>: A:cp-<%= cache %> and A:<%= dc %>
@@ -51,7 +51,7 @@ deployment-servers: P{O:deployment_server}
 dns-auth: P{O:authdns::server}
 dns-auth-canary: P{eeden.wikimedia.org}
 dns-rec: P{O:dnsrecursor}
-dns-rec-canary: P{hydrogen.wikimedia.org}
+dns-rec-canary: P{dns2001.wikimedia.org}
 druid: P{O:druid::analytics::worker or O:druid::public::worker}
 dumps: P{O:dumps::generation::server::primary or O:dumps::generation::server::fallback or O:dumps::web::htmldumps}
 elastic: P{O:elasticsearch::cirrus}
@@ -135,12 +135,11 @@ mw-videoscaler: P{O:mediawiki::videoscaler}
 mw-videoscaler-canary: P{mw1307.eqiad.wmnet}
 mw-videoscaler-codfw: A:mw-videoscaler and A:codfw
 mw-videoscaler-eqiad: A:mw-videoscaler and A:eqiad
-mwlog: P{O:xenon}
+mwlog: P{O:logging::mediawiki::udp2log}
 mx: P{O:mail::mx}
 mx-canary: P{mx2001.wikimedia.org}
 netmon: P{O:network::monitor}
 notebook: P{O:swap}
-ocg: P{ocg*}
 openldap: P{O:openldap::corp or O:openldap::labs}
 openldap-canary: P{dubnium.wikimedia.org}
 ores: P{O:ores}
