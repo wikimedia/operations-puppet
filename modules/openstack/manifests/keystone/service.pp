@@ -11,6 +11,8 @@ class openstack::keystone::service(
     $db_pass,
     $db_host,
     $db_max_pool_size,
+    $public_workers,
+    $admin_workers,
     $token_driver,
     $ldap_hosts,
     $ldap_base_dn,

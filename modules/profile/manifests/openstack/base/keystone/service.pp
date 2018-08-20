@@ -10,6 +10,8 @@ class profile::openstack::base::keystone::service(
     $db_pass = hiera('profile::openstack::base::keystone::db_pass'),
     $db_host = hiera('profile::openstack::base::keystone::db_host'),
     $db_max_pool_size = hiera('profile::openstack::base::keystone::db_max_pool_size'),
+    $admin_workers = hiera('profile::openstack::base::keystone::admin_workers'),
+    $public_workers = hiera('profile::openstack::base::keystone::public_workers'),
     $nova_db_pass = hiera('profile::openstack::base::nova::db_pass'),
     $token_driver = hiera('profile::openstack::base::keystone::token_driver'),
     $ldap_hosts = hiera('profile::openstack::base::ldap_hosts'),
