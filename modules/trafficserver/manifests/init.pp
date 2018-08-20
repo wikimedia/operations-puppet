@@ -56,6 +56,10 @@
 #   An array of Trafficserver::Mapping_rules, each representing a mapping rule. (default: []).
 #   See https://docs.trafficserver.apache.org/en/latest/admin-guide/files/remap.config.en.html
 #
+# [*caching_rules*]
+#   An array of Trafficserver::Caching_rules, each representing a caching rule. (default: []).
+#   See https://docs.trafficserver.apache.org/en/latest/admin-guide/files/cache.config.en.html
+#
 # [*storage*]
 #   An array of Trafficserver::Storage_elements. (default: []).
 #
@@ -81,6 +85,9 @@
 #                       { 'type'        => 'map',
 #                         'target'      => '/',
 #                         'replacement' => 'http://deployment-mediawiki05.deployment-prep.eqiad.wmflabs/' }, ],
+#    caching_rules => [ { 'primary_destination' => 'dest_domain',
+#                         'value'               => 'grafana.wikimedia.org',
+#                         'action'              => 'never-cache' }, ],
 #    storage       => [ { 'pathname' => '/srv/storage/', 'size' => '10G' },
 #                       { 'devname'  => 'sda3', 'volume' => 1 },
 #                       { 'devname'  => 'sdb3', 'volume' => 2, 'id' => 'cache.disk.1' }, ],
@@ -99,6 +106,7 @@ class trafficserver(
     Integer[0, 1] $outbound_tlsv1_2 = 1,
     String $outbound_tls_cipher_suite = '',
     Array[Trafficserver::Mapping_rule] $mapping_rules = [],
+    Array[Trafficserver::Caching_rule] $caching_rules = [],
     Array[Trafficserver::Storage_element] $storage = [],
 ) {
 
@@ -137,6 +145,9 @@ class trafficserver(
 
         '/etc/trafficserver/remap.config':
           content => template('trafficserver/remap.config.erb'),;
+
+        '/etc/trafficserver/cache.config':
+          content => template('trafficserver/cache.config.erb'),;
 
         '/etc/trafficserver/ip_allow.config':
           content => template('trafficserver/ip_allow.config.erb'),;

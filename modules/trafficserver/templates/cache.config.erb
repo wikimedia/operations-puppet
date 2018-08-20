@@ -1,0 +1,6 @@
+# https://docs.trafficserver.apache.org/en/latest/admin-guide/files/cache.config.en.html
+# This file is managed by Puppet.
+
+<% @caching_rules.each do |rule| -%>
+<%= rule['primary_destination'] %>=<%= rule['value'] %> action=<%= rule['action'] %>
+<% end -%>

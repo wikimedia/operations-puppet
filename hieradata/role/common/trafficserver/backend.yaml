@@ -7,6 +7,9 @@ profile::trafficserver::backend::mapping_rules:
       target: http://phabricator.wikimedia.org
       replacement: http://phab1001.eqiad.wmnet
     - type: map
+      target: http://people.wikimedia.org
+      replacement: http://rutherfordium.eqiad.wmnet
+    - type: map
       target: http://upload.wikimedia.org
       replacement: https://swift-rw.discovery.wmnet
     - type: regex_map
@@ -18,6 +21,10 @@ profile::trafficserver::backend::mapping_rules:
     - type: map
       target: /
       replacement: https://appservers-rw.discovery.wmnet
+profile::trafficserver::backend::caching_rules:
+    - primary_destination: dest_domain
+      value: people.wikimedia.org
+      action: never-cache
 profile::trafficserver::backend::default_lua_scripts:
     - set-x-cache
 profile::trafficserver::backend::outbound_tls_cipher_suite: '-ALL:ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384'
