@@ -18,7 +18,6 @@ class eventlogging::dependencies {
             pin      => 'release a=stretch-backports',
             package  => 'librdkafka1',
             priority => '1001',
-            before   => Package['varnishkafka'],
         }
     }
 
