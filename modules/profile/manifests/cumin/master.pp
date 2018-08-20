@@ -4,6 +4,7 @@ class profile::cumin::master (
 ) {
     include passwords::phabricator
     $cumin_log_path = '/var/log/cumin'
+    $cumin_masters = query_nodes('Class[Role::Cumin::Master]')
 
     ::keyholder::agent { 'cumin_master':
         trusted_groups => ['root'],
@@ -131,6 +132,24 @@ class profile::cumin::master (
         mode   => '0544',
         owner  => 'root',
         group  => 'root',
+    }
+
+    file { '/usr/local/sbin/check-cumin-aliases':
+        ensure => present,
+        source => 'puppet:///modules/profile/cumin/check_cumin_aliases.py',
+        mode   => '0544',
+        owner  => 'root',
+        group  => 'root',
+    }
+
+    # Check aliases cron, splayed between the week across the Cumin masters
+    $times = cron_splay($cumin_masters, 'weekly', 'cumin-check-aliases')
+    cron { 'cumin-check-aliases':
+        command => '/usr/local/sbin/check-cumin-aliases',
+        user    => 'root',
+        weekday => $times['weekday'],
+        hour    => $times['hour'],
+        minute  => $times['minute'],
     }
 
     class { '::phabricator::bot':
