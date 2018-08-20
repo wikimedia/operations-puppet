@@ -55,6 +55,11 @@ node /analytics10(2[89]|3[0-9]|4[0-9]|5[0-9]|6[0-9]|7[0-7]).eqiad.wmnet/ {
     interface::add_ip6_mapped { 'main': }
 }
 
+# ganeti VMs for Analytics tools/sites (T202013)
+node /analytics-tool100[123]\.eqiad\.wmnet/ {
+    role(spare::system)
+}
+
 # Analytics Query Service
 node /aqs100[456789]\.eqiad\.wmnet/ {
     role(aqs)
