@@ -65,6 +65,8 @@ class profile::openstack::base::keystone::service(
         db_pass                     => $db_pass,
         db_host                     => $db_host,
         db_max_pool_size            => $db_max_pool_size,
+        admin_workers               => $admin_workers,
+        public_workers              => $public_workers,
         token_driver                => $token_driver,
         ldap_hosts                  => $ldap_hosts,
         ldap_base_dn                => $ldap_base_dn,
