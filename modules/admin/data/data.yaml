@@ -3121,3 +3121,11 @@ ldap_only_users:
     ensure: present
     realname: Lea Voget
     email: lea.voget@wikimedia.de
+  mkramer:
+    ensure: present
+    realname: Mel Kramer
+    email: mkramer@wikimedia.org
+  eerhart:
+    ensure: present
+    realname: Ed Erhart
+    email: eerhart@wikimedia.org
