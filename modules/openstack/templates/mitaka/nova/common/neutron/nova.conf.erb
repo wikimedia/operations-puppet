@@ -74,6 +74,7 @@ connection = mysql://<%= @db_user %>:<%= @db_pass %>@<%= @db_host %>/nova
 max_overflow = 25
 max_pool_size = 10
 pool_timeout = 60
+idle_timeout = 1800
 
 [glance]
 host=<%= @glance_host %>
