@@ -29,6 +29,7 @@ class openstack::nova::common::nova_network(
     $spice_hostname,
     $keystone_auth_uri,
     $keystone_admin_uri,
+    $compute_workers,
     ) {
 
     $nova_controller_ip = ipresolve($nova_controller,4)

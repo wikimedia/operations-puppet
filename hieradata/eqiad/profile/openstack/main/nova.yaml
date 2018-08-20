@@ -1,3 +1,4 @@
+profile::openstack::main::nova::compute_workers: '12'
 profile::openstack::main::nova::dmz_cidr: '208.80.155.0/22,10.0.0.0/8'
 profile::openstack::main::nova::dhcp_domain: 'eqiad.wmflabs'
 profile::openstack::main::nova::dhcp_start: '10.68.16.4'

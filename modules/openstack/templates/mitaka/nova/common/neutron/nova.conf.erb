@@ -1,6 +1,7 @@
 [DEFAULT]
 # nova general settings
 my_ip = <%= @ipaddress %>
+osapi_compute_workers = <%= @compute_workers %>
 #verbose=True ### FIXME deprecated?
 state_path = /var/lib/nova
 rootwrap_config = /etc/nova/rootwrap.conf

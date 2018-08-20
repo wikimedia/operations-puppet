@@ -27,6 +27,7 @@ class profile::openstack::base::nova::common::nova_network(
     $auth_port = hiera('profile::openstack::base::keystone::auth_port'),
     $public_port = hiera('profile::openstack::base::keystone::public_port'),
     $spice_hostname = hiera('profile::openstack::base::spice_hostname'),
+    $compute_workers = hiera('profile::openstack::base::nova::compute_workers'),
     ) {
 
     $keystone_admin_uri = "http://${keystone_host}:${auth_port}"
@@ -64,6 +65,7 @@ class profile::openstack::base::nova::common::nova_network(
         spice_hostname           => $spice_hostname,
         keystone_auth_uri        => $keystone_auth_uri,
         keystone_admin_uri       => $keystone_admin_uri,
+        compute_workers          => $compute_workers,
     }
     contain '::openstack::nova::common::nova_network'
 }

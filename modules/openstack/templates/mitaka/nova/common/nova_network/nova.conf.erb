@@ -5,6 +5,7 @@ verbose=True
 state_path=/var/lib/nova
 root_helper=sudo nova-rootwrap /etc/nova/rootwrap.conf
 log_dir=/var/log/nova
+osapi_compute_workers = <%= @compute_workers %>
 
 # keystone
 auth_strategy=keystone

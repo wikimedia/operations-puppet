@@ -21,6 +21,7 @@ class profile::openstack::main::nova::common(
     $live_migration_uri = hiera('profile::openstack::main::nova::live_migration_uri'),
     $rabbit_pass = hiera('profile::openstack::main::nova::rabbit_pass'),
     $spice_hostname = hiera('profile::openstack::main::spice_hostname'),
+    $compute_workers = hiera('profile::openstack::main::nova::compute_workers'),
     ) {
 
     require ::profile::openstack::main::cloudrepo
@@ -48,5 +49,6 @@ class profile::openstack::main::nova::common(
         live_migration_uri       => $live_migration_uri,
         rabbit_pass              => $rabbit_pass,
         spice_hostname           => $spice_hostname,
+        compute_workers          => $compute_workers,
     }
 }
