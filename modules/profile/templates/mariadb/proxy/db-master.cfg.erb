@@ -1,7 +1,10 @@
 listen mariadb
     bind 0.0.0.0:3306
     mode tcp
+    option tcplog
     balance roundrobin
+    option log-health-checks
+    log /dev/log local0 info
     option tcpka
     option mysql-check user haproxy
     server <%= @primary_name %> <%= @primary_addr %> check inter 3s fall 20 rise 99999999
