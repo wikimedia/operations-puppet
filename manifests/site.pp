@@ -285,11 +285,6 @@ node /^cp30(3[4-9]|4[345679])\.esams\.wmnet$/ {
 # ulsfo varnishes
 #
 
-node /^cp40(09|1[078])\.ulsfo\.wmnet$/ {
-    # To be decommed - T178801
-    role(spare::system)
-}
-
 node /^cp402[1-6]\.ulsfo\.wmnet$/ {
     interface::add_ip6_mapped { 'main': }
     role(cache::upload)
