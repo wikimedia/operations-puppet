@@ -1075,6 +1075,11 @@ node /^install[12]002\.wikimedia\.org$/ {
     role(installserver)
 }
 
+# new icinga system to replace einsteinium T201344
+node 'icinga1001.wikimedia.org' {
+    role(spare::system)
+}
+
 # Phabricator
 node /^(phab1001\.eqiad|phab2001\.codfw)\.wmnet$/ {
     role(phabricator)

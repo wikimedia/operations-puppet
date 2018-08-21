@@ -2673,6 +2673,12 @@ host heze {
     filename "lpxelinux.0";
 }
 
+host icinga1001 {
+    hardware ethernet D0:94:66:5F:47:E2;
+    fixed-address icinga1001.wikimedia.org;
+}
+
+
 host iron {
     hardware ethernet 78:2b:cb:09:0d:5c;
     fixed-address iron.wikimedia.org;
