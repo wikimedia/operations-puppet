@@ -2885,6 +2885,10 @@ ldap_only_users:
     ensure: present
     realname: Lucas Werkmeister
     email: lucas.werkmeister@wikimedia.de
+  marcella:
+    ensure: present
+    realname: Marcella L. Florence
+    email: mflorence@wikimedia.org
   mhernandez:
     ensure: present
     realname: Megan Hernandez
