@@ -40,3 +40,19 @@ actions:
       direction: older
       unit: days
       unit_count: 2
+  3:
+    action: replicas
+    description: >-
+      after 15 days set number of replicas to 1
+    options:
+      count: 1
+    filters:
+    - filtertype: pattern
+      kind: prefix
+      value: <%= @prefix %>
+      exclude:
+    - filtertype: age
+      source: creation_date
+      direction: older
+      unit: days
+      unit_count: 15
