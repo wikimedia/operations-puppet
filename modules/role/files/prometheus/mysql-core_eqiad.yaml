@@ -149,13 +149,13 @@
     shard: es2
     role: slave
   targets:
+  - es1011:9104
   - es1013:9104
-  - es1015:9104
 - labels:
     shard: es2
     role: master
   targets:
-  - es1011:9104
+  - es1015:9104
 
 - labels:
     shard: es3
