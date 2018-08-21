@@ -16,7 +16,6 @@ EXCLUDE=("nobody" \
          "mwdeploy" \   # eventlog*
          "releases" \   # deployment.eqiad.wmnet
          "reprepro" \   # bromine.eqiad.wmnet
-         "mysql" \      # db1015.eqiad.wmnet T134476
          "parsoid-rt"); # ruthenium.eqiad.wmnet T90966
 
 log() {
