@@ -1439,10 +1439,6 @@ node /^ms-be201[3-5]\.codfw\.wmnet$/ {
     role(swift::storage)
 }
 
-node /^ms-be20(0[1-9]|1[0-2])\.codfw\.wmnet$/ {
-    role(spare::system)
-}
-
 node /^ms-be20(1[6-9]|[234][0-9])\.codfw\.wmnet$/ {
     role(swift::storage)
 }
