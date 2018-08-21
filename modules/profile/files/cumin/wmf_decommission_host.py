@@ -56,11 +56,18 @@ def main():
 
     # Downtime on Icinga both the host and the mgmt host, they will be removed by Puppet
     if is_valid_host:
-        lib.icinga_downtime(args.host, user, args.phab_task, title=script_name)
-        actions.append('Downtimed host on Icinga')
+        try:
+            lib.icinga_downtime(args.host, user, args.phab_task_id, title=script_name)
+            actions.append('Downtimed host on Icinga')
+        except RuntimeError:
+            actions.append('Skipped downtime host on Icinga (likely already removed)')
+
         mgmts = lib.get_mgmts([args.host])
-        lib.icinga_downtime(mgmts[args.host], user, args.phab_task, title=script_name)
-        actions.append('Downtimed mgmt interface on Icinga')
+        try:
+            lib.icinga_downtime(mgmts[args.host], user, args.phab_task_id, title=script_name)
+            actions.append('Downtimed mgmt interface on Icinga')
+        except RuntimeError:
+            actions.append('Skipped downtime mgmt interface on Icinga (likely already removed)')
 
     # Remove from DebMonitor
     lib.debmonitor_remove_host(args.host)
@@ -69,7 +76,7 @@ def main():
     message = ('{script} was executed by {user} for {host} and performed the following actions:\n'
                '- {actions}').format(
         script=script_name, user=user, host=args.host, actions='\n- '.join(actions))
-    lib.phabricator_task_update(phab_client, args.phab_task, message)
+    lib.phabricator_task_update(phab_client, args.phab_task_id, message)
 
     return 0
 
