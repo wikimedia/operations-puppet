@@ -52,6 +52,10 @@ class profile::reportupdater::jobs::mysql {
         repository => 'limn-language-data',
         output_dir => 'metrics/beta-feature-enables',
     }
+    reportupdater::job { 'published_cx2_translations':
+        repository => 'limn-language-data',
+        output_dir => 'metrics/published_cx2_translations',
+    }
     reportupdater::job { 'ee':
         repository => 'limn-ee-data',
         output_dir => 'metrics/echo',
