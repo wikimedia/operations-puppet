@@ -5,13 +5,9 @@
 #
 # [*overlayfs*]
 #  bool for whether overlay module is needed
-#
-# [*enable_microcode*]
-#  bool for whether the package intel-microcode should be installed or not
 
 class base::kernel(
     $overlayfs,
-    $enable_microcode,
     ) {
     if os_version('ubuntu == trusty') {
         # This directory is shipped by systemd, but trusty's upstart job for
@@ -119,9 +115,5 @@ class base::kernel(
                 'kernel.unprivileged_userns_clone' => 0,
             },
         }
-    }
-
-    if $enable_microcode {
-        require_package('intel-microcode')
     }
 }

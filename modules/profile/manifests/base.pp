@@ -24,7 +24,6 @@ class profile::base(
     $check_smart = hiera('profile::base::check_smart', true),
     $puppet_major_version = hiera('puppet_major_version', undef),
     $overlayfs = hiera('profile::base::overlayfs', false),
-    $enable_microcode = hiera('profile::base::enable_microcode', false),
 ) {
     require ::profile::base::certificates
     class { '::apt':
@@ -92,13 +91,11 @@ class profile::base(
         allowed_hosts => $nrpe_allowed_hosts,
     }
 
-    $do_enable_microcode = ($enable_microcode and $facts['is_virtual'] == false and $::processor0 !~ /AMD/)
     class { '::base::kernel':
         overlayfs        => $overlayfs,
-        enable_microcode => $do_enable_microcode,
     }
 
-    if $do_enable_microcode {
+    if ($facts['is_virtual'] == false and $::processor0 !~ /AMD/) {
         class { 'prometheus::node_intel_microcode': }
     }
 
