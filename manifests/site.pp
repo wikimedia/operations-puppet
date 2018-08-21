@@ -149,13 +149,6 @@ node 'bromine.eqiad.wmnet', 'vega.codfw.wmnet' {
     interface::add_ip6_mapped { 'main': }
 }
 
-# Californium is the former host of horizon
-# and toolsadmin.  Now ready for decom.
-node 'californium.wikimedia.org' {
-    role(spare::system)
-    interface::add_ip6_mapped { 'main': }
-}
-
 # Replacement to Lithium T195416
 node 'centrallog1001.eqiad.wmnet' {
     role(syslog::centralserver)
