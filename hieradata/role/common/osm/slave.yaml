@@ -1,1 +1,1 @@
-role::osm::slave::osm_master: 'labsdb1007.eqiad.wmnet'
+role::osm::slave::osm_master: 'osmdb.eqiad.wmnet'
