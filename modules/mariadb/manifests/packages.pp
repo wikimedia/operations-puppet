@@ -1,15 +1,14 @@
-# MariaDB 5.5 debs
+# MariaDB debs
 # These are not used on production (packages_wmf.pp is used instead).
 
 class mariadb::packages {
 
     package { [
         'libmariadbclient18',
-        'mariadb-client-5.5',
-        'mariadb-server-5.5',
-        'mariadb-server-core-5.5',
+        'mariadb-client',
+        'mariadb-server',
         'percona-toolkit',
-        'percona-xtrabackup',
+        # 'percona-xtrabackup',
     ]:
         ensure => present,
     }
