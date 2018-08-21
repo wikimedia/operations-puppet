@@ -1999,6 +1999,12 @@ node 'sarin.codfw.wmnet' {
     interface::add_ip6_mapped { 'main': }
 }
 
+#Will replace old system ruthenium via T201366
+node 'scandium.eqiad.wmnet' {
+    role(spare::system)
+}
+
+
 # Services 'A'
 node /^sca[12]00[1234]\.(eqiad|codfw)\.wmnet$/ {
     role(sca)
