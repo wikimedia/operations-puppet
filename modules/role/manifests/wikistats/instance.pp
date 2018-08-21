@@ -8,8 +8,14 @@ class role::wikistats::instance {
 
     system::role { 'wikistats': description => 'wikistats instance' }
 
+    if os_version('debian >= stretch') {
+        $php_module = 'php7.0'
+    } else {
+        $php_module = 'php5'
+    }
+
     class { '::httpd':
-        modules => ['php', 'rewrite'],
+        modules => [$php_module, 'rewrite'],
     }
 
     include ::profile::wikistats
