@@ -2297,6 +2297,15 @@ users:
       - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQC5L9UMTDwcCoGmMhnQciOLMAr+tJ4A/HCVCGfmkqPLBfsncfly7hSBxxPc6UZ7960FCwak8UJrH642/rtJ7Sr/AT7vfs14DpKXqV+ju5s7NAE7YnZY2tvlgx6HLiVo/vj1kw0/MQajzj6GyfbPtbgnTXNoTlqq2qiIIu8oLi0KGmVyKWlZH4mkIOjX6tFWj95nBDBll5XIT/B3UpGFVCbePfH0wo2wj4P+rZbLFty5FhKW5vm3k6O0IiRfmFHOv7EzUsYlh5LM1YK3oN2wuSSHG5ml917u41C2QNkGkXbu3NSWT2bzFwA02Zf4Q8WolVneXHuUmvYHNn9OiJpjuWLmhh3UhYQTaSjstx0ppHUakD/KD3N8jyZrApfk70zTkvcixu8x2tLZYcRUnM0mm2ObBwITOCdt3nUO6WITqM/yppuI3pi7BAfwjGwIel72TTxdlsJxUnP2nz3769IAbGCjBYokqA4migqc/s5A1UEznTTrkdsrOXjFAeuvT6K5SZMRTUqxdzU4r7WFnKKrnfUDbVMvAIkoCyQLJ/izKh0mEA85Nbz54EXKU5jbp85S8x3EHok+Q+Nng1IjF1H5XQeHRCAycX8It2DI5dl6XXj8j115+k5Yu56Q5diBcqk3ejvf0WRgsnR7S8b/EhqNBZ1hyRQaU/k4DX5NEB07cZDsNw== jiji@arizona
     uid: 19933
     email: emouzeli@wikimedia.org
+  cwhite:
+    ensure: present
+    gid: 500
+    name: cwhite
+    realname: Cole White
+    uid: 19968
+    email: cwhite@wikimedia.org
+    ssh_keys:
+      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDXTCL4y5N84pX2mKw53Ihs1AOfAFaLAv7WJqt0ijU3A8F8+k2ONCgL4qAuyOSPtHG4rbuscoAZlwsqVIriMLmUwlFXWe5oSWK221FDtvWVl4FmdGSvgou/Ehhrj+13XGD35S/uUhq07N3QfNjj42unrxID7WtkPHWbirksACqEoy6m5v7mga0+tMeKqv2z6jmWrHjmpXjcWwPfmkx54DELov0G9sOJvrYzm7ol5wvdRQGQln5yAm3Ycn126EK0VAwrXDomD/+p75a5dAcwSwci+h4mPiYQAnctEApxPUP1+0fXzkMolymNlwkjAWJBTevWjoUtPHUoVckO0t+lTwqVqRlM7XZ2nN7MIWp3UutV9ng2Fz6XDDwQxrX69QGooQTn3/7mj3ir74tU/UqRexrh0iC0oU69qu+lkYulpJQ2Ld1W+kEUWB4Qg5EXxWnaosSll8OOH2/VPhFi+xpGZLqCys6o0F5r5i0UkdapGyrIwZXHTYRfL577VkB7JIofXEK8ju0ichhF6WuYS404oPspPtBwwPB76RCaM050KhB4DPs27+RJs/Xebz3cKjrZaNBaUGgILzxbSU+nR1MJ7hirGhkq3+4rhxIPV4RofZOgazeWreGbku9o52FAermiRsoTFTt14HvqrmuyMBxBfwzWc7/ktjS1YUpsKpcx038h0w==
 ## Users mtizzoni, panisson, paolotti, & ciro have been added as ISI Foundation members for analytics access.
 ## Access will be revoked by request from Dario Taraborelli when it is no longer needed, see T141634 for details.
   mtizzoni:
