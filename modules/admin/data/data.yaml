@@ -30,7 +30,7 @@ groups:
     members: &ops_members [filippo, jgreen, bblack, andrew, faidon, rush, oblivian,
               dzahn, akosiaris, mark, ariel, cmjohnson, otto, robh, tstarling,
               ori, jmm, jynus, aaron, ema, elukey, gehel, volans, marostegui,
-              ayounsi, herron, aborrero, bstorm, vgutierrez, jiji]
+              ayounsi, herron, aborrero, bstorm, vgutierrez, jiji, cwhite]
     privileges: ['ALL = (ALL) NOPASSWD: ALL']
   ops-adm-group:
     # No gid for this group on purpose, it's a system provided one
