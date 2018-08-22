@@ -70,6 +70,17 @@ class profile::netbox (
             cidr     => '208.80.153.110/32',
             master   => $on_master,
         }
+        # User for monitoring check running on slave server
+        # who needs replication user rights and uses IPv6 (T185504)
+        postgresql::user { 'netbox@netmon2001-ipv6':
+            ensure   => present,
+            user     => 'replication',
+            database => 'netbox',
+            password => $replication_pass,
+            cidr     => '2620:0:860:4:208:80:153:110/128',
+            master   => $on_master,
+        }
+
         # Create the netbox user for localhost
         # This works on every server and is used for read-only db lookups
         postgresql::user { 'netbox@localhost':
@@ -116,6 +127,7 @@ class profile::netbox (
             pg_master   => $master,
             pg_user     => 'replication',
             pg_password => $replication_pass,
+            pg_database => 'netbox',
         }
     }
 
