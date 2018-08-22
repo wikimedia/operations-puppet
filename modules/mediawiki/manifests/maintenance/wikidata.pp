@@ -51,13 +51,6 @@ class mediawiki::maintenance::wikidata( $ensure = present, $ensure_testwiki = pr
         mode   => '0664',
     }
 
-    file { '/var/log/wikidata/rebuildTermSqlIndex.log':
-        ensure => absent,
-        owner  => $::mediawiki::users::web,
-        group  => $::mediawiki::users::web,
-        mode   => '0664',
-    }
-
     $log_ownership_user = $::mediawiki::users::web
     $log_ownership_group = $::mediawiki::users::web
     logrotate::conf { 'wikidata':
