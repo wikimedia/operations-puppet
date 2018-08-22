@@ -12,7 +12,7 @@ class wikilabels::web (
     # this to deb packages in the future if needed.
     # FIXME: Use debian packages for all the packages needing compilation
     ensure_packages(['virtualenv', 'python3-dev', 'libffi-dev',
-        'libpq-dev', 'g++', 'libmemcached-dev', 'nodejs'])
+        'libpq-dev', 'g++', 'libmemcached-dev', 'nodejs', 'zlib1g-dev'])
 
     file { '/srv':
         ensure => directory,
@@ -59,4 +59,21 @@ class wikilabels::web (
             }
         },
     }
+
+    file { '/var/log/wikilabels':
+        ensure => ensure_directory(present),
+        owner  => 'www-data',
+        group  => 'www-data',
+        mode   => '0664',
+    }
+
+    cron { 'wikilabels-remove_expired_tasks':
+        ensure  => present,
+        command => '/srv/wikilabels/venv/bin/python /srv/wikilabels/config/submodules/wikilabels/utility remove_expired_tasks --config=/srv/wikilabels/config/config/ > /var/log/wikilabels/remove_expired_tasks.log 2>&1',
+        user    => 'www-data',
+        hour    => 0,
+        minute  => 0,
+        require => File['/var/log/wikilabels'],
+    }
+
 }
