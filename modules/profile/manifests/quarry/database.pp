@@ -1,8 +1,8 @@
-# = Class: quarry::database
+# = Class: profile::quarry::database
 #
 # Sets up a mysql database for use by Quarry web frontends
 # and Quarry query runners
-class quarry::database {
+class profile::quarry::database {
     $data_path = '/srv/mysql/data'
 
     class { '::mysql::server':
