@@ -55,8 +55,15 @@ node /analytics10(2[89]|3[0-9]|4[0-9]|5[0-9]|6[0-9]|7[0-7]).eqiad.wmnet/ {
     interface::add_ip6_mapped { 'main': }
 }
 
+
+# turnilo.wikimedia.org
+# https://wikitech.wikimedia.org/wiki/Analytics/Systems/Turnilo-Pivot
+node 'analytics-tool1002.eqiad.wmnet' {
+    role(analytics_cluster::turnilo)
+}
+
 # ganeti VMs for Analytics tools/sites (T202013)
-node /analytics-tool100[123]\.eqiad\.wmnet/ {
+node /analytics-tool100[13]\.eqiad\.wmnet/ {
     role(spare::system)
 }
 

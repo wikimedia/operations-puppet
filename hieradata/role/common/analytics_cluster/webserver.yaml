@@ -15,6 +15,7 @@ profile::hue::database_host: 'analytics1003.eqiad.wmnet'
 profile::hue::hive_server_host: 'analytics1003.eqiad.wmnet'
 profile::hue::monitoring_enabled: true
 
+# TO be removed after turnilo moves to analytics-tool1002
 profile::druid::turnilo::port: 9091
 profile::druid::turnilo::druid_clusters:
   - name: druid-analytics-eqiad
