@@ -34,10 +34,6 @@ class profile::puppetdb::database(
         ssldir           => $ssldir,
     }
 
-    # Backups
-    backup::set { 'postgresql': }
-    class { '::postgresql::backup': }
-
     # Monitoring
     class { '::prometheus::postgres_exporter': }
 
