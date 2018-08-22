@@ -1,12 +1,10 @@
-# = Class: quarry::web
+# = Class: profile::quarry::web
 #
 # This class sets up a web frontend for Quarry, which lets
 # users run SQL queries against LabsDB.
 # Deployment is handled using fabric
-class quarry::web {
+class profile::quarry::web {
     require_package('python-flask', 'python-mwoauth')
-
-    require ::quarry::base
 
     $clone_path = $::quarry::base::clone_path
 
