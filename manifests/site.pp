@@ -66,6 +66,8 @@ node /aqs100[456789]\.eqiad\.wmnet/ {
     interface::add_ip6_mapped { 'main': }
 }
 
+# Replacement for meitnerium, currently running Archiva.
+# Migration in progress - T192639
 node 'archiva1001.wikimedia.org' {
     role(archiva)
     interface::add_ip6_mapped { 'main': }
