@@ -2866,6 +2866,15 @@ users:
       - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDbltutX5diB3UPRq+rUBdWmK/wgjq7gQASlWAJLXqNDfV3gLSZ9SlneE6fEx91RlodXMgRC7PuPxzCj+39pNS+mtX+53+pf7gHO8vtb1Bsqa4+EaWxBgEvybmdOpFOmmhevZSBRtV882RhppOwSw62YannwT9eMOUKKDixZHaXA94gFVTIAjASY7bSI2+VwSFCKskjC+qHSIzh9AkkkKONMuU+meCFSqR/V47t5lVm/DjIPfZq7cSnlemvV/p1+hgLiCGIA3DufUYnTxiyoNPaAHJRyXmFwTxChogwMBJnMVyXqabsN75hIf1DdyTmT0TB+Wn3cu+Mqjz1E7GUaDJAhmWTBjM1ulvQgrMiPxsxU1QiAfqwgmtC56D/oajCniiDbCqV1+9SwtsdEAQUIO142+n5sR4he5Z/3t3Z6NUaowbKHwxgRyjSOaS7REXzC5jzk+1RmZ24vdViWXxodFqDXZz2JjzPNR1IsSsZusvwjMOIezHRZxp1EnH6g3o01zJedYqvA717He1ONDXW+FfisZwxe2Tejmqb6xGhhvfQgLIslxeXKPGGaQwruN6L9+ijpatsjXaVCY6odhmR3D6WG1mUcZg2stngKUNMKZqovruTBJK3cbPBdKCCXs3M/52v7qq2fykwii1kN9CVVv4YoYDyukZ2UqxMW1yMNqirhw== bpirkle@wikimedia.org
     uid: 19714
     email: bpirkle@wikimedia.org
+  sguebo:
+    ensure: present
+    realname: Samuel Guebo
+    name: sguebo
+    gid: 500
+    ssh_keys:
+      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDcAX6WTg1eISyLlAAfCB6JefHgZQFJRptkuj1ivLPHtOCvOFilAJFZRNlBwb5Mzrfucs6dMMPLg+UJLdJz2YM/g06Iwl1xYYW1pcLIl7mrrq5x54mQCFmacxLQLk1tqG5YvChJF8SbcH+Z1LvHhEy+ElBlQRnhBhi9YuTzLyy12aHVewnnGr+I+XPxG1Hg7gKZgbcsxT8L7XXcg0EGMNxhciPKUK0nK3PEmKWR0Xlx4hLnQ2hDYLqRmGAM7zj7uJ1tq1qKHW5DZvmlojdfdWFmFbVQDvP0HJHruwvudSs2re+5iwsztP3La4iXAj7c3fPIrYNgXjxMRKc4GgXHPZsCd3q6bVkTNRp0mcb3PWPaTIs/QdR9T6Z6M6fuUlEFRTjP9SqGHwCR5P//sS/aJSpf9HUjE8l88vVF0HW8m7ZVE1/xVERzw1fOhE+BAnO6qEjxnyqLnykdBIEVPsNy2MTIo98dxgzykmP5aMwcYnKPiUJ4nsDsaLoPct9iftJF8nNcbk+j5BHHNfiSM6V220rWox2IYM9M/OChaPuoRVIHQMTQ17ZaE7+JO93xosFigB0IpuMk4vwV+Z/vhk3NDoAjcw1gFSKnz8pKGrBI8CV2ls/32w8jcNAJgNdP1cjqLwksAbKvyk1TDZi6sXYW2L2Rr6YZ8Rb6g2SeBe/LPs44sw==
+    uid: 19965
+    email: sguebo@wikimedia.org
 ldap_only_users:
   abartov:
     ensure: present
