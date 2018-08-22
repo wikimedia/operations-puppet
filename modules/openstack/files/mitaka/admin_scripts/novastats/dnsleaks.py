@@ -99,7 +99,7 @@ def purge_duplicates(delete=False):
 
         # we need a fresh copy of all instances so we don't accidentally
         #  delete things that have been created since we last checked.
-        instances = clients.allinstances()
+        instances = clients.allinstances(allregions=True)
         all_nova_instances = ["%s.%s.eqiad.wmflabs." % (instance.name.lower(), instance.tenant_id)
                               for instance in instances]
         all_nova_shortname_instances = ["%s.eqiad.wmflabs." % (instance.name.lower())

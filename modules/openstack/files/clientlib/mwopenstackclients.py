@@ -142,7 +142,11 @@ class Clients(object):
         client = self.keystoneclient()
         return client.projects.list()
 
-    def allinstances(self, projectid=None):
+    def allregions(self):
+        region_recs = self.keystoneclient().regions.list()
+        return [region.id for region in region_recs]
+
+    def allinstances(self, projectid=None, allregions=False):
         if projectid:
             return self.novaclient(projectid).servers.list()
         else:
@@ -150,7 +154,11 @@ class Clients(object):
             for project in self.allprojects():
                 if project.id == 'admin':
                     continue
-                instances.extend(self.novaclient(project.id).servers.list())
+                if allregions:
+                    for region in self.allregions():
+                        instances.extend(self.novaclient(project.id, region).servers.list())
+                else:
+                    instances.extend(self.novaclient(project.id).servers.list())
             return instances
 
     def globalimages(self):
