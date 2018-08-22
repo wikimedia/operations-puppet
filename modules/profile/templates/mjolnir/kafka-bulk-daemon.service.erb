@@ -10,6 +10,7 @@ ExecStart=/srv/deployment/search/mjolnir/venv/bin/mjolnir-utilities.py kafka_bul
         --es-clusters localhost:9200 \
         --group-id <%= @group_id %> \
         --topic <%= @topics.join(' ') %>
+        --prometheus-port <%= @prometheus_port %>
 
 StandardInput=null
 StandardOutput=journal

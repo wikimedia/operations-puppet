@@ -1005,6 +1005,29 @@ class role::prometheus::ops {
         port       => 9700,
     }
 
+    $mjolnir_jobs = [
+        {
+            'job_name'        => 'mjolnir',
+            'schema'          => 'http',
+            'file_sd_configs' => [
+                { 'files'     => [ "${targets_path}/mjolnir_*.yaml" ]}
+            ],
+        },
+    ]
+    prometheus::class_config { "mjolnir_bulk_${::site}}.yaml":
+        dest       => "${targets_path}/mjolnir_bulk_${::site}.yaml",
+        site       => $::site,
+        class_name => 'profile::mjolnir::bulk_daemon',
+        port       => 9170,
+    }
+    prometheus::class_config { "mjolnir_msearch_${::site}}.yaml":
+        dest       => "${targets_path}/mjolnir_msearch_${::site}.yaml",
+        site       => $::site,
+        class_name => 'profile::mjolnir::msearch_daemon',
+        port       => 9171,
+    }
+
+
     prometheus::server { 'ops':
         listen_address        => '127.0.0.1:9900',
         storage_retention     => $storage_retention,
@@ -1018,6 +1041,7 @@ class role::prometheus::ops {
             $etherpad_jobs, $elasticsearch_jobs, $wmf_elasticsearch_jobs,
             $blazegraph_jobs, $nutcracker_jobs, $postgresql_jobs,
             $kafka_burrow_jobs, $logstash_jobs, $haproxy_jobs, $statsd_exporter_jobs,
+            $mjolnir_jobs,
         ),
         global_config_extra   => $config_extra,
     }

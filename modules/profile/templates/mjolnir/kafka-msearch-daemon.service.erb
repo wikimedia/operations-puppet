@@ -11,6 +11,8 @@ ExecStart=/srv/deployment/search/mjolnir/venv/bin/mjolnir-utilities.py kafka_mse
     --output-topic <%= @output_topic %> \
     --num-workers <%= @num_workers %> \
     --max-concurrent-searches <%= @max_concurrent_searches %>
+    --prometheus-port <%= @prometheus_port %>
+
 StandardInput=null
 StandardOutput=journal
 StandardError=journal
