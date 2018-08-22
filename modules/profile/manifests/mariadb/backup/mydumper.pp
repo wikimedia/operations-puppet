@@ -11,6 +11,7 @@ class profile::mariadb::backup::mydumper {
         'mydumper',
         'python3',
         'python3-yaml',
+        'python3-pymysql',
     )
 
     group { 'dump':
