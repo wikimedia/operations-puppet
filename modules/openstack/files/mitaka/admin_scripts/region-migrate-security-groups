@@ -95,6 +95,12 @@ class NovaProject(object):
 
                 self.dest_neutronclient.create_security_group_rule(newrule)
 
+                if 'cidr' in rule['ip_range'] and rule['ip_range']['cidr'] == '10.0.0.0/8':
+                    # This rule is intended as an 'all VMs catch-all'.  We need to add an
+                    #  equivalent rule for the new region.
+                    newrule['security_group_rule']['remote_ip_prefix'] = '172.16.0.0/21'
+                    self.dest_neutronclient.create_security_group_rule(newrule)
+
 
 if __name__ == "__main__":
     config = configparser.ConfigParser()
