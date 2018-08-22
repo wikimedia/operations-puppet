@@ -16,7 +16,7 @@ class role::labs::ores::staging {
 
     git::clone { 'ores-wm-config':
         ensure    => present,
-        origin    => 'https://github.com/wiki-ai/ores-wikimedia-config.git',
+        origin    => 'https://github.com/wikimedia/ores-wikimedia-config.git',
         directory => $ores::base::config_path,
         branch    => 'master',
         owner     => 'www-data',
