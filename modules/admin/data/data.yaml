@@ -2875,6 +2875,15 @@ users:
       - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDcAX6WTg1eISyLlAAfCB6JefHgZQFJRptkuj1ivLPHtOCvOFilAJFZRNlBwb5Mzrfucs6dMMPLg+UJLdJz2YM/g06Iwl1xYYW1pcLIl7mrrq5x54mQCFmacxLQLk1tqG5YvChJF8SbcH+Z1LvHhEy+ElBlQRnhBhi9YuTzLyy12aHVewnnGr+I+XPxG1Hg7gKZgbcsxT8L7XXcg0EGMNxhciPKUK0nK3PEmKWR0Xlx4hLnQ2hDYLqRmGAM7zj7uJ1tq1qKHW5DZvmlojdfdWFmFbVQDvP0HJHruwvudSs2re+5iwsztP3La4iXAj7c3fPIrYNgXjxMRKc4GgXHPZsCd3q6bVkTNRp0mcb3PWPaTIs/QdR9T6Z6M6fuUlEFRTjP9SqGHwCR5P//sS/aJSpf9HUjE8l88vVF0HW8m7ZVE1/xVERzw1fOhE+BAnO6qEjxnyqLnykdBIEVPsNy2MTIo98dxgzykmP5aMwcYnKPiUJ4nsDsaLoPct9iftJF8nNcbk+j5BHHNfiSM6V220rWox2IYM9M/OChaPuoRVIHQMTQ17ZaE7+JO93xosFigB0IpuMk4vwV+Z/vhk3NDoAjcw1gFSKnz8pKGrBI8CV2ls/32w8jcNAJgNdP1cjqLwksAbKvyk1TDZi6sXYW2L2Rr6YZ8Rb6g2SeBe/LPs44sw==
     uid: 19965
     email: sguebo@wikimedia.org
+  ktsouroupidou:
+    ensure: present
+    realname: Kalliope Tsouroupidou
+    name: ktsouroupidou
+    gid: 500
+    ssh_keys:
+      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQCrzndpk6uVWUuKtLufbwXqzQ4ytn15zfveCPBWSKgGrhAPfrscyeF/jDqSEBhT2CprU8UyD20sAi9SeAsvLUakZ2z6vRG/XNbqLSfOGZudXEf9gkBOt9KdL5ycTRXWHIHLmRM/aWWAamp6tp4YArOD8Tao82caFmP8ikA/x0zM+K4DitOqWteG/CEbyOzdjF4kg2bWPrvHvhbyM3yKFKftn3EFn2owqCw7s/ACiigQjBbaEKxc4NKDrA7LQW5KXQ5RZkGSPMNT6t+jJ93Tlbm0MDQ7tGFJ3oZNRrpGZ4UlbRqURNGfepUYtFxJniX0+N7woi5KFhT+WTnV/4GfckReQj+f0XeoBlfqU4dsNABIumn/LZy2pWq5xBC2GNLZohWh04q+qRIgzn3Gw5W+R3LHTEV1xcx/8mTHY2rrKexAMkzm8koP+0UYV/pQEPzEtC3mx0YbyYmoqOlWimvYnZQjovdJPqNpp9gF1xUbmav+2AfRoVCRJYpk3d62lr2Us3zPh1QrU3+xbQyMwAWDVPIOx6TJFsJ7NW86obtYPY0CIjZxyL3SgusVy242i/DFGraudMVYG8pPCxdM4inZmIUiZGVJR9hcT3T2eFTxQujzi2I4/LZvFXqy2Vw19ErMLM7J4klFug3cojKEDH78J9kmKSfbmU+lCm7E+z8wbhU6RQ== ktsouroupidou@ktsouroupidouwmf1632
+    uid: 19971
+    email: ktsouroupidou@wikimedia.org
 ldap_only_users:
   abartov:
     ensure: present
