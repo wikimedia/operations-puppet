@@ -67,7 +67,7 @@ node /aqs100[456789]\.eqiad\.wmnet/ {
 }
 
 node 'archiva1001.wikimedia.org' {
-    role(spare::system)
+    role(archiva)
     interface::add_ip6_mapped { 'main': }
 }
 
