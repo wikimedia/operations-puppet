@@ -8,6 +8,7 @@ class role::elasticsearch::cirrus {
     include ::role::lvs::realserver
     include ::profile::elasticsearch::cirrus
     include ::profile::mjolnir::kafka_bulk_daemon
+    include ::profile::mjolnir::kafka_msearch_daemon
     include ::profile::prometheus::elasticsearch_exporter
     include ::profile::prometheus::wmf_elasticsearch_exporter
 

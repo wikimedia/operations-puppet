@@ -37,5 +37,9 @@ profile::elasticsearch::http_port: 9200
 profile::elasticsearch::cirrus::tls_port: 9243
 profile::elasticsearch::transport_tcp_port: 9300
 
-# MjoLniR kafka msearch daemon configuration
-profile::mjolnir::kafka_cluster: jumbo-eqiad
+# MjoLniR daemon configuration
+profile::mjolnir::kafka_msearch_daemon::kafka_cluster: jumbo-eqiad
+profile::mjolnir::kafka_msearch_daemon::input_topic: mjolnir.msearch-relforge-request
+profile::mjolnir::kafka_msearch_daemon::output_topic: mjolnir.msearch-relforge-response
+profile::mjolnir::kafka_msearch_daemon::num_workers: 5
+profile::mjolnir::kafka_msearch_daemon::max_concurrent_searches: 10

@@ -41,6 +41,22 @@ profile::elasticsearch::http_port: 9200
 profile::elasticsearch::cirrus::tls_port: 9243
 profile::elasticsearch::transport_tcp_port: 9300
 
+# Msearch daemons read same topic in same consumer group in all dcs. They
+# toggle themselves on/off based on load of the local elasticsearch cluster.
+profile::mjolnir::kafka_msearch_daemon::kafka_cluster: jumbo-eqiad
+profile::mjolnir::kafka_msearch_daemon::input_topic: mjolnir.msearch-prod-request
+profile::mjolnir::kafka_msearch_daemon::output_topic: mjolnir.msearch-prod-response
+# Max concurrent search threads consumed is:
+#   # kafka partitions * num_workers * max_concurrent_searches * # shards per index
+#   = (35 * 2 * 2 * 7)
+#   = max 980 concurrent shard searches
+# Unfortunately # shards per index is variable, so some caution is still required.
+profile::mjolnir::kafka_msearch_daemon::num_workers: 2
+profile::mjolnir::kafka_msearch_daemon::max_concurrent_searches: 2
+
+# Bulk daemon consumes per-datacenter to apply page updates to all clusters.
+profile::mjolnir::kafka_bulk_daemon::kafka_cluster: "main-%{::site}"
+profile::mjolnir::kafka_bulk_daemon::group_id: "cirrussearch_updates_%{::site}"
 profile::mjolnir::kafka_bulk_daemon::topics:
   - eqiad.cirrussearch.page-index-update
   - codfw.cirrussearch.page-index-update

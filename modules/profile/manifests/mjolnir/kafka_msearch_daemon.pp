@@ -5,7 +5,11 @@
 # kafka as a middleman.
 #
 class profile::mjolnir::kafka_msearch_daemon(
-    $kafka_cluster = hiera('profile::mjolnir::kafka_cluster'),
+    $kafka_cluster = hiera('profile::mjolnir::kafka_msearch_daemon::kafka_cluster'),
+    String $input_topic = hiera('profile::mjolnir::kafka_msearch_daemon::input_topic'),
+    String $output_topic = hiera('profile::mjolnir::kafka_msearch_daemon::output_topic'),
+    Integer $num_workers = hiera('profile::mjolnir::kafka_msearch_daemon::num_workers'),
+    Integer $max_concurrent_searches = hiera('profile::mjolnir::kafka_msearch_daemon::max_concurrent_searches'),
 ) {
     require ::profile::mjolnir
 

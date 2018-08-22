@@ -58,7 +58,4 @@ profile::elasticsearch::cirrus::certificate_name: 'search.svc.eqiad.wmnet'
 # Allow reindex from codfw to eqiad
 profile::elasticsearch::reindex_remote_whitelist: 'search.svc.codfw.wmnet:9243'
 
-# Bulk updates daemon needs a unique group id per dc
-profile::mjolnir::kafka_cluster: main-eqiad
-profile::mjolnir::kafka_bulk_daemon::group_id: cirrussearch_updates_eqiad
 elasticsearch::data_dir: '/srv/elasticsearch/production-search-eqiad'

@@ -10,7 +10,7 @@
 # $topics - Name of one or more kafka topics to consume from
 
 class profile::mjolnir::kafka_bulk_daemon(
-    String $kafka_cluster = hiera('profile::mjolnir::kafka_cluster'),
+    String $kafka_cluster = hiera('profile::mjolnir::kafka_bulk_daemon::kafka_cluster'),
     String $group_id = hiera('profile::mjolnir::kafka_bulk_daemon::group_id'),
     Array[String] $topics = hiera('profile::mjolnir::kafka_bulk_daemon::topics'),
 ) {
