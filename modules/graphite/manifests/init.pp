@@ -83,6 +83,16 @@ class graphite(
         require => Package['graphite-carbon'],
     }
 
+    # Dummy config file to use with carbonate during metric sync/backfill
+    file { '/etc/carbon/carbonate.conf':
+        ensure  => present,
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0444',
+        require => Package['graphite-carbon'],
+        content => '[main]\n',
+    }
+
     file { '/var/log/carbon':
         ensure  => directory,
         owner   => '_graphite',
