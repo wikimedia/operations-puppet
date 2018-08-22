@@ -101,10 +101,10 @@ menu = pfw3-eqiad
 title = pfw3-eqiad.wikimedia.org
 host = pfw3-eqiad.wikimedia.org
 
-+++ frbast1001
-menu = frbast1001
-title = frbast1001.wikimedia.org
-host = frbast1001.wikimedia.org
++++ frbast-eqiad
+menu = frbast-eqiad
+title = frbast-eqiad.wikimedia.org
+host = frbast-eqiad.wikimedia.org
 
 +++ thulium
 menu = thulium
@@ -224,10 +224,10 @@ menu = fasw-c-codfw
 title = fasw-c-codfw.mgmt.codfw.wmnet
 host = fasw-c-codfw.mgmt.codfw.wmnet
 
-+++ rigel
-menu = rigel
-title = rigel.wikimedia.org
-host = rigel.wikimedia.org
++++ frbast-codfw
+menu = frbast-codfw
+title = frbast-codfw.wikimedia.org
+host = frbast-codfw.wikimedia.org
 
 +++ saiph
 menu = saiph
