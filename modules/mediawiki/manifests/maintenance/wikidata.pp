@@ -52,7 +52,7 @@ class mediawiki::maintenance::wikidata( $ensure = present, $ensure_testwiki = pr
     }
 
     file { '/var/log/wikidata/rebuildTermSqlIndex.log':
-        ensure => $ensure,
+        ensure => absent,
         owner  => $::mediawiki::users::web,
         group  => $::mediawiki::users::web,
         mode   => '0664',
