@@ -109,11 +109,13 @@ read -a miscremotedirs_list <<<$miscremotedirs
 IFS=$IFS_SAVE
 
 while [ 1 ]; do
-
-    make_statusfiles_tarball
-
     # rsync of xml/sql dumps for public wikis
     for dest in $xmlremotedirs_list; do
+        # do this for each remote; if we do it once and then do all the rsyncs
+        # back to back, the status files in the tarball may be quite stale
+        # by the time they arrive at the last host
+        make_statusfiles_tarball
+
         /usr/bin/rsync -a  --contimeout=600 --timeout=600 --bwlimit=40000 --exclude='**bad/' --exclude='**save/' --exclude='**not/' --exclude='**temp/' --exclude='**tmp/' --exclude='*.inprog'  --exclude='*.html' --exclude='*.txt' --exclude='*.json' ${xmldumpsdir}/*wik* "$dest" > /dev/null 2>&1
 
 	# send statusfiles tarball over last, remote can unpack it when it notices the arrival
