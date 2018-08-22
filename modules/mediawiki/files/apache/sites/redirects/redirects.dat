@@ -463,8 +463,8 @@ funnel	svn.mediawiki.org	https://phabricator.wikimedia.org/diffusion/
 rewrite	download.wikimedia.org	https://dumps.wikimedia.org
 rewrite	download.wikipedia.org	https://dumps.wikimedia.org
 
-# redirect 2030.wikimedia.org to meta (T158981)
-funnel	2030.wikimedia.org	//meta.wikimedia.org/wiki/Strategy/Wikimedia_movement/2017
+# redirect 2030.wikimedia.org to meta (T158981, T202498)
+funnel	2030.wikimedia.org	//meta.wikimedia.org/wiki/Strategy/Wikimedia_movement/2018-20
 
 # redirect wikimedia.org/resources to meta (T172417)
 override	wikimedia.org/resources	//meta.wikimedia.org/wiki/Wikimedia_Resource_Center
