@@ -91,11 +91,12 @@ class DatabaseBackupStatistics(BackupStatistics):
         Returns True if it was successful, False otherwise.
         """
         logger = logging.getLogger('backup')
-        db = pymysql.connect(host=self.host, port=self.port, database=self.database,
-                             user=self.user, password=self.password,
-                             ssl={'ca': TLS_TRUSTED_CA})
-        if db is None:
-            logger.error('We could not connect to {} to store the stats'.format(self.host))
+        try:
+            db = pymysql.connect(host=self.host, port=self.port, database=self.database,
+                                 user=self.user, password=self.password,
+                                 ssl={'ca': TLS_TRUSTED_CA})
+        except (pymysql.err.OperationalError):
+            logger.exception('We could not connect to {} to store the stats'.format(self.host))
             return False
         with db.cursor(pymysql.cursors.DictCursor) as cursor:
             if status == 'ongoing':
