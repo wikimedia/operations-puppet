@@ -4,8 +4,13 @@ keystone_url = http://<%= @keystone_host %>:35357/v3
 user = novaadmin
 password = <%= @ldap_user_pass %>
 ssh_root_key_path = /home/andrew/vps_root_key
+<% if @site == "eqiad" -%>
+vps_domain = eqiad.wmflabs
+dns_server = labs-ns0.wikimedia.org
+<% elsif @site == "codfw" -%>
 vps_domain = codfw.labtest
 dns_server = labtest-ns0.wikimedia.org
+<% end %>
 
 [source]
 region = <%= @site %>
@@ -19,7 +24,7 @@ db_password = <%= @nova_db_pass %>
 
 region = eqiad1-r
 db_hostname = m5-master.eqiad.wmnet
-network_id = ToBeDetermined
+network_id = 7425e328-560c-4f00-8e99-706f3fb90bb4
 
 <% elsif @site == "codfw" -%>
 
