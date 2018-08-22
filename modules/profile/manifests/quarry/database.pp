@@ -3,13 +3,18 @@
 # Sets up a mysql database for use by Quarry web frontends
 # and Quarry query runners
 class profile::quarry::database {
-    $data_path = '/srv/mysql/data'
 
-    class { '::mysql::server':
-        package_name => 'mariadb-server',
-        config_hash  => {
-            'datadir'      => $data_path,
-            'bind_address' => '0.0.0.0',
-        },
+    package { [
+        'libmariadbclient18',
+        'mariadb-client',
+        'mariadb-server',
+        'percona-toolkit',
+    ]:
+        ensure => present,
+    }
+
+    class { '::mariadb::config':
+        basedir => '/usr',
+        datadir => '/srv/sqldata',
     }
 }
