@@ -2010,7 +2010,7 @@ node 'sarin.codfw.wmnet' {
 
 #Will replace old system ruthenium via T201366
 node 'scandium.eqiad.wmnet' {
-    role(spare::system)
+    role(parsoid::testing)
 }
 
 
