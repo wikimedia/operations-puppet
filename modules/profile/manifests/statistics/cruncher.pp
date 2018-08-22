@@ -12,9 +12,6 @@ class profile::statistics::cruncher(
 
     include ::deployment::umask_wikidev
 
-    include ::profile::backup::host
-    backup::set { 'home' : }
-
     class { '::statistics':
         servers      => $statistics_servers,
     }
