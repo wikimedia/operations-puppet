@@ -60,7 +60,7 @@ class releases (
         ensure  => 'directory',
         mode    => '2775',
         owner   => 'root',
-        group   => 'releasers-mediawiki',
+        group   => 'releasers-wikidiff2',
         require => File['/srv/org/wikimedia/releases'],
     }
 
