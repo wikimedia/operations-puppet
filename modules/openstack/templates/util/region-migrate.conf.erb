@@ -14,11 +14,13 @@ dns_server = labtest-ns0.wikimedia.org
 
 [source]
 region = <%= @site %>
+proxy = restricted.bastion.wmflabs.org
 
 [dest]
 db_username = nova
 db_name = nova
 db_password = <%= @nova_db_pass %>
+proxy = eqiad1-restricted.bastion.wmflabs.org
 
 <% if @site == "eqiad" -%>
 
@@ -31,5 +33,6 @@ network_id = 7425e328-560c-4f00-8e99-706f3fb90bb4
 region = codfw1dev-r
 db_hostname = labtestcontrol2003.wikimedia.org
 network_id = 05a5494a-184f-4d5c-9e98-77ae61c56daa
+network_name = lan-flat-cloudinstances2b
 
 <% end %>
