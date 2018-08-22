@@ -25,7 +25,11 @@ class openstack::neutron::metadata_agent(
     }
 
     service {'neutron-metadata-agent':
-        ensure  => 'running',
-        require => Package['neutron-metadata-agent'],
+        ensure    => 'running',
+        require   => Package['neutron-metadata-agent'],
+        subscribe => [
+                      File['/etc/neutron/neutron.conf'],
+                      File['/etc/neutron/metadata_agent.ini'],
+            ],
     }
 }

@@ -42,7 +42,11 @@ class openstack::neutron::linuxbridge_agent(
     }
 
     service {'neutron-linuxbridge-agent':
-        ensure  => 'running',
-        require => Package['neutron-linuxbridge-agent'],
+        ensure    => 'running',
+        require   => Package['neutron-linuxbridge-agent'],
+        subscribe => [
+                      File['/etc/neutron/neutron.conf'],
+                      File['/etc/neutron/plugins/ml2/ml2_conf.ini'],
+            ],
     }
 }

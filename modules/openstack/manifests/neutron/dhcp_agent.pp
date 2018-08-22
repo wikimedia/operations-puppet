@@ -32,7 +32,12 @@ class openstack::neutron::dhcp_agent(
     }
 
     service {'neutron-dhcp-agent':
-        ensure  => 'running',
-        require => Package['neutron-dhcp-agent'],
+        ensure    => 'running',
+        require   => Package['neutron-dhcp-agent'],
+        subscribe => [
+                      File['/etc/neutron/neutron.conf'],
+                      File['/etc/neutron/dhcp_agent.ini'],
+                      File['/etc/neutron/dnsmasq-neutron.conf'],
+            ],
     }
 }
