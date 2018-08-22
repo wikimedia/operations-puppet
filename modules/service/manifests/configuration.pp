@@ -43,7 +43,7 @@
 #   Default: false
 #
 class service::configuration(
-    $mwapi_host     = 'http://api-rw.discovery.wmnet',
+    $mwapi_host     = 'https://api-rw.discovery.wmnet',
     $restbase_uri  = 'http://restbase.discovery.wmnet:7231',
     $pdfrender_key = 'secret',
     $http_proxy    = undef,
