@@ -17,9 +17,14 @@
 #    protection against any attacker. This option restricts the firewall rules
 #    to allow only localhost TCP connections.
 #
+#  [*monitoring_enabled*]
+#    Enable monitoring/alarming.
+#    Default: false
+#
 class profile::archiva::proxy(
-    $ssl_enabled    = hiera('profile::archiva::proxy::ssl_enabled', false),
-    $only_localhost = hiera('profile::archiva::proxy::only_localhost', false),
+    $ssl_enabled        = hiera('profile::archiva::proxy::ssl_enabled', false),
+    $only_localhost     = hiera('profile::archiva::proxy::only_localhost', false),
+    $monitoring_enabled = hiera('profile::archiva::proxy::monitoring_enabled', false),
 ) {
 
     class { '::archiva::proxy':
@@ -44,9 +49,11 @@ class profile::archiva::proxy(
             srange => $ferm_srange,
         }
 
-        monitoring::service { 'https_archiva':
-            description   => 'HTTPS',
-            check_command => 'check_ssl_http_letsencrypt!archiva.wikimedia.org',
+        if $monitoring_enabled {
+            monitoring::service { 'https_archiva':
+                description   => 'HTTPS',
+                check_command => 'check_ssl_http_letsencrypt!archiva.wikimedia.org',
+            }
         }
     }
 }
