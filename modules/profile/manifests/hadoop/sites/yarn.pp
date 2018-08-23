@@ -11,6 +11,7 @@ class profile::hadoop::sites::yarn {
     class { '::apache::mod::xml2enc': }
     class { '::apache::mod::auth_basic': }
     class { '::apache::mod::authnz_ldap': }
+    class { '::apache::mod::headers': }
     class { '::passwords::ldap::production': }
 
     $proxypass = $passwords::ldap::production::proxypass
