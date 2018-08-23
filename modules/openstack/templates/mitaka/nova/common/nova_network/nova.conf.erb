@@ -83,7 +83,7 @@ connection = mysql://<%= @db_user %>:<%= @db_pass %>@<%= @db_host %>/nova_api
 [database]
 connection=mysql://<%= @db_user %>:<%= @db_pass %>@<%= @db_host %>/<%= @db_name %>
 max_overflow = 25
-max_pool_size = 10
+max_pool_size = 4
 pool_timeout = 60
 idle_timeout = 1800
 
