@@ -39,6 +39,7 @@ import time
 import glanceclient
 from keystoneclient.auth.identity import generic
 from keystoneclient import session as keystone_session
+from neutronclient.v2_0 import client as neutronclient
 from novaclient import client
 
 
@@ -64,7 +65,8 @@ class NovaInstance(object):
             project_domain_name='Default',
             project_name='admin')
         source_session = keystone_session.Session(auth=source_auth)
-        self.source_novaclient = client.Client('2', session=source_session, region_name=source_config['region'])
+        self.source_novaclient = client.Client('2', session=source_session,
+                                               region_name=source_config['region'])
 
         self.refresh_instance()
         self.project_id = self.source_instance.tenant_id
@@ -78,7 +80,10 @@ class NovaInstance(object):
             project_domain_name='Default',
             project_name='admin')
         self.dest_session = keystone_session.Session(auth=dest_auth)
-        self.dest_novaclient = client.Client('2', session=self.dest_session, region_name=dest_config['region'])
+        self.dest_novaclient = client.Client('2', session=self.dest_session,
+                                             region_name=dest_config['region'])
+        self.dest_neutronclient = neutronclient.Client(session=self.dest_session,
+                                                       region_name=dest_config['region'])
 
     # Returns True if the status changed, otherwise False
     @staticmethod
@@ -117,7 +122,7 @@ class NovaInstance(object):
     def dns_test(self, source=True, accept_multiples=False):
         if source:
             instance = self.source_instance
-            target_ip = instance.addresses['public'][0]['addr']
+            target_ip = self.get_fixed_ip(instance)
         else:
             instance = self.dest_instance
             target_ip = instance.addresses[self.dest_config['network_name']][0]['addr']
@@ -143,16 +148,31 @@ class NovaInstance(object):
                 print("Got multiple IPs for %s" % fqdn)
                 return False
 
-        if ips[0] != target_ip:
+        if target_ip not in ips:
             print("Got wrong ip %s for %s, should be %s" % (r, fqdn, target_ip))
             return False
 
         return True
 
+    def get_fixed_ip(self, instance):
+        for address in instance.addresses['public']:
+            if address['OS-EXT-IPS:type'] == 'fixed':
+                return address['addr']
+
+        print "WARNING: no fixed IP found for instance %s" % instance.name
+
+    def get_floating_ips(self, instance):
+        floating = []
+        for address in instance.addresses['public']:
+            if address['OS-EXT-IPS:type'] == 'floating':
+                floating.append(address['addr'])
+
+        return floating
+
     def ssh_test(self, source=True):
         if source:
             instance = self.source_instance
-            target_ip = instance.addresses['public'][0]['addr']
+            target_ip = self.get_fixed_ip(instance)
             proxy = self.source_config['proxy']
         else:
             instance = self.dest_instance
@@ -175,7 +195,8 @@ class NovaInstance(object):
             return False
 
         if r.strip() != instance.name:
-            print("ssh test to %s failed.  Returned hostname %s but expected %s" % (target_ip, r.strip(), instance.name))
+            print("ssh test to %s failed.  Returned hostname %s but expected %s" %
+                  (target_ip, r.strip(), instance.name))
             return False
         else:
             print("verified ssh for %s, returned hostname %s" % (target_ip, r))
@@ -208,6 +229,30 @@ class NovaInstance(object):
             else:
                 watched_instance = self.dest_instance
 
+    def assign_floating_ip_to_destination_vm(self):
+
+        ports = []
+        all_ports = self.dest_neutronclient.list_ports()
+        for port in all_ports['ports']:
+            if port['device_id'] == self.dest_instance.id:
+                ports.append(port)
+
+        print("ports: %s" % ports)
+        if len(ports) > 1:
+            print("Got the wrong number of ports for the dest VM.")
+            exit(1)
+
+        port = ports[0]
+
+        resp = self.dest_neutronclient.create_floatingip(
+                {'floatingip':
+                 {'tenant_id': self.project_id,
+                  'floating_network_id': self.dest_config['floating_ip_network_id'],
+                  'port_id': port['id']}})
+
+        self.dest_floating_ip = resp
+        print("Assigned floating IP is %s" % str(resp))
+
     def make_destination_vm(self, name, image_id, flavor_id):
         # we need a project-scoped session to create the VM in the right project
         create_auth = generic.Password(
@@ -218,7 +263,8 @@ class NovaInstance(object):
             project_domain_name='Default',
             project_name=self.project_id)
         create_session = keystone_session.Session(auth=create_auth)
-        self.create_novaclient = client.Client('2', session=create_session, region_name=self.dest_config['region'])
+        self.create_novaclient = client.Client('2', session=create_session,
+                                               region_name=self.dest_config['region'])
 
         nics = [{"net-id": self.dest_config['network_id'], "v4-fixed-ip": ''}]
         inst = self.create_novaclient.servers.create(name, image_id, flavor_id, nics=nics)
@@ -240,6 +286,16 @@ class NovaInstance(object):
         name = self.source_instance.name
         image_id = self.source_instance.image['id']
         flavor_id = self.source_instance.flavor['id']
+
+        floating_ips = self.get_floating_ips(self.source_instance)
+
+        if len(floating_ips) > 1:
+            print("This VM has more than one floating IP -- this case is not supported.")
+            exit(1)
+        elif len(floating_ips) == 1:
+            self.source_floating_ip = floating_ips[0]
+        else:
+            self.source_floating_ip = None
 
         # Make sure that our dns tests are working
         if not self.dns_test():
@@ -266,6 +322,9 @@ class NovaInstance(object):
         activated_image = self.activate_image(self.dest_session, image_id)
 
         self.make_destination_vm(name, image_id, flavor_id)
+
+        if self.source_floating_ip:
+            self.assign_floating_ip_to_destination_vm()
 
         # Make sure we have a working key for copying instances
         sshargs = ["ssh", "-i", "/root/.ssh/compute-hosts-key",
@@ -401,5 +460,4 @@ if __name__ == "__main__":
                             config['common'],
                             config['source'],
                             config['dest'])
-
     instance.migrate()
