@@ -6,6 +6,7 @@ class postgresql::slave::monitoring(
     $pg_password,
     $pg_user = 'replication',
     $pg_database = 'template1',
+    $description = 'Postgres Replication Lag',
     $critical = 16777216, # 16Mb
     $warning = 1048576, # 1Mb
 ) {
@@ -16,7 +17,7 @@ class postgresql::slave::monitoring(
 --warning=${warning} --critical=${critical}"
 
     nrpe::monitor_service { 'postgres-rep-lag':
-        description  => 'Postgres Replication Lag',
+        description  => $description,
         nrpe_command => $icinga_command,
     }
 

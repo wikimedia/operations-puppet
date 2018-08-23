@@ -128,6 +128,7 @@ class profile::netbox (
             pg_user     => 'replication',
             pg_password => $replication_pass,
             pg_database => 'netbox',
+            description => 'netbox Postgres',
         }
     }
 
@@ -157,13 +158,13 @@ class profile::netbox (
 
     monitoring::service { 'netbox-ssl':
         ensure        => $monitoring_ensure,
-        description   => 'Netbox SSL',
+        description   => 'netbox SSL',
         check_command => 'check_ssl_http_letsencrypt!netbox.wikimedia.org',
     }
 
     monitoring::service { 'netbox-https':
         ensure        => $monitoring_ensure,
-        description   => 'Netbox HTTPS',
+        description   => 'netbox HTTPS',
         check_command => 'check_https_url!netbox.wikimedia.org!https://netbox.wikimedia.org',
     }
 }
