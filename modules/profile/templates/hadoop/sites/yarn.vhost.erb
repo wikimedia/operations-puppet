@@ -1,0 +1,64 @@
+#####################################################################
+### THIS FILE IS MANAGED BY PUPPET
+#####################################################################
+# vim: filetype=apache
+
+<VirtualHost *:80>
+    ServerName <%= @server_name %>
+    ServerSignature Off
+
+    # Not used since this VHost will only act as proxy,
+    # but it is needed to avoid error messages in the httpd
+    # logs and logrotate crons.
+    DocumentRoot /var/www
+
+    <Directory />
+        Options FollowSymLinks
+        AllowOverride None
+        Require all denied
+    </Directory>
+
+    <Location />
+        AuthName "WMF Labs (use wiki login name not shell)"
+        AuthType Basic
+        AuthBasicProvider ldap
+        AuthLDAPBindDN cn=proxyagent,ou=profile,dc=wikimedia,dc=org
+        AuthLDAPBindPassword <%= @proxypass %>
+        AuthLDAPURL "ldaps://ldap-labs.eqiad.wikimedia.org ldap-labs.codfw.wikimedia.org/ou=people,dc=wikimedia,dc=org?cn"
+        Require ldap-group cn=wmf,ou=groups,dc=wikimedia,dc=org
+        Require ldap-group cn=nda,ou=groups,dc=wikimedia,dc=org
+
+        # The Jetty Webserver (responsible for the Yarn UI) returns HTML with hardcoded
+        # links in the HTML hrefs, so we need a way to avoid broken links.
+        # Not using 'ProxyHTMLEnable On' since it breaks the visualization of
+        # Spark shell logs in the UI.
+
+        # https://httpd.apache.org/docs/2.4/mod/mod_proxy_html.html#comment_3329
+        SetOutputFilter INFLATE;proxy-html;DEFLATE
+
+        # Force the Accept-Encoding: gzip request header (even when not explicitly
+        # asked) since for some reason the /static/ javascript content
+        # (see jar tf /usr/lib/hadoop-yarn/hadoop-yarn-common-2.6.0-cdh5.10.0.jar)
+        # is precompressed and Jetty, with its current settings, returns a 404
+        # without an explicit A-E:gzip request.
+        RequestHeader add Accept-Encoding gzip
+
+        # Links contained in embedded JS script that cause a broken UI experience
+        # if left untouched.
+        ProxyHTMLExtended On
+        ProxyHTMLLinks a href
+        ProxyHTMLURLMap http://<%= @resourcemanager_primary_host %>:8088/ / L
+        ProxyHTMLURLMap http://<%= @resourcemanager_primary_host %>:19888/ / L
+    </Location>
+
+    CustomLog /var/log/apache2/<%= @server_name %>-access.log wmf
+    ErrorLog /var/log/apache2/<%= @server_name %>.log
+
+    LogLevel warn
+
+    ProxyPass /jobhistory/ http://<%= @resourcemanager_primary_host %>:19888/jobhistory/
+    ProxyPassReverse /jobhistory/ http://<%= @resourcemanager_primary_host %>:19888/jobhistory/
+
+    ProxyPass / http://<%= @resourcemanager_primary_host %>:8088/
+    ProxyPassReverse / http://<%= @resourcemanager_primary_host %>:8088/
+</VirtualHost>
