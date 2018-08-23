@@ -21,6 +21,7 @@ class profile::druid::turnilo(
     $port               = hiera('profile::druid::turnilo::port', 9091),
     $monitoring_enabled = hiera('profile::druid::turnilo::monitoring_enabled', false),
     $contact_group      = hiera('profile::druid::turnilo::contact_group', 'analytics'),
+    $proxy_enabled      = hiera('profile::druid::turnilo::proxy_enabled', true)
 ) {
     class { 'turnilo':
         druid_clusters => $druid_clusters,
@@ -30,5 +31,16 @@ class profile::druid::turnilo(
         description   => 'turnilo',
         check_command => "check_tcp!${port}",
         contact_group => $contact_group,
+    }
+
+    if $proxy_enabled {
+        $server_name = $::realm ? {
+            'production' => 'turnilo.wikimedia.org',
+            'labs'       => "turnilo-${::labsproject}.${::site}.wmflabs",
+        }
+
+        class { 'turnilo::proxy':
+            server_name => $server_name
+        }
     }
 }

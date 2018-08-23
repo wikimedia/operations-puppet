@@ -1,0 +1,49 @@
+#####################################################################
+### THIS FILE IS MANAGED BY PUPPET
+#####################################################################
+# vim: filetype=apache
+
+<VirtualHost *:80>
+    ServerName <%= @server_name %>
+    ServerSignature Off
+
+    # Not used since this VHost will only act as proxy,
+    # but it is needed to avoid error messages in the httpd
+    # logs and logrotate crons.
+    DocumentRoot /var/www
+
+    <Directory />
+        Options FollowSymLinks
+        AllowOverride None
+        Require all denied
+    </Directory>
+
+    <Location />
+        AuthName "WMF Labs (use wiki login name not shell)"
+        AuthType Basic
+        AuthBasicProvider ldap
+        AuthLDAPBindDN cn=proxyagent,ou=profile,dc=wikimedia,dc=org
+        AuthLDAPBindPassword <%= @proxypass %>
+        AuthLDAPURL "ldaps://ldap-labs.eqiad.wikimedia.org ldap-labs.codfw.wikimedia.org/ou=people,dc=wikimedia,dc=org?cn"
+        Require ldap-group cn=wmf,ou=groups,dc=wikimedia,dc=org
+        Require ldap-group cn=nda,ou=groups,dc=wikimedia,dc=org
+    </Location>
+
+    CustomLog /var/log/apache2/<%= @server_name %>-access.log wmf
+    ErrorLog /var/log/apache2/<%= @server_name %>-error.log
+    LogLevel warn
+
+    ProxyPass / http://localhost:<%= @turnilo_port %>/
+    ProxyPassReverse / http://localhost:<%= @turnilo_port %>/
+</VirtualHost>
+
+
+# Redirect old pivot.wikimedia.org to renamed new <%= @server_name %>
+<VirtualHost *:80>
+    ServerName pivot.wikimedia.org
+    Redirect "/" "https://<%= @server_name %>/"
+
+    CustomLog /var/log/apache2/pivot.wikimedia.org-access.log wmf
+    ErrorLog /var/log/apache2/pivot.wikimedia.org-error.log
+    LogLevel warn
+</VirtualHost>
