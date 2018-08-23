@@ -1,8 +1,8 @@
-# = Class: quarry::celeryrunner
+# = Class: profile::quarry::celeryrunner
 #
 # Runs queries submitted via celery
-class quarry::celeryrunner {
-    require ::quarry::base
+class profile::quarry::celeryrunner {
+    require ::profile::quarry::base
 
     celery::worker { 'quarry-worker':
         app         => 'quarry.web.worker',

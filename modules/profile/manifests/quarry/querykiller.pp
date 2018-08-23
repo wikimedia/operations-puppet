@@ -1,9 +1,9 @@
 
-# = Class: quarry:querykiller
+# = Class: profile::quarry:querykiller
 #
 # Sets up a cron based query-killer
-class quarry::querykiller {
-    require ::quarry::base
+class profile::quarry::querykiller {
+    require ::profile::quarry::base
 
     file { '/var/log/quarry':
         ensure => directory,
