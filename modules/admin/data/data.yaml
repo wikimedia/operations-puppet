@@ -117,7 +117,7 @@ groups:
   releasers-wikidiff2:
     gid: 804
     description: people who upload wikidiff2 releases (T202473)
-    members: [demon, legoktm]
+    members: [demon, legoktm, wmde-fisch]
   udp2log-users:
     gid: 713
     description: general user tasks for udp2log (RT 5391)
