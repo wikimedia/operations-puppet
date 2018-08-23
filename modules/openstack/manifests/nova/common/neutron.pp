@@ -4,6 +4,7 @@ class openstack::nova::common::neutron(
     $db_pass,
     $db_host,
     $db_name,
+    $db_name_api,
     $nova_controller,
     $keystone_host,
     $scheduler_pool,

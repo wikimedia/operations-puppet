@@ -19,6 +19,7 @@ class openstack::nova::common::nova_network(
     $db_pass,
     $db_host,
     $db_name,
+    $db_name_api,
     $ldap_user_pass,
     $libvirt_type,
     $live_migration_uri,

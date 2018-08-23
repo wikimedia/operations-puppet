@@ -67,10 +67,10 @@ default_floating_pool = ext-nat
 linuxnet_interface_driver = nova.network.linux_net.LinuxBridgeInterfaceDriver
 
 [api_database]
-connection = mysql://<%= @db_user %>:<%= @db_pass %>@<%= @db_host %>/nova_api
+connection = mysql://<%= @db_user %>:<%= @db_pass %>@<%= @db_host %>/<%= @db_name_api %>
 
 [database]
-connection = mysql://<%= @db_user %>:<%= @db_pass %>@<%= @db_host %>/nova
+connection = mysql://<%= @db_user %>:<%= @db_pass %>@<%= @db_host %>/<%= @db_name %>
 max_overflow = 25
 max_pool_size = 4
 pool_timeout = 60

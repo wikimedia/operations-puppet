@@ -78,7 +78,7 @@ iscsi_helper=tgtadm
 notification_driver = messagingv2
 
 [api_database]
-connection = mysql://<%= @db_user %>:<%= @db_pass %>@<%= @db_host %>/nova_api
+connection = mysql://<%= @db_user %>:<%= @db_pass %>@<%= @db_host %>/<%= @db_name_api %>
 
 [database]
 connection=mysql://<%= @db_user %>:<%= @db_pass %>@<%= @db_host %>/<%= @db_name %>
