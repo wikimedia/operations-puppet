@@ -16,11 +16,6 @@ class mediawiki::packages {
     # Score
     require_package('lilypond', 'timidity', 'freepats')
 
-    # timidity recommends timidity-daemon, but we don't need it.
-    package { 'timidity-daemon':
-      ensure => absent,
-    }
-
     # Math rendering
     require_package('dvipng', 'gsfonts', 'make', 'ocaml', 'ploticus', 'texvc')
 
