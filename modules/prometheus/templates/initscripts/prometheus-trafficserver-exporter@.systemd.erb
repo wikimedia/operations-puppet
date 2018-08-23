@@ -1,0 +1,12 @@
+[Unit]
+Description=Prometheus exporter for Traffic Server (instance %i)
+Documentation=https://prometheus.io/docs/introduction/overview/
+
+[Service]
+Restart=always
+User=prometheus
+Group=prometheus
+ExecStart=/usr/bin/trafficserver_exporter --no-procstats --endpoint <%= @endpoint %> --port <%= @listen_port %>
+
+[Install]
+WantedBy=multi-user.target

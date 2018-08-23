@@ -30,4 +30,8 @@ class profile::trafficserver::backend (
             unit_test => "puppet:///modules/profile/trafficserver/${lua_script}_test.lua",
         }
     }
+
+    prometheus::trafficserver_exporter { 'trafficserver_exporter':
+        endpoint => "http://127.0.0.1:${port}/_stats",
+    }
 }
