@@ -271,6 +271,23 @@ class role::prometheus::ops {
         port       => '3904',
     }
 
+    # Job definition for trafficserver_exporter
+    $trafficserver_jobs = [
+      {
+        'job_name'        => 'trafficserver',
+        'file_sd_configs' => [
+          { 'files' => [ "${targets_path}/trafficserver_*.yaml"] },
+        ],
+      },
+    ]
+
+    prometheus::class_config{ "trafficserver_${::site}":
+        dest       => "${targets_path}/trafficserver_${::site}.yaml",
+        site       => $::site,
+        class_name => 'role::trafficserver::backend',
+        port       => '9122',
+    }
+
     # Job definition for memcache_exporter
     $memcached_jobs = [
       {
@@ -973,7 +990,7 @@ class role::prometheus::ops {
         max_chunks_to_persist => $max_chunks_to_persist,
         memory_chunks         => $memory_chunks,
         scrape_configs_extra  => array_concat(
-            $mysql_jobs, $varnish_jobs, $memcached_jobs, $hhvm_jobs,
+            $mysql_jobs, $varnish_jobs, $trafficserver_jobs, $memcached_jobs, $hhvm_jobs,
             $apache_jobs, $etcd_jobs, $etcdmirror_jobs, $mcrouter_jobs, $pdu_jobs,
             $nginx_jobs, $pybal_jobs, $blackbox_jobs, $jmx_exporter_jobs,
             $redis_jobs, $mtail_jobs, $ldap_jobs, $ircd_jobs, $pdns_rec_jobs,
