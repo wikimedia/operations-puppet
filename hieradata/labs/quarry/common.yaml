@@ -1,0 +1,3 @@
+profile::quarry::base::clone_path: '/srv/quarry'
+profile::quarry::base::result_path: '/data/project/quarry/results'
+profile::quarry::base::result_path_parent: '/data/project/quarry'

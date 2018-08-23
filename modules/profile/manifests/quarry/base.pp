@@ -1,11 +1,11 @@
-# = Class: quarry::base
+# = Class: profile::quarry::base
 #
 # This class sets up the basic underlying structure for both
 # Quarry web frontends and Quarry query runners.
-class quarry::base(
-    $clone_path = '/srv/quarry',
-    $result_path_parent = '/data/project/quarry',
-    $result_path = '/data/project/quarry/results',
+class profile::quarry::base(
+    $clone_path = hiera('profile::quarry::base::clone_path'),
+    $result_path_parent = hiera('profile::quarry::base::result_path_parent'),
+    $result_path = hiera('profile::quarry::base::result_path'),
 ) {
     include ::redis::client::python
 
