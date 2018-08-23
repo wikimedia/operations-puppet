@@ -3,5 +3,5 @@
 #
 # filtertags: labs-project-quarry
 class role::labs::quarry::killer {
-    include quarry::querykiller
+    include ::profile::quarry::querykiller
 }
