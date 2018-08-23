@@ -1,0 +1,9 @@
+# This file is managed by Puppet
+
+[Unit]
+After=mysql.service
+
+[Service]
+ExecStart=/usr/bin/pt-heartbeat --update
+User=heartbeat
+
