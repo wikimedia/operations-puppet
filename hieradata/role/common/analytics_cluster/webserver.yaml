@@ -11,9 +11,12 @@ profile::superset::database_uri: mysql://superset@analytics1003.eqiad.wmnet/supe
 profile::superset::workers: 8
 profile::superset::ldap_proxy_enabled: true
 
+# To be removed after hue moves to analytics-tool1001
 profile::hue::database_host: 'analytics1003.eqiad.wmnet'
 profile::hue::hive_server_host: 'analytics1003.eqiad.wmnet'
 profile::hue::monitoring_enabled: true
+# This is configured elsewhere via the statistics module; to be removed soon.
+profile::hue::proxy_enabled: false
 
 # TO be removed after turnilo moves to analytics-tool1002
 profile::druid::turnilo::port: 9091

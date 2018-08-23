@@ -7,7 +7,8 @@ class role::analytics_cluster::hadoop::ui {
         description => 'Hadoop GUIs: Hue and Yarn ResourceManager web interfaces'
     }
 
-    # include ::profile::hue
+    # hue.wikimedia.org
+    include ::profile::hue
 
     # yarn.wikimedia.org
     include ::profile::hadoop::yarn_proxy

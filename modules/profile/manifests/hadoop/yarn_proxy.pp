@@ -5,14 +5,17 @@
 class profile::hadoop::yarn_proxy {
     include profile::hadoop::common
 
-    class { '::apache::mod::proxy_http': }
-    class { '::apache::mod::proxy': }
-    class { '::apache::mod::proxy_html': }
-    class { '::apache::mod::xml2enc': }
-    class { '::apache::mod::auth_basic': }
-    class { '::apache::mod::authnz_ldap': }
-    class { '::apache::mod::headers': }
-    class { '::passwords::ldap::production': }
+    # Ignore wmf styleguide; Need to include here as well as in profile/hue.pp
+    # lint:ignore:wmf_styleguide
+    include ::apache::mod::proxy_http
+    include ::apache::mod::proxy
+    include ::apache::mod::proxy_html
+    include ::apache::mod::xml2enc
+    include ::apache::mod::auth_basic
+    include ::apache::mod::authnz_ldap
+    include ::apache::mod::headers
+    include ::passwords::ldap::production
+    # lint:endignore
 
     $proxypass = $passwords::ldap::production::proxypass
 

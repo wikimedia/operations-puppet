@@ -3,6 +3,3 @@
 profile::superset::database_uri: mysql://superset@analytics1003.eqiad.wmnet/superset
 profile::superset::workers: 8
 profile::superset::ldap_proxy_enabled: true
-
-profile::hue::database_host: 'analytics1003.eqiad.wmnet'
-profile::hue::hive_server_host: 'analytics1003.eqiad.wmnet'
