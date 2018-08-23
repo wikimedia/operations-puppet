@@ -62,8 +62,14 @@ node 'analytics-tool1002.eqiad.wmnet' {
     role(analytics_cluster::turnilo)
 }
 
+# superset.wikimedia.org
+# https://wikitech.wikimedia.org/wiki/Analytics/Systems/Superset
+node 'analytics-tool1003.eqiad.wmnet' {
+    role(analytics_cluster::superset)
+}
+
 # ganeti VMs for Analytics tools/sites (T202013)
-node /analytics-tool100[13]\.eqiad\.wmnet/ {
+node 'analytics-tool1001.eqiad.wmnet' {
     role(spare::system)
 }
 
