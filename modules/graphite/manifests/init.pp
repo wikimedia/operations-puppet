@@ -90,7 +90,7 @@ class graphite(
         group   => 'root',
         mode    => '0444',
         require => Package['graphite-carbon'],
-        content => '[main]\n',
+        content => "[main]\n",
     }
 
     file { '/var/log/carbon':
