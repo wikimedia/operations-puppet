@@ -25,3 +25,5 @@ profile::druid::turnilo::druid_clusters:
     type: druid
 
 profile::druid::turnilo::monitoring_enabled: true
+# This is configured elsewhere via the statistics module; to be removed soon.
+profile::druid::turnilo::proxy_enabled: false
