@@ -39,7 +39,7 @@ class graphite::monitoring::graphite {
     monitoring::graphite_threshold { 'carbon-cache_write_error':
         description     => 'carbon-cache write error',
         dashboard_links => ['https://grafana.wikimedia.org/dashboard/db/graphite-eqiad?orgId=1&panelId=30&fullscreen'],
-        metric          => 'secondYAxis(sumSeries(carbon.agents.graphite1001-*.errors))',
+        metric          => 'secondYAxis(sumSeries(carbon.agents.graphite1004-*.errors))',
         from            => '10minutes',
         warning         => 1,
         critical        => 8,
@@ -51,7 +51,7 @@ class graphite::monitoring::graphite {
     monitoring::graphite_threshold { 'carbon-cache_overflow':
         description     => 'carbon-cache queues overflow',
         dashboard_links => ['https://grafana.wikimedia.org/dashboard/db/graphite-eqiad?orgId=1&panelId=8&fullscreen'],
-        metric          => 'secondYAxis(sumSeries(carbon.agents.graphite1001-*.cache.overflow))',
+        metric          => 'secondYAxis(sumSeries(carbon.agents.graphite1004-*.cache.overflow))',
         from            => '10minutes',
         warning         => 1,
         critical        => 8,
@@ -63,7 +63,7 @@ class graphite::monitoring::graphite {
     monitoring::graphite_threshold { 'carbon-cache_many_creates':
         description     => 'carbon-cache too many creates',
         dashboard_links => ['https://grafana.wikimedia.org/dashboard/db/graphite-eqiad?orgId=1&panelId=9&fullscreen'],
-        metric          => 'sumSeries(carbon.agents.graphite1001-*.creates)',
+        metric          => 'sumSeries(carbon.agents.graphite1004-*.creates)',
         from            => '30min',
         warning         => 500,
         critical        => 1000,
