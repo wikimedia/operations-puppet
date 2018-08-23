@@ -20,6 +20,11 @@ class profile::archiva(
         }
     }
 
+    # Archiva's rsync has no srange restrictions since git-fat uses rsync,
+    # and it must be (read-only) reachable from everywhere. This is particularly
+    # noticeable in set ups where Archiva is exposed to the public Internet,
+    # since local set ups would not be able to pull dependencies if rsync
+    # wasn't properly exposed.
     ferm::service { 'archiva_rsync':
         proto => 'tcp',
         port  => '873',
