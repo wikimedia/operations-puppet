@@ -45,6 +45,12 @@ class profile::superset(
     $ldap_proxy_enabled = hiera('profile::superset::ldap_proxy_enabled', false),
     $statsd             = hiera('statsd', undef),
 ) {
+
+    if os_version('debian >= stretch') {
+        # Need libmariadbclient18 for mysql database
+        require_package('libmariadbclient18')
+    }
+
     # If given $database_password, insert it into $database_uri.
     $full_database_uri = $database_password ? {
         undef   => $database_uri,
