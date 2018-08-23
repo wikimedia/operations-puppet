@@ -2829,6 +2829,15 @@ users:
       - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC6GvnAGyZIE/zjBpRQINxGS8fzTTj1TjSLczbSaVhQOw52NrelEPw2yI0NyLaBPcPD1awob/seIigrJls+Cx3cxSww1fWEe+rRanUy3MXckcK0Hy1U+Ut+Aj9XcBYGl83oanriTXYiIKgSv0w2NzH0ttIwQqPpI2P4ahu2N5psZHU9GE3ccSH+enZ6eF8RmiWR2thGM84axCHqsuOMScmReYwJfxMi0zRyg7ag9HfLHZSrE6X4Y1buJf82bEUJVs7S77TiFfr7u3VIxupEM3amLD3EF1NTTEhUKiDXD07frOuen1KeJfjbDWFBpTA0ai0DE67dn8FfL6sJzEmmg7XD
     uid: 18640
     email: tonina.zhelyazkova@wikimedia.de
+  pearley:
+    ensure: present
+    realname: Patrick Earley
+    name: pearley
+    gid: 500
+    ssh_keys:
+      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQCkuGVdh5aLFt5xlJ5k2+LFmELmsYknZvo+JICa650muKIizaI2/lYbCMwtl9VDNudpqzsgeITKZ04HFicGIPlraZU8yZ5KVoWmhddEyhUVBib1lq0WEnyPrjlR1ljb5ets052keahF8+nTekRa4p+cWS1CGFyyrIEwEmSFuAo5yPX64cFYzhIn9pysIDSwYJeH0I4kRcCr7gczS2L/qO64lbDhgeshTQsRxDVlNHdz5f3zp2xnSdLuOsXh5vMdETxSZGc7TdGv5TbRSZqD4I0uD9d8OvWS0ZU5NpL9mOtIrkU1zzYcQmggiO5wS0ChUKZoXTWZbBdbJensdq5rLEicejlxU2guStwJyL0wEAWePslcH9axlb69We1MTH+Iel+T41sJaAUJSzCuWGLiUeBX153xro1mWQWaOPkklkcf29nhsYBP7kd5O1JIMnpeOalXuc7onCyH3ate4F4b01Q6PVF4sQJEvJE3yLCdMIgITRpHJKm6qlgMhxOmkYW8v1FpJbmnz3IBeWUhLsvYE3HNVdKRZz6N6qg3+5BeM0t4vXzK79bvH2omZVztpxu1DAfJMbteNoxzUYDkJEAbNZLSjiL6aJNHjkFB5Gy4/nyt1S6DLrr2ysAVyKHx6pAlebxNduTlPJJf9nXE/OhiCzVH0/NiOHZ7Pfr2JhOXEr8g9Q==
+    uid: 19962
+    email: pearley@wikimedia.org
 ldap_only_users:
   abartov:
     ensure: present
