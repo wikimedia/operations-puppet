@@ -10,7 +10,7 @@ class role::analytics_cluster::hadoop::ui {
     # include ::profile::hue
 
     # yarn.wikimedia.org
-    include ::profile::hadoop::sites::yarn
+    include ::profile::hadoop::yarn_proxy
 
     include ::profile::base::firewall
     include standard

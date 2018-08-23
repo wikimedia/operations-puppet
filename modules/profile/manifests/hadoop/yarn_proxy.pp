@@ -1,8 +1,8 @@
-# Class: profile::analytics::cluster::sites::yarn
+# Class: profile::hadoop::yarn_proxy
 #
 # Sets up a yarn ldap auth http proxy to the Hadoop ResourceManager web interface.
 #
-class profile::hadoop::sites::yarn {
+class profile::hadoop::yarn_proxy {
     include profile::hadoop::common
 
     class { '::apache::mod::proxy_http': }
@@ -25,7 +25,7 @@ class profile::hadoop::sites::yarn {
 
     # Set up the VirtualHost
     apache::site { 'yarn.wikimedia.org':
-        content => template('profile/hadoop/sites/yarn.vhost.erb'),
+        content => template('profile/hadoop/yarn.vhost.erb'),
     }
 
     ferm::service { 'yarn-http':
