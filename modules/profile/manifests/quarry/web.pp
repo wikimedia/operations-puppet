@@ -6,7 +6,7 @@
 class profile::quarry::web {
     require_package('python-flask', 'python-mwoauth')
 
-    $clone_path = $::quarry::base::clone_path
+    $clone_path = $::profile::quarry::base::clone_path
 
     uwsgi::app { 'quarry-web':
         require          => Git::Clone['analytics/quarry/web'],

@@ -6,7 +6,7 @@ class profile::quarry::celeryrunner {
 
     celery::worker { 'quarry-worker':
         app         => 'quarry.web.worker',
-        working_dir => $quarry::base::clone_path,
+        working_dir => $::profile::quarry::base::clone_path,
         user        => 'quarry',
         group       => 'quarry',
     }
