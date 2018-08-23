@@ -146,10 +146,10 @@ menu = cr2-codfw
 title = cr2-codfw.wikimedia.org
 host = cr2-codfw.wikimedia.org
 
-+++ cr1-eqdfw
-menu = cr1-eqdfw
-title = cr1-eqdfw.wikimedia.org
-host = cr1-eqdfw.wikimedia.org
++++ cr2-eqdfw
+menu = cr2-eqdfw
+title = cr2-eqdfw.wikimedia.org
+host = cr2-eqdfw.wikimedia.org
 
 +++ asw-a-codfw
 menu = asw-a-codfw
