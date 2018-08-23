@@ -2,7 +2,9 @@
 # = Class: profile::quarry:querykiller
 #
 # Sets up a cron based query-killer
-class profile::quarry::querykiller {
+class profile::quarry::querykiller(
+    $clone_path = hiera('profile::quarry::base::clone_path'),
+) {
     require ::profile::quarry::base
 
     file { '/var/log/quarry':
@@ -12,7 +14,7 @@ class profile::quarry::querykiller {
     }
 
     cron { 'query-killer':
-        command => "${quarry::base::clone_path}/quarry/web/killer.py",
+        command => "${clone_path}/quarry/web/killer.py",
         minute  => '*',
         user    => 'quarry',
     }
