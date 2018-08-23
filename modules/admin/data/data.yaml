@@ -2884,6 +2884,15 @@ users:
       - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQCrzndpk6uVWUuKtLufbwXqzQ4ytn15zfveCPBWSKgGrhAPfrscyeF/jDqSEBhT2CprU8UyD20sAi9SeAsvLUakZ2z6vRG/XNbqLSfOGZudXEf9gkBOt9KdL5ycTRXWHIHLmRM/aWWAamp6tp4YArOD8Tao82caFmP8ikA/x0zM+K4DitOqWteG/CEbyOzdjF4kg2bWPrvHvhbyM3yKFKftn3EFn2owqCw7s/ACiigQjBbaEKxc4NKDrA7LQW5KXQ5RZkGSPMNT6t+jJ93Tlbm0MDQ7tGFJ3oZNRrpGZ4UlbRqURNGfepUYtFxJniX0+N7woi5KFhT+WTnV/4GfckReQj+f0XeoBlfqU4dsNABIumn/LZy2pWq5xBC2GNLZohWh04q+qRIgzn3Gw5W+R3LHTEV1xcx/8mTHY2rrKexAMkzm8koP+0UYV/pQEPzEtC3mx0YbyYmoqOlWimvYnZQjovdJPqNpp9gF1xUbmav+2AfRoVCRJYpk3d62lr2Us3zPh1QrU3+xbQyMwAWDVPIOx6TJFsJ7NW86obtYPY0CIjZxyL3SgusVy242i/DFGraudMVYG8pPCxdM4inZmIUiZGVJR9hcT3T2eFTxQujzi2I4/LZvFXqy2Vw19ErMLM7J4klFug3cojKEDH78J9kmKSfbmU+lCm7E+z8wbhU6RQ== ktsouroupidou@ktsouroupidouwmf1632
     uid: 19971
     email: ktsouroupidou@wikimedia.org
+  wmde-fisch:
+    ensure: present
+    realname: Christoph Jauera
+    name: wmde-fisch
+    gid: 500
+    ssh_keys:
+      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQCw97od+vFEHe59KQiWTTpKASaX5AfzcuifR8XYqfY4ZzcXNq1rhWiAzvtXvlkMwCG39ja7EkUgIQEJHN7uswVNbsM0e7VKMvE8rw0zqrTJBxUOMgGlhO468JCSOsU8AXWzXyoiJN1yoxkeK+wG6dCmA8rtiwe00majxtlr3lltxStz5sAg71UvJWyZFdJBcODG3sTm6FPDcuGZVwjzCTckH9DdplClY7Nb95EfsJKuKqbVOrWv6kAefOlZ2JAbwNgjMeIIaejwwvI3bNZqipSgfHEp0G4mW++qFfO54SfY8bSUCNvP1rq/moxOFpOsjJd+NUjWb5JmiAW8T+Etf15ZTveo96VQbsmb9HRSmj8AAdmrhD4G53RRoiv69a4M2YgVKug9L7Y3C/TVoHEF4ADRkrK/LfbDPiVmRfJbFXo7lC1M+EWIo5+vOkYcc43Vh0vJF5XDGbZkSC47Za1yUY7VSst90iAIoUtM/SnzndNtaKfgTB2txqmqRMCI31LEGhuxRb7XzYPALPAkRoU1R+QP4VbkFfTPvy1sxv0pCsrsE7GZhjcTYHFxTOicJBc2kvEmZojqVVkDt0ccuN7vUU9FHTMuHtfJjX5ZIQBzjx5QbjvCIh2QDoSDAhu5JKrW/MRPhCUx2xAUzeW7N4Qd5T2E9imAsftR2mCaRxsCLP3kzw==
+    uid: 10388
+    email: christoph.jauera@wikimedia.de
 ldap_only_users:
   abartov:
     ensure: present
@@ -3130,10 +3139,6 @@ ldap_only_users:
     ensure: present
     realname: Thiemo Mättig
     email: thiemo.maettig@wikimedia.de
-  wmde-fisch:
-    ensure: present
-    realname: Christoph Fischer
-    email: christoph.fischer@wikimedia.de
   wmde-jand:
     ensure: present
     realname: Jan Dittrich
