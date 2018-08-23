@@ -487,12 +487,12 @@ groups:
   perf-team:
     gid: 796
     description: performance team members with access to 'webperf' and 'xhgui' servers
-    members: [krinkle, gilles, phedenskog, imarlier]
+    members: [krinkle, gilles, phedenskog, imarlier, aaron]
     privileges: ['ALL = (ALL) NOPASSWD: ALL']
   perf-roots:
     gid: 766
     description: users who have root on memcached, varnish, application servers, thumbor and xhgui servers
-    members: [krinkle, gilles, phedenskog]
+    members: [krinkle, gilles, phedenskog, aaron]
     privileges: ['ALL = (ALL) NOPASSWD: ALL']
   aqs-users:
     description: Group of users for the Analytics Query Service
