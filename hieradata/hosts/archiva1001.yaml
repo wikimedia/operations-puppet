@@ -4,17 +4,9 @@
 # Disable backups for the moment, only active for meitnerium
 profile::archiva::enable_backup: false
 
-# Enable TLS configuration but allow only localhost TCP connections
-# to port 80/443, since during the first run of Archiva several critical info
-# (like the admin account) need to be configured and archiva1001 is exposed
-# to the public Internet.
-profile::archiva::proxy::ssl_enabled: true
-profile::archiva::proxy::only_localhost: true
-
 # Disable monitoring for archiva.wikimedia.org
 profile::archiva::proxy::monitoring_enabled: false
 
-# Avoid to challenge the Let's Encrypt servers via ACME
-# to establish the ownership of archiva.wikimedia.org
-# until we are ready to migrate.
-do_acme: false
+# The new Archiva host will temporarily be run under the 'archiva-new'
+# domain. The TLS certficate will be requested via ACME to Let's Encrypt.
+profile::archiva::proxy::certificate_name: 'archiva-new'
