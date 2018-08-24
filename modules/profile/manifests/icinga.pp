@@ -5,7 +5,12 @@
 #
 # = Parameters
 #
-class profile::icinga {
+class profile::icinga(
+    $monitoring_groups = hiera('monitoring::groups'),
+    $partner = hiera('profile::icinga::partner'),
+    $is_passive = hiera('profile::icinga::passive'),
+    $ensure_service = hiera('profile::icinga::ensure_service', 'running'),
+){
 
     include ::standard
     include ::profile::base::firewall
@@ -42,20 +47,12 @@ class profile::icinga {
 
     class { '::icinga::monitor::etcd_mw_config': }
 
-    $monitoring_groups = hiera('monitoring::groups')
     create_resources(monitoring::group, $monitoring_groups)
 
     monitoring::service { 'https':
         description   => 'HTTPS',
         check_command => 'check_ssl_http_letsencrypt!icinga.wikimedia.org',
     }
-
-    # FIXME: move Hiera calls to profile parameters
-    # lint:ignore:wmf_styleguide
-    $partner = hiera('profile::icinga::partner')
-    $is_passive = hiera('profile::icinga::passive')
-    $ensure_service = hiera('role::icinga::ensure_service', 'running')
-    # lint:endignore
 
     $ircbot_present = $is_passive ? {
         false => 'present', #aka active
