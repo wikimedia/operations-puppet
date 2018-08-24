@@ -2,4 +2,6 @@ profile::librenms::sitename: 'librenms.wikimedia.org'
 profile::librenms::install_dir: '/srv/deployment/librenms/librenms'
 profile::netbox::active_server: netmon1002.wikimedia.org
 profile::netbox::slaves: [ 'netmon2001.wikimedia.org' ]
+profile::netbox::slave_ipv4: '208.80.153.110'
+profile::netbox::slave_ipv6: '2620:0:860:4:208:80:153:110'
 profile::base::enable_microcode: true

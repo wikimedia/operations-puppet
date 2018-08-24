@@ -15,6 +15,8 @@
 class profile::netbox (
     $active_server = hiera('profile::netbox::active_server'),
     $slaves = hiera('profile::netbox::slaves', undef),
+    $slave_ipv4 = hiera('profile::netbox::slave_ipv4'),
+    $slave_ipv6 = hiera('profile::netbox::slave_ipv6'),
 ) {
 
     include passwords::netbox
@@ -48,7 +50,7 @@ class profile::netbox (
             user     => 'replication',
             database => 'replication',
             password => $replication_pass,
-            cidr     => '208.80.153.110/32',
+            cidr     => "${slave_ipv4}/32",
             master   => $on_master,
             attrs    => 'REPLICATION',
         }
@@ -57,7 +59,7 @@ class profile::netbox (
             user     => 'replication',
             database => 'replication',
             password => $replication_pass,
-            cidr     => '2620:0:860:4:208:80:153:110/128',
+            cidr     => "${slave_ipv6}/128",
             master   => $on_master,
             attrs    => 'REPLICATION',
         }
@@ -67,7 +69,7 @@ class profile::netbox (
             user     => 'netbox',
             database => 'netbox',
             password => $db_password,
-            cidr     => '208.80.153.110/32',
+            cidr     => "${slave_ipv4}/32",
             master   => $on_master,
         }
         # User for monitoring check running on slave server
@@ -77,7 +79,7 @@ class profile::netbox (
             user     => 'replication',
             database => 'netbox',
             password => $replication_pass,
-            cidr     => '2620:0:860:4:208:80:153:110/128',
+            cidr     => "${slave_ipv6}/128",
             master   => $on_master,
         }
 
