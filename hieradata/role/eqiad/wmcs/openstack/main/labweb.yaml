@@ -101,3 +101,6 @@ profile::openstack::main::wikitech::web::db_name: 'labswiki'
 profile::openstack::main::horizon::maintenance_mode: false
 
 contactgroups: wmcs-team,admins
+
+# We still don't enable fpm here
+profile::mediawiki::php::enable_fpm: false

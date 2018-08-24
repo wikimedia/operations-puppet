@@ -227,6 +227,10 @@ mediawiki::hhvm::extra_fcgi:
           period: 30
         pcre_cache_type: lru
         enable_reusable_tc: true
+
+# Enable php-fpm
+profile::mediawiki::php::enable_fpm: true
+
 profile::mediawiki::jobrunner::queue_servers:
     - deployment-redis05.deployment-prep.eqiad.wmflabs
 profile::mediawiki::jobrunner::aggr_servers:
@@ -473,6 +477,7 @@ cache::fe_transient_gb: 0
 
 profile::kubernetes::deployment_server::git_owner: trebuchet
 profile::kubernetes::deployment_server::git_group: wikidev
+
 
 profile::maps::apps::eventlogging_service_uri: http://deployment-kafka-main-1.deployment-prep.eqiad.wmflabs:8085/v1/events
 profile::maps::apps::sources_to_invalidate:

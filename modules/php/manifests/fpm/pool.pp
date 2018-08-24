@@ -61,8 +61,10 @@ define php::fpm::pool(
         'request_slowlog_timeout' => 15,
     }
 
+
+    $pool_config = merge($base_config, $config)
     file { "${php::config_dir}/fpm/pool.d/${title_safe}.conf":
-        content => php_ini($base_config, $config),
+        content => template("php/php${php::version}-fpm.pool.conf.erb"),
         owner   => 'root',
         group   => 'root',
         mode    => '0444',

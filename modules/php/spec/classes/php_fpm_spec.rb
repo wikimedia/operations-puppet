@@ -19,7 +19,7 @@ describe 'php::fpm' do
                               .with_owner('root')
                               .with_mode('0444')
                               .with_ensure('present')
-                              .with_content(/log_level = notice/)
+                              .with_content(/log_level = notice\n/)
         }
         it { is_expected.to contain_service('php7.0-fpm')
                               .with_ensure('running')
@@ -58,7 +58,7 @@ describe 'php::fpm' do
                               .with_owner('root')
                               .with_mode('0444')
                               .with_ensure('present')
-                              .with_content(/log_level = warning/)
+                              .with_content(/log_level = warning\n/)
         }
       end
     end

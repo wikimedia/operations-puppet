@@ -20,3 +20,5 @@ role::lvs::realserver::pools:
     lvs_name: jobrunner
   nginx:
     lvs_name: videoscaler
+# We still don't enable fpm here
+profile::mediawiki::php::enable_fpm: false

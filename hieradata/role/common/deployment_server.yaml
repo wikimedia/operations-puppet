@@ -31,6 +31,10 @@ mediawiki::hhvm::extra_cli:
     server:
       light_process_count: 0
       light_process_file_prefix: ''
+
+# We still don't enable fpm here
+profile::mediawiki::php::enable_fpm: false
+
 # Default scap::server configuration.  This is used in production.
 # If you are setting up scap::server in labs, these will be used
 # unless you override them for your labs project.

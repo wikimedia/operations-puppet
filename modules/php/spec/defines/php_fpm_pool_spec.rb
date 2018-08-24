@@ -31,7 +31,7 @@ describe 'php::fpm::pool' do
       let(:params) { { 'port' => 9000 } }
       it { is_expected.to compile.with_all_deps }
       it { is_expected.to contain_file('/etc/php/7.0/fpm/pool.d/www.conf')
-                            .with_content(/listen = 127.0.0.1:9000/)
+                            .with_content(/listen = 127.0.0.1:9000\n/)
       }
     end
   end

@@ -32,14 +32,11 @@ class php::fpm(
     # Default config values
     $default_config = {
         'error_log'               => 'syslog',
-        'syslog'                  => {
-            'facility'            => 'daemon',
-            'ident'               => "php${php::version}-fpm",
-        },
+        'syslog.facility'         => 'daemon',
+        'syslog.ident'            => "php${php::version}-fpm",
         'log_level'               => 'notice',
         'process_control_timeout' => 180,
         'systemd_interval'        => 10,
-        'include'                 => "${php::config_dir}/fpm/pool.d/*.conf"
     }
 
     # These config values are set by the systemd unit shipped by
@@ -50,9 +47,10 @@ class php::fpm(
         'daemonize' => 'no',
     }
 
+    $full_global_config = merge($default_config, $config, $immutable_config)
     file { $main_config_file:
         ensure  => $ensure,
-        content => php_ini($default_config, $config, $immutable_config),
+        content => template("php/php${php::version}-fpm.conf.erb"),
         owner   => 'root',
         group   => 'root',
         mode    => '0444'

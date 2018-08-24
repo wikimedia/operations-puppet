@@ -14,7 +14,10 @@
 # intl, mbstring, xml - MediaWiki dependencies
 # memcached, mysql, redis - obvious from the name
 #
-class profile::mediawiki::php() {
+class profile::mediawiki::php(
+    Boolean $enable_fpm = hiera('profile::mediawiki::php::enable_fpm'),
+    Optional[Hash] $fpm_config = hiera('profile::mediawiki::php::fpm_config', undef),
+) {
     if os_version('debian == stretch') {
         apt::pin { 'php-wikidiff2':
             package  => 'php-wikidiff2',
@@ -32,12 +35,24 @@ class profile::mediawiki::php() {
         'error_log'    => 'syslog',
     }
 
+    if $enable_fpm {
+        $_sapis = ['cli', 'fpm']
+        $_config = {
+            'cli' => $config_cli,
+            'fpm' => merge($config_cli, $fpm_config)
+        }
+    } else {
+        $_sapis = ['cli']
+        $_config = {
+            'cli' => $config_cli,
+        }
+    }
     # Install the runtime
     class { '::php':
         ensure         => present,
         version        => $php_version,
-        sapis          => ['cli'],
-        config_by_sapi => {'cli' => $config_cli}
+        sapis          => $_sapis,
+        config_by_sapi => $_config,
     }
 
     # Extensions that need no custom settings
@@ -98,5 +113,34 @@ class profile::mediawiki::php() {
         'wddx',
     ]:
         package_name => '',
+    }
+
+    ### FPM configuration
+    # You can check all configuration options at
+    # http://php.net/manual/en/install.fpm.configuration.php
+    if $enable_fpm {
+        class { '::php::fpm':
+            ensure => present,
+            config => {
+                'emergency_restart_interval'  => '60s',
+                'emergency_restart_threshold' => $facts['processors']['count'],
+                'process.priority'            => -19,
+            }
+        }
+
+        # This will add an fpm pool listening on port 8000
+        # We only use 16 children for now, and the dynamic pm
+        # as we still are in an experimental state
+        # TODO: tune the parameters and switch back to the static pm
+        php::fpm::pool { 'www':
+            port   => 8000,
+            config => {
+                'pm'                        => 'dynamic',
+                'pm.max_spare_servers'      => 10,
+                'pm.min_spare_servers'      => 2,
+                'pm.max_children'           => 16,
+                'request_terminate_timeout' => 240,
+            }
+        }
     }
 }

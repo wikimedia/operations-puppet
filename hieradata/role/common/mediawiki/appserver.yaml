@@ -10,3 +10,5 @@ mediawiki::web::mpm_config::mpm: worker
 apache::logrotate::rotate: 12
 nutcracker::verbosity: "4"
 role::mediawiki::webserver::tls: true
+# We still don't enable fpm here
+profile::mediawiki::php::enable_fpm: false
