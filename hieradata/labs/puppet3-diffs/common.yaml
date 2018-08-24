@@ -1,4 +1,4 @@
-puppet_compiler::version: 0.4.1
+puppet_compiler::version: 0.4.2
 etcd::peers_list: "%{::hostname}=http://127.0.0.1:2380"
 etcd::client::globalconfig::host: 127.0.0.1
 etcd::client::globalconfig::port: 2379
