@@ -5,10 +5,11 @@ class k8s::kubelet(
     $cluster_domain = 'kube',
     $tls_cert = '/var/lib/kubernetes/ssl/certs/cert.pem',
     $tls_key = '/var/lib/kubernetes/ssl/private_keys/server.key',
-    $cni=false,
-    $cni_bin_dir='/opt/cni/bin',
-    $cni_conf_dir='/etc/cni/net.d',
-    $kubeconfig='/etc/kubernetes/kubeconfig',
+    $cni = false,
+    $cni_bin_dir = '/opt/cni/bin',
+    $cni_conf_dir = '/etc/cni/net.d',
+    $kubeconfig = '/etc/kubernetes/kubeconfig',
+    $extra_params = undef,
 ) {
     require ::k8s::infrastructure_config
 
