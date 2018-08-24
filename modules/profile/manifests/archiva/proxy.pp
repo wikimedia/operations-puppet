@@ -6,6 +6,12 @@
 #
 # Params:
 #
+#  [*certificate_name*]
+#    Name of the TLS certificate to be used with archiva::proxy
+#    (that in turn leverages Let's Encrypt/ACME). The 'ssl-cert-snakeoil' name
+#    is special and forces the usage of a self signed certificate rather than
+#    requesting a new one.
+#
 #  [*ssl_enabled*]
 #    Enable TLS settings for archiva.wikimedia.org and deploy
 #    related certificates.
@@ -22,13 +28,15 @@
 #    Default: false
 #
 class profile::archiva::proxy(
+    $certificate_name   = hiera('profile::archiva::proxy::certificate_name', 'archiva'),
     $ssl_enabled        = hiera('profile::archiva::proxy::ssl_enabled', false),
     $only_localhost     = hiera('profile::archiva::proxy::only_localhost', false),
     $monitoring_enabled = hiera('profile::archiva::proxy::monitoring_enabled', false),
 ) {
 
     class { '::archiva::proxy':
-        ssl_enabled => $ssl_enabled,
+        certificate_name => $certificate_name,
+        ssl_enabled      => $ssl_enabled,
     }
 
     $ferm_srange = $only_localhost ? {
