@@ -50,8 +50,12 @@ class role::icinga {
         check_command => 'check_ssl_http_letsencrypt!icinga.wikimedia.org',
     }
 
+    # FIXME: move Hiera calls to profile parameters
+    # lint:ignore:wmf_styleguide
     $partner = hiera('role::icinga::partner')
     $is_passive = hiera('role::icinga::passive')
+    $ensure_service = hiera('role::icinga::ensure_service', 'running')
+    # lint:endignore
 
     $ircbot_present = $is_passive ? {
         false => 'present', #aka active
@@ -68,6 +72,7 @@ class role::icinga {
     class { '::icinga':
         enable_notifications  => $enable_notifications,
         enable_event_handlers => $enable_event_handlers,
+        ensure_service        => $ensure_service,
     }
     class { '::icinga::web':       }
     class { '::icinga::naggen':    }

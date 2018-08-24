@@ -11,6 +11,7 @@
 class icinga(
     $enable_notifications  = 1,
     $enable_event_handlers = 1,
+    $ensure_service = 'running',
 ) {
     # Setup icinga user
     # FIXME: This should be done by the package
@@ -133,7 +134,7 @@ class icinga(
 
     # FIXME: This should not require explicit setup
     service { 'icinga':
-        ensure    => running,
+        ensure    => $ensure_service,
         hasstatus => false,
         restart   => '/etc/init.d/icinga reload',
         require   => [
