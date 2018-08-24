@@ -9,7 +9,7 @@ class role::alerting_host {
     system::role{ 'alerting_host':
         description => 'central host for health checking and alerting'
     }
-    include ::role::icinga
+    include ::profile::icinga
     include ::role::tcpircbot
     include ::role::certspotter
 

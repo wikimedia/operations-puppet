@@ -1,11 +1,11 @@
-# = Class: role::icinga
+# = Class: profile::icinga
 #
 # Sets up a icinga instance which checks services
 # and hosts for Wikimedia Production cluster
 #
 # = Parameters
 #
-class role::icinga {
+class profile::icinga {
 
     include ::standard
     include ::profile::base::firewall
@@ -52,8 +52,8 @@ class role::icinga {
 
     # FIXME: move Hiera calls to profile parameters
     # lint:ignore:wmf_styleguide
-    $partner = hiera('role::icinga::partner')
-    $is_passive = hiera('role::icinga::passive')
+    $partner = hiera('profile::icinga::partner')
+    $is_passive = hiera('profile::icinga::passive')
     $ensure_service = hiera('role::icinga::ensure_service', 'running')
     # lint:endignore
 

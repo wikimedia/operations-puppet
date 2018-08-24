@@ -5,9 +5,9 @@ profile::base::domain_search:
   - esams.wmnet
   - ulsfo.wmnet
   - eqsin.wmnet
-role::icinga::partner: einsteinium.wikimedia.org
+profile::icinga::partner: einsteinium.wikimedia.org
 # Note that our paging infrastructure (AQL as of 20161101) may need an update of it's sender whitelist
 # tegmen is the backup icinga server. All these flags need to be converted accordingly for it to assume the identity of the primary
 profile::tcpircbot::ensure: absent
 do_acme: false
-role::icinga::passive: true
+profile::icinga::passive: true
