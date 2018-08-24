@@ -45,22 +45,29 @@ class archiva::proxy(
                 puppet_svc => 'nginx',
                 system_svc => 'nginx',
             }
-        }
 
-        $ssl_certificate_chained = $certificate_name ? {
-            'ssl-cert-snakeoil' => '/etc/ssl/certs/ssl-cert-snakeoil.pem',
-            default             => "/etc/acme/cert/${certificate_name}.chained.crt",
+            # regsubst is needed due to letsencrypt::cert::integrated's naming
+            # conventions.
+            $safe_cert_name = regsubst($certificate_name, '\W', '_', 'G')
+            $ssl_certificate_chained = "/etc/acme/cert/${safe_cert_name}.chained.crt"
+            $ssl_certificate_key = "/etc/acme/key/${safe_cert_name}.key"
+
+            $tls_server_properties = [
+                "ssl_certificate     ${ssl_certificate_chained};",
+                "ssl_certificate_key ${ssl_certificate_key};",
+            ]
+        } else {
+            $ssl_certificate_chained = '/etc/ssl/certs/ssl-cert-snakeoil.pem'
+            $tls_server_properties = [
+                "ssl_certificate     ${ssl_certificate_chained};",
+            ]
         }
-        $ssl_certificate_key = "/etc/acme/key/${certificate_name}.key"
 
         # Use puppet's stupidity to flatten these into a single array.
         $server_properties = [
             $archiva_server_properties,
             ssl_ciphersuite('nginx', 'mid', true),
-            [
-                "ssl_certificate     ${ssl_certificate_chained};",
-                "ssl_certificate_key ${ssl_certificate_key};",
-            ],
+            $tls_server_properties,
         ]
 
     }
