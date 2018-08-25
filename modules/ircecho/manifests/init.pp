@@ -12,6 +12,7 @@ class ircecho (
     $ircecho_logs,
     $ircecho_nick,
     $ircecho_server = 'chat.freenode.net +6697',
+    $ident_passwd_file = undef,
     $ensure = 'present',
 ) {
 
@@ -20,6 +21,13 @@ class ircecho (
     file { '/usr/local/bin/ircecho':
         ensure => 'present',
         source => 'puppet:///modules/ircecho/ircecho.py',
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0755',
+    }
+    file { '/usr/local/bin/ib3_auth.py': # TODO: find a better place to put this
+        ensure => 'present',
+        source => 'puppet:///modules/ircecho/ib3_auth.py',
         owner  => 'root',
         group  => 'root',
         mode   => '0755',

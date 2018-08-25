@@ -17,6 +17,7 @@ import string
 import re
 import sys
 
+import ib3_auth
 import irc.client  # for exceptions.
 from optparse import OptionParser
 from irc.bot import SingleServerIRCBot
@@ -128,18 +129,20 @@ class EchoReader():
             return bot.chans
 
 
-class EchoBot(SingleServerIRCBot):
-    def __init__(self, chans, nickname, server, port=6667, ssl=False):
+class EchoBot(ib3_auth.SASL, SingleServerIRCBot):
+    def __init__(self, chans, nickname, server, port=6667, ssl=False, ident_passwd=None):
         print('Connecting to IRC server %s...' % server)
 
+        self.chans = chans
+        kwargs = {}
         if ssl:
             import ssl
             ssl_factory = irc.connection.Factory(wrapper=ssl.wrap_socket)
-            SingleServerIRCBot.__init__(self, [(server, port)], nickname, 'IRC echo bot',
-                                        connect_factory=ssl_factory)
-        else:
-            SingleServerIRCBot.__init__(self, [(server, port)], nickname, 'IRC echo bot')
-        self.chans = chans
+            kwargs['connect_factory'] = ssl_factory
+
+        SingleServerIRCBot.__init__(self, [(server, port)], nickname, 'IRC echo bot', **kwargs)
+        ib3_auth.SASL.__init__(self, [(server, port)], nickname, 'IRC echo bot', ident_passwd,
+                               **kwargs)
 
     def on_nicknameinuse(self, c, e):
         c.nick(c.get_nickname() + '_')
@@ -187,9 +190,12 @@ class EventHandler(pyinotify.ProcessEvent):
 
 
 parser = OptionParser(conflict_handler='resolve')
-parser.set_usage('ircecho [--infile=<filename>] <channel> <nickname> <server> [[+]port]')
+parser.set_usage('ircecho [--ident_passwd_file=<filename>] [--infile=<filename>] <channel>'
+                 ' <nickname> <server> [[+]port]')
 parser.add_option('--infile', dest='infile',
                   help='Read input from the specific file instead of from stdin')
+parser.add_option('--ident_passwd_file', dest='ident_passwd_file',
+                  help='Optional SASL password')
 (options, args) = parser.parse_args()
 chans = args[0]
 nickname = args[1]
@@ -201,7 +207,11 @@ except IndexError:
     ssl = False
     port = 6667
 global bot
-bot = EchoBot(chans, nickname, server, port, ssl)
+if options.ident_passwd_file:
+    with open(options.ident_passwd_file) as f:
+        bot = EchoBot(chans, nickname, server, port, ssl, f.read().strip())
+else:
+    bot = EchoBot(chans, nickname, server, port, ssl)
 global reader
 reader = EchoReader(options.infile)
 try:
