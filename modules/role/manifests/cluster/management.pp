@@ -14,7 +14,7 @@ class role::cluster::management {
     include ::profile::ipmi::mgmt
     include ::profile::access_new_install
     include ::profile::conftool::client
-    include ::profile::switchdc
+    include ::profile::spicerack
     include ::profile::debdeploy
     include ::profile::mediawiki::web_testing
     include ::standard
