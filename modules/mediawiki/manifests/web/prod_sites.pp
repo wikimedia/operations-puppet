@@ -128,7 +128,8 @@ class mediawiki::web::prod_sites {
 
     $other_wikis = [
         'transitionteam.wikimedia.org', 'iegcom.wikimedia.org',
-        'legalteam.wikimedia.org', 'zero.wikimedia.org'
+        'legalteam.wikimedia.org', 'zero.wikimedia.org',
+        'fixcopyright.wikimedia.org'
     ]
     mediawiki::web::vhost { $other_wikis:
         ensure          => present,
