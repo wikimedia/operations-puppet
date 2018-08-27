@@ -32,6 +32,9 @@ class profile::hue (
     # LDAP Labs config is the same as LDAP in production.
     class { '::ldap::config::labs': }
 
+    # For snappy support with Hue.
+    require_package('python-snappy')
+
     class { '::cdh::hue':
         # We always host hive-server on the same node as hive-metastore.
         hive_server_host           => $hive_server_host,
