@@ -14,6 +14,9 @@ output {
 <% else %>
         manage_template => false
 <% end %>
+<% if @plugin_id %>
+        id              => "<%= @plugin_id %>"
+<% end %>
     }
 <% if @guard_condition %>}<% end %>
 }

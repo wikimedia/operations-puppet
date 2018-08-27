@@ -24,6 +24,9 @@ output {
     <% if @timing %>
         timing      => [ "<%= @timing.map{|e| e.join('","') }.join('","') %>" ]
     <% end %>
+    <% if @plugin_id %>
+        id          => "<%= @plugin_id %>"
+    <% end %>
     }
 <% if @guard_condition %>}<% end %>
 }

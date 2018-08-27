@@ -20,6 +20,7 @@
 # - $template: Path to Elasticsearch mapping template. Default undef.
 # - $template_name: Name of Elasticsearch mapping template.
 #       Default $title.
+# - $plugin_id: Name associated with Logstash metrics
 #
 # == Sample usage:
 #
@@ -42,6 +43,7 @@ define logstash::output::elasticsearch(
     $priority        = 10,
     $template        = undef,
     $template_name   = $title,
+    $plugin_id       = "input/elasticsearch/${title}",
 ) {
     require ::logstash::output::elasticsearch::scripts
 

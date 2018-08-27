@@ -26,6 +26,7 @@
 # - $set: Hash of metric_name => set values. Default undef.
 # - $timing: Hash of metric_name => timing values. Default undef.
 # - $sample_rate: The sample rate for the metric. Default 1.
+# - $plugin_id: Name associated with Logstash metrics
 #
 # == Sample usage:
 #
@@ -50,6 +51,7 @@ define logstash::output::statsd(
     $set             = undef,
     $timing          = undef,
     $sample_rate     = 1,
+    $plugin_id       = "output/statsd/${title}",
 ) {
     logstash::conf { "output-statsd-${title}":
         ensure   => $ensure,
