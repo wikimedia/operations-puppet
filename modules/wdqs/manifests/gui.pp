@@ -117,13 +117,13 @@ class wdqs::gui(
     }
 
     # Categories daily dump starts at 5:00. Currently it is done by 5:05, but just in case
-    # it ever takes longer, start at 6:00.
+    # it ever takes longer, start at 7:00.
     cron { 'load-categories-daily':
         ensure  => $ensure_daily_categories,
         command => "/usr/local/bin/reloadCategoriesDaily.sh >> ${reload_categories_log}",
         user    => $username,
         minute  => fqdn_rand(60),
-        hour    => 6,
+        hour    => 7
     }
 
     cron { 'reload-dcatap':
