@@ -20,10 +20,6 @@ private:
       home: true
       project: true
       scratch: true
-  chasetestproject:
-    gid: 53308
-    mounts:
-      project: true
   contributors:
     gid: 50408
     mounts:
@@ -51,10 +47,6 @@ private:
       home: true
       project: true
       scratch: true
-  editor-engagement:
-    gid: 50068
-    mounts:
-      project: true
   etytree:
     gid: 53231
     mounts:
