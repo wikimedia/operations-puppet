@@ -82,7 +82,7 @@ groups:
     gid: 706
     description: access to mwmaint hosts, mwlog hosts (private data) and bastion hosts
                  restricted folks use sudo to access apache / www-data resources
-    members: [dartar, bearloga, tjones, cparle, pearley,
+    members: [dartar, bearloga, tjones, cparle, pearley, bpirkle,
               ezachte, jamesur, jdlrobson, smalyshev,
               leila, santhosh, amire80, foks, chelsyx, dbarratt, bmansurov]
     privileges: ['ALL = (www-data,apache) NOPASSWD: ALL']
