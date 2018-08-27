@@ -19,8 +19,8 @@ profile::openstack::main::nova::network::nova_dnsmasq_aliases:
     'public_ip': '208.80.155.136'
     'private_ip': '10.68.18.109'
   relic:
-    'public_ip': '208.80.155.197'
-    'private_ip': '10.68.16.162'
+    'public_ip': '185.15.56.23'
+    'private_ip': '172.16.1.226'
   tools-webproxy:
     'public_ip': '208.80.155.131'
     'private_ip': '10.68.21.49'
