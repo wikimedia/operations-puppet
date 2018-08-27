@@ -119,6 +119,9 @@ cache::app_directors:
     backends:
       eqiad: 'graphite1001.eqiad.wmnet'
 #     codfw: 'graphite2001.codfw.wmnet'
+  hadoop_ui:
+    backends:
+      eqiad: 'analytics-tool1001.eqiad.wmnet'
   krypton:
     backends:
       eqiad: 'krypton.eqiad.wmnet'
@@ -184,9 +187,15 @@ cache::app_directors:
   rutherfordium:
     backends:
       eqiad: 'rutherfordium.eqiad.wmnet'
+  superset:
+    backends:
+      eqiad: 'analytics-tool1003.eqiad.wmnet'
   thorium:
     backends:
       eqiad: 'thorium.eqiad.wmnet'
+  turnilo:
+    backends:
+      eqiad: 'analytics-tool1002.eqiad.wmnet'
   ununpentium:
     backends:
       eqiad: 'ununpentium.wikimedia.org'
