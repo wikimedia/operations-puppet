@@ -107,6 +107,8 @@ class profile::openstack::labtestn::keystone::service(
 
     ferm::rule { 'labtest_nova_35357':
         ensure => 'present',
-        rule   => "saddr @resolve(${labtest_nova_controller}) proto tcp dport (35357) ACCEPT;",
+        rule   => "saddr (@resolve(${labtest_nova_controller})
+                          @resolve(${labtest_nova_controller}, AAAA))
+                   proto tcp dport (35357) ACCEPT;",
     }
 }
