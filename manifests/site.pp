@@ -2082,7 +2082,7 @@ node 'thorium.eqiad.wmnet' {
 
 # new tor relay server to replace radium T196701
 node 'torrelay1001.wikimedia.org' {
-    role(spare::system)
+    role(tor_relay)
     interface::add_ip6_mapped { 'main': }
 }
 
