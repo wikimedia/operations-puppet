@@ -2,22 +2,24 @@
 # Installs cron job to drop old hive partitions,
 # delete old data from HDFS and sanitize EventLogging data.
 #
-class profile::analytics::refinery::job::data_purge {
+class profile::analytics::refinery::job::data_purge (
+    $public_druid_host = hiera('profile::analytics::refinery::job::data_purge::public_druid_host', undef)
+) {
     require ::profile::analytics::refinery
 
-    $webrequest_log_file        = "${profile::analytics::refinery::log_dir}/drop-webrequest-partitions.log"
-    $eventlogging_log_file      = "${profile::analytics::refinery::log_dir}/drop-eventlogging-partitions.log"
-    $wdqs_extract_log_file      = "${profile::analytics::refinery::log_dir}/drop-wdqs-extract-partitions.log"
-    $mediawiki_log_file         = "${profile::analytics::refinery::log_dir}/drop-mediawiki-log-partitions.log"
-    $mediawiki_private_log_file = "${profile::analytics::refinery::log_dir}/drop-mediawiki-private-partitions.log"
-    $geoeditors_log_file        = "${profile::analytics::refinery::log_dir}/drop-geoeditor-daily-partitions.log"
-    $druid_webrequest_log_file  = "${profile::analytics::refinery::log_dir}/drop-druid-webrequest.log"
-    $mediawiki_history_log_file = "${profile::analytics::refinery::log_dir}/drop-mediawiki-history.log"
-    $banner_activity_log_file   = "${profile::analytics::refinery::log_dir}/drop-banner-activity.log"
-    $el_sanitization_log_file   = "${profile::analytics::refinery::log_dir}/eventlogging-sanitization.log"
-    $query_clicks_log_file      = "${profile::analytics::refinery::log_dir}/drop-query-clicks.log"
-    $el_saltrotate_log_file     = "${profile::analytics::refinery::log_dir}/eventlogging-saltrotate.log"
-
+    $webrequest_log_file             = "${profile::analytics::refinery::log_dir}/drop-webrequest-partitions.log"
+    $eventlogging_log_file           = "${profile::analytics::refinery::log_dir}/drop-eventlogging-partitions.log"
+    $wdqs_extract_log_file           = "${profile::analytics::refinery::log_dir}/drop-wdqs-extract-partitions.log"
+    $mediawiki_log_file              = "${profile::analytics::refinery::log_dir}/drop-mediawiki-log-partitions.log"
+    $mediawiki_private_log_file      = "${profile::analytics::refinery::log_dir}/drop-mediawiki-private-partitions.log"
+    $geoeditors_log_file             = "${profile::analytics::refinery::log_dir}/drop-geoeditor-daily-partitions.log"
+    $druid_webrequest_log_file       = "${profile::analytics::refinery::log_dir}/drop-druid-webrequest.log"
+    $mediawiki_history_log_file      = "${profile::analytics::refinery::log_dir}/drop-mediawiki-history.log"
+    $banner_activity_log_file        = "${profile::analytics::refinery::log_dir}/drop-banner-activity.log"
+    $el_sanitization_log_file        = "${profile::analytics::refinery::log_dir}/eventlogging-sanitization.log"
+    $query_clicks_log_file           = "${profile::analytics::refinery::log_dir}/drop-query-clicks.log"
+    $el_saltrotate_log_file          = "${profile::analytics::refinery::log_dir}/eventlogging-saltrotate.log"
+    $public_druid_snapshots_log_file = "${profile::analytics::refinery::log_dir}/drop-druid-public-snapshots.log"
 
     # Shortcut to refinery path
     $refinery_path = $profile::analytics::refinery::path
@@ -86,6 +88,21 @@ class profile::analytics::refinery::job::data_purge {
         user        => 'hdfs',
         minute      => '15',
         hour        => '5'
+    }
+
+    # keep this many public druid mediawiki history refined snapshots
+    # cron runs once a month
+    if $public_druid_host {
+        $druid_public_keep_snapshots = 4
+        $mediawiki_history_reduced_basename = 'mediawiki_history_reduced'
+        cron {'refinery-druid-drop-public-snapshots':
+            command     => "${env} && ${refinery_path}/bin/refinery-drop-druid-snapshots -d ${mediawiki_history_reduced_basename} -t ${public_druid_host} -s ${keep_snapshots} -f ${public_druid_snapshots_log_file}",
+            environment => "MAILTO=${mail_to}",
+            user        => 'hdfs',
+            minute      => '0',
+            hour        => '7',
+            monthday    => '15'
+        }
     }
 
     # keep this many mediawiki history snapshots, 6 minimum
