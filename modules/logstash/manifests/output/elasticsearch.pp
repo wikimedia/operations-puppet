@@ -43,7 +43,7 @@ define logstash::output::elasticsearch(
     $priority        = 10,
     $template        = undef,
     $template_name   = $title,
-    $plugin_id       = "input/elasticsearch/${title}",
+    $plugin_id       = "output/elasticsearch/${title}",
 ) {
     require ::logstash::output::elasticsearch::scripts
 
