@@ -49,14 +49,14 @@ class profile::piwik::webserver(
         line   => 'opcache.enable=1',
         match  => '^;?opcache.enable\s*\=',
         path   => '/etc/php5/apache2/php.ini',
-        notify => Class['::apache'],
+        notify => Class['::httpd'],
     }
 
     file_line { 'php_memory_limit':
         line   => 'memory_limit = 256M',
         match  => '^;?memory_limit\s*\=',
         path   => '/etc/php5/apache2/php.ini',
-        notify => Class['::apache'],
+        notify => Class['::httpd'],
     }
 
     ferm::service { 'piwik_http':
