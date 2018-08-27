@@ -1,9 +1,6 @@
 # Archiva is being migrated from meitnerium to archiva1001
 # T192639
 
-# Disable backups for the moment, only active for meitnerium
-profile::archiva::enable_backup: false
-
 # Disable monitoring for archiva.wikimedia.org
 profile::archiva::proxy::monitoring_enabled: false
 
