@@ -64,7 +64,7 @@ default_schedule_zone = <%= @default_schedule_zone %>
 use_neutron = True
 firewall_driver = nova.virt.firewall.NoopFirewallDriver
 default_floating_pool = ext-nat
-linuxnet_interface_driver = nova.network.linux_net.LinuxBridgeInterfaceDriver
+linuxnet_interface_driver = nova.network.linux_net.LinuxBridgeInterfaceDriver
 
 [api_database]
 connection = mysql://<%= @db_user %>:<%= @db_pass %>@<%= @db_host %>/nova_api
