@@ -2847,6 +2847,15 @@ users:
       - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDfO6BVcbHhtufdzA8/H8Jjmg3oqfx10UCHSdb2ZoYmFettMxwXzzcWxzOoPThk7ihKAZWUrweIbV/KZuKtkcGRB3bSN5NyHckbwnzbf18TBqoAMjnDZO2shctuMn0gMuVVyk76W2KXzsn+kP0mry+Nt/UJjb1ZTjignEi8CzREpQV1JNw8L8U3Jhd0U18VN99+R2Bo1LeSnWWIMFxeAEJt6EI3tBTUSjQ3rCkAS6piC7+usB94n3sSXZcc9y3YjIVhWhVtiZlT7lqOEisjZ0w/3u0Nu3FFJRF0VoYeOpOO/fO4ir1P4JyGcMC3SEk/Cu1jgeZI7NHmNzYEPQBv9huswNYgvqLY35/JG3B3dP/fqMcn64sObXN8MCpH03iUsLgJe/rg8Knv5FodAK5ASMSakbuNdb1TC2LHYrbswX4vxrYLdOON0L6LoeV5a58lbkt1pB5u/0A8RC3kaEMBw6e5UVe9a1YYZphpHW5P2bqZIjIIORuAk5n+XgnOyc5MG9YZHEA91Aqit26Dnrm3PDxACtqMcsu2gLoTcjB0c/iP3u4HsUnFlzSFkNjFw94YWeBaLJrScAPIPJog3uH88eeLjhB1KwCobkZeRw/DelfiH9oOv21FPnuFHbkXB0JxTxUOwPEeUDpx4u74rsauEtJKmg+BLqFUsxwPV2726g9LIw==
     uid: 19963
     email: kbrown@wikimedia.org
+  banyek:
+    ensure: present
+    realname: Balazs Pocze
+    name: banyek
+    gid: 500
+    ssh_keys:
+      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDmE+Vsn9Dwb1n0lUNMbeSEw/UsZal7/065QKGXia1086EuKEtpe8+JoVvwzrMd+NYtX7Xd/b8Anbt84sHAycHfIgYI6RnJ10HrLvsze4dBaKr7JVv/qvRwf0P6p9Dc9zQOjGFEnKRgtyGyl3SNUahPGwhjhbHFCzxsVxKIh3iDV4TcWlrAPUcRFjwI56/I5daWpZQX+NvnpZCHVcFg0+8Lv/QYEOIbqbx6ZsbrCqBMIsSZUylw8C+5AVO4FosHbgBESFDEpipgliGbqQYmC4AWS1dDOVUW2qg40UqeduxweDux6KoVbz9igKp1M6ZHpGJEVmRSnmCJH2gT7lXvC3Xv wikimedia-prod
+    uid: 19996
+    email: bpocze@wikimedia.org
 ldap_only_users:
   abartov:
     ensure: present
