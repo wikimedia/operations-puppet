@@ -5,3 +5,6 @@ admin::groups:
 
 role::lvs::realserver::pools:
     proton: {}
+
+# TODO: Ugly ugly hack. Uses implicit hiera looks, needs to be removed
+service::configuration::mwapi_host: http://api-rw.discovery.wmnet
