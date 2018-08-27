@@ -9,7 +9,17 @@ class profile::openstack::labtestn::neutron::l3_agent(
     $dmz_cidr = hiera('profile::openstack::labtestn::neutron::dmz_cidr'),
     $network_public_ip = hiera('profile::openstack::labtestn::neutron::network_public_ip'),
     $report_interval = hiera('profile::openstack::labtestn::neutron::report_interval'),
+    $network_compat_interface = hiera('profile::openstack::labtestn::neutron::network_compat_interface'),
+    $network_compat_interface_vlan = hiera('profile::openstack::labtestn::neutron::network_compat_interface_vlan'),
     ) {
+
+    interface::tagged { $network_compat_interface:
+        base_interface => 'eth1',
+        vlan_id        => $network_compat_interface_vlan,
+        method         => 'manual',
+        up             => 'ip link set $IFACE up',
+        down           => 'ip link set $IFACE down',
+    }
 
     interface::tagged { $network_flat_interface_external:
         base_interface => 'eth1',
