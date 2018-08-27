@@ -84,7 +84,7 @@ groups:
                  restricted folks use sudo to access apache / www-data resources
     members: [dartar, bearloga, tjones, cparle, pearley, bpirkle,
               ezachte, jamesur, jdlrobson, smalyshev,
-              leila, santhosh, amire80, foks, chelsyx, dbarratt, bmansurov]
+              leila, santhosh, amire80, foks, chelsyx, dbarratt, bmansurov, karen]
     privileges: ['ALL = (www-data,apache) NOPASSWD: ALL']
   cassandra-test-roots:
     gid: 708
@@ -266,7 +266,7 @@ groups:
               jdlrobson, chelsyx, ovasileva, flemmerich, mkroetzsch, filippo, pmiazga, faidon,
               piccardi, fdans, eevans, anomie, demon, ladsgroup, musikanimal,
               kaldari, goransm, ema, dsaez, shiladsen, rho, mirrys, slaporte, jk,
-              ayounsi, mepps, mmiller, seddon, gilles, tstarling, pirroh, rush, tieu]
+              ayounsi, mepps, mmiller, seddon, gilles, tstarling, pirroh, rush, tieu, karen]
     system_members: [analytics-search]
   analytics-admins:
     gid: 732
