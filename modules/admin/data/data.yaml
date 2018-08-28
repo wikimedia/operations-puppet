@@ -3137,8 +3137,8 @@ ldap_only_users:
     email: tobias.gritschacher@wikimedia.de
   thiemowmde:
     ensure: present
-    realname: Thiemo Mättig
-    email: thiemo.maettig@wikimedia.de
+    realname: Thiemo Kreuz
+    email: thiemo.kreuz@wikimedia.de
   wmde-jand:
     ensure: present
     realname: Jan Dittrich
