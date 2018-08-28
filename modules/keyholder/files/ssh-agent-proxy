@@ -10,7 +10,8 @@
 
   Requirements: PyYAML (http://pyyaml.org/)
 
-  usage: ssh-agent-proxy [--bind ADDRESS] [--connect ADDRESS] [--auth-dir DIR]
+  usage: ssh-agent-proxy [--bind ADDRESS] [--connect ADDRESS]
+                         [--key-dir DIR]  [--auth-dir DIR]
 
   Options:
     --bind ADDRESS    Bind the proxy to the UNIX domain socket at this address
@@ -18,6 +19,9 @@
 
     --connect ADDRESS Proxy connects to the ssh-agent socket at this address
                       (default: '/run/keyholder/agent.sock').
+
+    --key-dir DIR     Directory where the SSH keys can be found
+                      (default: '/etc/keyholder.d').
 
     --auth-dir DIR    Directory where YAML files containing group:[key(s)]
                       access can be found (default: '/etc/keyholder-auth.d').
@@ -93,10 +97,10 @@ def unpack_variable_length_string(buffer, offset=0):
     return string, offset + struct.calcsize(fmt)
 
 
-def get_key_fingerprints():
+def get_key_fingerprints(key_dir):
     """Look up the key fingerprints for all keys held by keyholder"""
     keymap = {}
-    for fname in glob.glob('/etc/keyholder.d/*.pub'):
+    for fname in glob.glob(os.path.join(key_dir, '*.pub')):
         line = subprocess.check_output(
             ['/usr/bin/ssh-keygen', '-lf', fname], universal_newlines=True)
         bits, fingerprint, note = line.split(' ', 2)
@@ -105,11 +109,11 @@ def get_key_fingerprints():
     return keymap
 
 
-def get_key_perms(path):
-    """Recursively walk `path`, loading YAML configuration files."""
+def get_key_perms(auth_dir, key_dir):
+    """Recursively walk `auth_dir`, loading YAML configuration files."""
     key_perms = {}
-    fingerprints = get_key_fingerprints()
-    for fname in glob.glob(os.path.join(path, '*.y*ml')):
+    fingerprints = get_key_fingerprints(key_dir)
+    for fname in glob.glob(os.path.join(auth_dir, '*.y*ml')):
         with open(fname) as yml:
             for group, keys in yaml.safe_load(yml).items():
                 for key in keys:
@@ -237,12 +241,17 @@ ap.add_argument(
     help='Proxy connects to the ssh-agent socket at this address'
 )
 ap.add_argument(
+    '--key-dir',
+    default='/etc/keyholder.d',
+    help='directory with SSH keys'
+)
+ap.add_argument(
     '--auth-dir',
     default='/etc/keyholder-auth.d',
     help='directory with YAML configuration files'
 )
 args = ap.parse_args()
 
-perms = get_key_perms(args.auth_dir)
+perms = get_key_perms(args.auth_dir, args.key_dir)
 syslog.openlog(logoption=syslog.LOG_PID, facility=syslog.LOG_AUTH)
 SshAgentProxyServer(args.bind, args.connect, perms).serve_forever()
