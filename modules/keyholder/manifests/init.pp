@@ -107,7 +107,7 @@ class keyholder($require_encrypted_keys='yes') {
         owner   => 'root',
         group   => 'root',
         mode    => '0444',
-        content => "REQUIRE_ENCRYPTED_KEYS='${require_encrypted_keys}'",
+        content => "REQUIRE_ENCRYPTED_KEYS='${require_encrypted_keys}'\n",
     }
 
     # The `keyholder` script provides a simplified command-line
