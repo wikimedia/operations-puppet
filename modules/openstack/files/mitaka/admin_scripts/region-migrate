@@ -36,11 +36,12 @@ import requests
 import subprocess
 import time
 
+from designateclient.v2 import client as designateclient
 import glanceclient
 from keystoneclient.auth.identity import generic
 from keystoneclient import session as keystone_session
 from neutronclient.v2_0 import client as neutronclient
-from novaclient import client
+from novaclient import client as novaclient
 
 
 class NovaInstance(object):
@@ -65,12 +66,32 @@ class NovaInstance(object):
             project_domain_name='Default',
             project_name='admin')
         source_session = keystone_session.Session(auth=source_auth)
-        self.source_novaclient = client.Client('2', session=source_session,
-                                               region_name=source_config['region'])
+        self.source_novaclient = novaclient.Client('2', session=source_session,
+                                                   region_name=source_config['region'])
 
         self.refresh_instance()
         self.project_id = self.source_instance.tenant_id
         self.user_id = self.source_instance.user_id
+
+        project_auth = generic.Password(
+            auth_url=self.common_config['keystone_url'],
+            username=self.common_config['user'],
+            password=self.common_config['password'],
+            user_domain_name='Default',
+            project_domain_name='Default',
+            project_name=self.project_id)
+        project_session = keystone_session.Session(auth=project_auth)
+        self.designateclient = designateclient.Client(session=project_session, region_name=source_config['region'])
+
+        wmflabs_auth = generic.Password(
+            auth_url=self.common_config['keystone_url'],
+            username=self.common_config['user'],
+            password=self.common_config['password'],
+            user_domain_name='Default',
+            project_domain_name='Default',
+            project_name='wmflabsdotorg')
+        wmflabs_session = keystone_session.Session(auth=wmflabs_auth)
+        self.wmflabsdesignateclient = designateclient.Client(session=wmflabs_session, region_name=source_config['region'])
 
         dest_auth = generic.Password(
             auth_url=self.common_config['keystone_url'],
@@ -80,8 +101,8 @@ class NovaInstance(object):
             project_domain_name='Default',
             project_name='admin')
         self.dest_session = keystone_session.Session(auth=dest_auth)
-        self.dest_novaclient = client.Client('2', session=self.dest_session,
-                                             region_name=dest_config['region'])
+        self.dest_novaclient = novaclient.Client('2', session=self.dest_session,
+                                                 region_name=dest_config['region'])
         self.dest_neutronclient = neutronclient.Client(session=self.dest_session,
                                                        region_name=dest_config['region'])
 
@@ -97,7 +118,6 @@ class NovaInstance(object):
         # Because the glance devs can't be bothered to update their python
         #  bindings when new features are added, we have to do this the
         #  old-fashioned way.
-        print("Needed image is %s" % image.status)
         if deactivate:
             action = 'deactivate'
             if image.status == 'deactivated':
@@ -169,6 +189,17 @@ class NovaInstance(object):
 
         return floating
 
+    def migrate_dns(self, source_ip, dest_ip):
+        for client in [self.designateclient, self.wmflabsdesignateclient]:
+            zones = client.zones.list()
+            for zone in zones:
+                recordsets = client.recordsets.list(zone['id'])
+                for recordset in recordsets:
+                    if source_ip in recordset['records']:
+                        recordset['records'][recordset['records'].index(source_ip)] = dest_ip
+                        print("updating dns record to %s" % recordset['records'])
+                        client.recordsets.update(zone['id'], recordset['id'], {"records": recordset['records']})
+
     def ssh_test(self, source=True):
         if source:
             instance = self.source_instance
@@ -237,7 +268,6 @@ class NovaInstance(object):
             if port['device_id'] == self.dest_instance.id:
                 ports.append(port)
 
-        print("ports: %s" % ports)
         if len(ports) > 1:
             print("Got the wrong number of ports for the dest VM.")
             exit(1)
@@ -245,13 +275,12 @@ class NovaInstance(object):
         port = ports[0]
 
         resp = self.dest_neutronclient.create_floatingip(
-                {'floatingip':
-                 {'tenant_id': self.project_id,
-                  'floating_network_id': self.dest_config['floating_ip_network_id'],
-                  'port_id': port['id']}})
+            {'floatingip':
+             {'tenant_id': self.project_id,
+              'floating_network_id': self.dest_config['floating_ip_network_id'],
+              'port_id': port['id']}})
 
-        self.dest_floating_ip = resp
-        print("Assigned floating IP is %s" % str(resp))
+        return resp['floatingip']['floating_ip_address']
 
     def make_destination_vm(self, name, image_id, flavor_id):
         # we need a project-scoped session to create the VM in the right project
@@ -263,8 +292,8 @@ class NovaInstance(object):
             project_domain_name='Default',
             project_name=self.project_id)
         create_session = keystone_session.Session(auth=create_auth)
-        self.create_novaclient = client.Client('2', session=create_session,
-                                               region_name=self.dest_config['region'])
+        self.create_novaclient = novaclient.Client('2', session=create_session,
+                                                   region_name=self.dest_config['region'])
 
         nics = [{"net-id": self.dest_config['network_id'], "v4-fixed-ip": ''}]
         inst = self.create_novaclient.servers.create(name, image_id, flavor_id, nics=nics)
@@ -324,7 +353,10 @@ class NovaInstance(object):
         self.make_destination_vm(name, image_id, flavor_id)
 
         if self.source_floating_ip:
-            self.assign_floating_ip_to_destination_vm()
+            self.dest_floating_ip = self.assign_floating_ip_to_destination_vm()
+
+        print("dest_floating_ip is %s" % self.dest_floating_ip)
+        self.migrate_dns(self.source_floating_ip, self.dest_floating_ip)
 
         # Make sure we have a working key for copying instances
         sshargs = ["ssh", "-i", "/root/.ssh/compute-hosts-key",
