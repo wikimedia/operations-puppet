@@ -385,7 +385,7 @@ cache::alternate_domains:
   turnilo.wikimedia.org:
     director: 'thorium'
   yarn.wikimedia.org:
-    director: 'thorium'
+    director: 'hadoop_ui'
 cache::fe_transient_gb: 5
 cache::be_transient_gb: 0
 # Profile::cache::base
