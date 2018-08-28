@@ -102,7 +102,7 @@ class role::graphite::alerts {
     monitoring::graphite_threshold { 'swift_thumbs_eqiad_codfw_diff':
         description     => 'Number of thumbnails in eqiad greater than codfw',
         dashboard_links => ['https://grafana.wikimedia.org/dashboard/file/swift.json'],
-        metric          => 'divideSeries(swift.eqiad-prod.containers.mw-media.thumb.objects, swift.codfw-prod.containers.mw-media.thumb.objects)',
+        metric          => 'keepLastValue(divideSeries(swift.eqiad-prod.containers.mw-media.thumb.objects, swift.codfw-prod.containers.mw-media.thumb.objects))',
         warning         => 1.02,
         critical        => 1.05,
         from            => '90min',
@@ -112,7 +112,7 @@ class role::graphite::alerts {
     monitoring::graphite_threshold { 'swift_thumbs_codfw_eqiad_diff':
         description     => 'Number of thumbnails in codfw greater than eqiad',
         dashboard_links => ['https://grafana.wikimedia.org/dashboard/file/swift.json'],
-        metric          => 'divideSeries(swift.codfw-prod.containers.mw-media.thumb.objects, swift.eqiad-prod.containers.mw-media.thumb.objects)',
+        metric          => 'keepLastValue(divideSeries(swift.codfw-prod.containers.mw-media.thumb.objects, swift.eqiad-prod.containers.mw-media.thumb.objects))',
         warning         => 1.02,
         critical        => 1.05,
         from            => '90min',
