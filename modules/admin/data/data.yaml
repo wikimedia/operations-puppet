@@ -83,7 +83,7 @@ groups:
     description: access to mwmaint hosts, mwlog hosts (private data) and bastion hosts
                  restricted folks use sudo to access apache / www-data resources
     members: [dartar, bearloga, tjones, cparle, pearley, bpirkle, ktsouroupidou,
-              ezachte, jamesur, jdlrobson, smalyshev, sguebo,
+              ezachte, jamesur, jdlrobson, smalyshev, sguebo, thargrove,
               leila, santhosh, amire80, foks, chelsyx, dbarratt, bmansurov, karen]
     privileges: ['ALL = (www-data,apache) NOPASSWD: ALL']
   cassandra-test-roots:
@@ -255,7 +255,7 @@ groups:
                  Those files are group readable by the analytics-privatedata-users group.
     members: [dartar, milimetric, dfoy, aude, jforrester, nithum, imarlier,
               halfak, dr0ptp4kt, bearloga, elukey, ppchelko, bawolff, mneisler,
-              nuria, otto, deskana, arnad, jgreen, sguebo,
+              nuria, otto, deskana, arnad, jgreen, sguebo, thargrove,
               bsitzmann, dbrant, nettrom, leila, cwdent,
               ezachte, mforns, reedy, west1, phuedx, awight,
               joal, jamesur, akosiaris, jkatz, tonina, pearley, ktsouroupidou,
