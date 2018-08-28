@@ -8,14 +8,6 @@ class role::analytics_cluster::webserver {
 
     include ::profile::statistics::web
 
-    # Superset. T166689
-    include ::profile::superset
-
-    include ::profile::hue
-
-    # Turnilo replaced Pivot - T194427
-    include ::profile::druid::turnilo
-
     include ::profile::base::firewall
     include standard
 }
