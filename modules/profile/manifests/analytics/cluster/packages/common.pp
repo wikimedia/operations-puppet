@@ -18,6 +18,7 @@ class profile::analytics::cluster::packages::common {
     require_package('r-cran-rmysql')
 
     require_package(
+        'ipython',                'ipython3',
         'python-sympy',
         'python-matplotlib',      'python3-matplotlib',
         'python-tk',              'python3-tk',
