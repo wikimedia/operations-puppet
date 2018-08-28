@@ -7,12 +7,4 @@ class role::tor_relay {
     system::role { 'tor_relay':
         description => 'Tor relay'
     }
-
-    rsync::quickdatacopy { 'var-lib-tor':
-      ensure      => present,
-      auto_sync   => false,
-      source_host => 'radium.wikimedia.org',
-      dest_host   => 'torrelay1001.wikimedia.org',
-      module_path => '/var/lib/tor',
-    }
 }
