@@ -10,25 +10,10 @@
 
   Requirements: PyYAML (http://pyyaml.org/)
 
-  usage: ssh-agent-proxy [--bind ADDRESS] [--connect ADDRESS]
-                         [--key-dir DIR]  [--auth-dir DIR]
-
-  Options:
-    --bind ADDRESS    Bind the proxy to the UNIX domain socket at this address
-                      (default: '/run/keyholder/proxy.sock').
-
-    --connect ADDRESS Proxy connects to the ssh-agent socket at this address
-                      (default: '/run/keyholder/agent.sock').
-
-    --key-dir DIR     Directory where the SSH keys can be found
-                      (default: '/etc/keyholder.d').
-
-    --auth-dir DIR    Directory where YAML files containing group:[key(s)]
-                      access can be found (default: '/etc/keyholder-auth.d').
-
-
+  Copyright 2015-2018 Wikimedia Foundation, Inc.
   Copyright 2015 Ori Livneh <ori@wikimedia.org>
   Copyright 2015 Tyler Cipriani <thcipriani@wikimedia.org>
+  Copyright 2018 Faidon Liambotis <faidon@wikimedia.org>
 
   Licensed under the Apache License, Version 2.0 (the "License");
   you may not use this file except in compliance with the License.
@@ -229,7 +214,10 @@ class SshAgentProxyHandler(socketserver.BaseRequestHandler):
         return key_blob, data, flags
 
 
-ap = argparse.ArgumentParser(description='filtering proxy for ssh-agent')
+ap = argparse.ArgumentParser(
+    description='filtering proxy for ssh-agent',
+    formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+)
 ap.add_argument(
     '--bind',
     default='/run/keyholder/proxy.sock',
