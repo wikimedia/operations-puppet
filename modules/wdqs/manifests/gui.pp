@@ -78,6 +78,14 @@ class wdqs::gui(
         mode   => '0755',
     }
 
+    file { '/usr/local/bin/loadCategoriesDaily.sh':
+        ensure => present,
+        source => 'puppet:///modules/wdqs/cron/loadCategoriesDaily.sh',
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0755',
+    }
+
     file { '/usr/local/bin/reloadDCAT-AP.sh':
         ensure => present,
         source => 'puppet:///modules/wdqs/cron/reloadDCAT-AP.sh',
@@ -120,7 +128,7 @@ class wdqs::gui(
     # it ever takes longer, start at 7:00.
     cron { 'load-categories-daily':
         ensure  => $ensure_daily_categories,
-        command => "/usr/local/bin/reloadCategoriesDaily.sh >> ${reload_categories_log}",
+        command => "/usr/local/bin/loadCategoriesDaily.sh >> ${reload_categories_log}",
         user    => $username,
         minute  => fqdn_rand(60),
         hour    => 7
