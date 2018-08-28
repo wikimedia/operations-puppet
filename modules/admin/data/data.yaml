@@ -2902,6 +2902,15 @@ users:
       - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDJO7wkp5QMmHB+/GiFTHhd8pMwQ+1yUXu4jV+mBpRcnO0wPa18UPI1jkF0arwmfF1IWOcjmHH/PZTYNOXWMAW9qVI54zWpZcPGrwM3GhSWIp0sDNvsJXjSPHjqs4YPtKZcF7drqc4n1N3NLrHcLcbzv+gUQJ/J+qZYBUZumb0yFwnK0wn5S9wk1YMuGptRivhh/zpC1y3bbDslBJ2fhEFjs7MR1PxRvvSDZj/dXYMyrqqnMHrpE065bPH9swvIlZTurxNCkOhoIWYMEBQkPC7B5wUfcFP3zqv3seSc1xMeOI7VpFIrByMU+MOht4Vcpn9exVJ217pQcRdA0GBsDhfsyqBqMQuiUTaUAI3lIjA7xQprl7T41wcghligZ5Maug4HjTZ5qKtGdspsP/uDgIKOqBkq8S/+V6GTBmQ0J3PkLW7u2zjhTueu45rTXc4EJ+DsWtd/wvGRL+1EjVaclRGGUAeIxSvCdn/Xiatd2lip2+F6lqhg10qriL2txTNxhLUSlyg66/bgn5moDizrF2sKRdR8ETOZoAtjjbHHku1OIILcj/H2zueihyD9YerI2n+JBBxHl6hZ6GO+pfhG5wQOKAcmzbjj3M+wi5LBlVc/4zQBl+VE5U8Q04wir+EnXFO8pZSRSds75GxC6SVCIcFpwWqwe4LwMCmCukm+SUOaRw== thargrove@wmf1964.local
     uid: 19964
     email: thargrove@wikimedia.org
+  thiemowmde:
+    ensure: present
+    realname: Thiemo Kreuz
+    name: thiemowmde
+    gid: 500
+    ssh_keys:
+      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQCopJe4A8f90fa+Y0GYwvw1k/UaWNvWRNJ9m+ym7GXoMDpVYELQAdeYm52ApG/UsQh3q05vIOGJf/peD5I7gxO4k7y9pY7wa7U9E8RWoFZDwAbyp7zXQEIWOoPP1ZqL+sJrML35duzr7tGc1ap4QPt5Arehvi22sNBVVmdU+JZhPeBZ2gT9qcf1ss0m3/TsSJyIC9PpFYAGxQE5QDLXwAolm2Eq9LSqYu4kC50SuNSihy8xsTTtBHo6l3Vmdl2XXPHdxc5qVAC+ojw/uqNLVYhc0V+avozTP9L1EapvF+/g6agwmjpfx5MEO70upz9f00uKHm12qx2BKRQlS0Mq1czOc+RqmzGoYfPGkfhqRUh2EVbum3lGV8KXs8hPuhqBQbfWLfSEZ+6p/ys9a4EsARsEChuqMKA1MTi/AAp4W4AXbw5ut/Jc9XYrG1z8RkuY8KFf71y2uvW0JY3bs118h9RwryQQp7xHB+xWRwFS2PTlPABSSg+nDKdPF786Y0cMlUpetwEdmqQZfz9s7JUUIGYJLN08Y7RdTw3pir3Fr02MvbDPUeuPbHPW6w7EEIiyaejB/SYjJgn9XbMtMYx03oKDygtKznpwinxlGH0MmS6F8IE7oILSOWGNMgmLYbLcKkpx6M977rfud0g/a5PionT+Z1O8npyPL2aEPqPEwauV1Q== thiemo.kreuz@wikimedia.de
+    uid: 4506
+    email: thiemo.kreuz@wikimedia.de
 ldap_only_users:
   abartov:
     ensure: present
@@ -3144,10 +3153,6 @@ ldap_only_users:
     ensure: present
     realname: Tobias Gritschacher
     email: tobias.gritschacher@wikimedia.de
-  thiemowmde:
-    ensure: present
-    realname: Thiemo Kreuz
-    email: thiemo.kreuz@wikimedia.de
   wmde-jand:
     ensure: present
     realname: Jan Dittrich
