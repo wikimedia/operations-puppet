@@ -383,7 +383,7 @@ cache::alternate_domains:
   transparency-private.wikimedia.org:
     director: 'webserver_misc_static'
   turnilo.wikimedia.org:
-    director: 'thorium'
+    director: 'turnilo'
   yarn.wikimedia.org:
     director: 'hadoop_ui'
 cache::fe_transient_gb: 5
