@@ -287,7 +287,7 @@ cache::alternate_domains:
   wikitech.wikimedia.org:
     director: 'labweb'
   hue.wikimedia.org:
-    director: 'thorium'
+    director: 'hadoop_ui'
   iegreview.wikimedia.org:
     director: 'krypton'
   integration.wikimedia.org:
