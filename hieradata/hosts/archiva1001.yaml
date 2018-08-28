@@ -1,9 +1,0 @@
-# Archiva is being migrated from meitnerium to archiva1001
-# T192639
-
-# Disable monitoring for archiva.wikimedia.org
-profile::archiva::proxy::monitoring_enabled: false
-
-# The new Archiva host will temporarily be run under the 'archiva-new'
-# domain. The TLS certficate will be requested via ACME to Let's Encrypt.
-profile::archiva::proxy::certificate_name: 'archiva-new'
