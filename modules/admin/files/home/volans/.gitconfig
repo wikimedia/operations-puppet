@@ -3,7 +3,9 @@
     email = rcoccioli@wikimedia.org
 
 [alias]
+    s = status
     b = branch
+    d = diff
     fe = fetch --recurse-submodules
     pu = pull --recurse-submodules
     su = submodule foreach 'git pull'
@@ -14,3 +16,18 @@
     di = diff --submodule
     wdi = diff --word-diff=plain
     ll = log --graph --pretty=format:'%Cred%h%Creset -%C(auto)%d%Creset %s %Cgreen(%cr) %C(cyan)<%an>%Creset' --abbrev-commit --date=relative
+    lg  = log --graph --decorate --pretty=oneline --abbrev-commit
+    tags = log --oneline --decorate --tags --no-walk
+    amend = commit --amend --no-edit
+    undo = reset --soft HEAD^
+    ls = diff-tree --no-commit-id --name-only -r
+
+[merge]
+    ff = only
+    conflictstyle = diff3
+
+[status]
+    showUntrackedFiles = all
+
+[transfer]
+    fsckobjects = true
