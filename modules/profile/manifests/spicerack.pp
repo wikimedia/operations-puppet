@@ -39,7 +39,7 @@ class profile::spicerack(
         ensure  => present,
         owner   => 'root',
         group   => 'root',
-        mode    => '0640',
+        mode    => '0444',
         content => template('profile/spicerack/config.yaml.erb'),
     }
 
