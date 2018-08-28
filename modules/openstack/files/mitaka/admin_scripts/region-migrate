@@ -32,6 +32,7 @@ running in the target region.
 
 import configparser
 import argparse
+import json
 import requests
 import subprocess
 import time
@@ -40,6 +41,7 @@ from designateclient.v2 import client as designateclient
 import glanceclient
 from keystoneclient.auth.identity import generic
 from keystoneclient import session as keystone_session
+from keystoneclient.v3 import client as keystoneclient
 from neutronclient.v2_0 import client as neutronclient
 from novaclient import client as novaclient
 
@@ -81,7 +83,8 @@ class NovaInstance(object):
             project_domain_name='Default',
             project_name=self.project_id)
         project_session = keystone_session.Session(auth=project_auth)
-        self.designateclient = designateclient.Client(session=project_session, region_name=source_config['region'])
+        self.designateclient = designateclient.Client(session=project_session,
+                                                      region_name=source_config['region'])
 
         wmflabs_auth = generic.Password(
             auth_url=self.common_config['keystone_url'],
@@ -91,7 +94,8 @@ class NovaInstance(object):
             project_domain_name='Default',
             project_name='wmflabsdotorg')
         wmflabs_session = keystone_session.Session(auth=wmflabs_auth)
-        self.wmflabsdesignateclient = designateclient.Client(session=wmflabs_session, region_name=source_config['region'])
+        self.wmflabsdesignateclient = designateclient.Client(session=wmflabs_session,
+                                                             region_name=source_config['region'])
 
         dest_auth = generic.Password(
             auth_url=self.common_config['keystone_url'],
@@ -101,10 +105,14 @@ class NovaInstance(object):
             project_domain_name='Default',
             project_name='admin')
         self.dest_session = keystone_session.Session(auth=dest_auth)
+
         self.dest_novaclient = novaclient.Client('2', session=self.dest_session,
                                                  region_name=dest_config['region'])
         self.dest_neutronclient = neutronclient.Client(session=self.dest_session,
                                                        region_name=dest_config['region'])
+        self.dest_keystoneclient = keystoneclient.Client(session=self.dest_session,
+                                                         region_name=dest_config['region'])
+        self.proxy_endpoint = self.get_proxy_endpoint(self.dest_keystoneclient, dest_config['region'])
 
     # Returns True if the status changed, otherwise False
     @staticmethod
@@ -158,7 +166,6 @@ class NovaInstance(object):
             return False
 
         ips = r.strip().split('\n')
-        print(ips)
         if accept_multiples:
             if target_ip not in ips:
                 print("Got wrong ip %s for %s, should include %s" % (r, fqdn, target_ip))
@@ -189,6 +196,50 @@ class NovaInstance(object):
 
         return floating
 
+    def get_proxy_endpoint(self, keystoneclient, region):
+        services = keystoneclient.services.list()
+        for service in services:
+            if service.type == 'proxy':
+                serviceid = service.id
+                break
+
+        endpoints = keystoneclient.endpoints.list(service=serviceid,
+                                                  region=region)
+        for endpoint in endpoints:
+            if endpoint.interface == 'public':
+                return endpoint.url
+
+        print("Can't find the public proxy service endpoint.")
+
+    def migrate_proxies(self, source_ip, dest_ip):
+        endpoint = self.proxy_endpoint
+        requrl = endpoint.replace("$(tenant_id)s", self.project_id)
+        resp = requests.get(requrl + '/mapping')
+        if resp.status_code == 400 and resp.text == 'No such project':
+            return []
+        elif not resp:
+            raise Exception("Proxy service request got status " +
+                            str(resp.status_code))
+        project_proxies = resp.json()['routes']
+
+        for proxy in project_proxies:
+            if len(proxy['backends']) > 1:
+                print("This proxy record has multiple backends. "
+                      "That's unexpected and not handled, "
+                      "we may be leaking proxy records.")
+            elif proxy['backends'][0].split(":")[1].strip('/') == source_ip:
+                port = proxy['backends'][0].split(":")[2].strip('/')
+                # found match.  Delete and recreate.
+                print("Updating proxy record %s" % proxy)
+                requrl = endpoint.replace("$(tenant_id)s", self.project_id)
+                req = requests.delete(requrl + '/mapping/' + proxy['domain'])
+                req.raise_for_status()
+
+                proxy['backends'] = ['http://%s:%s' % (dest_ip, port)]
+
+                req = requests.put(requrl + '/mapping', data=json.dumps(proxy))
+                req.raise_for_status()
+
     def migrate_dns(self, source_ip, dest_ip):
         for client in [self.designateclient, self.wmflabsdesignateclient]:
             zones = client.zones.list()
@@ -198,7 +249,9 @@ class NovaInstance(object):
                     if source_ip in recordset['records']:
                         recordset['records'][recordset['records'].index(source_ip)] = dest_ip
                         print("updating dns record to %s" % recordset['records'])
-                        client.recordsets.update(zone['id'], recordset['id'], {"records": recordset['records']})
+                        client.recordsets.update(zone['id'],
+                                                 recordset['id'],
+                                                 {"records": recordset['records']})
 
     def ssh_test(self, source=True):
         if source:
@@ -356,6 +409,11 @@ class NovaInstance(object):
             self.dest_floating_ip = self.assign_floating_ip_to_destination_vm()
 
         print("dest_floating_ip is %s" % self.dest_floating_ip)
+
+        source_ip = self.get_fixed_ip(self.source_instance)
+        target_ip = self.dest_instance.addresses[self.dest_config['network_name']][0]['addr']
+
+        self.migrate_proxies(source_ip, target_ip)
         self.migrate_dns(self.source_floating_ip, self.dest_floating_ip)
 
         # Make sure we have a working key for copying instances
