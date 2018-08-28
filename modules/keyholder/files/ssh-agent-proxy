@@ -54,6 +54,7 @@ except ImportError:
         'All others: `pip3 install PyYAML`'
     )
 
+logger = logging.getLogger('ssh-agent-proxy')
 
 # Defined in <socket.h>.
 SO_PEERCRED = 17
@@ -225,48 +226,75 @@ class SshAgentProxyHandler(socketserver.BaseRequestHandler):
         return key_blob, data, flags
 
 
-ap = argparse.ArgumentParser(
-    description='filtering proxy for ssh-agent',
-    formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-)
-ap.add_argument(
-    '--debug',
-    action='store_true',
-    help='Debug mode: log to stdout and be more verbose',
-)
-ap.add_argument(
-    '--bind',
-    default='/run/keyholder/proxy.sock',
-    help='Bind the proxy to the domain socket at this address'
-)
-ap.add_argument(
-    '--connect',
-    default='/run/keyholder/agent.sock',
-    help='Proxy connects to the ssh-agent socket at this address'
-)
-ap.add_argument(
-    '--key-dir',
-    default='/etc/keyholder.d',
-    help='directory with SSH keys'
-)
-ap.add_argument(
-    '--auth-dir',
-    default='/etc/keyholder-auth.d',
-    help='directory with YAML configuration files'
-)
-args = ap.parse_args()
+def parse_args():
+    """Parse and return the parsed command line arguments."""
+    parser = argparse.ArgumentParser(
+        description='filtering proxy for ssh-agent',
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter
+    )
+    parser.add_argument(
+        '--debug',
+        action='store_true',
+        help='Debug mode: log to stdout and be more verbose',
+    )
+    parser.add_argument(
+        '--bind',
+        default='/run/keyholder/proxy.sock',
+        help='Bind the proxy to the domain socket at this address'
+    )
+    parser.add_argument(
+        '--connect',
+        default='/run/keyholder/agent.sock',
+        help='Proxy connects to the ssh-agent socket at this address'
+    )
+    parser.add_argument(
+        '--key-dir',
+        default='/etc/keyholder.d',
+        help='directory with SSH keys'
+    )
+    parser.add_argument(
+        '--auth-dir',
+        default='/etc/keyholder-auth.d',
+        help='directory with YAML configuration files'
+    )
+    return parser.parse_args()
 
-logger = logging.getLogger('ssh-agent-proxy')
-if args.debug:
-    logger.setLevel(logging.DEBUG)
-    handler = logging.StreamHandler()
-    handler.formatter = logging.Formatter('%(asctime)s %(levelname)s: %(message)s')
-else:
-    logger.setLevel(logging.INFO)
-    handler = logging.handlers.SysLogHandler(address='/dev/log', facility='auth')
-    handler.formatter = logging.Formatter('%(name)s[%(process)d]: %(message)s')
-logger.addHandler(handler)
 
-perms = get_key_perms(args.auth_dir, args.key_dir)
-logger.info('Initialized and serving requests')
-SshAgentProxyServer(args.bind, args.connect, perms).serve_forever()
+def setup_logging(debug):
+    """Setup logging format and level."""
+    if debug:
+        logger.setLevel(logging.DEBUG)
+        stream_handler = logging.StreamHandler()
+        fmt = logging.Formatter('%(asctime)s %(levelname)s: %(message)s')
+        stream_handler.setFormatter(fmt)
+        logger.addHandler(stream_handler)
+    else:
+        logger.setLevel(logging.INFO)
+        syslog_handler = logging.handlers.SysLogHandler(
+            address='/dev/log',
+            facility='auth',
+        )
+        fmt = logging.Formatter('%(name)s[%(process)d]: %(message)s')
+        syslog_handler.setFormatter(fmt)
+        logger.addHandler(syslog_handler)
+
+
+def main():
+    """Main entry point; runs forever."""
+    args = parse_args()
+    setup_logging(args.debug)
+
+    perms = get_key_perms(args.auth_dir, args.key_dir)
+    logger.info('Initialized and serving requests')
+
+    server = SshAgentProxyServer(args.bind, args.connect, perms)
+
+    try:
+        server.serve_forever()
+    except (SystemExit, KeyboardInterrupt):
+        logger.info('Shutting down')
+    server.server_close()
+
+
+if __name__ == '__main__':
+    main()
