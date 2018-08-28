@@ -56,7 +56,7 @@ class statistics::sites::stats {
     git::clone { 'wikistats-v2':
         ensure    => 'latest',
         directory => $wikistats_source_directory,
-        branch    => 'release',
+        branch    => 'master',
         origin    => 'https://gerrit.wikimedia.org/r/analytics/wikistats2',
         owner     => 'root',
         group     => 'www-data',
