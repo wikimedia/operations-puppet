@@ -328,7 +328,7 @@ cache::alternate_domains:
   phab.wmfusercontent.org:
     director: 'phabricator'
   pivot.wikimedia.org:
-    director: 'thorium'
+    director: 'turnilo'
   piwik.wikimedia.org:
     director: 'bohrium'
     caching: 'pass'
@@ -372,7 +372,7 @@ cache::alternate_domains:
         director: 'eventstreams'
         caching: 'pipe'
   superset.wikimedia.org:
-    director: 'thorium'
+    director: 'superset'
   ticket.wikimedia.org:
     director: 'mendelevium'
     caching: 'pass'
