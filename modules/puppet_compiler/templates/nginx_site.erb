@@ -22,9 +22,16 @@ server {
                 rewrite ^/<%= @hostname %>/(.*)$ /$1 last;
        }
 
-       # Proxy-pass the request to the host specified.
-       location ~ ^/(?<fwd_host><%= @host_regex %>)/.*$ {
+       # Proxy-pass requests for jessie compilers
+       location ~ '^/(?<fwd_host>compiler\d{2})/.*$' {
                 resolver <%= scope.lookupvar('::nameservers')[0] %>;
-                proxy_pass http://$fwd_host.<%= @domain %>;
+                proxy_pass http://$fwd_host.puppet3-diffs.eqiad.wmflabs;
        }
+
+       # Proxy-pass requests for stretch compilers
+       location ~ '^/(?<fwd_host>compiler\d{4})/.*$' {
+                resolver <%= scope.lookupvar('::nameservers')[0] %>;
+                proxy_pass http://$fwd_host.puppet-diffs.eqiad.wmflabs;
+       }
+
 }
