@@ -2911,6 +2911,15 @@ users:
       - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQCopJe4A8f90fa+Y0GYwvw1k/UaWNvWRNJ9m+ym7GXoMDpVYELQAdeYm52ApG/UsQh3q05vIOGJf/peD5I7gxO4k7y9pY7wa7U9E8RWoFZDwAbyp7zXQEIWOoPP1ZqL+sJrML35duzr7tGc1ap4QPt5Arehvi22sNBVVmdU+JZhPeBZ2gT9qcf1ss0m3/TsSJyIC9PpFYAGxQE5QDLXwAolm2Eq9LSqYu4kC50SuNSihy8xsTTtBHo6l3Vmdl2XXPHdxc5qVAC+ojw/uqNLVYhc0V+avozTP9L1EapvF+/g6agwmjpfx5MEO70upz9f00uKHm12qx2BKRQlS0Mq1czOc+RqmzGoYfPGkfhqRUh2EVbum3lGV8KXs8hPuhqBQbfWLfSEZ+6p/ys9a4EsARsEChuqMKA1MTi/AAp4W4AXbw5ut/Jc9XYrG1z8RkuY8KFf71y2uvW0JY3bs118h9RwryQQp7xHB+xWRwFS2PTlPABSSg+nDKdPF786Y0cMlUpetwEdmqQZfz9s7JUUIGYJLN08Y7RdTw3pir3Fr02MvbDPUeuPbHPW6w7EEIiyaejB/SYjJgn9XbMtMYx03oKDygtKznpwinxlGH0MmS6F8IE7oILSOWGNMgmLYbLcKkpx6M977rfud0g/a5PionT+Z1O8npyPL2aEPqPEwauV1Q== thiemo.kreuz@wikimedia.de
     uid: 4506
     email: thiemo.kreuz@wikimedia.de
+  gbirke:
+    ensure: present
+    realname: Gabriel Birke
+    name: gbirke
+    gid: 500
+    ssh_keys:
+      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDUGwDQt0/RIZ0YhzjVHZL8YqRF1I6lKxJIhNOFq/rlZiQ0Lvt6awwzAVn/uDSizANiv2tiWbVoyBPhX46MBPzMBBTKbSLL3uUYS3tG4kC1DiawzOcumr3oIVoFrJf3vX4m51P6vySMFCmmwG8N10YFHj0YFYJ5tPSMNk0KqYTflzw7gFbObhpbopUDarOdF3p3jpprEIdZetVfSLIWgeT8H9COR8+TbygyB6vKYon8M+2+M+bdC3wNTVHfY6UoYQJaL+ptoO26qSbyFoQJtzu8bfpvFBT+gl1wCWoG+Ygho7QcqxQtHIjCC0gKX2m7huMfpbbscNBF6BbKCGbzmTViV6e3Q9hacCMfUhN579u16ryU6wr1zeCjTZL5UqrcztFgPWEGOnAF4QH4gi4cAl2728ptJ0fKt2Gyfj1QmOc+HTWeYE4BRww8CS/JUjhElTx98hAYtBk/Rsv0/QOYW/Gr0lpdFaJfWb5a5MGnuXv5XiEpR0R566bVcc2aK0b5walIHPg19cT0gwPvadgnjNzys2HXwrdDfEFAjlJWH0BvTeXQpXQT1+7YccsPRH65p9TW3shYZOWrUgWsyC6r5DN5ChW7jpvQyVtdCycYNlrH87KRDM179gqX6msBuRaIWhW2i00CzZ5D3PCn8O0ISPAgc2OelSCm38b8KR2Gr4GVuQ== gabriel.birke@wikimedia.de
+    uid: 12490
+    email: gabriel.birke@wikimedia.de
 ldap_only_users:
   abartov:
     ensure: present
