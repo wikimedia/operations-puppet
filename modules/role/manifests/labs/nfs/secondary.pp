@@ -32,9 +32,10 @@ class role::labs::nfs::secondary(
         # Define DRBD role for this host, should come from hiera
         $drbd_role = 'primary'
 
+        # Do not change the 192 address here
         interface::ip { 'drbd-replication':
             interface => $data_iface,
-            address   => '192.168.0.2',
+            address   => '192.168.0.1',
             prefixlen => '30',
             require   => Interface::Manual['data'],
         }
@@ -44,9 +45,10 @@ class role::labs::nfs::secondary(
         # Define DRBD role for this host, should come from hiera
         $drbd_role = 'secondary'
 
+        # Do not change the 192 address here
         interface::ip { 'drbd-replication':
             interface => $data_iface,
-            address   => '192.168.0.1',
+            address   => '192.168.0.2',
             prefixlen => '30',
             require   => Interface::Manual['data'],
         }
