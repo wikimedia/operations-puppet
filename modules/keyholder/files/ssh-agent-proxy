@@ -72,7 +72,10 @@ SSH_AGENT_RSA_SHA2_512 = 4
 s_message_header = struct.Struct('!LB')
 s_flags = struct.Struct('!L')
 s_ucred = struct.Struct('2Ii')
-err = type('SshAgentProtocolError', (IOError,), {})
+
+
+class SshAgentProtocolError(OSError):
+    """Custom exception class for protocol errors."""
 
 
 def unpack_variable_length_string(buffer, offset=0):
@@ -166,7 +169,7 @@ class SshAgentProxyHandler(socketserver.BaseRequestHandler):
         if code in (SSH2_AGENTC_REQUEST_IDENTITIES,
                     SSH_AGENTC_REQUEST_RSA_IDENTITIES):
             if message:
-                raise err('Trailing bytes')
+                raise SshAgentProtocolError('Trailing bytes')
             self.send_message(self.backend, code)
 
         elif code == SSH2_AGENTC_SIGN_REQUEST:
@@ -209,7 +212,7 @@ class SshAgentProxyHandler(socketserver.BaseRequestHandler):
         flags, = s_flags.unpack_from(message, offset)
 
         if offset + s_flags.size != len(message):
-            raise err('SSH2_AGENTC_SIGN_REQUEST: Trailing bytes')
+            raise SshAgentProtocolError('Trailing bytes')
 
         # this is not the right way to be parsing flags, as in theory they can
         # coexist; in practice the existing ones cannot meaningfully coexist so
@@ -217,7 +220,7 @@ class SshAgentProxyHandler(socketserver.BaseRequestHandler):
         # the builtin class Flag.
         if flags not in (0, SSH_AGENT_OLD_SIGNATURE,
                          SSH_AGENT_RSA_SHA2_256, SSH_AGENT_RSA_SHA2_512):
-            raise err('SSH2_AGENTC_SIGN_REQUEST: Bad flags 0x%X' % flags)
+            raise SshAgentProtocolError('Unrecognized flags 0x%X' % flags)
 
         return key_blob, data, flags
 
