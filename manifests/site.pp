@@ -2044,11 +2044,6 @@ node /^(seaborgium|serpens)\.wikimedia\.org$/ {
     role(openldap::labs)
 }
 
-# Silver was wikitech; now slated for decom
-node 'silver.wikimedia.org' {
-    role(spare::system)
-}
-
 node 'sodium.wikimedia.org' {
     role(mirrors)
     interface::add_ip6_mapped { 'main': }

@@ -6407,13 +6407,6 @@ host scb2006 {
     filename "lpxelinux.0";
 }
 
-host silver {
-    hardware ethernet 18:03:73:f1:58:67;
-    fixed-address silver.wikimedia.org;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
-    filename "lpxelinux.0";
-}
-
 host snapshot1005 {
     hardware ethernet 30:e1:71:5d:e0:b8;
     fixed-address snapshot1005.eqiad.wmnet;
