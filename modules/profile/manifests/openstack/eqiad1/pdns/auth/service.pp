@@ -15,7 +15,7 @@ class profile::openstack::eqiad1::pdns::auth::service(
         host           => $host,
         host_secondary => $host_secondary,
         db_pass        => $db_pass,
-        db_host        => ipresolve($host,4),
+        db_host        => ipresolve($::fqdn,4),
     }
 
     class {'::profile::openstack::base::pdns::auth::monitor::pdns_control':}
