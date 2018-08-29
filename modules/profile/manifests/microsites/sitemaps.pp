@@ -13,9 +13,10 @@ class profile::microsites::sitemaps(
 
     # ensure sitemaps-admins own files in the document root
     file { '/srv/org/wikimedia/sitemaps':
-        ensure => 'directory',
-        owner  => 'root',
-        group  => 'sitemaps-admins',
-        mode   => '2770',
+        ensure  => 'directory',
+        group   => 'sitemaps-admins',
+        mode    => '2774',
+        recurse => true,
     }
 }
+
