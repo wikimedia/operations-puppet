@@ -45,19 +45,4 @@ class archiva::gitfat {
         user    => 'archiva',
         require => File['/usr/local/bin/archiva-gitfat-link'],
     }
-
-    # this uses modules/rsync to
-    # set up an rsync daemon service
-    include ::rsync::server
-
-    # Set up an rsync module so that anybody
-    # can rsync read from $gitfat_archiva_path.
-    # The git fat store will be available at:
-    #   hostname::archiva/git-fat
-    rsync::server::module { 'archiva':
-        path      => $archiva_path,
-        read_only => 'yes',
-        uid       => 'nobody',
-        gid       => 'nogroup',
-    }
 }
