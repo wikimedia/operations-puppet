@@ -65,6 +65,13 @@ class openstack::glance::service(
             require => Package['glance'];
     }
 
+    # Glance expects some images that are actually in /srv/glance/images to
+    #  be in /a/glance/images instead.  This link should keep everyone happy.
+    file {'/a':
+        ensure => link,
+        target => '/srv',
+    }
+
     service { 'glance-api':
         ensure  => $active,
         require => Package['glance'],
