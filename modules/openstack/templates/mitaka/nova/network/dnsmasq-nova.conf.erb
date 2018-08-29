@@ -25,3 +25,6 @@ dhcp-boot=jessie-installer/pxelinux.0,<%= @tftp_host -%>,<%= scope.function_ipre
 # This next line is a bit of a hack, supporting only a single
 #  serial port/baud speed for labs metal
 dhcp-option-force=209,pxelinux.cfg/ttyS1-115200
+
+# extra compat dhcp-option
+<%= @dnsmasq_compat_option %>

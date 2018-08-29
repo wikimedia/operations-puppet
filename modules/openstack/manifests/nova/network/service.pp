@@ -6,6 +6,7 @@ class openstack::nova::network::service(
     $version,
     $dns_recursor,
     $dns_recursor_secondary,
+    $dnsmasq_compat_option,
     $tftp_host='install1002.wikimedia.org',
     $labs_metal={},
     $nova_dnsmasq_aliases={},

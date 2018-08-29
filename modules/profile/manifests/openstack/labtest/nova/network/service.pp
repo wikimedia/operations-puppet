@@ -7,6 +7,7 @@ class profile::openstack::labtest::nova::network::service(
     $network_flat_tagged_base_interface = hiera('profile::openstack::labtest::nova::network_flat_tagged_base_interface'),
     $network_flat_interface_vlan = hiera('profile::openstack::labtest::nova::network_flat_interface_vlan'),
     $network_public_ip = hiera('profile::openstack::labtest::nova::network_public_ip'),
+    $dnsmasq_compat_option = hiera('profile::openstack::labtest::nova::dnsmasq_compat_option'),
     ) {
 
     require ::profile::openstack::labtest::nova::common
@@ -19,6 +20,7 @@ class profile::openstack::labtest::nova::network::service(
         network_flat_tagged_base_interface => $network_flat_tagged_base_interface,
         network_flat_interface_vlan        => $network_flat_interface_vlan,
         network_public_ip                  => $network_public_ip,
+        dnsmasq_compat_option              => $dnsmasq_compat_option,
     }
     contain '::profile::openstack::base::nova::network::service'
 
