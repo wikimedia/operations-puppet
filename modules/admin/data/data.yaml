@@ -688,6 +688,10 @@ groups:
     description: users with root on WDQS test cluster
     members: [smalyshev]
     privileges: ['ALL = (ALL) NOPASSWD: ALL']
+  sitemaps-admins:
+    gid: 805
+    description: People who upload files to sitemaps.wikimedia.org
+    members: [krinkle, gilles, phedenskog, imarlier, aaron]
   contint-docker:
     # Generally speaking, avoiding direct docker access is the most prudent course of action, but if
     # needed the docker group does have elevated privileges allowing users to interact with docker
