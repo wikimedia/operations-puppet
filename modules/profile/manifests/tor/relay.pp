@@ -13,6 +13,8 @@ class profile::tor::relay {
         nickname        => 'wikimediaeqiad1',
         contact         => 'noc@wikimedia.org',
         exit_policy     => 'reject *:*', # no exits allowed
+        apt_uri         => 'http://apt.wikimedia.org/wikimedia',
+        apt_dist        => "${::lsbdistcodename}-wikimedia",
     }
 
     ::tor::instance { 'wikimediaeqiad2':

@@ -8,10 +8,28 @@ class tor(
     $orport,
     $dirport,
     $exit_policy,
+    $apt_uri,
+    $apt_dist,
 ) {
 
-    package { 'tor':
-        ensure => 'present',
+    if os_version('debian >= stretch') {
+
+        apt::repository { 'thirdparty-tor':
+            uri        => $apt_uri,
+            dist       => $apt_dist,
+            components => 'thirdparty/tor',
+        }
+
+        package { 'tor':
+            ensure  => 'present',
+            require => [ Apt::Repository['thirdparty-tor'],Exec['apt-get update']],
+        }
+
+    } else {
+
+        package { 'tor':
+            ensure  => 'present',
+        }
     }
 
     # status monitor for tor - https://www.atagar.com/arm/
