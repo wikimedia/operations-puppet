@@ -17,9 +17,16 @@ class wdqs::monitor::services(
 
 
     # categories are updated weekly, this is a low frequency check
+    nrpe::monitor_service { 'WDQS_Categories_Ping':
+        description    => 'WDQS Categories endpoint',
+        nrpe_command   => '/usr/lib/nagios/plugins/check_wdqs_categories.py --ping',
+        check_interval => 720, # every 6 hours
+        retry_interval => 60,  # retry after 1 hour
+    }
+
     nrpe::monitor_service { 'WDQS_Categories_Lag':
         description    => 'WDQS Categories update lag',
-        nrpe_command   => '/usr/lib/nagios/plugins/check_wdqs_categories.py',
+        nrpe_command   => '/usr/lib/nagios/plugins/check_wdqs_categories.py --lag',
         check_interval => 720, # every 6 hours
         retry_interval => 60,  # retry after 1 hour
     }
