@@ -3,9 +3,9 @@ profile::openstack::eqiad1::pdns::private_reverse_zones:
   - '68.10.in-addr.arpa'
   - '16.172.in-addr.arpa'
 profile::openstack::eqiad1::pdns::host: 'labs-ns2.wikimedia.org'
-profile::openstack::eqiad1::pdns::host_secondary: 'labs-ns2.wikimedia.org'
+profile::openstack::eqiad1::pdns::host_secondary: 'labs-ns3.wikimedia.org'
 profile::openstack::eqiad1::pdns::recursor: 'labs-recursor2.wikimedia.org'
-profile::openstack::eqiad1::pdns::recursor_secondary: 'labs-recursor2.wikimedia.org'
+profile::openstack::eqiad1::pdns::recursor_secondary: 'labs-recursor3.wikimedia.org'
 profile::openstack::eqiad1::pdns::monitor_target_fqdn: 'tools-grid-master.tools.eqiad.wmflabs'
 profile::openstack::eqiad1::pdns::use_metal_resolver: True
 
