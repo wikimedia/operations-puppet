@@ -1403,7 +1403,7 @@ node /^mc20(19|2[0-9]|3[0-6])\.codfw\.wmnet/ {
 # Old archiva host (replaced by archiva1001)
 # Migration in progress - T192639
 node 'meitnerium.wikimedia.org' {
-    role(archiva)
+    role(spare::system)
     interface::add_ip6_mapped { 'main': }
 }
 

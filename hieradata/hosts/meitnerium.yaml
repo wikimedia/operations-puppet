@@ -1,9 +1,0 @@
-# Archiva is being migrated from meitnerium to archiva1001
-# T192639
-
-# Disable monitoring for archiva.wikimedia.org since it is now
-# controlled by archiva1001
-profile::archiva::proxy::monitoring_enabled: false
-
-# The archiva.wikimedia.org certificate is moved to archiva1001
-do_acme: false
