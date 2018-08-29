@@ -28,7 +28,7 @@ cr2-ulsfo.wikimedia.org;juniper;up;
 asw2-ulsfo.mgmt.ulsfo.wmnet;juniper;up;
 cr1-codfw.wikimedia.org;juniper;up;
 cr2-codfw.wikimedia.org;juniper;up;
-#cr2-eqdfw.wikimedia.org;juniper;up;   Commented out until T202952 is resolved
+cr2-eqdfw.wikimedia.org;juniper;up;
 asw-a-codfw.mgmt.codfw.wmnet;juniper;up;
 asw-b-codfw.mgmt.codfw.wmnet;juniper;up;
 asw-c-codfw.mgmt.codfw.wmnet;juniper;up;
