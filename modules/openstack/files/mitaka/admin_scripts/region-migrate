@@ -405,16 +405,14 @@ class NovaInstance(object):
 
         self.make_destination_vm(name, image_id, flavor_id)
 
-        if self.source_floating_ip:
-            self.dest_floating_ip = self.assign_floating_ip_to_destination_vm()
-
-        print("dest_floating_ip is %s" % self.dest_floating_ip)
-
         source_ip = self.get_fixed_ip(self.source_instance)
         target_ip = self.dest_instance.addresses[self.dest_config['network_name']][0]['addr']
-
         self.migrate_proxies(source_ip, target_ip)
-        self.migrate_dns(self.source_floating_ip, self.dest_floating_ip)
+
+        if self.source_floating_ip:
+            self.dest_floating_ip = self.assign_floating_ip_to_destination_vm()
+            print("dest_floating_ip is %s" % self.dest_floating_ip)
+            self.migrate_dns(self.source_floating_ip, self.dest_floating_ip)
 
         # Make sure we have a working key for copying instances
         sshargs = ["ssh", "-i", "/root/.ssh/compute-hosts-key",
