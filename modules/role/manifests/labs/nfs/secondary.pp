@@ -28,7 +28,7 @@ class role::labs::nfs::secondary(
         interface => $data_iface,
     }
 
-    if $::hostname == 'labstore1005' {
+    if $::hostname == 'labstore1004' {
         # Define DRBD role for this host, should come from hiera
         $drbd_role = 'primary'
 
@@ -40,7 +40,7 @@ class role::labs::nfs::secondary(
         }
     }
 
-    if $::hostname == 'labstore1004' {
+    if $::hostname == 'labstore1005' {
         # Define DRBD role for this host, should come from hiera
         $drbd_role = 'secondary'
 
