@@ -41,6 +41,7 @@ class profile::openstack::base::keystone::service(
     $designate_host = hiera('profile::openstack::base::designate_host'),
     $designate_host_standby = hiera('profile::openstack::base::designate_host_standby'),
     $second_region_designate_host = hiera('profile::openstack::base::second_region_designate_host'),
+    $second_region_designate_host_standby = hiera('profile::openstack::base::second_region_designate_host_standby'),
     $labweb_hosts = hiera('profile::openstack::base::labweb_hosts'),
     ) {
 
@@ -115,6 +116,7 @@ class profile::openstack::base::keystone::service(
                              @resolve(${designate_host}) @resolve(${designate_host_standby})
                              @resolve(${designate_host}, AAAA) @resolve(${designate_host_standby}, AAAA)
                              @resolve(${second_region_designate_host}) @resolve(${second_region_designate_host}, AAAA)
+                             @resolve(${second_region_designate_host_standby}) @resolve(${second_region_designate_host_standby}, AAAA)
                              ${labweb_ips} ${labweb_ip6s}
                              @resolve(${osm_host})
                              ) proto tcp dport (35357) ACCEPT;",
