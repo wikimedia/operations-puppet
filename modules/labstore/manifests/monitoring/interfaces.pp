@@ -13,6 +13,8 @@ class labstore::monitoring::interfaces(
     $contact_groups='wmcs-team,admins',
     $int_throughput_warn = '93750000',  # 750Mbps
     $int_throughput_crit = '106250000', # 850Mbps
+    $load_warn = '16',
+    $load_crit = '24',
 ) {
 
     $interval = '10min' # see T188624
@@ -56,8 +58,8 @@ class labstore::monitoring::interfaces(
         dashboard_links => ['https://grafana.wikimedia.org/dashboard/db/labs-monitoring'],
         metric          => "servers.${::hostname}.loadavg.01",
         from            => '10min',
-        warning         => '16',
-        critical        => '24',
+        warning         => $load_warn,
+        critical        => $load_crit,
         percentage      => '50', # Don't freak out on spikes
         contact_group   => $contact_groups,
     }
