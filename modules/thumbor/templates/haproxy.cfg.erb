@@ -37,6 +37,7 @@ listen thumbor
     http-request set-header X-Client-IP %[src]
     http-response set-header Proxy-Response-Date %Tl
     http-response set-header X-Upstream %si:%sp
+    http-response set-header Thumbor-Request-Id %[unique-id]
 
     # Maxconn 1 ensures that each Thumbor instance only handles one request at a time
     # which is deliberate since Thumbor is single-threaded
