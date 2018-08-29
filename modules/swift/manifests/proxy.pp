@@ -12,9 +12,11 @@ class swift::proxy (
     $rewrite_account           = undef,
     $dispersion_account        = undef,
     $thumborhost               = '',
+    $inactivedc_thumborhost    = '',
 ) {
     package {[
         'swift-proxy',
+        'python-eventlet',
     ]:
         ensure => present,
     }

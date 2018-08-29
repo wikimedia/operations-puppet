@@ -8,3 +8,4 @@ swift::proxy::memcached_servers: [
 ]
 
 swift::proxy::thumborhost: 'thumbor.svc.codfw.wmnet:8800'
+swift::proxy::inactivedc_thumborhost: 'thumbor.svc.eqiad.wmnet:8800'

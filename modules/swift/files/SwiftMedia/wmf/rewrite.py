@@ -4,6 +4,7 @@
 
 # unit test is in test_rewrite.py. Tests are referenced by numbered comments.
 
+import eventlet
 import re
 import urlparse
 
@@ -34,10 +35,17 @@ class _WMFRewriteContext(WSGIContext):
 
         self.account = conf['account'].strip()
         self.thumborhost = conf['thumborhost'].strip()
+        self.inactivedc_thumborhost = conf['inactivedc_thumborhost'].strip()
         self.user_agent = conf['user_agent'].strip()
         self.bind_port = conf['bind_port'].strip()
         self.shard_container_list = [
             item.strip() for item in conf['shard_container_list'].split(',')]
+
+    def thumborify_url(self, reqorig, host):
+        reqorig.host = host
+        thumbor_urlobj = list(urlparse.urlsplit(reqorig.url))
+        thumbor_urlobj[2] = urllib2.quote(thumbor_urlobj[2], '%/')
+        return urlparse.urlunsplit(thumbor_urlobj)
 
     def handle404(self, reqorig, url, container, obj):
         """
@@ -66,11 +74,7 @@ class _WMFRewriteContext(WSGIContext):
         # However, someone may have a formerly valid link to a file, so we
         # should do them the favor of giving them a 404.
         try:
-            reqorig.host = self.thumborhost
-            thumbor_urlobj = list(urlparse.urlsplit(reqorig.url))
-            thumbor_urlobj[2] = urllib2.quote(thumbor_urlobj[2], '%/')
-            thumbor_encodedurl = urlparse.urlunsplit(thumbor_urlobj)
-
+            thumbor_encodedurl = self.thumborify_url(reqorig, self.thumborhost)
             upcopy = thumbor_opener.open(thumbor_encodedurl)
         except urllib2.HTTPError as error:
             # Wrap the urllib2 HTTPError into a swob HTTPException
@@ -83,6 +87,11 @@ class _WMFRewriteContext(WSGIContext):
             msg = 'There was a problem while contacting the thumbnailing service: %s' % \
                   error.reason
             return swob.HTTPServiceUnavailable(msg)
+
+        # We successfully generated a thumbnail on the active DC, send the same request
+        # blindly to the inactive DC to populate Swift there, not waiting for the response
+        inactivedc_thumbor_encodedurl = self.thumborify_url(reqorig, self.inactivedc_thumborhost)
+        eventlet.spawn(thumbor_opener.open, inactivedc_thumbor_encodedurl)
 
         # get the Content-Type.
         uinfo = upcopy.info()
