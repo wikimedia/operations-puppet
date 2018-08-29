@@ -15,6 +15,10 @@ proxy_temp_path /srv/nginx/tmp/;
 server {
     listen 80;
 
+    if ($http_user_agent ~* (got/8.0.3 (https://github.com/sindresorhus/got)|python-requests/2.18.4)) {
+        return 403;
+    }
+
     # Enforce HTTPS only
     if ($http_x_forwarded_proto != "https") {
           rewrite ^(.*)$ https://$http_host$1 permanent;
