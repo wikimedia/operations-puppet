@@ -15,6 +15,13 @@
     RewriteRule   ^/~(.+) https://people.wikimedia.org/~$1  [R=301,L]
     RewriteRule   ^/dbtree(.*)$ https://dbtree.wikimedia.org [R=301,L]
 
+    # This domain is expected to show current cluster information.
+    # Disable unconditional client-side caching, and shorten server-side
+    # caching to just 1 minute. This does not mean browsers and cache proxies
+    # re-download responses every time, they are still able to store responses
+    # And use E-Tag/If-None-Match/304 to validate stored responses (T202734)
+    Header set Cache-Control "s-maxage=60, must-revalidate, max-age=0"
+
     ErrorLog /var/log/apache2/error.log
 
     # Possible values include: debug, info, notice, warn, error, crit,
