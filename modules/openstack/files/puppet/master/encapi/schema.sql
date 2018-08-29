@@ -1,7 +1,7 @@
 CREATE TABLE prefix (
     id INT UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
     project VARCHAR(64) NOT NULL, -- 63 dns label length limit
-    prefix VARCHAR(64) NOT NULL -- 63 dns label length limit + 1 for trailing .
+    prefix VARCHAR(255) NOT NULL -- 253 dns fqdn length limit + 1 for trailing .
 ) CHARSET=utf8mb4;
 CREATE UNIQUE INDEX project_prefix ON prefix(project, prefix);
 
