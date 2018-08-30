@@ -117,7 +117,7 @@ class wdqs::gui(
     # do not want them to be too far from one another.
     cron { 'reload-categories':
         ensure  => $ensure_reload_categories,
-        command => "/usr/local/bin/reloadCategories.sh >> ${reload_categories_log}",
+        command => "/usr/local/bin/reloadCategories.sh >> ${reload_categories_log} 2>&1",
         user    => $username,
         weekday => 1,
         minute  => fqdn_rand(60),
@@ -128,7 +128,7 @@ class wdqs::gui(
     # it ever takes longer, start at 7:00.
     cron { 'load-categories-daily':
         ensure  => $ensure_daily_categories,
-        command => "/usr/local/bin/loadCategoriesDaily.sh >> ${reload_categories_log}",
+        command => "/usr/local/bin/loadCategoriesDaily.sh >> ${reload_categories_log} 2>&1",
         user    => $username,
         minute  => fqdn_rand(60),
         hour    => 7
@@ -136,7 +136,7 @@ class wdqs::gui(
 
     cron { 'reload-dcatap':
         ensure  => present,
-        command => "/usr/local/bin/reloadDCAT-AP.sh >> ${log_dir}/dcat.log",
+        command => "/usr/local/bin/reloadDCAT-AP.sh >> ${log_dir}/dcat.log 2>&1",
         user    => $username,
         weekday => 4,
         minute  => 0,
