@@ -13,6 +13,8 @@
       RemoteIPInternalProxy <%= @trusted_proxies.join(' ') %>
     </IfModule>
 
+    RedirectMatch ^/$ https://<%= @host %>/r/
+
     # Misbehaving bots
     SetEnvIf User-Agent 80legs bad_browser
     SetEnvIf User-Agent bingbot bad_browser
