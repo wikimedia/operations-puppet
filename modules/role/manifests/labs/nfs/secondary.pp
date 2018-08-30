@@ -116,8 +116,8 @@ class role::labs::nfs::secondary(
     include labstore::monitoring::nfsd
     class { 'labstore::monitoring::interfaces':
         monitor_iface => $monitor_iface,
-        load_warn     => '36',
-        load_crit     => '48',
+        load_warn     => '50',
+        load_crit     => '70',
     }
 
     class { 'labstore::monitoring::secondary':
