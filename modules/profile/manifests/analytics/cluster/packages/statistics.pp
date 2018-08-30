@@ -45,6 +45,7 @@ class profile::analytics::cluster::packages::statistics {
         'libicu-dev',             # ^
         'libssh2-1-dev',          # ^
         'pandoc',                 # Requested by bearloga; necessary for using RMarkdown and performing format conversions
+        'lynx',                   # Requested by dcausse to be able to inspect yarn's logs from analytics10XX hosts
         'libgsl2',
         'gsl-bin',
         'libgsl-dev',
