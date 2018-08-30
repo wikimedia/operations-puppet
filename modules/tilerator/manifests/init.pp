@@ -23,6 +23,18 @@
 # [*cassandra_servers*]
 #   List of cassandra server names used by Tilerator
 #
+# [*eventlogging_service_uri*]
+#   URI for the eventbus service, for propagating resource change events
+#   upon map tile (re)generation
+#
+# [*sources_to_invalidate*]
+#   tile sources for which invalidation URIs will be generated. should be
+#   kept in sync with the sources marked public in the Kartotherian prod
+#   config
+#
+# [*tile_server_domain*]
+#   domain of the tile server, to be used in generating invalidation URIs
+#
 class tilerator(
     $cassandra_pass,
     $pgsql_pass,
@@ -31,6 +43,9 @@ class tilerator(
     $cassandra_servers,
     $style,
     $storage_id,
+    $eventlogging_service_uri,
+    $sources_to_invalidate,
+    $tile_server_domain,
     $contact_groups    = 'admins',
 ) {
 
@@ -50,17 +65,20 @@ class tilerator(
         no_workers        => $::processorcount / 2,
         deployment        => 'scap3',
         deployment_vars   => {
-            entrypoint         => '""',
-            cassandra_user     => $cassandra_user,
-            cassandra_password => $cassandra_pass,
-            cassandra_servers  => $cassandra_servers,
-            osmdb_user         => $pgsql_user,
-            osmdb_password     => $pgsql_pass,
-            redis_server       => $redis_url,
-            ui_only            => false,
-            daemon_only        => true,
-            style              => $style,
-            storage_id         => $storage_id,
+            entrypoint               => '""',
+            cassandra_user           => $cassandra_user,
+            cassandra_password       => $cassandra_pass,
+            cassandra_servers        => $cassandra_servers,
+            osmdb_user               => $pgsql_user,
+            osmdb_password           => $pgsql_pass,
+            redis_server             => $redis_url,
+            ui_only                  => false,
+            daemon_only              => true,
+            style                    => $style,
+            storage_id               => $storage_id,
+            eventlogging_service_uri => $eventlogging_service_uri,
+            sources_to_invalidate    => $sources_to_invalidate,
+            tile_server_domain       => $tile_server_domain,
         },
         contact_groups    => $contact_groups,
     }

@@ -14,31 +14,40 @@ class profile::maps::apps(
     $tilerator_style = hiera('profile::maps::apps::tilerator_style'),
     $kartotherian_storage_id = hiera('profile::maps::apps::kartotherian_storage_id'),
     $tilerator_storage_id = hiera('profile::maps::apps::tilerator_storage_id'),
+    $eventlogging_service_uri = hiera('profile::maps::apps::eventlogging_service_uri'),
+    $sources_to_invalidate = hiera('profile::maps::apps::sources_to_invalidate'),
+    $tile_server_domain = hiera('profile::maps::apps::tile_server_domain'),
 ) {
 
 
     $contact_groups = 'admins,team-interactive'
 
     class { '::tilerator':
-        cassandra_servers => $cassandra_hosts,
-        cassandra_pass    => $cassandra_tilerator_pass,
-        pgsql_pass        => $pgsql_tilerator_pass,
-        redis_server      => $redis_server,
-        redis_pass        => $redis_pass,
-        contact_groups    => $contact_groups,
-        style             => $tilerator_style,
-        storage_id        => $tilerator_storage_id,
+        cassandra_servers        => $cassandra_hosts,
+        cassandra_pass           => $cassandra_tilerator_pass,
+        pgsql_pass               => $pgsql_tilerator_pass,
+        redis_server             => $redis_server,
+        redis_pass               => $redis_pass,
+        contact_groups           => $contact_groups,
+        style                    => $tilerator_style,
+        storage_id               => $tilerator_storage_id,
+        eventlogging_service_uri => $eventlogging_service_uri,
+        sources_to_invalidate    => $sources_to_invalidate,
+        tile_server_domain       => $tile_server_domain
     }
 
     class { '::tilerator::ui':
-        cassandra_servers => $cassandra_hosts,
-        cassandra_pass    => $cassandra_tileratorui_pass,
-        pgsql_pass        => $pgsql_tileratorui_pass,
-        redis_server      => $redis_server,
-        redis_pass        => $redis_pass,
-        contact_groups    => $contact_groups,
-        style             => $tilerator_style,
-        storage_id        => $tilerator_storage_id,
+        cassandra_servers        => $cassandra_hosts,
+        cassandra_pass           => $cassandra_tileratorui_pass,
+        pgsql_pass               => $pgsql_tileratorui_pass,
+        redis_server             => $redis_server,
+        redis_pass               => $redis_pass,
+        contact_groups           => $contact_groups,
+        style                    => $tilerator_style,
+        storage_id               => $tilerator_storage_id,
+        eventlogging_service_uri => $eventlogging_service_uri,
+        sources_to_invalidate    => $sources_to_invalidate,
+        tile_server_domain       => $tile_server_domain
     }
 
     class { 'kartotherian':
