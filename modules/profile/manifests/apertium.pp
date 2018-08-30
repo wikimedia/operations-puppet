@@ -111,18 +111,17 @@ class profile::apertium {
         notify => Service['apertium-apy'],
     }
 
-    # lint:ignore:arrow_alignment
-    base::service_unit { 'apertium-apy':
-        ensure  => present,
-        systemd => systemd_template('apertium-apy'),
-        refresh => true,
+    systemd::service { 'apertium-apy':
+        ensure         => present,
+        content        => systemd_template('apertium-apy'),
+        restart        => true,
         service_params => {
             enable     => true,
             hasstatus  => true,
             hasrestart => true,
         },
     }
-    # lint:endignore
+
     file { $log_dir:
         ensure => directory,
         owner  => $uid,
