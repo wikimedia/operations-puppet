@@ -7,6 +7,7 @@ class profile::openstack::eqiad1::rabbitmq(
     $labs_hosts_range = hiera('profile::openstack::eqiad1::labs_hosts_range'),
     $nova_api_host = hiera('profile::openstack::eqiad1::nova_api_host'),
     $designate_host = hiera('profile::openstack::eqiad1::designate_host'),
+    $designate_host_standby = hiera('profile::openstack::eqiad1::designate_host_standby'),
     $nova_rabbit_password = hiera('profile::openstack::eqiad1::nova::rabbit_pass'),
     $neutron_rabbit_user = hiera('profile::openstack::base::neutron::rabbit_user'),
     $neutron_rabbit_password = hiera('profile::openstack::eqiad1::neutron::rabbit_pass'),
@@ -14,15 +15,16 @@ class profile::openstack::eqiad1::rabbitmq(
 
     require ::profile::openstack::eqiad1::clientlib
     class {'::profile::openstack::base::rabbitmq':
-        nova_controller      => $nova_controller,
-        monitor_user         => $monitor_user,
-        monitor_password     => $monitor_password,
-        cleanup_password     => $cleanup_password,
-        file_handles         => $file_handles,
-        labs_hosts_range     => $labs_hosts_range,
-        nova_api_host        => $nova_api_host,
-        designate_host       => $designate_host,
-        nova_rabbit_password => $nova_rabbit_password,
+        nova_controller        => $nova_controller,
+        monitor_user           => $monitor_user,
+        monitor_password       => $monitor_password,
+        cleanup_password       => $cleanup_password,
+        file_handles           => $file_handles,
+        labs_hosts_range       => $labs_hosts_range,
+        nova_api_host          => $nova_api_host,
+        designate_host         => $designate_host,
+        designate_host_standby => $designate_host_standby,
+        nova_rabbit_password   => $nova_rabbit_password,
     }
     contain '::profile::openstack::base::rabbitmq'
 

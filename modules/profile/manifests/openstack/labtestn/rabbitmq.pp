@@ -7,6 +7,7 @@ class profile::openstack::labtestn::rabbitmq(
     $labs_hosts_range = hiera('profile::openstack::labtestn::labs_hosts_range'),
     $nova_api_host = hiera('profile::openstack::labtestn::nova_api_host'),
     $designate_host = hiera('profile::openstack::labtestn::designate_host'),
+    $designate_host_standby = hiera('profile::openstack::labtestn::designate_host_standby'),
     $nova_rabbit_password = hiera('profile::openstack::labtestn::nova::rabbit_pass'),
     $neutron_rabbit_user = hiera('profile::openstack::base::neutron::rabbit_user'),
     $neutron_rabbit_password = hiera('profile::openstack::labtestn::neutron::rabbit_pass'),
@@ -14,15 +15,16 @@ class profile::openstack::labtestn::rabbitmq(
 
     require ::profile::openstack::labtestn::clientlib
     class {'::profile::openstack::base::rabbitmq':
-        nova_controller      => $nova_controller,
-        monitor_user         => $monitor_user,
-        monitor_password     => $monitor_password,
-        cleanup_password     => $cleanup_password,
-        file_handles         => $file_handles,
-        labs_hosts_range     => $labs_hosts_range,
-        nova_api_host        => $nova_api_host,
-        designate_host       => $designate_host,
-        nova_rabbit_password => $nova_rabbit_password,
+        nova_controller        => $nova_controller,
+        monitor_user           => $monitor_user,
+        monitor_password       => $monitor_password,
+        cleanup_password       => $cleanup_password,
+        file_handles           => $file_handles,
+        labs_hosts_range       => $labs_hosts_range,
+        nova_api_host          => $nova_api_host,
+        designate_host         => $designate_host,
+        designate_host_standby => $designate_host_standby,
+        nova_rabbit_password   => $nova_rabbit_password,
     }
     contain '::profile::openstack::base::rabbitmq'
 
