@@ -5,7 +5,9 @@
 # actually exporting any filesystems
 #
 
-class labstore {
+class labstore (
+    $nfsd_threads = '192',
+){
 
     require_package('nfs-kernel-server')
     require_package('lvm2')
@@ -56,10 +58,10 @@ class labstore {
     }
 
     file { '/etc/default/nfs-kernel-server':
-        ensure => present,
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0555',
-        source => 'puppet:///modules/labstore/nfs-kernel-server',
+        ensure  => present,
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0555',
+        content => template('labstore/nfs-kernel-server.erb'),
     }
 }
