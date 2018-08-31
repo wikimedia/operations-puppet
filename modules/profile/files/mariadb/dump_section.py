@@ -42,11 +42,13 @@ class BackupStatistics:
     user = None
     password = None
     dump_name = None
+    backup_dir = None
 
-    def __init__(self, dump_name, section, source, config):
+    def __init__(self, dump_name, section, source, backup_dir, config):
         self.dump_name = dump_name
         self.section = section
         self.source = source
+        self.backup_dir = backup_dir
         self.host = config.get('host', DEFAULT_HOST)
         self.port = config.get('port', DEFAULT_PORT)
         self.database = config['database']
@@ -63,6 +65,9 @@ class BackupStatistics:
         pass
 
     def finish(self):
+        pass
+
+    def delete(self):
         pass
 
 
@@ -118,7 +123,7 @@ class DatabaseBackupStatistics(BackupStatistics):
                     logger.error('We could not store the information on the database')
                     return False
                 db.commit()
-            elif status in ('finished', 'failed'):
+            elif status in ('finished', 'failed', 'deleted'):
                 query = "SELECT id, status FROM backups WHERE name = %s"
                 try:
                     result = cursor.execute(query, (self.dump_name,))
@@ -158,10 +163,50 @@ class DatabaseBackupStatistics(BackupStatistics):
 
     def gather_metrics(self):
         """
-        Gathers the file name list and sizes for the generated files and stores it on the given
-        statistics mysql database. Not yet implemented.
+        Gathers the file name list, last modification and sizes for the generated files
+        and stores it on the given statistics mysql database.
         """
-        pass
+        logger = logging.getLogger('backup')
+        try:
+            db = pymysql.connect(host=self.host, port=self.port, database=self.database,
+                                 user=self.user, password=self.password,
+                                 ssl={'ca': TLS_TRUSTED_CA})
+        except (pymysql.err.OperationalError):
+            logger.exception('We could not connect to {} to store the stats'.format(self.host))
+            return False
+        with db.cursor(pymysql.cursors.DictCursor) as cursor:
+            query = "SELECT id, status FROM backups WHERE name = %s"
+            try:
+                result = cursor.execute(query, (self.dump_name,))
+            except (pymysql.err.ProgrammingError, pymysql.err.InternalError):
+                logger.error('A MySQL error occurred while finding the entry for the '
+                             'backup')
+                return False
+            if result is None:
+                logger.error('We could not update the database backup statistics server')
+                return False
+            data = cursor.fetchall()
+            if len(data) != 1:
+                logger.error('We could not find the existing statistics for the finished '
+                             'dump')
+                return False
+            backup_id = str(data[0]['id'])
+
+        for file in sorted(os.listdir(self.backup_dir)):
+            name = file
+            statinfo = os.stat(os.path.join(self.backup_dir, file))
+            size = statinfo.st_size
+            time = statinfo.st_mtime
+            with db.cursor(pymysql.cursors.DictCursor) as cursor:
+                query = "INSERT INTO backup_files VALUES (%s, %s, %s, FROM_UNIXTIME(%s), NULL)"
+                try:
+                    result = cursor.execute(query, (backup_id, name, size, time))
+                except (pymysql.err.ProgrammingError, pymysql.err.InternalError):
+                    logger.error('A MySQL error occurred while inserting the backup'
+                                 'file details')
+                    return False
+        db.commit()
+        return True
 
     def start(self):
         self.set_status('ongoing')
@@ -171,6 +216,9 @@ class DatabaseBackupStatistics(BackupStatistics):
 
     def finish(self):
         self.set_status('finished')
+
+    def delete(self):
+        self.set_status('deleted')
 
 
 def get_mydumper_cmd(name, config):
@@ -222,10 +270,18 @@ def logical_dump(name, config, rotate):
     (cmd, dump_name, log_file) = get_mydumper_cmd(name, config)
     logger.debug(cmd)
 
+    backup_dir = config.get('backup_dir', ONGOING_BACKUP_DIR)
+    output_dir = os.path.join(backup_dir, dump_name)
+    metadata_file_path = os.path.join(output_dir, 'metadata')
+
     if 'statistics' in config:  # Enable statistics gathering?
+        if config['port'] == 3306:
+            source = config['host']
+        else:
+            source = config['host'] + ':' + str(config['port'])
         stats = DatabaseBackupStatistics(dump_name=dump_name, section=name,
-                                         config=config['statistics'],
-                                         source=config['host'] + ':' + str(config['port']))
+                                         config=config['statistics'], backup_dir=output_dir,
+                                         source=source)
     else:
         stats = DisabledBackupStatistics()
 
@@ -252,9 +308,6 @@ def logical_dump(name, config, rotate):
         stats.fail()
         return 4
 
-    backup_dir = config.get('backup_dir', ONGOING_BACKUP_DIR)
-    output_dir = os.path.join(backup_dir, dump_name)
-    metadata_file_path = os.path.join(output_dir, 'metadata')
     with open(metadata_file_path, 'r') as metadata_file:
         metadata = metadata_file.read()
     if 'Finished dump at: ' not in metadata:
