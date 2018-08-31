@@ -34,9 +34,10 @@ class profile::openstack::base::rabbitmq(
     contain '::openstack::nova::rabbit'
 
     rabbitmq::user{"${monitor_user}-rabbituser":
-      username => $monitor_user,
-      password => $monitor_password,
-      require  => Class['::rabbitmq'],
+      username      => $monitor_user,
+      password      => $monitor_password,
+      administrator => true,
+      require       => Class['::rabbitmq'],
     }
 
     class { '::rabbitmq::monitor':
