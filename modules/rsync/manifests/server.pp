@@ -17,6 +17,7 @@ class rsync::server(
   $motd_file  = 'UNSET',
   $log_file   = 'UNSET',
   $use_chroot = 'yes',
+  $use_ipv6   = false,
   $rsync_opts = [],
   $rsyncd_conf = {},
 ) inherits rsync {
@@ -32,6 +33,12 @@ class rsync::server(
     owner   => 'root',
     group   => 'root',
     content => template('rsync/rsync.default.erb'),
+  }
+
+  if($use_ipv6) {
+      # If address is left blank, rsync will listen
+      #  on :::873 in addition to 0.0.0.0:873.
+      $address = ''
   }
 
   # if($use_xinetd) {
