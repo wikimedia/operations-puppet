@@ -167,6 +167,7 @@ class DatabaseBackupStatistics(BackupStatistics):
         and stores it on the given statistics mysql database.
         """
         logger = logging.getLogger('backup')
+        # Find the completed backup db entry
         try:
             db = pymysql.connect(host=self.host, port=self.port, database=self.database,
                                  user=self.user, password=self.password,
@@ -192,19 +193,32 @@ class DatabaseBackupStatistics(BackupStatistics):
                 return False
             backup_id = str(data[0]['id'])
 
+        total_size = 0
+        # Insert the backup file list
         for file in sorted(os.listdir(self.backup_dir)):
             name = file
             statinfo = os.stat(os.path.join(self.backup_dir, file))
             size = statinfo.st_size
+            total_size += size
             time = statinfo.st_mtime
+            # TODO: Identify which object this files corresponds to and record it on
+            #       backup_objects
             with db.cursor(pymysql.cursors.DictCursor) as cursor:
                 query = "INSERT INTO backup_files VALUES (%s, %s, %s, FROM_UNIXTIME(%s), NULL)"
                 try:
                     result = cursor.execute(query, (backup_id, name, size, time))
                 except (pymysql.err.ProgrammingError, pymysql.err.InternalError):
-                    logger.error('A MySQL error occurred while inserting the backup'
+                    logger.error('A MySQL error occurred while inserting the backup '
                                  'file details')
                     return False
+        # Update the total backup size
+        with db.cursor(pymysql.cursors.DictCursor) as cursor:
+            query = "UPDATE backups SET total_size = %s WHERE id = %s"
+            try:
+                result = cursor.execute(query, (total_size, backup_id))
+            except (pymysql.err.ProgrammingError, pymysql.err.InternalError):
+                logger.error('A MySQL error occurred while updating the total backup size')
+                return False
         db.commit()
         return True
 
