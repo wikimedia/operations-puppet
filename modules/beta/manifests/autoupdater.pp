@@ -6,11 +6,6 @@
 class beta::autoupdater {
     $stage_dir = '/srv/mediawiki-staging'
 
-    # Parsoid JavaScript dependencies are updated on beta via npm
-    package { 'npm':
-        ensure => 'present',
-    }
-
     file { '/usr/local/bin/wmf-beta-autoupdate.py':
         owner   => 'root',
         group   => 'root',
