@@ -29,7 +29,7 @@ groups:
     description: include everywhere ops folks
     members: &ops_members [filippo, jgreen, bblack, andrew, faidon, rush, oblivian,
               dzahn, akosiaris, mark, ariel, cmjohnson, otto, robh, tstarling,
-              ori, jmm, jynus, aaron, ema, elukey, gehel, volans, marostegui,
+              ori, jmm, jynus, ema, elukey, gehel, volans, marostegui,
               ayounsi, herron, aborrero, bstorm, vgutierrez, jiji, cwhite, banyek]
     privileges: ['ALL = (ALL) NOPASSWD: ALL']
   ops-adm-group:
