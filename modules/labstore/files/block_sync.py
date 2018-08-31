@@ -36,12 +36,14 @@ def run_local(cmd):
 
 def bdsync(local_device, r_host, r_vg, r_snapshot_name, r_user):
     """ Run the block device sync from remote to local device using bdsync
+
     :param local_device Local device to sync to
     :param r_host Remote host to sync from
     :param r_vg Remote volume group
     :param r_snapshot_name Name of remote snapshot to sync from
     :param r_user Username to run remote commands as
-    :return String (stdout_data)
+    :return return code of bdsync command
+    :rtype int
     """
     remotenice = 10
     blocksize = 16384
@@ -58,10 +60,10 @@ def bdsync(local_device, r_host, r_vg, r_snapshot_name, r_user):
                                 universal_newlines=True)
     patch = subprocess.Popen(shlex.split(patch_cmd), stdin=progress.stdout)
     patch.communicate()[0]
+    return patch.returncode
 
 
-if __name__ == '__main__':
-
+def main():
     if os.geteuid() != 0:
         logging.error("Script needs to be run as root")
         sys.exit(1)
@@ -149,7 +151,14 @@ if __name__ == '__main__':
         run_remote('{} create {} {}/{} --force'.format(
             SNAPSHOT_MGR, args.r_snapshot_name, args.r_vg, args.r_lv), args.r_host, args.r_user)
 
-        bdsync(local_device, args.r_host, args.r_vg, args.r_snapshot_name, args.r_user)
+        sync_status = bdsync(local_device, args.r_host, args.r_vg,
+                             args.r_snapshot_name, args.r_user)
+
+        sys.exit(sync_status)
 
     finally:
         fcntl.flock(lock_file, fcntl.LOCK_UN)
+
+
+if __name__ == '__main__':
+    main()
