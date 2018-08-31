@@ -1,6 +1,0 @@
-cluster: labs
-admin::groups:
-  - deployment
-
-apache::logrotate::period: 'daily'
-apache::logrotate::rotate: 30
