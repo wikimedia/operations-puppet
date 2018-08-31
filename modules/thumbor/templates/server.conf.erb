@@ -165,8 +165,9 @@ POOLCOUNTER_CONFIG_PER_IP = {
 
 # Up to "workers" thumbnails can be generated at once for the same original
 # with up to a "maxqueue" other thumbnail requests for that original queued
+# T203135 Concurrency should be at least the same as the MediaWiki ThumbnailRenderJob
 POOLCOUNTER_CONFIG_PER_ORIGINAL = {
-    'workers': 2,
+    'workers': 6,
     'maxqueue': 100,
     'timeout': 8
 }
