@@ -342,3 +342,8 @@ rabbit_password = <%= @rabbit_pass %>
 rabbit_use_ssl = False
 rabbit_hosts = <%= @rabbit_host %>
 rabbit_port = 5672
+
+<% if @coordination_host %>
+[coordination]
+backend_url = memcached://<%= @coordination_host %>:11000
+<% end %>

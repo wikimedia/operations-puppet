@@ -29,6 +29,7 @@ class openstack::designate::service(
     $keystone_public_port,
     $keystone_auth_port,
     $region,
+    $coordination_host,
     ) {
 
     $keystone_host_ip   = ipresolve($keystone_host,4)

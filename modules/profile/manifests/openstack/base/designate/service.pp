@@ -1,6 +1,7 @@
 class profile::openstack::base::designate::service(
     $version = hiera('profile::openstack::base::version'),
     $designate_host = hiera('profile::openstack::base::designate_host'),
+    $second_region_designate_host = hiera('profile::openstack::base::second_region_designate_host'),
     $nova_controller = hiera('profile::openstack::base::nova_controller'),
     $keystone_host = hiera('profile::openstack::base::keystone_host'),
     $puppetmaster_hostname = hiera('profile::openstack::base::puppetmaster_hostname'),
@@ -27,6 +28,7 @@ class profile::openstack::base::designate::service(
     $labweb_hosts = hiera('profile::openstack::base::labweb_hosts'),
     $monitoring_host = hiera('profile::openstack::base::monitoring_host'),
     $region = hiera('profile::openstack::base::region'),
+    $coordination_host = hiera('profile::openstack::base::designate_host'),
     ) {
 
     $primary_pdns_ip = ipresolve($primary_pdns,4)
@@ -60,6 +62,7 @@ class profile::openstack::base::designate::service(
         keystone_public_port       => $keystone_public_port,
         keystone_auth_port         => $keystone_auth_port,
         region                     => $region,
+        coordination_host          => $coordination_host,
     }
     contain '::openstack::designate::service'
 
