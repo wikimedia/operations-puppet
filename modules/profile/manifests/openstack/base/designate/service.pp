@@ -1,7 +1,9 @@
 class profile::openstack::base::designate::service(
     $version = hiera('profile::openstack::base::version'),
     $designate_host = hiera('profile::openstack::base::designate_host'),
+    $designate_host_standby = hiera('profile::openstack::base::designate_host_standby'),
     $second_region_designate_host = hiera('profile::openstack::base::second_region_designate_host'),
+    $second_region_designate_host_standby = hiera('profile::openstack::base::second_region_designate_host_standby'),
     $nova_controller = hiera('profile::openstack::base::nova_controller'),
     $keystone_host = hiera('profile::openstack::base::keystone_host'),
     $puppetmaster_hostname = hiera('profile::openstack::base::puppetmaster_hostname'),
@@ -89,10 +91,18 @@ class profile::openstack::base::designate::service(
 
     # allow axfr traffic between mdns and pdns on the pdns hosts
     ferm::rule { 'mdns-axfr':
-        rule => "saddr (${primary_pdns_ip} ${secondary_pdns_ip} ) proto tcp dport (5354) ACCEPT;",
+        rule => "saddr (@resolve(${designate_host}) @resolve(${designate_host_standby})
+                        @resolve(${designate_host}, AAAA) @resolve(${designate_host_standby}, AAAA)
+                        @resolve(${second_region_designate_host}) @resolve(${second_region_designate_host}, AAAA)
+                        @resolve(${second_region_designate_host_standby}) @resolve(${second_region_designate_host_standby}, AAAA))
+                 proto tcp dport (5354) ACCEPT;",
     }
 
     ferm::rule { 'mdns-axfr-udp':
-        rule => "saddr (${primary_pdns_ip} ${secondary_pdns_ip} ) proto udp dport (5354) ACCEPT;",
+        rule => "saddr (@resolve(${designate_host}) @resolve(${designate_host_standby})
+                        @resolve(${designate_host}, AAAA) @resolve(${designate_host_standby}, AAAA)
+                        @resolve(${second_region_designate_host}) @resolve(${second_region_designate_host}, AAAA)
+                        @resolve(${second_region_designate_host_standby}) @resolve(${second_region_designate_host_standby}, AAAA))
+                 proto udp dport (5354) ACCEPT;",
     }
 }
