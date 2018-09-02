@@ -45,6 +45,7 @@ class profile::mariadb::grants::production(
 
     if $shard {
         $nodepool_pass       = $passwords::nodepool::nodepooldb_pass
+        $designate_pass      = $passwords::designate::db_pass
         $testreduce_pass     = $passwords::testreduce::mysql::db_pass
         $testreduce_cli_pass = $passwords::testreduce::mysql::mysql_client_pass
         $racktables_user     = $passwords::racktables::racktables_db_user
