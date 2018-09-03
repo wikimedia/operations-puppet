@@ -38,10 +38,6 @@ define profile::analytics::systemd_timer(
             'start'    => 'OnCalendar',
             'interval' => $interval
             }],
-        # RandomizedDelaySec in systemd's timers is available
-        # only from Debian Stretch onward, explicitly setting it
-        # to undef for the moment.
-        splay           => undef,
         unit_name       => "${title}.service",
     }
 }

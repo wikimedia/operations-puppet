@@ -11,6 +11,9 @@
 # [*splay*]
 #   Sets a maximum delay to wait before starting the timer. See
 #   RandomizedDelaySec in systemd.timer(5) for details.
+#   Note: RandomizedDelaySec is available only from Stretch onward,
+#   on Jessie's systemd version it will generate a warning and it will
+#   not be taken into consideration.
 #
 # [*unit_name*]
 #   The name of the unit to activate. Defaults to $title.service
