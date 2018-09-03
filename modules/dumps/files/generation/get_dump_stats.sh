@@ -34,9 +34,9 @@ get_wiki_stats() {
     else
 	currentall="No info available (no files found)"
     fi
-    pmhcount=$( ls ${wiki}-${date}-pages-meta-history*.xml.bz2 2>/dev/null | wc -l )
+    pmhcount=$( ls ${wiki}-${date}-pages-meta-history*.xml*bz2 2>/dev/null | wc -l )
     if [ $pmhcount -gt 0 ]; then
-	fullhistory=$( bzcat ${wiki}-${date}-pages-meta-history*.xml.bz2 | wc -c )
+	fullhistory=$( bzcat ${wiki}-${date}-pages-meta-history*.xml*bz2 | wc -c )
     else
 	fullhistory="No info available (no files found)"
     fi
