@@ -695,6 +695,7 @@ user_old,user_touched,F
 user_old,user_real_name,K
 user_old,user_token,F
 valid_tag,vt_tag,K
+wbqc_constraints,constraint_id,K
 wikilove_image_log,wlil_id,K
 wikilove_image_log,wlil_timestamp,K
 wikilove_image_log,wlil_user_id,K
