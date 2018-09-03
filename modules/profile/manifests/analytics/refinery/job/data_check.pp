@@ -26,6 +26,12 @@ class profile::analytics::refinery::job::data_check {
         minute      => 0,
     }
 
+    profile::analytics::systemd_timer { 'check_webrequest_partitions':
+        description => 'Check HDFS Webrequest partitions',
+        command     => "${::profile::analytics::refinery::path}/bin/refinery-dump-status-webrequest-partitions --hdfs-mount ${hdfs_mount_point} --datasets webrequest,raw_webrequest --quiet --percent-lost",
+        interval    => ' *-*-* 10:00:00',
+    }
+
     cron { 'refinery data check pageviews':
         command     => "${::profile::analytics::refinery::path}/bin/refinery-dump-status-webrequest-partitions --hdfs-mount ${hdfs_mount_point} --datasets pageview,projectview --quiet",
         environment => "MAILTO=${mail_to}",

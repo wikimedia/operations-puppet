@@ -1,0 +1,13 @@
+[Unit]
+Description=<%= @description %>
+User=<%= @user %>
+
+[Service]
+<%- if @environment -%>
+<%=
+    @environment.map { |k, v|
+        [ k, v ].join('=').join('Environment=')
+    }.join("\n")
+%>
+<%- end -%>
+ExecStart=<%= @command %>
