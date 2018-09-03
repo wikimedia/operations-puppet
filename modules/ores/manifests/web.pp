@@ -12,6 +12,7 @@ class ores::web(
     $ores_config_user = 'deploy-service',
     $ores_config_group = 'deploy-service',
     $celery_queue_maxsize = 100,
+    $poolcounter_nodes = [],
 ) {
     require ::ores::base
 
@@ -83,7 +84,11 @@ class ores::web(
                 'CELERY_RESULT_BACKEND' => "redis://${redis_host}:6379",
                 'CELERYD_CONCURRENCY'   => $celery_workers,
                 'queue_maxsize'         => $celery_queue_maxsize,
+                'lock_manager'          => 'pool_counter',
             },
+        },
+        'lock_managers' => {
+            'pool_counter' => $poolcounter_nodes,
         },
     }
     if $redis_password {
