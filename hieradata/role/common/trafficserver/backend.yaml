@@ -22,8 +22,8 @@ profile::trafficserver::backend::mapping_rules:
       target: /
       replacement: https://appservers-rw.discovery.wmnet
 profile::trafficserver::backend::caching_rules:
-    - primary_destination: dest_domain
-      value: people.wikimedia.org
+    - primary_destination: dest_host
+      value: rutherfordium.eqiad.wmnet
       action: never-cache
 profile::trafficserver::backend::default_lua_scripts:
     - set-x-cache
