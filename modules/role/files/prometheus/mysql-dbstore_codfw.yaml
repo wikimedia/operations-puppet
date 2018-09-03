@@ -51,6 +51,5 @@
     shard: x1
     role: slave
   targets:
-  - dbstore2001:13320
   - dbstore2002:13320
 
