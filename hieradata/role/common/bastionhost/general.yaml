@@ -8,4 +8,3 @@ profile::base::domain_search:
   - eqsin.wmnet
 admin::groups:
   - all-users
-profile::base::enable_microcode: true

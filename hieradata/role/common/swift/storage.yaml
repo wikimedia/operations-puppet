@@ -1,3 +1,2 @@
 cluster: swift
 nagios_group: swift
-profile::base::enable_microcode: true

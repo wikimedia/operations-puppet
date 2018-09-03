@@ -1,7 +1,6 @@
 bbr_congestion_control: true
 varnish::dynamic_backend_caches: false
 cache::lua_support: true
-profile::base::enable_microcode: true
 cluster: cache_canary
 cache::cluster: canary
 admin::groups:

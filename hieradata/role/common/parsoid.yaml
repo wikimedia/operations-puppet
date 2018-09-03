@@ -5,4 +5,3 @@ cluster: parsoid
 role::lvs::realserver::pools:
   parsoid: {}
 parsoid::discovery: 'api-rw'
-profile::base::enable_microcode: true

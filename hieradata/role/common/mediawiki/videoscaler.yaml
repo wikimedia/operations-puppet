@@ -20,4 +20,3 @@ role::lvs::realserver::pools:
     lvs_name: videoscaler
   nginx:
     lvs_name: jobrunner
-profile::base::enable_microcode: true

@@ -10,4 +10,3 @@ mediawiki::web::mpm_config::mpm: worker
 apache::logrotate::rotate: 12
 nutcracker::verbosity: "4"
 role::mediawiki::webserver::tls: true
-profile::base::enable_microcode: true

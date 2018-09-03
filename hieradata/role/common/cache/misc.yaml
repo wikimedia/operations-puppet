@@ -1,7 +1,6 @@
 cluster: cache_misc
 cache::cluster: misc
 cache::lua_support: true
-profile::base::enable_microcode: true
 prometheus::node_exporter::collectors_extra:
   - qdisc
   - meminfo_numa

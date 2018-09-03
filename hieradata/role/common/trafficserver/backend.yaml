@@ -1,4 +1,3 @@
-profile::base::enable_microcode: true
 profile::trafficserver::backend::mapping_rules:
     - type: map
       target: http://phabricator.wikimedia.org/ws/
