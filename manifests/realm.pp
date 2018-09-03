@@ -62,8 +62,6 @@ $other_site = $site ? {
 
 $app_routes = hiera('discovery::app_routes')
 
-# Shortcut variables to use e.g. in hiera
-$mw_primary = $app_routes['mediawiki']
 $aqs_site = $app_routes['aqs']
 
 $network_zone = $facts['ipaddress'] ? {

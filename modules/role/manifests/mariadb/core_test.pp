@@ -13,7 +13,7 @@ class role::mariadb::core_test {
     $mysql_role = hiera('mariadb::mysql_role', 'slave')
     $ssl = hiera('mariadb::ssl', 'puppet-cert')
     $binlog_format = hiera('mariadb::binlog_format', 'ROW')
-
+    $mw_primary = mediawiki::state('primary_dc')
     system::role { 'mariadb::core':
         description => "Core Test DB Server ${shard}",
     }
@@ -79,7 +79,7 @@ class role::mariadb::core_test {
         password => $passwords::misc::scripts::mysql_root_pass,
     }
 
-    $replication_is_critical = ($::mw_primary == $::site)
+    $replication_is_critical = ($mw_primary == $::site)
     $contact_group = $replication_is_critical ? {
         true  => 'dba',
         false => 'admins',

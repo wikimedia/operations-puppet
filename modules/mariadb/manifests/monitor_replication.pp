@@ -43,10 +43,11 @@ define mariadb::monitor_replication(
     }
 
     # check the lag towards the mw_primary datacenter's master
+    $mw_primary = mediawiki::state('primary_dc')
     nrpe::monitor_service { "mariadb_slave_sql_lag_${name}":
         description   => "MariaDB Slave Lag: ${name}",
         nrpe_command  => "${check_mariadb} --check=slave_sql_lag \
-                          --shard=${name} --datacenter=${::mw_primary} \
+                          --shard=${name} --datacenter=${mw_primary} \
                           --sql-lag-warn=${lag_warn} \
                           --sql-lag-crit=${lag_crit}",
         retries       => 10,
