@@ -15,6 +15,10 @@ require 'json'
 
 module Puppet::Parser::Functions
   newfunction(:conftool, :type => :rvalue, :arity => -2) do |args|
+    call_function(
+      'deprecation',
+      ['conftool', 'This function is deprecated, we should not query etcd directly from puppet, but use what we can get via confd.']
+    )
     case args.length
     when 2
       tags, type = *args

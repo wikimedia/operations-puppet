@@ -1,0 +1,4 @@
+primary_dc: eqiad
+read_only:
+  eqiad: false
+  codfw: true

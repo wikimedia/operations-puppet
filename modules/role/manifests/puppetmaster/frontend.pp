@@ -14,6 +14,8 @@ class role::puppetmaster::frontend {
 
     include ::profile::conftool::client
     include ::profile::conftool::master
+    # This profile is needed for puppet to access state stored in etcd
+    require ::profile::conftool::state
 
     # config-master.wikimedia.org
     include ::profile::configmaster

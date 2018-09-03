@@ -11,4 +11,7 @@ class role::puppetmaster::backend {
     include ::profile::puppetmaster::backend
 
     require ::profile::conftool::client
+    # This profile is needed for puppet to access state stored in etcd
+    require ::profile::conftool::state
+
 }

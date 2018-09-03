@@ -9,3 +9,5 @@ profile::base::domain_search:
   - eqsin.wmnet
 cluster: puppet
 profile::puppetmaster::common::storeconfigs: puppetdb
+profile::conftool::state::ensure: present
+profile::conftool::state::query_interval: 30

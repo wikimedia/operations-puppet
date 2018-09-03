@@ -10,19 +10,14 @@
 #
 class profile::discovery::client(
     $path=hiera('profile::discovery::path'),
-    $watch_interval=hiera('profile::discovery::watch_interval', 5),
-    $conftool_prefix = hiera('conftool_prefix'),
 ){
+    # We need confd
+    require ::profile::conftool::state
     file { $path:
         ensure => directory,
         owner  => root,
         group  => root,
         mode   => '0755',
-    }
-
-    class { 'confd':
-        interval => $watch_interval,
-        prefix   => $conftool_prefix,
     }
 
     confd::file { "${path}/discovery-basic.yaml":

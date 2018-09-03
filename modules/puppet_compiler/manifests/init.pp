@@ -90,6 +90,17 @@ class puppet_compiler(
     # An etcd instance running populated with (fake? synced?) data
 
     include ::etcd
+    # A new, better approach is to just use confd independently. Here we
+    # fake it with a file on disk
+    file { '/etc/conftool-state':
+        ensure => directory,
+        mode   => '0755'
+    }
+    file { '/etc/conftool-state/mediawiki.yaml':
+        ensure => present,
+        mode   => '0444',
+        source => 'puppet:///modules/puppet_compiler/mediawki.yaml'
+    }
 
     tidy { "${::puppet_compiler::workdir}/output":
         recurse => true,
