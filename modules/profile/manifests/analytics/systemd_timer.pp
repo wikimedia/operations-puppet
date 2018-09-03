@@ -38,6 +38,6 @@ define profile::analytics::systemd_timer(
             'start'    => 'OnCalendar',
             'interval' => $interval
             }],
-        unit_name       => $title,
+        unit_name       => "${title}.service",
     }
 }
