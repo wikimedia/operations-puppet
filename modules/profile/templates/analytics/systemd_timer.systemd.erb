@@ -1,8 +1,8 @@
 [Unit]
 Description=<%= @description %>
-User=<%= @user %>
 
 [Service]
+User=<%= @user %>
 <%- if @environment -%>
 <%=
     @environment.map { |k, v|
