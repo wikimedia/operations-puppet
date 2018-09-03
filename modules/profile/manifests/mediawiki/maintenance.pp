@@ -1,7 +1,5 @@
 # mediawiki maintenance server
-class profile::mediawiki::maintenance(
-    $maintenance_server = hiera('maintenance_server'),
-) {
+class profile::mediawiki::maintenance {
 
     # Deployment
     include ::scap::scripts
@@ -10,9 +8,9 @@ class profile::mediawiki::maintenance(
         ensure => link,
         target => '/srv/mediawiki'
     }
-    $ensure = $maintenance_server ? {
-        $::fqdn => 'present',
-        undef   => 'absent',
+    $mw_primary =
+    $ensure = mediawiki::state('primary_dc') ? {
+        $::site => 'present',
         default => 'absent',
     }
 
