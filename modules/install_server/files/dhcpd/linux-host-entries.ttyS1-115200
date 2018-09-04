@@ -351,6 +351,8 @@ host backup1001 {
 host backup2001 {
     hardware ethernet F4:E9:D4:74:FD:78;
     fixed-address backup2001.codfw.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch414-installer/";
+    filename "lpxelinux.0";
 }
 
 host baham {
