@@ -10,7 +10,7 @@ class profile::trafficserver::backend (
     $remap_rules_lua = $mapping_rules.map |TrafficServer::Mapping_rule $rule| {
         merge($rule, {
             params => $default_lua_scripts.map |String $lua_script| {
-                "@plugin=/usr/lib/trafficserver/modules/tslua.so @pparam=/etc/trafficserver/lua/${lua_script}.lua"
+                "@plugin=/usr/lib/trafficserver/modules/tslua.so @pparam=/etc/trafficserver/lua/${lua_script}.lua @pparam=${::hostname}"
             }
         })
     }

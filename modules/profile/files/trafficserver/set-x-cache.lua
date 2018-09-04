@@ -6,13 +6,9 @@
 -- This file is managed by Puppet.
 --
 
-require 'io'
-
 local PROXY_HOSTNAME=''
 function __init__(argtb)
-    local f = io.popen ("/bin/hostname")
-    PROXY_HOSTNAME = f:read("*line")
-    f:close()
+    PROXY_HOSTNAME = argtb[1]
 end
 
 function get_hostname()
