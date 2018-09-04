@@ -25,9 +25,6 @@ class ircecho (
         group  => 'root',
         mode   => '0755',
     }
-    file { '/usr/local/bin/ib3_auth.py':
-        ensure => absent,
-    }
     file { '/usr/local/lib/python2.7/dist-packages/ib3_auth.py':
         ensure => 'present',
         source => 'puppet:///modules/ircecho/ib3_auth.py',
