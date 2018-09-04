@@ -1,3 +1,9 @@
+# Test: replacing cron alerts with systemd timers and alarms
+# This tweaks profile::base's contactgroups and should allow host level error
+# reporting to the analytics team (including systemd failures).
+# Bug: T172532
+contactgroups: analytics,admins
+
 profile::hadoop::common::hadoop_cluster_name: 'analytics-hadoop'
 
 # Periodical backups of the analytics-meta mysql database.
