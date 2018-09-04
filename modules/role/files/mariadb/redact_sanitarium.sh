@@ -3,6 +3,7 @@
 host=localhost                   # default host localhost
 port=3306                        # default port 3306
 socket="/run/mysqld/mysqld.sock" # default socket to connect. If host & port are unset this parameter will used as dsn
+filtered_tables_file="/etc/mysql/filtered_tables.txt"
 
 while getopts "d:S:h:P:" flag; do
 case ${flag} in
@@ -36,7 +37,7 @@ fi
 
 query="mysql --skip-ssl --skip-column-names ${dsn} -e "
 
-for tbl in $(egrep ',F' /etc/mysql/filtered_tables.txt | awk -F ',' '{print $1}' | uniq); do
+for tbl in $(egrep ',F' "${filtered_tables_file}" | awk -F ',' '{print $1}' | uniq); do
 
     echo "-- $tbl"
 
@@ -44,7 +45,7 @@ for tbl in $(egrep ',F' /etc/mysql/filtered_tables.txt | awk -F ',' '{print $1}'
     update="SET SESSION sql_log_bin = 0; CREATE DEFINER='root'@'localhost' TRIGGER ${db}.${tbl}_update BEFORE UPDATE ON ${db}.${tbl} FOR EACH ROW SET"
     remove="SET SESSION sql_log_bin = 1; UPDATE ${db}.${tbl} SET"
 
-    for col in $(egrep "${tbl},.*,F" /etc/mysql/filtered_tables.txt | awk -F ',' '{print $2}'); do
+    for col in $(egrep "${tbl},.*,F" "${filtered_tables_file}" | awk -F ',' '{print $2}'); do
 
         datatype=$(${query} "select data_type from columns where table_schema = '${db}' and table_name = '${tbl}' and column_name = '${col}'" information_schema)
 
