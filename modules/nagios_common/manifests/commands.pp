@@ -19,8 +19,14 @@ class nagios_common::commands(
     $group = 'icinga',
 ) {
 
+    if os_version('debian >= stretch') {
+        $plugin_perl_package = 'libmonitoring-plugin-perl'
+    } else {
+        $plugin_perl_package = 'libnagios-plugin-perl' # Deprecated in Debian stretch
+    }
+
     require_package([
-        'libnagios-plugin-perl',
+        $plugin_perl_package,
         # check_ssl
         'libnet-ssleay-perl',
         'libio-socket-ssl-perl',
