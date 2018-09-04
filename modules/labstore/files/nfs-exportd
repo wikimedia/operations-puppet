@@ -62,14 +62,13 @@ def is_valid_ipv4(ip):
 
 
 class Project:
-    """ subtree_check -- allows mounting of subdirectories
-        async -- io should be done asynchronously
+    """ async -- io should be done asynchronously
         no_root_squash -- allow root in project instances
                           to be treated as root on mount
     """
     EXPORTS_TEMPLATE = '/exp/project/{name} ' + \
         '-rw,nohide,fsid=00000000000000000-{gid}-0000000000' + \
-        ',subtree_check,async,no_root_squash ' + \
+        ',no_subtree_check,async,no_root_squash ' + \
         '{instance_ips}'
 
     def __init__(self, name, gid, instance_ips, volumes):
@@ -127,7 +126,7 @@ def get_instance_ips(project, observer_pass, regions):
 
         except keystoneauth1.exceptions.http.Unauthorized:
             logging.error("Failed to get server list for project %s."
-                         "  Maybe the project was deleted." % project)
+                          "  Maybe the project was deleted." % project)
             ips = []
 
     return ips
