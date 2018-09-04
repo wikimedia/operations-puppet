@@ -1,2 +1,2 @@
 # scap3 (git-based) deployment server
-scap::deployment_server: "deploy1001.eqiad.wmnet"
+scap::deployment_server: deploy2001.codfw.wmnet
