@@ -36,9 +36,11 @@ cache::app_directors:
   appservers:
     backends:
       eqiad: 'appservers.svc.eqiad.wmnet'
+      #codfw: 'appservers.svc.codfw.wmnet'
   api:
     backends:
       eqiad: 'api.svc.eqiad.wmnet'
+      #codfw: 'api.svc.codfw.wmnet'
   security_audit:
     backends:
       eqiad: 'appservers.svc.eqiad.wmnet'
