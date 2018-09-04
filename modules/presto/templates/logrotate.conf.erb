@@ -1,0 +1,20 @@
+# logrotate(8) config for presto-server
+# This file is managed by puppet
+
+# var/log/server.log comes from rsyslog via journalctl.
+# The other log file in var/log, http-request.log,
+# is managed and rotated by Presto itself.
+<%= @data_dir %>/var/log/server.log {
+    daily
+    dateext
+    dateyesterday
+    rotate 7
+    missingok
+    nocreate
+    compress
+    delaycompress
+    sharedscripts
+    postrotate
+        service rsyslog rotate >/dev/null 2>&1 || true
+    endscript
+}

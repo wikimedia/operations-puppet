@@ -8,4 +8,5 @@ class role::cloud_analytics::worker {
     }
 
     include ::profile::hadoop::worker
+    include ::profile::presto::server
 }

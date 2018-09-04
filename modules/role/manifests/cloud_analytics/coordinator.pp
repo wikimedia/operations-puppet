@@ -18,4 +18,6 @@ class role::cloud_analytics::coordinator {
 
     # Include a weekly cron job to run hdfs balancer.
     include ::profile::hadoop::balancer
+
+    include ::profile::presto::client
 }
