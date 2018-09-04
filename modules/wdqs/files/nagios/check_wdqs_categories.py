@@ -83,16 +83,13 @@ def main():
     parser.add_argument('--critical', default=3600*24*12, type=int, metavar='SECONDS',
                         help='Raise critical if lag exceeds this many seconds (default: 12 days)')
 
-    group = parser.add_mutually_exclusive_group()
+    group = parser.add_mutually_exclusive_group(required=True)
     group.add_argument('--lag', action='store_true',
                        help='Checks the lag on categories update')
     group.add_argument('--ping', action='store_true',
                        help='Only checks that categories query works, ignore the timestamp')
 
     options = parser.parse_args()
-
-    if not (options.lag or options.ping):
-        parser.error('either --lag or --ping needs to be supplied')
 
     if options.lag:
         return check_categories_lag(
