@@ -13,6 +13,7 @@
 class profile::spicerack(
     String $tcpircbot_host = hiera('tcpircbot_host'),
     Wmflib::IpPort $tcpircbot_port = hiera('tcpircbot_port'),
+    Hash $redis_shards = hiera('redis::shards'),
 ) {
     # Ensure pre-requisite profiles are included
     require ::profile::conftool::client
@@ -22,6 +23,7 @@ class profile::spicerack(
     require ::profile::conftool::client
 
     include ::service::deploy::common
+    include ::passwords::redis
 
     # Install the software
     require_package('spicerack')
@@ -38,9 +40,28 @@ class profile::spicerack(
     file { '/etc/spicerack/config.yaml':
         ensure  => present,
         owner   => 'root',
-        group   => 'root',
-        mode    => '0444',
+        group   => 'ops',
+        mode    => '0440',
         content => template('profile/spicerack/config.yaml.erb'),
     }
 
+    # Install the Redis-specific configuration
+    file { '/etc/spicerack/redis_cluster':
+        ensure => directory,
+        owner  => 'root',
+        group  => 'ops',
+        mode   => '0550',
+    }
+
+    $redis_sessions_data = {
+        'password' => $passwords::redis::main_password,
+        'shards' => $redis_shards['sessions'],
+    }
+    file { '/etc/spicerack/redis_cluster/sessions.yaml':
+        ensure  => present,
+        owner   => 'root',
+        group   => 'ops',
+        mode    => '0440',
+        content => ordered_yaml($redis_sessions_data),
+    }
 }
