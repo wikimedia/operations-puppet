@@ -12,7 +12,7 @@
 class scap (
     $deployment_server = 'deployment',
     $wmflabs_master = 'deployment-deploy01.deployment-prep.eqiad.wmflabs',
-    $version = '3.8.4-1',
+    $version = '3.8.5-1',
 ) {
     package { 'scap':
         ensure => $version,
