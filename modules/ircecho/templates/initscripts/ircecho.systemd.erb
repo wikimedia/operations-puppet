@@ -7,7 +7,7 @@ User=nobody
 Group=nogroup
 Type=simple
 EnvironmentFile=-/etc/default/ircecho
-ExecStart=/usr/local/bin/ircecho <%- if @ident_passwd_file -%>--ident_passwd_file=<%= @ident_passwd_file %> <%- end -%>--infile=${INFILE} $CHANS $NICK $SERVER
+ExecStart=/usr/local/bin/ircecho <%- if @ident_passwd_file -%>--ident_passwd_file=<%= @ident_passwd_file %> <%- end -%> --infile=${INFILE} $CHANS $NICK $SERVER
 Restart=always
 RestartSec=10s
 
