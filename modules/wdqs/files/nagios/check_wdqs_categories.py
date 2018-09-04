@@ -91,7 +91,7 @@ def main():
 
     options = parser.parse_args()
 
-    if not options.lag or options.ping:
+    if not (options.lag or options.ping):
         parser.error('either --lag or --ping needs to be supplied')
 
     if options.lag:
