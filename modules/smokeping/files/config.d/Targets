@@ -106,10 +106,10 @@ menu = frbast-eqiad
 title = frbast-eqiad.wikimedia.org
 host = frbast-eqiad.wikimedia.org
 
-+++ thulium
-menu = thulium
-title = thulium.frack.eqiad.wmnet
-host = thulium.frack.eqiad.wmnet
++++ frpig1001
+menu = frpig1001
+title = frpig1001.frack.eqiad.wmnet
+host = frpig1001.frack.eqiad.wmnet
 
 + eqord
 
