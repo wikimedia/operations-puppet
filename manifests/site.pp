@@ -1091,7 +1091,7 @@ node /^install[12]002\.wikimedia\.org$/ {
 
 # new icinga system to replace einsteinium T201344
 node 'icinga1001.wikimedia.org' {
-    role(spare::system)
+    role(alerting_host)
 }
 
 # Phabricator
