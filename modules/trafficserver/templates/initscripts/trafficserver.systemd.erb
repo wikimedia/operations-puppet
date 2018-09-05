@@ -10,6 +10,10 @@ RestartSec=1
 ExecReload=/usr/bin/traffic_server -C verify_config
 ExecReload=/usr/bin/traffic_ctl config reload
 
+# traffic_manager is terminated with SIGTERM and exits with the received signal
+# number (15)
+SuccessExitStatus=15
+
 LimitNOFILE=500000
 LimitMEMLOCK=90000
 
