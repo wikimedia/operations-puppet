@@ -20,12 +20,15 @@ class icinga::web {
     }
 
     if os_version('debian >= stretch') {
-        $php_gd_module = 'php7.0-gd'
+        $php_version = '7.0'
     } else {
-        $php_gd_module = 'php5-gd'
+        $php_version = '5'
     }
 
-    require_package($php_gd_module)
+    $php_gd_module = "php${php_version}-gd"
+    $apache_php_package = "libapache2-mod-php${php_version}"
+
+    require_package($apache_php_package, $php_gd_module)
 
     include ::passwords::ldap::wmf_cluster
     $proxypass = $passwords::ldap::wmf_cluster::proxypass
