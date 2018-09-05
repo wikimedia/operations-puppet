@@ -169,8 +169,8 @@ class trafficserver(
 
     ## Service
     systemd::service { 'trafficserver':
-        ensure         => present,
-        content        => systemd_template('trafficserver'),
+        content        => init_template('trafficserver', 'systemd_override'),
+        override       => true,
         restart        => true,
         service_params => {
             restart    => 'systemctl reload trafficserver',
