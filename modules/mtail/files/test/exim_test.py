@@ -13,10 +13,16 @@ class EximTest(unittest.TestCase):
 
     def testEximMessages(self):
         s = self.store.get_samples('exim_messages_total')
-        self.assertIn(('status=out', 3), s)
+        self.assertIn(('status=out', 4), s)
 
         s = self.store.get_samples('exim_messages_bytes')
-        self.assertIn(('status=out', 183084), s)
+        self.assertIn(('status=out', 364379), s)
+
+        s = self.store.get_samples('exim_tls_connections')
+        self.assertIn(('status=in,ciphersuite=TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256', 1), s)
+
+        s = self.store.get_samples('exim_tls_connections')
+        self.assertIn(('status=out,ciphersuite=TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128', 1), s)
 
     def testDKIM(self):
         s = self.store.get_samples('exim_dkim_failure_total')

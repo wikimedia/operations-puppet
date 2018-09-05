@@ -1,6 +1,7 @@
 2017-11-02 10:20:48 1eACc9-0002y4-Ik => :blackhole: <wiki@wikimedia.org> R=aliases
 2017-11-02 10:41:52 1eACwY-0004ON-3Z => foobar@wikimedia.org R=otrs T=remote_smtp S=1789 H=mendelevium.eqiad.wmnet [10.64.32.174] C="250 OK id=1eACwa-0001jO-8e" DT=0s
 2017-11-02 10:44:25 1eACyz-0004Vc-Il => zomg@wikimedia.org (blah@wikimedia.org, root@wikimedia.org, root@wikisource.org, postmaster@wikisource.org) <abuse@wikisource.org> R=ldap_account T=remote_smtp S=181295 H=aspmx.l.google.com [209.85.232.27] X=TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128 DN="C=US,ST=California,L=Mountain View,O=Google Inc,CN=mx.google.com" C="250 2.0.0 OK 1509619465 v37si20676qtg.44 - gsmtp" DT=2s
+2017-11-02 10:44:25 1eACyz-0004Vc-Il => zomg@wikimedia.org (blah@wikimedia.org, root@wikimedia.org, root@wikisource.org, postmaster@wikisource.org) <abuse@wikisource.org> R=ldap_account T=remote_smtp S=181295 H=aspmx.l.google.com [209.85.232.27] X=TLS1.0:ECDHE_RSA_AES_128_CBC_SHA1:128 DN="C=US,ST=California,L=Mountain View,O=Google Inc,CN=mx.google.com" C="250 2.0.0 OK 1509619465 v37si20676qtg.44 - gsmtp" DT=2s
 2017-11-06 10:30:30 1eBefh-0007eo-Eh DKIM: d=asdf.com s=dkim c=relaxed/relaxed a=rsa-sha256 [verification failed - signature did not verify (headers probably modified in transit)]
 2017-11-06 14:54:35 1eBinK-00048M-Tr DKIM: d=bogus.xyz s=default c=relaxed/relaxed a=rsa-sha256 [invalid - public key record (currently?) unavailable]
 2017-11-06 15:10:11 1eBj2Q-0004sd-MC DKIM: d=test-foo.com s=subject c=relaxed/relaxed a=rsa-sha256 [verification succeeded]
@@ -11,3 +12,5 @@
 2017-11-07 14:08:47 Connection from [1.2.3.4]:57094 I=[1.2.3.4]:25 refused: too many connections from that IP address
 2017-11-07 14:15:21 rejected EHLO from [1.2.3.4]:2320 I=[1.2.3.4]:25: syntactically invalid argument(s): zomg
 2017-11-07 14:14:33 SMTP command timeout on connection from [1.2.3.4]:61601 I=[1.2.3.4]:25
+2018-09-05 07:36:02 1fxSM4-0005jX-DL <= wee@fun.com H=darth.vader.net [1.2.3.4]:61774 I=[4.5.6.7]:25 P=esmtps X=TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256 S=42149 id=10fa36c735b15269b0b23bf42be3e83f@baz.net
+2018-09-05 07:36:02 1fxSM4-0005jX-DL <= wee@fun.com H=darth.vader.net [1.2.3.4]:61774 I=[4.5.6.7]:25 P=esmtps X=TLS1.0:ECDHE_RSA_AES_128_CBC_SHA1:128 S=42149 id=10fa36c735b15269b0b23bf42be3e83f@baz.net

@@ -1,5 +1,8 @@
 counter exim_messages_total by status
 counter exim_messages_bytes by status
+
+counter exim_tls_connections by status, ciphersuite
+
 counter exim_dkim_success_total
 counter exim_dkim_failure_total
 
@@ -38,6 +41,10 @@ def queued {
       /S=(?P<size>[0-9]+)/ {
         exim_messages_bytes["out"] += $size
       }
+
+      /X=(?P<ciphersuite>[\w\:\.]+)/ {
+        exim_tls_connections["out"][$ciphersuite]++
+      }
     }
 
     $flags == "<=" {
@@ -45,6 +52,10 @@ def queued {
 
       /S=(?P<size>[0-9]+)/ {
         exim_messages_bytes["in"] += $size
+      }
+
+      /X=(?P<ciphersuite>[\w\:\.]+)/ {
+        exim_tls_connections["in"][$ciphersuite]++
       }
     }
 
