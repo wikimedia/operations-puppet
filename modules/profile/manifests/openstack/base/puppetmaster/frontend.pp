@@ -22,9 +22,6 @@ class profile::openstack::base::puppetmaster::frontend(
     include ::profile::backup::host
     include ::profile::conftool::client
     include ::profile::conftool::master
-    # config-master.wikimedia.org
-    include ::profile::configmaster
-    include ::profile::discovery::client
 
     # validatelabsfqdn will look up an instance certname in nova
     #  and make sure it's for an actual instance before signing
