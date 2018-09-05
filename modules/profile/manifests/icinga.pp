@@ -20,7 +20,14 @@ class profile::icinga(
     include netops::monitoring
     include facilities
     include lvs::monitor
-    include mysql
+
+    if os_version('debian >= stretch') {
+        require_package('mariadb-client')
+    }
+    else {
+        include mysql
+    }
+
     include rsync::server
 
     include icinga::monitor::checkpaging
