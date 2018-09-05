@@ -16,7 +16,12 @@ Options:
 EOF
 }
 
-commandfile="/var/lib/nagios/rw/nagios.cmd"
+if [ $(lsb_release -cs) == "jessie" ]; then
+    commandfile="/var/lib/nagios/rw/nagios.cmd"
+else
+    commandfile="/var/lib/icinga/rw/icinga.cmd"
+fi
+
 logfile="/var/log/icinga/icinga.log"
 user="marvin-bot" # because it's a _down_time bot, get it?:p
 
