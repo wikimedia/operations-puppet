@@ -1676,8 +1676,13 @@ node /^mw226[1-2]\.codfw\.wmnet$/ {
 # Row C
 
 # mw2200-2214 are in rack C4
-node /^mw22(0[0-9]|1[0-4])\.codfw\.wmnet$/ {
+node /^mw22(0[0-9]|1[0124])\.codfw\.wmnet$/ {
     role(mediawiki::appserver::api)
+}
+
+# Decom ticket: T203434
+node 'mw2213.codfw.wmnet' {
+    role(spare::system)
 }
 
 # Row D
