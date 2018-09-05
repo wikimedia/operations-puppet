@@ -3,3 +3,4 @@ profile::icinga::partner: einsteinium.wikimedia.org
 profile::tcpircbot::ensure: absent
 do_acme: false
 profile::icinga::passive: true
+profile::base::notifications_enabled: '0'
