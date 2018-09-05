@@ -15,6 +15,20 @@ class role::labs::nfs::secondary(
     include labstore::backup_keys
     include role::labs::db::maintain_dbusers
 
+    sysctl::parameters { 'cloudstore base':
+        values   => {
+            # Increase TCP max buffer size
+            'net.core.rmem_max' => 67108864,
+            'net.core.wmem_max' => 67108864,
+
+            # Increase Linux auto-tuning TCP buffer limits
+            # Values represent min, default, & max num. of bytes to use.
+            'net.ipv4.tcp_rmem' => [ 4096, 87380, 33554432 ],
+            'net.ipv4.tcp_wmem' => [ 4096, 65536, 33554432 ],
+        },
+        priority => 50,
+    }
+
     class {'::labstore::fileserver::exports':
         observer_pass => $observer_pass,
     }
