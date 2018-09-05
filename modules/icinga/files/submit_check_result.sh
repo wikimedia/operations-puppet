@@ -3,8 +3,9 @@
 # SUBMIT_CHECK_RESULT
 # Written by Ethan Galstad (egalstad@nagios.org)
 # Modified by Leslie Carr (lcarr@wikimedia.org)
+# Modified by Daniel Zahn (dzahn@wikimedia.org)
 #
-# Last Modified: 07-02-2013
+# Last Modified: 09-05-2018
 #
 # This script will write a command to the Nagios command
 # file to cause Nagios to process a passive service check
@@ -26,7 +27,11 @@
 
 echocmd="/bin/echo"
 
-CommandFile="/var/lib/nagios/rw/nagios.cmd"
+if [ $(lsb_release -cs) == "jessie" ]; then
+    CommandFile="/var/lib/nagios/rw/nagios.cmd"
+else
+    CommandFile="/var/lib/icinga/rw/icinga.cmd"
+fi
 
 # get the current date/time in seconds since UNIX epoch
 datetime=`date +%s`
