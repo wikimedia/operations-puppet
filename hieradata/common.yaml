@@ -570,7 +570,7 @@ hadoop_clusters:
     yarn_scheduler_minimum_allocation_vcores:   0
     yarn_scheduler_maximum_allocation_vcores:   32
 
-deployment_server: deploy2001.codfw.wmnet
+deployment_server: deploy1001.eqiad.wmnet
 
 maintenance_server:  mwmaint1001.eqiad.wmnet
 
