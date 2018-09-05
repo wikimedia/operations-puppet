@@ -16,6 +16,7 @@ version 5.
 
 import argparse
 import logging
+import os
 import sys
 import time
 
@@ -104,8 +105,14 @@ def icinga_cancel_downtime(host):
     icinga_host = lib.resolve_dns('icinga.wikimedia.org', 'CNAME')
     cmd = 'echo "[{now}] DEL_DOWNTIME_BY_HOST_NAME;{hostname}"  > {commandfile}'.format(
         now=int(time.time()), hostname=host.split('.')[0],
-        commandfile='/var/lib/nagios/rw/nagios.cmd')
+        commandfile=get_commandfile())
     return run_cumin(icinga_host, [cmd], timeout=300)
+
+
+def get_commandfile():
+    if os.path.exists('/var/lib/nagios/rw/nagios.cmd'):
+        return '/var/lib/nagios/rw/nagios.cmd'
+    return '/var/lib/icinga/rw/icinga.cmd'
 
 
 def pre_puppet(host, downgrading):
