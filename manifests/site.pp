@@ -647,6 +647,7 @@ node 'db1115.eqiad.wmnet' {
     role(mariadb::misc::tendril)
 }
 
+# Standby tendril host
 node 'db2093.codfw.wmnet' {
     role(mariadb::misc::tendril)
 }
