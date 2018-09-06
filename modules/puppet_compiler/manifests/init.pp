@@ -99,7 +99,7 @@ class puppet_compiler(
     file { '/etc/conftool-state/mediawiki.yaml':
         ensure => present,
         mode   => '0444',
-        source => 'puppet:///modules/puppet_compiler/mediawki.yaml'
+        source => 'puppet:///modules/puppet_compiler/mediawiki.yaml'
     }
 
     tidy { "${::puppet_compiler::workdir}/output":
