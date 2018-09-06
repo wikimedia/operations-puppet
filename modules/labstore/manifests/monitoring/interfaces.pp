@@ -13,8 +13,8 @@ class labstore::monitoring::interfaces(
     $contact_groups='wmcs-team,admins',
     $int_throughput_warn = '93750000',  # 750Mbps
     $int_throughput_crit = '106250000', # 850Mbps
-    $load_warn = '16',
-    $load_crit = '24',
+    $load_warn = $::processorcount * 0.75,
+    $load_crit = $::processorcount * 1.25,
 ) {
 
     $interval = '10min' # see T188624
