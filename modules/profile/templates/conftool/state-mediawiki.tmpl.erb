@@ -1,5 +1,5 @@
 # the master datacenter for mediawiki
-primary_dc: {{ (json( getv "/common/WMFMasterDatacenter" ).val }}
+primary_dc: {{ (json ( getv "/common/WMFMasterDatacenter" ) ).val }}
 # read-only settings
 read_only:{{ range gets "/*/ReadOnly" }}
-  {{ index (split (dir .Key) "/") 1 }}: {{$val:=(json .Value).val }}{{ if $val }}true{{ else }}$val{{end}}{{end}}
+  {{ index (split (dir .Key) "/") 1 }}: {{$val:=(json .Value).val }}{{ if $val }}true{{ else }}{{ $val }}{{end}}{{end}}
