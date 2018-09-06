@@ -26,7 +26,7 @@ class role::labs::nfs::secondary(
             'net.ipv4.tcp_rmem' => [ 4096, 87380, 33554432 ],
             'net.ipv4.tcp_wmem' => [ 4096, 65536, 33554432 ],
         },
-        priority => 50,
+        priority => 70,
     }
 
     class {'::labstore::fileserver::exports':
