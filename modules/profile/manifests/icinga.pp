@@ -10,6 +10,7 @@ class profile::icinga(
     $partner = hiera('profile::icinga::partner'),
     $is_passive = hiera('profile::icinga::passive'),
     $ensure_service = hiera('profile::icinga::ensure_service', 'running'),
+    $virtual_host = hiera('profile::icinga::virtual_host'),
 ){
 
     include ::standard
@@ -58,7 +59,7 @@ class profile::icinga(
 
     monitoring::service { 'https':
         description   => 'HTTPS',
-        check_command => 'check_ssl_http_letsencrypt!icinga.wikimedia.org',
+        check_command => "check_ssl_http_letsencrypt!${virtual_host}",
     }
 
     $ircbot_present = $is_passive ? {
@@ -78,7 +79,11 @@ class profile::icinga(
         enable_event_handlers => $enable_event_handlers,
         ensure_service        => $ensure_service,
     }
-    class { '::icinga::web':       }
+
+    class { '::icinga::web':
+        virtual_host => $virtual_host,
+    }
+
     class { '::icinga::naggen':    }
     class { '::icinga::ircbot':
         ensure => $ircbot_present,

@@ -2,7 +2,9 @@
 #
 # Sets up an apache instance for icinga web interface,
 # protected with ldap authentication
-class icinga::web {
+class icinga::web (
+    $virtual_host,
+) {
     include ::icinga
 
     # Apparently required for the web interface
@@ -51,13 +53,13 @@ class icinga::web {
     $ssl_settings = ssl_ciphersuite('apache', 'mid', true)
 
     letsencrypt::cert::integrated { 'icinga':
-        subjects   => 'icinga.wikimedia.org',
+        subjects   => $virtual_host,
         puppet_svc => 'apache2',
         system_svc => 'apache2',
     }
 
-    httpd::site { 'icinga.wikimedia.org':
-        content => template('icinga/icinga.wikimedia.org.erb'),
+    httpd::site { $virtual_host:
+        content => template('icinga/apache.erb'),
     }
 
     # remove icinga default config

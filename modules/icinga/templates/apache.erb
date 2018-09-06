@@ -13,7 +13,7 @@ Alias /icinga/stylesheets /etc/icinga/stylesheets
 Alias /icinga /usr/share/icinga/htdocs
 
 <VirtualHost *:443>
-    ServerName icinga.wikimedia.org
+    ServerName <%= @virtual_host %>
     ServerAdmin noc@wikimedia.org
     # https://httpoxy.org/
     RequestHeader unset Proxy early
@@ -59,13 +59,13 @@ Alias /icinga /usr/share/icinga/htdocs
         LoadModule alias_module modules/mod_alias.so
     </IfModule>
 
-    RedirectMatch ^/$ https://icinga.wikimedia.org/icinga
+    RedirectMatch ^/$ https://<%= @virtual_host %>/icinga
     ErrorLog /var/log/apache2/icinga.log
     LogLevel warn
 </VirtualHost>
 
 <VirtualHost *:80>
-    ServerName icinga.wikimedia.org
+    ServerName <%= @virtual_host %>
     ServerAdmin noc@wikimedia.org
     DocumentRoot /usr/share/icinga/htdocs
 
@@ -74,7 +74,7 @@ Alias /icinga /usr/share/icinga/htdocs
     RewriteEngine on
     RewriteCond %{SERVER_PORT} !^443$
     RewriteCond %{REQUEST_URI} !^/\.well-known/acme-challenge/
-    RewriteRule ^/(.*)$ https://icinga.wikimedia.org/$1 [L,R=301]
+    RewriteRule ^/(.*)$ https://<%= @virtual_host %>/$1 [L,R=301]
 
     ErrorLog /var/log/apache2/icinga.log
     LogLevel warn
