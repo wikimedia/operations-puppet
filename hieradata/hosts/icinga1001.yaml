@@ -2,6 +2,6 @@ profile::icinga::virtual_host: icinga-stretch.wikimedia.org
 profile::icinga::ensure_service: 'stopped'
 profile::icinga::partner: einsteinium.wikimedia.org
 profile::tcpircbot::ensure: absent
-do_acme: false
+do_acme: true
 profile::icinga::passive: true
 profile::base::notifications_enabled: '0'
