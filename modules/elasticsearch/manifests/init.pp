@@ -232,14 +232,6 @@ class elasticsearch(
         mode    => '0444',
         require => Package['elasticsearch'],
     }
-    file { '/etc/default/elasticsearch':
-        ensure  => file,
-        owner   => 'root',
-        group   => 'root',
-        content => template("elasticsearch/elasticsearch_${version}.erb"),
-        mode    => '0444',
-        require => Package['elasticsearch'],
-    }
 
     logrotate::rule { 'elasticsearch':
         ensure        => present,
@@ -271,6 +263,19 @@ class elasticsearch(
     # Note that we don't notify the Elasticsearch service of changes to its
     # config files because you need to be somewhat careful when restarting it.
     # So, for now at least, we'll be restarting it manually.
+
+    # Remove any confusion about if this is being used
+    file { '/etc/default/elasticsearch':
+        ensure => absent,
+    }
+
+    # since we are using our own systemd unit, ensure that the service
+    # installed by the debian package is disabled
+    service {'elasticsearch':
+        ensure  => stopped,
+        enable  => false,
+        require => Package['elasticsearch'],
+    }
 
     systemd::unit { "elasticsearch_${version}@.service":
         ensure  => present,
