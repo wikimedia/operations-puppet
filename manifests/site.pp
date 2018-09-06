@@ -1822,6 +1822,10 @@ node /^ores[12]00[1-9]\.(eqiad|codfw)\.wmnet$/ {
     role(ores)
 }
 
+node /orespoolcounter[12]00[12]\.(codfw|eqiad)\.wmnet/ {
+    role(orespoolcounter)
+}
+
 node /^oresrdb100[12]\.eqiad\.wmnet$/ {
     role(ores::redis)
     include ::standard

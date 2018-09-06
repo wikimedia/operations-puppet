@@ -365,6 +365,26 @@ host netmon1003 {
     filename "lpxelinux.0";
 }
 
+host orespoolcounter1001 {
+    hardware ethernet aa:00:00:dc:fc:24;
+    fixed-address orespoolcounter1001.eqiad.wmnet;
+}
+
+host orespoolcounter1002 {
+    hardware ethernet aa:00:00:78:dd:64;
+    fixed-address orespoolcounter1002.eqiad.wmnet;
+}
+
+host orespoolcounter2001 {
+    hardware ethernet aa:00:00:70:83:52;
+    fixed-address orespoolcounter2001.codfw.wmnet;
+}
+
+host orespoolcounter2002 {
+    hardware ethernet a:00:00:c0:d8:01;
+    fixed-address orespoolcounter2002.codfw.wmnet;
+}
+
 host oresrdb2001 {
     hardware ethernet aa:00:00:3b:a3:0e;
     fixed-address oresrdb2001.codfw.wmnet;
