@@ -307,13 +307,6 @@ host logstash1009 {
     filename "lpxelinux.0";
 }
 
-host meitnerium {
-    hardware ethernet aa:00:00:8c:71:ea;
-    fixed-address meitnerium.wikimedia.org;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
-    filename "lpxelinux.0";
-}
-
 host mendelevium {
     hardware ethernet aa:00:00:58:6a:10;
     fixed-address mendelevium.eqiad.wmnet;

@@ -79,7 +79,7 @@ node /aqs100[456789]\.eqiad\.wmnet/ {
 }
 
 # New Archiva host (replacement of meitnerium).
-# Migration in progress - T192639
+# T192639
 node 'archiva1001.wikimedia.org' {
     role(archiva)
     interface::add_ip6_mapped { 'main': }
@@ -1399,13 +1399,6 @@ node /^mc10(19|2[0-9]|3[0-6])\.eqiad\.wmnet/ {
 
 node /^mc20(19|2[0-9]|3[0-6])\.codfw\.wmnet/ {
     role(mediawiki::memcached)
-}
-
-# Old archiva host (replaced by archiva1001)
-# Migration in progress - T192639
-node 'meitnerium.wikimedia.org' {
-    role(spare::system)
-    interface::add_ip6_mapped { 'main': }
 }
 
 # OTRS - ticket.wikimedia.org
