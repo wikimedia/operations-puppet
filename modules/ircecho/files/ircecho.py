@@ -141,8 +141,9 @@ class EchoBot(ib3_auth.SASL, SingleServerIRCBot):
             kwargs['connect_factory'] = ssl_factory
 
         SingleServerIRCBot.__init__(self, [(server, port)], nickname, 'IRC echo bot', **kwargs)
-        ib3_auth.SASL.__init__(self, [(server, port)], nickname, 'IRC echo bot', ident_passwd,
-                               **kwargs)
+        if ident_passwd is not None:
+            ib3_auth.SASL.__init__(self, [(server, port)], nickname, 'IRC echo bot', ident_passwd,
+                                   **kwargs)
 
     def on_nicknameinuse(self, c, e):
         c.nick(c.get_nickname() + '_')
