@@ -1,0 +1,18 @@
+<dom-module id="wikimedia-polygerrit-style-gerrit">
+  <script>
+    Gerrit.install(function(plugin) {
+      plugin.registerStyleModule('app-theme', 'wikimedia-polygerrit-style');
+    });
+  </script>
+</dom-module>
+
+<dom-module id="wikimedia-polygerrit-style">
+  <style>
+    html {
+      /* --header-background-color: #FF8888; */
+      --header-title-content: "Wikimedia Code Review";
+      --header-icon: url("/r/static/wikimedia-codereview-logo.cache.png");
+      --header-icon-size: 1.3em;
+    }
+  </style>
+</dom-module>
