@@ -381,7 +381,7 @@ host orespoolcounter2001 {
 }
 
 host orespoolcounter2002 {
-    hardware ethernet a:00:00:c0:d8:01;
+    hardware ethernet aa:00:00:c0:d8:01;
     fixed-address orespoolcounter2002.codfw.wmnet;
 }
 
