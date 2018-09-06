@@ -10,6 +10,7 @@ class tor(
     $exit_policy,
     $apt_uri,
     $apt_dist,
+    $service_ensure,
 ) {
 
     if os_version('debian >= stretch') {
@@ -53,7 +54,7 @@ class tor(
     }
 
     service { 'tor':
-        ensure  => 'running',
+        ensure  => $service_ensure,
         require => Package['tor'],
     }
 }

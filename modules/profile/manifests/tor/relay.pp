@@ -1,5 +1,7 @@
 # sets up a tor relay
-class profile::tor::relay {
+class profile::tor::relay (
+    $service_ensure = hiera('profile::tor::relay::service_ensure'),
+) {
 
     include passwords::tor
     $controlpassword = $passwords::tor::hashed_control_password
@@ -15,6 +17,7 @@ class profile::tor::relay {
         exit_policy     => 'reject *:*', # no exits allowed
         apt_uri         => 'http://apt.wikimedia.org/wikimedia',
         apt_dist        => "${::lsbdistcodename}-wikimedia",
+        service_ensure  => $service_ensure,
     }
 
     ::tor::instance { 'wikimediaeqiad2':
