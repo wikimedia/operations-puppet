@@ -21,4 +21,4 @@ else
     check_status="OK"
 fi
 
-echo "${check_status}: The last execution of $1"
+echo "${check_status}: Status of $1"

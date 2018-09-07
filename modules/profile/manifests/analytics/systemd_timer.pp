@@ -61,7 +61,7 @@ define profile::analytics::systemd_timer(
         nrpe::monitor_service { "check_${title}_status":
             description    => "Check the last execution of ${title}",
             nrpe_command   => "/usr/local/lib/nagios/plugins/check_systemd_unit_status ${title}",
-            check_interval => 600,
+            check_interval => 10,
             retries        => 2,
             contact_group  => 'analytics',
             require        => File['/usr/local/lib/nagios/plugins/check_systemd_unit_status'],
