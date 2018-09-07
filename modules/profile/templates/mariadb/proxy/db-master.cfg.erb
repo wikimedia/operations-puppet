@@ -4,7 +4,7 @@ listen mariadb
     option tcplog
     balance roundrobin
     option log-health-checks
-    log /dev/log local0 info
+    log /dev/log local0 crit
     option tcpka
     option mysql-check user haproxy
     server <%= @primary_name %> <%= @primary_addr %> check inter 3s fall 20 rise 99999999

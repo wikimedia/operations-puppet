@@ -4,7 +4,7 @@ listen mariadb
     option tcplog
     balance roundrobin
     option log-health-checks
-    log /dev/log local0 info
+    log /dev/log local0 crit
     option tcpka
     option mysql-check user haproxy
 <% @servers.each_pair do |name, config| -%>
