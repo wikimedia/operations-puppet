@@ -265,9 +265,6 @@ cache::alternate_domains:
     director: 'gerrit'
   git.wikimedia.org:
     director: 'phabricator'
-  grafana-admin.wikimedia.org:
-    director: 'krypton'
-    caching: 'pass'
   grafana-labs-admin.wikimedia.org:
     director: 'labmon1001'
     caching: 'pass'
