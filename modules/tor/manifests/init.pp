@@ -21,9 +21,13 @@ class tor(
             components => 'thirdparty/tor',
         }
 
+        package { 'libzstd1':
+            ensure => 'present',
+        }
+
         package { 'tor':
             ensure  => 'present',
-            require => [ Apt::Repository['thirdparty-tor'],Exec['apt-get update']],
+            require => [ Apt::Repository['thirdparty-tor'],Package['libzstd1'],Exec['apt-get update']],
         }
 
     } else {
