@@ -43,8 +43,10 @@ profile::trafficserver::backend::mapping_rules:
       replacement: http://contint1001.wikimedia.org
     - type: map
       target: http://etherpad.wikimedia.org
-      # XXX: websockets
       replacement: http://etherpad1001.eqiad.wmnet:9001
+    - type: map
+      target: ws://etherpad.wikimedia.org
+      replacement: ws://etherpad1001.eqiad.wmnet:9001
     - type: map
       target: http://gerrit.wmfusercontent.org
       replacement: http://cobalt.wikimedia.org
@@ -94,7 +96,7 @@ profile::trafficserver::backend::mapping_rules:
       replacement: http://kibana.svc.eqiad.wmnet
     - type: map
       target: http://maps.wikimedia.org
-      replacement: http://kartotherian.discovery.wmnet
+      replacement: http://kartotherian.discovery.wmnet:6533
     - type: map
       target: http://metrics.wikimedia.org
       replacement: http://thorium.eqiad.wmnet
@@ -119,10 +121,9 @@ profile::trafficserver::backend::mapping_rules:
       replacement: http://webperf1001.eqiad.wmnet
       #replacement: http://webperf2001.codfw.wmnet
     - type: map
-      target: http://phabricator.wikimedia.org/ws/
-      # XXX websockets
-      replacement: http://phab1001-aphlict.eqiad.wmnet:22280/ws/
-      #replacement: http://phab2001-aphlict.codfw.wmnet:22280/ws/
+      target: ws://phabricator.wikimedia.org/ws/
+      replacement: ws://phab1001-aphlict.eqiad.wmnet:22280/ws/
+      #replacement: ws://phab2001-aphlict.codfw.wmnet:22280/ws/
     - type: map
       target: http://phabricator.wikimedia.org
       replacement: http://phab1001.eqiad.wmnet
