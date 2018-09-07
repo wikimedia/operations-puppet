@@ -1,4 +1,6 @@
 fixtures:
     symlinks:
-        authdns: "#{source_dir}"
-        geoip: "../../../../geoip"
+      authdns: "#{source_dir}"
+      apt: "../../../../apt"
+      geoip: "../../../../geoip"
+      wmflib: "../../../../wmflib"
