@@ -254,9 +254,11 @@ class gerrit::jetty(
     }
 
     file { '/var/lib/gerrit2/review_site/logs':
-      ensure  => 'link',
-      target  => '/var/log/gerrit',
-      require => [File['/var/lib/gerrit2'], Scap::Target['gerrit/gerrit'], File['/var/log/gerrit']],
+        ensure  => 'link',
+        target  => '/var/log/gerrit',
+        owner   => 'gerrit2',
+        group   => 'gerrit2',
+        require => [File['/var/lib/gerrit2'], Scap::Target['gerrit/gerrit'], File['/var/log/gerrit']],
     }
 
     file { '/var/log/gerrit':
