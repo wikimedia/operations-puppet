@@ -1,3 +1,30 @@
+<script>
+  var doc = document.querySelector("footer.style-scope.gr-app div.style-scope.gr-app");
+  if ( doc ) {
+    // code of conduct
+    var a = document.createElement('a');
+    var linkText = document.createTextNode("Code of Conduct");
+    a.appendChild(linkText);
+    a.href = "https://www.mediawiki.org/wiki/Special:MyLanguage/Code_of_Conduct";
+    a.className = "style-scope gr-app";
+    a.rel = "noopener";
+    var seperator = document.createTextNode(" | ");
+    doc.appendChild(seperator);
+    doc.appendChild(a);
+
+    // privacy policy
+    var a = document.createElement('a');
+    var linkText = document.createTextNode("Privacy policy");
+    a.appendChild(linkText);
+    a.href = "https://wikimediafoundation.org/wiki/Special:MyLanguage/Privacy_policy";
+    a.className = "style-scope gr-app";
+    a.rel = "noopener";
+    var seperator = document.createTextNode(" | ");
+    doc.appendChild(seperator);
+    doc.appendChild(a);
+  }
+</script>
+
 <dom-module id="wikimedia-polygerrit-style-gerrit">
   <script>
     Gerrit.install(function(plugin) {
