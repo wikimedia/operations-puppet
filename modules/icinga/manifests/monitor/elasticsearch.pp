@@ -36,5 +36,25 @@ class icinga::monitor::elasticsearch {
         contact_group => 'admins,team-discovery',
     }
 
+    monitoring::service { 'elasticsearch / shard size check - eqiad':
+        host           => 'search.svc.eqiad.wmnet',
+        check_command  => "check_elasticsearch_shard_size!${http_port}",
+        description    => 'ElasticSearch shard size check',
+        critical       => false,
+        check_interval => 1440,
+        retry_interval => 60,
+        contact_group  => 'admins,team-discovery',
+    }
+
+    monitoring::service { 'elasticsearch / shard size check - codfw':
+        host           => 'search.svc.codfw.wmnet',
+        check_command  => "check_elasticsearch_shard_size!${http_port}",
+        description    => 'ElasticSearch shard size check',
+        critical       => false,
+        check_interval => 1440,
+        retry_interval => 60,
+        contact_group  => 'admins,team-discovery',
+    }
+
 
 }

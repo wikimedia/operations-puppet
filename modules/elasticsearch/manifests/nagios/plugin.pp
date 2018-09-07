@@ -28,8 +28,13 @@ class elasticsearch::nagios::plugin {
         tag    => 'nagiosplugin',
     }
 
-    package { 'python-requests':
-      ensure => 'installed',
-      before => File['/usr/lib/nagios/plugins/check_elasticsearch.py'],
+    @file { '/usr/lib/nagios/plugins/check_elasticsearch_shard_size.py':
+        source => 'puppet:///modules/elasticsearch/nagios/check_elasticsearch_shard_size.py',
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0755',
+        tag    => 'nagiosplugin',
     }
+
+    require_package('python-requests', 'python3-requests')
 }
