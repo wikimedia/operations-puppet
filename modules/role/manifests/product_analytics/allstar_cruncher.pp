@@ -1,4 +1,4 @@
-# = Class: role::discovery::allstar_cruncher
+# = Class: role::product_analytics::allstar_cruncher
 #
 # This class sets up R and Python packages for number crunching, statistical
 # computing, forecasting, Bayesian inference, and machine learning (including
@@ -9,17 +9,17 @@
 # roles that include it) to instances running on Debian (Stretch or newer).
 #
 # filtertags: labs-project-discovery-stats
-class role::discovery::allstar_cruncher {
+class role::product_analytics::allstar_cruncher {
     # include ::standard
     # include ::profile::base::firewall
-    include ::profile::discovery_computing::forecasting
-    # ^ includes ::profile::discovery_computing::bayesian_statistics
-    include ::profile::discovery_computing::machine_learning
-    include ::profile::discovery_computing::deep_learning
+    include ::profile::product_analytics::forecasting
+    # ^ includes ::profile::product_analytics::probabilistic_programming
+    include ::profile::product_analytics::machine_learning
+    include ::profile::product_analytics::deep_learning
 
-    system::role { 'role::discovery::allstar_cruncher':
+    system::role { 'role::product_analytics::allstar_cruncher':
         ensure      => 'present',
-        description => 'Multi-purpose computing for Discovery Analysts',
+        description => 'VM configured for multi-purpose statistical computing',
     }
 
 }

@@ -1,4 +1,4 @@
-# = Class: role::discovery::deep_learner
+# = Class: role::product_analytics::deep_learner
 #
 # This class sets up R and Python packages for machine learning with deep
 # neural networks.
@@ -8,14 +8,14 @@
 # Debian (Stretch or newer).
 #
 # filtertags: labs-project-discovery-stats
-class role::discovery::deep_learner {
+class role::product_analytics::deep_learner {
     # include ::standard
     # include ::profile::base::firewall
-    include ::profile::discovery_computing::deep_learning
+    include ::profile::product_analytics::deep_learning
 
-    system::role { 'role::discovery::deep_learner':
+    system::role { 'role::product_analytics::deep_learner':
         ensure      => 'present',
-        description => 'Deep learning for Discovery Analysts',
+        description => 'VM configured for deep learning',
     }
 
 }

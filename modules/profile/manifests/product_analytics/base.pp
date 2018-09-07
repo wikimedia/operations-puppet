@@ -1,14 +1,14 @@
 # Provision for statistical computing and number crunching
 #
-# Install and configure R and install Discovery-specific essential R/Python2
-# packages for doing computationally-heavy statistics and machine learning.
+# Install and configure R & Python and install Product Analytics-specific
+# essential R/Python packages.
 #
 # Due to the outdated version of R on the currently available Ubuntu version
 # (Trusty), it is recommended to only apply this profile (and any profiles or
 # roles that include it) to instances running on Debian (Jessie or newer).
 #
 # filtertags: labs-project-discovery-stats
-class profile::discovery_computing::base {
+class profile::product_analytics::base {
     # `include ::r` would not install devtools, which would mean that we could
     # not install R packages from Git/GitHub
     class { 'r_lang':
@@ -37,6 +37,10 @@ class profile::discovery_computing::base {
         'python3-pandas',
         'python-requests',    # HTTP library
         'python3-requests',
+        'python-h5py',        # Python interface to HDF5
+        'python3-h5py',
+        'python-cython',      # C-Extensions for Python
+        'python3-cython'
     ]
     require_package($essentials)
 
@@ -44,6 +48,7 @@ class profile::discovery_computing::base {
         # Essentials
         'BH',         # Boost C++ Header Files
         'Rcpp',       # R and C++ Integration
+        'R6',         # Classes with Reference Semantics
         # Data Manipulation
         'data.table', # fast data frames
         'glue',       # better than paste() for combining strings
@@ -57,6 +62,7 @@ class profile::discovery_computing::base {
         'RcppEigen',     # 'Rcpp' Integration for the 'Eigen' Templated Linear Algebra Library
         'RcppGSL',       # 'Rcpp' Integration for 'GNU GSL' Vectors and Matrices
         'RcppNumerical', # 'Rcpp' Integration for Numerical Computing Libraries
+        'reticulate',    # R interface to Python modules, classes, and functions
     ]
     r_lang::cran { $rcpp_integrations:
         require => [
@@ -70,7 +76,30 @@ class profile::discovery_computing::base {
     # It's a lot of packages so we *really* need to extend the timeout.
     r_lang::cran { 'tidyverse':
         require => R_lang::Cran['Rcpp'],
-        timeout => 12000,
+        timeout => 16000,
+    }
+    # The tidy modeling "verse" is a collection of package for modeling
+    # and statistical analysis that share the underlying design philosophy,
+    # grammar, and data structures of the tidyverse.
+    r_lang::cran { 'tidymodels':
+        require => R_lang::Cran['tidyverse'],
+        timeout => 16000,
+    }
+
+    package { 'tensorflow':
+        ensure   => 'installed',
+        require  => [
+            Package['python-dev'],
+            Package['python-numpy'],
+            Package['python-wheel']
+        ],
+        provider => 'pip',
+    }
+    r_lang::cran { 'tensorflow':
+        require => [
+            Package['tensorflow'],
+            R_lang::Cran['reticulate']
+        ],
     }
 
 }

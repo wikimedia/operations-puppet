@@ -7,14 +7,14 @@
 # Debian (Stretch or newer).
 #
 # filtertags: labs-project-discovery-stats
-class role::discovery::learner {
+class role::product_analytics::learner {
     # include ::standard
     # include ::profile::base::firewall
-    include ::profile::discovery_computing::machine_learning
+    include ::profile::product_analytics::machine_learning
 
-    system::role { 'role::discovery::learner':
+    system::role { 'role::product_analytics::learner':
         ensure      => 'present',
-        description => 'Machine learning for Discovery Analysts',
+        description => 'VM configured for machine learning',
     }
 
 }
