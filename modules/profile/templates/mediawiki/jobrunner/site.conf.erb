@@ -10,7 +10,7 @@
 <VirtualHost *:<%= @local_only_port %>>
     ServerName jobrunner.svc.<%= scope['::site'] %>.wmnet
     ServerAlias jobrunner.discovery.wmnet
-    Timeout 1200
+    Timeout 1202
     DocumentRoot "/srv/mediawiki"
     # Only selected paths are allowed here
     # TODO: move monitoring directly to RunSingleJob.php when it's ready?
@@ -25,7 +25,7 @@
     ServerName videoscaler.svc.<%= scope['::site'] %>.wmnet
     ServerAlias videoscaler.discovery.wmnet
     # We support *very* long processing jobs when videoscaling
-    Timeout 86400
+    Timeout 86402
     DocumentRoot "/srv/mediawiki"
     # Only selected paths are allowed here
     # TODO: move monitoring directly to RunSingleJob.php when it's ready?
