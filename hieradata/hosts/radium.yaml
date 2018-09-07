@@ -1,1 +1,1 @@
-profile::tor::relay::service_ensure: running
+profile::tor::relay::service_ensure: stopped
