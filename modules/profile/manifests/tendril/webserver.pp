@@ -38,7 +38,7 @@ class profile::tendril::webserver (
             check_command => 'check_ssl_http_letsencrypt!tendril.wikimedia.org',
         }
         monitoring::service { 'https-tendril-unauthorized':
-            description   => 'HTTPS-tendril-unauthorized',
+            description   => 'Tendril requires authentication',
             check_command => 'check_https_unauthorized!tendril.wikimedia.org!/!401',
             contact_group => 'dba',
         }
