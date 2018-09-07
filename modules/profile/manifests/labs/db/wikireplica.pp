@@ -1,16 +1,4 @@
-class role::labs::db::replica {
-
-    system::role { 'labs::db::replica':
-        description => 'Labs replica database',
-    }
-
-    include ::standard
-    class { '::mariadb::packages_wmf': }
-    class { '::mariadb::service': }
-    include ::profile::mariadb::monitor
-    include ::profile::base::firewall
-
-
+class profile::labs::db::wikireplica {
     # mysql monitoring and administration from root clients/tendril
     $mysql_root_clients = join($::network::constants::special_hosts['production']['mysql_root_clients'], ' ')
     ferm::service { 'mysql_admin_standard':
@@ -37,12 +25,6 @@ class role::labs::db::replica {
         notrack => true,
         srange  => '(@resolve((labstore1004.eqiad.wmnet)) @resolve((labstore1005.eqiad.wmnet)))',
     }
-
-    include ::passwords::misc::scripts
-
-    include ::role::labs::db::common
-    include ::profile::labs::db::views
-    include ::role::labs::db::check_private_data
 
     class { 'profile::mariadb::monitor::prometheus':
         mysql_group => 'labs',

@@ -1243,10 +1243,12 @@ node 'labnodepool1001.eqiad.wmnet' {
 }
 
 ## labsdb dbs
-node /labsdb10(09|10|11)\.eqiad\.wmnet/ {
-    role(labs::db::replica)
+node /labsdb1009\.eqiad\.wmnet/ {
+    role(labs::db::wikireplica_web)
 }
-
+node /labsdb10(10|11)\.eqiad\.wmnet/ {
+    role(labs::db::wikireplica_analytics)
+}
 node 'labsdb1004.eqiad.wmnet' {
     role(postgres::master)
     include ::role::labs::db::slave
