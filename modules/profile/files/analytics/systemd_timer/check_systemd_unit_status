@@ -1,0 +1,26 @@
+#!/bin/bash
+
+# Usage:
+#    check_systemd_unit_status systemd_unit_name
+#
+# The script checks the current status of the given systemd unit name,
+# alerting if it is 'failed'.
+#
+
+
+if [ -z "$1" ]
+then
+    echo "usage: check_systemd_unit_status systemd_unit_name"
+    exit 1
+fi
+
+is_failed=$(systemctl --quiet is-failed $1)
+
+if [[ $is_failed ]]
+then
+    check_status="CRITICAL"
+else
+    check_status="OK"
+fi
+
+echo "${check_status}: The last execution of $1"
