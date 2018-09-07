@@ -9,11 +9,12 @@ allow arbitrary command execution on targeted list of instances.
 
 This is run in a cron every hour.
 """
-import yaml
 import argparse
+import yaml
 
 from keystoneclient.session import Session as KeystoneSession
 from keystoneclient.auth.identity.v3 import Password as KeystonePassword
+from keystoneclient.v3 import client as keystone_client
 
 from novaclient import client as novaclient
 
@@ -50,35 +51,51 @@ TOOLS_PREFIX_CLASSIFIER = {
 }
 
 
-def get_hostgroups(classifier, observer_pass):
+def get_regions(observer_pass):
+    client = keystone_client.Client(session=KeystoneSession(auth=KeystonePassword(
+        auth_url="http://cloudcontrol1003.wikimedia.org:5000/v3",
+        username="novaobserver",
+        password=observer_pass,
+        project_name='observer',
+        user_domain_name='default',
+        project_domain_name='default'
+    )), interface='public')
+
+    return [region.id for region in client.regions.list()]
+
+
+def get_hostgroups(classifier, observer_pass, regions):
     hostgroups = {name: [] for name in classifier.values()}
-    client = novaclient.Client(
-        "2.0",
-        session=KeystoneSession(auth=KeystonePassword(
-            auth_url="http://cloudcontrol1003.wikimedia.org:5000/v3",
-            username="novaobserver",
-            password=observer_pass,
-            project_name='tools',
-            user_domain_name='default',
-            project_domain_name='default'
-        ))
-    )
-    for instance in client.servers.list():
-        name = instance.name
-        if name.startswith('tools-puppetmaster'):
-            # To avoid chicken/egg strangeness, the tools puppetmaster
-            #  is not itself managed by the tools puppetmaster.  That
-            #  means clush keys aren't set up there.
-            continue
-        for prefix in classifier:
-            if name.startswith('tools-' + prefix):
-                role = classifier[prefix]
-                hostgroups[role].append(name + ".tools.eqiad.wmflabs")
+
+    for region in regions:
+        client = novaclient.Client(
+            "2.0",
+            session=KeystoneSession(auth=KeystonePassword(
+                auth_url="http://cloudcontrol1003.wikimedia.org:5000/v3",
+                username="novaobserver",
+                password=observer_pass,
+                project_name='tools',
+                user_domain_name='default',
+                project_domain_name='default'
+            )),
+            region_name=region
+        )
+        for instance in client.servers.list():
+            name = instance.name
+            if name.startswith('tools-puppetmaster'):
+                # To avoid chicken/egg strangeness, the tools puppetmaster
+                #  is not itself managed by the tools puppetmaster.  That
+                #  means clush keys aren't set up there.
+                continue
+            for prefix in classifier:
+                if name.startswith('tools-' + prefix):
+                    role = classifier[prefix]
+                    hostgroups[role].append(name + ".tools.eqiad.wmflabs")
 
     return hostgroups
 
 
-if __name__ == '__main__':
+def main():
     parser = argparse.ArgumentParser()
     parser.add_argument(
         'outputpath',
@@ -91,6 +108,11 @@ if __name__ == '__main__':
     )
     args = parser.parse_args()
 
-    hostgroups = get_hostgroups(TOOLS_PREFIX_CLASSIFIER, args.observer_pass)
+    regions = get_regions(args.observer_pass)
+    hostgroups = get_hostgroups(TOOLS_PREFIX_CLASSIFIER, args.observer_pass, regions)
     with open(args.outputpath, 'w') as f:
         f.write(yaml.safe_dump(hostgroups, default_flow_style=False))
+
+
+if __name__ == '__main__':
+    main()
