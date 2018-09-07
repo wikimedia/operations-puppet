@@ -70,6 +70,7 @@ class nagios_common::commands(
         'check_ores_workers',
         'check_ssl',
         'check_to_check_nagios_paging',
+        'check_vcp.py',
         'check_wikidata',
     ] :
         require    => File["${config_dir}/commands"],
