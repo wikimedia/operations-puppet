@@ -14,9 +14,7 @@ then
     exit 1
 fi
 
-is_failed=$(systemctl --quiet is-failed $1)
-
-if [[ $is_failed ]]
+if /bin/systemctl --quiet is-failed $1
 then
     check_status="CRITICAL"
 else
