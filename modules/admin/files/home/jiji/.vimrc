@@ -1,0 +1,10 @@
+set term=xterm
+syntax on
+colorscheme peachpuff
+set mouse=i
+set encoding=utf-8
+set fileencodings=utf-8,iso-8859-7
+set hlsearch
+set incsearch
+set ignorecase
+set smartcase
