@@ -1934,9 +1934,9 @@ node /^pybal-test200[123]\.codfw\.wmnet$/ {
     interface::add_ip6_mapped { 'main': }
 }
 
-# Tor relay
+# formerly Tor relay - replaced by torrelay1001 (T196701)
 node 'radium.wikimedia.org' {
-    role(tor_relay)
+    role(spare::system)
     interface::add_ip6_mapped { 'main': }
 }
 
@@ -2080,7 +2080,7 @@ node 'thorium.eqiad.wmnet' {
     interface::add_ip6_mapped { 'main': }
 }
 
-# new tor relay server to replace radium T196701
+# new tor relay server, replaced radium T196701
 node 'torrelay1001.wikimedia.org' {
     role(tor_relay)
     interface::add_ip6_mapped { 'main': }
