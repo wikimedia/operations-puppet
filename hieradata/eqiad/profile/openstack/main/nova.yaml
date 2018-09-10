@@ -16,14 +16,8 @@ profile::openstack::main::nova::live_migration_uri: 'qemu://%s.eqiad.wmnet/syste
 profile::openstack::main::nova::dnsmasq_compat_option: '# nothing yet'
 
 # Nova is permitted to schedule new VMs on the following
-#  hosts.  Note that 1019 and 1020 are reserved for
-#  internal infrastructure use so should never be part of
-#  the default pool.
-#
-# 1018 is running but held back as spare
+#  hosts.  1018 is running but held back as spare
 #  in case a different labvirt fails
-#
-# 1021 and 1022 are allocated to eqiad1, the new Neutron region
 #
 # 1015 is in the penalty box because it's running way too many VMs.
 profile::openstack::main::nova::scheduler_pool:

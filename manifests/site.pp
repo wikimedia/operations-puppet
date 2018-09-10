@@ -2188,17 +2188,16 @@ node /^labvirt100[0-9].eqiad.wmnet/ {
 #  key: profile::openstack::main::nova::scheduler_pool
 # We try to keep a few empty as emergency fail-overs
 #  or transition hosts for maintenance to come
-node /^labvirt101[0-9].eqiad.wmnet/ {
+node /^labvirt101[0-8].eqiad.wmnet/ {
     role(wmcs::openstack::main::virt)
     include ::standard
 }
 
-node /^labvirt1020\.eqiad\.wmnet$/ {
-    role(wmcs::openstack::main::virt)
-    include ::standard
+node /^cloudvirt1019\.eqiad\.wmnet$/ {
+    role(wmcs::openstack::eqiad1::virt)
 }
 
-node /^cloudvirt102[1-2].eqiad.wmnet$/ {
+node /^cloudvirt102[0-2].eqiad.wmnet$/ {
     role(wmcs::openstack::eqiad1::virt)
 }
 
