@@ -267,7 +267,7 @@ groups:
               piccardi, fdans, eevans, anomie, demon, ladsgroup, musikanimal,
               kaldari, goransm, ema, dsaez, shiladsen, rho, mirrys, slaporte, jk,
               ayounsi, mepps, mmiller, seddon, gilles, tstarling, pirroh, rush, tieu, karen,
-              cicalese, drossi]
+              cicalese, drossi, fsalutari]
     system_members: [analytics-search]
   analytics-admins:
     gid: 732
@@ -2934,6 +2934,17 @@ users:
       - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC/ezle/PMBu6wl5fwA/It/nPgzDJB3hi3x1NoFZl12QOCL7RjN8gqmQiBoLLUCEM34X1DqINU453oZAfvH9ZnbFbU9feajDJvs5W5Mgw9Y7uGRRjludBLA1rqBCPKGNZZdZzsYJ2I1XnQxIDC2+/Hp/UPaXU2AfaRKPVujfWGa6zuZqATiU1dh7Oiyl6svZc3oF4ef1a/4u651WnoG0YbIz6BV0SD+Tm9TJpt7p5HVPd6BizyXp1ed9E+2SeDSr3LW+RN6Neb1Uqr0IVxSGos3X4xJu4roV6FZ7sl7q/edeLPvcBUAEKXFVPojgXy3ACMzwtIlmTx2sKB/cHJYXi71 drossi@segv
     uid: 20047
     email: dario.rossi@telecom-paristech.fr
+    expiry_date: 2020-07-31
+    expiry_contact: gdubuc@wikimedia.org
+  fsalutari:
+    ensure: present
+    gid: 500
+    name: fsalutari
+    realname: Flavia Salutari
+    ssh_keys:
+      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDJHGVlDXeGsAoBVOTuKQL+IVOs5ypiAU/cX+Ve4vC7I2bb+4b50URwi1wkuXo0stb4rR6RHsLcQl5Xbv9QpgF8RnG6J98xubefSQv/KD6hiXEEhPA48PifqoCI6tNI3yWn+jp+dUoW8227XwXuXOSBDif+66G2WJX++tsX9lzGKPvuN1hUcPMU1AHGsEQCB1+ncje9F6f2hXutz4+LHx9iIOSs2OCeEwcchFr1AeLZWeflDQHUNI3jiUPc/60bVgedrvnEg54YHPExGeyPK0pd1VRkSq442+G12kSDEecpob9Cws9k/H6qAs7r2UT1C32nIpYqrTcL8G164b2OPU8F flaviasalutari@MacBook-Pro-di-Flavia.local
+    uid: 20040
+    email: flavia.salutari@telecom-paristech.fr
     expiry_date: 2020-07-31
     expiry_contact: gdubuc@wikimedia.org
 ldap_only_users:
