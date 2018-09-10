@@ -38,6 +38,7 @@ class icinga::monitor::certs {
         description   => 'HTTPS-planet',
         check_command => 'check_ssl_http!en.planet.wikimedia.org',
         host          => 'en.planet.wikimedia.org',
+        notes_url     => 'https://wikitech.wikimedia.org/wiki/Planet.wikimedia.org',
     }
 
     # *.wmflabs.org (labs wildcard cert, testing tools.wmflabs.org)
