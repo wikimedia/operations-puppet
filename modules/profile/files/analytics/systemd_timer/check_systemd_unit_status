@@ -11,14 +11,14 @@
 if [ -z "$1" ]
 then
     echo "usage: check_systemd_unit_status systemd_unit_name"
-    exit 1
+    exit 3
 fi
 
 if /bin/systemctl --quiet is-failed $1
 then
-    check_status="CRITICAL"
+    echo "CRITICAL: Status of the systemd unit $1"
+    exit 2
 else
-    check_status="OK"
+    echo "OK: Status of the systemd unit $1"
+    exit 0
 fi
-
-echo "${check_status}: Status of $1"

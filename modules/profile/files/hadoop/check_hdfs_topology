@@ -7,4 +7,5 @@ if [ $? -eq 1 ]; then
     echo "OK"
 else
     echo "CRITICAL: There is at least one node in the default rack."
+    exit 2
 fi

@@ -11,13 +11,15 @@
 
 if [ -z "${1}" ]; then
     echo "Usage: check_mountpoint_readability path"
-    exit 1
+    exit 3
 fi
 
 /usr/bin/timeout 5s /bin/ls "${1}" > /dev/null 2>&1
 
 if [ $? -eq 0 ]; then
     echo "OK"
+    exit 0
 else
     echo "CRITICAL"
+    exit 2
 fi

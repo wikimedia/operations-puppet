@@ -24,13 +24,17 @@ fi
 
 if [ "x${node_state}" = "xRUNNING" ]; then
     check_status="OK"
+    exit_status=0
 # Unhealthy is just a warning.  Likely disk space is getting low.
 elif [ "x${node_state}" = "xUNHEALTHY" ]; then
     check_status="WARNING"
+    exit_status=1
 # Anything else is critical.
 else
     logger "The script check_hadoop_yarn_node_state returned CRITICAL for status: ${node_state}"
     check_status="CRITICAL"
+    exit_status=2
 fi
 
 echo "${check_status}: YARN NodeManager ${node_id} Node-State: ${node_state}"
+exit $exit_status
