@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 #
-# Copyright (c) 2017 Wikimedia Foundation, Inc.
+# Copyright (c) 2017-2018 Wikimedia Foundation, Inc.
 
 # This script offboards a user from LDAP. In the default case a user can
 # retain standard Nova group memberships and only loses access to
@@ -10,21 +10,96 @@
 # also the possibility to remove a user from all groups
 # Initially only an LDIF is written, but not automatically modified in LDAP
 
-import sys
-from optparse import OptionParser
+from __future__ import print_function
+
 import ConfigParser
+import os
+import shutil
+import subprocess
+import sys
+import tempfile
+import yaml
+
+from optparse import OptionParser
 
 try:
     from phabricator import Phabricator
 except ImportError:
-    print "Unable to import Python Phabricator module"
+    print("Unable to import Python Phabricator module")
     sys.exit(1)
 
 try:
     import ldap
 except ImportError:
-    print "Unable to import Python LDAP"
+    print("Unable to import Python LDAP")
     sys.exit(1)
+
+
+def flatten(l, flattened=None):
+    '''
+    Flatten a list recursively. Make sure to only flatten list elements, which
+    is a problem with itertools.chain which also flattens strings. a defaults
+    to None instead of the empty list to avoid issues with Copy by reference
+    which is the default in python
+    '''
+
+    if flattened is None:
+        flattened = []
+
+    for i in l:
+        if isinstance(i, list):
+            flatten(i, flattened)
+        else:
+            flattened.append(i)
+    return flattened
+
+
+def fetch_yaml_data():
+    tmp_dir = tempfile.mkdtemp()
+    try:
+        subprocess.check_output(["git", "clone",
+                                 "https://gerrit.wikimedia.org/r/p/operations/puppet.git",
+                                 tmp_dir], stderr=subprocess.STDOUT, shell=False)
+    except subprocess.CalledProcessError as e:
+        print("git checkout failed", e.returncode)
+        shutil.rmtree(tmp_dir)
+        sys.exit(1)
+
+    with open(os.path.join(tmp_dir, 'modules/admin/data/data.yaml'), 'r') as data:
+        try:
+            yamldata = yaml.safe_load(data)
+        except yaml.YAMLError:
+            print('Failed to parse data.yaml')
+            shutil.rmtree(tmp_dir)
+            sys.exit(1)
+
+    shutil.rmtree(tmp_dir)
+    return yamldata
+
+
+def parse_users(yamldata):
+    users = {}
+
+    for table in ['users']:
+        for username, userdata in yamldata[table].items():
+            if userdata['ensure'] == 'absent':
+                continue
+
+            groups = []
+            for group, groupdata in list(yamldata['groups'].items()):
+                if username in flatten(groupdata['members']):
+                    groups.append(group)
+
+            if table == 'users':
+                users[username] = {
+                    'realname': userdata['realname'],
+                    'ldap_only': False,
+                    'uid': userdata['uid'],
+                    'prod_groups': groups,
+                    'has_server_access': (len(userdata['ssh_keys']) > 0),
+                }
+
+    return users
 
 
 def set_cookie(lc_object, pctrls, pagesize):
@@ -78,7 +153,7 @@ member: {user_dn}
     )
 
     if len(ldapdata) == 0:
-        print "LDAP user", uid, "not found"
+        print("LDAP user", uid, "not found")
         return
 
     user_dn = ldapdata[0][0]
@@ -122,35 +197,35 @@ member: {user_dn}
             if user_dn in i[1]['roleOccupant']:
                 project_admins.append(i[0])
 
-    print "User DN:", user_dn
+    print("User DN:", user_dn)
     member_set = set(memberships)
     priv_set = set(privileged_groups)
 
     if len(memberships) == 0:
-        print "Is not member of any LDAP group"
+        print("Is not member of any LDAP group")
     else:
-        print "Is member of the following unprivileged LDAP groups:"
+        print("Is member of the following unprivileged LDAP groups:")
         for group in memberships:
             if group not in priv_set:
                 if remove_all_groups:
                     ldif += REMOVE_GROUP.format(group_name=group, user_dn=user_dn)
-                    print " ", group, "(removing)"
+                    print(" ", group, "(removing)")
                 else:
-                    print " ", group, "(can be retained)"
+                    print(" ", group, "(can be retained)")
 
     if len(project_admins) == 0:
-        print "Is not a project admin in Nova"
+        print("Is not a project admin in Nova")
     else:
-        print "Is project admin of the following projects:"
+        print("Is project admin of the following projects:")
         for group in project_admins:
             if remove_all_groups:
                 ldif += REMOVE_GROUP.format(group_name=group, user_dn=user_dn)
-                print " ", group, "(removing)"
+                print(" ", group, "(removing)")
             else:
-                print " ", group, "(can be retained)"
+                print(" ", group, "(can be retained)")
 
     if len(member_set & priv_set) > 0:
-        print "Privileged groups:"
+        print("Privileged groups:")
         for priv_group in set(member_set & priv_set):
             if not remove_all_groups:  # Skip if we're pruning all groups anyway
                 if turn_volunteer:
@@ -158,28 +233,28 @@ member: {user_dn}
                         ldif += REMOVE_GROUP.format(group_name=priv_group, user_dn=user_dn)
                         ldif += ADD_GROUP.format(group_name='cn=nda,ou=groups,dc=wikimedia,dc=org',
                                                  user_dn=user_dn)
-                        print "  ", priv_group, "(converted to nda group)"
+                        print("  ", priv_group, "(converted to nda group)")
                     else:
-                        print "  ", priv_group, "(can be retained)"
+                        print("  ", priv_group, "(can be retained)")
                 else:
                     ldif += REMOVE_GROUP.format(group_name=priv_group, user_dn=user_dn)
-                    print "  ", priv_group, "(removing)"
+                    print("  ", priv_group, "(removing)")
     else:
-        print "Is not a member in any privileged group"
+        print("Is not a member in any privileged group")
 
     if not dry_run:
         try:
             with open(uid + ".ldif", "w") as ldif_file:
                 ldif_file.write(ldif)
-            print "LDIF file written to ", uid + ".ldif"
-            print "Please review and if all is well, you can effect the change running"
+            print("LDIF file written to ", uid + ".ldif")
+            print("Please review and if all is well, you can effect the change running")
             cmd = 'ldapmodify -h ldap-labs.eqiad.wikimedia.org -p 389 -x'
             cmd += ' -D "cn=scriptuser,ou=profile,dc=wikimedia,dc=org" -W -f ' + uid + ".ldif\n"
             cmd += 'To obtain the password run\n'
             cmd += 'sudo cat /etc/ldap.scriptuser.yaml'
-            print cmd
+            print(cmd)
         except IOError, e:
-            print "Error:", e
+            print("Error:", e)
             sys.exit(1)
 
 
@@ -196,10 +271,25 @@ def get_phabricator_client():
             token=parser.get('phabricator_bot', 'token'),
             host=parser.get('phabricator_bot', 'host'))
     except ConfigParser.NoSectionError:
-        print "Failed to open config file for Phabricator bot user:", phab_bot_conf
+        print("Failed to open config file for Phabricator bot user:", phab_bot_conf)
         sys.exit(1)
 
     return client
+
+
+def offboard_analytics(username):
+    pii_sensitive_groups = ['researchers', 'statistics-privatedata-users', 'statistics-users',
+                            'statistics-admins', 'analytics-users', 'analytics-privatedata-users',
+                            'analytics-admins', 'analytics-wmde-users']
+
+    yamldata = fetch_yaml_data()
+    users = parse_users(yamldata)
+    shell_groups = users[username]['prod_groups']
+
+    for group in shell_groups:
+        if group in pii_sensitive_groups:
+            print(group, "grants access to Hadoop/Hive, check PII leftovers")
+    print()
 
 
 def remove_user_from_project(user_phid, project_phid, phab_client):
@@ -231,14 +321,14 @@ def offboard_phabricator(username, remove_all_groups, dry_run, turn_volunteer):
                            'acl*support_and_safety_policy_admins']
 
     if len(user_query) == 0:
-        print "Phabricator user", username, "not found"
+        print("Phabricator user", username, "not found")
         sys.exit(1)
     else:
         phid_user = user_query[0]['phid']
 
     project_query = phab_client.project.query(members=[phid_user])
     if len(project_query['data']) == 0:
-        print "Not present in any project, nothing to be done"
+        print("Not present in any project, nothing to be done")
         return
     else:
         groups = project_query['data'].keys()
@@ -248,10 +338,10 @@ def offboard_phabricator(username, remove_all_groups, dry_run, turn_volunteer):
                  project_query['data'][membership]['phid']))
 
     if dry_run:
-        print "Phabricator user", username, "is present in the following groups:"
+        print("Phabricator user", username, "is present in the following groups:")
         for i in group_memberships:
             if dry_run:
-                print i[0]
+                print(i[0])
     else:
         for i in group_memberships:
             if remove_all_groups:
@@ -260,12 +350,12 @@ def offboard_phabricator(username, remove_all_groups, dry_run, turn_volunteer):
             else:
                 if i[0] in privileged_projects:
                     if turn_volunteer:
-                        print i[0], "is an privileged group, but can be retained"
+                        print(i[0], "is an privileged group, but can be retained")
                     else:
                         if confirm_removal(i[0]):
                             remove_user_from_project(phid_user, i[1], phab_client)
                 else:
-                    print i[0], "is an unprivileged group, can be retained"
+                    print(i[0], "is an unprivileged group, can be retained")
 
 
 def main():
@@ -293,14 +383,17 @@ def main():
     if options.ldap_username:
         offboard_ldap(options.ldap_username, options.remove_all_groups,
                       options.turn_volunteer, options.dry_run)
+
+        offboard_analytics(options.ldap_username)
+
     else:
-        print "Skipping LDAP offboarding, use -l USERNAME to run it at a later point"
+        print("Skipping LDAP offboarding, use -l USERNAME to run it at a later point")
 
     if options.phab_username:
         offboard_phabricator(options.phab_username, options.remove_all_groups, options.dry_run,
                              options.turn_volunteer)
     else:
-        print "Skipping Phabricator offboarding, use -p USERNAME to run it at later point"
+        print("Skipping Phabricator offboarding, use -p USERNAME to run it at later point")
 
 
 if __name__ == '__main__':
