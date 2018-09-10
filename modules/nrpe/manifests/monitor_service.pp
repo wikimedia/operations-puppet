@@ -25,6 +25,8 @@
 #    $event_handler
 #       Default to false. If present execute this registered command on the
 #       Nagios server.
+#    $notes_url
+#       An optional URL used to provide more information about the service.
 #    $ensure
 #       Defaults to present
 #
@@ -37,6 +39,7 @@ define nrpe::monitor_service( $description,
                               $event_handler  = undef,
                               $check_interval = 1,
                               $retry_interval = 1,
+                              $notes_url      = undef,
                               $ensure         = 'present') {
     nrpe::check { "check_${title}":
         command => $nrpe_command,
@@ -53,5 +56,6 @@ define nrpe::monitor_service( $description,
         event_handler  => $event_handler,
         check_interval => $check_interval,
         retry_interval => $retry_interval,
+        notes_url      => $notes_url,
     }
 }
