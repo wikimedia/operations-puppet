@@ -1,0 +1,4 @@
+profile::authdns::certcentral_target::certcentral_hosts:
+- certcentral1001.eqiad.wmnet
+- certcentral2001.codfw.wmnet
+

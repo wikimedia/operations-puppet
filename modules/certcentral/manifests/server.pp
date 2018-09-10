@@ -121,4 +121,16 @@ class certcentral::server (
         port   => '80',
         srange => '$DOMAIN_NETWORKS',
     }
+
+    keyholder::agent { 'authdns_certcentral':
+        trusted_groups => ['certcentral'],
+    }
+    file { '/usr/local/bin/certcentral-gdnsd-sync.py':
+        ensure  => present,
+        owner   => 'certcentral',
+        group   => 'certcentral',
+        mode    => '0544',
+        source  => 'puppet:///modules/certcentral/gdnsd-sync.py',
+        require => Package['certcentral'],
+    }
 }

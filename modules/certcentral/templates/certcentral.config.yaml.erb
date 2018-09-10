@@ -34,10 +34,10 @@ challenges:
 <%if @challenges['dns-01'] != nil -%>
     dns-01:
         zone_update_cmd: <%= @challenges['dns-01']['zone_update_cmd'] %>
-        sync_dns_servers: <% @challenges['dns-01']['sync_dns_servers'].each do |dns_server| %>
+        sync_dns_servers: <% scope['::authdns_servers'].each do |dns_server| %>
             - <%= dns_server -%>
         <% end %>
-        validation_dns_servers: <% @challenges['dns-01']['validation_dns_servers'].each do |dns_server| %>
+        validation_dns_servers: <% scope['::authdns_servers'].each do |dns_server| %>
             - <%= dns_server -%>
         <% end %>
 <% end -%>

@@ -260,3 +260,5 @@ $mail_smarthost = $realm ? {
 }
 
 $certcentral_host = hiera('certcentral_host')
+
+$authdns_servers = hiera('authdns_servers')

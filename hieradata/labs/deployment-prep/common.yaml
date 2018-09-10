@@ -496,3 +496,9 @@ profile::certcentral::accounts:
     regr: '{"body": {}, "uri": "https://acme-staging-v02.api.letsencrypt.org/acme/acct/6894413"}'
 profile::certcentral::certificates: {}
 profile::certcentral::challenges: {}
+#  dns-01:
+#    zone_update_cmd: /usr/local/bin/certcentral-gdnsd-sync.py
+#    sync_dns_servers:
+#    - deployment-certcentral-testdns
+#    validation_dns_servers:
+#    - 10.68.21.242

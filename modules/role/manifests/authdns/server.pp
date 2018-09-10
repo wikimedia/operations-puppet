@@ -6,6 +6,7 @@ class role::authdns::server {
     include ::profile::base::firewall
     include prometheus::node_gdnsd
     include role::authdns::data
+    include ::profile::authdns::certcentral_target
 
     create_resources(
         interface::ip,

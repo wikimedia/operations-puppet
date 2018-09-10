@@ -3,4 +3,6 @@ profile::certcentral::accounts:
     regr: '{"body": {}, "uri": "https://acme-staging-v02.api.letsencrypt.org/acme/acct/7090084"}'
     directory: "https://acme-staging-v02.api.letsencrypt.org/directory"
 profile::certcentral::certificates: {} # To be filled in following commits
-profile::certcentral::challenges: {} # To be filled in following commits
+profile::certcentral::challenges:
+  dns-01:
+    zone_update_cmd: /usr/local/bin/certcentral-gdnsd-sync.py
