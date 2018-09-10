@@ -81,6 +81,7 @@ define netops::check(
         group         => $group,
         description   => 'Juniper alarms',
         check_command => "check_jnx_alarms!${snmp_community}",
+        notes_url     => 'https://wikitech.wikimedia.org/wiki/Network_monitoring#Juniper_alarm',
     }
 
     if $interfaces {
@@ -89,6 +90,7 @@ define netops::check(
             group         => $group,
             description   => 'Router interfaces',
             check_command => "check_ifstatus_nomon!${snmp_community}",
+            notes_url     => 'https://wikitech.wikimedia.org/wiki/Network_monitoring#Router_interface_down',
         }
     }
 
@@ -98,6 +100,7 @@ define netops::check(
             group         => $group,
             description   => 'BGP status',
             check_command => "check_bgp!${snmp_community}",
+            notes_url     => 'https://wikitech.wikimedia.org/wiki/Network_monitoring#BGP_status',
         }
     }
 }
