@@ -50,6 +50,12 @@ case `hostname` in \
 		;; \
 esac
 
+case `hostname` in \
+	backup2001)
+		apt-install linux-meta-4.14
+		;; \
+esac
+
 # Use a more recent kernel on jessie and deinstall nfs-common/rpcbind
 # (we don't want these to be installed in general, only pull them in
 # where actually needed. stretch doesn't install nfs-common/rpcbind
