@@ -23,7 +23,7 @@ define netops::ripeatlas(
     $ipv4=undef,
     $ipv6=undef,
     $loss_allow=50,
-    $failures=19,
+    $failures=25,
     $group='network',
 ) {
     if $ipv4 {
