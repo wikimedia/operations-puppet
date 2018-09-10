@@ -6,10 +6,20 @@ class profile::openstack::eqiad1::neutron::l3_agent(
     $network_flat_interface_vlan_external = hiera('profile::openstack::eqiad1::neutron::network_flat_interface_vlan_external'),
     $network_flat_interface = hiera('profile::openstack::eqiad1::neutron::network_flat_interface'),
     $network_flat_interface_vlan = hiera('profile::openstack::eqiad1::neutron::network_flat_interface_vlan'),
+    $network_compat_interface = hiera('profile::openstack::eqiad1::neutron::network_compat_interface'),
+    $network_compat_interface_vlan = hiera('profile::openstack::eqiad1::neutron::network_compat_interface_vlan'),
     $dmz_cidr = hiera('profile::openstack::eqiad1::neutron::dmz_cidr'),
     $network_public_ip = hiera('profile::openstack::eqiad1::neutron::network_public_ip'),
     $report_interval = hiera('profile::openstack::eqiad1::neutron::report_interval'),
     ) {
+
+    interface::tagged { $network_compat_interface:
+        base_interface => 'eth1',
+        vlan_id        => $network_compat_interface_vlan,
+        method         => 'manual',
+        up             => 'ip link set $IFACE up',
+        down           => 'ip link set $IFACE down',
+    }
 
     interface::tagged { $network_flat_interface_external:
         base_interface => 'eth1',
