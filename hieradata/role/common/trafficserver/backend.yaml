@@ -170,7 +170,7 @@ profile::trafficserver::backend::mapping_rules:
       target: http://rt.wikimedia.org
       replacement: http://ununpentium.wikimedia.org
     - type: map
-      target: http://scolarships.wikimedia.org
+      target: http://scholarships.wikimedia.org
       replacement: http://krypton.eqiad.wmnet
     - type: map
       target: http://servermon.wikimedia.org
@@ -218,7 +218,7 @@ profile::trafficserver::backend::mapping_rules:
       replacement: https://swift-rw.discovery.wmnet
     - type: map
       target: http://yarn.wikimedia.org
-      replacement: https://yarn.wikimedia.org
+      replacement: http://analytics-tool1001.eqiad.wmnet
     - type: regex_map
       target: 'http://(.*)/api/rest_v1'
       replacement: http://restbase.discovery.wmnet:7231/api/rest_v1
