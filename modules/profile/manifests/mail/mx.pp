@@ -159,6 +159,7 @@ class profile::mail::mx (
 
     mtail::program { 'exim':
         ensure => present,
+        notify => Service['mtail'],
         source => 'puppet:///modules/mtail/programs/exim.mtail',
     }
 
