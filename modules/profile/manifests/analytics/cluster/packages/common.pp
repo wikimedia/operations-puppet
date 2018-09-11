@@ -23,6 +23,7 @@ class profile::analytics::cluster::packages::common {
         'python-matplotlib',      'python3-matplotlib',
         'python-tk',              'python3-tk',
         'python-geoip',           'python3-geoip',
+        'python-geoip2',          'python3-geoip2',
         'python-pandas',          'python3-pandas',
         'python-scipy',           'python3-scipy',
         'python-requests',        'python3-requests',
