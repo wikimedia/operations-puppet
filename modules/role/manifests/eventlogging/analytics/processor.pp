@@ -33,30 +33,26 @@ class role::eventlogging::analytics::processor{
     # Read in raw events from Kafka, process them, and send them to
     # the schema corresponding to their topic in Kafka.
     $kafka_schema_output_uri  = "${kafka_producer_scheme}/${kafka_brokers_string}?topic=eventlogging_{schema}"
-
-    # The downstream eventlogging MySQL consumer expects schemas to be
-    # all mixed up in a single stream.  We send processed events to a
-    # 'mixed' kafka topic in order to keep supporting it for now.
-    # We blacklist certain high volume schemas from going into this topic.
-    $mixed_schema_blacklist = hiera('eventlogging_valid_mixed_schema_blacklist', undef)
-    $kafka_mixed_output_uri = $mixed_schema_blacklist ? {
-        undef   => "${kafka_producer_scheme}/${kafka_brokers_string}?topic=eventlogging-valid-mixed",
-        default => "${kafka_producer_scheme}/${kafka_brokers_string}?topic=eventlogging-valid-mixed&blacklist=${mixed_schema_blacklist}"
-    }
+    $kafka_mixed_output_uri = "${kafka_producer_scheme}/${kafka_brokers_string}?topic=eventlogging-valid-mixed"
 
     # Increase number and backoff time of retries for async
     # analytics uses.  If metadata changes, we should give
-    # more time to retry. NOTE: testing this in production
-    # STILL yielded some dropped messages.  Need to figure
-    # out why and stop it.  This either needs to be higher,
-    # or it is a bug in kafka-python.
-    # See: https://phabricator.wikimedia.org/T142430
+    # more time to retry.
     $kafka_producer_args = $kafka_producer_scheme ? {
         # args for kafka-confluent handler writer
         'kafka-confluent://' => 'message.send.max.retries=6,retry.backoff.ms=200',
         # args for kafka-python handler writer
         'kafka://'           => 'retries=6&retry_backoff_ms=200'
     }
+
+    # Custom URI scheme to pass events through map function
+    $map_scheme        = 'map://'
+    # The downstream eventlogging MySQL consumer expects schemas to be
+    # all mixed up in a single stream.  We send processed events to a
+    # 'mixed' kafka topic in order to keep supporting it for now.
+    # We whitelist certain low volume schemas for this topic.
+    # The whitelist is maintained in plugins.py.
+    $valid_mixed_filter_function = 'eventlogging_valid_mixed_filter'
 
     # Incoming format from /beacon/event via varnishkafka eventlogging-client-side
     # is of the format:
@@ -73,7 +69,7 @@ class role::eventlogging::analytics::processor{
         sid            => $kafka_consumer_group,
         outputs        => [
             "${kafka_schema_output_uri}&${kafka_producer_args}",
-            "${kafka_mixed_output_uri}&${kafka_producer_args}",
+            "${map_scheme}${kafka_mixed_output_uri}&${kafka_producer_args}&function=${valid_mixed_filter_function}",
         ],
         output_invalid => true,
     }

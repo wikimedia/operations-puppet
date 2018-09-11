@@ -349,17 +349,6 @@ dumps_dist_active_vps: labstore1007.wikimedia.org
 # Also serves stat* hosts over nfs
 dumps_dist_active_web: labstore1006.wikimedia.org
 
-# Schemas names that match this regex
-# will not be produced to the eventlogging-valid-mixed
-# topic.  This allows us to keep high volume schema
-# events out of the MySQL consumer.
-# This is in common.yaml so that this will be used
-# for eventlogging in labs as well as production.
-# Currently this blacklists the following schemas:
-#   * Analytics so we can use it for testing throughput
-#   * CentralNoticeBannerHistory because it can't be inserted into mysql with its array property
-#   * ImageMetrics see T141407, these tables are no longer used and yet some cached code is still sending events
-eventlogging_valid_mixed_schema_blacklist: ^(Analytics|CentralNoticeBannerHistory|CentralNoticeImpression|ImageMetricsLoadingTime|ImageMetricsCorsSupport|Popups|SearchSatisfaction|Print|VirtualPageView|(MobileWikiAppiOS[a-zA-Z]+)|CitationUsage|WebClientError)$
 # Used to specify writer handler for eventlogging processor producer.
 eventlogging_kafka_producer_scheme: "kafka-confluent://"
 
