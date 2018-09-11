@@ -10,6 +10,7 @@ class profile::wdqs (
     String $updater_options = hiera('profile::wdqs::updater_options'),
     Array[String] $nodes = hiera('profile::wdqs::nodes'),
     Boolean $use_kafka_for_updates = hiera('profile::wdqs::use_kafka_for_updates'),
+    String $kafka_options = hiera('profile::wdqs::kafka_updater_options'),
     Array[String] $cluster_names = hiera('profile::wdqs::cluster_names'),
     String $rc_options = hiera('profile::wdqs::rc_updater_options'),
     Boolean $enable_ldf = hiera('profile::wdqs::enable_ldf'),
@@ -66,7 +67,7 @@ class profile::wdqs (
 
     if $use_kafka_for_updates {
         $kafka_brokers = kafka_config('main')['brokers']['string']
-        $base_kafka_options = "--kafka ${kafka_brokers} --consumer ${::hostname}"
+        $base_kafka_options = "--kafka ${kafka_brokers} --consumer ${::hostname} ${kafka_options}"
         $joined_cluster_names = join($cluster_names, ',')
 
         $poller_options = count($cluster_names) ? {
