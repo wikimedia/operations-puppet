@@ -1,6 +1,7 @@
 define monitoring::service(
     $description,
     $check_command,
+    $notes_url,
     $host                  = $::hostname,
     $retries               = 3,
     $group                 = undef,
@@ -14,7 +15,6 @@ define monitoring::service(
     $config_dir            = '/etc/nagios',
     $event_handler         = undef,
     $notifications_enabled = $::profile::base::notifications_enabled,
-    $notes_url             = undef,
 )
 {
     # the list of characters is the default for illegal_object_name_chars
