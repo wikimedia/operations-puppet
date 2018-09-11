@@ -27,12 +27,14 @@ define monitoring::grafana_alert(
     $dashboard     = $title,
     $ensure        = present,
     $grafana_url   = 'https://grafana.wikimedia.org',
-    $contact_group = 'admins'
+    $contact_group = 'admins',
+    $notes_url     = undef,
 ) {
     monitoring::service { $title:
         ensure        => $ensure,
         description   => "${grafana_url}/dashboard/${title} grafana alert",
         check_command => "check_grafana_alert!${title}!${grafana_url}",
         contact_group => $contact_group,
+        notes_url     => $notes_url,
     }
 }
