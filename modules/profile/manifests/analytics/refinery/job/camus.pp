@@ -5,10 +5,19 @@
 # == Parameters
 # [*kafka_cluster_name*]
 #   Name of the Kafka cluster in the kafka_clusters hash that will be used
-#   to look up brokers from which Camus will import data.  Default: analytics
+#   to look up brokers from which Camus will import data.
+#   Default: 'jumbo'
+#
+# [*kafka_cluster_name_mediawiki*]
+#   Name of the Kafka cluster that handles the mediawiki avro events.
+#   In production it represents the last job to migrate to Jumbo, but for
+#   reason outlined in T188136 we are still not ready to do it.
+#   This option ease the deployment of this profile in labs.
+#   Default: 'analytics'
 #
 class profile::analytics::refinery::job::camus(
-    $kafka_cluster_name = hiera('profile::analytics::refinery::job::camus::kafka_cluster_name', 'jumbo')
+    $kafka_cluster_name           = hiera('profile::analytics::refinery::job::camus::kafka_cluster_name', 'jumbo'),
+    $kafka_cluster_name_mediawiki = hiera('profile::analytics::refinery::job::camus::kafka_cluster_name_mediawiki', 'analytics'),
 ) {
     require ::profile::hadoop::common
     require ::profile::analytics::refinery
@@ -17,7 +26,7 @@ class profile::analytics::refinery::job::camus(
     $kafka_brokers = suffix($kafka_config['brokers']['array'], ':9092')
 
     # Temporary while we migrate camus jobs over to new kafka cluster.
-    $kafka_config_analytics  = kafka_config('analytics')
+    $kafka_config_analytics  = kafka_config($kafka_cluster_name_mediawiki)
 
     $kafka_brokers_analytics = suffix($kafka_config_analytics['brokers']['array'], ':9092')
     $kafka_brokers_jumbo     = suffix($kafka_config['brokers']['array'], ':9092')
