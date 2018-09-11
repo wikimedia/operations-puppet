@@ -4,6 +4,7 @@ class openstack::horizon::source_deploy(
     $wmflabsdotorg_admin,
     $wmflabsdotorg_pass,
     $dhcp_domain,
+    $instance_network_id,
     $ldap_user_pass,
     $all_regions,
     $venv_dir      = '/srv/deployment/horizon/venv',
