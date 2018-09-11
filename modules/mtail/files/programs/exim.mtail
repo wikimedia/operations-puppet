@@ -42,7 +42,7 @@ def queued {
         exim_messages_bytes["out"] += $size
       }
 
-      /X=(?P<ciphersuite>[\w\:\.]+)/ {
+      /\ X=(?P<ciphersuite>[\w\:\.]+)/ {
         exim_tls_connections["out"][$ciphersuite]++
       }
     }
@@ -54,7 +54,7 @@ def queued {
         exim_messages_bytes["in"] += $size
       }
 
-      /X=(?P<ciphersuite>[\w\:\.]+)/ {
+      /\ X=(?P<ciphersuite>[\w\:\.]+)/ {
         exim_tls_connections["in"][$ciphersuite]++
       }
     }
