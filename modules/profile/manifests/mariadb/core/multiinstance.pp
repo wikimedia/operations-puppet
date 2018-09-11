@@ -134,7 +134,7 @@ disabled, use mariadb@<instance_name> instead'; exit 1\"",
 
     class { 'mariadb::monitor_process':
         process_count => $num_instances,
-        is_critical   => true,
+        is_critical   => $is_critical,
         contact_group => 'sms,admins',
     }
 

@@ -20,7 +20,6 @@ class role::mariadb::core {
 
     include ::standard
     include ::base::firewall
-    include ::profile::mariadb::monitor
     include ::passwords::misc::scripts
     include ::role::mariadb::ferm
 
@@ -84,6 +83,17 @@ class role::mariadb::core {
         is_critical   => $replication_is_critical,
         contact_group => $contact_group,
         socket        => $socket,
+    }
+
+    class { 'mariadb::monitor_disk':
+        is_critical   => $::is_critical,
+        contact_group => 'admins',
+    }
+
+    class { 'mariadb::monitor_process':
+        process_count => $::num_instances,
+        is_critical   => $::is_critical,
+        contact_group => 'admins',
     }
 
     $heartbeat_enabled = $mysql_role == 'master'
