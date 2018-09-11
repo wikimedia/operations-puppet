@@ -24,10 +24,9 @@ define monitoring::service(
     if ! $host {
         fail("Parameter ${host} not defined!")
     }
-    # FIXME - top-scope var without namespace ($cluster), will break in puppet 2.8
-    # lint:ignore:variable_scope
-    $cluster_name = hiera('cluster', $cluster)
-    # lint:endignore
+
+    $cluster_name = hiera('cluster', $::cluster)
+
     $servicegroups = $group ? {
         /.+/    => $group,
         default => hiera('nagios_group',"${cluster_name}_${::site}")
