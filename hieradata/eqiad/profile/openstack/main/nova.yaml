@@ -13,7 +13,7 @@ profile::openstack::main::nova::network_public_ip: '208.80.155.255'
 profile::openstack::main::nova::zone: 'eqiad'
 profile::openstack::main::nova::db_host: 'm5-master.eqiad.wmnet'
 profile::openstack::main::nova::live_migration_uri: 'qemu://%s.eqiad.wmnet/system?pkipath=/var/lib/nova'
-profile::openstack::main::nova::dnsmasq_compat_option: 'dhcp-option=option:classless-static-route,172.16.0.0/21,10.68.23.253'
+profile::openstack::main::nova::dnsmasq_compat_option: '# nothing yet'
 
 # Nova is permitted to schedule new VMs on the following
 #  hosts.  1018 is running but held back as spare
