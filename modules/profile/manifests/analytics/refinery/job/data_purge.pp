@@ -26,6 +26,9 @@ class profile::analytics::refinery::job::data_purge (
 
     # Shortcut var to DRY up cron commands.
     $env = "export PYTHONPATH=\${PYTHONPATH}:${refinery_path}/python"
+    $systemd_env = {
+        'PYTHONPATH' => "\${PYTHONPATH}:${refinery_path}/python",
+    }
 
     # Send an email to analytics in case of failure
     $mail_to = 'analytics-alerts@wikimedia.org'
@@ -80,15 +83,27 @@ class profile::analytics::refinery::job::data_purge (
         minute  => '25',
         hour    => '*/4',
     }
+
     # keep this many days of druid webrequest sampled
+    # Currently being tested as systemd timer, see below
     $druid_webrequest_sampled_retention_days = 60
     cron {'refinery-drop-webrequest-sampled-druid':
+        ensure      => absent,
         command     => "${env} && ${refinery_path}/bin/refinery-drop-druid-deep-storage-data -d ${druid_webrequest_sampled_retention_days} webrequest_sampled_128 >> ${druid_webrequest_log_file}",
         environment => "MAILTO=${mail_to}",
         user        => 'hdfs',
         minute      => '15',
-        hour        => '5'
+        hour        => '5',
     }
+
+    profile::analytics::systemd_timer { 'refinery-drop-webrequest-sampled-druid':
+        description => 'Drop Druid Webrequest sampled data from deep storage',
+        command     => "${refinery_path}/bin/refinery-drop-druid-deep-storage-data -d ${druid_webrequest_sampled_retention_days} webrequest_sampled_128",
+        interval    => ' *-*-* 05:15:00',
+        environment => $systemd_env,
+        user        => 'hdfs',
+    }
+
 
     # keep this many public druid mediawiki history refined snapshots
     # cron runs once a month

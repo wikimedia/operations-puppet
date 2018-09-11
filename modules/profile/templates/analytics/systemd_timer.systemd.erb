@@ -4,10 +4,8 @@ Description=<%= @description %>
 [Service]
 User=<%= @user %>
 <%- if @environment -%>
-<%=
-    @environment.map { |k, v|
-        [ k, v ].join('=').join('Environment=')
-    }.join("\n")
-%>
+<%- @environment.keys.sort.each do |key| -%>
+Environment=<%= key -%>=<%= @environment[key] %>
+<%- end -%>
 <%- end -%>
 ExecStart=<%= @command %>
