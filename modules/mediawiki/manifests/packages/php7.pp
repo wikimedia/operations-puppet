@@ -24,8 +24,20 @@ class mediawiki::packages::php7 {
     }
 
     # Run-time
-    require_package('php-cli', 'php-common', 'php-curl', 'php-intl',
-        'php-mysql', 'php-redis')
+    require_package(
+        'php-cli',
+        'php-common',
+        'php-apcu',
+        'php-bz2',
+        'php-curl',
+        'php-geoip',
+        'php-intl',
+        'php-mbstring',
+        'php-memcached',
+        'php-mysql',
+        'php-redis',
+        'php-xml'
+    )
 
     # Wikimedia PHP extensions
     require_package('php-luasandbox')
@@ -33,8 +45,4 @@ class mediawiki::packages::php7 {
     package {'php-wikidiff2':
         ensure => present,
     }
-
-    # Third-party PHP extensions
-    require_package('php-apcu', 'php-bz2', 'php-geoip', 'php-mbstring',
-        'php-memcached', 'php-xml')
 }
