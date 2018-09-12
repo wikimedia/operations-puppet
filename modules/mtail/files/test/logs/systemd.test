@@ -1,3 +1,3 @@
-Jul 24 09:21:34 maps-test2001 systemd[1]: tileratorui.service holdoff time over, scheduling restart.
+Jul 24 09:21:34 maps2001 systemd[1]: tileratorui.service holdoff time over, scheduling restart.
 Jul 24 09:21:37 mwlog1001 systemd[1]: udp2log-mw.service holdoff time over, scheduling restart.
 Jul 24 09:44:12 thumbor1001 systemd[1]: thumbor@8836.service holdoff time over, scheduling restart.

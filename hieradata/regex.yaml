@@ -216,7 +216,7 @@ syslog_tls_eqiad:
 # Old hosts with mpt controllers and to be decom'd
 # smartmontools broken out of the box - T179078 and T86552
 smart_health_mpt:
-  __regex: !ruby/regexp /^(maps-test|lvs100[1-6]|labnet1002).*/
+  __regex: !ruby/regexp /^(lvs100[1-6]|labnet1002).*/
   profile::base::check_smart: false
 
 puppetdb4_servers:

@@ -136,12 +136,6 @@ monitoring::groups:
     description: eqiad maps servers
   maps_codfw:
     description: codfw maps servers
-  maps-test_codfw:
-    description: codfw maps test servers
-  maps-test-stretch_codfw:
-    description: codfw maps test stretch migration servers
-  maps-test-vectortiles_codfw:
-    description: codfw maps test servers for vector tiles
 
 # MediaWiki
   appserver_eqiad:

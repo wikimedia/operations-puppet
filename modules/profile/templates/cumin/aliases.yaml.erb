@@ -114,9 +114,8 @@ lvs-eqiad: A:lvs and A:eqiad
 lvs-esams: A:lvs and A:esams
 lvs-ulsfo: A:lvs and A:ulsfo
 lvs-eqsin: A:lvs and A:eqsin
-maps: P{O:maps::master or O:maps::slave} or A:maps-test
+maps: P{O:maps::master or O:maps::slave}
 maps-canary: P{maps1001.eqiad.wmnet}
-maps-test: P{O:maps::test::master or O:maps::test::slave or O:maps::test::vectortiles_master}
 memcached: P{O:mediawiki::memcached}
 memcached-canary: P{mc1019.eqiad.wmnet}
 memcached-codfw: A:memcached and A:codfw

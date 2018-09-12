@@ -1362,23 +1362,6 @@ node 'maerlant.wikimedia.org' {
     interface::add_ip6_mapped { 'main': }
 }
 
-node 'maps-test2001.codfw.wmnet' {
-    role(maps::test::master)
-}
-
-node 'maps-test2002.codfw.wmnet' {
-    role(maps::test::slave)
-}
-
-node 'maps-test2003.codfw.wmnet' {
-    # testing reimage of current maps style to stretch
-    role(maps::test::master)
-}
-
-node 'maps-test2004.codfw.wmnet' {
-    role(maps::test::vectortiles_master)
-}
-
 node 'maps1001.eqiad.wmnet' {
     role(maps::master)
 }
@@ -1389,6 +1372,10 @@ node /^maps100[2-4]\.eqiad\.wmnet/ {
 
 node 'maps2001.codfw.wmnet' {
     role(maps::master)
+}
+
+node /^maps-test200[1-4]\.codfw\.wmnet/ {
+    role(spare::system)
 }
 
 node /^maps200[2-4]\.codfw\.wmnet/ {

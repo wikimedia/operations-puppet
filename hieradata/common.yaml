@@ -270,11 +270,6 @@ wikimedia_clusters:
     id: 59
     sites:
       eqiad: []
-  maps-test:
-    description: "Maps Test Cluster"
-    id: 60
-    sites:
-      codfw: []
   thumbor:
     description: "Thumbor"
     id: 61
