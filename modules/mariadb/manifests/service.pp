@@ -62,11 +62,10 @@ wmf-mariadb103, wmf-mysql57 or wmf-mysql80")
         # TODO: use the base::service configuration
         if $manage {
             service { $vendor:
-                ensure  => $ensure,
-                enable  => $enable,
                 # $manage assumes only the main instance is managed-
                 # multiple instances have to be managed manually
-                require => File["/lib/systemd/system/${vendor}.service"],
+                ensure => $ensure,
+                enable => $enable,
             }
         }
         # handle per-host special configuration
