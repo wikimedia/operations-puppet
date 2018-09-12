@@ -122,6 +122,18 @@ maniphest.custom-field-definitions:
     description: Date of the release / deployment
     type: date
     search: true
+  risk.rating:
+    name: Risk Rating
+    search: true
+    type: select
+    default: default
+    options:
+      default: 'N/A'
+      info: 'Informational'
+      low: 'Low'
+      medium: 'Medium'
+      high: 'High'
+      critical: 'Critical'
 
 maniphest.subtypes:
   - { key: "default", name: "Task" }
