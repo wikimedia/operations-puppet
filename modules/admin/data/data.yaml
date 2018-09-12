@@ -140,7 +140,7 @@ groups:
               nikerabbit, dstrine, mpany, jsamra,
               jdittrich, chelsyx, ovasileva, mtizzoni, panisson, paolotti, ciro, debt,
               fdans, mlitn, niharika29, goransm, pmiazga, dsaez, shiladsen, cicalese,
-              mirrys, sharvaniharan, mmiller, amire80, rush, tieu]
+              mirrys, sharvaniharan, mmiller, amire80, rush, tieu, kharlan]
   ldap-admins:
     gid: 715
     description: ldap admins
@@ -2969,6 +2969,15 @@ users:
     email: monipe@wikimedia.org
     expiry_date: 2019-02-16
     expiry_contact: ebjune@wikimedia.org
+  kharlan:
+    ensure: present
+    realname: Kosta Harlan
+    name: kharlan
+    gid: 500
+    ssh_keys:
+      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQCboFezeLLnibVC36SKuKaBOOH2h0bpPSXEoFbAaw68S8bV//geEZdoSzd9Ii9FQ+gNAQrJuPc0R2AqFZZJoO+z0R8vsVLkEBdET9MCfMK4GVIS2zoITnW/jIIS4fURENB/VgAU0NUtOHFSgcCdPwh4FLCyQ8zwcLrNug06Z+PwZJsXzri4M8JV7vgYFfzoK/PP0aA0HxW/VOrWjxVGgs8O18DBSuj60XshTI5d9Z/7j97l2sBwkwJmLzuGLtSGCM++iOIEYyNA47TeWmJBCJ0GASugEc0VJ6N0IqUlP9GUck/+sRpfXv2tpUWUFRJMvpp0A9MD32af3Vm2hJ9bXjQNvTtHrxzVEtkNwpv5HGzMeK+8orNujI9GRqTCda4Lc1l63e4dcHqXVBFo2KGULRXp/qO6BNkR1JpPev3IGFEIs5voAEj++A5RtjGVAyk42t3KzihbYhCWCW8lTPrcmZIzmPVQeXU0OHBjRiONA+ui+jsWlXNkrUg6LZQQkhoKApsLwpFgfFkZXzCrT4++4E64DQkfLegcDF0sC5Be8YKBxbA0cWjlMuu9oVKbafqhfRtFWdrKoLat6l2yLlxMNOjd243udVIXtio4xcUpAIZ54ZA46DGV5S/pVncqp4q7gdvVFDp52KeK/lrwAp4kK8LR3JNdCMWq71b4KYrHj4OVDw== kharlan@kharlans-MacBook-Pro.local
+    uid: 19582
+    email: kharlan@wikimedia.org
 ldap_only_users:
   abartov:
     ensure: present
@@ -3247,10 +3256,6 @@ ldap_only_users:
     ensure: present
     realname: Katie Horn
     email: khorn@wikimedia.org
-  kharlan:
-    ensure: present
-    realname: Kosta Harlan
-    email: kharlan@wikimedia.org
   tarrow:
     ensure: present
     realname: Thomas Arrow
