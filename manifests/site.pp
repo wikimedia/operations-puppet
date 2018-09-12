@@ -325,6 +325,11 @@ node /^cp50(0[789]|1[012])\.eqsin\.wmnet$/ {
     role(cache::text)
 }
 
+node 'cumin2001.codfw.wmnet' {
+    role(spare::system)
+    interface::add_ip6_mapped { 'main': }
+}
+
 node 'darmstadtium.eqiad.wmnet' {
     role(docker::registry)
 }
