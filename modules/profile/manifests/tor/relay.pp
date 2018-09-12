@@ -1,6 +1,7 @@
 # sets up a tor relay
 class profile::tor::relay (
     $service_ensure = hiera('profile::tor::relay::service_ensure'),
+    $fingerprints = hiera('profile::tor::relay::fingerprints'),
 ) {
 
     include passwords::tor
@@ -18,6 +19,7 @@ class profile::tor::relay (
         apt_uri         => 'http://apt.wikimedia.org/wikimedia',
         apt_dist        => "${::lsbdistcodename}-wikimedia",
         service_ensure  => $service_ensure,
+        fingerprints    => $fingerprints,
     }
 
     ::tor::instance { 'wikimediaeqiad2':
@@ -28,6 +30,7 @@ class profile::tor::relay (
         address         => 'tor-eqiad-1.wikimedia.org',
         nickname        => 'wikimediaeqiad2',
         contact         => 'noc@wikimedia.org',
+        fingerprints    => $fingerprints,
         exit_policy     => 'reject *:*', # no exits allowed
     }
 

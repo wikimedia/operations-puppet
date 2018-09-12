@@ -11,6 +11,7 @@ class tor(
     $apt_uri,
     $apt_dist,
     $service_ensure,
+    $fingerprints,
 ) {
 
     if os_version('debian >= stretch') {
@@ -41,6 +42,8 @@ class tor(
     package { 'tor-arm':
         ensure => 'present',
     }
+
+    $family = join($fingerprints, ',')
 
     file { '/etc/tor/torrc':
         ensure  => 'present',

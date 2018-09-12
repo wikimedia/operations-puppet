@@ -9,6 +9,7 @@ define tor::instance(
     $orport,
     $dirport,
     $exit_policy,
+    $fingerprints,
 ) {
 
     if $name == 'default' {
@@ -23,6 +24,8 @@ define tor::instance(
         require => Package['tor'],
         before  => File[$config],
     }
+
+    $family = join($fingerprints, ',')
 
     file { $config:
         ensure  => 'present',
