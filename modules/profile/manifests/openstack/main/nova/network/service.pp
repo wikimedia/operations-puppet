@@ -9,7 +9,7 @@ class profile::openstack::main::nova::network::service(
     $network_flat_tagged_base_interface = hiera('profile::openstack::main::nova::network_flat_tagged_base_interface'),
     $network_flat_interface_vlan = hiera('profile::openstack::main::nova::network_flat_interface_vlan'),
     $network_public_ip = hiera('profile::openstack::main::nova::network_public_ip'),
-    $dnsmasq_compat_option = hiera('profile::openstack::main::nova::dnsmasq_compat_option'),
+    $dnsmasq_classles_static_route = hiera('profile::openstack::main::nova::dnsmasq_classles_static_route'),
     ) {
 
     require ::profile::openstack::main::nova::common
@@ -24,7 +24,7 @@ class profile::openstack::main::nova::network::service(
         network_flat_tagged_base_interface => $network_flat_tagged_base_interface,
         network_flat_interface_vlan        => $network_flat_interface_vlan,
         network_public_ip                  => $network_public_ip,
-        dnsmasq_compat_option              => $dnsmasq_compat_option,
+        dnsmasq_classles_static_route      => $dnsmasq_classles_static_route,
     }
 
     if ($::fqdn == $nova_network_host) {

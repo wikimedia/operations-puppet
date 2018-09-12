@@ -27,4 +27,4 @@ dhcp-boot=jessie-installer/pxelinux.0,<%= @tftp_host -%>,<%= scope.function_ipre
 dhcp-option-force=209,pxelinux.cfg/ttyS1-115200
 
 # extra compat dhcp-option
-<%= @dnsmasq_compat_option %>
+<%= @dnsmasq_classles_static_route %>

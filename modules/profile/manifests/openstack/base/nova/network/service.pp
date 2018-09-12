@@ -9,7 +9,7 @@ class profile::openstack::base::nova::network::service(
     $network_flat_tagged_base_interface = hiera('profile::openstack::base::nova::network_flat_tagged_base_interface'),
     $network_flat_interface_vlan = hiera('profile::openstack::base::nova::network_flat_interface_vlan'),
     $network_public_ip = hiera('profile::openstack::base::nova::network_public_ip'),
-    $dnsmasq_compat_option = hiera('profile::openstack::base::nova::dnsmasq_compat_option'),
+    $dnsmasq_classles_static_route = hiera('profile::openstack::base::nova::dnsmasq_classles_static_route'),
     ) {
 
     if ($::fqdn == $nova_network_host) {
@@ -28,13 +28,13 @@ class profile::openstack::base::nova::network::service(
     }
 
     class {'::openstack::nova::network::service':
-        active                 => ($::fqdn == $nova_network_host),
-        version                => $version,
-        labs_metal             => $labs_metal,
-        nova_dnsmasq_aliases   => $nova_dnsmasq_aliases,
-        dns_recursor           => $dns_recursor,
-        dns_recursor_secondary => $dns_recursor_secondary,
-        dnsmasq_compat_option  => $dnsmasq_compat_option,
+        active                        => ($::fqdn == $nova_network_host),
+        version                       => $version,
+        labs_metal                    => $labs_metal,
+        nova_dnsmasq_aliases          => $nova_dnsmasq_aliases,
+        dns_recursor                  => $dns_recursor,
+        dns_recursor_secondary        => $dns_recursor_secondary,
+        dnsmasq_classles_static_route => $dnsmasq_classles_static_route,
     }
     contain '::openstack::nova::network::service'
 }
