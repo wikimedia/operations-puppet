@@ -241,6 +241,8 @@ node /^cp107[1-4]\.eqiad\.wmnet$/ {
 # new canary, to replace cp1008 in future work
 node /^cp1099\.eqiad\.wmnet$/ {
     role(test)
+    include ::role::authdns::testns
+    interface::add_ip6_mapped { 'main': }
 }
 
 node /^cp10(7[579]|8[13579])\.eqiad\.wmnet$/ {
