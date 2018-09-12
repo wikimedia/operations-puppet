@@ -97,7 +97,6 @@ eventlogging_valid_mixed_schema_whitelist = (
     'PrefUpdate',
     'QuickSurveyInitiation',
     'QuickSurveysResponses',
-    'ReadingDepth',
     'RelatedArticles',
     'SaveTiming',
     'SearchSatisfactionErrors',
