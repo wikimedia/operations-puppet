@@ -72,6 +72,11 @@ class profile::analytics::refinery::job::camus(
 
     # Import eventbus topics into /wmf/data/raw/eventbus
     # once every hour.
+    # Also check that camus is always finding data in the revision-create
+    # topic from the primary mediawiki datacenter.
+    # NOTE: Using mediawiki::state is a bit of a hack; this data should
+    # be read from confd/etcd directly instead of using this hacky function.
+    $primary_mediawiki_dc = mediawiki::state('primary_dc')
     camus::job { 'eventbus':
         minute                => '5',
         kafka_brokers         => $kafka_brokers_jumbo,
@@ -79,8 +84,7 @@ class profile::analytics::refinery::job::camus(
         # Don't need to write _IMPORTED flags for EventBus data
         check_dry_run         => true,
         # Only check this topic, since it should always have data for every hour
-        # (except during DC switchover).
-        check_topic_whitelist => 'eqiad.mediawiki.revision-create',
+        check_topic_whitelist => "${primary_mediawiki_dc}.mediawiki.revision-create",
     }
 
     # Import mediawiki_* topics into /wmf/data/raw/mediawiki
