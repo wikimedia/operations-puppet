@@ -20,7 +20,7 @@ class icinga::monitor::certs {
     }
     monitoring::service { 'https_policy':
         description   => 'HTTPS-policy',
-        check_command => 'check_ssl_http!policy.wikimedia.org',
+        check_command => 'check_ssl_http_letsencrypt!policy.wikimedia.org',
         host          => 'policy.wikimedia.org',
     }
 
