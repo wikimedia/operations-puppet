@@ -10,3 +10,18 @@ GRANT SELECT ON `centralauth`.* TO 'research'@'%';
 GRANT SELECT ON `log`.* TO 'research'@'%';
 GRANT SELECT ON `warehouse`.* TO 'research'@'%';
 GRANT SELECT ON `flowdb`.* TO 'research'@'%';
+GRANT SELECT ON `wikishared`.* TO 'research'@'%'
+GRANT SELECT ON `cognate\_wiktionary`.* TO 'research'@'%'
+
+
+-- Grants for 'globaldev'@'%'
+GRANT USAGE ON *.* TO 'globaldev'@'%' IDENTIFIED BY <%= @globaldev_pass %>;
+GRANT SELECT ON `%wiki%`.* TO 'globaldev'@'%';
+
+-- Grants for 'wikiuser'@'%208.80.154.%' and 'wikiuser'@'208.80.152.%';
+
+GRANT PROCESS, REPLICATION CLIENT ON *.* TO 'wikiuser'@'208.80.152.%' IDENTIFIED BY <%= @wikiuser_pass %> ;
+GRANT PROCESS, REPLICATION CLIENT ON *.* TO 'wikiuser'@'208.80.154.%' IDENTIFIED BY <%= @wikiuser_pass %> ;
+
+GRANT SELECT, INSERT, UPDATE, DELETE ON `%wik%`.* TO 'wikiuser'@'208.80.152.%';
+GRANT SELECT, INSERT, UPDATE, DELETE ON `%wik%`.* TO 'wikiuser'@'208.80.154.%';
