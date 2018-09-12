@@ -36,7 +36,29 @@ define profile::analytics::refinery::job::refine_job (
     $weekday             = undef,
     $ensure              = 'present',
 ) {
+    # TODO: All Refine job configs will move to this hash one both Refine
+    # and RefineMonitor are switched to ConfigHelper properties files: T203804
+    $properties          = {
+        'input_path'                      => $input_base_path,
+        'input_path_regex'                => $input_regex,
+        'input_path_regex_capture_groups' => $input_capture,
+        'output_path'                     => $output_base_path,
+        'database'                        => $output_database,
+        'emails_to'                       => $email_to,
+        'table_whitelist_regex'           => $table_whitelist,
+        'table_blacklist_regex'           => $table_blacklist,
+        'since'                           => $since,
+    }
+
     require ::profile::analytics::refinery
+
+    # refine job properties will go in /etc/refinery/refine
+    $config_dir = "${::profile::analytics::refinery::config_dir}/refine"
+    if !defined(File[$config_dir]) {
+        file { $config_dir:
+            ensure => 'directory',
+        }
+    }
 
     $refinery_path = $profile::analytics::refinery::path
 
@@ -108,30 +130,31 @@ define profile::analytics::refinery::job::refine_job (
         $ensure_monitor = 'absent'
     }
 
+    $monitor_properties = merge($properties, {
+        'since' => 28,
+        'until' => 4,
+    })
+
     $monitor_job_name = "refine_monitor_${title}"
     $monitor_log_file = "${profile::analytics::refinery::log_dir}/${monitor_job_name}.log"
-    $monitor_since    = 28
-    $monitor_until    = 4
-    # NOTE: RefineMonitor should not be run in YARN.  Local mode is fine.
-    $monitor_command  = "/usr/bin/spark2-submit --class org.wikimedia.analytics.refinery.job.refine.RefineMonitor --name ${monitor_job_name} ${_refinery_job_jar} --since ${monitor_since} --until ${monitor_until} ${whitelist_blacklist_opt} ${email_opts} --input-base-path ${input_base_path} --input-regex '${input_regex}' --input-capture '${input_capture}' --output-base-path ${output_base_path} --database ${output_database}"
-    $monitor_script   = "/usr/local/bin/${monitor_job_name}"
+    $monitor_job_config_file = "${config_dir}/${monitor_job_name}.properties"
 
-    file { $monitor_script:
-        ensure  => $ensure_monitor,
-        content => $monitor_command,
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0555',
+    profile::analytics::refinery::job::config { $monitor_job_config_file:
+        ensure     => $ensure_monitor,
+        properties => $monitor_properties,
     }
+
+    # NOTE: RefineMonitor should not be run in YARN.  Local mode is fine.
+    $monitor_command  = "/usr/bin/spark2-submit --class org.wikimedia.analytics.refinery.job.refine.RefineMonitor --name ${monitor_job_name} ${_refinery_job_jar} --config_file ${monitor_job_config_file}"
 
     # Run this RefineMonitor job daily at 04:15
     cron { $monitor_job_name:
         ensure  => $ensure_monitor,
-        command => "${monitor_script} >> ${monitor_log_file} 2>&1",
+        command => "${monitor_command} >> ${monitor_log_file} 2>&1",
         user    => $user,
         hour    => 4,
         minute  => 15,
-        require => File[$monitor_script],
+        require => Profile::Analytics::Refinery::Job::Config[$monitor_job_config_file],
     }
 
 }

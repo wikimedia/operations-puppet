@@ -18,6 +18,12 @@ class profile::analytics::refinery {
     # to find the correct path for scripts etc..
     $path = $::profile::analytics::refinery::repository::path
 
+    # Create directory in /etc for general purpose refinery config.
+    $config_dir = '/etc/refinery'
+    file { $config_dir:
+        ensure => 'directory'
+    }
+
     # Create directory in /var/log for general purpose Refinery job logging.
     $log_dir = '/var/log/refinery'
     $log_dir_group = $::realm ? {
