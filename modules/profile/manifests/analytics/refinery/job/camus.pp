@@ -15,9 +15,13 @@
 #   This option ease the deployment of this profile in labs.
 #   Default: 'analytics'
 #
+# [*monitoring_enabled*]
+#   Enable monitoring for Camus data imported.
+#
 class profile::analytics::refinery::job::camus(
     $kafka_cluster_name           = hiera('profile::analytics::refinery::job::camus::kafka_cluster_name', 'jumbo'),
     $kafka_cluster_name_mediawiki = hiera('profile::analytics::refinery::job::camus::kafka_cluster_name_mediawiki', 'analytics'),
+    $monitoring_enabled           = hiera('profile::analytics::refinery::job::camus::monitoring_enabled', false),
 ) {
     require ::profile::hadoop::common
     require ::profile::analytics::refinery
@@ -42,7 +46,7 @@ class profile::analytics::refinery::job::camus(
         camus_jar           => "${profile::analytics::refinery::path}/artifacts/org/wikimedia/analytics/camus-wmf/camus-wmf-0.1.0-wmf7.jar",
         check_jar           => "${profile::analytics::refinery::path}/artifacts/org/wikimedia/analytics/refinery/refinery-camus-0.0.69.jar",
         # Email reports if CamusPartitionChecker finds errors.
-        check_email_enabled => true,
+        check_email_enabled => $monitoring_enabled,
         template_variables  => {
             'hadoop_cluster_name' => $::profile::hadoop::common::cluster_name
         }
@@ -52,7 +56,7 @@ class profile::analytics::refinery::job::camus(
     # Import webrequest_* topics into /wmf/data/raw/webrequest
     # every 10 minutes, check runs and flag fully imported hours.
     camus::job { 'webrequest':
-        check         => true,
+        check         => $monitoring_enabled,
         minute        => '*/10',
         kafka_brokers => $kafka_brokers_jumbo,
 
@@ -76,11 +80,15 @@ class profile::analytics::refinery::job::camus(
     # topic from the primary mediawiki datacenter.
     # NOTE: Using mediawiki::state is a bit of a hack; this data should
     # be read from confd/etcd directly instead of using this hacky function.
-    $primary_mediawiki_dc = mediawiki::state('primary_dc')
+    $primary_mediawiki_dc = $::realm ? {
+        'labs'  => 'eqiad',
+        default => mediawiki::state('primary_dc'),
+    }
+
     camus::job { 'eventbus':
         minute                => '5',
         kafka_brokers         => $kafka_brokers_jumbo,
-        check                 => true,
+        check                 => $monitoring_enabled,
         # Don't need to write _IMPORTED flags for EventBus data
         check_dry_run         => true,
         # Only check this topic, since it should always have data for every hour
@@ -92,7 +100,7 @@ class profile::analytics::refinery::job::camus(
     camus::job { 'mediawiki':
         # Currently not used, should be re-enabled if mediawiki-analytics move to Kafa jumbo-eqiad.
         ensure        => 'absent',
-        check         => true,
+        check         => $monitoring_enabled,
         minute        => '15',
         # refinery-camus contains some custom decoder classes which
         # are needed to import Avro binary data.
@@ -102,7 +110,7 @@ class profile::analytics::refinery::job::camus(
     # TODO: This camus job will be removed once all mediawiki avro topics have moved to jumbo.
     # See: https://phabricator.wikimedia.org/T188136
     camus::job { 'mediawiki-analytics':
-        check         => true,
+        check         => $monitoring_enabled,
         minute        => '15',
         # refinery-camus contains some custom decoder classes which
         # are needed to import Avro binary data.
