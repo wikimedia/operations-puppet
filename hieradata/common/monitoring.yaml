@@ -32,12 +32,6 @@ monitoring::groups:
     description: ulsfo upload Varnish
   cache_upload_eqsin:
     description: eqsin upload Varnish
-  cache_misc_codfw:
-    description: Misc caches codfw
-  cache_misc_eqiad:
-    description: Misc caches eqiad
-  cache_misc_esams:
-    description: Misc caches esams
   cache_canary_eqiad:
     description: Canary caches eqiad
 

@@ -8,7 +8,7 @@ class profile::cache::kafka::alerts {
     # (logster only reports once a minute, but we can use perSecond() in graphite
     # over a period of time of X minutes).
     # Currently monitored:
-    # varnishkafka-webrequest in text/upload/misc
+    # varnishkafka-webrequest in text/upload
     # varnishkafka-eventlogging in text
     # varnishkafka-statsd in text
     #

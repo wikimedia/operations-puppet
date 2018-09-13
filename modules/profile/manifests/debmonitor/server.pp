@@ -84,7 +84,7 @@ class profile::debmonitor::server (
 
     base::service_auto_restart { 'uwsgi-debmonitor': }
 
-    # Public endpoint: incoming traffic from cache-misc for the WebUI
+    # Public endpoint: incoming traffic from cache_text for the WebUI
     ferm::service { 'nginx-http':
         proto  => 'tcp',
         port   => '80',

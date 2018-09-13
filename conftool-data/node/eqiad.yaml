@@ -162,11 +162,6 @@ eqiad:
   dns:
     dns1001.wikimedia.org: [pdns_recursor]
     dns1002.wikimedia.org: [pdns_recursor]
-  cache_misc:
-    cp1045.eqiad.wmnet: [varnish-fe, varnish-be, nginx]
-    cp1051.eqiad.wmnet: [varnish-fe, varnish-be, nginx]
-    cp1058.eqiad.wmnet: [varnish-fe, varnish-be, nginx]
-    cp1061.eqiad.wmnet: [varnish-fe, varnish-be, nginx]
   parsoid:
     # Don't forget to update $wgLinterSubmitterWhitelist in operations/mediawiki-config
     wtp1025.eqiad.wmnet: [parsoid]

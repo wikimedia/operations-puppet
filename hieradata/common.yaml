@@ -181,13 +181,6 @@ wikimedia_clusters:
     sites:
       eqiad: []
       codfw: []
-  cache_misc:
-    description: "Misc Web caching cluster"
-    id: 41
-    sites:
-      eqiad: []
-      codfw: []
-      esams: []
   elasticsearch:
     description: "Elasticsearch cluster"
     id: 42

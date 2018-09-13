@@ -76,13 +76,4 @@ class role::graphite::alerts::reqstats {
         nagios_critical => false,
     }
 
-    monitoring::graphite_threshold { 'reqstats-5xx-misc':
-        description     => 'Misc HTTP 5xx reqs/min',
-        dashboard_links => ['https://grafana.wikimedia.org/dashboard/file/varnish-aggregate-client-status-codes.json?panelId=3&fullscreen&orgId=1&var-site=All&var-cache_type=misc&var-status_type=5'],
-        metric          => 'sumSeries(varnish.*.misc.frontend.request.client.status.5xx.sum)',
-        warning         => $settings['warning'],
-        critical        => $settings['critical'],
-        from            => $settings['cron'],
-        nagios_critical => false,
-    }
 }

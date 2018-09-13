@@ -226,12 +226,6 @@ class role::prometheus::ops {
         class_name => 'role::cache::canary',
         port       => '3903',
     }
-    prometheus::class_config{ "varnish-misc_mtail_${::site}":
-        dest       => "${targets_path}/varnish-misc_mtail_${::site}.yaml",
-        site       => $::site,
-        class_name => 'role::cache::misc',
-        port       => '3903',
-    }
     prometheus::class_config{ "varnish-upload_mtail_${::site}":
         dest       => "${targets_path}/varnish-upload_mtail_${::site}.yaml",
         site       => $::site,
@@ -250,12 +244,6 @@ class role::prometheus::ops {
         dest       => "${targets_path}/varnish-canary_backendmtail_${::site}.yaml",
         site       => $::site,
         class_name => 'role::cache::canary',
-        port       => '3904',
-    }
-    prometheus::class_config{ "varnish-misc_backendmtail_${::site}":
-        dest       => "${targets_path}/varnish-misc_backendmtail_${::site}.yaml",
-        site       => $::site,
-        class_name => 'role::cache::misc',
         port       => '3904',
     }
     prometheus::class_config{ "varnish-upload_backendmtail_${::site}":
@@ -533,16 +521,6 @@ class role::prometheus::ops {
         ],
       },
     ]
-
-    prometheus::cluster_config{ "nginx_cache_misc_${::site}":
-        dest    => "${targets_path}/nginx_cache_misc_${::site}.yaml",
-        site    => $::site,
-        cluster => 'cache_misc',
-        port    => 9145,
-        labels  => {
-            'cluster' => 'cache_misc'
-        },
-    }
 
     prometheus::cluster_config{ "nginx_cache_text_${::site}":
         dest    => "${targets_path}/nginx_cache_text_${::site}.yaml",
@@ -1063,11 +1041,6 @@ class role::prometheus::ops {
     prometheus::rule { 'rules_ops.conf':
         instance => 'ops',
         source   => 'puppet:///modules/role/prometheus/rules_ops.conf',
-    }
-
-    prometheus::varnish_2layer{ 'misc':
-        targets_path => $targets_path,
-        cache_name   => 'misc',
     }
 
     prometheus::varnish_2layer{ 'text':
