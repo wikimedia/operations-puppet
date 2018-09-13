@@ -22,7 +22,6 @@ class profile::analytics::refinery::job::data_purge (
     $druid_webrequest_log_file       = "${profile::analytics::refinery::log_dir}/drop-druid-webrequest.log"
     $mediawiki_history_log_file      = "${profile::analytics::refinery::log_dir}/drop-mediawiki-history.log"
     $banner_activity_log_file        = "${profile::analytics::refinery::log_dir}/drop-banner-activity.log"
-    $el_sanitization_log_file        = "${profile::analytics::refinery::log_dir}/eventlogging-sanitization.log"
     $query_clicks_log_file           = "${profile::analytics::refinery::log_dir}/drop-query-clicks.log"
     $el_saltrotate_log_file          = "${profile::analytics::refinery::log_dir}/eventlogging-saltrotate.log"
     $public_druid_snapshots_log_file = "${profile::analytics::refinery::log_dir}/drop-druid-public-snapshots.log"
@@ -163,13 +162,29 @@ class profile::analytics::refinery::job::data_purge (
             hour        => '0',
         }
 
-        # sanitize event database into event_sanitized
-        # cron runs once an hour
-        cron {'refinery-eventlogging-sanitization':
-            command => "${env} && ${refinery_path}/bin/is-yarn-app-running EventLoggingSanitization || /usr/bin/spark2-submit --master yarn --deploy-mode cluster --queue production --driver-memory 16G --conf spark.ui.retainedStage=20 --conf spark.ui.retainedTasks=1000 --conf spark.ui.retainedJobs=100 --conf spark.driver.extraClassPath=/usr/lib/hive/lib/hive-jdbc.jar:/usr/lib/hadoop-mapreduce/hadoop-mapreduce-client-common.jar:/usr/lib/hive/lib/hive-service.jar --conf spark.dynamicAllocation.maxExecutors=128 --files /etc/hive/conf/hive-site.xml --class org.wikimedia.analytics.refinery.job.refine.EventLoggingSanitization ${refinery_path}/artifacts/refinery-job.jar --whitelist-path /wmf/refinery/current/static_data/eventlogging/whitelist.yaml --salt-path /user/hdfs/eventlogging-sanitization-salt.txt --parallelism 16 --send-email-report >> ${$el_sanitization_log_file} 2>&1",
-            user    => 'hdfs',
-            minute  => '0',
+        # Sanitize event database into event_sanitized.
+        # Cron job runs once an hour.  EventLoggingSanitization is a Refine job wrapper with
+        # some extra features.  Use refine_job to configure and run it.
+        profile::analytics::refinery::job::refine_job { 'sanitize_eventlogging_analytics':
+            job_name            => 'sanitize_eventlogging_analytics',
+            job_class           => 'org.wikimedia.analytics.refinery.job.refine.EventLoggingSanitization',
+            job_config          => {
+                'input_path'          => '/wmf/data/event',
+                'database'            => 'event_sanitized',
+                'output_path'         => '/wmf/data/event_sanitized',
+                'whitelist_path'      => '/wmf/refinery/current/static_data/eventlogging/whitelist.yaml',
+                'salt_path'           => '/user/hdfs/eventlogging-sanitization-salt.txt',
+                'parallelism'         => '16',
+                'should_email_report' => true,
+                'emails_to'           => 'analytics-alerts@wikimedia.org',
+            },
+            spark_driver_memory => '16G',
+            spark_max_executors => '128',
+            spark_extra_opts    => '--conf spark.ui.retainedStage=20 --conf spark.ui.retainedTasks=1000 --conf spark.ui.retainedJobs=100',
+            monitoring_enabled  => false,
+            minute              => 0,
         }
+
 
         # drop data older than 2 months from cu_changes table, which is sqooped in
         # cron runs once a month

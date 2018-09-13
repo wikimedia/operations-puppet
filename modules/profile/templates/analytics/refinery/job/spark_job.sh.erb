@@ -1,0 +1,17 @@
+# NOTE: This file is managed by puppet
+#
+# Wrapper script for launching Spark Job <%= @title %>
+
+PYTHONPATH=<%= @refinery_path %>/python <%= @refinery_path %>/bin/is-yarn-app-running <%= @title %> ||
+/usr/bin/spark2-submit \
+--name <%= @job_name %> \
+--class <%= @class %> \
+<% if @spark_opts -%>
+<%= Array(@spark_opts).join(" ") %> \
+<% end -%>
+<%= @jar %> \
+<% if @job_opts -%>
+<%= Array(@job_opts).join(" ") %> "${@}"
+<% else -%>
+"${@}"
+<% end -%>
