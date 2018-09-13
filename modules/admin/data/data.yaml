@@ -316,7 +316,7 @@ groups:
   restbase-roots:
     gid: 744
     description: people who have full root on restbase nodes
-    members: [eevans, mobrovac, ppchelko]
+    members: [eevans, mobrovac, ppchelko, imarlier]
     privileges: ['ALL = (ALL) NOPASSWD: ALL']
   citoid-users:
     gid: 745
