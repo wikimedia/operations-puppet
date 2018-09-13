@@ -22,11 +22,18 @@ class profile::analytics::database::meta(
 
     $mariadb_socket = '/run/mysqld/mysqld.sock'
 
+    if os_version('debian >= stretch') {
+        $mariadb_basedir = '/opt/wmf-mariadb101'
+    } else {
+        $mariadb_basedir = '/opt/wmf-mariadb10'
+    }
+
     class { '::mariadb::config':
         config    => $config_template,
         socket    => '/run/mysqld/mysqld.sock',
         port      => 3306,
         datadir   => '/var/lib/mysql',
+        basedir   => $mariadb_basedir,
         read_only => false,
         require   => Class['mariadb::packages_wmf'],
     }
