@@ -47,7 +47,7 @@ case "$1" in
                 exit 1
             fi
 
-            if /usr/bin/timeout --preserve-status -k 10s 30s /bin/ls $2 &> /dev/null; then
+            if /usr/bin/timeout --preserve-status -k 10s 30s /usr/bin/stat $2 &> /dev/null; then
                 msg "$2 seems healthy."
             else
                 msg "$2 does not seem healthy."
@@ -102,7 +102,7 @@ case "$1" in
             ;;
         *)
             /bin/echo 'list   [check]                - list locally defined NFS mount paths'
-            /bin/echo 'check  <mount_path>           - validate ls returns successfully'
+            /bin/echo 'check  <mount_path>           - validate stat(1) returns successfully'
             /bin/echo 'mount  [ all | <mount_path> ] - mount a path defined in /etc/fstab'
             /bin/echo 'umount <mount_path>           - umount a path defined in /etc/fstab'
             /bin/echo 'clean                         - remove all mounts defined in /etc/fstab'
