@@ -322,7 +322,7 @@ node /^cp50(0[789]|1[012])\.eqsin\.wmnet$/ {
 }
 
 node 'cumin2001.codfw.wmnet' {
-    role(spare::system)
+    role(cluster::management)
     interface::add_ip6_mapped { 'main': }
 }
 
