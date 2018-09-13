@@ -218,11 +218,9 @@ node 'cp1008.wikimedia.org' {
     interface::add_ip6_mapped { 'main': }
 }
 
-# cache_misc still in use, but not for much longer!
-# these will go to decom list once it's gone
+# ex cp-misc_eqiad
 node /^cp10(45|5[18]|61)\.eqiad\.wmnet$/ {
-    interface::add_ip6_mapped { 'main': }
-    role(cache::misc)
+    role(spare::system)
 }
 
 # 18 total systems here for decom (old eqiad caches not in use):
@@ -271,16 +269,14 @@ node /^cp20(0[39]|15|21)\.codfw\.wmnet$/ {
     role(trafficserver::backend)
 }
 
-# Once cache_misc is gone, these will be spares for codfw text/upload
-# above until next codfw cache hardware refresh
+# ex cp-misc_codfw
 node /^cp20(06|1[28]|25)\.codfw\.wmnet$/ {
-    interface::add_ip6_mapped { 'main': }
-    role(cache::misc)
+    role(spare::system)
 }
 
+# ex cp-misc_esams
 node /^cp30(0[78]|10)\.esams\.wmnet$/ {
-    interface::add_ip6_mapped { 'main': }
-    role(cache::misc)
+    role(spare::system)
 }
 
 node 'cp3022.esams.wmnet' {
