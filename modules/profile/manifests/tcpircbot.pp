@@ -29,6 +29,8 @@ class profile::tcpircbot(
             '2620:0:861:103:10:64:32:20/64',    # neodymium.eqiad.wmnet
             '::ffff:10.192.0.140/128',          # sarin.codfw.wmnet
             '2620:0:860:101:10:192:0:140/64',   # sarin.codfw.wmnet
+            '::ffff:10.192.48.16/128',          # cumin2001.codfw.wmnet
+            '2620:0:860:101:10:192:48:16/64',   # cumin2001.codfw.wmnet
         ],
     }
     if $ensure == 'present' {
@@ -47,6 +49,7 @@ class profile::tcpircbot(
         'mwmaint2001.codfw.wmnet',      # maintenance codfw
         'neodymium.eqiad.wmnet',        # cluster mgmt eqiad
         'sarin.codfw.wmnet',            # cluster mgmt codfw
+        'cumin2001.codfw.wmnet',        # cluster mgmt codfw
     ]
 
     $allowed_hosts_ferm = join($allowed_hosts, ' ')
