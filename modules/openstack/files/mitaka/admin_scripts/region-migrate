@@ -253,7 +253,7 @@ class NovaInstance(object):
                                                  recordset['id'],
                                                  {"records": recordset['records']})
 
-    def ssh_test(self, source=True):
+    def ssh_test(self, source=True, command='hostname'):
         if source:
             instance = self.source_instance
             target_ip = self.get_fixed_ip(instance)
@@ -271,19 +271,20 @@ class NovaInstance(object):
 
         sshargs = ["ssh", "-i", rootkeyfile, "-oStrictHostKeyChecking=no",
                    '-oProxyCommand=/usr/bin/ssh -i %s -a -W %%h:%%p root@%s' % (rootkeyfile, proxy),
-                   "root@%s" % target_ip, "hostname"]
+                   "root@%s" % target_ip, command]
         try:
             r = subprocess.check_output(sshargs)
         except:
             print("exception caught while attempting ssh to %s" % target_ip)
             return False
 
-        if r.strip() != instance.name:
-            print("ssh test to %s failed.  Returned hostname %s but expected %s" %
-                  (target_ip, r.strip(), instance.name))
-            return False
-        else:
-            print("verified ssh for %s, returned hostname %s" % (target_ip, r))
+        if command == 'hostname':
+            if r.strip() != instance.name:
+                print("ssh test to %s failed.  Returned hostname %s but expected %s" %
+                      (target_ip, r.strip(), instance.name))
+                return False
+            else:
+                print("verified ssh for %s, returned hostname %s" % (target_ip, r))
 
         return True
 
@@ -518,6 +519,12 @@ class NovaInstance(object):
         if i == 10:
             print("all dns tests failed, giving up.  We probably leaked a DNS record for the source VM.")
             exit(1)
+
+        # Deleting the old host also deleted our puppet cert.  No problem, we'll just clean up
+        #  certs on the VM and let them regenerate.  Only do this if the server is managed by the
+        #  central puppetmaster.
+        print("Refreshing puppet cert on new host")
+        self.ssh_test(source=False, command='grep "server = labs-puppetmaster.wikimedia.org" /etc/puppet/puppet.conf && rm -r /var/lib/puppet/ssl/')
 
         print("Instance %s is now on host %s with status %s" % (
             self.dest_instance_id,
