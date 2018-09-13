@@ -307,6 +307,11 @@ host logstash1009 {
     filename "lpxelinux.0";
 }
 
+host matomo1001 {
+    hardware ethernet aa:00:00:eb:c3:90;
+    fixed-address matomo1001.eqiad.wmnet;
+}
+
 host mendelevium {
     hardware ethernet aa:00:00:58:6a:10;
     fixed-address mendelevium.eqiad.wmnet;
