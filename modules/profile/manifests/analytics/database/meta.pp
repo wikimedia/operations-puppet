@@ -31,11 +31,12 @@ class profile::analytics::database::meta(
         require   => Class['mariadb::packages_wmf'],
     }
 
-    # if labs, automate mysql_install_db.
-    if $::realm == 'labs' {
+    # If labs, automate mysql_install_db. Supported only for recent
+    # Debian OS like Stretch.
+    if $::realm == 'labs' and os_version('debian >= stretch') {
         exec { 'analytics_meta_mysql_install_db':
-            command => '/opt/wmf-mariadb10/scripts/mysql_install_db',
-            cwd     => '/opt/wmf-mariadb10',
+            command => '/opt/wmf-mariadb101/scripts/mysql_install_db',
+            cwd     => '/opt/wmf-mariadb101',
             creates => '/var/lib/mysql/ibdata1',
             require => Class['mariadb::config'],
             before  => Class['mariadb::service'],
