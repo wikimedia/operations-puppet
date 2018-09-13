@@ -111,7 +111,6 @@ lvs::configuration::lvs_service_ips:
   dns_rec: {}
   graphoid: {}
   mathoid: {}
-  misc_web: {}
   mobile: {}
   osm: {}
   parsoid: {}

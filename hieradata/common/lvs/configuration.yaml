@@ -56,16 +56,6 @@ lvs::configuration::lvs_service_ips:
     eqsin:
       dns_rec: 103.102.166.254
       dns_rec6: 2001:df2:e500:ed1a::3:fe
-  misc_web: &ip_block006
-    codfw:
-      misc_weblb: 208.80.153.248
-      misc_weblb6: 2620:0:860:ed1a::3:d
-    eqiad:
-      misc_weblb: 208.80.154.251
-      misc_weblb6: 2620:0:861:ed1a::3:d
-    esams:
-      misc_weblb: 91.198.174.217
-      misc_weblb6: 2620:0:862:ed1a::3:d
   search: &ip_block013
     eqiad: 10.2.2.30
     codfw: 10.2.1.30
@@ -318,53 +308,6 @@ lvs::configuration::lvs_services:
     conftool:
       cluster: dns
       service: pdns_recursor
-  misc_web:
-    description: Miscellaneous web sites Varnish cluster
-    class: high-traffic2
-    sites:
-    - codfw
-    - eqiad
-    - esams
-    ip: *ip_block006
-    scheduler: sh
-    depool-threshold: '.5'
-    monitors:
-      IdleConnection:
-        timeout-clean-reconnect: 3
-        max-delay: 300
-    conftool:
-      cluster: cache_misc
-      service: varnish-fe
-    icinga:
-      uri: varnishcheck!/
-      sites:
-        eqiad:
-          hostname: misc-web-lb.eqiad.wikimedia.org
-        codfw:
-          hostname: misc-web-lb.codfw.wikimedia.org
-        esams:
-          hostname: misc-web-lb.esams.wikimedia.org
-  misc_web-https:
-    description: Miscellaneous web sites Varnish cluster (HTTPS)
-    class: high-traffic2
-    sites:
-    - codfw
-    - eqiad
-    - esams
-    ip: *ip_block006
-    port: 443
-    scheduler: sh
-    depool-threshold: '.5'
-    monitors:
-      ProxyFetch:
-        url:
-        - https://varnishcheck.wikimedia.org/from/pybal
-      IdleConnection:
-        timeout-clean-reconnect: 3
-        max-delay: 300
-    conftool:
-      cluster: cache_misc
-      service: nginx
   apaches:
     description: "Main MediaWiki application server cluster, appservers.svc.%{::site}.wmnet"
     class: low-traffic
