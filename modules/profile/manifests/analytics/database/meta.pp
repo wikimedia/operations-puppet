@@ -12,14 +12,6 @@ class profile::analytics::database::meta(
 
     class { '::mariadb::packages_wmf': }
 
-    $config_template = $::realm ? {
-        # Production instance has large innodb_buffer_pool_size.
-        # Unfortunetly this is not configurable via parameters or
-        # hiera with the mariadb::config class.
-        'production' => 'role/mariadb/mysqld_config/analytics-meta.my.cnf.production.erb',
-        default      => 'role/mariadb/mysqld_config/analytics-meta.my.cnf.erb',
-    }
-
     $mariadb_socket = '/run/mysqld/mysqld.sock'
 
     if os_version('debian >= stretch') {
@@ -29,7 +21,7 @@ class profile::analytics::database::meta(
     }
 
     class { '::mariadb::config':
-        config    => $config_template,
+        config    => 'profile/analytics/database/meta/analytics-meta.my.cnf.erb',
         socket    => '/run/mysqld/mysqld.sock',
         port      => 3306,
         datadir   => '/var/lib/mysql',
