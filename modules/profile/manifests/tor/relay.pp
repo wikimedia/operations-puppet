@@ -54,4 +54,6 @@ class profile::tor::relay (
         description   => 'Tor DirPort',
         check_command => 'check_tcp!9032',
     }
+
+    backup::set { 'tor': }
 }

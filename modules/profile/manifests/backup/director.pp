@@ -239,6 +239,10 @@ class profile::backup::director(
                     ]
     }
 
+    bacula::director::fileset { 'tor':
+        includes => [ '/var/lib/tor/', '/var/lib/tor-instances/' ]
+    }
+
     # The console should be on the director
     class { 'bacula::console':
         director   => $::fqdn,
