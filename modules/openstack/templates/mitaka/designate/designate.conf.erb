@@ -308,6 +308,8 @@ certmanager_user = certmanager
 fqdn_format = '%(hostname)s.%(project_name)s.%(zone)s'
 puppet_master_host = "<%= @puppetmaster_hostname_ip %>"
 puppet_config_backend  = "http://<%= @puppetmaster_hostname %>:8101/v1"
+
+# This is the region that the proxy endpoint lives in:
 region = "<%= @region %>"
 
 #------------------------

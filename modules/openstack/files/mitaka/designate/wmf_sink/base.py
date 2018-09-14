@@ -20,6 +20,7 @@ from designate.notification_handler.base import BaseAddressHandler
 from keystoneclient.auth.identity import generic
 from keystoneclient import session as keystone_session
 from keystoneclient.v3 import client as keystone_client
+from novaclient import client as novaclient
 from oslo_log import log as logging
 
 import pipes
@@ -53,6 +54,25 @@ class BaseAddressWMFHandler(BaseAddressHandler):
 
         fqdn = cfg.CONF[self.name].fqdn_format % event_data
         fqdn = fqdn.rstrip('.').encode('utf8')
+
+        keystone = keystone_client.Client(
+            session=self._get_keystone_session(), interface='public', connect_retries=5)
+        region_recs = keystone.regions.list()
+        regions = [region.id for region in region_recs]
+        if len(regions) > 1:
+            # We need to make sure this VM doesn't exist in another region.  If it does
+            #  then we don't want to purge anything because we'll break that one.
+            for region in regions:
+                if region == cfg.CONF[self.name].region:
+                    continue
+                nova = novaclient.Client('2', session=self._get_keystone_session(data['tenant_id']),
+                                         region_name=region)
+                servers = nova.servers.list()
+                servernames = [server.name for server in servers]
+                if event_data['hostname'] in servernames:
+                    LOG.warning("Skipping cleanup of %s because it is also present in region %s" %
+                                (fqdn, region))
+                    return
 
         # Clean puppet keys for deleted instance
         if cfg.CONF[self.name].puppet_master_host:
@@ -179,23 +199,24 @@ class BaseAddressWMFHandler(BaseAddressHandler):
         else:
             return resp.json()['routes']
 
+    def _get_keystone_session(self, project_name='admin'):
+        auth = generic.Password(
+            auth_url=cfg.CONF['keystone_authtoken'].auth_uri,
+            username=cfg.CONF['keystone_authtoken'].admin_user,
+            password=cfg.CONF['keystone_authtoken'].admin_password,
+            user_domain_name='Default',
+            project_domain_name='Default',
+            project_name=project_name)
+
+        return(keystone_session.Session(auth=auth))
+
     def _get_proxy_endpoint(self):
         if not self.proxy_endpoint:
 
-            auth = generic.Password(
-                auth_url=cfg.CONF['keystone_authtoken'].auth_uri,
-                username=cfg.CONF['keystone_authtoken'].admin_user,
-                password=cfg.CONF['keystone_authtoken'].admin_password,
-                user_domain_name='Default',
-                project_domain_name='Default',
-                project_name='admin')
-
-            session = keystone_session.Session(auth=auth)
-
             keystone = keystone_client.Client(
-                session=session, interface='public', connect_retries=5)
-
+                session=self._get_keystone_session(), interface='public', connect_retries=5)
             services = keystone.services.list()
+
             for service in services:
                 if service.type == 'proxy':
                     serviceid = service.id

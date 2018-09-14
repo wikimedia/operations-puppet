@@ -520,12 +520,6 @@ class NovaInstance(object):
             print("all dns tests failed, giving up.  We probably leaked a DNS record for the source VM.")
             exit(1)
 
-        # Deleting the old host also deleted our puppet cert.  No problem, we'll just clean up
-        #  certs on the VM and let them regenerate.  Only do this if the server is managed by the
-        #  central puppetmaster.
-        print("Refreshing puppet cert on new host")
-        self.ssh_test(source=False, command='grep "server = labs-puppetmaster.wikimedia.org" /etc/puppet/puppet.conf && rm -r /var/lib/puppet/ssl/')
-
         print("Instance %s is now on host %s with status %s" % (
             self.dest_instance_id,
             self.dest_instance._info['OS-EXT-SRV-ATTR:host'],
