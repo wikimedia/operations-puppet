@@ -40,7 +40,7 @@
 class role::puppetmaster::standalone(
     $autosign = false,
     $prevent_cherrypicks = false,
-    $allow_from = ['10.0.0.0/8'],
+    $allow_from = ['10.0.0.0/8', '172.16.0.0/21'],
     $git_sync_minutes = '10',
     $extra_auth_rules = '',
     $server_name = $::fqdn,
