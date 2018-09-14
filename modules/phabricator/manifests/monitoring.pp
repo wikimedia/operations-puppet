@@ -28,10 +28,15 @@ class phabricator::monitoring {
         $phab_contact_groups = 'admins,phabricator'
     }
 
+    @monitoring::host { 'phabricator.wikimedia.org':
+        host_fqdn => 'phabricator.wikimedia.org',
+    }
+
     monitoring::service { 'phabricator-https':
         description   => 'https://phabricator.wikimedia.org',
         check_command => 'check_https_phabricator',
         contact_group => $phab_contact_groups,
+        host          => 'phabricator.wikimedia.org',
     }
 
 }
