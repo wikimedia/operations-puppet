@@ -1,5 +1,4 @@
 class profile::openstack::base::puppetmaster::frontend(
-    $labs_instance_range = hiera('profile::openstack::base::nova::fixed_range'),
     $designate_host = hiera('profile::openstack::base::designate_host'),
     $second_region_designate_host = hiera('profile::openstack::base::second_region_designate_host'),
     $puppetmasters = hiera('profile::openstack::base::puppetmaster::servers'),
@@ -34,7 +33,6 @@ class profile::openstack::base::puppetmaster::frontend(
     }
 
     class {'profile::openstack::base::puppetmaster::common':
-        labs_instance_range          => $labs_instance_range,
         designate_host               => $designate_host,
         second_region_designate_host => $second_region_designate_host,
         puppetmaster_webhostname     => $puppetmaster_webhostname,
@@ -94,11 +92,12 @@ class profile::openstack::base::puppetmaster::frontend(
         cert_secret_path => $cert_secret_path,
     }
 
+    $labs_networks = join($network::constants::labs_networks, ' ')
     $labweb_ips = inline_template("@resolve((<%= @labweb_hosts.join(' ') %>))")
     $labweb_ips_v6 = inline_template("@resolve((<%= @labweb_hosts.join(' ') %>), AAAA)")
     ferm::rule{'puppetmaster_balancer':
         ensure => 'present',
-        rule   => "saddr (${labs_instance_range} ${baremetal_servers}
+        rule   => "saddr (${labs_networks} ${baremetal_servers}
                           ${labweb_ips} ${labweb_ips_v6})
                           proto tcp dport 8140 ACCEPT;",
     }

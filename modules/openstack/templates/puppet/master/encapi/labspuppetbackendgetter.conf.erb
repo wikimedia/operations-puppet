@@ -13,7 +13,9 @@ server {
 <% @puppetmasters.values.flatten(1).map { |p| p['worker'] }.sort.each do |server| -%>
         allow <%= scope.function_ipresolve([server]) %>;
 <% end -%>
-        allow <%= @labs_instance_range %>;
+<% @labs_instance_ranges.each do |range| -%>
+        allow <%= range %>;
+<% end -%>
         deny all;
     }
 }

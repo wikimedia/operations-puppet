@@ -1,5 +1,4 @@
 class profile::openstack::base::puppetmaster::common(
-    $labs_instance_range = hiera('profile::openstack::base::puppetmaster::common::labs_instance_range'),
     $designate_host = hiera('profile::openstack::base::puppetmaster::common::designate_host'),
     $second_region_designate_host = hiera('profile::openstack::base::puppetmaster::common::second_region_designate_host'),
     $puppetmaster_webhostname = hiera('profile::openstack::base::puppetmaster::web_hostname'),
@@ -26,6 +25,7 @@ class profile::openstack::base::puppetmaster::common(
         puppetmaster => $puppetmaster_webhostname,
     }
 
+    $labs_networks = join($network::constants::labs_networks, ' ')
     class { '::openstack::puppet::master::encapi':
         mysql_host                   => $encapi_db_host,
         mysql_db                     => $encapi_db_name,
@@ -33,7 +33,6 @@ class profile::openstack::base::puppetmaster::common(
         mysql_password               => $encapi_db_pass,
         statsd_host                  => $statsd_host,
         statsd_prefix                => $encapi_statsd_prefix,
-        labs_instance_range          => $labs_instance_range,
         puppetmasters                => $puppetmasters,
         labweb_hosts                 => $labweb_hosts,
         nova_controller              => $nova_controller,
@@ -53,7 +52,7 @@ class profile::openstack::base::puppetmaster::common(
 
     ferm::rule{'puppetmaster':
         ensure => 'present',
-        rule   => "saddr (${labs_instance_range} ${baremetal_servers_str}
+        rule   => "saddr (${labs_networks} ${baremetal_servers_str}
                           @resolve((${all_puppetmasters})) ${labweb_ips} ${labweb_aaaa})
                           proto tcp dport 8141 ACCEPT;",
     }
@@ -68,7 +67,7 @@ class profile::openstack::base::puppetmaster::common(
 
     ferm::rule{'puppetbackendgetter':
         ensure => 'present',
-        rule   => "saddr (${labs_instance_range} ${baremetal_servers_str}
+        rule   => "saddr (${labs_networks} ${baremetal_servers_str}
                           ${labweb_ips} ${labweb_aaaa}
                           @resolve((${all_puppetmasters})) @resolve((${all_puppetmasters}), AAAA))
                           proto tcp dport 8100 ACCEPT;",

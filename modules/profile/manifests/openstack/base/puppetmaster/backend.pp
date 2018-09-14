@@ -1,5 +1,4 @@
 class profile::openstack::base::puppetmaster::backend(
-    $labs_instance_range = hiera('profile::openstack::base::nova::fixed_range'),
     $designate_host = hiera('profile::openstack::base::designate_host'),
     $second_region_designate_host = hiera('profile::openstack::base::second_region_designate_host'),
     $puppetmaster_webhostname = hiera('profile::openstack::base::puppetmaster::web_hostname'),
@@ -20,7 +19,6 @@ class profile::openstack::base::puppetmaster::backend(
     require ::profile::conftool::client
     include ::network::constants
     class {'profile::openstack::base::puppetmaster::common':
-        labs_instance_range          => $labs_instance_range,
         designate_host               => $designate_host,
         second_region_designate_host => $second_region_designate_host,
         puppetmaster_webhostname     => $puppetmaster_webhostname,
@@ -38,7 +36,8 @@ class profile::openstack::base::puppetmaster::backend(
     }
 
     # Only allow puppet access from the instances
-    $allow_from = flatten([$labs_instance_range, $baremetal_servers, '.wikimedia.org'])
+    $labs_networks = join($network::constants::labs_networks, ' ')
+    $allow_from = flatten([$network::constants::labs_networks, $baremetal_servers, '.wikimedia.org'])
 
     $config = {
         'node_terminus'     => 'exec',
