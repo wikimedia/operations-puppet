@@ -8,8 +8,9 @@ class phabricator::monitoring {
 
     $phabricator_active_server = hiera('phabricator_active_server')
 
-    # (only if) on active server monitor that PHD is running,
-    # and send actual SMS to contacts. monitor https on all though.
+    # Only monitor services on the active_server (at least until codfw is in prod).
+    # They are all paging because the "sms" contact group is added.
+    # https monitoring is on virtual host 'phabricator', should not be duplicated.
     if $::hostname == $phabricator_active_server {
         $phab_contact_groups = 'admins,phabricator,sms'
 
@@ -24,19 +25,16 @@ class phabricator::monitoring {
             nrpe_command  => "/usr/lib/nagios/plugins/check_procs -c 1: --ereg-argument-array  'php ./phd-daemon' -u phd",
             contact_group => $phab_contact_groups,
         }
-    } else {
-        $phab_contact_groups = 'admins,phabricator'
-    }
 
-    monitoring::host { 'phabricator.wikimedia.org':
-        host_fqdn => 'phabricator.wikimedia.org',
-    }
+        monitoring::host { 'phabricator.wikimedia.org':
+            host_fqdn => 'phabricator.wikimedia.org',
+        }
 
-    monitoring::service { 'phabricator-https':
-        description   => 'https://phabricator.wikimedia.org',
-        check_command => 'check_https_phabricator',
-        contact_group => $phab_contact_groups,
-        host          => 'phabricator.wikimedia.org',
+        monitoring::service { 'phabricator-https':
+            description   => 'https://phabricator.wikimedia.org',
+            check_command => 'check_https_phabricator',
+            contact_group => $phab_contact_groups,
+            host          => 'phabricator.wikimedia.org',
+        }
     }
-
 }
