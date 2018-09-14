@@ -31,6 +31,8 @@
 #
 # [*domain_suffix*] Suffix to use in redirects et al (prod/beta/staging use)
 #
+# [*upload_rewrite*] If non null, will introduce a rewrite to uploads.w.o/$upload_rewrite/
+#
 define mediawiki::web::vhost(
     String $docroot,
     Wmflib::Ensure $ensure = present,
@@ -46,6 +48,7 @@ define mediawiki::web::vhost(
     Integer[0, 99] $priority = 50,
     Boolean $declare_site = false,
     String $domain_suffix = 'org',
+    Optional[String] $upload_rewrite = undef,
 ) {
     $content = template('mediawiki/apache/mediawiki-vhost.conf.erb')
 
