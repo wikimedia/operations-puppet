@@ -11,6 +11,10 @@
 
     Include "sites-enabled/wikimedia-common.incl"
 
+    # Compatibility with urls from the original Wikitech,
+    # that used wgActionPaths. – https://phabricator.wikimedia.org/T193848
+    RewriteRule ^/view/(.*) /wiki/$1 [R=301]
+
     <Directory />
         Options FollowSymLinks
         AllowOverride None
