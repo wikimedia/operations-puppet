@@ -66,18 +66,4 @@ class profile::cache::kafka::alerts {
         retries         => 3,
         contact_group   => 'admins,analytics',
     }
-
-    monitoring::graphite_threshold { 'varnishkafka-webrequest-misc-kafka_drerr':
-        ensure          => 'present',
-        description     => 'cache_misc: Varnishkafka Webrequest Delivery Errors per second',
-        dashboard_links => ['https://grafana.wikimedia.org/dashboard/db/varnishkafka?panelId=20&fullscreen&orgId=1&var-instance=webrequest&var-host=All'],
-        metric          => 'sumSeries(perSecond(varnishkafka.*.webrequest.misc.varnishkafka.kafka_drerr))',
-        warning         => 1,
-        critical        => 5,
-        from            => '10min',
-        retry_interval  => 10,
-        retries         => 3,
-        contact_group   => 'admins,analytics',
-    }
-
 }
