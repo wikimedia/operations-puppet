@@ -28,7 +28,7 @@ class phabricator::monitoring {
         $phab_contact_groups = 'admins,phabricator'
     }
 
-    @monitoring::host { 'phabricator.wikimedia.org':
+    monitoring::host { 'phabricator.wikimedia.org':
         host_fqdn => 'phabricator.wikimedia.org',
     }
 
