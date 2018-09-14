@@ -1,5 +1,5 @@
 # This instantiates testreduce::client
-class role::parsoid::rt_client {
+class profile::parsoid::rt_client {
     include ::testreduce
 
     testreduce::client { 'parsoid-rt-client':

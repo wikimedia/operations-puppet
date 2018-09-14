@@ -1999,10 +1999,6 @@ node 'rutherfordium.eqiad.wmnet' {
 # But, we are likely going to split them into different boxes soon.
 node 'ruthenium.eqiad.wmnet' {
     role(parsoid::testing)
-    include ::role::test
-    include ::role::parsoid::rt_server, ::role::parsoid::vd_server
-    include ::role::parsoid::rt_client, ::role::parsoid::vd_client
-    include ::role::parsoid::diffserver
 }
 
 # cluster management (cumin master)

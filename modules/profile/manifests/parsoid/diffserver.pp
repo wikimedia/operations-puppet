@@ -2,7 +2,7 @@
 # for a specific test item
 
 # This instantiates visualdiff::server
-class role::parsoid::diffserver {
+class profile::parsoid::diffserver {
     include ::visualdiff
 
     visualdiff::server { 'diffserver':

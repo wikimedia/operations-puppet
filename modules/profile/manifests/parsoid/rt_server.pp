@@ -1,7 +1,7 @@
 # Parsoid RT testing services
 
 # This instantiates testreduce::server
-class role::parsoid::rt_server {
+class profile::parsoid::rt_server {
     include ::testreduce
     include ::passwords::testreduce::mysql
 

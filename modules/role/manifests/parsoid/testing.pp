@@ -5,5 +5,12 @@ class role::parsoid::testing {
         description => 'Parsoid server (rt-testing, visual-diffing, etc.)'
     }
 
+    include ::standard
+    include ::profile::base::firewall
+    include ::profile::parsoid::diffserver
+    include ::profile::parsoid::rt_server
+    include ::profile::parsoid::rt_client
+    include ::profile::parsoid::vd_server
+    include ::profile::parsoid::vd_client
     include ::profile::parsoid::testing
 }

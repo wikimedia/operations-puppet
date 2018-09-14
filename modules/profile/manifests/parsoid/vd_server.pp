@@ -1,7 +1,7 @@
 # Testreduce server for aggregating and displaying visualdiff results
 
 # This instantiates testreduce::server
-class role::parsoid::vd_server {
+class profile::parsoid::vd_server {
     include ::testreduce
     include ::passwords::testreduce::mysql
 
