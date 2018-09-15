@@ -56,10 +56,10 @@ class profile::analytics::refinery::job::camus(
     # Import webrequest_* topics into /wmf/data/raw/webrequest
     # every 10 minutes, check runs and flag fully imported hours.
     camus::job { 'webrequest':
-        check         => $monitoring_enabled,
-        minute        => '*/10',
-        kafka_brokers => $kafka_brokers_jumbo,
-
+        check                 => $monitoring_enabled,
+        minute                => '*/10',
+        kafka_brokers         => $kafka_brokers_jumbo,
+        check_topic_whitelist => 'webrequest_(upload|text)',
     }
 
     # Import eventlogging_* topics into /wmf/data/raw/eventlogging
