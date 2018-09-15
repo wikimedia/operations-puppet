@@ -111,7 +111,7 @@ class profile::analytics::refinery::job::data_purge (
         $druid_public_keep_snapshots = 4
         $mediawiki_history_reduced_basename = 'mediawiki_history_reduced'
         cron {'refinery-druid-drop-public-snapshots':
-            command     => "${env} && ${refinery_path}/bin/refinery-drop-druid-snapshots -d ${mediawiki_history_reduced_basename} -t ${public_druid_host} -s ${keep_snapshots} -f ${public_druid_snapshots_log_file}",
+            command     => "${env} && ${refinery_path}/bin/refinery-drop-druid-snapshots -d ${mediawiki_history_reduced_basename} -t ${public_druid_host} -s ${druid_public_keep_snapshots} -f ${public_druid_snapshots_log_file}",
             environment => "MAILTO=${mail_to}",
             user        => 'hdfs',
             minute      => '0',
