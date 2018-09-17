@@ -470,14 +470,9 @@
             "selected": false,
             "text": "upload",
             "value": "upload"
-          },
-          {
-            "selected": false,
-            "text": "misc",
-            "value": "misc"
           }
         ],
-        "query": "text,upload,misc",
+        "query": "text,upload",
         "refresh": 1,
         "refresh_on_load": false,
         "regex": "",

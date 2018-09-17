@@ -204,13 +204,6 @@ class role::prometheus::ops {
         'metric_relabel_configs' => [$varnish_be_uuid_relabel],
       },
       {
-        'job_name'        => 'varnish-misc',
-        'file_sd_configs' => [
-          { 'files' => [ "${targets_path}/varnish-misc_*.yaml"] },
-        ],
-        'metric_relabel_configs' => [$varnish_be_uuid_relabel],
-      },
-      {
         'job_name'        => 'varnish-canary',
         'file_sd_configs' => [
           { 'files' => [ "${targets_path}/varnish-canary_*.yaml"] },
