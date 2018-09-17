@@ -106,7 +106,7 @@ if ! which gdnsd > /dev/null || [ "$SKIP_RELOAD" = "true" ]; then
     exit 0
 fi
 
-if ! gdnsd checkconf >/dev/null; then
+if ! gdnsd checkconf >/dev/null 2>&1; then
     if [ -f /etc/gdnsd/config-geo-test~ ]; then
         mv /etc/gdnsd/config-geo-test~ /etc/gdnsd/config-geo-test
     fi
@@ -131,12 +131,21 @@ if ( ! cmp --quiet /etc/gdnsd/config-geo-test~ /etc/gdnsd/config-geo-test ) \
     rm -f /etc/gdnsd/config-geo-test~
     rm -f /etc/gdnsd/geo-maps~
     rm -f /etc/gdnsd/geo-resources~
-    echo "Restarting to update zones & config"
-    service gdnsd restart >/dev/null
+    if [ -x /usr/bin/gdnsdctl ]; then
+        echo "Replacing gdnsd to update config and zones:"
+        /usr/bin/gdnsdctl replace
+    else
+        echo "Restarting to update zones & config"
+        service gdnsd restart >/dev/null
+    fi
 else
     rm -f /etc/gdnsd/config-geo-test~
     rm -f /etc/gdnsd/geo-maps~
     rm -f /etc/gdnsd/geo-resources~
     echo "Reloading zones"
-    gdnsd reload-zones
+    if [ -x /usr/bin/gdnsdctl ]; then
+        /usr/bin/gdnsdctl reload-zones
+    else
+        gdnsd reload-zones
+    fi
 fi
