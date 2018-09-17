@@ -4,7 +4,8 @@ class profile::cumin::master (
 ) {
     include passwords::phabricator
     $cumin_log_path = '/var/log/cumin'
-    $cumin_masters = query_nodes('Class[Role::Cumin::Master]')
+    # Ensure to add FQDN of the current host also the first time the role is applied
+    $cumin_masters = unique(concat(query_nodes('Class[Role::Cumin::Master]'), [$::fqdn]))
 
     ::keyholder::agent { 'cumin_master':
         trusted_groups => ['root'],
