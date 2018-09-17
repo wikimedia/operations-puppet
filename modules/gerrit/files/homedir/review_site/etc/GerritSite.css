@@ -455,3 +455,9 @@ table.changeTable a.gwt-Anchor {
     color: #e39f00;
 }
 li.ci_comment_test { list-style-type: none; }
+
+.wikimedia-footer {
+  color: #a0adcc;
+  position: absolute;
+  padding: 0 0.5em;
+}
