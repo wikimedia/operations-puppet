@@ -97,6 +97,7 @@ keep_environment =
 tls_certificate = /etc/acme/cert/<%= @cert_name %>.chained.crt
 tls_privatekey = /etc/acme/key/<%= @cert_name %>.key
 tls_advertise_hosts = *
+tls_require_ciphers = NORMAL:%SERVER_PRECEDENCE
 
 # force Gmail over IPv4 due to reports of bad spam reputation over IPv6
 dns_ipv4_lookup = gmail-smtp-in.l.google.com : aspmx.l.google.com
