@@ -3108,6 +3108,10 @@ ldap_only_users:
     ensure: present
     realname: Shannon Bailey
     email: sbailey@wikimedia.org
+  sbassett:
+    ensure: present
+    realname: Scott Bassett
+    email: sbassett@wikimedia.org
   scfc:
     ensure: present
     realname: Tim Landscheidt
