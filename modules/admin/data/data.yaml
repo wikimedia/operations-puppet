@@ -3068,6 +3068,10 @@ ldap_only_users:
     ensure: present
     realname: Megan Hernandez
     email: mhernandez@wikimedia.org
+  mnovotny:
+    ensure: present
+    realname: Margeigh Novotny
+    email: mnovotny@wikimedia.org
   multichill:
     ensure: present
     realname: Maarten Dammers
