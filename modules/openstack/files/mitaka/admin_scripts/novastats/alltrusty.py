@@ -8,7 +8,7 @@ images = clients.globalimages()
 trustyimages = [image.id for image in images if 'trusty' in image.name.lower()]
 jessieimages = [image.id for image in images if 'jessie' in image.name.lower()]
 
-instances = clients.allinstances()
+instances = clients.allinstances(allregions=True)
 i = 0
 jessiecount = 0
 active = 0

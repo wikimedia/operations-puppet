@@ -56,7 +56,7 @@ def delete_prefix(project, prefix):
 def purge_duplicates(delete=False):
     for project in clients.allprojects():
         prefixes = all_prefixes(project.id)
-        instances = clients.allinstances(project.id)
+        instances = clients.allinstances(project.id, allregions=True)
 
         all_nova_instances = ["%s.%s.eqiad.wmflabs" % (instance.name, instance.tenant_id)
                               for instance in instances]

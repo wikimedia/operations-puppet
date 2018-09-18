@@ -22,7 +22,7 @@ flavordict['6f43bc6c-c91e-4b4a-8981-dd1d06ec1bb7'] = '300'
 flavordict['21e9047d-a60f-499d-b7f5-51f83ddf3611'] = '300'
 flavordict['62a89635-8a60-40d7-9b58-56594a071b0a'] = '300'
 
-instances = clients.allinstances()
+instances = clients.allinstances(allregions=True)
 i = 0
 for instance in instances:
     if instance.flavor['id'] not in flavordict:

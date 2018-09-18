@@ -14,7 +14,7 @@ parser.add_argument('--imageid',
                     default=None)
 args = parser.parse_args()
 
-allinstances = mwopenstackclients.Clients().allinstances(args.project)
+allinstances = mwopenstackclients.Clients().allinstances(args.project, allregions=True)
 bigDict = {instance.id: instance for instance in allinstances}
 
 usedimages = set()

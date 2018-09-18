@@ -116,7 +116,7 @@ fsduplicates = [instance for instance in all_disk_instances.keys()
 for instance in fsduplicates:
     printstat("In filesystem twice: %s (%s)" % (instance, all_disk_instances[instance]), True)
 
-instances = clients.allinstances()
+instances = clients.allinstances(allregions=True)
 
 all_nova_instances = [instance.id for instance in instances]
 for instance in instances:

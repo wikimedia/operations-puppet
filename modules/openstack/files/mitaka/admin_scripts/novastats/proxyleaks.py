@@ -92,13 +92,13 @@ def purge_leaks(delete=False):
                 if recordset['records'][0] == PROXY_BACKEND_IP:
                     proxy_recordsets[recordset['name']] = recordset
 
-    allinstances = clients.allinstances()
+    allinstances = clients.allinstances(allregions=True)
     all_nova_ips = [instance.addresses['public'][0]['addr']
                     for instance in allinstances if 'public' in instance.addresses]
 
     for project in clients.allprojects():
         mappings = all_mappings(project.id)
-        projectinstances = clients.allinstances(project.id)
+        projectinstances = clients.allinstances(project.id, allregions=True)
 
         all_project_ips = [instance.addresses['public'][0]['addr']
                            for instance in projectinstances if 'public' in instance.addresses]
