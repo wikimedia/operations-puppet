@@ -365,7 +365,7 @@ remote_smtp_signed:
 bulk_smtp:
 	driver = smtp
 	interface = WIKI_INTERFACE
-	helo_data = ${lookup dnsdb{ptr=$sending_ip_address}{$value}{wiki-mail.wikimedia.org}}
+	helo_data = wiki-mail-<%= @site %>.wikimedia.org
 	dkim_domain = <%= @dkim_domain %>
 	dkim_selector = wiki-mail
 	dkim_private_key = ${if exists{/etc/exim4/dkim/${dkim_domain}-${dkim_selector}.key}{/etc/exim4/dkim/${dkim_domain}-${dkim_selector}.key}{0}}
