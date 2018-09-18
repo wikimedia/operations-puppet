@@ -93,16 +93,9 @@ class mariadb::config(
 
     # Include these manually. If we're testing on systems with tarballs
     # instead of debs, the user won't exist.
-    if os_version('debian >= stretch') {
-        group { 'mysql':
-            ensure => present,
-            system => true,
-        }
-    }
-    else {
-        group { 'mysql':
-            ensure => present,
-        }
+    group { 'mysql':
+        ensure => present,
+        system => true,
     }
 
     user { 'mysql':
