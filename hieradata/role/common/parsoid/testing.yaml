@@ -1,2 +1,11 @@
 parsoid::testing::parsoid_port: 8142
 parsoid::testing::default_api_proxy_uri: 'http://api-rw.discovery.wmnet'
+
+admin::groups:
+  - parsoid-roots
+  - parsoid-admin
+  - parsoid-test-admins
+  - parsoid-test-roots
+
+parsoid::logging_name: parsoid-tests
+parsoid::statsd_prefix: parsoid-tests
