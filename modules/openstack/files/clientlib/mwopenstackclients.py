@@ -147,10 +147,14 @@ class Clients(object):
         return [region.id for region in region_recs]
 
     def allinstances(self, projectid=None, allregions=False):
+        instances = []
         if projectid:
-            return self.novaclient(projectid).servers.list()
+            if allregions:
+                for region in self.allregions():
+                    instances.extend(self.novaclient(projectid, region).servers.list())
+            else:
+                instances.extend(self.novaclient(projectid).servers.list())
         else:
-            instances = []
             for project in self.allprojects():
                 if project.id == 'admin':
                     continue
@@ -159,7 +163,7 @@ class Clients(object):
                         instances.extend(self.novaclient(project.id, region).servers.list())
                 else:
                     instances.extend(self.novaclient(project.id).servers.list())
-            return instances
+        return instances
 
     def globalimages(self):
         client = self.glanceclient()
