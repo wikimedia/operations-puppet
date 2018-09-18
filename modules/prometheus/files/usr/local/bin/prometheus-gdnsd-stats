@@ -16,7 +16,9 @@
 import argparse
 import logging
 import sys
-
+import os.path
+import subprocess
+import json
 import requests
 
 from prometheus_client import CollectorRegistry, Gauge, write_to_textfile
@@ -63,7 +65,8 @@ def collect_gdnsd_stats(stats, registry):
                 namespace='gdnsd', registry=registry)
             tcp_stats[name].set(value)
         uptime = Gauge(
-            'uptime', 'gdnsd daemon uptime', namespace='gdnsd', registry=registry)
+            'uptime', 'gdnsd daemon uptime', namespace='gdnsd',
+            registry=registry)
         uptime.set(stats['uptime'])
     except ValueError:
         log.exception('Failed to parse stats {}'.format(stats))
@@ -74,8 +77,11 @@ def main():
     parser.add_argument('--outfile', metavar='FILE.prom',
                         help='Output file (stdout)')
     parser.add_argument('--url', metavar='URL',
-                        help='gdnsd JSON location (%(default)s)',
+                        help='gdnsd-2.x JSON URI (%(default)s)',
                         default='http://localhost:3506/json')
+    parser.add_argument('--ctlpath', metavar='PATH',
+                        help='gdnsd-3.x gdnsdctl path (%(default)s)',
+                        default='/usr/bin/gdnsdctl')
     parser.add_argument('-d', '--debug', action='store_true',
                         help='Enable debug logging (false)')
     args = parser.parse_args()
@@ -88,13 +94,19 @@ def main():
     if args.outfile and not args.outfile.endswith('.prom'):
         parser.error('Output file does not end with .prom')
 
-    try:
-        response = requests.get(args.url, timeout=2)
-        response.raise_for_status()
-        json_stats = response.json()
-    except (requests.exceptions.RequestException, ValueError):
-        log.exception('Error fetching from {}'.format(args.url))
-        return 1
+    if os.path.isfile(args.ctlpath):
+        # gdnsd-3.x uses a CLI tool to dump JSON stats
+        raw = subprocess.check_output([args.ctlpath, 'stats'])
+        json_stats = json.loads(raw)
+    else:
+        # gdnsd-2.x uses HTTP and the url argument instead:
+        try:
+            response = requests.get(args.url, timeout=2)
+            response.raise_for_status()
+            json_stats = response.json()
+        except (requests.exceptions.RequestException, ValueError):
+            log.exception('Error fetching from {}'.format(args.url))
+            return 1
 
     registry = CollectorRegistry()
     collect_gdnsd_stats(json_stats, registry)
