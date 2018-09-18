@@ -6,5 +6,6 @@ class role::analytics_cluster::hadoop::client {
         description => 'Hadoop client',
     }
 
+    include ::profile::base::firewall
     require ::profile::hadoop::common
 }
