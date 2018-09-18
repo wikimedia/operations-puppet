@@ -8,7 +8,7 @@ class profile::mediawiki::maintenance {
         ensure => link,
         target => '/srv/mediawiki'
     }
-    $mw_primary =
+
     $ensure = mediawiki::state('primary_dc') ? {
         $::site => 'present',
         default => 'absent',
