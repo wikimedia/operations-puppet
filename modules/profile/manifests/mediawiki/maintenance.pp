@@ -14,12 +14,6 @@ class profile::mediawiki::maintenance {
         default => 'absent',
     }
 
-    motd::script { 'inactive_warning':
-        ensure   => $ensure,
-        priority => 1,
-        content  => template('role/mediawiki_maintenance/inactive.motd.erb'),
-    }
-
     # Mediawiki maintenance scripts (cron jobs)
     class { 'mediawiki::maintenance::pagetriage': ensure => $ensure }
     class { 'mediawiki::maintenance::translationnotifications': ensure => $ensure }
@@ -79,5 +73,17 @@ class profile::mediawiki::maintenance {
         source_host => 'mwmaint1001.eqiad.wmnet',
         dest_host   => 'mwmaint2001.codfw.wmnet',
         module_path => '/home',
+    }
+
+    # T199124
+    $motd_ensure = mediawiki::state('primary_dc') ? {
+        $::site => 'absent',
+        default => 'present',
+    }
+
+    motd::script { 'inactive_warning':
+        ensure   => $motd_ensure,
+        priority => 1,
+        content  => template('role/mediawiki_maintenance/inactive.motd.erb'),
     }
 }
