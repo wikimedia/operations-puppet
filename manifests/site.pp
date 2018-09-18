@@ -1913,12 +1913,6 @@ node /^pybal-test200[123]\.codfw\.wmnet$/ {
     interface::add_ip6_mapped { 'main': }
 }
 
-# formerly Tor relay - replaced by torrelay1001 (T196701)
-node 'radium.wikimedia.org' {
-    role(spare::system)
-    interface::add_ip6_mapped { 'main': }
-}
-
 node /^rdb100[1357]\.eqiad\.wmnet$/ {
     role(jobqueue_redis::master)
 }

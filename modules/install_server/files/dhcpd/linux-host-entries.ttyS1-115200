@@ -5956,13 +5956,6 @@ host puppetmaster2002 {
     fixed-address puppetmaster2002.codfw.wmnet;
 }
 
-host radium {
-    hardware ethernet 84:2b:2b:fd:bd:0e;
-    fixed-address radium.wikimedia.org;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
-    filename "lpxelinux.0";
-}
-
 host rdb2004 {
     hardware ethernet B0:83:FE:E4:5E:1A;
     fixed-address rdb2004.codfw.wmnet;
