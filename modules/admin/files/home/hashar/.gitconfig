@@ -7,5 +7,3 @@
 	name = Antoine Musso
 [alias]
 	lg  = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(cyan)<%an>%Creset' --abbrev-commit --date=relative
-[url "ssh://gerrit.wikimedia.org:29418"]
-	pushInsteadOf = https://gerrit.wikimedia.org/r/p
