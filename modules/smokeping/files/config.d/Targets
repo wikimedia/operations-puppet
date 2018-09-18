@@ -289,16 +289,15 @@ alerts = bigloss,someloss,startloss
 menu = Core
 title = Core Network Infrastructure
 
-+++ cr1-ulsfo
-menu = cr1-ulsfo
-title = cr1-ulsfo.wikimedia.org
-host = cr1-ulsfo.wikimedia.org
++++ cr3-ulsfo
+menu = cr3-ulsfo
+title = cr3-ulsfo.wikimedia.org
+host = cr3-ulsfo.wikimedia.org
 
-#Commented out for T204782
-#+++ cr2-ulsfo
-#menu = cr2-ulsfo
-#title = cr2-ulsfo.wikimedia.org
-#host = cr2-ulsfo.wikimedia.org
++++ cr4-ulsfo
+menu = cr4-ulsfo
+title = cr4-ulsfo.wikimedia.org
+host = cr4-ulsfo.wikimedia.org
 
 +++ asw2-ulsfo
 menu = asw2-ulsfo

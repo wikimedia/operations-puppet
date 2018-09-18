@@ -39,8 +39,8 @@ class netops::monitoring {
         'cr2-knams'  => { ipv4 => '91.198.174.246',  ipv6 => '2620:0:862:ffff::4', bgp => true, },
         'mr1-esams'  => { ipv4 => '91.198.174.247',  ipv6 => '2620:0:862:ffff::1', },
         # ulsfo
-        'cr1-ulsfo'  => { ipv4 => '198.35.26.192',   ipv6 => '2620:0:863:ffff::1', bgp => true, },
-        'cr2-ulsfo'  => { ipv4 => '198.35.26.193',   ipv6 => '2620:0:863:ffff::2', bgp => true, },
+        'cr3-ulsfo'  => { ipv4 => '198.35.26.192',   ipv6 => '2620:0:863:ffff::1', bgp => true, alarms => false, },
+        'cr4-ulsfo'  => { ipv4 => '198.35.26.193',   ipv6 => '2620:0:863:ffff::2', bgp => true, alarms => false, },
         'mr1-ulsfo'  => { ipv4 => '198.35.26.194',   ipv6 => '2620:0:863:ffff::6',   },
         # eqsin
         'mr1-eqsin'  => { ipv4 => '103.102.166.128', ipv6 => '2001:df2:e500:ffff::1', },
@@ -61,8 +61,8 @@ class netops::monitoring {
         're0.cr2-codfw' => { ipv4 => '10.193.0.12',     parents => ['mr1-codfw'] },
         're0.cr1-esams' => { ipv4 => '10.21.0.116',     parents => ['mr1-esams'] },
         're0.cr2-esams' => { ipv4 => '10.21.0.117',     parents => ['mr1-esams'] },
-        're0.cr1-ulsfo' => { ipv4 => '10.128.128.2',    parents => ['mr1-ulsfo'] },
-        're0.cr2-ulsfo' => { ipv4 => '10.128.128.3',    parents => ['mr1-ulsfo'] },
+        're0.cr3-ulsfo' => { ipv4 => '10.128.128.4',    parents => ['mr1-ulsfo'] },
+        're0.cr4-ulsfo' => { ipv4 => '10.128.128.5',    parents => ['mr1-ulsfo'] },
         're0.cr1-eqsin' => { ipv4 => '10.132.128.2',    parents => ['mr1-eqsin'] },
 
     }
@@ -100,7 +100,7 @@ class netops::monitoring {
         'asw-esams'     => { ipv4 => '10.21.0.104',  parents => ['cr1-esams', 'cr2-esams'] },
         'csw2-esams'    => { ipv4 => '10.21.0.105',  parents => ['asw-esams']  },
         # ulsfo
-        'asw2-ulsfo'    => { ipv4 => '10.128.128.7', parents => ['cr1-ulsfo', 'cr2-ulsfo'] },
+        'asw2-ulsfo'    => { ipv4 => '10.128.128.7', parents => ['cr3-ulsfo', 'cr4-ulsfo'] },
         # eqsin
         'asw1-eqsin'    => { ipv4 => '10.132.128.4', parents => ['cr1-eqsin'] },
     }
