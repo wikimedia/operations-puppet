@@ -14,6 +14,12 @@ class profile::mediawiki::maintenance {
         default => 'absent',
     }
 
+    motd::script { 'inactive_warning':
+        ensure   => $ensure,
+        priority => 1,
+        content  => template('role/mediawiki_maintenance/inactive.motd.erb'),
+    }
+
     # Mediawiki maintenance scripts (cron jobs)
     class { 'mediawiki::maintenance::pagetriage': ensure => $ensure }
     class { 'mediawiki::maintenance::translationnotifications': ensure => $ensure }
