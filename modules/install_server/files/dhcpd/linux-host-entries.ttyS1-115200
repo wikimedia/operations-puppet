@@ -5963,11 +5963,6 @@ host radium {
     filename "lpxelinux.0";
 }
 
-host radon {
-    hardware ethernet C8:1F:66:BF:71:16;
-    fixed-address radon.wikimedia.org;
-}
-
 host rdb2004 {
     hardware ethernet B0:83:FE:E4:5E:1A;
     fixed-address rdb2004.codfw.wmnet;
