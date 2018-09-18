@@ -1375,10 +1375,6 @@ node 'maps2001.codfw.wmnet' {
     role(maps::master)
 }
 
-node /^maps-test200[1-4]\.codfw\.wmnet/ {
-    role(spare::system)
-}
-
 node /^maps200[2-4]\.codfw\.wmnet/ {
     role(maps::slave)
 }
