@@ -73,7 +73,7 @@ class profile::openstack::base::pdns::recursor::service(
         require => File['/var/zones']
     }
 
-    $reverse_zone_rules = inline_template("<% @private_reverse_zones.each do |zone| %><%= zone %>=${pdns_host_ip} <% end %>")
+    $reverse_zone_rules = inline_template("<% @private_reverse_zones.each do |zone| %><%= zone %>=${pdns_host_ip}, <% end %>")
 
     class { '::dnsrecursor':
             listen_addresses         => [$pdns_recursor_ip],
