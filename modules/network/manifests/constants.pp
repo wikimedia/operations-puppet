@@ -401,6 +401,10 @@ class network::constants {
                     '10.68.18.65',  # bastion-02.eqiad.wmflabs
                     '10.68.18.66',  # bastion-restricted-01.eqiad.wmflabs
                     '10.68.18.68',  # bastion-restricted-02.eqiad.wmflabs
+                    '172.16.1.136', # bastion-eqiad1-01.eqiad.wmflabs
+                    '172.16.1.210', # bastion-eqiad1-02.eqiad.wmflabs
+                    '172.16.1.211', # bastion-restricted-eqiad1-02.eqiad.wmflabs
+                    '172.16.1.135', # bastion-restricted-eqiad1-01.eqiad.wmflabs
                 ], hiera('network::allow_ssh_from_ips', [])), # Allow labs projects to setup their own ssh origination points
             'monitoring_hosts' => [
                     '10.68.16.210', # shinken-01.eqiad.wmflabs
@@ -416,6 +420,8 @@ class network::constants {
             'cumin_masters' => [  # As seen by labs instances
                     '10.68.18.66',  # bastion-restricted-01.eqiad.wmflabs
                     '10.68.18.68',  # bastion-restricted-02.eqiad.wmflabs
+                    '172.16.1.211', # bastion-restricted-eqiad1-02.eqiad.wmflabs
+                    '172.16.1.135', # bastion-restricted-eqiad1-01.eqiad.wmflabs
                 ],
             'cumin_real_masters' => [  # Where Cumin can be run
                     '208.80.154.158',               # labpuppetmaster1001.wikimedia.org
