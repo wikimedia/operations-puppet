@@ -212,9 +212,25 @@ class KeystoneHooks(notifier.Driver):
             try:
                 client.security_group_rules.create(groupid,
                                                    ip_protocol='tcp',
+                                                   from_port='22',
+                                                   to_port='22',
+                                                   cidr='172.16.0.0/21')
+            except (exceptions.ClientException):
+                LOG.warning("Port 22 neutron security rule already exists.")
+            try:
+                client.security_group_rules.create(groupid,
+                                                   ip_protocol='tcp',
                                                    from_port='5666',
                                                    to_port='5666',
                                                    cidr='10.0.0.0/8')
+            except (exceptions.ClientException):
+                LOG.warning("Port 5666 security rule already exists.")
+            try:
+                client.security_group_rules.create(groupid,
+                                                   ip_protocol='tcp',
+                                                   from_port='5666',
+                                                   to_port='5666',
+                                                   cidr='172.16.0.0/21')
             except (exceptions.ClientException):
                 LOG.warning("Port 5666 security rule already exists.")
             try:
