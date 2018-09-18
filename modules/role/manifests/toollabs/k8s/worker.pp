@@ -72,7 +72,10 @@ class role::toollabs::k8s::worker {
     #
     # Ideally this will get winnowed down as time passes, but for the
     #  moment I just really want to get the above things properly closed off
-    ferm::rule {'rest-of-everything':
+    ferm::rule {'rest-of-eqiad-region':
         rule => 'saddr 10.0.0.0/8 proto tcp dport (1:8472 8473:10249 10251:10254 10256:65535) ACCEPT;'
+    }
+    ferm::rule {'rest-of-eqiad1-region':
+        rule => 'saddr 172.16.0.0/21 proto tcp dport (1:8472 8473:10249 10251:10254 10256:65535) ACCEPT;'
     }
 }
