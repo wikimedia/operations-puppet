@@ -1532,7 +1532,8 @@ node 'mwmaint1001.eqiad.wmnet' {
     interface::add_ip6_mapped { 'main': }
 }
 
-# upcoming server to replace mwmaint1001 (T201343)
+# mediawiki maintenance server (cron jobs)
+# replaced mwmaint1001 (T201343) which replaced terbium (T192185)
 node 'mwmaint1002.eqiad.wmnet' {
     role(mediawiki_maintenance)
     interface::add_ip6_mapped { 'main': }
