@@ -64,6 +64,8 @@ class network::constants {
             'maintenance_hosts' => [
                     '10.64.16.62',                      # mwmaint1001.eqiad.wmnet
                     '2620:0:861:102:10:64:16:62',       # mwmaint1001.eqiad.wmnet
+                    '10.64.16.77',                      # mwmaint1002.eqiad.wmnet
+                    '2620:0:861:102:10:64:16:77',       # mwmaint1002.eqiad.wmnet
                     '10.192.48.45',                     # mwmaint2001.codfw.wmnet
                     '2620:0:860:104:10:192:48:45',      # mwmaint2001.codfw.wmnet
                 ],
