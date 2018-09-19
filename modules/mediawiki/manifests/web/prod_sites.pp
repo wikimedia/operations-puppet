@@ -29,12 +29,6 @@ class mediawiki::web::prod_sites {
         priority => 6,
     }
 
-    # wikimediafoundation wiki, already a single wiki
-    apache::site { 'foundation':
-        source   => 'puppet:///modules/mediawiki/apache/sites/foundation.conf',
-        priority => 8,
-    }
-
     $sites_available = '/etc/apache2/sites-available'
     # Included in main.conf
     $main_conf_sites = [
@@ -116,6 +110,31 @@ class mediawiki::web::prod_sites {
     }
     ### END wikimania
 
+    ### BEGIN foundation
+    # wikimediafoundation wiki, already a single wiki
+    mediawiki::web::vhost { 'foundation':
+        server_name         => 'foundation.wikimedia.org',
+        server_aliases      => ['wikimediafoundation.org'],
+        canonical_name      => 'On',
+        docroot             => '/srv/mediawiki/docroot/wikimediafoundation.org',
+        declare_site        => true,
+        priority            => 8,
+
+        additional_rewrites => {
+            'early' => [
+                '# extract.php pages redirected to new pages',
+                '    RewriteRule ^/fundraising(\.html)?$ %{ENV:RW_PROTO}://%{SERVER_NAME}/wiki/Fundraising [R=301,L]',
+                '    RewriteRule ^/index(\.html)?$ %{ENV:RW_PROTO}://%{SERVER_NAME}/wiki/Home [R=301,L]',
+                '    RewriteRule ^/GNU_FDL(\.html)?$ %{ENV:RW_PROTO}://%{SERVER_NAME}/wiki/GNU_Free_Documentation_License [R=301,L]',
+                '    # Obsolete PDF redirected to current wiki page',
+                '    RewriteRule ^/bylaws\.pdf %{ENV:RW_PROTO}://%{SERVER_NAME}/wiki/Wikimedia_Foundation_bylaws [R,L]',
+                '    RewriteRule ^/wiki/Donate$ https://donate.wikimedia.org/ [R=301,L]'
+            ],
+            'late'  => [],
+        },
+    }
+
+    ### END foundation
 
     #### BEGIN wikimedia
     # Some other wikis, plus loginwiki, and www.wikimedia.org
