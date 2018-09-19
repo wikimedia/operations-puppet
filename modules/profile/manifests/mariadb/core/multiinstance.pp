@@ -18,6 +18,10 @@ disabled, use mariadb@<instance_name> instead'; exit 1\"",
     }
 
     $is_critical = ($::site == mediawiki::state('primary_dc'))
+    $contact_group = $is_critical ? {
+        true  => 'dba',
+        false => 'admins',
+    }
     $basedir = '/opt/wmf-mariadb101'
     # Read only forced on also for the masters of the primary datacenter
     class { 'mariadb::config':
@@ -128,14 +132,14 @@ disabled, use mariadb@<instance_name> instead'; exit 1\"",
     }
 
     class { 'mariadb::monitor_disk':
-        is_critical   => true,
-        contact_group => 'admins',
+        is_critical   => $is_critical,
+        contact_group => $contact_group,
     }
 
     class { 'mariadb::monitor_process':
         process_count => $num_instances,
         is_critical   => $is_critical,
-        contact_group => 'sms,admins',
+        contact_group => $contact_group,
     }
 
 }
