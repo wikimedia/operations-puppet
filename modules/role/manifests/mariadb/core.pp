@@ -72,16 +72,16 @@ class role::mariadb::core {
         password => $passwords::misc::scripts::mysql_root_pass,
     }
 
-    $replication_is_critical = ($mw_primary == $::site)
+    $is_critical = ($mw_primary == $::site)
     $read_only = !($mw_primary == $::site and $mysql_role == 'master')
-    $contact_group = $replication_is_critical ? {
+    $contact_group = $is_critical ? {
         true  => 'dba',
         false => 'admins',
     }
 
     mariadb::monitor_replication { [ $shard ]:
         multisource   => false,
-        is_critical   => $replication_is_critical,
+        is_critical   => $is_critical,
         contact_group => $contact_group,
         socket        => $socket,
     }
@@ -91,14 +91,13 @@ class role::mariadb::core {
     }
 
     class { 'mariadb::monitor_disk':
-        is_critical   => $::is_critical,
-        contact_group => 'admins',
+        is_critical   => $is_critical,
+        contact_group => $contact_group,
     }
 
     class { 'mariadb::monitor_process':
-        process_count => $::num_instances,
-        is_critical   => $::is_critical,
-        contact_group => 'admins',
+        is_critical   => $is_critical,
+        contact_group => $contact_group,
     }
 
     $heartbeat_enabled = $mysql_role == 'master'
