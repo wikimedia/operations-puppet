@@ -160,8 +160,10 @@ IDENTIFIED BY '<%= @striker_pass %>';
 GRANT SELECT, INSERT, UPDATE, DELETE ON striker.* TO 'striker'@'208.80.155.109'
 IDENTIFIED BY '<%= @striker_pass %>';
 
--- striker admin user. Will connect to DB from mwmaint1001/mwmaint2001, labweb1001 and labweb1002
+-- striker admin user. Will connect to DB from mwmaint1001/mwmaint1002/mwmaint2001, labweb1001 and labweb1002
 GRANT ALL ON striker.* TO 'striker_admin'@'10.64.16.62'
+IDENTIFIED BY '<%= @striker_admin_pass %>';
+GRANT ALL ON striker.* TO 'striker_admin'@'10.64.16.77'
 IDENTIFIED BY '<%= @striker_admin_pass %>';
 GRANT ALL ON striker.* TO 'striker_admin'@'10.192.48.45'
 IDENTIFIED BY '<%= @striker_admin_pass %>';
@@ -171,7 +173,7 @@ GRANT ALL ON striker.* TO 'striker_admin'@'208.80.155.109'
 IDENTIFIED BY '<%= @striker_admin_pass %>';
 
 -- wikiadmin user for wikitech aka 'labswiki' --
--- Will connect from labweb1001, labweb1002, mwmaint1001/mwmaint2001, deployment --
+-- Will connect from labweb1001, labweb1002, mwmaint1001/mwmaint1002/mwmaint2001, deployment --
 
 GRANT ALL ON `labswiki`.* TO 'wikiadmin'@'208.80.154.160'
 IDENTIFIED BY '<%= @wikiadmin_pass %>';
@@ -181,6 +183,8 @@ IDENTIFIED BY '<%= @wikiadmin_pass %>';
 GRANT ALL ON `labswiki`.* TO 'wikiadmin'@'10.192.48.45'
 IDENTIFIED BY '<%= @wikiadmin_pass %>';
 GRANT ALL ON `labswiki`.* TO 'wikiadmin'@'10.64.16.62'
+IDENTIFIED BY '<%= @wikiadmin_pass %>';
+GRANT ALL ON `labswiki`.* TO 'wikiadmin'@'10.64.16.77'
 IDENTIFIED BY '<%= @wikiadmin_pass %>';
 
 GRANT ALL ON `labswiki`.* TO 'wikiadmin'@'10.192.32.24'
@@ -199,7 +203,7 @@ GRANT DELETE, INSERT, SELECT, UPDATE ON `labswiki`.* TO 'wikiuser'@'208.80.155.1
 IDENTIFIED BY '<%= @wikiuser_pass %>';
 
 -- wikiadmin user for labtestwikitech aka 'labtestwiki' --
--- Will connect from labtestweb2001, mwmaint1001/mwmaint2001, deployment --
+-- Will connect from labtestweb2001, mwmaint1001/mwmaint1002/mwmaint2001, deployment --
 
 GRANT ALL ON `labtestwiki`.* TO 'wikiadmin'@'208.80.153.14'
 IDENTIFIED BY '<%= @wikiadmin_pass %>';
@@ -207,6 +211,8 @@ IDENTIFIED BY '<%= @wikiadmin_pass %>';
 GRANT ALL ON `labtestwiki`.* TO 'wikiadmin'@'10.192.48.45'
 IDENTIFIED BY '<%= @wikiadmin_pass %>';
 GRANT ALL ON `labtestwiki`.* TO 'wikiadmin'@'10.64.16.62'
+IDENTIFIED BY '<%= @wikiadmin_pass %>';
+GRANT ALL ON `labtestwiki`.* TO 'wikiadmin'@'10.64.16.77'
 IDENTIFIED BY '<%= @wikiadmin_pass %>';
 
 GRANT ALL ON `labtestwiki`.* TO 'wikiadmin'@'10.192.32.24'
