@@ -52,11 +52,6 @@ class mediawiki::web::prod_sites {
         priority => 4,
     }
 
-    # Remnant related wikis
-    mediawiki::web::site { '_wikisource.org':
-        before => Apache::Site['remnant']
-    }
-
     $remnant_simple_wikis = [
         'outreach.wikimedia.org',
         'advisory.wikimedia.org',
@@ -113,6 +108,17 @@ class mediawiki::web::prod_sites {
                     '    # Used for Firefox OS web application manifest living on meta.wikimedia.org',
                     '    AddType application/x-web-app-manifest+json .webapp'
                 ],
+            }
+            ;
+        '_wikisource.org':
+            docroot             => '/srv/mediawiki/docroot/wikisource.org',
+            server_name         => 'wikisource.org',
+            additional_rewrites => {
+                'early' => [],
+                'late'  => [
+                    '    # Uploads are offsite',
+                    '    RewriteRule ^/upload/(.*)$ %{ENV:RW_PROTO}://upload.wikimedia.org/wikipedia/sources/$1 [R=302]'
+                ]
             }
     }
     # private wikis in remnant.conf; they all change just by ServerName
