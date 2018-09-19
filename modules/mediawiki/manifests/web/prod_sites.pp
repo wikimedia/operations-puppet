@@ -53,11 +53,7 @@ class mediawiki::web::prod_sites {
     }
 
     # Remnant related wikis
-    $remnant_conf_sites = [
-        'meta.wikimedia.org',
-        '_wikisource.org',
-    ]
-    mediawiki::web::site { $remnant_conf_sites:
+    mediawiki::web::site { '_wikisource.org':
         before => Apache::Site['remnant']
     }
 
@@ -72,7 +68,7 @@ class mediawiki::web::prod_sites {
     mediawiki::web::vhost {
         default:
             ensure          => present,
-            short_urls      => true,
+            short_urls      => false,
             docroot         => '/srv/mediawiki/docroot/wikimedia.org',
             legacy_rewrites => true,
             declare_site    => false,
@@ -80,6 +76,7 @@ class mediawiki::web::prod_sites {
             before          => Apache::Site['remnant'],
             ;
         $remnant_simple_wikis:
+            short_urls => true,
             ;
         'usability.wikimedia.org':
             short_urls      => false,
@@ -94,9 +91,7 @@ class mediawiki::web::prod_sites {
             }
             ;
         'commons.wikimedia.org':
-            public_rewrites     => true,
             legacy_rewrites     => true,
-            short_urls          => false,
             additional_rewrites => {
                 'early' => [],
                 'late'  => [
@@ -104,6 +99,19 @@ class mediawiki::web::prod_sites {
                     '    RewriteRule ^/upload/(.*)$ %{ENV:RW_PROTO}://upload.wikimedia.org/wikipedia/commons/$1 [R=302]',
                     '    # /data/ path T163922',
                     '    RewriteRule ^/data/(.*)/(.*)$ %{ENV:RW_PROTO}://commons.wikimedia.org/wiki/Special:PageData/$1/$2 [R=301,QSA]'
+                ],
+            }
+            ;
+        'meta.wikimedia.org':
+            short_urls          => true,
+            legacy_rewrites     => true,
+            additional_rewrites => {
+                'early' => [],
+                'late'  => [
+                    '    # Uploads are offsite',
+                    '    RewriteRule ^/upload/(.*)$ %{ENV:RW_PROTO}://upload.wikimedia.org/wikipedia/meta/$1 [R=302]',
+                    '    # Used for Firefox OS web application manifest living on meta.wikimedia.org',
+                    '    AddType application/x-web-app-manifest+json .webapp'
                 ],
             }
     }
