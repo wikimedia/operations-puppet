@@ -116,6 +116,15 @@ class role::puppetmaster::standalone(
         puppetdb_major_version => $puppetdb_major_version,
     }
 
+    # Don't attempt to use puppet-master service on stretch, we're using passenger.
+    if os_version('debian >= stretch') {
+        service { 'puppet-master':
+            ensure  => stopped,
+            enable  => false,
+            require => Package['puppet'],
+        }
+    }
+
     # Update git checkout
     class { 'puppetmaster::gitsync':
         run_every_minutes => $git_sync_minutes,
