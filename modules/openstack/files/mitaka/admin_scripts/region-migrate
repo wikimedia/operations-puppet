@@ -419,6 +419,9 @@ class NovaInstance(object):
 
         self.make_destination_vm(name, image_id, flavor_id)
 
+        if activated_image:
+            self.activate_image(self.dest_session, image_id, deactivate=True)
+
         self.migrate_security_groups()
 
         source_ip = self.get_fixed_ip(self.source_instance)
@@ -491,9 +494,6 @@ class NovaInstance(object):
         print("Rebooting to acquire the new hostname")
         self.dest_instance.reboot()
         self.wait_for_status('ACTIVE', source=False)
-
-        if activated_image:
-            self.activate_image(self.dest_session, image_id, deactivate=True)
 
         for i in xrange(11):
             if self.ssh_test(source=False):
