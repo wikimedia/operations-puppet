@@ -1548,9 +1548,9 @@ node /^mw12(2[1-9]|3[0-5])\.eqiad\.wmnet$/ {
 }
 
 
-# Former imagescaler temp. used as terbium stand-in (T192185)
+# Former imagescaler temp. used as terbium stand-in (T192185), replaced by mwmaint1002
 node 'mwmaint1001.eqiad.wmnet' {
-    role(mediawiki_maintenance)
+    role(spare::system)
     interface::add_ip6_mapped { 'main': }
 }
 
