@@ -1528,6 +1528,12 @@ node 'mwmaint1001.eqiad.wmnet' {
     interface::add_ip6_mapped { 'main': }
 }
 
+# upcoming server to replace mwmaint1001 (T201343)
+node 'mwmaint1002.eqiad.wmnet' {
+    role(spare::system)
+    interface::add_ip6_mapped { 'main': }
+}
+
 # Former imagescalers (replaced by thumbor) T192457
 
 # Row B (B6)
