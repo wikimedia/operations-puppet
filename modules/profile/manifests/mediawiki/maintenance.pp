@@ -71,7 +71,7 @@ class profile::mediawiki::maintenance {
         ensure      => present,
         auto_sync   => false,
         source_host => 'mwmaint1001.eqiad.wmnet',
-        dest_host   => 'mwmaint2001.codfw.wmnet',
+        dest_host   => 'mwmaint1002.eqiad.wmnet',
         module_path => '/home',
     }
 
