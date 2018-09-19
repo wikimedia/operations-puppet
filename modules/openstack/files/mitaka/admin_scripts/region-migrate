@@ -292,9 +292,9 @@ class NovaInstance(object):
             return False
 
         if command == 'hostname':
-            if r.strip() != instance.name:
+            if r.strip().lower() != instance.name.lower():
                 print("ssh test to %s failed.  Returned hostname %s but expected %s" %
-                      (target_ip, r.strip(), instance.name))
+                      (target_ip, r.strip().lower(), instance.name.lower()))
                 return False
             else:
                 print("verified ssh for %s, returned hostname %s" % (target_ip, r))
