@@ -1528,7 +1528,7 @@ node 'mwmaint1001.eqiad.wmnet' {
 
 # upcoming server to replace mwmaint1001 (T201343)
 node 'mwmaint1002.eqiad.wmnet' {
-    role(spare::system)
+    role(mediawiki_maintenance)
     interface::add_ip6_mapped { 'main': }
 }
 
