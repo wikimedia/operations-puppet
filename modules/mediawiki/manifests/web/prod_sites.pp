@@ -56,7 +56,6 @@ class mediawiki::web::prod_sites {
     $remnant_conf_sites = [
         'meta.wikimedia.org',
         '_wikisource.org',
-        'commons.wikimedia.org',
     ]
     mediawiki::web::site { $remnant_conf_sites:
         before => Apache::Site['remnant']
@@ -92,6 +91,20 @@ class mediawiki::web::prod_sites {
                     '# Uploads are offsite',
                     '    RewriteRule ^/upload/(.*)$ %{ENV:RW_PROTO}://upload.wikimedia.org/wikipedia/species/$1 [R=302]'
                 ]
+            }
+            ;
+        'commons.wikimedia.org':
+            public_rewrites     => true,
+            legacy_rewrites     => true,
+            short_urls          => false,
+            additional_rewrites => {
+                'early' => [],
+                'late'  => [
+                    '# Uploads are offsite',
+                    '    RewriteRule ^/upload/(.*)$ %{ENV:RW_PROTO}://upload.wikimedia.org/wikipedia/commons/$1 [R=302]',
+                    '    # /data/ path T163922',
+                    '    RewriteRule ^/data/(.*)/(.*)$ %{ENV:RW_PROTO}://commons.wikimedia.org/wiki/Special:PageData/$1/$2 [R=301,QSA]'
+                ],
             }
     }
     # private wikis in remnant.conf; they all change just by ServerName
