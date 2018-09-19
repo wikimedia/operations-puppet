@@ -29,11 +29,6 @@ class mediawiki::web::prod_sites {
         priority => 6,
     }
 
-    # Wikimania sites, plus one wiki for wikimaniateam
-    apache::site { 'wikimania':
-        source   => 'puppet:///modules/mediawiki/apache/sites/wikimania.conf',
-        priority => 7,
-    }
 
     # wikimediafoundation wiki, already a single wiki
     apache::site { 'foundation':
@@ -41,11 +36,6 @@ class mediawiki::web::prod_sites {
         priority => 8,
     }
 
-    # Some other wikis, plus loginwiki, and www.wikimedia.org
-    apache::site { 'wikimedia':
-        source   => 'puppet:///modules/mediawiki/apache/sites/wikimedia.conf',
-        priority => 9,
-    }
 
     $sites_available = '/etc/apache2/sites-available'
     # Included in main.conf
@@ -108,6 +98,15 @@ class mediawiki::web::prod_sites {
         before          => Apache::Site['remnant'],
     }
 
+
+    ### BEGIN wikimania
+    # Wikimania sites, plus one wiki for wikimaniateam
+    apache::site { 'wikimania':
+        source   => 'puppet:///modules/mediawiki/apache/sites/wikimania.conf',
+        priority => 7,
+    }
+
+    ## Configuration for wikimania.conf
     mediawiki::web::vhost { 'wikimaniateam.wikimedia.org':
         ensure          => present,
         docroot         => '/srv/mediawiki/docroot/wikimedia.org',
@@ -117,6 +116,15 @@ class mediawiki::web::prod_sites {
         short_urls      => true,
         before          => Apache::Site['wikimania'],
     }
+    ### END wikimania
+
+    #### BEGIN wikimedia
+    # Some other wikis, plus loginwiki, and www.wikimedia.org
+    apache::site { 'wikimedia':
+        source   => 'puppet:///modules/mediawiki/apache/sites/wikimedia.conf',
+        priority => 9,
+    }
+
 
     mediawiki::web::site {[
         'wikimedia-chapter',
@@ -140,4 +148,6 @@ class mediawiki::web::prod_sites {
         short_urls      => true,
         before          => Apache::Site['wikimedia'],
     }
+
+    ### END wikimedia
 }
