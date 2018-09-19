@@ -16,37 +16,37 @@ class netops::monitoring {
         snmp_community => $passwords::network::snmp_ro_community,
         alarms         => true,
         interfaces     => true,
+        bfd            => true,
         os             => 'Junos',
     }
     $routers = {
         # eqiad
         'cr1-eqiad'  => { ipv4 => '208.80.154.196',  ipv6 => '2620:0:861:ffff::1', bgp => true, vrrp_peer => 'cr2-eqiad.wikimedia.org'},
         'cr2-eqiad'  => { ipv4 => '208.80.154.197',  ipv6 => '2620:0:861:ffff::2', bgp => true, },
-        'mr1-eqiad'  => { ipv4 => '208.80.154.199',  ipv6 => '2620:0:861:ffff::6', },
-        'pfw3-eqiad'  => { ipv4 => '208.80.154.219', parents => ['cr1-eqiad', 'cr2-eqiad'], bgp => true, alarms => false, },
+        'mr1-eqiad'  => { ipv4 => '208.80.154.199',  ipv6 => '2620:0:861:ffff::6', bfd => false, },
+        'pfw3-eqiad'  => { ipv4 => '208.80.154.219', parents => ['cr1-eqiad', 'cr2-eqiad'], bgp => true, bfd => false, alarms => false, },
         # eqord
         'cr2-eqord'  => { ipv4 => '208.80.154.198',  ipv6 => '2620:0:861:ffff::5', bgp => true, alarms => false,},
         # codfw
         'cr1-codfw'  => { ipv4 => '208.80.153.192',  ipv6 => '2620:0:860:ffff::1', bgp => true, vrrp_peer => 'cr2-codfw.wikimedia.org'},
         'cr2-codfw'  => { ipv4 => '208.80.153.193',  ipv6 => '2620:0:860:ffff::2', bgp => true, },
-        'mr1-codfw'  => { ipv4 => '208.80.153.196',  ipv6 => '2620:0:860:ffff::6', },
-        'pfw3-codfw' => { ipv4 => '208.80.153.197',  parents => ['cr1-codfw', 'cr2-codfw'], bgp => true, alarms => false, },
+        'mr1-codfw'  => { ipv4 => '208.80.153.196',  ipv6 => '2620:0:860:ffff::6', bfd => false, },
+        'pfw3-codfw' => { ipv4 => '208.80.153.197',  parents => ['cr1-codfw', 'cr2-codfw'], bgp => true, bfd => false, alarms => false, },
         # eqdfw
         'cr2-eqdfw'  => { ipv4 => '208.80.153.198',  ipv6 => '2620:0:860:ffff::5', bgp => true, alarms => false,},
         # esams
         'cr1-esams'  => { ipv4 => '91.198.174.245',  ipv6 => '2620:0:862:ffff::5', bgp => true, vrrp_peer => 'cr2-esams.wikimedia.org'},
         'cr2-esams'  => { ipv4 => '91.198.174.244',  ipv6 => '2620:0:862:ffff::3', bgp => true, },
         'cr2-knams'  => { ipv4 => '91.198.174.246',  ipv6 => '2620:0:862:ffff::4', bgp => true, },
-        'mr1-esams'  => { ipv4 => '91.198.174.247',  ipv6 => '2620:0:862:ffff::1', },
+        'mr1-esams'  => { ipv4 => '91.198.174.247',  ipv6 => '2620:0:862:ffff::1', bfd => false, },
         # ulsfo
         'cr3-ulsfo'  => { ipv4 => '198.35.26.192',   ipv6 => '2620:0:863:ffff::1', bgp => true, alarms => false, vrrp_peer => 'cr4-ulsfo.wikimedia.org'},
         'cr4-ulsfo'  => { ipv4 => '198.35.26.193',   ipv6 => '2620:0:863:ffff::2', bgp => true, alarms => false, },
-        'mr1-ulsfo'  => { ipv4 => '198.35.26.194',   ipv6 => '2620:0:863:ffff::6',   },
+        'mr1-ulsfo'  => { ipv4 => '198.35.26.194',   ipv6 => '2620:0:863:ffff::6', bfd => false, },
         # eqsin
-        'mr1-eqsin'  => { ipv4 => '103.102.166.128', ipv6 => '2001:df2:e500:ffff::1', },
+        'mr1-eqsin'  => { ipv4 => '103.102.166.128', ipv6 => '2001:df2:e500:ffff::1', bfd => false, },
         'cr1-eqsin'  => { ipv4 => '103.102.166.129', ipv6 => '2001:df2:e500:ffff::2', bgp => true, vrrp_peer => 'cr2-eqsin.wikimedia.org'},
         'cr2-eqsin'  => { ipv4 => '103.102.166.130', ipv6 => '2001:df2:e500:ffff::3', bgp => true, alarms => false, },
-
     }
     create_resources(netops::check, $routers, $routers_defaults)
 

@@ -42,6 +42,7 @@ define netops::check(
     $snmp_community=undef,
     $group='network',
     $alarms=false,
+    $bfd=false,
     $bgp=false,
     $interfaces=false,
     $parents=undef,
@@ -123,6 +124,16 @@ define netops::check(
             description   => 'VRRP status',
             check_command => "check_vrrp!${vrrp_peer}!${snmp_community}",
             notes_url     => 'https://wikitech.wikimedia.org/wiki/Network_monitoring#VRRP_status',
+        }
+    }
+
+    if $bfd {
+        @monitoring::service { "${title} BFD status":
+            host          => $title,
+            group         => $group,
+            description   => 'BFD status',
+            check_command => "check_bfd!${snmp_community}",
+            notes_url     => 'https://wikitech.wikimedia.org/wiki/Network_monitoring#BFD_status',
         }
     }
 }
