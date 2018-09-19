@@ -9,6 +9,10 @@ puppetdb:
     host: <%= @puppetdb_host %>
     port: 443
     api_version: 4
+<% if scope.function_os_version(['debian >= stretch']) -%>
+    urllib3_disable_warnings:
+      - SubjectAltNameWarning  # Temporary fix for T158757
+<% end -%>
 
 clustershell:
     ssh_options:
