@@ -130,7 +130,7 @@ groups:
                  credentials on stat1006 (currently the only such host)
     members: [awight, bmansurov, catrope, dartar, deskana, mneisler,
               dduvall, esanders, ezachte, gilles, halfak,
-              jforrester, jkatz, jmorgan, kaldari,
+              jforrester, jkatz, jmorgan, kaldari, nathante,
               leila, mattflaschen, milimetric, nettrom, bearloga,
               nuria, ori, otto, cooltey, tonina,
               mforns, jdlrobson, dr0ptp4kt, tgr, marktraceur, jhernandez, joal,
@@ -214,7 +214,7 @@ groups:
               leila, nettrom, mforns, bmansurov, tbayer, joal, imarlier,
               tjones, legoktm, dcausse, bearloga, atgomez, dstrine,
               marktraceur, mtizzoni, panisson, paolotti, ciro, melodykramer,
-              fdans, shiladsen, esanders, risler]
+              fdans, shiladsen, esanders, risler, nathante]
   statistics-users:
     gid: 726
     description: Access statistics number crunching hosts. NO PRIVS.
@@ -268,7 +268,7 @@ groups:
               piccardi, fdans, eevans, anomie, demon, ladsgroup, musikanimal,
               kaldari, goransm, ema, dsaez, shiladsen, rho, mirrys, slaporte, jk,
               ayounsi, mepps, mmiller, seddon, gilles, tstarling, pirroh, rush, tieu, karen,
-              cicalese, drossi, fsalutari]
+              cicalese, drossi, fsalutari, nathante]
     system_members: [analytics-search]
   analytics-admins:
     gid: 732
