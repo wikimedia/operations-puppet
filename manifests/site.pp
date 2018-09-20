@@ -26,8 +26,14 @@ node /^(actinium|alcyone|alsafi|aluminium)\.wikimedia\.org$/ {
 }
 
 # an-master100[12] new analytics master servers to be pushed into service T201939
-node /^an-master100[12]\.eqiad\.wmnet$/ {
+node 'an-master1001.eqiad.wmnet' {
     role(spare::system)
+    interface::add_ip6_mapped { 'main': }
+}
+
+node 'an-master1002.eqiad.wmnet' {
+    role(spare::system)
+    interface::add_ip6_mapped { 'main': }
 }
 
 # analytics1001 is the Hadoop master node:
