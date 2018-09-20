@@ -13,10 +13,10 @@ class profile::releases::parsoid (
 
     rsync::quickdatacopy { 'srv-org-wikimedia-releases-parsoid':
       ensure      => present,
+      auto_sync   => true,
       source_host => $active_server,
       dest_host   => $passive_server,
       module_path => '/srv/org/wikimedia/releases/parsoid',
-      auto_sync   => true,
     }
 
 }

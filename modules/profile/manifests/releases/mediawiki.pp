@@ -60,6 +60,7 @@ class profile::releases::mediawiki (
 
     rsync::quickdatacopy { 'srv-org-wikimedia-releases':
       ensure      => present,
+      auto_sync   => true,
       source_host => $active_server,
       dest_host   => $passive_server,
       module_path => '/srv/org/wikimedia/releases',

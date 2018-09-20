@@ -15,6 +15,7 @@ class profile::releases::reprepro(
 
     rsync::quickdatacopy { 'srv-org-wikimedia-reprepro':
       ensure      => present,
+      auto_sync   => true,
       source_host => $active_server,
       dest_host   => $passive_server,
       module_path => '/srv/org/wikimedia/reprepro',
