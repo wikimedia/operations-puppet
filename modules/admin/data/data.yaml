@@ -370,7 +370,7 @@ groups:
   maps-admins:
     gid: 753
     description: admin for maps clusters
-    members: [maxsem, eevans, sbisson, catrope, mholloway-shell, mbsantos]
+    members: [maxsem, eevans, sbisson, catrope, mholloway-shell, mbsantos, onimisionipe]
     # TODO: Revisit this when moving into production
     privileges: ['ALL = NOPASSWD: /usr/sbin/service cassandra *',
                  'ALL = NOPASSWD: /bin/systemctl mask cassandra.service',
