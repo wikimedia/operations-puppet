@@ -4226,8 +4226,6 @@ host ms-fe2008 {
 host multatuli {
     hardware ethernet a4:ba:db:30:d5:99;
     fixed-address multatuli.wikimedia.org;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
-    filename "lpxelinux.0";
 }
 
 host mwlog1001 {

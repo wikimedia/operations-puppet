@@ -1392,10 +1392,8 @@ node 'mendelevium.eqiad.wmnet' {
     role(otrs)
 }
 
-# misc. test server, keep (T156208)
 node 'multatuli.wikimedia.org' {
-    role(test)
-
+    role(authdns::server)
     interface::add_ip6_mapped { 'main': }
 }
 
