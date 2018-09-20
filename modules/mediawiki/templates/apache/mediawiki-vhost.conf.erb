@@ -13,12 +13,12 @@
     RewriteEngine On
 <% if @https_only %>
     RewriteCond %{HTTP:X-Forwarded-Proto} !https
-    RewriteRule ^/(.*)$ https://<%= @server_name %>/$1 [R=301,L,NE]
-    RewriteRule . - [E=RW_PROTO:%{HTTP:X-Forwarded-Proto}]    
+    RewriteRule ^/(.*)$ https://%{SERVER_NAME}/$1 [R=301,L,NE]
+    RewriteRule . - [E=RW_PROTO:%{HTTP:X-Forwarded-Proto}]
 <%- else -%>
     RewriteRule . - [E=RW_PROTO:%{HTTP:X-Forwarded-Proto}]
     RewriteCond %{ENV:RW_PROTO} !=https
-    RewriteRule . - [E=RW_PROTO:http]    
+    RewriteRule . - [E=RW_PROTO:http]
 <%- end -%>
 
 <% if @upload_rewrite %>
@@ -43,7 +43,7 @@
 
     # Primary wiki redirector:
     Alias /wiki <%= @docroot %>/w/index.php
-<%- if @public_rewrites -%>    
+<%- if @public_rewrites -%>
     # Make robots.txt editable via Mediawiki:robots.txt
     RewriteRule ^/robots\.txt$ /w/robots.php [L]
     # Primary wiki redirector:
@@ -61,7 +61,7 @@
 
     # Common API-related rewrites
     # API listing
-    RewriteRule ^/api$ %{ENV:RW_PROTO}://<%= @server_name %>/api/ [R=301]
+    RewriteRule ^/api$ %{ENV:RW_PROTO}://%{SERVER_NAME}/api/ [R=301]
     RewriteRule ^/api/$ /w/extract2.php?template=API_listing_template [L]
 
     # Math compatibility mode
@@ -76,8 +76,8 @@
 <%- if @legacy_rewrites -%>
     # UseMod compatibility URLs
     RewriteCond %{QUERY_STRING} ([^&;]+)
-    RewriteRule ^/wiki\.cgi$ %{ENV:RW_PROTO}://<%= @server_name %>/w/index.php?title=%1 [R=301,L]
-    RewriteRule ^/wiki\.cgi$ %{ENV:RW_PROTO}://<%= @server_name %>/w/index.php [R=301,L]
+    RewriteRule ^/wiki\.cgi$ %{ENV:RW_PROTO}://%{SERVER_NAME}/w/index.php?title=%1 [R=301,L]
+    RewriteRule ^/wiki\.cgi$ %{ENV:RW_PROTO}://%{SERVER_NAME}/w/index.php [R=301,L]
     # Early phase 2 compatibility URLs
     RewriteRule ^/wiki\.phtml$ %{ENV:RW_PROTO}://%{SERVER_NAME}/w/index.php [R=301,L]
 <%- end -%>
