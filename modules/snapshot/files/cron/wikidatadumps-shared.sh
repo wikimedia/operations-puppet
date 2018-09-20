@@ -15,20 +15,21 @@ today=`date +'%Y%m%d'`
 daysToKeep=70
 pagesPerBatch=400000
 
-args="output:temp;tools:php"
+args="wiki:multiversion;output:temp;tools:php"
 results=`python "${repodir}/getconfigvals.py" --configfile "$configfile" --args "$args"`
 
+multiversion=`getsetting "$results" "wiki" "multiversion"` || exit 1
 tempDir=`getsetting "$results" "output" "temp"` || exit 1
 php=`getsetting "$results" "tools" "php"` || exit 1
 
-for settingname in "tempDir"; do
+for settingname in "multiversion" "tempDir"; do
     checkval "$settingname" "${!settingname}"
 done
 
 targetDirBase=${cronsdir}/wikibase/wikidatawiki
 targetDir=$targetDirBase/$today
 
-multiversionscript="${apachedir}/multiversion/MWScript.php"
+multiversionscript="${multiversion}/MWScript.php"
 
 # Create the dir for the day: This may or may not already exist, we don't care
 mkdir -p $targetDir

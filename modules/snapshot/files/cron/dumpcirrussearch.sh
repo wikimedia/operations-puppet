@@ -40,22 +40,23 @@ if [ ! -f "$configFile" ]; then
 	exit 1
 fi
 
-args="wiki:dblist,privatelist;tools:gzip,php"
+args="wiki:dblist,privatelist,multiversion;tools:gzip,php"
 results=`python "${repodir}/getconfigvals.py" --configfile "$configFile" --args "$args"`
 
 allList=`getsetting "$results" "wiki" "dblist"` || exit 1
 privateList=`getsetting "$results" "wiki" "privatelist"` || exit 1
+multiversion=`getsetting "$results" "wiki" "multiversion"` || exit 1
 gzip=`getsetting "$results" "tools" "gzip"` || exit 1
 php=`getsetting "$results" "tools" "php"` || exit 1
 
-for settingname in "allList" "privateList" "gzip"; do
+for settingname in "allList" "privateList" "multiversion" "gzip"; do
     checkval "$settingname" "${!settingname}"
 done
 
 today=$(date +'%Y%m%d')
 targetDirBase="${cronsdir}/cirrussearch"
 targetDir="$targetDirBase/$today"
-multiVersionScript="${apachedir}/multiversion/MWScript.php"
+multiVersionScript="${multiversion}/MWScript.php"
 
 # create todays folder
 if [ "$dryrun" == "true" ]; then

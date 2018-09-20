@@ -7,9 +7,9 @@
 source /usr/local/etc/dump_functions.sh
 
 get_db_host() {
-    apachedir=$1
+    multiversion=$1
 
-    multiversionscript="${apachedir}/multiversion/MWScript.php"
+    multiversionscript="${multiversion}/MWScript.php"
     if [ -e "$multiversionscript" ]; then
         host=`$php -q "$multiversionscript" extensions/CentralAuth/maintenance/getCentralAuthDBInfo.php --wiki="aawiki"` || (echo $host >& 2; host="")
     fi
@@ -21,9 +21,9 @@ get_db_host() {
 }
 
 get_db_user() {
-    apachedir=$1
+    multiversion=$1
 
-    multiversionscript="${apachedir}/multiversion/MWScript.php"
+    multiversionscript="${multiversion}/MWScript.php"
     if [ -e "$multiversionscript" ]; then
         db_user=`echo 'echo $wgDBadminuser;' | $php "$multiversionscript" eval.php aawiki`
     fi
@@ -35,9 +35,9 @@ get_db_user() {
 }
 
 get_db_pass() {
-    apachedir=$1
+    multiversion=$1
 
-    multiversionscript="${apachedir}/multiversion/MWScript.php"
+    multiversionscript="${multiversion}/MWScript.php"
     if [ -e "$multiversionscript" ]; then
         db_pass=`echo 'echo $wgDBadminpassword;' | $php "$multiversionscript" eval.php aawiki`
     fi
@@ -97,22 +97,23 @@ while [ $# -gt 0 ]; do
     fi
 done
 
-args="tools:gzip,mysqldump,php"
+args="wiki:multiversion;tools:gzip,mysqldump,php"
 results=`python "${repodir}/getconfigvals.py" --configfile "$configfile" --args "$args"`
 
+multiversion=`getsetting "$results" "wiki" "multiversion"` || exit 1
 gzip=`getsetting "$results" "tools" "gzip"` || exit 1
 mysqldump=`getsetting "$results" "tools" "mysqldump"` || exit 1
 php=`getsetting "$results" "tools" "php"` || exit 1
 
-for settingname in "gzip" "mysqldump"; do
+for settingname in "multiversion" "gzip" "mysqldump"; do
     checkval "$settingname" "${!settingname}"
 done
 
 outputdir="${cronsdir}/globalblocks"
 
-host=`get_db_host "$apachedir"` || exit 1
-db_user=`get_db_user "$apachedir"` || exit 1
-db_pass=`get_db_pass "$apachedir"` || exit 1
+host=`get_db_host "$multiversion"` || exit 1
+db_user=`get_db_user "$multiversion"` || exit 1
+db_pass=`get_db_pass "$multiversion"` || exit 1
 
 dump_tables "globalblocks" "$outputdir" "$mysqldump" "$gzip" "$db_user" "$db_pass"
 

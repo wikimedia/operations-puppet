@@ -77,18 +77,19 @@ if [ ! -f "$configFile" ]; then
 	exit 1
 fi
 
-args="wiki:privatelist;tools:gzip,php"
+args="wiki:privatelist,multiversion;tools:gzip,php"
 results=`python "${repodir}/getconfigvals.py" --configfile "$configFile" --args "$args"`
 
 privateList=`getsetting "$results" "wiki" "privatelist"` || exit 1
+multiversion=`getsetting "$results" "wiki" "multiversion"` || exit 1
 gzip=`getsetting "$results" "tools" "gzip"` || exit 1
 php=`getsetting "$results" "tools" "php"` || exit 1
 
-for settingname in "gzip" "privateList"; do
+for settingname in "multiversion" "gzip" "privateList"; do
     checkval "$settingname" "${!settingname}"
 done
 
 today=$(date +'%Y%m%d')
 ts=$(date -u +'%Y%m%d%H%M%S')
-multiVersionScript="${apachedir}/multiversion/MWScript.php"
+multiVersionScript="${multiversion}/MWScript.php"
 categoriesDirBase="${cronsdir}/categoriesrdf"

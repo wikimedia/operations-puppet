@@ -59,12 +59,13 @@ done
 # Get config settings
 #####################
 
-args="tools:php"
+args="wiki:multiversion;tools:php"
 results=`python "${repodir}/getconfigvals.py" --configfile "$configfile" --args "$args"`
 
-php=`getsetting "$results" "tools" "php"`
+multiversion=`getsetting "$results" "wiki" "multiversion"` || exit 1
+php=`getsetting "$results" "tools" "php"` || exit 1
 
-for settingname in "php"; do
+for settingname in "multiversion" "php"; do
     checkval "$settingname" "${!settingname}"
 done
 
@@ -76,7 +77,7 @@ today=`date +%Y%m%d`
 xlationdir="${cronsdir}/contenttranslation"
 outdir="${xlationdir}/${today}"
 mkdir -p "$outdir" || exit 1
-multiversionscript="${apachedir}/multiversion/MWScript.php"
+multiversionscript="${multiversion}/MWScript.php"
 xlationscript="extensions/ContentTranslation/scripts/dump-corpora.php"
 
 do_dump json
