@@ -897,6 +897,24 @@ class role::prometheus::ops {
         port       => '9109',
     }
 
+    # Job definition for haproxy_exporter
+    $haproxy_jobs = [
+      {
+        'job_name'        => 'haproxy',
+        'scheme'          => 'http',
+        'file_sd_configs' => [
+          { 'files' => [ "${targets_path}/haproxy_*.yaml"] },
+        ],
+      },
+    ]
+
+    prometheus::class_config{ "haproxy_${::site}":
+        dest       => "${targets_path}/haproxy_${::site}.yaml",
+        site       => $::site,
+        class_name => 'profile::prometheus::haproxy_exporter',
+        port       => '9901',
+    }
+
     $nutcracker_jobs = [
         {
             'job_name'        => 'nutcracker',
@@ -967,7 +985,7 @@ class role::prometheus::ops {
             $redis_jobs, $mtail_jobs, $ldap_jobs, $ircd_jobs, $pdns_rec_jobs,
             $etherpad_jobs, $elasticsearch_jobs, $wmf_elasticsearch_jobs,
             $blazegraph_jobs, $nutcracker_jobs, $postgresql_jobs,
-            $kafka_burrow_jobs, $logstash_jobs
+            $kafka_burrow_jobs, $logstash_jobs, $haproxy_jobs
         ),
         global_config_extra   => $config_extra,
     }
