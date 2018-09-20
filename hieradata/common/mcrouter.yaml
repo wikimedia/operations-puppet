@@ -45,6 +45,9 @@ mcrouter::shards:
       shard02:
         host: 10.64.0.81
         port: 11211
+      shard03:
+        host: 10.64.0.82
+        port: 11211
       shard04:
         host: 10.64.0.83
         port: 11211
