@@ -2979,6 +2979,17 @@ users:
       - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQCboFezeLLnibVC36SKuKaBOOH2h0bpPSXEoFbAaw68S8bV//geEZdoSzd9Ii9FQ+gNAQrJuPc0R2AqFZZJoO+z0R8vsVLkEBdET9MCfMK4GVIS2zoITnW/jIIS4fURENB/VgAU0NUtOHFSgcCdPwh4FLCyQ8zwcLrNug06Z+PwZJsXzri4M8JV7vgYFfzoK/PP0aA0HxW/VOrWjxVGgs8O18DBSuj60XshTI5d9Z/7j97l2sBwkwJmLzuGLtSGCM++iOIEYyNA47TeWmJBCJ0GASugEc0VJ6N0IqUlP9GUck/+sRpfXv2tpUWUFRJMvpp0A9MD32af3Vm2hJ9bXjQNvTtHrxzVEtkNwpv5HGzMeK+8orNujI9GRqTCda4Lc1l63e4dcHqXVBFo2KGULRXp/qO6BNkR1JpPev3IGFEIs5voAEj++A5RtjGVAyk42t3KzihbYhCWCW8lTPrcmZIzmPVQeXU0OHBjRiONA+ui+jsWlXNkrUg6LZQQkhoKApsLwpFgfFkZXzCrT4++4E64DQkfLegcDF0sC5Be8YKBxbA0cWjlMuu9oVKbafqhfRtFWdrKoLat6l2yLlxMNOjd243udVIXtio4xcUpAIZ54ZA46DGV5S/pVncqp4q7gdvVFDp52KeK/lrwAp4kK8LR3JNdCMWq71b4KYrHj4OVDw== kharlan@kharlans-MacBook-Pro.local
     uid: 19582
     email: kharlan@wikimedia.org
+  nathante:
+    ensure: present
+    realname: Nathan TeBlunthuis
+    name: nathante
+    gid: 500
+    ssh_keys:
+      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCy8qCBdONqJpa3piqbRQO4hQIzXtL+rPEvL7uA0vxHdlmOj8ci/6rs6JEUm8okr0mxoBEZB1eLubFZnoNJOpYPXnCJJTIiz8ROFPNETf+3Y7rDwBwLB6gGG+1+gSuF7zvMo9jVlJVl4A39X9rBU1+0G2wiyg7bnXI4FUNk67R5LTKe+iPoeEw32Y3EuSDvb5mzWf/euaXm0TsCtEd83FUQlytHaxG0A6R96oriZDLVj7hxw4O1EUUluPGwPIZTtQuN3jlWja9K3aMxzTxEybZtqyegjccquiSyl+S4da4lp9t7m1hkWHuVrTAMmz40IOguT11+kBHCmHOukeGcL2zr nathante@nathante-x1
+    uid: 20110
+    email: nathante@uw.edu
+    expiry_date: 2018-11-16
+    expiry_contact: tbayer@wikimedia.org
 ldap_only_users:
   abartov:
     ensure: present
