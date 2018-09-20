@@ -762,11 +762,6 @@ node /^dumpsdata1002.eqiad.wmnet$/ {
 
 node 'eeden.wikimedia.org' {
     role(authdns::server)
-
-    # use eqiad LVS + codfw LVS (avoid self-dep)
-    # TODO: this was probably wrong, and surely has no effect on the catalog. Remove?
-    $nameservers_override = [ '208.80.154.254', '208.80.153.254' ]
-
     interface::add_ip6_mapped { 'main': }
 }
 
