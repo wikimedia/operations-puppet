@@ -18,28 +18,44 @@ class statistics::user {
         system     => true,
     }
 
+    $git_settings = {
+        'user' => {
+            'name'  => 'Statistics User',
+            # TODO: use a better email than this :(
+            'email' => 'analytics-alerts@wikimedia.org',
+        },
+        # Enable automated git/gerrit authentication via http
+        # by using .git-credential file store.
+        'credential' => {
+            'helper' => 'store',
+        }
+    }
+
+    # Specific global git config for all the Analytics VLAN
+    # to force every user to use the Production Webproxy.
+    # This is useful to avoid HTTP/HTTPS calls ending up
+    # being blocked by the VLAN's firewall rules, avoiding
+    # all the users to set up their own settings.
+    # Not needed in labs. VLAN's firewall rules ()
+    # Not needed in labs.
+    if $::realm == 'production' {
+        $git_http_proxy_settings = {
+            # https://wikitech.wikimedia.org/wiki/HTTP_proxy
+            'http' => {
+                'proxy' => 'http://webproxy.eqiad.wmnet:8080'
+            },
+            'https' => {
+                'proxy' => 'http://webproxy.eqiad.wmnet:8080'
+            },
+        }
+    } else {
+        $git_http_proxy_settings = {}
+    }
+
     # lint:ignore:arrow_alignment
     git::userconfig { 'stats':
         homedir  => $homedir,
-        settings => {
-            'user' => {
-                'name'  => 'Statistics User',
-                # TODO: use a better email than this :(
-                'email' => 'analytics-alerts@wikimedia.org',
-            },
-            # Enable automated git/gerrit authentication via http
-            # by using .git-credential file store.
-            'credential' => {
-                'helper' => 'store',
-            },
-            # https://wikitech.wikimedia.org/wiki/HTTP_proxy
-            'http' => {
-                'proxy' => "http://webproxy.${::site}.wmnet:8080"
-            },
-            'https' => {
-                'proxy' => "http://webproxy.${::site}.wmnet:8080"
-            },
-        },
+        settings => merge($git_settings, $git_http_proxy_settings),
         require  => User[$username],
     }
     # lint:endignore
