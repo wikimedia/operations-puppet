@@ -661,7 +661,7 @@ node 'db1116.eqiad.wmnet' {
 
 # tendril db
 node 'db1115.eqiad.wmnet' {
-    role(mariadb::misc::tendril)
+    role(mariadb::misc::tendril_and_zarcillo)
 }
 
 # Standby tendril host
