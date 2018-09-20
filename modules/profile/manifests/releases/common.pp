@@ -9,6 +9,6 @@ class profile::releases::common{
     motd::script { 'rsync_source_warning':
         ensure   => $motd_ensure,
         priority => 1,
-        content  => template('role/mediawiki_maintenance/inactive.motd.erb'),
+        content  => template('role/releases/rsync_source_warning.motd.erb'),
     }
 }
