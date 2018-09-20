@@ -1,4 +1,4 @@
-# monitoring of https://meta.wikimedia.org/wiki/ORES
+# monitoring of https://www.mediawiki.org/wiki/ORES
 class icinga::monitor::ores {
 
     monitoring::grafana_alert { 'db/ores':
