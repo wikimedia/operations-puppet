@@ -11,6 +11,7 @@ class role::authdns::data {
             'authdns1001.wikimedia.org',
             'authdns2001.wikimedia.org',
             'eeden.wikimedia.org',
+            'multatuli.wikimedia.org',
     ]
 
     # These are all of the public addresses the Internet finds us at
