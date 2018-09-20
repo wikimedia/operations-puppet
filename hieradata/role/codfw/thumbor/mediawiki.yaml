@@ -19,5 +19,7 @@ thumbor::poolcounter_server: 'poolcounter2001.codfw.wmnet'
 
 thumbor::stl_support: true
 
+prometheus::haproxy_exporter::endpoint: 'http://localhost:9900/?stats;csv'
+
 # keys are to be defined in private repo
 #thumbor::mediawiki::shared_secret

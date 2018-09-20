@@ -44,3 +44,9 @@ listen thumbor
     <%- @ports.each do |port| -%>
     server server<%= port -%> 127.0.0.1:<%= port -%> maxconn 1 check
     <%- end -%>
+
+listen stats
+    bind 127.0.0.1:<%= @listen_port + 1100 %>
+    mode http
+    stats enable
+    stats uri /
