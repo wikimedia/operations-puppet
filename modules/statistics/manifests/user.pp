@@ -36,7 +36,6 @@ class statistics::user {
     # This is useful to avoid HTTP/HTTPS calls ending up
     # being blocked by the VLAN's firewall rules, avoiding
     # all the users to set up their own settings.
-    # Not needed in labs. VLAN's firewall rules ()
     # Not needed in labs.
     if $::realm == 'production' {
         $git_http_proxy_settings = {
