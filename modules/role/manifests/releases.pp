@@ -11,9 +11,9 @@ class role::releases {
     include ::standard
     include ::profile::base::firewall
     include ::profile::backup::host
+    include ::profile::releases::common
     include ::profile::releases::mediawiki
     include ::profile::releases::mediawiki::security
     include ::profile::releases::reprepro
     include ::profile::releases::parsoid
-
 }

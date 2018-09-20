@@ -1,0 +1,26 @@
+#!/bin/sh
+
+cat <<'MOTD'
+     _         _   _  ___ _____                    _   _     _
+  __| | ___   | \ | |/ _ \_   _|  _   _ ___  ___  | |_| |__ (_)___
+/  _` |/ _ \  |  \| | | | || |   | | | / __|/ _ \ | __| '_ \| / __|
+| (_| | (_) | | |\  | |_| || |   | |_| \__ \  __/ | |_| | | | \__ \
+ \__,_|\___/  |_| \_|\___/ |_|    \__,_|___/\___|  \__|_| |_|_|___/
+
+                              _
+ ___  ___ _ ____   _____ _ __| |
+/ __|/ _ \ '__\ \ / / _ \ '__| |
+\__ \  __/ |   \ V /  __/ |  |_|
+|___/\___|_|    \_/ \___|_|  (_)
+
+
+releases.wikimedia.org has 2 backends, one in each data center.
+It is serving traffic from both, active/active.
+
+Though when you upload new files you need to use the right one
+which is the source for automatic rsyncing to the other one.
+
+This isn't the right one, this is the rsync destination, so don't
+upload here, upload to the other data center.
+
+MOTD
