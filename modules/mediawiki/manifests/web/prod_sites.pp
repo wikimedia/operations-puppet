@@ -6,12 +6,6 @@ class mediawiki::web::prod_sites {
         priority => 2,
     }
 
-    apache::site { 'main':
-        source   => 'puppet:///modules/mediawiki/apache/sites/main.conf',
-        priority => 3,
-    }
-
-
     # Search vhost
     apache::site { 'search.wikimedia':
         source   => 'puppet:///modules/mediawiki/apache/sites/search.wikimedia.conf',
@@ -24,7 +18,13 @@ class mediawiki::web::prod_sites {
         priority => 6,
     }
 
-    $sites_available = '/etc/apache2/sites-available'
+    ### BEGIN main
+    apache::site { 'main':
+        source   => 'puppet:///modules/mediawiki/apache/sites/main.conf',
+        priority => 3,
+    }
+
+
     # Included in main.conf
     $main_conf_sites = [
         'mediawiki.org',
@@ -39,11 +39,29 @@ class mediawiki::web::prod_sites {
         'wikisource.org',
         'wikinews.org',
         'wikiversity.org',
-        'wikivoyage.org'
     ]
     mediawiki::web::site { $main_conf_sites:
         before => Apache::Site['main']
     }
+
+    mediawiki::web::vhost{
+        'wikivoyage.org':
+            ensure          => present,
+            server_name     => 'wikivoyage',
+            server_aliases  => ['*.wikivoyage.org'],
+            docroot         => '/srv/mediawiki/docroot/wikivoyage.org',
+            public_rewrites => true,
+            variant_aliases => [
+                'zh', 'zh-hans', 'zh-hant',
+                'zh-cn', 'zh-hk', 'zh-mo',
+                'zh-my', 'zh-sg', 'zh-tw'
+            ],
+            legacy_rewrites => false,
+            declare_site    => false,
+            before          => Apache::Site['main']
+
+    }
+    ### END main
 
     ### BEGIN remnant
     # Other wikis
