@@ -11,9 +11,9 @@
 . /usr/local/bin/wikidatadumps-shared.sh
 
 if [[ "$1" == '--help' ]]; then
-	echo -e "Usage: $0 [--continue] all|truthy ttl|nt [nt|ttl]\n"
+	echo -e "Usage: $0 [--continue] all|truthy|lexemes ttl|nt [nt|ttl]\n"
 	echo -e "\t--continue\tAttempt to continue a previous dump run."
-	echo -e "\tall|truthy\tType of dump to produce."
+	echo -e "\tall|truthy|lexemes\tType of dump to produce."
 	echo -e "\tttl|nt\t\tOutput format."
 	echo -e "\t[nt|ttl]\t\tOutput format for extra dump, converted from above (optional)."
 
@@ -30,7 +30,7 @@ else
 fi
 
 declare -A dumpNameToFlavor
-dumpNameToFlavor=(["all"]="full-dump" ["truthy"]="truthy-dump")
+dumpNameToFlavor=(["all"]="full-dump" ["truthy"]="truthy-dump" ["lexemes"]="full-dump")
 
 dumpName=$1
 
@@ -74,10 +74,24 @@ rm -f $failureFile
 
 declare -A dumpNameToMinSize
 # Sanity check: Minimal size we expect each shard of a certain dump to have
-dumpNameToMinSize=(["all"]=`expr 23500000000 / $shards` ["truthy"]=`expr 14000000000 / $shards`)
+dumpNameToMinSize=(["all"]=`expr 23500000000 / $shards` ["truthy"]=`expr 14000000000 / $shards` ["lexeme"]=`expr 20000000 / $shards`)
 
 getNumberOfBatchesNeeded
 numberOfBatchesNeeded=$(($numberOfBatchesNeeded / $shards))
+
+if [[ $numberOfBatchesNeeded -lt 1 ]]; then
+# wiki is too small for default settings, change settings to something sane
+# this assumes wiki has at least four entities, which sounds plausible
+	shards=4
+	numberOfBatchesNeeded=1
+	pagesPerBatch=$(( $maxPageId / $shards ))
+fi
+
+if [[ "$dumpName" == "lexemes" ]]; then
+	entityTypes="--entity-type lexeme"
+else
+	entityTypes="--entity-type item --entity-type property"
+fi
 
 while [ $i -lt $shards ]; do
 	(
@@ -103,8 +117,7 @@ while [ $i -lt $shards ]; do
 				--batch-size $(($shards * 250)) \
 				--format $dumpFormat \
 				--flavor $dumpFlavor \
-				--entity-type item \
-				--entity-type property \
+				$entityTypes \
 				--no-cache \
 				--dbgroupdefault dump \
 				--part-id $i-$batch \
@@ -136,6 +149,10 @@ fi
 i=0
 while [ $i -lt $shards ]; do
 	getTempFiles "$tempDir/wikidata$dumpFormat-$dumpName.$i-batch*.gz"
+	if [ -z "$tempFiles" ]; then
+		echo "No files for shard $i!" >> $mainLogFile
+		exit 1
+	fi
 	getFileSize "$tempFiles"
 	if [ $fileSize -lt ${dumpNameToMinSize[$dumpName]} ]; then
 		echo "File size of $tempFile is only $fileSize. Aborting." >> $mainLogFile

@@ -16,7 +16,7 @@ class snapshot::cron::wikidatadumps::rdf(
     if !$filesonly {
         cron { 'wikidatardf-dumps':
             ensure      => 'present',
-            command     => "${scriptpath} all ttl nt; ${scriptpath} truthy nt",
+            command     => "${scriptpath} all ttl nt; ${scriptpath} truthy nt; ${scriptpath} lexemes ttl nt",
             environment => 'MAILTO=ops-dumps@wikimedia.org',
             user        => $user,
             minute      => '0',
