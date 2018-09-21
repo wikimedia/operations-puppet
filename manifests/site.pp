@@ -25,26 +25,33 @@ node /^(actinium|alcyone|alsafi|aluminium)\.wikimedia\.org$/ {
     interface::add_ip6_mapped { 'main': }
 }
 
-# an-master100[12] new analytics master servers to be pushed into service T201939
+# The Hadoop master node:
+# - primary active NameNode
+# - YARN ResourceManager
 node 'an-master1001.eqiad.wmnet' {
-    role(spare::system)
+    role(analytics_cluster::hadoop::master)
     interface::add_ip6_mapped { 'main': }
 }
 
+# The Hadoop (stanby) master node:
+# - primary active NameNode
+# - YARN ResourceManager
 node 'an-master1002.eqiad.wmnet' {
-    role(spare::system)
+    role(analytics_cluster::hadoop::standby)
     interface::add_ip6_mapped { 'main': }
 }
 
 # analytics1001 is the Hadoop master node:
 # - primary active NameNode
 # - YARN ResourceManager
+# Being replaced in T203635 - Procedure IN PROGRESS
 node 'analytics1001.eqiad.wmnet' {
     role(analytics_cluster::hadoop::master)
     interface::add_ip6_mapped { 'main': }
 }
 
 # analytics1002 is the Hadoop standby NameNode and ResourceManager.
+# Being replaced in T203635 - Procedure IN PROGRESS
 node 'analytics1002.eqiad.wmnet' {
     role(analytics_cluster::hadoop::standby)
     interface::add_ip6_mapped { 'main': }

@@ -477,11 +477,11 @@ hadoop_clusters:
   analytics-hadoop:
     zookeeper_cluster_name: main-eqiad
     resourcemanager_hosts:
-      - analytics1001.eqiad.wmnet
-      - analytics1002.eqiad.wmnet
+      - an-master1001.eqiad.wmnet
+      - an-master1002.eqiad.wmnet
     namenode_hosts:
-      - analytics1001.eqiad.wmnet
-      - analytics1002.eqiad.wmnet
+      - an-master1001.eqiad.wmnet
+      - an-master1002.eqiad.wmnet
     journalnode_hosts:
       - analytics1052.eqiad.wmnet  # Row A3
       - analytics1072.eqiad.wmnet  # ROW B2
