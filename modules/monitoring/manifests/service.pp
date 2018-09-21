@@ -105,6 +105,7 @@ define monitoring::service(
             freshness_threshold    => $is_fresh,
             event_handler          => $event_handler,
             notes_url              => $notes_url,
+            mode                   => '0444',
         },
     }
     # This is a hack. We detect if we are running on the scope of an icinga
