@@ -19,5 +19,7 @@ class role::mediawiki::maintenance {
     include ::profile::tlsproxy::envoy # TLS termination
 
     # LDAP
-    include ::profile::openldap::management
+    if ($::realm == 'production') {
+        include ::profile::openldap::management
+    }
 }
