@@ -27,7 +27,6 @@ class mediawiki::web::prod_sites {
 
     # Included in main.conf
     $main_conf_sites = [
-        'mediawiki.org',
         'test.wikidata.org',
         'wikidata.org',
         'wiktionary.org',
@@ -49,6 +48,22 @@ class mediawiki::web::prod_sites {
             public_rewrites => true,
             declare_site    => false,
             before          => Apache::Site['main']
+            ;
+        'mediawiki.org':
+            server_name         => 'www.mediawiki.org',
+            docroot             => '/srv/mediawiki/docroot/mediawiki.org',
+            server_aliases      => ['download.mediawiki.org'],
+            canonical_name      => 'On',
+            upload_rewrite      => {
+                'rewrite_prefix' => 'mediawiki' },
+            additional_rewrites => {
+                'early' => [
+                    '# Our FAQ',
+                    '    RewriteRule ^/FAQ$ %{ENV:RW_PROTO}://www.mediawiki.org/wiki/Help:FAQ [R=301,L]'
+                ],
+                'late'  => []
+            },
+            legacy_rewrites     => true,
             ;
         'wikivoyage.org':
             server_name     => 'wikivoyage',
