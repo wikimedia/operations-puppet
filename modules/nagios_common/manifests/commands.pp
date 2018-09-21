@@ -25,6 +25,11 @@ class nagios_common::commands(
         $plugin_perl_package = 'libnagios-plugin-perl' # Deprecated in Debian stretch
     }
 
+    # Workaround for T205091
+    if os_version('debian >= jessie') {
+        require_package('python3-snimpy')
+    }
+
     require_package([
         $plugin_perl_package,
         # check_ssl
@@ -38,7 +43,6 @@ class nagios_common::commands(
         'python3-requests',
         # check_bfd
         'python3-cffi-backend',
-        'python3-snimpy',
     ])
 
     file { "${config_dir}/commands":
