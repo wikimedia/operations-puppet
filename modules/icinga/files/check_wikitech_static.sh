@@ -5,7 +5,7 @@
 # CONFIG
 WIKITECH="https://wikitech.wikimedia.org/w/api.php"
 WIKITECHSTATIC="https://wikitech-static.wikimedia.org/w/api.php"
-API_QUERY="action=query&titles=Server_Admin_Log&list=recentchanges&format=xml"
+API_QUERY="action=query&titles=Special:RecentChanges&list=recentchanges&format=xml"
 
 AGE_LIMIT=200000 # seconds
 
