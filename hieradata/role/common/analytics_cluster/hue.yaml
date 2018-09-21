@@ -1,1 +1,1 @@
-cdh::hive::metastore_host: 'analytics1003.eqiad.wmnet'
+cdh::hive::metastore_host: 'an-coord1001.eqiad.wmnet'
