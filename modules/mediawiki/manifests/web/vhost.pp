@@ -22,6 +22,9 @@
 #
 # [*encoded_slashes*] AllowEncodedSlashes apache httpd directive.
 #
+# [*canonical_name*] Value of the UseCanonicalName httpd directive; only gets applied if
+#                    server_aliases is not empty.
+#
 # [*$additional_rewrites*] A struct of early and late rewriterules to add before or after
 #                          the main rewrites.
 #
@@ -43,6 +46,7 @@ define mediawiki::web::vhost(
     Boolean $short_urls = false,
     Boolean $https_only = false,
     Enum['On', 'Off', 'NoDecode'] $encoded_slashes = 'On',
+    Enum['On', 'Off'] $canonical_name = 'Off',
     Mediawiki::Rewrites $additional_rewrites = {'early' => [], 'late' => []},
     Array $variant_aliases = [],
     Integer[0, 99] $priority = 50,

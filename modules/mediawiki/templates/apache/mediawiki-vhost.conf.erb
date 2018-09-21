@@ -5,7 +5,7 @@
 <%-  @server_aliases.each do |server_alias| -%>
     ServerAlias <%= server_alias %>
 <% end -%>
-    UseCanonicalName Off
+    UseCanonicalName <%= @canonical_name %>
 <%- end -%>
 
     AllowEncodedSlashes <%= @encoded_slashes %>
