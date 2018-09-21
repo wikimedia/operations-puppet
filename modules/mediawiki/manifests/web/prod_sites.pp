@@ -29,13 +29,11 @@ class mediawiki::web::prod_sites {
         priority => 6,
     }
 
-
     # wikimediafoundation wiki, already a single wiki
     apache::site { 'foundation':
         source   => 'puppet:///modules/mediawiki/apache/sites/foundation.conf',
         priority => 8,
     }
-
 
     $sites_available = '/etc/apache2/sites-available'
     # Included in main.conf
@@ -118,6 +116,7 @@ class mediawiki::web::prod_sites {
     }
     ### END wikimania
 
+
     #### BEGIN wikimedia
     # Some other wikis, plus loginwiki, and www.wikimedia.org
     apache::site { 'wikimedia':
@@ -126,7 +125,7 @@ class mediawiki::web::prod_sites {
     }
 
 
-    mediawiki::web::site { ['www.wikimedia.org', 'login.wikimedia.org']:
+    mediawiki::web::site { 'www.wikimedia.org':
         before => Apache::Site['wikimedia']
     }
 
@@ -147,6 +146,8 @@ class mediawiki::web::prod_sites {
         $other_wikis:
             https_only => true,
             short_urls => true,
+            ;
+        'login.wikimedia.org':
             ;
         'wikimedia-chapter':
             server_aliases      => [
