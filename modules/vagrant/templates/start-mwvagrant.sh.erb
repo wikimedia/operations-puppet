@@ -3,5 +3,6 @@
 
 cd <%= @install_directory %>
 if /usr/local/bin/mwvagrant status | grep -q 'stopped (lxc)'; then
-    /usr/local/bin/mwvagrant up
+    /usr/local/bin/mwvagrant up &&
+    /usr/local/bin/mwvagrant ssh -- sudo service apache2 restart
 fi
