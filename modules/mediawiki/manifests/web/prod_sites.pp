@@ -38,28 +38,44 @@ class mediawiki::web::prod_sites {
         'wikibooks.org',
         'wikisource.org',
         'wikinews.org',
-        'wikiversity.org',
     ]
     mediawiki::web::site { $main_conf_sites:
         before => Apache::Site['main']
     }
 
     mediawiki::web::vhost{
-        'wikivoyage.org':
+        default:
             ensure          => present,
+            public_rewrites => true,
+            declare_site    => false,
+            before          => Apache::Site['main']
+            ;
+        'wikivoyage.org':
             server_name     => 'wikivoyage',
             server_aliases  => ['*.wikivoyage.org'],
             docroot         => '/srv/mediawiki/docroot/wikivoyage.org',
-            public_rewrites => true,
             variant_aliases => [
                 'zh', 'zh-hans', 'zh-hant',
                 'zh-cn', 'zh-hk', 'zh-mo',
                 'zh-my', 'zh-sg', 'zh-tw'
             ],
             legacy_rewrites => false,
-            declare_site    => false,
-            before          => Apache::Site['main']
-
+            ;
+        'wikiversity.org':
+            server_name     => 'wikiversity',
+            server_aliases  => ['*.wikiversity.org'],
+            docroot         => '/srv/mediawiki/docroot/wikiversity.org',
+            legacy_rewrites => true,
+            short_urls      => true,
+            upload_rewrite  => {
+                'domain_catchall' => 'wikiversity.org',
+                'rewrite_prefix'  => 'wikiversity'
+            },
+            variant_aliases => [
+                'sr', 'sr-ec', 'sr-el',
+                'zh', 'zh-hans', 'zh-hant',
+                'zh-cn', 'zh-hk', 'zh-sg', 'zh-tw'
+            ],
     }
     ### END main
 
