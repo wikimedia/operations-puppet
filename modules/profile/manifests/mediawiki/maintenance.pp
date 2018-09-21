@@ -39,9 +39,13 @@ class profile::mediawiki::maintenance (
         target => '/srv/mediawiki'
     }
 
-    $ensure = mediawiki::state('primary_dc') ? {
-        $::site => 'present',
-        default => 'absent',
+    if $::realm != 'labs' {
+        $ensure = mediawiki::state('primary_dc') ? {
+            $::site => 'present',
+            default => 'absent',
+        }
+    } else {
+        $ensure = 'present'
     }
 
     file { '/usr/local/bin/mw-cli-wrapper':
@@ -121,11 +125,15 @@ class profile::mediawiki::maintenance (
         module_path => '/home',
     }
 
+    if $::realm != 'labs' {
     # T199124
-    $motd_ensure = $ensure ? {
-        'present' => 'absent',
-        'absent'  => 'present',
-        default   => 'present',
+        $motd_ensure = $ensure ? {
+            'present' => 'absent',
+            'absent'  => 'present',
+            default   => 'present',
+        }
+    } else {
+        $motd_ensure = 'absent'
     }
 
     motd::script { 'inactive_warning':
