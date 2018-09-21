@@ -28,7 +28,8 @@ class shinken::shinkengen {
         unless  => '/usr/local/bin/shinkengen --test-if-up-to-date',
         require => [
             File['/usr/local/bin/shinkengen'],
-            File['/etc/shinkengen.yaml']
+            File['/etc/shinkengen.yaml'],
+            Package['shinken'],
         ],
         notify  => Service['shinken'],
     }
