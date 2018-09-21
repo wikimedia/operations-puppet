@@ -16,12 +16,12 @@ class shinken(
         file { '/etc/init.d/shinken':
             source  => 'puppet:///modules/shinken/init',
             require => Package['shinken'],
+            before  => Service['shinken'],
         }
     }
 
     service { 'shinken':
         ensure  => running,
-        require => File['/etc/init.d/shinken'],
     }
 
     file { '/etc/shinken/modules':
