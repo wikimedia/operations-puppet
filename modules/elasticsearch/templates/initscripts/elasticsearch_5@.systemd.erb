@@ -9,6 +9,7 @@ After=network-online.target
 User=elasticsearch
 Group=elasticsearch
 Environment=ES_HOME=/usr/share/elasticsearch
+Environment=ES_JVM_OPTIONS=/etc/elasticsearch/%i/jvm.options
 ExecStartPre=/usr/share/elasticsearch/bin/elasticsearch-systemd-pre-exec
 ExecStart=/usr/share/elasticsearch/bin/elasticsearch \
         -p /var/run/elasticsearch/%i.pid \
