@@ -8,7 +8,7 @@
 class toolserver_legacy {
 
     class { '::httpd':
-        modules => ['rewrite'],
+        modules => ['rewrite', 'ssl'],
     }
 
     $ssl_settings = ssl_ciphersuite('apache', 'compat')
