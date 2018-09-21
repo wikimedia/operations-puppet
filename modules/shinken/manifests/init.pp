@@ -10,11 +10,13 @@ class shinken(
         ensure  => present,
     }
 
-    # This is required because default shinken package on trusty
-    # has a broken init script. See line 76 of included init script
-    file { '/etc/init.d/shinken':
-        source  => 'puppet:///modules/shinken/init',
-        require => Package['shinken'],
+    if os_version('ubuntu trusty') {
+        # This is required because default shinken package on trusty
+        # has a broken init script. See line 76 of included init script
+        file { '/etc/init.d/shinken':
+            source  => 'puppet:///modules/shinken/init',
+            require => Package['shinken'],
+        }
     }
 
     service { 'shinken':
