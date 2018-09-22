@@ -1199,6 +1199,11 @@ host contint2001 {
     filename "lpxelinux.0";
 }
 
+host cumin1001 {
+     hardware ethernet D0:94:66:5F:69:70;
+     fixed-address cumin1001.eqiad.wmnet;
+}
+
 host cumin2001 {
      hardware ethernet 14:18:77:5B:2A:5D;
      fixed-address cumin2001.codfw.wmnet;

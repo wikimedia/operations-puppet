@@ -80,6 +80,8 @@ class network::constants {
                     '2620:0:861:103:10:64:32:20',  # neodymium.eqiad.wmnet
                     '10.192.0.140',                # sarin.codfw.wmnet
                     '2620:0:860:101:10:192:0:140', # sarin.codfw.wmnet
+                    '10.64.32.25',                 # cumin1001.eqiad.wmnet
+                    '2620:0:861:103:10:64:32:25',  # cumin1001.eqiad.wmnet
                     '10.192.48.16',                # cumin2001.codfw.wmnet
                     '2620:0:860:104:10:192:48:16', # cumin2001.codfw.wmnet
                 ],
@@ -90,6 +92,7 @@ class network::constants {
                     '10.192.48.91',                # db2093.codfw.wmnet
                     '10.64.32.20',                 # neodymium.eqiad.wmnet
                     '10.192.0.140',                # sarin.codfw.wmnet
+                    '10.64.32.25',                 # cumin1001.eqiad.wmnet
                     '10.192.48.16',                # cumin2001.codfw.wmnet
                 ],
             'kafka_brokers_main' => [

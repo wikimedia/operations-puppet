@@ -335,7 +335,7 @@ node /^cp50(0[789]|1[012])\.eqsin\.wmnet$/ {
     role(cache::text)
 }
 
-node 'cumin2001.codfw.wmnet' {
+node /^cumin[12]001\.(eqiad|codfw)\.wmnet$/ {
     role(cluster::management)
     interface::add_ip6_mapped { 'main': }
 }
