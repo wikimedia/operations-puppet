@@ -8,10 +8,6 @@ class profile::maps::apps(
     $pgsql_tileratorui_pass = hiera('profile::maps::osm_master::tileratorui_pass'),
     $redis_server = hiera('profile::maps::apps::redis_server'),
     $redis_pass = hiera('profile::maps::apps::redis_pass'),
-    # for "historical reasons", tilerator and kartotherian load styles differently.
-    # once this is fixed in application code, the 2 parameters below should be merged.
-    $kartotherian_style = hiera('profile::maps::apps::kartotherian_style'),
-    $tilerator_style = hiera('profile::maps::apps::tilerator_style'),
     $kartotherian_storage_id = hiera('profile::maps::apps::kartotherian_storage_id'),
     $tilerator_storage_id = hiera('profile::maps::apps::tilerator_storage_id'),
     $eventlogging_service_uri = hiera('profile::maps::apps::eventlogging_service_uri'),
@@ -29,7 +25,6 @@ class profile::maps::apps(
         redis_server             => $redis_server,
         redis_pass               => $redis_pass,
         contact_groups           => $contact_groups,
-        style                    => $tilerator_style,
         storage_id               => $tilerator_storage_id,
         eventlogging_service_uri => $eventlogging_service_uri,
         sources_to_invalidate    => $sources_to_invalidate,
@@ -43,7 +38,6 @@ class profile::maps::apps(
         redis_server             => $redis_server,
         redis_pass               => $redis_pass,
         contact_groups           => $contact_groups,
-        style                    => $tilerator_style,
         storage_id               => $tilerator_storage_id,
         eventlogging_service_uri => $eventlogging_service_uri,
         sources_to_invalidate    => $sources_to_invalidate,
@@ -55,7 +49,6 @@ class profile::maps::apps(
         cassandra_pass       => $cassandra_kartotherian_pass,
         pgsql_pass           => $pgsql_kartotherian_pass,
         contact_groups       => $contact_groups,
-        style                => $kartotherian_style,
         storage_id           => $kartotherian_storage_id,
         tilerator_storage_id => $tilerator_storage_id,
     }
