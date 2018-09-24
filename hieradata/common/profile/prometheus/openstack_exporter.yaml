@@ -1,0 +1,7 @@
+profile::prometheus::openstack_listen_port: 9183
+profile::prometheus::openstack_cache_refresh_interval: 300
+profile::prometheus::openstack_cache_file: '/var/cache/prometheus-openstack-exporter/%{region}'
+profile::prometheus::openstack_schedulable_instance_size:
+  ram_mbs: 4096
+  vcpu: 2
+  disk_gbs: 20
