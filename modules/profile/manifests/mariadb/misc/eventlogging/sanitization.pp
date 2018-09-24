@@ -79,12 +79,23 @@ class profile::mariadb::misc::eventlogging::sanitization(
     $eventlogging_cleaner_command = "/usr/local/bin/eventlogging_cleaner --whitelist ${whitelist_path} --yaml --older-than 90 --start-ts-file /var/run/eventlogging_cleaner --batch-size 10000 --sleep-between-batches 2 ${extra_parameters}"
     $command = "/usr/bin/flock --verbose -n /var/lock/eventlogging_cleaner ${eventlogging_cleaner_command} >> ${log_directory_path}/eventlogging_cleaner.log"
     cron { 'eventlogging_cleaner daily sanitization':
-        ensure      => present,
+        ensure      => absent,
         command     => $command,
         user        => 'eventlogcleaner',
         minute      => 0,
         hour        => 11,
         environment => 'MAILTO=analytics-alerts@wikimedia.org',
+        require     => [
+            File['/usr/local/bin/eventlogging_cleaner'],
+            File[$log_directory_path],
+            User['eventlogcleaner'],
+        ]
+    }
+
+    profile::analytics::systemd_timer { 'eventlogging_db_sanitization':
+        description => 'Apply Analytics data retetion policies to the Eventlogging database',
+        command     => $eventlogging_cleaner_command,
+        interval    => ' *-*-* 11:00:00',
         require     => [
             File['/usr/local/bin/eventlogging_cleaner'],
             File[$log_directory_path],
