@@ -29,7 +29,6 @@ class mediawiki::web::prod_sites {
     $main_conf_sites = [
         'test.wikidata.org',
         'wikidata.org',
-        'donate.wikimedia.org',
         'vote.wikimedia.org',
         'wikipedia.org',
         'wikibooks.org',
@@ -94,6 +93,20 @@ class mediawiki::web::prod_sites {
                 'zh', 'zh-hans', 'zh-hant',
                 'zh-cn', 'zh-hk', 'zh-sg', 'zh-tw'
             ],
+            ;
+        'donate.wikimedia.org':
+            docroot             => '/srv/mediawiki/docroot/wikimedia.org',
+            server_aliases      => ['donate.wikipedia.org'],
+            canonical_name      => 'On',
+            https_only          => true,
+            legacy_rewrites     => true,
+            short_urls          => true,
+            additional_rewrites => {
+                'early' => [
+                    'RewriteRule ^/$ https://donate.wikimedia.org/wiki/Special:FundraiserRedirector [R=302,L]',
+                ],
+                'late'  => []
+            }
             ;
         'wikivoyage.org':
             server_name     => 'wikivoyage',
