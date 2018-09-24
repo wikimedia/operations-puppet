@@ -29,7 +29,6 @@ class mediawiki::web::prod_sites {
     $main_conf_sites = [
         'test.wikidata.org',
         'wikidata.org',
-        'vote.wikimedia.org',
         'wikipedia.org',
     ]
     mediawiki::web::site { $main_conf_sites:
@@ -104,6 +103,12 @@ class mediawiki::web::prod_sites {
                 ],
                 'late'  => []
             }
+            ;
+        'vote.wikimedia.org':
+            docroot         => '/srv/mediawiki/docroot/wikimedia.org',
+            short_urls      => true,
+            https_only      => true,
+            legacy_rewrites => false,
             ;
         'wikibooks.org':
             server_name     => 'wikibooks',
