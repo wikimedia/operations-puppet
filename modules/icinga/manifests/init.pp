@@ -133,14 +133,13 @@ class icinga(
           require => Package['icinga']
         }
 
-        service { 'icinga':
-          ensure    => $ensure_service,
-          hasstatus => false,
-          restart   => 'systemctl reload icinga',
-          require   => [
+        systemd::service { 'icinga':
+            ensure  => 'present',
+            content => systemd_template('icinga'),
+            require => [
               Mount['/var/icinga-tmpfs'],
               Package['icinga'],
-          ],
+            ],
         }
 
         file { '/etc/icinga/icinga.cfg':
