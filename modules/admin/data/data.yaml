@@ -525,6 +525,7 @@ groups:
     description: Group of users for managing search related analytics jobs
     members: [ebernhardson, smalyshev, dcausse, gehel, bearloga]
     privileges: ['ALL = (analytics-search) NOPASSWD: ALL']
+    system_members: [analytics-search]
   parsoid-test-roots:
     gid: 772
     description: T125166 T125435
