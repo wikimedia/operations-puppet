@@ -27,7 +27,6 @@ class mediawiki::web::prod_sites {
 
     # Included in main.conf
     $main_conf_sites = [
-        'test.wikidata.org',
         'wikidata.org',
         'wikipedia.org',
     ]
@@ -41,6 +40,15 @@ class mediawiki::web::prod_sites {
             public_rewrites => true,
             declare_site    => false,
             before          => Apache::Site['main']
+            ;
+        'test.wikidata.org':
+            docroot             => '/srv/mediawiki/docroot/wikidata.org',
+            additional_rewrites => {
+                'early' => [
+                    '    Include "sites-enabled/wikidata-uris.incl"'
+                ],
+                'late'  => []
+            }
             ;
         'mediawiki.org':
             server_name         => 'www.mediawiki.org',
