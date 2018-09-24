@@ -42,6 +42,7 @@ class ores::base(
                     'myspell-ru',
                     'aspell-uk',
                     'myspell-hr',
+                    'hunspell-gl',
                     'hunspell-sr')
 
     if os_version('debian >= stretch') {
