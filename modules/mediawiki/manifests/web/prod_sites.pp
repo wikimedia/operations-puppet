@@ -26,13 +26,6 @@ class mediawiki::web::prod_sites {
 
 
     # Included in main.conf
-    $main_conf_sites = [
-        'wikipedia.org',
-    ]
-    mediawiki::web::site { $main_conf_sites:
-        before => Httpd::Site['main']
-    }
-
     mediawiki::web::vhost{
         default:
             ensure          => present,
@@ -129,6 +122,30 @@ class mediawiki::web::prod_sites {
             short_urls      => true,
             https_only      => true,
             legacy_rewrites => false,
+            ;
+        'wikipedia.org':
+            server_name         => 'wikipedia',
+            server_aliases      => ['*.wikipedia.org'],
+            docroot             => '/srv/mediawiki/docroot/wikipedia.org',
+            short_urls          => true,
+            upload_rewrite      => {
+                'domain_catchall' => 'wikipedia.org',
+                'rewrite_prefix'  => 'wikipedia',
+            },
+            legacy_rewrites     => true,
+            variant_aliases     => [
+                'sr', 'sr-ec', 'sr-el',
+                'zh', 'zh-hans', 'zh-hant',
+                'zh-cn', 'zh-hk', 'zh-my',
+                'zh-mo', 'zh-sg', 'zh-tw'
+            ],
+            additional_rewrites => {
+                'early' => [],
+                'late'  => [
+                    '    # moved wikistats off NFS',
+                    '    RewriteRule ^/wikistats(/(.*$)|$) %{ENV:RW_PROTO}://stats.wikimedia.org/$2 [R=302,L]'
+                ]
+            }
             ;
         'wikibooks.org':
             server_name     => 'wikibooks',
