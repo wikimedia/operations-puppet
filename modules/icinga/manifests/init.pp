@@ -13,30 +13,34 @@ class icinga(
     $enable_event_handlers = 1,
     $ensure_service = 'running',
 ) {
+
+    if os_version('debian == jessie') {
     # Setup icinga user
     # FIXME: This should be done by the package
 
-    group { 'nagios':
-        ensure    => present,
-        name      => 'nagios',
-        system    => true,
-        allowdupe => false,
-    }
+        group { 'nagios':
+            ensure    => present,
+            name      => 'nagios',
+            system    => true,
+            allowdupe => false,
+        }
 
-    group { 'icinga':
-        ensure => present,
-        name   => 'icinga',
-    }
+        group { 'icinga':
+            ensure => present,
+            name   => 'icinga',
+        }
 
-    user { 'icinga':
-        name       => 'icinga',
-        home       => '/home/icinga',
-        gid        => 'icinga',
-        system     => true,
-        managehome => false,
-        shell      => '/bin/false',
-        require    => [ Group['icinga'], Group['nagios'] ],
-        groups     => [ 'nagios' ],
+        user { 'icinga':
+            name       => 'icinga',
+            home       => '/home/icinga',
+            gid        => 'icinga',
+            system     => true,
+            managehome => false,
+            shell      => '/bin/false',
+            require    => [ Group['icinga'], Group['nagios'] ],
+            groups     => [ 'nagios' ],
+        }
+
     }
 
     package { 'icinga':
