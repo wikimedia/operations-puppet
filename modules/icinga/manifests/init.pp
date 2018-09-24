@@ -12,6 +12,7 @@ class icinga(
     $enable_notifications  = 1,
     $enable_event_handlers = 1,
     $ensure_service = 'running',
+    $icinga_user = 'icinga',
 ) {
 
     if os_version('debian == jessie') {
@@ -120,7 +121,7 @@ class icinga(
     # Setup tmpfs for use by icinga
     file { '/var/icinga-tmpfs':
         ensure => directory,
-        owner  => 'icinga',
+        owner  => $icinga_user,
         group  => 'icinga',
         mode   => '0755',
     }
@@ -139,7 +140,7 @@ class icinga(
             '/var/lib/icinga/rw',
         ]:
         ensure => directory,
-        owner  => 'icinga',
+        owner  => $icinga_user,
     }
 
     # FIXME: This should not require explicit setup
@@ -156,7 +157,7 @@ class icinga(
     # Script to purge resources for non-existent hosts
     file { '/usr/local/sbin/purge-nagios-resources.py':
         source => 'puppet:///modules/icinga/purge-nagios-resources.py',
-        owner  => 'icinga',
+        owner  => $icinga_user,
         group  => 'icinga',
         mode   => '0755',
     }
@@ -164,7 +165,7 @@ class icinga(
     # Command folders / files to let icinga web to execute commands
     # See Debian Bug 571801
     file { '/var/lib/nagios/rw':
-        owner => 'icinga',
+        owner => $icinga_user,
         group => 'www-data',
         mode  => '2710', # The sgid bit means new files inherit guid
     }
@@ -172,7 +173,7 @@ class icinga(
     # ensure icinga can write logs for ircecho, raid_handler etc.
     file { '/var/log/icinga':
         ensure => 'directory',
-        owner  => 'icinga',
+        owner  => $icinga_user,
         group  => 'adm',
         mode   => '2755',
     }

@@ -13,7 +13,7 @@ class icinga::naggen {
         content => generate(
             '/usr/local/bin/naggen2', $dbarg, '--type', 'hosts'),
         backup  => false,
-        owner   => 'icinga',
+        owner   => $icinga::icinga_user,
         group   => 'icinga',
         mode    => '0644',
         notify  => Service['icinga'],
@@ -22,7 +22,7 @@ class icinga::naggen {
         content => generate(
             '/usr/local/bin/naggen2', $dbarg, '--type', 'services'),
         backup  => false,
-        owner   => 'icinga',
+        owner   => $icinga::icinga_user,
         group   => 'icinga',
         mode    => '0644',
         notify  => Service['icinga'],

@@ -4,6 +4,7 @@
 # protected with ldap authentication
 class icinga::web (
     $virtual_host,
+    $icinga_user = 'icinga',
 ) {
     include ::icinga
 
@@ -37,7 +38,7 @@ class icinga::web (
 
     file { '/usr/share/icinga/htdocs/images/logos/ubuntu.png':
         source => 'puppet:///modules/icinga/ubuntu.png',
-        owner  => 'icinga',
+        owner  => $icinga_user,
         group  => 'icinga',
         mode   => '0644',
     }
