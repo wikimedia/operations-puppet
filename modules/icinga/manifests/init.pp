@@ -15,7 +15,13 @@ class icinga(
 ) {
     # Setup icinga user
     # FIXME: This should be done by the package
-    include ::icinga::group
+
+    group { 'nagios':
+        ensure    => present,
+        name      => 'nagios',
+        system    => true,
+        allowdupe => false,
+    }
 
     group { 'icinga':
         ensure => present,
