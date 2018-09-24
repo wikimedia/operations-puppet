@@ -69,11 +69,46 @@ class role::prometheus::beta {
       },
     ]
 
+    $jmx_exporter_jobs = [
+        {
+            'job_name'        => 'jmx_kafka',
+            'scheme'          => 'http',
+            'scrape_timeout'  => '45s',
+            'file_sd_configs' => [
+                { 'files' => [ "${targets_path}/jmx_kafka_broker_*.yaml" ]}
+            ],
+        },
+        {
+            'job_name'        => 'jmx_kafka_mirrormaker',
+            'scheme'          => 'http',
+            'file_sd_configs' => [
+                { 'files' => [ "${targets_path}/jmx_kafka_mirrormaker_*.yaml" ]}
+            ],
+        },
+    ]
+
+    # Collect all declared kafka_broker_.* jmx_exporter_instances
+    # from any uses of profile::kafka::broker::monitoring.
+    prometheus::jmx_exporter_config{ "kafka_broker_${::site}":
+        dest              => "${targets_path}/jmx_kafka_broker_beta_${::site}.yaml",
+        class_name        => 'profile::kafka::broker::monitoring',
+        instance_selector => 'kafka_broker_.*',
+        site              => $::site,
+    }
+    # Collect all declared kafka_mirror_.* jmx_exporter_instances
+    # from any uses of profile::kafka::mirror.
+    prometheus::jmx_exporter_config{ "kafka_mirrormaker_${::site}":
+        dest              => "${targets_path}/jmx_kafka_mirrormaker_beta_${::site}.yaml",
+        class_name        => 'profile::kafka::mirror',
+        instance_selector => 'kafka_mirror_.*',
+        site              => $::site,
+    }
+
     prometheus::server { 'beta':
         listen_address       => '127.0.0.1:9903',
         external_url         => 'https://beta-prometheus.wmflabs.org/beta',
         scrape_configs_extra => array_concat($varnish_jobs, $mysql_jobs, $web_jobs,
-            $cassandra_jobs),
+            $cassandra_jobs, $jmx_exporter_jobs),
     }
 
     prometheus::web { 'beta':
