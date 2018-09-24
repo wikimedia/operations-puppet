@@ -9,6 +9,7 @@
 # apcu - used by MediaWiki for local server caching
 # bz2 - dumps
 # curl - HTTP requests
+# gd - ZeroBanner
 # geoip - fundraising
 # intl, mbstring, xml - MediaWiki dependencies
 # memcached, mysql, redis - obvious from the name
@@ -44,6 +45,7 @@ class profile::mediawiki::php() {
         'apcu',
         'bz2',
         'curl',
+        'gd',
         'geoip',
         'intl',
         'luasandbox',
