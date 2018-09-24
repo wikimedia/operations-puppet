@@ -29,7 +29,6 @@ class mediawiki::web::prod_sites {
     $main_conf_sites = [
         'test.wikidata.org',
         'wikidata.org',
-        'wiktionary.org',
         'wikiquote.org',
         'donate.wikimedia.org',
         'vote.wikimedia.org',
@@ -63,7 +62,23 @@ class mediawiki::web::prod_sites {
                 ],
                 'late'  => []
             },
-            legacy_rewrites     => true,
+            legacy_rewrites     => true
+            ;
+        'wiktionary.org':
+            server_name     => 'wiktionary',
+            server_aliases  => ['*.wiktionary.org'],
+            docroot         => '/srv/mediawiki/docroot/wiktionary.org',
+            short_urls      => true,
+            upload_rewrite  => {
+                'domain_catchall' => 'wiktionary.org',
+                'rewrite_prefix'  => 'wiktionary',
+            },
+            legacy_rewrites => true,
+            variant_aliases => [
+                'sr', 'sr-ec', 'sr-el',
+                'zh', 'zh-hans', 'zh-hant',
+                'zh-cn', 'zh-hk', 'zh-sg', 'zh-tw'
+            ]
             ;
         'wikivoyage.org':
             server_name     => 'wikivoyage',
