@@ -31,7 +31,6 @@ class mediawiki::web::prod_sites {
         'wikidata.org',
         'vote.wikimedia.org',
         'wikipedia.org',
-        'wikibooks.org',
     ]
     mediawiki::web::site { $main_conf_sites:
         before => Apache::Site['main']
@@ -105,6 +104,22 @@ class mediawiki::web::prod_sites {
                 ],
                 'late'  => []
             }
+            ;
+        'wikibooks.org':
+            server_name     => 'wikibooks',
+            server_aliases  => ['*.wikibooks.org'],
+            docroot         => '/srv/mediawiki/docroot/wikibooks.org',
+            short_urls      => true,
+            upload_rewrite  => {
+                'domain_catchall' => 'wikibooks.org',
+                'rewrite_prefix'  => 'wikibooks',
+            },
+            legacy_rewrites => true,
+            variant_aliases => [
+                'sr', 'sr-ec', 'sr-el',
+                'zh', 'zh-hans', 'zh-hant',
+                'zh-cn', 'zh-hk', 'zh-sg', 'zh-tw'
+            ],
             ;
         'wikisource.org':
             server_name     => 'wikisource',
