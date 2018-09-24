@@ -29,7 +29,6 @@ class mediawiki::web::prod_sites {
     $main_conf_sites = [
         'test.wikidata.org',
         'wikidata.org',
-        'wikiquote.org',
         'donate.wikimedia.org',
         'vote.wikimedia.org',
         'wikipedia.org',
@@ -79,6 +78,22 @@ class mediawiki::web::prod_sites {
                 'zh', 'zh-hans', 'zh-hant',
                 'zh-cn', 'zh-hk', 'zh-sg', 'zh-tw'
             ]
+            ;
+        'wikiquote.org':
+            server_name     => 'wikiquote',
+            server_aliases  => ['*.wikiquote.org'],
+            docroot         => '/srv/mediawiki/docroot/wikiquote.org',
+            short_urls      => true,
+            upload_rewrite  => {
+                'domain_catchall' => 'wikiquote.org',
+                'rewrite_prefix'  => 'wikiquote',
+            },
+            legacy_rewrites => true,
+            variant_aliases => [
+                'sr', 'sr-ec', 'sr-el',
+                'zh', 'zh-hans', 'zh-hant',
+                'zh-cn', 'zh-hk', 'zh-sg', 'zh-tw'
+            ],
             ;
         'wikivoyage.org':
             server_name     => 'wikivoyage',
