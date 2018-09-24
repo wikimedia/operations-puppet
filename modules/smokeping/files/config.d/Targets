@@ -309,10 +309,10 @@ host = asw2-ulsfo.mgmt.ulsfo.wmnet
 menu = Hosts
 title = Sampled Hosts
 
-+++ bast4001
-menu = bast4001
-title = bast4001.wikimedia.org
-host = bast4001.wikimedia.org
++++ bast4002
+menu = bast4002
+title = bast4002.wikimedia.org
+host = bast4002.wikimedia.org
 
 + eqsin
 
