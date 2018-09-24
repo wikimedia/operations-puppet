@@ -33,7 +33,6 @@ class mediawiki::web::prod_sites {
         'wikipedia.org',
         'wikibooks.org',
         'wikisource.org',
-        'wikinews.org',
     ]
     mediawiki::web::site { $main_conf_sites:
         before => Apache::Site['main']
@@ -107,6 +106,22 @@ class mediawiki::web::prod_sites {
                 ],
                 'late'  => []
             }
+            ;
+        'wikinews.org':
+            server_name     => 'wikinews',
+            server_aliases  => ['*.wikinews.org'],
+            docroot         => '/srv/mediawiki/docroot/wikinews.org',
+            short_urls      => true,
+            upload_rewrite  => {
+                'domain_catchall' => 'wikinews.org',
+                'rewrite_prefix'  => 'wikinews',
+            },
+            legacy_rewrites => true,
+            variant_aliases => [
+                'sr', 'sr-ec', 'sr-el',
+                'zh', 'zh-hans', 'zh-hant',
+                'zh-cn', 'zh-hk', 'zh-sg', 'zh-tw'
+            ],
             ;
         'wikivoyage.org':
             server_name     => 'wikivoyage',
