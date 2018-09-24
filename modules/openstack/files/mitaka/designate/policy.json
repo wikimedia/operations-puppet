@@ -35,7 +35,7 @@
     "get_tenant": "",
     "count_tenants": "rule:admin",
 
-    "create_zone": "rule:admin",
+    "create_zone": "rule:admin_or_projectadmin",
     "get_zones": "",
     "get_zone": "",
     "get_zone_servers": "",
