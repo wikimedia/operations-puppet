@@ -94,6 +94,12 @@ acl_check_rcpt:
 
   require verify = recipient
 
+  # Drop connections from IP addresses listed in DNSBL
+  # change from warn to drop after validating
+  warn message = refusing mail from $sender_host_address - address is blocklisted by $dnslist_domain ($dnslist_value: $dnslist_text)
+          dnslists = zen.spamhaus.org
+          delay = 15s
+
   accept
 
 
