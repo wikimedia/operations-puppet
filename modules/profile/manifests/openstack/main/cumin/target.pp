@@ -15,8 +15,18 @@ class profile::openstack::main::cumin::target(
     $auth_group = hiera('profile::openstack::main::cumin::auth_group'),
     $project_masters = hiera('profile::openstack::main::cumin::project_masters'),
     $project_pub_key = hiera('profile::openstack::main::cumin::project_pub_key'),
+    $cluster = hiera('cluster', 'misc'),
+    $site = $::site,  # lint:ignore:wmf_styleguide
 ) {
     require ::network::constants
+
+    # Include cumin::selector on all cumin targets so that
+    # the get_clusters puppet function will get results when calling
+    # query_resources.
+    class { '::cumin::selector':
+        cluster => $cluster,
+        site    => $site,
+    }
 
     validate_array($project_masters)
 
