@@ -13,6 +13,7 @@ class icinga(
     $enable_event_handlers = 1,
     $ensure_service = 'running',
     $icinga_user = 'icinga',
+    $icinga_group = 'icinga',
 ) {
 
     if os_version('debian == jessie') {
@@ -60,8 +61,8 @@ class icinga(
 
     file { '/etc/icinga/cgi.cfg':
         source  => 'puppet:///modules/icinga/cgi.cfg',
-        owner   => 'icinga',
-        group   => 'icinga',
+        owner   => $icinga_user,
+        group   => $icinga_group,
         mode    => '0644',
         require => Package['icinga'],
         notify  => Service['icinga'],
@@ -69,8 +70,8 @@ class icinga(
 
     file { '/etc/icinga/icinga.cfg':
         content => template('icinga/icinga.cfg.erb'),
-        owner   => 'icinga',
-        group   => 'icinga',
+        owner   => $icinga_user,
+        group   => $icinga_group,
         mode    => '0644',
         require => Package['icinga'],
         notify  => Service['icinga'],
@@ -78,8 +79,8 @@ class icinga(
 
     file { '/etc/icinga/nsca_frack.cfg':
         content => template('icinga/nsca_frack.cfg.erb'),
-        owner   => 'icinga',
-        group   => 'icinga',
+        owner   => $icinga_user,
+        group   => $icinga_group,
         mode    => '0644',
         require => Package['icinga'],
         notify  => Service['icinga'],
@@ -122,7 +123,7 @@ class icinga(
     file { '/var/icinga-tmpfs':
         ensure => directory,
         owner  => $icinga_user,
-        group  => 'icinga',
+        group  => $icinga_group,
         mode   => '0755',
     }
 
@@ -158,7 +159,7 @@ class icinga(
     file { '/usr/local/sbin/purge-nagios-resources.py':
         source => 'puppet:///modules/icinga/purge-nagios-resources.py',
         owner  => $icinga_user,
-        group  => 'icinga',
+        group  => $icinga_group,
         mode   => '0755',
     }
 

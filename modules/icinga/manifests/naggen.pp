@@ -14,7 +14,7 @@ class icinga::naggen {
             '/usr/local/bin/naggen2', $dbarg, '--type', 'hosts'),
         backup  => false,
         owner   => $icinga::icinga_user,
-        group   => 'icinga',
+        group   => $icinga::icinga_group,
         mode    => '0644',
         notify  => Service['icinga'],
     }
@@ -23,7 +23,7 @@ class icinga::naggen {
             '/usr/local/bin/naggen2', $dbarg, '--type', 'services'),
         backup  => false,
         owner   => $icinga::icinga_user,
-        group   => 'icinga',
+        group   => $icinga::icinga_group,
         mode    => '0644',
         notify  => Service['icinga'],
     }

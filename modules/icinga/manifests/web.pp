@@ -38,7 +38,7 @@ class icinga::web (
     file { '/usr/share/icinga/htdocs/images/logos/ubuntu.png':
         source => 'puppet:///modules/icinga/ubuntu.png',
         owner  => $icinga::icinga_user,
-        group  => 'icinga',
+        group  => $icinga::icinga_group,
         mode   => '0644',
     }
 
