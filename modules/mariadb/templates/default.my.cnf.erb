@@ -25,7 +25,7 @@ server_id = <%= @server_id %>
 read_only = <%= @read_only %>
 
 secure_file_priv   = /dev/null
-max_allowed_packet = <% @max_allowed_packet %>
+max_allowed_packet = <%= @max_allowed_packet %>
 sync_binlog        = 1
 expire_logs_days   = 7
 
@@ -37,6 +37,6 @@ innodb_flush_method     = O_DIRECT
 [mysqldump]
 
 quick
-max_allowed_packet = <% @max_allowed_packet %>
+max_allowed_packet = <%= @max_allowed_packet %>
 
 
