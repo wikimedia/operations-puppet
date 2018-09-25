@@ -170,6 +170,7 @@ GRANT DELETE, INSERT, SELECT, UPDATE
     ON `scholarships`.* TO 'scholarships_app'@'10.64.32.156';
 
 -- Recommendation API
+-- (admin account)
 GRANT USAGE
     ON *.* TO 'recommendationapi'@'10.64.32.156'
     IDENTIFIED BY '<%= @recommendationapi_pass %>'
@@ -185,4 +186,22 @@ GRANT USAGE
 
 GRANT ALL PRIVILEGES
     ON `recommendationapi`.* TO 'recommendationapi'@'10.64.0.166';
+
+-- (service account - read only)
+GRANT USAGE
+    ON *.* TO 'recommendationapiservice'@'10.64.32.156'
+    IDENTIFIED BY '<%= @recommendationapiservice_pass %>'
+    WITH MAX_USER_CONNECTIONS 10;
+
+GRANT SELECT
+    ON `recommendationapi`.* TO 'recommendationapiservice'@'10.64.32.156';
+
+GRANT USAGE
+    ON *.* TO 'recommendationapiservice'@'10.64.0.166'
+    IDENTIFIED BY '<%= @recommendationapiservice_pass %>'
+    WITH MAX_USER_CONNECTIONS 10;
+
+GRANT SELECT
+    ON `recommendationapi`.* TO 'recommendationapiservice'@'10.64.0.166';
+
 
