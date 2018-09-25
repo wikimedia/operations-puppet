@@ -35,12 +35,12 @@ class profile::analytics::refinery::job::refine (
         # Refine EventLogging Analytics (capsule based) data.
         profile::analytics::refinery::job::refine_job { 'eventlogging_analytics':
             job_config => merge($default_config, {
-                input_path                 => '/wmf/data/raw/eventlogging',
-                input_regex                => 'eventlogging_(.+)/hourly/(\\d+)/(\\d+)/(\\d+)/(\\d+)',
-                input_regex_capture_groups => 'table,year,month,day,hour',
-                table_blacklist_regex      => '^Edit|ChangesListHighlights|InputDeviceDynamics$',
+                input_path                      => '/wmf/data/raw/eventlogging',
+                input_path_regex                => 'eventlogging_(.+)/hourly/(\\d+)/(\\d+)/(\\d+)/(\\d+)',
+                input_path_regex_capture_groups => 'table,year,month,day,hour',
+                table_blacklist_regex           => '^Edit|ChangesListHighlights|InputDeviceDynamics$',
                 # Deduplicate basd on uuid field and geocode ip in EventLogging analytics data.
-                transform_functions        => 'org.wikimedia.analytics.refinery.job.refine.deduplicate_eventlogging,org.wikimedia.analytics.refinery.job.refine.geocode_ip',
+                transform_functions             => 'org.wikimedia.analytics.refinery.job.refine.deduplicate_eventlogging,org.wikimedia.analytics.refinery.job.refine.geocode_ip',
             }),
             minute     => 30,
         }
@@ -48,12 +48,12 @@ class profile::analytics::refinery::job::refine (
         # Refine EventBus data.
         profile::analytics::refinery::job::refine_job { 'eventlogging_eventbus':
             job_config => merge($default_config, {
-                input_path                 => '/wmf/data/raw/event',
-                input_regex                => '.*(eqiad|codfw)_(.+)/hourly/(\\d+)/(\\d+)/(\\d+)/(\\d+)',
-                input_regex_capture_groups => 'datacenter,table,year,month,day,hour',
-                table_blacklist_regex      => '^mediawiki_page_properties_change|mediawiki_recentchange|mediawiki_revision_score$',
+                input_path                      => '/wmf/data/raw/event',
+                input_path_regex                => '.*(eqiad|codfw)_(.+)/hourly/(\\d+)/(\\d+)/(\\d+)/(\\d+)',
+                input_path_regex_capture_groups => 'datacenter,table,year,month,day,hour',
+                table_blacklist_regex           => '^mediawiki_page_properties_change|mediawiki_recentchange|mediawiki_revision_score$',
                 # Deduplicate eventbus based data based on meta.id field
-                transform_functions        => 'org.wikimedia.analytics.refinery.job.refine.deduplicate_eventbus',
+                transform_functions             => 'org.wikimedia.analytics.refinery.job.refine.deduplicate_eventbus',
             }),
             minute     => 20,
         }
@@ -87,12 +87,12 @@ class profile::analytics::refinery::job::refine (
 
         profile::analytics::refinery::job::refine_job { 'eventlogging_eventbus_job_queue':
             job_config => merge($default_config, {
-                input_path                 => '/wmf/data/raw/mediawiki_job',
-                input_regex                => '.*(eqiad|codfw)_(.+)/hourly/(\\d+)/(\\d+)/(\\d+)/(\\d+)',
-                input_regex_capture_groups => 'datacenter,table,year,month,day,hour',
-                table_blacklist_regex      => $job_table_blacklist,
+                input_path                      => '/wmf/data/raw/mediawiki_job',
+                input_path_regex                => '.*(eqiad|codfw)_(.+)/hourly/(\\d+)/(\\d+)/(\\d+)/(\\d+)',
+                input_path_regex_capture_groups => 'datacenter,table,year,month,day,hour',
+                table_blacklist_regex           => $job_table_blacklist,
                 # Deduplicate eventbus based data based on meta.id field
-                transform_functions        => 'org.wikimedia.analytics.refinery.job.refine.deduplicate_eventbus',
+                transform_functions             => 'org.wikimedia.analytics.refinery.job.refine.deduplicate_eventbus',
             }),
             minute     => 25,
         }
@@ -101,11 +101,11 @@ class profile::analytics::refinery::job::refine (
         profile::analytics::refinery::job::refine_job { 'netflow':
             job_config         => merge($default_config, {
                 # This is imported by camus_job { 'netflow': }
-                input_path                 => '/wmf/data/raw/netflow',
-                input_regex                => '(netflow)/hourly/(\\d+)/(\\d+)/(\\d+)/(\\d+)',
-                input_regex_capture_groups => 'table,year,month,day,hour',
-                output_path                => '/wmf/data/wmf',
-                database                   => 'wmf',
+                input_path                      => '/wmf/data/raw/netflow',
+                input_path_regex                => '(netflow)/hourly/(\\d+)/(\\d+)/(\\d+)/(\\d+)',
+                input_path_regex_capture_groups => 'table,year,month,day,hour',
+                output_path                     => '/wmf/data/wmf',
+                database                        => 'wmf',
             }),
             minute             => 45,
             monitoring_enabled => false,
