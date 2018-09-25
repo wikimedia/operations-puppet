@@ -108,7 +108,7 @@ class profile::prometheus::alerts {
         query           => 'scalar(quantile(0.50,sum(rate(kafka_server_BrokerTopicMetrics_MessagesIn_total{cluster="kafka_jumbo",topic="eventlogging-client-side"}[15m]))))',
         prometheus_url  => 'http://prometheus.svc.eqiad.wmnet/ops',
         warning         => 1500,
-        critical        => 5000,
+        critical        => 8000,
         method          => 'ge',
         contact_group   => 'analytics',
         dashboard_links => ['https://grafana.wikimedia.org/dashboard/db/eventlogging?panelId=6&fullscreen&orgId=1'],
