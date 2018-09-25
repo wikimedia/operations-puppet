@@ -1,27 +1,25 @@
 # = Class: icinga::plugins
 #
 # Sets up icinga check_plugins and notification commands
-class icinga::plugins (
-    $icinga_user = 'icinga',
-){
+class icinga::plugins {
     package { 'nagios-nrpe-plugin':
         ensure => present,
     }
     file { '/usr/lib/nagios':
         ensure => directory,
-        owner  => $icinga_user,
+        owner  => $icinga::icinga_user,
         group  => 'icinga',
         mode   => '0755',
     }
     file { '/usr/lib/nagios/plugins':
         ensure => directory,
-        owner  => $icinga_user,
+        owner  => $icinga::icinga_user,
         group  => 'icinga',
         mode   => '0755',
     }
     file { '/usr/lib/nagios/plugins/eventhandlers':
         ensure => directory,
-        owner  => $icinga_user,
+        owner  => $icinga::icinga_user,
         group  => 'icinga',
         mode   => '0755',
     }
@@ -33,13 +31,13 @@ class icinga::plugins (
     }
     file { '/var/lib/nagios/rm':
         ensure => directory,
-        owner  => $icinga_user,
+        owner  => $icinga::icinga_user,
         group  => 'nagios',
         mode   => '0775',
     }
     file { '/etc/nagios-plugins':
         ensure => directory,
-        owner  => $icinga_user,
+        owner  => $icinga::icinga_user,
         group  => 'icinga',
         mode   => '0755',
     }
@@ -49,7 +47,7 @@ class icinga::plugins (
         ensure  => directory,
         purge   => true,
         recurse => true,
-        owner   => $icinga_user,
+        owner   => $icinga::icinga_user,
         group   => 'icinga',
         mode    => '0755',
     }
@@ -126,7 +124,7 @@ class icinga::plugins (
         ensure     => present,
         content    => template('icinga/check_commands/smtp.cfg.erb'),
         config_dir => '/etc/icinga',
-        owner      => $icinga_user,
+        owner      => $icinga::icinga_user,
         group      => 'icinga',
     }
 
@@ -134,7 +132,7 @@ class icinga::plugins (
         ensure     => present,
         content    => template('icinga/check_commands/mysql.cfg.erb'),
         config_dir => '/etc/icinga',
-        owner      => $icinga_user,
+        owner      => $icinga::icinga_user,
         group      => 'icinga',
     }
 
@@ -142,7 +140,7 @@ class icinga::plugins (
         ensure     => present,
         content    => template('icinga/check_commands/check_ripe_atlas.cfg.erb'),
         config_dir => '/etc/icinga',
-        owner      => $icinga_user,
+        owner      => $icinga::icinga_user,
         group      => 'icinga',
     }
 
@@ -150,7 +148,7 @@ class icinga::plugins (
         ensure     => present,
         content    => template('icinga/check_commands/check_legal_html.cfg.erb'),
         config_dir => '/etc/icinga',
-        owner      => $icinga_user,
+        owner      => $icinga::icinga_user,
         group      => 'icinga',
     }
 
@@ -158,7 +156,7 @@ class icinga::plugins (
         ensure     => present,
         content    => template('icinga/check_commands/check_wikitech_static.cfg.erb'),
         config_dir => '/etc/icinga',
-        owner      => $icinga_user,
+        owner      => $icinga::icinga_user,
         group      => 'icinga',
     }
 
@@ -166,7 +164,7 @@ class icinga::plugins (
         ensure     => present,
         content    => template('icinga/check_commands/check_wikitech_static_version.cfg.erb'),
         config_dir => '/etc/icinga',
-        owner      => $icinga_user,
+        owner      => $icinga::icinga_user,
         group      => 'icinga',
     }
 
@@ -174,7 +172,7 @@ class icinga::plugins (
         ensure     => present,
         content    => template('icinga/check_commands/check_wikidata_crit.cfg.erb'),
         config_dir => '/etc/icinga',
-        owner      => $icinga_user,
+        owner      => $icinga::icinga_user,
         group      => 'icinga',
     }
 
