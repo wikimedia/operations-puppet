@@ -41,19 +41,15 @@ node 'an-master1002.eqiad.wmnet' {
     interface::add_ip6_mapped { 'main': }
 }
 
-# analytics1001 is the Hadoop master node:
-# - primary active NameNode
-# - YARN ResourceManager
-# Being replaced in T203635 - Procedure IN PROGRESS
+# Old hadoop master, replaced in T203635
 node 'analytics1001.eqiad.wmnet' {
-    role(analytics_cluster::hadoop::master)
+    role(spare::system)
     interface::add_ip6_mapped { 'main': }
 }
 
-# analytics1002 is the Hadoop standby NameNode and ResourceManager.
-# Being replaced in T203635 - Procedure IN PROGRESS
+# Old hadoop master, replaced in T203635
 node 'analytics1002.eqiad.wmnet' {
-    role(analytics_cluster::hadoop::standby)
+    role(spare::system)
     interface::add_ip6_mapped { 'main': }
 }
 
