@@ -16,6 +16,94 @@ import jinja2
 import requests
 import sqlalchemy
 
+# Taken from https://www.icinga.com/docs/icinga1/latest/en/objectdefinitions.html
+VALID_HOST_PARAMS = [
+    'host_name',
+    'alias',
+    'display_name',
+    'address',
+    'address6',
+    'parents',
+    'hostgroups',
+    'check_command',
+    'initial_state',
+    'max_check_attempts',
+    'check_interval',
+    'retry_interval',
+    'active_checks_enabled',
+    'passive_checks_enabled',
+    'check_period',
+    'obsess_over_host',
+    'check_freshness',
+    'freshness_threshold',
+    'event_handler',
+    'event_handler_enabled',
+    'low_flap_threshold',
+    'high_flap_threshold',
+    'flap_detection_enabled',
+    'flap_detection_options',
+    'failure_prediction_enabled',
+    'process_perf_data',
+    'retain_status_information',
+    'retain_nonstatus_information',
+    'contacts',
+    'contact_groups',
+    'notification_interval',
+    'first_notification_delay',
+    'notification_period',
+    'notification_options',
+    'notifications_enabled',
+    'stalking_options',
+    'notes',
+    'notes_url',
+    'action_url',
+    'icon_image',
+    'icon_image_alt',
+    'statusmap_image',
+    '2d_coords'
+]
+VALID_SERVICE_PARAMS = [
+    'host_name',
+    'hostgroup_name',
+    'service_description',
+    'display_name',
+    'servicegroups',
+    'is_volatile',
+    'check_command',
+    'initial_state',
+    'max_check_attempts',
+    'check_interval',
+    'retry_interval',
+    'active_checks_enabled',
+    'passive_checks_enabled',
+    'check_period',
+    'obsess_over_service',
+    'check_freshness',
+    'freshness_threshold',
+    'event_handler',
+    'event_handler_enabled',
+    'low_flap_threshold',
+    'high_flap_threshold',
+    'flap_detection_enabled',
+    'flap_detection_options',
+    'failure_prediction_enabled',
+    'process_perf_data',
+    'retain_status_information',
+    'retain_nonstatus_information',
+    'notification_interval',
+    'first_notification_delay',
+    'notification_period',
+    'notification_options',
+    'notifications_enabled',
+    'contacts',
+    'contact_groups',
+    'stalking_options',
+    'notes',
+    'notes_url',
+    'action_url',
+    'icon_image',
+    'icon_image_alt'
+]
 
 class NagiosGeneratorBase(object):
     restype = {
@@ -164,10 +252,12 @@ class NagiosGeneratorPuppetDB(NagiosGeneratorBase):
         if what in ['hosts']:
             if 'host_name' not in entity['parameters']:
                 entity['parameters']['host_name'] = entity['title']
-
-        param_keys = entity['parameters'].keys()
-        param_keys.sort()
-        params = [(p, entity['parameters'][p]) for p in param_keys if p not in ['ensure', 'target']]
+        if what == 'hosts':
+            valid_params = VALID_HOST_PARAMS
+        elif what == 'services':
+            valid_params = VALID_SERVICE_PARAMS
+        param_keys = sorted([key for key in entity['parameters'].keys() if key in valid_params])
+        params = [(p, entity['parameters'][p]) for p in param_keys]
         return (name, params)
 
 
