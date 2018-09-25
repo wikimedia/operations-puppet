@@ -31,6 +31,7 @@
     </appender>
 
     <appender name="logstash" class="net.logstash.logback.appender.LogstashSocketAppender">
+        <filter class="org.wikidata.query.rdf.common.log.PerLoggerThrottler" />
         <host><%= @logstash_host %></host>
         <port><%= @logstash_port %></port>
         <customFields>{"program":"<%= @title %>"}</customFields>
@@ -49,6 +50,5 @@
     <logger name="org.wikidata.query.rdf" level="info"/>
     <logger name="org.wikidata.query.rdf.blazegraph.inline.literal.AbstractMultiTypeExtension" level="error"/>
     <logger name="com.bigdata.util.concurrent.Haltable" level="off"/>
-    <logger name="com.bigdata.rdf.internal.LexiconConfiguration" level="off"/>
 
 </configuration>
