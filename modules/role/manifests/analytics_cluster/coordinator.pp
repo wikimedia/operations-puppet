@@ -28,7 +28,7 @@ class role::analytics_cluster::coordinator {
     include ::profile::analytics::database::meta
 
     # Back up analytics-meta MySQL instance
-    # to analytics1002.
+    # to an-master1002.
     include ::profile::analytics::database::meta::backup
 
     # SQL-like queries to data stored in HDFS

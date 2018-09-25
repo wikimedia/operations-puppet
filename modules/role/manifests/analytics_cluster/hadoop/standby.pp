@@ -14,7 +14,7 @@ class role::analytics_cluster::hadoop::standby {
     include ::profile::hadoop::logstash
     include ::profile::hadoop::backup::namenode
 
-    # analytics1002 is usually inactive, and it has a
+    # an-master1002 is usually inactive, and it has a
     # decent amount of disk space.  We use it to
     # store some backups, including fsimage snapshots
     # of Hadoop NameNode metadata, and of the
