@@ -65,8 +65,10 @@ define profile::analytics::refinery::job::refine_job (
         ensure     => $ensure,
         jar        => $_refinery_job_jar,
         class      => $job_class,
-        spark_opts => "--master yarn --deploy-mode cluster --queue ${queue} --driver-memory ${spark_driver_memory} --conf spark.driver.extraClassPath=/usr/lib/hive/lib/hive-jdbc.jar:/usr/lib/hadoop-mapreduce/hadoop-mapreduce-client-common.jar:/usr/lib/hive/lib/hive-service.jar --conf spark.dynamicAllocation.maxExecutors=${spark_max_executors} --files /etc/hive/conf/hive-site.xml ${spark_extra_opts}",
-        job_opts   => "--config_file ${job_config_file}",
+        # We use spark's --files option to load the $job_config_file to the Spark job's working HDFS dir.
+        # It is then referenced via its relative file name with --config_file $job_name.properties.
+        spark_opts => "--files /etc/hive/conf/hive-site.xml,${job_config_file} --master yarn --deploy-mode cluster --queue ${queue} --driver-memory ${spark_driver_memory} --conf spark.driver.extraClassPath=/usr/lib/hive/lib/hive-jdbc.jar:/usr/lib/hadoop-mapreduce/hadoop-mapreduce-client-common.jar:/usr/lib/hive/lib/hive-service.jar --conf spark.dynamicAllocation.maxExecutors=${spark_max_executors} ${spark_extra_opts}",
+        job_opts   => "--config_file ${job_name}.properties",
         require    => Profile::Analytics::Refinery::Job::Config[$job_config_file],
         user       => $user,
         hour       => $hour,
