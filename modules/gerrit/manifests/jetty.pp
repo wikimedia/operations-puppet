@@ -131,14 +131,6 @@ class gerrit::jetty(
         source  => 'puppet:///modules/gerrit/homedir',
     }
 
-    file { '/var/lib/gerrit2/review_site':
-        ensure  => directory,
-        owner   => 'gerrit2',
-        group   => 'gerrit2',
-        mode    => '0755',
-        require => File['/var/lib/gerrit2'],
-    }
-
     file { '/var/lib/gerrit2/review_site/bin':
         ensure  => directory,
         owner   => 'gerrit2',
@@ -218,7 +210,7 @@ class gerrit::jetty(
     file { '/var/lib/gerrit2/review_site/etc/motd.config':
         ensure  => 'link',
         target  => '/srv/deployment/gerrit/gerrit/etc/motd.config',
-        require => File['/var/lib/gerrit2/review_site'],
+        require => File['/var/lib/gerrit2'],
     }
 
     file { '/var/lib/gerrit2/review_site/etc/log4j.xml':
