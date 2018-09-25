@@ -121,7 +121,6 @@ define monitoring::host (
             icon_image            => $icon_image,
             vrml_image            => $vrml_image,
             statusmap_image       => $statusmap_image,
-            mode                  => '0444'
         },
     }
     # This is a hack. We detect if we are running on the scope of an icinga

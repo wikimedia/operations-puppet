@@ -17,7 +17,6 @@ define monitoring::exported_nagios_host (
     $statusmap_image,
     $parents=undef,
     $notifications_enabled='1',
-    $mode='0444'
 ) {
     @@nagios_host { $title:
         ensure                => $ensure,
@@ -36,6 +35,6 @@ define monitoring::exported_nagios_host (
         icon_image            => $icon_image,
         vrml_image            => $vrml_image,
         statusmap_image       => $statusmap_image,
-        mode                  => $mode
+
     }
 }
