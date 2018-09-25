@@ -43,9 +43,9 @@ camus.message.decoder.class=com.linkedin.camus.etl.kafka.coders.JsonStringMessag
 etl.record.writer.provider.class=com.linkedin.camus.etl.kafka.common.SequenceFileRecordWriterProvider
 
 # Max hadoop tasks to use, each task can pull multiple topic partitions.
-# Currently 4 topics, 2 with 24 partitions, 2 with 12.
-# 2 * 24 + 2 * 12 == 72
-mapred.map.tasks=72
+# Currently 2 topics with 24 partitions each.
+# 2 * 24 = 48
+mapred.map.tasks=48
 
 # Connection parameters.
 kafka.brokers=<%= Array(@kafka_brokers).join(',') %>
