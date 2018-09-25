@@ -1,7 +1,7 @@
 define osm::populate_admin (
     Wmflib::Ensure $ensure = present,
-    Integer $hour          = 12,
-    Integer $minute        = 5,
+    Integer $hour          = 0,
+    Integer $minute        = 1,
     String $weekday        = 'Tuesday',
     String $log_dir        = '/var/log/osm'
 ) {
