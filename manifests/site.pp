@@ -778,8 +778,9 @@ node /^dumpsdata1002.eqiad.wmnet$/ {
     role(dumps::generation::server::fallback)
 }
 
+# misc. test server, keep (T156208)
 node 'eeden.wikimedia.org' {
-    role(authdns::server)
+    role(test)
     interface::add_ip6_mapped { 'main': }
 }
 
