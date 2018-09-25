@@ -2,8 +2,8 @@
 
 import argparse
 import datetime
-import pymysql
 import sys
+import pymysql
 
 OK = 0
 WARNING = 1
@@ -16,6 +16,8 @@ SECTIONS = ['s1', 's2', 's3', 's4', 's5', 's6', 's7', 's8',
 DATACENTERS = ['eqiad', 'codfw']
 
 DEFAULT_FRESHNESS = 691200  # 8 days, in seconds
+CRIT_SIZE = 10000  # backup smaller than 10K are considered failed
+WARN_SIZE = 10000000000  # backups smaller than 10 GB are strange
 
 DB_HOST = 'localhost'
 DB_USER = 'nagios'
@@ -90,11 +92,26 @@ def check_backup_database(options):
                                   'Most recent backup {}'.format(section,
                                                                  datacenter,
                                                                  last_backup_date))
-            # TODO: check files and sizes
+
+            size = int(data[0]['total_size'])
+            if size < CRIT_SIZE:
+                return(CRITICAL, 'Last backup for {} at {} ({}) is tiny, less than 10K: '
+                                 '{} bytes'.format(section,
+                                                   datacenter,
+                                                   last_backup_date,
+                                                   size))
+            if size < WARN_SIZE:
+                return (WARNING, 'Last backup for {} at {} ({}) is less than 10G: '
+                                 '{} bytes.'.format(section,
+                                                    datacenter,
+                                                    last_backup_date,
+                                                    size))
+            # TODO: check files expected
             return (OK, 'Backups for {} at {} are up to date: '
-                        'Most recent backup {}'.format(section,
-                                                       datacenter,
-                                                       last_backup_date))
+                        'Most recent backup {} ({} bytes)'.format(section,
+                                                                  datacenter,
+                                                                  last_backup_date,
+                                                                  size))
 
 
 def main():
