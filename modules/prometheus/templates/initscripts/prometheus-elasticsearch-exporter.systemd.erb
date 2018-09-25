@@ -5,7 +5,7 @@ Documentation=https://prometheus.io/docs/introduction/overview/
 [Service]
 Restart=always
 User=prometheus
-ExecStart=/usr/bin/prometheus-elasticsearch-exporter -es.uri=<%= @es_uri %> -listenAddress :<%= @prometheus_port %>
+ExecStart=/usr/bin/prometheus-elasticsearch-exporter -es.uri=<%= @es_uri %>:<%= @prometheus_port %>
 
 [Install]
 WantedBy=multi-user.target
