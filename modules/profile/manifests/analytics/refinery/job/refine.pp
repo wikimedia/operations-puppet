@@ -58,23 +58,6 @@ class profile::analytics::refinery::job::refine (
             minute     => 20,
         }
 
-        # Refine EventBus data.
-        profile::analytics::refinery::job::refine_job { 'eventlogging_eventbus':
-            input_base_path     => '/wmf/data/raw/event',
-            # 'datacenter' is extracted from the input path into a Hive table partition
-            input_regex         => '.*(eqiad|codfw)_(.+)/hourly/(\\d+)/(\\d+)/(\\d+)/(\\d+)',
-            input_capture       => 'datacenter,table,year,month,day,hour',
-            output_base_path    => '/wmf/data/event',
-            output_database     => 'event',
-            # Temporarily blacklist revision_score until
-            # https://phabricator.wikimedia.org/T195979 is resolved upstream.
-            table_blacklist     => '^mediawiki_page_properties_change|mediawiki_recentchange|mediawiki_revision_score$',
-            # Deduplicate eventbus based data based on meta.id field
-            transform_functions => 'org.wikimedia.analytics.refinery.job.refine.deduplicate_eventbus',
-            minute              => 20,
-        }
-
-
         # $problematic_jobs will not be refined.
         # These have inconsistent schemas that cause refinement to fail.
         $problematic_jobs = [
