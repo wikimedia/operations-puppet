@@ -8,7 +8,7 @@
 # Array values.
 require 'json'
 -%>
-<% @properties.keys.each do |key| -%>
+<% @properties.keys.sort.each do |key| -%>
 <% if not @properties[key].nil? -%>
 <%= key %> = <%= @properties[key].class == Array ? @properties[key].to_json : @properties[key] %>
 <% end -%>
