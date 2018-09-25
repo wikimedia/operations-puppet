@@ -32,7 +32,6 @@ class profile::icinga(
     include rsync::server
 
     include icinga::monitor::checkpaging
-    include icinga::nsca::firewall
     include icinga::nsca::daemon
     include icinga::monitor::wikidata
     include icinga::monitor::ores
@@ -95,6 +94,15 @@ class profile::icinga(
         port   => 873,
         srange => "(@resolve(${partner}) @resolve(${partner}, AAAA))",
     }
+
+    # allow NSCA (Nagios Service Check Acceptor)
+    # connections on port 5667/tcp
+    ferm::service { 'icinga-nsca':
+        proto  => 'tcp',
+        port   => '5667',
+        srange => '($PRODUCTION_NETWORKS $FRACK_NETWORKS)',
+    }
+
     rsync::server::module { 'icinga-tmpfs':
         read_only => 'yes',
         path      => '/var/icinga-tmpfs',
