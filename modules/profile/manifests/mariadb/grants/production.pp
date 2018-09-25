@@ -64,6 +64,7 @@ class profile::mariadb::grants::production(
         $phab_rt_pass        = $passwords::mysql::phabricator::rt_pass
         $phab_manifest_pass  = $passwords::mysql::phabricator::manifest_pass
         $phab_metrics_pass   = $passwords::mysql::phabricator::metrics_pass
+        $recommendationapi_pass = $passwords::misc::scripts::recommendationapi_pass
 
         file { '/etc/mysql/production-grants-shard.sql':
             ensure  => present,
