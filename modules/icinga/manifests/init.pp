@@ -43,6 +43,11 @@ class icinga(
             groups     => [ 'nagios' ],
         }
 
+    } else {
+        file { [ '/etc/nagios/nagios_host.cfg', '/etc/nagios/nagios_service.cfg' ]:
+          ensure => 'file',
+          mode   => '0444'
+        }
     }
 
     package { 'icinga':
