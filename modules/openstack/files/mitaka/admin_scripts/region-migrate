@@ -447,6 +447,11 @@ class NovaInstance(object):
         self.wait_for_status('SHUTOFF', source=True)
         self.wait_for_status('SHUTOFF', source=False)
 
+        # There might be a race here where kvm is still writing to the
+        #  dest VM after it's stopped.  Take a nap and see if that helps.
+        # (The symptom is rsync failing to validate the dest file after copying.)
+        time.sleep(10)
+
         instancebasedir = "/var/lib/nova/instances"
         source_instancedir = "%s/%s" % (instancebasedir, self.instance_id)
         dest_instancedir = "%s/%s" % (instancebasedir, self.dest_instance_id)
