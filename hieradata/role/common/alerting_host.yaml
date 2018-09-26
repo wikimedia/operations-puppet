@@ -5,3 +5,8 @@ profile::base::domain_search:
   - esams.wmnet
   - ulsfo.wmnet
   - eqsin.wmnet
+
+profile::icinga::ircbot::ensure: present
+profile::icinga::ircbot::ircecho_nick: icinga-wm
+profile::icinga::ircbot::ircecho_server: 'chat.freenode.net +6697'
+

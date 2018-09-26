@@ -1,8 +1,10 @@
-# = Class: icinga::ircbot
+# = Class: profile::icinga::ircbot
 #
 # Sets up an ircecho instance that sends icinga alerts to IRC
-class icinga::ircbot(
-    $ensure='present'
+class profile::icinga::ircbot(
+    $ensure = hiera('profile::icinga::ircbot::ensure'),
+    $ircecho_nick   = hiera('profile::icinga::ircbot::ircecho_nick'),
+    $ircecho_server = hiera('profile::icinga::ircbot::ircecho_server'),
 ) {
     $ircecho_logs   = {
         '/var/log/icinga/irc.log'             => '#wikimedia-operations',
@@ -16,8 +18,6 @@ class icinga::ircbot(
         '/var/log/icinga/irc-fundraising.log' => '#wikimedia-fundraising',
         '/var/log/icinga/irc-reading-web.log' => '#wikimedia-reading-web-bots',
     }
-    $ircecho_nick   = 'icinga-wm'
-    $ircecho_server = 'chat.freenode.net +6697'
 
     class { '::ircecho':
         ensure         => $ensure,

@@ -85,7 +85,7 @@ class profile::icinga(
     }
 
     class { '::icinga::naggen':    }
-    class { '::icinga::ircbot':
+    class { '::profile::icinga::ircbot':
         ensure => $ircbot_present,
     }
 
