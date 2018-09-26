@@ -11,6 +11,7 @@ profile::openstack::labtest::second_region_designate_host_standby: 'labtestservi
 profile::openstack::labtest::puppetmaster_hostname: 'labtest-puppetmaster.wikimedia.org'
 profile::openstack::labtest::nova_api_host: 'labtestnet2002.codfw.wmnet'
 profile::openstack::labtest::labs_hosts_range: '10.192.20.0/24'
+profile::openstack::labtest::labs_hosts_range_v6: '2620:0:860:118::/64'
 profile::openstack::labtest::spice_hostname: 'labtestspice.wikimedia.org'
 profile::openstack::labtest::nova_network_host: 'labtestnet2002.codfw.wmnet'
 profile::openstack::labtest::rabbit_monitor_user: 'monitoring'

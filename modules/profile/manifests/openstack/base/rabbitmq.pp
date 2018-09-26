@@ -9,6 +9,7 @@ class profile::openstack::base::rabbitmq(
     $designate_host = hiera('profile::openstack::base::designate_host'),
     $designate_host_standby = hiera('profile::openstack::base::designate_host_standby'),
     $labs_hosts_range = hiera('profile::openstack::base::labs_hosts_range'),
+    $labs_hosts_range_v6 = hiera('profile::openstack::base::labs_hosts_range_v6'),
     $nova_rabbit_user = hiera('profile::openstack::base::nova::rabbit_user'),
     $nova_rabbit_password = hiera('profile::openstack::base::nova::rabbit_pass'),
 ){
@@ -67,6 +68,6 @@ class profile::openstack::base::rabbitmq(
 
     ferm::rule{'beam_nova':
         ensure => 'present',
-        rule   =>  "saddr ${labs_hosts_range} proto tcp dport (5672 56918) ACCEPT;",
+        rule   =>  "saddr ${labs_hosts_range} ${labs_hosts_range_v6} proto tcp dport (5672 56918) ACCEPT;",
     }
 }

@@ -17,6 +17,7 @@ profile::openstack::main::second_region_designate_host_standby: 'cloudservices10
 profile::openstack::main::puppetmaster_hostname: 'labs-puppetmaster.wikimedia.org'
 profile::openstack::main::spice_hostname: 'labspice.wikimedia.org'
 profile::openstack::main::labs_hosts_range: '10.64.20.0/24'
+profile::openstack::main::labs_hosts_range_v6: '2620:0:861:118::/64'
 profile::openstack::main::osm_host: 'wikitech.wikimedia.org'
 profile::openstack::main::rabbit_monitor_user: 'monitoring'
 profile::openstack::main::rabbit_file_handles: 8192
