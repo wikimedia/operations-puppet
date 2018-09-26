@@ -139,13 +139,14 @@ class KeystoneHooks(notifier.Driver):
     def _on_project_delete(self, project_id):
         ldapgroups.delete_ldap_project_group(project_id)
         self.page_editor.edit_page("", project_id, True)
-        designatemakedomain.deleteDomain(
-            CONF.wmfhooks.auth_url,
-            CONF.wmfhooks.admin_user,
-            CONF.wmfhooks.admin_pass,
-            project_id,
-            all=True,
-        )
+        # Fixme: Replace this cleanup when we have a version of Designate
+        #  that supports an all-projects flag
+        # designatemakedomain.deleteDomain(
+        #    CONF.wmfhooks.auth_url,
+        #    CONF.wmfhooks.admin_user,
+        #    CONF.wmfhooks.admin_pass,
+        #    project_id,
+        #    all=True)
 
     def _create_project_page(self, project_id):
         # Create wikitech project page
@@ -270,7 +271,7 @@ class KeystoneHooks(notifier.Driver):
             CONF.wmfhooks.admin_user,
             CONF.wmfhooks.admin_pass,
             project_id,
-            '{}.wmflabs.org'.format(project_id)
+            '{}.wmflabs.org.'.format(project_id)
         )
 
     def notify(self, context, message, priority, retry=False):

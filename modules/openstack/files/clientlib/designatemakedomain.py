@@ -20,7 +20,7 @@ from oslo_log import log as logging
 LOG = logging.getLogger('keystone.%s' % __name__)
 
 
-def deleteDomain(url, user, password, project, domain, all=False):
+def deleteDomain(url, user, password, project, domain="", delete_all=False):
     auth = generic.Password(
         auth_url=url,
         username=user,
@@ -34,14 +34,14 @@ def deleteDomain(url, user, password, project, domain, all=False):
 
     domains = targetClient.zones.list()
     for thisdomain in domains:
-        if all:
+        if delete_all:
             LOG.info("Deleting %s" % thisdomain['name'])
             targetClient.zones.delete(thisdomain['id'])
         else:
             if thisdomain['name'] == domain:
                 targetClient.zones.delete(thisdomain['id'])
                 return
-    if not all:
+    if not delete_all:
         LOG.warning("Domain %s not found" % domain)
 
 
