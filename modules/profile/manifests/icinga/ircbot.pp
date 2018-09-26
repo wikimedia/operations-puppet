@@ -19,11 +19,22 @@ class profile::icinga::ircbot(
         '/var/log/icinga/irc-reading-web.log' => '#wikimedia-reading-web-bots',
     }
 
+    $password_file = '/etc/icinga/.irc_secret'
+    file { $password_file:
+        ensure    => present,
+        owner     => $icinga::icinga_user,
+        group     => $icinga::icinga_group,
+        mode      => '0400',
+        content   => secret('icinga/icinga-wm_irc.secret'),
+        show_diff => false,
+    }
+
     class { '::ircecho':
-        ensure         => $ensure,
-        ircecho_logs   => $ircecho_logs,
-        ircecho_nick   => $ircecho_nick,
-        ircecho_server => $ircecho_server,
+        ensure            => $ensure,
+        ircecho_logs      => $ircecho_logs,
+        ircecho_nick      => $ircecho_nick,
+        ircecho_server    => $ircecho_server,
+        ident_passwd_file => $password_file,
     }
 
     # T28784 - IRC bots process need nagios monitoring
