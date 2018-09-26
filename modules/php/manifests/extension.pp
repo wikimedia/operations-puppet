@@ -11,7 +11,7 @@ define php::extension(
 
     $_sapis = pick($sapis, $php::sapis)
     $_config = pick($config, {'extension' => "${title}.so"})
-    $title_safe  = regsubst($title, '[\W_]', '-', 'G')
+    $title_safe  = regsubst($title, '[\W]', '-', 'G')
     $mod_file = "${php::config_dir}/mods-available/${title_safe}.ini"
     $conf_file   = sprintf('%02d-%s.%s', $priority, $title_safe, 'ini')
 
