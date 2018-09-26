@@ -6,22 +6,8 @@ private:
     gid: 50088
     mounts:
       project: true
-  bots:
-    gid: 50064
-    mounts:
-      dumps: true
-      home: true
-      project: true
-      scratch: true
   catgraph:
     gid: 50588
-    mounts:
-      dumps: true
-      home: true
-      project: true
-      scratch: true
-  contributors:
-    gid: 50408
     mounts:
       dumps: true
       home: true
@@ -159,13 +145,6 @@ private:
       scratch: true
   wikidumpparse:
     gid: 51824
-    mounts:
-      dumps: true
-      home: true
-      project: true
-      scratch: true
-  wikisource-tools:
-    gid: 50336
     mounts:
       dumps: true
       home: true
