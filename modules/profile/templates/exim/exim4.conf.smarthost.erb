@@ -1,0 +1,171 @@
+# This file is managed by puppet
+
+##########
+# Macros #
+##########
+
+CONFDIR=/etc/exim4
+
+###############################
+# Main configuration settings #
+###############################
+
+domainlist system_hostname = @
+
+# relay_from_hosts - Hosts and networks (including local interface addresses) permitted to relay through this smarthost.
+# Within puppet this is an array. The below reformats this into a semicolon ';' delimited list.
+# The <; at the beginning tells exim to use ';' as the delimiter instead of the default ':' (which interferes with ipv6)
+hostlist relay_from_hosts = <; @[] ; 127.0.0.1 ; ::1 ; <%= scope.lookupvar('relay_from_hosts').join(" ; ") %>
+
+# Administration
+log_selector = +address_rewrite +all_parents +delivery_size +deliver_time +incoming_interface +incoming_port +smtp_confirmation +smtp_protocol_error +smtp_syntax_error +tls_cipher +tls_peerdn
+message_logs = false
+
+# Policy control
+acl_smtp_rcpt = acl_check_rcpt
+
+helo_try_verify_hosts = *
+
+# Resource control
+check_spool_space = 50M
+smtp_reserve_hosts = <; +relay_from_hosts
+smtp_accept_queue_per_connection = 500
+
+deliver_queue_load_max = 800.0
+queue_only_load = 100.0
+remote_max_parallel = 500
+
+smtp_connect_backlog = 128
+smtp_receive_timeout = 1m
+smtp_accept_max = 4000
+smtp_accept_max_per_host = ${if match_ip{$sender_host_address}{+relay_from_hosts}{50}{5}}
+smtp_accept_reserve = 100
+
+# Lookups
+host_lookup = *
+rfc1413_hosts =
+
+# Other
+never_users = root : daemon : bin
+ignore_bounce_errors_after = 0h
+bounce_message_file = /etc/exim4/bounce_message_file
+warn_message_file = /etc/exim4/warn_message_file
+
+add_environment = <; PATH=/bin:/usr/bin
+keep_environment =
+
+# TLS
+tls_certificate = /etc/acme/cert/<%= @cert_name %>.chained.crt
+tls_privatekey = /etc/acme/key/<%= @cert_name %>.key
+tls_advertise_hosts = *
+tls_require_ciphers = NORMAL:%SERVER_PRECEDENCE
+
+###############################
+# Access Control Lists (ACLs) #
+###############################
+
+begin acl
+
+acl_check_rcpt:
+
+	# Accept if the source is local SMTP (a pipe)
+	accept hosts = :
+
+	# Deny if the local part contains @, %, /, | or !, or starts with a dot
+	deny local_parts = ^.*[@%!/|] : ^\\.
+
+	# Accept relaying from hosts (and networks) permitted to use this smarthost
+	accept hosts = +relay_from_hosts
+
+###########
+# Routers #
+###########
+
+begin routers
+
+<% @dkim_domains.each do |key, dkim_domain| -%>
+# router for dkim domain <%= dkim_domain['domain'] %> with selector <%= dkim_domain['selector'] %> (listed in dkim_domains)
+dnslookup_<%= dkim_domain['domain'].gsub(/[-.]/, '_') %>_<%= dkim_domain['selector'].gsub(/[-.]/, '_') %>:
+	driver = dnslookup
+	domains = ! +system_hostname
+	condition = ${if match_domain{$sender_address_domain}{<%= dkim_domain['domain'] %>} }
+<% if dkim_domain['exim_router_condition'] -%>
+	condition = <%= dkim_domain['exim_router_condition'] %>
+<% end -%>
+	transport = remote_smtp_<%= dkim_domain['domain'].gsub(/[-.]/, '_') %>_<%= dkim_domain['selector'].gsub(/[-.]/, '_') %>
+	ignore_target_hosts = <; 0.0.0.0 ; 127.0.0.0/8 ; 10/8 ; 172.16/12 ; 192.168/16
+	cannot_route_message = Cannot route to remote domain $domain
+
+<% end -%>
+
+# Route domains via DNS MX and A records
+dnslookup_unsigned:
+	driver = dnslookup
+	domains = ! +system_hostname
+	transport = remote_smtp_unsigned
+	ignore_target_hosts = <; 0.0.0.0 ; 127.0.0.0/8 ; 10/8 ; 172.16/12 ; 192.168/16
+	cannot_route_message = Cannot route to remote domain $domain
+	no_more
+
+# Use the system aliasfile /etc/aliases for system domains
+system_aliases:
+	driver = redirect
+	domains = +system_hostname
+	data = ${lookup{$local_part}lsearch{/etc/aliases}}
+	pipe_transport = address_pipe
+	allow_fail
+	allow_defer
+	forbid_file
+
+##############
+# Transports #
+##############
+
+begin transports
+
+# DKIM signature actually happens only for domains listed in dkim_domain
+# and if key file exists on filesystem.
+
+<% @dkim_domains.each do |key, dkim_domain| -%>
+# dkim enabled smtp transport for domain <%= dkim_domain['domain'] %> with dkim selector <%= dkim_domain['selector'] %> (listed in dkim_domains)
+remote_smtp_<%= dkim_domain['domain'].gsub(/[-.]/, '_') %>_<%= dkim_domain['selector'].gsub(/[-.]/, '_') %>:
+	driver = smtp
+	dkim_domain = <%= dkim_domain['domain'] %>
+	dkim_selector = <%= dkim_domain['selector'] %>
+	dkim_private_key = ${if exists{/etc/exim4/dkim/${dkim_domain}-${dkim_selector}.key}{/etc/exim4/dkim/${dkim_domain}-${dkim_selector}.key}{0}}
+	dkim_canon = relaxed
+
+<% end -%>
+
+# Transport for unsigned (dkim) mail.
+remote_smtp_unsigned:
+	driver = smtp
+
+# Generic pipe local delivery transport (for use by alias/forward files)
+
+address_pipe:
+	driver = pipe
+	return_output
+
+###############
+# Retry rules #
+###############
+
+begin retry
+
+*	*	senders=wiki@wikimedia.org	F,1h,15m; G,8h,1h,1.5
+*	*	F,2h,15m; G,16h,1h,1.5; F,4d,6h
+
+#################
+# Rewrite rules #
+#################
+
+begin rewrite
+
+<% if ! @envelope_rewrite_rules.empty? -%>
+
+<% @envelope_rewrite_rules.each do |envelope_rewrite_rule| -%>
+<%= envelope_rewrite_rule %>
+<% end -%>
+
+<% end -%>
