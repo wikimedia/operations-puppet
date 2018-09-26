@@ -36,7 +36,7 @@
     ProxyPass       /w/extensions        !
     ProxyPassMatch  ^/w/(.*\.(php|hh))$  fcgi://127.0.0.1:9000<%= @docroot %>/w/$1 retry=0
 <%- unless @variant_aliases.empty? -%>
-    ProxyPassMatch  <%= call_function('mediawiki::web::vhost::variant_regex', @variant_aliases) %> fcgi://127.0.0.1:9000<%= @docroot %>/w/index.php   retry=0
+    ProxyPassMatch  <%= scope.call_function('mediawiki::web::vhost::variant_regex', [@variant_aliases]) %> fcgi://127.0.0.1:9000<%= @docroot %>/w/index.php   retry=0
 <%- end -%>
     RewriteRule     ^/$                  fcgi://127.0.0.1:9000<%= @docroot %>/w/index.php    [P]
     RewriteRule     ^/robots\.txt$       fcgi://127.0.0.1:9000<%= @docroot %>/w/robots.php   [P]
