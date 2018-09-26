@@ -152,10 +152,6 @@ class network::constants {
                     '2620:0:860:104:1618:77ff:fe5e:a4c2', # conf2003.codfw.wmnet
                 ],
             'hadoop_masters' => [
-                    '10.64.36.118',                       # analytics1001.eqiad.wmnet
-                    '2620:0:861:106:10:64:36:118',        # analytics1001.eqiad.wmnet
-                    '10.64.53.21',                        # analytics1002.eqiad.wmnet
-                    '2620:0:861:108:10:64:53:21',         # analytics1002.eqiad.wmnet
                     '10.64.5.26',                         # an-master1001.eqiad.wmnet
                     '2620:0:861:104:10:64:5:26',          # an-master1001.eqiad.wmnet
                     '10.64.21.110',                       # an-master1002.eqiad.wmnet
