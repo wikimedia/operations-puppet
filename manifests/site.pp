@@ -2183,6 +2183,7 @@ node /^cloudvirt1019\.eqiad\.wmnet$/ {
 
 node /^cloudvirt102[0-2].eqiad.wmnet$/ {
     role(wmcs::openstack::eqiad1::virt)
+    interface::add_ip6_mapped { 'main': }
 }
 
 # Wikidata query service
