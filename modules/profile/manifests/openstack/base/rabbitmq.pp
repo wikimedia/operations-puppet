@@ -68,6 +68,6 @@ class profile::openstack::base::rabbitmq(
 
     ferm::rule{'beam_nova':
         ensure => 'present',
-        rule   =>  "saddr ${labs_hosts_range} ${labs_hosts_range_v6} proto tcp dport (5672 56918) ACCEPT;",
+        rule   =>  "saddr (${labs_hosts_range} ${labs_hosts_range_v6}) proto tcp dport (5672 56918) ACCEPT;",
     }
 }
