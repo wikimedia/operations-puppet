@@ -26,6 +26,7 @@ class profile::mariadb::misc::eventlogging::sanitization(
     }
 
     $log_directory_path = '/var/log/eventlogging_cleaner'
+    $state_directory_path = '/srv/eventlogging_cleaner'
 
     user { 'eventlogcleaner':
         gid        => 'eventlog',
@@ -58,6 +59,13 @@ class profile::mariadb::misc::eventlogging::sanitization(
         mode   => '0775',
     }
 
+    file { $state_directory_path:
+        ensure => 'directory',
+        owner  => 'root',
+        group  => 'eventlog',
+        mode   => '0775',
+    }
+
     logrotate::rule { 'eventlogging-cleaner':
         ensure        => present,
         file_glob     => "${log_directory_path}/eventlogging_cleaner.log",
@@ -76,7 +84,7 @@ class profile::mariadb::misc::eventlogging::sanitization(
     # %Y%m%d%H%M%S. If the file is not existent, the script will fail gracefully
     # without doing any action to the db. This is useful to avoid gaps in
     # records sanitized if the script fails and does not commit a new timestamp.
-    $eventlogging_cleaner_command = "/usr/local/bin/eventlogging_cleaner --whitelist ${whitelist_path} --yaml --older-than 90 --start-ts-file /var/run/eventlogging_cleaner --batch-size 10000 --sleep-between-batches 2 ${extra_parameters}"
+    $eventlogging_cleaner_command = "/usr/local/bin/eventlogging_cleaner --whitelist ${whitelist_path} --yaml --older-than 90 --start-ts-file ${state_directory_path}/eventlogging_cleaner --batch-size 10000 --sleep-between-batches 2 ${extra_parameters}"
 
     profile::analytics::systemd_timer { 'eventlogging_db_sanitization':
         description => 'Apply Analytics data retetion policies to the Eventlogging database',
@@ -86,6 +94,7 @@ class profile::mariadb::misc::eventlogging::sanitization(
         require     => [
             File['/usr/local/bin/eventlogging_cleaner'],
             File[$log_directory_path],
+            File[$state_directory_path],
             User['eventlogcleaner'],
         ]
     }
