@@ -1,4 +1,3 @@
-# filtertags: labs-project-ci-staging
 class profile::zuul::server(
     $conf_common = hiera('zuul::common'),
     $conf_server = hiera('profile::zuul::server::conf'),

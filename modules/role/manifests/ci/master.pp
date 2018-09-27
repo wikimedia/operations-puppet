@@ -7,8 +7,6 @@
 # monitoring.
 #
 # CI test server as per T79623
-#
-# filtertags: labs-project-ci-staging
 class role::ci::master {
 
     system::role { 'ci::master': description => 'CI Jenkins master' }

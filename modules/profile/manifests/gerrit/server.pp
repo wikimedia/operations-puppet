@@ -1,6 +1,6 @@
 # modules/profile/manifests/gerrit/server.pp
 #
-# filtertags: labs-project-git labs-project-ci-staging
+# filtertags: labs-project-git
 class profile::gerrit::server(
     $ipv4 = hiera('gerrit::service::ipv4'),
     $ipv6 = hiera('gerrit::service::ipv6', undef),

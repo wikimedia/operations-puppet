@@ -3,7 +3,7 @@
 # Experimental Jenkins slave instance for performing CD pipeline builds using
 # Blubber/Docker and isolated deployments/testing using Helm.
 #
-# filtertags: labs-project-integration labs-project-ci-staging
+# filtertags: labs-project-integration
 class role::ci::slave::labs::pipelinebuilder {
     requires_realm('labs')
 

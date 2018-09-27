@@ -6,7 +6,7 @@
 # That kind of slave does not need a local Xvfb nor any browser or Apache
 # configuration since everything is handled on Saucelabs or the target website.
 #
-# filtertags: labs-project-git labs-project-integration labs-project-ci-staging
+# filtertags: labs-project-git labs-project-integration
 class role::ci::slave::saucelabs {
 
     system::role { 'ci::slave::saucelabs':

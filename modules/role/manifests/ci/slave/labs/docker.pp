@@ -10,7 +10,7 @@
 #   /dev/vda4 and leaves the rest for /srv. This should be used for instance
 #   types with larger disks (xlarge, bigram, etc.).
 #
-# filtertags: labs-project-integration labs-project-ci-staging
+# filtertags: labs-project-integration
 class role::ci::slave::labs::docker(
     $docker_lvm_volume = false,
 ) {
