@@ -105,7 +105,7 @@ class icinga::plugins {
         mode   => '0755',
     }
 
-    # Wikidata dispatcher monitoring 
+    # Wikidata dispatcher monitoring
     file { '/usr/lib/nagios/plugins/check_wikidata_crit':
         source => 'puppet:///modules/icinga/check_wikidata_crit',
         owner  => 'root',
@@ -114,6 +114,8 @@ class icinga::plugins {
     }
 
     class { '::nagios_common::commands':
+        owner => $icinga::icinga_user,
+        group => $icinga::icinga_group,
     }
 
     include ::passwords::nagios::mysql
