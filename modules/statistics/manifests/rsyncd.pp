@@ -36,29 +36,6 @@ class statistics::rsyncd($path, $hosts_allow)
         hosts_allow => $hosts_allow,
     }
 
-    # Set up an rsync module for /a if
-    # we are using /srv a working path on this node.
-    # This if for backwards compatibility.
-    if ($::statistics::working_path == '/srv') {
-        rsync::server::module { 'a':
-            path        => $path,
-            read_only   => 'no',
-            list        => 'yes',
-            hosts_allow => $hosts_allow,
-        }
-    }
-
-    # Set up an rsync module
-    # (in /etc/rsync.conf) for /var/www.
-    # This will allow $hosts_allow to host public data files
-    # from the default Apache VirtualHost.
-    rsync::server::module { 'www':
-        path        => '/var/www',
-        read_only   => 'no',
-        list        => 'yes',
-        hosts_allow => $hosts_allow,
-    }
-
     # Allow rsyncd traffic from internal networks.
     # and stat* public IPs.
     ferm::service { 'rsync':
