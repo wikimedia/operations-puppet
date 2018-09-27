@@ -3,6 +3,14 @@ class SpecDependencies
 
   def initialize
     @deps = {}
+    # Scan all the modules that have spec tests and dependencies
+    # from other modules (thus have a .fixtures.yaml file),
+    # read the contents of the fixtures file and create a
+    # one-level dependency tree. It could be debatable if we should
+    # include higher order, indirect dependencies (if module C depends on module
+    # B that depends on module A, should we add it to the dependencies of C?),
+    # but we chose not to go that way as each module should just care about the
+    # interfaces it uses directly.
     FileList["modules/*/.fixtures.yml"].each do |file|
       module_name = module_from_filename(file)
       symlinks = YAML.safe_load(File.open(file))['fixtures']['symlinks'].keys.select{ |x| x != module_name }
@@ -14,12 +22,14 @@ class SpecDependencies
   end
 
   def specs_to_run(filelist)
+    # Extract a list of specs to run. For each module touched by the current
+    # change, we add all its dependencies and the module itself only if it has a
+    # spec to run
     specs = Set.new
     modules = modules_modified(filelist)
     return [] unless modules
     modules.each do |mod|
-      next unless Dir.exists?("modules/#{mod}/spec")
-      specs.add(mod)
+      specs.add(mod) if Dir.exists?("modules/#{mod}/spec")
       if @deps.include?mod
         @deps[mod].each{ |m| specs.add(m) }
       end
