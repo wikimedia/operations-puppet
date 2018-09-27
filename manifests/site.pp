@@ -653,12 +653,6 @@ node /^db2(094|095)\.codfw\.wmnet/ {
     role(mariadb::sanitarium_multiinstance)
 }
 
-# Old temporary sanitarium hosts now ready to be productionized
-#
-node 'db1116.eqiad.wmnet' {
-    role(spare::system)
-}
-
 # tendril db
 node 'db1115.eqiad.wmnet' {
     role(mariadb::misc::tendril_and_zarcillo)
@@ -675,6 +669,10 @@ node 'db1095.eqiad.wmnet' {
 }
 
 node 'db1102.eqiad.wmnet' {
+    role(mariadb::dbstore_multiinstance)
+}
+
+node 'db1116.eqiad.wmnet' {
     role(mariadb::dbstore_multiinstance)
 }
 

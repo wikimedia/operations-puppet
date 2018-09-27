@@ -29,6 +29,18 @@
   - db1102:13315
 
 - labels:
+    shard: s7
+    role: slave
+  targets:
+  - db1116:13317
+
+- labels:
+    shard: s8
+    role: slave
+  targets:
+  - db1116:13318
+
+- labels:
     role: slave
     shard: multi
   targets:
