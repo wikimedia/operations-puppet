@@ -95,21 +95,19 @@ class mediawiki::web::prod_sites {
             short_urls      => false,
             ;
         'species.wikimedia.org':
-            additional_rewrites => {
-                'early' => [],
-                'late'  => [
-                    '# Uploads are offsite',
-                    '    RewriteRule ^/upload/(.*)$ %{ENV:RW_PROTO}://upload.wikimedia.org/wikipedia/species/$1 [R=302]'
-                ]
+            upload_rewrite => {
+                'rewrite_prefix' => 'wikipedia/species'
             }
             ;
         'commons.wikimedia.org':
             legacy_rewrites     => true,
+            upload_rewrite      => {
+                'rewrite_prefix' => 'wikipedia/commons'
+            },
             additional_rewrites => {
+
                 'early' => [],
                 'late'  => [
-                    '# Uploads are offsite',
-                    '    RewriteRule ^/upload/(.*)$ %{ENV:RW_PROTO}://upload.wikimedia.org/wikipedia/commons/$1 [R=302]',
                     '    # /data/ path T163922',
                     '    RewriteRule ^/data/(.*)/(.*)$ %{ENV:RW_PROTO}://commons.wikimedia.org/wiki/Special:PageData/$1/$2 [R=301,QSA]'
                 ],
@@ -118,25 +116,22 @@ class mediawiki::web::prod_sites {
         'meta.wikimedia.org':
             short_urls          => true,
             legacy_rewrites     => true,
+            upload_rewrite      => {
+                'rewrite_prefix' => 'wikipedia/meta'
+            },
             additional_rewrites => {
                 'early' => [],
                 'late'  => [
-                    '    # Uploads are offsite',
-                    '    RewriteRule ^/upload/(.*)$ %{ENV:RW_PROTO}://upload.wikimedia.org/wikipedia/meta/$1 [R=302]',
                     '    # Used for Firefox OS web application manifest living on meta.wikimedia.org',
                     '    AddType application/x-web-app-manifest+json .webapp'
                 ],
             }
             ;
         '_wikisource.org':
-            docroot             => '/srv/mediawiki/docroot/wikisource.org',
-            server_name         => 'wikisource.org',
-            additional_rewrites => {
-                'early' => [],
-                'late'  => [
-                    '    # Uploads are offsite',
-                    '    RewriteRule ^/upload/(.*)$ %{ENV:RW_PROTO}://upload.wikimedia.org/wikipedia/sources/$1 [R=302]'
-                ]
+            docroot        => '/srv/mediawiki/docroot/wikisource.org',
+            server_name    => 'wikisource.org',
+            upload_rewrite => {
+                'rewrite_prefix' => 'wikipedia/sources'
             }
     }
     # private wikis in remnant.conf; they all change just by ServerName
@@ -280,7 +275,10 @@ class mediawiki::web::prod_sites {
                 'wb.wikimedia.org',
             ],
             legacy_rewrites     => true,
-            upload_rewrite      => 'wikimedia.org',
+            upload_rewrite      => {
+                'domain_catchall' => 'wikimedia.org',
+                'rewrite_prefix'  => 'wikimedia.org',
+            },
             additional_rewrites => {
                 'early' => [
                     '# www. prefix',

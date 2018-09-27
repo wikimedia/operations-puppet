@@ -34,7 +34,10 @@
 #
 # [*domain_suffix*] Suffix to use in redirects et al (prod/beta/staging use)
 #
-# [*upload_rewrite*] If non null, will introduce a rewrite to uploads.w.o/$upload_rewrite/
+# [*upload_rewrite*] If non null, the struct will control how and if we rewrite requests
+#   to /upload/; specifically:
+#   * 'domain_catchall' (string) is the domain for which to do catchall
+#   * 'rewrite_prefix'  (string) The prefix to use in the rewrite
 #
 define mediawiki::web::vhost(
     String $docroot,
@@ -52,7 +55,7 @@ define mediawiki::web::vhost(
     Integer[0, 99] $priority = 50,
     Boolean $declare_site = false,
     String $domain_suffix = 'org',
-    Optional[String] $upload_rewrite = undef,
+    Optional[Mediawiki::Upload_rewrite] $upload_rewrite = undef,
 ) {
     $content = template('mediawiki/apache/mediawiki-vhost.conf.erb')
 

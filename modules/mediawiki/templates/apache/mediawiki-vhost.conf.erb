@@ -21,10 +21,15 @@
     RewriteRule . - [E=RW_PROTO:http]
 <%- end -%>
 
-<% if @upload_rewrite %>
+<%- if @upload_rewrite  -%>
+<%- if @upload_rewrite['domain_catchall'] -%>
     # Uploads to the host-specific directory
-    RewriteCond %{HTTP_HOST} ([a-z\-]+)\.<%= @upload_rewrite.gsub('.', '\.') %>
-    RewriteRule ^/upload/(.*)$ %{ENV:RW_PROTO}://upload.wikimedia.org/<%= @upload_rewrite %>/%1/$1 [R=302]
+    RewriteCond %{HTTP_HOST} ([a-z\-]+)\.<%= @upload_rewrite['domain_catchall'].gsub('.', '\.') %>
+    RewriteRule ^/upload/(.*)$ %{ENV:RW_PROTO}://upload.wikimedia.org/<%= @upload_rewrite['rewrite_prefix'] %>/%1/$1 [R=302]
+<%- else -%>
+    # Uploads are offsite
+    RewriteRule ^/upload/(.*)$ %{ENV:RW_PROTO}://upload.wikimedia.org/<%= @upload_rewrite['rewrite_prefix'] %>/$1 [R=302]
+<%- end -%>
 <%- end -%>
     <%= @additional_rewrites['early'].join("\n") %>
 
