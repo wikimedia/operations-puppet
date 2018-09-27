@@ -41,6 +41,13 @@ node 'an-master1002.eqiad.wmnet' {
     interface::add_ip6_mapped { 'main': }
 }
 
+# analytics1003's replacement
+# T204970
+node 'an-coord1001.eqiad.wmnet' {
+    role(spare::system)
+    interface::add_ip6_mapped { 'main': }
+}
+
 # Old hadoop master, replaced in T203635
 node 'analytics1001.eqiad.wmnet' {
     role(spare::system)

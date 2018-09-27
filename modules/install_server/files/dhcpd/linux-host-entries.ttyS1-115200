@@ -23,6 +23,11 @@ host an-master1002 {
     fixed-address an-master1002.eqiad.wmnet;
 }
 
+host an-coord1001 {
+    hardware ethernet D0:94:66:5F:75:BC;
+    fixed-address an-coord1001.eqiad.wmnet;
+}
+
 host analytics1001 {
     hardware ethernet F0:1F:AF:E8:AF:06;
     fixed-address analytics1001.eqiad.wmnet;
