@@ -93,11 +93,15 @@ class icinga(
 
     class { '::nagios_common::contactgroups':
         source  => 'puppet:///modules/nagios_common/contactgroups.cfg',
+        owner   => $icinga_user,
+        group   => $icinga_group,
         require => Package['icinga'],
         notify  => Service['icinga'],
     }
 
     class { '::nagios_common::contacts':
+        owner   => $icinga_user,
+        group   => $icinga_group,
         content => secret('nagios/contacts.cfg'),
         require => Package['icinga'],
         notify  => Service['icinga'],
@@ -108,6 +112,8 @@ class icinga(
       '::nagios_common::timeperiods',
       '::nagios_common::notification_commands',
     ] :
+        owner   => $icinga_user,
+        group   => $icinga_group,
         require => Package['icinga'],
         notify  => Service['icinga'],
     }

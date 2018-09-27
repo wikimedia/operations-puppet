@@ -15,44 +15,39 @@ class profile::icinga(
     $icinga_group = hiera('profile::icinga::icinga_group', 'icinga'),
 ){
 
-    include ::standard
-    include ::profile::base::firewall
-    include ::profile::scap::dsh
-
-    include role::authdns::monitoring
-    include netops::monitoring
-    include facilities
-    include lvs::monitor
+    interface::add_ip6_mapped { 'main': }
 
     if os_version('debian >= stretch') {
         require_package('mariadb-client')
     }
     else {
-        include mysql
+        class { 'mysql': }
     }
 
-    include rsync::server
-
-    include icinga::monitor::checkpaging
-    include icinga::nsca::daemon
-    include icinga::monitor::wikidata
-    include icinga::monitor::ores
-    include icinga::monitor::toollabs
-    include icinga::monitor::legal
-    include icinga::monitor::certs
-    include icinga::monitor::gsb
-    include icinga::monitor::commons
-    include icinga::monitor::elasticsearch
-    include icinga::monitor::wdqs
-    include icinga::monitor::performance
-    include icinga::monitor::services
-    include icinga::monitor::reading_web
-    include icinga::monitor::traffic
-    include icinga::event_handlers::raid
-    include ::profile::bird::anycast_monitoring
-    include ::profile::prometheus::alerts
-    include ::profile::maps::alerts
-    include ::profile::cache::kafka::alerts
+    class { 'rsync::server': }
+    class { 'netops::monitoring': }
+    class { 'facilities': }
+    class { 'lvs::monitor': }
+    class { 'icinga::monitor::checkpaging': }
+    class { 'icinga::nsca::daemon': }
+    class { 'icinga::monitor::wikidata': }
+    class { 'icinga::monitor::ores': }
+    class { 'icinga::monitor::toollabs': }
+    class { 'icinga::monitor::legal': }
+    class { 'icinga::monitor::certs': }
+    class { 'icinga::monitor::gsb': }
+    class { 'icinga::monitor::commons': }
+    class { 'icinga::monitor::elasticsearch': }
+    class { 'icinga::monitor::wdqs': }
+    class { 'icinga::monitor::performance': }
+    class { 'icinga::monitor::services': }
+    class { 'icinga::monitor::reading_web': }
+    class { 'icinga::monitor::traffic': }
+    class { 'icinga::event_handlers::raid': }
+    class { '::profile::bird::anycast_monitoring': }
+    class { '::profile::prometheus::alerts': }
+    class { '::profile::maps::alerts': }
+    class { '::profile::cache::kafka::alerts': }
 
     class { '::icinga::monitor::etcd_mw_config': }
     class { '::snmp::mibs': }
@@ -76,6 +71,7 @@ class profile::icinga(
         false => 1, #aka active
         true  => 0,
     }
+
     class { '::icinga':
         enable_notifications  => $enable_notifications,
         enable_event_handlers => $enable_event_handlers,

@@ -12,6 +12,10 @@ class role::alerting_host {
     include ::profile::icinga
     include ::role::tcpircbot
     include ::role::certspotter
+    include ::role::authdns::monitoring
+    include ::standard
+    include ::profile::base::firewall
+    include ::profile::scap::dsh
 
     if os_version('debian >= stretch') {
         $php_module = 'php7.0'
@@ -22,6 +26,4 @@ class role::alerting_host {
     class { '::httpd':
         modules => ['headers', 'rewrite', 'authnz_ldap', 'cgi', 'ssl', $php_module],
     }
-
-    interface::add_ip6_mapped { 'main': }
 }
