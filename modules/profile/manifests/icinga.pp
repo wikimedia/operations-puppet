@@ -11,6 +11,8 @@ class profile::icinga(
     $is_passive = hiera('profile::icinga::passive'),
     $ensure_service = hiera('profile::icinga::ensure_service', 'running'),
     $virtual_host = hiera('profile::icinga::virtual_host'),
+    $icinga_user = hiera('profile::icinga::icinga_user', 'icinga'),
+    $icinga_group = hiera('profile::icinga::icinga_group', 'icinga'),
 ){
 
     include ::standard
@@ -78,6 +80,8 @@ class profile::icinga(
         enable_notifications  => $enable_notifications,
         enable_event_handlers => $enable_event_handlers,
         ensure_service        => $ensure_service,
+        icinga_user           => $icinga_user,
+        icinga_group          => $icinga_group,
     }
 
     class { '::icinga::web':
