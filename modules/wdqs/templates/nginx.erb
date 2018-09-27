@@ -1,10 +1,3 @@
-log_format logstash
-    '[$time_local] '
-    '"$request" $status $body_bytes_sent '
-    '"$http_referer" "$http_user_agent" '
-    '$request_time '
-    '$upstream_response_time $http_x_client_ip $remote_addr';
-
 limit_conn_zone $http_x_client_ip zone=byaddr:10m;
 
 # Namespace alias map: alias -> real namespace
@@ -39,9 +32,6 @@ server {
     # Rate limit error
     error_page 429 @rate_limit;
     location @rate_limit {
-<% if @logstash_host -%>
-        access_log syslog:server=<%= @logstash_host %>:<%= @logstash_syslog_port %>,facility=local7,tag=wdqs,severity=info logstash;
-<% end -%>
         add_header Cache-Control no-cache always;
         echo Rate limit exceeded;
         echo_flush;
@@ -129,9 +119,5 @@ server {
         limit_except GET OPTIONS POST {
             deny all;
         }
-
-<% if @logstash_host -%>
-        access_log syslog:server=<%= @logstash_host %>:<%= @logstash_syslog_port %>,facility=local7,tag=wdqs,severity=info logstash;
-<% end -%>
     }
 }

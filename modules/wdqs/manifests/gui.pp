@@ -3,8 +3,6 @@
 # Provisions WDQS GUI
 #
 # == Parameters:
-# - $logstash_host: Where to send the logs for the service in syslog format
-# - $logstash_syslog_port: port on which to send logs in syslog format
 # - $package_dir:  Directory where the service is installed.
 #   GUI files are expected to be under its gui/ directory.
 # - $data_dir: Where the data is installed.
@@ -13,8 +11,6 @@
 # - $port: main GUI service port
 # - $additional_port: secondary port for internal requests
 class wdqs::gui(
-    Optional[String] $logstash_host = undef,
-    Wmflib::IpPort $logstash_syslog_port = 10514,
     String $package_dir = '/srv/deployment/wdqs/wdqs',
     String $data_dir = '/srv/wdqs',
     String $log_dir = '/var/log/wdqs',

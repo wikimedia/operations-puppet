@@ -97,7 +97,6 @@ class profile::wdqs (
 
     # Service Web proxy
     class { '::wdqs::gui':
-        logstash_host         => $logstash_host,
         package_dir           => $package_dir,
         data_dir              => $data_dir,
         use_git_deploy        => $use_git_deploy,
