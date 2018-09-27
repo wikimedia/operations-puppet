@@ -8,7 +8,10 @@ class profile::mariadb::backup::check (
     $datacenters = hiera('profile::mariadb::backup::check::datacenters', ),
     $sections    = hiera('profile::mariadb::backup::check::sections', ),
 ) {
-    require_package('python3-pymysql')
+    require_package(
+        'python3-pymysql',  # to connect to the backup metadata db
+        'python3-arrow',    # to print human-friendly dates
+    )
 
     file { '/usr/local/bin/check_mariadb_backups.py':
         ensure => present,

@@ -3,6 +3,8 @@
 import argparse
 import datetime
 import sys
+
+import arrow
 import pymysql
 
 OK = 0
@@ -16,8 +18,9 @@ SECTIONS = ['s1', 's2', 's3', 's4', 's5', 's6', 's7', 's8',
 DATACENTERS = ['eqiad', 'codfw']
 
 DEFAULT_FRESHNESS = 691200  # 8 days, in seconds
-CRIT_SIZE = 10000  # backup smaller than 10K are considered failed
-WARN_SIZE = 10000000000  # backups smaller than 10 GB are strange
+# TODO: Parametrize?
+CRIT_SIZE = 10 * 1024  # backups smaller than 10K are considered failed
+WARN_SIZE = 10 * 1024 * 1024 * 1024  # backups smaller than 10 GB are strange
 
 DB_HOST = 'localhost'
 DB_USER = 'nagios'
@@ -83,35 +86,48 @@ def check_backup_database(options):
                 return (CRITICAL, 'We could not find any completed backup for '
                                   '{} at {}'.format(section, datacenter))
 
-            # check backup is fresh enough
             last_backup_date = data[0]['start_date']
             required_backup_date = (datetime.datetime.now() -
                                     datetime.timedelta(seconds=freshness))
+            present = arrow.utcnow()
+            humanized_freshness = present.humanize(present.shift(seconds=freshness))
+            size = int(data[0]['total_size'])
+            humanized_size = str(round(size / 1024 / 1024 / 1024)) + ' GB'
+            humanized_warn_size = str(round(WARN_SIZE / 1024 / 1024 / 1024)) + ' GB'
+            humanized_crit_size = str(round(CRIT_SIZE / 1024)) + ' KB'
+            source = data[0]['source']
+
+            # check backup is fresh enough
             if last_backup_date < required_backup_date:
-                return (CRITICAL, 'Last backup for {} at {} is outdated: '
+                return (CRITICAL, 'Backup for {} at {} taken more than {}: '
                                   'Most recent backup {}'.format(section,
                                                                  datacenter,
+                                                                 humanized_freshness,
                                                                  last_backup_date))
-
-            size = int(data[0]['total_size'])
+            # check size
             if size < CRIT_SIZE:
-                return(CRITICAL, 'Last backup for {} at {} ({}) is tiny, less than 10K: '
+                return(CRITICAL, 'Backup for {} at {} ({}) is less than {}: '
                                  '{} bytes'.format(section,
                                                    datacenter,
+                                                   humanized_crit_size,
                                                    last_backup_date,
                                                    size))
             if size < WARN_SIZE:
-                return (WARNING, 'Last backup for {} at {} ({}) is less than 10G: '
+                return (WARNING, 'Backup for {} at {} ({}) is less than {}: '
                                  '{} bytes.'.format(section,
                                                     datacenter,
+                                                    humanized_warn_size,
                                                     last_backup_date,
                                                     size))
             # TODO: check files expected
-            return (OK, 'Backups for {} at {} are up to date: '
-                        'Most recent backup {} ({} bytes)'.format(section,
-                                                                  datacenter,
-                                                                  last_backup_date,
-                                                                  size))
+            return (OK, 'Backup for {} at {} taken less than {} and larger than {}: '
+                        'Last one {} from {} ({})'.format(section,
+                                                          datacenter,
+                                                          humanized_freshness,
+                                                          humanized_warn_size,
+                                                          last_backup_date,
+                                                          source,
+                                                          humanized_size))
 
 
 def main():
