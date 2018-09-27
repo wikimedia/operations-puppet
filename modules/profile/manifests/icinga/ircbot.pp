@@ -22,8 +22,8 @@ class profile::icinga::ircbot(
     $password_file = '/etc/icinga/.irc_secret'
     file { $password_file:
         ensure    => present,
-        owner     => $icinga::icinga_user,
-        group     => $icinga::icinga_group,
+        owner     => 'nobody',
+        group     => 'nogroup',
         mode      => '0400',
         content   => secret('icinga/icinga-wm_irc.secret'),
         show_diff => false,
