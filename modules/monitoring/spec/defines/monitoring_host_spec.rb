@@ -138,7 +138,7 @@ describe 'monitoring::host' do
       $mysql_check_pass='foo'
     }
     include ::profile::base
-    include icinga
+    class { 'icinga': icinga_user => 'icinga', icinga_group => 'icinga' }
     """
     }
     let(:node_params) { {'cluster' => 'ci', 'site' => 'eqiad'} }
