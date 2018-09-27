@@ -479,3 +479,4 @@ profile::maps::apps::sources_to_invalidate:
   - osm
   - osm-intl
 profile::maps::apps::tile_server_domain: maps-beta.wmflabs.org
+profile::maps::apps::wikidata_query_service: https://query.wikidata.org/bigdata/namespace/wdq/sparql

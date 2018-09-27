@@ -13,6 +13,7 @@ class profile::maps::apps(
     $eventlogging_service_uri = hiera('profile::maps::apps::eventlogging_service_uri'),
     $sources_to_invalidate = hiera('profile::maps::apps::sources_to_invalidate'),
     $tile_server_domain = hiera('profile::maps::apps::tile_server_domain'),
+    $wikidata_query_service = hiera('profile::maps::apps::wikidata_query_service'),
 ) {
 
 
@@ -45,12 +46,13 @@ class profile::maps::apps(
     }
 
     class { 'kartotherian':
-        cassandra_servers    => $cassandra_hosts,
-        cassandra_pass       => $cassandra_kartotherian_pass,
-        pgsql_pass           => $pgsql_kartotherian_pass,
-        contact_groups       => $contact_groups,
-        storage_id           => $kartotherian_storage_id,
-        tilerator_storage_id => $tilerator_storage_id,
+        cassandra_servers      => $cassandra_hosts,
+        cassandra_pass         => $cassandra_kartotherian_pass,
+        pgsql_pass             => $pgsql_kartotherian_pass,
+        contact_groups         => $contact_groups,
+        storage_id             => $kartotherian_storage_id,
+        tilerator_storage_id   => $tilerator_storage_id,
+        wikidata_query_service => $wikidata_query_service,
     }
 
     # those fonts are needed for the new maps style (brighmed)
