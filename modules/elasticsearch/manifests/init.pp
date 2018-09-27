@@ -11,9 +11,9 @@
 #
 # == Sample usage:
 #
-#   class { "elasticsearch":
+#   class { 'elasticsearch':
 #       default_instance_params => {
-#           cluster_name => "labs-search",
+#           cluster_name => 'labs-search',
 #       }
 #   }
 #
