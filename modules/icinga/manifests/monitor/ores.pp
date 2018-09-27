@@ -47,8 +47,8 @@ class icinga::monitor::ores {
     # T122830
     file { '/usr/local/lib/nagios/plugins/check_ores_workers':
         source => 'puppet:///modules/nagios_common/check_commands/check_ores_workers',
-        owner  => 'icinga',
-        group  => 'icinga',
+        owner  => $profile::icinga::icinga_user,
+        group  => $profile::icinga::icinga_group,
         mode   => '0550',
     }
 }

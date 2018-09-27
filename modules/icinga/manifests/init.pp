@@ -9,11 +9,11 @@
 # test. That is submit a passive check of DOWN for a paging service and confirm
 # people get the pages.
 class icinga(
+    $icinga_user,
+    $icinga_group,
     $enable_notifications  = 1,
     $enable_event_handlers = 1,
     $ensure_service = 'running',
-    $icinga_user = 'icinga',
-    $icinga_group = 'icinga',
 ) {
 
     if os_version('debian == jessie') {
