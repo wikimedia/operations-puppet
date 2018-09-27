@@ -10,3 +10,7 @@ profile::icinga::ircbot::ensure: present
 profile::icinga::ircbot::ircecho_nick: icinga-wm
 profile::icinga::ircbot::ircecho_server: 'chat.freenode.net +6697'
 
+profile::icinga::active_host: einsteinium.wikimedia.org
+profile::icinga::partners:
+  - 'tegmen.wikimedia.org'
+  - 'icinga1001.wikimedia.org'

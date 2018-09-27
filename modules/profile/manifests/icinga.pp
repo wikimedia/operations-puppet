@@ -7,13 +7,14 @@
 #
 class profile::icinga(
     $monitoring_groups = hiera('monitoring::groups'),
-    $partner = hiera('profile::icinga::partner'),
-    $is_passive = hiera('profile::icinga::passive'),
+    $active_host = hiera('profile::icinga::active_host'),
+    $partners = hiera('profile::icinga::partners', []),
     $ensure_service = hiera('profile::icinga::ensure_service', 'running'),
     $virtual_host = hiera('profile::icinga::virtual_host'),
     $icinga_user = hiera('profile::icinga::icinga_user', 'icinga'),
     $icinga_group = hiera('profile::icinga::icinga_group', 'icinga'),
 ){
+    $is_passive = !($::fqdn == $active_host)
 
     interface::add_ip6_mapped { 'main': }
 
@@ -89,10 +90,23 @@ class profile::icinga(
         ensure => $ircbot_present,
     }
 
-    ferm::service { 'icinga-rsync':
-        proto  => 'tcp',
-        port   => 873,
-        srange => "(@resolve(${partner}) @resolve(${partner}, AAAA))",
+    if ($is_passive) {
+        file { '/usr/local/sbin/sync_icinga_state':
+          ensure  => present,
+          owner   => 'root',
+          group   => 'root',
+          mode    => '0755',
+          content => template('role/icinga/sync_icinga_state.sh.erb'),
+        }
+    }
+    else {
+        $partners.each |String $partner| {
+            ferm::service { "icinga-rsync-${partner}":
+              proto  => 'tcp',
+              port   => 873,
+              srange => "(@resolve(${partner}) @resolve(${partner}, AAAA))",
+            }
+        }
     }
 
     # allow NSCA (Nagios Service Check Acceptor)
@@ -114,13 +128,6 @@ class profile::icinga(
     rsync::server::module { 'icinga-lib':
         read_only => 'yes',
         path      => '/var/lib/icinga',
-    }
-    file { '/usr/local/sbin/sync_icinga_state':
-        ensure  => present,
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0755',
-        content => template('role/icinga/sync_icinga_state.sh.erb'),
     }
 
     # We absent the cron on active hosts, should only exist on passive ones
