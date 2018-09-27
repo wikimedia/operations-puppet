@@ -20,12 +20,14 @@ class profile::icinga(
 
     if os_version('debian >= stretch') {
         require_package('mariadb-client')
-    }
-    else {
+    } else {
         class { 'mysql': }
     }
 
-    class { 'rsync::server': }
+    class { 'rsync::server':
+        use_ipv6 => true,
+    }
+
     class { 'netops::monitoring': }
     class { 'facilities': }
     class { 'lvs::monitor': }
