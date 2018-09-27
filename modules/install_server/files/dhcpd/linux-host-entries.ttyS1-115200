@@ -2999,7 +2999,7 @@ host cloudstore1008 {
 }
 
 host cloudstore1009 {
-    hardware ethernet d0:94:66:2d:94:3b;
+    hardware ethernet d0:94:66:2d:94:3f;
     fixed-address cloudstore1009.wikimedia.org;
 }
 
