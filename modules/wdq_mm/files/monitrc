@@ -1,9 +1,0 @@
-# THIS FILE IS MANAGED BY PUPPET
-
-check host wdq-mm with address 127.0.0.1
-    start "/sbin/start wdq-mm"
-    stop "/sbin/stop wdq-mm"
-    if failed port 8834 protocol HTTP
-        request /
-        with timeout 10 seconds
-        then restart
