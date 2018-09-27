@@ -7,7 +7,12 @@ class role::toollabs::elasticsearch {
 
     include ::toollabs::base
     include ::profile::base::firewall
-    include ::elasticsearch
+
+    class { 'elasticsearch':
+        default_instance_params => {
+            cluster_name => 'labs-tools',
+        }
+    }
 
     file { '/usr/share/elasticsearch/plugins':
         ensure => 'directory',
