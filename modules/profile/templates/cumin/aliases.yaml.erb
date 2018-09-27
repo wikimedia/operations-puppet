@@ -74,7 +74,7 @@ hadoop-master: P{O:analytics_cluster::hadoop::master}
 hadoop-standby: P{O:analytics_cluster::hadoop::standby}
 hadoop-worker: P{O:analytics_cluster::hadoop::worker}
 hadoop-worker-canary: P{analytics1030.eqiad.wmnet}
-icinga: P{O:icinga}
+icinga: P{O:alerting_host}
 installserver: P{O:installserver}
 jobqueue-redis-codfw: (A:jobqueue-redis-master or A:jobqueue-redis-slave) and A:codfw
 jobqueue-redis-eqiad: (A:jobqueue-redis-master or A:jobqueue-redis-slave) and A:eqiad
@@ -205,7 +205,7 @@ wdqs-main: P{O:wdqs or O:wdqs::internal}
 wdqs-internal: P{O:wdqs::internal}
 wdqs-public: P{O:wdqs}
 wdqs-test: P{O:wdqs::test}
-webperf: P{O:webperf::processors_and_site}
+webperf: P{O:webperf::processors_and_site or O:webperf::profiling_tools}
 yubiauth: P{O:yubiauth_server}
 
 # Miscellaneous groups
@@ -213,7 +213,7 @@ misc-analytics: P{O:statistics::web or O:statistics::cruncher or O:statistics::p
 misc-apache: P{O:microsites::peopleweb or C:grafana::production or O:requesttracker or O:releases or O:otrs or O:webserver_misc_static or O:webserver_misc_apps} or A:planet
 misc-devel: P{O:webperf::processors_and_site or O:webperf::profiling_tools or O:ve or O:archiva or O:docker::registry} or A:debugproxy or A:mwlog
 misc-nonprod: P{O:spare::system or O:test or O:pybaltest or O:authdns::testns or O:cache::canary}
-misc-ops: A:installserver or A:cumin or A:url-downloader or A:icinga or P{O:logging::webrequest::ops or O:builder or O:syslog::centralserver or O:pmacct or O:backup::offsite or O:backup or O:mirrors} or A:netmon or A:puppetboard or A:debmonitor
+misc-ops: A:installserver or A:cumin or A:url-downloader or A:icinga or P{O:logging::webrequest::ops or O:builder or O:syslog::centralserver or O:pmacct or O:backup::offsite or O:backup or O:mirrors} or A:netmon or A:puppetboard or A:debmonitor or O:ping_offload or A:debmonitor
 misc-others: P{O:mw_rc_irc or O:etherpad or O:tor_relay or O:lists or O:netinsights}
 misc-releng: P{O:wmcs::openstack::main::nodepool or O:phabricator} or A:contint or A:gerrit or A:mw-maintenance
 misc-wmcs: A:labnet or A:labcontrol or A:labservices or A:labweb or A:osm or A:db-wmcs or P{O:labs::monitoring}
