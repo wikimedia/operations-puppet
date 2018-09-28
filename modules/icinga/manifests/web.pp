@@ -7,7 +7,6 @@ class icinga::web (
     $icinga_group,
     $virtual_host,
 ) {
-    include ::icinga
 
     # Apparently required for the web interface
     package { 'icinga-doc':
