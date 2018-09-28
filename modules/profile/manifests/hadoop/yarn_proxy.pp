@@ -32,7 +32,8 @@ class profile::hadoop::yarn_proxy {
     }
 
     ferm::service { 'yarn-http':
-        proto => 'tcp',
-        port  => '80',
+        proto  => 'tcp',
+        port   => '80',
+        srange => '$CACHES',
     }
 }
