@@ -2151,7 +2151,6 @@ node 'deploy1001.eqiad.wmnet', 'deploy2001.codfw.wmnet' {
 # test system for performance team (T117888)
 node 'tungsten.eqiad.wmnet' {
     role(xhgui::app)
-    include ::role::test
 }
 
 # replaced magnesium (RT) (T119112 T123713)
