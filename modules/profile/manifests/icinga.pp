@@ -16,8 +16,6 @@ class profile::icinga(
 ){
     $is_passive = !($::fqdn == $active_host)
 
-    interface::add_ip6_mapped { 'main': }
-
     if os_version('debian >= stretch') {
         require_package('mariadb-client')
     } else {

@@ -6,16 +6,20 @@
 # = Parameters
 #
 class role::alerting_host {
+
     system::role{ 'alerting_host':
         description => 'central host for health checking and alerting'
     }
+
+    include ::standard
+    include ::profile::base::firewall
+
     include ::profile::icinga
     include ::profile::tcpircbot
     include ::profile::certspotter
-    include ::role::authdns::monitoring
-    include ::standard
-    include ::profile::base::firewall
     include ::profile::scap::dsh
+
+    include ::role::authdns::monitoring
 
     if os_version('debian >= stretch') {
         $php_module = 'php7.0'
