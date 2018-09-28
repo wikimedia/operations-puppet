@@ -11,7 +11,6 @@ class profile::hue (
     $database_name              = hiera('profile::hue::database_name', 'hue'),
     $ldap_create_users_on_login = hiera('profile::hue::ldap_create_users_on_login', false),
     $monitoring_enabled         = hiera('profile::hue::monitoring_enabled', false),
-    $proxy_enabled              = hiera('profile::hue::proxy_enabled', true),
 ){
 
     # Require that all Hue applications
@@ -61,12 +60,6 @@ class profile::hue (
         secure_proxy_ssl_header    => true,
     }
 
-    ferm::service{ 'hue_server':
-        proto  => 'tcp',
-        port   => '8888',
-        srange => '$PRODUCTION_NETWORKS',
-    }
-
     # Include icinga alerts if production realm.
     if $monitoring_enabled {
         nrpe::monitor_service { 'hue':
@@ -79,30 +72,28 @@ class profile::hue (
 
     # Vhost proxy to Hue app server.
     # This is not for LDAP auth, LDAP is done by Hue itself.
-    if $proxy_enabled {
 
-        # Ignore wmf styleguide; Need to include here as well as in yarn_proxy.pp
-        # lint:ignore:wmf_styleguide
-        include ::apache::mod::proxy_http
-        include ::apache::mod::proxy
-        # lint:endignore
+    # Ignore wmf styleguide; Need to include here as well as in yarn_proxy.pp
+    # lint:ignore:wmf_styleguide
+    include ::apache::mod::proxy_http
+    include ::apache::mod::proxy
+    # lint:endignore
 
-        $server_name = $::realm ? {
-            'production' => 'hue.wikimedia.org',
-            'labs'       => "hue-${::labsproject}.${::site}.wmflabs",
-        }
+    $server_name = $::realm ? {
+        'production' => 'hue.wikimedia.org',
+        'labs'       => "hue-${::labsproject}.${::site}.wmflabs",
+    }
 
-        $hue_port = $::cdh::hue::http_port
+    $hue_port = $::cdh::hue::http_port
 
-        # Set up the VirtualHost
-        apache::site { $server_name:
-            content => template('profile/hue/hue.vhost.erb'),
-        }
+    # Set up the VirtualHost
+    apache::site { $server_name:
+        content => template('profile/hue/hue.vhost.erb'),
+    }
 
-        ferm::service { 'hue-http':
-            proto  => 'tcp',
-            port   => '80',
-            srange => '$CACHES',
-        }
+    ferm::service { 'hue-http':
+        proto  => 'tcp',
+        port   => '80',
+        srange => '$CACHES',
     }
 }
