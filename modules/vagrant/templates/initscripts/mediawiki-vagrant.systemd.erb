@@ -6,6 +6,7 @@ After=network.target
 Type=oneshot
 Environment=LANG=en_US.UTF-8
 ExecStart=/usr/local/bin/start-mwvagrant.sh
+RemainAfterExit=yes
 
 [Install]
 WantedBy=multi-user.target

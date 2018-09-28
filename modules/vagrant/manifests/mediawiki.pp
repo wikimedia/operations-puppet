@@ -96,4 +96,17 @@ class vagrant::mediawiki(
         declare_service => false,
         require         => File['/usr/local/bin/start-mwvagrant.sh'],
     }
+    if $::initsystem == 'systemd' {
+        # FIXME: when upstart (Trusty) support is removed, just use the normal
+        # 'declare_service' behavior of ::base::service_unit instead of this
+        # manual declaration. Our service unit uses 'RemainAfterExit=yes', so
+        # systemd will treat it as running even though it is a one-time
+        # script.
+        service { 'mediawiki-vagrant':
+            ensure   => 'running',
+            enable   => true,
+            provider => 'systemd',
+            require  => Base::Service_unit['mediawiki-vagrant'],
+        }
+    }
 }
