@@ -1,4 +1,7 @@
 codfw:
+  testserver:
+    mwdebug2001.codfw.wmnet: [apache2]
+    mwdebug2002.codfw.wmnet: [apache2]
   appserver:
     mw2163.codfw.wmnet: [apache2,nginx]
     mw2164.codfw.wmnet: [apache2,nginx]
@@ -152,9 +155,6 @@ codfw:
     mw2281.codfw.wmnet: [apache2,nginx]
     mw2282.codfw.wmnet: [apache2,nginx]
   videoscaler: *jobrunner
-  testserver:
-    mwdebug2001.codfw.wmnet: [apache2]
-    mwdebug2002.codfw.wmnet: [apache2]
   parsoid:
     # Do not forget to update $wgLinterSubmitterWhitelist in operations/mediawiki-config
     wtp2001.codfw.wmnet: [parsoid]
