@@ -24,8 +24,9 @@ class profile::icinga(
         class { 'mysql': }
     }
 
+    # leaving address blank means also using IPv6
     class { 'rsync::server':
-        use_ipv6 => true,
+        address => '',
     }
 
     class { 'netops::monitoring': }
