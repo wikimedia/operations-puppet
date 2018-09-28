@@ -14,31 +14,26 @@
 # [*delete_empty*]
 #   if tile is empty, make sure we don't store it, if it was there before
 #
-# [*expire_dir*]
-#   expire directory location
-#
-# [*statefile_dir*]
-#   directory containing the state file from OSM
+# [*zoom*]
+#   the zoom level of the pyramid's tip
 #
 # [*from_zoom*]
-#   new jobs will be created from this zoom
+#   zoom level at which to start generation (inclusive)
 #
 # [*before_zoom*]
-#   and until (but not including) this zoom
+#   zoom level to end tile generation (exclusive)
 #
 class tilerator::regen (
     Stdlib::Absolutepath $osmosis_dir   = '/srv/osmosis',
     String $generator_id                = 'gen',
     String $storage_id                  = 'v3',
     Boolean $delete_empty               = true,
-    Stdlib::Absolutepath $expire_dir    = '/srv/osm_expire/',
-    Stdlib::Absolutepath $statefile_dir = '/var/run/tileratorui',
+    Integer[0, 19] $zoom                = 0,
     Integer[0, 19] $from_zoom           = 0,
     Integer[0, 19] $before_zoom         = 10,
 ) {
 
     $tilerator_log_dir = '/var/log/tilerator/'
-    $statefile = "${statefile_dir}/expire.state"
 
     file { '/usr/local/bin/notify-tilerator-regen':
         ensure => present,
@@ -69,7 +64,7 @@ class tilerator::regen (
     }
 
     # Notify tilerator to regenerate zoom levels 0-9 monthly
-    $regen_options = "${osmosis_dir} ${from_zoom} ${before_zoom} ${generator_id} ${storage_id} ${delete_empty} ${expire_dir} ${statefile}"
+    $regen_options = "${osmosis_dir} ${zoom} ${from_zoom} ${before_zoom} ${generator_id} ${storage_id} ${delete_empty}"
     cron { "regen-zoom-level-${title}":
         ensure   => present,
         command  => "/usr/local/bin/notify-tilerator-regen ${regen_options} >> ${tilerator_log_dir}/regen-zoom-level.log 2>&1",
