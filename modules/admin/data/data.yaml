@@ -140,7 +140,7 @@ groups:
               nikerabbit, dstrine, mpany, jsamra,
               jdittrich, chelsyx, ovasileva, mtizzoni, panisson, paolotti, ciro, debt,
               fdans, mlitn, niharika29, goransm, pmiazga, dsaez, shiladsen, cicalese,
-              mirrys, sharvaniharan, mmiller, amire80, rush, tieu, kharlan]
+              mirrys, sharvaniharan, mmiller, amire80, rush, tieu, kharlan, gbirke]
   ldap-admins:
     gid: 715
     description: ldap admins
@@ -268,7 +268,7 @@ groups:
               piccardi, fdans, eevans, anomie, demon, ladsgroup, musikanimal,
               kaldari, goransm, ema, dsaez, shiladsen, rho, mirrys, slaporte, jk,
               ayounsi, mepps, mmiller, seddon, gilles, tstarling, pirroh, rush, tieu, karen,
-              cicalese, drossi, fsalutari, nathante]
+              cicalese, drossi, fsalutari, nathante, gbirke]
     system_members: [analytics-search]
   analytics-admins:
     gid: 732
@@ -3210,10 +3210,6 @@ ldap_only_users:
     ensure: present
     realname: Christoph Neuroth
     email: christoph.neuroth+wikimedia@gmail.com
-  gbirke:
-    ensure: present
-    realname: Gabriel Birke
-    email: gabriel.birke@wikimedia.de
   jakob:
     ensure: present
     realname: Jakob Warkotsch
