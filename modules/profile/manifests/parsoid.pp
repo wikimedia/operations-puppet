@@ -4,9 +4,13 @@ class profile::parsoid(
     if $has_lvs {
         require ::profile::lvs::realserver
     }
+
+    class { '::service::configuration': }
+
     class { '::parsoid':
-        port      => 8000,
-        discovery => 'api-rw'
+        port         => 8000,
+        mwapi_server => $::service::configuration::mwapi_uri,
+        mwapi_proxy  => ''
     }
 
     # Monitor TCP Connection States
