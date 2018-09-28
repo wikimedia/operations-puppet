@@ -126,8 +126,10 @@ class icinga(
 
     # Setup all plugins!
     class { '::icinga::plugins':
-        require => Package['icinga'],
-        notify  => Service['icinga'],
+        icinga_user  => $icinga_user,
+        icinga_group => $icinga_group,
+        require      => Package['icinga'],
+        notify       => Service['icinga'],
     }
 
     # Setup tmpfs for use by icinga

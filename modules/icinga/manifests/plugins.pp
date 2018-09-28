@@ -1,26 +1,29 @@
 # = Class: icinga::plugins
 #
 # Sets up icinga check_plugins and notification commands
-class icinga::plugins {
+class icinga::plugins(
+    $icinga_user,
+    $icinga_group,
+){
     package { 'nagios-nrpe-plugin':
         ensure => present,
     }
     file { '/usr/lib/nagios':
         ensure => directory,
-        owner  => $icinga::icinga_user,
-        group  => $icinga::icinga_group,
+        owner  => $icinga_user,
+        group  => $icinga_group,
         mode   => '0755',
     }
     file { '/usr/lib/nagios/plugins':
         ensure => directory,
-        owner  => $icinga::icinga_user,
-        group  => $icinga::icinga_group,
+        owner  => $icinga_user,
+        group  => $icinga_group,
         mode   => '0755',
     }
     file { '/usr/lib/nagios/plugins/eventhandlers':
         ensure => directory,
-        owner  => $icinga::icinga_user,
-        group  => $icinga::icinga_group,
+        owner  => $icinga_user,
+        group  => $icinga_group,
         mode   => '0755',
     }
     file { '/usr/lib/nagios/plugins/eventhandlers/submit_check_result':
@@ -31,14 +34,14 @@ class icinga::plugins {
     }
     file { '/var/lib/nagios/rm':
         ensure => directory,
-        owner  => $icinga::icinga_user,
+        owner  => $icinga_user,
         group  => 'nagios',
         mode   => '0775',
     }
     file { '/etc/nagios-plugins':
         ensure => directory,
-        owner  => $icinga::icinga_user,
-        group  => $icinga::icinga_group,
+        owner  => $icinga_user,
+        group  => $icinga_group,
         mode   => '0755',
     }
     # TODO: Purge this directoy instead of populating it is probably not very
@@ -47,8 +50,8 @@ class icinga::plugins {
         ensure  => directory,
         purge   => true,
         recurse => true,
-        owner   => $icinga::icinga_user,
-        group   => $icinga::icinga_group,
+        owner   => $icinga_user,
+        group   => $icinga_group,
         mode    => '0755',
     }
 
@@ -114,8 +117,8 @@ class icinga::plugins {
     }
 
     class { '::nagios_common::commands':
-        owner => $icinga::icinga_user,
-        group => $icinga::icinga_group,
+        owner => $icinga_user,
+        group => $icinga_group,
     }
 
     include ::passwords::nagios::mysql
@@ -126,56 +129,56 @@ class icinga::plugins {
         ensure     => present,
         content    => template('icinga/check_commands/smtp.cfg.erb'),
         config_dir => '/etc/icinga',
-        owner      => $icinga::icinga_user,
-        group      => $icinga::icinga_group,
+        owner      => $icinga_user,
+        group      => $icinga_group,
     }
 
     nagios_common::check_command::config { 'mysql.cfg':
         ensure     => present,
         content    => template('icinga/check_commands/mysql.cfg.erb'),
         config_dir => '/etc/icinga',
-        owner      => $icinga::icinga_user,
-        group      => $icinga::icinga_group,
+        owner      => $icinga_user,
+        group      => $icinga_group,
     }
 
     nagios_common::check_command::config { 'check_ripe_atlas.cfg':
         ensure     => present,
         content    => template('icinga/check_commands/check_ripe_atlas.cfg.erb'),
         config_dir => '/etc/icinga',
-        owner      => $icinga::icinga_user,
-        group      => $icinga::icinga_group,
+        owner      => $icinga_user,
+        group      => $icinga_group,
     }
 
     nagios_common::check_command::config { 'check_legal_html.cfg':
         ensure     => present,
         content    => template('icinga/check_commands/check_legal_html.cfg.erb'),
         config_dir => '/etc/icinga',
-        owner      => $icinga::icinga_user,
-        group      => $icinga::icinga_group,
+        owner      => $icinga_user,
+        group      => $icinga_group,
     }
 
     nagios_common::check_command::config { 'check_wikitech_static.cfg':
         ensure     => present,
         content    => template('icinga/check_commands/check_wikitech_static.cfg.erb'),
         config_dir => '/etc/icinga',
-        owner      => $icinga::icinga_user,
-        group      => $icinga::icinga_group,
+        owner      => $icinga_user,
+        group      => $icinga_group,
     }
 
     nagios_common::check_command::config { 'check_wikitech_static_version.cfg':
         ensure     => present,
         content    => template('icinga/check_commands/check_wikitech_static_version.cfg.erb'),
         config_dir => '/etc/icinga',
-        owner      => $icinga::icinga_user,
-        group      => $icinga::icinga_group,
+        owner      => $icinga_user,
+        group      => $icinga_group,
     }
 
     nagios_common::check_command::config { 'check_wikidata_crit.cfg':
         ensure     => present,
         content    => template('icinga/check_commands/check_wikidata_crit.cfg.erb'),
         config_dir => '/etc/icinga',
-        owner      => $icinga::icinga_user,
-        group      => $icinga::icinga_group,
+        owner      => $icinga_user,
+        group      => $icinga_group,
     }
 
     # Include check_elasticsearch from elasticsearch module
