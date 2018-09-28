@@ -3,6 +3,8 @@
 # Sets up an apache instance for icinga web interface,
 # protected with ldap authentication
 class icinga::web (
+    $icinga_user,
+    $icinga_group,
     $virtual_host,
 ) {
     include ::icinga
@@ -37,8 +39,8 @@ class icinga::web (
 
     file { '/usr/share/icinga/htdocs/images/logos/ubuntu.png':
         source => 'puppet:///modules/icinga/ubuntu.png',
-        owner  => $icinga::icinga_user,
-        group  => $icinga::icinga_group,
+        owner  => $icinga_user,
+        group  => $icinga_group,
         mode   => '0644',
     }
 

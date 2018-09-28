@@ -10,8 +10,8 @@ class icinga::event_handlers::raid (
     class { '::phabricator::bot':
         username => 'ops-monitoring-bot',
         token    => $passwords::phabricator::ops_monitoring_bot_token,
-        owner    => $profile::icinga::icinga_user,
-        group    => $profile::icinga::icinga_group,
+        owner    => $icinga_user,
+        group    => $icinga_group,
     }
 
     package { 'python-phabricator':

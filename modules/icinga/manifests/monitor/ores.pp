@@ -1,5 +1,8 @@
 # monitoring of https://www.mediawiki.org/wiki/ORES
-class icinga::monitor::ores {
+class icinga::monitor::ores (
+    $icinga_user,
+    $icinga_group,
+){
 
     monitoring::grafana_alert { 'db/ores':
         contact_group   => 'team-scoring',
@@ -47,8 +50,8 @@ class icinga::monitor::ores {
     # T122830
     file { '/usr/local/lib/nagios/plugins/check_ores_workers':
         source => 'puppet:///modules/nagios_common/check_commands/check_ores_workers',
-        owner  => $profile::icinga::icinga_user,
-        group  => $profile::icinga::icinga_group,
+        owner  => $icinga_user,
+        group  => $icinga_group,
         mode   => '0550',
     }
 }

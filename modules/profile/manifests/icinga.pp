@@ -33,7 +33,12 @@ class profile::icinga(
     class { 'icinga::monitor::checkpaging': }
     class { 'icinga::nsca::daemon': }
     class { 'icinga::monitor::wikidata': }
-    class { 'icinga::monitor::ores': }
+
+    class { 'icinga::monitor::ores':
+        icinga_user  => $icinga_user,
+        icinga_group => $icinga_group,
+    }
+
     class { 'icinga::monitor::toollabs': }
     class { 'icinga::monitor::legal': }
     class { 'icinga::monitor::certs': }
@@ -88,10 +93,16 @@ class profile::icinga(
     }
 
     class { '::icinga::web':
+        icinga_user  => $icinga_user,
+        icinga_group => $icinga_group,
         virtual_host => $virtual_host,
     }
 
-    class { '::icinga::naggen':    }
+    class { '::icinga::naggen':
+        icinga_user  => $icinga_user,
+        icinga_group => $icinga_group,
+    }
+
     class { '::profile::icinga::ircbot':
         ensure => $ircbot_present,
     }

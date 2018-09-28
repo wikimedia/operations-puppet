@@ -2,7 +2,10 @@
 #
 # Runs naggen2 to generate hosts, service and hostext config
 # from exported puppet resources
-class icinga::naggen {
+class icinga::naggen (
+    $icinga_user,
+    $icinga_group,
+){
     include ::icinga
     $dbarg = $::use_puppetdb ? {
         true    => '--puppetdb',
@@ -13,8 +16,8 @@ class icinga::naggen {
         content => generate(
             '/usr/local/bin/naggen2', $dbarg, '--type', 'hosts'),
         backup  => false,
-        owner   => $icinga::icinga_user,
-        group   => $icinga::icinga_group,
+        owner   => $icinga_user,
+        group   => $icinga_group,
         mode    => '0644',
         notify  => Service['icinga'],
     }
@@ -22,7 +25,7 @@ class icinga::naggen {
         content => generate(
             '/usr/local/bin/naggen2', $dbarg, '--type', 'services'),
         backup  => false,
-        owner   => $icinga::icinga_user,
+        owner   => $icinga_user,
         group   => $icinga::icinga_group,
         mode    => '0644',
         notify  => Service['icinga'],
