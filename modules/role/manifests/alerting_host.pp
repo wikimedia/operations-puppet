@@ -11,7 +11,7 @@ class role::alerting_host {
     }
     include ::profile::icinga
     include ::profile::tcpircbot
-    include ::role::certspotter
+    include ::profile::certspotter
     include ::role::authdns::monitoring
     include ::standard
     include ::profile::base::firewall

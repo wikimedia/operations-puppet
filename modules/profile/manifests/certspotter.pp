@@ -1,8 +1,8 @@
-# = Class: role::certspotter
+# = Class: profile::certspotter
 #
 # Sets up certspotter for Wikimedia prod
 #
-class role::certspotter {
+class profile::certspotter {
     class { '::certspotter':
         address => 'noc@wikimedia.org',
         # cf. role::cache::ssl::unified
