@@ -39,8 +39,8 @@ class profile::product_analytics::base {
         'python3-requests',
         'python-h5py',        # Python interface to HDF5
         'python3-h5py',
-        'python-cython',      # C-Extensions for Python
-        'python3-cython'
+        'cython',             # C-Extensions for Python
+        'cython3'
     ]
     require_package($essentials)
 
