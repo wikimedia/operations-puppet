@@ -23,10 +23,10 @@ class role::xhgui::app {
         modules => ['authnz_ldap', 'php5', 'rewrite'],
     }
 
+    include ::standard
+    include ::profile::base::firewall
     include ::mongodb
-
     include ::passwords::ldap::production
-
 
     $auth_ldap = {
         name          => 'nda/ops/wmf',
