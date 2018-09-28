@@ -1,7 +1,10 @@
 # = Class: icinga::event_handlers::raid
 #
 # Sets up icinga RAID event handler
-class icinga::event_handlers::raid {
+class icinga::event_handlers::raid (
+    $icinga_user,
+    $icinga_group,
+){
     include ::passwords::phabricator
 
     class { '::phabricator::bot':
@@ -30,8 +33,8 @@ class icinga::event_handlers::raid {
         ensure     => present,
         content    => template('icinga/event_handlers/raid_handler.cfg.erb'),
         config_dir => '/etc/icinga',
-        owner      => 'icinga',
-        group      => 'icinga',
+        owner      => $icinga_user,
+        group      => $icinga_group,
         require    => File['/usr/lib/nagios/plugins/eventhandlers/raid_handler'],
         notify     => Service['icinga'],
     }

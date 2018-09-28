@@ -47,7 +47,12 @@ class profile::icinga(
     class { 'icinga::monitor::services': }
     class { 'icinga::monitor::reading_web': }
     class { 'icinga::monitor::traffic': }
-    class { 'icinga::event_handlers::raid': }
+
+    class { 'icinga::event_handlers::raid':
+        icinga_user  => $icinga_user,
+        icinga_group => $icinga_group,
+    }
+
     class { '::profile::bird::anycast_monitoring': }
     class { '::profile::prometheus::alerts': }
     class { '::profile::maps::alerts': }
