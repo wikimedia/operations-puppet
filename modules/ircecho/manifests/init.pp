@@ -24,6 +24,7 @@ class ircecho (
         owner  => 'root',
         group  => 'root',
         mode   => '0755',
+        notify => Service['ircecho'],
     }
     file { '/usr/local/lib/python2.7/dist-packages/ib3_auth.py':
         ensure => 'present',
@@ -31,6 +32,7 @@ class ircecho (
         owner  => 'root',
         group  => 'root',
         mode   => '0755',
+        notify => Service['ircecho'],
     }
 
     file { '/etc/default/ircecho':
