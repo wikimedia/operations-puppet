@@ -9,16 +9,5 @@ class role::parsoid {
 
     include ::standard
     include ::profile::base::firewall
-
-    if hiera('has_lvs', true) {
-        include role::lvs::realserver
-    }
-
-    include ::parsoid
-    # Monitor TCP Connection States
-    diamond::collector { 'TcpConnStates':
-        ensure => absent,
-        source => 'puppet:///modules/diamond/collector/tcpconnstates.py',
-    }
-
+    include ::profile::parsoid
 }
