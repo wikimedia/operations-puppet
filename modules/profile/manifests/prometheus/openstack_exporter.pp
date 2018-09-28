@@ -30,6 +30,6 @@ class profile::prometheus::openstack_exporter (
     ferm::service { 'prometheus-openstack-exporter':
         proto  => 'tcp',
         port   => $listen_port,
-        srange => "(@resolve((${prometheus_nodes_ferm})), @resolve((${prometheus_nodes_ferm}), AAAA))",
+        srange => "(@resolve((${prometheus_nodes_ferm})) @resolve((${prometheus_nodes_ferm}), AAAA))",
     }
 }
