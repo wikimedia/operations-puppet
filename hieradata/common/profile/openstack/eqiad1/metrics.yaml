@@ -4,7 +4,6 @@ profile::openstack::eqiad1::metrics::disck_allocation_ratio: 1.0
 profile::openstack::eqiad1::metrics::prometheus_listen_port: 12345
 profile::openstack::eqiad1::metrics::cache_refresh_interval: 10
 profile::openstack::eqiad1::metrics::cache_file: /var/cache/prometheus-openstack-exporter/eqiad1
-profile::openstack::eqiad1::metrics::schedulable_instance_size:
-  ram_mbs: 4096
-  vcpu: 2
-  disk_gbs: 2
+profile::openstack::eqiad1::metrics::sched_ram_mbs: 4096
+profile::openstack::eqiad1::metrics::sched_vcpu: 2
+profile::openstack::eqiad1::metrics::sched_disk_gbs: 2

@@ -8,8 +8,8 @@ openstack_allocation_ratio_disk: <%= @disk_allocation_ratio %>
 
 # To export hypervisor_schedulable_instances metric set desired instance size
 schedulable_instance_size:
-    ram_mbs: <%= @schedulable_instance_size.ram_mbs %>
-    vcpu: <%= @schedulable_instance_size.vcpu %>
-    disk_gbs: <%= @schedulable_instance_size.disk_gbs %>
+    ram_mbs: <%= @sched_ram_mbs %>
+    vcpu: <%= @sched_vcpu %>
+    disk_gbs: <%= @sched_disk_gbs %>
 
 use_nova_volumes: False

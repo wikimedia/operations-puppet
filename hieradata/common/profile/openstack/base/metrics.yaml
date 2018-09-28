@@ -4,7 +4,6 @@ profile::openstack::base::metrics::disck_allocation_ratio: 1.0
 profile::openstack::base::metrics::prometheus_listen_port: 12345
 profile::openstack::base::metrics::cache_refresh_interval: 10
 profile::openstack::base::metrics::cache_file: /var/cache/prometheus-openstack-exporter/base
-profile::openstack::base::metrics::schedulable_instance_size:
-  ram_mbs: 4096
-  vcpu: 2
-  disk_gbs: 2
+profile::openstack::base::metrics::sched_ram_mbs: 4096
+profile::openstack::base::metrics::sched_vcpu: 2
+profile::openstack::base::metrics::sched_disk_gbs: 2
