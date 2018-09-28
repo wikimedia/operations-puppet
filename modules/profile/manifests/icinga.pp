@@ -126,16 +126,19 @@ class profile::icinga(
     }
 
     rsync::server::module { 'icinga-tmpfs':
-        read_only => 'yes',
-        path      => '/var/icinga-tmpfs',
+        read_only   => 'yes',
+        path        => '/var/icinga-tmpfs',
+        hosts_allow => $partners
     }
     rsync::server::module { 'icinga-cache':
-        read_only => 'yes',
-        path      => '/var/cache/icinga',
+        read_only   => 'yes',
+        path        => '/var/cache/icinga',
+        hosts_allow => $partners
     }
     rsync::server::module { 'icinga-lib':
-        read_only => 'yes',
-        path      => '/var/lib/icinga',
+        read_only   => 'yes',
+        path        => '/var/lib/icinga',
+        hosts_allow => $partners
     }
 
     # We absent the cron on active hosts, should only exist on passive ones
