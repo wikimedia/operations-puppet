@@ -10,7 +10,7 @@ class role::alerting_host {
         description => 'central host for health checking and alerting'
     }
     include ::profile::icinga
-    include ::role::tcpircbot
+    include ::profile::tcpircbot
     include ::role::certspotter
     include ::role::authdns::monitoring
     include ::standard
