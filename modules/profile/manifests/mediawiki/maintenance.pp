@@ -9,10 +9,26 @@ class profile::mediawiki::maintenance {
         target => '/srv/mediawiki'
     }
 
-    $ensure = mediawiki::state('primary_dc') ? {
-        $::site => 'present',
-        default => 'absent',
+    # FIXME: reactivate this after we switched back to eqiad and mwmaint1002
+    #$ensure = mediawiki::state('primary_dc') ? {
+    #    $::site => 'present',
+    #    default => 'absent',
+    #}
+
+    # FIXME: remove this after we switched back to eqiad and mwmaint1002
+    if ($::site == mediawiki::state('primary_dc')) and ($::fqdn == 'mwmaint1002.eqiad.wmnet') {
+        $ensure = 'present'
     }
+    if ($::site == mediawiki::state('primary_dc')) and ($::fqdn == 'mwmaint1001.eqiad.wmnet') {
+        $ensure = 'absent'
+    }
+    if ($::site == mediawiki::state('primary_dc')) and ($::fqdn == 'mwmaint2001.codfw.wmnet') {
+        $ensure = 'present'
+    }
+    if ($::site != mediawiki::state('primary_dc')) {
+        $ensure = 'absent'
+    }
+    # /FIXME
 
     # Mediawiki maintenance scripts (cron jobs)
     class { 'mediawiki::maintenance::pagetriage': ensure => $ensure }
