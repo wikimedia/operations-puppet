@@ -14,10 +14,22 @@ define scap::dsh::group($hosts=undef, $conftool=undef,) {
     }
 
     if $conftool {
-        # Usual dirty trick to avoid a parser function.
-        # TODO: fix this once we have the future parser
         $default_datacenters = ['eqiad', 'codfw']
-        $keys = split(template('scap/dsh/dsh_group_keys.erb'),'\|')
+        # Add the default datacenters if they don't exist
+        $data = $conftool.map |$x| {
+            {'datacenters' => $default_datacenters} + $x
+        }
+
+        # And extract the confd keys
+        # Puppet lint seems to have a bug here
+        # lint:ignore:variable_scope
+        $k = $data.map |$datum| {
+            $datum['datacenters'].map |$y| {
+                "/${y}/${datum['cluster']}/${datum['service']}"
+            }
+        }
+        # lint:endignore
+        $keys = flatten($k)
 
         confd::file { "/etc/dsh/group/${title}":
             ensure     => present,
