@@ -415,7 +415,7 @@ groups:
   wdqs-roots:
     gid: 806
     description: Root level access for WikiData Query Service project
-    members: []
+    members: [onimisionipe]
     privileges: ['ALL = (ALL) NOPASSWD: ALL']
   mailman-admins:
     gid: 757
