@@ -28,10 +28,9 @@ class profile::prometheus::openstack_exporter (
         require => File['/etc/prometheus-openstack-exporter.yaml'],
     }
 
-    $prometheus_nodes_ferm = join($prometheus_nodes, ' ')
     ferm::service { 'prometheus-openstack-exporter':
         proto  => 'tcp',
         port   => $listen_port,
-        srange => "(@resolve((${prometheus_nodes_ferm})) @resolve((${prometheus_nodes_ferm}), AAAA))",
+        srange => "@resolve((${prometheus_nodes}))",
     }
 }
