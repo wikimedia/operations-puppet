@@ -53,7 +53,7 @@ class matomo (
     # Running it once a day to avoid performance penalties on high
     # trafficated websites (https://piwik.org/docs/setup-auto-archiving/#important-tips-for-medium-to-high-traffic-websites)
     if $archive_cron_url and $archive_cron_email {
-        $cmd = "[ -e /usr/share/matomo/console ] && [ -x /usr/bin/php ] && nice /usr/bin/php /usr/share/matomo/console core:archive --url=\"${archive_cron_url}\" >> /var/log/piwik/piwik-archive.log"
+        $cmd = "[ -e /usr/share/matomo/console ] && [ -x /usr/bin/php ] && nice /usr/bin/php /usr/share/matomo/console core:archive --url=\"${archive_cron_url}\" >> /var/log/matomo/matomo-archive.log"
         cron { 'matomo_archiver':
             command     => $cmd,
             user        => $piwik_username,
