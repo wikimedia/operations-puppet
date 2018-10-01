@@ -1,0 +1,43 @@
+# Use for Piwik/Matomo
+
+[client]
+port   = <%= @port %>
+socket = <%= @socket %>
+
+[mysqld]
+
+log_error=/var/log/mysql.err
+
+user      = mysql
+socket    = <%= @socket %>
+port      = <%= @port %>
+datadir   = <%= @datadir %>
+basedir   = <%= @basedir %>
+tmpdir    = <%= @tmpdir %>
+server_id = <%= @server_id %>
+read_only = <%= (@read_only == 'off' or not @read_only) ? 0 : 1 %>
+
+secure_file_priv   = /dev/null
+max_allowed_packet = 64M
+sync_binlog        = 0
+expire_logs_days   = 7
+
+innodb_file_per_table          = 1
+innodb_log_file_size           = 50M
+innodb_flush_method            = O_DIRECT
+innodb_flush_log_at_trx_commit = 1
+innodb_buffer_pool_size        = 2G
+innodb_buffer_pool_instances   = 4
+
+query_cache_type        = 1
+query_cache_size        = 16M
+
+# enable socket authentication
+plugin-load = unix_socket=auth_socket.so
+
+[mysqldump]
+
+quick
+max_allowed_packet = 16M
+
+#!includedir /etc/mysql/conf.d/
