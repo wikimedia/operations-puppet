@@ -51,6 +51,17 @@ class icinga(
           mode    => '0755',
           require => Package['icinga'],
         }
+
+        service { 'icinga':
+          ensure    => $ensure_service,
+          hasstatus => false,
+          restart   => '/etc/init.d/icinga reload',
+          require   => [
+              Mount['/var/icinga-tmpfs'],
+              File['/etc/init.d/icinga'],
+          ],
+        }
+
     } else {
         file { [ '/etc/nagios/nagios_host.cfg', '/etc/nagios/nagios_service.cfg' ]:
           ensure => 'file',
@@ -63,6 +74,16 @@ class icinga(
           group   => 'root',
           mode    => '0644',
           require => Package['icinga']
+        }
+
+        service { 'icinga':
+          ensure    => $ensure_service,
+          hasstatus => false,
+          restart   => 'systemctl reload icinga',
+          require   => [
+              Mount['/var/icinga-tmpfs'],
+              Package['icinga'],
+          ],
         }
     }
 
@@ -161,17 +182,6 @@ class icinga(
         ]:
         ensure => directory,
         owner  => $icinga_user,
-    }
-
-    # FIXME: This should not require explicit setup
-    service { 'icinga':
-        ensure    => $ensure_service,
-        hasstatus => false,
-        restart   => '/etc/init.d/icinga reload',
-        require   => [
-            Mount['/var/icinga-tmpfs'],
-            File['/etc/init.d/icinga'],
-        ],
     }
 
     # Script to purge resources for non-existent hosts
