@@ -5,4 +5,3 @@ cluster: parsoid
 profile::lvs::realserver::pools:
   parsoid:
     service: parsoid
-profile::lvs::realserver::use_conftool: true
