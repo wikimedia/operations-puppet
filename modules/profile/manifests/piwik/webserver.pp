@@ -30,6 +30,10 @@ class profile::piwik::webserver(
     if os_version('debian >= stretch') {
         $php_module = 'php7.0'
         $php_ini = '/etc/php/7.0/apache2/php.ini'
+
+        package { 'php7.0-mbstring':
+            ensure => 'present',
+        }
     } else {
         $php_module = 'php5'
         $php_ini = '/etc/php5/apache2/php.ini'
