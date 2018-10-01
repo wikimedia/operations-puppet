@@ -1,4 +1,4 @@
-#!/usr/bin/python -u
+#!/usr/bin/python3 -u
 # vim: set tabstop=4 shiftwidth=4 softtabstop=4 expandtab textwidth=80 smarttab
 #
 # stdin -> IRC echo bot, with optional file input support.
@@ -92,7 +92,7 @@ class EchoReader():
         else:
             while True:
                 try:
-                    s = raw_input()
+                    s = input()
                     # this throws an exception if not connected.
                     s = beautify_message(s)
                     self.bot.connection.privmsg(self.chans, s.replace('\n', ''))
@@ -105,7 +105,7 @@ class EchoReader():
     def get_unique_string(self):
         unique = ''
         for i in range(15):
-            unique = unique + random.choice(string.letters)
+            unique = unique + random.choice(string.ascii_letters)
         return unique
 
     def escape(self, string):
@@ -183,8 +183,8 @@ class EventHandler(pyinotify.ProcessEvent):
                     bot.connection.privmsg(chans, out)
             except (irc.client.ServerNotConnectedError, irc.client.MessageTooLong,
                     UnicodeDecodeError) as e:
-                print('Error writing: %s'
-                      'Dropping this message: "%s"') % (e, s)
+                print(('Error writing: %s'
+                      'Dropping this message: "%s"') % (e, s))
 
     def process_IN_CREATE(self, event):
         try:
