@@ -282,6 +282,7 @@ profile::elasticsearch::cirrus::ferm_srange: ''
 profile::elasticsearch::cirrus::storage_device: dm-0
 profile::elasticsearch::rack: ''
 profile::elasticsearch::row: ''
+profile::elasticsearch::instances: {}
 profile::elasticsearch::dc_settings: {}
 profile::elasticsearch::common_settings:
     expected_nodes: 3
