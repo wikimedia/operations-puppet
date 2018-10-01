@@ -28,6 +28,16 @@ class profile::prometheus::openstack_exporter (
         require => File['/etc/prometheus-openstack-exporter.yaml'],
     }
 
+    # perhaps this should go in the package
+    file { '/var/cache/prometheus-openstack-exporter':
+        ensure  => directory,
+        recurse => true,
+        force   => true,
+        mode    => '0775',
+        owner   => 'root',
+        group   => 'prometheus',
+    }
+
     ferm::service { 'prometheus-openstack-exporter':
         proto  => 'tcp',
         port   => $listen_port,
