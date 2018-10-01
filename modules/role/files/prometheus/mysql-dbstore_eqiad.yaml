@@ -29,6 +29,12 @@
   - db1102:13315
 
 - labels:
+    shard: s6
+    role: slave
+  targets:
+  - dbstore1001:13316
+
+- labels:
     shard: s7
     role: slave
   targets:
