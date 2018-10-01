@@ -1402,6 +1402,12 @@ node /^maps200[2-4]\.codfw\.wmnet/ {
     role(maps::slave)
 }
 
+# Replacement for bohrium - T202962
+node 'matomo1001.eqiad.wmnet' {
+    role(piwik)
+    interface::add_ip6_mapped { 'main': }
+}
+
 node /^mc10(19|2[0-9]|3[0-6])\.eqiad\.wmnet/ {
     role(mediawiki::memcached)
 }
