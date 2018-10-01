@@ -10,6 +10,7 @@
 # Modified by Ryan Anderson <ryan@michonline.com> to handle disconnections more
 # gracefully. Changes in the public domain.
 
+import logging
 import pyinotify
 import threading
 import random
@@ -21,6 +22,9 @@ import ib3_auth
 import irc.client  # for exceptions.
 from optparse import OptionParser
 from irc.bot import SingleServerIRCBot
+
+logging.basicConfig()
+logger = logging.getLogger()
 
 
 def beautify_message(m):
@@ -218,4 +222,5 @@ reader = EchoReader(options.infile)
 try:
     bot.start()
 except Exception:
+    logger.exception('Caught exception, exiting')
     sys.exit(1)
