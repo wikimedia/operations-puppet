@@ -23,6 +23,7 @@ profile::wdqs::nodes:
   - 'wdqs2003.codfw.wmnet'
 admin::groups:
   - wdqs-admins
+  - wdqs-roots
 cluster: wdqs
 contactgroups: admins,wdqs-admins
 role::lvs::realserver::pools:
