@@ -37,6 +37,8 @@ class openstack::cloudrepo(
             mode   => '0444',
             source => 'puppet:///modules/openstack/backports/openstack.pref',
         }
+    } elsif os_version('debian stretch') and ($version == 'newton') {
+        notify {'On stretch this will probably install Newton-versioned packages, but nothing is explicitly pinned':}
     } elsif os_version('debian stretch') and ($version == 'ocata') {
         notify {'On stretch this will probably install Ocata-versioned packages, but nothing is explicitly pinned':}
     } else {

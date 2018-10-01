@@ -32,6 +32,8 @@ class openstack::clientrepo(
 
     } elsif os_version('debian jessie') and ($version == 'mitaka') {
         include ::openstack::jessie_mitaka_client_pinning
+    } elsif os_version('debian stretch') and ($version == 'newton') {
+        notify {'On stretch this will probably install Newton-versioned packages, but nothing is explicitly pinned':}
     } elsif os_version('debian stretch') and ($version == 'ocata') {
         notify {'On stretch this will probably install Ocata-versioned packages, but nothing is explicitly pinned':}
     } else {
