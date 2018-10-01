@@ -27,8 +27,4 @@ class profile::etherpad {
         port   => '9001',
         srange => '$CACHES',
     }
-
-    diamond::collector { 'EtherpadStatus':
-        source   => 'puppet:///modules/etherpad/etherpad.py',
-    }
 }
