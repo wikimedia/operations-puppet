@@ -12,23 +12,45 @@ class icinga::naggen (
         default => '--activerecord',
     }
 
-    file { '/etc/icinga/puppet_hosts.cfg':
-        content => generate(
-            '/usr/local/bin/naggen2', $dbarg, '--type', 'hosts'),
-        backup  => false,
-        owner   => $icinga_user,
-        group   => $icinga_group,
-        mode    => '0644',
-        notify  => Service['icinga'],
+    if os_version('debian == jessie') {
+        file { '/etc/icinga/puppet_hosts.cfg':
+          content => generate(
+              '/usr/local/bin/naggen2', $dbarg, '--type', 'hosts'),
+          backup  => false,
+          owner   => $icinga_user,
+          group   => $icinga_group,
+          mode    => '0644',
+          notify  => Service['icinga'],
+        }
+        file { '/etc/icinga/puppet_services.cfg':
+          content => generate(
+              '/usr/local/bin/naggen2', $dbarg, '--type', 'services'),
+          backup  => false,
+          owner   => $icinga_user,
+          group   => $icinga::icinga_group,
+          mode    => '0644',
+          notify  => Service['icinga'],
+        }
     }
-    file { '/etc/icinga/puppet_services.cfg':
-        content => generate(
-            '/usr/local/bin/naggen2', $dbarg, '--type', 'services'),
-        backup  => false,
-        owner   => $icinga_user,
-        group   => $icinga::icinga_group,
-        mode    => '0644',
-        notify  => Service['icinga'],
+    else {
+        file { '/etc/icinga/objects/puppet_hosts.cfg':
+          content => generate(
+              '/usr/local/bin/naggen2', $dbarg, '--type', 'hosts'),
+          backup  => false,
+          owner   => $icinga_user,
+          group   => $icinga_group,
+          mode    => '0644',
+          notify  => Service['icinga'],
+        }
+        file { '/etc/icinga/objects/puppet_services.cfg':
+          content => generate(
+              '/usr/local/bin/naggen2', $dbarg, '--type', 'services'),
+          backup  => false,
+          owner   => $icinga_user,
+          group   => $icinga::icinga_group,
+          mode    => '0644',
+          notify  => Service['icinga'],
+        }
     }
     # Collect all (virtual) resources
     Monitoring::Group <| |> {

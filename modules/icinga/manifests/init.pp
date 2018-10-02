@@ -14,12 +14,17 @@ class icinga(
     $enable_notifications  = 1,
     $enable_event_handlers = 1,
     $ensure_service = 'running',
+    $cfg_files = [
+        '/etc/nagios/puppet_hostgroups.cfg',     # Backwards-compatibility
+        '/etc/nagios/puppet_servicegroups.cfg',
+        '/etc/nagios/nagios_host.cfg',           # Locally-generated hosts (routers, pdus, et. al. -- not naggen2)
+        '/etc/nagios/nagios_service.cfg',
+    ],
+    $cfg_dirs = [],
 ) {
 
     if os_version('debian == jessie') {
     # Setup icinga user
-    # FIXME: This should be done by the package
-
         group { 'nagios':
             ensure    => present,
             name      => 'nagios',
@@ -61,6 +66,42 @@ class icinga(
               File['/etc/init.d/icinga'],
           ],
         }
+        file { '/etc/icinga/icinga.cfg':
+          content => template('icinga/icinga.cfg.erb'),
+          owner   => $icinga_user,
+          group   => $icinga_group,
+          mode    => '0644',
+          require => Package['icinga'],
+          notify  => Service['icinga'],
+        }
+
+        class { '::nagios_common::contactgroups':
+          source  => 'puppet:///modules/nagios_common/contactgroups.cfg',
+          owner   => $icinga_user,
+          group   => $icinga_group,
+          require => Package['icinga'],
+          notify  => Service['icinga'],
+        }
+
+        class { '::nagios_common::contacts':
+          owner   => $icinga_user,
+          group   => $icinga_group,
+          content => secret('nagios/contacts.cfg'),
+          require => Package['icinga'],
+          notify  => Service['icinga'],
+        }
+
+        class { [
+            '::nagios_common::user_macros',
+            '::nagios_common::timeperiods',
+            '::nagios_common::notification_commands',
+        ] :
+          owner   => $icinga_user,
+          group   => $icinga_group,
+          require => Package['icinga'],
+          notify  => Service['icinga'],
+        }
+
 
     } else {
         file { [ '/etc/nagios/nagios_host.cfg', '/etc/nagios/nagios_service.cfg' ]:
@@ -85,6 +126,53 @@ class icinga(
               Package['icinga'],
           ],
         }
+
+        file { '/etc/icinga/icinga.cfg':
+          content => template('icinga/stretch-icinga.cfg.erb'),
+          owner   => $icinga_user,
+          group   => $icinga_group,
+          mode    => '0644',
+          require => Package['icinga'],
+          notify  => Service['icinga'],
+        }
+
+        # Clear the objects directory of sample configuration
+        file { '/etc/icinga/objects':
+          ensure  => 'directory',
+          purge   => true,
+          recurse => true,
+        }
+
+        class { '::nagios_common::contactgroups':
+          source     => 'puppet:///modules/nagios_common/contactgroups.cfg',
+          owner      => $icinga_user,
+          group      => $icinga_group,
+          config_dir => '/etc/icinga/objects',
+          require    => Package['icinga'],
+          notify     => Service['icinga'],
+        }
+
+        class { '::nagios_common::contacts':
+          owner      => $icinga_user,
+          group      => $icinga_group,
+          config_dir => '/etc/icinga/objects',
+          content    => secret('nagios/contacts.cfg'),
+          require    => Package['icinga'],
+          notify     => Service['icinga'],
+        }
+
+        class { [
+            '::nagios_common::user_macros',
+            '::nagios_common::timeperiods',
+            '::nagios_common::notification_commands',
+        ] :
+          owner      => $icinga_user,
+          group      => $icinga_group,
+          config_dir => '/etc/icinga/objects',
+          require    => Package['icinga'],
+          notify     => Service['icinga'],
+        }
+
     }
 
     package { 'icinga':
@@ -100,47 +188,11 @@ class icinga(
         notify  => Service['icinga'],
     }
 
-    file { '/etc/icinga/icinga.cfg':
-        content => template('icinga/icinga.cfg.erb'),
-        owner   => $icinga_user,
-        group   => $icinga_group,
-        mode    => '0644',
-        require => Package['icinga'],
-        notify  => Service['icinga'],
-    }
-
     file { '/etc/icinga/nsca_frack.cfg':
         content => template('icinga/nsca_frack.cfg.erb'),
         owner   => $icinga_user,
         group   => $icinga_group,
         mode    => '0644',
-        require => Package['icinga'],
-        notify  => Service['icinga'],
-    }
-
-    class { '::nagios_common::contactgroups':
-        source  => 'puppet:///modules/nagios_common/contactgroups.cfg',
-        owner   => $icinga_user,
-        group   => $icinga_group,
-        require => Package['icinga'],
-        notify  => Service['icinga'],
-    }
-
-    class { '::nagios_common::contacts':
-        owner   => $icinga_user,
-        group   => $icinga_group,
-        content => secret('nagios/contacts.cfg'),
-        require => Package['icinga'],
-        notify  => Service['icinga'],
-    }
-
-    class { [
-      '::nagios_common::user_macros',
-      '::nagios_common::timeperiods',
-      '::nagios_common::notification_commands',
-    ] :
-        owner   => $icinga_user,
-        group   => $icinga_group,
         require => Package['icinga'],
         notify  => Service['icinga'],
     }
