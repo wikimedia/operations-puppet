@@ -15,7 +15,10 @@ Example:
 import argparse
 import sys
 
+from collections import defaultdict
+
 import requests
+
 
 EX_OK = 0
 EX_WARNING = 1
@@ -30,22 +33,22 @@ def get_shards(base_url, timeout, unit):
 
 
 def extract_large_shards(shards, shard_size_warning, shard_size_critical):
-    warnings = []
-    criticals = []
+    warnings = defaultdict(list)
+    criticals = defaultdict(list)
     for shard in shards:
         if shard['prirep'] == 'p':
             if int(shard['store']) > shard_size_critical:
-                criticals.append(shard)
+                criticals[shard['index']].append(int(shard['store']))
             elif int(shard['store']) > shard_size_warning:
-                warnings.append(shard)
+                warnings[shard['index']].append(int(shard['store']))
 
     return warnings, criticals
 
 
 def trigger_alert(warnings, criticals, unit='gb'):
     if criticals:
-        all_items = warnings + criticals
-        log_output('CRITICAL', prepare_msg(all_items, unit))
+        criticals.update(warnings)
+        log_output('CRITICAL', prepare_msg(criticals, unit))
         return EX_CRITICAL
     elif warnings:
         log_output('WARNING', prepare_msg(warnings, unit))
@@ -56,14 +59,19 @@ def trigger_alert(warnings, criticals, unit='gb'):
 
 
 def prepare_msg(shards, unit):
-    shards = sorted(shards, key=lambda k: (int(k['store']),
-                                           k['index'], int(k['shard'])), reverse=True)
     all_alert_items = []
-    for shard in shards:
-        all_alert_items.append("{index}:{shard_no} (size={shard_size}{unit})".
-                               format(index=shard['index'], shard_no=shard['shard'],
-                                      shard_size=shard['store'], unit=unit))
+    for index, shard_size in sort_shards(shards):
+        all_alert_items.append("{index}({shard_size}{unit})".
+                               format(index=index, shard_size=shard_size, unit=unit))
     return ", ".join(all_alert_items)
+
+
+def sort_shards(shards):
+    indices = {}
+    for index, shard_sizes in shards.items():
+        indices[index] = max(shard_sizes)
+
+    return sorted(indices.items(), key=lambda k_v: k_v[1], reverse=True)
 
 
 def log_output(status, msg):
