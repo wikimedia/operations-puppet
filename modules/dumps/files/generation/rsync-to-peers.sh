@@ -108,6 +108,7 @@ read -a xmlremotedirs_list <<<$xmlremotedirs
 read -a miscremotedirs_list <<<$miscremotedirs
 IFS=$IFS_SAVE
 
+BWLIMIT=80000
 while [ 1 ]; do
     # rsync of xml/sql dumps for public wikis
     for dest in $xmlremotedirs_list; do
@@ -116,20 +117,20 @@ while [ 1 ]; do
         # by the time they arrive at the last host
         make_statusfiles_tarball
 
-        /usr/bin/rsync -a  --contimeout=600 --timeout=600 --bwlimit=80000 --exclude='**bad/' --exclude='**save/' --exclude='**not/' --exclude='**temp/' --exclude='**tmp/' --exclude='*.inprog'  --exclude='*.html' --exclude='*.txt' --exclude='*.json' ${xmldumpsdir}/*wik* "$dest" > /dev/null 2>&1
+        /usr/bin/rsync -a  --contimeout=600 --timeout=600 --bwlimit=$BWLIMIT --exclude='**bad/' --exclude='**save/' --exclude='**not/' --exclude='**temp/' --exclude='**tmp/' --exclude='*.inprog'  --exclude='*.html' --exclude='*.txt' --exclude='*.json' ${xmldumpsdir}/*wik* "$dest" > /dev/null 2>&1
 
 	# send statusfiles tarball over last, remote can unpack it when it notices the arrival
 	# this way, content of status and html files always reflects dump output already
 	# made available via rsync
         if [ -f "$tarballpathgz" ]; then
-            /usr/bin/rsync -pgo  --contimeout=600 --timeout=600 "$tarballpathgz" "$dest" > /dev/null 2>&1
+            /usr/bin/rsync -pgo  --contimeout=600 --timeout=600 --bwlimit=$BWLIMIT "$tarballpathgz" "$dest" > /dev/null 2>&1
         fi
 
     done
 
     # rsync of misc dumps, not necessarily to/from the same tree as the public wikis
     for dest in $miscremotedirs_list; do
-        /usr/bin/rsync -a  --contimeout=600 --timeout=600 --bwlimit=80000 ${miscdumpsdir}/* "$dest" > /dev/null 2>&1
+        /usr/bin/rsync -a  --contimeout=600 --timeout=600 --bwlimit=$BWLIMIT ${miscdumpsdir}/* "$dest" > /dev/null 2>&1
     done
 
     # when dumps aren't being generated, no reason to try over and over again to push new files.
