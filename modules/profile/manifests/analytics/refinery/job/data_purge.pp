@@ -155,7 +155,7 @@ class profile::analytics::refinery::job::data_purge (
         # given that hdfs stores modified dates without milliseconds
         # 1 minute margin is given to avoid timestamp comparison problems
         cron {'refinery-eventlogging-saltrotate':
-            command     => "${env} && ${refinery_path}/bin/saltrotate --verbose -p '3 months' /user/hdfs/eventlogging-sanitization-salt.txt >> ${$el_saltrotate_log_file}",
+            command     => "${env} && ${refinery_path}/bin/saltrotate --verbose -p '3 months' -b '14 days' /user/hdfs/eventlogging-sanitization-salt.txt >> ${$el_saltrotate_log_file}",
             environment => "MAILTO=${mail_to}",
             user        => 'hdfs',
             minute      => '1',
