@@ -1362,10 +1362,6 @@ node /^lvs300[1-4]\.esams\.wmnet$/ {
     role(lvs::balancer)
 }
 
-node /^lvs400[1-4]\.ulsfo\.wmnet$/ {
-    role(spare::system)
-}
-
 # ULSFO lvs servers
 node /^lvs400[567]\.ulsfo\.wmnet$/ {
     role(lvs::balancer)

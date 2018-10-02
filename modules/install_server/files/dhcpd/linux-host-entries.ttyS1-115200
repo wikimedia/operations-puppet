@@ -3501,34 +3501,6 @@ host lvs3004 {
     fixed-address lvs3004.esams.wmnet;
 }
 
-host lvs4001 {
-    hardware ethernet 90:b1:1c:42:f0:9e;
-    fixed-address lvs4001.ulsfo.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
-    filename "lpxelinux.0";
-}
-
-host lvs4002 {
-    hardware ethernet 90:b1:1c:45:51:ef;
-    fixed-address lvs4002.ulsfo.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
-    filename "lpxelinux.0";
-}
-
-host lvs4003 {
-    hardware ethernet 90:b1:1c:45:5d:91;
-    fixed-address lvs4003.ulsfo.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
-    filename "lpxelinux.0";
-}
-
-host lvs4004 {
-    hardware ethernet 90:b1:1c:42:c3:7a;
-    fixed-address lvs4004.ulsfo.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
-    filename "lpxelinux.0";
-}
-
 host lvs4005 {
     hardware ethernet F4:E9:D4:BA:F4:60;
     fixed-address lvs4005.ulsfo.wmnet;
