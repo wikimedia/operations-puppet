@@ -29,11 +29,13 @@ class profile::piwik::database {
             ensure => absent,
         }
 
+        $mariadb_socket = '/run/mysqld/mysqld.sock'
+
         class { '::mariadb::packages_wmf': }
 
         class { '::mariadb::config':
             config    => 'profile/piwik/my.cnf.erb',
-            socket    => '/run/mysqld/mysqld.sock',
+            socket    => $mariadb_socket,
             port      => 3306,
             datadir   => '/var/lib/mysql',
             basedir   => '/opt/wmf-mariadb101',
@@ -46,6 +48,10 @@ class profile::piwik::database {
             manage  => true,
             enable  => true,
             require => Class['mariadb::config'],
+        }
+
+        profile::prometheus::mysqld_exporter_instance {'matomo':
+            socket => $mariadb_socket,
         }
     }
 }

@@ -22,7 +22,7 @@ class profile::analytics::database::meta(
 
     class { '::mariadb::config':
         config    => 'profile/analytics/database/meta/analytics-meta.my.cnf.erb',
-        socket    => '/run/mysqld/mysqld.sock',
+        socket    => $mariadb_socket,
         port      => 3306,
         datadir   => '/var/lib/mysql',
         basedir   => $mariadb_basedir,
@@ -47,6 +47,11 @@ class profile::analytics::database::meta(
         manage  => true,
         enable  => true,
         require => Class['mariadb::config'],
+    }
+
+
+    profile::prometheus::mysqld_exporter_instance {'analytics-meta':
+        socket => $mariadb_socket,
     }
 
     # Allow access to this analytics mysql instance from analytics networks.
