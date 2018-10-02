@@ -34,6 +34,9 @@ class profile::piwik::webserver(
         package { 'php7.0-mbstring':
             ensure => 'present',
         }
+        package { 'php7.0-xml':
+            ensure => 'present',
+        }
     } else {
         $php_module = 'php5'
         $php_ini = '/etc/php5/apache2/php.ini'
