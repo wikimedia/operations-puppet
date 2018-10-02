@@ -201,7 +201,7 @@ class role::prometheus::analytics {
         max_chunks_to_persist => $max_chunks_to_persist,
         memory_chunks         => $memory_chunks,
         global_config_extra   => $config_extra,
-        scrape_configs_extra  => array_concat($jmx_exporter_jobs, $druid_jobs, $kafka_burrow_jobs)
+        scrape_configs_extra  => array_concat($jmx_exporter_jobs, $druid_jobs, $kafka_burrow_jobs, $mysql_jobs)
     }
 
     prometheus::web { 'analytics':
