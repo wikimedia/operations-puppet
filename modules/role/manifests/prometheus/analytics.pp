@@ -87,20 +87,20 @@ class role::prometheus::analytics {
       {
         'job_name'        => 'mysql-databases',
         'file_sd_configs' => [
-          { 'files' => [ "${targets_path}/mysql-databases_*.yaml"] },
+          { 'files' => [ "${targets_path}/mysql_database_*.yaml"] },
         ]
       },
     ]
 
     prometheus::class_config{ "matomo_mysql_${::site}":
-        dest       => "${targets_path}/matomo_mysql_${::site}.yaml",
+        dest       => "${targets_path}/mysql_database_matomo_${::site}.yaml",
         site       => $::site,
         class_name => 'role::piwik',
         port       => '13306',
     }
 
     prometheus::class_config{ "analyics_meta_mysql_${::site}":
-        dest       => "${targets_path}/analyics_meta_mysql_${::site}.yaml",
+        dest       => "${targets_path}/mysql_database_analyics_meta_${::site}.yaml",
         site       => $::site,
         class_name => 'profile::analytics::database::meta',
         port       => '13306',
