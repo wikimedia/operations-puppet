@@ -11,7 +11,7 @@ groups:
               psinger, midom, tparscal, dworley, moushira, lpintscher, gpaumier,
               nschaaf, zhousquared, gwicke, dpatrick, samwalton9, samtar, akrausetud, jgonsior,
               yuvipanda, shrlak, joewalsh, madhuvishy, groovier, khorn, ironholds, katie,
-              cy534, pnorman]
+              cy534, pnorman, mpany]
   absent_ldap:
     description: meta group for absented users which had privileged LDAP access in the past
     members: [adavenport, siddharth11, albe]
@@ -137,7 +137,7 @@ groups:
               daisy, mholloway-shell, ebernhardson, niedzielski,
               neilpquinn-wmf, tbayer, dbrant, maxsem,
               jminor, etonkovidova, sbisson, addshore, matmarex, elukey,
-              nikerabbit, dstrine, mpany, jsamra,
+              nikerabbit, dstrine, jsamra,
               jdittrich, chelsyx, ovasileva, mtizzoni, panisson, paolotti, ciro, debt,
               fdans, mlitn, niharika29, goransm, pmiazga, dsaez, shiladsen, cicalese,
               mirrys, sharvaniharan, mmiller, amire80, rush, tieu, kharlan, gbirke]
@@ -263,7 +263,7 @@ groups:
               andyrussg, niedzielski, maxsem, hoo, daniel, tbayer, krinkle, tgr,
               smalyshev, ebernhardson, addshore, jminor, chedasaurus, neilpquinn-wmf,
               dcausse, bd808, tjones, mobrovac, jdrewniak, ejegg, jdcc, ori,
-              bmansurov, atgomez, amire80, kartik, pcoombe, foks, mpany, jsamra,
+              bmansurov, atgomez, amire80, kartik, pcoombe, foks, jsamra,
               jdlrobson, chelsyx, ovasileva, flemmerich, mkroetzsch, filippo, pmiazga, faidon,
               piccardi, fdans, eevans, anomie, demon, ladsgroup, musikanimal,
               kaldari, goransm, ema, dsaez, shiladsen, rho, mirrys, slaporte, jk,
@@ -2226,16 +2226,12 @@ users:
     uid: 1235
     email: bwolff@wikimedia.org
   mpany:
-    ensure: present
+    ensure: absent
     gid: 500
     name: mpany
     realname: Maximilian Pany
-    ssh_keys:
-      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDbRaAUzTfgxalgYGZ7ztelMGXC7vDJ4VwFtFlMt9IvApeYViRh+eIwcr2+94cwextv5fuFD/UWAhk38KKsEnr2SDu1BhTeqlXM1Tfibb8vfq5SrUXzANh61HgqAt9XIyWPXhOFGBJWGZKIHE9DJaDZn5xCmkwz+KPe0smxa0QLHgJTs/Z0sHYu5wcJYPQ/D+b1lBQAPHMUzCIDz8t6ctFysb/pPubX7kbnILao+Q60D7L85+6jgPx2mGFHfsv4LiZP80BhsbrLjwOpuILy3A8jS9aJ9WI0q6Yap9vuRXa8D0DNiymeoGo5X6ye0vdtfe4NZuV9eru3BWBjbSFmRwXP MJP@MJPwork.local
+    ssh_keys: []
     uid: 15095
-    email: maximilian.pany@gmail.com
-    expiry_date: 2018-09-30
-    expiry_contact: mhernandez@wikimedia.org
   jsamra:
     ensure: present
     gid: 500
