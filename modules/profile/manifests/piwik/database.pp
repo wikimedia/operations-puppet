@@ -15,8 +15,6 @@ class profile::piwik::database {
     if os_version('debian == jessie') {
         require_package('mysql-server')
 
-        $mariadb_socket = '/var/run/mysqld/mysqld.sock'
-
         file { '/etc/mysql/my.cnf':
             ensure  => present,
             owner   => 'root',
@@ -51,9 +49,9 @@ class profile::piwik::database {
             enable  => true,
             require => Class['mariadb::config'],
         }
-    }
 
-    profile::prometheus::mysqld_exporter_instance {'matomo':
-        socket => $mariadb_socket,
+        profile::prometheus::mysqld_exporter_instance {'matomo':
+            socket => $mariadb_socket,
+        }
     }
 }
