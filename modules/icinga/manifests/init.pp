@@ -20,7 +20,9 @@ class icinga(
         '/etc/nagios/nagios_host.cfg',           # Locally-generated hosts (routers, pdus, et. al. -- not naggen2)
         '/etc/nagios/nagios_service.cfg',
     ],
-    $cfg_dirs = [],
+    $cfg_dirs = [
+        '/etc/icinga/commands'
+    ],
 ) {
 
     if os_version('debian == jessie') {

@@ -148,10 +148,21 @@ class nagios_common::commands(
         require        => File["${config_dir}/commands"],
     }
 
-    file { "${config_dir}/checkcommands.cfg":
-        source => 'puppet:///modules/nagios_common/checkcommands.cfg',
-        owner  => $owner,
-        group  => $group,
-        mode   => '0644',
+    if os_version('debian == jessie') {
+        file { "${config_dir}/checkcommands.cfg":
+          source => 'puppet:///modules/nagios_common/checkcommands.cfg',
+          owner  => $owner,
+          group  => $group,
+          mode   => '0644',
+        }
+    }
+    else {
+        # Lines up with default configuration.
+        file { "${config_dir}/commands.cfg":
+          source => 'puppet:///modules/nagios_common/checkcommands.cfg',
+          owner  => $owner,
+          group  => $group,
+          mode   => '0644',
+        }
     }
 }
