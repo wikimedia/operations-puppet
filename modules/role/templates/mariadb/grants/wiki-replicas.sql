@@ -37,3 +37,7 @@ GRANT SELECT ON *.* TO 'viewmaster'@'%';
 
 -- quarry user granted 48 connections #T180141
 GRANT USAGE ON *.* TO 's52788'@'%' WITH MAX_USER_CONNECTIONS 48;
+
+-- wmf-pt-kill user has to be granted SUPER and SHOW PROCESSLIST and should be able to login via unix_socket (T203674)
+
+GRANT PROCESS, SUPER ON *.* TO 'wmf-pt-kill'@'localhost' IDENTIFIED VIA unix_socket;
