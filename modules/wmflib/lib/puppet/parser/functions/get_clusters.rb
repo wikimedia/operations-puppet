@@ -41,7 +41,7 @@ module Puppet::Parser::Functions
       sites = false
     end
 
-    function_query_resources([false, 'Class["Profile::Cumin::Target"]', false])
+    function_query_resources([false, 'Class["Cumin::Selector"]', false])
       .sort_by{ |n| n['certname'] }.each do |node|
       cluster = node['parameters']['cluster']
       site = node['parameters']['site']
