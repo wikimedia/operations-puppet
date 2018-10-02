@@ -164,7 +164,6 @@ class icinga(
         }
 
         class { [
-            '::nagios_common::user_macros',
             '::nagios_common::timeperiods',
             '::nagios_common::notification_commands',
         ] :
@@ -173,6 +172,14 @@ class icinga(
           config_dir => '/etc/icinga/objects',
           require    => Package['icinga'],
           notify     => Service['icinga'],
+        }
+
+        # manages resource.cfg and does not belong in /etc/icinga/objects
+        class { '::nagios_common::user_macros':
+          owner   => $icinga_user,
+          group   => $icinga_group,
+          require => Package['icinga'],
+          notify  => Service['icinga'],
         }
 
     }
