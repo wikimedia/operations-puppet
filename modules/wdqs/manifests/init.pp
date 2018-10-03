@@ -55,6 +55,7 @@ class wdqs(
         config_file        => $blazegraph_config_file,
         logstash_host      => $logstash_host,
         logstash_json_port => $logstash_json_port,
+        log_dir            => $log_dir,
     }
 
     file { $log_dir:
