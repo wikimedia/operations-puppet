@@ -35,6 +35,7 @@ class profile::etcd::v3(
     String $allow_from = hiera('profile::etcd::v3::allow_from'),
     Integer $max_latency = hiera('profile::etcd::v3::max_latency'),
 ) {
+    $adv_client_port = 4001
     # Parameters mangling
     $cluster_state = $cluster_bootstrap ? {
         true    => 'new',
@@ -72,7 +73,7 @@ class profile::etcd::v3(
         peers_list       => $peers_list,
         use_client_certs => $use_client_certs,
         max_latency_ms   => $max_latency,
-        adv_client_port  => 4001,
+        adv_client_port  => $adv_client_port,
         trusted_ca       => '/etc/ssl/certs/Puppet_Internal_CA.pem',
         client_cert      => "/etc/ssl/localcerts/${certname}.crt",
         client_key       => "/etc/ssl/private/${certname}.key",
@@ -89,7 +90,7 @@ class profile::etcd::v3(
     if $allow_from != 'localhost' {
         ferm::service { 'etcd_clients':
             proto  => 'tcp',
-            port   => 2379,
+            port   => $adv_client_port,
             srange => $allow_from,
         }
     }

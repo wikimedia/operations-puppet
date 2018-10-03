@@ -4,7 +4,7 @@ profile::etcd::v3::cluster_name: "v3.%{::domain}"
 profile::etcd::v3::cluster_bootstrap: true
 profile::etcd::v3::discovery: "dns:v3.%{::domain}"
 profile::etcd::v3::use_client_certs: false
-profile::etcd::v3::allow_from: "localhost"
+profile::etcd::v3::allow_from: "$DOMAIN_NETWORKS"
 profile::etcd::v3::max_latency: 10
 # This cert is generated using puppet-ecdsacert, and includes
 # all the hostnames for the etcd machines in the SANs
