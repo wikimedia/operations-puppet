@@ -30,6 +30,7 @@ class profile::analytics::cluster::packages::common {
         'python-dateutil',        'python3-dateutil',
         'python-docopt',          'python3-docopt',
         'python-numpy',           'python3-numpy',
+        'python-sklearn',         'python3-sklearn',
         'python-yaml',            'python3-yaml',
         'python3-tabulate',
         'python3-enchant',
@@ -38,7 +39,6 @@ class profile::analytics::cluster::packages::common {
         'python3-nose',
         'python3-setuptools',
         'python3-mmh3',
-        'python3-sklearn',
         'python3-sklearn-lib',
         'libgomp1',
     )
