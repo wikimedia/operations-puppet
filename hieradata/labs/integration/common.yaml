@@ -6,4 +6,6 @@ contint::zuul_merger_hosts:
     - 127.0.0.1
 puppetmaster::autosigner: true
 
-profile::ci::docker::settings: {}
+profile::ci::docker::settings:
+  # Logging is unnecessary in CI as container output is streamed to Jenkins
+  log-driver: none
