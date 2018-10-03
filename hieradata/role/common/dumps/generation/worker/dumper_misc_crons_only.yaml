@@ -3,3 +3,4 @@ admin::groups:
   - deployment
   - snapshot-admins
   - snapshot-users
+profile::mediawiki::php::enable_fpm: false
