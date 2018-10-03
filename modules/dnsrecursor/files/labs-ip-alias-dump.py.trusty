@@ -67,7 +67,6 @@ for project in projects:
                                    connect_retries=5, region_name=region)
 
         for server in client.servers.list():
-            serverAddresses = {}
             try:
                 private = [
                     str(ip['addr']) for ip in server.addresses['public']
