@@ -18,6 +18,10 @@ class profile::etcd::tlsproxy(
         default => 'http'
     }
 
+    $upstream_host = $tls_upstream ? {
+        true    => $::fqdn,
+        default => '127.0.0.1'
+    }
     sslcert::certificate { $cert_name:
         skip_private => false,
         before       => Service['nginx'],

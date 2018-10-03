@@ -1,5 +1,5 @@
 upstream etcd {
-    server 127.0.0.1:<%= @upstream_port %> max_fails=0;
+    server <%= @upstream_host %>:<%= @upstream_port %> max_fails=0;
 }
 
 server {
