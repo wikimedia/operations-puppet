@@ -34,7 +34,7 @@ class profile::prometheus::openstack_exporter (
 
     systemd::service { 'prometheus-openstack-exporter':
         ensure         => present,
-        content        => 'puppet:///modules/profile/prometheus/prometheus-openstack-exporter.service',
+        source         => 'puppet:///modules/profile/prometheus/prometheus-openstack-exporter.service',
         restart        => true,
         override       => true,
         require        => File['/usr/local/sbin/prometheus-openstack-exporter-wrapper'],
