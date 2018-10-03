@@ -86,10 +86,12 @@ class profile::etcd::v3(
     }
 
     # Firewall
-    ferm::service { 'etcd_clients':
-        proto  => 'tcp',
-        port   => 2379,
-        srange => $allow_from,
+    if $allow_from != 'localhost' {
+        ferm::service { 'etcd_clients':
+            proto  => 'tcp',
+            port   => 2379,
+            srange => $allow_from,
+        }
     }
 
     ferm::service { 'etcd_peers':
