@@ -60,6 +60,16 @@ class role::labs::prometheus {
         },
     ]
 
+    $openstack_jobs = [
+        {
+            'job_name'        => 'openstack',
+            'scheme'          => 'http',
+            'file_sd_configs' => [
+                { 'files' => [ "${targets_path}/openstack_*.yaml" ] }
+            ],
+        },
+    ]
+
     file { "${targets_path}/blackbox_http_keystone.yaml":
       content => ordered_yaml([{
         'targets' => ['cloudcontrol1003.wikimedia.org:5000/v3', # keystone
@@ -92,6 +102,14 @@ class role::labs::prometheus {
         port       => '9199',
     }
 
+    prometheus::class_config{ "openstack_${::site}":
+        dest       => "${targets_path}/openstack_${::site}.yaml",
+        site       => $::site,
+        class_name => 'role::wmcs::openstack::eqiad1::control',
+        # same as profile::openstack::eqiad1::metrics::prometheus_listen_port and friends
+        port       => '12345',
+    }
+
     # in jessie, install some depends from jessie-backports
     # before calling prometheus::server
     if os_version('debian == jessie') {
@@ -109,7 +127,7 @@ class role::labs::prometheus {
         memory_chunks         => $memory_chunks,
         scrape_configs_extra  => array_concat(
             $blackbox_jobs, $rabbitmq_jobs, $pdns_jobs,
-            $pdns_rec_jobs,
+            $pdns_rec_jobs, $openstack_jobs,
         ),
     }
 
