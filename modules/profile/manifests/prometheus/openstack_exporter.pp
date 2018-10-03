@@ -23,9 +23,28 @@ class profile::prometheus::openstack_exporter (
         content => template('profile/prometheus/openstack-exporter.yaml.erb'),
     }
 
-    service { 'prometheus-openstack-exporter':
-        ensure  => running,
+    file { '/usr/local/sbin/prometheus-openstack-exporter-wrapper':
+        ensure  => 'present',
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0554',
+        source  => 'puppet://modules/profile/prometheus/prometheus-openstack-exporter-wrapper.sh',
         require => File['/etc/prometheus-openstack-exporter.yaml'],
+    }
+
+    systemd::service { 'prometheus-openstack-exporter':
+        ensure         => present,
+        content        => 'puppet://modules/profile/prometheus/prometheus-openstack-exporter.service',
+        restart        => true,
+        override       => true,
+        require        => File['/usr/local/sbin/prometheus-openstack-exporter-wrapper'],
+        service_params => {
+            ensure     => 'running',
+        },
+        subscribe      => [
+            File['/etc/prometheus-openstack-exporter.yaml'],
+            File['/usr/local/sbin/prometheus-openstack-exporter-wrapper'],
+        ],
     }
 
     # perhaps this should go in the package

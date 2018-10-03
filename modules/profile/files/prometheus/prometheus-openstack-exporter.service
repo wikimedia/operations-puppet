@@ -1,0 +1,7 @@
+# overrides the file shipped with the package
+[Service]
+ExecStart=/usr/local/sbin/prometheus-openstack-exporter-wrapper
+ProtectSystem=full
+ProtectHome=read-only
+PrivateTmp=true
+StandardOutput=null
