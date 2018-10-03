@@ -315,7 +315,7 @@ cache::alternate_domains:
   pivot.wikimedia.org:
     director: 'turnilo'
   piwik.wikimedia.org:
-    director: 'bohrium'
+    director: 'matomo1001'
     caching: 'pass'
   '^([^.]+\.)?planet\.wikimedia\.org$':
     director: 'planet'

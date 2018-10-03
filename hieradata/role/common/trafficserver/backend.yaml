@@ -137,7 +137,7 @@ profile::trafficserver::backend::mapping_rules:
       replacement: http://analytics-tool1002.eqiad.wmnet
     - type: map
       target: http://piwik.wikimedia.org
-      replacement: http://bohrium.eqiad.wmnet
+      replacement: http://matomo1001.eqiad.wmnet
     - type: regex_map
       target: 'http://([^.]+\.)?planet\.wikimedia\.org'
       replacement: http://planet1001.eqiad.wmnet
@@ -230,7 +230,7 @@ profile::trafficserver::backend::mapping_rules:
       replacement: https://appservers-rw.discovery.wmnet
 profile::trafficserver::backend::caching_rules:
     - primary_destination: dest_host
-      value: bohrium.eqiad.wmnet
+      value: matomo1001.eqiad.wmnet
       action: never-cache
     - primary_destination: dest_host
       value: cxserver.discovery.wmnet
