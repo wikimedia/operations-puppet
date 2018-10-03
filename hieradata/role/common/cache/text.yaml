@@ -65,9 +65,6 @@ cache::app_directors:
     backends:
       eqiad: 'bromine.eqiad.wmnet'
       codfw: 'vega.codfw.wmnet'
-  bohrium:
-    backends:
-      eqiad: 'bohrium.eqiad.wmnet'
   labweb:
     backends:
       eqiad: 'labweb.svc.eqiad.wmnet'
