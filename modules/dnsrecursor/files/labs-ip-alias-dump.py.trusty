@@ -67,26 +67,27 @@ for project in projects:
                                    connect_retries=5, region_name=region)
 
         for server in client.servers.list():
-            try:
-                private = [
-                    str(ip['addr']) for ip in server.addresses['public']
-                    if ip['OS-EXT-IPS:type'] == 'fixed'
-                ]
-                public = [
-                    str(ip['addr']) for ip in server.addresses['public']
-                    if ip['OS-EXT-IPS:type'] == 'floating'
-                ]
-                if public:
-                    # Match all possible public IPs to all possible private ones
-                    # Technically there can be more than one floating IP and more
-                    # than one private IP Although this is never practically the
-                    # case...
-                    aliases[server.name] = list(itertools.product(public, private))
-            except KeyError:
-                # This can happen if a server doesn't (yet) have any addresses,
-                # while it's being constructed.  In which case we simply
-                # harmlessly ignore it.
-                pass
+            for network_name, addresses in server.addresses.items():
+                try:
+                    private = [
+                        str(ip['addr']) for ip in addresses
+                        if ip['OS-EXT-IPS:type'] == 'fixed'
+                    ]
+                    public = [
+                        str(ip['addr']) for ip in addresses
+                        if ip['OS-EXT-IPS:type'] == 'floating'
+                    ]
+                    if public:
+                        # Match all possible public IPs to all possible private ones
+                        # Technically there can be more than one floating IP and more
+                        # than one private IP Although this is never practically the
+                        # case...
+                        aliases[server.name] = list(itertools.product(public, private))
+                except KeyError:
+                    # This can happen if a server doesn't (yet) have any addresses,
+                    # while it's being constructed.  In which case we simply
+                    # harmlessly ignore it.
+                    pass
 
 output = 'aliasmapping = {}\n'
 # Sort to prevent flapping around due to random ordering
