@@ -66,8 +66,6 @@ class profile::statsd {
         }
     }
 
-    diamond::collector { 'UDPCollector': }
-
     $prometheus_labels = "{instance=~\"${::hostname}.*\"}"
     monitoring::check_prometheus { 'statsd_udp_inbound_errors':
         description     => 'statsd UDP receive errors are elevated',
