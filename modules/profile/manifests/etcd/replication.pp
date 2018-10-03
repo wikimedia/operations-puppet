@@ -14,11 +14,21 @@
 #
 # [*active*] If replication is active. For now, only one server per cluster
 #
+# [*dst_url*] scheme:hostname:port combination of the target etcd instance
+#             (namely the one receiving the replicated data from etcd mirror).
+#             Default: http://localhost:2378
+#
+# [*src_port*] Client port of the origin etcd instance
+#              (namely the one replicating data via etcd mirror).
+#              Default: 2379
+#
 class profile::etcd::replication(
     $origin = hiera('profile::etcd::replication::origin'),
     $destination_path = hiera('profile::etcd::replication::destination_path'),
     $prometheus_nodes = hiera('prometheus_nodes'),
     $active = hiera('profile::etcd::replication::active'),
+    $dst_url = hiera('profile::etcd::replication::dst_url', 'http://localhost:2378'),
+    $src_port = hiera('profile::etcd::replication::src_port', 2379),
 ) {
     require ::passwords::etcd
     $accounts = $::passwords::etcd::accounts
@@ -30,9 +40,9 @@ class profile::etcd::replication(
 
     $hosts = fqdn_rotate($origin['servers'])
     etcdmirror::instance { $resource_title:
-        src      => "https://${hosts[0]}:2379",
+        src      => "https://${hosts[0]}:${src_port}",
         src_path => $origin['path'],
-        dst      => 'http://localhost:2378',
+        dst      => $dst_url,
         dst_path => $destination_path,
         enable   => $active,
     }
