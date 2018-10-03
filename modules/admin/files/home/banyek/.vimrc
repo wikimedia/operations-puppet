@@ -24,7 +24,6 @@ set foldenable
 set clipboard=unnamed
 hi CursorLine   cterm=NONE ctermbg=darkred ctermfg=white guibg=darkred guifg=white
 hi CursorColumn cterm=NONE ctermbg=darkred ctermfg=white guibg=darkred guifg=white
-set listchars=eol:¬,tab:>·,trail:~,extends:>,precedes:<,space:␣
 nnoremap <Leader>c :set cursorline! cursorcolumn!<CR>
 
 autocmd BufWinLeave *.* mkview
