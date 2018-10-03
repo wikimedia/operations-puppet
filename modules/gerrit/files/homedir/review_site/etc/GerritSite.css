@@ -208,6 +208,7 @@
 html.loginParent { height: 100%; }
 html.loginParent body {
     height: 100%;
+    margin: 0;
 
     font-family: 'Source Sans Pro', sans-serif;
 
@@ -219,7 +220,7 @@ html.loginParent body {
     background-color: #999 !important;
 }
 
-html.loginParent body:after {
+html.loginParent .gerritBody:after {
     content: "Image by Adrian Dreßler";
 }
 
@@ -232,15 +233,15 @@ html.loginParent body #gerrit_topmenu { display: none; }
 html.loginParent body #gerrit_header { display: none; }
 html.loginParent body #gerrit_body {
     display: flex;
-    height: 100%;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
     resize: both;
-    overflow: auto;
 }
 html.loginParent body #gerrit_body h1 {
     display: none;
 }
+html.loginParent .wikimedia-footer { position: inherit; }
 
 .com-google-gerrit-client-diff-CommentBox-Style-commentWidgets {
     /*
