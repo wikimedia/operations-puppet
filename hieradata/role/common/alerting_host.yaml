@@ -14,3 +14,5 @@ profile::icinga::active_host: einsteinium.wikimedia.org
 profile::icinga::partners:
   - 'tegmen.wikimedia.org'
   - 'icinga1001.wikimedia.org'
+
+profile::base::nrpe_allowed_hosts: '127.0.0.1,208.80.153.74,208.80.155.119,208.80.154.84'
