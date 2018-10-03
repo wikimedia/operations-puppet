@@ -214,7 +214,7 @@ groups:
               leila, nettrom, mforns, bmansurov, tbayer, joal, imarlier,
               tjones, legoktm, dcausse, bearloga, atgomez, dstrine,
               marktraceur, mtizzoni, panisson, paolotti, ciro, melodykramer,
-              fdans, shiladsen, esanders, risler, nathante]
+              fdans, shiladsen, esanders, risler, nathante, chelsyx]
   statistics-users:
     gid: 726
     description: Access statistics number crunching hosts. NO PRIVS.
