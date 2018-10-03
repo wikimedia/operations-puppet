@@ -1,7 +1,15 @@
-# overrides the file shipped with the package
+# Managed by puppet: a replacement to the file shipped with the package
+[Unit]
+Description=Prometheus Openstack exporter
+
 [Service]
+Type=simple
+Restart=always
 ExecStart=/usr/local/sbin/prometheus-openstack-exporter-wrapper
 ProtectSystem=full
 ProtectHome=read-only
 PrivateTmp=true
 StandardOutput=null
+
+[Install]
+WantedBy=multi-user.target

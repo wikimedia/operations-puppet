@@ -36,7 +36,7 @@ class profile::prometheus::openstack_exporter (
         ensure         => present,
         content        => systemd_template('prometheus-openstack-exporter'),
         restart        => true,
-        override       => true,
+        override       => false,
         require        => File['/usr/local/sbin/prometheus-openstack-exporter-wrapper'],
         service_params => {
             ensure     => 'running',
