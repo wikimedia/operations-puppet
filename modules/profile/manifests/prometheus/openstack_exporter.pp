@@ -28,13 +28,13 @@ class profile::prometheus::openstack_exporter (
         owner   => 'root',
         group   => 'root',
         mode    => '0554',
-        source  => 'puppet://modules/profile/prometheus/prometheus-openstack-exporter-wrapper.sh',
+        source  => 'puppet:///modules/profile/prometheus/prometheus-openstack-exporter-wrapper.sh',
         require => File['/etc/prometheus-openstack-exporter.yaml'],
     }
 
     systemd::service { 'prometheus-openstack-exporter':
         ensure         => present,
-        content        => 'puppet://modules/profile/prometheus/prometheus-openstack-exporter.service',
+        content        => 'puppet:///modules/profile/prometheus/prometheus-openstack-exporter.service',
         restart        => true,
         override       => true,
         require        => File['/usr/local/sbin/prometheus-openstack-exporter-wrapper'],
