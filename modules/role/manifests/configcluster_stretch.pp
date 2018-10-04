@@ -10,6 +10,5 @@ class role::configcluster_stretch {
 
     include ::profile::etcd::v3
     include ::profile::etcd::tlsproxy
-    # Replication is not active during the setup phase.
-    #include ::profile::etcd::replication
+    include ::profile::etcd::replication
 }
