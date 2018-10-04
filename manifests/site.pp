@@ -2214,13 +2214,8 @@ node /^wdqs200[4-6]\.codfw\.wmnet$/ {
     role(wdqs::internal)
 }
 
-# Wikidata query service automated deployment
-node 'wdqs1009.eqiad.wmnet' {
-    role(wdqs::autodeploy)
-}
-
 # Wikidata query service test
-node 'wdqs1010.eqiad.wmnet' {
+node /^wdqs10(09|10)\.eqiad\.wmnet$/ {
     role(wdqs::test)
 }
 
