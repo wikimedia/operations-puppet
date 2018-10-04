@@ -36,13 +36,15 @@ class icinga::monitor::elasticsearch {
         contact_group => 'admins,team-discovery',
     }
 
+    # this check is throttled to reduce the noise from segment merges.
     monitoring::service { 'elasticsearch / shard size check - eqiad':
         host           => 'search.svc.eqiad.wmnet',
         check_command  => "check_elasticsearch_shard_size!${http_port}",
         description    => 'ElasticSearch shard size check',
         critical       => false,
-        check_interval => 1440,
-        retry_interval => 60,
+        check_interval => 1440, # 24h
+        retry_interval => 180, # 3h
+        retries        => 3,
         contact_group  => 'admins,team-discovery',
     }
 
@@ -51,8 +53,9 @@ class icinga::monitor::elasticsearch {
         check_command  => "check_elasticsearch_shard_size!${http_port}",
         description    => 'ElasticSearch shard size check',
         critical       => false,
-        check_interval => 1440,
-        retry_interval => 60,
+        check_interval => 1440, # 24h
+        retry_interval => 180, # 3h
+        retries        => 3,
         contact_group  => 'admins,team-discovery',
     }
 
