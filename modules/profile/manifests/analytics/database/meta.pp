@@ -67,9 +67,10 @@ class profile::analytics::database::meta(
     # Include icinga alerts if production realm.
     if $monitoring_enabled {
         nrpe::monitor_service { 'mysql_analytics-meta':
-            description  => 'analytics-meta MySQL instance',
-            nrpe_command => '/usr/lib/nagios/plugins/check_procs -c 1:1 -C mysqld',
-            require      => Service['mysql'],
+            description   => 'analytics-meta MySQL instance',
+            nrpe_command  => '/usr/lib/nagios/plugins/check_procs -c 1:1 -C mysqld',
+            contact_group => 'admins,analytics',
+            require       => Class['mariadb::service'],
         }
 
         nrpe::monitor_service { 'mysql_analytics-meta_disk_space':
