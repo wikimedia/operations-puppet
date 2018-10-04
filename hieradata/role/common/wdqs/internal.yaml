@@ -22,6 +22,7 @@ profile::wdqs::nodes:
   - 'wdqs2005.codfw.wmnet'
   - 'wdqs2006.codfw.wmnet'
 admin::groups:
+  - wdqs-roots
   - wdqs-admins
 cluster: wdqs-internal
 contactgroups: admins,wdqs-admins

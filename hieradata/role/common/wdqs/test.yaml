@@ -22,6 +22,7 @@ profile::wdqs::nodes:
   - 'wdqs1009.eqiad.wmnet'
   - 'wdqs1010.eqiad.wmnet'
 admin::groups:
+  - wdqs-roots
   - wdqs-admins
   - wdqs-test-roots
 cluster: wdqs-test
