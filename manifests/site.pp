@@ -44,7 +44,7 @@ node 'an-master1002.eqiad.wmnet' {
 # analytics1003's replacement
 # T204970
 node 'an-coord1001.eqiad.wmnet' {
-    role(spare::system)
+    role(analytics_cluster::coordinator)
     interface::add_ip6_mapped { 'main': }
 }
 

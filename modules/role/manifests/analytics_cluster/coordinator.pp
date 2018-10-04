@@ -27,9 +27,11 @@ class role::analytics_cluster::coordinator {
     include ::profile::analytics::cluster::client
     include ::profile::analytics::database::meta
 
-    # Back up analytics-meta MySQL instance
-    # to an-master1002.
-    include ::profile::analytics::database::meta::backup
+    if $::hostname == 'analytics1003' {
+        # Back up analytics-meta MySQL instance
+        # to an-master1002.
+        include ::profile::analytics::database::meta::backup
+    }
 
     # SQL-like queries to data stored in HDFS
     include ::profile::hive::metastore
@@ -40,26 +42,31 @@ class role::analytics_cluster::coordinator {
     include ::profile::oozie::server
     include ::profile::oozie::server::database
 
-    # Include a weekly cron job to run hdfs balancer.
-    include ::profile::hadoop::balancer
+    # Temporary to ease the migration process from an1003 to an-coord1001.
+    # Bug: T203635
+    if $::hostname == 'analytics1003' {
 
-    # We need hive-site.xml in HDFS.  This can be included
-    # on any node with a Hive client, but we really only
-    # want to include it in one place.  analytics1003
-    # is a little special and standalone, so we do it here.
-    include ::profile::hive::site_hdfs
+        # Include a weekly cron job to run hdfs balancer.
+        include ::profile::hadoop::balancer
 
-    # Various crons that launch Hadoop jobs.
-    include ::profile::analytics::refinery
+        # We need hive-site.xml in HDFS.  This can be included
+        # on any node with a Hive client, but we really only
+        # want to include it in one place.  analytics1003
+        # is a little special and standalone, so we do it here.
+        include ::profile::hive::site_hdfs
 
-    # Camus crons import data into
-    # from Kafka into HDFS.
-    include ::profile::analytics::refinery::job::camus
-    include ::profile::analytics::refinery::job::data_check
-    include ::profile::analytics::refinery::job::data_purge
-    include ::profile::analytics::refinery::job::project_namespace_map
-    include ::profile::analytics::refinery::job::sqoop_mediawiki
-    include ::profile::analytics::refinery::job::refine
+        # Various crons that launch Hadoop jobs.
+        include ::profile::analytics::refinery
+
+        # Camus crons import data into
+        # from Kafka into HDFS.
+        include ::profile::analytics::refinery::job::camus
+        include ::profile::analytics::refinery::job::data_check
+        include ::profile::analytics::refinery::job::data_purge
+        include ::profile::analytics::refinery::job::project_namespace_map
+        include ::profile::analytics::refinery::job::sqoop_mediawiki
+        include ::profile::analytics::refinery::job::refine
+    }
 
     include standard
     include ::profile::base::firewall
