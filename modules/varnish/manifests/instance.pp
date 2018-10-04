@@ -215,6 +215,8 @@ define varnish::instance(
         ]
     }
 
+    base::service_auto_restart { "varnish${instancesuffix}-hospital": }
+
     # This mechanism with the touch/rm conditionals in the pair of execs
     #   below should ensure that reload-vcl failures are retried on
     #   future puppet runs until they succeed.
