@@ -201,6 +201,8 @@ define varnish::instance(
         ]
     }
 
+    base::service_auto_restart { "varnish${instancesuffix}-slowlog": }
+
     systemd::service { "varnish${instancesuffix}-hospital":
         ensure         => present,
         content        => systemd_template('varnishospital'),
