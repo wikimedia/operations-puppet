@@ -1,5 +1,4 @@
 class profile::openstack::eqiad1::metrics(
-    $nova_controller = hiera('profile::openstack::eqiad1::nova_controller'),
     $cpu_allocation_ratio = hiera('profile::openstack::eqiad1::metrics::cpu_allocation_ratio'),
     $ram_allocation_ratio = hiera('profile::openstack::eqiad1::metrics::ram_allocation_ratio'),
     $disk_allocation_ratio = hiera('profile::openstack::eqiad1::metrics::disck_allocation_ratio'),
@@ -16,7 +15,6 @@ class profile::openstack::eqiad1::metrics(
 
     require ::profile::openstack::eqiad1::observerenv
     class {'::profile::openstack::base::metrics':
-        nova_controller        => $nova_controller,
         cpu_allocation_ratio   => $cpu_allocation_ratio,
         ram_allocation_ratio   => $ram_allocation_ratio,
         disk_allocation_ratio  => $disk_allocation_ratio,

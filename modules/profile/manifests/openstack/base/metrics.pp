@@ -1,5 +1,4 @@
 class profile::openstack::base::metrics(
-    $nova_controller = hiera('profile::openstack::base::nova_controller'),
     $prometheus_nodes = hiera('profile::openstack::base::monitoring_host'),
     $cpu_allocation_ratio = hiera('profile::openstack::base::metrics::cpu_allocation_ratio'),
     $ram_allocation_ratio = hiera('profile::openstack::base::metrics::ram_allocation_ratio'),
@@ -15,23 +14,20 @@ class profile::openstack::base::metrics(
     $observer_password = hiera('profile::openstack::base::observer_password'),
   ) {
 
-    # only in active node
-    if ($nova_controller == $::fqdn) {
-        class {'::profile::prometheus::openstack_exporter':
-            prometheus_nodes       => $prometheus_nodes,
-            cpu_allocation_ratio   => $cpu_allocation_ratio,
-            ram_allocation_ratio   => $ram_allocation_ratio,
-            disk_allocation_ratio  => $disk_allocation_ratio,
-            listen_port            => $listen_port,
-            cache_refresh_interval => $cache_refresh_interval,
-            cache_file             => $cache_file,
-            sched_ram_mbs          => $sched_ram_mbs,
-            sched_vcpu             => $sched_vcpu,
-            sched_disk_gbs         => $sched_disk_gbs,
-            region                 => $region,
-            keystone_host          => $keystone_host,
-            observer_password      => $observer_password,
-        }
-        contain '::profile::prometheus::openstack_exporter'
+    class {'::profile::prometheus::openstack_exporter':
+        prometheus_nodes       => $prometheus_nodes,
+        cpu_allocation_ratio   => $cpu_allocation_ratio,
+        ram_allocation_ratio   => $ram_allocation_ratio,
+        disk_allocation_ratio  => $disk_allocation_ratio,
+        listen_port            => $listen_port,
+        cache_refresh_interval => $cache_refresh_interval,
+        cache_file             => $cache_file,
+        sched_ram_mbs          => $sched_ram_mbs,
+        sched_vcpu             => $sched_vcpu,
+        sched_disk_gbs         => $sched_disk_gbs,
+        region                 => $region,
+        keystone_host          => $keystone_host,
+        observer_password      => $observer_password,
     }
+    contain '::profile::prometheus::openstack_exporter'
 }

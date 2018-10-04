@@ -105,7 +105,7 @@ class role::labs::prometheus {
     prometheus::class_config{ "openstack_${::site}":
         dest       => "${targets_path}/openstack_${::site}.yaml",
         site       => $::site,
-        class_name => 'profile::prometheus::openstack_exporter',
+        class_name => 'role::wmcs::openstack::eqiad1::control',
         # same as profile::openstack::eqiad1::metrics::prometheus_listen_port and friends
         port       => '12345',
     }
