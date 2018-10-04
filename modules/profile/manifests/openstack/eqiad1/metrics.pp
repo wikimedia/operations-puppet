@@ -13,7 +13,6 @@ class profile::openstack::eqiad1::metrics(
     $observer_password = hiera('profile::openstack::eqiad1::observer_password'),
   ) {
 
-    require ::profile::openstack::eqiad1::observerenv
     class {'::profile::openstack::base::metrics':
         cpu_allocation_ratio   => $cpu_allocation_ratio,
         ram_allocation_ratio   => $ram_allocation_ratio,
