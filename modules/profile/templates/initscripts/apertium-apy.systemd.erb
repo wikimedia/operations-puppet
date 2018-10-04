@@ -27,5 +27,8 @@ WatchdogSec=10s
 # No reason to have access to shared tmp files:
 PrivateTmp=yes
 
+# apy requires UTF-8 locale to work
+Environment=LC_ALL=C.UTF-8
+
 [Install]
 WantedBy=multi-user.target
