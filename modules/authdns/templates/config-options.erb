@@ -4,20 +4,14 @@
 # top-level config file which includes this!
 
 listen = any
-http_listen = [ 127.0.0.1, ::1 ],
 zones_strict_data = true,
 zones_default_ttl = 3600,
-# don't inotify on zonefiles but wait for HUP
-zones_rfc1035_auto = false,
 
-# Use multiple threads-per-socket, makes handling
-#  query-rate spikes even easier.
-# Note this will only take effect on kernels >= 3.9 (trusty),
-#  on others it will be bumped back to 1 at runtime by
-#  the daemon for lack of SO_REUSEPORT support.
+# Use one thread+socket per physical CPU, per listen address, makes
+# handling query-rate spikes even easier:
 udp_threads = <%= @physicalcorecount %>
 tcp_threads = <%= @physicalcorecount %>
 
-# Experiment: raise tcp timeout from default 15 to 50, see if this has any
-# notable impact on connection stats (close_c vs close_s_ok):
-tcp_timeout = 50
+# NSID for debugging the mapping of functional IPs to real servers
+# Do not enable until we're on 2.99.9944 or higher
+# nsid_ascii = <%= @hostname %>
