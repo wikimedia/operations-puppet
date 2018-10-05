@@ -12,6 +12,9 @@ aqs: P{O:aqs}
 aqs-canary: P{aqs1004.eqiad.wmnet}
 bastion: P{O:bastionhost::general or O:bastionhost::twofa}
 bastion-canary: P{bast4002.wikimedia.org}
+cloudcontrol: P{O:wmcs::openstack::eqiad1::control}
+cloudnet: P{O:wmcs::openstack::eqiad1::net}
+cloudservices: P{O:wmcs::openstack::eqiad1::services_primary or O:wmcs::openstack::eqiad1::services_secondary}
 conf: P{O:configcluster}
 conf-canary: P{conf2001.codfw.wmnet}
 conf-codfw: A:conf and A:codfw
@@ -216,4 +219,4 @@ misc-nonprod: P{O:spare::system or O:test or O:pybaltest or O:authdns::testns or
 misc-ops: A:installserver or A:cumin or A:url-downloader or A:icinga or P{O:logging::webrequest::ops or O:builder or O:syslog::centralserver or O:pmacct or O:backup::offsite or O:backup or O:mirrors} or A:netmon or A:puppetboard or A:debmonitor or O:ping_offload or A:debmonitor
 misc-others: P{O:mw_rc_irc or O:etherpad or O:tor_relay or O:lists or O:netinsights}
 misc-releng: P{O:wmcs::openstack::main::nodepool or O:phabricator} or A:contint or A:gerrit or A:mw-maintenance
-misc-wmcs: A:labnet or A:labcontrol or A:labservices or A:labweb or A:osm or A:db-wmcs or P{O:labs::monitoring}
+misc-wmcs: A:labnet or A:labcontrol or A:labservices or A:labweb or A:osm or A:db-wmcs or P{O:labs::monitoring} or A:cloudcontrol or A:cloudnet or A:cloudservices
