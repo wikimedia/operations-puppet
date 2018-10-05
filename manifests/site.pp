@@ -173,11 +173,6 @@ node 'bast5001.wikimedia.org' {
     interface::add_ip6_mapped { 'main': }
 }
 
-node 'bohrium.eqiad.wmnet' {
-    role(piwik)
-    interface::add_ip6_mapped { 'main': }
-}
-
 # VM with webserver for misc. static sites
 node 'bromine.eqiad.wmnet', 'vega.codfw.wmnet' {
     role(webserver_misc_static)
@@ -1398,7 +1393,6 @@ node /^maps200[2-4]\.codfw\.wmnet/ {
     role(maps::slave)
 }
 
-# Replacement for bohrium - T202962
 node 'matomo1001.eqiad.wmnet' {
     role(piwik)
     interface::add_ip6_mapped { 'main': }

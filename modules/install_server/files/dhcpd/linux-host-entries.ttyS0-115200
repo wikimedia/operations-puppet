@@ -66,13 +66,6 @@ host argon {
     fixed-address argon.eqiad.wmnet;
 }
 
-host bohrium {
-    hardware ethernet aa:00:00:1e:70:87;
-    fixed-address bohrium.eqiad.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
-    filename "lpxelinux.0";
-}
-
 host boron {
     hardware ethernet aa:00:00:78:d4:48;
     fixed-address boron.eqiad.wmnet;
