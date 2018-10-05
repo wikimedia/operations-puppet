@@ -60,7 +60,7 @@ class labstore::monitoring::interfaces(
         from            => '10min',
         warning         => $load_warn,
         critical        => $load_crit,
-        percentage      => '50', # Don't freak out on spikes
+        percentage      => '85', # Don't freak out on spikes
         contact_group   => $contact_groups,
     }
 }
