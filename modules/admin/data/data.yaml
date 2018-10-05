@@ -281,6 +281,8 @@ groups:
                  'ALL = (yarn)  NOPASSWD: ALL',
                  'ALL = (oozie) NOPASSWD: ALL',
                  'ALL = (hive)  NOPASSWD: ALL',
+                 'ALL = (turnilo)  NOPASSWD: ALL',
+                 'ALL = (superset)  NOPASSWD: ALL',
                  'ALL = NOPASSWD: /bin/journalctl *']
   eventlogging-admins:
     gid: 733
