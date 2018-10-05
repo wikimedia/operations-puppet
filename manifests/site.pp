@@ -455,7 +455,7 @@ node /^db20(58|65|73|90)\.codfw\.wmnet/ {
     role(mariadb::core)
 }
 
-# s5 (dewiki) core production dbs on eqiad
+# s5 (dewiki and others) core production dbs on eqiad
 # eqiad master
 node 'db1070.eqiad.wmnet' {
     role(mariadb::core)
@@ -466,7 +466,7 @@ node /^db1(082|100|110)\.eqiad\.wmnet/ {
     role(mariadb::core)
 }
 
-# s5 (dewiki) core production dbs on codfw
+# s5 (dewiki and others) core production dbs on codfw
 # codfw master
 node 'db2052.codfw.wmnet' {
     role(mariadb::core)
