@@ -39,4 +39,17 @@ class role::authdns::server {
         port   => '22',
         srange => "(@resolve((${authdns_ns_ferm})) @resolve((${authdns_ns_ferm}), AAAA))",
     }
+
+    # Enable TFO, which gdnsd-3.x supports by default if enabled
+    sysctl::parameters { 'TCP Fast Open for AuthDNS':
+        values => {
+            'net.ipv4.tcp_fastopen' => 3,
+        },
+    }
+
+    # Enable RPS/RSS stuff.  Current authdns hosts have tg3 or bnx2 1G cards,
+    # but it still helps!
+    interface::rps { 'primary':
+        interface => $facts['interface_primary'],
+    }
 }
