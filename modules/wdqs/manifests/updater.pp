@@ -36,4 +36,18 @@ class wdqs::updater(
     service { 'wdqs-updater':
         ensure => 'running',
     }
+
+    sudo::user { 'deploy-service_wdqs-updater':
+        user       => 'deploy-service',
+        privileges => [
+            'ALL=(root) NOPASSWD: /usr/sbin/service wdqs-updater start',
+            'ALL=(root) NOPASSWD: /usr/sbin/service wdqs-updater stop',
+            'ALL=(root) NOPASSWD: /usr/sbin/service wdqs-updater restart',
+            'ALL=(root) NOPASSWD: /usr/sbin/service wdqs-updater reload',
+            'ALL=(root) NOPASSWD: /usr/sbin/service wdqs-updater status',
+            'ALL=(root) NOPASSWD: /usr/sbin/service wdqs-updater try-restart',
+            'ALL=(root) NOPASSWD: /usr/sbin/service wdqs-updater force-reload',
+            'ALL=(root) NOPASSWD: /usr/sbin/service wdqs-updater graceful-stop'
+        ],
+    }
 }
