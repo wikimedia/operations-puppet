@@ -7,7 +7,11 @@
 # and then finally ensures grants and permissions are
 # set so that configured hosts can properly connect to this database.
 #
-class profile::hive::metastore::database {
+class profile::hive::metastore::database(
+    $jdbc_database = hiera('profile::hive::metastore::database::jdbc_database', 'hive_metastore'),
+    $jdbc_username = hiera('profile::hive::metastore::database::jdbc_username', 'hive'),
+    $jdbc_password = hiera('profile::hive::metastore::database::jdbc_password', 'hive'),
+) {
     # Install a database server (MariaDB)
     require ::profile::analytics::database::meta
 
@@ -24,7 +28,12 @@ class profile::hive::metastore::database {
     # after cdh::hive::metastore::mysql makes puppet fail.
 
     class { '::cdh::hive::metastore::mysql':
-        require => Class['profile::analytics::database::meta'],
+        db_root_username => undef,
+        db_root_password => undef,
+        jdbc_database    => $jdbc_database,
+        jdbc_username    => $jdbc_username,
+        jdbc_password    => $jdbc_password,
+        require          => Class['profile::analytics::database::meta'],
     }
 
     # cdh::hive::metastore::mysql only ensures that
