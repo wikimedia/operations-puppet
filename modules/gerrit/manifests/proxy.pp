@@ -38,7 +38,8 @@ class gerrit::proxy(
       $trusted_proxies = $cache_text_nodes[$::site]
 
       httpd::site { $avatars_host:
-          content => template('gerrit/avatars_apache.erb'),
+          priority => 60,
+          content  => template('gerrit/avatars_apache.erb'),
       }
     }
 
