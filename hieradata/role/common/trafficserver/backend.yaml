@@ -49,7 +49,7 @@ profile::trafficserver::backend::mapping_rules:
       replacement: ws://etherpad1001.eqiad.wmnet:9001
     - type: map
       target: http://gerrit.wmfusercontent.org
-      replacement: http://cobalt.wikimedia.org
+      replacement: http://gerrit.wikimedia.org
     - type: map
       target: http://git.wikimedia.org
       replacement: http://phab1001.eqiad.wmnet
