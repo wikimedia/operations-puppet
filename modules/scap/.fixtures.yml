@@ -1,0 +1,9 @@
+fixtures:
+    symlinks:
+        scap: "#{source_dir}"
+        security: "../../../../security"
+        ssh: "../../../../ssh"
+        sudo: "../../../../sudo"
+        ferm: "../../../../ferm"
+        stdlib: "../../../../stdlib"
+        wmflib: "../../../../wmflib"

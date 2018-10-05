@@ -22,6 +22,10 @@
 #   service name that should be allowed to be restarted via sudo by
 #   deploy_user.  Default: undef.
 #
+# [*additional_services_names*]
+#   An array of additional services to apply sudo rules to by
+#   deploy_user. Default: []
+#
 # [*package_name*]
 #   the name of the scap3 deployment package Default: $title
 #
@@ -48,16 +52,21 @@
 #   }
 #
 define scap::target(
-    $deploy_user,
-    $key_name = $deploy_user,
-    $service_name = undef,
-    $package_name = $title,
-    $manage_user = true,
-    $sudo_rules = [],
+    String $deploy_user,
+    String $key_name = $deploy_user,
+    Optional[String] $service_name = undef,
+    Array[String] $additional_services_names = [],
+    String $package_name = $title,
+    Boolean $manage_user = true,
+    Array[String] $sudo_rules = [],
 ) {
     # Include scap3 package and ssh ferm rules.
     include scap
     include scap::ferm
+
+    if !$service_name and !empty($additional_services_names) {
+        fail('service_name must be set if additional_services_names is set')
+    }
 
     if $manage_user
     {
@@ -94,8 +103,6 @@ define scap::target(
         }
     }
 
-
-
     if $::realm == 'labs' {
         if !defined(Security::Access::Config["scap-allow-${deploy_user}"]) {
             # Allow $deploy_user login from scap deployment host.
@@ -121,6 +128,7 @@ define scap::target(
     # TODO: Remove this when it is no longer needed.
 
     if !defined(Sudo::User["scap_${deploy_user}"]) {
+
         sudo::user { "scap_${deploy_user}":
             user       => $deploy_user,
             privileges => ["ALL=(${deploy_user}) NOPASSWD: ALL"],
@@ -128,26 +136,36 @@ define scap::target(
     }
 
     if $service_name {
-        $privileges = array_concat([
-            "ALL=(root) NOPASSWD: /usr/sbin/service ${service_name} start",
-            "ALL=(root) NOPASSWD: /usr/sbin/service ${service_name} stop",
-            "ALL=(root) NOPASSWD: /usr/sbin/service ${service_name} restart",
-            "ALL=(root) NOPASSWD: /usr/sbin/service ${service_name} reload",
-            "ALL=(root) NOPASSWD: /usr/sbin/service ${service_name} status",
-            "ALL=(root) NOPASSWD: /usr/sbin/service ${service_name} try-restart",
-            "ALL=(root) NOPASSWD: /usr/sbin/service ${service_name} force-reload",
-            "ALL=(root) NOPASSWD: /usr/sbin/service ${service_name} graceful-stop"
-        ], $sudo_rules)
-        $rule_name = "scap_${deploy_user}_${service_name}"
-    } else {
-        $privileges = $sudo_rules
-        $rule_name = regsubst("scap_${deploy_user}_${title}", '/', '_', 'G')
+        $all_services_names = array_concat($additional_services_names, $service_name)
+        $all_services_names.each |String $svc_name| {
+            $service_privileges = [
+                "ALL=(root) NOPASSWD: /usr/sbin/service ${svc_name} start",
+                "ALL=(root) NOPASSWD: /usr/sbin/service ${svc_name} stop",
+                "ALL=(root) NOPASSWD: /usr/sbin/service ${svc_name} restart",
+                "ALL=(root) NOPASSWD: /usr/sbin/service ${svc_name} reload",
+                "ALL=(root) NOPASSWD: /usr/sbin/service ${svc_name} status",
+                "ALL=(root) NOPASSWD: /usr/sbin/service ${svc_name} try-restart",
+                "ALL=(root) NOPASSWD: /usr/sbin/service ${svc_name} force-reload",
+                "ALL=(root) NOPASSWD: /usr/sbin/service ${svc_name} graceful-stop"
+            ]
+
+            if !defined(Sudo::User["scap_${deploy_user}_${svc_name}"]) {
+                sudo::user { "scap_${deploy_user}_${svc_name}":
+                    user       => $deploy_user,
+                    privileges => $service_privileges,
+                }
+            }
+        }
     }
 
-    if size($privileges) > 0 and !defined(Sudo::User[$rule_name]) {
-        sudo::user { $rule_name:
-            user       => $deploy_user,
-            privileges => $privileges,
+    if !empty($sudo_rules) {
+        $sudo_rule_name = regsubst("scap_sudo_rules_${deploy_user}_${title}", '/', '_', 'G')
+
+        if !defined(Sudo::User[$sudo_rule_name]) {
+                sudo::user { $sudo_rule_name:
+                    user       => $deploy_user,
+                    privileges => $sudo_rules,
+                }
         }
     }
 
