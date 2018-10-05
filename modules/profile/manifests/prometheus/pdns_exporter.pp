@@ -11,4 +11,6 @@ class profile::prometheus::pdns_exporter (
         port   => '9192',
         srange => '@resolve(labmon1001.eqiad.wmnet)', # Should be properly defined via Hiera for WMCS
     }
+
+    base::service_auto_restart { 'prometheus-pdns-exporter': }
 }
