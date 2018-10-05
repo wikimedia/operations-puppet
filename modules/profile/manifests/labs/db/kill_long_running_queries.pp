@@ -5,7 +5,7 @@
 #
 #
 class profile::labs::db::kill_long_running_queries (
-    $victim        = hiera(profile::labs::db::kill_long_running_queries::pt_kill_victim,),
+    $victims        = hiera(profile::labs::db::kill_long_running_queries::pt_kill_victims,),
     $interval      = hiera(profile::labs::db::kill_long_running_queries::pt_kill_interval,),
     $busy_time     = hiera(profile::labs::db::kill_long_running_queries::pt_kill_busy_time,),
     $match_command = hiera(profile::labs::db::kill_long_running_queries::pt_kill_match_command,),
