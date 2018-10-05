@@ -76,6 +76,8 @@ class profile::ntp {
         }
     }
     else {
+        diamond::collector { 'Ntpd': }
+
         ntp::daemon { 'server':
             servers      => $wmf_server_upstreams,
             pools        => $wmf_server_upstream_pools,
