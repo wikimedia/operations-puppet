@@ -16,6 +16,7 @@ class nutcracker::monitoring($port = 11212) {
     }
 
     diamond::collector { 'Nutcracker':
-        source   => 'puppet:///modules/nutcracker/monitor/nutcracker.py',
+        ensure => 'absent',
+        source => 'puppet:///modules/nutcracker/monitor/nutcracker.py',
     }
 }
