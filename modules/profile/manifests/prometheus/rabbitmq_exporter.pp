@@ -27,6 +27,8 @@ class profile::prometheus::rabbitmq_exporter (
         require => File['/etc/prometheus/rabbitmq-exporter.yaml'],
     }
 
+    base::service_auto_restart { 'prometheus-rabbitmq-exporter': }
+
     ferm::service { 'prometheus-rabbitmq-exporter':
         proto  => 'tcp',
         port   => '9195',
