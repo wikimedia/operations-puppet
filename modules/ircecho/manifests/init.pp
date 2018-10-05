@@ -52,4 +52,6 @@ class ircecho (
             hasrestart => true,
         },
     }
+
+    base::service_auto_restart { 'ircecho': }
 }
