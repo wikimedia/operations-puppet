@@ -57,12 +57,4 @@ class role::openldap::labs {
     }
 
     backup::openldapset {'openldap_labs':}
-    $monitor_pass = $passwords::openldap::labs::monitor_pass
-    diamond::collector { 'OpenLDAP':
-        settings => {
-            host     => $ldap_labs_hostname,
-            username => '"cn=monitor,dc=wikimedia,dc=org"',
-            password => $monitor_pass,
-        },
-    }
 }
