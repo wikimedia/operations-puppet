@@ -26,7 +26,10 @@ class package_builder(
     }
 
     if os_version('debian >= stretch') {
-        require_package('dh-make-golang')
+        require_package([
+            'dh-make-golang',
+            'dh-sysuser'
+        ])
     }
 
     require_package([
