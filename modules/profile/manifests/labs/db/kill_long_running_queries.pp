@@ -24,7 +24,7 @@ class profile::labs::db::kill_long_running_queries (
         ensure => present,
     }
     service { 'wmf-pt-kill':
-        ensure => stopped,
+        ensure => running,
     }
 
 }
