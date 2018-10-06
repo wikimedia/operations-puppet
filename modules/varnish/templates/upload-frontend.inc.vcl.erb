@@ -207,7 +207,6 @@ sub cluster_fe_deliver {
 
 	// Temporary experiment in reducing facebookexternalhit / facebookexternalua traffic to cache_upload
 	if (std.ip(req.http.X-Client-IP, "192.0.2.1") ~ fb_nets
-		&& req.http.user-agent ~ "facebook"
 		&& (resp.status == 200 || resp.status == 206)) {
 			set resp.http.Cache-control = "public, max-age=3600, s-maxage=3600";
 			set resp.http.Age = "0";
