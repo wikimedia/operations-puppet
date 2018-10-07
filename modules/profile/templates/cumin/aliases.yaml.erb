@@ -48,7 +48,7 @@ db-core-codfw: A:db-core and A:codfw
 db-core-eqiad: A:db-core and A:eqiad
 db-dbproxy: P{O:mariadb::proxy::master}
 db-dbstore: P{O:mariadb::backup or O:mariadb::dbstore or O:mariadb::dbstore_multiinstance}
-db-labsdb: P{O:labs::db::replica}
+db-labsdb: P{O:labs::db::wikireplica_analytics or O:labs::db::wikireplica_web}
 db-misc-servers: P{O:mariadb::sanitarium_multiinstance}
 db-parsercache: P{O:mariadb::parsercache}
 db-wmcs: P{O:postgres::master or O:labs::db::master}
@@ -218,7 +218,7 @@ misc-analytics: P{O:statistics::web or O:statistics::cruncher or O:statistics::p
 misc-apache: P{O:microsites::peopleweb or C:grafana::production or O:requesttracker or O:releases or O:otrs or O:webserver_misc_static or O:webserver_misc_apps} or A:planet
 misc-devel: P{O:webperf::processors_and_site or O:webperf::profiling_tools or O:ve or O:archiva or O:docker::registry} or A:debugproxy or A:mwlog
 misc-nonprod: P{O:spare::system or O:test or O:pybaltest or O:authdns::testns or O:cache::canary}
-misc-ops: A:installserver or A:cumin or A:url-downloader or A:icinga or P{O:logging::webrequest::ops or O:builder or O:syslog::centralserver or O:pmacct or A:backup or O:mirrors} or A:netmon or A:puppetboard or A:debmonitor or O:ping_offload or A:debmonitor
+misc-ops: A:installserver or A:cumin or A:url-downloader or A:icinga or A:netmon or A:puppetboard or A:debmonitor or A:debmonitor or A:backup or P{O:ping_offload or O:logging::webrequest::ops or O:builder or O:syslog::centralserver or O:pmacct or O:mirrors}
 misc-others: P{O:mw_rc_irc or O:etherpad or O:tor_relay or O:lists or O:netinsights}
 misc-releng: P{O:wmcs::openstack::main::nodepool or O:phabricator} or A:contint or A:gerrit or A:mw-maintenance
 misc-wmcs: A:labnet or A:labcontrol or A:labservices or A:labweb or A:osm or A:db-wmcs or P{O:labs::monitoring} or A:cloudcontrol or A:cloudnet or A:cloudservices
