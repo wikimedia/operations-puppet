@@ -8,6 +8,7 @@ import time
 import sys
 
 from cumin import Config, NodeSet, query
+from cumin.backends import InvalidQueryError
 
 
 # Hardcoded DC aliases to verify them.
@@ -34,7 +35,13 @@ def main():
     all_hosts = query.Query(config).execute('*')
 
     for alias in config['aliases']:
-        match = query.Query(config).execute('A:' + alias)
+        try:
+            match = query.Query(config).execute('A:' + alias)
+        except InvalidQueryError as e:
+            print('Unable to execute query for alias {alias}: {msg}'.format(alias=alias, msg=e))
+            ret = 1
+            continue
+
         if not match:
             print('Alias {alias} matched 0 hosts'.format(alias=alias))
             ret = 1
