@@ -14,7 +14,8 @@ define varnish::logging::backendtiming(
     include ::varnish::common
 
     mtail::program { 'varnishbackendtiming':
-        source => 'puppet:///modules/mtail/programs/varnishbackendtiming.mtail',
-        notify => Service['varnishmtail-backend'],
+        source      => 'puppet:///modules/mtail/programs/varnishbackendtiming.mtail',
+        destination => '/etc/varnishmtail-backend',
+        notify      => Service['varnishmtail-backend'],
     }
 }
