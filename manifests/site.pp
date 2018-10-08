@@ -184,6 +184,15 @@ node 'centrallog1001.eqiad.wmnet' {
     role(syslog::centralserver)
 }
 
+# Ganeti VMs for certcentral service
+node 'certcentral1001.eqiad.wmnet' {
+    role(spare::system)
+}
+
+node 'certcentral2001.codfw.wmnet' {
+    role(spare::system)
+}
+
 # two new cloudvirt systems, need to be pushed into production T199125
 node /^cloudvirt102[34].eqiad.wmnet$/ {
     role(spare::system)
