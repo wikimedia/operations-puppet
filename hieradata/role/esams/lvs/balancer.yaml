@@ -1,4 +1,5 @@
-profile::pybal::config_host: conf1006.eqiad.wmnet:4001
+profile::pybal::config_host: conf1006.eqiad.wmnet
+profile::pybal::etcd_port: 4001
 profile::lvs::tagged_subnets:
   - public1-esams
 # lvs300[24] are LVS balancers for the esams recursive DNS IP,

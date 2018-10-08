@@ -1,4 +1,5 @@
-profile::pybal::config_host: conf1004.eqiad.wmnet:4001
+profile::pybal::config_host: conf1004.eqiad.wmnet
+profile::pybal::etcd_port: 4001
 profile::lvs::tagged_subnets:
   - private1-a-eqiad
   - private1-b-eqiad

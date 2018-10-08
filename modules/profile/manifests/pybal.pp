@@ -8,6 +8,7 @@ class profile::pybal(
     $config_source = hiera('profile::pybal::config_source'),
     $config_host = hiera('profile::pybal::config_host'),
     $wikimedia_clusters = hiera('wikimedia_clusters'),
+    $etcd_port = hiera('profile::pybal::etcd_port', 2379)
 ) {
 
     requires_os('debian >= jessie')
@@ -51,6 +52,12 @@ class profile::pybal(
     # Base class, not parametrized
     class { '::pybal': }
 
+    if ($config_source == 'etcd' and $etcd_port != 2379) {
+        $pybal_config_host = "${config_host}:${etcd_port}"
+    }
+    else {
+        $pybal_config_host = $config_host
+    }
     class { '::pybal::configuration':
         global_options  => $global_options,
         lvs_services    => $::lvs::configuration::lvs_services,
@@ -58,11 +65,13 @@ class profile::pybal(
         site            => $::site,
         conftool_prefix => $conftool_prefix,
         config          => $config_source,
-        config_host     => $config_host
+        config_host     => $pybal_config_host
     }
 
     class { '::pybal::monitoring':
         config_host     => $config_host,
+        config_source   => $config_source,
+        etcd_port       => $etcd_port,
         lvs_services    => $::lvs::configuration::lvs_services,
         lvs_class_hosts => $lvs::configuration::lvs_class_hosts,
     }
