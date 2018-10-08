@@ -41,13 +41,13 @@ cp-ats-eqiad: A:cp-ats and A:eqiad
 cumin: P{O:cluster::management}
 db-all-codfw: (A:db-parsercache or A:db-labsdb or A:db-dbstore or A:db-core or A:db-misc or A:db-misc-servers or A:db-backups) and A:codfw
 db-all-eqiad: (A:db-parsercache or A:db-labsdb or A:db-dbstore or A:db-core or A:db-misc or A:db-misc-servers or A:db-backups) and A:eqiad
-db-misc: P{O:mariadb::misc or O:mariadb::misc::phabricator or O:mariadb::misc::eventlogging::master or O:mariadb::misc::eventlogging::replica or O:mariadb::misc::tendril}
+db-misc: P{O:mariadb::misc or O:mariadb::misc::phabricator or O:mariadb::misc::eventlogging::master or O:mariadb::misc::eventlogging::replica or O:mariadb::misc::tendril or O:mariadb::misc::tendril_and_zarcillo or O:mariadb::misc::multiinstance}
 db-backups: P{O:mariadb::backups or O:mariadb::temporary_storage}
 db-core: P{O:mariadb::core or O:mariadb::core_multiinstance}
 db-core-codfw: A:db-core and A:codfw
 db-core-eqiad: A:db-core and A:eqiad
-db-dbproxy: P{O:mariadb::proxy::master}
-db-dbstore: P{O:mariadb::backup or O:mariadb::dbstore or O:mariadb::dbstore_multiinstance}
+db-dbproxy: P{O:mariadb::proxy::master or O:mariadb::proxy::replicas}
+db-dbstore: P{O:mariadb::backup or O:mariadb::dbstore or O:mariadb::dbstore_multiinstance or O:mariadb::backups_and_dbstore_multiinstance}
 db-labsdb: P{O:labs::db::wikireplica_analytics or O:labs::db::wikireplica_web}
 db-misc-servers: P{O:mariadb::sanitarium_multiinstance}
 db-parsercache: P{O:mariadb::parsercache}
