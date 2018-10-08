@@ -50,7 +50,7 @@ profile::druid::ferm_srange: '$ANALYTICS_NETWORKS'
 
 profile::druid::common::properties:
   druid.metadata.storage.type: mysql
-  druid.metadata.storage.connector.host: analytics1003.eqiad.wmnet
+  druid.metadata.storage.connector.host: an-coord1001.eqiad.wmnet
   # druid.metadata.storage.connector.password is set in the private repo.
   druid.storage.type: hdfs
   druid.request.logging.type: file
