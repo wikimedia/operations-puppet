@@ -82,4 +82,5 @@ class coal::processor(
         ],
     }
 
+    base::service_auto_restart { 'coal': }
 }
