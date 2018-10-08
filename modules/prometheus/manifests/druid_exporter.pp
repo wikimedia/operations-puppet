@@ -25,4 +25,6 @@ define prometheus::druid_exporter (
         ensure  => running,
         require => Package['prometheus-druid-exporter'],
     }
+
+    base::service_auto_restart { 'prometheus-druid-exporter': }
 }
