@@ -11,7 +11,7 @@ profile::elasticsearch::rack: ''
 profile::elasticsearch::row: ''
 profile::elasticsearch::instances: {}
 profile::elasticsearch::dc_settings: {}
-profile::elasticsearch::base_data_dir: '/var/lib/elasticsearch'
+profile::elasticsearch::base_data_dir: '/srv/elasticsearch'
 profile::elasticsearch::common_settings:
     auto_create_index: true
     cluster_name: production-logstash-eqiad
