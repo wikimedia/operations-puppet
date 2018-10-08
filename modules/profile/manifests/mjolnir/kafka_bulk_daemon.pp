@@ -17,7 +17,9 @@ class profile::mjolnir::kafka_bulk_daemon(
     require ::profile::mjolnir
 
     $kafka_config = kafka_config($kafka_cluster)
-    systemd::service { 'mjolnir-kafka-bulk-daemon':
+    ::systemd::service { 'mjolnir-kafka-bulk-daemon':
         content => template('profile/mjolnir/kafka-bulk-daemon.service.erb'),
     }
+
+    ::base::service_auto_restart { 'mjolnir-kafka-bulk-daemon': }
 }

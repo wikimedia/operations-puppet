@@ -14,7 +14,9 @@ class profile::mjolnir::kafka_msearch_daemon(
     require ::profile::mjolnir
 
     $kafka_config = kafka_config($kafka_cluster)
-    systemd::service { 'mjolnir-kafka-msearch-daemon':
+    ::systemd::service { 'mjolnir-kafka-msearch-daemon':
         content => template('profile/mjolnir/kafka-msearch-daemon.service.erb'),
     }
+
+    ::base::service_auto_restart { 'mjolnir-kafka-msearch-daemon': }
 }
