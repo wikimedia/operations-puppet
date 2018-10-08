@@ -91,6 +91,11 @@ class varnish::logging(
     ::varnish::logging::xcache { 'xcache':
     }
 
+    # Parse Backend-Timing origin server response header and make the values
+    # available to Prometheus
+    ::varnish::logging::backendtiming { 'backendtiming':
+    }
+
     file { "/usr/local/lib/python${::varnish::common::python_version}/dist-packages/wikimedia_varnishlogconsumer.py":
         source => 'puppet:///modules/varnish/wikimedia_varnishlogconsumer.py',
         owner  => 'root',
