@@ -8,6 +8,7 @@ all: P{*}
 all-mw-codfw: (A:mw-videoscaler or A:mw-api or A:mw or A:mw-jobrunner) and A:codfw
 all-mw-eqiad: (A:mw-videoscaler or A:mw-api or A:mw or A:mw-jobrunner) and A:eqiad
 analytics-all-eqiad: A:hadoop or A:aqs or A:druid or A:notebook or A:kafka-analytics or A:kafka-jumbo or A:misc-analytics
+analytics-tools: P{O:analytics_cluster::hadoop::ui or O:analytics_cluster::turnilo or O:analytics_cluster::superset}
 aqs: P{O:aqs}
 aqs-canary: P{aqs1004.eqiad.wmnet}
 backup: P{O:backup::offsite or O:backup}
@@ -17,7 +18,7 @@ cloudcontrol: P{O:wmcs::openstack::eqiad1::control}
 cloudnet: P{O:wmcs::openstack::eqiad1::net}
 cloudservices: P{O:wmcs::openstack::eqiad1::services_primary or O:wmcs::openstack::eqiad1::services_secondary}
 cloudvirt: P{O:wmcs::openstack::eqiad1::virt}
-conf: P{O:configcluster}
+conf: P{O:configcluster or O:configcluster_stretch}
 conf-canary: P{conf2001.codfw.wmnet}
 conf-codfw: A:conf and A:codfw
 conf-eqiad: A:conf and A:eqiad
@@ -153,6 +154,7 @@ ores: P{O:ores}
 ores-canary: P{ores1001.eqiad.wmnet}
 ores-eqiad: A:ores and A:eqiad
 ores-codfw: A:ores and A:codfw
+ores-poolcounter: P{O:orespoolcounter}
 oresrdb: P{O:ores::redis}
 oresrdb-codfw: A:oresrdb and A:codfw
 oresrdb-eqiad: A:oresrdb and A:eqiad
@@ -164,6 +166,7 @@ parsoid-canary: P{wtp1025.eqiad.wmnet}
 parsoid-codfw: A:parsoid and A:codfw
 parsoid-eqiad: A:parsoid and A:eqiad
 planet: P{O:planet}
+ping: P{O:ping_offload}
 poolcounter: P{O:poolcounter::server}
 poolcounter-codfw: A:poolcounter and A:codfw
 poolcounter-eqiad: A:poolcounter and A:eqiad
@@ -176,6 +179,7 @@ puppetdb: P{O:puppetmaster::puppetdb}
 puppetmaster: A:puppetmaster-backend or A:puppetmaster-frontend
 puppetmaster-backend: P{O:puppetmaster::backend}
 puppetmaster-frontend: P{O:puppetmaster::frontend}
+releases: P{O:releases}
 relforge: P{O:elasticsearch::relforge}
 restbase: P{O:restbase::production} or A:restbase-dev
 restbase-canary: P{restbase1007.eqiad.wmnet}
@@ -215,10 +219,10 @@ yubiauth: P{O:yubiauth_server}
 
 # Miscellaneous groups
 misc-analytics: P{O:statistics::web or O:statistics::cruncher or O:statistics::private or O:piwik or O:analytics_cluster::coordinator or O:kafka::monitoring or O:analytics_cluster::webserver} or A:eventlogging
-misc-apache: P{O:microsites::peopleweb or C:grafana::production or O:requesttracker or O:releases or O:otrs or O:webserver_misc_static or O:webserver_misc_apps} or A:planet
+misc-apache: P{O:microsites::peopleweb or C:grafana::production or O:requesttracker or or O:otrs or O:webserver_misc_static or O:webserver_misc_apps} or A:planet or A:releases
 misc-devel: P{O:webperf::processors_and_site or O:webperf::profiling_tools or O:ve or O:archiva or O:docker::registry} or A:debugproxy or A:mwlog
 misc-nonprod: P{O:spare::system or O:test or O:pybaltest or O:authdns::testns or O:cache::canary}
-misc-ops: A:installserver or A:cumin or A:url-downloader or A:icinga or A:netmon or A:puppetboard or A:debmonitor or A:debmonitor or A:backup or P{O:ping_offload or O:logging::webrequest::ops or O:builder or O:syslog::centralserver or O:pmacct or O:mirrors}
+misc-ops: A:installserver or A:cumin or A:url-downloader or A:icinga or A:netmon or A:puppetboard or A:debmonitor or A:debmonitor or A:backup or A:ping or P{O:logging::webrequest::ops or O:builder or O:syslog::centralserver or O:pmacct or O:mirrors}
 misc-others: P{O:mw_rc_irc or O:etherpad or O:tor_relay or O:lists or O:netinsights}
 misc-releng: P{O:wmcs::openstack::main::nodepool or O:phabricator} or A:contint or A:gerrit or A:mw-maintenance
 misc-wmcs: A:labnet or A:labcontrol or A:labservices or A:labweb or A:osm or A:db-wmcs or P{O:labs::monitoring} or A:cloudcontrol or A:cloudnet or A:cloudservices
