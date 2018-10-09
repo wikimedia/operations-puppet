@@ -1870,6 +1870,11 @@ host db2095 {
     fixed-address db2095.codfw.wmnet;
 }
 
+host db2096 {
+    hardware ethernet D0:94:66:83:16:A4;
+    fixed-address db2096.codfw.wmnet;
+}
+
 host dbproxy1001 {
     hardware ethernet 84:2b:2b:fd:bd:56;
     fixed-address dbproxy1001.eqiad.wmnet;
