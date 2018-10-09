@@ -2,7 +2,7 @@
 #
 # Wrapper script for launching Spark Job <%= @title %>
 
-PYTHONPATH=<%= @refinery_path %>/python <%= @refinery_path %>/bin/is-yarn-app-running <%= @title %> ||
+PYTHONPATH=<%= @refinery_path %>/python <%= @refinery_path %>/bin/is-yarn-app-running --verbose <%= @title %> ||
 /usr/bin/spark2-submit \
 --name <%= @job_name %> \
 --class <%= @class %> \
