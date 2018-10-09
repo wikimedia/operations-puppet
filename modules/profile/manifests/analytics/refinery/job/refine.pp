@@ -11,6 +11,7 @@ class profile::analytics::refinery::job::refine (
     $deploy_jobs  = hiera('profile::analytics::refinery::job::refine::deploy_jobs', true),
 ){
     require ::profile::analytics::refinery
+    require ::profile::hive::client
 
     # Update this when you want to change the version of the refinery job jar
     # being used for the refine job.
@@ -28,6 +29,7 @@ class profile::analytics::refinery::job::refine (
         'should_email_report' => true,
         'database'            => 'event',
         'output_path'         => '/wmf/data/event',
+        'hive_server_url'     => "${::profile::hive::client::hiveserver_host}:${::profile::hive::client::hiveserver_url}",
     }
 
     if $deploy_jobs {
