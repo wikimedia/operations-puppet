@@ -161,19 +161,19 @@ class network::constants {
                 ],
             'druid_analytics_hosts' => [
                     '10.64.5.101',                        # druid1001.eqiad.wmnet
-                    '2620:0:861:104:1e98:ecff:fe29:e298', # druid1001.eqiad.wmnet
+                    '2620:0:861:104:10:64:5:101',         # druid1001.eqiad.wmnet
                     '10.64.36.102',                       # druid1002.eqiad.wmnet
-                    '2620:0:861:106:1602:ecff:fe06:8bec', # druid1002.eqiad.wmnet
+                    '2620:0:861:106:10:64:36:102',        # druid1002.eqiad.wmnet
                     '10.64.53.103',                       # druid1003.eqiad.wmnet
-                    '2620:0:861:108:1e98:ecff:fe29:e278', # druid1003.eqiad.wmnet
+                    '2620:0:861:108:10:64:53:103',        # druid1003.eqiad.wmnet
                 ],
             'druid_public_hosts' => [
                     '10.64.0.35',                         # druid1004.eqiad.wmnet
-                    '2620:0:861:101:1a66:daff:feac:87a1', # druid1004.eqiad.wmnet
+                    '2620:0:861:101:10:64:0:35',          # druid1004.eqiad.wmnet
                     '10.64.16.172',                       # druid1005.eqiad.wmnet
-                    '2620:0:861:102:1a66:daff:feae:36fb', # druid1005.eqiad.wmnet
+                    '2620:0:861:102:10:64:16:172',        # druid1005.eqiad.wmnet
                     '10.64.48.171',                       # druid1006.eqiad.wmnet
-                    '2620:0:861:107:1a66:daff:feac:75cd', # druid1006.eqiad.wmnet
+                    '2620:0:861:107:10:64:48:171',        # druid1006.eqiad.wmnet
                 ],
             'caches' => [
                     '10.64.32.97',                        # cp1045.eqiad.wmnet
