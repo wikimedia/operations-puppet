@@ -5,6 +5,9 @@ class profile::trafficserver::backend (
     Array[TrafficServer::Caching_rule] $caching_rules=hiera('profile::trafficserver::backend::caching_rules', []),
     Array[String] $default_lua_scripts=hiera('profile::trafficserver::backend::default_lua_scripts', []),
     Array[TrafficServer::Storage_element] $storage=hiera('profile::trafficserver::backend::storage_elements', []),
+    String $purge_host_regex=hiera('profile::trafficserver::backend::purge_host_regex', ''),
+    Array[Stdlib::Compat::Ip_address] $purge_multicasts=hiera('profile::trafficserver::backend::purge_multicasts', ['239.128.0.112', '239.128.0.113', '239.128.0.114', '239.128.0.115']),
+    Array[String] $purge_endpoints=hiera('profile::trafficserver::backend::purge_endpoints', ['127.0.0.1:3129']),
 ){
     # Build list of remap rules with default Lua scripts passed as parameters
     $remap_rules_lua = $mapping_rules.map |TrafficServer::Mapping_rule $rule| {
@@ -33,5 +36,12 @@ class profile::trafficserver::backend (
 
     prometheus::trafficserver_exporter { 'trafficserver_exporter':
         endpoint => "http://127.0.0.1:${port}/_stats",
+    }
+
+    # Purging
+    class { '::varnish::htcppurger':
+        host_regex => $purge_host_regex,
+        mc_addrs   => $purge_multicasts,
+        varnishes  => $purge_endpoints,
     }
 }
