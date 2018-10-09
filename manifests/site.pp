@@ -207,20 +207,18 @@ node 'cobalt.wikimedia.org', 'gerrit2001.wikimedia.org' {
     interface::add_ip6_mapped { 'main': }
 }
 
-# Etcd discovery service nodes in eqiad
-# NOTE: zookeeper has been moved to conf100[4-6] as part of T182924
+# Old Zookeeper/Etcd nodes, to be decommed
 node /^conf100[123]\.eqiad\.wmnet$/ {
-    role(configcluster)
+    role(spare::system)
 }
 
-# Zookeeper (and soon Etcd) discovery service nodes in eqiad
+# Zookeeper and Etcd discovery service nodes in eqiad
 node /^conf100[456]\.eqiad\.wmnet$/ {
     role(configcluster_stretch)
-
     interface::add_ip6_mapped { 'main': }
 }
 
-# conf200x are etcd/zookeeper service nodes in codfw
+# Zookeeper and Etcd discovery service nodes in codfw
 node /^conf200[123]\.codfw\.wmnet$/ {
     role(configcluster)
 }
