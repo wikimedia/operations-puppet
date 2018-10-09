@@ -41,8 +41,6 @@ node 'an-master1002.eqiad.wmnet' {
     interface::add_ip6_mapped { 'main': }
 }
 
-# analytics1003's replacement
-# T204970
 node 'an-coord1001.eqiad.wmnet' {
     role(analytics_cluster::coordinator)
     interface::add_ip6_mapped { 'main': }
@@ -60,8 +58,9 @@ node 'analytics1002.eqiad.wmnet' {
     interface::add_ip6_mapped { 'main': }
 }
 
+# Old Analytics Hadoop coordinator, replaced in T204970
 node 'analytics1003.eqiad.wmnet' {
-    role(analytics_cluster::coordinator)
+    role(spare::system)
     interface::add_ip6_mapped { 'main': }
 }
 
