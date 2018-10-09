@@ -12,22 +12,6 @@
 define varnish::logging::media {
     include ::varnish::common
 
-    file { '/usr/local/bin/varnishmedia':
-        ensure => absent,
-        notify => Service['varnishmedia'],
-    }
-
-    systemd::service { 'varnishmedia':
-        ensure  => absent,
-        content => '',
-    }
-
-    nrpe::monitor_service { 'varnishmedia':
-        ensure       => absent,
-        description  => 'Varnish traffic logger - varnishmedia',
-        nrpe_command => '/bin/true',
-    }
-
     mtail::program { 'varnishmedia':
         source => 'puppet:///modules/mtail/programs/varnishmedia.mtail',
         notify => Service['varnishmtail'],
