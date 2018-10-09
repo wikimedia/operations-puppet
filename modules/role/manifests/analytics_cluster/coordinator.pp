@@ -27,7 +27,7 @@ class role::analytics_cluster::coordinator {
     include ::profile::analytics::cluster::client
     include ::profile::analytics::database::meta
 
-    if $::hostname == 'analytics1003' {
+    if $::hostname == 'an-coord1001' {
         # Back up analytics-meta MySQL instance
         # to an-master1002.
         include ::profile::analytics::database::meta::backup
