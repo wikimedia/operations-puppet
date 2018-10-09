@@ -19,6 +19,8 @@
 #   $auth_users      - list of usernames that will be allowed to connect to this module (must be undef or an array)
 #   $hosts_allow     - list of patterns allowed to connect to this module (man 5 rsyncd.conf for details, must be undef or an array)
 #   $hosts_deny      - list of patterns allowed to connect to this module (man 5 rsyncd.conf for details, must be undef or an array)
+#   $auto_ferm       - If enabled and if $hosts_allow is set, generate a ferm service which restricts access to the allowed hosts
+#   $auto_ferm_ipv6  - If auto_ferm is used and this option is enabled, ferm rules are also generated for ipv6
 #
 #   sets up an rsync server
 #
@@ -45,6 +47,7 @@ define rsync::server::module (
   $outgoing_chmod  = '0644',
   $max_connections = '0',
   $lock_file       = '/var/run/rsyncd.lock',
+  $auto_ferm       = false,
   $secrets_file    = undef,
   $auth_users      = undef,
   $hosts_allow     = undef,
@@ -54,5 +57,21 @@ define rsync::server::module (
     ensure  => $ensure,
     content => template('rsync/module.erb'),
     notify  => Exec['compile fragments'],
+  }
+
+  if $auto_ferm and $hosts_allow {
+      ferm::service { "rsyncd_access_${name}":
+          proto  => 'tcp',
+          port   => '873',
+          srange => "@resolve((${hosts_allow}))",
+      }
+
+      if $::auto_ferm_ipv6 {
+          ferm::service { "rsyncd_access_${name}":
+              proto  => 'tcp',
+              port   => '873',
+              srange => "@resolve((${hosts_allow}),AAAA)",
+          }
+      }
   }
 }
