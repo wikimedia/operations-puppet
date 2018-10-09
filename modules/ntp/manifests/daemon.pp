@@ -10,12 +10,6 @@ define ntp::daemon($servers=[], $pools=[], $peers=[], $query_acl=[], $time_acl=[
         content => template('ntp/ntp-conf.erb'),
     }
 
-    if !(defined(File['/etc/diamond/collectors/NtpdCollector.conf'])) {
-        diamond::collector { 'Ntpd':
-            ensure => 'absent'
-        }
-    }
-
     service { 'ntp':
         ensure    => ensure_service($ensure),
         require   => [ File['ntp.conf'], Package['ntp'] ],
