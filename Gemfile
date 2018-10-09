@@ -10,6 +10,6 @@ gem 'safe_yaml', '~> 1.0.4'
 
 gem 'rake', '~> 12.0.0'
 gem 'git', '1.3.0'
-gem 'puppet-lint', '2.0.2'
+gem 'puppet-lint', '2.3.6'
 gem 'rubocop', '~> 0.49.1', require: false
-gem 'puppet-lint-wmf_styleguide-check', '1.0.2'
+gem 'puppet-lint-wmf_styleguide-check', '1.0.4'

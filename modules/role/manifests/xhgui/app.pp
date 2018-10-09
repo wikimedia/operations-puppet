@@ -74,9 +74,8 @@ class role::xhgui::app {
         ensure    => 'latest',
         directory => '/srv/xhprof',
         branch    => 'wmf_deploy',
-    } ->
-
-    file { '/srv/xhprof/profiles':
+    }
+    -> file { '/srv/xhprof/profiles':
         ensure => directory,
         owner  => 'www-data',
         group  => 'www-data',
@@ -87,16 +86,14 @@ class role::xhgui::app {
         ensure    => 'latest',
         directory => '/srv/xhgui',
         branch    => 'wmf_deploy',
-    } ->
-
-    file { '/srv/xhgui/cache':
+    }
+    -> file { '/srv/xhgui/cache':
         ensure => directory,
         owner  => 'www-data',
         group  => 'www-data',
         mode   => '0755',
-    } ->
-
-    httpd::site { 'xhgui_apache_site':
+    }
+    -> httpd::site { 'xhgui_apache_site':
         content => template('role/apache/sites/xhgui.erb'),
     }
 }

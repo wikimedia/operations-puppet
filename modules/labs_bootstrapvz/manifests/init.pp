@@ -72,38 +72,38 @@ class labs_bootstrapvz() {
     Exec { path => '/bin' }
 
     exec { "cp /etc/security/access.conf ${bootstrap_filepath}/access.conf":
-    } ~>
+    }
 
-    exec { "sed -i '${projectregex}' ${bootstrap_filepath}/access.conf":
+    ~> exec { "sed -i '${projectregex}' ${bootstrap_filepath}/access.conf":
     }
 
     exec { "cp /etc/nslcd.conf ${bootstrap_filepath}/nslcd.conf":
-    } ~>
+    }
 
-    exec { "sed -i '${projectregex}' ${bootstrap_filepath}/nslcd.conf":
+    ~> exec { "sed -i '${projectregex}' ${bootstrap_filepath}/nslcd.conf":
     }
 
     exec { "cp /etc/ldap/ldap.conf ${bootstrap_filepath}/nss_ldap.conf":
-    } ~>
+    }
 
-    exec { "sed -i '${projectregex}' ${bootstrap_filepath}/nss_ldap.conf":
+    ~> exec { "sed -i '${projectregex}' ${bootstrap_filepath}/nss_ldap.conf":
     }
 
     exec { "cp /etc/puppet/puppet.conf ${bootstrap_filepath}/puppet/puppet.conf":
         require => File["${bootstrap_filepath}/puppet"],
-    } ~>
+    }
 
-    exec { "sed -i '${fqdnregex}' ${bootstrap_filepath}/puppet/puppet.conf":
-    } ~>
+    ~> exec { "sed -i '${fqdnregex}' ${bootstrap_filepath}/puppet/puppet.conf":
+    }
 
-    exec { "sed -i '${masterregex}' ${bootstrap_filepath}/puppet/puppet.conf":
+    ~> exec { "sed -i '${masterregex}' ${bootstrap_filepath}/puppet/puppet.conf":
     }
 
     exec { "sed -i '${projectregex}' ${bootstrap_filepath}/puppet/puppet.conf":
-    } ~>
+    }
 
     # The bootstrap run tends to time out during apt
-    apt::conf { 'bootstrap-timeout':
+    ~> apt::conf { 'bootstrap-timeout':
         priority => '99',
         key      => 'Acquire::http::Timeout',
         value    => '3000',

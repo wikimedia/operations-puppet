@@ -79,9 +79,7 @@ class labs_vmbuilder($vmbuilder_version) {
     }
 
     # FIXME - top-scope var without namespace, will break in puppet 2.8
-    # lint:ignore:variable_scope
-    $projectregex = "s/${labsproject}/_PROJECT_/g"
-    # lint:endignore
+    $projectregex = "s/${::labsproject}/_PROJECT_/g"
     $fqdnregex    = "s/${::fqdn}/_FQDN_/g"
 
     # We can't just use $::servername here because the master
@@ -93,35 +91,29 @@ class labs_vmbuilder($vmbuilder_version) {
 
     exec { "cp /etc/security/access.conf ${vmbuilder_filepath}/access.conf":
         subscribe => File['vmbuilder_version'],
-    } ~>
-
-    exec { "sed -i '${projectregex}' ${vmbuilder_filepath}/access.conf":
+    }
+    ~> exec { "sed -i '${projectregex}' ${vmbuilder_filepath}/access.conf":
     }
 
     exec { "cp /etc/nslcd.conf ${vmbuilder_filepath}/nslcd.conf":
         subscribe => File['vmbuilder_version'],
-    } ~>
-
-    exec { "sed -i '${projectregex}' ${vmbuilder_filepath}/nslcd.conf":
+    }
+    ~> exec { "sed -i '${projectregex}' ${vmbuilder_filepath}/nslcd.conf":
     }
 
     exec { "cp /etc/ldap/ldap.conf ${vmbuilder_filepath}/nss_ldap.conf":
         subscribe => File['vmbuilder_version'],
-    } ~>
-
-    exec { "sed -i '${projectregex}' ${vmbuilder_filepath}/nss_ldap.conf":
+    }
+    ~> exec { "sed -i '${projectregex}' ${vmbuilder_filepath}/nss_ldap.conf":
     }
 
     exec { "cp /etc/puppet/puppet.conf ${vmbuilder_filepath}/puppet.conf":
         subscribe => File['vmbuilder_version'],
-    } ~>
-
-    exec { "sed -i '${fqdnregex}' ${vmbuilder_filepath}/puppet.conf":
-    } ~>
-
-    exec { "sed -i '${masterregex}' ${vmbuilder_filepath}/puppet.conf":
-    } ~>
-
-    exec { "sed -i '${projectregex}' ${vmbuilder_filepath}/puppet.conf":
+    }
+    ~> exec { "sed -i '${fqdnregex}' ${vmbuilder_filepath}/puppet.conf":
+    }
+    ~> exec { "sed -i '${masterregex}' ${vmbuilder_filepath}/puppet.conf":
+    }
+    ~> exec { "sed -i '${projectregex}' ${vmbuilder_filepath}/puppet.conf":
     }
 }
