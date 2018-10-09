@@ -14,7 +14,6 @@ class profile::base(
     $monitor_systemd = hiera('profile::base::monitor_systemd', true),
     $core_dump_pattern = hiera('profile::base::core_dump_pattern', '/var/tmp/core/core.%h.%e.%p.%t'),
     $ssh_server_settings = hiera('profile::base::ssh_server_settings', {}),
-    $nrpe_allowed_hosts = hiera('profile::base::nrpe_allowed_hosts', '127.0.0.1,208.80.153.74,208.80.155.119,208.80.154.84'),
     $group_contact = hiera('contactgroups', 'admins'),
     $check_disk_options = hiera('profile::base::check_disk_options', '-w 6% -c 3% -W 6% -K 3% -l -e -A -i "/srv/sd[a-b][1-3]" -i "/srv/nvme[0-9]n[0-9]p[0-9]" --exclude-type=tracefs'),
     $check_disk_critical = hiera('profile::base::check_disk_critical', false),
@@ -54,6 +53,7 @@ class profile::base(
     }
 
     include ::passwords::root
+    include ::network::constants
 
     class { '::base::resolving':
         domain_search => $domain_search,
@@ -90,6 +90,8 @@ class profile::base(
     # might be needed
 
     create_resources('class', {'ssh::server' => $ssh_server_settings})
+
+    $nrpe_allowed_hosts = join($network::constants::special_hosts['production']['monitoring_hosts'], ',')
 
     class { '::nrpe':
         allowed_hosts => $nrpe_allowed_hosts,
