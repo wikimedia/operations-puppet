@@ -147,4 +147,5 @@ class profile::cache::base(
         mc_addrs   => $purge_multicasts,
         varnishes  => $purge_varnishes,
     }
+    Class[varnish::packages] -> Class[varnish::htcppurger]
 }
