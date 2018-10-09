@@ -80,6 +80,13 @@ sub cluster_fe_hit {
 }
 
 sub cluster_fe_ratelimit {
+	// ratelimit FB in an attempt to mitigate awful outbound traffic spike
+	if (std.ip(req.http.X-Client-IP, "192.0.2.1") ~ fb_nets) {
+		if (vsthrottle.is_denied("fb_limiter", 100, 10s)) {
+			return (synth(429, "Please stop, you are saturating one of our outbound links :P"));
+		}
+	}
+
 	// Maps rate limiting: 1000/10s (100/s long term, with 1000 burst)
 	if (req.http.Host == "<%= @vcl_config.fetch('maps_domain') %>") {
 		// Fallback to 192.0.2.1, from rfc5735's TEST-NET-1, which is not in wikimedia_nets
