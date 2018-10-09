@@ -24,6 +24,11 @@ class standard::diamond {
             ensure => purged,
         }
 
+        service { 'diamond':
+            ensure => stopped,
+            before => Package['diamond'],
+        }
+
         file { '/etc/diamond/diamond.conf':
             ensure => absent,
         }
