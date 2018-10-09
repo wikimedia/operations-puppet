@@ -1,0 +1,13 @@
+# DSH group for the mediawiki canaries.
+# This file is managed by puppet.
+{{- $active_dc := (json (getv "/mediawiki-config/common/WMFMasterDatacenter")).val }}
+# List of hosts gathered from etcd
+# Canaries for cluster <%= @cl %> in {{ $active_dc }}
+{{- $pool := printf "/pools/%s/<%= @cl %>/canary" $active_dc -}}
+{{- range $node := ls $pool -}}
+{{- $key := printf "%s/%s" $pool $node }}{{ $data := json (getv $key) -}}
+{{ if ne $data.pooled "inactive" }}
+{{ $node }}
+{{- end }}
+{{- end -}}
+

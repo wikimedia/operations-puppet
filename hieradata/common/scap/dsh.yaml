@@ -17,10 +17,6 @@ scap::dsh::scap_masters:
 
 
 scap::dsh::groups:
-  jobrunner-canaries:
-    hosts:
-      - mw1299.eqiad.wmnet
-      - mw2247.codfw.wmnet
   jobrunner:
     conftool:
       - {'cluster': 'jobrunner', 'service': 'apache2'}
@@ -68,21 +64,7 @@ scap::dsh::groups:
   parsoid_php:
     conftool:
       - {'cluster': 'parsoid', 'service': 'parsoid-php'}
-  mediawiki-api-canaries:
-    hosts:
-      - mw1276.eqiad.wmnet
-      - mw1277.eqiad.wmnet
-      - mw1278.eqiad.wmnet
-      - mw1279.eqiad.wmnet
-  mediawiki-appserver-canaries:
-    hosts:
-      - mwdebug1001.eqiad.wmnet
-      - mwdebug1002.eqiad.wmnet
-      - mw1261.eqiad.wmnet
-      - mw1262.eqiad.wmnet
-      - mw1263.eqiad.wmnet
-      - mw1264.eqiad.wmnet
-      - mw1265.eqiad.wmnet
+  # The mediawiki canary lists change dynamically depending on the active dc
   cassandra:
     conftool:
       - {'cluster': 'aqs', 'service': 'cassandra', 'datacenters': ['eqiad']}
