@@ -44,7 +44,7 @@ class role::analytics_cluster::coordinator {
 
     # Temporary to ease the migration process from an1003 to an-coord1001.
     # Bug: T203635
-    if $::hostname == 'analytics1003' {
+    if $::hostname == 'an-coord1001' {
 
         # Include a weekly cron job to run hdfs balancer.
         include ::profile::hadoop::balancer
