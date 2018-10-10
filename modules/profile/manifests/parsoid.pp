@@ -13,11 +13,4 @@ class profile::parsoid(
         mwapi_server => $mwapi_server,
         mwapi_proxy  => ''
     }
-
-    # Monitor TCP Connection States
-    diamond::collector { 'TcpConnStates':
-        ensure => absent,
-        source => 'puppet:///modules/diamond/collector/tcpconnstates.py',
-    }
-
 }

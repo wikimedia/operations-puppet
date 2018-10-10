@@ -71,18 +71,6 @@ class profile::mediawiki::jobrunner(
         retries       => 2,
     }
 
-    # Monitor TCP Connection States
-    ::diamond::collector { 'TcpConnStates':
-        ensure => absent,
-        source => 'puppet:///modules/diamond/collector/tcpconnstates.py',
-    }
-
-    # Monitor Ferm/Netfilter Connection Flows
-    ::diamond::collector { 'NfConntrackCount':
-        ensure => absent,
-        source => 'puppet:///modules/diamond/collector/nf_conntrack_counter.py',
-    }
-
     # TODO: restrict this to monitoring and localhost only.
     ::ferm::service { 'mediawiki-jobrunner':
         proto   => 'tcp',

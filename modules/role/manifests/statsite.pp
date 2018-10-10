@@ -12,10 +12,6 @@ class role::statsite {
     class { '::statsite': }
     statsite::instance { '8125': }
 
-    diamond::collector { 'UDPCollector':
-        ensure => absent,
-    }
-
     ferm::service { 'statsite':
         proto   => 'udp',
         notrack => true,

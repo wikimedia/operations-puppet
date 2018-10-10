@@ -68,8 +68,4 @@ class ores::redis(
     redis::monitoring::nrpe_instance{ $instances: }
 
     $uris = apply_format("localhost:%s/${password}", $instances)
-    diamond::collector { 'Redis':
-        ensure   => absent,
-        settings => { instances => join($uris, ', ') },
-    }
 }

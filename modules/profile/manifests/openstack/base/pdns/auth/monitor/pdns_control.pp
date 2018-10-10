@@ -9,16 +9,4 @@ class profile::openstack::base::pdns::auth::monitor::pdns_control {
         user       => 'prometheus',
         privileges => ['ALL=(root) NOPASSWD: /usr/bin/pdns_control list'],
     }
-
-    # For the authoritative servers
-    diamond::collector { 'PowerDNS':
-        ensure   => absent,
-        settings => {
-            # lint:ignore:quoted_booleans
-            # This is jammed straight into a config file, needs quoting.
-            use_sudo => 'true',
-            # lint:endignore
-        },
-        require  => Sudo::User['diamond_sudo_for_pdns'],
-    }
 }

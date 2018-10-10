@@ -74,11 +74,6 @@ class profile::cassandra(
         }
     }
 
-    # temporary collector, T78514
-    diamond::collector { 'CassandraCollector':
-        ensure => absent,
-    }
-
     system::role { 'cassandra':
         description => 'Cassandra server',
     }

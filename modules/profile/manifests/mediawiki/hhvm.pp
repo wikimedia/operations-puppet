@@ -19,11 +19,6 @@ class profile::mediawiki::hhvm(
 ) {
     class { 'hhvm::debug': }
 
-    # Temporary: we are decommissioning the diamond collector.
-    diamond::collector { 'HhvmApc':
-        ensure => absent,
-    }
-
     # Derive HHVM's thread count by taking the smallest of:
     #  - the memory of the system divided by a typical thread memory allocation
     #  - processor count * 4 (we have hyperthreading)

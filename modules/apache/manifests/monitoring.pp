@@ -12,14 +12,6 @@ class apache::monitoring {
     # an Apache status report.
     require_package('links')
 
-    diamond::collector { 'Httpd':
-        ensure   => absent,
-        settings => {
-            path => "${::site}.${::cluster}.httpd",
-            urls => 'http://127.0.0.1/server-status?auto',
-        },
-    }
-
     file { '/usr/local/bin/apache-status':
         source => 'puppet:///modules/apache/apache-status',
         owner  => 'root',
