@@ -204,9 +204,9 @@ network::subnets:
         frack-payments-codfw:
           ipv4: 10.195.0.0/27
         frack-bastion-codfw:
-          ipv4: 10.195.0.64/29
+          ipv4: 10.195.0.128/29
         frack-administration-codfw:
-          ipv4: 10.195.0.72/29
+          ipv4: 10.195.0.64/28
         frack-fundraising-codfw:
           ipv4: 10.195.0.32/27
         frack-listenerdmz-codfw:
