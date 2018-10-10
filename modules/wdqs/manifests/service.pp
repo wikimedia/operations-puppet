@@ -87,6 +87,7 @@ class wdqs::service(
         }
 
         exec { 'wdqs_git_fat_init':
+            path    => '/usr/bin:/bin',
             command => 'git fat init',
             user    => $deploy_user,
             group   => $deploy_user,
