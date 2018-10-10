@@ -9,7 +9,9 @@ class statistics::rsync::eventlogging {
 
     # Any logs older than this will be pruned by
     # the rsync_job define.
-    $retention_days = 90
+    # Lowered the retention in T206542 due to disk space
+    # consumption concerns.
+    $retention_days = 60
 
     $destination = '/srv/log/eventlogging/archive'
 
