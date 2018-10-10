@@ -92,9 +92,10 @@ class profile::mediawiki::maintenance {
     }
 
     # T199124
-    $motd_ensure = mediawiki::state('primary_dc') ? {
-        $::site => 'absent',
-        default => 'present',
+    $motd_ensure = $ensure ? {
+        'present' => 'absent',
+        'absent'  => 'present',
+        default   => 'present',
     }
 
     motd::script { 'inactive_warning':
