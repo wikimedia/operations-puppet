@@ -66,6 +66,8 @@ class rsync::server(
 
   file { $rsync_fragments:
     ensure  => directory,
+    recurse => true,
+    purge   => true,
   }
 
   file { "${rsync_fragments}/header":
