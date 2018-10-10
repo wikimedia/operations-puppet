@@ -107,7 +107,7 @@ class profile::prometheus::alerts {
         description     => 'Throughput of EventLogging events',
         query           => 'scalar(quantile(0.50,sum(rate(kafka_server_BrokerTopicMetrics_MessagesIn_total{cluster="kafka_jumbo",topic="eventlogging-client-side"}[15m]))))',
         prometheus_url  => 'http://prometheus.svc.eqiad.wmnet/ops',
-        warning         => 1500,
+        warning         => 6000,
         critical        => 8000,
         method          => 'ge',
         contact_group   => 'analytics',
