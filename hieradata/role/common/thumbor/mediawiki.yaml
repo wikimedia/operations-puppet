@@ -2,3 +2,98 @@ admin::groups:
     - perf-roots
 
 cluster: thumbor
+
+profile::prometheus::statsd_exporter::mappings:
+    - match: thumbor.*.result_storage.incoming_time
+      name: thumbor_result_storage_receive_milliseconds
+    - match: thumbor.*.result_storage.outgoing_time
+      name: thumbor_result_storage_transmit_milliseconds
+    - match: thumbor.*.result_storage.bytes_read
+      name: thumbor_result_storage_receive_bytes
+    - match: thumbor.*.result_storage.bytes_written
+      name: thumbor_result_storage_transmit_bytes
+    - match: thumbor.*.result_storage.miss
+      name: thumbor_result_storage_requests_total
+      labels:
+        outcome: miss
+    - match: thumbor.*.result_storage.hit
+      name: thumbor_result_storage_requests_total
+      labels:
+        outcome: hit
+
+    - match: thumbor.*.storage.miss
+      name: thumbor_storage_requests_total
+      labels:
+        outcome: miss
+    - match: thumbor.*.storage.hit
+      name: thumbor_storage_requests_total
+      labels:
+        outcome: hit
+
+    - match: thumbor.*.poolcounter.locked
+      name: thumbor_poolcounter_locked_total
+    - match: thumbor.*.poolcounter.time
+      name: thumbor_poolcounter_milliseconds
+
+    - match: thumbor.*.memcache.*
+      name: thumbor_memcache_total
+      labels:
+        operation: "$2"
+
+    - match: thumbor.*.poolcounter.time
+      name: thumbor_poolcounter_milliseconds
+
+    - match: thumbor.*.response.status.*
+      name: thumbor_response_total
+      labels:
+        status: "$2"
+    - match: thumbor.*.response.time.([0-9]+)
+      name: thumbor_response_milliseconds
+      match_type: regex
+      labels:
+        status: "$2"
+    - match: thumbor.*.response.bytes.*
+      name: thumbor_response_bytes
+      labels:
+        format: "$2"
+    - match: thumbor.*.response.format.*
+      name: thumbor_response_format_total
+      labels:
+        format: "$2"
+    - match: thumbor.*.response.time.([a-z]+)
+      name: thumbor_response_format_milliseconds
+      match_type: regex
+      labels:
+        format: "$2"
+
+    - match: thumbor.*.swift.thumbnail.*.success
+      name: thumbor_swift_thumbnail_success
+      labels:
+        operation: "$2"
+    - match: thumbor.*.swift.thumbnail.*.miss
+      name: thumbor_swift_thumbnail_miss
+      labels:
+        operation: "$2"
+
+    - match: thumbor.*.swift.original.*.success
+      name: thumbor_swift_original_success
+      labels:
+        operation: "$2"
+    - match: thumbor.*.swift.original.*.miss
+      name: thumbor_swift_original_miss
+      labels:
+        operation: "$2"
+
+    - match: thumbor.*.engine.processing_utime.*.engine.*
+      name: thumbor_engine_user_milliseconds
+      labels:
+        engine: "$3"
+    - match: thumbor.*.engine.processing_time.*.engine.*
+      name: thumbor_engine_milliseconds
+      labels:
+        engine: "$3"
+
+    - match: thumbor.*.process.*.service.start_timestamp_monotonic
+      name: thumbor_process_start_time
+      labels:
+        port: "$2"
