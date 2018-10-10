@@ -78,18 +78,21 @@ node /analytics10(2[89]|3[0-9]|4[0-9]|5[0-9]|6[0-9]|7[0-7]).eqiad.wmnet/ {
 # hue.wikimedia.org, yarn.wikimedia.org
 node 'analytics-tool1001.eqiad.wmnet' {
     role(analytics_cluster::hadoop::ui)
+    interface::add_ip6_mapped { 'main': }
 }
 
 # turnilo.wikimedia.org
 # https://wikitech.wikimedia.org/wiki/Analytics/Systems/Turnilo-Pivot
 node 'analytics-tool1002.eqiad.wmnet' {
     role(analytics_cluster::turnilo)
+    interface::add_ip6_mapped { 'main': }
 }
 
 # superset.wikimedia.org
 # https://wikitech.wikimedia.org/wiki/Analytics/Systems/Superset
 node 'analytics-tool1003.eqiad.wmnet' {
     role(analytics_cluster::superset)
+    interface::add_ip6_mapped { 'main': }
 }
 
 # Analytics Query Service
