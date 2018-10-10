@@ -2,7 +2,7 @@ profile::wdqs::blazegraph_options:
   - '-Dhttp.proxyHost=webproxy.eqiad.wmnet'
   - '-Dhttp.proxyPort=8080'
   - '-XX:+ExitOnOutOfMemoryError'
-profile::wdqs::use_git_deploy: true
+profile::wdqs::deploy_mode: 'scap3'
 profile::wdqs::package_dir: '/srv/deployment/wdqs/wdqs'
 profile::wdqs::data_dir: '/srv/wdqs'
 profile::wdqs::endpoint: 'https://query.wikidata.org'

@@ -1,6 +1,6 @@
 ALIAS_FILE="<%= @alias_map %>"
 LOG_DIR="<%= @log_dir %>"
-<% if !@use_git_deploy -%>
+<% if @deploy_mode == 'autodeploy' -%>
 DEPLOY_DIR=<%= @package_dir %>
 DATA_DIR=<%= @data_dir %>
 <% end -%>

@@ -17,7 +17,7 @@ class wdqs::gui(
     String $username = 'blazegraph',
     Wmflib::IpPort $port = 80,
     Wmflib::IpPort $additional_port = 8888,
-    Boolean $use_git_deploy = true,
+    Enum['scap3', 'autodeploy'] $deploy_mode = 'scap3',
     Boolean $enable_ldf = true,
     Integer $max_query_time_millis = 60000,
     Enum['none', 'daily', 'weekly'] $load_categories = 'none',

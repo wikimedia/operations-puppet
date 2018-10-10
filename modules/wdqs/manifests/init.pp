@@ -6,7 +6,7 @@
 # == Parameters:
 # - $logstash_host: hostname where to send logs
 # - $logstash_json_port: port on which to send logs in json format
-# - $use_git_deploy: whether scap deployment is being used
+# - $deploy_mode: whether scap deployment is being used or git for autodeployment
 # - $username: Username owning the service
 # - $package_dir:  Directory where the service should be installed.
 # - $data_dir: Directory where the database should be stored
@@ -18,7 +18,7 @@
 class wdqs(
     String $logstash_host,
     Wmflib::IpPort $logstash_json_port = 11514,
-    Boolean $use_git_deploy = true,
+    Enum['scap3', 'autodeploy'] $deploy_mode = 'scap3',
     String $username = 'blazegraph',
     String $package_dir = '/srv/deployment/wdqs/wdqs',
     String $data_dir = '/srv/wdqs',
@@ -50,6 +50,7 @@ class wdqs(
 
     class { 'wdqs::service':
         deploy_user        => $deploy_user,
+        deploy_mode        => $deploy_mode,
         package_dir        => $package_dir,
         username           => $username,
         config_file        => $blazegraph_config_file,
@@ -101,8 +102,8 @@ class wdqs(
         require => Exec["${data_file} exists"],
     }
 
-    $config_dir_group = $use_git_deploy ? {
-        true    => $deploy_user,
+    $config_dir_group = $deploy_mode ? {
+        'scap3'    => $deploy_user,
         default => 'root',
     }
 

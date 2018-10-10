@@ -1,6 +1,6 @@
 class profile::wdqs (
     String $logstash_host = hiera('logstash_host'),
-    Boolean $use_git_deploy = hiera('profile::wdqs::use_git_deploy'),
+    Enum['scap3', 'autodeploy'] $deploy_mode = hiera('profile::wdqs::deploy_mode'),
     String $package_dir = hiera('profile::wdqs::package_dir'),
     String $data_dir = hiera('profile::wdqs::data_dir'),
     String $endpoint = hiera('profile::wdqs::endpoint'),
@@ -42,7 +42,7 @@ class profile::wdqs (
 
     # Install services - both blazegraph and the updater
     class { '::wdqs':
-        use_git_deploy         => $use_git_deploy,
+        deploy_mode            => $deploy_mode,
         package_dir            => $package_dir,
         data_dir               => $data_dir,
         endpoint               => $endpoint,
@@ -102,7 +102,7 @@ class profile::wdqs (
     class { '::wdqs::gui':
         package_dir           => $package_dir,
         data_dir              => $data_dir,
-        use_git_deploy        => $use_git_deploy,
+        deploy_mode           => $deploy_mode,
         enable_ldf            => $enable_ldf,
         max_query_time_millis => $max_query_time_millis,
         load_categories       => $load_categories,
