@@ -11,7 +11,6 @@
 # into the WMF puppet repository. - otto
 
 class rsync::server(
-  $use_xinetd = false,  # this parameter should not be used.  xinetd is not available.
   $address    = '0.0.0.0',
   $timeout    = '300',
   $motd_file  = 'UNSET',
@@ -41,22 +40,11 @@ class rsync::server(
       $address = ''
   }
 
-  # if($use_xinetd) {
-  #   include xinetd
-  #   xinetd::service { 'rsync':
-  #     bind        => $address,
-  #     port        => '873',
-  #     server      => '/usr/bin/rsync',
-  #     server_args => '--daemon --config ${rsync_conf}',
-  #     require     => Package['rsync'],
-  #   }
-  # } else {
-    service { 'rsync':
+  service { 'rsync':
       ensure    => running,
       enable    => true,
       subscribe => [ Exec['compile fragments'], File['/etc/default/rsync'] ],
-    }
-  # }
+  }
 
   if $motd_file != 'UNSET' {
     file { '/etc/rsync-motd':

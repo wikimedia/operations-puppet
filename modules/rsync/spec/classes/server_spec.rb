@@ -1,6 +1,5 @@
 require 'spec_helper'
 describe 'rsync::server', :type => :class do
-
   let :fragment_file do
     "/etc/rsync.d/header"
   end
@@ -13,18 +12,6 @@ describe 'rsync::server', :type => :class do
       should_not contain_file('/etc/rsync-motd')
       should contain_file(fragment_file).with_content(/^use chroot\s*=\s*yes$/)
       should contain_file(fragment_file).with_content(/^address\s*=\s*0.0.0.0$/)
-    }
-  end
-
-  describe 'when disabling xinetd' do
-    let :params do
-      { :use_xinetd => false }
-    end
-
-    it {
-      should_not contain_class('xinetd')
-      should_not contain_xinetd__service('rsync')
-      should contain_service('rsync')
     }
   end
 
@@ -74,5 +61,4 @@ describe 'rsync::server', :type => :class do
         .with_content(/^forward lookup = no$/)
     }
   end
-
 end
