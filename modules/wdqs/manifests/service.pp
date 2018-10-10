@@ -84,6 +84,7 @@ class wdqs::service(
             origin             => 'https://gerrit.wikimedia.org/r/wikidata/query/deploy',
             branch             => 'master',
             recurse_submodules => true,
+            before             => File["${package_dir}/rules.log"],
         }
 
         exec { 'wdqs_git_fat_init':
