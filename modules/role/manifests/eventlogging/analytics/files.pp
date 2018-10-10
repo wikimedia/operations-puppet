@@ -37,9 +37,14 @@ class role::eventlogging::analytics::files {
     # Log retention in labs is not important and might
     # end up consuming a sizeable chunk of the disk partiton
     # in which it is placed (usually the root one).
+    #
+    # Reduced the max age in T206542 due to an increase
+    # in events handled and consequent disk space consumption increase.
+    # These logs are rsynced to stat1005 and kept for 90 days,
+    # so safe to apply a stricter retention rule.
     $logs_max_age = $::realm ? {
         'labs'  => 4,
-        default => 30,
+        default => 20,
     }
 
     logrotate::conf { 'eventlogging-files':
