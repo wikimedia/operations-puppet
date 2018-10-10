@@ -89,6 +89,7 @@ class wdqs::service(
 
         exec { 'wdqs_git_fat_init':
             path    => '/usr/bin:/bin',
+            cwd     => $package_dir,
             command => 'git fat init',
             user    => $deploy_user,
             group   => $deploy_user,
@@ -99,10 +100,11 @@ class wdqs::service(
         # an uninitialized git-fat file is 74 bytes (the length of the SHA)
         exec { 'wdqs_git_fat_pull':
             path    => '/usr/bin:/bin',
+            cwd     => $package_dir,
             command => 'git fat pull',
             user    => $deploy_user,
             group   => $deploy_user,
-            onlyif  => 'test $(stat -c%s /srv/deployment/wdqs/wdqs/blazegraph-service-*.war) -eq 74',
+            onlyif  => 'test $(stat -c%s blazegraph-service-*.war) -eq 74',
             require => Exec['wdqs_git_fat_init'],
         }
 
