@@ -93,7 +93,7 @@ class wdqs::service(
             command => 'git fat init',
             user    => $deploy_user,
             group   => $deploy_user,
-            onlyif  => 'git config --get filter.fat.clean || git config --get filter.fat.smudge',
+            onlyif  => '! git config --get filter.fat.clean || git config --get filter.fat.smudge',
             require => Git::Clone['wdqs_git_clone'],
         }
 
