@@ -14,6 +14,11 @@ profile::wdqs::max_query_time_millis: 30000
 profile::wdqs::high_query_time_port: false
 profile::wdqs::fetch_constraints: true
 profile::wdqs::load_categories: 'daily'
+profile::wdqs::blazegraph_extra_jvm_opts:
+  # throttling configuration (see https://gerrit.wikimedia.org/r/plugins/gitiles/wikidata/query/rdf/+/refs/heads/master/blazegraph/src/main/java/org/wikidata/query/rdf/blazegraph/throttling/ThrottlingFilter.java for details)
+  - '-Dwdqs.throttling-filter.time-bucket-capacity-in-seconds=240'
+  - '-Dwdqs.throttling-filter.time-bucket-refill-amount-in-seconds=120'
+  - '-Dwdqs.throttling-filter.ban-duration-in-minutes=60'
 profile::wdqs::nodes:
   - 'wdqs1006.eqiad.wmnet'
   - 'wdqs1007.eqiad.wmnet'

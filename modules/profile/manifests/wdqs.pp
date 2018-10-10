@@ -20,6 +20,7 @@ class profile::wdqs (
     String $contact_groups = hiera('contactgroups', 'admins'),
     Boolean $fetch_constraints = hiera('profile::wdqs::fetch_constraints'),
     Enum['none', 'daily', 'weekly'] $load_categories = hiera('profile::wdqs::load_categories'),
+    Array[String] $blazegraph_extra_jvm_opts = hiera('profile::wdqs::blazegraph_extra_jvm_opts'),
 ) {
     require ::profile::prometheus::blazegraph_exporter
 
@@ -31,6 +32,14 @@ class profile::wdqs (
     $prometheus_blazegraph_agent_config = '/etc/wdqs/wdqs-blazegraph-prometheus-jmx.yaml'
     $prometheus_updater_agent_config = '/etc/wdqs/wdqs-updater-prometheus-jmx.yaml'
 
+    $default_extra_jvm_opts = [
+        '-XX:+UseNUMA',
+        '-XX:+UnlockExperimentalVMOptions',
+        '-XX:G1NewSizePercent=20',
+        '-XX:+ParallelRefProcEnabled',
+        "-javaagent:${prometheus_agent_path}=${prometheus_blazegraph_agent_port}:${prometheus_blazegraph_agent_config}"
+    ]
+
     # Install services - both blazegraph and the updater
     class { '::wdqs':
         use_git_deploy         => $use_git_deploy,
@@ -41,13 +50,7 @@ class profile::wdqs (
         blazegraph_heap_size   => $blazegraph_heap_size,
         blazegraph_config_file => $blazegraph_config_file,
         logstash_host          => $logstash_host,
-        extra_jvm_opts         => [
-            '-XX:+UseNUMA',
-            '-XX:+UnlockExperimentalVMOptions',
-            '-XX:G1NewSizePercent=20',
-            '-XX:+ParallelRefProcEnabled',
-            "-javaagent:${prometheus_agent_path}=${prometheus_blazegraph_agent_port}:${prometheus_blazegraph_agent_config}"
-        ],
+        extra_jvm_opts         => $default_extra_jvm_opts + $blazegraph_extra_jvm_opts,
     }
 
     profile::prometheus::jmx_exporter { 'wdqs_blazegraph':

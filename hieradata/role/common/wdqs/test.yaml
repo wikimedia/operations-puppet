@@ -18,6 +18,7 @@ profile::wdqs::max_query_time_millis: 60000
 profile::wdqs::high_query_time_port: false
 profile::wdqs::fetch_constraints: true
 profile::wdqs::load_categories: 'daily'
+profile::wdqs::blazegraph_extra_jvm_opts: []
 profile::wdqs::nodes:
   - 'wdqs1009.eqiad.wmnet'
   - 'wdqs1010.eqiad.wmnet'
