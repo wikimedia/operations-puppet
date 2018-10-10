@@ -36,4 +36,6 @@ class coal::web {
             },
         },
     }
+
+    base::service_auto_restart { 'uwsgi-coal': }
 }
