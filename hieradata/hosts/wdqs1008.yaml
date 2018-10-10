@@ -1,0 +1,2 @@
+# this will go away once https://gerrit.wikimedia.org/r/c/operations/puppet/+/467469 is merged
+numa_networking: 'on'

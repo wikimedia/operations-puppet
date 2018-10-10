@@ -137,4 +137,6 @@ class profile::wdqs (
         contact_groups => $contact_groups,
     }
 
+    # spread IRQ for NIC
+    interface::rps { $facts['interface_primary']: }
 }
