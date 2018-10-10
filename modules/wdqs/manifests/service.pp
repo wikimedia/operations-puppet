@@ -96,6 +96,16 @@ class wdqs::service(
             require => Git::Clone['wdqs_git_clone'],
         }
 
+        # an uninitialized git-fat file is 74 bytes (the length of the SHA)
+        exec { 'wdqs_git_fat_pull':
+            path    => '/usr/bin:/bin',
+            command => 'git fat pull',
+            user    => $deploy_user,
+            group   => $deploy_user,
+            onlyif  => 'test $(stat -c%s /srv/deployment/wdqs/wdqs/blazegraph-service-*.war) -eq 74',
+            require => Exec['wdqs_git_fat_init'],
+        }
+
         sudo::user { 'deploy-service_blazegraph':
             user       => $deploy_user,
             privileges => [
