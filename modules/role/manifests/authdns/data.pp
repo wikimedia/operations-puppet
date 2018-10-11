@@ -3,16 +3,6 @@ class role::authdns::data {
     # Our DNS data repo URL
     $gitrepo = 'https://gerrit.wikimedia.org/r/p/operations/dns.git'
 
-    # These are the real fqdn's of the authdns machines
-    # There should normally be a 1:1 correlation between entries
-    # in this list and node definitions in manifests/site.pp
-    # which "include role::authdns"
-    $nameservers = [
-            'authdns1001.wikimedia.org',
-            'authdns2001.wikimedia.org',
-            'multatuli.wikimedia.org',
-    ]
-
     # These are all of the public addresses the Internet finds us at
     # (Note the IPv6 ones aren't published yet, not in "real" use)
     $ns_addrs = {

@@ -13,8 +13,10 @@ class role::authdns::server {
         { interface => 'lo' }
     )
 
+    $authdns_servers = hiera('authdns_servers')
+
     class { 'authdns':
-        nameservers        => $role::authdns::data::nameservers,
+        nameservers        => $authdns_servers,
         gitrepo            => $role::authdns::data::gitrepo,
         lvs_services       => hiera('lvs::configuration::lvs_services'),
         discovery_services => hiera('discovery::services'),
@@ -31,7 +33,7 @@ class role::authdns::server {
         port  => '53',
     }
 
-    $authdns_ns_ferm = join($role::authdns::data::nameservers, ' ')
+    $authdns_ns_ferm = join($authdns_servers, ' ')
     ferm::service { 'authdns_update_ssh':
         proto  => 'tcp',
         port   => '22',
