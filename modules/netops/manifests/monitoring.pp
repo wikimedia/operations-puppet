@@ -53,7 +53,7 @@ class netops::monitoring {
         'mr1-eqiad.oob' => { ipv4 => '198.32.107.153',  ipv6 => '2607:f6f0:205::153', },
         'mr1-codfw.oob' => { ipv4 => '216.117.46.36',   },
         'mr1-esams.oob' => { ipv4 => '164.138.24.90',   },
-        'mr1-ulsfo.oob' => { ipv4 => '198.24.47.102', },
+        'mr1-ulsfo.oob' => { ipv4 => '198.24.47.102',   ipv6 => '2607:fb58:9000:7::2', },
         'mr1-eqsin.oob' => { ipv4 => '27.111.227.106',  ipv6 => '2403:b100:3001:9::2', },
         're0.cr1-eqiad' => { ipv4 => '10.65.0.12',      parents => ['mr1-eqiad'] },
         're0.cr2-eqiad' => { ipv4 => '10.65.0.14',      parents => ['mr1-eqiad'] },
