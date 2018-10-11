@@ -99,7 +99,7 @@ class profile::cache::kafka::eventlogging(
         # Generate icinga alert if varnishkafka is not running.
         nrpe::monitor_service { 'varnishkafka-eventlogging':
             description   => 'eventlogging Varnishkafka log producer',
-            nrpe_command  => "/usr/lib/nagios/plugins/check_procs -c 1 -a '/usr/bin/varnishkafka -S /etc/varnishkafka/eventlogging.conf'",
+            nrpe_command  => "/usr/lib/nagios/plugins/check_procs -c 1:1 -a '/usr/bin/varnishkafka -S /etc/varnishkafka/eventlogging.conf'",
             contact_group => 'admins,analytics',
             require       => Varnishkafka::Instance['eventlogging'],
         }
