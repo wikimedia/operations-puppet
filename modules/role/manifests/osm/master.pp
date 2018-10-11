@@ -16,7 +16,6 @@ class role::osm::master(
     $osm_slave    = undef,
     $osm_slave_v4 = undef,
     $osm_slave_v6 = undef,
-    $osmupdater_pass = hiera('osm::postgresql_osmupdater_pass'),
 ) {
     include role::osm::common
     include postgresql::postgis
@@ -31,12 +30,13 @@ class role::osm::master(
         type     => 'local',
         method   => 'peer',
     }
+
     postgresql::user { 'osmupdater':
         user     => 'osmupdater',
-        password => $osmupdater_pass,
         database => 'gis',
+        type     => 'local',
+        method   => 'peer',
     }
-
 
     class { 'postgresql::master':
         includes => 'tuning.conf',
@@ -56,13 +56,12 @@ class role::osm::master(
     # Create the spatialdb
     postgresql::spatialdb { 'gis': }
     osm::planet_sync { 'gis':
-        pg_password => hiera('osm::postgresql_osmupdater_pass'),
-        use_proxy   => true,
-        proxy_host  => "webproxy.${::site}.wmnet",
-        proxy_port  => 8080,
-        period      => 'day',
-        hour        => '1',
-        minute      => '17',
+        use_proxy  => true,
+        proxy_host => "webproxy.${::site}.wmnet",
+        proxy_port => 8080,
+        period     => 'day',
+        hour       => '1',
+        minute     => '17',
     }
     # Add coastlines
     osm::shapefile_import { 'gis-coastlines':

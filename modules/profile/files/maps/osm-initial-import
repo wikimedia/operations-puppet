@@ -19,7 +19,6 @@ function show_help() {
   echo "osm-initial-import -d <date_of_import> [-H <database_host>] -p <password_file> -s <state_file_url> [-x <proxy>]"
   echo "  date_of_import: find the latest dump at https://planet.osm.org/pbf/"
   echo "  database_host: hostname of the postgresql database, default to `hostname -f`"
-  echo "  password_file: a file containing the postgresql password of the osmimporter user"
   echo "  state_file_url: the URL to the state file corresponding to the dump, find the"
   echo "      correct one at http://planet.openstreetmap.org/replication/ (the state file"
   echo "      must be older than the dump)"
@@ -31,7 +30,6 @@ function show_help() {
   echo "  example:"
   echo "      osm-initial-import \\"
   echo "        -d 160530 \\"
-  echo "        -p ~/osmimporter_pass \\"
   echo "        -s http://planet.openstreetmap.org/replication/day/000/001/355.state.txt \\"
   echo "        -x webproxy.eqiad.wmnet:8080"
 }
@@ -44,8 +42,6 @@ while getopts "d:hH:p:s:x:" opt; do
       exit 0
       ;;
   H)  database_host="${OPTARG}"
-      ;;
-  p)  password_file="${OPTARG}"
       ;;
   s)  state_file_url="${OPTARG}"
       ;;
@@ -89,10 +85,10 @@ function ensure_sql_grants() {
 function initial_osm_import() {
   echo "starting initial OSM import"
   cd ${osmosis_dir}
-  PGPASSWORD="$(< ${password_file})" flock -xn ${replicate_lock} \
-    sudo -E -u osmupdater osm2pgsql \
+  flock -xn ${replicate_lock} \
+    sudo -u osmimporter osm2pgsql \
       --create --slim --flat-nodes nodes.bin -C 40000 --number-processes 8 \
-      --hstore --host ${database_host} -U osmimporter -d gis -E 3857 \
+      --hstore -U osmimporter -d gis -E 3857 \
       ${download_dir}/${filename} 2>&1 | tee ${log_file}
 
   if [ ${PIPESTATUS[0]} -ne 0 ]; then
