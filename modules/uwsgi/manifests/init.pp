@@ -16,7 +16,7 @@ class uwsgi {
         $plugins = [ 'uwsgi-plugin-python', 'uwsgi-plugin-python3', 'uwsgi-plugin-rack-ruby1.9.1' ]
     }
 
-    package { [ 'uwsgi', 'uwsgi-dbg' ]: }
+    package { 'uwsgi': }
     package { $plugins: }
 
     exec { 'remove_uwsgi_initd':
