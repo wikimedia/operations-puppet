@@ -34,6 +34,7 @@ class prometheus::node_exporter (
     $ignored_fs_types  = '^(overlay|autofs|binfmt_misc|cgroup|configfs|debugfs|devpts|devtmpfs|fusectl|hugetlbfs|mqueue|proc|procfs|pstore|rpc_pipefs|securityfs|sysfs|tracefs)$',
     $ignored_mount_points  = '^/(sys|proc|dev)($|/)',
     $collectors_extra = [],
+    $collector_ntp_server = '127.0.0.1',
     $web_listen_address = ':9100',
 ) {
     require_package('prometheus-node-exporter')
