@@ -6393,6 +6393,11 @@ host stat1006 {
     fixed-address stat1006.eqiad.wmnet;
 }
 
+host stat1007 {
+    hardware ethernet D0:94:66:7F:9A:D1;
+    fixed-address stat1007.eqiad.wmnet;
+}
+
 host tegmen {
     hardware ethernet 14:18:77:33:42:F8;
     fixed-address tegmen.wikimedia.org;
