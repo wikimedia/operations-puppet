@@ -2,3 +2,4 @@ fixtures:
     symlinks:
         logrotate: "#{source_dir}"
         stdlib: "../../../../stdlib"
+        wmflib: "../../../../wmflib"

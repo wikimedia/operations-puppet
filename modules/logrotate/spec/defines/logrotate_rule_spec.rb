@@ -11,14 +11,6 @@ describe 'logrotate::rule', :type => :define do
         it { should contain_file('/etc/logrotate.d/some_rule') }
     end
 
-    context 'invalid frequency' do
-        let(:params) { {
-            :frequency => 'invalid',
-            :file_glob => '/var/log/some.log',
-        } }
-        it { should raise_error(Puppet::Error, /frequency should be in/) }
-    end
-
     context 'undef frequency and size' do
         let(:params) { {
             :frequency => :undef,

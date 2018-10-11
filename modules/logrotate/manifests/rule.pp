@@ -15,41 +15,23 @@
 #   default: undef
 #
 define logrotate::rule (
-    $file_glob,
-    $ensure         = present,
-    $frequency      = undef,
-    $not_if_empty   = false,
-    $date_yesterday = false,
-    $copy_truncate  = false,
-    $max_age        = undef,
-    $rotate         = undef,
-    $date_ext       = false,
-    $compress       = false,
-    $missing_ok     = false,
-    $size           = undef,
-    $no_create      = false,
-    $post_rotate    = undef,
-    $su             = undef,
-    $create         = undef,
+    String $file_glob,
+    Wmflib::Ensure $ensure = present,
+    Optional[Enum['daily', 'weekly', 'monthly', 'yearly']] $frequency = undef,
+    Boolean $not_if_empty = false,
+    Boolean $date_yesterday = false,
+    Boolean $copy_truncate = false,
+    Optional[Integer] $max_age = undef,
+    Optional[Integer] $rotate = undef,
+    Boolean $date_ext = false,
+    Boolean $compress = false,
+    Boolean $missing_ok = false,
+    Optional[String] $size = undef,
+    Boolean $no_create = false,
+    Optional[String] $post_rotate = undef,
+    Optional[String] $su = undef,
+    Optional[String] $create = undef,
 ) {
-
-    $valid_frequencies = [ 'daily', 'weekly', 'monthly', 'yearly' ]
-    $valid_frequencies_text = join($valid_frequencies, ', ')
-
-    if ($frequency != undef) and !($frequency in $valid_frequencies) {
-        fail("\$frequency should be in [${valid_frequencies_text}] but is '${frequency}'")
-    }
-    validate_bool(
-        $not_if_empty, $date_yesterday, $copy_truncate, $date_ext,
-        $compress, $missing_ok, $no_create
-    )
-
-    if $max_age != undef {
-        validate_integer($max_age)
-    }
-    if $rotate != undef {
-        validate_integer($rotate)
-    }
 
     $actual_size = $size ? {
         undef => undef,
