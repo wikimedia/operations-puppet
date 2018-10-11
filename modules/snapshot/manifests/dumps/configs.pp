@@ -37,6 +37,7 @@ class snapshot::dumps::configs(
                 maxRetries        => '3',
                 revsMargin        => '100',
                 fixeddumporder    => '1',
+                lbzip2threads     => '3',
                 wikis => {
                     ruwiki => {
                         pagesPerChunkHistory  => '204180,713334,1020881,1460226,2071097,1997756',
@@ -100,6 +101,7 @@ class snapshot::dumps::configs(
                 maxRetries        => '3',
                 revsMargin        => '100',
                 maxrevs           => '20000',
+                lbzip2threads     => '10',
                 wikis => {
                     enwiki => {
                         pagesPerChunkHistory  => "${enchunkhistory1},${enchunkhistory2}",
@@ -122,6 +124,7 @@ class snapshot::dumps::configs(
                 maxRetries           => '3',
                 revsMargin           => '100',
                 maxrevs              => '20000',
+                lbzip2threads        => '10',
                 wikis => {
                     wikidatawiki => {
                         pagesPerChunkHistory  => "${wikidatachunkhistory1},${$wikidatachunkhistory2}",

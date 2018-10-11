@@ -73,6 +73,9 @@ maxRetries=<%= @config[@configtype]['maxRetries'] %>
 <% if @config[@configtype]['global'].has_key?('revsMargin') -%>
 revsMargin=<%= @config[@configtype]['revsMargin'] %>
 <% end -%>
+<% if @config[@configtype]['global'].has_key?('lbzip2threads') -%>
+lbzip2threads=<%= @config[@configtype]['lbzip2threads'] %>
+<% end -%>
 
 [otherformats]
 multistream=1
