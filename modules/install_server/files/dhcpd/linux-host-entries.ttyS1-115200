@@ -4644,19 +4644,9 @@ host mw1296 {
     fixed-address mw1296.eqiad.wmnet;
 }
 
-host mwmaint1001 {
+host mw1297 {
     hardware ethernet 14:18:77:61:37:50;
     fixed-address mwmaint1001.eqiad.wmnet;
-}
-
-host mwmaint1002 {
-    hardware ethernet D0:94:66:5F:50:AE;
-    fixed-address mwmaint1002.eqiad.wmnet;
-}
-
-host mwmaint2001 {
-    hardware ethernet 14:02:ec:3f:47:8c;
-    fixed-address mwmaint2001.codfw.wmnet;
 }
 
 host mw1298 {
@@ -5677,6 +5667,16 @@ host mw2289 {
 host mw2290 {
     hardware ethernet D0:94:66:35:E8:74;
     fixed-address mw2290.codfw.wmnet;
+}
+
+host mwmaint1002 {
+    hardware ethernet D0:94:66:5F:50:AE;
+    fixed-address mwmaint1002.eqiad.wmnet;
+}
+
+host mwmaint2001 {
+    hardware ethernet 14:02:ec:3f:47:8c;
+    fixed-address mwmaint2001.codfw.wmnet;
 }
 
 host deploy2001 {

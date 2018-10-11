@@ -1547,13 +1547,6 @@ node /^mw12(2[1-9]|3[0-5])\.eqiad\.wmnet$/ {
     role(mediawiki::appserver::api)
 }
 
-
-# Former imagescaler temp. used as terbium stand-in (T192185), replaced by mwmaint1002
-node 'mwmaint1001.eqiad.wmnet' {
-    role(spare::system)
-    interface::add_ip6_mapped { 'main': }
-}
-
 # mediawiki maintenance server (cron jobs)
 # replaced mwmaint1001 (T201343) which replaced terbium (T192185)
 node 'mwmaint1002.eqiad.wmnet' {
@@ -1564,7 +1557,7 @@ node 'mwmaint1002.eqiad.wmnet' {
 # Former imagescalers (replaced by thumbor) T192457
 
 # Row B (B6)
-node /^mw129[8]\.eqiad\.wmnet$/ {
+node /^mw129[78]\.eqiad\.wmnet$/ {
     role(spare::system)
 }
 
