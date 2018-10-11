@@ -10,7 +10,7 @@ class wdqs::service(
     String $config_file,
     String $logstash_host,
     Wmflib::IpPort $logstash_json_port,
-    Stdlib::Absolutepath $log_dir,
+    Stdlib::Absolutepath $autodeploy_log_dir = '/var/log/wdqs-autodeploy',
 ) {
 
     include ::wdqs::packages
@@ -128,7 +128,14 @@ class wdqs::service(
                 ],
             }
 
-            $wdqs_autodeployment_log = "${log_dir}/wdqs_autodeployment.log"
+            file { $autodeploy_log_dir:
+                ensure => directory,
+                owner  => $deploy_user,
+                group  => 'root',
+                mode   => '0775',
+            }
+
+            $wdqs_autodeployment_log = "${$autodeploy_log_dir}/wdqs_autodeployment.log"
 
             file { '/usr/local/bin/wdqs-autodeploy':
                 ensure => present,
