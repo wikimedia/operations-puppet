@@ -66,25 +66,17 @@
 # }
 
 define base::service_unit (
-    $ensure           = present,
-    $systemd          = undef,
-    $systemd_override = undef,
-    $upstart          = undef,
-    $sysvinit         = undef,
-    $strict           = true,
-    $refresh          = true,
-    $declare_service  = true,
-    $mask             = false,
-    $service_params   = {},
+    Wmflib::Ensure $ensure             = present,
+    Optional[String] $systemd          = undef,
+    Optional[String] $systemd_override = undef,
+    Optional[String] $upstart          = undef,
+    Optional[String] $sysvinit         = undef,
+    Boolean $strict                    = true,
+    Boolean $refresh                   = true,
+    Boolean $declare_service           = true,
+    Boolean $mask                      = false,
+    Hash $service_params               = {},
 ) {
-
-    validate_ensure($ensure)
-
-    # Let's ensure any leftover from the preceding defs fail
-    validate_string($systemd)
-    validate_string($systemd_override)
-    validate_string($upstart)
-    validate_string($sysvinit)
 
     $custom_inits = {
         'systemd'          => $systemd,
