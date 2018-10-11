@@ -26,16 +26,13 @@
 #    priority => 90,
 #  }
 #
-define rsyslog::conf(
-    $ensure   = present,
-    $content  = undef,
-    $source   = undef,
-    $priority = 60
+define rsyslog::conf (
+    Wmflib::Ensure $ensure    = present,
+    Optional[String] $content = undef,
+    Optional[String] $source  = undef,
+    Integer[0, 99] $priority  = 60
 ) {
     include ::rsyslog
-
-    # TODO/puppet4 make this a parameter type check
-    validate_numeric($priority, 99, 0)
 
     $basename = regsubst($title, '[\W_]', '-', 'G')
     $filename = sprintf('/etc/rsyslog.d/%02d-%s.conf', $priority, $basename)
