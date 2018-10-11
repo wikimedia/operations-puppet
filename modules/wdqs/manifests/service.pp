@@ -141,7 +141,7 @@ class wdqs::service(
             cron { 'wdqs-autodeploy':
                 ensure  => present,
                 command => "/usr/local/bin/wdqs-autodeploy ${package_dir} >> ${$wdqs_autodeployment_log} 2>&1",
-                user    => $username,
+                user    => $deploy_user,
                 hour    => [5, 11, 17, 23],
             }
 
