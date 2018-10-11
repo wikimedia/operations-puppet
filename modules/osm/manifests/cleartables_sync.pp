@@ -1,5 +1,4 @@
 define osm::cleartables_sync (
-    String $pg_password,
     Boolean $use_proxy,
     String $proxy_host,
     Wmflib::IpPort $proxy_port,
@@ -54,8 +53,8 @@ define osm::cleartables_sync (
     $java_proxy = "\"-Dhttp.proxyHost=${proxy_host} -Dhttp.proxyPort=${proxy_port} -Dhttps.proxyHost=${proxy_host} -Dhttps.proxyPort=${proxy_port}\""
 
     $environment = $use_proxy ? {
-        false   => ["PGPASSWORD=${pg_password}",],
-        default => ["PGPASSWORD=${pg_password}", "https_proxy=https://${proxy_host}:${proxy_port}", "JAVACMD_OPTIONS=${java_proxy}"],
+        false   => [],
+        default => ["https_proxy=https://${proxy_host}:${proxy_port}", "JAVACMD_OPTIONS=${java_proxy}"],
     }
 
     cron {
