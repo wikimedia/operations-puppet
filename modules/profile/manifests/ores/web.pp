@@ -5,6 +5,8 @@ class profile::ores::web(
     $celery_workers = hiera('profile::ores::celery::workers'),
     $celery_queue_maxsize = hiera('profile::ores::celery::queue_maxsize'),
     $poolcounter_nodes = hiera('profile::ores::web::poolcounter_nodes'),
+    $logstash_host = hiera('logstash_host'),
+    $logstash_port = hiera('logstash_gelf_port', 12201),
 ){
     class { '::ores::web':
         redis_password       => $redis_password,
@@ -13,6 +15,8 @@ class profile::ores::web(
         celery_workers       => $celery_workers,
         celery_queue_maxsize => $celery_queue_maxsize,
         poolcounter_nodes    => $poolcounter_nodes,
+        logstash_host        => $logstash_host,
+        logstash_port        => $logstash_port,
     }
 
     ferm::service { 'ores':

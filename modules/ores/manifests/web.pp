@@ -13,6 +13,8 @@ class ores::web(
     $ores_config_group = 'deploy-service',
     $celery_queue_maxsize = 100,
     $poolcounter_nodes = [],
+    $logstash_host = undef,
+    $logstash_port = undef,
 ) {
     require ::ores::base
 
@@ -89,6 +91,14 @@ class ores::web(
         },
         'lock_managers' => {
             'pool_counter' => $poolcounter_nodes,
+        },
+        'logging' => {
+            'handlers' => {
+                'logstash' => {
+                    'host' => $logstash_host,
+                    'port' => $logstash_port,
+                },
+            },
         },
     }
     if $redis_password {
