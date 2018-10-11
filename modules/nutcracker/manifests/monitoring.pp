@@ -14,9 +14,4 @@ class nutcracker::monitoring($port = 11212) {
             nrpe_command => "/usr/lib/nagios/plugins/check_tcp -H 127.0.0.1 -p ${port} --timeout=2",
         }
     }
-
-    diamond::collector { 'Nutcracker':
-        ensure => 'absent',
-        source => 'puppet:///modules/nutcracker/monitor/nutcracker.py',
-    }
 }
