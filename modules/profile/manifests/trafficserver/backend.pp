@@ -1,3 +1,8 @@
+# === class profile::trafficserver::backend
+#
+# Sets up a Traffic Server backend instance with HTCP-based HTTP purging and
+# Nagios checks.
+#
 class profile::trafficserver::backend (
     Wmflib::IpPort $port=hiera('profile::trafficserver::backend::port', 3129),
     String $outbound_tls_cipher_suite=hiera('profile::trafficserver::backend::outbound_tls_cipher_suite', ''),
@@ -43,5 +48,24 @@ class profile::trafficserver::backend (
         host_regex => $purge_host_regex,
         mc_addrs   => $purge_multicasts,
         varnishes  => $purge_endpoints,
+    }
+
+    # Nagios checks
+    nrpe::monitor_service { 'traffic_manager':
+        description  => 'Ensure traffic_manager is running',
+        nrpe_command => '/usr/lib/nagios/plugins/check_procs -c 1:1 -a "/usr/bin/traffic_manager --nosyslog"',
+        require      => Class['::trafficserver'],
+    }
+
+    nrpe::monitor_service { 'traffic_server':
+        description  => 'Ensure traffic_server is running',
+        nrpe_command => '/usr/lib/nagios/plugins/check_procs -c 1:1 -a /usr/bin/traffic_server',
+        require      => Class['::trafficserver'],
+    }
+
+    nrpe::monitor_service { 'trafficserver_exporter':
+        description  => 'Ensure trafficserver_exporter is running',
+        nrpe_command => '/usr/lib/nagios/plugins/check_procs -c 1:1 -a "/usr/bin/python3 /usr/bin/trafficserver_exporter"',
+        require      => Prometheus::Trafficserver_exporter['trafficserver_exporter'],
     }
 }
