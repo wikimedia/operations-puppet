@@ -70,8 +70,8 @@ class profile::mediawiki::maintenance {
     rsync::quickdatacopy { 'home-mwmaint':
         ensure      => present,
         auto_sync   => false,
-        source_host => 'mwmaint1001.eqiad.wmnet',
-        dest_host   => 'mwmaint1002.eqiad.wmnet',
+        source_host => 'mwmaint1002.eqiad.wmnet',
+        dest_host   => 'mwmaint2001.codfw.wmnet',
         module_path => '/home',
     }
 
