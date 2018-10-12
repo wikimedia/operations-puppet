@@ -44,4 +44,6 @@ class webperf::navtiming(
         ensure   => running,
         provider => systemd,
     }
+
+    base::service_auto_restart { 'navtiming': }
 }
