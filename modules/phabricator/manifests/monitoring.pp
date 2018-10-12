@@ -2,11 +2,6 @@
 #
 class phabricator::monitoring {
 
-    diamond::collector { 'ApacheStatusSimple':
-        ensure => 'absent',
-        source => 'puppet:///modules/phabricator/monitor/apache_status.py',
-    }
-
     $phabricator_active_server = hiera('phabricator_active_server')
 
     # Only monitor services on the active_server (at least until codfw is in prod).

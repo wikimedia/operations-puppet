@@ -45,3 +45,4 @@ profile::phabricator::main::rate_limits:
   request: 0
 # This is the number of concurrent connections per client IP:
   connection: 0
+diamond::remove: true
