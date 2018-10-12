@@ -18,6 +18,10 @@ class nagios_common::commands(
     $owner = 'icinga',
     $group = 'icinga',
 ) {
+    $nrpe_v2_arg = os_version('debian >= stretch') ? {
+        true    => '-2',
+        default => ''
+    }
 
     # Workaround for T205091
     if os_version('debian >= jessie') {
@@ -148,19 +152,19 @@ class nagios_common::commands(
 
     if os_version('debian == jessie') {
         file { "${config_dir}/checkcommands.cfg":
-          source => 'puppet:///modules/nagios_common/checkcommands.cfg',
-          owner  => $owner,
-          group  => $group,
-          mode   => '0644',
+          content => template("${module_name}/checkcommands.cfg.erb"),
+          owner   => $owner,
+          group   => $group,
+          mode    => '0644',
         }
     }
     else {
         # Lines up with default configuration.
         file { "${config_dir}/commands.cfg":
-          source => 'puppet:///modules/nagios_common/checkcommands.cfg',
-          owner  => $owner,
-          group  => $group,
-          mode   => '0644',
+          content => template("${module_name}/checkcommands.cfg.erb"),
+          owner   => $owner,
+          group   => $group,
+          mode    => '0644',
         }
     }
 }
