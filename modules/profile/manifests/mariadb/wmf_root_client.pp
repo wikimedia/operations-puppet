@@ -4,7 +4,7 @@
 class profile::mariadb::wmf_root_client {
 
     # prevent accidental addition on a db server or a non-dedicated client
-    if !($::fqdn in ['neodymium.eqiad.wmnet', 'sarin.codfw.wmnet', 'cumin1001.eqiad.wmnet', 'cumin2001.codfw.wmnet']) {
+    if !($::fqdn in ['cumin1001.eqiad.wmnet', 'cumin2001.codfw.wmnet']) {
         fail('role::mariadb::wmf_root_client should only be used on root-owned, \
              dedicated servers.')
     }

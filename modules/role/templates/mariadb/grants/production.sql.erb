@@ -9,20 +9,6 @@ GRANT PROXY
     ON ''@'%' TO 'root'@'localhost'
     WITH GRANT OPTION;
 
--- Grants for 'root'@'10.64.32.20' (neodymium)
-
-GRANT ALL PRIVILEGES
-    ON *.* TO 'root'@'10.64.32.20'
-    IDENTIFIED BY '<%= @root_pass %>'
-    WITH GRANT OPTION;
-
--- Grants for 'root'@'10.192.0.140' (sarin)
-
-GRANT ALL PRIVILEGES
-    ON *.* TO 'root'@'10.192.0.140'
-    IDENTIFIED BY '<%= @root_pass %>'
-    WITH GRANT OPTION;
-
 -- Grants for 'root'@'10.64.32.25' (cumin1001)
 
 GRANT ALL PRIVILEGES
