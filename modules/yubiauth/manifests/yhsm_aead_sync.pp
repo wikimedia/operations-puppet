@@ -8,5 +8,6 @@ class yubiauth::yhsm_aead_sync(
         path        => '/var/cache/yubikey-ksm/aeads',
         read_only   => 'yes',
         hosts_allow => $sync_allowed,
+        auto_ferm   => true,
     }
 }

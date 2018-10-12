@@ -7,8 +7,6 @@ class profile::yubiauth::server (
     $auth_server_primary = hiera('yubiauth_server_primary'),
 ) {
 
-    $auth_servers_ferm = join($auth_servers, ' ')
-
     include ::profile::base::firewall
 
     class {'::yubiauth::yhsm_daemon': }
@@ -21,12 +19,6 @@ class profile::yubiauth::server (
 
         class { 'yubiauth::yhsm_aead_sync':
             sync_allowed => $auth_servers,
-        }
-
-        ferm::service {'yubiauth_rsync':
-            port   => '873',
-            proto  => 'tcp',
-            srange => "@resolve((${auth_servers_ferm}))",
         }
     }
     else {
