@@ -4,3 +4,4 @@ admin::groups:
   - snapshot-admins
   - snapshot-users
 profile::mediawiki::php::enable_fpm: false
+diamond::remove: true
