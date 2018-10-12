@@ -115,3 +115,6 @@ profile::prometheus::statsd_exporter::mappings:
       name: thumbor_process_start_time
       labels:
         port: "$2"
+
+diamond::remove: true
+
