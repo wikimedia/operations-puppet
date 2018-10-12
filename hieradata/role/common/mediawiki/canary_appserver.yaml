@@ -15,3 +15,4 @@ role::mediawiki::webserver::tls: true
 profile::mediawiki::php::enable_fpm: false
 # Bump the connections per backend to 5 in mcrouter, see T203786
 profile::mediawiki::mcrouter_wancache::num_proxies: 5
+diamond::remove: true
