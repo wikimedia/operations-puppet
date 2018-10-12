@@ -38,5 +38,7 @@ class debug_proxy(
         notify  => Service['nginx'],
     }
 
+    base::service_auto_restart { 'nginx': }
+
     diamond::collector::nginx { 'debug_proxy': }
 }
