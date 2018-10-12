@@ -3,7 +3,8 @@
 class phabricator::monitoring {
 
     diamond::collector { 'ApacheStatusSimple':
-        source   => 'puppet:///modules/phabricator/monitor/apache_status.py',
+        ensure => 'absent',
+        source => 'puppet:///modules/phabricator/monitor/apache_status.py',
     }
 
     $phabricator_active_server = hiera('phabricator_active_server')
