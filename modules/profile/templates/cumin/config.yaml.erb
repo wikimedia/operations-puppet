@@ -14,6 +14,10 @@ puppetdb:
       - SubjectAltNameWarning  # Temporary fix for T158757
 <% end -%>
 
+knownhosts:
+    files:
+        - /etc/ssh/ssh_known_hosts
+
 clustershell:
     ssh_options:
         - '-o BatchMode=yes'
