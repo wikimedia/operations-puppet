@@ -31,6 +31,9 @@
 #   If not undef, this is a hash indicating the port to listen to for ssl and
 #   the public cert, private key, and CA cert paths on the filesystem.
 #
+# [*num_proxies*]
+#   Maximum number of connections to each backend. Defaults to 1.
+#
 # === Examples
 #
 #  class { '::mcrouter':
@@ -59,6 +62,7 @@ class mcrouter(
     Integer $cross_cluster_timeout_ms,
     Wmflib::Ensure $ensure = present,
     Mcrouter::Ssl $ssl_options = undef,
+    Integer $num_proxies = 1,
 ) {
     require_package('mcrouter')
 

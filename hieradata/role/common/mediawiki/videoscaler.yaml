@@ -22,3 +22,5 @@ role::lvs::realserver::pools:
     lvs_name: jobrunner
 # We still don't enable fpm here
 profile::mediawiki::php::enable_fpm: false
+# Bump the connections per backend to 5 in mcrouter, see T203786
+profile::mediawiki::mcrouter_wancache::num_proxies: 5

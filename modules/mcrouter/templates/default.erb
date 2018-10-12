@@ -8,10 +8,10 @@ ADDITIONAL_ARGS="--route-prefix=<%= @region %>/<%= @cluster %> \
 --send-invalid-route-to-default \
 --file-observer-poll-period-ms=1000 \
 --file-observer-sleep-before-update-ms=100 \
+--num-proxies=<%= @num_proxies %> \
 <%- if @ssl_options -%>
 --ssl-port <%= @ssl_options['port'] %> \
 --pem-cert-path=<%= @ssl_options['cert'] %> \
 --pem-key-path=<%= @ssl_options['key'] %> \
 --pem-ca-path=<%= @ssl_options['ca_cert'] %> \
 <%- end -%>"
-
