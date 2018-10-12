@@ -4,11 +4,11 @@ class labstore::monitoring::ldap(
     ) {
 
     file { '/usr/local/bin/getent_check':
-        ensure => present,
-        source => 'puppet:///modules/labstore/getent_check',
-        mode   => '0755',
-        owner  => 'root',
-        group  => 'root',
+        ensure  => present,
+        mode    => '0755',
+        owner   => 'root',
+        group   => 'root',
+        content => template('labstore/getent_check.erb'),
     }
 
     # Monitor that getent passwd over LDAP resolves in reasonable time

@@ -11,7 +11,6 @@ class labstore (
 
     require_package('nfs-kernel-server')
     require_package('lvm2')
-    require_package('nfsd-ldap')
     require_package('nfs-common')
     require_package('rpcbind')
 
@@ -24,6 +23,7 @@ class labstore (
             priority => '1001',
             before   => Package['nethogs'],
         }
+        require_package('nfsd-ldap')
     }
 
     package { 'nethogs':
