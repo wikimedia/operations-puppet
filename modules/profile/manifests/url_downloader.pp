@@ -98,4 +98,6 @@ class profile::url_downloader (
         description   => 'url_downloader',
         check_command => "check_tcp_ip!url-downloader.wikimedia.org!${url_downloader_port}",
     }
+
+    base::service_auto_restart { 'squid3': }
 }
