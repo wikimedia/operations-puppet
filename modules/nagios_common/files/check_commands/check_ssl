@@ -15,8 +15,8 @@ package Local::CheckSSL;
 
 use strict;
 use warnings;
-use Nagios::Plugin::Getopt;
-use Nagios::Plugin::Functions;
+use Monitoring::Plugin::Getopt;
+use Monitoring::Plugin::Functions;
 use Net::SSLeay;
 use IO::Socket::SSL;
 use Socket qw(AF_INET AF_INET6 AF_UNSPEC);
@@ -31,7 +31,7 @@ our ( $client, @crit, @warn, @ok, @verbose );
 sub init {
     ( @crit, @warn, @ok, @verbose ) = ();
 
-    $ng = Nagios::Plugin::Getopt->new(
+    $ng = Monitoring::Plugin::Getopt->new(
         usage   => 'Usage: %s -H <host> -p <port> -w <days> -c <days> [...]',
         version => 1,
         blurb   => 'Connects to a host and checks their SSL/TLS certificate',
@@ -193,14 +193,14 @@ sub ssl_connect {
         $sopts{'SSL_ocsp_mode'} = SSL_OCSP_NO_STAPLE;
     }
     else {
-        nagios_exit( UNKNOWN, 'Invalid OCSP setting: ' . $ng->ocsp );
+        plugin_exit( UNKNOWN, 'Invalid OCSP setting: ' . $ng->ocsp );
     }
 
     # we use IO::Socket::SSL for its verify hostname routines that are
     # complicated enough to handles SANs, wildcards etc., depending on the given
     # protocol (e.g. RFC 2818 rules for HTTPS)
     $client = IO::Socket::SSL->new(%sopts)
-      or nagios_exit( CRITICAL, 'failed to connect or SSL handshake:' . $@ );
+      or plugin_exit( CRITICAL, 'failed to connect or SSL handshake:' . $@ );
 
     if ( $ng->ocsp eq 'must-staple' ) {
         my $now = time;
@@ -323,7 +323,7 @@ sub run {
 
     print join( "\n", @verbose ), "\n" if $ng->verbose;
 
-    nagios_exit(
+    plugin_exit(
         check_messages(
             critical => \@crit,
             warning  => \@warn,
