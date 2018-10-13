@@ -195,8 +195,8 @@ node 'certcentral2001.codfw.wmnet' {
     role(certcentral)
 }
 
-# two new cloudvirt systems, need to be pushed into production T199125
-node /^cloudvirt102[4-9].eqiad.wmnet$/ {
+# new cloudvirt systems
+node /^cloudvirt102[5-9].eqiad.wmnet$/ {
     role(spare::system)
 }
 
@@ -2194,7 +2194,7 @@ node /^cloudvirt101[8-9]\.eqiad\.wmnet$/ {
     interface::add_ip6_mapped { 'main': }
 }
 
-node /^cloudvirt102[0-3].eqiad.wmnet$/ {
+node /^cloudvirt102[0-4].eqiad.wmnet$/ {
     role(wmcs::openstack::eqiad1::virt)
     interface::add_ip6_mapped { 'main': }
 }
