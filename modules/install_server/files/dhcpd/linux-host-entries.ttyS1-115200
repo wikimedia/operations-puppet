@@ -484,6 +484,13 @@ host cloudnet1004 {
     filename "jessie-installer/debian-installer/amd64/pxelinux.0";
 }
 
+host cloudvirt1018 {
+    hardware ethernet 18:66:DA:FC:9C:58;
+    fixed-address cloudvirt1018.eqiad.wmnet;
+    option pxelinux.pathprefix "jessie-installer/";
+    filename "jessie-installer/debian-installer/amd64/pxelinux.0";
+}
+
 host cloudvirt1019 {
     hardware ethernet e0:07:1b:f0:ec:88;
     fixed-address cloudvirt1019.eqiad.wmnet;
@@ -3309,13 +3316,6 @@ host labvirt1017 {
     fixed-address labvirt1017.eqiad.wmnet;
     option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/trusty-installer/";
     filename "lpxelinux.0";
-}
-
-host labvirt1018 {
-    hardware ethernet 18:66:DA:FC:9C:58;
-    fixed-address labvirt1018.eqiad.wmnet;
-    option pxelinux.pathprefix "jessie-installer/";
-    filename "jessie-installer/debian-installer/amd64/pxelinux.0";
 }
 
 host labweb1001 {
