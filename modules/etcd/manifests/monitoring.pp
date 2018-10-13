@@ -8,11 +8,19 @@ class etcd::monitoring {
         require => Service['etcd'],
     }
 
-    require_package('libnagios-plugin-perl')
+    if os_version('debian >= stretch') {
+        $plugin_package = 'libmonitoring-plugin-perl'
+        $plugin_file = 'etcd_cluster_health_stretch'
+    } else {
+        $plugin_package = 'libnagios-plugin-perl'
+        $plugin_file = 'etcd_cluster_health'
+    }
+
+    require_package($plugin_package)
 
     file { '/usr/local/bin/nrpe_etcd_cluster_health':
         ensure  => present,
-        source  => 'puppet:///modules/etcd/etcd_cluster_health',
+        source  => "puppet:///modules/etcd/${plugin_file}",
         owner   => 'root',
         group   => 'root',
         mode    => '0555',
