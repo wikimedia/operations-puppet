@@ -1,231 +1,84 @@
-/*@import url(//fonts.googleapis.com/css?family=Oxygen:400,700,300);*/
-
-html{
-    font-family: 'Oxygen', sans-serif;
+.img-responsive {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+html,body {
+  font-family: 'Open Sans', sans-serif;
+  font-size: 14px;
+  background: #F0F2F4;
+}
+.navbar.is-white {
+  background: #F0F2F4;
+}
+.navbar-brand .brand-text {
+  font-size: 1.11rem;
+  font-weight: bold;
+}
+.hero-body
+{background-image: linear-gradient(141deg, #54b2de 0%, #1fc7c4 100%);
+background-position: center;
+background-size: cover;
+background-repeat: no-repeat;
+height: 500px;
+}
+.articles {
+  margin: 5rem 0;
+  margin-top: -400px;
+}
+.articles .content p {
+    line-height: 1.9;
+    margin: 15px 0;
+}
+.author-image {
+    position: absolute;
+    top: -30px;
+    left: 50%;
+    width: 60px;
+    height: 60px;
+    margin-left: -30px;
+    border: 3px solid #ccc;
+    border-radius: 50%;
+}
+.media-center {
+  display: block;
+  margin-bottom: 1rem;
+}
+.media-content {
+  margin-top: 3rem;
+}
+.article, .promo-block {
+  margin-top: 6rem;
+}
+div.column.is-8:first-child {
+  padding-top: 0;
+  margin-top: 0;
+}
+.article-title {
+  font-size: 2rem;
+  font-weight: lighter;
+  line-height: 2;
+}
+.article-subtitle {
+  color: #909AA0;
+  margin-bottom: 3rem;
+}
+.article-body {
+  line-height: 1.4;
+  margin: 0 6rem;
+}
+.article-body {
+  margin: 0;
+}
+.tags:last-child {
+  margin-bottom: 0;
+}
+.promo-block .container {
+  margin: 1rem 5rem;
 }
 
-body {
-  background-color: #eff0f1;
-  font-family: 'Oxygen', sans-serif;
+.logo {
+  margin-right: 0.5em;
+  max-height: 100% !important;
 }
 
-h2 {
-	font-size: 22px;
-}
-
-h3 {
-	font-size: 20px;
-}
-
-.navbar-default {
-  border-bottom:2px solid #3daee9;
-}
-
-.modal .modal-body {
-    max-height: 420px;
-    overflow-y: auto;
-}
-
-.box {
-    background-color: #ffffff;
-    border-radius: 3px;
-    box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12);
-    padding: 10px 25px;
-    display: block;
-    margin-bottom: 20px;
-    overflow: hidden;
-}
-
-.boxh2{
-    color: #2980b9;
-    font-size: 20px;
-}
-
-blockquote{
-    font-size: 15px;
-    border-left-color: #FDBC4B;
-}
-/*
-.btn-mat > p {
-    color: #717171;
-    font-size: 16px;
-    padding-top: 10px;
-    text-align: justify;
-}
-.btn-mat {
-    background-color: #eff0f1;
-    border-radius: 2px;
-    box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12);
-    color: #000000;
-    transition: all 0.5s ease 0s;
-}
-.btn-mat:hover {
-    background-color: #d7d8d8;
-    box-shadow: 0 2px 3px 0 rgba(0, 0, 0, 0.16), 0 2px 5px 0 rgba(0, 0, 0, 0.12);
-    color: #000000;
-    transition: all 0.5s ease 0s;
-}
-*/
-
-.btn-mat{
-    background-color: #FFF;
-    border-radius: 3px;
-    box-shadow: 1px 1px .5px rgba(0,0,0,0.2);
-    color: #000;
-    transition: all 0.5s ease 0s;
-    border: solid 1px rgba(0,0,0,0.2);
-    background: linear-gradient(to bottom, #eff0f1, #e7e8e9);
-    text-transform: capitalize;
-}
-.btn-mat:hover{
-    background: linear-gradient(to bottom, #3daee9, #1998da);
-    color: #FFF;
-}
-
-.blueline
-{
-    border-color: #3daee9;
-    background-color: #3daee9;
-    color: #3daee9;
-}
-
-.dayform{
-    padding-bottom:10px;
-    border-bottom:1px solid #3daee9;
-    margin-bottom: 15px;
-}
-
-.dayform h3{
-	font-size: 24px;
-}
-
-.bluebor{
-    border-bottom-color: #3daee9;
-}
-
-@font-face {
-    font-family: 'icomoon';
-    src:url('fonts/icomoon.eot?-4v22cy');
-    src:url('fonts/icomoon.eot?#iefix-4v22cy') format('embedded-opentype'),
-        url('fonts/icomoon.woff?-4v22cy') format('woff'),
-        url('fonts/icomoon.ttf?-4v22cy') format('truetype'),
-        url('fonts/icomoon.svg?-4v22cy#icomoon') format('svg');
-    font-weight: normal;
-    font-style: normal;
-}
-
-[class^="icon-"], [class*=" icon-"] {
-    font-family: 'icomoon';
-    speak: none;
-    font-style: normal;
-    font-weight: normal;
-    font-variant: normal;
-    text-transform: none;
-    line-height: 1;
-
-    /* Better Font Rendering =========== */
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-}
-
-.icon-kdeArrowLeft:before {
-    content: "\e600";
-}
-
-.icon-kdeArrowRight:before {
-    content: "\e601";
-}
-
-.icon-kdeLogo {
-    /*content: "\e602";*/
-    background-image: url('Wikimedia_Community_Logo.svg');
-}
-
-.icon-kdeMenuIcon:before {
-    content: "\e603";
-    color: white;
-}
-
-.dtdate{
-    text-align: left;
-}
-
-@media (min-width: 768px) {
-  .dtdate{
-    text-align: right;
-  }
-  .consizeit{
-    width: 10%;
-  }
-}
-
-.imcent{
-    display: block;
-    margin-left: auto;
-    margin-right: auto;
-}
-
-.borderless tbody tr td, .borderless tbody tr th, .borderless thead tr th {
-    border: none;
-}
-
-.table-condensed>thead>tr>th, .table-condensed>tbody>tr>th, .table-condensed>tfoot>tr>th, .table-condensed>thead>tr>td, .table-condensed>tbody>tr>td, .table-condensed>tfoot>tr>td{
-    padding: 1px;
-}
-
-video {
-    max-width: 100%;
-}
-
-/* Properly position iframe videos players (like youtube) within its parent container */
-iframe {
-    display: block;
-    width: 100%;
-    border: none;
-}
-/* https://cfxdesign.com/how-to-make-the-wordpress-video-shortcode-responsive/ */
-.wp-video, video.wp-video-shortcode, .mejs-container, .mejs-overlay.load {
-    width: 100% !important;
-    height: 100% !important;
-}
-
-a.navbar-brand {
-    float: none;
-    text-align: justify;
-}
-
-@media (min-width: 1000px) {
-    .itemRow {
-        margin-right: -295px;
-    }
-}
-
-span.logoText {
-    float: left;
-    clear: both;
-    padding-bottom: 1em;
-}
-
-#footer {
-    background-color: #444;
-    color: #ffffff;
-    margin-top: -20px;
-    padding-top: 2em;
-    padding-bottom: 1em;
-}
-
-.navbar-survival101 {
-    background-color:#2B6DAD;
-}
-
-.navbar-survival101 .navbar-brand img {
-    vertical-align: baseline;
-}
-
-.navbar-expand-lg .navbar-nav .nav-link {
-    color: #fff;
-}
-
-nav.navbar {
-    margin-bottom: 1em;
-}
