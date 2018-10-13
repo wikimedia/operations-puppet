@@ -19,20 +19,19 @@ class nagios_common::commands(
     $group = 'icinga',
 ) {
 
-    if os_version('debian >= stretch') {
-        $plugin_perl_package = 'libmonitoring-plugin-perl'
-    } else {
-        $plugin_perl_package = 'libnagios-plugin-perl' # Deprecated in Debian stretch
-    }
-
     # Workaround for T205091
     if os_version('debian >= jessie') {
         require_package('python3-snimpy')
     }
 
+    # replaced by libmonitoring-plugin-perl in stretch
+    if os_version('debian == jessie') {
+        require_package('libnagios-plugin-perl')
+    }
+
     require_package([
-        $plugin_perl_package,
         # check_ssl
+        'libmonitoring-plugin-perl',
         'libnet-ssleay-perl',
         'libio-socket-ssl-perl',
         'libio-socket-inet6-perl',
