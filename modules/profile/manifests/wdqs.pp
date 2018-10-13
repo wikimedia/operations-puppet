@@ -85,8 +85,8 @@ class profile::wdqs (
         true    => '--constraints',
         default => '',
     }
-
-    $extra_updater_options = "${poller_options} ${fetch_constraints_options}"
+    # 0 - Main, 120 - Property, 146 - Lexeme
+    $extra_updater_options = "${poller_options} ${fetch_constraints_options} --entityNamespaces 0,120,146"
 
     class { 'wdqs::updater':
         options        => "${updater_options} -- ${extra_updater_options}",
