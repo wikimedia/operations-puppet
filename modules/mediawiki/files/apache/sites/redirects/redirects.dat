@@ -149,29 +149,7 @@ rewrite	*vikimedija.org	//rs.wikimedia.org
 rewrite	*wikipedia.bg	//bg.wikipedia.org
 rewrite	*wikipedia.is	//is.wikipedia.org
 rewrite	*wikipedia.co.za	//af.wikipedia.org
-rewrite	*wikibooks.cz	//cs.wikibooks.org
-rewrite	*wikicitaty.cz	//cs.wikiquote.org
-rewrite	*wikidruhy.cz	//species.wikimedia.org
-rewrite	*wikiquote.cz	//cs.wikiquote.org
-rewrite	*wikisource.cz	//cs.wikisource.org
-rewrite	*wikispecies.cz	//species.wikimedia.org
-rewrite	*wikiversity.cz	//cs.wikiversity.org
-rewrite	*wikiverzita.cz	//cs.wikiversity.org
-rewrite	*wikizpravy.cz	//cs.wikinews.org
-rewrite	*wikizdroje.cz	//cs.wikisource.org
-rewrite	*wiktionary.cz	//cs.wiktionary.org
-rewrite	*wikislovnik.cz	//cs.wiktionary.org
-rewrite	*wikiknihy.cz	//cs.wikibooks.org
 rewrite	*wikisource.pl	//pl.wikisource.org
-
-# T81228
-override	*wikipedie.cz/Experti_na_prirodu	//cs.wikipedia.org/wiki/Wikipedie:WikiProjekt_Chráněná_území/Experti_na_přírodu
-override	*wikipedie.cz/Experti-na-prirodu	//cs.wikipedia.org/wiki/Wikipedie:WikiProjekt_Chráněná_území/Experti_na_přírodu
-override	*wikipedie.cz/experti_na_prirodu	//cs.wikipedia.org/wiki/Wikipedie:WikiProjekt_Chráněná_území/Experti_na_přírodu
-override	*wikipedie.cz/experti-na-prirodu	//cs.wikipedia.org/wiki/Wikipedie:WikiProjekt_Chráněná_území/Experti_na_přírodu
-
-rewrite	*wikipedie.cz	//cs.wikipedia.org
-rewrite	*wikipedia.cz	//cs.wikipedia.org
 
 # wikimedia.ee / wikipedia.ee - T165733#3355736
 rewrite	*wikimedia.ee	//ee.wikimedia.org
