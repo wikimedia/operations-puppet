@@ -16,3 +16,4 @@ profile::mariadb::backup::check::sections:
  - m3
  - m5
 monitor_screens: false
+diamond::remove: true
