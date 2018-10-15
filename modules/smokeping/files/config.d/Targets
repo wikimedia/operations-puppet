@@ -229,10 +229,10 @@ menu = frbast-codfw
 title = frbast-codfw.wikimedia.org
 host = frbast-codfw.wikimedia.org
 
-+++ saiph
-menu = saiph
-title = saiph.frack.codfw.wmnet
-host = saiph.frack.codfw.wmnet
++++ frpig2001
+menu = frpig2001
+title = frpig2001.frack.codfw.wmnet
+host = frpig2001.frack.codfw.wmnet
 
 
 + esams
