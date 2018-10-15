@@ -72,6 +72,12 @@ class ores::web(
                 'port' => '6380',
             },
         },
+        'task_trackers' => {
+            'redis' => {
+                'host' => $redis_host,
+                'port' => '6380',
+            },
+        },
         'score_processors' => {
             'ores_celery' => {
                 'BROKER_URL'            => "redis://${redis_host}:6379",
@@ -87,6 +93,7 @@ class ores::web(
                 'CELERYD_CONCURRENCY'   => $celery_workers,
                 'queue_maxsize'         => $celery_queue_maxsize,
                 'lock_manager'          => 'pool_counter',
+                'task_tracker'          => 'redis',
             },
         },
         'lock_managers' => {
@@ -105,6 +112,11 @@ class ores::web(
         $pass_config = {
             'score_caches' => {
                 'ores_redis' => {
+                    'password' => $redis_password,
+                },
+            },
+            'task_trackers' => {
+                'redis' => {
                     'password' => $redis_password,
                 },
             },
