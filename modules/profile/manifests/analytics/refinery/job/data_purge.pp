@@ -43,10 +43,19 @@ class profile::analytics::refinery::job::data_purge (
         # Keep this many days of raw webrequest data.
         $raw_retention_days = 31
         cron { 'refinery-drop-webrequest-raw-partitions':
+            ensure  => absent,
             command => "${env} && ${refinery_path}/bin/refinery-drop-webrequest-partitions -d ${raw_retention_days} -D wmf_raw -l /wmf/data/raw/webrequest -w raw >> ${webrequest_log_file} 2>&1",
             user    => 'hdfs',
             minute  => '15',
             hour    => '*/4',
+        }
+
+        profile::analytics::systemd_timer { 'refinery-drop-webrequest-raw-partitions':
+            description => 'Drop Webrequest raw data imported on HDFS following data retention policies.',
+            command     => "${refinery_path}/bin/refinery-drop-webrequest-partitions -d ${raw_retention_days} -D wmf_raw -l /wmf/data/raw/webrequest -w raw",
+            interval    => '*-*-* 00/4:15:00',
+            environment => $systemd_env,
+            user        => 'hdfs',
         }
 
         # Keep this many days of refined webrequest data.
