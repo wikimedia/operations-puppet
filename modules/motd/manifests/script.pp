@@ -25,17 +25,14 @@
 #    priority => 60,
 #  }
 #
-define motd::script(
-    $ensure    = present,
-    $priority  = 50,
-    $content   = undef,
-    $source    = undef,
+define motd::script (
+    Wmflib::Ensure $ensure    = present,
+    Integer[0, 99] $priority  = 50,
+    Optional[String] $content = undef,
+    Optional[String] $source  = undef,
 ) {
     include ::motd
 
-    # TODO/puppet4 - make all of these checks parameter type definitions instead
-    validate_ensure($ensure)
-    validate_numeric($priority, 99, 0)
     if $source == undef and $content == undef  { fail('you must provide either "source" or "content"') }
     if $source != undef and $content != undef  { fail('"source" and "content" are mutually exclusive') }
 
