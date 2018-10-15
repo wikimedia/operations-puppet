@@ -66,8 +66,8 @@ class wdqs::monitor::services(
         dashboard_links => ['https://grafana.wikimedia.org/dashboard/db/wikidata-query-service?orgId=1&panelId=8&fullscreen'],
         query           => "scalar(time() - blazegraph_lastupdated{instance=\"${::hostname}:9193\"})",
         prometheus_url  => "http://prometheus.svc.${::site}.wmnet/ops",
-        warning         => '1200', # 20 minutes
-        critical        => '3600', # 60 minutes
+        warning         => 1200, # 20 minutes
+        critical        => 3600, # 60 minutes
         contact_group   => $contact_groups,
     }
 }

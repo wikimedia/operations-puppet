@@ -73,38 +73,28 @@
 #   Links to the Grafana dashboard for this alarm
 #
 define monitoring::check_prometheus(
-    $description,
-    $query,
-    $prometheus_url,
-    $warning,
-    $critical,
-    $dashboard_links,
-    $method          = 'ge',
-    $nan_ok          = false,
-    $check_interval  = 1,
-    $retry_interval  = 1,
-    $retries         = 5,
-    $group           = undef,
-    $ensure          = present,
-    $nagios_critical = false,
-    $contact_group   = 'admins',
-)
-{
-    validate_re($method, '^(gt|ge|lt|le|eq|ne)$')
-    validate_bool($nan_ok)
-    validate_array($dashboard_links)
+    String $description,
+    String $query,
+    String $prometheus_url,
+    Numeric $warning,
+    Numeric $critical,
+    Array[Pattern[/^https:\/\/grafana\.wikimedia\.org/], 1] $dashboard_links,
+    Enum['gt', 'ge', 'lt', 'le', 'eq', 'ne'] $method          = 'ge',
+    Boolean $nan_ok          = false,
+    Integer $check_interval  = 1,
+    Integer $retry_interval  = 1,
+    Integer $retries         = 5,
+    Optional[String] $group           = undef,
+    Wmflib::Ensure $ensure          = present,
+    Boolean $nagios_critical = false,
+    String $contact_group   = 'admins',
+) {
 
     # Validate the dashboard_links and generate the notes_urls
-    if size($dashboard_links) < 1 {
-        fail('The $dashboard_links array cannot be empty')
-    } elsif size($dashboard_links) == 1 {
+    if size($dashboard_links) == 1 {
         # Puppet reduce doesn't call the lambda if there is only one element
-        validate_re($dashboard_links[0], '^https:\/\/grafana\.wikimedia\.org')
         $notes_urls = "'${dashboard_links[0]}'"
     } else {
-        $dashboard_links.each |$dashboard_link| {
-            validate_re($dashboard_link, '^https:\/\/grafana\.wikimedia\.org')
-        }
         $notes_urls = $dashboard_links.reduce('') |$urls, $dashboard_link| {
             "${urls}'${dashboard_link}' "
         }

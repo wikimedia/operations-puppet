@@ -994,8 +994,8 @@ class role::prometheus::ops {
         description     => 'Prometheus configuration reload failure',
         query           => 'prometheus_config_last_reload_successful',
         method          => 'eq',
-        warning         => '0',
-        critical        => '0',
+        warning         => 0,
+        critical        => 0,
         # Check each Prometheus server host individually, not through the LVS service IP
         prometheus_url  => "http://${::fqdn}/ops",
         dashboard_links => ["https://grafana.wikimedia.org/dashboard/db/host-overview?var-server=${::hostname}&var-datasource=${::site}%20prometheus%2Fops"],
