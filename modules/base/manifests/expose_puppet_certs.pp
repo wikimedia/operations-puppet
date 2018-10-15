@@ -29,15 +29,14 @@
 #   The source directory containing the original SSL certificates. Avoid
 #   supplying this unless you know what you are doing
 #
-define base::expose_puppet_certs(
-    $ensure          = 'present',
-    $provide_private = false,
-    $provide_keypair = false,
-    $user            = 'root',
-    $group           = 'root',
-    $ssldir          = puppet_ssldir(),
+define base::expose_puppet_certs (
+    Wmflib::Ensure $ensure       = 'present',
+    Boolean $provide_private     = false,
+    Boolean $provide_keypair     = false,
+    String $user                 = 'root',
+    String $group                = 'root',
+    Stdlib::Absolutepath $ssldir = puppet_ssldir(),
 ) {
-    validate_absolute_path($ssldir)
 
     $target_basedir = $title
     $puppet_cert_name = $::fqdn
