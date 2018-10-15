@@ -88,10 +88,10 @@ def main():
     parser.add_argument('--bytes', default='gb', metavar='BYTES',
                         help='Unit of shard size. E.g:%(choices)',
                         choices=['b', 'kb', 'mb', 'gb'])
-    parser.add_argument('--shard-size-warning', default=35, type=int,
+    parser.add_argument('--shard-size-warning', default=50, type=int,
                         dest='shard_size_warning', metavar='WARNING',
                         help='Notify when shard size go past the warning threshold.')
-    parser.add_argument('--shard-size-critical', default=50, type=int,
+    parser.add_argument('--shard-size-critical', default=60, type=int,
                         dest='shard_size_critical', metavar='CRITICAL',
                         help='Notify when shard size goes beyond the critical threshold')
     options = parser.parse_args()
