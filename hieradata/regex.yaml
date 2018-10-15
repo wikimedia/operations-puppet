@@ -254,3 +254,4 @@ mediawiki_test_environment:
     apaches:
       service: hhvm
   profile::mediawiki::vhost_feature_flags: {}
+  profile::mediawiki::php::enable_fpm: true
