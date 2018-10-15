@@ -22,6 +22,7 @@ class wdqs::updater(
         group   => 'root',
         mode    => '0644',
         before  => Systemd::Unit['wdqs-updater'],
+        notify  => Service['wdqs-updater'],
     }
 
     wdqs::logback_config { 'wdqs-updater':
@@ -32,6 +33,7 @@ class wdqs::updater(
 
     systemd::unit { 'wdqs-updater':
         content => template('wdqs/initscripts/wdqs-updater.systemd.erb'),
+        notify  => Service['wdqs-updater'],
     }
     service { 'wdqs-updater':
         ensure => 'running',
