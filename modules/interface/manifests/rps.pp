@@ -57,4 +57,10 @@ define interface::rps($interface=$name, $rss_pattern='', $qdisc='') {
             before  => Exec["rps-${interface}"],
         }
     }
+    # Note: tg3 (Broadcom Tigon3): driver defaults to 4 RX queues and 1 TX
+    # queue, and supports raising the TX queues to 4 optionally as well, but
+    # there's a comment in the tg3.c source code that says this is a bad idea,
+    # as hardware may under-perform under some scenarios with multiple TX
+    # queues (large packets starving access to tx queues full of smaller
+    # packets).  Best left at defaults here!
 }

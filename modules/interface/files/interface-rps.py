@@ -21,7 +21,9 @@
 # rss_pattern - This specifies an optional RSS (Receive Side Scaling) IRQ name
 #     regex for finding device IRQs in /proc/interrupts.  It must contain a
 #     single '%%d' to match the queue number in the IRQ name.  For example,
-#     for bnx2x this is 'eth0-fp-%%d', and for bnx2 and tg3 it is 'eth0-%%d'.
+#     for bnx2x this is 'eth0-fp-%%d', for bnx2 it is 'eth0-%%d', for tg3 it
+#     seems to be 'eth0-txrx-%%d' when you set up (non-default) 4x transmits as
+#     well via ethtool, and the numbers start at 1!
 #     For bnxt_en it seems to be 'eth0-TxRx-%%d'.
 #     The double-percent form is due to ConfigParser limitations.
 #
@@ -160,10 +162,11 @@ def get_bnx2x_cos_queue_map(tx_queues, rx_queues):
     return tx_qmap
 
 
-def detect_rss_pattern(device):
+def detect_rss_pattern(device, q_offset):
     """Detect RSS IRQ Name pattern based on device, if possible"""
 
-    rss_patt_re = re.compile(r'^\s*[0-9]+:.*\s' + device + r'([^\s0-9]+)0\n$')
+    rss_patt_re = re.compile(r'^\s*[0-9]+:.*\s' + device + r'([^\s0-9]+)'
+                             + str(q_offset) + r'\n$')
     irq_file = open('/proc/interrupts', 'r')
     for line in irq_file:
         match = rss_patt_re.match(line)
@@ -172,7 +175,7 @@ def detect_rss_pattern(device):
     return None
 
 
-def get_rx_irqs(rss_pattern, rx_queues):
+def get_rx_irqs(rss_pattern, rx_queues, q_offset):
     """Find RSS IRQs for rx queues matching rss_pattern (e.g. 'eth0-fp-%d')"""
 
     # create a dictionary of rxq:rx_irq, e.g.
@@ -184,7 +187,7 @@ def get_rx_irqs(rss_pattern, rx_queues):
     for line in irq_file:
         match = rss_re.match(line)
         if match:
-            irqs[int(match.group(2))] = int(match.group(1))
+            irqs[int(match.group(2)) - q_offset] = int(match.group(1))
 
     # If we don't get an *exact* match for the rx_queues list, give up
     if len(irqs) != len(rx_queues):
@@ -292,11 +295,6 @@ def main():
 
     opts = get_options(device)
 
-    if opts['rss_pattern']:
-        rss_pattern = opts['rss_pattern']
-    else:
-        rss_pattern = detect_rss_pattern(device)
-
     cpu_list = get_cpu_list(device, opts['numa_filter'])
     rx_queues = get_queues(device, 'rx')
     tx_queues = get_queues(device, 'tx')
@@ -304,10 +302,21 @@ def main():
         os.readlink('/sys/class/net/%s/device/driver/module' % device)
     )
 
+    # TG3: it numbers queues 0-3, but then the naming pattern in
+    # /proc/interrupts uses numbering 1-4 :P
+    q_offset = 0
+    if driver == 'tg3':
+        q_offset = 1
+
+    if opts['rss_pattern']:
+        rss_pattern = opts['rss_pattern']
+    else:
+        rss_pattern = detect_rss_pattern(device, q_offset)
+
     if rss_pattern:
         if rss_pattern.count('%') != 1 or rss_pattern.count('%d') != 1:
             raise Exception('The RSS pattern must contain a single %d')
-        rx_irqs = get_rx_irqs(rss_pattern, rx_queues)
+        rx_irqs = get_rx_irqs(rss_pattern, rx_queues, q_offset)
     else:
         rx_irqs = {rxq: None for rxq in rx_queues}
 
