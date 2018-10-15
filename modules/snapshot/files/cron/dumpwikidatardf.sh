@@ -74,7 +74,7 @@ rm -f $failureFile
 
 declare -A dumpNameToMinSize
 # Sanity check: Minimal size we expect each shard of a certain dump to have
-dumpNameToMinSize=(["all"]=`expr 23500000000 / $shards` ["truthy"]=`expr 14000000000 / $shards` ["lexeme"]=`expr 20000000 / $shards`)
+dumpNameToMinSize=(["all"]=`expr 23500000000 / $shards` ["truthy"]=`expr 14000000000 / $shards` ["lexemes"]=`expr 20000000 / $shards`)
 
 getNumberOfBatchesNeeded
 numberOfBatchesNeeded=$(($numberOfBatchesNeeded / $shards))
