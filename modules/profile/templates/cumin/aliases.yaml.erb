@@ -209,7 +209,8 @@ thumbor-canary: P{thumbor1001.eqiad.wmnet}
 thumbor-codfw: A:thumbor and A:codfw
 thumbor-eqiad: A:thumbor and A:eqiad
 url-downloader: P{O:url_downloader}
-wdqs-all: P{O:wdqs or O:wdqs::internal or O:wdqs::test}
+wdqs-all: P{O:wdqs or O:wdqs::internal or O:wdqs::test or O:wdqs::autodeploy}
+wdqs-autodeploy: P{O:wdqs::autodeploy}
 wdqs-main: P{O:wdqs or O:wdqs::internal}
 wdqs-internal: P{O:wdqs::internal}
 wdqs-public: P{O:wdqs}
