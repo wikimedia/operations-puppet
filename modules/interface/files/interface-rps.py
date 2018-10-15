@@ -33,12 +33,11 @@
 #     root.  In the normal (2+ queues) case, it will set up "mq" as the root
 #     qdisc and use the specified qdisc for each sub-queue within mq.
 #
-# numa_filter - Normally this script ignores NUMA considerations.  If this
-#     option is set to any true-like value (1, yes, true, on), the script will
-#     attempt to find the NUMA node the ethernet device is attached to, and
-#     only utilize CPU cores which share the same NUMA node as the device.  If
-#     sysfs doesn't have information about the device being attached to a
-#     specific node, NUMA-level information will be ignored.
+# numa_filter - Normally this script pays attention to NUMA considerations and
+#     tries to only map queues to CPUs in the same NUMA domain the adapter is
+#     attached to.  If this option is set to any false-like value (0, no,
+#     false, off), the script will act as if it couldn't find NUMA-level info
+#     in sysfs and use all system CPUs in a NUMA-unaware fashion.
 #
 # If the rss_pattern option is not specified, the code will try to auto-detect
 # the pattern by searching /proc/interrupts for the 0th RSS IRQ based on the
@@ -67,7 +66,6 @@
 # [Options]
 # rss_pattern = eth0-%%d
 # qdisc = fq flow_limit 300 buckets 8192 maxrate 1gbit
-# numa_filter = true
 # -----cut------
 #
 # Authors: Faidon Liambotis and Brandon Black
@@ -246,7 +244,7 @@ def get_options(device):
     opts = {
         'rss_pattern': None,
         'qdisc':       None,
-        'numa_filter': False,
+        'numa_filter': True,
     }
     config_file = os.path.join('/etc/interface-rps.d/', device)
     if os.path.isfile(config_file):

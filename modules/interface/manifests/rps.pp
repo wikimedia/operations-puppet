@@ -40,15 +40,15 @@ define interface::rps($interface=$name, $rss_pattern='', $qdisc='') {
         ],
     }
 
-    # This sets the queue count at runtime if it's incorrect (first run or
-    # change of numa_networking setting, before the module parameter from
-    # ::modparams can take effect on next boot).  Changing at runtime *will*
-    # blip the interface.  This shouldn't be an issue for first-run scenarios,
-    # but might require a depool when changing $numa_networking on live
-    # production hosts that can't handle short network blips.
+    # This sets the queue count at runtime if it's incorrect (first run
+    # or after a reboot).  Changing at runtime *will* blip the interface.  This
+    # shouldn't be an issue for first-run scenarios, but might require a depool
+    # on live production hosts that can't handle short network blips.
     if $facts['net_driver'][$interface]['driver'] =~ /^bnx(2x|t_en)/ {
-        # Limit to known cases bnx2x and bnxt_en
-        $num_queues = $::interface::rps::modparams::num_queues
+        # Limit to known cases bnx2x and bnxt_en which generally allow tons of
+        # queues, so that we can generally configure them for all non-HT cores
+        # on the interface's NUMA node.
+        $num_queues = size($facts['numa']['device_to_htset'][$interface])
         exec { "ethtool_rss_combined_channels_${interface}":
             path    => '/usr/bin:/usr/sbin:/bin:/sbin',
             command => "ethtool -L ${interface} combined ${num_queues}",
