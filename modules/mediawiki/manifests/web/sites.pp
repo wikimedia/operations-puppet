@@ -34,12 +34,12 @@ class mediawiki::web::sites (
         before => Service['apache2'],
     }
 
-    apache::site { 'nonexistent':
+    ::httpd::site { 'nonexistent':
         source   => 'puppet:///modules/mediawiki/apache/sites/nonexistent.conf',
         priority => 0,
     }
 
-    apache::site { 'wwwportals':
+    ::httpd::site { 'wwwportals':
         content  => template('mediawiki/apache/sites/wwwportals.conf.erb'),
         priority => 1,
     }

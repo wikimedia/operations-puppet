@@ -1,25 +1,25 @@
 class mediawiki::web::prod_sites {
     tag 'mediawiki', 'mw-apache-config'
 
-    apache::site { 'redirects':
+    ::httpd::site { 'redirects':
         content  => compile_redirects('puppet:///modules/mediawiki/apache/sites/redirects/redirects.dat'),
         priority => 2,
     }
 
     # Search vhost
-    apache::site { 'search.wikimedia':
+    ::httpd::site { 'search.wikimedia':
         source   => 'puppet:///modules/mediawiki/apache/sites/search.wikimedia.conf',
         priority => 5,
     }
 
     # Old secure redirects
-    apache::site { 'secure.wikimedia':
+    ::httpd::site { 'secure.wikimedia':
         source   => 'puppet:///modules/mediawiki/apache/sites/secure.wikimedia.conf',
         priority => 6,
     }
 
     ### BEGIN main
-    apache::site { 'main':
+    ::httpd::site { 'main':
         source   => 'puppet:///modules/mediawiki/apache/sites/main.conf',
         priority => 3,
     }
@@ -31,7 +31,7 @@ class mediawiki::web::prod_sites {
         'wikipedia.org',
     ]
     mediawiki::web::site { $main_conf_sites:
-        before => Apache::Site['main']
+        before => Httpd::Site['main']
     }
 
     mediawiki::web::vhost{
@@ -39,7 +39,7 @@ class mediawiki::web::prod_sites {
             ensure          => present,
             public_rewrites => true,
             declare_site    => false,
-            before          => Apache::Site['main']
+            before          => Httpd::Site['main']
             ;
         'test.wikidata.org':
             docroot             => '/srv/mediawiki/docroot/wikidata.org',
@@ -197,7 +197,7 @@ class mediawiki::web::prod_sites {
 
     ### BEGIN remnant
     # Other wikis
-    apache::site { 'remnant':
+    ::httpd::site { 'remnant':
         source   => 'puppet:///modules/mediawiki/apache/sites/remnant.conf',
         priority => 4,
     }
@@ -218,7 +218,7 @@ class mediawiki::web::prod_sites {
             legacy_rewrites => true,
             declare_site    => false,
             public_rewrites => true,
-            before          => Apache::Site['remnant'],
+            before          => Httpd::Site['remnant'],
             ;
         $remnant_simple_wikis:
             short_urls => true,
@@ -286,14 +286,14 @@ class mediawiki::web::prod_sites {
         https_only      => true,
         declare_site    => false,
         short_urls      => true,
-        before          => Apache::Site['remnant'],
+        before          => Httpd::Site['remnant'],
     }
 
     ### END remnant
 
     ### BEGIN wikimania
     # Wikimania sites, plus one wiki for wikimaniateam
-    apache::site { 'wikimania':
+    ::httpd::site { 'wikimania':
         source   => 'puppet:///modules/mediawiki/apache/sites/wikimania.conf',
         priority => 7,
     }
@@ -306,7 +306,7 @@ class mediawiki::web::prod_sites {
         https_only      => true,
         declare_site    => false,
         short_urls      => true,
-        before          => Apache::Site['wikimania'],
+        before          => Httpd::Site['wikimania'],
     }
     ### END wikimania
 
@@ -338,14 +338,14 @@ class mediawiki::web::prod_sites {
 
     #### BEGIN wikimedia
     # Some other wikis, plus loginwiki, and www.wikimedia.org
-    apache::site { 'wikimedia':
+    ::httpd::site { 'wikimedia':
         source   => 'puppet:///modules/mediawiki/apache/sites/wikimedia.conf',
         priority => 9,
     }
 
 
     mediawiki::web::site { 'www.wikimedia.org':
-        before => Apache::Site['wikimedia']
+        before => Httpd::Site['wikimedia']
     }
 
     $other_wikis = [
@@ -360,7 +360,7 @@ class mediawiki::web::prod_sites {
             legacy_rewrites => false,
             declare_site    => false,
             short_urls      => true,
-            before          => Apache::Site['wikimedia'],
+            before          => Httpd::Site['wikimedia'],
             ;
         $other_wikis:
             https_only => true,
