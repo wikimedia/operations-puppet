@@ -89,7 +89,7 @@ class profile::mariadb::misc::eventlogging::sanitization(
     profile::analytics::systemd_timer { 'eventlogging_db_sanitization':
         description => 'Apply Analytics data retetion policies to the Eventlogging database',
         command     => $eventlogging_cleaner_command,
-        interval    => ' *-*-* 11:00:00',
+        interval    => '*-*-* 11:00:00',
         user        => 'eventlogcleaner',
         require     => [
             File['/usr/local/bin/eventlogging_cleaner'],

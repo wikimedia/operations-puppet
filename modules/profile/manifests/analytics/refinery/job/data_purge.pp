@@ -106,7 +106,7 @@ class profile::analytics::refinery::job::data_purge (
         profile::analytics::systemd_timer { 'refinery-drop-webrequest-sampled-druid':
             description => 'Drop Druid Webrequest sampled data from deep storage',
             command     => "${refinery_path}/bin/refinery-drop-druid-deep-storage-data -d ${druid_webrequest_sampled_retention_days} webrequest_sampled_128",
-            interval    => ' *-*-* 05:15:00',
+            interval    => '*-*-* 05:15:00',
             environment => $systemd_env,
             user        => 'hdfs',
         }

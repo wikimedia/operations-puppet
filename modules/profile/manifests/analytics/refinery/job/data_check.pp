@@ -20,12 +20,12 @@ class profile::analytics::refinery::job::data_check {
     profile::analytics::systemd_timer { 'check_webrequest_partitions':
         description => 'Check HDFS Webrequest partitions',
         command     => "${::profile::analytics::refinery::path}/bin/refinery-dump-status-webrequest-partitions --hdfs-mount ${hdfs_mount_point} --datasets webrequest,raw_webrequest --quiet --percent-lost",
-        interval    => ' *-*-* 10:00:00',
+        interval    => '*-*-* 10:00:00',
     }
 
     profile::analytics::systemd_timer { 'check_pageviews_partitions':
         description => 'Check HDFS Pageviews partitions',
         command     => "${::profile::analytics::refinery::path}/bin/refinery-dump-status-webrequest-partitions --hdfs-mount ${hdfs_mount_point} --datasets pageview,projectview --quiet",
-        interval    => ' *-*-* 10:10:00',
+        interval    => '*-*-* 10:10:00',
     }
 }
