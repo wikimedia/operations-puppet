@@ -280,12 +280,12 @@ class role::prometheus::ops {
     ]
 
     # Generate a list of hosts running memcached from wikimedia_clusters definition in Hiera
-    prometheus::class_config{ "memcached_${::site}":
-        dest       => "${targets_path}/memcached_${::site}.yaml",
-        site       => $::site,
-        class_name => 'profile::prometheus::memcached_exporter',
-        port       => '9150',
-        labels     => {}
+    prometheus::cluster_config{ "memcached_${::site}":
+        dest    => "${targets_path}/memcached_${::site}.yaml",
+        site    => $::site,
+        cluster => 'memcached',
+        port    => '9150',
+        labels  => {}
     }
 
     # Job definition for hhvm_exporter
