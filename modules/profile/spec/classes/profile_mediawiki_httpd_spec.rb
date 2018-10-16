@@ -1,0 +1,63 @@
+require 'spec_helper'
+
+test_on = {
+  supported_os: [
+    {
+      'operatingsystem'        => 'Debian',
+      'operatingsystemrelease' => ['9'],
+    }
+  ]
+}
+
+describe 'profile::mediawiki::httpd' do
+  before(:each) do
+    Puppet::Parser::Functions.newfunction(:secret, :type => :rvalue) {
+      'expected value'
+    }
+  end
+  on_supported_os(test_on).each do |os, facts|
+    context "on #{os}" do
+      let(:facts){ facts }
+      let(:pre_condition) {
+        [
+          'class mediawiki::users($web="www-data"){ notice($web) }',
+          'include mediawiki::users'
+        ]
+      }
+      context "default parameters" do
+        let(:params){ {:vhost_feature_flags => {}} }
+        it { is_expected.to  compile.with_all_deps }
+        it { is_expected.to contain_class('httpd')
+                              .with_period('daily')
+                              .with_rotate(30)
+        }
+        it { is_expected.to contain_httpd__conf('hhvm_catchall')
+                              .with_ensure('present')
+        }
+        it { is_expected.to contain_httpd__conf('fcgi_proxies')
+                              .with_ensure('absent')
+        }
+        it { is_expected.to contain_file('/etc/apache2/conf-available/50-worker.conf')
+                              .with_content(/MaxRequestWorkers\s+50/)
+        }
+      end
+      context "with mediawiki vhost flags" do
+        let(:params){ {:vhost_feature_flags => { :set_handler => true}}}
+        it { is_expected.to  compile.with_all_deps }
+        it { is_expected.to contain_httpd__conf('hhvm_catchall')
+                              .with_ensure('absent')
+        }
+        it { is_expected.to contain_httpd__conf('fcgi_proxies')
+                              .with_ensure('present')
+        }
+      end
+      context "with workers_limit = 5" do
+        let(:params){ {:vhost_feature_flags => {}, :workers_limit => 5} }
+        it { is_expected.to contain_file('/etc/apache2/conf-available/50-worker.conf')
+                              .with_content(/MaxRequestWorkers\s+5/)
+        }
+      end
+      context
+    end
+  end
+end

@@ -6,3 +6,6 @@ fixtures:
         ldap: "../../../../ldap"
         lvs: "../../../../lvs"
         phabricator: "../../../../phabricator"
+        mediawiki: "../../../../mediawiki"
+        httpd: "../../../../httpd"
+        stdlib: "../../../../stdlib"
