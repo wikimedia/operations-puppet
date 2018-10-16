@@ -346,18 +346,6 @@ class Terminator(object):
             time.sleep(self.sleep_between_batches)
 
 
-def check_not_valid_whitelist_table_prefixes(whitelist, tables):
-    """
-    Return all the whitelist table prefixes that do not match any table
-    provided in input.
-    """
-    not_valid_table_prefixes = []
-    for table_prefix in whitelist:
-        if not [t for t in tables if t.startswith(table_prefix + '_')]:
-            not_valid_table_prefixes.append(table_prefix)
-    return not_valid_table_prefixes
-
-
 def parse_tsv_whitelist(rows):
     """Parse rows containing tables and their attributes to whitelist
 
@@ -461,9 +449,6 @@ if __name__ == '__main__':
                         help='Bypass any whitelist and sanitization scheme. '
                              '(default: false).'
                              'Not compatible with --whitelist')
-    parser.add_argument('--no-whitelist-sanity-check', action='store_true',
-                        help='Bypass any whitelist sanity check '
-                             '(default: false).')
     parser.add_argument('--dbport', default=3306, type=int,
                         help='The target db port (default: 3306)')
     parser.add_argument('--dbname', default='log',
@@ -636,16 +621,6 @@ if __name__ == '__main__':
             log.info('Forcing close, no tables on the database.')
             sys.exit(1)
 
-        # Sanity check
-        bad_whitelist_entries = check_not_valid_whitelist_table_prefixes(whitelist, tables)
-        if bad_whitelist_entries and not args.no_whitelist_sanity_check:
-            log.error(
-                "Some table prefixes in the whitelist do not match any "
-                "table name retrieved from the database. Please review "
-                "the following entries of the whitelist: %s", bad_whitelist_entries
-            )
-            sys.exit(1)
-
         terminator = Terminator(
             database,
             whitelist,
@@ -733,25 +708,6 @@ class TestParser(unittest.TestCase):
 
     def setUp(self):
         print("Test: ", self._testMethodName)
-
-    def test_check_not_valid_whitelist_table_prefixes(self):
-        """
-        Test if all the whitelist table prefixes not contained in the table
-        list is returned correctly.
-        """
-        tables = ['AwesomeTableBatman_1234', 'AnotherTable_5677', 'AwesomeTable_789']
-        whitelist = {'AwesomeTable': ['field1', 'field2'], 'NotGood': ['field1', 'field2']}
-        expected_result = ['NotGood']
-        result = check_not_valid_whitelist_table_prefixes(whitelist, tables)
-        self.assertEqual(result, expected_result)
-
-        tables = ['AwesomeTableBatman_1234', 'AnotherTable_5677', 'AwesomeTable_789']
-        whitelist = {
-            'AwesomeTable': ['field1', 'field2'],
-            'AwesomeTableBatman': ['field1', 'field2']
-        }
-        result = check_not_valid_whitelist_table_prefixes(whitelist, tables)
-        self.assertEqual(result, [])
 
     def test_row_elements(self):
         """
