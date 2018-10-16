@@ -203,8 +203,8 @@ package Local::CheckBGP;
 
 use strict;
 use warnings;
-use Nagios::Plugin::Getopt;
-use Nagios::Plugin::Functions;
+use Monitoring::Plugin::Getopt;
+use Monitoring::Plugin::Functions;
 use Time::Duration;
 
 # this not exactly great; this isn't a very OO-package, but ePN restricts the
@@ -215,7 +215,7 @@ our ( @crit, @warn, @ok );
 sub init {
     ( @crit, @warn, @ok ) = ();
 
-    $ng = Nagios::Plugin::Getopt->new(
+    $ng = Monitoring::Plugin::Getopt->new(
         usage   => 'Usage: %s -H <host> --c <community> [...]',
         version => 1,
         blurb   => 'Checks the state of a router\'s BGP peerings',
@@ -277,7 +277,7 @@ sub collect {
         vendor     => $ng->vendor,
     );
     unless ( defined $bgp ) {
-        nagios_exit( CRITICAL, $error );
+        plugin_exit( CRITICAL, $error );
     }
 
     my %counts = (qw/up 0 down 0 shutdown 0/);
@@ -331,7 +331,7 @@ sub run {
 
     print join( "\n", @ok ), "\n" if $ng->verbose;
 
-    nagios_exit(
+    plugin_exit(
         check_messages(
             critical => \@crit,
             warning  => \@warn,
