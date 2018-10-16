@@ -1,6 +1,6 @@
 class profile::wdqs (
     String $logstash_host = hiera('logstash_host'),
-    Enum['scap3', 'autodeploy'] $deploy_mode = hiera('profile::wdqs::deploy_mode'),
+    Enum['scap3', 'autodeploy', 'manual'] $deploy_mode = hiera('profile::wdqs::deploy_mode'),
     String $package_dir = hiera('profile::wdqs::package_dir'),
     String $data_dir = hiera('profile::wdqs::data_dir'),
     String $endpoint = hiera('profile::wdqs::endpoint'),
