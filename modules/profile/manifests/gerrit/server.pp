@@ -67,6 +67,18 @@ class profile::gerrit::server(
         }
     }
 
+    if $slave {
+        $tls_host = $slave_hosts[0]
+    } else {
+        $tls_host = $host
+    }
+
+    letsencrypt::cert::integrated { 'gerrit':
+        subjects   => $tls_host,
+        puppet_svc => 'apache2',
+        system_svc => 'apache2',
+    }
+
     class { '::gerrit':
         host             => $host,
         ipv4             => $ipv4,

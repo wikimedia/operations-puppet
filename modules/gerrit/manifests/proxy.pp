@@ -16,12 +16,6 @@ class gerrit::proxy(
         $tls_host = $host
     }
 
-    letsencrypt::cert::integrated { 'gerrit':
-        subjects   => $tls_host,
-        puppet_svc => 'apache2',
-        system_svc => 'apache2',
-    }
-
     monitoring::service { 'https':
         description   => 'HTTPS',
         check_command => "check_ssl_on_host_port_letsencrypt!${tls_host}!${tls_host}!443",
