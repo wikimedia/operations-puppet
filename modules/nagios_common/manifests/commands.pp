@@ -64,7 +64,6 @@ class nagios_common::commands(
         'check_jnx_alarms',
         'check_ores_workers',
         'check_ssl',
-        'check_sslxNN',
         'check_to_check_nagios_paging',
         'check_wikidata',
     ] :
