@@ -1,12 +1,11 @@
 class mediawiki::web::beta_sites {
     tag 'mediawiki', 'mw-apache-config'
 
-    apache::mod_conf { 'php5':
-        ensure => 'absent',
+    # w-beta.wmflabs.org depends on proxy_http
+    httpd::mod_conf { 'proxy_http':
+        ensure => present,
     }
 
-    # w-beta.wmflabs.org depends on proxy_http
-    include ::apache::mod::proxy_http
     mediawiki::web::vhost { 'testwikimedia':
         server_aliases  => ['test.wikimedia.beta.wmflabs.org'],
         docroot         => '/srv/mediawiki/docroot/wikimedia.org',
