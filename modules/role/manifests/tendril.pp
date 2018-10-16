@@ -24,7 +24,7 @@ class role::tendril {
             'cn=nda,ou=groups,dc=wikimedia,dc=org',
             'cn=wmf,ou=groups,dc=wikimedia,dc=org',
         ],
-        auth_name    => 'WMF Labs (use wiki login name not shell) - nda/ops/wmf',
+        auth_name    => 'Developer account (use wiki login name not shell) - nda/ops/wmf',
     }
 
     # Make tendril active-passive cross-datacenter until a local db backend is
