@@ -47,7 +47,7 @@ class prometheus::statsd_exporter (
         mode    => '0444',
         owner   => 'root',
         group   => 'root',
-        content => "ARGS=\"-statsd.mapping-config=${config} -statsd.relay-address=${relay_address} -web.listen-address=${listen_address} ${arguments}\"",
+        content => "ARGS=\"--statsd.mapping-config=${config} --statsd.relay-address=${relay_address} --web.listen-address=${listen_address} ${arguments}\"",
         notify  => Service['prometheus-statsd-exporter'],
     }
 
