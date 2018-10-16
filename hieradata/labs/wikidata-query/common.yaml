@@ -14,3 +14,4 @@ profile::wdqs::use_kafka_for_updates: false
 profile::wdqs::max_query_time_millis: 60000
 profile::wdqs::high_query_time_port: true
 profile::wdqs::fetch_constraints: true
+profile::wdqs::nodes: []
