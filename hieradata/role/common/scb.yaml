@@ -138,7 +138,10 @@ profile::nutcracker::memcached_pools: {}
 profile::nutcracker::monitor_port: 0 # we have nothing exposed via tcp
 
 # Recommendation API
-profile::recommendation_api::wdqs_uri: "http://wdqs-internal.discovery.wmnet"
+profile::recommendation_api::wdqs_uri: http://wdqs-internal.discovery.wmnet
+profile::recommendation_api::dbhost: m2-master.eqiad.wmnet
+profile::recommendation_api::dbname: recommendationapi
+profile::recommendation_api::dbuser: recommendationapiservice
 
 # ChangePropagation for JobQueue
 profile::cpjobqueue::redis_path: "/var/run/nutcracker/redis_%{::site}.sock"
