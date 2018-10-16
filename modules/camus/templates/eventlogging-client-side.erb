@@ -26,6 +26,12 @@ etl.execution.history.max.of.quota=.8
 # records are delimited by newline
 etl.output.record.delimiter=\n
 
+# In this particular use case, the eventlogging events are not in JSON format,
+# but in a simple string separated by tabs. We rely on the fallback mechanism of
+# JsonStringMessageDecoder to use the system time for bucketing if it fails to decode.
+camus.message.decoder.class=com.linkedin.camus.etl.kafka.coders.JsonStringMessageDecoder
+camus.message.timestamp.field=dt
+
 # SequenceFileRecordWriterProvider writes the records as Hadoop Sequence files
 # so that they can be split even if they are compressed.  We Snappy compress these
 # by setting mapreduce.output.fileoutputformat.compress.codec to SnappyCodec
