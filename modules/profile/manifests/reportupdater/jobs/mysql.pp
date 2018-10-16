@@ -40,10 +40,6 @@ class profile::reportupdater::jobs::mysql {
         repository => 'limn-flow-data',
         output_dir =>  'metrics/beta-feature-enables',
     }
-    reportupdater::job { 'edit':
-        repository => 'limn-edit-data',
-        output_dir => 'metrics',
-    }
     reportupdater::job { 'edit-beta-features':
         repository => 'limn-edit-data',
         output_dir => 'metrics/beta-feature-enables',
@@ -63,14 +59,6 @@ class profile::reportupdater::jobs::mysql {
     reportupdater::job { 'ee-beta-features':
         repository => 'limn-ee-data',
         output_dir => 'metrics/beta-feature-enables',
-    }
-    reportupdater::job { 'multimedia':
-        repository => 'limn-multimedia-data',
-        output_dir => 'metrics/multimedia-health',
-    }
-    reportupdater::job { 'ee-migration':
-        repository => 'limn-ee-data',
-        output_dir => 'metrics/ee',
     }
     reportupdater::job { 'page-creation':
         repository => 'reportupdater-queries',
