@@ -71,6 +71,7 @@ class wdqs(
         target  => "${log_dir}/rules.log",
         require => [ File[$package_dir], File[$log_dir] ],
         before  => Service['wdqs-blazegraph'],
+        tag     => 'in-wdqs-package-dir',
     }
 
     # If we have data in separate dir, make link in package dir
@@ -99,6 +100,7 @@ class wdqs(
         group   => $username,
         mode    => '0664',
         require => Exec["${data_file} exists"],
+        tag     => 'in-wdqs-data-dir',
     }
 
     $config_dir_group = $deploy_mode ? {

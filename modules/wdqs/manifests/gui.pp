@@ -38,6 +38,7 @@ class wdqs::gui(
         owner  => $username,
         group  => 'wikidev',
         mode   => '0664',
+        tag    => 'in-wdqs-data-dir',
     }
 
     # The directory for operator-controlled nginx flags

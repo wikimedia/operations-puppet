@@ -43,8 +43,13 @@ class wdqs::deploy::manual(
         origin             => 'https://gerrit.wikimedia.org/r/wikidata/query/deploy',
         branch             => 'master',
         recurse_submodules => true,
-        before             => File["${package_dir}/rules.log"],
     }
+
+    # git clone needs to be executed before any files are created in the package dir
+    # and for some deployment types, the data dir is in the package dir
+    Git::Clone['wdqs_git_clone'] -> File<| tag == 'in-wdqs-data-dir' |>
+    Git::Clone['wdqs_git_clone'] -> File<| tag == 'in-wdqs-package-dir' |>
+
 
     exec { 'wdqs_git_fat_init':
         path    => '/usr/bin:/bin',
