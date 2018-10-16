@@ -521,43 +521,13 @@ define hostgroup {
 
 define service {
     use                      passive-service
+    service_description      check_apache2
+    hostgroup_name           fundraising-payments
+}
+
+define service {
+    use                      passive-service
     service_description      check_disk
-    hostgroup_name           fundraising-payments
-}
-
-define service {
-    use                      passive-service
-    service_description      check_load
-    hostgroup_name           fundraising-payments
-}
-
-define service {
-    use                      passive-service
-    service_description      check_zombie
-    hostgroup_name           fundraising-payments
-}
-
-define service {
-    use                      passive-service
-    service_description      check_procs
-    hostgroup_name           fundraising-payments
-}
-
-define service {
-    use                      passive-service
-    service_description      check_puppetrun
-    hostgroup_name           fundraising-payments
-}
-
-define service {
-    use                      passive-service
-    service_description      check_swap
-    hostgroup_name           fundraising-payments
-}
-
-define service {
-    use                      passive-service
-    service_description      check_raid
     hostgroup_name           fundraising-payments
 }
 
@@ -566,6 +536,12 @@ define service {
     service_description      check_gcsip
     hostgroup_name           fundraising-payments
     contact_groups           fr-tech,fr-tech-ops
+}
+
+define service {
+    use                      passive-service
+    service_description      check_load
+    hostgroup_name           fundraising-payments
 }
 
 define service {
@@ -584,19 +560,13 @@ define service {
 
 define service {
     use                      passive-service
-    service_description      check_nginx
-    hostgroup_name           fundraising-payments
-}
-
-define service {
-    use                      passive-service
-    service_description      check_apache2
-    hostgroup_name           fundraising-payments
-}
-
-define service {
-    use                      passive-service
     service_description      check_mysql
+    hostgroup_name           fundraising-payments
+}
+
+define service {
+    use                      passive-service
+    service_description      check_nginx
     hostgroup_name           fundraising-payments
 }
 
@@ -608,13 +578,49 @@ define service {
 
 define service {
     use                      passive-service
+    service_description      check_procs
+    hostgroup_name           fundraising-payments
+}
+
+define service {
+    use                      passive-service
+    service_description      check_puppetrun
+    hostgroup_name           fundraising-payments
+}
+
+define service {
+    use                      passive-service
+    service_description      check_raid
+    hostgroup_name           fundraising-payments
+}
+
+define service {
+    use                      passive-service
+    service_description      check_rsyslog_backlog
+    hostgroup_name           fundraising-payments
+}
+
+define service {
+    use                      passive-service
     service_description      check_ssl
     hostgroup_name           fundraising-payments
 }
 
 define service {
     use                      passive-service
+    service_description      check_swap
+    hostgroup_name           fundraising-payments
+}
+
+define service {
+    use                      passive-service
     service_description      check_timesync
+    hostgroup_name           fundraising-payments
+}
+
+define service {
+    use                      passive-service
+    service_description      check_zombie
     hostgroup_name           fundraising-payments
 }
 
@@ -640,12 +646,6 @@ define service {
 
 define service {
     use                      passive-service
-    service_description      check_zombie
-    hostgroup_name           fundraising-logger
-}
-
-define service {
-    use                      passive-service
     service_description      check_procs
     hostgroup_name           fundraising-logger
 }
@@ -664,6 +664,12 @@ define service {
 
 define service {
     use                      passive-service
+    service_description      check_rsyslog_backlog
+    hostgroup_name           fundraising-logger
+}
+
+define service {
+    use                      passive-service
     service_description      check_swap
     hostgroup_name           fundraising-logger
 }
@@ -671,6 +677,12 @@ define service {
 define service {
     use                      passive-service
     service_description      check_timesync
+    hostgroup_name           fundraising-logger
+}
+
+define service {
+    use                      passive-service
+    service_description      check_zombie
     hostgroup_name           fundraising-logger
 }
 
@@ -696,12 +708,6 @@ define service {
 
 define service {
     use                      passive-service
-    service_description      check_zombie
-    hostgroup_name           fundraising-build
-}
-
-define service {
-    use                      passive-service
     service_description      check_procs
     hostgroup_name           fundraising-build
 }
@@ -714,19 +720,31 @@ define service {
 
 define service {
     use                      passive-service
-    service_description      check_swap
-    hostgroup_name           fundraising-build
-}
-
-define service {
-    use                      passive-service
     service_description      check_raid
     hostgroup_name           fundraising-build
 }
 
 define service {
     use                      passive-service
+    service_description      check_rsyslog_backlog
+    hostgroup_name           fundraising-build
+}
+
+define service {
+    use                      passive-service
+    service_description      check_swap
+    hostgroup_name           fundraising-build
+}
+
+define service {
+    use                      passive-service
     service_description      check_timesync
+    hostgroup_name           fundraising-build
+}
+
+define service {
+    use                      passive-service
+    service_description      check_zombie
     hostgroup_name           fundraising-build
 }
 
@@ -752,12 +770,6 @@ define service {
 
 define service {
     use                      passive-service
-    service_description      check_zombie
-    hostgroup_name           fundraising-pay-lvs
-}
-
-define service {
-    use                      passive-service
     service_description      check_procs
     hostgroup_name           fundraising-pay-lvs
 }
@@ -765,6 +777,18 @@ define service {
 define service {
     use                      passive-service
     service_description      check_puppetrun
+    hostgroup_name           fundraising-pay-lvs
+}
+
+define service {
+    use                      passive-service
+    service_description      check_raid
+    hostgroup_name           fundraising-pay-lvs
+}
+
+define service {
+    use                      passive-service
+    service_description      check_rsyslog_backlog
     hostgroup_name           fundraising-pay-lvs
 }
 
@@ -780,6 +804,11 @@ define service {
     hostgroup_name           fundraising-pay-lvs
 }
 
+define service {
+    use                      passive-service
+    service_description      check_zombie
+    hostgroup_name           fundraising-pay-lvs
+}
 
 # fundraising-queue hostgroup
 
@@ -802,12 +831,6 @@ define service {
 
 define service {
     use                      passive-service
-    service_description      check_zombie
-    hostgroup_name           fundraising-queue
-}
-
-define service {
-    use                      passive-service
     service_description      check_procs
     hostgroup_name           fundraising-queue
 }
@@ -815,12 +838,6 @@ define service {
 define service {
     use                      passive-service
     service_description      check_puppetrun
-    hostgroup_name           fundraising-queue
-}
-
-define service {
-    use                      passive-service
-    service_description      check_swap
     hostgroup_name           fundraising-queue
 }
 
@@ -839,7 +856,25 @@ define service {
 
 define service {
     use                      passive-service
+    service_description      check_rsyslog_backlog
+    hostgroup_name           fundraising-queue
+}
+
+define service {
+    use                      passive-service
+    service_description      check_swap
+    hostgroup_name           fundraising-queue
+}
+
+define service {
+    use                      passive-service
     service_description      check_timesync
+    hostgroup_name           fundraising-queue
+}
+
+define service {
+    use                      passive-service
+    service_description      check_zombie
     hostgroup_name           fundraising-queue
 }
 
@@ -865,12 +900,6 @@ define service {
 
 define service {
     use                      passive-service
-    service_description      check_zombie
-    hostgroup_name           fundraising-bastion
-}
-
-define service {
-    use                      passive-service
     service_description      check_procs
     hostgroup_name           fundraising-bastion
 }
@@ -883,6 +912,18 @@ define service {
 
 define service {
     use                      passive-service
+    service_description      check_raid
+    hostgroup_name           fundraising-bastion
+}
+
+define service {
+    use                      passive-service
+    service_description      check_rsyslog_backlog
+    hostgroup_name           fundraising-bastion
+}
+
+define service {
+    use                      passive-service
     service_description      check_swap
     hostgroup_name           fundraising-bastion
 }
@@ -890,6 +931,12 @@ define service {
 define service {
     use                      passive-service
     service_description      check_timesync
+    hostgroup_name           fundraising-bastion
+}
+
+define service {
+    use                      passive-service
+    service_description      check_zombie
     hostgroup_name           fundraising-bastion
 }
 
@@ -915,12 +962,6 @@ define service {
 
 define service {
     use                      passive-service
-    service_description      check_zombie
-    hostgroup_name           fundraising-reporting
-}
-
-define service {
-    use                      passive-service
     service_description      check_procs
     hostgroup_name           fundraising-reporting
 }
@@ -933,13 +974,13 @@ define service {
 
 define service {
     use                      passive-service
-    service_description      check_swap
+    service_description      check_raid
     hostgroup_name           fundraising-reporting
 }
 
 define service {
     use                      passive-service
-    service_description      check_raid
+    service_description      check_rsyslog_backlog
     hostgroup_name           fundraising-reporting
 }
 
@@ -951,7 +992,19 @@ define service {
 
 define service {
     use                      passive-service
+    service_description      check_swap
+    hostgroup_name           fundraising-reporting
+}
+
+define service {
+    use                      passive-service
     service_description      check_timesync
+    hostgroup_name           fundraising-reporting
+}
+
+define service {
+    use                      passive-service
+    service_description      check_zombie
     hostgroup_name           fundraising-reporting
 }
 
@@ -977,7 +1030,13 @@ define service {
 
 define service {
     use                      passive-service
-    service_description      check_zombie
+    service_description      check_missing_thank_yous
+    host_name                frdb1001
+}
+
+define service {
+    use                      passive-service
+    service_description      check_mysql
     hostgroup_name           fundraising-database
 }
 
@@ -995,25 +1054,7 @@ define service {
 
 define service {
     use                      passive-service
-    service_description      check_swap
-    hostgroup_name           fundraising-database
-}
-
-define service {
-    use                      passive-service
     service_description      check_raid
-    hostgroup_name           fundraising-database
-}
-
-define service {
-    use                      passive-service
-    service_description      check_mysql
-    hostgroup_name           fundraising-database
-}
-
-define service {
-    use                      passive-service
-    service_description      check_timesync
     hostgroup_name           fundraising-database
 }
 
@@ -1043,8 +1084,26 @@ define service {
 
 define service {
     use                      passive-service
-    service_description      check_missing_thank_yous
+    service_description      check_rsyslog_backlog
     host_name                frdb1001
+}
+
+define service {
+    use                      passive-service
+    service_description      check_swap
+    hostgroup_name           fundraising-database
+}
+
+define service {
+    use                      passive-service
+    service_description      check_timesync
+    hostgroup_name           fundraising-database
+}
+
+define service {
+    use                      passive-service
+    service_description      check_zombie
+    hostgroup_name           fundraising-database
 }
 
 
@@ -1057,13 +1116,13 @@ define hostgroup {
 
 define service {
     use                      passive-service
-    service_description      check_mailq
+    service_description      check_disk
     hostgroup_name           fundraising-civicrm
 }
 
 define service {
     use                      passive-service
-    service_description      check_disk
+    service_description      check_ipsec
     hostgroup_name           fundraising-civicrm
 }
 
@@ -1075,7 +1134,7 @@ define service {
 
 define service {
     use                      passive-service
-    service_description      check_zombie
+    service_description      check_mailq
     hostgroup_name           fundraising-civicrm
 }
 
@@ -1093,13 +1152,13 @@ define service {
 
 define service {
     use                      passive-service
-    service_description      check_swap
+    service_description      check_raid
     hostgroup_name           fundraising-civicrm
 }
 
 define service {
     use                      passive-service
-    service_description      check_raid
+    service_description      check_rsyslog_backlog
     hostgroup_name           fundraising-civicrm
 }
 
@@ -1111,13 +1170,19 @@ define service {
 
 define service {
     use                      passive-service
-    service_description      check_ipsec
+    service_description      check_swap
     hostgroup_name           fundraising-civicrm
 }
 
 define service {
     use                      passive-service
     service_description      check_timesync
+    hostgroup_name           fundraising-civicrm
+}
+
+define service {
+    use                      passive-service
+    service_description      check_zombie
     hostgroup_name           fundraising-civicrm
 }
 
@@ -1131,49 +1196,19 @@ define hostgroup {
 
 define service {
     use                      passive-service
+    service_description      check_apache2
+    hostgroup_name           fundraising-listener
+}
+
+define service {
+    use                      passive-service
     service_description      check_disk
     hostgroup_name           fundraising-listener
 }
 
 define service {
     use                      passive-service
-    service_description      check_load
-    hostgroup_name           fundraising-listener
-}
-
-define service {
-    use                      passive-service
-    service_description      check_zombie
-    hostgroup_name           fundraising-listener
-}
-
-define service {
-    use                      passive-service
-    service_description      check_procs
-    hostgroup_name           fundraising-listener
-}
-
-define service {
-    use                      passive-service
-    service_description      check_puppetrun
-    hostgroup_name           fundraising-listener
-}
-
-define service {
-    use                      passive-service
-    service_description      check_swap
-    hostgroup_name           fundraising-listener
-}
-
-define service {
-    use                      passive-service
-    service_description      check_nginx
-    hostgroup_name           fundraising-listener
-}
-
-define service {
-    use                      passive-service
-    service_description      check_apache2
+    service_description      check_ipn_redir
     hostgroup_name           fundraising-listener
 }
 
@@ -1191,6 +1226,42 @@ define service {
 
 define service {
     use                      passive-service
+    service_description      check_load
+    hostgroup_name           fundraising-listener
+}
+
+define service {
+    use                      passive-service
+    service_description      check_nginx
+    hostgroup_name           fundraising-listener
+}
+
+define service {
+    use                      passive-service
+    service_description      check_procs
+    hostgroup_name           fundraising-listener
+}
+
+define service {
+    use                      passive-service
+    service_description      check_puppetrun
+    hostgroup_name           fundraising-listener
+}
+
+define service {
+    use                      passive-service
+    service_description      check_rsyslog_backlog
+    hostgroup_name           fundraising-listener
+}
+
+define service {
+    use                      passive-service
+    service_description      check_swap
+    hostgroup_name           fundraising-listener
+}
+
+define service {
+    use                      passive-service
     service_description      check_ssl
     hostgroup_name           fundraising-listener
 }
@@ -1203,13 +1274,13 @@ define service {
 
 define service {
     use                      passive-service
-    service_description      check_ipn_redir
+    service_description      check_timesync
     hostgroup_name           fundraising-listener
 }
 
 define service {
     use                      passive-service
-    service_description      check_timesync
+    service_description      check_zombie
     hostgroup_name           fundraising-listener
 }
 
@@ -1235,7 +1306,7 @@ define service {
 
 define service {
     use                      passive-service
-    service_description      check_zombie
+    service_description      check_mysql
     hostgroup_name           fundraising-qa
 }
 
@@ -1253,19 +1324,13 @@ define service {
 
 define service {
     use                      passive-service
-    service_description      check_swap
-    hostgroup_name           fundraising-qa
-}
-
-define service {
-    use                      passive-service
     service_description      check_raid
     hostgroup_name           fundraising-qa
 }
 
 define service {
     use                      passive-service
-    service_description      check_mysql
+    service_description      check_rsyslog_backlog
     hostgroup_name           fundraising-qa
 }
 
@@ -1277,7 +1342,19 @@ define service {
 
 define service {
     use                      passive-service
+    service_description      check_swap
+    hostgroup_name           fundraising-qa
+}
+
+define service {
+    use                      passive-service
     service_description      check_timesync
+    hostgroup_name           fundraising-qa
+}
+
+define service {
+    use                      passive-service
+    service_description      check_zombie
     hostgroup_name           fundraising-qa
 }
 
@@ -1303,12 +1380,6 @@ define service {
 
 define service {
     use                      passive-service
-    service_description      check_zombie
-    hostgroup_name           fundraising-backup
-}
-
-define service {
-    use                      passive-service
     service_description      check_procs
     hostgroup_name           fundraising-backup
 }
@@ -1321,6 +1392,18 @@ define service {
 
 define service {
     use                      passive-service
+    service_description      check_raid
+    hostgroup_name           fundraising-backup
+}
+
+define service {
+    use                      passive-service
+    service_description      check_rsyslog_backlog
+    hostgroup_name           fundraising-backup
+}
+
+define service {
+    use                      passive-service
     service_description      check_swap
     hostgroup_name           fundraising-backup
 }
@@ -1328,6 +1411,12 @@ define service {
 define service {
     use                      passive-service
     service_description      check_timesync
+    hostgroup_name           fundraising-backup
+}
+
+define service {
+    use                      passive-service
+    service_description      check_zombie
     hostgroup_name           fundraising-backup
 }
 
@@ -1353,12 +1442,6 @@ define service {
 
 define service {
     use                      passive-service
-    service_description      check_zombie
-    hostgroup_name           fundraising-auth
-}
-
-define service {
-    use                      passive-service
     service_description      check_procs
     hostgroup_name           fundraising-auth
 }
@@ -1371,19 +1454,31 @@ define service {
 
 define service {
     use                      passive-service
-    service_description      check_swap
-    hostgroup_name           fundraising-auth
-}
-
-define service {
-    use                      passive-service
     service_description      check_raid
     hostgroup_name           fundraising-auth
 }
 
 define service {
     use                      passive-service
+    service_description      check_rsyslog_backlog
+    hostgroup_name           fundraising-auth
+}
+
+define service {
+    use                      passive-service
+    service_description      check_swap
+    hostgroup_name           fundraising-auth
+}
+
+define service {
+    use                      passive-service
     service_description      check_timesync
+    hostgroup_name           fundraising-auth
+}
+
+define service {
+    use                      passive-service
+    service_description      check_zombie
     hostgroup_name           fundraising-auth
 }
 
@@ -1409,12 +1504,6 @@ define service {
 
 define service {
     use                      passive-service
-    service_description      check_zombie
-    hostgroup_name           fundraising-network
-}
-
-define service {
-    use                      passive-service
     service_description      check_procs
     hostgroup_name           fundraising-network
 }
@@ -1427,19 +1516,31 @@ define service {
 
 define service {
     use                      passive-service
-    service_description      check_swap
-    hostgroup_name           fundraising-network
-}
-
-define service {
-    use                      passive-service
     service_description      check_raid
     hostgroup_name           fundraising-network
 }
 
 define service {
     use                      passive-service
+    service_description      check_rsyslog_backlog
+    hostgroup_name           fundraising-network
+}
+
+define service {
+    use                      passive-service
+    service_description      check_swap
+    hostgroup_name           fundraising-network
+}
+
+define service {
+    use                      passive-service
     service_description      check_timesync
+    hostgroup_name           fundraising-network
+}
+
+define service {
+    use                      passive-service
+    service_description      check_zombie
     hostgroup_name           fundraising-network
 }
 
@@ -1459,13 +1560,13 @@ define service {
 
 define service {
     use                      passive-service
-    service_description      check_load
+    service_description      check_ipsec
     hostgroup_name           fundraising-banner-logger
 }
 
 define service {
     use                      passive-service
-    service_description      check_zombie
+    service_description      check_load
     hostgroup_name           fundraising-banner-logger
 }
 
@@ -1483,19 +1584,19 @@ define service {
 
 define service {
     use                      passive-service
-    service_description      check_swap
-    hostgroup_name           fundraising-banner-logger
-}
-
-define service {
-    use                      passive-service
     service_description      check_raid
     hostgroup_name           fundraising-banner-logger
 }
 
 define service {
     use                      passive-service
-    service_description      check_ipsec
+    service_description      check_rsyslog_backlog
+    hostgroup_name           fundraising-banner-logger
+}
+
+define service {
+    use                      passive-service
+    service_description      check_swap
     hostgroup_name           fundraising-banner-logger
 }
 
@@ -1504,3 +1605,10 @@ define service {
     service_description      check_timesync
     hostgroup_name           fundraising-banner-logger
 }
+
+define service {
+    use                      passive-service
+    service_description      check_zombie
+    hostgroup_name           fundraising-banner-logger
+}
+
