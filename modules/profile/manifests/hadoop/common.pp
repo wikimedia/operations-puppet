@@ -163,6 +163,10 @@
 #  [*java_home*]
 #    Sets the JAVA_HOME env. variable in hadoop-env.sh
 #
+#  [*net_topology*]
+#    A mapping of FQDN hostname to 'rack'.  This will be used by net-topology.py.erb
+#    to render a script that will be used for Hadoop node rack awareness.
+#
 class profile::hadoop::common (
     $zookeeper_clusters = hiera('zookeeper_clusters'),
     $hadoop_clusters    = hiera('hadoop_clusters'),
@@ -238,6 +242,13 @@ class profile::hadoop::common (
 
     $zookeeper_hosts = keys($zookeeper_clusters[$zookeeper_cluster_name]['hosts'])
 
+    # If specified, this will be rendered into the net-topology.py.erb script.
+    $net_topology = $hadoop_config['net_topology']
+    $net_topology_script_content = $net_topology ? {
+        undef   => undef,
+        default => template('profile/hadoop/net-topology.py.erb'),
+    }
+
     class { '::cdh::hadoop':
         # Default to using running resourcemanager on the same hosts
         # as the namenodes.
@@ -292,7 +303,7 @@ class profile::hadoop::common (
         mapreduce_reduce_memory_mb                  => $mapreduce_reduce_memory_mb,
         mapreduce_reduce_java_opts                  => $mapreduce_reduce_java_opts,
 
-        net_topology_script_template                => 'profile/hadoop/net-topology.py.erb',
+        net_topology_script_content                 => $net_topology_script_content,
 
         # This needs to be set in order to use Impala
         dfs_datanode_hdfs_blocks_metadata_enabled   => true,

@@ -67,7 +67,7 @@ node 'analytics1003.eqiad.wmnet' {
 # analytics1028-analytics1077 are Hadoop worker nodes.
 #
 # NOTE:  If you add, remove or move Hadoop nodes, you should edit
-# modules/role/templates/analytics_cluster/hadoop/net-topology.py.erb
+# hieradata/common.yaml hadoop_clusters net_topology
 # to make sure the hostname -> /datacenter/rack/row id is correct.
 # This is used for Hadoop network topology awareness.
 node /analytics10(2[89]|3[0-9]|4[0-9]|5[0-9]|6[0-9]|7[0-7]).eqiad.wmnet/ {
