@@ -8,7 +8,6 @@ class role::noc::site {
         port   => 'http',
         srange => '($CACHES $CUMIN_MASTERS)',
     }
-
+    include ::profile::mediawiki::common
     include ::noc
 }
-

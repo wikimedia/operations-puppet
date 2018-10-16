@@ -1,6 +1,6 @@
 class mediawiki::maintenance::pagetriage( $ensure = present ) {
 
-    require ::mediawiki
+    require ::mediawiki::users
 
     system::role { 'mediawiki::maintenance::pagetriage': description => 'Mediawiki Maintenance Server: pagetriage extension' }
 
@@ -31,4 +31,3 @@ class mediawiki::maintenance::pagetriage( $ensure = present ) {
         command  => '/usr/local/bin/mwscript extensions/PageTriage/cron/updatePageTriageQueue.php test2wiki > /var/log/mediawiki/updatePageTriageQueue.test2.log',
     }
 }
-

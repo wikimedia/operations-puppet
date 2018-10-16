@@ -2,7 +2,7 @@
 class noc {
 
     # NOC needs a working mediawiki installation at the moment
-    include ::mediawiki # lint:ignore:wmf_styleguide
+    # so it will need profile::mediawiki::common to be present.
 
     include ::apache # lint:ignore:wmf_styleguide
 

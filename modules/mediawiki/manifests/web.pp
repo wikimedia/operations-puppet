@@ -5,7 +5,6 @@ class mediawiki::web {
     tag 'mediawiki', 'mw-apache-config'
 
     include ::apache
-    include ::mediawiki
     include ::mediawiki::users
 
     include ::mediawiki::web::modules

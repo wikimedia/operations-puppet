@@ -1,5 +1,5 @@
 class mediawiki::maintenance::readinglists( $ensure = present ) {
-    require ::mediawiki
+    require ::mediawiki::users
 
     cron { 'readinglists_purge':
         ensure  => $ensure,
@@ -9,4 +9,3 @@ class mediawiki::maintenance::readinglists( $ensure = present ) {
         command => '/usr/local/bin/mwscript extensions/ReadingLists/maintenance/purge.php --wiki=metawiki > /var/log/mediawiki/readinglists_purge.log',
     }
 }
-
