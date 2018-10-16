@@ -14,8 +14,8 @@ package Local::CheckJnxAlarms;
 
 use strict;
 use warnings;
-use Nagios::Plugin::Getopt;
-use Nagios::Plugin::Functions;
+use Monitoring::Plugin::Getopt;
+use Monitoring::Plugin::Functions;
 use Net::SNMP;
 
 my %name2oid = (
@@ -42,7 +42,7 @@ our ( @crit, @warn, @ok );
 sub init {
     ( @crit, @warn, @ok ) = ();
 
-    $ng = Nagios::Plugin::Getopt->new(
+    $ng = Monitoring::Plugin::Getopt->new(
         usage   => 'Usage: %s -H <host> --c <community> [...]',
         version => 1,
         blurb   => 'Checks the state of a router\'s BGP peerings',
@@ -83,7 +83,7 @@ sub collect {
         -version   => $ng->snmpver,
     );
     unless ( defined $session ) {
-        nagios_exit( CRITICAL, $error );
+        plugin_exit( CRITICAL, $error );
     }
 
     my ( %alarms, @text );
@@ -93,7 +93,7 @@ sub collect {
         my $response   = $session->get_table(
             -baseoid        => $oid,
             -maxrepetitions => 15,
-        ) or nagios_exit( CRITICAL, $session->error );
+        ) or plugin_exit( CRITICAL, $session->error );
 
         my $value = ( values %{$response} )[0];
         $alarms{$type} = $value;
@@ -114,7 +114,7 @@ sub run {
 
     print join( "\n", @ok ), "\n" if $ng->verbose;
 
-    nagios_exit(
+    plugin_exit(
         check_messages(
             critical => \@crit,
             warning  => \@warn,
