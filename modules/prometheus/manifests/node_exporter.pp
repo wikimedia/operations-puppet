@@ -30,15 +30,14 @@
 
 
 class prometheus::node_exporter (
-    $ignored_devices  = '^(ram|loop|fd|(h|s|v|xv)d[a-z]|nvme\\\\d+n\\\\d+p)\\\\d+$',
-    $ignored_fs_types  = '^(overlay|autofs|binfmt_misc|cgroup|configfs|debugfs|devpts|devtmpfs|fusectl|hugetlbfs|mqueue|proc|procfs|pstore|rpc_pipefs|securityfs|sysfs|tracefs)$',
-    $ignored_mount_points  = '^/(sys|proc|dev)($|/)',
-    $collectors_extra = [],
-    $collector_ntp_server = '127.0.0.1',
-    $web_listen_address = ':9100',
+    String $ignored_devices  = '^(ram|loop|fd|(h|s|v|xv)d[a-z]|nvme\\\\d+n\\\\d+p)\\\\d+$',
+    String $ignored_fs_types  = '^(overlay|autofs|binfmt_misc|cgroup|configfs|debugfs|devpts|devtmpfs|fusectl|hugetlbfs|mqueue|proc|procfs|pstore|rpc_pipefs|securityfs|sysfs|tracefs)$',
+    String $ignored_mount_points  = '^/(sys|proc|dev)($|/)',
+    Array[String] $collectors_extra = [],
+    String $collector_ntp_server = '127.0.0.1',
+    Pattern[/:\d+$/] $web_listen_address = ':9100',
 ) {
     require_package('prometheus-node-exporter')
-    validate_re($web_listen_address, ':\d+$')
 
     $collectors_default = ['buddyinfo', 'conntrack', 'diskstats', 'entropy', 'edac', 'filefd', 'filesystem', 'hwmon',
         'loadavg', 'mdadm', 'meminfo', 'netdev', 'netstat', 'sockstat', 'stat', 'tcpstat',
