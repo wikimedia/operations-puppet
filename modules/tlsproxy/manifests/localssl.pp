@@ -84,6 +84,10 @@ define tlsproxy::localssl(
         fail('Specify either certs or acme_subjects, not both and not neither.')
     }
 
+    if $redir_port != undef and $tls_port != 443 {
+        fail('http -> https redirect only works with default 443 HTTPS port.')
+    }
+
     require tlsproxy::instance
 
     $websocket_support = hiera('cache::websocket_support', false)
@@ -93,11 +97,11 @@ define tlsproxy::localssl(
     $fastopen_pending_max = hiera('tlsproxy::localssl::fastopen_pending_max', 150)
 
     # Ensure that exactly one definition exists with default_server = true
-    # if multiple defines have default_server set to true, this
-    # resource will conflict.
+    # for a given port. If multiple defines have default_server set to true,
+    # this resource will conflict.
     if $default_server {
-        notify { 'tlsproxy localssl default_server':
-            message => "tlsproxy::localssl instance ${title} with server name ${server_name} is the default server."
+        notify { "tlsproxy localssl default_server on port ${tls_port}":
+            message => "tlsproxy::localssl instance ${title} on port ${tls_port} with server name ${server_name} is the default server.",
         }
     }
 
@@ -135,7 +139,7 @@ define tlsproxy::localssl(
     $basename = regsubst($title, '[\W_]', '-', 'G')
 
     nginx::site { $name:
-        require => Notify['tlsproxy localssl default_server'],    # Ensure a default_server has been defined
+        require => Notify["tlsproxy localssl default_server on port ${tls_port}"],    # Ensure a default_server has been defined
         content => template('tlsproxy/localssl.erb')
     }
 }
