@@ -24,7 +24,10 @@ class mediawiki (
     include ::mediawiki::packages
     include ::mediawiki::scap
     include ::mediawiki::users
-    include ::mediawiki::syslog
+    class { '::mediawiki::syslog':
+        forward_syslog => $forward_syslog,
+        log_aggregator => $log_aggregator,
+    }
     include ::mediawiki::mwrepl
 
     # lint:ignore:wmf_styleguide

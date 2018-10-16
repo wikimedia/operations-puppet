@@ -6,7 +6,7 @@
 # MediaWiki log aggregator via UDP. It also sets up log rotation for the
 # local log files.
 #
-class mediawiki::syslog {
+class mediawiki::syslog($forward_syslog = undef, $log_aggregator = undef) {
 
     # We assign a priority of 40 to MediaWiki's rsyslog config file
     # so we can intercept log messages before they fall through to

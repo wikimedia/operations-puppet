@@ -13,26 +13,26 @@ $outchannel apache2, /var/log/apache2.log, 100000000, /usr/sbin/logrotate -f /et
 # Forward Apache to /var/log/apache2.log and log aggregator.
 if $programname == "apache2" then {
     :omfile:$apache2
-    @<%= scope['::mediawiki::log_aggregator'] %>;MediaWiki
-<% if scope['::mediawiki::forward_syslog'] -%>
-    @<%= scope['::mediawiki::forward_syslog'] %>
+    @<%= @log_aggregator %>;MediaWiki
+<% if @forward_syslog -%>
+    @<%= @forward_syslog %>
 <% end -%>
     stop
 }
 
 # Forward HHVM logs and stack traces to log aggregator.
 if $programname == "hhvm" then {
-    @<%= scope['::mediawiki::log_aggregator'] %>;MediaWiki
-<% if scope['::mediawiki::forward_syslog'] -%>
-    @<%= scope['::mediawiki::forward_syslog'] %>
+    @<%= @log_aggregator %>;MediaWiki
+<% if @forward_syslog -%>
+    @<%= @forward_syslog %>
 <% end -%>
     stop
 }
 
 if $syslogtag == "hhvm-fatal:" then {
-    @<%= scope['::mediawiki::log_aggregator'] %>;MediaWiki
-<% if scope['::mediawiki::forward_syslog'] -%>
-    @<%= scope['::mediawiki::forward_syslog'] %>
+    @<%= @log_aggregator %>;MediaWiki
+<% if @forward_syslog -%>
+    @<%= @forward_syslog %>
 <% end -%>
     stop
 }
@@ -41,8 +41,8 @@ if $syslogtag == "hhvm-fatal:" then {
 # "hhvm" (such as warnings that the process was killed or respawned)
 # to the log aggregator.
 if $msg contains "hhvm" and $programname == "kernel" then {
-    @<%= scope['::mediawiki::log_aggregator'] %>;MediaWiki
-<% if scope['::mediawiki::forward_syslog'] -%>
-    @<%= scope['::mediawiki::forward_syslog'] %>
+    @<%= @log_aggregator %>;MediaWiki
+<% if @forward_syslog -%>
+    @<%= @forward_syslog %>
 <% end -%>
 }
