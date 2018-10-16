@@ -4,11 +4,12 @@
 #
 
 class prometheus::node_puppet_agent (
-    $ensure = 'present',
-    $outfile = '/var/lib/prometheus/node.d/puppet_agent.prom',
+    Wmflib::Ensure $ensure = 'present',
+    Stdlib::AbsolutePath $outfile = '/var/lib/prometheus/node.d/puppet_agent.prom',
 ) {
-    validate_re($outfile, '\.prom$')
-    validate_ensure($ensure)
+    if !($outfile =~ /\.prom$/) {
+        fail("\$outfile should end with '.prom' but is [${outfile}]")
+    }
 
     require_package(['python-prometheus-client', 'python-yaml'])
 
