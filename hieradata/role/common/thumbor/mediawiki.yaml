@@ -65,6 +65,9 @@ profile::prometheus::statsd_exporter::mappings:
       match_type: regex
       labels:
         format: "$2"
+    # Duplicated metric, drop
+    - match: thumbor.*.response.time
+      action: drop
 
     - match: thumbor.*.swift.thumbnail.*.success
       name: thumbor_swift_thumbnail_success
@@ -83,6 +86,11 @@ profile::prometheus::statsd_exporter::mappings:
       name: thumbor_swift_original_miss
       labels:
         operation: "$2"
+
+    - match: thumbor.*.swift_loader.status.*
+      name: thumbor_swift_loader_operations_total
+      labels:
+        status: "$2"
 
     - match: thumbor.*.engine.processing_utime.*.engine.*
       name: thumbor_engine_user_milliseconds
