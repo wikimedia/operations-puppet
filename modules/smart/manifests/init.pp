@@ -52,7 +52,7 @@ class smart (
 
     cron { 'export_smart_data_dump':
         ensure  => $ensure,
-        command => "/usr/local/sbin/smart-data-dump --outfile ${outfile}",
+        command => "/usr/local/sbin/smart-data-dump --syslog --outfile ${outfile}",
         user    => 'root',
         hour    => '*',
         minute  => fqdn_rand(60, 'export_smart_data_dump'),
