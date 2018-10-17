@@ -16,12 +16,6 @@ class profile::analytics::cluster::rsyncd(
         list        => 'yes',
         hosts_allow => $hosts_allow,
         require     => Class['cdh::hadoop::mount'],
-    }
-
-    $hosts_allow_ferm = join($hosts_allow, ' ')
-    ferm::service {'analytics_rsyncd_hdfs_archive':
-        port   => '873',
-        proto  => 'tcp',
-        srange => "@resolve((${hosts_allow_ferm}))",
+        auto_ferm   => true,
     }
 }
