@@ -13,7 +13,7 @@ configfile="${confsdir}/wikidump.conf.dumps"
 
 today=`date +'%Y%m%d'`
 daysToKeep=70
-pagesPerBatch=400000
+pagesPerBatch=200000
 
 args="wiki:multiversion;output:temp;tools:php"
 results=`python "${repodir}/getconfigvals.py" --configfile "$configfile" --args "$args"`
