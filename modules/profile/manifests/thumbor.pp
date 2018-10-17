@@ -5,6 +5,7 @@ class profile::thumbor(
     $swift_sharded_containers = hiera_array('swift::proxy::shard_container_list'),
     $swift_private_containers = hiera_array('swift::proxy::private_container_list'),
     $thumbor_mediawiki_shared_secret = hiera('thumbor::mediawiki::shared_secret'),
+    $statsd_port = hiera('statsd_exporter_port'),
 ) {
     include ::profile::conftool::client
     class { 'conftool::scripts': }
@@ -16,6 +17,7 @@ class profile::thumbor(
     class { '::thumbor':
         logstash_host => $logstash_host,
         logstash_port => $logstash_port,
+        statsd_port   => $statsd_port,
     }
 
     include ::swift::params

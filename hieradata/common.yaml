@@ -8,6 +8,7 @@ datacenters:
 
 # Main statsd instance
 statsd: statsd.eqiad.wmnet:8125
+statsd_exporter_port: 9125
 
 # Debmonitor instance
 debmonitor: debmonitor.discovery.wmnet
