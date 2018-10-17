@@ -88,12 +88,6 @@ class icinga::plugins(
         group  => 'root',
         mode   => '0755',
     }
-    file { '/usr/lib/nagios/plugins/check_longqueries':
-        source => 'puppet:///modules/icinga/check_longqueries.pl',
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0755',
-    }
     file { '/usr/lib/nagios/plugins/check_MySQL.php':
         source => 'puppet:///modules/icinga/check_MySQL.php',
         owner  => 'root',
