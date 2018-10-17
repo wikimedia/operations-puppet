@@ -231,21 +231,13 @@ class profile::phabricator::main (
     if $rsync_cfg_enabled {
         class { '::rsync::server': }
 
-        $rsync_clients = 'labstore1006.wikimedia.org labstore1007.wikimedia.org'
+        $rsync_clients = ['labstore1006.wikimedia.org', 'labstore1007.wikimedia.org']
         rsync::server::module { 'srvdumps':
-            path        => '/srv/dumps',
-            read_only   => 'yes',
-            hosts_allow => $rsync_clients,
-        }
-        ferm::service {'phabdumps_rsyncd_ipv4':
-            port   => '873',
-            proto  => 'tcp',
-            srange => "@resolve((${rsync_clients}))",
-        }
-        ferm::service {'phabdumps_rsyncd_ipv6':
-            port   => '873',
-            proto  => 'tcp',
-            srange => "@resolve((${rsync_clients}),AAAA)",
+            path           => '/srv/dumps',
+            read_only      => 'yes',
+            hosts_allow    => $rsync_clients,
+            auto_ferm      => true,
+            auto_ferm_ipv6 => true,
         }
     }
 
