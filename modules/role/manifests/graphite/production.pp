@@ -93,12 +93,7 @@ class role::graphite::production {
         uid         => '_graphite',
         gid         => '_graphite',
         hosts_allow => $graphite_hosts,
-    }
-
-    ferm::service { 'rsync-graphite':
-        proto  => 'tcp',
-        port   => '873',
-        srange => "@resolve((${graphite_hosts_ferm}))",
+        auto_ferm   => true,
     }
 
     ferm::service { 'carbon_c_relay-local_relay_udp':
