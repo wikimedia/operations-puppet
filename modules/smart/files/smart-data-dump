@@ -94,8 +94,13 @@ def get_fact(fact_name):
 def megaraid_list_pd():
     """List physical disks attached to megaraid controller. Generator to yield PD objects."""
 
-    raw_output = subprocess.check_output(['/usr/bin/timeout', '60', '/usr/sbin/smartctl',
-                                          '--scan-open'])
+    try:
+        raw_output = subprocess.check_output(['/usr/bin/timeout', '60', '/usr/sbin/smartctl',
+                                              '--scan-open'])
+    except subprocess.CalledProcessError:
+        log.exception('Failed to scan for megaraid physical disks')
+        return
+
     for line in raw_output.splitlines():
         line = str(line, 'utf8', 'ignore')
         if 'megaraid,' not in line:
@@ -110,8 +115,13 @@ def megaraid_list_pd():
 def hpsa_list_pd():
     """List physical disks attached to hpsa controller. Generator to yield PD objects."""
 
-    raw_output = subprocess.check_output(['/usr/bin/timeout', '60', '/usr/sbin/hpssacli',
-                                          'controller', 'all', 'show', 'config'])
+    try:
+        raw_output = subprocess.check_output(['/usr/bin/timeout', '60', '/usr/sbin/hpssacli',
+                                              'controller', 'all', 'show', 'config'])
+    except subprocess.CalledProcessError:
+        log.exception('Failed to scan for hpsa physical disks')
+        return
+
     in_controller = False
     for line in raw_output.splitlines():
         line = str(line, 'utf8', 'ignore')
@@ -132,9 +142,14 @@ def hpsa_list_pd():
 def noraid_list_pd():
     """List all physical disks. Generator to yield PD objects."""
 
-    # starting with stretch, lsblk has --json but not on trusty/jessie
-    raw_output = subprocess.check_output(['/usr/bin/timeout', '60', '/bin/lsblk', '--noheadings',
-                                          '--output', 'NAME,TYPE', '--raw'])
+    try:
+        # starting with stretch, lsblk has --json but not on trusty/jessie
+        raw_output = subprocess.check_output(['/usr/bin/timeout', '60', '/bin/lsblk',
+                                              '--noheadings', '--output', 'NAME,TYPE', '--raw'])
+    except subprocess.CalledProcessError:
+        log.exception('Failed to scan for directly attached physical disks')
+        return
+
     for line in raw_output.splitlines():
         line = str(line, 'utf8', 'ignore')
         name, disk_type = line.split(' ', 1)
