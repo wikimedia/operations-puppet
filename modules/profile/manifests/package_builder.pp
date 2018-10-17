@@ -16,11 +16,12 @@ class profile::package_builder {
         path        => '/var/cache/pbuilder/result',
     }
 
-    # Allow rsync
     ferm::service { 'package_builder_rsync':
-        proto => 'tcp',
-        port  => 873,
+        proto  => 'tcp',
+        port   => 873,
+        srange => '$DOMAIN_NETWORKS',
     }
+
     monitoring::service { 'package_builder_rsync':
         description   => 'package builder rsync',
         check_command => 'check_tcp!873',
