@@ -434,6 +434,7 @@ class mediawiki::web::prod_sites {
                 'ua.wikimedia.org',
                 'us.wikimedia.org',
                 'wb.wikimedia.org',
+                'za.wikimedia.org',
             ],
             legacy_rewrites     => true,
             upload_rewrite      => {
