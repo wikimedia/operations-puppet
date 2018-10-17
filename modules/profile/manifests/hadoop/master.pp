@@ -11,6 +11,7 @@
 #    If production monitoring needs to be enabled or not.
 #
 class profile::hadoop::master(
+    $cluster_name             = hiera('profile::hadoop::common::hadoop_cluster_name'),
     $monitoring_enabled       = hiera('profile::hadoop::master::monitoring_enabled', false),
     $hadoop_namenode_heapsize = hiera('profile::hadoop::master::namenode_heapsize', 2048),
     $hadoop_user_groups       = hiera('profile::hadoop::master::hadoop_user_groups'),
@@ -155,7 +156,7 @@ class profile::hadoop::master(
             monitoring::check_prometheus { 'hadoop-hdfs-namenode-heap-usage':
                 description     => 'HDFS active Namenode JVM Heap usage',
                 dashboard_links => ['https://grafana.wikimedia.org/dashboard/db/analytics-hadoop?panelId=4&fullscreen&orgId=1'],
-                query           => "scalar(quantile_over_time(0.5,jvm_memory_bytes_used{instance=\"${::hostname}:10080\",area=\"heap\"}[120m]))",
+                query           => "scalar(quantile_over_time(0.5,jvm_memory_bytes_used{hadoop_cluster=\"${cluster_name}\",instance=\"${::hostname}:10080\",area=\"heap\"}[120m]))",
                 warning         => $nn_jvm_warning_threshold,
                 critical        => $nn_jvm_critical_threshold,
                 contact_group   => 'analytics',
@@ -170,7 +171,7 @@ class profile::hadoop::master(
             monitoring::check_prometheus { 'hadoop-yarn-resourcemananager-heap-usage':
                 description     => 'YARN active ResourceManager JVM Heap usage',
                 dashboard_links => ['https://grafana.wikimedia.org/dashboard/db/analytics-hadoop?panelId=12&fullscreen&orgId=1'],
-                query           => "scalar(quantile_over_time(0.5,jvm_memory_bytes_used{instance=\"${::hostname}:10083\",area=\"heap\"}[120m]))",
+                query           => "scalar(quantile_over_time(0.5,jvm_memory_bytes_used{hadoop_cluster=\"${cluster_name}\",instance=\"${::hostname}:10083\",area=\"heap\"}[120m]))",
                 warning         => $rm_jvm_warning_threshold,
                 critical        => $rm_jvm_critical_threshold,
                 contact_group   => 'analytics',

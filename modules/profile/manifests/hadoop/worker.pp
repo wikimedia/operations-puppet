@@ -8,6 +8,7 @@
 #    If production monitoring needs to be enabled or not.
 #
 class profile::hadoop::worker(
+    $cluster_name       = hiera('profile::hadoop::common::hadoop_cluster_name'),
     $monitoring_enabled = hiera('profile::hadoop::worker::monitoring_enabled', false),
     $ferm_srange        = hiera('profile::hadoop::worker::ferm_srange', '$DOMAIN_NETWORKS'),
 ) {
@@ -117,7 +118,7 @@ class profile::hadoop::worker(
             monitoring::check_prometheus { 'analytics_hadoop_hdfs_datanode':
                 description     => 'HDFS DataNode JVM Heap usage',
                 dashboard_links => ['https://grafana.wikimedia.org/dashboard/db/analytics-hadoop?panelId=1&fullscreen&orgId=1'],
-                query           => "scalar(quantile_over_time(0.5,jvm_memory_bytes_used{instance=\"${::hostname}:51010\",area=\"heap\"}[120m]))",
+                query           => "scalar(quantile_over_time(0.5,jvm_memory_bytes_used{hadoop_cluster=\"${cluster_name}\",instance=\"${::hostname}:51010\",area=\"heap\"}[120m]))",
                 warning         => $dn_jvm_critical_threshold,
                 critical        => $dn_jvm_critical_threshold,
                 contact_group   => 'analytics',
@@ -132,7 +133,7 @@ class profile::hadoop::worker(
             monitoring::check_prometheus { 'analytics_hadoop_yarn_nodemanager':
                 description     => 'YARN NodeManager JVM Heap usage',
                 dashboard_links => ['https://grafana.wikimedia.org/dashboard/db/analytics-hadoop?orgId=1&panelId=17&fullscreen'],
-                query           => "scalar(quantile_over_time(0.5,jvm_memory_bytes_used{instance=\"${::hostname}:8141\",area=\"heap\"}[120m]))",
+                query           => "scalar(quantile_over_time(0.5,jvm_memory_bytes_used{hadoop_cluster=\"${cluster_name}\",instance=\"${::hostname}:8141\",area=\"heap\"}[120m]))",
                 warning         => $nm_jvm_critical_threshold,
                 critical        => $nm_jvm_critical_threshold,
                 contact_group   => 'analytics',
