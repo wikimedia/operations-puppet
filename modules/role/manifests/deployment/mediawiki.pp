@@ -4,10 +4,6 @@ class role::deployment::mediawiki(
     $keyholder_user = 'mwdeploy',
     $keyholder_group = ['wikidev', 'mwdeploy'],
 ) {
-
-    # All needed classes for deploying mediawiki
-    include ::mediawiki
-
     include ::profile::mediawiki::nutcracker
     include ::profile::conftool::client
     include ::scap::master

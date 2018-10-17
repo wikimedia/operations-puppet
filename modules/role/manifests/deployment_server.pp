@@ -2,6 +2,8 @@
 class role::deployment_server {
     include ::standard
     include ::profile::base::firewall
+    # All needed classes for deploying mediawiki
+    include ::profile::mediawiki::common
     include ::profile::mediawiki::deployment::server
     include ::profile::mediawiki::mcrouter_wancache
     include ::profile::prometheus::mcrouter_exporter
