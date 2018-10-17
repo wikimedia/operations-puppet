@@ -114,8 +114,14 @@ class role::labs::nfs::secondary(
     }
 
     # state via nfs-manage
-    service { 'nfs-kernel-server':
-        enable => false,
+    if $::lsbdistcodename == 'stretch' {
+        service { 'nfs-server':
+            enable => false,
+        }
+    } else {
+        service { 'nfs-kernel-server':
+            enable => false,
+        }
     }
 
     file { '/usr/local/sbin/nfs-manage':
