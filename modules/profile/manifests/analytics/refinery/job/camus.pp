@@ -132,10 +132,10 @@ class profile::analytics::refinery::job::camus(
         }
 
         # Import eventlogging-client-side events for backup purposes
-        camus::job { 'eventlogging-client-side':
-            minute        => '20',
-            kafka_brokers => $kafka_brokers_jumbo,
-        }
+        #camus::job { 'eventlogging-client-side':
+        #    minute        => '20',
+        #    kafka_brokers => $kafka_brokers_jumbo,
+        #}
 
         # Import netflow queue topics into /wmf/data/raw/netflow
         # once every hour.
