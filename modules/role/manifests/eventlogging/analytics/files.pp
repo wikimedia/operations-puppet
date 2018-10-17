@@ -85,19 +85,13 @@ class role::eventlogging::analytics::files {
     if ( $backup_destinations ) {
         class { 'rsync::server': }
 
-        $rsync_clients_ferm = join($backup_destinations, ' ')
-        ferm::service { 'eventlogging_rsyncd':
-            proto  => 'tcp',
-            port   => '873',
-            srange => "@resolve((${rsync_clients_ferm}))",
-        }
-
         rsync::server::module { 'eventlogging':
             path        => $out_dir,
             read_only   => 'yes',
             list        => 'yes',
             require     => File[$out_dir],
             hosts_allow => $backup_destinations,
+            auto_ferm   => true,
         }
     }
 }
