@@ -1104,18 +1104,12 @@ class role::prometheus::ops {
     # Move Prometheus metrics to new HW - T148408
     include rsync::server
 
-    $prometheus_nodes_ferm = join(hiera('prometheus_nodes'), ' ')
-
     rsync::server::module { 'prometheus-ops':
-        path        => '/srv/prometheus/ops/metrics',
-        uid         => 'prometheus',
-        gid         => 'prometheus',
-        hosts_allow => $prometheus_nodes_ferm,
-    }
-
-    ferm::service { 'rsync-prometheus':
-        proto  => 'tcp',
-        port   => '873',
-        srange => "(@resolve((${prometheus_nodes_ferm})) @resolve((${prometheus_nodes_ferm}), AAAA))",
+        path           => '/srv/prometheus/ops/metrics',
+        uid            => 'prometheus',
+        gid            => 'prometheus',
+        hosts_allow    => hiera('prometheus_nodes'),
+        auto_ferm      => true,
+        auto_ferm_ipv6 => true,
     }
 }
