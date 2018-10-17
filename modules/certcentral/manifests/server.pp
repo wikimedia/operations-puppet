@@ -95,9 +95,13 @@ class certcentral::server (
         require  => Package['certcentral'],
     }
 
+    require sslcert::dhparam
     nginx::site { 'certcentral':
         content => template('certcentral/central.nginx.conf.erb'),
-        require => Uwsgi::App['certcentral']
+        require => [
+            Uwsgi::App['certcentral'],
+            File['/etc/ssl/dhparam.pem'],
+        ],
     }
 
     ferm::service { 'certcentral-api':
