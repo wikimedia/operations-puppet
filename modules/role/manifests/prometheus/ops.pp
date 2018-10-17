@@ -1101,10 +1101,11 @@ class role::prometheus::ops {
         cache_name   => 'canary',
     }
 
-    # Move Prometheus metrics to new HW - T148408
+    # Used for  migrations / hardware refresh, but not continuously
     include rsync::server
 
     rsync::server::module { 'prometheus-ops':
+        ensure         => absent,
         path           => '/srv/prometheus/ops/metrics',
         uid            => 'prometheus',
         gid            => 'prometheus',
