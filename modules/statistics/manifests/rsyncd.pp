@@ -25,6 +25,7 @@ class statistics::rsyncd($path, $hosts_allow)
         read_only   => 'no',
         list        => 'yes',
         hosts_allow => $hosts_allow,
+        auto_ferm   => true,
     }
 
     # Set up an rsync module
@@ -34,13 +35,6 @@ class statistics::rsyncd($path, $hosts_allow)
         read_only   => 'no',
         list        => 'yes',
         hosts_allow => $hosts_allow,
-    }
-
-    # Allow rsyncd traffic from internal networks.
-    # and stat* public IPs.
-    ferm::service { 'rsync':
-        proto  => 'tcp',
-        port   => '873',
-        srange => '$PRODUCTION_NETWORKS',
+        auto_ferm   => true,
     }
 }
