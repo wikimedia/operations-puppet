@@ -68,6 +68,7 @@ profile::prometheus::statsd_exporter::mappings:
     # Duplicated metric, drop
     - match: thumbor.*.response.time
       action: drop
+      name: thumbor_response_time_drop
 
     - match: thumbor.*.swift.thumbnail.*.success
       name: thumbor_swift_thumbnail_success
