@@ -3015,6 +3015,15 @@ users:
       - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQCgr5UbpFYwSX418pV4Py2Ii6z48JSnsVwjX31BdpjHHbMNe12klSabux4xBwFrkTzx3qDOIJcdMNRCR0If2EPE4NRTa86U1X2aZ4/TdveTvRsfpk6gMVH2EqEwwLVDhEGFg2mCeUrw+75BiDFjUfqQVSPp2GupGHMdByekWQlmJKH7CXJlNQ6zlurbzTOenaqdCBaxANgfgSfK2OAAdCIqSinOXvJb9+nn0k2hDYDNxqvPXopISa+oxXclk2cuGkDz/GJWkOgzgkhSlMPNU3sZ+3g2nJnZ7Q/apVHK0sjS6u6HWdK7KTlFm0GtWCtQuu1JCcF8m2xGw9PzBCZN54gtpW0OMZZ8nc7w1aiB6kZVPbE0wMOFKCOdvQcD25p2l8rBvLbXLJWWEBqaNz8OLmulkGPsvAmmVh/P1O3MmT5H/dRjfQCqyN5Eu/iY34Q7f2+JRG0GqLL3VIhpDgf+Dglsun/Nr/XrPXW7E6Y0azuwZg8MGMphbchgZqIJXtNtMZVvHzuSHLO8eSw0PASIozK7DpcmfZxHkdprsF1mH9aBXD8D/tmzFwxQ1GSenE21+gyx5leSPs2PcDdIjAaHTlyhkOG88jzByfoqWvu/5b2RanAuA4nu/j/zasEFILupfD48nu7FbWBx6ukrWaxjo94Vf3SHMk7MJuFqgPCR2vsuiQ== ijohnson@isaacwmf.lan
     uid: 20171
     email: ijohnson@wikimedia.org
+  liw:
+    ensure: present
+    realname: Lars Wirzenius
+    name: liw
+    gid: 500
+    ssh_keys:
+      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAID2zn+4xWIOSECwT5R0nzYSalHPylPHsaxkBUkToyWU8 liw@exolobe4
+    uid: 20220
+    email: lwirzenius@wikimedia.org
 ldap_only_users:
   abartov:
     ensure: present
