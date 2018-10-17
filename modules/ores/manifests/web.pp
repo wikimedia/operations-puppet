@@ -5,7 +5,7 @@ class ores::web(
     $redis_host = '127.0.0.1',
     $redis_password = undef,
     $port = 8081,
-    $graphite_server = 'graphite-in.eqiad.wmnet',
+    $statsd_server = 'statsd.eqiad.wmnet',
     $deployment = 'scap3',
     $celery_workers = 35,
     $extra_config = undef,
@@ -49,7 +49,7 @@ class ores::web(
             processes     => $web_workers,
             add-header    => [ 'Access-Control-Allow-Origin: *', "Server: ${::fqdn}" ],
             max-requests  => 200,
-            stats-push    => "statsd:${graphite_server}:8125,ores.${::hostname}.uwsgi",
+            stats-push    => "statsd:${statsd_server}:8125,ores.${::hostname}.uwsgi",
             memory-report => true,
         },
     }
@@ -58,7 +58,7 @@ class ores::web(
     $base_config = {
         'metrics_collectors' => {
             'wmflabs_statsd' => {
-                'host' => $graphite_server,
+                'host' => $statsd_server,
             },
         },
         'ores' => {
