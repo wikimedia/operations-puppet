@@ -20,25 +20,22 @@ class aptrepo::rsync (
         include rsync::server
 
         rsync::server::module { 'install-srv':
-            ensure      => $aptrepo::rsync::ensure,
-            path        => '/srv',
-            read_only   => 'no',
-            hosts_allow => $primary_server,
+            ensure         => $aptrepo::rsync::ensure,
+            path           => '/srv',
+            read_only      => 'no',
+            hosts_allow    => $primary_server,
+            auto_ferm      => true,
+            auto_ferm_ipv6 => true,
         }
 
         rsync::server::module { 'install-home':
-            ensure      => $aptrepo::rsync::ensure,
-            path        => '/home',
-            read_only   => 'no',
-            hosts_allow => $primary_server,
+            ensure         => $aptrepo::rsync::ensure,
+            path           => '/home',
+            read_only      => 'no',
+            hosts_allow    => $primary_server,
+            auto_ferm      => true,
+            auto_ferm_ipv6 => true,
         }
-    }
-
-    ferm::service { 'aptrepo-rsync':
-        ensure => $ensure_ferm,
-        proto  => 'tcp',
-        port   => '873',
-        srange => "(@resolve((${primary_server})) @resolve((${primary_server}), AAAA))",
     }
 
     cron { 'rsync-aptrepo':
