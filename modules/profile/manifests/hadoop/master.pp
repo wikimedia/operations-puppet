@@ -52,6 +52,8 @@ class profile::hadoop::master(
         group  => 'root',
     }
 
+    # TODO: move this elsewhere!
+
     # Ensure that druid deep storage directories exist for all Druid clusters.
     ::druid::cdh::hadoop::deep_storage { 'analytics-eqiad':
         # analytics-eqiad predates the time when there were multiple Druid clusters.
