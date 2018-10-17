@@ -4,10 +4,10 @@
 # filtertags: labs-project-analytics labs-project-math
 class profile::hive::client(
     $zookeeper_clusters     = hiera('zookeeper_clusters'),
-    $zookeeper_cluster_name = hiera('profile::hive::client::zookeeper_cluster_name'),
     $hiveserver_host        = hiera('profile::hive::client::server_host'),
     $hiveserver_port        = hiera('profile::hive::client::server_port'),
     $metastore_host         = hiera('profile::hive::client::hive_metastore_host'),
+    $zookeeper_cluster_name = hiera('profile::hive::client::zookeeper_cluster_name', undef),
     $hive_server_opts       = hiera('profile::hive::client::hive_server_opts', undef),
     $hive_metastore_opts    = hiera('profile::hive::client::hive_metastore_opts', undef),
     $java_home              = hiera('profile::hive::client::java_home', '/usr/lib/jvm/java-8-openjdk-amd64/jre'),
@@ -18,7 +18,13 @@ class profile::hive::client(
     # Automatically include this in Hive client classpaths.
     $hcatalog_jar = 'file:///usr/lib/hive-hcatalog/share/hcatalog/hive-hcatalog-core.jar'
     $auxpath = $hcatalog_jar
-    $zookeeper_hosts        = keys($zookeeper_clusters[$zookeeper_cluster_name]['hosts'])
+
+    # If given a $zookeeper_cluster_name to use for query locking,
+    # look up the hosts from $zookeeper_clusters.
+    $zookeeper_hosts = $zookeeper_cluster_name ? {
+        undef   => undef,
+        default => keys($zookeeper_clusters[$zookeeper_cluster_name]['hosts']),
+    }
 
     # You must set at least:
     #   metastore_host
