@@ -221,34 +221,10 @@ def set_cpus(device, cpus, rxq, rx_irq, txqs):
 
 
 def dist_queues_to_cpus(device, cpu_list, rx_queues, rx_irqs, tx_qmap):
-    """Smart distribution of queues + IRQs to CPUs (or vice-versa)"""
-    if len(rx_queues) >= len(cpu_list):
-        # try to divide queues / CPUs and assign N CPUs per queue, isolated
-        (quot, rem) = divmod(len(rx_queues), len(cpu_list))
-
-        for i, cpu in enumerate(cpu_list):
-            for j in range(quot):
-                rxq = rx_queues[i * quot + j]
-                set_cpus(device, [cpu], rxq, rx_irqs[rxq], tx_qmap[rxq])
-
-        # if there are remainder queues, split CPU list into rem subgroups
-        # (with trailing remainder of CPUs left out), one per queue
-        if rem > 0:
-            cquot = len(cpu_list) / rem
-            for i, rxq in enumerate(rx_queues[-rem:]):
-                cpu_sublist = cpu_list[i * cquot:(i + 1) * cquot]
-                set_cpus(device, cpu_sublist, rxq, rx_irqs[rxq], tx_qmap[rxq])
-
-    else:
-        # do the opposite division
-        (quot, rem) = divmod(len(cpu_list), len(rx_queues))
-
-        # ...and collect CPUs, then assign them together to queues
-        for i, rxq in enumerate(rx_queues):
-            cpus = []
-            for j in range(quot):
-                cpus.append(cpu_list[i * quot + j])
-            set_cpus(device, cpus, rxq, rx_irqs[rxq], tx_qmap[rxq])
+    """This does exactly 1 core for every queue, even if result is uneven"""
+    ncpus = len(cpu_list)
+    for i, rxq in enumerate(rx_queues):
+        set_cpus(device, cpu_list[i % ncpus], rxq, rx_irqs[rxq], tx_qmap[rxq])
 
 
 def setup_qdisc(device, num_queues, qdisc):
