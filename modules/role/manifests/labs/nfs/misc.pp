@@ -29,12 +29,14 @@ class role::labs::nfs::misc(
         path        => '/srv/dumps/pagecounts',
         read_only   => 'no',
         hosts_allow => $dump_servers_ips,
+        auto_ferm   => true,
     }
 
     rsync::server::module { 'dumps':
         path        => '/srv/dumps',
         read_only   => 'no',
         hosts_allow => $dump_servers_ips,
+        auto_ferm   => true,
     }
 
 
@@ -44,7 +46,8 @@ class role::labs::nfs::misc(
         path        => '/srv/statistics',
         read_only   => 'no',
         hosts_allow => $statistics_servers,
-        require     => File['/srv/statistics']
+        require     => File['/srv/statistics'],
+        auto_ferm   => true,
     }
 
     # This has a flat exports list
@@ -108,12 +111,5 @@ class role::labs::nfs::misc(
         atboot  => true,
         device  => '/dev/srv/maps/',
         require => File['/srv/maps'],
-    }
-
-    # this is how prod hosts drop off datasets for serving
-    ferm::rule{'puppetbackendgetter':
-        ensure => 'present',
-        rule   => "saddr (@resolve((${dump_servers_ips})) @resolve((${statistics_servers})))
-                   proto tcp dport 873 ACCEPT;",
     }
 }
