@@ -14,16 +14,26 @@ class profile::hadoop::balancer {
 
     # logrotate HDFS balancer's log files
     logrotate::conf { 'hdfs_balancer':
-        ensure => 'present',
+        ensure => absent,
         source => 'puppet:///modules/profile/hadoop/hdfs_balancer.logrotate',
     }
 
     cron { 'hdfs-balancer':
+        ensure  => absent,
         command => '/usr/local/bin/hdfs-balancer >> /var/log/hadoop-hdfs/balancer.log 2>&1',
         user    => 'hdfs',
         # Every day at 6am UTC.
         minute  => 0,
         hour    => 6,
         require => File['/usr/local/bin/hdfs-balancer'],
+    }
+
+    profile::analytics::systemd_timer { 'hdfs-balancer':
+        description     => 'Run the HDFS balancer script to keep HDFS blocks replicated in the most redundant and efficient way.',
+        command         => '/usr/local/bin/hdfs-balancer',
+        interval        => '*-*-* 06:00:00',
+        logfile_name    => 'balancer.log',
+        logfile_basedir => '/var/log/hadoop-hdfs',
+        require         => File['/usr/local/bin/hdfs-balancer'],
     }
 }
