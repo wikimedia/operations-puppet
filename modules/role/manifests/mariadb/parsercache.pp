@@ -4,6 +4,7 @@
 class role::mariadb::parsercache(
     $shard,
     ) {
+    $mw_primary = mediawiki::state('primary_dc')
 
     include ::standard
     include ::profile::base::firewall
@@ -43,5 +44,15 @@ class role::mariadb::parsercache(
         datacenter => $::site,
         enabled    => true,
     }
-
+    $is_critical = ($mw_primary ==$::site)
+    $contact_group = $is_critical ? {
+        true  => 'dba',
+        false => 'admins',
+    }
+    mariadb::monitor_replication { [ $shard ]:
+      multisource   => false,
+      is_critical   => $is_critical,
+      contact_group => $contact_group,
+      socket        => '/run/mysqld/mysqld.sock',
+    }
 }
