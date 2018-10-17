@@ -44,7 +44,7 @@ class wdqs(
         comment    => 'Blazegraph user',
         forcelocal => true,
         system     => true,
-        home       => $data_dir,
+        #        home       => $package_dir,
         managehome => no,
     }
 
