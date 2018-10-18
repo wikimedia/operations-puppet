@@ -41,6 +41,10 @@
 #   the status of memcached before sending traffic again).
 #   Defaults to 3000.
 #
+# [*timeouts_until_tko*]
+#   Number of timeouts to happen before marking a memcached server as TKO.
+#   Default: undef
+#
 # === Examples
 #
 #  class { '::mcrouter':
@@ -71,6 +75,7 @@ class mcrouter(
     Mcrouter::Ssl $ssl_options = undef,
     Integer $num_proxies = 1,
     Integer $probe_delay_initial_ms = 3000,
+    Optional[Integer] $timeouts_until_tko = undef,
 ) {
     require_package('mcrouter')
 

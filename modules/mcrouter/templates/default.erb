@@ -10,6 +10,9 @@ ADDITIONAL_ARGS="--route-prefix=<%= @region %>/<%= @cluster %> \
 --file-observer-sleep-before-update-ms=100 \
 --num-proxies=<%= @num_proxies %> \
 --probe-timeout-initial=<%= @probe_delay_initial_ms %> \
+<%- if @timeouts_until_tko -%>
+--timeouts-until-tko=<%= @timeouts_until_tko %> \
+<%- end -%>
 <%- if @ssl_options -%>
 --ssl-port <%= @ssl_options['port'] %> \
 --pem-cert-path=<%= @ssl_options['cert'] %> \

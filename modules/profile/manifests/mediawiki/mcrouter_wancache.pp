@@ -6,7 +6,8 @@ class profile::mediawiki::mcrouter_wancache(
     Integer $port = hiera('mcrouter::port'),
     Boolean $has_ssl = hiera('mcrouter::has_ssl'),
     Integer $ssl_port = hiera('mcrouter::ssl_port', $port + 1),
-    Integer $num_proxies = hiera('profile::mediawiki::mcrouter_wancache::num_proxies', 1)
+    Integer $num_proxies = hiera('profile::mediawiki::mcrouter_wancache::num_proxies', 1),
+    Optional[Integer] $timeouts_until_tko = lookup('profile::mediawiki::mcrouter_wancache::timeouts_until_tko', {'default_value' => undef}),
 ) {
     $servers_by_datacenter = $servers_by_datacenter_category['wancache']
     $proxies_by_datacenter = pick($servers_by_datacenter_category['proxies'], {})
@@ -109,6 +110,7 @@ class profile::mediawiki::mcrouter_wancache(
         cross_region_timeout_ms  => 250,
         cross_cluster_timeout_ms => 1000,
         num_proxies              => $num_proxies,
+        timeouts_until_tko       => $timeouts_until_tko,
         port                     => $port,
         ssl_options              => $ssl_options,
     }
