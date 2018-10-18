@@ -2,8 +2,8 @@
 #
 # Sets up icinga check_plugins and notification commands
 class icinga::plugins(
-    $icinga_user,
-    $icinga_group,
+    String $icinga_user,
+    String $icinga_group,
 ){
     package { 'nagios-nrpe-plugin':
         ensure => present,

@@ -3,9 +3,9 @@
 # Sets up an apache instance for icinga web interface,
 # protected with ldap authentication
 class icinga::web (
-    $icinga_user,
-    $icinga_group,
-    $virtual_host,
+    String $icinga_user,
+    String $icinga_group,
+    String $virtual_host,
 ) {
 
     # Apparently required for the web interface

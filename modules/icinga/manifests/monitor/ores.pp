@@ -1,7 +1,7 @@
 # monitoring of https://www.mediawiki.org/wiki/ORES
 class icinga::monitor::ores (
-    $icinga_user,
-    $icinga_group,
+    String $icinga_user,
+    String $icinga_group,
 ){
 
     monitoring::grafana_alert { 'db/ores':

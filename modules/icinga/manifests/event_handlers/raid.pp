@@ -2,8 +2,8 @@
 #
 # Sets up icinga RAID event handler
 class icinga::event_handlers::raid (
-    $icinga_user,
-    $icinga_group,
+    String $icinga_user,
+    String $icinga_group,
 ){
     include ::passwords::phabricator
 

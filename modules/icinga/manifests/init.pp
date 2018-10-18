@@ -9,18 +9,18 @@
 # test. That is submit a passive check of DOWN for a paging service and confirm
 # people get the pages.
 class icinga(
-    $icinga_user,
-    $icinga_group,
-    $enable_notifications  = 1,
-    $enable_event_handlers = 1,
-    $ensure_service = 'running',
-    $cfg_files = [
+    String $icinga_user,
+    String $icinga_group,
+    Integer[0, 1] $enable_notifications  = 1,
+    Integer[0, 1] $enable_event_handlers = 1,
+    Enum['stopped', 'running'] $ensure_service = 'running',
+    Array[Stdlib::Unixpath] $cfg_files = [
         '/etc/nagios/puppet_hostgroups.cfg',     # Backwards-compatibility
         '/etc/nagios/puppet_servicegroups.cfg',
         '/etc/nagios/nagios_host.cfg',           # Locally-generated hosts (routers, pdus, et. al. -- not naggen2)
         '/etc/nagios/nagios_service.cfg',
     ],
-    $cfg_dirs = [
+    Array[Stdlib::Unixpath] $cfg_dirs = [
         '/etc/icinga/commands'
     ],
 ) {

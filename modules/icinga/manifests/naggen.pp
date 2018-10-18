@@ -3,8 +3,8 @@
 # Runs naggen2 to generate hosts, service and hostext config
 # from exported puppet resources
 class icinga::naggen (
-    $icinga_user,
-    $icinga_group,
+    String $icinga_user,
+    String $icinga_group,
 ){
     include ::icinga
     $dbarg = $::use_puppetdb ? {

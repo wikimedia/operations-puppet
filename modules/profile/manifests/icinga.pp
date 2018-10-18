@@ -6,13 +6,13 @@
 # = Parameters
 #
 class profile::icinga(
-    $monitoring_groups = hiera('monitoring::groups'),
-    $active_host = hiera('profile::icinga::active_host'),
-    $partners = hiera('profile::icinga::partners', []),
-    $ensure_service = hiera('profile::icinga::ensure_service', 'running'),
-    $virtual_host = hiera('profile::icinga::virtual_host'),
-    $icinga_user = hiera('profile::icinga::icinga_user', 'icinga'),
-    $icinga_group = hiera('profile::icinga::icinga_group', 'icinga'),
+    Hash[String, Hash] $monitoring_groups = hiera('monitoring::groups'),
+    String $active_host = hiera('profile::icinga::active_host'),
+    Array[String] $partners = hiera('profile::icinga::partners', []),
+    Enum['stopped', 'running'] $ensure_service = hiera('profile::icinga::ensure_service', 'running'),
+    String $virtual_host = hiera('profile::icinga::virtual_host'),
+    String $icinga_user = hiera('profile::icinga::icinga_user', 'icinga'),
+    String $icinga_group = hiera('profile::icinga::icinga_group', 'icinga'),
 ){
     $is_passive = !($::fqdn == $active_host)
 
