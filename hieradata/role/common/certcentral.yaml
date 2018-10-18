@@ -2,7 +2,13 @@ profile::certcentral::accounts:
   6e01c693ed6e9d9a6b5930923ecef104:
     regr: '{"body": {}, "uri": "https://acme-staging-v02.api.letsencrypt.org/acme/acct/7090084"}'
     directory: "https://acme-staging-v02.api.letsencrypt.org/directory"
-profile::certcentral::certificates: {} # To be filled in following commits
+profile::certcentral::certificates:
+    pinkunicorn:
+        CN: pinkunicorn.wikimedia.org
+        SNI:
+        - pinkunicorn.wikimedia.org
+        - '*.pinkunicorn.wikimedia.org'
+        challenge: dns-01
 profile::certcentral::challenges:
   dns-01:
     zone_update_cmd: /usr/local/bin/certcentral-gdnsd-sync.py
