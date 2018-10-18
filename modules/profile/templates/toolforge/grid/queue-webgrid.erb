@@ -11,7 +11,7 @@ slots                 256
 tmpdir                /tmp
 shell                 /bin/bash
 shell_start_mode      unix_behavior
-terminate_method      SIGTERM
+terminate_method      /usr/local/bin/jobkill $job_pid
 notify                00:00:60
 prolog                NONE
 epilog                /usr/local/bin/portreleaser

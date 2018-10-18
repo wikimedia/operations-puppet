@@ -5,7 +5,7 @@ define sonofgridengine::queue(
     $config  = undef,
 ) {
 
-    gridengine::resource { $rname:
+    soneofgridengine::resource { $rname:
         dir    => 'queues',
         config => $config,
     }

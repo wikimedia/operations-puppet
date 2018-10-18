@@ -4,9 +4,9 @@ class profile::toolforge::grid::base (
     $external_hostname = hiera('profile::toolforge::external_hostname', undef),
     $external_ip = hiera('profile::toolforge::external_ip', undef),
     $is_mail_relay = hiera('profile::toolforge::is_mail_relay', false),
-    $active_mail_relay = hiera('profile::toolforge::is_mail_relay', 'tools-mail.tools.eqiad.wmflabs'),
-    $mail_domain = hiera('profile::toolforge::is_mail_relay', 'tools.wmflabs.org'),
-    $active_proxy = hiera('active_proxy_host'),
+    $active_mail_relay = hiera('profile::toolforge::active_mail_relay', 'tools-mail.tools.eqiad.wmflabs'),
+    $mail_domain = hiera('profile::toolforge::mail_domain', 'tools.wmflabs.org'),
+    $active_proxy = hiera('profile::toolforge::active_proxy_host'),
     $etcdir = hiera('profile::toolforge::etcdir'),
 ) {
 
@@ -25,7 +25,7 @@ class profile::toolforge::grid::base (
     $project_path = '/data/project'
     # should match /etc/default/gridengine
     $sge_root     = '/var/lib/gridengine'
-    $sysdir       = "${project_path}/.system"
+    $sysdir       = "${project_path}/.system_sge"
     $geconf       = "${sysdir}/gridengine"
     $collectors   = "${geconf}/collectors"
 
@@ -35,10 +35,10 @@ class profile::toolforge::grid::base (
     #  - known_hosts
     $store  = "${sysdir}/store"
 
-    # exec {'ensure-grid-is-on-NFS':
-    #     command => '/bin/false',
-    #     unless  => "/usr/bin/timeout -k 5s 60s /usr/bin/test -e ${project_path}/herald",
-    # }
+    exec {'ensure-grid-is-on-NFS':
+        command => '/bin/false',
+        unless  => "/usr/bin/timeout -k 5s 60s /usr/bin/test -e ${project_path}/herald",
+    }
 
     file { $sysdir:
         ensure  => directory,
@@ -157,20 +157,13 @@ class profile::toolforge::grid::base (
         content => $active_proxy,
     }
 
-    file { '/etc/hosts':
-        content => template('toollabs/hosts.erb'),
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0644',
-    }
-
     # Silence e-mails sent when regular users try to sudo (T95882)
     file { '/etc/sudoers.d/40-tools-sudoers-no-warning':
         ensure => file,
         mode   => '0440',
         owner  => 'root',
         group  => 'root',
-        source => 'puppet:///modules/toollabs/40-tools-sudoers-no-warning',
+        source => 'puppet:///modules/profile/toolforge/40-tools-sudoers-no-warning',
     }
 
     file { '/usr/local/bin/log-command-invocation':
@@ -178,7 +171,7 @@ class profile::toolforge::grid::base (
         owner  => 'root',
         group  => 'root',
         mode   => '0555',
-        source => 'puppet:///modules/toollabs/log-command-invocation',
+        source => 'puppet:///modules/profile/toolforge/log-command-invocation',
     }
 
     diamond::collector::localcrontab { 'localcrontabcollector': }

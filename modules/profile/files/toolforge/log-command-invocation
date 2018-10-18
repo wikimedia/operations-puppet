@@ -1,0 +1,4 @@
+#!/bin/sh
+# No-op script to replace former EventLogging ping
+# See https://phabricator.wikimedia.org/T166712
+exec /bin/true

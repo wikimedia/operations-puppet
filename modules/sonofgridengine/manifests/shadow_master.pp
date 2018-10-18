@@ -1,11 +1,11 @@
 # sonofgridengine/shadow_master.pp
 
 class sonofgridengine::shadow_master(
-    $gridmaster = $grid_master,
+    $gridmaster,
     $sgeroot = '/var/lib/gridengine',
 ) {
 
-    #include ::gridengine
+    include ::sonofgridengine
     package { ['gridengine-master', 'gridengine-client']:
         ensure  => latest,
         require => Package['gridengine-common'],

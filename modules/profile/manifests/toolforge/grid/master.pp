@@ -3,8 +3,16 @@
 class profile::toolforge::grid::master (
     $etcdir = hiera('profile::toolforge::etcdir'),
 ){
-    # include ::toollabs::queue::continuous
-    # include ::toollabs::queue::task
+    $hostlist = '@general'
+
+    sonofgridengine::queue { 'continuous':
+        config => 'profile/toolforge/grid/queue-continuous.erb',
+    }
+
+    sonofgridengine::queue { 'task':
+        config => 'profile/toolforge/grid/queue-task.erb',
+    }
+
     class { '::sonofgridengine::master':
         etcdir  => $etcdir,
     }
@@ -73,23 +81,24 @@ class profile::toolforge::grid::master (
         config => 'toollabs/gridengine/queue-webgrid.erb',
     }
 
-    #
+
     # These things are done on toollabs::master because they
     # need to be done exactly once per project (they live on the
     # shared filesystem), and there can only be exactly one
     # gridmaster in this setup.  They could have been done on
     # any singleton instance.
-    #
+
 
     # Make sure that old-style fqdn for nodes are still understood
     # in this new-style fqdn environment by making aliases for the
     # nodes that existed before the change:
+    # UPDATE: commented out because all of the aliases are for old hosts.
     # file { '/var/lib/gridengine/default/common/host_aliases':
     #     ensure  => file,
     #     owner   => 'root',
     #     group   => 'root',
     #     mode    => '0444',
-    #     source  => 'puppet:///modules/toollabs/host_aliases',
+    #     source  => 'puppet:///modules/profile/toolforge/host_aliases',
     #     require => File['/var/lib/gridengine'],
     # }
 
