@@ -189,10 +189,12 @@ node 'centrallog1001.eqiad.wmnet' {
 # Ganeti VMs for certcentral service
 node 'certcentral1001.eqiad.wmnet' {
     role(certcentral)
+    interface::add_ip6_mapped { 'main': }
 }
 
 node 'certcentral2001.codfw.wmnet' {
     role(certcentral)
+    interface::add_ip6_mapped { 'main': }
 }
 
 # new cloudvirt systems
