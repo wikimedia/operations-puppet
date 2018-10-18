@@ -136,7 +136,7 @@ class profile::netbox (
     }
 
     class { '::netbox':
-        directory       => '/srv/deployment/netbox/deploy/netbox',
+        directory       => '/srv/deployment/netbox/deploy/src',
         db_password     => $db_password,
         secret_key      => $secret_key,
         ldap_password   => $proxypass,

@@ -46,7 +46,7 @@ class netbox(
     $admins=false,
     $config_path = '/srv/deployment/netbox/deploy',
     $venv_path = '/srv/deployment/netbox/venv',
-    $directory = '/srv/deployment/netbox/deploy/netbox',
+    $directory = '/srv/deployment/netbox/deploy/src',
     $ensure='present',
     $napalm_username='',
 ) {
