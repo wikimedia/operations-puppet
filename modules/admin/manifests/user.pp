@@ -43,17 +43,15 @@
 #
 
 define admin::user (
-    $ensure     = 'present',
-    $uid        = undef,
-    $gid        = undef,
-    $groups     = [],
-    $comment    = '',
-    $shell      = '/bin/bash',
-    $privileges = undef,
-    $ssh_keys   = [],
-    )
-{
-    validate_ensure($ensure)
+    Wmflib::Ensure $ensure              = present,
+    Optional[Integer] $uid              = undef,
+    Optional[Integer] $gid              = undef,
+    Array[String] $groups               = [],
+    String $comment                     = '',
+    String $shell                       = '/bin/bash',
+    Optional[Array[String]] $privileges = undef,
+    Array[String] $ssh_keys             = [],
+) {
 
     user { $name:
         ensure     => $ensure,
@@ -84,10 +82,6 @@ define admin::user (
             force        => true,
             require      => User[$name],
         }
-    }
-
-    if !is_array($ssh_keys) {
-        fail("${name} is not a valid ssh_keys array: ${ssh_keys}")
     }
 
     # recursively-managed, automatically purged
