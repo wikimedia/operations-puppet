@@ -17,13 +17,11 @@
 #   The queue runner config option.
 
 class exim4(
-  $config,
-  $variant = 'light',
-  $queuerunner = 'combined',
-  $filter=undef,
+  String $config,
+  Enum['light', 'heavy'] $variant = 'light',
+  Enum['combined', 'no', 'separate', 'ppp', 'nodaemon', 'queueonly'] $queuerunner = 'combined',
+  Optional[String] $filter = undef,
 ) {
-    validate_re($variant, '^(light|heavy)$')
-    validate_re($queuerunner, '^(combined|no|separate|ppp|nodaemon|queueonly)$')
 
     package { [
         'exim4-config',
