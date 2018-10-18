@@ -219,4 +219,3 @@ profile::kubernetes::deployment_server::services:
 #    token: dummy
 #  mathoid:
 #    token: dummy
-diamond::remove: true
