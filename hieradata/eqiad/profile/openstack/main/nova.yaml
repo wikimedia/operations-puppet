@@ -16,10 +16,12 @@ profile::openstack::main::nova::live_migration_uri: 'qemu://%s.eqiad.wmnet/syste
 profile::openstack::main::nova::dnsmasq_classles_static_route: 'dhcp-option=option:classless-static-route,0.0.0.0/0,10.68.16.1,172.16.0.0/21,10.68.23.253'
 
 # Nova is permitted to schedule new VMs on the following
-#  hosts.  1018 is running but held back as spare
-#  in case a different labvirt fails
+#  hosts.
 #
-# 1015 is in the penalty box because it's running way too many VMs.
+# The virt nodes allocated to eqiad are labvirt1001 through 1017.
+#
+# 1015, 1016, and 1017 are depooled so we can drain them in preparation
+# for moving to eqiad1.
 profile::openstack::main::nova::scheduler_pool:
   - labvirt1001
   - labvirt1002
@@ -35,5 +37,3 @@ profile::openstack::main::nova::scheduler_pool:
   - labvirt1012
   - labvirt1013
   - labvirt1014
-  - labvirt1016
-  - labvirt1017
