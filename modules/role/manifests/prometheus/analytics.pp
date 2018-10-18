@@ -96,14 +96,14 @@ class role::prometheus::analytics {
         dest       => "${targets_path}/mysql_database_matomo_${::site}.yaml",
         site       => $::site,
         class_name => 'role::piwik',
-        port       => '13306',
+        port       => 13306,
     }
 
     prometheus::class_config{ "analyics_meta_mysql_${::site}":
         dest       => "${targets_path}/mysql_database_analyics_meta_${::site}.yaml",
         site       => $::site,
         class_name => 'profile::analytics::database::meta',
-        port       => '13306',
+        port       => 13306,
     }
 
     prometheus::jmx_exporter_config{ "hadoop_worker_${::site}":
@@ -162,7 +162,7 @@ class role::prometheus::analytics {
         dest    => "${targets_path}/druid_public_${::site}.yaml",
         site    => $::site,
         cluster => 'druid_public',
-        port    => '8000',
+        port    => 8000,
         labels  => {
             'cluster' => 'druid_public'
         }
@@ -172,7 +172,7 @@ class role::prometheus::analytics {
         dest    => "${targets_path}/druid_analytics_${::site}.yaml",
         site    => $::site,
         cluster => 'druid_analytics',
-        port    => '8000',
+        port    => 8000,
         labels  => {
             'cluster' => 'druid_analytics'
         }
@@ -192,7 +192,7 @@ class role::prometheus::analytics {
         dest       => "${targets_path}/burrow_analytics_${::site}.yaml",
         site       => $::site,
         class_name => 'role::kafka::monitoring',
-        port       => '9000',
+        port       => 9000,
     }
 
     prometheus::server { 'analytics':

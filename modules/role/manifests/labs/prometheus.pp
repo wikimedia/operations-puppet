@@ -85,21 +85,21 @@ class role::labs::prometheus {
         dest       => "${targets_path}/rabbitmq_${::site}.yaml",
         site       => $::site,
         class_name => 'role::wmcs::openstack::main::control',
-        port       => '9195',
+        port       => 9195,
     }
 
     prometheus::class_config{ "pdns_${::site}":
         dest       => "${targets_path}/pdns_${::site}.yaml",
         site       => $::site,
         class_name => 'role::wmcs::openstack::main::services_primary',
-        port       => '9192',
+        port       => 9192,
     }
 
     prometheus::class_config{ "pdns-rec_${::site}":
         dest       => "${targets_path}/pdns-rec_${::site}.yaml",
         site       => $::site,
         class_name => 'role::wmcs::openstack::main::services_primary',
-        port       => '9199',
+        port       => 9199,
     }
 
     prometheus::class_config{ "openstack_${::site}":
@@ -107,7 +107,7 @@ class role::labs::prometheus {
         site       => $::site,
         class_name => 'role::wmcs::openstack::eqiad1::control',
         # same as profile::openstack::eqiad1::metrics::prometheus_listen_port and friends
-        port       => '12345',
+        port       => 12345,
     }
 
     # in jessie, install some depends from jessie-backports

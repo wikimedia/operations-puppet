@@ -24,21 +24,13 @@
 #  }
 
 define prometheus::class_config(
-    $dest,
-    $site,
-    $class_name,
-    $port,
-    $labels = {},
-    $class_parameters = {},
+    String $dest,
+    String $site,
+    String $class_name,
+    Wmflib::IpPort $port,
+    Hash $labels = {},
+    Hash $class_parameters = {},
 ) {
-    # TODO/puppet4: convert this class to use typed parameters
-    validate_string($dest)
-    validate_string($site)
-    validate_string($class_name)
-    validate_numeric($port)
-    validate_hash($labels)
-    validate_hash($class_parameters)
-
     $query = template('prometheus/puppetdb_query_string.erb')
     $servers = keys(query_resources(false, $query, true))
     $site_clusters = get_clusters({'site' => $site})

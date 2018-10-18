@@ -9,7 +9,7 @@ define prometheus::varnish_2layer(
         dest    => "${targets_path}/varnish-${cache_name}_${::site}_backend.yaml",
         site    => $::site,
         cluster => "cache_${cache_name}",
-        port    => '9131',
+        port    => 9131,
         labels  => {
           'layer' => 'backend',
         },
@@ -19,7 +19,7 @@ define prometheus::varnish_2layer(
         dest    => "${targets_path}/varnish-${cache_name}_${::site}_frontend.yaml",
         site    => $::site,
         cluster => "cache_${cache_name}",
-        port    => '9331',
+        port    => 9331,
         labels  => {
           'layer' => 'frontend',
         },
