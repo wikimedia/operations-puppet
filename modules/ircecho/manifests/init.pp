@@ -53,5 +53,7 @@ class ircecho (
         },
     }
 
-    base::service_auto_restart { 'ircecho': }
+    if os_version('debian >= jessie') {
+        base::service_auto_restart { 'ircecho': }
+    }
 }
