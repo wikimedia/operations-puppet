@@ -31,14 +31,12 @@
 #  }
 #
 define sysctl::conffile(
-    $ensure   = present,
-    $content  = undef,
-    $source   = undef,
-    $priority = 70
+    Wmflib::Ensure $ensure   = present,
+    Optional[String] $content  = undef,
+    Optional[String] $source   = undef,
+    Integer[0, 99] $priority = 70
 ) {
     include ::sysctl
-    # TODO/puppet4 Make this a type check
-    validate_numeric($priority, 99, 0)
 
     $basename = regsubst($title, '\W', '-', 'G')
     $filename = sprintf('/etc/sysctl.d/%02d-%s.conf', $priority, $basename)
