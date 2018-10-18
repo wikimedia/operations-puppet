@@ -1,5 +1,5 @@
 class puppetmaster::certmanager(
-    $remote_cert_cleaner=''
+    $remote_cert_cleaners=''
 ){
     user { 'certmanager':
         home   => '/',
