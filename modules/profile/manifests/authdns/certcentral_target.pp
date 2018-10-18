@@ -9,7 +9,7 @@ class profile::authdns::certcentral_target(
     }
 
     ssh::userkey { 'certcentral':
-        content => secret('ssh/authdns-certcentral.pub'),
+        content => secret('keyholder/authdns_certcentral.pub'),
     }
 
     sudo::user { 'certcentral':
