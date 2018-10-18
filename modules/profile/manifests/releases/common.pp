@@ -2,8 +2,8 @@ class profile::releases::common{
 
     # T205037
     $motd_ensure = mediawiki::state('primary_dc') ? {
-        $::site => 'present',
-        default => 'absent',
+        $::site => 'absent',
+        default => 'present',
     }
 
     motd::script { 'rsync_source_warning':
