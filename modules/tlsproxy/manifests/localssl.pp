@@ -112,26 +112,34 @@ define tlsproxy::localssl(
         $certs_nginx = $certs
     }
 
-    if !empty($certs) {
-        sslcert::certificate { $certs:
-            skip_private => $skip_private,
-            before       => Service['nginx'],
+    $certs.each |String $cert| {
+        if !defined(Sslcert::Certificate[$cert]) {
+            sslcert::certificate { $cert:
+                skip_private => $skip_private,
+                before       => Service['nginx'],
+            }
         }
-    } elsif !empty($acme_subjects) {
-        letsencrypt::cert::integrated { $server_name:
-            subjects   => join($acme_subjects, ','),
-            puppet_svc => 'nginx',
-            system_svc => 'nginx',
+    }
+    if !empty($acme_subjects) {
+        if !defined(Letsencrypt::Cert::Integrated[$server_name]) {
+            letsencrypt::cert::integrated { $server_name:
+                subjects   => join($acme_subjects, ','),
+                puppet_svc => 'nginx',
+                system_svc => 'nginx',
+            }
         }
         # TODO: Maybe add monitoring to this in role::cache::ssl::unified
     }
 
     if $do_ocsp and !empty($certs) {
         include tlsproxy::ocsp
-
-        sslcert::ocsp::conf { $certs:
-            proxy  => "webproxy.${::site}.wmnet:8080",
-            before => [Service['nginx'], Exec['nginx-reload']],
+        $certs.each |String $cert| {
+            if !defined(Sslcert::Ocsp::Conf[$cert]) {
+                sslcert::ocsp::conf { $cert:
+                    proxy  => "webproxy.${::site}.wmnet:8080",
+                    before => [Service['nginx'], Exec['nginx-reload']],
+                }
+            }
         }
     }
 
