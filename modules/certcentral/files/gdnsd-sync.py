@@ -27,5 +27,5 @@ for server in args.remote_servers:
             'acme-dns-01'
         ] + args.params,
         check=True,
-        env={'SSH_AGENT_SOCK': '/run/keyholder/proxy.sock'}
+        env={'SSH_AUTH_SOCK': '/run/keyholder/proxy.sock'}
     )
