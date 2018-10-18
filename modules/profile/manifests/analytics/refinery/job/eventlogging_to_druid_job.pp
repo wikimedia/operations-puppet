@@ -67,7 +67,7 @@ define profile::analytics::refinery::job::eventlogging_to_druid_job (
     $job_config,
     $job_name            = "eventlogging_to_druid_${title}",
     $refinery_job_jar    = undef,
-    $job_class           = 'org.wikimedia.analytics.refinery.job.refine.EventLoggingToDruid',
+    $job_class           = 'org.wikimedia.analytics.refinery.job.EventLoggingToDruid',
     $queue               = 'production',
     $user                = 'hdfs',
     $ensure              = 'present',
