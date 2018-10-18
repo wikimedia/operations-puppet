@@ -8,7 +8,7 @@ accounts:
       directory: <%= account_details['directory'] %>
       <% if account_details['default'] != nil -%>
       default: <%= account_details['default'] %>
-      <% end -%>
+      <% end %>
 <% end -%>
 <% end -%>
 <% if @certificates == {} -%>
@@ -24,10 +24,10 @@ certificates:
         challenge: <%= cert_details['challenge'] %>
         <% if cert_details['account'] != nil -%>
         account: <%= cert_details['account'] %>
-        <% end -%>
+        <% end %>
 <% end -%>
 <% end -%>
-<%if @challenges == {} -%>
+<% if @challenges == {} -%>
 challenges: {}
 <% else -%>
 challenges:
