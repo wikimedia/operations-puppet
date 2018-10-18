@@ -22,17 +22,5 @@ define diamond::collector::nagios (
     }
 
     include ::diamond::collector::nagios_lib
-
-    file { "/etc/diamond/nagios.d/${title}.json":
-        ensure  => $ensure,
-        content => ordered_json({
-            name    => $title,
-            command => $command,
-        }),
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0444',
-        notify  => Service['diamond'],
-    }
 }
 

@@ -31,7 +31,7 @@ class keyholder::monitoring( $ensure = present ) {
     }
 
     sudo::user { 'diamond_check_keyholder':
-        ensure     => $ensure,
+        ensure     => 'absent',
         user       => 'diamond',
         privileges => [ "ALL = NOPASSWD: ${plugin_path}" ],
         require    => File[$plugin_path],
