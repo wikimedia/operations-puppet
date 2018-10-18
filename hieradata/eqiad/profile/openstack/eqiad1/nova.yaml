@@ -15,5 +15,6 @@ profile::openstack::eqiad1::nova::physical_interface_mappings:
 #  the default pool.
 #
 profile::openstack::eqiad1::nova::scheduler_pool:
+  - cloudvirt1018
   - cloudvirt1021
   - cloudvirt1022
