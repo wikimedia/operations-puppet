@@ -226,3 +226,4 @@ profile::kubernetes::deployment_server::services:
 #    token: dummy
 #  zotero:
 #    token: dummy
+diamond::remove: true
