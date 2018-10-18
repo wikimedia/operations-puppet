@@ -21,7 +21,6 @@ class profile::openstack::labtestn::designate::service(
     $labweb_hosts = hiera('profile::openstack::labtestn::labweb_hosts'),
     $region = hiera('profile::openstack::labtestn::region'),
     $coordination_host = hiera('profile::openstack::labtestn::designate_host'),
-    $prometheus_nodes = hiera('profile::openstack::labtestn::prometheus_nodes'),
     ) {
 
     require ::profile::openstack::labtestn::clientlib
@@ -53,10 +52,6 @@ class profile::openstack::labtestn::designate::service(
 
     # Memcached for coordination between pool managers
     class { '::memcached':
-    }
-
-    class { '::profile::prometheus::memcached_exporter':
-        prometheus_nodes => $prometheus_nodes,
     }
 
     ferm::service { 'designate_memcached':

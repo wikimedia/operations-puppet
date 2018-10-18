@@ -5,7 +5,6 @@
 class profile::openstack::base::nutcracker(
     $labweb_hosts = hiera('profile::openstack::base::labweb_hosts'),
     $redis_shards = hiera('profile::openstack::base::nutcracker::redis::shards'),
-    $prometheus_nodes = hiera('profile::openstack::base::prometheus_nodes'),
 ) {
     $labweb_ips = $labweb_hosts.map |$host| { ipresolve($host, 4) }
     $memcached_servers = $labweb_ips.map |$ip| { "${ip}:11000:1" }
@@ -17,10 +16,6 @@ class profile::openstack::base::nutcracker(
     }
 
     class { '::memcached':
-    }
-
-    class { '::profile::prometheus::memcached_exporter':
-        prometheus_nodes => $prometheus_nodes,
     }
 
     $labweb_ips_ferm = inline_template("(@resolve((<%= @labweb_hosts.join(' ') %>)) @resolve((<%= @labweb_hosts.join(' ') %>), AAAA))")
