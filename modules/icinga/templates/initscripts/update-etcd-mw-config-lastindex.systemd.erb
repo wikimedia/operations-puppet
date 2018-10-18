@@ -3,7 +3,7 @@ Description=Update the etcd last modified index for MediaWiki config
 Requires=network.target
 
 [Service]
-User=icinga
+User=<%= @icinga_user %>
 Type=oneshot
 ExecStart=/usr/local/bin/update-etcd-mw-config-lastindex
 Restart=no

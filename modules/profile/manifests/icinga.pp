@@ -61,7 +61,10 @@ class profile::icinga(
     class { '::profile::maps::alerts': }
     class { '::profile::cache::kafka::alerts': }
 
-    class { '::icinga::monitor::etcd_mw_config': }
+    class { '::icinga::monitor::etcd_mw_config':
+        icinga_user => $icinga_user,
+    }
+
     class { '::snmp::mibs': }
 
     create_resources(monitoring::group, $monitoring_groups)
