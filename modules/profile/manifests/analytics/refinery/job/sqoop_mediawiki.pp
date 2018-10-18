@@ -11,8 +11,10 @@ class profile::analytics::refinery::job::sqoop_mediawiki {
     include ::passwords::mysql::analytics_labsdb
     include ::passwords::mysql::research
 
+    $refinery_path              = $profile::analytics::refinery::path
+
     # Shortcut var to DRY up cron commands.
-    $env = "export PYTHONPATH=\${PYTHONPATH}:${profile::analytics::refinery::path}/python"
+    $env = "export PYTHONPATH=\${PYTHONPATH}:${refinery_path}/python"
 
     $output_directory_labs      = '/wmf/data/raw/mediawiki/tables'
     $output_directory_private   = '/wmf/data/raw/mediawiki_private/tables'
@@ -35,6 +37,7 @@ class profile::analytics::refinery::job::sqoop_mediawiki {
     $num_mappers                = 4
 
     cron { 'refinery-sqoop-mediawiki':
+        ensure      => absent,
         command     => "${env} && /usr/bin/python3 ${profile::analytics::refinery::path}/bin/sqoop-mediawiki-tables -j sqoop-mediawiki-monthly-$(/bin/date --date=\"$(/bin/date +\\%Y-\\%m-15) -1 month\" +'\\%Y-\\%m') -l -H ${labs_db_host} -d ${$output_directory_labs} -w ${wiki_file_labs} -t archive,ipblocks,logging,page,pagelinks,redirect,revision,user,user_groups -u ${labs_db_user} -p ${db_password_labs} -F 20010101000000 -T \$(/bin/date '+\\%Y\\%m01000000') -s snapshot -x \$(/bin/date --date=\"$(/bin/date +\\%Y-\\%m-15) -1 month\" +'\\%Y-\\%m') -m ${num_mappers} -a avrodata -k ${num_processors} -o ${labs_log_file}",
         user        => 'hdfs',
         minute      => '0',
@@ -44,14 +47,45 @@ class profile::analytics::refinery::job::sqoop_mediawiki {
         environment => 'MAILTO=analytics-alerts@wikimedia.org',
     }
 
+    file { '/usr/local/bin/refinery-sqoop-mediawiki':
+        content => template('profile/analytics/refinery/job/refinery-sqoop-mediawiki.sh.erb'),
+        mode    => '0660',
+        owner   => 'hdfs',
+        group   => 'hdfs',
+    }
+
+    profile::analytics::systemd_timer { 'refinery-sqoop-mediawiki':
+        description => 'Schedules sqoop to import MediaWiki databases into Hadoop monthly.',
+        command     => '/usr/local/bin/refinery-sqoop-mediawiki',
+        interval    => '*-*-05 00:00:00',
+        user        => 'hdfs',
+        require     => File['/usr/local/bin/refinery-sqoop-mediawiki'],
+    }
+
     cron { 'refinery-sqoop-mediawiki-private':
-        command     => "${env} && /usr/bin/python3 ${profile::analytics::refinery::path}/bin/sqoop-mediawiki-tables -j sqoop-mediawiki-monthly-private-$(/bin/date --date=\"$(/bin/date +\\%Y-\\%m-15) -1 month\" +'\\%Y-\\%m') -H ${private_db_host} -d ${$output_directory_private} -w ${wiki_file_private} -t cu_changes -u ${private_db_user} -p ${db_password_private} -F \$(/bin/date --date=\"$(/bin/date +\\%Y-\\%m-15) -1 month\" +'\\%Y\\%m01000000') -T \$(/bin/date '+\\%Y\\%m01000000') -s month -x \$(/bin/date --date=\"$(/bin/date +\\%Y-\\%m-15) -1 month\" +'\\%Y-\\%m') -m ${num_mappers} -a avrodata -k ${num_processors} -o ${private_log_file}",
+        ensure      => absent,
+        command     => "${env} && /usr/bin/python3 ${profile::analytics::refinery::path}/bin/sqoop-mediawiki-tables -j sqoop-mediawiki-monthly-private-$(/bin/date --date=\"$(/bin/date +\\%Y-\\%m-15) -1 month\" +'\\%Y-\\%m') -H ${private_db_host} -d ${$output_directory_private} -w ${wiki_file_private} -t cu_changes -u ${private_db_user} -p ${db_password_private} -F $$(/bin/date --date=\"$(/bin/date +\\%Y-\\%m-15) -1 month\" +'\\%Y\\%m01000000') -T \$(/bin/date '+\\%Y\\%m01000000') -s month -x \$(/bin/date --date=\"$(/bin/date +\\%Y-\\%m-15) -1 month\" +'\\%Y-\\%m') -m ${num_mappers} -a avrodata -k ${num_processors} -o ${private_log_file}",
         user        => 'hdfs',
         minute      => '0',
         hour        => '0',
         # Start on the second day of every month.
         monthday    => '2',
         environment => 'MAILTO=analytics-alerts@wikimedia.org',
+    }
+
+    file { '/usr/local/bin/refinery-sqoop-mediawiki-private':
+        content => template('profile/analytics/refinery/job/refinery-sqoop-mediawiki-private.sh.erb'),
+        mode    => '0660',
+        owner   => 'hdfs',
+        group   => 'hdfs',
+    }
+
+    profile::analytics::systemd_timer { 'refinery-sqoop-mediawiki-private':
+        description => 'Schedules sqoop to import MediaWiki databases (containing PII data) into Hadoop monthly.',
+        command     => '/usr/local/bin/refinery-sqoop-mediawiki-private',
+        interval    => '*-*-02 00:00:00',
+        user        => 'hdfs',
+        require     => File['/usr/local/bin/refinery-sqoop-mediawiki-private'],
     }
 }
 
