@@ -31,8 +31,9 @@ class base::standard_packages {
         'ncdu',
         'ngrep',
         'pigz',
-        'pv',
         'psmisc',
+        'pv',
+        'pxz',
         'python3',
         'quickstack',
         'screen',
@@ -50,11 +51,6 @@ class base::standard_packages {
     ])
 
     package { 'tzdata': ensure => latest }
-
-    # pxz is not available on precise
-    if os_version('debian >= jessie || ubuntu >= trusty') {
-        require_package('pxz')
-    }
 
     # uninstall these packages
     package { [
