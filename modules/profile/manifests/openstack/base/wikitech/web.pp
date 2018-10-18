@@ -6,7 +6,8 @@ class profile::openstack::base::wikitech::web(
     $wikitech_nova_ldap_user_pass = hiera('profile::openstack::base::ldap_user_pass'),
     ) {
 
-    class {'::mediawiki': }
+    require profile::mediawiki::common
+
     class {'::mediawiki::packages::fonts': }
     class {'::profile::backup::host':}
 
