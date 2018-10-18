@@ -4,7 +4,7 @@
 #
 class wdqs::service(
     String $deploy_user,
-    Enum['scap3', 'autodeploy', 'manual'] $deploy_mode,
+    Wdqs::DeployMode $deploy_mode,
     Stdlib::Absolutepath $package_dir,
     String $username,
     String $config_file,

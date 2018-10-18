@@ -18,7 +18,7 @@
 class wdqs(
     String $logstash_host,
     Wmflib::IpPort $logstash_json_port = 11514,
-    Enum['scap3', 'autodeploy', 'manual'] $deploy_mode = 'scap3',
+    Wdqs::DeployMode $deploy_mode = 'scap3',
     String $username = 'blazegraph',
     String $package_dir = '/srv/deployment/wdqs/wdqs',
     String $data_dir = '/srv/wdqs',
