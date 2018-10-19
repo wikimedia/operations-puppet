@@ -7,6 +7,8 @@ Group=certcentral
 ExecStart=/usr/bin/certcentral-backend
 ExecReload=/bin/kill -SIGHUP $MAINPID
 Restart=always
+Environment=HTTP_PROXY=<%= @http_proxy %>
+Environment=HTTPS_PROXY=<%= @http_proxy %>
 [Install]
 WantedBy=multi-user.target
 

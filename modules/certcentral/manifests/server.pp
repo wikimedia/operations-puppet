@@ -2,6 +2,7 @@ class certcentral::server (
     Hash[String, Hash[String, String]] $accounts = {},
     Hash[String, Hash[String, Any]] $certificates = {},
     Hash[String, Hash[String, Any]] $challenges = {},
+    String $http_proxy = '',
     Wmflib::Ensure $http_challenge_support = absent,
 ) {
     if os_version('debian == stretch') {

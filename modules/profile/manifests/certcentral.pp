@@ -35,6 +35,7 @@ class profile::certcentral (
     Hash[String, Hash[String, String]] $accounts = hiera('profile::certcentral::accounts'),
     Hash[String, Hash[String, Any]] $certificates = hiera('profile::certcentral::certificates'),
     Hash[String, Hash[String, Any]] $challenges = hiera('profile::certcentral::challenges'),
+    String $http_proxy = hiera('http_proxy'),
 ) {
     File <<| tag == 'certcentral-authorisedhosts' |>> ~> Base::Service_unit['uwsgi-certcentral']
 
@@ -42,5 +43,6 @@ class profile::certcentral (
         accounts     => $accounts,
         certificates => $certificates,
         challenges   => $challenges,
+        http_proxy   => $http_proxy,
     }
 }
