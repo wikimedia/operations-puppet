@@ -77,10 +77,14 @@ class confluent::kafka::common(
         # package installs these, and we don't want to remove their .service files
         # in case it would cause package conflicts during future upgrades, so we just
         # ensure they are not running and masked in systemd.
+        #
+        # work around "Error: Could not set 'mask' on enable:undefined method `mask' for Service"
+        # that occurs on Jessie hosts by forcing provider => 'systemd'
         service { ['confluent-kafka', 'confluent-kafka-connect', 'confluent-zookeeper']:
-            ensure  => 'stopped',
-            enable  => 'mask',
-            require => Package[$package],
+            ensure   => 'stopped',
+            enable   => 'mask',
+            provider => 'systemd',
+            require  => Package[$package],
         }
     }
 
