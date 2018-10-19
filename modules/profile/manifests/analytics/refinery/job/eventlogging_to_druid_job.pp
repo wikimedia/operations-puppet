@@ -34,15 +34,12 @@
 # But in the meantime...
 #
 # The temporary solution:
-# Issue 1) Make this module install 3 loading jobs for each
-#    given datasource: one hourly, one daily and one monthly. The hourly one
-#    will load data as soon as possible with the mentioned potential issues.
-#    The daily one, will load data with a lag of 4 days, to automatically
-#    cover up any hourly loading issues that happened during that lag. The
-#    monthly one will load the whole month after a 40 day lag, to
-#    automatically cover up any issues that happened since the daily job
-#    loaded the corresponding data. A desirable side-effect of this hack is
-#    that Druid data gets compacted in daily and then monthly segments.
+# Issue 1) Make this module install 2 loading jobs for each given datasource:
+#    one hourly and one daily. The hourly one will load data as soon as
+#    possible with the mentioned potential issues. The daily one, will load
+#    data with a lag of 3-4 days, to automatically cover up any hourly load
+#    issues that happened during that lag. A desirable side-effect of this
+#    hack is that Druid hourly data gets compacted in daily segments.
 # Issue 2) Instead of passing relative time offsets (hours ago), calculate
 #    absolute timestamps for since and until using bash. To allow bash to
 #    interpret date commands since and until params can not be passed via
@@ -55,16 +52,21 @@
 #   and given to the EventLoggingToDruid job as the --config_file argument.
 #   Please, do not include the following properties: since, until,
 #   segment_granularity, reduce_memory, num_shards. The reason being:
-#   This job will install 3 jobs for each datasource: an hourly one, a daily
-#   one and a monthly one. This improves compaction of Druid segments, and
-#   also serves as a temporary solution to avoid having to rerun ingestions in
-#   case of input data being delayed because of restarts, issues or outages.
+#   This profile will install 2 jobs for each datasource: hourly and daily.
+#   Each of those will have different parameters for since, until, segment_
+#   granularity, reduce_memory and num_shards. Therefore, those options are
+#   specified inside this file.
+#
+# [*daily_shards*]
+#   Number of shards that the daily segment of this datasource should have.
+#   This will be usually 1, except for very big schemas. Default: 1.
 #
 # [*job_name*]
 #   The Spark job name. Default: eventlogging_to_druid_$title
 #
 define profile::analytics::refinery::job::eventlogging_to_druid_job (
     $job_config,
+    $daily_shards        = 1,
     $job_name            = "eventlogging_to_druid_${title}",
     $refinery_job_jar    = undef,
     $job_class           = 'org.wikimedia.analytics.refinery.job.EventLoggingToDruid',
@@ -108,7 +110,7 @@ define profile::analytics::refinery::job::eventlogging_to_druid_job (
         ensure     => $ensure,
         properties => merge($default_config, $job_config, {
             'segment_granularity' => 'hour',
-            'num_shards'          => 2,
+            'num_shards'          => 1,
             'reduce_memory'       => '4096',
         }),
     }
@@ -116,7 +118,7 @@ define profile::analytics::refinery::job::eventlogging_to_druid_job (
         ensure     => $ensure,
         jar        => $_refinery_job_jar,
         class      => $job_class,
-        spark_opts => "${default_spark_opts} --files /etc/hive/conf/hive-site.xml,${hourly_job_config_file} --conf spark.dynamicAllocation.maxExecutors=16 --driver-memory 4G",
+        spark_opts => "${default_spark_opts} --files /etc/hive/conf/hive-site.xml,${hourly_job_config_file} --conf spark.dynamicAllocation.maxExecutors=32 --driver-memory 2G",
         job_opts   => "--config_file ${job_name}_hourly.properties --since $(date --date '-6hours' -u +'%Y-%m-%dT%H:00:00') --until $(date --date '-5hours' -u +'%Y-%m-%dT%H:00:00')",
         require    => Profile::Analytics::Refinery::Job::Config[$hourly_job_config_file],
         user       => $user,
@@ -129,7 +131,7 @@ define profile::analytics::refinery::job::eventlogging_to_druid_job (
         ensure     => $ensure,
         properties => merge($default_config, $job_config, {
             'segment_granularity' => 'day',
-            'num_shards'          => 4,
+            'num_shards'          => $daily_shards,
             'reduce_memory'       => '8192',
         }),
     }
@@ -137,33 +139,10 @@ define profile::analytics::refinery::job::eventlogging_to_druid_job (
         ensure     => $ensure,
         jar        => $_refinery_job_jar,
         class      => $job_class,
-        spark_opts => "${default_spark_opts} --files /etc/hive/conf/hive-site.xml,${daily_job_config_file} --conf spark.dynamicAllocation.maxExecutors=32 --driver-memory 8G",
+        spark_opts => "${default_spark_opts} --files /etc/hive/conf/hive-site.xml,${daily_job_config_file} --conf spark.dynamicAllocation.maxExecutors=64 --driver-memory 2G",
         job_opts   => "--config_file ${job_name}_daily.properties --since $(date --date '-4days' -u +'%Y-%m-%dT00:00:00') --until $(date --date '-3days' -u +'%Y-%m-%dT00:00:00')",
         require    => Profile::Analytics::Refinery::Job::Config[$daily_job_config_file],
         user       => $user,
-        hour       => 0,
-        minute     => 0,
-    }
-
-    # Monthly job
-    $monthly_job_config_file = "${job_config_dir}/${job_name}_monthly.properties"
-    profile::analytics::refinery::job::config { $monthly_job_config_file:
-        ensure     => $ensure,
-        properties => merge($default_config, $job_config, {
-            'segment_granularity' => 'month',
-            'num_shards'          => 8,
-            'reduce_memory'       => '16384',
-        }),
-    }
-    profile::analytics::refinery::job::spark_job { "${job_name}_monthly":
-        ensure     => $ensure,
-        jar        => $_refinery_job_jar,
-        class      => $job_class,
-        spark_opts => "${default_spark_opts} --files /etc/hive/conf/hive-site.xml,${monthly_job_config_file} --conf spark.dynamicAllocation.maxExecutors=64 --driver-memory 16G",
-        job_opts   => "--config_file ${job_name}_monthly.properties --since $(date --date '-1month' -u +'%Y-%m-01T00:00:00') --until $(date -u +'%Y-%m-01T00:00:00')",
-        require    => Profile::Analytics::Refinery::Job::Config[$monthly_job_config_file],
-        user       => $user,
-        monthday   => 10,
         hour       => 0,
         minute     => 0,
     }
