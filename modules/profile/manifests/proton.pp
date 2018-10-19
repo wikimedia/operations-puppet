@@ -21,4 +21,14 @@ class profile::proton(
         },
     }
 
+    # font configuration section
+    file { '/etc/fonts/conf.d/10-sub-pixel-rgb.conf':
+        ensure => link,
+        target => '/usr/share/fontconfig/conf.avail/10-sub-pixel-rgb.conf',
+    }
+    file { '/etc/fonts/conf.d/10-unhinted.conf':
+        ensure => link,
+        target => '/usr/share/fontconfig/conf.avail/10-unhinted.conf',
+    }
+
 }
