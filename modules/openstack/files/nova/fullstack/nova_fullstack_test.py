@@ -17,7 +17,7 @@ alerts on failure.
 Expects env variables inline with our other nova tooling:
     'OS_PASSWORD'
     'OS_USERNAME'
-    'OS_TENANT_NAME'
+    'OS_PROJECT_ID'
 """
 
 import argparse
@@ -448,7 +448,7 @@ def main():
     pw = os.environ.get('OS_PASSWORD')
     region = os.environ.get('OS_REGION_NAME')
     user = os.environ.get('OS_USERNAME') or args.user
-    project = os.environ.get('OS_TENANT_NAME') or args.project
+    project = os.environ.get('OS_PROJECT_ID') or args.project
     if not all([user, pw, project]):
         logging.error('Set username and password environment variables')
         sys.exit(1)

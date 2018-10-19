@@ -77,7 +77,7 @@ class openstack::nova::compute::monitor(
 
         # This means we need to have a token administrative instance running on all
         # active hypervisors as a canary:
-        # OS_TENANT_NAME=testlabs openstack server create \
+        # OS_PROJECT_ID=testlabs openstack server create \
         # --flavor 2 --image <image-id> --availability-zone host:<hypervisor> <instance>
         nrpe::monitor_service { 'ensure_running_kvm_instances':
             ensure        => $ensure,

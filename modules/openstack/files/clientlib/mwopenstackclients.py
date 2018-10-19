@@ -24,7 +24,7 @@ class Clients(object):
          - envfile arg
          - username, password, url, project args
          - execution environment varaiables
-           (i.e. OS_USERNAME, OS_PASSWORD, OS_AUTH_URL, OS_TENANT_NAME)
+           (i.e. OS_USERNAME, OS_PASSWORD, OS_AUTH_URL, OS_PROJECT_ID)
 
         :param envfile: A puppetized yaml file like /etc/observerenv.yaml
         :param username: OpenStack user
@@ -46,7 +46,7 @@ class Clients(object):
                 self.username = env['OS_USERNAME']
                 self.password = env['OS_PASSWORD']
                 self.url = env['OS_AUTH_URL']
-                self.project = env['OS_TENANT_NAME']
+                self.project = env['OS_PROJECT_ID']
                 self.region = env['OS_REGION_NAME']
         else:
             if username:
@@ -72,7 +72,7 @@ class Clients(object):
             if project:
                 self.project = project
             else:
-                self.project = os.environ.get('OS_TENANT_NAME', None)
+                self.project = os.environ.get('OS_PROJECT_ID', None)
 
         if not self.username:
             raise Exception("No username (env OS_USERNAME) specified")
@@ -81,7 +81,7 @@ class Clients(object):
         if not self.url:
             raise Exception("No url (env OS_AUTH_URL) specified")
         if not self.project:
-            raise Exception("No project (env OS_TENANT_NAME) specified")
+            raise Exception("No project (env OS_PROJECT_ID) specified")
 
     def session(self, project=None):
         if not project:
