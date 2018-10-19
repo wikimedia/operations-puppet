@@ -1560,6 +1560,12 @@ define service {
 
 define service {
     use                      passive-service
+    service_description      check_impression_logs
+    hostgroup_name           fundraising-banner-logger
+}
+
+define service {
+    use                      passive-service
     service_description      check_ipsec
     hostgroup_name           fundraising-banner-logger
 }
