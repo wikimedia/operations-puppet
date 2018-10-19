@@ -398,6 +398,10 @@ scap::sources:
   analytics/superset/deploy:
     repository: analytics/superset/deploy
 
+  # Superset
+  analytics/turnilo/deploy:
+    repository: analytics/turnilo/deploy
+
   # IEG grant review
   iegreview/iegreview:
     repository: iegreview
