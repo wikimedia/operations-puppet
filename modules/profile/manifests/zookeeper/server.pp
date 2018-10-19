@@ -86,9 +86,9 @@ class profile::zookeeper::server (
         monitoring::check_prometheus { 'zookeeper-server-heap-usage':
             description     => 'Zookeeper node JVM Heap usage',
             dashboard_links => ['https://grafana.wikimedia.org/dashboard/db/zookeeper?refresh=5m&orgId=1&panelId=40&fullscreen'],
-            query           => "scalar(quantile_over_time(0.5,jvm_memory_bytes_used{instance=\"${::hostname}:12181\",area=\"heap\"}[120m]))",
-            warning         => 921000000,  # 90% of the Heap used
-            critical        => 972000000,  # 95% of the Heap used
+            query           => "scalar(avg(jvm_memory_bytes_used{instance=\"${::hostname}:12181\",area=\"heap\"}/jvm_memory_bytes_max{instance=\"${::hostname}:12181\",area=\"heap\"}))",
+            warning         => 0.9,
+            critical        => 0.95,
             contact_group   => 'analytics',
             prometheus_url  => "http://prometheus.svc.${::site}.wmnet/${prometheus_instance}",
         }
