@@ -47,7 +47,7 @@ class profile::releases::mediawiki (
 
     monitoring::service { 'http_releases_jenkins':
         description   => "HTTP ${sitename_jenkins}",
-        check_command => "check_http_url!${sitename_jenkins}!/login/",
+        check_command => "check_http_url!${sitename_jenkins}!/login",
     }
 
     ferm::service { 'releases_http':
