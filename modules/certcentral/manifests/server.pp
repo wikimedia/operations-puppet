@@ -34,7 +34,10 @@ class certcentral::server (
         group   => 'certcentral',
         mode    => '0444',
         content => template('certcentral/certcentral.config.yaml.erb'),
-        notify  => Base::Service_unit['uwsgi-certcentral'],
+        notify  => [
+            Base::Service_unit['uwsgi-certcentral'],
+            Service['certcentral'],
+        ],
         require => Package['certcentral'],
     }
 
