@@ -17,9 +17,9 @@ certificates: {}
 certificates:
 <% @certificates.each do |certificate, cert_details| -%>
     <%= certificate %>:
-        CN: <%= cert_details['CN'] %>
+        CN: '<%= cert_details['CN'] %>'
         SNI: <% cert_details['SNI'].each do |sni| %>
-            - <%= sni -%>
+            - <%= "'" + sni + "'" -%>
         <%- end %>
         challenge: <%= cert_details['challenge'] %>
         <% if cert_details['account'] != nil -%>
