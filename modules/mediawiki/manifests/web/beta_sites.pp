@@ -7,6 +7,14 @@ class mediawiki::web::beta_sites {
 
     # w-beta.wmflabs.org depends on proxy_http
     include ::apache::mod::proxy_http
+    mediawiki::web::vhost { 'testwikimedia':
+        server_aliases  => ['test.wikimedia.beta.wmflabs.org'],
+        docroot         => '/srv/mediawiki/docroot/wikimedia.org',
+        declare_site    => false,
+        short_urls      => false,
+        public_rewrites => true,
+    }
+
     ::httpd::site { 'beta-specific':
         source   => 'puppet:///modules/mediawiki/apache/beta/sites/beta_specific.conf',
         priority => 1,
@@ -17,69 +25,102 @@ class mediawiki::web::beta_sites {
         priority => 1,
     }
 
-    ::httpd::site { 'wikibooks':
-        source   => 'puppet:///modules/mediawiki/apache/beta/sites/wikibooks.conf',
-        priority => 2,
+    mediawiki::web::vhost {
+        default:
+            docroot         => '/srv/mediawiki/docroot/standard-docroot',
+            legacy_rewrites => false,
+            public_rewrites => true,
+            short_urls      => false,
+            declare_site    => true,
+            domain_suffix   => 'beta.wmflabs.org',
+            variant_aliases => [
+                'sr', 'sr-ec', 'sr-el', 'zh', 'zh-hans', 'zh-hant',
+                'zh-cn', 'zh-hk', 'zh-sg', 'zh-tw'
+            ],
+            ;
+        'wikibooks':
+            server_aliases => ['*.wikibooks.beta.wmflabs.org'],
+            priority       => 2,
+            ;
+        'wikipedia':
+            docroot             => '/srv/mediawiki/docroot/wikipedia.org',
+            server_aliases      => ['*.wikipedia.beta.wmflabs.org'],
+            priority            => 3,
+            additional_rewrites => {
+                'early' => [],
+                'late'  => [
+                    '    # Redirect commons.wikipedia to commons.wikimedia',
+                    '    RewriteCond %{HTTP_HOST} =commons.wikipedia.beta.wmflabs.org',
+                    '    RewriteRule ^(.*)$ http://commons.wikimedia.beta.wmflabs.org$1 [R=301,L,NE]',
+                    '    RewriteRule ^/data/(.*)/(.*)$ /wiki/Special:PageData/$1/$2 [R=303,QSA]'
+                ]
+            }
+            ;
+        'wikidata':
+            server_aliases      => [
+                'wikidata.beta.wmflabs.org',
+                '*.wikidata.beta.wmflabs.org'
+            ],
+            priority            => 4,
+            additional_rewrites => {
+                'early' => [],
+                'late'  => [
+                    '    # https://meta.wikimedia.org/wiki/Wikidata/Notes/URI_scheme',
+                    '    Include "sites-enabled/wikidata-uris.incl"',
+                ]
+            }
+            ;
+        'wikisource':
+            server_aliases => ['*.wikisource.beta.wmflabs.org'],
+            priority       => 5,
+            ;
+        'wikiversity':
+            server_aliases => ['*.wikiversity.beta.wmflabs.org'],
+            priority       => 7,
+            ;
+        'wikiquote':
+            server_aliases => ['*.wikiquote.beta.wmflabs.org'],
+            priority       => 8,
+            ;
+        'wiktionary':
+            server_aliases => ['*.wiktionary.beta.wmflabs.org'],
+            priority       => 10,
+            ;
+        'wikinews':
+            server_aliases => ['*.wikinews.beta.wmflabs.org'],
+            priority       => 11,
+            ;
+        'loginwiki':
+            server_name     => 'login.wikimedia.beta.wmflabs.org',
+            public_rewrites => false,
+            priority        => 12,
+            variant_aliases => [],
+            ;
+        'wikimedia':
+            server_name     => 'misc-sites',
+            server_aliases  => [
+                'zero.wikimedia.beta.wmflabs.org',
+                'commons.wikimedia.beta.wmflabs.org',
+                'deployment.wikimedia.beta.wmflabs.org',
+                'meta.wikimedia.beta.wmflabs.org',
+            ],
+            priority        => 16,
+            variant_aliases => [],
+            ;
+        'wikivoyage':
+            server_aliases  => ['*.wikivoyage.beta.wmflabs.org'],
+            variant_aliases => [],
+            priority        => 17,
     }
 
-    ::httpd::site { 'wikipedia':
-        source   => 'puppet:///modules/mediawiki/apache/beta/sites/wikipedia.conf',
-        priority => 3,
-    }
+#    ::httpd::site { 'testwiki':
+#        ensure   => absent,
+#        priority => 9,
+#    }
 
-    ::httpd::site { 'wikidata':
-        source   => 'puppet:///modules/mediawiki/apache/beta/sites/wikidata.conf',
-        priority => 4,
-    }
-
-    ::httpd::site { 'wikisource':
-        source   => 'puppet:///modules/mediawiki/apache/beta/sites/wikisource.conf',
-        priority => 5,
-    }
-
-    ::httpd::site { 'wikiversity':
-        source   => 'puppet:///modules/mediawiki/apache/beta/sites/wikiversity.conf',
-        priority => 7,
-    }
-
-    ::httpd::site { 'wikiquote':
-        source   => 'puppet:///modules/mediawiki/apache/beta/sites/wikiquote.conf',
-        priority => 8,
-    }
-
-    ::httpd::site { 'testwiki':
-        ensure   => absent,
-        priority => 9,
-    }
-
-    ::httpd::site { 'wiktionary':
-        source   => 'puppet:///modules/mediawiki/apache/beta/sites/wiktionary.conf',
-        priority => 10,
-    }
-
-    ::httpd::site { 'wikinews':
-        source   => 'puppet:///modules/mediawiki/apache/beta/sites/wikinews.conf',
-        priority => 11,
-    }
-
-    ::httpd::site { 'loginwiki':
-        source   => 'puppet:///modules/mediawiki/apache/beta/sites/loginwiki.conf',
-        priority => 12,
-    }
-
-    ::httpd::site { 'wikimedia':
-        source   => 'puppet:///modules/mediawiki/apache/beta/sites/wikimedia.conf',
-        priority => 16,
-    }
-
-    ::httpd::site { 'wikivoyage':
-        source   => 'puppet:///modules/mediawiki/apache/beta/sites/wikivoyage.conf',
-        priority => 17,
-    }
-
-    ::httpd::site { 'remnant':
-        ensure   => absent,
-        priority => 20,
-    }
+#    ::httpd::site { 'remnant':
+#        ensure   => absent,
+#        priority => 20,
+#    }
 
 }
