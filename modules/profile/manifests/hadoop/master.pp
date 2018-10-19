@@ -4,16 +4,12 @@
 #
 # == Parameters
 #
-#  [*hadoop_namenode_heapsize*]
-#    Current JVM heap size to use as threshold for monitoring.
-#
 #  [*monitoring_enabled*]
 #    If production monitoring needs to be enabled or not.
 #
 class profile::hadoop::master(
     $cluster_name             = hiera('profile::hadoop::common::hadoop_cluster_name'),
     $monitoring_enabled       = hiera('profile::hadoop::master::monitoring_enabled', false),
-    $hadoop_namenode_heapsize = hiera('profile::hadoop::master::namenode_heapsize', 2048),
     $hadoop_user_groups       = hiera('profile::hadoop::master::hadoop_user_groups'),
 ){
     require ::profile::hadoop::common
@@ -147,36 +143,27 @@ class profile::hadoop::master(
             prometheus_url  => "http://prometheus.svc.${::site}.wmnet/analytics",
         }
 
-        # Java heap space used alerts.
-        # The goal is to get alarms for long running memory leaks like T153951.
-        # Only include heap size alerts if heap size is configured.
-        if $hadoop_namenode_heapsize {
-            $nn_jvm_warning_threshold  = floor($hadoop_namenode_heapsize * 0.9 * 1000000)
-            $nn_jvm_critical_threshold = floor($hadoop_namenode_heapsize * 0.95 * 1000000)
-            monitoring::check_prometheus { 'hadoop-hdfs-namenode-heap-usage':
-                description     => 'HDFS active Namenode JVM Heap usage',
-                dashboard_links => ['https://grafana.wikimedia.org/dashboard/db/analytics-hadoop?panelId=4&fullscreen&orgId=1'],
-                query           => "scalar(quantile_over_time(0.5,jvm_memory_bytes_used{hadoop_cluster=\"${cluster_name}\",instance=\"${::hostname}:10080\",area=\"heap\"}[120m]))",
-                warning         => $nn_jvm_warning_threshold,
-                critical        => $nn_jvm_critical_threshold,
-                contact_group   => 'analytics',
-                prometheus_url  => "http://prometheus.svc.${::site}.wmnet/analytics",
-            }
+        # Thresholds for the HDFS namenode are higher since it has always
+        # filled most of its heap. This is not bad of course, but we'd like to know
+        # if the usage stays above 90% over time to see if anything is happening.
+        monitoring::check_prometheus { 'hadoop-hdfs-namenode-heap-usage':
+            description     => 'HDFS active Namenode JVM Heap usage',
+            dashboard_links => ['https://grafana.wikimedia.org/dashboard/db/analytics-hadoop?panelId=4&fullscreen&orgId=1'],
+            query           => "scalar(avg(jvm_memory_bytes_used{hadoop_cluster=\"${cluster_name}\",instance=\"${::hostname}:10080\",area=\"heap\"}/jvm_memory_bytes_max{hadoop_cluster=\"${cluster_name}\",instance=\"${::hostname}:10080\",area=\"heap\"}))",
+            warning         => 0.9,
+            critical        => 0.95,
+            contact_group   => 'analytics',
+            prometheus_url  => "http://prometheus.svc.${::site}.wmnet/analytics",
         }
 
-        $hadoop_resourcemanager_heapsize = 4096
-        if $hadoop_resourcemanager_heapsize {
-            $rm_jvm_warning_threshold  = floor($hadoop_resourcemanager_heapsize * 0.9 * 1000000)
-            $rm_jvm_critical_threshold = floor($hadoop_resourcemanager_heapsize * 0.95 * 1000000)
-            monitoring::check_prometheus { 'hadoop-yarn-resourcemananager-heap-usage':
-                description     => 'YARN active ResourceManager JVM Heap usage',
-                dashboard_links => ['https://grafana.wikimedia.org/dashboard/db/analytics-hadoop?panelId=12&fullscreen&orgId=1'],
-                query           => "scalar(quantile_over_time(0.5,jvm_memory_bytes_used{hadoop_cluster=\"${cluster_name}\",instance=\"${::hostname}:10083\",area=\"heap\"}[120m]))",
-                warning         => $rm_jvm_warning_threshold,
-                critical        => $rm_jvm_critical_threshold,
-                contact_group   => 'analytics',
-                prometheus_url  => "http://prometheus.svc.${::site}.wmnet/analytics",
-            }
+        monitoring::check_prometheus { 'hadoop-yarn-resourcemananager-heap-usage':
+            description     => 'YARN active ResourceManager JVM Heap usage',
+            dashboard_links => ['https://grafana.wikimedia.org/dashboard/db/analytics-hadoop?panelId=12&fullscreen&orgId=1'],
+            query           => "scalar(avg(jvm_memory_bytes_used{hadoop_cluster=\"${cluster_name}\",instance=\"${::hostname}:10083\",area=\"heap\"}/jvm_memory_bytes_max{hadoop_cluster=\"${cluster_name}\",instance=\"${::hostname}:10083\",area=\"heap\"}))",
+            warning         => 0.7,
+            critical        => 0.9,
+            contact_group   => 'analytics',
+            prometheus_url  => "http://prometheus.svc.${::site}.wmnet/analytics",
         }
     }
 }

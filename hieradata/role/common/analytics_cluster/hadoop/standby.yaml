@@ -18,9 +18,6 @@ profile::hadoop::common::hadoop_cluster_name: 'analytics-hadoop'
 profile::hadoop::standby_master::monitoring_enabled: true
 profile::hadoop::logstash::enabled: false
 
-# Used to set up jvm heap size usage thresholds
-profile::hadoop::standby::namenode_heapsize: 8192
-
 profile::hadoop::common::config_override:
   # This is the heap zize of YARN daemons ResourceManager and NodeManagers.
   # This setting is used to configure the max heap size for both.
