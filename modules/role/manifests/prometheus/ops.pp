@@ -402,6 +402,14 @@ class role::prometheus::ops {
         port       => 9117,
     }
 
+    # Special config for Apache on Phabricator deployment
+    prometheus::class_config{ "apache_phabricator_${::site}":
+        dest       => "${targets_path}/apache_phabricator_${::site}.yaml",
+        site       => $::site,
+        class_name => 'profile::phabricator::main',
+        port       => 9117,
+    }
+
     # Job definition for etcd_exporter
     $etcd_jobs = [
       {
