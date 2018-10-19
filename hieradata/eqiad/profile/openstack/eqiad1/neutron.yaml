@@ -9,7 +9,7 @@ profile::openstack::eqiad1::neutron::rabbit_user: 'neutron'
 profile::openstack::eqiad1::neutron::network_flat_name: 'cloudinstances2b'
 # T193496
 profile::openstack::eqiad1::neutron::network_public_ip: '185.15.56.1'
-profile::openstack::eqiad1::neutron::dmz_cidr: '172.16.0.0/21:91.198.174.0/24,172.16.0.0/21:198.35.26.0/23,172.16.0.0/21:10.0.0.0/8,172.16.0.0/21:208.80.152.0/22,172.16.0.0/21:103.102.166.0/24'
+profile::openstack::eqiad1::neutron::dmz_cidr: '172.16.0.0/21:91.198.174.0/24,172.16.0.0/21:198.35.26.0/23,172.16.0.0/21:10.0.0.0/8,172.16.0.0/21:208.80.152.0/22,172.16.0.0/21:103.102.166.0/24,172.16.0.0/21:172.16.0.0/21'
 profile::openstack::eqiad1::neutron::tld: 'wmflabs'
 profile::openstack::eqiad1::neutron::l3_agent_bridges:
   br-external:
