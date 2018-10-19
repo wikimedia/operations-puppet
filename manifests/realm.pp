@@ -244,6 +244,4 @@ $mail_smarthost = hiera('mail_smarthost')
 
 $certcentral_host = hiera('certcentral_host')
 
-$authdns_servers = hiera('authdns_servers')
-
 $ntp_peers = hiera('ntp_peers')

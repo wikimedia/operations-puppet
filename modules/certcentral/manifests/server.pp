@@ -6,6 +6,7 @@ class certcentral::server (
     Wmflib::Ensure $http_challenge_support = absent,
     String $active_host = '',
     String $passive_host = '',
+    Array[String] $authdns_servers = [],
 ) {
     $is_active = $::fqdn == $active_host
 
@@ -46,12 +47,38 @@ class certcentral::server (
         require => Package['certcentral']
     }
 
-    $ssl_settings = ssl_ciphersuite('nginx', 'strong')
+    $challenge_conf = has_key($challenges, 'dns-01')? {
+        true    => {
+            'dns-01' => {
+                zone_update_cmd          => $challenges['dns-01']['zone_update_cmd'],
+                sync_dns_servers         => $authdns_servers,
+                verification_dns_servers => $authdns_servers,
+            }
+        },
+        default => {},
+    }
+
+    $config = {
+        accounts     => $accounts.map |String $account, Hash[String, String] $account_details| {
+            $ret = {
+                id        => $account,
+                directory => $account_details['directory'],
+            }
+            if has_key($account_details, 'default') {
+                merge($ret, { default => $account_details['default'] })
+            } else {
+                $ret
+            }
+        },
+        certificates => $certificates,
+        challenges   => $challenge_conf,
+    }
+
     file { '/etc/certcentral/config.yaml':
         owner   => 'certcentral',
         group   => 'certcentral',
         mode    => '0444',
-        content => template('certcentral/certcentral.config.yaml.erb'),
+        content => ordered_yaml($config),
         notify  => [
             Base::Service_unit['uwsgi-certcentral'],
             Service['certcentral'],
@@ -137,6 +164,7 @@ class certcentral::server (
     base::service_auto_restart { 'uwsgi-certcentral': }
 
     require sslcert::dhparam
+    $ssl_settings = ssl_ciphersuite('nginx', 'strong')
     nginx::site { 'certcentral':
         content => template('certcentral/central.nginx.conf.erb'),
         require => [

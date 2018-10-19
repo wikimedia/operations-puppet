@@ -38,15 +38,17 @@ class profile::certcentral (
     String $http_proxy = hiera('http_proxy'),
     String $active_host = hiera('profile::certcentral::active'),
     String $passive_host = hiera('profile::certcentral::passive'),
+    Array[String] $authdns_servers = hiera('authdns_servers'),
 ) {
     File <<| tag == 'certcentral-authorisedhosts' |>> ~> Base::Service_unit['uwsgi-certcentral']
 
     class { '::certcentral::server':
-        accounts     => $accounts,
-        certificates => $certificates,
-        challenges   => $challenges,
-        http_proxy   => $http_proxy,
-        active_host  => $active_host,
-        passive_host => $passive_host,
+        accounts        => $accounts,
+        certificates    => $certificates,
+        challenges      => $challenges,
+        http_proxy      => $http_proxy,
+        active_host     => $active_host,
+        passive_host    => $passive_host,
+        authdns_servers => $authdns_servers,
     }
 }
