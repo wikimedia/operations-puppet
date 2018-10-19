@@ -7,7 +7,6 @@ profile::certcentral::certificates:
         CN: 'pinkunicorn.wikimedia.org'
         SNI:
         - 'pinkunicorn.wikimedia.org'
-        - '*.pinkunicorn.wikimedia.org'
         challenge: dns-01
 profile::certcentral::challenges:
   dns-01:
