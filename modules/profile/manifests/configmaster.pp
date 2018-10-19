@@ -1,7 +1,7 @@
 class profile::configmaster(
     $conftool_prefix = hiera('conftool_prefix'),
-    $datacenters = hiera('datacenters'),
 ) {
+    include ::lvs::configuration
     $vhostnames = [
         'config-master.eqiad.wmnet',
         'config-master.codfw.wmnet',
@@ -22,9 +22,9 @@ class profile::configmaster(
 
     # Write pybal pools
     class { '::pybal::web':
-        ensure      => present,
-        root_dir    => $root_dir,
-        datacenters => $datacenters,
+        ensure   => present,
+        root_dir => $root_dir,
+        services => $::lvs::configuration::lvs_services
     }
 
     apache::site { 'config-master':
