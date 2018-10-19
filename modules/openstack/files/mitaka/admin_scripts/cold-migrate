@@ -22,10 +22,10 @@ from novaclient import client
 
 class NovaInstance(object):
 
-    def __init__(self, session, instance_id):
+    def __init__(self, session, instance_id, region):
         self.instance_id = instance_id
         self.session = session
-        self.novaclient = client.Client('2', session=session)
+        self.novaclient = client.Client('2', session=session, region_name=region)
         self.refresh_instance()
 
     # Returns True if the status changed, otherwise False
@@ -180,6 +180,11 @@ if __name__ == "__main__":
         default=os.environ.get('OS_AUTH_URL', None)
     )
     argparser.add_argument(
+        '--region',
+        help='nova region',
+        default=os.environ.get('OS_REGION_NAME', None)
+    )
+    argparser.add_argument(
         '--mysql-password',
         help='mysql password for nova db',
         default=os.environ.get('NOVA_MYSQL_PASS', None)
@@ -210,5 +215,5 @@ if __name__ == "__main__":
         project_name='admin')
     session = keystone_session.Session(auth=auth)
 
-    instance = NovaInstance(session, args.instanceid)
+    instance = NovaInstance(session, args.instanceid, region=args.region)
     instance.migrate(args.destination, args.mysql_password)
