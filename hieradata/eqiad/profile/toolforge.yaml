@@ -1,4 +1,0 @@
-profile::toolforge::is_mail_relay: false
-profile::toolforge::active_mail_relay: tools-mail.tools.eqiad.wmflabs
-profile::toolforge::active_proxy_host: tools-proxy-02
-profile::toolforge::etcdir: /var/lib/gridengine/etc
