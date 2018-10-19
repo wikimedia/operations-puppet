@@ -111,7 +111,7 @@ class profile::hadoop::worker(
         monitoring::check_prometheus { 'analytics_hadoop_hdfs_datanode':
             description     => 'HDFS DataNode JVM Heap usage',
             dashboard_links => ['https://grafana.wikimedia.org/dashboard/db/analytics-hadoop?panelId=1&fullscreen&orgId=1'],
-            query           => "scalar(avg(jvm_memory_bytes_used{hadoop_cluster=\"${cluster_name}\",instance=\"${::hostname}:51010\",area=\"heap\"}/jvm_memory_bytes_max{hadoop_cluster=\"${cluster_name}\",instance=\"${::hostname}:51010\",area=\"heap\"}))",
+            query           => "scalar(avg_over_time(jvm_memory_bytes_used{hadoop_cluster=\"${cluster_name}\",instance=\"${::hostname}:51010\",area=\"heap\"}[60m])/avg_over_time(jvm_memory_bytes_max{hadoop_cluster=\"${cluster_name}\",instance=\"${::hostname}:51010\",area=\"heap\"}[60m])",
             warning         => 0.9,
             critical        => 0.95,
             contact_group   => 'analytics',
@@ -121,7 +121,7 @@ class profile::hadoop::worker(
         monitoring::check_prometheus { 'analytics_hadoop_yarn_nodemanager':
             description     => 'YARN NodeManager JVM Heap usage',
             dashboard_links => ['https://grafana.wikimedia.org/dashboard/db/analytics-hadoop?orgId=1&panelId=17&fullscreen'],
-            query           => "scalar(avg(jvm_memory_bytes_used{hadoop_cluster=\"${cluster_name}\",instance=\"${::hostname}:8141\",area=\"heap\"}/jvm_memory_bytes_max{hadoop_cluster=\"${cluster_name}\",instance=\"${::hostname}:8141\",area=\"heap\"}))",
+            query           => "scalar(avg_over_time(jvm_memory_bytes_used{hadoop_cluster=\"${cluster_name}\",instance=\"${::hostname}:8141\",area=\"heap\"}[60])/avg_over_time(jvm_memory_bytes_max{hadoop_cluster=\"${cluster_name}\",instance=\"${::hostname}:8141\",area=\"heap\"}[60m])",
             warning         => 0.9,
             critical        => 0.95,
             contact_group   => 'analytics',
