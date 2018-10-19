@@ -164,7 +164,7 @@ class profile::hadoop::master(
             }
         }
 
-        $hadoop_resourcemanager_heapsize = $::cdh::hadoop::yarn_heapsize
+        $hadoop_resourcemanager_heapsize = 4096
         if $hadoop_resourcemanager_heapsize {
             $rm_jvm_warning_threshold  = floor($hadoop_resourcemanager_heapsize * 0.9 * 1000000)
             $rm_jvm_critical_threshold = floor($hadoop_resourcemanager_heapsize * 0.95 * 1000000)
