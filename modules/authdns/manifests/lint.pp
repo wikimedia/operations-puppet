@@ -6,7 +6,7 @@ class authdns::lint {
     include ::geoip
 
     package { 'gdnsd':
-        ensure => installed,
+        ensure => latest,
     }
 
     service { 'gdnsd':
