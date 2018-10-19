@@ -67,10 +67,10 @@ class certcentral::server (
         }
     }
 
-    service { 'certcentral':
-        ensure   => running,
-        provider => 'systemd',
-        require  => Package['certcentral'],
+    systemd::service { 'certcentral':
+        ensure  => present,
+        require => Package['certcentral'],
+        content => template('certcentral/certcentral.service.erb'),
     }
 
     cron { 'reload-certcentral-backend':

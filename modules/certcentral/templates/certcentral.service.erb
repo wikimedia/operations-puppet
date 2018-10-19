@@ -1,0 +1,12 @@
+[Unit]
+Description=Central Certificates Service
+
+[Service]
+User=certcentral
+Group=certcentral
+ExecStart=/usr/bin/certcentral-backend
+ExecReload=/bin/kill -SIGHUP $MAINPID
+Restart=always
+[Install]
+WantedBy=multi-user.target
+
