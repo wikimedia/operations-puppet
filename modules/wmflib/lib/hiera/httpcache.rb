@@ -74,8 +74,7 @@ class Hiera
       end
       # We shamelessly throw exceptions here, and catch them upper in the chain
       # specifically in Hiera::Mwcache.stale? and Hiera::Mwcache.read
-      # FIXME: use safe_load here somehow?
-      body = YAML.load(res.body)
+      body = YAML.safe_load(res.body)
 
       body['hiera']
     end
