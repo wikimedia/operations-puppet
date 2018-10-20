@@ -95,6 +95,7 @@ class profile::openstack::base::pdns::recursor::service(
         nova_api_url          => "http://${keystone_host}:5000/v3",
         extra_records         => $aliaser_extra_records,
         observer_project_name => $observer_project,
+        require               => Class['::profile::openstack::base::clientlib'],
     }
 
     ferm::service { 'recursor_udp_dns_rec':
