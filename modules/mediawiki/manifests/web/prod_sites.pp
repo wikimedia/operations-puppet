@@ -328,14 +328,32 @@ class mediawiki::web::prod_sites {
     }
 
     ## Configuration for wikimania.conf
-    mediawiki::web::vhost { 'wikimaniateam.wikimedia.org':
-        ensure          => present,
-        docroot         => '/srv/mediawiki/docroot/wikimedia.org',
-        legacy_rewrites => false,
-        https_only      => true,
-        declare_site    => false,
-        short_urls      => true,
-        before          => Httpd::Site['wikimania'],
+    mediawiki::web::vhost {
+        default:
+            ensure          => present,
+            docroot         => '/srv/mediawiki/docroot/wikimedia.org',
+            legacy_rewrites => false,
+            declare_site    => false,
+            before          => Httpd::Site['wikimania'],
+            ;
+        'wikimaniateam.wikimedia.org':
+            https_only => true,
+            short_urls => true,
+            ;
+        'wikimania':
+            server_aliases => [
+                'wikimania.wikimedia.org', 'wikimania2005.wikimedia.org',
+                'wikimania2006.wikimedia.org', 'wikimania2007.wikimedia.org',
+                'wikimania2008.wikimedia.org', 'wikimania2009.wikimedia.org',
+                'wikimania2010.wikimedia.org', 'wikimania2011.wikimedia.org',
+                'wikimania2012.wikimedia.org', 'wikimania2013.wikimedia.org',
+                'wikimania2014.wikimedia.org', 'wikimania2015.wikimedia.org',
+                'wikimania2016.wikimedia.org', 'wikimania2017.wikimedia.org',
+                'wikimania2018.wikimedia.org'],
+            upload_rewrite => {
+                    'domain_catchall' => 'wikimedia.org',
+                    'rewrite_prefix'  => 'wikimedia',
+            },
     }
     ### END wikimania
 
