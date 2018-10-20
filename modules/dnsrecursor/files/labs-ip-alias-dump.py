@@ -1,4 +1,5 @@
 #!/usr/bin/python
+import json
 import os
 import sys
 import yaml
@@ -11,9 +12,6 @@ from keystoneclient import session as keystone_session
 from keystoneclient.v3 import client as keystone_client
 
 from novaclient import client as novaclient
-
-
-LUA_LINE_TEMPLATE = '{table}["{key}"] = "{value}" -- {comment}\n'
 
 
 def new_session(project):
@@ -89,58 +87,20 @@ for project in projects:
                     # harmlessly ignore it.
                     pass
 
-output = 'aliasmapping = {}\n'
+output_d = {'aliasmapping': {}, 'extra_records': {}}
 # Sort to prevent flapping around due to random ordering
 for name in sorted(aliases.keys()):
     ips = aliases[name]
     for public, private in ips:
-        output += LUA_LINE_TEMPLATE.format(
-            table='aliasmapping',
-            key=public,
-            value=private,
-            comment=name
-        )
-
-output += """
-function postresolve (dq)
-    local records = dq:getRecords()
-    for key,val in pairs(records)
-    do
-        content = val:getContent()
-        if (aliasmapping[content] and val.type == pdns.A) then
-            val:changeContent(aliasmapping[content])
-        end
-    end
-    dq:setRecords(records)
-    return true
-end
-"""
+        output_d['aliasmapping'][public] = private
 
 if 'extra_records' in config:
-    output += 'extra_records = {}\n'
     extra_records = config['extra_records']
 
     for q in sorted(extra_records.keys()):
-        output += LUA_LINE_TEMPLATE.format(
-            table='extra_records',
-            key=q,
-            value=extra_records[q],
-            comment=q
-        )
+        output_d['extra_records'][q] = extra_records[q]
 
-    output += """
-function preresolve(dq)
-    for k, v in pairs(extra_records) do
-        if dq.qname:equal(k)
-        then
-            dq:addAnswer(pdns.A, v, 300)
-            return true
-        end
-    end
-    return false
-end
-"""
-
+output = json.dumps(output_d)
 if os.path.exists(config['output_path']):
     with open(config['output_path']) as f:
         current_contents = f.read()

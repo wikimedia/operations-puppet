@@ -43,17 +43,29 @@ class profile::openstack::base::pdns::recursor::service(
     }
 
     #  We need to alias some public IPs to their corresponding private IPs.
-    $alias_file = '/etc/powerdns/labs-ip-alias.lua'
+    if os_version('ubuntu trusty') {
+        $aliaser_source = 'puppet:///modules/profile/openstack/base/pdns/recursor/labsaliaser.lua.trusty'
+    } else {
+        $aliaser_source = 'puppet:///modules/profile/openstack/base/pdns/recursor/labsaliaser.lua'
+    }
+
+    $aliaser_file = '/etc/powerdns/labs-ip-aliaser.lua'
+    file { $aliaser_file:
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0555',
+        source => $aliaser_source,
+    }
     if $use_metal_resolver {
         $metal_resolver = '/etc/powerdns/metaldns.lua'
-        $lua_hooks = [$alias_file, $metal_resolver]
+        $lua_hooks = [$aliaser_file, $metal_resolver]
 
         class { '::dnsrecursor::metalresolver':
             metal_resolver => $metal_resolver,
             tld            => $tld
         }
     } else {
-        $lua_hooks = [$alias_file]
+        $lua_hooks = [$aliaser_file]
     }
 
     file { '/var/zones':
@@ -93,7 +105,6 @@ class profile::openstack::base::pdns::recursor::service(
         password              => $observer_password,
         nova_api_url          => "http://${keystone_host}:5000/v3",
         extra_records         => $aliaser_extra_records,
-        alias_file            => $alias_file,
         observer_project_name => $observer_project,
     }
 

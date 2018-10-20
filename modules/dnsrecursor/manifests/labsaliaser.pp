@@ -7,14 +7,26 @@ class dnsrecursor::labsaliaser(
     $password,
     $nova_api_url,
     $extra_records,
-    $alias_file,
     $observer_project_name,
 ) {
+    user { 'labsaliaser':
+        ensure => present,
+        system => true,
+        home   => '/nonexistent',
+        shell  => '/bin/false',
+    }
+    file { '/var/cache/labsaliaser':
+        ensure  => directory,
+        owner   => 'labsaliaser',
+        group   => 'labsaliaser',
+        mode    => '0644',
+        require => User['labsaliaser'],
+    }
 
     $config = {
         'username'              => $username,
         'password'              => $password,
-        'output_path'           => $alias_file,
+        'output_path'           => '/var/cache/labsaliaser/labs-ip-aliases.json',
         'nova_api_url'          => $nova_api_url,
         'extra_records'         => $extra_records,
         'observer_project_name' => $observer_project_name,
@@ -28,23 +40,24 @@ class dnsrecursor::labsaliaser(
         content => ordered_yaml($config),
     }
 
-    if os_version('ubuntu trusty') {
-        $dumpfile = 'puppet:///modules/dnsrecursor/labs-ip-alias-dump.py.trusty'
-    } else {
-        $dumpfile = 'puppet:///modules/dnsrecursor/labs-ip-alias-dump.py'
-    }
-
-    file { '/usr/local/bin/labs-ip-alias-dump.py':
+    package { 'lua-json':
         ensure => present,
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0550',
-        source => $dumpfile,
+    }
+    file { '/usr/local/bin/labs-ip-alias-dump.py':
+        ensure  => present,
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0550',
+        source  => 'puppet:///modules/dnsrecursor/labs-ip-alias-dump.py',
+        require => [
+            Package['lua-json'],
+            File['/var/cache/labsaliaser'],
+        ],
     }
 
     cron { 'labs-ip-alias-dump':
         ensure  => 'present',
-        user    => 'root',
+        user    => 'labsaliaser',
         command => 'if ! `/usr/local/bin/labs-ip-alias-dump.py --check-changes-only`; then /usr/local/bin/labs-ip-alias-dump.py; /usr/bin/rec_control reload-lua-script; fi  > /dev/null 2>&1',
         minute  => 30,
         require => File[
