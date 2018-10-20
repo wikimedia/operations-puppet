@@ -26,7 +26,7 @@ class Hiera
           source = source['labs/'.length..-1].chomp('/common').capitalize
 
           data = @cache.read(source, Hash, {}) do |content|
-            YAML.load(content)
+            YAML.safe_load(content)
           end
 
           next if data.nil? || data.empty?
