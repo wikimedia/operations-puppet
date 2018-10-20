@@ -7,7 +7,7 @@ class shinken(
     include shinken::shinkengen
 
     package { 'shinken':
-        ensure  => present,
+        ensure => present,
     }
 
     if os_version('ubuntu trusty') {
@@ -20,22 +20,27 @@ class shinken(
         }
     }
 
+    package { 'python-cherrypy3':
+        ensure => present,
+    }
+
     service { 'shinken':
-        ensure  => running,
+        ensure => running,
+        enable => true,
     }
 
     file { '/etc/shinken/modules':
         ensure  => directory,
-        owner   => 'shinken',
-        group   => 'shinken',
+        owner   => 'root',
+        group   => 'root',
         require => Package['shinken'],
     }
 
     file { '/etc/shinken/modules/webui.cfg':
         ensure  => present,
         content => template('shinken/webui.cfg.erb'),
-        owner   => 'shinken',
-        group   => 'shinken',
+        owner   => 'root',
+        group   => 'root',
         require => File['/etc/shinken/modules'],
         notify  => Service['shinken'],
     }
@@ -43,8 +48,26 @@ class shinken(
     file { '/etc/shinken/shinken.cfg':
         ensure  => present,
         source  => 'puppet:///modules/shinken/shinken.cfg',
-        owner   => 'shinken',
-        group   => 'shinken',
+        owner   => 'root',
+        group   => 'root',
+        require => Package['shinken'],
+        notify  => Service['shinken'],
+    }
+
+    file { '/etc/shinken/poller/poller.cfg':
+        ensure  => present,
+        source  => 'puppet:///modules/shinken/poller.cfg',
+        owner   => 'root',
+        group   => 'root',
+        require => Package['shinken'],
+        notify  => Service['shinken'],
+    }
+
+    file { '/etc/shinken/broker/broker.cfg':
+        ensure  => present,
+        source  => 'puppet:///modules/shinken/broker.cfg',
+        owner   => 'root',
+        group   => 'root',
         require => Package['shinken'],
         notify  => Service['shinken'],
     }
@@ -52,30 +75,30 @@ class shinken(
     file { '/etc/shinken/templates.cfg':
         ensure  => present,
         source  => 'puppet:///modules/shinken/templates.cfg',
-        owner   => 'shinken',
-        group   => 'shinken',
+        owner   => 'root',
+        group   => 'root',
         require => Package['shinken'],
         notify  => Service['shinken'],
     }
 
     file { '/etc/shinken/generated':
         ensure  => directory,
-        owner   => 'shinken',
-        group   => 'shinken',
+        owner   => 'root',
+        group   => 'root',
         require => Package['shinken'],
     }
 
     file { '/etc/shinken/customconfig':
         ensure  => directory,
-        owner   => 'shinken',
-        group   => 'shinken',
+        owner   => 'root',
+        group   => 'root',
         require => Package['shinken'],
     }
 
     class { 'nagios_common::contactgroups':
         source     => 'puppet:///modules/nagios_common/contactgroups-labs.cfg',
-        owner      => 'shinken',
-        group      => 'shinken',
+        owner      => 'root',
+        group      => 'root',
         config_dir => '/etc/shinken',
         require    => Package['shinken'],
         notify     => Service['shinken'],
@@ -83,8 +106,8 @@ class shinken(
 
     class { 'nagios_common::contacts':
         source     => 'puppet:///modules/nagios_common/contacts-labs.cfg',
-        owner      => 'shinken',
-        group      => 'shinken',
+        owner      => 'root',
+        group      => 'root',
         config_dir => '/etc/shinken',
         require    => Package['shinken'],
         notify     => Service['shinken'],
@@ -95,16 +118,16 @@ class shinken(
       'nagios_common::timeperiods',
     ] :
         config_dir => '/etc/shinken',
-        owner      => 'shinken',
-        group      => 'shinken',
+        owner      => 'root',
+        group      => 'root',
         notify     => Service['shinken'],
         require    => Package['shinken'],
     }
 
     class { 'nagios_common::notification_commands':
         config_dir   => '/etc/shinken',
-        owner        => 'shinken',
-        group        => 'shinken',
+        owner        => 'root',
+        group        => 'root',
         notify       => Service['shinken'],
         require      => Package['shinken'],
         irc_dir_path => '/var/log/ircecho',
@@ -121,8 +144,8 @@ class shinken(
     class { 'nagios_common::commands':
         require    => Package['shinken'],
         config_dir => '/etc/shinken',
-        owner      => 'shinken',
-        group      => 'shinken',
+        owner      => 'root',
+        group      => 'root',
         notify     => Service['shinken'],
     }
 }
