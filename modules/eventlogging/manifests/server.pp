@@ -107,10 +107,11 @@ class eventlogging::server(
         file_glob    => "${log_dir}/*.log",
         not_if_empty => true,
         max_age      => 30,
-        rotate       => 2,
+        rotate       => 4,
         date_ext     => true,
         compress     => true,
         missing_ok   => true,
+        size         => '100M',
     }
 
     if os_version('debian >= jessie') {
