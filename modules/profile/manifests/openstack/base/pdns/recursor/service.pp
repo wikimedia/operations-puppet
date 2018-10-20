@@ -85,6 +85,7 @@ class profile::openstack::base::pdns::recursor::service(
             max_tcp_per_client       => 10,
             max_cache_entries        => 3000000,
             client_tcp_timeout       => 1,
+            require                  => Interface::Alias[$title]
     }
 
     class { '::dnsrecursor::labsaliaser':
