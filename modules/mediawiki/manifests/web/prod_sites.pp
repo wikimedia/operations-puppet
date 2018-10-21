@@ -444,6 +444,7 @@ class mediawiki::web::prod_sites {
                 'pa-us.wikimedia.org',
                 'pl.wikimedia.org',
                 'pt.wikimedia.org',
+                'punjabi.wikimedia.org',
                 'romd.wikimedia.org',
                 'rs.wikimedia.org',
                 'ru.wikimedia.org',
