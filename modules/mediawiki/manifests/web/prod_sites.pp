@@ -352,7 +352,7 @@ class mediawiki::web::prod_sites {
                 'wikimania2018.wikimedia.org'],
             upload_rewrite => {
                     'domain_catchall' => 'wikimedia.org',
-                    'rewrite_prefix'  => 'wikimedia',
+                    'rewrite_prefix'  => 'wikipedia',
             },
     }
     ### END wikimania
