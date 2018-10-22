@@ -48,10 +48,12 @@ define rsync::server::module (
   $max_connections = '0',
   $lock_file       = '/var/run/rsyncd.lock',
   $auto_ferm       = false,
+  $auto_ferm_ipv6  = false,
   $secrets_file    = undef,
   $auth_users      = undef,
   $hosts_allow     = undef,
-  $hosts_deny      = undef)  {
+  $hosts_deny      = undef,
+){
 
   file { "${rsync::server::rsync_fragments}/frag-${name}":
     ensure  => $ensure,
