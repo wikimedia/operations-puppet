@@ -7,7 +7,6 @@
 # FIXME: Why man pages for some but not all?
 # FIXME: What on earth does MW have to do with this? Send it to the right module
 class scap::scripts {
-    require mediawiki::users
 
     file { '/usr/local/bin/logstash_checker.py':
         owner  => 'root',
