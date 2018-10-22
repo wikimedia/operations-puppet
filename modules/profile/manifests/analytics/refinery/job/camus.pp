@@ -49,7 +49,7 @@ class profile::analytics::refinery::job::camus(
         Camus::Job {
             script              => "export PYTHONPATH=\${PYTHONPATH}:${profile::analytics::refinery::path}/python && ${profile::analytics::refinery::path}/bin/camus",
             kafka_brokers       => $kafka_brokers,
-            camus_jar           => "${profile::analytics::refinery::path}/artifacts/org/wikimedia/analytics/camus-wmf/camus-wmf-0.1.0-wmf7.jar",
+            camus_jar           => "${profile::analytics::refinery::path}/artifacts/org/wikimedia/analytics/camus-wmf/camus-wmf-0.1.0-wmf9.jar",
             check_jar           => "${profile::analytics::refinery::path}/artifacts/org/wikimedia/analytics/refinery/refinery-camus-0.0.69.jar",
             # Email reports if CamusPartitionChecker finds errors.
             check_email_enabled => $monitoring_enabled,
