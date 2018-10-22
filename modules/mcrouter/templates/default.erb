@@ -9,6 +9,7 @@ ADDITIONAL_ARGS="--route-prefix=<%= @region %>/<%= @cluster %> \
 --file-observer-poll-period-ms=1000 \
 --file-observer-sleep-before-update-ms=100 \
 --num-proxies=<%= @num_proxies %> \
+--probe_delay_initial_ms=<%= @probe_delay_initial_ms %> \
 <%- if @ssl_options -%>
 --ssl-port <%= @ssl_options['port'] %> \
 --pem-cert-path=<%= @ssl_options['cert'] %> \

@@ -34,6 +34,13 @@
 # [*num_proxies*]
 #   Maximum number of connections to each backend. Defaults to 1.
 #
+# [*probe_delay_initial_ms*]
+#   TKO probe retry initial timeout in ms. When a memcached server is marked
+#   as TKO (by default after 3 timeouts registered), mcrouter waits this amount
+#   of time before sending the first health checks probes (meant to verify
+#   the status of memcached before sending traffic again).
+#   Defaults to 3000.
+#
 # === Examples
 #
 #  class { '::mcrouter':
@@ -63,6 +70,7 @@ class mcrouter(
     Wmflib::Ensure $ensure = present,
     Mcrouter::Ssl $ssl_options = undef,
     Integer $num_proxies = 1,
+    Integer $probe_delay_initial_ms = 3000,
 ) {
     require_package('mcrouter')
 
