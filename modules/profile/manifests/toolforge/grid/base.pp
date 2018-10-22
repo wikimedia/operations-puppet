@@ -14,7 +14,7 @@ class profile::toolforge::grid::base (
 
     class { '::labs_lvm': }
 
-    package { ['nano', 'at']:
+    package { 'nano':
         ensure => latest,
     }
 
