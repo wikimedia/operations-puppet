@@ -33,7 +33,7 @@ server_port=5667
 #
 # NOTE: This option is ignored if NSCA is running under either inetd or xinetd
 
-nsca_user=icinga
+nsca_user=<%= @icinga_user %>
 
 # NSCA GROUP
 # This determines the effective group that the NSCA daemon should run as.
@@ -41,6 +41,7 @@ nsca_user=icinga
 #
 # NOTE: This option is ignored if NSCA is running under either inetd or xinetd.
 
+# FIXME - replace with <%= @icinga_group %> once production is on stretch
 nsca_group=nagios
 
 # NSCA CHROOT

@@ -31,7 +31,12 @@ class profile::icinga(
     class { 'facilities': }
     class { 'lvs::monitor': }
     class { 'icinga::monitor::checkpaging': }
-    class { 'icinga::nsca::daemon': }
+
+    class { 'icinga::nsca::daemon':
+        icinga_user  => $icinga_user,
+        icinga_group => $icinga_group,
+    }
+
     class { 'icinga::monitor::wikidata': }
 
     class { 'icinga::monitor::ores':

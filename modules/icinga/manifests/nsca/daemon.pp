@@ -2,7 +2,10 @@
 #
 # Sets up an NSCA daemon for listening to passive check
 # results from hosts
-class icinga::nsca::daemon {
+class icinga::nsca::daemon (
+    $icinga_user,
+    $icinga_group,
+){
 
     package { 'nsca':
         ensure => 'present',
