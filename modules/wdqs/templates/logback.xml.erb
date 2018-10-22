@@ -19,6 +19,11 @@
     <%- end -%>
 
     <appender name="stdout" class="ch.qos.logback.core.ConsoleAppender">
+        <filter class="org.wikidata.query.rdf.common.log.RateLimitFilter">
+        <!-- rate limit on console to 10 messages per second -->
+            <bucketCapacity>10</bucketCapacity>
+            <refillIntervalInMillis>1000</refillIntervalInMillis>
+        </filter>
         <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
             <pattern><%= @pattern %></pattern>
             <outputPatternAsHeader>true</outputPatternAsHeader>
@@ -32,6 +37,7 @@
 
     <appender name="logstash" class="net.logstash.logback.appender.LogstashSocketAppender">
         <filter class="org.wikidata.query.rdf.common.log.PerLoggerThrottler" />
+        <filter class="org.wikidata.query.rdf.common.log.RateLimitFilter" />
         <host><%= @logstash_host %></host>
         <port><%= @logstash_port %></port>
         <customFields>{"program":"<%= @title %>"}</customFields>
