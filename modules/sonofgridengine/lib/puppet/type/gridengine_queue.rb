@@ -1,4 +1,7 @@
 # Copyright 2018 Brooke Storm
+
+# WIP - This is not finished, but it was started in case the existing puppet DSL
+# code doesn't actually correctly define the queues right.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
