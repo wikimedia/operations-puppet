@@ -33,14 +33,10 @@
 # running locally or distributed across several hosts.
 #
 # The /etc/eventlogging.d file hierarchy contains instance definitions.
-# It has a subfolder for each service type. An Upstart task,
-# 'eventlogging/init', walks this file hierarchy and provisions a
-# job for each instance definition. Instance definition files contain
-# command-line arguments for the service program, one argument per line.
+# It has a subfolder for each service type.
 #
-# An 'eventloggingctl' (in Ubuntu) shell script provides a convenient
-# wrapper around Upstart's initctl that is specifically tailored for managing
-# EventLogging tasks.
+# An 'eventloggingctl' shell script provides a convenient wrapper around
+# Systemd units, that is specifically tailored for managing EventLogging tasks.
 #
 # == Parameters
 #
@@ -114,69 +110,15 @@ class eventlogging::server(
         size         => '100M',
     }
 
-    if os_version('debian >= jessie') {
-        systemd::service { 'eventlogging':
-            ensure  => present,
-            content => systemd_template('eventlogging'),
-            restart => true,
-            require => User['eventlogging'],
-        }
+    systemd::service { 'eventlogging':
+        ensure  => present,
+        content => systemd_template('eventlogging'),
+        restart => true,
+        require => User['eventlogging'],
+    }
 
-        file { '/sbin/eventloggingctl':
-            source => 'puppet:///modules/eventlogging/eventloggingctl.systemd',
-            mode   => '0755',
-        }
-    } else {
-        # Manage EventLogging services with 'eventloggingctl'.
-        # Usage: eventloggingctl {start|stop|restart|status|tail}
-        file { '/sbin/eventloggingctl':
-            source => 'puppet:///modules/eventlogging/eventloggingctl',
-            mode   => '0755',
-        }
-
-        # Upstart job definitions.
-        file { '/etc/init/eventlogging':
-            ensure  => 'directory',
-            recurse => true,
-            purge   => true,
-            force   => true,
-        }
-        file { '/etc/init/eventlogging/init.conf':
-            content => template('eventlogging/upstart/init.conf.erb'),
-        }
-        file { '/etc/init/eventlogging/consumer.conf':
-            content => template('eventlogging/upstart/consumer.conf.erb'),
-            require => File['/etc/eventlogging.d/consumers'],
-        }
-        file { '/etc/init/eventlogging/forwarder.conf':
-            content => template('eventlogging/upstart/forwarder.conf.erb'),
-            require => File['/etc/eventlogging.d/forwarders'],
-        }
-        file { '/etc/init/eventlogging/multiplexer.conf':
-            content => template('eventlogging/upstart/multiplexer.conf.erb'),
-            require => File['/etc/eventlogging.d/multiplexers'],
-        }
-        file { '/etc/init/eventlogging/processor.conf':
-            content => template('eventlogging/upstart/processor.conf.erb'),
-            require => File['/etc/eventlogging.d/processors'],
-        }
-        file { '/etc/init/eventlogging/reporter.conf':
-            content => template('eventlogging/upstart/reporter.conf.erb'),
-            require => File['/etc/eventlogging.d/reporters'],
-        }
-
-        # daemon service http service is not supported using upstart.
-        # See: eventlogging::service::service
-
-        # 'eventlogging/init' is the master upstart task; it walks
-        # </etc/eventlogging.d> and starts a job for each instance
-        # definition file that it encounters.
-        service { 'eventlogging/init':
-            provider => 'upstart',
-            require  => [
-                File['/etc/init/eventlogging'],
-                User['eventlogging']
-            ],
-        }
+    file { '/sbin/eventloggingctl':
+        source => 'puppet:///modules/eventlogging/eventloggingctl.systemd',
+        mode   => '0755',
     }
 }

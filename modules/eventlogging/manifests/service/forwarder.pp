@@ -55,16 +55,14 @@ define eventlogging::service::forwarder(
         content => template('eventlogging/forwarder.erb'),
     }
 
-    if os_version('debian >= stretch') {
-        rsyslog::conf { $service_name:
-            content  => template('eventlogging/rsyslog.conf.erb'),
-            priority => 80,
-        }
-        systemd::service { $service_name:
-            ensure  => present,
-            content => systemd_template('eventlogging-consumer@'),
-            restart => true,
-            require => File[$config_file],
-        }
+    rsyslog::conf { $service_name:
+        content  => template('eventlogging/rsyslog.conf.erb'),
+        priority => 80,
+    }
+    systemd::service { $service_name:
+        ensure  => present,
+        content => systemd_template('eventlogging-consumer@'),
+        restart => true,
+        require => File[$config_file],
     }
 }
