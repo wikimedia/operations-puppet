@@ -21,8 +21,20 @@ class icinga::nsca::daemon (
         require => Package['nsca'],
     }
 
-    service { 'nsca':
-        ensure  => running,
-        require => File['/etc/nsca.cfg'],
+    if os_version('debian >= stretch') {
+
+        systemd::service { 'nsca':
+            ensure  => 'present',
+            content => systemd_template('nsca'),
+            require => File['/etc/nsca.cfg'],
+        }
+
+    # FIXME: remove after we are off jessie
+    } else {
+
+        service { 'nsca':
+            ensure  => running,
+            require => File['/etc/nsca.cfg'],
+        }
     }
 }
