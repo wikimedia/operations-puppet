@@ -261,22 +261,6 @@ define command {
     command_line    $USER1$/check_http -H $ARG1$ -p $ARG2$ -I $HOSTADDRESS$ -u /wikimedia-monitoring-test
     }
 
-# 'check_http_upload' command definition, querying a different URL
-define command {
-    command_name    check_http_upload_on_port
-    command_line    $USER1$/check_http -H upload.wikimedia.org -I $HOSTADDRESS$ -u /monitoring/backend -p $ARG1$
-    }
-
-define command {
-    command_name    check_http_donate
-    command_line    $USER1$/check_http -H donate.wikimedia.org -I $HOSTADDRESS$
-    }
-# 'check_http_mobile' command definition
-define command {
-    command_name    check_http_mobile
-    command_line    $USER1$/check_http -H en.m.wikipedia.org -I $HOSTADDRESS$ -u /wiki/Main_Page -w 10 -c 20 -t 60 -f warning -r 'Terms of Use'
-    }
-
 define command {
     command_name    check_http_url_at_address_for_string_with_timeout
     command_line    $USER1$/check_http -t $ARG1$ -H $ARG2$ -I $ARG2$ -u $ARG3$ -s $ARG4$
@@ -300,16 +284,6 @@ define command {
 define command {
     command_name    check_https_url_for_string
     command_line    $USER1$/check_http -H $ARG1$ -I $HOSTADDRESS$ -S -u $ARG2$ -s $ARG3$
-    }
-
-define command {
-    command_name    check_https_url_for_string_on_host
-    command_line    $USER1$/check_http -H $ARG1$ -I $ARG2$ -S -u $ARG3$ -s $ARG4$
-    }
-
-define command {
-    command_name    check_https_url_for_regexp
-    command_line    $USER1$/check_http -H $ARG1$ -I $HOSTADDRESS$ -S -u $ARG2$ --linespan --ereg $ARG3$
     }
 
 define command {
@@ -340,11 +314,6 @@ define command {
 define command {
     command_name    check_http_lvs
     command_line    $USER1$/check_http -H $ARG1$ -I $HOSTADDRESS$ -u "$ARG2$"
-    }
-
-define command {
-    command_name    check_https_lvs
-    command_line    $USER1$/check_http -H $ARG1$ -S -I $HOSTADDRESS$ -u "$ARG2$"
     }
 
 define command {
