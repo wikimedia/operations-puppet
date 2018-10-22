@@ -42,7 +42,7 @@ class role::logstash::collector (
 
     sysctl::parameters { 'logstash_receive_skbuf':
         values => {
-            'net.core.rmem_default' => 4194304,
+            'net.core.rmem_default' => 8388608,
         },
     }
 
