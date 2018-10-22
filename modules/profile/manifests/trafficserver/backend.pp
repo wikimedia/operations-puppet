@@ -68,4 +68,9 @@ class profile::trafficserver::backend (
         nrpe_command => '/usr/lib/nagios/plugins/check_procs -c 1:1 -a "/usr/bin/python3 /usr/bin/trafficserver_exporter"',
         require      => Prometheus::Trafficserver_exporter['trafficserver_exporter'],
     }
+
+    monitoring::service { 'traffic_manager_check_http':
+        description   => 'Ensure traffic_manager binds on $port and responds to HTTP requests',
+        check_command => "check_http_hostheader_port_url!localhost!${port}!/_stats",
+    }
 }
