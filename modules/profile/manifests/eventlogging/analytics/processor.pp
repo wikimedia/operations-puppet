@@ -1,34 +1,29 @@
-# == Class role::eventlogging::processor
+# == Class profile::eventlogging::processor
+#
 # Reads raw events, parses and validates them, and then sends
 # them along for further consumption.
 #
-# filtertags: labs-project-deployment-prep
-class role::eventlogging::analytics::processor{
-    include role::eventlogging::analytics::server
+# == Parameters
+#
+# [*kafka_producer_scheme*]
+#   Choose the eventlogging URI scheme to use for consumers and producer (inputs vs outputs).
+#   This allows us to try out different Kafka handlers and different kafka clients
+#   that eventlogging supports. The default is kafka://.  Also available is kafka-confluent://
+#   eventlogging::processor is the only configured analytics eventlogging kafka producer, so we
+#   only need to define this here.
+#
+class profile::eventlogging::analytics::processor(
+    $client_side_processors = hiera('profile::eventlogging::analytics::processor::client_side_processors', ['client-side-00', 'client-side-01']),
+    $kafka_consumer_group   = hiera('profile::eventlogging::analytics::processor::kafka_consumer_group', 'eventlogging_processor_client_side_00'),
+    $kafka_producer_scheme  = hiera('profile::eventlogging::analytics::processor::kafka_producer_scheme', 'kafka://'),
+){
 
-    $kafka_brokers_string      = $role::eventlogging::analytics::server::kafka_config['brokers']['string']
+    include profile::eventlogging::analytics::server
 
-    $kafka_consumer_group = hiera(
-        'eventlogging_processor_kafka_consumer_group',
-        'eventlogging_processor_client_side_00'
-    )
+    $kafka_brokers_string = $profile::eventlogging::analytics::server::kafka_config['brokers']['string']
 
-    # Run N parallel client side processors.
-    # These will auto balance amongst themselves.
-    $client_side_processors = hiera(
-        'eventlogging_client_side_processors',
-        ['client-side-00', 'client-side-01']
-    )
-
-    # client-side-raw URI is defined for DRY purposes in role::eventlogging::analytics::server.
-    $kafka_client_side_raw_uri = $role::eventlogging::analytics::server::kafka_client_side_raw_uri
-
-    # Choose the eventlogging URI scheme to use for consumers and producer (inputs vs outputs).
-    # This allows us to try out different Kafka handlers and different kafka clients
-    # that eventlogging supports.  The default is kafka://.  Also available is kafka-confluent://
-    # eventlogging::processor is the only configured analytics eventlogging kafka producer, so we
-    # only need to define this here.
-    $kafka_producer_scheme = hiera('eventlogging_kafka_producer_scheme', 'kafka://')
+    # client-side-raw URI is defined for DRY purposes in profile::eventlogging::analytics::server.
+    $kafka_client_side_raw_uri = $profile::eventlogging::analytics::server::kafka_client_side_raw_uri
 
     # Read in raw events from Kafka, process them, and send them to
     # the schema corresponding to their topic in Kafka.

@@ -1,17 +1,21 @@
-# == Class role::eventlogging::analytics::mysql
+# == Class profile::eventlogging::analytics::mysql
+#
 # Consumes the mixed stream of events and writes them to MySQL
 #
-#
-# filtertags: labs-project-deployment-prep
-class role::eventlogging::analytics::mysql {
-    include role::eventlogging::analytics::server
+class profile::eventlogging::analytics::mysql(
+    $mysql_consumers = hiera('profile::eventlogging::analytics::mysql::consumers'),
+    $mysql_db        = hiera('profile::eventlogging::analytics::mysql::db', '127.0.0.1/log'),
+    $statsd_host     = hiera('profile::eventlogging::analytics::mysql::statsd_host', 'statsd.eqiad.wmnet'),
+) {
+
+    include profile::eventlogging::analytics::server
 
     # We use the mediawiki/event-schemas to support insertion of events from EventBus
     # that use those schemas not on meta.wikimedia.org.
     # NOTE: If an event schema changes, the eventlogging-consumer process(es) will
     # not be automatically restarted.  You must manually restart this for the consumer
     # process to pick up changes to local schemas.
-    require eventschemas
+    class { 'eventschemas': }
 
     ## MySQL / MariaDB
 
@@ -20,20 +24,9 @@ class role::eventlogging::analytics::mysql {
     class { 'passwords::mysql::eventlogging': }    # T82265
     $mysql_user = $passwords::mysql::eventlogging::user
     $mysql_pass = $passwords::mysql::eventlogging::password
-    $mysql_db = $::realm ? {
-        production => 'm4-master.eqiad.wmnet/log',
-        labs       => '127.0.0.1/log',
-    }
 
-    # Run N parallel mysql consumers processors.
-    # These will auto balance amongst themselves.
-    $mysql_consumers = hiera(
-        'eventlogging_mysql_consumers',
-        ['mysql-m4-master-00']
-    )
-
-    $kafka_consumer_scheme = $role::eventlogging::analytics::server::kafka_consumer_scheme
-    $kafka_brokers_string  = $role::eventlogging::analytics::server::kafka_brokers_string
+    $kafka_consumer_scheme = $profile::eventlogging::analytics::server::kafka_consumer_scheme
+    $kafka_brokers_string  = $profile::eventlogging::analytics::server::kafka_brokers_string
 
     # Add more here as requested.
     # NOTE: The datacenter prefixed topics are produced via EventBus, and are of
@@ -44,10 +37,6 @@ class role::eventlogging::analytics::mysql {
     ]
     $topics_string = join($topics_to_consume, ',')
     $kafka_consumer_uri = "${kafka_consumer_scheme}/${kafka_brokers_string}?topics=${topics_string}"
-
-    # Define statsd host url to send mysql insert metrics.
-    # For beta cluster, set in https://wikitech.wikimedia.org/wiki/Hiera:Deployment-prep
-    $statsd_host          = hiera('eventlogging_statsd_host', 'statsd.eqiad.wmnet')
 
     # Map function to use on events consumed by mysql. T179625
     $map_function      = '&function=mysql_mapper'

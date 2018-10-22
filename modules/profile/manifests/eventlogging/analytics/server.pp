@@ -1,12 +1,10 @@
-# == Class role::eventlogging::analytics::server
-# Common role class that all other eventlogging analytics role classes should include.
+# == Class profile::eventlogging::analytics::server
 #
-class role::eventlogging::analytics::server {
-    system::role { 'eventlogging::analytics':
-        description => 'EventLogging analytics processes',
-    }
-
-    include ::eventlogging::dependencies
+# Common profile class that all other eventlogging analytics profile classes should include.
+#
+class profile::eventlogging::analytics::server(
+    $kafka_cluster = hiera('profile::eventlogging::analytics::server::kafka_cluster'),
+) {
 
     scap::target { 'eventlogging/analytics':
         deploy_user => 'eventlogging',
@@ -24,14 +22,7 @@ class role::eventlogging::analytics::server {
     }
 
     # Get the Kafka configuration
-    # FIXME: temporary hardcoding the name of the Kafka cluster in labs
-    # to allow our environment to work properly in there. Needs to be removed
-    # with a proper parameter when migrating to role/profiles.
-    if $::realm == 'production' {
-        $kafka_config = kafka_config('jumbo-eqiad')
-    } else {
-        $kafka_config = kafka_config('jumbo')
-    }
+    $kafka_config = kafka_config($kafka_cluster)
     $kafka_brokers_string = $kafka_config['brokers']['string']
 
     # Using kafka-confluent as a consumer is not currently supported by this puppet module,

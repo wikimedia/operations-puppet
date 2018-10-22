@@ -337,9 +337,6 @@ dumps_dist_active_vps: labstore1007.wikimedia.org
 # Also serves stat* hosts over nfs
 dumps_dist_active_web: labstore1006.wikimedia.org
 
-# Used to specify writer handler for eventlogging processor producer.
-eventlogging_kafka_producer_scheme: "kafka-confluent://"
-
 # Cloud Services <
 #
 # Cumin

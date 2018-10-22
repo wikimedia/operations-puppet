@@ -1,3 +1,39 @@
 admin::groups:
   - eventlogging-admins
   - eventlogging-roots
+profile::eventlogging::analytics::server::kafka_cluster: 'jumbo-eqiad'
+
+# Used to specify writer handler for eventlogging processor producer.
+profile::eventlogging::analytics::processor::kafka_producer_scheme: "kafka-confluent://"
+# Kafka Topic eventlogging-client-side with
+# raw eventlogging events has 12 partitions
+# in production.  Run 12 processors.
+profile::eventlogging::analytics::processor::client_side_processors:
+    - client-side-00
+    - client-side-01
+    - client-side-02
+    - client-side-03
+    - client-side-04
+    - client-side-05
+    - client-side-06
+    - client-side-07
+    - client-side-08
+    - client-side-09
+    - client-side-10
+    - client-side-11
+
+# Kafka Topic eventlogging-valid-mixed with
+# most eventlogging events has 12 partitions
+# in production.  Run 4 mysql consumers
+# to insert this data into the log database.
+profile::eventlogging::analytics::mysql::consumers:
+    - mysql-m4-master-00
+    # Dropping these consumers because custom replication of
+    # eventlogging tables does not work with parallel consumers due to
+    # race conditions. We'll bring these back after adding autoincrement ids
+    # to eventlogging tables, and having replication script check the ids
+    # instead of the time based faulty checking for new events that's happening now.
+    # - mysql-m4-master-01
+    # - mysql-m4-master-02
+    # - mysql-m4-master-03
+profile::eventlogging::analytics::mysql::db: 'm4-master.eqiad.wmnet/log'

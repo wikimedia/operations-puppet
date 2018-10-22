@@ -1,9 +1,12 @@
-# == Class role::eventlogging::analytics::files
+# == Class profile::eventlogging::analytics::files
+#
 # Consumes streams of events and writes them to log files.
 #
-# filtertags: labs-project-deployment-prep
-class role::eventlogging::analytics::files {
-    include role::eventlogging::analytics::server
+class profile::eventlogging::analytics::files(
+    $backup_destinations = hiera('statistics_servers', undef)
+) {
+
+    include profile::eventlogging::analytics::server
 
     # Log all raw log records and decoded events to flat files in
     # $out_dir as a medium of last resort. These files are rotated
@@ -49,7 +52,7 @@ class role::eventlogging::analytics::files {
 
     logrotate::conf { 'eventlogging-files':
         ensure  => 'present',
-        content => template('role/eventlogging/analytics/files_logrotate.erb'),
+        content => template('profile/eventlogging/analytics/files_logrotate.erb'),
         require => [
             File[$out_dir],
             File["${out_dir}/archive"]
@@ -57,9 +60,9 @@ class role::eventlogging::analytics::files {
     }
 
     # These commonly used URIs are defined for DRY purposes in
-    # role::eventlogging::analytics::server.
-    $kafka_client_side_raw_uri = $role::eventlogging::analytics::server::kafka_client_side_raw_uri
-    $kafka_mixed_uri           = $role::eventlogging::analytics::server::kafka_mixed_uri
+    # profile::eventlogging::analytics::server.
+    $kafka_client_side_raw_uri = $profile::eventlogging::analytics::server::kafka_client_side_raw_uri
+    $kafka_mixed_uri           = $profile::eventlogging::analytics::server::kafka_mixed_uri
 
     # Raw client side events:
     eventlogging::service::consumer { 'client-side-events.log':
@@ -75,11 +78,6 @@ class role::eventlogging::analytics::files {
         input  => $kafka_mixed_uri,
         output => "file://${out_dir}/all-events.log",
         sid    => 'eventlogging_consumer_all_events_log_00',
-    }
-
-    $backup_destinations = $::realm ? {
-        production => hiera('statistics_servers'),
-        labs       => false,
     }
 
     if ( $backup_destinations ) {
