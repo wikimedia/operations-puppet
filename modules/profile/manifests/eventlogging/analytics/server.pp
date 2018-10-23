@@ -18,7 +18,8 @@ class profile::eventlogging::analytics::server(
     }
 
     class { 'eventlogging::server':
-        eventlogging_path => '/srv/deployment/eventlogging/analytics'
+        eventlogging_path => '/srv/deployment/eventlogging/analytics',
+        log_dir           => '/srv/log/eventlogging/systemd',
     }
 
     # Get the Kafka configuration

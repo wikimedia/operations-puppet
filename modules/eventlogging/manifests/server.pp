@@ -44,8 +44,14 @@
 #   Path to eventlogging codebase
 #   Default: /srv/deployment/eventlogging/eventlogging
 #
+# [*log_dir*]
+#   Log directory in which all the systemd daemons will log their
+#   output. It creates recursively the missing directories if needed.
+#   Default: '/var/log/eventlogging/systemd'
+#
 class eventlogging::server(
     $eventlogging_path   = '/srv/deployment/eventlogging/eventlogging',
+    $log_dir             = '/srv/log/eventlogging/systemd'
 )
 {
     require ::eventlogging::dependencies
@@ -87,15 +93,27 @@ class eventlogging::server(
         ensure => directory,
     }
 
-    # In Jessie/Systemd, eventlogging runtime logs go here
-    $log_dir = '/var/log/eventlogging'
+    # This directory is useful for various components of
+    # eventlogging, so we use this class as central creation
+    # point due to the fact that it needs to be included
+    # everywhere.
+    if !defined(File['/srv/log']) {
+        file { '/srv/log':
+            ensure => 'directory',
+            mode   => '0755',
+            owner  => 'root',
+            group  => 'root',
+        }
+    }
 
     # Logs are collected in <$log_dir> and rotated daily.
     file { $log_dir:
-        ensure => 'directory',
-        owner  => 'eventlogging',
-        group  => 'eventlogging',
-        mode   => '0644',
+        ensure  => 'directory',
+        owner   => 'eventlogging',
+        group   => 'eventlogging',
+        recurse => true,
+        mode    => '0644',
+        require => File['/srv/log'],
     }
 
     logrotate::rule { 'eventlogging':

@@ -39,6 +39,7 @@ class role::eventbus::eventbus {
     # /etc/eventlogging.d directories and eventlogging user and group.
     class { 'eventlogging::server':
         eventlogging_path => '/srv/deployment/eventlogging/eventbus',
+        log_dir           => '/var/log/eventlogging',
     }
 
     $kafka_brokers_array = $config['brokers']['array']

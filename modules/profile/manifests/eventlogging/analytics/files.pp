@@ -6,26 +6,13 @@ class profile::eventlogging::analytics::files(
     $backup_destinations = hiera('statistics_servers', undef)
 ) {
 
-    include profile::eventlogging::analytics::server
+    require profile::eventlogging::analytics::server
 
     # Log all raw log records and decoded events to flat files in
     # $out_dir as a medium of last resort. These files are rotated
     # and rsynced to some stat hosts for backup.
 
     $out_dir = '/srv/log/eventlogging'
-
-    # We ensure the /srv/log (parent of $out_dir) manually here, as
-    # there is no proper class to rely on for this, and starting a
-    # separate would be an overkill for now.
-    if !defined(File['/srv/log']) {
-        file { '/srv/log':
-            ensure => 'directory',
-            mode   => '0755',
-            owner  => 'root',
-            group  => 'root',
-        }
-    }
-
     $logs_dir_owner = 'eventlogging'
     $logs_dir_group = 'eventlogging'
 
