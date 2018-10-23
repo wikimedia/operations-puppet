@@ -506,3 +506,7 @@ profile::certcentral::challenges: {}
 #    - deployment-certcentral-testdns
 #    validation_dns_servers:
 #    - 10.68.21.242
+# Mediawiki vhost feature flags
+role::mediawiki::webserver::vhost_feature_flags:
+  set_handler: true
+  serve_php7: true
