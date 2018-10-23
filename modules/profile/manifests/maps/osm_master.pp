@@ -1,5 +1,6 @@
 class profile::maps::osm_master (
     $planet_sync_period       = hiera('profile::maps::osm_master::planet_sync_period', 'day'),
+    $planet_sync_day          = hiera('profile::maps::osm_master::planet_sync_day', '*/2'),
     $planet_sync_hour         = hiera('profile::maps::osm_master::planet_sync_hour', '1'),
     $planet_sync_minute       = hiera('profile::maps::osm_master::planet_sync_minute', '27'),
     $maps_hosts               = hiera('profile::maps::hosts'),
@@ -157,6 +158,7 @@ class profile::maps::osm_master (
             num_threads              => 4,
             pg_password              => $osmupdater_pass,
             period                   => $planet_sync_period,
+            day                      => $planet_sync_day,
             hour                     => $planet_sync_hour,
             minute                   => $planet_sync_minute,
             postreplicate_command    => 'sudo -u tileratorui /usr/local/bin/notify-tilerator',
