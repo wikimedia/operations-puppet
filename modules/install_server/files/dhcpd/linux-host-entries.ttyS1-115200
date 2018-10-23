@@ -6417,6 +6417,12 @@ host tungsten {
     filename "lpxelinux.0";
 }
 
+host weblog1001 {
+    hardware ethernet 14:18:77:5B:2E:16;
+    fixed-address weblog1001.eqiad.wmnet;
+}
+
+
 host wezen {
     hardware ethernet 70:10:6f:ab:39:5e;
     fixed-address wezen.codfw.wmnet;

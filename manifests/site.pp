@@ -2233,6 +2233,12 @@ node 'wdqs1010.eqiad.wmnet' {
     role(wdqs::test)
 }
 
+# replacing oxygen via T207760
+node 'weblog1001.eqiad.wmnet'
+{
+    role(spare::system)
+}
+
 # VMs for performance team replacing hafnium (T179036)
 node /^webperf[12]001\.(codfw|eqiad)\.wmnet/ {
     role(webperf::processors_and_site)
