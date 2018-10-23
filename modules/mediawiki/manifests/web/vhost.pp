@@ -39,6 +39,14 @@
 #   * 'domain_catchall' (string) is the domain for which to do catchall
 #   * 'rewrite_prefix'  (string) The prefix to use in the rewrite
 #
+# [*feature_flags*] A general container for feature flags, that is changes to the
+#   vhosts that we are introducing/testing and are destined to be the default for
+#   all vhosts. The list will vary with time, and must be reflected in the
+#   corresponding puppet type. Here is the list of currently effective feature
+#   flags:
+#   - set_handler: Whether to use the new format (using FilesMatch/SetHandler) to
+#     manage proxying to the FCGI backend, or the explicit list of ProxyPass
+#     directives we were using before.
 define mediawiki::web::vhost(
     String $docroot,
     Wmflib::Ensure $ensure = present,
@@ -56,7 +64,12 @@ define mediawiki::web::vhost(
     Boolean $declare_site = false,
     String $domain_suffix = 'org',
     Optional[Mediawiki::Upload_rewrite] $upload_rewrite = undef,
+    Mediawiki::Vhost_feature_flags $feature_flags = {},
 ) {
+    # Feature flags. Remove them once the change is applied everywhere.
+    $set_handler = pick($feature_flags['set_handler'], false)
+
+    # The vhost content
     $content = template('mediawiki/apache/mediawiki-vhost.conf.erb')
 
     if $declare_site {

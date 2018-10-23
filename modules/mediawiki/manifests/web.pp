@@ -1,7 +1,7 @@
 # === Class mediawiki::web
 #
 # Installs and configures a web environment for mediawiki
-class mediawiki::web {
+class mediawiki::web(Mediawiki::Vhost_feature_flags $vhost_feature_flags = {}) {
     tag 'mediawiki', 'mw-apache-config'
 
     include ::apache
@@ -70,15 +70,24 @@ class mediawiki::web {
     }
 
 
-    # Not needed anymore. TODO: remove at a later stage
-    apache::def { 'HHVM':
-        ensure => absent,
-    }
-
     # Set the Server response header to be equal to the app server FQDN.
     include ::apache::mod::security2
 
     apache::conf { 'server_header':
         content  => template('mediawiki/apache/server-header.conf.erb'),
+    }
+
+    if $vhost_feature_flags != {} {
+        if $vhost_feature_flags['set_handler'] {
+            # If we globally enable the set_handler feature flag, also declare
+            # the proxies explicitly with retry=0
+            httpd::conf { 'fcgi_proxies':
+                source => 'puppet:///modules/mediawiki/apache/configs/fcgi_proxies.conf'
+            }
+        }
+        Mediawiki::Web::Vhost {
+            feature_flags => $vhost_feature_flags,
+
+        }
     }
 }
