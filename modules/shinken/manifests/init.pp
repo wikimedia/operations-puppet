@@ -54,7 +54,7 @@ class shinken(
         notify  => Service['shinken'],
     }
 
-    file { '/etc/shinken/poller/poller.cfg':
+    file { '/etc/shinken/pollers/poller.cfg':
         ensure  => present,
         source  => 'puppet:///modules/shinken/poller.cfg',
         owner   => 'root',
@@ -63,7 +63,7 @@ class shinken(
         notify  => Service['shinken'],
     }
 
-    file { '/etc/shinken/broker/broker.cfg':
+    file { '/etc/shinken/brokers/broker.cfg':
         ensure  => present,
         source  => 'puppet:///modules/shinken/broker.cfg',
         owner   => 'root',
