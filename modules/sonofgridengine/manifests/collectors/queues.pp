@@ -3,7 +3,7 @@
 define sonofgridengine::collectors::queues($store, $config)
 {
 
-    gridengine::collector { $title:
+    sonofgridengine::collector { $title:
         dir       => 'queues',
         sourcedir => $store,
         config    => $config,

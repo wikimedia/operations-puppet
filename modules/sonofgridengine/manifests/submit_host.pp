@@ -15,10 +15,10 @@ class sonofgridengine::submit_host {
 
     file { '/var/lib/gridengine/default/common/accounting':
         ensure => link,
-        target => '/data/project/.system/accounting',
+        target => '/data/project/.sge_system/accounting',
     }
 
-    gridengine::resource { "submit-${::fqdn}":
+    sonofgridengine::resource { "submit-${::fqdn}":
         rname  => $::fqdn,
         dir    => 'submithosts',
         config => 'gridengine/nothing.erb', # the content here doesn't actually matter

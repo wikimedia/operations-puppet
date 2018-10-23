@@ -5,7 +5,7 @@ define sonofgridengine::hostgroup(
     $config = undef,
 ) {
 
-    gridengine::resource { $rname:
+    sonofgridengine::resource { $rname:
         dir    => 'hostgroups',
         config => $config,
     }
