@@ -152,6 +152,13 @@ class profile::toolforge::grid::master (
         require => File[$profile::toolforge::grid::base::geconf],
     }
 
+    file { '/var/spool/gridengine/spooldb':
+        ensure  => directory,
+        owner   => 'sgeadmin',
+        group   => 'sgeadmin',
+        require => File[$profile::toolforge::grid::base::geconf],
+    }
+
     # This must only run on install
     exec { 'initialize-grid-database':
         command  => "/usr/share/gridengine/scripts/init_cluster ${profile::toolforge::grid::base::sge_root} default /var/spool/gridengine/spooldb sgeadmin",
