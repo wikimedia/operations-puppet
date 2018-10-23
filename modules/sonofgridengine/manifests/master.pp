@@ -38,7 +38,7 @@ class sonofgridengine::master (
         owner  => 'root',
         group  => 'root',
         mode   => '0555',
-        source => 'puppet:///modules/gridengine/mergeconf',
+        source => 'puppet:///modules/sonofgridengine/mergeconf',
     }
 
     file { "${etcdir}/bin/tracker":
@@ -46,7 +46,7 @@ class sonofgridengine::master (
         owner  => 'root',
         group  => 'root',
         mode   => '0555',
-        source => 'puppet:///modules/gridengine/tracker',
+        source => 'puppet:///modules/sonofgridengine/tracker',
     }
 
     file { "${etcdir}/bin/collector":
@@ -54,7 +54,7 @@ class sonofgridengine::master (
         owner  => 'root',
         group  => 'root',
         mode   => '0555',
-        source => 'puppet:///modules/gridengine/collector',
+        source => 'puppet:///modules/sonofgridengine/collector',
     }
 
     sonofgridengine::resourcedir { 'queues':
@@ -109,7 +109,7 @@ class sonofgridengine::master (
         owner  => 'sgeadmin',
         group  => 'sgeadmin',
         mode   => '0664',
-        source => 'puppet:///modules/gridengine/config-99-default',
+        source => 'puppet:///modules/sonofgridengine/config-99-default',
     }
 
     exec { 'update-config-conf':

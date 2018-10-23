@@ -42,7 +42,7 @@ class sonofgridengine::shadow_master(
         owner   => 'root',
         group   => 'root',
         mode    => '0444',
-        source  => 'puppet:///modules/gridengine/gridengine-shadow.conf';
+        source  => 'puppet:///modules/sonofgridengine/gridengine-shadow.conf';
     }
 
     file { "${sgeroot}/default/common/shadow_masters":
