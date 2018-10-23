@@ -15,24 +15,7 @@
 require 'puppet/provider/parsedfile'
 require 'puppet/util/execution'
 require 'puppet/util/filetype'
-
-Puppet::Util::FileType.newfiletype(:gridengine_complex) do
-  # TODO: target/default_target should be used to point to a
-  #       specific gridengine instance and default to, well, the
-  #       default.
-
-  def read
-    `qconf -sc`
-  end
-
-  def write(text)
-    Tempfile.open('gridengine_complex') do |tmpfile|
-      tmpfile.write(text)
-      tmpfile.close
-      Puppet::Util::Execution.execute(['qconf', '-Mc', tmpfile.path])
-    end
-  end
-end
+require 'wmcs/gridengine_complex_filetype'
 
 Puppet::Type.type(:gridengine_complex).provide(:parsed, :parent => Puppet::Provider::ParsedFile, :default_target => 'default') do
   desc 'Provider for gridengine_complex.'
