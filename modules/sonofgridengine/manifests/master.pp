@@ -57,38 +57,38 @@ class sonofgridengine::master (
         source => 'puppet:///modules/gridengine/collector',
     }
 
-    gridengine::resourcedir { 'queues':
+    sonofgridengine::resourcedir { 'queues':
         addcmd => '/usr/bin/qconf -Aq',
         modcmd => '/usr/bin/qconf -Mq',
         delcmd => '/usr/bin/qconf -dq',
     }
-    gridengine::resourcedir { 'hostgroups':
+    sonofgridengine::resourcedir { 'hostgroups':
         addcmd => '/usr/bin/qconf -Ahgrp',
         modcmd => '/usr/bin/qconf -Mhgrp',
         delcmd => '/usr/bin/qconf -dhgrp',
     }
-    gridengine::resourcedir { 'quotas':
+    sonofgridengine::resourcedir { 'quotas':
         addcmd => '/usr/bin/qconf -Arqs',
         modcmd => '/usr/bin/qconf -Mrqs',
         delcmd => '/usr/bin/qconf -drqs',
     }
-    gridengine::resourcedir { 'checkpoints':
+    sonofgridengine::resourcedir { 'checkpoints':
         addcmd => '/usr/bin/qconf -Ackpt',
         modcmd => '/usr/bin/qconf -Mckpt',
         delcmd => '/usr/bin/qconf -dckpt',
     }
-    gridengine::resourcedir { 'exechosts':
+    sonofgridengine::resourcedir { 'exechosts':
         addcmd => '/usr/bin/qconf -Ae',
         modcmd => '/usr/bin/qconf -Me',
         delcmd => '/usr/bin/qconf -de',
     }
-    gridengine::resourcedir { 'submithosts':
+    sonofgridengine::resourcedir { 'submithosts':
         addcmd => '/usr/bin/qconf -as',
         modcmd => '/bin/true',
         delcmd => '/usr/bin/qconf -ds',
     }
 
-    gridengine::resourcedir { 'adminhosts':
+    sonofgridengine::resourcedir { 'adminhosts':
         addcmd => '/usr/bin/qconf -ah',
         modcmd => '/bin/true',
         delcmd => '/usr/bin/qconf -dh',
