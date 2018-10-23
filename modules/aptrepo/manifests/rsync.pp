@@ -23,7 +23,7 @@ class aptrepo::rsync (
             ensure         => $aptrepo::rsync::ensure,
             path           => '/srv',
             read_only      => 'no',
-            hosts_allow    => $primary_server,
+            hosts_allow    => [$primary_server],
             auto_ferm      => true,
             auto_ferm_ipv6 => true,
         }
@@ -32,7 +32,7 @@ class aptrepo::rsync (
             ensure         => $aptrepo::rsync::ensure,
             path           => '/home',
             read_only      => 'no',
-            hosts_allow    => $primary_server,
+            hosts_allow    => [$primary_server],
             auto_ferm      => true,
             auto_ferm_ipv6 => true,
         }
