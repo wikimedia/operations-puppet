@@ -13,6 +13,7 @@ class profile::icinga(
     String $virtual_host = hiera('profile::icinga::virtual_host'),
     String $icinga_user = hiera('profile::icinga::icinga_user', 'icinga'),
     String $icinga_group = hiera('profile::icinga::icinga_group', 'icinga'),
+    Integer $max_concurrent_checks = hiera('profile::icinga::max_concurrent_checks', 0),
 ){
     $is_passive = !($::fqdn == $active_host)
 
@@ -98,6 +99,7 @@ class profile::icinga(
         ensure_service        => $ensure_service,
         icinga_user           => $icinga_user,
         icinga_group          => $icinga_group,
+        max_concurrent_checks => $max_concurrent_checks,
     }
 
     class { '::icinga::web':

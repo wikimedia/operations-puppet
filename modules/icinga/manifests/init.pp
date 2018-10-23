@@ -23,6 +23,7 @@ class icinga(
     Array[Stdlib::Unixpath] $cfg_dirs = [
         '/etc/icinga/commands'
     ],
+    Integer $max_concurrent_checks = 0,
 ) {
 
     if os_version('debian == jessie') {

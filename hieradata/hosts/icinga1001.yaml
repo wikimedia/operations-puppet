@@ -6,3 +6,4 @@ profile::icinga::passive: true
 profile::base::notifications_enabled: '0'
 profile::icinga::icinga_user: nagios
 profile::icinga::icinga_group: nagios
+profile::icinga::max_concurrent_checks: 0

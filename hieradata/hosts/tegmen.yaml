@@ -3,3 +3,4 @@ profile::icinga::virtual_host: icinga.wikimedia.org
 # tegmen is the backup icinga server. All these flags need to be converted accordingly for it to assume the identity of the primary
 profile::tcpircbot::ensure: absent
 do_acme: false
+profile::icinga::max_concurrent_checks: 10000
