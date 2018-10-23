@@ -10,6 +10,11 @@
 
     AllowEncodedSlashes <%= @encoded_slashes %>
 
+<%- if @serve_php7 -%>
+    # Set the variable if php7 is required
+    SetEnvIf Cookie "PHP_ENGINE=php7" backend=php7
+
+<%- end -%>
     RewriteEngine On
 <% if @https_only %>
     RewriteCond %{HTTP:X-Forwarded-Proto} !https
@@ -108,9 +113,18 @@
     # Forbid accessing files under /w/extensions
     RewriteRule ^/w/extensions/.*\.php - [F,L]
     <FilesMatch "\.php$">
-        # Send all php files to the FCGI backend (HHVM)
-        # This takes precedence over the catchall in the general configuration
+    # Send all php files to the FCGI backend (HHVM/PHP7)
+    # This takes precedence over the catchall in the general configuration
+<%- if @serve_php7 -%>
+    <If "reqenv('backend') == 'php7'">
+        SetHandler "proxy:fcgi://127.0.0.1:8000"
+    </If>
+    <Else>
         SetHandler "proxy:fcgi://127.0.0.1:9000"
+    </Else>
+<%- else -%>
+        SetHandler "proxy:fcgi://127.0.0.1:9000"
+<%- end -%>
     </FilesMatch>
 <%- end -%>
 </VirtualHost>

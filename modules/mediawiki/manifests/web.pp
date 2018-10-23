@@ -82,7 +82,7 @@ class mediawiki::web(Mediawiki::Vhost_feature_flags $vhost_feature_flags = {}) {
             # If we globally enable the set_handler feature flag, also declare
             # the proxies explicitly with retry=0
             httpd::conf { 'fcgi_proxies':
-                source => 'puppet:///modules/mediawiki/apache/configs/fcgi_proxies.conf'
+                content => template('mediawiki/apache/fcgi_proxies.conf.erb')
             }
         }
         Mediawiki::Web::Vhost {
