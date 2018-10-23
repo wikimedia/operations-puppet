@@ -277,6 +277,14 @@ class icinga(
         mode   => '2755',
     }
 
+    # archive location for rotated logs, use the space in /srv/
+    file { '/srv/icinga-logs':
+        ensure => 'directory',
+        owner  => $icinga_user,
+        group  => 'adm',
+        mode   => '2755',
+    }
+
     # Check that the icinga config is sane
     monitoring::service { 'check_icinga_config':
         description    => 'Check correctness of the icinga configuration',

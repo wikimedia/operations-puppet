@@ -255,21 +255,18 @@ event_broker_options=<%= @event_broker_options || 0 %>
 log_rotation_method=d
 
 
-
 # LOG ARCHIVE PATH
 # This is the directory where archived (rotated) log files should be
 # placed (assuming you've chosen to do log rotation).
 
-log_archive_path=/var/log/icinga/archives
-
+log_archive_path=/srv/icinga-logs
 
 
 # LOGGING OPTIONS FOR DAEMON
 # If you want messages logged to the daemon log file (usually icinga.log).
 # Default option is 1 (yes), the other valid option is 0 (no)
 
-use_daemon_log=1
-
+use_daemon_log=0
 
 
 # LOGGING OPTIONS FOR SYSLOG
@@ -279,21 +276,18 @@ use_daemon_log=1
 use_syslog=1
 
 
-
 # SYSLOG FACILITY
 # If you enabled use_syslog you can set icinga to use a local facility
 # instead of the default.To enable set this option to 1, if not, set it to 0.
 
-use_syslog_local_facility=0
-
+use_syslog_local_facility=1
 
 
 # SYSLOG LOCAL FACILITY
 # If you specified the use_syslog_local_facility you can chose which
 # local facility to use. Valid values are from 0 to 7
 
-syslog_local_facility=5
-
+syslog_local_facility=1
 
 
 # NOTIFICATION LOGGING OPTION
