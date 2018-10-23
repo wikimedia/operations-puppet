@@ -32,6 +32,8 @@ profile::prometheus::statsd_exporter::mappings:
 
     - match: thumbor.*.poolcounter.locked
       name: thumbor_poolcounter_locked_total
+    - match: thumbor.*.poolcounter.throttled
+      name: thumbor_poolcounter_throttled_total
     - match: thumbor.*.poolcounter.time
       name: thumbor_poolcounter_milliseconds
 
@@ -69,6 +71,9 @@ profile::prometheus::statsd_exporter::mappings:
     - match: thumbor.*.response.time
       action: drop
       name: thumbor_response_time_drop
+    - match: thumbor.*.response.count
+      action: drop
+      name: thumbor_response_count_drop
 
     - match: thumbor.*.swift.thumbnail.*.success
       name: thumbor_swift_thumbnail_success
@@ -76,6 +81,10 @@ profile::prometheus::statsd_exporter::mappings:
         operation: "$2"
     - match: thumbor.*.swift.thumbnail.*.miss
       name: thumbor_swift_thumbnail_miss
+      labels:
+        operation: "$2"
+    - match: thumbor.*.swift.thumbnail.*.exception
+      name: thumbor_swift_thumbnail_exception
       labels:
         operation: "$2"
 
