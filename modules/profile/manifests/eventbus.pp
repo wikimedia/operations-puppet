@@ -1,27 +1,28 @@
-# == Class role::eventbus
+# == Class profile::eventbus
 #
-# Role class for eventbus EventLogging service.
+# Profile class for eventbus EventLogging service.
 # This class includes topic configuration, mediawiki/event-schemas
 # and an HTTP Produce service using eventlogging-service to produce
 # to Kafka.
 #
-# TODO: Move this class back to role::eventbus once
-# https://phabricator.wikimedia.org/T119042 works.
-#
-# filtertags: labs-project-deployment-prep
-class role::eventbus::eventbus {
-    include ::profile::base::firewall
-    require ::eventschemas
+class profile::eventbus(
+    $has_lvs                 = hiera('has_lvs', true),
+    $kafka_message_max_bytes = hiera('kafka_message_max_bytes', 1048576),
+    $statsd_host             = hiera('statsd'),
+    $logstash_host           = hiera('logstash_host'),
+    $logstash_port           = hiera('logstash_gelf_port', 12201),
+) {
+    class { '::eventschemas': }
 
     # for /srv/log dir creation
-    require ::service::configuration
+    class { '::service::configuration': }
 
-    if hiera('has_lvs', true) {
-        include ::role::lvs::realserver
+    if $has_lvs {
+        include ::profile::lvs::realserver
     }
     $config = kafka_config('main')
 
-    include ::eventlogging::dependencies
+    class { '::eventlogging::dependencies': }
 
     # eventlogging code for eventbus is configured to deploy
     # from the eventlogging/eventbus deploy target
@@ -33,7 +34,7 @@ class role::eventbus::eventbus {
 
     # The deploy-service user needs to be able to depool/pool
     # during the deployment.
-    include ::scap::conftool
+    class { '::scap::conftool': }
 
     # Include eventlogging server configuration, including
     # /etc/eventlogging.d directories and eventlogging user and group.
@@ -51,7 +52,7 @@ class role::eventbus::eventbus {
         undef   => '',
         default => "&api_version=${kafka_api_version}"
     }
-    $kafka_message_max_bytes = hiera('kafka_message_max_bytes', 1048576)
+
     # The requests not only contain the message but also a small metadata overhead.
     # So if we want to produce a kafka_message_max_bytes payload the max request size should be a bit higher.
     # The 48564 value isn't arbitrary - it's the difference between default message.max.size and default max.request.size
@@ -85,7 +86,7 @@ class role::eventbus::eventbus {
     # disks with error logs.
     logrotate::conf { 'eventlogging-service-eventbus.failed_events':
         ensure => 'present',
-        source => 'puppet:///modules/role/eventbus/failed_events.logrotate',
+        source => 'puppet:///modules/profile/eventbus/failed_events.logrotate',
     }
 
     eventlogging::service::service { 'eventbus':
@@ -93,10 +94,10 @@ class role::eventbus::eventbus {
         topic_config    => "${::eventschemas::path}/config/eventbus-topics.yaml",
         outputs         => $outputs,
         error_output    => 'file:///srv/log/eventlogging/eventlogging-service-eventbus.failed_events.log',
-        statsd          => hiera('statsd'),
+        statsd          => $statsd_host,
         statsd_prefix   => 'eventbus',
-        logstash_host   => hiera('logstash_host'),
-        logstash_port   => hiera('logstash_gelf_port', 12201),
+        logstash_host   => $logstash_host,
+        logstash_port   => $logstash_port,
         # The service will be reloaded (SIGHUPed, not restarted)
         # if any of these resources change.
         # Reload if mediawiki/event-schemas has a change.

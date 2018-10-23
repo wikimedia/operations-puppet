@@ -1,12 +1,13 @@
 # Compound role for the Kafka "main" cluster
 class role::kafka::main {
 
+    include ::profile::base::firewall
     include ::profile::kafka::broker
     system::role { 'kafka::main':
         description => "Kafka Broker in the main-${::site} Kafka cluster",
     }
 
-    include ::role::eventbus::eventbus
+    include ::profile::eventbus
     system::role { 'eventbus':
         description => 'EventBus HTTP Service node',
     }
