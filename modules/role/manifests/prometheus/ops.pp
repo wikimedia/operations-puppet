@@ -923,6 +923,23 @@ class role::prometheus::ops {
         port       => 9901,
     }
 
+    $statsd_exporter_jobs = [
+      {
+        'job_name'        => 'statsd_exporter',
+        'scheme'          => 'http',
+        'file_sd_configs' => [
+          { 'files' => [ "${targets_path}/statsd_exporter_*.yaml"] },
+        ],
+      },
+    ]
+
+    prometheus::class_config{ "statsd_exporter_${::site}":
+        dest       => "${targets_path}/statsd_exporter_${::site}.yaml",
+        site       => $::site,
+        class_name => 'profile::prometheus::statsd_exporter',
+        port       => 9112,
+    }
+
     $nutcracker_jobs = [
         {
             'job_name'        => 'nutcracker',
@@ -993,7 +1010,7 @@ class role::prometheus::ops {
             $redis_jobs, $mtail_jobs, $ldap_jobs, $ircd_jobs, $pdns_rec_jobs,
             $etherpad_jobs, $elasticsearch_jobs, $wmf_elasticsearch_jobs,
             $blazegraph_jobs, $nutcracker_jobs, $postgresql_jobs,
-            $kafka_burrow_jobs, $logstash_jobs, $haproxy_jobs
+            $kafka_burrow_jobs, $logstash_jobs, $haproxy_jobs, $statsd_exporter_jobs,
         ),
         global_config_extra   => $config_extra,
     }
