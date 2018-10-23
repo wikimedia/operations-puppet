@@ -27,6 +27,19 @@ class prometheus::statsd_exporter (
 
     $basedir = '/etc/prometheus'
     $config = "${basedir}/statsd_exporter.conf"
+    $defaults = {
+      'timer_type' => 'summary',
+      'quantiles'  => [
+        { 'quantile' => '0.99',
+          'error'    => '0.001' },
+        { 'quantile' => '0.95',
+          'error'    => '0.001' },
+        { 'quantile' => '0.75',
+          'error'    => '0.001' },
+        { 'quantile' => '0.50',
+          'error'    => '0.005' },
+      ],
+    }
 
     file { $basedir:
         ensure => directory,
@@ -36,7 +49,7 @@ class prometheus::statsd_exporter (
     }
 
     file { $config:
-        content => ordered_yaml({'mappings' => $mappings}),
+        content => ordered_yaml({'defaults' => $defaults, 'mappings' => $mappings}),
         owner   => 'root',
         group   => 'root',
         mode    => '0444',
