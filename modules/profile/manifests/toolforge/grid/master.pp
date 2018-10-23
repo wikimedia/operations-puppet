@@ -53,14 +53,14 @@ class profile::toolforge::grid::master (
         require     => Service['gridengine-master'],
     }
 
-    file { "${toolforge::collectors}/hostgroups":
+    file { "${profile::toolforge::grid::base::collectors}/hostgroups":
         ensure => directory,
         owner  => 'root',
         group  => 'root',
         mode   => '0755',
     }
 
-    file { "${toollabs::collectors}/queues":
+    file { "${profile::toolforge::grid::base::collectors}/queues":
         ensure => directory,
         owner  => 'root',
         group  => 'root',
@@ -68,16 +68,16 @@ class profile::toolforge::grid::master (
     }
 
     sonofgridengine::collectors::hostgroups { '@general':
-        store => "${toollabs::collectors}/hostgroups",
+        store => "${profile::toolforge::grid::base::collectors}/hostgroups",
     }
 
     sonofgridengine::collectors::queues { 'webgrid-lighttpd':
-        store  => "${toollabs::collectors}/queues",
+        store  => "${profile::toolforge::grid::base::collectors}/queues",
         config => 'toollabs/gridengine/queue-webgrid.erb',
     }
 
     sonofgridengine::collectors::queues { 'webgrid-generic':
-        store  => "${toollabs::collectors}/queues",
+        store  => "${profile::toolforge::grid::base::collectors}/queues",
         config => 'toollabs/gridengine/queue-webgrid.erb',
     }
 
