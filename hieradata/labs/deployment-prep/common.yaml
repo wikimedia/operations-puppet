@@ -510,3 +510,6 @@ profile::certcentral::challenges: {}
 role::mediawiki::webserver::vhost_feature_flags:
   set_handler: true
   serve_php7: true
+
+wikimail_smarthost:
+- 'deployment-mx02.deployment-prep.eqiad.wmflabs'

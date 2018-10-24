@@ -237,27 +237,10 @@ $private_tables = [
     'watchlist' ]
 
 # Route list for mail coming from MediaWiki mailer
-$wikimail_smarthost = $realm ? {
-    'production' => $site ? {
-        'eqiad' => [ 'wiki-mail-eqiad.wikimedia.org', 'wiki-mail-codfw.wikimedia.org' ],
-        'codfw' => [ 'wiki-mail-codfw.wikimedia.org', 'wiki-mail-eqiad.wikimedia.org' ],
-        default => [ 'wiki-mail-eqiad.wikimedia.org', 'wiki-mail-codfw.wikimedia.org' ],
-    },
-    'labs'       => $::labsproject ? {
-        'deployment-prep' => [ 'deployment-mx02.deployment-prep.eqiad.wmflabs' ],
-        default           => [ 'mx1001.wikimedia.org', 'mx2001.wikimedia.org' ],
-    },
-}
+$wikimail_smarthost = hiera('wikimail_smarthost')
+
 # Generic, default servers (order matters!)
-$mail_smarthost = $realm ? {
-    'production' => $site ? {
-        'eqiad' => [ 'mx1001.wikimedia.org', 'mx2001.wikimedia.org' ],
-        'codfw' => [ 'mx2001.wikimedia.org', 'mx1001.wikimedia.org' ],
-        default => [ 'mx1001.wikimedia.org', 'mx2001.wikimedia.org' ],
-    },
-    # FIXME: find some SMTP servers for labs
-    'labs'       => [ 'mx1001.wikimedia.org', 'mx2001.wikimedia.org' ],
-}
+$mail_smarthost = hiera('mail_smarthost')
 
 $certcentral_host = hiera('certcentral_host')
 

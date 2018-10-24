@@ -670,3 +670,11 @@ authdns_servers:
 
 # certcentral active host
 certcentral_host: 'certcentral1001.eqiad.wmnet'
+
+mail_smarthost:
+- 'mx1001.wikimedia.org'
+- 'mx2001.wikimedia.org'
+
+wikimail_smarthost:
+- 'wiki-mail-eqiad.wikimedia.org'
+- 'wiki-mail-codfw.wikimedia.org'
