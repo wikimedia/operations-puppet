@@ -17,11 +17,6 @@
 # [*port*]
 #   Bind trafficserver to this port (default: 8080).
 #
-# [*log_method*]
-#   The method used to produce event logs. Valid options are: 'ascii',
-#   'binary', 'pipe' (default: 'pipe').
-#   See https://docs.trafficserver.apache.org/en/latest/admin-guide/files/logging.config.en.html#logs
-#
 # [*log_mode*]
 #   The mode used to produce event logs. Valid options are: 'ascii', 'binary',
 #   'ascii_pipe' (default: 'ascii_pipe').
@@ -74,7 +69,7 @@
 #  class { 'trafficserver':
 #    user          => 'trafficserver',
 #    port          => 80,
-#    log_method    => 'ascii',
+#    log_mode      => 'ascii',
 #    log_format    => 'squid',
 #    log_filename  => 'access',
 #    mapping_rules => [ { 'type'        => 'map',
@@ -94,7 +89,6 @@
 class trafficserver(
     String $user = 'trafficserver',
     Wmflib::IpPort $port = 8080,
-    Enum['ascii', 'binary', 'pipe'] $log_method = 'pipe',
     Enum['ascii', 'binary', 'ascii_pipe'] $log_mode = 'ascii_pipe',
     Enum['squid', 'extended'] $log_format = 'squid',
     String $log_filename = 'event',
@@ -154,9 +148,6 @@ class trafficserver(
 
         '/etc/trafficserver/plugin.config':
           content => template('trafficserver/plugin.config.erb'),;
-
-        '/etc/trafficserver/logging.config':
-          content => template('trafficserver/logging.config.erb');
 
         '/etc/trafficserver/logging.yaml':
           content => template('trafficserver/logging.yaml.erb');
