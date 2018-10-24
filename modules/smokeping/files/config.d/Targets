@@ -121,10 +121,10 @@ alerts = bigloss,someloss,startloss
 menu = Core
 title = Core Network Infrastructure
 
-+++ cr1-eqord
-menu = cr1-eqord
-title = cr1-eqord.wikimedia.org
-host = cr1-eqord.wikimedia.org
++++ cr2-eqord
+menu = cr2-eqord
+title = cr2-eqord.wikimedia.org
+host = cr2-eqord.wikimedia.org
 
 + codfw
 
