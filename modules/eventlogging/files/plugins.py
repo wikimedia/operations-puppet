@@ -18,6 +18,7 @@ eventlogging_valid_mixed_schema_whitelist = (
     'ChangesListHighlights',
     'CitationUsage',
     'ContentTranslation',
+    'ContentTranslationAbuseFilter',
     'ContentTranslationCTA',
     'ContentTranslationError',
     'ContentTranslationSuggestion',
