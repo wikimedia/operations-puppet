@@ -34,7 +34,7 @@ class profile::eventlogging::analytics::files(
     # so safe to apply a stricter retention rule.
     $logs_max_age = $::realm ? {
         'labs'  => 4,
-        default => 15,
+        default => 7,
     }
 
     logrotate::conf { 'eventlogging-files':
