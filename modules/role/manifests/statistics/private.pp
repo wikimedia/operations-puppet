@@ -9,8 +9,10 @@ class role::statistics::private {
 
     include ::profile::statistics::private
 
-    # Run Hadoop/Hive reportupdater jobs here.
-    include ::profile::reportupdater::jobs::hadoop
+    if $::hostname == 'stat1005' {
+        # Run Hadoop/Hive reportupdater jobs here.
+        include ::profile::reportupdater::jobs::hadoop
+    }
 
     # Include Hadoop and other analytics cluster
     # clients so that analysts can access Hadoop

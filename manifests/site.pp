@@ -2114,7 +2114,7 @@ node 'stat1006.eqiad.wmnet' {
 # SRE/Analytics to make the stat1005's GPU to work.
 # T148843
 node 'stat1007.eqiad.wmnet' {
-    role(spare::system)
+    role(statistics::private)
     interface::add_ip6_mapped { 'main': }
 }
 

@@ -7,6 +7,7 @@ class profile::statistics::private(
     $wmde_secrets        = hiera('wmde_secrets'),
     $dumps_servers       = hiera('dumps_dist_nfs_servers'),
     $dumps_active_server = hiera('dumps_dist_active_web'),
+    $active_host         = hiera('profile::statistics::private::active_host', false),
 ) {
 
     require ::profile::analytics::cluster::packages::statistics
@@ -63,17 +64,20 @@ class profile::statistics::private(
     # rsync mediawiki logs from logging hosts
     class { '::statistics::rsync::mediawiki': }
 
-    # WMDE releated statistics & analytics scripts.
-    class { '::statistics::wmde':
-        statsd_host   => $statsd_host,
-        graphite_host => $graphite_host,
-        wmde_secrets  => $wmde_secrets,
+    if $active_host {
+
+        # WMDE releated statistics & analytics scripts.
+        class { '::statistics::wmde':
+            statsd_host   => $statsd_host,
+            graphite_host => $graphite_host,
+            wmde_secrets  => $wmde_secrets,
+        }
+
+        # Discovery team statistics scripts and cron jobs
+        class { '::statistics::discovery': }
+
+        # Class to save old versions of the geoip MaxMind database, which are useful
+        # for historical geocoding.
+        class { '::geoip::data::archive': }
     }
-
-    # Discovery team statistics scripts and cron jobs
-    class { '::statistics::discovery': }
-
-    # Class to save old versions of the geoip MaxMind database, which are useful
-    # for historical geocoding.
-    class { '::geoip::data::archive': }
 }
