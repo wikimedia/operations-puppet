@@ -22,6 +22,11 @@
 #   'binary', 'pipe' (default: 'pipe').
 #   See https://docs.trafficserver.apache.org/en/latest/admin-guide/files/logging.config.en.html#logs
 #
+# [*log_mode*]
+#   The mode used to produce event logs. Valid options are: 'ascii', 'binary',
+#   'ascii_pipe' (default: 'ascii_pipe').
+#   See https://docs.trafficserver.apache.org/en/8.0.x/admin-guide/files/logging.yaml.en.html
+#
 # [*log_format*]
 #   The format to be used for event log entries. Valid options are: 'squid',
 #   'extended' (default: 'squid').
@@ -90,6 +95,7 @@ class trafficserver(
     String $user = 'trafficserver',
     Wmflib::IpPort $port = 8080,
     Enum['ascii', 'binary', 'pipe'] $log_method = 'pipe',
+    Enum['ascii', 'binary', 'ascii_pipe'] $log_mode = 'ascii_pipe',
     Enum['squid', 'extended'] $log_format = 'squid',
     String $log_filename = 'event',
     Integer[0, 1] $outbound_tlsv1 = 0,
@@ -151,6 +157,9 @@ class trafficserver(
 
         '/etc/trafficserver/logging.config':
           content => template('trafficserver/logging.config.erb');
+
+        '/etc/trafficserver/logging.yaml':
+          content => template('trafficserver/logging.yaml.erb');
 
         '/etc/trafficserver/healtchecks.config':
           # Response body can be changed by pointing to a text file with actual

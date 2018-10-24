@@ -1,0 +1,11 @@
+formats:
+    - name: squid
+      format: '%<cqtq> %<ttms> %<chi> %<crc>/%<pssc> %<psql> %<cqhm> %<cquc> %<caun> %<phr>/%<shn> %<psct>'
+
+    - name: extended
+      format: '%<chi> - %<caun> [%<cqtn>] "%<cqtx>" %<pssc> %<pscl> %<sssc> %<sscl> %<cqcl> %<pqcl> %<cqhl> %<pshl> %<pqhl> %<sshl> %<tts>'
+
+logs:
+    - filename: <%= @log_filename %>
+      format: <%= @log_format %>
+      mode: <%= @log_mode %>
