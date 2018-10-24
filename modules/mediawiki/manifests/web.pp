@@ -85,9 +85,5 @@ class mediawiki::web(Mediawiki::Vhost_feature_flags $vhost_feature_flags = {}) {
                 content => template('mediawiki/apache/fcgi_proxies.conf.erb')
             }
         }
-        Mediawiki::Web::Vhost {
-            feature_flags => $vhost_feature_flags,
-
-        }
     }
 }

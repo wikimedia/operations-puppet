@@ -1,13 +1,23 @@
-class role::mediawiki::webserver {
+# This class will be refactored in the near future.
+# We've introduced new style violations, but bear with me here.
+class role::mediawiki::webserver(
+    Mediawiki::Vhost_feature_flags $vhost_feature_flags = {}
+) {
     include ::role::mediawiki::common
     include ::apache::monitoring
-    include ::mediawiki::web
+    class { '::mediawiki::web':
+        vhost_feature_flags => $vhost_feature_flags,
+    }
     include ::mediawiki::web::sites
     include ::mediawiki::packages::fonts
 
     class { '::hhvm::admin': }
 
     # FIXME: These should all be merged into the generic sites class!
+    Mediawiki::Web::Vhost {
+        feature_flags => $vhost_feature_flags,
+
+    }
     if $::realm == 'labs' {
         include ::mediawiki::web::beta_sites
     } else {
