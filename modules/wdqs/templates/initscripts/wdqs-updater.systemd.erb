@@ -12,6 +12,9 @@ ExecStart=/bin/bash <%= @package_dir %>/runUpdate.sh <%= @options %>
 User=<%= @username %>
 StandardOutput=journal+console
 Restart=always
+RestartSec=10
+StartLimitBurst=5
+StartLimitIntervalSec=300
 SyslogIdentifier=%N
 
 [Install]
