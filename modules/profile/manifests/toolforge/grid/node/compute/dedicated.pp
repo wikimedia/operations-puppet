@@ -11,7 +11,12 @@
 # Sample Usage:
 #
 # filtertags: toolforge
-class profile::toolforge::grid::node::compute::dedicated($dedicated_tool = hiera('node_dedicated_tool', undef)) {
+class profile::toolforge::grid::node::compute::dedicated(
+    $dedicated_tool = hiera('node_dedicated_tool', undef),
+) {
+
+    include profile::toolforge::grid::node::compute
+
     if $dedicated_tool {
         sonofgridengine::join { "queues-${::fqdn}":
             sourcedir => "${profile::toolforge::base::collectors}/queues",
