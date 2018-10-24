@@ -12,11 +12,6 @@ alias=<%= v['public_ip'] %>,<%= v['private_ip'] %>
 server=<%= @recursor_ip %>
 server=<%= @recursor_secondary_ip %>
 
-# Special entries for labs baremetal
-<% @labs_metal.sort.map do |k,v| -%>
-dhcp-host=<%= v['MAC'] %>,<%= k %>,<%= v['IPv4'] %>,10m
-<% end -%>
-
 #Clients should use the designate-backed dns server rather than dnsmasq
 dhcp-option=option:dns-server,<%= @recursor_ip %>,<%= @recursor_secondary_ip %>
 

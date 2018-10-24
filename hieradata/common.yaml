@@ -350,10 +350,6 @@ profile::openstack::base::keystone::auth_protocol: http
 profile::openstack::base::keystone::public_port: 5000
 profile::openstack::main::nova::dhcp_domain: 'eqiad.wmflabs'
 
-# this should be deprecated
-labs_metal:
-  promethium: {MAC: '90:b1:1c:2d:6f:0c', IPv4: 10.68.16.2, project: wikitextexp }
-
 # /> Cloud Services
 #
 

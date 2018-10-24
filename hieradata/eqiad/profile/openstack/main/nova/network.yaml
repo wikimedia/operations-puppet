@@ -4,11 +4,6 @@
 # Note also that nova-network is not great about refreshing dnsmasq,
 #  so changes to this table may require a manual kill of dnsmasq and restart
 #  of nova-network.
-profile::openstack::main::nova::network::labs_metal:
-  promethium:
-    'MAC': '90:b1:1c:2d:6f:0c'
-    'IPv4': 10.68.16.2
-    'project': wikitextexp
 
 # A wide variety of hosts are reachable via a public web proxy
 profile::openstack::main::nova::network::nova_dnsmasq_aliases:

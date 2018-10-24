@@ -70,7 +70,7 @@ class dnsrecursor(
         }
     }
     else {
-        # trusty instances (labservices metaldns stuff)
+        # trusty instances
         $pdns_rec_ver = '3'
     }
 

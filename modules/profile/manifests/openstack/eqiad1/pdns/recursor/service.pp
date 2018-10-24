@@ -7,7 +7,6 @@ class profile::openstack::eqiad1::pdns::recursor::service(
     $tld = hiera('profile::openstack::eqiad1::pdns::tld'),
     $private_reverse_zones = hiera('profile::openstack::eqiad1::pdns::private_reverse_zones'),
     $aliaser_extra_records = hiera('profile::openstack::eqiad1::pdns::recursor_aliaser_extra_records'),
-    $use_metal_resolver = hiera('profile::openstack::eqiad1::pdns::use_metal_resolver'),
     ) {
 
     class {'::profile::openstack::base::pdns::recursor::service':
@@ -19,7 +18,6 @@ class profile::openstack::eqiad1::pdns::recursor::service(
         tld                   => $tld,
         private_reverse_zones => $private_reverse_zones,
         aliaser_extra_records => $aliaser_extra_records,
-        use_metal_resolver    => $use_metal_resolver,
     }
 
     class{'::profile::openstack::base::pdns::recursor::monitor::rec_control':}

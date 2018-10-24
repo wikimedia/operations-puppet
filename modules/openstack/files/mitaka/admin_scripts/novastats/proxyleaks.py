@@ -105,9 +105,6 @@ def purge_leaks(delete=False):
 
         for mapping in mappings:
             backend_ip = mapping['backends'][0].split(":")[1].strip('/')
-            if backend_ip == u'10.68.16.2':
-                # Special case -- this is promethium, a bare-metal server
-                continue
             if backend_ip not in all_project_ips:
                 if backend_ip not in all_nova_ips:
                     print "%s: possible stray proxy: %s" % (project.id, mapping)
@@ -130,9 +127,6 @@ def purge_leaks(delete=False):
     session = clients.session('wmflabsdotorg')
     dotorgclient = designateclientv2.Client(session=session)
     for domain in proxy_recordsets:
-        if domain == 'mw-expt-tests.wmflabs.org.':
-            # Special case -- this is promethium, a bare-metal server
-            continue
         if domain == 'wmflabs.org.':
             continue
         if domain == 'proxy-eqiad.wmflabs.org.':

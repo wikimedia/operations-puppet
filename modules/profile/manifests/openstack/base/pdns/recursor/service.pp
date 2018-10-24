@@ -29,7 +29,6 @@ class profile::openstack::base::pdns::recursor::service(
     $tld = hiera('profile::openstack::base::pdns::tld'),
     $private_reverse_zones = hiera('profile::openstack::base::pdns::private_reverse_zones'),
     $aliaser_extra_records = hiera('profile::openstack::base::pdns::recursor_aliaser_extra_records'),
-    $use_metal_resolver = hiera('profile::openstack::base::pdns::use_metal_resolver'),
     ) {
 
     include ::network::constants
@@ -56,17 +55,7 @@ class profile::openstack::base::pdns::recursor::service(
         mode   => '0555',
         source => $aliaser_source,
     }
-    if $use_metal_resolver {
-        $metal_resolver = '/etc/powerdns/metaldns.lua'
-        $lua_hooks = [$aliaser_file, $metal_resolver]
-
-        class { '::dnsrecursor::metalresolver':
-            metal_resolver => $metal_resolver,
-            tld            => $tld
-        }
-    } else {
-        $lua_hooks = [$aliaser_file]
-    }
+    $lua_hooks = [$aliaser_file]
 
     file { '/var/zones':
         ensure => directory,
