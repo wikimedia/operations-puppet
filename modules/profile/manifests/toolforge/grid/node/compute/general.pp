@@ -10,7 +10,7 @@
 #
 # Sample Usage:
 #
-# filtertags: labs-project-tools
+# filtertags: toolforge
 class profile::toolforge::grid::node::compute::general {
 
     class { '::sonofgridengine::exec_host':
