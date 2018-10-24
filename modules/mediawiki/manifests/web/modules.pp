@@ -10,9 +10,6 @@ class mediawiki::web::modules {
     include ::apache::mod::setenvif
     include ::apache::mod::status
 
-    # Include the apache configurations for php
-    include ::mediawiki::web::php_engine
-
     # Modules we don't enable.
     # Note that deflate and filter are activated deep down in the
     # apache sites, we should probably move them here

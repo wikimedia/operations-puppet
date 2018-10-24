@@ -1,6 +1,6 @@
 # === Class mediawiki::web::php_engine
 # Configures apache to serve requests via HHVM/any other FastCGI backend
-class mediawiki::web::php_engine {
+class mediawiki::web::php_engine($catchall_ensure=present) {
     include ::apache::mod::proxy_fcgi
 
     apache::mod_conf { 'mod_php5':
@@ -9,6 +9,7 @@ class mediawiki::web::php_engine {
 
     # HHVM catchall, and removal of mod_php
     apache::conf { 'hhvm_catchall':
+        ensure   => $catchall_ensure,
         source   => 'puppet:///modules/mediawiki/apache/configs/hhvm_catchall.conf',
         priority => 50,
     }

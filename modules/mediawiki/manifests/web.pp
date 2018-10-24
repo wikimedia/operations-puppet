@@ -7,6 +7,14 @@ class mediawiki::web(Mediawiki::Vhost_feature_flags $vhost_feature_flags = {}) {
     include ::apache
     include ::mediawiki::users
 
+    # Include the apache configurations for php
+    $catchall_ensure = $vhost_feature_flags['set_handler'] ? {
+        true    => absent,
+        default => present,
+    }
+    class { 'mediawiki::web::php_engine':
+        catchall_ensure => $catchall_ensure,
+    }
     include ::mediawiki::web::modules
     include ::mediawiki::web::mpm_config
 
