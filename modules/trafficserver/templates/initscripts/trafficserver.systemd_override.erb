@@ -4,7 +4,7 @@ ExecStart=/usr/bin/traffic_manager --nosyslog
 Restart=always
 RestartSec=1
 ExecReload=
-ExecReload=/usr/bin/traffic_server -C verify_config
+#ExecReload=/usr/bin/traffic_server -C verify_config
 ExecReload=/usr/bin/traffic_ctl config reload
 
 # traffic_manager is terminated with SIGTERM and exits with the received signal
