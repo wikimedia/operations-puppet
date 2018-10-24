@@ -17,13 +17,6 @@
 # [*port*]
 #   Bind trafficserver to this port (default: 8080).
 #
-# [*synthetic_port*]
-#   The synthetic healthcheck port (default: 8083).
-#
-# [*mgmt_port*]
-#   The port used for internal communication between traffic_manager and
-#   traffic_server processes (default: 8084).
-#
 # [*log_method*]
 #   The method used to produce event logs. Valid options are: 'ascii',
 #   'binary', 'pipe' (default: 'pipe').
@@ -96,8 +89,6 @@
 class trafficserver(
     String $user = 'trafficserver',
     Wmflib::IpPort $port = 8080,
-    Wmflib::IpPort $synthetic_port = 8083,
-    Wmflib::IpPort $mgmt_port = 8084,
     Enum['ascii', 'binary', 'pipe'] $log_method = 'pipe',
     Enum['squid', 'extended'] $log_format = 'squid',
     String $log_filename = 'event',

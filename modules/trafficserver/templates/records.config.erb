@@ -3,9 +3,6 @@
 
 # traffic_manager TCP ports
 CONFIG proxy.config.http.server_ports STRING <%= @port %> <%= @port %>:ipv6
-CONFIG proxy.config.admin.synthetic_port INT <%= @synthetic_port %>
-# traffic_server TCP port
-CONFIG proxy.config.process_manager.mgmt_port INT <%= @mgmt_port %>
 
 CONFIG proxy.config.admin.user_id STRING <%= @user %>
 CONFIG proxy.config.http.cache.required_headers INT 0
