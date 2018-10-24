@@ -135,8 +135,10 @@ def main():
     logging.info("Waiting for {} to be drained.".format(args.host))
     time.sleep(30)
 
-    # Run apt full-upgrade
-    if not run_cumin(args.host, ['apt -y full-upgrade'], timeout=300):
+    # Upgrade all pacakges, leave config files untouched, do not prompt
+    upgrade_cmd = ("DEBIAN_FRONTEND=noninteractive apt-get -y -o Dpkg::Options::='--force-confdef' "
+                   "-o Dpkg::Options::='--force-confold' dist-upgrade")
+    if not run_cumin(args.host, [upgrade_cmd], timeout=300):
         logger.error("Failed upgrading {}. Exiting.".format(args.host))
         return 1
 
