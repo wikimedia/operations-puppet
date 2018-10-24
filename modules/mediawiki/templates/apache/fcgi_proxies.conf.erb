@@ -1,3 +1,9 @@
 # Configure the proxies
-ProxySet "fcgi://127.0.0.1:9000" retry=0
-<%- if @vhost_feature_flags['serve_php7'] -%>ProxySet "fcgi://127.0.0.1:8000" retry=0<%- end %>
+<Proxy "fcgi://127.0.0.1:9000">
+       ProxySet retry=0
+</Proxy>
+<%- if @vhost_feature_flags['serve_php7'] -%>
+<Proxy "fcgi://127.0.0.1:8000">
+       ProxySet retry=0
+</Proxy>
+<%- end %>
