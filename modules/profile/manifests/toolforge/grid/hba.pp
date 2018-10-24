@@ -1,8 +1,8 @@
 # Establish the ability to do Host Based Auth from bastions to execs/webgrid
 
-class profile::toolforge::grid::hba (
-    $sysdir = hiera('profile::toolforge::sysdir'),
-    ){
+class profile::toolforge::grid::hba {
+
+    $sysdir = $profile::toolforge::grid::base::sysdir
 
     file { '/usr/local/sbin/project-make-shosts':
         ensure  => file,
