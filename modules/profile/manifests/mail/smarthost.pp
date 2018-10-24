@@ -31,6 +31,7 @@ class profile::mail::smarthost (
     $relay_from_hosts         = hiera('profile::mail::smarthost::relay_from_hosts', []),
     $envelope_rewrite_rules   = hiera('profile::mail::smarthost::envelope_rewrite_rules', []),
     $root_alias_rcpt          = hiera('profile::mail::smarthost::root_alias_rcpt', ':blackhole:'),
+    $helo_data                = hiera('profile::mail::smarthost::helo_data', ''),
 ) {
 
     class { 'exim4':
