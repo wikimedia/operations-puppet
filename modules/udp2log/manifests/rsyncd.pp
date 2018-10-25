@@ -23,13 +23,7 @@ class udp2log::rsyncd(
         comment     => 'udp2log log files',
         path        => $path,
         read_only   => 'yes',
-        hosts_allow => $hosts_allow;
-    }
-
-    $hosts_allowed_ferm = join($hosts_allow, ' ')
-    ferm::service { 'rsyncd':
-        proto  => 'tcp',
-        port   => '873',
-        srange => "@resolve((${hosts_allowed_ferm}))",
+        hosts_allow => $hosts_allow,
+        auto_ferm   => true,
     }
 }
