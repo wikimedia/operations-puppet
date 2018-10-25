@@ -1,0 +1,17 @@
+# Managed by puppet
+[Unit]
+Description=toolforge updatetools service, update tools and user tables
+
+[Service]
+Type=simple
+Restart=always
+ExecStart=/usr/local/sbin/updatetools
+ProtectSystem=full
+ProtectHome=read-only
+PrivateTmp=true
+StandardOutput=null
+User=<%= @labsproject %>.admin
+Group=<%= @labsproject %>.admin
+
+[Install]
+WantedBy=multi-user.target
