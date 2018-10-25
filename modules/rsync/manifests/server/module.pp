@@ -65,6 +65,7 @@ define rsync::server::module (
       $hosts_allow_ferm = join($hosts_allow, ' ')
 
       ferm::service { "rsyncd_access_${name}":
+          ensure => $ensure,
           proto  => 'tcp',
           port   => '873',
           srange => "@resolve((${hosts_allow_ferm}))",
@@ -72,6 +73,7 @@ define rsync::server::module (
 
       if $auto_ferm_ipv6 {
           ferm::service { "rsyncd_access_${name}_ipv6":
+              ensure => $ensure,
               proto  => 'tcp',
               port   => '873',
               srange => "@resolve((${hosts_allow_ferm}),AAAA)",
