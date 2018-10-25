@@ -130,7 +130,7 @@ define osm::planet_sync (
         ensure      => $ensure_cron,
         command     => "/usr/local/bin/replicate-osm >> ${osm_log_dir}/osm2pgsql.log 2>&1",
         user        => 'osmupdater',
-        day         => $day,
+        monthday    => $day,
         hour        => $hour,
         minute      => $minute,
         environment => [ "PGPASSWORD=${pg_password}", "PGPASS=${pg_password}", ],
