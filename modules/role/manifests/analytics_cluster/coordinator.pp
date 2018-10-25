@@ -43,11 +43,6 @@ class role::analytics_cluster::coordinator {
     # Include a weekly cron job to run hdfs balancer.
     include ::profile::hadoop::balancer
 
-    # We need hive-site.xml in HDFS.  This can be included
-    # on any node with a Hive client, but we really only
-    # want to include it in one place.
-    include ::profile::hive::site_hdfs
-
     # Various crons that launch Hadoop jobs.
     include ::profile::analytics::refinery
 
