@@ -105,6 +105,14 @@ class icinga(
           notify  => Service['icinga'],
         }
 
+        file { '/etc/icinga/nsca_frack.cfg':
+            content => template('icinga/nsca_frack.cfg.erb'),
+            owner   => $icinga_user,
+            group   => $icinga_group,
+            mode    => '0644',
+            require => Package['icinga'],
+            notify  => Service['icinga'],
+        }
 
     } else {
         file { [ '/etc/nagios/nagios_host.cfg', '/etc/nagios/nagios_service.cfg' ]:
@@ -183,6 +191,14 @@ class icinga(
           notify  => Service['icinga'],
         }
 
+        file { '/etc/icinga/objects/nsca_frack.cfg':
+            content => template('icinga/nsca_frack.cfg.erb'),
+            owner   => $icinga_user,
+            group   => $icinga_group,
+            mode    => '0644',
+            require => Package['icinga'],
+            notify  => Service['icinga'],
+        }
     }
 
     package { 'icinga':
@@ -191,15 +207,6 @@ class icinga(
 
     file { '/etc/icinga/cgi.cfg':
         source  => 'puppet:///modules/icinga/cgi.cfg',
-        owner   => $icinga_user,
-        group   => $icinga_group,
-        mode    => '0644',
-        require => Package['icinga'],
-        notify  => Service['icinga'],
-    }
-
-    file { '/etc/icinga/nsca_frack.cfg':
-        content => template('icinga/nsca_frack.cfg.erb'),
         owner   => $icinga_user,
         group   => $icinga_group,
         mode    => '0644',
