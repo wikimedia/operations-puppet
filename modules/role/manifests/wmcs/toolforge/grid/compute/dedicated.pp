@@ -1,4 +1,4 @@
-# Class: role::toolforge::compute::dedicated
+# Class: role::wmcs::toolforge::compute::dedicated
 #
 # This configures the compute node as a dedicated node
 #

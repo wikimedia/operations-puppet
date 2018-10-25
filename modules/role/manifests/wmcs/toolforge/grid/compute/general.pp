@@ -1,4 +1,4 @@
-# Class: role::toolforge::compute::general
+# Class: role::wmcs::toolforge::compute::general
 #
 # This configures the compute node as a general node
 #
