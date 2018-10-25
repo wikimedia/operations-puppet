@@ -16,6 +16,7 @@ class pybal::monitoring(
     ])
 
     diamond::collector { 'PyBalState':
+        ensure => 'absent',
         source => 'puppet:///modules/pybal/pybal_state.py',
     }
 
