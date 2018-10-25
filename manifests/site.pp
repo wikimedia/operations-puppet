@@ -2217,7 +2217,7 @@ node /^wdqs200[1-3]\.codfw\.wmnet$/ {
 }
 
 # Wikidata query service internal
-node /^wdqs100[78]\.eqiad\.wmnet$/ {
+node /^wdqs100[378]\.eqiad\.wmnet$/ {
     role(wdqs::internal)
 }
 

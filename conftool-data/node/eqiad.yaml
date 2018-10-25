@@ -273,6 +273,7 @@ eqiad:
     wdqs1005.eqiad.wmnet: [wdqs]
     wdqs1006.eqiad.wmnet: [wdqs]
   wdqs-internal:
+    wdqs1003.eqiad.wmnet: [wdqs]
     wdqs1007.eqiad.wmnet: [wdqs]
     wdqs1008.eqiad.wmnet: [wdqs]
   logstash:
