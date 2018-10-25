@@ -19,6 +19,7 @@ profile::wdqs::nodes:
   - 'wdqs1003.eqiad.wmnet'
   - 'wdqs1004.eqiad.wmnet'
   - 'wdqs1005.eqiad.wmnet'
+  - 'wdqs1006.eqiad.wmnet'
   - 'wdqs2001.codfw.wmnet'
   - 'wdqs2002.codfw.wmnet'
   - 'wdqs2003.codfw.wmnet'

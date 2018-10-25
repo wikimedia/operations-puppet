@@ -2208,7 +2208,7 @@ node /^cloudvirt102[0-4].eqiad.wmnet$/ {
 }
 
 # Wikidata query service
-node /^wdqs100[3-5]\.eqiad\.wmnet$/ {
+node /^wdqs100[3-6]\.eqiad\.wmnet$/ {
     role(wdqs)
 }
 
