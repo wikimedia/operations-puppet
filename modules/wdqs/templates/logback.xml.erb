@@ -6,49 +6,94 @@
 
     <%- if @evaluators -%>
     <evaluator name="SYNTAX_ERROR">
-      <expression>
-      throwable != null &amp;&amp; throwable.getCause() != null &amp;&amp;
-      throwable instanceof java.util.concurrent.ExecutionException &amp;&amp;
-      throwable.getCause() instanceof org.openrdf.query.MalformedQueryException</expression>
+        <expression>
+            throwable != null &amp;&amp; throwable.getCause() != null &amp;&amp;
+            throwable instanceof java.util.concurrent.ExecutionException &amp;&amp;
+            throwable.getCause() instanceof org.openrdf.query.MalformedQueryException
+        </expression>
     </evaluator>
     <evaluator name="QUERY_TIMEOUT">
-      <expression>
-      throwable != null &amp;&amp; throwable instanceof java.util.concurrent.TimeoutException
-      </expression>
+        <expression>
+            throwable != null &amp;&amp; throwable instanceof java.util.concurrent.TimeoutException
+        </expression>
     </evaluator>
     <%- end -%>
 
+    <!--
+        File based logs:
+        * rolling every day or when size > 100MB
+    -->
+    <appender name="file" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file><%= @log_dir %>/<%= @title %>.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <!-- daily rollover -->
+            <fileNamePattern><%= @log_dir %>/<%= @title %>.%d{yyyy-MM-dd}.%i.log.gz</fileNamePattern>
+            <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                <maxFileSize>100MB</maxFileSize>
+            </timeBasedFileNamingAndTriggeringPolicy>
+            <maxHistory>30</maxHistory>
+        </rollingPolicy>
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <pattern><%= @pattern %></pattern>
+            <outputPatternAsHeader>true</outputPatternAsHeader>
+        </encoder>
+    </appender>
+    <appender name="async-file" class="ch.qos.logback.classic.AsyncAppender">
+        <neverBlock>true</neverBlock>
+        <appender-ref ref="file" />
+    </appender>
+
+    <!--
+        Console based logs:
+        * per logger / message throttling is enabled
+        * limited to 10 messages per second
+        * level => ERROR
+    -->
     <appender name="stdout" class="ch.qos.logback.core.ConsoleAppender">
+        <filter class="org.wikidata.query.rdf.common.log.PerLoggerThrottler" />
         <filter class="org.wikidata.query.rdf.common.log.RateLimitFilter">
-        <!-- rate limit on console to 10 messages per second -->
             <bucketCapacity>10</bucketCapacity>
             <refillIntervalInMillis>1000</refillIntervalInMillis>
+        </filter>
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>error</level>
         </filter>
         <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
             <pattern><%= @pattern %></pattern>
             <outputPatternAsHeader>true</outputPatternAsHeader>
         </encoder>
     </appender>
-
     <appender name="async-stdout" class="ch.qos.logback.classic.AsyncAppender">
         <neverBlock>true</neverBlock>
         <appender-ref ref="stdout" />
     </appender>
 
+    <!--
+        Logstash:
+        * per logger / message throttling is enabled
+        * limited to 100 messages per second
+        * level => INFO
+    -->
     <appender name="logstash" class="net.logstash.logback.appender.LogstashSocketAppender">
         <filter class="org.wikidata.query.rdf.common.log.PerLoggerThrottler" />
-        <filter class="org.wikidata.query.rdf.common.log.RateLimitFilter" />
+        <filter class="org.wikidata.query.rdf.common.log.RateLimitFilter">
+            <bucketCapacity>100</bucketCapacity>
+            <refillIntervalInMillis>1000</refillIntervalInMillis>
+        </filter>
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>info</level>
+        </filter>
         <host><%= @logstash_host %></host>
         <port><%= @logstash_port %></port>
         <customFields>{"program":"<%= @title %>"}</customFields>
     </appender>
-
     <appender name="async-logstash" class="ch.qos.logback.classic.AsyncAppender">
         <neverBlock>true</neverBlock>
         <appender-ref ref="logstash" />
     </appender>
 
     <root level="warn">
+        <appender-ref ref="async-file"/>
         <appender-ref ref="async-stdout"/>
         <appender-ref ref="async-logstash"/>
     </root>

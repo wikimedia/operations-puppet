@@ -1,6 +1,7 @@
 define wdqs::logback_config (
     String $pattern,
     String $logstash_host,
+    Stdlib::Unixpath $log_dir,
     Wmflib::IpPort $logstash_port = 11514,
     Boolean $evaluators = false,
 ) {

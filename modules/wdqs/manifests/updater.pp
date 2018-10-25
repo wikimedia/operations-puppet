@@ -7,13 +7,14 @@
 # parameter $package_dir and $username are set on the wdqs::updater class.
 #
 class wdqs::updater(
-    $options,
-    $logstash_host,
-    $logstash_json_port = 11514,
-    $package_dir = $::wdqs::package_dir,
-    $username = $::wdqs::username,
-    $data_dir = $::wdqs::data_dir,
-    $extra_jvm_opts = undef,
+    String $options,
+    String $logstash_host,
+    Wmflib::IpPort $logstash_json_port = 11514,
+    Stdlib::Unixpath $log_dir = $::wdqs::log_dir,
+    Stdlib::Unixpath $package_dir = $::wdqs::package_dir,
+    String $username = $::wdqs::username,
+    Stdlib::Unixpath $data_dir = $::wdqs::data_dir,
+    Array[String] $extra_jvm_opts = [],
 ){
     file { '/etc/default/wdqs-updater':
         ensure  => present,
@@ -27,6 +28,7 @@ class wdqs::updater(
 
     wdqs::logback_config { 'wdqs-updater':
         pattern       => '%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n',
+        log_dir       => $log_dir,
         logstash_host => $logstash_host,
         logstash_port => $logstash_json_port,
     }
