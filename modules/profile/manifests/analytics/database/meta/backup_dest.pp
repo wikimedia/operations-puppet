@@ -47,13 +47,7 @@ class profile::analytics::database::meta::backup_dest(
         read_only   => 'no',
         list        => 'no',
         hosts_allow => $hosts_allow,
-    }
-
-    $rsync_clients_ferm = join($hosts_allow, ' ')
-    ferm::service { 'analytics_cluster-backup-rsync':
-        proto  => 'tcp',
-        port   => '873',
-        srange => "@resolve((${rsync_clients_ferm}))",
+        auto_ferm   => true,
     }
 
     if !defined(Sudo::User['nagios_check_newest_file_age']) {
