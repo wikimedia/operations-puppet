@@ -20,7 +20,6 @@ profile::wdqs::blazegraph_extra_jvm_opts:
   - '-Dwdqs.throttling-filter.time-bucket-refill-amount-in-seconds=120'
   - '-Dwdqs.throttling-filter.ban-duration-in-minutes=60'
 profile::wdqs::nodes:
-  - 'wdqs1006.eqiad.wmnet'
   - 'wdqs1007.eqiad.wmnet'
   - 'wdqs1008.eqiad.wmnet'
   - 'wdqs2004.codfw.wmnet'
