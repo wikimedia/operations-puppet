@@ -18,12 +18,12 @@
 #  THIS FILE IS MANAGED BY PUPPET
 #
 
+import ipaddress
 import argparse
 import yaml
 import os
 import time
 import logging
-import socket
 import sys
 import subprocess
 
@@ -41,23 +41,11 @@ VOLUMES_NEEDING_EXPORTS = ['project', 'home', 'tools-home', 'tools-project']
 def is_valid_ipv4(ip):
     """
     Returns true if ip is a valid ipv4 address
-
-    This test is a temp proxy for the py3 ipaddress module based check,
-    it tries to convert a dot separated ipv4 address to a 32-bit packed binary
-    format, and fails if the conversion doesn't succeed.
-
-    This check is a more permissive than the ipaddress library check,
-    and follows http://man7.org/linux/man-pages/man3/inet_aton.3.html to check
-    if the address is valid, and won't validate if the string has 4 octets, etc.
-
-    We can use this however, because we get instance ips from Keystone, and
-    mainly need to check if the value is not empty, or cannot be a valid IP
-    string
     """
     try:
-        socket.inet_aton(ip)
+        ipaddress.IPv4Address(ip)
         return True
-    except socket.error:
+    except ipaddress.AddressValueError:
         return False
 
 
