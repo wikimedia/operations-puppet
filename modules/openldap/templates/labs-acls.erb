@@ -14,3 +14,4 @@ limits dn.exact="uid=novaadmin,ou=people,dc=wikimedia,dc=org" time=unlimited siz
 #  to appear on wikitech, gerrit, etc. so limit access only to the keystone host
 access to dn=uid=novaobserver,ou=people,dc=wikimedia,dc=org
 	by peername.ip=<%=scope.function_ipresolve([scope.call_function(:hiera, ['labs_keystone_host']), 4])%> anonymous read
+	by peername.ipv6=<%=scope.function_ipresolve([scope.call_function(:hiera, ['labs_keystone_host']), 6])%> anonymous read
