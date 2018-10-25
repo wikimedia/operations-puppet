@@ -75,14 +75,15 @@ class role::prometheus::global {
         srange => '$DOMAIN_NETWORKS',
     }
 
-    # Move Prometheus metrics to new HW - T148408
+    # Used for migrations / hardware refresh, but not continuously
     include rsync::server
-
     $prometheus_nodes = hiera('prometheus_nodes')
     rsync::server::module { 'prometheus-global':
+        ensure      => absent,
         path        => '/srv/prometheus/global/metrics',
         uid         => 'prometheus',
         gid         => 'prometheus',
         hosts_allow => $prometheus_nodes,
+        auto_ferm   => true,
     }
 }
