@@ -8,7 +8,7 @@ class profile::toolforge::grid::node::web::generic {
     include profile::toolforge::grid::node::web
 
     sonofgridengine::join { "queues-${::fqdn}":
-        sourcedir => "${toollabs::collectors}/queues",
+        sourcedir => "${profile::toolforge::grid::base::collectors}/queues",
         list      => [ 'webgrid-generic' ],
     }
 
@@ -22,7 +22,13 @@ class profile::toolforge::grid::node::web::generic {
     }
 
     # tomcat support
-    package { [ 'tomcat7-user', 'xmlstarlet' ]:
-        ensure => latest,
+    if $facts['lsbdistcodename'] == 'stretch' {
+        package { [ 'tomcat8-user', 'xmlstarlet' ]:
+            ensure => latest,
+        }
+    } else {
+        package { [ 'tomcat7-user', 'xmlstarlet' ]:
+            ensure => latest,
+        }
     }
 }

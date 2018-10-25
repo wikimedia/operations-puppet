@@ -13,9 +13,12 @@
 # Sample Usage:
 #
 # filtertags: labs-project-tools
-class profile::toolforge::grid::node::web {
-
-    class {'::sonofgridengine::submit_host': }
+class profile::toolforge::grid::node::web (
+    $etcdir = hiera('profile::toolforge::etcdir'),
+){
+    include profile::toolforge::grid::node::compute
+    # Why would this need to be a submit host??
+    # class {'::sonofgridengine::submit_host': }
 
     # New style webservices!
     package { 'toollabs-webservice':

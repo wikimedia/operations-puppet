@@ -10,14 +10,18 @@
 #
 # Sample Usage:
 #
-# filtertags: labs-project-tools
+# filtertags: toolforge
 class profile::toolforge::grid::node::web::lighttpd {
-
     include profile::toolforge::grid::node::web
 
-
-    package { 'php5-cgi':
-        ensure => latest,
+    if $facts['lsbdistcodename'] == 'stretch' {
+        package { 'php-cgi':
+            ensure => latest,
+        }
+    } else {
+        package { 'php5-cgi':
+            ensure => latest,
+        }
     }
 
     package { [
@@ -29,7 +33,7 @@ class profile::toolforge::grid::node::web::lighttpd {
     }
 
     sonofgridengine::join { "queues-${::fqdn}":
-        sourcedir => "${toollabs::collectors}/queues",
+        sourcedir => "${profile::toolforge::grid::base::collectors}/queues",
         list      => [ 'webgrid-lighttpd' ],
     }
 
