@@ -14,12 +14,6 @@ class icinga::nsca::daemon (
     include ::passwords::icinga
     $nsca_decrypt_password = $::passwords::icinga::nsca_decrypt_password
 
-    file { '/etc/nsca.cfg':
-        content => template('icinga/nsca.cfg.erb'),
-        owner   => 'root',
-        mode    => '0400',
-        require => Package['nsca'],
-    }
 
     if os_version('debian >= stretch') {
 
@@ -29,6 +23,8 @@ class icinga::nsca::daemon (
             require => File['/etc/nsca.cfg'],
         }
 
+        $nsca_chroot = '/var/lib/icinga'
+
     # FIXME: remove after we are off jessie
     } else {
 
@@ -36,5 +32,14 @@ class icinga::nsca::daemon (
             ensure  => running,
             require => File['/etc/nsca.cfg'],
         }
+
+        $nsca_chroot = '/var/lib/nagios'
+    }
+
+    file { '/etc/nsca.cfg':
+        content => template('icinga/nsca.cfg.erb'),
+        owner   => 'root',
+        mode    => '0400',
+        require => Package['nsca'],
     }
 }
