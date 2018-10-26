@@ -1,14 +1,14 @@
 # == Class geoip::data::archive
 #
-
+#
 # Sets up a cron job that grabs the latest version of the MaxMind database, puts it
 # in a timestamped directory in /srv/geoip/archive, and pushes its contents to hdfs.
-
+#
 class geoip::data::archive(
     $maxmind_db_source_dir = '/usr/share/GeoIP',
-    $hdfs_archive_dir = '/wmf/data/archive/geoip'
+    $hdfs_archive_dir = '/wmf/data/archive/geoip',
+    $archive_dir = "${maxmind_db_source_dir}/archive",
 ) {
-    $archive_dir = "${maxmind_db_source_dir}/archive"
     # Puppet assigns 755 permissions to files and dirs, so the script can be ran
     # manually without sudo.
     file { $archive_dir:

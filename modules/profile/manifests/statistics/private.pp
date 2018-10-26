@@ -66,7 +66,17 @@ class profile::statistics::private(
     if $::hostname == 'stat1007' {
         # Class to save old versions of the geoip MaxMind database, which are useful
         # for historical geocoding.
-        class { '::geoip::data::archive': }
+        if !defined(File['/srv/geoip']) {
+            file { '/srv/geoip':
+                ensure => file,
+                owner  => 'root',
+                group  => 'wikidev',
+            }
+        }
+        class { '::geoip::data::archive':
+            archive_dir => '/srv/geoip/archive',
+            require     => File['/srv/geoip'],
+        }
     }
 
     if $::hostname == 'stat1005' {
