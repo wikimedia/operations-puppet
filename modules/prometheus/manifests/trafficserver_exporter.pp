@@ -20,5 +20,10 @@ define prometheus::trafficserver_exporter (
         content => systemd_template('prometheus-trafficserver-exporter@'),
     }
 
+    monitoring::service { 'trafficserver_exporter_check_http':
+        description   => "Ensure traffic_exporter binds on port ${listen_port} and responds to HTTP requests",
+        check_command => "check_http_port_url!${listen_port}!/",
+    }
+
     base::service_auto_restart { 'prometheus-trafficserver-exporter': }
 }
