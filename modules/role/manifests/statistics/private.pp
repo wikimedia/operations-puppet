@@ -9,7 +9,7 @@ class role::statistics::private {
 
     include ::profile::statistics::private
 
-    if $::hostname == 'stat1005' {
+    if $::hostname == 'stat1007' {
         # Run Hadoop/Hive reportupdater jobs here.
         include ::profile::reportupdater::jobs::hadoop
     }
