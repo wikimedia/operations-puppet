@@ -491,10 +491,7 @@ max_concurrent_checks=<%= @max_concurrent_checks || 10000 %>
 # check result processing (requires more cpu power).
 
 #check_result_reaper_frequency=1
-check_result_reaper_frequency=10
-
-
-
+check_result_reaper_frequency=2
 
 # MAX CHECK RESULT REAPER TIME
 # This is the max amount of time (in seconds) that  a single
@@ -502,7 +499,7 @@ check_result_reaper_frequency=10
 # returning control back to Icinga so it can perform other
 # duties.
 
-max_check_result_reaper_time=30
+max_check_result_reaper_time=10
 
 
 
