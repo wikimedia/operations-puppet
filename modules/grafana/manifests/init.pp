@@ -44,9 +44,11 @@ class grafana(
     file { '/etc/grafana/grafana.ini':
         content => ini($defaults, $config),
         owner   => 'root',
-        group   => 'root',
-        mode    => '0444',
+        group   => 'grafana',
+        mode    => '0440',
         require => Package['grafana'],
+        # Explicit ordering to force first-run configuration options to be applied
+        before  => Service['grafana-server'],
     }
 
     file { '/var/lib/grafana/dashboards':
@@ -76,6 +78,8 @@ class grafana(
             group   => 'grafana',
             mode    => '0440',
             content => template('grafana/ldap.toml.erb'),
+            notify  => Service['grafana-server'],
+            before  => Service['grafana-server'],
         }
     }
 
