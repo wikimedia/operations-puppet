@@ -5,7 +5,6 @@ class profile::openstack::base::puppetmaster::backend(
     $puppetmaster_hostname = hiera('profile::openstack::base::puppetmaster_hostname'),
     $puppetmaster_ca = hiera('profile::openstack::base::puppetmaster::ca'),
     $puppetmasters = hiera('profile::openstack::base::puppetmaster::servers'),
-    $baremetal_servers = hiera('profile::openstack::base::puppetmaster::baremetal'),
     $encapi_db_host = hiera('profile::openstack::base::puppetmaster::encapi::db_host'),
     $encapi_db_name = hiera('profile::openstack::base::puppetmaster::encapi::db_name'),
     $encapi_db_user = hiera('profile::openstack::base::puppetmaster::encapi::db_user'),
@@ -24,7 +23,6 @@ class profile::openstack::base::puppetmaster::backend(
         puppetmaster_webhostname     => $puppetmaster_webhostname,
         puppetmaster_hostname        => $puppetmaster_hostname,
         puppetmasters                => $puppetmasters,
-        baremetal_servers            => $baremetal_servers,
         encapi_db_host               => $encapi_db_host,
         encapi_db_name               => $encapi_db_name,
         encapi_db_user               => $encapi_db_user,
@@ -37,7 +35,7 @@ class profile::openstack::base::puppetmaster::backend(
 
     # Only allow puppet access from the instances
     $labs_networks = join($network::constants::labs_networks, ' ')
-    $allow_from = flatten([$network::constants::labs_networks, $baremetal_servers, '.wikimedia.org'])
+    $allow_from = flatten([$network::constants::labs_networks, '.wikimedia.org'])
 
     $config = {
         'node_terminus'     => 'exec',

@@ -1,6 +1,5 @@
 profile::openstack::main::puppetmaster::web_hostname: 'labs-puppetmaster.wikimedia.org'
 profile::openstack::main::puppetmaster::ca: 'labpuppetmaster1001.wikimedia.org'
-profile::openstack::main::puppetmaster::baremetal: ['10.64.20.12']
 profile::openstack::main::puppetmaster::servers:
   labpuppetmaster1001.wikimedia.org:
     - { worker: labpuppetmaster1001.wikimedia.org, loadfactor: 10 }

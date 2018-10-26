@@ -1,5 +1,4 @@
 profile::openstack::labtest::puppetmaster::web_hostname: labtest-puppetmaster.wikimedia.org
-profile::openstack::labtest::puppetmaster::baremetal: []
 profile::openstack::labtest::puppetmaster::ca: labtestpuppetmaster2001.wikimedia.org
 profile::openstack::labtest::puppetmaster::servers:
   labtestpuppetmaster2001.wikimedia.org:

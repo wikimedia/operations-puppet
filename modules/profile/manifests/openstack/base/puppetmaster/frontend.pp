@@ -5,7 +5,6 @@ class profile::openstack::base::puppetmaster::frontend(
     $puppetmaster_ca = hiera('profile::openstack::base::puppetmaster::ca'),
     $puppetmaster_hostname = hiera('profile::openstack::base::puppetmaster_hostname'),
     $puppetmaster_webhostname = hiera('profile::openstack::base::puppetmaster::web_hostname'),
-    $baremetal_servers = hiera('profile::openstack::base::puppetmaster::baremetal'),
     $encapi_db_host = hiera('profile::openstack::base::puppetmaster::encapi::db_host'),
     $encapi_db_name = hiera('profile::openstack::base::puppetmaster::encapi::db_name'),
     $encapi_db_user = hiera('profile::openstack::base::puppetmaster::encapi::db_user'),
@@ -38,7 +37,6 @@ class profile::openstack::base::puppetmaster::frontend(
         puppetmaster_webhostname     => $puppetmaster_webhostname,
         puppetmaster_hostname        => $puppetmaster_hostname,
         puppetmasters                => $puppetmasters,
-        baremetal_servers            => $baremetal_servers,
         encapi_db_host               => $encapi_db_host,
         encapi_db_name               => $encapi_db_name,
         encapi_db_user               => $encapi_db_user,
@@ -101,7 +99,7 @@ class profile::openstack::base::puppetmaster::frontend(
     $labweb_ips_v6 = inline_template("@resolve((<%= @labweb_hosts.join(' ') %>), AAAA)")
     ferm::rule{'puppetmaster_balancer':
         ensure => 'present',
-        rule   => "saddr (${labs_networks} ${baremetal_servers}
+        rule   => "saddr (${labs_networks}
                           ${labweb_ips} ${labweb_ips_v6})
                           proto tcp dport 8140 ACCEPT;",
     }
