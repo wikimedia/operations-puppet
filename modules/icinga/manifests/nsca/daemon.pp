@@ -24,6 +24,7 @@ class icinga::nsca::daemon (
         }
 
         $nsca_chroot = '/var/lib/icinga'
+        $command_file = '/rw/icinga.cmd'
 
     # FIXME: remove after we are off jessie
     } else {
@@ -34,6 +35,7 @@ class icinga::nsca::daemon (
         }
 
         $nsca_chroot = '/var/lib/nagios'
+        $command_file = '/rw/nagios.cmd'
     }
 
     file { '/etc/nsca.cfg':
