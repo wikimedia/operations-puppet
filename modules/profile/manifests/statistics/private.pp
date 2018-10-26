@@ -63,9 +63,11 @@ class profile::statistics::private(
     # rsync mediawiki logs from logging hosts
     class { '::statistics::rsync::mediawiki': }
 
-    # Class to save old versions of the geoip MaxMind database, which are useful
-    # for historical geocoding.
-    class { '::geoip::data::archive': }
+    if $::hostname == 'stat1007' {
+        # Class to save old versions of the geoip MaxMind database, which are useful
+        # for historical geocoding.
+        class { '::geoip::data::archive': }
+    }
 
     if $::hostname == 'stat1005' {
 
