@@ -1,0 +1,24 @@
+# This file is managed by Puppet.
+#
+[libdefaults]
+        default_realm = <%= @krb_realm_name.upcase %>
+        kdc_timesync = 1
+        ccache_type = 4
+        forwardable = true
+        proxiable = true
+
+[realms]
+        <%= @krb_realm_name.upcase %> = {
+                kdc = <%= @krb_kdc_servers %>
+                admin_server = <%= @krb_kadmin_primary %>
+        }
+
+[domain_realm]
+        .<%= @krb_realm_name.downcase %> = <%= @krb_realm_name.upcase %>
+        <%= @krb_realm_name.downcase %> = <%= @krb_realm_name.upcase %>
+
+[logging]
+        kdc = FILE:/var/log/kerberos/krb5kdc.log
+        admin_server = FILE:/var/log/kerberos/kadmin.log
+        default = FILE:/var/log/kerberos/krb5lib.log
+
