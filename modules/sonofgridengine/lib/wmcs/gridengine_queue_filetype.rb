@@ -1,13 +1,13 @@
 # gridengine complexes need a custom filetype
 require 'puppet/util/filetype'
 
-Puppet::Util::FileType.newfiletype(:gridengine_complex) do
+Puppet::Util::FileType.newfiletype(:gridengine_queue) do
   # TODO: target/default_target should be used to point to a
   #       specific gridengine instance and default to, well, the
   #       default.
 
   def read
-    `qconf -sc`
+    `qconf -sq #{@path}`
   end
 
   def write(text)

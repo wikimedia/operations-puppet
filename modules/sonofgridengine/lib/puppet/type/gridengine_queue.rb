@@ -1,7 +1,4 @@
 # Copyright 2018 Brooke Storm
-
-# WIP - This is not finished, but it was started in case the existing puppet DSL
-# code doesn't actually correctly define the queues right.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -105,56 +102,136 @@ Puppet::Type.newtype(:gridengine_queue) do
     end
 
     newproperty(:prolog) do
+        desc "Things to run before jobs in this queue"
+        defaultto 'NONE'
     end
 
     newproperty(:epliog) do
+        desc "Things to run after jobs in this queue"
+        defaultto 'NONE'
     end
 
     newproperty(:shell_start_mode) do
+        defaultto 'unix_behavior'
     end
 
     newproperty(:starter_method) do
+        defaultto 'NONE'
     end
 
     newproperty(:suspend_method) do
+        defaultto 'NONE'
     end
 
     newproperty(:resume_method) do
+        defaultto 'NONE'
     end
 
     newproperty(:terminate_method) do
+        defaultto '/usr/local/bin/jobkill $job_pid'
     end
 
     newproperty(:notify) do
+        defaultto '00:00:60'
     end
 
     newproperty(:ownerlist) do
+        defaultto 'NONE'
     end
 
     newproperty(:userlists) do
+        defaultto 'NONE'
     end
 
     newproperty(:xuserlists) do
+        defaultto 'NONE'
     end
 
     newproperty(:subordinate_list) do
+        defaultto 'NONE'
     end
 
     newproperty(:complex_values) do
+        defaultto 'NONE'
     end
 
     newproperty(:projects) do
+        defaultto 'NONE'
     end
 
     newproperty(:xprojects) do
+        defaultto 'NONE'
     end
 
     newproperty(:calendar) do
+        defaultto 'NONE'
     end
 
     newproperty(:initial_state) do
+        defaultto 'NONE'
     end
 
-    newproperty(:resource_limits) do
+    newproperty(:s_rt) do
+        defaultto 'INFINITY'
+    end
+
+    newproperty(:h_rt) do
+        defaultto 'INFINITY'
+    end
+
+    newproperty(:s_cpu) do
+        defaultto 'INFINITY'
+    end
+
+    newproperty(:h_cpu) do
+        defaultto 'INFINITY'
+    end
+
+    newproperty(:s_fsize) do
+        defaultto 'INFINITY'
+    end
+
+    newproperty(:h_fsize) do
+        defaultto 'INFINITY'
+    end
+
+    newproperty(:s_data) do
+        defaultto 'INFINITY'
+    end
+
+    newproperty(:h_data) do
+        defaultto 'INFINITY'
+    end
+
+    newproperty(:s_stack) do
+        defaultto 'INFINITY'
+    end
+
+    newproperty(:h_stack) do
+        defaultto 'INFINITY'
+    end
+
+    newproperty(:s_core) do
+        defaultto 'INFINITY'
+    end
+
+    newproperty(:h_core) do
+        defaultto 'INFINITY'
+    end
+
+    newproperty(:s_rss) do
+        defaultto 'INFINITY'
+    end
+
+    newproperty(:h_rss) do
+        defaultto 'INFINITY'
+    end
+
+    newproperty(:s_vmem) do
+        defaultto 'INFINITY'
+    end
+
+    newproperty(:h_vmem) do
+        defaultto 'INFINITY'
     end
 end
