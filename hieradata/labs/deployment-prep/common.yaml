@@ -326,7 +326,7 @@ role::logstash::apifeatureusage::elastic_hosts:
   jobqueue: &labs_shards
     eqiad:
       shard01:
-        host: 10.68.19.242 # deployment-redis06
+        host: 10.68.19.242 # deployment-redis05
         port: 6379
       shard02:
         host: 10.68.20.16 # deployment-redis06
