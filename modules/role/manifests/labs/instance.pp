@@ -36,8 +36,7 @@ class role::labs::instance {
 
     # Allows per-host overriding of NFS mounts
     $mount_nfs = hiera('mount_nfs', true)
-    # No NFS on labs metal for now.
-    if $::virtual == 'kvm' and $mount_nfs{
+    if $mount_nfs {
         require role::labs::nfsclient
     }
 
