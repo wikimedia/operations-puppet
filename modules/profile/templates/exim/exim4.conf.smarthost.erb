@@ -10,6 +10,8 @@ CONFDIR=/etc/exim4
 # Main configuration settings #
 ###############################
 
+primary_hostname = <%= @exim_primary_hostname %>
+
 domainlist system_hostname = @
 
 # relay_from_hosts - Hosts and networks (including local interface addresses) permitted to relay through this smarthost.
@@ -134,18 +136,12 @@ remote_smtp_<%= dkim_domain['domain'].gsub(/[-.]/, '_') %>_<%= dkim_domain['sele
 	dkim_selector = <%= dkim_domain['selector'] %>
 	dkim_private_key = ${if exists{/etc/exim4/dkim/${dkim_domain}-${dkim_selector}.key}{/etc/exim4/dkim/${dkim_domain}-${dkim_selector}.key}{0}}
 	dkim_canon = relaxed
-	<% if helo_data -%>
-	helo_data = <%= helo_data %>
-	<% end -%>
 
 <% end -%>
 
 # Transport for unsigned (dkim) mail.
 remote_smtp_unsigned:
 	driver = smtp
-	<% if helo_data -%>
-	helo_data = <%= helo_data %>
-	<% end -%>
 
 # Generic pipe local delivery transport (for use by alias/forward files)
 

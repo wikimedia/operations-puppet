@@ -22,6 +22,8 @@
 # * $envelope_rewrite_rules   - An array of envelope rewrite rules to be applied to this smarthost
 #
 # * $root_alias_rcpt          - The desired recipient (email address) of email to root@local_domains
+#
+# * $exim_primary_hostname    - The desired hostname of the exim mail system.  Useful if hostname is within .wmflabs
 
 class profile::mail::smarthost (
     $prometheus_nodes         = hiera('prometheus_nodes', []),
@@ -31,7 +33,7 @@ class profile::mail::smarthost (
     $relay_from_hosts         = hiera('profile::mail::smarthost::relay_from_hosts', []),
     $envelope_rewrite_rules   = hiera('profile::mail::smarthost::envelope_rewrite_rules', []),
     $root_alias_rcpt          = hiera('profile::mail::smarthost::root_alias_rcpt', ':blackhole:'),
-    $helo_data                = hiera('profile::mail::smarthost::helo_data', ''),
+    $exim_primary_hostname    = hiera('profile::mail::smarthost::exim_primary_hostname', $facts['fqdn']),
 ) {
 
     class { 'exim4':
