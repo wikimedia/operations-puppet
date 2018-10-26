@@ -1,0 +1,22 @@
+module(
+  load="impstats"
+  interval="10"
+  format="json"
+  resetCounters="off"
+  ruleset="process_stats"
+)
+
+module(
+  load="omprog"
+)
+
+ruleset(name="process_stats") {
+  action(
+    type="omprog"
+    name="to_exporter"
+    # forceSingleInstance has been fixed in rsyslog 8.38
+    # https://github.com/rsyslog/rsyslog/commit/a978072b864324a3a6678660983779b3d2410a1b
+    forceSingleInstance="on"
+    binary="/usr/bin/prometheus-rsyslog-exporter -web.listen-address <%= @listen_address %>"
+  )
+}

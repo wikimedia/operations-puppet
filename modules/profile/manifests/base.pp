@@ -9,6 +9,7 @@ class profile::base(
     $nameservers   = hiera('profile::base::nameservers', $::nameservers), # lint:ignore:wmf_styleguide
     $remote_syslog = hiera('profile::base::remote_syslog', ['syslog.eqiad.wmnet', 'syslog.codfw.wmnet']),
     $remote_syslog_tls = hiera('profile::base::remote_syslog_tls', []),
+    $enable_rsyslog_exporter = hiera('profile::base::enable_rsyslog_exporter', false),
     $notifications_enabled = hiera('profile::base::notifications_enabled', '1'),
     $monitor_systemd = hiera('profile::base::monitor_systemd', true),
     $core_dump_pattern = hiera('profile::base::core_dump_pattern', '/var/tmp/core/core.%h.%e.%p.%t'),
@@ -60,6 +61,9 @@ class profile::base(
     }
 
     class { '::rsyslog': }
+    if $enable_rsyslog_exporter and os_version('debian >= jessie') {
+        include ::profile::prometheus::rsyslog_exporter
+    }
 
     unless empty($remote_syslog) and empty($remote_syslog_tls) {
         class { '::base::remote_syslog':
