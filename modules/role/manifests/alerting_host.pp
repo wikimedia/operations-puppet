@@ -22,7 +22,13 @@ class role::alerting_host {
     include ::role::authdns::monitoring
 
     if os_version('debian >= stretch') {
+
+        class { '::httpd::mpm':
+            mpm => 'prefork'
+        }
+
         $php_module = 'php7.0'
+
     } else {
         $php_module = 'php5'
     }
