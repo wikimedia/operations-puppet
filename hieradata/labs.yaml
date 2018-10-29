@@ -155,3 +155,12 @@ prometheus_nodes: []
 wikimail_smarthost:
 - 'mx1001.wikimedia.org'
 - 'mx2001.wikimedia.org'
+
+ntp_peers:
+    eqiad:
+    - 'ntp-01.cloudinfra.wmflabs.org'
+    - 'ntp-02.cloudinfra.wmflabs.org'
+    codfw: []
+    ulsfo: []
+    eqsin: []
+    esams: []

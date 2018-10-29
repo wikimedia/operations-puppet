@@ -15,3 +15,11 @@ labsldapconfig:
   secondary_hostname: "labtestservices2001.wikimedia.org"
 
 labs_tld: "labtest"
+
+ntp_peers:
+    eqiad: []
+    codfw:
+    - 'ntp-1.cloudinfra.codfw.labtest'
+    ulsfo: []
+    eqsin: []
+    esams: []
