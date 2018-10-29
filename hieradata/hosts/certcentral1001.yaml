@@ -1,0 +1,4 @@
+profile::certcentral::accounts:
+  6e01c693ed6e9d9a6b5930923ecef104:
+    regr: '{"body": {}, "uri": "https://acme-staging-v02.api.letsencrypt.org/acme/acct/7090084"}'
+    directory: "https://acme-staging-v02.api.letsencrypt.org/directory"
