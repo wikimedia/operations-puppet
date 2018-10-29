@@ -507,7 +507,7 @@ define service {
     check_command            nsca-fail!1!'passive check is awol'
     notification_interval    0
     notification_period      24x7
-    notification_options     c,r,f
+    notification_options     c,r,f,w
     max_check_attempts       2
 }
 
