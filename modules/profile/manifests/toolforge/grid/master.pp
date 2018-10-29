@@ -112,6 +112,24 @@ class profile::toolforge::grid::master (
     #     require => File['/var/lib/gridengine'],
     # }
 
+    $hostlist = '@general'
+
+    gridengine_queue { 'continuous':
+        hostlist  => $hostlist,
+        seq_no    => 1,
+        priority  => 10,
+        qtype     => 'BATCH',
+        ckpt_list => 'continuous',
+        rerun     => 'TRUE',
+    }
+
+    gridengine_queue { 'task':
+        hostlist  => $hostlist,
+        seq_no    => 0,
+        qtype     => 'BATCH INTERACTIVE',
+        ckpt_list => 'NONE',
+    }
+
     file { '/usr/local/bin/dequeugridnodes.sh':
         ensure => file,
         owner  => 'root',

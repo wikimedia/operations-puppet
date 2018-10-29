@@ -22,22 +22,6 @@ class profile::toolforge::grid::node::compute::general {
 
     $hostlist = '@general'
 
-    gridengine_queue { 'continuous':
-        hostlist  => $hostlist,
-        seq_no    => 1,
-        priority  => 10,
-        qtype     => 'BATCH',
-        ckpt_list => 'continuous',
-        rerun     => 'TRUE',
-    }
-
-    gridengine_queue { 'task':
-        hostlist  => $hostlist,
-        seq_no    => 0,
-        qtype     => 'BATCH INTERACTIVE',
-        ckpt_list => 'NONE',
-    }
-
     sonofgridengine::queue { 'continuous':
         config => 'profile/toolforge/grid/queue-continuous.erb',
     }
