@@ -30,7 +30,7 @@ Puppet::Type.type(:gridengine_queue).provide(:parsed, :parent => Puppet::Provide
   text_line :blank, :match => /^\s*$/
 
   record_line :parsed, :fields => [
-    "hostlist", "seq_no", "load_thresholds", "suspend_thresholds",
+    "qname", "hostlist", "seq_no", "load_thresholds", "suspend_thresholds",
     "nsuspend", "suspend_interval", "priority", "min_cpu_interval",
     "processors", "qtype", "pe_list", "ckpt_list", "rerun", "slots",
     "tmpdir", "shell", "prolog", "epliog", "shell_start_mode",

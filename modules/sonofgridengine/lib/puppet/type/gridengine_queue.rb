@@ -17,6 +17,10 @@ Puppet::Type.newtype(:gridengine_queue) do
 
     ensurable
 
+    newproperty(:qname) do
+        isnamevar
+    end
+
     newproperty(:hostlist) do
         desc "The hostslists that access this queue for execution.
         This is a list of host identifiers per sge_types(1)"
