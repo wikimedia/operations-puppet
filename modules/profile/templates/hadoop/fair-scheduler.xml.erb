@@ -36,11 +36,13 @@
     <!--
     The production queue has a higher priority than default,
     and it will start killing (preempting) jobs in other queues
-    if it can't get its minimum share within 10 minutes.
+    if it can't get its minimum share within 10 minutes, and
+    fair share within 30 minutes.
      -->
     <weight>10.0</weight>
     <minSharePreemptionTimeout>600</minSharePreemptionTimeout>
     <maxRunningApps>50</maxRunningApps>
+    <fairSharePreemptionThreshold>1800</fairSharePreemptionThreshold>
   </queue>
 
   <!-- essential jobs will aggressively preempt jobs in other queues -->
@@ -56,11 +58,11 @@
     The essential queue has a much higher priority than production,
     and it will start killing (preempting) jobs in other queues,
     first after 60 seconds if it can't get its minimum share,
-    and then more after 10 minutes if it can't get its fair share.
+    and then more after 5 minutes if it can't get its fair share.
      -->
     <weight>20.0</weight>
     <minSharePreemptionTimeout>60</minSharePreemptionTimeout>
-    <fairSharePreemptionThreshold>600</fairSharePreemptionThreshold>
+    <fairSharePreemptionThreshold>300</fairSharePreemptionThreshold>
     <maxRunningApps>50</maxRunningApps>
   </queue>
 
