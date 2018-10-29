@@ -13,6 +13,10 @@ options => {
     #  the daemon for lack of SO_REUSEPORT support.
     udp_threads = <%= @physicalcorecount %>
     tcp_threads = <%= @physicalcorecount %>
+
+    # Experiment: raise tcp timeout from default 15 to 50, see if this has any
+    # notable impact on connection stats (close_c vs close_s_ok):
+    tcp_timeout = 50
 }
 
 service_types => {
