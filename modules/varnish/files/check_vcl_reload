@@ -6,7 +6,10 @@ STATE_FILE="/var/run/reload-vcl-state"
 
 # No reload-vcl has happened, apparently.
 # No reason to raise an alarm then
-test -f $STATE_FILE || exit $STATE_OK
+if [ ! -f $STATE_FILE ]; then
+    echo "reload-vcl has not been executed yet."
+    exit $STATE_OK
+fi
 
 HOUR=3600 #seconds
 MIN=60
