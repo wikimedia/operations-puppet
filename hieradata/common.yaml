@@ -614,6 +614,8 @@ hadoop_clusters:
     yarn_scheduler_maximum_allocation_mb: 53248
     yarn_scheduler_minimum_allocation_vcores:   0
     yarn_scheduler_maximum_allocation_vcores:   32
+    # Raised for T206943
+    yarn_resourcemanager_zk_timeout_ms: 20000
 
 deployment_server: deploy1001.eqiad.wmnet
 

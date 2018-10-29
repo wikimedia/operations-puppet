@@ -188,6 +188,7 @@ class profile::hadoop::common (
     $hadoop_config = $hadoop_default_config + $hadoop_clusters[$cluster_name] + $config_override
 
     $zookeeper_cluster_name                   = $hadoop_config['zookeeper_cluster_name']
+    $yarn_resourcemanager_zk_timeout_ms       = $hadoop_config['yarn_resourcemanager_zk_timeout_ms']
     $resourcemanager_hosts                    = $hadoop_config['resourcemanager_hosts']
     $namenode_hosts                           = $hadoop_config['namenode_hosts']
     $journalnode_hosts                        = $hadoop_config['journalnode_hosts']
@@ -254,6 +255,7 @@ class profile::hadoop::common (
         # as the namenodes.
         resourcemanager_hosts                       => $resourcemanager_hosts,
         zookeeper_hosts                             => $zookeeper_hosts,
+        yarn_resourcemanager_zk_timeout_ms          => $yarn_resourcemanager_zk_timeout_ms,
         dfs_name_dir                                => [$hadoop_name_directory],
         dfs_journalnode_edits_dir                   => $hadoop_journal_directory,
         dfs_datanode_failed_volumes_tolerated       => $datanode_volumes_failed_tolerated,
