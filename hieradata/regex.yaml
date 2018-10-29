@@ -212,12 +212,6 @@ analytics_no_monitor_screens:
   __regex: !ruby/regexp /^stat1\d\d\d\.eqiad\.wmnet$/
   monitor_screens: false
 
-# Gradual syslog-tls rollout - T136312
-syslog_tls_eqiad:
-  __regex: !ruby/regexp /^(analytics|aqs|conf|cp|db|dbproxy|druid|elastic|es|etcd|ganeti|kafka)1\d\d\d\.eqiad\.wmnet$/
-  profile::base::remote_syslog_tls: ['syslog.eqiad.wmnet:6514', 'syslog.codfw.wmnet:6514']
-  profile::base::remote_syslog: []
-
 # Old hosts with mpt controllers and to be decom'd
 # smartmontools broken out of the box - T179078 and T86552
 smart_health_mpt:
