@@ -19,5 +19,12 @@ class profile::kerberos::client (
         mode   => '0750',
     }
 
+    file { '/etc/security/keytabs':
+        ensure => directory,
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0750',
+    }
+
     require_package ('krb5-user')
 }
