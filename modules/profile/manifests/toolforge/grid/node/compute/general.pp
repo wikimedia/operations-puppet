@@ -22,7 +22,7 @@ class profile::toolforge::grid::node::compute::general {
 
     $hostlist = '@general'
 
-    sonofgridengine::gridengine_queue { 'continuous':
+    gridengine_queue { 'continuous':
         hostlist  => $hostlist,
         seq_no    => 1,
         priority  => 10,
@@ -31,7 +31,7 @@ class profile::toolforge::grid::node::compute::general {
         rerun     => 'TRUE',
     }
 
-    sonofgridengine::gridengine_queue { 'task':
+    gridengine_queue { 'task':
         hostlist  => $hostlist,
         seq_no    => 0,
         qtype     => 'BATCH INTERACTIVE',
