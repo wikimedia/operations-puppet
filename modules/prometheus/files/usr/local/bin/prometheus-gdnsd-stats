@@ -38,8 +38,8 @@ def collect_gdnsd_stats(stats, registry):
         namespace='gdnsd', registry=registry)
     dns_stats['edns'] = Gauge(
         'request_edns', 'EDNS requests', namespace='gdnsd', registry=registry)
-    dns_stats['edns_client_subnet'] = Gauge(
-        'request_edns_client_subnet', 'EDNS requests with client_subnet',
+    dns_stats['edns_clientsub'] = Gauge(
+        'request_edns_client_subnet', 'EDNS requests with client subnet',
         namespace='gdnsd', registry=registry)
     dns_stats['v6'] = Gauge(
         'request_v6', 'IPv6 requests', namespace='gdnsd', registry=registry)
