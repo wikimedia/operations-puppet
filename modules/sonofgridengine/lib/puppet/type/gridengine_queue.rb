@@ -17,7 +17,7 @@ Puppet::Type.newtype(:gridengine_queue) do
 
     ensurable
 
-    newproperty(:qname) do
+    newparam(:qname) do
         isnamevar
     end
 
