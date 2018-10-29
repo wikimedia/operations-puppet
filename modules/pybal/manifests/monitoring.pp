@@ -15,11 +15,6 @@ class pybal::monitoring(
         'python-requests',
     ])
 
-    diamond::collector { 'PyBalState':
-        ensure => 'absent',
-        source => 'puppet:///modules/pybal/pybal_state.py',
-    }
-
     file { '/usr/local/lib/nagios/plugins/check_pybal':
         ensure => present,
         source => 'puppet:///modules/pybal/check_pybal',
