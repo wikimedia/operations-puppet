@@ -68,7 +68,7 @@ class profile::statistics::private(
         # for historical geocoding.
         if !defined(File['/srv/geoip']) {
             file { '/srv/geoip':
-                ensure => file,
+                ensure => directory,
                 owner  => 'root',
                 group  => 'wikidev',
             }
