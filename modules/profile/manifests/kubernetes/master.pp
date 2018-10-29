@@ -66,6 +66,7 @@ class profile::kubernetes::master(
     }
 
     diamond::collector { 'Kubernetes':
+        ensure => 'absent',
         source => 'puppet:///modules/diamond/collector/kubernetes.py',
     }
 
