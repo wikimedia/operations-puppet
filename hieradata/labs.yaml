@@ -145,7 +145,6 @@ profile::base::ssh_server_settings:
 labs_puppet_master: "labs-puppetmaster.wikimedia.org"
 labs_keystone_host: "cloudcontrol1003.wikimedia.org"
 puppetmaster: "labs-puppetmaster.wikimedia.org"
-mysql::server::use_apparmor: false  # The images we have for debian don't support it
 keystone_public_port: '5000'
 
 # All labs instances have internet connectivity, so do not bother with proxies
