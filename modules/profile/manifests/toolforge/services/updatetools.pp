@@ -1,5 +1,6 @@
 class profile::toolforge::services::updatetools(
     $active_node = hiera('profile::toolforge::services::active_node'),
+    $updatetools_enabled = hiera('profile::toolforge::services::updatetools_enabled'),
 ) {
     require_package('python-mysqldb')
 
@@ -18,7 +19,7 @@ class profile::toolforge::services::updatetools(
         override       => false,
         require        => File['/usr/local/bin/updatetools'],
         service_params => {
-            ensure     => ensure_service($::fqdn == $active_node),
+            ensure     => ensure_service($updatetools_enabled and $::fqdn == $active_node),
         },
         subscribe      => [
             File['/usr/local/bin/updatetools'],
