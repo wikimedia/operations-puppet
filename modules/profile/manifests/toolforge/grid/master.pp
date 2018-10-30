@@ -3,6 +3,8 @@
 class profile::toolforge::grid::master (
     $etcdir = hiera('profile::toolforge::etcdir'),
 ){
+    include profile::toolforge::infrastructure
+
     $hostlist = '@general'
 
     sonofgridengine::queue { 'continuous':
