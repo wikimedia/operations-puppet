@@ -19,15 +19,15 @@ define elasticsearch::tlsproxy (
     Wmflib::IpPort $upstream_port,
     Wmflib::IpPort $tls_port,
 ){
-    tlsproxy::localssl { $certificate_name:
+    tlsproxy::localssl { $title:
         certs          => [$certificate_name],
         server_name    => $certificate_name,
         default_server => true,
         upstream_ports => [$upstream_port],
         tls_port       => $tls_port,
-    } -> monitoring::service { "elasticsearch-https-${certificate_name}":
+    } -> monitoring::service { "elasticsearch-https-${title}":
         ensure        => present,
-        description   => "Elasticsearch HTTPS for ${certificate_name}",
+        description   => "Elasticsearch HTTPS for ${title}",
         check_command => "check_ssl_on_port!${certificate_name}!${tls_port}",
     }
 }
