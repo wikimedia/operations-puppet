@@ -1,0 +1,23 @@
+<VirtualHost *:80>
+    ServerName bienvenida.wikimedia.org
+    ServerAdmin noc@wikimedia.org
+    DocumentRoot /srv/org/wikimedia/bienvenida
+
+    ServerSignature On
+
+    LogLevel warn
+    ErrorLog /var/log/apache2/bienvenida.wikimedia.org.error.log
+    CustomLog /var/log/apache2/bienvenida.wikimedia.org.access.log wmf
+
+    <Directory />
+        Options FollowSymLinks
+        AllowOverride None
+    </Directory>
+
+    <Directory /srv/org/wikimedia/bienvenida>
+        Options Indexes FollowSymLinks MultiViews
+        AllowOverride None
+        Require all granted
+    </Directory>
+
+</VirtualHost>
