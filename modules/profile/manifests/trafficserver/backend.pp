@@ -65,7 +65,7 @@ class profile::trafficserver::backend (
 
     nrpe::monitor_service { 'trafficserver_exporter':
         description  => 'Ensure trafficserver_exporter is running',
-        nrpe_command => '/usr/lib/nagios/plugins/check_procs -c 1:1 -a "/usr/bin/python3 /usr/bin/trafficserver_exporter"',
+        nrpe_command => '/usr/lib/nagios/plugins/check_procs -c 1:1 -a "/usr/bin/python3 /usr/bin/prometheus-trafficserver-exporter"',
         require      => Prometheus::Trafficserver_exporter['trafficserver_exporter'],
     }
 

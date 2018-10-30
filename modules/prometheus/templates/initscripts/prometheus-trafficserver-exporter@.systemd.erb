@@ -6,7 +6,7 @@ Documentation=https://prometheus.io/docs/introduction/overview/
 Restart=always
 User=prometheus
 Group=prometheus
-ExecStart=/usr/bin/trafficserver_exporter --no-procstats --endpoint <%= @endpoint %> --port <%= @listen_port %>
+ExecStart=/usr/bin/prometheus-trafficserver-exporter --no-procstats --endpoint <%= @endpoint %> --port <%= @listen_port %>
 
 [Install]
 WantedBy=multi-user.target
