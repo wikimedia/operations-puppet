@@ -4,7 +4,7 @@ PartOf=carbon.service
 
 [Service]
 User=carbon-c-relay
-ExecStart=/usr/bin/carbon-c-relay -H <%= "#{scope.lookupvar('::hostname')}_frontend" -%> -p 2003 -f /etc/carbon/frontend-relay.conf
+ExecStart=/usr/bin/carbon-c-relay -H <%= "#{scope.lookupvar('::hostname')}_frontend" -%> -p 2003 -f /etc/carbon/frontend-relay.conf -q <%= @c_relay_settings['queue_depth'] || 25000 %> -b <%= @c_relay_settings['batch_size'] || 2500 %>
 Restart=on-failure
 LimitNOFILE=65535
 
