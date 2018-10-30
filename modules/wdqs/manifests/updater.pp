@@ -2,20 +2,27 @@
 #
 # Wikidata Query Service updater service.
 #
-# Note: this class references the main wdqs class. It is the responsibility of
-# the caller to make sure that the main wdqs class is instantiated or that the
-# parameter $package_dir and $username are set on the wdqs::updater class.
-#
+# Note: Installs and start the wdqs-updater service.
+# == Parameters:
+# - $options: extra updater options.
+# - $logstash_host: hostname where to send logs.
+# - $package_dir:  Directory where the service should be installed.
+# - $data_dir: Directory where the database should be stored
+# - $log_dir: Directory where the logs go
+# - $logstash_json_port: port on which to send logs in json format
+# - $username: Username owning the service
+# - $deploy_user: deploy user for sudo rules
+# - $extra_jvm_opts: extra JVM options for updater.
 class wdqs::updater(
     String $options,
     String $logstash_host,
+    Stdlib::Unixpath $package_dir,
+    Stdlib::Unixpath $data_dir,
+    Stdlib::Unixpath $log_dir = '/var/log/wdqs',
     Wmflib::IpPort $logstash_json_port = 11514,
-    Stdlib::Unixpath $log_dir = $::wdqs::log_dir,
-    Stdlib::Unixpath $package_dir = $::wdqs::package_dir,
-    String $username = $::wdqs::username,
-    Stdlib::Unixpath $data_dir = $::wdqs::data_dir,
+    String $username = 'blazegraph',
     Array[String] $extra_jvm_opts = [],
-){
+) {
     file { '/etc/default/wdqs-updater':
         ensure  => present,
         content => template('wdqs/updater-default.erb'),
@@ -37,21 +44,8 @@ class wdqs::updater(
         content => template('wdqs/initscripts/wdqs-updater.systemd.erb'),
         notify  => Service['wdqs-updater'],
     }
+
     service { 'wdqs-updater':
         ensure => 'running',
-    }
-
-    sudo::user { 'deploy-service_wdqs-updater':
-        user       => 'deploy-service',
-        privileges => [
-            'ALL=(root) NOPASSWD: /usr/sbin/service wdqs-updater start',
-            'ALL=(root) NOPASSWD: /usr/sbin/service wdqs-updater stop',
-            'ALL=(root) NOPASSWD: /usr/sbin/service wdqs-updater restart',
-            'ALL=(root) NOPASSWD: /usr/sbin/service wdqs-updater reload',
-            'ALL=(root) NOPASSWD: /usr/sbin/service wdqs-updater status',
-            'ALL=(root) NOPASSWD: /usr/sbin/service wdqs-updater try-restart',
-            'ALL=(root) NOPASSWD: /usr/sbin/service wdqs-updater force-reload',
-            'ALL=(root) NOPASSWD: /usr/sbin/service wdqs-updater graceful-stop'
-        ],
     }
 }

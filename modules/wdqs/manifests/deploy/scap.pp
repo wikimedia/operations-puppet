@@ -5,9 +5,10 @@ class wdqs::deploy::scap(
 ) {
     # Deployment
     scap::target { 'wdqs/wdqs':
-        service_name => 'wdqs-blazegraph',
-        deploy_user  => $deploy_user,
-        manage_user  => true,
+        service_name              => 'wdqs-blazegraph',
+        deploy_user               => $deploy_user,
+        additional_services_names => ['wdqs-updater'],
+        manage_user               => true,
     }
 
     $git_deploy_dir = '/srv/deployment/wdqs/wdqs'

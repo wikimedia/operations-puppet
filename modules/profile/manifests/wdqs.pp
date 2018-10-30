@@ -93,6 +93,8 @@ class profile::wdqs (
     class { 'wdqs::updater':
         options        => "${updater_options} -- ${extra_updater_options}",
         logstash_host  => $logstash_host,
+        package_dir    => $package_dir,
+        data_dir       => $data_dir,
         extra_jvm_opts => [
             '-XX:+UseNUMA',
             "-javaagent:${prometheus_agent_path}=${prometheus_updater_agent_port}:${prometheus_updater_agent_config}",

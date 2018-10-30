@@ -8,6 +8,7 @@ fixtures:
         monitoring: "../../../../monitoring"
         ssh: "../../../../ssh"
         sudo: "../../../../sudo"
+        git: "../../../../git"
         icinga: "../../../../icinga"
         systemd: "../../../../systemd"
         service: "../../../../service"

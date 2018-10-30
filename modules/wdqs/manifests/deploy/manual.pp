@@ -73,7 +73,7 @@ class wdqs::deploy::manual(
         require => Exec['wdqs_git_fat_init'],
     }
 
-    sudo::user { 'deploy-service_blazegraph':
+    sudo::user { "${deploy_user}_wdqs-blazegraph":
         user       => $deploy_user,
         privileges => [
             'ALL=(root) NOPASSWD: /usr/sbin/service wdqs-blazegraph start',
@@ -84,6 +84,20 @@ class wdqs::deploy::manual(
             'ALL=(root) NOPASSWD: /usr/sbin/service wdqs-blazegraph try-restart',
             'ALL=(root) NOPASSWD: /usr/sbin/service wdqs-blazegraph force-reload',
             'ALL=(root) NOPASSWD: /usr/sbin/service wdqs-blazegraph graceful-stop'
+        ],
+    }
+
+    sudo::user { "${deploy_user}_wdqs-updater":
+        user       => $deploy_user,
+        privileges => [
+            'ALL=(root) NOPASSWD: /usr/sbin/service wdqs-updater start',
+            'ALL=(root) NOPASSWD: /usr/sbin/service wdqs-updater stop',
+            'ALL=(root) NOPASSWD: /usr/sbin/service wdqs-updater restart',
+            'ALL=(root) NOPASSWD: /usr/sbin/service wdqs-updater reload',
+            'ALL=(root) NOPASSWD: /usr/sbin/service wdqs-updater status',
+            'ALL=(root) NOPASSWD: /usr/sbin/service wdqs-updater try-restart',
+            'ALL=(root) NOPASSWD: /usr/sbin/service wdqs-updater force-reload',
+            'ALL=(root) NOPASSWD: /usr/sbin/service wdqs-updater graceful-stop'
         ],
     }
 
