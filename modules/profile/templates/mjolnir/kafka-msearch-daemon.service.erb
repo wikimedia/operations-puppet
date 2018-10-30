@@ -10,7 +10,7 @@ ExecStart=/srv/deployment/search/mjolnir/venv/bin/mjolnir-utilities.py kafka_mse
     --input-topic <%= @input_topic %> \
     --output-topic <%= @output_topic %> \
     --num-workers <%= @num_workers %> \
-    --max-concurrent-searches <%= @max_concurrent_searches %>
+    --max-concurrent-searches <%= @max_concurrent_searches %> \
     --prometheus-port <%= @prometheus_port %>
 
 StandardInput=null
