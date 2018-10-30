@@ -60,7 +60,7 @@ class profile::cache::ssl::unified(
             'wikiversity.org', '*.wikiversity.org', '*.m.wikiversity.org',
             'wikivoyage.org',  '*.wikivoyage.org',  '*.m.wikivoyage.org',
             'wiktionary.org',  '*.wiktionary.org',  '*.m.wiktionary.org',
-            'wikimediafoundation.org', '*.wikimediafoundation.org', '*.m.wikimediafoundation.org',
+            'wikimediafoundation.org', '*.wikimediafoundation.org',
             'wmfusercontent.org', '*.wmfusercontent.org',
             'w.wiki',
         ]
