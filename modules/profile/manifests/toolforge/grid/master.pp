@@ -27,41 +27,44 @@ class profile::toolforge::grid::master (
         etcdir  => $etcdir,
     }
 
-    gridengine_complex { 'h_vmem':
-        ensure      => present,
-        shortcut    => 'h_vmem',
-        type        => 'MEMORY',
-        relop       => '<=',
-        requestable => 'FORCED',
-        default     => '0',
-        urgency     => '0',
-        consumable  => 'YES',
-        require     => Service['gridengine-master'],
-    }
+    # The following failed attempt at creating resource types before my time
+    # will never work as is.  The provider is a TABLE not a file, per se.
 
-    gridengine_complex { 'release':
-        ensure      => present,
-        shortcut    => 'rel',
-        type        => 'CSTRING',
-        relop       => '==',
-        requestable => 'YES',
-        consumable  => 'NO',
-        default     => 'NONE',
-        urgency     => '0',
-        require     => Service['gridengine-master'],
-    }
+    # gridengine_complex { 'h_vmem':
+    #     ensure      => present,
+    #     shortcut    => 'h_vmem',
+    #     type        => 'MEMORY',
+    #     relop       => '<=',
+    #     requestable => 'FORCED',
+    #     default     => '0',
+    #     urgency     => '0',
+    #     consumable  => 'YES',
+    #     require     => Service['gridengine-master'],
+    # }
 
-    gridengine_complex { 'user_slot':
-        ensure      => present,
-        shortcut    => 'u',
-        type        => 'INT',
-        relop       => '<=',
-        requestable => 'YES',
-        consumable  => 'YES',
-        default     => '0',
-        urgency     => '0',
-        require     => Service['gridengine-master'],
-    }
+    # gridengine_complex { 'release':
+    #     ensure      => present,
+    #     shortcut    => 'rel',
+    #     type        => 'CSTRING',
+    #     relop       => '==',
+    #     requestable => 'YES',
+    #     consumable  => 'NO',
+    #     default     => 'NONE',
+    #     urgency     => '0',
+    #     require     => Service['gridengine-master'],
+    # }
+
+    # gridengine_complex { 'user_slot':
+    #     ensure      => present,
+    #     shortcut    => 'u',
+    #     type        => 'INT',
+    #     relop       => '<=',
+    #     requestable => 'YES',
+    #     consumable  => 'YES',
+    #     default     => '0',
+    #     urgency     => '0',
+    #     require     => Service['gridengine-master'],
+    # }
 
     file { "${profile::toolforge::grid::base::collectors}/hostgroups":
         ensure => directory,
@@ -112,23 +115,26 @@ class profile::toolforge::grid::master (
     #     require => File['/var/lib/gridengine'],
     # }
 
-    $hostlist = '@general'
+    # These are being removed.  Keeping as comments for temporary reference.
+    # $hostlist = '@general'
 
-    gridengine_queue { 'continuous':
-        hostlist  => $hostlist,
-        seq_no    => 1,
-        priority  => 10,
-        qtype     => 'BATCH',
-        ckpt_list => 'continuous',
-        rerun     => 'TRUE',
-    }
+    # gridengine_queue { 'continuous':
+    #     ensure    => present,
+    #     hostlist  => $hostlist,
+    #     seq_no    => 1,
+    #     priority  => 10,
+    #     qtype     => 'BATCH',
+    #     ckpt_list => 'continuous',
+    #     rerun     => 'TRUE',
+    # }
 
-    gridengine_queue { 'task':
-        hostlist  => $hostlist,
-        seq_no    => 0,
-        qtype     => 'BATCH INTERACTIVE',
-        ckpt_list => 'NONE',
-    }
+    # gridengine_queue { 'task':
+    #     ensure    => present,
+    #     hostlist  => $hostlist,
+    #     seq_no    => 0,
+    #     qtype     => 'BATCH INTERACTIVE',
+    #     ckpt_list => 'NONE',
+    # }
 
     file { '/usr/local/bin/dequeugridnodes.sh':
         ensure => file,
