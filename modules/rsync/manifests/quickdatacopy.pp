@@ -33,17 +33,13 @@ define rsync::quickdatacopy(
 
           include rsync::server
 
-          ferm::service { $title:
-              ensure => $ensure,
-              proto  => 'tcp',
-              port   => 873,
-              srange => "(@resolve((${dest_host})) @resolve((${dest_host}), AAAA))",
-          }
-
           rsync::server::module { $title:
-              ensure    => $ensure,
-              read_only => 'yes',
-              path      => $module_path,
+              ensure         => $ensure,
+              read_only      => 'yes',
+              path           => $module_path,
+              hosts_allow    => [$dest_host],
+              auto_ferm      => true,
+              auto_ferm_ipv6 => true,
           }
       }
 
