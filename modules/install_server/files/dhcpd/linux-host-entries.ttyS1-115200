@@ -5876,6 +5876,26 @@ host pc2006 {
     filename "lpxelinux.0";
 }
 
+host pc2007 {
+    hardware ethernet D0:94:66:86:2E:4D;
+    fixed-address pc2007.codfw.wmnet;
+}
+
+host pc2008 {
+    hardware ethernet D0:94:66:87:25:32;
+    fixed-address pc2008.codfw.wmnet;
+}
+
+host pc2009 {
+    hardware ethernet D0:94:66:87:9A:8B;
+    fixed-address pc2009.codfw.wmnet;
+}
+
+host pc2010 {
+    hardware ethernet D0:94:66:86:4D:6C;
+    fixed-address pc2010.codfw.wmnet;
+}
+
 host phab1001 {
     hardware ethernet 14:18:77:5B:23:4C;
     fixed-address phab1001.eqiad.wmnet;
