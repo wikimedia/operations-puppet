@@ -9,10 +9,10 @@ class profile::microsites::bienvenida {
     ensure_resource('file', '/srv/org/wikimedia', {'ensure' => 'directory' })
     ensure_resource('file', '/srv/org/wikimedia/bienvenida', {'ensure' => 'directory' })
 
-    #git::clone { 'wikimedia/campaigns/eswiki-2018':
-    #    ensure    => 'latest',
-    #    source    => 'gerrit',
-    #    directory => '/srv/org/wikimedia/bienvenida',
-    #    branch    => 'master',
-    #}
+    git::clone { 'wikimedia/campaigns/eswiki-2018':
+        ensure    => 'latest',
+        source    => 'gerrit',
+        directory => '/srv/org/wikimedia/bienvenida',
+        branch    => 'master',
+    }
 }
