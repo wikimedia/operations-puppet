@@ -49,7 +49,7 @@ class profile::cache::ssl::unified(
         # want to move these variables to hiera
         $check_cn = 'en.wikipedia.org'
         $check_sans = [
-            'wikipedia.org',   '*.wikipedia.org',   '*.m.wikipedia.org', '*.zero.wikipedia.org',
+            'wikipedia.org',   '*.wikipedia.org',   '*.m.wikipedia.org',
             'wikimedia.org',   '*.wikimedia.org',   '*.m.wikimedia.org', '*.planet.wikimedia.org',
             'mediawiki.org',   '*.mediawiki.org',   '*.m.mediawiki.org',
             'wikibooks.org',   '*.wikibooks.org',   '*.m.wikibooks.org',
