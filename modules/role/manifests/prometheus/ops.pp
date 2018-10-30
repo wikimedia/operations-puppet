@@ -1008,7 +1008,7 @@ class role::prometheus::ops {
     $mjolnir_jobs = [
         {
             'job_name'        => 'mjolnir',
-            'schema'          => 'http',
+            'scheme'          => 'http',
             'file_sd_configs' => [
                 { 'files'     => [ "${targets_path}/mjolnir_*.yaml" ]}
             ],
