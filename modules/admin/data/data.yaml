@@ -72,7 +72,8 @@ groups:
               mobrovac, nuria, thcipriani, joal, eevans, mforns, dcausse,
               bsitzmann, mholloway-shell, dduvall, dereckson,
               ladsgroup, bawolff, zfilipin, addshore, niharika29, ppchelko, pmiazga,
-              musikanimal, jdrewniak, sbisson, imarlier, jforrester, mbsantos, aaron, liw]
+              musikanimal, jdrewniak, sbisson, imarlier, jforrester, mbsantos,
+              aaron, liw, sbassett]
     privileges: ['ALL = (www-data,apache,mwdeploy,l10nupdate) NOPASSWD: ALL',
                  'ALL = NOPASSWD: /sbin/restart hhvm',
                  'ALL = NOPASSWD: /sbin/start hhvm',
@@ -270,7 +271,7 @@ groups:
               piccardi, fdans, eevans, anomie, demon, ladsgroup, musikanimal,
               kaldari, goransm, ema, dsaez, shiladsen, rho, mirrys, slaporte, jk,
               ayounsi, mepps, mmiller, seddon, gilles, tstarling, pirroh, rush, tieu, karen,
-              cicalese, drossi, fsalutari, nathante, gbirke, isaacj]
+              cicalese, drossi, fsalutari, nathante, gbirke, isaacj, sbassett]
     system_members: [analytics-search]
   analytics-admins:
     gid: 732
