@@ -3034,6 +3034,15 @@ users:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAICZipDQ0KYnTOf0E3//nyKTUFjCso0ribmE7NxrqRIlk sbassett@wikimedia.org
     uid: 20088
     email: sbassett@wikimedia.org
+  jdl:
+    ensure: present
+    realname: Jason David Linehan
+    name: jdl
+    gid: 500
+    ssh_keys:
+      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIMZcJ3VhuvTvkRNYmNB6RW4GInY8RQOdjjXSEz9UDS27
+    uid: 20295
+    email: jlinehan@wikimedia.org
 ldap_only_users:
   abartov:
     ensure: present
