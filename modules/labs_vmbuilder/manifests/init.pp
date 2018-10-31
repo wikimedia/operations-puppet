@@ -78,7 +78,6 @@ class labs_vmbuilder($vmbuilder_version) {
         require => Package['python-vm-builder'],
     }
 
-    # FIXME - top-scope var without namespace, will break in puppet 2.8
     $projectregex = "s/${::labsproject}/_PROJECT_/g"
     $fqdnregex    = "s/${::fqdn}/_FQDN_/g"
 
