@@ -21,6 +21,8 @@ class profile::wdqs (
     Boolean $fetch_constraints = hiera('profile::wdqs::fetch_constraints'),
     Enum['none', 'daily', 'weekly'] $load_categories = hiera('profile::wdqs::load_categories'),
     Array[String] $blazegraph_extra_jvm_opts = hiera('profile::wdqs::blazegraph_extra_jvm_opts'),
+    Integer[0] $lag_warning  = hiera('profile::wdqs::lag_warning', 1200),
+    Integer[0] $lag_critical = hiera('profile::wdqs::lag_critical', 3600),
 ) {
     require ::profile::prometheus::blazegraph_exporter
 
@@ -135,6 +137,8 @@ class profile::wdqs (
     # Monitoring
     class { '::wdqs::monitor::services':
         contact_groups => $contact_groups,
+        lag_warning    => $lag_warning,
+        lag_critical   => $lag_critical,
     }
 
     # spread IRQ for NIC

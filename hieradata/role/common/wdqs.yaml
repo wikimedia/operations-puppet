@@ -15,6 +15,8 @@ profile::wdqs::high_query_time_port: true
 profile::wdqs::fetch_constraints: true
 profile::wdqs::load_categories: 'daily'
 profile::wdqs::blazegraph_extra_jvm_opts: []
+profile::wdqs::lag_warning: 21600 # 6 hours
+profile::wdqs::lag_critical: 43200 # 12 hours
 profile::wdqs::nodes:
   - 'wdqs1004.eqiad.wmnet'
   - 'wdqs1005.eqiad.wmnet'
