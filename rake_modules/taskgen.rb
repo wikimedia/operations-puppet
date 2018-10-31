@@ -224,7 +224,7 @@ class TaskGen < ::Rake::TaskLib
     end
     # Set up filelists
     PuppetSyntax.manifests_paths = puppet_changed_files
-    PuppetSyntax.templates_paths = filter_files_by("**/templates/**/*.erb", "**/templates/**/*.epp")
+    PuppetSyntax.templates_paths = filter_files_by("**/templates/**.erb", "**/templates/**.epp")
     PuppetSyntax.hieradata_paths = filter_files_by("hieradata/**.yaml", "conftool-data/**.yaml")
     tasks = []
     unless PuppetSyntax.manifests_paths.empty?
