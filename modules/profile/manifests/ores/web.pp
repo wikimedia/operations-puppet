@@ -6,7 +6,7 @@ class profile::ores::web(
     $celery_queue_maxsize = hiera('profile::ores::celery::queue_maxsize'),
     $poolcounter_nodes = hiera('profile::ores::web::poolcounter_nodes'),
     $logstash_host = hiera('logstash_host'),
-    $logstash_port = hiera('logstash_gelf_port', 12201),
+    $logstash_port = hiera('logstash_json_lines_port', 11514),
 ){
     class { '::ores::web':
         redis_password       => $redis_password,
