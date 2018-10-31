@@ -506,6 +506,7 @@ profile::certcentral::challenges: {}
 # - no tls
 # - lvs
 profile::mediawiki::webserver::has_tls: false
+profile::mediawiki::php::php_version: "7.2"
 profile::mediawiki::vhost_feature_flags:
   set_handler: true
   serve_php7: true

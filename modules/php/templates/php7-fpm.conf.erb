@@ -1,0 +1,4 @@
+[global]
+<% @full_global_config.each do |k, v| %><%= k %> = <%= v %>
+<% end %>
+include = <%= scope.lookupvar('php::config_dir') %>/fpm/pool.d/*.conf

@@ -18,6 +18,7 @@
 class profile::mediawiki::php(
     Boolean $enable_fpm = hiera('profile::mediawiki::php::enable_fpm'),
     Optional[Hash] $fpm_config = hiera('profile::mediawiki::php::fpm_config', undef),
+    Enum['7.0', '7.2'] $php_version = hiera('profile::mediawiki::php::php_version', '7.0')
 ) {
     if os_version('debian == stretch') {
         # We get our packages for our repositories again
@@ -25,15 +26,23 @@ class profile::mediawiki::php(
             ensure => absent,
             notify => Exec['apt_update_php'],
         }
+        # Use php7.2 from Ondrej Sury's repository.
+        if $php_version == '7.2' {
+            apt::repository { 'wikimedia-php72':
+                uri        => 'http://apt.wikimedia.org/wikimedia',
+                dist       => "${::lsbdistcodename}-wikimedia",
+                components => 'thirdparty/php72',
+                notify     => Exec['apt_update_php'],
+                before     => Package["php${php_version}-common", "php${php_version}-opcache"]
+            }
+        }
+
         # First installs can trip without this
         exec {'apt_update_php':
             command     => '/usr/bin/apt-get update',
             refreshonly => true,
         }
     }
-
-    # We're on 7.0 until we can give 7.2 a ride.
-    $php_version = '7.0'
 
     $config_cli = {
         'include_path' => '".:/usr/share/php:/srv/mediawiki/php"',
