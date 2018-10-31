@@ -6,10 +6,10 @@ HDFS_ARCHIVE_DIR=${3:-"/wmf/data/archive/geoip"}
 
 CURRENT_DATE=$(date +'%Y-%m-%d')
 
-echo "Hardlink copying $MAXMIND_DB_SOURCE_DIR to $MAXMIND_DB_ARCHIVE_DIR/$CURRENT_DATE"
+echo "Copying $MAXMIND_DB_SOURCE_DIR to $MAXMIND_DB_ARCHIVE_DIR/$CURRENT_DATE"
 
 mkdir "$MAXMIND_DB_ARCHIVE_DIR/$CURRENT_DATE"
-find "$MAXMIND_DB_SOURCE_DIR" -maxdepth 1 -type f -exec cp -l {} "$MAXMIND_DB_ARCHIVE_DIR/$CURRENT_DATE/" \;
+find "$MAXMIND_DB_SOURCE_DIR" -maxdepth 1 -type f -exec cp {} "$MAXMIND_DB_ARCHIVE_DIR/$CURRENT_DATE/" \;
 
 echo "Copying $MAXMIND_DB_ARCHIVE_DIR/$CURRENT_DATE into HDFS at $HDFS_ARCHIVE_DIR"
 
