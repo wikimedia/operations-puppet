@@ -77,6 +77,9 @@ class profile::statistics::private(
             archive_dir => '/srv/geoip/archive',
             require     => File['/srv/geoip'],
         }
+
+        # Discovery team statistics scripts and cron jobs
+        class { '::statistics::discovery': }
     }
 
     if $::hostname == 'stat1005' {
@@ -87,9 +90,6 @@ class profile::statistics::private(
             graphite_host => $graphite_host,
             wmde_secrets  => $wmde_secrets,
         }
-
-        # Discovery team statistics scripts and cron jobs
-        class { '::statistics::discovery': }
 
     }
 }
