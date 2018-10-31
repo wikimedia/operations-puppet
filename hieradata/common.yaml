@@ -677,3 +677,22 @@ mail_smarthost:
 wikimail_smarthost:
 - 'wiki-mail-eqiad.wikimedia.org'
 - 'wiki-mail-codfw.wikimedia.org'
+
+# These are our servers - they all peer to each other and sync to upstream NTP
+# pool servers.
+ntp_peers:
+    eqiad:
+    - 'dns1001.wikimedia.org'
+    - 'dns1002.wikimedia.org'
+    codfw:
+    - 'dns2001.wikimedia.org'
+    - 'dns2002.wikimedia.org'
+    esams:
+    - 'nescio.wikimedia.org'    # esams recdns
+    - 'maerlant.wikimedia.org'  # esams recdns
+    ulsfo:
+    - 'dns4001.wikimedia.org'
+    - 'dns4002.wikimedia.org'
+    eqsin:
+    - 'dns5001.wikimedia.org'
+    - 'dns5002.wikimedia.org'

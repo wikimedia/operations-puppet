@@ -4,31 +4,6 @@
 class standard::ntp {
     include network::constants
 
-    # These are our servers - they all peer to each other
-    #   and sync to upstream NTP pool servers.
-    $wmf_peers = {
-        eqiad => [
-            'dns1001.wikimedia.org',
-            'dns1002.wikimedia.org',
-        ],
-        codfw => [
-            'dns2001.wikimedia.org',
-            'dns2002.wikimedia.org',
-        ],
-        esams => [
-            'nescio.wikimedia.org',       # esams recdns
-            'maerlant.wikimedia.org',     # esams recdns
-        ],
-        ulsfo => [
-            'dns4001.wikimedia.org',
-            'dns4002.wikimedia.org',
-        ],
-        eqsin => [
-            'dns5001.wikimedia.org',
-            'dns5002.wikimedia.org',
-        ],
-    }
-
     # ntp monitoring queries
     # TODO: Make this realm independent
     $monitoring_acl = $network::constants::special_hosts['production']['monitoring_hosts']

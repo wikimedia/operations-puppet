@@ -13,7 +13,7 @@ class standard(
         include ::profile::debmonitor::client  # lint:ignore:wmf_styleguide
     }
 
-    unless $::fqdn in $::standard::ntp::wmf_peers[$::site] {
+    unless $::fqdn in $::ntp_peers[$::site] {
         if (os_version('debian >= jessie')) {
             include ::standard::ntp::timesyncd
         } else {

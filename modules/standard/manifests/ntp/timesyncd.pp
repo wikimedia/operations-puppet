@@ -9,14 +9,13 @@ class standard::ntp::timesyncd () {
         ensure => purged,
     }
 
-    $wmf_peers = $::standard::ntp::wmf_peers
     # This maps the servers that regular clients use
     $ntp_servers = {
-        eqiad => concat($wmf_peers['eqiad'], $wmf_peers['codfw']),
-        codfw => concat($wmf_peers['eqiad'], $wmf_peers['codfw']),
-        esams => concat($wmf_peers['esams'], $wmf_peers['eqiad']),
-        ulsfo => concat($wmf_peers['ulsfo'], $wmf_peers['codfw']),
-        eqsin => concat($wmf_peers['eqsin'], $wmf_peers['codfw']),
+        eqiad => concat($::ntp_peers['eqiad'], $::ntp_peers['codfw']),
+        codfw => concat($::ntp_peers['eqiad'], $::ntp_peers['codfw']),
+        esams => concat($::ntp_peers['esams'], $::ntp_peers['eqiad']),
+        ulsfo => concat($::ntp_peers['ulsfo'], $::ntp_peers['codfw']),
+        eqsin => concat($::ntp_peers['eqsin'], $::ntp_peers['codfw']),
     }
 
     file { '/etc/systemd/timesyncd.conf':

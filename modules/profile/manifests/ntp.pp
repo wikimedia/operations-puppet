@@ -2,27 +2,25 @@
 #
 # Ntp server profile
 class profile::ntp {
-    $wmf_peers = $::standard::ntp::wmf_peers
-
     # A list of all global peers, used in the core sites' case below
     $wmf_all_peers = array_concat(
-        $wmf_peers['eqiad'],
-        $wmf_peers['codfw'],
-        $wmf_peers['esams'],
-        $wmf_peers['ulsfo'],
-        $wmf_peers['eqsin']
+        $::ntp_peers['eqiad'],
+        $::ntp_peers['codfw'],
+        $::ntp_peers['esams'],
+        $::ntp_peers['ulsfo'],
+        $::ntp_peers['eqsin']
     )
 
-    # wmf_peers is a list of peer servers that exist within each site,
+    # ntp_peers is a list of peer servers that exist within each site,
     # while wmf_server_peers here is a list of servers a given server should
     # peer with globally, which is in the most-general terms:
     # 1) All peers at both core sites
     # 2) For core sites: All peers at all non-core sites
     # 3) Exclude self from final list
     $wmf_server_peers_plus_self = $::site ? {
-        esams   => array_concat($wmf_peers['eqiad'], $wmf_peers['codfw'], $wmf_peers['esams']),
-        ulsfo   => array_concat($wmf_peers['eqiad'], $wmf_peers['codfw'], $wmf_peers['ulsfo']),
-        eqsin   => array_concat($wmf_peers['eqiad'], $wmf_peers['codfw'], $wmf_peers['eqsin']),
+        esams   => array_concat($::ntp_peers['eqiad'], $::ntp_peers['codfw'], $::ntp_peers['esams']),
+        ulsfo   => array_concat($::ntp_peers['eqiad'], $::ntp_peers['codfw'], $::ntp_peers['ulsfo']),
+        eqsin   => array_concat($::ntp_peers['eqiad'], $::ntp_peers['codfw'], $::ntp_peers['eqsin']),
         default => $wmf_all_peers, # core sites
     }
     $wmf_server_peers = delete($wmf_server_peers_plus_self, $::fqdn)
@@ -54,7 +52,7 @@ class profile::ntp {
     # maxclock 14 is to better support our large-ish "peer" lists at cores
     #        (if we set it this high non-core, it results in way too many pool peers)
     #        (as we add more edge DCs, we'll need to bump this value by 2 each time)
-    #        (could abstract this as $count_wmf_peers + 4)
+    #        (could abstract this as $count_ntp_peers + 4)
     # orphan <stratum> - if no internet servers are reachable, our servers will
     #     operate as an orphaned peer island and maintain some kind of stable
     #     sync with each other.  Without this, if all of our global servers
