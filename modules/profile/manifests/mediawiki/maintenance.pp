@@ -67,6 +67,9 @@ class profile::mediawiki::maintenance {
     # to your PYTHONPATH or sys.path.
     include ::eventlogging
 
+    # Include geoip databases and CLI.
+    class { '::geoip': }
+
     rsync::quickdatacopy { 'home-mwmaint':
         ensure      => present,
         auto_sync   => false,
