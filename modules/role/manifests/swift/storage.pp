@@ -17,7 +17,9 @@ class role::swift::storage {
     include ::swift::storage::monitoring
 
     include role::statsite
-    include ::profile::prometheus::statsd_exporter
+    class { '::profile::prometheus::statsd_exporter':
+        relay_address => 'localhost:8125',
+    }
 
     $all_drives = hiera('swift_storage_drives')
 

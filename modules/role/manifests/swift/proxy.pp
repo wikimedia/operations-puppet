@@ -51,7 +51,9 @@ class role::swift::proxy (
     include ::profile::prometheus::memcached_exporter
 
     include role::statsite
-    include ::profile::prometheus::statsd_exporter
+    class { '::profile::prometheus::statsd_exporter':
+        relay_address => 'localhost:8125',
+    }
 
     ferm::service { 'swift-proxy':
         proto   => 'tcp',
