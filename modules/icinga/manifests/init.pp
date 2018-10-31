@@ -114,6 +114,11 @@ class icinga(
             notify  => Service['icinga'],
         }
 
+        logrotate::conf { 'icinga':
+            ensure => present,
+            source => 'puppet:///modules/icinga/logrotate.conf',
+        }
+
     } else {
         file { [ '/etc/nagios/nagios_host.cfg', '/etc/nagios/nagios_service.cfg' ]:
           ensure => 'file',
@@ -214,11 +219,6 @@ class icinga(
         notify  => Service['icinga'],
     }
 
-    # FIXME: This should be in the package?
-    logrotate::conf { 'icinga':
-        ensure => present,
-        source => 'puppet:///modules/icinga/logrotate.conf',
-    }
 
     # Setup all plugins!
     class { '::icinga::plugins':
