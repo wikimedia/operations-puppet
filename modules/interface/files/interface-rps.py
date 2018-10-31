@@ -198,11 +198,9 @@ def get_rx_irqs(rss_pattern, rx_queues, q_offset):
     return irqs
 
 
-def set_cpus(device, cpus, rxq, rx_irq, txqs):
-    """Assign a device's matching set of [rt]x queues and IRQ to a CPU set"""
-    bitmask = 0
-    for cpu in cpus:
-        bitmask += 2 ** cpu
+def set_cpu(device, cpu, rxq, rx_irq, txqs):
+    """Assign a device's matching set of [rt]x queues and IRQ to a CPU"""
+    bitmask = 2 ** cpu
     txt_bitmask = format(bitmask, 'x')
 
     if rx_irq:
@@ -222,7 +220,7 @@ def dist_queues_to_cpus(device, cpu_list, rx_queues, rx_irqs, tx_qmap):
     """This does exactly 1 core for every queue, even if result is uneven"""
     ncpus = len(cpu_list)
     for i, rxq in enumerate(rx_queues):
-        set_cpus(device, cpu_list[i % ncpus], rxq, rx_irqs[rxq], tx_qmap[rxq])
+        set_cpu(device, cpu_list[i % ncpus], rxq, rx_irqs[rxq], tx_qmap[rxq])
 
 
 def setup_qdisc(device, num_queues, qdisc):
