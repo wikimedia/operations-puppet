@@ -21,10 +21,7 @@ define monitoring::host (
     # Determine the hostgroup:
     # If defined in the declaration of resource, we use it;
     # If not, adopt the standard format
-    # FIXME - top-scope var without namespace, will break in puppet 2.8
-    # lint:ignore:variable_scope
-    $cluster_name = hiera('cluster', $cluster)
-    # lint:endignore
+    $cluster_name = hiera('cluster', $::cluster)
     $hostgroup = $group ? {
         /.+/    => $group,
         default => hiera('nagios_group',"${cluster_name}_${::site}")
