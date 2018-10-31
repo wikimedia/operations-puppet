@@ -51,6 +51,7 @@ class role::swift::proxy (
     include ::profile::prometheus::memcached_exporter
 
     include role::statsite
+    include ::profile::prometheus::statsd_exporter
 
     ferm::service { 'swift-proxy':
         proto   => 'tcp',

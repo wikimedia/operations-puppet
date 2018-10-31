@@ -17,6 +17,7 @@ class role::swift::storage {
     include ::swift::storage::monitoring
 
     include role::statsite
+    include ::profile::prometheus::statsd_exporter
 
     $all_drives = hiera('swift_storage_drives')
 
