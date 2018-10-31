@@ -132,7 +132,7 @@ define tlsproxy::localssl(
     }
 
     if $do_ocsp and !empty($certs) {
-        include tlsproxy::ocsp
+        require tlsproxy::ocsp
         $certs.each |String $cert| {
             if !defined(Sslcert::Ocsp::Conf[$cert]) {
                 sslcert::ocsp::conf { $cert:

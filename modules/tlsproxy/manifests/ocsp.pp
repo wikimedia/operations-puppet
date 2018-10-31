@@ -32,4 +32,22 @@ class tlsproxy::ocsp {
         nrpe_command => "/usr/lib/nagios/plugins/check-fresh-files-in-dir.py ${check_args}",
         require      => File['/usr/lib/nagios/plugins/check-fresh-files-in-dir.py'],
     }
+
+    # systemd unit fragment for running ocsp updater from ExecStartPre
+    $sysd_ocsp_conf = '/etc/systemd/system/nginx.service.d/ocsp.conf'
+
+    file { $sysd_ocsp_conf:
+        ensure => present,
+        mode   => '0444',
+        owner  => 'root',
+        group  => 'root',
+        source => 'puppet:///modules/tlsproxy/nginx-ocsp.conf',
+        before => Class['nginx'],
+    }
+
+    exec { 'systemd reload for nginx systemd ocsp fragment':
+        refreshonly => true,
+        command     => '/bin/systemctl daemon-reload',
+        subscribe   => File[$sysd_ocsp_conf],
+    }
 }
