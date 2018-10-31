@@ -1,7 +1,5 @@
 # the update scripts fetching data (input) for wikistats
 # and writing it to local mariadb
-#FIXME - this was used in labs in the past but is gone unfortunately
-#require misc::mariadb::server
 class wikistats::updates (
     $db_pass,
 ) {

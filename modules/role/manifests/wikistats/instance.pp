@@ -18,5 +18,13 @@ class role::wikistats::instance {
         modules => [$php_module, 'rewrite'],
     }
 
+    class { '::mariadb::packages': }
+
+    class { '::mariadb::config':
+        basedir => '/usr',
+        datadir => '/srv/sqldata',
+    }
+
     include ::profile::wikistats
+
 }
