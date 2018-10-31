@@ -3013,6 +3013,8 @@ host labstore1007 {
 host cloudstore1008 {
     hardware ethernet d0:94:66:26:d5:6e;
     fixed-address cloudstore1008.wikimedia.org;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch414-installer/";
+    filename "lpxelinux.0";
 }
 
 host cloudstore1009 {
