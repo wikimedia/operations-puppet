@@ -2,3 +2,7 @@
 # (swift proxy-server will do the checking)
 tlsproxy::nginx_client_max_body_size: 0
 tlsproxy::localssl::proxy_request_buffering: 'off'
+profile::prometheus::statsd_exporter::mappings:
+  - match: .*
+    name: test
+
