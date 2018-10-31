@@ -27,13 +27,14 @@ class role::alerting_host {
             mpm => 'prefork'
         }
 
-        $php_module = 'php7.0'
+        $httpd_modules = ['headers', 'rewrite', 'authnz_ldap', 'cgi', 'ssl']
 
     } else {
-        $php_module = 'php5'
+
+        $httpd_modules = ['headers', 'rewrite', 'authnz_ldap', 'cgi', 'ssl', 'php5']
     }
 
     class { '::httpd':
-        modules => ['headers', 'rewrite', 'authnz_ldap', 'cgi', 'ssl', $php_module],
+        modules => $httpd_modules,
     }
 }

@@ -22,16 +22,10 @@ class icinga::web (
       port  => 80,
     }
 
-    if os_version('debian >= stretch') {
-        $php_version = '7.0'
-    } else {
-        $php_version = '5'
+    # PHP was once required for PNP4Nagios but we don't use it anymore
+    if os_version('debian == jessie') {
+        require_package(libapache2-mod-php5, php5-gd)
     }
-
-    $php_gd_module = "php${php_version}-gd"
-    $apache_php_package = "libapache2-mod-php${php_version}"
-
-    require_package($apache_php_package, $php_gd_module)
 
     include ::passwords::ldap::wmf_cluster
     $proxypass = $passwords::ldap::wmf_cluster::proxypass
