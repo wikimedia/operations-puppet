@@ -18,16 +18,16 @@ class profile::maps::alerts {
       description     => 'Maps - OSM synchronization lag - eqiad',
       dashboard_links => ['https://grafana.wikimedia.org/dashboard/db/maps-performances?panelId=11&fullscreen&orgId=1'],
       query           => 'scalar(max(time()-osm_sync_timestamp{cluster="maps", instance="maps1001:9100"}))',
-      warning         => 25 * 3600, # 25 hours
-      critical        => 48 * 3600, # 48 hours
+      warning         => 49 * 3600, # 49 hours
+      critical        => 3 * 24 * 3600, # 3 days
       prometheus_url  => 'http://prometheus.svc.eqiad.wmnet/ops',
     }
     monitoring::check_prometheus { 'maps-osm-sync-lag-codf':
         description     => 'Maps - OSM synchronization lag - codfw',
         dashboard_links => ['https://grafana.wikimedia.org/dashboard/db/maps-performances?panelId=12&fullscreen&orgId=1'],
         query           => 'scalar(max(time()-osm_sync_timestamp{cluster="maps"}))',
-        warning         => 25 * 3600, # 25 hours
-        critical        => 48 * 3600, # 48 hours
+        warning         => 49 * 3600, # 49 hours
+        critical        => 3 * 24 * 3600, # 3 days
         prometheus_url  => 'http://prometheus.svc.codfw.wmnet/ops',
     }
 }
