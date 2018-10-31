@@ -14,6 +14,13 @@ class role::statistics::private {
         include ::profile::reportupdater::jobs::hadoop
     }
 
+    if $::hostname == 'stat1005' {
+        motd::script { 'deprecation-warning':
+            ensure => present,
+            source => 'puppet:///modules/role/statistics/private/deprecation_motd.sh',
+        }
+    }
+
     # Include Hadoop and other analytics cluster
     # clients so that analysts can access Hadoop
     # from here.
