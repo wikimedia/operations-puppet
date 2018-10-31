@@ -26,6 +26,7 @@
 # - $set: Hash of metric_name => set values. Default undef.
 # - $timing: Hash of metric_name => timing values. Default undef.
 # - $sample_rate: The sample rate for the metric. Default 1.
+# - $priority: Configuration loading priority. Default '10'.
 # - $plugin_id: Name associated with Logstash metrics
 #
 # == Sample usage:
@@ -51,15 +52,13 @@ define logstash::output::statsd(
     $set             = undef,
     $timing          = undef,
     $sample_rate     = 1,
+    Integer $priority = 10,
     $plugin_id       = "output/statsd/${title}",
 ) {
     logstash::conf { "output-statsd-${title}":
         ensure   => $ensure,
         content  => template('logstash/output/statsd.erb'),
-        # FIXME - top-scope var without namespace, will break in puppet 2.8
-        # lint:ignore:variable_scope
         priority => $priority,
-        # lint:endignore
     }
 }
 # vim:sw=4 ts=4 sts=4 et:
