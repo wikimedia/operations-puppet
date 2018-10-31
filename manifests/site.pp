@@ -1849,36 +1849,34 @@ node 'oxygen.eqiad.wmnet'
 
 # parser cache databases
 # eqiad
+# pc1
 node 'pc1004.eqiad.wmnet' {
-    class { '::role::mariadb::parsercache':
-        shard  => 'pc1',
-    }
+    role(mariadb::parsercache)
 }
+# pc2
 node 'pc1005.eqiad.wmnet' {
-    class { '::role::mariadb::parsercache':
-        shard  => 'pc2',
-    }
+    role(mariadb::parsercache)
 }
+# pc3
 node 'pc1006.eqiad.wmnet' {
-    class { '::role::mariadb::parsercache':
-        shard  => 'pc3',
-    }
+    role(mariadb::parsercache)
 }
 # codfw
+# pc1
 node 'pc2004.codfw.wmnet' {
-    class { '::role::mariadb::parsercache':
-        shard  => 'pc1',
-    }
+    role(mariadb::parsercache)
 }
+# pc1
+node 'pc2007.codfw.wmnet' {
+    role(mariadb::parsercache)
+}
+# pc2
 node 'pc2005.codfw.wmnet' {
-    class { '::role::mariadb::parsercache':
-        shard  => 'pc2',
-    }
+    role(mariadb::parsercache)
 }
+# pc3
 node 'pc2006.codfw.wmnet' {
-    class { '::role::mariadb::parsercache':
-        shard  => 'pc3',
-    }
+    role(mariadb::parsercache)
 }
 # virtual machines for https://wikitech.wikimedia.org/wiki/Ping_offload
 node /^ping[12]001\.(eqiad|codfw)\.wmnet$/ {
@@ -1947,7 +1945,6 @@ node /^rdb100[248]\.eqiad\.wmnet/ {
 }
 
 # New rdb servers T206450
-
 node /^rdb100[59]\.eqiad\.wmnet$/ {
     role(redis::misc::master)
 }
