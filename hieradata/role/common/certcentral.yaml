@@ -4,6 +4,12 @@ profile::certcentral::certificates:
         SNI:
         - 'pinkunicorn.wikimedia.org'
         challenge: dns-01
+    pinkunicorn-wildcard:
+        CN: 'pinkunicorn.wikimedia.org'
+        SNI:
+          - 'pinkunicorn.wikimedia.org'
+          - '*.pinkunicorn.wikimedia.org'
+        challenge: dns-01
 profile::certcentral::challenges:
   dns-01:
     zone_update_cmd: /usr/local/bin/certcentral-gdnsd-sync.py
