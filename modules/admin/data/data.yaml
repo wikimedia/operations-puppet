@@ -3024,6 +3024,15 @@ users:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAID2zn+4xWIOSECwT5R0nzYSalHPylPHsaxkBUkToyWU8 liw@exolobe4
     uid: 20220
     email: lwirzenius@wikimedia.org
+  sbassett:
+    ensure: present
+    realname: Scott Bassett
+    name: sbassett
+    gid: 500
+    ssh_keys:
+      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAICZipDQ0KYnTOf0E3//nyKTUFjCso0ribmE7NxrqRIlk sbassett@wikimedia.org
+    uid: 20088
+    email: sbassett@wikimedia.org
 ldap_only_users:
   abartov:
     ensure: present
@@ -3156,10 +3165,6 @@ ldap_only_users:
     ensure: present
     realname: Shannon Bailey
     email: sbailey@wikimedia.org
-  sbassett:
-    ensure: present
-    realname: Scott Bassett
-    email: sbassett@wikimedia.org
   scfc:
     ensure: present
     realname: Tim Landscheidt
