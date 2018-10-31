@@ -73,7 +73,7 @@ groups:
               bsitzmann, mholloway-shell, dduvall, dereckson,
               ladsgroup, bawolff, zfilipin, addshore, niharika29, ppchelko, pmiazga,
               musikanimal, jdrewniak, sbisson, imarlier, jforrester, mbsantos,
-              aaron, liw, sbassett]
+              aaron, liw, sbassett, jdl]
     privileges: ['ALL = (www-data,apache,mwdeploy,l10nupdate) NOPASSWD: ALL',
                  'ALL = NOPASSWD: /sbin/restart hhvm',
                  'ALL = NOPASSWD: /sbin/start hhvm',
@@ -143,7 +143,7 @@ groups:
               jdittrich, chelsyx, ovasileva, mtizzoni, panisson, paolotti, ciro, debt,
               fdans, mlitn, niharika29, goransm, pmiazga, dsaez, shiladsen, cicalese,
               mirrys, sharvaniharan, mmiller, amire80, rush, tieu, kharlan, gbirke,
-              isaacj]
+              isaacj, jdl]
   ldap-admins:
     gid: 715
     description: ldap admins
@@ -217,7 +217,7 @@ groups:
               leila, nettrom, mforns, bmansurov, tbayer, joal, imarlier,
               tjones, legoktm, dcausse, bearloga, atgomez, dstrine,
               marktraceur, mtizzoni, panisson, paolotti, ciro, melodykramer,
-              fdans, shiladsen, esanders, risler, nathante, chelsyx]
+              fdans, shiladsen, esanders, risler, nathante, chelsyx, jdl]
   statistics-users:
     gid: 726
     description: Access statistics number crunching hosts. NO PRIVS.
@@ -271,7 +271,7 @@ groups:
               piccardi, fdans, eevans, anomie, demon, ladsgroup, musikanimal,
               kaldari, goransm, ema, dsaez, shiladsen, rho, mirrys, slaporte, jk,
               ayounsi, mepps, mmiller, seddon, gilles, tstarling, pirroh, rush, tieu, karen,
-              cicalese, drossi, fsalutari, nathante, gbirke, isaacj, sbassett]
+              cicalese, drossi, fsalutari, nathante, gbirke, isaacj, sbassett, jdl]
     system_members: [analytics-search]
   analytics-admins:
     gid: 732
