@@ -3,6 +3,118 @@
 tlsproxy::nginx_client_max_body_size: 0
 tlsproxy::localssl::proxy_request_buffering: 'off'
 profile::prometheus::statsd_exporter::mappings:
-  - match: test.*
-    name: test
 
+  # Authentication subsystem (tempauth)
+  - match: swift.*.*.tempauth.AUTH_.errors
+    name: swift_proxy_tempauth_errors_total
+  - match: swift.*.*.tempauth.AUTH_.forbidden
+    name: swift_proxy_tempauth_forbidden_total
+  - match: swift.*.*.tempauth.AUTH_.token_denied
+    name: swift_proxy_tempauth_token_denied_total
+  - match: swift.*.*.tempauth.AUTH_.unauthorized
+    name: swift_proxy_tempauth_unauthorized_total
+
+  # General swift-proxy metrics
+  - match: swift.*.*.proxy-server.client_disconnects
+    name: swift_proxy_client_disconnects_total
+  - match: swift.*.*.proxy-server.client_timeouts
+    name: swift_proxy_client_timeouts_total
+  - match: swift.*.*.proxy-server.handoff_count
+    name: swift_proxy_handoff_total
+  - match: swift.*.*.proxy-server.errors
+    name: swift_proxy_errors_total
+
+  # Rate Limiting
+  - match: swift.*.*.proxy-server.RL.*.*.timing
+    name: swift_proxy_ratelimit_milliseconds
+    labels:
+      method: "$3"
+      status: "$4"
+  - match: swift.*.*.proxy-server.RL.*.*.xfer
+    name: swift_proxy_ratelimit_bytes
+    labels:
+      method: "$3"
+      status: "$4"
+
+  # Object metrics
+  - match: swift.*.*.proxy-server.object.client_disconnects
+    name: swift_proxy_object_client_disconnects_total
+  - match: swift.*.*.proxy-server.object.client_timeouts
+    name: swift_proxy_object_client_timeouts_total
+  - match: swift.*.*.proxy-server.object.handoff_count
+    name: swift_proxy_object_handoff_total
+  # Drop generic object metrics, use per-policy object metrics below
+  - match: swift.*.*.proxy-server.object.*.*.timing
+    name: drop
+    action: drop
+  - match: swift.*.*.proxy-server.object.*.*.first-byte.timing
+    name: drop
+    action: drop
+  - match: swift.*.*.proxy-server.object.*.*.xfer
+    name: drop
+    action: drop
+  # Per-policy metrics
+  - match: swift.*.*.proxy-server.object.policy.*.*.*.timing
+    name: swift_proxy_object_milliseconds
+    labels:
+      policy: "$3"
+      method: "$4"
+      status: "$5"
+  - match: swift.*.*.proxy-server.object.policy.*.*.*.first-byte.timing
+    name: swift_proxy_object_first_byte_milliseconds
+    labels:
+      policy: "$3"
+      method: "$4"
+      status: "$5"
+  - match: swift.*.*.proxy-server.object.policy.*.*.*.xfer
+    name: swift_proxy_object_bytes
+    labels:
+      policy: "$3"
+      method: "$4"
+      status: "$5"
+
+  # Account metrics
+  - match: swift.*.*.proxy-server.account.client_disconnects
+    name: swift_proxy_account_client_disconnects_total
+  - match: swift.*.*.proxy-server.account.client_timeouts
+    name: swift_proxy_account_client_timeouts_total
+  - match: swift.*.*.proxy-server.account.handoff_count
+    name: swift_proxy_account_handoff_total
+  - match: swift.*.*.proxy-server.account.*.*.timing
+    name: swift_proxy_account_milliseconds
+    labels:
+      method: "$3"
+      status: "$4"
+  - match: swift.*.*.proxy-server.account.*.*.first-byte.timing
+    name: swift_proxy_account_first_byte_milliseconds
+    labels:
+      method: "$3"
+      status: "$4"
+  - match: swift.*.*.proxy-server.account.*.*.xfer
+    name: swift_proxy_account_bytes
+    labels:
+      method: "$3"
+      status: "$4"
+
+  # Container metrics
+  - match: swift.*.*.proxy-server.container.client_disconnects
+    name: swift_proxy_container_client_disconnects_total
+  - match: swift.*.*.proxy-server.container.client_timeouts
+    name: swift_proxy_container_client_timeouts_total
+  - match: swift.*.*.proxy-server.container.handoff_count
+    name: swift_proxy_container_handoff_total
+  - match: swift.*.*.proxy-server.container.*.*.timing
+    name: swift_proxy_container_milliseconds
+    labels:
+      method: "$3"
+      status: "$4"
+  - match: swift.*.*.proxy-server.container.*.*.first-byte.timing
+    name: swift_proxy_container_first_byte_milliseconds
+    labels:
+      method: "$3"
+      status: "$4"
+  - match: swift.*.*.proxy-server.container.*.*.xfer
+    name: swift_proxy_container_bytes
+    labels:
+      method: "$3"
+      status: "$4"
