@@ -3,6 +3,6 @@
 tlsproxy::nginx_client_max_body_size: 0
 tlsproxy::localssl::proxy_request_buffering: 'off'
 profile::prometheus::statsd_exporter::mappings:
-  - match: .*
+  - match: test.*
     name: test
 
