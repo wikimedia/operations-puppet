@@ -50,11 +50,10 @@ indexes:
     name: revcomment_comment_id
     columns:
       - revcomment_comment_id
-  - table: image_comment_temp
-    name: imgcomment_description_id
+  - table: image
+    name: img_description_id
     columns:
-      - imgcomment_description_id
-      - imgcomment_name
+      - img_description_id
   - table: slots
     name: slot_content_id
     columns:
