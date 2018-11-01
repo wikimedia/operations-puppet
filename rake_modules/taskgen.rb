@@ -336,6 +336,15 @@ class TaskGen < ::Rake::TaskLib
           end
           tasks << 'tox:grafana'
         end
+        sonofgridengine_files = filter_files_by("modules/grafana/sonofgridengine/files/**")
+        unless sonofgridengine_files.empty?
+          desc 'Run tox for sonofgridengine'
+          task :grafana do
+            res = system("tox -e sonofgridengine")
+            raise 'Tests for sonofgridengine failed!' unless res
+          end
+          tasks << 'tox:sonofgridengine'
+        end
         tox_files = filter_files_by("*.py")
         unless tox_files.empty?
           desc 'Run flake8 on python files via tox'
