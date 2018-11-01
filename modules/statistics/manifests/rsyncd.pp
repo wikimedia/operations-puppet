@@ -2,12 +2,11 @@
 # Sets up rsyncd and common modules
 # for statistic servers.  Currently
 # this is read/write between statistic
-# servers in /srv or /a.
+# servers in /srv and /home
 #
 # == Parameters
-#   path        - string.  Base path to allow rsync access.  Should probably be /srv or /a.
 #   hosts_allow - array.   Hosts to grant rsync access.
-class statistics::rsyncd($path, $hosts_allow)
+class statistics::rsyncd($hosts_allow)
 {
     Class['::statistics'] -> Class['statistics::rsyncd']
 
@@ -31,7 +30,7 @@ class statistics::rsyncd($path, $hosts_allow)
     # Set up an rsync module
     # (in /etc/rsyncd.conf) for /srv.
     rsync::server::module { 'srv':
-        path        => $path,
+        path        => '/srv',
         read_only   => 'no',
         list        => 'yes',
         hosts_allow => $hosts_allow,

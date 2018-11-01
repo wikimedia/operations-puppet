@@ -7,6 +7,13 @@ class statistics::compute {
     Class['::statistics::user'] -> Class['::statistics::compute']
 
     $working_path = $::statistics::working_path
+
+    # Set up rsync modules for copying files
+    # between statistic servers in /srv and /home
+    class { '::statistics::rsyncd':
+        hosts_allow => $::statistics::servers,
+    }
+
     $published_datasets_path = "${working_path}/published-datasets"
     # Create $working_path/published-datasets.  Anything in this directory
     # will be available at analytics.wikimedia.org/datasets.
@@ -28,7 +35,7 @@ class statistics::compute {
     # Install a simple rsync script for published-datasets, so that
     # stat users can push their work out manually if they want.
     # TODO: hiera-ize thorium.eqiad.wmnet
-    $published_datasets_destination = "thorium.eqiad.wmnet::srv/published-datasets-rsynced/${::hostname}/"
+    $published_datasets_destination = "thorium.eqiad.wmnet::publshed-datasets-destination/${::hostname}/"
     file { '/usr/local/bin/published-datasets-sync':
         content => template('statistics/published-datasets-sync.sh.erb'),
         owner   => 'root',

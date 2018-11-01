@@ -33,6 +33,21 @@ class statistics::sites::analytics {
         mode   => '0775',
     }
 
+    # Allow rsyncing to /srv/published-datasets-rsynced from statistics::servers
+    class { '::rsync::server':
+        # the default timeout of 300 is too low
+        timeout => 1000,
+    }
+    # Set up an rsync module
+    # (in /etc/rsyncd.conf) for /srv.
+    rsync::server::module { 'publshed-datasets-destination':
+        path        => "${working_path}/published-datasets-rsynced",
+        read_only   => 'no',
+        list        => 'yes',
+        hosts_allow => $::statistics::servers,
+        auto_ferm   => true,
+        require     => File["${working_path}/published-datasets-rsynced"],
+    }
 
     # Merge files in published-datasets-rsynced/* via hardlinks into $document_root/datasets
     cron { 'hardsync-published-datasets':

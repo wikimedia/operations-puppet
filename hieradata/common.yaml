@@ -316,7 +316,6 @@ statistics_servers:
   - stat1005.eqiad.wmnet
   - stat1006.eqiad.wmnet
   - stat1007.eqiad.wmnet
-  - thorium.eqiad.wmnet
   - labstore1006.wikimedia.org
   - labstore1007.wikimedia.org
 dumps_nfs_clients:
