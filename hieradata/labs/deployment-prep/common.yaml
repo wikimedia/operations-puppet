@@ -231,10 +231,6 @@ mediawiki::hhvm::extra_fcgi:
 # Enable php-fpm
 profile::mediawiki::php::enable_fpm: true
 
-profile::mediawiki::jobrunner::queue_servers:
-    - deployment-redis05.deployment-prep.eqiad.wmflabs
-profile::mediawiki::jobrunner::aggr_servers:
-    - deployment-redis05.deployment-prep.eqiad.wmflabs
 statsd: labmon1001.eqiad.wmnet:8125
 profile::mediawiki::jobrunner::runners:
   basic: 5
