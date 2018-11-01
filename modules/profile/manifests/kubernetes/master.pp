@@ -65,11 +65,6 @@ class profile::kubernetes::master(
         srange => $accessible_range,
     }
 
-    diamond::collector { 'Kubernetes':
-        ensure => 'absent',
-        source => 'puppet:///modules/diamond/collector/kubernetes.py',
-    }
-
     # Alert us if API requests exceed a certain threshold. TODO: reevaluate
     # after we 've ran a few services
     monitoring::check_prometheus { 'apiserver_request_count':
