@@ -57,10 +57,6 @@ private:
       dumps: true
       scratch: true
       maps: true
-  maps-team:
-    gid: 52497
-    mounts:
-      scratch: true
   math:
     gid: 50398
     mounts:
