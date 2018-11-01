@@ -71,13 +71,6 @@ private:
     gid: 52376
     mounts:
       scratch: true
-  openstack:
-    gid: 50076
-    mounts:
-      dumps: true
-      home: true
-      project: true
-      scratch: true
   osmit:
     gid: 51933
     mounts:
