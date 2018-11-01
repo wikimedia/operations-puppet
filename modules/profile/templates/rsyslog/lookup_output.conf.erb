@@ -1,0 +1,7 @@
+
+# define lookup table for log outputs
+lookup_table(name="output_lookup" file="/etc/rsyslog.lookup.d/lookup_table_output.json" reloadOnHUP="on")
+
+# perform lookup of programname against table "output_lookup"
+# this is used later to determine which output actions to apply
+set $.log_outputs = lookup("output_lookup", $programname);

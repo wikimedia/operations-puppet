@@ -1,0 +1,26 @@
+# this is the kafka output config, so load the kafka output module
+module(load="omkafka")
+
+# define a template to be used by omkafka dynatopic
+template(name="kafka_topic" type="string" string="rsyslog-%syslogseverity-text%")
+
+# send to kafka if lookup table contains "kafka" for relevant programname
+# $.log_outputs defined by lookup table in lookup_output.conf
+if ( $.log_outputs contains "kafka" ) then {
+
+    action(type="omkafka"
+           broker=<%= scope.lookupvar('logging_kafka_brokers').to_json %>
+           topic="kafka_topic"
+           dynatopic="on"
+           dynatopic.cachesize="1000"
+           template="syslog_json"
+           confParam=[ "security.protocol=ssl",
+                       "ssl.ca.location=/etc/ssl/certs/Puppet_Internal_CA.pem",
+                       "compression.codec=snappy",
+                       "socket.timeout.ms=10",
+                       "socket.keepalive.enable=true",
+                       "queue.buffering.max.ms=50",
+                       "batch.num.messages=1000" ]
+    )
+
+}

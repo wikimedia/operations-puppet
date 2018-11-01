@@ -1,0 +1,5 @@
+
+# use lookup table to determine if log continues on to local outputs (defined in rsyslog.conf)
+if ( not ($.log_outputs contains "local") ) then {
+    stop
+}
