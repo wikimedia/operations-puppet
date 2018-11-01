@@ -227,6 +227,8 @@ cache::alternate_domains:
     director: 'thorium'
   annual.wikimedia.org:
     director: 'webserver_misc_static'
+  bienvenida.wikimedia.org:
+    director: 'webserver_misc_static'
   bugs.wikimedia.org:
     director: 'phabricator'
   bugzilla.wikimedia.org:
