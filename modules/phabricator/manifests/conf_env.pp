@@ -6,10 +6,10 @@
 # phabricator config file `local.json`
 #
 define phabricator::conf_env(
-    $environment,
-    $phab_settings  = {},
-    $owner          = 'root',
-    $group          = 'root',
+    String $environment,
+    Hash $phab_settings = {},
+    String $owner       = 'root',
+    String $group       = 'root',
 ) {
     file { "${phabricator::confdir}/local/${environment}.json":
         owner   => $owner,

@@ -1,12 +1,12 @@
 # == Class: phabricator::bot
 #
 class phabricator::bot (
-    $username,
-    $token,
-    $host     = 'https://phabricator.wikimedia.org/api/',
-    $owner    = 'root',
-    $group    = 'root',
-    $mode     = '0440',
+    String $username,
+    String $token,
+    String $host  = 'https://phabricator.wikimedia.org/api/',
+    String $owner = 'root',
+    String $group = 'root',
+    String $mode  = '0440',
 ) {
 
     file { "/etc/phabricator_${username}.conf":

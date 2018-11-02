@@ -36,15 +36,15 @@
 #    Whether to enable the cron or not, default present
 
 define phabricator::logmail (
-    $script_name,
-    $sndr_address,
-    $rcpt_address,
-    $basedir  = '/usr/local/bin',
-    $hour        = '0',
-    $minute      = '0',
-    $monthday    = undef,
-    $weekday     = undef,
-    $ensure      = present,
+    String $script_name,
+    String $sndr_address,
+    Variant[String, Array] $rcpt_address,
+    Stdlib::Unixpath $basedir  = '/usr/local/bin',
+    Optional[Integer] $hour = 0,
+    Optional[Integer] $minute = 0,
+    Optional[Integer] $monthday = undef,
+    Optional[Integer] $weekday = undef,
+    Wmflib::Ensure $ensure = 'present',
 ) {
 
     require_package('mariadb-client')

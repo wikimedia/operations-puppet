@@ -7,14 +7,14 @@
 #   This is the index value for the ext_reference custom field
 
 define phabricator::redirector(
-    $mysql_user,
-    $mysql_pass,
-    $mysql_host,
-    $rootdir     = '/srv/phab',
-    $field_index = '',
-    $phab_host   = 'phabricator.wikimedia.org',
-    $alt_host    = 'phab.wmfusercontent.org',
-    $rate_limits = {'request' => 0, 'connection' => 0}
+    String $mysql_user,
+    String $mysql_pass,
+    String $mysql_host,
+    Stdlib::Unixpath $rootdir = '/srv/phab',
+    String $field_index       = '',
+    String $phab_host         = 'phabricator.wikimedia.org',
+    String $alt_host          = 'phab.wmfusercontent.org',
+    Hash $rate_limits         = {'request' => 0, 'connection' => 0}
 ) {
     require phabricator
 

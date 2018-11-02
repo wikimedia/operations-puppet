@@ -4,8 +4,8 @@
 #
 
 class phabricator::phd (
-    $settings = {},
-    $basedir  = '/',
+    Hash $settings            = {},
+    Stdlib::Unixpath $basedir = '/',
 ) {
     group { 'phd':
         ensure => present,

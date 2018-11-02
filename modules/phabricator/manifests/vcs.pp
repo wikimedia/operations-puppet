@@ -15,11 +15,11 @@
 #  Port SSH should listen on
 
 class phabricator::vcs (
-    $basedir               = '/srv/phab',
-    $settings              = {},
-    $listen_addresses      = [],
-    $ssh_port              = '22',
-    $proxy                 = "http://url-downloader.${::site}.wikimedia.org:8080",
+    Stdlib::Unixpath $basedir = '/srv/phab',
+    Hash $settings            = {},
+    Array $listen_addresses   = [],
+    Integer $ssh_port         = 22,
+    String $proxy             = "http://url-downloader.${::site}.wikimedia.org:8080",
 ) {
 
     $phd_user = $settings['phd.user']

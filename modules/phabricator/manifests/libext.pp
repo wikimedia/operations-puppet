@@ -10,7 +10,10 @@
 #    Case sensitive extension name
 
 
-define phabricator::libext ($rootdir, $libname = $name) {
+define phabricator::libext (
+    Stdlib::Unixpath $rootdir,
+    String $libname = $name,
+){
 
     # symlink static directories for extensions
     $static_dir  = "${rootdir}/libext/${libname}/rsrc/webroot-static"

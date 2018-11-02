@@ -52,19 +52,19 @@
 #
 
 class phabricator (
-    $phabdir          = '/srv/phab',
-    $confdir         = '/srv/phab/phabricator/conf',
-    $timezone         = 'UTC',
-    $trusted_proxies  = [],
-    $libraries        = [],
-    $settings         = {},
-    $conf_files       = {},
-    $mysql_admin_user = '',
-    $mysql_admin_pass = '',
-    $serveradmin      = '',
-    $serveraliases    = [],
-    $deploy_user      = 'phab-deploy',
-    $deploy_target    = 'phabricator/deployment',
+    Stdlib::Unixpath $phabdir = '/srv/phab',
+    Stdlib::Unixpath $confdir = '/srv/phab/phabricator/conf',
+    String $timezone          = 'UTC',
+    Array $trusted_proxies    = [],
+    Array $libraries          = [],
+    Hash $settings            = {},
+    Hash $conf_files          = {},
+    String $mysql_admin_user  = '',
+    String $mysql_admin_pass  = '',
+    String $serveradmin       = '',
+    Array $serveraliases      = [],
+    String $deploy_user       = 'phab-deploy',
+    String $deploy_target     = 'phabricator/deployment',
 ) {
     validate_hash($conf_files)
 

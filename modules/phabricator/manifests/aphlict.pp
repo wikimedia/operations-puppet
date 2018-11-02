@@ -2,12 +2,11 @@
 # Aphlict is the phabricator real-time notification relay service.
 # Docs: https://secure.phabricator.com/book/phabricator/article/notifications/
 class phabricator::aphlict(
-    $ensure = 'present',
-    $user   = 'aphlict',
-    $group  = 'aphlict',
-    $basedir = '/srv/phab'
+    Wmflib::Ensure $ensure    = 'present',
+    String $user              = 'aphlict',
+    String $group             = 'aphlict',
+    Stdlib::Unixpath $basedir = '/srv/phab'
 ) {
-    validate_ensure($ensure)
 
     # packages
     require_package('nodejs')

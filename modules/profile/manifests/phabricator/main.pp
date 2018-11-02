@@ -2,31 +2,31 @@
 #
 # filtertags: labs-project-deployment-prep labs-project-phabricator
 class profile::phabricator::main (
-    $cache_text_nodes = hiera('cache::text::nodes', []),
-    $domain = hiera('phabricator_domain', 'phabricator.wikimedia.org'),
-    $altdom = hiera('phabricator_altdomain', 'phab.wmfusercontent.org'),
-    $mysql_host = hiera('phabricator::mysql::master', 'localhost'),
-    $mysql_port = hiera('phabricator::mysql::master::port', 3306),
-    $mysql_slave = hiera('phabricator::mysql::slave', 'localhost'),
-    $mysql_slave_port = hiera('phabricator::mysql::slave::port', 3323),
-    $phab_root_dir = '/srv/phab',
-    $deploy_target = 'phabricator/deployment',
-    $phab_app_user = hiera('phabricator_app_user', undef),
-    $phab_app_pass = hiera('phabricator_app_pass', undef),
-    $phab_daemons_user = hiera('phabricator_daemons_user', undef),
-    $phab_manifest_user = hiera('phabricator_manifest_user', undef),
-    $phab_manifest_pass = hiera('phabricator_manifest_pass', undef),
-    $phab_daemons_pass = hiera('phabricator_daemons_pass', undef),
-    $phab_mysql_admin_user = hiera('phabricator_admin_user', undef),
-    $phab_mysql_admin_pass = hiera('phabricator_admin_pass', undef),
-    $phab_diffusion_ssh_host = hiera('phabricator_diffusion_ssh_host', 'git-ssh.wikimedia.org'),
-    $cluster_search = hiera('phabricator_cluster_search'),
-    $active_server = hiera('phabricator_server', undef),
-    $passive_server = hiera('phabricator_server_failover', undef),
-    $logmail = hiera('phabricator_logmail', false),
-    $aphlict_enabled = hiera('phabricator_aphlict_enabled', false),
-    $rate_limits = hiera('profile::phabricator::main::rate_limits'),
-    $phd_taskmasters = hiera('phabricator_phd_taskmasters', 10)
+    Hash $cache_text_nodes = hiera('cache::text::nodes', []),
+    String $domain = hiera('phabricator_domain', 'phabricator.wikimedia.org'),
+    String $altdom = hiera('phabricator_altdomain', 'phab.wmfusercontent.org'),
+    String $mysql_host = hiera('phabricator::mysql::master', 'localhost'),
+    Integer $mysql_port = hiera('phabricator::mysql::master::port', 3306),
+    String $mysql_slave = hiera('phabricator::mysql::slave', 'localhost'),
+    Integer $mysql_slave_port = hiera('phabricator::mysql::slave::port', 3323),
+    Stdlib::Unixpath $phab_root_dir = '/srv/phab',
+    String $deploy_target = 'phabricator/deployment',
+    Optional[String] $phab_app_user = hiera('phabricator_app_user', undef),
+    Optional[String] $phab_app_pass = hiera('phabricator_app_pass', undef),
+    Optional[String] $phab_daemons_user = hiera('phabricator_daemons_user', undef),
+    Optional[String] $phab_manifest_user = hiera('phabricator_manifest_user', undef),
+    Optional[String] $phab_manifest_pass = hiera('phabricator_manifest_pass', undef),
+    Optional[String] $phab_daemons_pass = hiera('phabricator_daemons_pass', undef),
+    Optional[String] $phab_mysql_admin_user = hiera('phabricator_admin_user', undef),
+    Optional[String] $phab_mysql_admin_pass = hiera('phabricator_admin_pass', undef),
+    String $phab_diffusion_ssh_host = hiera('phabricator_diffusion_ssh_host', 'git-ssh.wikimedia.org'),
+    Array $cluster_search = hiera('phabricator_cluster_search'),
+    Optional[String] $active_server = hiera('phabricator_server', undef),
+    Optional[String] $passive_server = hiera('phabricator_server_failover', undef),
+    Boolean $logmail = hiera('phabricator_logmail', false),
+    Boolean $aphlict_enabled = hiera('phabricator_aphlict_enabled', false),
+    Hash $rate_limits = hiera('profile::phabricator::main::rate_limits'),
+    Integer $phd_taskmasters = hiera('phabricator_phd_taskmasters', 10)
 ){
 
     mailalias { 'root':
@@ -340,7 +340,7 @@ class profile::phabricator::main (
         script_name  => 'community_metrics.sh',
         rcpt_address => 'wikitech-l@lists.wikimedia.org',
         sndr_address => 'communitymetrics@wikimedia.org',
-        monthday     => '1',
+        monthday     => 1,
         require      => Package[$deploy_target],
     }
 
@@ -350,7 +350,6 @@ class profile::phabricator::main (
         script_name  => 'project_changes.sh',
         rcpt_address => [ 'phabricator-reports@lists.wikimedia.org' ],
         sndr_address => 'aklapper@wikimedia.org',
-        monthday     => '*',
         weekday      => 1, # Monday
         require      => Package[$deploy_target],
     }
