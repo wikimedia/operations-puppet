@@ -14,5 +14,6 @@ profile::mediawiki::httpd::logrotate_retention: 12
 profile::lvs::realserver::pools:
   apaches:
     service: hhvm
-profile::mediawiki::vhost_feature_flags: {}
 profile::mediawiki::php::php_version: "7.2"
+profile::mediawiki::vhost_feature_flags:
+  serve_php7: true
