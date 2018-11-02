@@ -1,5 +1,190 @@
 cluster: swift
 nagios_group: swift
 profile::prometheus::statsd_exporter::mappings:
-  - match: test.*
-    name: test
+  # Account-related services
+  - match: swift.*.*.account-auditor.passes
+    name: swift_account_auditor_passes_total
+  - match: swift.*.*.account-auditor.timing
+    name: swift_account_auditor_milliseconds
+
+  - match: swift.*.*.account-reaper.errors
+    name: swift_account_reaper_errors_total
+
+  - match: swift.*.*.account-replicator.attempts
+    name: swift_account_replicator_attempts_total
+  - match: swift.*.*.account-replicator.diffs
+    name: swift_account_replicator_diffs_total
+  - match: swift.*.*.account-replicator.failures
+    name: swift_account_replicator_failures_total
+  - match: swift.*.*.account-replicator.no_changes
+    name: swift_account_replicator_no_changes_total
+  - match: swift.*.*.account-replicator.removes.*
+    name: swift_account_replicator_removes_total
+    labels:
+        device: "$3"
+  - match: swift.*.*.account-replicator.rsyncs
+    name: swift_account_replicator_rsyncs_total
+  - match: swift.*.*.account-replicator.successes
+    name: swift_account_replicator_successes_total
+  - match: swift.*.*.account-replicator.timing
+    name: swift_account_replicator_milliseconds
+
+  - match: swift.*.*.account-server.*.timing
+    name: swift_account_server_milliseconds
+    labels:
+      method: "$3"
+
+
+  # Container-related services
+  - match: swift.*.*.container-auditor.passes
+    name: swift_container_auditor_passes_total
+  - match: swift.*.*.container-auditor.timing
+    name: swift_container_auditor_milliseconds
+
+  - match: swift.*.*.container-replicator.attempts
+    name: swift_container_replicator_attempts_total
+  - match: swift.*.*.container-replicator.diff_caps
+    name: swift_container_replicator_diff_caps_total
+  - match: swift.*.*.container-replicator.diffs
+    name: swift_container_replicator_diffs_total
+  - match: swift.*.*.container-replicator.failures
+    name: swift_container_replicator_failures_total
+  - match: swift.*.*.container-replicator.no_changes
+    name: swift_container_replicator_no_changes_total
+  - match: swift.*.*.container-replicator.removes.*
+    name: swift_container_replicator_removes_total
+    labels:
+        device: "$3"
+  - match: swift.*.*.container-replicator.rsyncs
+    name: swift_container_replicator_rsyncs_total
+  - match: swift.*.*.container-replicator.successes
+    name: swift_container_replicator_successes_total
+  - match: swift.*.*.container-replicator.timing
+    name: swift_container_replicator_milliseconds
+
+  - match: swift.*.*.container-server.*.timing
+    name: swift_container_server_success_milliseconds
+    labels:
+        method: "$3"
+  - match: swift.*.*.container-server.*.errors.timing
+    name: swift_container_server_errors_milliseconds
+    labels:
+        method: "$3"
+
+  - match: swift.*.*.container-sync.failures
+    name: swift_container_sync_failures_total
+  - match: swift.*.*.container-sync.skips
+    name: swift_container_sync_skips_total
+
+  - match: swift.*.*.container-updater.failures
+    name: swift_container_updater_failures_total
+  - match: swift.*.*.container-updater.no_changes
+    name: swift_container_updater_no_changes_total
+  - match: swift.*.*.container-updater.successes
+    name: swift_container_updater_successes_total
+  - match: swift.*.*.container-updater.timing
+    name: swift_container_updater_milliseconds
+
+
+  # Object-related services
+  - match: swift.*.*.object-auditor.errors
+    name: swift_object_auditor_errors_total
+  - match: swift.*.*.object-auditor.quarantines
+    name: swift_object_auditor_quarantines_total
+  - match: swift.*.*.object-auditor.timing
+    name: swift_object_auditor_milliseconds
+
+  - match: swift.*.*.object-replicator.partition.delete.timing
+    name: swift_object_replicator_partition_delete_milliseconds
+  - match: swift.*.*.object-replicator.partition.delete.count.*
+    name: swift_object_replicator_partition_delete_total
+    labels:
+       device: "$3"
+  - match: swift.*.*.object-replicator.partition.update.timing
+    name: swift_object_replicator_partition_update_milliseconds
+  - match: swift.*.*.object-replicator.partition.update.count.*
+    name: swift_object_replicator_partition_update_total
+    labels:
+       device: "$3"
+  - match: swift.*.*.object-replicator.suffix.hashes
+    name: swift_object_replicator_suffix_hashes_total
+  - match: swift.*.*.object-replicator.suffix.syncs
+    name: swift_object_replicator_suffix_syncs_total
+
+  - match: swift.*.*.object-server.quarantines
+    name: swift_object_server_quarantines_total
+  - match: swift.*.*.object-server.async_pendings
+    name: swift_object_server_async_pendings_total
+  # Drop the generic timing in favor of per-device timing below
+  - match: swift.*.*.object-server.*.timing
+    name: swift_object_server_success_milliseconds
+    action: drop
+    labels:
+        method: "$3"
+  - match: swift.*.*.object-server.*.errors.timing
+    name: swift_object_server_errors_milliseconds
+    labels:
+        method: "$3"
+  - match: swift.*.*.object-server.*.*.timing
+    name: swift_object_server_success_milliseconds
+    labels:
+        method: "$3"
+        device: "$4"
+
+  - match: swift.*.*.object-updater.errors
+    name: swift_object_updater_errors_total
+  - match: swift.*.*.object-updater.failures
+    name: swift_object_updater_failures_total
+  - match: swift.*.*.object-updater.successes
+    name: swift_object_updater_successes_total
+  - match: swift.*.*.object-updater.timing
+    name: swift_object_updater_milliseconds
+  - match: swift.*.*.object-updater.unlinks
+    name: swift_object_updater_unlinks_total
+
+
+  # Built-in proxy-server metrics, for accounts
+  - match: swift.*.*.proxy-server.account.client_disconnects
+    name: swift_proxy_server_account_client_disconnects_total
+  - match: swift.*.*.proxy-server.account.client_timeouts
+    name: swift_proxy_server_account_client_timeouts_total
+  - match: swift.*.*.proxy-server.account.handoff_count
+    name: swift_proxy_server_account_handoff_total
+  - match: swift.*.*.proxy-server.account.*.*.timing
+    name: swift_proxy_server_account_milliseconds
+    labels:
+      method: "$3"
+      status: "$4"
+  - match: swift.*.*.proxy-server.account.*.*.first-byte.timing
+    name: swift_proxy_server_account_first_byte_milliseconds
+    labels:
+      method: "$3"
+      status: "$4"
+  - match: swift.*.*.proxy-server.account.*.*.xfer
+    name: swift_proxy_server_account_bytes
+    labels:
+      method: "$3"
+      status: "$4"
+
+  # Built-in proxy-server metrics, for containers
+  - match: swift.*.*.proxy-server.container.client_disconnects
+    name: swift_proxy_server_container_client_disconnects_total
+  - match: swift.*.*.proxy-server.container.client_timeouts
+    name: swift_proxy_server_container_client_timeouts_total
+  - match: swift.*.*.proxy-server.container.handoff_count
+    name: swift_proxy_server_container_handoff_total
+  - match: swift.*.*.proxy-server.container.*.*.timing
+    name: swift_proxy_server_container_milliseconds
+    labels:
+      method: "$3"
+      status: "$4"
+  - match: swift.*.*.proxy-server.container.*.*.first-byte.timing
+    name: swift_proxy_server_container_first_byte_milliseconds
+    labels:
+      method: "$3"
+      status: "$4"
+  - match: swift.*.*.proxy-server.container.*.*.xfer
+    name: swift_proxy_server_container_bytes
+    labels:
+      method: "$3"
+      status: "$4"
