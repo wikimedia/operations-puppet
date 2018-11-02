@@ -1,0 +1,20 @@
+#!/bin/sh
+# Display full qstat data.
+#
+# Normal usage of `qstat` will truncate columns to fit to the screen. This
+# version instead reads from the "xml" output format and formats as columns
+# using a crazy pants tr & sed pipeline. Very nice for doing things like:
+#
+#   # list of all running jobs grouped by tool and sorted by start time
+#   qstat-full -u '*' |
+#   awk 'BEGIN { OFS="\t" } {print $1, $3, $6, $5}' |
+#   sort -n -k 3 |
+#   sort -s -k 2
+#
+
+qstat -xml "$@" |
+tr '\n' ' ' |
+sed 's#<job_list[^>]*>#\n#g' |
+sed 's#<[^>]*>##g' |
+grep ' ' |
+column -t
