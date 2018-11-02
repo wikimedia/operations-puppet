@@ -253,5 +253,7 @@ mediawiki_test_environment:
   profile::lvs::realserver::pools:
     apaches:
       service: hhvm
-  profile::mediawiki::vhost_feature_flags: {}
+  profile::mediawiki::vhost_feature_flags:
+    set_handler: true
+    serve_php7: true
   profile::mediawiki::php::enable_fpm: true
