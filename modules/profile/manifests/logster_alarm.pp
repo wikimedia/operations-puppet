@@ -41,6 +41,13 @@ class profile::logster_alarm {
         mode   => '0644',
     }
 
+    file{ '/usr/lib/python2.7/dist-packages/logster/parsers/AlarmCounterLogster.py':
+        source => 'puppet:///modules/profile/logster_alarm/AlarmCounterLogster.py',
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0644',
+    }
+
     logster::job{'csp':
         parser          => 'AlarmCounterLogster',
         logfile         => '/srv/mw-log/csp-report-only.log',
