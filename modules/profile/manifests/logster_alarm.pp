@@ -49,15 +49,21 @@ class profile::logster_alarm {
     }
 
     logster::job{'csp':
-        parser          => 'AlarmCounterLogster',
+        parser          => '--output stdout AlarmCounterLogster',
         logfile         => '/srv/mw-log/csp-report-only.log',
         logster_options => "--parser-option='-a /etc/logster/csp -s /srv/security/logs/csp-report-only.log -n CSP -e logsteralarms@wikimedia.org'",
     }
 
-    logster::job{'badpass':
-        parser          => 'AlarmCounterLogster',
-        logfile         => '/srv/mw-log/badpass.log',
-        logster_options => "--parser-option='-a /etc/logster/badpass -s /srv/security/logs/badpass.log -n badpass -e logsteralarms@wikimedia.org'",
-
+    logster::job{'badpass_priv':
+        parser          => '--output stdout AlarmCounterLogster',
+        logfile         => '/srv/mw-log/badpass-priv.log',
+        logster_options => "--parser-option='-a /etc/logster/badpass-priv -s /srv/security/logs/badpass-priv.log -n badpass-priv -e logsteralarms@wikimedia.org'",
     }
+
+    # TODO: set configurable rate to alarm
+    # logster::job{'badpass':
+    #    parser          => '--output stdout AlarmCounterLogster',
+    #    logfile         => '/srv/mw-log/badpass.log',
+    #    logster_options => "--parser-option='-a /etc/logster/badpass -s /srv/security/logs/badpass.log -n badpass -e logsteralarms@wikimedia.org'",
+    #}
 }
