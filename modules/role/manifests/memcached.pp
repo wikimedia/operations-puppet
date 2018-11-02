@@ -9,4 +9,11 @@ class role::memcached {
     include ::profile::base::firewall
     include profile::memcached::instance
     include profile::memcached::memkeys
+
+    # Performance experiment - T203786
+    if $::hostname == 'mc1035' {
+        interface::rps {
+            $facts['interface_primary']:
+        }
+    }
 }
