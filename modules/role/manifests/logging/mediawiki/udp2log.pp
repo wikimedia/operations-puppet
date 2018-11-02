@@ -25,6 +25,8 @@ class role::logging::mediawiki::udp2log(
         default_instance => false,
     }
 
+    class {'profile::logster_alarm':}
+
     ferm::rule { 'udp2log_accept_all_wikimedia':
         rule => 'saddr ($DOMAIN_NETWORKS) proto udp ACCEPT;',
     }
