@@ -49,7 +49,7 @@ class profile::analytics::refinery::job::sqoop_mediawiki {
 
     file { '/usr/local/bin/refinery-sqoop-mediawiki':
         content => template('profile/analytics/refinery/job/refinery-sqoop-mediawiki.sh.erb'),
-        mode    => '0660',
+        mode    => '0550',
         owner   => 'hdfs',
         group   => 'hdfs',
     }
@@ -75,7 +75,7 @@ class profile::analytics::refinery::job::sqoop_mediawiki {
 
     file { '/usr/local/bin/refinery-sqoop-mediawiki-private':
         content => template('profile/analytics/refinery/job/refinery-sqoop-mediawiki-private.sh.erb'),
-        mode    => '0660',
+        mode    => '0550',
         owner   => 'hdfs',
         group   => 'hdfs',
     }
