@@ -20,7 +20,7 @@ define diamond::collector::nginx(
     }
 
     diamond::collector { 'Nginx':
-        ensure   => $ensure,
+        ensure   => 'absent',
         settings => {
             req_port => $port,
         },
