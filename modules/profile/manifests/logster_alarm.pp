@@ -40,4 +40,10 @@ class profile::logster_alarm {
         group  => 'root',
         mode   => '0644',
     }
+
+    logster::job{'badpass':
+        parser          => 'AlarmCounterLogster',
+        logfile         => '/srv/mw-log/csp-report-only.log',
+        logster_options => "--parser-option='-a /etc/logster/csp -s /srv/security/logs/csp-report-only.log -n CSP -e logsteralarms@wikimedia.org'",
+    }
 }
