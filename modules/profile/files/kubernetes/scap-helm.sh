@@ -30,7 +30,7 @@ declare -a LOG_ON_COMMANDS=(install upgrade)
 function sal_log {
 	if [[ "${LOG_ON_COMMANDS[*]}" =~ $COMMAND ]]; then
 		echo "!log ${USER}@${HOST} scap-helm ${SERVICE} $*" \
-			| nc "${TCPIRCBOT_HOST}" "${TCPIRCBOT_PORT}" \
+			| nc -q 1 "${TCPIRCBOT_HOST}" "${TCPIRCBOT_PORT}" \
 			|| (>&2 echo "WARNING: failed to send message to tcpircbot")
 	fi
 }
