@@ -3,14 +3,29 @@ class profile::logster_alarm {
     file{ '/etc/logster':
         ensure => 'directory',
         owner  => 'root',
-        group  => 'root',
-        mode   => '0655',
+        group  => 'deployment',
+        mode   => '0675',
     }
 
     file{ '/etc/logster/badpass':
         ensure => 'file',
         owner  => 'root',
-        group  => 'root',
+        group  => 'deployment',
+        mode   => '0675',
+    }
+
+    file{ '/etc/logster/badpass-priv':
+        ensure => 'file',
+        owner  => 'root',
+        group  => 'deployment',
+        mode   => '0675',
+    }
+
+    file{ '/etc/logster/csp':
+        ensure => 'file',
+        owner  => 'root',
+        group  => 'deployment',
+        mode   => '0675',
     }
 
     file{ '/srv/security':
