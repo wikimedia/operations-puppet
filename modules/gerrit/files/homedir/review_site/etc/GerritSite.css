@@ -233,6 +233,7 @@ html.loginParent body #gerrit_topmenu { display: none; }
 html.loginParent body #gerrit_header { display: none; }
 html.loginParent body #gerrit_body {
     display: flex;
+    height: 100%;
     flex-direction: column;
     justify-content: center;
     align-items: center;
