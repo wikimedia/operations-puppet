@@ -209,10 +209,8 @@ html.loginParent { height: 100%; }
 html.loginParent body {
     height: 100%;
     margin: 0;
-
     font-family: 'Source Sans Pro', sans-serif;
-
-    background-image: url(/r/static/1024px-Sea_and_sky_light.cache.jpg) !important;
+    background-image: url(/r/static/2006-12-28_10h26_33.jpg) !important;
     background-position: center center !important;
     background-repeat:  no-repeat !important;
     background-attachment: fixed !important;
@@ -221,7 +219,7 @@ html.loginParent body {
 }
 
 html.loginParent .gerritBody:after {
-    content: "Image by Adrian Dreßler";
+    content: "Image by Damien Boilley";
 }
 
 html.loginParent body .wm-gerrit-heading {
