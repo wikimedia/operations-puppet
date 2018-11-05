@@ -287,8 +287,6 @@ monitoring::groups:
     description: Equipment with asw-a-eqiad as uplink
   asw-b-codfw:
     description: Equipment with asw-b-codfw as uplink
-  asw-b-eqiad:
-    description: Equipment with asw-b-eqiad as uplink
   asw-c-codfw:
     description: Equipment with asw-c-codfw as uplink
   asw-c-eqiad:
