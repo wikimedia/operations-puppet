@@ -11,6 +11,7 @@ class profile::cxserver(
 
     $lingocloud_api_key = $::passwords::cxserver::lingocloud_api_key
     $matxin_api_key     = $::passwords::cxserver::matxin_api_key
+    $google_api_key     = $::passwords::cxserver::google_api_key
     $yandex_api_key     = $::passwords::cxserver::yandex_api_key
     $youdao_app_key     = $::passwords::cxserver::youdao_app_key
     $youdao_app_secret  = $::passwords::cxserver::youdao_app_secret
@@ -31,6 +32,7 @@ class profile::cxserver(
             lingocloud_key     => $lingocloud_api_key,
             lingocloud_account => 'wikimedia',
             matxin_key         => $matxin_api_key,
+            google_key         => $google_api_key,
             yandex_key         => $yandex_api_key,
             youdao_app_key     => $youdao_app_key,
             youdao_app_secret  => $youdao_app_secret,
