@@ -33,6 +33,7 @@ class debug_proxy(
     $backend_aliases,
     $resolver,
 ) {
+    require_package('libnginx-mod-http-lua')
     nginx::site { 'debug_proxy':
         content => template('debug_proxy/debug_proxy.nginx.erb'),
         notify  => Service['nginx'],
