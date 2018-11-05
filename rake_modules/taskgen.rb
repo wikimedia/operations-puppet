@@ -30,6 +30,7 @@ class TaskGen < ::Rake::TaskLib
     @changed_files = @git.changes_in_head
     @tasks = setup_tasks
     @failed_specs = []
+    PuppetSyntax.exclude_paths = ['vendor/**/*']
   end
 
   def setup_wmf_lint_check
