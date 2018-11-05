@@ -11,17 +11,16 @@
 # - $log_dir: Directory where the logs go
 # - $logstash_json_port: port on which to send logs in json format
 # - $username: Username owning the service
-# - $deploy_user: deploy user for sudo rules
 # - $extra_jvm_opts: extra JVM options for updater.
 class wdqs::updater(
     String $options,
     String $logstash_host,
     Stdlib::Unixpath $package_dir,
     Stdlib::Unixpath $data_dir,
-    Stdlib::Unixpath $log_dir = '/var/log/wdqs',
-    Wmflib::IpPort $logstash_json_port = 11514,
-    String $username = 'blazegraph',
-    Array[String] $extra_jvm_opts = [],
+    Stdlib::Unixpath $log_dir,
+    Wmflib::IpPort $logstash_json_port,
+    String $username,
+    Array[String] $extra_jvm_opts,
 ) {
     file { '/etc/default/wdqs-updater':
         ensure  => present,

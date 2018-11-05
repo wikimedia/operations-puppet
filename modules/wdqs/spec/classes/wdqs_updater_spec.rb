@@ -14,6 +14,8 @@ describe 'wdqs::updater', :type => :class do
         :data_dir => '/srv/wdqs',
         :username => 'blazegraph',
         :logstash_host => 'localhost',
+        :logstash_json_port => 11_514,
+        :extra_jvm_opts => [],
         }
    }
 

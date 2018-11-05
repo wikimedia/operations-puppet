@@ -42,32 +42,22 @@ class profile::wdqs (
         "-javaagent:${prometheus_agent_path}=${prometheus_blazegraph_agent_port}:${prometheus_blazegraph_agent_config}"
     ]
 
-    # Install services - both blazegraph and the updater
-    class { '::wdqs':
-        deploy_mode            => $deploy_mode,
-        package_dir            => $package_dir,
-        data_dir               => $data_dir,
-        endpoint               => $endpoint,
-        blazegraph_options     => $blazegraph_options,
-        blazegraph_heap_size   => $blazegraph_heap_size,
-        blazegraph_config_file => $blazegraph_config_file,
-        logstash_host          => $logstash_host,
-        extra_jvm_opts         => $default_extra_jvm_opts + $blazegraph_extra_jvm_opts,
-    }
-
     profile::prometheus::jmx_exporter { 'wdqs_blazegraph':
         hostname         => $::hostname,
         port             => $prometheus_blazegraph_agent_port,
         prometheus_nodes => $prometheus_nodes,
         config_file      => $prometheus_blazegraph_agent_config,
         source           => 'puppet:///modules/profile/wdqs/wdqs-blazegraph-prometheus-jmx.yaml',
+        before           => Service['wdqs-blazegraph'],
     }
+
     profile::prometheus::jmx_exporter { 'wdqs_updater':
         hostname         => $::hostname,
         port             => $prometheus_updater_agent_port,
         prometheus_nodes => $prometheus_nodes,
         config_file      => $prometheus_updater_agent_config,
         source           => 'puppet:///modules/profile/wdqs/wdqs-updater-prometheus-jmx.yaml',
+        before           => Service['wdqs-updater'],
     }
 
     if $use_kafka_for_updates {
@@ -90,26 +80,25 @@ class profile::wdqs (
     # 0 - Main, 120 - Property, 146 - Lexeme
     $extra_updater_options = "${poller_options} ${fetch_constraints_options} --entityNamespaces 0,120,146"
 
-    class { 'wdqs::updater':
-        options        => "${updater_options} -- ${extra_updater_options}",
-        logstash_host  => $logstash_host,
-        package_dir    => $package_dir,
-        data_dir       => $data_dir,
-        extra_jvm_opts => [
+    # Install services - both blazegraph, updater and the GUI
+    class { '::wdqs':
+        deploy_mode               => $deploy_mode,
+        package_dir               => $package_dir,
+        data_dir                  => $data_dir,
+        endpoint                  => $endpoint,
+        blazegraph_options        => $blazegraph_options,
+        updater_options           => "${updater_options} -- ${extra_updater_options}",
+        blazegraph_heap_size      => $blazegraph_heap_size,
+        config_file               => $blazegraph_config_file,
+        logstash_host             => $logstash_host,
+        enable_ldf                => $enable_ldf,
+        max_query_time_millis     => $max_query_time_millis,
+        load_categories           => $load_categories,
+        blazegraph_extra_jvm_opts => $default_extra_jvm_opts + $blazegraph_extra_jvm_opts,
+        updater_extra_jvm_opts    => [
             '-XX:+UseNUMA',
             "-javaagent:${prometheus_agent_path}=${prometheus_updater_agent_port}:${prometheus_updater_agent_config}",
         ],
-        require        => Profile::Prometheus::Jmx_exporter['wdqs_updater'],
-    }
-
-    # Service Web proxy
-    class { '::wdqs::gui':
-        package_dir           => $package_dir,
-        data_dir              => $data_dir,
-        deploy_mode           => $deploy_mode,
-        enable_ldf            => $enable_ldf,
-        max_query_time_millis => $max_query_time_millis,
-        load_categories       => $load_categories,
     }
 
     # Firewall

@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe 'wdqs::service', :type => :class do
+describe 'wdqs::blazegraph', :type => :class do
    before(:each) do
         Puppet::Parser::Functions.newfunction(:secret, :type => :rvalue) { |_|
             'fake_secret'
@@ -8,13 +8,17 @@ describe 'wdqs::service', :type => :class do
    end
 
    let(:params) { {
-        :deploy_user => 'deploy-service',
-        :deploy_mode => 'scap3',
         :package_dir => '/srv/deployment/wdqs/wdqs',
+        :data_dir => '/srv/wdqs',
+        :log_dir => '/var/log/wdqs',
+        :endpoint => '',
+        :blazegraph_heap_size => '1g',
         :username => 'blazegraph',
         :config_file => 'RWStore.properties',
         :logstash_host => 'localhost',
-        :logstash_json_port => 115_14,
+        :logstash_json_port => 11_514,
+        :blazegraph_options => [],
+        :extra_jvm_opts => [],
         }
    }
 
