@@ -31,7 +31,7 @@ groups:
               dzahn, akosiaris, mark, ariel, cmjohnson, otto, robh, tstarling,
               ori, jmm, jynus, ema, elukey, gehel, volans, marostegui,
               ayounsi, herron, aborrero, bstorm, vgutierrez, jiji, cwhite, banyek,
-              gtirloni, crusnov]
+              gtirloni, crusnov, cdanis]
     privileges: ['ALL = (ALL) NOPASSWD: ALL']
   ops-adm-group:
     # No gid for this group on purpose, it's a system provided one
@@ -3044,6 +3044,15 @@ users:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIMZcJ3VhuvTvkRNYmNB6RW4GInY8RQOdjjXSEz9UDS27
     uid: 20295
     email: jlinehan@wikimedia.org
+  cdanis:
+    ensure: present
+    realname: Chris Danis
+    name: cdanis
+    gid: 500
+    ssh_keys:
+      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPhmLO5JSeJ7IK13C3mjckZF/HwdCQ32bqfaZgRfUfiw cdanis@cdanis
+    uid: 20431
+    email: cdanis@wikimedia.org
 ldap_only_users:
   abartov:
     ensure: present
