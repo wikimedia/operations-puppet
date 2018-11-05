@@ -787,13 +787,13 @@ class role::prometheus::ops {
         site       => $::site,
     }
 
-    prometheus::redis_exporter_config{ "redis_misc_${::site}":
+    prometheus::redis_exporter_config{ "redis_misc_master_${::site}":
         dest       => "${targets_path}/redis_misc_master_${::site}.yaml",
         class_name => 'role::misc::master',
         site       => $::site,
     }
 
-    prometheus::redis_exporter_config{ "redis_misc_${::site}":
+    prometheus::redis_exporter_config{ "redis_misc_slave_${::site}":
         dest       => "${targets_path}/redis_misc_slave_${::site}.yaml",
         class_name => 'role::misc::slave',
         site       => $::site,
