@@ -744,6 +744,14 @@ class role::prometheus::ops {
         'metric_relabel_configs' => [ $redis_exporter_relabel ],
       },
       {
+        'job_name'        => 'redis_misc',
+        'scheme'          => 'http',
+        'file_sd_configs' => [
+          { 'files' => [ "${targets_path}/redis_misc_*.yaml" ]}
+        ],
+        'metric_relabel_configs' => [ $redis_exporter_relabel ],
+      },
+      {
         'job_name'        => 'redis_maps',
         'scheme'          => 'http',
         'file_sd_configs' => [
@@ -776,6 +784,18 @@ class role::prometheus::ops {
     prometheus::redis_exporter_config{ "redis_jobqueue_slave_${::site}":
         dest       => "${targets_path}/redis_jobqueue_slave_${::site}.yaml",
         class_name => 'role::jobqueue_redis::slave',
+        site       => $::site,
+    }
+
+    prometheus::redis_exporter_config{ "redis_misc_${::site}":
+        dest       => "${targets_path}/redis_misc_master_${::site}.yaml",
+        class_name => 'role::misc::master',
+        site       => $::site,
+    }
+
+    prometheus::redis_exporter_config{ "redis_misc_${::site}":
+        dest       => "${targets_path}/redis_misc_slave_${::site}.yaml",
+        class_name => 'role::misc::slave',
         site       => $::site,
     }
 
