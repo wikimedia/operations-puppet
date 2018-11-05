@@ -12,10 +12,9 @@
 #
 # filtertags: toolforge
 class role::wmcs::toolforge::grid::web::generic {
+    system::role { 'wmcs::toolforge::grid::web::generic': description => 'Generic web exec node' }
 
     include profile::toolforge::grid::base
     include profile::toolforge::grid::node::all
     include profile::toolforge::grid::node::web::generic
-
-    system::role { 'wmcs::toolforge::grid::web::generic': description => 'Generic web exec node' }
 }
