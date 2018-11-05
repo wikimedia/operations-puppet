@@ -54,6 +54,13 @@ class profile::cache::kafka::webrequest(
     # remove noise from Analytics data.
     # 3) A request marked with the VSL tag 'HttpGarbage' indicates unparseable
     # HTTP requests, generating spurious Varnish logs.
+    # 4) After T27611 Varnish has the capability of trying to fetch .webp
+    # variants of the hottest thumbnails, but this adds extra log entries
+    # to the shared memory log that pollutes webrequests. Every log containing
+    # Timestamp:Restart (and hence not Timestamp:Resp) need to be filtered out,
+    # since it represents a failed fetch for the webp variant (not yet generated
+    # for example) that is followed by a 'regular' fetch for the original image.
+    #
     # 'T':
     # VLS API timeout is the maximum time that Varnishkafka will wait between
     # "Begin" and "End" timestamps before flushing the available tags to a log.
@@ -74,8 +81,9 @@ class profile::cache::kafka::webrequest(
     # Raised the maximum timeout for incomplete records from '700' to '1500'
     # after setting the -L to '5000'. VSL timeouts were masked
     # by VSL store overflow errors.
+
     $varnish_opts = {
-        'q' => 'ReqMethod ne "PURGE" and not Timestamp:Pipe and not ReqHeader:Upgrade ~ "[wW]ebsocket" and not HttpGarbage',
+        'q' => 'ReqMethod ne "PURGE" and not Timestamp:Pipe and not Timestamp:Restart and not ReqHeader:Upgrade ~ "[wW]ebsocket" and not HttpGarbage',
         'T' => '1500',
         'L' => '10000'
     }
