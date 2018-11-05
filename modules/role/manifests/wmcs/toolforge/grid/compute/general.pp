@@ -14,6 +14,7 @@
 class role::wmcs::toolforge::grid::compute::general {
     system::role { 'wmcs::toolforge::grid::compute::general': description => 'General computation node' }
 
+    include profile::toolforge::base
     include profile::toolforge::apt_pinning
     include profile::toolforge::grid::base
     include profile::toolforge::grid::node::all

@@ -1,6 +1,7 @@
 class role::wmcs::toolforge::grid::master {
     system::role { 'wmcs::toolforge::grid::master': description => 'Toolforge gridengine master' }
 
+    include profile::toolforge::base
     include profile::toolforge::apt_pinning
     include profile::toolforge::grid::base
     include profile::toolforge::grid::master
