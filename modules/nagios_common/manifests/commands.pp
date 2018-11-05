@@ -36,6 +36,7 @@ class nagios_common::commands(
     require_package([
         # check_ssl
         'libmonitoring-plugin-perl',
+        'libtimedate-perl',
         'libnet-ssleay-perl',
         'libio-socket-ssl-perl',
         'libio-socket-inet6-perl',
