@@ -10,8 +10,6 @@ class profile::toolforge::grid::base (
     $etcdir = hiera('profile::toolforge::etcdir'),
 ) {
 
-    include profile::toolforge::apt_pinning
-
     class { '::labs_lvm': }
 
     package { 'nano':

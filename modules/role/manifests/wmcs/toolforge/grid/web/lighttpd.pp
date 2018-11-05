@@ -14,6 +14,7 @@
 class role::wmcs::toolforge::grid::web::lighttpd {
     system::role { 'wmcs::toolforge::grid::web::lighttpd': description => 'lighttpd web exec node' }
 
+    include profile::toolforge::apt_pinning
     include profile::toolforge::grid::base
     include profile::toolforge::grid::node::all
     include profile::toolforge::grid::node::web::lighttpd
