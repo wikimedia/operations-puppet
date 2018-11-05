@@ -19,7 +19,7 @@ map $http_x_wikimedia_debug $debug_backend {
 
 # Checks if php7 is selected
 map $http_x_wikimedia_debug $php_engine {
-  "~;php7" "php7";
+  "~; php7" "php7";
   default "hhvm";
 }
 
