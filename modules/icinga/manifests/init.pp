@@ -119,6 +119,8 @@ class icinga(
             source => 'puppet:///modules/icinga/logrotate.conf',
         }
 
+        $command_file='/var/lib/nagios/rw'
+
     } else {
         file { [ '/etc/nagios/nagios_host.cfg', '/etc/nagios/nagios_service.cfg' ]:
           ensure => 'file',
@@ -203,6 +205,9 @@ class icinga(
             require => Package['icinga'],
             notify  => Service['icinga'],
         }
+
+        $command_file='/var/lib/icinga/rw'
+
     }
 
     package { 'icinga':
@@ -246,7 +251,6 @@ class icinga(
     # Fix the ownerships of some files. This is ugly but will do for now
     file { ['/var/cache/icinga',
             '/var/lib/icinga',
-            '/var/lib/icinga/rw',
         ]:
         ensure => directory,
         owner  => $icinga_user,
@@ -262,10 +266,11 @@ class icinga(
 
     # Command folders / files to let icinga web to execute commands
     # See Debian Bug 571801
-    file { '/var/lib/nagios/rw':
-        owner => $icinga_user,
-        group => 'www-data',
-        mode  => '2710', # The sgid bit means new files inherit guid
+    file { $command_file:
+        ensure => 'directory',
+        owner  => $icinga_user,
+        group  => 'www-data',
+        mode   => '2710', # The sgid bit means new files inherit guid
     }
 
     # ensure icinga can write logs for ircecho, raid_handler etc.
