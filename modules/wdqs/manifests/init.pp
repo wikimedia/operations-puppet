@@ -15,21 +15,21 @@
 # - $blazegraph_options: options for Blazegraph startup script
 # - $blazegraph_heap_size: heapsize for blazegraph
 # - $blazegraph_config_file: Blazegraph properties config file
+# - $extra_jvm_opts: Extra JVM configs for wdqs-blazegraph
 class wdqs(
     String $logstash_host,
     Wmflib::IpPort $logstash_json_port = 11514,
     Wdqs::DeployMode $deploy_mode = 'scap3',
     String $username = 'blazegraph',
-    String $package_dir = '/srv/deployment/wdqs/wdqs',
-    String $data_dir = '/srv/wdqs',
-    String $log_dir = '/var/log/wdqs',
+    Stdlib::Unixpath $package_dir = '/srv/deployment/wdqs/wdqs',
+    Stdlib::Unixpath $data_dir = '/srv/wdqs',
+    Stdlib::Unixpath $log_dir = '/var/log/wdqs',
     String $endpoint = '',
     Array[String] $blazegraph_options = [],
     String $blazegraph_heap_size = '32g',
     String $blazegraph_config_file = 'RWStore.properties',
     Array[String] $extra_jvm_opts = [],
 ) {
-
     $deploy_user = 'deploy-service'
     $data_file = "${data_dir}/wikidata.jnl"
 
