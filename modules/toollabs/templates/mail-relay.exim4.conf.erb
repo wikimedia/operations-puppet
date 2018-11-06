@@ -229,17 +229,6 @@ tool_default:
 
 begin transports
 
-gridqueue:
-  driver = pipe
-  batch_max = 1
-  umask = 007
-  user = INSTANCEPROJECT.$local_part
-  group = INSTANCEPROJECT.$local_part
-  path = /bin:/usr/bin:/usr/local/bin
-  allow_commands = jmail
-  return_fail_output
-  temp_errors = 73:74:75
-
 remote_smtp:
   driver = smtp
 
