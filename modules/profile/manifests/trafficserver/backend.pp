@@ -84,6 +84,11 @@ class profile::trafficserver::backend (
         group  => 'root',
     }
 
+    sudo::user { 'nagios_trafficserver_config_status':
+        user       => 'nagios',
+        privileges => ["ALL = (${trafficserver::user}) NOPASSWD: ${config_status_filename}"],
+    }
+
     nrpe::monitor_service { 'check_trafficserver_config_status':
         description  => 'Check trafficserver config status',
         nrpe_command => "sudo -u ${trafficserver::user} ${config_status_filename}",
