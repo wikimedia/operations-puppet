@@ -31,7 +31,7 @@ class LocalCrontabCollector(diamond.collector.Collector):
         config = super(LocalCrontabCollector, self).get_default_config()
         config.update({
             'path':             'localcrontab',
-            'administrative':   ['root', 'puppet'],
+            'administrative':   ['root', 'puppet', 'prometheus'],
             'use_sudo':         False,
             'sudo_cmd':         '/usr/bin/sudo',
             'sudo_user':        'root',
