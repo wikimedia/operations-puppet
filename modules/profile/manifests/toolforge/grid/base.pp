@@ -93,20 +93,6 @@ class profile::toolforge::grid::base (
         require => Exec['ensure-grid-is-on-NFS'],
     }
 
-    # TODO: Remove after Puppet cycle.
-    file { '/var/mail':
-        ensure => directory,
-        owner  => 'root',
-        group  => 'mail',
-        mode   => '2775',
-    }
-
-    # TODO: Remove after Puppet cycle.
-    file { "${store}/mail":
-        ensure => absent,
-        force  => true,
-    }
-
     # Link to currently active proxy
     file { '/etc/active-proxy':
         ensure  => file,

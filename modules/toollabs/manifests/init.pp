@@ -134,20 +134,6 @@ class toollabs (
         }
     }
 
-    # TODO: Remove after Puppet cycle.
-    file { '/var/mail':
-        ensure => directory,
-        owner  => 'root',
-        group  => 'mail',
-        mode   => '2775',
-    }
-
-    # TODO: Remove after Puppet cycle.
-    file { "${store}/mail":
-        ensure => absent,
-        force  => true,
-    }
-
     # Link to currently active proxy
     $active_proxy = hiera('active_proxy_host')
     file { '/etc/active-proxy':
