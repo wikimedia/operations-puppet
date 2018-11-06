@@ -37,7 +37,7 @@ class profile::mediawiki::hhvm(
         hhvm              =>
         {
             xenon             => {
-                period => to_seconds('10 minutes'),
+                period => to_seconds('5 minutes'),
             },
             enable_reusable_tc => true,
             error_handling     => {
