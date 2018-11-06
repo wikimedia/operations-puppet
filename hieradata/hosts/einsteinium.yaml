@@ -3,4 +3,3 @@ profile::icinga::virtual_host: icinga.wikimedia.org
 profile::tcpircbot::ensure: present
 do_acme: true
 profile::icinga::max_concurrent_checks: 10000
-profile::base::notifications_enabled: '0'
