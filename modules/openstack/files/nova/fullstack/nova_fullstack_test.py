@@ -200,6 +200,7 @@ def verify_create(nova_connection,
                   image,
                   flavor,
                   timeout,
+                  network,
                   on_host=None):
     """ Create and ensure creation for an instance
     :param nova_connection: nova connection obj
@@ -217,9 +218,15 @@ def verify_create(nova_connection,
         else:
             availability_zone = None
 
+        if network:
+            nics = [{"net-id": network}]
+        else:
+            nics = None
+
         cserver = nova_connection.servers.create(name=name,
                                                  image=image.id,
                                                  flavor=flavor.id,
+                                                 network=nics,
                                                  availability_zone=availability_zone)
         while True:
             server = nova_connection.servers.get(cserver.id)
@@ -423,6 +430,12 @@ def main():
     )
 
     argparser.add_argument(
+        '--network',
+        default='',
+        help='Specify a Neutron network for VMs',
+    )
+
+    argparser.add_argument(
         '--statsd',
         default='statsd.eqiad.wmnet',
         help='Send statistics to statsd endpoint',
@@ -510,12 +523,18 @@ def main():
                                        cimage,
                                        cflavor,
                                        args.creation_timeout,
+                                       args.network,
                                        args.virthost)
             stat('verify.creation', vc)
 
-            addr = server.addresses['public'][0]['addr']
-            if not addr.startswith('10.'):
-                raise Exception("Bad address of {}".format(addr))
+            if 'public' in server.addresses:
+                addr = server.addresses['public'][0]['addr']
+                if not addr.startswith('10.'):
+                    raise Exception("Bad address of {}".format(addr))
+            else:
+                addr = server.addresses['lan-flat-cloudinstances2b'][0]['addr']
+                if not addr.startswith('172.'):
+                    raise Exception("Bad address of {}".format(addr))
 
             if not args.skip_dns:
                 host = '{}.{}.eqiad.wmnet'.format(server.name, server.tenant_id)

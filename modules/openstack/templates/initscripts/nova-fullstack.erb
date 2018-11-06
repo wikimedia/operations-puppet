@@ -1,4 +1,4 @@
-#!/usr/bin
+#!/bin/sh
 
 export OS_USERNAME="osstackcanary"
 export OS_PASSWORD="<%= @password %>"
@@ -11,6 +11,7 @@ export OS_REGION_NAME="<%= @region %>"
                                    --max-pool <%= @max_pool %>  \
                                    --project admin-monitoring \
                                    --prepend fullstackd \
+                                   --network <%= @network %> \
                                    --image debian-8.11-jessie \
                                    --flavor m1.small \
                                    --keyfile <%= @keyfile %> \
