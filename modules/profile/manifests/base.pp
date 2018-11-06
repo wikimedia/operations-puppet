@@ -91,7 +91,7 @@ class profile::base(
 
     create_resources('class', {'ssh::server' => $ssh_server_settings})
 
-    $nrpe_allowed_hosts = join($network::constants::special_hosts['production']['monitoring_hosts'], ',')
+    $nrpe_allowed_hosts = join($network::constants::special_hosts[$realm]['monitoring_hosts'], ',')
 
     class { '::nrpe':
         allowed_hosts => $nrpe_allowed_hosts,
