@@ -444,6 +444,7 @@ class network::constants {
                 ],
             'caches' => [ # So that roles with CACHES in ferm rules can be used in labs
                     '10.68.21.68', # novaproxy-01.project-proxy.eqiad.wmflabs
+                    '10.68.21.69', # novaproxy-02.project-proxy.eqiad.wmflabs
                 ],
             }
     }
