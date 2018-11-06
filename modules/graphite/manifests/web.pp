@@ -95,11 +95,11 @@ class graphite::web(
     }
 
     exec { 'graphite_syncdb':
-        command     => $syncdb_command,
-        user        => 'www-data',
-        subscribe   => File['/etc/graphite/local_settings.py'],
-        refreshonly => true,
-        require     => [
+        command   => $syncdb_command,
+        user      => 'www-data',
+        subscribe => File['/etc/graphite/local_settings.py'],
+        creates   => '/var/lib/graphite-web/graphite.db',
+        require   => [
             Package['graphite-web', 'python-memcache'],
             File['/var/lib/graphite-web'],
         ],
