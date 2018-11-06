@@ -9,6 +9,7 @@ class profile::openstack::main::nova::fullstack::service(
         nova_api_host      => $nova_api_host,
         osstackcanary_pass => $osstackcanary_pass,
         region             => $region,
+        network            => '',
     }
     if ($::fqdn == $nova_api_host) {
         class {'::openstack::nova::fullstack::monitor':}
