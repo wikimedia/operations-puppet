@@ -73,4 +73,20 @@ class profile::trafficserver::backend (
         description   => 'Ensure traffic_manager binds on $port and responds to HTTP requests',
         check_command => "check_http_hostheader_port_url!localhost!${port}!/_stats",
     }
+
+    $config_status_filename = '/usr/local/lib/nagios/plugins/check_trafficserver_config_status'
+
+    file { $config_status_filename:
+        ensure => present,
+        source => 'puppet:///modules/profile/trafficserver/check_trafficserver_config_status.sh',
+        mode   => '0555',
+        owner  => 'root',
+        group  => 'root',
+    }
+
+    nrpe::monitor_service { 'check_trafficserver_config_status':
+        description  => 'Check trafficserver config status',
+        nrpe_command => $config_status_filename,
+        require      => File[$config_status_filename],
+    }
 }
