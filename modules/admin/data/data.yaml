@@ -451,7 +451,7 @@ groups:
   mw-log-readers:
     gid: 760
     description: users who can login on mwlog hosts and read mediawiki logs
-    members: [tjones, addshore, matanya]
+    members: [tjones, matanya]
 
   apertium-admins:
     description: Group of apertium admins
