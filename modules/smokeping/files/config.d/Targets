@@ -194,10 +194,10 @@ menu = dns2002
 title = dns2002.wikimedia.org [D5]
 host = dns2002.wikimedia.org
 
-+++ tegmen
-menu = tegmen
-title = tegmen.wikimedia.org [C5]
-host = tegmen.wikimedia.org
++++ icinga2001
+menu = icinga2001
+title = icinga2001.wikimedia.org [C5]
+host = icinga2001.wikimedia.org
 
 +++ mwmaint2001
 menu = mwmaint2001
