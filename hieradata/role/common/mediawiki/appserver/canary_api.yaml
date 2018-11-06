@@ -14,5 +14,4 @@ profile::mediawiki::httpd::logrotate_retention: 12
 profile::lvs::realserver::pools:
   api:
     service: hhvm
-profile::mediawiki::vhost_feature_flags:
-  set_handler: true
+profile::mediawiki::vhost_feature_flags: {}
