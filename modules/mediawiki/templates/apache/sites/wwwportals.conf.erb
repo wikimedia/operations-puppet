@@ -1,3 +1,14 @@
+<%-
+def sethandler
+    <<-HEREDOC
+    <FilesMatch "\.php$">
+    # Send all php files to the FCGI backend (HHVM/PHP7)
+    # This takes precedence over the catchall in the general configuration
+        SetHandler "proxy:fcgi://127.0.0.1:9000"
+    </FilesMatch>
+    HEREDOC
+end
+-%>
 <VirtualHost *:80>
     ServerName wikipedia.<%= @domain_suffix %>
 
@@ -69,11 +80,7 @@
     # ErrorDocument defined in sites-available/01-main.conf should be served directly and not redirected
     RewriteCond %{REQUEST_URI} !=/w/404.php
     RewriteRule ^(.*)$ %{ENV:RW_PROTO}://en.wikipedia.<%= @domain_suffix %>$1 [R=301,L]
-
-    <IfModule mod_php5.c>
-        php_admin_flag engine on
-    </IfModule>
-
+<%= sethandler %>
 </VirtualHost>
 
 <VirtualHost *:80>
@@ -82,14 +89,12 @@
     UseCanonicalName off
 
     DocumentRoot /srv/mediawiki/docroot/m.wikipedia.org
-    <IfModule mod_php5.c>
-        php_admin_flag engine on
-    </IfModule>
 
     RewriteEngine On
 
     # Everything will be redirected to the appropriate lang.m.wikipedia.org or lang.zero.wikipedia.org based on zero configuration @ meta
     RewriteRule ^/$ /w/mobilelanding.php [L]
+<%= sethandler %>
 </VirtualHost>
 
 <VirtualHost *:80>
@@ -97,10 +102,6 @@
     ServerAlias m.wiktionary.<%= @domain_suffix %>
 
     DocumentRoot /srv/mediawiki/docroot/wwwportal
-    <IfModule mod_php5.c>
-        php_admin_flag engine on
-    </IfModule>
-
 
     RewriteEngine On
     RewriteRule . - [E=RW_PROTO:%{HTTP:X-Forwarded-Proto}]
@@ -126,6 +127,7 @@
     # ErrorDocument defined in sites-available/01-main.conf should be served directly and not redirected
     RewriteCond %{REQUEST_URI} !=/w/404.php
     RewriteRule ^(.*)$ %{ENV:RW_PROTO}://en.wiktionary.<%= @domain_suffix %>$1 [R=301,L]
+<%= sethandler %>
 </VirtualHost>
 
 <VirtualHost *:80>
@@ -133,10 +135,6 @@
     ServerAlias m.wikinews.<%= @domain_suffix %>
 
     DocumentRoot /srv/mediawiki/docroot/wwwportal
-    <IfModule mod_php5.c>
-        php_admin_flag engine on
-    </IfModule>
-
 
     RewriteEngine On
     RewriteRule . - [E=RW_PROTO:%{HTTP:X-Forwarded-Proto}]
@@ -162,6 +160,7 @@
     # ErrorDocument defined in sites-available/01-main.conf should be served directly and not redirected
     RewriteCond %{REQUEST_URI} !=/w/404.php
     RewriteRule ^(.*)$ %{ENV:RW_PROTO}://en.wikinews.<%= @domain_suffix %>$1 [R=301,L]
+<%= sethandler %>
 </VirtualHost>
 
 <VirtualHost *:80>
@@ -169,10 +168,6 @@
     ServerAlias m.wikiquote.<%= @domain_suffix %>
 
     DocumentRoot /srv/mediawiki/docroot/wwwportal
-    <IfModule mod_php5.c>
-        php_admin_flag engine on
-    </IfModule>
-
 
     RewriteEngine On
     RewriteRule . - [E=RW_PROTO:%{HTTP:X-Forwarded-Proto}]
@@ -198,6 +193,7 @@
     # ErrorDocument defined in sites-available/01-main.conf should be served directly and not redirected
     RewriteCond %{REQUEST_URI} !=/w/404.php
     RewriteRule ^(.*)$ %{ENV:RW_PROTO}://en.wikiquote.<%= @domain_suffix %>$1 [R=301,L]
+<%= sethandler %>
 </VirtualHost>
 
 <VirtualHost *:80>
@@ -205,10 +201,6 @@
     ServerAlias m.wikiversity.<%= @domain_suffix %>
 
     DocumentRoot /srv/mediawiki/docroot/wwwportal
-    <IfModule mod_php5.c>
-        php_admin_flag engine on
-    </IfModule>
-
 
     RewriteEngine On
     RewriteRule . - [E=RW_PROTO:%{HTTP:X-Forwarded-Proto}]
@@ -234,6 +226,7 @@
     # ErrorDocument defined in sites-available/01-main.conf should be served directly and not redirected
     RewriteCond %{REQUEST_URI} !=/w/404.php
     RewriteRule ^(.*)$ %{ENV:RW_PROTO}://en.wikiversity.<%= @domain_suffix %>$1 [R=301,L]
+<%= sethandler %>
 </VirtualHost>
 
 <VirtualHost *:80>
@@ -241,10 +234,6 @@
     ServerAlias m.wikibooks.<%= @domain_suffix %>
 
     DocumentRoot /srv/mediawiki/docroot/wwwportal
-    <IfModule mod_php5.c>
-        php_admin_flag engine on
-    </IfModule>
-
 
     RewriteEngine On
     RewriteRule . - [E=RW_PROTO:%{HTTP:X-Forwarded-Proto}]
@@ -270,6 +259,7 @@
     # ErrorDocument defined in sites-available/01-main.conf should be served directly and not redirected
     RewriteCond %{REQUEST_URI} !=/w/404.php
     RewriteRule ^(.*)$ %{ENV:RW_PROTO}://en.wikibooks.<%= @domain_suffix %>$1 [R=301,L]
+<%= sethandler %>
 </VirtualHost>
 
 <VirtualHost *:80>
@@ -277,10 +267,6 @@
     ServerAlias m.wikivoyage.<%= @domain_suffix %>
 
     DocumentRoot /srv/mediawiki/docroot/wwwportal
-    <IfModule mod_php5.c>
-        php_admin_flag engine on
-    </IfModule>
-
 
     RewriteEngine On
     RewriteRule . - [E=RW_PROTO:%{HTTP:X-Forwarded-Proto}]
@@ -311,6 +297,7 @@
     # ErrorDocument defined in sites-available/01-main.conf should be served directly and not redirected
     RewriteCond %{REQUEST_URI} !=/w/404.php
     RewriteRule ^(.*)$ %{ENV:RW_PROTO}://en.wikivoyage.<%= @domain_suffix %>$1 [R=301,L]
+<%= sethandler %>
 </VirtualHost>
 
 # vim: sts=4 sw=4 syn=apache autoindent
