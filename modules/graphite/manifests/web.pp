@@ -155,6 +155,7 @@ class graphite::web(
     exec { 'create_graphite_admin':
         command => "/usr/local/sbin/graphite-auth set ${admin_user} ${admin_pass}",
         unless  => "/usr/local/sbin/graphite-auth check ${admin_user} ${admin_pass}",
+        user    => 'www-data',
         require => File['/usr/local/sbin/graphite-auth'],
     }
 
