@@ -73,7 +73,7 @@ groups:
               bsitzmann, mholloway-shell, dduvall, dereckson,
               ladsgroup, bawolff, zfilipin, addshore, niharika29, ppchelko, pmiazga,
               musikanimal, jdrewniak, sbisson, imarlier, jforrester, mbsantos,
-              aaron, liw, sbassett, jdl, tarrow, lucaswerkmeister-wmde]
+              aaron, liw, sbassett, jdl, tarrow, lucaswerkmeister-wmde, wmde-leszek]
     privileges: ['ALL = (www-data,apache,mwdeploy,l10nupdate) NOPASSWD: ALL',
                  'ALL = NOPASSWD: /sbin/restart hhvm',
                  'ALL = NOPASSWD: /sbin/start hhvm',
@@ -2016,6 +2016,15 @@ users:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIHEX0SYMIuG9K+uTJRd1zVc0W+zFQvvdPyEaomSy07KO lucas.werkmeister@wikimedia.de
     uid: 16753
     email: lucas.werkmeister@wikimedia.de
+  wmde-leszek:
+    ensure: present
+    gid: 500
+    name: wmde-leszek
+    realname: Leszek Manicki
+    ssh_keys:
+      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDQzMlkh1GeOuyRRQDFEe3SzmldZhTmaAkCSl5lySO1pd4q8BQZ06l6rRMW5Rp1nxItb7ZQxBNQI1LEmtJ/z2a9Av0YCvjTkJ0sAb7E2gYSqezuI5CzUXwAB40/D6rjlJXUe9OiWu2sytTh9SLUemxPQZVztqYlrAk9wkfbMa2ni7xzs9OwtplUq5NVLDcbAD/AKPiVeOT7QpgoFrmZ4Bt7zdDFnQmzFWik/y7PMar6qMBvQusDt6QC7BMbJaZrsE3bES/xy9LJOASIGM4KPVLdlhA9c7J3sUL943NDe52XpD16FYhaJGwrjbruOXR++HWQxdH4aQ3HUd293NWykm8h
+    uid: 12300
+    email: leszek.manicki@wikimedia.de
   jminor:
     ensure: present
     gid: 500
@@ -3320,10 +3329,6 @@ ldap_only_users:
     ensure: present
     realname: Jan Dittrich
     email: jan.dittrich@wikimedia.de
-  wmde-leszek:
-    ensure: present
-    realname: Leszek Manicki
-    email: leszek.manicki@wikimedia.de
   jgleeson:
     ensure: present
     realname: Jack Gleeson
