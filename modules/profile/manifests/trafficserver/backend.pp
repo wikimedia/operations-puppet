@@ -86,7 +86,7 @@ class profile::trafficserver::backend (
 
     nrpe::monitor_service { 'check_trafficserver_config_status':
         description  => 'Check trafficserver config status',
-        nrpe_command => $config_status_filename,
+        nrpe_command => "sudo -u ${trafficserver::user} ${config_status_filename}",
         require      => File[$config_status_filename],
     }
 }
