@@ -1,0 +1,8 @@
+[Unit]
+Description=test instance lifecycle (create/setup/delete)
+
+[Service]
+ExecStart=/usr/local/bin/nova-fullstack
+
+[Install]
+WantedBy=multi-user.target
