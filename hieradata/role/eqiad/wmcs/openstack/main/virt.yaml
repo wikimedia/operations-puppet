@@ -4,3 +4,4 @@ admin::groups:
 profile::base::check_disk_critical: true
 
 contactgroups: wmcs-team,admins
+profile::base::notifications: critical

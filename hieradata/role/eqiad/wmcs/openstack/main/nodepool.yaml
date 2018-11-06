@@ -3,3 +3,4 @@ admin::groups:
   - contint-admins
 
 contactgroups: wmcs-team,admins
+profile::base::notifications: critical

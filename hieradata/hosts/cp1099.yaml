@@ -1,1 +1,1 @@
-profile::base::notifications_enabled: '0'
+profile::base::notifications: disabled

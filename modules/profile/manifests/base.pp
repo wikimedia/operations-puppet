@@ -10,7 +10,7 @@ class profile::base(
     $remote_syslog = hiera('profile::base::remote_syslog', ['syslog.eqiad.wmnet', 'syslog.codfw.wmnet']),
     $remote_syslog_tls = hiera('profile::base::remote_syslog_tls', []),
     $enable_rsyslog_exporter = hiera('profile::base::enable_rsyslog_exporter', false),
-    $notifications_enabled = hiera('profile::base::notifications_enabled', '1'),
+    Enum['critical', 'disabled', 'enabled'] $notifications = hiera('profile::base::notifications', 'enabled'),
     $monitor_systemd = hiera('profile::base::monitor_systemd', true),
     $core_dump_pattern = hiera('profile::base::core_dump_pattern', '/var/tmp/core/core.%h.%e.%p.%t'),
     $ssh_server_settings = hiera('profile::base::ssh_server_settings', {}),
@@ -121,6 +121,11 @@ class profile::base(
         class { '::base::auto_restarts': }
     }
 
+    $notifications_enabled = $notifications ? {
+        'disabled' => '0',
+        default    => '1',
+    }
+
     class { '::base::monitoring::host':
         contact_group            => $group_contact,
         nrpe_check_disk_options  => $check_disk_options,
@@ -133,6 +138,7 @@ class profile::base(
         raid_check_interval      => $check_raid_interval,
         raid_retry_interval      => $check_raid_retry,
         notifications_enabled    => $notifications_enabled,
+        is_critical              => ($notifications == 'critical'),
         monitor_systemd          => $monitor_systemd,
     }
 

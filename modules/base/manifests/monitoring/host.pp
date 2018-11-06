@@ -32,6 +32,7 @@ class base::monitoring::host(
     $raid_check_interval = 10,
     $raid_retry_interval = 10,
     $notifications_enabled = '1',
+    Boolean $is_critical = false,
     $monitor_systemd = true,
 ) {
     include ::base::puppet::params # In order to be able to use some variables
@@ -45,6 +46,7 @@ class base::monitoring::host(
 
     ::monitoring::host { $::hostname:
         notifications_enabled => $notifications_enabled,
+        critical              => $is_critical
     }
 
     ::monitoring::service { 'ssh':

@@ -9,4 +9,4 @@ cache::text::nodes:
     codfw:
       - 'cp1008.wikimedia.org'
 
-profile::base::notifications_enabled: '0'
+profile::base::notifications: disabled

@@ -1,2 +1,2 @@
 mariadb::shard: 'test-s4'
-profile::base::notifications_enabled: '0'
+profile::base::notifications: disabled

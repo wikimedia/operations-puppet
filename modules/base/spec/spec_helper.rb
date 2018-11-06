@@ -10,3 +10,4 @@ RSpec.configure do |c|
   c.template_dir = File.join(fixture_path, 'templates')
   c.hiera_config = File.join(fixture_path, 'hiera.yaml')
 end
+require_relative '../../../rake_modules/fix_service_provider'
