@@ -73,7 +73,7 @@ profile::trafficserver::backend::mapping_rules:
     - type: map
       target: http://graphite.wikimedia.org
       replacement: http://graphite1004.eqiad.wmnet
-      #replacement: http://graphite2001.codfw.wmnet
+      #replacement: http://graphite2003.codfw.wmnet
     - type: map
       target: http://horizon.wikimedia.org
       replacement: http://labweb.svc.eqiad.wmnet
