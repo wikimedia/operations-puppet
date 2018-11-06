@@ -2,3 +2,4 @@ fixtures:
     symlinks:
         nagios_common: "#{source_dir}"
         stdlib: "../../../../stdlib"
+        systemd: "../../../../systemd"
