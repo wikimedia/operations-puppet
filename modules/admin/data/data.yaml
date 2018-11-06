@@ -73,7 +73,7 @@ groups:
               bsitzmann, mholloway-shell, dduvall, dereckson,
               ladsgroup, bawolff, zfilipin, addshore, niharika29, ppchelko, pmiazga,
               musikanimal, jdrewniak, sbisson, imarlier, jforrester, mbsantos,
-              aaron, liw, sbassett, jdl]
+              aaron, liw, sbassett, jdl, tarrow]
     privileges: ['ALL = (www-data,apache,mwdeploy,l10nupdate) NOPASSWD: ALL',
                  'ALL = NOPASSWD: /sbin/restart hhvm',
                  'ALL = NOPASSWD: /sbin/start hhvm',
@@ -1998,6 +1998,15 @@ users:
       - ssh-rsa AAAAB3NzaC1yc2EAAAABJQAAAQEAzgRlylV838q00yOqBhigvoFWYSCZK8H9f8hR83AGsxY+guW335xYjWwgtvTPTJm5hZghIMB2RnHjt9uI8IEGic4kF3o7aM/002JWTpfCi0bEbJLNifJ9SkgTskHdYMAZwoN54ruMWLExG4arcF0wvz/z9o0eRTdzhZ1bdfggasrAcGH8CLhtKonjBTjaTyas758/EliZ8hiO9aPrQG4fYYdEDSUpS2ADKIcAm+sxujItjSSaIPGWFdRZDm7xkhvTK/n850/q9S7iu34uwxqp2Q1TuoTioWmDByjZO0FFj07pQsRQ5CdQ8unQairUMvDzY9nmyoRn5t4crnUmhbG4cw== rsa-key-20160809-wmfprod
     uid: 2178
     email: adam.shorland@wikimedia.de
+  tarrow:
+    ensure: present
+    gid: 500
+    name: tarrow
+    realname: Thomas Arrow
+    ssh_keys:
+      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIMz9obHO+vDMTPbP6av+fTEYwGcJZrtor/nifNWPGLfV 20181101_tarrow_wikiprod
+    uid: 3393
+    email: thomas.arrow_ext@wikimedia.de
   jminor:
     ensure: present
     gid: 500
@@ -3338,10 +3347,6 @@ ldap_only_users:
     ensure: present
     realname: Katie Horn
     email: khorn@wikimedia.org
-  tarrow:
-    ensure: present
-    realname: Thomas Arrow
-    email: thomas.arrow_ext@wikimedia.de
   bpirkle:
     ensure: present
     realname: Bill Pirkle
