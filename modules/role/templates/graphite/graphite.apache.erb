@@ -16,6 +16,11 @@
         SetHandler uwsgi-handler
     </Location>
 
+    Alias /static/ /usr/share/graphite-web/static/
+    <Location "/static/">
+        SetHandler None
+    </Location>
+
     <Location ~ "/(render|metrics|events/get_data)">
         Satisfy Any
         Allow from all
