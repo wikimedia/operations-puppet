@@ -3,8 +3,8 @@ profile::nutcracker::redis_pools:
     server_retry_timeout: 10000
     server_map:
       cp-1:
-        host: 10.64.32.76
-        port: 6382
+        host: 10.64.16.76
+        port: 6379
       cp-2:
         host: 10.64.0.201
         port: 6382
