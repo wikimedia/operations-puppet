@@ -422,14 +422,8 @@ class network::constants {
             'monitoring_hosts' => [
                     '10.68.21.15', # shinken-02.shinken.eqiad.wmflabs
                 ],
-            'deployment_hosts' => [
-                    '10.68.23.38',   # deployment-deploy01.deployment-prep.eqiad.wmflabs
-                    '10.68.23.98',   # deployment-deploy02.deployment-prep.eqiad.wmflabs
-                ],
-            'maintenance_hosts' => [
-                    '',  # deployment-terbium.deployment-prep.eqiad.wmflabs ?
-                    '',  # deployment-wasat.deployment-prep.eqiad.wmflabs ?
-                ],
+            'deployment_hosts' => hiera('network::allow_deployment_from_ips', []), # lint:ignore:wmf_styleguide
+            'maintenance_hosts' => hiera('network::allow_maintenance_from_ips', []), # lint:ignore:wmf_styleguide
             'cumin_masters' => [  # As seen by labs instances
                     '10.68.18.66',  # bastion-restricted-01.eqiad.wmflabs
                     '10.68.18.68',  # bastion-restricted-02.eqiad.wmflabs

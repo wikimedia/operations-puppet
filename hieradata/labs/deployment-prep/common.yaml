@@ -512,3 +512,7 @@ profile::mediawiki::vhost_feature_flags:
 
 wikimail_smarthost:
 - 'deployment-mx02.deployment-prep.eqiad.wmflabs'
+
+network::allow_deployment_from_ips:
+- '10.68.23.38' # deployment-deploy01.deployment-prep.eqiad.wmflabs
+- '10.68.23.98' # deployment-deploy02.deployment-prep.eqiad.wmflabs
