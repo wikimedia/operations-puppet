@@ -73,7 +73,7 @@ groups:
               bsitzmann, mholloway-shell, dduvall, dereckson,
               ladsgroup, bawolff, zfilipin, addshore, niharika29, ppchelko, pmiazga,
               musikanimal, jdrewniak, sbisson, imarlier, jforrester, mbsantos,
-              aaron, liw, sbassett, jdl, tarrow]
+              aaron, liw, sbassett, jdl, tarrow, lucaswerkmeister-wmde]
     privileges: ['ALL = (www-data,apache,mwdeploy,l10nupdate) NOPASSWD: ALL',
                  'ALL = NOPASSWD: /sbin/restart hhvm',
                  'ALL = NOPASSWD: /sbin/start hhvm',
@@ -2007,6 +2007,15 @@ users:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIMz9obHO+vDMTPbP6av+fTEYwGcJZrtor/nifNWPGLfV 20181101_tarrow_wikiprod
     uid: 3393
     email: thomas.arrow_ext@wikimedia.de
+  lucaswerkmeister-wmde:
+    ensure: present
+    gid: 500
+    name: lucaswerkmeister-wmde
+    realname: Lucas Werkmeister
+    ssh_keys:
+      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIHEX0SYMIuG9K+uTJRd1zVc0W+zFQvvdPyEaomSy07KO lucas.werkmeister@wikimedia.de
+    uid: 16753
+    email: lucas.werkmeister@wikimedia.de
   jminor:
     ensure: present
     gid: 500
@@ -3151,10 +3160,6 @@ ldap_only_users:
     ensure: present
     realname: Lydia Pintscher
     email: lydia.pintscher@wikimedia.de
-  lucaswerkmeister-wmde:
-    ensure: present
-    realname: Lucas Werkmeister
-    email: lucas.werkmeister@wikimedia.de
   mhernandez:
     ensure: present
     realname: Megan Hernandez
