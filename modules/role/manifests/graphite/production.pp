@@ -129,4 +129,5 @@ class role::graphite::production {
     }
 
     backup::set { 'var-lib-carbon-whisper-coal': }
+    backup::set { 'var-lib-graphite-web-graphite-db': }
 }

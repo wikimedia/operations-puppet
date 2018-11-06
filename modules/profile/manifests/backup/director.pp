@@ -123,6 +123,9 @@ class profile::backup::director(
     bacula::director::fileset { 'var-lib-carbon-whisper-coal':
         includes => [ '/var/lib/carbon/whisper/coal' ]
     }
+    bacula::director::fileset { 'var-lib-graphite-web-graphite-db':
+        includes => [ '/var/lib/graphite-web/graphite.db' ]
+    }
     bacula::director::fileset { 'var-lib-jenkins-backups':
         includes => [ '/var/lib/jenkins/backups' ]
     }
