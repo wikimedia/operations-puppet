@@ -58,10 +58,12 @@ class profile::mediawiki::php(
     # Extensions that need no custom settings
     php::extension { [
         'apcu',
+        'bcmath',
         'bz2',
         'curl',
         'gd',
         'geoip',
+        'gmp',
         'intl',
         'luasandbox',
         'mbstring',
