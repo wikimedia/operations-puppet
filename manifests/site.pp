@@ -793,8 +793,8 @@ node 'eeden.wikimedia.org' {
     interface::add_ip6_mapped { 'main': }
 }
 
-# icinga based monitoring hosts (einsteinium = eqiad, tegmen = codfw)
-node 'einsteinium.wikimedia.org', 'tegmen.wikimedia.org' {
+# icinga based monitoring host on jessie (icinga1001/icinga2001 replacing it)
+node 'einsteinium.wikimedia.org' {
     role(alerting_host)
     interface::add_ip6_mapped { 'main': }
 }
@@ -1118,7 +1118,7 @@ node /^install[12]002\.wikimedia\.org$/ {
 }
 
 # new icinga system to replace einsteinium T201344
-node 'icinga1001.wikimedia.org' {
+node /^icinga[12]001\.wikimedia.org$/ {
     role(alerting_host)
     interface::add_ip6_mapped { 'main': }
 }

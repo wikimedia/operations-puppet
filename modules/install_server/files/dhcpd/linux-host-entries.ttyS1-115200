@@ -6492,11 +6492,9 @@ host stat1007 {
     fixed-address stat1007.eqiad.wmnet;
 }
 
-host tegmen {
+host icinga2001 {
     hardware ethernet 14:18:77:33:42:F8;
-    fixed-address tegmen.wikimedia.org;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
-    filename "lpxelinux.0";
+    fixed-address icinga2001.wikimedia.org;
 }
 
 host torrelay1001 {
