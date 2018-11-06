@@ -226,7 +226,7 @@ def verify_create(nova_connection,
         cserver = nova_connection.servers.create(name=name,
                                                  image=image.id,
                                                  flavor=flavor.id,
-                                                 network=nics,
+                                                 nics=nics,
                                                  availability_zone=availability_zone)
         while True:
             server = nova_connection.servers.get(cserver.id)
