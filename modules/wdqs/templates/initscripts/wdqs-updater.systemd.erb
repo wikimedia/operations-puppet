@@ -4,6 +4,8 @@ Wants=wdqs-blazegraph.service
 After=wdqs-blazegraph.service
 ConditionPathExists=<%= @data_dir %>/wikidata.jnl
 ConditionPathExists=<%= @data_dir %>/data_loaded
+StartLimitIntervalSec=300
+StartLimitBurst=5
 
 [Service]
 Type=simple
@@ -13,8 +15,6 @@ User=<%= @username %>
 StandardOutput=journal+console
 Restart=always
 RestartSec=10
-StartLimitBurst=5
-StartLimitIntervalSec=300
 SyslogIdentifier=%N
 
 [Install]
