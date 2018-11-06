@@ -22,12 +22,10 @@ class role::graphite::production {
         c_relay_settings => {
             forward_clusters => {
                 'default'   => [
-                  'graphite1001.eqiad.wmnet:1903',
                   'graphite1004.eqiad.wmnet:1903',
                   'graphite2003.codfw.wmnet:1903',
                 ],
                 'big_users' => [
-                  'graphite1003.eqiad.wmnet:1903',
                   'graphite1004.eqiad.wmnet:1903',
                   'graphite2003.codfw.wmnet:1903',
                 ]
@@ -81,8 +79,6 @@ class role::graphite::production {
     }
 
     $graphite_hosts = [
-        'graphite1001.eqiad.wmnet',
-        'graphite1003.eqiad.wmnet',
         'graphite1004.eqiad.wmnet',
         'graphite2003.codfw.wmnet',
     ]
