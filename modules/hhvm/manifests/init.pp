@@ -121,6 +121,10 @@ class hhvm(
         date         => { timezone => 'UTC' },
         include_path => '.:/usr/share/php',
 
+        pcre         => {
+            backtrack_limit => 5000000, # T201184
+        },
+
         hhvm         => {
             dynamic_extension_path   => '/usr/lib/x86_64-linux-gnu/hhvm/extensions/20150212',
             dynamic_extensions       => $dynamic_extensions,
