@@ -6024,8 +6024,6 @@ host rdb1004 {
 host rdb1005 {
     hardware ethernet 14:18:77:33:46:B1;
     fixed-address rdb1005.eqiad.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
-    filename "lpxelinux.0";
 }
 
 host rdb1006 {
