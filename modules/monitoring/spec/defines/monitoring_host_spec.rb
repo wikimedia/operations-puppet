@@ -28,7 +28,8 @@ describe 'monitoring::host' do
         :has_ipmi        => true,
         :ipmi_lan        => { :ipaddress => '2.2.2.2', },
         :lsbdistrelease  => '9.3',
-        :lsbdistid       => 'Debian'
+        :lsbdistid       => 'Debian',
+        :initsystem      => 'systemd',
       }
     }
     let(:title) { 'ahost' }
@@ -93,7 +94,8 @@ describe 'monitoring::host' do
         :lldp_parent     => 'ahosts_parent',
         :has_ipmi        => false,
         :lsbdistrelease  => '9.3',
-        :lsbdistid       => 'Debian'
+        :lsbdistid       => 'Debian',
+        :initsystem      => 'systemd',
       }
     }
     let(:title) { 'ahost' }
@@ -153,7 +155,8 @@ describe 'monitoring::host' do
         :has_ipmi        => true,
         :ipmi_lan        => { :ipaddress => '2.2.2.2', },
         :lsbdistrelease  => '9.3',
-        :lsbdistid       => 'Debian'
+        :lsbdistid       => 'Debian',
+        :initsystem      => 'systemd',
       }
     }
 
