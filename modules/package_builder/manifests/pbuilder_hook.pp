@@ -45,6 +45,15 @@ define package_builder::pbuilder_hook(
         content => template('package_builder/D05localsources.erb'),
     }
 
+    # on stretch, add a hook for building php 7.2 packages, T208433
+    # TODO: remove this addition once we move off stretch.
+    file { "${basepath}/hooks/${distribution}/D04php72":
+        ensure => present,
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0555',
+        source => 'puppet:///modules/package_builder/hooks/D04php72'
+    }
 
     # Dependency info
     File["${basepath}/hooks/${distribution}"] -> File["${basepath}/hooks/${distribution}/C10shell.wikimedia.org"]
