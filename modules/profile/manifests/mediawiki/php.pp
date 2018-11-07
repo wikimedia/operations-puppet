@@ -1,4 +1,4 @@
-# === Class mediawiki::packages::php7
+# === Class profile::mediawiki::php
 #
 # This class declares packages that make up Wikimedia's PHP7-based
 # MediaWiki deployment stack. We'll be moving to this by mid-2018.
@@ -13,6 +13,7 @@
 # geoip - fundraising
 # intl, mbstring, xml - MediaWiki dependencies
 # memcached, mysql, redis - obvious from the name
+# bcmath, gmp - various extensions and vendor libraries
 #
 class profile::mediawiki::php(
     Boolean $enable_fpm = hiera('profile::mediawiki::php::enable_fpm'),
