@@ -9,7 +9,7 @@ class profile::toolforge::bastion(
     $active_cronrunner = hiera('profile::toolforge::active_cronrunner'),
 ){
     # admin_host???
-    class {'::gridengine::submit_host': }
+    class {'::sonofgridengine::submit_host': }
     include profile::toolforge::dev_environ
     include profile::toolforge::grid::exec_environ
 

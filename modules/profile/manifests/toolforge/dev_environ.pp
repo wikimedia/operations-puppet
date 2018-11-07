@@ -44,9 +44,12 @@ class profile::toolforge::dev_environ {
             'libboost-python1.54-dev',
             'redis-tools',
             'openjdk-7-jdk',
+            'mytop',                       # T58999
             'libpng12-dev',
             'libtiff4-dev', # T54717
             'tcl8.5-dev',
+            'libgdal1-dev',                # T58995
+            'sbt',
         ]:
             ensure  => latest,
         }
@@ -60,8 +63,11 @@ class profile::toolforge::dev_environ {
             'libboost-python1.55-dev',
             'openjdk-7-jdk',
             'libpng12-dev',
+            'mytop',                       # T58999
             'libtiff4-dev', # T54717
             'tcl8.5-dev',
+            'libgdal1-dev',                # T58995
+            'sbt',
         ]:
             ensure  => latest,
         }
@@ -77,6 +83,9 @@ class profile::toolforge::dev_environ {
             'libpng-dev',
             'libtiff5-dev',  # T54717
             'tcl-dev',
+            'libgdal-dev',                # T58995
+            'mariadb-client-10.1',
+            # sbt is not in the official repos -- scala is not well supported
         ]:
             ensure  => latest,
         }
@@ -104,7 +113,6 @@ class profile::toolforge::dev_environ {
         'libdmtx-dev',                 # T55867.
         'libfcgi-dev',                 # T54902.
         'libfreetype6-dev',
-        'libgdal1-dev',                # T58995
         'libgeoip-dev',                # T64649
         'libldap2-dev',                # T114388
         'libproj-dev',                 # T58995
@@ -124,14 +132,12 @@ class profile::toolforge::dev_environ {
         'maven',
         'mc', # Popular{{cn}} on Toolserver
         'mercurial',
-        'mytop',                       # T58999
         'pastebinit',
         'pep8',                        # T59863
         'qt4-qmake',
         'rake',                        # T120287
         'rlwrap',                      # T87368
         'ruby-dev',                    # T120287
-        'sbt',
         'subversion',
         'tig',
         'valgrind',                    # T87117.
