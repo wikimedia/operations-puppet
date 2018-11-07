@@ -8,7 +8,7 @@ class noc {
 
     apache::def { 'HHVM': }
 
-    include ::mediawiki::web::php_engine
+    include ::noc::php_engine
 
     include ::apache::mod::rewrite
     include ::apache::mod::headers

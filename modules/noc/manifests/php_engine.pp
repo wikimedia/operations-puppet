@@ -1,6 +1,6 @@
-# === Class mediawiki::web::php_engine
+# === Class noc::php_engine
 # Configures apache to serve requests via HHVM/any other FastCGI backend
-class mediawiki::web::php_engine($catchall_ensure=present) {
+class noc::php_engine($catchall_ensure=present) {
     include ::apache::mod::proxy_fcgi
 
     apache::mod_conf { 'mod_php5':
