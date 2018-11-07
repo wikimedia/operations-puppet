@@ -420,7 +420,6 @@ class network::constants {
                     '172.16.1.135', # bastion-restricted-eqiad1-01.eqiad.wmflabs
                 ], hiera('network::allow_ssh_from_ips', [])), # Allow labs projects to setup their own ssh origination points
             'monitoring_hosts' => [
-                    '10.68.16.210', # shinken-01.shinken.eqiad.wmflabs
                     '10.68.21.15', # shinken-02.shinken.eqiad.wmflabs
                 ],
             'deployment_hosts' => [
