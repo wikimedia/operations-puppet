@@ -86,7 +86,7 @@ class profile::mediawiki::common(
     }
 
 
-    # TODO: move to role::mediawiki::webserver ?
+    # TODO: move to profile::mediawiki::webserver ?
     ferm::service{ 'ssh_pybal':
         proto  => 'tcp',
         port   => '22',

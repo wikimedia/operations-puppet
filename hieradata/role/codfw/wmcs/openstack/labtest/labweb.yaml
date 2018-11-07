@@ -63,8 +63,6 @@ striker::uwsgi::secret_config:
 apache::logrotate::period: 'daily'
 apache::logrotate::rotate: 30
 
-role::mediawiki::webserver::tls: false
-
 profile::openstack::labtest::version: ocata
 
 profile::openstack::base::nutcracker::redis::shards:
