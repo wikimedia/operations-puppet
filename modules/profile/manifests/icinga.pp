@@ -13,6 +13,7 @@ class profile::icinga(
     String $virtual_host = hiera('profile::icinga::virtual_host'),
     String $icinga_user = hiera('profile::icinga::icinga_user', 'icinga'),
     String $icinga_group = hiera('profile::icinga::icinga_group', 'icinga'),
+    Stdlib::Unixpath $retention_file = hiera('profile::icinga::retention_file', '/var/cache/icinga/retention.dat'),
     Integer $max_concurrent_checks = hiera('profile::icinga::max_concurrent_checks', 0),
 ){
     $is_passive = !($::fqdn == $active_host)
@@ -100,6 +101,7 @@ class profile::icinga(
         icinga_user           => $icinga_user,
         icinga_group          => $icinga_group,
         max_concurrent_checks => $max_concurrent_checks,
+        retention_file        => $retention_file,
     }
 
     class { '::icinga::web':

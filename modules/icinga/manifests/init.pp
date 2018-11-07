@@ -23,6 +23,7 @@ class icinga(
     Array[Stdlib::Unixpath] $cfg_dirs = [
         '/etc/icinga/commands'
     ],
+    Stdlib::Unixpath $retention_file = '/var/cache/icinga/retention.dat',
     Integer $max_concurrent_checks = 0,
 ) {
 

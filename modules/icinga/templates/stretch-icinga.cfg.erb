@@ -701,9 +701,7 @@ retain_state_information=1
 # This file is used only if the retain_state_information
 # variable is set to 1.
 
-state_retention_file=/var/cache/icinga/retention.dat
-
-
+state_retention_file=<%= @retention_file || '/var/lib/icinga/retention.dat' %>
 
 # SYNC FILE
 # This is an advanced facility to pass a subset of retention
