@@ -6,9 +6,11 @@ cache::upload::nodes:
     - 'cp2011.codfw.wmnet'
     - 'cp2014.codfw.wmnet'
     - 'cp2017.codfw.wmnet'
+    - 'cp2018.codfw.wmnet'
     - 'cp2020.codfw.wmnet'
     - 'cp2022.codfw.wmnet'
     - 'cp2024.codfw.wmnet'
+    - 'cp2025.codfw.wmnet'
     - 'cp2026.codfw.wmnet'
   eqiad:
     - 'cp1076.eqiad.wmnet'
