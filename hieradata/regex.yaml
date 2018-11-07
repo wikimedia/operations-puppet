@@ -257,3 +257,7 @@ mediawiki_test_environment:
     set_handler: true
     serve_php7: true
   profile::mediawiki::php::enable_fpm: true
+
+rsyslog_exporter_rollout:
+  __regex: !ruby/regexp /^(graphite2001|bast400[12]|cp4021|dns4001).*/
+  profile::base::enable_rsyslog_exporter: true
