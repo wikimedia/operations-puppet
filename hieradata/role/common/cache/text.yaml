@@ -20,9 +20,9 @@ cache::websocket_support: true
 cache::route_table:
   eqiad: 'codfw'
   codfw: 'eqiad'
-  ulsfo: 'eqiad'
+  ulsfo: 'codfw'
   esams: 'eqiad'
-  eqsin: 'eqiad'
+  eqsin: 'codfw'
 cache::app_def_be_opts:
   port: 80
   connect_timeout: '3s'
