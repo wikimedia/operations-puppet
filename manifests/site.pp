@@ -1943,7 +1943,7 @@ node /^pybal-test200[123]\.codfw\.wmnet$/ {
     interface::add_ip6_mapped { 'main': }
 }
 
-node /^rdb100[1357]\.eqiad\.wmnet$/ {
+node /^rdb100[137]\.eqiad\.wmnet$/ {
     role(jobqueue_redis::master)
 }
 
@@ -1952,6 +1952,11 @@ node /^rdb100[2468]\.eqiad\.wmnet/ {
 }
 
 # New rdb servers T206450 
+
+node 'rdb1005.eqiad.wmnet'{
+    role(spare::system)
+}
+
 node 'rdb1009.eqiad.wmnet' {
     role(redis::misc::master)
 }
