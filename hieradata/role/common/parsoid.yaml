@@ -5,3 +5,4 @@ cluster: parsoid
 profile::lvs::realserver::pools:
   parsoid:
     service: parsoid
+diamond::remove: true

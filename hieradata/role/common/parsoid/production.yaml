@@ -2,4 +2,3 @@ admin::groups:
   - parsoid-roots
   - parsoid-admin
 cluster: parsoid
-diamond::remove: true
