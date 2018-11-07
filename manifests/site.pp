@@ -280,7 +280,7 @@ node /^cp10(7[68]|8[02468]|90)\.eqiad\.wmnet$/ {
     role(cache::upload)
 }
 
-node /^cp20(0[147]|1[0369]|23)\.codfw\.wmnet$/ {
+node /^cp20(0[1467]|1[02369]|23)\.codfw\.wmnet$/ {
     interface::add_ip6_mapped { 'main': }
     role(cache::text)
 }
@@ -297,7 +297,7 @@ node /^cp20(0[39]|15|21)\.codfw\.wmnet$/ {
 }
 
 # ex cp-misc_codfw
-node /^cp20(06|1[28]|25)\.codfw\.wmnet$/ {
+node /^cp20(18|25)\.codfw\.wmnet$/ {
     role(spare::system)
 }
 
