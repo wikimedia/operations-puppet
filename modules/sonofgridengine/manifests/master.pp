@@ -112,6 +112,14 @@ class sonofgridengine::master (
         source => 'puppet:///modules/sonofgridengine/config-99-default',
     }
 
+    file {'/usr/local/bin/grid-configurator':
+        ensure => file,
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0755',
+        source => 'puppet:///modules/sonofgridengine/grid_configurator/grid_configurator.py',
+    }
+
     exec { 'update-config-conf':
         onlyif  => "${etcdir}/bin/mergeconf ${etcdir}/config.conf ${etcdir}/config/*",
         command => "/bin/echo /usr/bin/qconf -Mconf ${etcdir}/config.conf",
