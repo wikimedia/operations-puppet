@@ -124,9 +124,6 @@ mcrouter::shards:
       shard10:
         host: 10.192.32.160
         port: 11211
-      shard11:
-        host: 10.192.32.161
-        port: 11211
       shard12:
         host: 10.192.32.162
         port: 11211
