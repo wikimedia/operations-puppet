@@ -68,12 +68,12 @@ class openstack::util::admin_scripts(
         require => File['/root/novastats'],
     }
 
-    file { '/root/novastats/diskspace.py':
+    file { '/root/novastats/capacity.py':
         ensure  => 'present',
         owner   => 'root',
         group   => 'root',
         mode    => '0755',
-        source  => "puppet:///modules/openstack/${version}/admin_scripts/novastats/diskspace.py",
+        source  => "puppet:///modules/openstack/${version}/admin_scripts/novastats/capacity.py",
         require => File['/root/novastats'],
     }
 

@@ -66,6 +66,30 @@ for host in hosts:
     if host.service == 'compute':
         computenodedict[host.host_name] = {"instances": {}}
 
+        # Learn about CPU usage
+        args = ["ssh", "-i", "/root/.ssh/compute-hosts-key",
+                "nova@%s.eqiad.wmnet" % host.host_name,
+                "mpstat 10 1"]
+        r = subprocess.check_output(args)
+        for line in r.split('\n'):
+            fields = line.split()
+            if fields:
+                if fields[0] == 'Average:':
+                    computenodedict[host.host_name]['cpuidle'] = float(fields[11])
+
+        # Learn about available RAM on this host
+        args = ["ssh", "-i", "/root/.ssh/compute-hosts-key",
+                "nova@%s.eqiad.wmnet" % host.host_name,
+                "free"]
+        r = subprocess.check_output(args)
+        for line in r.split('\n'):
+            fields = line.split()
+            if fields:
+                if fields[0] == 'Mem:':
+                    computenodedict[host.host_name]['freetotal'] = int(fields[1])
+                elif fields[0] == '-/+':
+                    computenodedict[host.host_name]['freefree'] = int(fields[3])
+
         # Learn about available space on this host
         args = ["ssh", "-i", "/root/.ssh/compute-hosts-key",
                 "nova@%s.eqiad.wmnet" % host.host_name,
@@ -110,19 +134,22 @@ for host in hosts:
             else:
                 all_disk_instances[instance] = [host.host_name]
 
+
 fsduplicates = [instance for instance in all_disk_instances.keys()
                 if len(all_disk_instances[instance]) > 1]
+
 
 for instance in fsduplicates:
     printstat("In filesystem twice: %s (%s)" % (instance, all_disk_instances[instance]), True)
 
-instances = clients.allinstances(allregions=True)
+instances = clients.allinstances()
 
 all_nova_instances = [instance.id for instance in instances]
 for instance in instances:
     if instance.id in all_disk_instances:
         host = all_disk_instances[instance.id][0]
         computenodedict[host]['novainstances'] += [instance]
+
 
 novaduplicates = [instance for instance, count in
                   collections.Counter(all_nova_instances).items() if count > 1]
@@ -175,3 +202,8 @@ for hostname in computenodedict.keys():
 
     percent = float(maxusage) / float(hostdict['dftotal']) * 100
     printstat("Maximum disk commitment: %.2f%%" % percent, percent > 150)
+
+    percent = 100 - float(hostdict['freefree']) / float(hostdict['freetotal']) * 100
+    printstat("%.2f%% used RAM" % percent, percent > 90)
+
+    printstat("CPU 10-second idle: %.2f%%" % hostdict['cpuidle'])
