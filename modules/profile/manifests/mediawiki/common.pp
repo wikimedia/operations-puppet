@@ -37,15 +37,6 @@ class profile::mediawiki::common(
     include ::profile::mediawiki::hhvm
     include ::profile::mediawiki::php
 
-    # This profile is used to contain the convert command of imagemagick using
-    file { '/etc/firejail/mediawiki-imagemagick.profile':
-        source  => 'puppet:///modules/mediawiki/mediawiki-imagemagick.profile',
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0644',
-        require => Package['firejail'],
-    }
-
     file { '/usr/local/bin/mediawiki-firejail-convert':
         source => 'puppet:///modules/mediawiki/mediawiki-firejail-convert',
         owner  => 'root',
