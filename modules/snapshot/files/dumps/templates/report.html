@@ -88,6 +88,15 @@
                 See <a href="http://meta.wikimedia.org/wiki/Data_dumps">Meta:Data dumps</a>
                 for documentation on the provided data formats.
         </p>
+        <p>
+          The 7zip decoder on Windows is known to have
+          <a href="https://phabricator.wikimedia.org/T208647">problems</a> with some bz2-format
+          files for larger wikis; we recommend the use of bzip2 for Windows for these cases.
+        </p>
+        <p>
+          Please report problems with these dumps on Phabricator and add the
+          <a href="https://phabricator.wikimedia.org/project/profile/1519/">Dumps-generation</a> tag.
+        </p>
         <p class="notice">%(notice)s</p>
 
         <p>See <a href="../../%(index)s">all databases list</a>.</p>
