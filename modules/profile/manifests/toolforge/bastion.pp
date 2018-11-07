@@ -361,9 +361,6 @@ class profile::toolforge::bastion(
         ensure  => absent,
     }
 
-    class {'::ldap::config::labs': }
-    $ldapconfig = $ldap::config::labs::ldapconfig
-
     file { '/etc/toollabs-cronhost':
         ensure  => file,
         owner   => 'root',
