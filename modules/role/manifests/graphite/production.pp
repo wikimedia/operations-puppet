@@ -12,8 +12,6 @@ class role::graphite::production {
     include ::profile::backup::host
     include ::profile::statsd # all graphite hosts also include statsd
 
-    interface::rps { $facts['interface_primary']: }
-
     class { '::httpd':
         modules => ['headers', 'rewrite', 'proxy', 'proxy_http', 'uwsgi', 'authnz_ldap'],
     }
