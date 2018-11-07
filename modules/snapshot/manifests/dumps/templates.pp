@@ -41,14 +41,6 @@ class snapshot::dumps::templates {
         group  => 'root',
         source => 'puppet:///modules/snapshot/dumps/templates/legal.html',
     }
-    file { "${templsdir}/progress.html":
-        ensure => 'present',
-        path   => "${templsdir}/progress.html",
-        mode   => '0644',
-        owner  => 'root',
-        group  => 'root',
-        source => 'puppet:///modules/snapshot/dumps/templates/progress.html',
-    }
     file { "${templsdir}/report.html":
         ensure => 'present',
         path   => "${templsdir}/report.html",
