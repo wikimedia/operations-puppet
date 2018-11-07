@@ -209,6 +209,7 @@ def main():
         sys.exit("you have specified no valid grid configuration domains")
 
     for domain in domains:
+        logging.debug('Running configuration updates for %s', domain)
         grid_conf_cls = select_object(domain)
         try:
             conf_files = os.listdir(os.path.join(args.config_dir, domain))
