@@ -83,6 +83,7 @@ class profile::toolforge::dev_environ {
             'libpng-dev',
             'libtiff5-dev',  # T54717
             'tcl-dev',
+            'libkml-dev',
             'libgdal-dev',                # T58995
             'mariadb-client-10.1',
             # sbt is not in the official repos -- scala is not well supported
