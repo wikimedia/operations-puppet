@@ -1,5 +1,7 @@
 class profile::logster_alarm {
 
+    require_package('python-yaml')
+
     file{ '/etc/logster':
         ensure => 'directory',
         owner  => 'root',
@@ -14,14 +16,14 @@ class profile::logster_alarm {
         mode   => '0675',
     }
 
-    file{ '/etc/logster/badpass-priv':
+    file{ '/etc/logster/badpass-priv.yaml':
         ensure => 'file',
         owner  => 'root',
         group  => 'deployment',
         mode   => '0675',
     }
 
-    file{ '/etc/logster/csp':
+    file{ '/etc/logster/csp.yaml':
         ensure => 'file',
         owner  => 'root',
         group  => 'deployment',
@@ -66,13 +68,13 @@ class profile::logster_alarm {
     logster::job{'csp':
         parser          => '--output stdout AlarmCounterLogster',
         logfile         => '/srv/mw-log/csp-report-only.log',
-        logster_options => "--parser-option='-a /etc/logster/csp -s /srv/security/logs/csp-report-only.log -n CSP -e logsteralarms@wikimedia.org'",
+        logster_options => "--parser-option='-a /etc/logster/csp.yaml -s /srv/security/logs/csp-report-only.log -n CSP -e logsteralarms@wikimedia.org'",
     }
 
     logster::job{'badpass_priv':
         parser          => '--output stdout AlarmCounterLogster',
         logfile         => '/srv/mw-log/badpass-priv.log',
-        logster_options => "--parser-option='-a /etc/logster/badpass-priv -s /srv/security/logs/badpass-priv.log -n badpass-priv -e logsteralarms@wikimedia.org'",
+        logster_options => "--parser-option='-a /etc/logster/badpass-priv.yaml -s /srv/security/logs/badpass-priv.log -n badpass-priv -e logsteralarms@wikimedia.org'",
     }
 
     # TODO: set configurable rate to alarm

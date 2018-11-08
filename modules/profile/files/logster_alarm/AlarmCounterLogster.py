@@ -1,10 +1,31 @@
 # This is in anticipation of a better solution
 # This is a logster parser(hack) where we look for
 # instances of defined strings, count them, extract lines and log them elsewhere
+
+# Example YAML config:
+#
+# regex:
+#  csp_warn:
+#    pattern: 'Received\sCSP\sreport:\s<(.+?)>\sblocked\sfrom\sbeing\sloaded\son\s<(https://.+?)>'
+#    fields:
+#      uri:
+#        position: 1
+#        keys:
+#          - baduri
+#          - worseuri
+#      project:
+#        position: 2
+#        keys:
+#          - badproject
+#          - worseproject
+
+
 import datetime
 import optparse
 import smtplib
+import re
 import socket
+import yaml
 
 from logster.logster_helper import MetricObject, LogsterParser
 
@@ -39,6 +60,7 @@ class AlarmCounterLogster(LogsterParser):
     def __init__(self, option_string=None):
 
         self.line_count = 0
+        self.alarm_count = 0
 
         optparser = optparse.OptionParser()
         optparser.add_option('--savefile', '-s', dest='savefile', default=None,
@@ -73,17 +95,23 @@ class AlarmCounterLogster(LogsterParser):
             with open('myfile', 'w') as f:
                 f.close()
 
-        with open(self.alarmfile) as al:
-            raw_alarming = al.readlines()
-            alarming = [x.lower().strip().strip('\n') for x in raw_alarming]
+        with open(self.alarmfile) as f:
+            settings = yaml.safe_load(f)
 
-        self.alarms = alarming
-        self.header = "{} Alarms({}): {}".format(datetime.datetime.now(),
-                                                 self.alarmfile,
-                                                 ', '.join(self.alarms))
-        self.alarm_match = dict((k.lower(), []) for k in self.alarms)
+        header = '{} Alarms[{}]'.format(datetime.datetime.now(),
+                                        self.alarmfile)
 
-        self.write(self.header)
+        # create header for runs that persists to emails and log file
+        for re_name, re_meta in settings['regex'].iteritems():
+            ren_name = ' - {}'.format(re_name)
+            for field, attr in re_meta['fields'].iteritems():
+                if attr['keys']:
+                    ren_name += '({}: {})'.format(field, ','.join(attr['keys']))
+            header += ren_name
+
+        self.re_matches = {}
+        self.settings = settings
+        self.header = header
 
     def write(self, line):
 
@@ -94,28 +122,54 @@ class AlarmCounterLogster(LogsterParser):
             a.write(str(line) + '\n')
 
     def parse_line(self, line):
-        '''This function should digest the contents of one line at a time, updating
-        object's state variables. Takes a single argument, the line to be parsed.'''
 
-        for alarm in self.alarms:
-            if alarm.lower() in line.lower():
-                self.alarm_match[alarm.lower()].append(line)
-                self.line_count += 1
+        self.line_count += 1
 
-        for k, v in self.alarm_match.iteritems():
-            for log_match in v:
-                self.write("{}) {}".format(k, log_match))
+        # Find regex matches and build a dict of tuples
+        # for confirmed matches and later processing
+        for re_name, re_meta in self.settings['regex'].iteritems():
+            if re_name not in self.re_matches:
+                self.re_matches[re_name] = []
+            match = re.search(re_meta['pattern'], line)
+            if match:
+                self.re_matches[re_name].append((match,
+                                                 re_meta,
+                                                 line))
 
-    def notify(self, rate):
+    def keyword_match(self):
+        keyword_hits = []
+        for re_name, re_match in self.re_matches.iteritems():
+            for item in re_match:
+                result = item[0]
+                config = item[1]
+                for k, v in config['fields'].iteritems():
+                    extracted = result.group(v['position'])
+                    for key in v['keys']:
+                        if key in extracted:
+                            content = (re_name,
+                                       k,
+                                       key,
+                                       extracted,
+                                       result.group())
+                            self.alarm_count += 1
+                            keyword_hits.append(content)
+
+        return keyword_hits
+
+    def notify(self, rate, keyword_matches):
 
         body = ''
         body += self.header
         body += '\n\n'
-        body += 'Overall match rate {}\n'.format(str(rate))
-        body += 'Alarm matches:\n'
-        for k, v in self.alarm_match.iteritems():
-            if v:
-                body += '{}: {}\n'.format(k, len(v))
+        body += 'Logging rate is {}\n'.format(str(rate))
+        body += 'Alarm match count is {}\n'.format(self.alarm_count)
+
+        for hit in keyword_matches:
+            hit_msg = "({}) {} found in {} {}".format(hit[0], hit[2], hit[1], hit[3])
+            hit_msg += " with extract {}".format(hit[4])
+            self.write(hit_msg)
+            body += hit_msg
+            body += "\n\n"
 
         if self.savefile:
             body += '\nMatching lines extracted and stored in {}'.format(self.savefile)
@@ -130,16 +184,20 @@ class AlarmCounterLogster(LogsterParser):
                  body)
 
     def get_state(self, duration):
+        self.write(self.header)
 
+        kmatches = self.keyword_match()
         self.duration = duration
-        rate = float(self.line_count) / float(self.duration)
+        line_rate = float(self.line_count) / float(self.duration)
+        alarm_rate = float(self.alarm_count) / float(self.duration)
 
-        if rate > 0 and self.email:
-            self.notify(rate)
+        if alarm_rate > 0 and self.email:
+            self.write("Alarm count is {}".format(self.alarm_count))
+            self.notify(line_rate, kmatches)
 
         return [
             MetricObject('{}.alarm_rate'.format(self.name),
-                         (rate),
+                         (alarm_rate),
                          'lines per sec',
                          type='float',
                          slope='both'),
