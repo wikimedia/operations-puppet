@@ -1,4 +1,5 @@
 from os import path
+import subprocess
 import sys
 import tempfile
 import unittest
@@ -85,7 +86,7 @@ hostlist dummy01 dummy02 dummy03
 
         # If they match, it should only call the subprocess once
         mock_run.assert_called_once_with(['qconf', '-shgrp', '@dummies'],
-                                         capture_output=True,
+                                         stdout=subprocess.PIPE,
                                          check=True,
                                          timeout=60
                                          )

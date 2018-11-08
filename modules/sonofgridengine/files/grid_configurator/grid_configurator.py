@@ -220,6 +220,9 @@ def main():
             raise
 
         for conf in conf_files:
+            if conf.startswith('.'):
+                continue
+
             grid_conf_obj = grid_conf_cls(conf)
             if grid_conf_obj.check_exists():
                 grid_conf_obj.create(os.path.join(domain_dir, conf), args.dry_run)

@@ -1,4 +1,5 @@
 from os import path
+import subprocess
 import sys
 import tempfile
 import unittest
@@ -107,7 +108,7 @@ broke                   VERY
 
         # If they match, it should only call the subprocess once
         mock_run.assert_called_once_with(['/bin/echo', 'get', 'dummy_intance'],
-                                         capture_output=True,
+                                         stdout=subprocess.PIPE,
                                          check=True,
                                          timeout=60
                                          )
