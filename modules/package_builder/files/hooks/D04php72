@@ -6,4 +6,5 @@ if [ "$PHP72" = "yes" ] && [ "$DIST" = "stretch" ]; then
     deb http://apt.wikimedia.org/wikimedia stretch-wikimedia thirdparty/php72
     deb-src http://apt.wikimedia.org/wikimedia stretch-wikimedia thirdparty/php72
 EOF
+    apt-get update
 fi
