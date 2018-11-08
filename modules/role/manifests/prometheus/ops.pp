@@ -876,6 +876,30 @@ class role::prometheus::ops {
         port       => 9198,
     }
 
+    $rsyslog_jobs = [
+        {
+            'job_name'        => 'rsyslog',
+            'scheme'          => 'http',
+            'file_sd_configs' => [
+                { 'files' => [ "${targets_path}/rsyslog_*.yaml" ]}
+            ],
+            # drop metrics for actions without an explicity assigned name
+            # to prevent metrics explosion
+            'metric_relabel_configs' => [
+                { 'source_labels' => ['action'],
+                    'regex'  => 'action-\d+-builtin:.*',
+                    'action' => 'drop',
+                },
+            ],
+        },
+    ]
+    prometheus::class_config { "rsyslog_${::site}":
+        dest       => "${targets_path}/rsyslog_${::site}.yaml",
+        site       => $::site,
+        class_name => 'profile::prometheus::rsyslog_exporter',
+        port       => 9105,
+    }
+
     $pdns_rec_jobs = [
       {
         'job_name'        => 'pdnsrec',
@@ -1061,7 +1085,7 @@ class role::prometheus::ops {
             $etherpad_jobs, $elasticsearch_jobs, $wmf_elasticsearch_jobs,
             $blazegraph_jobs, $nutcracker_jobs, $postgresql_jobs,
             $kafka_burrow_jobs, $logstash_jobs, $haproxy_jobs, $statsd_exporter_jobs,
-            $mjolnir_jobs,
+            $mjolnir_jobs, $rsyslog_jobs,
         ),
         global_config_extra   => $config_extra,
     }
