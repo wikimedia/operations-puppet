@@ -17,8 +17,6 @@ class profile::toolforge::grid::node::web (
     $etcdir = hiera('profile::toolforge::etcdir'),
 ){
     include profile::toolforge::grid::node::compute
-    # Why would this need to be a submit host??
-    # class {'::sonofgridengine::submit_host': }
 
     # New style webservices!
     package { 'toollabs-webservice':
