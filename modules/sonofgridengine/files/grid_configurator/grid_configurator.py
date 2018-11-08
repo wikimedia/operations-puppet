@@ -61,7 +61,7 @@ class GridConfig:
         return True
 
     def check_exists(self):
-        result = subprocess.run(self.getcmd, capture_output=True, timeout=60)
+        result = subprocess.run(self.getcmd, stdout=subprocess.PIPE, timeout=60)
         return not bool(result.returncode)
 
     def run(self, incoming_config, dryrun):
@@ -75,7 +75,7 @@ class GridConfig:
 
     def _get_config(self):
         result = subprocess.run(self.getcmd, timeout=60,
-                                capture_output=True, check=True)
+                                stdout=subprocess.PIPE, check=True)
         current_state = {}
         rawconfig = result.stdout
         for x in rawconfig.splitlines():
@@ -108,7 +108,7 @@ class GridHostGroup(GridConfig):
 
     def _get_config(self):
         result = subprocess.run(self.getcmd, timeout=60,
-                                capture_output=True, check=True)
+                                stdout=subprocess.PIPE, check=True)
         current_state = {}
         rawconfig = result.stdout
         lines = rawconfig.splitlines()
