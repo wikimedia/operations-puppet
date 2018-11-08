@@ -28,7 +28,7 @@ class elasticsearch::log::hot_threads {
     # log file locations.
     $log = '/var/log/elasticsearch/elasticsearch_hot_threads_errors.log'
     cron { 'elasticsearch-hot-threads-log':
-        command => "${script} >> ${log} 2>&1",
+        command => $script,
         #So the destination directory exists
         require => [Package['elasticsearch'], File[$script]],
         user    => 'elasticsearch',

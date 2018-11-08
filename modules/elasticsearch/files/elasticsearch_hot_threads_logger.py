@@ -29,7 +29,7 @@ def main(config_path):
     try:
         with open(config_path, 'r') as f:
             conf = yaml.safe_load(f)
-        with open(conf['output'], 'a') as f:
+        with open(conf['log_file'], 'a') as f:
             print_hot_threads(port=conf['port'], out=f)
             end = time() + 5 * 60
             max_load = cpu_count() / 2.0
