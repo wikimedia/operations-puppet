@@ -188,16 +188,16 @@ logstash_json_lines_port: 11514
 logstash_logback_port: 11514
 
 mediawiki_memcached_servers:
-    - 10.68.23.25:11211:1  # deployment-memc04
-    - 10.68.23.49:11211:1  # deployment-memc05
+    - deployment-memc04:11211:1
+    - deployment-memc05:11211:1
 "mcrouter::shards":
   wancache:
     eqiad:
       shard01:
-        host: 10.68.23.25  # deployment-memc04
+        host: deployment-memc04
         port: 11211
       shard02:
-        host: 10.68.23.49  # deployment-memc05
+        host: deployment-memc05
         port: 11211
 mcrouter::port: 11213
 mcrouter::has_ssl: false
@@ -322,10 +322,10 @@ role::logstash::apifeatureusage::elastic_hosts:
   jobqueue: &labs_shards
     eqiad:
       shard01:
-        host: 10.68.19.242 # deployment-redis05
+        host: deployment-redis05
         port: 6379
       shard02:
-        host: 10.68.20.16 # deployment-redis06
+        host: deployment-redis06
         port: 6379
   sessions: *labs_shards
 nfs_mounts:
