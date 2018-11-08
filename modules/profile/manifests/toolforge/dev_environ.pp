@@ -86,7 +86,7 @@ class profile::toolforge::dev_environ {
             'libkml-dev',
             'libgdal-dev',                # T58995
             'mariadb-client-10.1',
-            # sbt is not in the official repos -- scala is not well supported
+            # sbt is not in the official repos -- scala may require external repos
         ]:
             ensure  => latest,
         }
