@@ -7,3 +7,4 @@ fixtures:
         logrotate: "../../../../logrotate"
         elasticsearch: "../../../../elasticsearch"
         stdlib: "../../../../stdlib"
+        systemd: "../../../../systemd"
