@@ -1,0 +1,13 @@
+#!/bin/bash
+# NOTE: This file is managed by puppet
+#
+
+export PYTHONPATH=\${PYTHONPATH}:<%= @refinery_path %>/python
+
+/usr/bin/python3 <%= @refinery_path %>/bin/import-mediawiki-dumps \
+    --input-base  <%= @input_directory_base %> \
+    --output-base <%= @output_directory_base %> \
+    --projects-file <%= @wiki_file %> \
+    --dump-type pages-meta-history \
+    --log-file <%= @log_file %> \
+    --dump-date $(/bin/date +'%Y%m01')
