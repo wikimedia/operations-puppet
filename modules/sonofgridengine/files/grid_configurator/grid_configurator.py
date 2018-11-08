@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
 import argparse
@@ -211,8 +212,9 @@ def main():
     for domain in domains:
         logging.debug('Running configuration updates for %s', domain)
         grid_conf_cls = select_object(domain)
+        domain_dir = os.path.join(args.config_dir, domain + 's')
         try:
-            conf_files = os.listdir(os.path.join(args.config_dir, domain))
+            conf_files = os.listdir(domain_dir)
         except NameError:
             logging.error('%s is not a valid directory', os.path.join(args.config_dir, domain))
             raise
@@ -220,9 +222,9 @@ def main():
         for conf in conf_files:
             grid_conf_obj = grid_conf_cls(conf)
             if grid_conf_obj.check_exists():
-                grid_conf_obj.create(os.path.join(args.config_dir, conf), args.dry_run)
+                grid_conf_obj.create(os.path.join(domain_dir, conf), args.dry_run)
             else:
-                grid_conf_obj.compare_and_update(os.path.join(args.config_dir, conf), args.dry_run)
+                grid_conf_obj.compare_and_update(os.path.join(domain_dir, conf), args.dry_run)
 
 
 if __name__ == "__main__":
