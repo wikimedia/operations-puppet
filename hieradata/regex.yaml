@@ -259,5 +259,5 @@ mediawiki_test_environment:
   profile::mediawiki::php::enable_fpm: true
 
 rsyslog_exporter_rollout:
-  __regex: !ruby/regexp /^(graphite2001|bast400[12]|cp4021|dns4001).*/
+  __regex: !ruby/regexp /^graphite2001.codfw.wmnet/
   profile::base::enable_rsyslog_exporter: true
