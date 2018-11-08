@@ -17,7 +17,8 @@ define swift::init_device($partition_nr='1') {
     }
 
     exec { "mkfs-${dev}":
-        command => "mkfs -t xfs -L ${fs_label} -i size=512 ${dev}",
+        # Disable free inode b-tree, see T199198
+        command => "mkfs -t xfs -L ${fs_label} -m crc=1 -m finobt=0 -i size=512 ${dev}",
         path    => '/sbin/:/usr/sbin/',
         require => [Package['xfsprogs'], Exec["parted-${title}"]],
         unless  => "xfs_admin -l ${dev}",
