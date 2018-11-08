@@ -17,6 +17,9 @@
 # [*threads*]
 #   Number of threads to spawn. Defaults to 4.
 #
+# [*socket_receive_bufsize*]
+#   SO_RCVBUF size. Defaults to 6M.  (Kernel will ultimately double this value per socket(7))
+#
 # === Examples
 #
 #  # Listen on UDP port 9001 and route to ports 9002-9004:
@@ -30,6 +33,7 @@ class statsd_proxy(
     $backend_ports,
     $ensure = present,
     $threads = 4,
+    $socket_receive_bufsize = 6291456,
 ) {
     validate_ensure($ensure)
     validate_array($backend_ports)

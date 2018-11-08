@@ -1,6 +1,7 @@
 port <%= @server_port %>
 num_threads <%= @threads %>
 flush_interval 10  # ms
+socket_receive_bufsize <%= @socket_receive_bufsize %>
 
 <%- @backend_ports.each do |port| -%>
 node 127.0.0.1:<%= port %>:1
