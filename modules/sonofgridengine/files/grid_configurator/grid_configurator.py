@@ -62,9 +62,11 @@ class GridConfig:
         return True
 
     def check_exists(self):
-        result = subprocess.run(
-            self.getcmd, stdout=subprocess.PIPE, timeout=60, check=False
-        )
+        try:
+            result = subprocess.run(self.getcmd, stdout=subprocess.PIPE, timeout=60)
+        except subprocess.CalledProcessError:
+            pass
+
         return not bool(result.returncode)
 
     def run(self, incoming_config, dryrun):
