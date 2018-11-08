@@ -1961,13 +1961,18 @@ node /^(rdb1006|rdb1010)\.eqiad\.wmnet$/ {
     role(redis::misc::slave)
 }
 
+node /^rdb200[5]\.codfw\.wmnet$/ {
+    role(redis::misc::master)
+}
+node /^rdb200[6]\.codfw\.wmnet$/ {
+    role(redis::misc::slave)
+}
 
-node /^rdb200[135]\.codfw\.wmnet$/ {
+node /^rdb200[13]\.codfw\.wmnet$/ {
     role(jobqueue_redis::master)
 }
 
-
-node /^rdb200[246]\.codfw\.wmnet/ {
+node /^rdb200[24]\.codfw\.wmnet/ {
     role(jobqueue_redis::slave)
 }
 

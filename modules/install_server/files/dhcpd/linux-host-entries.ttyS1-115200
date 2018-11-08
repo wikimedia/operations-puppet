@@ -5982,15 +5982,11 @@ host rdb2004 {
 host rdb2005 {
     hardware ethernet 14:02:ec:42:b7:14;
     fixed-address rdb2005.codfw.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
-    filename "lpxelinux.0";
 }
 
 host rdb2006 {
     hardware ethernet 14:02:ec:42:05:cc;
     fixed-address rdb2006.codfw.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
-    filename "lpxelinux.0";
 }
 
 host rdb1001 {
