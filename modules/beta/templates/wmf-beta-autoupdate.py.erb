@@ -60,8 +60,10 @@ def main():
         pull_repo(name='mwcore', path=PATH_MWCORE),
         pull_repo(name='mwvendor', path=PATH_VENDOR),
         pull_repo(name='mwextpull', path=PATH_MWEXT),
+        submodule_sync(name='mwextpull', path=PATH_MWEXT),
         update_repo(name='mwextupdate', path=PATH_MWEXT),
         pull_repo(name='mwskinpull', path=PATH_MWSKIN),
+        submodule_sync(name='mwskinupdate', path=PATH_MWSKIN),
         update_repo(name='mwskinupdate', path=PATH_MWSKIN),
         pull_repo(name='portal', path=PATH_PORTAL),
     ]
@@ -112,6 +114,10 @@ def pull_repo(name, path):
     """Pull repository at path"""
     return runner(name=name, path=path, cmd=['git', 'pull'])
 
+def submodule_sync(name, path):
+    """Registers and updates submodules in path"""
+    return runner(name=name, path=path, cmd=[
+        'git', 'submodule', 'sync', '--recursive'])
 
 def update_repo(name, path):
     """Registers and updates submodules in path"""
