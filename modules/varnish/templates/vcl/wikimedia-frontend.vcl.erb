@@ -525,6 +525,8 @@ sub deliver_synth_ {
 		} else {
 			set resp.http.X-Cache-Status = "unknown";
 		}
+
+		set resp.http.Server-Timing = {"cache;desc=""} + resp.http.X-Cache-Status + {"""};
 	}
 
 	std.collect(resp.http.Via);
