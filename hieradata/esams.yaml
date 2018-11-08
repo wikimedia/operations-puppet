@@ -7,3 +7,5 @@ public_tls_unified_cert_vendor: "digicert-2017"
 # Reasonable expected max RTT in ms to furthest core DC
 # (given worst alternate network paths, and plus a small fudge factor)
 max_core_rtt: 200 # knams-MPLS(up to ~110?)->eqiad->codfw, ~164 rounded up to 200.
+
+profile::base::enable_rsyslog_exporter: true
