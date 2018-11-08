@@ -15,6 +15,10 @@ class profile::icinga(
     String $icinga_group = hiera('profile::icinga::icinga_group', 'icinga'),
     Stdlib::Unixpath $retention_file = hiera('profile::icinga::retention_file', '/var/cache/icinga/retention.dat'),
     Integer $max_concurrent_checks = hiera('profile::icinga::max_concurrent_checks', 0),
+    Stdlib::Unixpath $check_result_path = hiera('profile::icinga::check_result_path', '/var/icinga-tmpfs'),
+    Stdlib::Unixpath $temp_path = hiera('profile::icinga::temp_path', '/var/icinga-tmpfs'),
+    Stdlib::Unixpath $temp_file = hiera('profile::icinga::temp_file', '/var/icinga-tmpfs/icinga.tmp'),
+    Stdlib::Unixpath $status_file = hiera('profile::icinga::status_file', '/var/icinga-tmpfs/status.dat'),
 ){
     $is_passive = !($::fqdn == $active_host)
 

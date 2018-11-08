@@ -109,7 +109,7 @@ resource_file=/etc/icinga/resource.cfg
 # for data retrieval (e.g. IDOUtils DB)
 # Note: This is a mandatory output for Icinga Classic UI to work properly.
 
-status_file=/var/lib/icinga/status.dat
+status_file=<%= @status_file || '/var/icinga-tmpfs/status.dat' %>
 
 
 
@@ -211,7 +211,7 @@ lock_file=/var/run/icinga/icinga.pid
 # is created, used, and deleted throughout the time that Icinga is
 # running.
 
-temp_file=/var/cache/icinga/icinga.tmp
+temp_file=<%= @temp_file || '/var/icinga-tmpfs/icinga.tmp' %>
 
 
 
@@ -219,7 +219,7 @@ temp_file=/var/cache/icinga/icinga.tmp
 # This is path where Icinga can create temp files for service and
 # host check results, etc.
 
-temp_path=/tmp
+temp_path=<%= @temp_path || '/var/icinga-tmpfs' %>
 
 
 
@@ -505,7 +505,7 @@ max_check_result_reaper_time=10
 # Note: Make sure that only one instance of Icinga has access
 # to this directory!
 
-check_result_path=/var/lib/icinga/spool/checkresults
+check_result_path=<%= @check_result_path || '/var/icinga-tmpfs' %>
 
 
 
