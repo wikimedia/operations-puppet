@@ -115,7 +115,7 @@ def pull_repo(name, path):
     return runner(name=name, path=path, cmd=['git', 'pull'])
 
 def submodule_sync(name, path):
-    """Registers and updates submodules in path"""
+    """Syncs the submodules in path"""
     return runner(name=name, path=path, cmd=[
         'git', 'submodule', 'sync', '--recursive'])
 
