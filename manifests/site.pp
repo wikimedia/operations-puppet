@@ -1947,21 +1947,17 @@ node /^rdb100[137]\.eqiad\.wmnet$/ {
     role(jobqueue_redis::master)
 }
 
-node /^rdb100[2468]\.eqiad\.wmnet/ {
+node /^rdb100[248]\.eqiad\.wmnet/ {
     role(jobqueue_redis::slave)
 }
 
 # New rdb servers T206450 
 
-node 'rdb1005.eqiad.wmnet'{
-    role(spare::system)
-}
-
-node 'rdb1009.eqiad.wmnet' {
+node /^rdb100[59]\.eqiad\.wmnet$/ {
     role(redis::misc::master)
 }
 
-node 'rdb1010.eqiad.wmnet' {
+node /^(rdb1006|rdb1010)\.eqiad\.wmnet$/ {
     role(redis::misc::slave)
 }
 
