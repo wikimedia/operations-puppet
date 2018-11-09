@@ -234,7 +234,7 @@ def main():
                 continue
 
             grid_conf_obj = grid_conf_cls(conf)
-            if grid_conf_obj.check_exists():
+            if not grid_conf_obj.check_exists():
                 grid_conf_obj.create(os.path.join(domain_dir, conf), args.dry_run)
             else:
                 grid_conf_obj.compare_and_update(
