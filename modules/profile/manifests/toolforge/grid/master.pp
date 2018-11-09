@@ -7,12 +7,16 @@ class profile::toolforge::grid::master (
 
     $hostlist = '@general'
 
+    sonofgridengine::queue { 'task':
+        config => 'profile/toolforge/grid/queue-task.erb',
+    }
+
     sonofgridengine::queue { 'continuous':
         config => 'profile/toolforge/grid/queue-continuous.erb',
     }
 
-    sonofgridengine::queue { 'task':
-        config => 'profile/toolforge/grid/queue-task.erb',
+    sonofgridengine::checkpoint { 'continuous':
+        config => 'profile/toolforge/grid/chkpt-continuous.erb',
     }
 
     # For when we deploy the web nodes

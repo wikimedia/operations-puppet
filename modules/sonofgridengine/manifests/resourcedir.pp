@@ -31,8 +31,9 @@ define sonofgridengine::resourcedir(
         purge   => false,
     }
 
-    exec { "track-${dir}":
-        command => "${etcdir}/bin/tracker '${confdir}' '${trackerdir}' '${addcmd}' '${modcmd}' '${delcmd}'",
-        require => File["${etcdir}/bin/tracker", $confdir, $trackerdir],
-    }
+    # Disable tracker execution, pending removal
+    # exec { "track-${dir}":
+    #     command => "${etcdir}/bin/tracker '${confdir}' '${trackerdir}' '${addcmd}' '${modcmd}' '${delcmd}'",
+    #     require => File["${etcdir}/bin/tracker", $confdir, $trackerdir],
+    # }
 }

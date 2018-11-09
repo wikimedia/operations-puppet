@@ -8,7 +8,7 @@ import subprocess
 import sys
 
 
-VALID_DOMAINS = ["queue", "hostgroup"]
+VALID_DOMAINS = ["hostgroup", "checkpoint", "queue"]
 
 
 class GridConfig:
@@ -49,7 +49,7 @@ class GridConfig:
             result = subprocess.run(self.modcmd, timeout=60)
             return not bool(result.returncode)
 
-        logging.info("%s %s", self.modcmd, input_file)
+        logging.info("%s %s", " ".join(self.modcmd), input_file)
         return True
 
     def create(self, input_file, dryrun):
@@ -58,7 +58,7 @@ class GridConfig:
             result = subprocess.run(self.addcmd, timeout=60)
             return not bool(result.returncode)
 
-        logging.info("%s %s", self.addcmd, input_file)
+        logging.info("%s %s", " ".join(self.addcmd), input_file)
         return True
 
     def check_exists(self):
@@ -103,6 +103,18 @@ class GridQueue(GridConfig):
         )
 
 
+class GridChkPt(GridConfig):
+    def __init__(self, queue_name):
+        super().__init__(
+            "checkpoint",
+            queue_name,
+            ["qconf", "-Ackpt"],
+            ["qconf", "-Mckpt"],
+            ["qconf", "-dckpt"],
+            ["qconf", "-sckpt"],
+        )
+
+
 class GridHostGroup(GridConfig):
     def __init__(self, group_name):
         super().__init__(
@@ -143,6 +155,8 @@ class GridHostGroup(GridConfig):
         ]
 
         if not set(self.desired_conf.keys()) == set(self.current_conf.keys()):
+            logging.debug("Desired conf keys: %s", self.desired_conf.keys())
+            logging.debug("Current conf keys: %s", self.current_conf.keys())
             raise Exception("Configuration file doesn't match existing setup")
 
         if self.current_conf == self.desired_conf:
@@ -154,7 +168,7 @@ class GridHostGroup(GridConfig):
             result = subprocess.run(self.modcmd, timeout=60)
             return not bool(result.returncode)
 
-        logging.info("%s %s", self.modcmd, input_file)
+        logging.info("%s %s", " ".join(self.modcmd), input_file)
         return True
 
 
@@ -198,7 +212,11 @@ def get_args():
 
 
 def select_object(obj_type):
-    grid_obj_types = {"queue": GridQueue, "hostgroup": GridHostGroup}
+    grid_obj_types = {
+        "queue": GridQueue,
+        "hostgroup": GridHostGroup,
+        "checkpoint": GridChkPt,
+    }
     return grid_obj_types[obj_type]
 
 
