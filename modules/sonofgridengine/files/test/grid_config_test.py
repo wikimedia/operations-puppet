@@ -64,7 +64,7 @@ broke                   VERY
         tmp_dir = tempfile.mkdtemp()
         grid_resource = 'magic-queue'
         mock_run.return_value.returncode = 0
-        mock_run.return_value.stdout = """\
+        mock_run.return_value.stdout = b"""\
 qname                   magic-queue
 glurp                   GLURP
 broke                   VERY
@@ -89,7 +89,7 @@ broke                   VERY
         tmp_dir = tempfile.mkdtemp()
         grid_resource = 'dummy_intance'
         mock_run.return_value.returncode = 0
-        mock_run.return_value.stdout = """\
+        mock_run.return_value.stdout = b"""\
 qname                   magic-queue
 glurp                   FLURP
 broke                   VERY

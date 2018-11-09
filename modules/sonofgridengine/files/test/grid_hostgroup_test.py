@@ -46,7 +46,7 @@ hostlist dummy01 dummy02 dummy03
         tmp_dir = tempfile.mkdtemp()
         grid_resource = '@dummies'
         mock_run.return_value.returncode = 0
-        mock_run.return_value.stdout = """\
+        mock_run.return_value.stdout = b"""\
 group_name              @dummies
 hostlist dummy01 dummy03
 """
@@ -69,7 +69,7 @@ hostlist dummy01 dummy02 dummy03
         tmp_dir = tempfile.mkdtemp()
         grid_resource = 'dummy_intance'
         mock_run.return_value.returncode = 0
-        mock_run.return_value.stdout = """\
+        mock_run.return_value.stdout = b"""\
 group_name              @dummies
 hostlist dummy01 dummy02 dummy03
 """

@@ -83,7 +83,7 @@ class GridConfig:
             self.getcmd, timeout=60, stdout=subprocess.PIPE, check=True
         )
         current_state = {}
-        rawconfig = result.stdout
+        rawconfig = result.stdout.decode("utf-8")
         for x in rawconfig.splitlines():
             [k, v] = x.split(maxsplit=1)
             current_state[k] = v
@@ -119,7 +119,7 @@ class GridHostGroup(GridConfig):
             self.getcmd, timeout=60, stdout=subprocess.PIPE, check=True
         )
         current_state = {}
-        rawconfig = result.stdout
+        rawconfig = result.stdout.decode("utf-8")  # You get bytes out of this.
         lines = rawconfig.splitlines()
         [k, v] = lines.pop(0).split(maxsplit=1)  # First line like 'group_name @general'
         current_state.update({k: v})
