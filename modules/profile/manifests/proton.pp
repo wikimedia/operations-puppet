@@ -17,7 +17,8 @@ class profile::proton(
         deployment        => 'scap3',
         deployment_config => true,
         environment       => {
-            'CHROME_BIN' => '/usr/bin/chromium'
+            'CHROME_BIN'                      => '/usr/bin/chromium',
+            'APP_ENABLE_CANCELLABLE_PROMISES' => true,
         },
     }
 
