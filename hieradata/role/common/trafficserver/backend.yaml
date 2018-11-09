@@ -292,3 +292,4 @@ profile::trafficserver::backend::logs:
     filters:
     - purge
     mode: ascii_pipe
+diamond::remove: true

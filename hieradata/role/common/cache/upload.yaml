@@ -81,3 +81,4 @@ profile::cache::kafka::webrequest::kafka_cluster_name: jumbo-eqiad
 profile::cache::kafka::webrequest::ssl_enabled: true
 
 profile::cache::upload::upload_webp_hits_threshold: 1000
+diamond::remove: true
