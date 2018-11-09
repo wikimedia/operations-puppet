@@ -14,8 +14,6 @@ def syslog {/(?P<date>(?P<legacy_date>\w+\s+\d+\s+\d+:\d+:\d+)|(?P<rfc3339_date>
 @syslog {
 counter mce_events
 counter cpu_throttled
-counter edac_correctable_errors
-counter edac_uncorrectable_errors
 counter edac_events
 
 counter upstart_respawn by service
@@ -33,15 +31,6 @@ counter segfault by binary
 /kernel: \[[\d.]+\] EDAC / {
   edac_events++
 }
-
-# See also https://github.com/google/mtail/issues/50
-#/kernel: \[[\d.]+\] EDAC MC\d+: (\d+) CE/ {
-#  edac_correctable_errors += $1
-#}
-#
-#/kernel: \[[\d.]+\] EDAC MC\d+: (\d+) UE/ {
-#  edac_uncorrectable_errors += $1
-#}
 
 /kernel: \[[\d.]+\] init: (?P<service>[\S]+) .*process ended, respawning/ {
   upstart_respawn[$service]++
