@@ -34,7 +34,7 @@ class GridConfig:
 
         for x in rawconfig.splitlines():
             if not x.startswith("#"):
-                [k, v] = x.split()
+                [k, v] = x.split(maxsplit=1)
                 self.desired_conf[k] = v
 
         if not set(self.desired_conf.keys()) == set(self.current_conf.keys()):
@@ -85,7 +85,7 @@ class GridConfig:
         current_state = {}
         rawconfig = result.stdout
         for x in rawconfig.splitlines():
-            [k, v] = x.split()
+            [k, v] = x.split(maxsplit=1)
             current_state[k] = v
 
         return current_state
@@ -121,7 +121,7 @@ class GridHostGroup(GridConfig):
         current_state = {}
         rawconfig = result.stdout
         lines = rawconfig.splitlines()
-        [k, v] = lines.pop(0).split()  # First line like 'group_name @general'
+        [k, v] = lines.pop(0).split(maxsplit=1)  # First line like 'group_name @general'
         current_state.update({k: v})
         hosts = [
             host for l in lines for host in l.split() if host not in ["hostlist", "\\"]
@@ -136,7 +136,7 @@ class GridHostGroup(GridConfig):
 
         raw_lines = rawconfig.splitlines()
         conf_lines = [x for x in raw_lines if not x.startswith("#")]
-        [label1, hostgrp_name] = conf_lines.pop(0).split()
+        [label1, hostgrp_name] = conf_lines.pop(0).split(maxsplit=1)
         self.desired_conf[label1] = hostgrp_name
         self.desired_conf["hostlist"] = [
             host for host in conf_lines[0].split() if host != "hostlist"
