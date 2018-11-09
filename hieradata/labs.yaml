@@ -174,9 +174,13 @@ puppet_major_version: 4
 # A dummy, empty prometheus config for default behavior on VMs
 prometheus_nodes: []
 
+mail_smarthost:
+- 'mx-out01.wmflabs.org'
+- 'mx-out02.wmflabs.org'
+
 wikimail_smarthost:
-- 'mx1001.wikimedia.org'
-- 'mx2001.wikimedia.org'
+- 'mx-out01.wmflabs.org'
+- 'mx-out02.wmflabs.org'
 
 ntp_peers:
     eqiad:
