@@ -7,5 +7,4 @@ profile::puppetmaster::common::storeconfigs: none
 profile::conftool::master::sync_dir: "/etc/conftool/data"
 profile::puppetmaster::frontend::prevent_cherrypicks: false
 
-contactgroups: wmcs-team,admins
 profile::base::notifications: critical
