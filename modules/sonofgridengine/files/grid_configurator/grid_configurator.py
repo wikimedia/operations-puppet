@@ -19,8 +19,6 @@ class GridConfig:
         self.conf_type = conf_type
         self.res_name = res_name
         getcmd.append(res_name)
-        addcmd.append(res_name)
-        modcmd.append(res_name)
         delcmd.append(res_name)
         self.getcmd = getcmd
         self.current_conf = {}
@@ -47,7 +45,8 @@ class GridConfig:
             return True
 
         if not dryrun:
-            result = subprocess.run(self.modcmd.append(input_file), timeout=60)
+            self.modcmd.append(input_file)
+            result = subprocess.run(self.modcmd, timeout=60)
             return not bool(result.returncode)
 
         logging.info("%s %s", self.modcmd, input_file)
@@ -55,7 +54,8 @@ class GridConfig:
 
     def create(self, input_file, dryrun):
         if not dryrun:
-            result = subprocess.run(self.addcmd.append(input_file), timeout=60)
+            self.addcmd.append(input_file)
+            result = subprocess.run(self.addcmd, timeout=60)
             return not bool(result.returncode)
 
         logging.info("%s %s", self.addcmd, input_file)
@@ -76,7 +76,7 @@ class GridConfig:
         return self.create(incoming_config, dryrun)
 
     def rundel(self):
-        return subprocess.run(self.delcmd.append(self.res_name), timeout=60)
+        return subprocess.run(self.delcmd, timeout=60)
 
     def _get_config(self):
         result = subprocess.run(
@@ -150,7 +150,8 @@ class GridHostGroup(GridConfig):
             return True
 
         if not dryrun:
-            result = subprocess.run(self.modcmd.append(input_file), timeout=60)
+            self.modcmd.append(input_file)
+            result = subprocess.run(self.modcmd, timeout=60)
             return not bool(result.returncode)
 
         logging.info("%s %s", self.modcmd, input_file)
