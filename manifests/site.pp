@@ -1939,14 +1939,14 @@ node /^pybal-test200[123]\.codfw\.wmnet$/ {
 }
 
 node /^rdb100[137]\.eqiad\.wmnet$/ {
-    role(jobqueue_redis::master)
+    role(spare::system)
 }
 
 node /^rdb100[248]\.eqiad\.wmnet/ {
-    role(jobqueue_redis::slave)
+    role(spare::system)
 }
 
-# New rdb servers T206450 
+# New rdb servers T206450
 
 node /^rdb100[59]\.eqiad\.wmnet$/ {
     role(redis::misc::master)
@@ -1956,18 +1956,18 @@ node /^(rdb1006|rdb1010)\.eqiad\.wmnet$/ {
     role(redis::misc::slave)
 }
 
-node /^rdb200[5]\.codfw\.wmnet$/ {
+node /^rdb200[35]\.codfw\.wmnet$/ {
     role(redis::misc::master)
 }
-node /^rdb200[6]\.codfw\.wmnet$/ {
+node /^rdb200[46]\.codfw\.wmnet$/ {
     role(redis::misc::slave)
 }
 
-node /^rdb200[13]\.codfw\.wmnet$/ {
+node /^rdb200[1]\.codfw\.wmnet$/ {
     role(jobqueue_redis::master)
 }
 
-node /^rdb200[24]\.codfw\.wmnet/ {
+node /^rdb200[2]\.codfw\.wmnet/ {
     role(jobqueue_redis::slave)
 }
 
