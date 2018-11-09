@@ -63,6 +63,12 @@ class profile::icinga(
     class { 'icinga::monitor::traffic': }
     class { 'icinga::monitor::gerrit': }
 
+    class { 'icinga::monitor::planet':
+        url  => 'https://en.planet.wikimedia.org/',
+        warn => 24,
+        crit => 48,
+    }
+
     class { 'icinga::event_handlers::raid':
         icinga_user  => $icinga_user,
         icinga_group => $icinga_group,
