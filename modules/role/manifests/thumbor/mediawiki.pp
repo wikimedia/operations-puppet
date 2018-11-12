@@ -21,7 +21,9 @@ class role::thumbor::mediawiki {
     }
 
     include ::profile::prometheus::memcached_exporter
-    include ::profile::prometheus::statsd_exporter
+    class { '::profile::prometheus::statsd_exporter':
+        relay_address => 'localhost:8125',
+    }
 
     $thumbor_memcached_servers_ferm = join(hiera('thumbor_memcached_servers'), ' ')
 
