@@ -14,12 +14,19 @@ class profile::trafficserver::backend (
     Array[Stdlib::Compat::Ip_address] $purge_multicasts=hiera('profile::trafficserver::backend::purge_multicasts', ['239.128.0.112', '239.128.0.113', '239.128.0.114', '239.128.0.115']),
     Array[String] $purge_endpoints=hiera('profile::trafficserver::backend::purge_endpoints', ['127.0.0.1:3129']),
 ){
-    # Build list of remap rules with default Lua scripts passed as parameters
+    # Build list of remap rules with Lua scripts passed as parameters.
+    # Pass the default Lua scripts to all remap rules, adding rule-specific
+    # scripts if they have been specified.
     $remap_rules_lua = $mapping_rules.map |TrafficServer::Mapping_rule $rule| {
+        if (has_key($rule, 'params')) {
+            $rule_specific_params = $rule["params"]
+        } else {
+            $rule_specific_params = []
+        }
         merge($rule, {
             params => $default_lua_scripts.map |String $lua_script| {
                 "@plugin=/usr/lib/trafficserver/modules/tslua.so @pparam=/etc/trafficserver/lua/${lua_script}.lua @pparam=${::hostname}"
-            }
+            } + $rule_specific_params
         })
     }
 
