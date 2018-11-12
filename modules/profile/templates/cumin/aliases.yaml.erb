@@ -82,10 +82,6 @@ hadoop-worker: P{O:analytics_cluster::hadoop::worker}
 hadoop-worker-canary: P{analytics1030.eqiad.wmnet}
 icinga: P{O:alerting_host}
 installserver: P{O:installserver}
-jobqueue-redis-codfw: (A:jobqueue-redis-master or A:jobqueue-redis-slave) and A:codfw
-jobqueue-redis-eqiad: (A:jobqueue-redis-master or A:jobqueue-redis-slave) and A:eqiad
-jobqueue-redis-master: P{O:jobqueue_redis::master}
-jobqueue-redis-slave: P{O:jobqueue_redis::slave}
 kafka-all: A:kafka-analytics or A:kafka-main or A:kafka-jumbo
 kafka-analytics: P{O:kafka::analytics}
 kafka-analytics-canary: P{kafka1012.eqiad.wmnet}

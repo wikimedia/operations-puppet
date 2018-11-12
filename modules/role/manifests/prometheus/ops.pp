@@ -736,14 +736,6 @@ class role::prometheus::ops {
         'metric_relabel_configs' => [ $redis_exporter_relabel ],
       },
       {
-        'job_name'        => 'redis_jobqueue',
-        'scheme'          => 'http',
-        'file_sd_configs' => [
-          { 'files' => [ "${targets_path}/redis_jobqueue_*.yaml" ]}
-        ],
-        'metric_relabel_configs' => [ $redis_exporter_relabel ],
-      },
-      {
         'job_name'        => 'redis_misc',
         'scheme'          => 'http',
         'file_sd_configs' => [
@@ -772,18 +764,6 @@ class role::prometheus::ops {
     prometheus::redis_exporter_config{ "redis_sessions_${::site}":
         dest       => "${targets_path}/redis_sessions_${::site}.yaml",
         class_name => 'role::mediawiki::memcached',
-        site       => $::site,
-    }
-
-    prometheus::redis_exporter_config{ "redis_jobqueue_master_${::site}":
-        dest       => "${targets_path}/redis_jobqueue_master_${::site}.yaml",
-        class_name => 'role::jobqueue_redis::master',
-        site       => $::site,
-    }
-
-    prometheus::redis_exporter_config{ "redis_jobqueue_slave_${::site}":
-        dest       => "${targets_path}/redis_jobqueue_slave_${::site}.yaml",
-        class_name => 'role::jobqueue_redis::slave',
         site       => $::site,
     }
 
