@@ -3392,7 +3392,7 @@ ldap_only_users:
     ensure: present
     realname: Kate Chapman
     email: kchapman@wikimedia.org
-  kzimmerman:
+  kzeta:
     ensure: present
     realname: Kate Zimmerman
     email: kzimmerman@wikimedia.org
