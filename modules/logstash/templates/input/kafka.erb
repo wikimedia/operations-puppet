@@ -3,13 +3,18 @@ input {
     # Some options have not been added, if you want to add more options, see:
     # https://www.elastic.co/guide/en/logstash/current/plugins-inputs-kafka.html
 <%- if @tags -%>
-    tags              => ["<%= @tags.join('", "') %>"]
+    tags                    => ["<%= @tags.join('", "') %>"]
 <%- end -%>
-    topics            => ["<%= @topic %>"]
-    type              => "<%= @type %>"
-    bootstrap_servers => "<%= @bootstrap_servers %>"
+    topics                  => ["<%= @topic %>"]
+    type                    => "<%= @type %>"
+    bootstrap_servers       => "<%= @bootstrap_servers %>"
 <%- unless @plugin_id.empty? -%>
-    id                => "<%= @plugin_id %>"
+    id                      => "<%= @plugin_id %>"
 <%- end -%>
+<% if @security_protocol == 'SSL' %>
+    security_protocol       => "<%= @security_protocol %> "
+    ssl_truststore_location => "<%= @ssl_truststore_location %>"
+    ssl_truststore_password => "<%= @ssl_truststore_password %>"
+<% end -%>
   }
 }

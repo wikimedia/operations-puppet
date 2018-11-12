@@ -15,6 +15,11 @@
 #      a string in the form of `host1:port1,host2:port2. For more info, see:
 #      https://www.elastic.co/guide/en/logstash/current/plugins-inputs-kafka.html
 # - $plugin_id: Name associated with Logstash metrics
+# - $security_protocol: Security protocol to use, which can be either of PLAINTEXT,SSL,SASL_PLAINTEXT,SASL_SSL
+#      must be set to SSL for ssl_truststore* configs to be set
+#      see https://www.elastic.co/guide/en/logstash/current/plugins-inputs-kafka.html#plugins-inputs-kafka-security_protocol
+# - $ssl_truststore_location: path to jks truststore file. Default: none. Requires $security_protocol = 'SSL'
+# - $ssl_truststore_password: jks truststore password value. Default: none. Requires $security_protocol = 'SSL'
 #
 # == Sample usage:
 #
@@ -24,12 +29,15 @@
 #
 define logstash::input::kafka(
     $bootstrap_servers,
-    $ensure            = present,
-    $priority          = 10,
-    $tags              = [$title],
-    $topic             = $title,
-    $type              = 'kafka',
-    $plugin_id         = "input/kafka/${title}",
+    $ensure                                                                          = present,
+    $priority                                                                        = 10,
+    $tags                                                                            = [$title],
+    $topic                                                                           = $title,
+    $type                                                                            = 'kafka',
+    $plugin_id                                                                       = "input/kafka/${title}",
+    Optional[Enum['PLAINTEXT','SSL','SASL_PLAINTEXT','SASL_SSL']] $security_protocol = undef,
+    Optional[Stdlib::Unixpath] $ssl_truststore_location                              = undef,
+    Optional[String] $ssl_truststore_password                                        = undef,
 ) {
     logstash::conf { "input-kafka-${title}":
         ensure   => $ensure,
