@@ -1944,11 +1944,7 @@ node /^pybal-test200[123]\.codfw\.wmnet$/ {
     interface::add_ip6_mapped { 'main': }
 }
 
-node /^rdb100[137]\.eqiad\.wmnet$/ {
-    role(spare::system)
-}
-
-node /^rdb100[248]\.eqiad\.wmnet/ {
+node /^rdb100[123478]\.eqiad\.wmnet$/ {
     role(spare::system)
 }
 
@@ -1968,12 +1964,8 @@ node /^rdb200[46]\.codfw\.wmnet$/ {
     role(redis::misc::slave)
 }
 
-node /^rdb200[1]\.codfw\.wmnet$/ {
-    role(jobqueue_redis::master)
-}
-
-node /^rdb200[2]\.codfw\.wmnet/ {
-    role(jobqueue_redis::slave)
+node /^rdb200[12]\.codfw\.wmnet$/ {
+    role(spare::system)
 }
 
 # https://releases.wikimedia.org - VMs for releases (mediawiki and other)
