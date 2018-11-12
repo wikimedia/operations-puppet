@@ -20,11 +20,15 @@ class profile::mediawiki::php(
     Optional[Hash] $fpm_config = hiera('profile::mediawiki::php::fpm_config', undef),
 ) {
     if os_version('debian == stretch') {
-        apt::pin { 'php-wikidiff2':
-            package  => 'php-wikidiff2',
-            pin      => 'release a=stretch-backports',
-            priority => '1001',
-            before   => Package['php-wikidiff2'],
+        # We get our packages for our repositories again
+        file { '/etc/apt/preferences.d/php_wikidiff2.pref':
+            ensure => absent,
+            notify => Exec['apt_update_php'],
+        }
+        # First installs can trip without this
+        exec {'apt_update_php':
+            command     => '/usr/bin/apt-get update',
+            refreshonly => true,
         }
     }
 
@@ -57,28 +61,48 @@ class profile::mediawiki::php(
     }
 
     # Extensions that need no custom settings
-    php::extension { [
-        'apcu',
+
+    # First, extensions provided as core extensions; these are version-specific
+    # and are provided as php$version-$extension
+    #
+    $core_extensions =  [
         'bcmath',
         'bz2',
         'curl',
         'gd',
-        'geoip',
         'gmp',
         'intl',
-        'luasandbox',
         'mbstring',
+    ]
+
+    $core_extensions.each |$extension| {
+        php::extension { $extension:
+            package_name => "php${php_version}-${extension}"
+        }
+    }
+    # Extensions that are installed with package-name php-$extension and, based
+    # on the php version selected above, will install the proper extension
+    # version based on apt priorities.
+    # php-luasandbox and  php-wikidiff2 are special cases as the package is *not*
+    # compatible with all supported PHP versions.
+    # Technically, it would be needed to inject ensure => latest in the packages,
+    # but we prefer to handle the transitions with other tools than puppet.
+    php::extension { [
+        'apcu',
+        'geoip',
         'msgpack',
         'redis',
-        'wikidiff2'
+        'luasandbox',
+        'wikidiff2',
     ]:
         ensure => present
     }
 
-    # Extensions that require configuration
+    # Extensions that require configuration.
     php::extension {
         'xml':
-            priority => 15;
+            package_name => "php${php_version}-xml",
+            priority     => 15;
         'memcached':
             priority => 25,
             config   => {
@@ -91,7 +115,7 @@ class profile::mediawiki::php(
                 'compact_strings' => 'Off',
             };
         'mysqli':
-            package_name => 'php-mysql';
+            package_name => "php${php_version}-mysql";
         'dba':
             package_name => "php${php_version}-dba",
     }
