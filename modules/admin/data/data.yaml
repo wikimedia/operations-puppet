@@ -106,7 +106,7 @@ groups:
   releasers-mediawiki:
     gid: 711
     description: people who upload mediawiki releases
-    members: [catrope, demon, hashar, legoktm, reedy, thcipriani]
+    members: [catrope, demon, hashar, legoktm, reedy, thcipriani, twentyafterfour]
     privileges: ['ALL = (jenkins) NOPASSWD: ALL',
                  'ALL = NOPASSWD: /usr/sbin/service jenkins *']
   releasers-mobile:
