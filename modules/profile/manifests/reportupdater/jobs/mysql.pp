@@ -52,6 +52,10 @@ class profile::reportupdater::jobs::mysql {
         repository => 'limn-language-data',
         output_dir => 'metrics/published_cx2_translations',
     }
+    reportupdater::job { 'mt_engines':
+        repository => 'limn-language-data',
+        output_dir => 'metrics/mt_engines',
+    }
     reportupdater::job { 'ee':
         repository => 'limn-ee-data',
         output_dir => 'metrics/echo',
