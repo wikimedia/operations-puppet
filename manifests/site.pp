@@ -1863,21 +1863,18 @@ node 'pc1006.eqiad.wmnet' {
 }
 # codfw
 # pc1
-node 'pc2004.codfw.wmnet' {
-    role(mariadb::parsercache)
-}
-# pc1
-node 'pc2007.codfw.wmnet' {
+node /^pc20[10][047]\.codfw\.wmnet$/ {
     role(mariadb::parsercache)
 }
 # pc2
-node 'pc2005.codfw.wmnet' {
+node /^pc200[58]\.codfw\.wmnet$/ {
     role(mariadb::parsercache)
 }
 # pc3
-node 'pc2006.codfw.wmnet' {
+node /^pc200[69]\.codfw\.wmnet$/ {
     role(mariadb::parsercache)
 }
+
 # virtual machines for https://wikitech.wikimedia.org/wiki/Ping_offload
 node /^ping[12]001\.(eqiad|codfw)\.wmnet$/ {
     role(ping_offload)
