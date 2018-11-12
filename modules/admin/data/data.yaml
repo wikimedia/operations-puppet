@@ -3384,3 +3384,7 @@ ldap_only_users:
     ensure: present
     realname: Marcella L. Florence
     email: mflorence@wikimedia.org
+  mmarble:
+    ensure: present
+    realname: Michal Marble
+    email: mmarble@wikimedia.org
