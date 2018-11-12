@@ -46,6 +46,11 @@ class profile::trafficserver::backend (
         }
     }
 
+    trafficserver::lua_script { 'x-mediawiki-original':
+        source    => 'puppet:///modules/profile/trafficserver/x-mediawiki-original.lua',
+        unit_test => 'puppet:///modules/profile/trafficserver/x-mediawiki-original_test.lua',
+    }
+
     prometheus::trafficserver_exporter { 'trafficserver_exporter':
         endpoint => "http://127.0.0.1:${port}/_stats",
     }

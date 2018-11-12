@@ -220,6 +220,9 @@ profile::trafficserver::backend::mapping_rules:
     - type: map
       target: http://upload.wikimedia.org
       replacement: https://swift-rw.discovery.wmnet
+      params:
+          - '@plugin=/usr/lib/trafficserver/modules/tslua.so'
+          - '@pparam=/etc/trafficserver/lua/x-mediawiki-original.lua'
     - type: map
       target: http://yarn.wikimedia.org
       replacement: http://analytics-tool1001.eqiad.wmnet
