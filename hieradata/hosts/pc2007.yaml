@@ -1,1 +1,2 @@
 mariadb::parsercache::shard: 'pc1'
+profile::base::notifications_enabled: '0'
