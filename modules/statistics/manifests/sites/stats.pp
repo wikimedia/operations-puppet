@@ -32,6 +32,16 @@ class statistics::sites::stats {
         show_diff => false,
     }
 
+    # Allow rsync to /srv/stats.wikimedia.org.
+    # Files are pushed here by ezachte for wikistats 1 updates.
+    rsync::server::module { 'stats.wikimedia.org':
+        path        => $wikistats_web_directory,
+        read_only   => 'no',
+        list        => 'yes',
+        hosts_allow => $::statistics::servers,
+        auto_ferm   => true,
+    }
+
     apache::site { 'stats.wikimedia.org':
         content => template('statistics/stats.wikimedia.org.erb'),
     }

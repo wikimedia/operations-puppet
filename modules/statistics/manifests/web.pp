@@ -39,4 +39,12 @@ class statistics::web {
     include ::apache::mod::proxy_http
     include ::apache::mod::headers
     include ::apache::mod::cgi
+
+    # Allow rsyncing from statistics::servers
+    # NOTE: This does not set up any rsync modules; that must be done
+    # in other classes.
+    class { '::rsync::server':
+        # the default timeout of 300 is too low
+        timeout => 1000,
+    }
 }
