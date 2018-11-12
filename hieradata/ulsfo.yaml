@@ -1,3 +1,6 @@
+## NOTE namespaced keys (i.e. with ::) will NOT be looked up here
+## See also https://phabricator.wikimedia.org/T209265
+
 prometheus_nodes:
   - bast4001.wikimedia.org
   - bast4002.wikimedia.org
