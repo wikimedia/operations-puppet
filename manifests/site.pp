@@ -1610,7 +1610,7 @@ node 'mw1338.eqiad.wmnet' {
 # Debug servers
 # mwdebug2001 is in row A, mwdebug2002 is in row B
 node /^mwdebug200[12]\.codfw\.wmnet$/ {
-  role(mediawiki::canary_appserver)
+    role(mediawiki::canary_appserver)
 }
 
 
