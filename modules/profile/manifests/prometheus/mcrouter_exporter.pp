@@ -1,9 +1,10 @@
 class profile::prometheus::mcrouter_exporter (
     Integer $mcrouter_port = hiera('mcrouter::port'),
+    Integer $listen_port = hiera('profile::prometheus::mcrouter_exporter::listen_port', 9151),
     $prometheus_nodes = hiera('prometheus_nodes'),
 ) {
     prometheus::mcrouter_exporter { 'default':
-        arguments => "-mcrouter.address localhost:${mcrouter_port}",
+        arguments => "-mcrouter.address localhost:${mcrouter_port} -web.listen-address :${listen_port}",
     }
 
     $prometheus_ferm_nodes = join($prometheus_nodes, ' ')
@@ -11,7 +12,7 @@ class profile::prometheus::mcrouter_exporter (
 
     ferm::service { 'prometheus-mcrouter-exporter':
         proto  => 'tcp',
-        port   => '9151',
+        port   => $listen_port,
         srange => $ferm_srange,
     }
 
