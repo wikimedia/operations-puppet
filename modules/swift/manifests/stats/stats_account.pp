@@ -1,8 +1,9 @@
 define swift::stats::stats_account (
     $accounts,
     $statsd_prefix,
-    $statsd_host,
     $credentials,
+    $statsd_host = 'statsd.eqiad.wmnet',
+    $statsd_port = 8125,
 ) {
     $account_info = $accounts[$name]
     $auth_url     = $account_info[auth]
@@ -24,7 +25,7 @@ define swift::stats::stats_account (
 
         cron { "swift-account-stats_${user}":
             ensure  => present,
-            command => ". ${account_file} && /usr/local/bin/swift-account-stats --prefix ${account_statsd_prefix} --statsd-host ${statsd_host} 1>/dev/null",
+            command => ". ${account_file} && /usr/local/bin/swift-account-stats --prefix ${account_statsd_prefix} --statsd-host ${statsd_host} --statsd-port ${statsd_port} 1>/dev/null",
             user    => 'root',
             hour    => '*',
             minute  => '*',

@@ -3,6 +3,7 @@ class swift::stats::accounts(
     $accounts      = $::swift::params::accounts,
     $credentials   = $::swift::params::account_keys,
     $statsd_host   = 'statsd.eqiad.wmnet',
+    $statsd_port   = 8125,
     $statsd_prefix = "swift.${::swift::params::swift_cluster}.stats",
 ) {
     $required_packages = [
@@ -36,6 +37,7 @@ class swift::stats::accounts(
         accounts      => $accounts,
         statsd_prefix => $statsd_prefix,
         statsd_host   => $statsd_host,
+        statsd_port   => $statsd_port,
         credentials   => $credentials,
     }
 }
