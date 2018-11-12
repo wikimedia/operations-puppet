@@ -17,15 +17,6 @@ Architectures: all>amd64
 VerifyRelease: 9B7D32F2D50582E6
 ListShellHook: grep-dctrl -X -S jenkins || [ $? -eq 1 ]
 
-Name: cloudera-trusty
-Method: http://archive.cloudera.com/cdh5/ubuntu/trusty/amd64/cdh/
-Components: contrib>thirdparty/cloudera
-UDebComponents:
-Suite: trusty-cdh5.10.0
-Architectures: amd64 source
-VerifyRelease: 327574EE02A818DD
-ListShellHook: grep-dctrl -e -S '^(avro-libs|bigtop-jsvc|bigtop-tomcat|bigtop-utils|crunch|hadoop|hbase|hive|hue|impala|kite|llama|mahout|oozie|parquet|parquet-format|pig|pig-udf-datafu|sentry|solr|flume-ng|spark-core|sqoop|sqoop2|whirr|zookeeper)$' || [ $? -eq 1 ]
-
 Name: cloudera-jessie
 Method: http://archive.cloudera.com/cdh5/debian/jessie/amd64/cdh/
 Components: contrib>thirdparty/cloudera
