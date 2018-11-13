@@ -1,6 +1,7 @@
 class profile::toolforge::mailrelay(
-    $external_hostname = hiera('profile::toolforge::mailrelay::external_hostname'),
-    $mail_domain = hiera('profile::toolforge::mail_domain', 'tools.wmflabs.org'),
+    String $external_hostname = hiera('profile::toolforge::mailrelay::external_hostname'),
+    String $mail_domain = hiera('profile::toolforge::mail_domain', 'tools.wmflabs.org'),
+    String $cert_name = hiera('profile::toolforge::cert_name', 'tools_mail'),
 ) {
     class { '::exim4':
         queuerunner => 'combined',
@@ -44,6 +45,26 @@ class profile::toolforge::mailrelay(
         group  => 'root',
         mode   => '0644',
         source => 'puppet:///modules/profile/toolforge/mailrelay/aliases',
+    }
+
+    letsencrypt::cert::integrated { $cert_name:
+        subjects   => $mail_domain,
+        key_group  => 'Debian-exim',
+        puppet_svc => 'nginx',
+        system_svc => 'nginx',
+    }
+
+    class { 'nginx':
+        variant => 'light',
+    }
+
+    nginx::site { 'letsencrypt-standalone':
+        content => template('letsencrypt/cert/integrated/standalone.nginx.erb'),
+    }
+
+    ferm::service { 'nginx-http':
+        proto => 'tcp',
+        port  => '80',
     }
 
     diamond::collector::extendedexim { 'extended_exim_collector': }
