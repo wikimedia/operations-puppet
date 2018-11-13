@@ -10,6 +10,12 @@ class toollabs::services(
     $active = false,
 ) inherits toollabs {
 
+    # ugly, but this code/class (toollabs::services) is already refactored and
+    # will be deleted soon anyway
+    aptly::repo { 'stretch-toolsbeta':
+        publish      => true,
+    }
+
     include ::gridengine::submit_host
 
     package { 'tools-manifest':
