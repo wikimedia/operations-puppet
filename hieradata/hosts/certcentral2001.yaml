@@ -1,4 +1,0 @@
-profile::certcentral::accounts:
-  2059bfbc1a41d8b2de206d9d23fef48a:
-    regr: '{"body": {}, "uri": "https://acme-v02.api.letsencrypt.org/acme/acct/45156791"}'
-    directory: "https://acme-v02.api.letsencrypt.org/directory"

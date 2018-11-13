@@ -7,3 +7,9 @@ profile::certcentral::certificates:
 profile::certcentral::challenges:
   dns-01:
     zone_update_cmd: /usr/local/bin/certcentral-gdnsd-sync.py
+profile::certcentral::accounts:
+  cb6556464272a118e117b3b0039bd261:
+    regr: '{"body": {}, "uri": "https://acme-v02.api.letsencrypt.org/acme/acct/45156774"}'
+    directory: "https://acme-v02.api.letsencrypt.org/directory"
+profile::certcentral::active: certcentral1001.eqiad.wmnet
+profile::certcentral::passive: certcentral2001.codfw.wmnet

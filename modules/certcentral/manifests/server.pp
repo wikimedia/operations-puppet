@@ -4,6 +4,8 @@ class certcentral::server (
     Hash[String, Hash[String, Any]] $challenges = {},
     String $http_proxy = '',
     Wmflib::Ensure $http_challenge_support = absent,
+    String $active_host = '',
+    String $passive_host = '',
 ) {
     if os_version('debian == stretch') {
         apt::pin { 'acme':
@@ -14,6 +16,19 @@ class certcentral::server (
             before   => Package['certcentral'],
         }
     }
+
+    user { 'certcentral':
+        ensure => present,
+        system => true,
+        home   => '/nonexistent',
+        shell  => '/bin/bash',
+        before => Package['certcentral'],
+    }
+
+    ssh::userkey { 'certcentral':
+        content => secret('keyholder/authdns_certcentral.pub'),
+    }
+
     package { 'certcentral':
         ensure  => present,
         require => Exec['apt-get update'],
@@ -39,6 +54,15 @@ class certcentral::server (
             Base::Service_unit['uwsgi-certcentral'],
             Service['certcentral'],
         ],
+        require => Package['certcentral'],
+    }
+
+    $live_certs_path = '/etc/certcentral/live_certs'
+    file { '/etc/certcentral/cert-sync.conf':
+        owner   => 'certcentral',
+        group   => 'certcentral',
+        mode    => '0444',
+        content => template('certcentral/cert-sync.conf.erb'),
         require => Package['certcentral'],
     }
 
@@ -68,15 +92,19 @@ class certcentral::server (
         }
     }
 
+    $ensure = ($::fqdn == $active_host)? {
+        true    => 'present',
+        default => 'absent',
+    }
     systemd::service { 'certcentral':
-        ensure   => present,
+        ensure   => $ensure,
         require  => Package['certcentral'],
         content  => template('certcentral/certcentral.service.erb'),
         override => true,
     }
 
     cron { 'reload-certcentral-backend':
-        ensure   => present, # TODO: replace with https://gerrit.wikimedia.org/r/460397
+        ensure   => ($::fqdn == $active_host), # TODO: replace with https://gerrit.wikimedia.org/r/460397
         command  => '/bin/systemctl reload certcentral',
         user     => 'root',
         minute   => '0',
@@ -127,6 +155,13 @@ class certcentral::server (
         srange => '$DOMAIN_NETWORKS',
     }
 
+    ferm::service { 'certcentral-ssh-rsync':
+        ensure => ($::fqdn == $passive_host),
+        proto  => 'tcp',
+        port   => '22',
+        srange => "(@resolve((${active_host})) @resolve((${active_host}), AAAA))",
+    }
+
     keyholder::agent { 'authdns_certcentral':
         trusted_groups => ['certcentral'],
     }
@@ -137,5 +172,19 @@ class certcentral::server (
         mode    => '0544',
         source  => 'puppet:///modules/certcentral/gdnsd-sync.py',
         require => Package['certcentral'],
+    }
+
+    file { '/usr/local/bin/certcentral-certs-sync':
+        ensure => present,
+        owner  => 'certcentral',
+        group  => 'certcentral',
+        mode   => '0544',
+        source => 'puppet:///modules/certcentral/certs-sync',
+    }
+
+    if $::fqdn == $active_host {
+        exec { '/usr/local/bin/certcentral-certs-sync':
+            timeout => 60,
+        }
     }
 }
