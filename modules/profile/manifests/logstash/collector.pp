@@ -274,7 +274,7 @@ class profile::logstash::collector (
         host            => '127.0.0.1',
         guard_condition => '"es" in [tags]',
         index           => '%{[@metadata][index_name]}-%{+YYYY.MM.dd}',
-        manage_indices  => false,
+        manage_indices  => true,
         priority        => 90,
         template        => '/etc/logstash/elasticsearch-template.json',
         require         => File['/etc/logstash/elasticsearch-template.json'],
