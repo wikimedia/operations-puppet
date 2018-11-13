@@ -61,13 +61,27 @@ define profile::analytics::refinery::job::refine_job (
         properties => $job_config,
     }
 
+    # We need to load an older CDH's version of these Hive jars in order to use
+    # Hive JDBC directly inside of a spark job.  This is a workaround for
+    # https://issues.apache.org/jira/browse/SPARK-23890.
+    # See also:
+    # https://github.com/wikimedia/analytics-refinery/blob/master/artifacts/hive-cdh5.10.0.README
+    # https://phabricator.wikimedia.org/T209407
+    # Because these older CDH hive jars are no longer deployed throughout the cluster,
+    # we need to include them in --files to upload them to the YARN AM/Spark Driver container.
+    $driver_extra_hive_jars = "${refinery_path}/artifacts/hive-jdbc-1.1.0-cdh5.10.0.jar,${refinery_path}/artifacts/hive-service-1.1.0-cdh5.10.0.jar"
+    # We need hadoop-mapreduce-client-common which IS deployed throughout the cluster,
+    # as well as the aforementioned CDH 5.10.0 hive jars, which have will be uploaded to the
+    # Spark Driver's working dir, and should be referenced by relative path.
+    $driver_extra_classpath = '/usr/lib/hadoop-mapreduce/hadoop-mapreduce-client-common.jar:hive-jdbc-1.1.0-cdh5.10.0.jar:hive-service-1.1.0-cdh5.10.0.jar'
+
     profile::analytics::refinery::job::spark_job { $job_name:
         ensure     => $ensure,
         jar        => $_refinery_job_jar,
         class      => $job_class,
         # We use spark's --files option to load the $job_config_file to the Spark job's working HDFS dir.
         # It is then referenced via its relative file name with --config_file $job_name.properties.
-        spark_opts => "--files /etc/hive/conf/hive-site.xml,${job_config_file} --master yarn --deploy-mode cluster --queue ${queue} --driver-memory ${spark_driver_memory} --conf spark.driver.extraClassPath=/usr/lib/hive/lib/hive-jdbc.jar:/usr/lib/hadoop-mapreduce/hadoop-mapreduce-client-common.jar:/usr/lib/hive/lib/hive-service.jar --conf spark.dynamicAllocation.maxExecutors=${spark_max_executors} ${spark_extra_opts}",
+        spark_opts => "--files /etc/hive/conf/hive-site.xml,${job_config_file},${driver_extra_hive_jars} --master yarn --deploy-mode cluster --queue ${queue} --driver-memory ${spark_driver_memory} --conf spark.driver.extraClassPath=${driver_extra_classpath} --conf spark.dynamicAllocation.maxExecutors=${spark_max_executors} ${spark_extra_opts}",
         job_opts   => "--config_file ${job_name}.properties",
         require    => Profile::Analytics::Refinery::Job::Config[$job_config_file],
         user       => $user,
