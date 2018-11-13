@@ -31,7 +31,8 @@ class puppetmaster::puppetdb(
         require => Class['::sslcert::dhparam'],
     }
 
-    diamond::collector::nginx{ $::fqdn:
+    # T209709
+    nginx::status_site { $::fqdn:
         port => 10080,
     }
 

@@ -51,7 +51,8 @@ class profile::docker::registry(
         http_allowed_hosts   => $http_allowed_hosts,
     }
 
-    diamond::collector::nginx{ $::fqdn:
+    # T209709
+    nginx::status_site { $::fqdn:
         port => 10080,
     }
 

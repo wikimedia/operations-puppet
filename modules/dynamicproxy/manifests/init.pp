@@ -206,7 +206,8 @@ class dynamicproxy (
         source  => 'puppet:///modules/dynamicproxy/redis.lua',
     }
 
-    diamond::collector::nginx { 'diamond-monitor-proxy': }
+    # T209709
+    nginx::status_site { 'diamond-monitor-proxy': }
 
     # Also monitor local redis
     include ::redis::client::python

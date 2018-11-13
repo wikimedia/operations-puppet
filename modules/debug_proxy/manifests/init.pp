@@ -41,5 +41,6 @@ class debug_proxy(
 
     base::service_auto_restart { 'nginx': }
 
-    diamond::collector::nginx { 'debug_proxy': }
+    # T209709
+    nginx::status_site { 'debug_proxy': }
 }
