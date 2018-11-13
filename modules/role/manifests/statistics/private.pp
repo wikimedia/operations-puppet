@@ -12,6 +12,9 @@ class role::statistics::private {
     if $::hostname == 'stat1007' {
         # Run Hadoop/Hive reportupdater jobs here.
         include ::profile::reportupdater::jobs::hadoop
+
+        # This job copies wiktext dumps from the NFS mounts to HDFS
+        include ::profile::analytics::refinery::job::import_wikitext_dumps
     }
 
     if $::hostname == 'stat1005' {
