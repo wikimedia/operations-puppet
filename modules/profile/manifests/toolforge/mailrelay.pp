@@ -48,7 +48,7 @@ class profile::toolforge::mailrelay(
     }
 
     letsencrypt::cert::integrated { $cert_name:
-        subjects   => $mail_domain,
+        subjects   => $external_hostname,
         key_group  => 'Debian-exim',
         puppet_svc => 'nginx',
         system_svc => 'nginx',
