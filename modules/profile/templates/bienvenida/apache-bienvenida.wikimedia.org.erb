@@ -15,6 +15,7 @@
     </Directory>
 
     <Directory /srv/org/wikimedia/bienvenida>
+        Header set Cache-Control "max-age=3600, must-revalidate"
         Options Indexes FollowSymLinks MultiViews
         AllowOverride None
         Require all granted
