@@ -36,16 +36,17 @@
 #   domain of the tile server, to be used in generating invalidation URIs
 #
 class tilerator(
-    $cassandra_pass,
-    $pgsql_pass,
-    $redis_server,
-    $redis_pass,
-    $cassandra_servers,
-    $storage_id,
-    $eventlogging_service_uri,
-    $sources_to_invalidate,
-    $tile_server_domain,
-    $contact_groups    = 'admins',
+    String $cassandra_pass,
+    String $pgsql_pass,
+    String $redis_server,
+    String $redis_pass,
+    Array[String] $cassandra_servers,
+    String $storage_id,
+    String $eventlogging_service_uri,
+    Array[String] $sources_to_invalidate,
+    String $tile_server_domain,
+    Integer[0] $num_workers,
+    Optional[String] $contact_groups    = 'admins',
 ) {
 
     validate_array($cassandra_servers)
@@ -61,7 +62,7 @@ class tilerator(
     service::node { 'tilerator':
         port              => 6534,
         deployment_config => true,
-        no_workers        => $::processorcount / 2,
+        no_workers        => $num_workers,
         deployment        => 'scap3',
         deployment_vars   => {
             entrypoint               => '""',
