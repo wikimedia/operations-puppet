@@ -7,11 +7,75 @@
 class profile::toolforge::bastion(
     $nproc = hiera('profile::toolforge::bastion::nproc',30),
     $active_cronrunner = hiera('profile::toolforge::active_cronrunner'),
+    $master_host = hiera('k8s::master_host'),
+    $etcd_hosts = hiera('flannel::etcd_hosts', [$master_host]),
 ){
+    # Son of Grid Engine Configuration
     # admin_host???
     class {'::sonofgridengine::submit_host': }
     include profile::toolforge::dev_environ
     include profile::toolforge::grid::exec_environ
+
+    file { '/etc/toollabs-cronhost':
+        ensure  => file,
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0644',
+        content => $active_cronrunner,
+    }
+    file { '/usr/local/bin/crontab':
+        ensure  => 'link',
+        target  => '/usr/bin/oge-crontab',
+        require => Package['misctools'],
+    }
+
+    file { '/usr/local/bin/killgridjobs.sh':
+        ensure => file,
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0555',
+        source => 'puppet:///modules/profile/toolforge/gridscripts/killgridjobs.sh',
+    }
+
+    file { '/usr/local/sbin/exec-manage':
+        ensure => file,
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0655',
+        source => 'puppet:///modules/profile/toolforge/exec-manage',
+    }
+
+    file { '/usr/local/sbin/qstat-full':
+        ensure => file,
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0655',
+        source => 'puppet:///modules/profile/toolforge/qstat-full',
+    }
+
+    file { "${profile::toolforge::grid::base::store}/submithost-${::fqdn}":
+        ensure  => file,
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0444',
+        require => File[$profile::toolforge::grid::base::store],
+        content => "${::ipaddress}\n",
+    }
+
+    # General SSH Use Configuration
+    package { 'toollabs-webservice':
+        ensure => latest,
+    }
+
+    motd::script { 'bastion-banner':
+        ensure => present,
+        source => "puppet:///modules/profile/toolforge/40-${::labsproject}-bastion-banner.sh",
+    }
+
+    # Display tips.
+    file { '/etc/profile.d/motd-tips.sh':
+        ensure  => absent,
+    }
 
     if os_version('ubuntu trusty') {
 
@@ -318,18 +382,8 @@ class profile::toolforge::bastion(
     #     }
     # }
 
-
-    package { 'toollabs-webservice':
-        ensure => latest,
-    }
-
     package { 'mosh':
         ensure => present,
-    }
-
-    motd::script { 'bastion-banner':
-        ensure => present,
-        source => "puppet:///modules/profile/toolforge/40-${::labsproject}-bastion-banner.sh",
     }
 
     file {'/etc/security/limits.conf':
@@ -348,54 +402,25 @@ class profile::toolforge::bastion(
         source => 'puppet:///modules/profile/toolforge/submithost-ssh_config',
     }
 
-    file { "${profile::toolforge::grid::base::store}/submithost-${::fqdn}":
-        ensure  => file,
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0444',
-        require => File[$profile::toolforge::grid::base::store],
-        content => "${::ipaddress}\n",
+    # Kubernetes Configuration
+    $etcd_url = join(prefix(suffix($etcd_hosts, ':2379'), 'https://'), ',')
+
+    ferm::service { 'flannel-vxlan':
+        proto => udp,
+        port  => 8472,
     }
 
-    # Display tips.
-    file { '/etc/profile.d/motd-tips.sh':
-        ensure  => absent,
+    class { '::k8s::flannel':
+        etcd_endpoints => $etcd_url,
     }
 
-    file { '/etc/toollabs-cronhost':
-        ensure  => file,
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0644',
-        content => $active_cronrunner,
-    }
-    file { '/usr/local/bin/crontab':
-        ensure  => 'link',
-        target  => '/usr/bin/oge-crontab',
-        require => Package['misctools'],
+    class { '::k8s::infrastructure_config':
+        master_host => $master_host,
     }
 
-    file { '/usr/local/bin/killgridjobs.sh':
-        ensure => file,
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0555',
-        source => 'puppet:///modules/profile/toolforge/gridscripts/killgridjobs.sh',
+    class { '::k8s::proxy':
+        master_host => $master_host,
     }
 
-    file { '/usr/local/sbin/exec-manage':
-        ensure => file,
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0655',
-        source => 'puppet:///modules/profile/toolforge/exec-manage',
-    }
-
-    file { '/usr/local/sbin/qstat-full':
-        ensure => file,
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0655',
-        source => 'puppet:///modules/profile/toolforge/qstat-full',
-    }
+    require_package('kubernetes-client')
 }
