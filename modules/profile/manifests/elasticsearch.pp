@@ -48,8 +48,16 @@ class profile::elasticsearch(
         }
     }
 
+    # filter our instances that should not be deployed on this node
+    # this is used for the cirrus clusters, where multiple sub clusters are defined
+    # on a subset of all nodes.
+    #
+    # note in filter |$instance| below, $isntance is an array [ key, value ]
+    # see https://puppet.com/docs/puppet/5.5/function.html#filter for details
+    $filtered_instances = $configured_instances.filter |$instance| { $facts['fqdn'] in $instance[1]['cluster_hosts'] }
+
     # Accessed from profile::elasticsearch::* for firewalls, proxies, etc.
-    $configured_instances.each |$instance_title, $instance_params| {
+    $filtered_instances.each |$instance_title, $instance_params| {
         $transport_tcp_port = pick_default($instance_params['transport_tcp_port'], 9300)
         $elastic_nodes_ferm = join(pick_default($instance_params['cluster_hosts'], [$::fqdn]), ' ')
 
@@ -74,7 +82,7 @@ class profile::elasticsearch(
     # Install
     class { '::elasticsearch':
         version            => 5,
-        instances          => $configured_instances,
+        instances          => $filtered_instances,
         base_data_dir      => $base_data_dir,
         logstash_host      => $logstash_host,
         logstash_gelf_port => $logstash_gelf_port,
