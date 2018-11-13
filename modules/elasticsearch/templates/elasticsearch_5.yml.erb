@@ -392,6 +392,11 @@ gateway:
 <% if @row and @row != '' %>node.attr.row: <%=  @row  %><% end %>
 <% if @rack and @rack != '' %>node.attr.rack: <%= @rack %><% end %>
 
+##
+# Other attributes
+##
+node.attr.hostname: <%= @hostname %>
+node.attr.fqdn: <%= @fqdn %>
 
 ##
 # Elasticsearch cluster balance configuration
