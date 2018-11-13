@@ -23,12 +23,20 @@ class profile::mariadb::parsercache (
         password => $passwords::misc::scripts::mysql_root_pass,
     }
 
+    if os_version('debian >= stretch') {
+        $mysqlbasedir = '/opt/wmf-mariadb101/'
+    }
+    else {
+        $mysqlbasedir = '/opt/wmf-mariadb10'
+    }
+
     class { 'mariadb::config':
         config  => 'role/mariadb/mysqld_config/parsercache.my.cnf.erb',
         datadir => '/srv/sqldata-cache',
         tmpdir  => '/srv/tmp',
         ssl     => 'puppet-cert',
         p_s     => 'off',
+        basedir => $mysqlbasedir,
     }
 
     class { 'mariadb::heartbeat':
