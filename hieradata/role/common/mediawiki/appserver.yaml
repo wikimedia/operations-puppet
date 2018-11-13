@@ -16,4 +16,4 @@ profile::lvs::realserver::pools:
     service: hhvm
 profile::mediawiki::vhost_feature_flags:
   set_handler: true
-profile::mediawiki::php::php_version: 7.2
+profile::mediawiki::php::php_version: "7.2"
