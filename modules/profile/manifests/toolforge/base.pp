@@ -1,6 +1,6 @@
 class profile::toolforge::base(
     $is_mail_relay = hiera('profile::toolforge::is_mail_relay', false),
-    $active_mail_relay = hiera('profile::toolforge::active_mail_relay', 'tools-mail.tools.eqiad.wmflabs'),
+    $active_mail_relay = hiera('profile::toolforge::active_mail_relay', 'tools-mail-02.tools.eqiad.wmflabs'),
     $mail_domain = hiera('profile::toolforge::mail_domain', 'tools.wmflabs.org'),
 ) {
     package { 'nano':
