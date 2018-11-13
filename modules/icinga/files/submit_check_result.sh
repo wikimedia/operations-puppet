@@ -27,11 +27,7 @@
 
 echocmd="/bin/echo"
 
-if [ $(lsb_release -cs) == "jessie" ]; then
-    CommandFile="/var/lib/nagios/rw/nagios.cmd"
-else
-    CommandFile="/var/lib/icinga/rw/icinga.cmd"
-fi
+CommandFile="/var/lib/icinga/rw/icinga.cmd"
 
 # get the current date/time in seconds since UNIX epoch
 datetime=`date +%s`

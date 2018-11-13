@@ -27,198 +27,110 @@ class icinga(
     Integer $max_concurrent_checks = 0,
 ) {
 
-    if os_version('debian == jessie') {
-    # Setup icinga user
-        group { 'nagios':
-            ensure    => present,
-            name      => 'nagios',
-            system    => true,
-            allowdupe => false,
-        }
+    file { [ '/etc/nagios/nagios_host.cfg', '/etc/nagios/nagios_service.cfg' ]:
+      ensure => 'file',
+      mode   => '0444'
+    }
 
-        group { 'icinga':
-            ensure => present,
-            name   => 'icinga',
-        }
+    # Replaces custom icinga init script.
+    file { '/etc/default/icinga':
+      source  => 'puppet:///modules/icinga/default_icinga.sh',
+      owner   => 'root',
+      group   => 'root',
+      mode    => '0644',
+      require => Package['icinga']
+    }
 
-        user { 'icinga':
-            name       => 'icinga',
-            home       => '/home/icinga',
-            gid        => 'icinga',
-            system     => true,
-            managehome => false,
-            shell      => '/bin/false',
-            require    => [ Group['icinga'], Group['nagios'] ],
-            groups     => [ 'nagios' ],
-        }
+    systemd::service { 'icinga':
+        ensure         => 'present',
+        content        => systemd_template('icinga'),
+        service_params => {
+            hasstatus => false,
+            restart   => '/etc/init.d/icinga reload',
+        },
+        require        => [
+          Mount['/var/icinga-tmpfs'],
+          Package['icinga'],
+        ],
+    }
 
-        # Setup icinga custom init script
-        file { '/etc/init.d/icinga':
-          source  => 'puppet:///modules/icinga/icinga-init.sh',
-          owner   => 'root',
-          group   => 'root',
-          mode    => '0755',
-          require => Package['icinga'],
-        }
+    file { '/etc/icinga/icinga.cfg':
+      content => template('icinga/icinga.cfg.erb'),
+      owner   => $icinga_user,
+      group   => $icinga_group,
+      mode    => '0644',
+      require => Package['icinga'],
+      notify  => Service['icinga'],
+    }
 
-        service { 'icinga':
-          ensure    => $ensure_service,
-          hasstatus => false,
-          restart   => '/etc/init.d/icinga reload',
-          require   => [
-              Mount['/var/icinga-tmpfs'],
-              File['/etc/init.d/icinga'],
-          ],
-        }
+    # Clear the objects directory of sample configuration
+    file { '/etc/icinga/objects':
+      ensure  => 'directory',
+      purge   => true,
+      recurse => true,
+    }
 
-        class { '::nagios_common::contactgroups':
-          source  => 'puppet:///modules/nagios_common/contactgroups.cfg',
-          owner   => $icinga_user,
-          group   => $icinga_group,
-          require => Package['icinga'],
-          notify  => Service['icinga'],
-        }
+    class { '::nagios_common::contactgroups':
+      source     => 'puppet:///modules/nagios_common/contactgroups.cfg',
+      owner      => $icinga_user,
+      group      => $icinga_group,
+      config_dir => '/etc/icinga/objects',
+      require    => Package['icinga'],
+      notify     => Service['icinga'],
+    }
 
-        class { '::nagios_common::contacts':
-          owner   => $icinga_user,
-          group   => $icinga_group,
-          content => secret('nagios/contacts.cfg'),
-          require => Package['icinga'],
-          notify  => Service['icinga'],
-        }
+    class { '::nagios_common::contacts':
+      owner      => $icinga_user,
+      group      => $icinga_group,
+      config_dir => '/etc/icinga/objects',
+      content    => secret('nagios/contacts.cfg'),
+      require    => Package['icinga'],
+      notify     => Service['icinga'],
+    }
 
-        class { [
-            '::nagios_common::user_macros',
-            '::nagios_common::timeperiods',
-            '::nagios_common::notification_commands',
-        ] :
-          owner   => $icinga_user,
-          group   => $icinga_group,
-          require => Package['icinga'],
-          notify  => Service['icinga'],
-        }
+    class { [
+        '::nagios_common::timeperiods',
+        '::nagios_common::notification_commands',
+    ] :
+      owner      => $icinga_user,
+      group      => $icinga_group,
+      config_dir => '/etc/icinga/objects',
+      require    => Package['icinga'],
+      notify     => Service['icinga'],
+    }
 
-        file { '/etc/icinga/nsca_frack.cfg':
-            content => template('icinga/nsca_frack.cfg.erb'),
-            owner   => $icinga_user,
-            group   => $icinga_group,
-            mode    => '0644',
-            require => Package['icinga'],
-            notify  => Service['icinga'],
-        }
+    # manages resource.cfg and does not belong in /etc/icinga/objects
+    class { '::nagios_common::user_macros':
+      owner   => $icinga_user,
+      group   => $icinga_group,
+      require => Package['icinga'],
+      notify  => Service['icinga'],
+    }
 
-        logrotate::conf { 'icinga':
-            ensure => present,
-            source => 'puppet:///modules/icinga/logrotate.conf',
-        }
+    file { '/etc/icinga/objects/nsca_frack.cfg':
+        content => template('icinga/nsca_frack.cfg.erb'),
+        owner   => $icinga_user,
+        group   => $icinga_group,
+        mode    => '0644',
+        require => Package['icinga'],
+        notify  => Service['icinga'],
+    }
 
-        $command_file='/var/lib/nagios/rw'
+    $command_file='/var/lib/icinga/rw'
 
-    } else {
-        file { [ '/etc/nagios/nagios_host.cfg', '/etc/nagios/nagios_service.cfg' ]:
-          ensure => 'file',
-          mode   => '0444'
-        }
-        # Replaces custom icinga init script.
-        file { '/etc/default/icinga':
-          source  => 'puppet:///modules/icinga/default_icinga.sh',
-          owner   => 'root',
-          group   => 'root',
-          mode    => '0644',
-          require => Package['icinga']
-        }
+    file { '/var/log/icinga/icinga.log':
+        ensure => 'present',
+        mode   => '0644',
+    }
 
-        systemd::service { 'icinga':
-            ensure         => 'present',
-            content        => systemd_template('icinga'),
-            service_params => {
-                hasstatus => false,
-                restart   => '/etc/init.d/icinga reload',
-            },
-            require        => [
-              Mount['/var/icinga-tmpfs'],
-              Package['icinga'],
-            ],
-        }
-
-        file { '/etc/icinga/icinga.cfg':
-          content => template('icinga/icinga.cfg.erb'),
-          owner   => $icinga_user,
-          group   => $icinga_group,
-          mode    => '0644',
-          require => Package['icinga'],
-          notify  => Service['icinga'],
-        }
-
-        # Clear the objects directory of sample configuration
-        file { '/etc/icinga/objects':
-          ensure  => 'directory',
-          purge   => true,
-          recurse => true,
-        }
-
-        class { '::nagios_common::contactgroups':
-          source     => 'puppet:///modules/nagios_common/contactgroups.cfg',
-          owner      => $icinga_user,
-          group      => $icinga_group,
-          config_dir => '/etc/icinga/objects',
-          require    => Package['icinga'],
-          notify     => Service['icinga'],
-        }
-
-        class { '::nagios_common::contacts':
-          owner      => $icinga_user,
-          group      => $icinga_group,
-          config_dir => '/etc/icinga/objects',
-          content    => secret('nagios/contacts.cfg'),
-          require    => Package['icinga'],
-          notify     => Service['icinga'],
-        }
-
-        class { [
-            '::nagios_common::timeperiods',
-            '::nagios_common::notification_commands',
-        ] :
-          owner      => $icinga_user,
-          group      => $icinga_group,
-          config_dir => '/etc/icinga/objects',
-          require    => Package['icinga'],
-          notify     => Service['icinga'],
-        }
-
-        # manages resource.cfg and does not belong in /etc/icinga/objects
-        class { '::nagios_common::user_macros':
-          owner   => $icinga_user,
-          group   => $icinga_group,
-          require => Package['icinga'],
-          notify  => Service['icinga'],
-        }
-
-        file { '/etc/icinga/objects/nsca_frack.cfg':
-            content => template('icinga/nsca_frack.cfg.erb'),
-            owner   => $icinga_user,
-            group   => $icinga_group,
-            mode    => '0644',
-            require => Package['icinga'],
-            notify  => Service['icinga'],
-        }
-
-        $command_file='/var/lib/icinga/rw'
-
-        file { '/var/log/icinga/icinga.log':
-            ensure => 'present',
-            mode   => '0644',
-        }
-
-        # If hosts appear to be missing from the web ui, it might be
-        # the permissions on this file.  Requires a restart if changed.
-        file { '/var/cache/icinga/objects.cache':
-            ensure => 'present',
-            mode   => '0644',
-            owner  => $icinga_user,
-            group  => 'www-data',
-            notify => Service['icinga'],
-        }
+    # If hosts appear to be missing from the web ui, it might be
+    # the permissions on this file.  Requires a restart if changed.
+    file { '/var/cache/icinga/objects.cache':
+        ensure => 'present',
+        mode   => '0644',
+        owner  => $icinga_user,
+        group  => 'www-data',
+        notify => Service['icinga'],
     }
 
     package { 'icinga':

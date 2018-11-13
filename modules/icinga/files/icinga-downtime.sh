@@ -16,13 +16,8 @@ Options:
 EOF
 }
 
-if [ $(lsb_release -cs) == "jessie" ]; then
-    commandfile="/var/lib/nagios/rw/nagios.cmd"
-    hostsfile="/etc/icinga/puppet_hosts.cfg"
-else
-    commandfile="/var/lib/icinga/rw/icinga.cmd"
-    hostsfile="/etc/icinga/objects/puppet_hosts.cfg"
-fi
+commandfile="/var/lib/icinga/rw/icinga.cmd"
+hostsfile="/etc/icinga/objects/puppet_hosts.cfg"
 
 logfile="/var/log/icinga/icinga.log"
 user="marvin-bot" # because it's a _down_time bot, get it?:p
