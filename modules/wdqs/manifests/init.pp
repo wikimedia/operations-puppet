@@ -63,8 +63,17 @@ class wdqs(
         deploy_mode           => $deploy_mode,
         package_dir           => $package_dir,
         data_dir              => $data_dir,
+        log_dir               => $log_dir,
+        username              => $username,
         enable_ldf            => $enable_ldf,
         max_query_time_millis => $max_query_time_millis,
-        load_categories       => $load_categories,
+    }
+
+    class { 'wdqs::crontasks':
+        package_dir     => $package_dir,
+        data_dir        => $data_dir,
+        log_dir         => $log_dir,
+        username        => $username,
+        load_categories => $load_categories,
     }
 }
