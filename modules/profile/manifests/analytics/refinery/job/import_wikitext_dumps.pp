@@ -12,7 +12,7 @@ class profile::analytics::refinery::job::import_wikitext_dumps {
     $wiki_file              = '/mnt/hdfs/wmf/refinery/current/static_data/mediawiki/grouped_wikis/labs_grouped_wikis.csv'
     $input_directory_base   = '/mnt/data/xmldatadumps/public'
     $output_directory_base  = '/wmf/data/raw/mediawiki/xmldumps'
-    $page_history_log_file  = "${::profile::analytics::refinery::log_dir}/import_wikitext_dumps.log"
+    $log_file               = "${::profile::analytics::refinery::log_dir}/import_wikitext_dumps.log"
 
     file { '/usr/local/bin/refinery-import-page-history-dumps':
         content => template('profile/analytics/refinery/job/refinery-import-wikitext-dumps.sh.erb'),
