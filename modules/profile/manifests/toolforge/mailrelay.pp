@@ -1,5 +1,5 @@
 class profile::toolforge::mailrelay(
-    String $external_hostname = hiera('profile::toolforge::mailrelay::external_hostname'),
+    String $external_hostname = hiera('profile::toolforge::mailrelay::external_hostname', 'mail.tools.wmflabs.org'),
     String $mail_domain = hiera('profile::toolforge::mail_domain', 'tools.wmflabs.org'),
     String $cert_name = hiera('profile::toolforge::cert_name', 'tools_mail'),
 ) {
