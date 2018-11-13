@@ -3,9 +3,11 @@
 
 class profile::toolforge::infrastructure {
 
-    motd::script { 'infrastructure-banner':
-        ensure => present,
-        source => "puppet:///modules/profile/toolforge/40-${::labsproject}-infrastructure-banner.sh",
+    if ($::labsproject in ['tools', 'toolsbeta']) {
+        motd::script { 'infrastructure-banner':
+            ensure => present,
+            source => "puppet:///modules/profile/toolforge/40-${::labsproject}-infrastructure-banner.sh",
+        }
     }
 
     # Infrastructure instances are limited to an (arbitrarily picked) local
