@@ -1,8 +1,8 @@
-profile::icinga::virtual_host: icinga-stretch.wikimedia.org
+profile::icinga::virtual_host: icinga.wikimedia.org
 profile::icinga::partner: einsteinium.wikimedia.org
-profile::tcpircbot::ensure: absent
+profile::tcpircbot::ensure: present
 do_acme: true
-profile::icinga::passive: true
+profile::icinga::passive: false
 profile::base::notifications: disabled
 profile::icinga::icinga_user: nagios
 profile::icinga::icinga_group: nagios
