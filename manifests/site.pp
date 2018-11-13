@@ -1360,6 +1360,10 @@ node /lvs200[1-6]\.codfw\.wmnet/ {
     role(lvs::balancer)
 }
 
+node 'lvs2010.codfw.wmnet' {
+    role(lvs::balancer)
+}
+
 # ESAMS lvs servers
 node /^lvs300[1-4]\.esams\.wmnet$/ {
     role(lvs::balancer)
