@@ -46,12 +46,10 @@ class network::constants {
                     '2620:0:861:2:208:80:154:151',      # iron.wikimedia.org
                 ],
             'monitoring_hosts' => [
-                    '208.80.153.74',                    # icinga2001.wikimedia.org
-                    '2620:0:860:3:208:80:153:74',       # icinga2001.wikimedia.org
-                    '208.80.155.119',                   # einsteinium.wikimedia.org
-                    '2620:0:861:4:208:80:155:119',      # einsteinium.wikimedia.org
                     '208.80.154.84',                    # icinga1001.wikimedia.org
                     '2620:0:861:3:208:80:154:84',       # icinga1001.wikimedia.org
+                    '208.80.153.74',                    # icinga2001.wikimedia.org
+                    '2620:0:860:3:208:80:153:74',       # icinga2001.wikimedia.org
                     '208.80.154.82',                    # dbmonitor1001.wikimedia.org
                     '2620:0:861:3:208:80:154:82',       # dbmonitor1001.wikimedia.org
                     '208.80.153.52',                    # dbmonitor2001.wikimedia.org

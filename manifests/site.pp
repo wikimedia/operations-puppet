@@ -798,9 +798,9 @@ node 'eeden.wikimedia.org' {
     interface::add_ip6_mapped { 'main': }
 }
 
-# icinga based monitoring host on jessie (icinga1001/icinga2001 replacing it)
+# formerly icinga based monitoring hosts (eqiad) replaced by icinga1001
 node 'einsteinium.wikimedia.org' {
-    role(alerting_host)
+    role(spare::system)
     interface::add_ip6_mapped { 'main': }
 }
 

@@ -15,7 +15,7 @@ import sys
 # this script is intended to run on an Icinga server
 CONTACTS_FILE = '/etc/icinga/contacts.cfg'
 
-# mail sent from einsteinium.wikimedia.org (icinga server) uses these
+# mail sent from icinga1001.wikimedia.org (icinga server) uses these
 MAIL_FROM = 'icinga@wikimedia.org'
 MAIL_SERVER = 'localhost'
 

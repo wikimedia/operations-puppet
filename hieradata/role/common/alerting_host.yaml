@@ -13,5 +13,4 @@ profile::icinga::ircbot::ircecho_server: 'chat.freenode.net +6697'
 profile::icinga::active_host: icinga1001.wikimedia.org
 profile::icinga::partners:
   - 'icinga2001.wikimedia.org'
-  - 'einsteinium.wikimedia.org'
 
