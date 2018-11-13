@@ -18,8 +18,10 @@ EOF
 
 if [ $(lsb_release -cs) == "jessie" ]; then
     commandfile="/var/lib/nagios/rw/nagios.cmd"
+    hostsfile="/etc/icinga/puppet_hosts.cfg"
 else
     commandfile="/var/lib/icinga/rw/icinga.cmd"
+    hostsfile="/etc/icinga/objects/puppet_hosts.cfg"
 fi
 
 logfile="/var/log/icinga/icinga.log"
@@ -54,9 +56,9 @@ if [ -z "$hostname" ] || [ -z "$reason" ]; then
     exit 1
 fi
 
-# If $hostname is not in icinga/puppet_hosts.cfg, then icinga won't know about it.  Fail now.
-if ! grep -qE "host_name\s+$hostname$" /etc/icinga/puppet_hosts.cfg; then
-    echo "Unknown <hostname> '$hostname'. <hostname> must exist in /etc/icinga/puppet_hosts.cfg. (Did you accidentally use FQDN instead of short hostname?)"
+# If $hostname is not in puppet_hosts.cfg, then icinga won't know about it.  Fail now.
+if ! grep -qE "host_name\s+$hostname$" $hostsfile; then
+    echo "Unknown <hostname> '$hostname'. <hostname> must exist in ${hostsfile}. (Did you accidentally use FQDN instead of short hostname?)"
     exit 1
 fi
 
