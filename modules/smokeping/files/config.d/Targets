@@ -81,11 +81,10 @@ menu = cobalt
 title = cobalt.wikimedia.org [C4]
 host = cobalt.wikimedia.org
 
-+++ einsteinium
-menu = einsteinium
-title = einsteinium.wikimedia.org [D3]
-host = einsteinium.wikimedia.org
-
++++ authdns1001
+menu = authdns1001
+title = authdns1001.wikimedia.org [B1]
+host = authdns1001.wikimedia.org
 
 ++ frack
 menu = frack
