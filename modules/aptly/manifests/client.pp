@@ -1,5 +1,5 @@
 class aptly::client(
-    $servername,
+    $servername="${::labsproject}-packages.${::labsproject}.${::site}.wmflabs",
     $source=false,
     $components='main',
     $protocol='http',
