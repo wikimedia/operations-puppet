@@ -4,3 +4,4 @@ profile::tcpircbot::ensure: absent
 do_acme: true
 profile::icinga::passive: true
 profile::icinga::max_concurrent_checks: 10000
+profile::base::notifications: disabled

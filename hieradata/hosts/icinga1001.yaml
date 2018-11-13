@@ -3,7 +3,6 @@ profile::icinga::partner: einsteinium.wikimedia.org
 profile::tcpircbot::ensure: present
 do_acme: true
 profile::icinga::passive: false
-profile::base::notifications: disabled
 profile::icinga::icinga_user: nagios
 profile::icinga::icinga_group: nagios
 profile::icinga::retention_file: '/var/lib/icinga/retention.dat'
