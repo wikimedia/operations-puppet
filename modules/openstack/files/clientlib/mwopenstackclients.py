@@ -184,7 +184,8 @@ class DnsManager(object):
         services = client.keystoneclient().services.list()
         serviceid = [s.id for s in services if s.type == 'dns'][0]
         endpoints = client.keystoneclient().endpoints.list(serviceid)
-        self.url = [e.url for e in endpoints if e.interface == 'public'][0]
+        self.url = [e.url for e in endpoints
+                    if e.interface == 'public' and e.region == client.region][0]
         session = client.session()
         self.token = session.get_token()
         self.tenant = tenant
