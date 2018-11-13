@@ -1,11 +1,36 @@
-formats:
-    - name: squid
-      format: '%<cqtq> %<ttms> %<chi> %<crc>/%<pssc> %<psql> %<cqhm> %<cquc> %<caun> %<phr>/%<shn> %<psct>'
+# https://docs.trafficserver.apache.org/en/latest/admin-guide/files/logging.yaml.en.html
+# This file is managed by Puppet.
 
-    - name: extended
-      format: '%<chi> - %<caun> [%<cqtn>] "%<cqtx>" %<pssc> %<pscl> %<sssc> %<sscl> %<cqcl> %<pqcl> %<cqhl> %<pshl> %<pqhl> %<sshl> %<tts>'
+formats:
+<% @log_formats.each do |log_format| -%>
+    - name: <%= log_format['name'] %>
+      format: '<%= log_format['format'] %>'
+      <% if log_format.fetch('interval', nil) %>
+      interval: <%= log_format['interval'] %>
+      <% end %>
+
+<% end -%>
+
+<% if @log_filters.length > 0 -%>
+filters:
+<% @log_filters.each do |log_filter| -%>
+    - name: <%= log_filter['name'] %>
+      action: <%= log_filter['action'] %>
+      condition: <%= log_filter['condition'] %>
+
+<% end -%>
+<% end -%>
 
 logs:
-    - filename: <%= @log_filename %>
-      format: <%= @log_format %>
-      mode: <%= @log_mode %>
+<% @logs.each do |log| -%>
+    - filename: <%= log['filename'] %>
+      format: <%= log['format'] %>
+<% if log['filters'] -%>
+      filters:
+<% log['filters'].each do |filter| -%>
+      - <%= filter -%>
+<% end %>
+      mode: <%= log['mode'] %>
+<% end -%>
+
+<% end -%>

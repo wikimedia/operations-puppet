@@ -271,3 +271,24 @@ profile::trafficserver::backend::storage_elements:
       id: disk.0
     - devname: sdb3
       id: disk.1
+profile::trafficserver::backend::log_formats:
+  - name: wmf
+    format: 'ReqMethod:%<cqhm> RespStatus:%<pssc> OriginStatus:%<sssc> ReqURL:%<cquuc> ReqHeader:User-Agent:%<{User-agent}cqh> ReqHeader:Host:%<{Host}cqh>'
+profile::trafficserver::backend::log_filters:
+  - name: notpurge
+    action: reject
+    condition: cqhm MATCH PURGE
+  - name: purge
+    action: accept
+    condition: cqhm MATCH PURGE
+profile::trafficserver::backend::logs:
+  - filename: notpurge
+    format: wmf
+    filters:
+    - notpurge
+    mode: ascii_pipe
+  - filename: purge
+    format: wmf
+    filters:
+    - purge
+    mode: ascii_pipe

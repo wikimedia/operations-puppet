@@ -17,18 +17,6 @@
 # [*port*]
 #   Bind trafficserver to this port (default: 8080).
 #
-# [*log_mode*]
-#   The mode used to produce event logs. Valid options are: 'ascii', 'binary',
-#   'ascii_pipe' (default: 'ascii_pipe').
-#   See https://docs.trafficserver.apache.org/en/8.0.x/admin-guide/files/logging.yaml.en.html
-#
-# [*log_format*]
-#   The format to be used for event log entries. Valid options are: 'squid',
-#   'extended' (default: 'squid').
-#
-# [*log_filename*]
-#   The filename to use for event log entries. (default: 'event').
-#
 # [*outbound_tlsv1*]
 #   Whether or not to enable TLSv1 for outbound TLS. Disabled by default (default: 0).
 #
@@ -64,6 +52,18 @@
 #
 #   See https://docs.trafficserver.apache.org/en/latest/admin-guide/files/storage.config.en.html
 #
+# [*log_formats*]
+#   An array of Trafficserver::Log_formats. (default: []).
+#   See https://docs.trafficserver.apache.org/en/latest/admin-guide/files/logging.yaml.en.html
+#
+# [*log_filters*]
+#   An array of Trafficserver::Log_filters. (default: []).
+#   See https://docs.trafficserver.apache.org/en/latest/admin-guide/files/logging.yaml.en.html
+#
+# [*logs*]
+#   An array of Trafficserver::Logs. (default: []).
+#   See https://docs.trafficserver.apache.org/en/latest/admin-guide/files/logging.yaml.en.html
+#
 # === Examples
 #
 #  class { 'trafficserver':
@@ -89,9 +89,6 @@
 class trafficserver(
     String $user = 'trafficserver',
     Wmflib::IpPort $port = 8080,
-    Enum['ascii', 'binary', 'ascii_pipe'] $log_mode = 'ascii_pipe',
-    Enum['squid', 'extended'] $log_format = 'squid',
-    String $log_filename = 'event',
     Integer[0, 1] $outbound_tlsv1 = 0,
     Integer[0, 1] $outbound_tlsv1_1 = 0,
     Integer[0, 1] $outbound_tlsv1_2 = 1,
@@ -99,6 +96,9 @@ class trafficserver(
     Array[Trafficserver::Mapping_rule] $mapping_rules = [],
     Array[Trafficserver::Caching_rule] $caching_rules = [],
     Array[Trafficserver::Storage_element] $storage = [],
+    Array[Trafficserver::Log_format] $log_formats = [],
+    Array[Trafficserver::Log_filter] $log_filters = [],
+    Array[Trafficserver::Log] $logs = [],
 ) {
 
     ## Packages

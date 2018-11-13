@@ -10,6 +10,9 @@ class profile::trafficserver::backend (
     Array[TrafficServer::Caching_rule] $caching_rules=hiera('profile::trafficserver::backend::caching_rules', []),
     Array[String] $default_lua_scripts=hiera('profile::trafficserver::backend::default_lua_scripts', []),
     Array[TrafficServer::Storage_element] $storage=hiera('profile::trafficserver::backend::storage_elements', []),
+    Array[TrafficServer::Log_format] $log_formats=hiera('profile::trafficserver::backend::log_formats', []),
+    Array[TrafficServer::Log_filter] $log_filters=hiera('profile::trafficserver::backend::log_filters', []),
+    Array[TrafficServer::Log] $logs=hiera('profile::trafficserver::backend::logs', []),
     String $purge_host_regex=hiera('profile::trafficserver::backend::purge_host_regex', ''),
     Array[Stdlib::Compat::Ip_address] $purge_multicasts=hiera('profile::trafficserver::backend::purge_multicasts', ['239.128.0.112', '239.128.0.113', '239.128.0.114', '239.128.0.115']),
     Array[String] $purge_endpoints=hiera('profile::trafficserver::backend::purge_endpoints', ['127.0.0.1:3129']),
@@ -36,6 +39,9 @@ class profile::trafficserver::backend (
         storage                   => $storage,
         mapping_rules             => $remap_rules_lua,
         caching_rules             => $caching_rules,
+        log_formats               => $log_formats,
+        log_filters               => $log_filters,
+        logs                      => $logs,
     }
 
     # Install default Lua scripts
