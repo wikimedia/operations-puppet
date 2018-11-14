@@ -300,7 +300,7 @@ host analytics1077 {
 }
 
 host an-worker1078 {
-    hardware ethernet 20:04:0F:E9:53:5E;
+    hardware ethernet 20:04:0F:E9:53:5C;
     fixed-address an-worker1078.eqiad.wmnet;
 }
 
