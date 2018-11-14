@@ -112,4 +112,15 @@ class profile::trafficserver::backend (
         nrpe_command => "sudo -u ${trafficserver::user} ${config_status_filename}",
         require      => File[$config_status_filename],
     }
+
+    $logs.each |TrafficServer::Log $log| {
+        if $log['mode'] == 'ascii_pipe' {
+            fifo_log_demux::instance { $log['filename']:
+                user      => $trafficserver::user,
+                fifo      => "/var/log/trafficserver/${log['filename']}.pipe",
+                socket    => "/var/run/trafficserver/${log['filename']}.sock",
+                wanted_by => 'trafficserver.service',
+            }
+        }
+    }
 }
