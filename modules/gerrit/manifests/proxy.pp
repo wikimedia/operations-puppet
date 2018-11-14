@@ -46,6 +46,15 @@ class gerrit::proxy(
         content => template('gerrit/apache.ports.conf.erb'),
     }
 
+    $robots = ['User-Agent: *', 'Disallow: /g', 'Disallow: /r/plugins/gitiles', 'Crawl-delay: 1']
+    file { '/var/www/robots.txt':
+        ensure  => present,
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0444',
+        content => inline_template("<%= @robots.join('\n') %>"),
+    }
+
     # Error page stuff
     file { '/var/www/error.html':
         ensure  => present,
