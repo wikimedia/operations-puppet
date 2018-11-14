@@ -305,7 +305,7 @@ host an-worker1078 {
 }
 
 host an-worker1079 {
-    hardware ethernet 20:04:0F:E9:5C:D2;
+    hardware ethernet F4:E9:D4:47:2F:D0;
     fixed-address an-worker1079.eqiad.wmnet;
 }
 
