@@ -7,11 +7,13 @@
 # == Parameters:
 # - $statsd_host: Host to send statsd data to.
 # - $prometheus_nodes: List of prometheus nodes to allow connections from
+# - $input_kafka_ssl_truststore_password: password for jks truststore used by logstash kafka input plugin
 #
 # filtertags: labs-project-deployment-prep
 class profile::logstash::collector (
     $statsd_host,
     $prometheus_nodes = hiera('prometheus_nodes', []),
+    $input_kafka_ssl_truststore_password = hiera('profile::logstash::collector::input_kafka_ssl_truststore_password')
 ) {
 
     nrpe::monitor_service { 'logstash':
@@ -156,6 +158,25 @@ class profile::logstash::collector (
         port    => '16514',
         notrack => true,
         srange  => '$DOMAIN_NETWORKS',
+    }
+
+    $kafka_config = kafka_config("logging-${::site}")
+
+    logstash::input::kafka { 'rsyslog-shipper':
+        topics_pattern          => 'rsyslog-.*',
+        tags                    => ['rsyslog-shipper','kafka'],
+        bootstrap_servers       => $kafka_config['brokers']['ssl_string'],
+        security_protocol       => 'SSL',
+        ssl_truststore_location => '/etc/logstash/kafka-logging-truststore.jks',
+        ssl_truststore_password => $input_kafka_ssl_truststore_password,
+    }
+
+    file { '/etc/logstash/kafka-logging-truststore.jks':
+        content => secret("certificates/kafka_logging-${::site}_broker/truststore.jks"),
+        before  => Logstash::Input::Kafka['rsyslog-shipper'],
+        owner   => 'logstash',
+        group   => 'logstash',
+        mode    => '0640',
     }
 
     # disabled for troubleshooting T193766 -herron
