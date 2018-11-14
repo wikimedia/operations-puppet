@@ -103,8 +103,9 @@ class certcentral::server (
         override => true,
     }
 
+
     cron { 'reload-certcentral-backend':
-        ensure   => ($::fqdn == $active_host), # TODO: replace with https://gerrit.wikimedia.org/r/460397
+        ensure   => $ensure, # TODO: replace with https://gerrit.wikimedia.org/r/460397
         command  => '/bin/systemctl reload certcentral',
         user     => 'root',
         minute   => '0',
