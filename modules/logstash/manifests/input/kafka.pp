@@ -10,6 +10,7 @@
 # - $priority: Configuration loading priority. Default: '10'.
 # - $tags: Array of tags to be added to the logs. Default: [$title].
 # - $topic: Kafka topic. Default: $title.
+# - $topics_pattern: Kafka topic pattern. Default: None. Supersedes $topic if set.
 # - $type: Log type to be passed to Logstash. Default: 'kafka'.
 # - $bootstrap_servers: Kafka servers to boostrap from. This list should be
 #      a string in the form of `host1:port1,host2:port2. For more info, see:
@@ -33,6 +34,7 @@ define logstash::input::kafka(
     $priority                                                                        = 10,
     $tags                                                                            = [$title],
     $topic                                                                           = $title,
+    Optional[String] $topics_pattern                                                 = undef,
     $type                                                                            = 'kafka',
     $plugin_id                                                                       = "input/kafka/${title}",
     Optional[Enum['PLAINTEXT','SSL','SASL_PLAINTEXT','SASL_SSL']] $security_protocol = undef,

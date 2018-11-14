@@ -5,7 +5,11 @@ input {
 <%- if @tags -%>
     tags                    => ["<%= @tags.join('", "') %>"]
 <%- end -%>
+<%- if @topics_pattern.nil? -%>
     topics                  => ["<%= @topic %>"]
+<% else -%>
+    topics_pattern          => "<%= @topics_pattern %>"
+<% end -%>
     type                    => "<%= @type %>"
     bootstrap_servers       => "<%= @bootstrap_servers %>"
 <%- unless @plugin_id.empty? -%>
