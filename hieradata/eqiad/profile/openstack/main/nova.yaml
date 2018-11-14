@@ -18,9 +18,9 @@ profile::openstack::main::nova::dnsmasq_classles_static_route: 'dhcp-option=opti
 # Nova is permitted to schedule new VMs on the following
 #  hosts.
 #
-# The virt nodes allocated to eqiad are labvirt1001 through 1017.
+# The virt nodes allocated to eqiad are labvirt1001 through 1014.
 #
-# 1015, 1016, and 1017 are depooled so we can drain them in preparation
+# 1013 and 1014 are depooled so we can drain them in preparation
 # for moving to eqiad1.
 profile::openstack::main::nova::scheduler_pool:
   - labvirt1001
@@ -35,5 +35,3 @@ profile::openstack::main::nova::scheduler_pool:
   - labvirt1010
   - labvirt1011
   - labvirt1012
-  - labvirt1013
-  - labvirt1014
