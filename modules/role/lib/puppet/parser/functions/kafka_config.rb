@@ -30,11 +30,12 @@
 #   {
 #     'name'      => # full Kafka cluster name
 #     'brokers'   => {
-#       'hash'     => # original brokers definition as seen in Hiera
-#       'array'    => # array of brokers' FQDNs
-#       'string'   => # comma-separated list of host:port broker pairs
-#       'graphite' => # comma-separated list of host_9999 broker pairs
-#       'size'     => # number of brokers
+#       'hash'       => # original brokers definition as seen in Hiera
+#       'array'      => # array of brokers' FQDNs
+#       'string'     => # comma-separated list of host:port broker pairs
+#       'ssl_string' => # comma-separated list of host:ssl_port broker pairs
+#       'graphite'   => # comma-separated list of host_9999 broker pairs
+#       'size'       => # number of brokers
 #     }
 #     'jmx_port'  => # the JMX port (9999)
 #     'zookeeper' => {
