@@ -54,9 +54,6 @@ case `hostname` in \
 	backup2001)
 		apt-install linux-meta-4.14
 		;; \
-	cloudstore1008)
-		apt-install linux-meta-4.14
-		;; \
 esac
 
 # Use a more recent kernel on jessie and deinstall nfs-common/rpcbind
