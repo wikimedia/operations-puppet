@@ -22,6 +22,8 @@ profile::openstack::main::nova::dnsmasq_classles_static_route: 'dhcp-option=opti
 #
 # 1013 and 1014 are depooled so we can drain them in preparation
 # for moving to eqiad1.
+# 1010 and 1011 are depooled so we can drain and return
+# them to the vendor -- their leases expire in December of 2018.
 profile::openstack::main::nova::scheduler_pool:
   - labvirt1001
   - labvirt1002
@@ -32,6 +34,4 @@ profile::openstack::main::nova::scheduler_pool:
   - labvirt1007
   - labvirt1008
   - labvirt1009
-  - labvirt1010
-  - labvirt1011
   - labvirt1012
