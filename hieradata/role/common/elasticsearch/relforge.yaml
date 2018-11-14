@@ -67,4 +67,5 @@ profile::mjolnir::kafka_msearch_daemon::input_topic: mjolnir.msearch-relforge-re
 profile::mjolnir::kafka_msearch_daemon::output_topic: mjolnir.msearch-relforge-response
 profile::mjolnir::kafka_msearch_daemon::num_workers: 5
 profile::mjolnir::kafka_msearch_daemon::max_concurrent_searches: 10
+diamond::remove: true
 

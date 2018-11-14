@@ -77,3 +77,4 @@ profile::mjolnir::kafka_bulk_daemon::group_id: "cirrussearch_updates_%{::site}"
 profile::mjolnir::kafka_bulk_daemon::topics:
   - eqiad.cirrussearch.page-index-update
   - codfw.cirrussearch.page-index-update
+diamond::remove: true
