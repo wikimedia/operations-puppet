@@ -175,6 +175,11 @@ puppetdb: P{O:puppetmaster::puppetdb}
 puppetmaster: A:puppetmaster-backend or A:puppetmaster-frontend
 puppetmaster-backend: P{O:puppetmaster::backend}
 puppetmaster-frontend: P{O:puppetmaster::frontend}
+redis: A:redis-misc-master or A:redis-misc-slave
+redis-misc-codfw: (A:redis-misc-master or A:redis-misc-slave) and A:codfw
+redis-misc-eqiad: (A:redis-misc-master or A:redis-misc-slave) and A:eqiad
+redis-misc-master: P{O:redis::misc::master}
+redis-misc-slave: P{O:redis::misc::slave}
 releases: P{O:releases}
 relforge: P{O:elasticsearch::relforge}
 restbase: P{O:restbase::production} or A:restbase-dev
