@@ -84,19 +84,10 @@ class profile::mediawiki::httpd(
         notify => Service['apache2'],
     }
 
-    ## PHP Engine
-    # HHVM catchall, and removal of mod_php
-    $catchall_ensure = $vhost_feature_flags['set_handler'] ? {
-        true    => absent,
-        default => present,
-    }
-    $proxies_ensure = $vhost_feature_flags['set_handler'] ? {
-        true    => present,
-        default => absent,
-    }
+
+    # HHVM catchall is now outdated, remove it if present.
     ::httpd::conf { 'hhvm_catchall':
-        ensure   => $catchall_ensure,
-        source   => 'puppet:///modules/mediawiki/apache/configs/hhvm_catchall.conf',
+        ensure   => absent,
         priority => 50,
     }
 
@@ -105,10 +96,9 @@ class profile::mediawiki::httpd(
         source   => 'puppet:///modules/mediawiki/apache/configs/fcgi_headers.conf',
         priority => 0,
     }
-    # If we globally enable the set_handler feature flag, also declare
-    # the proxies explicitly with retry=0
+    # Declare the proxies explicitly with retry=0
     httpd::conf { 'fcgi_proxies':
-        ensure  => $proxies_ensure,
+        ensure  => present,
         content => template('mediawiki/apache/fcgi_proxies.conf.erb')
     }
 

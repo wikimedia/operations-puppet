@@ -6,7 +6,6 @@
 # mediawiki::web::vhost
 type Mediawiki::Vhost_feature_flags = Struct[
     {
-    'set_handler' => Optional[Boolean],
     'serve_php7'  => Optional[Boolean],
     }
 ]

@@ -41,27 +41,11 @@
     ### Common rewrite rules for all wikis
 
     # Redirect /wiki, /w to the fcgi backend
-<%- unless @set_handler -%>
-    ProxyPass       /wiki                fcgi://127.0.0.1:9000<%= @docroot %>/w/index.php retry=0
-    ProxyPass       /w/thumb_handler.php fcgi://127.0.0.1:9000<%= @docroot %>/w/thumb_handler.php retry=0
-    ProxyPass       /w/extensions        !
-    ProxyPassMatch  ^/w/(.*\.(php|hh))$  fcgi://127.0.0.1:9000<%= @docroot %>/w/$1 retry=0
-<%- unless @variant_aliases.empty? -%>
-    ProxyPassMatch  <%= scope.call_function('mediawiki::web::vhost::variant_regex', [@variant_aliases]) %> fcgi://127.0.0.1:9000<%= @docroot %>/w/index.php   retry=0
-<%- end -%>
-    RewriteRule     ^/$                  fcgi://127.0.0.1:9000<%= @docroot %>/w/index.php    [P]
-    RewriteRule     ^/robots\.txt$       fcgi://127.0.0.1:9000<%= @docroot %>/w/robots.php   [P]
-    RewriteRule     ^/favicon\.ico$      fcgi://127.0.0.1:9000<%= @docroot %>/w/favicon.php  [P]
-<%- end -%>
     # /w/wiki.phtml is severely underperforming on HHVM
     RewriteRule     ^/w/wiki.phtml$      /w/index.php [L,QSA,NE]
 
     # Primary wiki redirector:
-<%- if @set_handler -%>
     RewriteRule ^/wiki /w/index.php [L]
-<%- else -%>
-    Alias /wiki <%= @docroot %>/w/index.php
-<%- end -%>
 <%- if @public_rewrites -%>
     # Make robots.txt editable via Mediawiki:robots.txt
     RewriteRule ^/robots\.txt$ /w/robots.php [L]
@@ -103,13 +87,8 @@
 <%= @additional_rewrites['late'].join("\n") %>
 
 <%- @variant_aliases.each do |v| -%>
-<%- if @set_handler -%>
      RewriteRule ^/<%= v %> /w/index.php [L]
-<%- else -%>
-    Alias /<%= v %> <%= @docroot %>/w/index.php
 <%- end -%>
-<%- end -%>
-<%- if @set_handler -%>
     # Forbid accessing files under /w/extensions
     RewriteRule ^/w/extensions/.*\.php - [F,L]
     <FilesMatch "\.php$">
@@ -126,5 +105,4 @@
         SetHandler "proxy:fcgi://127.0.0.1:9000"
 <%- end -%>
     </FilesMatch>
-<%- end -%>
 </VirtualHost>

@@ -44,9 +44,6 @@
 #   all vhosts. The list will vary with time, and must be reflected in the
 #   corresponding puppet type. Here is the list of currently effective feature
 #   flags:
-#   - set_handler: Whether to use the new format (using FilesMatch/SetHandler) to
-#     manage proxying to the FCGI backend, or the explicit list of ProxyPass
-#     directives we were using before.
 #   - serve_php7: Wether to direct requests to PHP7 based on the PHP_ENGINE cookie
 define mediawiki::web::vhost(
     String $docroot,
@@ -68,7 +65,6 @@ define mediawiki::web::vhost(
     Mediawiki::Vhost_feature_flags $feature_flags = {},
 ) {
     # Feature flags. Remove them once the change is applied everywhere.
-    $set_handler = pick($feature_flags['set_handler'], false)
     $serve_php7 = pick($feature_flags['serve_php7'], false)
     # The vhost content
     $content = template('mediawiki/apache/mediawiki-vhost.conf.erb')

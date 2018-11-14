@@ -32,23 +32,13 @@ describe 'profile::mediawiki::httpd' do
                               .with_rotate(30)
         }
         it { is_expected.to contain_httpd__conf('hhvm_catchall')
-                              .with_ensure('present')
+                              .with_ensure('absent')
         }
         it { is_expected.to contain_httpd__conf('fcgi_proxies')
-                              .with_ensure('absent')
+                              .with_ensure('present')
         }
         it { is_expected.to contain_file('/etc/apache2/conf-available/50-worker.conf')
                               .with_content(/MaxRequestWorkers\s+50/)
-        }
-      end
-      context "with mediawiki vhost flags" do
-        let(:params){ {:vhost_feature_flags => { :set_handler => true}}}
-        it { is_expected.to  compile.with_all_deps }
-        it { is_expected.to contain_httpd__conf('hhvm_catchall')
-                              .with_ensure('absent')
-        }
-        it { is_expected.to contain_httpd__conf('fcgi_proxies')
-                              .with_ensure('present')
         }
       end
       context "with workers_limit = 5" do
