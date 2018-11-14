@@ -85,5 +85,6 @@ class php::fpm(
         mode    => '0755',
         recurse => true,
         purge   => true,
+        require => Package["php${php::version}-fpm"]
     }
 }
