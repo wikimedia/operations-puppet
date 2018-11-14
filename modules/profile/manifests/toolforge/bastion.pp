@@ -405,6 +405,10 @@ class profile::toolforge::bastion(
     # Kubernetes Configuration
     $etcd_url = join(prefix(suffix($etcd_hosts, ':2379'), 'https://'), ',')
 
+    class { '::docker':
+        version => '1.12.6-0~debian-stretch'
+    }
+
     ferm::service { 'flannel-vxlan':
         proto => udp,
         port  => 8472,
