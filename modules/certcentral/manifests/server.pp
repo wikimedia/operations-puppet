@@ -156,8 +156,12 @@ class certcentral::server (
         srange => '$DOMAIN_NETWORKS',
     }
 
+    $ensure_passive = ($::fqdn == $passive_host)? {
+        true    => present,
+        default => absent,
+    }
     ferm::service { 'certcentral-ssh-rsync':
-        ensure => ($::fqdn == $passive_host),
+        ensure => $ensure_passive,
         proto  => 'tcp',
         port   => '22',
         srange => "(@resolve((${active_host})) @resolve((${active_host}), AAAA))",
