@@ -20,6 +20,7 @@ describe 'php::fpm' do
                               .with_mode('0444')
                               .with_ensure('present')
                               .with_content(/log_level = notice\n/)
+                              .that_requires('Package[php7.0-fpm]')
         }
         it { is_expected.to contain_service('php7.0-fpm')
                               .with_ensure('running')

@@ -53,7 +53,8 @@ class php::fpm(
         content => template("php/php${php::version}-fpm.conf.erb"),
         owner   => 'root',
         group   => 'root',
-        mode    => '0444'
+        mode    => '0444',
+        require => Package["php${php::version}-fpm"]
     }
 
     # We want to reload php-fpm. It has been tested that a reload can manage the
