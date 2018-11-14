@@ -78,14 +78,15 @@ class profile::toolforge::dev_environ {
             'bundler',  # T120287
             'libmariadb-dev',
             'libmariadb-dev-compat',
-            'libboost-python1.67-dev',
+            'libboost1.62-dev',
+            'libboost-dev',
+            'libkml-dev',
+            'libgdal-dev',                # T58995
+            'libboost-python1.62-dev',
             'openjdk-8-jdk',
             'libpng-dev',
             'libtiff5-dev',  # T54717
             'tcl-dev',
-            'libboost-dev',
-            'libkml-dev',
-            'libgdal-dev',                # T58995
             'mariadb-client-10.1',
             # sbt is not in the official repos -- scala may require external repos
         ]:
