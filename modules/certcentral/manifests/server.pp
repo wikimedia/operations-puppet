@@ -189,7 +189,9 @@ class certcentral::server (
 
     if $::fqdn == $active_host {
         exec { '/usr/local/bin/certcentral-certs-sync':
+            user    => 'certcentral',
             timeout => 60,
+            require => [User['certcentral'], File['/etc/certcentral/cert-sync.conf']],
         }
     }
 }
