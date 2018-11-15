@@ -405,9 +405,26 @@ class profile::toolforge::bastion(
     # Kubernetes Configuration
     $etcd_url = join(prefix(suffix($etcd_hosts, ':2379'), 'https://'), ',')
 
-    class { '::docker':
-        version => '1.12.6-0~debian-stretch'
+    if os_version('debian == stretch') {
+        $docker_version = '1.12.6-0~debian-stretch'
+
+        class { '::profile::docker::storage':
+            physical_volumes => '/dev/vda4',
+            vg_to_remove     => 'vd',
+        }
+
+        class { '::profile::docker::engine':
+            settings        => {
+                'iptables'     => false,
+                'ip-masq'      => false,
+                'live-restore' => true,
+            },
+            version         => $docker_version,
+            declare_service => false,
+            require         => Class['::profile::docker::storage'],
+        }
     }
+
 
     ferm::service { 'flannel-vxlan':
         proto => udp,
