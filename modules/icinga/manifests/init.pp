@@ -209,6 +209,11 @@ class icinga(
 
         $command_file='/var/lib/icinga/rw'
 
+        file { '/var/log/icinga/icinga.log':
+            ensure => 'present',
+            mode   => '0644',
+        }
+
     }
 
     package { 'icinga':
