@@ -2,6 +2,8 @@
 # (swift proxy-server will do the checking)
 tlsproxy::nginx_client_max_body_size: 0
 tlsproxy::localssl::proxy_request_buffering: 'off'
+swift::stats_reporter::statsd_host: 'localhost'
+swift::stats_reporter::statsd_port: '9125'
 profile::prometheus::statsd_exporter::mappings:
 
   # Authentication subsystem (tempauth)
