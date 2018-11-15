@@ -1874,15 +1874,15 @@ node 'pc1006.eqiad.wmnet' {
 }
 # codfw
 # pc1
-node /^pc20[10][047]\.codfw\.wmnet$/ {
+node /^pc20(04|07|10)\.codfw\.wmnet$/ {
     role(mariadb::parsercache)
 }
 # pc2
-node /^pc200[58]\.codfw\.wmnet$/ {
+node /^pc20(05|08)\.codfw\.wmnet$/ {
     role(mariadb::parsercache)
 }
 # pc3
-node /^pc200[69]\.codfw\.wmnet$/ {
+node /^pc20(06|09)\.codfw\.wmnet$/ {
     role(mariadb::parsercache)
 }
 
