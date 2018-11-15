@@ -416,7 +416,6 @@ class profile::toolforge::bastion(
             },
             version         => $docker_version,
             declare_service => false,
-            require         => Class['::profile::docker::storage'],
         }
     }
 
