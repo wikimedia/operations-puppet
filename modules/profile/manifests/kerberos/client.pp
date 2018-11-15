@@ -23,7 +23,7 @@ class profile::kerberos::client (
         ensure => directory,
         owner  => 'root',
         group  => 'root',
-        mode   => '0750',
+        mode   => '0755',
     }
 
     require_package ('krb5-user')
