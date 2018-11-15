@@ -48,16 +48,4 @@ class profile::ci::jenkins(
         group   => 'root',
         require => File['/var/lib/jenkins/email-templates'],
     }
-
-    # TODO/FIXME: remove hiera condition once T150771 is resolved
-    # and jenkins service is running active/active in both DCs
-    # aware that there should not be permanent hiera lookups in role
-    # should also be converted to profile/role anyways (T162822)
-    if $service_monitor {
-        nrpe::monitor_service { 'jenkins_zmq_publisher':
-            description   => 'jenkins_zmq_publisher',
-            contact_group => 'contint',
-            nrpe_command  => '/usr/lib/nagios/plugins/check_tcp -H 127.0.0.1 -p 8888 --timeout=2',
-        }
-    }
 }
