@@ -2022,7 +2022,7 @@ users:
     name: wmde-leszek
     realname: Leszek Manicki
     ssh_keys:
-      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDQzMlkh1GeOuyRRQDFEe3SzmldZhTmaAkCSl5lySO1pd4q8BQZ06l6rRMW5Rp1nxItb7ZQxBNQI1LEmtJ/z2a9Av0YCvjTkJ0sAb7E2gYSqezuI5CzUXwAB40/D6rjlJXUe9OiWu2sytTh9SLUemxPQZVztqYlrAk9wkfbMa2ni7xzs9OwtplUq5NVLDcbAD/AKPiVeOT7QpgoFrmZ4Bt7zdDFnQmzFWik/y7PMar6qMBvQusDt6QC7BMbJaZrsE3bES/xy9LJOASIGM4KPVLdlhA9c7J3sUL943NDe52XpD16FYhaJGwrjbruOXR++HWQxdH4aQ3HUd293NWykm8h
+      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDDa1W3Y8nlp/EmGkMrbhe4hdFFcAbFUANdhTM6K8sl661rYriocfoxCLfzGfqDnSa7BddB0b1Zb6L845fquJRoLBZqeww0YyCgAdZ9rfrKmA5fnDoGWmHThz/dshS/52SI8fEw+FnW7/PMjSRNsozZ6Vz9PU1h9OdBCwwjFEbaeNkApXo/0Fn4EcuwPEqyvQa2VXlVlHZJ+Vu/BDfVPqeTl1CupBCu62+S7o9T0FAOxk+gNea5F5LMLSkCvczbJiB1tfaCf0ThPdVdtrx6AhKD7hxnL5mQbbV2hUK6txVz+8MwZe5uEH3TFRC0iGSDJP9QV0u8QZwRdONg+wnkVMer
     uid: 12300
     email: leszek.manicki@wikimedia.de
   jminor:
