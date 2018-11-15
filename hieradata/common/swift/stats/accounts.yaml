@@ -1,1 +1,2 @@
+swift::stats::accounts::statsd_host: 'localhost'
 swift::stats::accounts::statsd_port: '9125'
