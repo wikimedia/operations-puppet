@@ -402,40 +402,40 @@ class profile::toolforge::bastion(
         source => 'puppet:///modules/profile/toolforge/submithost-ssh_config',
     }
 
-    # Kubernetes Configuration
-    $etcd_url = join(prefix(suffix($etcd_hosts, ':2379'), 'https://'), ',')
+    # Kubernetes Configuration - See T209627
+    # $etcd_url = join(prefix(suffix($etcd_hosts, ':2379'), 'https://'), ',')
 
-    if os_version('debian == stretch') {
-        $docker_version = '1.12.6-0~debian-stretch'
+    # if os_version('debian == stretch') {
+    #     $docker_version = '1.12.6-0~debian-jessie' # The stretch repo appears to have a jessie version?
 
-        class { '::profile::docker::engine':
-            settings        => {
-                'iptables'     => false,
-                'ip-masq'      => false,
-                'live-restore' => true,
-            },
-            version         => $docker_version,
-            declare_service => false,
-        }
-    }
+    #     class { '::profile::docker::engine':
+    #         settings        => {
+    #             'iptables'     => false,
+    #             'ip-masq'      => false,
+    #             'live-restore' => true,
+    #         },
+    #         version         => $docker_version,
+    #         declare_service => false,
+    #     }
+    # }
 
 
-    ferm::service { 'flannel-vxlan':
-        proto => udp,
-        port  => 8472,
-    }
+    # ferm::service { 'flannel-vxlan':
+    #     proto => udp,
+    #     port  => 8472,
+    # }
 
-    class { '::k8s::flannel':
-        etcd_endpoints => $etcd_url,
-    }
+    # class { '::k8s::flannel':
+    #     etcd_endpoints => $etcd_url,
+    # }
 
-    class { '::k8s::infrastructure_config':
-        master_host => $master_host,
-    }
+    # class { '::k8s::infrastructure_config':
+    #     master_host => $master_host,
+    # }
 
-    class { '::k8s::proxy':
-        master_host => $master_host,
-    }
+    # class { '::k8s::proxy':
+    #     master_host => $master_host,
+    # }
 
-    require_package('kubernetes-client')
+    # require_package('kubernetes-client')
 }
