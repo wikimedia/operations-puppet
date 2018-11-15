@@ -214,6 +214,23 @@ class icinga(
             mode   => '0644',
         }
 
+        # If hosts appear to be missing from the web ui, it might be
+        # the permissions on this file.  Requires a restart if changed.
+        file { '/var/cache/icinga/objects.cache':
+            ensure => 'present',
+            mode   => '0644',
+            owner  => $icinga_user,
+            group  => 'www-data',
+            notify => Service['icinga'],
+        }
+
+        file { '/var/lib/icinga/retention.dat':
+            ensure => 'present',
+            mode   => '0644',
+            owner  => $icinga_user,
+            group  => 'www-data',
+        }
+
     }
 
     package { 'icinga':
