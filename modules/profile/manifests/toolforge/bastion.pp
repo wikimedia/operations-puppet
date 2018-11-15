@@ -408,11 +408,6 @@ class profile::toolforge::bastion(
     if os_version('debian == stretch') {
         $docker_version = '1.12.6-0~debian-stretch'
 
-        class { '::profile::docker::storage':
-            physical_volumes => '/dev/vda4',
-            vg_to_remove     => 'vd',
-        }
-
         class { '::profile::docker::engine':
             settings        => {
                 'iptables'     => false,
