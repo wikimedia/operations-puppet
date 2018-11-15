@@ -1274,9 +1274,9 @@ node 'labnet1002.eqiad.wmnet' {
     role(wmcs::openstack::main::net)
 }
 
+# Was used to host the Nodepool service (T209361)
 node 'labnodepool1001.eqiad.wmnet' {
-    $nagios_contact_group = 'admins,contint'
-    role(wmcs::openstack::main::nodepool)
+    role(spare::system)
 }
 
 ## labsdb dbs
