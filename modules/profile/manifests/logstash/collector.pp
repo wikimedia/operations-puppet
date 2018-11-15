@@ -164,6 +164,7 @@ class profile::logstash::collector (
 
     logstash::input::kafka { 'rsyslog-shipper':
         topics_pattern          => 'rsyslog-.*',
+        type                    => 'syslog',
         tags                    => ['rsyslog-shipper','kafka'],
         bootstrap_servers       => $kafka_config['brokers']['ssl_string'],
         security_protocol       => 'SSL',
