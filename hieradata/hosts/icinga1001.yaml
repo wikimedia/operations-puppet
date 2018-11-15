@@ -1,5 +1,5 @@
 profile::icinga::virtual_host: icinga.wikimedia.org
-profile::icinga::partner: einsteinium.wikimedia.org
+profile::icinga::partner: icinga2001.wikimedia.org
 profile::tcpircbot::ensure: present
 do_acme: true
 profile::icinga::passive: false
