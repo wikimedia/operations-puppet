@@ -50,6 +50,9 @@
 #  osm::planet_sync { 'mydb': }
 define osm::planet_sync (
     String $pg_password,
+    Boolean $use_proxy,
+    String $proxy_host,
+    Wmflib::IpPort $proxy_port,
     Wmflib::Ensure $ensure                  = present,
     String $osmosis_dir                     = '/srv/osmosis',
     String $expire_dir                      = '/srv/osm_expire',
@@ -57,7 +60,6 @@ define osm::planet_sync (
     String $hour                            = '*',
     String $day                             = '*',
     String $minute                          = '*/30',
-    String $proxy                           = 'webproxy.eqiad.wmnet:8080',
     Boolean $flat_nodes                     = false,
     String $expire_levels                   = '15',
     Integer $memory_limit                   = floor($::memorysize_mb) / 12,

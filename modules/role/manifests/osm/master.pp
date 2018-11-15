@@ -24,6 +24,7 @@ class role::osm::master(
     include passwords::osm
     include ::profile::base::firewall
     include ::profile::prometheus::postgres_exporter
+
     postgresql::user { 'prometheus@localhost':
         user     => 'prometheus',
         database => 'postgres',
@@ -56,6 +57,9 @@ class role::osm::master(
     postgresql::spatialdb { 'gis': }
     osm::planet_sync { 'gis':
         pg_password => hiera('osm::postgresql_osmupdater_pass'),
+        use_proxy   => true,
+        proxy_host  => "webproxy.${::site}.wmnet",
+        proxy_port  => 8080,
         period      => 'day',
         hour        => '1',
         minute      => '17',
@@ -171,4 +175,3 @@ class role::osm::master(
                          '/usr/bin/rsync --daemon --no-detach'",
     }
 }
-
