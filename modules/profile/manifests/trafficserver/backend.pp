@@ -123,4 +123,13 @@ class profile::trafficserver::backend (
             }
         }
     }
+
+    # Wrapper script to print ATS logs to stdout using fifo-log-tailer
+    file { '/usr/local/bin/atslog':
+        ensure => present,
+        source => 'puppet:///modules/profile/trafficserver/atslog.sh',
+        mode   => '0555',
+        owner  => 'root',
+        group  => 'root',
+    }
 }
