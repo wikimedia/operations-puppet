@@ -1065,8 +1065,6 @@ node 'labtestservices2002.wikimedia.org' {
     interface::add_ip6_mapped { 'main': }
 }
 
-
-# Temporary nodepool testing here:
 node 'labtestservices2003.wikimedia.org' {
     role(spare::system)
     interface::add_ip6_mapped { 'main': }
