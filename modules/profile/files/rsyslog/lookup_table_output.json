@@ -2,4 +2,4 @@
   "nomatch" : "local",
   "type" : "string",
   "table":[
-    {"index" : "something-kafka-only",    "value" : "kafka" }]}
+    {"index" : "apache2", "value" : "kafka" }]}
