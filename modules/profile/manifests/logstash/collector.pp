@@ -166,6 +166,7 @@ class profile::logstash::collector (
         topics_pattern          => 'rsyslog-.*',
         type                    => 'syslog',
         tags                    => ['rsyslog-shipper','kafka'],
+        codec                   => 'json',
         bootstrap_servers       => $kafka_config['brokers']['ssl_string'],
         security_protocol       => 'SSL',
         ssl_truststore_location => '/etc/logstash/kafka-logging-truststore.jks',
