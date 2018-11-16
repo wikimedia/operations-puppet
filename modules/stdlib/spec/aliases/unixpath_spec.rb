@@ -1,12 +1,16 @@
 require 'spec_helper'
 
-if Puppet.version.to_f >= 4.5
+if Puppet::Util::Package.versioncmp(Puppet.version, '4.5.0') >= 0
   describe 'test::unixpath', type: :class do
     describe 'valid handling' do
       %w{
         /usr2/username/bin:/usr/local/bin:/usr/bin:.
         /var/tmp
         /Users/helencampbell/workspace/puppetlabs-stdlib
+        /var/ůťƒ8
+        /var/ネット
+        /var//tmp
+        /var/../tmp
       }.each do |value|
         describe value.inspect do
           let(:params) {{ value: value }}
@@ -27,7 +31,9 @@ if Puppet.version.to_f >= 4.5
           "C:/whatever",
           "\\var\\tmp",
           "\\Users/hc/wksp/stdlib",
-          "*/Users//nope"
+          "*/Users//nope",
+          "var\ůťƒ8",
+          "var\ネット"
         ].each do |value|
           describe value.inspect do
             let(:params) {{ value: value }}

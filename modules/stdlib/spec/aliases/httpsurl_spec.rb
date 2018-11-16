@@ -1,12 +1,14 @@
 require 'spec_helper'
 
-if Puppet.version.to_f >= 4.5
+if Puppet::Util::Package.versioncmp(Puppet.version, '4.5.0') >= 0
   describe 'test::httpsurl', type: :class do
     describe 'valid handling' do
       %w{
         https://hello.com
         https://notcreative.org
         https://notexciting.co.uk
+        https://graphemica.com/❤
+        https://graphemica.com/緩
       }.each do |value|
         describe value.inspect do
           let(:params) {{ value: value }}
@@ -26,7 +28,9 @@ if Puppet.version.to_f >= 4.5
           '',
           "httds://notquiteright.org",
           "hptts:/nah",
-          "https;//notrightbutclose.org"
+          "https;//notrightbutclose.org",
+          "http://graphemica.com/❤",
+           "http://graphemica.com/緩"
         ].each do |value|
           describe value.inspect do
             let(:params) {{ value: value }}

@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-if Puppet.version.to_f >= 4.5
+if Puppet::Util::Package.versioncmp(Puppet.version, '4.5.0') >= 0
   describe 'test::absolute_path', type: :class do
     describe 'valid paths handling' do
       %w{
@@ -15,6 +15,9 @@ if Puppet.version.to_f >= 4.5
         /
         /var/tmp
         /var/opt/../lib/puppet
+        /var/opt//lib/puppet
+        /var/ůťƒ8
+        /var/ネット
       }.each do |value|
         describe value.inspect do
           let(:params) {{ value: value }}
@@ -50,6 +53,8 @@ if Puppet.version.to_f >= 4.5
           etc/puppetlabs/puppet
           opt/puppet/bin
           relative\\windows
+          \var\ůťƒ8
+          \var\ネット
         }.each do |value|
           describe value.inspect do
             let(:params) {{ value: value }}

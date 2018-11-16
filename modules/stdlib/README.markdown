@@ -118,6 +118,22 @@ In this code example, `match` looks for a line beginning with export
 followed by HTTP_PROXY and delete it.  If multiple lines match, an
 error will be raised unless the `multiple => true` parameter is set.
 
+Encoding example:
+
+    file_line { "XScreenSaver":
+      ensure   => present,
+      path     => '/root/XScreenSaver'
+      line     => "*lock: 10:00:00",
+      match    => '^*lock:',
+      encoding => "iso-8859-1",
+    }
+
+Files with special characters that are not valid UTF-8 will give the 
+error message "invalid byte sequence in UTF-8".  In this case, determine
+the correct file encoding and specify the correct encoding using the
+encoding attribute, the value of which needs to be a valid Ruby character
+encoding.
+
 **Autorequires:** If Puppet is managing the file that contains the line being managed, the `file_line` resource autorequires that file.
 
 ##### Parameters
@@ -193,6 +209,8 @@ Converts a string to and from base64 encoding. Requires an `action` ('encode', '
 
 For backward compatibility, `method` will be set as `default` if not specified.
 
+*Please note:* This function is an implementation of a Ruby class and as such may not be entirely UTF8 compatible. To ensure compatibility please use this function with Ruby 2.4.0 or greater - https://bugs.ruby-lang.org/issues/10085.
+
 *Examples:*
 ~~~
 base64('encode', 'hello')
@@ -247,9 +265,17 @@ bool2str(false, 't', 'f')         => 'f'
 
 Requires a single boolean as input. *Type*: rvalue.
 
+#### `camelcase`
+
+Converts the case of a string or all strings in an array to camel case. *Type*: rvalue.
+
+*Please note:* This function is an implementation of a Ruby class and as such may not be entirely UTF8 compatible. To ensure compatibility please use this function with Ruby 2.4.0 or greater - https://bugs.ruby-lang.org/issues/10085.
+
 #### `capitalize`
 
 Capitalizes the first character of a string or array of strings and lowercases the remaining characters of each string. Requires either a single string or an array as an input. *Type*: rvalue.
+
+*Please note:* This function is an implementation of a Ruby class and as such may not be entirely UTF8 compatible. To ensure compatibility please use this function with Ruby 2.4.0 or greater - https://bugs.ruby-lang.org/issues/10085.
 
 #### `ceiling`
 
@@ -332,6 +358,8 @@ Deletes a determined indexed value from an array. For example, `delete_at(['a','
 #### `delete_regex`
 
 Deletes all instances of a given element from an array or hash that match a provided regular expression. A string will be treated as a one-item array.
+
+*Please note:* This function is an implementation of a Ruby class and as such may not be entirely UTF8 compatible. To ensure compatibility please use this function with Ruby 2.4.0 or greater - https://bugs.ruby-lang.org/issues/10085.
 
 For example, `delete_regex(['a','b','c','b'], 'b')` returns ['a','c']; `delete_regex({'a' => 1,'b' => 2,'c' => 3},['b','c'])` returns {'a'=> 1}, `delete_regex(['abf', 'ab', 'ac'], '^ab.*')` returns ['ac']. `delete_regex(['ab', 'b'], 'b')` returns ['ab'].
 
@@ -460,6 +488,8 @@ See also [unix2dos](#unix2dos).
 #### `downcase`
 
 Converts the case of a string or of all strings in an array to lowercase. *Type*: rvalue.
+
+*Please note:* This function is an implementation of a Ruby class and as such may not be entirely UTF8 compatible. To ensure compatibility please use this function with Ruby 2.4.0 or greater - https://bugs.ruby-lang.org/issues/10085.
 
 #### `empty`
 
@@ -815,6 +845,10 @@ The return value is an array in which each element is one joined key/value pair.
 
 Returns the keys of a hash as an array. *Type*: rvalue.
 
+#### `length`
+
+Returns the length of a given string, array or hash. To eventually replace the deprecated size() function as can handle the new type functionality introduced in Puppet 4. *Type*: rvalue.
+
 #### `loadyaml`
 
 Loads a YAML file containing an array, string, or hash, and returns the data in the corresponding native data type.
@@ -994,6 +1028,8 @@ The third argument to this function is the salt to use.
 
 *Type*: rvalue.
 
+**Please note:** This function is an implementation of a Ruby class and as such may not be entirely UTF8 compatible. To ensure compatibility please use this function with Ruby 2.4.0 or greater - https://bugs.ruby-lang.org/issues/10085.
+
 **Note:** this uses the Puppet master's implementation of crypt(3). If your environment contains several different operating systems, ensure that they are compatible before using this function.
 
 #### `range`
@@ -1067,11 +1103,13 @@ Randomizes the order of a string or array elements. *Type*: rvalue.
 
 #### `size`
 
-Returns the number of elements in a string, an array or a hash. *Type*: rvalue.
+Returns the number of elements in a string, an array or a hash. May get confused around Puppet 4 type values and as such is to be deprecated in the next release and replaced with the new stdlib length function. *Type*: rvalue.
 
 #### `sort`
 
 Sorts strings and arrays lexically. *Type*: rvalue.
+
+*Please note:* This function is an implementation of a Ruby class and as such may not be entirely UTF8 compatible. To ensure compatibility please use this function with Ruby 2.4.0 or greater - https://bugs.ruby-lang.org/issues/10085.
 
 #### `squeeze`
 
@@ -1086,9 +1124,13 @@ Converts certain strings to a boolean. This attempts to convert strings that con
 Converts a string to a salted-SHA512 password hash, used for OS X versions >= 10.7. Given any string, this function returns a hex version of a salted-SHA512 password hash, which can be inserted into your Puppet
 manifests as a valid password attribute. *Type*: rvalue.
 
+*Please note:* This function is an implementation of a Ruby class and as such may not be entirely UTF8 compatible. To ensure compatibility please use this function with Ruby 2.4.0 or greater - https://bugs.ruby-lang.org/issues/10085.
+
 #### `strftime`
 
 Returns formatted time. For example, `strftime("%s")` returns the time since Unix epoch, and `strftime("%Y-%m-%d")` returns the date. *Type*: rvalue.
+
+*Please note:* This function is an implementation of a Ruby class and as such may not be entirely UTF8 compatible. To ensure compatibility please use this function with Ruby 2.4.0 or greater - https://bugs.ruby-lang.org/issues/10085.
 
   *Format:*
 
@@ -1154,6 +1196,8 @@ For example:
 #### `swapcase`
 
 Swaps the existing case of a string. For example, `swapcase("aBcD")` results in "AbCd". *Type*: rvalue.
+
+*Please note:* This function is an implementation of a Ruby class and as such may not be entirely UTF8 compatible. To ensure compatibility please use this function with Ruby 2.4.0 or greater - https://bugs.ruby-lang.org/issues/10085.
 
 #### `time`
 
@@ -1242,9 +1286,13 @@ See also [dos2unix](#dos2unix).
 
 Converts an object, array or hash of objects that respond to upcase to uppercase. For example, `upcase('abcd')` returns 'ABCD'. *Type*: rvalue.
 
+*Please note:* This function is an implementation of a Ruby class and as such may not be entirely UTF8 compatible. To ensure compatibility please use this function with Ruby 2.4.0 or greater - https://bugs.ruby-lang.org/issues/10085.
+
 #### `uriescape`
 
 URLEncodes a string or array of strings. Requires either a single string or an array as an input. *Type*: rvalue.
+
+*Please note:* This function is an implementation of a Ruby class and as such may not be entirely UTF8 compatible. To ensure compatibility please use this function with Ruby 2.4.0 or greater - https://bugs.ruby-lang.org/issues/10085.
 
 #### `validate_absolute_path`
 

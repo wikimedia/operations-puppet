@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-if Puppet.version.to_f >= 4.0
+if Puppet::Util::Package.versioncmp(Puppet.version, '4.5.0') >= 0
   describe 'deprecation' do
     before(:each) {
       # this is to reset the strict variable to default
@@ -40,7 +40,7 @@ if Puppet.version.to_f >= 4.0
       Puppet.settings[:strict] = :warning
     }
   end
-else
+elsif Puppet.version.to_f < 4.0
   # Puppet version < 4 will use these tests.
   describe 'deprecation' do
     after(:all) do
