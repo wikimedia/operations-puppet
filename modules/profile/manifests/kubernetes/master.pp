@@ -15,6 +15,7 @@ class profile::kubernetes::master(
     $authz_mode=hiera('profile::kubernetes::master::authz_mode'),
     $service_account_private_key_file=hiera('profile::kubernetes::master::service_account_private_key_file', undef),
     $prometheus_url=hiera('profile::kubernetes::master::prometheus_url', "http://prometheus.svc.${::site}.wmnet/k8s"),
+    $runtime_config=hiera('profile::kubernetes::master::runtime_config', undef),
 ){
     if $expose_puppet_certs {
         base::expose_puppet_certs { '/etc/kubernetes':
@@ -44,6 +45,7 @@ class profile::kubernetes::master(
         service_node_port_range  => $service_node_port_range,
         apiserver_count          => $apiserver_count,
         admission_controllers    => $admission_controllers,
+        runtime_config           => $runtime_config,
     }
 
     class { '::k8s::scheduler': }

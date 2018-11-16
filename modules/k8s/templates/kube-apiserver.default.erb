@@ -41,7 +41,9 @@ DAEMON_ARGS=" \
 <%- if @service_node_port_range -%>
 --service-node-port-range=<%= @service_node_port_range %> \
 <%- end -%>
---runtime-config=batch/v2alpha1 \
+<%- if @runtime_config -%>
+--runtime-config=<%= @runtime_config %> \
+<%- end -%>
 --tls-cert-file=<%= @ssl_cert_path %> \
 --tls-private-key-file=<%= @ssl_key_path %> \
 <%- if not @admission_control_params.empty? -%>

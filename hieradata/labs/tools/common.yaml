@@ -46,3 +46,4 @@ profile::elasticsearch::dc_settings:
 kubelet::pod_infra_container_image: 'docker-registry.tools.wmflabs.org/pause:2.0'
 profile::kubernetes::node::kubelet_extra_params:
   - --require-kubeconfig
+profile::kubernetes::master::runtime_config: batch/v2alpha1

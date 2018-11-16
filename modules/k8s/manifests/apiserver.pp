@@ -16,6 +16,7 @@ class k8s::apiserver(
     $authz_mode = 'abac',
     $storage_backend = 'etcd2',
     $apiserver_count = undef,
+    $runtime_config = undef,
 ) {
     file { '/etc/kubernetes':
         ensure => directory,
