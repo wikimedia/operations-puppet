@@ -3,6 +3,8 @@
 
 class profile::toolforge::infrastructure {
 
+    require ::profile::toolforge::clush::target
+
     if ($::labsproject in ['tools', 'toolsbeta']) {
         motd::script { 'infrastructure-banner':
             ensure => present,
