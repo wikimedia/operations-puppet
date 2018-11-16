@@ -92,25 +92,29 @@ class profile::trafficserver::backend (
         check_command => "check_http_hostheader_port_url!localhost!${port}!/_stats",
     }
 
-    $config_status_filename = '/usr/local/lib/nagios/plugins/check_trafficserver_config_status'
+    $check_scripts = [ 'check_trafficserver_config_status', 'check_trafficserver_verify_config' ]
 
-    file { $config_status_filename:
-        ensure => present,
-        source => 'puppet:///modules/profile/trafficserver/check_trafficserver_config_status.sh',
-        mode   => '0555',
-        owner  => 'root',
-        group  => 'root',
-    }
+    $check_scripts.each |String $script| {
+            $full_path =  "/usr/local/lib/nagios/plugins/${script}"
 
-    sudo::user { 'nagios_trafficserver_config_status':
-        user       => 'nagios',
-        privileges => ["ALL = (${trafficserver::user}) NOPASSWD: ${config_status_filename}"],
-    }
+            file { $full_path:
+                ensure => present,
+                source => "puppet:///modules/profile/trafficserver/${script}.sh",
+                mode   => '0555',
+                owner  => 'root',
+                group  => 'root',
+            }
 
-    nrpe::monitor_service { 'check_trafficserver_config_status':
-        description  => 'Check trafficserver config status',
-        nrpe_command => "sudo -u ${trafficserver::user} ${config_status_filename}",
-        require      => File[$config_status_filename],
+            sudo::user { "nagios_trafficserver_${script}":
+                user       => 'nagios',
+                privileges => ["ALL = (${trafficserver::user}) NOPASSWD: ${full_path}"],
+            }
+
+            nrpe::monitor_service { $script:
+                description  => $script,
+                nrpe_command => "sudo -u ${trafficserver::user} ${full_path}",
+                require      => File[$full_path],
+            }
     }
 
     $logs.each |TrafficServer::Log $log| {
