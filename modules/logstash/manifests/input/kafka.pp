@@ -12,6 +12,7 @@
 # - $topic: Kafka topic. Default: $title.
 # - $topics_pattern: Kafka topic pattern. Default: None. Supersedes $topic if set.
 # - $type: Log type to be passed to Logstash. Default: 'kafka'.
+# - $codec: Codec to decode input. Default 'plain'.
 # - $bootstrap_servers: Kafka servers to boostrap from. This list should be
 #      a string in the form of `host1:port1,host2:port2. For more info, see:
 #      https://www.elastic.co/guide/en/logstash/current/plugins-inputs-kafka.html
@@ -36,6 +37,7 @@ define logstash::input::kafka(
     $topic                                                                           = $title,
     Optional[String] $topics_pattern                                                 = undef,
     $type                                                                            = 'kafka',
+    String $codec                                                                    = 'plain',
     $plugin_id                                                                       = "input/kafka/${title}",
     Optional[Enum['PLAINTEXT','SSL','SASL_PLAINTEXT','SASL_SSL']] $security_protocol = undef,
     Optional[Stdlib::Unixpath] $ssl_truststore_location                              = undef,

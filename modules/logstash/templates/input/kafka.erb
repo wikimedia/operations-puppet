@@ -11,6 +11,7 @@ input {
     topics_pattern          => "<%= @topics_pattern %>"
 <% end -%>
     type                    => "<%= @type %>"
+    codec                   => "<%= @codec %>"
     bootstrap_servers       => "<%= @bootstrap_servers %>"
 <%- unless @plugin_id.empty? -%>
     id                      => "<%= @plugin_id %>"
