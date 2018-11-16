@@ -2,11 +2,13 @@
 # This is a logster parser(hack) where we look for
 # instances of defined strings, count them, extract lines and log them elsewhere
 
+# Warning: re.search only matches first entry
+#
 # Example YAML config:
 #
 # regex:
 #  csp_warn:
-#    pattern: 'Received\sCSP\sreport:\s<(.+?)>\sblocked\sfrom\sbeing\sloaded\son\s<(https://.+?)>'
+#    pattern: '\sCSP\sreport:\s<(.+?)>\sblocked\sfrom\sbeing\sloaded\son\s<(https://.+?)>(.+?)'
 #    fields:
 #      uri:
 #        position: 1
@@ -18,15 +20,24 @@
 #        keys:
 #          - badproject
 #          - worseproject
+#      ipaddress:
+#        position: 3
+#        iprange: True
+#        keys:
+#          - 192.168.0.0/16
+#          - 172.16.0.0/12
 
 
 import datetime
+import ipaddress
 import optparse
 import smtplib
 import re
 import socket
 import yaml
 
+from ipaddress import ip_address as IP
+from ipaddress import ip_network as IPNet
 from logster.logster_helper import MetricObject, LogsterParser
 
 
@@ -136,18 +147,36 @@ class AlarmCounterLogster(LogsterParser):
                                                  re_meta,
                                                  line))
 
+    def ip_in_net(self, ip, net):
+        """:param ip: string ('10.0.0.1')
+           :param net: string ('10.0.0.0/8')
+        """
+        try:
+            return IP(unicode(ip)) in IPNet(unicode(net))
+        except ipaddress.AddressValueError:
+            self.write('WARN {} {} failed evaluation'.format(ip, net))
+            return None
+
     def keyword_match(self):
         keyword_hits = []
         for re_name, re_match in self.re_matches.iteritems():
             for item in re_match:
                 result = item[0]
                 config = item[1]
-                for k, v in config['fields'].iteritems():
-                    extracted = result.group(v['position'])
-                    for key in v['keys']:
-                        if key in extracted:
+                for field, fkey in config['fields'].iteritems():
+                    extracted = result.group(fkey['position'])
+
+                    for key in fkey['keys']:
+                        if 'iprange' in fkey and fkey['iprange']:
+                            found = self.ip_in_net(extracted, key)
+                        elif key in extracted:
+                            found = True
+                        else:
+                            found = False
+
+                        if found:
                             content = (re_name,
-                                       k,
+                                       field,
                                        key,
                                        extracted,
                                        result.group())
@@ -172,7 +201,7 @@ class AlarmCounterLogster(LogsterParser):
             body += "\n\n"
 
         if self.savefile:
-            body += '\nMatching lines extracted and stored in {}'.format(self.savefile)
+            body += '\nExtracted content is stored in {}'.format(self.savefile)
 
         self.write('{} sending email for {} rate {}'.format(datetime.datetime.now(),
                                                             self.name,
@@ -180,7 +209,7 @@ class AlarmCounterLogster(LogsterParser):
 
         sendMail('LogsterAlarm',
                  [self.email],
-                 'LogsterAlarm{} rate {}'.format(self.name, str(rate)),
+                 'LogsterAlarm{} match count is {}\n'.format(self.name, self.alarm_count),
                  body)
 
     def get_state(self, duration):

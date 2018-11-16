@@ -1,6 +1,7 @@
 class profile::logster_alarm {
 
-    require_package('python-yaml')
+    require_package(['python-yaml',
+                    'python-ipaddress'])
 
     file{ '/etc/logster':
         ensure => 'directory',
