@@ -1,12 +1,19 @@
 # this is the kafka output config, so load the kafka output module
 module(load="omkafka")
 
+# load mmrm1stspace to remove leading space from msg field in output
+# (leading space breaks existing grok/regex message filters)
+module(load="mmrm1stspace")
+
 # define a template to be used by omkafka dynatopic
 template(name="kafka_topic" type="string" string="rsyslog-%syslogseverity-text%")
 
 # send to kafka if lookup table contains "kafka" for relevant programname
 # $.log_outputs defined by lookup table in lookup_output.conf
 if ( $.log_outputs contains "kafka" ) then {
+
+    # remove leading white space from msg field
+    action(type="mmrm1stspace")
 
     action(type="omkafka"
            broker=<%= scope.lookupvar('logging_kafka_brokers').to_json %>
