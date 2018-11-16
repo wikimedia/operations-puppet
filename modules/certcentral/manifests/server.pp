@@ -57,7 +57,7 @@ class certcentral::server (
         require => Package['certcentral'],
     }
 
-    $live_certs_path = '/etc/certcentral/live_certs'
+    $live_certs_path = '/var/lib/certcentral/live_certs'
     file { '/etc/certcentral/cert-sync.conf':
         owner   => 'certcentral',
         group   => 'certcentral',
