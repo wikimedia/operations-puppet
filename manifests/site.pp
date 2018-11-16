@@ -441,7 +441,7 @@ node /^db1(111|112)\.eqiad\.wmnet/ {
     role(mariadb::core_test)
 }
 
-# mysql-8.0 temporary test
+# temporary test
 node 'db1118.eqiad.wmnet' {
     role(mariadb::core_test)
 }
