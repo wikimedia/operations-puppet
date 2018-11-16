@@ -14,6 +14,8 @@ class profile::phabricator::main (
     $phab_app_user = hiera('phabricator_app_user', undef),
     $phab_app_pass = hiera('phabricator_app_pass', undef),
     $phab_daemons_user = hiera('phabricator_daemons_user', undef),
+    $phab_manifest_user = hiera('phabricator_manifest_user', undef),
+    $phab_manifest_pass = hiera('phabricator_manifest_pass', undef),
     $phab_daemons_pass = hiera('phabricator_daemons_pass', undef),
     $phab_mysql_admin_user = hiera('phabricator_admin_user', undef),
     $phab_mysql_admin_pass = hiera('phabricator_admin_pass', undef),
@@ -96,6 +98,17 @@ class profile::phabricator::main (
         $daemons_pass = $passwords::mysql::phabricator::app_pass
     } else {
         $daemons_pass = $phab_daemons_pass
+    }
+
+    if $phab_manifest_user == undef {
+        $manifest_user = $passwords::mysql::phabricator::manifest_user
+    } else {
+        $manifest_user = $phab_manifest_user
+    }
+    if $phab_manifest_pass == undef {
+        $manifest_pass = $passwords::mysql::phabricator::manifest_pass
+    } else {
+        $manifest_pass = $phab_manifest_pass
     }
 
     # todo: create a separate mail_user and mail_pass?
@@ -213,10 +226,10 @@ class profile::phabricator::main (
         dbmaster_port   => $mysql_port,
         dbslave_host    => $mysql_slave,
         dbslave_port    => $mysql_slave_port,
-        manifest_user   => $passwords::mysql::phabricator::manifest_user,
-        manifest_pass   => $passwords::mysql::phabricator::manifest_pass,
-        app_user        => $passwords::mysql::phabricator::app_user,
-        app_pass        => $passwords::mysql::phabricator::app_pass,
+        manifest_user   => $manifest_user,
+        manifest_pass   => $manifest_pass,
+        app_user        => $app_user,
+        app_pass        => $app_pass,
         bz_user         => $passwords::mysql::phabricator::bz_user,
         bz_pass         => $passwords::mysql::phabricator::bz_pass,
         rt_user         => $passwords::mysql::phabricator::rt_user,
