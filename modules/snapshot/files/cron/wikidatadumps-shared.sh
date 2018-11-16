@@ -15,12 +15,13 @@ today=`date +'%Y%m%d'`
 daysToKeep=70
 pagesPerBatch=200000
 
-args="wiki:multiversion;output:temp;tools:php"
+args="wiki:multiversion;output:temp;tools:php,lbzip2"
 results=`python "${repodir}/getconfigvals.py" --configfile "$configfile" --args "$args"`
 
 multiversion=`getsetting "$results" "wiki" "multiversion"` || exit 1
 tempDir=`getsetting "$results" "output" "temp"` || exit 1
 php=`getsetting "$results" "tools" "php"` || exit 1
+lbzip2=`getsetting "$results" "tools" "lbzip2"` || exit 1
 
 for settingname in "multiversion" "tempDir"; do
     checkval "$settingname" "${!settingname}"

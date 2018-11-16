@@ -133,7 +133,11 @@ find $legacyDirectory -name '*.json.gz' -mtime +`expr $daysToKeep + 1` -delete
 ln -fs "$today/$filename.json.gz" "$targetDirBase/latest-all.json.gz"
 
 # Create the bzip2 from the gzip one and update the latest-all.json.bz2 link
-gzip -dc $targetFileGzip | bzip2 -c > $tempDir/wikidataJson.bz2
+nthreads=$(( $shards / 2))
+if [ $nthreads -lt 1 ]; then
+    nthreads=1
+fi
+gzip -dc $targetFileGzip | "$lbzip2" -n $nthreads -c > $tempDir/wikidataJson.bz2
 mv $tempDir/wikidataJson.bz2 $targetFileBzip2
 ln -fs "$today/$filename.json.bz2" "$targetDirBase/latest-all.json.bz2"
 putDumpChecksums $targetFileBzip2
