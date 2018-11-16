@@ -91,6 +91,7 @@ network::subnets:
           ipv4: 10.64.72.0/24
         private1-kubestagepods-eqiad:
           ipv4: 10.64.75.0/24
+          ipv6: 2620:0:861:babe::/64
         private1-kubestagesvc-eqiad:
           ipv4: 10.64.76.0/24
     codfw:

@@ -24,6 +24,7 @@ class profile::url_downloader (
 
     include network::constants
 
+    # TODO rework all this ugly mess
     if $::realm == 'production' {
         $wikimedia = [
             $network::constants::all_network_subnets['production']['eqiad']['public']['public1-a-eqiad']['ipv4'],
@@ -61,6 +62,16 @@ class profile::url_downloader (
             $network::constants::all_network_subnets['production']['codfw']['private']['private1-c-codfw']['ipv6'],
             $network::constants::all_network_subnets['production']['codfw']['private']['private1-d-codfw']['ipv4'],
             $network::constants::all_network_subnets['production']['codfw']['private']['private1-d-codfw']['ipv6'],
+
+            # Kubernetes pods
+            $network::constants::all_network_subnets['production']['eqiad']['private']['private1-kubepods-eqiad']['ipv4'],
+            $network::constants::all_network_subnets['production']['eqiad']['private']['private1-kubepods-eqiad']['ipv6'],
+
+            $network::constants::all_network_subnets['production']['codfw']['private']['private1-kubepods-codfw']['ipv4'],
+            $network::constants::all_network_subnets['production']['codfw']['private']['private1-kubepods-codfw']['ipv6'],
+
+            $network::constants::all_network_subnets['production']['eqiad']['private']['private1-kubestagepods-eqiad']['ipv4'],
+            $network::constants::all_network_subnets['production']['eqiad']['private']['private1-kubestagepods-eqiad']['ipv6'],
 
             $network::constants::all_network_subnets['production']['esams']['public']['public1-esams']['ipv4'], #TODO: Do we need this ?
             $network::constants::all_network_subnets['production']['esams']['public']['public1-esams']['ipv6'], #TODO: Do we need this ?
