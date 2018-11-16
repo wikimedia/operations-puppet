@@ -5,7 +5,7 @@ class role::labs::graphite {
 
     require ::profile::openstack::main::observerenv
     include graphite::labs::archiver
-    include role::statsite
+    include profile::statsite
 
     class { '::uwsgi': }
 

@@ -8,7 +8,7 @@ class role::thumbor::mediawiki {
     include ::standard
     include ::profile::base::firewall
     include ::mediawiki::packages::fonts
-    include role::statsite
+    include ::profile::statsite
     include ::profile::prometheus::haproxy_exporter
     include ::profile::prometheus::nutcracker_exporter
     include ::profile::thumbor

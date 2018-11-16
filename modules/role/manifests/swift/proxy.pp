@@ -50,7 +50,7 @@ class role::swift::proxy (
 
     include ::profile::prometheus::memcached_exporter
 
-    include role::statsite
+    include ::profile::statsite
     class { '::profile::prometheus::statsd_exporter':
         relay_address => 'localhost:8125',
     }
