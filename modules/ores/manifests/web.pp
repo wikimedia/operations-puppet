@@ -80,12 +80,21 @@ class ores::web(
         },
         'scoring_systems' => {
             'celery_queue' => {
-                'BROKER_URL'            => "redis://${redis_host}:6379",
-                'CELERY_RESULT_BACKEND' => "redis://${redis_host}:6379",
-                'CELERYD_CONCURRENCY'   => $celery_workers,
-                'queue_maxsize'         => $celery_queue_maxsize,
-                'lock_manager'          => 'pool_counter',
-                'task_tracker'          => 'redis',
+                'BROKER_URL'                   => "redis://${redis_host}:6379",
+                'CELERY_RESULT_BACKEND'        => "redis://${redis_host}:6379",
+                'CELERYD_CONCURRENCY'          => $celery_workers,
+                'queue_maxsize'                => $celery_queue_maxsize,
+                'lock_manager'                 => 'pool_counter',
+                'task_tracker'                 => 'redis',
+                'CELERY_CREATE_MISSING_QUEUES' => true,
+                'CELERYD_MAX_TASKS_PER_CHILD'  => '100',
+                'CELERYD_HIJACK_ROOT_LOGGER'   => false,
+                'CELERY_RESULT_SERIALIZER'     => 'pickle',
+                'CELERY_TASK_SERIALIZER'       => 'pickle',
+                'CELERY_ACCEPT_CONTENT'        => [ 'pickle' ],
+                'BROKER_TRANSPORT_OPTIONS'     => {
+                  'socket_timeout' => '15',
+                },
             },
         },
         'lock_managers' => {
