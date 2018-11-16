@@ -867,7 +867,7 @@ class role::prometheus::ops {
             # to prevent metrics explosion
             'metric_relabel_configs' => [
                 { 'source_labels' => ['action'],
-                    'regex'  => 'action-\d+-builtin:.*',
+                    'regex'  => 'action-\d+-.*:.*',
                     'action' => 'drop',
                 },
             ],
