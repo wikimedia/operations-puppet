@@ -21,6 +21,7 @@ class wdqs(
     Boolean $enable_ldf = true,
     Integer $max_query_time_millis = 60000,
     Enum['none', 'daily', 'weekly'] $load_categories = 'none',
+    Boolean $run_tests = false,
 ) {
     $deploy_user = 'deploy-service'
 
@@ -75,5 +76,6 @@ class wdqs(
         log_dir         => $log_dir,
         username        => $username,
         load_categories => $load_categories,
+        run_tests       => $run_tests,
     }
 }

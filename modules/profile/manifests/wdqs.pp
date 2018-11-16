@@ -24,6 +24,7 @@ class profile::wdqs (
     Boolean $fetch_constraints = hiera('profile::wdqs::fetch_constraints'),
     Boolean $enable_ldf = hiera('profile::wdqs::enable_ldf'),
     Boolean $enable_rdf_dump = hiera('profile::wdqs::enable_rdf_dump'),
+    Boolean $run_tests = hiera('profile::wdqs::run_tests', false),
 ) {
     require ::profile::prometheus::blazegraph_exporter
 
@@ -105,6 +106,7 @@ class profile::wdqs (
             '-XX:+UseNUMA',
             "-javaagent:${prometheus_agent_path}=${prometheus_updater_agent_port}:${prometheus_updater_agent_config}",
         ],
+        run_tests                 => $run_tests,
     }
 
     # Firewall

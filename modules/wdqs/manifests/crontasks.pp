@@ -8,12 +8,14 @@
 # - $log_dir: Directory where the logs go
 # - $username: Username owning the service
 # - $load_categories: frequency of loading categories
+# - $run_tests: run test queries periodically (usefull for test servers)
 class wdqs::crontasks(
     String $package_dir,
     String $data_dir,
     String $log_dir,
     String $username,
     Enum['none', 'daily', 'weekly'] $load_categories,
+    Boolean $run_tests,
 ) {
     file { '/usr/local/bin/cronUtils.sh':
         ensure => present,
@@ -94,6 +96,14 @@ class wdqs::crontasks(
         weekday => 4,
         minute  => 0,
         hour    => 10,
+    }
+
+    cron { 'run-wdqs-test-queries':
+        ensure      => $run_tests,
+        environment => 'MAILTO=wdqs-admins',
+        command     => "${package_dir}/queries/test.sh > /dev/null",
+        user        => $username,
+        minute      => '*/30',
     }
 
     logrotate::rule { 'wdqs-reload-categories':
