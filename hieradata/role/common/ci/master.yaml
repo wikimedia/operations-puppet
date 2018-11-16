@@ -25,8 +25,7 @@ profile::zuul::server::conf:
     gearman_server: 127.0.0.1
     config_git_branch: master
     gearman_server_start: true
-    # FIXME use a lookup?
-    statsd_host: statsd.eqiad.wmnet
+    statsd_host: localhost
     url_pattern: 'https://integration.wikimedia.org/ci/job/{job.name}/{build.number}/console'
     status_url: 'https://integration.wikimedia.org/zuul/'
 

@@ -35,4 +35,6 @@ class role::ci::master {
     # adding jenkins-slave to it. This is a flawed approach and should be better
     # addressed. See T174465 for the long discussion
     Class['Admin'] -> Class['::profile::ci::docker']
+
+    include ::profile::statsite
 }
