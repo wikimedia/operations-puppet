@@ -223,14 +223,6 @@ class icinga(
             group  => 'www-data',
             notify => Service['icinga'],
         }
-
-        file { '/var/lib/icinga/retention.dat':
-            ensure => 'present',
-            mode   => '0644',
-            owner  => $icinga_user,
-            group  => 'www-data',
-        }
-
     }
 
     package { 'icinga':
