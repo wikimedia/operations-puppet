@@ -1,14 +1,45 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
+# Copyright (c) 2018 Wikimedia Foundation, Inc.
+#
+#  Permission to use, copy, modify, and/or distribute this software for any
+#  purpose with or without fee is hereby granted, provided that the above
+#  copyright notice and this permission notice appear in all copies.
+#
+#  THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
+#  WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
+#  MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
+#  ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
+#  WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
+#  ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
+#  OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
+#
+#
+#  THIS FILE IS MANAGED BY PUPPET
+#
+
 import argparse
 import logging
 import os
 import subprocess
 import sys
 
+from keystoneauth1 import session
+from keystoneauth1.identity import v3
+from keystoneclient.v3 import client as keystone_client
+from novaclient import client as novaclient
 
-VALID_DOMAINS = ["hostgroup", "checkpoint", "queue"]
+
+VALID_DOMAINS = ["hostgroup", "checkpoint", "queue", "hosts"]
+
+GRID_HOST_TYPES = {
+    "sgewebgrid-generic": "exec",
+    "sgewebgrid-lighttpd": "exec",
+    "sgeexec": "exec",
+    "sgebastion": "submit",
+    "sgecron": "submit",
+}
 
 
 class GridConfig:
@@ -187,6 +218,7 @@ def get_args():
             " values can be given space-separated."
         ),
         nargs="+",
+        metavar="<configuration area>",
     )
     group.add_argument(
         "--all-domains",
@@ -197,7 +229,32 @@ def get_args():
         "--config-dir",
         help="Path to find the configuration file",
         default="/data/project/.system_sge/gridengine/etc",
+        metavar="/nfs/path/to/grid/configuration/files",
     )
+
+    argparser.add_argument(
+        "--keystone-url",
+        help="URL to use for Keystone when calling OpenStack -- only for hosts",
+        default="http://cloudcontrol1003.wikimedia.org:5000/v3",
+        metavar='eg. "http://cloudcontrol1003.wikimedia.org:5000/v3"',
+    )
+
+    argparser.add_argument(
+        "--observer-pass",
+        help="Read-only password to use for Keystone when calling OpenStack -- only for hosts",
+        default="",  # Should not be required unless all-domains or domains includes hosts
+    )
+
+    argparser.add_argument(
+        "--beta",
+        help=(
+            "Required for running on toolsbeta for hosts, "
+            "otherwise, this assumes Toolforge proper",
+        ),
+        default=False,
+        action="store_true",
+    )
+
     argparser.add_argument(
         "--dry-run",
         help=(
@@ -208,7 +265,12 @@ def get_args():
     )
     argparser.add_argument("--debug", help="Turn on debug logging", action="store_true")
 
-    return argparser.parse_args()
+    args = argparser.parse_args()
+    if args.all_domains or "hosts" in args.domains:
+        if not args.observer_pass:
+            argparser.error("To process hosts the --observer-pass argument is required")
+
+    return args
 
 
 def select_object(obj_type):
@@ -218,6 +280,117 @@ def select_object(obj_type):
         "checkpoint": GridChkPt,
     }
     return grid_obj_types[obj_type]
+
+
+class HostProcessor:
+    """Object to manage the gathering of hostname information from Keystone and
+    application of it to the grid itself"""
+
+    def __init__(self, keystone_url, observer_pass, host_types, beta):
+        self.keystone_url = keystone_url
+        self.observer_pass = observer_pass
+        self.regions = []
+        self.project = "toolsbeta" if beta else "tools"
+        self._get_regions()
+        self.host_set = self._hosts(host_types)
+
+    def _get_regions(self):
+        client = keystone_client.Client(
+            session=session.Session(
+                auth=v3.Password(
+                    auth_url=self.keystone_url,
+                    username="novaobserver",
+                    password=self.observer_pass,
+                    project_name="observer",
+                    user_domain_name="default",
+                    project_domain_name="default",
+                )
+            ),
+            interface="public",
+        )
+        self.regions = [region.id for region in client.regions.list()]
+
+    def _hosts(self, host_types):
+        host_set = {name: [] for name in set(host_types.values())}
+        for region in self.regions:
+            client = novaclient.Client(
+                "2.0",
+                session=session.Session(
+                    auth=v3.Password(
+                        auth_url=self.keystone_url,
+                        username="novaobserver",
+                        password=self.observer_pass,
+                        project_name="tools",
+                        user_domain_name="default",
+                        project_domain_name="default",
+                    )
+                ),
+                region_name=region,
+            )
+            for instance in client.servers.list():
+                name = instance.name
+                for prefix in host_types:
+                    full_prefix = "{}-{}".format(self.project, prefix)
+                    if name.startswith(full_prefix):
+                        role = host_types[prefix]
+                        host_set[role].append(
+                            "{}.{}.eqiad.wmflabs".format(name, self.project)
+                        )
+        return host_set
+
+    def run_updates(self, dry_run, host_types):
+        for host_class in sorted(set(host_types.values())):
+            get_arg = "-s{}".format(host_class[0])
+            add_arg = "-a{}".format(host_class[0])
+            del_arg = "-d{}".format(host_class[0])
+            logging.info(host_class)
+            result = subprocess.run(
+                ["qconf", get_arg], timeout=60, stdout=subprocess.PIPE, check=True
+            )
+
+            current_hosts = result.stdout.decode("utf-8").splitlines()
+            if "host defined" in current_hosts[0]:
+                current_hosts = []
+
+            for host in self.host_set[host_class]:
+                logging.info("{} {}".format(host, host_class))
+                logging.info(current_hosts)
+                if host in current_hosts:
+                    current_hosts.remove(host)
+                    continue
+
+                if not dry_run:
+                    result = subprocess.run(
+                        ["qconf", add_arg, host],
+                        timeout=60,
+                        stdout=subprocess.PIPE,
+                        check=True,
+                    )
+                else:
+                    logging.info("Would run: qconf {} {}".format(add_arg, host))
+
+            if current_hosts:
+                # This suggests there are hosts listed that don't exist and must
+                # be expunged
+                for host in current_hosts:
+                    if not dry_run:
+                        result = subprocess.run(
+                            ["qconf", del_arg, host],
+                            timeout=60,
+                            stdout=subprocess.PIPE,
+                            check=True,
+                        )
+                    else:
+                        logging.info(
+                            "Would delete {} host: qconf {} {}".format(
+                                host_class, del_arg, host
+                            )
+                        )
+
+
+def add_remove_hosts(dry_run, keystone_url, observer_pass, host_types, beta):
+    host_processor = HostProcessor(keystone_url, observer_pass, host_types, beta)
+    host_processor.run_updates(dry_run, host_types)
 
 
 def main():
@@ -236,7 +409,19 @@ def main():
     if not domains:
         sys.exit("you have specified no valid grid configuration domains")
 
+    if "hosts" in domains:
+        add_remove_hosts(
+            args.dry_run,
+            args.keystone_url,
+            args.observer_pass,
+            GRID_HOST_TYPES,
+            args.beta,
+        )
+
     for domain in domains:
+        if domain == "hosts":
+            continue
+
         logging.debug("Running configuration updates for %s", domain)
         grid_conf_cls = select_object(domain)
         domain_dir = os.path.join(args.config_dir, domain + "s")
