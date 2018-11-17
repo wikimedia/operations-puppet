@@ -1,1 +1,2 @@
 do_acme: false
+profile::base::notifications: disabled
