@@ -14,4 +14,4 @@ NICENESS=0
 
 # Purge Nagios Resources
 # as a startup measure, filter puppet-managed cfg files for only those entries that are in puppet_hosts
-/usr/local/sbin/purge-nagios-resources.py /etc/icinga/puppet_hosts.cfg /etc/nagios/puppet_hostgroups.cfg /etc/nagios/puppet_servicegroups.cfg /etc/icinga/puppet_services.cfg
+/usr/local/sbin/purge-nagios-resources.py /etc/icinga/objects/puppet_hosts.cfg /etc/nagios/puppet_hostgroups.cfg /etc/nagios/puppet_servicegroups.cfg /etc/icinga/objects/puppet_services.cfg
