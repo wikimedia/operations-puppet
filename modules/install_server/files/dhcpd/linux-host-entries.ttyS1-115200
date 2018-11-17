@@ -2209,13 +2209,6 @@ host eeden {
     filename "lpxelinux.0";
 }
 
-host einsteinium {
-    hardware ethernet F0:1F:AF:E8:B2:33;
-    fixed-address einsteinium.wikimedia.org;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
-    filename "lpxelinux.0";
-}
-
 host elastic1017 {
     hardware ethernet B0:83:FE:C0:B0:D2;
     fixed-address elastic1017.eqiad.wmnet;

@@ -1133,7 +1133,7 @@ node /^install[12]002\.wikimedia\.org$/ {
     role(installserver)
 }
 
-# new icinga system to replace einsteinium T201344
+# new icinga systems, replaced einsteinium and tegmen (T201344, T208824)
 node /^icinga[12]001\.wikimedia.org$/ {
     role(alerting_host)
     interface::add_ip6_mapped { 'main': }
