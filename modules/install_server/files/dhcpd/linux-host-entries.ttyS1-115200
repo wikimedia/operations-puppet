@@ -315,77 +315,77 @@ host an-worker1080 {
 }
 
 host an-worker1081 {
-    hardware ethernet 20:04:0F:E9:91:CA;
+    hardware ethernet F4:E9:D4:DB:BE:90;
     fixed-address an-worker1081.eqiad.wmnet;
 }
 
 host an-worker1082 {
-    hardware ethernet 20:04:0F:E9:64:36;
+    hardware ethernet F4:E9:D4:47:0E:10;
     fixed-address an-worker1082.eqiad.wmnet;
 }
 
 host an-worker1083 {
-    hardware ethernet 20:04:0F:E9:3B:1E;
+    hardware ethernet F4:E9:D4:47:18:D0;
     fixed-address an-worker1083.eqiad.wmnet;
 }
 
 host an-worker1084 {
-    hardware ethernet 20:04:0F:E9:53:62;
+    hardware ethernet F4:E9:D4:DB:BF:00;
     fixed-address an-worker1084.eqiad.wmnet;
 }
 
 host an-worker1085 {
-    hardware ethernet 20:04:0F:E9:3B:FA;
+    hardware ethernet F4:E9:D4:DB:78:C0;
     fixed-address an-worker1085.eqiad.wmnet;
 }
 
 host an-worker1086 {
-    hardware ethernet 20:04:0F:E9:69:B2;
+    hardware ethernet F4:E9:D4:DB:BE:A0;
     fixed-address an-worker1086.eqiad.wmnet;
 }
 
 host an-worker1087 {
-    hardware ethernet 20:04:0F:E9:3B:26;
+    hardware ethernet F4:E9:D4:DB:91:10;
     fixed-address an-worker1087.eqiad.wmnet;
 }
 
 host an-worker1088 {
-    hardware ethernet 20:04:0F:E9:69:0A;
+    hardware ethernet F4:E9:D4:DB:AB:80;
     fixed-address an-worker1088.eqiad.wmnet;
 }
 
 host an-worker1089 {
-    hardware ethernet 20:04:0F:E9:5F:9A;
+    hardware ethernet F4:E9:D4:DB:AB:90;
     fixed-address an-worker1089.eqiad.wmnet;
 }
 
 host an-worker1090 {
-    hardware ethernet 20:04:0F:E9:5F:B6;
+    hardware ethernet F4:E9:D4:DB:A6:F0;
     fixed-address an-worker1090.eqiad.wmnet;
 }
 
 host an-worker1091 {
-    hardware ethernet 20:04:0F:E9:53:6E;
+    hardware ethernet F4:E9:D4:DB:87:60;
     fixed-address an-worker1091.eqiad.wmnet;
 }
 
 host an-worker1092 {
-    hardware ethernet 20:04:0F:E9:91:EE;
+    hardware ethernet F4:E9:D4:DB:AF:90;
     fixed-address an-worker1092.eqiad.wmnet;
 }
 
 host an-worker1093 {
-    hardware ethernet 20:04:0F:E9:91:EA;
+    hardware ethernet F4:E9:D4:DB:84:F0;
     fixed-address an-worker1093.eqiad.wmnet;
 }
 
 host an-worker1094 {
-    hardware ethernet 20:04:0F:E9:B3:BA;
+    hardware ethernet F4:E9:D4:DB:AD:60;
     fixed-address an-worker1094.eqiad.wmnet;
 }
 
 host an-worker1095 {
-    hardware ethernet 20:04:0F:E9:B7:1A;
+    hardware ethernet F4:E9:D4:DB:7E:10;
     fixed-address an-worker1095.eqiad.wmnet;
 }
 
