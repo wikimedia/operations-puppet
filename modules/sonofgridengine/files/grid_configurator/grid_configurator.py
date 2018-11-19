@@ -293,10 +293,12 @@ class HostProcessor:
                 add_arg = "-a{}".format(host_class[0])
                 del_arg = "-d{}".format(host_class[0])
 
-            logging.info(host_class)  # TODO: remove this
-            result = subprocess.run(
-                ["qconf", get_arg], timeout=60, stdout=subprocess.PIPE, check=True
-            )
+            try:
+                result = subprocess.run(
+                    ["qconf", get_arg], timeout=60, stdout=subprocess.PIPE, check=True
+                )
+            except subprocess.CalledProcessError:
+                pass
 
             current_hosts = result.stdout.decode("utf-8").splitlines()
             if "host defined" in current_hosts[0]:
