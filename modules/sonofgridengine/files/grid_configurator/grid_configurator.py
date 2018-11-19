@@ -451,7 +451,7 @@ def select_object(obj_type):
     return grid_obj_types[obj_type]
 
 
-def run_domain_updates(config_dir, domain, grid_object, dry_run):
+def run_domain_updates(config_dir, domain, grid_class, dry_run):
     domain_dir = os.path.join(config_dir, domain + "s")
     try:
         conf_files = os.listdir(domain_dir)
@@ -463,6 +463,7 @@ def run_domain_updates(config_dir, domain, grid_object, dry_run):
         if conf.startswith("."):
             continue
 
+        grid_object = grid_class(conf)
         if not grid_object.check_exists():
             grid_object.create(os.path.join(domain_dir, conf), dry_run)
         else:
