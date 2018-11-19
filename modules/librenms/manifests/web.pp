@@ -10,12 +10,6 @@ class librenms::web(
         content => template('librenms/apache.conf.erb'),
     }
 
-    letsencrypt::cert::integrated { 'librenms':
-        subjects   => 'librenms.wikimedia.org',
-        puppet_svc => 'apache2',
-        system_svc => 'apache2',
-    }
-
     certcentral::cert { 'librenms':
         puppet_svc => 'apache2',
     }
