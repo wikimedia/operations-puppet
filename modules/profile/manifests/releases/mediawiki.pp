@@ -8,6 +8,8 @@ class profile::releases::mediawiki (
     $server_admin = hiera('profile::releases::mediawiki::server_admin'),
     $active_server = hiera('releases_server'),
     $passive_server = hiera('releases_server_failover'),
+    $jenkins_agent_username = hiera('jenkins_agent_username'),
+    $jenkins_agent_key = hiera('profile::releases::mediawiki::jenkins_agent_key'),
 ){
     class { '::jenkins':
         access_log => true,
@@ -17,6 +19,13 @@ class profile::releases::mediawiki (
     }
 
     base::service_auto_restart { 'jenkins': }
+
+    # Master connect to itself via the fqdn / primary IP ipaddress
+    class { 'jenkins::slave':
+        ssh_key => jenkins_agent_key,
+        user    => $jenkins_agent_username,
+        workdir => '/srv/jenkins-slave',
+    }
 
     class { '::releases':
         sitename         => $sitename,
