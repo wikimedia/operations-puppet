@@ -1453,7 +1453,7 @@ node /^ms-be101[3-5]\.eqiad\.wmnet$/ {
     role(swift::storage)
 }
 
-node /^ms-be10(1[6-9]|[234][0-9])\.eqiad\.wmnet$/ {
+node /^ms-be10(1[6-9]|[2345][0-9])\.eqiad\.wmnet$/ {
     role(swift::storage)
 }
 
