@@ -25,4 +25,7 @@ class mediawiki::packages {
     require_package('texlive-latex-extra', 'texlive-pstricks', 'texlive-publishers')
 
     require_package('firejail')
+
+    # SecurePoll is incompatible with gpg2 (T209802)
+    require_package('gnupg1')
 }
