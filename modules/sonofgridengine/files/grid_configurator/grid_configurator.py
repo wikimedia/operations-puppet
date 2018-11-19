@@ -203,6 +203,173 @@ class GridHostGroup(GridConfig):
         return True
 
 
+class GridExecHost(GridConfig):
+    def __init__(self, host_name):
+        super().__init__(
+            "hostgroup",
+            host_name,
+            ["qconf", "-Ae"],
+            ["qconf", "-Me"],
+            ["qconf", "-de"],
+            ["qconf", "-se"],
+        )
+
+
+class HostProcessor:
+    """Object to manage the gathering of hostname information from Keystone and
+    application of it to the grid itself"""
+
+    def __init__(self, keystone_url, observer_pass, host_types, beta, config_dir):
+        self.keystone_url = keystone_url
+        self.observer_pass = observer_pass
+        self.regions = []
+        self.project = "toolsbeta" if beta else "tools"
+        self._get_regions()
+        self.host_set = self._hosts(host_types)
+        self.config_dir = config_dir
+
+    def _get_regions(self):
+        client = keystone_client.Client(
+            session=session.Session(
+                auth=v3.Password(
+                    auth_url=self.keystone_url,
+                    username="novaobserver",
+                    password=self.observer_pass,
+                    project_name="observer",
+                    user_domain_name="default",
+                    project_domain_name="default",
+                )
+            ),
+            interface="public",
+        )
+        self.regions = [region.id for region in client.regions.list()]
+
+    def _hosts(self, host_types):
+        host_set = {name: [] for name in set(host_types.values())}
+        for region in self.regions:
+            client = novaclient.Client(
+                "2.0",
+                session=session.Session(
+                    auth=v3.Password(
+                        auth_url=self.keystone_url,
+                        username="novaobserver",
+                        password=self.observer_pass,
+                        project_name="tools",
+                        user_domain_name="default",
+                        project_domain_name="default",
+                    )
+                ),
+                region_name=region,
+            )
+            for instance in client.servers.list():
+                name = instance.name
+                for prefix in host_types:
+                    full_prefix = "{}-{}".format(self.project, prefix)
+                    if name.startswith(full_prefix):
+                        role = host_types[prefix]
+                        host_set[role].append(
+                            "{}.{}.eqiad.wmflabs".format(name, self.project)
+                        )
+        return host_set
+
+    def run_updates(self, dry_run, host_types):
+        for host_class in sorted(set(host_types.values())):
+            if host_class == "exec":
+                get_arg = "-sel"
+                add_arg = "-Ae"
+                del_arg = "-de"
+                exec_host_dir = os.path.join(self.config_dir, "exec_hosts")
+                try:
+                    conf_files = os.listdir(exec_host_dir)
+                except NameError:
+                    logging.error(
+                        "%s is not a valid directory", os.path.join(exec_host_dir)
+                    )
+                    raise
+
+                exec_conf_files = [c for c in conf_files if not c.startswith(".")]
+            else:
+                get_arg = "-s{}".format(host_class[0])
+                add_arg = "-a{}".format(host_class[0])
+                del_arg = "-d{}".format(host_class[0])
+
+            logging.info(host_class)  # TODO: remove this
+            result = subprocess.run(
+                ["qconf", get_arg], timeout=60, stdout=subprocess.PIPE, check=True
+            )
+
+            current_hosts = result.stdout.decode("utf-8").splitlines()
+            if "host defined" in current_hosts[0]:
+                current_hosts = []
+
+            for host in self.host_set[host_class]:
+                logging.info("{} {}".format(host, host_class))
+                logging.info(current_hosts)
+                if host_class == "exec":
+                    if host in current_hosts and host in exec_conf_files:
+                        # Here we need to check for config changes
+                        grid_exec_host = GridExecHost(host)
+                        grid_exec_host.compare_and_update(
+                            os.path.join(exec_host_dir, host), dry_run
+                        )
+                        current_hosts.remove(host)
+                        continue
+                    elif host in current_hosts:
+                        # Oops - no host config
+                        logging.warning(
+                            "%s cannot be added without a config file", host
+                        )
+                        continue
+
+                    # Add the host
+                    this_host_config = os.path.join(self.config_dir, "exec_hosts", host)
+                    if not dry_run:
+                        result = subprocess.run(
+                            ["qconf", add_arg, this_host_config],
+                            timeout=60,
+                            stdout=subprocess.PIPE,
+                            check=True,
+                        )
+                    else:
+                        logging.info(
+                            "Would run: qconf {} {}".format(add_arg, this_host_config)
+                        )
+
+                else:
+                    if host in current_hosts:
+                        current_hosts.remove(host)
+                        continue
+
+                    if not dry_run:
+                        result = subprocess.run(
+                            ["qconf", add_arg, host],
+                            timeout=60,
+                            stdout=subprocess.PIPE,
+                            check=True,
+                        )
+                    else:
+                        logging.info("Would run: qconf {} {}".format(add_arg, host))
+
+            if current_hosts:
+                # This suggests there are hosts listed that don't exist and must
+                # be expunged
+                for host in current_hosts:
+                    if not dry_run:
+                        result = subprocess.run(
+                            ["qconf", del_arg, host],
+                            timeout=60,
+                            stdout=subprocess.PIPE,
+                            check=True,
+                        )
+                    else:
+                        logging.info(
+                            "Would delete {} host: qconf {} {}".format(
+                                host_class, del_arg, host
+                            )
+                        )
+
+
+# Utility Functions
 def get_args():
     """Gather arguments from the command line and return help information"""
     argparser = argparse.ArgumentParser(
@@ -282,115 +449,22 @@ def select_object(obj_type):
     return grid_obj_types[obj_type]
 
 
-class HostProcessor:
-    """Object to manage the gathering of hostname information from Keystone and
-    application of it to the grid itself"""
+def run_domain_updates(config_dir, domain, grid_object, dry_run):
+    domain_dir = os.path.join(config_dir, domain + "s")
+    try:
+        conf_files = os.listdir(domain_dir)
+    except NameError:
+        logging.error("%s is not a valid directory", os.path.join(config_dir, domain))
+        raise
 
-    def __init__(self, keystone_url, observer_pass, host_types, beta):
-        self.keystone_url = keystone_url
-        self.observer_pass = observer_pass
-        self.regions = []
-        self.project = "toolsbeta" if beta else "tools"
-        self._get_regions()
-        self.host_set = self._hosts(host_types)
+    for conf in conf_files:
+        if conf.startswith("."):
+            continue
 
-    def _get_regions(self):
-        client = keystone_client.Client(
-            session=session.Session(
-                auth=v3.Password(
-                    auth_url=self.keystone_url,
-                    username="novaobserver",
-                    password=self.observer_pass,
-                    project_name="observer",
-                    user_domain_name="default",
-                    project_domain_name="default",
-                )
-            ),
-            interface="public",
-        )
-        self.regions = [region.id for region in client.regions.list()]
-
-    def _hosts(self, host_types):
-        host_set = {name: [] for name in set(host_types.values())}
-        for region in self.regions:
-            client = novaclient.Client(
-                "2.0",
-                session=session.Session(
-                    auth=v3.Password(
-                        auth_url=self.keystone_url,
-                        username="novaobserver",
-                        password=self.observer_pass,
-                        project_name="tools",
-                        user_domain_name="default",
-                        project_domain_name="default",
-                    )
-                ),
-                region_name=region,
-            )
-            for instance in client.servers.list():
-                name = instance.name
-                for prefix in host_types:
-                    full_prefix = "{}-{}".format(self.project, prefix)
-                    if name.startswith(full_prefix):
-                        role = host_types[prefix]
-                        host_set[role].append(
-                            "{}.{}.eqiad.wmflabs".format(name, self.project)
-                        )
-        return host_set
-
-    def run_updates(self, dry_run, host_types):
-        for host_class in sorted(set(host_types.values())):
-            get_arg = "-s{}".format(host_class[0])
-            add_arg = "-a{}".format(host_class[0])
-            del_arg = "-d{}".format(host_class[0])
-            logging.info(host_class)
-            result = subprocess.run(
-                ["qconf", get_arg], timeout=60, stdout=subprocess.PIPE, check=True
-            )
-
-            current_hosts = result.stdout.decode("utf-8").splitlines()
-            if "host defined" in current_hosts[0]:
-                current_hosts = []
-
-            for host in self.host_set[host_class]:
-                logging.info("{} {}".format(host, host_class))
-                logging.info(current_hosts)
-                if host in current_hosts:
-                    current_hosts.remove(host)
-                    continue
-
-                if not dry_run:
-                    result = subprocess.run(
-                        ["qconf", add_arg, host],
-                        timeout=60,
-                        stdout=subprocess.PIPE,
-                        check=True,
-                    )
-                else:
-                    logging.info("Would run: qconf {} {}".format(add_arg, host))
-
-            if current_hosts:
-                # This suggests there are hosts listed that don't exist and must
-                # be expunged
-                for host in current_hosts:
-                    if not dry_run:
-                        result = subprocess.run(
-                            ["qconf", del_arg, host],
-                            timeout=60,
-                            stdout=subprocess.PIPE,
-                            check=True,
-                        )
-                    else:
-                        logging.info(
-                            "Would delete {} host: qconf {} {}".format(
-                                host_class, del_arg, host
-                            )
-                        )
-
-
-def add_remove_hosts(dry_run, keystone_url, observer_pass, host_types, beta):
-    host_processor = HostProcessor(keystone_url, observer_pass, host_types, beta)
-    host_processor.run_updates(dry_run, host_types)
+        if not grid_object.check_exists():
+            grid_object.create(os.path.join(domain_dir, conf), dry_run)
+        else:
+            grid_object.compare_and_update(os.path.join(domain_dir, conf), dry_run)
 
 
 def main():
@@ -410,40 +484,23 @@ def main():
         sys.exit("you have specified no valid grid configuration domains")
 
     if "hosts" in domains:
-        add_remove_hosts(
-            args.dry_run,
+        logging.debug("Running configuration updates for hosts")
+        host_processor = HostProcessor(
             args.keystone_url,
             args.observer_pass,
             GRID_HOST_TYPES,
             args.beta,
+            args.config_dir,
         )
+        host_processor.run_updates(args.dry_run, GRID_HOST_TYPES)
 
     for domain in domains:
         if domain == "hosts":
             continue
 
-        logging.debug("Running configuration updates for %s", domain)
         grid_conf_cls = select_object(domain)
-        domain_dir = os.path.join(args.config_dir, domain + "s")
-        try:
-            conf_files = os.listdir(domain_dir)
-        except NameError:
-            logging.error(
-                "%s is not a valid directory", os.path.join(args.config_dir, domain)
-            )
-            raise
-
-        for conf in conf_files:
-            if conf.startswith("."):
-                continue
-
-            grid_conf_obj = grid_conf_cls(conf)
-            if not grid_conf_obj.check_exists():
-                grid_conf_obj.create(os.path.join(domain_dir, conf), args.dry_run)
-            else:
-                grid_conf_obj.compare_and_update(
-                    os.path.join(domain_dir, conf), args.dry_run
-                )
+        logging.debug("Running configuration updates for %s", domain)
+        run_domain_updates(args.config_dir, domain, grid_conf_cls, args.dry_run)
 
 
 if __name__ == "__main__":

@@ -1,5 +1,6 @@
-# import subprocess
+import os
 import sys
+import tempfile
 import unittest
 from unittest.mock import patch
 from unittest.mock import MagicMock
@@ -20,6 +21,39 @@ class HostProcessorTest(unittest.TestCase):
     @patch("grid_configurator.grid_configurator.HostProcessor._hosts")
     @patch("grid_configurator.grid_configurator.session.Session", autospec=True)
     def setupClass(cls, mock_get_regions, mock_get_servers, mock_session):
+        tmp_dir = tempfile.mkdtemp()
+        os.mkdir(os.path.join(tmp_dir, "exec_hosts"))
+        exec_dir = os.path.join(tmp_dir, "exec_hosts")
+        existing_exec_host_one = "toolsbeta-sgeexec-0000.toolsbeta.eqiad.wmflabs"
+        with open(os.path.join(exec_dir, existing_exec_host_one), "w") as input_file:
+            input_file.write(
+                """\
+hostname              toolsbeta-sgeexec-0000.toolsbeta.eqiad.wmflabs
+complex_values        h_vmem=3G,slots=32,release=stretch
+load_scaling          NONE
+user_lists            NONE
+xuser_lists           NONE
+projects              NONE
+xprojects             NONE
+usage_scaling         NONE
+report_variables      NONE
+"""
+            )
+        existing_exec_host_two = "toolsbeta-sgeexec-0000.toolsbeta.eqiad.wmflabs"
+        with open(os.path.join(exec_dir, existing_exec_host_two), "w") as input_file:
+            input_file.write(
+                """\
+hostname              toolsbeta-sgeexec-0002.toolsbeta.eqiad.wmflabs
+complex_values        h_vmem=3G,slots=32,release=stretch
+load_scaling          NONE
+user_lists            NONE
+xuser_lists           NONE
+projects              NONE
+xprojects             NONE
+usage_scaling         NONE
+report_variables      NONE
+"""
+            )
         mock_get_regions.return_value = ["region"]
         mock_get_servers.return_value = OPENSTACK_MOCK_HOSTS
         cls.host_proc_object = grid_configurator.HostProcessor(
@@ -27,6 +61,7 @@ class HostProcessorTest(unittest.TestCase):
             "not-a-password",
             grid_configurator.GRID_HOST_TYPES,
             True,
+            tmp_dir,
         )
 
     @patch("grid_configurator.grid_configurator.subprocess.run")
@@ -38,8 +73,20 @@ toolsbeta-sgeexec-0000
 toolsbeta-sgebastion-0000
 toolsbeta-sgecron-0000
 """
+        NEW_HOST_CONF = b"""\
+hostname              toolsbeta-sgeexec-0002.toolsbeta.eqiad.wmflabs
+complex_values        h_vmem=3G,slots=32,release=stretch
+load_scaling          NONE
+user_lists            NONE
+xuser_lists           NONE
+projects              NONE
+xprojects             NONE
+usage_scaling         NONE
+report_variables      NONE
+"""
         mock_run.side_effect = [
             MagicMock(stdout=GRID_MOCK_EXEC_HOSTS, returncode=0),
+            MagicMock(stdout=NEW_HOST_CONF, returncode=0),
             MagicMock(stdout="", returncode=0),
             MagicMock(stdout=GRID_MOCK_SUBMIT_HOSTS, returncode=0),
         ]
@@ -50,7 +97,7 @@ toolsbeta-sgecron-0000
             check=True,
             timeout=60,
         )
-        self.assertEqual(mock_run.call_count, 3)
+        self.assertEqual(mock_run.call_count, 4)
 
     @patch("grid_configurator.grid_configurator.subprocess.run")
     def test_run_updates_with_deleted_host(self, mock_run):
@@ -66,6 +113,8 @@ toolsbeta-sgecron-0000
         mock_run.side_effect = [
             MagicMock(stdout=GRID_MOCK_EXEC_HOSTS, returncode=0),
             MagicMock(stdout="", returncode=0),
+            MagicMock(stdout="", returncode=0),
+            MagicMock(stdout="", returncode=0),
             MagicMock(stdout=GRID_MOCK_SUBMIT_HOSTS, returncode=0),
         ]
         self.host_proc_object.run_updates(False, grid_configurator.GRID_HOST_TYPES)
@@ -75,10 +124,11 @@ toolsbeta-sgecron-0000
             check=True,
             timeout=60,
         )
-        self.assertEqual(mock_run.call_count, 3)
+        self.assertEqual(mock_run.call_count, 5)
 
     @patch("grid_configurator.grid_configurator.subprocess.run")
     def test_run_updates_with_same_hosts(self, mock_run):
+
         GRID_MOCK_EXEC_HOSTS = b"""\
 toolsbeta-sgeexec-0000
 toolsbeta-sgeexec-0002
@@ -89,7 +139,9 @@ toolsbeta-sgecron-0000
 """
         mock_run.side_effect = [
             MagicMock(stdout=GRID_MOCK_EXEC_HOSTS, returncode=0),
+            MagicMock(stdout="", returncode=0),
+            MagicMock(stdout="", returncode=0),
             MagicMock(stdout=GRID_MOCK_SUBMIT_HOSTS, returncode=0),
         ]
         self.host_proc_object.run_updates(False, grid_configurator.GRID_HOST_TYPES)
-        self.assertEqual(mock_run.call_count, 2)
+        self.assertEqual(mock_run.call_count, 4)
