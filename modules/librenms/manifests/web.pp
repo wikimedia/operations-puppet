@@ -16,6 +16,10 @@ class librenms::web(
         system_svc => 'apache2',
     }
 
+    certcentral::cert { 'librenms':
+        puppet_svc => 'apache2',
+    }
+
     if $active_server == $::fqdn {
         $monitoring_ensure = 'present'
     } else {
