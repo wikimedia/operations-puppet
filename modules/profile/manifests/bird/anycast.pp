@@ -19,7 +19,7 @@ class profile::bird::anycast(
       srange => "(${neighbors_for_ferm})",
       before => Class['::bird'],
   }
-
+  # Ports from https://github.com/BIRD/bird/blob/master/proto/bfd/bfd.h#L28-L30
   if $bfd {
     ferm::service { 'bird-bfd-control':
         proto  => 'udp',
@@ -30,6 +30,12 @@ class profile::bird::anycast(
     ferm::service { 'bird-bfd-echo':
         proto  => 'udp',
         port   => '3785',
+        srange => "(${neighbors_for_ferm})",
+        before => Class['::bird'],
+    }
+    ferm::service { 'bird-bfd-multi-ctl':  # Multihop BFD
+        proto  => 'udp',
+        port   => '4784',
         srange => "(${neighbors_for_ferm})",
         before => Class['::bird'],
     }
