@@ -13,6 +13,7 @@ class profile::maps::osm_master (
     $postgres_slaves          = hiera('profile::maps::osm_master::slaves', undef),
     $cleartables              = hiera('profile::maps::osm_master::cleartables', false),
     $disable_replication_cron = hiera('profile::maps::osm_master::disable_replication_cron', false),
+    $disable_admin_cron       = hiera('profile::maps::osm_master::disable_admin_cron', false),
     $tilerator_storage_id     = hiera('profile::maps::apps::tilerator_storage_id'),
     $use_proxy                = hiera('profile::maps::apps::use_proxy'),
 ) {
@@ -176,7 +177,8 @@ class profile::maps::osm_master (
             disable_replication_cron => $disable_replication_cron,
         }
         osm::populate_admin { $db_name:
-            ensure => present,
+            ensure             => present,
+            disable_admin_cron => $disable_admin_cron,
         }
     }
 
