@@ -238,7 +238,7 @@ profile::mediawiki::jobrunner::runners:
 "hhvm::base_jit_size": 183500800
 "role::logging::mediawiki::log_directory": /data/project/logs
 "beta::syncsiteresources::user": www-data
-"role::url_downloader::url_downloader_ip": 10.68.19.117 # deployment-urldownloader02
+"role::url_downloader::url_downloader_ip": 172.16.4.11 # deployment-urldownloader02
 "zotero::http_proxy": deployment-urldownloader02.deployment-prep.eqiad.wmflabs:8080
 deployment_server: deployment-deploy01.deployment-prep.eqiad.wmflabs
 "scap::deployment_server": deployment-deploy01.deployment-prep.eqiad.wmflabs
@@ -514,5 +514,5 @@ wikimail_smarthost:
 - 'deployment-mx02.deployment-prep.eqiad.wmflabs'
 
 network::allow_deployment_from_ips:
-- '10.68.23.38' # deployment-deploy01.deployment-prep.eqiad.wmflabs
-- '10.68.23.98' # deployment-deploy02.deployment-prep.eqiad.wmflabs
+- '172.16.4.18' # deployment-deploy01.deployment-prep.eqiad.wmflabs
+- '172.16.4.19' # deployment-deploy02.deployment-prep.eqiad.wmflabs
