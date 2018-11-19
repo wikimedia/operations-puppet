@@ -164,4 +164,6 @@ class profile::librenms (
         dest_host   => 'netmon2001.wikimedia.org',
         module_path => '/srv/librenms/rrd',
     }
+
+    certcentral::cert {'librenms': }
 }
