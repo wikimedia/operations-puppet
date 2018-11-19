@@ -13,7 +13,8 @@
 class profile::logstash::collector (
     $statsd_host,
     $prometheus_nodes = hiera('prometheus_nodes', []),
-    $input_kafka_ssl_truststore_password = hiera('profile::logstash::collector::input_kafka_ssl_truststore_password')
+    $input_kafka_ssl_truststore_password = hiera('profile::logstash::collector::input_kafka_ssl_truststore_password'),
+    $jmx_exporter_port = hiera('profile::logstash::collector::jmx_exporter_port', 7800),
 ) {
 
     nrpe::monitor_service { 'logstash':
@@ -21,7 +22,6 @@ class profile::logstash::collector (
         nrpe_command => '/usr/lib/nagios/plugins/check_procs -c 1:1 -u logstash -C java -a logstash',
     }
 
-    $jmx_exporter_port = 7800
     $config_dir = '/etc/prometheus'
     $jmx_exporter_config_file = "${config_dir}/logstash_jmx_exporter.yaml"
 
