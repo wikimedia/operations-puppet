@@ -23,21 +23,28 @@ define certcentral::cert (
 
     ['rsa-2048', 'ec-prime256v1'].each |String $type| {
         # lint:ignore:puppet_url_without_modules
-        file { "/etc/centralcerts/${title}.${type}.public.pem":
+        file { "/etc/centralcerts/${title}.${type}.crt":
             owner  => 'root',
             group  => 'root',
             mode   => '0644',
             source => "puppet://${::certcentral_host}/acmedata/${title}/${type}.crt",
         }
 
-        file { "/etc/centralcerts/${title}.${type}.fullchain.pem":
+        file { "/etc/centralcerts/${title}.${type}.chain.crt":
+            owner  => 'root',
+            group  => 'root',
+            mode   => '0644',
+            source => "puppet://${::certcentral_host}/acmedata/${title}/${type}.chain.crt",
+        }
+
+        file { "/etc/centralcerts/${title}.${type}.chained.crt":
             owner  => 'root',
             group  => 'root',
             mode   => '0644',
             source => "puppet://${::certcentral_host}/acmedata/${title}/${type}.chained.crt",
         }
 
-        file { "/etc/centralcerts/${title}.${type}.private.pem":
+        file { "/etc/centralcerts/${title}.${type}.key":
             owner  => 'root',
             group  => 'root',
             mode   => '0600',
