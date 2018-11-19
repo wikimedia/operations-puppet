@@ -15,6 +15,10 @@
         HeaderName ./releases-header.html
         AllowOverride All
         Require all granted
+        <Files "index.yaml">
+            Header set Cache-Control must-revalidate
+        </Files>
+
     </Directory>
 
     <Directory /srv/org/wikimedia/releases/mediawiki/>
