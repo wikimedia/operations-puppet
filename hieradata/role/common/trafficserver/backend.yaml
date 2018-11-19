@@ -293,4 +293,4 @@ profile::trafficserver::backend::logs:
     - purge
     mode: ascii_pipe
 diamond::remove: true
-profile::base::notifications_enabled: '0'
+profile::base::notifications: disabled
