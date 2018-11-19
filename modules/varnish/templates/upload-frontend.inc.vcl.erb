@@ -220,7 +220,7 @@ sub cluster_fe_deliver {
 	}
 
 	# If the client supports WebP and the thumbnail is popular enough, attempt to serve a WebP thumbnail instead of JPG/PNG
-	if (obj.hits > <%= @vcl_config.fetch('upload_webp_hits_threshold') %> && req.url ~ "(?i)\.(jpg|jpeg|jpe|png)$" && req.url ~ "(?i)/thumb/" && req.http.Accept ~ "(?i)image/webp" && req.restarts == 0) {
+	if (obj.hits > <%= @vcl_config.fetch('upload_webp_hits_threshold') %> && req.url ~ "(?i)\.(jpg|jpeg|jpe|png)$" && req.url ~ "(?i)/thumb/" && req.http.Accept ~ "(?i)image/webp" && req.http.User-Agent !~ "^Opera" && req.restarts == 0) {
 		# Append .webp to the request URL
 		set req.url = req.url + ".webp";
 		return(restart);
