@@ -22,8 +22,8 @@ class HostProcessorTest(unittest.TestCase):
     @patch("grid_configurator.grid_configurator.session.Session", autospec=True)
     def setupClass(cls, mock_get_regions, mock_get_servers, mock_session):
         tmp_dir = tempfile.mkdtemp()
-        os.mkdir(os.path.join(tmp_dir, "exec_hosts"))
-        exec_dir = os.path.join(tmp_dir, "exec_hosts")
+        os.mkdir(os.path.join(tmp_dir, "exechosts"))
+        exec_dir = os.path.join(tmp_dir, "exechosts")
         existing_exec_host_one = "toolsbeta-sgeexec-0000.toolsbeta.eqiad.wmflabs"
         with open(os.path.join(exec_dir, existing_exec_host_one), "w") as input_file:
             input_file.write(

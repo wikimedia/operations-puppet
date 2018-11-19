@@ -278,7 +278,7 @@ class HostProcessor:
                 get_arg = "-sel"
                 add_arg = "-Ae"
                 del_arg = "-de"
-                exec_host_dir = os.path.join(self.config_dir, "exec_hosts")
+                exec_host_dir = os.path.join(self.config_dir, "exechosts")
                 try:
                     conf_files = os.listdir(exec_host_dir)
                 except NameError:
@@ -322,7 +322,7 @@ class HostProcessor:
                         continue
 
                     # Add the host
-                    this_host_config = os.path.join(self.config_dir, "exec_hosts", host)
+                    this_host_config = os.path.join(self.config_dir, "exechosts", host)
                     if not dry_run:
                         result = subprocess.run(
                             ["qconf", add_arg, this_host_config],
