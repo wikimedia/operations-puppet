@@ -77,7 +77,7 @@ class profile::trafficserver::backend (
 
     nrpe::monitor_service { 'traffic_server':
         description  => 'Ensure traffic_server is running',
-        nrpe_command => '/usr/lib/nagios/plugins/check_procs -c 1:1 -a /usr/bin/traffic_server',
+        nrpe_command => "/usr/lib/nagios/plugins/check_procs -c 1:1 -a /usr/bin/traffic_server -M --httpport ${port}",
         require      => Class['::trafficserver'],
     }
 
