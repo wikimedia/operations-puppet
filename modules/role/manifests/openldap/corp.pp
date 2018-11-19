@@ -47,8 +47,4 @@ class role::openldap::corp {
     backup::openldapset {'openldap_oit':}
     # NOTE: username is in double quotes cause otherwise it get's auto split
     # into array hence the nested quoting
-
-    diamond::collector { 'OpenLDAP':
-        ensure   => 'absent',
-    }
 }
