@@ -355,9 +355,9 @@ def populate_new_accounts(config, account_type='tool'):
 
         new_accounts = [t for t in all_accounts if t[0] not in cur_accounts]
 
-        logging.info('Found %s new %s accounts: %s',
-                     len(new_accounts), account_type,
-                     ', '.join([t[0] for t in new_accounts]))
+        logging.debug('Found %s new %s accounts: %s',
+                      len(new_accounts), account_type,
+                      ', '.join([t[0] for t in new_accounts]))
         for new_account, new_account_id in new_accounts:
             # if a homedir for this account does not exist yet, just ignore it
             # home directory creation (for tools) is currently handled by maintain-kubeusers,
@@ -365,8 +365,8 @@ def populate_new_accounts(config, account_type='tool'):
             # picked up on the next round
             replica_path = get_replica_path(account_type, new_account)
             if not os.path.exists(os.path.dirname(replica_path)):
-                logging.info('Skipping %s account %s, since no home directory exists yet',
-                             account_type, new_account)
+                logging.debug('Skipping %s account %s, since no home directory exists yet',
+                              account_type, new_account)
                 continue
             pwd = generate_new_pw()
             mysql_username = 's%d' % new_account_id if account_type == 'tool' \
