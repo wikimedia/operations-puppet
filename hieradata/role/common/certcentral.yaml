@@ -1,4 +1,9 @@
 profile::certcentral::certificates:
+    librenms:
+        CN: 'librenms.wikimedia.org'
+        SNI:
+        - 'librenms.wikimedia.org'
+        challenge: dns-01
     pinkunicorn:
         CN: 'pinkunicorn.wikimedia.org'
         SNI:
