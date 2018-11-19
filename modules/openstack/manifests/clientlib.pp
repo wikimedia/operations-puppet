@@ -45,6 +45,22 @@ class openstack::clientlib(
         }
     }
 
+    if os_version('debian stretch') and $version == 'newton' {
+        $python3packages = [
+            'python3-keystoneauth1',
+            'python3-keystoneclient',
+            'python3-novaclient',
+            'python3-glanceclient',
+            'python3-openstackclient',
+            'python3-designateclient',
+            'python3-neutronclient',
+        ]
+
+        package{ $python3packages:
+            ensure => 'present',
+        }
+    }
+
     # assumption is any version not liberty is newer
     # Ubuntu on liberty /does not/
     if os_version('ubuntu trusty') and $version != 'liberty' {
