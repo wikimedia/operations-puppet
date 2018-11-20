@@ -7,6 +7,8 @@ class profile::maps::osm_master (
     $kartotherian_pass        = hiera('profile::maps::osm_master::kartotherian_pass'),
     $tilerator_pass           = hiera('profile::maps::osm_master::tilerator_pass'),
     $tileratorui_pass         = hiera('profile::maps::osm_master::tileratorui_pass'),
+    $osmimporter_pass         = hiera('profile::maps::osm_master::osmimporter_pass'),
+    $osmupdater_pass          = hiera('profile::maps::osm_master::osmupdater_pass'),
     $replication_pass         = hiera('profile::maps::osm_master::replication_pass'),
     $postgres_slaves          = hiera('profile::maps::osm_master::slaves', undef),
     $cleartables              = hiera('profile::maps::osm_master::cleartables', false),
@@ -56,17 +58,15 @@ class profile::maps::osm_master (
         password => $tileratorui_pass,
         database => $db_name,
     }
-    postgresql::user { 'osmimporter@localhost':
+    postgresql::user { 'osmimporter':
         user     => 'osmimporter',
+        password => $osmimporter_pass,
         database => $db_name,
-        type     => 'local',
-        method   => 'peer'
     }
-    postgresql::user { 'osmupdater@localhost':
+    postgresql::user { 'osmupdater':
         user     => 'osmupdater',
+        password => $osmupdater_pass,
         database => $db_name,
-        type     => 'local',
-        method   => 'peer'
     }
     postgresql::user { 'prometheus@localhost':
         user     => 'prometheus',
@@ -152,6 +152,7 @@ class profile::maps::osm_master (
     if $cleartables {
         osm::cleartables_sync { $db_name:
             ensure                   => present,
+            pg_password              => $osmupdater_pass,
             use_proxy                => $use_proxy,
             proxy_host               => "webproxy.${::site}.wmnet",
             proxy_port               => 8080,
@@ -167,6 +168,7 @@ class profile::maps::osm_master (
             use_proxy                => $use_proxy,
             proxy_host               => "webproxy.${::site}.wmnet",
             proxy_port               => 8080,
+            pg_password              => $osmupdater_pass,
             period                   => $planet_sync_period,
             day                      => $planet_sync_day,
             hour                     => $planet_sync_hour,

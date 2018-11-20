@@ -5,16 +5,10 @@ class osm::users {
     }
 
     user { 'osmupdater':
-        ensure => present,
-        system => true,
-        groups => 'osm',
-        home   => '/nonexistent',
-    }
-
-    user { 'osmimporter':
-        ensure => present,
-        system => true,
-        groups => 'osm',
-        home   => '/nonexistent',
+        ensure  => present,
+        system  => true,
+        groups  => 'osm',
+        home    => '/nonexistent',
+        require => Group['osm'],
     }
 }

@@ -49,6 +49,7 @@
 # Sample Usage:
 #  osm::planet_sync { 'mydb': }
 define osm::planet_sync (
+    String $pg_password,
     Boolean $use_proxy,
     String $proxy_host,
     Wmflib::IpPort $proxy_port,
@@ -78,21 +79,21 @@ define osm::planet_sync (
         ensure => 'directory',
         owner  => 'osmupdater',
         group  => 'osm',
-        mode   => '0775',
+        mode   => '0755',
     }
 
     file { $expire_dir:
         ensure => directory,
         owner  => 'osmupdater',
         group  => 'osm',
-        mode   => '0775',
+        mode   => '0755',
     }
 
     file { $osmosis_dir:
         ensure => directory,
         owner  => 'osmupdater',
         group  => 'osm',
-        mode   => '0775',
+        mode   => '0755',
     }
 
     file { '/usr/local/bin/replicate-osm':
@@ -115,7 +116,7 @@ define osm::planet_sync (
         ensure => directory,
         owner  => 'osmupdater',
         group  => 'osmupdater',
-        mode   => '0775',
+        mode   => '0755',
     }
 
     logrotate::conf { 'planetsync':
@@ -123,25 +124,18 @@ define osm::planet_sync (
         content => template('osm/planetsync-logrotate.conf.erb'),
     }
 
-    file { "${osmosis_dir}/nodes.bin":
-        ensure => present,
-        owner  => 'osmupdater',
-        group  => 'osm',
-        mode   => '0775',
-    }
-
     $ensure_cron = $disable_replication_cron ? {
         true    => absent,
         default => $ensure,
     }
-
     cron { "planet_sync-${name}":
-        ensure   => $ensure_cron,
-        command  => "/usr/local/bin/replicate-osm >> ${osm_log_dir}/osm2pgsql.log 2>&1",
-        user     => 'osmupdater',
-        monthday => $day,
-        hour     => $hour,
-        minute   => $minute,
+        ensure      => $ensure_cron,
+        command     => "/usr/local/bin/replicate-osm >> ${osm_log_dir}/osm2pgsql.log 2>&1",
+        user        => 'osmupdater',
+        monthday    => $day,
+        hour        => $hour,
+        minute      => $minute,
+        environment => [ "PGPASSWORD=${pg_password}", "PGPASS=${pg_password}", ],
     }
 
     cron { "expire_old_planet_syncs-${name}":
