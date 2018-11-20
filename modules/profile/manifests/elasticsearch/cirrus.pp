@@ -25,7 +25,7 @@ class profile::elasticsearch::cirrus(
     # certificate_name and tls_port aren't even
     # elasticsearch::instance params,
 
-    $::profile::elasticsearch::configured_instances.each |$instance_title, $instance_params| {
+    $::profile::elasticsearch::filtered_instances.each |$instance_title, $instance_params| {
         $cluster_name = $instance_params['cluster_name']
         $certificate_name = $instance_params['certificate_name']
         $http_port = $instance_params['http_port']
@@ -70,7 +70,7 @@ class profile::elasticsearch::cirrus(
     }
 
     # Install prometheus data collection
-    $::profile::elasticsearch::configured_instances.reduce(9108) |$prometheus_port, $kv_pair| {
+    $::profile::elasticsearch::filtered_instances.reduce(9108) |$prometheus_port, $kv_pair| {
         $instance_params = $kv_pair[1]
         $http_port = $instance_params['http_port']
 
