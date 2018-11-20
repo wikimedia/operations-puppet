@@ -2,4 +2,5 @@
   "nomatch" : "local",
   "type" : "string",
   "table":[
+    {"index" : "input-file-apache2-error", "value" : "kafka" },
     {"index" : "apache2", "value" : "kafka" }]}
