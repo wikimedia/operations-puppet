@@ -2,17 +2,18 @@
     shard: pc1
     role: master
   targets:
-  - pc2004:9104
+  - pc2007:9104
+  - pc2010:9104
 
 - labels:
     shard: pc2
     role: master
   targets:
-  - pc2005:9104
+  - pc2008:9104
 
 - labels:
     shard: pc3
     role: master
   targets:
-  - pc2006:9104
+  - pc2009:9104
 

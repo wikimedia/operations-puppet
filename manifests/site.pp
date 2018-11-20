@@ -1872,16 +1872,21 @@ node 'pc1006.eqiad.wmnet' {
 }
 # codfw
 # pc1
-node /^pc20(04|07|10)\.codfw\.wmnet$/ {
+node /^pc20(07|10)\.codfw\.wmnet$/ {
     role(mariadb::parsercache)
 }
 # pc2
-node /^pc20(05|08)\.codfw\.wmnet$/ {
+node /^pc20(08)\.codfw\.wmnet$/ {
     role(mariadb::parsercache)
 }
 # pc3
-node /^pc20(06|09)\.codfw\.wmnet$/ {
+node /^pc20(09)\.codfw\.wmnet$/ {
     role(mariadb::parsercache)
+}
+
+# pc2004, pc2005 and pc2006 will be decommissioned
+node /^pc20(04|05|06)\.codfw\.wmnet$/ {
+    role(spare::system)
 }
 
 # virtual machines for https://wikitech.wikimedia.org/wiki/Ping_offload
