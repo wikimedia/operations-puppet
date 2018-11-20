@@ -27,6 +27,7 @@ TOOLS_PREFIX_CLASSIFIER = {
     "docker-builder": "docker-builder",
     "docker-registry": "docker-registry",
     "elastic": "elastic",
+    "exec-": "exec",
     "exec-14": "exec-trusty",
     "flannel-etcd": "flannel-etcd",
     "grid-master": "grid-master",
