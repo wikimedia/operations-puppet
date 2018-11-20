@@ -154,6 +154,9 @@ class profile::netbox (
         puppet_svc => 'apache2',
         system_svc => 'apache2',
     }
+    certcentral::cert { 'netbox':
+        puppet_svc => 'apache2',
+    }
     if $active_server == $::fqdn {
         $monitoring_ensure = 'present'
     } else {
