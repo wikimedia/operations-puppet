@@ -214,6 +214,30 @@ class GridExecHost(GridConfig):
             ["qconf", "-se"],
         )
 
+    def compare_and_update(self, input_file, dryrun):
+        self.current_conf = self._get_config()
+        with open(input_file) as inp_f:
+            rawconfig = inp_f.read()
+
+        for x in rawconfig.splitlines():
+            if not x.startswith("#"):
+                [k, v] = x.split(maxsplit=1)
+                self.desired_conf[k] = v
+
+        # We don't check the file format.  Be careful.
+        # Also, only check certain, configurable values, for now just complexes
+        if self.current_conf["complex_values"] == self.desired_conf["complex_values"]:
+            logging.debug("%s matches %s", input_file, self.res_name)
+            return True
+
+        if not dryrun:
+            self.modcmd.append(input_file)
+            result = subprocess.run(self.modcmd, timeout=60)
+            return not bool(result.returncode)
+
+        logging.info("%s %s", " ".join(self.modcmd), input_file)
+        return True
+
 
 class HostProcessor:
     """Object to manage the gathering of hostname information from Keystone and
@@ -254,7 +278,7 @@ class HostProcessor:
                         auth_url=self.keystone_url,
                         username="novaobserver",
                         password=self.observer_pass,
-                        project_name="tools",
+                        project_name=self.project,
                         user_domain_name="default",
                         project_domain_name="default",
                     )
@@ -321,6 +345,7 @@ class HostProcessor:
                         logging.warning(
                             "%s cannot be added without a config file", host
                         )
+                        current_hosts.remove(host)
                         continue
 
                     # Add the host
