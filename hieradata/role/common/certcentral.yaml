@@ -4,6 +4,11 @@ profile::certcentral::certificates:
         SNI:
         - 'librenms.wikimedia.org'
         challenge: dns-01
+    netbox:
+        CN: 'netbox.wikimedia.org'
+        SNI:
+        - 'netbox.wikimedia.org'
+        challenge: dns-01
     pinkunicorn:
         CN: 'pinkunicorn.wikimedia.org'
         SNI:
