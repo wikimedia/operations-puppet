@@ -21,6 +21,8 @@ class role::alerting_host {
 
     include ::role::authdns::monitoring
 
+    include ::profile::rsyslog::kafka_shipper
+
     if os_version('debian >= stretch') {
 
         class { '::httpd::mpm':
