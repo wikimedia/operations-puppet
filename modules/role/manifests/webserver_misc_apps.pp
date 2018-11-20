@@ -12,6 +12,7 @@ class role::webserver_misc_apps {
     $apache_modules_common = ['ssl', 'rewrite', 'headers', 'authnz_ldap', 'proxy', 'proxy_http']
 
     if os_version('debian == stretch') {
+        require_package('libapache2-mod-php7.0')
         $apache_modules = concat($apache_modules_common, 'php7.0')
     } else {
         $apache_modules = concat($apache_modules_common, 'php5')
