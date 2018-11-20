@@ -3,6 +3,8 @@ class profile::toolforge::base(
     $active_mail_relay = hiera('profile::toolforge::active_mail_relay', 'tools-mail-02.tools.eqiad.wmflabs'),
     $mail_domain = hiera('profile::toolforge::mail_domain', 'tools.wmflabs.org'),
 ) {
+    require ::profile::toolforge::clush::target
+
     package { 'nano':
         ensure => latest,
     }
