@@ -114,10 +114,22 @@ class GridConfig:
             self.getcmd, timeout=60, stdout=subprocess.PIPE, check=True
         )
         current_state = {}
+        last_key = ""
         rawconfig = result.stdout.decode("utf-8")
         for x in rawconfig.splitlines():
-            [k, v] = x.split(maxsplit=1)
-            current_state[k] = v
+            if not x.endswith("\\") and len(x.split(maxsplit=1)) == 2:
+                [k, v] = x.split(maxsplit=1)
+                current_state[k] = v
+            elif len(x.split(maxsplit=1)) == 2:
+                x_stripped = x.rstrip("\\")
+                if len(x_stripped.split(maxsplit=1)) > 1:
+                    [k, v] = x_stripped.split(maxsplit=1)
+                    last_key = k
+                    current_state[k] = v
+                else:
+                    current_state[last_key] += x_stripped.strip()
+            else:
+                current_state[last_key] += x.strip()
 
         return current_state
 
