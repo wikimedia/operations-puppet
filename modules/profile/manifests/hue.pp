@@ -21,6 +21,7 @@ class profile::hue (
     # and configs installed.
     # Include Hadoop ecosystem client classes.
     require ::profile::hadoop::common
+    require ::profile::hadoop::httpd
     require ::profile::hive::client
     require ::profile::oozie::client
 
@@ -79,12 +80,6 @@ class profile::hue (
     # Vhost proxy to Hue app server.
     # This is not for LDAP auth, LDAP is done by Hue itself.
 
-    # Ignore wmf styleguide; Need to include here as well as in yarn_proxy.pp
-    # lint:ignore:wmf_styleguide
-    include ::apache::mod::proxy_http
-    include ::apache::mod::proxy
-    # lint:endignore
-
     $server_name = $::realm ? {
         'production' => 'hue.wikimedia.org',
         'labs'       => "hue-${::labsproject}.${::site}.wmflabs",
@@ -93,13 +88,7 @@ class profile::hue (
     $hue_port = $::cdh::hue::http_port
 
     # Set up the VirtualHost
-    apache::site { $server_name:
+    httpd::site { $server_name:
         content => template('profile/hue/hue.vhost.erb'),
-    }
-
-    ferm::service { 'hue-http':
-        proto  => 'tcp',
-        port   => '80',
-        srange => '$CACHES',
     }
 }
