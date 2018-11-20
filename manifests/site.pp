@@ -204,6 +204,11 @@ node 'certcentral2001.codfw.wmnet' {
     interface::add_ip6_mapped { 'main': }
 }
 
+
+node /cloudstore100[89]\.wikimedia\.org/ {
+    role(spare::system)
+}
+
 # new cloudvirt systems
 node /^cloudvirt102[5-9].eqiad.wmnet$/ {
     role(spare::system)
