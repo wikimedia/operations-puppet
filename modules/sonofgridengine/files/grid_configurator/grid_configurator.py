@@ -359,6 +359,13 @@ class HostProcessor:
                         )
                         current_hosts.remove(host)
                         continue
+                    elif host not in exec_conf_files:
+                        # Oops - no host config
+                        logging.warning(
+                            "%s cannot be added without a config file", host
+                        )
+                        current_hosts.remove(host)
+                        continue
 
                     # Add the host
                     this_host_config = os.path.join(self.config_dir, "exechosts", host)
