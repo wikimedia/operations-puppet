@@ -13,28 +13,13 @@ class turnilo::proxy(
 ) {
     Class['turnilo'] -> Class['turnilo::proxy']
 
-    # Ignore wmf styleguide; I should be able to use Apache classes from a module. >:o
-    # lint:ignore:wmf_styleguide
-    class { '::apache::mod::proxy_http': }
-    class { '::apache::mod::proxy': }
-    class { '::apache::mod::auth_basic': }
-    class { '::apache::mod::authnz_ldap': }
-    class { '::passwords::ldap::production': }
-    # lint:endignore
-
     $proxypass = $passwords::ldap::production::proxypass
 
     # local variable for use int template.
     $turnilo_port = $turnilo::port
 
     # Set up the VirtualHost
-    apache::site { $server_name:
+    httpd::site { $server_name:
         content => template('turnilo/turnilo.vhost.erb'),
-    }
-
-    ferm::service { 'turnilo-http':
-        proto  => 'tcp',
-        port   => '80',
-        srange => '$CACHES',
     }
 }

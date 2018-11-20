@@ -27,6 +27,22 @@ class profile::druid::turnilo(
         druid_clusters => $druid_clusters,
     }
 
+    class { '::httpd':
+        modules => ['proxy_http',
+                    'proxy',
+                    'proxy_html',
+                    'auth_basic',
+                    'authnz_ldap']
+    }
+
+    class { '::passwords::ldap::production': }
+
+    ferm::service { 'turnilo-http':
+        proto  => 'tcp',
+        port   => '80',
+        srange => '$CACHES',
+    }
+
     monitoring::service { 'turnilo':
         description   => 'turnilo',
         check_command => "check_tcp!${port}",
