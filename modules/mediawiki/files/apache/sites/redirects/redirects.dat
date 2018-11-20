@@ -94,7 +94,17 @@ rewrite	nb.wikivoyage.org	//no.wikivoyage.org
 rewrite	nb.wikisource.org	//no.wikisource.org
 rewrite	nb.wikinews.org	//no.wikinews.org
 funnel	nb.wikiversity.org	//beta.wikiversity.org/wiki/Hovedside
+# Although there is a rename of zh-yue pending (T30441), content
+# already exists at zh-yue so the rewrite must go that way for now (T105999)
 rewrite	yue.wikipedia.org	//zh-yue.wikipedia.org
+# The projects not yet live have content on the incubator under yue.* and
+# redirects for Wx/zh-yue to Wx/yue so we can add the redirs now (T209693)
+# Not sure about betawikiversity/wikisource so skipping those
+rewrite	zh-yue.wiktionary.org	//yue.wiktionary.org
+rewrite	zh-yue.wikibooks.org	//yue.wikibooks.org
+rewrite	zh-yue.wikivoyage.org	//yue.wikivoyage.org
+rewrite	zh-yue.wikinews.org	//yue.wikinews.org
+rewrite	zh-yue.wikiquote.org	//yue.wikiquote.org
 
 # renamed chapter wiki - T40763
 
