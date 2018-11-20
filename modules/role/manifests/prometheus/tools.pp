@@ -23,11 +23,26 @@ class role::prometheus::tools {
             {
                 'job_name'              => 'k8s-api',
                 'bearer_token_file'     => $bearer_token_file,
+                'scheme'                => 'https',
+                'tls_config'            => {
+                    'server_name' => $master_host,
+                },
                 'kubernetes_sd_configs' => [
                     {
-                        'api_servers'       => [ "https://${master_host}:6443" ],
+                        'api_server'        => "https://${master_host}:6443",
                         'bearer_token_file' => $bearer_token_file,
-                        'role'              => 'apiserver',
+                        'role'              => 'endpoints',
+                    },
+                ],
+                # Scrape config for API servers, keep only endpoints for default/kubernetes to poll only
+                # api servers
+                'relabel_configs'       => [
+                    {
+                        'source_labels' => ['__meta_kubernetes_namespace',
+                                            '__meta_kubernetes_service_name',
+                                            '__meta_kubernetes_endpoint_port_name'],
+                        'action'        => 'keep',
+                        'regex'         => 'default;kubernetes;https',
                     },
                 ],
             },
@@ -41,7 +56,7 @@ class role::prometheus::tools {
                 },
                 'kubernetes_sd_configs' => [
                     {
-                        'api_servers'       => [ "https://${master_host}:6443" ],
+                        'api_server'        => "https://${master_host}:6443",
                         'bearer_token_file' => $bearer_token_file,
                         'role'              => 'node',
                     },
