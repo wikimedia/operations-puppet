@@ -10,9 +10,6 @@ profile::openstack::main::nova::network::nova_dnsmasq_aliases:
   deployment-cache-text04:
     'public_ip': '208.80.155.135'
     'private_ip': '10.68.18.103'
-  deployment-cache-upload04:
-    'public_ip': '208.80.155.136'
-    'private_ip': '10.68.18.109'
   relic:
     'public_ip': '208.80.155.197'
     'private_ip': '10.68.23.252'
