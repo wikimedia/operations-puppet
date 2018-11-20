@@ -96,7 +96,7 @@ class GridConfig:
         try:
             result = subprocess.run(self.getcmd, stdout=subprocess.PIPE, timeout=60)
         except subprocess.CalledProcessError:
-            pass
+            return False
 
         return not bool(result.returncode)
 
@@ -334,11 +334,11 @@ class HostProcessor:
                     ["qconf", get_arg], timeout=60, stdout=subprocess.PIPE, check=True
                 )
             except subprocess.CalledProcessError:
-                pass
+                result = False
 
-            current_hosts = result.stdout.decode("utf-8").splitlines()
-            if "host defined" in current_hosts[0]:
-                current_hosts = []
+            current_hosts = current_hosts = (
+                result.stdout.decode("utf-8").splitlines() if result else []
+            )
 
             for host in self.host_set[host_class]:
                 logging.info("{} {}".format(host, host_class))
