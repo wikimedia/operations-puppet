@@ -69,6 +69,22 @@ ON `testreduce_0715`.* TO 'ssastry'@'10.64.16.155';
 GRANT SELECT, INSERT, UPDATE, DELETE, ALTER
 ON `testreduce_vd`.* TO 'ssastry'@'10.64.16.155';
 
+
+-- keystone --
+
+CREATE USER 'keystone'@'%'
+IDENTIFIED BY '<%= @keystone_pass %>';
+
+GRANT ALL PRIVILEGES ON `keystone`.* TO 'keystone'@'%'
+
+-- neutron --
+
+CREATE USER 'neutron'@'%'
+IDENTIFIED BY '<%= @keystone_pass %>';
+
+GRANT ALL PRIVILEGES ON `neutron`.* TO 'neutron'@'%'
+
+
 -- designate, labservices1002
 
 CREATE USER 'designate'@'208.80.154.12'

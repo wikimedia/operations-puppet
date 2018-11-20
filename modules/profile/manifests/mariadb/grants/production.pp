@@ -11,6 +11,7 @@ class profile::mariadb::grants::production(
 
     include passwords::misc::scripts
     include passwords::tendril
+    include passwords::openstack::keystone
     include passwords::nodepool
     include passwords::testreduce::mysql
     include passwords::racktables
@@ -47,6 +48,7 @@ class profile::mariadb::grants::production(
     if $shard {
         $nodepool_pass       = $passwords::nodepool::nodepooldb_pass
         $designate_pass      = $passwords::designate::db_pass
+        $keystone_pass       = $passwords::openstack::keystone::keystone_db_pass
         $testreduce_pass     = $passwords::testreduce::mysql::db_pass
         $testreduce_cli_pass = $passwords::testreduce::mysql::mysql_client_pass
         $racktables_user     = $passwords::racktables::racktables_db_user
