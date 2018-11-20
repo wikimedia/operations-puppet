@@ -33,8 +33,6 @@ profile::redis::master::settings:
 profile::maps::apps::kartotherian_storage_id: v4
 profile::maps::apps::tilerator_storage_id: v4
 
-profile::maps::apps::use_proxy: true
-
 profile::maps::apps::eventlogging_service_uri: http://eventbus.discovery.wmnet:8085/v1/events
 profile::maps::apps::sources_to_invalidate:
   - osm

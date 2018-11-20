@@ -3,20 +3,18 @@
 # Sets up waterlines
 # Parameters:
 #    * database - postgres database name
-#    * use_proxy - when set to true, proxy is used
 #    * proxy - web proxy used for downloading shapefiles
 class osm::import_waterlines (
-    Boolean $use_proxy,
-    String $proxy_host,
-    Wmflib::IpPort $proxy_port,
-    String $database = 'gis',
+    $database = 'gis',
+    $proxy = 'webproxy.eqiad.wmnet:8080'
 ) {
 
     $log_dir = '/var/log/waterlines'
 
-    $proxy_opt = $use_proxy ? {
-        false   => '',
-        default => "-x ${proxy_host}:${proxy_port}",
+    $proxy_opt = $proxy ? {
+        undef   => '',
+        ''      => '',
+        default => "-x ${proxy}",
     }
 
     file { '/usr/local/bin/import_waterlines':

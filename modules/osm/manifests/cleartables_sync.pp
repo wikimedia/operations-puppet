@@ -1,10 +1,9 @@
 define osm::cleartables_sync (
     String $pg_password,
-    Boolean $use_proxy,
-    String $proxy_host,
-    Wmflib::IpPort $proxy_port,
     Wmflib::Ensure $ensure            = 'present',
     String $postreplicate_command     = undef,
+    String $proxy_host                = "webproxy.${::site}.wmnet",
+    Wmflib::IpPort $proxy_port        = 8080,
     Boolean $disable_replication_cron = false,
 ) {
 
@@ -53,16 +52,15 @@ define osm::cleartables_sync (
 
     $java_proxy = "\"-Dhttp.proxyHost=${proxy_host} -Dhttp.proxyPort=${proxy_port} -Dhttps.proxyHost=${proxy_host} -Dhttps.proxyPort=${proxy_port}\""
 
-    $environment = $use_proxy ? {
-        false   => ["PGPASSWORD=${pg_password}",],
-        default => ["PGPASSWORD=${pg_password}", "https_proxy=https://${proxy_host}:${proxy_port}", "JAVACMD_OPTIONS=${java_proxy}"],
-    }
-
     cron {
         default:
             ensure      => $ensure_cron,
             user        => 'osmupdater',
-            environment => $environment;
+            environment => [
+                "PGPASSWORD=${pg_password}",
+                "https_proxy=https://${proxy_host}:${proxy_port}",
+                "JAVACMD_OPTIONS=${java_proxy}"
+            ];
         "planet_sync-${name}": # TODO: cleanup after this cron is renamed
             ensure => absent;
         "planet_update-${name}":

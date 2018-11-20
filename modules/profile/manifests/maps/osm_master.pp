@@ -15,7 +15,6 @@ class profile::maps::osm_master (
     $disable_replication_cron = hiera('profile::maps::osm_master::disable_replication_cron', false),
     $disable_admin_cron       = hiera('profile::maps::osm_master::disable_admin_cron', false),
     $tilerator_storage_id     = hiera('profile::maps::apps::tilerator_storage_id'),
-    $use_proxy                = hiera('profile::maps::apps::use_proxy'),
 ) {
 
     require ::profile::maps::postgresql_common
@@ -41,11 +40,7 @@ class profile::maps::osm_master (
     }
 
     class { '::osm': }
-    class { '::osm::import_waterlines':
-        use_proxy  => $use_proxy,
-        proxy_host => "webproxy.${::site}.wmnet",
-        proxy_port => 8080,
-    }
+    class { '::osm::import_waterlines': }
 
     # Users
     postgresql::user { 'kartotherian':
@@ -153,9 +148,6 @@ class profile::maps::osm_master (
         osm::cleartables_sync { $db_name:
             ensure                   => present,
             pg_password              => $osmupdater_pass,
-            use_proxy                => $use_proxy,
-            proxy_host               => "webproxy.${::site}.wmnet",
-            proxy_port               => 8080,
             postreplicate_command    => 'sudo -u tileratorui /usr/local/bin/notify-tilerator',
             disable_replication_cron => $disable_replication_cron,
         }
@@ -165,9 +157,6 @@ class profile::maps::osm_master (
             flat_nodes               => true,
             expire_levels            => '15',
             num_threads              => 4,
-            use_proxy                => $use_proxy,
-            proxy_host               => "webproxy.${::site}.wmnet",
-            proxy_port               => 8080,
             pg_password              => $osmupdater_pass,
             period                   => $planet_sync_period,
             day                      => $planet_sync_day,
