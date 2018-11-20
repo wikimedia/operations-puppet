@@ -22,5 +22,10 @@ class profile::microsites::peopleweb {
     }
 
     backup::set {'home': }
+
+    rsyslog::input::file { 'apache2-error':
+        path => '/var/log/apache2/*error*.log',
+    }
+
 }
 
