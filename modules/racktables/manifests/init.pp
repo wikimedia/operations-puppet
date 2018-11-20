@@ -5,7 +5,11 @@
 ## http://racktables.org/ and unzipped into /srv/org/wikimedia/racktables
 class racktables ($racktables_host, $racktables_db_host, $racktables_db) {
 
-    require_package('php5-mysql', 'php5-gd')
+    if os_version('debian == jessie') {
+        require_package('php5-mysql', 'php5-gd')
+    } else {
+        require_package('php-mysql', 'php-gd')
+    }
 
     file { [
         '/srv/org',
