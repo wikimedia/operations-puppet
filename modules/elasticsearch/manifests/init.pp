@@ -35,17 +35,16 @@ class elasticsearch (
     }
 
     if empty($instances) {
+        $cluster_name = $default_instance_params['cluster_name']
         $defaults_for_single_instance = {
-            cluster_name       => 'elasticsearch',
             http_port          => 9200,
             transport_tcp_port => 9300,
         }
-        $merged_instance_params = merge(
-            $defaults_for_single_instance,
-            $default_instance_params
-        )
         $configured_instances = {
-            $merged_instance_params['cluster_name'] => $merged_instance_params
+            $cluster_name => merge(
+                $defaults_for_single_instance,
+                $default_instance_params
+            )
         }
     } else {
         $configured_instances = $instances.reduce({}) |$agg, $kv_pair| {

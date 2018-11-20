@@ -28,7 +28,6 @@ class profile::elasticsearch(
 
     # Sane defaults to simplify single instance configuration
     $defaults_for_single_instance = {
-        cluster_name       => 'elasticsearch',
         http_port          => 9200,
         transport_tcp_port => 9300,
     }
