@@ -92,7 +92,8 @@ class profile::trafficserver::backend (
         check_command => "check_http_hostheader_port_url!localhost!${port}!/_stats",
     }
 
-    $check_scripts = [ 'check_trafficserver_config_status', 'check_trafficserver_verify_config' ]
+    # XXX: Avoid `traffic_server -C verify_config` for now
+    $check_scripts = [ 'check_trafficserver_config_status' ] # 'check_trafficserver_verify_config' ]
 
     $check_scripts.each |String $script| {
             $full_path =  "/usr/local/lib/nagios/plugins/${script}"
