@@ -364,4 +364,10 @@ class profile::phabricator::main (
         module_path => '/srv/repos',
       }
     }
+
+    # Ship apache error logs to ELK - T141895
+    rsyslog::input::file { 'apache2-error':
+        path => '/var/log/apache2/*error*.log',
+    }
+
 }

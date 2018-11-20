@@ -15,6 +15,7 @@ class role::phabricator {
     include ::phabricator::monitoring
     include ::phabricator::mpm
     include ::profile::prometheus::apache_exporter
+    include ::profile::rsyslog::kafka_shipper
 
     if os_version('debian >= stretch') {
         $php_module = 'php7.2'
