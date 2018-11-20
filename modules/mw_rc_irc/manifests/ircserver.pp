@@ -53,10 +53,7 @@ class mw_rc_irc::ircserver {
     }
 
     diamond::collector { 'IRCDStats':
-        source   => 'puppet:///modules/mw_rc_irc/monitor/ircd_stats.py',
-        settings => {
-            method => 'Threaded',
-        },
+        ensure => 'absent'
     }
 
     monitoring::service { 'ircd':
