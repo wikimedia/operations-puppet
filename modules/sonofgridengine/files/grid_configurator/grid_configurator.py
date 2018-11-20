@@ -364,7 +364,6 @@ class HostProcessor:
                         logging.warning(
                             "%s cannot be added without a config file", host
                         )
-                        current_hosts.remove(host)
                         continue
 
                     # Add the host
