@@ -4,10 +4,10 @@
 #                    list of instances
 
 class profile::toolforge::clush::master(
-    String $observer_pass = lookup('profile::openstack::eqiad1::observer_password'),
+    String $observer_pass = lookup('profile::openstack::main::observer_password'),
     ) {
 
-    require ::profile::openstack::base::clientlib
+    require ::profile::openstack::main::clientlib
 
     class { '::clush::master':
         username => 'clushuser',
