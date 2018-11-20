@@ -3,15 +3,21 @@
 #
 # filtertags: labs-project-analytics labs-project-math
 class profile::hive::client(
-    $zookeeper_clusters       = hiera('zookeeper_clusters'),
-    $hiveserver_host          = hiera('profile::hive::client::server_host'),
-    $hiveserver_port          = hiera('profile::hive::client::server_port'),
-    $metastore_host           = hiera('profile::hive::client::hive_metastore_host'),
-    $zookeeper_cluster_name   = hiera('profile::hive::client::zookeeper_cluster_name', undef),
-    $hive_server_opts         = hiera('profile::hive::client::hive_server_opts', undef),
-    $hive_metastore_opts      = hiera('profile::hive::client::hive_metastore_opts', undef),
-    $ensure_hive_site_in_hdfs = hiera('profile::hive::client::ensure_hive_site_in_hdfs', false),
-    $java_home                = hiera('profile::hive::client::java_home', '/usr/lib/jvm/java-8-openjdk-amd64/jre'),
+    $zookeeper_clusters                            = hiera('zookeeper_clusters'),
+    $hiveserver_host                               = hiera('profile::hive::client::server_host'),
+    $hiveserver_port                               = hiera('profile::hive::client::server_port'),
+    $metastore_host                                = hiera('profile::hive::client::hive_metastore_host'),
+    $zookeeper_cluster_name                        = hiera('profile::hive::client::zookeeper_cluster_name', undef),
+    $hive_server_opts                              = hiera('profile::hive::client::hive_server_opts', undef),
+    $hive_metastore_opts                           = hiera('profile::hive::client::hive_metastore_opts', undef),
+    $ensure_hive_site_in_hdfs                      = hiera('profile::hive::client::ensure_hive_site_in_hdfs', false),
+    $java_home                                     = hiera('profile::hive::client::java_home', '/usr/lib/jvm/java-8-openjdk-amd64/jre'),
+    $hive_metastore_sasl_enabled                   = hiera('profile::hive::client::hive_metastore_sasl_enabled', undef),
+    $hive_metastore_kerberos_keytab_file           = hiera('profile::hive::client::hive_metastore_kerberos_keytab_file', undef),
+    $hive_metastore_kerberos_principal             = hiera('profile::hive::client::hive_metastore_kerberos_principal', undef),
+    $hive_server2_authentication                   = hiera('profile::hive::client::hive_server2_authentication', undef),
+    $hive_server2_authentication_kerbero_principal = hiera('profile::hive::client::hive_server2_authentication_kerbero_principal', undef),
+    $hive_server2_authentication_kerberos_keytab   = hiera('profile::hive::client::hive_server2_authentication_kerberos_keytab', undef),
 ) {
     require ::profile::hadoop::common
 
@@ -31,24 +37,33 @@ class profile::hive::client(
     #   metastore_host
     class { '::cdh::hive':
         # Hive uses Zookeeper for table locking.
-        zookeeper_hosts           => $zookeeper_hosts,
+        zookeeper_hosts                               => $zookeeper_hosts,
         # We set support concurrency to false by default.
         # if someone needs to use it in their hive job, they
         # may manually set it to true via
         # set hive.support.concurrency = true;
-        support_concurrency       => false,
+        support_concurrency                           => false,
         # Set this pretty high, to avoid limiting the number
         # of substitution variables a Hive script can use.
-        variable_substitute_depth => 10000,
-        auxpath                   => $auxpath,
+        variable_substitute_depth                     => 10000,
+        auxpath                                       => $auxpath,
         # default to using Snappy for parquet formatted tables
-        parquet_compression       => 'SNAPPY',
-        hive_server_opts          => $hive_server_opts,
-        hive_metastore_opts       => $hive_metastore_opts,
-        metastore_host            => $metastore_host,
-        java_home                 => $java_home,
+        parquet_compression                           => 'SNAPPY',
+        hive_server_opts                              => $hive_server_opts,
+        hive_metastore_opts                           => $hive_metastore_opts,
+        metastore_host                                => $metastore_host,
+        java_home                                     => $java_home,
         # Precaution for CVE-2018-1284
-        hive_server_udf_blacklist => 'xpath,xpath_string,xpath_boolean,xpath_number,xpath_double,xpath_float,xpath_long,xpath_int,xpath_short'
+        hive_server_udf_blacklist                     => 'xpath,xpath_string,xpath_boolean,xpath_number,xpath_double,xpath_float,xpath_long,xpath_int,xpath_short',
+
+        # Optional security configs
+        hive_metastore_sasl_enabled                   => $hive_metastore_sasl_enabled,
+        hive_metastore_kerberos_keytab_file           => $hive_metastore_kerberos_keytab_file,
+        hive_metastore_kerberos_principal             => $hive_metastore_kerberos_principal,
+        hive_server2_authentication                   => $hive_server2_authentication,
+        hive_server2_authentication_kerbero_principal => $hive_server2_authentication_kerbero_principal,
+        hive_server2_authentication_kerberos_keytab   => $hive_server2_authentication_kerberos_keytab,
+
     }
 
     # Set up a wrapper script for beeline, the command line

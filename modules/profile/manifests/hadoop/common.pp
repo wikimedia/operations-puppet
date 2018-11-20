@@ -222,6 +222,25 @@ class profile::hadoop::common (
     $yarn_scheduler_minimum_allocation_mb     = $hadoop_config['yarn_scheduler_minimum_allocation_mb']
     $yarn_scheduler_maximum_allocation_mb     = $hadoop_config['yarn_scheduler_maximum_allocation_mb']
     $java_home                                = $hadoop_config['java_home']
+    $core_site_extra_properties               = $hadoop_config['core_site_extra_properties'] ? {
+        undef   => {},
+        default => $hadoop_config['core_site_extra_properties'],
+    }
+    $yarn_site_extra_properties               = $hadoop_config['yarn_site_extra_properties'] ? {
+        undef   => {},
+        default => $hadoop_config['yarn_site_extra_properties'],
+    }
+    $hdfs_site_extra_properties               = $hadoop_config['hdfs_site_extra_properties'] ? {
+        undef   => {},
+        default => $hadoop_config['hdfs_site_extra_properties'],
+    }
+    $mapred_site_extra_properties             = $hadoop_config['mapred_site_extra_properties'] ? {
+        undef   => {},
+        default => $hadoop_config['mapred_site_extra_properties'],
+    }
+    $ssl_server_config                        = $hadoop_config['ssl_server_config']
+    $ssl_client_config                        = $hadoop_config['ssl_client_config']
+    $yarn_nm_container_executor_config        = $hadoop_config['yarn_nodemanager_container_executor_config']
 
     # Include Wikimedia's thirdparty/cloudera apt component
     # as an apt source on all Hadoop hosts.  This is needed
@@ -249,6 +268,34 @@ class profile::hadoop::common (
         undef   => undef,
         default => template('profile/hadoop/net-topology.py.erb'),
     }
+
+    $core_site_extra_properties_default = {
+        # Allow superset running as 'superset' user on thorium.eqiad.wmnet
+        # to run jobs as users in the analytics-users and analytics-privatedata-users groups.
+        'hadoop.proxyusers.superset.hosts'  => 'thorium.eqiad.wmnet',
+        'hadoop.proxyusers.superset.groups' => 'analytics-users,analytics-privatedata-users',
+    }
+
+    $yarn_site_extra_properties_default = {
+        # Enable FairScheduler preemption. This will allow the essential queue
+        # to preempt non-essential jobs.
+        'yarn.scheduler.fair.preemption'                                                => true,
+        # Let YARN wait for at least 1/3 of nodes to present scheduling
+        # opportunties before scheduling a job for certain data
+        # on a node on which that data is not present.
+        'yarn.scheduler.fair.locality.threshold.node'                                   => '0.33',
+        # After upgrading to CDH 5.4.0, we are encountering this bug:
+        # https://issues.apache.org/jira/browse/MAPREDUCE-5799
+        # This should work around the problem.
+        'yarn.app.mapreduce.am.env'                                                     => 'LD_LIBRARY_PATH=/usr/lib/hadoop/lib/native',
+        # The default of 90.0 for this was marking older dells as unhealthy when they still
+        # had 2TB of space left.  99% will mark them at unhealthy with they still have
+        # > 200G free.
+        'yarn.nodemanager.disk-health-checker.max-disk-utilization-per-disk-percentage' => '99.0',
+    }
+
+    $hdfs_site_extra_properties_default = {}
+    $mapred_site_extra_properties_default = {}
 
     class { '::cdh::hadoop':
         # Default to using running resourcemanager on the same hosts
@@ -316,30 +363,15 @@ class profile::hadoop::common (
         # Yarn App Master possible port ranges
         yarn_app_mapreduce_am_job_client_port_range => '55000-55199',
 
-        core_site_extra_properties                  => {
-            # Allow superset running as 'superset' user on thorium.eqiad.wmnet
-            # to run jobs as users in the analytics-users and analytics-privatedata-users groups.
-            'hadoop.proxyusers.superset.hosts'  => 'thorium.eqiad.wmnet',
-            'hadoop.proxyusers.superset.groups' => 'analytics-users,analytics-privatedata-users',
-        },
+        core_site_extra_properties                  => $core_site_extra_properties_default + $core_site_extra_properties,
+        yarn_site_extra_properties                  => $yarn_site_extra_properties_default + $yarn_site_extra_properties,
+        hdfs_site_extra_properties                  => $hdfs_site_extra_properties_default + $hdfs_site_extra_properties,
+        mapreduce_site_extra_properties             => $mapred_site_extra_properties_default + $mapred_site_extra_properties,
 
-        yarn_site_extra_properties                  => {
-            # Enable FairScheduler preemption. This will allow the essential queue
-            # to preempt non-essential jobs.
-            'yarn.scheduler.fair.preemption'                                                => true,
-            # Let YARN wait for at least 1/3 of nodes to present scheduling
-            # opportunties before scheduling a job for certain data
-            # on a node on which that data is not present.
-            'yarn.scheduler.fair.locality.threshold.node'                                   => '0.33',
-            # After upgrading to CDH 5.4.0, we are encountering this bug:
-            # https://issues.apache.org/jira/browse/MAPREDUCE-5799
-            # This should work around the problem.
-            'yarn.app.mapreduce.am.env'                                                     => 'LD_LIBRARY_PATH=/usr/lib/hadoop/lib/native',
-            # The default of 90.0 for this was marking older dells as unhealthy when they still
-            # had 2TB of space left.  99% will mark them at unhealthy with they still have
-            # > 200G free.
-            'yarn.nodemanager.disk-health-checker.max-disk-utilization-per-disk-percentage' => '99.0',
-        },
+        ssl_client_config                           => $ssl_client_config,
+        ssl_server_config                           => $ssl_server_config,
+
+        yarn_nodemanager_container_executor_config  => $yarn_nm_container_executor_config,
 
         java_home                                   => $java_home,
     }
