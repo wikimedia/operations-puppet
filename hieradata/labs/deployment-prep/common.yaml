@@ -296,9 +296,9 @@ profile::elasticsearch::common_settings:
       - deployment-elastic06.deployment-prep.eqiad.wmflabs
       - deployment-elastic07.deployment-prep.eqiad.wmflabs
     cluster_hosts:
-      - deployment-elastic05
-      - deployment-elastic06
-      - deployment-elastic07
+      - deployment-elastic05.deployment-prep.eqiad.wmflabs
+      - deployment-elastic06.deployment-prep.eqiad.wmflabs
+      - deployment-elastic07.deployment-prep.eqiad.wmflabs
     cluster_name: beta-search
     reindex_remote_whitelist: ''
     search_shard_count_limit: 1000
