@@ -41,6 +41,7 @@ class profile::librenms (
         'irc_alert_chan'   => '#wikimedia-operations',
         'irc_alert_utf8'   => true,
         'irc_nick'         => 'librenms-wmf',
+        'irc_pass'         => "librenms-wmf:${passwords::librenms::ircbot_pass}",
 
         'autodiscovery'    => {
             'xdp'      => true,
