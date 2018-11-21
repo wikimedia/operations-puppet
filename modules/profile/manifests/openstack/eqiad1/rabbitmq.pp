@@ -14,7 +14,7 @@ class profile::openstack::eqiad1::rabbitmq(
     $neutron_rabbit_password = hiera('profile::openstack::eqiad1::neutron::rabbit_pass'),
 ){
 
-    require ::profile::openstack::eqiad1::clientlib
+    require ::profile::openstack::eqiad1::clientpackages
     class {'::profile::openstack::base::rabbitmq':
         nova_controller        => $nova_controller,
         monitor_user           => $monitor_user,

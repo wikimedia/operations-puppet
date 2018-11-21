@@ -48,7 +48,7 @@ class profile::openstack::labtest::keystone::service(
     }
     contain '::profile::openstack::base::keystone::db'
 
-    require ::profile::openstack::labtest::clientlib
+    require ::profile::openstack::labtest::clientpackages
 
     # Since the DB for keystone is local and we want keystone
     # in the other codfw deployment to access we add this rule

@@ -3,7 +3,7 @@
 class profile::toolforge::grid::master (
     $etcdir = hiera('profile::toolforge::etcdir'),
 ){
-    include profile::openstack::main::clientlib
+    include profile::openstack::main::clientpackages
     include profile::openstack::main::observerenv
     include profile::toolforge::infrastructure
 

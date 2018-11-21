@@ -45,7 +45,7 @@ class profile::openstack::labtestn::keystone::service(
     }
     contain '::profile::openstack::base::keystone::db'
 
-    require ::profile::openstack::labtestn::clientlib
+    require ::profile::openstack::labtestn::clientpackages
     class {'::profile::openstack::base::keystone::service':
         version                              => $version,
         region                               => $region,

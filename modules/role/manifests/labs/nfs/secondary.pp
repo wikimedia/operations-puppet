@@ -9,7 +9,7 @@ class role::labs::nfs::secondary(
     }
 
     include ::standard
-    require ::profile::openstack::main::clientlib
+    require ::profile::openstack::main::clientpackages
     require ::profile::openstack::main::observerenv
     include labstore::fileserver::secondary
     include labstore::backup_keys

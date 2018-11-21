@@ -12,7 +12,7 @@ class role::labs::shinken(
     $ircbot = true,
 ){
 
-    require ::profile::openstack::main::clientlib
+    require ::profile::openstack::main::clientpackages
 
     class { '::shinken':
         auth_secret => 'This is insecure, should switch to using private repo',

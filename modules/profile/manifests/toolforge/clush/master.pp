@@ -7,7 +7,7 @@ class profile::toolforge::clush::master(
     String $observer_pass = lookup('profile::openstack::main::observer_password'),
     ) {
 
-    require ::profile::openstack::main::clientlib
+    require ::profile::openstack::main::clientpackages
 
     class { '::clush::master':
         username => 'clushuser',

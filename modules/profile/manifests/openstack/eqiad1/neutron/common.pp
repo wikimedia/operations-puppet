@@ -12,7 +12,7 @@ class profile::openstack::eqiad1::neutron::common(
     $log_agent_heartbeats = hiera('profile::openstack::eqiad1::neutron::log_agent_heartbeats'),
     ) {
 
-    require ::profile::openstack::eqiad1::clientlib
+    require ::profile::openstack::eqiad1::clientpackages
     class {'::profile::openstack::base::neutron::common':
         version              => $version,
         nova_controller      => $nova_controller,

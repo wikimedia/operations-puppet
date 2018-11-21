@@ -11,7 +11,7 @@ class profile::openstack::labtestn::neutron::common(
     $log_agent_heartbeats = hiera('profile::openstack::labtestn::neutron::log_agent_heartbeats'),
     ) {
 
-    require ::profile::openstack::labtestn::clientlib
+    require ::profile::openstack::labtestn::clientpackages
     class {'::profile::openstack::base::neutron::common':
         version              => $version,
         nova_controller      => $nova_controller,

@@ -17,7 +17,7 @@ class profile::openstack::main::puppetmaster::frontend(
     $nova_controller = hiera('profile::openstack::main::nova_controller'),
     ) {
 
-    require ::profile::openstack::main::clientlib
+    require ::profile::openstack::main::clientpackages
     include ::profile::openstack::main::cumin::master
     class {'::profile::openstack::base::puppetmaster::frontend':
         designate_host               => $designate_host,

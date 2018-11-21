@@ -22,7 +22,7 @@ class role::toollabs::clush::master(
     ) {
 
     include ::toollabs::base
-    require ::profile::openstack::main::clientlib
+    require ::profile::openstack::main::clientpackages
     include ::toollabs::infrastructure
 
     class { '::clush::master':

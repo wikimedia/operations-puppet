@@ -4,7 +4,7 @@ class profile::openstack::labtestn::observerenv(
     $observer_password = hiera('profile::openstack::labtestn::observer_password'),
   ) {
 
-    require ::profile::openstack::labtestn::clientlib
+    require ::profile::openstack::labtestn::clientpackages
     class {'::profile::openstack::base::observerenv':
         region            => $region,
         keystone_host     => $keystone_host,

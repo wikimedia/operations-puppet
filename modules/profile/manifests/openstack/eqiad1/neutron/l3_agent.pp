@@ -37,7 +37,7 @@ class profile::openstack::eqiad1::neutron::l3_agent(
         down           => 'ip link set $IFACE down',
     }
 
-    require ::profile::openstack::eqiad1::clientlib
+    require ::profile::openstack::eqiad1::clientpackages
     require ::profile::openstack::eqiad1::neutron::common
     class {'::profile::openstack::base::neutron::l3_agent':
         version           => $version,

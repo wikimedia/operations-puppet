@@ -22,7 +22,7 @@ class profile::openstack::eqiad1::designate::service(
     $coordination_host = hiera('profile::openstack::eqiad1::designate_host'),
     ) {
 
-    require ::profile::openstack::eqiad1::clientlib
+    require ::profile::openstack::eqiad1::clientpackages
     class{'::profile::openstack::base::designate::service':
         version                              => $version,
         designate_host                       => $designate_host,

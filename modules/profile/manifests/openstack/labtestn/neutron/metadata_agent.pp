@@ -5,7 +5,7 @@ class profile::openstack::labtestn::neutron::metadata_agent(
     $report_interval = hiera('profile::openstack::labtestn::neutron::report_interval'),
     ) {
 
-    require ::profile::openstack::labtestn::clientlib
+    require ::profile::openstack::labtestn::clientpackages
     require ::profile::openstack::labtestn::neutron::common
     class {'::profile::openstack::base::neutron::metadata_agent':
         version                      => $version,

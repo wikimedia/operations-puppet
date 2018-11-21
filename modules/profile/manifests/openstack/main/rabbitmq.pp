@@ -12,7 +12,7 @@ class profile::openstack::main::rabbitmq(
     $nova_rabbit_password = hiera('profile::openstack::main::nova::rabbit_pass'),
 ){
 
-    require ::profile::openstack::main::cloudrepo
+    require ::profile::openstack::main::serverpackages
     class {'::profile::openstack::base::rabbitmq':
         nova_controller        => $nova_controller,
         monitor_user           => $monitor_user,

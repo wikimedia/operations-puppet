@@ -14,7 +14,7 @@ class profile::openstack::labtestn::rabbitmq(
     $neutron_rabbit_password = hiera('profile::openstack::labtestn::neutron::rabbit_pass'),
 ){
 
-    require ::profile::openstack::labtestn::clientlib
+    require ::profile::openstack::labtestn::clientpackages
     class {'::profile::openstack::base::rabbitmq':
         nova_controller        => $nova_controller,
         monitor_user           => $monitor_user,

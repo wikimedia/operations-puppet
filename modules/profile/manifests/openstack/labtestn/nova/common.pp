@@ -11,7 +11,7 @@ class profile::openstack::labtestn::nova::common(
     $metadata_proxy_shared_secret = hiera('profile::openstack::labtestn::neutron::metadata_proxy_shared_secret')
     ) {
 
-    require ::profile::openstack::labtestn::clientlib
+    require ::profile::openstack::labtestn::clientpackages
     class {'::profile::openstack::base::nova::common::neutron':
         version                      => $version,
         db_pass                      => $db_pass,

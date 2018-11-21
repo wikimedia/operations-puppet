@@ -11,7 +11,7 @@ class profile::openstack::labtest::horizon::dashboard_source_deploy(
     $maintenance_mode = hiera('profile::openstack::labtest::horizon::maintenance_mode'),
     ) {
 
-    require ::profile::openstack::labtest::clientlib
+    require ::profile::openstack::labtest::clientpackages
     class {'::profile::openstack::base::horizon::dashboard_source_deploy':
         version             => $version,
         keystone_host       => $keystone_host,

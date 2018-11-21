@@ -1,7 +1,7 @@
-class openstack::jessie_mitaka_client_pinning {
-    if !os_version('debian jessie') {
-        fail('Class is meant to be applied only on Debian Jessie')
-    }
+class openstack::clientpackages::mitaka::jessie(
+) {
+    # repo is jessie-backports, already enabled by ::apt
+    # we just need some apt pinning configuration here
 
     apt::pin { 'jessie_mitaka_pinning_python_cinderclient':
         package  => 'python-cinderclient',

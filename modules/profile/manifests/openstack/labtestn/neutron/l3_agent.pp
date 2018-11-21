@@ -37,7 +37,7 @@ class profile::openstack::labtestn::neutron::l3_agent(
         down           => 'ip link set $IFACE down',
     }
 
-    require ::profile::openstack::labtestn::clientlib
+    require ::profile::openstack::labtestn::clientpackages
     require ::profile::openstack::labtestn::neutron::common
     class {'::profile::openstack::base::neutron::l3_agent':
         version           => $version,

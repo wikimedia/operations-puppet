@@ -5,7 +5,7 @@ class profile::openstack::eqiad1::nova::fullstack::service(
     $network = hiera('profile::openstack::eqiad1::nova::instance_network_id'),
     ) {
 
-    require ::profile::openstack::eqiad1::clientlib
+    require ::profile::openstack::eqiad1::clientpackages
     class { '::profile::openstack::base::nova::fullstack::service':
         nova_api_host      => $nova_api_host,
         osstackcanary_pass => $osstackcanary_pass,

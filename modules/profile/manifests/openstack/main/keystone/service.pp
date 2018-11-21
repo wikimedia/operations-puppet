@@ -36,7 +36,7 @@ class profile::openstack::main::keystone::service(
     $region = hiera('profile::openstack::main::region'),
     ) {
 
-    require ::profile::openstack::main::clientlib
+    require ::profile::openstack::main::clientpackages
 
     class {'::openstack::util::envscripts':
         ldap_user_pass        => $ldap_user_pass,

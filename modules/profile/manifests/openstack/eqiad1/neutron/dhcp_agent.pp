@@ -4,7 +4,7 @@ class profile::openstack::eqiad1::neutron::dhcp_agent(
     $report_interval = hiera('profile::openstack::eqiad1::neutron::report_interval'),
     ) {
 
-    require ::profile::openstack::eqiad1::clientlib
+    require ::profile::openstack::eqiad1::clientpackages
     require ::profile::openstack::eqiad1::neutron::common
     class {'profile::openstack::base::neutron::dhcp_agent':
         version         => $version,

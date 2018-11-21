@@ -10,7 +10,7 @@ class profile::openstack::eqiad1::glance (
     $glance_image_dir = hiera('profile::openstack::base::glance::image_dir'),
     ) {
 
-    require ::profile::openstack::eqiad1::clientlib
+    require ::profile::openstack::eqiad1::clientpackages
     class {'::profile::openstack::base::glance':
         version                 => $version,
         nova_controller         => $nova_controller,

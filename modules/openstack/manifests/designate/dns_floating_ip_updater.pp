@@ -4,7 +4,7 @@ class openstack::designate::dns_floating_ip_updater(
     $floating_ip_ptr_fqdn_replacement_pattern,
     ) {
 
-    # also requires openstack::clientlib
+    # also requires openstack::clientpackages
     require_package('python-ipaddress')
 
     $config = {

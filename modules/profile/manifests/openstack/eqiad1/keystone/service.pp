@@ -37,7 +37,7 @@ class profile::openstack::eqiad1::keystone::service(
     $glance_host = hiera('profile::openstack::eqiad1::glance_host'),
     ) {
 
-    require ::profile::openstack::eqiad1::clientlib
+    require ::profile::openstack::eqiad1::clientpackages
     class {'::profile::openstack::base::keystone::service':
         daemon_active                        => $daemon_active,
         version                              => $version,

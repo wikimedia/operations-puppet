@@ -17,7 +17,7 @@ class profile::openstack::labtest::puppetmaster::frontend(
     $nova_controller = hiera('profile::openstack::labtest::nova_controller'),
     ) {
 
-    require ::profile::openstack::labtest::clientlib
+    require ::profile::openstack::labtest::clientpackages
     class {'::profile::openstack::base::puppetmaster::frontend':
         designate_host               => $designate_host,
         second_region_designate_host => $second_region_designate_host,

@@ -23,7 +23,7 @@ class profile::openstack::labtest::designate::service(
     $coordination_host = hiera('profile::openstack::labtest::second_region_designate_host'),
     ) {
 
-    require ::profile::openstack::labtest::clientlib
+    require ::profile::openstack::labtest::clientpackages
     class{'::profile::openstack::base::designate::service':
         version                              => $version,
         designate_host                       => $designate_host,

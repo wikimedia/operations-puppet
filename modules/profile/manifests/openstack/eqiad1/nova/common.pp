@@ -13,7 +13,7 @@ class profile::openstack::eqiad1::nova::common(
     $metadata_proxy_shared_secret = hiera('profile::openstack::eqiad1::neutron::metadata_proxy_shared_secret')
     ) {
 
-    require ::profile::openstack::eqiad1::clientlib
+    require ::profile::openstack::eqiad1::clientpackages
     class {'::profile::openstack::base::nova::common::neutron':
         version                      => $version,
         db_pass                      => $db_pass,
