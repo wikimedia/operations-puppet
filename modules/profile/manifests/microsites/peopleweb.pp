@@ -47,13 +47,5 @@ class profile::microsites::peopleweb (
         path => '/var/log/apache2/*error*.log',
     }
 
-    rsync::quickdatacopy { 'people-home':
-        ensure      => present,
-        auto_sync   => false,
-        source_host => 'rutherfordium.eqiad.wmnet',
-        dest_host   => 'people1001.eqiad.wmnet',
-        module_path => '/home',
-    }
-
 }
 
