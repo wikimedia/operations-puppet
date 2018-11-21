@@ -123,8 +123,8 @@ class ores::web(
             },
             'scoring_systems' => {
                 'celery_queue' => {
-                    'BROKER_URL'            => "redis://:${redis_password}@${redis_host}:6379",
-                    'CELERY_RESULT_BACKEND' => "redis://:${redis_password}@${redis_host}:6379",
+                    'broker_url'     => "redis://:${redis_password}@${redis_host}:6379",
+                    'result_backend' => "redis://:${redis_password}@${redis_host}:6379",
                 },
             },
         }
