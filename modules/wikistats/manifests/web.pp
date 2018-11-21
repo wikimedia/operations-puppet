@@ -3,12 +3,8 @@ class wikistats::web (
     $wikistats_host,
     ) {
 
-    if os_version('debian >= stretch') {
-        $php_version = '7.0'
-        require_package('php7.0-xml')
-    } else {
-        $php_version = '5'
-    }
+    $php_version = '7.0'
+    require_package('php7.0-xml')
 
     $apache_php_package = "libapache2-mod-php${php_version}"
 

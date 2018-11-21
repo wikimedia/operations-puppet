@@ -4,12 +4,7 @@ class wikistats::updates (
     $db_pass,
 ) {
 
-    # update scripts are PHP-cli
-    if os_version('debian >= stretch') {
-        require_package('php7.0-cli')
-    } else {
-        require_package('php5-cli')
-    }
+    require_package('php7.0-cli')
 
     # log dir for wikistats
     file { '/var/log/wikistats':
