@@ -233,6 +233,14 @@ class profile::logstash::collector (
         source   => 'puppet:///modules/profile/logstash/filter-json-lines.conf',
         priority => 20,
     }
+
+    # rsyslog-shipper processing might tweak/adjust some generic syslog fields
+    # thus process this filter after all inputs
+    logstash::conf { 'filter_rsyslog_shipper':
+        source   => 'puppet:///modules/profile/logstash/filter-rsyslog-shipper.conf',
+        priority => 25,
+    }
+
     ## Application specific processing (50)
 
     logstash::conf { 'filter_mediawiki':
