@@ -2014,7 +2014,7 @@ node 'roentgenium.eqiad.wmnet' {
 
 
 # people.wikimedia.org, for all shell users
-node 'rutherfordium.eqiad.wmnet' {
+node 'rutherfordium.eqiad.wmnet', 'people1001.eqiad.wmnet' {
     role(microsites::peopleweb)
 }
 
