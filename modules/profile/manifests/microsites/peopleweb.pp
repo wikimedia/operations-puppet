@@ -7,8 +7,16 @@ class profile::microsites::peopleweb {
         srange => '$CACHES',
     }
 
+    if os_version('debian == jessie') {
+        $php_version = '5'
+    } else {
+        $php_version = '7.0'
+    }
+
+    require_package("libapache2-mod-php${php_version}")
+
     class { '::httpd':
-        modules => ['userdir', 'cgi', 'php5', 'rewrite', 'headers'],
+        modules => ['userdir', 'cgi', "php${php_version}", 'rewrite', 'headers'],
     }
 
     class { '::publichtml':
