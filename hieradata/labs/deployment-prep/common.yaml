@@ -510,3 +510,10 @@ network::allow_deployment_from_ips:
 
 profile::rsyslog::kafka_shipper::kafka_brokers:
   - 'deployment-logstash2.deployment-prep.eqiad.wmflabs:9093'
+
+cache::text::nodes:
+    eqiad:
+      - 'deployment-cache-text04.deployment-prep.eqiad.wmflabs'
+cache::upload::nodes:
+    eqiad:
+      - 'deployment-cache-upload04.deployment-prep.eqiad.wmflabs'
