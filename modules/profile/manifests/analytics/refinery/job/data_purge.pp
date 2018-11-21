@@ -59,6 +59,14 @@ class profile::analytics::refinery::job::data_purge (
         user        => 'hdfs',
     }
 
+    profile::analytics::systemd_timer { 'refinery-drop-eventlogging-client-side-partitions':
+        description => 'Drop Eventlogging Client Side data imported on HDFS following data retention policies.',
+        command     => "${refinery_path}/bin/refinery-drop-eventlogging-partitions -d ${eventlogging_retention_days} -l /wmf/data/raw/eventlogging_client_side",
+        interval    => '*-*-* 00/4:30:00',
+        environment => $systemd_env,
+        user        => 'hdfs',
+    }
+
     # keep this many days of wdqs_extract data
     $wdqs_extract_retention_days = 90
     profile::analytics::systemd_timer { 'refinery-drop-wdqs-extract-partitions':
