@@ -79,9 +79,12 @@ class AlarmCounterLogster(LogsterParser):
         optparser.add_option('--alarmfile', '-a', dest='alarmfile', default=None,
                              help='file to read for alarms (one per line)')
         optparser.add_option('--name', '-n', dest='name', default='',
-                             help='Job identifier')
+                             help='Human readable name for job')
         optparser.add_option('--email', '-e', dest='email', default='',
-                             help='Job identifier')
+                             help='Comma separated list of emails')
+        optparser.add_option('--alarmthreshold', '-t', type='int', dest='alarmthreshold',
+                             default=0,
+                             help='Alarm count to alert at')
 
         if option_string:
             options = option_string.split(' ')
@@ -90,7 +93,8 @@ class AlarmCounterLogster(LogsterParser):
         opts, args = optparser.parse_args(args=options)
 
         self.name = opts.name
-        self.email = opts.email
+        self.alarmthreshold = opts.alarmthreshold
+        self.emails = opts.email.split(',')
 
         if opts.savefile:
             self.savefile = opts.savefile
@@ -192,6 +196,7 @@ class AlarmCounterLogster(LogsterParser):
         body += '\n\n'
         body += 'Logging rate is {}\n'.format(str(rate))
         body += 'Alarm match count is {}\n'.format(self.alarm_count)
+        body += 'Alerting match count threshold is {}\n\n'.format(self.alarmthreshold)
 
         for hit in keyword_matches:
             hit_msg = "({}) {} found in {} {}".format(hit[0], hit[2], hit[1], hit[3])
@@ -208,7 +213,7 @@ class AlarmCounterLogster(LogsterParser):
                                                             rate))
 
         sendMail('LogsterAlarm',
-                 [self.email],
+                 self.emails,
                  'LogsterAlarm{} match count is {}\n'.format(self.name, self.alarm_count),
                  body)
 
@@ -220,7 +225,7 @@ class AlarmCounterLogster(LogsterParser):
         line_rate = float(self.line_count) / float(self.duration)
         alarm_rate = float(self.alarm_count) / float(self.duration)
 
-        if alarm_rate > 0 and self.email:
+        if self.alarm_count > self.alarmthreshold and self.emails:
             self.write("Alarm count is {}".format(self.alarm_count))
             self.notify(line_rate, kmatches)
 
