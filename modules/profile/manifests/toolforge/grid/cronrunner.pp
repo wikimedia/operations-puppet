@@ -1,6 +1,8 @@
 # Manage the crons for the Toolforge grid users
 
 class profile::toolforge::grid::cronrunner {
+    include ::profile::toolforge::grid::hba
+
     motd::script { 'submithost-banner':
         ensure => present,
         source => "puppet:///modules/profile/toolforge/40-${::labsproject}-submithost-banner.sh",
