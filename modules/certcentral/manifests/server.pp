@@ -7,6 +7,8 @@ class certcentral::server (
     String $active_host = '',
     String $passive_host = '',
 ) {
+    $is_active = $::fqdn == $active_host
+
     if os_version('debian == stretch') {
         apt::pin { 'acme':
             package  => 'python3-acme',
@@ -92,7 +94,7 @@ class certcentral::server (
         }
     }
 
-    $ensure = ($::fqdn == $active_host)? {
+    $ensure = $is_active? {
         true    => 'present',
         default => 'absent',
     }
@@ -156,7 +158,7 @@ class certcentral::server (
         srange => '$DOMAIN_NETWORKS',
     }
 
-    $ensure_passive = ($::fqdn == $passive_host)? {
+    $ensure_passive = (!$is_active)? {
         true    => present,
         default => absent,
     }
@@ -187,7 +189,40 @@ class certcentral::server (
         source => 'puppet:///modules/certcentral/certs-sync',
     }
 
-    if $::fqdn == $active_host {
+    $cc_backend_process = $is_active? {
+        true    => '1:1',
+        default => '0:0',
+    }
+    nrpe::monitor_service { 'certcentral_backend':
+        description  => 'Ensure certcentral-backend is running only in the active node',
+        nrpe_command => "/usr/lib/nagios/plugins/check_procs -c ${cc_backend_process} -a certcentral-backend",
+        require      => Package['certcentral'],
+    }
+
+    nrpe::monitor_service { 'certcentral_api':
+        description  => 'Ensure certcentral-api is running',
+        nrpe_command => "/usr/lib/nagios/plugins/check_procs -c 1:1 -a '/usr/bin/uwsgi --die-on-term --ini /etc/uwsgi/apps-enabled/certcentral.ini'",
+        require      => Package['certcentral'],
+    }
+
+    sudo::user { 'nagios_certcentral_fileage_checks':
+        user       => 'nagios',
+        privileges => ['ALL = (certcentral) NOPASSWD: /usr/lib/nagios/plugins/check_file_age'],
+    }
+
+    nrpe::monitor_service { 'cert_sync_active_node':
+        ensure       => $ensure,
+        description  => 'Ensure cert-sync script runs successfully in the active node',
+        nrpe_command => "sudo -u certcentral /usr/lib/nagios/plugins/check_file_age -w 3600 -c 7200 ${live_certs_path}/.rsync.done",
+    }
+
+    nrpe::monitor_service { 'cert_sync_passive_node':
+        ensure       => $ensure_passive,
+        description  => 'Ensure that passive node gets the certificates from the active node as expected',
+        nrpe_command => "sudo -u certcentral /usr/lib/nagios/plugins/check_file_age -w 3600 -c 7200 ${live_certs_path}/.rsync.status",
+    }
+
+    if $is_active {
         exec { '/usr/local/bin/certcentral-certs-sync':
             user    => 'certcentral',
             timeout => 60,
