@@ -1,8 +1,0 @@
----
-
-# Use labs-recursor0 in order to resolve .wmflabs addresses (T177959)
-# Expect degraded functionality when falling back to prod resolvers.
-nameservers:
-  - '208.80.155.118' # labs-recursor0.wikimedia.org
-  - '208.80.154.254' # eqiad lvs
-  - '208.80.153.254' # codfw lvs
