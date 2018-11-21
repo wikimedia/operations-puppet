@@ -19,6 +19,10 @@ class profile::microsites::peopleweb {
         modules => ['userdir', 'cgi', "php${php_version}", 'rewrite', 'headers'],
     }
 
+    class { '::httpd::mpm':
+        mpm => 'prefork'
+    }
+
     class { '::publichtml':
         sitename     => 'people.wikimedia.org',
         server_admin => 'noc@wikimedia.org',
