@@ -77,11 +77,18 @@ class wdqs::common(
     if $data_dir != $package_dir {
         file { $data_dir:
             ensure => directory,
-            purge  => false,
             owner  => $username,
             group  => 'wikidev',
             mode   => '0775',
         }
+    }
+
+    # putting dumps into the data dir since they're large
+    file { "${data_dir}/dumps":
+        ensure => directory,
+        owner  => $username,
+        group  => 'wikidev',
+        mode   => '0775',
     }
 
     # This is a rather ugly hack to ensure that permissions of $data_file are
