@@ -2028,12 +2028,8 @@ node 'roentgenium.eqiad.wmnet' {
     role(failoid)
 }
 
-
-# was people.wikimedia.org, replaced by people1001
-node 'rutherfordium.eqiad.wmnet' {
-    role(spare::system)
-}
-
+# people.wikimedia.org, for all shell users
+# replaced rutherfordium in T210036
 node 'people1001.eqiad.wmnet' {
     role(microsites::peopleweb)
     interface::add_ip6_mapped { 'main': }

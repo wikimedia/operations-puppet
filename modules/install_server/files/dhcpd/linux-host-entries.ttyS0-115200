@@ -530,13 +530,6 @@ host roentgenium {
     filename "lpxelinux.0";
 }
 
-host rutherfordium {
-    hardware ethernet aa:00:00:94:f7:c2;
-    fixed-address rutherfordium.eqiad.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
-    filename "lpxelinux.0";
-}
-
 host sca1003 {
     hardware ethernet aa:00:00:a1:2d:b1;
     fixed-address sca1003.eqiad.wmnet;
