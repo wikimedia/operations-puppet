@@ -8,7 +8,7 @@ import genpp
 import logging
 
 environ_packages = {
-    'dev': ['coverage', 'dev', 'stdeb'],
+    'dev': ['coverage', 'dev', 'stdeb', 'cffi'],
     'exec': [
         'babel',                # T60220
         'beautifulsoup',        # For valhallasw.
@@ -71,6 +71,7 @@ environ_packages = {
         'werkzeug',
         'zbar',                 # T58996
         'zmq',
+        'cffi',                 # T204422
     ],
 }
 

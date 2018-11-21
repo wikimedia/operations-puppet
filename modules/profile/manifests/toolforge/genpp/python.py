@@ -8,12 +8,13 @@ import genpp
 import logging
 
 environ_packages = {
-    'dev': ['coverage', 'dev', 'stdeb'],
+    'dev': ['coverage', 'dev', 'stdeb', 'cffi'],
     'exec': [
         'babel',                # T60220
         'beautifulsoup',        # For valhallasw.
         'bottle',               # T58995
         'celery',
+        'cffi',                 # T204422
         'egenix-mxdatetime',
         'egenix-mxtools',
         'enum34',               # T111602

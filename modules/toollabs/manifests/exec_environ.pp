@@ -57,6 +57,9 @@ class toollabs::exec_environ {
         'fonts-smc',                 # T33950
         'fonts-hosny-amiri',         # T135347
         'fonts-taml-tscu',           # T117919
+        'qpdf',                      # T204422
+        'pngquant',                  # T204422
+        'unpaper',                   # T204422
     )
 
     if os_version('ubuntu >= trusty') {
