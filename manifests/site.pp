@@ -2014,8 +2014,13 @@ node 'roentgenium.eqiad.wmnet' {
 
 
 # people.wikimedia.org, for all shell users
-node 'rutherfordium.eqiad.wmnet', 'people1001.eqiad.wmnet' {
+node 'rutherfordium.eqiad.wmnet' {
     role(microsites::peopleweb)
+}
+
+node 'people1001.eqiad.wmnet' {
+    role(microsites::peopleweb)
+    interface::add_ip6_mapped { 'main': }
 }
 
 # ruthenium is a parsoid regression test server
