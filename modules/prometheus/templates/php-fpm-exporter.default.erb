@@ -1,0 +1,1 @@
+ARGS="--addr <%= @listen_address %> <%- if @fcgi_endpoint -%>--fcgi <%= @fcgi_endpoint %><% else %>--endpoint <%= @http_endpoint %><% end %>"

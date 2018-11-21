@@ -247,6 +247,3 @@ puppetmaster_puppetdb4:
 mediawiki_test_environment:
   __regex: !ruby/regexp /^mwdebug(1[0-9]+\.eqiad|2[0-9]+\.codfw)\.wmnet$/
   profile::base::environment: mediawiki_test
-  profile::mediawiki::vhost_feature_flags:
-    serve_php7: true
-  profile::mediawiki::php::enable_fpm: true

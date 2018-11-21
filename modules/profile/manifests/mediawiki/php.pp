@@ -18,8 +18,13 @@
 class profile::mediawiki::php(
     Boolean $enable_fpm = hiera('profile::mediawiki::php::enable_fpm'),
     Optional[Hash] $fpm_config = hiera('profile::mediawiki::php::fpm_config', undef),
-    Enum['7.0', '7.2'] $php_version = hiera('profile::mediawiki::php::php_version', '7.0')
+    Enum['7.0', '7.2'] $php_version = hiera('profile::mediawiki::php::php_version', '7.0'),
+    Optional[Wmflib::UserIpPort] $port = hiera('profile::php_fpm::fcgi_port', undef)
 ) {
+    # If php-fpm is enabled, we need the port to be set
+    if $enable_fpm and $port == undef {
+        fail('If fpm is enabled, its port should be set too')
+    }
     if os_version('debian == stretch') {
         # We get our packages for our repositories again
         file { '/etc/apt/preferences.d/php_wikidiff2.pref':
@@ -164,12 +169,12 @@ class profile::mediawiki::php(
             }
         }
 
-        # This will add an fpm pool listening on port 8000
+        # This will add an fpm pool listening on port $port
         # We only use 16 children for now, and the dynamic pm
         # as we still are in an experimental state
         # TODO: tune the parameters and switch back to the static pm
         php::fpm::pool { 'www':
-            port   => 8000,
+            port   => $port,
             config => {
                 'pm'                        => 'dynamic',
                 'pm.max_spare_servers'      => 10,
