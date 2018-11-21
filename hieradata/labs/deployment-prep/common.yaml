@@ -14,7 +14,7 @@ service::configuration::statsd_host: labmon1001.eqiad.wmnet
 service::configuration::logstash_host: deployment-logstash2.deployment-prep.eqiad.wmflabs
 profile::citoid::zotero_host: deployment-zotero01.deployment-prep.eqiad.wmflabs
 profile::citoid::zotero_port: 1969
-profile::changeprop::purge_host: deployment-cache-text04.deployment-prep.eqiad.wmflabs
+profile::changeprop::purge_host: deployment-cache-text05.deployment-prep.eqiad.wmflabs
 profile::changeprop::ores_uris: ['http://deployment-ores01.deployment-prep.eqiad.wmflabs:8081']
 profile::changeprop::eventbus_uri: http://deployment-kafka-main-1.deployment-prep.eqiad.wmflabs:8085
 profile::changeprop::restbase_uri: http://deployment-restbase02.deployment-prep.eqiad.wmflabs:7231
@@ -513,7 +513,7 @@ profile::rsyslog::kafka_shipper::kafka_brokers:
 
 cache::text::nodes:
     eqiad:
-      - 'deployment-cache-text04.deployment-prep.eqiad.wmflabs'
+      - 'deployment-cache-text05.deployment-prep.eqiad.wmflabs'
 cache::upload::nodes:
     eqiad:
       - 'deployment-cache-upload04.deployment-prep.eqiad.wmflabs'
