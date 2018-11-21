@@ -2,7 +2,7 @@
 
 class profile::toolforge::grid::hba {
 
-    $sysdir = $profile::toolforge::grid::base::sysdir
+    $sysstore = $profile::toolforge::grid::base::store
 
     file { '/usr/local/sbin/project-make-shosts':
         ensure  => file,
@@ -14,7 +14,7 @@ class profile::toolforge::grid::hba {
 
     exec { 'make-shosts':
         command => '/usr/local/sbin/project-make-shosts >/etc/ssh/shosts.equiv~',
-        onlyif  => "/usr/bin/test -n \"\$(/usr/bin/find /data/project/.system/store -maxdepth 1 \\( -type d -or -type f -name submithost-\\* \\) -newer /etc/ssh/shosts.equiv~)\" -o ! -s /etc/ssh/shosts.equiv~",
+        onlyif  => "/usr/bin/test -n \"\$(/usr/bin/find ${sysstore} -maxdepth 1 \\( -type d -or -type f -name submithost-\\* \\) -newer /etc/ssh/shosts.equiv~)\" -o ! -s /etc/ssh/shosts.equiv~",
         require => File['/usr/local/sbin/project-make-shosts'],
     }
 
@@ -37,7 +37,7 @@ class profile::toolforge::grid::hba {
 
     exec { 'make-access':
         command => '/usr/local/sbin/project-make-access >/etc/project.access',
-        onlyif  => "/usr/bin/test -n \"\$(/usr/bin/find /data/project/.system/store -maxdepth 1 \\( -type d -or -type f -name submithost-\\* \\) -newer /etc/project.access)\" -o ! -s /etc/project.access",
+        onlyif  => "/usr/bin/test -n \"\$(/usr/bin/find ${sysstore} -maxdepth 1 \\( -type d -or -type f -name submithost-\\* \\) -newer /etc/project.access)\" -o ! -s /etc/project.access",
         require => File['/usr/local/sbin/project-make-access'],
     }
 
