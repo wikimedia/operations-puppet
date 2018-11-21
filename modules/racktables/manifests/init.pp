@@ -7,8 +7,11 @@ class racktables ($racktables_host, $racktables_db_host, $racktables_db) {
 
     if os_version('debian == jessie') {
         require_package('php5-mysql', 'php5-gd')
+        $php_ini = '/etc/php5/apache2/php.ini'
+
     } else {
         require_package('php-mysql', 'php-gd')
+        $php_ini = '/etc/php/7.0/apache2/php.ini'
     }
 
     file { [
@@ -38,7 +41,7 @@ class racktables ($racktables_host, $racktables_db_host, $racktables_db) {
 
     # Increase the default memory limit T102092
     file_line { 'racktables_php_memory':
-        path   => '/etc/php5/apache2/php.ini',
+        path   => $php_ini,
         line   => 'memory_limit = 256M',
         match  => '^\s*memory_limit',
         notify => Service['apache2'],
