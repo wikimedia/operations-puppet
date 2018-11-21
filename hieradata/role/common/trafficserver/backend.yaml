@@ -119,7 +119,7 @@ profile::trafficserver::backend::mapping_rules:
       replacement: http://ruthenium.eqiad.wmnet:8001
     - type: map
       target: http://people.wikimedia.org
-      replacement: http://rutherfordium.eqiad.wmnet
+      replacement: http://people1001.eqiad.wmnet
     - type: map
       target: http://performance.wikimedia.org
       replacement: http://webperf1001.eqiad.wmnet
@@ -278,7 +278,7 @@ profile::trafficserver::backend::caching_rules:
       value: puppetmaster1001.eqiad.wmnet
       action: never-cache
     - primary_destination: dest_host
-      value: rutherfordium.eqiad.wmnet
+      value: people1001.eqiad.wmnet
       action: never-cache
     - primary_destination: dest_host
       value: thorium.eqiad.wmnet

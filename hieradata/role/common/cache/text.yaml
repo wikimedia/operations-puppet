@@ -173,9 +173,9 @@ cache::app_directors:
       port: 8001
     backends:
       eqiad: 'ruthenium.eqiad.wmnet'
-  rutherfordium:
+  people:
     backends:
-      eqiad: 'rutherfordium.eqiad.wmnet'
+      eqiad: 'people1001.eqiad.wmnet'
   superset:
     backends:
       eqiad: 'analytics-tool1003.eqiad.wmnet'
@@ -299,7 +299,7 @@ cache::alternate_domains:
   parsoid-vd-tests.wikimedia.org:
     director: 'ruthenium'
   people.wikimedia.org:
-    director: 'rutherfordium'
+    director: 'people'
     caching: 'pass'
   performance.wikimedia.org:
     director: 'performance'
