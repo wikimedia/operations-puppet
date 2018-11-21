@@ -366,7 +366,7 @@ class profile::hadoop::common (
         core_site_extra_properties                  => $core_site_extra_properties_default + $core_site_extra_properties,
         yarn_site_extra_properties                  => $yarn_site_extra_properties_default + $yarn_site_extra_properties,
         hdfs_site_extra_properties                  => $hdfs_site_extra_properties_default + $hdfs_site_extra_properties,
-        mapreduce_site_extra_properties             => $mapred_site_extra_properties_default + $mapred_site_extra_properties,
+        mapred_site_extra_properties                => $mapred_site_extra_properties_default + $mapred_site_extra_properties,
 
         ssl_client_config                           => $ssl_client_config,
         ssl_server_config                           => $ssl_server_config,
