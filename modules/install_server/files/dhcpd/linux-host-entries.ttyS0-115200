@@ -391,6 +391,11 @@ host oresrdb2001 {
     filename "lpxelinux.0";
 }
 
+host people1001 {
+    hardware ethernet aa:00:00:1f:b1:51;
+    fixed-address people1001.eqiad.wmnet;
+}
+
 host ping1001 {
     hardware ethernet aa:00:00:33:10:e2;
     fixed-address ping1001.eqiad.wmnet;
