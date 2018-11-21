@@ -20,19 +20,22 @@ class phragile(
 ) {
 
     requires_realm('labs')
+    if os_version('debian == jessie') {
+        $php_module = 'php5'
+    } else {
+        $php_module = 'php'
+    }
 
     class { '::httpd':
-        modules => ['rewrite', 'php5'],
+        modules => ['rewrite', $php_module],
     }
 
-    package { [
-        'php5-cli',
-        'php5-curl',
-        'php5-mysql',
-        'php5-mcrypt',
-    ]:
-        ensure => present,
-    }
+    require_package(
+        "${php_module}-cli",
+        "${php_module}-curl",
+        "${php_module}-mysql",
+        "${php_module}-mcrypt",
+    )
 
     group { 'phragile':
         ensure => present,
@@ -57,15 +60,15 @@ class phragile(
     }
 
     exec { 'mcrypt':
-        command => '/usr/sbin/php5enmod mcrypt',
+        command => "/usr/sbin/${php_module}enmod mcrypt",
         unless  => '/usr/bin/php -m | /bin/grep -q mcrypt',
-        require => [Package['php5-mcrypt'], Package['php5-cli']],
+        require => [Package["${php_module}-mcrypt"], Package["${php_module}-cli"]],
     }
 
     exec { 'php_mysql':
-        command => '/usr/sbin/php5enmod mysql',
+        command => "/usr/sbin/${php_module}enmod mysql",
         unless  => '/usr/bin/php -m | /bin/grep -q mysql',
-        require => [Package['php5-mysql'], Package['php5-cli']],
+        require => [Package["${php_module}-mysql"], Package["${php_module}-cli"]],
     }
 
     $composer_dir = "${phragile_home}/composer"
@@ -85,7 +88,7 @@ class phragile(
         cwd         => $install_dir,
         command     => "${composer} install",
         user        => 'phragile',
-        require     => [Git::Clone['phragile'], Git::Clone['composer'], Package['php5-mcrypt'], Package['php5-cli']],
+        require     => [Git::Clone['phragile'], Git::Clone['composer'], Package["${php_module}-mcrypt"], Package["${php_module}-cli"]],
     }
 
     file { "${install_dir}/.env":
