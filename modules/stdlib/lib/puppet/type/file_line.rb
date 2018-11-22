@@ -34,12 +34,16 @@ Puppet::Type.newtype(:file_line) do
     In this code example match will look for a line beginning with export
     followed by HTTP_PROXY and replace it with the value in line.
 
-    Match Example With `ensure => absent`:
+    Examples With `ensure => absent`:
+
+    This type has two behaviors when `ensure => absent` is set.
+
+    One possibility is to set `match => ...` and `match_for_absence => true`,
+    as in the following example:
 
         file_line { 'bashrc_proxy':
           ensure            => absent,
           path              => '/etc/bashrc',
-          line              => 'export HTTP_PROXY=http://squid.puppetlabs.vm:3128',
           match             => '^export\ HTTP_PROXY\=',
           match_for_absence => true,
         }
@@ -48,11 +52,27 @@ Puppet::Type.newtype(:file_line) do
     followed by HTTP_PROXY and delete it.  If multiple lines match, an
     error will be raised unless the `multiple => true` parameter is set.
 
+    Note that the `line => ...` parameter would be accepted BUT IGNORED in
+    the above example.
+
+    The second way of using `ensure => absent` is to specify a `line => ...`,
+    and no match:
+
+        file_line { 'bashrc_proxy':
+          ensure => absent,
+          path   => '/etc/bashrc',
+          line   => 'export HTTP_PROXY=http://squid.puppetlabs.vm:3128',
+        }
+
+    Note that when ensuring lines are absent this way, the default behavior
+    this time is to always remove all lines matching, and this behavior
+    can't be disabled.
+
     Encoding example:
 
         file_line { "XScreenSaver":
           ensure   => present,
-          path     => '/root/XScreenSaver'
+          path     => '/root/XScreenSaver',
           line     => "*lock: 10:00:00",
           match    => '^*lock:',
           encoding => "iso-8859-1",
@@ -131,6 +151,13 @@ Puppet::Type.newtype(:file_line) do
     defaultto true
   end
 
+  newparam(:replace_all_matches_not_matching_line) do
+    desc 'Configures the behavior of replacing all lines in a file which match the `match` parameter regular expression, regardless of whether the specified line is already present in the file.'
+
+    newvalues(true, false)
+    defaultto false
+  end
+
   newparam(:encoding) do
     desc 'For files that are not UTF-8 encoded, specify encoding such as iso-8859-1'
     defaultto 'UTF-8'
@@ -148,6 +175,12 @@ Puppet::Type.newtype(:file_line) do
   end
 
   validate do
+    if self[:replace_all_matches_not_matching_line].to_s == 'true' and self[:multiple].to_s == 'false'
+      raise(Puppet::Error, "multiple must be true when replace_all_matches_not_matching_line is true")
+    end
+    if self[:replace_all_matches_not_matching_line].to_s == 'true' and self[:replace].to_s == 'false'
+      raise(Puppet::Error, "replace must be true when replace_all_matches_not_matching_line is true")
+    end
     unless self[:line]
       unless (self[:ensure].to_s == 'absent') and (self[:match_for_absence].to_s == 'true') and self[:match]
         raise(Puppet::Error, "line is a required attribute")

@@ -3,6 +3,55 @@
 All notable changes to this project will be documented in this file. The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org).
 
+## Supported Release 4.22.0
+### Summary
+
+This is a clean release in preparation of putting the module through the rubocop process.
+
+#### Added
+- Support has been added for Debian 9
+- 'Stdlib::Mode type' has been added to the module.
+- A type for 'ensure' has been added to the service resources.
+- A new function 'sprintf_hash' has been added to allow the use of named references.
+
+#### Removed
+- Support has been removed for: RedHat 4, CentOS 4, OracleLinux 4, Scientific 4, SLES 10 SP4, Windows Server 2003, Windows Server 2003 R2 and Windows 8.
+
+#### Fixed
+- The 'ruby_spec.rb' test file has been altered s that it properly checks results.
+- Example syntax in 'file_line.rb' has been fixed.
+
+## Supported Release 4.21.0
+### Summary
+
+This is a small feature release that includes a revamped, albeit backwards-compatible file_line type.
+
+#### Added
+- `replace_all_matches_not_matching_line` parameter in file_line
+- additional tests and documentation for file_line
+
+#### Removed
+- duplicate spec test for absolute_path
+
+#### Fixed
+- Unixpath type to allow "/" as valid path
+- file_line behavior that caused infinite appending of `line` to a file ([MODULES-5651](https://tickets.puppet.com/browse/MODULES-5651))
+
+## Supported Release 4.20.0
+### Summary
+
+This release adds new functions and updated README translations.
+
+#### Added
+- `to_json`, `to_json_pretty`, and `to_yaml` functions
+- new Japanese README translations
+
+#### Fixed
+- compatibility issue with older versions of Puppet and the `pw_hash` function ([MODULES-5546](https://tickets.puppet.com/browse/MODULES-5546))
+
+#### Removed
+- support for EOL platform Debian 6 (Squeeze)
+
 ## Supported Release 4.19.0
 ### Summary
 

@@ -117,29 +117,49 @@ In the example above, `match` looks for a line beginning with 'export' followed 
 
 Match Example:
 
-    file_line { 'bashrc_proxy':
-      ensure             => present,
-      path               => '/etc/bashrc',
-      line               => 'export HTTP_PROXY=http://squid.puppetlabs.vm:3128',
-      match              => '^export\ HTTP_PROXY\=',
-      append_on_no_match => false,
-    }
+```puppet
+file_line { 'bashrc_proxy':
+  ensure             => present,
+  path               => '/etc/bashrc',
+  line               => 'export HTTP_PROXY=http://squid.puppetlabs.vm:3128',
+  match              => '^export\ HTTP_PROXY\=',
+  append_on_no_match => false,
+}
+```
 
-In this code example, `match` looks for a line beginning with export followed by HTTP_PROXY and replaces it with the value in line. If a match is not found, then no changes are made to the file.
+In this code example, `match` looks for a line beginning with export followed by 'HTTP_PROXY' and replaces it with the value in line. If a match is not found, then no changes are made to the file.
 
-Match Example with `ensure => absent`:
+Examples of `ensure => absent`:
+
+This type has two behaviors when `ensure => absent` is set.
+
+The first is to set `match => ...` and `match_for_absence => true`. Match looks for a line beginning with 'export', followed by 'HTTP_PROXY', and then deletes it. If multiple lines match, an error is raised unless the `multiple => true` parameter is set.
+
+The `line => ...` parameter in this example would be accepted but ignored.
+
+For example:
 
 ```puppet
 file_line { 'bashrc_proxy':
   ensure            => absent,
   path              => '/etc/bashrc',
-  line              => 'export HTTP_PROXY=http://squid.puppetlabs.vm:3128',
   match             => '^export\ HTTP_PROXY\=',
   match_for_absence => true,
 }
 ```
 
-In the example above, `match` looks for a line beginning with 'export' followed by 'HTTP_PROXY' and deletes it. If multiple lines match, an error is raised, unless the `multiple => true` parameter is set.
+The second way of using `ensure => absent` is to specify a `line => ...` and no match. When ensuring lines are absent, the default behavior is to remove all lines matching. This behavior can't be disabled.
+
+For example:
+
+```puppet
+file_line { 'bashrc_proxy':
+  ensure => absent,
+  path   => '/etc/bashrc',
+  line   => 'export HTTP_PROXY=http://squid.puppetlabs.vm:3128',
+}
+```
+
 
 Encoding example:
 
@@ -193,7 +213,7 @@ Values: String.
 
 ##### `match`
 
-Specifies a regular expression to compare against existing lines in the file; if a match is found, it is replaced rather than adding a new line. A regex comparison is performed against the line value, and if it does not match, an exception is raised.
+Specifies a regular expression to compare against existing lines in the file; if a match is found, it is replaced rather than adding a new line.
 
 Values: String containing a regex.
 
@@ -210,7 +230,7 @@ Default value: `false`.
 
 ##### `multiple`
 
-Specifies whether `match` and `after` can change multiple lines. If set to `false`, an exception is raised if more than one line matches.
+Specifies whether `match` and `after` can change multiple lines. If set to `false`, allows file_line to replace only one line and raises an error if more than one will be replaced. If set to `true`, allows file_line to replace one or more lines.
 
 Values: `true`, `false`.
 
@@ -235,11 +255,19 @@ Value: String specifying an absolute path to the file.
 
 ##### `replace`
 
-Specifies whether the resource overwrites an existing line that matches the `match` parameter. If set to `false` and a line is found matching the `match` parameter, the line is not placed in the file.
+Specifies whether the resource overwrites an existing line that matches the `match` parameter when `line` does not otherwise exist.
+
+If set to `false` and a line is found matching the `match` parameter, the line is not placed in the file.
 
 Boolean.
 
 Default value: `true`.
+
+##### `replace_all_matches_not_matching_line`
+
+Replaces all lines matched by `match` parameter, even if `line` already exists in the file.
+
+Default value: `false`.
 
 ### Data types
 
@@ -265,6 +293,24 @@ Unacceptable input example:
 
 ```shell
 ../relative_path
+```
+
+#### `Stdlib::Ensure::Service`
+
+Matches acceptable ensure values for service resources.
+
+Acceptable input examples:    
+
+```shell
+stopped
+running
+```
+
+Unacceptable input example:   
+
+```shell
+true
+false
 ```
 
 #### `Stdlib::Httpsurl`
@@ -321,6 +367,30 @@ Unacceptable input example:
 
 ```shell
 C:/whatever
+```
+
+#### `Stdlib::Filemode`
+
+Matches valid four digit modes in octal format.
+
+Acceptable input examples:
+
+```shell
+0644
+```
+
+```shell
+1777
+```
+
+Unacceptable input examples:
+
+```shell
+644
+```
+
+```shell
+0999
 ```
 
 #### `Stdlib::Windowspath`
@@ -485,9 +555,9 @@ Converts a Boolean to a number. Converts values:
 * `false`, 'f', '0', 'n', and 'no' to 0.
 * `true`, 't', '1', 'y', and 'yes' to 1.
 
-  Argument: a single Boolean or string as an input.
+Argument: a single Boolean or string as an input.
 
-  *Type*: rvalue.
+*Type*: rvalue.
 
 #### `bool2str`
 
@@ -1623,6 +1693,24 @@ Returns the number of elements in a string, an array or a hash. This function wi
 
 *Type*: rvalue.
 
+#### `sprintf_hash`
+
+Perform printf-style formatting with named references of text.
+
+The first parameter is format string describing how the rest of the parameters in the hash
+should be formatted. See the documentation for the `Kernel::sprintf` function in Ruby for
+all the details.
+
+*Example:*
+
+```puppet
+$output = sprintf_hash('String: %<foo>s / number converted to binary: %<number>b',
+                       { 'foo' => 'a string', 'number' => 5 })
+# $output = 'String: a string / number converted to binary: 101'
+```
+
+*Type*: rvalue
+
 #### `sort`
 
 Sorts strings and arrays lexically.
@@ -1751,6 +1839,30 @@ Converts the argument into bytes.
 For example, "4 kB" becomes "4096".
 
 Arguments: A single string.
+
+*Type*: rvalue.
+
+#### `to_json`
+
+Converts input into a JSON String.
+
+For example, `{ "key" => "value" }` becomes `{"key":"value"}`.
+
+*Type*: rvalue.
+
+#### `to_json_pretty`
+
+Converts input into a pretty JSON String.
+
+For example, `{ "key" => "value" }` becomes `{\n  \"key\": \"value\"\n}`.
+
+*Type*: rvalue.
+
+#### `to_yaml`
+
+Converts input into a YAML String.
+
+For example, `{ "key" => "value" }` becomes `"---\nkey: value\n"`.
 
 *Type*: rvalue.
 
@@ -2190,7 +2302,7 @@ Arguments:
 Example:
 
 ```puppet
-validate_legacy("Optional[String]", "validate_re", "Value to be validated", ["."])
+validate_legacy('Optional[String]', 'validate_re', 'Value to be validated', ["."])
 ```
 
 This function supports updating modules from Puppet 3-style argument validation (using the stdlib `validate_*` functions) to Puppet 4 data types, without breaking functionality for those depending on Puppet 3-style validation.
