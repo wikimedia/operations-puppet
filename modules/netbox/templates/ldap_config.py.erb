@@ -36,7 +36,7 @@ AUTH_LDAP_GROUP_TYPE = GroupOfNamesType()
 # Define special user types using groups. Exercise great caution when assigning superuser status.
 AUTH_LDAP_MIRROR_GROUPS = True
 AUTH_LDAP_USER_FLAGS_BY_GROUP = {
-    'is_active': "cn=ops,ou=groups,dc=wikimedia,dc=org",
+    'is_active': "cn=wmf,ou=groups,dc=wikimedia,dc=org",
     'is_staff': "cn=ops,ou=groups,dc=wikimedia,dc=org",
     'is_superuser': "cn=ops,ou=groups,dc=wikimedia,dc=org",
 }
