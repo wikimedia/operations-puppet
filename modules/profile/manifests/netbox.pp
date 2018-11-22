@@ -149,11 +149,6 @@ class profile::netbox (
         content => template('profile/netbox/netbox.wikimedia.org.erb'),
     }
 
-    letsencrypt::cert::integrated { 'netbox':
-        subjects   => 'netbox.wikimedia.org',
-        puppet_svc => 'apache2',
-        system_svc => 'apache2',
-    }
     certcentral::cert { 'netbox':
         puppet_svc => 'apache2',
     }
