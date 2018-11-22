@@ -5,7 +5,7 @@
 # Parameter documentation can be found in wdqs::blazegraph, wdqs::updater, wdqs::gui and wdqs::common
 class wdqs(
     String $logstash_host,
-    String $updater_options,
+    Array[String] $updater_options,
     String $endpoint = '',
     Wmflib::IpPort $logstash_json_port = 11514,
     String $blazegraph_heap_size = '32g',

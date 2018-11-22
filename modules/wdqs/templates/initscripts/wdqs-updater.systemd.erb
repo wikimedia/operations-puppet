@@ -10,7 +10,7 @@ StartLimitBurst=5
 [Service]
 Type=simple
 WorkingDirectory=<%= @package_dir %>
-ExecStart=/bin/bash <%= @package_dir %>/runUpdate.sh <%= @options %>
+ExecStart=/bin/bash <%= @package_dir %>/runUpdate.sh <%= @options.join(' ') %>
 User=<%= @username %>
 StandardOutput=journal+console
 Restart=always

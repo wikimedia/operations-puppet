@@ -63,28 +63,28 @@ class profile::wdqs (
 
     if $use_kafka_for_updates {
         $kafka_brokers = kafka_config('main')['brokers']['string']
-        $base_kafka_options = "--kafka ${kafka_brokers} --consumer ${::hostname} ${kafka_options}"
+        $base_kafka_options = [ '--kafka', $kafka_brokers, '--consumer', $::hostname, $kafka_options ]
         $joined_cluster_names = join($cluster_names, ',')
 
         $poller_options = count($cluster_names) ? {
             0       => $base_kafka_options,
-            default => "${base_kafka_options} --clusters ${joined_cluster_names}",
+            default => $base_kafka_options + [ '--clusters', $joined_cluster_names ],
         }
     } else {
-        $poller_options = $rc_options
+        $poller_options = [ $rc_options ]
     }
 
     $fetch_constraints_options = $fetch_constraints ? {
-        true    => '--constraints',
-        default => '',
+        true    => [ '--constraints' ],
+        default => [],
     }
     $dump_options = $enable_rdf_dump ? {
-        true    => "--dumpDir ${data_dir}/dumps",
-        default => '',
+        true    => [ '--dumpDir', "${data_dir}/dumps" ],
+        default => [],
     }
 
     # 0 - Main, 120 - Property, 146 - Lexeme
-    $extra_updater_options = "${poller_options} ${fetch_constraints_options} ${dump_options} --entityNamespaces 0,120,146"
+    $extra_updater_options = $poller_options + $fetch_constraints_options + $dump_options + [ '--entityNamespaces', '0,120,146' ]
 
     # Install services - both blazegraph, updater and the GUI
     class { '::wdqs':
@@ -93,7 +93,7 @@ class profile::wdqs (
         data_dir                  => $data_dir,
         endpoint                  => $endpoint,
         blazegraph_options        => $blazegraph_options,
-        updater_options           => "${updater_options} -- ${extra_updater_options}",
+        updater_options           => split($updater_options, ' ') + ['--'] + $extra_updater_options,
         blazegraph_heap_size      => $blazegraph_heap_size,
         config_file               => $blazegraph_config_file,
         logstash_host             => $logstash_host,

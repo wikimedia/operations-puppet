@@ -8,7 +8,7 @@ describe 'wdqs::updater', :type => :class do
    end
 
    let(:params) { {
-        :options => '-opt',
+        :options => ['-opt'],
         :log_dir => '/var/log/wdqs',
         :package_dir => '/srv/deployment/wdqs/wdqs',
         :data_dir => '/srv/wdqs',

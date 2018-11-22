@@ -13,7 +13,7 @@
 # - $username: Username owning the service
 # - $extra_jvm_opts: extra JVM options for updater.
 class wdqs::updater(
-    String $options,
+    Array[String] $options,
     String $logstash_host,
     Stdlib::Unixpath $package_dir,
     Stdlib::Unixpath $data_dir,
