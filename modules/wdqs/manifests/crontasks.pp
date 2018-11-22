@@ -98,8 +98,13 @@ class wdqs::crontasks(
         hour    => 10,
     }
 
+    $ensure_tests = $run_tests ? {
+        true    => present,
+        default => absent,
+    }
+
     cron { 'run-wdqs-test-queries':
-        ensure      => $run_tests,
+        ensure      => $ensure_tests,
         environment => 'MAILTO=wdqs-admins',
         command     => "${package_dir}/queries/test.sh > /dev/null",
         user        => $username,
