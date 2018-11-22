@@ -16,6 +16,8 @@ class role::swift::storage {
     include ::swift::container_sync
     include ::swift::storage::monitoring
 
+    include ::toil::systemd_scope_cleanup
+
     include ::profile::statsite
     class { '::profile::prometheus::statsd_exporter':
         relay_address => 'localhost:8125',
