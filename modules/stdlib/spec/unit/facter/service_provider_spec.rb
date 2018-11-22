@@ -1,4 +1,3 @@
-#! /usr/bin/env ruby -S rspec # rubocop:disable Lint/ScriptPermission : Rubocop error??
 require 'spec_helper'
 require 'puppet/type'
 require 'puppet/type/service'

@@ -1,12 +1,15 @@
 {
   "name": "puppetlabs-stdlib",
-  "version": "4.24.0",
+  "version": "4.25.1",
   "author": "puppetlabs",
   "summary": "Standard library of resources for Puppet modules.",
   "license": "Apache-2.0",
   "source": "https://github.com/puppetlabs/puppetlabs-stdlib",
   "project_page": "https://github.com/puppetlabs/puppetlabs-stdlib",
   "issues_url": "https://tickets.puppetlabs.com/browse/MODULES",
+  "dependencies": [
+
+  ],
   "operatingsystem_support": [
     {
       "operatingsystem": "RedHat",
@@ -76,7 +79,10 @@
         "Server 2008 R2",
         "Server 2012",
         "Server 2012 R2",
-        "7"
+        "Server 2016",
+        "7",
+        "8",
+        "10"
       ]
     },
     {
@@ -95,7 +101,7 @@
     }
   ],
   "description": "Standard Library for Puppet Modules",
-  "dependencies": [
-
-  ]
+  "pdk-version": "1.4.1",
+  "template-url": "file:///opt/puppetlabs/pdk/share/cache/pdk-templates.git",
+  "template-ref": "1.4.1-0-g52adbbb"
 }

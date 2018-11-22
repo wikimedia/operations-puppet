@@ -1,4 +1,3 @@
-#! /usr/bin/env ruby -S rspec # rubocop:disable Lint/ScriptPermission
 require 'spec_helper_acceptance'
 
 # Windows and OS X do not have useful implementations of crypt(3)

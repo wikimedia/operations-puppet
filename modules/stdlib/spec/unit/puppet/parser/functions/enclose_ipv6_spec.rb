@@ -1,4 +1,3 @@
-#! /usr/bin/env ruby -S rspec # rubocop:disable Lint/ScriptPermission : Rubocop error??
 require 'spec_helper'
 
 describe 'the enclose_ipv6 function' do

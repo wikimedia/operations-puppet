@@ -3,8 +3,22 @@ require 'spec_helper'
 if Puppet::Util::Package.versioncmp(Puppet.version, '4.5.0') >= 0
   describe 'Stdlib::Base32' do
     describe 'valid handling' do
-      ['ASDASDDASD3453453', 'ASDASDDASD3453453=', 'ASDASDDASD3453453==', 'ASDASDDASD3453453===', 'ASDASDDASD3453453====', 'ASDASDDASD3453453=====', 'ASDASDDASD3453453======', 'asdasddasd3453453',
-       'asdasddasd3453453=', 'asdasddasd3453453==', 'asdasddasd3453453===', 'asdasddasd3453453====', 'asdasddasd3453453=====', 'asdasddasd3453453======'].each do |value|
+      %w[
+        ASDASDDASD3453453
+        ASDASDDASD3453453=
+        ASDASDDASD3453453==
+        ASDASDDASD3453453===
+        ASDASDDASD3453453====
+        ASDASDDASD3453453=====
+        ASDASDDASD3453453======
+        asdasddasd3453453
+        asdasddasd3453453=
+        asdasddasd3453453==
+        asdasddasd3453453===
+        asdasddasd3453453====
+        asdasddasd3453453=====
+        asdasddasd3453453======
+      ].each do |value|
         describe value.inspect do
           it { is_expected.to allow_value(value) }
         end

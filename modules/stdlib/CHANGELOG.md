@@ -2,6 +2,32 @@
 
 All notable changes to this project will be documented in this file. The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org).
+## Supported Release 4.25.1
+### Summary
+
+This is a patch which includes a roll up of small fixes. In Puppet 5.5.0 `flatten()`, `length(),` `empty(),` `join(),` `keys(),` and `values()` are now built into Puppet. Please note that the Puppet implementation of the functions will take precedence over the functions in 'puppetlabs-stdlib'.
+
+#### Fixed
+- Remove unneeded execute permission from test files.
+- Puppet 5.5.0 function deprecation [MODULES-6894](https://tickets.puppetlabs.com/browse/MODULES-6894).
+
+## Supported Release 4.25.0
+### Summary
+
+This is quite a feature heavy release, it makes this module PDK-compliant for easier maintenance and includes a roll up of maintenance changes.
+
+#### Added
+- PDK conversion [MODULES-6332](https://tickets.puppetlabs.com/browse/MODULES-6332).
+- Update `join_keys_to_values` with an undef statement.
+- Type alias `Stdlib::Fqdn` matches paths on a fully qualified domain name.
+- Type alias `Stdlib::Host` matches a valid host, this can be a valid 'ipv4', 'ipv6' or 'fqdn'.
+- Type alias `Stdlib::Port` matches a valid TCP/UDP Port number.
+- Type alias `Stdlib::Filesource` matches paths valid values for the source parameter of the puppet file type.
+- Type alias `Stdlib::IP::Address` matches any IP address, including both IPv4 and IPv6 addresses,
+- Type alias `Stdlib::IP::Address::V4` matches any string consisting of a valid IPv4 address, this is extended by 'CIDR' and 'nosubnet'.
+- Type alias `Stdlib::IP::Address::V6` matches any string consisting of a valid IPv6 address, this is extended by 'Full', 'Alternate' and 'Compressed'.
+- Type alias `Stdlib::IP::Address::V6::Nosubnet`matches any string consisting of a valid IPv6 address with no subnet, this is extended by 'Full', 'Alternate' and 'Compressed'.
+- Type alias `Stdlib::Port` matches a valid TCP/UDP Port number this is then extended to 'Privileged' which are ports less than 1024 and 'Unprivileged' which are ports greater than 1024.
 
 ## Supported Release 4.24.0
 ### Summary
@@ -94,9 +120,9 @@ This release adds new functions and better documentation/fixes for existing func
 - Add new function, fact() (FACT-932)
 
 #### Fixed
-- Fixes for the file_line provider ([MODULES-5003](https://tickets.puppet.com/browse/MODULES-5003)) 
-- Add documentation for email functions ([MODULES-5382](https://tickets.puppet.com/browse/MODULES-5382)) 
-- unique function is deprecated for puppet version > 5. (FM-6239) 
+- Fixes for the file_line provider ([MODULES-5003](https://tickets.puppet.com/browse/MODULES-5003))
+- Add documentation for email functions ([MODULES-5382](https://tickets.puppet.com/browse/MODULES-5382))
+- unique function is deprecated for puppet version > 5. (FM-6239)
 - Fix headers in CHANGELOG.md so that headers render correctly
 - ensure_packages, converge ensure values 'present' and 'installed'
 

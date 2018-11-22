@@ -1,4 +1,3 @@
-#! /usr/bin/env ruby -S rspec # rubocop:disable Lint/ScriptPermission : Rubocop Error
 require 'spec_helper_acceptance'
 
 tmpdir = default.tmpdir('stdlib')

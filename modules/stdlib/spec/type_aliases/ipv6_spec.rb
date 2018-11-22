@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 if Puppet::Util::Package.versioncmp(Puppet.version, '4.5.0') >= 0
-  describe 'Stdlib::Compat::Ipv6' do
+  describe 'Stdlib::Ipv6' do
     describe 'accepts ipv6 addresses' do
       [
         '2001:0db8:85a3:0000:0000:8a2e:0370:7334',
@@ -21,6 +21,12 @@ if Puppet::Util::Package.versioncmp(Puppet.version, '4.5.0') >= 0
     end
     describe 'rejects other values' do
       [
+        nil,
+        [nil],
+        [nil, nil],
+        { 'foo' => 'bar' },
+        {},
+        '',
         'nope',
         '77',
         '4.4.4',
@@ -28,6 +34,12 @@ if Puppet::Util::Package.versioncmp(Puppet.version, '4.5.0') >= 0
         '::ffff:2.3.4',
         '::ffff:257.1.2.3',
         '::ffff:12345678901234567890.1.26',
+        '2001::0db8::1',
+        ' 2001:0db8::1',
+        '2001:0db8::1 ',
+        ' 2001:0db8::1 ',
+        'foobar2001:0db8::1',
+        '2001:0db8::1foobar',
       ].each do |value|
         describe value.inspect do
           it { is_expected.not_to allow_value(value) }

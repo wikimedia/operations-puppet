@@ -1,4 +1,3 @@
-#! /usr/bin/env ruby -S rspec # rubocop:disable Lint/ScriptPermission : Rubocop Mistake???
 require 'spec_helper_acceptance'
 
 if return_puppet_version =~ %r{^4}
