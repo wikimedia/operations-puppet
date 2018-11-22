@@ -1,0 +1,50 @@
+# Provide a UDP syslog input to accept JSON payloads (in the syslog message) and forwards them to
+# Kakfa.
+# To be recognized as JSON the syslog message must be prepended with "@cee: "
+# see also https://www.rsyslog.com/doc/v8-stable/configuration/modules/mmjsonparse.html
+
+# Kafka topic selection is based on the syslog message severity.
+
+module(load="imudp")
+module(load="mmjsonparse")
+
+# Augment the payload with additional properties
+template(name="udp_localhost_all_properties" type="list") {
+   constant(value="{")
+   property(name="timereported" outname="timestamp" format="jsonf" dateformat="rfc3339")
+   constant(value=", ")
+   property(name="hostname" outname="logsource" format="jsonf")
+   constant(value=", ")
+   property(name="programname" outname="program" format="jsonf")
+   constant(value=", ")
+   property(name="syslogseverity-text" outname="severity" format="jsonf")
+   constant(value=", ")
+   property(name="syslogfacility-text" outname="facility" format="jsonf")
+   constant(value=", ")
+   # Include all JSON properties parsed by mmjsonparse
+   property(name="$!all-json" position.from="2")
+}
+
+template(name="udp_localhost_topic" type="string" string="udp_localhost-%$syslogseverity-text:::lowercase%")
+
+# Use a separate (in memory) queue to limit message processing to this ruleset only.
+ruleset(name="udp_localhost_to_kafka" queue.type="LinkedList") {
+  action(type="mmjsonparse" name="mmjsonparse")
+
+  action(type="omkafka"
+         broker=<%= scope.lookupvar('logging_kafka_brokers').to_json %>
+         topic="udp_localhost_topic"
+         dynatopic="on"
+         dynatopic.cachesize="1000"
+         template="udp_localhost_all_properties"
+         confParam=[ "security.protocol=ssl",
+                     "ssl.ca.location=/etc/ssl/certs/Puppet_Internal_CA.pem",
+                     "compression.codec=snappy",
+                     "socket.timeout.ms=60000",
+                     "socket.keepalive.enable=true",
+                     "queue.buffering.max.ms=50",
+                     "batch.num.messages=1000" ]
+  )
+}
+
+input(type="imudp" port="<%= @port %>" address="localhost" ruleset="udp_localhost_to_kafka")
