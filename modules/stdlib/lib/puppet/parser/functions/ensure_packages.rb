@@ -19,6 +19,9 @@ third argument to the ensure_resource() function.
     if arguments[0].is_a?(Hash)
       if arguments[1]
         defaults = { 'ensure' => 'present' }.merge(arguments[1])
+        if defaults['ensure'] == 'installed'
+          defaults['ensure'] = 'present'
+        end
       else
         defaults = { 'ensure' => 'present' }
       end
@@ -30,12 +33,16 @@ third argument to the ensure_resource() function.
 
       if arguments[1]
         defaults = { 'ensure' => 'present' }.merge(arguments[1])
+        if defaults['ensure'] == 'installed'
+          defaults['ensure'] = 'present'
+        end
       else
         defaults = { 'ensure' => 'present' }
       end
 
       Puppet::Parser::Functions.function(:ensure_resource)
       packages.each { |package_name|
+      raise(Puppet::ParseError, 'ensure_packages(): Empty String provided for package name') if package_name.length == 0
       if !findresource("Package[#{package_name}]")
         function_ensure_resource(['package', package_name, defaults ])
       end

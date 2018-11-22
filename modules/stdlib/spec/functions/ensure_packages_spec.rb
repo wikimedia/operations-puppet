@@ -34,6 +34,14 @@ describe 'ensure_packages' do
     end
   end
 
+  context 'given an empty packages array' do
+    let(:pre_condition) { 'notify { "hi": } -> Package <| |>; $somearray = ["vim",""]; ensure_packages($somearray)' }
+
+    describe 'after running ensure_package(["vim", ""])' do
+      it { expect { catalogue }.to raise_error(Puppet::ParseError, /Empty String provided/) }
+    end
+  end
+
   context 'given hash of packages' do
     before { subject.call([{"foo" => { "provider" => "rpm" }, "bar" => { "provider" => "gem" }}, { "ensure" => "present"}]) }
     before { subject.call([{"パッケージ" => { "ensure" => "absent"}}]) }
@@ -48,4 +56,16 @@ describe 'ensure_packages' do
     it { expect(lambda { catalogue }).to contain_package('ρǻ¢κầģẻ').with({'ensure' => 'absent'}) }
     end
   end
+
+  context 'given a catalog with "package { puppet: ensure => present }"' do
+    let(:pre_condition) { 'package { puppet: ensure => present }' }
+
+    describe 'after running ensure_package("puppet", { "ensure" => "installed" })' do
+      before { subject.call(['puppet', { "ensure" => "installed" }]) }
+
+      # this lambda is required due to strangeness within rspec-puppet's expectation handling
+      it { expect(lambda { catalogue }).to contain_package('puppet').with_ensure('present') }
+    end
+  end
+
 end
