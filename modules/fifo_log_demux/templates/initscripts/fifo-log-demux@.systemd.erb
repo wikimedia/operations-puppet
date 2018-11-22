@@ -3,6 +3,9 @@ Description=FIFO log demultiplexer (instance %i)
 Documentation=https://github.com/wikimedia/operations-software-fifo-log-demux
 <% if @socket_activation -%>
 Requires=fifo-log-demux@<%= @title %>.socket
+<% elsif @wanted_by -%>
+Requires=<%= @wanted_by %>
+After=<%= @wanted_by %>
 <% end -%>
 
 [Service]
@@ -12,8 +15,6 @@ Type=simple
 Restart=always
 User=<%= @user %>
 ExecStart=/usr/bin/fifo-log-demux <% if @socket_activation %>-log-fifo-fd=3<% else %>-log-fifo <%= @fifo %><% end %> -socket <%= @socket %>
-# XXX exits 2 on SIGINT?
-SuccessExitStatus=2
 
 <% if @wanted_by -%>
 [Install]
