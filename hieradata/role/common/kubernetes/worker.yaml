@@ -32,4 +32,5 @@ profile::kubernetes::node::kubelet_config: /etc/kubernetes/kubelet_config
 profile::kubernetes::node::kubeproxy_config: /etc/kubernetes/kubeproxy_config
 role::lvs::realserver::pools:
   mathoid: {}
+  zoterov2: {}
 diamond::remove: true

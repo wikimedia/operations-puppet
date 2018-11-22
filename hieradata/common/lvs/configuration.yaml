@@ -145,6 +145,10 @@ lvs::configuration::lvs_service_ips:
   proton: &ip_block044
     eqiad: 10.2.2.21
     codfw: 10.2.1.21
+  # XXX: Temporary while the migration to v2 is ongoing
+  zoterov2: &ip_block045
+    eqiad: 10.2.2.29
+    codfw: 10.2.1.29
 
 lvs::configuration::lvs_services:
   text:
