@@ -130,7 +130,7 @@ groups:
     description: Access statistics number crunching hosts (like
                  statistics-users) and also provides access to research mysql
                  credentials on stat1006 (currently the only such host)
-    members: [awight, bmansurov, catrope, dartar, deskana, mneisler,
+    members: [awight, bmansurov, catrope, dartar, mneisler,
               dduvall, esanders, ezachte, gilles, halfak,
               jforrester, jkatz, jmorgan, kaldari, nathante,
               leila, mattflaschen, milimetric, nettrom, bearloga,
@@ -225,7 +225,7 @@ groups:
               mattflaschen, mhurd, awight, jforrester,
               marktraceur, nuria, leila, gilles,
               dbrant, tgr, dr0ptp4kt, brion, bsitzmann, amire80,
-              deskana, dduvall, nettrom, mforns, jkatz, ebernhardson,
+              dduvall, nettrom, mforns, jkatz, ebernhardson,
               mlitn, tbayer, joal, kartik, nikerabbit, pcoombe,
               neilpquinn-wmf, maxsem, jminor, atgomez, dstrine,
               ladsgroup, ovasileva, shiladsen]
@@ -259,7 +259,7 @@ groups:
                  Those files are group readable by the analytics-privatedata-users group.
     members: [dartar, milimetric, dfoy, aude, jforrester, nithum, imarlier,
               halfak, dr0ptp4kt, bearloga, elukey, ppchelko, bawolff, mneisler,
-              nuria, otto, deskana, arnad, jgreen, sguebo, thargrove,
+              nuria, otto, arnad, jgreen, sguebo, thargrove,
               bsitzmann, dbrant, nettrom, leila, cwdent, jmm,
               ezachte, mforns, reedy, west1, phuedx, awight,
               joal, jamesur, akosiaris, jkatz, tonina, pearley, ktsouroupidou,
@@ -1604,14 +1604,12 @@ users:
     uid: 5037
     email: bsitzmann@wikimedia.org
   deskana:
-    ensure: present
+    ensure: absent
     gid: 500
     name: deskana
     realname: Dan Garry
-    ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCdM9OC4SueHM4uUWnbrKbVJyISM4pqBpiT84TW4UORYQMxL6RbBdloPxmXtdXBDIYQJyXUn1ymG+FDlUlk/OMnTo+S9m1fmJdfBADg/2qOJmLC6YcPdpOLapIkK3Fe+7ser6xyt6MGF4kmcOYPJqjtBntP3EabduX0H/PfH4CtmgibYSznLI5Rb1Kvd+/1xR9uFGJnQP5LI4+LQT273HpLx/gdCXTzO+rLS3xKspcUIrHlo6Hy5GmmUrvgemiyNHp8GkjuXt5Y7n45wmwLnZUd6YWx3ylroEzebCcCa//CAwlEztB7I8tOdD7NkbaJwUDoUcprU1PWx8JwSinVup9f
-        dgarry@dan-garry.corp.wikimedia.org]
+    ssh_keys: []
     uid: 3262
-    email: dgarry@wikimedia.org
   ssmith:
     ensure: absent
     gid: 500
