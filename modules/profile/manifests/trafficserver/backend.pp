@@ -92,31 +92,14 @@ class profile::trafficserver::backend (
         check_command => "check_http_hostheader_port_url!localhost!${port}!/_stats",
     }
 
-    # XXX: Avoid `traffic_server -C verify_config` for now
-    $check_scripts = [ 'check_trafficserver_config_status' ] # 'check_trafficserver_verify_config' ]
-
-    $check_scripts.each |String $script| {
-            $full_path =  "/usr/local/lib/nagios/plugins/${script}"
-
-            file { $full_path:
-                ensure => present,
-                source => "puppet:///modules/profile/trafficserver/${script}.sh",
-                mode   => '0555',
-                owner  => 'root',
-                group  => 'root',
-            }
-
-            sudo::user { "nagios_trafficserver_${script}":
-                user       => 'nagios',
-                privileges => ["ALL = (${trafficserver::user}) NOPASSWD: ${full_path}"],
-            }
-
-            nrpe::monitor_service { $script:
-                description  => $script,
-                nrpe_command => "sudo -u ${trafficserver::user} ${full_path}",
-                require      => File[$full_path],
-            }
+    profile::trafficserver::nrpe_monitor_script { 'check_trafficserver_config_status':
+        sudo_user => $trafficserver::user,
     }
+
+    # XXX: Avoid `traffic_server -C verify_config` for now
+    #profile::trafficserver::nrpe_monitor_script { 'check_trafficserver_verify_config':
+    #    sudo_user => $trafficserver::user,
+    #}
 
     $logs.each |TrafficServer::Log $log| {
         if $log['mode'] == 'ascii_pipe' {
