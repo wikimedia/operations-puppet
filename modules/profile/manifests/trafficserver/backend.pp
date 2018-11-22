@@ -96,10 +96,6 @@ class profile::trafficserver::backend (
         sudo_user => $trafficserver::user,
     }
 
-    profile::trafficserver::nrpe_monitor_script { 'check_trafficserver_log_fifo':
-        sudo_user => 'root',
-    }
-
     # XXX: Avoid `traffic_server -C verify_config` for now
     #profile::trafficserver::nrpe_monitor_script { 'check_trafficserver_verify_config':
     #    sudo_user => $trafficserver::user,
@@ -112,6 +108,12 @@ class profile::trafficserver::backend (
                 fifo      => "/var/log/trafficserver/${log['filename']}.pipe",
                 socket    => "/var/run/trafficserver/${log['filename']}.sock",
                 wanted_by => 'trafficserver.service',
+            }
+
+            profile::trafficserver::nrpe_monitor_script { "check_trafficserver_log_fifo_${log['filename']}":
+                sudo_user => 'root',
+                checkname => 'check_trafficserver_log_fifo',
+                args      => "/var/log/trafficserver/${log['filename']}.pipe",
             }
         }
     }
