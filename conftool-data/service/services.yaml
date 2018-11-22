@@ -229,6 +229,14 @@ kubernetes:
     datacenters:
     - eqiad
     - codfw
+  zotero:
+    port: 1968
+    default_values:
+      pooled: 'no'
+      weight: 10
+    datacenters:
+    - eqiad
+    - codfw
 logstash:
   kibana:
     port: 80
