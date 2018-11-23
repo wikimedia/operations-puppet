@@ -62,6 +62,7 @@ class netbox(
       content => template('netbox/configuration.py.erb'),
       require => Scap::Target['netbox/deploy'],
       before  => Uwsgi::App['netbox'],
+      notify  => Service['uwsgi-netbox'],
   }
 
   file { '/etc/netbox-ldap.py':
@@ -72,6 +73,7 @@ class netbox(
       content => template('netbox/ldap_config.py.erb'),
       require => Scap::Target['netbox/deploy'],
       before  => Uwsgi::App['netbox'],
+      notify  => Service['uwsgi-netbox'],
   }
 
   ::keyholder::agent { 'netbox':
