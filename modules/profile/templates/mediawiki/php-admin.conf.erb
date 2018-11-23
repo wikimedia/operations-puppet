@@ -1,0 +1,26 @@
+<VirtualHost *:<%= @admin_port %>>
+    DocumentRoot <%= @docroot %>
+    <Location />
+        Require local
+    </Location>
+    <Location /metrics>
+       <RequireAny>
+           Require host <%= @prometheus_nodes_str %>
+           Require local
+       </RequireAny>
+   </Location>
+   <LocationMatch "/(apcu|opcache)-free">
+       AuthType Basic
+       AuthName "Administrative action"
+       AuthBasicProvider file
+       AuthUserFile "/etc/apache/htpasswd.php7adm"
+       Require valid-user
+   </Location>
+   RewriteEngine On
+   RewriteRule .* index.php [L]
+   <FilesMatch "\.php$">
+       SetHandler "proxy:fcgi://127.0.0.1:8000"
+   </FilesMatch>
+   ErrorLog ${APACHE_LOG_DIR}/php-admin-error.log
+   CustomLog ${APACHE_LOG_DIR}/php-admin-access.log wmf
+</VirtualHost>
