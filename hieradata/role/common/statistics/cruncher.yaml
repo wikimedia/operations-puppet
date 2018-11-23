@@ -4,3 +4,4 @@ admin::groups:
   - statistics-admins
   - statistics-users
   - researchers
+diamond::remove: true
