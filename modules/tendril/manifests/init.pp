@@ -22,12 +22,6 @@ class tendril (
         content => template("tendril/apache/${site_name}.erb");
     }
 
-    letsencrypt::cert::integrated { 'tendril':
-        subjects   => $site_name,
-        puppet_svc => 'apache2',
-        system_svc => 'apache2',
-    }
-
     certcentral::cert { 'tendril':
         puppet_svc => 'apache2',
     }
