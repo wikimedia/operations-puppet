@@ -14,6 +14,11 @@ profile::certcentral::certificates:
         SNI:
         - 'pinkunicorn.wikimedia.org'
         challenge: dns-01
+    tendril:
+        CN: 'tendril.wikimedia.org'
+        SNI:
+        - 'tendril.wikimedia.org'
+        challenge: dns-01
 profile::certcentral::challenges:
   dns-01:
     zone_update_cmd: /usr/local/bin/certcentral-gdnsd-sync.py
