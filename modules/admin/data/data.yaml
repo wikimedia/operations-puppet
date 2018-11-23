@@ -3399,3 +3399,7 @@ ldap_only_users:
     ensure: present
     realname: Kate Zimmerman
     email: kzimmerman@wikimedia.org
+  deskana:
+    ensure: present
+    realname: Dan Garry
+    email: djgwiki@gmail.com
