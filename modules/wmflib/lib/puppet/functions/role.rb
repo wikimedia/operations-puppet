@@ -47,7 +47,8 @@ Puppet::Functions.create_function(:role) do
     # Backwards compat
     scope['_roles'] = { role => true }
     # This is where we're going in the future
-    scope['_role'] = role
+    # Hack: we transform 'foo::bar' in 'foo/bar' so that it's easy to lookup in hiera
+    scope['_role'] = role.gsub(/::/, '/')
     rolename = 'role::' + role
     call_function('include', rolename)
   end
