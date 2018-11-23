@@ -306,10 +306,10 @@ codfw:
   kubernetes:
     acrab.codfw.wmnet: [kubemaster]
     acrux.codfw.wmnet: [kubemaster]
-    kubernetes2001.codfw.wmnet: [mathoid]
-    kubernetes2002.codfw.wmnet: [mathoid]
-    kubernetes2003.codfw.wmnet: [mathoid]
-    kubernetes2004.codfw.wmnet: [mathoid]
+    kubernetes2001.codfw.wmnet: [mathoid, zotero]
+    kubernetes2002.codfw.wmnet: [mathoid, zotero]
+    kubernetes2003.codfw.wmnet: [mathoid, zotero]
+    kubernetes2004.codfw.wmnet: [mathoid, zotero]
   ores:
     ores2001.codfw.wmnet: [ores]
     ores2002.codfw.wmnet: [ores]
