@@ -28,6 +28,10 @@ class tendril (
         system_svc => 'apache2',
     }
 
+    certcentral::cert { 'tendril':
+        puppet_svc => 'apache2',
+    }
+
     require_package(
         'php5-mysql',
         'php5-memcache', # do not install -memcached, it won't work
