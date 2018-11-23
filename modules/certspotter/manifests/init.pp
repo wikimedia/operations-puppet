@@ -63,11 +63,8 @@ class certspotter(
         content => inline_template("<%= @domains.join(\"\n\") %>\n"),
     }
 
-    # 20180423 - cron disabled (with ensure => absent) to squelch cron errors
-    # until certspotter can be upgraded -herron
     $cmd = "/usr/bin/certspotter -watchlist ${watchlist} -state_dir ${statedir}"
     cron { 'certspotter':
-        ensure      => absent,
         command     => $cmd,
         environment => "MAILTO=${address}",
         user        => 'certspotter',
