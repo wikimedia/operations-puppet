@@ -114,10 +114,23 @@ profile::trafficserver::backend::mapping_rules:
     replacement: http://deployment-ms-fe02.deployment-prep.eqiad.wmflabs
     params:
         - '@plugin=/usr/lib/trafficserver/modules/tslua.so'
+        - '@pparam=/etc/trafficserver/lua/normalize-path.lua'
+        # decode    /
+        - '@pparam="2F"'
+        # encode    !  $  &  '  (  )  *  +  ,  :  ;  =  @  [  ]
+        - '@pparam="21 24 26 27 28 29 2A 2B 2C 3A 3B 3D 40 5B 5D"'
+        - '@plugin=/usr/lib/trafficserver/modules/tslua.so'
         - '@pparam=/etc/trafficserver/lua/x-mediawiki-original.lua'
   - type: map
     target: /
     replacement: http://deployment-mediawiki-07.deployment-prep.eqiad.wmflabs
+    params:
+        - '@plugin=/usr/lib/trafficserver/modules/tslua.so'
+        - '@pparam=/etc/trafficserver/lua/normalize-path.lua'
+        # decode    :  /  @  !  $  (  )  *  ,  ;
+        - '@pparam="3A 2F 40 21 24 28 29 2A 2C 3B"'
+        # encode    [  ]  &  '  +  =
+        - '@pparam="5B 5D 26 27 2B 3D"'
 varnish::dynamic_backend_caches: false
 # Worst path rtt through our network, used in prod to determine timeouts. Not
 # particularly useful in labs, but necessary as the setting has no default

@@ -57,6 +57,10 @@ class profile::trafficserver::backend (
         unit_test => 'puppet:///modules/profile/trafficserver/x-mediawiki-original_test.lua',
     }
 
+    trafficserver::lua_script { 'normalize-path':
+        source    => 'puppet:///modules/profile/trafficserver/normalize-path.lua',
+    }
+
     prometheus::trafficserver_exporter { 'trafficserver_exporter':
         endpoint => "http://127.0.0.1:${port}/_stats",
     }
