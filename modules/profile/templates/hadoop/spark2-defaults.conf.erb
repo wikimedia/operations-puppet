@@ -22,3 +22,6 @@ spark.dynamicAllocation.cachedExecutorIdleTimeout   3600s
 spark.sql.catalogImplementation                     hive
 <% end -%>
 spark.yarn.archive                  hdfs:///user/spark/share/lib/spark2-assembly.zip
+<% @security_settings.sort.each do |key, value| -%>
+<%= key %>   <%= value %>
+<% end -%>

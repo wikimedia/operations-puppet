@@ -25,9 +25,14 @@
 #   spark2-shell to use the Hive databases.
 #   Default: true
 #
+# [*security_settings*]
+#   Map of key->value settings to set in spark2-defaults.conf
+#   Default: {}
+#
 class profile::hadoop::spark2(
     $install_yarn_shuffle_jar = hiera('profile::hadoop::spark2::install_yarn_shuffle_jar', true),
     $install_oozie_sharelib   = hiera('profile::hadoop::spark2::install_oozie_sharelib', false),
+    $security_settings        = hiera('profile::hadoop::spark2::security_settings', {}),
 ) {
     require ::profile::hadoop::common
 
