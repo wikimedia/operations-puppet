@@ -7,9 +7,7 @@
 <VirtualHost *:80>
     ServerName netbox.wikimedia.org
     ServerAdmin noc@wikimedia.org
-    Include /etc/acme/challenge-apache.conf
     RewriteEngine on
-    RewriteCond %{REQUEST_URI} !^/\.well-known/acme-challenge/
     RewriteRule ^/(.*)$ https://netbox.wikimedia.org/$1 [L,R=301]
 </VirtualHost>
 
