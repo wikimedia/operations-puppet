@@ -67,9 +67,7 @@ class extdist(
         $php_cli = 'php5-cli'
     }
 
-    package { $php_cli:
-        ensure => present,
-    }
+    require_package('python3-requests', $php_cli)
 
     git::clone { 'integration/composer':
         ensure             => latest,
@@ -96,7 +94,7 @@ class extdist(
     }
 
     cron { 'extdist-generate-tarballs':
-        command => "/usr/bin/python ${clone_dir}/nightly.py --all",
+        command => "/usr/bin/python3 ${clone_dir}/nightly.py --all",
         user    => 'extdist',
         minute  => '0',
         hour    => '*',
@@ -108,7 +106,7 @@ class extdist(
     }
 
     cron { 'skindist-generate-tarballs':
-        command => "/usr/bin/python ${clone_dir}/nightly.py --all --skins",
+        command => "/usr/bin/python3 ${clone_dir}/nightly.py --all --skins",
         user    => 'extdist',
         minute  => '30',
         hour    => '*',
