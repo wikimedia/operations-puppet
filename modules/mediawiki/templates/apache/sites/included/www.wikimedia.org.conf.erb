@@ -31,4 +31,8 @@
     RewriteRule ^/api$ %{ENV:RW_PROTO}://%{SERVER_NAME}/api/ [R=301]
     RewriteRule ^/api/$ /w/extract2.php?template=API_listing_template [L]
 
+    <FilesMatch "\.php$">
+        # Send all php files to the FCGI backend (PHP7)
+        SetHandler "proxy:fcgi://127.0.0.1:8000"
+    </FilesMatch>
 </VirtualHost>
