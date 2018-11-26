@@ -9,9 +9,12 @@ class network::constants {
     $network_infra = $network_data['network::infrastructure']
     $mgmt_networks = $network_data['network::management']
 
+    # Per realm aggregate networks
+    $aggregate_networks = flatten($network_data['network::aggregate_networks'][$::realm])
 
-    # are you really sure you want to use this? maybe what you really
-    # the trusted/production networks. See $production_networks for this.
+    # NOTE DO NOT USE $all_networks. It's deprecated, not realm aware and
+    # problematic. It's here just for posterity's sake. Use $domain_networks or
+    # $aggregate_networks depending on your needs
     $all_networks = flatten([$external_networks, '10.0.0.0/8'])
     $all_networks_lo = flatten([$all_networks, '127.0.0.0/8', '::1/128'])
 

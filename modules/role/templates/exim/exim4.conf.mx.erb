@@ -44,10 +44,10 @@ domainlist rt_domains = rt.wikimedia.org
 domainlist phab_domains = phabricator.wikimedia.org
 domainlist donate_domains = donate.wikimedia.org : civicrm.wikimedia.org
 
-hostlist wikimedia_nets = <; <%= scope.lookupvar('network::constants::all_networks').join(" ; ") %>
+hostlist wikimedia_nets = <; <%= scope.lookupvar('network::constants::aggregate_networks').join(" ; ") %>
 
 # this explicitly allows all Wikimedia networks, including Labs, as we are the relays for them as well
-hostlist relay_from_hosts = <; @[] ; 127.0.0.1 ; ::1 ; <%= scope.lookupvar('network::constants::all_networks').join(" ; ") %>
+hostlist relay_from_hosts = <; @[] ; 127.0.0.1 ; ::1 ; <%= scope.lookupvar('network::constants::aggregate_networks').join(" ; ") %>
 
 # Administration
 log_selector = +address_rewrite +all_parents +delivery_size +deliver_time +incoming_interface +incoming_port +smtp_confirmation +smtp_protocol_error +smtp_syntax_error +tls_cipher +tls_peerdn

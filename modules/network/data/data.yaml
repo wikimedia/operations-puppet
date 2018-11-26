@@ -1,4 +1,4 @@
-network::external:
+network::external: &external
 - 91.198.174.0/24
 - 208.80.152.0/22
 - 2620:0:860::/46
@@ -7,6 +7,29 @@ network::external:
 - 2a02:ec80::/32
 - 2001:df2:e500::/48
 - 103.102.166.0/24
+
+network::aggregate_networks:
+  production:
+  - *external
+  - 10.0.0.0/8
+  - 127.0.0.0/8 # localhost is always implicitly trusted
+  - '::1/128'
+  labs:
+  - 208.80.155.128/25
+  - 172.16.0.0/12
+  - 2620:0:860:117::/64 # labs-hosts1-a-codfw. Not on proper boundary aggregation wise
+  - 2620:0:860:118::/63 # labs-hosts codfw
+  - 2620:0:860:120::/64 # labs-hosts1-d-codfw. Not on proper boundary aggregation wise
+  - 2620:0:860:121::/64 # labs-support1-a-codfw. Not on proper boundray aggregation wise
+  - 2620:0:860:122::/63 # labs-support codfw
+  - 2620:0:860:124::/64 # labs-support1-d-codfw. Not on proper boundray aggregation wise
+  - 2620:0:861:117::/64 # labs-support1-a-eqiad. Not on proper boundary aggregation wise
+  - 2620:0:860:118::/63 # labs-hosts and support
+  - 10.68.0.0/16 # NOTE The 10.0.0.0/8 allocations are deprecated
+  - 10.196.0.0/16 # NOTE The 10.0.0.0/8 allocations are deprecated
+  - 127.0.0.0/8 # localhost is always implicitly trusted
+  - '::1/128'
+
 
 network::infrastructure:
   - 91.198.174.224/27 # esams
