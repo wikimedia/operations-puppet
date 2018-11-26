@@ -467,6 +467,39 @@ class role::prometheus::ops {
         port       => 9151,
     }
 
+    # php and php-fpm
+    $php_jobs =  [
+        {
+        'job_name'        => 'php',
+        'scheme'          => 'http',
+        'file_sd_configs' => [
+            { 'files' => [ "${targets_path}/php_*.yaml" ]}
+        ],
+        },
+    ]
+
+    $php_fpm_jobs = [
+        {
+        'job_name'        => 'php-fpm',
+        'scheme'          => 'http',
+        'file_sd_configs' => [
+            { 'files' => [ "${targets_path}/php-fpm_*.yaml" ]}
+        ],
+        },
+    ]
+    prometheus::class_config{ "php_${::site}":
+        dest       => "${targets_path}/php_${::site}.yaml",
+        site       => $::site,
+        class_name => 'profile::mediawiki::php::monitoring',
+        port       => 9181,
+    }
+    prometheus::class_config{ "php-fpm_${::site}":
+        dest       => "${targets_path}/php-fpm_${::site}.yaml",
+        site       => $::site,
+        class_name => 'profile::prometheus::php_fpm_exporter',
+        port       => 9180,
+    }
+
     $pdu_jobs = [
       {
         'job_name'        => 'pdu',
@@ -1065,7 +1098,7 @@ class role::prometheus::ops {
             $etherpad_jobs, $elasticsearch_jobs, $wmf_elasticsearch_jobs,
             $blazegraph_jobs, $nutcracker_jobs, $postgresql_jobs,
             $kafka_burrow_jobs, $logstash_jobs, $haproxy_jobs, $statsd_exporter_jobs,
-            $mjolnir_jobs, $rsyslog_jobs,
+            $mjolnir_jobs, $rsyslog_jobs, $php_jobs, $php_fpm_jobs,
         ),
         global_config_extra   => $config_extra,
     }
