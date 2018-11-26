@@ -108,6 +108,16 @@ profile::trafficserver::backend::logs:
     filters:
     - purge
     mode: ascii_pipe
+profile::trafficserver::backend::mapping_rules:
+  - type: map
+    target: http://upload.wmflabs.org
+    replacement: http://deployment-ms-fe02.deployment-prep.eqiad.wmflabs
+    params:
+        - '@plugin=/usr/lib/trafficserver/modules/tslua.so'
+        - '@pparam=/etc/trafficserver/lua/x-mediawiki-original.lua'
+  - type: map
+    target: /
+    replacement: http://deployment-mediawiki-07.deployment-prep.eqiad.wmflabs
 varnish::dynamic_backend_caches: false
 # Worst path rtt through our network, used in prod to determine timeouts. Not
 # particularly useful in labs, but necessary as the setting has no default
