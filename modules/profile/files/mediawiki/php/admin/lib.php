@@ -67,7 +67,7 @@ class PrometheusMetric {
 		if ($this->description == "") {
 			return "";
 		}
-		return sprintf("# HELP %s %s\n# TYPE %s %s",
+		return sprintf("# HELP %s %s\n# TYPE %s %s\n",
 					$this->key, $this->description,
 					$this->key, $this->type
 		);
