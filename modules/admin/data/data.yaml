@@ -11,7 +11,7 @@ groups:
               psinger, midom, tparscal, dworley, moushira, lpintscher, gpaumier,
               nschaaf, zhousquared, gwicke, dpatrick, samwalton9, samtar, akrausetud, jgonsior,
               yuvipanda, shrlak, joewalsh, madhuvishy, groovier, khorn, ironholds, katie,
-              cy534, pnorman, mpany]
+              cy534, pnorman, mpany, deskana]
   absent_ldap:
     description: meta group for absented users which had privileged LDAP access in the past
     members: [adavenport, siddharth11, albe]
