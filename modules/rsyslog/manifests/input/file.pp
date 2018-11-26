@@ -8,6 +8,7 @@
 # $syslog_tag - Desired syslog tag (useful for example with filtering/shipping)
 # $priority - Rsyslog conf file priority number (used in filename prefix)
 # $reopen_on_truncate - Reopen input file when it was truncated (inode unchanged but file size on disk is less than current offset in memory).
+# $startmsg_regex - Regex pattern matching the beginning of multi-line log event. Log lines will be appended until the next match.
 #
 define rsyslog::input::file(
     String  $path,
@@ -15,6 +16,7 @@ define rsyslog::input::file(
     Pattern[/[a-zA-Z0-9-_]+/] $syslog_tag_prefix = 'input-file',
     Pattern[/[a-zA-Z0-9-_]+/] $syslog_tag        = $title,
     Integer $priority                            = 10,
+    String $startmsg_regex                       = undef,
 ) {
 
     rsyslog::conf { "${syslog_tag_prefix}-${syslog_tag}":
