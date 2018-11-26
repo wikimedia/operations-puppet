@@ -318,6 +318,15 @@ class TaskGen < ::Rake::TaskLib
           end
           tasks << 'tox:mtail'
         end
+        tslua_files = filter_files_by("modules/profile/files/trafficserver/**")
+        unless tslua_files.empty?
+          desc 'Run tox for tslua'
+          task :tslua do
+            res = system("tox -e tslua")
+            raise 'Tests for tslua failed!' unless res
+          end
+          tasks << 'tox:tslua'
+        end
         nagios_common_files = filter_files_by("modules/nagios_common/files/check_commands/**")
         unless nagios_common_files.empty?
           desc 'Run tox for nagios_common'
