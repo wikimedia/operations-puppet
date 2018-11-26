@@ -112,7 +112,7 @@ class profile::hadoop::master(
         # Alert if the HDFS space consumption raises above a safe threshold.
         monitoring::check_prometheus { 'hadoop-hdfs-capacity-gb-remaining':
             description     => 'HDFS capacity reimaing GBs',
-            dashboard_links => ['https://grafana.wikimedia.org/dashboard/db/analytics-hadoop?orgId=1&panelId=47&fullscreen'],
+            dashboard_links => ["https://grafana.wikimedia.org/dashboard/db/hadoop?var-hadoop_cluster=${cluster_name}&orgId=1&panelId=47&fullscreen"],
             query           => "scalar(Hadoop_NameNode_CapacityRemainingGB{instance=\"${::hostname}:10080\"})",
             warning         => 200000,
             critical        => 100000,
@@ -125,7 +125,7 @@ class profile::hadoop::master(
         # these values should always be 0.
         monitoring::check_prometheus { 'hadoop-hdfs-corrupt-blocks':
             description     => 'HDFS corrupt blocks',
-            dashboard_links => ['https://grafana.wikimedia.org/dashboard/db/analytics-hadoop?orgId=1&panelId=39&fullscreen'],
+            dashboard_links => ["https://grafana.wikimedia.org/dashboard/db/hadoop?var-hadoop_cluster=${cluster_name}&orgId=1&panelId=39&fullscreen"],
             query           => "scalar(Hadoop_NameNode_CorruptBlocks{instance=\"${::hostname}:10080\"})",
             warning         => 2,
             critical        => 5,
@@ -135,7 +135,7 @@ class profile::hadoop::master(
 
         monitoring::check_prometheus { 'hadoop-hdfs-missing-blocks':
             description     => 'HDFS missing blocks',
-            dashboard_links => ['https://grafana.wikimedia.org/dashboard/db/analytics-hadoop?orgId=1&panelId=40&fullscreen'],
+            dashboard_links => ["https://grafana.wikimedia.org/dashboard/db/hadoop?var-hadoop_cluster=${cluster_name}&orgId=1&panelId=40&fullscreen"],
             query           => "scalar(Hadoop_NameNode_MissingBlocks{instance=\"${::hostname}:10080\"})",
             warning         => 2,
             critical        => 5,
@@ -148,7 +148,7 @@ class profile::hadoop::master(
         # if the usage stays above 90% over time to see if anything is happening.
         monitoring::check_prometheus { 'hadoop-hdfs-namenode-heap-usage':
             description     => 'HDFS active Namenode JVM Heap usage',
-            dashboard_links => ['https://grafana.wikimedia.org/dashboard/db/analytics-hadoop?panelId=4&fullscreen&orgId=1'],
+            dashboard_links => ["https://grafana.wikimedia.org/dashboard/db/hadoop?var-hadoop_cluster=${cluster_name}&panelId=4&fullscreen&orgId=1"],
             query           => "scalar(avg_over_time(jvm_memory_bytes_used{hadoop_cluster=\"${cluster_name}\",instance=\"${::hostname}:10080\",area=\"heap\"}[60m])/avg_over_time(jvm_memory_bytes_max{hadoop_cluster=\"${cluster_name}\",instance=\"${::hostname}:10080\",area=\"heap\"}[60m]))",
             warning         => 0.9,
             critical        => 0.95,
@@ -158,10 +158,10 @@ class profile::hadoop::master(
 
         monitoring::check_prometheus { 'hadoop-yarn-resourcemananager-heap-usage':
             description     => 'YARN active ResourceManager JVM Heap usage',
-            dashboard_links => ['https://grafana.wikimedia.org/dashboard/db/analytics-hadoop?panelId=12&fullscreen&orgId=1'],
+            dashboard_links => ["https://grafana.wikimedia.org/dashboard/db/hadoop?var-hadoop_cluster=${cluster_name}&panelId=12&fullscreen&orgId=1"],
             query           => "scalar(avg_over_time(jvm_memory_bytes_used{hadoop_cluster=\"${cluster_name}\",instance=\"${::hostname}:10083\",area=\"heap\"}[60m])/avg_over_time(jvm_memory_bytes_max{hadoop_cluster=\"${cluster_name}\",instance=\"${::hostname}:10083\",area=\"heap\"}[60m]))",
-            warning         => 0.7,
-            critical        => 0.9,
+            warning         => 0.9,
+            critical        => 0.95,
             contact_group   => 'analytics',
             prometheus_url  => "http://prometheus.svc.${::site}.wmnet/analytics",
         }
