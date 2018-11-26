@@ -22,11 +22,6 @@ class icinga::web (
       port  => 80,
     }
 
-    # PHP was once required for PNP4Nagios but we don't use it anymore
-    if os_version('debian == jessie') {
-        require_package(libapache2-mod-php5, php5-gd)
-    }
-
     include ::passwords::ldap::wmf_cluster
     $proxypass = $passwords::ldap::wmf_cluster::proxypass
 
