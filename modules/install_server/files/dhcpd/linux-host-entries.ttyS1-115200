@@ -5980,6 +5980,21 @@ host pc1006 {
     filename "lpxelinux.0";
 }
 
+host pc1008 {
+    hardware ethernet D0:94:66:87:90:73;
+    fixed-address pc1008.eqiad.wmnet;
+}
+
+host pc1009 {
+    hardware ethernet D0:94:66:87:95:BB;
+    fixed-address pc1009.eqiad.wmnet;
+}
+
+host pc1010 {
+    hardware ethernet D0:94:66:86:4C:4B;
+    fixed-address pc1010.eqiad.wmnet;
+}
+
 host pc2007 {
     hardware ethernet D0:94:66:86:2E:4D;
     fixed-address pc2007.codfw.wmnet;

@@ -1881,6 +1881,24 @@ node 'pc1005.eqiad.wmnet' {
 node 'pc1006.eqiad.wmnet' {
     role(mariadb::parsercache)
 }
+
+# pc1007-1010 are new via T207258
+node 'pc1007.eqiad.wmnet' {
+    role(spare::system)
+}
+
+node 'pc1008.eqiad.wmnet' {
+    role(spare::system)
+}
+
+node 'pc1009.eqiad.wmnet' {
+    role(spare::system)
+}
+
+node 'pc1010.eqiad.wmnet' {
+    role(spare::system)
+}
+
 # codfw
 # pc1
 node /^pc20(07|10)\.codfw\.wmnet$/ {
