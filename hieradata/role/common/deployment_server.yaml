@@ -227,3 +227,4 @@ profile::kubernetes::deployment_server::services:
 #  zotero:
 #    token: dummy
 diamond::remove: true
+profile::mediawiki::php::php_version: "7.2"
