@@ -22,11 +22,7 @@ class profile::icinga(
 ){
     $is_passive = !($::fqdn == $active_host)
 
-    if os_version('debian >= stretch') {
-        require_package('mariadb-client')
-    } else {
-        class { 'mysql': }
-    }
+    require_package('mariadb-client')
 
     # leaving address blank means also using IPv6
     class { 'rsync::server':
