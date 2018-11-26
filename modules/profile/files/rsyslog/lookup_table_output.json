@@ -4,6 +4,16 @@
   "table":[
     {"index" : "jenkins", "value" : "kafka local" },
     {"index" : "icinga", "value" : "kafka local" },
+    {"index" : "prometheus@analytics",         "value" : "kafka local" },
+    {"index" : "prometheus@ops",               "value" : "kafka local" },
+    {"index" : "prometheus@k8s",               "value" : "kafka local" },
+    {"index" : "prometheus@k8s-staging",       "value" : "kafka local" },
+    {"index" : "prometheus@labs",              "value" : "kafka local" },
+    {"index" : "prometheus@global",            "value" : "kafka local" },
+    {"index" : "prometheus@services",          "value" : "kafka local" },
+    {"index" : "prometheus-node-exporter",     "value" : "kafka local" },
+    {"index" : "prometheus-blackbox-exporter", "value" : "kafka local" },
+    {"index" : "prometheus",                   "value" : "kafka local" },
     {"index" : "input-file-apache2-error", "value" : "kafka" },
     {"index" : "input-file-puppetdb", "value" : "kafka" },
     {"index" : "apache2", "value" : "kafka" }]}
