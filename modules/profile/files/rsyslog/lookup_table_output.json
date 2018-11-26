@@ -5,4 +5,5 @@
     {"index" : "jenkins", "value" : "kafka local" },
     {"index" : "icinga", "value" : "kafka local" },
     {"index" : "input-file-apache2-error", "value" : "kafka" },
+    {"index" : "input-file-puppetdb", "value" : "kafka" },
     {"index" : "apache2", "value" : "kafka" }]}

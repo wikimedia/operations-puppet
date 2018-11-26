@@ -57,4 +57,10 @@ class profile::puppetdb(
             srange => "@resolve((${puppetboard_hosts}))",
         }
     }
+
+    # Ship PuppetDB logs to ELK
+    rsyslog::input::file { 'puppetdb':
+        path => '/var/log/puppetlabs/puppetdb/puppetdb.log',
+    }
+
 }
