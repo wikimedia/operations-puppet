@@ -40,12 +40,6 @@ class archiva::proxy(
 
         # Install the certificate if it is not the snakeoil cert
         if $certificate_name != 'ssl-cert-snakeoil' {
-            letsencrypt::cert::integrated { $certificate_name:
-                subjects   => "${certificate_name}.wikimedia.org",
-                puppet_svc => 'nginx',
-                system_svc => 'nginx',
-            }
-
             certcentral::cert { $certificate_name:
                 puppet_svc => 'nginx',
             }

@@ -21,9 +21,6 @@ server {
 server {
   listen [::]:<%= @listen %>;
   listen <%= @listen %>;
-<% if @ssl_enabled -%>
-    include /etc/acme/challenge-nginx.conf;
-<% end -%>
 
 <% if @server_properties -%>
   <%= @server_properties.sort.join("\n  ") -%>
