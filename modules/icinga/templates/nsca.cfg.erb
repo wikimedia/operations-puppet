@@ -41,8 +41,7 @@ nsca_user=<%= @icinga_user %>
 #
 # NOTE: This option is ignored if NSCA is running under either inetd or xinetd.
 
-# FIXME - replace with <%= @icinga_group %> once production is on stretch
-nsca_group=nagios
+nsca_group=<%= @icinga_group %>
 
 # NSCA CHROOT
 # If specified, determines a directory into which the nsca daemon
