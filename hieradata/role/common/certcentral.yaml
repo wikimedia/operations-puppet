@@ -1,4 +1,9 @@
 profile::certcentral::certificates:
+    archiva:
+        CN: 'archiva.wikimedia.org'
+        SNI:
+        - 'archiva.wikimedia.org'
+        challenge: dns-01
     librenms:
         CN: 'librenms.wikimedia.org'
         SNI:
