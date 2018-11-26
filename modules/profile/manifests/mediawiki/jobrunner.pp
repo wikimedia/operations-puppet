@@ -5,6 +5,40 @@ class profile::mediawiki::jobrunner(
     $port = 9005
     $local_only_port = 9006
 
+
+    class { '::httpd':
+        period  => 'daily',
+        rotate  => 7,
+        modules => [
+            'alias',
+            'authz_host',
+            'autoindex',
+            'deflate',
+            'dir',
+            'expires',
+            'headers',
+            'mime',
+            'rewrite',
+            'setenvif',
+            'proxy_fcgi',
+        ]
+    }
+
+    class { '::httpd::mpm':
+        mpm => 'worker',
+    }
+
+    # Modules we don't enable.
+    # TODO: We should also disable auth_basic, authn_file, authz_user
+    # env, negotiation and reqtimeout
+    ::httpd::mod_conf { [
+        'authz_default',
+        'authz_groupfile',
+        'cgi',
+    ]:
+        ensure => absent,
+    }
+
     # Special HHVM setup
     # The apache2 systemd unit in stretch enables PrivateTmp by default
     # This makes "systemctl reload apache" fail with error code 226/EXIT_NAMESPACE
@@ -45,18 +79,12 @@ class profile::mediawiki::jobrunner(
         }
     }
 
-    class { '::apache::mpm':
-        mpm => 'worker',
-    }
-
-    class { '::apache::mod::proxy_fcgi': }
-
-    apache::conf { 'hhvm_jobrunner_port':
+    httpd::conf { 'hhvm_jobrunner_port':
         priority => 1,
         content  => inline_template("# This file is managed by Puppet\nListen <%= @port %>\nListen <%= @local_only_port %>\n"),
     }
 
-    apache::site{ 'hhvm_jobrunner':
+    httpd::site{ 'hhvm_jobrunner':
         priority => 1,
         content  => template('profile/mediawiki/jobrunner/site.conf.erb'),
     }
