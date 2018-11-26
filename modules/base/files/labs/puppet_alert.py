@@ -14,12 +14,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 """
-Send an alert email to project admins about a puppet failure.  This is
+Send an alert email to project members about a puppet failure.  This is
 meant to be run on the affected instance.
 """
 import sys
 sys.path.append('/usr/local/sbin/')
-from notify_maintainers import email_admins
+from notify_maintainers import email_members
 import calendar
 import time
 import ldap
@@ -56,27 +56,27 @@ def main():
 
         fqdn = socket.getfqdn()
 
-        subject = "[Cloud VPS alert] puppet failure on %s" % (fqdn,)
+        subject = "[Cloud VPS alert] Puppet failure on %s" % (fqdn,)
 
-        print "It has been %s seconds since last puppet run." \
+        print "It has been %s seconds since last Puppet run." \
             "Sending nag emails." % NAG_INTERVAL
 
         body = """
 Puppet is failing to run on the "{fqdn}" instance in Wikimedia Cloud VPS.
 
-Working puppet runs are needed to maintain instance security and logins.
-As long as puppet continues to fail, this system is in danger of becoming
+Working Puppet runs are needed to maintain instance security and logins.
+As long as Puppet continues to fail, this system is in danger of becoming
 unreachable.
 
-You are receiving this email because you are listed as an administrator
-for the project that contains this instance.  Please take steps to repair
+You are receiving this email because you are listed as member for the
+project that contains this instance.  Please take steps to repair
 this instance or contact a Cloud VPS admin for assistance.
 
 For further support, visit #wikimedia-cloud on freenode or
 <https://wikitech.wikimedia.org>
 """.format(fqdn=fqdn)
 
-        email_admins(subject, body)
+        email_members(subject, body)
 
 
 if __name__ == '__main__':

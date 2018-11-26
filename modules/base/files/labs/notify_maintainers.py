@@ -16,7 +16,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 """
-Send email alerts to project admins -- run on the affected instance
+Send email alerts to project members -- run on the affected instance
 """
 import sys
 import argparse
@@ -37,7 +37,7 @@ def connect(server, username, password):
     return conn
 
 
-def email_admins(subject, msg):
+def email_members(subject, msg):
 
     with open('/etc/wmflabs-project') as f:
         project_name = f.read().strip()
@@ -46,22 +46,22 @@ def email_admins(subject, msg):
         config = yaml.safe_load(f)
 
     conn = connect(config['servers'][0], config['user'], config['password'])
-    roledn = "cn=projectadmin,cn=%s,ou=projects,%s" % (project_name,
-                                                       config['basedn'])
+    roledn = 'cn=%s,ou=groups,%s' % ('project-' + project_name,
+                                     config['basedn'])
 
     body = msg
 
-    adminrec = conn.search_s(
+    member_rec = conn.search_s(
         roledn,
         ldap.SCOPE_BASE
     )
-    admins = adminrec[0][1]['roleOccupant']
+    members = member_rec[0][1]['member']
 
-    for admin in admins:
-        if admin.lower() in USER_IGNORE_LIST:
+    for member in members:
+        if member.lower() in USER_IGNORE_LIST:
             continue
 
-        userrec = conn.search_s(admin, ldap.SCOPE_BASE)
+        userrec = conn.search_s(member, ldap.SCOPE_BASE)
         email = userrec[0][1]['mail'][0]
 
         args = ['/usr/bin/mail', '-s', subject, email]
@@ -86,9 +86,9 @@ def main():
         args.m = sys.stdin.read()
 
     if args.s is None:
-        args.s = "[WMFLabs notice] project admins for %s" % (socket.gethostname())
+        args.s = "[WMCS notice] Project members for %s" % (socket.gethostname())
 
-    email_admins(args.s, args.m)
+    email_members(args.s, args.m)
 
 
 if __name__ == '__main__':
