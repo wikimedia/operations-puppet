@@ -47,7 +47,6 @@ describe("Busted unit testing framework", function()
       -- Stub get_uri() returning orig_path
       _G.ts.client_request.get_uri = function() return orig_path end
 
-      stub(ts, "error")
       stub(ts.client_request, "set_uri")
 
       remap_hook()

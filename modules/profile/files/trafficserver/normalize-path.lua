@@ -75,8 +75,6 @@ function remap_hook()
 
         if orig_path ~= modified_path then
             ts.client_request.set_uri(modified_path)
-            -- Log to error.log while in testing phase!
-            ts.error("modified path: " .. orig_path .. " -> " .. modified_path)
         end
     end
 end
