@@ -53,8 +53,8 @@ class archiva::proxy(
             # regsubst is needed due to letsencrypt::cert::integrated's naming
             # conventions.
             $safe_cert_name = regsubst($certificate_name, '\W', '_', 'G')
-            $ssl_certificate_chained = "/etc/acme/cert/${safe_cert_name}.chained.crt"
-            $ssl_certificate_key = "/etc/acme/key/${safe_cert_name}.key"
+            $ssl_certificate_chained = "/etc/centralcerts/${safe_cert_name}.rsa-2048.chained.crt"
+            $ssl_certificate_key = "/etc/centralcerts/${safe_cert_name}.rsa-2048.key"
 
             $tls_server_properties = [
                 "ssl_certificate     ${ssl_certificate_chained};",
