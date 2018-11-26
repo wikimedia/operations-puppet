@@ -9,15 +9,17 @@
            Require local
        </RequireAny>
    </Location>
-   <LocationMatch "/(apcu|opcache)-free">
-       AuthType Basic
-       AuthName "Administrative action"
-       AuthBasicProvider file
-       AuthUserFile "/etc/apache/htpasswd.php7adm"
-       Require valid-user
-   </LocationMatch>
+   # disabled for now, would need more apache modules
+   # to be enabled
+   #<LocationMatch "/(apcu|opcache)-free">
+   #    AuthType Basic
+   #    AuthName "Administrative action"
+   #    AuthBasicProvider file
+   #    AuthUserFile "/etc/apache/htpasswd.php7adm"
+   #    Require valid-user
+   #</LocationMatch>
    RewriteEngine On
-   RewriteRule .* index.php [L]
+   RewriteRule .* /index.php [L]
    <FilesMatch "\.php$">
        SetHandler "proxy:fcgi://127.0.0.1:8000"
    </FilesMatch>
