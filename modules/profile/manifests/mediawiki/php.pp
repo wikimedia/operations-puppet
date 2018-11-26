@@ -228,5 +228,10 @@ class profile::mediawiki::php(
             sapis    => ['fpm']
         }
     }
-
+    ## Install excimer, our php profiler, if we're on a newer version of php
+    if $php_version != '7.0' {
+        php::extension { 'excimer':
+            ensure => present,
+        }
+    }
 }
