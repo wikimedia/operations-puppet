@@ -120,13 +120,11 @@ profile::eventstreams::streams:
     topics:
       - eqiad.mediawiki.revision-create
       - codfw.mediawiki.revision-create
-  # Disable public revision-score events until we figure out a good schema.
-  # See: https://phabricator.wikimedia.org/T197000
-  # revision-score:
-  #   description: "Mediawiki Revision Score feed. Schema: https://github.com/wikimedia/mediawiki-event-schemas/tree/master/jsonschema/mediawiki/revision/score"
-  #   topics:
-  #     - eqiad.mediawiki.revision-score
-  #     - codfw.mediawiki.revision-score
+  revision-score:
+    description: "Mediawiki Revision Score feed. Schema: https://github.com/wikimedia/mediawiki-event-schemas/tree/master/jsonschema/mediawiki/revision/score"
+    topics:
+      - eqiad.mediawiki.revision-score
+      - codfw.mediawiki.revision-score
   test:
     description: "Test event stream. A new event is posted about once a minute. Schema: https://github.com/wikimedia/mediawiki-event-schemas/tree/master/jsonschema/test/event"
     topics:
