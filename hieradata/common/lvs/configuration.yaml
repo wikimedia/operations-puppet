@@ -554,6 +554,52 @@ lvs::configuration::lvs_services:
           hostname: search.svc.eqiad.wmnet
         codfw:
           hostname: search.svc.codfw.wmnet
+  search-omega-https:
+    description: Elasticsearch search for MediaWiki (Omega cluster) - HTTPS
+    class: low-traffic
+    sites:
+    - codfw
+    ip: *ip_block013
+    port: 9443
+    depool-threshold: '.5'
+    monitors:
+      ProxyFetch:
+        url:
+        - https://localhost/
+      IdleConnection:
+        timeout-clean-reconnect: 3
+        max-delay: 300
+    conftool:
+      cluster: elasticsearch
+      service: elasticsearch-omega-ssl
+    icinga:
+      check_command: check_https_on_port!9443
+      sites:
+        codfw:
+          hostname: search.svc.codfw.wmnet
+  search-psi-https:
+    description: Elasticsearch search for MediaWiki (Psi cluster) - HTTPS
+    class: low-traffic
+    sites:
+    - codfw
+    ip: *ip_block013
+    port: 9643
+    depool-threshold: '.5'
+    monitors:
+      ProxyFetch:
+        url:
+        - https://localhost/
+      IdleConnection:
+        timeout-clean-reconnect: 3
+        max-delay: 300
+    conftool:
+      cluster: elasticsearch
+      service: elasticsearch-psi-ssl
+    icinga:
+      check_command: check_https_on_port!9643
+      sites:
+        codfw:
+          hostname: search.svc.codfw.wmnet
   mathoid:
     description: "Mathematical rendering service, mathoid.svc.%{::site}.wmnet"
     class: low-traffic

@@ -41,6 +41,20 @@ elasticsearch:
     datacenters:
     - eqiad
     - codfw
+  elasticsearch-omega-ssl:
+    port: 9443
+    default_values:
+      pooled: 'yes'
+      weight: 10
+    datacenters:
+    - codfw
+  elasticsearch-psi-ssl:
+    port: 9643
+    default_values:
+      pooled: 'yes'
+      weight: 10
+    datacenters:
+    - codfw
 sca:
   zotero:
     port: 1969
