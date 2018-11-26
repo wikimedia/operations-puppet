@@ -46,6 +46,10 @@ class archiva::proxy(
                 system_svc => 'nginx',
             }
 
+            certcentral::cert { $certificate_name:
+                puppet_svc => 'nginx',
+            }
+
             # regsubst is needed due to letsencrypt::cert::integrated's naming
             # conventions.
             $safe_cert_name = regsubst($certificate_name, '\W', '_', 'G')
