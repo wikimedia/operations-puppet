@@ -28,6 +28,7 @@ define certcentral::cert (
             group  => 'root',
             mode   => '0644',
             source => "puppet://${::certcentral_host}/acmedata/${title}/${type}.crt",
+            notify => Service[$puppet_svc],
         }
 
         file { "/etc/centralcerts/${title}.${type}.chain.crt":
@@ -35,6 +36,7 @@ define certcentral::cert (
             group  => 'root',
             mode   => '0644',
             source => "puppet://${::certcentral_host}/acmedata/${title}/${type}.chain.crt",
+            notify => Service[$puppet_svc],
         }
 
         file { "/etc/centralcerts/${title}.${type}.chained.crt":
@@ -42,6 +44,7 @@ define certcentral::cert (
             group  => 'root',
             mode   => '0644',
             source => "puppet://${::certcentral_host}/acmedata/${title}/${type}.chained.crt",
+            notify => Service[$puppet_svc],
         }
 
         file { "/etc/centralcerts/${title}.${type}.key":
@@ -49,6 +52,7 @@ define certcentral::cert (
             group  => 'root',
             mode   => '0600',
             source => "puppet://${::certcentral_host}/acmedata/${title}/${type}.key",
+            notify => Service[$puppet_svc],
         }
         # lint:endignore
     }
