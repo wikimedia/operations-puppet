@@ -15,7 +15,7 @@
        AuthBasicProvider file
        AuthUserFile "/etc/apache/htpasswd.php7adm"
        Require valid-user
-   </Location>
+   </LocationMatch>
    RewriteEngine On
    RewriteRule .* index.php [L]
    <FilesMatch "\.php$">
