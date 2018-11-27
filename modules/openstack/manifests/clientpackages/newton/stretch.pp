@@ -15,4 +15,8 @@ class openstack::clientpackages::newton::stretch(
     package{ $python3packages:
         ensure => 'present',
     }
+
+    package{ 'mariadb-client-10.1':
+        ensure => 'present',
+    }
 }

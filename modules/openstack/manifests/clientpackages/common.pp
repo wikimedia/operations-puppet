@@ -16,7 +16,6 @@ class openstack::clientpackages::common(
     $otherpackages = [
         'ebtables',
         'python-netaddr',
-        'virtual-mysql-client',
     ]
 
     package { $otherpackages:

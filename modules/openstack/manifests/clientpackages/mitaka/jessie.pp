@@ -3,6 +3,10 @@ class openstack::clientpackages::mitaka::jessie(
     # repo is jessie-backports, already enabled by ::apt
     # we just need some apt pinning configuration here
 
+    package{ 'mysql-client-5.5':
+        ensure => 'present',
+    }
+
     apt::pin { 'jessie_mitaka_pinning_python_cinderclient':
         package  => 'python-cinderclient',
         pin      => 'version 1:1.6.0-3~bpo8+1',
