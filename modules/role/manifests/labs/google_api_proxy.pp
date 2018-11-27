@@ -29,7 +29,8 @@ class role::labs::google_api_proxy (
         $instances,
         {
             'acls'       => [
-                'allow 10.68.16.0/21; # All of Labs',
+                'allow 10.68.16.0/21; # All of eqiad region',
+                'allow 172.16.0.0/21; # All of eqiad1-r region',
                 'allow 127.0.0.1;',
                 'deny all;',
             ],
