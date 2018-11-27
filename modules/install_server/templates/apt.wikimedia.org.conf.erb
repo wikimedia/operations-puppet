@@ -23,8 +23,8 @@ server {
    listen [::]:443 ipv6only=on default_server ssl;
    server_name apt.wikimedia.org;
 
-   ssl_certificate /etc/acme/cert/apt.chained.crt;
-   ssl_certificate_key /etc/acme/key/apt.key;
+   ssl_certificate /etc/centralcerts/apt.rsa-2048.chained.crt;
+   ssl_certificate_key /etc/centralcerts/apt.rsa-2048.key;
    <%= @ssl_settings.join("\n   ") %>
 
    root /srv;
