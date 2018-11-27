@@ -30,7 +30,7 @@ class profile::redis::slave(
     redis::monitoring::nrpe_instance { $instances: }
 
     diamond::collector { 'Redis':
-        settings => { instances => join($uris, ', ') }
+        ensure => 'absent'
     }
 
     profile::prometheus::redis_exporter{ $instances:
