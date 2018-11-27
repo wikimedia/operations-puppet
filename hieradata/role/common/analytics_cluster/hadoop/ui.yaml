@@ -1,5 +1,7 @@
 nagios_group: analytics_eqiad
 cluster: analytics
+admin::groups:
+  - analytics-admins
 
 profile::hadoop::common::hadoop_cluster_name: 'analytics-hadoop'
 

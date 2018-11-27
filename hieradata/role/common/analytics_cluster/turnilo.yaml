@@ -1,3 +1,8 @@
+nagios_group: analytics_eqiad
+cluster: analytics
+admin::groups:
+  - analytics-admins
+
 profile::druid::turnilo::port: 9091
 profile::druid::turnilo::druid_clusters:
   - name: druid-analytics-eqiad
