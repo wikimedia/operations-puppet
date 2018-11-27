@@ -461,3 +461,10 @@ li.ci_comment_test { list-style-type: none; }
   position: absolute;
   padding: 0 0.5em;
 }
+
+/**
+ * Overrides strange css in gerrit where editor header is only 16px
+ */
+.com-google-gerrit-client-editor-EditScreen_BinderImpl_GenCss_style-header {
+  height: auto;
+}
