@@ -91,7 +91,13 @@ class profile::toolforge::bastion(
 
     systemd::unit { 'user-.slice':
         ensure   => present,
-        content  => file('profile/toolforge/bastion-resource-control.conf'),
+        content  => file('profile/toolforge/bastion-user-resource-control.conf'),
+        override => true,
+    }
+
+    systemd::unit { 'user-0.slice':
+        ensure   => present,
+        content  => file('profile/toolforge/bastion-root-resource-control.conf'),
         override => true,
     }
 
