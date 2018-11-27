@@ -217,6 +217,11 @@ profile::kubernetes::deployment_server::services:
     group: wikidev
     mode: '0640'
     namespace: zotero
+  graphoid:
+    username: graphoid
+    group: wikidev
+    mode: '0640'
+    namespace: graphoid
 
 # Specified in the private repo in this form
 #profile::kubernetes::deployment_server::tokens:
@@ -225,6 +230,8 @@ profile::kubernetes::deployment_server::services:
 #  mathoid:
 #    token: dummy
 #  zotero:
+#    token: dummy
+#  graphoid
 #    token: dummy
 diamond::remove: true
 profile::mediawiki::php::php_version: "7.2"
