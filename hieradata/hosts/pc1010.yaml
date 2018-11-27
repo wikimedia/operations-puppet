@@ -1,0 +1,2 @@
+mariadb::parsercache::shard: 'pc1'
+profile::base::notifications: disabled

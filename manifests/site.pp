@@ -1883,33 +1883,16 @@ node 'oxygen.eqiad.wmnet'
 # parser cache databases
 # eqiad
 # pc1
-node 'pc1004.eqiad.wmnet' {
+node /^pc10(04|07|10)\.eqiad\.wmnet$/ {
     role(mariadb::parsercache)
 }
 # pc2
-node 'pc1005.eqiad.wmnet' {
+node /^pc10(05|08)\.eqiad\.wmnet$/ {
     role(mariadb::parsercache)
 }
 # pc3
-node 'pc1006.eqiad.wmnet' {
+node /^pc10(06|09)\.eqiad\.wmnet$/ {
     role(mariadb::parsercache)
-}
-
-# pc1007-1010 are new via T207258
-node 'pc1007.eqiad.wmnet' {
-    role(spare::system)
-}
-
-node 'pc1008.eqiad.wmnet' {
-    role(spare::system)
-}
-
-node 'pc1009.eqiad.wmnet' {
-    role(spare::system)
-}
-
-node 'pc1010.eqiad.wmnet' {
-    role(spare::system)
 }
 
 # codfw
