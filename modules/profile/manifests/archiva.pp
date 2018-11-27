@@ -8,6 +8,9 @@ class profile::archiva(
 ) {
     require_package('default-jdk')
 
+    # needed by ssl_ciphersuite() used in ::archiva::proxy
+    class { '::sslcert::dhparam': }
+
     class { '::archiva': }
 
     class { '::archiva::gitfat': }
