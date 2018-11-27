@@ -8,7 +8,7 @@ class role::logstash::eventlogging {
     include ::role::logstash::collector
 
     $topic = 'eventlogging_EventError'
-    $kafka_config = kafka_config('analytics')
+    $kafka_config = kafka_config('jumbo')
 
     logstash::input::kafka { $topic:
         tags              => [$topic, 'kafka'],
