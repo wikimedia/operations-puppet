@@ -6360,6 +6360,36 @@ host restbase2012 {
     filename "lpxelinux.0";
 }
 
+host restbase2013 {
+    hardware ethernet 4C:D9:8F:35:6E:78;
+    fixed-address restbase2013.codfw.wmnet;
+}
+
+host restbase2014 {
+    hardware ethernet D0:94:66:98:0D:8C;
+    fixed-address restbase2014.codfw.wmnet;
+}
+
+host restbase2015 {
+    hardware ethernet D0:94:66:97:ED:8A;
+    fixed-address restbase2015.codfw.wmnet;
+}
+
+host restbase2016 {
+    hardware ethernet D0:94:66:98:02:81;
+    fixed-address restbase2016.codfw.wmnet;
+}
+
+host restbase2017 {
+    hardware ethernet D0:94:66:97:7A:2C;
+    fixed-address restbase2017.codfw.wmnet;
+}
+
+host restbase2018 {
+    hardware ethernet D0:94:66:97:E8:C9;
+    fixed-address restbase2018.codfw.wmnet;
+}
+
 host restbase-dev1004 {
     hardware ethernet 30:e1:71:5c:a2:f8;
     fixed-address restbase-dev1004.eqiad.wmnet;
