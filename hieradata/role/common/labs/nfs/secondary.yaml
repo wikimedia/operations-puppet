@@ -13,3 +13,6 @@ profile::base::ssh_server_settings:
 
 admin::groups:
   - wmcs-roots
+
+prometheus::node_exporter::collectors_extra:
+  - drbd
