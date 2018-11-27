@@ -1,8 +1,14 @@
+# This file is managed by Puppet
+# Do NOT edit by hand! any manual change will be lost.
+#
+
 ##############################################################################
 #
 # ICINGA.CFG - Sample Main Config File for Icinga
-# Modified from nagios3
 #
+# Read the documentation for more information on this configuration
+# file.  I've provided some comments here, but things may not be so
+# clear without further explanation.
 #
 ##############################################################################
 
@@ -15,8 +21,7 @@
 log_file=/var/log/icinga/icinga.log
 
 # Commands definitions
-cfg_file=/etc/icinga/checkcommands.cfg
-cfg_dir=/etc/icinga/commands
+cfg_file=/etc/icinga/commands.cfg
 
 # Debian also defaults to using the check commands defined by the debian
 # nagios-plugins package
@@ -25,37 +30,29 @@ cfg_dir=/etc/nagios-plugins/config
 # OBJECT CONFIGURATION FILE(S)
 # These are the object configuration files in which you define hosts,
 # host groups, contacts, contact groups, services, etc.
-# You can split your object definitions across several config files
-# if you wish (as shown below), or keep them all in a single config file.
+# Hint: Check the docs/wiki on how to monitor remote hosts with different
+# transport methods and plugins
 
-# You can specify individual object config files as shown below:
-#cfg_file=/etc/nagios3/objects/commands.cfg
+# Debian uses by default a configuration directory where icinga-common,
+# other packages and the local admin can dump or link configuration
+# files into.
+cfg_dir=/etc/icinga/objects/
 
-# PUPPET managed
-cfg_file=/etc/icinga/contactgroups.cfg
-cfg_file=/etc/icinga/contacts.cfg
-cfg_file=/etc/icinga/timeperiods.cfg
-cfg_file=/etc/icinga/notification_commands.cfg
-# We use naggen2 for those
-cfg_file=/etc/icinga/puppet_hosts.cfg
-cfg_file=/etc/icinga/puppet_services.cfg
+# Definitions for ido2db process checks
+#cfg_file=/etc/icinga/objects/ido2db_check_proc.cfg
 
+# Definitions for broker modules like idoutils.cfg
+cfg_dir=/etc/icinga/modules
 
-# You can also tell Icinga to process all config files (with a .cfg
-# extension) in a particular directory by using the cfg_dir
-# directive as shown below:
+# CUSTOM CONFIG FILES
+<%- @cfg_files.sort.each do |cfgfile| -%>
+cfg_file=<%= cfgfile %>
+<%- end -%>
 
-# backwards compatibility with old nagios installation
-cfg_file=/etc/nagios/puppet_hostgroups.cfg
-cfg_file=/etc/nagios/puppet_servicegroups.cfg
-# These are locally generated hosts (like routers, pdus). We do not use naggen2 for these
-cfg_file=/etc/nagios/nagios_host.cfg
-cfg_file=/etc/nagios/nagios_service.cfg
-
-# passive checks via nsca from fundraising systems
-cfg_file=/etc/icinga/nsca_frack.cfg
-
-
+# CUSTOM CONFIG DIRECTORIES
+<%- @cfg_dirs.sort.each do |cfgdir| -%>
+cfg_dir=<%= cfgdir %>
+<%- end -%>
 
 # OBJECT CACHE FILE
 # This option determines where object definitions are cached when
@@ -63,6 +60,11 @@ cfg_file=/etc/icinga/nsca_frack.cfg
 # this cache file (rather than looking at the object config files
 # directly) in order to prevent inconsistencies that can occur
 # when the config files are modified after Icinga starts.
+# If you explicitely set it to /dev/null the core will skip writing
+# the objects cache file entirely.
+# Note: This is a mandatory output for Icinga Classic UI to work properly.
+# Tip: Use that file to debug your configuration with fully resolved
+# objects like the core sees them.
 
 object_cache_file=/var/cache/icinga/objects.cache
 
@@ -70,7 +72,7 @@ object_cache_file=/var/cache/icinga/objects.cache
 
 # PRE-CACHED OBJECT FILE
 # This options determines the location of the precached object file.
-# If you run icinga with the -p command line option, it will preprocess
+# If you run Icinga with the -p command line option, it will preprocess
 # your object configuration file(s) and write the cached config to this
 # file.  You can then start Icinga with the -u option to have it read
 # object definitions from this precached file, rather than the standard
@@ -80,7 +82,7 @@ object_cache_file=/var/cache/icinga/objects.cache
 # Read the documentation section on optimizing Icinga to find our more
 # about how this feature works.
 
-precached_object_file=/var/lib/icinga/objects.precache
+precached_object_file=/var/cache/icinga/objects.precache
 
 
 
@@ -101,9 +103,13 @@ resource_file=/etc/icinga/resource.cfg
 # This is where the current status of all monitored services and
 # hosts is stored.  Its contents are read and processed by the CGIs.
 # The contents of the status file are deleted every time Icinga
-#  restarts.
+# restarts.
+# If you explicitely set it to /dev/null the core will skip writing
+# the status file entirely. This becomes handy when using other methods
+# for data retrieval (e.g. IDOUtils DB)
+# Note: This is a mandatory output for Icinga Classic UI to work properly.
 
-status_file=/var/icinga-tmpfs/status.dat
+status_file=<%= @status_file || '/var/icinga-tmpfs/status.dat' %>
 
 
 
@@ -111,7 +117,9 @@ status_file=/var/icinga-tmpfs/status.dat
 # This option determines the frequency (in seconds) that
 # Icinga will periodically dump program, host, and
 # service status data.
+# Increase the value, if you don't require it that often.
 
+#status_update_interval=30
 status_update_interval=10
 
 
@@ -120,7 +128,7 @@ status_update_interval=10
 # This determines the effective user that Icinga should run as.
 # You can either supply a username or a UID.
 
-icinga_user=<%= @icinga_user %>
+icinga_user=nagios
 
 
 
@@ -128,7 +136,7 @@ icinga_user=<%= @icinga_user %>
 # This determines the effective group that Icinga should run as.
 # You can either supply a group name or a GID.
 
-icinga_group=icinga
+icinga_group=nagios
 
 
 
@@ -172,7 +180,7 @@ command_check_interval=-1
 # Debian Users: In case you didn't read README.Debian yet, _NOW_ is the
 # time to do it.
 
-command_file=/var/lib/nagios/rw/nagios.cmd
+command_file=/var/lib/icinga/rw/icinga.cmd
 
 
 
@@ -181,8 +189,11 @@ command_file=/var/lib/nagios/rw/nagios.cmd
 # the Icinga daemon should allocate to the buffer that holds incoming
 # external commands before they are processed.  As external commands
 # are processed by the daemon, they are removed from the buffer.
+# Increase the value, if you are using addons like check_mk supplying
+# more external commands (passive check results) than usual.
 
-external_command_buffer_slots=8192
+#external_command_buffer_slots=32768
+external_command_buffer_slots=<%= @external_command_buffer_slots || 8192 %>
 
 
 
@@ -200,7 +211,7 @@ lock_file=/var/run/icinga/icinga.pid
 # is created, used, and deleted throughout the time that Icinga is
 # running.
 
-temp_file=/var/icinga-tmpfs/icinga.tmp
+temp_file=<%= @temp_file || '/var/icinga-tmpfs/icinga.tmp' %>
 
 
 
@@ -208,7 +219,7 @@ temp_file=/var/icinga-tmpfs/icinga.tmp
 # This is path where Icinga can create temp files for service and
 # host check results, etc.
 
-temp_path=/var/icinga-tmpfs
+temp_path=<%= @temp_path || '/var/icinga-tmpfs' %>
 
 
 
@@ -218,40 +229,19 @@ temp_path=/var/icinga-tmpfs
 #         -1      = Broker everything
 #         <other> = See documentation
 
-event_broker_options=0
+event_broker_options=<%= @event_broker_options || 0 %>
 
 
 
 # EVENT BROKER MODULE(S)
-# This directive is used to specify an event broker module that should
-# by loaded by Icinga at startup.  Use multiple directives if you want
-# to load more than one module.  Arguments that should be passed to
-# the module at startup are seperated from the module path by a space.
+# ----> use the new *module definition* instead:
+# ----> http://docs.icinga.org/latest/en/objectdefinitions.html
 #
-#!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-# WARNING !!! WARNING !!! WARNING !!! WARNING !!! WARNING !!! WARNING
-#!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-#
-# Do NOT overwrite modules while they are being used by Icinga or Icinga
-# will crash in a fiery display of SEGFAULT glory.  This is a bug/limitation
-# either in dlopen(), the kernel, and/or the filesystem.  And maybe Icinga...
-#
-# The correct/safe way of updating a module is by using one of these methods:
-#    1. Shutdown Icinga, replace the module file, restart Icinga
-#    2. Delete the original module file, move the new module file into place, restart Icinga
-#
-# Example:
-#
-#   broker_module=<modulepath> [moduleargs]
-
-#broker_module=/somewhere/module1.o
-#broker_module=/somewhere/module2.o arg1 arg2=3 debug=0
-
-# Uncomment this to enable idomod.o
+# Example definitions can be found in the '/etc/icinga/modules/' directory.
+# If you want to enable idoutils in Debian install icinga-idoutils and copy
+# /usr/share/doc/icinga-idoutils/examples/idoutils.cfg-sample to
+# /etc/icinga/modules/idoutils.cfg.
 # Don't forget to also enable the daemon in /etc/default/icinga
-#broker_module=/usr/lib/icinga/idomod.o config_file=/etc/icinga/idomod.cfg
-
-
 
 # LOG ROTATION METHOD
 # This is the log rotation method that Icinga should use to rotate
@@ -265,14 +255,11 @@ event_broker_options=0
 log_rotation_method=d
 
 
-
 # LOG ARCHIVE PATH
 # This is the directory where archived (rotated) log files should be
 # placed (assuming you've chosen to do log rotation).
 
-log_archive_path=/var/log/icinga/archives
-
-
+log_archive_path=/srv/icinga-logs
 
 
 # LOGGING OPTIONS FOR DAEMON
@@ -280,6 +267,8 @@ log_archive_path=/var/log/icinga/archives
 # Default option is 1 (yes), the other valid option is 0 (no)
 
 use_daemon_log=1
+
+
 # LOGGING OPTIONS FOR SYSLOG
 # If you want messages logged to the syslog facility, as well as the
 # Icinga log file set this option to 1.  If not, set it to 0.
@@ -287,20 +276,18 @@ use_daemon_log=1
 use_syslog=1
 
 
-
 # SYSLOG FACILITY
 # If you enabled use_syslog you can set icinga to use a local facility
 # instead of the default.To enable set this option to 1, if not, set it to 0.
 
-use_syslog_local_facility=0
-
+use_syslog_local_facility=1
 
 
 # SYSLOG LOCAL FACILITY
 # If you specified the use_syslog_local_facility you can chose which
 # local facility to use. Valid values are from 0 to 7
 
-syslog_local_facility=5
+syslog_local_facility=1
 
 
 # NOTIFICATION LOGGING OPTION
@@ -315,7 +302,7 @@ log_notifications=1
 # If you don't want service check retries to be logged, set this value
 # to 0.  If retries should be logged, set the value to 1.
 
-log_service_retries=0
+log_service_retries=1
 
 
 
@@ -323,7 +310,7 @@ log_service_retries=0
 # If you don't want host check retries to be logged, set this value to
 # 0.  If retries should be logged, set the value to 1.
 
-log_host_retries=0
+log_host_retries=1
 
 
 
@@ -356,6 +343,7 @@ log_initial_states=0
 log_current_states=1
 
 
+
 # EXTERNAL COMMANDS LOGGING OPTION
 # If you don't want Icinga to log external commands, set this value
 # to 0.  If external commands should be logged, set this value to 1.
@@ -367,12 +355,32 @@ log_external_commands=1
 
 
 
+# LOG ANONYMIZED EXTERNAL COMMAND AUTHOR !!EXPERIMENTAL!!
+# This option substitutes the user name on external commands with
+# the string "<anon>" if the command gets logged. It is
+# anonymized in log files only. This option was added to make
+# icinga compliant with data retention laws on various countries.
+# This option is disabled by default.
+
+log_anonymized_external_command_author=0
+
+
+
 # PASSIVE CHECKS LOGGING OPTION
 # If you don't want Icinga to log passive host and service checks, set
 # this value to 0.  If passive checks should be logged, set
 # this value to 1.
 
 log_passive_checks=1
+
+
+
+# LONG PLUGIN OUTPUT LOGGING OPTION
+# If you want Icinga to log the complete text of the plugin output
+# to the log instead of only the first line then set this value to 1.
+# Default value is 0.
+
+log_long_plugin_output=0
 
 
 
@@ -466,17 +474,18 @@ max_host_check_spread=30
 # will not restrict the number of concurrent checks that are
 # being executed.
 
-max_concurrent_checks=<%= @max_concurrent_checks %>
+max_concurrent_checks=<%= @max_concurrent_checks || 10000 %>
+
 
 
 # HOST AND SERVICE CHECK REAPER FREQUENCY
 # This is the frequency (in seconds!) that Icinga will process
 # the results of host and service checks.
+# Lower this value in larger environments to allow faster
+# check result processing (requires more cpu power).
 
-check_result_reaper_frequency=10
-
-
-
+#check_result_reaper_frequency=1
+check_result_reaper_frequency=2
 
 # MAX CHECK RESULT REAPER TIME
 # This is the max amount of time (in seconds) that  a single
@@ -484,7 +493,7 @@ check_result_reaper_frequency=10
 # returning control back to Icinga so it can perform other
 # duties.
 
-max_check_result_reaper_time=30
+max_check_result_reaper_time=10
 
 
 
@@ -496,7 +505,7 @@ max_check_result_reaper_time=30
 # Note: Make sure that only one instance of Icinga has access
 # to this directory!
 
-check_result_path=/var/icinga-tmpfs
+check_result_path=<%= @check_result_path || '/var/icinga-tmpfs' %>
 
 
 
@@ -507,6 +516,23 @@ check_result_path=/var/icinga-tmpfs
 # threshold will be mercilessly deleted without further processing.
 
 max_check_result_file_age=3600
+
+
+
+
+# MAX CHECK RESULT LIST ITEMS !!EXPERIMENTAL!!
+# This experimental option allows you to set the max number of items
+# the checkresult reaper will put onto the checkresult list for further
+# processing by the core. If there are too many, the reaping will be
+# terminated early, allowing the core to process the results sooner.
+# On larger setups, that list might grow too much, and decrease
+# performance on processing. You might experiment with that value, the
+# inner core default is set to 0, disabling that feature.
+# Values:
+#  0 = Disable max check result list items
+#  number = set max check result list items
+
+#max_check_result_list_items=1024
 
 
 
@@ -580,7 +606,7 @@ soft_state_dependencies=0
 
 # TIME CHANGE ADJUSTMENT THRESHOLDS
 # These options determine when Icinga will react to detected changes
-# in system time (either forward or backwards).
+# in system time (forward into the future).
 
 #time_change_threshold=900
 
@@ -639,8 +665,12 @@ sleep_time=0.25
 # service checks, host checks, event handlers, notifications, the
 # ocsp command, and performance data commands.  All values are in
 # seconds.
+# Increase the timeout values in case you are experiencing a lot
+# of check timeouts. Addons like e.g. check_mk will perform
+# one combined active servicecheck which could take longer than
+# the default of 60sec.
 
-service_check_timeout=90
+service_check_timeout=<%= @service_check_timeout || 90 %>
 host_check_timeout=30
 event_handler_timeout=30
 notification_timeout=30
@@ -671,9 +701,7 @@ retain_state_information=1
 # This file is used only if the retain_state_information
 # variable is set to 1.
 
-state_retention_file=/var/lib/icinga/retention.dat
-
-
+state_retention_file=<%= @retention_file || '/var/lib/icinga/retention.dat' %>
 
 # SYNC FILE
 # This is an advanced facility to pass a subset of retention
@@ -697,7 +725,8 @@ state_retention_file=/var/lib/icinga/retention.dat
 # If the file does not exist, no error will appear.
 # There is also an API that will force a read of the sync file.
 
-#sync_retention_file=/var/lib/icinga/sync.dat
+#sync_retention_file=/var/cache/icinga/sync.dat
+
 
 
 # RETENTION DATA UPDATE INTERVAL
@@ -725,10 +754,12 @@ use_retained_program_state=1
 # DUMP RETAINED HOST SERVICE STATES TO NEB
 # This setting determines wether or not Icinga will dump host
 # and service states based on the values saved in the retention
-# file to the neb modules. If you don't want that, use at your
-# own risk and disable it
+# file to the neb modules. It will already do that on event loop
+# initialization.
+# Changed in Icinga 1.10 to disabled - re-enable if you require it.
 
-dump_retained_host_service_states_to_neb=1
+dump_retained_host_service_states_to_neb=<%= @dump_retained_host_service_states_to_neb || 1 %>
+
 
 
 # USE RETAINED SCHEDULING INFO
@@ -846,7 +877,7 @@ accept_passive_host_checks=1
 # service notifications when it is initially (re)started.
 # Values: 1 = enable notifications, 0 = disable notifications
 
-enable_notifications=<%= @enable_notifications %>
+enable_notifications=<%= @enable_notifications || 0 %>
 
 
 
@@ -856,7 +887,21 @@ enable_notifications=<%= @enable_notifications %>
 # you're implementing redundant hosts, leave this option enabled.
 # Values: 1 = enable event handlers, 0 = disable event handlers
 
-enable_event_handlers=<%= @enable_event_handlers %>
+enable_event_handlers=<%= @enable_event_handlers || 1 %>
+
+
+
+# STATE BASED ESCALATION RANGES !!!Experimental!!!
+# This option allows you to enable state based escalation ranges which
+# will allow a more detailed granularity on when an escalation notification
+# may happen, adding a filter based on the current host or service state
+# when checking the escalation for notification viability.
+# This is a behavioural change to the default, and therefore intentionally
+# disabled. Enable at your own risk, as this remains an experimental feature.
+# Values: 1 = enable state based escalation ranges,
+# 0 = disable state based escalation ranges
+
+#enable_state_based_escalation_ranges=0
 
 
 
@@ -959,6 +1004,11 @@ process_performance_data=0
 # This boolean option determines whether services assigned to empty
 # host groups (host groups with no host members) will cause Icinga to
 # exit with error on start up (or during a configuration check) or not.
+# It's useful to be able to assign services to empty hostgroups when
+# configuration files or pre-cached object files are distributed to
+# various pollers, or when the process of generating Icinga config is
+# automated, or when a set of services is slowly being phased out but
+# should be kept around.
 # The default behavior if the option is not present in the main
 # configuration file is for Icinga to exit with error if services are
 # associated with host groups that have no hosts associated with them.
@@ -1140,7 +1190,7 @@ additional_freshness_latency=15
 # Values: 1 = enable flap detection
 #         0 = disable flap detection (default)
 
-enable_flap_detection=0
+enable_flap_detection=<%= @enable_flap_detection || 0 %>
 
 
 
@@ -1179,7 +1229,7 @@ date_format=iso8601
 # will also need to alter the Apache directives for the CGI path
 # to include your timezone.  Example:
 #
-#   <Directory "/usr/local/nagios/sbin/">
+#   <Directory "/usr/local/icinga/sbin/">
 #      SetEnv TZ "Australia/Brisbane"
 #      ...
 #   </Directory>
@@ -1203,9 +1253,13 @@ p1_file=/usr/lib/icinga/p1.pl
 # This option determines whether or not the embedded Perl interpreter
 # will be enabled during runtime.  This option has no effect if Icinga
 # has not been compiled with support for embedded Perl.
+# This option is intentionally disabled by default, because embedded
+# perl can cause memory leaks and make Icinga unstable if not properly
+# used.
+# Only enable this setting when you really know what you are doing!
 # Values: 0 = disable interpreter, 1 = enable interpreter
 
-enable_embedded_perl=0
+enable_embedded_perl=<%= @enable_embedded_perl || 0 %>
 
 
 
@@ -1240,6 +1294,7 @@ stalking_notifications_for_hosts=0
 stalking_notifications_for_services=0
 
 
+
 # ILLEGAL OBJECT NAME CHARACTERS
 # This option allows you to specify illegal characters that cannot
 # be used in host names, service descriptions, or names of other
@@ -1264,7 +1319,22 @@ illegal_object_name_chars=`~!$%^&*|'"<>?,()=
 #	$SERVICEACKAUTHOR$
 #	$SERVICEACKCOMMENT$
 
-illegal_macro_output_chars=`~$|'"<>
+illegal_macro_output_chars=`~$&|'"<>
+
+
+
+# KEEP UNKNOWN MACROS
+# This option can be used to keep unknown macros within the output.
+# e.g. check_proc -C $foo$ will remain.
+# This was the default in versions older than Icinga 1.8, but now
+# the default is to remove those macros from the output, causing
+# the shell to interpret $foo and leaving a single $ there. See
+# #2291 for further information.
+# Make sure to escape single dollar signs with another '$', as the
+# docs describe. Other than that, enable this setting to revert to
+# the old behaviour.
+
+keep_unknown_macros=0
 
 
 
@@ -1299,8 +1369,8 @@ use_true_regexp_matching=0
 # using the $ADMINEMAIL$ and $ADMINPAGER$ macros in your notification
 # commands.
 
-admin_email=nagios
-admin_pager=pagenagios
+admin_email=<%= @admin_email || 'noc@wikimedia.org' %>
+admin_pager=<%= @admin_email || 'noc@wikimedia.org' %>
 
 
 
@@ -1325,7 +1395,7 @@ daemon_dumps_core=0
 # Values: 1 - Enabled tweaks
 #         0 - Disable tweaks (default)
 
-use_large_installation_tweaks=1
+use_large_installation_tweaks=<%= @use_large_installation_tweaks || 1 %>
 
 
 
@@ -1336,10 +1406,12 @@ use_large_installation_tweaks=1
 # executed.  Enabling this option can cause performance issues in
 # large installations, as it will consume a bit more memory and (more
 # importantly) consume more CPU.
-# Values: 1 - Enable environment variable macros (default)
-#         0 - Disable environment variable macros
+# Keep in mind that various addons/plugins will require this setting
+# to be enabled (e.g. check_oracle_health) for special usage.
+# Values: 1 - Enable environment variable macros
+#         0 - Disable environment variable macros (default)
 
-enable_environment_macros=0
+enable_environment_macros=<%= @enable_environment_macros || 0 %>
 
 
 
@@ -1400,7 +1472,7 @@ debug_level=0
 #         1 = More detailed
 #         2 = Very detailed
 
-debug_verbosity=1
+debug_verbosity=2
 
 
 
@@ -1418,4 +1490,5 @@ debug_file=/var/log/icinga/icinga.debug
 # automatically be deleted.  This helps ensure your disk space usage doesn't
 # get out of control when debugging Icinga.
 
-max_debug_file_size=1000000
+# 100M
+max_debug_file_size=100000000

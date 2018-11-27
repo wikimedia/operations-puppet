@@ -70,14 +70,6 @@ class icinga(
               File['/etc/init.d/icinga'],
           ],
         }
-        file { '/etc/icinga/icinga.cfg':
-          content => template('icinga/icinga.cfg.erb'),
-          owner   => $icinga_user,
-          group   => $icinga_group,
-          mode    => '0644',
-          require => Package['icinga'],
-          notify  => Service['icinga'],
-        }
 
         class { '::nagios_common::contactgroups':
           source  => 'puppet:///modules/nagios_common/contactgroups.cfg',
@@ -150,7 +142,7 @@ class icinga(
         }
 
         file { '/etc/icinga/icinga.cfg':
-          content => template('icinga/stretch-icinga.cfg.erb'),
+          content => template('icinga/icinga.cfg.erb'),
           owner   => $icinga_user,
           group   => $icinga_group,
           mode    => '0644',
