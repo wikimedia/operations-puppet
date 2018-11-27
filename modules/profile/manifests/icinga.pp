@@ -167,13 +167,14 @@ class profile::icinga(
         true  => 'present',
         false => 'absent',
     }
+
     cron { 'sync-icinga-state':
         ensure  => $cron_presence,
         minute  => '33',
         command => '/usr/local/sbin/run-no-puppet /usr/local/sbin/sync_icinga_state >/dev/null 2>&1',
     }
 
-    # On the passive host, replace the downtime script with a warning
+    # On the passive host, replace the downtime script with a warning.
     $downtime_script = $is_passive ? {
         true  => 'icinga-downtime-absent.sh',
         false => 'icinga-downtime.sh',
@@ -186,5 +187,17 @@ class profile::icinga(
         owner   => 'root',
         group   => 'root',
         mode    => '0550',
+    }
+
+    # On the passive host, display a warning in the MOTD.
+    $motd_presence = $is_passive ? {
+        true  => 'present',
+        false => 'absent',
+    }
+
+    motd::script { 'inactive_warning':
+        ensure   => $motd_presence,
+        priority => 1,
+        content  => template('profile/icinga/inactive.motd.erb'),
     }
 }
