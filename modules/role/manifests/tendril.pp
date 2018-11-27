@@ -12,6 +12,8 @@ class role::tendril {
 
     include ::profile::tendril::webserver
 
+    # needed by ssl_ciphersuite() used in ::tendril
+    class { '::sslcert::dhparam': }
     class { '::tendril':
         site_name    => 'tendril.wikimedia.org',
         docroot      => '/srv/tendril/web',
