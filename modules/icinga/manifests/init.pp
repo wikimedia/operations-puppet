@@ -219,15 +219,6 @@ class icinga(
         check_interval => 10,
     }
 
-    # script to schedule host downtimes
-    file { '/usr/local/bin/icinga-downtime':
-        ensure => present,
-        source => 'puppet:///modules/icinga/icinga-downtime.sh',
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0550',
-    }
-
     # script to manually send SMS to Icinga contacts (T82937)
     file { '/usr/local/bin/icinga-sms':
         ensure => present,

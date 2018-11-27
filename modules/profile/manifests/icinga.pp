@@ -172,4 +172,19 @@ class profile::icinga(
         minute  => '33',
         command => '/usr/local/sbin/run-no-puppet /usr/local/sbin/sync_icinga_state >/dev/null 2>&1',
     }
+
+    # On the passive host, replace the downtime script with a warning
+    $downtime_script = $is_passive ? {
+        true  => 'icinga-downtime-absent.sh',
+        false => 'icinga-downtime.sh',
+    }
+
+    # script to schedule host/service downtimes
+    file { '/usr/local/bin/icinga-downtime':
+        ensure  => present,
+        content => template("profile/icinga/${downtime_script}.erb"),
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0550',
+    }
 }
