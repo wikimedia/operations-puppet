@@ -4,6 +4,8 @@ class role::netmon {
     }
     # Basic boilerplate for network-related servers
     require ::role::network::monitor
+    # needed by librenms and netbox web servers
+    class { '::sslcert::dhparam': }
     include ::profile::backup::host
     include ::profile::librenms
     include ::profile::rancid
