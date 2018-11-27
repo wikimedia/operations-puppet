@@ -52,10 +52,6 @@ class mw_rc_irc::ircserver {
         require  => File['/etc/systemd/system/ircd.service'],
     }
 
-    diamond::collector { 'IRCDStats':
-        ensure => 'absent'
-    }
-
     monitoring::service { 'ircd':
         description   => 'ircd',
         check_command => 'check_ircd',
