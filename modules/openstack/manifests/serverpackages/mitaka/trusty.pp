@@ -8,7 +8,7 @@ class openstack::serverpackages::mitaka::trusty(
             uri        => 'http://ubuntu-cloud.archive.canonical.com/ubuntu',
             dist       => 'trusty-updates/mitaka',
             components => 'main',
-            keyfile    => 'puppet:///modules/openstack/cloudrepo/ubuntu-cloud.key',
+            keyfile    => 'puppet:///modules/openstack/serverpackages/mitaka/trusty/ubuntu-cloud.key',
             notify     => Exec['apt_key_and_update'];
         }
 
