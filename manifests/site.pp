@@ -833,20 +833,12 @@ node /^elastic105[0-2]\.eqiad\.wmnet/ {
     role(elasticsearch::cirrus)
 }
 
-node /^elastic20[0-2][0-9]\.codfw\.wmnet/ {
+node /^elastic20[0-3][0-9]\.codfw\.wmnet/ {
     role(elasticsearch::cirrus)
-}
-
-node /^elastic203[0-6]\.codfw\.wmnet/ {
-    role(elasticsearch::cirrus)
-}
-
-node /^elastic203[7-9]\.codfw\.wmnet/ {
-    role(spare::system)
 }
 
 node /^elastic204[0-4]\.codfw\.wmnet/ {
-    role(spare::system)
+    role(elasticsearch::cirrus)
 }
 
 node 'elnath.codfw.wmnet' {

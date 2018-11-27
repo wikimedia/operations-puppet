@@ -51,8 +51,16 @@ profile::elasticsearch::instances:
           - elastic2034.codfw.wmnet
           - elastic2035.codfw.wmnet
           - elastic2036.codfw.wmnet
+          - elastic2037.codfw.wmnet
+          - elastic2038.codfw.wmnet
+          - elastic2039.codfw.wmnet
+          - elastic2040.codfw.wmnet
+          - elastic2041.codfw.wmnet
+          - elastic2042.codfw.wmnet
+          - elastic2043.codfw.wmnet
+          - elastic2044.codfw.wmnet
 
-        expected_nodes: 36
+        expected_nodes: 44
 
         # We should be able to run "OK" with 11 servers.
         recover_after_nodes: 11
@@ -77,12 +85,16 @@ profile::elasticsearch::instances:
           - elastic2003.codfw.wmnet
           - elastic2004.codfw.wmnet
           - elastic2005.codfw.wmnet
+          - elastic2037.codfw.wmnet
+          - elastic2038.codfw.wmnet
 
           # row B
           - elastic2007.codfw.wmnet
           - elastic2008.codfw.wmnet
           - elastic2009.codfw.wmnet
           - elastic2010.codfw.wmnet
+          - elastic2041.codfw.wmnet
+          - elastic2042.codfw.wmnet
 
           # row C
           - elastic2013.codfw.wmnet
@@ -97,7 +109,7 @@ profile::elasticsearch::instances:
           - elastic2022.codfw.wmnet
           - elastic2023.codfw.wmnet
 
-        expected_nodes: 18
+        expected_nodes: 22
 
         # We should be able to run "OK" with 11 servers.
         recover_after_nodes: 11
@@ -121,6 +133,8 @@ profile::elasticsearch::instances:
           - elastic2025.codfw.wmnet
           - elastic2026.codfw.wmnet
           - elastic2027.codfw.wmnet
+          - elastic2039.codfw.wmnet
+          - elastic2040.codfw.wmnet
 
           # row B
           - elastic2011.codfw.wmnet
@@ -128,6 +142,8 @@ profile::elasticsearch::instances:
           - elastic2028.codfw.wmnet
           - elastic2029.codfw.wmnet
           - elastic2030.codfw.wmnet
+          - elastic2043.codfw.wmnet
+          - elastic2044.codfw.wmnet
 
           # row C
           - elastic2017.codfw.wmnet
@@ -142,7 +158,7 @@ profile::elasticsearch::instances:
           - elastic2035.codfw.wmnet
           - elastic2036.codfw.wmnet
 
-        expected_nodes: 18
+        expected_nodes: 22
 
         # We should be able to run "OK" with 11 servers.
         recover_after_nodes: 11
