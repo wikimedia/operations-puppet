@@ -39,6 +39,7 @@ while true; do
         -y|--yes) FORCE=1; shift ;;
         -h|--help) USAGE=1; shift ;;
         -q|--quiet) QUIET=1; shift ;;
+        -d|--diffs) DIFF_ONLY=1; shift ;;
         --) shift ; break ;;
         *) echo "Internal error!"; exit 1 ;;
     esac
@@ -117,6 +118,12 @@ else
     fi
 fi
 
+# If we only requested to see the diffs, just exit as a success, printing the sha1
+# of the commit we looked at.
+if [ $DIFF_ONLY -eq 1 ]; then
+    echo "${fetch_head_sha1}";
+    exit 0;
+fi;
 
 # If cool, merge it!
 echo ""
