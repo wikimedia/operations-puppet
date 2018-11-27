@@ -1,4 +1,9 @@
 profile::certcentral::certificates:
+    apt:
+        CN: 'apt.wikimedia.org'
+        SNI:
+        - 'apt.wikimedia.org'
+        challenge: dns-01
     archiva:
         CN: 'archiva.wikimedia.org'
         SNI:
