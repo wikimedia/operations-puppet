@@ -14,6 +14,7 @@ class role::logstash::eventlogging {
         tags              => [$topic, 'kafka'],
         type              => 'eventlogging',
         bootstrap_servers => $kafka_config['brokers']['string'],
+        codec             => 'json'
     }
     # lint:ignore:puppet_url_without_modules
     logstash::conf { 'filter_eventlogging':
