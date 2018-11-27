@@ -454,7 +454,7 @@ host backup1001 {
 }
 
 host backup2001 {
-    hardware ethernet F4:E9:D4:74:FD:78;
+    hardware ethernet B0:26:28:29:56:90;
     fixed-address backup2001.codfw.wmnet;
 }
 
