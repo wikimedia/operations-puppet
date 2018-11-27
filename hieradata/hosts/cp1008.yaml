@@ -5,7 +5,7 @@ cache::canary::nodes:
       - 'cp1008.wikimedia.org'
 cache::text::nodes:
     eqiad:
-      - 'cp1008.wikimedia.org'
+      - 'cp1071.eqiad.wmnet'
     codfw:
       - 'cp1008.wikimedia.org'
 
