@@ -73,7 +73,8 @@ groups:
               bsitzmann, mholloway-shell, dduvall, dereckson,
               ladsgroup, bawolff, zfilipin, addshore, niharika29, ppchelko, pmiazga,
               musikanimal, jdrewniak, sbisson, imarlier, jforrester, mbsantos,
-              aaron, liw, sbassett, jdl, tarrow, lucaswerkmeister-wmde, wmde-leszek]
+              aaron, liw, sbassett, jdl, tarrow, lucaswerkmeister-wmde,
+              wmde-leszek, jhuneidi]
     privileges: ['ALL = (www-data,apache,mwdeploy,l10nupdate) NOPASSWD: ALL',
                  'ALL = NOPASSWD: /sbin/restart hhvm',
                  'ALL = NOPASSWD: /sbin/start hhvm',
@@ -162,7 +163,7 @@ groups:
     description: users with some sudo permissions on jenkins and nodepool hosts
     members: [bd808, cscott, dduvall, demon, krinkle, reedy, marktraceur,
               twentyafterfour, zfilipin, thcipriani, legoktm, gjg,
-              hashar, niedzielski, addshore, liw]
+              hashar, niedzielski, addshore, liw, jhuneidi]
     privileges: ['ALL = (jenkins) NOPASSWD: ALL',
                  'ALL = (jenkins-slave) NOPASSWD: ALL',
                  'ALL = (gerritslave) NOPASSWD: ALL',
@@ -713,7 +714,7 @@ groups:
     # Allow this for CI users. There is no gid on purpose, to allow reusing the package provided one
     posix_name: docker # Use posix_name to avoid potential conflicts with other uses of the docker group
     description: Allow releng team to be in the docker group for contint. No gid on purpose
-    members: [*ops_members, dduvall, demon, gjg, hashar, thcipriani, twentyafterfour, zfilipin, legoktm, addshore, reedy, liw]
+    members: [*ops_members, dduvall, demon, gjg, hashar, thcipriani, twentyafterfour, zfilipin, legoktm, addshore, reedy, liw, jhuneidi]
   builder-docker:
     # There is no gid on purpose, same as above
     posix_name: docker # Use posix_name to avoid potential conflicts with other uses of the docker group
@@ -3088,6 +3089,15 @@ users:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPhmLO5JSeJ7IK13C3mjckZF/HwdCQ32bqfaZgRfUfiw cdanis@cdanis
     uid: 20431
     email: cdanis@wikimedia.org
+  jhuneidi:
+    ensure: present
+    realname: Jeena Huneidi
+    name: jhuneidi
+    gid: 500
+    ssh_keys:
+      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAICqyqaNOZBSTQyIKQTLWpU4nI75ilgK78R7Rs7z26/SH jhuneidi@Jeenas-MacBook-Pro.local
+    uid: 20526
+    email: jhuneidi@wikimedia.org
 ldap_only_users:
   abartov:
     ensure: present
