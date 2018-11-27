@@ -273,7 +273,7 @@ groups:
               kaldari, goransm, ema, dsaez, shiladsen, rho, mirrys, slaporte, jk,
               ayounsi, mepps, mmiller, seddon, gilles, tstarling, pirroh, rush, tieu, karen,
               cicalese, drossi, fsalutari, nathante, gbirke, isaacj, sbassett, jdl,
-              niharika29, ryanmax, afandian2]
+              niharika29, ryanmax, afandian2, jgleeson]
     system_members: [analytics-search]
   analytics-admins:
     gid: 732
@@ -3116,6 +3116,15 @@ users:
       - AAAAB3NzaC1yc2EAAAADAQABAAABAQCsJPyatQmAgubnM6ChTohZdEYTOfVJjzpsOtiVrBcwTOVBwEl3qcORlMEF0MMk+BdMfiMd12jmfxGWuOhzJAZ8iPDE9Bk9z0/ttb6NJj09CfO5YlfOsgi8gAXthZ7gAX7EulUVW1jKHksbG3tS7zIxmx5+GzHWJ6SGapKsUrf2LC0RwQkiNyha2535vZlvmbMRhaICeN9F/2GCSoEbgdvf2+4Ln3hO/me5EcKvxDfXCcCYklHxNS9ikfK84RpXd8EfIv2tmf1LYWw38DUVv6io3ehuar7c/twBTmodiKqkkywLHNY0u6KFAnKEsBuQ989CiepxIJjb+NYd+KuZvMBh jwass@herring.local
     uid: 20561
     email: joe@afandian.com
+  jgleeson:
+    ensure: present
+    realname: Jack Gleeson
+    name: jgleeson
+    gid: 500
+    ssh_keys:
+      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQC/4WyLSPS/Kd/QQQXZOWomOKl+JrW1Av6+hjbWqHWopg3/nxN0ugNYuA4f2pVNPHJf5NB9Ch2OEeu/45SMvXboGnrM+V1OGIGpPYhlVb0hz5kERDzpwft9jH6FkAy3UWrFKygxlSgLjfpIrjyiNmFDlTgxFbs1IBjvWKp2bkEsy59P57le1LtNu+kq4v0y/3TSLaLmEg1+VsjlCsiVX13ybXRecCMPsoTM0McKbOH7h+d3I+cYe+XfdRkmZ/Gc42XX8vAr6Z3MpzR1pfh1796TuPv2vN2QT0VM+ExqCr6/7nqJNwL1XWoVMiNkIwNaR/84+h2R3jZ+2uWzuiu7uF1QYX+DjJicDWkn7sDHHqzuHXnpW2/h/qMwmf1NoDJhmKP8Q7/DEKoNp9exzoGAVWcKTnOBpD80JsoDMG9d/T+y+EX69WvF13pl2BuqvWEOxNqR5Cr/5QwATGjmttgEwlGBS2o1awo6S1nnHMqLa14V1JHGWxZ3O/wvEj+Us3afYZ1N4E0IMvbvRehBB3waLnsMKWriGiNVPwNeHsX6oVintHXOSzX51XugNujtb8DcgJnrRT13y05vqSqcP2gIcdvj3umF2vCoccHjD8NaVNSTnxvQJZdDcOX0f+lcoF3VuA0LmGoIpSY4gVGOeLQdfmM1NEA/gYghT1PvHdKW5BcYOQ== jgleeson@wikimedia.org
+    uid: 18145
+    email: jgleeson@wikimedia.org
 
 ldap_only_users:
   abartov:
@@ -3361,10 +3370,6 @@ ldap_only_users:
     ensure: present
     realname: Jan Dittrich
     email: jan.dittrich@wikimedia.de
-  jgleeson:
-    ensure: present
-    realname: Jack Gleeson
-    email: jgleeson@wikimedia.org
   tonina:
     ensure: present
     realname: Tonina Zhelyazkova
