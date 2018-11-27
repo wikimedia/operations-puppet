@@ -622,7 +622,6 @@ site_identifiers,si_site,K
 site_identifiers,si_type,K
 site_identifiers,si_key,K
 site_stats,ss_row_id,K
-site_stats,ss_total_views,K
 site_stats,ss_total_edits,K
 site_stats,ss_good_articles,K
 site_stats,ss_total_pages,K
