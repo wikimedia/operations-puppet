@@ -3180,6 +3180,10 @@ ldap_only_users:
     ensure: present
     realname: Maarten Dammers
     email: maarten@mdammers.nl
+  mvolz:
+    ensure: present
+    realname: Marielle Volz
+    email: mvolz@wikimedia.org
   nirzar:
     ensure: present
     realname: Nirzar Pangarkar
