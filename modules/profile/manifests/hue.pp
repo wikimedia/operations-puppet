@@ -11,6 +11,9 @@ class profile::hue (
     $database_name              = hiera('profile::hue::database_name', 'hue'),
     $ldap_create_users_on_login = hiera('profile::hue::ldap_create_users_on_login', false),
     $monitoring_enabled         = hiera('profile::hue::monitoring_enabled', false),
+    $kerberos_keytab            = hiera('profile::hue::kerberos_keytab', undef),
+    $kerbersos_principal        = hiera('profile::hue::kerberos_principal', undef),
+    $kerberos_kinit_path        = hiera('profile::hue::kerberos_kinit_path', undef),
 ){
 
     # Require that all Hue applications
@@ -58,6 +61,9 @@ class profile::hue (
         ssl_private_key            => false,
         ssl_certificate            => false,
         secure_proxy_ssl_header    => true,
+        kerberos_keytab            => $kerberos_keytab,
+        kerbersos_principal        => $kerbersos_principal,
+        kerberos_kinit_path        => $kerberos_kinit_path,
     }
 
     # Include icinga alerts if production realm.
