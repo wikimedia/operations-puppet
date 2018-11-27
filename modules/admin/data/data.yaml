@@ -273,7 +273,7 @@ groups:
               kaldari, goransm, ema, dsaez, shiladsen, rho, mirrys, slaporte, jk,
               ayounsi, mepps, mmiller, seddon, gilles, tstarling, pirroh, rush, tieu, karen,
               cicalese, drossi, fsalutari, nathante, gbirke, isaacj, sbassett, jdl,
-              niharika29]
+              niharika29, ryanmax, afandian2]
     system_members: [analytics-search]
   analytics-admins:
     gid: 732
@@ -3098,6 +3098,21 @@ users:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAICqyqaNOZBSTQyIKQTLWpU4nI75ilgK78R7Rs7z26/SH jhuneidi@Jeenas-MacBook-Pro.local
     uid: 20526
     email: jhuneidi@wikimedia.org
+  ryanmax:
+    ensure: present
+    realname: Ryan Steinberg
+    ssh_keys:
+      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBN1rS7OObcft7lDa9+H45kLfkdGHwlJ6rL2Fm2IPsMB
+    uid: 20482
+    email: ryanmax@stanford.edu
+  afandian2:
+    ensure: present
+    realname: Joe Wass
+    ssh_keys:
+      - AAAAB3NzaC1yc2EAAAADAQABAAABAQCsJPyatQmAgubnM6ChTohZdEYTOfVJjzpsOtiVrBcwTOVBwEl3qcORlMEF0MMk+BdMfiMd12jmfxGWuOhzJAZ8iPDE9Bk9z0/ttb6NJj09CfO5YlfOsgi8gAXthZ7gAX7EulUVW1jKHksbG3tS7zIxmx5+GzHWJ6SGapKsUrf2LC0RwQkiNyha2535vZlvmbMRhaICeN9F/2GCSoEbgdvf2+4Ln3hO/me5EcKvxDfXCcCYklHxNS9ikfK84RpXd8EfIv2tmf1LYWw38DUVv6io3ehuar7c/twBTmodiKqkkywLHNY0u6KFAnKEsBuQ989CiepxIJjb+NYd+KuZvMBh jwass@herring.local
+    uid: 20561
+    email: joe@afandian.com
+
 ldap_only_users:
   abartov:
     ensure: present
