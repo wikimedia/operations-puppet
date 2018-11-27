@@ -6482,6 +6482,21 @@ host scb2006 {
     filename "lpxelinux.0";
 }
 
+host sessionstore2001 {
+    hardware ethernet D0:94:66:8F:CA:FE;
+    fixed-address sessionstore2001.codfw.wmnet;
+}
+
+host sessionstore2002 {
+    hardware ethernet D0:94:66:90:99:5C;
+    fixed-address sessionstore2002.codfw.wmnet;
+}
+
+host sessionstore2003 {
+    hardware ethernet D0:94:66:90:B5:46;
+    fixed-address sessionstore2003.codfw.wmnet;
+}
+
 host snapshot1005 {
     hardware ethernet 30:e1:71:5d:e0:b8;
     fixed-address snapshot1005.eqiad.wmnet;
