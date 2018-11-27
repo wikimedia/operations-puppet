@@ -1,6 +1,8 @@
 define certcentral::cert (
     String $puppet_svc = 'nginx',
 ) {
+    require ::certcentral
+
     if !defined(File['/etc/centralcerts']) {
         file { '/etc/centralcerts':
             ensure => directory,
