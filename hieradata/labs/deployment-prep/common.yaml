@@ -507,3 +507,6 @@ wikimail_smarthost:
 network::allow_deployment_from_ips:
 - '172.16.4.18' # deployment-deploy01.deployment-prep.eqiad.wmflabs
 - '172.16.4.19' # deployment-deploy02.deployment-prep.eqiad.wmflabs
+
+profile::rsyslog::kafka_shipper::kafka_brokers:
+  - 'deployment-logstash2.deployment-prep.eqiad.wmflabs:9093'
