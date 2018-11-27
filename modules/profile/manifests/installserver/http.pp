@@ -2,12 +2,8 @@
 class profile::installserver::http {
 
     include install_server::web_server
+    class { '::sslcert::dhparam': }
 
-    letsencrypt::cert::integrated { 'apt':
-        subjects   => 'apt.wikimedia.org',
-        puppet_svc => 'nginx',
-        system_svc => 'nginx',
-    }
     certcentral::cert { 'apt':
         puppet_svc => 'nginx',
     }
