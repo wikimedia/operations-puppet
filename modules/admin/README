@@ -277,3 +277,8 @@ by providing a list of system_members in your group declaration.
 Your system user *must* already exist by the time the admin module ensures group membership.
 If it doesn't, the groupmembers exec will fail.
 
+ldap-only:
+
+Before adding someone to LDAP, check whether there's an existing entry in puppet.git:modules/admin/data/data.yaml.
+
+If the user already has shell access, no further change is needed. You can proceed with the LDAP change. If not, add the user to the ldap_only_users table at the end of the file.Existing users are checked automatically they exist on ldap, if a user is removed from ldap, add it to the ldap-absent group. A user can be on the 'absent' group (former cluster access, now removed from /etc/passwd) and on the ldap-only group (only has ldap access now).
