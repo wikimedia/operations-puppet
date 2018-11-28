@@ -16,8 +16,6 @@ server {
    listen [::]:443 default ssl ipv6only=off;
    server_name <%= @xmldumps_server %>;
 
-   include /etc/acme/challenge-nginx.conf;
-
    ssl_certificate /etc/centralcerts/dumps.rsa-2048.chained.crt;
    ssl_certificate_key /etc/centralcerts/dumps.rsa-2048.key;
    ssl_session_cache shared:SSL:50m;

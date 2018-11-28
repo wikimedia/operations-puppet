@@ -19,11 +19,6 @@ class dumps::web::xmldumps(
 
     $ssl_settings = ssl_ciphersuite('nginx', 'mid', true)
 
-    letsencrypt::cert::integrated { 'dumps':
-        subjects   => $xmldumps_server,
-        puppet_svc => 'nginx',
-        system_svc => 'nginx',
-    }
     certcentral::cert { 'dumps':
         puppet_svc => 'nginx',
     }

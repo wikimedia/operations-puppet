@@ -9,6 +9,7 @@ class profile::dumps::distribution::web (
         variant => 'extras',
     }
 
+    class { '::sslcert::dhparam': }
     class {'::dumps::web::xmldumps':
         do_acme          => $do_acme,
         datadir          => $datadir,
