@@ -162,6 +162,12 @@ class openstack::keystone::service(
             mode    => '0644',
             notify  => Service['keystone'],
             require => Package['keystone'];
+        '/etc/keystone/keystone.my.cnf':
+            ensure  => 'present',
+            owner   => 'root',
+            group   => 'root',
+            mode    => '0400',
+            content => template("openstack/${version}/keystone/keystone.my.cnf.erb");
         '/usr/lib/python2.7/dist-packages/wmfkeystoneauth':
             ensure  => 'present',
             owner   => 'root',

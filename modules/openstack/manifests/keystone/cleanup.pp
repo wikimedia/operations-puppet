@@ -34,12 +34,13 @@ class openstack::keystone::cleanup (
         #  days (613440 seconds), any token that expires
         #  less than 7 days from now is already at least
         #  2 hours old.
+        $keystone_db_credentials = '/etc/keystone/keystone.my.cnf'
         cron {
             'cleanup_novaobserver_keystone_tokens':
                 ensure  => $ensure,
                 user    => 'root',
                 minute  => 30,
-                command => "/usr/bin/mysql ${db_name} -h${db_host} -u${db_user} -p${db_pass} -e 'DELETE FROM token WHERE user_id=\"novaobserver\" AND NOW() + INTERVAL 7 day > expires LIMIT 10000;'",
+                command => "/usr/bin/mysql --defaults-file=${keystone_db_credentials} ${db_name} -h${db_host} -e 'DELETE FROM token WHERE user_id=\"novaobserver\" AND NOW() + INTERVAL 7 day > expires LIMIT 10000;'",
         }
 
         cron {
@@ -47,6 +48,6 @@ class openstack::keystone::cleanup (
                 ensure  => $ensure,
                 user    => 'root',
                 minute  => 40,
-                command => "/usr/bin/mysql ${db_name} -h${db_host} -u${db_user} -p${db_pass} -e 'DELETE FROM token WHERE user_id=\"novaadmin\" AND NOW() + INTERVAL 7 day > expires LIMIT 10000;'",
+                command => "/usr/bin/mysql --defaults-file=${keystone_db_credentials} ${db_name} -h${db_host} -e 'DELETE FROM token WHERE user_id=\"novaadmin\" AND NOW() + INTERVAL 7 day > expires LIMIT 10000;'",
         }
 }
