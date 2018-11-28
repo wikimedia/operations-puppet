@@ -1,4 +1,0 @@
-seeds:
-  - "localhost"
-logstash_port: 12201
-logstash_host: "deployment-logstash2.deployment-prep.eqiad.wmflabs"
