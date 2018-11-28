@@ -78,6 +78,9 @@ class profile::gerrit::server(
         puppet_svc => 'apache2',
         system_svc => 'apache2',
     }
+    certcentral::cert { 'gerrit':
+        puppet_svc => 'apache2',
+    }
 
     class { '::gerrit':
         host             => $host,
