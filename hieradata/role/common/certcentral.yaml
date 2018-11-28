@@ -14,6 +14,12 @@ profile::certcentral::certificates:
         SNI:
         - 'dumps.wikimedia.org'
         challenge: dns-01
+    gerrit:
+        CN: 'gerrit.wikimedia.org'
+        SNI:
+        - 'gerrit.wikimedia.org'
+        - 'gerrit-slave.wikimedia.org'
+        challenge: dns-01
     icinga:
         CN: 'icinga.wikimedia.org'
         SNI:
