@@ -311,6 +311,15 @@ wikimedia_clusters:
     sites:
       eqiad: []
       codfw: []
+  recursor:
+    description: "DNS Recursor and NTP Servers"
+    id: 69
+    sites:
+      eqiad: []
+      codfw: []
+      esams: []
+      ulsfo: []
+      eqsin: []
 
 puppetmaster: "puppet"
 

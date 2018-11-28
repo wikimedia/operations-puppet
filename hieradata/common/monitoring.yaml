@@ -303,3 +303,15 @@ monitoring::groups:
     description: Thumbor image scaling (eqiad)
   thumbor_codfw:
     description: Thumbor image scaling (codfw)
+
+# Recursor
+  recursor_eqiad:
+    description: DNS Recursor and NTP Servers (eqiad)
+  recursor_codfw:
+    description: DNS Recursor and NTP Servers (codfw)
+  recursor_esams:
+    description: DNS Recursor and NTP Servers (esams)
+  recursor_ulsfo:
+    description: DNS Recursor and NTP Servers (ulsfo)
+  recursor_eqsin:
+    description: DNS Recursor and NTP Servers (eqsin)
