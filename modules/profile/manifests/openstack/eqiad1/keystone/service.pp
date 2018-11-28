@@ -7,7 +7,9 @@ class profile::openstack::eqiad1::keystone::service(
     $osm_host = hiera('profile::openstack::eqiad1::osm_host'),
     $db_host = hiera('profile::openstack::eqiad1::keystone::db_host'),
     $token_driver = hiera('profile::openstack::eqiad1::keystone::token_driver'),
+    $db_user = hiera('profile::openstack::eqiad1::keystone::db_user'),
     $db_pass = hiera('profile::openstack::eqiad1::keystone::db_pass'),
+    $db_name = hiera('profile::openstack::base::keystone::db_name'),
     $nova_db_pass = hiera('profile::openstack::eqiad1::nova::db_pass'),
     $ldap_hosts = hiera('profile::openstack::eqiad1::ldap_hosts'),
     $ldap_user_pass = hiera('profile::openstack::eqiad1::ldap_user_pass'),
@@ -35,6 +37,8 @@ class profile::openstack::eqiad1::keystone::service(
     $public_port = hiera('profile::openstack::base::keystone::public_port'),
     $main_nova_controller = hiera('profile::openstack::main::nova_controller'),
     $glance_host = hiera('profile::openstack::eqiad1::glance_host'),
+    $spread_check_user = hiera('profile::openstack::eqiad1::monitor::spread_check_user'),
+    $spread_check_password = hiera('profile::openstack::eqiad1::monitor::spread_check_password'),
     ) {
 
     require ::profile::openstack::eqiad1::clientpackages
@@ -79,11 +83,34 @@ class profile::openstack::eqiad1::keystone::service(
     contain '::profile::openstack::base::keystone::hooks'
 
     class {'::openstack::keystone::monitor::services':
-        active      => $::fqdn == $keystone_host,
-        auth_port   => $auth_port,
-        public_port => $public_port,
+        active         => $::fqdn == $keystone_host,
+        auth_port      => $auth_port,
+        public_port    => $public_port,
+        critical       => true,
+        contact_groups => 'wmcs-team',
     }
     contain '::openstack::keystone::monitor::services'
+
+    class {'::openstack::keystone::cleanup':
+        active  => $::fqdn == $keystone_host,
+        db_user => $db_user,
+        db_pass => $db_pass,
+        db_host => $db_host,
+        db_name => $db_name,
+    }
+
+    class {'::openstack::monitor::spreadcheck':
+        active        => $::fqdn == $nova_controller,
+        keystone_host => $keystone_host,
+        nova_user     => $spread_check_user,
+        nova_password => $spread_check_password,
+    }
+
+    class {'::openstack::keystone::monitor::projects_and_users':
+        active         => $::fqdn == $keystone_host,
+        contact_groups => 'wmcs-team,admins',
+    }
+    contain '::openstack::keystone::monitor::projects_and_users'
 
     # allow foreign glance to call back to admin auth port
     # to validate issued tokens

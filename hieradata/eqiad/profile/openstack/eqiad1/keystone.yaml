@@ -1,2 +1,3 @@
+profile::openstack::eqiad1::keystone::db_user: 'keystone'
 profile::openstack::eqiad1::keystone::db_host: 'm5-master.eqiad.wmnet'
 profile::openstack::eqiad1::keystone::token_driver: 'normal'
