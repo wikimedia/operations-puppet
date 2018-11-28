@@ -16,7 +16,7 @@
         AllowOverride All
         Require all granted
         <Files "index.yaml">
-            Header set Cache-Control must-revalidate
+            Header set Cache-Control no-cache,must-revalidate
         </Files>
 
     </Directory>
