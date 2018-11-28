@@ -12,3 +12,4 @@ profile::redis::slave::settings:
   stop_writes_on_bgsave_error: false
   slave_read_only: false
 profile::redis::slave::aof: true
+diamond::remove: true

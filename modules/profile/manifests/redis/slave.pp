@@ -29,10 +29,6 @@ class profile::redis::slave(
     # Add monitoring, using nrpe and not remote checks anymore
     redis::monitoring::nrpe_instance { $instances: }
 
-    diamond::collector { 'Redis':
-        ensure => 'absent'
-    }
-
     profile::prometheus::redis_exporter{ $instances:
         password         => $password,
         prometheus_nodes => $prometheus_nodes,
