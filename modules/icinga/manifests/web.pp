@@ -42,11 +42,6 @@ class icinga::web (
 
     $ssl_settings = ssl_ciphersuite('apache', 'mid', true)
 
-    letsencrypt::cert::integrated { 'icinga':
-        subjects   => $virtual_host,
-        puppet_svc => 'apache2',
-        system_svc => 'apache2',
-    }
     certcentral::cert { 'icinga':
         puppet_svc => 'apache2',
     }

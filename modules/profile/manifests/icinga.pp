@@ -104,6 +104,7 @@ class profile::icinga(
         retention_file        => $retention_file,
     }
 
+    class { '::sslcert::dhparam': }
     class { '::icinga::web':
         icinga_user  => $icinga_user,
         icinga_group => $icinga_group,
