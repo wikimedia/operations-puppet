@@ -9,6 +9,11 @@ profile::certcentral::certificates:
         SNI:
         - 'archiva.wikimedia.org'
         challenge: dns-01
+    dumps:
+        CN: 'dumps.wikimedia.org'
+        SNI:
+        - 'dumps.wikimedia.org'
+        challenge: dns-01
     icinga:
         CN: 'icinga.wikimedia.org'
         SNI:
