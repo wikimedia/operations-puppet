@@ -47,6 +47,9 @@ class icinga::web (
         puppet_svc => 'apache2',
         system_svc => 'apache2',
     }
+    certcentral::cert { 'icinga':
+        puppet_svc => 'apache2',
+    }
 
     httpd::site { $virtual_host:
         content => template('icinga/apache.erb'),
