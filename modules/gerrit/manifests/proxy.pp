@@ -24,6 +24,11 @@ class gerrit::proxy(
 
     $ssl_settings = ssl_ciphersuite('apache', 'mid', true)
 
+    # TODO: get rid of this and come with a better approach (check gerrit change 476301 comments)
+    $use_certcentral = $::realm? {
+        'production' => true,
+        default      => false,
+    }
     httpd::site { $tls_host:
         content => template('gerrit/apache.erb'),
     }
