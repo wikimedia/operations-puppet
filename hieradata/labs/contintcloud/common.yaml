@@ -1,6 +1,0 @@
----
-# install dev packages for services
-service::configuration::use_dev_pkgs: true
-
-# User for jenkins master-slave connections
-jenkins_agent_username: 'jenkins'
