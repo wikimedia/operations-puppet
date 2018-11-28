@@ -315,3 +315,15 @@ monitoring::groups:
     description: DNS Recursor and NTP Servers (ulsfo)
   recursor_eqsin:
     description: DNS Recursor and NTP Servers (eqsin)
+
+# Spare
+  spare_eqiad:
+    description: Spare servers (eqiad)
+  spare_codfw:
+    description: Spare servers (codfw)
+  spare_esams:
+    description: Spare servers (esams)
+  spare_ulsfo:
+    description: Spare servers (ulsfo)
+  spare_eqsin:
+    description: Spare servers (eqsin)

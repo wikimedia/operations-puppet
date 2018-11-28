@@ -1,2 +1,3 @@
+cluster: spare
 profile::base::notifications: disabled
 diamond::remove: true

@@ -320,6 +320,15 @@ wikimedia_clusters:
       esams: []
       ulsfo: []
       eqsin: []
+  spare:
+    description: "Spare servers"
+    id: 70
+    sites:
+      eqiad: []
+      codfw: []
+      esams: []
+      ulsfo: []
+      eqsin: []
 
 puppetmaster: "puppet"
 
