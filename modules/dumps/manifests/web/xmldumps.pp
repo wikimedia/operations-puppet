@@ -24,6 +24,9 @@ class dumps::web::xmldumps(
         puppet_svc => 'nginx',
         system_svc => 'nginx',
     }
+    certcentral::cert { 'dumps':
+        puppet_svc => 'nginx',
+    }
 
     nginx::site { 'xmldumps':
         content => template('dumps/web/xmldumps/nginx.conf.erb'),
