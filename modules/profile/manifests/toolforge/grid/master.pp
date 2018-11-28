@@ -118,7 +118,7 @@ class profile::toolforge::grid::master (
         ensure  => directory,
         owner   => 'sgeadmin',
         group   => 'sgeadmin',
-        require => File[$toolforge::geconf],
+        require => File[$profile::toolforge::grid::base::geconf],
     }
 
     file { '/var/spool/gridengine':

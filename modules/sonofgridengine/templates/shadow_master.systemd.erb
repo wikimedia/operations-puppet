@@ -1,0 +1,10 @@
+[Unit]
+Description=Gridengine shadow master
+After=network.target
+
+[Service]
+Type=simple
+ExecStart=/usr/sbin/sge_shadowd
+Restart=always
+StartLimitInterval=90
+StartLimitBurst=3

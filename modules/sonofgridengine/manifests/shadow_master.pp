@@ -36,15 +36,6 @@ class sonofgridengine::shadow_master(
         content => template('gridengine/default-gridengine-shadow.erb'),
     }
 
-    file { '/etc/init/gridengine-shadow.conf':
-        ensure  => present,
-        require => Package['gridengine-master'],
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0444',
-        source  => 'puppet:///modules/sonofgridengine/gridengine-shadow.conf';
-    }
-
     file { "${sgeroot}/default/common/shadow_masters":
         ensure  => present,
         require => File["${sgeroot}/default/common"],
@@ -54,8 +45,17 @@ class sonofgridengine::shadow_master(
         content => "${::fqdn}\n",
     }
 
-    service { 'gridengine-shadow':
-        ensure  => running,
-        require => File['/etc/init/gridengine-shadow.conf', "${sgeroot}/default/common/shadow_masters"],
+    file {'/usr/local/bin/grid-configurator':
+        ensure => file,
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0755',
+        source => 'puppet:///modules/sonofgridengine/grid_configurator/grid_configurator.py',
+    }
+
+    systemd::service { 'gridengine-shadow':
+        ensure  => present,
+        require => [ Package['gridengine-master'],File["${sgeroot}/default/common/shadow_masters"] ],
+        content => systemd_template('shadow_master'),
     }
 }
