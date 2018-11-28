@@ -67,6 +67,7 @@ class profile::icinga(
     class { '::profile::prometheus::alerts': }
     class { '::profile::maps::alerts': }
     class { '::profile::cache::kafka::alerts': }
+    class { '::profile::prometheus::icinga_exporter': }
 
     class { '::icinga::monitor::etcd_mw_config':
         icinga_user => $icinga_user,

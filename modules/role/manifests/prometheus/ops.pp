@@ -410,6 +410,14 @@ class role::prometheus::ops {
         port       => 9117,
     }
 
+    # Special config for Icinga exporter
+    prometheus::class_config{ "icinga_${::site}":
+        dest       => "${targets_path}/icinga_${::site}.yaml",
+        site       => $::site,
+        class_name => 'profile::icinga',
+        port       => 9245,
+    }
+
     # Job definition for etcd_exporter
     $etcd_jobs = [
       {
