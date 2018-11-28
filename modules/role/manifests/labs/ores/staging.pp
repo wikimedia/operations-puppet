@@ -35,14 +35,14 @@ class role::labs::ores::staging {
             },
             'score_processors' => {
                 'ores_celery' => {
-                    'BROKER_URL'            => 'redis://127.0.0.1:6379',
-                    'CELERY_RESULT_BACKEND' => 'redis://127.0.0.1:6379',
+                    'broker_url'     => 'redis://127.0.0.1:6379',
+                    'result_backend' => 'redis://127.0.0.1:6379',
                 }
             },
             'scoring_systems'  => {
                 'celery_queue' => {
-                    'BROKER_URL'            => 'redis://127.0.0.1:6379',
-                    'CELERY_RESULT_BACKEND' => 'redis://127.0.0.1:6379',
+                    'broker_url'     => 'redis://127.0.0.1:6379',
+                    'result_backend' => 'redis://127.0.0.1:6379',
                 }
             },
         },

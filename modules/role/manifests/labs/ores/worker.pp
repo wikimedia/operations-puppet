@@ -20,14 +20,14 @@ class role::labs::ores::worker {
             },
             'score_processors' => {
                 'ores_celery' => {
-                    'BROKER_URL'            => 'redis://ores-redis-02:6379',
-                    'CELERY_RESULT_BACKEND' => 'redis://ores-redis-02:6379',
+                    'broker_url'     => 'redis://ores-redis-02:6379',
+                    'result_backend' => 'redis://ores-redis-02:6379',
                 }
             },
             'scoring_systems'  => {
                 'celery_queue' => {
-                    'BROKER_URL'            => 'redis://ores-redis-02:6379',
-                    'CELERY_RESULT_BACKEND' => 'redis://ores-redis-02:6379',
+                    'broker_url'     => 'redis://ores-redis-02:6379',
+                    'result_backend' => 'redis://ores-redis-02:6379',
                 }
             }
         },
