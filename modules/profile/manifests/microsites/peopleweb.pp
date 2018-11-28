@@ -1,10 +1,18 @@
 # let users publish their own HTML in their home dirs
-class profile::microsites::peopleweb {
+class profile::microsites::peopleweb (
+    $deployment_server = hiera('deployment_server'),
+){
 
     ferm::service { 'people-http':
         proto  => 'tcp',
         port   => '80',
         srange => '$CACHES',
+    }
+
+    ferm::service { 'people-http-deployment':
+        proto  => 'tcp',
+        port   => '80',
+        srange => "(@resolve((${deployment_server})) @resolve((${deployment_server}), AAAA))"
     }
 
     if os_version('debian == jessie') {
