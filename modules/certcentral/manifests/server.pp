@@ -99,10 +99,13 @@ class certcentral::server (
         default => 'absent',
     }
     systemd::service { 'certcentral':
-        ensure   => $ensure,
-        require  => Package['certcentral'],
-        content  => template('certcentral/certcentral.service.erb'),
-        override => true,
+        ensure         => $ensure,
+        require        => Package['certcentral'],
+        content        => template('certcentral/certcentral.service.erb'),
+        override       => true,
+        service_params => {
+            restart   => '/bin/systemctl reload certcentral',
+        },
     }
 
 
