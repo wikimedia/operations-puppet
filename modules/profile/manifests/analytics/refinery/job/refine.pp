@@ -57,7 +57,7 @@ class profile::analytics::refinery::job::refine (
                 input_path                      => '/wmf/data/raw/event',
                 input_path_regex                => '.*(eqiad|codfw)_(.+)/hourly/(\\d+)/(\\d+)/(\\d+)/(\\d+)',
                 input_path_regex_capture_groups => 'datacenter,table,year,month,day,hour',
-                table_blacklist_regex           => '^mediawiki_page_properties_change|mediawiki_recentchange$',
+                table_blacklist_regex           => '^mediawiki_page_properties_change|mediawiki_recentchange|mediawiki_revision_score$',
                 # Deduplicate eventbus based data based on meta.id field
                 transform_functions             => 'org.wikimedia.analytics.refinery.job.refine.deduplicate_eventbus',
             }),
