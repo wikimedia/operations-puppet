@@ -71,7 +71,7 @@ class profile::hive::client(
     # /usr/local/bin/beeline
 
     file { '/usr/local/bin/beeline':
-        content => template('role/analytics_cluster/hive/beeline_wrapper.py.erb'),
+        content => template('profile/hive/client/beeline_wrapper.py.erb'),
         mode    => '0755',
         owner   => 'root',
         group   => 'root',
