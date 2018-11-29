@@ -208,5 +208,18 @@ class profile::mediawiki::php(
                 'request_terminate_timeout' => 240,
             }
         }
+
+        # Send logs locally to /var/log/php7.x-fpm/error.log
+        # Please note: this replaces the logrotate rule coming from the package,
+        # because we use syslog-based logging. This will also prevent an fpm reload
+        # for every logrotate run.
+        $fpm_programname = "php${php_version}-fpm"
+        systemd::syslog { $fpm_programname:
+            base_dir     => '/var/log',
+            owner        => 'www-data',
+            group        => 'wikidev',
+            readable_by  => 'group',
+            log_filename => 'error.log'
+        }
     }
 }

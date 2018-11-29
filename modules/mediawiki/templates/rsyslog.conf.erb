@@ -46,3 +46,22 @@ if $msg contains "hhvm" and $programname == "kernel" then {
     @<%= @forward_syslog %>
 <% end -%>
 }
+
+# Forward PHP7 logs and stacktraces to the log aggregator
+if ($programname startswith 'php7.')  then {
+    @<%= @log_aggregator %>;MediaWiki
+<% if @forward_syslog -%>
+    @<%= @forward_syslog %>
+<% end -%>
+    stop
+}
+
+# Forward messages logged by the kernel and containing the string
+# "php7" (such as warnings that the process was killed or respawned)
+# to the log aggregator.
+if $msg contains "php7" and $programname == "kernel" then {
+    @<%= @log_aggregator %>;MediaWiki
+<% if @forward_syslog -%>
+    @<%= @forward_syslog %>
+<% end -%>
+}
