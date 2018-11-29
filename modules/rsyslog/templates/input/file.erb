@@ -3,4 +3,7 @@
 input(type="imfile"
       File="<%= @path %>"
       reopenOnTruncate="<%= @reopen_on_truncate %>"
+<% if @startmsg_regex -%>
+      startmsg.regex="<%= @startmsg_regex %>"
+<% end -%>
       Tag="<%= @syslog_tag_prefix %>-<%= @syslog_tag %>")

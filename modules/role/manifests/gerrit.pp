@@ -9,6 +9,7 @@ class role::gerrit {
     include ::profile::backup::host
     include ::profile::base::firewall
     include ::profile::gerrit::server
+    include ::profile::rsyslog::kafka_shipper
 
     class { '::httpd':
         modules => ['rewrite', 'headers', 'proxy', 'proxy_http', 'remoteip', 'ssl'],
