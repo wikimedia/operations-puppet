@@ -13,6 +13,7 @@ class profile::gerrit::server(
     $config = hiera('gerrit::server::config'),
     $log_host = hiera('logstash_host'),
     $cache_text_nodes = hiera('cache::text::nodes', []),
+    $use_certcentral = hiera('gerrit::server::use_certcentral', false),
 ) {
 
     interface::alias { 'gerrit server':
@@ -67,20 +68,21 @@ class profile::gerrit::server(
         }
     }
 
-    if $slave {
-        $tls_host = $slave_hosts[0]
-    } else {
-        $tls_host = $host
-    }
-
-    letsencrypt::cert::integrated { 'gerrit':
-        subjects   => $tls_host,
-        puppet_svc => 'apache2',
-        system_svc => 'apache2',
-    }
-    if $::realm == 'production' {
+    if $use_certcentral {
+        class { '::sslcert::dhparam': }
         certcentral::cert { 'gerrit':
             puppet_svc => 'apache2',
+        }
+    } else {
+        if $slave {
+            $tls_host = $slave_hosts[0]
+        } else {
+            $tls_host = $host
+        }
+        letsencrypt::cert::integrated { 'gerrit':
+            subjects   => $tls_host,
+            puppet_svc => 'apache2',
+            system_svc => 'apache2',
         }
     }
 
@@ -94,6 +96,7 @@ class profile::gerrit::server(
         log_host         => $log_host,
         avatars_host     => $avatars_host,
         cache_text_nodes => $cache_text_nodes,
+        use_certcentral  => $use_certcentral,
     }
 
     class { '::gerrit::replication_key':

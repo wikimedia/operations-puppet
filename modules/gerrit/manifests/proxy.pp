@@ -8,6 +8,7 @@ class gerrit::proxy(
     $maint_mode       = false,
     $avatars_host     = $::gerrit::avatars_host,
     $cache_text_nodes = $::gerrit::cache_text_nodes,
+    $use_certcentral  = false,
     ) {
 
     if $slave {
@@ -24,11 +25,6 @@ class gerrit::proxy(
 
     $ssl_settings = ssl_ciphersuite('apache', 'mid', true)
 
-    # TODO: get rid of this and come with a better approach (check gerrit change 476301 comments)
-    $use_certcentral = $::realm? {
-        'production' => true,
-        default      => false,
-    }
     httpd::site { $tls_host:
         content => template('gerrit/apache.erb'),
     }

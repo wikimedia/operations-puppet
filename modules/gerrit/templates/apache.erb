@@ -34,9 +34,13 @@ MaxClients 50
 
     CustomLog /var/log/apache2/<%= @host %>.http.access.log wmf
     ServerSignature Off
+    <%- if @use_certcentral == false -%>
     IncludeOptional /etc/acme/challenge-apache.conf
+    <%- end -%>
     RewriteEngine on
+    <%- if @use_certcentral == false -%>
     RewriteCond %{REQUEST_URI} !^/\.well-known/acme-challenge/
+    <%- end -%>
     RewriteRule ^/(.*)$ https://<%= @host %>/$1 [L,R=301,NE]
 </VirtualHost>
 

@@ -9,6 +9,7 @@ class gerrit(
     $log_host = undef,
     $avatars_host = undef,
     $cache_text_nodes = [],
+    $use_certcentral = false,
 ) {
 
     class { '::gerrit::jetty':
@@ -29,6 +30,7 @@ class gerrit(
         slave            => $slave,
         avatars_host     => $avatars_host,
         cache_text_nodes => $cache_text_nodes,
+        use_certcentral  => $use_certcentral,
     }
 
     if !$slave {
