@@ -1,5 +1,6 @@
 define certcentral::cert (
     String $puppet_svc = 'nginx',
+    String $key_group = 'root',
 ) {
     require ::certcentral
 
@@ -51,8 +52,8 @@ define certcentral::cert (
 
         file { "/etc/centralcerts/${title}.${type}.key":
             owner  => 'root',
-            group  => 'root',
-            mode   => '0600',
+            group  => $key_group,
+            mode   => '0640',
             source => "puppet://${::certcentral_host}/acmedata/${title}/${type}.key",
             notify => Service[$puppet_svc],
         }
