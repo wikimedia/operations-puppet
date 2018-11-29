@@ -273,11 +273,6 @@ class profile::logstash::collector (
         priority => 50,
     }
 
-    logstash::conf { 'filter_rsyslog_multiline':
-        source   => 'puppet:///modules/profile/logstash/filter-rsyslog-multiline.conf',
-        priority => 50,
-    }
-
     ## Global post-processing (70)
 
     logstash::conf { 'filter_add_normalized_message':

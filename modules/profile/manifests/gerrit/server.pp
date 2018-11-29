@@ -99,12 +99,4 @@ class profile::gerrit::server(
     class { '::gerrit::replication_key':
         require => Class['gerrit'],
     }
-
-    # Ship gerrit logs to ELK using startmsg_regex pattern to join multi-line events based on datestamp
-    # example: [2018-11-28 21:53:07,446]
-    rsyslog::input::file { 'gerrit-multiline':
-        path           => '/var/log/gerrit/*_log',
-        startmsg_regex => '^\\[[0-9,-\\ \\:]+\\]',
-    }
-
 }
