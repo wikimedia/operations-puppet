@@ -182,16 +182,25 @@ class profile::mediawiki::php(
         }
 
         # This will add an fpm pool listening on port $port
-        # We only use 16 children for now, and the dynamic pm
-        # as we still are in an experimental state
-        # TODO: tune the parameters and switch back to the static pm
+        # We found in our benchmarking that having a number of workers slightly
+        # higher than the number of processors is a good compromise at least
+        # during the transition to HHVM.
+        # Also, contrary to popular belief, pm = dynamic didn't pose any significant
+        # performance penalty (quite the contrary).
+        # See T206341
+        # We want a minimum of 8 workers
+        $num_workers = max(floor($facts['processors']['count'] * 1.5), 8)
+        # These numbers need to be positive integers
+        $max_spare = ceil($num_workers * 0.3)
+        $min_spare = ceil($num_workers * 0.1)
         php::fpm::pool { 'www':
             port   => $port,
             config => {
                 'pm'                        => 'dynamic',
-                'pm.max_spare_servers'      => 10,
-                'pm.min_spare_servers'      => 2,
-                'pm.max_children'           => 16,
+                'pm.max_spare_servers'      => $num_workers,
+                'pm.min_spare_servers'      => $min_spare,
+                'pm.start_servers'          => $min_spare,
+                'pm.max_children'           => $max_spare,
                 'request_terminate_timeout' => 240,
             }
         }
