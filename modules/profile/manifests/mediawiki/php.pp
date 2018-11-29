@@ -54,11 +54,23 @@ class profile::mediawiki::php(
         'error_log'    => 'syslog',
     }
 
+    # Custom config for php-fpm
+    # basic optimizations for opcache. See T206341
+    $base_config_fpm = {
+        'opcache.enable'                => 1,
+        'opcache.memory_consumption'    => 256,
+        'opcache.max_accelerated_files' => 24000,
+        'opcache.max_wasted_percentage' => 10,
+        # TODO: is this ok or it will create race conditions during large deployments?
+        # It might be better to just disable revalidation and have scap do a rolling
+        # restart of the opcache upon deployments.
+        'opcache.revalidate_freq'       => 60
+    }
     if $enable_fpm {
         $_sapis = ['cli', 'fpm']
         $_config = {
             'cli' => $config_cli,
-            'fpm' => merge($config_cli, $fpm_config)
+            'fpm' => merge($config_cli, $base_config_fpm, $fpm_config)
         }
     } else {
         $_sapis = ['cli']
