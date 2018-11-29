@@ -46,6 +46,7 @@ define netops::check(
     $interfaces=false,
     $parents=undef,
     $os=undef,
+    $vcp=false,
 ) {
 
     # If we get an array convert it to a comma separated string
@@ -101,6 +102,16 @@ define netops::check(
             description   => 'BGP status',
             check_command => "check_bgp!${snmp_community}",
             notes_url     => 'https://wikitech.wikimedia.org/wiki/Network_monitoring#BGP_status',
+        }
+    }
+
+    if $vcp {
+        @monitoring::service { "${title} VCP status":
+            host          => $title,
+            group         => $group,
+            description   => 'Juniper virtual chassis ports',
+            check_command => "check_vcp!${snmp_community}",
+            notes_url     => 'https://wikitech.wikimedia.org/wiki/Network_monitoring#VCP_status',
         }
     }
 }
