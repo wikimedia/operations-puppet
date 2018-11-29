@@ -690,11 +690,12 @@ groups:
                  'ALL = NOPASSWD: /bin/dmesg *',
                  'ALL = (syslog) NOPASSWD: ALL']
   graphite-admins:
-    description: Group to enable access to Graphite servers
+    description: Group to enable access to Graphite servers, restart services, and run all commands as the _graphite user
     gid: 800
-    members: [imarlier]
+    members: [imarlier, addshore]
     privileges: ['ALL = NOPASSWD: /usr/sbin/service coal *',
-                 'ALL = NOPASSWD: /bin/journalctl *']
+                 'ALL = NOPASSWD: /bin/journalctl *',
+                 'ALL = (_graphite) NOPASSWD: ALL']
   snapshot-users:
     gid: 801
     description: People who have shell access to snapshot hosts and bastions only.
