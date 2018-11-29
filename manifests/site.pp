@@ -2215,11 +2215,16 @@ node /^labvirt100[0-9].eqiad.wmnet/ {
     include ::standard
 }
 
+# Leased servers, on their way back to the wellspring
+node /^labvirt101[0-1].eqiad.wmnet/ {
+    role(spare::system)
+}
+
 # To see labvirt nodes active in the scheduler look at hiera:
 #  key: profile::openstack::main::nova::scheduler_pool
 # We try to keep a few empty as emergency fail-overs
 #  or transition hosts for maintenance to come
-node /^labvirt101[0-4].eqiad.wmnet/ {
+node /^labvirt101[2-4].eqiad.wmnet/ {
     role(wmcs::openstack::main::virt)
     include ::standard
 }
