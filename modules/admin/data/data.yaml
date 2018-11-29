@@ -2543,7 +2543,7 @@ users:
       - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQC/gM+ET26j1I16ZWjbbcoWQhMNYj3AlS0yZQCSnLKbv6pbGCOs9xtTsxQQLH71ITdrlvS9E7KTjR4Ycn/gbgprkrtxCT89U4kU41kQTDHfAow8zodB7S99B0NR2cfUzAVglzw28mDfiCnlk7RS761Zgw+vJhrvGIwwwQngDXR7Y3PN8I3n6h4Jvv3Sm+NvWZD2j/OzeGWZF6XE60sRxXR9IriEjSpETqTwrAk6l0PhrJgzccfEtFWWcLy+ueSrSjL7TF6rxG663C8WA3F2NGm3GTGJCwxGyH94urPOoHZ/Xfqwa3vt6al8DLNpgVziUPnARXN0DsNsT0bUV2MIhRm1b0vapWUySFHr4yyGYjoMzB4WWqQZXeswJr4LYhf2j8RRhjacKp4ucKwbNO/ytwXzwvAGXXxgA+RGqxcKp6wwGVyZNDS0kRyI23xlaIM7N9nJxsK+q9n7uTDeeR+beUxmqoRg0x4pt8nNI2C+NnNL0vKdZtPtHBhunIN2ARycBm8Q8oEfOq/eA7RDw+srPFCaadG0z9jQ0qJB69RHCVZZohCHv7Jryz+iHTdiRcAPqUBCB9MwcpzqkWUirdpSQR1kz0qJpGN3BWxU6VlDpBpMRnjByTcAigVPfei2fOzAH3P7k1yE9eoT7ooyU+RtLreYbtCODpp03sTwRTOzvbjWiQ==
     uid: 15999
     email: tiziano.piccardi@epfl.ch
-    expiry_date: 2018-11-29
+    expiry_date: 2019-05-29
     expiry_contact: leila@wikimedia.org
   fdans:
     ensure: present
@@ -2873,7 +2873,7 @@ users:
       - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQCwms9/RJYJkac1m4+rV0FCg4c2DKjxpJbrp2PNSfTx/xePfssZA3Y6h8hzqMTKFdX1WCBmMD5z1d3YsKL9FZ/6RFE+jBweaCCo9tMMGFQwnj2t6Z/ZOUVR2gnUBTKdUzVGhdcAW5PFnE5WosgXnTm5hLNMWKa18lYcFa9nlgduI6TXNZyA4UpEiZOThw1pUtnlMeVA0ysU6MWmofOu1yHvief+2P1ep7sSMWVaJq9mDeoRNpm3py4hFW+cCxnReJWDG4GPu48y/5mBrhx+5rKEMWURppmL69GXP3qchRAOn26+1gjqmNY0KVuJimkB4sdFIARmN+O6Z6SxBKdCCtBwhZNwkfO72YyF4qS/1BWVSFMRIyJdtSUf6lMefQWkMccaRLspShYzdEGEiN8J7Zml9wO/PdF1WcV0J8Q/ZCmp0x2FS0Hp4jQkrosxaVTkqjXTdh6SWW8SuST5QYkgjeTCP066og68Q28bWpzUaUINrs8XJ6Fq4/WUqsitH/Xbi1laHUY27h5oGY9Mbm1AJ/5oeVAHy0XeOHqfhpS74RxCnm/yk3DRbsnXnxwM1zoayJR3wxu/bct4jkD8R29nl0UPgpzHHmGWmiZ2y+Syga/JnKkgJ3b534sKiPIzl7Gu3SrOExfepmLSPWQ9bLrna4pZ7RHEUajW0gb8lhlinTufOw== pirroh@cs.stanford.edu
     uid: 19707
     email: pirroh@cs.stanford.edu
-    expiry_date: 2018-11-18
+    expiry_date: 2019-05-29
     expiry_contact: mredi@wikimedia.org
   tieu:
     ensure: present
