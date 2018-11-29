@@ -1,10 +1,12 @@
 class openstack::neutron::l3_agent(
     $version,
-    $dmz_cidr,
+    $dmz_cidr_array,
     $network_public_ip,
     $report_interval,
     $enabled=true,
     ) {
+
+    $dmz_cidr = join($dmz_cidr_array, ',')
 
     if os_version('debian jessie') and ($version == 'mitaka') {
         $install_options = ['-t', 'jessie-backports']

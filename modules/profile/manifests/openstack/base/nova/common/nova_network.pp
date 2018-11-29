@@ -41,7 +41,7 @@ class profile::openstack::base::nova::common::nova_network(
         keystone_host            => $keystone_host,
         nova_api_host            => $nova_api_host,
         nova_api_host_ip         => $nova_api_host_ip,
-        dmz_cidr                 => $dmz_cidr,
+        dmz_cidr_array           => $dmz_cidr,
         dhcp_domain              => $dhcp_domain,
         quota_floating_ips       => $quota_floating_ips,
         dhcp_start               => $dhcp_start,

@@ -7,7 +7,7 @@ class profile::openstack::base::neutron::l3_agent(
 
     class {'::openstack::neutron::l3_agent':
         version           => $version,
-        dmz_cidr          => $dmz_cidr,
+        dmz_cidr_array    => $dmz_cidr,
         network_public_ip => $network_public_ip,
         report_interval   => $report_interval,
     }

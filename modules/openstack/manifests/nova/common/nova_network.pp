@@ -4,7 +4,7 @@ class openstack::nova::common::nova_network(
     $keystone_host,
     $nova_api_host,
     $nova_api_host_ip,
-    $dmz_cidr,
+    $dmz_cidr_array,
     $dhcp_domain,
     $quota_floating_ips,
     $dhcp_start,
@@ -33,6 +33,7 @@ class openstack::nova::common::nova_network(
     $compute_workers,
     ) {
 
+    $dmz_cidr = join($dmz_cidr_array, ',')
     $nova_controller_ip = ipresolve($nova_controller,4)
     $keystone_host_ip = ipresolve($keystone_host,4)
 

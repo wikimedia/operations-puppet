@@ -2,7 +2,9 @@
 # used for labs in eqiad.  We are using it as a placeholder for now
 # with no actual advertisement or needed external services for now
 # 208.80.155.0/22
-profile::openstack::labtest::nova::dmz_cidr: '208.80.155.0/22,10.0.0.0/8'
+profile::openstack::labtest::nova::dmz_cidr:
+ - 208.80.155.0/22
+ - 10.0.0.0/8
 profile::openstack::labtest::nova::dhcp_domain: 'codfw.labtest'
 profile::openstack::labtest::nova::dhcp_start: '10.196.16.4'
 profile::openstack::labtest::nova::quota_floating_ips: '0'
