@@ -50,8 +50,12 @@ class profile::mediawiki::php(
     }
 
     $config_cli = {
-        'include_path' => '".:/usr/share/php:/srv/mediawiki/php"',
-        'error_log'    => 'syslog',
+        'include_path'         => '".:/usr/share/php:/srv/mediawiki/php"',
+        'error_log'            => 'syslog',
+        'pcre.backtrack_limit' => 5000000,
+        'date.timezone'        => 'UTC',
+        'display_errors'       => 'stderr',
+        'memory_limit'         => '500M',
     }
 
     # Custom config for php-fpm
