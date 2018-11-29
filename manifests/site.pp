@@ -2029,9 +2029,9 @@ node 'roentgenium.eqiad.wmnet' {
 }
 
 
-# people.wikimedia.org, for all shell users
+# was people.wikimedia.org, replaced by people1001
 node 'rutherfordium.eqiad.wmnet' {
-    role(microsites::peopleweb)
+    role(spare::system)
 }
 
 node 'people1001.eqiad.wmnet' {
