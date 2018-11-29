@@ -17,11 +17,18 @@
 import os
 import sys
 
+<% if @hive_server2_authentication_kerberos_principal -%>
+DEFAULT_OPTIONS = {'-n': os.environ['USER'],
+                   '-u': 'jdbc:hive2://<%= @hiveserver_host %>:' +
+                         '<%= @hiveserver_port %>' + '/default;principal=<%= @hive_server2_authentication_kerberos_principal %>',
+                   '--outputformat': 'tsv2', }
+<% else -%>
 # Let's set beeline defaults for user, database url and outputformat
 DEFAULT_OPTIONS = {'-n': os.environ['USER'],
                    '-u': 'jdbc:hive2://<%= @hiveserver_host %>:' +
                          '<%= @hiveserver_port %>',
                    '--outputformat': 'tsv2', }
+<% end -%>
 
 # Let's parse out arguments to see if values are set for the default
 # options we have, if not add them to the argument list
