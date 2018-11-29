@@ -175,6 +175,18 @@ class profile::logstash::collector (
         ssl_truststore_password => $input_kafka_ssl_truststore_password,
     }
 
+    logstash::input::kafka { 'rsyslog-udp-localhost':
+        topics_pattern          => 'udp_localhost-.*',
+        group_id                => $input_kafka_consumer_group_id,
+        type                    => 'syslog',
+        tags                    => ['rsyslog-udp-localhost','kafka'],
+        codec                   => 'json',
+        bootstrap_servers       => $kafka_config['brokers']['ssl_string'],
+        security_protocol       => 'SSL',
+        ssl_truststore_location => '/etc/logstash/kafka-logging-truststore.jks',
+        ssl_truststore_password => $input_kafka_ssl_truststore_password,
+    }
+
     file { '/etc/logstash/kafka-logging-truststore.jks':
         content => secret("certificates/kafka_logging-${::site}_broker/truststore.jks"),
         before  => Logstash::Input::Kafka['rsyslog-shipper'],
