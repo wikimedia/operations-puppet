@@ -34,9 +34,6 @@
 # [*ensure*]
 #   installs/removes config files
 #
-# [*napalm_username*]
-#   Optional, username to use to connect to network devices
-#
 class netbox(
     $secret_key,
     $ldap_password,
@@ -48,7 +45,6 @@ class netbox(
     $venv_path = '/srv/deployment/netbox/venv',
     $directory = '/srv/deployment/netbox/deploy/src',
     $ensure='present',
-    $napalm_username='',
 ) {
 
   require_package('virtualenv', 'python3-pip')
@@ -76,10 +72,6 @@ class netbox(
       notify  => Service['uwsgi-netbox'],
   }
 
-  ::keyholder::agent { 'netbox':
-      trusted_groups => ['www-data'],
-  }
-
   service::uwsgi { 'netbox':
       port            => $port,
       deployment_user => 'deploy-librenms',
@@ -94,7 +86,6 @@ class netbox(
           env          => [
               'LANG=C.UTF-8',
               'PYTHONENCODING=utf-8',
-              'SSH_AUTH_SOCK=/run/keyholder/proxy.sock',
           ],
       },
       healthcheck_url => '/login/',

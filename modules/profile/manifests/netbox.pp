@@ -17,7 +17,6 @@ class profile::netbox (
     $slaves = hiera('profile::netbox::slaves', undef),
     $slave_ipv4 = hiera('profile::netbox::slave_ipv4'),
     $slave_ipv6 = hiera('profile::netbox::slave_ipv6'),
-    $napalm_username = hiera('profile::netbox::napalm_username'),
 ) {
 
     include passwords::netbox
@@ -136,12 +135,11 @@ class profile::netbox (
     }
 
     class { '::netbox':
-        directory       => '/srv/deployment/netbox/deploy/src',
-        db_password     => $db_password,
-        secret_key      => $secret_key,
-        ldap_password   => $proxypass,
-        admins          => '("Ops Team", "ops@lists.wikimedia.org")',
-        napalm_username => $napalm_username,
+        directory     => '/srv/deployment/netbox/deploy/src',
+        db_password   => $db_password,
+        secret_key    => $secret_key,
+        ldap_password => $proxypass,
+        admins        => '("Ops Team", "ops@lists.wikimedia.org")',
     }
     $ssl_settings = ssl_ciphersuite('apache', 'mid', true)
 
