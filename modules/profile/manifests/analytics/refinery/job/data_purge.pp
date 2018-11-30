@@ -171,7 +171,7 @@ class profile::analytics::refinery::job::data_purge (
             'should_email_report'             => true,
             'emails_to'                       => 'analytics-alerts@wikimedia.org',
             # The following parameters are for the RefineMonitor job.
-            'input_path_regex'                => '.*/([^/]+)/year=(\\\\d{4})/month=(\\\\d{1,2})/day=(\\\\d{1,2})/hour=(\\\\d{1,2})',
+            'input_path_regex'                => '.*/([^/]+)/year=(\\d{4})/month=(\\d{1,2})/day=(\\d{1,2})/hour=(\\d{1,2})',
             'input_path_regex_capture_groups' => 'table,year,month,day,hour',
             'input_path_datetime_format'      => '\'year=\'yyyy/\'month=\'M/\'day=\'d/\'hour=\'H',
         },
