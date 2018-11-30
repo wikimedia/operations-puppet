@@ -9,7 +9,7 @@ define certcentral::cert (
             ensure => directory,
             owner  => 'root',
             group  => 'root',
-            mode   => '0600',
+            mode   => '0755',
         }
     }
 
