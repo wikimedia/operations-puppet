@@ -256,6 +256,7 @@ scap::dsh::groups:
             - deployment-snapshot01.deployment-prep.eqiad.wmflabs
             - deployment-deploy01.deployment-prep.eqiad.wmflabs
             - deployment-deploy02.deployment-prep.eqiad.wmflabs
+            - deployment-mwmaint01.deployment-prep.eqiad.wmflabs
     mediawiki-appserver-canaries:
         hosts:
             - deployment-mediawiki-07.deployment-prep.eqiad.wmflabs
