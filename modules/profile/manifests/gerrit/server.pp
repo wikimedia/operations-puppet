@@ -107,7 +107,7 @@ class profile::gerrit::server(
     # example: [2018-11-28 21:53:07,446]
     rsyslog::input::file { 'gerrit-multiline':
         path           => '/var/log/gerrit/*_log',
-        startmsg_regex => '^\\\\[[0-9,-\\\\ \\\\:]+\\\\]',
+        startmsg_regex => '^\\\\[[0-9,-\\\\+\\\\ \\\\:]+\\\\]',
     }
 
 }
