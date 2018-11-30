@@ -12,21 +12,9 @@ class role::phabricator {
     include ::profile::base::firewall
     include ::profile::backup::host
     include ::profile::phabricator::main
+    include ::profile::phabricator::httpd
     include ::phabricator::monitoring
     include ::phabricator::mpm
     include ::profile::prometheus::apache_exporter
     include ::profile::rsyslog::kafka_shipper
-
-    if os_version('debian >= stretch') {
-        $php_module = 'php7.2'
-    } else {
-        $php_module = 'php5'
-    }
-
-    $apache_lib = "libapache2-mod-${php_module}"
-
-    class { '::httpd':
-        modules => ['headers', 'rewrite', 'remoteip', $php_module],
-        require => Package[$apache_lib],
-    }
 }
