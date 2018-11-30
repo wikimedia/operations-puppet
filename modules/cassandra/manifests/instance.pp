@@ -359,7 +359,7 @@ define cassandra::instance(
 
     # Storage directories are an array of arbitrary, fully-qualified paths;
     # Since we cannot guarantee a common base path, ensure will not work.
-    flatten([$instance_data_file_directories, $commitlog_directory, $saved_caches_directory]).each | $data_dir | {
+    flatten([$instance_data_file_directories, $commitlog_directory, $saved_caches_directory, $hints_directory]).each | $data_dir | {
         exec { "install-${data_dir}":
             command => "install -o cassandra -g cassandra -m 750 -d ${data_dir}",
             path    => '/usr/bin/:/bin/',
