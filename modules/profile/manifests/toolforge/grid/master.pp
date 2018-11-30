@@ -21,16 +21,6 @@ class profile::toolforge::grid::master (
         config => 'profile/toolforge/grid/ckpt-continuous.erb',
     }
 
-    # For when we deploy the web nodes
-
-    # sonofgridengine::queue { 'webgrid-lighttpd':
-    #     config => 'profile/toolforge/grid/queue-webgrid.erb',
-    # }
-
-    # sonofgridengine::queue { 'webgrid-generic':
-    #     config => 'profile/toolforge/grid/queue-webgrid.erb',
-    # }
-
     class { '::sonofgridengine::master':
         etcdir  => $etcdir,
     }
