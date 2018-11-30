@@ -26,8 +26,11 @@ class profile::phabricator::main (
     Boolean $logmail = hiera('phabricator_logmail', false),
     Boolean $aphlict_enabled = hiera('phabricator_aphlict_enabled', false),
     Hash $rate_limits = hiera('profile::phabricator::main::rate_limits'),
-    Integer $phd_taskmasters = hiera('phabricator_phd_taskmasters', 10)
-){
+    Integer $phd_taskmasters = hiera('phabricator_phd_taskmasters', 10),
+    Boolean $enable_php_fpm = hiera('phabricator_enable_php_fpm', false),
+    Integer $opcache_validate = hiera('phabricator_opcache_validate', 0),
+    String $timezone = hiera('phabricator_timezone', 'UTC'),
+) {
 
     mailalias { 'root':
         recipient => 'root@wikimedia.org',
@@ -200,9 +203,94 @@ class profile::phabricator::main (
             'gitblit.hostname'                       => 'git.wikimedia.org',
             'notification.servers'                   => $notification_servers,
         },
-        conf_files     => $conf_files,
+        conf_files       => $conf_files,
+        enable_php_fpm   => $enable_php_fpm,
+        opcache_validate => $opcache_validate,
+        timezone         => $timezone,
     }
     # lint:endignore
+
+    # only supports stretch, do not use on jessie
+    if $enable_php_fpm {
+        $fpm_config = {
+            'date'                   => {
+                'timezone' => $timezone,
+            },
+            'opcache'                   => {
+                'memory_consumption'      => 128,
+                'interned_strings_buffer' => 16,
+                'max_accelerated_files'   => 10000,
+                'validate_timestamps'     => $opcache_validate,
+            },
+            'max_execution_time'  => 10,
+            'post_max_size'       => '10M',
+            'track_errors'        => 'Off',
+            'upload_max_filesize' => '10M',
+        }
+
+        # Install the runtime
+        class { '::php':
+            ensure         => present,
+            version        => '7.2',
+            sapis          => ['cli', 'fpm'],
+            config_by_sapi => {
+                'fpm' => $fpm_config,
+            },
+            require        => Apt::Repository['wikimedia-php72'],
+        }
+
+        $core_extensions =  [
+            'curl',
+            'gd',
+            'gmp',
+            'intl',
+            'mbstring',
+        ]
+
+        $core_extensions.each |$extension| {
+            php::extension { $extension:
+                package_name => "php7.2-${extension}",
+                require      => Apt::Repository['wikimedia-php72'],
+            }
+        }
+
+        # Extensions that require configuration.
+        php::extension {
+            'apcu':
+                package_name => 'php-apcu';
+            'xml':
+                package_name => 'php7.2-xml',
+                priority     => 15;
+            'mysqlnd':
+                package_name => 'php7.2-mysqlnd',
+                priority     => 15;
+            'mysqli':
+                package_name => 'php7.2-mysql';
+        }
+
+        class { '::php::fpm':
+            ensure  => present,
+            config  => {
+                'emergency_restart_interval' => '60s',
+                'process.priority'           => -19,
+            },
+            require => Apt::Repository['wikimedia-php72'],
+        }
+
+        $num_workers = max(floor($facts['processors']['count'] * 1.5), 8)
+        # These numbers need to be positive integers
+        $max_spare = ceiling($num_workers * 0.3)
+        $min_spare = ceiling($num_workers * 0.1)
+        php::fpm::pool { 'www':
+            config => {
+                'pm'                   => 'dynamic',
+                'pm.max_spare_servers' => $max_spare,
+                'pm.min_spare_servers' => $min_spare,
+                'pm.start_servers'     => $min_spare,
+                'pm.max_children'      => $num_workers,
+            }
+        }
+    }
 
     class { '::phabricator::aphlict':
         ensure  => $aphlict_ensure,

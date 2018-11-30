@@ -39,6 +39,12 @@
 # [*deploy_target*]
 #     The name of the scap3 deployment repo, e.g. phabricator/deployment
 #
+# [*enable_php_fpm*]
+#     Weather to enable php-fpm, defaults to false.
+#
+# [*opcache_validate*]
+#     Allows you to enable opcache revalidation.
+#
 
 # === Examples
 #
@@ -65,6 +71,8 @@ class phabricator (
     Array $serveraliases      = [],
     String $deploy_user       = 'phab-deploy',
     String $deploy_target     = 'phabricator/deployment',
+    Boolean $enable_php_fpm   = false,
+    Integer $opcache_validate = 0,
 ) {
     validate_hash($conf_files)
 
@@ -119,20 +127,22 @@ class phabricator (
             logoutput   => true,
         }
 
-        package { [
-            'php-apcu',
-            'php-mailparse',
-            'php7.2-mysql',
-            'php7.2-gd',
-            'php7.2-dev',
-            'php7.2-curl',
-            'php7.2-cli',
-            'php7.2-json',
-            'php7.2-ldap',
-            'php7.2-mbstring',
-            'libapache2-mod-php7.2']:
-                ensure  => present,
-                require => Apt::Repository['wikimedia-php72'],
+        if !$enable_php_fpm {
+            package { [
+                'php-apcu',
+                'php-mailparse',
+                'php7.2-mysql',
+                'php7.2-gd',
+                'php7.2-dev',
+                'php7.2-curl',
+                'php7.2-cli',
+                'php7.2-json',
+                'php7.2-ldap',
+                'php7.2-mbstring',
+                'libapache2-mod-php7.2']:
+                    ensure  => present,
+                    require => Apt::Repository['wikimedia-php72'],
+            }
         }
     } else {
         # jessie - PHP (5.5/5.6) packages and Apache module
@@ -227,15 +237,15 @@ class phabricator (
         require => $base_requirements,
     }
 
-    $opcache_validate = hiera('phabricator_opcache_validate', 0)
-
-    if os_version('debian >= stretch') {
+    if !$enable_php_fpm {
       file { '/etc/php/7.2/apache2/conf.d/php.ini':
           content => template('phabricator/php72.ini.erb'),
           notify  => Service['apache2'],
           require => Package['libapache2-mod-php7.2'],
       }
-    } else {
+    }
+
+    if os_version('debian == jessie') {
       file { '/etc/php5/apache2/php.ini':
           content => template('phabricator/php.ini.erb'),
           notify  => Service['apache2'],
