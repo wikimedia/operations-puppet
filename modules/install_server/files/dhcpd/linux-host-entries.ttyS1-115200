@@ -2564,6 +2564,46 @@ host elastic2036 {
     fixed-address elastic2036.codfw.wmnet;
 }
 
+host elastic2037 {
+    hardware ethernet B0:26:28:32:AA:60;
+    fixed-address elastic2037.codfw.wmnet;
+}
+
+host elastic2038 {
+    hardware ethernet B0:26:28:32:A6:30;
+    fixed-address elastic2038.codfw.wmnet;
+}
+
+host elastic2039 {
+    hardware ethernet B0:26:28:32:BC:90;
+    fixed-address elastic2039.codfw.wmnet;
+}
+
+host elastic2040 {
+    hardware ethernet B0:26:28:32:89:90 ;
+    fixed-address elastic2040.codfw.wmnet;
+}
+
+host elastic2041 {
+    hardware ethernet B0:26:28:32:96:50 ;
+    fixed-address elastic2041.codfw.wmnet;
+}
+
+host elastic2042 {
+    hardware ethernet B0:26:28:32:A1:A0;
+    fixed-address elastic2042.codfw.wmnet;
+}
+
+host elastic2043 {
+    hardware ethernet B0:26:28:32:AA:D0;
+    fixed-address elastic2043.codfw.wmnet;
+}
+
+host elastic2044 {
+    hardware ethernet B0:26:28:32:AC:B0;
+    fixed-address elastic2044.codfw.wmnet;
+}
+
 host es1011 {
     hardware ethernet 44:A8:42:35:6C:73;
     fixed-address es1011.eqiad.wmnet;
