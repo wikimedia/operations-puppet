@@ -6,4 +6,5 @@ class role::etherpad {
     include ::standard
     include ::profile::base::firewall
     include ::profile::etherpad
+    include ::profile::rsyslog::kafka_shipper
 }

@@ -27,4 +27,11 @@ class profile::etherpad {
         port   => '9001',
         srange => '$CACHES',
     }
+
+    # Ship etherpad server logs to ELK using startmsg_regex pattern to join multi-line events based on datestamp
+    # example: [2018-11-30 21:32:43.412]
+    rsyslog::input::file { 'etherpad-multiline':
+        path           => '/var/log/etherpad-lite/etherpad-lite.log',
+        startmsg_regex => '^\\\\[[0-9,-\\\\ \\\\:]+\\\\]',
+    }
 }
