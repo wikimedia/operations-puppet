@@ -3,9 +3,7 @@
 <VirtualHost *:80>
     ServerAdmin webmaster@wikimedia.org
     ServerName <%= @lists_servername %>
-    Include /etc/acme/challenge-apache.conf
     RewriteEngine on
-    RewriteCond %{REQUEST_URI} !^/\.well-known/acme-challenge/
     RewriteRule ^/(.*)$ https://<%= @lists_servername %>/$1 [R=301]
 </VirtualHost>
 

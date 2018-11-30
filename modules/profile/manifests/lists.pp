@@ -10,12 +10,7 @@ class profile::lists {
         ipv6 => hiera('mailman::lists::ipv6', undef),
     }
 
-    letsencrypt::cert::integrated { 'lists':
-        subjects   => 'lists.wikimedia.org',
-        puppet_svc => 'apache2',
-        system_svc => 'apache2',
-        key_group  => 'Debian-exim',
-    }
+    class { '::sslcert::dhparam': }
     certcentral::cert{ 'lists':
         puppet_svc => 'apache2',
         key_group  => 'Debian-exim',
