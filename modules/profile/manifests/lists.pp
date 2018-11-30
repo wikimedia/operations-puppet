@@ -18,7 +18,7 @@ class profile::lists {
     }
     certcentral::cert{ 'lists':
         puppet_svc => 'apache2',
-        key_group  => 'exim',
+        key_group  => 'Debian-exim',
     }
 
     class { 'spamassassin':
