@@ -83,6 +83,20 @@ def edit_recordset(endpoint, token, zoneid, recordset, newrecords):
     req.raise_for_status()
 
 
+def recordset_is_service(recordset):
+    if recordset['type'] == 'A':
+        attribute = 'name'
+    elif recordset['type'] == 'PTR':
+        attribute = 'data'
+    else:
+        return False
+
+    if recordset[attribute].lower().endswith(".svc.eqiad.wmflabs."):
+        return True
+
+    return False
+
+
 def purge_duplicates(delete=False):
     (endpoint, token) = designate_endpoint_and_token()
 
@@ -107,7 +121,7 @@ def purge_duplicates(delete=False):
 
         for recordset in recordsets:
             name = recordset['name'].lower()
-            if name.endswith(".svc.eqiad.wmflabs."):
+            if recordset_is_service(recordset):
                 # These are service records and shouldn't point to instances.
                 #  Leave them be.
                 continue
