@@ -20,6 +20,8 @@ class role::thumbor::mediawiki {
         port => 11211,
     }
 
+    class {'::imagemagick::install': }
+
     include ::profile::prometheus::memcached_exporter
     class { '::profile::prometheus::statsd_exporter':
         relay_address => 'localhost:8125',
