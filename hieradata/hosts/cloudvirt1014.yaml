@@ -1,1 +1,3 @@
 profile::openstack::base::nova::instance_dev: "/dev/mapper/tank-data"
+
+profile::base::notifications: disabled
