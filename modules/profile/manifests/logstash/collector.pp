@@ -363,4 +363,12 @@ class profile::logstash::collector (
         method          => 'ge',
         prometheus_url  => "http://prometheus.svc.${::site}.wmnet/ops",
     }
+
+    # Ship logstash server logs to ELK using startmsg_regex pattern to join multi-line events based on datestamp
+    # example: [2018-11-30T16:13:48,043]
+    rsyslog::input::file { 'logstash-multiline':
+        path           => '/var/log/logstash/logstash-plain.log',
+        startmsg_regex => '^\\\\[[0-9,-\\\\ \\\\:]+\\\\]',
+    }
+
 }

@@ -15,6 +15,7 @@
     {"index" : "prometheus-node-exporter",     "value" : "kafka local" },
     {"index" : "prometheus-blackbox-exporter", "value" : "kafka local" },
     {"index" : "prometheus",                   "value" : "kafka local" },
+    {"index" : "input-file-logstash-multiline","value" : "kafka" },
     {"index" : "input-file-gerrit-multiline",  "value" : "kafka" },
     {"index" : "input-file-apache2-error", "value" : "kafka" },
     {"index" : "input-file-puppetdb", "value" : "kafka" },
