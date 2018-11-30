@@ -4,6 +4,7 @@
   "table":[
     {"index" : "jenkins", "value" : "kafka local" },
     {"index" : "icinga", "value" : "kafka local" },
+    {"index" : "grafana-server",               "value" : "kafka local" },
     {"index" : "prometheus@analytics",         "value" : "kafka local" },
     {"index" : "prometheus@ops",               "value" : "kafka local" },
     {"index" : "prometheus@k8s",               "value" : "kafka local" },

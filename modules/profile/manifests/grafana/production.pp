@@ -6,6 +6,8 @@
 class profile::grafana::production {
     include ::profile::grafana
 
+    include ::profile::rsyslog::kafka_shipper
+
     grafana::dashboard { 'varnish-http-errors':
         ensure  => absent,
         content => '',
