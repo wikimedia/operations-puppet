@@ -79,8 +79,11 @@ class profile::swap(
         # (in /etc/rsyncd.conf) for /home.
         rsync::server::module { 'home':
             path        => '/home',
-            read_only   => 'no',
+            read_only   => 'yes',
             list        => 'yes',
+            # Set uid/gid to false to override rsync::server::module's default of 0/0
+            uid         => false,
+            gid         => false,
             hosts_allow => $rsync_hosts_allow,
         }
     }

@@ -6,8 +6,12 @@ path            = <%= @path %>
 read only       = <%= @read_only %>
 write only      = <%= @write_only %>
 list            = <%= @list %>
+<% if @uid -%>
 uid             = <%= @uid %>
+<% end -%>
+<% if @gid -%>
 gid             = <%= @gid %>
+<% end -%>
 max connections = <%= @max_connections %>
 <% if Integer(@max_connections) > 0 %>lock file =     <%= @lock_file %><% end %>
 <% if @comment %>comment               = <%= @comment %><% end %>

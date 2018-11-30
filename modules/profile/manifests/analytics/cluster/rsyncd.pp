@@ -14,6 +14,9 @@ class profile::analytics::cluster::rsyncd(
         path        => "${::cdh::hadoop::mount::mount_point}/wmf/data/archive",
         read_only   => 'yes',
         list        => 'yes',
+        # Set uid/gid to false to override rsync::server::module's default of 0/0
+        uid         => false,
+        gid         => false,
         hosts_allow => $hosts_allow,
         require     => Class['cdh::hadoop::mount'],
         auto_ferm   => true,
