@@ -127,10 +127,8 @@ class sonofgridengine::master (
     }
 
     service { 'gridengine-master':
-        ensure    => running,
-        enable    => true,
-        hasstatus => false,
-        pattern   => 'sge_qmaster',
-        require   => Package['gridengine-master'],
+        ensure  => running,
+        enable  => true,
+        require => Package['gridengine-master'],
     }
 }

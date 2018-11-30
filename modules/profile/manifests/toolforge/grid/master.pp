@@ -21,10 +21,6 @@ class profile::toolforge::grid::master (
         config => 'profile/toolforge/grid/ckpt-continuous.erb',
     }
 
-    class { '::sonofgridengine::master':
-        etcdir  => $etcdir,
-    }
-
     file { "${profile::toolforge::grid::base::collectors}/hostgroups":
         ensure => directory,
         owner  => 'root',
@@ -130,6 +126,10 @@ class profile::toolforge::grid::master (
         owner   => 'sgeadmin',
         group   => 'sgeadmin',
         require => File[$profile::toolforge::grid::base::geconf],
+    }
+
+    class { '::sonofgridengine::master':
+        etcdir  => $etcdir,
     }
 
     # This must only run on install

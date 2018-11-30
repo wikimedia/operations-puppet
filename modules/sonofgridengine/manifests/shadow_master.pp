@@ -53,6 +53,14 @@ class sonofgridengine::shadow_master(
         source => 'puppet:///modules/sonofgridengine/grid_configurator/grid_configurator.py',
     }
 
+    file { '/var/run/gridengine':
+        ensure => directory,
+        force  => true,
+        owner  => 'sgeadmin',
+        group  => 'sgeadmin',
+        mode   => '0775',
+    }
+
     systemd::service { 'gridengine-shadow':
         ensure  => present,
         require => [ Package['gridengine-master'],File["${sgeroot}/default/common/shadow_masters"] ],

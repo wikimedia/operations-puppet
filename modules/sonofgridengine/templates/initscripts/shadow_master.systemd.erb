@@ -1,9 +1,13 @@
 [Unit]
 Description=Gridengine shadow master
 After=network.target
+After=syslog.target
 
 [Service]
-Type=simple
+Type=forking
+PIDFile=/var/run/gridengine/sge_shadowd.pid
+User=sgeadmin
+Group=sgeadmin
 ExecStart=/usr/sbin/sge_shadowd
 Restart=always
 StartLimitInterval=90
