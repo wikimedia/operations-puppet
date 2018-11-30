@@ -33,6 +33,10 @@
 #   proxy.config.ssl.server.cipher_suite will be used. See
 #   https://docs.trafficserver.apache.org/en/7.1.x/admin-guide/files/records.config.en.html
 #
+# [*enable_xdebug*]
+#   Enable the XDebug plugin. (default: false)
+#   https://docs.trafficserver.apache.org/en/latest/admin-guide/plugins/xdebug.en.html
+#
 # [*mapping_rules*]
 #   An array of Trafficserver::Mapping_rules, each representing a mapping rule. (default: []).
 #   See https://docs.trafficserver.apache.org/en/latest/admin-guide/files/remap.config.en.html
@@ -93,6 +97,7 @@ class trafficserver(
     Integer[0, 1] $outbound_tlsv1_1 = 0,
     Integer[0, 1] $outbound_tlsv1_2 = 1,
     String $outbound_tls_cipher_suite = '',
+    Boolean $enable_xdebug = false,
     Array[Trafficserver::Mapping_rule] $mapping_rules = [],
     Array[Trafficserver::Caching_rule] $caching_rules = [],
     Array[Trafficserver::Storage_element] $storage = [],

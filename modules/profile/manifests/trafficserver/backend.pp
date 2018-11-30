@@ -6,6 +6,7 @@
 class profile::trafficserver::backend (
     Wmflib::IpPort $port=hiera('profile::trafficserver::backend::port', 3129),
     String $outbound_tls_cipher_suite=hiera('profile::trafficserver::backend::outbound_tls_cipher_suite', ''),
+    Boolean $enable_xdebug=hiera('profile::trafficserver::backend::enable_xdebug', false),
     Array[TrafficServer::Mapping_rule] $mapping_rules=hiera('profile::trafficserver::backend::mapping_rules', []),
     Array[TrafficServer::Caching_rule] $caching_rules=hiera('profile::trafficserver::backend::caching_rules', []),
     Array[String] $default_lua_scripts=hiera('profile::trafficserver::backend::default_lua_scripts', []),
@@ -36,6 +37,7 @@ class profile::trafficserver::backend (
     class { '::trafficserver':
         port                      => $port,
         outbound_tls_cipher_suite => $outbound_tls_cipher_suite,
+        enable_xdebug             => $enable_xdebug,
         storage                   => $storage,
         mapping_rules             => $remap_rules_lua,
         caching_rules             => $caching_rules,

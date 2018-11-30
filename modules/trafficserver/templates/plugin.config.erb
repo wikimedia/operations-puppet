@@ -3,3 +3,6 @@
 
 healthchecks.so /etc/trafficserver/healtchecks.config
 stats_over_http.so
+<% if @enable_xdebug -%>
+xdebug.so --header=X-ATS-Debug
+<% end -%>

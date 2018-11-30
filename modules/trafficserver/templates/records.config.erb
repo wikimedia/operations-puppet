@@ -9,6 +9,12 @@ CONFIG proxy.config.http.cache.required_headers INT 0
 CONFIG proxy.config.url_remap.pristine_host_hdr INT 1
 CONFIG proxy.config.disable_configuration_modification INT 1
 
+<% if @enable_xdebug -%>
+# XDebug Plugin
+CONFIG proxy.config.diags.debug.enabled INT 1
+CONFIG proxy.config.diags.debug.tags STRING xdebug.headers
+<% end -%>
+
 # logging: send diags to stdout/stderr (systemd journal)
 CONFIG proxy.config.diags.output.status STRING O
 CONFIG proxy.config.diags.output.note STRING O
