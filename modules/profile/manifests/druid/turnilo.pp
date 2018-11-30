@@ -30,7 +30,6 @@ class profile::druid::turnilo(
     class { '::httpd':
         modules => ['proxy_http',
                     'proxy',
-                    'proxy_html',
                     'auth_basic',
                     'authnz_ldap']
     }
