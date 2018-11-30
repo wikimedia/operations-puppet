@@ -1,0 +1,40 @@
+#!/usr/bin/env stap
+#
+# ats_uncacheable.stp - debug uncacheable origin server responses
+#
+# Print the URL of origin server responses considered uncacheable by Apache
+# Traffic Server and whether the decision was taken because of CC:no-store,
+# CC:private, or Pragma:no-cache.
+#
+# Sample output:
+# no_store 0 private 1 pragma_no_cache 0 url w/api.php
+#
+# Note that this probe is working with Traffic Server 8.0.0 and might not
+# function properly on other versions.
+#
+probe process("/usr/bin/traffic_server").function("is_response_cacheable") {
+   # proxy/hdrs/MIME.h
+   MIME_COOKED_MASK_CC_NO_STORE = 1 << 2;
+   MIME_COOKED_MASK_CC_PRIVATE  = 1 << 8;
+
+   # does_server_permit_storing is set by does_server_allow_response_to_be_stored()
+   if ($s->cache_info->directives->does_server_permit_storing == 0) {
+       # Get the request URL
+       ui = $s->unmapped_url->m_url_impl;
+       pp = @cast(ui, "URLImpl")->m_ptr_path;
+       lp = @cast(ui, "URLImpl")->m_len_path;
+       url = user_string_n(pp ,lp);
+
+       # get_cooked_cc_mask()
+       cc_mask = $s->hdr_info->server_response->m_mime->m_cooked_stuff->m_cache_control->m_mask;
+
+       # get_cooked_pragma_no_cache()
+       pragma_no_cache = $s->hdr_info->server_response->m_mime->m_cooked_stuff->m_pragma->m_no_cache;
+
+       printf("no_store %d private %d pragma_no_cache %d url %s\n",
+           (cc_mask & MIME_COOKED_MASK_CC_NO_STORE) != 0,
+           (cc_mask & MIME_COOKED_MASK_CC_PRIVATE) != 0,
+           pragma_no_cache,
+           url);
+    }
+}
