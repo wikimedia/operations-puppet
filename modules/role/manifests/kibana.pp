@@ -27,27 +27,33 @@ class role::kibana (
     $ldap_binddn   = undef,
     $ldap_groups   = [],
 ) {
-    include ::apache
-    include ::apache::mod::alias
-    include ::apache::mod::headers
-    include ::apache::mod::proxy
-    include ::apache::mod::proxy_http
-    include ::apache::mod::rewrite
+
     include ::kibana
 
+    $httpd_base_modules = ['proxy_http',
+                        'proxy',
+                        'alias',
+                        'headers',
+                        'rewrite']
+
     if $auth_type == 'ldap' {
-        include ::apache::mod::authnz_ldap
+        $httpd_extra_modules = ['authnz_ldap']
         include ::passwords::ldap::production
 
         # FIXME: move this into hiera config
         $ldap_bindpass = $passwords::ldap::production::proxypass
 
     } elsif $auth_type == 'local' {
-        include ::apache::mod::authz_groupfile
-        include ::apache::mod::authz_user
+        $httpd_extra_modules = ['authz_groupfile', 'authz_user']
 
     } elsif $auth_type != 'none' {
         fail('role::kibana::auth_type must be one of ldap, local, none')
+    }
+
+    $httpd_modules = concat($httpd_base_modules, $httpd_extra_modules)
+
+    class { '::httpd':
+        modules => $httpd_modules,
     }
 
     $apache_auth = template("role/kibana/apache-auth-${auth_type}.erb")
@@ -59,7 +65,7 @@ class role::kibana (
         srange  => '$DOMAIN_NETWORKS',
     }
 
-    apache::site { $vhost:
+    httpd::site { $vhost:
         content => template('role/kibana/apache.conf.erb'),
     }
 }
