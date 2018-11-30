@@ -16,6 +16,10 @@ class profile::lists {
         system_svc => 'apache2',
         key_group  => 'Debian-exim',
     }
+    certcentral::cert{ 'lists':
+        puppet_svc => 'apache2',
+        key_group  => 'exim',
+    }
 
     class { 'spamassassin':
         required_score   => '4.0',
