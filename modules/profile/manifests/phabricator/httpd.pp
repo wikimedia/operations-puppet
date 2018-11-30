@@ -14,4 +14,10 @@ class profile::phabricator::httpd {
         modules => ['headers', 'rewrite', 'remoteip', $php_module],
         require => Package[$apache_lib],
     }
+
+    # MPM tweaks for high load systems
+    # More performance specific tweaks to follow here
+    httpd::conf { 'mpm_prefork':
+        source => 'puppet:///modules/phabricator/apache/mpm_prefork.conf',
+    }
 }

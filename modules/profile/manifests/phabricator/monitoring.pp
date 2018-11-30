@@ -1,8 +1,8 @@
-# == Class: phabricator::monitoring
+# == Class: profile::phabricator::monitoring
 #
-class phabricator::monitoring {
-
+class profile::phabricator::monitoring (
     $phabricator_active_server = hiera('phabricator_active_server')
+){
 
     # Only monitor services on the active_server (at least until codfw is in prod).
     # They are all paging because the "sms" contact group is added.

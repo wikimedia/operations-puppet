@@ -13,8 +13,7 @@ class role::phabricator {
     include ::profile::backup::host
     include ::profile::phabricator::main
     include ::profile::phabricator::httpd
-    include ::phabricator::monitoring
-    include ::phabricator::mpm
+    include ::profile::phabricator::monitoring
     include ::profile::prometheus::apache_exporter
     include ::profile::rsyslog::kafka_shipper
 }
