@@ -40,7 +40,7 @@ class openstack::keystone::cleanup (
                 ensure  => $ensure,
                 user    => 'root',
                 minute  => 30,
-                command => "/usr/bin/mysql --defaults-file=${keystone_db_credentials} ${db_name} -h${db_host} -e 'DELETE FROM token WHERE user_id=\"novaobserver\" AND NOW() + INTERVAL 7 day > expires LIMIT 10000;'",
+                command => "/usr/bin/mysql --defaults-file=${keystone_db_credentials} ${db_name} -h${db_host} -e 'DELETE FROM token WHERE user_id=\"novaobserver\" AND NOW() + INTERVAL 7 day > expires ORDER BY id LIMIT 10000;'",
         }
 
         cron {
@@ -48,6 +48,6 @@ class openstack::keystone::cleanup (
                 ensure  => $ensure,
                 user    => 'root',
                 minute  => 40,
-                command => "/usr/bin/mysql --defaults-file=${keystone_db_credentials} ${db_name} -h${db_host} -e 'DELETE FROM token WHERE user_id=\"novaadmin\" AND NOW() + INTERVAL 7 day > expires LIMIT 10000;'",
+                command => "/usr/bin/mysql --defaults-file=${keystone_db_credentials} ${db_name} -h${db_host} -e 'DELETE FROM token WHERE user_id=\"novaadmin\" AND NOW() + INTERVAL 7 day > expires ORDER BY id LIMIT 10000;'",
         }
 }
