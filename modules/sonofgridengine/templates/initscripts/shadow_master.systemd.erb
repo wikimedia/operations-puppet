@@ -5,7 +5,7 @@ After=syslog.target
 
 [Service]
 Type=forking
-PIDFile=/var/run/gridengine/sge_shadowd.pid
+PIDFile=/var/spool/gridengine/qmaster/shadowd_<%= @facts['fqdn'] %>.pid
 User=sgeadmin
 Group=sgeadmin
 ExecStart=/usr/sbin/sge_shadowd
