@@ -115,7 +115,7 @@ define osm::planet_sync (
         ensure => directory,
         owner  => 'osmupdater',
         group  => 'osmupdater',
-        mode   => '0775',
+        mode   => '0755',
     }
 
     logrotate::conf { 'planetsync':
