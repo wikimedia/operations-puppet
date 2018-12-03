@@ -329,6 +329,15 @@ wikimedia_clusters:
       esams: []
       ulsfo: []
       eqsin: []
+  prometheus:
+    description: "Prometheus servers"
+    id: 71
+    sites:
+      eqiad: []
+      codfw: []
+      esams: []
+      ulsfo: []
+      eqsin: []
 
 puppetmaster: "puppet"
 

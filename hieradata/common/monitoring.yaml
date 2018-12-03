@@ -327,3 +327,15 @@ monitoring::groups:
     description: Spare servers (ulsfo)
   spare_eqsin:
     description: Spare servers (eqsin)
+
+# Prometheus
+  prometheus_eqiad:
+    description: Prometheus servers (eqiad)
+  prometheus_codfw:
+    description: Prometheus servers (codfw)
+  prometheus_esams:
+    description: Prometheus servers (esams)
+  prometheus_ulsfo:
+    description: Prometheus servers (ulsfo)
+  prometheus_eqsin:
+    description: Prometheus servers (eqsin)
