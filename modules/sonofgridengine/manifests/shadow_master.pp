@@ -36,13 +36,11 @@ class sonofgridengine::shadow_master(
         content => template('gridengine/default-gridengine-shadow.erb'),
     }
 
-    file { "${sgeroot}/default/common/shadow_masters":
-        ensure  => present,
-        require => File["${sgeroot}/default/common"],
-        owner   => 'sgeadmin',
-        group   => 'sgeadmin',
-        mode    => '0555',
-        content => "${::fqdn}\n",
+    file_line { 'shadow_masters':
+        ensure => present,
+        after  => $gridmaster,
+        line   => $::fqdn,
+        path   => "${sgeroot}/default/common",
     }
 
     file {'/usr/local/bin/grid-configurator':

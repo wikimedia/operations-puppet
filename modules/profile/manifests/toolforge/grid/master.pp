@@ -132,6 +132,20 @@ class profile::toolforge::grid::master (
         etcdir  => $etcdir,
     }
 
+    file { "${profile::toolforge::grid::base::geconf}/default/common/shadow_masters":
+        ensure  => present,
+        require => File["${profile::toolforge::grid::base::geconf}/default/common"],
+        owner   => 'sgeadmin',
+        group   => 'sgeadmin',
+        mode    => '0555',
+    }
+
+    file_line { 'shadow_masters':
+        ensure => present,
+        line   => $facts['fqdn'],
+        path   => "${profile::toolforge::grid::base::geconf}/default/common",
+    }
+
     # This must only run on install
     exec { 'initialize-grid-database':
         command  => "/usr/share/gridengine/scripts/init_cluster ${profile::toolforge::grid::base::sge_root} default /var/spool/gridengine/spooldb sgeadmin",
