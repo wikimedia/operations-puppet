@@ -1,1 +1,2 @@
 mariadb::parsercache::shard: 'pc2'
+profile::base::notifications: disabled
