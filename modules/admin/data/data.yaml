@@ -390,6 +390,11 @@ groups:
                  'ALL = (postgres) NOPASSWD: ALL',
                  'ALL = (osmupdater) NOPASSWD: ALL',
                  'ALL = (cassandra) NOPASSWD: ALL',]
+  maps-roots:
+    gid: 752
+    description: Root level access for Maps/OSM servers
+    members: [onimisionipe,]
+    privileges: ['ALL = (ALL) NOPASSWD: ALL']
   kartotherian-admin:
     description: Group of kartotherian admins
     gid: 754
