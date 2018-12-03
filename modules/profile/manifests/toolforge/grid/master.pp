@@ -142,7 +142,7 @@ class profile::toolforge::grid::master (
     file_line { 'shadow_masters':
         ensure => present,
         line   => $facts['fqdn'],
-        path   => "${profile::toolforge::grid::base::geconf}/default/common",
+        path   => "${profile::toolforge::grid::base::geconf}/default/common/shadow_masters",
     }
 
     # This must only run on install

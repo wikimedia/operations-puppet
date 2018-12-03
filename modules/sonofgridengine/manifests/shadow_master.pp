@@ -40,7 +40,7 @@ class sonofgridengine::shadow_master(
         ensure => present,
         after  => $gridmaster,
         line   => $::fqdn,
-        path   => "${sgeroot}/default/common",
+        path   => "${sgeroot}/default/common/shadow_masters",
     }
 
     file {'/usr/local/bin/grid-configurator':
