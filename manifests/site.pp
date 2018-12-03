@@ -2231,6 +2231,12 @@ node /^cloudvirt102[0-4].eqiad.wmnet$/ {
     interface::add_ip6_mapped { 'main': }
 }
 
+# New analytics cloudvirt nodes via T207194
+node /^cloudvirtan100[1-5].eqiad.wmnet$/ {
+    role(spare::system)
+    interface::add_ip6_mapped { 'main': }
+}
+
 # Wikidata query service
 node /^wdqs100[4-6]\.eqiad\.wmnet$/ {
     role(wdqs)
