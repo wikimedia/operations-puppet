@@ -91,7 +91,7 @@ class ores::web(
                 'worker_hijack_root_logger'  => false,
                 'result_serializer'          => 'pickle',
                 'task_serializer'            => 'pickle',
-                'accept_content'             => [ 'pickle' ],
+                'accept_content'             => [ 'pickle', 'json' ],
                 'broker_transport_options'   => {
                   'socket_timeout' => '15',
                 },
