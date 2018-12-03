@@ -1007,6 +1007,176 @@ profile::cassandra::instances:
       hints_directory: /srv/cassandra/instance-data/cassandra-c/hints
       saved_caches_directory: /srv/cassandra/instance-data/cassandra-c/saved_caches
       jmx_exporter_enabled: true
+  "restbase2014.codfw.wmnet":
+    a:
+      listen_address: 10.192.16.85
+      data_file_directories:
+        - /srv/sda4/cassandra-a/data
+        - /srv/sdb4/cassandra-a/data
+        - /srv/sdc4/cassandra-a/data
+      heapdump_directory: /srv/sda4/cassandra-a
+      commitlog_directory: /srv/cassandra/instance-data/cassandra-a/commitlog
+      hints_directory: /srv/cassandra/instance-data/cassandra-a/hints
+      saved_caches_directory: /srv/cassandra/instance-data/cassandra-a/saved_caches
+      jmx_exporter_enabled: true
+    b:
+      listen_address: 10.192.16.86
+      data_file_directories:
+        - /srv/sda4/cassandra-b/data
+        - /srv/sdb4/cassandra-b/data
+        - /srv/sdc4/cassandra-b/data
+      heapdump_directory: /srv/sdb4/cassandra-b
+      commitlog_directory: /srv/cassandra/instance-data/cassandra-b/commitlog
+      hints_directory: /srv/cassandra/instance-data/cassandra-b/hints
+      saved_caches_directory: /srv/cassandra/instance-data/cassandra-b/saved_caches
+      jmx_exporter_enabled: true
+    c:
+      listen_address: 10.192.16.87
+      data_file_directories:
+        - /srv/sda4/cassandra-c/data
+        - /srv/sdb4/cassandra-c/data
+        - /srv/sdc4/cassandra-c/data
+      heapdump_directory: /srv/sdc4/cassandra-c
+      commitlog_directory: /srv/cassandra/instance-data/cassandra-c/commitlog
+      hints_directory: /srv/cassandra/instance-data/cassandra-c/hints
+      saved_caches_directory: /srv/cassandra/instance-data/cassandra-c/saved_caches
+      jmx_exporter_enabled: true
+  "restbase2015.codfw.wmnet":
+    a:
+      listen_address: 10.192.32.22
+      data_file_directories:
+        - /srv/sda4/cassandra-a/data
+        - /srv/sdb4/cassandra-a/data
+        - /srv/sdc4/cassandra-a/data
+      heapdump_directory: /srv/sda4/cassandra-a
+      commitlog_directory: /srv/cassandra/instance-data/cassandra-a/commitlog
+      hints_directory: /srv/cassandra/instance-data/cassandra-a/hints
+      saved_caches_directory: /srv/cassandra/instance-data/cassandra-a/saved_caches
+      jmx_exporter_enabled: true
+    b:
+      listen_address: 10.192.32.25
+      data_file_directories:
+        - /srv/sda4/cassandra-b/data
+        - /srv/sdb4/cassandra-b/data
+        - /srv/sdc4/cassandra-b/data
+      heapdump_directory: /srv/sdb4/cassandra-b
+      commitlog_directory: /srv/cassandra/instance-data/cassandra-b/commitlog
+      hints_directory: /srv/cassandra/instance-data/cassandra-b/hints
+      saved_caches_directory: /srv/cassandra/instance-data/cassandra-b/saved_caches
+      jmx_exporter_enabled: true
+    c:
+      listen_address: 10.192.32.105
+      data_file_directories:
+        - /srv/sda4/cassandra-c/data
+        - /srv/sdb4/cassandra-c/data
+        - /srv/sdc4/cassandra-c/data
+      heapdump_directory: /srv/sdc4/cassandra-c
+      commitlog_directory: /srv/cassandra/instance-data/cassandra-c/commitlog
+      hints_directory: /srv/cassandra/instance-data/cassandra-c/hints
+      saved_caches_directory: /srv/cassandra/instance-data/cassandra-c/saved_caches
+      jmx_exporter_enabled: true
+  "restbase2016.codfw.wmnet":
+    a:
+      listen_address: 10.192.32.108
+      data_file_directories:
+        - /srv/sda4/cassandra-a/data
+        - /srv/sdb4/cassandra-a/data
+        - /srv/sdc4/cassandra-a/data
+      heapdump_directory: /srv/sda4/cassandra-a
+      commitlog_directory: /srv/cassandra/instance-data/cassandra-a/commitlog
+      hints_directory: /srv/cassandra/instance-data/cassandra-a/hints
+      saved_caches_directory: /srv/cassandra/instance-data/cassandra-a/saved_caches
+      jmx_exporter_enabled: true
+    b:
+      listen_address: 10.192.32.111
+      data_file_directories:
+        - /srv/sda4/cassandra-b/data
+        - /srv/sdb4/cassandra-b/data
+        - /srv/sdc4/cassandra-b/data
+      heapdump_directory: /srv/sdb4/cassandra-b
+      commitlog_directory: /srv/cassandra/instance-data/cassandra-b/commitlog
+      hints_directory: /srv/cassandra/instance-data/cassandra-b/hints
+      saved_caches_directory: /srv/cassandra/instance-data/cassandra-b/saved_caches
+      jmx_exporter_enabled: true
+    c:
+      listen_address: 10.192.32.175
+      data_file_directories:
+        - /srv/sda4/cassandra-c/data
+        - /srv/sdb4/cassandra-c/data
+        - /srv/sdc4/cassandra-c/data
+      heapdump_directory: /srv/sdc4/cassandra-c
+      commitlog_directory: /srv/cassandra/instance-data/cassandra-c/commitlog
+      hints_directory: /srv/cassandra/instance-data/cassandra-c/hints
+      saved_caches_directory: /srv/cassandra/instance-data/cassandra-c/saved_caches
+      jmx_exporter_enabled: true
+  "restbase2017.codfw.wmnet":
+    a:
+      listen_address: 10.192.48.121
+      data_file_directories:
+        - /srv/sda4/cassandra-a/data
+        - /srv/sdb4/cassandra-a/data
+        - /srv/sdc4/cassandra-a/data
+      heapdump_directory: /srv/sda4/cassandra-a
+      commitlog_directory: /srv/cassandra/instance-data/cassandra-a/commitlog
+      hints_directory: /srv/cassandra/instance-data/cassandra-a/hints
+      saved_caches_directory: /srv/cassandra/instance-data/cassandra-a/saved_caches
+      jmx_exporter_enabled: true
+    b:
+      listen_address: 10.192.48.122
+      data_file_directories:
+        - /srv/sda4/cassandra-b/data
+        - /srv/sdb4/cassandra-b/data
+        - /srv/sdc4/cassandra-b/data
+      heapdump_directory: /srv/sdb4/cassandra-b
+      commitlog_directory: /srv/cassandra/instance-data/cassandra-b/commitlog
+      hints_directory: /srv/cassandra/instance-data/cassandra-b/hints
+      saved_caches_directory: /srv/cassandra/instance-data/cassandra-b/saved_caches
+      jmx_exporter_enabled: true
+    c:
+      listen_address: 10.192.48.123
+      data_file_directories:
+        - /srv/sda4/cassandra-c/data
+        - /srv/sdb4/cassandra-c/data
+        - /srv/sdc4/cassandra-c/data
+      heapdump_directory: /srv/sdc4/cassandra-c
+      commitlog_directory: /srv/cassandra/instance-data/cassandra-c/commitlog
+      hints_directory: /srv/cassandra/instance-data/cassandra-c/hints
+      saved_caches_directory: /srv/cassandra/instance-data/cassandra-c/saved_caches
+      jmx_exporter_enabled: true
+  "restbase2018.codfw.wmnet":
+    a:
+      listen_address: 10.192.48.124
+      data_file_directories:
+        - /srv/sda4/cassandra-a/data
+        - /srv/sdb4/cassandra-a/data
+        - /srv/sdc4/cassandra-a/data
+      heapdump_directory: /srv/sda4/cassandra-a
+      commitlog_directory: /srv/cassandra/instance-data/cassandra-a/commitlog
+      hints_directory: /srv/cassandra/instance-data/cassandra-a/hints
+      saved_caches_directory: /srv/cassandra/instance-data/cassandra-a/saved_caches
+      jmx_exporter_enabled: true
+    b:
+      listen_address: 10.192.48.125
+      data_file_directories:
+        - /srv/sda4/cassandra-b/data
+        - /srv/sdb4/cassandra-b/data
+        - /srv/sdc4/cassandra-b/data
+      heapdump_directory: /srv/sdb4/cassandra-b
+      commitlog_directory: /srv/cassandra/instance-data/cassandra-b/commitlog
+      hints_directory: /srv/cassandra/instance-data/cassandra-b/hints
+      saved_caches_directory: /srv/cassandra/instance-data/cassandra-b/saved_caches
+      jmx_exporter_enabled: true
+    c:
+      listen_address: 10.192.48.126
+      data_file_directories:
+        - /srv/sda4/cassandra-c/data
+        - /srv/sdb4/cassandra-c/data
+        - /srv/sdc4/cassandra-c/data
+      heapdump_directory: /srv/sdc4/cassandra-c
+      commitlog_directory: /srv/cassandra/instance-data/cassandra-c/commitlog
+      hints_directory: /srv/cassandra/instance-data/cassandra-c/hints
+      saved_caches_directory: /srv/cassandra/instance-data/cassandra-c/saved_caches
+      jmx_exporter_enabled: true
 
 
 profile::cassandra::settings:
