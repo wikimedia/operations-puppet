@@ -1106,8 +1106,15 @@ node /labweb100[12]\.wikimedia\.org/ {
     interface::add_ip6_mapped { 'main': }
 }
 
-# Primary graphite machines
-node 'graphite1001.eqiad.wmnet' {
+node /^graphite100[13]\.eqiad\.wmnet/ {
+    role(spare::system)
+}
+node /^graphite200[12]\.codfw\.wmnet/ {
+    role(spare::system)
+}
+
+# Primary graphite host
+node 'graphite1004.eqiad.wmnet' {
     role(graphite::production)
     # TODO: move the roles below to ::role::alerting::host
     include ::role::graphite::alerts
@@ -1116,27 +1123,8 @@ node 'graphite1001.eqiad.wmnet' {
     include ::role::elasticsearch::alerts
 }
 
-# graphite additional machine, for additional space
-node 'graphite1003.eqiad.wmnet' {
-    role(graphite::production)
-}
-
-# replacement to graphite1001, which is old and needs decom
-node 'graphite1004.eqiad.wmnet' {
-    role(graphite::production)
-}
-
-# Primary graphite machines
-node 'graphite2001.codfw.wmnet' {
-    role(graphite::production)
-}
-
+# Standby graphite host
 node 'graphite2003.codfw.wmnet' {
-    role(graphite::production)
-}
-
-# graphite additional machine, for additional space
-node 'graphite2002.codfw.wmnet' {
     role(graphite::production)
 }
 
