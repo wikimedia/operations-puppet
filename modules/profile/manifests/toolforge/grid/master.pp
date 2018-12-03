@@ -133,11 +133,10 @@ class profile::toolforge::grid::master (
     }
 
     file { "${profile::toolforge::grid::base::geconf}/default/common/shadow_masters":
-        ensure  => present,
-        require => File["${profile::toolforge::grid::base::geconf}/default/common"],
-        owner   => 'sgeadmin',
-        group   => 'sgeadmin',
-        mode    => '0555',
+        ensure => present,
+        owner  => 'sgeadmin',
+        group  => 'sgeadmin',
+        mode   => '0555',
     }
 
     file_line { 'shadow_masters':
