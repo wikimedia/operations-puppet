@@ -242,9 +242,14 @@ profile::trafficserver::backend::mapping_rules:
           - '@pparam="3A 40 21 24 28 29 2A 2C 3B 27"'
           # encode    [  ]  &  +  =
           - '@pparam="5B 5D 26 2B 3D"'
+          - '@plugin=/usr/lib/trafficserver/modules/tslua.so'
+          - '@pparam=/etc/trafficserver/lua/rb-mw-mangling.lua'
     - type: regex_map
       target: 'http://(.*)/w/api.php'
       replacement: https://api-rw.discovery.wmnet/w/api.php
+      params:
+          - '@plugin=/usr/lib/trafficserver/modules/tslua.so'
+          - '@pparam=/etc/trafficserver/lua/rb-mw-mangling.lua'
     - type: map
       target: /
       replacement: https://appservers-rw.discovery.wmnet
@@ -255,6 +260,8 @@ profile::trafficserver::backend::mapping_rules:
           - '@pparam="3A 2F 40 21 24 28 29 2A 2C 3B"'
           # encode    [  ]  &  '  +  =
           - '@pparam="5B 5D 26 27 2B 3D"'
+          - '@plugin=/usr/lib/trafficserver/modules/tslua.so'
+          - '@pparam=/etc/trafficserver/lua/rb-mw-mangling.lua'
 profile::trafficserver::backend::caching_rules:
     - primary_destination: dest_host
       value: matomo1001.eqiad.wmnet

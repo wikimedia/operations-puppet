@@ -63,6 +63,10 @@ class profile::trafficserver::backend (
         source    => 'puppet:///modules/profile/trafficserver/normalize-path.lua',
     }
 
+    trafficserver::lua_script { 'rb-mw-mangling':
+        source    => 'puppet:///modules/profile/trafficserver/rb-mw-mangling.lua',
+    }
+
     prometheus::trafficserver_exporter { 'trafficserver_exporter':
         endpoint => "http://127.0.0.1:${port}/_stats",
     }
