@@ -12,6 +12,7 @@ role::lvs::realserver::pools:
   kartotherian: {}
 
 admin::groups:
+  - maps-roots
   - maps-admins
   - kartotherian-admin
   - tilerator-admin
