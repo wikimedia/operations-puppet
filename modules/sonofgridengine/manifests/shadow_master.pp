@@ -51,6 +51,12 @@ class sonofgridengine::shadow_master(
         source => 'puppet:///modules/sonofgridengine/grid_configurator/grid_configurator.py',
     }
 
+    # Installing the gridengine-master package will start the service
+    service { 'gridengine-master':
+        ensure => stopped,
+        enable => false,
+    }
+
     systemd::service { 'gridengine-shadow':
         ensure  => present,
         require => Package['gridengine-master'],
