@@ -53,7 +53,7 @@ class sonofgridengine::shadow_master(
 
     systemd::service { 'gridengine-shadow':
         ensure  => present,
-        require => [ Package['gridengine-master'],File["${sgeroot}/default/common/shadow_masters"] ],
+        require => Package['gridengine-master'],
         content => systemd_template('shadow_master'),
     }
 }
