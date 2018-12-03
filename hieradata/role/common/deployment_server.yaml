@@ -135,8 +135,6 @@ scap::sources:
     repository: operations/software/logstash/plugins
   analytics/turnilo/deploy:
     repository: analytics/turnilo/deploy
-  mathoid/deploy: {}
-#    lvs_service: mathoid
   mobileapps/deploy: {}
 #    lvs_service: mobileapps
   ores/deploy: {}

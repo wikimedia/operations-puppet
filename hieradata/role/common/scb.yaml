@@ -7,7 +7,6 @@ admin::groups:
   - cxserver-admin
   - apertium-admins
   - graphoid-admin
-  - mathoid-admin
   - zotero-admin
   - mobileapps-admin
   - changeprop-admin
@@ -19,7 +18,6 @@ role::lvs::realserver::pools:
   graphoid: {}
   cxserver: {}
   citoid: {}
-  mathoid: {}
   eventstreams: {}
   pdfrender: {}
   "recommendation-api": {}

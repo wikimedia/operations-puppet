@@ -240,12 +240,6 @@ groups:
     description: office it folk
     members: []
     privileges: ['ALL = (syslog) NOPASSWD: ALL']
-  mathoid-admin:
-    gid: 730
-    description: group of mathoid admins
-    members: [catrope, mobrovac]
-    privileges: ['ALL = NOPASSWD: /usr/sbin/service mathoid *',
-                 'ALL = (mathoid) NOPASSWD: ALL']
   analytics-users:
     gid: 7080
     description: Gives generic client access to the Analytics (Hadoop) cluster.
