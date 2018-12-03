@@ -292,6 +292,7 @@ profile::trafficserver::backend::caching_rules:
       action: never-cache
 profile::trafficserver::backend::default_lua_scripts:
     - set-x-cache
+    - cookies-private
 profile::trafficserver::backend::outbound_tls_cipher_suite: '-ALL:ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384'
 profile::trafficserver::backend::storage_elements:
     - devname: sda3
