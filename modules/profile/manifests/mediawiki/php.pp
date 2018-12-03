@@ -68,7 +68,8 @@ class profile::mediawiki::php(
         # TODO: is this ok or it will create race conditions during large deployments?
         # It might be better to just disable revalidation and have scap do a rolling
         # restart of the opcache upon deployments.
-        'opcache.revalidate_freq'       => 60
+        'opcache.revalidate_freq'       => 60,
+        'auto_prepend_file'             => '/srv/mediawiki/wmf-config/PhpAutoPrepend.php',
     }
     if $enable_fpm {
         $_sapis = ['cli', 'fpm']
