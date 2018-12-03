@@ -196,7 +196,7 @@ class profile::mediawiki::php(
         $num_workers = max(floor($facts['processors']['count'] * 1.5), 8)
         # These numbers need to be positive integers
         $max_spare = ceiling($num_workers * 0.3)
-        $min_spare = ceilingi($num_workers * 0.1)
+        $min_spare = ceiling($num_workers * 0.1)
         php::fpm::pool { 'www':
             port   => $port,
             config => {
