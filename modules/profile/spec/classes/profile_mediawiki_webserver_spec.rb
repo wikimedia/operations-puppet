@@ -44,6 +44,9 @@ describe 'profile::mediawiki::webserver' do
       }
       context "with default params" do
         it { is_expected.to compile.with_all_deps }
+        it { is_expected.to contain_httpd__conf('fcgi_proxies')
+                              .with_ensure('present')
+        }
         it { is_expected.to contain_class('mediawiki::packages::fonts') }
         it { is_expected.to contain_class('mediawiki::web::prod_sites') }
         it { is_expected.to contain_systemd__unit('apache2.service')

@@ -1,4 +1,4 @@
-class mediawiki::web::prod_sites {
+class mediawiki::web::prod_sites(String $fcgi_proxy) {
     tag 'mediawiki', 'mw-apache-config'
 
     ::httpd::site { 'redirects':
@@ -392,7 +392,8 @@ class mediawiki::web::prod_sites {
 
 
     mediawiki::web::site { 'www.wikimedia.org':
-        before => Httpd::Site['wikimedia']
+        fcgi_proxy => $fcgi_proxy,
+        before     => Httpd::Site['wikimedia']
     }
 
     $other_wikis = [

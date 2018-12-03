@@ -19,12 +19,9 @@ class profile::mediawiki::php(
     Boolean $enable_fpm = hiera('profile::mediawiki::php::enable_fpm'),
     Optional[Hash] $fpm_config = hiera('profile::mediawiki::php::fpm_config', undef),
     Enum['7.0', '7.2'] $php_version = hiera('profile::mediawiki::php::php_version', '7.0'),
-    Optional[Wmflib::UserIpPort] $port = hiera('profile::php_fpm::fcgi_port', undef)
+    Optional[Wmflib::UserIpPort] $port = hiera('profile::php_fpm::fcgi_port', undef),
+    String $fcgi_pool = hiera('profile::mediawiki::fcgi_pool', 'www'),
 ) {
-    # If php-fpm is enabled, we need the port to be set
-    if $enable_fpm and $port == undef {
-        fail('If fpm is enabled, its port should be set too')
-    }
     if os_version('debian == stretch') {
         # We get our packages for our repositories again
         file { '/etc/apt/preferences.d/php_wikidiff2.pref':
@@ -198,7 +195,7 @@ class profile::mediawiki::php(
         # These numbers need to be positive integers
         $max_spare = ceiling($num_workers * 0.3)
         $min_spare = ceiling($num_workers * 0.1)
-        php::fpm::pool { 'www':
+        php::fpm::pool { $fcgi_pool:
             port   => $port,
             config => {
                 'pm'                        => 'dynamic',

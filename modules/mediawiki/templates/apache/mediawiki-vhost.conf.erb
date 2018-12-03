@@ -93,7 +93,7 @@
     # Send all php files to the FCGI backend (HHVM/PHP7)
     # This takes precedence over the catchall in the general configuration
     <If "reqenv('backend') == 'php7'">
-        SetHandler "proxy:fcgi://127.0.0.1:8000"
+        SetHandler "proxy:<%= @php_fpm_fcgi_endpoint %>"
     </If>
     <Else>
         SetHandler "proxy:fcgi://127.0.0.1:9000"

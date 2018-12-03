@@ -8,7 +8,6 @@
 class profile::mediawiki::httpd(
     Integer $logrotate_retention = hiera('profile::mediawiki::httpd::logrotate_retention', 30),
     Optional[Integer] $workers_limit = hiera('profile::mediawiki::httpd::workers_limit', undef),
-    Mediawiki::Vhost_feature_flags $vhost_feature_flags = hiera('profile::mediawiki::vhost_feature_flags'),
 ) {
     tag 'mediawiki', 'mw-apache-config'
 
@@ -95,11 +94,6 @@ class profile::mediawiki::httpd(
     ::httpd::conf { 'fcgi_headers':
         source   => 'puppet:///modules/mediawiki/apache/configs/fcgi_headers.conf',
         priority => 0,
-    }
-    # Declare the proxies explicitly with retry=0
-    httpd::conf { 'fcgi_proxies':
-        ensure  => present,
-        content => template('mediawiki/apache/fcgi_proxies.conf.erb')
     }
 
     # MPM configuration

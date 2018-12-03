@@ -2,8 +2,12 @@ class profile::mediawiki::php::monitoring(
     $prometheus_nodes = hiera('prometheus_nodes'),
     $auth_passwd = hiera('profile::mediawiki::php::monitoring::password'),
     $auth_salt = hiera('profile::mediawiki::php::monitoring::salt'),
+    Optional[Wmflib::UserIpPort] $fcgi_port = hiera('profile::php_fpm::fcgi_port', undef),
+    String $fcgi_pool = hiera('profile::mediawiki::fcgi_pool', 'www'),
+
 ) {
     require profile::mediawiki::php
+    $fcgi_proxy = mediawiki::fcgi_endpoint($fcgi_port, $fcgi_pool)
     $admin_port = 9181
     $docroot = '/var/www/php-monitoring'
     $htpasswd_file = '/etc/apache2/htpasswd.php7adm'

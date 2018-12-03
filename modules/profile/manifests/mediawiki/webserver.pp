@@ -1,17 +1,28 @@
 class profile::mediawiki::webserver(
     Boolean $has_lvs = hiera('has_lvs'),
     Boolean $has_tls = hiera('profile::mediawiki::webserver::has_tls'),
+    Optional[Wmflib::UserIpPort] $fcgi_port = hiera('profile::php_fpm::fcgi_port', undef),
+    String $fcgi_pool = hiera('profile::mediawiki::fcgi_pool', 'www'),
     Mediawiki::Vhost_feature_flags $vhost_feature_flags = hiera('profile::mediawiki::vhost_feature_flags'),
 ) {
     include ::lvs::configuration
     include ::profile::mediawiki::httpd
+
+    $fcgi_proxy = mediawiki::fcgi_endpoint($fcgi_port, $fcgi_pool)
+
+    # Declare the proxies explicitly with retry=0
+    httpd::conf { 'fcgi_proxies':
+        ensure  => present,
+        content => template('mediawiki/apache/fcgi_proxies.conf.erb')
+    }
 
     # we need fonts!
     class { '::mediawiki::packages::fonts': }
 
     # Set feature flags for all mediawiki::web::vhost resources
     Mediawiki::Web::Vhost {
-        feature_flags => $vhost_feature_flags,
+        php_fpm_fcgi_endpoint => $fcgi_proxy,
+        feature_flags         => $vhost_feature_flags,
     }
 
     # Basic web sites
@@ -25,7 +36,9 @@ class profile::mediawiki::webserver(
         class { '::mediawiki::web::beta_sites': }
     }
     else {
-        class { '::mediawiki::web::prod_sites': }
+        class { '::mediawiki::web::prod_sites':
+            fcgi_proxy => $fcgi_proxy,
+        }
     }
 
     if $has_lvs {

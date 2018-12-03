@@ -7,6 +7,7 @@
 # This define is transitional and should NOT be used outside of the mediawiki::web hierarchy
 define mediawiki::web::site(
     String $template_name = $title,
+    String $fcgi_proxy = 'fcgi://127.0.0.1:8000',
 ) {
     file { "/etc/apache2/sites-available/${title}.conf":
         content => template("mediawiki/apache/sites/included/${template_name}.conf.erb"),

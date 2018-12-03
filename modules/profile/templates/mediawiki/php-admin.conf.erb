@@ -21,7 +21,7 @@
    RewriteEngine On
    RewriteRule .* /index.php [L]
    <FilesMatch "\.php$">
-       SetHandler "proxy:fcgi://127.0.0.1:8000"
+       SetHandler "proxy:<%= @fcgi_proxy %>"
    </FilesMatch>
    ErrorLog ${APACHE_LOG_DIR}/php-admin-error.log
    CustomLog ${APACHE_LOG_DIR}/php-admin-access.log wmf

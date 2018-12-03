@@ -25,7 +25,6 @@ describe 'profile::mediawiki::httpd' do
         ]
       }
       context "default parameters" do
-        let(:params){ {:vhost_feature_flags => {}} }
         it { is_expected.to  compile.with_all_deps }
         it { is_expected.to contain_class('httpd')
                               .with_period('daily')
@@ -34,20 +33,16 @@ describe 'profile::mediawiki::httpd' do
         it { is_expected.to contain_httpd__conf('hhvm_catchall')
                               .with_ensure('absent')
         }
-        it { is_expected.to contain_httpd__conf('fcgi_proxies')
-                              .with_ensure('present')
-        }
         it { is_expected.to contain_file('/etc/apache2/conf-available/50-worker.conf')
                               .with_content(/MaxRequestWorkers\s+50/)
         }
       end
       context "with workers_limit = 5" do
-        let(:params){ {:vhost_feature_flags => {}, :workers_limit => 5} }
+        let(:params){ {:workers_limit => 5} }
         it { is_expected.to contain_file('/etc/apache2/conf-available/50-worker.conf')
                               .with_content(/MaxRequestWorkers\s+5/)
         }
       end
-      context
     end
   end
 end
