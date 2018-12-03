@@ -1,3 +1,4 @@
+#!/usr/bin/python3
 import sys
 import getopt
 from subprocess import Popen, PIPE
@@ -9,7 +10,7 @@ from subprocess import Popen, PIPE
 #############################################################
 
 
-class PhpRunner(object):
+class PhpRunner():
     """Run a maintenance 'scriptlet' on all wikis
     The maintenance class framework is set up already;
     the caller should supply a few lines of code that would
@@ -28,17 +29,17 @@ class PhpRunner(object):
         result = True
         try:
             proc = Popen(command, stdin=PIPE, stdout=PIPE, stderr=PIPE)
-            output, error = proc.communicate(self.get_php_code())
+            output, error = proc.communicate(self.get_php_code().encode('utf-8'))
             if proc.returncode:
                 # don't barf, let the caller decide what to do
                 sys.stderr.write("command '%s failed with return code %s and "
                                  "error %s\n" % (command,
-                                                 proc.returncode, error))
+                                                 proc.returncode, error.decode('utf-8')))
                 result = False
-            print output
+            print(output.decode('utf-8'))
             if error:
-                sys.stderr.write(error + '\n')
-        except:
+                sys.stderr.write(error.decode('utf-8') + '\n')
+        except Exception:
             sys.stderr.write("command %s failed\n" % command)
             raise
         return result
@@ -51,7 +52,7 @@ class PhpRunner(object):
                 "require_once( \"$dir/maintenance/Maintenance.php\" );"
                 % self.script_path)
         else:
-            php_setup = ("require_once( '%s/Maintenance.php' );"
+            php_setup = ("require_once( '%s/maintenance/Maintenance.php' );"
                          % self.script_path)
         return "<?php\n" + php_setup + self.fillin_scriptlet_template()
 
@@ -73,7 +74,7 @@ require_once( RUN_MAINTENANCE_IF_MAIN );
 def usage(message):
     if message:
         sys.stderr.write(message + '\n')
-    usagemessage = """Usage: runphpscriptletonallwikis.py --scriptpath path
+    usagemessage = """Usage: python3 runphpscriptletonallwikis.py --scriptpath path
                  [--wikilist value] [--multiversion] [--multiversion]
                  [--scriptlet text] [--scriptletfile filename] [wikiname]
 
@@ -92,7 +93,7 @@ Arguments:
 wikiname:  name of wiki to process, if specified overrides wikilist
 
 Example:
-python runphpscriptletonallwikis.py enwiki
+python3 runphpscriptletonallwikis.py enwiki
 """
     sys.stderr.write(usagemessage)
     sys.exit(1)
@@ -126,13 +127,16 @@ def do_main():
         elif opt == "--scriptletfile":
             scriptlet_file = val
 
-    if len(remainder) > 0:
+    if remainder:
         if len(remainder) > 1 or remainder[0].startswith("--"):
             usage("Unknown option specified")
         wiki = remainder[0]
 
-    if (not wiki and not wiki_list_file) or not script_path:
+    if (not wiki and not wiki_list_file):
         usage("One of wiki or wikilist must be specified")
+
+    if not script_path:
+        usage("script_path must be specified")
 
     if not scriptlet and not scriptlet_file:
         usage("One of scriptlet or scriptletfile must be specified")

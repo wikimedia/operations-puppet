@@ -101,7 +101,7 @@ class dumps::web::cleanups::xmldumps(
         source => 'puppet:///modules/dumps/web/cleanups/cleanup_old_xmldumps.py',
     }
 
-    $xmlclean = '/usr/bin/python /usr/local/bin/cleanup_old_xmldumps.py'
+    $xmlclean = '/usr/bin/python3 /usr/local/bin/cleanup_old_xmldumps.py'
     $args = "-d ${xmldumpsdir} -w ${wikilist_dir} -k /etc/dumps/xml_keeps.conf"
 
     if ($isreplica == false) {

@@ -1,3 +1,4 @@
+#!/usr/bin/python3
 """
 Given the root directory of wiki dumps, a directory with wiki
 db lists, and a file with settings for how many dumps of a
@@ -26,7 +27,7 @@ def usage(message=None):
         sys.stderr.write(message)
         sys.stderr.write("\n")
     usage_message = """
-Usage: cleanup_old_xmldumps.py --keeps_conffile path --wikilists dir
+Usage: python3 cleanup_old_xmldumps.py --keeps_conffile path --wikilists dir
            [--preservelist path] [--subdirs] [--dryrun] [--help]
 
 Given a directory with files with lists of wikis,
@@ -205,7 +206,7 @@ def get_preserve_patterns(path):
     return lines
 
 
-class DumpsCleaner(object):
+class DumpsCleaner():
     """
     methods for finding and cleaning up old wiki dump dirs and 'latest' links
     """
@@ -307,7 +308,7 @@ class DumpsCleaner(object):
         for filename in files:
             to_remove = os.path.join(dirpath, filename)
             if self.dryrun:
-                print "would remove ", to_remove
+                print("would remove ", to_remove)
             else:
                 os.unlink(to_remove)
 
@@ -324,7 +325,7 @@ class DumpsCleaner(object):
             else:
                 to_remove = os.path.join(self.dumpsdir, wiki, dirname)
                 if self.dryrun:
-                    print "would remove ", to_remove
+                    print("would remove ", to_remove)
                 else:
                     shutil.rmtree("%s" % to_remove)
 
@@ -343,18 +344,18 @@ class DumpsCleaner(object):
         cutoff = dates[-2]
         path = os.path.join(self.dumpsdir, wiki, 'latest')
         # FIXME this cleanup of rss paths hardcoded in here sucks. a lot.
-        for filename, filedate in links_by_date.iteritems():
+        for filename, filedate in links_by_date.items():
             if filedate < cutoff:
                 filepath = os.path.join(path, filename)
                 if self.dryrun:
-                    print "would remove link, file", filepath, filepath + '-rss.xml'
+                    print("would remove link, file", filepath, filepath + '-rss.xml')
                 else:
                     try:
                         os.unlink(filepath)
                         os.unlink(filepath + '-rss.xml')
                     except Exception:
                         # we want to hear about it but we want to continue our cleanup too
-                        print "failed to remove", filepath, filepath + '-rss.xml'
+                        print("failed to remove", filepath, filepath + '-rss.xml')
                         continue
 
     def cleanup_wiki(self, keeps, partials, wiki):
@@ -405,7 +406,7 @@ def check_args(args, remainder):
     """
     Whine about missing mandatory args, etc.
     """
-    if len(remainder) > 0:
+    if remainder:
         usage("Unknown option(s) specified: <%s>" % remainder[0])
 
     for arg in args:

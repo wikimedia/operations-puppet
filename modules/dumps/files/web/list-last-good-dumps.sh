@@ -38,7 +38,7 @@ if [ -z "$xmldumpsdir" ]; then
 fi
 
 # generate lists of most recent completed successful dumps for rsync (dirs, files)
-/usr/bin/python /usr/local/bin/list-last-n-good-dumps.py --dumpsnumber 1,2,3,4,5 --dirlisting 'rsync-dirlist-last-%s-good.txt' --rsynclists --relpath --outputdir "${xmldumpsdir}/" --dumpsdir "${xmldumpsdir}/"
-/usr/bin/python /usr/local/bin/list-last-n-good-dumps.py --dumpsnumber 1,2,3,4,5 --filelisting 'rsync-filelist-last-%s-good.txt' --rsynclists --relpath --outputdir "${xmldumpsdir}/" --toplevel --dumpsdir "${xmldumpsdir}/"
+/usr/bin/python3 /usr/local/bin/list-last-n-good-dumps.py --dumpsnumber 1,2,3,4,5 --dirlisting 'rsync-dirlist-last-%s-good.txt' --rsynclists --relpath --outputdir "${xmldumpsdir}/" --dumpsdir "${xmldumpsdir}/"
+/usr/bin/python3 /usr/local/bin/list-last-n-good-dumps.py --dumpsnumber 1,2,3,4,5 --filelisting 'rsync-filelist-last-%s-good.txt' --rsynclists --relpath --outputdir "${xmldumpsdir}/" --toplevel --dumpsdir "${xmldumpsdir}/"
 # these lists can be used for rsync excl/incl on our side, providing shares that "just work" for the mirrors
-/usr/bin/python /usr/local/bin/list-last-n-good-dumps.py --dumpsnumber 1,2,3,4,5 --rsynclisting 'rsync-inc-last-%s.txt' --relpath --outputdir "${xmldumpsdir}/" --toplevel --dumpsdir "${xmldumpsdir}/"
+/usr/bin/python3 /usr/local/bin/list-last-n-good-dumps.py --dumpsnumber 1,2,3,4,5 --rsynclisting 'rsync-inc-last-%s.txt' --relpath --outputdir "${xmldumpsdir}/" --toplevel --dumpsdir "${xmldumpsdir}/"

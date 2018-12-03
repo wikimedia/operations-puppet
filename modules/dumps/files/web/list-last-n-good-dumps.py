@@ -1,3 +1,4 @@
+#!/usr/bin/python3
 """
 generate a list of directories and/or files of the last
 so many good dump runs
@@ -80,8 +81,7 @@ def fillin_fname_templ(templ, number):
     the substitution and return the new name"""
     if '%s' in templ:
         return templ % number
-    else:
-        return templ
+    return templ
 
 
 def is_in_progress(dir_to_check):
@@ -96,7 +96,7 @@ def is_in_progress(dir_to_check):
     return bool("in-progress" in text)
 
 
-class OutputPaths(object):
+class OutputPaths():
     """
     keep track of all output file templates and names
 
@@ -125,8 +125,7 @@ class OutputPaths(object):
         be written"""
         if self.output_dir:
             return os.path.join(self.output_dir, name)
-        else:
-            return os.path.join(self.dumpsdir, name)
+        return os.path.join(self.dumpsdir, name)
 
     def get_list_output_path(self, num, name):
         """return full path to output file for the specific
@@ -159,7 +158,7 @@ class OutputPaths(object):
                 os.path.isdir(os.path.join(self.dumpsdir, subdir))]
 
 
-class DumpList(object):
+class DumpList():
     """This class generates a list of the last n sets of XML
     dump files per project that were successful, adding failed
     and/or incomplete dumps to the list if there are not n
@@ -425,7 +424,7 @@ class DumpList(object):
             raise DumpListError(
                 "command '" + command_string +
                 ("' failed with return code %s " % proc.returncode) +
-                " and error '" + error + "'")
+                " and error '" + error.decode('utf-8') + "'")
 
     def get_toplevelfiles(self):
         """
@@ -493,7 +492,7 @@ def usage(message=None):
     """display usage message, call when we encounter an options error"""
     if message:
         sys.stderr.write(message + "\n\n")
-    usage_message = """Usage: list-last-n-good-dumps.py --dumpsdir <path> --outputdir <path>
+    usage_message = """Usage: python3 list-last-n-good-dumps.py --dumpsdir <path> --outputdir <path>
                 [--dumpsnumber n] [--relpath] [--rsynclists]
                 [--dirlisting filename-format] [--filelisting filename-format]
                 [--rsynclisting filename-format]
@@ -540,7 +539,7 @@ rsynclisting -- produce a file named with the specified format listing the
                 default value: none
 
 Example use:
-python list-last-n-good-dumps.py --dumpsnumber 3,5
+python3 list-last-n-good-dumps.py --dumpsnumber 3,5
                --dumpsdir /data/xmldatadumps/public
                --outputdir /data/xmldatadumps/public
                --dirlisting rsync-dirs-last-%%s.txt
@@ -557,7 +556,7 @@ def check_options(dumps_num_list, templs):
             usage("dumpsnumber must be a number or a comma-separated"
                   " list of numbers each greater than 0")
 
-    if not len(templs):
+    if not templs:
         usage("At least one of --dirlisting, --filelisting, or"
               " --rsynclisting must be specified")
 
@@ -625,7 +624,7 @@ def do_main():
     except Exception:
         usage("Unknown option specified")
 
-    if len(remainder):
+    if remainder:
         usage("Unknown option specified: %s" % remainder[0])
 
     for (opt, val) in options:
