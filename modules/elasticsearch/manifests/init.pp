@@ -22,7 +22,7 @@ class elasticsearch (
     Elasticsearch::InstanceParams $default_instance_params           = {},
     String $java_package                                             = 'openjdk-8-jdk',
     Integer $version                                                 = 5,
-    String $base_data_dir                                            = '/srv/elasticsearch',
+    Stdlib::Absolutepath $base_data_dir                              = '/srv/elasticsearch',
     Optional[String] $logstash_host                                  = undef,
     Optional[Wmflib::IpPort] $logstash_gelf_port                     = 12201,
     Optional[String] $rack                                           = undef,
@@ -82,6 +82,13 @@ class elasticsearch (
     }
     file { '/var/log/elasticsearch/elasticsearch_index_search_slowlog.log':
         ensure => absent,
+    }
+
+    file { $base_data_dir:
+        ensure => directory,
+        owner  => 'elasticsearch',
+        group  => 'elasticsearch',
+        mode   => '0755',
     }
 
     logrotate::rule { 'elasticsearch':
