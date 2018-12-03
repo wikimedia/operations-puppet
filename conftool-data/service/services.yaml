@@ -67,14 +67,6 @@ scb:
     default_values:
       pooled: 'yes'
       weight: 10
-  mathoid:
-    port: 10042
-    default_values:
-      pooled: 'no'
-      weight: 10
-    datacenters:
-    - eqiad
-    - codfw
   graphoid:
     port: 19000
     default_values:
