@@ -85,15 +85,14 @@ def edit_recordset(endpoint, token, zoneid, recordset, newrecords):
 
 def recordset_is_service(recordset):
     if recordset['type'] == 'A':
-        attribute = 'name'
-    elif recordset['type'] == 'PTR':
-        attribute = 'data'
-    else:
+        if recordset['name'].lower().endswith(".svc.eqiad.wmflabs."):
+            return True
         return False
 
-    if recordset[attribute].lower().endswith(".svc.eqiad.wmflabs."):
-        return True
-
+    if recordset['type'] == 'PTR':
+        for record in recordset['records']:
+            if record.lower().endswith(".svc.eqiad.wmflabs."):
+                return True
     return False
 
 
