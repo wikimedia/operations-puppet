@@ -3085,6 +3085,7 @@ users:
     realname: Chris Danis
     name: cdanis
     gid: 500
+    shell: /usr/bin/zsh
     ssh_keys:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPhmLO5JSeJ7IK13C3mjckZF/HwdCQ32bqfaZgRfUfiw cdanis@cdanis
     uid: 20431
