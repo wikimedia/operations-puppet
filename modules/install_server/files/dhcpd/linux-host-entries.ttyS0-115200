@@ -191,6 +191,11 @@ host fermium {
     filename "lpxelinux.0";
 }
 
+host grafana1001 {
+    hardware ethernet aa:00:00:99:e1:5d;
+    fixed-address grafana1001.eqiad.wmnet;
+}
+
 host hassaleh {
     hardware ethernet aa:00:00:3f:8c:a0;
     fixed-address hassaleh.codfw.wmnet;
