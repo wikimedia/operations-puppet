@@ -26,7 +26,8 @@ class profile::spicerack(
     include ::passwords::redis
 
     # Install the software
-    require_package('spicerack')
+    # python3-dateutil is required by spicerack cookbook
+    require_package('python3-dateutil', 'spicerack')
 
     $cookbooks_dir = '/srv/deployment/spicerack'
 
