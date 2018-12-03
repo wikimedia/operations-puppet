@@ -196,15 +196,15 @@ class profile::mediawiki::php(
         $num_workers = max(floor($facts['processors']['count'] * 1.5), 8)
         # These numbers need to be positive integers
         $max_spare = ceiling($num_workers * 0.3)
-        $min_spare = ceiling($num_workers * 0.1)
+        $min_spare = ceilingi($num_workers * 0.1)
         php::fpm::pool { 'www':
             port   => $port,
             config => {
                 'pm'                        => 'dynamic',
-                'pm.max_spare_servers'      => $num_workers,
+                'pm.max_spare_servers'      => $max_spare,
                 'pm.min_spare_servers'      => $min_spare,
                 'pm.start_servers'          => $min_spare,
-                'pm.max_children'           => $max_spare,
+                'pm.max_children'           => $num_workers,
                 'request_terminate_timeout' => 240,
             }
         }
