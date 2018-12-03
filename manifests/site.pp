@@ -1906,10 +1906,6 @@ node /^pc20(09)\.codfw\.wmnet$/ {
 node /^pc10(04|05|06)\.eqiad\.wmnet$/ {
     role(spare::system)
 }
-# pc2004, pc2005 and pc2006 will be decommissioned - T209858
-node /^pc20(04|05|06)\.codfw\.wmnet$/ {
-    role(spare::system)
-}
 
 # virtual machines for https://wikitech.wikimedia.org/wiki/Ping_offload
 node /^ping[12]001\.(eqiad|codfw)\.wmnet$/ {
