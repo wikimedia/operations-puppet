@@ -55,7 +55,6 @@ cache::req_handling:
     director: 'kartotherian'
 # Profile parameters
 # Profile::cache::base
-profile::cache::base::admission_policy: 'none'
 profile::cache::base::zero_site: 'https://zero.wikimedia.org'
 profile::cache::base::purge_host_only_upload_re: '^(upload|maps)\.wikimedia\.org$'
 profile::cache::base::purge_host_not_upload_re: '^(?!(upload|maps)\.wikimedia\.org)'
