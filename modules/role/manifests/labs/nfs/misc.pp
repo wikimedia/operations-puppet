@@ -18,7 +18,6 @@ class role::labs::nfs::misc(
     include rsync::server
     include labstore::backup_keys
     include labstore::monitoring::interfaces
-    include labstore::monitoring::nfsd
     # to be included post ldap integration
     # include labstore::monitoring::ldap
 

@@ -133,7 +133,6 @@ class role::labs::nfs::secondary(
 
     include labstore::monitoring::exports
     include labstore::monitoring::ldap
-    include labstore::monitoring::nfsd
     class { 'labstore::monitoring::interfaces':
         monitor_iface => $monitor_iface,
     }
