@@ -339,3 +339,10 @@ monitoring::groups:
     description: Prometheus servers (ulsfo)
   prometheus_eqsin:
     description: Prometheus servers (eqsin)
+
+# Graphite
+  graphite_eqiad:
+    description: Graphite servers (eqiad)
+  graphite_codfw:
+    description: Graphite servers (codfw)
+

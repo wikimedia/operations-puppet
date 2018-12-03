@@ -338,6 +338,12 @@ wikimedia_clusters:
       esams: []
       ulsfo: []
       eqsin: []
+  graphite:
+    description: "Graphite servers"
+    id: 72
+    sites:
+      eqiad: []
+      codfw: []
 
 puppetmaster: "puppet"
 
