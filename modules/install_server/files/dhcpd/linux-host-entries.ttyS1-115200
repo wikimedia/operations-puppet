@@ -5991,27 +5991,6 @@ host oxygen {
     filename "lpxelinux.0";
 }
 
-host pc1004 {
-    hardware ethernet 14:18:77:42:DF:00;
-    fixed-address pc1004.eqiad.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
-    filename "lpxelinux.0";
-}
-
-host pc1005 {
-    hardware ethernet 14:18:77:42:C8:7B;
-    fixed-address pc1005.eqiad.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
-    filename "lpxelinux.0";
-}
-
-host pc1006 {
-    hardware ethernet 14:18:77:42:F3:A7;
-    fixed-address pc1006.eqiad.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
-    filename "lpxelinux.0";
-}
-
 host pc1008 {
     hardware ethernet D0:94:66:87:90:73;
     fixed-address pc1008.eqiad.wmnet;

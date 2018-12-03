@@ -1879,15 +1879,15 @@ node 'oxygen.eqiad.wmnet'
 # parser cache databases
 # eqiad
 # pc1
-node /^pc10(04|07|10)\.eqiad\.wmnet$/ {
+node /^pc10(07|10)\.eqiad\.wmnet$/ {
     role(mariadb::parsercache)
 }
 # pc2
-node /^pc10(05|08)\.eqiad\.wmnet$/ {
+node /^pc10(08)\.eqiad\.wmnet$/ {
     role(mariadb::parsercache)
 }
 # pc3
-node /^pc10(06|09)\.eqiad\.wmnet$/ {
+node /^pc10(09)\.eqiad\.wmnet$/ {
     role(mariadb::parsercache)
 }
 
@@ -1905,7 +1905,11 @@ node /^pc20(09)\.codfw\.wmnet$/ {
     role(mariadb::parsercache)
 }
 
-# pc2004, pc2005 and pc2006 will be decommissioned
+# pc1004, pc1005 and pc1006 will be decommissioned - T210969
+node /^pc10(04|05|06)\.eqiad\.wmnet$/ {
+    role(spare::system)
+}
+# pc2004, pc2005 and pc2006 will be decommissioned - T209858
 node /^pc20(04|05|06)\.codfw\.wmnet$/ {
     role(spare::system)
 }
