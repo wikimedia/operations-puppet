@@ -9,7 +9,6 @@ class profile::mediawiki::webserver(
     # we need fonts!
     class { '::mediawiki::packages::fonts': }
 
-
     # Set feature flags for all mediawiki::web::vhost resources
     Mediawiki::Web::Vhost {
         feature_flags => $vhost_feature_flags,

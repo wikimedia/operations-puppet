@@ -44,7 +44,7 @@
 #   all vhosts. The list will vary with time, and must be reflected in the
 #   corresponding puppet type. Here is the list of currently effective feature
 #   flags:
-#   - serve_php7: Wether to direct requests to PHP7 based on the PHP_ENGINE cookie
+#   - no flag is active!
 define mediawiki::web::vhost(
     String $docroot,
     Wmflib::Ensure $ensure = present,
@@ -65,7 +65,7 @@ define mediawiki::web::vhost(
     Mediawiki::Vhost_feature_flags $feature_flags = {},
 ) {
     # Feature flags. Remove them once the change is applied everywhere.
-    $serve_php7 = pick($feature_flags['serve_php7'], false)
+    # nothing to see here
     # The vhost content
     $content = template('mediawiki/apache/mediawiki-vhost.conf.erb')
 

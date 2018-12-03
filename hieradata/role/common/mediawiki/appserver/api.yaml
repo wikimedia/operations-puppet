@@ -15,5 +15,4 @@ profile::lvs::realserver::pools:
   api:
     service: hhvm
 profile::mediawiki::php::php_version: "7.2"
-profile::mediawiki::vhost_feature_flags:
-  serve_php7: true
+profile::mediawiki::vhost_feature_flags: {}
