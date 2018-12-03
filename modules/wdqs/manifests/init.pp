@@ -22,6 +22,7 @@ class wdqs(
     Integer $max_query_time_millis = 60000,
     Enum['none', 'daily', 'weekly'] $load_categories = 'none',
     Boolean $run_tests = false,
+    Boolean $log_sparql = false,
 ) {
     $deploy_user = 'deploy-service'
 
@@ -58,6 +59,7 @@ class wdqs(
         logstash_json_port => $logstash_json_port,
         options            => $updater_options,
         extra_jvm_opts     => $updater_extra_jvm_opts,
+        log_sparql         => $log_sparql,
     }
 
     class { 'wdqs::gui':

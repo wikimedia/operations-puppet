@@ -23,8 +23,9 @@ class profile::wdqs (
     Boolean $use_kafka_for_updates = hiera('profile::wdqs::use_kafka_for_updates'),
     Boolean $fetch_constraints = hiera('profile::wdqs::fetch_constraints'),
     Boolean $enable_ldf = hiera('profile::wdqs::enable_ldf'),
-    Boolean $enable_rdf_dump = hiera('profile::wdqs::enable_rdf_dump'),
+    Boolean $enable_rdf_dump = hiera('profile::wdqs::enable_rdf_dump', false),
     Boolean $run_tests = hiera('profile::wdqs::run_tests', false),
+    Boolean $log_sparql = hiera('profile::wdqs::log_sparql', false),
 ) {
     require ::profile::prometheus::blazegraph_exporter
 
@@ -107,6 +108,7 @@ class profile::wdqs (
             "-javaagent:${prometheus_agent_path}=${prometheus_updater_agent_port}:${prometheus_updater_agent_config}",
         ],
         run_tests                 => $run_tests,
+        log_sparql                => $log_sparql,
     }
 
     # Firewall

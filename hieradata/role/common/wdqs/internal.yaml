@@ -19,7 +19,6 @@ profile::wdqs::blazegraph_extra_jvm_opts:
   - '-Dwdqs.throttling-filter.time-bucket-capacity-in-seconds=240'
   - '-Dwdqs.throttling-filter.time-bucket-refill-amount-in-seconds=120'
   - '-Dwdqs.throttling-filter.ban-duration-in-minutes=60'
-profile::wdqs::enable_rdf_dump: false
 profile::wdqs::nodes:
   - 'wdqs1003.eqiad.wmnet'
   - 'wdqs1007.eqiad.wmnet'

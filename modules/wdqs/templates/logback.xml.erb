@@ -85,10 +85,30 @@
         <port><%= @logstash_port %></port>
         <customFields>{"program":"<%= @title %>"}</customFields>
     </appender>
-    <appender name="async-logstash" class="ch.qos.logback.classic.AsyncAppender">
-        <neverBlock>true</neverBlock>
-        <appender-ref ref="logstash" />
+
+    <%- if @sparql -%>
+    <appender name="file-sparql" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file><%= @log_dir %>/<%= @title %>-sparql.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <!-- daily rollover -->
+            <fileNamePattern><%= @log_dir %>/<%= @title %>.%d{yyyy-MM-dd}-sparql.%i.log.gz</fileNamePattern>
+            <maxFileSize>1500MB</maxFileSize>
+            <maxHistory>3</maxHistory>
+        </rollingPolicy>
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <pattern>%d{HH:mm:ss.SSS} %msg%n</pattern>
+            <outputPatternAsHeader>false</outputPatternAsHeader>
+        </encoder>
     </appender>
+    <appender name="async-file-sparql" class="ch.qos.logback.classic.AsyncAppender">
+        <neverBlock>true</neverBlock>
+        <appender-ref ref="file-sparql" />
+    </appender>
+
+    <logger name="org.wikidata.query.rdf.tool.rdf.client.RdfClient" level="trace" additivity="false">
+        <appender-ref ref="async-file-sparql"/>
+    </logger>
+    <%- end -%>
 
     <root level="warn">
         <appender-ref ref="async-file"/>

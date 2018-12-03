@@ -19,7 +19,7 @@ profile::wdqs::high_query_time_port: false
 profile::wdqs::fetch_constraints: true
 profile::wdqs::load_categories: 'daily'
 profile::wdqs::blazegraph_extra_jvm_opts: []
-profile::wdqs::enable_rdf_dump: false
+profile::wdqs::log_sparql: true
 profile::wdqs::nodes:
   - 'wdqs1009.eqiad.wmnet'
   - 'wdqs1010.eqiad.wmnet'

@@ -4,6 +4,7 @@ define wdqs::logback_config (
     Stdlib::Unixpath $log_dir,
     Wmflib::IpPort $logstash_port = 11514,
     Boolean $evaluators = false,
+    Boolean $sparql = false,
 ) {
     file { "/etc/wdqs/logback-${title}.xml":
         ensure  => present,

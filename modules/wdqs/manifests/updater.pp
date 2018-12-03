@@ -7,11 +7,12 @@
 # - $options: extra updater options.
 # - $logstash_host: hostname where to send logs.
 # - $package_dir:  Directory where the service should be installed.
-# - $data_dir: Directory where the database should be stored
-# - $log_dir: Directory where the logs go
-# - $logstash_json_port: port on which to send logs in json format
-# - $username: Username owning the service
+# - $data_dir: Directory where the database should be stored.
+# - $log_dir: Directory where the logs go.
+# - $logstash_json_port: port on which to send logs in json format.
+# - $username: Username owning the service.
 # - $extra_jvm_opts: extra JVM options for updater.
+# - $log_sparql: enable SPARQL logging.
 class wdqs::updater(
     Array[String] $options,
     String $logstash_host,
@@ -21,6 +22,7 @@ class wdqs::updater(
     Wmflib::IpPort $logstash_json_port,
     String $username,
     Array[String] $extra_jvm_opts,
+    Boolean $log_sparql = false,
 ) {
     file { '/etc/default/wdqs-updater':
         ensure  => present,
@@ -37,6 +39,7 @@ class wdqs::updater(
         log_dir       => $log_dir,
         logstash_host => $logstash_host,
         logstash_port => $logstash_json_port,
+        sparql        => $log_sparql,
     }
 
     systemd::unit { 'wdqs-updater':
