@@ -53,7 +53,7 @@ profile::druid::common::properties:
   druid.metadata.storage.connector.host: an-coord1001.eqiad.wmnet
   # druid.metadata.storage.connector.password is set in the private repo.
   druid.storage.type: hdfs
-  druid.request.logging.type: file
+  druid.request.logging.type: slf4j
   druid.request.logging.dir: /var/log/druid
   # Historically, the analytics-eqiad Druid cluster was the only one,
   # and as such had a deep storage directory in HDFS without

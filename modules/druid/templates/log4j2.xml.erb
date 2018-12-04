@@ -19,14 +19,40 @@
             <Policies>
                 <SizeBasedTriggeringPolicy size="10 MB"/>
             </Policies>
-            <DefaultRolloverStrategy max="15"/>
+            <DefaultRolloverStrategy max="5"/>
         </RollingFile>
+        <% if @service == 'broker' or @service == 'historical' -%>
+        <RollingFile name="AccessLogFile"
+            fileName="/var/log/druid/<%= @service %>-access.log"
+            filePattern="/var/log/druid/<%= @service %>-access.%i.log">
+            <Policies>
+                <SizeBasedTriggeringPolicy size="10 MB"/>
+            </Policies>
+            <DefaultRolloverStrategy max="5"/>
+        </RollingFile>
+        <RollingFile name="RollingRequestsFile"
+            fileName="/var/log/druid/<%= @service %>-requests.log"
+            filePattern="/var/log/druid/<%= @service %>-requests.%i.log">
+            <Policies>
+                <SizeBasedTriggeringPolicy size="100 MB"/>
+            </Policies>
+            <DefaultRolloverStrategy max="3"/>
+        </RollingFile>
+        <% end -%>
     </Appenders>
 
     <Loggers>
         <Logger name="io.druid.java.util.emitter.core.LoggingEmitter" level="info" additivity="false">
           <AppenderRef ref="RollingMetricsFile"/>
         </Logger>
+        <% if @service == 'broker' or @service == 'historical' -%>
+        <Logger name="io.druid.server.log.LoggingRequestLogger" level="info" additivity="false">
+          <AppenderRef ref="RollingRequestsFile"/>
+        </Logger>
+        <Logger name="io.druid.jetty.RequestLog" additivity="false" level="DEBUG">
+            <AppenderRef ref="AccessLogFile"/>
+        </Logger>
+        <% end -%>
         <Root level="info">
             <AppenderRef ref="RollingFile"/>
         </Root>

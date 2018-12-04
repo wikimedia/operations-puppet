@@ -47,7 +47,7 @@ profile::druid::common::properties:
   druid.metadata.storage.connector.host: an-coord1001.eqiad.wmnet
   # druid.metadata.storage.connector.password is set in the private repo.
   druid.storage.type: hdfs
-  druid.request.logging.type: file
+  druid.request.logging.type: slf4j
   druid.request.logging.dir: /var/log/druid
   # We need to use a special deep storage directory in HDFS so
   # we don't conflict with other (e.g. analytics-eqiad) druid
@@ -88,7 +88,7 @@ profile::druid::broker::properties:
   druid.cache.sizeInBytes: 2147483648
 profile::druid::broker::env:
   DRUID_HEAP_OPTS: "-Xmx10g -Xms5g"
-  DRUID_EXTRA_JVM_OPTS: "-XX:NewSize=4g -XX:MaxNewSize=4g -XX:MaxDirectMemorySize=12g -XX:+UseConcMarkSweepGC -XX:+PrintGCDetails -XX:+PrintGCTimeStamps"
+  DRUID_EXTRA_JVM_OPTS: "-XX:NewSize=4g -XX:MaxNewSize=4g -XX:MaxDirectMemorySize=12g -XX:+UseConcMarkSweepGC -XX:+PrintGCDetails -XX:+PrintGCTimeStamps -Djava.util.logging.manager=org.apache.logging.log4j.jul.LogManager"
 
 
 # --- Druid Coordinator
@@ -123,7 +123,7 @@ profile::druid::historical::properties:
   druid.monitoring.monitors: ["io.druid.server.metrics.HistoricalMetricsMonitor"]
 profile::druid::historical::env:
   DRUID_HEAP_OPTS: "-Xmx8g -Xms4g"
-  DRUID_EXTRA_JVM_OPTS: "-XX:NewSize=2g -XX:MaxNewSize=2g -XX:MaxDirectMemorySize=10g -XX:+UseConcMarkSweepGC -XX:+PrintGCDetails -XX:+PrintGCTimeStamps"
+  DRUID_EXTRA_JVM_OPTS: "-XX:NewSize=2g -XX:MaxNewSize=2g -XX:MaxDirectMemorySize=10g -XX:+UseConcMarkSweepGC -XX:+PrintGCDetails -XX:+PrintGCTimeStamps -Djava.util.logging.manager=org.apache.logging.log4j.jul.LogManager"
 
 
 # --- Druid MiddleManager
