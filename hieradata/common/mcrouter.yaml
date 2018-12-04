@@ -34,7 +34,7 @@ mcrouter::shards:
         port: 11214
         ssl: true
       D:
-        host: 10.192.48.109 # mw2287, D5
+        host: 10.192.48.93 # mw2271, D3
         port: 11214
         ssl: true
   wancache:
