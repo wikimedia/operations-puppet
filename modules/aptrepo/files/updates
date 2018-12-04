@@ -142,6 +142,15 @@ Architectures: amd64
 VerifyRelease: 37BBEE3F7AD95B3F
 ListShellHook: grep-dctrl -X -S grafana || [ $? -eq 1 ]
 
+Name: grafana-stretch
+Method: https://packagecloud.io/grafana/stable/debian
+Components: main>thirdparty/grafana
+UDebComponents:
+Suite: stretch
+Architectures: amd64
+VerifyRelease: 37BBEE3F7AD95B3F
+ListShellHook: grep-dctrl -X -S grafana || [ $? -eq 1 ]
+
 Name: confluent
 Method: http://packages.confluent.io/deb/2.0
 Components: main>thirdparty
