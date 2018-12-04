@@ -2692,7 +2692,7 @@ host elastic2053 {
 }
 
 host elastic2054 {
-    hardware ethernet B0:26:28:32:A3:E0 ;
+    hardware ethernet B0:26:28:32:A3:E0;
     fixed-address elastic2054.codfw.wmnet;
 }
 
