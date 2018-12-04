@@ -11,7 +11,7 @@ groups:
               psinger, midom, tparscal, dworley, moushira, lpintscher, gpaumier,
               nschaaf, zhousquared, gwicke, dpatrick, samwalton9, samtar, akrausetud, jgonsior,
               yuvipanda, shrlak, joewalsh, madhuvishy, groovier, khorn, ironholds, katie,
-              cy534, pnorman, mpany, deskana]
+              cy534, pnorman, mpany, deskana, arnad]
   absent_ldap:
     description: meta group for absented users which had privileged LDAP access in the past, an automatic check verifies it has been really removed from the LDAP (but removal has to be handled separatelly)
     members: [adavenport, siddharth11, albe]
@@ -254,7 +254,7 @@ groups:
                  Those files are group readable by the analytics-privatedata-users group.
     members: [dartar, milimetric, dfoy, aude, jforrester, nithum, imarlier,
               halfak, dr0ptp4kt, bearloga, elukey, ppchelko, bawolff, mneisler,
-              nuria, otto, arnad, jgreen, sguebo, thargrove,
+              nuria, otto, jgreen, sguebo, thargrove,
               bsitzmann, dbrant, nettrom, leila, cwdent, jmm,
               ezachte, mforns, reedy, west1, phuedx, awight,
               joal, jamesur, akosiaris, jkatz, tonina, pearley, ktsouroupidou,
@@ -2517,16 +2517,12 @@ users:
     uid: 2497
     email: matanya@foss.co.il
   arnad:
-    ensure: present
+    ensure: absent
     gid: 500
     name: arnad
     realname: Adrian Bielefeldt
-    ssh_keys:
-      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDDR23MLJl52/9i2syrOF+mSSHBCpyIEvymOarSFgc0FufWukmb04xTKLRNBjDdWtGzmROqhG9aiD8pptcanzBHXTryoPHDZxnpjik+BmY9IRNXqfhI8hoYE914epFIyM5I14tXra76LFbnVfc3dU2H0V3YCxiMqZkzglxU53Vr25N7e5nSPGdYlwIn3vt3WcF1h9AZdw67659kVX3dKJ0NLWvPJz+odPkJbPwxl3v3XWRW+a+TG42TOVFnoTMkgJ3Vh0Q/0hv00fSb7HzqtlyVfWqNR0KgvilLWkOfH+IX2dAZcPInPk6x9JhFRyfehi7X9t2FXgFlT2T8kmCf215H Adrian.Bielefeldt@mailbox.tu-dresden.de
+    ssh_keys: []
     uid: 15336
-    email: Adrian.Bielefeldt@mailbox.tu-dresden.de
-    expiry_date: 2018-11-30
-    expiry_contact: leila@wikimedia.org
   jgonsior:
     ensure: absent
     gid: 500
