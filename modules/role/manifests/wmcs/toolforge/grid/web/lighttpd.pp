@@ -12,7 +12,9 @@
 #
 # filtertags: toolforge
 class role::wmcs::toolforge::grid::web::lighttpd {
-    system::role { 'wmcs::toolforge::grid::web::lighttpd': description => 'lighttpd web exec node' }
+    system::role { $name:
+        description => 'Toolforge lighttpd web exec node'
+    }
 
     include profile::toolforge::base
     include profile::toolforge::apt_pinning

@@ -12,7 +12,9 @@
 #
 # filtertags: toolforge
 class role::wmcs::toolforge::grid::compute::general {
-    system::role { 'wmcs::toolforge::grid::compute::general': description => 'General computation node' }
+    system::role { $name:
+        description => 'Toolforge general computation node'
+    }
 
     include profile::toolforge::base
     include profile::toolforge::apt_pinning

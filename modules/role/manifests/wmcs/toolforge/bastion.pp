@@ -1,6 +1,8 @@
 # filtertags: labs-project-tools
 class role::wmcs::toolforge::bastion {
-    system::role { 'wmcs::toolforge::bastion': description => 'Toolforge bastion' }
+    system::role { $name:
+        description => 'Toolforge bastion'
+    }
 
     include profile::toolforge::base
     include profile::toolforge::apt_pinning

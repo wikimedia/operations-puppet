@@ -12,7 +12,9 @@
 #
 # filtertags: toolforge
 class role::wmcs::toolforge::grid::web::generic {
-    system::role { 'wmcs::toolforge::grid::web::generic': description => 'Generic web exec node' }
+    system::role { $name:
+        description => 'Toolforge generic web exec node'
+    }
 
     include profile::toolforge::base
     include profile::toolforge::apt_pinning

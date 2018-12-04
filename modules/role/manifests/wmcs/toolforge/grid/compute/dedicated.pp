@@ -12,7 +12,9 @@
 #
 # filtertags: toolforge
 class role::wmcs::toolforge::grid::compute::dedicated {
-    system::role { 'wmcs::toolforge::grid::compute::dedicated': description => 'Dedicated computation node' }
+    system::role { $name:
+        description => 'Toolforge dedicated computation node'
+    }
 
     include profile::toolforge::base
     include profile::toolforge::apt_pinning
