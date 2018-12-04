@@ -50,7 +50,7 @@ profile::graphoid::error_headers:
 ### END GRAPHOID ###
 
 profile::citoid::zotero_port: 1968
-profile::citoid::zotero_host: "zotero2.svc.%{::site}.wmnet"
+profile::citoid::zotero_host: "zoterov2.svc.%{::site}.wmnet"
 
 
 ### BEGIN EVENTSTREAMS ###
