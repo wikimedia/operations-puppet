@@ -21,7 +21,7 @@
             </Policies>
             <DefaultRolloverStrategy max="5"/>
         </RollingFile>
-        <% if @service == 'broker' or @service == 'historical'  or @service == 'middlemanager' -%>
+        <% if @service == 'broker' or @service == 'historical' -%>
         <RollingFile name="AccessLogFile"
             fileName="/var/log/druid/<%= @service %>-access.log"
             filePattern="/var/log/druid/<%= @service %>-access.%i.log">
@@ -30,6 +30,8 @@
             </Policies>
             <DefaultRolloverStrategy max="5"/>
         </RollingFile>
+        <% end -%>
+        <% if @service == 'broker' or @service == 'historical' or @service == 'middlemanager' -%>
         <RollingFile name="RollingRequestsFile"
             fileName="/var/log/druid/<%= @service %>-requests.log"
             filePattern="/var/log/druid/<%= @service %>-requests.%i.log">
@@ -49,6 +51,8 @@
         <Logger name="io.druid.server.log.LoggingRequestLogger" level="info" additivity="false">
           <AppenderRef ref="RollingRequestsFile"/>
         </Logger>
+        <% end -%>
+        <% if @service == 'broker' or @service == 'historical' -%>
         <Logger name="io.druid.jetty.RequestLog" additivity="false" level="DEBUG">
             <AppenderRef ref="AccessLogFile"/>
         </Logger>
