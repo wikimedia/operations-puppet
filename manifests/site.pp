@@ -983,7 +983,7 @@ node /^ganeti[12]00[0-9]\.(codfw|eqiad)\.wmnet$/ {
 
 # Virtual machine being turned up to run Grafana (T210416)
 node 'grafana1001.eqiad.wmnet' {
-    role(spare::system)
+    role(grafana)
 }
 
 # debug_proxy hosts; Varnish backend for X-Wikimedia-Debug reqs

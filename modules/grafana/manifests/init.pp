@@ -39,7 +39,7 @@ class grafana(
 
     if os_version('debian >= stretch') {
         apt::repository { 'thirdparty-grafana':
-            url        => 'http://apt.wikimedia.org/wikimedia',
+            uri        => 'http://apt.wikimedia.org/wikimedia',
             dist       => "${::lsbdistcodename}-wikimedia",
             components => 'thirdparty/grafana',
             notify     => Exec['apt_update_grafana'],
