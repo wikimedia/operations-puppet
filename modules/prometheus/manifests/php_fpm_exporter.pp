@@ -37,9 +37,14 @@ class prometheus::php_fpm_exporter (
         notify  => Service[$sw_name],
     }
 
-    service { $sw_name:
-        ensure  => running,
-        require => Package[$sw_name],
+    # We need to run as www-data so we can access php-fpm if it's running via
+    # a unix socket
+    systemd::service { $sw_name:
+        ensure   => present,
+        content  => "[Service]\nUser=www-data",
+        override => true,
+        restart  => true,
+        require  => Package[$sw_name],
     }
 
     base::service_auto_restart { $sw_name: }
