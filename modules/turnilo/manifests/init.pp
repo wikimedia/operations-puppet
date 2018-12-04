@@ -30,6 +30,16 @@ class turnilo(
 ) {
 
     requires_os('debian >= jessie')
+
+    # Nodejs 10 upgrade - T210705
+    if os_version('debian == stretch') {
+        apt::repository { 'wikimedia-node10':
+            uri        => 'http://apt.wikimedia.org/wikimedia',
+            dist       => 'stretch-wikimedia',
+            components => 'component/node10',
+            before     => Package['nodejs'],
+        }
+    }
     require_package('nodejs', 'firejail')
 
     $scap_deployment_base_dir = '/srv/deployment'
