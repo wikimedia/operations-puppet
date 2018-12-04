@@ -222,7 +222,7 @@ class profile::phabricator::main (
                 'max_accelerated_files'   => 10000,
                 'validate_timestamps'     => $opcache_validate,
             },
-            'max_execution_time'  => 10,
+            'max_execution_time'  => 30,
             'post_max_size'       => '10M',
             'track_errors'        => 'Off',
             'upload_max_filesize' => '10M',
