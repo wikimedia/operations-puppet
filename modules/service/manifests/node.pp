@@ -122,6 +122,10 @@
 #   Default: hiera('contactgroups', 'admins') - use 'contactgroups' hiera
 #            variable with a fallback to 'admins' if 'contactgroups' isn't set.
 #
+# [*use_nodejs10*]
+#   Deploy an apt component for nodejs 10 for hosts running Debian Stretch.
+#   Default: false
+#
 # === Examples
 #
 # To set up a service named myservice on port 8520 and with a templated
@@ -180,6 +184,7 @@ define service::node(
     $deployment_config = false,
     $deployment_vars = {},
     $contact_groups  = hiera('contactgroups', 'admins'),
+    $use_nodejs10    = false,
 ) {
     case $deployment {
         'git': {
@@ -217,11 +222,36 @@ define service::node(
     # the local log directory
     $local_logdir = "${service::configuration::log_dir}/${title}"
     $local_logfile = "${local_logdir}/main.log"
-    # Software and the deployed code, firejail for containment
-    require_package('nodejs', 'firejail')
 
-    if os_version('debian == jessie') {
-        require_package('nodejs-legacy')
+
+    if $use_nodejs10 {
+        if os_version('debian == stretch') {
+            apt::repository { 'wikimedia-node10':
+                uri        => 'http://apt.wikimedia.org/wikimedia',
+                dist       => 'stretch-wikimedia',
+                components => 'component/node10',
+                before     => Package['nodejs'],
+            }
+        } else {
+            fail('The use_nodejs10 parameter is only usable on Debian Stretch.')
+        }
+    }
+
+    # Software and the deployed code, firejail for containment
+    if !defined(Package['nodejs']) {
+        package { 'nodejs':
+            ensure => present,
+        }
+    }
+    if !defined(Package['nodejs-legacy']) and os_version('debian == jessie'){
+        package { 'nodejs-legacy':
+            ensure => present,
+        }
+    }
+    if !defined(Package['firejail']) {
+        package { 'firejail':
+            ensure => present,
+        }
     }
 
     # User/group
