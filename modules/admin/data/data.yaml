@@ -477,7 +477,7 @@ groups:
   deploy-aqs:
     gid: 786
     description: Deployers for the Analytics Query Service
-    members: [nuria, milimetric, joal, mforns]
+    members: [nuria, milimetric, joal, mforns, fdans]
     privileges: [
          'ALL = NOPASSWD: /usr/sbin/service restbase *',
          'ALL = (restbase) NOPASSWD: ALL']
