@@ -93,6 +93,7 @@ class grafana(
             group   => 'grafana',
             mode    => '0440',
             content => template('grafana/ldap.toml.erb'),
+            require => Package['grafana'],
             notify  => Service['grafana-server'],
             before  => Service['grafana-server'],
         }
