@@ -4,11 +4,13 @@
 # Currently explicitly supports nodejs
 #
 # filtertags: labs-project-tools
-class profile::toolforge::grid::node::web::generic {
+class profile::toolforge::grid::node::web::generic(
+    $collectors = lookup('profile::toolforge::grid::base::collectors'),
+) {
     include profile::toolforge::grid::node::web
 
     sonofgridengine::join { "queues-${::fqdn}":
-        sourcedir => "${profile::toolforge::grid::base::collectors}/queues",
+        sourcedir => "${collectors}/queues",
         list      => [ 'webgrid-generic' ],
     }
 

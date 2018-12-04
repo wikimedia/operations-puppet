@@ -11,7 +11,9 @@
 # Sample Usage:
 #
 # filtertags: toolforge
-class profile::toolforge::grid::node::compute::general {
+class profile::toolforge::grid::node::compute::general(
+    $collectors = lookup('profile::toolforge::grid::base::collectors'),
+) {
 
     include profile::toolforge::grid::node::compute
 
@@ -31,7 +33,7 @@ class profile::toolforge::grid::node::compute::general {
     }
 
     sonofgridengine::join { "hostgroups-${::fqdn}":
-        sourcedir => "${profile::toolforge::grid::base::collectors}/hostgroups",
+        sourcedir => "${collectors}/hostgroups",
         list      => [ $hostlist ],
     }
 

@@ -11,7 +11,9 @@
 # Sample Usage:
 #
 # filtertags: toolforge
-class profile::toolforge::grid::node::web::lighttpd {
+class profile::toolforge::grid::node::web::lighttpd(
+    $collectors = lookup('profile::toolforge::grid::base::collectors'),
+) {
     include profile::toolforge::grid::node::web
 
     if $facts['lsbdistcodename'] == 'stretch' {
@@ -33,7 +35,7 @@ class profile::toolforge::grid::node::web::lighttpd {
     }
 
     sonofgridengine::join { "queues-${::fqdn}":
-        sourcedir => "${profile::toolforge::grid::base::collectors}/queues",
+        sourcedir => "${collectors}/queues",
         list      => [ 'webgrid-lighttpd' ],
     }
 

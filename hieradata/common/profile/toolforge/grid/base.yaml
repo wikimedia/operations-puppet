@@ -1,0 +1,6 @@
+# should match /etc/default/gridengine
+profile::toolforge::grid::base::sge_root: /var/lib/gridengine
+profile::toolforge::grid::base::project_path: /data/project
+profile::toolforge::grid::base::sysdir: /data/project/.system_sge
+profile::toolforge::grid::base::geconf: /data/project/.system_sge/gridengine
+profile::toolforge::grid::base::collectors: /data/project/.system_sge/gridengine/collectors

@@ -5,16 +5,14 @@ class profile::toolforge::grid::base (
     $external_ip = hiera('profile::toolforge::external_ip', undef),
     $active_proxy = hiera('profile::toolforge::active_proxy_host'),
     $etcdir = hiera('profile::toolforge::etcdir'),
+    $project_path = lookup('profile::toolforge::grid::base::project_path'),
+    $sge_root = lookup('profile::toolforge::grid::base::sge_root'),
+    $sysdir = lookup('profile::toolforge::grid::base::sysdir'),
+    $geconf = lookup('profile::toolforge::grid::base::geconf'),
+    $collectors = lookup('profile::toolforge::grid::base::collectors'),
 ) {
 
     class { '::labs_lvm': }
-
-    $project_path = '/data/project'
-    # should match /etc/default/gridengine
-    $sge_root     = '/var/lib/gridengine'
-    $sysdir       = "${project_path}/.system_sge"
-    $geconf       = "${sysdir}/gridengine"
-    $collectors   = "${geconf}/collectors"
 
     # Weird use of NFS for config centralization.
     # Nodes drop their config into a directory.

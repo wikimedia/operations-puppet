@@ -2,6 +2,9 @@
 
 class profile::toolforge::grid::master (
     $etcdir = hiera('profile::toolforge::etcdir'),
+    $sge_root = lookup('profile::toolforge::grid::base::sge_root'),
+    $geconf = lookup('profile::toolforge::grid::base::geconf'),
+    $collectors = lookup('profile::toolforge::grid::base::collectors'),
 ){
     include profile::openstack::main::clientpackages
     include profile::openstack::main::observerenv
@@ -21,14 +24,14 @@ class profile::toolforge::grid::master (
         config => 'profile/toolforge/grid/ckpt-continuous.erb',
     }
 
-    file { "${profile::toolforge::grid::base::collectors}/hostgroups":
+    file { "${collectors}/hostgroups":
         ensure => directory,
         owner  => 'root',
         group  => 'root',
         mode   => '0755',
     }
 
-    file { "${profile::toolforge::grid::base::collectors}/queues":
+    file { "${collectors}/queues":
         ensure => directory,
         owner  => 'root',
         group  => 'root',
@@ -36,16 +39,16 @@ class profile::toolforge::grid::master (
     }
 
     sonofgridengine::collectors::hostgroups { '@general':
-        store => "${profile::toolforge::grid::base::collectors}/hostgroups",
+        store => "${collectors}/hostgroups",
     }
 
     sonofgridengine::collectors::queues { 'webgrid-lighttpd':
-        store  => "${profile::toolforge::grid::base::collectors}/queues",
+        store  => "${collectors}/queues",
         config => 'toollabs/gridengine/queue-webgrid.erb',
     }
 
     sonofgridengine::collectors::queues { 'webgrid-generic':
-        store  => "${profile::toolforge::grid::base::collectors}/queues",
+        store  => "${collectors}/queues",
         config => 'toollabs/gridengine/queue-webgrid.erb',
     }
 
@@ -100,39 +103,39 @@ class profile::toolforge::grid::master (
         source => 'puppet:///modules/profile/toolforge/gridscripts/runninggridjobsmail.py',
     }
 
-    file { "${profile::toolforge::grid::base::geconf}/spool":
+    file { "${geconf}/spool":
         ensure  => directory,
         owner   => 'sgeadmin',
         group   => 'sgeadmin',
-        require => File[$profile::toolforge::grid::base::geconf],
+        require => File[$geconf],
     }
 
     file { '/var/spool/gridengine':
         ensure  => link,
-        target  => "${profile::toolforge::grid::base::geconf}/spool",
+        target  => "${geconf}/spool",
         force   => true,
-        require => File["${profile::toolforge::grid::base::geconf}/spool"],
+        require => File["${geconf}/spool"],
     }
 
     file { '/var/spool/gridengine/qmaster':
         ensure  => directory,
         owner   => 'sgeadmin',
         group   => 'sgeadmin',
-        require => File[$profile::toolforge::grid::base::geconf],
+        require => File[$geconf],
     }
 
     file { '/var/spool/gridengine/spooldb':
         ensure  => directory,
         owner   => 'sgeadmin',
         group   => 'sgeadmin',
-        require => File[$profile::toolforge::grid::base::geconf],
+        require => File[$geconf],
     }
 
     class { '::sonofgridengine::master':
         etcdir  => $etcdir,
     }
 
-    file { "${profile::toolforge::grid::base::geconf}/default/common/shadow_masters":
+    file { "${geconf}/default/common/shadow_masters":
         ensure => present,
         owner  => 'sgeadmin',
         group  => 'sgeadmin',
@@ -142,13 +145,13 @@ class profile::toolforge::grid::master (
     file_line { 'shadow_masters':
         ensure => present,
         line   => $facts['fqdn'],
-        path   => "${profile::toolforge::grid::base::geconf}/default/common/shadow_masters",
+        path   => "${geconf}/default/common/shadow_masters",
     }
 
     # This must only run on install
     exec { 'initialize-grid-database':
-        command  => "/usr/share/gridengine/scripts/init_cluster ${profile::toolforge::grid::base::sge_root} default /var/spool/gridengine/spooldb sgeadmin",
-        require  => File['/var/spool/gridengine', "${profile::toolforge::grid::base::geconf}/spool"],
+        command  => "/usr/share/gridengine/scripts/init_cluster ${sge_root} default /var/spool/gridengine/spooldb sgeadmin",
+        require  => File['/var/spool/gridengine', "${geconf}/spool"],
         creates  => '/var/spool/gridengine/spooldb/sge',
         user     => 'sgeadmin',
         provider => 'shell',

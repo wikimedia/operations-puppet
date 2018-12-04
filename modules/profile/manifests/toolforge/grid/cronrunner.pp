@@ -1,6 +1,8 @@
 # Manage the crons for the Toolforge grid users
 
-class profile::toolforge::grid::cronrunner {
+class profile::toolforge::grid::cronrunner(
+    $sysdir = lookup('profile::toolforge::grid::base::sysdir'),
+) {
     include ::profile::toolforge::grid::hba
 
     motd::script { 'submithost-banner':
@@ -43,14 +45,14 @@ class profile::toolforge::grid::cronrunner {
     }
 
     # Backup crontabs! See https://phabricator.wikimedia.org/T95798
-    file { "${profile::toolforge::grid::base::sysdir}/crontabs":
+    file { "${sysdir}/crontabs":
         ensure => directory,
         owner  => 'root',
         group  => "${::labsproject}.admin",
         mode   => '0770',
     }
 
-    file { "${profile::toolforge::grid::base::sysdir}/crontabs/${::fqdn}":
+    file { "${sysdir}/crontabs/${::fqdn}":
         ensure    => directory,
         source    => '/var/spool/cron/crontabs',
         owner     => 'root',

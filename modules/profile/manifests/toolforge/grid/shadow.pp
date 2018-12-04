@@ -2,6 +2,7 @@
 
 class profile::toolforge::grid::shadow(
     $gridmaster = hiera('sonofgridengine::gridmaster'),
+    $geconf = lookup('profile::toolforge::grid::base::geconf'),
 ){
     include profile::openstack::main::clientpackages
     include profile::openstack::main::observerenv
@@ -9,12 +10,12 @@ class profile::toolforge::grid::shadow(
 
     file { '/var/spool/gridengine':
         ensure => link,
-        target => "${profile::toolforge::grid::base::geconf}/spool",
+        target => "${geconf}/spool",
         force  => true,
     }
 
     class { '::sonofgridengine::shadow_master':
         gridmaster => $gridmaster,
-        sgeroot    => $profile::toolforge::grid::base::geconf,
+        sgeroot    => $geconf,
     }
 }
