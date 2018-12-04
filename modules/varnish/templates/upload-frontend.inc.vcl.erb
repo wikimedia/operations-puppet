@@ -147,8 +147,11 @@ sub cluster_fe_backend_response {
 		set beresp.uncacheable = true;
 		return (deliver);
 	}
+<% end -%>
 
-	// hit-for-pass objects >= 256K size
+<% if @vcl_config.fetch("admission_policy", "nhw") != "exp" -%>
+	// hit-for-pass objects >= 256K size. The "exp" admission policy does not
+	// need this as it implicitly takes object size into account.
 	if (std.integer(beresp.http.Content-Length, 0) >= 262144 || beresp.http.Content-Length ~ "^[0-9]{9}") {
 		// HFP
 		set beresp.http.X-CDIS = "pass";
