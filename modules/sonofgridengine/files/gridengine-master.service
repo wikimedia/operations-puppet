@@ -1,0 +1,23 @@
+# managed by puppet!
+
+[Unit]
+Description=SGE Master daemon
+Before=multi-user.target
+Before=graphical.target
+After=remote-fs.target
+
+[Service]
+Restart=always
+# Don't play PID guessing games
+GuessMainPID=no
+Type=simple
+# don't fork, let systemd be the direct parent of the proc
+Environment="SGE_ND=true"
+# We could just place all env vars here...
+EnvironmentFile=/etc/default/gridengine
+ExecStart=/usr/sbin/sge_qmaster
+# some security measures
+ProtectSystem=full
+ProtectHome=true
+PrivateTmp=true
+ProtectControlGroups=true

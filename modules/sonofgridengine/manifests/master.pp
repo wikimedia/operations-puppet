@@ -126,9 +126,16 @@ class sonofgridengine::master (
         require => File[ "${etcdir}/bin", "${etcdir}/config/99-default" ],
     }
 
-    service { 'gridengine-master':
-        ensure  => running,
-        enable  => true,
-        require => Package['gridengine-master'],
+    # remove the sysvinit script shipped with the package
+    file { '/etc/init.d/gridengine-master':
+        ensure => absent,
+    }
+
+    systemd::unit { 'gridengine-master.service':
+        ensure   => present,
+        content  => file('sonofgridengine/gridengine-master.service'),
+        override => false,
+        restart  => true,
+        require  => Package['gridengine-master'],
     }
 }
