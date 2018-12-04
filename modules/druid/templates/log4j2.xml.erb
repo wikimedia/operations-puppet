@@ -21,7 +21,7 @@
             </Policies>
             <DefaultRolloverStrategy max="5"/>
         </RollingFile>
-        <% if @service == 'broker' or @service == 'historical' -%>
+        <% if @service == 'broker' or @service == 'historical'  or @service == 'middlemanager' -%>
         <RollingFile name="AccessLogFile"
             fileName="/var/log/druid/<%= @service %>-access.log"
             filePattern="/var/log/druid/<%= @service %>-access.%i.log">
@@ -45,7 +45,7 @@
         <Logger name="io.druid.java.util.emitter.core.LoggingEmitter" level="info" additivity="false">
           <AppenderRef ref="RollingMetricsFile"/>
         </Logger>
-        <% if @service == 'broker' or @service == 'historical' -%>
+        <% if @service == 'broker' or @service == 'historical' or @service == 'middlemanager' -%>
         <Logger name="io.druid.server.log.LoggingRequestLogger" level="info" additivity="false">
           <AppenderRef ref="RollingRequestsFile"/>
         </Logger>
