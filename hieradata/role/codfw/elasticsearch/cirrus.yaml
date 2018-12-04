@@ -59,8 +59,18 @@ profile::elasticsearch::instances:
           - elastic2042.codfw.wmnet
           - elastic2043.codfw.wmnet
           - elastic2044.codfw.wmnet
+          - elastic2045.codfw.wmnet
+          - elastic2046.codfw.wmnet
+          - elastic2047.codfw.wmnet
+          - elastic2048.codfw.wmnet
+          - elastic2049.codfw.wmnet
+          - elastic2050.codfw.wmnet
+          - elastic2051.codfw.wmnet
+          - elastic2052.codfw.wmnet
+          - elastic2053.codfw.wmnet
+          - elastic2054.codfw.wmnet
 
-        expected_nodes: 44
+        expected_nodes: 54
 
         # We should be able to run "OK" with 11 servers.
         recover_after_nodes: 11
@@ -101,6 +111,10 @@ profile::elasticsearch::instances:
           - elastic2014.codfw.wmnet
           - elastic2015.codfw.wmnet
           - elastic2016.codfw.wmnet
+          - elastic2045.codfw.wmnet
+          - elastic2046.codfw.wmnet
+          - elastic2049.codfw.wmnet
+
 
           # row D
           - elastic2019.codfw.wmnet
@@ -108,8 +122,10 @@ profile::elasticsearch::instances:
           - elastic2021.codfw.wmnet
           - elastic2022.codfw.wmnet
           - elastic2023.codfw.wmnet
+          - elastic2050.codfw.wmnet
+          - elastic2051.codfw.wmnet
 
-        expected_nodes: 22
+        expected_nodes: 27
 
         # We should be able to run "OK" with 11 servers.
         recover_after_nodes: 11
@@ -151,14 +167,19 @@ profile::elasticsearch::instances:
           - elastic2031.codfw.wmnet
           - elastic2032.codfw.wmnet
           - elastic2033.codfw.wmnet
+          - elastic2047.codfw.wmnet
+          - elastic2048.codfw.wmnet
 
           # row D
           - elastic2024.codfw.wmnet
           - elastic2034.codfw.wmnet
           - elastic2035.codfw.wmnet
           - elastic2036.codfw.wmnet
+          - elastic2052.codfw.wmnet
+          - elastic2053.codfw.wmnet
+          - elastic2054.codfw.wmnet
 
-        expected_nodes: 22
+        expected_nodes: 27
 
         # We should be able to run "OK" with 11 servers.
         recover_after_nodes: 11
