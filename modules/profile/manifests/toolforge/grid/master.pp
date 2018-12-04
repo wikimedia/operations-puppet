@@ -140,9 +140,7 @@ class profile::toolforge::grid::master (
         owner  => 'sgeadmin',
         group  => 'sgeadmin',
         mode   => '0555',
-    }
-
-    file_line { 'shadow_masters':
+    } -> file_line { 'shadow_masters':
         ensure => present,
         line   => $facts['fqdn'],
         path   => "${geconf}/default/common/shadow_masters",
