@@ -63,6 +63,13 @@ class sonofgridengine::shadow_master(
         content => systemd_template('shadow_master'),
     }
 
+    file { '/etc/systemd/system/gridengine-shadow.service.d':
+        ensure => directory,
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0755',
+    }
+
     file { '/etc/systemd/system/gridengine-shadow.service.d/override.conf':
         ensure  => present,
         mode    => '0755',
