@@ -5,9 +5,8 @@
 class profile::ci::castor::server {
 
     class { 'rsync::server':
-        # Disable DNS lookup since wmflabs fails to set some for contintcloud
-        # and that is annoying in logs. That is solely needed for host
-        # allow/deny which we do not use. T136276
+        # Disable DNS lookup, they are only needed for host allow/deny which we
+        # do not use. That might cause log spam as well: T136276
         rsyncd_conf => {
             'forward lookup' => 'no',
         }
