@@ -1,4 +1,7 @@
 # cdanis1 prompt theme
+# like adam1 but
+#   - never abbrevs paths with ...
+#   - chooses if prompt spans lines based on terminal width
 
 prompt_cdanis1_help () {
   cat <<'EOF'
@@ -23,7 +26,7 @@ prompt_cdanis1_setup () {
   prompt_cdanis1_color2=${2:-'cyan'}
   prompt_cdanis1_color3=${3:-'green'}
 
-  base_prompt="%K{$prompt_cdanis1_color1}%n@%M%k "
+  base_prompt="%K{$prompt_cdanis1_color1}%n@$(hostname -f)%k "
   post_prompt="%b%f%k"
 
   setopt localoptions extendedglob
@@ -35,17 +38,16 @@ prompt_cdanis1_setup () {
 
 prompt_cdanis1_precmd () {
   setopt localoptions noxtrace nowarncreateglobal
-  local base_prompt_expanded_no_color base_prompt_etc
-  local prompt_length space_left
+  local base_prompt_expanded_no_color base_prompt_etc_no_color
+  local prompt_length
 
   base_prompt_expanded_no_color=$(print -P "$base_prompt_no_color")
-  base_prompt_etc=$(print -P "$base_prompt%(4~|...|)%3~")
-  prompt_length=${#base_prompt_etc}
-  if [[ $prompt_length -lt 40 ]]; then
-    path_prompt="%B%F{$prompt_cdanis1_color2}%(4~|...|)%3~%F{white}"
+  base_prompt_etc_no_color=$(print -P "$base_prompt_no_color%~")
+  prompt_length=${#base_prompt_etc_no_color}
+  if [[ $prompt_length -lt $(( $COLUMNS * 0.4 )) ]]; then
+    path_prompt="%B%F{$prompt_cdanis1_color2}%~%F{white}"
   else
-    space_left=$(( $COLUMNS - $#base_prompt_expanded_no_color - 2 ))
-    path_prompt="%B%F{$prompt_cdanis1_color3}%${space_left}<...<%~$prompt_newline%F{white}"
+    path_prompt="%B%F{$prompt_cdanis1_color3}%~$prompt_newline%F{white}"
   fi
   PS1="$base_prompt$path_prompt %# $post_prompt"
   PS2="$base_prompt$path_prompt %_> $post_prompt"
