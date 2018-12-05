@@ -73,6 +73,11 @@ es_codfw_rack_d5:
   profile::elasticsearch::rack: D5
   profile::elasticsearch::row:  D
 
+es_codfw_rack_d7:
+  __regex: !ruby/regexp /^elastic20(53|54)\.codfw\.wmnet$/
+  profile::elasticsearch::rack: D7
+  profile::elasticsearch::row:  D
+
 es_eqiad_rack_a3:
   __regex: !ruby/regexp /^(elastic10(30|31|32|33|34|35)|relforge1001)\.eqiad\.wmnet$/
   profile::elasticsearch::rack: A3
