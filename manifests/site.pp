@@ -78,7 +78,7 @@ node /analytics10(2[89]|3[0-9]|4[0-9]|5[0-9]|6[0-9]|7[0-7]).eqiad.wmnet/ {
 # an-worker1078-1095 are new Hadoop worker nodes.
 # T207192
 node /an-worker10(7[89]|8[0-9]|9[0-5]).eqiad.wmnet/ {
-    role(spare::system)
+    role(analytics_cluster::hadoop::worker)
     interface::add_ip6_mapped { 'main': }
 }
 
