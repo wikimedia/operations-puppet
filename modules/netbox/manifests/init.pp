@@ -44,6 +44,7 @@ class netbox(
     $config_path = '/srv/deployment/netbox/deploy',
     $venv_path = '/srv/deployment/netbox/venv',
     $directory = '/srv/deployment/netbox/deploy/src',
+    $reports_path = '/srv/deployment/netbox-reports',
     $ensure='present',
 ) {
 
@@ -99,4 +100,5 @@ class netbox(
   }
 
   base::service_auto_restart { 'uwsgi-netbox': }
+
 }

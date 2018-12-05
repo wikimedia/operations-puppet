@@ -24,6 +24,8 @@ class profile::netbox (
     $secret_key = $passwords::netbox::secret_key
     $replication_pass = $passwords::netbox::replication_password
 
+    $reports_path = '/srv/deployment/netbox-reports'
+
     # Have backups because Netbox is used as a source of truth (T190184)
     include ::profile::backup::host
     backup::set { 'netbox': }
@@ -134,12 +136,18 @@ class profile::netbox (
         }
     }
 
+    git::clone { 'operations/software/netbox-reports':
+        ensure    => 'latest',
+        directory => $reports_path,
+    }
+
     class { '::netbox':
         directory     => '/srv/deployment/netbox/deploy/src',
         db_password   => $db_password,
         secret_key    => $secret_key,
         ldap_password => $proxypass,
         admins        => '("Ops Team", "ops@lists.wikimedia.org")',
+        reports_path  => $reports_path,
     }
     $ssl_settings = ssl_ciphersuite('apache', 'mid', true)
 
