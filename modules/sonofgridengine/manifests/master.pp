@@ -126,8 +126,36 @@ class sonofgridengine::master (
         require => File[ "${etcdir}/bin", "${etcdir}/config/99-default" ],
     }
 
-    # remove the sysvinit script shipped with the package
+    # remove the sysvinit script and links shipped with the package
     file { '/etc/init.d/gridengine-master':
+        ensure => absent,
+    }
+
+    file { '/etc/rc0.d/K01gridengine-master':
+        ensure => absent,
+    }
+
+    file { '/etc/rc1.d/K01gridengine-master':
+        ensure => absent,
+    }
+
+    file { '/etc/rc6.d/K01gridengine-master':
+        ensure => absent,
+    }
+
+    file { '/etc/rc2.d/S01gridengine-master':
+        ensure => absent,
+    }
+
+    file { '/etc/rc3.d/S01gridengine-master':
+        ensure => absent,
+    }
+
+    file { '/etc/rc4.d/S01gridengine-master':
+        ensure => absent,
+    }
+
+    file { '/etc/rc5.d/S01gridengine-master':
         ensure => absent,
     }
 
