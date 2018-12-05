@@ -2,6 +2,7 @@
 Description=Gridengine shadow master
 After=network.target
 After=syslog.target
+After=remote-fs.target
 
 [Service]
 Type=forking
@@ -12,3 +13,7 @@ ExecStart=/usr/sbin/sge_shadowd
 Restart=always
 StartLimitInterval=90
 StartLimitBurst=3
+
+[Install]
+WantedBy=multi-user.target
+Alias=sge_shadowd.service
