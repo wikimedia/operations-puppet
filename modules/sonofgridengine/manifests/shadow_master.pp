@@ -72,7 +72,7 @@ class sonofgridengine::shadow_master(
 
     file { '/etc/systemd/system/gridengine-shadow.service.d/override.conf':
         ensure  => present,
-        mode    => '0755',
+        mode    => '0444',
         owner   => 'root',
         group   => 'root',
         content => "[Service]\nEnvironment=\"SGE_CHECK_INTERVAL=45\"\nEnvironment=\"SGE_GET_ACTIVE_INTERVAL=90\"\n",
