@@ -171,11 +171,20 @@ class role::labs::nfs::secondary(
     }
 
     if($drbd_role == 'primary') {
-
         diamond::collector { 'DirectorySize':
             source      => 'puppet:///modules/labstore/monitor/dir_size_tracker.py',
             config_file => 'puppet:///modules/labstore/monitor/DirectorySizeCollector.conf',
             require     => Sudo::User['diamond_dir_size_tracker'],
+        }
+
+        class { 'profile::prometheus::node_directory_size':
+            directory_size_paths => {
+                'misc_home'     => { 'path' => '/exp/project/*/home', 'filter' => '*/tools/*' },
+                'misc_project'  => { 'path' => '/exp/project/*/project', 'filter' => '*/tools/*' },
+                'tools_home'    => { 'path' => '/exp/project/tools/home/*' },
+                'tools_project' => { 'path' => '/exp/project/tools/project/*' },
+                'paws'          => { 'path' => '/exp/project/tools/project/paws/userhomes/*' },
+            },
         }
     }
 
