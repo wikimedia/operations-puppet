@@ -62,4 +62,18 @@ class sonofgridengine::shadow_master(
         require => Package['gridengine-master'],
         content => systemd_template('shadow_master'),
     }
+
+    file { '/etc/systemd/system/gridengine-shadow.service.d/override.conf':
+        ensure  => present,
+        mode    => '0755',
+        owner   => 'root',
+        group   => 'root',
+        content => "[Service]\nEnvironment=\"SGE_CHECK_INTERVAL=45\"\nEnvironment=\"SGE_GET_ACTIVE_INTERVAL=90\"\n",
+        notify  => Exec['sonofgridengine-shadow_master-systemctl-override-daemon-reload'],
+    }
+
+    exec { 'sonofgridengine-shadow_master-systemctl-override-daemon-reload':
+        command     => '/bin/systemctl daemon-reload',
+        refreshonly => true,
+    }
 }
