@@ -1,12 +1,11 @@
 # managed by puppet!
-
 [Unit]
 Description=SGE Master daemon
-Before=multi-user.target
-Before=graphical.target
 After=remote-fs.target
 
 [Service]
+User=sgeadmin
+Group=sgeadmin
 Restart=always
 # Don't play PID guessing games
 GuessMainPID=no
@@ -21,3 +20,7 @@ ProtectSystem=full
 ProtectHome=true
 PrivateTmp=true
 ProtectControlGroups=true
+
+[Install]
+WantedBy=multi-user.target
+Alias=sge_qmaster.service
