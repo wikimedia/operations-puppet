@@ -1,7 +1,7 @@
 # sets up a webserver configured for phabricator
 #
 class profile::phabricator::httpd (
-    Boolean $enable_php_fpm   = false,
+    Boolean $enable_php_fpm = hiera('phabricator_enable_php_fpm', false),
 ) {
 
     $httpd_base_modules = [ 'headers', 'rewrite', 'remoteip' ]
