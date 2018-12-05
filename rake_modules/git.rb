@@ -16,7 +16,12 @@ class GitOps
     old = changed[:old]
     new = changed[:new]
     diffs = @git.diff('HEAD^')
+    # Support fully ignoring paths
+    data = YAML.safe_load(File.open("#{@git.dir.path}/.ignored.yaml"))
+    ignored_modules = data["ignored_modules"]
     diffs.each do |diff|
+      # Ignore upstream modules
+      next unless ignored_modules.select { |m| %r'^modules/#{m}/' =~ diff.path }.empty?
       name_status = diffs.name_status[diff.path]
       case name_status
       when 'A'
