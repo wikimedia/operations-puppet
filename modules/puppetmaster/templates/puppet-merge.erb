@@ -30,7 +30,7 @@ It also runs the conftool merge if necessary.
 SHA1 equals HEAD if not specified
 "
 
-TEMP=$(getopt -o yhq --long yes,help,quiet -n "$0" -- "$@")
+TEMP=$(getopt -o yhqd --long yes,help,quiet,diffs -n "$0" -- "$@")
 if [ $? != 0 ] ; then echo "Terminating..." >&2 ; exit 1 ; fi
 
 eval set -- "$TEMP"
