@@ -1342,7 +1342,7 @@ node /^logstash100[4-6]\.eqiad\.wmnet$/ {
     include ::role::kafka::logging # lint:ignore:wmf_styleguide
 }
 
-# logstash collectors (Ganeti VM)
+# eqiad logstash collectors (Ganeti)
 node 'logstash1007.eqiad.wmnet' {
     role(logstash)
     include ::role::logstash::eventlogging
@@ -1351,6 +1351,11 @@ node 'logstash1007.eqiad.wmnet' {
 node /^logstash100[8-9]\.eqiad\.wmnet$/ {
     role(logstash)
     include ::lvs::realserver
+}
+
+# codfw logstash collectors (Ganeti)
+node /^logstash200[4-6]\.codfw\.wmnet$/ {
+    role(spare::system) # to be moved to role(logstash) after codfw logstash metal is online T211065
 }
 
 node /lvs100[1-2]\.wikimedia\.org/ {

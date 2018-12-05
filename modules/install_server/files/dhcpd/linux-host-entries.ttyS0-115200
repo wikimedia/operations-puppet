@@ -315,6 +315,21 @@ host logstash1009 {
     filename "lpxelinux.0";
 }
 
+host logstash2004 {
+    hardware ethernet aa:00:00:b8:ec:a0;
+    fixed-address logstash2004.codfw.wmnet;
+}
+
+host logstash2005 {
+    hardware ethernet aa:00:00:9a:96:89;
+    fixed-address logstash2005.codfw.wmnet;
+}
+
+host logstash2006 {
+    hardware ethernet aa:00:00:6b:b7:01;
+    fixed-address logstash2006.codfw.wmnet;
+}
+
 host matomo1001 {
     hardware ethernet aa:00:00:eb:c3:90;
     fixed-address matomo1001.eqiad.wmnet;
