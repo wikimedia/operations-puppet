@@ -237,12 +237,14 @@ class phabricator (
         require => $base_requirements,
     }
 
-    if !$enable_php_fpm {
-      file { '/etc/php/7.2/apache2/conf.d/php.ini':
-          content => template('phabricator/php72.ini.erb'),
-          notify  => Service['apache2'],
-          require => Package['libapache2-mod-php7.2'],
-      }
+    if os_version('debian >= stretch') {
+        if !$enable_php_fpm {
+          file { '/etc/php/7.2/apache2/conf.d/php.ini':
+              content => template('phabricator/php72.ini.erb'),
+              notify  => Service['apache2'],
+              require => Package['libapache2-mod-php7.2'],
+          }
+        }
     }
 
     if os_version('debian == jessie') {
