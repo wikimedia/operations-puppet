@@ -1,0 +1,1 @@
+profile::openstack::base::nova::instance_dev: '/dev/mapper/cloudvirtan1003--vg-srv'
