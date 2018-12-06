@@ -24,7 +24,7 @@ if ( $.log_outputs contains "kafka" ) then {
            confParam=[ "security.protocol=ssl",
                        "ssl.ca.location=/etc/ssl/certs/Puppet_Internal_CA.pem",
                        "compression.codec=snappy",
-                       "socket.timeout.ms=10",
+                       "socket.timeout.ms=10000",
                        "socket.keepalive.enable=true",
                        "queue.buffering.max.ms=50",
                        "batch.num.messages=1000" ]
