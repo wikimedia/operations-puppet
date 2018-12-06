@@ -1,4 +1,4 @@
-# Defines rsync jobs that fetch various datasets from stat1005,
+# Defines rsync jobs that fetch various datasets from stat1007,
 # generated locally by ezachte.
 class dumps::web::fetches::stat_dumps(
     $src = undef,

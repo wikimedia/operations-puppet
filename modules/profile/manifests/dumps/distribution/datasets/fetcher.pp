@@ -15,13 +15,13 @@ class profile::dumps::distribution::datasets::fetcher(
     }
 
     class {'dumps::web::fetches::stats':
-        src             => 'stat1005.eqiad.wmnet::hdfs-archive',
+        src             => 'stat1007.eqiad.wmnet::hdfs-archive',
         miscdatasetsdir => $miscdatasetsdir,
         user            => $user,
     }
 
     class {'dumps::web::fetches::stat_dumps':
-        src             => 'stat1005.eqiad.wmnet::srv/dumps',
+        src             => 'stat1007.eqiad.wmnet::srv/dumps',
         miscdatasetsdir => $miscdatasetsdir,
         user            => $user,
     }

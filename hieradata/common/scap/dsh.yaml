@@ -84,7 +84,7 @@ scap::dsh::groups:
         - {'cluster': 'elasticsearch', 'service': 'elasticsearch', 'datacenters': ['eqiad', 'codfw']}
   discovery-analytics:
     hosts:
-      - stat1005.eqiad.wmnet
+      - stat1007.eqiad.wmnet
   librenms:
     hosts:
       - netmon1002.wikimedia.org

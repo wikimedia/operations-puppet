@@ -1,4 +1,4 @@
-profile::dumps::stats_hosts: 'stat1005.eqiad.wmnet stat1006.eqiad.wmnet stat1007.eqiad.wmnet'
+profile::dumps::stats_hosts: 'stat1006.eqiad.wmnet stat1007.eqiad.wmnet'
 profile::dumps::peer_hosts: 'dumpsdata1001.eqiad.wmnet dumpsdata1002.eqiad.wmnet labstore1006.wikimedia.org labstore1007.wikimedia.org'
 profile::dumps::phab_hosts: 'phab1001.eqiad.wmnet'
 profile::dumps::rsync_internal_clients:
@@ -10,7 +10,6 @@ profile::dumps::rsync_internal_clients:
     - dumpsdata1002.eqiad.wmnet
     - labstore1006.wikimedia.org
     - labstore1007.wikimedia.org
-    - stat1005.eqiad.wmnet
     - stat1006.eqiad.wmnet
     - stat1007.eqiad.wmnet
   ipv6: []

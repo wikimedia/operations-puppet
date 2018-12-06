@@ -73,7 +73,7 @@ class role::logging::mediawiki::udp2log(
     # analysis hosts.
     class { 'udp2log::rsyncd':
         path        => $log_directory,
-        hosts_allow => hiera('statistics_servers', 'stat1005.eqiad.wmnet')
+        hosts_allow => hiera('statistics_servers', 'stat1007.eqiad.wmnet')
     }
 
     cron { 'mw-log-cleanup':

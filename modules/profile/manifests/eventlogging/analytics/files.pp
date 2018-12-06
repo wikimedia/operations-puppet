@@ -30,7 +30,7 @@ class profile::eventlogging::analytics::files(
     #
     # Reduced the max age in T206542 due to an increase
     # in events handled and consequent disk space consumption increase.
-    # These logs are rsynced to stat1005 and kept for 90 days,
+    # These logs are rsynced to stat1007 and kept for 90 days,
     # so safe to apply a stricter retention rule.
     $logs_max_age = $::realm ? {
         'labs'  => 4,

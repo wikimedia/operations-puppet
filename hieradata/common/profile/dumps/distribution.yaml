@@ -17,7 +17,6 @@ profile::dumps::distribution::nfs_clients:
   - 10.68.0.0/16
   - 172.16.0.0/21
   - 172.16.128.0/21
-  - stat1005.eqiad.wmnet
   - stat1006.eqiad.wmnet
   - stat1007.eqiad.wmnet
   - notebook1003.eqiad.wmnet

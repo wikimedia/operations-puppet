@@ -10,7 +10,7 @@
 #
 class udp2log::rsyncd(
         $path        = '/var/log/udp2log/archive',
-        $hosts_allow = ['stat1005.eqiad.wmnet']
+        $hosts_allow = ['stat1007.eqiad.wmnet']
 ) {
 
     class { 'rsync::server':
