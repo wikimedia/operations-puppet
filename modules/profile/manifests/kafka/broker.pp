@@ -413,14 +413,4 @@ class profile::kafka::broker(
         },
         priority => 75,
     }
-
-    include ::profile::rsyslog::kafka_shipper
-
-    # Ship kafka logs to ELK using startmsg_regex pattern to join multi-line events based on datestamp
-    # example: [2018-11-28 20:48:39,068]
-    rsyslog::input::file { 'kafka-multiline':
-        path           => '/var/log/kafka/server.log',
-        startmsg_regex => '^\\\\[[0-9,-\\\\ \\\\:]+\\\\]',
-    }
-
 }

@@ -16,7 +16,6 @@
     {"index" : "prometheus-blackbox-exporter", "value" : "kafka local" },
     {"index" : "prometheus",                   "value" : "kafka local" },
     {"index" : "input-file-etherpad-multiline","value" : "kafka" },
-    {"index" : "input-file-kafka-multiline",   "value" : "kafka" },
     {"index" : "input-file-logstash-multiline","value" : "kafka" },
     {"index" : "input-file-gerrit-multiline",  "value" : "kafka" },
     {"index" : "input-file-apache2-error", "value" : "kafka" },
