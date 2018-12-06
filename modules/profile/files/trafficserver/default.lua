@@ -45,5 +45,12 @@ function do_global_read_response()
         ts.error("Setting CC:private on response with Set-Cookie for uri " ..  ts.client_request.get_uri())
     end
 
+    -- Do not cache files bigger than 1GB
+    local content_length = ts.server_response.header['Content-Length']
+    if content_length and tonumber(content_length) > 1024 * 16 * 16 * 16 * 16 * 16 then
+        ts.server_response.header['Cache-Control'] = 'private, max-age=0, s-maxage=0'
+        ts.error("Setting CC:private on response with CL:" .. ts.server_response.header['Content-Length'] ..", uri=" ..  ts.client_request.get_uri())
+    end
+
     return 0
 end

@@ -30,6 +30,25 @@ describe("Busted unit testing framework", function()
       assert.are.equals("private, max-age=0, s-maxage=0", _G.ts.server_response.header['Cache-Control'])
     end)
 
+    it("test - do_global_read_response large Content-Length", function()
+      stub(ts, "error")
+
+      -- No Content-Length
+      _G.ts.server_response.header = {}
+      do_global_read_response()
+      assert.are.equals(nil, _G.ts.server_response.header['Cache-Control'])
+
+      -- Small enough object
+      _G.ts.server_response.header['Content-Length'] = '120'
+      do_global_read_response()
+      assert.are.equals(nil, _G.ts.server_response.header['Cache-Control'])
+
+      -- Large enough object
+      _G.ts.server_response.header['Content-Length'] = '1073741825'
+      do_global_read_response()
+      assert.are.equals("private, max-age=0, s-maxage=0", _G.ts.server_response.header['Cache-Control'])
+    end)
+
     it("test - do_global_send_response cache miss", function()
       _G.ts.http.get_cache_lookup_status = function() return TS_LUA_CACHE_LOOKUP_MISS end
 
