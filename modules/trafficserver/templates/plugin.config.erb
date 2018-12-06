@@ -6,3 +6,6 @@ stats_over_http.so
 <% if @enable_xdebug -%>
 xdebug.so --header=X-ATS-Debug
 <% end -%>
+<% @global_lua_scripts.each do |script| -%>
+tslua.so <%= script %>
+<% end -%>

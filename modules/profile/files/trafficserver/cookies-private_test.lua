@@ -14,13 +14,13 @@ describe("Busted unit testing framework", function()
 
       require("cookies-private")
 
-      set_cc_private()
+      do_global_read_response()
 
       assert.are.equals(nil, _G.ts.server_response.header['Cache-Control'])
 
       _G.ts.server_response.header['Set-Cookie'] = 'banana potato na'
 
-      set_cc_private()
+      do_global_read_response()
 
       assert.are.equals("private, max-age=0, s-maxage=0", _G.ts.server_response.header['Cache-Control'])
     end)

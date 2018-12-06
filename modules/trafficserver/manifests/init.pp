@@ -37,6 +37,9 @@
 #   Enable the XDebug plugin. (default: false)
 #   https://docs.trafficserver.apache.org/en/latest/admin-guide/plugins/xdebug.en.html
 #
+# [*global_lua_scripts*]
+#   Array of global Lua scripts to define in plugin.config. (default: []).
+#
 # [*mapping_rules*]
 #   An array of Trafficserver::Mapping_rules, each representing a mapping rule. (default: []).
 #   See https://docs.trafficserver.apache.org/en/latest/admin-guide/files/remap.config.en.html
@@ -98,6 +101,7 @@ class trafficserver(
     Integer[0, 1] $outbound_tlsv1_2 = 1,
     String $outbound_tls_cipher_suite = '',
     Boolean $enable_xdebug = false,
+    Array[String] $global_lua_scripts = [],
     Array[Trafficserver::Mapping_rule] $mapping_rules = [],
     Array[Trafficserver::Caching_rule] $caching_rules = [],
     Array[Trafficserver::Storage_element] $storage = [],
