@@ -6,6 +6,10 @@ stats_over_http.so
 <% if @enable_xdebug -%>
 xdebug.so --header=X-ATS-Debug
 <% end -%>
+<% if @collapsed_forwarding -%>
+#collapsed_forwarding.so --delay=<delay> --retries=<retries>
+collapsed_forwarding.so
+<% end -%>
 <% if @global_lua_script != '' -%>
 tslua.so <%= @global_lua_script %>
 <% end -%>

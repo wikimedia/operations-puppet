@@ -37,6 +37,10 @@
 #   Enable the XDebug plugin. (default: false)
 #   https://docs.trafficserver.apache.org/en/latest/admin-guide/plugins/xdebug.en.html
 #
+# [*collapsed_forwarding*]
+#   Enable the Collapsed Forwarding plugin. (default: true)
+#   https://docs.trafficserver.apache.org/en/latest/admin-guide/plugins/collapsed_forwarding.en.html
+#
 # [*global_lua_script*]
 #   The name of the global Lua script to define in plugin.config. (default: '').
 #
@@ -101,6 +105,7 @@ class trafficserver(
     Integer[0, 1] $outbound_tlsv1_2 = 1,
     String $outbound_tls_cipher_suite = '',
     Boolean $enable_xdebug = false,
+    Boolean $collapsed_forwarding = true,
     String $global_lua_script = '',
     Array[Trafficserver::Mapping_rule] $mapping_rules = [],
     Array[Trafficserver::Caching_rule] $caching_rules = [],

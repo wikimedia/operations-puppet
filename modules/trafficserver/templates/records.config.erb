@@ -27,6 +27,17 @@ CONFIG proxy.config.diags.debug.enabled INT 1
 CONFIG proxy.config.diags.debug.tags STRING xdebug.headers
 <% end -%>
 
+<% if @collapsed_forwarding -%>
+# Collapsed Forwarding
+CONFIG proxy.config.http.cache.open_write_fail_action INT 1
+CONFIG proxy.config.http.number_of_redirections INT 10
+CONFIG proxy.config.http.redirect_use_orig_cache_key INT 1
+# Defaults
+#CONFIG proxy.config.http.background_fill_active_timeout INT 0
+#CONFIG proxy.config.http.background_fill_completed_threshold FLOAT 0.0
+#CONFIG proxy.config.cache.enable_read_while_writer INT 1
+<% end -%>
+
 # logging: send diags to stdout/stderr (systemd journal)
 CONFIG proxy.config.diags.output.status STRING O
 CONFIG proxy.config.diags.output.note STRING O
