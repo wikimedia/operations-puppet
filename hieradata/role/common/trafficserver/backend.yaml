@@ -290,9 +290,7 @@ profile::trafficserver::backend::caching_rules:
     - primary_destination: dest_host
       value: thorium.eqiad.wmnet
       action: never-cache
-profile::trafficserver::backend::default_lua_scripts:
-    - set-x-cache
-    - cookies-private
+profile::trafficserver::backend::default_lua_script: 'default'
 profile::trafficserver::backend::outbound_tls_cipher_suite: '-ALL:ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384'
 profile::trafficserver::backend::storage_elements:
     - devname: sda3

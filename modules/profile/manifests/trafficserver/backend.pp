@@ -9,7 +9,7 @@ class profile::trafficserver::backend (
     Boolean $enable_xdebug=hiera('profile::trafficserver::backend::enable_xdebug', false),
     Array[TrafficServer::Mapping_rule] $mapping_rules=hiera('profile::trafficserver::backend::mapping_rules', []),
     Array[TrafficServer::Caching_rule] $caching_rules=hiera('profile::trafficserver::backend::caching_rules', []),
-    Array[String] $default_lua_scripts=hiera('profile::trafficserver::backend::default_lua_scripts', []),
+    String $default_lua_script=hiera('profile::trafficserver::backend::default_lua_script', ''),
     Array[TrafficServer::Storage_element] $storage=hiera('profile::trafficserver::backend::storage_elements', []),
     Array[TrafficServer::Log_format] $log_formats=hiera('profile::trafficserver::backend::log_formats', []),
     Array[TrafficServer::Log_filter] $log_filters=hiera('profile::trafficserver::backend::log_filters', []),
@@ -18,16 +18,17 @@ class profile::trafficserver::backend (
     Array[Stdlib::Compat::Ip_address] $purge_multicasts=hiera('profile::trafficserver::backend::purge_multicasts', ['239.128.0.112', '239.128.0.113', '239.128.0.114', '239.128.0.115']),
     Array[String] $purge_endpoints=hiera('profile::trafficserver::backend::purge_endpoints', ['127.0.0.1:3129']),
 ){
-    # Add hostname as a parameter to all global Lua plugins
-    $global_lua_scripts = $default_lua_scripts.map |String $lua_script| {
-        "${lua_script} ${::hostname}"
+    # Add hostname as a parameter to the default global Lua plugin
+    $global_lua_script = $default_lua_script? {
+        ''      => '',
+        default => "/etc/trafficserver/lua/${default_lua_script}.lua ${::hostname}",
     }
 
     class { '::trafficserver':
         port                      => $port,
         outbound_tls_cipher_suite => $outbound_tls_cipher_suite,
         enable_xdebug             => $enable_xdebug,
-        global_lua_scripts        => $global_lua_scripts,
+        global_lua_script         => $global_lua_script,
         storage                   => $storage,
         mapping_rules             => $mapping_rules,
         caching_rules             => $caching_rules,
@@ -36,11 +37,11 @@ class profile::trafficserver::backend (
         logs                      => $logs,
     }
 
-    # Install default Lua scripts
-    $default_lua_scripts.each |String $lua_script| {
-        trafficserver::lua_script { $lua_script:
-            source    => "puppet:///modules/profile/trafficserver/${lua_script}.lua",
-            unit_test => "puppet:///modules/profile/trafficserver/${lua_script}_test.lua",
+    # Install default Lua script
+    if $default_lua_script != '' {
+        trafficserver::lua_script { $default_lua_script:
+            source    => "puppet:///modules/profile/trafficserver/${default_lua_script}.lua",
+            unit_test => "puppet:///modules/profile/trafficserver/${default_lua_script}_test.lua",
         }
     }
 
