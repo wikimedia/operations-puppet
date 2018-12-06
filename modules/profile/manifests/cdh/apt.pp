@@ -15,6 +15,7 @@ class profile::cdh::apt (
         uri        => 'http://apt.wikimedia.org/wikimedia',
         dist       => "${::lsbdistcodename}-wikimedia",
         components => 'thirdparty/cloudera',
+        notify     => Exec['apt_update_cdh'],
     }
 
     $ensure_pin = $pin_release ? {
@@ -27,6 +28,14 @@ class profile::cdh::apt (
             ensure   => $ensure_pin,
             pin      => 'release c=thirdparty/cloudera',
             priority => '1002',
+            notify   => Exec['apt_update_cdh'],
         }
     }
+
+    # First installs can trip without this
+    exec {'apt_update_cdh':
+        command     => '/usr/bin/apt-get update',
+        refreshonly => true,
+    }
+
 }
