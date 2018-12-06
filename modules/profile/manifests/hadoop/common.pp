@@ -247,6 +247,10 @@ class profile::hadoop::common (
     # to install CDH packages from our apt repo mirror.
     require ::profile::cdh::apt
 
+    # Ensure that apt is refreshed before installing the common Hadoop packages
+    # (that need the Cloudera repo/component to be set up).
+    Exec['apt-get update'] -> Class['::cdh::hadoop']
+
     # Need Java before Hadoop is installed.
     require ::profile::java::analytics
 
