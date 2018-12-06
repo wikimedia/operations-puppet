@@ -27,4 +27,12 @@ class profile::openstack::eqiad1::nova::compute::service(
         require                            => Class['::profile::openstack::base::neutron::linuxbridge_agent'],
     }
     contain '::profile::openstack::base::nova::compute::service'
+
+    class {'::openstack::nova::compute::monitor':
+        active           => true,
+        certname         => $certname,
+        verify_instances => true,
+        contact_groups   => 'wmcs-team,admins',
+    }
+    contain '::openstack::nova::compute::monitor'
 }
