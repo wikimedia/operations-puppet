@@ -68,7 +68,10 @@ class profile::hadoop::spark2(
             # spark2_yarn_shuffle_jar_install will exit 0 if the current installed
             # version of spark2 has a yarn shuffle jar installed already.
             unless  => '/usr/local/bin/spark2_yarn_shuffle_jar_install',
-            require => File['/usr/local/bin/spark2_yarn_shuffle_jar_install'],
+            require => [
+                File['/usr/local/bin/spark2_yarn_shuffle_jar_install'],
+                Package['hadoop-yarn-nodemanager'],
+            ],
         }
     }
 
