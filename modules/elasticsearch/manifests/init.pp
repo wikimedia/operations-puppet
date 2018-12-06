@@ -78,6 +78,7 @@ class elasticsearch (
         mode    => '0755',
         recurse => true,
         purge   => true,
+        force   => true,
     }
 
     # These files are created when the server is using the default cluster_name
