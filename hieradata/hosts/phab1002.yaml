@@ -16,3 +16,5 @@ phabricator::vcs::address::v4: "10.64.48.22"
 phabricator::vcs::address::v6: "2620:0:861:107:10:64:48:22"
 
 phabricator_logmail: false
+
+phabricator_enable_php_fpm: true
