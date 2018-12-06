@@ -173,7 +173,6 @@ class profile::hadoop::common (
     $cluster_name       = hiera('profile::hadoop::common::hadoop_cluster_name'),
     $config_override    = hiera('profile::hadoop::common::config_override', {}),
 ) {
-
     # Properties that are not meant to have undef as default value (a hash key
     # without a correspondent value returns undef) should be listed in here.
     $hadoop_default_config = {
@@ -386,4 +385,5 @@ class profile::hadoop::common (
             before => Class['cdh::hadoop'],
         }
     }
+    contain 'cdh::hadoop'
 }
