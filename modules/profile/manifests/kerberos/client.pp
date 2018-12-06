@@ -12,6 +12,13 @@ class profile::kerberos::client (
         content => template('profile/kerberos/krb.conf.erb')
     }
 
+    file { '/usr/local/bin/kerberos-puppet-wrapper':
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0555',
+        source => 'puppet:///modules/profile/kerberos/kerberos-puppet-wrapper.py',
+    }
+
     file { '/var/log/kerberos':
         ensure => directory,
         owner  => 'root',
