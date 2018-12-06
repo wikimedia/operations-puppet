@@ -1,14 +1,14 @@
 # sets up a TLS proxy for Gerrit
 class gerrit::proxy(
-    $ipv4,
-    $ipv6,
-    $host             = $::gerrit::host,
-    $slave_hosts      = $::gerrit::slave_hosts,
-    $slave            = false,
-    $maint_mode       = false,
-    $avatars_host     = $::gerrit::avatars_host,
-    $cache_text_nodes = $::gerrit::cache_text_nodes,
-    $use_certcentral  = false,
+    Stdlib::Ipv4 $ipv4,
+    Stdlib::Fqdn $host                           = $::gerrit::host,
+    Boolean $slave                               = false,
+    Boolean $maint_mode                          = false,
+    Stdlib::Fqdn $avatars_host                   = $::gerrit::avatars_host,
+    Hash $cache_text_nodes                       = $::gerrit::cache_text_nodes,
+    Boolean $use_certcentral                     = false,
+    Optional[Stdlib::Ipv6] $ipv6,
+    Optional[Array[Stdlib::Fqdn]] $slave_hosts   = $::gerrit::slave_hosts,
     ) {
 
     if $slave {

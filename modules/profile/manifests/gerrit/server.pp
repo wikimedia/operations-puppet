@@ -2,18 +2,18 @@
 #
 # filtertags: labs-project-git
 class profile::gerrit::server(
-    $ipv4 = hiera('gerrit::service::ipv4'),
-    $ipv6 = hiera('gerrit::service::ipv6', undef),
-    $host = hiera('gerrit::server::host'),
-    $avatars_host = hiera('gerrit::server::avatars_host', undef),
-    $slave_hosts = hiera('gerrit::server::slave_hosts'),
-    $master_host = hiera('gerrit::server::master_host'),
-    $bacula = hiera('gerrit::server::bacula'),
-    $gerrit_servers = join(hiera('gerrit::servers'), ' '),
-    $config = hiera('gerrit::server::config'),
-    $log_host = hiera('logstash_host'),
-    $cache_text_nodes = hiera('cache::text::nodes', []),
-    $use_certcentral = hiera('gerrit::server::use_certcentral', false),
+    Stdlib::Ipv4 $ipv4 = hiera('gerrit::service::ipv4'),
+    Stdlib::Fqdn $host = hiera('gerrit::server::host'),
+    Array[Stdlib::Fqdn] $slave_hosts = hiera('gerrit::server::slave_hosts'),
+    Stdlib::Fqdn $master_host = hiera('gerrit::server::master_host'),
+    String $bacula = hiera('gerrit::server::bacula'),
+    Array[Stdlib::Fqdn] $gerrit_servers = hiera('gerrit::servers'),
+    String $config = hiera('gerrit::server::config'),
+    Stdlib::Fqdn $log_host = hiera('logstash_host'),
+    Hash $cache_text_nodes = hiera('cache::text::nodes', []),
+    Boolean $use_certcentral = hiera('gerrit::server::use_certcentral', false),
+    Optional[Stdlib::Ipv6] $ipv6 = hiera('gerrit::service::ipv6', undef),
+    Optional[Stdlib::Fqdn] $avatars_host = hiera('gerrit::server::avatars_host', undef),
 ) {
 
     interface::alias { 'gerrit server':
@@ -46,10 +46,11 @@ class profile::gerrit::server(
     }
 
     # ssh between gerrit servers for cluster support
+    $gerrit_servers_ferm=join($gerrit_servers, ' ')
     ferm::service { 'gerrit_ssh_cluster':
         port   => '22',
         proto  => 'tcp',
-        srange => "(@resolve((${gerrit_servers})) @resolve((${gerrit_servers}), AAAA))",
+        srange => "(@resolve((${gerrit_servers_ferm})) @resolve((${gerrit_servers_ferm}), AAAA))",
     }
 
     ferm::service { 'gerrit_http':

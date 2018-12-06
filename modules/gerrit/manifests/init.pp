@@ -1,15 +1,15 @@
 # Manifest to setup a Gerrit instance
 class gerrit(
-    $config,
-    $host,
-    $ipv4,
-    $ipv6,
-    $slave_hosts = [],
-    $slave = false,
-    $log_host = undef,
-    $avatars_host = undef,
-    $cache_text_nodes = [],
-    $use_certcentral = false,
+    String $config,
+    Stdlib::Fqdn $host,
+    Stdlib::Ip_address $ipv4,
+    Stdlib::Ip_address $ipv6,
+    Array[Stdlib::Fqdn] $slave_hosts = [],
+    Boolean $slave = false,
+    Stdlib::Fqdn $log_host = undef,
+    Stdlib::Fqdn $avatars_host = undef,
+    Hash $cache_text_nodes = {},
+    Boolean $use_certcentral = false,
 ) {
 
     class { '::gerrit::jetty':
