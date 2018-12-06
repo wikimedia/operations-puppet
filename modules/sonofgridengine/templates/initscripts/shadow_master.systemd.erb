@@ -6,10 +6,11 @@ After=remote-fs.target
 
 [Service]
 Type=forking
+EnvironmentFile=/etc/default/gridengine
 PIDFile=/var/spool/gridengine/qmaster/shadowd_<%= @facts['fqdn'] %>.pid
 User=sgeadmin
 Group=sgeadmin
-ExecStart=/usr/sbin/sge_shadowd
+ExecStart=/usr/lib/gridengine/sge_shadowd
 Restart=always
 StartLimitInterval=90
 StartLimitBurst=3
