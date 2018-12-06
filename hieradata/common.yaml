@@ -354,6 +354,9 @@ statistics_servers:
   - stat1007.eqiad.wmnet
   - labstore1006.wikimedia.org
   - labstore1007.wikimedia.org
+labstore_servers:
+  - labstore1006.wikimedia.org
+  - labstore1007.wikimedia.org
 dumps_nfs_clients:
   snapshots:
     - snapshot1005.eqiad.wmnet

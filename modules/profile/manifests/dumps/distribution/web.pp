@@ -24,7 +24,7 @@ class profile::dumps::distribution::web (
     # copy web server logs to stat host
     if $do_acme {
       class {'::dumps::web::rsync::nginxlogs':
-          dest => 'stat1005.eqiad.wmnet::srv/log/webrequest/archive/dumps.wikimedia.org/',
+          dest => 'stat1005.eqiad.wmnet::dumps-webrequest/',
       }
     }
 }

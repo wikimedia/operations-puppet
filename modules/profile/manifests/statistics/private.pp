@@ -2,6 +2,7 @@
 #
 class profile::statistics::private(
     $statistics_servers  = hiera('statistics_servers'),
+    $labstore_servers    = hiera('labstore_servers'),
     $statsd_host         = hiera('statsd'),
     $graphite_host       = hiera('profile::statistics::private::graphite_host'),
     $wmde_secrets        = hiera('wmde_secrets'),
@@ -62,6 +63,17 @@ class profile::statistics::private(
 
     # rsync mediawiki logs from logging hosts
     class { '::statistics::rsync::mediawiki': }
+
+    # Allowing statistics nodes (mostly labsdb100[6,7] in this case)
+    # to push nginx access logs to a specific /srv path. We usually
+    # allow only pull based rsyncs, but after T211330 we needed a way
+    # to unbreak that use case. This rsync might be removed in the future.
+    rsync::server::module { 'dumps-webrequest':
+        path        => '/srv/log/webrequest/archive/dumps.wikimedia.org',
+        read_only   => 'no',
+        hosts_allow => $labstore_servers,
+        auto_ferm   => true,
+    }
 
     if $::hostname == 'stat1007' {
         # Class to save old versions of the geoip MaxMind database, which are useful
