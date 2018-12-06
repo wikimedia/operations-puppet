@@ -70,7 +70,7 @@ class profile::hadoop::spark2(
             unless  => '/usr/local/bin/spark2_yarn_shuffle_jar_install',
             require => [
                 File['/usr/local/bin/spark2_yarn_shuffle_jar_install'],
-                Package['hadoop-yarn-nodemanager'],
+                Package['hadoop-client'],
             ],
         }
     }
