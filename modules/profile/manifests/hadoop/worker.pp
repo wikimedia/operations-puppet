@@ -26,6 +26,12 @@ class profile::hadoop::worker(
     # Spark 2 is manually packaged by us, it is not part of CDH.
     include ::profile::hadoop::spark2
 
+    if $monitoring_enabled {
+        # Prometheus exporters
+        require ::profile::hadoop::monitoring::datanode
+        require ::profile::hadoop::monitoring::nodemanager
+    }
+
     class { '::cdh::hadoop::worker': }
 
     # The HDFS journalnodes are co-located for convenience,
@@ -57,10 +63,6 @@ class profile::hadoop::worker(
     }
 
     if $monitoring_enabled {
-        # Prometheus exporters
-        require ::profile::hadoop::monitoring::datanode
-        require ::profile::hadoop::monitoring::nodemanager
-
         # Icinga process alerts for DataNode and NodeManager
         nrpe::monitor_service { 'hadoop-hdfs-datanode':
             description   => 'Hadoop DataNode',
