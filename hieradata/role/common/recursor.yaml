@@ -8,3 +8,4 @@ profile::bird::bind_service: 'pdns-recursor.service'
 
 prometheus::node_exporter::collectors_extra:
   - 'ntp'
+diamond::remove: true
