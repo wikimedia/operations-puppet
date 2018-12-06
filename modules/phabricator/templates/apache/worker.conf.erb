@@ -1,0 +1,17 @@
+# Worker MPM
+# ServerLimit: Upper limit on configurable number of processes
+# StartServers: number of server processes to start
+# ThreadsPerChild: the number of threads deployed by each child process
+# MinSpareThreads: Minimum number of idle threads available to handle request spikes
+# MaxSpareThreads: Maximum number of idle threads
+# MaxRequestWorkers: maximum number of server processes allowed to start
+# MaxConnectionsPerChild: maximum number of requests a server process serves
+<IfModule mpm_worker_module>
+    ServerLimit         <%= @httpd_server_limit %>
+    StartServers        10
+    ThreadsPerChild     <%= @threads_per_child %>
+    MinSpareThreads     10
+    MaxSpareThreads     25
+    MaxRequestWorkers   <%= @max_req_workers %>
+    MaxRequestsPerChild 300000
+</IfModule>
