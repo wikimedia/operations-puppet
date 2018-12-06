@@ -70,6 +70,16 @@ class elasticsearch (
         ensure => absent,
     }
 
+    # main elasticsearch dir, purge it to ensure any undefined config file is removed
+    file { '/etc/elasticsearch':
+        ensure  => directory,
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0755',
+        recurse => true,
+        purge   => true,
+    }
+
     # These files are created when the server is using the default cluster_name
     # and are never written to when the server is using the correct cluster name
     # thus leaving old files with no useful information named in such a way that
