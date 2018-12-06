@@ -833,14 +833,6 @@ node /^elastic105[0-2]\.eqiad\.wmnet/ {
     role(elasticsearch::cirrus)
 }
 
-node /^elastic20[0-1][0-9]\.codfw\.wmnet/ {
-    role(spare::system)
-}
-
-node /^elastic202[0-4]\.codfw\.wmnet/ {
-    role(spare::system)
-}
-
 node /^elastic202[5-9]\.codfw\.wmnet/ {
     role(elasticsearch::cirrus)
 }
