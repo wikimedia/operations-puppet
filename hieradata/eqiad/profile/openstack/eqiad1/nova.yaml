@@ -16,9 +16,15 @@ profile::openstack::eqiad1::nova::physical_interface_mappings:
 #
 # cloudvirt1024 is reserved as an emergency spare.
 #
-# Note that 1019 and 1020 are reserved for
-#  internal infrastructure use so should never be part of
-#  the default pool.
+# There are some hypervisors that are visible to nova
+#  but will never be in the general scheduler pool
+#  because they're reserved for hand-created special-purpose
+#  instances.  They are:
+#
+# cloudvirt1019 and 1020: reserved for cloud-wide DB instances
+#
+# cloudvirtanXXXX: reserved for gigantic cloud-analytics worker nodes
+#
 #
 profile::openstack::eqiad1::nova::scheduler_pool:
   - cloudvirt1014
