@@ -48,6 +48,13 @@ CONFIG proxy.config.diags.output.error STRING E
 CONFIG proxy.config.diags.output.fatal STRING E
 CONFIG proxy.config.diags.output.alert STRING E
 CONFIG proxy.config.diags.output.emergency STRING E
+# ATS stops logging if the logging directory has less than
+# max_space_mb_headroom (default: 1000 MB) available
+CONFIG proxy.config.log.max_space_mb_headroom INT 0
+# Do not rotate logfiles
+CONFIG proxy.config.log.rolling_enabled INT 0
+# Flush logs immediately
+CONFIG proxy.config.log.max_secs_per_buffer INT 0
 
 # Outbound TLS settings
 CONFIG proxy.config.ssl.client.TLSv1 INT <%= @outbound_tlsv1 %>
