@@ -26,6 +26,7 @@ define profile::analytics::refinery::job::refine_job (
     $monitoring_enabled  = true,
     $refinery_job_jar    = undef,
     $job_class           = 'org.wikimedia.analytics.refinery.job.refine.Refine',
+    $monitor_class       = 'org.wikimedia.analytics.refinery.job.refine.RefineMonitor',
     $queue               = 'production',
     $spark_driver_memory = '8G',
     $spark_max_executors = 64,
@@ -108,7 +109,7 @@ define profile::analytics::refinery::job::refine_job (
     profile::analytics::refinery::job::spark_job { "monitor_${job_name}":
         ensure   => $ensure_monitor,
         jar      => $_refinery_job_jar,
-        class    => 'org.wikimedia.analytics.refinery.job.refine.RefineMonitor',
+        class    => $monitor_class,
         # Use the same config file as the Refine job, but override the since and until
         # to avoid looking back so far when checking for missing data.
         job_opts => "--config_file ${job_config_file} --since ${monitor_since} --until ${monitor_until}",
