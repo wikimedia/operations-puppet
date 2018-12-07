@@ -219,5 +219,14 @@ class profile::mediawiki::php(
             readable_by  => 'group',
             log_filename => 'error.log'
         }
+        # Set up profiling (T206152)
+        # Install tideways and mongodb, but activate them only if
+        # $enable_profiling is true, as just installing tideways gives us a perf hit.
+        php::extension { ['tideways', 'mongodb']:
+            ensure   => present,
+            priority => 30,
+            sapis    => ['fpm']
+        }
     }
+
 }
