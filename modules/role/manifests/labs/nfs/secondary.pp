@@ -172,9 +172,7 @@ class role::labs::nfs::secondary(
 
     if($drbd_role == 'primary') {
         diamond::collector { 'DirectorySize':
-            source      => 'puppet:///modules/labstore/monitor/dir_size_tracker.py',
-            config_file => 'puppet:///modules/labstore/monitor/DirectorySizeCollector.conf',
-            require     => Sudo::User['diamond_dir_size_tracker'],
+            ensure => 'absent'
         }
 
         class { 'profile::prometheus::node_directory_size':
