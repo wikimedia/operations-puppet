@@ -3212,6 +3212,10 @@ ldap_only_users:
     ensure: present
     realname: Megan Hernandez
     email: mhernandez@wikimedia.org
+  migr:
+    ensure: present
+    realname: Michael Grosse
+    email: michael.grosse@wikimedia.de
   skvjold:
     ensure: present
     realname: Margeigh Novotny
