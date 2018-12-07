@@ -39,11 +39,12 @@ class profile::prometheus::node_directory_size (
     content => template('profile/prometheus/node-directory-size.erb')
   }
 
-  # Collect every 10 minutes
+  # Collect once a day
   cron { 'prometheus_directorysize':
     ensure  => $ensure,
     user    => 'root',
-    minute  => '*/10',
+    hour    => '3',
+    minute  => '30',
     command => '/usr/local/bin/prometheus-directory-size -c /etc/default/prometheus-directory-size',
   }
 }
