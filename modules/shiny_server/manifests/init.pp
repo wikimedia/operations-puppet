@@ -24,7 +24,7 @@ class shiny_server {
     }
 
     $essentials = [
-        'gfortran', 'g++-4.8', 'gfortran-4.8',
+        'gfortran', 'g++',
         'libssl-dev', 'libcurl4-openssl-dev', 'libxml2-dev', 'libssh2-1-dev',
         'libcairo2-dev', 'gdebi', 'pandoc'
     ]
