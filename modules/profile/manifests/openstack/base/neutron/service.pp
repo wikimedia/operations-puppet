@@ -4,6 +4,7 @@ class profile::openstack::base::neutron::service(
 
     include ::network::constants
     $prod_networks = join($::network::constants::production_networks, ' ')
+    $labs_networks = join($::network::constants::labs_networks, ' ')
 
     class {'::openstack::neutron::service':
         version => $version,
@@ -12,7 +13,7 @@ class profile::openstack::base::neutron::service(
 
     ferm::rule{'neutron-server-api':
         ensure => 'present',
-        rule   => "saddr (${prod_networks}) proto tcp dport (9696) ACCEPT;",
+        rule   => "saddr (${prod_networks} ${labs_networks}) proto tcp dport (9696) ACCEPT;",
     }
 
     # restricted proxy for apt
