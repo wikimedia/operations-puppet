@@ -19,10 +19,10 @@ fi
 #  Started at Tue Oct 30 16:13:34 2018
 #  Last reconfiguration at Mon Nov  5 15:37:14 2018
 #  Configuration is current
-res="$(/usr/bin/traffic_ctl config status | awk 'NR==4')"
+res="$(/usr/bin/traffic_ctl config status | grep -E 'requires restarting|Reconfiguration required')"
 
-if [ "$res" = "Configuration is current" ]; then
-    echo "OK: $res"
+if [ -z "$res" ]; then
+    echo "OK: configuration is current"
     exit 0
 else
     echo "WARNING: $res"
