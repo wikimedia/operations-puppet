@@ -171,9 +171,6 @@ class role::labs::nfs::secondary(
     }
 
     if($drbd_role == 'primary') {
-        diamond::collector { 'DirectorySize':
-            ensure => 'absent'
-        }
 
         class { 'profile::prometheus::node_directory_size':
             directory_size_paths => {
