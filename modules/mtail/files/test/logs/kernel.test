@@ -5,3 +5,9 @@ Jul 24 07:36:01 thumbor1003 kernel: [12674673.520226] rsvg-convert[39547]: segfa
 Jul 24 07:36:30 sca2004 kernel: [1718044.702571] HTML5 Parser[20315]: segfault at 0 ip 00007ff6fe45c0e7 sp 00007ff6e91fe7a0 error 6 in libmozalloc.so[7ff6fe45b000+2000]
 Jul 24 07:36:35 thumbor1002 kernel: [12674662.267249] rsvg-convert[38025]: segfault at 30 ip 00007f63c47c4228 sp 00007ffdab60a0c0 error 4 in libcairo.so.2.11400.0[7f63c476b000+110000]
 Jul 24 07:36:37 thumbor1003 kernel: [12674709.979677] rsvg-convert[40326]: segfault at 30 ip 00007fa82186f24f sp 00007fff81705770 error 4 in libcairo.so.2.11400.0[7fa821816000+110000]
+Dec  6 06:25:21 mw1253 kernel: [6126925.001934] CPU30: Package temperature above threshold, cpu clock throttled (total events = 323080993)
+Dec  6 06:25:30 mw1253 kernel: [6126933.744939] CPU0: Core temperature above threshold, cpu clock throttled (total events = 161208498)
+Dec  6 06:25:38 mw1225 kernel: [6197019.830929] CPU24: Package temperature above threshold, cpu clock throttled (total events = 349682417)
+Dec  6 06:25:38 mw1227 kernel: [6197534.841973] CPU4: Core temperature above threshold, cpu clock throttled (total events = 135408788)
+Dec  6 09:16:28 mw1239 kernel: [6206875.534261] EDAC MC0: 1 CE memory scrubbing error on CPU_SrcID#0_Ha#0_Chan#1_DIMM#0 (channel:1 slot:0 page:0x70148 offset:0x0 grain:32 syndrome:0x0 -  area:DRAM err_code:0008:00c1 socket:0 ha:0 channel_mask:2 rank:0)
+Dec  6 06:25:52 labcontrol1002 kernel: [1881525.490960] init: nova-spiceproxy main process ended, respawning

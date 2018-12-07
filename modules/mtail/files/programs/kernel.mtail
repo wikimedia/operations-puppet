@@ -12,36 +12,40 @@ def syslog {/(?P<date>(?P<legacy_date>\w+\s+\d+\s+\d+:\d+:\d+)|(?P<rfc3339_date>
 }
 
 @syslog {
-counter mce_events
-counter cpu_throttled
-counter edac_events
+counter mce_events by hostname
+counter cpu_throttled by hostname
+counter edac_events by hostname
 
-counter upstart_respawn by service
-counter oom_kill by binary
-counter segfault by binary
+counter upstart_respawn by service, hostname
+counter oom_kill by binary, hostname
+counter segfault by binary, hostname
 
-/kernel: \[[\d.]+\] mce: .*Machine check events logged/ {
-  mce_events++
+# TODO: when we are using mtail 3.0.0rc14 or better (likely with the
+# Buster upgrade), this duplicate parsing of hostname can be removed.
+# https://github.com/google/mtail/issues/89
+
+/(?P<hostname>[\w\.-]+)\s+kernel: \[[\d.]+\] mce: .*Machine check events logged/ {
+  mce_events[$hostname]++
 }
 
-/kernel: \[[\d.]+\] .* above threshold, cpu clock throttled/ {
-  cpu_throttled++
+/(?P<hostname>[\w\.-]+)\s+kernel: \[[\d.]+\] .* above threshold, cpu clock throttled/ {
+  cpu_throttled[$hostname]++
 }
 
-/kernel: \[[\d.]+\] EDAC / {
-  edac_events++
+/(?P<hostname>[\w\.-]+)\s+kernel: \[[\d.]+\] EDAC / {
+  edac_events[$hostname]++
 }
 
-/kernel: \[[\d.]+\] init: (?P<service>[\S]+) .*process ended, respawning/ {
-  upstart_respawn[$service]++
+/(?P<hostname>[\w\.-]+)\s+kernel: \[[\d.]+\] init: (?P<service>[\S]+) .*process ended, respawning/ {
+  upstart_respawn[$service][$hostname]++
 }
 
-/kernel: \[[\d.]+\] (?P<binary>[\S]+) invoked oom-killer:.*/ {
-  oom_kill[$binary]++
+/(?P<hostname>[\w\.-]+)\s+kernel: \[[\d.]+\] (?P<binary>[\S]+) invoked oom-killer:.*/ {
+  oom_kill[$binary][$hostname]++
 }
 
-/kernel: \[[\d.]+\] (?P<binary>[^\[]+)\[\d+\]: segfault at.*/ {
-  segfault[$binary]++
+/(?P<hostname>[\w\.-]+)\s+kernel: \[[\d.]+\] (?P<binary>[^\[]+)\[\d+\]: segfault at.*/ {
+  segfault[$binary][$hostname]++
 }
 
 }
