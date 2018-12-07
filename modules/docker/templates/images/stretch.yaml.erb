@@ -6,6 +6,7 @@ provider:
     description: Debian {system.release} {system.architecture}
   dockerfile:
   - CMD /bin/bash
+  - ENV LC_ALL C.UTF-8
 bootstrapper:
   mirror: http://mirrors.wikimedia.org/debian/
   workspace: /target
@@ -15,7 +16,7 @@ system:
   architecture: amd64
   bootloader: none
   charmap: UTF-8
-  locale: en_US
+  locale: C
   timezone: UTC
 volume:
   backing: folder
