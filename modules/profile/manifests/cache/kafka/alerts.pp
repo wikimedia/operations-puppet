@@ -23,7 +23,7 @@ class profile::cache::kafka::alerts {
         warning         => 1,
         critical        => 5,
         from            => '10min',
-        retry_interval  => 10,
+        retry_interval  => 1,
         retries         => 3,
         contact_group   => 'admins,analytics',
     }
@@ -36,7 +36,7 @@ class profile::cache::kafka::alerts {
         warning         => 1,
         critical        => 5,
         from            => '10min',
-        retry_interval  => 10,
+        retry_interval  => 1,
         retries         => 3,
         contact_group   => 'admins,analytics',
     }
@@ -49,7 +49,7 @@ class profile::cache::kafka::alerts {
         warning         => 1,
         critical        => 5,
         from            => '10min',
-        retry_interval  => 10,
+        retry_interval  => 1,
         retries         => 3,
         contact_group   => 'admins,analytics',
     }
@@ -62,7 +62,7 @@ class profile::cache::kafka::alerts {
         warning         => 1,
         critical        => 5,
         from            => '10min',
-        retry_interval  => 10,
+        retry_interval  => 1,
         retries         => 3,
         contact_group   => 'admins,analytics',
     }
