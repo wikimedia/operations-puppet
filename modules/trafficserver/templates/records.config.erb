@@ -8,6 +8,8 @@ CONFIG proxy.config.admin.user_id STRING <%= @user %>
 
 CONFIG proxy.config.http.cache.required_headers INT 0
 CONFIG proxy.config.http.cache.cache_responses_to_cookies INT 1
+# Do not accept inbound connections until the cache is enabled
+CONFIG proxy.config.http.wait_for_cache INT 2
 
 CONFIG proxy.config.http.insert_request_via_str INT 0
 CONFIG proxy.config.http.insert_client_ip INT 0
