@@ -725,6 +725,12 @@ groups:
     posix_name: docker # Use posix_name to avoid potential conflicts with other uses of the docker group
     description: Allow ops team to be in the docker group for builder. No gid on purpose
     members: *ops_members
+  proton-admins:
+    description: Admins for the proton service
+    gid: 807
+    members: []
+    privileges: ['ALL = NOPASSWD: /usr/sbin/service proton *',
+                 'ALL = (proton) NOPASSWD: ALL']
 
 users:
   rush:
