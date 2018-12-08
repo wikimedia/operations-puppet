@@ -191,4 +191,14 @@ class openstack::util::admin_scripts(
         group  => 'root',
         mode   => '0744',
     }
+
+    # Script to list, add, and delete dynamicproxy entries. Also updates
+    # Designate managed DNS entries for the proxied hostname.
+    file { '/usr/local/sbin/webproxy':
+        ensure => 'present',
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0755',
+        source => 'puppet:///modules/openstack/util/webproxy.py',
+    }
 }
