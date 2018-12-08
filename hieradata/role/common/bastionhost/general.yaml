@@ -1,4 +1,4 @@
-cluster: misc
+cluster: bastion
 profile::base::domain_search:
   - wikimedia.org
   - eqiad.wmnet

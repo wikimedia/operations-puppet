@@ -346,3 +346,14 @@ monitoring::groups:
   graphite_codfw:
     description: Graphite servers (codfw)
 
+# Bastion
+  bastion_eqiad:
+    description: Bastion servers (eqiad)
+  bastion_codfw:
+    description: Bastion servers (codfw)
+  bastion_esams:
+    description: Bastion servers (esams)
+  bastion_ulsfo:
+    description: Bastion servers (ulsfo)
+  bastion_eqsin:
+    description: Bastion servers (eqsin)

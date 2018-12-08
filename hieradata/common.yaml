@@ -344,6 +344,15 @@ wikimedia_clusters:
     sites:
       eqiad: []
       codfw: []
+  bastion:
+    description: "Bastion servers"
+    id: 73
+    sites:
+      eqiad: []
+      codfw: []
+      esams: []
+      ulsfo: []
+      eqsin: []
 
 puppetmaster: "puppet"
 
