@@ -26,7 +26,7 @@ prompt_cdanis1_setup () {
   prompt_cdanis1_color2=${2:-'cyan'}
   prompt_cdanis1_color3=${3:-'green'}
 
-  base_prompt="%K{$prompt_cdanis1_color1}%n@$(hostname -f)%k "
+  base_prompt="%K{%(!.red.$prompt_cdanis1_color1)}%n@$(hostname -f | sed 's/\.localdomain//')%k "
   post_prompt="%b%f%k"
 
   setopt localoptions extendedglob

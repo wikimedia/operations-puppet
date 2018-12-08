@@ -1,1 +1,4 @@
 escape ^Zz
+hardstatus on
+hardstatus alwayslastline
+hardstatus string "%{b kb}%H %-Lw%{bw}%n%f %t%{kb}%+Lw %=%l %C%a"
