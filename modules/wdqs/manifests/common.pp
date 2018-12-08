@@ -89,6 +89,7 @@ class wdqs::common(
         owner  => $username,
         group  => 'wikidev',
         mode   => '0775',
+        tag    => 'in-wdqs-data-dir',
     }
 
     # This is a rather ugly hack to ensure that permissions of $data_file are
