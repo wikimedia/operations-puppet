@@ -1,10 +1,6 @@
 # Set up the prompt
-
-fpath=(~/.zshfunc $fpath)
-
-autoload -Uz promptinit
-promptinit
-prompt cdanis1
+autoload -Uz add-zsh-hook
+. ~/.zshfunc/prompt_cdanis1_setup
 
 setopt histignorealldups sharehistory
 
