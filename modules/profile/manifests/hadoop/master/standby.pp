@@ -55,11 +55,6 @@ class profile::hadoop::master::standby(
         require ::profile::hadoop::monitoring::namenode
         require ::profile::hadoop::monitoring::resourcemanager
 
-        # Make sure the prometheus exporter package and config file exist before
-        # attempting to launch any JVMs that use them.
-        Class['::profile::hadoop::monitoring::namenode'] -> Class['::cdh::hadoop::namenode::standby']
-        Class['::profile::hadoop::monitoring::resourcemanager'] -> Class['::cdh::hadoop::resourcemanager']
-
         monitoring::check_prometheus { 'hadoop-yarn-resourcemananager-heap-usage':
             description     => 'YARN active ResourceManager JVM Heap usage',
             dashboard_links => ["https://grafana.wikimedia.org/dashboard/db/hadoop?var-hadoop_cluster=${cluster_name}&panelId=12&fullscreen&orgId=1"],
