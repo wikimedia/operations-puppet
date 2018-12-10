@@ -1,7 +1,7 @@
 cluster: proton
 
 admin::groups:
-  - sc-admins
+  - proton-admins
 
 role::lvs::realserver::pools:
     proton: {}
