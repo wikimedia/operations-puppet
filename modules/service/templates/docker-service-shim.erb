@@ -1,0 +1,19 @@
+<%- envargs = @environment.map{ |k, v| "-e #{k}=\"#{v}\"" }.join(' ') -%>
+[Unit]
+Description=Systemd runner for <%= @title %>
+After=docker.service
+Requires=docker.service
+
+[Service]
+ExecStartPre=-/usr/bin/docker stop %n
+ExecStartPre=-/usr/bin/docker rm %n
+ExecStart=/usr/bin/docker run --rm=true <%= envargs %> -p <%= @port %>:<%= @port %> -v /etc/<%= @title %>/:/etc/<%= @title %> --name %n <%= @image_full_name %> <%= @override_cmd %>
+Restart=always
+RestartSec=10s
+NotifyAccess=all
+# Let docker do its things on its own terms
+TimeoutStartSec=120
+TimeoutStopSec=15
+
+[Install]
+WantedBy=multi-user.target
