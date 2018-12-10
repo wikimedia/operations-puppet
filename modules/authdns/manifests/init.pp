@@ -42,6 +42,7 @@ class authdns(
         group  => 'root',
         mode   => '0755',
     }
+    # OLD: to be removed from here so the ops/dns repo can control it
     file { '/etc/gdnsd/config':
         ensure  => 'present',
         owner   => 'root',
@@ -50,11 +51,32 @@ class authdns(
         content => template("${module_name}/config.erb"),
         require => File['/etc/gdnsd'],
     }
+    # NEW: we have to coordinate this switch with changes in ops/dns!
+    file { '/etc/gdnsd/config-options':
+        ensure  => 'present',
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0444',
+        content => template("${module_name}/config-options.erb"),
+        require => File['/etc/gdnsd'],
+    }
     file { '/etc/gdnsd/zones':
         ensure => 'directory',
         owner  => 'root',
         group  => 'root',
         mode   => '0755',
+    }
+
+    # This abstracts the GeoIP2-City database path from the configuration
+    file { '/etc/gdnsd/geoip':
+        ensure => 'directory',
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0755',
+    }
+    file { '/etc/gdnsd/geoip/GeoIP2-City.mmdb':
+        ensure => 'link',
+        target => '/usr/share/GeoIP/GeoIP2-City.mmdb',
     }
 
     $workingdir = '/srv/authdns/git' # export to template
@@ -85,10 +107,13 @@ class authdns(
         require     => [
                 File['/etc/wikimedia-authdns.conf'],
                 File['/etc/gdnsd/config'],
+                File['/etc/gdnsd/config-options'],
                 File['/etc/gdnsd/discovery-geo-resources'],
                 File['/etc/gdnsd/discovery-metafo-resources'],
                 File['/etc/gdnsd/discovery-states'],
                 File['/etc/gdnsd/discovery-map'],
+                File['/etc/gdnsd/geoip'],
+                File['/etc/gdnsd/geoip/GeoIP2-City.mmdb'],
             ],
         # we prepare the config even before the package gets installed, leaving
         # no window where service would be started and answer with REFUSED

@@ -1,5 +1,5 @@
 discovery-map => {
-    geoip2_db => /usr/share/GeoIP/GeoIP2-City.mmdb
+    geoip2_db => GeoIP2-City.mmdb
     datacenters => [eqiad codfw]
     map => { default => [eqiad codfw] }
     nets => {
