@@ -45,8 +45,9 @@ hadoop_clusters:
       - ca-worker-3.cloud-analytics.eqiad.wmflabs  # Row C2
       - ca-worker-4.cloud-analytics.eqiad.wmflabs  # Row D2
       - ca-worker-5.cloud-analytics.eqiad.wmflabs  # Row D8
+    hadoop_var_directory: /srv/hadoop
     datanode_mounts:
-      - /var/lib/hadoop/data
+      - /srv/hadoop/data
 
     # Configure memory based on these recommendations and then adjusted:
     # http://docs.hortonworks.com/HDPDocuments/HDP2/HDP-2.0.6.0/bk_installing_manually_book/content/rpm-chap1-11.html

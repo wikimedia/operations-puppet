@@ -176,7 +176,8 @@ class profile::hadoop::common (
     # Properties that are not meant to have undef as default value (a hash key
     # without a correspondent value returns undef) should be listed in here.
     $hadoop_default_config = {
-        'java_home'    => '/usr/lib/jvm/java-8-openjdk-amd64/jre',
+        'hadoop_var_directory' => '/var/lib/hadoop',
+        'java_home'            => '/usr/lib/jvm/java-8-openjdk-amd64/jre',
 
     }
 
@@ -191,6 +192,7 @@ class profile::hadoop::common (
     $resourcemanager_hosts                    = $hadoop_config['resourcemanager_hosts']
     $namenode_hosts                           = $hadoop_config['namenode_hosts']
     $journalnode_hosts                        = $hadoop_config['journalnode_hosts']
+    $hadoop_var_directory                     = $hadoop_config['hadoop_var_directory']
     $datanode_mounts                          = $hadoop_config['datanode_mounts']
     $datanode_volumes_failed_tolerated        = $hadoop_config['datanode_volumes_failed_tolerated']
     $hdfs_trash_checkpoint_interval           = $hadoop_config['hdfs_trash_checkpoint_interval']
@@ -249,7 +251,6 @@ class profile::hadoop::common (
     # Need Java before Hadoop is installed.
     require ::profile::java::analytics
 
-    $hadoop_var_directory                     = '/var/lib/hadoop'
     $hadoop_name_directory                    = "${hadoop_var_directory}/name"
     $hadoop_data_directory                    = "${hadoop_var_directory}/data"
     $hadoop_journal_directory                 = "${hadoop_var_directory}/journal"
