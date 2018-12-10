@@ -89,8 +89,8 @@ hadoop_clusters:
     # # The default is 1000m.
     # TODO: do we need to set this? Is this for containers?
     #       Heap sizes are set below in *opts
-    # yarn_heapsize: 512
-    # hadoop_heapsize: 1024
+    yarn_heapsize: 512
+    hadoop_heapsize: 1024
 
     # Hadoop process heapsizes and Prometheus JMX Exporter config templates.
     hadoop_namenode_opts: "-Xms1024m -Xmx1024m -XX:+UseParNewGC -XX:+UseConcMarkSweepGC -XX:CMSInitiatingOccupancyFraction=70 -XX:+CMSParallelRemarkEnabled" # -javaagent:/usr/share/java/prometheus/jmx_prometheus_javaagent.jar=%{::ipaddress}:10080:/etc/prometheus/hdfs_namenode_jmx_exporter.yaml"
