@@ -23,8 +23,8 @@ profile::zookeeper::zookeeper_version: '3.4.9-3+deb9u1'
 zookeeper_clusters:
   cloud-analytics:
     hosts:
-      ca-master-1.cloud-analytics.eqiad.wmflabs: '1'
-      ca-master-2.cloud-analytics.eqiad.wmflabs: '2'
+      ca-conf-1.cloud-analytics.eqiad.wmflabs: '1'
+      ca-conf-2.cloud-analytics.eqiad.wmflabs: '2'
 
 
 # Hadoop base configuration is common to multiple profiles, and must be kept
