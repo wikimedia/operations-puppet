@@ -99,7 +99,7 @@ hadoop_clusters:
     hdfs_trash_interval: 10080
 
 
-# Set monitoring_enabled temporarily to false for all Hadoop profiles
+# Set monitoring_enabled to true for all Hadoop processes.
 profile::hadoop::master::monitoring_enabled: true
 profile::hadoop::worker::monitoring_enabled: true
 profile::hadoop::standby_master::monitoring_enabled: true
