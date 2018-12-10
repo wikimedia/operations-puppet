@@ -1,0 +1,112 @@
+#
+# There's only one Hadoop cluster in cloud-analytics, so we
+# are safe to set this stuff globally for the cloud-analytics Cloud VPS project.
+#
+# NOTE: I would put these in Horizon Hiera interface if it were not for
+#       https://phabricator.wikimedia.org/T177855
+#
+
+# Clients will connect to the Hadoop cluster by this name.
+profile::hadoop::common::hadoop_cluster_name: cloud-analytics
+
+# Ensure that users in these posix groups have home directories in HDFS.
+profile::hadoop::master::hadoop_user_groups: project-cloud-analytics
+
+
+# List of zookeeper clusters.
+zookeeper_clusters:
+  cloud-analytics-eqiad:
+    hosts:
+      ca-master-1.cloud-analytics.eqiad.wmflabs: '1'
+      ca-master-2.cloud-analytics.eqiad.wmflabs: '2'
+
+
+# Hadoop base configuration is common to multiple profiles, and must be kept
+# in sync. Instead of having it repated multiple times it is convenient to
+# have a single place in hiera to check/modify.
+hadoop_clusters:
+  cloud-analytics:
+    zookeeper_cluster_name: cloud-analytics-eqiad
+    resourcemanager_hosts:
+      - ca-master-1.cloud-analytics.eqiad.wmflabs
+      - ca-master-2.cloud-analytics.eqiad.wmflabs
+    namenode_hosts:
+      - ca-master-1.cloud-analytics.eqiad.wmflabs
+      - ca-master-2.cloud-analytics.eqiad.wmflabs
+    journalnode_hosts:
+      - ca-worker-1.cloud-analytics.eqiad.wmflabs  # Row A3
+      - ca-worker-2.cloud-analytics.eqiad.wmflabs  # ROW B2
+      - ca-worker-3.cloud-analytics.eqiad.wmflabs  # Row C2
+      - ca-worker-4.cloud-analytics.eqiad.wmflabs  # Row D2
+      - ca-worker-5.cloud-analytics.eqiad.wmflabs  # Row D8
+    datanode_mounts:
+      - /var/lib/hadoop/data
+
+    # Configure memory based on these recommendations and then adjusted:
+    # http://docs.hortonworks.com/HDPDocuments/HDP2/HDP-2.0.6.0/bk_installing_manually_book/content/rpm-chap1-11.html
+
+    # These Map/Reduce and YARN ApplicationMaster master settings are
+    # also settable per job.
+    # All worker nodes have 120G Ram and 46 cores.
+    # We will primarily be running Presto on these nodes,
+    # Not jobs in YARN, so we can adjust to make Hadoop use minimal resources.
+
+    # Choosing 512G for default application container size.
+    # Map container size and JVM max heap size (-XmX)
+    mapreduce_map_memory_mb: 512
+    mapreduce_map_java_opts: '-Xmx410m'  # 0.8 * 512M
+
+    # Reduce container size and JVM max heap size (-Xmx)
+    mapreduce_reduce_memory_mb: 1024         # 2 * 512M
+    mapreduce_reduce_java_opts: '-Xmx820m'  # 0.8 * 2 * 512M
+
+    # Yarn ApplicationMaster container size and  max heap size (-Xmx)
+    yarn_app_mapreduce_am_resource_mb: 1024          # 2 * 512G
+    yarn_app_mapreduce_am_command_opts: '-Xmx820m'  # 0.8 * 2 * 512M
+
+    # Save a lot of non Hadoop memory for Presto and other processes.
+    yarn_nodemanager_os_reserved_memory_mb: 112
+
+    # We use 8G total RAM and 4 cores for YARN
+
+    # Allow a job to request up to the smallest value of yarn_nodemanager_resource_memory_mb (8G)
+    # in the cluster. The smallest value is 52G on the R720s (analytics1069 and below).
+    yarn_scheduler_maximum_allocation_mb: 8192
+    yarn_scheduler_minimum_allocation_vcores:   0
+    yarn_scheduler_maximum_allocation_vcores:   4
+    # Raised for T206943
+    yarn_resourcemanager_zk_timeout_ms: 20000
+
+    # # This is the heap zize of YARN daemons ResourceManager and NodeManagers.
+    # # This setting is used to configure the max heap size for both.
+    # # The default is 1000m.
+    # TODO: do we need to set this? Is this for containers?
+    #       Heap sizes are set below in *opts
+    # yarn_heapsize: 512
+    # hadoop_heapsize: 1024
+
+    # Hadoop process heapsizes and Prometheus JMX Exporter config templates.
+    hadoop_namenode_opts: "-Xms1024m -Xmx1024m -XX:+UseParNewGC -XX:+UseConcMarkSweepGC -XX:CMSInitiatingOccupancyFraction=70 -XX:+CMSParallelRemarkEnabled -javaagent:/usr/share/java/prometheus/jmx_prometheus_javaagent.jar=%{::ipaddress}:10080:/etc/prometheus/hdfs_namenode_jmx_exporter.yaml"
+    yarn_resourcemanager_opts: "-Xms512m -Xmx512m -javaagent:/usr/share/java/prometheus/jmx_prometheus_javaagent.jar=%{::ipaddress}:10083:/etc/prometheus/yarn_resourcemanager_jmx_exporter.yaml"
+    mapreduce_history_java_opts: "-Xms128m -Xmx128m -javaagent:/usr/share/java/prometheus/jmx_prometheus_javaagent.jar=%{::ipaddress}:10086:/etc/prometheus/mapreduce_history_jmx_exporter.yaml"
+    hadoop_datanode_opts: "-Xms4096m -javaagent:/usr/share/java/prometheus/jmx_prometheus_javaagent.jar=%{::ipaddress}:51010:/etc/prometheus/hdfs_datanode_jmx_exporter.yaml"
+    hadoop_journalnode_opts: "-javaagent:/usr/share/java/prometheus/jmx_prometheus_javaagent.jar=%{::ipaddress}:10485:/etc/prometheus/hdfs_journalnode_jmx_exporter.yaml"
+    yarn_nodemanager_opts: "-Xms2048m -javaagent:/usr/share/java/prometheus/jmx_prometheus_javaagent.jar=%{::ipaddress}:8141:/etc/prometheus/yarn_nodemanager_jmx_exporter.yaml"
+
+    # The HDFS Trash is configured in this way:
+    # 1) Once every day a checkpoint is made (that contains all the trash for a day).
+    # 2) After a week a checkpoint is deleted.
+    hdfs_trash_checkpoint_interval: 1440
+    hdfs_trash_interval: 10080
+
+
+
+# Hive Client settings.
+# Hive configuration is common to multiple clients, but because of role based
+# hiera lookups, we need to repeat it in multiple places. If you change this,
+# make sure you change it in all the right places!
+profile::hive::client::zookeeper_cluster_name: cloud-analytics-eqiad
+profile::hive::client::server_host: ca-coord-1.cloud-analytics.eqiad.wmflabs
+profile::hive::client::server_port: 10000
+profile::hive::client::metastore_host: ca-coord-1.cloud-analytics.eqiad.wmflabs
+
