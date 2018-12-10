@@ -3134,6 +3134,15 @@ users:
       - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQC/4WyLSPS/Kd/QQQXZOWomOKl+JrW1Av6+hjbWqHWopg3/nxN0ugNYuA4f2pVNPHJf5NB9Ch2OEeu/45SMvXboGnrM+V1OGIGpPYhlVb0hz5kERDzpwft9jH6FkAy3UWrFKygxlSgLjfpIrjyiNmFDlTgxFbs1IBjvWKp2bkEsy59P57le1LtNu+kq4v0y/3TSLaLmEg1+VsjlCsiVX13ybXRecCMPsoTM0McKbOH7h+d3I+cYe+XfdRkmZ/Gc42XX8vAr6Z3MpzR1pfh1796TuPv2vN2QT0VM+ExqCr6/7nqJNwL1XWoVMiNkIwNaR/84+h2R3jZ+2uWzuiu7uF1QYX+DjJicDWkn7sDHHqzuHXnpW2/h/qMwmf1NoDJhmKP8Q7/DEKoNp9exzoGAVWcKTnOBpD80JsoDMG9d/T+y+EX69WvF13pl2BuqvWEOxNqR5Cr/5QwATGjmttgEwlGBS2o1awo6S1nnHMqLa14V1JHGWxZ3O/wvEj+Us3afYZ1N4E0IMvbvRehBB3waLnsMKWriGiNVPwNeHsX6oVintHXOSzX51XugNujtb8DcgJnrRT13y05vqSqcP2gIcdvj3umF2vCoccHjD8NaVNSTnxvQJZdDcOX0f+lcoF3VuA0LmGoIpSY4gVGOeLQdfmM1NEA/gYghT1PvHdKW5BcYOQ== jgleeson@wikimedia.org
     uid: 18145
     email: jgleeson@wikimedia.org
+  toddleroux:
+    ensure: present
+    gid: 500
+    realname: Todd Leroux
+    name: toddleroux
+    ssh_keys:
+      - AAAAB3NzaC1yc2EAAAADAQABAAACAQDX2JxzqK7TeBZ2unDfbfyg90oHxAhipobW+Fzg0xwg1BV7xo3VYJXuKRhPhuP1pp6Ju/Z1zfuCCnZ9QhGzU27Y6zigM1Ze7fCAGU2jUdaNJJ1cK5V8N/Zvi6ywOSz3s/jHAHYyDD9EkfVDny53xeI0tq4xS9fWZePyZy8Ga1XxEKx7kngileN89ExYZ7aw/tTvKjfn9KM+frXXI3RfGO7usmlEmBgrC0DQcrP6i/bHvfP8HDjd3Kj29VS2N8FdlZJQq3zO5q1zr9r2rXxf7Ohs+G+qqyGJ3TTxX2ISBuN6UNHpaBusUIhMY+/b1FwT682mkEx0ma9wY5pcod66oCstUEliT9dpekAFxcboh8gNJ4GK4QMLWsfk68HfZJCXEIACTJ2x+ZviMQUWgXQq0K7Gcp0Ypzm+kBjz3cPEIdP0bUK+7T2jDRAiZAk+rfQ7h4ryHwuKY9Ir39xtZHRgs8UNXAh4hF6rEvXtHwlhNkdDy93od4f63Fuf4UjCtNwZFLjvnUTZIajllnzWzjwOizY4Z7Bj/byh7hSPORhuGnqXgW4vz0JWDKMBH2ad5t6jQaE3WkFu01n19SQDickaZKBfUE7dNgQrKfFeVfYiu3rnmk9E8nkGrQOH/WcfzaDGgF6GIdy6SXy1QpbH39wEHJruVX3RQimSjCo+p5hkSdT8NQ== todd.c.leroux@gmail.com
+    uid: 20623
+    email: todd.c.leroux@gmail.com
 
 ldap_only_users:
   abartov:
