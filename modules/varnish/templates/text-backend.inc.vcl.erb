@@ -63,6 +63,17 @@ sub cluster_be_backend_fetch {
 
 sub cluster_be_backend_response_early {
 	call text_common_backend_response_early;
+
+	// Set up Vary-slotting for PHP7 at the backend-most layer
+	if (!bereq.http.X-Next-Is-Cache) {
+		if (beresp.http.Vary) {
+			if (beresp.http.Vary !~ "X-Seven") {
+				set beresp.http.Vary = beresp.http.Vary + ",X-Seven";
+			}
+		} else {
+			set beresp.http.Vary = "X-Seven";
+		}
+	}
 }
 
 sub cluster_be_backend_response {

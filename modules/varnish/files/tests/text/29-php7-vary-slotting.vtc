@@ -1,0 +1,40 @@
+varnishtest "PHP7 Vary-slotting"
+
+server s1 {
+    rxreq
+    expect req.url == "/1"
+    txresp -hdr "Vary: Cookie"
+
+    rxreq
+    expect req.url == "/2"
+    txresp
+} -start
+
+varnish v1 -arg "-p vcc_err_unref=false -p vcc_allow_inline_c=true -p cc_command='exec gcc -std=gnu99 -g -O2 -fstack-protector-strong -Wformat -Werror=format-security -Wall -pthread -fpic -shared -Wl,-x -o %o %s'" -vcl+backend {
+   backend vtc_backend {
+       .host = "${s1_addr}"; .port = "${s1_port}";
+   }
+
+   include "/usr/share/varnish/tests/wikimedia_misc-backend.vcl";
+}
+
+# Attach the "wikimedia_misc" label to wikimedia_misc-backend.vcl
+varnish v1 -cli "vcl.label wikimedia_misc vcl1"
+
+varnish v1 -vcl {
+    backend vtc_backend {
+        .host = "${s1_addr}"; .port = "${s1_port}";
+    }
+
+    include "/usr/share/varnish/tests/wikimedia_text-backend.vcl";
+} -start
+
+client c1 {
+    txreq -url "/1" -hdr "X-Seven: 1"
+    rxresp
+    expect resp.http.Vary == "Cookie,X-Seven"
+
+    txreq -url "/2"
+    rxresp
+    expect resp.http.Vary == "X-Seven"
+} -run

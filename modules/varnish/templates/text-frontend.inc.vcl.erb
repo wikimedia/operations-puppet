@@ -231,6 +231,12 @@ sub cluster_fe_recv {
 		unset req.http.If-Modified-Since;
 	}
 
+	// Detect client cookie indicating to use PHP7
+	unset req.http.X-Seven;
+	if (req.http.Cookie ~ "(^|;\s*)PHP_ENGINE=php7(;|$)") {
+		set req.http.X-Seven = "1";
+	}
+
 	call text_common_recv;
 }
 
