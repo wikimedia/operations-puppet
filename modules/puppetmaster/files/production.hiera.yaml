@@ -1,5 +1,6 @@
 :backends:
   - nuyaml
+  - role
 :role:
   :datadir: /etc/puppet/hieradata
 :nuyaml:
@@ -17,7 +18,9 @@
   - "private/%{::site}"
   - "common"
   - "private/common"
-  - "role/%{::site}/%{::_role}"
-  - "role/common/%{::_role}"
-  - "private/role/%{::site}/%{::_role}"
-  - "private/role/common/%{::_role}"
+
+:role_hierarchy:
+  - "%{::site}"
+  - "common"
+  - "private/%{::site}"
+  - "private/common"
