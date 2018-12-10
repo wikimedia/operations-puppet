@@ -6,16 +6,22 @@
 #       https://phabricator.wikimedia.org/T177855
 #
 
-# Clients will connect to the Hadoop cluster by this name.
+# Hadoop clients will connect to the Hadoop cluster by this name.
 profile::hadoop::common::hadoop_cluster_name: cloud-analytics
 
 # Ensure that users in these posix groups have home directories in HDFS.
 profile::hadoop::master::hadoop_user_groups: project-cloud-analytics
 
 
+# Zookeeper clients will connect to the Zookeeper cluster by this name.
+profile::zookeeper::cluster_name: cloud-analytics
+# To avoid version conflics with Cloudera zookeeper package, this
+# class manually specifies which debian package version should be installed.
+profile::zookeeper::zookeeper_version: '3.4.9-3'
+
 # List of zookeeper clusters.
 zookeeper_clusters:
-  cloud-analytics-eqiad:
+  cloud-analytics:
     hosts:
       ca-master-1.cloud-analytics.eqiad.wmflabs: '1'
       ca-master-2.cloud-analytics.eqiad.wmflabs: '2'
@@ -26,7 +32,7 @@ zookeeper_clusters:
 # have a single place in hiera to check/modify.
 hadoop_clusters:
   cloud-analytics:
-    zookeeper_cluster_name: cloud-analytics-eqiad
+    zookeeper_cluster_name: cloud-analytics
     resourcemanager_hosts:
       - ca-master-1.cloud-analytics.eqiad.wmflabs
       - ca-master-2.cloud-analytics.eqiad.wmflabs
@@ -105,7 +111,7 @@ hadoop_clusters:
 # Hive configuration is common to multiple clients, but because of role based
 # hiera lookups, we need to repeat it in multiple places. If you change this,
 # make sure you change it in all the right places!
-profile::hive::client::zookeeper_cluster_name: cloud-analytics-eqiad
+profile::hive::client::zookeeper_cluster_name: cloud-analytics
 profile::hive::client::server_host: ca-coord-1.cloud-analytics.eqiad.wmflabs
 profile::hive::client::server_port: 10000
 profile::hive::client::metastore_host: ca-coord-1.cloud-analytics.eqiad.wmflabs
