@@ -2,7 +2,6 @@
 ## See also https://phabricator.wikimedia.org/T209265
 
 prometheus_nodes:
-  - bast4001.wikimedia.org
   - bast4002.wikimedia.org
 
 # Which of our redundant unified cert vendors to use in each DC

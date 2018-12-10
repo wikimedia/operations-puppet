@@ -498,15 +498,6 @@ host bast3003 {
     filename "stretch-installer/debian-installer/amd64/pxelinux.0";
 }
 
-host bast4001 {
-    hardware ethernet 90:b1:1c:4d:42:49;
-    fixed-address bast4001.wikimedia.org;
-
-    next-server 208.80.153.53; # install2002 (tftp server)
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
-    filename "lpxelinux.0";
-}
-
 host bast4002 {
     hardware ethernet F4:E9:D4:BA:EE:D0;
     fixed-address bast4002.wikimedia.org;
