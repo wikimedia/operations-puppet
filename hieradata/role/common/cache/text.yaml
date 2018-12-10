@@ -270,7 +270,7 @@ cache::alternate_domains:
     director: 'labmon1001'
     caching: 'pass'
   grafana.wikimedia.org:
-    director: 'krypton'
+    director: 'grafana1001'
     caching: 'pass'
   graphite-labs.wikimedia.org:
     director: 'labmon1001'
