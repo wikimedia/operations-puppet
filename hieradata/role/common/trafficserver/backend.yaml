@@ -1,3 +1,4 @@
+cluster: cache_ats
 profile::trafficserver::backend::mapping_rules:
     - type: map
       target: http://15.wikipedia.org

@@ -359,3 +359,15 @@ monitoring::groups:
     description: Bastion servers (ulsfo)
   bastion_eqsin:
     description: Bastion servers (eqsin)
+
+# Apache Traffic Server (ATS)
+  cache_ats_eqiad:
+    description: ATS servers (eqiad)
+  cache_ats_codfw:
+    description: ATS servers (codfw)
+  cache_ats_esams:
+    description: ATS servers (esams)
+  cache_ats_ulsfo:
+    description: ATS servers (ulsfo)
+  cache_ats_eqsin:
+    description: ATS servers (eqsin)

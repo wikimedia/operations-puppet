@@ -353,6 +353,15 @@ wikimedia_clusters:
       esams: []
       ulsfo: []
       eqsin: []
+  cache_ats:
+    description: "Apache Traffic Server (ATS) servers"
+    id: 74
+    sites:
+      eqiad: []
+      codfw: []
+      esams: []
+      ulsfo: []
+      eqsin: []
 
 puppetmaster: "puppet"
 
