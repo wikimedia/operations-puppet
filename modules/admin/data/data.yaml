@@ -10,7 +10,7 @@ groups:
               yurik, bsimmers, bcohn, hjiang, tomasz, csteipp, zareen, jgirault, ellery,
               psinger, midom, tparscal, dworley, moushira, lpintscher, gpaumier,
               nschaaf, zhousquared, gwicke, dpatrick, samwalton9, samtar, akrausetud, jgonsior,
-              yuvipanda, shrlak, joewalsh, madhuvishy, groovier, khorn, ironholds, katie,
+              yuvipanda, shrlak, madhuvishy, groovier, khorn, ironholds, katie,
               cy534, pnorman, mpany, deskana, arnad]
   absent_ldap:
     description: meta group for absented users which had privileged LDAP access in the past, an automatic check verifies it has been really removed from the LDAP (but removal has to be handled separatelly)
@@ -144,7 +144,7 @@ groups:
               jdittrich, chelsyx, ovasileva, mtizzoni, panisson, paolotti, ciro, debt,
               fdans, mlitn, niharika29, goransm, pmiazga, dsaez, shiladsen, cicalese,
               mirrys, sharvaniharan, mmiller, amire80, rush, tieu, kharlan, gbirke,
-              isaacj, jdl]
+              isaacj, jdl, joewalsh]
   ldap-admins:
     gid: 715
     description: ldap admins
@@ -2256,11 +2256,12 @@ users:
     uid: 14124
     email: jsutherland@wikimedia.org
   joewalsh:
-    ensure: absent
+    ensure: present
     gid: 500
     name: joewalsh
     realname: Joe Walsh
-    ssh_keys: []
+    ssh_keys:
+      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQC62lqIiUm85t0/H/LtVU248hyLrJLLldWw1CzS2N/PWqhoT/JtvnOS4orC/oln1A73jHp6ArSRVwIQDPdBUoNdQTQgiO5b9ScX+CsRLMGqwE2nMydXHy17xbaDMVwJ7ga+xUaQH8ZgURY3d92bfpiZq1xy4LOM83UuL08kKqgK8wGi/He3w3GLWQrpsBS/Ir6EPtqiOLgg1X8/D4tuofZcntuYdCyXcd3NXOuOiWLgpQterErt6UKtIo/ZcEcjQuyxW6lHwxalcy6nTeJ2hedH75eHVFDnbj3ndhi1b2uwfE5rMxbFVi/A2hsGs128P+vR8JGhSexvAzSvCUZ3P7pixK9egMuG4z1jwuFGqHX57r0S2KAGVc8iD7wTMdfLjEN3ONL3DTUdo1vlU3HYI1uUXi1ViPtXa2NSwAJ7qQ0ofU2J0F1u7gC+BxyCps6Eez855KuWH01Yc+BGQ86HiUm0Q/3cbBM1PmolxfKp4HwQ6gfwbAv+AKiIFvcQPbaE46dbpnbVnzOA1S1sU7kvAbQtgpLSi/3HzEfpwRU34/Z6xf93u8uekdfKN69s6KWGQF4JXRdV31X8RAdK3q2Dp9hUWjSwwjdWSHwCI48YQl+EoF48lDgbp+COgWlJ97AkUWYNhnhucyb/Xof2Q7jLIdnGfsgiszKQ8aCjeDd+ErP1fw== joewalsh@wikimedia.org
     uid: 14815
   bawolff:
     ensure: present
