@@ -3182,6 +3182,10 @@ ldap_only_users:
     ensure: present
     realname: Guillaume Paumier
     email: gpaumier@wikimedia.org
+  greta:
+    ensure: present
+    realname: Greta Doci
+    email: greta.doci@wikimedia.de
   heather:
     ensure: present
     realname: Heather Walls
