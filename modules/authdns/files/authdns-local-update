@@ -63,14 +63,14 @@ fi
 echo "Pulling the current revision from $REMOTE"
 (cd $WORKINGDIR; sudo -u authdns authdns-git-pull $PULL_ARGS $REMOTE)
 
-if [ ! -e "/etc/gdnsd/config" ]; then
+if [ ! -e "/etc/gdnsd/config-options" ]; then
+    die "config-options not found, system misconfigured?"
+fi
+if [ ! -e "$WORKINGDIR/config" ]; then
     die "config not found, system misconfigured?"
 fi
 if [ ! -e "$WORKINGDIR/templates" ]; then
     die "templates not found, system misconfigured?"
-fi
-if [ ! -e "$WORKINGDIR/config-geo-test" ]; then
-    die "config-geo-test not found, system misconfigured?"
 fi
 if [ ! -e "$WORKINGDIR/geo-maps" ]; then
     die "geo-maps not found, system misconfigured?"
@@ -90,25 +90,25 @@ if [ `ls /etc/gdnsd/zones |wc -l` -le 10 ]; then
     die "less than 10 zones, something's probably wrong, aborting";
 fi
 
-echo "Copy config-geo bits"
-cp -f /etc/gdnsd/config-geo-test /etc/gdnsd/config-geo-test~ 2>/dev/null || true
+echo "Copy config bits"
+cp -f /etc/gdnsd/config /etc/gdnsd/config~ 2>/dev/null || true
 cp -f /etc/gdnsd/geo-maps /etc/gdnsd/geo-maps~ 2>/dev/null || true
 cp -f /etc/gdnsd/geo-resources /etc/gdnsd/geo-resources~ 2>/dev/null || true
-cp -f $WORKINGDIR/config-geo-test /etc/gdnsd/
+cp -f $WORKINGDIR/config /etc/gdnsd/
 cp -f $WORKINGDIR/geo-maps /etc/gdnsd/geo-maps
 cp -f $WORKINGDIR/geo-resources /etc/gdnsd/geo-resources
 
 # initial run, before gdnsd was installed
 if ! which gdnsd > /dev/null || [ "$SKIP_RELOAD" = "true" ]; then
-    rm -f /etc/gdnsd/config-geo-test~
+    rm -f /etc/gdnsd/config~
     rm -f /etc/gdnsd/geo-maps~
     rm -f /etc/gdnsd/geo-resources~
     exit 0
 fi
 
 if ! gdnsd checkconf >/dev/null 2>&1; then
-    if [ -f /etc/gdnsd/config-geo-test~ ]; then
-        mv /etc/gdnsd/config-geo-test~ /etc/gdnsd/config-geo-test
+    if [ -f /etc/gdnsd/config~ ]; then
+        mv /etc/gdnsd/config~ /etc/gdnsd/config
     fi
     if [ -f /etc/gdnsd/geo-maps~ ]; then
         mv /etc/gdnsd/geo-maps~ /etc/gdnsd/geo-maps
@@ -125,10 +125,10 @@ cp -f $WORKINGDIR/admin_state /var/lib/gdnsd/
 
 ### reload
 
-if ( ! cmp --quiet /etc/gdnsd/config-geo-test~ /etc/gdnsd/config-geo-test ) \
+if ( ! cmp --quiet /etc/gdnsd/config~ /etc/gdnsd/config ) \
   || ( ! cmp --quiet /etc/gdnsd/geo-maps~ /etc/gdnsd/geo-maps ) \
   || ( ! cmp --quiet /etc/gdnsd/geo-resources~ /etc/gdnsd/geo-resources ); then
-    rm -f /etc/gdnsd/config-geo-test~
+    rm -f /etc/gdnsd/config~
     rm -f /etc/gdnsd/geo-maps~
     rm -f /etc/gdnsd/geo-resources~
     if [ -x /usr/bin/gdnsdctl ]; then
@@ -139,7 +139,7 @@ if ( ! cmp --quiet /etc/gdnsd/config-geo-test~ /etc/gdnsd/config-geo-test ) \
         service gdnsd restart >/dev/null
     fi
 else
-    rm -f /etc/gdnsd/config-geo-test~
+    rm -f /etc/gdnsd/config~
     rm -f /etc/gdnsd/geo-maps~
     rm -f /etc/gdnsd/geo-resources~
     echo "Reloading zones"

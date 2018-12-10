@@ -42,16 +42,6 @@ class authdns(
         group  => 'root',
         mode   => '0755',
     }
-    # OLD: to be removed from here so the ops/dns repo can control it
-    file { '/etc/gdnsd/config':
-        ensure  => 'present',
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0444',
-        content => template("${module_name}/config.erb"),
-        require => File['/etc/gdnsd'],
-    }
-    # NEW: we have to coordinate this switch with changes in ops/dns!
     file { '/etc/gdnsd/config-options':
         ensure  => 'present',
         owner   => 'root',
@@ -106,7 +96,6 @@ class authdns(
         timeout     => 60,
         require     => [
                 File['/etc/wikimedia-authdns.conf'],
-                File['/etc/gdnsd/config'],
                 File['/etc/gdnsd/config-options'],
                 File['/etc/gdnsd/discovery-geo-resources'],
                 File['/etc/gdnsd/discovery-metafo-resources'],

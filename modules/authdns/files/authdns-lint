@@ -1,7 +1,7 @@
 #!/bin/bash
 #
 # Shell script to use for linting zone templates & config. It sets up a gdnsd
-# chroot directory, generates zone files based on the templates using
+# etc directory, generates zone files based on the templates using
 # authdns-gen-zones and runs gdnsd checkconf.
 #
 # Written by Faidon Liambotis, Aug 2013
@@ -32,28 +32,21 @@ if [ -z "$TESTDIR" ]; then
     TESTDIR=$(mktemp -d --tmpdir 'authdns-lint.XXXXXX')
     CLEANUP=yes
 fi
-echo "Using $TESTDIR as the output working directory (gdnsd chroot)"
-mkdir -p $TESTDIR/etc/zones
 
-if [ ! -e "$WORKINGDIR/templates" ]; then
-    die "templates not found, system misconfigured?"
-fi
-if [ ! -e "$WORKINGDIR/config-geo-test" ]; then
-    die "config-geo-test not found, system misconfigured?"
-fi
-if [ ! -e "$WORKINGDIR/geo-maps" ]; then
-    die "geo-maps not found, system misconfigured?"
-fi
-if [ ! -e "$WORKINGDIR/geo-resources" ]; then
-    die "geo-resources not found, system misconfigured?"
-fi
+echo "Using $TESTDIR as the output working directory (gdnsd etc)"
+mkdir -p $TESTDIR/zones
+mkdir -p $TESTDIR/geoip
 
 echo "Generating zonefiles from zone templates"
-authdns-gen-zones $WORKINGDIR/templates $TESTDIR/etc/zones
+authdns-gen-zones $WORKINGDIR/templates $TESTDIR/zones
 
 echo "Generating gdnsd config"
-cp -f $WORKINGDIR/config-geo-test $TESTDIR/etc/config
-cp -f $WORKINGDIR/geo-maps $TESTDIR/etc/geo-maps
-cp -f $WORKINGDIR/geo-resources $TESTDIR/etc/geo-resources
+for realf in config geo-maps geo-resources; do
+    cp -f $WORKINGDIR/$realf $TESTDIR/
+done
+for mockf in config-options discovery-maps discovery-geo-resources discovery-metafo-resources discovery-states; do
+    cp -f $WORKINGDIR/utils/mock_etc/$mockf $TESTDIR/
+done
+cp -f $WORKINGDIR/utils/mock_etc/geoip/GeoIP2-City.mmdb $TESTDIR/geoip/
 
-gdnsd -sSc $TESTDIR/etc checkconf
+gdnsd -sSc $TESTDIR checkconf
