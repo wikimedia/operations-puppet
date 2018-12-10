@@ -72,33 +72,25 @@ hadoop_clusters:
     yarn_app_mapreduce_am_command_opts: '-Xmx820m'  # 0.8 * 2 * 512M
 
     # Save a lot of non Hadoop memory for Presto and other processes.
-    yarn_nodemanager_os_reserved_memory_mb: 112
+    yarn_nodemanager_os_reserved_memory_mb: 104
 
     # We use 8G total RAM and 4 cores for YARN
 
-    # Allow a job to request up to the smallest value of yarn_nodemanager_resource_memory_mb (8G)
+    # Allow a job to request up to the smallest value of yarn_nodemanager_resource_memory_mb (120G - 104G = 16G)
     # in the cluster. The smallest value is 52G on the R720s (analytics1069 and below).
-    yarn_scheduler_maximum_allocation_mb: 8192
+    yarn_scheduler_maximum_allocation_mb: 16384
     yarn_scheduler_minimum_allocation_vcores:   0
     yarn_scheduler_maximum_allocation_vcores:   4
     # Raised for T206943
     yarn_resourcemanager_zk_timeout_ms: 20000
 
-    # # This is the heap zize of YARN daemons ResourceManager and NodeManagers.
-    # # This setting is used to configure the max heap size for both.
-    # # The default is 1000m.
-    # TODO: do we need to set this? Is this for containers?
-    #       Heap sizes are set below in *opts
-    yarn_heapsize: 512
-    hadoop_heapsize: 1024
-
     # Hadoop process heapsizes and Prometheus JMX Exporter config templates.
     hadoop_namenode_opts: "-Xms1024m -Xmx1024m -XX:+UseParNewGC -XX:+UseConcMarkSweepGC -XX:CMSInitiatingOccupancyFraction=70 -XX:+CMSParallelRemarkEnabled" # -javaagent:/usr/share/java/prometheus/jmx_prometheus_javaagent.jar=%{::ipaddress}:10080:/etc/prometheus/hdfs_namenode_jmx_exporter.yaml"
     yarn_resourcemanager_opts: "-Xms512m -Xmx512m" # -javaagent:/usr/share/java/prometheus/jmx_prometheus_javaagent.jar=%{::ipaddress}:10083:/etc/prometheus/yarn_resourcemanager_jmx_exporter.yaml"
     mapreduce_history_java_opts: "-Xms128m -Xmx128m" # -javaagent:/usr/share/java/prometheus/jmx_prometheus_javaagent.jar=%{::ipaddress}:10086:/etc/prometheus/mapreduce_history_jmx_exporter.yaml"
-    hadoop_datanode_opts: "-Xms4096m" # -javaagent:/usr/share/java/prometheus/jmx_prometheus_javaagent.jar=%{::ipaddress}:51010:/etc/prometheus/hdfs_datanode_jmx_exporter.yaml"
+    hadoop_datanode_opts: "-Xms4096m -Xmx4096m" # -javaagent:/usr/share/java/prometheus/jmx_prometheus_javaagent.jar=%{::ipaddress}:51010:/etc/prometheus/hdfs_datanode_jmx_exporter.yaml"
 #    hadoop_journalnode_opts: "-javaagent:/usr/share/java/prometheus/jmx_prometheus_javaagent.jar=%{::ipaddress}:10485:/etc/prometheus/hdfs_journalnode_jmx_exporter.yaml"
-    yarn_nodemanager_opts: "-Xms2048m " #-javaagent:/usr/share/java/prometheus/jmx_prometheus_javaagent.jar=%{::ipaddress}:8141:/etc/prometheus/yarn_nodemanager_jmx_exporter.yaml"
+    yarn_nodemanager_opts: "-Xms2048m -Xmx2048m" #-javaagent:/usr/share/java/prometheus/jmx_prometheus_javaagent.jar=%{::ipaddress}:8141:/etc/prometheus/yarn_nodemanager_jmx_exporter.yaml"
 
     # The HDFS Trash is configured in this way:
     # 1) Once every day a checkpoint is made (that contains all the trash for a day).
