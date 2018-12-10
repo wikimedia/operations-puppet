@@ -30,6 +30,11 @@ class profile::hadoop::worker(
         # Prometheus exporters
         require ::profile::hadoop::monitoring::datanode
         require ::profile::hadoop::monitoring::nodemanager
+
+        # Make sure the prometheus exporter package and config file exist before
+        # attempting to launch any JVMs that use them.
+        Class['::profile::hadoop::monitoring::datanode'] -> Class['::cdh::hadoop::worker']
+        Class['::profile::hadoop::monitoring::nodemanager'] -> Class['::cdh::hadoop::worker']
     }
 
     class { '::cdh::hadoop::worker': }
@@ -39,6 +44,8 @@ class profile::hadoop::worker(
     if $::fqdn in $::cdh::hadoop::journalnode_hosts {
         if $monitoring_enabled {
             require profile::hadoop::monitoring::journalnode
+            Class['::profile::hadoop::monitoring::journalnode'] -> Class['::cdh::hadoop::journalnode']
+
         }
         class { 'cdh::hadoop::journalnode': }
     }

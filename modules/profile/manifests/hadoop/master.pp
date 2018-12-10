@@ -56,6 +56,12 @@ class profile::hadoop::master(
         require ::profile::hadoop::monitoring::resourcemanager
         require ::profile::hadoop::monitoring::history
 
+        # Make sure the prometheus exporter package and config file exist before
+        # attempting to launch any JVMs that use them.
+        Class['::profile::hadoop::monitoring::namenode'] -> Class['::cdh::hadoop::master']
+        Class['::profile::hadoop::monitoring::resourcemanager'] -> Class['::cdh::hadoop::master']
+        Class['::profile::hadoop::monitoring::history'] -> Class['::cdh::hadoop::master']
+
         # Icinga process alerts for NameNode, ResourceManager and HistoryServer
         nrpe::monitor_service { 'hadoop-hdfs-namenode':
             description   => 'Hadoop Namenode - Primary',
