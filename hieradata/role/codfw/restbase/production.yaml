@@ -25,6 +25,12 @@ profile::restbase::hosts:
   - restbase2010.codfw.wmnet
   - restbase2011.codfw.wmnet
   - restbase2012.codfw.wmnet
+  - restbase2013.codfw.wmnet
+  - restbase2014.codfw.wmnet
+  - restbase2015.codfw.wmnet
+  - restbase2016.codfw.wmnet
+  - restbase2017.codfw.wmnet
+  - restbase2018.codfw.wmnet
 
 lvs::realserver::realserver_ips:
   - '10.2.1.17' # restbase.svc.codfw.wmnet
