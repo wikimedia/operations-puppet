@@ -17,7 +17,7 @@ profile::hadoop::master::hadoop_user_groups: project-cloud-analytics
 profile::zookeeper::cluster_name: cloud-analytics
 # To avoid version conflics with Cloudera zookeeper package, this
 # class manually specifies which debian package version should be installed.
-profile::zookeeper::zookeeper_version: '3.4.9-3'
+profile::zookeeper::zookeeper_version: '3.4.9-3+deb9u1'
 
 # List of zookeeper clusters.
 zookeeper_clusters:
