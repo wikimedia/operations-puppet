@@ -410,6 +410,16 @@ class role::prometheus::ops {
         port       => 9117,
     }
 
+    # Job definition for icinga_exporter
+    $icinga_jobs = [
+      {
+        'job_name'        => 'icinga',
+        'file_sd_configs' => [
+          { 'files' => [ "${targets_path}/icinga_*.yaml" ]}
+        ],
+      },
+    ]
+
     # Special config for Icinga exporter
     prometheus::class_config{ "icinga_${::site}":
         dest       => "${targets_path}/icinga_${::site}.yaml",
@@ -1106,7 +1116,7 @@ class role::prometheus::ops {
             $etherpad_jobs, $elasticsearch_jobs, $wmf_elasticsearch_jobs,
             $blazegraph_jobs, $nutcracker_jobs, $postgresql_jobs,
             $kafka_burrow_jobs, $logstash_jobs, $haproxy_jobs, $statsd_exporter_jobs,
-            $mjolnir_jobs, $rsyslog_jobs, $php_jobs, $php_fpm_jobs,
+            $mjolnir_jobs, $rsyslog_jobs, $php_jobs, $php_fpm_jobs, $icinga_jobs,
         ),
         global_config_extra   => $config_extra,
     }
