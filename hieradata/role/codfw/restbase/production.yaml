@@ -1,16 +1,16 @@
 profile::restbase::seeds_ng:
-  - restbase2001-a.codfw.wmnet
-  - restbase2001-b.codfw.wmnet
-  - restbase2001-c.codfw.wmnet
-  - restbase2002-a.codfw.wmnet
-  - restbase2002-b.codfw.wmnet
-  - restbase2002-c.codfw.wmnet
-  - restbase2003-a.codfw.wmnet
-  - restbase2003-b.codfw.wmnet
-  - restbase2003-c.codfw.wmnet
-  - restbase2005-a.codfw.wmnet
-  - restbase2005-b.codfw.wmnet
-  - restbase2005-c.codfw.wmnet
+  - restbase2007-a.codfw.wmnet
+  - restbase2007-b.codfw.wmnet
+  - restbase2007-c.codfw.wmnet
+  - restbase2008-a.codfw.wmnet
+  - restbase2008-b.codfw.wmnet
+  - restbase2008-c.codfw.wmnet
+  - restbase2009-a.codfw.wmnet
+  - restbase2009-b.codfw.wmnet
+  - restbase2009-c.codfw.wmnet
+  - restbase2010-a.codfw.wmnet
+  - restbase2010-b.codfw.wmnet
+  - restbase2010-c.codfw.wmnet
 # used for rate limiting
 profile::restbase::hosts:
   - restbase2001.codfw.wmnet
