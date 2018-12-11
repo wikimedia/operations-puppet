@@ -39,7 +39,7 @@ class profile::analytics::database::meta(
         exec { 'analytics_meta_mysql_install_db':
             command => '/opt/wmf-mariadb101/scripts/mysql_install_db',
             cwd     => '/opt/wmf-mariadb101',
-            creates => '/var/lib/mysql/ibdata1',
+            creates => "${datadir}/ibdata1",
             require => Class['mariadb::config'],
             before  => Class['mariadb::service'],
         }
