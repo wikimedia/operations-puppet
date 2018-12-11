@@ -98,7 +98,6 @@ hadoop_clusters:
     hdfs_trash_checkpoint_interval: 1440
     hdfs_trash_interval: 10080
 
-
 # Set monitoring_enabled to true for all Hadoop processes.
 profile::hadoop::master::monitoring_enabled: true
 profile::hadoop::worker::monitoring_enabled: true
@@ -106,11 +105,16 @@ profile::hadoop::standby_master::monitoring_enabled: true
 
 
 # Hive Client settings.
-# Hive configuration is common to multiple clients, but because of role based
-# hiera lookups, we need to repeat it in multiple places. If you change this,
-# make sure you change it in all the right places!
 profile::hive::client::zookeeper_cluster_name: cloud-analytics
 profile::hive::client::server_host: ca-coord-1.cloud-analytics.eqiad.wmflabs
 profile::hive::client::server_port: 10000
 profile::hive::client::metastore_host: ca-coord-1.cloud-analytics.eqiad.wmflabs
+
+# Hive Server Settings
+# (These opts are in ::hive::client namespace because profile::hive::client installs the config files.)
+profile::hive::client::hive_metastore_opts: '-javaagent:/usr/share/java/prometheus/jmx_prometheus_javaagent.jar=%{::ipaddress}:9183:/etc/prometheus/hive_metastore_jmx_exporter.yaml'
+profile::hive::client::hive_server_opts: '-javaagent:/usr/share/java/prometheus/jmx_prometheus_javaagent.jar=%{::ipaddress}:10100:/etc/prometheus/hive_server_jmx_exporter.yaml'
+profile::hive::server::monitoring_enabled: true
+profile::hive::metastore::monitoring_enabled: true
+profile::analytics::database::meta::monitoring_enabled: true
 
