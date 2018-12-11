@@ -35,6 +35,11 @@ profile::certcentral::certificates:
         SNI:
         - 'lists.wikimedia.org'
         challenge: dns-01
+    mirrors:
+        CN: 'mirrors.wikimedia.org'
+        SNI:
+        - 'mirrors.wikimedia.org'
+        challenge: dns-01
     netbox:
         CN: 'netbox.wikimedia.org'
         SNI:
