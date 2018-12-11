@@ -4074,6 +4074,41 @@ host ms-be1043 {
     fixed-address ms-be1043.eqiad.wmnet;
 }
 
+host ms-be1044 {
+    hardware ethernet B0:26:28:1A:45:36;
+    fixed-address ms-be1044.eqiad.wmnet;
+}
+
+host ms-be1045 {
+    hardware ethernet B0:26:28:1A:3E:52;
+    fixed-address ms-be1045.eqiad.wmnet;
+}
+
+host ms-be1046 {
+    hardware ethernet B0:26:28:1A:55:E0;
+    fixed-address ms-be1046.eqiad.wmnet;
+}
+
+host ms-be1047 {
+    hardware ethernet B0:26:28:1A:54:C0;
+    fixed-address ms-be1047.eqiad.wmnet;
+}
+
+host ms-be1048 {
+    hardware ethernet B0:26:28:1A:4A:7C;
+    fixed-address ms-be1048.eqiad.wmnet;
+}
+
+host ms-be1049 {
+    hardware ethernet B0:26:28:1A:6F:C0;
+    fixed-address ms-be1049.eqiad.wmnet;
+}
+
+host ms-be1050 {
+    hardware ethernet B0:26:28:1A:77:B2;
+    fixed-address ms-be1050.eqiad.wmnet;
+}
+
 host ms-be2013 {
     hardware ethernet 54:9F:35:08:4A:18;
     fixed-address ms-be2013.codfw.wmnet;
