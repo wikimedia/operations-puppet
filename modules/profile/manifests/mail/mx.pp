@@ -11,12 +11,6 @@ class profile::mail::mx (
         recipient => 'root@wikimedia.org',
     }
 
-    sslcert::certificate { 'mail.wikimedia.org':
-        ensure => absent,
-        group  => 'Debian-exim',
-        before => Class['exim4'],
-    }
-
     letsencrypt::cert::integrated { $cert_name:
         subjects   => $cert_subjects,
         key_group  => 'Debian-exim',
