@@ -1360,6 +1360,13 @@ node /^logstash100[8-9]\.eqiad\.wmnet$/ {
     include ::lvs::realserver
 }
 
+# codfw logstash kafka/elasticsearch
+node /^logstash200[1-3]\.codfw\.wmnet$/ {
+    role(logstash::elasticsearch)
+    # Remove kafka::logging role after dedicated logging kafka hardware is online
+    include ::role::kafka::logging # lint:ignore:wmf_styleguide
+}
+
 # codfw logstash collectors (Ganeti)
 node /^logstash200[4-6]\.codfw\.wmnet$/ {
     role(spare::system) # to be moved to role(logstash) after codfw logstash metal is online T211065

@@ -511,7 +511,7 @@ kafka_clusters:
         id: 1006
         rack: D
 
-  # Kafka cluster for logs, see also T206454
+  # Kafka clusters for logs, see also T206454
   logging-eqiad:
     zookeeper_cluster_name: main-eqiad
     brokers:
@@ -523,6 +523,19 @@ kafka_clusters:
         rack: B
       logstash1006.eqiad.wmnet:
         id: 1006
+        rack: D
+
+  logging-codfw:
+    zookeeper_cluster_name: main-codfw
+    brokers:
+      logstash2001.codfw.wmnet:
+        id: 2001
+        rack: A
+      logstash2002.codfw.wmnet:
+        id: 2002
+        rack: C
+      logstash2003.codfw.wmnet:
+        id: 2003
         rack: D
 
 # Hadoop base configuration is common to multiple profiles, and must be kept
