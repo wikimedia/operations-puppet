@@ -2130,8 +2130,9 @@ node 'stat1004.eqiad.wmnet' {
     interface::add_ip6_mapped { 'main': }
 }
 
+# Testing GPU for T148843
 node 'stat1005.eqiad.wmnet' {
-    role(statistics::private)
+    role(statistics::gpu)
     interface::add_ip6_mapped { 'main': }
 }
 

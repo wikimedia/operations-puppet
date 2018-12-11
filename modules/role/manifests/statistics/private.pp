@@ -9,20 +9,11 @@ class role::statistics::private {
 
     include ::profile::statistics::private
 
-    if $::hostname == 'stat1007' {
-        # Run Hadoop/Hive reportupdater jobs here.
-        include ::profile::reportupdater::jobs::hadoop
+    # Run Hadoop/Hive reportupdater jobs here.
+    include ::profile::reportupdater::jobs::hadoop
 
-        # This job copies wiktext dumps from the NFS mounts to HDFS
-        include ::profile::analytics::refinery::job::import_wikitext_dumps
-    }
-
-    if $::hostname == 'stat1005' {
-        motd::script { 'deprecation-warning':
-            ensure => present,
-            source => 'puppet:///modules/role/statistics/private/deprecation_motd.sh',
-        }
-    }
+    # This job copies wiktext dumps from the NFS mounts to HDFS
+    include ::profile::analytics::refinery::job::import_wikitext_dumps
 
     # Include Hadoop and other analytics cluster
     # clients so that analysts can access Hadoop

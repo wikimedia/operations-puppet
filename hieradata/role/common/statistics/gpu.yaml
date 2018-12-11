@@ -1,0 +1,6 @@
+cluster: analytics
+admin::groups:
+  - analytics-admins
+
+diamond::remove: true
+
