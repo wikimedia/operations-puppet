@@ -1370,7 +1370,7 @@ node /^logstash200[1-3]\.codfw\.wmnet$/ {
 
 # codfw logstash collectors (Ganeti)
 node /^logstash200[4-6]\.codfw\.wmnet$/ {
-    role(spare::system) # to be moved to role(logstash) after codfw logstash metal is online T211065
+    role(logstash)
 }
 
 node /lvs100[1-2]\.wikimedia\.org/ {

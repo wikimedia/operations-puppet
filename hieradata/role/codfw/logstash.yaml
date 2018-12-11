@@ -1,0 +1,62 @@
+role::logstash::apifeatureusage::elastic_hosts:
+  - search.svc.codfw.wmnet
+  - search.svc.eqiad.wmnet
+cluster: logstash
+admin::groups:
+  - logstash-roots
+  - elasticsearch-roots
+
+# ES-specific
+# NOTE: cluster_name must be kept in sync with the backend
+# node config in hieradata/role/common/logstash/elasticsearch.yaml
+profile::elasticsearch::rack: ''
+profile::elasticsearch::row: ''
+profile::elasticsearch::ferm_srange: ''
+profile::elasticsearch::instances: {}
+profile::elasticsearch::dc_settings: {}
+profile::elasticsearch::base_data_dir: '/srv/elasticsearch'
+profile::elasticsearch::common_settings:
+    awareness_attributes: ''
+    auto_create_index: true
+    cluster_name: production-logstash-codfw
+    expected_nodes: 3
+    heap_memory: '4G'
+    # The ES nodes that are run on the same box as Logstash+Kibana are only used
+    # as client nodes to communicate with the backing cluster.
+    holds_data: false
+    minimum_master_nodes: 2
+    recover_after_nodes: 2
+    recover_after_time: '1m'
+    unicast_hosts:
+      - logstash2001.codfw.wmnet
+      - logstash2002.codfw.wmnet
+      - logstash2003.codfw.wmnet
+    cluster_hosts:
+      - logstash2001.codfw.wmnet
+      - logstash2002.codfw.wmnet
+      - logstash2003.codfw.wmnet
+      - logstash2004.codfw.wmnet
+      - logstash2005.codfw.wmnet
+      - logstash2006.codfw.wmnet
+    auto_create_index: true
+    send_logs_to_logstash: false
+    curator_uses_unicast_hosts: false
+    http_port: 9200
+    transport_tcp_port: 9300
+
+# Logstash specific
+logstash::heap_memory: 1g
+
+role::logstash::collector::statsd_host: statsd.eqiad.wmnet
+
+# Kibana
+role::kibana::vhost: logstash.wikimedia.org
+role::kibana::serveradmin: noc@wikimedia.org
+role::kibana::auth_type: ldap
+role::kibana::auth_realm: WMF Labs (use wiki login name not shell) - nda/ops/wmf
+role::kibana::ldap_authurl: ldaps://ldap-labs.codfw.wikimedia.org ldap-labs.eqiad.wikimedia.org/ou=people,dc=wikimedia,dc=org?cn
+role::kibana::ldap_binddn: cn=proxyagent,ou=profile,dc=wikimedia,dc=org
+role::kibana::ldap_groups:
+  - cn=ops,ou=groups,dc=wikimedia,dc=org
+  - cn=nda,ou=groups,dc=wikimedia,dc=org
+  - cn=wmf,ou=groups,dc=wikimedia,dc=org
