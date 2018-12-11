@@ -7,8 +7,6 @@ class role::cloud_analytics::coordinator {
         description => 'cloud-analytics host hosting Hadoop services (Hive, etc.) and maintenance scripts'
     }
 
-    include ::profile::analytics::database::meta
-
     # TODO: backup to ca-master1002
     # Back up analytics-meta MySQL instance
     # to an-master1002.

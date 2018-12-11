@@ -43,9 +43,5 @@ class profile::hive::metastore::database(
     # than where you run this MySQL database, then you need
     # to make sure that node has proper permissions to
     # access MySQL via the hive user and pw.
-
-    # If labs, just allow access to hive_metastore db from all hosts.
-    if $::realm == 'labs' {
-        cdh::hive::metastore::mysql::grant { '%': }
-    }
+    # You could use the cdh::hive::metastore::mysql::grant define to do this.
 }
