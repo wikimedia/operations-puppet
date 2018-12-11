@@ -1365,6 +1365,7 @@ node /^logstash200[1-3]\.codfw\.wmnet$/ {
     role(logstash::elasticsearch)
     # Remove kafka::logging role after dedicated logging kafka hardware is online
     include ::role::kafka::logging # lint:ignore:wmf_styleguide
+    interface::add_ip6_mapped { 'main': } # lint:ignore:wmf_styleguide
 }
 
 # codfw logstash collectors (Ganeti)
