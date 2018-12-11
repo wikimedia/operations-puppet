@@ -124,6 +124,8 @@ monitoring::groups:
 # Logstash
   logstash_eqiad:
     description: eqiad logstash
+  logstash_codfw:
+    description: codfw logstash
 
 # Maps
   maps_eqiad:
