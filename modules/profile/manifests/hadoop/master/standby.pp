@@ -14,6 +14,12 @@ class profile::hadoop::master::standby(
     # Ensure that druid user exists on standby namenodes nodes.
     class { '::druid::cdh::hadoop::user':  }
 
+    if $monitoring_enabled {
+        # Prometheus exporters
+        require ::profile::hadoop::monitoring::namenode
+        require ::profile::hadoop::monitoring::resourcemanager
+    }
+
     class { '::cdh::hadoop::namenode::standby': }
 
     # Include icinga alerts if production realm.
@@ -51,10 +57,6 @@ class profile::hadoop::master::standby(
 
     # Include icinga alerts if production realm.
     if $monitoring_enabled {
-        # Prometheus exporters
-        require ::profile::hadoop::monitoring::namenode
-        require ::profile::hadoop::monitoring::resourcemanager
-
         monitoring::check_prometheus { 'hadoop-yarn-resourcemananager-heap-usage':
             description     => 'YARN active ResourceManager JVM Heap usage',
             dashboard_links => ["https://grafana.wikimedia.org/dashboard/db/hadoop?var-hadoop_cluster=${cluster_name}&panelId=12&fullscreen&orgId=1"],

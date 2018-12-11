@@ -14,6 +14,13 @@ class profile::hadoop::master(
 ){
     require ::profile::hadoop::common
 
+    if $monitoring_enabled {
+        # Prometheus exporters
+        require ::profile::hadoop::monitoring::namenode
+        require ::profile::hadoop::monitoring::resourcemanager
+        require ::profile::hadoop::monitoring::history
+    }
+
     class { '::cdh::hadoop::master': }
 
     # This will create HDFS user home directories
@@ -51,11 +58,6 @@ class profile::hadoop::master(
 
     # Include icinga alerts if production realm.
     if $monitoring_enabled {
-        # Prometheus exporters
-        require ::profile::hadoop::monitoring::namenode
-        require ::profile::hadoop::monitoring::resourcemanager
-        require ::profile::hadoop::monitoring::history
-
         # Icinga process alerts for NameNode, ResourceManager and HistoryServer
         nrpe::monitor_service { 'hadoop-hdfs-namenode':
             description   => 'Hadoop Namenode - Primary',
