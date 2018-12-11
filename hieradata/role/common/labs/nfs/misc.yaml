@@ -21,5 +21,6 @@ role::labs::nfs::misc::maps_project_internal_ips:
   - '10.68.16.103'
   - '10.68.16.70'
   - '10.68.20.112'
+  - '172.16.6.46'
 admin::groups:
   - wmcs-roots
