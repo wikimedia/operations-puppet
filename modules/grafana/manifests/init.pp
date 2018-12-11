@@ -66,6 +66,21 @@ class grafana(
         before  => Service['grafana-server'],
     }
 
+    # If we're on Grafana 5.x, we need to install this yaml file to tell grafana
+    # to read the dashboards from the place that earlier versions would
+    # by default.  On earlier versions we don't want to install this, as the
+    # directory will not exist.  Being on stretch is a proxy for grafana>=5
+    if os_version('debian >= stretch') {
+        file { '/etc/grafana/provisioning/dashboards/provision-puppet-dashboards.yaml':
+            source  => 'puppet:///modules/grafana/provision-puppet-dashboards.yaml',
+            owner   => 'root',
+            group   => 'grafana',
+            mode    => '0440',
+            require => Package['grafana'],
+            before  => Service['grafana-server'],
+        }
+    }
+
     file { '/var/lib/grafana/dashboards':
         ensure  => directory,
         owner   => 'grafana',
