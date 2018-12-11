@@ -1,4 +1,4 @@
-class role::mediawiki_maintenance {
+class role::mediawiki::maintenance {
     include ::standard
     include ::profile::base::firewall
 

@@ -85,6 +85,6 @@ class profile::mediawiki::maintenance {
     motd::script { 'inactive_warning':
         ensure   => $motd_ensure,
         priority => 1,
-        content  => template('role/mediawiki_maintenance/inactive.motd.erb'),
+        content  => template('profile/mediawiki/maintenance/inactive.motd.erb'),
     }
 }
