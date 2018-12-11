@@ -6,7 +6,9 @@
 # FIXME: Why are these named-like-this and namedLikeThis
 # FIXME: Why man pages for some but not all?
 # FIXME: What on earth does MW have to do with this? Send it to the right module
-class scap::scripts {
+class scap::scripts (
+    Wmflib::Ensure $sql_scripts = present,
+){
 
     file { '/usr/local/bin/logstash_checker.py':
         owner  => 'root',
@@ -70,12 +72,14 @@ class scap::scripts {
         source => 'puppet:///modules/scap/set-group-write',
     }
     file { '/usr/local/bin/sql':
+        ensure => $sql_scripts,
         owner  => 'root',
         group  => 'root',
         mode   => '0555',
         source => 'puppet:///modules/scap/sql',
     }
     file { '/usr/local/bin/sqldump':
+        ensure => $sql_scripts,
         owner  => 'root',
         group  => 'root',
         mode   => '0555',
