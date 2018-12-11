@@ -14,6 +14,7 @@ class profile::logstash::collector (
     $statsd_host,
     $prometheus_nodes = hiera('prometheus_nodes', []),
     $input_kafka_ssl_truststore_password = hiera('profile::logstash::collector::input_kafka_ssl_truststore_password'),
+    $input_kafka_consumer_group_id = hiera('profile::logstash::collector::input_kafka_consumer_group_id', undef),
     $jmx_exporter_port = hiera('profile::logstash::collector::jmx_exporter_port', 7800),
 ) {
 
@@ -164,6 +165,7 @@ class profile::logstash::collector (
 
     logstash::input::kafka { 'rsyslog-shipper':
         topics_pattern          => 'rsyslog-.*',
+        group_id                => $input_kafka_consumer_group_id,
         type                    => 'syslog',
         tags                    => ['rsyslog-shipper','kafka'],
         codec                   => 'json',

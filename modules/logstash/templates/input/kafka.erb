@@ -10,6 +10,9 @@ input {
 <% else -%>
     topics_pattern          => "<%= @topics_pattern %>"
 <% end -%>
+<%- if @group_id -%>
+    group_id                => "<%= @group_id %>"
+<%- end -%>
     type                    => "<%= @type %>"
     codec                   => "<%= @codec %>"
     bootstrap_servers       => "<%= @bootstrap_servers %>"

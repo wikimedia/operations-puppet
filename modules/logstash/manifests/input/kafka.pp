@@ -11,6 +11,7 @@
 # - $tags: Array of tags to be added to the logs. Default: [$title].
 # - $topic: Kafka topic. Default: $title.
 # - $topics_pattern: Kafka topic pattern. Default: None. Supersedes $topic if set.
+# - $group_id: Kafka consumer group id. Default: None (use logstash implemented default of "logstash")
 # - $type: Log type to be passed to Logstash. Default: 'kafka'.
 # - $codec: Codec to decode input. Default 'plain'.
 # - $bootstrap_servers: Kafka servers to boostrap from. This list should be
@@ -42,6 +43,7 @@ define logstash::input::kafka(
     Optional[Enum['PLAINTEXT','SSL','SASL_PLAINTEXT','SASL_SSL']] $security_protocol = undef,
     Optional[Stdlib::Unixpath] $ssl_truststore_location                              = undef,
     Optional[String] $ssl_truststore_password                                        = undef,
+    Optional[String] $group_id                                                       = undef,
 ) {
     logstash::conf { "input-kafka-${title}":
         ensure   => $ensure,
