@@ -12,6 +12,7 @@ class profile::mail::mx (
     }
 
     sslcert::certificate { 'mail.wikimedia.org':
+        ensure => absent,
         group  => 'Debian-exim',
         before => Class['exim4'],
     }
