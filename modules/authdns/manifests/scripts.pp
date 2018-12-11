@@ -10,11 +10,7 @@ class authdns::scripts {
     }
 
     file { '/usr/local/bin/authdns-gen-zones':
-        ensure => present,
-        mode   => '0555',
-        owner  => 'root',
-        group  => 'root',
-        source => "puppet:///modules/${module_name}/authdns-gen-zones.py",
+        ensure => absent,
     }
 
     file { '/usr/local/bin/authdns-lint':

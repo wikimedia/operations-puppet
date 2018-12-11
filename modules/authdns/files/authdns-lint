@@ -1,52 +1,23 @@
 #!/bin/bash
-#
-# Shell script to use for linting zone templates & config. It sets up a gdnsd
-# etc directory, generates zone files based on the templates using
-# authdns-gen-zones and runs gdnsd checkconf.
-#
-# Written by Faidon Liambotis, Aug 2013
+
+# Simple wrapper while the legacy jessie-based CI is still
+# running, to use the CI stuff that's now inside the repo itself.
+# Requires both arguments (workingdir and testdir), which is how
+# the releng jessie CI stuff invokes this.
 
 set -e
-
-PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
-
-die() { echo >&2 "E: $*"; exit 1; }
-
-cleanup() {
-   if [ "$CLEANUP" = "yes" ] && [ -d "$TESTDIR" ]; then
-       rm -rf $TESTDIR
-   fi
-}
-trap cleanup EXIT
 
 WORKINGDIR=$1
 TESTDIR=$2
 
+die() { echo >&2 "E: $*"; exit 1; }
+
 if [ -z "$WORKINGDIR" ]; then
     die "no template dir specified"
 fi
-echo "Using $WORKINGDIR as the input working directory"
-
 if [ -z "$TESTDIR" ]; then
-    # no test directory passed, generate one and clean it up on exit
-    TESTDIR=$(mktemp -d --tmpdir 'authdns-lint.XXXXXX')
-    CLEANUP=yes
+    die "no test dir specified"
 fi
-
-echo "Using $TESTDIR as the output working directory (gdnsd etc)"
-mkdir -p $TESTDIR/zones
-mkdir -p $TESTDIR/geoip
-
-echo "Generating zonefiles from zone templates"
-authdns-gen-zones $WORKINGDIR/templates $TESTDIR/zones
-
-echo "Generating gdnsd config"
-for realf in config geo-maps geo-resources; do
-    cp -f $WORKINGDIR/$realf $TESTDIR/
-done
-for mockf in config-options discovery-maps discovery-geo-resources discovery-metafo-resources discovery-states; do
-    cp -f $WORKINGDIR/utils/mock_etc/$mockf $TESTDIR/
-done
-cp -f $WORKINGDIR/utils/mock_etc/geoip/GeoIP2-City.mmdb $TESTDIR/geoip/
-
-gdnsd -sSc $TESTDIR checkconf
+echo "Executing check-gdnsd.sh from $WORKINGDIR with $TESTDIR as output"
+cd $WORKINGDIR
+utils/check-gdnsd.sh $TESTDIR

@@ -83,7 +83,7 @@ if [ ! -e "$WORKINGDIR/admin_state" ]; then
 fi
 
 echo "Generating zonefiles from zone templates"
-authdns-gen-zones $WORKINGDIR/templates /etc/gdnsd/zones
+$WORKINGDIR/utils/authdns-gen-zones.py $WORKINGDIR/templates /etc/gdnsd/zones
 
 echo "Doing sanity checks"
 if [ `ls /etc/gdnsd/zones |wc -l` -le 10 ]; then
