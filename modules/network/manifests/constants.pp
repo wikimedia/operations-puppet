@@ -130,12 +130,18 @@ class network::constants {
                     '2620:0:861:107:10:64:48:117', # kafka-jumbo1006.eqiad.wmnet
                 ],
             'kafka_brokers_logging' => [
-                    '10.64.0.162',                 # logstash1004.eqiad.wmnet
-                    '2620:0:861:101:10:64:0:162',  # logstash1004.eqiad.wmnet
-                    '10.64.16.185',                # logstash1005.eqiad.wmnet
-                    '2620:0:861:102:10:64:16:185', # logstash1005.eqiad.wmnet
-                    '10.64.48.109',                # logstash1006.eqiad.wmnet
-                    '2620:0:861:107:10:64:48:109', # logstash1006.eqiad.wmnet
+                    '10.64.0.162',                  # logstash1004.eqiad.wmnet
+                    '2620:0:861:101:10:64:0:162',   # logstash1004.eqiad.wmnet
+                    '10.64.16.185',                 # logstash1005.eqiad.wmnet
+                    '2620:0:861:102:10:64:16:185',  # logstash1005.eqiad.wmnet
+                    '10.64.48.109',                 # logstash1006.eqiad.wmnet
+                    '2620:0:861:107:10:64:48:109',  # logstash1006.eqiad.wmnet
+                    '10.192.0.112',                 # logstash2001.codfw.wmnet
+                    '2620:0:860:101:10:192:0:112',  # logstash2001.codfw.wmnet
+                    '10.192.32.180',                # logstash2002.codfw.wmnet
+                    '2620:0:860:103:10:192:32:180', # logstash2002.codfw.wmnet
+                    '10.192.48.131',                # logstash2003.codfw.wmnet
+                    '2620:0:860:104:10:192:48:131', # logstash2003.codfw.wmnet
                 ],
             'zookeeper_hosts_main' => [
                     '10.64.0.23',                         # conf1004.eqiad.wmnet
