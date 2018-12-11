@@ -3228,6 +3228,10 @@ ldap_only_users:
     ensure: present
     realname: Lydia Pintscher
     email: lydia.pintscher@wikimedia.de
+  marble:
+    ensure: present
+    realname: Michal Anna Marble
+    email: mmarble@wikimedia.org
   mhernandez:
     ensure: present
     realname: Megan Hernandez
