@@ -6,6 +6,9 @@ class role::labs::novaproxy(
     $all_proxies,
     $active_proxy,
     $use_ssl = true,
+    $banned_ips = [],
+    $blocked_user_agent_regex = '',
+    $blocked_referer_regex = '',
 ) {
     include ::profile::base::firewall
 
@@ -54,18 +57,24 @@ class role::labs::novaproxy(
 
         $ssl_settings = ssl_ciphersuite('nginx', 'compat')
         class { '::dynamicproxy':
-            ssl_certificate_name => 'star.wmflabs.org',
-            ssl_settings         => $ssl_settings,
-            set_xff              => true,
-            luahandler           => 'domainproxy',
-            redis_replication    => $redis_replication,
-            require              => Sslcert::Certificate['star.wmflabs.org'],
+            ssl_certificate_name     => 'star.wmflabs.org',
+            ssl_settings             => $ssl_settings,
+            set_xff                  => true,
+            luahandler               => 'domainproxy',
+            redis_replication        => $redis_replication,
+            require                  => Sslcert::Certificate['star.wmflabs.org'],
+            banned_ips               => $banned_ips,
+            blocked_user_agent_regex => $blocked_user_agent_regex,
+            blocked_referer_regex    => $blocked_referer_regex,
         }
     } else {
         class { '::dynamicproxy':
-            set_xff           => true,
-            luahandler        => 'domainproxy',
-            redis_replication => $redis_replication,
+            set_xff                  => true,
+            luahandler               => 'domainproxy',
+            redis_replication        => $redis_replication,
+            banned_ips               => $banned_ips,
+            blocked_user_agent_regex => $blocked_user_agent_regex,
+            blocked_referer_regex    => $blocked_referer_regex,
         }
     }
 
