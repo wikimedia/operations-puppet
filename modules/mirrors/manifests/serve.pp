@@ -7,6 +7,9 @@ class mirrors::serve {
         puppet_svc => 'nginx',
         system_svc => 'nginx',
     }
+    certcentral::cert { 'mirrors':
+        puppet_svc => 'nginx',
+    }
     # TODO: Monitor SSL?
 
     $ssl_settings = ssl_ciphersuite('nginx', 'mid', true)
