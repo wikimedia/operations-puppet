@@ -2,11 +2,8 @@ class mirrors::serve {
     # HTTP
     include ::nginx
 
-    letsencrypt::cert::integrated { 'mirrors':
-        subjects   => 'mirrors.wikimedia.org',
-        puppet_svc => 'nginx',
-        system_svc => 'nginx',
-    }
+    # TODO: adopt role/profile pattern and drop the lint:ignore
+    include ::sslcert::dhparam # lint:ignore:wmf_styleguide
     certcentral::cert { 'mirrors':
         puppet_svc => 'nginx',
     }
