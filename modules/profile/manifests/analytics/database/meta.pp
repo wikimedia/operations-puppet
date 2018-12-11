@@ -4,6 +4,8 @@
 # and other Analytics Cluster services.
 #
 class profile::analytics::database::meta(
+    $datadir            = hiera('profile::analytics::database::meta::datadir', '/var/lib/mysql'),
+    $tmpdir             = hiera('profile::analytics::database::meta::tmpdir', '/srv/tmp'),
     $monitoring_enabled = hiera('profile::analytics::database::meta::monitoring_enabled', false),
     $ferm_srange        = hiera('profile::analytics::database::meta::ferm_srange', '$DOMAIN_NETWORKS'),
 ) {
@@ -24,7 +26,8 @@ class profile::analytics::database::meta(
         config    => 'profile/analytics/database/meta/analytics-meta.my.cnf.erb',
         socket    => $mariadb_socket,
         port      => 3306,
-        datadir   => '/var/lib/mysql',
+        datadir   => $datadir,
+        tmpdir    => $tmpdir,
         basedir   => $mariadb_basedir,
         read_only => false,
         require   => Class['mariadb::packages_wmf'],

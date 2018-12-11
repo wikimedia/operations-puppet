@@ -116,5 +116,7 @@ profile::hive::client::hive_metastore_opts: '-javaagent:/usr/share/java/promethe
 profile::hive::client::hive_server_opts: '-javaagent:/usr/share/java/prometheus/jmx_prometheus_javaagent.jar=%{::ipaddress}:10100:/etc/prometheus/hive_server_jmx_exporter.yaml'
 profile::hive::server::monitoring_enabled: true
 profile::hive::metastore::monitoring_enabled: true
+profile::analytics::database::meta::datadir: /srv/mysql_data
+profile::analytics::database::meta::tmpdir: /srv/mysql_tmp
 profile::analytics::database::meta::monitoring_enabled: true
 
