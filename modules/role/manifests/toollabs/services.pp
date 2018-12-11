@@ -12,9 +12,7 @@ class role::toollabs::services(
         active => ($::fqdn == $active_host),
     }
 
-    class { '::toollabs::bigbrother':
-        active => ($::fqdn == $active_host),
-    }
+    class { '::toollabs::bigbrother': }
 
     class { '::toollabs::updatetools':
         active => ($::fqdn == $active_host),
