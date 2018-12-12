@@ -2102,6 +2102,12 @@ node /^rhodium.eqiad.wmnet/ {
     interface::add_ip6_mapped { 'main': }
 }
 
+# NEW network insights (netflow/pmacct, etc.) via T201364
+node 'sulfur.wikimedia.org' {
+    role(netinsights)
+}
+
+
 
 node 'thorium.eqiad.wmnet' {
     # thorium is used to host public Analytics websites like:

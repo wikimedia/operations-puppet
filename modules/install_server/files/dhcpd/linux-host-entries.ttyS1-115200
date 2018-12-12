@@ -2151,6 +2151,11 @@ host deploy1001 {
     fixed-address deploy1001.eqiad.wmnet;
 }
 
+host deploy2001 {
+    hardware ethernet 14:18:77:5B:29:2A;
+    fixed-address deploy2001.codfw.wmnet;
+}
+
 host druid1001 {
     hardware ethernet 1C:98:EC:29:E2:98;
     fixed-address druid1001.eqiad.wmnet;
@@ -2811,6 +2816,10 @@ host icinga1001 {
     fixed-address icinga1001.wikimedia.org;
 }
 
+host icinga2001 {
+    hardware ethernet 14:18:77:33:42:F8;
+    fixed-address icinga2001.wikimedia.org;
+}
 
 host iron {
     hardware ethernet 78:2b:cb:09:0d:5c;
@@ -5814,11 +5823,6 @@ host mwmaint2001 {
     fixed-address mwmaint2001.codfw.wmnet;
 }
 
-host deploy2001 {
-    hardware ethernet 14:18:77:5B:29:2A;
-    fixed-address deploy2001.codfw.wmnet;
-}
-
 host neodymium {
     hardware ethernet 90:B1:1C:2D:79:8C;
     fixed-address neodymium.eqiad.wmnet;
@@ -6555,9 +6559,9 @@ host stat1007 {
     fixed-address stat1007.eqiad.wmnet;
 }
 
-host icinga2001 {
-    hardware ethernet 14:18:77:33:42:F8;
-    fixed-address icinga2001.wikimedia.org;
+host sulfur {
+    hardware ethernet D0:94:66:5F:7C:96;
+    fixed-address sulfur.wikimedia.org;
 }
 
 host torrelay1001 {
@@ -6576,7 +6580,6 @@ host weblog1001 {
     hardware ethernet 14:18:77:5B:2E:16;
     fixed-address weblog1001.eqiad.wmnet;
 }
-
 
 host wezen {
     hardware ethernet 70:10:6f:ab:39:5e;
