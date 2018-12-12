@@ -135,9 +135,9 @@ class presto::server(
     service { 'presto-server':
         ensure  => $service_ensure,
         require => [
-            Presto::Properites['config'],
-            Presto::Properites['node'],
-            Presto::Properites['log'],
+            Presto::Properties['config'],
+            Presto::Properties['node'],
+            Presto::Properties['log'],
             File['/etc/presto/jvm.config'],
             File['/var/log/presto'],
             Rsyslog::Conf['presto-server'],
