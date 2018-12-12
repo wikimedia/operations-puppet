@@ -1,6 +1,6 @@
 class profile::dumps::nfs(
-    $clients_all = hiera('dumps_nfs_clients'),
-    $clients_wanted = hiera('profile::dumps::nfs::clients_wanted'),
+    Hash $clients_all = hiera('dumps_nfs_clients'),
+    String $clients_wanted = hiera('profile::dumps::nfs::clients_wanted'),
 ) {
     $path    = '/data'
 
@@ -15,12 +15,12 @@ class profile::dumps::nfs(
         $clients = {}
     }
 
-    $lockd_udp       = '32768'
-    $lockd_tcp       = '32769'
-    $mountd_port     = '32767'
-    $statd_port      = '32765'
-    $statd_out       = '32766'
-    $portmapper_port = '111'
+    $lockd_udp       = 32768
+    $lockd_tcp       = 32769
+    $mountd_port     = 32767
+    $statd_port      = 32765
+    $statd_out       = 32766
+    $portmapper_port = 111
 
     class { '::dumps::nfs':
         clients     => $clients,

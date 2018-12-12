@@ -1,11 +1,11 @@
 class dumps::nfs(
-    $clients = undef,
-    $path = undef,
-    $lockd_udp = undef,
-    $lockd_tcp = undef,
-    $mountd_port = undef,
-    $statd_port = undef,
-    $statd_out = undef,
+    Hash $clients = undef,
+    Stdlib::Unixpath $path = undef,
+    Stdlib::Port $lockd_udp = undef,
+    Stdlib::Port $lockd_tcp = undef,
+    Stdlib::Port $mountd_port = undef,
+    Stdlib::Port $statd_port = undef,
+    Stdlib::Port $statd_out = undef,
 ) {
     file { '/etc/exports':
         mode    => '0444',
