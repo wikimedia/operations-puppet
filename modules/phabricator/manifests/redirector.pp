@@ -9,11 +9,11 @@
 define phabricator::redirector(
     String $mysql_user,
     String $mysql_pass,
-    String $mysql_host,
+    Stdlib::Fqdn $mysql_host,
     Stdlib::Unixpath $rootdir = '/srv/phab',
     String $field_index       = '',
-    String $phab_host         = 'phabricator.wikimedia.org',
-    String $alt_host          = 'phab.wmfusercontent.org',
+    Stdlib::Fqdn $phab_host   = 'phabricator.wikimedia.org',
+    Stdlib::Fqdn $alt_host    = 'phab.wmfusercontent.org',
     Hash $rate_limits         = {'request' => 0, 'connection' => 0}
 ) {
     require phabricator

@@ -4,9 +4,9 @@
 # and perform administrative tasks.
 #
 class phabricator::tools (
-    String $dbmaster_host       = 'localhost',
+    Stdlib::Fqdn $dbmaster_host       = 'localhost',
     Integer $dbmaster_port      = 3306,
-    String $dbslave_host        = 'localhost',
+    Stdlib::Fqdn $dbslave_host        = 'localhost',
     Integer $dbslave_port       = 3323,
     Stdlib::Unixpath $directory = '/srv/phab/tools',
     String $deploy_target       = 'phabricator/deployment',
