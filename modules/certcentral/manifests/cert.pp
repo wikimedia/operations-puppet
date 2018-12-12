@@ -1,5 +1,5 @@
 define certcentral::cert (
-    String $puppet_svc = 'nginx',
+    Variant[String, Undef] $puppet_svc = undef,
     String $key_group = 'root',
 ) {
     require ::certcentral
