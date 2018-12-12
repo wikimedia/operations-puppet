@@ -46,10 +46,10 @@ class profile::presto::server(
     $config_properties = $presto_config['properties']['config'] + $config_overrides
 
     # Use common node.properties + the specific node.id for this hostname.
-    # $presto_config['nodes'] MUST contain an entry for this hostname that maps
-    # to a hash that includes an 'id' entry to specify the node.id for this hostname.
+    # $presto_config['nodes'] MUST contain an entry for this fqdn that maps
+    # to a hash that includes an 'id' entry to specify the node.id for this fqdn.
     $node_properties = $presto_config['properties']['node'] + {
-        'node.id' => $presto_config['nodes'][$::hostname]['id']
+        'node.id' => $presto_config['nodes'][$::fqdn]['id']
     }
 
     # Don't set any log properties if none given
