@@ -148,7 +148,7 @@ presto_clusters:
       # a properties file at /etc/presto/catalog/$name.properties.
       hive:
         properties:
-          connector.name: hive
+          connector.name: hive-hadoop2
           hive.metastore.uri: ca-coord-1.cloud-analytics-eqiad.wmflabs:9083
           hive.metastore.username: presto
           hive.storage-format: PARQUET
