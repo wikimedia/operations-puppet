@@ -49,12 +49,11 @@ class profile::prometheus::openstack_exporter (
 
     # perhaps this should go in the package
     file { '/var/cache/prometheus-openstack-exporter':
-        ensure  => directory,
-        recurse => true,
-        force   => true,
-        mode    => '0775',
-        owner   => 'root',
-        group   => 'prometheus',
+        ensure => directory,
+        force  => true,
+        mode   => '0775',
+        owner  => 'prometheus',
+        group  => 'prometheus',
     }
 
     ferm::service { 'prometheus-openstack-exporter':
