@@ -126,8 +126,8 @@ class presto::server(
 
 
     $service_ensure = $enabled ? {
-        false   => 'absent',
-        default => 'present',
+        false   => 'stopped',
+        default => 'running',
     }
 
     # Start the Presto server.
