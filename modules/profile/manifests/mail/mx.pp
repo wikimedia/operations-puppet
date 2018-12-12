@@ -17,6 +17,10 @@ class profile::mail::mx (
         puppet_svc => 'nginx',
         system_svc => 'nginx',
     }
+    certcentral::cert { 'mx':
+        puppet_svc => undef,
+        key_group  => 'Debian-exim',
+    }
 
     class { 'nginx':
         variant => 'light',
