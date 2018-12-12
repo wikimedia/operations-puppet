@@ -558,6 +558,7 @@ lvs::configuration::lvs_services:
     description: Elasticsearch search for MediaWiki (Omega cluster) - HTTPS
     class: low-traffic
     sites:
+    - eqiad
     - codfw
     ip: *ip_block013
     port: 9443
@@ -575,12 +576,15 @@ lvs::configuration::lvs_services:
     icinga:
       check_command: check_https_on_port!9443
       sites:
+        eqiad:
+          hostname: search.svc.eqiad.wmnet
         codfw:
           hostname: search.svc.codfw.wmnet
   search-psi-https:
     description: Elasticsearch search for MediaWiki (Psi cluster) - HTTPS
     class: low-traffic
     sites:
+    - eqiad
     - codfw
     ip: *ip_block013
     port: 9643
@@ -598,6 +602,8 @@ lvs::configuration::lvs_services:
     icinga:
       check_command: check_https_on_port!9643
       sites:
+        eqiad:
+          hostname: search.svc.eqiad.wmnet
         codfw:
           hostname: search.svc.codfw.wmnet
   mathoid:

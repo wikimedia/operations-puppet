@@ -47,6 +47,7 @@ elasticsearch:
       pooled: 'yes'
       weight: 10
     datacenters:
+    - eqiad
     - codfw
   elasticsearch-psi-ssl:
     port: 9643
@@ -54,6 +55,7 @@ elasticsearch:
       pooled: 'yes'
       weight: 10
     datacenters:
+    - eqiad
     - codfw
 sca:
   zotero:
