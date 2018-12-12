@@ -367,6 +367,8 @@ class profile::logstash::collector (
         increment       => [ '%{level}' ],
     }
 
+    class { '::profile::prometheus::statsd_exporter': }
+
     # Alerting
     monitoring::check_prometheus { 'logstash-udp-loss-ratio':
         description     => 'Packet loss ratio for UDP',

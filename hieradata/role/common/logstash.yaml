@@ -61,3 +61,12 @@ role::kibana::ldap_groups:
   - cn=nda,ou=groups,dc=wikimedia,dc=org
   - cn=wmf,ou=groups,dc=wikimedia,dc=org
 diamond::remove: true
+
+profile::prometheus::statsd_exporter::mappings:
+  # In some instances, e.g. mediawiki, the sender and channel are concatenated with a dot separator.  Level is the last field.
+  - match: '^logstash\.rate\.(.*)\.(.*)$'
+    name: logstash_count
+    match_type: regex
+    labels:
+      sender: "$1"
+      level: "$2"
