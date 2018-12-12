@@ -88,13 +88,6 @@ class ores::web(
                 'task_tracker'               => 'redis',
                 'task_create_missing_queues' => true,
                 'worker_max_tasks_per_child' => '100',
-                'worker_hijack_root_logger'  => false,
-                'result_serializer'          => 'pickle',
-                'task_serializer'            => 'pickle',
-                'accept_content'             => [ 'pickle', 'json' ],
-                'broker_transport_options'   => {
-                  'socket_timeout' => '15',
-                },
             },
         },
         'lock_managers' => {
