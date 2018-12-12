@@ -132,7 +132,7 @@ presto_clusters:
       config:
         http-server.http.port: 8280
         # TODO: Set up LVS for discovery since any Presto node can do it?
-        discovery.uri: ca-worker-1.cloud-analytics.eqiad.wmflab:8280
+        discovery.uri: http://ca-worker-1.cloud-analytics.eqiad.wmflabs:8280
         # We colocate worker and coordinators together.
         coordinator: true
         node-scheduler.include-coordinator: true
@@ -149,7 +149,7 @@ presto_clusters:
       hive:
         properties:
           connector.name: hive-hadoop2
-          hive.metastore.uri: ca-coord-1.cloud-analytics-eqiad.wmflabs:9083
+          hive.metastore.uri: thrift://ca-coord-1.cloud-analytics-eqiad.wmflabs:9083
           hive.metastore.username: presto
           hive.storage-format: PARQUET
           hive.compression-codec: SNAPPY
