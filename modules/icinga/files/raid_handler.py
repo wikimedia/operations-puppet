@@ -22,7 +22,7 @@ COMPRESSED_RAID_TYPES = ('megacli', 'hpssacli')
 
 SKIP_STRINGS = ('timeout', 'timed out', 'connection refused', 'out of bounds',
                 'must have write cache policy', 'Could not complete SSL handshake',
-                r'Command check_raid_[^ ]+ not defined')
+                r'Command check_raid_[^ ]+ not defined', 'Connection reset by peer')
 
 LOG_PATH = '/var/log/icinga/raid_handler.log'
 COMMAND_FILE = '/var/lib/nagios/rw/nagios.cmd'
