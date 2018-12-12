@@ -139,3 +139,7 @@ private:
       home: true
       project: true
       scratch: true
+  soweego:
+    gid: 53892
+    mounts:
+      dumps: true
