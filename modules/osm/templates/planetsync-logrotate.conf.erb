@@ -3,6 +3,7 @@
 #####################################################################
 
 <%= @osm_log_dir %>/osmosis.log {
+  su osmupdater osmupdater
   daily
   notifempty
   maxage 30
@@ -15,6 +16,7 @@
 }
 
 <%= @osm_log_dir %>/osm2pgsql.log {
+  su osmupdater osmupdater
   daily
   notifempty
   maxage 30

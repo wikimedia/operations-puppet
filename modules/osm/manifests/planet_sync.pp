@@ -72,7 +72,7 @@ define osm::planet_sync (
 ) {
     include ::osm::users
 
-    $osm_log_dir = '/var/log/osmosis/'
+    $osm_log_dir = '/var/log/osmosis'
 
     file { '/srv/downloads':
         ensure => 'directory',
