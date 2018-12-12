@@ -40,6 +40,12 @@ profile::certcentral::certificates:
         SNI:
         - 'mirrors.wikimedia.org'
         challenge: dns-01
+    mx:
+        CN: 'mx1001.wikimedia.org'
+        SNI:
+        - 'mx1001.wikimedia.org'
+        - 'mx2001.wikimedia.org'
+        challenge: dns-01
     netbox:
         CN: 'netbox.wikimedia.org'
         SNI:
