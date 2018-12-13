@@ -132,11 +132,10 @@ presto_clusters:
       config:
         http-server.http.port: 8280
         # TODO: Set up LVS for discovery since any Presto node can do it?
-        discovery.uri: http://ca-worker-1.cloud-analytics.eqiad.wmflabs:8280
-        # We colocate worker and coordinators together.
-        coordinator: true
-        node-scheduler.include-coordinator: true
-        discovery-server.enabled: true
+        discovery.uri: http://ca-master-2.cloud-analytics.eqiad.wmflabs:8280
+        coordinator: false
+        node-scheduler.include-coordinator: false
+        discovery-server.enabled: false
         # flat will try to schedule splits on the host where the data is located by reserving
         # 50% of the work queue for local splits. It is recommended to use flat for clusters
         # where distributed storage runs on the same nodes as Presto workers.

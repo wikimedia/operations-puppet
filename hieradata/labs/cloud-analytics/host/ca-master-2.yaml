@@ -1,0 +1,9 @@
+
+# Run this node as the Presto Coordinator and Discovery service.
+profile::presto::server::config_overrides:
+  coordinator: true
+  discovery-server.enabled: true
+
+# Use a lot of memory for ca-master-2 has less memory than worker nodes.
+# Only reserve a small heap.
+profile::presto::server::heap_max: 2G
