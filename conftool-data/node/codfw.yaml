@@ -248,12 +248,6 @@ codfw:
     elastic2053.codfw.wmnet: [elasticsearch, elasticsearch-ssl, elasticsearch-psi-ssl]
     elastic2054.codfw.wmnet: [elasticsearch, elasticsearch-ssl, elasticsearch-psi-ssl]
   restbase:
-    restbase2001.codfw.wmnet: [restbase, cassandra]
-    restbase2002.codfw.wmnet: [restbase, cassandra]
-    restbase2003.codfw.wmnet: [restbase, cassandra]
-    restbase2004.codfw.wmnet: [restbase, cassandra]
-    restbase2005.codfw.wmnet: [restbase, cassandra]
-    restbase2006.codfw.wmnet: [restbase, cassandra]
     restbase2007.codfw.wmnet: [restbase, cassandra]
     restbase2008.codfw.wmnet: [restbase, cassandra]
     restbase2009.codfw.wmnet: [restbase, cassandra]
