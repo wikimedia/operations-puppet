@@ -14,11 +14,7 @@ class authdns::scripts {
     }
 
     file { '/usr/local/bin/authdns-lint':
-        ensure => present,
-        mode   => '0555',
-        owner  => 'root',
-        group  => 'root',
-        source => "puppet:///modules/${module_name}/authdns-lint",
+        ensure => absent,
     }
 
     file { '/usr/local/sbin/authdns-update':
