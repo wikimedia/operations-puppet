@@ -16,3 +16,206 @@ profile::ores::web::redis_host: "oresrdb.svc.%{::site}.wmnet"
 # The password is in the private store, this is here for completeness
 # profile::ores::web::redis_password: nothing
 diamond::remove: true
+
+profile::prometheus::statsd_exporter::mappings:
+  - match: ores.*.precache_request.*.*
+    name: ores_precache_request_duration
+    labels:
+      context: "$2"
+      model: "$3"
+
+  - match: ores.*.scores_request.*.*.*
+    name: ores_scores_request_duration
+    labels:
+      context: "$2"
+      model: "$3"
+      revids: "$4"
+
+  - match: ores.*.revision_scored.*.*
+    name: ores_revision_scored_count
+    labels:
+      context: "$2"
+      model: "$3"
+
+  - match: ores.*.datasources_extracted.*.*.*
+    name: ores_datasources_extracted_duration
+    labels:
+      context: "$2"
+      model: "$3"
+      revids: "$4"
+
+  - match: ores.*.score_processed.*.*
+    name: ores_score_processed_duration
+    labels:
+      context: "$2"
+      model: "$3"
+
+  - match: ores.*.score_processor_overloaded.*.*
+    name: ores_score_processor_overloaded_count
+    labels:
+      context: "$2"
+      model: "$3"
+
+  - match: ores.*.precache_cache_hit.*.*
+    name: ores_precache_cache_hit_count
+    labels:
+      context: "$2"
+      model: "$3"
+
+  - match: ores.*.score_cache_hit.*.*
+    name: ores_score_cache_hit_count
+    labels:
+      context: "$2"
+      model: "$3"
+
+  - match: ores.*.precache_cache_miss.*.*
+    name: ores_precache_cache_miss_count
+    labels:
+      context: "$2"
+      model: "$3"
+
+  - match: ores.*.score_cache_miss.*.*
+    name: ores_score_cache_miss_count
+    labels:
+      context: "$2"
+      model: "$3"
+
+  - match: ores.*.score_errored.*.*
+    name: ores_score_errored_count
+    labels:
+      context: "$2"
+      model: "$3"
+
+  - match: ores.*.score_timed_out.*.*
+    name: ores_score_timed_out_duration
+    labels:
+      context: "$2"
+      model: "$3"
+
+  - match: ores.*.precache_score.*.*
+    name: ores_precache_score_duration
+    labels:
+      context: "$2"
+      model: "$3"
+
+  - match: ores.*.precache_scoring_error.*.*.*
+    name: ores_precache_scoring_error_duration
+    labels:
+      context: "$2"
+      model: "$3"
+      status: "$4"
+
+  - match: ores.*.locking_response_time.*
+    name: ores_locking_response_time_duration
+    labels:
+      type: "$2"
+
+  - match: ores.*.response.*.*
+    name: ores_response_count
+    labels:
+      code: "$2"
+      context: "$3"
+
+  - match: ores.*.uwsgi.core.overloaded
+    name: ores_uwsgi_core_count
+    labels:
+
+  - match: ores.*.uwsgi.core.routed_signals
+    name: ores_uwsgi_core_routed_signals_count
+    labels:
+
+  - match: ores.*.uwsgi.core.total_tx
+    name: ores_uwsgi_core_total_tx_count
+    labels:
+
+  - match: ores.*.uwsgi.core.unrouted_signals
+    name: ores_uwsgi_unrouted_signals_count
+    labels:
+
+  - match: ores.*.uwsgi.rss_size
+    name: ores_uwsgi_rss_size
+    labels:
+
+  - match: ores.*.uwsgi.vsz_size
+    name: ores_uwsgi_vsz_size
+    labels:
+
+  - match: ores.*.uwsgi.socket.*.listen_queue
+    name: ores_uwsgi_socket_listen_queue
+    labels:
+      socketid: "$2"
+
+  - match: ores.*.uwsgi.worker.*.delta_requests
+    name: ores_uwsgi_worker_delta_requests_count
+    labels:
+      workerid: "$2"
+
+  - match: ores.*.uwsgi.worker.*.failed_requests
+    name: ores_uwsgi_worker_failed_requests_count
+    labels:
+      workerid: "$2"
+
+  - match: ores.*.uwsgi.worker.*.requests
+    name: ores_uwsgi_worker_requests_count
+    labels:
+      workerid: "$2"
+
+  - match: ores.*.uwsgi.worker.*.respawns
+    name: ores_uwsgi_worker_respawns_count
+    labels:
+      workerid: "$2"
+
+  - match: ores.*.uwsgi.worker.*.total_tx
+    name: ores_uwsgi_worker_total_tx_count
+    labels:
+      workerid: "$2"
+
+  - match: ores.*.uwsgi.worker.*.core.*.exceptions
+    name: ores_uwsgi_worker_core_exceptions_count
+    labels:
+      workerid: "$2"
+
+  - match: ores.*.uwsgi.worker.*.core.*.offloaded_requests
+    name: ores_uwsgi_worker_core_offloaded_requests_count
+    labels:
+      workerid: "$2"
+
+  - match: ores.*.uwsgi.worker.*.core.*.read_errors
+    name: ores_uwsgi_worker_core_read_errors_count
+    labels:
+      workerid: "$2"
+
+  - match: ores.*.uwsgi.worker.*.core.*.requests
+    name: ores_uwsgi_worker_core_requests_count
+    labels:
+      workerid: "$2"
+
+  - match: ores.*.uwsgi.worker.*.core.*.routed_requests
+    name: ores_uwsgi_worker_core_routed_requests_count
+    labels:
+      workerid: "$2"
+
+  - match: ores.*.uwsgi.worker.*.core.*.static_requests
+    name: ores_uwsgi_worker_core_static_requests_count
+    labels:
+      workerid: "$2"
+
+  - match: ores.*.uwsgi.worker.*.core.*.write_errors
+    name: ores_uwsgi_worker_core_write_errors_count
+    labels:
+      workerid: "$2"
+
+  - match: ores.*.uwsgi.worker.*.avg_response_time
+    name: ores_uwsgi_worker_avg_response_time
+    labels:
+      workerid: "$2"
+
+  - match: ores.*.uwsgi.worker.*.rss_size
+    name: ores_uwsgi_worker_rss_size
+    labels:
+      workerid: "$2"
+
+  - match: ores.*.uwsgi.worker.*.vsz_size
+    name: ores_uwsgi_worker_vsz_size
+    labels:
+      workerid: "$2"
