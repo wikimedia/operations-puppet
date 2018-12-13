@@ -17,7 +17,7 @@ DIRS=$(find $2 -maxdepth 0 -type d -not -path "${3}")
 
 # Expansion is expected
 # shellcheck disable=SC2086
-timeout 10m nice -n 19 ionice -c 3 du --block-size=1 --summarize ${DIRS} \
+timeout 10m nice -n 19 ionice -c 3 du --block-size=1 --summarize ${DIRS} 2>/dev/null \
     | awk -v name="${1}" '{ printf("node_directory_size_bytes{directory=\"%s\",name=\"%s\"} %d\n", $2, name, $1); }' \
     >> "${OUTFILE}"
 
