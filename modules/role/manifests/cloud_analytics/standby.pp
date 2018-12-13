@@ -8,4 +8,7 @@ class role::cloud_analytics::standby {
     }
 
     include ::profile::hadoop::master::standby
+    # Run a presto coordinator (not worker) here.
+    # Coordinator vs worker is configured via hiera.
+    include ::profile::presto::server
 }
