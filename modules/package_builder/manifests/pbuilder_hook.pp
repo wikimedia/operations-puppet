@@ -55,6 +55,15 @@ define package_builder::pbuilder_hook(
         source => 'puppet:///modules/package_builder/hooks/D04php72'
     }
 
+    # on stretch, add a hook for building Spicerack dependencies from a dedicated component
+    file { "${basepath}/hooks/${distribution}/D03spicerack":
+        ensure => present,
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0555',
+        source => 'puppet:///modules/package_builder/hooks/D03spicerack'
+    }
+
     # Dependency info
     File["${basepath}/hooks/${distribution}"] -> File["${basepath}/hooks/${distribution}/C10shell.wikimedia.org"]
     File["${basepath}/hooks/${distribution}"] -> File["${basepath}/hooks/${distribution}/D01apt.wikimedia.org"]
