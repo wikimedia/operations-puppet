@@ -16,22 +16,6 @@ class profile::mail::mx (
         key_group  => 'Debian-exim',
     }
 
-    class { 'nginx':
-        ensure  => absent,
-        variant => 'light',
-    }
-
-    nginx::site { 'letsencrypt-standalone':
-        ensure  => absent,
-        content => template('letsencrypt/cert/integrated/standalone.nginx.erb'),
-    }
-
-    ferm::service { 'nginx-http':
-        ensure => absent,
-        proto  => 'tcp',
-        port   => '80',
-    }
-
     class { 'spamassassin':
         required_score   => '4.0',
         use_bayes        => '1',
