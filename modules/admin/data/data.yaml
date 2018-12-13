@@ -3123,7 +3123,7 @@ users:
     realname: Joe Wass
     name: afandian2
     ssh_keys:
-      - AAAAB3NzaC1yc2EAAAADAQABAAABAQCsJPyatQmAgubnM6ChTohZdEYTOfVJjzpsOtiVrBcwTOVBwEl3qcORlMEF0MMk+BdMfiMd12jmfxGWuOhzJAZ8iPDE9Bk9z0/ttb6NJj09CfO5YlfOsgi8gAXthZ7gAX7EulUVW1jKHksbG3tS7zIxmx5+GzHWJ6SGapKsUrf2LC0RwQkiNyha2535vZlvmbMRhaICeN9F/2GCSoEbgdvf2+4Ln3hO/me5EcKvxDfXCcCYklHxNS9ikfK84RpXd8EfIv2tmf1LYWw38DUVv6io3ehuar7c/twBTmodiKqkkywLHNY0u6KFAnKEsBuQ989CiepxIJjb+NYd+KuZvMBh jwass@herring.local
+      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIHt287L9YmVILW5tSEruECUqJ+Ad0Ja+Q3Dl8Pnncbxc jwass@herring.local
     uid: 20561
     email: joe@afandian.com
   jgleeson:
