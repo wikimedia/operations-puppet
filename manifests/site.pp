@@ -2301,6 +2301,7 @@ node 'wdqs1010.eqiad.wmnet' {
 node 'weblog1001.eqiad.wmnet'
 {
     role(spare::system)
+    interface::add_ip6_mapped { 'main': }
 }
 
 # VMs for performance team replacing hafnium (T179036)
