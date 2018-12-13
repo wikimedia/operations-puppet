@@ -69,6 +69,22 @@ class authdns(
         target => '/usr/share/GeoIP/GeoIP2-City.mmdb',
     }
 
+    # Shared cookie secret to avoid cookie validity disruptions
+    file { '/etc/gdnsd/secrets':
+        ensure => 'directory',
+        owner  => 'gdnsd',
+        group  => 'gdnsd',
+        mode   => '0500',
+    }
+    file { '/etc/gdnsd/secrets/dnscookies.key':
+        ensure    => 'present',
+        owner     => 'gdnsd',
+        group     => 'gdnsd',
+        mode      => '0400',
+        content   => secret('dns/dnscookies.key'),
+        show_diff => false,
+    }
+
     $workingdir = '/srv/authdns/git' # export to template
 
     file { '/etc/wikimedia-authdns.conf':

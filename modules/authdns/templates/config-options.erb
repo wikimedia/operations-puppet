@@ -18,3 +18,6 @@ tcp_threads = <%= @physicalcorecount %>
 
 # NSID for debugging the mapping of functional IPs to real servers
 nsid_ascii = <%= @hostname %>
+
+# Secret master key for cookie generation, shared by all the authdns fleet
+cookie_key_file = /etc/gdnsd/secrets/dnscookies.key
