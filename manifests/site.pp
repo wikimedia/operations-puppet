@@ -1886,11 +1886,10 @@ node /^oresrdb200[12]\.codfw\.wmnet$/ {
     include ::standard
 }
 
-# oxygen runs a kafkatee instance that consumes webrequest from Kafka
-# and writes to a couple of files for quick and easy ops debugging.,
+# To be decommed in T211826
 node 'oxygen.eqiad.wmnet'
 {
-    role(logging::webrequest::ops)
+    role(spare::system)
 }
 
 # parser cache databases
@@ -2292,10 +2291,9 @@ node 'wdqs1010.eqiad.wmnet' {
     role(wdqs::test)
 }
 
-# replacing oxygen via T207760
 node 'weblog1001.eqiad.wmnet'
 {
-    role(spare::system)
+    role(logging::webrequest::ops)
     interface::add_ip6_mapped { 'main': }
 }
 
