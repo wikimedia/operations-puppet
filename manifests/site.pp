@@ -2025,11 +2025,6 @@ node /^restbase10(0[789]|1[012345678])\.eqiad\.wmnet$/ {
     role(restbase::production)
 }
 
-# T211070
-node /^restbase200[1-6]\.codfw\.wmnet$/ {
-    role(spare::system)
-}
-
 # restbase codfw cluster
 node /^restbase20(0[7-9]|1[0-8])\.codfw\.wmnet$/ {
     role(restbase::production)

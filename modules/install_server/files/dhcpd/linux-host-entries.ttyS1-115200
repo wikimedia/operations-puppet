@@ -6268,43 +6268,6 @@ host restbase1018 {
     filename "lpxelinux.0";
 }
 
-host restbase2001 {
-    hardware ethernet 3c:a8:2a:0a:ec:a0;
-    fixed-address restbase2001.codfw.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
-    filename "lpxelinux.0";
-}
-host restbase2002 {
-    hardware ethernet 3c:a8:2a:0a:5e:2c;
-    fixed-address restbase2002.codfw.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
-    filename "lpxelinux.0";
-}
-host restbase2003 {
-    hardware ethernet 3c:a8:2a:0a:2a:44;
-    fixed-address restbase2003.codfw.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
-    filename "lpxelinux.0";
-}
-host restbase2004 {
-    hardware ethernet 3c:a8:2a:0a:ee:a0;
-    fixed-address restbase2004.codfw.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
-    filename "lpxelinux.0";
-}
-host restbase2005 {
-    hardware ethernet 3c:a8:2a:0a:fd:20;
-    fixed-address restbase2005.codfw.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
-    filename "lpxelinux.0";
-}
-host restbase2006 {
-    hardware ethernet 3c:a8:2a:0b:10:00;
-    fixed-address restbase2006.codfw.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
-    filename "lpxelinux.0";
-}
-
 host restbase2007 {
     hardware ethernet 14:02:ec:06:a9:dc;
     fixed-address restbase2007.codfw.wmnet;
