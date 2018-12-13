@@ -20,6 +20,7 @@ import os.path
 import subprocess
 import json
 import requests
+import re
 
 from prometheus_client import CollectorRegistry, Gauge, write_to_textfile
 from prometheus_client.exposition import generate_latest
@@ -43,14 +44,21 @@ def collect_gdnsd_stats(stats, registry):
         namespace='gdnsd', registry=registry)
     dns_stats['v6'] = Gauge(
         'request_v6', 'IPv6 requests', namespace='gdnsd', registry=registry)
+    dns_stats['cookies'] = Gauge(
+        'cookie', 'EDNS cookies processed', ['status'],
+        namespace='gdnsd', registry=registry)
 
     if any(x not in stats for x in ('uptime', 'udp', 'tcp', 'stats')):
         raise ValueError('Failed to parse stats {}'.format(stats))
 
+    cookie_re = re.compile('^edns_cookie_([a-z]+)$')
     try:
         for name, value in stats['stats'].items():
-            if name in ('noerror', 'refused', 'nxdomain', 'notimp',
-                        'badvers', 'formerr', 'dropped'):
+            cm = cookie_re.match(name)
+            if cm:
+                dns_stats['cookies'].labels(status=cm.group(1)).set(value)
+            elif name in ('noerror', 'refused', 'nxdomain', 'notimp',
+                          'badvers', 'formerr', 'dropped'):
                 dns_stats['requests'].labels(status=name).set(value)
             elif name in dns_stats:
                 dns_stats[name].set(value)
