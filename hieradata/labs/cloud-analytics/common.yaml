@@ -13,10 +13,6 @@ profile::hadoop::common::hadoop_cluster_name: cloud-analytics
 profile::hadoop::master::hadoop_user_groups: project-cloud-analytics
 
 
-# Presto clients will connect to the Presto cluster by this name.
-profile::presto::cluster_name: cloud-analytics
-
-
 # Zookeeper clients will connect to the Zookeeper cluster by this name.
 profile::zookeeper::cluster_name: cloud-analytics
 # To avoid version conflics with Cloudera zookeeper package, this
@@ -108,62 +104,39 @@ profile::hadoop::worker::monitoring_enabled: true
 profile::hadoop::standby_master::monitoring_enabled: true
 
 
+#
+# Presto settings:
+#
 
-# Presto clusters.
-presto_clusters:
-  # In the Presto cloud-analytics cluster, each Presto worker is colocated with a
-  # Hadoop worker, and each Presto worker is also a coordinator.
-  cloud-analytics:
-    nodes:
-      ca-worker-1.cloud-analytics.eqiad.wmflabs:
-        id: '1'
-      ca-worker-2.cloud-analytics.eqiad.wmflabs:
-        id: '2'
-      ca-worker-3.cloud-analytics.eqiad.wmflabs:
-        id: '3'
-      ca-worker-4.cloud-analytics.eqiad.wmflabs:
-        id: '4'
-      ca-worker-5.cloud-analytics.eqiad.wmflabs:
-        id: '5'
-    properties:
-      node:
-        node.environment: production
-        node.data-dir: /srv/presto
-      config:
-        http-server.http.port: 8280
-        # TODO: Set up LVS for discovery since any Presto node can do it?
-        discovery.uri: http://ca-master-2.cloud-analytics.eqiad.wmflabs:8280
-        coordinator: false
-        node-scheduler.include-coordinator: false
-        discovery-server.enabled: false
-        # flat will try to schedule splits on the host where the data is located by reserving
-        # 50% of the work queue for local splits. It is recommended to use flat for clusters
-        # where distributed storage runs on the same nodes as Presto workers.
-        node-scheduler.network-topology: flat
-      log: {}
-    catalogs:
-      # Each catalog hash should contain a single properties has that will
-      # end up being passed to the presto::properties define.  This will render
-      # a properties file at /etc/presto/catalog/$name.properties.
-      hive:
-        properties:
-          connector.name: hive-hadoop2
-          hive.metastore.uri: thrift://ca-coord-1.cloud-analytics-eqiad.wmflabs:9083
-          hive.metastore.username: presto
-          hive.storage-format: PARQUET
-          hive.compression-codec: SNAPPY
-          # We colocate workers with Hadoop DataNodes.
-          hive.force-local-scheduling: true
-          # Allow presto-cli to impersonate the user running the process
-          hive.hdfs.impersonation.enabled: true
-          # TODO: do we want to disable non managed tables?
-          hive.non-managed-table-writes-enabled: true
-          hive.non-managed-table-creates-enabled: true
-      # TODO: setup catalog connection to labsdb mysql?
+# This will be used for the node.enviroment for all Presto servers in this cluster.
+profile::presto::cluster_name: cloud-analytics
 
-# Use a lot of memory for presto.
+# TODO: Set up LVS for discovery since any Presto node can do it?
+profile::presto::discovery_uri: http://ca-master-2.cloud-analytics.eqiad.wmflabs:8280
+
+# Use a lot of memory for Presto workers.
 # This should match the value of Hadoop yarn_nodemanager_os_reserved_memory_mb
 profile::presto::server::heap_max: 104G
+
+profile::presto::server::catalogs:
+  # Each catalog hash should contain a single properties has that will
+  # end up being passed to the presto::properties define.  This will render
+  # a properties file at /etc/presto/catalog/$name.properties.
+  hive:
+    properties:
+      connector.name: hive-hadoop2
+      hive.metastore.uri: thrift://ca-coord-1.cloud-analytics-eqiad.wmflabs:9083
+      hive.metastore.username: presto
+      hive.storage-format: PARQUET
+      hive.compression-codec: SNAPPY
+      # We colocate workers with Hadoop DataNodes.
+      hive.force-local-scheduling: true
+      # Allow presto-cli to impersonate the user running the process
+      hive.hdfs.impersonation.enabled: true
+      # TODO: do we want to disable non managed tables?
+      hive.non-managed-table-writes-enabled: true
+      hive.non-managed-table-creates-enabled: true
+  # TODO: setup catalog connection to labsdb mysql?
 
 
 

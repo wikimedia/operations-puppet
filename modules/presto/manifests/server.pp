@@ -53,7 +53,9 @@ class presto::server(
 
     $default_node_properties = {
         'node.environment' => 'test',
-        'node.id'          => '1001',
+        # If node.id is not provided, then we will default to using the node's
+        # fqdn with . replaced by -.
+        'node.id'          => inline_template('<%= @fqdn.tr(\'.\', \'-\') %>'),
         'node.data-dir'    => '/var/lib/presto',
     }
 
@@ -62,24 +64,21 @@ class presto::server(
         'com.facebook.presto' => 'INFO',
     }
 
-
-    $presto_config_properties = merge($default_config_properties, $config_properties)
     presto::properties { 'config':
-        properties => $presto_config_properties,
+        properties => $default_config_properties + config_properties,
     }
 
-    $presto_node_properties = merge($default_node_properties, $node_properties)
+    $final_node_properties = $default_node_properties + $node_properties
     presto::properties { 'node':
-        properties => $presto_node_properties,
+        properties => $final_node_properties,
     }
 
-    $presto_log_properties = merge($default_log_properties, $log_properties)
     presto::properties { 'log':
-        properties => $presto_log_properties,
+        properties => $default_log_properties + $log_properties,
     }
 
     file { '/etc/presto/jvm.config':
-        content => template('presto/jvm.config.erb')
+        content => template('presto/jvm.config.erb'),
     }
 
     # Ensure presto catalog properties files are created for each
@@ -90,7 +89,7 @@ class presto::server(
 
 
     # Make sure the $data_dir exists
-    $data_dir = $presto_node_properties['node.data-dir']
+    $data_dir = $final_node_properties['node.data-dir']
     if !defined(File[$data_dir]) {
         file { $data_dir:
             ensure  => 'directory',

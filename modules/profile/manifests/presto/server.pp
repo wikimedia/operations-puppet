@@ -1,70 +1,69 @@
 # == Class profile::presto::server
 #
 # Sets up a presto server in a presto cluster.
+# By default this node will be set up as a worker node.  To enable the
+# coordinator or discovery, provide appropriate settings in $config_properties.
 #
-# With no $config_overrides, this server will
-# be both a 'coordinator' and a 'worker' server.  It will accept queries from
-# clients and also allow scheduling of work on itself.
-#
-# To use this as either only a coordinator or a worker, set the appropriate
-# $config_overrides: coordinator, node-scheduler.include-coordinator and discovery-server.enabled.
 # See also: https://prestodb.io/docs/current/installation/deployment.html
 #
 # == Parameters
 #
-# [*presto_clusters*]
-#   hash of presto clusters and configuration, keyed by cluster name.
-#   Each cluster entry should have 3 top level configurations:
-#   'nodes', which maps hostnames to ids, 'catalogs', which maps Presto
-#   catalog names to catalog .properties files, and 'properties', which itself
-#   is used to render the various Presto server .properties files. The
-#   'properties' hash can have 3 entries: 'config', 'node', and 'log',
-#   each respectively for rendering config.properties, node.properties,
-#   and log.properties.
-#
 # [*cluster_name*]
-#   Key in $presto_clusters that indicates which configuration to use for this Presto cluster.
+#   Name of the Presto cluster.  This will be used as the default node.environment.
+#
+# [*discovery_uri*]
+#   URI to the Presto discovery server.
+#
+# [*node_properties*]
+#   Specific node.properties settings. This profile attempts to use sane defaults.
+#   Only set this if you need to override them.  Note that node.id will be
+#   set automatically by the presto::server module class based on the current node's
+#   $::fqdn.
+#
+# [*config_properties*]
+#   Specific config.properties settings. This profile attempts to use sane defaults.
+#   Only set this if you need to override them.
+#
+# [*log_properties*]
+#   Specific log.properties settings.
 #
 # [*heap_max*]
 #   -Xmx argument. Default: 2G
 #
-# [*config_overrides*]
-#   Overrides for config.properties.  This should be a hash of config.properties keys
-#   to values.  Anything here will override properties found in
-#   $presto_clusters[$cluster_name]['properties']['config'].  Default: {}
-#
 class profile::presto::server(
-    Hash   $presto_clusters  = hiera('presto_clusters'),
-    String $cluster_name     = hiera('profile::presto::cluster_name'),
-    String $heap_max         = hiera('profile::presto::server::heap_max',          '2G'),
-    Hash   $config_overrides = hiera('profile::presto::server::config_overrides',  {}),
+    String $cluster_name      = hiera('profile::presto::cluster_name'),
+    String $discovery_uri     = hiera('profile::presto::discovery_uri'),
+    Hash   $node_properties   = hiera('profile::presto::server::node_properties',   {}),
+    Hash   $config_properties = hiera('profile::presto::server::config_properties', {}),
+    Hash   $catalogs          = hiera('profile::presto::server::catalogs',          {}),
+    Hash   $log_properties    = hiera('profile::presto::server::log_properties',    {}),
+    String $heap_max          = hiera('profile::presto::server::heap_max',          '2G'),
 ) {
 
-    $presto_config = $presto_clusters[$cluster_name]
-
-    # Merge in any overrides for config.properties
-    $config_properties = $presto_config['properties']['config'] + $config_overrides
-
-    # Use common node.properties + the specific node.id for this hostname.
-    # $presto_config['nodes'] MUST contain an entry for this fqdn that maps
-    # to a hash that includes an 'id' entry to specify the node.id for this fqdn.
-    $node_properties = $presto_config['properties']['node'] + {
-        'node.id' => $presto_config['nodes'][$::fqdn]['id']
+    $default_node_properties = {
+        'node.enviroment' => $cluster_name,
+        'node.data-dir'   => '/srv/presto',
     }
 
-    # Don't set any log properties if none given
-    if 'log' in $presto_config['properties'] {
-        $log_properties = $presto_config['properties']['log']
-    }
-    else {
-        $log_properties = {}
+    $default_config_properties = {
+        'http-server.http.port'              => 8280,
+        'discovery.uri'                      => $discovery_uri,
+        'coordiantor'                        => false,
+        'node-scheduler.include-coordinator' => false,
+        'discovery-server.enabled'           => false,
+        # flat will try to schedule splits on the host where the data is located by reserving
+        # 50% of the work queue for local splits. It is recommended to use flat for clusters
+        # where distributed storage runs on the same nodes as Presto workers.
+        # You should change this if your Presto cluster is not colocated with storage.
+        'node-scheduler.network-topology'    => 'flat',
     }
 
     class { '::presto::server':
-        config_properties => $config_properties,
-        node_properties   => $node_properties,
+        # Merge in any overrides for config.properties
+        node_properties   => $default_node_properties + $node_properties,
+        config_properties => $default_config_properties + $config_properties,
         log_properties    => $log_properties,
-        catalogs          => $presto_config['catalogs'],
+        catalogs          => $catalogs,
         heap_max          => $heap_max,
     }
 }
