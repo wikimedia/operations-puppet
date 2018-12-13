@@ -220,6 +220,11 @@ profile::kubernetes::deployment_server::services:
     group: wikidev
     mode: '0640'
     namespace: graphoid
+  blubberoid:
+    username: blubberoid
+    group: wikidev
+    mode: '0640'
+    namespace: blubberoid
 
 # Specified in the private repo in this form
 #profile::kubernetes::deployment_server::tokens:
@@ -230,6 +235,8 @@ profile::kubernetes::deployment_server::services:
 #  zotero:
 #    token: dummy
 #  graphoid
+#    token: dummy
+#  blubberoid
 #    token: dummy
 diamond::remove: true
 profile::mediawiki::php::php_version: "7.2"

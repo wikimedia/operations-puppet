@@ -52,6 +52,10 @@ profile::kubernetes::deployment_server::services:
     username: graphoid
     group: wikidev
     mode: '0640'
+  blubberoid:
+    username: blubberoid
+    group: wikidev
+    mode: '0640'
 
 # Specified in the private repo in this form
 #profile::kubernetes::deployment_server::tokens:
@@ -60,6 +64,8 @@ profile::kubernetes::deployment_server::services:
 #  zotero:
 #    token: dummy
 #  graphoid
+#    token: dummy
+#  blubberoid
 #    token: dummy
 
 profile::ci::kubernetes_config::user: jenkins
