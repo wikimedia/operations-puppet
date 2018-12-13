@@ -1,7 +1,10 @@
 # == Class role::logging::kafkatee::webrequest::ops
 # Includes output filters useful for operational debugging.
 #
-class profile::kafkatee::webrequest::ops {
+class profile::kafkatee::webrequest::ops (
+    $logstash_host = hiera('logstash_host'),
+    $logstash_port = hiera('logstash_json_lines_port'),
+) {
     include ::profile::kafkatee::webrequest::base
     include ::geoip
 
@@ -20,9 +23,6 @@ class profile::kafkatee::webrequest::ops {
     logrotate::conf { 'kafkatee-ops':
         content => template('profile/kafkatee/kafkatee_ops_logrotate.erb'),
     }
-
-    $logstash_host = hiera('logstash_host')
-    $logstash_port = hiera('logstash_json_lines_port')
 
     kafkatee::output { 'sampled-1000':
         instance_name => 'webrequest',
