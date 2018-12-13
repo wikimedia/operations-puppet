@@ -3,7 +3,7 @@ test_on = {
   supported_os: [
     {
       'operatingsystem'        => 'Debian',
-      'operatingsystemrelease' => ['8', '9'],
+      'operatingsystemrelease' => ['9'],
       # the puppet gem
     }
   ]
