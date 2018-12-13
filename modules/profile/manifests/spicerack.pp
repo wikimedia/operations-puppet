@@ -25,9 +25,20 @@ class profile::spicerack(
     include ::service::deploy::common
     include ::passwords::redis
 
-    # Install the software
-    # python3-dateutil is required by spicerack cookbook
-    require_package('python3-dateutil', 'spicerack')
+    # python3-dateutil is required by some spicerack cookbook
+    require_package('python3-dateutil')
+
+    apt::repository { 'wikimedia-spicerack':
+        uri        => 'http://apt.wikimedia.org/wikimedia',
+        dist       => 'stretch-wikimedia',
+        components => 'component/spicerack',
+        before     => Package['spicerack'],
+    }
+
+    # Needs to be installed directly because of the above apt::repository - T178575
+    package { 'spicerack':
+        ensure  => 'installed',
+    }
 
     $cookbooks_dir = '/srv/deployment/spicerack'
 
