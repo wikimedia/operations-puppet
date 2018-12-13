@@ -4,3 +4,4 @@ profile::netbox::active_server: netmon1002.wikimedia.org
 profile::netbox::slaves: [ 'netmon2001.wikimedia.org' ]
 profile::netbox::slave_ipv4: '208.80.153.110'
 profile::netbox::slave_ipv6: '2620:0:860:4:208:80:153:110'
+diamond::remove: true

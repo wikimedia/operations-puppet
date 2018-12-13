@@ -54,3 +54,4 @@ profile::grafana::ldap:
 # In private repo
 #profile::grafana::secret_key:
 #profile::grafana::admin_password:
+diamond::remove: true

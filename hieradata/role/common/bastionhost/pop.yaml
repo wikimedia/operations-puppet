@@ -8,3 +8,4 @@ profile::base::domain_search:
   - eqsin.wmnet
 admin::groups:
   - all-users
+diamond::remove: true

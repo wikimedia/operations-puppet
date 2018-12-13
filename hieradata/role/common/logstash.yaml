@@ -60,3 +60,4 @@ role::kibana::ldap_groups:
   - cn=ops,ou=groups,dc=wikimedia,dc=org
   - cn=nda,ou=groups,dc=wikimedia,dc=org
   - cn=wmf,ou=groups,dc=wikimedia,dc=org
+diamond::remove: true

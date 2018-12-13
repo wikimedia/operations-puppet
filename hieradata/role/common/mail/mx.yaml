@@ -4,3 +4,4 @@ admin::groups:
 mtail::logs:
   - /var/log/exim4/mainlog
 mtail::group: 'adm'
+diamond::remove: true

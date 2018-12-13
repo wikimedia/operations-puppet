@@ -9,3 +9,4 @@ profile::releases::mediawiki::sitename_jenkins: 'releases-jenkins.wikimedia.org'
 profile::releases::mediawiki::server_admin: 'noc@wikimedia.org'
 profile::releases::mediawiki::prefix: '/'
 profile::releases::mediawiki::http_port: '8080'
+diamond::remove: true

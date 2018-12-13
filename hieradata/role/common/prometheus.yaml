@@ -6,3 +6,4 @@ profile::base::domain_search:
   - esams.wmnet
   - ulsfo.wmnet
   - eqsin.wmnet
+diamond::remove: true
