@@ -39,17 +39,13 @@ case "$1" in
                msg "$2 is a symlink"
             fi
 
-            if /bin/cat /proc/mounts | /usr/bin/awk '{print $2}' \
+            if ! /bin/cat /proc/mounts | /usr/bin/awk '{print $2}' \
                 | /bin/grep -qs "^$2$"; then
-                msg "$2 is mounted."
-            else
                 msg "$2 is not mounted."
                 exit 1
             fi
 
-            if /usr/bin/timeout --preserve-status -k 10s 30s /usr/bin/stat $2 &> /dev/null; then
-                msg "$2 seems healthy."
-            else
+            if ! /usr/bin/timeout --preserve-status -k 10s 30s /usr/bin/stat $2 &> /dev/null; then
                 msg "$2 does not seem healthy."
                 exit 1
             fi
