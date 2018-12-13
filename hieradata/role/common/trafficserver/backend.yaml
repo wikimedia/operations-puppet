@@ -99,6 +99,7 @@ profile::trafficserver::backend::mapping_rules:
     - type: map
       target: http://logstash.wikimedia.org
       replacement: http://kibana.svc.eqiad.wmnet
+      # replacement: http://kibana.svc.codfw.wmnet
     - type: map
       target: http://maps.wikimedia.org
       replacement: https://kartotherian.discovery.wmnet

@@ -115,6 +115,7 @@ lvs::configuration::lvs_service_ips:
     codfw: 10.2.1.32
   kibana: &ip_block032
     eqiad: 10.2.2.33
+    codfw: 10.2.1.33
   eventstreams: &ip_block033
     eqiad: 10.2.2.34
     codfw: 10.2.1.34
@@ -1078,6 +1079,8 @@ lvs::configuration::lvs_services:
       sites:
         eqiad:
           hostname: kibana.svc.eqiad.wmnet
+        codfw:
+          hostname: kibana.svc.codfw.wmnet
   eventstreams:
     description: "Public EventStreams via HTTP + SSE backed by Kafka. eventstreams.svc.%{::site}.wmnet"
     class: low-traffic

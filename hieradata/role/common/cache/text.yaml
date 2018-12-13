@@ -197,6 +197,7 @@ cache::app_directors:
   logstash_director:
     backends:
       eqiad: 'kibana.svc.eqiad.wmnet'
+      # codfw: 'kibana.svc.codfw.wmnet'
   wdqs_director:
     backends:
       eqiad: 'wdqs.svc.eqiad.wmnet'

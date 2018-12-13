@@ -1,3 +1,6 @@
+lvs::realserver::realserver_ips:
+    - '10.2.1.33' # kibana.svc.codfw.wmnet
+
 role::logstash::apifeatureusage::elastic_hosts:
   - search.svc.codfw.wmnet
   - search.svc.eqiad.wmnet
