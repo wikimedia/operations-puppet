@@ -11,12 +11,6 @@ class profile::mail::mx (
         recipient => 'root@wikimedia.org',
     }
 
-    letsencrypt::cert::integrated { $cert_name:
-        subjects   => $cert_subjects,
-        key_group  => 'Debian-exim',
-        puppet_svc => 'nginx',
-        system_svc => 'nginx',
-    }
     certcentral::cert { 'mx':
         puppet_svc => undef,
         key_group  => 'Debian-exim',
