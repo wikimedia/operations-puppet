@@ -401,6 +401,7 @@ def extract_tables(join_def):
 
 
 def main():
+    exit_status = 0
     argparser = argparse.ArgumentParser(
         "maintain-views",
         description="Maintain labsdb sanitized views of replica databases"
@@ -474,18 +475,18 @@ def main():
     # argparse mutually exclusive is weird http://bugs.python.org/issue10984
     if args.table and args.clean:
         logging.critical("cannot specify a single table and cleanup")
-        sys.exit(1)
+        return 2
 
     if args.drop and not args.databases:
         logging.critical("--drop must specify database names")
-        sys.exit(1)
+        return 2
 
     with open(args.config_location, 'r') as stream:
         try:
             config = yaml.safe_load(stream)
         except yaml.YAMLError as exc:
             logging.critical(exc)
-            sys.exit(1)
+            return 2
 
     all_tables = []
     all_tables = all_tables + config['fullviews']
@@ -540,7 +541,7 @@ def main():
     logging.debug("Removing %s dbs as sensitive", len(dbs) - len(allowed_dbs))
     if not allowed_dbs:
         logging.error('None of the specified dbs are allowed')
-        sys.exit(1)
+        return 1
 
     # assign all metadata from lists
     dbs_with_metadata = {x: {} for x in allowed_dbs}
@@ -566,7 +567,7 @@ def main():
 
             if not ops.user_exists(ops.definer):
                 logging.critical("Definer has not been created")
-                sys.exit(1)
+                return 1
 
             if args.drop:
                 ops.drop_public_database()
@@ -587,8 +588,14 @@ def main():
                 logging.info('cleaning %s tables', len(clean_tables))
                 for dt in clean_tables:
                     logging.info("Dropping view %s.%s", ops.db_p, dt)
-                    ops.drop_view(dt)
+                    try:
+                        ops.drop_view(dt)
+                    except pymysql.err.MySQLError:
+                        exit_status = 1
+                        logging.exception(
+                            "Error dropping view %s.%s", ops.db_p, dt)
+    return exit_status
 
 
 if __name__ == "__main__":
-    main()
+    sys.exit(main())
