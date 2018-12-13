@@ -3,7 +3,7 @@ cluster: relforge
 admin::groups:
   - elasticsearch-roots
 
-profile::elasticsearch::cirrus::ferm_srange: '$LABS_NETWORKS'
+profile::elasticsearch::cirrus::ferm_srange: '(($LABS_NETWORKS @resolve((contint1001.wikimedia.org contint2001.wikimedia.org))))'
 
 # T130329
 profile::base::check_disk_options: -w 15% -c 10% -W 6% -K 3% -l -e -A -i "/srv/sd[a-b][1-3]" --exclude-type=tracefs
