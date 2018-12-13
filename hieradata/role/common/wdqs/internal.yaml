@@ -1,19 +1,5 @@
 profile::wdqs::deploy_mode: 'scap3'
-profile::wdqs::package_dir: '/srv/deployment/wdqs/wdqs'
-profile::wdqs::data_dir: '/srv/wdqs'
-profile::wdqs::endpoint: 'https://query.wikidata.org'
-profile::wdqs::use_kafka_for_updates: true
-profile::wdqs::cluster_names: [ 'eqiad', 'codfw' ]
-profile::wdqs::updater_options: '-n wdq'
-profile::wdqs::rc_updater_options: '-b 500 -T 1200'
-profile::wdqs::kafka_updater_options: '-b 700'
-profile::wdqs::blazegraph_config_file: '/etc/wdqs/RWStore.properties'
-profile::wdqs::blazegraph_heap_size: '32g'
-profile::wdqs::enable_ldf: false
 profile::wdqs::max_query_time_millis: 30000
-profile::wdqs::high_query_time_port: false
-profile::wdqs::fetch_constraints: true
-profile::wdqs::load_categories: 'daily'
 profile::wdqs::blazegraph_extra_jvm_opts:
   # throttling configuration (see https://gerrit.wikimedia.org/r/plugins/gitiles/wikidata/query/rdf/+/refs/heads/master/blazegraph/src/main/java/org/wikidata/query/rdf/blazegraph/throttling/ThrottlingFilter.java for details)
   - '-Dwdqs.throttling-filter.time-bucket-capacity-in-seconds=240'

@@ -11,10 +11,7 @@ profile::wdqs::kafka_updater_options: '-b 700'
 profile::wdqs::blazegraph_config_file: 'RWStore.properties'
 profile::wdqs::blazegraph_heap_size: '8g'
 profile::wdqs::enable_ldf: true
-profile::wdqs::max_query_time_millis: 60000
 profile::wdqs::high_query_time_port: true
-profile::wdqs::fetch_constraints: true
-profile::wdqs::load_categories: 'daily'
 profile::wdqs::nodes: []
 profile::wdqs::blazegraph_extra_jvm_opts: []
 profile::wdqs::blazegraph_options: []
