@@ -1,5 +1,4 @@
 include "misc-common.inc.vcl";
-include "zero.inc.vcl";
 
 sub cluster_fe_vcl_switch {
 // XXX testing whether this works at all - note this duplicates similar code in text-frontend, as apparently request data is re-set on VCL switching.  If this works, next week we'll want to factor this out a little differently...
@@ -19,23 +18,7 @@ sub cluster_fe_vcl_switch {
 	}
 }
 
-sub cluster_fe_recv_pre_purge {
-    // Block WP Zero users from accessing Phabricator uploads to prevent abuse
-    // (T168142)
-    if (req.http.Host == "phab.wmfusercontent.org") {
-        if ((req.method == "GET" && req.url ~ "^/file/data/") ||
-            (req.method == "POST" && req.url ~ "^/file/dropupload/")) {
-            call tag_carrier;
-
-            if (req.http.X-CS) {
-                return (synth(403, "Disallowed"));
-            }
-
-            // Unset request headers potentially set by tag_carrier
-            call tag_carrier_cleanup;
-        }
-    }
-}
+sub cluster_fe_recv_pre_purge { }
 
 sub cluster_fe_recv {
     if (req.http.Host == "grafana.wikimedia.org"
