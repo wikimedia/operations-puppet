@@ -3,9 +3,13 @@
 # production configuration.  The stuff in the operations/dns repo owns the
 # top-level config file which includes this!
 
+# The options in this file should be about the runtime behavior of the daemon;
+# things like listen addresses, thread/socket tuning, debug options, etc.
+# Options that are more in the realm of the interpretation of zone data should
+# be in the main config file's options stanza in the ops/dns repo.
+
+# For now we listen on the any-addresses of both protocols
 listen = any
-zones_strict_data = true,
-zones_default_ttl = 3600,
 
 # Use one thread+socket per physical CPU, per listen address, makes
 # handling query-rate spikes even easier:
