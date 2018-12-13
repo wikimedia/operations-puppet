@@ -17,16 +17,19 @@ class profile::mail::mx (
     }
 
     class { 'nginx':
+        ensure  => absent,
         variant => 'light',
     }
 
     nginx::site { 'letsencrypt-standalone':
+        ensure  => absent,
         content => template('letsencrypt/cert/integrated/standalone.nginx.erb'),
     }
 
     ferm::service { 'nginx-http':
-        proto => 'tcp',
-        port  => '80',
+        ensure => absent,
+        proto  => 'tcp',
+        port   => '80',
     }
 
     class { 'spamassassin':
