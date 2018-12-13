@@ -65,7 +65,7 @@ class presto::server(
     }
 
     presto::properties { 'config':
-        properties => $default_config_properties + config_properties,
+        properties => $default_config_properties + $config_properties,
     }
 
     $final_node_properties = $default_node_properties + $node_properties
