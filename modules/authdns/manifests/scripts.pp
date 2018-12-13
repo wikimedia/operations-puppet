@@ -9,14 +9,6 @@ class authdns::scripts {
         }
     }
 
-    file { '/usr/local/bin/authdns-gen-zones':
-        ensure => absent,
-    }
-
-    file { '/usr/local/bin/authdns-lint':
-        ensure => absent,
-    }
-
     file { '/usr/local/sbin/authdns-update':
         ensure => present,
         mode   => '0555',
