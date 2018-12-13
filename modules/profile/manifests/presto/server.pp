@@ -48,8 +48,6 @@ class profile::presto::server(
     $default_config_properties = {
         'http-server.http.port'              => 8280,
         'discovery.uri'                      => $discovery_uri,
-        'coordinator'                        => false,
-        'node-scheduler.include-coordinator' => false,
         # flat will try to schedule splits on the host where the data is located by reserving
         # 50% of the work queue for local splits. It is recommended to use flat for clusters
         # where distributed storage runs on the same nodes as Presto workers.

@@ -1,6 +1,8 @@
 # Class: presto::server
 #
 # Sets up a Presto server, either worker or coordinator or both, depending on settings.
+# The default is to set up worker only.
+#
 # NOTE: Do not include this class on a node that has presto::client.
 #
 # == Parameters
@@ -40,9 +42,8 @@ class presto::server(
     require_package('presto-server')
 
     $default_config_properties = {
-        'coordinator'                        => true,
-        'node-scheduler.include-coordinator' => true,
-        'discovery-server.enabled'           => true,
+        'coordinator'                        => false,
+        'node-scheduler.include-coordinator' => false,
         # Use non-default http port to avoid conflicts with commonly used 8080
         'http-server.http.port'              => '8280',
         'jmx.rmiregistry.port'               => '8279',
