@@ -40,11 +40,9 @@ class presto::server(
     require_package('presto-server')
 
     $default_config_properties = {
-        # lint:ignore:quoted_booleans
-        'coordinator'                        => 'true',
-        'node-scheduler.include-coordinator' => 'true',
-        'discovery-server.enabled'           => 'true',
-        # lint:endignore
+        'coordinator'                        => true,
+        'node-scheduler.include-coordinator' => true,
+        'discovery-server.enabled'           => true,
         # Use non-default http port to avoid conflicts with commonly used 8080
         'http-server.http.port'              => '8280',
         'jmx.rmiregistry.port'               => '8279',
