@@ -257,7 +257,7 @@ groups:
               nuria, otto, jgreen, sguebo, thargrove,
               bsitzmann, dbrant, nettrom, leila, cwdent, jmm,
               ezachte, mforns, reedy, west1, phuedx, awight,
-              joal, jamesur, akosiaris, jkatz, tonina, pearley, ktsouroupidou,
+              joal, akosiaris, jkatz, tonina, pearley, ktsouroupidou,
               andyrussg, niedzielski, maxsem, hoo, daniel, tbayer, krinkle, tgr,
               smalyshev, ebernhardson, addshore, jminor, chedasaurus, neilpquinn-wmf,
               dcausse, bd808, tjones, mobrovac, jdrewniak, ejegg, jdcc, ori,
@@ -1355,7 +1355,7 @@ users:
     ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCpzjSZ/xVz5iW6HmT2NsFXSagx/NZexbRF7W8dPyv4RlBLOxAOYbfyCpu4eZ5q1qtCIYm2xzcNSIgox8SDvBoRw54lXNuHBJJQLYlL/gHQqDNnfMRTuu3vWuNVQIVfcAg6lAh0HACNVLgMEso8IqlG+ldFzlXJg9RoOHjImJMvwJ5b8uc99wuLSQA3FO8Khgil6gVu0CQzoNitjYm93DQ/QSuzJGel2wo/skKOXZ39t46h8bLg2QyoO0/33nsnNm7yoXkiA2CFRHBDpc2UJ73BQIakPDsfc2kHWHsyJHYf72COUtQqvcLubxJZrSAi1YK+3mPTT+xI4vhVlDxQe/tp
         WMServers 201508 jalexander@wikimedia.org]
     uid: 2054
-    email: jalexander@wikimedia.org
+    email: jamesofur@gmail.com
   jdlrobson:
     ensure: present
     gid: 500
