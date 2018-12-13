@@ -131,21 +131,12 @@ if ( ! cmp --quiet /etc/gdnsd/config~ /etc/gdnsd/config ) \
     rm -f /etc/gdnsd/config~
     rm -f /etc/gdnsd/geo-maps~
     rm -f /etc/gdnsd/geo-resources~
-    if [ -x /usr/bin/gdnsdctl ]; then
-        echo "Replacing gdnsd to update config and zones:"
-        /usr/bin/gdnsdctl replace
-    else
-        echo "Restarting to update zones & config"
-        service gdnsd restart >/dev/null
-    fi
+    echo "Replacing gdnsd to update config and zones:"
+    /usr/bin/gdnsdctl replace
 else
     rm -f /etc/gdnsd/config~
     rm -f /etc/gdnsd/geo-maps~
     rm -f /etc/gdnsd/geo-resources~
     echo "Reloading zones"
-    if [ -x /usr/bin/gdnsdctl ]; then
-        /usr/bin/gdnsdctl reload-zones
-    else
-        gdnsd reload-zones
-    fi
+    /usr/bin/gdnsdctl reload-zones
 fi
