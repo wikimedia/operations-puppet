@@ -3,7 +3,7 @@
 class gerrit::jetty(
     Stdlib::Fqdn $host,
     Stdlib::Ipv4 $ipv4,
-    Stdlib::Ipv6 $ipv6,
+    Optional[Stdlib::Ipv6] $ipv6,
     Stdlib::Fqdn $db_host = 'localhost',
     Hash $replication = '',
     Stdlib::HTTPSUrl $url = "https://${::gerrit::host}/r",
