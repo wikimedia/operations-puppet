@@ -7,10 +7,14 @@
 #  [*monitoring_enabled*]
 #    If production monitoring needs to be enabled or not.
 #
+#  [*use_kerberos*]
+#    Make Puppet use Kerberos authentication when executing hdfs commands.
+#
 class profile::hadoop::worker(
     $cluster_name       = hiera('profile::hadoop::common::hadoop_cluster_name'),
     $monitoring_enabled = hiera('profile::hadoop::worker::monitoring_enabled', false),
     $ferm_srange        = hiera('profile::hadoop::worker::ferm_srange', '$DOMAIN_NETWORKS'),
+    $use_kerberos       = hiera('profile::hadoop::worker::use_kerberos', false),
 ) {
     require ::profile::analytics::cluster::packages::common
     require ::profile::hadoop::common
@@ -48,7 +52,9 @@ class profile::hadoop::worker(
     # SPARK_HOME in an oozie launcher, and that SPARK_HOME
     # needs to point at a locally installed spark directory
     # in order load Spark Python dependencies.
-    class { '::cdh::spark': }
+    class { '::cdh::spark':
+        use_kerberos => $use_kerberos,
+    }
 
     # sqoop needs to be on worker nodes if Oozie is to
     # launch sqoop jobs.
