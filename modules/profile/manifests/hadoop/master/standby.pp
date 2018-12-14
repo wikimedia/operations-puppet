@@ -8,11 +8,14 @@
 class profile::hadoop::master::standby(
     $cluster_name             = hiera('profile::hadoop::common::hadoop_cluster_name'),
     $monitoring_enabled       = hiera('profile::hadoop::standby_master::monitoring_enabled', false),
+    $use_kerberos             = hiera('profile::hadoop::standby_master::use_kerberos', false)
 ) {
     require ::profile::hadoop::common
 
     # Ensure that druid user exists on standby namenodes nodes.
-    class { '::druid::cdh::hadoop::user':  }
+    class { '::druid::cdh::hadoop::user':
+        use_kerberos => $use_kerberos,
+    }
 
     if $monitoring_enabled {
         # Prometheus exporters
@@ -53,7 +56,9 @@ class profile::hadoop::master::standby(
         }
     }
 
-    class { '::cdh::hadoop::resourcemanager': }
+    class { '::cdh::hadoop::resourcemanager':
+        use_kerberos => $use_kerberos,
+    }
 
     # Include icinga alerts if production realm.
     if $monitoring_enabled {
