@@ -25,7 +25,7 @@ template(name="udp_localhost_all_properties" type="list") {
    property(name="$!all-json" position.from="2")
 }
 
-template(name="udp_localhost_topic" type="string" string="udp_localhost-%$syslogseverity-text:::lowercase%")
+template(name="udp_localhost_topic" type="string" string="udp_localhost-%syslogseverity-text:::lowercase%")
 
 # Use a separate (in memory) queue to limit message processing to this ruleset only.
 ruleset(name="udp_localhost_to_kafka" queue.type="LinkedList") {
