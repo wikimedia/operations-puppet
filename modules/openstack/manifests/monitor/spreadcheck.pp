@@ -6,6 +6,7 @@ class openstack::monitor::spreadcheck(
     $keystone_host,
     $nova_user,
     $nova_password,
+    $region_name,
 ) {
     # monitoring::service doesn't take a bool
     if $active {
