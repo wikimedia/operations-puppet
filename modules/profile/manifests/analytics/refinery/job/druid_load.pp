@@ -7,7 +7,7 @@ class profile::analytics::refinery::job::druid_load {
 
     # Update this when you want to change the version of the refinery job jar
     # being used for the druid load jobs.
-    $refinery_version = '0.0.79'
+    $refinery_version = '0.0.83'
 
     # Use this value as default refinery_job_jar.
     Profile::Analytics::Refinery::Job::Eventlogging_to_druid_job {
@@ -17,24 +17,23 @@ class profile::analytics::refinery::job::druid_load {
     # Load event.NavigationTiming
     profile::analytics::refinery::job::eventlogging_to_druid_job { 'navigationtiming':
         job_config => {
-            dimensions    => 'event_action,event_isAnon,event_isOversample,event_mediaWikiVersion,event_mobileMode,event_namespaceId,event_netinfoEffectiveConnectionType,event_originCountry,recvFrom,revision,userAgent_browser_family,userAgent_browser_major,userAgent_device_family,userAgent_is_bot,userAgent_os_family,userAgent_os_major,wiki',
-            time_measures => 'event_connectEnd,event_connectStart,event_dnsLookup,event_domComplete,event_domInteractive,event_fetchStart,event_firstPaint,event_loadEventEnd,event_loadEventStart,event_redirecting,event_requestStart,event_responseEnd,event_responseStart,event_secureConnectionStart,event_unload,event_gaps,event_mediaWikiLoadEnd,event_RSI',
+            dimensions    => 'event.action,event.isAnon,event.isOversample,event.mediaWikiVersion,event.mobileMode,event.namespaceId,event.netinfoEffectiveConnectionType,event.originCountry,recvFrom,revision,userAgent.browser_family,userAgent.browser_major,userAgent.device_family,userAgent.is_bot,userAgent.os_family,userAgent.os_major,wiki',
+            time_measures => 'event.connectEnd,event.connectStart,event.dnsLookup,event.domComplete,event.domInteractive,event.fetchStart,event.firstPaint,event.loadEventEnd,event.loadEventStart,event.redirecting,event.requestStart,event.responseEnd,event.responseStart,event.secureConnectionStart,event.unload,event.gaps,event.mediaWikiLoadEnd,event.RSI',
         },
     }
 
     # Load event.ReadingDepth
     profile::analytics::refinery::job::eventlogging_to_druid_job { 'readingdepth':
         job_config => {
-            dimensions    => 'event_action,event_default_sample,event_isAnon,event_namespaceId,event_skin,revision,userAgent_browser_family,userAgent_browser_major,userAgent_browser_minor,userAgent_device_family,userAgent_is_bot,userAgent_os_family,userAgent_os_major,userAgent_os_minor,wiki,event_page-issues-a_sample,event_page-issues-b_sample',
-            time_measures => 'event_domInteractiveTime,event_firstPaintTime,event_totalLength,event_visibleLength',
+            dimensions    => 'event.action,event.default_sample,event.isAnon,event.namespaceId,event.skin,revision,userAgent.browser_family,userAgent.browser_major,userAgent.browser_minor,userAgent.device_family,userAgent.is_bot,userAgent.os_family,userAgent.os_major,userAgent.os_minor,wiki,event.page-issues-a_sample,event.page-issues-b_sample',
+            time_measures => 'event.domInteractiveTime,event.firstPaintTime,event.totalLength,event.visibleLength',
         },
     }
 
     # Load event.PageIssues
     profile::analytics::refinery::job::eventlogging_to_druid_job { 'pageissues':
         job_config => {
-            dimensions    => 'event_action,event_editCountBucket,event_isAnon,event_issuesSeverity,event_issuesVersion,event_namespaceId,event_sectionNumbers,revision,wiki,userAgent_browser_family,userAgent_browser_major,userAgent_browser_minor,userAgent_device_family,userAgent_is_bot,userAgent_os_family,userAgent_os_major,userAgent_os_minor',
+            dimensions => 'event.action,event.editCountBucket,event.isAnon,event.issuesSeverity,event.issuesVersion,event.namespaceId,event.sectionNumbers,revision,wiki,userAgent.browser_family,userAgent.browser_major,userAgent.browser_minor,userAgent.device_family,userAgent.is_bot,userAgent.os_family,userAgent.os_major,userAgent.os_minor',
         },
     }
-
 }

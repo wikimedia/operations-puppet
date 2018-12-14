@@ -1,6 +1,6 @@
 # == Define profile::analytics::refinery::job::eventlogging_to_druid_job
 #
-# Installs cron jobs to run EventLoggingToDruid Spark job.
+# Installs crons to run HiveToDruid Spark jobs on EventLogging datasets.
 # This job loads data from the given EL Hive table to a Druid datasource.
 #
 # We use spark's --files option to load each job's config file to the
@@ -11,18 +11,18 @@
 # TEMPORARY HACK
 #
 # The problem:
-# EventLoggingToDruid does not use RefineTarget to determine which data pieces
+# HiveDruid does not use RefineTarget to determine which data pieces
 # are available at a given moment and are to be loaded to Druid, because
-# currently RefineTarget does not support Druid. Instead, EventLoggingToDruid
+# currently RefineTarget does not support Druid. Instead, HiveDruid
 # just assumes that the passed date/time interval is correct and loads it
 # without any check or filter. The interval checking needs to be done then by
 # puppet (cron), passing a relative number of hours ago as since and until.
 #
 # Potential issues:
 # 1) If the data pipeline is late for any reason (high load, outage, restarts,
-#    etc.) EventLoggingToDruid might not find the input data, or find it
+#    etc.) HiveToDruid might not find the input data, or find it
 #    incomplete, thus loading corrupt data to Druid for that hour.
-# 2) If the cluster is busy and the EventLoggingToDruid job takes more than
+# 2) If the cluster is busy and the HiveToDruid job takes more than
 #    1 hour to launch (waiting), then 'since 6 hours ago' will skip 1 hour
 #    (or more) and there will be a hole in the corresponding Druid datasource.
 # This would cause user confusion, frustration and give the maintainers lots
@@ -49,7 +49,7 @@
 #
 # [*job_config*]
 #   A hash of job config properites that will be rendered as a properties file
-#   and given to the EventLoggingToDruid job as the --config_file argument.
+#   and given to the HiveToDruid job as the --config_file argument.
 #   Please, do not include the following properties: since, until,
 #   segment_granularity, reduce_memory, num_shards. The reason being:
 #   This profile will install 2 jobs for each datasource: hourly and daily.
@@ -69,7 +69,7 @@ define profile::analytics::refinery::job::eventlogging_to_druid_job (
     $daily_shards        = 1,
     $job_name            = "eventlogging_to_druid_${title}",
     $refinery_job_jar    = undef,
-    $job_class           = 'org.wikimedia.analytics.refinery.job.EventLoggingToDruid',
+    $job_class           = 'org.wikimedia.analytics.refinery.job.HiveToDruid',
     $queue               = 'production',
     $user                = 'hdfs',
     $ensure              = 'present',
@@ -83,7 +83,7 @@ define profile::analytics::refinery::job::eventlogging_to_druid_job (
         default => $refinery_job_jar,
     }
 
-    # Directory where EventLoggingToDruid config property files will go
+    # Directory where HiveToDruid config property files will go
     $job_config_dir = "${::profile::analytics::refinery::config_dir}/eventlogging_to_druid"
     if !defined(File[$job_config_dir]) {
         file { $job_config_dir:
@@ -146,5 +146,4 @@ define profile::analytics::refinery::job::eventlogging_to_druid_job (
         hour       => 0,
         minute     => 0,
     }
-
 }
