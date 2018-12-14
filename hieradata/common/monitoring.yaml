@@ -377,3 +377,9 @@ monitoring::groups:
     description: Icinga (eqiad)
   alerting_codfw:
     description: Icinga (codfw)
+
+# CI Servers
+  ci_eqiad:
+    description: Continuous Integration servers (eqiad)
+  ci_codfw:
+    description: Continuous Integration servers (codfw)

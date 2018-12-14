@@ -3,7 +3,7 @@ admin::groups:
   - contint-admins
   - contint-roots
   - contint-docker
-cluster: misc
+cluster: ci
 contactgroups: 'admins,contint'
 
 profile::ci::jenkins::prefix: '/ci'

@@ -368,6 +368,12 @@ wikimedia_clusters:
     sites:
       eqiad: []
       codfw: []
+  ci:
+    description: "Continuous Integration servers"
+    id: 76
+    sites:
+      eqiad: []
+      codfw: []
 
 puppetmaster: "puppet"
 
