@@ -7,7 +7,7 @@ a virt host outage doesn't take out all instances in a given class.
 Note that the algorithm used for checking 'spread out enough' is super
 bogus, and doesn't work when number of instances > number of virt hosts.
 This should be fixed - it isn't even good enough for some of the host
-classes in the test use case (Tool Labs' exec nodes).
+classes in the test use case (Toolforge' exec nodes).
 FIXME: Find a mathematically valid definition of 'spread out enough'
        and implement it
 """
@@ -96,5 +96,5 @@ if __name__ == '__main__':
             ','.join(failed_classes)
         sys.exit(2)
     else:
-        print "OK: All critical toollabs instances are spread out enough"
+        print "OK: All critical toolforge instances are spread out enough"
         sys.exit(0)
