@@ -371,3 +371,9 @@ monitoring::groups:
     description: ATS servers (ulsfo)
   cache_ats_eqsin:
     description: ATS servers (eqsin)
+
+# Icinga Servers
+  alerting_eqiad:
+    description: Icinga (eqiad)
+  alerting_codfw:
+    description: Icinga (codfw)

@@ -362,6 +362,12 @@ wikimedia_clusters:
       esams: []
       ulsfo: []
       eqsin: []
+  alerting:
+    description: "Icinga"
+    id: 75
+    sites:
+      eqiad: []
+      codfw: []
 
 puppetmaster: "puppet"
 
