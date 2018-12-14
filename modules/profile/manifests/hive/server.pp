@@ -5,11 +5,14 @@
 class profile::hive::server(
     $monitoring_enabled  = hiera('profile::hive::server::monitoring_enabled', false),
     $ferm_srange         = hiera('profile::hive::server::ferm_srange', '$DOMAIN_NETWORKS'),
+    $use_kerberos        = hiera('profile::hive::server::use_kerberos', false),
 ) {
     include ::profile::hive::client
 
     # Setup hive-server
-    class { '::cdh::hive::server': }
+    class { '::cdh::hive::server':
+        use_kerberos => $use_kerberos,
+    }
 
     ferm::service{ 'hive_server':
         proto  => 'tcp',

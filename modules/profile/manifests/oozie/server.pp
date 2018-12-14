@@ -14,6 +14,7 @@ class profile::oozie::server(
     $oozie_authentication_type                = hiera('profile::oozie::server::oozie_authentication_type', undef),
     $oozie_authentication_kerberos_principal  = hiera('profile::oozie::server::oozie_authentication_kerberos_principal', undef),
     $oozie_authentication_kerberos_name_rules = hiera('profile::oozie::server::oozie_authentication_kerberos_name_rules', undef),
+    $use_kerberos                             = hiera('profile::oozie::server::use_kerberos', false),
 ) {
     require ::profile::oozie::client
 
@@ -45,6 +46,7 @@ class profile::oozie::server(
         oozie_authentication_type                   => $oozie_authentication_type,
         oozie_authentication_kerberos_principal     => $oozie_authentication_kerberos_principal,
         oozie_authentication_kerberos_name_rules    => $oozie_authentication_kerberos_name_rules,
+        use_kerberos                                => $use_kerberos,
     }
 
     # Oozie is creating event logs in /var/log/oozie.

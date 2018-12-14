@@ -7,10 +7,15 @@
 #  [*monitoring_enabled*]
 #    If production monitoring needs to be enabled or not.
 #
+#  [*use_kerberos*]
+#    Force puppet to use kerberos authentication when executing
+#    hdfs commands.
+#
 class profile::hadoop::master(
     $cluster_name             = hiera('profile::hadoop::common::hadoop_cluster_name'),
     $monitoring_enabled       = hiera('profile::hadoop::master::monitoring_enabled', false),
     $hadoop_user_groups       = hiera('profile::hadoop::master::hadoop_user_groups'),
+    $use_kerberos             = hiera('profile::hadoop::master::use_kerberos', false),
 ){
     require ::profile::hadoop::common
 
@@ -21,7 +26,9 @@ class profile::hadoop::master(
         require ::profile::hadoop::monitoring::history
     }
 
-    class { '::cdh::hadoop::master': }
+    class { '::cdh::hadoop::master':
+        use_kerberos => $use_kerberos,
+    }
 
     # This will create HDFS user home directories
     # for all users in the provided groups.
