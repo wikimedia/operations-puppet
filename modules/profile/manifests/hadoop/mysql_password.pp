@@ -16,17 +16,16 @@ class profile::hadoop::mysql_password(
     $research_path = '/user/hdfs/mysql-analytics-research-client-pw.txt'
 
     if $use_kerberos {
-        if !defined(File['/usr/local/bin/kerberos-puppet-wrapper']) {
-            fail('kerberos-puppet-wrapper is not defined in the catalog.')
-        }
+        File['/usr/local/bin/kerberos-puppet-wrapper'] -> Exec['hdfs_put_mysql-analytics-research-client-pw.txt']
+        File['/usr/local/bin/kerberos-puppet-wrapper'] -> Exec['hdfs_put_mysql-analytics-labsdb-client-pw.txt']
         $wrapper = '/usr/local/bin/kerberos-puppet-wrapper hdfs '
     } else {
         $wrapper = ''
     }
 
     exec { 'hdfs_put_mysql-analytics-research-client-pw.txt':
-        command => "/bin/echo -n '${research_pass}' | /usr/bin/hdfs dfs -put - ${research_path} && /usr/bin/hdfs dfs -chmod 600 ${research_path}",
-        unless  => "/usr/bin/hdfs dfs -test -e ${research_path}",
+        command => "/bin/echo -n '${research_pass}' | ${wrapper}/usr/bin/hdfs dfs -put - ${research_path} && ${wrapper}/usr/bin/hdfs dfs -chmod 600 ${research_path}",
+        unless  => "${wrapper}/usr/bin/hdfs dfs -test -e ${research_path}",
         user    => 'hdfs',
     }
 
