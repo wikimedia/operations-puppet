@@ -33,7 +33,7 @@ class role::swift::proxy (
 
         monitoring::service { 'swift-https':
             description   => 'Swift HTTPS',
-            check_command => "check_http_url!${::swift::proxy::proxy_service_host}!/monitoring/frontend",
+            check_command => "check_https_url!${::swift::proxy::proxy_service_host}!/monitoring/frontend",
         }
 
         ferm::service { 'swift-proxy-https':
