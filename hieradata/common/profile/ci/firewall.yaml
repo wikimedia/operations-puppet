@@ -1,9 +1,3 @@
-# Host running nodepool daemon
-#
-# Use ip address since the value is injected in an iptables rule and ferm
-# @resolve has undefined behavior.
-profile::ci::firewall::nodepool_host: '10.64.20.18'  # labnodepool1001.eqiad.wmnet
-
 # Hosts running zuul-merger process
 #
 # Use ip addresses since the values are injected in iptables rules.

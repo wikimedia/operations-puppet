@@ -1274,11 +1274,6 @@ node 'labnet1002.eqiad.wmnet' {
     role(wmcs::openstack::main::net)
 }
 
-# Was used to host the Nodepool service (T209361)
-node 'labnodepool1001.eqiad.wmnet' {
-    role(spare::system)
-}
-
 ## labsdb dbs
 node /labsdb1009\.eqiad\.wmnet/ {
     role(labs::db::wikireplica_web)
