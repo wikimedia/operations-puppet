@@ -1,1 +1,2 @@
+cluster: puppet
 diamond::remove: true
