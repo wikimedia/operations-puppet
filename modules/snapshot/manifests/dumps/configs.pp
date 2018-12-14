@@ -169,6 +169,7 @@ class snapshot::dumps::configs(
                 maxRetries        => '3',
                 revsMargin        => '20',
                 fixeddumporder    => '1',
+                lbzip2threads     => '2',
                 wikis => {
                     enwiki => {
                         pagesPerChunkHistory  => '20000,40000,70000,80000',
