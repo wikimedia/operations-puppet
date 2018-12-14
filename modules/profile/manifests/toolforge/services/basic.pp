@@ -1,8 +1,6 @@
 class profile::toolforge::services::basic(
     $active_node = hiera('profile::toolforge::services::active_node'),
   ) {
-    class { '::sonofgridengine::submit_host': }
-
     package { 'tools-manifest':
         ensure => latest,
     }

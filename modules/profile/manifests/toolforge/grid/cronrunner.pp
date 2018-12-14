@@ -10,8 +10,6 @@ class profile::toolforge::grid::cronrunner(
         source => "puppet:///modules/profile/toolforge/40-${::labsproject}-submithost-banner.sh",
     }
 
-    class {'::sonofgridengine::submit_host': }
-
     # We need to include exec environment here since the current
     # version of jsub checks the local environment to find the full
     # path to things before submitting them to the grid. This assumes

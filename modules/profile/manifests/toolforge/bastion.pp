@@ -12,7 +12,6 @@ class profile::toolforge::bastion(
 ){
     # Son of Grid Engine Configuration
     # admin_host???
-    class {'::sonofgridengine::submit_host': }
     include profile::toolforge::dev_environ
     include profile::toolforge::grid::exec_environ
 
