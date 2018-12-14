@@ -814,12 +814,6 @@ node 'eeden.wikimedia.org' {
     interface::add_ip6_mapped { 'main': }
 }
 
-# formerly icinga based monitoring hosts (eqiad) replaced by icinga1001
-node 'einsteinium.wikimedia.org' {
-    role(spare::system)
-    interface::add_ip6_mapped { 'main': }
-}
-
 node /^elastic101[7-9]\.eqiad\.wmnet/ {
     role(elasticsearch::cirrus)
 }
