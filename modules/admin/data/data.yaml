@@ -3153,6 +3153,10 @@ ldap_only_users:
   adavenport:
     ensure: absent
     realname: Allison Davenport
+  aezell:
+    ensure: present
+    realname: Alex Ezell
+    email: aezell@wikimedia.org
   albe:
     ensure: absent
     realname: Aleksey Bekh-Ivanov
