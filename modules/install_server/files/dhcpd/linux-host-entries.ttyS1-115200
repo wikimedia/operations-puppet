@@ -510,6 +510,11 @@ host bast5001 {
     next-server 208.80.153.53; # install2002 (tftp server)
 }
 
+host bohrium {
+    hardware ethernet D0:94:66:5F:4A:3C;
+    fixed-address bohrium.wikimedia.org;
+}
+
 host centrallog1001 {
     hardware ethernet D0:94:66:61:18:AF;
     fixed-address centrallog1001.eqiad.wmnet;
