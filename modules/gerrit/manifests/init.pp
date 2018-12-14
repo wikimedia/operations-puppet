@@ -2,8 +2,8 @@
 class gerrit(
     String $config,
     Stdlib::Fqdn $host,
-    Stdlib::Ip_address $ipv4,
-    Stdlib::Ip_address $ipv6,
+    Stdlib::Ipv4 $ipv4,
+    Stdlib::Ipv6 $ipv6,
     Array[Stdlib::Fqdn] $slave_hosts = [],
     Boolean $slave = false,
     Stdlib::Fqdn $log_host = undef,

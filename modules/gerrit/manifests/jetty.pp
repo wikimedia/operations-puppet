@@ -2,8 +2,8 @@
 # https://projects.eclipse.org/projects/rt.jetty/developer
 class gerrit::jetty(
     Stdlib::Fqdn $host,
-    Stdlib::Ip_address $ipv4,
-    Stdlib::Ip_address $ipv6,
+    Stdlib::Ipv4 $ipv4,
+    Stdlib::Ipv6 $ipv6,
     Stdlib::Fqdn $db_host = 'localhost',
     Hash $replication = '',
     Stdlib::HTTPSUrl $url = "https://${::gerrit::host}/r",
