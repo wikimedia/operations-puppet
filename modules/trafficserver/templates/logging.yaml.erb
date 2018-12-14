@@ -16,7 +16,7 @@ filters:
 <% @log_filters.each do |log_filter| -%>
     - name: <%= log_filter['name'] %>
       action: <%= log_filter['action'] %>
-      condition: <%= log_filter['condition'] %>
+      condition: '<%= log_filter['condition'] %>'
 
 <% end -%>
 <% end -%>
@@ -28,7 +28,7 @@ logs:
 <% if log['filters'] -%>
       filters:
 <% log['filters'].each do |filter| -%>
-      - <%= filter -%>
+      - <%= filter %>
 <% end %>
       mode: <%= log['mode'] %>
 <% end -%>
