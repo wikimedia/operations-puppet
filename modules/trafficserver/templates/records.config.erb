@@ -63,3 +63,11 @@ CONFIG proxy.config.ssl.client.TLSv1_2 INT <%= @outbound_tlsv1_2 %>
 <% if @outbound_tls_cipher_suite != '' -%>
 CONFIG proxy.config.ssl.client.cipher_suite STRING <%= @outbound_tls_cipher_suite %>
 <% end -%>
+<% if @outbound_tls_verify_origin -%>
+# Origin server certificate validation settings
+CONFIG proxy.config.ssl.client.verify.server INT 2
+CONFIG proxy.config.ssl.client.CA.cert.path STRING <%= @outbound_tls_cacert_dirpath %>
+<% if @outbound_tls_cacert_filename != '' -%>
+CONFIG proxy.config.ssl.client.CA.cert.filename STRING <%= @outbound_tls_cacert_filename %>
+<% end -%>
+<% end -%>

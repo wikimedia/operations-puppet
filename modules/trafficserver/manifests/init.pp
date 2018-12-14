@@ -33,6 +33,17 @@
 #   proxy.config.ssl.server.cipher_suite will be used. See
 #   https://docs.trafficserver.apache.org/en/7.1.x/admin-guide/files/records.config.en.html
 #
+# [*outbound_tls_verify_origin*]
+#   If true, validate origin server certificate. (default: true)
+#
+# [*outbound_tls_cacert_dirpath*]
+#   Absolute path to the directory containing the file specified in
+#   $outbound_tls_cacert_filename. (default: '/etc/ssl/certs/')
+#
+# [*outbound_tls_cacert_filename*]
+#   If specified, the filename of the CA to trust for origin server certificate
+#   validation. (default: '')
+#
 # [*enable_xdebug*]
 #   Enable the XDebug plugin. (default: false)
 #   https://docs.trafficserver.apache.org/en/latest/admin-guide/plugins/xdebug.en.html
@@ -104,6 +115,9 @@ class trafficserver(
     Integer[0, 1] $outbound_tlsv1_1 = 0,
     Integer[0, 1] $outbound_tlsv1_2 = 1,
     String $outbound_tls_cipher_suite = '',
+    Boolean $outbound_tls_verify_origin = true,
+    String $outbound_tls_cacert_dirpath = '/etc/ssl/certs',
+    String $outbound_tls_cacert_filename = '',
     Boolean $enable_xdebug = false,
     Boolean $collapsed_forwarding = true,
     String $global_lua_script = '',

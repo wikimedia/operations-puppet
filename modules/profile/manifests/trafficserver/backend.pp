@@ -25,16 +25,17 @@ class profile::trafficserver::backend (
     }
 
     class { '::trafficserver':
-        port                      => $port,
-        outbound_tls_cipher_suite => $outbound_tls_cipher_suite,
-        enable_xdebug             => $enable_xdebug,
-        global_lua_script         => $global_lua_script,
-        storage                   => $storage,
-        mapping_rules             => $mapping_rules,
-        caching_rules             => $caching_rules,
-        log_formats               => $log_formats,
-        log_filters               => $log_filters,
-        logs                      => $logs,
+        port                         => $port,
+        outbound_tls_cipher_suite    => $outbound_tls_cipher_suite,
+        outbound_tls_cacert_filename => 'Puppet_Internal_CA.pem',
+        enable_xdebug                => $enable_xdebug,
+        global_lua_script            => $global_lua_script,
+        storage                      => $storage,
+        mapping_rules                => $mapping_rules,
+        caching_rules                => $caching_rules,
+        log_formats                  => $log_formats,
+        log_filters                  => $log_filters,
+        logs                         => $logs,
     }
 
     # Install default Lua script
