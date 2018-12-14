@@ -7,6 +7,7 @@ class role::maps::slave {
     include ::profile::maps::apps
     include ::profile::maps::cassandra
     include ::profile::maps::osm_slave
+    include ::profile::maps::tlsproxy
     include ::profile::prometheus::postgres_exporter
 
     system::role { 'maps::slave':

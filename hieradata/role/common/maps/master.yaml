@@ -41,3 +41,4 @@ profile::maps::apps::sources_to_invalidate:
 profile::maps::apps::tile_server_domain: maps.wikimedia.org
 profile::maps::apps::wikidata_query_service: http://wdqs.discovery.wmnet/bigdata/namespace/wdq/sparql
 diamond::remove: true
+profile::maps::tlsproxy::servicename: kartotherian.discovery.wmnet

@@ -7,6 +7,7 @@ class role::maps::master {
     include ::profile::maps::apps
     include ::profile::maps::cassandra
     include ::profile::maps::osm_master
+    include ::profile::maps::tlsproxy
     include ::profile::redis::master
     include ::profile::prometheus::postgres_exporter
 
