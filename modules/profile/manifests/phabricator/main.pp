@@ -256,16 +256,16 @@ class profile::phabricator::main (
 
         # Extensions that require configuration.
         php::extension {
-            'apcu':
-                package_name => 'php-apcu';
+            'mysqlnd':
+                package_name => 'php7.2-mysqlnd',
+                priority     => 10;
             'xml':
                 package_name => 'php7.2-xml',
                 priority     => 15;
-            'mysqlnd':
-                package_name => 'php7.2-mysqlnd',
-                priority     => 15;
             'mysqli':
                 package_name => 'php7.2-mysql';
+            'apcu':
+                package_name => 'php-apcu';
         }
 
         class { '::php::fpm':
