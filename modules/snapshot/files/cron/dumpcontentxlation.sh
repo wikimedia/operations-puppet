@@ -60,7 +60,7 @@ done
 #####################
 
 args="wiki:multiversion;tools:php"
-results=`python "${repodir}/getconfigvals.py" --configfile "$configfile" --args "$args"`
+results=`python3 "${repodir}/getconfigvals.py" --configfile "$configfile" --args "$args"`
 
 multiversion=`getsetting "$results" "wiki" "multiversion"` || exit 1
 php=`getsetting "$results" "tools" "php"` || exit 1

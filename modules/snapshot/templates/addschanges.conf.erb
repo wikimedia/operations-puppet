@@ -20,7 +20,7 @@ templatedir=<%= scope.lookupvar('snapshot::dumps::dirs::templsdir') %>
 indextmpl=<%= scope.lookupvar('snapshot::dumps::dirs::templsdir') -%>/incrs-index.html
 temp=<%= scope.lookupvar('snapshot::dumps::dirs::dumpstempdir') %>
 webroot=http://download.wikimedia.org
-fileperms=0644
+fileperms=0o644
 # revisions must be at least this much older than time of current run
 # (or from 23:59 on specified date) to be dumped
 delay=43200

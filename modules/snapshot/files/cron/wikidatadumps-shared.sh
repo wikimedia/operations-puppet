@@ -16,7 +16,7 @@ daysToKeep=70
 pagesPerBatch=200000
 
 args="wiki:multiversion;output:temp;tools:php,lbzip2"
-results=`python "${repodir}/getconfigvals.py" --configfile "$configfile" --args "$args"`
+results=`python3 "${repodir}/getconfigvals.py" --configfile "$configfile" --args "$args"`
 
 multiversion=`getsetting "$results" "wiki" "multiversion"` || exit 1
 tempDir=`getsetting "$results" "output" "temp"` || exit 1

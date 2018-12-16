@@ -21,7 +21,7 @@ temp=<%= @tempdir %>
 templatedir=<%= scope.lookupvar('snapshot::dumps::dirs::templsdir') %>
 index=backup-index.html
 webroot=http://download.wikimedia.org
-fileperms=0644
+fileperms=0o644
 
 [reporting]
 adminmail=<%= @config[@configtype]['global']['adminmail'] %>

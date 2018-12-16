@@ -78,7 +78,7 @@ if [ ! -f "$configFile" ]; then
 fi
 
 args="wiki:privatelist,multiversion;tools:gzip,php"
-results=`python "${repodir}/getconfigvals.py" --configfile "$configFile" --args "$args"`
+results=`python3 "${repodir}/getconfigvals.py" --configfile "$configFile" --args "$args"`
 
 privateList=`getsetting "$results" "wiki" "privatelist"` || exit 1
 multiversion=`getsetting "$results" "wiki" "multiversion"` || exit 1

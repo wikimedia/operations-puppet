@@ -14,7 +14,7 @@ errors=0
 
 cd "$repodir"
 
-python "${repodir}/onallwikis.py" --outdir "$outputdir" \
+python3 "${repodir}/onallwikis.py" --outdir "$outputdir" \
        --config "$configfile" --nooverwrite \
        --query "'select img_name, img_timestamp from image;'" \
        --filenameformat "{w}-{d}-local-wikiqueries.gz"
@@ -27,7 +27,7 @@ fi
 globalusagelist="${dblistsdir}/globalusage.dblist"
 basewiki=`cat "$globalusagelist"`
 
-python "${repodir}/onallwikis.py" --outdir "$outputdir" \
+python3 "${repodir}/onallwikis.py" --outdir "$outputdir" \
        --base "$basewiki" \
        --config "$configfile" --nooverwrite \
        --query "'select gil_to from globalimagelinks where gil_wiki= \"{w}\";'" \

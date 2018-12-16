@@ -15,7 +15,7 @@ class snapshot::dumps::timechecker(
     cron { 'dumps-timechecker':
         ensure      => 'present',
         environment => 'MAILTO=ops-dumps@wikimedia.org',
-        command     => "cd ${repodir}; python show_runtimes.py -d ${dumpsbasedir} -W ${wikis_list}; python show_runtimes.py -d ${dumpsbasedir} -j meta-history-bz2 -s 40 -w ${dblist}",
+        command     => "cd ${repodir}; python3 show_runtimes.py -d ${dumpsbasedir} -W ${wikis_list}; python3 show_runtimes.py -d ${dumpsbasedir} -j meta-history-bz2 -s 40 -w ${dblist}",
         user        => $xmldumpsuser,
         minute      => '10',
         hour        => '1',

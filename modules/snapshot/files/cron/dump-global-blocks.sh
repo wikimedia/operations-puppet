@@ -98,7 +98,7 @@ while [ $# -gt 0 ]; do
 done
 
 args="wiki:multiversion;tools:gzip,mysqldump,php"
-results=`python "${repodir}/getconfigvals.py" --configfile "$configfile" --args "$args"`
+results=`python3 "${repodir}/getconfigvals.py" --configfile "$configfile" --args "$args"`
 
 multiversion=`getsetting "$results" "wiki" "multiversion"` || exit 1
 gzip=`getsetting "$results" "tools" "gzip"` || exit 1

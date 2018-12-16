@@ -125,7 +125,7 @@ done
 pgrep dumpscheduler.py > /dev/null && exit 0
 show "no dumpscheduler running so proceeding"
 
-python="/usr/bin/python"
+python="/usr/bin/python3"
 
 source /usr/local/etc/set_dump_dirs.sh
 
