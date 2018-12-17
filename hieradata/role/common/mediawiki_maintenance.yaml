@@ -29,3 +29,4 @@ profile::openldap::management::cron_active: false
 # We don't need php-fpm here
 profile::mediawiki::php::enable_fpm: false
 profile::mediawiki::php::php_version: "7.2"
+diamond::remove: true

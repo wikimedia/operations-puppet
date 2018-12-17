@@ -5,3 +5,4 @@ profile::etcd::use_client_certs: true
 profile::etcd::do_backup: true
 profile::etcd::use_proxy: false
 profile::etcd::allow_from: "$DOMAIN_NETWORKS"
+diamond::remove: true

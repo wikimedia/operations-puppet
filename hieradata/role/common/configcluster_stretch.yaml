@@ -26,3 +26,4 @@ profile::zookeeper::firewall::srange: '(($HADOOP_MASTERS $KAFKA_BROKERS_ANALYTIC
 profile::zookeeper::monitoring_enabled: true
 # Page if a zookeeper server in this cluster goes down.
 profile::zookeeper::is_critical: true
+diamond::remove: true

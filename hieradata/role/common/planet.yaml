@@ -2,3 +2,4 @@ cluster: misc
 profile::planet::domain_name: 'wikimedia.org'
 profile::planet::meta_link: 'meta.wikimedia.org/wiki/Planet_Wikimedia'
 profile::planet::http_proxy: "http://url-downloader.%{::site}.wikimedia.org:8080"
+diamond::remove: true

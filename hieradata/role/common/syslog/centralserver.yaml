@@ -2,3 +2,4 @@ mtail::logs:
   - /srv/syslog/syslog.log
   - /srv/syslog/apache2.log
   - /srv/syslog/swift.log
+diamond::remove: true
