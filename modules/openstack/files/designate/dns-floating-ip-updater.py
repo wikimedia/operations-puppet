@@ -88,9 +88,9 @@ for tenant in client.keystoneclient().projects.list():
     nova_client = client.novaclient(tenant.name)
     # Go through every instance
     for server in nova_client.servers.list():
-        if server.addresses and 'public' in server.addresses:
+        for network_name, addresses in server.addresses.items():
             public = [
-                str(ip['addr']) for ip in server.addresses['public']
+                str(ip['addr']) for ip in addresses
                 if ip['OS-EXT-IPS:type'] == 'floating'
             ]
             # If the instance has a public IP...
