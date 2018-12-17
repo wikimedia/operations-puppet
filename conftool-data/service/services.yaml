@@ -258,6 +258,7 @@ logstash:
     port: 80
     datacenters:
     - eqiad
+    - codfw
     default_values:
       pooled: 'no'
       weight: 10
