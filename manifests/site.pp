@@ -780,6 +780,12 @@ node /^dns500[12]\.wikimedia\.org$/ {
     interface::add_ip6_mapped { 'main': }
 }
 
+# https://doc.wikimedia.org (T211974)
+node 'doc1001.eqiad.wmnet' {
+    role(doc)
+    interface::add_ip6_mapped { 'main': }
+}
+
 # Druid analytics-eqiad (non public) servers.
 # These power internal backends and queries.
 # https://wikitech.wikimedia.org/wiki/Analytics/Data_Lake#Druid
