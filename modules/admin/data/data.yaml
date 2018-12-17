@@ -728,7 +728,7 @@ groups:
   proton-admins:
     description: Admins for the proton service
     gid: 807
-    members: [pmiazga, bsitzmann, mholloway-shell, mbsantos, tgr]
+    members: [pmiazga, bsitzmann, mholloway-shell, mbsantos, tgr, eevans, mobrovac, ppchelko]
     privileges: ['ALL = NOPASSWD: /usr/sbin/service proton *',
                  'ALL = (proton) NOPASSWD: ALL']
 
