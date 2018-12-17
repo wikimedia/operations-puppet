@@ -101,7 +101,7 @@ profile::trafficserver::backend::mapping_rules:
       replacement: http://kibana.svc.eqiad.wmnet
     - type: map
       target: http://maps.wikimedia.org
-      replacement: http://kartotherian.discovery.wmnet:6533
+      replacement: https://kartotherian.discovery.wmnet
     - type: map
       target: http://metrics.wikimedia.org
       replacement: http://thorium.eqiad.wmnet
