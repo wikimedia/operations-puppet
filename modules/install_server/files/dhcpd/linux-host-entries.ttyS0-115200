@@ -128,6 +128,11 @@ host d-i-test {
     fixed-address d-i-test.eqiad.wmnet;
 }
 
+host doc1001 {
+    hardware ethernet aa:00:00:d2:27:b3;
+    fixed-address doc1001.eqiad.wmnet;
+}
+
 host dubnium {
     hardware ethernet aa:00:00:2f:d8:57;
     fixed-address dubnium.wikimedia.org;
