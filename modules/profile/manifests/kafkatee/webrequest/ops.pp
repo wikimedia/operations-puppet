@@ -12,7 +12,8 @@ class profile::kafkatee::webrequest::ops (
 
     $log_directory = '/srv/log'
     $webrequest_log_directory = "${log_directory}/webrequest"
-    file { [$log_directory, $webrequest_log_directory]:
+    $webrequest_log_archive_directory = "${log_directory}/webrequest/archive"
+    file { [$log_directory, $webrequest_log_directory, $webrequest_log_archive_directory]:
         ensure  => 'directory',
         owner   => 'kafkatee',
         group   => 'kafkatee',
