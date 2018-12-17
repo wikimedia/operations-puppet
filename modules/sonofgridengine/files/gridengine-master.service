@@ -11,7 +11,7 @@ Type=forking
 PidFile=/var/spool/gridengine/qmaster/qmaster.pid
 # We could just place all env vars here...
 EnvironmentFile=/etc/default/gridengine
-ExecStart=/usr/lib/gridengine/sge_qmaster
+ExecStart=/usr/sbin/sge_qmaster
 
 [Install]
 WantedBy=multi-user.target
