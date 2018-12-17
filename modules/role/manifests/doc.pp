@@ -12,4 +12,6 @@ class role::doc {
     include ::standard
     include ::profile::base::firewall
     include ::profile::backup::host
+    include ::profile::doc
+
 }
