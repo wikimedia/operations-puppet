@@ -1,1 +1,2 @@
 profile::dumps::generation::worker::dumper::runtype: enwiki
+profile::mediawiki::php::php_version: "7.2"
