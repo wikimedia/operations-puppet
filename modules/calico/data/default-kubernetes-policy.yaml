@@ -5,6 +5,7 @@
 # $ kubectl --namespace=kube-system delete configmap wmf-default-policy
 # $ kubectl --namespace=kube-system create configmap wmf-default-policy --from-file=egress=default-kubernetes-policy.yaml
 #
+# NOTE: This is going to be deprecated when we move to calico 2.4.x
 # Allow DNS
 - action: allow
   dst_ports:
@@ -106,8 +107,23 @@
     - 8085
   dst_net: 10.2.2.23/32
   protocol: tcp
-  # Allow cached API
-  # Re-evaluate this at some later point in time. For now deny
+  # Cached API
+  # NOTE: We want to deny this for most services as it makes operations difficult
+  # but we have zotero which we don't currently control
+- action: allow
+  destination:
+    net: 208.80.153.224/32
+  protocol: tcp
+  dst_ports:
+    - 80
+    - 443
+- action: allow
+  destination:
+    net: 208.80.154.224/32
+  protocol: tcp
+  dst_ports:
+    - 80
+    - 443
   # Allow pod IP spaces, this should be locked down if needed in ingress by service owner
 - action: allow
   dst_net: 10.64.64.0/21
