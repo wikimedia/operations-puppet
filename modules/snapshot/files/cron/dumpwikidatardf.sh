@@ -195,13 +195,18 @@ while [ $i -lt $shards ]; do
 	let i++
 done
 
+nthreads=$(( $shards / 2))
+if [ $nthreads -lt 1 ]; then
+    nthreads=1
+fi
+
 moveLinkFile wikidata$dumpFormat-$dumpName.gz $filename.$dumpFormat.gz latest-$dumpName.$dumpFormat.gz
-gzip -dc "$targetDir/$filename.$dumpFormat.gz" | bzip2 -c > $tempDir/wikidata$dumpFormat-$dumpName.bz2
+gzip -dc "$targetDir/$filename.$dumpFormat.gz" | "$lbzip2" -n $nthreads -c > $tempDir/wikidata$dumpFormat-$dumpName.bz2
 moveLinkFile wikidata$dumpFormat-$dumpName.bz2 $filename.$dumpFormat.bz2 latest-$dumpName.$dumpFormat.bz2
 
 if [ -n "$extraFormat" ]; then
 	moveLinkFile wikidata$extraFormat-$dumpName.gz $filename.$extraFormat.gz latest-$dumpName.$extraFormat.gz
-	gzip -dc "$targetDir/$filename.$extraFormat.gz" | bzip2 -c > $tempDir/wikidata$extraFormat-$dumpName.bz2
+	gzip -dc "$targetDir/$filename.$extraFormat.gz" | "$lbzip2" -n $nthreads -c > $tempDir/wikidata$extraFormat-$dumpName.bz2
 	moveLinkFile wikidata$extraFormat-$dumpName.bz2 $filename.$extraFormat.bz2 latest-$dumpName.$extraFormat.bz2
 fi
 
