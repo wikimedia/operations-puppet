@@ -26,7 +26,16 @@ class profile::kafkatee::webrequest::ops (
         auto_sync   => false,
         source_host => 'oxygen.eqiad.wmnet',
         dest_host   => 'weblog1001.eqiad.wmnet',
-        module_path => $webrequest_log_directory,
+        module_path => $log_directory,
+    }
+
+    # Temporary rsync to copy data for T211883
+    rsync::quickdatacopy { 'home-dirs':
+        ensure      => present,
+        auto_sync   => false,
+        source_host => 'oxygen.eqiad.wmnet',
+        dest_host   => 'weblog1001.eqiad.wmnet',
+        module_path => '/home',
     }
 
     # Rotate kafkatee output logs in $webrequest_log_directory.
