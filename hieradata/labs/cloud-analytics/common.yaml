@@ -125,7 +125,7 @@ profile::presto::server::catalogs:
   hive:
     properties:
       connector.name: hive-hadoop2
-      hive.metastore.uri: thrift://ca-coord-1.cloud-analytics-eqiad.wmflabs:9083
+      hive.metastore.uri: thrift://ca-coord-1.cloud-analytics.eqiad.wmflabs:9083
       hive.metastore.username: presto
       hive.storage-format: PARQUET
       hive.compression-codec: SNAPPY
