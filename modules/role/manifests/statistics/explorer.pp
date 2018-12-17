@@ -8,6 +8,10 @@ class role::statistics::explorer {
         description => 'Statistics & Analytics cluster explorer (private data access, no local compute)'
     }
 
+    # TEMP for T211327
+    # To be removed (with purge of packages) ASAP
+    require_package('exfat-fuse', 'exfat-utils')
+
     include ::standard
     include ::profile::statistics::explorer
     include ::profile::analytics::cluster::client
