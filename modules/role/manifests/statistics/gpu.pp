@@ -5,4 +5,5 @@ class role::statistics::gpu {
     system::role { 'statistics::gpu':
         description => 'Statistics node for GPU testing'
     }
+    include ::standard
 }
