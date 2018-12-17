@@ -1360,6 +1360,7 @@ node /^logstash200[1-3]\.codfw\.wmnet$/ {
 # codfw logstash collectors (Ganeti)
 node /^logstash200[4-6]\.codfw\.wmnet$/ {
     role(logstash)
+    include ::lvs::realserver # lint:ignore:wmf_styleguide
 }
 
 node /lvs100[1-2]\.wikimedia\.org/ {
