@@ -212,10 +212,10 @@ codfw:
     dns2001.wikimedia.org: [pdns_recursor]
     dns2002.wikimedia.org: [pdns_recursor]
   maps:
-    maps2001.codfw.wmnet: [kartotherian, cassandra]
-    maps2002.codfw.wmnet: [kartotherian, cassandra]
-    maps2003.codfw.wmnet: [kartotherian, cassandra]
-    maps2004.codfw.wmnet: [kartotherian, cassandra]
+    maps2001.codfw.wmnet: [kartotherian, kartotherian-ssl, cassandra]
+    maps2002.codfw.wmnet: [kartotherian, kartotherian-ssl, cassandra]
+    maps2003.codfw.wmnet: [kartotherian, kartotherian-ssl, cassandra]
+    maps2004.codfw.wmnet: [kartotherian, kartotherian-ssl, cassandra]
   elasticsearch:
     elastic2025.codfw.wmnet: [elasticsearch, elasticsearch-ssl, elasticsearch-omega-ssl]
     elastic2026.codfw.wmnet: [elasticsearch, elasticsearch-ssl, elasticsearch-omega-ssl]

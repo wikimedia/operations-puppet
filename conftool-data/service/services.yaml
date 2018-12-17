@@ -164,6 +164,14 @@ maps:
     datacenters:
     - codfw
     - eqiad
+  kartotherian-ssl:
+    port: 443
+    default_values:
+      pooled: 'yes'
+      weight: 10
+    datacenters:
+    - eqiad
+    - codfw
   cassandra:
     default_values:
       pooled: 'no'

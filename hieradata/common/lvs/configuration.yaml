@@ -808,6 +808,32 @@ lvs::configuration::lvs_services:
           hostname: kartotherian.svc.codfw.wmnet
         eqiad:
           hostname: kartotherian.svc.eqiad.wmnet
+  kartotherian-ssl:
+    description: "Kartotherian, kartotherian.svc.%{::site}.wmnet - HTTPS"
+    class: low-traffic
+    sites:
+    - codfw
+    - eqiad
+    ip: *ip_block022
+    port: 443
+    depool-threshold: '.5'
+    monitors:
+      ProxyFetch:
+        url:
+        - https://localhost/
+      IdleConnection:
+        timeout-clean-reconnect: 3
+        max-delay: 300
+    conftool:
+      cluster: maps
+      service: kartotherian-ssl
+    icinga:
+      check_command: "check_https_url!kartotherian.svc.%{::site}.wmnet!/osm-intl/6/23/24.png"
+      sites:
+        codfw:
+          hostname: kartotherian.svc.codfw.wmnet
+        eqiad:
+          hostname: kartotherian.svc.eqiad.wmnet
   mobileapps:
     description: "A service for use by mobile apps. Provides DOM manipulation, aggregation, JSON flattening. mobileapps.svc.%{::site}.wmnet"
     class: low-traffic

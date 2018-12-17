@@ -202,10 +202,10 @@ eqiad:
     restbase1017.eqiad.wmnet: [restbase, cassandra]
     restbase1018.eqiad.wmnet: [restbase, cassandra]
   maps:
-    maps1001.eqiad.wmnet: [kartotherian]
-    maps1002.eqiad.wmnet: [kartotherian]
-    maps1003.eqiad.wmnet: [kartotherian]
-    maps1004.eqiad.wmnet: [kartotherian]
+    maps1001.eqiad.wmnet: [kartotherian, kartotherian-ssl]
+    maps1002.eqiad.wmnet: [kartotherian, kartotherian-ssl]
+    maps1003.eqiad.wmnet: [kartotherian, kartotherian-ssl]
+    maps1004.eqiad.wmnet: [kartotherian, kartotherian-ssl]
   elasticsearch:
     elastic1017.eqiad.wmnet: [elasticsearch, elasticsearch-ssl, elasticsearch-omega-ssl]
     elastic1018.eqiad.wmnet: [elasticsearch, elasticsearch-ssl, elasticsearch-omega-ssl]
