@@ -11,7 +11,7 @@ groups:
               psinger, midom, tparscal, dworley, moushira, lpintscher, gpaumier,
               nschaaf, zhousquared, gwicke, dpatrick, samwalton9, samtar, akrausetud, jgonsior,
               yuvipanda, shrlak, madhuvishy, groovier, khorn, ironholds, katie,
-              cy534, pnorman, mpany, deskana, arnad]
+              cy534, pnorman, mpany, deskana, arnad, nithum]
   absent_ldap:
     description: meta group for absented users which had privileged LDAP access in the past, an automatic check verifies it has been really removed from the LDAP (but removal has to be handled separatelly)
     members: [adavenport, siddharth11, albe]
@@ -252,7 +252,7 @@ groups:
                  This will grant shell access on Hadoop client nodes and on
                  Hadoop NameNodes.  Some files in HDFS have sensitive data in them.
                  Those files are group readable by the analytics-privatedata-users group.
-    members: [dartar, milimetric, dfoy, aude, jforrester, nithum, imarlier,
+    members: [dartar, milimetric, dfoy, aude, jforrester, imarlier,
               halfak, dr0ptp4kt, bearloga, elukey, ppchelko, bawolff, mneisler,
               nuria, otto, jgreen, sguebo, thargrove,
               bsitzmann, dbrant, nettrom, leila, cwdent, jmm,
@@ -2582,16 +2582,12 @@ users:
     uid: 12744
     email: samtar.on.en.wp@gmail.com
   nithum:
-    ensure: present
+    ensure: absent
     gid: 500
     name: nithum
     realname: Nithum Thain
-    ssh_keys:
-      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDHQ6oDkb1WXmbizF6PX4hIELg7azLCcAaNiIl2ytjKTv7DcunsiwM/IkzoU94SUc1uIfijevzDTDU2moSTv8OJ5b/2RxG2RpL8pPVA+aLIm/2Yfo/ulCnjs0WgHbRpY7GKagliU6/PG8JV8byoLglVbPUcepie4P33yAqsA3BxdVsGxw4WnyOIIG2mRsYyAQsMNB5xwofkHW3fPLetY6MYpu9EtKCjaJzX2FzETT7E8WpjwYpqBnAC108hqueyCoZ7Q3eD6qs+pUdcKDPjFHPOQCxPulVjkdsUczct3r5s9ryze0ziSb5GvMowgc1i1Kn9fUPcPPmqRwR4to8348DN nithum@MBP.local
+    ssh_keys: []
     uid: 15708
-    email: nithum@gmail.com
-    expiry_date: 2018-12-15
-    expiry_contact: dario@wikimedia.org
   shrlak:
     ensure: absent
     gid: 500
