@@ -714,6 +714,15 @@ hadoop_clusters:
     # Raised for T206943
     yarn_resourcemanager_zk_timeout_ms: 20000
 
+    # Allow superset to impersonate users.
+    # This is what allows superset to access files in
+    # HDFS as users running Hive queries.
+    # We only want to allow access from analytics-tool1003 (where superset runs)
+    # and for users in specific groups.
+    core_site_extra_properties:
+      hadoop.proxyuser.superset.hosts: analytics-tool1003.eqiad.wmnet
+      hadoop.proxyuser.superset.groups: analytics-users,analytics-privatedata-users
+
 deployment_server: deploy1001.eqiad.wmnet
 
 install_server: install1002.wikimedia.org

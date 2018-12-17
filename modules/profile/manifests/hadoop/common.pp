@@ -264,12 +264,8 @@ class profile::hadoop::common (
         default => template('profile/hadoop/net-topology.py.erb'),
     }
 
-    $core_site_extra_properties_default = {
-        # Allow superset running as 'superset' user on thorium.eqiad.wmnet
-        # to run jobs as users in the analytics-users and analytics-privatedata-users groups.
-        'hadoop.proxyusers.superset.hosts'  => 'thorium.eqiad.wmnet',
-        'hadoop.proxyusers.superset.groups' => 'analytics-users,analytics-privatedata-users',
-    }
+    # No extra core-site defaults
+    $core_site_extra_properties_default = {}
 
     $yarn_site_extra_properties_default = {
         # Enable FairScheduler preemption. This will allow the essential queue
