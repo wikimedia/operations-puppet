@@ -4,6 +4,9 @@ class role::mediawiki::common {
     include ::profile::mediawiki::common
     include ::profile::mediawiki::nutcracker
 
+    # Compatibility endpoint to syslog via logging pipeline
+    include ::profile::rsyslog::udp_localhost_compat
+
     include ::profile::mediawiki::mcrouter_wancache
     if os_version('debian >= stretch') {
         include ::profile::prometheus::mcrouter_exporter
