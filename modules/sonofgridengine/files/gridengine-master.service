@@ -7,11 +7,12 @@ After=remote-fs.target
 User=sgeadmin
 Group=sgeadmin
 Restart=always
-Type=forking
-PidFile=/var/spool/gridengine/qmaster/qmaster.pid
+Type=simple
+# PidFile=/var/spool/gridengine/qmaster/qmaster.pid
 # We could just place all env vars here...
 EnvironmentFile=/etc/default/gridengine
-ExecStart=/usr/sbin/sge_qmaster
+Environment=SGE_ND=true
+ExecStart=/usr/lib/gridengine/sge_qmaster
 
 [Install]
 WantedBy=multi-user.target
