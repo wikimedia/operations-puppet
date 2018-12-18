@@ -142,7 +142,7 @@ class statistics::wmde::graphite(
     }
 
     cron { 'wmde/toolkit-analyzer-build':
-        command => "time java -Xmx2g -jar ${dir}/src/toolkit-analyzer-build/toolkit-analyzer.jar --processors Metric --store ${dir}/data --latest >> ${log_dir}/toolkit-analyzer.log 2>&1",
+        command => "time java -Dhttp.proxyHost=\"http://webproxy.${::site}.wmnet\" -Dhttp.proxyPort=8080 -Xmx2g -jar ${dir}/src/toolkit-analyzer-build/toolkit-analyzer.jar --processors Metric --store ${dir}/data --latest >> ${log_dir}/toolkit-analyzer.log 2>&1",
         hour    => '12',
         minute  => '0',
     }
