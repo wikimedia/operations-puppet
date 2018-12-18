@@ -33,7 +33,7 @@ class sonofgridengine::shadow_master(
         owner   => 'root',
         group   => 'root',
         mode    => '0444',
-        content => template('gridengine/default-gridengine-shadow.erb'),
+        content => template('sonofgridengine/default-gridengine-shadow.erb'),
     }
 
     file_line { 'shadow_masters':
