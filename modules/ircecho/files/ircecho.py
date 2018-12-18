@@ -181,7 +181,8 @@ class EventHandler(pyinotify.ProcessEvent):
                 outputs = [s[0+i:450+i] for i in range(0, len(s), 450)]
                 for out in outputs:
                     bot.connection.privmsg(chans, out)
-            except (irc.client.ServerNotConnectedError, irc.client.MessageTooLong) as e:
+            except (irc.client.ServerNotConnectedError, irc.client.MessageTooLong,
+                    UnicodeDecodeError) as e:
                 print('Error writing: %s'
                       'Dropping this message: "%s"') % (e, s)
 
