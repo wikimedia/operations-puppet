@@ -18,6 +18,7 @@ class profile::doc {
             dist       => "${::lsbdistcodename}-wikimedia",
             components => 'thirdparty/php72',
             notify     => Exec['apt_update_php'],
+            before     => Package[$php_package]
         }
     }
 
@@ -28,7 +29,6 @@ class profile::doc {
                     'rewrite',
                     'proxy',
                     'proxy_fcgi'],
-        require => Package[$php_package],
     }
 
     class { '::httpd::mpm':
