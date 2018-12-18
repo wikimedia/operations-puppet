@@ -67,21 +67,24 @@ class profile::toolforge::grid::base (
         require => File[$store],
     }
 
-    # The follow conflicts with the ssh-known-hosts stuff with puppetdb
-    # exec { 'make_known_hosts':
-    #     command => "/bin/cat ${store}/hostkey-* >/etc/ssh/ssh_known_hosts~",
-    #     onlyif  => "/usr/bin/test -n \"\$(/usr/bin/find ${store} -maxdepth 1 \\( -type d -or -type f -name hostkey-\\* \\) -newer /etc/ssh/ssh_known_hosts~)\" -o ! -s /etc/ssh/ssh_known_hosts~",
-    #     require => File[$store],
-    # }
+    if $::labsproject == 'tools' {
+        # The following conflicts with the ssh-known-hosts stuff with puppetdb
+        # TODO: Remove when adding puppetdb to tools
+        exec { 'make_known_hosts':
+            command => "/bin/cat ${store}/hostkey-* >/etc/ssh/ssh_known_hosts~",
+            onlyif  => "/usr/bin/test -n \"\$(/usr/bin/find ${store} -maxdepth 1 \\( -type d -or -type f -name hostkey-\\* \\) -newer /etc/ssh/ssh_known_hosts~)\" -o ! -s /etc/ssh/ssh_known_hosts~",
+            require => File[$store],
+        }
 
-    # file { '/etc/ssh/ssh_known_hosts':
-    #     ensure  => file,
-    #     source  => '/etc/ssh/ssh_known_hosts~',
-    #     owner   => 'root',
-    #     group   => 'root',
-    #     mode    => '0444',
-    #     require => Exec['make_known_hosts'],
-    # }
+        file { '/etc/ssh/ssh_known_hosts':
+            ensure  => file,
+            source  => '/etc/ssh/ssh_known_hosts~',
+            owner   => 'root',
+            group   => 'root',
+            mode    => '0444',
+            require => Exec['make_known_hosts'],
+        }
+    }
 
     File['/var/lib/gridengine'] -> Package <| title == 'gridengine-common' |>
 
