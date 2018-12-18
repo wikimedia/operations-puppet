@@ -383,3 +383,9 @@ monitoring::groups:
     description: Continuous Integration servers (eqiad)
   ci_codfw:
     description: Continuous Integration servers (codfw)
+
+# Management Servers
+  management_eqiad:
+    description: Management servers (eqiad)
+  management_codfw:
+    description: Management servers (codfw)

@@ -374,6 +374,12 @@ wikimedia_clusters:
     sites:
       eqiad: []
       codfw: []
+  management:
+    description: "Management servers"
+    id: 77
+    sites:
+      eqiad: []
+      codfw: []
 
 puppetmaster: "puppet"
 
