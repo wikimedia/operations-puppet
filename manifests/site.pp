@@ -1885,7 +1885,7 @@ node /^oresrdb200[12]\.codfw\.wmnet$/ {
 # To be decommed in T211826
 node 'oxygen.eqiad.wmnet'
 {
-    role(logging::webrequest::ops)
+    role(spare::system)
 }
 
 # parser cache databases
