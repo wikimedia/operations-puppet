@@ -253,6 +253,14 @@ kubernetes:
     datacenters:
     - eqiad
     - codfw
+  blubberoid:
+    port: 8748
+    default_values:
+      pooled: 'yes'
+      weight: 10
+    datacenters:
+    - eqiad
+    - codfw
 logstash:
   kibana:
     port: 80
