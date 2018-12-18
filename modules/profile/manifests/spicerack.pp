@@ -25,8 +25,8 @@ class profile::spicerack(
     include ::service::deploy::common
     include ::passwords::redis
 
-    # python3-dateutil is required by some spicerack cookbook
-    require_package('python3-dateutil')
+    # Packages required by spicerack cookbooks
+    require_package('python3-dateutil', 'python3-requests')
 
     apt::repository { 'wikimedia-spicerack':
         uri        => 'http://apt.wikimedia.org/wikimedia',
