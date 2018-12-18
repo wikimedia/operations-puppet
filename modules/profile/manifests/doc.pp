@@ -6,6 +6,13 @@ class profile::doc {
 
     # Use php7.2 from Ondrej Sury's repository.
     if $php_version == '7.2' {
+
+        exec {'apt_update_php':
+            command     => '/usr/bin/apt-get update',
+            refreshonly => true,
+            logoutput   => true,
+        }
+
         apt::repository { 'wikimedia-php72':
             uri        => 'http://apt.wikimedia.org/wikimedia',
             dist       => "${::lsbdistcodename}-wikimedia",
