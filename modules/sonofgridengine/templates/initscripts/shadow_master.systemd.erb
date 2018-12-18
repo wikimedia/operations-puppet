@@ -6,6 +6,7 @@ After=remote-fs.target
 
 [Service]
 Type=forking
+KillMode=process
 EnvironmentFile=/etc/default/gridengine
 PIDFile=/var/spool/gridengine/qmaster/shadowd_<%= @facts['fqdn'] %>.pid
 User=sgeadmin
