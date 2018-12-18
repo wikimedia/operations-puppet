@@ -83,6 +83,9 @@ cache::app_directors:
     backends:
       eqiad: 'debmonitor1001.eqiad.wmnet'
       # codfw: 'debmonitor2001.codfw.wmnet' # Active/Passive setup
+  doc:
+    backends:
+      eqiad: 'doc1001.eqiad.wmnet'
   labtestweb2001:
     backends:
       eqiad: 'labtestweb2001.wikimedia.org'
@@ -253,7 +256,7 @@ cache::alternate_domains:
   docker-registry.wikimedia.org:
     director: 'darmstadtium'
   doc.wikimedia.org:
-    director: 'contint1001'
+    director: 'doc'
   etherpad.wikimedia.org:
     director: 'etherpad1001'
     caching: 'websockets'
