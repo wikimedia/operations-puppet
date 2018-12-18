@@ -20,24 +20,6 @@ class profile::kafkatee::webrequest::ops (
         require => Package['kafkatee'],
     }
 
-    # Temporary rsync to copy data for T211883
-    rsync::quickdatacopy { 'srv-log-webrequest':
-        ensure      => absent,
-        auto_sync   => false,
-        source_host => 'oxygen.eqiad.wmnet',
-        dest_host   => 'weblog1001.eqiad.wmnet',
-        module_path => $log_directory,
-    }
-
-    # Temporary rsync to copy data for T211883
-    rsync::quickdatacopy { 'home-dirs':
-        ensure      => absent,
-        auto_sync   => false,
-        source_host => 'oxygen.eqiad.wmnet',
-        dest_host   => 'weblog1001.eqiad.wmnet',
-        module_path => '/home',
-    }
-
     # Rotate kafkatee output logs in $webrequest_log_directory.
     logrotate::conf { 'kafkatee-ops':
         content => template('profile/kafkatee/kafkatee_ops_logrotate.erb'),
