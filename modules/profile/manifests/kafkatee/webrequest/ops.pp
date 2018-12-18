@@ -22,7 +22,7 @@ class profile::kafkatee::webrequest::ops (
 
     # Temporary rsync to copy data for T211883
     rsync::quickdatacopy { 'srv-log-webrequest':
-        ensure      => present,
+        ensure      => absent,
         auto_sync   => false,
         source_host => 'oxygen.eqiad.wmnet',
         dest_host   => 'weblog1001.eqiad.wmnet',
@@ -31,7 +31,7 @@ class profile::kafkatee::webrequest::ops (
 
     # Temporary rsync to copy data for T211883
     rsync::quickdatacopy { 'home-dirs':
-        ensure      => present,
+        ensure      => absent,
         auto_sync   => false,
         source_host => 'oxygen.eqiad.wmnet',
         dest_host   => 'weblog1001.eqiad.wmnet',
