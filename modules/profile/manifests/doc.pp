@@ -11,7 +11,6 @@ class profile::doc {
             uri        => 'http://apt.wikimedia.org/wikimedia',
             dist       => "${::lsbdistcodename}-wikimedia",
             components => 'thirdparty/php72',
-            notify     => Exec['apt_update_php'],
         }
 
         package { '$php_package':
