@@ -159,7 +159,7 @@ labstore:
   cluster: labsnfs
 
 labs:
-  __regex: !ruby/regexp /^lab((net|nodepool|mon)100[1-9]\.eqiad\.wmnet|(services|control)100[1-9]\.wikimedia\.org)$/
+  __regex: !ruby/regexp /^lab((net|mon)100[1-9]\.eqiad\.wmnet|(services|control)100[1-9]\.wikimedia\.org)$/
   cluster: labs
 
 # Legacy ms-be partitioning scheme, using sdm/sdn as boot devices T189633
