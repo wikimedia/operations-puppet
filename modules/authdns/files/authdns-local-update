@@ -20,6 +20,16 @@ if [ "$(id -u)" -ne "0" ]; then
     die "this script needs root"
 fi
 
+if [ ! -d $WORKINGDIR ]; then
+    die "$WORKINGDIR is not a directory"
+fi
+
+if [ ! -e "/etc/gdnsd/config-options" ]; then
+    die "/etc/gdnsd/config-options not found, system misconfigured?"
+fi
+
+cd $WORKINGDIR
+
 # setup locking; only one copy of this may be running at the same time
 LOCKFILE=/var/lock/authdns-local-update
 LOCKFD=9
@@ -31,14 +41,21 @@ if ! flock -xn $LOCKFD; then
     die "failed to lock, another update running?"
 fi
 
+DEPLOY_SKIP_RELOAD=""
+DEPLOY_INITIAL=""
+PULL_ARGS=""
 while :; do
     case "$1" in
         --skip-reload)
-            SKIP_RELOAD="true"
+            DEPLOY_SKIP_RELOAD="--skip-reload"
+            shift
+            ;;
+        --initial)
+            DEPLOY_INITIAL="--initial"
             shift
             ;;
         --skip-review)
-            SKIP_REVIEW="true"
+            PULL_ARGS="--skip-review"
             shift
             ;;
         *)
@@ -53,90 +70,12 @@ if [ -z "$1" ]; then
         die "no master given and no origin defined in config"
     fi
     REMOTE=$ORIGIN
-    if [ "$SKIP_REVIEW" = "true" ]; then
-        PULL_ARGS="--skip-review"
-    fi
 else
     REMOTE="ssh://${1}${WORKINGDIR}"
     PULL_ARGS="--skip-review"
 fi
 echo "Pulling the current revision from $REMOTE"
-(cd $WORKINGDIR; sudo -u authdns authdns-git-pull $PULL_ARGS $REMOTE)
+sudo -u authdns authdns-git-pull $PULL_ARGS $REMOTE
 
-if [ ! -e "/etc/gdnsd/config-options" ]; then
-    die "config-options not found, system misconfigured?"
-fi
-if [ ! -e "$WORKINGDIR/config" ]; then
-    die "config not found, system misconfigured?"
-fi
-if [ ! -e "$WORKINGDIR/templates" ]; then
-    die "templates not found, system misconfigured?"
-fi
-if [ ! -e "$WORKINGDIR/geo-maps" ]; then
-    die "geo-maps not found, system misconfigured?"
-fi
-if [ ! -e "$WORKINGDIR/geo-resources" ]; then
-    die "geo-resources not found, system misconfigured?"
-fi
-if [ ! -e "$WORKINGDIR/admin_state" ]; then
-    die "admin_state not found, system misconfigured?"
-fi
-
-echo "Generating zonefiles from zone templates"
-$WORKINGDIR/utils/authdns-gen-zones.py $WORKINGDIR/templates /etc/gdnsd/zones
-
-echo "Doing sanity checks"
-if [ `ls /etc/gdnsd/zones |wc -l` -le 10 ]; then
-    die "less than 10 zones, something's probably wrong, aborting";
-fi
-
-echo "Copy config bits"
-cp -f /etc/gdnsd/config /etc/gdnsd/config~ 2>/dev/null || true
-cp -f /etc/gdnsd/geo-maps /etc/gdnsd/geo-maps~ 2>/dev/null || true
-cp -f /etc/gdnsd/geo-resources /etc/gdnsd/geo-resources~ 2>/dev/null || true
-cp -f $WORKINGDIR/config /etc/gdnsd/
-cp -f $WORKINGDIR/geo-maps /etc/gdnsd/geo-maps
-cp -f $WORKINGDIR/geo-resources /etc/gdnsd/geo-resources
-
-# initial run, before gdnsd was installed
-if ! which gdnsd > /dev/null || [ "$SKIP_RELOAD" = "true" ]; then
-    rm -f /etc/gdnsd/config~
-    rm -f /etc/gdnsd/geo-maps~
-    rm -f /etc/gdnsd/geo-resources~
-    exit 0
-fi
-
-if ! gdnsd checkconf >/dev/null 2>&1; then
-    if [ -f /etc/gdnsd/config~ ]; then
-        mv /etc/gdnsd/config~ /etc/gdnsd/config
-    fi
-    if [ -f /etc/gdnsd/geo-maps~ ]; then
-        mv /etc/gdnsd/geo-maps~ /etc/gdnsd/geo-maps
-    fi
-    if [ -f /etc/gdnsd/geo-resources~ ]; then
-        mv /etc/gdnsd/geo-resources~ /etc/gdnsd/geo-resources
-    fi
-    die "gdnsd checkconf failed, aborting"
-fi
-
-echo "Copying admin_state into place; will take effect immediately"
-mkdir -p /var/lib/gdnsd
-cp -f $WORKINGDIR/admin_state /var/lib/gdnsd/
-
-### reload
-
-if ( ! cmp --quiet /etc/gdnsd/config~ /etc/gdnsd/config ) \
-  || ( ! cmp --quiet /etc/gdnsd/geo-maps~ /etc/gdnsd/geo-maps ) \
-  || ( ! cmp --quiet /etc/gdnsd/geo-resources~ /etc/gdnsd/geo-resources ); then
-    rm -f /etc/gdnsd/config~
-    rm -f /etc/gdnsd/geo-maps~
-    rm -f /etc/gdnsd/geo-resources~
-    echo "Replacing gdnsd to update config and zones:"
-    /usr/bin/gdnsdctl replace
-else
-    rm -f /etc/gdnsd/config~
-    rm -f /etc/gdnsd/geo-maps~
-    rm -f /etc/gdnsd/geo-resources~
-    echo "Reloading zones"
-    /usr/bin/gdnsdctl reload-zones
-fi
+echo "Deploying via utils/deploy-check.py..."
+utils/deploy-check.py --deploy $DEPLOY_INITIAL $DEPLOY_SKIP_RELOAD

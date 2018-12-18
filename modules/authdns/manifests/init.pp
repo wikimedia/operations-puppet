@@ -106,7 +106,7 @@ class authdns(
     }
 
     exec { 'authdns-local-update':
-        command     => '/usr/local/sbin/authdns-local-update --skip-review',
+        command     => '/usr/local/sbin/authdns-local-update --skip-review --initial',
         user        => root,
         refreshonly => true,
         timeout     => 60,
@@ -119,6 +119,7 @@ class authdns(
                 File['/etc/gdnsd/discovery-map'],
                 File['/etc/gdnsd/geoip'],
                 File['/etc/gdnsd/geoip/GeoIP2-City.mmdb'],
+                File['/etc/gdnsd/zones'],
             ],
         # we prepare the config even before the package gets installed, leaving
         # no window where service would be started and answer with REFUSED

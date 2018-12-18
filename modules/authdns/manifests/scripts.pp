@@ -3,11 +3,13 @@
 # but we don't do that anymore and provisioning them here instead.
 #
 class authdns::scripts {
-    if ! defined(Package['python-jinja2']){
-        package { 'python-jinja2':
-            ensure => present,
-        }
-    }
+    # These are needed by gen-zones.py in the ops/dns repo, which
+    # authdns-local-update will indirectly execute
+    require_package('python3-git')
+    require_package('python3-jinja2')
+
+    # legacy, to be removed later
+    require_package('python-jinja2')
 
     file { '/usr/local/sbin/authdns-update':
         ensure => present,
