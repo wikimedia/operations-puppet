@@ -41,6 +41,13 @@ swift::storagehosts:
   - ms-be1041.eqiad.wmnet
   - ms-be1042.eqiad.wmnet
   - ms-be1043.eqiad.wmnet
+  - ms-be1044.eqiad.wmnet
+  - ms-be1045.eqiad.wmnet
+  - ms-be1046.eqiad.wmnet
+  - ms-be1047.eqiad.wmnet
+  - ms-be1048.eqiad.wmnet
+  - ms-be1049.eqiad.wmnet
+  - ms-be1050.eqiad.wmnet
   - ms-be2013.codfw.wmnet
   - ms-be2014.codfw.wmnet
   - ms-be2015.codfw.wmnet
