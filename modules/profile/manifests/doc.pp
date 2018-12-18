@@ -37,4 +37,17 @@ class profile::doc {
         port   => '80',
         srange => '$CACHES',
     }
+
+    file { [
+        '/srv/org',
+        '/srv/org/wikimedia/',
+        '/srv/org/wikimedia/doc',
+    ]:
+        ensure => 'directory',
+        owner  => 'root',
+        group  => 'wikidev',
+        mode   => '0755',
+    }
+
+    backup::set { 'srv-org-wikimedia': }
 }
