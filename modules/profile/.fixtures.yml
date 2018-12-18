@@ -1,6 +1,8 @@
 fixtures:
     symlinks:
         profile: "#{source_dir}"
+        apt: "../../../../apt"
+        backup: "../../../../backup"
         conftool: "../../../../conftool"
         etcd: "../../../../etcd"
         ferm: "../../../../ferm"
@@ -15,6 +17,7 @@ fixtures:
         nginx: "../../../../nginx"
         nrpe: "../../../../nrpe"
         phabricator: "../../../../phabricator"
+        rsync: "../../../../rsync"
         sslcert: "../../../../sslcert"
         stdlib: "../../../../stdlib"
         sysctl: "../../../../sysctl"
