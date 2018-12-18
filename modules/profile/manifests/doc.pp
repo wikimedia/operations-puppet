@@ -18,7 +18,6 @@ class profile::doc {
             dist       => "${::lsbdistcodename}-wikimedia",
             components => 'thirdparty/php72',
             notify     => Exec['apt_update_php'],
-            before     => Package[$php_package]
         }
     }
 
