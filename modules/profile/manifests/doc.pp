@@ -13,7 +13,7 @@ class profile::doc {
             components => 'thirdparty/php72',
         }
 
-        package { '$php_package':
+        package { $php_package:
             ensure  => installed,
             require => [ Apt::Repository['wikimedia-php72'],
                         Exec['apt-get update']],
