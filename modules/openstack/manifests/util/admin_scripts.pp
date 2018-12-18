@@ -45,6 +45,29 @@ class openstack::util::admin_scripts(
         source => "puppet:///modules/openstack/${version}/admin_scripts/live-migrate",
     }
 
+    file { '/root/nova-quota-sync':
+        ensure => 'directory',
+        owner  => 'root',
+    }
+
+    # Script to check and/or fix quotas.  With luck this won't be
+    #  needed in Pike or later.
+    file { '/root/nova-quota-sync/nova-quota-sync':
+        ensure => 'present',
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0755',
+        source => "puppet:///modules/openstack/${version}/admin_scripts/nova-quota-sync/nova-quota-sync",
+    }
+
+    file { '/root/nova-quota-sync/readme.md':
+        ensure => 'present',
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0555',
+        source => "puppet:///modules/openstack/${version}/admin_scripts/nova-quota-sync/readme.md",
+    }
+
     # Set up keystone services (example script)
     file { '/root/prod-example.sh':
         ensure => 'present',
