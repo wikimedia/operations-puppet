@@ -41,7 +41,6 @@ class profile::doc {
     file { [
         '/srv/org',
         '/srv/org/wikimedia/',
-        '/srv/org/wikimedia/doc',
     ]:
         ensure => 'directory',
         owner  => 'root',
@@ -49,5 +48,36 @@ class profile::doc {
         mode   => '0755',
     }
 
+    user { 'doc-uploader':
+        ensure => present,
+        shell  => '/bin/false',
+        system => true,
+    }
+    file { '/srv/org/wikimedia/doc':
+        ensure => 'directory',
+        owner  => 'doc-uploader',
+        group  => 'wikidev',
+        mode   => '0755',
+    }
+
     backup::set { 'srv-org-wikimedia': }
+
+    class { '::rsync::server': }
+
+    rsync::server::module { 'doc':
+        ensure         => present,
+        comment        => 'Docroot of https://doc.wikimedia.org/',
+        read_only      => 'no',
+        path           => '/srv/org/wikimedia/doc',
+        uid            => 'doc-uploader',
+        gid            => 'wikidev',
+        hosts_allow    => ['contint1001.wikimedia.org', 'contint2001.wikimedia.org'],
+        auto_ferm      => true,
+        auto_ferm_ipv6 => true,
+        require        => [
+            User['doc-uploader'],
+            File['/srv/org/wikimedia/doc'],
+        ],
+    }
+
 }
