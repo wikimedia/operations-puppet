@@ -91,3 +91,6 @@ discovery::services:
   zotero:
     lvs: zotero
     active_active: true
+  blubberoid:
+    lvs: blubberoid
+    active_active: true
