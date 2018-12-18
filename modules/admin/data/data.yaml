@@ -160,24 +160,19 @@ groups:
     members: []
   contint-admins:
     gid: 719
-    description: users with some sudo permissions on jenkins and nodepool hosts
+    description: users with some sudo permissions on the CI masters (Jenkins, Zuul).
     members: [bd808, cscott, dduvall, demon, krinkle, reedy, marktraceur,
               twentyafterfour, zfilipin, thcipriani, legoktm, gjg,
               hashar, niedzielski, addshore, liw, jhuneidi]
     privileges: ['ALL = (jenkins) NOPASSWD: ALL',
                  'ALL = (jenkins-slave) NOPASSWD: ALL',
                  'ALL = (gerritslave) NOPASSWD: ALL',
-                 'ALL = (nodepool) NOPASSWD: ALL',
                  'ALL = (zuul) NOPASSWD: ALL',
                  'ALL = NOPASSWD: /etc/init.d/jenkins',
                  'ALL = NOPASSWD: /usr/sbin/service jenkins start',
                  'ALL = NOPASSWD: /usr/sbin/service jenkins stop',
                  'ALL = NOPASSWD: /usr/sbin/service jenkins restart',
                  'ALL = NOPASSWD: /usr/sbin/service jenkins status',
-                 'ALL = NOPASSWD: /usr/sbin/service nodepool start',
-                 'ALL = NOPASSWD: /usr/sbin/service nodepool stop',
-                 'ALL = NOPASSWD: /usr/sbin/service nodepool restart',
-                 'ALL = NOPASSWD: /usr/sbin/service nodepool status',
                  'ALL = NOPASSWD: /usr/sbin/service zuul reload',
                  'ALL = NOPASSWD: /usr/sbin/service zuul restart',
                  'ALL = NOPASSWD: /usr/sbin/service zuul start',
