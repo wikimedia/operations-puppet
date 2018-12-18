@@ -22,7 +22,7 @@ $dump -h m3-slave \
     pigz > /srv/backups/m3-phabricator-phlegal-$(date +%Y%m%d%H%M%S).sql.gz
 
 $dump -h m5-slave --databases glance keystone neutron nova \
-    designate designate_pool_manager nodepooldb | \
+    designate designate_pool_manager | \
     pigz > /srv/backups/m5-$(date +%Y%m%d%H%M%S).sql.gz
 
 sql="select schema_name from information_schema.schemata where schema_name regexp '^(wik|flowdb)'"
