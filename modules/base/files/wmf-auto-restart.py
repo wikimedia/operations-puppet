@@ -141,6 +141,11 @@ def main():
         logging.getLogger().addHandler(logging.StreamHandler())
         logger.setLevel(logging.DEBUG)
 
+    if args.servicename.lower().endswith('.service'):
+        print("You need to provide the base service name, not the name of the systemd unit",
+              file=sys.stderr)  # noqa: E999 TODO: remove once tox:pep8 uses python3 T184435
+        return 1
+
     run_time_deps = ('/bin/pidof', '/usr/bin/lsof', '/bin/systemctl')
     missing_run_time_deps = [i for i in run_time_deps if not os.path.isfile(i)]
 
