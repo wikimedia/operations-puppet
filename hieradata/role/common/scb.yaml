@@ -148,4 +148,5 @@ profile::cpjobqueue::videoscaler_host: https://videoscaler.discovery.wmnet
 
 #CXserver
 profile::cxserver::apertium_uri: "http://apertium.svc.%{::site}.wmnet:2737"
+profile::cxserver::ratelimit_port: 3051
 diamond::remove: true

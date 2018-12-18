@@ -9,3 +9,10 @@ profile::nutcracker::redis_pools:
         host: 10.192.32.133
         port: 6379
     listen: '/var/run/nutcracker/redis_codfw.sock 0666'
+profile::cxserver::ratelimit_hosts:
+  - scb2001.codfw.wmnet
+  - scb2002.codfw.wmnet
+  - scb2003.codfw.wmnet
+  - scb2004.codfw.wmnet
+  - scb2005.codfw.wmnet
+  - scb2006.codfw.wmnet
