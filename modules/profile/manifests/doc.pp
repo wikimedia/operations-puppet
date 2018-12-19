@@ -50,29 +50,20 @@ class profile::doc {
         srange => '$CACHES',
     }
 
-    file { [
-        '/srv/org',
-        '/srv/org/wikimedia/',
-    ]:
-        ensure => 'directory',
-        owner  => 'root',
-        group  => 'wikidev',
-        mode   => '0755',
-    }
-
     user { 'doc-uploader':
         ensure => present,
         shell  => '/bin/false',
         system => true,
     }
-    file { '/srv/org/wikimedia/doc':
-        ensure => 'directory',
-        owner  => 'doc-uploader',
-        group  => 'wikidev',
-        mode   => '0755',
+    file { '/srv/docroot/org/wikimedia/doc':
+        ensure  => 'directory',
+        owner   => 'doc-uploader',
+        group   => 'wikidev',
+        mode    => '0755',
+        require => Git::Clone['integration/docroot'],
     }
 
-    backup::set { 'srv-org-wikimedia': }
+    backup::set { 'srv-docroot-org-wikimedia-doc': }
 
     class { '::rsync::server': }
 
@@ -80,7 +71,7 @@ class profile::doc {
         ensure         => present,
         comment        => 'Docroot of https://doc.wikimedia.org/',
         read_only      => 'no',
-        path           => '/srv/org/wikimedia/doc',
+        path           => '/srv/docroot/org/wikimedia/doc',
         uid            => 'doc-uploader',
         gid            => 'wikidev',
         hosts_allow    => ['contint1001.wikimedia.org', 'contint2001.wikimedia.org'],
@@ -88,7 +79,7 @@ class profile::doc {
         auto_ferm_ipv6 => true,
         require        => [
             User['doc-uploader'],
-            File['/srv/org/wikimedia/doc'],
+            File['/srv/docroot/org/wikimedia/doc'],
         ],
     }
 

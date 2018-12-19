@@ -111,6 +111,9 @@ class profile::backup::director(
     bacula::director::fileset { 'srv-org-wikimedia':
         includes => [ '/srv/org/wikimedia' ]
     }
+    bacula::director::fileset { 'srv-docroot-org-wikimedia-doc':
+        includes => [ '/srv/docroot/org/wikimedia/doc' ]
+    }
     bacula::director::fileset { 'var-lib-archiva':
         includes     => [ '/var/lib/archiva' ],
     }
