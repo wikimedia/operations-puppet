@@ -34,7 +34,7 @@ class profile::doc {
 
     # Apache configuration for doc.wikimedia.org
     httpd::site { 'doc.wikimedia.org':
-        content => template('contint/apache/doc.wikimedia.org.erb'),
+        content => template('profile/doc/httpd-doc.wikimedia.org.erb'),
     }
 
     ferm::service { 'doc-http':
