@@ -6,6 +6,7 @@ fixtures:
         conftool: "../../../../conftool"
         etcd: "../../../../etcd"
         ferm: "../../../../ferm"
+        git: "../../../../git"
         hhvm: "../../../../hhvm"
         httpd: "../../../../httpd"
         ldap: "../../../../ldap"

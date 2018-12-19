@@ -37,6 +37,13 @@ class profile::doc {
         content => template('profile/doc/httpd-doc.wikimedia.org.erb'),
     }
 
+    git::clone { 'integration/docroot':
+        directory => '/srv/docroot',
+        owner     => 'nobody',
+        group     => 'wikidev',
+        shared    => true,
+    }
+
     ferm::service { 'doc-http':
         proto  => 'tcp',
         port   => '80',
