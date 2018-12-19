@@ -73,7 +73,7 @@ class druid::middlemanager(
         'druid.port'                        => 8091,
         'druid.worker.capacity'             => 3,
 
-        'druid.indexer.runner.startPort'    => 8100,
+        'druid.indexer.runner.startPort'    => 8200,
         # Indexer tasks processes (peons) need to run
         # with the same java that druid should use.
         'druid.indexer.runner.javaCommand'  => "${::druid::java_home}/bin/java",
