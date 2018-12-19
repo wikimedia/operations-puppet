@@ -544,6 +544,11 @@ host releases1001 {
     fixed-address releases1001.eqiad.wmnet;
 }
 
+host registry1001 {
+    hardware ethernet aa:00:00:85:e5:d2;
+    fixed-address registry1001.eqiad.wmnet;
+}
+
 host releases2001 {
     hardware ethernet aa:00:00:ae:36:40;
     fixed-address releases2001.codfw.wmnet;

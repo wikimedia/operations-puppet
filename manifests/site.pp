@@ -2004,6 +2004,11 @@ node /^rdb200[12]\.codfw\.wmnet$/ {
     role(spare::system)
 }
 
+node /^registry[12]00[12]\.(eqiad|codfw)\.wmnet$/ {
+    role(spare::system)
+}
+
+
 # https://releases.wikimedia.org - VMs for releases (mediawiki and other)
 # https://releases-jenkins.wikimedia.org - for releases admins
 node /^releases[12]001\.(codfw|eqiad)\.wmnet$/ {
