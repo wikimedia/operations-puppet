@@ -11,5 +11,8 @@ input {
     <%- unless @plugin_id.empty? -%>
     id => "<%= @plugin_id %>"
     <%- end -%>
+    <%- if @tags -%>
+    tags => ["<%= @tags.join('", "') %>"]
+    <%- end -%>
   }
 }

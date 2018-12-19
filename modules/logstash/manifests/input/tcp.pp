@@ -31,6 +31,7 @@ define logstash::input::tcp(
     Optional[String] $ssl_cert   = undef,
     Optional[String] $ssl_key    = undef,
     String           $plugin_id  = "input/tcp/${port}",
+    Optional[Array]  $tags       = undef,
 ) {
 
     # Ensure cert/key params look like filesystem paths when ssl is enabled.

@@ -26,6 +26,7 @@ define logstash::input::udp(
     $codec     = 'plain',
     $priority  = 10,
     $plugin_id = "input/udp/${port}",
+    $tags      = undef,
 ) {
     logstash::conf { "input-udp-${title}":
         ensure   => $ensure,

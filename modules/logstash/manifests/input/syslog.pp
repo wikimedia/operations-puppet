@@ -21,6 +21,7 @@ define logstash::input::syslog(
     $port      = 514,
     $priority  = 10,
     $plugin_id = "input/syslog/${port}",
+    $tags      = undef,
 ) {
     logstash::conf { "input-syslog-${title}":
         ensure   => $ensure,

@@ -21,6 +21,7 @@ define logstash::input::udp2log(
     $port      = 8324,
     $priority  = 10,
     $plugin_id = "input/udp2log/${port}",
+    $tags      = undef,
 ) {
     logstash::conf { "input-udp2log-${title}":
         ensure   => $ensure,

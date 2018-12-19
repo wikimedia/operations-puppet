@@ -21,6 +21,7 @@ define logstash::input::gelf(
     $port      = 12201,
     $priority  = 10,
     $plugin_id = "input/gelf/${port}",
+    $tags      = undef,
 ) {
     logstash::conf { "input-gelf-${title}":
         ensure   => $ensure,

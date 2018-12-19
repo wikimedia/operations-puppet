@@ -27,6 +27,7 @@ define logstash::input::log4j(
     $port       = 4560,
     $priority   = 10,
     $plugin_id  = "input/log4j/${port}",
+    $tags       = undef,
 ) {
     logstash::conf { "input-log4j-${title}":
         ensure   => $ensure,

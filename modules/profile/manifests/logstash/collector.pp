@@ -51,6 +51,7 @@ class profile::logstash::collector (
 
     logstash::input::udp2log { 'mediawiki':
         port => 8324,
+        tags => ['input-udp2log-mediawiki-8324'],
     }
 
     ferm::service { 'logstash_udp2log':
@@ -62,6 +63,7 @@ class profile::logstash::collector (
 
     logstash::input::syslog { 'syslog':
         port => 10514,
+        tags => ['input-syslog-10514'],
     }
 
     ferm::service { 'logstash_syslog_udp':
@@ -96,6 +98,7 @@ class profile::logstash::collector (
 
     logstash::input::gelf { 'gelf':
         port => 12201,
+        tags => ['input-gelf-12201'],
     }
 
     ferm::service { 'logstash_gelf':
@@ -105,7 +108,9 @@ class profile::logstash::collector (
         srange  => '$DOMAIN_NETWORKS',
     }
 
-    logstash::input::log4j { 'log4j': }
+    logstash::input::log4j { 'log4j':
+        tags => ['input-log4j-4560'],
+    }
 
     ferm::service { 'logstash_log4j':
         proto   => 'tcp',
@@ -121,6 +126,7 @@ class profile::logstash::collector (
     logstash::input::udp { 'logback':
         port  => 11514,
         codec => 'json',
+        tags  => ['input-udp-logback-11514'],
     }
 
     ferm::service { 'logstash_udp':
@@ -133,6 +139,7 @@ class profile::logstash::collector (
     logstash::input::tcp { 'json_lines':
         port  => 11514,
         codec => 'json_lines',
+        tags  => ['input-tcp-json_lines-11514'],
     }
 
     ferm::service { 'logstash_json_lines':
@@ -152,6 +159,7 @@ class profile::logstash::collector (
         ssl_enable => true,
         ssl_cert   => '/etc/logstash/ssl/cert.pem',
         ssl_key    => '/etc/logstash/ssl/server.key',
+        tags       => ['input-tcp-syslog_tls-16514'],
     }
 
     ferm::service { 'logstash_syslog_tls':
