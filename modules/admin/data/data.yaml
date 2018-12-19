@@ -167,6 +167,7 @@ groups:
     privileges: ['ALL = (jenkins) NOPASSWD: ALL',
                  'ALL = (jenkins-slave) NOPASSWD: ALL',
                  'ALL = (gerritslave) NOPASSWD: ALL',
+                 'ALL = (doc-uploader) NOPASSWD: ALL',
                  'ALL = (zuul) NOPASSWD: ALL',
                  'ALL = NOPASSWD: /etc/init.d/jenkins',
                  'ALL = NOPASSWD: /usr/sbin/service jenkins start',
