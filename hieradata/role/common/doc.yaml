@@ -1,2 +1,5 @@
+admin::groups:
+  - contint-users
+  - contint-admins
 cluster: ci
 contactgroups: 'admins,contint'
