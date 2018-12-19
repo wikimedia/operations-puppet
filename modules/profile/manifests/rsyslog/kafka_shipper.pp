@@ -29,6 +29,11 @@ class profile::rsyslog::kafka_shipper (
         require => File['/etc/rsyslog.lookup.d'],
     }
 
+    rsyslog::conf { 'max_message_size':
+        content  => template('profile/rsyslog/max_message_size.conf.erb'),
+        priority => 00,
+    }
+
     rsyslog::conf { 'lookup_output':
         content  => template('profile/rsyslog/lookup_output.conf.erb'),
         priority => 10,
