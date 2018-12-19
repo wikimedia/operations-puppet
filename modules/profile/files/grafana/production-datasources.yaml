@@ -1,0 +1,216 @@
+# See https://docs.grafana.org/administration/provisioning/#datasources
+
+apiVersion: 1
+
+datasources:
+ - name: graphite
+   type: graphite
+   access: direct
+   orgId: 1
+   url: https://graphite.wikimedia.org
+   database:
+   isDefault: true
+   editable: false
+   withCredentials: false
+   version: 6
+
+ - name: elastic
+   type: elasticsearch
+   access: direct
+   orgId: 1
+   url: https://grafana.wikimedia.org
+   database: grafana-dashboards
+   isDefault: false
+   editable: false
+   withCredentials: false
+   version: 1
+   json_data:
+     timeField: '@timestamp'
+
+ - name: codfw prometheus/ops
+   type: prometheus
+   access: proxy
+   orgId: 1
+   url: http://prometheus.svc.codfw.wmnet/ops
+   database:
+   isDefault: false
+   editable: false
+   withCredentials: false
+   version: 1
+
+ - name: eqiad prometheus/ops
+   type: prometheus
+   access: proxy
+   orgId: 1
+   url: http://prometheus.svc.eqiad.wmnet/ops
+   database:
+   isDefault: false
+   editable: false
+   withCredentials: false
+   version: 1
+
+ - name: ulsfo prometheus/ops
+   type: prometheus
+   access: proxy
+   orgId: 1
+   url: http://prometheus.svc.ulsfo.wmnet/ops
+   database:
+   isDefault: false
+   editable: false
+   withCredentials: false
+   version: 1
+
+ - name: esams prometheus/ops
+   type: prometheus
+   access: proxy
+   orgId: 1
+   url: http://prometheus.svc.esams.wmnet/ops
+   database:
+   isDefault: false
+   editable: false
+   withCredentials: false
+   version: 1
+
+ - name: codfw prometheus/global
+   type: prometheus
+   access: proxy
+   orgId: 1
+   url: http://prometheus.svc.codfw.wmnet/global
+   database:
+   isDefault: false
+   editable: false
+   withCredentials: false
+   version: 1
+
+ - name: eqiad prometheus/global
+   type: prometheus
+   access: proxy
+   orgId: 1
+   url: http://prometheus.svc.eqiad.wmnet/global
+   database:
+   isDefault: false
+   editable: false
+   withCredentials: false
+   version: 1
+
+ - name: frack.eqiad prometheus
+   type: prometheus
+   access: proxy
+   orgId: 1
+   url: http://pay-lvs1001.frack.eqiad.wmnet:9090
+   database:
+   isDefault: false
+   editable: false
+   withCredentials: false
+   version: 1
+
+ - name: frack.codfw prometheus
+   type: prometheus
+   access: proxy
+   orgId: 1
+   url: http://pay-lvs2001.frack.codfw.wmnet:9090
+   database:
+   isDefault: false
+   editable: false
+   withCredentials: false
+   version: 1
+
+ - name: eqiad prometheus/services
+   type: prometheus
+   access: proxy
+   orgId: 1
+   url: http://prometheus.svc.eqiad.wmnet/services
+   database:
+   isDefault: false
+   editable: false
+   withCredentials: false
+   version: 1
+
+ - name: codfw prometheus/services
+   type: prometheus
+   access: proxy
+   orgId: 1
+   url: http://prometheus.svc.codfw.wmnet/services
+   database:
+   isDefault: false
+   editable: false
+   withCredentials: false
+   version: 1
+
+ - name: eqiad prometheus/labs
+   type: prometheus
+   access: proxy
+   orgId: 1
+   url: http://prometheus-labmon.eqiad.wmnet/labs
+   database:
+   isDefault: false
+   editable: false
+   withCredentials: false
+   version: 1
+
+ - name: eqiad prometheus/k8s
+   type: prometheus
+   access: proxy
+   orgId: 1
+   url: http://prometheus.svc.eqiad.wmnet/k8s
+   database:
+   isDefault: false
+   editable: false
+   withCredentials: false
+   version: 1
+
+ - name: codfw prometheus/k8s
+   type: prometheus
+   access: proxy
+   orgId: 1
+   url: http://prometheus.svc.codfw.wmnet/k8s
+   database:
+   isDefault: false
+   editable: false
+   withCredentials: false
+   version: 1
+
+ - name: codfw prometheus/analytics
+   type: prometheus
+   access: proxy
+   orgId: 1
+   url: http://prometheus.svc.codfw.wmnet/analytics
+   database:
+   isDefault: false
+   editable: false
+   withCredentials: false
+   version: 1
+
+ - name: eqiad prometheus/analytics
+   type: prometheus
+   access: proxy
+   orgId: 1
+   url: http://prometheus.svc.eqiad.wmnet/analytics
+   database:
+   isDefault: false
+   editable: false
+   withCredentials: false
+   version: 1
+
+ - name: eqiad prometheus/k8s-staging
+   type: prometheus
+   access: proxy
+   orgId: 1
+   url: http://prometheus.svc.eqiad.wmnet/k8s-staging
+   database:
+   isDefault: false
+   editable: false
+   withCredentials: false
+   version: 1
+
+ - name: eqsin prometheus/ops
+   type: prometheus
+   access: proxy
+   orgId: 1
+   url: http://prometheus.svc.eqsin.wmnet/ops
+   database:
+   isDefault: false
+   editable: false
+   withCredentials: false
+   version: 1
+
