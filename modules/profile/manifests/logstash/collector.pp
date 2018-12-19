@@ -169,37 +169,75 @@ class profile::logstash::collector (
         srange  => '$DOMAIN_NETWORKS',
     }
 
-    $kafka_config = kafka_config("logging-${::site}")
+    # logstash collectors in both sites pull messages from both kafka clusters
+    $kafka_config_eqiad = kafka_config('logging-eqiad')
+    $kafka_config_codfw = kafka_config('logging-codfw')
 
-    logstash::input::kafka { 'rsyslog-shipper':
+    logstash::input::kafka { 'rsyslog-shipper-eqiad':
         topics_pattern          => 'rsyslog-.*',
         group_id                => $input_kafka_consumer_group_id,
         type                    => 'syslog',
         tags                    => ['input-kafka-rsyslog-shipper', 'rsyslog-shipper', 'kafka'],
         codec                   => 'json',
-        bootstrap_servers       => $kafka_config['brokers']['ssl_string'],
+        bootstrap_servers       => $kafka_config_eqiad['brokers']['ssl_string'],
         security_protocol       => 'SSL',
-        ssl_truststore_location => '/etc/logstash/kafka-logging-truststore.jks',
+        ssl_truststore_location => '/etc/logstash/kafka-logging-truststore-eqiad.jks',
         ssl_truststore_password => $input_kafka_ssl_truststore_password,
         consumer_threads        => 3,
     }
 
-    logstash::input::kafka { 'rsyslog-udp-localhost':
+    logstash::input::kafka { 'rsyslog-shipper-codfw':
+        topics_pattern          => 'rsyslog-.*',
+        group_id                => $input_kafka_consumer_group_id,
+        type                    => 'syslog',
+        tags                    => ['rsyslog-shipper','kafka'],
+        codec                   => 'json',
+        bootstrap_servers       => $kafka_config_codfw['brokers']['ssl_string'],
+        security_protocol       => 'SSL',
+        ssl_truststore_location => '/etc/logstash/kafka-logging-truststore-codfw.jks',
+        ssl_truststore_password => $input_kafka_ssl_truststore_password,
+    }
+
+    logstash::input::kafka { 'rsyslog-udp-localhost-eqiad':
         topics_pattern          => 'udp_localhost-.*',
         group_id                => $input_kafka_consumer_group_id,
         type                    => 'syslog',
         tags                    => ['input-kafka-rsyslog-udp-localhost', 'rsyslog-udp-localhost', 'kafka'],
         codec                   => 'json',
-        bootstrap_servers       => $kafka_config['brokers']['ssl_string'],
+        bootstrap_servers       => $kafka_config_eqiad['brokers']['ssl_string'],
         security_protocol       => 'SSL',
-        ssl_truststore_location => '/etc/logstash/kafka-logging-truststore.jks',
+        ssl_truststore_location => '/etc/logstash/kafka-logging-truststore-eqiad.jks',
+        ssl_truststore_password => $input_kafka_ssl_truststore_password,
+    }
+
+    logstash::input::kafka { 'rsyslog-udp-localhost-codfw':
+        topics_pattern          => 'udp_localhost-.*',
+        group_id                => $input_kafka_consumer_group_id,
+        type                    => 'syslog',
+        tags                    => ['rsyslog-udp-localhost','kafka'],
+        codec                   => 'json',
+        bootstrap_servers       => $kafka_config_codfw['brokers']['ssl_string'],
+        security_protocol       => 'SSL',
+        ssl_truststore_location => '/etc/logstash/kafka-logging-truststore-codfw.jks',
         ssl_truststore_password => $input_kafka_ssl_truststore_password,
         consumer_threads        => 3,
     }
 
     file { '/etc/logstash/kafka-logging-truststore.jks':
-        content => secret("certificates/kafka_logging-${::site}_broker/truststore.jks"),
-        before  => Logstash::Input::Kafka['rsyslog-shipper'],
+        ensure  => absent,
+    }
+
+    file { '/etc/logstash/kafka-logging-truststore-eqiad.jks':
+        content => secret('certificates/kafka_logging-eqiad_broker/truststore.jks'),
+        before  => Logstash::Input::Kafka['rsyslog-shipper-eqiad'],
+        owner   => 'logstash',
+        group   => 'logstash',
+        mode    => '0640',
+    }
+
+    file { '/etc/logstash/kafka-logging-truststore-codfw.jks':
+        content => secret('certificates/kafka_logging-codfw_broker/truststore.jks'),
+        before  => Logstash::Input::Kafka['rsyslog-shipper-codfw'],
         owner   => 'logstash',
         group   => 'logstash',
         mode    => '0640',
