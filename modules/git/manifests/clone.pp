@@ -65,6 +65,8 @@ define git::clone(
     $mode=undef,
     $source='gerrit') {
 
+    require_package('git')
+
     $default_url_format = $source ? {
         'phabricator' => 'https://phabricator.wikimedia.org/diffusion/%.git',
         'github'      => 'https://github.com/wikimedia/%s.git',
