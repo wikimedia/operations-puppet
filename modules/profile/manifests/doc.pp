@@ -32,6 +32,11 @@ class profile::doc {
         source => 'puppet:///modules/profile/doc/httpd_worker.conf'
     }
 
+    # Apache configuration for doc.wikimedia.org
+    httpd::site { 'doc.wikimedia.org':
+        content => template('contint/apache/doc.wikimedia.org.erb'),
+    }
+
     ferm::service { 'doc-http':
         proto  => 'tcp',
         port   => '80',

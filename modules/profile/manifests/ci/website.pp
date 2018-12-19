@@ -17,6 +17,7 @@ class profile::ci::website {
     }
 
     # Apache configuration for doc.wikimedia.org
+    # Will be superseeded by profile::doc
     httpd::site { 'doc.wikimedia.org':
         content => template('contint/apache/doc.wikimedia.org.erb'),
     }
