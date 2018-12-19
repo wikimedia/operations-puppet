@@ -36,6 +36,7 @@ class profile::cxserver(
             youdao_app_secret  => $youdao_app_secret,
             ratelimit_port     => $ratelimit_port,
             ratelimit_hosts    => $rl_hosts,
+            ipaddress          => $::ipaddress,
         },
     }
 
