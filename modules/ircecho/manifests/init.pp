@@ -44,17 +44,16 @@ class ircecho (
         notify  => Service['ircecho'],
     }
 
-    base::service_unit { 'ircecho':
+    systemd::service { 'ircecho':
         ensure         => $ensure,
-        systemd        => systemd_template('ircecho'),
-        sysvinit       => sysvinit_template('ircecho'),
-        require        => File['/usr/local/bin/ircecho'],
+        content        => systemd_template('ircecho'),
         service_params => {
+            ensure     => 'running',
             hasrestart => true,
         },
+        require        => File['/usr/local/bin/ircecho'],
     }
 
-    if os_version('debian >= jessie') {
-        base::service_auto_restart { 'ircecho': }
-    }
+
+    base::service_auto_restart { 'ircecho': }
 }
