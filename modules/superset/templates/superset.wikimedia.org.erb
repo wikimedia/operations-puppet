@@ -19,7 +19,7 @@
     </Directory>
 
     <Location />
-        AuthName "WMF LDAP (use shell username, not Wikitech name)"
+        AuthName "Developer account (use wiki login name not shell) - allowed groups: wmf, nda"
         AuthType Basic
         AuthBasicProvider ldap
         AuthLDAPBindDN cn=proxyagent,ou=profile,dc=wikimedia,dc=org
