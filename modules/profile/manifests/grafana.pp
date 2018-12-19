@@ -19,6 +19,9 @@ class profile::grafana (
 
     include ::profile::base::firewall
 
+    # This isn't needed by grafana, but is handy for inspecting its database.
+    require_package(['sqlite3'])
+
     $base_config = {
         # Configuration settings for /etc/grafana/grafana.ini.
         # See <http://docs.grafana.org/installation/configuration/>.
