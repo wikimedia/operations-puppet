@@ -645,6 +645,48 @@ host cloudvirt1024 {
     filename "jessie-installer/debian-installer/amd64/pxelinux.0";
 }
 
+host cloudvirt1025 {
+    hardware ethernet D0:94:66:62:A9:13;
+    fixed-address cloudvirt1025.eqiad.wmnet;
+    option pxelinux.pathprefix "stretch-installer/";
+    filename "stretch-installer/debian-installer/amd64/pxelinux.0";
+}
+
+host cloudvirt1026 {
+    hardware ethernet D0:94:66:62:A8:B3;
+    fixed-address cloudvirt1026.eqiad.wmnet;
+    option pxelinux.pathprefix "stretch-installer/";
+    filename "stretch-installer/debian-installer/amd64/pxelinux.0";
+}
+
+host cloudvirt1027 {
+    hardware ethernet D0:94:66:62:A8:D8;
+    fixed-address cloudvirt1027.eqiad.wmnet;
+    option pxelinux.pathprefix "stretch-installer/";
+    filename "stretch-installer/debian-installer/amd64/pxelinux.0";
+}
+
+host cloudvirt1028 {
+    hardware ethernet D0:94:66:62:D6:D0;
+    fixed-address cloudvirt1028.eqiad.wmnet;
+    option pxelinux.pathprefix "stretch-installer/";
+    filename "stretch-installer/debian-installer/amd64/pxelinux.0";
+}
+
+host cloudvirt1029 {
+    hardware ethernet D0:94:66:62:A8:EF;
+    fixed-address cloudvirt1029.eqiad.wmnet;
+    option pxelinux.pathprefix "stretch-installer/";
+    filename "stretch-installer/debian-installer/amd64/pxelinux.0";
+}
+
+host cloudvirt1030 {
+    hardware ethernet D0:94:66:62:A9:07;
+    fixed-address cloudvirt1030.eqiad.wmnet;
+    option pxelinux.pathprefix "stretch-installer/";
+    filename "stretch-installer/debian-installer/amd64/pxelinux.0";
+}
+
 host cloudvirtan1001 {
     hardware ethernet F4:E9:D4:DB:AF:B0;
     fixed-address cloudvirtan1001.eqiad.wmnet;
