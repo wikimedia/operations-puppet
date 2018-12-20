@@ -1,10 +1,6 @@
 class role::dumps::distribution::server {
     system::role { 'dumps::distribution::server': description => 'labstore host in the public VLAN that distributes Dumps to clients via NFS/Web/Rsync' }
 
-    # TEMP for T211327
-    # To be removed (with purge of packages) ASAP
-    require_package('exfat-fuse', 'exfat-utils')
-
     include ::standard
     include ::profile::base::firewall
     include ::profile::wmcs::nfs::ferm
