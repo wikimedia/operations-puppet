@@ -575,9 +575,7 @@ hadoop_clusters:
       - analytics1052.eqiad.wmnet  # Row A3
       - an-worker1078.eqiad.wmnet  # Row A2
       - analytics1072.eqiad.wmnet  # ROW B2
-      - analytics1028.eqiad.wmnet  # Row C2
       - an-worker1090.eqiad.wmnet  # Row C4
-      - analytics1035.eqiad.wmnet  # Row D2
       - analytics1069.eqiad.wmnet  # Row D8
     # analytics* Dell R720s have mounts on disks sdb - sdm.
     # (sda is hardware raid on the 2 2.5 drives in the flex bays.)
