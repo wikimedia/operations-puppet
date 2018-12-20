@@ -212,6 +212,10 @@ node /^cloudvirt102[5-9].eqiad.wmnet$/ {
     role(spare::system)
 }
 
+node 'cloudvirt1030.eqiad.wmnet' {
+    role(wmcs::openstack::eqiad1::virt)
+}
+
 # All gerrit servers (swap master status in hiera)
 node 'cobalt.wikimedia.org', 'gerrit2001.wikimedia.org' {
     role(gerrit)
