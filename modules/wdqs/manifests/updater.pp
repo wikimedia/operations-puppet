@@ -4,7 +4,7 @@
 #
 # Note: Installs and start the wdqs-updater service.
 # == Parameters:
-# - $options: extra updater options.
+# - $options: extra updater options, passed to runUpdate.sh script.
 # - $logstash_host: hostname where to send logs.
 # - $package_dir:  Directory where the service should be installed.
 # - $data_dir: Directory where the database should be stored.

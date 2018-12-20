@@ -26,6 +26,7 @@ class profile::wdqs (
     Boolean $enable_rdf_dump = hiera('profile::wdqs::enable_rdf_dump', false),
     Boolean $run_tests = hiera('profile::wdqs::run_tests', false),
     Boolean $log_sparql = hiera('profile::wdqs::log_sparql', false),
+    String $kafka_reporting_topic = hiera('profile::wdqs::kafka_reporting_topic', 'eqiad.mediawiki.revision-create'),
 ) {
     require ::profile::prometheus::blazegraph_exporter
 
@@ -72,8 +73,10 @@ class profile::wdqs (
             0       => $base_kafka_options,
             default => $base_kafka_options + [ '--clusters', $joined_cluster_names ],
         }
+        $kafka_jvm_opts = [ "-Dorg.wikidata.query.rdf.tool.change.KafkaPoller.reportingTopic=${kafka_reporting_topic}" ]
     } else {
         $poller_options = [ $rc_options ]
+        $kafka_jvm_opts = []
     }
 
     $fetch_constraints_options = $fetch_constraints ? {
@@ -106,7 +109,7 @@ class profile::wdqs (
         updater_extra_jvm_opts    => [
             '-XX:+UseNUMA',
             "-javaagent:${prometheus_agent_path}=${prometheus_updater_agent_port}:${prometheus_updater_agent_config}",
-        ],
+        ] + $kafka_jvm_opts,
         run_tests                 => $run_tests,
         log_sparql                => $log_sparql,
     }
