@@ -15,27 +15,21 @@ class profile::hadoop::mysql_password(
     $research_pass = $::passwords::mysql::research::pass
     $research_path = '/user/hdfs/mysql-analytics-research-client-pw.txt'
 
-    if $use_kerberos {
-        File['/usr/local/bin/kerberos-puppet-wrapper'] -> Exec['hdfs_put_mysql-analytics-research-client-pw.txt']
-        File['/usr/local/bin/kerberos-puppet-wrapper'] -> Exec['hdfs_put_mysql-analytics-labsdb-client-pw.txt']
-        $wrapper = '/usr/local/bin/kerberos-puppet-wrapper hdfs '
-    } else {
-        $wrapper = ''
-    }
-
-    exec { 'hdfs_put_mysql-analytics-research-client-pw.txt':
-        command => "/bin/echo -n '${research_pass}' | ${wrapper}/usr/bin/hdfs dfs -put - ${research_path} && ${wrapper}/usr/bin/hdfs dfs -chmod 600 ${research_path}",
-        unless  => "${wrapper}/usr/bin/hdfs dfs -test -e ${research_path}",
-        user    => 'hdfs',
+    cdh::exec { 'hdfs_put_mysql-analytics-research-client-pw.txt':
+        command      => "/bin/echo -n '${research_pass}' | /usr/bin/hdfs dfs -put - ${research_path} && /usr/bin/hdfs dfs -chmod 600 ${research_path}",
+        unless       => "/usr/bin/hdfs dfs -test -e ${research_path}",
+        user         => 'hdfs',
+        use_kerberos => $use_kerberos,
     }
 
     include ::passwords::mysql::analytics_labsdb
     $labsdb_user = $::passwords::mysql::analytics_labsdb::user
     $labsdb_pass = $::passwords::mysql::analytics_labsdb::pass
     $labsdb_path = '/user/hdfs/mysql-analytics-labsdb-client-pw.txt'
-    exec { 'hdfs_put_mysql-analytics-labsdb-client-pw.txt':
-        command => "/bin/echo -n '${labsdb_pass}' | ${wrapper}/usr/bin/hdfs dfs -put - ${labsdb_path} && ${wrapper}/usr/bin/hdfs dfs -chmod 600 ${labsdb_path}",
-        unless  => "${wrapper}/usr/bin/hdfs dfs -test -e ${labsdb_path}",
-        user    => 'hdfs',
+    cdh::exec { 'hdfs_put_mysql-analytics-labsdb-client-pw.txt':
+        command      => "/bin/echo -n '${labsdb_pass}' | /usr/bin/hdfs dfs -put - ${labsdb_path} && /usr/bin/hdfs dfs -chmod 600 ${labsdb_path}",
+        unless       => "/usr/bin/hdfs dfs -test -e ${labsdb_path}",
+        user         => 'hdfs',
+        use_kerberos => $use_kerberos,
     }
 }
