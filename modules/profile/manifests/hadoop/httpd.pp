@@ -8,7 +8,7 @@ class profile::hadoop::httpd {
                     'proxy',
                     'proxy_html',
                     'headers',
-                    'xml2end',
+                    'xml2enc',
                     'auth_basic',
                     'authnz_ldap']
     }
