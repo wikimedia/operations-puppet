@@ -19,20 +19,23 @@ class openstack::nova::compute::service(
 
     # Libvirt package is different in subtle ways across Ubuntu and Jessie
     $libvirt_service = $facts['lsbdistcodename'] ? {
-        'trusty' => 'libvirt-bin',
-        'jessie' => 'libvirtd',
+        'trusty'  => 'libvirt-bin',
+        'jessie'  => 'libvirtd',
+        'stretch' => 'libvirtd',
     }
 
     $libvirt_default_conf = $facts['lsbdistcodename'] ? {
-        'trusty' => '/etc/default/libvirt-bin',
-        'jessie' => '/etc/default/libvirtd',
+        'trusty'  => '/etc/default/libvirt-bin',
+        'jessie'  => '/etc/default/libvirtd',
+        'stretch' => '/etc/default/libvirtd',
     }
 
     # trusty: libvirtd:x:117:nova
     # jessie: libvirt:x:121:nova
     $libvirt_unix_sock_group = $facts['lsbdistcodename'] ? {
-        'trusty' => 'libvirtd',
-        'jessie' => 'libvirt',
+        'trusty'  => 'libvirtd',
+        'jessie'  => 'libvirt',
+        'stretch' => 'libvirt',
     }
 
     # Without qemu-system, apt will install qemu-kvm by default,
