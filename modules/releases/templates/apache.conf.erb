@@ -9,6 +9,9 @@
     IndexIgnore "releases-header.html"
     HeaderName ./releases-header.html
 
+    <Location "/charts/">
+        Header set Cache-Control no-cache,must-revalidate
+    </Location>
     <Directory /srv/org/wikimedia/releases/>
         Options Indexes FollowSymLinks MultiViews
         IndexIgnore "releases-header.html"
@@ -18,7 +21,6 @@
         <Files "index.yaml">
             Header set Cache-Control no-cache,must-revalidate
         </Files>
-
     </Directory>
 
     <Directory /srv/org/wikimedia/releases/mediawiki/>
