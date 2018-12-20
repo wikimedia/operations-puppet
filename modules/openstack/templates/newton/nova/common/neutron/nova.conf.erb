@@ -1,0 +1,141 @@
+[DEFAULT]
+# nova general settings
+my_ip = <%= @ipaddress %>
+osapi_compute_workers = <%= @compute_workers %>
+metadata_workers = <%= @metadata_workers %>
+#verbose=True ### FIXME deprecated?
+state_path = /var/lib/nova
+rootwrap_config = /etc/nova/rootwrap.conf
+log_dir=/var/log/nova
+pybasedir = /usr/lib/python2.7/dist-packages
+#use_rootwrap_daemon = True ### FIXME may be used only in compute nodes?
+notification_driver = messagingv2
+
+# keystone
+auth_strategy = keystone
+
+# Prevent '.novalocal' from being appended to every hostname
+dhcp_domain =
+
+# compute
+compute_driver=libvirt.LibvirtDriver
+notification_topics=notifications
+connection_type=libvirt
+instance_name_template=i-%08x
+#daemonize=1 ### FIXME unknown yet, it seems like 'daemon' in some configs
+enabled_apis=osapi_compute, metadata
+osapi_compute_unique_server_name_scope='global'
+rpc_response_timeout=180
+instance_usage_audit = False
+compute_monitors=virt_driver
+
+# glance
+image_service=nova.image.glance.GlanceImageService
+remove_unused_base_images=True
+glance_api_servers=<%= @glance_host %>:9292
+
+# APIs
+s3_host=<%= @nova_controller %>
+cc_host=<%= @nova_controller %>
+ec2_url=http://<%= @nova_api_host %>:8773/services/Cloud
+ec2_dmz_host=<%= @nova_api_host_ip %>
+api_paste_config=/etc/nova/api-paste.ini
+enabled_apis = osapi_compute,metadata
+
+# quotas
+quota_cores = 8
+quota_instances = 8
+quota_ram = 16384
+quota_floating_ips = 0
+quota_fixed_ips = 200
+max_age = 30
+
+# nova-scheduler
+scheduler_driver=filter_scheduler
+wmf_scheduler_hosts_pool = <%= @scheduler_pool.join(",") %>
+scheduler_default_filters=AvailabilityZoneFilter,RamFilter,ComputeFilter,ComputeCapabilitiesFilter,ImagePropertiesFilter,ServerGroupAntiAffinityFilter,ServerGroupAffinityFilter,AggregateInstanceExtraSpecsFilter,AvailabilityZoneFilter,SchedulerPoolFilter,DiskFilter
+scheduler_weight_classes=nova.scheduler.weights.metrics.MetricsWeigher
+scheduler_host_subset_size = 2
+ram_allocation_ratio=1.0
+disk_allocation_ratio=1.5
+cpu_allocation_ratio=4.0
+default_schedule_zone = <%= @default_schedule_zone %>
+
+# networking
+use_neutron = True
+firewall_driver = nova.virt.firewall.NoopFirewallDriver
+default_floating_pool = ext-nat
+linuxnet_interface_driver = nova.network.linux_net.LinuxBridgeInterfaceDriver
+
+[api_database]
+connection = mysql://<%= @db_user %>:<%= @db_pass %>@<%= @db_host %>/<%= @db_name_api %>
+
+[database]
+connection = mysql://<%= @db_user %>:<%= @db_pass %>@<%= @db_host %>/<%= @db_name %>
+max_overflow = 25
+max_pool_size = 4
+pool_timeout = 60
+idle_timeout = 1800
+
+[glance]
+host=<%= @glance_host %>
+api_servers = http://<%= @glance_host %>:9292
+
+[keystone_authtoken]
+auth_host = <%= @keystone_host %>
+auth_protocol = http
+admin_user = novaadmin
+admin_tenant_name = admin
+auth_uri = http://<%= @keystone_host %>:5000
+auth_url = http://<%= @keystone_host %>:35357
+auth_type = password
+project_domain_name = default
+user_domain_name = default
+project_name = admin
+username = novaadmin
+password = <%= @ldap_user_pass %>
+
+[oslo_messaging_rabbit]
+rabbit_host=<%= @rabbit_host %>
+rabbit_port = 5672
+rabbit_use_ssl = False
+rabbit_userid = <%= @rabbit_user %>
+rabbit_password = <%= @rabbit_pass %>
+
+[oslo_concurrency]
+lock_path = /var/lock/nova
+
+[vnc]
+enabled=False
+
+[spice]
+html5proxy_host=<%= @nova_controller %>
+html5proxy_port=6082
+html5proxy_base_url=https://<%= @spice_hostname %>/spice_sec_auto.html
+server_listen = 0.0.0.0
+server_proxyclient_address = $my_ip
+enabled = true
+agent_enabled=True
+keymap=en-us
+
+[conductor]
+workers = 8
+
+[METRICS]
+weight_setting = cpu.percent=-1.0
+
+[neutron]
+service_metadata_proxy = true
+metadata_proxy_shared_secret = <%= @metadata_proxy_shared_secret %>
+url = http://<%= @nova_controller %>:9696
+auth_url = http://<%= @keystone_host %>:5000/v3
+# set this?
+#admin_auth_url = http://<%= @keystone_host %>:35357/v2.0
+auth_type = v3password
+password = <%= @ldap_user_pass %>
+project_domain_name = default
+project_name = admin
+tenant_name = admin
+user_domain_id = default
+user_domain_name = default
+username = novaadmin

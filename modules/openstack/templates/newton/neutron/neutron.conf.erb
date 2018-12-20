@@ -1,0 +1,123 @@
+[DEFAULT]
+# debug = true
+auth_strategy = keystone
+
+# New standards would dictate this should be the 
+# terse 'ml2' only but the Debian package for
+# neutron-server is doing some dynamic path loading
+# for the ini file that expects the verbose name here.
+# Use the verbose name until it is an issue
+core_plugin = neutron.plugins.ml2.plugin.Ml2Plugin
+
+# metering?
+service_plugins = router
+allow_overlapping_ips = True
+
+# Do not reschedule the dataplane components
+# just because a control plane l3-agent is maint
+# or restarted. This also means it will not get changes
+# so we need to monitor l3-agent state administratively.
+allow_automatic_l3agent_failover = false
+
+# allow vxlan use for VRRP without
+# enabling tenant created networks
+l3_ha_network_type = vxlan
+
+# run 2 dhcp agents per for HA
+dhcp_agents_per_network = 2
+
+dns_domain = <%= @tld %>
+
+# https://docs.openstack.org/mitaka/networking-guide/config-az.html#l3-high-availability
+# make routers HA "by default"
+l3_ha = True
+# maximum number of network nodes to use for the HA router
+max_l3_agents_per_router = 2
+# Minimum number of network nodes to use for the HA
+# router. A new router can be created only if this number
+# of network nodes are available.
+min_l3_agents_per_router = 2
+
+rpc_backend = rabbit
+rpc_response_timeout = 3
+
+#notify_nova_on_port_status_changes = True
+notify_nova_on_port_status_changes = True
+notify_nova_on_port_data_changes = True
+
+agent_down_time = <%= @agent_down_time %>
+
+# db connection contention
+api_workers = 10
+
+[agent]
+root_helper = sudo neutron-rootwrap /etc/neutron/rootwrap.conf
+log_agent_heartbeats = <%= @log_agent_heartbeats %>
+
+[cors]
+[cors.subdomain]
+
+[database]
+connection = mysql://<%= @db_user %>:<%= @db_pass %>@<%= @db_host %>/neutron
+
+[keystone_authtoken]
+region_name = <%= @region %>
+auth_host = <%= @keystone_host %>
+auth_protocol = http
+# Change to neutron user
+admin_user = novaadmin
+admin_password = <%= @ldap_user_pass %>
+admin_tenant_name = admin
+
+[matchmaker_redis]
+
+[nova]
+region_name = <%= @region %>
+auth_url = http://<%= @keystone_host %>:5000/v3
+auth_type = v3password
+password = <%= @ldap_user_pass %>
+project_domain_name = default
+project_name = admin
+tenant_name = admin
+user_domain_id = default
+user_domain_name = default
+username = novaadmin
+
+[oslo_concurrency]
+lock_path = /var/lock/neutron
+
+[oslo_messaging_amqp]
+[oslo_messaging_notifications]
+
+[oslo_messaging_rabbit]
+rabbit_host = <%= @nova_controller %>
+rabbit_userid = <%= @rabbit_user %>
+rabbit_password = <%= @rabbit_pass %>
+
+[oslo_policy]
+
+[quotas]
+quota_floatingip = 0
+quota_security_group = 40
+quota_security_group_rule = 100
+
+[ssl]
+
+[securitygroup]
+# Be warned that this section also exists in plugins/ml2/ml2_conf.ini and
+#  it's probably good to keep the two in sync.  Or maybe that other file
+#  doesn't do anything, it's unclear.
+
+enable_security_group = True
+# Networking uses iptables to achieve security group functions.
+# L2 agent with enable_ipset option enabled, it makes use of
+# IPset to improve security group’s performance, as it represents
+# a hash set which is insensitive to the number of elements.
+# When a port is created, L2 agent will add an additional IPset chain
+# to its iptables chain, if the security group that this port belongs
+# to has rules between other security group, the member of that
+# security group will be added to the ipset chain.
+#
+enable_ipset = True
+# neutron.agent.linux.iptables_firewall.IptablesFirewallDriver
+firewall_driver = iptables

@@ -1,0 +1,12 @@
+# 1->4 debug levels
+#log_level = 3
+
+unix_sock_group = "<%= @libvirt_unix_sock_group %>"
+unix_sock_rw_perms = "0770"
+auth_unix_ro = "none"
+auth_unix_rw = "none"
+auth_tcp = "sasl"
+key_file = "/var/lib/nova/<%= @certname %>.key"
+cert_file = "/etc/ssl/localcerts/<%= @certname %>.crt"
+ca_file = "<%= @ca_target %>"
+tls_allowed_dn_list = ["C=US,ST=California,O=Wikimedia Foundation,OU=Operations,CN=labvirt*.<%= @site %>.wmnet"]

@@ -1,0 +1,32 @@
+[agent]
+report_interval = <%= @report_interval %>
+
+[linux_bridge]
+
+# End up with a mapping of network name to local interface
+<% if ! @physical_interface_mappings.empty? -%>
+<% iface_map = [] -%>
+<% @physical_interface_mappings.sort.each do |name,iface| -%>
+<% iface_map.push(name + ':' + iface) %>
+<% end -%>
+<% iface_map_string = iface_map.join(',') -%>
+physical_interface_mappings = <%= iface_map_string -%>
+<% end -%>
+
+# End up with a mapping of network name to local bridge
+# NOTE: this will not work with any nova components such as compute
+<% if ! @bridge_mappings.empty? -%>
+<% bmap = [] -%>
+<% @bridge_mappings.sort.each  do |name,bridge| -%>
+<% bmap.push(name + ':' + bridge) %>
+<% end -%>
+<% bmap_string = bmap.join(',') -%>
+bridge_mappings = <%= bmap_string -%>
+<% end -%>
+
+[vxlan]
+enable_vxlan = True
+# local_ip = OVERLAY_INTERFACE_IP_ADDRESS
+local_ip = <%= @ipaddress %>
+# Notes on this being disabled are in ml2_conf.conf
+# l2_population = True
