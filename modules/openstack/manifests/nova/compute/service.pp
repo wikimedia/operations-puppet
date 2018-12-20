@@ -32,6 +32,7 @@ class openstack::nova::compute::service(
 
     # trusty: libvirtd:x:117:nova
     # jessie: libvirt:x:121:nova
+    # stretch: libvirt:x:121:nova
     $libvirt_unix_sock_group = $facts['lsbdistcodename'] ? {
         'trusty'  => 'libvirtd',
         'jessie'  => 'libvirt',
@@ -45,13 +46,22 @@ class openstack::nova::compute::service(
         install_options => $install_options,
     }
 
+    $libvirt_package = $facts['lsbdistcodename'] ? {
+        'trusty'  => 'libvirt-bin',
+        'jessie'  => 'libvirt-bin',
+        'stretch' => ['libvirt-daemon-system', 'libvirt-clients'],
+    }
+
+    package { $libvirt_package:
+        ensure => 'present',
+    }
+
     package { [
         'nova-compute',
         'nova-compute-kvm',
         'spice-html5',
         'websockify',
         'virt-top',
-        'libvirt-bin',
         'dnsmasq-base',
     ]:
         ensure          => 'present',
