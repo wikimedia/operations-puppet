@@ -8,7 +8,7 @@ class openstack::nova::common::base(
         'nova-common',
     ]
 
-    if os_version('debian jessie') and ($version == 'mitaka') {
+    if (os_version('debian jessie') or os_version('debian stretch')) and ($version == 'mitaka') {
         $install_options = ['-t', 'jessie-backports']
     } else {
         $install_options = ''
