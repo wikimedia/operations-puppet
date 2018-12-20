@@ -12,7 +12,10 @@ profile::openstack::eqiad1::nova::physical_interface_mappings:
 
 # Nova is permitted to schedule new VMs on the following
 #  hosts.  Nodes currently allocated for eqiad1 are
-#  cloudvirt1014 through cloudvirt1025.
+#  cloudvirt1013 through cloudvirt1025.
+#
+# Cloudvirt1013 is currently (mostly) empty in hopes of rebuilding
+#  with Stretch.
 #
 # cloudvirt1024 is reserved as an emergency spare.  We're
 #  saving 1024 rather than the highest- or lowest-numbered
