@@ -208,7 +208,7 @@ node /cloudstore100[89]\.wikimedia\.org/ {
 }
 
 # new cloudvirt systems
-node /^cloudvirt102[5-9].eqiad.wmnet$/ {
+node /^cloudvirt102[6-9].eqiad.wmnet$/ {
     role(spare::system)
 }
 
@@ -2257,7 +2257,7 @@ node /^cloudvirt101[4-9]\.eqiad\.wmnet$/ {
     interface::add_ip6_mapped { 'main': }
 }
 
-node /^cloudvirt102[0-4].eqiad.wmnet$/ {
+node /^cloudvirt102[0-5].eqiad.wmnet$/ {
     role(wmcs::openstack::eqiad1::virt)
     interface::add_ip6_mapped { 'main': }
 }
