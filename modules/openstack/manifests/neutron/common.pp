@@ -14,16 +14,7 @@ class openstack::neutron::common(
     $agent_down_time,
     ) {
 
-    if (os_version('debian jessie') or os_version('debian stretch')) and ($version == 'mitaka') {
-        $install_options = ['-t', 'jessie-backports']
-    } else {
-        $install_options = ''
-    }
-
-    package{ 'neutron-common':
-        ensure          => 'present',
-        install_options => $install_options,
-    }
+    class { "openstack::neutron::common::${version}::${::lsbdistcodename}": }
 
     file { '/etc/neutron/neutron.conf':
             owner   => 'neutron',

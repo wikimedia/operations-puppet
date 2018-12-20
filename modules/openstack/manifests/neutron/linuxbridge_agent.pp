@@ -6,18 +6,10 @@ class openstack::neutron::linuxbridge_agent(
     $physical_interface_mappings={},
     ) {
 
+    class { "openstack::neutron::linuxbridge_agent::${version}::${::lsbdistcodename}": }
     include openstack::nova::compute::kmod
 
     create_resources(openstack::neutron::bridge, $bridges)
-
-    $packages = [
-        'neutron-linuxbridge-agent',
-        'libosinfo-1.0-0',
-    ]
-
-    package { $packages:
-        ensure => 'present',
-    }
 
     file { '/etc/neutron/plugins/ml2/linuxbridge_agent.ini':
         owner   => 'root',
