@@ -48,18 +48,24 @@ class profile::elasticsearch(
         }
     }
 
-    # filter our instances that should not be deployed on this node
+    # Get all unique elastic nodes across all instances.
+    # This is needed to set ferm rules for cross cluster communication
+    $all_elastic_nodes = unique($configured_instances.reduce([]) |$result, $instance_params| {
+        $result + $instance_params[1]['cluster_hosts']
+    })
+
+    # filter out instances that should not be deployed on this node
     # this is used for the cirrus clusters, where multiple sub clusters are defined
     # on a subset of all nodes.
     #
-    # note in filter |$instance| below, $isntance is an array [ key, value ]
+    # note in filter |$instance| below, $instance is an array [ key, value ]
     # see https://puppet.com/docs/puppet/5.5/function.html#filter for details
     $filtered_instances = $configured_instances.filter |$instance| { $facts['fqdn'] in $instance[1]['cluster_hosts'] }
 
     # Accessed from profile::elasticsearch::* for firewalls, proxies, etc.
     $filtered_instances.each |$instance_title, $instance_params| {
         $transport_tcp_port = pick_default($instance_params['transport_tcp_port'], 9300)
-        $elastic_nodes_ferm = join(pick_default($instance_params['cluster_hosts'], [$::fqdn]), ' ')
+        $elastic_nodes_ferm = join(pick_default($all_elastic_nodes, [$::fqdn]), ' ')
 
         ferm::service { "elastic-inter-node-${transport_tcp_port}":
             proto   => 'tcp',
