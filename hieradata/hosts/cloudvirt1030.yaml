@@ -3,3 +3,5 @@ profile::base::notifications: disabled
 profile::openstack::eqiad1::version: 'newton'
 profile::openstack::eqiad1::nova::network_flat_tagged_base_interface: eno4
 profile::openstack::eqiad1::nova::network_flat_interface: 'eno4.1105'
+profile::openstack::eqiad1::nova::physical_interface_mappings:
+  cloudinstances2b: 'eno4.1105'
