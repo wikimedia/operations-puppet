@@ -6,6 +6,7 @@
 #
 class profile::hadoop::backup::namenode(
     $monitoring_enabled = hiera('profile::hadoop::backup::namenode::monitoring_enabled', false),
+    $use_kerberos       = hiera('profile::hadoop::backup::namenode::use_kerberos', false),
 ) {
     require ::profile::hadoop::common
 
@@ -35,8 +36,14 @@ class profile::hadoop::backup::namenode(
         require => File['/srv/backup']
     }
 
+    if $use_kerberos {
+        $wrapper = '/usr/local/bin/kerberos-puppet-wrapper hdfs '
+    } else {
+        $wrapper = ''
+    }
+
     cron { 'hadoop-namenode-backup-fetchimage':
-        command => "/usr/bin/hdfs dfsadmin -fetchImage ${destination} > /dev/null 2>&1 ",
+        command => "${wrapper}/usr/bin/hdfs dfsadmin -fetchImage ${destination} > /dev/null 2>&1 ",
         user    => 'hdfs',
         hour    => 0,
         minute  => 0,
