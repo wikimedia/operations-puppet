@@ -1,3 +1,1 @@
 profile::dumps::generation::worker::dumper::runtype: wikidatawiki
-profile::mediawiki::php::php_version: "7.2"
-profile::dumps::generation::worker::common::php: /usr/bin/php7.2

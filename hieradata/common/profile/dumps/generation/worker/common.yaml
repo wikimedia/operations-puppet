@@ -1,2 +1,2 @@
-profile::dumps::generation::worker::common::php: /usr/bin/php7.0
+profile::dumps::generation::worker::common::php: /usr/bin/php7.2
 profile::dumps::generation::worker::common::nfs_extra_mountopts: actimeo=0
