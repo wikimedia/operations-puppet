@@ -29,10 +29,15 @@
 #   Map of key value pairs to add to spark2-defaults.conf
 #   Default: {}
 #
+# [*use_kerberos*]
+#   Force kerberos authentication before executing HDFS commands.
+#   Default: false
+#
 class profile::hadoop::spark2(
     $install_yarn_shuffle_jar = hiera('profile::hadoop::spark2::install_yarn_shuffle_jar', true),
     $install_oozie_sharelib   = hiera('profile::hadoop::spark2::install_oozie_sharelib', false),
     $extra_settings           = hiera('profile::hadoop::spark2::extra_settings', {}),
+    $use_kerberos             = hiera('profile::hadoop::spark2::use_kerberos', false),
 ) {
     require ::profile::hadoop::common
 
@@ -86,13 +91,14 @@ class profile::hadoop::spark2(
             require => Class['::profile::oozie::server'],
         }
 
-        exec { 'spark2_oozie_sharelib_install':
-            command => '/usr/local/bin/spark2_oozie_sharelib_install',
-            user    => 'oozie',
+        cdh::exec { 'spark2_oozie_sharelib_install':
+            command      => '/usr/local/bin/spark2_oozie_sharelib_install',
+            user         => 'oozie',
             # spark2_oozie_sharelib_install will exit 0 if the current installed
             # version of spark2 has a oozie sharelib installed already.
-            unless  => '/usr/local/bin/spark2_oozie_sharelib_install',
-            require => File['/usr/local/bin/spark2_oozie_sharelib_install'],
+            unless       => '/usr/local/bin/spark2_oozie_sharelib_install',
+            require      => File['/usr/local/bin/spark2_oozie_sharelib_install'],
+            use_kerberos => $use_kerberos,
         }
     }
 }
