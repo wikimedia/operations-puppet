@@ -33,7 +33,7 @@
 #   Default: 3
 #
 # [*druid.indexer.runner.startPort*]
-#   The port that peons begin running on.  Default: 8100.
+#   The port that peons begin running on.  Default: 8200.
 #   Note that ferm rules will be set up to allow incoming access to
 #   this + 900 ports.
 #
