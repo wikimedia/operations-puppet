@@ -211,7 +211,6 @@ class GridHostGroup(GridConfig):
             result = subprocess.run(self.modcmd, timeout=60)
             return not bool(result.returncode)
 
-        logging.info("%s %s", " ".join(self.modcmd), input_file)
         return True
 
 
@@ -247,7 +246,6 @@ class GridExecHost(GridConfig):
             result = subprocess.run(self.modcmd, timeout=60)
             return not bool(result.returncode)
 
-        logging.info("%s %s", " ".join(self.modcmd), input_file)
         return True
 
 

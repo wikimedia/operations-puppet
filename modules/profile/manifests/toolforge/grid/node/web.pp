@@ -17,6 +17,7 @@ class profile::toolforge::grid::node::web (
     $etcdir = hiera('profile::toolforge::etcdir'),
 ){
     include profile::toolforge::grid::node::compute
+    include profile::toolforge::grid::submit_host
 
     # New style webservices!
     package { 'toollabs-webservice':
