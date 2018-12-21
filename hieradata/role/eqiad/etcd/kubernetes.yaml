@@ -1,0 +1,1 @@
+profile::etcd::allow_from: '(@resolve(argon.eqiad.wmnet) @resolve(argon.eqiad.wmnet, AAAA) @resolve(chlorine.eqiad.wmnet) @resolve(chlorine.eqiad.wmnet, AAAA))'
