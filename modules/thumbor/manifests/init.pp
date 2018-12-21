@@ -47,6 +47,7 @@ class thumbor (
 
     require_package('firejail')
     require_package('python-logstash')
+    require_package('binutils') # The find_library() function in ctypes/Python uses objdump
 
     package { 'python-thumbor-wikimedia':
         ensure          => installed,

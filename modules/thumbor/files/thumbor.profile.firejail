@@ -1,6 +1,5 @@
 # system directories
-# ctypes requires /sbin/ldconfig
-#blacklist /sbin
+blacklist /sbin
 blacklist /usr/sbin
 blacklist /usr/local/sbin
 
