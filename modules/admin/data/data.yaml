@@ -3204,6 +3204,10 @@ ldap_only_users:
     ensure: present
     realname: James Buatti
     email: jbuatti@wikimedia.org
+  jmatazzoni:
+    ensure: present
+    realname: James Matazzoni
+    email: jmatazzoni@wikimedia.org
   jrobell:
     ensure: present
     realname: Jessica Robell
