@@ -216,7 +216,7 @@ class openstack::nova::compute::service(
     service { $libvirt_service:
         ensure  => 'running',
         enable  => true,
-        require => Package['libvirt-bin'],
+        require => Package[$libvirt_package],
     }
 
     service { 'nova-compute':
