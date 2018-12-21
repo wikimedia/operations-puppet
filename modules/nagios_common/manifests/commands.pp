@@ -43,6 +43,8 @@ class nagios_common::commands(
         # check_bgp/check_jnx_alarms
         'libnet-snmp-perl',
         'libtime-duration-perl',
+        # check_vrrp
+        'python3-nagiosplugin',
         # check_etcd_mw_config_lastindex
         'python3-requests',
         # check_bfd
@@ -71,6 +73,7 @@ class nagios_common::commands(
         'check_ssl',
         'check_to_check_nagios_paging',
         'check_vcp.py',
+        'check_vrrp.py',
         'check_wikidata',
     ] :
         require    => File["${config_dir}/commands"],

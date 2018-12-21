@@ -47,6 +47,7 @@ define netops::check(
     $parents=undef,
     $os=undef,
     $vcp=false,
+    $vrrp_peer=false,
 ) {
 
     # If we get an array convert it to a comma separated string
@@ -112,6 +113,16 @@ define netops::check(
             description   => 'Juniper virtual chassis ports',
             check_command => "check_vcp!${snmp_community}",
             notes_url     => 'https://wikitech.wikimedia.org/wiki/Network_monitoring#VCP_status',
+        }
+    }
+
+    if $vrrp_peer {
+        @monitoring::service { "${title} VRRP status":
+            host          => $title,
+            group         => $group,
+            description   => 'VRRP status',
+            check_command => "check_vrrp!${vrrp_peer}!${snmp_community}",
+            notes_url     => 'https://wikitech.wikimedia.org/wiki/Network_monitoring#VRRP_status',
         }
     }
 }
