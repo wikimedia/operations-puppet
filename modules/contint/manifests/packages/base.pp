@@ -5,6 +5,9 @@
 class contint::packages::base {
     # Colordiff gives us nice coloring in Jenkins console whenever
     # it is used instead of the stock diff.
+    #
+    # XXX Still used by integration-zuul-layoutdiff
+    #
     package { 'colordiff':
         ensure => present,
     }

@@ -9,19 +9,12 @@ class contint::packages::labs {
 
     include ::contint::packages::base
 
-    include ::contint::packages::mediawiki
     # We're no longer installing PHP on app servers starting with
     # jessie, but we still need it for CI
     if os_version('debian == jessie') {
         include ::contint::packages::php5
     }
 
-    # Fonts needed for browser tests screenshots (T71535)
-    include ::mediawiki::packages::fonts
-
-    include ::contint::packages::analytics
-    include ::contint::packages::doxygen
-    include ::contint::packages::java
     include ::contint::packages::javascript
     include ::contint::packages::php
     include ::contint::packages::python
@@ -77,6 +70,4 @@ class contint::packages::labs {
         ]:
         ensure => present;
     }
-
-    include ::contint::packages::ops
 }
