@@ -93,9 +93,10 @@ report_variables      NONE
         cls.host_proc_object = grid_configurator.HostProcessor(
             "http://dummycontrol1003.wikimedia.org:5000/v3",
             "not-a-password",
-            grid_configurator.GRID_HOST_TYPES,
+            grid_configurator.GRID_HOST_PREFIX,
             True,
             tmp_dir,
+            grid_configurator.GRID_HOST_TYPE,
         )
 
     @patch("grid_configurator.grid_configurator.subprocess.run")
@@ -113,7 +114,7 @@ toolsbeta-sgecron-0000.toolsbeta.eqiad.wmflabs
             MagicMock(stdout=CURRENT_HOST_CONF2, returncode=0),
             MagicMock(stdout=GRID_MOCK_SUBMIT_HOSTS, returncode=0),
         ]
-        self.host_proc_object.run_updates(False, grid_configurator.GRID_HOST_TYPES)
+        self.host_proc_object.run_updates(False, grid_configurator.GRID_HOST_TYPE)
         mock_run.assert_any_call(
             [
                 "qconf",
@@ -147,7 +148,7 @@ toolsbeta-sgecron-0000.toolsbeta.eqiad.wmflabs
             MagicMock(stdout=b"", returncode=0),
             MagicMock(stdout=GRID_MOCK_SUBMIT_HOSTS, returncode=0),
         ]
-        self.host_proc_object.run_updates(False, grid_configurator.GRID_HOST_TYPES)
+        self.host_proc_object.run_updates(False, grid_configurator.GRID_HOST_TYPE)
         mock_run.assert_any_call(
             ["qconf", "-de", "toolsbeta-sgeexec-0001.toolsbeta.eqiad.wmflabs"],
             stdout=grid_configurator.subprocess.PIPE,
@@ -173,5 +174,5 @@ toolsbeta-sgecron-0000.toolsbeta.eqiad.wmflabs
             MagicMock(stdout=CURRENT_HOST_CONF2, returncode=0),
             MagicMock(stdout=GRID_MOCK_SUBMIT_HOSTS, returncode=0),
         ]
-        self.host_proc_object.run_updates(False, grid_configurator.GRID_HOST_TYPES)
+        self.host_proc_object.run_updates(False, grid_configurator.GRID_HOST_TYPE)
         self.assertEqual(mock_run.call_count, 4)

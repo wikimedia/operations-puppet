@@ -32,10 +32,10 @@ from novaclient import client as novaclient
 
 
 VALID_DOMAINS = ["hostgroup", "checkpoint", "queue", "hosts"]
-
-GRID_HOST_TYPES = {
-    "sgewebgrid-generic": "exec",
-    "sgewebgrid-lighttpd": "exec",
+GRID_HOST_TYPE = ["exec", "submit"]
+GRID_HOST_PREFIX = {
+    "sgewebgrid-generic": ["exec", "submit"],
+    "sgewebgrid-lighttpd": ["exec", "submit"],
     "sgeexec": "exec",
     "sgebastion": "submit",
     "sgecron": "submit",
@@ -251,13 +251,15 @@ class HostProcessor:
     """Object to manage the gathering of hostname information from Keystone and
     application of it to the grid itself"""
 
-    def __init__(self, keystone_url, observer_pass, host_types, beta, config_dir):
+    def __init__(
+        self, keystone_url, observer_pass, host_prefixes, beta, config_dir, host_types
+    ):
         self.keystone_url = keystone_url
         self.observer_pass = observer_pass
         self.regions = []
         self.project = "toolsbeta" if beta else "tools"
         self._get_regions()
-        self.host_set = self._hosts(host_types)
+        self.host_set = self._hosts(host_prefixes, host_types)
         self.config_dir = config_dir
 
     def _get_regions(self):
@@ -276,8 +278,8 @@ class HostProcessor:
         )
         self.regions = [region.id for region in client.regions.list()]
 
-    def _hosts(self, host_types):
-        host_set = {name: [] for name in set(host_types.values())}
+    def _hosts(self, host_prefixes, host_types):
+        host_set = {name: [] for name in host_types}
         for region in self.regions:
             client = novaclient.Client(
                 "2.0",
@@ -295,17 +297,23 @@ class HostProcessor:
             )
             for instance in client.servers.list():
                 name = instance.name
-                for prefix in host_types:
+                for prefix in host_prefixes:
                     full_prefix = "{}-{}".format(self.project, prefix)
                     if name.startswith(full_prefix):
-                        role = host_types[prefix]
-                        host_set[role].append(
-                            "{}.{}.eqiad.wmflabs".format(name, self.project)
-                        )
+                        role = host_prefixes[prefix]
+                        if isinstance(role, list):
+                            for r in role:
+                                host_set[r].append(
+                                    "{}.{}.eqiad.wmflabs".format(name, self.project)
+                                )
+                        else:
+                            host_set[role].append(
+                                "{}.{}.eqiad.wmflabs".format(name, self.project)
+                            )
         return host_set
 
     def run_updates(self, dry_run, host_types):
-        for host_class in sorted(set(host_types.values())):
+        for host_class in sorted(host_types):
             if host_class == "exec":
                 get_arg = "-sel"
                 add_arg = "-Ae"
@@ -528,11 +536,12 @@ def main():
         host_processor = HostProcessor(
             args.keystone_url,
             args.observer_pass,
-            GRID_HOST_TYPES,
+            GRID_HOST_PREFIX,
             args.beta,
             args.config_dir,
+            GRID_HOST_TYPE,
         )
-        host_processor.run_updates(args.dry_run, GRID_HOST_TYPES)
+        host_processor.run_updates(args.dry_run, GRID_HOST_TYPE)
 
     for domain in domains:
         if domain == "hosts":
