@@ -80,7 +80,6 @@ class GridConfig:
             result = subprocess.run(self.modcmd, timeout=60)
             return not bool(result.returncode)
 
-        logging.info("%s %s", " ".join(self.modcmd), input_file)
         return True
 
     def create(self, input_file, dryrun):
@@ -89,7 +88,6 @@ class GridConfig:
             result = subprocess.run(self.addcmd, timeout=60)
             return not bool(result.returncode)
 
-        logging.info("%s %s", " ".join(self.addcmd), input_file)
         return True
 
     def check_exists(self):
@@ -339,8 +337,6 @@ class HostProcessor:
             )
 
             for host in self.host_set[host_class]:
-                logging.info("{} {}".format(host, host_class))
-                logging.info(current_hosts)
                 if host_class == "exec":
                     if host in current_hosts and host in exec_conf_files:
                         # Here we need to check for config changes
