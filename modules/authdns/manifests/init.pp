@@ -30,6 +30,7 @@ class authdns(
         ensure     => 'running',
         hasrestart => true,
         hasstatus  => true,
+        restart    => 'service gdnsd reload',
         require    => Package['gdnsd'],
     }
 
@@ -49,6 +50,7 @@ class authdns(
         mode    => '0444',
         content => template("${module_name}/config-options.erb"),
         require => File['/etc/gdnsd'],
+        notify  => Service['gdnsd'],
     }
     file { '/etc/gdnsd/zones':
         ensure => 'directory',
@@ -83,6 +85,7 @@ class authdns(
         mode      => '0400',
         content   => secret('dns/dnscookies.key'),
         show_diff => false,
+        notify    => Service['gdnsd'],
     }
 
     $workingdir = '/srv/authdns/git' # export to template
@@ -138,6 +141,7 @@ class authdns(
         group   => 'root',
         mode    => '0444',
         content => template("${module_name}/discovery-geo-resources.erb"),
+        notify  => Service['gdnsd'],
     }
 
     file { '/etc/gdnsd/discovery-metafo-resources':
@@ -146,6 +150,7 @@ class authdns(
         group   => 'root',
         mode    => '0444',
         content => template("${module_name}/discovery-metafo-resources.erb"),
+        notify  => Service['gdnsd'],
     }
 
     file { '/etc/gdnsd/discovery-states':
@@ -154,6 +159,7 @@ class authdns(
         group   => 'root',
         mode    => '0444',
         content => template("${module_name}/discovery-states.erb"),
+        notify  => Service['gdnsd'],
     }
 
     file { '/etc/gdnsd/discovery-map':
@@ -162,6 +168,7 @@ class authdns(
         owner  => 'root',
         group  => 'root',
         source => "puppet:///modules/${module_name}/discovery-map",
+        notify => Service['gdnsd'],
     }
 
     class { 'confd':
