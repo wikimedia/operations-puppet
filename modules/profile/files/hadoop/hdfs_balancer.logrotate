@@ -1,7 +1,7 @@
 # Note:  This file is managed by Puppet.
 #
-/var/log/hadoop-hdfs/balancer.log {
-  weekly
+/var/log/hadoop-hdfs/hdfs-balancer/balancer.log {
+  daily
   rotate 4
   su root hadoop
   missingok
