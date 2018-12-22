@@ -1,0 +1,7 @@
+#!/bin/sh
+if /usr/bin/nice /usr/sbin/gdnsd -S checkconf; then
+    echo "OK: gdnsd -S checkconf success"
+    exit 0
+fi
+echo "CRITICAL: gdnsd -S checkconf failure"
+exit 2

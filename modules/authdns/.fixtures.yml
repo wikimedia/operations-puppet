@@ -4,3 +4,5 @@ fixtures:
       apt: "../../../../apt"
       geoip: "../../../../geoip"
       wmflib: "../../../../wmflib"
+      nrpe: "../../../../nrpe"
+      monitoring: "../../../../monitoring"

@@ -11,6 +11,7 @@ test_on = {
 
 describe 'authdns' do
   let(:node) { 'testhost.eqiad.wmnet' }
+  let(:node_params) { {'cluster' => 'authdns', 'site' => 'eqiad'} }
 
   on_supported_os(test_on).each do |os, facts|
     context "On #{os}" do
@@ -20,14 +21,14 @@ describe 'authdns' do
                        :discovery_services => {},
                      } }
       let(:pre_condition) { [
-                              '$site = "test"',
                               'define git::clone($directory, $origin, $branch,$owner,$group) {}',
-                              'define monitoring::service($description,$check_command) {}',
                               'define ssh::userkey($content) {}',
                               'define sudo::user($privileges) {}',
                               'class confd($prefix) {}',
                               'package{ "git": }',
-                              'include ::apt'
+                              'include ::apt',
+                              'class profile::base { $notifications_enabled = "1" }',
+                              'include ::profile::base'
                             ] }
       it { is_expected.to compile.with_all_deps  }
     end
