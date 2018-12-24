@@ -4,6 +4,7 @@ class role::dumps::generation::server::primary {
     include ::standard
     include ::profile::base::firewall
     include ::profile::dumps::generation::server::primary
+    include ::profile::dumps::generation::server::rsync
     include ::profile::dumps::rsyncer_peer
     include ::profile::dumps::nfs
     include ::profile::dumps::generation::server::cleanup
