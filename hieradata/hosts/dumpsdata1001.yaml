@@ -7,3 +7,9 @@ profile::dumps::dumpstempdir: '/data/xmldatadumps/temp'
 profile::dumps::cleanup::isreplica: false
 
 profile::dumps::nfs::clients_wanted: 'generation'
+
+profile::dumps::rsyncer:
+  dumps_user: 'dumpsgen'
+  dumps_group: 'dumpsgen'
+  dumps_deploygroup: 'wikidev'
+  dumps_mntpoint: '/data'
