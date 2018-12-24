@@ -2175,36 +2175,20 @@ node 'stat1007.eqiad.wmnet' {
     interface::add_ip6_mapped { 'main': }
 }
 
-node /^snapshot1005\.eqiad\.wmnet/ {
-    role(dumps::generation::worker::testbed)
-}
-
-node /^snapshot1006\.eqiad\.wmnet/ {
-    # NOTE: New snapshot hosts must also be manually added
-    # to hiera/common.yaml:dataset_clients_snapshots,
-    # hieradata/hosts/ with a file named after the host,
-    # and modules/scap/files/dsh/group/mediawiki-installation
+# NOTE: new snapshot hosts must also be manually added to
+# hieradata/common.yaml:dumps_nfs_clients for dump fs nfs mount,
+# hieradata/common/scap/dsh.yaml for mediawiki installation,
+# and to hieradata/hosts/ if running dumps for enwiki or wikidata.
+node /^snapshot100[569]\.eqiad\.wmnet/ {
     role(dumps::generation::worker::dumper)
 }
 
 node /^snapshot1007\.eqiad\.wmnet/ {
-    # NOTE: New snapshot hosts must also be manually added
-    # to hiera/common.yaml:dataset_clients_snapshots,
-    # hieradata/hosts/ with a file named after the host,
-    # and modules/scap/files/dsh/group/mediawiki-installation
-    role(dumps::generation::worker::dumper_misc)
+    role(dumps::generation::worker::dumper_monitor)
 }
 
 node /^snapshot1008\.eqiad\.wmnet/ {
-    # NOTE: New snapshot hosts must also be manually added
-    # to hiera/common.yaml:dataset_clients_snapshots,
-    # hieradata/hosts/ with a file named after the host,
-    # and modules/scap/files/dsh/group/mediawiki-installation
     role(dumps::generation::worker::dumper_misc_crons_only)
-}
-
-node /^snapshot1009\.eqiad\.wmnet/ {
-    role(dumps::generation::worker::dumper)
 }
 
 node 'mwmaint2001.codfw.wmnet' {

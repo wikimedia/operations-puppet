@@ -1,4 +1,4 @@
-class role::dumps::generation::worker::dumper_misc {
+class role::dumps::generation::worker::dumper_monitor {
     include standard
     include ::profile::base::firewall
 
@@ -7,7 +7,7 @@ class role::dumps::generation::worker::dumper_misc {
     include profile::dumps::generation::worker::crontester
     include profile::dumps::generation::worker::monitor
 
-    system::role { 'snapshot::dumper_misc':
-        description => 'dumper of XML/SQL wiki content, misc dumps, monitor',
+    system::role { 'dumps::generation::worker::dumper_monitor':
+        description => 'dumper of XML/SQL wiki content, monitor',
     }
 }

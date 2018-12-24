@@ -5,7 +5,7 @@ class role::dumps::generation::worker::dumper_misc_crons_only {
     include profile::dumps::generation::worker::common
     include profile::dumps::generation::worker::cronrunner
 
-    system::role { 'snapshot::dumper_misc':
-        description => 'dumper of XML/SQL wiki content, misc dumps, monitor',
+    system::role { 'dumps::generation::worker::dumper_misc_crons_only':
+        description => 'producer of misc dumps such as wikidata weeklies',
     }
 }

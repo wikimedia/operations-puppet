@@ -193,7 +193,7 @@ scb: P{O:scb}
 scb-canary: P{scb1001.eqiad.wmnet}
 scb-codfw: A:scb and A:codfw
 scb-eqiad: A:scb and A:eqiad
-snapshot: P{O:dumps::generation::worker::dumper or O:dumps::generation::worker::dumper_misc or O:dumps::generation::worker::dumper_misc_crons_only} or A:snapshot-canary
+snapshot: P{O:dumps::generation::worker::dumper or O:dumps::generation::worker::dumper_monitor or O:dumps::generation::worker::dumper_misc_crons_only} or A:snapshot-canary
 snapshot-canary: P{O:dumps::generation::worker::testbed}
 stat: P{O:statistics::private or O:statistics::cruncher or O:statistics::gpu or O:statistics::explorer}
 swift: A:swift-fe or A:swift-be
