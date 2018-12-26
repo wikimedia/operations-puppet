@@ -114,6 +114,15 @@ class role::osm::master(
             method   => 'trust',
             database => 'gis',
     }
+    postgresql::user { 'osm@eqiad1r':
+            ensure   => 'present',
+            user     => 'osm',
+            password => $passwords::osm::osm_password,
+            cidr     => '172.16.0.0/21',
+            type     => 'host',
+            method   => 'trust',
+            database => 'gis',
+    }
 
     # Specific users and databases
     postgresql::spatialdb { 'u_kolossos': }
@@ -126,6 +135,16 @@ class role::osm::master(
             method   => 'md5',
             database => 'u_kolossos',
     }
+    postgresql::user { 'kolossos@eqiad1r':
+            ensure   => 'present',
+            user     => 'kolossos',
+            password => $passwords::osm::kolossos_password,
+            cidr     => '172.16.0.0/21',
+            type     => 'host',
+            method   => 'md5',
+            database => 'u_kolossos',
+    }
+
     postgresql::spatialdb { 'u_aude': }
     postgresql::user { 'aude@labs':
             ensure   => 'present',
@@ -136,12 +155,31 @@ class role::osm::master(
             method   => 'md5',
             database => 'u_aude',
     }
+    postgresql::user { 'aude@eqiad1r':
+            ensure   => 'present',
+            user     => 'aude',
+            password => $passwords::osm::aude_password,
+            cidr     => '172.16.0.0/21',
+            type     => 'host',
+            method   => 'md5',
+            database => 'u_aude',
+    }
+
     postgresql::spatialdb { 'wikimaps_atlas': }
     postgresql::user { 'planemad@labs':
             ensure   => 'present',
             user     => 'planemad',
             password => $passwords::osm::planemad_password,
             cidr     => '10.68.16.0/21',
+            type     => 'host',
+            method   => 'md5',
+            database => 'wikimaps_atlas',
+    }
+    postgresql::user { 'planemad@eqiad1r':
+            ensure   => 'present',
+            user     => 'planemad',
+            password => $passwords::osm::planemad_password,
+            cidr     => '172.16.0.0/21',
             type     => 'host',
             method   => 'md5',
             database => 'wikimaps_atlas',
