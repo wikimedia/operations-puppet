@@ -42,10 +42,13 @@ def connect(server, username, password):
 
 
 def get_user_keys(conn, user):
-    response = conn.search_s(
-        user,
-        ldap.SCOPE_BASE
-    )
+    try:
+        response = conn.search_s(
+            user,
+            ldap.SCOPE_BASE
+        )
+    except ldap.NO_SUCH_OBJECT:
+        return []
     for _, user in response:
         return user['sshPublicKey']
 
