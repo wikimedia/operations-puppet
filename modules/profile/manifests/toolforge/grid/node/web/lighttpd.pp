@@ -34,6 +34,11 @@ class profile::toolforge::grid::node::web::lighttpd(
         require => File['/var/run/lighttpd'],
     }
 
+    service { 'lighttpd':
+        ensure  => stopped,
+        require => Package['lighttpd'],
+    }
+
     sonofgridengine::join { "queues-${::fqdn}":
         sourcedir => "${collectors}/queues",
         list      => [ 'webgrid-lighttpd' ],
