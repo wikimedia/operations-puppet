@@ -1104,7 +1104,7 @@ users:
     uid: 2008
     email: ttijhof@wikimedia.org
   ladsgroup:
-    ensure: present
+    ensure: absent
     gid: 500
     name: ladsgroup
     realname: Amir Sarabadani
