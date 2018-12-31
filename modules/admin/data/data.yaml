@@ -71,7 +71,7 @@ groups:
               tgr, phuedx, ejegg, twentyafterfour, legoktm, catrope,
               mobrovac, nuria, thcipriani, joal, eevans, mforns, dcausse,
               bsitzmann, mholloway-shell, dduvall, dereckson,
-              bawolff, zfilipin, addshore, niharika29, ppchelko, pmiazga,
+              ladsgroup, bawolff, zfilipin, addshore, niharika29, ppchelko, pmiazga,
               musikanimal, jdrewniak, sbisson, imarlier, jforrester, mbsantos,
               aaron, liw, sbassett, jdl, tarrow, lucaswerkmeister-wmde,
               wmde-leszek, jhuneidi, wmde-fisch]
@@ -224,7 +224,7 @@ groups:
               dduvall, nettrom, mforns, jkatz, ebernhardson,
               mlitn, tbayer, joal, kartik, nikerabbit, pcoombe,
               neilpquinn-wmf, maxsem, jminor, atgomez, dstrine,
-              ovasileva, shiladsen]
+              ladsgroup, ovasileva, shiladsen]
   statistics-admins:
     posix_name: stats
     description: access files created by stats user cron jobs
@@ -258,7 +258,7 @@ groups:
               dcausse, bd808, tjones, mobrovac, jdrewniak, ejegg, jdcc, ori,
               bmansurov, atgomez, amire80, kartik, pcoombe, foks, jsamra,
               jdlrobson, chelsyx, ovasileva, flemmerich, mkroetzsch, filippo, pmiazga, faidon,
-              piccardi, fdans, eevans, anomie, demon, musikanimal,
+              piccardi, fdans, eevans, anomie, demon, ladsgroup, musikanimal,
               kaldari, goransm, ema, dsaez, shiladsen, rho, mirrys, slaporte, jk,
               ayounsi, mepps, mmiller, seddon, gilles, tstarling, pirroh, rush, tieu, karen,
               cicalese, drossi, fsalutari, nathante, gbirke, isaacj, sbassett, jdl,
@@ -464,7 +464,7 @@ groups:
     gid: 763
     description: Service deploy users
     members: [bd808, eevans, mobrovac, ppchelko, demon, twentyafterfour, thcipriani, dduvall,
-              bsitzmann, mholloway-shell, kartik, halfak, smalyshev, hoo, tgr,
+              bsitzmann, mholloway-shell, kartik, halfak, ladsgroup, smalyshev, hoo, tgr,
               ssastry, cscott, arlolra, jdlrobson, maxsem, awight, jforrester, niedzielski,
               pmiazga, phuedx, mbsantos, onimisionipe]
     privileges: []
@@ -604,7 +604,7 @@ groups:
   ores-admin:
     description: ORES admins
     gid: 782
-    members: [awight, halfak]
+    members: [awight, halfak, ladsgroup]
     privileges: ['ALL = NOPASSWD: /usr/sbin/service uwsgi-ores *',
                  'ALL = NOPASSWD: /usr/sbin/service celery-ores-worker *',
                  'ALL = NOPASSWD: /usr/bin/lsof *']
