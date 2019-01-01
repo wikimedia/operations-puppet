@@ -288,6 +288,20 @@ class mediawiki::web::prod_sites(String $fcgi_proxy) {
                 ],
             }
             ;
+        'test-commons.wikimedia.org':
+            legacy_rewrites     => true,
+            upload_rewrite      => {
+                'rewrite_prefix' => 'wikipedia/testcommons'
+            },
+            additional_rewrites => {
+
+                'early' => [],
+                'late'  => [
+                    '    # /data/ path T163922',
+                    '    RewriteRule ^/data/(.*)/(.*)$ %{ENV:RW_PROTO}://test-commons.wikimedia.org/wiki/Special:PageData/$1/$2 [R=301,QSA]'
+                ],
+            }
+            ;
         '_wikisource.org':
             docroot        => '/srv/mediawiki/docroot/wikisource.org',
             server_name    => 'wikisource.org',
