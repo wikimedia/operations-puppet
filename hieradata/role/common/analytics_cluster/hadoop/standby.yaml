@@ -40,4 +40,8 @@ profile::hadoop::firewall::master::analytics_druid_srange: '(($ANALYTICS_NETWORK
 
 profile::hadoop::backup::namenode::monitoring_enabled: true
 
+profile::hadoop::standby_master::excluded_hosts:
+  - analytics1028.eqiad.wmnet
+  - analytics1028
+
 diamond::remove: true
