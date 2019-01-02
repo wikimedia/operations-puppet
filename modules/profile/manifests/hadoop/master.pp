@@ -11,11 +11,16 @@
 #    Force puppet to use kerberos authentication when executing
 #    hdfs commands.
 #
+#  [*excluded_hosts*]
+#    Hosts that are going to be added to the hosts.exclude
+#    Default: []
+#
 class profile::hadoop::master(
     $cluster_name             = hiera('profile::hadoop::common::hadoop_cluster_name'),
     $monitoring_enabled       = hiera('profile::hadoop::master::monitoring_enabled', false),
     $hadoop_user_groups       = hiera('profile::hadoop::master::hadoop_user_groups'),
     $use_kerberos             = hiera('profile::hadoop::master::use_kerberos', false),
+    $excluded_hosts           = hiera('profile::hadoop::master::excluded_hosts', []),
 ){
     require ::profile::hadoop::common
 
@@ -27,7 +32,8 @@ class profile::hadoop::master(
     }
 
     class { '::cdh::hadoop::master':
-        use_kerberos => $use_kerberos,
+        use_kerberos   => $use_kerberos,
+        excluded_hosts => $excluded_hosts,
     }
 
     # This will create HDFS user home directories

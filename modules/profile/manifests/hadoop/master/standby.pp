@@ -8,7 +8,8 @@
 class profile::hadoop::master::standby(
     $cluster_name             = hiera('profile::hadoop::common::hadoop_cluster_name'),
     $monitoring_enabled       = hiera('profile::hadoop::standby_master::monitoring_enabled', false),
-    $use_kerberos             = hiera('profile::hadoop::standby_master::use_kerberos', false)
+    $use_kerberos             = hiera('profile::hadoop::standby_master::use_kerberos', false),
+    $excluded_hosts           = hiera('profile::hadoop::standby_master::excluded_hosts', []),
 ) {
     require ::profile::hadoop::common
 
@@ -23,7 +24,10 @@ class profile::hadoop::master::standby(
         require ::profile::hadoop::monitoring::resourcemanager
     }
 
-    class { '::cdh::hadoop::namenode::standby': }
+    class { '::cdh::hadoop::namenode::standby':
+        use_kerberos   => $use_kerberos,
+        excluded_hosts => $excluded_hosts,
+    }
 
     # Include icinga alerts if production realm.
     if $monitoring_enabled {
