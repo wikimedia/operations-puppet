@@ -20,9 +20,14 @@
 #   A puppet URL to a file containing the mpm specific configuration required.
 #   Defaults to undef.
 #
+# [*content*]
+#   A template that contains path to erb file.
+#   Defaults to undef.
+#
 class httpd::mpm(
     Enum['prefork', 'event', 'worker'] $mpm = 'worker',
     Optional[String] $source  = undef,
+    Optional[String] $content  = undef,
 ) {
     require_package('apache2')
     $selected_mod = "mpm_${mpm}"
@@ -44,13 +49,14 @@ class httpd::mpm(
         mode   => '0444',
     }
 
-    if $source {
+    if $source or $content {
         file { "/etc/apache2/mods-available/mpm_${mpm}.conf":
-            ensure => present,
-            owner  => 'root',
-            group  => 'root',
-            mode   => '0444',
-            source => $source,
+            ensure  => present,
+            owner   => 'root',
+            group   => 'root',
+            mode    => '0444',
+            source  => $source,
+            content => $content,
         }
     }
 
