@@ -26,30 +26,20 @@ class profile::phabricator::httpd (
         require => Package[$php_lib],
     }
 
-    $threads_per_child = 25
-    $apache_server_limit = $::processorcount
-    $max_req_workers = $threads_per_child * $apache_server_limit
-
     $mpm = $enable_php_fpm ? {
         true => 'worker',
         default => 'prefork'
     }
 
     $mpm_source = $enable_php_fpm ? {
-        true => undef,
+        true    => 'puppet:///modules/phabricator/apache/worker.conf',
         default => 'puppet:///modules/phabricator/apache/mpm_prefork.conf'
-    }
-
-    $mpm_content = $enable_php_fpm ? {
-        true => template('phabricator/apache/worker.conf.erb'),
-        default => undef,
     }
 
     # MPM tweaks for high load systems
     # More performance specific tweaks to follow here
     class { '::httpd::mpm':
-        mpm     => $mpm,
-        source  => $mpm_source,
-        content => $mpm_content,
+        mpm    => $mpm,
+        source => $mpm_source,
     }
 }
