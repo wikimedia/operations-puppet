@@ -134,6 +134,8 @@ class certcentral::server (
         require  => Package['certcentral'],
     }
 
+    base::service_auto_restart { 'uwsgi-certcentral': }
+
     require sslcert::dhparam
     nginx::site { 'certcentral':
         content => template('certcentral/central.nginx.conf.erb'),
