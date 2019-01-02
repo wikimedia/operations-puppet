@@ -9,14 +9,16 @@ class role::analytics_cluster::hadoop::ui {
 
     # hue.wikimedia.org
     #
-    # NOTE: We currently (2018-08) use Cloudera's Jessie .deb packages on
+    # NOTE: We currently (2019-01) use Cloudera's Jessie .deb packages on
     # Debian Stretch.  This usually is fine, since most CDH packages are
-    # JVM based.  However, hue is a Python Django app, and has non JVM dependencies.
+    # JVM based. However, hue is a Python Django app, and has non JVM dependencies.
     # 2 of its dependencies are no longer available in Debian Stretch:
     # - libmysqlclient18
     # - libssl1.0.0
-    # To work around this, both libmysqlclient18 and libssl1.0.0 have been manually
-    # downloaded and installed (dpkg -i) on analytics-tool1001.
+    # To work around this, libmysqlclient18 was manually downloaded and installed
+    # on analytics-tool1001, and we created a Debian Equiv package for libssl1.0.0
+    # (added to the cdh component).
+    # More info: T152712#3424883
     include ::profile::hue
 
     # yarn.wikimedia.org
