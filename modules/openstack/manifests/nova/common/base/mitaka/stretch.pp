@@ -5,6 +5,8 @@ class openstack::nova::common::base::mitaka::stretch(
     $packages = [
         'unzip',
         'bridge-utils',
+        'sqlite3',
+        'python-mysqldb',
     ]
 
     package { $packages:
@@ -14,5 +16,6 @@ class openstack::nova::common::base::mitaka::stretch(
     package { 'nova-common':
         ensure          => 'present',
         install_options => ['-t', 'jessie-backports'],
+        require         => Package[$packages],
     }
 }

@@ -14,6 +14,7 @@ class openstack::nova::compute::service::mitaka::stretch(
         'websockify',
         'virt-top',
         'dnsmasq-base',
+        'qemu-utils',
     ]
 
     package { $packages:
@@ -27,7 +28,8 @@ class openstack::nova::compute::service::mitaka::stretch(
 
     package { $packages_hack:
         ensure          => 'present',
-        install_options => ['-t', 'jessie-backports']
+        install_options => ['-t', 'jessie-backports'],
+        require         => Package[$packages],
     }
 
     # /etc/default/libvirt-guests
