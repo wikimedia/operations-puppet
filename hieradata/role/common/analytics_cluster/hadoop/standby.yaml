@@ -43,5 +43,9 @@ profile::hadoop::backup::namenode::monitoring_enabled: true
 profile::hadoop::standby_master::excluded_hosts:
   - analytics1028.eqiad.wmnet
   - analytics1028
+  - analytics1029.eqiad.wmnet
+  - analytics1029
+  - analytics1030.eqiad.wmnet
+  - analytics1030
 
 diamond::remove: true
