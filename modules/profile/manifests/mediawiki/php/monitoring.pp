@@ -77,5 +77,14 @@ class profile::mediawiki::php::monitoring(
             retry_interval => 2,
         }
     }
+    else {
+        # Check that the basic health check url can be rendered via php-fpm.
+        monitoring::service { 'appserver_health_php7':
+            description    => 'PHP7 rendering',
+            check_command  => 'check_http_jobrunner_php7',
+            retries        => 2,
+            retry_interval => 2,
+        }
+    }
     # TODO: add an else with a check for /w/health-check.php
 }

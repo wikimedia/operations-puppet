@@ -242,10 +242,16 @@ define command {
     command_line    $USER1$/check_http -H en.wikipedia.org -I $HOSTADDRESS$ -u /wiki/Main_Page -k 'Cookie: PHP_ENGINE=php7' -d 'X-Powered-By: PHP/7.'
     }
 
-# 'check_http_jobrunner' command definition, querying the rpc endpoint
+# 'check_http_jobrunner' command definition, querying the health-check endpoint
 define command {
     command_name    check_http_jobrunner
     command_line    $USER1$/check_http -I $HOSTADDRESS$ -p 9005 -u /w/health-check.php
+    }
+
+# 'check_http_jobrunner' command definition, querying the health-check endpoint via php7
+define command {
+    command_name    check_http_jobrunner_php7
+    command_line    $USER1$/check_http -I $HOSTADDRESS$ -p 9005 -u /w/health-check.php -k 'Cookie: PHP_ENGINE=php7' -d 'X-Powered-By: PHP/7.'
     }
 
 

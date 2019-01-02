@@ -1,9 +1,27 @@
 class profile::mediawiki::jobrunner(
-    $statsd = hiera('statsd')
+    $statsd = hiera('statsd'),
+    Optional[Wmflib::UserIpPort] $fcgi_port = hiera('profile::php_fpm::fcgi_port', undef),
+    String $fcgi_pool = hiera('profile::mediawiki::fcgi_pool', 'www'),
 ) {
     # Parameters we don't need to override
     $port = 9005
     $local_only_port = 9006
+    $fcgi_proxy = mediawiki::fcgi_endpoint($fcgi_port, $fcgi_pool)
+
+    # Add headers lost by mod_proxy_fastcgi
+    # The apache module doesn't pass along to the fastcgi appserver
+    # a few headers, like Content-Type and Content-Length.
+    # We need to add them back here.
+    ::httpd::conf { 'fcgi_headers':
+        source   => 'puppet:///modules/mediawiki/apache/configs/fcgi_headers.conf',
+        priority => 0,
+    }
+    # Declare the proxies explicitly with retry=0
+    httpd::conf { 'fcgi_proxies':
+        ensure  => present,
+        content => template('mediawiki/apache/fcgi_proxies.conf.erb')
+    }
+
 
 
     class { '::httpd':
