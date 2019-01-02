@@ -191,7 +191,7 @@ GRANT ALL PRIVILEGES
 GRANT USAGE
     ON *.* TO 'recommendationapiservice'@'10.64.32.156'
     IDENTIFIED BY '<%= @recommendationapiservice_pass %>'
-    WITH MAX_USER_CONNECTIONS 10;
+    WITH MAX_USER_CONNECTIONS 50;
 
 GRANT SELECT
     ON `recommendationapi`.* TO 'recommendationapiservice'@'10.64.32.156';
@@ -199,7 +199,7 @@ GRANT SELECT
 GRANT USAGE
     ON *.* TO 'recommendationapiservice'@'10.64.0.166'
     IDENTIFIED BY '<%= @recommendationapiservice_pass %>'
-    WITH MAX_USER_CONNECTIONS 10;
+    WITH MAX_USER_CONNECTIONS 50;
 
 GRANT SELECT
     ON `recommendationapi`.* TO 'recommendationapiservice'@'10.64.0.166';
