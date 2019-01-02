@@ -245,7 +245,7 @@ define command {
 # 'check_http_jobrunner' command definition, querying the rpc endpoint
 define command {
     command_name    check_http_jobrunner
-    command_line    $USER1$/check_http -I $HOSTADDRESS$ -p 9005 -u /rpc/RunJobs.php
+    command_line    $USER1$/check_http -I $HOSTADDRESS$ -p 9005 -u /w/health-check.php
     }
 
 
