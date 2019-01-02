@@ -21,7 +21,7 @@ role::lvs::realserver::pools:
   nginx:
     lvs_name: videoscaler
 # We still don't enable fpm here
-profile::mediawiki::php::enable_fpm: false
+profile::mediawiki::php::enable_fpm: true
 # Bump the connections per backend to 5 in mcrouter, see T203786
 profile::mediawiki::mcrouter_wancache::num_proxies: 5
 diamond::remove: true
