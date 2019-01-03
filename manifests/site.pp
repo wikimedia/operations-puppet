@@ -207,12 +207,7 @@ node /cloudstore100[89]\.wikimedia\.org/ {
     role(spare::system)
 }
 
-# new cloudvirt systems
-node /^cloudvirt102[6-8].eqiad.wmnet$/ {
-    role(spare::system)
-}
-
-node 'cloudvirt1029.eqiad.wmnet' {
+node /^cloudvirt102[6-9].eqiad.wmnet$/ {
     role(wmcs::openstack::eqiad1::virt)
 }
 
