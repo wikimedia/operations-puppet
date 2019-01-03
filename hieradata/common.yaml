@@ -380,6 +380,12 @@ wikimedia_clusters:
     sites:
       eqiad: []
       codfw: []
+  certcentral:
+    description: "Certcentral servers"
+    id: 78
+    sites:
+      eqiad: []
+      codfw: []
 
 puppetmaster: "puppet"
 

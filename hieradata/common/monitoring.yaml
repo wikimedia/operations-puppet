@@ -389,3 +389,9 @@ monitoring::groups:
     description: Management servers (eqiad)
   management_codfw:
     description: Management servers (codfw)
+
+# Certcentral Servers
+  certcentral_eqiad:
+    description: Certcentral servers (eqiad)
+  certcentral_codfw:
+    description: Certcentral servers (codfw)
