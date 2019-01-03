@@ -207,14 +207,6 @@ node /cloudstore100[89]\.wikimedia\.org/ {
     role(spare::system)
 }
 
-node /^cloudvirt102[6-9].eqiad.wmnet$/ {
-    role(wmcs::openstack::eqiad1::virt)
-}
-
-node 'cloudvirt1030.eqiad.wmnet' {
-    role(wmcs::openstack::eqiad1::virt)
-}
-
 # All gerrit servers (swap master status in hiera)
 node 'cobalt.wikimedia.org', 'gerrit2001.wikimedia.org' {
     role(gerrit)
@@ -2240,7 +2232,12 @@ node /^cloudvirt101[3-9]\.eqiad\.wmnet$/ {
     interface::add_ip6_mapped { 'main': }
 }
 
-node /^cloudvirt102[0-5].eqiad.wmnet$/ {
+node /^cloudvirt102[0-9].eqiad.wmnet$/ {
+    role(wmcs::openstack::eqiad1::virt)
+    interface::add_ip6_mapped { 'main': }
+}
+
+node 'cloudvirt1030.eqiad.wmnet' {
     role(wmcs::openstack::eqiad1::virt)
     interface::add_ip6_mapped { 'main': }
 }
