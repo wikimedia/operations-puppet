@@ -8,4 +8,11 @@ class openstack::serverpackages::mitaka::stretch(
         dist       => 'jessie-backports',
         components => 'main',
     }
+
+    # hack, use the jessie repository in stretch.
+    apt::repository { 'jessie-for-mitaka-on-stretch':
+        uri        => 'http://mirrors.wikimedia.org/debian/',
+        dist       => 'jessie',
+        components => 'main',
+    }
 }

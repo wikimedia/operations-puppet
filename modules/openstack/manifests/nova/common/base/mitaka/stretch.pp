@@ -13,9 +13,20 @@ class openstack::nova::common::base::mitaka::stretch(
         ensure => 'present',
     }
 
+    package { 'python-dogpile.core':
+        ensure          => 'present',
+        install_options => ['-t', 'jessie'],
+    }
+
+    package { 'python-nova':
+        ensure          => 'present',
+        install_options => ['-t', 'jessie-backports'],
+        require         => Package['python-dogpile.core'],
+    }
+
     package { 'nova-common':
         ensure          => 'present',
         install_options => ['-t', 'jessie-backports'],
-        require         => Package[$packages],
+        require         => [Package[$packages], Package['python-nova']],
     }
 }
