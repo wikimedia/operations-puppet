@@ -9,7 +9,7 @@
 (
     # make sure balancer is not already running.
     lockfile-check /tmp/hdfs-balancer && \
-    echo "$(date \'+\%y/\%m/\%d \%H:\%M:\%S\') WARN Not starting hdfs balancer, it is already running (or the lockfile exists)."
+    echo "$(date '+%y/%m/%d %H:%M:%S') WARN Not starting hdfs balancer, it is already running (or the lockfile exists)."
 ) || \
 (
     # Create a lockfile
