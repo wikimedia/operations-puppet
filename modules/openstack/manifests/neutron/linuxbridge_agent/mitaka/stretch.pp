@@ -2,7 +2,7 @@ class openstack::neutron::linuxbridge_agent::mitaka::stretch(
 ) {
     require ::openstack::serverpackages::mitaka::stretch
 
-    package { 'libosinfo-1.0.0':
+    package { 'libosinfo-1.0-0':
         ensure => 'present',
     }
 
