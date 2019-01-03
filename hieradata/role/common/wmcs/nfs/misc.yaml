@@ -1,0 +1,39 @@
+profile::wmcs::nfs::server::nfsd_threads: 192
+
+profile::wmcs::nfs::monitoring::interfaces::monitor_iface: eth0
+profile::wmcs::nfs::monitoring::interfaces::contact_groups: 'wmcs-team,admins'
+profile::wmcs::nfs::monitoring::interfaces::int_throughput_warn: 93750000
+profile::wmcs::nfs::monitoring::interfaces::int_throughput_crit: 106250000
+profile::wmcs::nfs::monitoring::interfaces::load_warn: '%{::processorcount} * 0.75'
+profile::wmcs::nfs::monitoring::interfaces::load_crit: '%{::processorcount} * 1.25'
+
+ldap::client::nss::nsswitch_conf_source: file:///usr/share/base-files/nsswitch.conf
+
+# the snapshots created by the backup process cannot be checked
+# by the check_disk nrpe plugin so need to be excluded.
+profile::base::check_disk_options: -w 10% -c 5% -W 6% -K 3% -l -e -A -i /run/lock/storage-replicate-.*/snapshot -i /exp/.* --exclude-type=tracefs
+
+profile::base::ssh_server_settings:
+  # Paramiko needs to ssh into these for replication/backups
+  # Otherwise throws: SSHException: Incompatible ssh peer (no acceptable kex algorithm)
+  disable_nist_kex: false
+  explicit_macs: false
+  # This is there because we have a ssh::userkey stanza
+  # and it will not be used without this hack.  Same pattern ganeti uses.
+  authorized_keys_file: /etc/ssh/userkeys/%u /etc/ssh/userkeys/%u.d/cumin /etc/ssh/userkeys/%u.d/labstore
+
+# IPs from the Maps project that are allowed to mount the maps volume
+profile::wmcs::nfs::misc::maps_project_ips:
+  - '10.68.16.6'   # overpass-wiki
+  - '10.68.17.110' # maps-tiles2
+  - '10.68.16.103' # maps-tiles3
+  - '10.68.16.70'  # maps-wma1
+  - '10.68.20.112' # not-found
+  - '172.16.6.46'  # maps-warper2
+  - '172.16.0.158' # maps-warper3
+  - '172.16.1.144' # maps-wma
+  - '172.16.5.153' # maps-puppetmaster
+  - '172.16.5.154' # maps-tiles1
+
+admin::groups:
+  - wmcs-roots

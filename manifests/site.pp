@@ -213,7 +213,7 @@ node 'certcentral2001.codfw.wmnet' {
 
 
 node /cloudstore100[89]\.wikimedia\.org/ {
-    role(spare::system)
+    role(wmcs::nfs::misc)
 }
 
 # All gerrit servers (swap master status in hiera)
