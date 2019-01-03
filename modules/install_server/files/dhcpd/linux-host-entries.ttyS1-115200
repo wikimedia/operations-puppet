@@ -663,12 +663,12 @@ host cloudvirt1026 {
 }
 
 host cloudvirt1027 {
-    hardware ethernet D0:94:66:62:A8:D8;
+    hardware ethernet D0:94:66:62:A8:D7;
     fixed-address cloudvirt1027.eqiad.wmnet;
 }
 
 host cloudvirt1028 {
-    hardware ethernet D0:94:66:62:D6:D0;
+    hardware ethernet D0:94:66:62:D6:CF;
     fixed-address cloudvirt1028.eqiad.wmnet;
 }
 
