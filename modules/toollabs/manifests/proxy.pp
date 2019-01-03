@@ -32,16 +32,15 @@ class toollabs::proxy(
         ssl_certificate_name => $ssl_certificate_name,
         redis_replication    => $redis_replication,
         error_config         => {
-            title       => 'Wikimedia Toolforge Error',
+            title       => 'Wikimedia Tool Labs Error',
             logo        => '/.error/tool-labs-logo.png',
             logo_2x     => '/.error/tool-labs-logo-2x.png',
-            logo_alt    => 'Wikimedia Toolforge',
+            logo_alt    => 'Wikimedia Tool Labs',
             logo_height => '157',
             favicon     => '/.error/favicon.ico',
         },
-        banned_description   => 'You have been banned from accessing Toolforge. Please see <a href="https://wikitech.wikimedia.org/wiki/Help:Toolforge/Banned">Help:Toolforge/Banned</a> for more information on why and on how to resolve this.',
+        banned_description   => 'You have been banned from accessing Tool Labs. Please see <a href="https://wikitech.wikimedia.org/wiki/Help:Tool_Labs/Banned">Help:Tool Labs/Banned</a> for more information on why and on how to resolve this.',
         web_domain           => $web_domain,
-        https_upgrade        => true,
     }
 
 
