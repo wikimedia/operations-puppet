@@ -3,6 +3,29 @@
 # This file provides the testreduce code repository
 #
 class testreduce {
+
+    if os_version('debian == stretch') {
+
+        $node_packages = ['node-abbrev', 'node-ansi-regex', 'node-cacache',
+                      'node-config-chain', 'node-glob', 'node-hosted-git-info',
+                      'node-ini node-npm-package-arg', 'node-jsonstream',
+                      'node-libnpx', 'node-lockfile', 'node-lru-cache',
+                      'node-move-concurrently', 'node-normalize', 'package-data',
+                      'node-gyp', 'node-resolve-from', 'node-npmlog', 'node-osenv',
+                      'node-read-package-json', 'node-request', 'node-retry',
+                      'node-rimraf', 'node-semver', 'node-sha', 'node-slide',
+                      'node-strip-ansi', 'node-tar', 'node-boxen', 'node-which']
+
+        $pinned_packages = join($node_packages, ' ')
+
+        apt::pin { 'stretch-backports':
+            package  => $pinned_packages,
+            pin      => 'release a=stretch-backports',
+            priority => 500,
+            before   => [Package['npm'], Package['nodejs']],
+        }
+    }
+
     require_package('nodejs')
     require_package('npm')
 
