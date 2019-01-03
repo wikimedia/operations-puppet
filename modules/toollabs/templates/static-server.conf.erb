@@ -44,7 +44,7 @@ server {
         return 301 https://$host$request_uri;
     }
     # Tell browsers to use https for 24 hours even if they find an http link
-    add_header Strict-Transport-Security "max-age=86400"
+    add_header Strict-Transport-Security "max-age=86400";
     <%- end -%>
 
     # Block requests with no UA string
