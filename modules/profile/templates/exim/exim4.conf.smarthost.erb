@@ -57,8 +57,8 @@ add_environment = <; PATH=/bin:/usr/bin
 keep_environment =
 
 # TLS
-tls_certificate = /etc/acme/cert/<%= @cert_name %>.chained.crt
-tls_privatekey = /etc/acme/key/<%= @cert_name %>.key
+tls_certificate = /etc/acme/cert/<%= @cert_name.gsub(/[-.]/, '_') %>.chained.crt
+tls_privatekey = /etc/acme/key/<%= @cert_name.gsub(/[-.]/, '_') %>.key
 tls_advertise_hosts = *
 tls_require_ciphers = NORMAL:%SERVER_PRECEDENCE
 
