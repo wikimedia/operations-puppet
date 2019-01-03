@@ -1,1 +1,0 @@
-profile::etcd::allow_from: '(@resolve(acrab.codfw.wmnet) @resolve(acrab.codfw.wmnet, AAAA) @resolve(acrux.codfw.wmnet) @resolve(acrux.codfw.wmnet, AAAA))'

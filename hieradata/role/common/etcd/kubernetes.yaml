@@ -4,4 +4,5 @@ profile::etcd::discovery: "dns:k8s.%{::site}.wmnet"
 profile::etcd::use_client_certs: false
 profile::etcd::do_backup: true
 profile::etcd::use_proxy: false
+profile::etcd::allow_from: "$DOMAIN_NETWORKS"
 diamond::remove: true
