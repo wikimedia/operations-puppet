@@ -386,6 +386,11 @@ wikimedia_clusters:
     sites:
       eqiad: []
       codfw: []
+  wmcs:
+    description: "WMCS servers"
+    id: 79
+    sites:
+      eqiad: []
 
 puppetmaster: "puppet"
 

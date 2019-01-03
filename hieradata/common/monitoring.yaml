@@ -395,3 +395,7 @@ monitoring::groups:
     description: Certcentral servers (eqiad)
   certcentral_codfw:
     description: Certcentral servers (codfw)
+
+# WMCS Servers
+  wmcs_eqiad:
+    description: WMCS servers (eqiad)
