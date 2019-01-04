@@ -41,7 +41,6 @@
 # [*ssh_keys*]
 #  An array of strings containing the SSH public keys.
 #
-
 define admin::user (
     Wmflib::Ensure $ensure              = present,
     Optional[Integer] $uid              = undef,
@@ -84,7 +83,9 @@ define admin::user (
         }
     }
 
-    # recursively-managed, automatically purged
+    # /etc/ssh/userkey is recursively-managed,
+    # automatically purged, so user keys not defined
+    # (as resource) will be automatically dropped.
     if !empty($ssh_keys) {
         ssh::userkey { $name:
             ensure  => $ensure,

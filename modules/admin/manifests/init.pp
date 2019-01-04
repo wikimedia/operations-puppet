@@ -5,12 +5,17 @@
 # [*$groups*]
 #  Array of valid groups (defined in yaml) to create with associated members
 #
+# [*$groups_no_ssh*]
+#  Array of valid groups (defined in yaml) to create with associated members,
+#  with the constraint that no ssh key for their users is deployed.
+#
 # [*$always_groups*]
 #  Array of valid groups to always run
 #
 
 class admin(
     $groups=[],
+    $groups_no_ssh=[],
     $always_groups=['absent', 'ops', 'wikidev', 'ops-adm-group'],
 )
 {
@@ -25,11 +30,21 @@ class admin(
     $users = keys($uinfo)
 
     #making sure to include always_groups
-    $all_groups = concat($always_groups, $groups)
+    # These are groups containing users with SSH access
+    $regular_groups = concat($always_groups, $groups)
+    # These are all groups configured
+    $all_groups = concat($regular_groups, $groups_no_ssh)
 
-    #this custom function eliminates the need for virtual users
-    $user_set = unique_users($data, $all_groups)
+    # Note: the unique_users() custom function eliminates the need for virtual users.
 
+    # List of users with SSH access
+    $users_set_ssh = unique_users($data, $regular_groups)
+
+    # List of users without SSH access
+    # Note: since a user may be listed among groups in $groups
+    # and at the same time groups in $groups_no_ssh,
+    # we need to make sure that the two sets don't overlap.
+    $users_set_nossh = unique_users($data, $groups_no_ssh).filter |$user| { !($user in $users_set_ssh) }
 
     file { '/usr/local/sbin/enforce-users-groups':
         ensure => file,
@@ -38,11 +53,18 @@ class admin(
     }
 
     admin::hashgroup { $all_groups:
-        before => Admin::Hashuser[$user_set],
+        before => [
+            Admin::Hashuser[$users_set_ssh],
+            Admin::Hashuser[$users_set_nossh],
+        ],
     }
 
-    admin::hashuser { $user_set:
-        before => Admin::Groupmembers[$all_groups],
+    admin::hashuser { $users_set_ssh:
+        ensure_ssh_key => true,
+    }
+
+    admin::hashuser { $users_set_nossh:
+        ensure_ssh_key => false,
     }
 
     admin::groupmembers { $all_groups:
