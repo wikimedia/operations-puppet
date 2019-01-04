@@ -1601,45 +1601,28 @@ node /^mw129[78]\.eqiad\.wmnet$/ {
 
 # Row A
 
-# mw1308-mw1311 are in rack A6
-node /^mw13(0[89]|1[01])\.eqiad\.wmnet$/ {
+# mw1307-mw1311 are in rack A6
+node /^mw13(0[7-9]|1[01])\.eqiad\.wmnet$/ {
     role(mediawiki::jobrunner)
 }
 
 # Row B
 
-# mw1299-mw1306 are in rack B6
-node /^mw1(299|30[0-6])\.eqiad\.wmnet$/ {
+# mw1293-6,mw1299-mw1306 are in rack B6
+node /^mw1(29[34569]|30[0-6])\.eqiad\.wmnet$/ {
+    role(mediawiki::jobrunner)
+}
+
+# Rack B7
+node 'mw1318.eqiad.wmnet' {
     role(mediawiki::jobrunner)
 }
 
 # Row C
 
-# mw1334-mw1337 are in rack C6
-node /^mw133[4-7]\.eqiad\.wmnet$/ {
+# mw1334-mw1338 are in rack C6
+node /^mw133[4-8]\.eqiad\.wmnet$/ {
     role(mediawiki::jobrunner)
-}
-
-# Videoscalers
-
-# Row A (A6)
-node 'mw1307.eqiad.wmnet' {
-    role(mediawiki::videoscaler)
-}
-
-# Row B (B6)
-node /^mw129[3-6]\.eqiad\.wmnet$/ {
-    role(mediawiki::videoscaler)
-}
-
-# Row B (B7)
-node 'mw1318.eqiad.wmnet' {
-    role(mediawiki::videoscaler)
-}
-
-# Row C (C6)
-node 'mw1338.eqiad.wmnet' {
-    role(mediawiki::videoscaler)
 }
 
 ## DATACENTER: CODFW
@@ -1749,12 +1732,17 @@ node /^mw224[45]\.codfw\.wmnet$/ {
 
 # Row A
 
-# mw2243, mw2247-mw2250 are in rack A4
-node /^mw22(4[3789]|50)\.codfw\.wmnet$/ {
+# mw2243, mw2246-mw2250 are in rack A4
+node /^mw22(4[36789]|50)\.codfw\.wmnet$/ {
     role(mediawiki::jobrunner)
 }
 
 # Row B
+
+# mw2259-60 are in rack B3
+node /^mw22(59|60)\.codfw\.wmnet$/ {
+    role(mediawiki::jobrunner)
+}
 
 # mw2263-7 are in rack B3
 node /^mw226[3-7]\.codfw\.wmnet$/ {
@@ -1763,8 +1751,8 @@ node /^mw226[3-7]\.codfw\.wmnet$/ {
 
 # Row C
 
-# mw2153-62 are in rack C3
-node /^mw21(5[3-9]|6[0-2])\.codfw\.wmnet$/ {
+# mw2152-62 are in rack C3
+node /^mw21(5[2-9]|6[0-2])\.codfw\.wmnet$/ {
     role(mediawiki::jobrunner)
 }
 
@@ -1773,25 +1761,6 @@ node /^mw21(5[3-9]|6[0-2])\.codfw\.wmnet$/ {
 # mw2278-80 are in rack D3, mw2281-2 are in rack D4
 node /^mw22(7[8-9]|8[0-2])\.codfw\.wmnet$/ {
     role(mediawiki::jobrunner)
-}
-
-# Videoscalers
-
-# Row A (A4)
-
-node 'mw2246.codfw.wmnet' {
-    role(mediawiki::videoscaler)
-}
-
-# Row B (B3)
-node /^mw22(59|60)\.codfw\.wmnet$/ {
-    role(mediawiki::videoscaler)
-}
-
-# Row C (C3)
-
-node 'mw2152.codfw.wmnet' {
-    role(mediawiki::videoscaler)
 }
 
 ## END MEDIAWIKI APPLICATION SERVERS
