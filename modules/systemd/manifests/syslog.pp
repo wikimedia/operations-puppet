@@ -29,12 +29,18 @@
 #   Filename of the logging file.
 #   Default: 'syslog.log'
 #
+# [*force_stop*]
+#   Force 'stop' rule in the syslog configuration to
+#   avoid sending the logs to syslog/daemon.log files.
+#   Default: false
+#
 define systemd::syslog(
     $base_dir     = '/var/log',
     $owner        = $title,
     $group        = $title,
     $readable_by  = 'group',
-    $log_filename = 'syslog.log'
+    $log_filename = 'syslog.log',
+    $force_stop   = false,
     ) {
     if $::initsystem != 'systemd' {
         fail('systemd::syslog is useful only with systemd')
