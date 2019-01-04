@@ -22,11 +22,13 @@ class testreduce {
             package  => $pinned_packages,
             pin      => 'release a=stretch-backports',
             priority => 500,
+            before   => [Package['npm'], Package['nodejs']],
         }
     }
 
-    require_package('nodejs')
-    require_package('npm')
+    package { ['nodejs', 'npm']:
+        ensure => present,
+    }
 
     group { 'testreduce':
         ensure => present,
