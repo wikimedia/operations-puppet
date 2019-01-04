@@ -468,7 +468,7 @@ groups:
     members: [bd808, eevans, mobrovac, ppchelko, demon, twentyafterfour, thcipriani, dduvall,
               bsitzmann, mholloway-shell, kartik, halfak, ladsgroup, smalyshev, hoo, tgr,
               ssastry, cscott, arlolra, jdlrobson, maxsem, awight, jforrester, niedzielski,
-              pmiazga, phuedx, mbsantos, onimisionipe]
+              pmiazga, phuedx, mbsantos, onimisionipe, bmansurov]
     privileges: []
 
   deploy-aqs:
@@ -662,7 +662,7 @@ groups:
   recommendation-admin:
     description: Group of recommendation-api admins
     gid: 794
-    members: [ppchelko, eevans, mobrovac]
+    members: [ppchelko, eevans, mobrovac, bmansurov]
     privileges: ['ALL = NOPASSWD: /usr/sbin/service recommendation_api *',
                  'ALL = (recommendation_api) NOPASSWD: ALL']
   cpjobqueue-admin:
