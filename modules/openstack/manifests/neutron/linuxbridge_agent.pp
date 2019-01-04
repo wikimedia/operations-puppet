@@ -6,18 +6,14 @@ class openstack::neutron::linuxbridge_agent(
     $physical_interface_mappings={},
     ) {
 
-    class { "openstack::neutron::linuxbridge_agent::${version}::${::lsbdistcodename}": }
-    include openstack::nova::compute::kmod
-
-    create_resources(openstack::neutron::bridge, $bridges)
-
-    file { '/etc/neutron/plugins/ml2/linuxbridge_agent.ini':
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0744',
-        content => template("openstack/${version}/neutron/plugins/ml2/linuxbridge_agent.ini.erb"),
-        require => Package['neutron-linuxbridge-agent'],
+    class { "openstack::neutron::linuxbridge_agent::${version}":
+        report_interval             => $report_interval,
+        physical_interface_mappings => $physical_interface_mappings,
+        bridge_mappings             => $bridge_mappings,
     }
+
+    include openstack::nova::compute::kmod
+    create_resources(openstack::neutron::bridge, $bridges)
 
     file { '/etc/neutron/plugins/linuxbridge':
         ensure  => 'directory',

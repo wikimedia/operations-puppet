@@ -6,30 +6,15 @@ class openstack::neutron::l3_agent(
     $enabled=true,
     ) {
 
-    $dmz_cidr = join($dmz_cidr_array, ',')
-
-    if os_version('debian jessie') and ($version == 'mitaka') {
-        $install_options = ['-t', 'jessie-backports']
-    } else {
-        $install_options = ''
-    }
-
-    package { 'neutron-l3-agent':
-        ensure          => 'present',
-        install_options => $install_options,
+    class { "openstack::neutron::l3_agent::${version}":
+        dmz_cidr_array    => $dmz_cidr_array,
+        network_public_ip => $network_public_ip,
+        report_interval   => $report_interval,
     }
 
     class {'openstack::neutron::l3_agent_hacks':
         version => $version,
         require => Package['neutron-l3-agent'],
-    }
-
-    file { '/etc/neutron/l3_agent.ini':
-            owner   => 'neutron',
-            group   => 'neutron',
-            mode    => '0640',
-            content => template("openstack/${version}/neutron/l3_agent.ini.erb"),
-            require => Package['neutron-l3-agent'];
     }
 
     service {'neutron-l3-agent':

@@ -7,6 +7,8 @@ class openstack::serverpackages::mitaka::stretch(
         uri        => 'http://mirrors.wikimedia.org/debian/',
         dist       => 'jessie-backports',
         components => 'main',
+        trust_repo => true,
+        source     => false,
     }
 
     # hack, use the jessie repository in stretch.
@@ -14,6 +16,8 @@ class openstack::serverpackages::mitaka::stretch(
         uri        => 'http://mirrors.wikimedia.org/debian/',
         dist       => 'jessie',
         components => 'main',
+        trust_repo => true,
+        source     => false,
     }
 
     # make sure we don't have libssl1.0.0 installed, and exclude

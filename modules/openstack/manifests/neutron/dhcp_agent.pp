@@ -4,31 +4,9 @@ class openstack::neutron::dhcp_agent(
     $report_interval,
     ) {
 
-    if os_version('debian jessie') and ($version == 'mitaka') {
-        $install_options = ['-t', 'jessie-backports']
-    } else {
-        $install_options = ''
-    }
-
-    package { 'neutron-dhcp-agent':
-        ensure          => 'present',
-        install_options => $install_options,
-    }
-
-    file { '/etc/neutron/dhcp_agent.ini':
-        owner   => 'neutron',
-        group   => 'neutron',
-        mode    => '0640',
-        content => template("openstack/${version}/neutron/dhcp_agent.ini.erb"),
-        require => Package['neutron-common'];
-    }
-
-    file { '/etc/neutron/dnsmasq-neutron.conf':
-        owner   => 'neutron',
-        group   => 'neutron',
-        mode    => '0640',
-        content => template("openstack/${version}/neutron/dnsmasq-neutron.conf.erb"),
-        require => Package['neutron-common'];
+    class { "openstack::neutron::dhcp_agent::${version}":
+        dhcp_domain     => $dhcp_domain,
+        report_interval => $report_interval,
     }
 
     service {'neutron-dhcp-agent':
