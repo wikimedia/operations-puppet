@@ -1,8 +1,8 @@
 fixtures:
     symlinks:
         systemd: "#{source_dir}"
-        base: "../../../../base"
         logrotate: "../../../../logrotate"
+        nrpe: "../../../../nrpe"
         rsyslog: "../../../../rsyslog"
         stdlib: "../../../../stdlib"
         wmflib: "../../../../wmflib"

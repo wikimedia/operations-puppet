@@ -1,7 +1,8 @@
 # == Define: profile::analytics::systemd_timer
 #
 # This is prototype of a possible replacement (or evolution) of the
-# Analytics' cron job definitions.
+# Analytics' cron job definitions. This used to be its own define, which got abstracted
+# to the more general systemd::timer::job define
 #
 # [*description*]
 #   Description to place in the systemd unit.
@@ -76,49 +77,27 @@ define profile::analytics::systemd_timer(
     $syslog_force_stop = true,
 ) {
 
-    systemd::unit { "${title}.service":
-        ensure  => 'present',
-        content => template('profile/analytics/systemd_timer.systemd.erb'),
+    $logging = $logfile_name ? {
+        undef   => false,
+        default => true
     }
-
-    systemd::timer { $title:
-        timer_intervals => [{
+    systemd::timer::job { $title:
+        description               => $description,
+        command                   => $command,
+        interval                  => {
             'start'    => 'OnCalendar',
             'interval' => $interval
-            }],
-        unit_name       => "${title}.service",
-    }
-
-    if $logfile_name {
-        systemd::syslog { $title:
-            base_dir     => $logfile_basedir,
-            log_filename => $logfile_name,
-            owner        => $logfile_owner,
-            group        => $logfile_group,
-            readable_by  => $logfile_perms,
-            force_stop   => $syslog_force_stop,
-        }
-    }
-
-
-    if $monitoring_enabled {
-        if !defined(File['/usr/local/lib/nagios/plugins/check_systemd_unit_status']) {
-            file { '/usr/local/lib/nagios/plugins/check_systemd_unit_status':
-                ensure => present,
-                source => 'puppet:///modules/profile/analytics/systemd_timer/check_systemd_unit_status',
-                mode   => '0555',
-                owner  => 'root',
-                group  => 'root',
-            }
-        }
-
-        nrpe::monitor_service { "check_${title}_status":
-            description    => "Check the last execution of ${title}",
-            nrpe_command   => "/usr/local/lib/nagios/plugins/check_systemd_unit_status ${title}",
-            check_interval => 10,
-            retries        => 2,
-            contact_group  => $monitoring_contact_groups,
-            require        => File['/usr/local/lib/nagios/plugins/check_systemd_unit_status'],
-        }
+        },
+        user                      => $user,
+        environment               => $environment,
+        monitoring_enabled        => $monitoring_enabled,
+        monitoring_contact_groups => $monitoring_contact_groups,
+        logging_enabled           => $logging,
+        logfile_basedir           => $logfile_basedir,
+        logfile_name              => $logfile_name,
+        logfile_owner             => $logfile_owner,
+        logfile_group             => $logfile_group,
+        logfile_perms             => $logfile_perms,
+        syslog_force_stop         => $syslog_force_stop,
     }
 }

@@ -1,0 +1,11 @@
+[Unit]
+Description=<%= @description %>
+
+[Service]
+User=<%= @user %>
+<%- if @environment -%>
+<%- @environment.keys.sort.each do |key| -%>
+Environment=<%= key -%>=<%= @environment[key] %>
+<%- end -%>
+<%- end -%>
+ExecStart=<%= @command %>

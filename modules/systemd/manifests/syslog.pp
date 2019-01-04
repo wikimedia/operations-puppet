@@ -38,10 +38,10 @@ define systemd::syslog(
     $base_dir     = '/var/log',
     $owner        = $title,
     $group        = $title,
-    $readable_by  = 'group',
+    Enum['user', 'group', 'all'] $readable_by  = 'group',
     $log_filename = 'syslog.log',
     $force_stop   = false,
-    ) {
+) {
     if $::initsystem != 'systemd' {
         fail('systemd::syslog is useful only with systemd')
     }
