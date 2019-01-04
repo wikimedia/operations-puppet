@@ -36,5 +36,13 @@ class elasticsearch::nagios::plugin {
         tag    => 'nagiosplugin',
     }
 
-    require_package('python-requests', 'python3-requests')
+    @file { '/usr/lib/nagios/plugins/check_elasticsearch_unassigned_shards.py':
+        source => 'puppet:///modules/elasticsearch/nagios/check_elasticsearch_unassigned_shards.py',
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0755',
+        tag    => 'nagiosplugin',
+    }
+
+    require_package('python-requests', 'python3-requests', 'python3-dateutil')
 }

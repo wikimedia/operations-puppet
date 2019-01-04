@@ -59,5 +59,29 @@ class icinga::monitor::elasticsearch {
         contact_group  => 'admins,team-discovery',
     }
 
+    monitoring::service { 'elasticsearch / unassigned shard check - eqiad':
+        host           => 'search.svc.eqiad.wmnet',
+        check_command  => "check_elasticsearch_unassigned_shards!${http_port}",
+        description    => 'ElasticSearch unassigned shard size check',
+        critical       => false,
+        check_interval => 720, # 12h
+        retry_interval => 120, # 2h
+        retries        => 1,
+        notes_url      => 'https://grafana.wikimedia.org/d/000000455/elasticsearch-percentiles?panelId=64&fullscreen&orgId=1&var-cluster=eqiad',
+        contact_group  => 'admins,team-discovery',
+    }
+
+    monitoring::service { 'elasticsearch / unassigned shard size check - codfw':
+        host           => 'search.svc.codfw.wmnet',
+        check_command  => "check_elasticsearch_unassigned_shards!${http_port}",
+        description    => 'ElasticSearch unassigned shard size check',
+        critical       => false,
+        check_interval => 720, # 12h
+        retry_interval => 120, # 2h
+        retries        => 1,
+        notes_url      => 'https://grafana.wikimedia.org/d/000000455/elasticsearch-percentiles?panelId=64&fullscreen&orgId=1&var-cluster=codfw',
+        contact_group  => 'admins,team-discovery',
+    }
+
 
 }

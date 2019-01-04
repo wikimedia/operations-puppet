@@ -493,6 +493,11 @@ define command {
     command_line    $USER1$/check_elasticsearch_shard_size.py --url http://$HOSTADDRESS$:$ARG1$
 }
 
+define command {
+    command_name    check_elasticsearch_unassigned_shards
+    command_line    $USER1$/check_elasticsearch_unassigned_shards.py --url http://$HOSTADDRESS$:$ARG1$
+}
+
 # Analytics Cluster Checks
 
 define command {
