@@ -4,7 +4,7 @@ class profile::mediawiki::php::monitoring(
     $auth_salt = hiera('profile::mediawiki::php::monitoring::salt'),
     Optional[Wmflib::UserIpPort] $fcgi_port = hiera('profile::php_fpm::fcgi_port', undef),
     String $fcgi_pool = hiera('profile::mediawiki::fcgi_pool', 'www'),
-
+    Boolean $monitor_page = hiera('profile::mediawiki::php::monitoring::monitor_page', true),
 ) {
     require profile::mediawiki::php
     $fcgi_proxy = mediawiki::fcgi_endpoint($fcgi_port, $fcgi_pool)
@@ -65,15 +65,17 @@ class profile::mediawiki::php::monitoring(
     # Check that php-fpm is running
     $svc_name = "php${profile::mediawiki::php::php_version}-fpm"
     nrpe::monitor_systemd_unit_state{ $svc_name: }
-
-    # Check that a simple page can be rendered via php-fpm.
-    # If a service check happens to run while we are performing a
-    # graceful restart of Apache, we want to try again before declaring
-    # defeat.
-    monitoring::service { 'appserver_http_php7':
-        description    => 'PHP7 rendering',
-        check_command  => 'check_http_wikipedia_main_php7',
-        retries        => 2,
-        retry_interval => 2,
+    if $monitor_page {
+        # Check that a simple page can be rendered via php-fpm.
+        # If a service check happens to run while we are performing a
+        # graceful restart of Apache, we want to try again before declaring
+        # defeat.
+        monitoring::service { 'appserver_http_php7':
+            description    => 'PHP7 rendering',
+            check_command  => 'check_http_wikipedia_main_php7',
+            retries        => 2,
+            retry_interval => 2,
+        }
     }
+    # TODO: add an else with a check for /w/health-check.php
 }

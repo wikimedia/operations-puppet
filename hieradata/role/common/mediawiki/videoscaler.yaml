@@ -26,3 +26,4 @@ profile::mediawiki::php::enable_fpm: true
 profile::mediawiki::mcrouter_wancache::num_proxies: 5
 diamond::remove: true
 profile::mediawiki::php::php_version: "7.2"
+profile::mediawiki::php::monitoring::monitor_page: false
