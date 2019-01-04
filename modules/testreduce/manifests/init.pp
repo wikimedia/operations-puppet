@@ -22,7 +22,6 @@ class testreduce {
             package  => $pinned_packages,
             pin      => 'release a=stretch-backports',
             priority => 500,
-            before   => [Package['npm'], Package['nodejs']],
         }
     }
 
