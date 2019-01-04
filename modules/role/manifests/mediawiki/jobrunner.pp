@@ -12,6 +12,7 @@ class role::mediawiki::jobrunner {
 
     include ::profile::mediawiki::jobrunner
     include ::profile::mediawiki::videoscaler
+    include ::profile::mediawiki::php::monitoring
 
     # TODO: change role used in beta
     if hiera('has_lvs', true) {

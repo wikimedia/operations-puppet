@@ -9,6 +9,7 @@ class role::mediawiki::videoscaler {
     include ::profile::mediawiki::jobrunner
     include ::profile::mediawiki::videoscaler
     include ::profile::base::firewall
+    include ::profile::mediawiki::php::monitoring
 
     # TODO: change role used in beta
     # lint:ignore:wmf_styleguide
