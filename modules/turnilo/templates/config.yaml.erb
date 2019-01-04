@@ -17,6 +17,7 @@ dataCubes:
   - name: mediawiki_geoeditors_monthly
     title: mediawiki_geoeditors_monthly
     clusterName: druid-analytics-eqiad
+    description: Editors per project per country per month.
     source: mediawiki_geoeditors_monthly
     # The refresh rule describes how often the data cube looks for new data. Default: 'query'/PT1M (every minute)
     refreshRule:
@@ -24,7 +25,7 @@ dataCubes:
 
 
     #defaultTimezone: Etc/UTC # <- default
-    #defaultDuration: P1D # <- default
+    defaultDuration: P1M # <- default
 
     # The name of the measure that will be used for default sorting.
     # It is commonly set to the measure that represents the count of events.
@@ -32,11 +33,11 @@ dataCubes:
     defaultSortMeasure: distinct_editors
 
     # The names of measures that are selected by default
-    #defaultSelectedMeasures: []
+    defaultSelectedMeasures: [distinct_editors]
 
     # The names of dimensions that are pinned by default (in order that they will appear in the pin bar)
 
-    #defaultPinnedDimensions: []
+    defaultPinnedDimensions: [wiki_db]
 
     # How the dataset should be introspected
     # possible options are:
@@ -1056,6 +1057,7 @@ dataCubes:
 
   - name: unique_devices_per_domain_monthly
     title: unique_devices_per_domain_monthly
+    description: Unique Devices per mobile and desktop sites per project. Metric is not additive across sites or projects.
     clusterName: druid-analytics-eqiad
     source: unique_devices_per_domain_monthly
     # The refresh rule describes how often the data cube looks for new data. Default: 'query'/PT1M (every minute)
@@ -1064,7 +1066,7 @@ dataCubes:
 
 
     #defaultTimezone: Etc/UTC # <- default
-    #defaultDuration: P1D # <- default
+    defaultDuration: P1M # <- default
 
     # The name of the measure that will be used for default sorting.
     # It is commonly set to the measure that represents the count of events.
@@ -1076,7 +1078,7 @@ dataCubes:
 
     # The names of dimensions that are pinned by default (in order that they will appear in the pin bar)
 
-    #defaultPinnedDimensions: []
+    defaultPinnedDimensions: [domain]
 
     # How the dataset should be introspected
     # possible options are:
@@ -1195,6 +1197,7 @@ dataCubes:
   - name: unique_devices_per_project_family_daily
     title: unique_devices_per_project_family_daily
     clusterName: druid-analytics-eqiad
+    description: Unique Devices per project family (all *.wikipedia.org sites, for example).
     source: unique_devices_per_project_family_daily
     # The refresh rule describes how often the data cube looks for new data. Default: 'query'/PT1M (every minute)
     refreshRule:
@@ -1214,7 +1217,7 @@ dataCubes:
 
     # The names of dimensions that are pinned by default (in order that they will appear in the pin bar)
 
-    #defaultPinnedDimensions: []
+    defaultPinnedDimensions: [project_family]
 
     # How the dataset should be introspected
     # possible options are:
@@ -1332,6 +1335,7 @@ dataCubes:
 
   - name: unique_devices_per_domain_daily
     title: unique_devices_per_domain_daily
+    description: Unique Devices per mobile and desktop sites per project. Metric is not additive across sites or projects.
     clusterName: druid-analytics-eqiad
     source: unique_devices_per_domain_daily
     # The refresh rule describes how often the data cube looks for new data. Default: 'query'/PT1M (every minute)
@@ -1352,7 +1356,7 @@ dataCubes:
 
     # The names of dimensions that are pinned by default (in order that they will appear in the pin bar)
 
-    #defaultPinnedDimensions: []
+    defaultPinnedDimensions: [domain]
 
     # How the dataset should be introspected
     # possible options are:
@@ -1834,6 +1838,7 @@ dataCubes:
 
   - name: unique_devices_per_project_family_monthly
     title: unique_devices_per_project_family_monthly
+    description: Unique Devices per project family (all *.wikipedia.org sites, for example).
     clusterName: druid-analytics-eqiad
     source: unique_devices_per_project_family_monthly
     # The refresh rule describes how often the data cube looks for new data. Default: 'query'/PT1M (every minute)
@@ -1842,7 +1847,7 @@ dataCubes:
 
 
     #defaultTimezone: Etc/UTC # <- default
-    #defaultDuration: P1D # <- default
+    defaultDuration: P1M # <- default
 
     # The name of the measure that will be used for default sorting.
     # It is commonly set to the measure that represents the count of events.
@@ -1854,7 +1859,7 @@ dataCubes:
 
     # The names of dimensions that are pinned by default (in order that they will appear in the pin bar)
 
-    #defaultPinnedDimensions: []
+    defaultPinnedDimensions: [project_family]
 
     # How the dataset should be introspected
     # possible options are:
