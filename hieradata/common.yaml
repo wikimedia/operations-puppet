@@ -150,12 +150,6 @@ wikimedia_clusters:
     sites:
       eqiad: []
       codfw: []
-  videoscaler:
-    description: "Video scalers"
-    id: 34
-    sites:
-      eqiad: []
-      codfw: []
   fundraising:
     description: "Fundraising"
     id: 35

@@ -140,8 +140,6 @@ monitoring::groups:
     description: eqiad API application servers
   jobrunner_eqiad:
     description: eqiad jobrunner application servers
-  videoscaler_eqiad:
-    description: eqiad video scaler
 
   appserver_codfw:
     description: codfw application servers
@@ -149,8 +147,6 @@ monitoring::groups:
     description: codfw API application servers
   jobrunner_codfw:
     description: codfw jobrunner application servers
-  videoscaler_codfw:
-    description: codfw video scaler
 
 # Memcached
   memcached_eqiad:

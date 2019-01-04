@@ -23,13 +23,11 @@ scap::dsh::groups:
       - mw2247.codfw.wmnet
   jobrunner:
     conftool:
-      - {'cluster': 'videoscaler', 'service': 'apache2'}
       - {'cluster': 'jobrunner', 'service': 'apache2'}
   mediawiki-installation:
     conftool:
       - {'cluster': 'appserver', 'service': 'apache2'}
       - {'cluster': 'api_appserver', 'service': 'apache2'}
-      - {'cluster': 'videoscaler', 'service': 'apache2'}
       - {'cluster': 'jobrunner', 'service': 'apache2'}
       - {'cluster': 'testserver', 'service': 'apache2'}
     hosts:

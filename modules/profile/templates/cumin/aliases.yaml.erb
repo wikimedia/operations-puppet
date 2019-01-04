@@ -5,8 +5,8 @@ all: P{*}
 <% end -%>
 
 # Server group definitions
-all-mw-codfw: (A:mw-videoscaler or A:mw-api or A:mw or A:mw-jobrunner) and A:codfw
-all-mw-eqiad: (A:mw-videoscaler or A:mw-api or A:mw or A:mw-jobrunner) and A:eqiad
+all-mw-codfw: (A:mw-api or A:mw or A:mw-jobrunner) and A:codfw
+all-mw-eqiad: (A:mw-api or A:mw or A:mw-jobrunner) and A:eqiad
 analytics-all-eqiad: A:hadoop or A:aqs or A:druid or A:notebook or A:kafka-analytics or A:kafka-jumbo or A:misc-analytics
 analytics-tools: P{O:analytics_cluster::hadoop::ui or O:analytics_cluster::turnilo or O:analytics_cluster::superset}
 aqs: P{O:aqs}
@@ -135,10 +135,6 @@ mw-jobrunner-canary: P{mw1311.eqiad.wmnet}
 mw-jobrunner-codfw: A:mw-jobrunner and A:codfw
 mw-jobrunner-eqiad: A:mw-jobrunner and A:eqiad
 mw-maintenance: P{O:mediawiki::maintenance}
-mw-videoscaler: P{O:mediawiki::videoscaler}
-mw-videoscaler-canary: P{mw1307.eqiad.wmnet}
-mw-videoscaler-codfw: A:mw-videoscaler and A:codfw
-mw-videoscaler-eqiad: A:mw-videoscaler and A:eqiad
 mwlog: P{O:logging::mediawiki::udp2log}
 mx: P{O:mail::mx}
 mx-canary: P{mx2001.wikimedia.org}
