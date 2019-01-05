@@ -937,21 +937,29 @@ class profile::toolforge::grid::exec_environ {
             'libpng16-16',
             'perl-modules-5.24',
             # PHP libraries (Stretch is on php7)
+            'php-apcu',
+            'php-apcu-bc',
+            'php-bcmath',
+            'php-bz2',
             'php-cli',
             'php-common',
             'php-curl',
+            'php-dba',
             'php-gd',
             'php-imagick',                # T71078.
             'php-intl',                   # T57652
+            'php-mbstring',
             'php-mcrypt',
             'php-mysql',
             'php-pgsql',                  # For access to OSM db
+            'php-readline',               # T136519.
             'php-redis',
+            'php-soap',
             'php-sqlite3',
             'php-xdebug',                 # T72313
             # php-xhprof isn't available in stretch
             'php-xml',
-            'php-readline',               # T136519.
+            'php-zip',
             'opencv-data',                 # T142321
             'openjdk-8-jre-headless',
             'python-flake8',
