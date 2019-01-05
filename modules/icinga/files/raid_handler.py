@@ -25,7 +25,7 @@ SKIP_STRINGS = ('timeout', 'timed out', 'connection refused', 'out of bounds',
                 r'Command check_raid_[^ ]+ not defined', 'Connection reset by peer')
 
 LOG_PATH = '/var/log/icinga/raid_handler.log'
-COMMAND_FILE = '/var/lib/nagios/rw/nagios.cmd'
+COMMAND_FILE = '/var/lib/icinga/rw/icinga.cmd'
 CHECK_NRPE_PATH = '/usr/lib/nagios/plugins/check_nrpe'
 
 NRPE_REMOTE_COMMAND = 'get_raid_status_{}'
