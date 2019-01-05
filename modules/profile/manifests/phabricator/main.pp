@@ -178,6 +178,17 @@ class profile::phabricator::main (
         $mysql_admin_pass = $phab_mysql_admin_pass
     }
 
+    $mail_config = [
+        {
+            'key'      => 'wikimedia-smtp',
+            'type'     => 'smtp',
+            'options'  => {
+                'host' => 'localhost',
+                'port' => 25,
+            }
+        }
+    ]
+
     # lint:ignore:arrow_alignment
     class { '::phabricator':
         deploy_target    => $deploy_target,
@@ -200,6 +211,9 @@ class profile::phabricator::main (
             'phabricator.base-uri'                   => "https://${domain}",
             'security.alternate-file-domain'         => "https://${altdom}",
             'mysql.host'                             => $mysql_host,
+            # new mail config
+            'cluster.mailers'                        => $mail_config,
+            # old mail config
             'phpmailer.smtp-host'                    => 'localhost',
             'metamta.default-address'                => "no-reply@${domain}",
             'metamta.domain'                         => $domain,
