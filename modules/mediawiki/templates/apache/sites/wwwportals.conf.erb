@@ -30,6 +30,8 @@ end
 <VirtualHost *:80>
     DocumentRoot /srv/mediawiki/docroot/wwwportal
     ServerName www.wikipedia.<%= @domain_suffix %>
+    ServerAlias m.wikipedia.<%= @domain_suffix %>
+    ServerAlias zero.wikipedia.<%= @domain_suffix %>
 
     RewriteEngine On
     RewriteRule . - [E=RW_PROTO:%{HTTP:X-Forwarded-Proto}]
@@ -80,20 +82,6 @@ end
     # ErrorDocument defined in sites-available/01-main.conf should be served directly and not redirected
     RewriteCond %{REQUEST_URI} !=/w/404.php
     RewriteRule ^(.*)$ %{ENV:RW_PROTO}://en.wikipedia.<%= @domain_suffix %>$1 [R=301,L]
-<%= sethandler %>
-</VirtualHost>
-
-<VirtualHost *:80>
-    ServerName m.wikipedia.<%= @domain_suffix %>
-    ServerAlias zero.wikipedia.<%= @domain_suffix %>
-    UseCanonicalName off
-
-    DocumentRoot /srv/mediawiki/docroot/m.wikipedia.org
-
-    RewriteEngine On
-
-    # Everything will be redirected to the appropriate lang.m.wikipedia.org or lang.zero.wikipedia.org based on zero configuration @ meta
-    RewriteRule ^/$ /w/mobilelanding.php [L]
 <%= sethandler %>
 </VirtualHost>
 
