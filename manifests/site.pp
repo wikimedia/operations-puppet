@@ -1394,7 +1394,7 @@ node /lvs200[1-6]\.codfw\.wmnet/ {
 }
 
 node 'lvs2010.codfw.wmnet' {
-    role(lvs::balancer)
+    role(spare::system)
 }
 
 # ESAMS lvs servers
