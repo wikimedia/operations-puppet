@@ -53,6 +53,13 @@
 #   Check systemd::syslog for more info about the available options.
 #   Default: 'all'
 #
+#  [*syslog_force_stop*]
+#   Force logs to be written into the logfile but not in
+#   syslog/daemon.log. This is particularly useful for units that
+#   need to log a lot of information, since it prevents a duplication
+#   of space consumed on disk.
+#   Default: true
+#
 define profile::analytics::systemd_timer(
     $description,
     $command,
@@ -66,6 +73,7 @@ define profile::analytics::systemd_timer(
     $logfile_owner = 'hdfs',
     $logfile_group = 'hdfs',
     $logfile_perms = 'all',
+    $syslog_force_stop = true,
 ) {
 
     systemd::unit { "${title}.service":
@@ -88,6 +96,7 @@ define profile::analytics::systemd_timer(
             owner        => $logfile_owner,
             group        => $logfile_group,
             readable_by  => $logfile_perms,
+            force_stop   => $syslog_force_stop,
         }
     }
 
