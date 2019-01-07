@@ -16,8 +16,8 @@ profile::cassandra::single_instance::dc: 'eqiad'
 profile::cassandra::single_instance::seeds:
   - '10.64.48.154' # maps1004.eqiad.wmnet
 
-profile::maps::osm_master::disable_replication_cron: true
-profile::maps::osm_master::disable_admin_cron: true
+profile::maps::osm_master::disable_replication_cron: false
+profile::maps::osm_master::disable_admin_cron: false
 profile::maps::osm_master::slaves:
   maps1004:
     ip_address: '10.64.48.154'
