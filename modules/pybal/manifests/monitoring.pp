@@ -73,7 +73,7 @@ class pybal::monitoring(
     $prometheus_labels = "{instance=\"${::hostname}:9090\"}"
     monitoring::check_prometheus { 'pybal_bgp_sessions':
         description     => 'PyBal BGP sessions are established',
-        dashboard_links => ["https://grafana.wikimedia.org/dashboard/db/pybal-bgp?var-datasource=${::site}%20prometheus%2Fops"],
+        dashboard_links => ["https://grafana.wikimedia.org/dashboard/db/pybal-bgp?var-datasource=${::site} prometheus/ops"],
         query           => "scalar(pybal_bgp_session_established${prometheus_labels} and ignoring (local_asn, peer) pybal_bgp_enabled${prometheus_labels} == 1)",
         method          => 'le',
         warning         => 0,

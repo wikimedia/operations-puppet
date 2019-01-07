@@ -1123,7 +1123,7 @@ class profile::prometheus::ops (
         critical        => 0,
         # Check each Prometheus server host individually, not through the LVS service IP
         prometheus_url  => "http://${::fqdn}/ops",
-        dashboard_links => ["https://grafana.wikimedia.org/dashboard/db/host-overview?var-server=${::hostname}&var-datasource=${::site}%20prometheus%2Fops"],
+        dashboard_links => ["https://grafana.wikimedia.org/dashboard/db/host-overview?var-server=${::hostname}&var-datasource=${::site} prometheus/ops"],
     }
 
     prometheus::web { 'ops':

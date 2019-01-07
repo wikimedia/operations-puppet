@@ -70,7 +70,8 @@
 #   What contact groups to use for notifications
 #
 # [*dashboard_links*]
-#   Links to the Grafana dashboard for this alarm
+#   Links to the Grafana dashboard for this alarm.
+#   URLs must not be URL-encoded as they will be encoded by Icinga.
 #
 define monitoring::check_prometheus(
     String $description,
@@ -89,13 +90,21 @@ define monitoring::check_prometheus(
     Boolean $nagios_critical = false,
     String $contact_group   = 'admins',
 ) {
+    $dashboard_link_fail_message = 'The $dashboard_links URLs must not be URL-encoded'
 
     # Validate the dashboard_links and generate the notes_urls
     if size($dashboard_links) == 1 {
+        if $dashboard_links[0] =~ /%\h\h/ {
+            fail($dashboard_link_fail_message)
+        }
         # Puppet reduce doesn't call the lambda if there is only one element
         $notes_urls = "'${dashboard_links[0]}'"
     } else {
         $notes_urls = $dashboard_links.reduce('') |$urls, $dashboard_link| {
+            if $dashboard_link =~ /%\h\h/ {
+                fail($dashboard_link_fail_message)
+            }
+
             "${urls}'${dashboard_link}' "
         }
     }
