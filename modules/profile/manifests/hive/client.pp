@@ -18,6 +18,9 @@ class profile::hive::client(
     $hive_server2_authentication                    = hiera('profile::hive::client::hive_server2_authentication', undef),
     $hive_server2_authentication_kerberos_principal = hiera('profile::hive::client::hive_server2_authentication_kerberos_principal', undef),
     $hive_server2_authentication_kerberos_keytab    = hiera('profile::hive::client::hive_server2_authentication_kerberos_keytab', undef),
+    $hive_metastore_jdbc_user                       = hiera('profile::hive::client::hive_metastore_jdbc_user', undef),
+    $hive_metastore_jdbc_password                   = hiera('profile::hive::client::hive_metastore_jdbc_password', undef),
+    $hive_metastore_database                        = hiera('profile::hive::client::hive_metastore_jdbc_database', undef),
 ) {
     require ::profile::hadoop::common
 
@@ -63,7 +66,9 @@ class profile::hive::client(
         hive_server2_authentication                    => $hive_server2_authentication,
         hive_server2_authentication_kerberos_principal => $hive_server2_authentication_kerberos_principal,
         hive_server2_authentication_kerberos_keytab    => $hive_server2_authentication_kerberos_keytab,
-
+        jdbc_username                                  => $hive_metastore_jdbc_user,
+        jdbc_password                                  => $hive_metastore_jdbc_password,
+        jdbc_database                                  => $hive_metastore_database,
     }
 
     # Set up a wrapper script for beeline, the command line
