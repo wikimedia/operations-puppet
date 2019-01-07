@@ -87,6 +87,11 @@ class ores::web(
                 'lock_manager'               => 'pool_counter',
                 'task_tracker'               => 'redis',
                 'task_create_missing_queues' => true,
+                # T210103: Temporarily whitelist fu-berlin.de
+                'whitelisted_ips'            => [
+                    '87.77.0.0/16',
+                    '160.45.0.0/16',
+                ],
                 'worker_max_tasks_per_child' => '100',
             },
         },
