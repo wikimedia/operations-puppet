@@ -91,21 +91,19 @@ class swift::storage (
         ensure => running,
     }
 
-    if os_version('debian >= jessie') {
-        # Swift object reconstructor is needed for storage using erasures codes
-        # which we don't use.
+    # Swift object reconstructor is needed for storage using erasures codes
+    # which we don't use.
 
-        # Remove its unit so 'systemctl <action> swift*' exits zero.
-        # If one of the units matching the wildcard is masked then systemctl
-        # exits non-zero on e.g. restart.
-        file { '/lib/systemd/system/swift-object-reconstructor.service':
-            ensure => absent,
-            notify => Exec['reload systemd daemon'],
-        }
-        exec { 'reload systemd daemon':
-            command     => '/bin/systemctl daemon-reload',
-            refreshonly => true,
-        }
+    # Remove its unit so 'systemctl <action> swift*' exits zero.
+    # If one of the units matching the wildcard is masked then systemctl
+    # exits non-zero on e.g. restart.
+    file { '/lib/systemd/system/swift-object-reconstructor.service':
+        ensure => absent,
+        notify => Exec['reload systemd daemon'],
+    }
+    exec { 'reload systemd daemon':
+        command     => '/bin/systemctl daemon-reload',
+        refreshonly => true,
     }
 
     # install swift-drive-audit as a cronjob;

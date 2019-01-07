@@ -13,13 +13,7 @@ define swift::mount_filesystem (
         mode   => '0750',
     }
 
-    # systemd < 218-4 fails to handle 'nobootwait' in fstab
-    # http://metadata.ftp-master.debian.org/changelogs/main/s/systemd/unstable_changelog
-    if $::operatingsystem == 'Ubuntu' and os_version('ubuntu <= trusty') {
-        $mount_options = 'nobootwait,noatime,nodiratime,nobarrier,logbufs=8'
-    } else {
-        $mount_options = 'nofail,noatime,nodiratime,nobarrier,logbufs=8'
-    }
+    $mount_options = 'nofail,noatime,nodiratime,nobarrier,logbufs=8'
 
     mount { $mount_point:
         # XXX this won't mount the disks the first time they are added to
