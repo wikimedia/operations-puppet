@@ -1,0 +1,15 @@
+nagios_group: analytics_eqiad
+cluster: analytics
+admin::groups:
+  - analytics-admins
+
+profile::druid::turnilo::port: 9091
+profile::druid::turnilo::druid_clusters:
+  - name: druid-analytics-eqiad
+    host: 'druid1001.eqiad.wmnet:8082'
+    sourceListRefreshInterval: 15000
+    sourceReintrospectInterval: 120000
+    type: druid
+
+profile::druid::turnilo::monitoring_enabled: true
+diamond::remove: true

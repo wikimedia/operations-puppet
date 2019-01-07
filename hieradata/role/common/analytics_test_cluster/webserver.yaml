@@ -1,0 +1,5 @@
+cluster: analytics
+admin::groups:
+  - statistics-web-users
+  - statistics-admins
+diamond::remove: true

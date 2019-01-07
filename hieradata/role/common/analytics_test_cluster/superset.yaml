@@ -1,0 +1,11 @@
+nagios_group: analytics_eqiad
+cluster: analytics
+admin::groups:
+  - analytics-admins
+
+# Database password will be filled added in profile::superset from the
+# profile::superset::database_password hiera variable stored in the private repo.
+profile::superset::database_uri: mysql://superset@analytics1030.eqiad.wmnet/superset
+profile::superset::workers: 8
+profile::superset::ldap_proxy_enabled: true
+diamond::remove: true

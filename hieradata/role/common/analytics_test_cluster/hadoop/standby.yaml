@@ -1,0 +1,43 @@
+nagios_group: analytics_eqiad
+cluster: analytics
+# FIXME:
+# indirect hiera lookup due to includes in the role:
+# role::analytics::hadoop::client
+hadoop_zookeeper_cluster_name: main-eqiad
+admin::groups:
+  - analytics-users
+  - analytics-privatedata-users
+  - analytics-admins
+  # elasticsearch::analytics creates the analytics-search user and group
+  # that analytics-search-users are allowed to sudo to.  This is used
+  # for deploying files to HDFS.
+  - analytics-search-users
+
+profile::hadoop::common::hadoop_cluster_name: 'analytics-hadoop'
+
+profile::hadoop::standby_master::monitoring_enabled: true
+profile::hadoop::logstash::enabled: false
+
+profile::hadoop::common::config_override:
+  # This is the heap zize of YARN daemons ResourceManager and NodeManagers.
+  # This setting is used to configure the max heap size for both.
+  # The default is 1000m, we increase it to 2048m in production.
+  yarn_heapsize: 2048
+  # Prometheus JMX Exporter config templates.
+  hadoop_namenode_opts: "-Xms12288m -Xmx12288m -XX:+UseParNewGC -XX:+UseConcMarkSweepGC -XX:CMSInitiatingOccupancyFraction=70 -XX:+CMSParallelRemarkEnabled -javaagent:/usr/share/java/prometheus/jmx_prometheus_javaagent.jar=%{::ipaddress}:10080:/etc/prometheus/hdfs_namenode_jmx_exporter.yaml"
+  yarn_resourcemanager_opts: "-Xms4096m -Xmx4096m -javaagent:/usr/share/java/prometheus/jmx_prometheus_javaagent.jar=%{::ipaddress}:10083:/etc/prometheus/yarn_resourcemanager_jmx_exporter.yaml"
+  # The HDFS Trash is configured in this way:
+  # 1) Once every day a checkpoint is made (that contains all the trash for a day).
+  # 2) After a month a checkpoint is deleted.
+  hdfs_trash_checkpoint_interval: 1440
+  hdfs_trash_interval: 43200
+
+profile::analytics::database::meta::backup_dest::hive::metastore_host: 'analytics1030.eqiad.wmnet'
+profile::analytics::database::meta::backup_dest::oozie_host: 'analytics1030.eqiad.wmnet'
+
+profile::hadoop::firewall::master::analytics_srange: '$ANALYTICS_NETWORKS'
+profile::hadoop::firewall::master::analytics_druid_srange: '(($ANALYTICS_NETWORKS $DRUID_PUBLIC_HOSTS))'
+
+profile::hadoop::backup::namenode::monitoring_enabled: true
+
+diamond::remove: true

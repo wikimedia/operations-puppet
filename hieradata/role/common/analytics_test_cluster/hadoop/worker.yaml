@@ -1,0 +1,42 @@
+nagios_group: analytics_eqiad
+cluster: analytics
+
+admin::groups:
+  - analytics-admins
+
+profile::hadoop::common::hadoop_cluster_name: 'analytics-hadoop'
+
+profile::hadoop::worker::monitoring_enabled: true
+profile::hadoop::logstash::enabled: false
+
+# Analytics worker disks are large.  We will install a custom
+# NRPE check for them, so the base module's should ignore them.
+profile::base::check_disk_options: '-w 6% -c 3% -W 6% -K 3% -l -e -A -i "/var/lib/hadoop/data"'
+profile::base::check_raid_policy: 'WriteBack'
+
+profile::hadoop::common::config_override:
+  # Increased Heap sizes for Datanode/Nodemanager Hadoop daemons from 2G to 4G
+  # in https://phabricator.wikimedia.org/T178876
+  yarn_heapsize: 4096
+  hadoop_heapsize: 4096
+  # Prometheus JMX Exporter config templates.
+  hadoop_datanode_opts: "-Xms4096m -javaagent:/usr/share/java/prometheus/jmx_prometheus_javaagent.jar=%{::ipaddress}:51010:/etc/prometheus/hdfs_datanode_jmx_exporter.yaml"
+  hadoop_journalnode_opts: "-javaagent:/usr/share/java/prometheus/jmx_prometheus_javaagent.jar=%{::ipaddress}:10485:/etc/prometheus/hdfs_journalnode_jmx_exporter.yaml"
+  yarn_nodemanager_opts: "-Xms4096m -javaagent:/usr/share/java/prometheus/jmx_prometheus_javaagent.jar=%{::ipaddress}:8141:/etc/prometheus/yarn_nodemanager_jmx_exporter.yaml"
+  yarn_nodemanager_os_reserved_memory_mb: 12000
+
+profile::hadoop::worker::ferm_srange: '(($ANALYTICS_NETWORKS $DRUID_PUBLIC_HOSTS))'
+
+# Hive Client settings.
+# Hive configuration is common to multiple clients, but because of role based
+# hiera lookups, we need to repeat it in multiple places. If you change this,
+# make sure you change it in all the right places!
+profile::hive::client::zookeeper_cluster_name: main-eqiad
+profile::hive::client::server_host: analytics1030.eqiad.wmnet
+profile::hive::client::server_port: 10000
+profile::hive::client::metastore_host: 'analytics1030.eqiad.wmnet'
+
+prometheus::node_exporter::collectors_extra:
+  - meminfo_numa
+
+diamond::remove: true

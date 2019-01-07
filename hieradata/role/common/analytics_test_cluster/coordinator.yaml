@@ -1,0 +1,40 @@
+profile::hadoop::common::hadoop_cluster_name: 'analytics-hadoop'
+
+# Periodical backups of the analytics-meta mysql database.
+profile::analytics::database::meta::backup::rsync_dest: 'analytics1029.eqiad.wmnet::backup/mysql/analytics-meta'
+
+# Hive Client settings.
+# Hive configuration is common to multiple clients, but because of role based
+# hiera lookups, we need to repeat it in multiple places. If you change this,
+# make sure you change it in all the right places!
+profile::hive::client::zookeeper_cluster_name: main-eqiad
+profile::hive::client::server_host: analytics1030.eqiad.wmnet
+profile::hive::client::server_port: 10000
+profile::hive::client::metastore_host: 'analytics1030.eqiad.wmnet'
+
+# Hive Server Settings
+profile::hive::server::monitoring_enabled: true
+profile::hive::server::ferm_srange: '$ANALYTICS_NETWORKS'
+profile::hive::metastore::monitoring_enabled: true
+profile::hive::metastore::ferm_srange: '$ANALYTICS_NETWORKS'
+
+profile::analytics::database::meta::monitoring_enabled: true
+profile::analytics::database::meta::ferm_srange: '(($DRUID_PUBLIC_HOSTS $ANALYTICS_NETWORKS))'
+profile::analytics::refinery::job::data_purge::public_druid_host: 'druid1004.eqiad.wmnet:8081'
+profile::oozie::server::monitoring_enabled: true
+profile::oozie::server::ferm_srange: '$ANALYTICS_NETWORKS'
+
+# Following Cloudera recommandations for ~20 users
+profile::hive::client::hive_metastore_opts: '-Xms4g -Xmx10g -Xms4g -Xmx10g -javaagent:/usr/share/java/prometheus/jmx_prometheus_javaagent.jar=%{::ipaddress}:9183:/etc/prometheus/hive_metastore_jmx_exporter.yaml'
+profile::hive::client::hive_server_opts: '-Xms4g -Xmx6g -javaagent:/usr/share/java/prometheus/jmx_prometheus_javaagent.jar=%{::ipaddress}:10100:/etc/prometheus/hive_server_jmx_exporter.yaml'
+profile::oozie::server::jvm_opts: '-Xms2g -Xmx2g'
+
+# Build and install oozie sharelib for our custom spark2 package.
+profile::hadoop::spark2::install_oozie_sharelib: true
+
+profile::analytics::refinery::job::camus::monitoring_enabled: true
+
+# Http proxy to get project-namespace infos from API using python
+profile::analytics::refinery::job::project_namespace_map::http_proxy: 'http://webproxy.eqiad.wmnet:8080'
+
+diamond::remove: true
