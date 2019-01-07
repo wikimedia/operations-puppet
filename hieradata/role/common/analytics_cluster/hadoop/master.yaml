@@ -51,6 +51,10 @@ profile::hadoop::master::excluded_hosts:
   - analytics1035
   - analytics1036.eqiad.wmnet
   - analytics1036
+  - analytics1037.eqiad.wmnet
+  - analytics1037
+  - analytics1038.eqiad.wmnet
+  - analytics1038
 
 profile::hadoop::firewall::master::analytics_srange: '$ANALYTICS_NETWORKS'
 profile::hadoop::firewall::master::analytics_druid_srange: '(($ANALYTICS_NETWORKS $DRUID_PUBLIC_HOSTS))'

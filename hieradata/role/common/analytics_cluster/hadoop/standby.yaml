@@ -59,5 +59,9 @@ profile::hadoop::standby_master::excluded_hosts:
   - analytics1035
   - analytics1036.eqiad.wmnet
   - analytics1036
+  - analytics1037.eqiad.wmnet
+  - analytics1037
+  - analytics1038.eqiad.wmnet
+  - analytics1038
 
 diamond::remove: true
