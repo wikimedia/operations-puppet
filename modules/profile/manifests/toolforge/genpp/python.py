@@ -8,7 +8,12 @@ import genpp
 import logging
 
 environ_packages = {
-    'dev': ['coverage', 'dev', 'stdeb', 'cffi'],
+    'dev': [
+        'cffi',
+        'coverage',
+        'dev',
+        'stdeb',
+    ],
     'exec': [
         'babel',                # T60220
         'beautifulsoup',        # For valhallasw.
@@ -66,6 +71,7 @@ environ_packages = {
         'twitter',
         'unicodecsv',           # T86015
         'unittest2',            # T86015
+        'venv',
         'virtualenv',
         'wadllib',
         'webpy',
