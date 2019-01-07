@@ -38,7 +38,7 @@ class statistics::wmde::graphite(
     include ::passwords::mysql::research
     # This file will render at
     # /etc/mysql/conf.d/research-wmde-client.cnf.
-    mysql::config::client { 'research-wmde':
+    mariadb::config::client { 'research-wmde':
         user    => $::passwords::mysql::research::user,
         pass    => $::passwords::mysql::research::pass,
         group   => $user,
@@ -116,7 +116,7 @@ class statistics::wmde::graphite(
         require => [
             Git::Clone['wmde/scripts'],
             File["${dir}/src/config"],
-            Mysql::Config::Client['research-wmde'],
+            Mariadb::Config::Client['research-wmde'],
         ],
     }
 

@@ -82,7 +82,7 @@ class statistics::compute {
     # https://github.com/wikimedia/analytics-limn-ee-data/blob/master/ee/config.yaml
     # If you think about changing or removing this file, make sure you also
     # consider reportupdater's usage.
-    mysql::config::client { 'stats-research':
+    mariadb::config::client { 'stats-research':
         user  => $::passwords::mysql::research::user,
         pass  => $::passwords::mysql::research::pass,
         group => $::statistics::user::username,

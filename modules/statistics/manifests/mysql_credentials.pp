@@ -7,7 +7,7 @@ define statistics::mysql_credentials(
     include ::passwords::mysql::research
     # This file will render at
     # /etc/mysql/conf.d/research-client.cnf.
-    mysql::config::client { $title:
+    mariadb::config::client { $title:
         user  => $::passwords::mysql::research::user,
         pass  => $::passwords::mysql::research::pass,
         group => $group,

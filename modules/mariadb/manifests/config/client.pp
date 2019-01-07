@@ -1,9 +1,9 @@
-# == Define mysql::config::client
-# Convenience wrapper for mysql::config::file that only set a few [client] settings.
+# == Define mariadb::config::client
+# Convenience wrapper for mariadb::config::file that only set a few [client] settings.
 # You must set at least one of user, pass, host or port.
 #
 # == Usage
-#   mysql::config::client { 'myuser':
+#   mariadb::config::client { 'myuser':
 #       user => 'myser',
 #       pass => 'mypass',
 #   }
@@ -28,10 +28,10 @@
 #   [*owner*]       - Owner of the file.  Default: root
 #   [*group*]       - Group owner of the file.  Default: root
 #   [*mode*]        - File mode.  Default: 0444
-#   [*template*]    - Template to use to render the file.  Default: mysql/my.conf.cnf.erb
+#   [*template*]    - Template to use to render the file.  Default: mariadb/my.conf.cnf.erb
 #   [*ensure*]      - Either 'present' or 'absent'.  Default: present.
 #
-define mysql::config::client(
+define mariadb::config::client(
     $user     = false,
     $pass     = false,
     $host     = false,
@@ -40,15 +40,15 @@ define mysql::config::client(
     $owner    = 'root',
     $group    = 'root',
     $mode     = '0444',
-    $template = 'mysql/my.conf.cnf.erb',
+    $template = 'mariadb/my.conf.cnf.erb',
     $ensure   = 'present',
 )
 {
     if !($user or $pass or $host or $port) {
-        fail('mysql::config::client needs at least one of user, pass, host, or port to be set.')
+        fail('mariadb::config::client needs at least one of user, pass, host, or port to be set.')
     }
 
-    mysql::config::file { "${title}-client":
+    mariadb::config::file { "${title}-client":
         ensure   => $ensure,
         settings => {
             'client' => {

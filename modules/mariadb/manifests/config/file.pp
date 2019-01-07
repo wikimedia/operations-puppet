@@ -1,8 +1,8 @@
-# == Define mysql::config::file
+# == Define mariadb::config::file
 # Render a mysql config file using the given $settings hash.
 #
 # == Usage
-#   mysql::config::file { 'myhost':
+#   mariadb::config::file { 'myhost':
 #       'settings' => {
 #           'client' => {
 #               'host' => 'myhost.example.org',
@@ -26,16 +26,16 @@
 #   [*owner*]       - Owner of the file.  Default: root
 #   [*group*]       - Group owner of the file.  Default: root
 #   [*mode*]        - File mode.  Default: 0444
-#   [*template*]    - Template to use to render the file.  Default: mysql/my.conf.cnf.erb
+#   [*template*]    - Template to use to render the file.  Default: mariadb/my.conf.cnf.erb
 #   [*ensure*]      - Either 'present' or 'absent'.  Default: present.
 #
-define mysql::config::file(
+define mariadb::config::file(
     $settings,
     $path     = "/etc/mysql/conf.d/${title}.cnf",
     $owner    = 'root',
     $group    = 'root',
     $mode     = '0444',
-    $template = 'mysql/my.conf.cnf.erb',
+    $template = 'mariadb/my.conf.cnf.erb',
     $ensure   = 'present',
 )
 {

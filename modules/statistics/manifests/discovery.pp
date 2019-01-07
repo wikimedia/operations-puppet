@@ -21,7 +21,7 @@ class statistics::discovery {
 
     # This file will render at
     # /etc/mysql/conf.d/discovery-stats-client.cnf.
-    ::mysql::config::client { 'discovery-stats':
+    ::mariadb::config::client { 'discovery-stats':
         user  => $::passwords::mysql::research::user,
         pass  => $::passwords::mysql::research::pass,
         group => $group,
@@ -70,7 +70,7 @@ class statistics::discovery {
         require => [
             Class['::statistics::compute'],
             Git::Clone['wikimedia/discovery/golden'],
-            Mysql::Config::Client['discovery-stats']
+            Mariadb::Config::Client['discovery-stats']
         ],
         user    => $user,
     }
