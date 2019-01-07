@@ -1,0 +1,56 @@
+server {
+    # NOTE This vhost is meant to only be reached via varnish
+    # Listens on port 81 so that auto-downgrade from https to http won't be possible
+    listen 81 default_server;
+
+    # Avoids 411 errors!
+    chunked_transfer_encoding on;
+
+    # Tell everyone we're v2, not v1!
+    add_header 'Docker-Distribution-Api-Version' 'registry/2.0' always;
+
+    # Don't pollute varnish caches with docker images.
+    # Note an approach for CC: max-age=60 or 600 would gives us a small amount
+    # of caching and protects us in big stormy scenarios. However we have CI
+    # requiring really small reaction times for now, so avoid all caching.
+    # Bug: T211719
+    add_header 'Cache-Control' 'no-cache,must-revalidate' always;
+
+    location / {
+        # The HTTP endpoint cannot be used to upload images
+        limit_except GET HEAD OPTIONS {
+            deny all;
+        }
+
+        # IP whitelisting
+        satisfy any;
+        <%- @http_allowed_hosts.each do |host| -%>
+        allow <%= scope.function_ipresolve([host]) %>;
+        <%- end -%>
+        deny all;
+
+        # Proxy passing
+        proxy_pass http://registry;
+        proxy_redirect off;
+        proxy_buffering off;
+        proxy_http_version 1.1;
+        proxy_set_header Proxy-Connection "Keep-Alive";
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header Host $host;
+    }
+    <%- if @expose_metrics -%>
+    location /metrics {
+      # IP whitelisting
+      satisfy any;
+      <%- @metrics_allowed_hosts.each do |host| -%>
+      allow <%= scope.function_ipresolve([host]) %>;
+      <%- end -%>
+      deny all;
+      proxy_pass http://registry_metrics;
+      proxy_redirect off;
+      proxy_buffering off;
+      proxy_http_version 1.1;
+      proxy_set_header Host $host;
+    }
+    <%- end -%>
+}

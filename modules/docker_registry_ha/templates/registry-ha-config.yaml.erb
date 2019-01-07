@@ -1,0 +1,45 @@
+version: 0.1
+log:
+  fields:
+    service: docker-registry
+storage:
+  cache:
+    blobdescriptor: redis
+  swift:
+    username: <%= @swift_user %>
+    password: <%= @swift_password %> 
+    authurl: <%= @swift_url%>
+    container: <%= @swift_container %>
+  delete:
+    enabled: true
+http:
+  addr: :5000
+  secret: <%= @registry_shared_secret %>
+  headers:
+    X-Content-Type-Options: [nosniff]
+  debug:
+    addr: :5001
+    prometheus:
+      enabled: true
+      path: /metrics
+redis:
+  addr: <%= @redis_host + ":" + @redis_port.to_s %>
+  password: <%= @redis_password %>
+  db: 0
+  dialtimeout: 100ms
+  readtimeout: 100ms
+  writetimeout: 300ms
+  pool:
+    maxidle: 16
+    maxactive: 64
+    idletimeout: 300s
+health:
+  storagedriver:
+    enabled: true
+    interval: 10s
+    threshold: 3
+  tcp:
+    - addr: <%= @redis_addr %>
+      timeout: 3s
+      interval: 10s
+      threshold: 3

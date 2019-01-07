@@ -1,0 +1,128 @@
+upstream registry {
+  server 127.0.0.1:5000;
+}
+
+upstream registry_metrics {
+  server 127.0.0.1:5001;
+}
+
+map $http_upgrade $connection_upgrade {
+    default upgrade;
+    '' close;
+}
+
+server {
+    listen 443 default_server ssl;
+    listen [::]:443 ssl default_server ipv6only=on;
+<%- if @use_puppet_certs %>
+    ssl_certificate     /etc/nginx/ssl/cert.pem;
+    ssl_certificate_key /etc/nginx/ssl/server.key;
+<%- else -%>
+    ssl_certificate /etc/ssl/localcerts/<%= @ssl_certificate_name %>.chained.crt;
+    ssl_certificate_key /etc/ssl/private/<%= @ssl_certificate_name %>.key;
+<%- end -%>
+
+    # Copied from modules/tlsproxy/templates/nginx.conf.erb. Eugh
+    # Enable a shared cache, since it is defined at this level
+    # it will be used for all virtual hosts. 1m = 4000 active sessions,
+    # so we are allowing 200,000 active sessions.
+    ssl_session_cache shared:SSL:50m;
+    ssl_session_timeout 5m;
+
+    <%= @ssl_settings.join("\n    ") %>
+
+    # Images can be pretty large!
+    client_max_body_size 0;
+
+    # Avoids 411 errors!
+    chunked_transfer_encoding on;
+
+    # Tell everyone we're v2, not v1!
+    add_header 'Docker-Distribution-Api-Version' 'registry/2.0' always;
+
+    # Let me prefix by saying that the Docker v2 registry protocol apparently
+    # is much better than the v1 protocol. I have not read enough about both
+    # to make a comparative analysis, but I can tell that the auth design for
+    # v2 is just terribly done!
+    #
+    # So for a v2 to client to decide if it needs to authenticate or not, it
+    # first makes a GET request to /v2/, and based on wether it gets back a 2xx
+    # or a 401, decides to authenticate for all other requests in that session.
+    # This practically means it is really hard to do something like restrict
+    # write access to only a certain group while allowing read access to other
+    # groups - since it categorizes the whole registry based on the response
+    # code of one endpoint....
+    #
+    # I have hacked around this in the following manner:
+    #  - Tell nginx that you can be whitelisted by IP or by specifying a password
+    #  - Whitelist the whole world!
+    #  - Blacklist the one IP that needs to specify password (to push)
+    #
+    # This causes nginx to return a 401 only to the IP that I want to push, and
+    # since this IP will have the password it'll be able to authenticate. The
+    # rest of the world will just be allowed via IP, and hence not be asked for
+    # passwords.
+    #
+    # This special case handling is only for the root endpoint - all other endpoints
+    # are handled in the location stanza below this, and require authentication for
+    # POST/PUT/DELETE etc. We're only doing this special hack to convince the
+    # docker client to send/not send basic auth credentials depending on what we
+    # want them to do.
+    #
+    # Fuck you docker.
+    location = /v2/ {
+      satisfy any;
+
+      <%- @allow_push_from.each do |ip| -%>
+      deny <%= ip %>;
+      <%- end -%>
+      allow all;
+
+      auth_basic "docker-registry";
+      auth_basic_user_file /etc/nginx/htpasswd.registry;
+
+      proxy_pass http://registry;
+      proxy_redirect off;
+      proxy_buffering off;
+      proxy_http_version 1.1;
+      proxy_set_header Host $host;
+    }
+
+    location /v2 {
+      # Require auth for POST, PUT, DELETE, ... requests
+      limit_except GET HEAD OPTIONS {
+        auth_basic "docker-registry";
+        auth_basic_user_file /etc/nginx/htpasswd.registry;
+      }
+
+      add_header 'Docker-Distribution-Api-Version' 'registry/2.0' always;
+
+      proxy_pass http://registry;
+      proxy_redirect off;
+      proxy_buffering off;
+      proxy_http_version 1.1;
+      proxy_set_header Upgrade $http_upgrade;
+      proxy_set_header Connection $connection_upgrade;
+      proxy_set_header Proxy-Connection "Keep-Alive";
+      proxy_set_header X-Real-IP $remote_addr;
+      proxy_set_header X-Forwarded-Proto $scheme;
+      proxy_set_header Host $host;
+    }
+    
+    <%- if @expose_metrics -%>
+
+    location /metrics {
+      satisfy any;
+      <%- @metrics_allowed_hosts.each do |host| -%>
+      allow <%= scope.function_ipresolve([host]) %>;
+      <%- end -%>
+      deny all;
+      proxy_pass http://registry_metrics;
+      proxy_redirect off;
+      proxy_buffering off;
+      proxy_http_version 1.1;
+      proxy_set_header Host $host;
+    }
+    <%- end -%>
+
+}

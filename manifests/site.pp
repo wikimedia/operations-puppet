@@ -1978,7 +1978,7 @@ node /^rdb200[12]\.codfw\.wmnet$/ {
 }
 
 node /^registry[12]00[12]\.(eqiad|codfw)\.wmnet$/ {
-    role(spare::system)
+    role(docker_registry_ha::registry)
 }
 
 

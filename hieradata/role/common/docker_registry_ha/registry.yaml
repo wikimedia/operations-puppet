@@ -1,0 +1,11 @@
+profile::docker_registry_ha::registry::image_builders:
+  - '10.64.0.36' #boron.eqiad.wmnet
+  - '208.80.154.17' # contint1001
+  - '208.80.153.15' # contint2001
+docker_registry_ha::username: uploader
+#docker_registry_ha::hash: defined in the private repo
+profile::docker_registry_ha::registry::swift_username: "docker"
+#profile::docker_registry_ha::registry::swift_password defined in the private repo
+profile::docker_registry_ha::registry::swift_container: "docker_registry"
+profile::docker_registry_ha::registry::certname: "docker-registry.discovery.wmnet"
+diamond::remove: true
