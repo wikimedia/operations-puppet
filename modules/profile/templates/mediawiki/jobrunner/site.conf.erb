@@ -62,7 +62,7 @@
     </Directory>
 
     # Only selected paths are allowed here
-    RewriteCond %{REQUEST_URI} !^/(w/health-check|rpc/RunSinglejob)\.php
+    RewriteCond %{REQUEST_URI} !^/(w/health-check|rpc/RunSingleJob|rpc/RunJobs)\.php
     RewriteRule ^ - [R=404,L]
 
     # Set the variable if php7 is required
