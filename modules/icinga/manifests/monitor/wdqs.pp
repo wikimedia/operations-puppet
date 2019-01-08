@@ -5,7 +5,7 @@ class icinga::monitor::wdqs {
     # more than 5% of the time during the last minute
     monitoring::graphite_threshold { 'wdqs-response-time-codfw':
         description     => 'Response time of WDQS codfw',
-        dashboard_links => ['https://grafana.wikimedia.org/dashboard/db/wikidata-query-service?orgId=1&panelId=13&fullscreen'],
+        dashboard_links => ['https://grafana.wikimedia.org/d/000000522/wikidata-query-service-frontend?panelId=13&fullscreen&orgId=1'],
         host            => 'wdqs.svc.codfw.wmnet',
         metric          => 'varnish.codfw.backends.be_wdqs_svc_codfw_wmnet.GET.p99',
         warning         => 120000, # 2 minutes
@@ -17,7 +17,7 @@ class icinga::monitor::wdqs {
 
     monitoring::graphite_threshold { 'wdqs-response-time-eqiad':
         description     => 'Response time of WDQS eqiad',
-        dashboard_links => ['https://grafana.wikimedia.org/dashboard/db/wikidata-query-service?orgId=1&panelId=13&fullscreen'],
+        dashboard_links => ['https://grafana.wikimedia.org/d/000000522/wikidata-query-service-frontend?panelId=13&fullscreen&orgId=1'],
         host            => 'wdqs.svc.eqiad.wmnet',
         metric          => 'varnish.eqiad.backends.be_wdqs_svc_eqiad_wmnet.GET.p99',
         warning         => 120000, # 2 minutes
