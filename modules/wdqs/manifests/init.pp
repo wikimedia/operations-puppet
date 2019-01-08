@@ -8,7 +8,7 @@ class wdqs(
     Array[String] $updater_options,
     String $endpoint = '',
     Wmflib::IpPort $logstash_json_port = 11514,
-    String $blazegraph_heap_size = '32g',
+    String $blazegraph_heap_size = '31g',
     String $config_file = 'RWStore.properties',
     Array[String] $blazegraph_options = [],
     Array[String] $blazegraph_extra_jvm_opts = [],
