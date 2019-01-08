@@ -3135,6 +3135,15 @@ users:
       - AAAAB3NzaC1yc2EAAAADAQABAAACAQDX2JxzqK7TeBZ2unDfbfyg90oHxAhipobW+Fzg0xwg1BV7xo3VYJXuKRhPhuP1pp6Ju/Z1zfuCCnZ9QhGzU27Y6zigM1Ze7fCAGU2jUdaNJJ1cK5V8N/Zvi6ywOSz3s/jHAHYyDD9EkfVDny53xeI0tq4xS9fWZePyZy8Ga1XxEKx7kngileN89ExYZ7aw/tTvKjfn9KM+frXXI3RfGO7usmlEmBgrC0DQcrP6i/bHvfP8HDjd3Kj29VS2N8FdlZJQq3zO5q1zr9r2rXxf7Ohs+G+qqyGJ3TTxX2ISBuN6UNHpaBusUIhMY+/b1FwT682mkEx0ma9wY5pcod66oCstUEliT9dpekAFxcboh8gNJ4GK4QMLWsfk68HfZJCXEIACTJ2x+ZviMQUWgXQq0K7Gcp0Ypzm+kBjz3cPEIdP0bUK+7T2jDRAiZAk+rfQ7h4ryHwuKY9Ir39xtZHRgs8UNXAh4hF6rEvXtHwlhNkdDy93od4f63Fuf4UjCtNwZFLjvnUTZIajllnzWzjwOizY4Z7Bj/byh7hSPORhuGnqXgW4vz0JWDKMBH2ad5t6jQaE3WkFu01n19SQDickaZKBfUE7dNgQrKfFeVfYiu3rnmk9E8nkGrQOH/WcfzaDGgF6GIdy6SXy1QpbH39wEHJruVX3RQimSjCo+p5hkSdT8NQ== todd.c.leroux@gmail.com
     uid: 20623
     email: todd.c.leroux@gmail.com
+  jbond:
+    ensure: present
+    gid: 500
+    name: jbond
+    realname: John Bond
+    ssh_keys:
+      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAICSadkjU94IaCUrtnwvECGaGkDyICObEn35NvNpilUaD jbond@work-laptop
+    uid: 20774
+    email: jbond@wikimedia.org
 
 ldap_only_users:
   abartov:
