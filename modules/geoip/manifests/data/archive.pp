@@ -8,6 +8,7 @@ class geoip::data::archive(
     $maxmind_db_source_dir = '/usr/share/GeoIP',
     $hdfs_archive_dir = '/wmf/data/archive/geoip',
     $archive_dir = "${maxmind_db_source_dir}/archive",
+    $use_kerberos = false,
 ) {
     # Puppet assigns 755 permissions to files and dirs, so the script can be ran
     # manually without sudo.
@@ -27,7 +28,13 @@ class geoip::data::archive(
         content => file('geoip/archive.sh')
     }
 
-    $archive_command = "${archive_script} ${maxmind_db_source_dir} ${archive_dir} ${hdfs_archive_dir} > /dev/null"
+    if $use_kerberos {
+        $wrapper = '/usr/local/bin/kerberos-puppet-wrapper hdfs '
+    } else {
+        $wrapper = ''
+    }
+
+    $archive_command = "${wrapper}${archive_script} ${maxmind_db_source_dir} ${archive_dir} ${hdfs_archive_dir} > /dev/null"
 
     cron { 'archive-maxmind-geoip-database':
         ensure      => present,

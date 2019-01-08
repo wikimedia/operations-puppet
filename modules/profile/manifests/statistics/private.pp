@@ -8,6 +8,7 @@ class profile::statistics::private(
     $wmde_secrets        = hiera('wmde_secrets'),
     $dumps_servers       = hiera('dumps_dist_nfs_servers'),
     $dumps_active_server = hiera('dumps_dist_active_web'),
+    $use_kerberos        = hiera('profile::statistics::private::use_kerberos', false),
 ) {
 
     require ::profile::analytics::cluster::packages::statistics
@@ -86,8 +87,9 @@ class profile::statistics::private(
             }
         }
         class { '::geoip::data::archive':
-            archive_dir => '/srv/geoip/archive',
-            require     => File['/srv/geoip'],
+            archive_dir  => '/srv/geoip/archive',
+            use_kerberos => $use_kerberos,
+            require      => File['/srv/geoip'],
         }
 
         # Discovery team statistics scripts and cron jobs
