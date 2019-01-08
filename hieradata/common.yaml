@@ -385,6 +385,12 @@ wikimedia_clusters:
     id: 79
     sites:
       eqiad: []
+  webperf:
+    description: "Web Performance servers"
+    id: 80
+    sites:
+      eqiad: []
+      codfw: []
 
 puppetmaster: "puppet"
 

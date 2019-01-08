@@ -395,3 +395,9 @@ monitoring::groups:
 # WMCS Servers
   wmcs_eqiad:
     description: WMCS servers (eqiad)
+
+  # Web Performance Servers
+  webperf_eqiad:
+    description: Web Performance servers (eqiad)
+  webperf_codfw:
+    description: Web Performance servers (codfw)
