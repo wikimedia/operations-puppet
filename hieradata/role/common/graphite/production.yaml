@@ -1,3 +1,4 @@
+cluster: graphite
 admin::groups:
   - perf-roots
   - graphite-admins
