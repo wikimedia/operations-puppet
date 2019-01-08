@@ -27,6 +27,9 @@
     Timeout 1202
     DocumentRoot "/srv/mediawiki"
     RewriteEngine On
+    <Directory /srv/mediawiki>
+       Require all granted
+    </Directory>
     # Only selected paths are allowed here
     RewriteCond %{REQUEST_URI} !^/(w/health-check|rpc/RunSinglejob)\.php
     RewriteRule ^ - [R=404,L]
@@ -53,7 +56,11 @@
     Timeout 86402
     DocumentRoot "/srv/mediawiki"
     # Only selected paths are allowed here
-        RewriteEngine On
+    RewriteEngine On
+    <Directory /srv/mediawiki>
+       Require all granted
+    </Directory>
+
     # Only selected paths are allowed here
     RewriteCond %{REQUEST_URI} !^/(w/health-check|rpc/RunSinglejob)\.php
     RewriteRule ^ - [R=404,L]
