@@ -270,9 +270,6 @@ cache::alternate_domains:
   grafana-labs.wikimedia.org:
     director: 'labmon1001'
     caching: 'pass'
-  grafana-old.wikimedia.org:
-    director: 'krypton'
-    caching: 'pass'
   grafana.wikimedia.org:
     director: 'grafana1001'
     caching: 'pass'
