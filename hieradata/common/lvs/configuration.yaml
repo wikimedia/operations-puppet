@@ -146,10 +146,6 @@ lvs::configuration::lvs_service_ips:
   proton: &ip_block044
     eqiad: 10.2.2.21
     codfw: 10.2.1.21
-  # XXX: Temporary while the migration to v2 is ongoing
-  zoterov2: &ip_block045
-    eqiad: 10.2.2.29
-    codfw: 10.2.1.29
   blubberoid: &ip_block046
     eqiad: 10.2.2.31
     codfw: 10.2.1.31
@@ -765,30 +761,6 @@ lvs::configuration::lvs_services:
           hostname: zotero.svc.eqiad.wmnet
         codfw:
           hostname: zotero.svc.codfw.wmnet
-  zoterov2:
-    description: "Zotero, zoterov2.svc.%{::site}.wmnet"
-    class: low-traffic
-    sites:
-    - eqiad
-    - codfw
-    ip: *ip_block045
-    port: 1968
-    depool-threshold: '.5'
-    monitors:
-      IdleConnection:
-        timeout-clean-reconnect: 3
-        max-delay: 300
-    conftool:
-      cluster: kubernetes
-      service: zotero
-    # XXX: Enable icinga when everything is in place
-    #icinga:
-    # check_command: "check_http_zotero_lvs_on_port!zoterov2.svc.%{::site}.wmnet!1968!/export?format=wikipedia"
-    # sites:
-    #   eqiad:
-    #     hostname: zoterov2.svc.eqiad.wmnet
-    #   codfw:
-    #     hostname: zoterov2.svc.codfw.wmnet
   kartotherian:
     description: "Kartotherian, kartotherian.svc.%{::site}.wmnet"
     class: low-traffic
