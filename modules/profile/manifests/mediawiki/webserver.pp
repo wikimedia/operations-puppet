@@ -7,7 +7,6 @@ class profile::mediawiki::webserver(
 ) {
     include ::lvs::configuration
     include ::profile::mediawiki::httpd
-
     $fcgi_proxy = mediawiki::fcgi_endpoint($fcgi_port, $fcgi_pool)
 
     # Declare the proxies explicitly with retry=0
@@ -44,7 +43,25 @@ class profile::mediawiki::webserver(
     if $has_lvs {
         require ::profile::lvs::realserver
 
-        class { '::mediawiki::conftool': }
+        class { 'conftool::scripts': }
+        conftool::credentials { 'mwdeploy':
+            home => '/var/lib/mwdeploy',
+        }
+
+        # Will re-enable a mediawiki appserver after running scap pull
+        file { '/usr/local/bin/mw-pool':
+            ensure => present,
+            source => 'puppet:///modules/mediawiki/mw-pool',
+            owner  => 'root',
+            group  => 'root',
+            mode   => '0555',
+        }
+
+        monitoring::service { 'etcd_mw_config':
+            ensure        => present,
+            description   => 'MediaWiki EtcdConfig up-to-date',
+            check_command => "check_etcd_mw_config_lastindex!${::site}",
+        }
 
         # Restart HHVM if it is running since more than 3 days or
         # memory occupation exceeds 50% of the available RAM
