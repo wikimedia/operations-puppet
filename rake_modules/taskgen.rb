@@ -301,7 +301,8 @@ class TaskGen < ::Rake::TaskLib
         end
         tasks << 'tox:update'
       else
-        if @changed_files.include?('modules/admin/data/data.yaml')
+        admin_data_files = filter_files_by('modules/admin/data/**')
+        unless admin_data_files.empty?
           desc 'Run tox for the admin data file'
           task :admin do
             res = system('tox -e admin')
