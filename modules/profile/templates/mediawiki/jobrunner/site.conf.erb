@@ -3,6 +3,9 @@
     DocumentRoot "/srv/mediawiki"
     # Only accept health check requests.
     RewriteEngine On
+    <Directory /srv/mediawiki>
+       Require all granted
+    </Directory>
     RewriteCond  %{REQUEST_URI} !^/w/health-check.php
     RewriteRule ^ - [R=404,L]
     # Set the variable if php7 is required
