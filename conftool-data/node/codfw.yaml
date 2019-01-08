@@ -260,9 +260,6 @@ codfw:
     restbase2016.codfw.wmnet: [restbase, cassandra]
     restbase2017.codfw.wmnet: [restbase, cassandra]
     restbase2018.codfw.wmnet: [restbase, cassandra]
-  sca:
-    sca2003.codfw.wmnet: [zotero]
-    sca2004.codfw.wmnet: [zotero]
   scb:
     scb2001.codfw.wmnet: [mobileapps, graphoid, citoid, apertium, cxserver, eventstreams, pdfrender, "recommendation-api"]
     scb2002.codfw.wmnet: [mobileapps, graphoid, citoid, apertium, cxserver, eventstreams, pdfrender, "recommendation-api"]

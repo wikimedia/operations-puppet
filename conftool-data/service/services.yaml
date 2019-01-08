@@ -57,15 +57,6 @@ elasticsearch:
     datacenters:
     - eqiad
     - codfw
-sca:
-  zotero:
-    port: 1969
-    default_values:
-      pooled: 'no'
-      weight: 10
-    datacenters:
-    - eqiad
-    - codfw
 scb:
   mobileapps:
     port: 8888

@@ -144,9 +144,6 @@ eqiad:
     cp1086.eqiad.wmnet: [varnish-fe, varnish-be, nginx]
     cp1088.eqiad.wmnet: [varnish-fe, varnish-be, nginx]
     cp1090.eqiad.wmnet: [varnish-fe, varnish-be, nginx]
-  sca:
-    sca1003.eqiad.wmnet: [zotero]
-    sca1004.eqiad.wmnet: [zotero]
   scb:
     scb1001.eqiad.wmnet: [mobileapps, graphoid, citoid, apertium, cxserver, eventstreams, pdfrender, "recommendation-api"]
     scb1002.eqiad.wmnet: [mobileapps, graphoid, citoid, apertium, cxserver, eventstreams, pdfrender, "recommendation-api"]
