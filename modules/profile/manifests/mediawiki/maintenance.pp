@@ -30,6 +30,10 @@ class profile::mediawiki::maintenance {
     }
 
     # Mediawiki maintenance scripts (cron jobs)
+    profile::mediawiki::periodic_job { 'mediawiki_tor_exit_node':
+        command  => '/usr/local/bin/mwscript extensions/TorBlock/maintenance/loadExitNodes.php --wiki=aawiki --force',
+        interval => '*-*-* *:*:00/20',
+    }
     class { 'mediawiki::maintenance::pagetriage': ensure => $ensure }
     class { 'mediawiki::maintenance::translationnotifications': ensure => $ensure }
     class { 'mediawiki::maintenance::updatetranslationstats': ensure => $ensure }
@@ -37,7 +41,6 @@ class profile::mediawiki::maintenance {
     class { 'mediawiki::maintenance::echo_mail_batch': ensure => $ensure }
     class { 'mediawiki::maintenance::parsercachepurging': ensure => $ensure }
     class { 'mediawiki::maintenance::cleanup_upload_stash': ensure => $ensure }
-    class { 'mediawiki::maintenance::tor_exit_node': ensure => $ensure }
     class { 'mediawiki::maintenance::update_flaggedrev_stats': ensure => $ensure }
     class { 'mediawiki::maintenance::refreshlinks': ensure => $ensure }
     class { 'mediawiki::maintenance::update_special_pages': ensure => $ensure }
