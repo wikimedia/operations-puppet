@@ -1,5 +1,8 @@
 # mediawiki maintenance server
 class profile::mediawiki::maintenance {
+    # In order to be able to use the conftool-aware wrapper, we need to access
+    # such data easily (on disk).
+    require ::profile::conftool::state
 
     # httpd for noc.wikimedia.org
     class { '::httpd':
@@ -17,6 +20,13 @@ class profile::mediawiki::maintenance {
     $ensure = mediawiki::state('primary_dc') ? {
         $::site => 'present',
         default => 'absent',
+    }
+
+    file { '/usr/local/bin/mw-cli-wrapper':
+        source => 'puppet:///modules/profile/mediawiki/maintenance/mw-cli-wrapper.sh',
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0555'
     }
 
     # Mediawiki maintenance scripts (cron jobs)
