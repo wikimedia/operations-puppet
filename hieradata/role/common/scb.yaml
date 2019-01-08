@@ -49,8 +49,8 @@ profile::graphoid::error_headers:
   'Cache-Control': 'public, s-maxage=300, max-age=300'
 ### END GRAPHOID ###
 
-profile::citoid::zotero_port: 1968
-profile::citoid::zotero_host: "zoterov2.svc.%{::site}.wmnet"
+profile::citoid::zotero_port: 1969
+profile::citoid::zotero_host: "zotero.discovery.wmnet"
 
 
 ### BEGIN EVENTSTREAMS ###
