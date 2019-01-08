@@ -756,7 +756,7 @@ lvs::configuration::lvs_services:
         timeout-clean-reconnect: 3
         max-delay: 300
     conftool:
-      cluster: sca
+      cluster: kubernetes
       service: zotero
     icinga:
       check_command: "check_http_zotero_lvs_on_port!zotero.svc.%{::site}.wmnet!1969!/export?format=wikipedia"
