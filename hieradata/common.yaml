@@ -391,6 +391,12 @@ wikimedia_clusters:
     sites:
       eqiad: []
       codfw: []
+  poolcounter:
+    description: "Poolcounter servers"
+    id: 81
+    sites:
+      eqiad: []
+      codfw: []
 
 puppetmaster: "puppet"
 

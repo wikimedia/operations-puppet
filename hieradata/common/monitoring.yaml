@@ -401,3 +401,9 @@ monitoring::groups:
     description: Web Performance servers (eqiad)
   webperf_codfw:
     description: Web Performance servers (codfw)
+
+  # Poolcounter Servers
+  poolcounter_eqiad:
+    description: Poolcounter servers (eqiad)
+  poolcounter_codfw:
+    description: Poolcounter servers (codfw)
