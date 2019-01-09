@@ -25,12 +25,7 @@ class profile::conftool::client(
         $socks_pkg = 'python-pysocks'
     }
 
-    if os_version('ubuntu <= trusty') {
-        $conftool_pkg = 'python-conftool'
-    }
-    else {
-        $conftool_pkg = 'python3-conftool'
-    }
+    $conftool_pkg = 'python3-conftool'
 
     require_package(
         $conftool_pkg,
