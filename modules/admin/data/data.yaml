@@ -11,7 +11,7 @@ groups:
               psinger, midom, tparscal, dworley, moushira, lpintscher, gpaumier,
               nschaaf, zhousquared, gwicke, dpatrick, samwalton9, samtar, akrausetud, jgonsior,
               yuvipanda, shrlak, madhuvishy, groovier, khorn, ironholds, katie,
-              cy534, pnorman, mpany, deskana, arnad, nithum, ladsgroup]
+              cy534, pnorman, mpany, deskana, arnad, nithum]
   absent_ldap:
     description: meta group for absented users which had privileged LDAP access in the past, an automatic check verifies it has been really removed from the LDAP (but removal has to be handled separatelly)
     members: [adavenport, siddharth11, albe]
@@ -1104,11 +1104,11 @@ users:
     uid: 2008
     email: ttijhof@wikimedia.org
   ladsgroup:
-    ensure: absent
+    ensure: present
     gid: 500
     name: ladsgroup
     realname: Amir Sarabadani
-    ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDDL1tcL4XnCAA5SQIple6w9DMpC0xdvfOrKxpuq51FSlm/yBRrq/BhCsazcxs+hj20qzRvkod23LChfx1x9IyR6Wgm8aX3ORO720n2/IyG9aC31+Ub1WQOFDFqHmh8qsVnq/o25sHiR7EVoG1FXReNxZW59ckBR9z5ZzS8HFJZd9c0RHC6kutUMAT8AhXMvQpF/6m/PcIbZqmE/v//cNVC+sbhannNZ+q9jjz25MQmQKgNagq7zioCs5AwjcHAd2JDSEL3GK3G/aTfVceF9YgICnfXRUlt8bP+8TwikJKlHxkjkJ/sBopODXP40SaqPb5BvIPvU3OojI6z+IYPwamcLKk9A3X6bHNqtGjXssPXfCNeoYa07sLDRrt5ECpIL5cMANSZmc8/j5meGRmKenySvLlhtBTLYiSsgrkkUvhfbk6VNMEH8V8Qaaw9hyTKsJyuSQr7yXgbz3dzvho7E5M97gioqpArHM/hOfVn4JWTKQ1LnWhvR+6TxJ5DkrZQp0fzODTHwF0DQmJ9kOAORIrfYvl4ps6HtKXxV6wZSs8p7hb9XD6vVGKRUv5zb/TTcJkdUVQHTKGyHvmHL8nBr4QAieLUEdCDE/q6v5St43/0aLzRYWGtTNh0inPqHiOKKDWkjfQz6BcgCsC6KBFAtzj2TjtJ8WkmuJHmvObRl5p78Q== amir.sarabadani@wikimedia.de]
+    ssh_keys: [ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJuLuPFsHiu4OohMH4CYehzDbdrGO/o6XFvCCX4Mzeyx amir@amir-GL552VW]
     uid: 3182
     email: amir.sarabadani@wikimedia.de
   manybubbles:
