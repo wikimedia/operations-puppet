@@ -32,36 +32,6 @@ profile::hadoop::common::config_override:
 # Ensure that users in these posix groups have home directories in HDFS.
 profile::hadoop::master::hadoop_user_groups: "analytics-users analytics-privatedata-users analytics-admins analytics-search-users"
 
-profile::hadoop::master::excluded_hosts:
-  - analytics1028.eqiad.wmnet
-  - analytics1028
-  - analytics1029.eqiad.wmnet
-  - analytics1029
-  - analytics1030.eqiad.wmnet
-  - analytics1030
-  - analytics1031.eqiad.wmnet
-  - analytics1031
-  - analytics1032.eqiad.wmnet
-  - analytics1032
-  - analytics1033.eqiad.wmnet
-  - analytics1033
-  - analytics1034.eqiad.wmnet
-  - analytics1034
-  - analytics1035.eqiad.wmnet
-  - analytics1035
-  - analytics1036.eqiad.wmnet
-  - analytics1036
-  - analytics1037.eqiad.wmnet
-  - analytics1037
-  - analytics1038.eqiad.wmnet
-  - analytics1038
-  - analytics1039.eqiad.wmnet
-  - analytics1039
-  - analytics1040.eqiad.wmnet
-  - analytics1040
-  - analytics1041.eqiad.wmnet
-  - analytics1041
-
 profile::hadoop::firewall::master::analytics_srange: '$ANALYTICS_NETWORKS'
 profile::hadoop::firewall::master::analytics_druid_srange: '(($ANALYTICS_NETWORKS $DRUID_PUBLIC_HOSTS))'
 
