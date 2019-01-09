@@ -27,11 +27,11 @@
 # }
 #
 class geoip::data::maxmind(
-  $data_directory = '/usr/share/GeoIP',
-  $user_id        = '999999',
-  $license_key    = '000000000000',
-  $product_ids    = [506],
-  $proxy          = undef
+  Stdlib::Unixpath $data_directory = '/usr/share/GeoIP',
+  String $user_id        = '999999',
+  String $license_key    = '000000000000',
+  Array $product_ids     = [506],
+  Optional[Stdlib::Httpurl] $proxy = undef,
 ) {
   package { 'geoipupdate':
     ensure => present,
@@ -44,10 +44,6 @@ class geoip::data::maxmind(
   }
 
   $config_file = '/etc/GeoIP.conf'
-
-  validate_string($license_key)
-  validate_string($user_id)
-  validate_array($product_ids)
 
   # Install GeoIP.conf with Maxmind user_id, licence_key, and product_ids.
   file { $config_file:
