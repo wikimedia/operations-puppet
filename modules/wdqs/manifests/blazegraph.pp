@@ -11,7 +11,7 @@
 # - $heap_size: heapsize for blazegraph
 # - $username: Username owning the service
 # - $deploy_user: username of deploy user
-# - $config_file: Blazegraph properties config file
+# - $use_deployed_config: Whether we should use config in deployed repo or our own
 # - $options: options for Blazegraph startup script
 # - $extra_jvm_opts: Extra JVM configs for wdqs-blazegraph
 class wdqs::blazegraph(
@@ -23,10 +23,23 @@ class wdqs::blazegraph(
     Stdlib::Unixpath $log_dir,
     String $heap_size,
     String $username,
-    String $config_file,
+    Boolean $use_deployed_config,
     Array[String] $options,
     Array[String] $extra_jvm_opts,
 ) {
+    if ($use_deployed_config) {
+        $config_file = 'RWStore.properties'
+    } else {
+        $config_file = '/etc/wdqs/RWStore.properties'
+        file { $config_file:
+            ensure  => present,
+            content => template('wdqs/RWStore.properties.erb'),
+            owner   => 'root',
+            group   => 'root',
+            mode    => '0644',
+            before  => Systemd::Unit['wdqs-blazegraph'],
+        }
+    }
 
     # Blazegraph tries to log to this file, redirect to log dir
     file { "${package_dir}/rules.log":
@@ -62,4 +75,5 @@ class wdqs::blazegraph(
     service { 'wdqs-blazegraph':
         ensure => 'running',
     }
+
 }

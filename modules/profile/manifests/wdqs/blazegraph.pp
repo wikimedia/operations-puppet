@@ -6,7 +6,7 @@ class profile::wdqs::blazegraph(
     Wmflib::IpPort $logstash_json_port = hiera('logstash_json_lines_port'),
     String $endpoint = hiera('profile::wdqs::endpoint', 'https://query.wikidata.org'),
     String $heap_size = hiera('profile::wdqs::blazegraph_heap_size', '31g'),
-    String $config_file = hiera('profile::wdqs::blazegraph_config_file', '/etc/wdqs/RWStore.properties'),
+    Boolean $use_deployed_config = hiera('profile::wdqs::blazegraph_use_deployed_config', false),
     Array[String] $options = hiera('profile::wdqs::blazegraph_options'),
     Array[String] $extra_jvm_opts = hiera('profile::wdqs::blazegraph_extra_jvm_opts'),
     Array[String] $prometheus_nodes = hiera('prometheus_nodes'),
@@ -39,17 +39,17 @@ class profile::wdqs::blazegraph(
     }
 
     class { 'wdqs::blazegraph':
-        package_dir        => $package_dir,
-        data_dir           => $data_dir,
-        logstash_host      => $logstash_host,
-        endpoint           => $endpoint,
-        logstash_json_port => $logstash_json_port,
-        log_dir            => $log_dir,
-        heap_size          => $heap_size,
-        username           => $username,
-        options            => $options,
-        config_file        => $config_file,
-        extra_jvm_opts     => $default_extra_jvm_opts + $extra_jvm_opts,
+        package_dir         => $package_dir,
+        data_dir            => $data_dir,
+        logstash_host       => $logstash_host,
+        endpoint            => $endpoint,
+        logstash_json_port  => $logstash_json_port,
+        log_dir             => $log_dir,
+        heap_size           => $heap_size,
+        username            => $username,
+        options             => $options,
+        use_deployed_config => $use_deployed_config,
+        extra_jvm_opts      => $default_extra_jvm_opts + $extra_jvm_opts,
     }
 
     class { 'wdqs::monitor::blazegraph':

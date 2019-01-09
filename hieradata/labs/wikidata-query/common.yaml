@@ -8,7 +8,7 @@ profile::wdqs::cluster_names: []
 profile::wdqs::updater_options: '-n wdq -s -l en'
 profile::wdqs::rc_updater_options: ''
 profile::wdqs::kafka_updater_options: '-b 700'
-profile::wdqs::blazegraph_config_file: 'RWStore.properties'
+profile::wdqs::blazegraph_use_deployed_config: true
 profile::wdqs::blazegraph_heap_size: '8g'
 profile::wdqs::enable_ldf: true
 profile::wdqs::high_query_time_port: true
