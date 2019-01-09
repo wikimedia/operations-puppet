@@ -134,21 +134,21 @@ VerifyRelease: 74A941BA219EC810
 ListShellHook: grep-dctrl -X -S tor || [ $? -eq 1 ]
 
 Name: grafana
-Method: https://packagecloud.io/grafana/stable/debian
+Method: https://packages.grafana.com/oss/deb
 Components: main>thirdparty
 UDebComponents:
-Suite: wheezy
+Suite: stable
 Architectures: amd64
-VerifyRelease: 37BBEE3F7AD95B3F
+VerifyRelease: 8C8C34C524098CB6
 ListShellHook: grep-dctrl -X -S grafana || [ $? -eq 1 ]
 
 Name: grafana-stretch
-Method: https://packagecloud.io/grafana/stable/debian
+Method: https://packages.grafana.com/oss/deb
 Components: main>thirdparty/grafana
 UDebComponents:
-Suite: stretch
+Suite: stable
 Architectures: amd64
-VerifyRelease: 37BBEE3F7AD95B3F
+VerifyRelease: 8C8C34C524098CB6
 ListShellHook: grep-dctrl -X -S grafana || [ $? -eq 1 ]
 
 Name: confluent
