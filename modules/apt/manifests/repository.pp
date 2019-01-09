@@ -16,7 +16,7 @@ define apt::repository(
 
     $binline = "deb ${trustedline}${uri} ${dist} ${components}\n"
     $srcline = $source ? {
-        true    => "deb-src ${uri} ${dist} ${components}\n",
+        true    => "deb-src ${trustedline}${uri} ${dist} ${components}\n",
         default => '',
     }
 
