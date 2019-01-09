@@ -3191,7 +3191,7 @@ ldap_only_users:
     email: cfloyd@wikimedia.org
   daimona:
     ensure: present
-    realname: Daimona Eaytoy
+    realname: (known to Legal)
     email: daimona.wiki@gmail.com
   ferdbold:
     ensure: present
