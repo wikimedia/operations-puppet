@@ -3189,6 +3189,10 @@ ldap_only_users:
     ensure: present
     realname: Corey Floyd
     email: cfloyd@wikimedia.org
+  daimona:
+    ensure: present
+    realname: Daimona Eaytoy
+    email: daimona.wiki@gmail.com
   ferdbold:
     ensure: present
     realname: Frederic Bolduc
