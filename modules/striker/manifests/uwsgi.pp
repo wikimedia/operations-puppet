@@ -111,6 +111,10 @@ class striker::uwsgi(
         ],
     }
 
+    if os_version('debian >= jessie') {
+        base::service_auto_restart { 'uwsgi-striker': }
+    }
+
     # Our ini() function does a shallow merge rather than a deep merge, so
     # merge the config sections before passing to ini() below.
     $complete_config = deep_merge($config, $secret_config)
