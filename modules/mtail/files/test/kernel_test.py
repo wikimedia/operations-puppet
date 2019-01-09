@@ -21,7 +21,7 @@ class KernelTest(unittest.TestCase):
         s = self.store.get_samples('segfault')
         self.assertIn(('binary=rsvg-convert,hostname=thumbor1003', 2), s)
         self.assertIn(('binary=rsvg-convert,hostname=thumbor1002', 1), s)
-        self.assertIn(('binary=HTML5 Parser,hostname=sca2004', 1), s)
+        self.assertIn(('binary=nodejs,hostname=maps1001', 1), s)
 
     def testThrottle(self):
         s = self.store.get_samples('cpu_throttled')
