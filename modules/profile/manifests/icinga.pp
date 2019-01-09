@@ -129,6 +129,9 @@ class profile::icinga(
           mode    => '0755',
           content => template('role/icinga/sync_icinga_state.sh.erb'),
         }
+
+        base::service_auto_restart { 'apache2': }
+
     }
     else {
         $partners.each |String $partner| {
