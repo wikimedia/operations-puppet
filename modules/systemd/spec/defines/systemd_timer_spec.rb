@@ -43,6 +43,66 @@ describe 'systemd::timer' do
     }
     it { is_expected.to compile.with_all_deps }
   end
+  context 'when using a valid everyday calendar spec' do
+    let(:pre_condition) {
+'systemd::unit { "dummy.service":
+                  content => "",
+}'}
+    let(:params) {
+      {
+        :timer_intervals => [{'start' => 'OnCalendar', 'interval' => '*-*-* 00:00:00'}]
+      }
+    }
+    it { is_expected.to compile.with_all_deps }
+  end
+  context 'when using a valid calendar (with repetition) spec' do
+    let(:pre_condition) {
+'systemd::unit { "dummy.service":
+                  content => "",
+}'}
+    let(:params) {
+      {
+        :timer_intervals => [{'start' => 'OnCalendar', 'interval' => 'Mon,Tue *-*-* 00/4:00:00'}]
+      }
+    }
+    it { is_expected.to compile.with_all_deps }
+  end
+  context 'when using a valid everyday calendar (with repetition) spec' do
+    let(:pre_condition) {
+'systemd::unit { "dummy.service":
+                  content => "",
+}'}
+    let(:params) {
+      {
+        :timer_intervals => [{'start' => 'OnCalendar', 'interval' => '*-*-* 00/4:00:00'}]
+      }
+    }
+    it { is_expected.to compile.with_all_deps }
+  end
+  context 'when using a valid hourly calendar spec' do
+    let(:pre_condition) {
+'systemd::unit { "dummy.service":
+                  content => "",
+}'}
+    let(:params) {
+      {
+        :timer_intervals => [{'start' => 'OnCalendar', 'interval' => 'Mon,Tue *-*-* *:20:00'}]
+      }
+    }
+    it { is_expected.to compile.with_all_deps }
+  end
+  context 'when using a valid everyday hourly calendar spec' do
+    let(:pre_condition) {
+'systemd::unit { "dummy.service":
+                  content => "",
+}'}
+    let(:params) {
+      {
+        :timer_intervals => [{'start' => 'OnCalendar', 'interval' => '*-*-* *:20:00'}]
+      }
+    }
+    it { is_expected.to compile.with_all_deps }
+  end
   context 'when referring to an inexistent unit' do
     let(:params) {
       {
