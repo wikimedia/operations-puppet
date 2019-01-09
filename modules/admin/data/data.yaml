@@ -31,7 +31,7 @@ groups:
               dzahn, akosiaris, mark, ariel, cmjohnson, otto, robh, tstarling,
               ori, jmm, jynus, ema, elukey, gehel, volans, marostegui,
               ayounsi, herron, aborrero, bstorm, vgutierrez, jiji, cwhite, banyek,
-              gtirloni, crusnov, cdanis, fsero]
+              gtirloni, crusnov, cdanis, fsero, jbond]
     privileges: ['ALL = (ALL) NOPASSWD: ALL']
   ops-adm-group:
     # No gid for this group on purpose, it's a system provided one
