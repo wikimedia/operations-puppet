@@ -4,6 +4,14 @@
     DocumentRoot /srv/xhgui/webroot
     Alias /xhgui /srv/xhgui/webroot
 
+    # Restrict non-GET requests to specified ldap-auth'ed user groups.
+    # XHGui doesn't do authentication itself and exposes interfaces that
+    # change the MongoDB store, including:
+    #
+    # - delete_all: Truncates the entire database. (!)
+    # - delete: Delete single record.
+    # - import: Import an offline profile.
+    # - watch: shared bookmark list for certain function names.
     <Location />
         AuthName "<%= @auth_ldap['name'] %>"
         AuthType Basic
@@ -21,10 +29,20 @@
         <% end -%>
     </Location>
 
+    # NOTE: This MUST be after the previous <Location>
+    #
+    # Disable the delete features introduced in XHGui 0.9.
+    # https://phabricator.wikimedia.org/T213218
+    <LocationMatch "^/xhgui/runs/delete">
+        Require all denied
+    </LocationMatch>
+
     <Directory /srv/xhgui/webroot>
         AllowOverride None
         php_admin_flag engine on
 
+        # Based on:
+        # https://github.com/perftools/xhgui/blob/v0.7.1/webroot/.htaccess
         RewriteEngine On
         RewriteBase /xhgui
         RewriteCond %{REQUEST_FILENAME} !-f
