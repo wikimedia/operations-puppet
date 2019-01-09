@@ -8,7 +8,7 @@ class dynamicproxy::api(
         mode   => '0555',
     }
 
-    require_package('python3-flask', 'python3-redis', 'python3-flask-sqlalchemy')
+    require_package('python3-flask', 'python3-redis', 'python3-flask-sqlalchemy', 'sqlite3')
 
     uwsgi::app { 'invisible-unicorn':
         settings  => {
