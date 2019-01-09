@@ -203,10 +203,6 @@ monitoring::groups:
     description: Services development testing eqiad
 
 # Service Clusters
-  sca_eqiad:
-    description: Service Cluster A servers eqiad
-  sca_codfw:
-    description: Service Cluster A servers codfw
   scb_eqiad:
     description: Service Cluster B servers eqiad
   scb_codfw:

@@ -195,12 +195,6 @@ wikimedia_clusters:
     id: 45
     sites:
       eqiad: []
-  sca:
-    description: "Service Cluster A"
-    id: 46
-    sites:
-      eqiad: []
-      codfw: []
   restbase:
     description: "Restbase"
     id: 48

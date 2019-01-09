@@ -2082,13 +2082,6 @@ node /sessionstore100[1-3].eqiad.wmnet/ {
     role(spare::system)
 }
 
-# Services 'A'
-node /^sca[12]00[1234]\.(eqiad|codfw)\.wmnet$/ {
-    role(sca)
-
-    interface::add_ip6_mapped { 'main': }
-}
-
 # Services 'B'
 node /^scb[12]00[123456]\.(eqiad|codfw)\.wmnet$/ {
     role(scb)

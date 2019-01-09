@@ -574,34 +574,6 @@ host roentgenium {
     filename "lpxelinux.0";
 }
 
-host sca1003 {
-    hardware ethernet aa:00:00:a1:2d:b1;
-    fixed-address sca1003.eqiad.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/trusty-installer/";
-    filename "lpxelinux.0";
-}
-
-host sca1004 {
-    hardware ethernet aa:00:00:7c:87:74;
-    fixed-address sca1004.eqiad.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/trusty-installer/";
-    filename "lpxelinux.0";
-}
-
-host sca2003 {
-    hardware ethernet aa:00:00:d3:5b:8c;
-    fixed-address sca2003.codfw.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/trusty-installer/";
-    filename "lpxelinux.0";
-}
-
-host sca2004 {
-    hardware ethernet aa:00:00:f1:5b:a4;
-    fixed-address sca2004.codfw.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/trusty-installer/";
-    filename "lpxelinux.0";
-}
-
 host seaborgium {
     hardware ethernet aa:00:00:4d:be:84;
     fixed-address seaborgium.wikimedia.org;

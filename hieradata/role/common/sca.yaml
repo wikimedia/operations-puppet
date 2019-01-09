@@ -1,5 +1,0 @@
-cluster: sca
-admin::groups:
-  - sc-admins
-  - zotero-admin
-zotero::http_proxy: "url-downloader.%{::site}.wikimedia.org:8080"
