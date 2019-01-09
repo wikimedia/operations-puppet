@@ -185,7 +185,7 @@ UDebComponents:
 Suite: stretch
 Architectures: amd64 source
 VerifyRelease: AC0E47584A7A714D
-ListShellHook: grep-dctrl -X -S php7.2 || [ $? -eq 1 ]
+ListShellHook: grep-dctrl \( -X -S php7.2 \) -o \( -X -S xdebug \) || [ $? -eq 1 ]
 
 Name: mono-project-trusty
 Method: https://download.mono-project.com/repo/ubuntu
