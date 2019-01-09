@@ -27,6 +27,7 @@ class wdqs::common(
         'scap3': {
             class {'::wdqs::deploy::scap':
                 deploy_user => $deploy_user,
+                username    => $username,
                 package_dir => $package_dir,
             }
         }

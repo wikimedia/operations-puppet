@@ -1,6 +1,7 @@
 # the wdqs package is managed by scap
 class wdqs::deploy::scap(
     String $deploy_user,
+    String $username,
     Stdlib::Absolutepath $package_dir,
 ) {
     # Deployment
@@ -17,7 +18,7 @@ class wdqs::deploy::scap(
         file { $package_dir:
             ensure  => link,
             target  => $git_deploy_dir,
-            owner   => $::wdqs::username,
+            owner   => $username,
             group   => 'wikidev',
             mode    => '0775',
             require => Scap::Target['wdqs/wdqs'],

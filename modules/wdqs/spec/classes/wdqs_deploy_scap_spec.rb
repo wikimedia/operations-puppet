@@ -9,6 +9,7 @@ describe 'wdqs::deploy::scap', :type => :class do
 
    let(:params) { {
         :deploy_user => 'deploy-service',
+        :username    => 'blazegraph',
         :package_dir => '/srv/deployment/wdqs/wdqs',
         }
    }

@@ -12,12 +12,12 @@ describe 'wdqs::blazegraph', :type => :class do
         :data_dir => '/srv/wdqs',
         :log_dir => '/var/log/wdqs',
         :endpoint => '',
-        :blazegraph_heap_size => '1g',
+        :heap_size => '1g',
         :username => 'blazegraph',
         :config_file => 'RWStore.properties',
         :logstash_host => 'localhost',
         :logstash_json_port => 11_514,
-        :blazegraph_options => [],
+        :options => [],
         :extra_jvm_opts => [],
         }
    }

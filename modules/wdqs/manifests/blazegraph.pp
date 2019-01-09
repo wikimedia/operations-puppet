@@ -8,11 +8,11 @@
 # - $endpoint: External endpoint name
 # - $logstash_json_port: port on which to send logs in json format
 # - $log_dir: Directory where the logs go
-# - $blazegraph_heap_size: heapsize for blazegraph
+# - $heap_size: heapsize for blazegraph
 # - $username: Username owning the service
 # - $deploy_user: username of deploy user
-# - $blazegraph_config_file: Blazegraph properties config file
-# - $blazegraph_options: options for Blazegraph startup script
+# - $config_file: Blazegraph properties config file
+# - $options: options for Blazegraph startup script
 # - $extra_jvm_opts: Extra JVM configs for wdqs-blazegraph
 class wdqs::blazegraph(
     Stdlib::Unixpath $package_dir,
@@ -21,10 +21,10 @@ class wdqs::blazegraph(
     String $endpoint,
     Wmflib::IpPort $logstash_json_port,
     Stdlib::Unixpath $log_dir,
-    String $blazegraph_heap_size,
+    String $heap_size,
     String $username,
     String $config_file,
-    Array[String] $blazegraph_options,
+    Array[String] $options,
     Array[String] $extra_jvm_opts,
 ) {
 
