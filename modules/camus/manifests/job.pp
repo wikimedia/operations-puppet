@@ -1,4 +1,5 @@
 # == Define camus::job
+#
 # Renders a camus.properties template and installs a
 # cron job to launch a Camus MapReduce job in Hadoop.
 #
@@ -57,6 +58,19 @@
 # [*month*]
 # [*monthday*]
 # [*weekday*]
+#
+# [*interval*]
+#   Systemd interval to use. Format: DayOfWeek Year-Month-Day Hour:Minute:Second
+#
+# [*environment*]
+#  Hash containing 'Environment=' related values to insert in the
+#  Systemd unit.
+#
+# [*monitoring_enabled*]
+#  Periodically check the last execution of the unit and alarm if it ended
+#  up in a failed state.
+#  Default: true
+#
 # [*ensure*]
 #
 define camus::job (
@@ -77,6 +91,9 @@ define camus::job (
     $month                  = undef,
     $monthday               = undef,
     $weekday                = undef,
+    $interval               = undef,
+    $environment            = undef,
+    $monitoring_enabled     = true,
     $ensure                 = 'present',
 )
 {
@@ -123,6 +140,12 @@ define camus::job (
 
     $command = "${script} --run --job-name camus-${title} ${camus_jar_opt} ${libjars_opt} ${check_opts} ${properties_file} >> ${log_file} 2>&1"
 
+    if $interval {
+        $cron_ensure = absent
+    } else {
+        $cron_ensure = $ensure
+    }
+
     cron { "camus-${title}":
         ensure   => $ensure,
         command  => $command,
@@ -133,5 +156,29 @@ define camus::job (
         monthday => $monthday,
         weekday  => $weekday,
         require  => File[$properties_file],
+    }
+
+    if $interval {
+        $unit_command = "${script} --run --job-name camus-${title} ${camus_jar_opt} ${libjars_opt} ${check_opts} ${properties_file}"
+
+        systemd::timer::job { $title:
+            description               => "Hadoop Map-Reduce Camus job for ${title}",
+            command                   => $unit_command,
+            interval                  => {
+                'start'    => 'OnCalendar',
+                'interval' => $interval
+            },
+            user                      => $user,
+            environment               => $environment,
+            monitoring_enabled        => $monitoring_enabled,
+            monitoring_contact_groups => 'analytics',
+            logging_enabled           => true,
+            logfile_basedir           => $camus::log_directory,
+            logfile_name              => "${title}.log",
+            logfile_owner             => $user,
+            logfile_group             => $user,
+            logfile_perms             => 'all',
+            syslog_force_stop         => true,
+        }
     }
 }

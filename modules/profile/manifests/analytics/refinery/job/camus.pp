@@ -35,13 +35,18 @@ class profile::analytics::refinery::job::camus(
     $kafka_brokers_analytics = suffix($kafka_config_analytics['brokers']['array'], ':9092')
     $kafka_brokers_jumbo     = suffix($kafka_config['brokers']['array'], ':9092')
 
+    $env = "export PYTHONPATH=\${PYTHONPATH}:${profile::analytics::refinery::path}/python"
+    $systemd_env = {
+        'PYTHONPATH' => "\${PYTHONPATH}:${profile::analytics::refinery::path}/python",
+    }
+
     # Make all uses of camus::job set default kafka_brokers and camus_jar.
     # If you build a new camus or refinery, and you want to use it, you'll
     # need to change these.  You can also override these defaults
     # for a particular camus::job instance by setting the parameter on
     # the camus::job declaration.
     Camus::Job {
-        script              => "export PYTHONPATH=\${PYTHONPATH}:${profile::analytics::refinery::path}/python && ${profile::analytics::refinery::path}/bin/camus",
+        script              => "${env} && ${profile::analytics::refinery::path}/bin/camus",
         kafka_brokers       => $kafka_brokers,
         camus_jar           => "${profile::analytics::refinery::path}/artifacts/org/wikimedia/analytics/camus-wmf/camus-wmf-0.1.0-wmf9.jar",
         check_jar           => "${profile::analytics::refinery::path}/artifacts/org/wikimedia/analytics/refinery/refinery-camus-0.0.69.jar",
@@ -134,7 +139,10 @@ class profile::analytics::refinery::job::camus(
     # Import netflow queue topics into /wmf/data/raw/netflow
     # once every hour.
     camus::job { 'netflow':
+        script        => "${profile::analytics::refinery::path}/bin/camus",
         minute        => '30',
         kafka_brokers => $kafka_brokers_jumbo,
+        environment   => $systemd_env,
+        interval      => '*-*-* *:20:00',
     }
 }
