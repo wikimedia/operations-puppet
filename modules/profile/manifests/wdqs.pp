@@ -5,7 +5,7 @@ class profile::wdqs (
     String $data_dir = hiera('profile::wdqs::data_dir', '/srv/wdqs'),
     String $endpoint = hiera('profile::wdqs::endpoint', 'https://query.wikidata.org'),
     Array[String] $blazegraph_options = hiera('profile::wdqs::blazegraph_options'),
-    String $blazegraph_heap_size = hiera('profile::wdqs::blazegraph_heap_size', '32g'),
+    String $blazegraph_heap_size = hiera('profile::wdqs::blazegraph_heap_size', '31g'),
     String $blazegraph_config_file = hiera('profile::wdqs::blazegraph_config_file', '/etc/wdqs/RWStore.properties'),
     String $updater_options = hiera('profile::wdqs::updater_options', '-n wdq'),
     Array[String] $nodes = hiera('profile::wdqs::nodes'),
