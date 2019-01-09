@@ -12,6 +12,11 @@ cache::upload::nodes:
     - 'cp2024.codfw.wmnet'
     - 'cp2025.codfw.wmnet'
     - 'cp2026.codfw.wmnet'
+  codfw_ats:
+    - 'cp2003.codfw.wmnet'
+    - 'cp2009.codfw.wmnet'
+    - 'cp2015.codfw.wmnet'
+    - 'cp2021.codfw.wmnet'
   eqiad:
     - 'cp1076.eqiad.wmnet'
     - 'cp1078.eqiad.wmnet'
@@ -21,6 +26,11 @@ cache::upload::nodes:
     - 'cp1086.eqiad.wmnet'
     - 'cp1088.eqiad.wmnet'
     - 'cp1090.eqiad.wmnet'
+  eqiad_ats:
+    - 'cp1071.eqiad.wmnet'
+    - 'cp1072.eqiad.wmnet'
+    - 'cp1073.eqiad.wmnet'
+    - 'cp1074.eqiad.wmnet'
   esams:
     - 'cp3034.esams.wmnet'
     - 'cp3035.esams.wmnet'
