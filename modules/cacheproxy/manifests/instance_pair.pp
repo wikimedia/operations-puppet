@@ -19,6 +19,7 @@ class cacheproxy::instance_pair (
     $separate_vcl=[],
     $wikimedia_nets=[],
     $wikimedia_trust=[],
+    $ats_backends=false,
 ) {
     # ideally this could be built with "map"...
     # also, in theory all caches sites should be listed here for flexibility,
@@ -96,6 +97,15 @@ class cacheproxy::instance_pair (
     # Set a reduced keep value for frontends
     $fe_keep_vcl_config = merge($fe_vcl_config, { 'keep' => '1d', })
 
+    # Use ATS for local backends?
+    if $ats_backends {
+        $cache_local_backends = $cluster_nodes["${::site}_ats"]
+        $local_service = 'ats-be'
+    } else {
+        $cache_local_backends = $cluster_nodes[$::site]
+        $local_service = 'varnish-be'
+    }
+
     # lint:ignore:arrow_alignment
     varnish::instance { "${cache_type}-frontend":
         instance_name      => 'frontend',
@@ -110,8 +120,8 @@ class cacheproxy::instance_pair (
         backend_caches     => {
             'cache_local' => {
                 'dc'       => $::site,
-                'service'  => 'varnish-be',
-                'backends' => $cluster_nodes[$::site],
+                'service'  => $local_service,
+                'backends' => $cache_local_backends,
                 'be_opts'  => $fe_cache_be_opts,
             },
         },

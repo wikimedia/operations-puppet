@@ -14,6 +14,7 @@ class profile::cache::text(
     $be_transient_gb = hiera('cache::be_transient_gb'),
     $backend_warming = hiera('cache::backend_warming', false),
     $admission_policy = hiera('profile::cache::base::admission_policy', 'nhw'),
+    $ats_backends = hiera('cache::ats_backends', false),
 ) {
     # profile::cache::base needs to be evaluated before this one.
     require ::profile::cache::base
@@ -95,6 +96,7 @@ class profile::cache::text(
         backend_warming  => $backend_warming,
         wikimedia_nets   => $profile::cache::base::wikimedia_nets,
         wikimedia_trust  => $profile::cache::base::wikimedia_trust,
+        ats_backends     => $ats_backends,
     }
 
     # ResourceLoader browser cache hit rate and request volume stats.
