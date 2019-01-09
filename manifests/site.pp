@@ -64,13 +64,22 @@ node 'analytics1003.eqiad.wmnet' {
     interface::add_ip6_mapped { 'main': }
 }
 
-# analytics1028-analytics1077 are Hadoop worker nodes.
+# analytics1028-analytics1041 are Hadoop worker nodes.
+# These hosts are OOW but they are used as temporary
+# Hadoop testing cluster for T211836.
+#
+node /analytics10(2[89]|3[0-9]|4[0-1]).eqiad.wmnet/ {
+    role(spare::system)
+    interface::add_ip6_mapped { 'main': }
+}
+
+# analytics1042-analytics1077 are Analytics Hadoop worker nodes.
 #
 # NOTE:  If you add, remove or move Hadoop nodes, you should edit
 # hieradata/common.yaml hadoop_clusters net_topology
 # to make sure the hostname -> /datacenter/rack/row id is correct.
 # This is used for Hadoop network topology awareness.
-node /analytics10(2[89]|3[0-9]|4[0-9]|5[0-9]|6[0-9]|7[0-7]).eqiad.wmnet/ {
+node /analytics10(4[2-9]|5[0-9]|6[0-9]|7[0-7]).eqiad.wmnet/ {
     role(analytics_cluster::hadoop::worker)
     interface::add_ip6_mapped { 'main': }
 }
