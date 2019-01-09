@@ -188,6 +188,10 @@ codfw:
     cp2016.codfw.wmnet: [varnish-fe, varnish-be, nginx]
     cp2019.codfw.wmnet: [varnish-fe, varnish-be, nginx]
     cp2023.codfw.wmnet: [varnish-fe, varnish-be, nginx]
+    cp2003.codfw.wmnet: [ats-be]
+    cp2009.codfw.wmnet: [ats-be]
+    cp2015.codfw.wmnet: [ats-be]
+    cp2021.codfw.wmnet: [ats-be]
   cache_upload:
     cp2002.codfw.wmnet: [varnish-fe, varnish-be, nginx]
     cp2005.codfw.wmnet: [varnish-fe, varnish-be, nginx]
@@ -201,6 +205,10 @@ codfw:
     cp2024.codfw.wmnet: [varnish-fe, varnish-be, nginx]
     cp2025.codfw.wmnet: [varnish-fe, varnish-be, nginx]
     cp2026.codfw.wmnet: [varnish-fe, varnish-be, nginx]
+    cp2003.codfw.wmnet: [ats-be]
+    cp2009.codfw.wmnet: [ats-be]
+    cp2015.codfw.wmnet: [ats-be]
+    cp2021.codfw.wmnet: [ats-be]
   phabricator:
     phab2001-vcs.codfw.wmnet: [git-ssh]
   swift:
