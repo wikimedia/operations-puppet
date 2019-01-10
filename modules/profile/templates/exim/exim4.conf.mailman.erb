@@ -23,7 +23,7 @@ domainlist local_domains = +system_domains : +mailman_domains
 # Standard lists
 domainlist mailman_domains = lists.wikimedia.org
 
-hostlist wikimedia_nets = <; <%= scope.lookupvar('network::constants::all_networks').join(" ; ") %>
+hostlist wikimedia_nets = <; <%= scope.lookupvar('network::constants::aggregate_networks').join(" ; ") %>
 hostlist relay_from_hosts = <; @[] ; 127.0.0.1 ; ::1 ;
 
 # Administration
