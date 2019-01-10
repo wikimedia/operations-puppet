@@ -411,3 +411,10 @@ monitoring::groups:
   # Dumps Servers
   dumps_eqiad:
     description: Dumps servers (eqiad)
+
+  # Syslog Servers
+  syslog_eqiad:
+    description: Syslog servers (eqiad)
+  syslog_codfw:
+    description: Syslog servers (codfw)
+

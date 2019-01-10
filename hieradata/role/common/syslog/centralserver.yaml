@@ -1,3 +1,4 @@
+cluster: syslog
 mtail::logs:
   - /srv/syslog/syslog.log
   - /srv/syslog/apache2.log

@@ -402,6 +402,12 @@ wikimedia_clusters:
     id: 82
     sites:
       eqiad: []
+  syslog:
+    description: "Syslog servers"
+    id: 83
+    sites:
+      eqiad: []
+      codfw: []
 
 puppetmaster: "puppet"
 
