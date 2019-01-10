@@ -49,7 +49,7 @@
 #   https://docs.trafficserver.apache.org/en/latest/admin-guide/plugins/xdebug.en.html
 #
 # [*collapsed_forwarding*]
-#   Enable the Collapsed Forwarding plugin. (default: true)
+#   Enable the Collapsed Forwarding plugin. (default: false)
 #   https://docs.trafficserver.apache.org/en/latest/admin-guide/plugins/collapsed_forwarding.en.html
 #
 # [*global_lua_script*]
@@ -119,7 +119,7 @@ class trafficserver(
     String $outbound_tls_cacert_dirpath = '/etc/ssl/certs',
     String $outbound_tls_cacert_filename = '',
     Boolean $enable_xdebug = false,
-    Boolean $collapsed_forwarding = true,
+    Boolean $collapsed_forwarding = false,
     String $global_lua_script = '',
     Array[Trafficserver::Mapping_rule] $mapping_rules = [],
     Array[Trafficserver::Caching_rule] $caching_rules = [],
