@@ -147,7 +147,7 @@ define camus::job (
     }
 
     cron { "camus-${title}":
-        ensure   => $ensure,
+        ensure   => $cron_ensure,
         command  => $command,
         user     => $user,
         hour     => $hour,
@@ -161,7 +161,7 @@ define camus::job (
     if $interval {
         $unit_command = "${script} --run --job-name camus-${title} ${camus_jar_opt} ${libjars_opt} ${check_opts} ${properties_file}"
 
-        systemd::timer::job { $title:
+        systemd::timer::job { "camus-${title}":
             description               => "Hadoop Map-Reduce Camus job for ${title}",
             command                   => $unit_command,
             interval                  => {
