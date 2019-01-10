@@ -53,12 +53,6 @@
 #   ERb template.  You can access these in your template as
 #   @template_variables['my_property']
 #
-# [*hour*]
-# [*minute*]
-# [*month*]
-# [*monthday*]
-# [*weekday*]
-#
 # [*interval*]
 #   Systemd interval to use. Format: DayOfWeek Year-Month-Day Hour:Minute:Second
 #
@@ -86,11 +80,6 @@ define camus::job (
     $libjars                = undef,
     $template               = "camus/${title}.erb",
     $template_variables     = {},
-    $hour                   = undef,
-    $minute                 = undef,
-    $month                  = undef,
-    $monthday               = undef,
-    $weekday                = undef,
     $interval               = undef,
     $environment            = undef,
     $monitoring_enabled     = true,
@@ -138,48 +127,26 @@ define camus::job (
         default => "--check ${check_jar_opt}${check_dry_run_opt}${check_email_enabled_opt}${check_topic_whitelist_opt}",
     }
 
-    $command = "${script} --run --job-name camus-${title} ${camus_jar_opt} ${libjars_opt} ${check_opts} ${properties_file} >> ${log_file} 2>&1"
+    $unit_command = "${script} --run --job-name camus-${title} ${camus_jar_opt} ${libjars_opt} ${check_opts} ${properties_file}"
 
-    if $interval {
-        $cron_ensure = absent
-    } else {
-        $cron_ensure = $ensure
-    }
-
-    cron { "camus-${title}":
-        ensure   => $cron_ensure,
-        command  => $command,
-        user     => $user,
-        hour     => $hour,
-        minute   => $minute,
-        month    => $month,
-        monthday => $monthday,
-        weekday  => $weekday,
-        require  => File[$properties_file],
-    }
-
-    if $interval {
-        $unit_command = "${script} --run --job-name camus-${title} ${camus_jar_opt} ${libjars_opt} ${check_opts} ${properties_file}"
-
-        systemd::timer::job { "camus-${title}":
-            description               => "Hadoop Map-Reduce Camus job for ${title}",
-            command                   => $unit_command,
-            interval                  => {
-                'start'    => 'OnCalendar',
-                'interval' => $interval
-            },
-            user                      => $user,
-            environment               => $environment,
-            monitoring_enabled        => $monitoring_enabled,
-            monitoring_contact_groups => 'analytics',
-            logging_enabled           => true,
-            logfile_basedir           => $camus::log_directory,
-            logfile_name              => "${title}.log",
-            logfile_owner             => $user,
-            logfile_group             => $user,
-            logfile_perms             => 'all',
-            syslog_force_stop         => true,
-            syslog_identifier         => "camus-${title}",
-        }
+    systemd::timer::job { "camus-${title}":
+        description               => "Hadoop Map-Reduce Camus job for ${title}",
+        command                   => $unit_command,
+        interval                  => {
+            'start'    => 'OnCalendar',
+            'interval' => $interval
+        },
+        user                      => $user,
+        environment               => $environment,
+        monitoring_enabled        => $monitoring_enabled,
+        monitoring_contact_groups => 'analytics',
+        logging_enabled           => true,
+        logfile_basedir           => $camus::log_directory,
+        logfile_name              => "${title}.log",
+        logfile_owner             => $user,
+        logfile_group             => $user,
+        logfile_perms             => 'all',
+        syslog_force_stop         => true,
+        syslog_identifier         => "camus-${title}",
     }
 }

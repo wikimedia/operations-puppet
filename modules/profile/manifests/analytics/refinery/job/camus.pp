@@ -63,7 +63,6 @@ class profile::analytics::refinery::job::camus(
     # every 10 minutes, check runs and flag fully imported hours.
     camus::job { 'webrequest':
         check                 => $monitoring_enabled,
-        minute                => '*/10',
         kafka_brokers         => $kafka_brokers_jumbo,
         check_topic_whitelist => 'webrequest_(upload|text)',
         interval              => '*-*-* *:00/10:00',
@@ -72,7 +71,6 @@ class profile::analytics::refinery::job::camus(
     # Import eventlogging_* topics into /wmf/data/raw/eventlogging
     # once every hour.
     camus::job { 'eventlogging':
-        minute                => '5',
         kafka_brokers         => $kafka_brokers_jumbo,
         check                 => true,
         # Don't need to write _IMPORTED flags for EventLogging data
@@ -94,7 +92,6 @@ class profile::analytics::refinery::job::camus(
     }
 
     camus::job { 'eventbus':
-        minute                => '5',
         kafka_brokers         => $kafka_brokers_jumbo,
         check                 => $monitoring_enabled,
         # Don't need to write _IMPORTED flags for EventBus data
@@ -111,7 +108,6 @@ class profile::analytics::refinery::job::camus(
     # See: https://phabricator.wikimedia.org/T188136
     camus::job { 'mediawiki-analytics':
         check         => $monitoring_enabled,
-        minute        => '15',
         # refinery-camus contains some custom decoder classes which
         # are needed to import Avro binary data.
         libjars       => "${profile::analytics::refinery::path}/artifacts/org/wikimedia/analytics/refinery/refinery-camus-0.0.28.jar",
@@ -122,14 +118,12 @@ class profile::analytics::refinery::job::camus(
     # Import eventbus mediawiki.job queue topics into /wmf/data/raw/mediawiki_job
     # once every hour.
     camus::job { 'mediawiki_job':
-        minute        => '10',
         kafka_brokers => $kafka_brokers_jumbo,
         interval      => '*-*-* *:10:00',
     }
 
     # Import eventlogging-client-side events for backup purposes
     camus::job { 'eventlogging-client-side':
-        minute        => '20',
         kafka_brokers => $kafka_brokers_jumbo,
         interval      => '*-*-* *:20:00',
     }
@@ -137,7 +131,6 @@ class profile::analytics::refinery::job::camus(
     # Import netflow queue topics into /wmf/data/raw/netflow
     # once every hour.
     camus::job { 'netflow':
-        minute        => '30',
         kafka_brokers => $kafka_brokers_jumbo,
         interval      => '*-*-* *:30:00',
     }
