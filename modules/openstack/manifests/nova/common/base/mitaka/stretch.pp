@@ -5,7 +5,6 @@ class openstack::nova::common::base::mitaka::stretch(
     $packages = [
         'unzip',
         'bridge-utils',
-        'sqlite3',
         'python-mysqldb',
     ]
 

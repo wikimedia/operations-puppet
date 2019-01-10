@@ -37,4 +37,12 @@ class openstack::serverpackages::mitaka::stretch(
         pin      => 'version 0.97-1*',
         priority => '-1',
     }
+
+    # this package is required by nova-common and neutron-common, i.e
+    # cloudvirt and cloudnet servers. And we need it installed not from
+    # jessie-backports, so put it here, since this class is the common place
+    # for this stuff anyway
+    package { 'sqlite3':
+        ensure => 'present',
+    }
 }
