@@ -159,6 +159,9 @@ class profile::backup::director(
     bacula::director::fileset { 'bugzilla-backup':
         includes => [ '/srv/org/wikimedia/bugzilla-backup' ]
     }
+    bacula::director::fileset { 'rt-static':
+        includes => [ '/srv/org/wikimedia/static-rt' ]
+    }
     bacula::director::fileset { 'srv-deployment':
         includes => [ '/srv' ]
     }

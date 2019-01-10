@@ -1,0 +1,38 @@
+# Apache config for static-rt.wikimedia.org
+# ! THIS FILE IS MANAGED BY PUPPET !
+
+<VirtualHost *:80>
+    ServerAdmin noc@wikimedia.org
+    ServerName static-rt.wikimedia.org
+    DocumentRoot /srv/org/wikimedia/static-rt
+
+    RewriteEngine On
+    RewriteCond %{HTTP:X-Forwarded-Proto} !https
+    RewriteCond %{REQUEST_URI} !^/status$
+    RewriteRule ^/(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [R=301,E=ProtoRedirect]
+    Header always merge Vary X-Forwarded-Proto env=ProtoRedirect
+    RewriteCond %{QUERY_STRING} ^id=([0-9]+)$
+    RewriteRule ^/Ticket/Display.html$ /%1.html? [PT]
+
+    <Directory />
+        Options FollowSymLinks
+        AllowOverride None
+    </Directory>
+
+    <Directory /srv/org/wikimedia/static-rt>
+        Options Indexes FollowSymLinks MultiViews
+        AllowOverride None
+        Require all granted
+    </Directory>
+
+ErrorLog /var/log/apache2/error.log
+
+# Possible values include: debug, info, notice, warn, error, crit,
+# alert, emerg.
+LogLevel warn
+
+CustomLog /var/log/apache2/access.log wmf
+ServerSignature On
+
+</VirtualHost>
+
