@@ -12,12 +12,6 @@ class network::constants {
     # Per realm aggregate networks
     $aggregate_networks = flatten($network_data['network::aggregate_networks'][$::realm])
 
-    # NOTE DO NOT USE $all_networks. It's deprecated, not realm aware and
-    # problematic. It's here just for posterity's sake. Use $domain_networks or
-    # $aggregate_networks depending on your needs
-    $all_networks = flatten([$external_networks, '10.0.0.0/8'])
-    $all_networks_lo = flatten([$all_networks, '127.0.0.0/8', '::1/128'])
-
     # $domain_networks is a set of all networks belonging to a domain.
     # a domain is a realm currently, but the notion is more generic than that on
     # purpose.
