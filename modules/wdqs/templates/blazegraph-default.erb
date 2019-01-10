@@ -2,6 +2,7 @@ HEAP_SIZE="<%= @heap_size %>"
 BLAZEGRAPH_OPTS="<%= @options.join(' ') %>"
 LOG_CONFIG=/etc/wdqs/logback-wdqs-blazegraph.xml
 LOG_DIR="<%= @log_dir %>"
+PORT=<%= @port %>
 <%- if @extra_jvm_opts -%>
 EXTRA_JVM_OPTS="
   <%= @extra_jvm_opts.join(" \\\n  ") %>"

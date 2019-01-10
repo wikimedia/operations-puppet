@@ -3,7 +3,7 @@ class profile::wdqs::blazegraph(
     Stdlib::Unixpath $data_dir = hiera('profile::wdqs::data_dir', '/srv/wdqs'),
     Stdlib::Unixpath $log_dir = hiera('profile::wdqs::log_dir', '/var/log/wdqs'),
     String $logstash_host = hiera('logstash_host'),
-    Wmflib::IpPort $logstash_json_port = hiera('logstash_json_lines_port'),
+    Stdlib::Port $logstash_json_port = hiera('logstash_json_lines_port'),
     String $endpoint = hiera('profile::wdqs::endpoint', 'https://query.wikidata.org'),
     String $heap_size = hiera('profile::wdqs::blazegraph_heap_size', '31g'),
     Boolean $use_deployed_config = hiera('profile::wdqs::blazegraph_use_deployed_config', false),
@@ -19,39 +19,46 @@ class profile::wdqs::blazegraph(
 
     $username = 'blazegraph'
     $prometheus_agent_path = '/usr/share/java/prometheus/jmx_prometheus_javaagent.jar'
-    $prometheus_agent_port = '9102'
     $prometheus_agent_config = '/etc/wdqs/wdqs-blazegraph-prometheus-jmx.yaml'
     $default_extra_jvm_opts = [
         '-XX:+UseNUMA',
         '-XX:+UnlockExperimentalVMOptions',
         '-XX:G1NewSizePercent=20',
         '-XX:+ParallelRefProcEnabled',
-        "-javaagent:${prometheus_agent_path}=${prometheus_agent_port}:${prometheus_agent_config}"
     ]
 
-    profile::prometheus::jmx_exporter { 'wdqs_blazegraph':
-        hostname         => $::hostname,
-        port             => $prometheus_agent_port,
-        prometheus_nodes => $prometheus_nodes,
-        config_file      => $prometheus_agent_config,
-        source           => 'puppet:///modules/profile/wdqs/wdqs-blazegraph-prometheus-jmx.yaml',
-        before           => Service['wdqs-blazegraph'],
+    $prometheus_agent_port_wdqs = 9102
+    profile::prometheus::jmx_exporter {
+        default:
+            hostname         => $::hostname,
+            prometheus_nodes => $prometheus_nodes,
+            config_file      => $prometheus_agent_config,
+            source           => 'puppet:///modules/profile/wdqs/wdqs-blazegraph-prometheus-jmx.yaml',
+            ;
+        'wdqs_blazegraph':
+            port   => $prometheus_agent_port_wdqs,
+            before => Service['wdqs-blazegraph'],
     }
 
-    class { 'wdqs::blazegraph':
-        package_dir         => $package_dir,
-        data_dir            => $data_dir,
-        logstash_host       => $logstash_host,
-        endpoint            => $endpoint,
-        logstash_json_port  => $logstash_json_port,
-        log_dir             => $log_dir,
-        heap_size           => $heap_size,
-        username            => $username,
-        options             => $options,
-        use_deployed_config => $use_deployed_config,
-        extra_jvm_opts      => $default_extra_jvm_opts + $extra_jvm_opts,
+    wdqs::blazegraph {
+        default:
+            package_dir         => $package_dir,
+            data_dir            => $data_dir,
+            logstash_host       => $logstash_host,
+            logstash_json_port  => $logstash_json_port,
+            log_dir             => $log_dir,
+            username            => $username,
+            options             => $options,
+            use_deployed_config => $use_deployed_config,
+            ;
+        'wdqs-blazegraph':
+            port             => 9999,
+            config_file_name => 'RWStore.properties',
+            heap_size        => $heap_size,
+            extra_jvm_opts   => $default_extra_jvm_opts + $extra_jvm_opts +  "-javaagent:${prometheus_agent_path}=${prometheus_agent_port_wdqs}:${prometheus_agent_config}"
     }
 
+    # No monitoring for lag for secondary servers
     class { 'wdqs::monitor::blazegraph':
         port           => 9999,
         username       => $username,

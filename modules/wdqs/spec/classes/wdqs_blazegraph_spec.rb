@@ -1,17 +1,19 @@
 require 'spec_helper'
 
-describe 'wdqs::blazegraph', :type => :class do
+describe 'wdqs::blazegraph', :type => :define do
    before(:each) do
         Puppet::Parser::Functions.newfunction(:secret, :type => :rvalue) { |_|
             'fake_secret'
         }
    end
 
+   let(:title) { 'wdqs-blazegraph' }
    let(:params) { {
         :package_dir => '/srv/deployment/wdqs/wdqs',
         :data_dir => '/srv/wdqs',
         :log_dir => '/var/log/wdqs',
-        :endpoint => '',
+        :port => 9999,
+        :config_file_name => 'RWStore.properties',
         :heap_size => '1g',
         :username => 'blazegraph',
         :use_deployed_config => false,
@@ -38,18 +40,20 @@ describe 'wdqs::blazegraph', :type => :class do
   end
 end
 
-describe 'wdqs::blazegraph', :type => :class do
+describe 'wdqs::blazegraph', :type => :define do
    before(:each) do
         Puppet::Parser::Functions.newfunction(:secret, :type => :rvalue) { |_|
             'fake_secret'
         }
    end
 
+   let(:title) { 'wdqs-categories' }
    let(:params) { {
         :package_dir => '/srv/deployment/wdqs/wdqs',
         :data_dir => '/srv/wdqs',
         :log_dir => '/var/log/wdqs',
-        :endpoint => '',
+        :port => 9090,
+        :config_file_name => 'RWStore.properties',
         :heap_size => '1g',
         :username => 'blazegraph',
         :use_deployed_config => true,
@@ -67,8 +71,14 @@ describe 'wdqs::blazegraph', :type => :class do
         :lsbdistid => 'Debian',
     } }
 
-    it { is_expected.to contain_file('/lib/systemd/system/wdqs-blazegraph.service')
+    it { is_expected.to contain_file('/lib/systemd/system/wdqs-categories.service')
       .with_content(/runBlazegraph.sh -f RWStore.properties/)
+    }
+    it { is_expected.to contain_file('/lib/systemd/system/wdqs-categories.service')
+      .with_content(%r{BLAZEGRAPH_CONFIG=/etc/default/wdqs-categories})
+    }
+    it { is_expected.to contain_file('/etc/default/wdqs-categories')
+      .with_content(/PORT=9090/)
     }
   end
 end

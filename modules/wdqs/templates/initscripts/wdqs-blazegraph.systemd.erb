@@ -1,8 +1,9 @@
 [Unit]
-Description=Wikidate Query Service - Blazegraph
+Description=Wikidate Query Service - Blazegraph - <%= @title %>
 
 [Service]
 Type=simple
+Environment="BLAZEGRAPH_CONFIG=/etc/default/<%= @title %>"
 WorkingDirectory=<%= @package_dir %>
 ExecStart=/bin/bash <%= @package_dir %>/runBlazegraph.sh -f <%= @config_file %>
 User=<%= @username %>
@@ -20,9 +21,9 @@ RestrictAddressFamilies=AF_UNIX AF_INET AF_INET6
 
 ReadOnlyDirectories=/
 # data storage
-ReadWriteDirectories=/srv/wdqs
+ReadWriteDirectories=<%= @data_dir %>
 # logs
-ReadWriteDirectories=/var/log/wdqs
+ReadWriteDirectories=<%= @log_dir %>
 # already protected by PrivateTmp
 ReadWriteDirectories=/tmp /var/tmp
 
