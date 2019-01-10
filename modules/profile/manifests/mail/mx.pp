@@ -21,7 +21,7 @@ class profile::mail::mx (
         use_bayes        => '1',
         bayes_auto_learn => '1',
         max_children     => 32,
-        trusted_networks => $network::constants::all_networks,
+        trusted_networks => $network::constants::aggregate_networks,
     }
 
     include passwords::exim

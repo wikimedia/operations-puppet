@@ -22,7 +22,7 @@ class profile::otrs(
         exim_database_name => $exim_database_name,
         exim_database_user => $exim_database_user,
         exim_database_pass => $exim_database_pass,
-        trusted_networks   => $network::constants::all_networks,
+        trusted_networks   => $network::constants::aggregate_networks,
     }
 
     class { '::httpd':
