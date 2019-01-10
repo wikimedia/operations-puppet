@@ -27,8 +27,8 @@
 <% end -%>
 
 <% if @xhgui_host -%>
-    ProxyPass /xhgui http://<%= @xhgui_host %>/xhgui/
-    ProxyPassReverse /xhgui http://<%= @xhgui_host %>/xhgui/
+    ProxyPass /xhgui http://<%= @xhgui_host %>/xhgui
+    ProxyPassReverse /xhgui http://<%= @xhgui_host %>/xhgui
 <% end -%>
 
 </VirtualHost>
