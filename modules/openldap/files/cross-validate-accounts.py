@@ -157,7 +157,8 @@ def validate_common_ops_group(yamldata):
     ldap_ops = get_ldap_group_members('ops')
     yml_ops = yamldata['groups']['ops']['members'] + yamldata['groups']['datacenter-ops']['members']
     if sorted(ldap_ops) != sorted(yml_ops):
-        return "Membership of ops group in LDAP and YAML are not identical"
+        ops_diff = list(set(sorted(ldap_ops)) - set(sorted(yml_ops)))
+        return "Membership of ops group in LDAP and YAML are not identical: " + str(ops_diff)
     else:
         return ""
 
