@@ -22,7 +22,13 @@
     <Directory /srv/org/wikimedia/static-rt>
         Options Indexes FollowSymLinks MultiViews
         AllowOverride None
-        Require all granted
+        AuthName "Developer account (use wiki login name not shell) - ops"
+        AuthType Basic
+        AuthBasicProvider ldap
+        AuthLDAPBindDN cn=proxyagent,ou=profile,dc=wikimedia,dc=org
+        AuthLDAPBindPassword <%= @proxypass %>
+        AuthLDAPURL "ldaps://ldap-labs.eqiad.wikimedia.org ldap-labs.codfw.wikimedia.org/ou=people,dc=wikimedia,dc=org?cn"
+        Require ldap-group cn=ops,ou=groups,dc=wikimedia,dc=org
     </Directory>
 
 ErrorLog /var/log/apache2/error.log
