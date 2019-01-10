@@ -407,3 +407,7 @@ monitoring::groups:
     description: Poolcounter servers (eqiad)
   poolcounter_codfw:
     description: Poolcounter servers (codfw)
+
+  # Dumps Servers
+  dumps_eqiad:
+    description: Dumps servers (eqiad)

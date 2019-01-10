@@ -397,6 +397,11 @@ wikimedia_clusters:
     sites:
       eqiad: []
       codfw: []
+  dumps:
+    description: "Dumps servers"
+    id: 82
+    sites:
+      eqiad: []
 
 puppetmaster: "puppet"
 
