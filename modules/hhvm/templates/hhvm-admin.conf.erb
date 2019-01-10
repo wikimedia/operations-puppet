@@ -6,7 +6,7 @@
     <Location />
         ProxyPass fcgi://127.0.0.1:9001/ retry=0
         <RequireAny>
-            Require ip 10. <%= scope['::network::constants::all_networks'].join(' ') %>
+            Require ip <%= scope['::network::constants::domain_networks'].join(' ') %>
             Require local
         </RequireAny>
     </Location>
