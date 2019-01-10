@@ -682,13 +682,13 @@ class profile::prometheus::ops (
 
     prometheus::jmx_exporter_config{ "wdqs_blazegraph_${::site}":
         dest              => "${targets_path}/jmx_wdqs_blazegraph_${::site}.yaml",
-        class_name        => 'profile::wdqs',
+        class_name        => 'profile::wdqs::blazegraph',
         instance_selector => 'wdqs_blazegraph',
         site              => $::site,
     }
     prometheus::jmx_exporter_config { "wdqs_updater_${::site}":
         dest              => "${targets_path}/jmx_wdqs_updater_${::site}.yaml",
-        class_name        => 'profile::wdqs',
+        class_name        => 'profile::wdqs::updater',
         instance_selector => 'wdqs_updater',
         site              => $::site,
     }
@@ -741,7 +741,7 @@ class profile::prometheus::ops (
     prometheus::class_config{ "blazegraph_${::site}":
         dest       => "${targets_path}/blazegraph_${::site}.yaml",
         site       => $::site,
-        class_name => 'profile::wdqs',
+        class_name => 'profile::wdqs::blazegraph',
         port       => 9193,
     }
 
