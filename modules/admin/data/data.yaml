@@ -405,6 +405,7 @@ groups:
     description: Admins for the WikiData Query Service project
     members: [smalyshev, hoo, onimisionipe]
     privileges: ['ALL = NOPASSWD: /usr/sbin/service wdqs-blazegraph *',
+                 'ALL = NOPASSWD: /usr/sbin/service wdqs-categories *',
                  'ALL = NOPASSWD: /usr/sbin/service wdqs-updater *',
                  'ALL = NOPASSWD: /usr/sbin/service nginx *',
                  'ALL = NOPASSWD: /bin/systemctl reload nginx',

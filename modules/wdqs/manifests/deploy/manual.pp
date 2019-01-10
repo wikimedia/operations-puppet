@@ -73,32 +73,20 @@ class wdqs::deploy::manual(
         require => Exec['wdqs_git_fat_init'],
     }
 
-    sudo::user { "${deploy_user}_wdqs-blazegraph":
-        user       => $deploy_user,
-        privileges => [
-            'ALL=(root) NOPASSWD: /usr/sbin/service wdqs-blazegraph start',
-            'ALL=(root) NOPASSWD: /usr/sbin/service wdqs-blazegraph stop',
-            'ALL=(root) NOPASSWD: /usr/sbin/service wdqs-blazegraph restart',
-            'ALL=(root) NOPASSWD: /usr/sbin/service wdqs-blazegraph reload',
-            'ALL=(root) NOPASSWD: /usr/sbin/service wdqs-blazegraph status',
-            'ALL=(root) NOPASSWD: /usr/sbin/service wdqs-blazegraph try-restart',
-            'ALL=(root) NOPASSWD: /usr/sbin/service wdqs-blazegraph force-reload',
-            'ALL=(root) NOPASSWD: /usr/sbin/service wdqs-blazegraph graceful-stop'
-        ],
-    }
-
-    sudo::user { "${deploy_user}_wdqs-updater":
-        user       => $deploy_user,
-        privileges => [
-            'ALL=(root) NOPASSWD: /usr/sbin/service wdqs-updater start',
-            'ALL=(root) NOPASSWD: /usr/sbin/service wdqs-updater stop',
-            'ALL=(root) NOPASSWD: /usr/sbin/service wdqs-updater restart',
-            'ALL=(root) NOPASSWD: /usr/sbin/service wdqs-updater reload',
-            'ALL=(root) NOPASSWD: /usr/sbin/service wdqs-updater status',
-            'ALL=(root) NOPASSWD: /usr/sbin/service wdqs-updater try-restart',
-            'ALL=(root) NOPASSWD: /usr/sbin/service wdqs-updater force-reload',
-            'ALL=(root) NOPASSWD: /usr/sbin/service wdqs-updater graceful-stop'
-        ],
+    [ 'wdqs-blazegraph', 'wdqs-categories', 'wdqs-updater'].each |String $service_name| {
+        sudo::user { "${deploy_user}_${service_name}":
+            user       => $deploy_user,
+            privileges => [
+                "ALL=(root) NOPASSWD: /usr/sbin/service ${service_name} start",
+                "ALL=(root) NOPASSWD: /usr/sbin/service ${service_name} stop",
+                "ALL=(root) NOPASSWD: /usr/sbin/service ${service_name} restart",
+                "ALL=(root) NOPASSWD: /usr/sbin/service ${service_name} reload",
+                "ALL=(root) NOPASSWD: /usr/sbin/service ${service_name} status",
+                "ALL=(root) NOPASSWD: /usr/sbin/service ${service_name} try-restart",
+                "ALL=(root) NOPASSWD: /usr/sbin/service ${service_name} force-reload",
+                "ALL=(root) NOPASSWD: /usr/sbin/service ${service_name} graceful-stop"
+            ],
+        }
     }
 
 }

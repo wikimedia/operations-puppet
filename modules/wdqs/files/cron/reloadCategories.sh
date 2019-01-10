@@ -1,8 +1,13 @@
 #!/bin/bash
+set -e
 # This script is reloading categories into a new namespace
 # NOTE: This should be run under user that has rights to
 # sudo systemctl reload nginx
 . /usr/local/bin/cronUtils.sh
+if [ -r /etc/wdqs/vars.sh ]; then
+  . /etc/wdqs/vars.sh
+fi
+ENDPOINT=${CATEGORY_ENDPOINT:-"http://localhost:9999"}
 
 echo "$(date --iso-8601=seconds) starting categories reload"
 
@@ -11,7 +16,7 @@ newNamespace="categories${today}"
 rm -f ${DATA_DIR}/*-categories.ttl.gz
 cd ${DEPLOY_DIR}
 # Create new namespace
-bash createNamespace.sh ${newNamespace} || exit 1
+bash createNamespace.sh ${newNamespace} $ENDPOINT || exit 1
 # Load the data
 echo "loading categories in ${newNamespace}"
 bash forAllCategoryWikis.sh loadCategoryDump.sh $newNamespace

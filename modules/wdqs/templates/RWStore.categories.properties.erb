@@ -1,0 +1,35 @@
+# Dump data in target.
+com.bigdata.journal.AbstractJournal.file=<%= @data_dir %>/categories.jnl
+com.bigdata.journal.AbstractJournal.bufferMode=DiskRW
+com.bigdata.service.AbstractTransactionService.minReleaseAge=1
+
+com.bigdata.rdf.store.AbstractTripleStore.quads=false
+com.bigdata.rdf.store.AbstractTripleStore.statementIdentifiers=false
+
+# Don't use truth maintenance right yet.
+com.bigdata.rdf.sail.truthMaintenance=false
+com.bigdata.rdf.store.AbstractTripleStore.textIndex=false
+com.bigdata.rdf.store.AbstractTripleStore.axiomsClass=com.bigdata.rdf.axioms.NoAxioms
+
+# Use our private vocabularies
+com.bigdata.rdf.store.AbstractTripleStore.vocabularyClass=org.wikidata.query.rdf.blazegraph.WikibaseVocabulary$V003
+com.bigdata.rdf.store.AbstractTripleStore.inlineURIFactory=org.wikidata.query.rdf.blazegraph.WikibaseInlineUriFactory
+com.bigdata.rdf.store.AbstractTripleStore.extensionFactoryClass=org.wikidata.query.rdf.blazegraph.WikibaseExtensionFactory
+
+# Suggested settings from https://phabricator.wikimedia.org/T92308
+com.bigdata.btree.writeRetentionQueue.capacity=4000
+com.bigdata.btree.BTree.branchingFactor=128
+# 200M initial extent.
+com.bigdata.journal.AbstractJournal.initialExtent=209715200
+com.bigdata.journal.AbstractJournal.maximumExtent=209715200
+# larger statement buffer capacity for bulk loading.
+com.bigdata.rdf.sail.bufferCapacity=100000
+# Override the #of write cache buffers to improve bulk load performance. Requires enough native heap!
+com.bigdata.journal.AbstractJournal.writeCacheBufferCount=1000
+# Enable small slot optimization!
+com.bigdata.rwstore.RWStore.smallSlotType=1024
+# See https://jira.blazegraph.com/browse/BLZG-1385 - reduce LRU cache timeout
+com.bigdata.journal.AbstractJournal.historicalIndexCacheCapacity=20
+com.bigdata.journal.AbstractJournal.historicalIndexCacheTimeout=5
+# Geospatial OFF - categories don't use it
+com.bigdata.rdf.store.AbstractTripleStore.geoSpatial=false

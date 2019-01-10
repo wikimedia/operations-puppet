@@ -7,19 +7,21 @@ class profile::wdqs::common(
     Boolean $run_tests = hiera('profile::wdqs::run_tests', false),
     Enum['none', 'daily', 'weekly'] $load_categories = hiera('profile::wdqs::load_categories', 'daily'),
     Array[String] $nodes = hiera('profile::wdqs::nodes'),
+    Stdlib::Httpurl $categories_endpoint =  hiera('profile::wdqs::categories_endpoint', 'http://localhost:9999'),
 ) {
 
     $username = 'blazegraph'
     $deploy_user = 'deploy-service'
 
     class { '::wdqs::common':
-        deploy_mode => $deploy_mode,
-        username    => $username,
-        deploy_user => $deploy_user,
-        package_dir => $package_dir,
-        data_dir    => $data_dir,
-        log_dir     => $log_dir,
-        endpoint    => $endpoint,
+        deploy_mode         => $deploy_mode,
+        username            => $username,
+        deploy_user         => $deploy_user,
+        package_dir         => $package_dir,
+        data_dir            => $data_dir,
+        log_dir             => $log_dir,
+        endpoint            => $endpoint,
+        categories_endpoint => $categories_endpoint,
     }
 
     class { 'wdqs::crontasks':

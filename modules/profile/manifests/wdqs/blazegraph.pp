@@ -19,7 +19,6 @@ class profile::wdqs::blazegraph(
 
     $username = 'blazegraph'
     $prometheus_agent_path = '/usr/share/java/prometheus/jmx_prometheus_javaagent.jar'
-    $prometheus_agent_config = '/etc/wdqs/wdqs-blazegraph-prometheus-jmx.yaml'
     $default_extra_jvm_opts = [
         '-XX:+UseNUMA',
         '-XX:+UnlockExperimentalVMOptions',
@@ -28,16 +27,24 @@ class profile::wdqs::blazegraph(
     ]
 
     $prometheus_agent_port_wdqs = 9102
+    $prometheus_agent_config_wdqs = '/etc/wdqs/wdqs-blazegraph-prometheus-jmx.yaml'
+    $prometheus_agent_port_categories = 9103
+    $prometheus_agent_config_categories = '/etc/wdqs/wdqs-categories-prometheus-jmx.yaml'
     profile::prometheus::jmx_exporter {
         default:
             hostname         => $::hostname,
             prometheus_nodes => $prometheus_nodes,
-            config_file      => $prometheus_agent_config,
             source           => 'puppet:///modules/profile/wdqs/wdqs-blazegraph-prometheus-jmx.yaml',
             ;
         'wdqs_blazegraph':
-            port   => $prometheus_agent_port_wdqs,
-            before => Service['wdqs-blazegraph'],
+            port        => $prometheus_agent_port_wdqs,
+            before      => Service['wdqs-blazegraph'],
+            config_file => $prometheus_agent_config_wdqs,
+            ;
+        'wdqs_categories':
+            port        => $prometheus_agent_port_categories,
+            before      => Service['wdqs-categories'],
+            config_file => $prometheus_agent_config_categories,
     }
 
     wdqs::blazegraph {
@@ -55,7 +62,13 @@ class profile::wdqs::blazegraph(
             port             => 9999,
             config_file_name => 'RWStore.properties',
             heap_size        => $heap_size,
-            extra_jvm_opts   => $default_extra_jvm_opts + $extra_jvm_opts +  "-javaagent:${prometheus_agent_path}=${prometheus_agent_port_wdqs}:${prometheus_agent_config}"
+            extra_jvm_opts   => $default_extra_jvm_opts + $extra_jvm_opts +  "-javaagent:${prometheus_agent_path}=${prometheus_agent_port_wdqs}:${prometheus_agent_config_wdqs}"
+            ;
+        'wdqs-categories':
+            port             => 9990,
+            config_file_name => 'RWStore.categories.properties',
+            heap_size        => '8g',
+            extra_jvm_opts   => $default_extra_jvm_opts + $extra_jvm_opts +  "-javaagent:${prometheus_agent_path}=${prometheus_agent_port_categories}:${prometheus_agent_config_categories}"
     }
 
     # No monitoring for lag for secondary servers

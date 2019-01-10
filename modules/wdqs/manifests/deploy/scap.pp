@@ -8,7 +8,7 @@ class wdqs::deploy::scap(
     scap::target { 'wdqs/wdqs':
         service_name              => 'wdqs-blazegraph',
         deploy_user               => $deploy_user,
-        additional_services_names => ['wdqs-updater'],
+        additional_services_names => ['wdqs-updater', 'wdqs-categories'],
         manage_user               => true,
     }
 

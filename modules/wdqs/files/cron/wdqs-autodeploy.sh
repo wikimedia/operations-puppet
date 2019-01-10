@@ -14,6 +14,8 @@ git -C $package_dir fat pull
 
 echo "restarting wdqs-blazegraph"
 sudo service wdqs-blazegraph restart
+echo "restarting wdqs-categories"
+sudo service wdqs-categories restart
 
 sleep 10
 

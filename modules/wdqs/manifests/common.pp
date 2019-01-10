@@ -9,6 +9,7 @@
 # - $package_dir:  Directory where the service should be installed.
 # - $data_dir: Directory where the database should be stored.
 # - $log_dir: Directory where the logs go.
+# - $categories_endpoint: Endpoint which category scripts will be using.
 class wdqs::common(
     Wdqs::DeployMode $deploy_mode,
     String $username,
@@ -17,6 +18,7 @@ class wdqs::common(
     Stdlib::Unixpath $package_dir,
     Stdlib::Unixpath $data_dir,
     Stdlib::Unixpath $log_dir,
+    Stdlib::Httpurl $categories_endpoint,
 ) {
     include ::wdqs::packages
 
