@@ -331,7 +331,7 @@ groups:
                  * Reset authentication of users
                  * Delete users (e.g. unverified accounts due to wrong email address)
                  * Delete files (e.g. copyright violations)
-    members: [aklapper]
+    members: [aklapper, gjg]
     privileges: ['ALL = NOPASSWD: /srv/phab/phabricator/bin/cache purge --caches user',
                  'ALL = NOPASSWD: /srv/phab/phabricator/bin/remove destroy F*',
                  'ALL = NOPASSWD: /srv/phab/phabricator/bin/remove destroy H*',
