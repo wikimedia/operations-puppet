@@ -58,7 +58,7 @@ trace=off
 delegation-only=com,net
 
 # If set, only allow these comma separated netmasks to recurse
-allow-from=127.0.0.0/8, ::1/128, <%= (@allow_from + flatten_ips(@listen_addresses)).join(", ") %>
+allow-from=<%= (@allow_from + flatten_ips(@listen_addresses)).join(", ") %>
 
 # Zones for which we forward queries, comma separated domain=ip pairs
 forward-zones=<%= @forward_zones -%>, <%= @additional_forward_zones -%>

@@ -9,7 +9,7 @@ class profile::dnsrecursor (
 
     class { '::dnsrecursor':
         version_hostname => true,
-        allow_from       => $network::constants::all_networks,
+        allow_from       => $network::constants::aggregate_networks,
         listen_addresses => [
             $facts['ipaddress'],
             $facts['ipaddress6'],
