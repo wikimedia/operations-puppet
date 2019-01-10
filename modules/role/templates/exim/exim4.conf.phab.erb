@@ -16,7 +16,7 @@ domainlist local_domains = +system_domains : +phab_domains
 # Standard lists
 domainlist phab_domains = phabricator.wikimedia.org
 
-hostlist wikimedia_nets = <; <%= scope.lookupvar('network::constants::all_networks').join(" ; ") %>
+hostlist wikimedia_nets = <; <%= scope.lookupvar('network::constants::aggregate_networks').join(" ; ") %>
 hostlist relay_from_hosts = <; @[] ; 127.0.0.1 ; ::1 ;
 
 # Administration
