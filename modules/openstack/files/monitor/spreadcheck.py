@@ -1,24 +1,42 @@
 #!/usr/bin/python
+#
+# Copyright (c) 2019 Wikimedia Foundation and contributors
+#
+# Licensed under the Apache License, Version 2.0 (the "License"); you may
+# not use this file except in compliance with the License. You may obtain
+# a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+# WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+# License for the specific language governing permissions and limitations
+# under the License.
 """
 Simple NRPE check script that checks if a particular projects' critical
 instance types are spread out enough in underlying virt* hosts so that
 a virt host outage doesn't take out all instances in a given class.
 
-Note that the algorithm used for checking 'spread out enough' is super
-bogus, and doesn't work when number of instances > number of virt hosts.
-This should be fixed - it isn't even good enough for some of the host
-classes in the test use case (Toolforge' exec nodes).
-FIXME: Find a mathematically valid definition of 'spread out enough'
-       and implement it
+Our current definition of 'spread out enough' is no more than 1/3 of the
+instances of a given class on the same virt.
 """
-import sys
+from __future__ import print_function
+
 import argparse
+import collections
+import logging
+import math
+import sys
+
+import mwopenstackclients
 import yaml
-from novaclient import client as novaclient
-from collections import defaultdict
 
 
-def classify_instances(creds, project, classifier):
+logger = logging.getLogger(__name__)
+
+
+def classify_instances(project, servers, classifier):
     """
     Classify instances in project based on prefixes.
 
@@ -34,17 +52,17 @@ def classify_instances(creds, project, classifier):
     Returns a dict with the following structure:
         classname  -> [(instancename, virthostname)]
     """
-    client = novaclient.Client("1.1", project_id=project, **creds)
-
-    servers = client.servers.list()
-    classification = defaultdict(list)
+    classification = {}
+    for prefix in classifier:
+        classification[classifier[prefix]] = []
 
     for server in servers:
         if getattr(server, 'status') != 'ACTIVE':
             continue
-        name, host = server.name, getattr(server, 'hostId')
+        name = server.name
+        host = getattr(server, 'OS-EXT-SRV-ATTR:hypervisor_hostname')
         for prefix in classifier:
-            if name.startswith(project + '-' + prefix):
+            if name.startswith('{}-{}'.format(project, prefix)):
                 classname = classifier[prefix]
                 classification[classname].append((name, host))
                 break
@@ -53,48 +71,77 @@ def classify_instances(creds, project, classifier):
 
 
 def get_failed_classes(classification):
-    """
-    Return list of classes that are not 'spread out enough'
+    """Get list of classes that are not 'spread out enough'.
 
-    'Spread out enough' is defined very, very poorly - it just
-    checks that:
-        number of instances > unique number of virt* hosts hosting instances
-
-    This works only when number of instances > total number of virt* hosts,
-    and is also quite terrible otherwise.
-
-    FIXME: Use a proper mathematical definition of 'spread out enough'.
-
-    Returns a list of classes that are considered to be not spread out enough
+    'Spread out enough' is defined as no more than 1/3 of the total instances
+    on a single virt.
     """
     failed_classes = []
 
     for cls, items in classification.iteritems():
-        hosts_used = len(set([i[1] for i in items]))
-        if hosts_used < len(items):
-            failed_classes.append(cls)
+        num_instances = len(items)
+        buckets = collections.defaultdict(list)
+        for name, host in items:
+            buckets[host].append(name)
+        hosts_used = len(buckets)
+        logger.debug('%s: %d on %d virts', cls, num_instances, hosts_used)
+
+        max_instances = int(math.ceil(num_instances / 3.0))
+        for virt, instances in buckets.iteritems():
+            instance_cnt = len(instances)
+            if instance_cnt > max_instances:
+                logger.info(
+                    '%s: %d instances on %s; expected <=%d',
+                    cls, instance_cnt, virt, max_instances)
+                failed_classes.append(cls)
+                break
+
     return failed_classes
 
 
-if __name__ == '__main__':
-    argparser = argparse.ArgumentParser()
-    argparser.add_argument(
-        '--config',
-        help='Path to yaml config file',
-        type=argparse.FileType('r')
+def main():
+    parser = argparse.ArgumentParser(description='Instance distribution check')
+    parser.add_argument(
+        '-v', '--verbose', action='count',
+        default=0, dest='loglevel', help='Increase logging verbosity')
+    parser.add_argument(
+        '--envfile', default='/etc/novaobserver.yaml',
+        help='Path to OpenStack authentication YAML file')
+    parser.add_argument(
+        '--config', type=argparse.FileType('r'),
+        help='Path to yaml config file')
+
+    args = parser.parse_args()
+
+    logging.basicConfig(
+        level=max(logging.DEBUG, logging.WARNING - (10 * args.loglevel)),
+        format='%(asctime)s %(name)-12s %(levelname)-8s: %(message)s',
+        datefmt='%Y-%m-%dT%H:%M:%SZ'
     )
-    args = argparser.parse_args()
+    logging.captureWarnings(True)
+    # Quiet some noisy 3rd-party loggers channels
+    logging.getLogger('requests').setLevel(logging.WARNING)
+    logging.getLogger('urllib3').setLevel(logging.WARNING)
 
     config = yaml.safe_load(args.config)
+    client = mwopenstackclients.Clients(envfile=args.envfile)
 
-    classification = classify_instances(config['credentials'],
-                                        config['project'],
-                                        config['classifier'])
+    classification = classify_instances(
+        project=config['project'],
+        servers=client.allinstances(
+            projectid=config['project'], allregions=True),
+        classifier=config['classifier'])
     failed_classes = get_failed_classes(classification)
+
     if failed_classes:
-        print "CRITICAL: %s class instances not spread out enough" % \
-            ','.join(failed_classes)
-        sys.exit(2)
+        print(
+            "CRITICAL: {} class instances not spread out enough".format(
+                ','.join(failed_classes)))
+        return 2
     else:
-        print "OK: All critical toolforge instances are spread out enough"
-        sys.exit(0)
+        print("OK: All critical toolforge instances are spread out enough")
+        return 1
+
+
+if __name__ == '__main__':
+    sys.exit(main())

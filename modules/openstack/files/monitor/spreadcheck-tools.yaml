@@ -1,0 +1,22 @@
+project: tools
+
+classifier:
+  bastion-: bastion
+  checker-: checker
+  elastic-: elastic
+  flannel-etcd-: flannel-etcd
+  k8s-etcd-: k8s-etcd
+  mail: mail
+  paws-worker-: paws
+  prometheus-: prometheus
+  proxy-: proxy
+  redis-: redis
+  services-: services
+  sgebastion-: sgebastion
+  sgeexec-: sgeexec
+  sgegrid-master: sgemaster
+  sgegrid-shadow: sgemaster
+  sgewebgrid-generic-: sgewebgrid-generic
+  sgewebgrid-lighttpd-: sgewebgrid-lighttpd
+  static-: static
+  worker-: worker

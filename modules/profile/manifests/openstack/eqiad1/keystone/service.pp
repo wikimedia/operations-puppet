@@ -37,9 +37,6 @@ class profile::openstack::eqiad1::keystone::service(
     $public_port = hiera('profile::openstack::base::keystone::public_port'),
     $main_nova_controller = hiera('profile::openstack::main::nova_controller'),
     $glance_host = hiera('profile::openstack::eqiad1::glance_host'),
-    $spread_check_user = hiera('profile::openstack::eqiad1::monitor::spread_check_user'),
-    $spread_check_password = hiera('profile::openstack::eqiad1::monitor::spread_check_password'),
-    $spread_check_region_name = hiera('profile::openstack::eqiad1::monitor::spread_check_region_name'),
     ) {
 
     require ::profile::openstack::eqiad1::clientpackages
@@ -102,10 +99,6 @@ class profile::openstack::eqiad1::keystone::service(
 
     class {'::openstack::monitor::spreadcheck':
         active        => $::fqdn == $nova_controller,
-        keystone_host => $keystone_host,
-        nova_user     => $spread_check_user,
-        nova_password => $spread_check_password,
-        region_name   => $spread_check_region_name,
     }
 
     class {'::openstack::keystone::monitor::projects_and_users':
