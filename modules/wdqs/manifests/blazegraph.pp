@@ -32,8 +32,7 @@ class wdqs::blazegraph(
     } else {
         $config_file = '/etc/wdqs/RWStore.properties'
         file { $config_file:
-            ensure  => present,
-            force   => true,
+            ensure  => file,
             content => template('wdqs/RWStore.properties.erb'),
             owner   => 'root',
             group   => 'root',
