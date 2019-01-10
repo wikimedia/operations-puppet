@@ -31,7 +31,7 @@ class profile::ntp {
         default => 'us',
     }
 
-    # TODO: generate from $network::constants::all_networks
+    # TODO: generate from $network::constants::aggregate_networks
     $our_networks_acl = [
       '10.0.0.0 mask 255.0.0.0',
       '208.80.152.0 mask 255.255.252.0',
