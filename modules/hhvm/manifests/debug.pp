@@ -34,30 +34,6 @@ class hhvm::debug {
                     ]
     require_package($common_pkgs)
 
-    if os_version('ubuntu == trusty') {
-        $trusty_pkgs = [
-                        'libboost1.54-dbg',
-                        'libjson-c2-dbg',
-                        'libssl1.0.0-dbg',
-                        'libstdc++6-4.8-dbg',
-                        'perf-tools',
-                        ]
-
-        require_package($trusty_pkgs)
-    }
-
-    if os_version('debian == jessie') {
-        $jessie_pkgs = [
-                        'libboost1.55-dbg',
-                        'libjson-c2-dbg',
-                        'libssl1.0.0-dbg',
-                        'libstdc++6-4.8-dbg',
-                        'perf-tools-unstable',
-                        ]
-
-        require_package($jessie_pkgs)
-    }
-
     if os_version('debian == stretch') {
         # TODO: libjson-c3-dbgsym, libssl1.0.2-dbgsym, libboost-atomic1.62.0-dbgsym
         # libboost-chrono1.62.0-dbgsym, libboost-context1.62.0-dbgsym
@@ -130,20 +106,6 @@ class hhvm::debug {
     exec { '/usr/local/sbin/install-pkg-src hhvm':
         unless  => '/usr/local/sbin/install-pkg-src --dry-run hhvm | grep -q up-to-date',
         require => Package['dpkg-dev', 'hhvm'],
-    }
-
-
-    ## Misc
-
-    if os_version('ubuntu == trusty') {
-        # Backported fix for pretty-printer bundled with libstdc++6-4.8-dbg.
-        # See <https://gcc.gnu.org/bugzilla/show_bug.cgi?id=58962> and
-        # <https://bugs.launchpad.net/ubuntu/+source/gcc-4.8/+bug/1256419>.
-
-        file { '/usr/share/gcc-4.8/python/libstdcxx/v6/printers.py':
-            source  => 'puppet:///modules/hhvm/debug/printers.py',
-            require => Package['libstdc++6-4.8-dbg'],
-        }
     }
 
 

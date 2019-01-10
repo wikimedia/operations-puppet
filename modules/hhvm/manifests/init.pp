@@ -72,12 +72,8 @@ class hhvm(
     ) {
 
 
-    ## Packages
-    if os_version('ubuntu == trusty') {
-        $ext_pkgs = []
-    } else {
-        $ext_pkgs = [ 'hhvm-luasandbox', 'hhvm-tidy', 'hhvm-wikidiff2' ]
-    }
+    $ext_pkgs = [ 'hhvm-luasandbox', 'hhvm-tidy', 'hhvm-wikidiff2' ]
+
     package { 'hhvm':
         ensure => present,
     }
@@ -110,12 +106,7 @@ class hhvm(
 
 
     # HHVM specific
-    if os_version('ubuntu == trusty') {
-        # only for dumps hosts, they don't need these extensions
-        $dynamic_extensions = []
-    } else {
-        $dynamic_extensions = [ 'luasandbox.so', 'tidy.so', 'wikidiff2.so' ]
-    }
+    $dynamic_extensions = [ 'luasandbox.so', 'tidy.so', 'wikidiff2.so' ]
 
     $common_defaults = {
         date         => { timezone => 'UTC' },
