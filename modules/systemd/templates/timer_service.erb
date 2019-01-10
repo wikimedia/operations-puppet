@@ -8,4 +8,7 @@ User=<%= @user %>
 Environment=<%= key -%>=<%= @environment[key] %>
 <%- end -%>
 <%- end -%>
+<%- if @syslog_identifier -%>
+SyslogIdentifier=<%= @syslog_identifier %>
+<%- end -%>
 ExecStart=<%= @command %>

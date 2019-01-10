@@ -63,6 +63,15 @@
 #   of space consumed on disk.
 #   Default: true
 #
+#  [*syslog_identifier*]
+#   Adds the SyslogIdentifier parameter to the systemd unit to
+#   override the default behavior, namely using the program name.
+#   This is particularly useful when multiple timers are scheduled
+#   using the same program but with different parameters. Without
+#   an explicit SyslogIdentifier in fact they would end up sharing
+#   the same identifier and rsyslog rules wouldn't work anymore.
+#   Default: undef
+#
 define systemd::timer::job(
     String $description,
     String $command,
@@ -79,6 +88,7 @@ define systemd::timer::job(
     String $logfile_group = 'root',
     Enum['user', 'group', 'all'] $logfile_perms = 'all',
     Boolean $syslog_force_stop = true,
+    Optional[String] $syslog_identifier = undef,
 ) {
     $log_owner = $logfile_owner ? {
         undef   => $user,
