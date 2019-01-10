@@ -126,14 +126,20 @@ class profile::analytics::refinery::job::camus(
     # Import eventbus mediawiki.job queue topics into /wmf/data/raw/mediawiki_job
     # once every hour.
     camus::job { 'mediawiki_job':
+        script        => "${profile::analytics::refinery::path}/bin/camus",
         minute        => '10',
         kafka_brokers => $kafka_brokers_jumbo,
+        environment   => $systemd_env,
+        interval      => '*-*-* *:10:00',
     }
 
     # Import eventlogging-client-side events for backup purposes
     camus::job { 'eventlogging-client-side':
+        script        => "${profile::analytics::refinery::path}/bin/camus",
         minute        => '20',
         kafka_brokers => $kafka_brokers_jumbo,
+        environment   => $systemd_env,
+        interval      => '*-*-* *:20:00',
     }
 
     # Import netflow queue topics into /wmf/data/raw/netflow
@@ -143,6 +149,6 @@ class profile::analytics::refinery::job::camus(
         minute        => '30',
         kafka_brokers => $kafka_brokers_jumbo,
         environment   => $systemd_env,
-        interval      => '*-*-* *:20:00',
+        interval      => '*-*-* *:30:00',
     }
 }

@@ -179,6 +179,7 @@ define camus::job (
             logfile_group             => $user,
             logfile_perms             => 'all',
             syslog_force_stop         => true,
+            syslog_identifier         => "camus-${title}",
         }
     }
 }
