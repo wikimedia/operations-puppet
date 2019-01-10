@@ -1,11 +1,7 @@
 # sets up Apache site for a WMF RT install
 class requesttracker::apache($apache_site) {
 
-    if os_version('debian >= jessie') {
-        $rt_apache_conf = 'requesttracker/rt4.apache.httponly.erb'
-    } else {
-        $rt_apache_conf = 'requesttracker/rt4.apache.erb'
-    }
+    $rt_apache_conf = 'requesttracker/rt4.apache.httponly.erb'
 
     httpd::site { 'rt.wikimedia.org':
         content => template($rt_apache_conf),
