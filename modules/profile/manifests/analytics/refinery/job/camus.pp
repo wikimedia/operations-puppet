@@ -46,12 +46,13 @@ class profile::analytics::refinery::job::camus(
     # for a particular camus::job instance by setting the parameter on
     # the camus::job declaration.
     Camus::Job {
-        script              => "${env} && ${profile::analytics::refinery::path}/bin/camus",
+        script              => "${profile::analytics::refinery::path}/bin/camus",
         kafka_brokers       => $kafka_brokers,
         camus_jar           => "${profile::analytics::refinery::path}/artifacts/org/wikimedia/analytics/camus-wmf/camus-wmf-0.1.0-wmf9.jar",
         check_jar           => "${profile::analytics::refinery::path}/artifacts/org/wikimedia/analytics/refinery/refinery-camus-0.0.69.jar",
         # Email reports if CamusPartitionChecker finds errors.
         check_email_enabled => $monitoring_enabled,
+        environment         => $systemd_env,
         template_variables  => {
             'hadoop_cluster_name' => $::profile::hadoop::common::cluster_name
         }
@@ -65,6 +66,7 @@ class profile::analytics::refinery::job::camus(
         minute                => '*/10',
         kafka_brokers         => $kafka_brokers_jumbo,
         check_topic_whitelist => 'webrequest_(upload|text)',
+        interval              => '*-*-* *:00/10:00',
     }
 
     # Import eventlogging_* topics into /wmf/data/raw/eventlogging
@@ -77,6 +79,7 @@ class profile::analytics::refinery::job::camus(
         check_dry_run         => true,
         # Only check these topic, since they should have data every hour.
         check_topic_whitelist => 'eventlogging_(NavigationTiming|VirtualPageView)',
+        interval              => '*-*-* *:05:00',
     }
 
     # Import eventbus topics into /wmf/data/raw/eventbus
@@ -98,21 +101,13 @@ class profile::analytics::refinery::job::camus(
         check_dry_run         => true,
         # Only check this topic, since it should always have data for every hour
         check_topic_whitelist => "${primary_mediawiki_dc}.mediawiki.revision-create",
+        interval              => '*-*-* *:05:00',
     }
 
     # Import mediawiki_* topics into /wmf/data/raw/mediawiki
     # once every hour.  This data is expected to be Avro binary.
-    camus::job { 'mediawiki':
-        # Currently not used, should be re-enabled if mediawiki-analytics move to Kafa jumbo-eqiad.
-        ensure        => 'absent',
-        check         => $monitoring_enabled,
-        minute        => '15',
-        # refinery-camus contains some custom decoder classes which
-        # are needed to import Avro binary data.
-        libjars       => "${profile::analytics::refinery::path}/artifacts/org/wikimedia/analytics/refinery/refinery-camus-0.0.28.jar",
-        kafka_brokers => $kafka_brokers_jumbo,
-    }
-    # TODO: This camus job will be removed once all mediawiki avro topics have moved to jumbo.
+    # TODO: This camus job will be removed once all mediawiki avro topics have moved
+    # to Modern Event Platform.
     # See: https://phabricator.wikimedia.org/T188136
     camus::job { 'mediawiki-analytics':
         check         => $monitoring_enabled,
@@ -121,34 +116,29 @@ class profile::analytics::refinery::job::camus(
         # are needed to import Avro binary data.
         libjars       => "${profile::analytics::refinery::path}/artifacts/org/wikimedia/analytics/refinery/refinery-camus-0.0.28.jar",
         kafka_brokers => $kafka_brokers_analytics,
+        interval      => '*-*-* *:15:00',
     }
 
     # Import eventbus mediawiki.job queue topics into /wmf/data/raw/mediawiki_job
     # once every hour.
     camus::job { 'mediawiki_job':
-        script        => "${profile::analytics::refinery::path}/bin/camus",
         minute        => '10',
         kafka_brokers => $kafka_brokers_jumbo,
-        environment   => $systemd_env,
         interval      => '*-*-* *:10:00',
     }
 
     # Import eventlogging-client-side events for backup purposes
     camus::job { 'eventlogging-client-side':
-        script        => "${profile::analytics::refinery::path}/bin/camus",
         minute        => '20',
         kafka_brokers => $kafka_brokers_jumbo,
-        environment   => $systemd_env,
         interval      => '*-*-* *:20:00',
     }
 
     # Import netflow queue topics into /wmf/data/raw/netflow
     # once every hour.
     camus::job { 'netflow':
-        script        => "${profile::analytics::refinery::path}/bin/camus",
         minute        => '30',
         kafka_brokers => $kafka_brokers_jumbo,
-        environment   => $systemd_env,
         interval      => '*-*-* *:30:00',
     }
 }
