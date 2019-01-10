@@ -7,6 +7,7 @@ class role::webserver_misc_static {
 
     include ::standard
     include ::profile::base::firewall
+    include ::profile::backup::host
     include ::profile::microsites::httpd
 
     include ::profile::microsites::annualreport    # https://annual.wikimedia.org

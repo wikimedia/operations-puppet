@@ -3,7 +3,6 @@ class profile::microsites::static_bugzilla {
 
     include ::bugzilla_static
 
-    include ::profile::backup::host
     backup::set { 'bugzilla-static' : }
     backup::set { 'bugzilla-backup' : }
 
