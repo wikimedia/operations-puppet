@@ -50,3 +50,18 @@ SignWith: 9D392D3FFADF18FB
 DebOverride: deb-override
 Log:
  log
+
+Origin: Wikimedia
+Label: Wikimedia
+Suite: buster-wikimedia
+Codename: buster-wikimedia
+AlsoAcceptFor: buster buster-backports
+Version: 10
+Architectures: source amd64 i386
+Components: main thirdparty/hwraid
+UDebComponents: main
+Description: Wikimedia packages for Debian buster
+SignWith: 9D392D3FFADF18FB
+DebOverride: deb-override
+Log:
+ log
