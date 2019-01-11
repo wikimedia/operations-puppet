@@ -4,7 +4,7 @@ tools-cron-01.tools.eqiad.wmflabs
 tools-static-13.tools.eqiad.wmflabs
 tools-exec-1442.tools.eqiad.wmflabs
 tools-webgrid-lighttpd-1419.tools.eqiad.wmflabs
-tools-docker-builder-05.tools.eqiad.wmflabs
+tools-docker-builder-06.tools.eqiad.wmflabs
 tools-grid-master.tools.eqiad.wmflabs
 tools-mail.tools.eqiad.wmflabs
 tools-k8s-etcd-03.tools.eqiad.wmflabs
