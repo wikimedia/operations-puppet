@@ -5,7 +5,7 @@
 # vim: filetype=apache
 
 <VirtualHost *:80>
-    ServerName doc.wikimedia.org
+    ServerName https://doc.wikimedia.org
 
     LogLevel warn
     ErrorLog /var/log/apache2/doc_error.log
@@ -14,11 +14,6 @@
     DocumentRoot /srv/docroot/org/wikimedia/doc
 
     RewriteEngine On
-
-    # T95164
-    DirectorySlash Off
-    RewriteCond %{REQUEST_FILENAME} -d
-    RewriteRule ^(.+[^/])$ https://doc.wikimedia.org/$1/ [R=301,QSA]
 
     # Lower caching length (T184255)
     Header set Cache-Control "s-maxage=3600, must-revalidate, max-age=0"
