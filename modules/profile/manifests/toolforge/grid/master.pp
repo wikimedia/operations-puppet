@@ -145,4 +145,32 @@ class profile::toolforge::grid::master (
         line   => $facts['fqdn'],
         path   => "${geconf}/default/common/shadow_masters",
     }
+
+    file { "${etcdir}/config/global":
+        ensure => file,
+        owner  => 'sgeadmin',
+        group  => 'sgeadmin',
+        mode   => '0664',
+        source => 'puppet:///modules/profile/toolforge/grid-global-config',
+    }
+
+    file { "${etcdir}/config/scheduler":
+        ensure => file,
+        owner  => 'sgeadmin',
+        group  => 'sgeadmin',
+        mode   => '0664',
+        source => 'puppet:///modules/profile/toolforge/grid-scheduler-config',
+    }
+
+    exec { 'update-global-config':
+        command     => "/usr/bin/qconf -Mconf ${etcdir}/config/global",
+        subscribe   => File["${etcdir}/config/global"],
+        refreshonly => true,
+    }
+
+    exec { 'update-scheduler-config':
+        command     => "/usr/bin/qconf -Msconf ${etcdir}/config/scheduler",
+        subscribe   => File["${etcdir}/config/scheduler"],
+        refreshonly => true,
+    }
 }

@@ -1,3 +1,5 @@
+# THIS FILE IS MANAGED BY PUPPET
+# Do not change this directly
 execd_spool_dir              /var/spool/gridengine/execd
 mailer                       /usr/local/bin/gridengine-mailer
 xterm                        /usr/bin/xterm
@@ -6,8 +8,8 @@ prolog                       none
 epilog                       none
 shell_start_mode             posix_compliant
 login_shells                 bash,sh,ksh,csh,tcsh
-min_uid                      0
-min_gid                      0
+min_uid                      100
+min_gid                      100
 user_lists                   none
 xuser_lists                  none
 projects                     none
@@ -25,12 +27,20 @@ token_extend_time            none
 shepherd_cmd                 none
 qmaster_params               none
 execd_params                 none
-reporting_params             accounting=true reporting=false flush_time=00:00:15 joblog=false sharelog=00:00:00
+reporting_params             accounting=true reporting=false \
+                             flush_time=00:00:15 joblog=false sharelog=00:00:00
 finished_jobs                100
-gid_range                    64500-65500
+gid_range                    65400-65500
+rlogin_daemon                /usr/sbin/sshd -i
+rlogin_command               /usr/bin/ssh
+qlogin_daemon                /usr/sbin/sshd -i
+qlogin_command               /usr/share/gridengine/qlogin-wrapper
+rsh_daemon                   /usr/sbin/sshd -i
+rsh_command                  /usr/bin/ssh
 max_aj_instances             2000
 max_aj_tasks                 75000
-max_u_jobs                   0
+# Set for T67777
+max_u_jobs                   50
 max_jobs                     0
 auto_user_oticket            0
 auto_user_fshare             0
@@ -38,11 +48,5 @@ auto_user_default_project    none
 auto_user_delete_time        86400
 delegated_file_staging       false
 reprioritize                 0
-rlogin_daemon                /usr/sbin/sshd -i
-rlogin_command               /usr/bin/ssh
-qlogin_daemon                /usr/sbin/sshd -i
-qlogin_command               /usr/share/gridengine/qlogin-wrapper
-rsh_daemon                   /usr/sbin/sshd -i
-rsh_command                  /usr/bin/ssh
 jsv_url                      none
 jsv_allowed_mod              ac,h,i,e,o,j,M,N,p,w
