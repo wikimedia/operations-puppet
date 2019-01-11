@@ -31,7 +31,7 @@ class profile::wmcs::nfs::misc (
         fstype  => ext4,
         options => 'defaults,noatime',
         atboot  => true,
-        device  => '/dev/srv/maps/',
+        device  => '/dev/srv/maps',
         require => File['/srv/maps'],
     }
 }
