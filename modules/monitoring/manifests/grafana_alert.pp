@@ -5,9 +5,9 @@
 #
 # === Parameters
 #
-# [*metric*]
-#   Grafana dashboard uri. For example: 'db/webpagetest-alerts'.
-#   Defaults to the resource title.
+# [*dashboard_uid*]
+#   Grafana dashboard uid. For example: '000000400'.
+#   Required.
 #
 # [*grafana_url*]
 #   URL of Grafana.
@@ -19,12 +19,14 @@
 #
 # === Examples
 #
-#  # Emit a critical if any grafana alert on the db/webpagetest-alerts
+#  # Emit a critical if any grafana alert on the jobqueue-eventbus
 #  # dashboard is in "alterting" state.
-#  monitoring::grafana_alert { 'db/webpagetest-alerts': }
+#  monitoring::grafana_alert { 'db/jobqueue-eventbus':
+#      dashboard_uid => '000000400',
+#  }
 #
 define monitoring::grafana_alert(
-    $dashboard     = $title,
+    $dashboard_uid,
     $ensure        = present,
     $grafana_url   = 'https://grafana.wikimedia.org',
     $contact_group = 'admins',
@@ -32,8 +34,8 @@ define monitoring::grafana_alert(
 ) {
     monitoring::service { $title:
         ensure        => $ensure,
-        description   => "${grafana_url}/dashboard/${title} grafana alert",
-        check_command => "check_grafana_alert!${title}!${grafana_url}",
+        description   => "${title} grafana alert",
+        check_command => "check_grafana_alert!${dashboard_uid}!${grafana_url}",
         contact_group => $contact_group,
         notes_url     => $notes_url,
     }

@@ -7,8 +7,12 @@
   Checks a Grafana dashboard and generates CRITICAL states if
   it has Grafana alerts in "alerting" state.
 
+  The script requires the Grafana dashboard UID to operate.
+  The UID could be found in Grafana dashboard URI which looks like the following:
+  https://grafana.wikimedia.org/d/DASHBOARD_UID/DASHBOARD_NAME
+
   Usage:
-    check_grafana_alert DASHBOARD_URI GRAFANA_URL
+    check_grafana_alert DASHBOARD_UID GRAFANA_URL
 
   Positional arguments:
     DASHBOARD_URI         Grafana dashboard URI
@@ -27,34 +31,47 @@ import urllib2
 
 
 ap = argparse.ArgumentParser(description='Grafana dashboard alert')
-ap.add_argument('dashboard', help='dashboard URI')
+ap.add_argument('dashboard_uid', help='dashboard ID')
 ap.add_argument('grafana_url', help="URL of grafana")
 args = ap.parse_args()
 
-alerting_names = []
-full_dashboard_url = ''
-
+# First - fetch the proper Dashboard ID, URI and title from API
+dashboard_id = ''
+dashboard_url = ''
+dashboard_title = ''
 try:
-    url = args.grafana_url + '/api/alerts'
-    data = json.load(urllib2.urlopen(url))
-
-    for record in data:
-        if 'url' in record and record['url'].endswith('/%s' % args.dashboard):
-            if 'state' in record and record['state'] == 'alerting' and 'name' in record:
-                # We are selecting only the records for a dashboard with a particular name,
-                # so all the records we select should have the same url.
-                full_dashboard_url = record['url']
-                alerting_names.append(record['name'])
+    dashboard_info = json.load(urllib2.urlopen('%s/api/dashboards/uid/%s' % (
+        args.grafana_url,
+        args.dashboard_uid
+    )))
+    dashboard_id = dashboard_info['meta']['dashboardId']
+    dashboard_url = '%s%s' % (
+        args.grafana_url,
+        dashboard_info['meta']['url']
+    )
+    dashboard_title = dashboard_info['dashboard']['title']
 except Exception as e:
-    print('UNKNOWN: failed to check dashboard %s due to exception: %s' % (
-        args.dashboard, e.msg))
+    print('UNKNOWN: failed to fetch info about dashboard with uid=%s due to exception: %s' % (
+        args.dashboard_uid, e))
+    sys.exit(3)
+
+alerting_names = []
+try:
+    data = json.load(urllib2.urlopen('%s/api/alerts?dashboardId=%s&state=alerting' % (
+        args.grafana_url,
+        args.dashboard_id
+    )))
+    alerting_names = list(map(lambda alert: alert['name'], data))
+except Exception as e:
+    print('UNKNOWN: failed to check dashboard %s ( %s ) due to exception: %s' % (
+        dashboard_title, dashboard_url, e))
     sys.exit(3)
 
 if len(alerting_names) > 0:
-    print('CRITICAL: %s%s is alerting: %s.' % (
-        args.grafana_url, full_dashboard_url, ', '.join(alerting_names)), file=sys.stderr)
+    print('CRITICAL: %s ( %s ) is alerting: %s.' % (
+        dashboard_title, dashboard_url, ', '.join(alerting_names)), file=sys.stderr)
     sys.exit(2)
 else:
-    print('OK: %s%s is not alerting.' % (
-        args.grafana_url, full_dashboard_url), file=sys.stderr)
+    print('OK: %s ( %s ) is not alerting.' % (
+        dashboard_title, dashboard_url), file=sys.stderr)
     sys.exit(0)

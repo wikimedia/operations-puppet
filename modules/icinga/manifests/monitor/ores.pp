@@ -5,12 +5,14 @@ class icinga::monitor::ores (
 ){
 
     monitoring::grafana_alert { 'ores':
-        contact_group   => 'team-scoring',
+        dashboard_uid => '000000255',
+        contact_group => 'team-scoring',
     }
 
     # T154175
     monitoring::grafana_alert { 'ores-extension':
-        contact_group   => 'team-scoring',
+        dashboard_uid => '000000263',
+        contact_group => 'team-scoring',
     }
 
     @monitoring::host { 'ores.wmflabs.org':
