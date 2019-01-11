@@ -511,3 +511,4 @@ cache::upload::nodes:
       - 'deployment-cache-upload04.deployment-prep.eqiad.wmflabs'
 
 logstash::heap_memory: 1G
+profile::services_proxy::ensure: absent

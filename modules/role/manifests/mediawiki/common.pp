@@ -12,4 +12,6 @@ class role::mediawiki::common {
     if os_version('debian >= stretch') {
         include ::profile::prometheus::mcrouter_exporter
     }
+    # proxy for connection to other servers
+    include ::profile::services_proxy
 }

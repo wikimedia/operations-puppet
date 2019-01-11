@@ -1,0 +1,38 @@
+# This list is mostly to be used inside mediawiki.
+profile::services_proxy::services:
+  search-chi_eqiad:
+    port: 9243
+    localport: 19243
+    scheme: https
+    hostname: search.svc.eqiad.wmnet
+    timeout: 600
+  search-psi_eqiad:
+    port: 9643
+    localport: 19643
+    scheme: https
+    hostname: search.svc.eqiad.wmnet
+    timeout: 600
+  search-omega_eqiad:
+    port: 9443
+    localport: 19443
+    scheme: https
+    hostname: search.svc.eqiad.wmnet
+    timeout: 600
+  search-chi_codfw:
+    port: 9243
+    localport: 14243
+    scheme: https
+    hostname: search.svc.codfw.wmnet
+    timeout: 600
+  search-psi_codfw:
+    port: 9643
+    localport: 14643
+    scheme: https
+    hostname: search.svc.codfw.wmnet
+    timeout: 600
+  search-omega_codfw:
+    port: 9443
+    localport: 14443
+    scheme: https
+    hostname: search.svc.codfw.wmnet
+    timeout: 600
