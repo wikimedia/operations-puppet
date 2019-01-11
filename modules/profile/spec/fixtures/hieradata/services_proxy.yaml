@@ -1,0 +1,8 @@
+profile::services_proxy::ensure: present
+profile::services_proxy::services:
+  foobar_testsite:
+    port: 999
+    localport: 10999
+    scheme: https
+    hostname: foobar.testsite.example.com
+    timeout: 60
