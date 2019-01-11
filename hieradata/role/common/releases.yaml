@@ -1,4 +1,5 @@
 admin::groups:
+  - releasers-blubber
   - releasers-mediawiki
   - releasers-mobile
   - releasers-parsoid

@@ -122,6 +122,10 @@ groups:
     gid: 804
     description: people who upload wikidiff2 releases (T202473)
     members: [demon, legoktm, wmde-fisch, thiemowmde]
+  releasers-blubber:
+    gid: 808
+    description: people who upload blubber releases
+    members: [dduvall, jhuneidi, liw, thcipriani]
   udp2log-users:
     gid: 713
     description: general user tasks for udp2log (RT 5391)
