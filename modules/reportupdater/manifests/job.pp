@@ -30,7 +30,9 @@
 #
 define reportupdater::job(
     $repository,
-    $output_dir  = $title,
+    $output_dir = $title,
+    $interval = undef,
+    $monitoring_enabled = true,
 )
 {
     Class['::reportupdater'] -> Reportupdater::Job[$title]
@@ -63,10 +65,39 @@ define reportupdater::job(
         }
     }
 
+    if $interval {
+        $cron_ensure = absent
+    } else {
+        $cron_ensure = present
+    }
+
     cron { "reportupdater_${repository}-${title}":
+        ensure  => $cron_ensure,
         command => "python ${::reportupdater::path}/update_reports.py -l info ${query_path} ${output_path} >> ${log_file} 2>&1",
         user    => $::reportupdater::user,
         minute  => 0,
         require => Git::Clone[$repository_name],
+    }
+
+    if $interval {
+        systemd::timer::job { "reportupdater-${title}":
+            description               => "Report Updater job for ${title}",
+            command                   => "python ${::reportupdater::path}/update_reports.py -l info ${query_path} ${output_path}",
+            interval                  => {
+                'start'    => 'OnCalendar',
+                'interval' => $interval
+            },
+            user                      => $::reportupdater::user,
+            monitoring_enabled        => $monitoring_enabled,
+            monitoring_contact_groups => 'analytics',
+            logging_enabled           => true,
+            logfile_basedir           => $::reportupdater::log_path,
+            logfile_name              => 'syslog.log',
+            logfile_owner             => $::reportupdater::user,
+            logfile_group             => $::reportupdater::user,
+            logfile_perms             => 'all',
+            syslog_force_stop         => true,
+            syslog_identifier         => "reportupdater-${title}",
+        }
     }
 }

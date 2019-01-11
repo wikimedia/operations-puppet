@@ -11,13 +11,9 @@
 #                       repository, job query repositories, and data output.
 #                       Default: /srv/reportupdater
 #
-#   $rsync_to         - string. [optional] If defined, everything i
-#                       $base_path/output will be rsynced to $rsync_to.
-#
 class reportupdater(
     $user,
     $base_path = '/srv/reportupdater',
-    $rsync_to  = undef,
 ) {
     $group = 'wikidev'
 
@@ -55,17 +51,5 @@ class reportupdater(
         origin    => 'https://gerrit.wikimedia.org/r/p/analytics/reportupdater.git',
         owner     => $user,
         require   => File[$base_path],
-    }
-
-    # If specified, rsync anything generated in $output_base_path to $rsync_to.
-    $rsync_cron_ensure = $rsync_to ? {
-        undef   => 'absent',
-        default => 'present',
-    }
-    cron { 'reportupdater_rsync_to':
-        ensure  => $rsync_cron_ensure,
-        command => "/usr/bin/rsync -rt ${output_path}/* ${rsync_to}",
-        user    => $user,
-        minute  => 15,
     }
 }
