@@ -8,29 +8,13 @@
 # Options that are more in the realm of the interpretation of zone data should
 # be in the main config file's options stanza in the ops/dns repo.
 
-listen = {
-    # Our primary IPv4 traffic on port 53 comes in here:
-    # Use one thread+socket per physical CPU, per listen address, makes
-    # handling query-rate spikes even easier
-    0.0.0.0 = {
-        udp_threads = <%= @physicalcorecount %>
-        tcp_threads = <%= @physicalcorecount %>
-    }
+# For now we listen on the any-addresses of both protocols
+listen = any
 
-    # No IPv6 usage for our authdns yet, but leave it running minimally
-    # in case of healthchecks or testing or whatever
-    :: = {
-        udp_threads = 1
-        tcp_threads = 1
-    }
-
-    # PROXY protocol listener on port 5353 of IPv4 localhost.
-    # This is for future experimentation with e.g. DNS-over-TLS
-    127.0.0.1:5353 = {
-        tcp_proxy = true
-        tcp_threads = <%= @physicalcorecount %>
-    }
-}
+# Use one thread+socket per physical CPU, per listen address, makes
+# handling query-rate spikes even easier:
+udp_threads = <%= @physicalcorecount %>
+tcp_threads = <%= @physicalcorecount %>
 
 # NSID for debugging the mapping of functional IPs to real servers
 nsid_ascii = <%= @hostname %>
