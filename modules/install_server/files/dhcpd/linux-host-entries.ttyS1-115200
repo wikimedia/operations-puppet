@@ -5999,6 +5999,11 @@ host oxygen {
     filename "lpxelinux.0";
 }
 
+host pc1007 {
+    hardware ethernet D0:94:66:75:D1:63;
+    fixed-address pc1007.eqiad.wmnet;
+}
+
 host pc1008 {
     hardware ethernet D0:94:66:87:90:73;
     fixed-address pc1008.eqiad.wmnet;
