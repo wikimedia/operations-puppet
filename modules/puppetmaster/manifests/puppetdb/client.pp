@@ -5,9 +5,6 @@ class puppetmaster::puppetdb::client(
     $port=443,
     $puppetdb_major_version=undef,
 ) {
-    # Only 3.5+ puppetmasters can work with our version of puppetdb
-    requires_os('debian >= jessie')
-
     if $puppetdb_major_version == 4 {
         $puppetdb_terminus_package = 'puppetdb-termini'
         $puppetdb_conf_template    = 'puppetmaster/puppetdb4.conf.erb'

@@ -21,12 +21,7 @@ class puppetmaster::passenger(
     $puppet_major_version=undef,
 ) {
     include ::apache::mod::passenger
-
-    # jessie-specific instructions
-    if os_version('debian >= jessie') {
-        # Debian jessie needs the DH params file
-        include ::sslcert::dhparam
-    }
+    include ::sslcert::dhparam
 
     # Set a unicode capable locale to avoid "SERVER: invalid byte sequence in
     # US-ASCII" errors when puppetmaster is started with LANG that doesn't

@@ -23,8 +23,6 @@ class puppetdb::app(
     Optional[String] $db_password=undef,
     Optional[Integer[4]] $puppetdb_major_version=undef,
 ) {
-    requires_os('debian >= jessie')
-
     ## PuppetDB installation
 
     require_package('puppetdb')

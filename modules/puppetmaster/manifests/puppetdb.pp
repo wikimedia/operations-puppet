@@ -10,8 +10,6 @@ class puppetmaster::puppetdb(
     $ssldir = undef,
     $ca_path = '/etc/ssl/certs/Puppet_Internal_CA.pem',
 ) {
-    requires_os('debian >= jessie')
-
     $puppetdb_pass = hiera('puppetdb::password::rw')
 
     ## TLS Termination
