@@ -2,6 +2,6 @@
 #
 # Monitor Traffic
 class icinga::monitor::traffic {
-    monitoring::grafana_alert { 'db/varnish-http-requests':
+    monitoring::grafana_alert { 'varnish-http-requests':
     }
 }

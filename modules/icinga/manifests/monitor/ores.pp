@@ -4,12 +4,12 @@ class icinga::monitor::ores (
     String $icinga_group,
 ){
 
-    monitoring::grafana_alert { 'db/ores':
+    monitoring::grafana_alert { 'ores':
         contact_group   => 'team-scoring',
     }
 
     # T154175
-    monitoring::grafana_alert { 'db/ores-extension':
+    monitoring::grafana_alert { 'ores-extension':
         contact_group   => 'team-scoring',
     }
 
