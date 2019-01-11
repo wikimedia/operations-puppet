@@ -1,9 +1,8 @@
-# filtertags: labs-project-tools
-class role::toollabs::docker::builder {
-
-    include ::toollabs::base
-    include ::toollabs::infrastructure
-
+class profile::toolforge::docker::builder(
+    $docker_username = lookup('docker::username'),
+    $docker_password = lookup('docker::password'),
+    $docker_registry = lookup('docker::registry'),
+) {
     class { '::profile::docker::storage':
         vg_to_remove     => 'vd',
         physical_volumes => '/dev/vda4',
@@ -20,11 +19,7 @@ class role::toollabs::docker::builder {
 
     class { '::toollabs::images': }
 
-    # This requires push privilages
-    $docker_username = hiera('docker::username')
-    $docker_password = hiera('docker::password')
-    $docker_registry = hiera('docker::registry')
-
+    # Registry credentials require push privilages
     # uses strict_encode64 since encode64 adds newlines?!
     $docker_auth = inline_template("<%= require 'base64'; Base64.strict_encode64('${docker_username}:${docker_password}') -%>")
 
@@ -36,11 +31,16 @@ class role::toollabs::docker::builder {
         },
     }
 
+    group { 'docker':
+        ensure => 'present',
+    }
+
     file { '/root/.docker':
-        ensure => directory,
-        owner  => 'root',
-        group  => 'docker',
-        mode   => '0550',
+        ensure  => directory,
+        owner   => 'root',
+        group   => 'docker',
+        mode    => '0550',
+        require => Group['docker'],
     }
 
     file { '/root/.docker/config.json':
