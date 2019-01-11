@@ -1453,7 +1453,11 @@ node 'maps1001.eqiad.wmnet' {
     role(maps::master)
 }
 
-node /^maps100[23]\.eqiad\.wmnet/ {
+node 'maps1002.eqiad.wmnet' {
+    role(maps::slave)
+}
+
+node 'maps1003.eqiad.wmnet' {
     role(maps::slave)
 }
 
