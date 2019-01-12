@@ -201,4 +201,13 @@ class openstack::util::admin_scripts(
         mode   => '0755',
         source => 'puppet:///modules/openstack/util/webproxy.py',
     }
+
+    # Script to reassign VPS proxies to use a different proxy IP
+    file { '/root/updateproxies':
+        ensure => 'present',
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0755',
+        source => 'puppet:///modules/openstack/util/updateproxies.py',
+    }
 }
