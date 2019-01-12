@@ -218,7 +218,11 @@ define service::node(
     $local_logdir = "${service::configuration::log_dir}/${title}"
     $local_logfile = "${local_logdir}/main.log"
     # Software and the deployed code, firejail for containment
-    require_package('nodejs', 'nodejs-legacy', 'firejail')
+    require_package('nodejs', 'firejail')
+
+    if os_version('debian == jessie') {
+        require_package('nodejs-legacy')
+    }
 
     # User/group
     group { $title:
