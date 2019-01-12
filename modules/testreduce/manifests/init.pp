@@ -6,8 +6,8 @@ class testreduce {
 
     if os_version('debian == stretch') {
 
-        $node_packages = ['node-abbrev', 'node-ansi-regex', 'node-cacache',
-                      'node-config-chain', 'node-glob', 'node-hosted-git-info',
+        $node_packages = ['nodejs', 'nodejs-dev', 'npm', 'node-abbrev', 'node-ansi-regex',
+                      'node-cacache', 'node-config-chain', 'node-glob', 'node-hosted-git-info',
                       'node-ini node-npm-package-arg', 'node-jsonstream',
                       'node-libnpx', 'node-lockfile', 'node-lru-cache',
                       'node-move-concurrently', 'node-normalize', 'package-data',
@@ -21,7 +21,7 @@ class testreduce {
         apt::pin { 'stretch-backports':
             package  => $pinned_packages,
             pin      => 'release a=stretch-backports',
-            priority => 500,
+            priority => 1005,
         }
     }
 
