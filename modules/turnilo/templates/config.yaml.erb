@@ -88,6 +88,7 @@ dataCubes:
         title: Time
         kind: time
         formula: $__time
+        granularities: ["P1M","P1M", "P1M", "P1M","P1M"]
 
       - name: activity_level
         title: Activity Level
@@ -156,6 +157,7 @@ dataCubes:
   - name: netflow
     title: netflow
     clusterName: druid-analytics-eqiad
+    description: Network data, bytes and packets
     source: netflow
     # The refresh rule describes how often the data cube looks for new data. Default: 'query'/PT1M (every minute)
     refreshRule:
@@ -294,6 +296,7 @@ dataCubes:
   - name: pageviews_daily
     title: pageviews_daily
     clusterName: druid-analytics-eqiad
+    description: Pageview data agreggated daily for all projects per country.
     source: pageviews_daily
     # The refresh rule describes how often the data cube looks for new data. Default: 'query'/PT1M (every minute)
     refreshRule:
@@ -892,6 +895,7 @@ dataCubes:
   - name: banner_activity_minutely
     title: banner_activity_minutely
     clusterName: druid-analytics-eqiad
+    description: Impressions of banners per campaign on all projects.
     source: banner_activity_minutely
     # The refresh rule describes how often the data cube looks for new data. Default: 'query'/PT1M (every minute)
     refreshRule:
@@ -1129,6 +1133,7 @@ dataCubes:
         title: Time
         kind: time
         formula: $__time
+        granularities: ["P1M","P1M", "P1M", "P1M","P1M"]
 
       - name: country
         title: Country
@@ -1475,6 +1480,7 @@ dataCubes:
   - name: pageviews_hourly
     title: pageviews_hourly
     clusterName: druid-analytics-eqiad
+    description: Pageview data for all projects per country per browser, agreggated hourly for the last 3 months.
     source: pageviews_hourly
     # The refresh rule describes how often the data cube looks for new data. Default: 'query'/PT1M (every minute)
     refreshRule:
@@ -1910,6 +1916,7 @@ dataCubes:
         title: Time
         kind: time
         formula: $__time
+        granularities: ["P1M","P1M", "P1M", "P1M","P1M"]
 
       - name: country
         title: Country
@@ -1977,6 +1984,7 @@ dataCubes:
 
   - name: virtualpageviews_hourly
     title: virtualpageviews_hourly
+    description: Previews per hour per project per country.
     clusterName: druid-analytics-eqiad
     source: virtualpageviews_hourly
     # The refresh rule describes how often the data cube looks for new data. Default: 'query'/PT1M (every minute)
@@ -2163,6 +2171,7 @@ dataCubes:
 
   - name: webrequest_sampled_128
     title: webrequest_sampled_128
+    description: All web requests received for all projects sampled to 1/128.
     clusterName: druid-analytics-eqiad
     source: webrequest_sampled_128
     # The refresh rule describes how often the data cube looks for new data. Default: 'query'/PT1M (every minute)
