@@ -14,5 +14,5 @@ profile::openstack::main::nova::network::nova_dnsmasq_aliases:
     'public_ip': '208.80.155.131'
     'private_ip': '10.68.21.49'
   labs_shared_proxy:
-    'public_ip': '208.80.155.156'
-    'private_ip': '10.68.21.68'
+    'public_ip': '185.15.56.49'
+    'private_ip': '172.16.0.164'
