@@ -2,7 +2,7 @@ groups:
   absent:
     description: meta group for absented users with previous cluster shell access, it removes the account from /etc/passwd on all production hosts running puppet
     members: [ananthrk, avar, bsitu, cmcmahon, csalvia, diederik, edenhill, erik, gage,
-              handrade, howief, jdouglas, jgonera, jsahleen, mah, maryana, mglaser, mvolz,
+              handrade, howief, jdouglas, jgonera, jsahleen, mah, maryana, mglaser,
               mwalker, nimishg, rainman, ssmith, swalling, sumanah, werdna, rmoen,
               johnflewis, marc, jkrauska, akumar, mnoushad, spage, tnegrin, msyed, kleduc,
               manybubbles, haithams, jzerebecki, ashwinpp, robla, asherman,
@@ -74,7 +74,7 @@ groups:
               ladsgroup, bawolff, zfilipin, addshore, niharika29, ppchelko, pmiazga,
               musikanimal, jdrewniak, sbisson, jforrester, mbsantos,
               aaron, liw, sbassett, jdl, tarrow, lucaswerkmeister-wmde,
-              wmde-leszek, jhuneidi, wmde-fisch]
+              wmde-leszek, jhuneidi, wmde-fisch, mvolz]
     privileges: ['ALL = (www-data,apache,mwdeploy,l10nupdate) NOPASSWD: ALL',
                  'ALL = NOPASSWD: /sbin/restart hhvm',
                  'ALL = NOPASSWD: /sbin/start hhvm',
@@ -290,7 +290,7 @@ groups:
   citoid-admin:
     gid: 736
     description: group of citoid admins
-    members: [catrope, mobrovac]
+    members: [catrope, mobrovac, mvolz]
     privileges: ['ALL = NOPASSWD: /usr/sbin/service citoid *',
                  'ALL = (citoid) NOPASSWD: ALL']
   eventlogging-roots:
@@ -468,7 +468,7 @@ groups:
     members: [bd808, eevans, mobrovac, ppchelko, demon, twentyafterfour, thcipriani, dduvall,
               bsitzmann, mholloway-shell, kartik, halfak, ladsgroup, smalyshev, hoo, tgr,
               ssastry, cscott, arlolra, jdlrobson, maxsem, awight, jforrester, niedzielski,
-              pmiazga, phuedx, mbsantos, onimisionipe, bmansurov]
+              pmiazga, phuedx, mbsantos, onimisionipe, bmansurov, mvolz]
     privileges: []
 
   deploy-aqs:
@@ -1832,11 +1832,11 @@ users:
     ssh_keys: []
     uid: 11049
   mvolz:
-    ensure: absent
+    ensure: present
     gid: 500
     name: mvolz
     realname: Marielle Volz
-    ssh_keys: []
+    ssh_keys: [ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKynyl6NqNr/+mz1p1RFkE4KLXr+gZQrisj56XtNjYOA marielle@dull]
     uid: 4724
   eevans:
     ensure: present
