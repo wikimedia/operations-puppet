@@ -11,7 +11,7 @@ groups:
               psinger, midom, tparscal, dworley, moushira, lpintscher, gpaumier,
               nschaaf, zhousquared, gwicke, dpatrick, samwalton9, samtar, akrausetud, jgonsior,
               yuvipanda, shrlak, madhuvishy, groovier, khorn, ironholds, katie,
-              cy534, pnorman, mpany, deskana, arnad, nithum, banyek]
+              cy534, pnorman, mpany, deskana, arnad, nithum, banyek, imarlier]
   absent_ldap:
     description: meta group for absented users which had privileged LDAP access in the past, an automatic check verifies it has been really removed from the LDAP (but removal has to be handled separatelly)
     members: [adavenport, siddharth11, albe]
@@ -72,7 +72,7 @@ groups:
               mobrovac, nuria, thcipriani, joal, eevans, mforns, dcausse,
               bsitzmann, mholloway-shell, dduvall, dereckson,
               ladsgroup, bawolff, zfilipin, addshore, niharika29, ppchelko, pmiazga,
-              musikanimal, jdrewniak, sbisson, imarlier, jforrester, mbsantos,
+              musikanimal, jdrewniak, sbisson, jforrester, mbsantos,
               aaron, liw, sbassett, jdl, tarrow, lucaswerkmeister-wmde,
               wmde-leszek, jhuneidi, wmde-fisch]
     privileges: ['ALL = (www-data,apache,mwdeploy,l10nupdate) NOPASSWD: ALL',
@@ -125,7 +125,7 @@ groups:
   udp2log-users:
     gid: 713
     description: general user tasks for udp2log (RT 5391)
-    members: [milimetric, demon, andyrussg, imarlier]
+    members: [milimetric, demon, andyrussg]
   researchers:
     gid: 714
     description: Access statistics number crunching hosts (like
@@ -210,7 +210,7 @@ groups:
                  add them instead to the analytics-users group.  statistics-* groups
                  DO NOT EQUAL Hadoop/Hive cluster access.
     members: [ezachte, milimetric, dartar, halfak, awight, dr0ptp4kt, nuria,
-              leila, nettrom, mforns, bmansurov, tbayer, joal, imarlier,
+              leila, nettrom, mforns, bmansurov, tbayer, joal,
               tjones, legoktm, dcausse, bearloga, atgomez, dstrine,
               marktraceur, mtizzoni, panisson, paolotti, ciro, melodykramer,
               fdans, shiladsen, esanders, risler, nathante, chelsyx, jdl]
@@ -247,7 +247,7 @@ groups:
                  This will grant shell access on Hadoop client nodes and on
                  Hadoop NameNodes.  Some files in HDFS have sensitive data in them.
                  Those files are group readable by the analytics-privatedata-users group.
-    members: [dartar, milimetric, dfoy, aude, jforrester, imarlier,
+    members: [dartar, milimetric, dfoy, aude, jforrester,
               halfak, dr0ptp4kt, bearloga, elukey, ppchelko, bawolff, mneisler,
               nuria, otto, jgreen, sguebo, thargrove,
               bsitzmann, dbrant, nettrom, leila, cwdent, jmm,
@@ -317,7 +317,7 @@ groups:
   restbase-roots:
     gid: 744
     description: people who have full root on restbase nodes
-    members: [eevans, mobrovac, ppchelko, imarlier]
+    members: [eevans, mobrovac, ppchelko]
     privileges: ['ALL = (ALL) NOPASSWD: ALL']
   citoid-users:
     gid: 745
@@ -421,7 +421,7 @@ groups:
   wdqs-roots:
     gid: 806
     description: Root level access for WikiData Query Service project
-    members: [onimisionipe, imarlier]
+    members: [onimisionipe]
     privileges: ['ALL = (ALL) NOPASSWD: ALL']
   mailman-admins:
     gid: 757
@@ -501,12 +501,12 @@ groups:
   perf-team:
     gid: 796
     description: performance team members with access to 'webperf' and 'xhgui' servers
-    members: [krinkle, gilles, phedenskog, imarlier, aaron]
+    members: [krinkle, gilles, phedenskog, aaron]
     privileges: ['ALL = (ALL) NOPASSWD: ALL']
   perf-roots:
     gid: 766
     description: users who have root on memcached, varnish, application servers, thumbor and xhgui servers
-    members: [krinkle, gilles, phedenskog, aaron, imarlier]
+    members: [krinkle, gilles, phedenskog, aaron]
     privileges: ['ALL = (ALL) NOPASSWD: ALL']
   aqs-users:
     description: Group of users for the Analytics Query Service
@@ -691,7 +691,7 @@ groups:
   graphite-admins:
     description: Group to enable access to Graphite servers, restart services, and run all commands as the _graphite user
     gid: 800
-    members: [imarlier, addshore]
+    members: [addshore]
     privileges: ['ALL = NOPASSWD: /usr/sbin/service coal *',
                  'ALL = NOPASSWD: /bin/journalctl *',
                  'ALL = (_graphite) NOPASSWD: ALL']
@@ -707,7 +707,7 @@ groups:
   sitemaps-admins:
     gid: 805
     description: People who upload files to sitemaps.wikimedia.org
-    members: [krinkle, gilles, phedenskog, imarlier, aaron]
+    members: [krinkle, gilles, phedenskog, aaron]
   contint-docker:
     # Generally speaking, avoiding direct docker access is the most prudent course of action, but if
     # needed the docker group does have elevated privileges allowing users to interact with docker
@@ -2752,14 +2752,12 @@ users:
     ssh_keys: []
     uid: 18102
   imarlier:
-    ensure: present
+    ensure: absent
     gid: 500
     name: imarlier
     realname: Ian Marlier
-    ssh_keys:
-    - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBBqDEqQ//bMfmytP77928v+HLf6+jscYeY8WvPrReLI imarlier@WMF2024.lan
+    ssh_keys: []
     uid: 18334
-    email: imarlier@wikimedia.org
   cy534:
     ensure: absent
     gid: 500
