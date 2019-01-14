@@ -82,9 +82,6 @@ def parse_users(yamldata):
 
     for table in ['users']:
         for username, userdata in yamldata[table].items():
-            if userdata['ensure'] == 'absent':
-                continue
-
             groups = []
             for group, groupdata in list(yamldata['groups'].items()):
                 if username in flatten(groupdata['members']):
@@ -92,6 +89,7 @@ def parse_users(yamldata):
 
             if table == 'users':
                 users[username] = {
+                    'ensure': userdata['ensure'],
                     'realname': userdata['realname'],
                     'ldap_only': False,
                     'uid': userdata['uid'],
@@ -253,7 +251,7 @@ member: {user_dn}
             cmd += 'To obtain the password run\n'
             cmd += 'sudo cat /etc/ldap.scriptuser.yaml'
             print(cmd)
-        except IOError, e:
+        except IOError as e:
             print("Error:", e)
             sys.exit(1)
 
@@ -280,10 +278,17 @@ def get_phabricator_client():
 def offboard_analytics(username):
     pii_sensitive_groups = ['researchers', 'statistics-privatedata-users', 'statistics-users',
                             'statistics-admins', 'analytics-users', 'analytics-privatedata-users',
-                            'analytics-admins', 'analytics-wmde-users']
+                            'analytics-admins', 'analytics-wmde-users', 'ops']
 
     yamldata = fetch_yaml_data()
     users = parse_users(yamldata)
+    if username not in users:
+        print (username, 'does not exist in modules/admin/data/data.yaml')
+        return
+    elif users[username]['ensure'] == 'absent':
+        print (username, 'has already been offboarded in  modules/admin/data/data.yaml')
+        print ('Hadoop/Hive PII check cannot be performed.')
+        print ('please check a previous revision where `{} ensure: present`'.format(username))
     shell_groups = users[username]['prod_groups']
 
     for group in shell_groups:
