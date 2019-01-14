@@ -59,6 +59,7 @@ class profile::doc {
         path           => '/srv/docroot/org/wikimedia/doc',
         uid            => 'doc-uploader',
         gid            => 'wikidev',
+        incoming_chmod => 'D775,F664',
         hosts_allow    => ['contint1001.wikimedia.org', 'contint2001.wikimedia.org'],
         auto_ferm      => true,
         auto_ferm_ipv6 => true,
