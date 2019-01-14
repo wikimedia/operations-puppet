@@ -1,6 +1,5 @@
 # Monitor exteral blazegraph settings
 class wdqs::monitor::blazegraph (
-    Stdlib::Port $port,
     String $username,
     String $contact_groups,
     Integer[0] $lag_warning,
