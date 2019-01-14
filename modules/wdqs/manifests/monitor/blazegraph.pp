@@ -1,3 +1,4 @@
+# Monitor exteral blazegraph settings
 class wdqs::monitor::blazegraph (
     Stdlib::Port $port,
     String $username,
@@ -5,16 +6,6 @@ class wdqs::monitor::blazegraph (
     Integer[0] $lag_warning,
     Integer[0] $lag_critical,
 ) {
-    nrpe::monitor_service { 'WDQS_Local_Blazegraph_endpoint':
-        description  => 'Blazegraph Port',
-        nrpe_command => "/usr/lib/nagios/plugins/check_tcp -H 127.0.0.1 -p ${port}",
-    }
-
-    nrpe::monitor_service { 'WDQS_Blazegraph_process':
-        description  => 'Blazegraph process',
-        nrpe_command => "/usr/lib/nagios/plugins/check_procs -c 1:1 -u ${username} --ereg-argument-array '^java .* blazegraph-service-.*war'",
-    }
-
     require_package('python3-requests')
     file { '/usr/lib/nagios/plugins/check_wdqs_categories.py':
         source => 'puppet:///modules/wdqs/nagios/check_wdqs_categories.py',

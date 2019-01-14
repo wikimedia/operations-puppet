@@ -71,13 +71,23 @@ class profile::wdqs::blazegraph(
             extra_jvm_opts   => $default_extra_jvm_opts + $extra_jvm_opts +  "-javaagent:${prometheus_agent_path}=${prometheus_agent_port_categories}:${prometheus_agent_config_categories}"
     }
 
-    # No monitoring for lag for secondary servers
     class { 'wdqs::monitor::blazegraph':
-        port           => 9999,
         username       => $username,
         contact_groups => $contact_groups,
         lag_warning    => $lag_warning,
         lag_critical   => $lag_critical,
     }
 
+    wdqs::monitor::blazegraph_instance {
+        default:
+            username       => $username,
+            contact_groups => $contact_groups,
+            ;
+        'wdqs-blazegraph':
+            port           => 9999,
+            ;
+        'wdqs-categories':
+            port           => 9990,
+            ;
+    }
 }
