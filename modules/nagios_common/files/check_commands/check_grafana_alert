@@ -44,7 +44,7 @@ try:
         args.grafana_url,
         args.dashboard_uid
     )))
-    dashboard_id = dashboard_info['meta']['dashboardId']
+    dashboard_id = dashboard_info['dashboard']['id']
     dashboard_url = '%s%s' % (
         args.grafana_url,
         dashboard_info['meta']['url']
@@ -59,7 +59,7 @@ alerting_names = []
 try:
     data = json.load(urllib2.urlopen('%s/api/alerts?dashboardId=%s&state=alerting' % (
         args.grafana_url,
-        args.dashboard_id
+        dashboard_id
     )))
     alerting_names = list(map(lambda alert: alert['name'], data))
 except Exception as e:
