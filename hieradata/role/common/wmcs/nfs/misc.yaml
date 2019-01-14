@@ -7,7 +7,7 @@ profile::wmcs::nfs::monitoring::interfaces::int_throughput_crit: 106250000
 profile::wmcs::nfs::monitoring::interfaces::load_warn: '%{::processorcount} * 0.75'
 profile::wmcs::nfs::monitoring::interfaces::load_crit: '%{::processorcount} * 1.25'
 
-ldap::client::nss::nsswitch_conf_source: puppet:///modules/profiles/wmcs/nfs/server/nsswitch.conf
+ldap::client::nss::nsswitch_conf_source: file:///usr/share/base-files/nsswitch.conf
 
 # the snapshots created by the backup process cannot be checked
 # by the check_disk nrpe plugin so need to be excluded.
