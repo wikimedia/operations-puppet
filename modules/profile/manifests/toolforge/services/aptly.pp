@@ -1,9 +1,9 @@
-class profile::toolforge::services::aptly() {
-    # generic aptly server role
-    # include profile::aptly::server
-
-    # while working with the dual grid in tools/toolsbeta
-    aptly::repo { 'stretch-toolsbeta':
+class profile::toolforge::services::aptly(
+) {
+    aptly::repo { 'stretch-tools':
+        publish      => true,
+    }
+    aptly::repo { 'jessie-tools':
         publish      => true,
     }
 }
