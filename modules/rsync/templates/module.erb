@@ -13,6 +13,8 @@ uid             = <%= @uid %>
 gid             = <%= @gid %>
 <% end -%>
 use chroot      = <% if @chroot %>yes<% else %>no<% end %>
+<% if @incoming_chmod %>incoming chmod = <%= @incoming_chmod %><% end %>
+<% if @outgoing_chmod %>outgoing chmod = <%= @outgoing_chmod %><% end %>
 max connections = <%= @max_connections %>
 <% if Integer(@max_connections) > 0 %>lock file =     <%= @lock_file %><% end %>
 <% if @comment %>comment               = <%= @comment %><% end %>

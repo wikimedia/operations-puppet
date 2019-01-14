@@ -10,8 +10,8 @@
 #   $list            - yes||no, defaults to yes
 #   $uid             - uid of rsync server, defaults to 0
 #   $gid             - gid of rsync server, defaults to 0
-#   $incoming_chmod  - incoming file mode, defaults to 0644
-#   $outgoing_chmod  - outgoing file mode, defaults to 0644
+#   $incoming_chmod  - incoming file mode, defaults to undef
+#   $outgoing_chmod  - outgoing file mode, defaults to undef
 #   $max_connections - maximum number of simultaneous connections allowed, defaults to 0
 #   $lock_file       - file used to support the max connections parameter, defaults to /var/run/rsyncd.lock
 #    only needed if max_connections > 0
@@ -44,8 +44,8 @@ define rsync::server::module (
   $list                                                = 'yes',
   $uid                                                 = '0',
   $gid                                                 = '0',
-  $incoming_chmod                                      = '0644',
-  $outgoing_chmod                                      = '0644',
+  $incoming_chmod                                      = undef,
+  $outgoing_chmod                                      = undef,
   $max_connections                                     = '0',
   $lock_file                                           = '/var/run/rsyncd.lock',
   $chroot                                              = true,
