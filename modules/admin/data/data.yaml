@@ -11,7 +11,7 @@ groups:
               psinger, midom, tparscal, dworley, moushira, lpintscher, gpaumier,
               nschaaf, zhousquared, gwicke, dpatrick, samwalton9, samtar, akrausetud, jgonsior,
               yuvipanda, shrlak, madhuvishy, groovier, khorn, ironholds, katie,
-              cy534, pnorman, mpany, deskana, arnad, nithum]
+              cy534, pnorman, mpany, deskana, arnad, nithum, banyek]
   absent_ldap:
     description: meta group for absented users which had privileged LDAP access in the past, an automatic check verifies it has been really removed from the LDAP (but removal has to be handled separatelly)
     members: [adavenport, siddharth11, albe]
@@ -30,7 +30,7 @@ groups:
     members: &ops_members [filippo, jgreen, bblack, andrew, faidon, rush, oblivian,
               dzahn, akosiaris, mark, ariel, cmjohnson, otto, robh, tstarling,
               ori, jmm, jynus, ema, elukey, gehel, volans, marostegui,
-              ayounsi, herron, aborrero, bstorm, vgutierrez, jiji, cwhite, banyek,
+              ayounsi, herron, aborrero, bstorm, vgutierrez, jiji, cwhite,
               gtirloni, crusnov, cdanis, fsero, jbond]
     privileges: ['ALL = (ALL) NOPASSWD: ALL']
   ops-adm-group:
@@ -2911,7 +2911,7 @@ users:
     uid: 19963
     email: kbrown@wikimedia.org
   banyek:
-    ensure: present
+    ensure: absent
     realname: Balazs Pocze
     name: banyek
     gid: 500
