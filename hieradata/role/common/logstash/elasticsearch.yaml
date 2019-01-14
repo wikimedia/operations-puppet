@@ -71,5 +71,7 @@ profile::kafka::broker::inter_broker_protocol_version: 1.1.0
 profile::kafka::broker::group_initial_rebalance_delay: 10000
 
 profile::kafka::broker::max_heap_size: '2g'
+profile::kafka::broker::num_partitions: 3
+
 diamond::remove: true
 
