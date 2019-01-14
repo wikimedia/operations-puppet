@@ -26,7 +26,7 @@ import requests
 
 clients = mwopenstackclients.clients()
 
-PROXY_BACKEND_IP = u'208.80.155.156'
+PROXY_BACKEND_IP = u'185.15.56.49'
 
 
 def proxy_endpoint():
@@ -76,8 +76,22 @@ def get_proxy_dns_zones():
     return zones
 
 
+def get_project_dns_zones(project_id):
+    session = clients.session(project_id)
+    client = designateclientv2.Client(session=session)
+    zones = client.zones.list()
+    return zones
+
+
 def get_proxy_dns_recordsets(zone):
     session = clients.session('wmflabsdotorg')
+    client = designateclientv2.Client(session=session)
+    domains = client.recordsets.list(zone['id'])
+    return domains
+
+
+def get_project_dns_recordsets(project_id, zone):
+    session = clients.session(project_id)
     client = designateclientv2.Client(session=session)
     domains = client.recordsets.list(zone['id'])
     return domains
@@ -93,15 +107,26 @@ def purge_leaks(delete=False):
                     proxy_recordsets[recordset['name']] = recordset
 
     allinstances = clients.allinstances(allregions=True)
-    all_nova_ips = [instance.addresses['public'][0]['addr']
-                    for instance in allinstances if 'public' in instance.addresses]
+    all_nova_ips = []
+    for instance in allinstances:
+        for network in instance.addresses:
+            all_nova_ips.append(instance.addresses[network][0]['addr'])
 
     for project in clients.allprojects():
+        projectzones = get_project_dns_zones(project.id)
+        project_recordsets = {}
+        for zone in projectzones:
+            for recordset in get_project_dns_recordsets(project.id, zone):
+                if recordset['records'][0] == PROXY_BACKEND_IP:
+                    project_recordsets[recordset['name']] = recordset
+
         mappings = all_mappings(project.id)
         projectinstances = clients.allinstances(project.id, allregions=True)
 
-        all_project_ips = [instance.addresses['public'][0]['addr']
-                           for instance in projectinstances if 'public' in instance.addresses]
+        all_project_ips = []
+        for instance in projectinstances:
+            for network in instance.addresses:
+                all_project_ips.append(instance.addresses[network][0]['addr'])
 
         for mapping in mappings:
             backend_ip = mapping['backends'][0].split(":")[1].strip('/')
@@ -119,7 +144,7 @@ def purge_leaks(delete=False):
                 print "ignoring outlier %s" % searchname
                 # These are old leftovers in a different domain, hard to deal with automatically
                 continue
-            if searchname not in proxy_recordsets:
+            if searchname not in proxy_recordsets and searchname not in project_recordsets:
                 print "No dns recordset found for %s" % searchname
             else:
                 proxy_recordsets.pop(searchname, None)
@@ -130,6 +155,8 @@ def purge_leaks(delete=False):
         if domain == 'wmflabs.org.':
             continue
         if domain == 'proxy-eqiad.wmflabs.org.':
+            continue
+        if domain == 'proxy-eqiad1.wmflabs.org.':
             continue
         rset = proxy_recordsets[domain]
         print "found record unassociated with a proxy: %s" % rset
