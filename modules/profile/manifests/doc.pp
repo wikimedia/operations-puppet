@@ -47,7 +47,7 @@ class profile::doc {
     ferm::service { 'doc-http':
         proto  => 'tcp',
         port   => '80',
-        srange => '$CACHES',
+        srange => '($CACHES $DEPLOYMENT_HOSTS)',
     }
 
     user { 'doc-uploader':
