@@ -63,6 +63,8 @@ class profile::doc {
         require => Git::Clone['integration/docroot'],
     }
 
+    class {'::deployment::umask_wikidev': }
+
     backup::set { 'srv-docroot-org-wikimedia-doc': }
 
     class { '::rsync::server': }

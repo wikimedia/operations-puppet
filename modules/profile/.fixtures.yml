@@ -4,6 +4,7 @@ fixtures:
         apt: "../../../../apt"
         backup: "../../../../backup"
         conftool: "../../../../conftool"
+        deployment: "../../../../deployment"
         etcd: "../../../../etcd"
         ferm: "../../../../ferm"
         git: "../../../../git"
