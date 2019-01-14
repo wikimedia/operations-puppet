@@ -738,11 +738,11 @@ class profile::prometheus::ops (
       },
     ]
 
-    prometheus::class_config{ "blazegraph_${::site}":
-        dest       => "${targets_path}/blazegraph_${::site}.yaml",
-        site       => $::site,
-        class_name => 'profile::wdqs::blazegraph',
-        port       => 9193,
+    prometheus::resource_config{ "blazegraph_${::site}":
+        dest           => "${targets_path}/blazegraph_${::site}.yaml",
+        site           => $::site,
+        define_name    => 'prometheus::blazegraph_exporter',
+        port_parameter => 'prometheus_port'
     }
 
     # redis_exporter runs alongside each redis instance, thus drop the (uninteresting in this
