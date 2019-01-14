@@ -2915,10 +2915,8 @@ users:
     realname: Balazs Pocze
     name: banyek
     gid: 500
-    ssh_keys:
-      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDmE+Vsn9Dwb1n0lUNMbeSEw/UsZal7/065QKGXia1086EuKEtpe8+JoVvwzrMd+NYtX7Xd/b8Anbt84sHAycHfIgYI6RnJ10HrLvsze4dBaKr7JVv/qvRwf0P6p9Dc9zQOjGFEnKRgtyGyl3SNUahPGwhjhbHFCzxsVxKIh3iDV4TcWlrAPUcRFjwI56/I5daWpZQX+NvnpZCHVcFg0+8Lv/QYEOIbqbx6ZsbrCqBMIsSZUylw8C+5AVO4FosHbgBESFDEpipgliGbqQYmC4AWS1dDOVUW2qg40UqeduxweDux6KoVbz9igKp1M6ZHpGJEVmRSnmCJH2gT7lXvC3Xv wikimedia-prod
+    ssh_keys: []
     uid: 19996
-    email: bpocze@wikimedia.org
   bpirkle:
     ensure: present
     realname: Bill Pirkle
