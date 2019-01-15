@@ -65,6 +65,11 @@ server {
         rewrite ^ /bigdata/namespace/$aliased/sparql last;
     }
 
+    set $port 9999;
+    if ( $uri ~ ^/bigdata/namespace/categories/ ) {
+        set @port 9990;
+    }
+
 <% if @enable_ldf -%>
     location ~ ^/bigdata/(namespace/[a-zA-Z0-9_]+/sparql|ldf|assets) {
 <% else -%>
@@ -76,7 +81,11 @@ server {
 
         # use IP address for the backend and not "localhost" to ensure
         # connection is done over IPv4 (backend is configured as IPv4 only)
-        proxy_pass http://127.0.0.1:9999;
+        set $endpoint "http://127.0.0.1:9999";
+        if ( $uri ~ ^/bigdata/namespace/categories ) {
+                set $endpoint "http://127.0.0.1:9990";
+        }
+        proxy_pass $endpoint;
 
         # Allow only 5 connections per IP
         limit_conn byaddr 5;
