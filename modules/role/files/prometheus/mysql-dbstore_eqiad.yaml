@@ -3,6 +3,7 @@
     role: slave
   targets:
   - dbstore1001:13311
+  - dbstore1003:13311
 
 - labels:
     shard: s2
@@ -27,6 +28,7 @@
     role: slave
   targets:
   - db1102:13315
+  - dbstore1003:13316
 
 - labels:
     shard: s6
@@ -39,6 +41,7 @@
     role: slave
   targets:
   - db1116:13317
+  - dbstore1003:13317
 
 - labels:
     shard: s8
