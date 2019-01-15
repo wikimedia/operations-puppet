@@ -13,7 +13,7 @@ if [ -z "${DATA_DIR}" -o -z "${LOG_DIR}" -o -z "${DEPLOY_DIR}" ]; then
 	exit 1
 fi
 
-HOST="http://localhost:9999"
+HOST=${CATEGORY_ENDPOINT:-"http://localhost:9999"}
 NAMESPACE_URL="/bigdata/namespace/"
 today=$(date -u +'%Y%m%d')
 
