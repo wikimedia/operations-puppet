@@ -108,9 +108,7 @@ server {
       proxy_set_header X-Forwarded-Proto $scheme;
       proxy_set_header Host $host;
     }
-    
     <%- if @expose_metrics -%>
-
     location /metrics {
       satisfy any;
       <%- @metrics_allowed_hosts.each do |host| -%>

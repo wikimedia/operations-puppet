@@ -22,6 +22,10 @@ class docker_registry_ha (
         priority => '1002',
     }
 
+    package {'docker-registry':
+        ensure => present,
+    }
+
     file { '/etc/docker/registry/config.yml':
         content => template('docker_registry_ha/registry-ha-config.yaml.erb'),
         owner   => 'docker-registry',
