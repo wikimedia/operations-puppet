@@ -7,7 +7,7 @@ class profile::wdqs::common(
     Boolean $run_tests = hiera('profile::wdqs::run_tests', false),
     Enum['none', 'daily', 'weekly'] $load_categories = hiera('profile::wdqs::load_categories', 'daily'),
     Array[String] $nodes = hiera('profile::wdqs::nodes'),
-    Stdlib::Httpurl $categories_endpoint =  hiera('profile::wdqs::categories_endpoint', 'http://localhost:9999'),
+    Stdlib::Httpurl $categories_endpoint =  hiera('profile::wdqs::categories_endpoint', 'http://localhost:9990'),
 ) {
 
     $username = 'blazegraph'
