@@ -1958,11 +1958,11 @@ node /^rdb100[123478]\.eqiad\.wmnet$/ {
 }
 
 # New rdb servers T206450
-node /^rdb100[59]\.eqiad\.wmnet$/ {
+node /^rdb100[69]\.eqiad\.wmnet$/ {
     role(redis::misc::master)
 }
 
-node /^(rdb1006|rdb1010)\.eqiad\.wmnet$/ {
+node /^(rdb1005|rdb1010)\.eqiad\.wmnet$/ {
     role(redis::misc::slave)
 }
 
