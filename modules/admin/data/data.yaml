@@ -3483,3 +3483,7 @@ ldap_only_users:
     ensure: present
     realname: Dan Garry
     email: djgwiki@gmail.com
+  holger:
+    ensure: present
+    realname: Holger Knust
+    email: hknust@wikimedia.org
