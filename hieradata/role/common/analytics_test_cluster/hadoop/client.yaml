@@ -1,4 +1,4 @@
-profile::hadoop::common::hadoop_cluster_name: 'analytics-hadoop'
+profile::hadoop::common::hadoop_cluster_name: 'analytics-test-hadoop'
 
 # Hive Client settings.
 # Hive configuration is common to multiple clients, but because of role based

@@ -68,7 +68,29 @@ node 'analytics1003.eqiad.wmnet' {
 # These hosts are OOW but they are used as temporary
 # Hadoop testing cluster for T211836.
 #
-node /analytics10(2[89]|3[0-9]|4[0-1]).eqiad.wmnet/ {
+node 'analytics1028.eqiad.wmnet' {
+    role(analytics_test_cluster::hadoop::master)
+    interface::add_ip6_mapped { 'main': }
+}
+
+node 'analytics1029.eqiad.wmnet' {
+    role(analytics_test_cluster::hadoop::standby)
+    interface::add_ip6_mapped { 'main': }
+}
+
+# Reserved to be the Hadoop coordinator
+node 'analytics1030.eqiad.wmnet' {
+    role(spare::system)
+    interface::add_ip6_mapped { 'main': }
+}
+
+node /analytics10(3[1-8]|4[0-1]).eqiad.wmnet/ {
+    role(analytics_test_cluster::hadoop::worker)
+    interface::add_ip6_mapped { 'main': }
+}
+
+# Reserved for various UIs
+node 'analytics1039.eqiad.wmnet' {
     role(spare::system)
     interface::add_ip6_mapped { 'main': }
 }

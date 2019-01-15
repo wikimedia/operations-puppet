@@ -597,6 +597,77 @@ kafka_clusters:
 # in sync. Instead of having it repated multiple times it is convenient to
 # have a single place in hiera to check/modify.
 hadoop_clusters:
+  analytics-test-hadoop:
+    zookeeper_cluster_name: main-eqiad
+    resourcemanager_hosts:
+      - analytics1028.eqiad.wmnet
+      - an-master1029.eqiad.wmnet
+    namenode_hosts:
+      - analytics1028.eqiad.wmnet
+      - an-master1029.eqiad.wmnet
+    journalnode_hosts:
+      - analytics1031.eqiad.wmnet
+      - analytics1034.eqiad.wmnet
+      - analytics1041.eqiad.wmnet
+    # analytics* Dell R720s have mounts on disks sdb - sdm.
+    # (sda is hardware raid on the 2 2.5 drives in the flex bays.)
+    datanode_mounts:
+      - /var/lib/hadoop/data/b
+      - /var/lib/hadoop/data/c
+      - /var/lib/hadoop/data/d
+      - /var/lib/hadoop/data/e
+      - /var/lib/hadoop/data/f
+      - /var/lib/hadoop/data/g
+      - /var/lib/hadoop/data/h
+      - /var/lib/hadoop/data/i
+      - /var/lib/hadoop/data/j
+      - /var/lib/hadoop/data/k
+      - /var/lib/hadoop/data/l
+      - /var/lib/hadoop/data/m
+    net_topology:
+      analytics1028.eqiad.wmnet:  /eqiad/C/2
+      analytics1029.eqiad.wmnet:  /eqiad/C/2
+      analytics1031.eqiad.wmnet:  /eqiad/C/2
+      analytics1032.eqiad.wmnet:  /eqiad/C/3
+      analytics1033.eqiad.wmnet:  /eqiad/C/3
+      analytics1034.eqiad.wmnet:  /eqiad/C/3
+      analytics1035.eqiad.wmnet:  /eqiad/D/8
+      analytics1036.eqiad.wmnet:  /eqiad/D/8
+      analytics1037.eqiad.wmnet:  /eqiad/D/8
+      analytics1038.eqiad.wmnet:  /eqiad/D/4
+      analytics1040.eqiad.wmnet:  /eqiad/D/4
+      analytics1041.eqiad.wmnet:  /eqiad/D/4
+
+    datanode_volumes_failed_tolerated: 2
+    mapreduce_reduce_shuffle_parallelcopies: 10
+    mapreduce_task_io_sort_mb: 200
+    mapreduce_task_io_sort_factor: 10
+
+    mapreduce_map_memory_mb: 2048
+    mapreduce_map_java_opts: '-Xmx1638m'  # 0.8 * 2G
+
+    mapreduce_reduce_memory_mb: 4096         # 2 * 2G
+    mapreduce_reduce_java_opts: '-Xmx3276m'  # 0.8 * 2 * 2G
+
+    yarn_app_mapreduce_am_resource_mb: 4096          # 2 * 2G
+    yarn_app_mapreduce_am_command_opts: '-Xmx3276m'  # 0.8 * 2 * 2G
+
+    yarn_scheduler_minimum_allocation_mb: 0
+
+    yarn_scheduler_maximum_allocation_mb: 53248
+    yarn_scheduler_minimum_allocation_vcores:   0
+    yarn_scheduler_maximum_allocation_vcores:   32
+    yarn_resourcemanager_zk_timeout_ms: 20000
+
+    # Allow superset to impersonate users.
+    # This is what allows superset to access files in
+    # HDFS as users running Hive queries.
+    # We only want to allow access from analytics-tool1003 (where superset runs)
+    # and for users in specific groups.
+    #core_site_extra_properties:
+    #  hadoop.proxyuser.superset.hosts: analytics-tool1003.eqiad.wmnet
+    #  hadoop.proxyuser.superset.groups: analytics-users,analytics-privatedata-users
+
   analytics-hadoop:
     zookeeper_cluster_name: main-eqiad
     resourcemanager_hosts:

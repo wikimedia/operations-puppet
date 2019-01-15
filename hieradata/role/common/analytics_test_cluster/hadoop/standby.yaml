@@ -13,7 +13,7 @@ admin::groups:
   # for deploying files to HDFS.
   - analytics-search-users
 
-profile::hadoop::common::hadoop_cluster_name: 'analytics-hadoop'
+profile::hadoop::common::hadoop_cluster_name: 'analytics-test-hadoop'
 
 profile::hadoop::standby_master::monitoring_enabled: true
 profile::hadoop::logstash::enabled: false
