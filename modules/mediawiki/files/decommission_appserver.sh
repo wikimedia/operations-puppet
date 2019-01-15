@@ -51,3 +51,6 @@ done
 pushd /etc/logrotate.d
 rm -f hhvm mediawiki_apache nginx nutcracker
 popd
+
+# Remove any trace of tmpreaper to avoid daily cronspam
+apt-get purge tmpreaper
