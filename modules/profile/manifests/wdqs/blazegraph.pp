@@ -15,6 +15,7 @@ class profile::wdqs::blazegraph(
     Integer[0] $lag_critical = hiera('profile::wdqs::lag_critical', 3600),
 ) {
     require ::profile::wdqs::common
+    require ::profile::prometheus::blazegraph_exporter
 
     $username = 'blazegraph'
     $prometheus_agent_path = '/usr/share/java/prometheus/jmx_prometheus_javaagent.jar'
@@ -44,24 +45,6 @@ class profile::wdqs::blazegraph(
             port        => $prometheus_agent_port_categories,
             before      => Service['wdqs-categories'],
             config_file => $prometheus_agent_config_categories,
-    }
-
-    file { '/usr/local/bin/prometheus-blazegraph-exporter':
-        ensure => present,
-        source => 'puppet:///modules/wdqs/monitor/prometheus-blazegraph-exporter.py',
-        mode   => '0555',
-        owner  => 'root',
-        group  => 'root',
-    }
-    prometheus::blazegraph_exporter { 'wdqs-blazegraph':
-        blazegraph_port  => 9999,
-        prometheus_port  => 9193,
-        prometheus_nodes => $prometheus_nodes,
-    }
-    prometheus::blazegraph_exporter { 'wdqs-categories':
-        blazegraph_port  => 9990,
-        prometheus_port  => 9194,
-        prometheus_nodes => $prometheus_nodes,
     }
 
     wdqs::blazegraph {

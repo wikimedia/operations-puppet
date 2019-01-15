@@ -7,9 +7,4 @@ class wdqs::packages {
 
     require_package('openjdk-8-jdk')
     require_package('curl')
-
-    # with multi instance, this package is overkill
-    package { 'prometheus-blazegraph-exporter':
-        ensure => absent,
-    }
 }
