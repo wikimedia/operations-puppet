@@ -46,6 +46,7 @@ class visualdiff {
         owner     => 'root',
         group     => 'wikidev',
         directory => '/srv/visualdiff',
+        before    => File['/srv/visualdiff/pngs'],
     }
 
     # visual-diff testreduce clients save the
