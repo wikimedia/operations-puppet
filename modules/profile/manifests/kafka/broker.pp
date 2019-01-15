@@ -141,6 +141,10 @@
 #   Value for -Xms and -Xmx to pass to the JVM. Example: '8g'
 #   Default: undef
 #
+# [*num_partitions*]
+#   The default number of partitions per topic.
+#   Default: 1
+#
 class profile::kafka::broker(
     $kafka_cluster_name                = hiera('profile::kafka::broker::kafka_cluster_name'),
     $statsd                            = hiera('statsd'),
@@ -173,6 +177,7 @@ class profile::kafka::broker(
     $kafka_version                     = hiera('profile::kafka::broker::kafka_version', undef),
 
     $max_heap_size                     = hiera('profile::kafka::broker::max_heap_size', undef),
+    $num_partitions                    = hiera('profile::kafka::broker::num_partitions', 1),
 ) {
     $config         = kafka_config($kafka_cluster_name)
     $cluster_name   = $config['name']
@@ -370,6 +375,7 @@ class profile::kafka::broker(
         message_max_bytes                => $message_max_bytes,
         authorizer_class_name            => $authorizer_class_name,
         super_users                      => $super_users,
+        num_partitions                   => $num_partitions,
     }
 
     $ferm_srange = $::realm ? {
