@@ -254,9 +254,11 @@ class TaskGen < ::Rake::TaskLib
     global_files = ['Gemfile', '.rubocop.todo.yml']
     ruby_files = filter_files_by("**/*.rb", "**/Rakefile", 'Rakefile', 'Gemfile', '**/.rubocop.todo.yml')
     return [] if ruby_files.empty?
-    rubocop_task = RuboCop::RakeTask.new(:rubocop)
-    if @changed_files.select{ |f| global_files.include?f }.empty?
-      rubocop_task.patterns = ruby_files
+    RuboCop::RakeTask.new(:rubocop) do |r|
+        r.options = ['--force-exclusion']
+        if @changed_files.select{ |f| global_files.include?f }.empty?
+          r.patterns = ruby_files
+        end
     end
 
     [:rubocop]
