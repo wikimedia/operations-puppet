@@ -1,3 +1,2 @@
 mariadb::shard: 's3'
-mariadb::mysql_role: 'master'
 mariadb::binlog_format: 'STATEMENT'
