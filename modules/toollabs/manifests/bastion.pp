@@ -233,6 +233,14 @@ class toollabs::bastion(
         source => 'puppet:///modules/toollabs/gridscripts/killgridjobs.sh',
     }
 
+    file { '/usr/local/sbin/exec-manage':
+        ensure => file,
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0655',
+        source => 'puppet:///modules/toollabs/exec-manage',
+    }
+
     file { '/usr/local/sbin/qstat-full':
         ensure => file,
         owner  => 'root',

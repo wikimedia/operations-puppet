@@ -128,12 +128,4 @@ class toollabs::master inherits toollabs {
         force   => true,
         require => File["${toollabs::geconf}/spool"],
     }
-
-    file { '/usr/local/sbin/exec-manage':
-        ensure => file,
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0655',
-        source => 'puppet:///modules/toollabs/exec-manage',
-    }
 }
