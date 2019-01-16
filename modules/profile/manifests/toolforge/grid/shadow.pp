@@ -18,4 +18,12 @@ class profile::toolforge::grid::shadow(
         gridmaster => $gridmaster,
         sgeroot    => $geconf,
     }
+
+    file { '/usr/local/sbin/exec-manage':
+        ensure => file,
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0655',
+        source => 'puppet:///modules/profile/toolforge/exec-manage',
+    }
 }

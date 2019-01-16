@@ -8,7 +8,7 @@ set -e
 
 function usage {
         echo -e "Usage:\n"
-        echo "exec-manage [status|depool|repool|test] exec_host_name"
+        echo "exec-manage [status|depool|repool] exec_host_name"
         echo "exec-manage [list]"
         echo ""
         echo "Example: exec-manage status tools-exec1001.tools.eqiad.wmflabs"
@@ -29,26 +29,6 @@ cmd=$1
 exec_host=$2
 
 case $cmd in
-    status)
-
-        # List count of running jobs on host
-        echo "Count of jobs running on host $exec_host : "
-        /usr/bin/qhost -j -h $exec_host | awk '{print $1; }' | grep -E ^[0-9] | wc -l
-
-        echo
-
-        # List details of jobs running on host
-        echo "Jobs running on host $exec_host : "
-        /usr/bin/qhost -j -h $exec_host
-
-        echo
-
-        # Also check status of queues on host
-        echo "Status of queues on this host (States - d = disabled) : "
-        /usr/bin/qstat -f -q "*@$exec_host"
-
-        ;;
-
     depool)
 
         # Collect the list of jobs running on this host, and convert them
@@ -93,34 +73,26 @@ case $cmd in
         # Enables all queues on this host
         /usr/bin/qmod -e "*@$exec_host"
 
-        # Fall-through to test
+        # Fall-through to status
         ;&
 
-    test)
+    status)
 
-        # Determine release version of Exec node. Logic for now:
-        # Hosts with 14xx - Trusty
-        case "$exec_host" in
-            *"-14"*)
-                release="trusty"
-                ;;
-            *)
-                echo "Could not determine release version for execution node $exec_host."
-                exit 1
-                ;;
-        esac
+        # List count of running jobs on host
+        echo "Count of jobs running on host $exec_host : "
+        /usr/bin/qhost -j -h $exec_host | awk '{print $1; }' | grep -E ^[0-9] | wc -l
 
-        echo "Submitting a test job to $exec_host"
+        echo
 
-        # Submit a test job to a recently repooled host to make sure it accepts
-        # new jobs
-        /usr/bin/qsub -l hostname=$exec_host -l release=$release \
-            -b y "date && sleep 60 && date"
+        # List details of jobs running on host
+        echo "Jobs running on host $exec_host : "
+        /usr/bin/qhost -j -h $exec_host
 
-        # Wait 1 second and display the output of qstat
-        sleep 1
-        echo "Output of qstat: "
-        /usr/bin/qstat
+        echo
+
+        # Also check status of queues on host
+        echo "Status of queues on this host (States - d = disabled) : "
+        /usr/bin/qstat -f -q "*@$exec_host"
 
         ;;
 

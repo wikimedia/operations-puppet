@@ -167,7 +167,7 @@ class profile::toolforge::grid::master (
         owner  => 'root',
         group  => 'root',
         mode   => '0655',
-        source => 'puppet:///modules/toollabs/exec-manage',
+        source => 'puppet:///modules/profile/toolforge/exec-manage',
     }
 
     exec { 'update-global-config':
