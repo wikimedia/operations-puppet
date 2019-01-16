@@ -85,6 +85,10 @@
         <port><%= @logstash_port %></port>
         <customFields>{"program":"<%= @title %>"}</customFields>
     </appender>
+    <appender name="async-logstash" class="ch.qos.logback.classic.AsyncAppender">
+        <neverBlock>true</neverBlock>
+        <appender-ref ref="logstash" />
+    </appender>
 
     <%- if @sparql -%>
     <appender name="file-sparql" class="ch.qos.logback.core.rolling.RollingFileAppender">
