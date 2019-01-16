@@ -162,6 +162,14 @@ class profile::toolforge::grid::master (
         source => 'puppet:///modules/profile/toolforge/grid-scheduler-config',
     }
 
+    file { '/usr/local/sbin/exec-manage':
+        ensure => file,
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0655',
+        source => 'puppet:///modules/toollabs/exec-manage',
+    }
+
     exec { 'update-global-config':
         command     => "/usr/bin/qconf -Mconf ${etcdir}/config/global",
         subscribe   => File["${etcdir}/config/global"],
