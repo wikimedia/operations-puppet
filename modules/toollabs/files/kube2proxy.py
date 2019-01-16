@@ -1,10 +1,13 @@
 #!/usr/bin/python3
-import requests
+from distutils.version import StrictVersion
 import argparse
-import redis
-import logging
-import yaml
 import json
+import logging
+
+import redis
+import requests
+import yaml
+
 
 LOG_FORMAT = "%(asctime)s %(message)s"
 log = logging.getLogger()
@@ -13,6 +16,7 @@ services_registry = 'k8s_services'
 
 
 class KubeAuth(requests.auth.AuthBase):
+    """Add Authorization header to requests."""
     def __init__(self, token):
         self.token = token
 
@@ -55,9 +59,9 @@ class KubeClient(object):
         resp = self.session.get(
             self.url_for('/namespaces/{}/services/{}'.format(namespace, name)))
         if resp.status_code != '200':
-            raise ValueError("Found an unexpected response code %s when "
-                             "searching for service %s" % (resp.status_code,
-                                                           name))
+            raise ValueError(
+                "Found an unexpected response code %s when "
+                "searching for service %s" % (resp.status_code, name))
 
     def sync_services(self):
         """Does a full sync of the services, returns a list
@@ -208,6 +212,13 @@ def main():
     else:
         level = logging.INFO
     logging.basicConfig(format=LOG_FORMAT, level=level)
+
+    # T213711: Verify that the version of requests we are seeing is new enough
+    # to work for watching the Kubernetes API change stream.
+    if StrictVersion(requests.__version__) < StrictVersion('2.7.0'):
+        raise AssertionError(
+            'kube2proxy needs requests>=2.7.0, found {}'.format(
+                requests.__version__))
 
     with open(args.config, 'r') as fh:
         config = yaml.safe_load(fh)
