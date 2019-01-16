@@ -67,7 +67,7 @@ server {
 
     set $port 9999;
     if ( $uri ~ ^/bigdata/namespace/categories/ ) {
-        set @port 9990;
+        set $port 9990;
     }
 
 <% if @enable_ldf -%>
