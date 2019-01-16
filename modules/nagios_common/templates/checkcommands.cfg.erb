@@ -473,6 +473,7 @@ define command {
 
 # end percona mysql checks
 # Elasticsearch Checks
+# TODO: Merge all https and http checks for a more cleaner approach - T215587
 define command {
     command_name    check_elasticsearch
     command_line    $USER1$/check_elasticsearch -H $HOSTADDRESS$ -P $ARG1$
@@ -484,8 +485,8 @@ define command {
 }
 
 define command {
-    command_name    check_elasticsearch_shards
-    command_line    $USER1$/check_elasticsearch.py --ignore-status --url http://$HOSTADDRESS$:$ARG1$
+    command_name    check_cirrus_frozen_writes_via_https
+    command_line    $USER1$/check_cirrus_frozen_writes.py --url https://$HOSTNAME$:$ARG1$
 }
 
 define command {
@@ -494,13 +495,28 @@ define command {
 }
 
 define command {
+    command_name    check_elasticsearch_shards_threshold_via_https
+    command_line    $USER1$/check_elasticsearch.py --ignore-status --url https://$HOSTNAME$:$ARG1$ --shards-inactive "$ARG2$"
+}
+
+define command {
     command_name    check_elasticsearch_shard_size
     command_line    $USER1$/check_elasticsearch_shard_size.py --url http://$HOSTADDRESS$:$ARG1$
 }
 
 define command {
+    command_name    check_elasticsearch_shard_size_via_https
+    command_line    $USER1$/check_elasticsearch_shard_size.py --url https://$HOSTNAME$:$ARG1$
+}
+
+define command {
     command_name    check_elasticsearch_unassigned_shards
     command_line    $USER1$/check_elasticsearch_unassigned_shards.py --url http://$HOSTADDRESS$:$ARG1$
+}
+
+define command {
+    command_name    check_elasticsearch_unassigned_shards_via_https
+    command_line    $USER1$/check_elasticsearch_unassigned_shards.py --url https://$HOSTNAME$:$ARG1$
 }
 
 # Analytics Cluster Checks
