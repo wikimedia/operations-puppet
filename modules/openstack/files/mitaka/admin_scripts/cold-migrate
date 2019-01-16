@@ -117,7 +117,7 @@ class NovaInstance(object):
 
         host_moved = True
         args = ["mysql", "--user=nova", "--password=%s" % mysql_password,
-                "--host", "m5-master.eqiad.wmnet", "nova",
+                "--host", "m5-master.eqiad.wmnet", "nova_eqiad1",
                 "-e",
                 "update instances set host=\"%s\",node=\"%s.eqiad.wmnet\" "
                 "where uuid=\"%s\";" %
