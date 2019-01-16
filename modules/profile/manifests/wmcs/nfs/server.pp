@@ -8,6 +8,7 @@ class profile::wmcs::nfs::server (
         'nethogs',
         'nfs-common',
         'nfs-kernel-server',
+        'nfsd-ldap',
         'rpcbind',
     ]
 
