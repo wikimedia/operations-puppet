@@ -32,7 +32,6 @@ class eventlogging::dependencies {
         'python-mysqldb',
         'python-pygments',
         'python-pykafka',
-        'python-pymongo',
         'python-six',
         'python-sqlalchemy',
         'python-statsd',
