@@ -124,6 +124,24 @@ class role::prometheus::analytics {
         site       => $::site,
     }
 
+    prometheus::jmx_exporter_config{ "hadoop_worker_test_${::site}":
+        dest       => "${targets_path}/jmx_hadoop_worker_test_${::site}.yaml",
+        class_name => 'role::analytics_test_cluster::hadoop::worker',
+        site       => $::site,
+    }
+
+    prometheus::jmx_exporter_config{ "hadoop_master_test_${::site}":
+        dest       => "${targets_path}/jmx_hadoop_master_test_${::site}.yaml",
+        class_name => 'role::analytics_test_cluster::hadoop::master',
+        site       => $::site,
+    }
+
+    prometheus::jmx_exporter_config{ "hadoop_standby_test_${::site}":
+        dest       => "${targets_path}/jmx_hadoop_standby_test_${::site}.yaml",
+        class_name => 'role::analytics_test_cluster::hadoop::standby',
+        site       => $::site,
+    }
+
     prometheus::jmx_exporter_config{ "druid_public_${::site}":
         dest       => "${targets_path}/jmx_druid_public_${::site}.yaml",
         class_name => 'role::druid::public::worker',
