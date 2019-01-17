@@ -46,3 +46,4 @@ profile::kafka::mirror::properties:
     "batch.size": 65536
 
 profile::kafka::broker::max_heap_size: '2g'
+diamond::remove: true
