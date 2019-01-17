@@ -1,6 +1,6 @@
 class helm(
-    $helm_home='/etc/helm',
-    $stable_repo='https://releases.wikimedia.org/charts/',
+    Stdlib::Unixpath $helm_home='/etc/helm',
+    Stdlib::Httpurl $stable_repo='https://releases.wikimedia.org/charts/',
 ) {
     package { [
         'helm',
