@@ -2,8 +2,8 @@
 # A typical use case is speeding up interaction with MediaWiki
 # sqlite database files in Jenkins jobs.
 define contint::tmpfs(
-  $mount_point = '/var/lib/jenkins/tmpfs',
-  $size = '512M',
+  Stdlib::Unixpath $mount_point = '/var/lib/jenkins/tmpfs',
+  String $size = '512M',
   ) {
 
   # Setup tmpfs to write SQLite files to

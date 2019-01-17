@@ -1,6 +1,6 @@
 # Class publishing the Zuul repositories with git-daemon
 class contint::zuul::git_daemon(
-    $zuul_git_dir = '/var/lib/zuul/git'
+    Stdlib::Unixpath $zuul_git_dir = '/var/lib/zuul/git'
 ) {
   # Point both git daemon paths to the same directory. This way we do not have
   # a /git/ prefix in the git:// URLs.

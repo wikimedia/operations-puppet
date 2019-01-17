@@ -15,9 +15,9 @@
 # /srv/localhost/example.
 #
 define contint::localvhost(
-    $docroot = "/srv/localhost/${name}",
-    $port = 9412,
-    $log_prefix = $name,
+    Stdlib::Unixpath $docroot = "/srv/localhost/${name}",
+    Stdlib::Port $port = 9412,
+    String $log_prefix = $name,
 ){
 
     apache::site { "${name}.localhost":
