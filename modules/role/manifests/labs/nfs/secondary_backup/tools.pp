@@ -17,8 +17,7 @@ class role::labs::nfs::secondary_backup::tools {
         local_lv            => 'tools-project',
         local_snapshot      => 'tools-project-backup',
         local_snapshot_size => '2T',
-        weekday             => 'Tue',
-        hour                => 20,
+        interval            => 'Tue *-*-* 20:00:00',
     }
 
 }

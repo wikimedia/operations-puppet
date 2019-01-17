@@ -1,15 +1,13 @@
 define labstore::device_backup (
-    $remotehost,
-    $remote_vg,
-    $remote_lv,
-    $remote_snapshot,
-    $local_vg,
-    $local_lv,
-    $local_snapshot,
-    $local_snapshot_size,
-    $weekday,
-    $hour=0,
-    $minute=0,
+    String $remotehost,
+    String $remote_vg,
+    String $remote_lv,
+    String $remote_snapshot,
+    String $local_vg,
+    String $local_lv,
+    String $local_snapshot,
+    String $local_snapshot_size,
+    String $interval,  # https://www.freedesktop.org/software/systemd/man/systemd.time.html
 ) {
     include ::labstore::bdsync
     $remote_ip = ipresolve($remotehost, 4)
@@ -24,7 +22,7 @@ define labstore::device_backup (
     systemd::timer { 'block_sync':
         timer_intervals => [{
             'start'    => 'OnCalendar',
-            'interval' => sprintf('%s *-*-* %02d:%02d:00', $weekday, $hour, $minute)
+            'interval' => $interval
             }],
         unit_name       => 'block_sync.service',
     }
