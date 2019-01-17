@@ -4,7 +4,7 @@
 # MediaWiki.
 #
 class mediawiki::users(
-    $web = 'www-data',
+    String $web = 'www-data',
 ) {
 
     # The mwdeploy account is used by various scripts in the MediaWiki

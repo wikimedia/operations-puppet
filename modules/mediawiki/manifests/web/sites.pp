@@ -1,5 +1,5 @@
 class mediawiki::web::sites (
-    $domain_suffix = 'org',
+    String $domain_suffix = 'org',
 ) {
     tag 'mediawiki', 'mw-apache-config'
 
