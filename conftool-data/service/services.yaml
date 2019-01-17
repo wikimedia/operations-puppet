@@ -237,7 +237,7 @@ kubernetes:
     - eqiad
     - codfw
   zotero:
-    port: 1968
+    port: 1969
     default_values:
       pooled: 'no'
       weight: 10
