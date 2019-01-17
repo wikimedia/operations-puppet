@@ -601,10 +601,10 @@ hadoop_clusters:
     zookeeper_cluster_name: main-eqiad
     resourcemanager_hosts:
       - analytics1028.eqiad.wmnet
-      - an-master1029.eqiad.wmnet
+      - analytics1029.eqiad.wmnet
     namenode_hosts:
       - analytics1028.eqiad.wmnet
-      - an-master1029.eqiad.wmnet
+      - analytics1029.eqiad.wmnet
     journalnode_hosts:
       - analytics1031.eqiad.wmnet
       - analytics1034.eqiad.wmnet
