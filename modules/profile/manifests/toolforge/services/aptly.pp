@@ -8,6 +8,13 @@ class profile::toolforge::services::aptly(
     aptly::repo { 'jessie-tools':
         publish      => true,
     }
+    # delete next two once migrations end
+    aptly::repo { 'trusty-tools':
+        publish      => true,
+    }
+    aptly::repo { 'stretch-toolsbeta':
+        publish      => true,
+    }
 
     # make sure we have a backup server ready to take over
     rsync::quickdatacopy { 'aptly-sync':

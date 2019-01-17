@@ -6,8 +6,6 @@ class role::toollabs::services(
         description => 'Tool Labs manifest based services',
     }
 
-    include ::role::aptly::server
-
     class { '::toollabs::services': }
 
     class { '::toollabs::updatetools':

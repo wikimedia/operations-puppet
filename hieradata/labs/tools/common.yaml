@@ -4,7 +4,6 @@ profile::base::labs::unattended_distro: 'absent'
 "profile::base::core_dump_pattern": core
 classes:
     - role::aptly::client
-role::aptly::client::servername: tools-services-01.tools.eqiad.wmflabs
 standard::has_default_mail_relay: false
 k8s_regular_users:
   - lolrrit-wm
