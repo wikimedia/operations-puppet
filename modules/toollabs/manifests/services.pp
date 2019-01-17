@@ -7,7 +7,6 @@
 #   false if they should just be hot standby
 
 class toollabs::services(
-    $active = false,
 ) inherits toollabs {
 
     # ugly, but this code/class (toollabs::services) is already refactored and
@@ -17,27 +16,6 @@ class toollabs::services(
     }
 
     include ::gridengine::submit_host
-
-    package { 'tools-manifest':
-        ensure => latest,
-    }
-
-    package { 'toollabs-webservice':
-        ensure => latest,
-    }
-
-    file { '/usr/local/bin/webservice':
-        ensure => link,
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0555',
-        target => '/usr/bin/webservice',
-    }
-
-    service { 'webservicemonitor':
-        ensure    => ensure_service($active),
-        subscribe => Package['tools-manifest'],
-    }
 
     diamond::collector { 'SGE':
         source   => 'puppet:///modules/toollabs/monitoring/sge.py',
