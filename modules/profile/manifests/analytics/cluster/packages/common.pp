@@ -25,6 +25,7 @@ class profile::analytics::cluster::packages::common {
         'python-geoip',           'python3-geoip',
         'python-geoip2',          'python3-geoip2',
         'python-pandas',          'python3-pandas',
+        'python-pycountry',       'python3-pycountry',
         'python-scipy',           'python3-scipy',
         'python-requests',        'python3-requests',
         'python-dateutil',        'python3-dateutil',
