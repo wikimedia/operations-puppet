@@ -10,7 +10,6 @@ class testreduce {
             uri        => 'http://apt.wikimedia.org/wikimedia',
             dist       => 'stretch-wikimedia',
             components => 'component/node10',
-            before     => Package['nodejs'],
         }
 
         $node_packages = ['nodejs', 'nodejs-dev', 'npm', 'node-abbrev', 'node-ansi-regex',
