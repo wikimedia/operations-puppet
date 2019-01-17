@@ -1,10 +1,10 @@
 # Definition pbuilder_hook
 define package_builder::pbuilder_hook(
-    $distribution='stretch',
-    $components='main',
-    $mirror='http://apt.wikimedia.org/wikimedia',
-    $upstream_mirror='http://mirrors.wikimedia.org/debian',
-    $basepath='/var/cache/pbuilder',
+    String $distribution='stretch',
+    String $components='main',
+    Stdlib::Httpurl $mirror='http://apt.wikimedia.org/wikimedia',
+    Stdlib::Httpurl $upstream_mirror='http://mirrors.wikimedia.org/debian',
+    Stdlib::Unixpath $basepath='/var/cache/pbuilder',
 ) {
     file { "${basepath}/hooks/${distribution}":
         ensure => directory,

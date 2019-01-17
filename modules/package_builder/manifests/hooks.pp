@@ -2,7 +2,7 @@
 # A wrapper class for package::pbuilder_hooks. Mostly exists to make the
 # addition of new distributions as easy as possible
 class package_builder::hooks(
-    $basepath='/var/cache/pbuilder',
+    Stdlib::Unixpath $basepath='/var/cache/pbuilder',
 ) {
     file { "${basepath}/hooks":
         ensure => directory,

@@ -34,13 +34,13 @@
 # single cow image.
 # Default: undef
 define package_builder::pbuilder_base(
-    $mirror='http://mirrors.wikimedia.org/debian',
-    $distribution='stretch',
-    $distribution_alias=undef,
-    $components='main',
-    $architecture='amd64',
-    $basepath='/var/cache/pbuilder',
-    $keyring=undef,
+    Stdlib::Httpurl $mirror='http://mirrors.wikimedia.org/debian',
+    String $distribution='stretch',
+    Optional[String] $distribution_alias=undef,
+    String $components='main',
+    String $architecture='amd64',
+    Stdlib::Unixpath $basepath='/var/cache/pbuilder',
+    Optional[Stdlib::Unixpath] $keyring=undef,
 ) {
     if $keyring {
         $arg = "--debootstrapopts --keyring=${keyring}"

@@ -2,7 +2,7 @@
 # A wrapper class for package::pbuilder_base. Mostly exists to make the
 # addition of new distributions as easy as possible
 class package_builder::environments(
-    $basepath='/var/cache/pbuilder',
+    Stdlib::Unixpath $basepath='/var/cache/pbuilder',
 ) {
     # amd64 architecture
     package_builder::pbuilder_base { 'trusty-amd64':

@@ -8,7 +8,7 @@
 # Usage:
 #   include package_builder
 class package_builder(
-    $basepath='/var/cache/pbuilder',
+    Stdlib::Unixpath $basepath='/var/cache/pbuilder',
 ) {
     class { '::package_builder::hooks':
         basepath => $basepath,
