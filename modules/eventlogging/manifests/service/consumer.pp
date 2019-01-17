@@ -4,10 +4,10 @@
 # EventLogging and various data storage, monitoring, and visualization
 # systems. Multiple consumers may subscribe to a single event stream.
 # One consumer may write the data to Hadoop, another to statsd, another
-# to MongoDB, etc. Both the input stream and the output medium are
+# to MySQL, etc. Both the input stream and the output medium are
 # specified by URI. A plug-in architecture provides a mechanism for a
 # plug-in to register itself as the handler of a particular output URI
-# scheme (for example, the MongoDB consumer handles "mongo://" URIs).
+# scheme (for example, the MySQL consumer handles "mysql://" URIs).
 #
 # === Parameters
 #
@@ -54,7 +54,7 @@
 #
 #  eventlogging::service::consumer { 'all events':
 #    input  => 'tcp://eventlog1002.eqiad.wmnet:8600',
-#    output => 'mongodb://eventlog1002.eqiad.wmnet:27017/?w=1',
+#    output => 'mysql://user:password@eventlog1002.eqiad.wmnet:3306/?charset=utf8',
 #  }
 #
 define eventlogging::service::consumer(
