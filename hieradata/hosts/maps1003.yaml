@@ -16,3 +16,5 @@ profile::cassandra::single_instance::seeds:
   - '10.64.32.117' # maps1003.eqiad.wmnet
 
 profile::maps::osm_slave::master: 'maps1004.eqiad.wmnet'
+
+cassandra::target_version: '2.2'
