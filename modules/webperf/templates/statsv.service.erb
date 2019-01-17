@@ -4,7 +4,7 @@ After=network-online.target
 
 [Service]
 WorkingDirectory=/srv/deployment/statsv/statsv
-ExecStart=/usr/bin/python /srv/deployment/statsv/statsv/statsv.py --brokers <%= @kafka_brokers %> --statsd <%= @statsd %> --topics <%= @topics %> <%= "--api-version #{@kafka_api_version}" if @kafka_api_version %>
+ExecStart=/usr/bin/python /srv/deployment/statsv/statsv/statsv.py --brokers <%= @kafka_brokers %> --statsd <%= @statsd_host %>:<%= @statsd_port %> --topics <%= @topics %> <%= "--api-version #{@kafka_api_version}" if @kafka_api_version %>
 User=nobody
 Restart=always
 WatchdogSec=120

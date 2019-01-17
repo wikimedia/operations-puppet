@@ -16,9 +16,9 @@
 #   Write stats to this StatsD instance. Default: 8125.
 #
 class webperf::navtiming(
-    $kafka_brokers,
-    $statsd_host = '127.0.0.1',
-    $statsd_port = 8125,
+    String $kafka_brokers,
+    Variant[Stdlib::Ipv4, Stdlib::Fqdn] $statsd_host = '127.0.0.1',
+    Stdlib::Port $statsd_port = 8125,
 ) {
     include ::webperf
 

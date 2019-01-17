@@ -12,14 +12,18 @@
 # [*topics*]
 #   Comma separated list of topics from which statsv should consume. Default: statsv
 #
-# [*statsd*]
-#   host:port of statsd instance.  Default: localhost:8125
+# [*statsd_host*]
+#   host name of statsd instance.  Default: localhost
+#
+# [*statsd_port*]
+#   port of statsd instance.  Default: 8125
 #
 class webperf::statsv(
-    $kafka_brokers,
-    $kafka_api_version = undef,
-    $topics            = 'statsv',
-    $statsd            = 'localhost:8125',
+    String $kafka_brokers,
+    Optional[String] $kafka_api_version = undef,
+    String $topics            = 'statsv',
+    Stdlib::Fqdn $statsd_host = 'localhost',
+    Integer $statsd_port      = 8125,
 ) {
     include ::webperf
 

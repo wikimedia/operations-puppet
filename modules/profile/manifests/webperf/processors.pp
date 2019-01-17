@@ -18,7 +18,7 @@ class profile::webperf::processors(
 ) {
     $statsd_parts = split($statsd, ':')
     $statsd_host = $statsd_parts[0]
-    $statsd_port = $statsd_parts[1]
+    $statsd_port = 0 + $statsd_parts[1]
 
     # statsv is on main kafka, not analytics or jumbo kafka.
     # Note that at any given time, all statsv varnishkafka producers are
@@ -34,7 +34,8 @@ class profile::webperf::processors(
     class { '::webperf::statsv':
         kafka_brokers     => $kafka_main_brokers,
         kafka_api_version => $kafka_main_config['api_version'],
-        statsd            => $statsd,
+        statsd_host       => $statsd_host,
+        statsd_port       => $statsd_port,
     }
 
     # EventLogging is on the jumbo kafka. Unlike the main one, this
