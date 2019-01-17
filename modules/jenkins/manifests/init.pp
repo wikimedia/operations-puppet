@@ -43,17 +43,17 @@
 # Default: ${ITEM_ROOTDIR}/workspace
 #
 class jenkins(
-    $prefix,
-    $access_log = false,
-    $log_group = 'wikidev',
-    $http_port = '8080',
-    $max_open_files = '8192',
-    $service_ensure  = 'running',
-    $service_enable = true,
-    $service_monitor = true,
-    $umask = '0002',
-    $builds_dir = "\${ITEM_ROOTDIR}/builds",
-    $workspaces_dir = "\${ITEM_ROOTDIR}/workspace"
+    String $prefix,
+    Boolean $access_log = false,
+    String $log_group = 'wikidev',
+    Stdlib::Port $http_port = 8080,
+    Integer $max_open_files = 8192,
+    Enum['running', 'stopped', 'unmanaged'] $service_ensure = 'running',
+    Boolean $service_enable = true,
+    Boolean $service_monitor = true,
+    Stdlib::Filemode $umask = '0002',
+    String $builds_dir = "\${ITEM_ROOTDIR}/builds",
+    String $workspaces_dir = "\${ITEM_ROOTDIR}/workspace"
 )
 {
     include ::jenkins::common

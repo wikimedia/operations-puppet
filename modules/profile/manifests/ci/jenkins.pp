@@ -13,7 +13,7 @@ class profile::ci::jenkins(
     # Load the Jenkins module, that setup a Jenkins master
     class { '::jenkins':
         access_log      => true,
-        http_port       => '8080',
+        http_port       => 8080,
         prefix          => $prefix,
         umask           => '0002',
         service_ensure  => $service_ensure,

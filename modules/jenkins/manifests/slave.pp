@@ -1,9 +1,9 @@
 # == Class: jenkins::slave
 #
 class jenkins::slave(
-    $ssh_key,
-    $user = 'jenkins-slave',
-    $workdir = '/var/lib/jenkins-slave',
+    String $ssh_key,
+    String $user = 'jenkins-slave',
+    Stdlib::Unixpath $workdir = '/var/lib/jenkins-slave',
 ) {
 
     include ::jenkins::common
