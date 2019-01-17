@@ -30,4 +30,10 @@ class aptly(
             source => 'puppet:///modules/aptly/aptly.nginx.conf',
         }
     }
+
+    ferm::service { 'aptly':
+        proto  => 'tcp',
+        port   => '80',
+        srange => '$DOMAIN_NETWORKS',
+    }
 }

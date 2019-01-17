@@ -18,10 +18,4 @@ class role::aptly::server {
     aptly::repo { "stretch-${::labsproject}":
         publish      => true,
     }
-
-    ferm::service { 'aptly':
-        proto  => 'tcp',
-        port   => '80',
-        srange => '$DOMAIN_NETWORKS',
-    }
 }
