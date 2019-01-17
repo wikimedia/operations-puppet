@@ -1,11 +1,11 @@
 # define a cronjob to dump xml tables
 define wikistats::cronjob::xmldump(
-    $table,
-    $minute,
-    $db_pass,
-    $db_user = 'wikistatsuser',
-    $db_name = 'wikistats',
-    $file_path = '/var/www/wikistats/xml',
+    String $table,
+    Integer $minute,
+    String $db_pass,
+    String $db_user = 'wikistatsuser',
+    String $db_name = 'wikistats',
+    Stdlib::Unixpath $file_path = '/var/www/wikistats/xml',
 ){
 
     $query = $table ? {

@@ -1,7 +1,7 @@
 # the update scripts fetching data (input) for wikistats
 # and writing it to local mariadb
 class wikistats::updates (
-    $db_pass,
+    String $db_pass,
 ) {
 
     require_package('php7.0-cli')

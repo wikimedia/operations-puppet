@@ -13,7 +13,7 @@
 # on meta and several similar ones for other projects
 # not to be confused with stats.wm by analytics
 class wikistats (
-    $wikistats_host,
+    Stdlib::Fqdn $wikistats_host,
 ) {
 
     group { 'wikistatsuser':

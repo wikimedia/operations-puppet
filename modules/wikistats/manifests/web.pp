@@ -1,7 +1,7 @@
 # the apache setup for the wikistats site
 class wikistats::web (
-    $wikistats_host,
-    ) {
+    Stdlib::Fqdn $wikistats_host,
+) {
 
     $php_version = '7.0'
     require_package('php7.0-xml')

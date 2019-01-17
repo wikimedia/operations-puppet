@@ -1,9 +1,10 @@
 # the database server setup for the wikistats site
-class wikistats::db($db_pass) {
+class wikistats::db (
+    String $db_pass,
+    Stdlib::Unixpath $backupdir = '/usr/lib/wikistats/backup',
+) {
 
     require_package('mariadb-server', 'php7.0-mysql')
-
-    $backupdir = '/usr/lib/wikistats/backup'
 
     # db backup
     cron { 'mysql-dump-wikistats':
