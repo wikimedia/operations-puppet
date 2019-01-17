@@ -18,6 +18,7 @@ import sys
 
 import requests
 
+from ConfigParser import SafeConfigParser
 from prometheus_client.parser import text_fd_to_metric_families
 
 
@@ -36,6 +37,10 @@ class PyBalIPVSDiff(object):
                         help='HTTP request timeout in seconds',
                         type=float,
                         default=1.0)
+        ap.add_argument('--pybal-config',
+                        help='pybal config file path',
+                        type=str,
+                        default='/etc/pybal/pybal.conf')
         self.args = ap.parse_args(argument_list)
 
     def get_url(self, url):
@@ -84,13 +89,54 @@ class PyBalIPVSDiff(object):
 
         return hosts
 
+    def get_services_pybal(self):
+        """Return the set of ip:port services known to pybal."""
+        services = set()
+        pybal_config = SafeConfigParser()
+        pybal_config.read(self.args.pybal_config)
+
+        for section in pybal_config.sections():
+            if section == 'global':
+                continue
+            service = '{}:{}'.format(pybal_config.get(section, 'ip'),
+                                     pybal_config.get(section, 'port'))
+            services.add(service)
+
+        return services
+
+    def get_services_ipvs(self):
+        """Return the set of ip:port services known to IPVS."""
+        req = self.get_url(self.args.prometheus_url)
+        services = set()
+
+        for metric in text_fd_to_metric_families(req.iter_lines()):
+            if metric.name == "node_ipvs_backend_weight":
+                for sample in metric.samples:
+                    address = sample[1]['local_address']
+                    port = sample[1]['local_port']
+                    services.add('{}:{}'.format(address, port))
+
+        return services
+
     def run(self):
         try:
             pybal_hosts = self.get_remote_hosts_pybal()
             ipvs_hosts = self.get_remote_hosts_ipvs()
+            ipvs_services = self.get_services_ipvs()
+            pybal_services = self.get_services_pybal()
         except requests.exceptions.RequestException as err:
             print("UNKNOWN: %s" % err)
             return 3
+
+        if pybal_services - ipvs_services:
+            print("CRITICAL: Services known to PyBal but not to IPVS: %s" %
+                  (pybal_services - ipvs_services))
+            return 2
+
+        if ipvs_services - pybal_services:
+            print("CRITICAL: Services in IPVS but unknown to PyBal: %s" %
+                  (ipvs_services - pybal_services))
+            return 2
 
         if pybal_hosts - ipvs_hosts:
             print("CRITICAL: Hosts known to PyBal but not to IPVS: %s" %
