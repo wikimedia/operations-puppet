@@ -8,9 +8,7 @@ class role::toollabs::services(
 
     include ::role::aptly::server
 
-    class { '::toollabs::services':
-        active => ($::fqdn == $active_host),
-    }
+    class { '::toollabs::services': }
 
     class { '::toollabs::updatetools':
         active => ($::fqdn == $active_host),
