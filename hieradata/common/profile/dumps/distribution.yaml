@@ -123,7 +123,7 @@ profile::dumps::distribution::mirrors:
     addedby: 'atg'
     addeddate: 'Oct 31 2012'
     active: 'no'
-  - url: 'https://wikipedia.freemirror.org/'
+  - url: 'https://dumps.wikimedia.freemirror.org/'
     hostname: 'mirror.freemirror.org'
     ipv4: ['mirror.freemirror.org']
     ipv6: ['mirror.freemirror.org']
