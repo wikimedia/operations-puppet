@@ -24,11 +24,11 @@
 # install certs or configure apache for ssl/tls
 
 class releases (
-        $sitename = undef,
-        $sitename_jenkins = undef,
-        $server_admin = 'noc@wikimedia.org',
-        $prefix = '/',
-        $http_port = '8080',
+    Optional[String] $sitename = undef,
+    Optional[String] $sitename_jenkins = undef,
+    String $server_admin = 'noc@wikimedia.org',
+    Stdlib::Unixpath $prefix = '/',
+    Stdlib::Port $http_port = '8080',
 ) {
 
     ensure_resource('file', '/srv/mediawiki', {'ensure' => 'directory' })

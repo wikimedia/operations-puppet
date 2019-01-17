@@ -1,12 +1,10 @@
 class releases::reprepro::upload (
-    # lint:ignore:puppet_url_without_modules
-    $private_key  = 'releases/id_rsa.upload',
-    # lint:endignore
-    $user         = 'releases',
-    $group        = 'releases',
-    $sudo_user    = '%wikidev',
-    $homedir      = '/var/lib/releases',
-    $upload_host  = undef,
+    String $private_key  = 'releases/id_rsa.upload',
+    String $user         = 'releases',
+    String $group        = 'releases',
+    String $sudo_user    = '%wikidev',
+    Stdlib::Unixpath $homedir      = '/var/lib/releases',
+    Optional[String] $upload_host  = undef,
 ) {
     group { 'releases':
         ensure => present,

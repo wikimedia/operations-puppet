@@ -17,11 +17,12 @@
 #   This module seems to be unused at the moment, you should probably look into
 #   install_server::apt_repository instead.
 #
-class releases::reprepro {
-    $basedir = '/srv/org/wikimedia/reprepro'
-    $outdir = '/srv/org/wikimedia/releases/debian'
-    $homedir = '/var/lib/reprepro'
-    $incomingdir = "${basedir}/incoming"
+class releases::reprepro (
+    Stdlib::Unixpath $basedir = '/srv/org/wikimedia/reprepro',
+    Stdlib::Unixpath $outdir = '/srv/org/wikimedia/releases/debian',
+    Stdlib::Unixpath $homedir = '/var/lib/reprepro',
+    Stdlib::Unixpath $incomingdir = "${basedir}/incoming",
+) {
 
     class { '::aptrepo':
         basedir         => $basedir,
