@@ -145,40 +145,58 @@ class profile::analytics::refinery::job::data_purge (
         user        => 'hdfs',
     }
 
-    # create and rotate cryptographic salts for EventLogging sanitization
-    # runs once a day, at midnight, to coincide with salt rotation time
-    # given that hdfs stores modified dates without milliseconds
-    # 1 minute margin is given to avoid timestamp comparison problems
+    # Create, rotate and delete EventLogging salts (for hashing).
+    # Local directory for salt files:
+    $refinery_config_dir = $::profile::analytics::refinery::config_dir
+    file { ["${refinery_config_dir}/salts", "${refinery_config_dir}/salts/eventlogging_sanitization"]:
+        ensure => 'directory',
+        owner  => 'hdfs',
+    }
+    # Timer runs at midnight (salt rotation time):
     profile::analytics::systemd_timer { 'refinery-eventlogging-saltrotate':
-        description => 'Create and rotate cryptographic salts for EventLogging sanitization.',
-        command     => "${refinery_path}/bin/saltrotate -p '3 months' -b '14 days' /user/hdfs/eventlogging-sanitization-salt.txt",
+        description => 'Create, rotate and delete cryptographic salts for EventLogging sanitization.',
+        command     => "${refinery_path}/bin/saltrotate -p '3 months' -b '50 days' ${refinery_config_dir}/salts/eventlogging_sanitization && hdfs dfs -rm -r /user/hdfs/salts/eventlogging_sanitization && hdfs dfs -put ${refinery_config_dir}/salts/eventlogging_sanitization /user/hdfs/salts",
         environment => $systemd_env,
-        interval    => '*-*-* 01:00:00',
+        interval    => '*-*-* 00:00:00',
         user        => 'hdfs',
     }
 
-    # Sanitize event database into event_sanitized.
-    # job runs once an hour.  EventLoggingSanitization is a Refine job wrapper with
-    # some extra features.  Use refine_job to configure and run it.
-    profile::analytics::refinery::job::refine_job { 'sanitize_eventlogging_analytics':
-        job_name            => 'sanitize_eventlogging_analytics',
-        refinery_job_jar    => "${refinery_path}/artifacts/org/wikimedia/analytics/refinery/refinery-job-0.0.85.jar",
+    # EventLogging sanitization. Runs in two steps.
+    # Common parameters for both jobs:
+    $eventlogging_sanitization_job_config = {
+        'input_path'          => '/wmf/data/event',
+        'database'            => 'event_sanitized',
+        'output_path'         => '/wmf/data/event_sanitized',
+        'whitelist_path'      => '/wmf/refinery/current/static_data/eventlogging/whitelist.yaml',
+        'salts_path'          => '/user/hdfs/salts/eventlogging_sanitization',
+        'parallelism'         => '16',
+        'should_email_report' => true,
+        'emails_to'           => 'analytics-alerts@wikimedia.org',
+    }
+    # Execute 1st sanitization pass, right after data collection. Runs once per hour.
+    # Job starts a couple minutes after the hour, to leave time for the salt files to be updated.
+    profile::analytics::refinery::job::refine_job { 'sanitize_eventlogging_analytics_immediate':
         job_class           => 'org.wikimedia.analytics.refinery.job.refine.EventLoggingSanitization',
         monitor_class       => 'org.wikimedia.analytics.refinery.job.refine.EventLoggingSanitizationMonitor',
-        job_config          => {
-            'input_path'          => '/wmf/data/event',
-            'database'            => 'event_sanitized',
-            'output_path'         => '/wmf/data/event_sanitized',
-            'whitelist_path'      => '/wmf/refinery/current/static_data/eventlogging/whitelist.yaml',
-            'salt_path'           => '/user/hdfs/eventlogging-sanitization-salt.txt',
-            'parallelism'         => '16',
-            'should_email_report' => true,
-            'emails_to'           => 'analytics-alerts@wikimedia.org',
-        },
+        job_config          => $eventlogging_sanitization_job_config,
         spark_driver_memory => '16G',
         spark_max_executors => '128',
         spark_extra_opts    => '--conf spark.ui.retainedStage=20 --conf spark.ui.retainedTasks=1000 --conf spark.ui.retainedJobs=100',
-        interval            => '*-*-* *:00:00',
+        interval            => '*-*-* *:02:00',
+    }
+    # Execute 2nd sanitization pass, after 45 days of collection.
+    # Runs once per day at a less busy time.
+    profile::analytics::refinery::job::refine_job { 'sanitize_eventlogging_analytics_delayed':
+        job_class           => 'org.wikimedia.analytics.refinery.job.refine.EventLoggingSanitization',
+        monitor_class       => 'org.wikimedia.analytics.refinery.job.refine.EventLoggingSanitizationMonitor',
+        job_config          => $eventlogging_sanitization_job_config.merge({
+            'since' => 1104,
+            'until' => 1080,
+        }),
+        spark_driver_memory => '16G',
+        spark_max_executors => '128',
+        spark_extra_opts    => '--conf spark.ui.retainedStage=20 --conf spark.ui.retainedTasks=1000 --conf spark.ui.retainedJobs=100',
+        interval            => '*-*-* 06:00:00',
     }
 
     # Drop unsanitized EventLogging data from the event database after retention period.
