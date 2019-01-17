@@ -46,6 +46,7 @@ class profile::wdqs::blazegraph(
             config_file => $prometheus_agent_config_categories,
     }
 
+    require_package('python3-dateutil', 'python3-prometheus-client')
     file { '/usr/local/bin/prometheus-blazegraph-exporter':
         ensure => present,
         source => 'puppet:///modules/wdqs/monitor/prometheus-blazegraph-exporter.py',
