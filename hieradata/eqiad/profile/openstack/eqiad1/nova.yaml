@@ -14,8 +14,8 @@ profile::openstack::eqiad1::nova::physical_interface_mappings:
 #  hosts.  Nodes currently allocated for eqiad1 are
 #  cloudvirt1013 through cloudvirt1030.
 #
-# cloudvirt1025 is depooled so we can drain it and rebuild
-#  it with Stretch.
+# cloudvirt1014-1023 are depooled so we can drain them and rebuild
+#  with Stretch.
 #
 # cloudvirt1024 and cloudvirt1030 are reserved as emergency spares.
 #  We're saving 1024 rather than the highest- or lowest-numbered
@@ -35,14 +35,7 @@ profile::openstack::eqiad1::nova::physical_interface_mappings:
 #
 profile::openstack::eqiad1::nova::scheduler_pool:
   - cloudvirt1013
-  - cloudvirt1014
-  - cloudvirt1015
-  - cloudvirt1016
-  - cloudvirt1017
-  - cloudvirt1018
-  - cloudvirt1021
-  - cloudvirt1022
-  - cloudvirt1023
+  - cloudvirt1025
   - cloudvirt1026
   - cloudvirt1027
   - cloudvirt1028
