@@ -267,7 +267,7 @@ groups:
               kaldari, goransm, ema, dsaez, shiladsen, rho, mirrys, slaporte, jk,
               ayounsi, mepps, mmiller, seddon, gilles, tstarling, pirroh, rush, tieu, karen,
               cicalese, drossi, fsalutari, nathante, gbirke, isaacj, sbassett, jdl,
-              niharika29, ryanmax, afandian2, jgleeson, toddleroux]
+              niharika29, ryanmax, afandian2, jgleeson, toddleroux, srishakatux]
     system_members: [analytics-search]
   analytics-admins:
     gid: 732
@@ -3146,6 +3146,15 @@ users:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAICSadkjU94IaCUrtnwvECGaGkDyICObEn35NvNpilUaD jbond@work-laptop
     uid: 20774
     email: jbond@wikimedia.org
+  srishakatux:
+    ensure: present
+    gid: 500
+    name: srishakatux
+    realname: Srishti Sethi
+    ssh_keys:
+      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDTbsoRC1ieQ6+ru0TU7RistfbwsH7MqGYRy5fYNJtc0/MorLs+85LZ0YbgaaKeoUI9XwUk5ZN4DtHrki3X9vCKNu0ss4KKVD7O3XfVbTR8Oztbg11zhGGlUf/zU9mhIUVyqrk5TQFF8GfwfzImaXoBhkB6RtwaODVb2r+ZwKWQYseAVDBVrHHD2vCKjarQpDhJdPjuNw0bbwFk3QBKgAdKU0GBJHHR91WhTsB5tXSkZW8II83M9w+0tHIKUHMiMihuKRy61OgTvkZdYE3cvAJHB310Rl5KPEeihV3/2eqCW2BW6qRB+iMpaO72dh8QSn1CGR7UxUYJKULhr4fOi/K3 ssethi@wmf1699.local
+    uid: 15861
+    email: ssethi@wikimedia.org
 
 ldap_only_users:
   abartov:
