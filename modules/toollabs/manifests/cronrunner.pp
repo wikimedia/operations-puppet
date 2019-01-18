@@ -79,4 +79,8 @@ class toollabs::cronrunner {
         ensure    => ensure_service(true),
         subscribe => Package['tools-manifest'],
     }
+
+    diamond::collector { 'SGE':
+        source   => 'puppet:///modules/toollabs/monitoring/sge.py',
+    }
 }

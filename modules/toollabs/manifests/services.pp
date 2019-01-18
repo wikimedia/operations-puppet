@@ -18,6 +18,6 @@ class toollabs::services(
     include ::gridengine::submit_host
 
     diamond::collector { 'SGE':
-        source   => 'puppet:///modules/toollabs/monitoring/sge.py',
+        ensure => 'absent',
     }
 }
