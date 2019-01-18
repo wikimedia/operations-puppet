@@ -60,7 +60,8 @@ class profile::maps::apps(
     }
 
     # those fonts are needed for the new maps style (brighmed)
-    ensure_packages(['fonts-noto', 'fonts-noto-cjk'])
+    # fix nodejs-legacy dependency when T214153 has been fixed
+    ensure_packages(['fonts-noto', 'fonts-noto-cjk', 'nodejs-legacy'])
 
     if os_version('debian >= stretch') {
         ensure_packages(['fonts-noto-unhinted'])
