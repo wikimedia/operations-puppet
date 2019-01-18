@@ -238,8 +238,8 @@ sub analytics_deliver {
     // Add Google Translate translationengine X-Analytics tag for measuring impact.
     // Via is largely standardized and is likely to stay. Other characteristics of the
     // request, including the Referer, can be combined for greater confidence.
-    if (req.http.Via ~ "(?i)translate\.google\.com") {
-        set resp.http.X-Analytics = resp.http.X-Analytics + ";translationengine=GT";
+    if (req.http.X-WMF-Translation-Engine) {
+        set resp.http.X-Analytics = resp.http.X-Analytics + ";translationengine=" + req.http.X-WMF-Translation-Engine;
     }
 
     if (req.http.X-WMF-NOCOOKIES) {

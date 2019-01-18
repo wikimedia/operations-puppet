@@ -1,0 +1,12 @@
+// Identify translation engine for later handling
+
+sub translation_engine_recv {
+	unset req.http.X-WMF-Translation-Engine;
+	unset req.http.X-WMF-GT-Redirect-Scoped;
+	if (req.http.Via ~ "(?i)translate\.google\.com") {
+		set req.http.X-WMF-Translation-Engine = "GT";
+		if (req.http.User-Agent !~ "Googlebot" && req.http.Host == "simple.wikipedia.org") {
+			set req.http.X-WMF-GT-Redirect-Scoped = 1;
+		}
+	}
+}

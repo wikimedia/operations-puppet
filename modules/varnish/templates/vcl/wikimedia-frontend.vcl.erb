@@ -27,6 +27,7 @@ import vsthrottle;
 include "<%= @varnish_include_path %>wikimedia-common_<%= @vcl %>.inc.vcl";
 include "analytics.inc.vcl";
 include "browsersec.inc.vcl";
+include "translation-engine.inc.vcl";
 
 /* Include the VCL file for this role */
 include "<%= @varnish_include_path %><%= @vcl %>.inc.vcl";
@@ -357,6 +358,7 @@ sub vcl_recv {
 
 	if(req.restarts == 0) {
 		call analytics_recv;
+		call translation_engine_recv;
 	}
 
 	call cluster_fe_recv_pre_purge;
