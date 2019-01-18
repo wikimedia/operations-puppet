@@ -6277,8 +6277,6 @@ host restbase1015 {
 host restbase1016 {
     hardware ethernet 18:66:DA:7F:25:5B;
     fixed-address restbase1016.eqiad.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
-    filename "lpxelinux.0";
 }
 
 host restbase1017 {
