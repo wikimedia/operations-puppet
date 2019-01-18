@@ -20,6 +20,7 @@ import logging
 import sys
 import time
 import requests
+import re
 
 from dateutil.parser import parse
 from xml.etree import ElementTree
@@ -69,6 +70,27 @@ class PrometheusBlazeGraphExporter(object):
         params = {'format': 'json', 'query': query}
         response = requests.get(self.sparql_endpoint, params=params)
         return response.json()
+
+    def fetch_allocators(self):
+        allocators = 0
+        try:
+            url = "{base_url}/status?dumpJournal".format(base_url=self.url)
+            response = requests.get(url).text
+            split_info = response.split('AllocatorSize')
+            for alloc_line in split_info[1].splitlines():
+                # empty line finishes the table
+                if len(alloc_line.strip()) == 0:
+                    break
+                parts = re.split("\s+", alloc_line)
+
+                # second value must be a digit
+                if not parts[1].isdigit():
+                    continue
+                allocators += int(parts[1])
+            return allocators
+        except requests.exceptions.RequestException:
+            log.exception('Error fetching allocator data')
+            return None
 
     @scrape_duration.time()
     def collect(self):
@@ -180,8 +202,9 @@ class PrometheusBlazeGraphExporter(object):
 
                 metric_family.add_metric([], value)
 
-        triple_metric = CounterMetricFamily('blazegraph_triples', '')
-        lag_metric = CounterMetricFamily('blazegraph_lastupdated', '')
+        triple_metric = GaugeMetricFamily('blazegraph_triples', 'Count of triples in Blazegraph')
+        lag_metric = CounterMetricFamily('blazegraph_lastupdated', 'Last update timestamp')
+
         try:
             sparql_query = """ prefix schema: <http://schema.org/>
                         SELECT * WHERE { {
@@ -207,8 +230,28 @@ class PrometheusBlazeGraphExporter(object):
             log.exception("Error querying endpoint")
             triple_metric.add_metric([], float('nan'))
             lag_metric.add_metric([], float('nan'))
+
+        alloc_metric = GaugeMetricFamily(
+                'blazegraph_allocators',
+                'Number of used FixedAllocators in Blazegraph'
+        )
+        alloc_free_metric = GaugeMetricFamily(
+                'blazegraph_free_allocators',
+                'Number of free FixedAllocators in Blazegraph'
+        )
+
+        allocs = self.fetch_allocators()
+        if allocs:
+            alloc_metric.add_metric([], allocs)
+            alloc_free_metric.add_metric([], 256*1024 - allocs)
+        else:
+            alloc_metric.add_metric([], float('nan'))
+            alloc_free_metric.add_metric([], float('nan'))
+
         yield triple_metric
         yield lag_metric
+        yield alloc_metric
+        yield alloc_free_metric
 
         for metric in blazegraph_metrics.values():
             yield metric
