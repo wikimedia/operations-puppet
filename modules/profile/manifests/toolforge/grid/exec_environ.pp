@@ -800,6 +800,11 @@ class profile::toolforge::grid::exec_environ {
         }
     } elsif $::lsbdistcodename == 'stretch' {
         include ::profile::toolforge::genpp::python_exec_stretch
+        apt::repository { "php72-external-${::lsbdistcodename}": #T213666
+            uri        => 'http://apt.wikimedia.org/wikimedia',
+            dist       => "${::lsbdistcodename}-wikimedia",
+            components => 'thirdparty/php72',
+        }
         package { [
             'hhvm',                         # T78783
             'libboost-python1.62.0',
@@ -815,27 +820,27 @@ class profile::toolforge::grid::exec_environ {
             # PHP libraries (Stretch is on php7)
             'php-apcu',
             'php-apcu-bc',
-            'php-bcmath',
-            'php-bz2',
-            'php-cli',
-            'php-common',
-            'php-curl',
-            'php-dba',
-            'php-gd',
+            'php7.2-bcmath',
+            'php7.2-bz2',
+            'php7.2-cli',
+            'php7.2-common',
+            'php7.2-curl',
+            'php7.2-dba',
+            'php7.2-gd',
             'php-imagick',                # T71078.
-            'php-intl',                   # T57652
-            'php-mbstring',
-            'php-mcrypt',
-            'php-mysql',
-            'php-pgsql',                  # For access to OSM db
-            'php-readline',               # T136519.
+            'php7.2-intl',                   # T57652
+            'php7.2-mbstring',
+            # php-mcrypt is deprecated on 7.1+
+            'php7.2-mysql',
+            'php7.2-pgsql',                  # For access to OSM db
+            'php7.2-readline',               # T136519.
             'php-redis',
-            'php-soap',
-            'php-sqlite3',
+            'php7.2-soap',
+            'php7.2-sqlite3',
             'php-xdebug',                 # T72313
             # php-xhprof isn't available in stretch
-            'php-xml',
-            'php-zip',
+            'php7.2-xml',
+            'php7.2-zip',
             'opencv-data',                 # T142321
             'openjdk-8-jre-headless',
             'python-flake8',
