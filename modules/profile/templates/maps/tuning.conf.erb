@@ -17,9 +17,12 @@ cpu_tuple_cost = 0.05
 maintenance_work_mem = <%= @maintenance_work_mem %>
 autovacuum_work_mem = 1GB
 
+<% if @pgversion.to_f > 9.5 %>
 # increase WAL size to correspond with large data loads (this should be enabled when migrating to postgresql >= 9.5)
-# max_wal_size = 4GB
-# min_wal_size = 1GB
+# TODO: clean up this when migration to pg 9.6 is complete
+max_wal_size = 4GB
+min_wal_size = 1GB
+<% end %>
 
 # SSDs have better random performance than spinning rust
 random_page_cost = 2.0
