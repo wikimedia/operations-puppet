@@ -5,7 +5,7 @@ prometheus_nodes:
   - bast3002.wikimedia.org
 
 # Which of our redundant unified cert vendors to use in each DC
-public_tls_unified_cert_vendor: "digicert-2017"
+public_tls_unified_cert_vendor: "globalsign-2018"
 
 # Reasonable expected max RTT in ms to furthest core DC
 # (given worst alternate network paths, and plus a small fudge factor)
