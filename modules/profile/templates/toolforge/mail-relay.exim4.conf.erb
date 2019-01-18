@@ -48,7 +48,7 @@ domainlist local_domains = MAILDOMAIN : \
                            tools-webgrid-lighttpd-1408.eqiad.wmflabs : \
                            tools-webgrid-lighttpd-1409.eqiad.wmflabs : \
                            tools-webgrid-lighttpd-1410.eqiad.wmflabs
-hostlist relay_from_hosts = 10.0.0.0/8
+hostlist relay_from_hosts = 10.0.0.0/8 : 172.16.0.0/21
 
 acl_smtp_rcpt = acl_check_rcpt
 acl_smtp_data = acl_check_data
