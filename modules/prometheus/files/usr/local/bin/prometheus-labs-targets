@@ -1,15 +1,13 @@
 #!/usr/bin/python3
-# Generate prometheus targets for a given project from wikitech's nova
-# instances list.
+# Generate Prometheus targets configuration for a given project from nova API.
 
 import argparse
-import codecs
-import json
-import logging
 import sys
-import urllib.parse
-import urllib.request
 import yaml
+
+from novaclient import client as novaclient
+from keystoneclient.auth.identity import generic
+from keystoneclient import session as keystone_session
 
 
 HELP_EPILOG = """
@@ -22,65 +20,78 @@ For example list all default scraping URLs:
 """
 
 
-def project_instances(project):
-    req = urllib.request.urlopen(
-            'https://wikitech.wikimedia.org/w/api.php?' +
-            urllib.parse.urlencode({
-                'action': 'query',
-                'list': 'novainstances',
-                'niregion': 'eqiad',
-                'format': 'json',
-                'niproject': project,
-                })
-            )
-
-    reader = codecs.getreader('utf-8')
-    data = json.load(reader(req))
-    for instance in data['query']['novainstances']:
+def list_instances(env, project, region):
+    nova_connection = {
+        "username": env["OS_USERNAME"],
+        "password": env["OS_PASSWORD"],
+        "auth_url": env["OS_AUTH_URL"],
+        "project_domain_name": env["OS_PROJECT_DOMAIN_NAME"],
+        "user_domain_name": env["OS_USER_DOMAIN_NAME"],
+        "project_name": project,
+    }
+    auth = generic.Password(**nova_connection)
+    session = keystone_session.Session(auth=auth)
+    client = novaclient.Client("2", session=session, region_name=region)
+    for instance in client.servers.list():
         yield instance
 
 
 def main():
-    parser = argparse.ArgumentParser(epilog=HELP_EPILOG,
-            formatter_class=argparse.RawTextHelpFormatter)
-    parser.add_argument('--project', dest='project')
-    parser.add_argument('--port', dest='port', default='9100')
-    parser.add_argument('--print-format', dest='print_format', default=None,
-        metavar='FMT', help='Print each host according to FMT')
+    parser = argparse.ArgumentParser(
+        epilog=HELP_EPILOG, formatter_class=argparse.RawTextHelpFormatter
+    )
+    parser.add_argument("--project", dest="project")
+    parser.add_argument("--region", dest="region", default="eqiad1-r")
+    parser.add_argument("--port", dest="port", default="9100")
     parser.add_argument(
-        '--prefix',
-        help='Only output targets for instances that match this prefix',
-        default=''  # Match everything by default
+        "--print-format",
+        dest="print_format",
+        default=None,
+        metavar="FMT",
+        help="Print each host according to FMT",
+    )
+    parser.add_argument(
+        "--prefix",
+        help="Only output targets for instances that match this prefix",
+        default="",  # Match everything by default
     )
     args = parser.parse_args()
 
     if args.project is None:
         try:
-            with open('/etc/wmflabs-project') as f:
+            with open("/etc/wmflabs-project") as f:
                 args.project = f.read().strip()
         except IOError as e:
-            parser.error('unable to detect project from /etc/wmflabs-project: %r' % e)
+            parser.error("unable to detect project from /etc/wmflabs-project: %r" % e)
             return 1
 
-    scrape_configs = []
+    with open("/etc/novaobserver.yaml") as f:
+        env = yaml.safe_load(f)
+
     format_lines = []
-    targets = {'targets': []}
-    for instance in project_instances(args.project):
-        if instance['name'].startswith(args.prefix):
-            targets['targets'].append("%s:%s" % (instance['name'], args.port))
-            if args.print_format:
-                print_args = {'hostname': instance['name'],
-                              'port': args.port,
-                              'project': args.project}
-                format_lines.append(args.print_format.format(**print_args))
-    targets['targets'] = sorted(targets['targets'])
-    scrape_configs.append(targets)
+    config = {"targets": []}
+
+    instances = list_instances(env, args.project, args.region)
+    for instance in instances:
+        if not instance.name.startswith(args.prefix):
+            continue
+        config["targets"].append("%s:%s" % (instance.name, args.port))
+        if args.print_format:
+            print_args = {
+                "hostname": instance.name,
+                "port": args.port,
+                "project": args.project,
+            }
+            format_lines.append(args.print_format.format(**print_args))
+    config["targets"] = sorted(config["targets"])
 
     if args.print_format:
-        print('\n'.join(format_lines))
+        print("\n".join(format_lines))
     else:
-        print(yaml.dump(scrape_configs, default_flow_style=False))
+        out = []
+        out.append(config)
+        print(yaml.dump(out, default_flow_style=False))
 
 
-if __name__ == '__main__':
-  sys.exit(main())
+if __name__ == "__main__":
+    sys.exit(main())
