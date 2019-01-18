@@ -1078,7 +1078,11 @@ node 'cloudservices1004.wikimedia.org' {
     interface::add_ip6_mapped { 'main': }
 }
 
-node /^labtestneutron200[1-2]\.codfw.wmnet$/ {
+node 'labtestneutron2002.codfw.wmnet' {
+    role(wmcs::openstack::labtestn::net)
+}
+
+node 'cloudnet2001-dev.codfw.wmnet' {
     role(wmcs::openstack::labtestn::net)
 }
 

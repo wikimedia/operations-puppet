@@ -3282,11 +3282,9 @@ host labtestnet2003 {
     filename "trusty-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
-host labtestneutron2001 {
+host cloudnet2001-dev {
     hardware ethernet 78:2b:cb:48:f9:61;
-    fixed-address labtestneutron2001.codfw.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
-    filename "lpxelinux.0";
+    fixed-address cloudnet2001-dev.codfw.wmnet;
 }
 
 host labtestneutron2002 {
