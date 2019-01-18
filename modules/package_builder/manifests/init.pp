@@ -17,7 +17,7 @@ class package_builder(
         basepath => $basepath,
     }
 
-    if os_version('ubuntu == trusty || debian == jessie') {
+    if os_version('debian == jessie') {
         $php_dev='php5-dev'
         $dh_php='dh-php5'
     } else {
@@ -69,15 +69,10 @@ class package_builder(
         'ivy-debian-helper',
         'maven-debian-helper',
         'haveged',
+        'ubuntu-archive-keyring',
         $php_dev,
         $dh_php,
     ])
-
-    if $::operatingsystem == 'Ubuntu' {
-        require_package('ubuntu-keyring')
-    } else {
-        require_package('ubuntu-archive-keyring')
-    }
 
     file { '/etc/pbuilderrc':
         ensure  => present,
