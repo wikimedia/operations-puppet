@@ -677,7 +677,6 @@ class profile::toolforge::grid::exec_environ {
           'pdf2djvu',                    # T130138
           'pdftk',                       # T67048.
           'phantomjs',                   # T68928
-          'phpunit',
           'poppler-utils',               # T55869.
           'postgis',                     # T76226
           'postgresql-client',
