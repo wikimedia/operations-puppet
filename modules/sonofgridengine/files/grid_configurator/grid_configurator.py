@@ -36,7 +36,7 @@ GRID_HOST_TYPE = ["exec", "submit"]
 GRID_HOST_PREFIX = {
     "sgewebgrid-generic": ["exec", "submit"],
     "sgewebgrid-lighttpd": ["exec", "submit"],
-    "sgeexec": "exec",
+    "sgeexec": ["exec", "submit"],
     "sgebastion": "submit",
     "sgecron": "submit",
 }
