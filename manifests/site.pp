@@ -92,9 +92,9 @@ node /analytics10(3[1-8]|4[0-1]).eqiad.wmnet/ {
     interface::add_ip6_mapped { 'main': }
 }
 
-# Reserved for various UIs of the Hadoop test cluster
+# Hadoop Test cluster's UIs
 node 'analytics1039.eqiad.wmnet' {
-    role(spare::system)
+    role(analytics_test_cluster::hadoop::ui)
     interface::add_ip6_mapped { 'main': }
 }
 
