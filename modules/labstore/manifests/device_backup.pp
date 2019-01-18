@@ -14,17 +14,17 @@ define labstore::device_backup (
 
     $block_sync='/usr/local/sbin/block_sync'
 
-    systemd::unit { 'block_sync.service':
+    systemd::unit { "block_sync-${local_lv}.service":
         ensure  => 'present',
-        content => template('labstore/device_backup/device_backup.systemd.erb'),
+        content => systemd_template('block_sync'),
     }
 
-    systemd::timer { 'block_sync':
+    systemd::timer { "block_sync-${local_lv}":
         timer_intervals => [{
             'start'    => 'OnCalendar',
             'interval' => $interval
             }],
-        unit_name       => 'block_sync.service',
+        unit_name       => "block_sync-${local_lv}.service",
     }
 
     file { '/usr/local/sbin/snapshot-manager':
