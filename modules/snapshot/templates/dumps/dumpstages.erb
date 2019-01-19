@@ -34,8 +34,8 @@
 
 # regular articles multistream
 1 max continue none <%= @stages['smallwikis']['rest'] -%> --job articlesmultistreamdump
-# regular articles for big wikis multistream
-1 max continue none <%= @stages['bigwikis']['rest'] -%> --job articlesmultistreamdump
+# regular articles, recombines for big wikis multistream
+1 max continue none <%= @stages['bigwikis']['rest'] -%> --job articlesmultistreamdump,articlesmultistreamdumprecombine
 
 # articles plus meta pages
 1 max continue none <%= @stages['smallwikis']['rest'] -%> --job metacurrentdump
@@ -59,8 +59,8 @@
 # stubs, stubs recombine next so inconsistencies between stubs and tables aren't too huge
 27 1 continue none <%= @stages['enwiki']['rest'] -%> --job xmlstubsdump,xmlstubsdumprecombine
 
-# regular articles, recombine, multistream
-27 1 continue none <%= @stages['enwiki']['rest'] -%> --job articlesdump,articlesdumprecombine,articlesmultistreamdump
+# regular articles, recombine, multistream, multistreamrecombine
+27 1 continue none <%= @stages['enwiki']['rest'] -%> --job articlesdump,articlesdumprecombine,articlesmultistreamdump,articlesmultistreamdumprecombine
 
 # articles plus meta pages
 27 1 continue none <%= @stages['enwiki']['rest'] -%> --job metacurrentdump,metacurrentdumprecombine
@@ -80,8 +80,8 @@
 # tables next so inconsistencies between stubs and tables aren't too huge
 27 1 continue none <%= @stages['wikidatawiki']['rest'] -%> --job tables
 
-# regular articles, recombine, multistream
-27 1 continue none <%= @stages['wikidatawiki']['rest'] -%> --job articlesdump,articlesdumprecombine,articlesmultistreamdump
+# regular articles, recombine, multistream, multistreamrecombine
+27 1 continue none <%= @stages['wikidatawiki']['rest'] -%> --job articlesdump,articlesdumprecombine,articlesmultistreamdump,articlesmultistreamdumprecombine
 
 # articles plus meta pages
 27 1 continue none <%= @stages['wikidatawiki']['rest'] -%> --job metacurrentdump,metacurrentdumprecombine
