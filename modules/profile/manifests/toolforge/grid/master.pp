@@ -12,6 +12,8 @@ class profile::toolforge::grid::master (
 
     $hostlist = '@general'
 
+    class { '::prometheus::node_sge': }
+
     sonofgridengine::queue { 'task':
         config => 'profile/toolforge/grid/queue-task.erb',
     }
