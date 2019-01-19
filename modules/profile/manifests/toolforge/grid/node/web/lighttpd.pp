@@ -17,7 +17,7 @@ class profile::toolforge::grid::node::web::lighttpd(
     include profile::toolforge::grid::node::web
 
     if $facts['lsbdistcodename'] == 'stretch' {
-        package { 'php-cgi':
+        package { 'php7.2-cgi':
             ensure => latest,
         }
     } else {
