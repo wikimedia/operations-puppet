@@ -9,6 +9,8 @@ class profile::mariadb::dbstore_multiinstance (
     $s7            = hiera('profile::mariadb::dbstore_multiinstance::s7', false),
     $s8            = hiera('profile::mariadb::dbstore_multiinstance::s8', false),
     $x1            = hiera('profile::mariadb::dbstore_multiinstance::x1', false),
+    # Analytics staging database
+    $sdb            = hiera('profile::mariadb::dbstore_multiinstance::sdb', false),
 ) {
     class { 'mariadb::packages_wmf': }
     class { 'mariadb::service':
@@ -107,6 +109,17 @@ disabled, use mariadb@<instance_name> instead'; exit 1\"",
         profile::mariadb::ferm { 'x1': port => '3320' }
         profile::prometheus::mysqld_exporter_instance { 'x1': port => 13320, }
     }
+
+# Analytics staging database
+    if $sdb {
+        mariadb::instance { 'sdb':
+            port                    => 3340,
+            innodb_buffer_pool_size => $sdb,
+        }
+        profile::mariadb::ferm { 'sdb': port => '3340' }
+        profile::prometheus::mysqld_exporter_instance { 'sdb': port => 13340, }
+    }
+
 
     class { 'mariadb::monitor_disk':
         is_critical   => false,
