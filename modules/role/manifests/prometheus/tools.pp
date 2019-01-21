@@ -138,7 +138,7 @@ class role::prometheus::tools {
     }
 
     include ::role::prometheus::blackbox_exporter
-    include ::prometheus::scripts
+    include ::prometheus::wmcs_scripts
 
     cron { 'prometheus_tools_project_targets':
         ensure  => present,

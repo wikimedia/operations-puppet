@@ -125,7 +125,7 @@ class role::prometheus::beta {
 
     $targets_file = "${targets_path}/node_project.yml"
 
-    include ::prometheus::scripts
+    include ::prometheus::wmcs_scripts
 
     cron { 'prometheus_labs_project_targets':
         ensure  => present,

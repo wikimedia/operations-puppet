@@ -1,9 +1,9 @@
-# = Class: prometheus::scripts
+# = Class: prometheus::wmcs_scripts
 #
-# This class includes accessory prometheus scripts, usually to generate targets
-# for prometheus to pick up.
+# This class includes Prometheus scripts to be used in WMCS, usually to generate targets
+# for Prometheus to pick up.
 
-class prometheus::scripts {
+class prometheus::wmcs_scripts {
     require_package(['python3-yaml', 'python3-novaclient', 'python3-keystoneclient'])
 
     # output all nova instances for the current labs project as prometheus
