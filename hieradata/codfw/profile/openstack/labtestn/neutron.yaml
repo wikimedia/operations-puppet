@@ -1,9 +1,9 @@
-profile::openstack::labtestn::neutron::network_flat_interface: 'eth1.2105'
+profile::openstack::labtestn::neutron::network_flat_interface: 'eno2.2105'
 profile::openstack::labtestn::neutron::network_flat_interface_vlan: '2105'
-profile::openstack::labtestn::neutron::network_flat_interface_external: 'eth1.2120'
+profile::openstack::labtestn::neutron::network_flat_interface_external: 'eno2.2120'
 profile::openstack::labtestn::neutron::network_flat_interface_vlan_external: '2120'
 profile::openstack::labtestn::neutron::network_compat_interface_vlan: '2102'
-profile::openstack::labtestn::neutron::network_compat_interface: 'eth1.2102'
+profile::openstack::labtestn::neutron::network_compat_interface: 'eno2.2102'
 profile::openstack::labtestn::neutron::rabbit_user: 'neutron'
 profile::openstack::labtestn::neutron::network_flat_name: 'cloudinstances2b'
 profile::openstack::labtestn::neutron::network_public_ip: '172.16.129.254'
@@ -13,11 +13,11 @@ profile::openstack::labtestn::neutron::dmz_cidr:
 profile::openstack::labtestn::neutron::tld: 'labtest'
 profile::openstack::labtestn::neutron::l3_agent_bridges:
   br-external:
-    addif: 'eth1.2120'
+    addif: 'eno2.2120'
   br-internal:
-    addif: 'eth1.2105'
+    addif: 'eno2.2105'
   br-compat:
-    addif: 'eth1.2102'
+    addif: 'eno2.2102'
 profile::openstack::labtestn::neutron::l3_agent_bridge_mappings:
   br-external: 'br-external'
   cloudinstances2b: 'br-internal'
