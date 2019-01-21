@@ -1,0 +1,19 @@
+# This file is managed by Puppet
+# modules/sonofgridengine/templates/logrotate.erb
+<%= @sge_root %>/<%= @sge_cell %>/common/accounting {
+    compress
+    delaycompress
+    missingok
+    notifempty
+    rotate 8
+    weekly
+}
+
+<%= @sge_root %>/spool/qmaster/messages {
+    compress
+    delaycompress
+    missingok
+    notifempty
+    rotate 8
+    weekly
+}

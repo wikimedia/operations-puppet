@@ -183,4 +183,9 @@ class profile::toolforge::grid::master (
         subscribe   => File["${etcdir}/config/scheduler"],
         refreshonly => true,
     }
+
+    class { 'sonofgridengine::logrotate':
+        ensure   => 'present',
+        sge_root => $sge_root,
+    }
 }
