@@ -3285,11 +3285,9 @@ host cloudnet2001-dev {
     fixed-address cloudnet2001-dev.codfw.wmnet;
 }
 
-host labtestneutron2002 {
+host cloudnet2002-dev {
     hardware ethernet 30:e1:71:55:a2:40;
-    fixed-address labtestneutron2002.codfw.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
-    filename "lpxelinux.0";
+    fixed-address cloudnet2002-dev.codfw.wmnet;
 }
 
 host labtestpuppetmaster2001 {
