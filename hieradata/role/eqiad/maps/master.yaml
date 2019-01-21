@@ -1,17 +1,31 @@
 profile::maps::hosts:
-  - 'maps1001.eqiad.wmnet'
+  - 'maps1004.eqiad.wmnet'
+  - 'maps1003.eqiad.wmnet'
   - 'maps1002.eqiad.wmnet'
 profile::redis::master::clients:
-  - 'maps1001.eqiad.wmnet'
+  - 'maps1004.eqiad.wmnet'
+  - 'maps1003.eqiad.wmnet'
   - 'maps1002.eqiad.wmnet'
 
-profile::maps::apps::redis_server: 'redis://maps1001.eqiad.wmnet'
+profile::maps::apps::redis_server: 'redis://maps1004.eqiad.wmnet'
+profile::maps::apps::tilerator_ncpu_ratio: 0.5  # half the CPU used by tilerator
 
 profile::cassandra::single_instance::dc: 'eqiad'
 profile::cassandra::single_instance::seeds:
-  - '10.64.0.79'   # maps1001.eqiad.wmnet
+  - '10.64.48.154' # maps1004.eqiad.wmnet
+  - '10.64.32.117' # maps1003.eqiad.wmnet
   - '10.64.16.42'  # maps1002.eqiad.wmnet
 
+profile::maps::osm_master::planet_sync_day: '*'
+profile::maps::osm_master::disable_replication_cron: false
+profile::maps::osm_master::disable_admin_cron: false
 profile::maps::osm_master::slaves:
+  maps1004:
+    ip_address: '10.64.48.154'
+  maps1003:
+    ip_address: '10.64.32.117'
   maps1002:
-    ip_address: 10.64.16.42
+    ip_address: '10.64.16.42'
+
+cassandra::target_version: '2.2'
+

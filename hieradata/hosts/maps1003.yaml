@@ -1,20 +1,2 @@
 cassandra::rack: c5
 do_paging: false
-
-# During migration to stretch, nodes are moved one by one, config is overridden
-# on a per-node basis. This will be cleaned once migration is completed. See
-# T198622 for details.
-profile::maps::hosts:
-  - 'maps1004.eqiad.wmnet'
-  - 'maps1003.eqiad.wmnet'
-
-profile::maps::apps::redis_server: 'redis://maps1004.eqiad.wmnet'
-
-profile::cassandra::single_instance::dc: 'eqiad'
-profile::cassandra::single_instance::seeds:
-  - '10.64.48.154' # maps1004.eqiad.wmnet
-  - '10.64.32.117' # maps1003.eqiad.wmnet
-
-profile::maps::osm_slave::master: 'maps1004.eqiad.wmnet'
-
-cassandra::target_version: '2.2'

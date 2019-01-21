@@ -3643,8 +3643,6 @@ host maps1001 {
 host maps1002 {
     hardware ethernet 1c:98:ec:21:88:b4;
     fixed-address maps1002.eqiad.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
-    filename "lpxelinux.0";
 }
 
 host maps1003 {
