@@ -31,8 +31,6 @@ host an-coord1001 {
 host analytics1001 {
     hardware ethernet F0:1F:AF:E8:AF:06;
     fixed-address analytics1001.eqiad.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
-    filename "lpxelinux.0";
 }
 
 host analytics1002 {
