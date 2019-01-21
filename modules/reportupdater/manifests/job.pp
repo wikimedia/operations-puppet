@@ -82,7 +82,7 @@ define reportupdater::job(
     if $interval {
         systemd::timer::job { "reportupdater-${title}":
             description               => "Report Updater job for ${title}",
-            command                   => "python ${::reportupdater::path}/update_reports.py -l info ${query_path} ${output_path}",
+            command                   => "/usr/bin/python ${::reportupdater::path}/update_reports.py -l info ${query_path} ${output_path}",
             interval                  => {
                 'start'    => 'OnCalendar',
                 'interval' => $interval
