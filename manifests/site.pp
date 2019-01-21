@@ -546,14 +546,11 @@ node /^db10(69|79|86|94)\.eqiad\.wmnet/ {
 #
 # s7 (centralauth, meta et al.) core production dbs on codfw
 # codfw master
-node 'db2040.codfw.wmnet' {
-    role(mariadb::core)
-}
 node 'db2047.codfw.wmnet' {
     role(mariadb::core)
 }
 
-node /^db20(54|61|68|77)\.codfw\.wmnet/ {
+node /^db20(40|54|61|68|77)\.codfw\.wmnet/ {
     role(mariadb::core)
 }
 
