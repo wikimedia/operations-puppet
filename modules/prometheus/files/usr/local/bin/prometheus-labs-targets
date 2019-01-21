@@ -5,7 +5,8 @@ import argparse
 import sys
 import yaml
 
-from novaclient import client as novaclient
+from novaclient import client as nova_client
+from keystoneclient import client as keystone_client
 from keystoneclient.auth.identity import generic
 from keystoneclient import session as keystone_session
 
@@ -20,7 +21,7 @@ For example list all default scraping URLs:
 """
 
 
-def list_instances(env, project, region):
+def get_session(env, project):
     nova_connection = {
         "username": env["OS_USERNAME"],
         "password": env["OS_PASSWORD"],
@@ -30,10 +31,21 @@ def list_instances(env, project, region):
         "project_name": project,
     }
     auth = generic.Password(**nova_connection)
-    session = keystone_session.Session(auth=auth)
-    client = novaclient.Client("2", session=session, region_name=region)
+    return keystone_session.Session(auth=auth)
+
+
+def list_instances(env, project, region):
+    session = get_session(env, project)
+    client = nova_client.Client("2", session=session, region_name=region)
     for instance in client.servers.list():
         yield instance
+
+
+def list_regions(env, project):
+    session = get_session(env, project)
+    client = keystone_client.Client(session=session, interface="public")
+    for region in client.regions.list():
+        yield region
 
 
 def main():
@@ -41,19 +53,25 @@ def main():
         epilog=HELP_EPILOG, formatter_class=argparse.RawTextHelpFormatter
     )
     parser.add_argument("--project", dest="project")
-    parser.add_argument("--region", dest="region", default="eqiad1-r")
+    parser.add_argument(
+        "--region",
+        default=None,
+        dest="region",
+        help="Fetch instances for REGION (default: all regions)",
+        metavar="REGION",
+    )
     parser.add_argument("--port", dest="port", default="9100")
     parser.add_argument(
         "--print-format",
-        dest="print_format",
         default=None,
-        metavar="FMT",
+        dest="print_format",
         help="Print each host according to FMT",
+        metavar="FMT",
     )
     parser.add_argument(
         "--prefix",
-        help="Only output targets for instances that match this prefix",
         default="",  # Match everything by default
+        help="Only output targets for instances that match this prefix",
     )
     args = parser.parse_args()
 
@@ -68,21 +86,33 @@ def main():
     with open("/etc/novaobserver.yaml") as f:
         env = yaml.safe_load(f)
 
+    all_regions = list_regions(env, args.project)
+    regions = [r.id for r in all_regions]
+
+    if args.region is not None:
+        if args.region not in regions:
+            parser.error(
+                "Region %s invalid. Valid choices: %r" % (args.region, regions)
+            )
+            return 1
+        regions = [args.region]
+
     format_lines = []
     config = {"targets": []}
 
-    instances = list_instances(env, args.project, args.region)
-    for instance in instances:
-        if not instance.name.startswith(args.prefix):
-            continue
-        config["targets"].append("%s:%s" % (instance.name, args.port))
-        if args.print_format:
-            print_args = {
-                "hostname": instance.name,
-                "port": args.port,
-                "project": args.project,
-            }
-            format_lines.append(args.print_format.format(**print_args))
+    for region in regions:
+        instances = list_instances(env, args.project, region)
+        for instance in instances:
+            if not instance.name.startswith(args.prefix):
+                continue
+            config["targets"].append("%s:%s" % (instance.name, args.port))
+            if args.print_format:
+                print_args = {
+                    "hostname": instance.name,
+                    "port": args.port,
+                    "project": args.project,
+                }
+                format_lines.append(args.print_format.format(**print_args))
     config["targets"] = sorted(config["targets"])
 
     if args.print_format:
