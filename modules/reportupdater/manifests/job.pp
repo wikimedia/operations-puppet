@@ -1,6 +1,6 @@
 # == Define reportupdater::job
 #
-# Sets up hourly cron jobs to run reportupdater, which generates
+# Sets up hourly systemd timer job to run reportupdater, which generates
 # and updates tsv reports for a set of given queries.
 #
 # This requires that a repository with config and queries for the script
@@ -20,6 +20,9 @@
 #                  This will be relative to $::reportupdater::base_path/output
 #                  Default: $title
 #
+#   interval     - string. [optional] Systemd time to run the report updater job.
+#                  Default: '*-*-* *:00:00' (hourly)
+#
 # == Usage
 #   reportupdater::job { 'browser': }
 #
@@ -31,7 +34,7 @@
 define reportupdater::job(
     $repository,
     $output_dir = $title,
-    $interval = undef,
+    $interval = '*-*-* *:00:00',
     $monitoring_enabled = true,
 )
 {

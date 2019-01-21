@@ -40,12 +40,10 @@ class profile::reportupdater::jobs::hadoop {
     reportupdater::job { 'browser':
         repository => 'reportupdater-queries',
         output_dir => 'metrics/browser',
-        interval   => '*-*-* *:00:00',
     }
 
     reportupdater::job { 'interlanguage':
         repository => 'limn-language-data',
         output_dir => 'metrics/interlanguage',
-        interval   => '*-*-* *:00:00',
     }
 }
