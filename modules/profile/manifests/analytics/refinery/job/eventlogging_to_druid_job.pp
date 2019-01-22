@@ -123,6 +123,7 @@ define profile::analytics::refinery::job::eventlogging_to_druid_job (
         require    => Profile::Analytics::Refinery::Job::Config[$hourly_job_config_file],
         user       => $user,
         minute     => 0,
+        interval   => '*-*-* *:00:00',
     }
 
     # Daily job
@@ -145,5 +146,6 @@ define profile::analytics::refinery::job::eventlogging_to_druid_job (
         user       => $user,
         hour       => 0,
         minute     => 0,
+        interval   => '*-*-* 00:00:00',
     }
 }
