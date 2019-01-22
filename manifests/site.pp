@@ -1753,7 +1753,7 @@ node /^mw22(8[3-9]|90)\.codfw\.wmnet$/ {
 # Former imagescalers (T192457)
 
 # Row C (C3)
-node /^mw215[01]\.codfw\.wmnet$/ {
+node /^mw2150\.codfw\.wmnet$/ {
     role(spare::system)
 }
 
