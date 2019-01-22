@@ -20,6 +20,7 @@ if ( $.log_outputs contains "kafka" ) then {
            topic="kafka_topic"
            dynatopic="on"
            dynatopic.cachesize="1000"
+           partitions.auto="on"
            template="syslog_json"
            confParam=[ "security.protocol=ssl",
                        "ssl.ca.location=/etc/ssl/certs/Puppet_Internal_CA.pem",

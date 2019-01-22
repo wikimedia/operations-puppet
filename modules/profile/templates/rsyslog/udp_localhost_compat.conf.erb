@@ -36,6 +36,7 @@ ruleset(name="udp_localhost_to_kafka" queue.type="LinkedList") {
          topic="udp_localhost_topic"
          dynatopic="on"
          dynatopic.cachesize="1000"
+         partitions.auto="on"
          template="udp_localhost_all_properties"
          confParam=[ "security.protocol=ssl",
                      "ssl.ca.location=/etc/ssl/certs/Puppet_Internal_CA.pem",
