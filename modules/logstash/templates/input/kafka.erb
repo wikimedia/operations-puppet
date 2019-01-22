@@ -15,6 +15,7 @@ input {
 <%- end -%>
     type                    => "<%= @type %>"
     codec                   => "<%= @codec %>"
+    consumer_threads        => <%= @consumer_threads %>
     bootstrap_servers       => "<%= @bootstrap_servers %>"
 <%- unless @plugin_id.empty? -%>
     id                      => "<%= @plugin_id %>"

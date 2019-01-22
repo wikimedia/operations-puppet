@@ -44,6 +44,7 @@ define logstash::input::kafka(
     Optional[Stdlib::Unixpath] $ssl_truststore_location                              = undef,
     Optional[String] $ssl_truststore_password                                        = undef,
     Optional[String] $group_id                                                       = undef,
+    Integer $consumer_threads                                                        = 1,
 ) {
     logstash::conf { "input-kafka-${title}":
         ensure   => $ensure,

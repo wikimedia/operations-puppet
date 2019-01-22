@@ -173,6 +173,7 @@ class profile::logstash::collector (
         security_protocol       => 'SSL',
         ssl_truststore_location => '/etc/logstash/kafka-logging-truststore.jks',
         ssl_truststore_password => $input_kafka_ssl_truststore_password,
+        consumer_threads        => 3,
     }
 
     logstash::input::kafka { 'rsyslog-udp-localhost':
@@ -185,6 +186,7 @@ class profile::logstash::collector (
         security_protocol       => 'SSL',
         ssl_truststore_location => '/etc/logstash/kafka-logging-truststore.jks',
         ssl_truststore_password => $input_kafka_ssl_truststore_password,
+        consumer_threads        => 3,
     }
 
     file { '/etc/logstash/kafka-logging-truststore.jks':
