@@ -3,6 +3,7 @@
 #
 class profile::prometheus::k8s::staging (
     $users = hiera('k8s_infrastructure_users'), # lint:ignore:wmf_styleguide
+    $prometheus_v2 = hiera('prometheus::server::prometheus_v2', false),
 ){
     $targets_path = '/srv/prometheus/k8s-staging/targets'
     $storage_retention = hiera('prometheus::server::storage_retention', '4032h') # lint:ignore:wmf_styleguide
@@ -164,6 +165,7 @@ class profile::prometheus::k8s::staging (
         memory_chunks         => $memory_chunks,
         global_config_extra   => $config_extra,
         scrape_configs_extra  => $scrape_configs_extra,
+        prometheus_v2         => $prometheus_v2,
     }
 
     prometheus::web { 'k8s-staging':

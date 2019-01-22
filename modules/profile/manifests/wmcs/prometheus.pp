@@ -3,6 +3,7 @@ class profile::wmcs::prometheus(
     $storage_retention = hiera('prometheus::server::storage_retention', '4032h'),
     $max_chunks_to_persist = hiera('prometheus::server::max_chunks_to_persist', '524288'),
     $memory_chunks = hiera('prometheus::server::memory_chunks', '1048576'),
+    $prometheus_v2 = hiera('prometheus::server::prometheus_v2', false),
 ) {
     include ::prometheus::blackbox_exporter
     $blackbox_jobs = [
@@ -129,6 +130,7 @@ class profile::wmcs::prometheus(
             $blackbox_jobs, $rabbitmq_jobs, $pdns_jobs,
             $pdns_rec_jobs, $openstack_jobs,
         ),
+        prometheus_v2         => $prometheus_v2,
     }
 
     prometheus::web { 'labs':

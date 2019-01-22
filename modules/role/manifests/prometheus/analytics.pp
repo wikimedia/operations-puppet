@@ -14,6 +14,7 @@ class role::prometheus::analytics {
     $storage_retention = hiera('prometheus::server::storage_retention', '4032h')
     $max_chunks_to_persist = hiera('prometheus::server::max_chunks_to_persist', '524288')
     $memory_chunks = hiera('prometheus::server::memory_chunks', '1048576')
+    $prometheus_v2 = hiera('prometheus::server::prometheus_v2', false)
 
     $config_extra = {
         # All metrics will get an additional 'site' label when queried by
@@ -219,7 +220,8 @@ class role::prometheus::analytics {
         max_chunks_to_persist => $max_chunks_to_persist,
         memory_chunks         => $memory_chunks,
         global_config_extra   => $config_extra,
-        scrape_configs_extra  => array_concat($jmx_exporter_jobs, $druid_jobs, $kafka_burrow_jobs, $mysql_jobs)
+        scrape_configs_extra  => array_concat($jmx_exporter_jobs, $druid_jobs, $kafka_burrow_jobs, $mysql_jobs),
+        prometheus_v2         => $prometheus_v2,
     }
 
     prometheus::web { 'analytics':

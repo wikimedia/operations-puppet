@@ -8,6 +8,7 @@ class profile::prometheus::ops (
     $max_chunks_to_persist = hiera('prometheus::server::max_chunks_to_persist', '524288'),
     $memory_chunks = hiera('prometheus::server::memory_chunks', '1048576'),
     $targets_path = '/srv/prometheus/ops/targets',
+    $prometheus_v2 = hiera('prometheus::server::prometheus_v2', false),
 ){
 
     $config_extra = {
@@ -1095,6 +1096,7 @@ class profile::prometheus::ops (
             $mjolnir_jobs, $rsyslog_jobs, $php_jobs, $php_fpm_jobs, $icinga_jobs,
         ),
         global_config_extra   => $config_extra,
+        prometheus_v2         => $prometheus_v2,
     }
 
     monitoring::check_prometheus { 'prometheus_config_reload_fail':

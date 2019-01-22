@@ -25,6 +25,13 @@ define prometheus::rule (
     $service_name = "prometheus@${instance}"
     $file_path = "${instance_path}/rules/${title}"
 
+    $prometheus_v2 = hiera('prometheus::server::prometheus_v2', false)
+    if $prometheus_v2 {
+      $validate_cmd = '/usr/bin/promtool check rules %'
+    } else {
+      $validate_cmd = '/usr/bin/promtool check-rules %'
+    }
+
     file { $file_path:
         ensure       => file,
         mode         => '0444',
@@ -32,7 +39,7 @@ define prometheus::rule (
         source       => $source,
         content      => $content,
         notify       => Exec["${service_name}-rules-reload"],
-        validate_cmd => '/usr/bin/promtool check-rules %',
+        validate_cmd => $validate_cmd,
     }
 
     exec { "${service_name}-rules-reload":

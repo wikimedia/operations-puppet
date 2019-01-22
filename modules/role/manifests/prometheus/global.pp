@@ -1,4 +1,6 @@
 class role::prometheus::global {
+    $prometheus_v2 = hiera('prometheus::server::prometheus_v2', false)
+
     system::role { 'prometheus::global':
         description => 'Prometheus server (global)',
     }
@@ -63,6 +65,7 @@ class role::prometheus::global {
         storage_retention    => '10920h',
         listen_address       => '127.0.0.1:9904',
         scrape_configs_extra => $federation_jobs,
+        prometheus_v2        => $prometheus_v2,
     }
 
     prometheus::web { 'global':

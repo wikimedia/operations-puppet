@@ -7,6 +7,7 @@
 
 class role::prometheus::beta (
     $storage_retention = hiera('prometheus::server::storage_retention', '730h'),
+    $prometheus_v2 = hiera('prometheus::server::prometheus_v2', false),
 ) {
 
     class { '::httpd':
@@ -112,6 +113,7 @@ class role::prometheus::beta (
         scrape_configs_extra => array_concat($varnish_jobs, $mysql_jobs, $web_jobs,
             $cassandra_jobs, $jmx_exporter_jobs),
         storage_retention    => $storage_retention,
+        prometheus_v2        => $prometheus_v2,
     }
 
     prometheus::web { 'beta':
