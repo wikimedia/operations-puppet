@@ -10,25 +10,28 @@
     role: slave
   targets:
   - db1095:13312
+  - dbstore1003:13312
 
 - labels:
     shard: s3
     role: slave
   targets:
   - db1095:13313
+  - dbstore1003:13313
 
 - labels:
     shard: s4
     role: slave
   targets:
   - db1102:13314
+  - dbstore1003:13314
 
 - labels:
     shard: s5
     role: slave
   targets:
   - db1102:13315
-  - dbstore1003:13316
+  - dbstore1003:13315
 
 - labels:
     shard: s6
