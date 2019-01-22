@@ -76,30 +76,28 @@ class profile::statistics::private(
         auto_ferm   => true,
     }
 
-    if $::hostname == 'stat1007' {
-        # Class to save old versions of the geoip MaxMind database, which are useful
-        # for historical geocoding.
-        if !defined(File['/srv/geoip']) {
-            file { '/srv/geoip':
-                ensure => directory,
-                owner  => 'root',
-                group  => 'wikidev',
-            }
+    # Class to save old versions of the geoip MaxMind database, which are useful
+    # for historical geocoding.
+    if !defined(File['/srv/geoip']) {
+        file { '/srv/geoip':
+            ensure => directory,
+            owner  => 'root',
+            group  => 'wikidev',
         }
-        class { '::geoip::data::archive':
-            archive_dir  => '/srv/geoip/archive',
-            use_kerberos => $use_kerberos,
-            require      => File['/srv/geoip'],
-        }
+    }
+    class { '::geoip::data::archive':
+        archive_dir  => '/srv/geoip/archive',
+        use_kerberos => $use_kerberos,
+        require      => File['/srv/geoip'],
+    }
 
-        # Discovery team statistics scripts and cron jobs
-        class { '::statistics::discovery': }
+    # Discovery team statistics scripts and cron jobs
+    class { '::statistics::discovery': }
 
-        # WMDE releated statistics & analytics scripts.
-        class { '::statistics::wmde':
-            statsd_host   => $statsd_host,
-            graphite_host => $graphite_host,
-            wmde_secrets  => $wmde_secrets,
-        }
+    # WMDE releated statistics & analytics scripts.
+    class { '::statistics::wmde':
+        statsd_host   => $statsd_host,
+        graphite_host => $graphite_host,
+        wmde_secrets  => $wmde_secrets,
     }
 }
