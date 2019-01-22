@@ -37,7 +37,7 @@ class profile::analytics::refinery::job::project_namespace_map(
     }
 
     file { '/usr/local/bin/refinery-download-project-namespace-map':
-        content => template('profile/analytics/refinery/job/refinery-sqoop-mediawiki.sh.erb'),
+        content => template('profile/analytics/refinery/job/refinery-download-project-namespace-map.sh.erb'),
         mode    => '0550',
         owner   => 'hdfs',
         group   => 'hdfs',
