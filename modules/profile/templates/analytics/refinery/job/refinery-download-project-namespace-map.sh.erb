@@ -1,2 +1,2 @@
 #!/bin/bash
-/srv/deployment/analytics/refinery/bin/download-project-namespace-map -x <%= @output_directory %> -s $(/bin/date --date="$(/bin/date +\%Y-\%m-15) -1 month" +'\%Y-\%m') <%= @http_proxy_option %>
+/srv/deployment/analytics/refinery/bin/download-project-namespace-map -x <%= @output_directory %> -s $(/bin/date --date="$(/bin/date +%Y-%m-15) -1 month" +'%Y-%m') <%= @http_proxy_option %>
