@@ -214,6 +214,12 @@ cache::app_directors:
     backends:
       eqiad: 'ores.svc.eqiad.wmnet'
       codfw: 'ores.svc.codfw.wmnet'
+  blubberoid:
+    be_opts:
+      port: 8748
+    backends:
+      eqiad: 'blubberoid.svc.eqiad.wmnet'
+      codfw: 'blubberoid.svc.codfw.wmnet'
 cache::req_handling:
   cxserver.wikimedia.org:
     director: 'cxserver_backend'
@@ -234,6 +240,9 @@ cache::alternate_domains:
     director: 'thorium'
   annual.wikimedia.org:
     director: 'webserver_misc_static'
+  blubberoid.wikimedia.org:
+    director: 'blubberoid'
+    caching: 'pass'
   bienvenida.wikimedia.org:
     director: 'webserver_misc_static'
   bugs.wikimedia.org:
