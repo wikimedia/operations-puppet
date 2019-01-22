@@ -28,7 +28,7 @@ class openstack::monitor::spreadcheck(
         owner  => 'nagios',
         group  => 'nagios',
         mode   => '0400',
-        source => 'puppet:///modules/monitor/spreadcheck-tools.yaml',
+        source => 'puppet:///modules/openstack/monitor/spreadcheck-tools.yaml',
     }
 
     nrpe::monitor_service { 'check-tools-spread':
