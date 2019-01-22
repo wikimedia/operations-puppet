@@ -41,6 +41,7 @@ class profile::analytics::refinery::job::refine {
             transform_functions             => 'org.wikimedia.analytics.refinery.job.refine.deduplicate_eventlogging,org.wikimedia.analytics.refinery.job.refine.geocode_ip',
         }),
         minute     => 30,
+        interval   => '*-*-* *:30:00',
     }
 
     # Refine EventBus data.
@@ -54,6 +55,7 @@ class profile::analytics::refinery::job::refine {
             transform_functions             => 'org.wikimedia.analytics.refinery.job.refine.deduplicate_eventbus',
         }),
         minute     => 20,
+        interval   => '*-*-* *:20:00',
     }
 
     # $problematic_jobs will not be refined.
@@ -93,6 +95,7 @@ class profile::analytics::refinery::job::refine {
             transform_functions             => 'org.wikimedia.analytics.refinery.job.refine.deduplicate_eventbus',
         }),
         minute     => 25,
+        interval   => '*-*-* *:25:00',
     }
 
     # Netflow data
@@ -106,6 +109,7 @@ class profile::analytics::refinery::job::refine {
             database                        => 'wmf',
         }),
         minute                 => 45,
+        interval               => '*-*-* *:45:00',
         monitoring_enabled     => false,
         refine_monitor_enabled => false,
     }
