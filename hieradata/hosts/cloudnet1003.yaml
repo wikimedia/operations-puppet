@@ -1,0 +1,10 @@
+profile::openstack::eqiad1::neutron::l3_agent_bridges:
+  br-external:
+    addif: 'eno2.1120'
+  br-internal:
+    addif: 'eno2.1105'
+  br-compat:
+    addif: 'eno2.1102'
+profile::openstack::eqiad1::neutron::network_flat_interface: 'eno2.1105'
+profile::openstack::eqiad1::neutron::network_flat_interface_external: 'eno2.1120'
+profile::openstack::eqiad1::neutron::network_compat_interface: 'eno2.1102'
