@@ -36,6 +36,7 @@ define reportupdater::job(
     $output_dir = $title,
     $interval = '*-*-* *:00:00',
     $monitoring_enabled = true,
+    $ensure = present,
 )
 {
     Class['::reportupdater'] -> Reportupdater::Job[$title]
@@ -49,9 +50,6 @@ define reportupdater::job(
 
     # Path of the query configuration directory inside of $repository_name.
     $query_path      = "${path}/${title}"
-
-    # Path at which the job will store logs.
-    $log_file        = "${::reportupdater::log_path}/${repository}-${title}.log"
 
     # Path at which the job will store its report output.
     $output_path     = "${::reportupdater::output_path}/${output_dir}"
@@ -68,39 +66,25 @@ define reportupdater::job(
         }
     }
 
-    if $interval {
-        $cron_ensure = absent
-    } else {
-        $cron_ensure = present
-    }
 
-    cron { "reportupdater_${repository}-${title}":
-        ensure  => $cron_ensure,
-        command => "python ${::reportupdater::path}/update_reports.py -l info ${query_path} ${output_path} >> ${log_file} 2>&1",
-        user    => $::reportupdater::user,
-        minute  => 0,
-        require => Git::Clone[$repository_name],
-    }
-
-    if $interval {
-        systemd::timer::job { "reportupdater-${title}":
-            description               => "Report Updater job for ${title}",
-            command                   => "/usr/bin/python ${::reportupdater::path}/update_reports.py -l info ${query_path} ${output_path}",
-            interval                  => {
-                'start'    => 'OnCalendar',
-                'interval' => $interval
-            },
-            user                      => $::reportupdater::user,
-            monitoring_enabled        => $monitoring_enabled,
-            monitoring_contact_groups => 'analytics',
-            logging_enabled           => true,
-            logfile_basedir           => $::reportupdater::log_path,
-            logfile_name              => 'syslog.log',
-            logfile_owner             => $::reportupdater::user,
-            logfile_group             => $::reportupdater::user,
-            logfile_perms             => 'all',
-            syslog_force_stop         => true,
-            syslog_identifier         => "reportupdater-${title}",
-        }
+    systemd::timer::job { "reportupdater-${title}":
+        ensure                    => $ensure,
+        description               => "Report Updater job for ${title}",
+        command                   => "/usr/bin/python ${::reportupdater::path}/update_reports.py -l info ${query_path} ${output_path}",
+        interval                  => {
+            'start'    => 'OnCalendar',
+            'interval' => $interval
+        },
+        user                      => $::reportupdater::user,
+        monitoring_enabled        => $monitoring_enabled,
+        monitoring_contact_groups => 'analytics',
+        logging_enabled           => true,
+        logfile_basedir           => $::reportupdater::log_path,
+        logfile_name              => 'syslog.log',
+        logfile_owner             => $::reportupdater::user,
+        logfile_group             => $::reportupdater::user,
+        logfile_perms             => 'all',
+        syslog_force_stop         => true,
+        syslog_identifier         => "reportupdater-${title}",
     }
 }

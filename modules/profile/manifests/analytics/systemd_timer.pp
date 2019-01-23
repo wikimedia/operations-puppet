@@ -75,6 +75,7 @@ define profile::analytics::systemd_timer(
     $logfile_group = 'hdfs',
     $logfile_perms = 'all',
     $syslog_force_stop = true,
+    $ensure = present,
 ) {
 
     $logging = $logfile_name ? {
@@ -82,6 +83,7 @@ define profile::analytics::systemd_timer(
         default => true
     }
     systemd::timer::job { $title:
+        ensure                    => $ensure,
         description               => $description,
         command                   => $command,
         interval                  => {

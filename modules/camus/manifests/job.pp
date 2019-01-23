@@ -89,7 +89,6 @@ define camus::job (
     require ::camus
 
     $properties_file = "${camus::config_directory}/${title}.properties"
-    $log_file        = "${camus::log_directory}/${title}.log"
 
     file { $properties_file:
         content => template($template),
@@ -130,6 +129,7 @@ define camus::job (
     $unit_command = "${script} --run --job-name camus-${title} ${camus_jar_opt} ${libjars_opt} ${check_opts} ${properties_file}"
 
     systemd::timer::job { "camus-${title}":
+        ensure                    => $ensure,
         description               => "Hadoop Map-Reduce Camus job for ${title}",
         command                   => $unit_command,
         interval                  => {
