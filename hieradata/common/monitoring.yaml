@@ -40,6 +40,8 @@ monitoring::groups:
     description: Druid public cluster eqiad
   druid_analytics_eqiad:
     description: Druid analytics cluster eqiad
+  druid_test_analytics_eqiad:
+    description: Druid analytics test cluster eqiad
 
 # Elasticsearch
   elasticsearch_eqiad:
