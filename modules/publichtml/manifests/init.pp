@@ -1,9 +1,9 @@
 # server with user public_html directories enabled and nothing else
 # no critical services, in fact no services at all should run here
 class publichtml(
-    $sitename     = undef,
-    $docroot      = '/srv/org/wikimedia/publichtml',
-    $server_admin = undef,
+    Stdlib::Fqdn $sitename = undef,
+    Stdlib::Unixpath $docroot = '/srv/org/wikimedia/publichtml',
+    String $server_admin = undef,
 ) {
 
     system::role { 'publichtml':
