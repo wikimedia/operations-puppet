@@ -175,7 +175,6 @@ class profile::analytics::refinery::job::data_purge (
         spark_driver_memory => '16G',
         spark_max_executors => '128',
         spark_extra_opts    => '--conf spark.ui.retainedStage=20 --conf spark.ui.retainedTasks=1000 --conf spark.ui.retainedJobs=100',
-        minute              => 0,
         interval            => '*-*-* *:00:00',
     }
 

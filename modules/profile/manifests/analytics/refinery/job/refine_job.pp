@@ -20,6 +20,10 @@
 # [*job_name*]
 #   The Spark job name. Default: refine_$title
 #
+# [*interval*]
+#   Systemd time interval.
+#   Default: '*-*-* *:00:00' (hourly)
+#
 define profile::analytics::refinery::job::refine_job (
     $job_config,
     $job_name               = "refine_${title}",
@@ -33,12 +37,7 @@ define profile::analytics::refinery::job::refine_job (
     $spark_max_executors    = 64,
     $spark_extra_opts       = '',
     $user                   = 'hdfs',
-    $hour                   = undef,
-    $minute                 = undef,
-    $month                  = undef,
-    $monthday               = undef,
-    $weekday                = undef,
-    $interval               = undef,
+    $interval               = '*-*-* *:00:00',
     $ensure                 = 'present',
 ) {
     require ::profile::analytics::refinery
@@ -88,11 +87,6 @@ define profile::analytics::refinery::job::refine_job (
         job_opts           => "--config_file ${job_name}.properties",
         require            => Profile::Analytics::Refinery::Job::Config[$job_config_file],
         user               => $user,
-        hour               => $hour,
-        minute             => $minute,
-        month              => $month,
-        monthday           => $monthday,
-        weekday            => $weekday,
         interval           => $interval,
         monitoring_enabled => $monitoring_enabled,
     }
@@ -125,8 +119,6 @@ define profile::analytics::refinery::job::refine_job (
         job_opts           => "--config_file ${job_config_file} --since ${monitor_since} --until ${monitor_until}",
         require            => Profile::Analytics::Refinery::Job::Config[$job_config_file],
         user               => $user,
-        hour               => 4,
-        minute             => 15,
         interval           => $monitor_interval,
         monitoring_enabled => $monitoring_enabled,
     }

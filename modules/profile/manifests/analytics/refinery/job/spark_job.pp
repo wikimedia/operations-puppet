@@ -24,6 +24,10 @@
 # [*log_file*]
 #   Default: /var/log/refinery/$job_name.log
 #
+# [*interval*]
+#   Systemd time interval.
+#   Default: '*-*-* *:00:00' (hourly)
+#
 define profile::analytics::refinery::job::spark_job(
     $jar,
     $class,
@@ -32,12 +36,7 @@ define profile::analytics::refinery::job::spark_job(
     $job_opts            = undef,
     $log_file            = "/var/log/refinery/${job_name}.log",
     $user                = 'hdfs',
-    $hour                = undef,
-    $minute              = undef,
-    $month               = undef,
-    $monthday            = undef,
-    $weekday             = undef,
-    $interval            = undef,
+    $interval            = '*-*-* *:00:00',
     $environment         = undef,
     $ensure              = 'present',
     $monitoring_enabled  = true,

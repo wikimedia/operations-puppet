@@ -40,7 +40,6 @@ class profile::analytics::refinery::job::refine {
             # Deduplicate basd on uuid field and geocode ip in EventLogging analytics data.
             transform_functions             => 'org.wikimedia.analytics.refinery.job.refine.deduplicate_eventlogging,org.wikimedia.analytics.refinery.job.refine.geocode_ip',
         }),
-        minute     => 30,
         interval   => '*-*-* *:30:00',
     }
 
@@ -54,7 +53,6 @@ class profile::analytics::refinery::job::refine {
             # Deduplicate eventbus based data based on meta.id field
             transform_functions             => 'org.wikimedia.analytics.refinery.job.refine.deduplicate_eventbus',
         }),
-        minute     => 20,
         interval   => '*-*-* *:20:00',
     }
 
@@ -94,7 +92,6 @@ class profile::analytics::refinery::job::refine {
             # Deduplicate eventbus based data based on meta.id field
             transform_functions             => 'org.wikimedia.analytics.refinery.job.refine.deduplicate_eventbus',
         }),
-        minute     => 25,
         interval   => '*-*-* *:25:00',
     }
 
@@ -108,7 +105,6 @@ class profile::analytics::refinery::job::refine {
             output_path                     => '/wmf/data/wmf',
             database                        => 'wmf',
         }),
-        minute                 => 45,
         interval               => '*-*-* *:45:00',
         monitoring_enabled     => false,
         refine_monitor_enabled => false,

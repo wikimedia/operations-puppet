@@ -122,7 +122,6 @@ define profile::analytics::refinery::job::eventlogging_to_druid_job (
         job_opts   => "--config_file ${job_name}_hourly.properties --since $(date --date '-6hours' -u +'%Y-%m-%dT%H:00:00') --until $(date --date '-5hours' -u +'%Y-%m-%dT%H:00:00')",
         require    => Profile::Analytics::Refinery::Job::Config[$hourly_job_config_file],
         user       => $user,
-        minute     => 0,
         interval   => '*-*-* *:00:00',
     }
 
@@ -144,8 +143,6 @@ define profile::analytics::refinery::job::eventlogging_to_druid_job (
         job_opts   => "--config_file ${job_name}_daily.properties --since $(date --date '-4days' -u +'%Y-%m-%dT00:00:00') --until $(date --date '-3days' -u +'%Y-%m-%dT00:00:00')",
         require    => Profile::Analytics::Refinery::Job::Config[$daily_job_config_file],
         user       => $user,
-        hour       => 0,
-        minute     => 0,
         interval   => '*-*-* 00:00:00',
     }
 }
