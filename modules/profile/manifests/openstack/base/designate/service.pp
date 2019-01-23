@@ -74,7 +74,7 @@ class profile::openstack::base::designate::service(
     ferm::rule { 'designate-api':
         rule => "saddr (@resolve(${osm_host}) ${labweb_ip6s} @resolve(${keystone_host}) @resolve(${keystone_host}, AAAA)
                        ${labweb_ips} @resolve(${nova_controller}) @resolve(${nova_controller}, AAAA)
-                       @resolve(${monitoring_host})) proto tcp dport (9001) ACCEPT;",
+                       @resolve(${monitoring_host})  @resolve(${monitoring_host}, AAAA)) proto tcp dport (9001) ACCEPT;",
     }
 
     # Allow labs instances to hit the designate api.
