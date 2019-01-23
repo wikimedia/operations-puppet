@@ -73,10 +73,10 @@ class role::labs::prometheus {
     file { "${targets_path}/blackbox_http_keystone.yaml":
       content => ordered_yaml([{
         'targets' => ['cloudcontrol1003.wikimedia.org:5000/v3', # keystone
-                      'labcontrol1001.wikimedia.org:9292', # glance
-                      'labservices1001.wikimedia.org:9001', # designate
-                      'labnet1001.eqiad.wmnet:8774', # nova
-                      'proxy-eqiad.wmflabs.org:5668', # proxy
+                      'cloudcontrol1003.wikimedia.org:9292', # glance
+                      'cloudservices1003.wikimedia.org:9001', # designate
+                      'cloudnet1003.eqiad.wmnet:9696', # neutron
+                      'proxy-eqiad1.wmflabs.org:5668', # proxy
             ]
         }]),
     }
