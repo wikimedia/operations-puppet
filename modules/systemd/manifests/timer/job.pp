@@ -89,23 +89,26 @@ define systemd::timer::job(
     Enum['user', 'group', 'all'] $logfile_perms = 'all',
     Boolean $syslog_force_stop = true,
     Optional[String] $syslog_identifier = undef,
+    Wmflib::Ensure $ensure = 'present',
 ) {
     $log_owner = $logfile_owner ? {
         undef   => $user,
         default => $logfile_owner
     }
     systemd::unit { "${title}.service":
-        ensure  => 'present',
+        ensure  => $ensure,
         content => template('systemd/timer_service.erb'),
     }
 
     systemd::timer { $title:
+        ensure          => $ensure,
         timer_intervals => [$interval],
         unit_name       => "${title}.service",
     }
 
     if $logging_enabled {
         systemd::syslog { $title:
+            ensure       => $ensure,
             base_dir     => $logfile_basedir,
             log_filename => $logfile_name,
             owner        => $log_owner,
@@ -119,7 +122,7 @@ define systemd::timer::job(
     if $monitoring_enabled {
         if !defined(File['/usr/local/lib/nagios/plugins/check_systemd_unit_status']) {
             file { '/usr/local/lib/nagios/plugins/check_systemd_unit_status':
-                ensure => present,
+                ensure => $ensure,
                 source => 'puppet:///modules/systemd/check_systemd_unit_status',
                 mode   => '0555',
                 owner  => 'root',
@@ -128,6 +131,7 @@ define systemd::timer::job(
         }
 
         nrpe::monitor_service { "check_${title}_status":
+            ensure         => $ensure,
             description    => "Check the last execution of ${title}",
             nrpe_command   => "/usr/local/lib/nagios/plugins/check_systemd_unit_status ${title}",
             check_interval => 10,

@@ -35,6 +35,7 @@
 #   Default: false
 #
 define systemd::syslog(
+    Wmflib::Ensure $ensure = 'present',
     $base_dir     = '/var/log',
     $owner        = $title,
     $group        = $title,
@@ -58,8 +59,12 @@ define systemd::syslog(
     $local_syslogfile = "${local_logdir}/${log_filename}"
 
     if ! defined(File[$local_logdir]) {
+        $local_logdir_ensure = $ensure ? {
+            absent  => absent,
+            default => directory,
+        }
         file { $local_logdir:
-            ensure => directory,
+            ensure => $local_logdir_ensure,
             owner  => $owner,
             group  => $group,
             mode   => $dirmode,
@@ -67,7 +72,7 @@ define systemd::syslog(
     }
 
     file { $local_syslogfile:
-        ensure  => present,
+        ensure  => $ensure,
         replace => false,
         content => '',
         owner   => $owner,
@@ -77,6 +82,7 @@ define systemd::syslog(
     }
 
     rsyslog::conf { $title:
+        ensure   => $ensure,
         content  => template('systemd/rsyslog.conf.erb'),
         priority => 20,
         require  => File[$local_logdir],
@@ -87,7 +93,7 @@ define systemd::syslog(
     }
 
     logrotate::conf { $title:
-        ensure  => present,
+        ensure  => $ensure,
         content => template('systemd/logrotate.erb'),
     }
 }
