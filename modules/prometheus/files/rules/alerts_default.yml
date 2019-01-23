@@ -1,0 +1,17 @@
+groups:
+- name: alerts_default.conf
+  rules:
+  - alert: InstanceDown
+    expr: up == 0
+    for: 3m
+    labels:
+      severity: warn
+    annotations:
+      SUMMARY: Instance {{$labels.instance}}/{{$labels.job}} down
+  - alert: PrometheusReloadFailed
+    expr: prometheus_config_last_reload_successful == 0
+    for: 1h
+    labels:
+      severity: warn
+    annotations:
+      SUMMARY: Prometheus {{$labels.instance}} config reload fail
