@@ -31,7 +31,9 @@ class profile::analytics::refinery::job::druid_load {
     }
 
     # Load event.PageIssues
+    # Deactivated for now until new experiment.
     profile::analytics::refinery::job::eventlogging_to_druid_job { 'pageissues':
+        ensure     => 'absent',
         job_config => {
             dimensions => 'event.action,event.editCountBucket,event.isAnon,event.issuesSeverity,event.issuesVersion,event.namespaceId,event.sectionNumbers,revision,wiki,userAgent.browser_family,userAgent.browser_major,userAgent.browser_minor,userAgent.device_family,userAgent.is_bot,userAgent.os_family,userAgent.os_major,userAgent.os_minor',
         },
