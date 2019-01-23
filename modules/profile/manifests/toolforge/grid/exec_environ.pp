@@ -836,7 +836,6 @@ class profile::toolforge::grid::exec_environ {
             'libprotobuf10',
             'libbytes-random-secure-perl', # T123824
             'libvips42',
-            'nodejs-legacy',               # T1102
             'mariadb-client',              # For /usr/bin/mysql
             'libpng16-16',
             'perl-modules-5.24',
