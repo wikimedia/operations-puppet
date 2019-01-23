@@ -408,6 +408,11 @@ wikimedia_clusters:
     sites:
       eqiad: []
       codfw: []
+  druid_test_analytics:
+    description: "Druid Analytics Test Cluster"
+    id: 84
+    sites:
+      eqiad: []
 
 puppetmaster: "puppet"
 
