@@ -19,7 +19,7 @@ profile::hadoop::common::hadoop_cluster_name: 'analytics-test-hadoop'
 profile::zookeeper::cluster_name: druid-analytics-eqiad
 # To avoid version conflics with Cloudera zookeeper package, this
 # class manually specifies which debian package version should be installed.
-profile::zookeeper::zookeeper_version: '3.4.9-3'
+profile::zookeeper::zookeeper_version: '3.4.9-3+deb9u1'
 # Tranquillity runs via Spark on the Hadoop worker nodes and needs to
 # communicate with zookeeper to discover the Druid Overlord master.
 # This should be solved in https://github.com/druid-io/tranquility/issues/251
