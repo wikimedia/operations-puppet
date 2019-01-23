@@ -5,7 +5,9 @@
 #
 # filtertags: labs-project-deployment-prep
 
-class role::prometheus::beta {
+class role::prometheus::beta (
+    $storage_retention = hiera('prometheus::server::storage_retention', '730h'),
+) {
 
     class { '::httpd':
         modules => ['proxy', 'proxy_http'],
@@ -109,6 +111,7 @@ class role::prometheus::beta {
         external_url         => 'https://beta-prometheus.wmflabs.org/beta',
         scrape_configs_extra => array_concat($varnish_jobs, $mysql_jobs, $web_jobs,
             $cassandra_jobs, $jmx_exporter_jobs),
+        storage_retention    => $storage_retention,
     }
 
     prometheus::web { 'beta':
