@@ -1,5 +1,14 @@
 # == Class: role::xhgui::app
 #
+# This class is deprecated!
+#
+# It provisions XHGui for Debian Jessie with Apache and PHP 5, and
+# assumes no other web services use Apaache on the same host.
+# It is being replaced by role::webperf::profiling_tools and
+# profile::webperf::xhgui.
+#
+# -------
+#
 # XHGUI is a MongoDB-backed PHP webapp for viewing and analyzing
 # PHP profiling data.
 #
