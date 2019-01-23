@@ -12,8 +12,8 @@ Note that this only works with the keystone v2.0 API.
 
 import time
 
-from keystoneclient.auth.identity import generic
-from keystoneclient import session as keystone_session
+from keystoneauth1.identity import v3
+from keystoneauth1 import session as keystone_session
 from designateclient.v2 import client
 from oslo_log import log as logging
 
@@ -21,7 +21,7 @@ LOG = logging.getLogger('keystone.%s' % __name__)
 
 
 def deleteDomain(url, user, password, project, domain="", delete_all=False):
-    auth = generic.Password(
+    auth = v3.Password(
         auth_url=url,
         username=user,
         password=password,
@@ -46,7 +46,7 @@ def deleteDomain(url, user, password, project, domain="", delete_all=False):
 
 
 def createDomain(url, user, password, project, domain, ttl=120):
-    auth = generic.Password(
+    auth = v3.Password(
         auth_url=url,
         username=user,
         password=password,
@@ -57,13 +57,13 @@ def createDomain(url, user, password, project, domain, ttl=120):
     createSession = keystone_session.Session(auth=auth)
     createClient = client.Client(session=createSession, region_name='eqiad')
 
-    auth = generic.Password(
+    auth = v3.Password(
         auth_url=url,
         username=user,
         password=password,
         user_domain_name='Default',
         project_domain_name='Default',
-        tenant_name=project)
+        project_id=project)
 
     targetSession = keystone_session.Session(auth=auth)
 
