@@ -11,10 +11,11 @@ class profile::openstack::labtestn::neutron::l3_agent(
     $report_interval = hiera('profile::openstack::labtestn::neutron::report_interval'),
     $network_compat_interface = hiera('profile::openstack::labtestn::neutron::network_compat_interface'),
     $network_compat_interface_vlan = hiera('profile::openstack::labtestn::neutron::network_compat_interface_vlan'),
+    $base_interface = lookup('profile::openstack::labtestn::neutron::base_interface'),
     ) {
 
     interface::tagged { $network_compat_interface:
-        base_interface => 'eth1',
+        base_interface => $base_interface,
         vlan_id        => $network_compat_interface_vlan,
         method         => 'manual',
         up             => 'ip link set $IFACE up',
@@ -22,7 +23,7 @@ class profile::openstack::labtestn::neutron::l3_agent(
     }
 
     interface::tagged { $network_flat_interface_external:
-        base_interface => 'eth1',
+        base_interface => $base_interface,
         vlan_id        => $network_flat_interface_vlan_external,
         method         => 'manual',
         up             => 'ip link set $IFACE up',
@@ -30,7 +31,7 @@ class profile::openstack::labtestn::neutron::l3_agent(
     }
 
     interface::tagged { $network_flat_interface:
-        base_interface => 'eth1',
+        base_interface => $base_interface,
         vlan_id        => $network_flat_interface_vlan,
         method         => 'manual',
         up             => 'ip link set $IFACE up',

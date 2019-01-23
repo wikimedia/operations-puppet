@@ -1,3 +1,4 @@
+profile::openstack::labtestn::neutron::base_interface: 'eno2'
 profile::openstack::labtestn::neutron::network_flat_interface: 'eno2.2105'
 profile::openstack::labtestn::neutron::network_flat_interface_vlan: '2105'
 profile::openstack::labtestn::neutron::network_flat_interface_external: 'eno2.2120'

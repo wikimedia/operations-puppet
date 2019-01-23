@@ -1,3 +1,4 @@
+profile::openstack::eqiad1::neutron::base_interface: 'eno50'
 profile::openstack::eqiad1::neutron::l3_agent_bridges:
   br-external:
     addif: 'eno50.1120'

@@ -1,3 +1,4 @@
+profile::openstack::eqiad1::neutron::base_interface: 'eth1'
 profile::openstack::eqiad1::neutron::db_host: m5-master.eqiad.wmnet
 profile::openstack::eqiad1::neutron::network_flat_interface: 'eth1.1105'
 profile::openstack::eqiad1::neutron::network_flat_interface_vlan: '1105'
