@@ -1,45 +1,105 @@
+<!--
+Copyright (C) 2019 The Android Open Source Project
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+-->
+
 <script>
   var doc = document.querySelector("footer.style-scope.gr-app div.style-scope.gr-app");
   if ( doc ) {
     // code of conduct
-    var a = document.createElement('a');
-    var linkText = document.createTextNode("Code of Conduct");
-    a.appendChild(linkText);
-    a.href = "https://www.mediawiki.org/wiki/Special:MyLanguage/Code_of_Conduct";
-    a.className = "style-scope gr-app";
-    a.rel = "noopener";
-    var seperator = document.createTextNode(" | ");
-    doc.appendChild(seperator);
-    doc.appendChild(a);
+    appendLink(
+      'https://www.mediawiki.org/wiki/Special:MyLanguage/Code_of_Conduct',
+      'Code of Conduct',
+    );
 
     // privacy policy
+    appendLink(
+      'https://wikimediafoundation.org/wiki/Special:MyLanguage/Privacy_policy',
+      'Privacy policy',
+    );
+  }
+
+  function appendLink(url, text) {
     var a = document.createElement('a');
-    var linkText = document.createTextNode("Privacy policy");
+    var linkText = document.createTextNode(text);
     a.appendChild(linkText);
-    a.href = "https://wikimediafoundation.org/wiki/Special:MyLanguage/Privacy_policy";
+    a.href = url;
     a.className = "style-scope gr-app";
     a.rel = "noopener";
     var seperator = document.createTextNode(" | ");
     doc.appendChild(seperator);
-    doc.appendChild(a);
+    return doc.appendChild(a);
   }
 </script>
 
-<dom-module id="wikimedia-polygerrit-style-gerrit">
-  <script>
-    Gerrit.install(function(plugin) {
-      plugin.registerStyleModule('app-theme', 'wikimedia-polygerrit-style');
-    });
-  </script>
-</dom-module>
+<dom-module>
+   <script>
+     Gerrit.install(plugin => {});
+   </script>
+   <style>
+     .gr-app-0 gr-main-header.gr-app {
+       background-color: white;
+     }
 
-<dom-module id="wikimedia-polygerrit-style">
-  <style>
-    html {
-      /* --header-background-color: #FF8888; */
-      --header-title-content: "Wikimedia Code Review";
-      --header-icon: url("/r/static/wikimedia-codereview-logo.cache.png");
-      --header-icon-size: 1.3em;
-    }
-  </style>
+     .gr-app-0 gr-main-header.gr-app,
+     .gr-app-1 gr-main-header.gr-app {
+         border-width: 0 0 3px 0;
+         border-style: solid;
+         box-shadow: 0 3px 3px 2px rgba(0,0,0,0.075), 0 0 2px rgba(0,0,0,0.2);
+         padding: 0 0.5em;
+         border-bottom: 0px;
+     }
+
+     #header:after {
+         content: '';
+         height: 2px;
+         display: block;
+         background-image: linear-gradient(to right, #990000 15%, #006699 15%, #006699 85%, #339966 85%);
+     }
+
+     .gr-main-header-0 .linksTitle.gr-main-header,
+     .gr-main-header-0 .bigTitle.gr-main-header,
+     .gr-main-header-0 .loginButton.gr-main-header,
+     .gr-main-header-0 .registerButton.gr-main-header,
+     .gr-main-header-0 .gr-account-dropdown {
+       color: #001133;
+     }
+
+     .gr-main-header-0 iron-icon.gr-main-header {
+       color: rgb(255,255,255);
+     }
+
+
+     .gr-main-header-0 .titleText.gr-main-header::after,
+     .gr-main-header-1 .titleText.gr-main-header::after {
+       content: 'Wikimedia Code Review';
+     }
+
+     .gr-main-header-0 .titleText.gr-main-header::before,
+     .gr-main-header-1 .titleText.gr-main-header::before {
+       /* We use svg here as all browsers polygerrit supports, support svg. */
+       background-image: url(/static/wikimedia-codereview-logo.cache.svg);
+       background-size: 1.3em 1.3em;
+       background-repeat: no-repeat;
+       content: "";
+       display: inline-block;
+       height: 1.3em;
+       margin-right: calc(1em / 2);
+       margin-left: calc(1em / 3);
+       margin-bottom: calc(0em / 7);
+       vertical-align: middle;
+       width: 1.3em;
+     }
+   </style>
 </dom-module>
