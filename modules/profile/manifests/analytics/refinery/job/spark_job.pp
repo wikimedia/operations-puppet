@@ -56,45 +56,26 @@ define profile::analytics::refinery::job::spark_job(
         mode    => '0555',
     }
 
-    if $interval {
-        systemd::timer::job { $title:
-            description               => "Spark job for ${title}",
-            command                   => $script,
-            interval                  => {
-                'start'    => 'OnCalendar',
-                'interval' => $interval
-            },
-            user                      => $user,
-            environment               => $environment,
-            monitoring_enabled        => $monitoring_enabled,
-            monitoring_contact_groups => 'analytics',
-            logging_enabled           => true,
-            logfile_basedir           => '/var/log/refinery',
-            logfile_name              => "${title}.log",
-            logfile_owner             => $user,
-            logfile_group             => $user,
-            logfile_perms             => 'all',
-            syslog_force_stop         => true,
-            syslog_identifier         => $title,
-            require                   => File[$script],
-        }
-    }
-
-    if $interval {
-        $cron_ensure = absent
-    } else {
-        $cron_ensure = $ensure
-    }
-
-    cron { $job_name:
-        ensure   => $cron_ensure,
-        command  => "${script} >> ${log_file} 2>&1",
-        user     => $user,
-        hour     => $hour,
-        minute   => $minute,
-        month    => $month,
-        monthday => $monthday,
-        weekday  => $weekday,
-        require  => File[$script],
+    systemd::timer::job { $title:
+        ensure                    => $ensure,
+        description               => "Spark job for ${title}",
+        command                   => $script,
+        interval                  => {
+            'start'    => 'OnCalendar',
+            'interval' => $interval
+        },
+        user                      => $user,
+        environment               => $environment,
+        monitoring_enabled        => $monitoring_enabled,
+        monitoring_contact_groups => 'analytics',
+        logging_enabled           => true,
+        logfile_basedir           => '/var/log/refinery',
+        logfile_name              => "${title}.log",
+        logfile_owner             => $user,
+        logfile_group             => $user,
+        logfile_perms             => 'all',
+        syslog_force_stop         => true,
+        syslog_identifier         => $title,
+        require                   => File[$script],
     }
 }
