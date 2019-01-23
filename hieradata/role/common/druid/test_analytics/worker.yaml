@@ -16,7 +16,7 @@ profile::hadoop::common::hadoop_cluster_name: 'analytics-test-hadoop'
 # Druid nodes get their own Zookeeper cluster to isolate them
 # from the production ones.
 # Configure the zookeeper profile.
-profile::zookeeper::cluster_name: druid-analytics-eqiad
+profile::zookeeper::cluster_name: druid-analytics-test-eqiad
 # To avoid version conflics with Cloudera zookeeper package, this
 # class manually specifies which debian package version should be installed.
 profile::zookeeper::zookeeper_version: '3.4.9-3+deb9u1'
