@@ -94,7 +94,7 @@ class PageEditor():
                                                     text,
                                                     end_comment)
 
-                pText = page.edit()
+                pText = page.text()
                 start_replace_index = pText.find(begin_comment)
                 if start_replace_index == -1:
                     # Just stick new text at the top.
