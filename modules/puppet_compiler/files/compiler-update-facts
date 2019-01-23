@@ -8,7 +8,7 @@
 set -e
 set -u
 
-COMPILER=${PUPPET_COMPILER:-compiler02.puppet3-diffs.eqiad.wmflabs}
+COMPILER=${PUPPET_COMPILER:-compiler1001.puppet-diffs.eqiad.wmflabs}
 RUBY_SCRIPT=$(cat <<'RUBY_SCRIPT'
 require 'safe_yaml'
 SafeYAML::OPTIONS[:default_mode] = :safe
