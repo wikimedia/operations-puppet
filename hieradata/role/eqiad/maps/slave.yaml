@@ -2,6 +2,7 @@ profile::maps::hosts:
   - 'maps1004.eqiad.wmnet'
   - 'maps1003.eqiad.wmnet'
   - 'maps1002.eqiad.wmnet'
+  - 'maps1001.eqiad.wmnet'
 
 profile::maps::apps::redis_server: 'redis://maps1004.eqiad.wmnet'
 
@@ -10,6 +11,7 @@ profile::cassandra::single_instance::seeds:
   - '10.64.48.154' # maps1004.eqiad.wmnet
   - '10.64.32.117' # maps1003.eqiad.wmnet
   - '10.64.16.42'  # maps1002.eqiad.wmnet
+  - '10.64.0.79'   # maps1001.eqiad.wmnet
 
 profile::maps::osm_slave::master: 'maps1004.eqiad.wmnet'
 

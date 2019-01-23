@@ -1450,20 +1450,12 @@ node 'maerlant.wikimedia.org' {
     interface::add_ip6_mapped { 'main': }
 }
 
-node 'maps1001.eqiad.wmnet' {
-    role(maps::master)
-}
-
-node 'maps1002.eqiad.wmnet' {
-    role(maps::slave)
-}
-
-node 'maps1003.eqiad.wmnet' {
-    role(maps::slave)
-}
-
 node 'maps1004.eqiad.wmnet' {
     role(maps::master)
+}
+
+node /^maps100[1-3]\.eqiad\.wmnet/ {
+    role(maps::slave)
 }
 
 node 'maps2001.codfw.wmnet' {
