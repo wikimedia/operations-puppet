@@ -18,10 +18,10 @@
 #   To avoid pulling multiple times when role is applied on muliple nodes for a standby-scenario.
 #
 class librenms(
-    $active_server,
-    $config={},
-    $install_dir='/srv/librenms',
-    $rrd_dir="${install_dir}/rrd",
+    Stdlib::Fqdn $active_server,
+    Hash $config={},
+    Stdlib::Unixpath $install_dir='/srv/librenms',
+    Stdlib::Unixpath $rrd_dir="${install_dir}/rrd",
 ) {
 
     # NOTE: scap will manage the deploy user

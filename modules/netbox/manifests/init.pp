@@ -35,17 +35,17 @@
 #   installs/removes config files
 #
 class netbox(
-    $secret_key,
-    $ldap_password,
-    $db_password,
-    $debug=false,
-    $port=8001,
-    $admins=false,
-    $config_path = '/srv/deployment/netbox/deploy',
-    $venv_path = '/srv/deployment/netbox/venv',
-    $directory = '/srv/deployment/netbox/deploy/src',
-    $reports_path = '/srv/deployment/netbox-reports',
-    $ensure='present',
+    String $secret_key,
+    String $ldap_password,
+    String $db_password,
+    Boolean $debug=false,
+    Stdlib::Port $port=8001,
+    Variant[Boolean, String] $admins = false,
+    Stdlib::Unixpath $config_path = '/srv/deployment/netbox/deploy',
+    Stdlib::Unixpath $venv_path = '/srv/deployment/netbox/venv',
+    Stdlib::Unixpath $directory = '/srv/deployment/netbox/deploy/src',
+    Stdlib::Unixpath $reports_path = '/srv/deployment/netbox-reports',
+    Wmflib::Ensure $ensure='present',
 ) {
 
   require_package('virtualenv', 'python3-pip')

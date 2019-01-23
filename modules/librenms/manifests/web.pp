@@ -1,7 +1,7 @@
 class librenms::web(
-    $sitename,
-    $install_dir,
-    $active_server,
+    Stdlib::Fqdn $sitename,
+    Stdlib::Unixpath $install_dir,
+    Stdlib::Fqdn $active_server,
 ) {
 
     $ssl_settings = ssl_ciphersuite('apache', 'mid', true)

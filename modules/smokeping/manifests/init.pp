@@ -7,7 +7,7 @@
 # of the server that should run the smokeping service
 # and be the rsync source of RRD files.
 class smokeping(
-    $active_server,
+    Stdlib::Fqdn $active_server,
 ) {
 
     require_package('smokeping', 'curl', 'dnsutils')
