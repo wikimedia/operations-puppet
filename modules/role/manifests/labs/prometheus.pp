@@ -74,6 +74,7 @@ class role::labs::prometheus {
       content => ordered_yaml([{
         'targets' => ['cloudcontrol1003.wikimedia.org:5000/v3', # keystone
                       'cloudcontrol1003.wikimedia.org:9292', # glance
+                      'cloudcontrol1003.wikimedia.org:8774', # nova
                       'cloudservices1003.wikimedia.org:9001', # designate
                       'cloudnet1003.eqiad.wmnet:9696', # neutron
                       'proxy-eqiad1.wmflabs.org:5668', # proxy
