@@ -1,11 +1,8 @@
 profile::openstack::eqiad1::neutron::base_interface: 'eth1'
 profile::openstack::eqiad1::neutron::db_host: m5-master.eqiad.wmnet
-profile::openstack::eqiad1::neutron::network_flat_interface: 'eth1.1105'
 profile::openstack::eqiad1::neutron::network_flat_interface_vlan: '1105'
-profile::openstack::eqiad1::neutron::network_flat_interface_external: 'eth1.1120'
 profile::openstack::eqiad1::neutron::network_flat_interface_vlan_external: '1120'
 profile::openstack::eqiad1::neutron::network_compat_interface_vlan: '1102'
-profile::openstack::eqiad1::neutron::network_compat_interface: 'eth1.1102'
 profile::openstack::eqiad1::neutron::rabbit_user: 'neutron'
 profile::openstack::eqiad1::neutron::network_flat_name: 'cloudinstances2b'
 # T193496

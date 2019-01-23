@@ -6,6 +6,3 @@ profile::openstack::eqiad1::neutron::l3_agent_bridges:
     addif: 'eno50.1105'
   br-compat:
     addif: 'eno50.1102'
-profile::openstack::eqiad1::neutron::network_flat_interface: 'eno50.1105'
-profile::openstack::eqiad1::neutron::network_flat_interface_external: 'eno50.1120'
-profile::openstack::eqiad1::neutron::network_compat_interface: 'eno50.1102'
