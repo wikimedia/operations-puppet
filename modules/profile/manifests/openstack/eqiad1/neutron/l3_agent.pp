@@ -14,37 +14,21 @@ class profile::openstack::eqiad1::neutron::l3_agent(
     $base_interface = lookup('profile::openstack::eqiad1::neutron::base_interface'),
     ) {
 
-    interface::tagged { $network_compat_interface:
-        base_interface => $base_interface,
-        vlan_id        => $network_compat_interface_vlan,
-        method         => 'manual',
-        up             => 'ip link set $IFACE up',
-        down           => 'ip link set $IFACE down',
-    }
-
-    interface::tagged { $network_flat_interface_external:
-        base_interface => $base_interface,
-        vlan_id        => $network_flat_interface_vlan_external,
-        method         => 'manual',
-        up             => 'ip link set $IFACE up',
-        down           => 'ip link set $IFACE down',
-    }
-
-    interface::tagged { $network_flat_interface:
-        base_interface => $base_interface,
-        vlan_id        => $network_flat_interface_vlan,
-        method         => 'manual',
-        up             => 'ip link set $IFACE up',
-        down           => 'ip link set $IFACE down',
-    }
-
     require ::profile::openstack::eqiad1::clientpackages
     require ::profile::openstack::eqiad1::neutron::common
+
     class {'::profile::openstack::base::neutron::l3_agent':
-        version           => $version,
-        dmz_cidr          => $dmz_cidr,
-        network_public_ip => $network_public_ip,
-        report_interval   => $report_interval,
+        version                              => $version,
+        dmz_cidr                             => $dmz_cidr,
+        network_public_ip                    => $network_public_ip,
+        report_interval                      => $report_interval,
+        base_interface                       => $base_interface,
+        network_compat_interface             => $network_compat_interface,
+        network_compat_interface_vlan        => $network_compat_interface_vlan,
+        network_flat_interface               => $network_flat_interface,
+        network_flat_interface_vlan          => $network_flat_interface_vlan,
+        network_flat_interface_external      => $network_flat_interface_external,
+        network_flat_interface_vlan_external => $network_flat_interface_vlan_external,
     }
     contain '::profile::openstack::base::neutron::l3_agent'
 
