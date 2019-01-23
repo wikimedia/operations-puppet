@@ -179,6 +179,7 @@ class KeystoneHooks(notifier.Driver):
             LOG.error("Failed to find id for role %s" % CONF.wmfhooks.user_role_name)
             raise exception.NotImplemented()
 
+        LOG.warning("Adding default users to project %s" % project_id)
         self.assignment_api.add_role_to_user_and_project(CONF.wmfhooks.admin_user,
                                                          project_id,
                                                          roledict[CONF.wmfhooks.admin_role_name])
@@ -189,6 +190,7 @@ class KeystoneHooks(notifier.Driver):
                                                          project_id,
                                                          roledict[CONF.wmfhooks.observer_role_name])
 
+        LOG.warning("Adding security groups to project %s" % project_id)
         # Use the nova api to set up security groups for the new project
         auth = v3.Password(
             auth_url=CONF.wmfhooks.auth_url,
@@ -259,14 +261,17 @@ class KeystoneHooks(notifier.Driver):
         else:
             LOG.warning("Failed to find default security group in new project.")
 
+        LOG.warning("Syncing membership with ldap for project %s" % project_id)
         assignments = self._get_current_assignments(project_id)
         ldapgroups.sync_ldap_project_group(project_id, assignments)
 
+        LOG.warning("Setting up default sudoers in ldap for project %s" % project_id)
         # Set up default sudoers in ldap
         ldapgroups.create_sudo_defaults(project_id)
         self._create_project_page(project_id)
 
         # This bit will take a while:
+        LOG.warning("Creating default designate domain for project %s" % project_id)
         designatemakedomain.createDomain(
             CONF.wmfhooks.auth_url,
             CONF.wmfhooks.admin_user,
@@ -274,6 +279,8 @@ class KeystoneHooks(notifier.Driver):
             project_id,
             '{}.wmflabs.org.'.format(project_id)
         )
+
+        LOG.warning("Completed wmf hooks for project creation: %s" % project_id)
 
     def notify(self, context, message, priority, retry=False):
         event_type = message.get('event_type')
