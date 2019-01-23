@@ -10,6 +10,7 @@ class testreduce {
             uri        => 'http://apt.wikimedia.org/wikimedia',
             dist       => 'stretch-wikimedia',
             components => 'component/node10',
+            before     => Package['nodejs'],
         }
 
         $node_packages = ['nodejs', 'nodejs-dev', 'node-abbrev', 'node-ansi-regex',
@@ -28,6 +29,7 @@ class testreduce {
             package  => $pinned_packages,
             pin      => 'release a=stretch-wikimedia',
             priority => 1005,
+            before   => Package['nodejs'],
         }
 
         apt::pin { 'npm-stretch-backports':
@@ -35,9 +37,15 @@ class testreduce {
             pin      => 'release a=stretch-backports',
             priority => 1004,
         }
+
     }
 
-    ensure_packages(['nodejs', 'npm'])
+    ensure_packages('nodejs')
+
+    ensure_packages(
+        ['npm'],
+        { 'install_options' => ['-t', 'stretch-backports']}
+    )
 
     group { 'testreduce':
         ensure => present,
