@@ -11,7 +11,7 @@ groups:
               psinger, midom, tparscal, dworley, moushira, lpintscher, gpaumier,
               nschaaf, zhousquared, gwicke, dpatrick, samwalton9, samtar, akrausetud, jgonsior,
               yuvipanda, shrlak, madhuvishy, groovier, khorn, ironholds, katie,
-              cy534, pnorman, mpany, deskana, arnad, nithum, banyek, imarlier]
+              cy534, pnorman, mpany, deskana, arnad, nithum, banyek, imarlier, mkroetzsch]
   absent_ldap:
     description: meta group for absented users which had privileged LDAP access in the past, an automatic check verifies it has been really removed from the LDAP (but removal has to be handled separatelly)
     members: [adavenport, siddharth11, albe]
@@ -262,7 +262,7 @@ groups:
               smalyshev, ebernhardson, addshore, jminor, chedasaurus, neilpquinn-wmf,
               dcausse, bd808, tjones, mobrovac, jdrewniak, ejegg, jdcc, ori,
               bmansurov, atgomez, amire80, kartik, pcoombe, foks, jsamra,
-              jdlrobson, chelsyx, ovasileva, flemmerich, mkroetzsch, filippo, pmiazga, faidon,
+              jdlrobson, chelsyx, ovasileva, flemmerich, filippo, pmiazga, faidon,
               piccardi, fdans, eevans, anomie, demon, ladsgroup, musikanimal,
               kaldari, goransm, ema, dsaez, shiladsen, rho, mirrys, slaporte, jk,
               ayounsi, mepps, mmiller, seddon, gilles, tstarling, pirroh, rush, tieu, karen,
@@ -2454,12 +2454,11 @@ users:
     uid: 15343
     email: marostegui@wikimedia.org
   mkroetzsch:
-    ensure: present
+    ensure: absent
     gid: 500
     name: mkroetzsch
     realname: Markus Kroetzsch
-    ssh_keys:
-      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCTzLfXEWbB8g/rN0l9Jiva80PTQ0LOIGzANPQ2DFkPdwvutxWesEfkcI6wbUWQJdmRzhaUyCFetHdzcBMf71h3JczYX6AvtNetsTcXG8Fc4J0qajglF16Uso7/CFIA5XEkmGa15YWXQ63Y6Tlx18ARhY5f+sMPlJUn/Zxi9jd9gc+7AjwlxrTyhkKgzr2HmlVAxphbZmF7yfB3m4d0STyH4RlphVx+7zTCC4zGyDT9vwBqhQxZ0VKRllpu+lMXdR5gJiURAqgBEp5G5cDg1mN70PjRo8ZG+DgrFmLQKLRgzl6a4U9IFg6YhaE7TiGtz25e9Weo4mjoTPZAsjpEkE73 markus.kroetzsch@tu-dresden.de
+    ssh_keys: []
     uid: 1023
     email: markus.kroetzsch@tu-dresden.de
     expiry_date: 2019-01-26
