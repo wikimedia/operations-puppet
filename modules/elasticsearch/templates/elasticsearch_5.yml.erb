@@ -412,15 +412,11 @@ cluster.routing.allocation.balance:
 ##
 indices.queries.cache.size: <%= @filter_cache_size %>
 
-<% if @bulk_thread_pool_capacity or @bulk_thread_pool_executors or @search_thread_pool_executors-%>
+<% if @bulk_thread_pool_capacity or @bulk_thread_pool_executors-%>
 ##
 # Thread pool settings
 ##
 thread_pool:
-<% if @search_thread_pool_executors -%>
-    search:
-        size: <%= @search_thread_pool_executors %>
-<% end -%>
 <% if @bulk_thread_pool_capacity or @bulk_thread_pool_executors -%>
     bulk:
 <% if @bulk_thread_pool_executors -%>

@@ -64,8 +64,6 @@
 # - $bulk_thread_pool_executors: number of executors for bulk actions on each
 #       node.
 # - $bulk_thread_pool_capacity: queue depth for bulk actions of each node.
-# - $search_thread_pool_executors: number of executors for search actions on
-#       each node.
 # - $load_fixed_bitset_filters_eagerly: set to false to disable loading
 #        bitsets in memory when opening indices will slowdown queries but can
 #        significantly reduce heap usage.
@@ -126,7 +124,6 @@ define elasticsearch::instance(
     String $filter_cache_size                                = '10%',
     Optional[Integer] $bulk_thread_pool_executors            = undef,
     Optional[Integer] $bulk_thread_pool_capacity             = undef,
-    Optional[Integer] $search_thread_pool_executors          = undef,
     Boolean $load_fixed_bitset_filters_eagerly               = true,
     Boolean $gc_log                                          = true,
     Integer $search_shard_count_limit                        = 1000,

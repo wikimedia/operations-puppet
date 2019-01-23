@@ -28,7 +28,6 @@ type Elasticsearch::InstanceParams = Struct[{
     'filter_cache_size'                  => Optional[String],
     'bulk_thread_pool_executors'         => Optional[Integer],
     'bulk_thread_pool_capacity'          => Optional[Integer],
-    'search_thread_pool_executors'       => Optional[Integer],
     'load_fixed_bitset_filters_eagerly'  => Optional[Boolean],
     'gc_log'                             => Optional[Boolean],
     'search_shard_count_limit'           => Optional[Integer],

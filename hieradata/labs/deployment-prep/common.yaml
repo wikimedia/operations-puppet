@@ -306,14 +306,6 @@ profile::elasticsearch::common_settings:
     search_shard_count_limit: 1000
     # Increase the per-node cache for compiled LTR models from default 10MB
     ltr_cache_size: '100mb'
-    # By default elasticsearch sets this to:
-    #   ((# of available_processors * 3) /2) + 1
-    # which works out to 49 for our servers. When search is stalled on IO it
-    # makes sense to have more threads than cores, but we never see our servers
-    # stalled out on IO.  We have seen (T169498) servers completely exhaust
-    # their CPU though, so setting this to match cpu counts to prevent
-    # overcommit of CPU resources.
-    search_thread_pool_executors: 4
     http_port: 9200
     transport_tcp_port: 9300
 
