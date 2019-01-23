@@ -484,6 +484,13 @@ zookeeper_clusters:
       druid1005.eqiad.wmnet: '1005'
       druid1006.eqiad.wmnet: '1006'
 
+  # ZK cluster for Druid analytics-test-eqiad cluster (non public),
+  # colocated on druid hosts. This is mainly used as testing
+  # environment for the Hadoop Test cluster jobs.
+  druid-analytics-test-eqiad:
+    hosts:
+      analytics1041.eqiad.wmnet: '1001'
+
 # Used to sync the setting between all Kafka clusters and clients.
 kafka_message_max_bytes: 4194304
 

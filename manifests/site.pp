@@ -87,7 +87,7 @@ node 'analytics1030.eqiad.wmnet' {
 }
 
 # Hadoop Test cluster's workers
-node /analytics10(3[1-8]|4[0-1]).eqiad.wmnet/ {
+node /analytics10(3[1-8]|40).eqiad.wmnet/ {
     role(analytics_test_cluster::hadoop::worker)
     interface::add_ip6_mapped { 'main': }
 }
@@ -95,6 +95,12 @@ node /analytics10(3[1-8]|4[0-1]).eqiad.wmnet/ {
 # Hadoop Test cluster's UIs
 node 'analytics1039.eqiad.wmnet' {
     role(analytics_test_cluster::hadoop::ui)
+    interface::add_ip6_mapped { 'main': }
+}
+
+# Druid Analytics Test cluster
+node 'analytics1041.eqiad.wmnet' {
+    role(druid::test_analytics::worker)
     interface::add_ip6_mapped { 'main': }
 }
 
