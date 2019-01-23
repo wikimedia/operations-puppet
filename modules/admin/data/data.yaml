@@ -3499,3 +3499,7 @@ ldap_only_users:
     ensure: present
     realname: Holger Knust
     email: hknust@wikimedia.org
+  dsharpe:
+    ensure: present
+    realname: David Sharpe
+    email: dsharpe@wikimedia.org
