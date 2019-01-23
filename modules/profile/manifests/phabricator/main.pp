@@ -374,7 +374,7 @@ class profile::phabricator::main (
         ensure => $ferm_ensure,
         proto  => 'tcp',
         port   => '80',
-        srange => '$CACHES',
+        srange => '($CACHES $DEPLOYMENT_HOSTS)',
     }
 
     # receive mail from mail smarthosts
