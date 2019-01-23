@@ -26,7 +26,6 @@ profile::zookeeper::zookeeper_version: '3.4.9-3+deb9u1'
 # for Druid >= 0.11
 profile::zookeeper::firewall::srange: '$ANALYTICS_NETWORKS'
 profile::zookeeper::prometheus_instance: 'analytics'
-profile::zookeeper::monitoring_enabled: true
 
 # -- Druid common configuration
 
