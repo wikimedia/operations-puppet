@@ -12,8 +12,9 @@
 #    WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
 #    License for the specific language governing permissions and limitations
 #    under the License.
-from keystoneclient.auth.identity import generic
-from keystoneclient import session as keystone_session
+
+from keystoneauth1.identity import v3
+from keystoneauth1 import session as keystone_session
 from keystone.common import dependency
 from keystone import exception
 from novaclient import client as nova_client
@@ -189,7 +190,7 @@ class KeystoneHooks(notifier.Driver):
                                                          roledict[CONF.wmfhooks.observer_role_name])
 
         # Use the nova api to set up security groups for the new project
-        auth = generic.Password(
+        auth = v3.Password(
             auth_url=CONF.wmfhooks.auth_url,
             username=CONF.wmfhooks.admin_user,
             password=CONF.wmfhooks.admin_pass,
