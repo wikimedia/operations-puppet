@@ -445,7 +445,7 @@ class profile::toolforge::grid::exec_environ {
           'mono-complete',
           'mono-fastcgi-server',         # T85142
           'mono-vbnc',                   # T186846
-          # 'npm' is only in the wikimedia repos and not for stretch
+          'npm',
           'nodejs',
           'r-base',
           'ruby',
@@ -770,7 +770,6 @@ class profile::toolforge::grid::exec_environ {
             'libbytes-random-secure-perl', # T123824
             'libvips38',
             'nodejs-legacy',               # T1102
-            'npm',
             'mariadb-client',              # For /usr/bin/mysql
             'openjdk-7-jre-headless',
             'libpng12-0',
