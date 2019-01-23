@@ -445,8 +445,6 @@ class profile::toolforge::grid::exec_environ {
           'mono-complete',
           'mono-fastcgi-server',         # T85142
           'mono-vbnc',                   # T186846
-          'npm',
-          'nodejs',
           'r-base',
           'ruby',
           'tcl',
@@ -769,7 +767,9 @@ class profile::toolforge::grid::exec_environ {
             'libprotobuf9',
             'libbytes-random-secure-perl', # T123824
             'libvips38',
+            'nodejs',
             'nodejs-legacy',               # T1102
+            'npm',
             'mariadb-client',              # For /usr/bin/mysql
             'openjdk-7-jre-headless',
             'libpng12-0',
@@ -803,6 +803,31 @@ class profile::toolforge::grid::exec_environ {
             dist       => "${::lsbdistcodename}-wikimedia",
             components => 'thirdparty/php72',
         }
+
+        # T212981 - installing npm requires some extra love
+        $nodejs_packages = [
+            'nodejs',
+            'nodejs-dev',
+        ]
+
+        apt::pin { $nodejs_packages:
+            pin      => 'release a=stretch-backports',
+            priority => '2000',
+            before   => Package['nodejs'],
+        }
+
+        package { [
+            'npm',
+            'nodejs',
+            'node-cacache',
+            'node-move-concurrently',
+            'node-gyp',
+            'nodejs-dev',
+            ]:
+            ensure          => latest,
+            install_options => ['-t', 'stretch-backports'],
+        }
+
         package { [
             'hhvm',                         # T78783
             'libboost-python1.62.0',
