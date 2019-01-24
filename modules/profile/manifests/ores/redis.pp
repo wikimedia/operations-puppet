@@ -19,6 +19,7 @@ class profile::ores::redis(
     ::profile::prometheus::redis_exporter{ $instances:
         password         => $password,
         prometheus_nodes => $prometheus_nodes,
+        arguments        => '-check-keys celery',
     }
 
     $redis_hosts_ferm = join($redis_clients, ' ')

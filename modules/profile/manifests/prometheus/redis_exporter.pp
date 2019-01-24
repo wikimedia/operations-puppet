@@ -22,11 +22,13 @@ define profile::prometheus::redis_exporter (
     $prometheus_nodes,
     $hostname = $::hostname,
     $port = $title + 10000,
+    $arguments = '',
 ) {
     ::prometheus::redis_exporter { $title:
-        hostname => $hostname,
-        port     => $port,
-        password => $password,
+        hostname  => $hostname,
+        port      => $port,
+        password  => $password,
+        arguments => $arguments,
     }
 
     $prometheus_nodes_ferm = join($prometheus_nodes, ' ')
