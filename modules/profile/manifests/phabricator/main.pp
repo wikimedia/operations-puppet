@@ -51,6 +51,15 @@ class profile::phabricator::main (
         $rsync_cfg_enabled = false
         $ferm_ensure = 'absent'
         $aphlict_ensure = 'absent'
+
+        # on standby/staging servers allow http from
+        # deployment servers for testing changes
+        ferm::service { 'phabmain_http_deployment':
+            ensure => present,
+            proto  => 'tcp',
+            port   => '80',
+            srange => '$DEPLOYMENT_HOSTS',
+        }
     }
 
     if $aphlict_enabled {
