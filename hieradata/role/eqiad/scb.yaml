@@ -6,7 +6,7 @@ profile::nutcracker::redis_pools:
         host: 10.64.16.76
         port: 6379
       cp-2:
-        host: 10.64.48.55
+        host: 10.64.0.24
         port: 6379
     listen: '/var/run/nutcracker/redis_eqiad.sock 0666'
 profile::cxserver::ratelimit_hosts:
