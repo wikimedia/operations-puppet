@@ -25,15 +25,13 @@ class uwsgi {
         require => Package['uwsgi'],
     }
 
-    if os_version('debian >= jessie') {
-        # Stop the default uwsgi service since it is incompatible with
-        # our multi instance setup. The update-rc.d isn't good enough on
-        # systemd instances
-        service { 'uwsgi':
-            ensure  => stopped,
-            enable  => false,
-            require => Package['uwsgi'],
-        }
+    # Stop the default uwsgi service since it is incompatible with
+    # our multi instance setup. The update-rc.d isn't good enough on
+    # systemd instances
+    service { 'uwsgi':
+        ensure  => stopped,
+        enable  => false,
+        require => Package['uwsgi'],
     }
 
     file { [ '/etc/uwsgi/apps-available', '/etc/uwsgi/apps-enabled' ]:
@@ -52,15 +50,7 @@ class uwsgi {
     }
 
     # additionally, ensure that /run/uwsgi is created at boot
-    if os_version('debian >= jessie') {
-        systemd::tmpfile { 'uwsgi-startup':
-            content => 'd /run/uwsgi 0755 www-data www-data',
-        }
-    } else {
-        base::service_unit { 'uwsgi-startup':
-            ensure          => present,
-            upstart         => upstart_template('uwsgi-startup'),
-            declare_service => false,
-        }
+    systemd::tmpfile { 'uwsgi-startup':
+        content => 'd /run/uwsgi 0755 www-data www-data',
     }
 }

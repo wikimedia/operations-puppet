@@ -1,7 +1,0 @@
-description "create required directories for sockets/stats"
-
-start on mounted MOUNTPOINT=/run TYPE=tmpfs
-
-task
-
-exec install -d -o www-data -g www-data /run/uwsgi
