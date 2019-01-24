@@ -1,3 +1,2 @@
-diamond::remove: true
 admin::groups:
   - labtest-roots
