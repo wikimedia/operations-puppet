@@ -100,12 +100,14 @@ class profile::wdqs::blazegraph(
         default:
             username       => $username,
             contact_groups => $contact_groups,
-            ;
+        ;
         'wdqs-blazegraph':
-            port           => 9999,
-            ;
+            port            => 9999,
+            prometheus_port => 9193,
+        ;
         'wdqs-categories':
-            port           => 9990,
-            ;
+            port            => 9990,
+            prometheus_port => 9194,
+        ;
     }
 }
