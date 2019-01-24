@@ -938,7 +938,7 @@ class profile::toolforge::grid::exec_environ {
 
         package { [
             'hhvm',                         # T78783
-            'libboost-python1.62.0',
+            'libboost-python-dev',          # T213965
             'libmpc3',
             'libproj12',
             'libprotobuf10',
