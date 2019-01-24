@@ -18,17 +18,6 @@ class graphite::carbon_c_relay( $c_relay_settings ) {
         ensure => present,
     }
 
-    # HACK systemd needs escaping for / in service names and carbonctl relies
-    # on having everything in /etc/init/carbon. Remove once fully migrated to
-    # jessie.
-    if os_version('debian >= jessie') {
-        $frontend_service_name = 'carbon-frontend-relay'
-        $local_service_name = 'carbon-local-relay'
-    } else {
-        $frontend_service_name = 'carbon/frontend-relay'
-        $local_service_name = 'carbon/local-relay'
-    }
-
     # make sure the global carbon-c-relay doesn't run
     file { '/etc/init/carbon-c-relay.override':
         content => "manual\n",
@@ -41,7 +30,7 @@ class graphite::carbon_c_relay( $c_relay_settings ) {
         ensure   => stopped,
     }
 
-    systemd::service { $frontend_service_name:
+    systemd::service { 'carbon-frontend-relay':
         ensure  => present,
         restart => true,
         content => systemd_template('frontend-relay'),
@@ -52,10 +41,10 @@ class graphite::carbon_c_relay( $c_relay_settings ) {
         owner   => 'root',
         group   => 'root',
         mode    => '0444',
-        notify  => Service[$frontend_service_name],
+        notify  => Service['carbon-frontend-relay'],
     }
 
-    systemd::service { $local_service_name:
+    systemd::service { 'carbon-local-relay':
         ensure  => present,
         restart => true,
         content => systemd_template('local-relay'),
@@ -66,6 +55,6 @@ class graphite::carbon_c_relay( $c_relay_settings ) {
         owner   => 'root',
         group   => 'root',
         mode    => '0444',
-        notify  => Service[$local_service_name],
+        notify  => Service['carbon-local-relay'],
     }
 }

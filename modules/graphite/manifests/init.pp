@@ -129,84 +129,52 @@ class graphite(
         notify  => Service['carbon'],
     }
 
-    if $::initsystem == 'upstart' {
-        file { '/etc/init/carbon':
-            source  => 'puppet:///modules/graphite/carbon-upstart',
-            recurse => true,
-            notify  => Service['carbon'],
-        }
-
-        file { '/sbin/carbonctl':
-            source => 'puppet:///modules/graphite/carbonctl',
-            mode   => '0755',
-            before => Service['carbon'],
-        }
-
-        file { '/etc/default/graphite-carbon':
-            source => 'puppet:///modules/graphite/graphite-carbon',
-            mode   => '0644',
-            before => Service['carbon'],
-        }
-
-        service { 'carbon':
-            ensure   => 'running',
-            provider => 'base',
-            restart  => '/sbin/carbonctl restart',
-            start    => '/sbin/carbonctl start',
-            status   => '/sbin/carbonctl status',
-            stop     => '/sbin/carbonctl stop',
-        }
+    # disable default carbon-cache via systemctl
+    exec { 'mask_carbon-cache':
+        command => '/bin/systemctl mask carbon-cache.service',
+        creates => '/etc/systemd/system/carbon-cache.service',
+        before  => Package['graphite-carbon'],
     }
 
-    if $::initsystem == 'systemd' {
-        # disable default carbon-cache via systemctl, previously done via
-        # /etc/default/graphite-carbon
-        exec { 'mask_carbon-cache':
-            command => '/bin/systemctl mask carbon-cache.service',
-            creates => '/etc/systemd/system/carbon-cache.service',
-            before  => Package['graphite-carbon'],
-        }
-
-        # create required directory in /run at reboot, don't wait for a puppet
-        # run to fix it
-        systemd::tmpfile { 'graphite':
-            content => 'd /var/run/carbon 0755 _graphite _graphite',
-        }
-
-        rsyslog::conf { 'graphite':
-            source => 'puppet:///modules/graphite/rsyslog.conf',
-        }
-
-        logrotate::rule { 'graphite':
-            file_glob      => '/var/log/uwsgi-graphite-web.log',
-            frequency      => 'daily',
-            date_ext       => true,
-            date_yesterday => true,
-            rotate         => 14,
-            missing_ok     => true,
-            no_create      => true,
-            compress       => true,
-            post_rotate    => 'service rsyslog rotate >/dev/null 2>&1 || true',
-        }
-
-        systemd::unit { 'carbon-cache@.service':
-            ensure  => present,
-            content => systemd_template('carbon-cache@')
-        }
-
-        systemd::service { 'carbon':
-            ensure  => present,
-            content => systemd_template('carbon'),
-            restart => true,
-        }
-
-        graphite::carbon_cache_instance { 'a': }
-        graphite::carbon_cache_instance { 'b': }
-        graphite::carbon_cache_instance { 'c': }
-        graphite::carbon_cache_instance { 'd': }
-        graphite::carbon_cache_instance { 'e': }
-        graphite::carbon_cache_instance { 'f': }
-        graphite::carbon_cache_instance { 'g': }
-        graphite::carbon_cache_instance { 'h': }
+    # create required directory in /run at reboot, don't wait for a puppet
+    # run to fix it
+    systemd::tmpfile { 'graphite':
+        content => 'd /var/run/carbon 0755 _graphite _graphite',
     }
+
+    rsyslog::conf { 'graphite':
+        source => 'puppet:///modules/graphite/rsyslog.conf',
+    }
+
+    logrotate::rule { 'graphite':
+        file_glob      => '/var/log/uwsgi-graphite-web.log',
+        frequency      => 'daily',
+        date_ext       => true,
+        date_yesterday => true,
+        rotate         => 14,
+        missing_ok     => true,
+        no_create      => true,
+        compress       => true,
+        post_rotate    => 'service rsyslog rotate >/dev/null 2>&1 || true',
+    }
+
+    systemd::unit { 'carbon-cache@.service':
+        ensure  => present,
+        content => systemd_template('carbon-cache@')
+    }
+
+    systemd::service { 'carbon':
+        ensure  => present,
+        content => systemd_template('carbon'),
+        restart => true,
+    }
+
+    graphite::carbon_cache_instance { 'a': }
+    graphite::carbon_cache_instance { 'b': }
+    graphite::carbon_cache_instance { 'c': }
+    graphite::carbon_cache_instance { 'd': }
+    graphite::carbon_cache_instance { 'e': }
+    graphite::carbon_cache_instance { 'f': }
+    graphite::carbon_cache_instance { 'g': }
+    graphite::carbon_cache_instance { 'h': }
 }
