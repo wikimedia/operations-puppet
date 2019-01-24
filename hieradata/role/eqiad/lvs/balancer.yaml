@@ -14,8 +14,8 @@ profile::lvs::tagged_subnets:
 #   (dns1001 and dns1002) with fallback to codfw
 # (doing this for all lvs for now, see T103921)
 profile::base::nameservers:
-  #  - '208.80.154.10' # dns1001
-  - '208.80.155.108' # dns1002
+  - '208.80.154.10' # dns1001
+  #- '208.80.155.108' # dns1002
   - '208.80.153.254' # codfw lvs
 
 profile::lvs::interface_tweaks:
