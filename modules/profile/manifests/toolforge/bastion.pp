@@ -12,7 +12,7 @@ class profile::toolforge::bastion(
 ){
     # Son of Grid Engine Configuration
     # admin_host???
-    include profile::toolforge::dev_environ
+    include profile::toolforge::shell_environ
     include profile::toolforge::grid::exec_environ
 
     file { '/etc/toollabs-cronhost':
@@ -56,6 +56,17 @@ class profile::toolforge::bastion(
     # General SSH Use Configuration
     package { 'toollabs-webservice':
         ensure => latest,
+    }
+
+    file { [
+        '/usr/local/bin/webservice2',
+        '/usr/local/bin/webservice',
+    ]:
+        ensure => link,
+        target => '/usr/bin/webservice',
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0555',
     }
 
     motd::script { 'bastion-banner':
@@ -111,20 +122,6 @@ class profile::toolforge::bastion(
     # Kubernetes Configuration - See T209627
     if os_version('ubuntu trusty') or os_version('debian jessie'){
         $etcd_url = join(prefix(suffix($etcd_hosts, ':2379'), 'https://'), ',')
-
-        if os_version('debian == stretch') {
-            $docker_version = '1.12.6-0~debian-jessie' # The stretch repo appears to have a jessie version?
-
-            class { '::profile::docker::engine':
-                settings        => {
-                    'iptables'     => false,
-                    'ip-masq'      => false,
-                    'live-restore' => true,
-                },
-                version         => $docker_version,
-                declare_service => false,
-            }
-        }
 
 
         ferm::service { 'flannel-vxlan':

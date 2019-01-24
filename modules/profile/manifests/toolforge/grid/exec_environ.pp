@@ -20,6 +20,31 @@ class profile::toolforge::grid::exec_environ {
         components => "thirdparty/mono-project-${::lsbdistcodename}",
     }
 
+    file { '/srv/composer':
+        ensure => 'directory',
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0755',
+    }
+
+    git::clone { 'composer':
+        ensure             => 'latest',
+        directory          => '/srv/composer',
+        origin             => 'https://gerrit.wikimedia.org/r/p/integration/composer.git',
+        recurse_submodules => true,
+        require            => File['/srv/composer'],
+    }
+
+    # Create a symbolic link for the composer executable.
+    file { '/usr/local/bin/composer':
+        ensure  => 'link',
+        target  => '/srv/composer/vendor/bin/composer',
+        owner   => 'root',
+        group   => 'root',
+        require => Git::Clone['composer'],
+    }
+
+    # Packages in all OSs
     require_package(
         'fonts-arabeyes',
         'fonts-arphic-ukai',
@@ -65,8 +90,8 @@ class profile::toolforge::grid::exec_environ {
         'fonts-smc',                 # T33950
         'fonts-hosny-amiri',         # T135347
         'fonts-taml-tscu',           # T117919
-        'qpdf',                      # T204422
         'pngquant',                  # T204422
+        'qpdf',                      # T204422
         'unpaper',                   # T204422
     )
 
@@ -82,13 +107,15 @@ class profile::toolforge::grid::exec_environ {
             'ttf-telugu-fonts',
             'ttf-kochi-gothic',
             'ttf-kochi-mincho',
-            'fonts-mgopen'
+            'fonts-mgopen',
+            'sbt',
         )
     }
 
     if os_version('debian == jessie') {
         require_package(
-            'fonts-noto' # T184664
+            'fonts-noto', # T184664
+            'sbt',
         )
     }
 
@@ -144,7 +171,38 @@ class profile::toolforge::grid::exec_environ {
           'language-pack-zh-hans',
           'language-pack-zh-hant',
 
-          # Language Runtimes
+          # Language Runtimes and dev tools
+          'ant',
+          'autoconf',
+          'automake',                    # T119870
+          'build-essential',
+          'bundler',                    # T120287
+          'cmake',
+          'cython',
+          'gcj-jdk',                   # T58995
+          'libdjvulibre-dev',          # T58972
+          'libdmtx-dev',               # T55867.
+          'libfcgi-dev',               # T54902.
+          'libfreetype6-dev',
+          'libgeoip-dev',              # T64649
+          'libldap2-dev',              # T114388
+          'libproj-dev',               # T58995
+          'libprotobuf-dev',           # T58995
+          'librsvg2-dev',              # T60516
+          'libsasl2-dev',              # T114388
+          'libsparsehash-dev',         # T58995
+          'libssl-dev',                # T114388
+          'libtool',
+          'libvips-dev',
+          'libxml2-dev',
+          'libxslt1-dev',
+          'libzbar-dev',               # T58996
+          'maven',
+          'mercurial',                 # T198008
+          'subversion',
+          'qt4-qmake',   # Isn't this very deprecated?
+          'rake',                      # T120287
+          'ruby-dev',                  # T120287
           'gcj-jre',                     # T58995
           'golang',
           'luarocks',
@@ -438,7 +496,38 @@ class profile::toolforge::grid::exec_environ {
           # To add all locales, this needs to all be in a role so that the include
           # works
 
-          # Language Runtimes
+          # Language Runtimes and dev tools
+          'ant',
+          'autoconf',
+          'automake',                    # T119870
+          'build-essential',
+          'bundler',                    # T120287
+          'cmake',
+          'cython',
+          'gcj-jdk',                   # T58995
+          'libdjvulibre-dev',          # T58972
+          'libdmtx-dev',               # T55867.
+          'libfcgi-dev',               # T54902.
+          'libfreetype6-dev',
+          'libgeoip-dev',              # T64649
+          'libldap2-dev',              # T114388
+          'libproj-dev',               # T58995
+          'libprotobuf-dev',           # T58995
+          'librsvg2-dev',              # T60516
+          'libsasl2-dev',              # T114388
+          'libsparsehash-dev',         # T58995
+          'libssl-dev',                # T114388
+          'libtool',
+          'libvips-dev',
+          'libxml2-dev',
+          'libxslt1-dev',
+          'libzbar-dev',               # T58996
+          'maven',
+          'mercurial',                 # T198008
+          'subversion',
+          'qt4-qmake',   # Isn't this very deprecated?
+          'rake',                      # T120287
+          'ruby-dev',                  # T120287
           'gcj-jre',                     # T58995
           'golang',
           'luarocks',
@@ -726,6 +815,17 @@ class profile::toolforge::grid::exec_environ {
             'python-flake8',
             'python3-flake8',
             'tcl-thread',
+            # Previously we installed libmariadbclient-dev, but that causes
+            # dependency issues on Trusty.  libmariadbclient-dev formerly
+            # provided libmysqlclient-dev, but not in trusty.
+            # https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=759309
+            'libmysqlclient-dev',
+            'libboost-python1.54-dev',
+            'openjdk-7-jdk',
+            'libpng12-dev',
+            'libtiff4-dev', # T54717
+            'tcl8.5-dev',
+            'libgdal1-dev',                # T58995
             ]:
             ensure => latest,
         }
@@ -793,6 +893,14 @@ class profile::toolforge::grid::exec_environ {
             'python-flake8',
             'python3-flake8',
             'tcl-thread',
+            'libmariadb-client-lgpl-dev',
+            'libmariadb-client-lgpl-dev-compat',
+            'libboost-python1.55-dev',
+            'openjdk-7-jdk',
+            'libpng12-dev',
+            'libtiff4-dev', # T54717
+            'tcl8.5-dev',
+            'libgdal1-dev',                # T58995
             ]:
             ensure => latest,
         }
@@ -868,6 +976,17 @@ class profile::toolforge::grid::exec_environ {
             'python-flake8',
             'python3-flake8',
             'tcl-thread',
+            'libmariadb-dev',
+            'libmariadb-dev-compat',
+            'libboost1.62-dev',
+            'libboost-dev',
+            'libkml-dev',
+            'libgdal-dev',                # T58995
+            'libboost-python1.62-dev',
+            'openjdk-8-jdk',
+            'libpng-dev',
+            'libtiff5-dev',  # T54717
+            'tcl-dev',
           ]:
           ensure => latest,
         }
