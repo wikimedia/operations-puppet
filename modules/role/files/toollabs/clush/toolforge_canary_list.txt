@@ -13,7 +13,7 @@ tools-paws-master-01.tools.eqiad.wmflabs
 tools-worker-1027.tools.eqiad.wmflabs
 tools-paws-worker-1019.tools.eqiad.wmflabs
 tools-prometheus-02.tools.eqiad.wmflabs
-tools-services-02.tools.eqiad.wmflabs
+tools-sge-services-03.tools.eqiad.wmflabs
 tools-bastion-03.tools.eqiad.wmflabs
 tools-proxy-02.tools.eqiad.wmflabs
 tools-webgrid-generic-1404.tools.eqiad.wmflabs
