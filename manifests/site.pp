@@ -743,12 +743,8 @@ node 'dbstore1002.eqiad.wmnet' {
 }
 
 #dbstore100[345] are new via T209620
-node /^dbstore100(3|4)\.eqiad\.wmnet$/ {
+node /^dbstore100(3|4|5)\.eqiad\.wmnet$/ {
     role(mariadb::dbstore_multiinstance)
-}
-
-node 'dbstore1005.eqiad.wmnet' {
-    role(spare::system)
 }
 
 node 'dbstore2001.codfw.wmnet' {
