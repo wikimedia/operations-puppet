@@ -972,7 +972,7 @@ class profile::toolforge::grid::exec_environ {
             'php7.2-xml',
             'php7.2-zip',
             'opencv-data',                 # T142321
-            'openjdk-8-jre-headless',
+            'openjdk-11-jre-headless',
             'python-flake8',
             'python3-flake8',
             'tcl-thread',
@@ -983,7 +983,7 @@ class profile::toolforge::grid::exec_environ {
             'libkml-dev',
             'libgdal-dev',                # T58995
             'libboost-python1.62-dev',
-            'openjdk-8-jdk',
+            'openjdk-11-jdk',
             'libpng-dev',
             'libtiff5-dev',  # T54717
             'tcl-dev',
