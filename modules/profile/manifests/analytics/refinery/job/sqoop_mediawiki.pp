@@ -51,6 +51,21 @@ class profile::analytics::refinery::job::sqoop_mediawiki {
         require     => File['/usr/local/bin/refinery-sqoop-mediawiki'],
     }
 
+    file { '/usr/local/bin/refinery-sqoop-mediawiki-production':
+        content => template('profile/analytics/refinery/job/refinery-sqoop-mediawiki-production.sh.erb'),
+        mode    => '0550',
+        owner   => 'hdfs',
+        group   => 'hdfs',
+    }
+
+    profile::analytics::systemd_timer { 'refinery-sqoop-mediawiki-production':
+        description => 'Schedules sqoop to import MediaWiki databases from prod replicas into Hadoop monthly.',
+        command     => '/usr/local/bin/refinery-sqoop-mediawiki',
+        interval    => '*-*-07 00:00:00',
+        user        => 'hdfs',
+        require     => File['/usr/local/bin/refinery-sqoop-mediawiki-production'],
+    }
+
     file { '/usr/local/bin/refinery-sqoop-mediawiki-private':
         content => template('profile/analytics/refinery/job/refinery-sqoop-mediawiki-private.sh.erb'),
         mode    => '0550',
