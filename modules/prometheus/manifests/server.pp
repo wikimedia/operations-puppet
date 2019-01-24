@@ -52,7 +52,7 @@ define prometheus::server (
     $listen_address,
     $scrape_interval = '60s',
     $base_path = "/srv/prometheus/${title}",
-    $storage_retention = '730h0m0s',
+    $storage_retention = '730h',
     $storage_encoding = '2',
     $max_chunks_to_persist = '524288',
     $memory_chunks = '1048576',

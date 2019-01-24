@@ -5,7 +5,7 @@ class profile::prometheus::k8s (
     $users = hiera('k8s_infrastructure_users'), # lint:ignore:wmf_styleguide
 ){
     $targets_path = '/srv/prometheus/k8s/targets'
-    $storage_retention = hiera('prometheus::server::storage_retention', '4032h0m0s')
+    $storage_retention = hiera('prometheus::server::storage_retention', '4032h')
     $max_chunks_to_persist = hiera('prometheus::server::max_chunks_to_persist', '524288')
     $memory_chunks = hiera('prometheus::server::memory_chunks', '1048576')
     $bearer_token_file = '/srv/prometheus/k8s/k8s.token'

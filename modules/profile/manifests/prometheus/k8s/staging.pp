@@ -5,7 +5,7 @@ class profile::prometheus::k8s::staging (
     $users = hiera('k8s_infrastructure_users'), # lint:ignore:wmf_styleguide
 ){
     $targets_path = '/srv/prometheus/k8s-staging/targets'
-    $storage_retention = hiera('prometheus::server::storage_retention', '4032h0m0s') # lint:ignore:wmf_styleguide
+    $storage_retention = hiera('prometheus::server::storage_retention', '4032h') # lint:ignore:wmf_styleguide
     $max_chunks_to_persist = hiera('prometheus::server::max_chunks_to_persist', '524288') # lint:ignore:wmf_styleguide
     $memory_chunks = hiera('prometheus::server::memory_chunks', '1048576') # lint:ignore:wmf_styleguide
     $bearer_token_file = '/srv/prometheus/k8s-staging/k8s.token'

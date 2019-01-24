@@ -11,7 +11,7 @@ class role::prometheus::analytics {
     include ::profile::base::firewall
 
     $targets_path = '/srv/prometheus/analytics/targets'
-    $storage_retention = hiera('prometheus::server::storage_retention', '4032h0m0s')
+    $storage_retention = hiera('prometheus::server::storage_retention', '4032h')
     $max_chunks_to_persist = hiera('prometheus::server::max_chunks_to_persist', '524288')
     $memory_chunks = hiera('prometheus::server::memory_chunks', '1048576')
 
