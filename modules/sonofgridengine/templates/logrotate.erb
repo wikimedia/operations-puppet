@@ -1,6 +1,8 @@
 # This file is managed by Puppet
 # modules/sonofgridengine/templates/logrotate.erb
 <%= @sge_root %>/<%= @sge_cell %>/common/accounting {
+    su sgeadmin sgeadmin
+    create 0644 sgeadmin sgeadmin 
     compress
     delaycompress
     missingok
@@ -10,6 +12,8 @@
 }
 
 <%= @sge_root %>/spool/qmaster/messages {
+    su sgeadmin sgeadmin
+    create 0644 sgeadmin sgeadmin 
     compress
     delaycompress
     missingok
