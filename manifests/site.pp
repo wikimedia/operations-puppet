@@ -172,11 +172,6 @@ node /^authdns[12]001\.wikimedia\.org$/ {
     interface::add_ip6_mapped { 'main': }
 }
 
-# to be decom'ed - replaced by authdns2001 (T199247)
-node 'baham.wikimedia.org' {
-    role(spare::system)
-}
-
 # Bastion in Virginia
 node 'bast1002.wikimedia.org' {
     role(bastionhost::general)

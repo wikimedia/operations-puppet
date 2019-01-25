@@ -456,11 +456,6 @@ host backup2001 {
     fixed-address backup2001.codfw.wmnet;
 }
 
-host baham {
-    hardware ethernet D4:AE:52:B3:90:36;
-    fixed-address baham.wikimedia.org;
-}
-
 host bast1002 {
     hardware ethernet 14:18:77:58:86:BC;
     fixed-address bast1002.wikimedia.org;
