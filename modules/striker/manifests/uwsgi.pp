@@ -32,26 +32,14 @@ class striker::uwsgi(
     include service::configuration
 
     # Packages needed by python wheels
-    if os_version('ubuntu trusty') {
-        require_package(
-            'libffi6',
-            'libldap-2.4-2',
-            'libmysqlclient18',
-            'libsasl2-2',
-            'libssl1.0.0',
-            'python3-wheel',
-            'python-virtualenv',
-        )
-    } else {
-        require_package(
-            'libffi6',
-            'libldap-2.4-2',
-            'libsasl2-2',
-            'python3-wheel',
-            'python-virtualenv',
-            'libmariadbclient18',
-        )
-    }
+    require_package(
+        'libffi6',
+        'libldap-2.4-2',
+        'libsasl2-2',
+        'python3-wheel',
+        'python-virtualenv',
+        'libmariadbclient18',
+    )
 
     # Striker is controlled via a custom systemd unit (uwsgi-striker),
     #  so avoid the generic uwsgi sysvinit script
@@ -111,9 +99,7 @@ class striker::uwsgi(
         ],
     }
 
-    if os_version('debian >= jessie') {
-        base::service_auto_restart { 'uwsgi-striker': }
-    }
+    base::service_auto_restart { 'uwsgi-striker': }
 
     # Our ini() function does a shallow merge rather than a deep merge, so
     # merge the config sections before passing to ini() below.
