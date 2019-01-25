@@ -12,7 +12,7 @@ class testreduce {
             components => 'component/node10',
         }
 
-        $node_packages = ['nodejs', 'nodejs-dev', 'npm', 'node-abbrev', 'node-ansi-regex',
+        $node_packages = ['nodejs', 'nodejs-dev', 'node-abbrev', 'node-ansi-regex',
                       'node-cacache', 'node-config-chain', 'node-glob', 'node-hosted-git-info',
                       'node-ini node-npm-package-arg', 'node-jsonstream',
                       'node-libnpx', 'node-lockfile', 'node-lru-cache',
@@ -24,10 +24,16 @@ class testreduce {
 
         $pinned_packages = join($node_packages, ' ')
 
-        apt::pin { 'stretch-node10':
+        apt::pin { 'node10-stretch-wikimedia':
             package  => $pinned_packages,
             pin      => 'release a=stretch-wikimedia',
             priority => 1005,
+        }
+
+        apt::pin { 'npm-stretch-backports':
+            package  => 'npm',
+            pin      => 'release a=stretch-backports',
+            priority => 1004,
         }
     }
 
