@@ -1732,11 +1732,6 @@ node /^mw22(0[0-9]|1[0124])\.codfw\.wmnet$/ {
     role(mediawiki::appserver::api)
 }
 
-# Decom ticket: T203434
-node 'mw2213.codfw.wmnet' {
-    role(spare::system)
-}
-
 # Row D
 
 #mw2283-90 are in rack D4
