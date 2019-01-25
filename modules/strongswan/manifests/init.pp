@@ -32,20 +32,18 @@ class strongswan (
         }
     }
 
-    if os_version('debian >= jessie') {
-        # On Jessie we need an extra package which is only "recommended"
-        # rather than being a strict dependency.
-        # If you don't install this, on startup strongswan will say:
-        #   loading certificate from 'i-00000894.eqiad.wmflabs.pem' failed
-        # and 'pki --verify --in /etc/ipsec.d/certs/i-00000894.eqiad.wmflabs.pem \
-        # --ca /etc/ipsec.d/cacerts/ca.pem' will say:
-        #  building CRED_CERTIFICATE - X509 failed, tried 3 builders
-        #  parsing certificate failed
-        package { 'libstrongswan-standard-plugins':
-            ensure  => present,
-            before  => Service['strongswan'],
-            require => Package['strongswan'],
-        }
+    # On Debian we need an extra package which is only "recommended"
+    # rather than being a strict dependency.
+    # If you don't install this, on startup strongswan will say:
+    #   loading certificate from 'i-00000894.eqiad.wmflabs.pem' failed
+    # and 'pki --verify --in /etc/ipsec.d/certs/i-00000894.eqiad.wmflabs.pem \
+    # --ca /etc/ipsec.d/cacerts/ca.pem' will say:
+    #  building CRED_CERTIFICATE - X509 failed, tried 3 builders
+    #  parsing certificate failed
+    package { 'libstrongswan-standard-plugins':
+        ensure  => present,
+        before  => Service['strongswan'],
+        require => Package['strongswan'],
     }
 
     file { '/etc/strongswan.d/wmf.conf':
