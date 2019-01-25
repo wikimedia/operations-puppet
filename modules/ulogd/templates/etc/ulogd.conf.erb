@@ -1,0 +1,144 @@
+<%-
+# ulogd doesn't support all log levels so we try to be helpful and make a best guess
+# this also allows us to use the same puppet type for the  syslog_level param which 
+# does support all levels
+log_levels = {
+  'debug'  => 1,
+  'info'   => 3,
+  'notice' => 5,
+  'warning'  => 7,
+  'error'  => 7,
+  'crit'  => 8,
+  'alert'  => 8,
+  'emerg'  => 8,
+}
+def bool2int(value)
+  if value.is_a?(TrueClass)
+    return 1
+  elsif value.is_a?(FalseClass)
+    return 0
+  end
+end
+-%>
+# MANAGED BY PUPPET
+[global]
+logfile=<%= @logfile %>
+loglevel=<%= log_levels.fetch(@log_level, 3) %>
+
+<%# 
+The version of ulogd2 on buster dynamically loads modules so we don't need this
+https://git.netfilter.org/ulogd2/commit/?id=8f0fff33137807838b39a4dfd01438d6b25f7175
+-%>
+<%- if scope.call_function('os_version', ['debian <= stretch']) -%>
+plugin="/usr/lib/x86_64-linux-gnu/ulogd/ulogd_inppkt_NFLOG.so"
+plugin="/usr/lib/x86_64-linux-gnu/ulogd/ulogd_inppkt_ULOG.so"
+plugin="/usr/lib/x86_64-linux-gnu/ulogd/ulogd_inppkt_UNIXSOCK.so"
+plugin="/usr/lib/x86_64-linux-gnu/ulogd/ulogd_inpflow_NFCT.so"
+plugin="/usr/lib/x86_64-linux-gnu/ulogd/ulogd_inpflow_NFACCT.so"
+plugin="/usr/lib/x86_64-linux-gnu/ulogd/ulogd_filter_IFINDEX.so"
+plugin="/usr/lib/x86_64-linux-gnu/ulogd/ulogd_filter_IP2STR.so"
+plugin="/usr/lib/x86_64-linux-gnu/ulogd/ulogd_filter_IP2BIN.so"
+plugin="/usr/lib/x86_64-linux-gnu/ulogd/ulogd_filter_IP2HBIN.so"
+plugin="/usr/lib/x86_64-linux-gnu/ulogd/ulogd_filter_PRINTPKT.so"
+plugin="/usr/lib/x86_64-linux-gnu/ulogd/ulogd_filter_HWHDR.so"
+plugin="/usr/lib/x86_64-linux-gnu/ulogd/ulogd_filter_PRINTFLOW.so"
+plugin="/usr/lib/x86_64-linux-gnu/ulogd/ulogd_filter_MARK.so"
+  <%- @nflog.each do |output| -%>
+plugin="/usr/lib/x86_64-linux-gnu/ulogd/ulogd_output_<%= output %>.so"
+  <%- end -%>
+plugin="/usr/lib/x86_64-linux-gnu/ulogd/ulogd_raw2packet_BASE.so"
+<%- end -%>
+
+<%- ['LOGEMU', 'SYSLOG'].each do |output| -%>
+  <%-if @nflog.include?(output) -%>
+stack=log1:NFLOG,base1:BASE,ifi1:IFINDEX,ip2str1:IP2STR,print1:PRINTPKT,<%= output.downcase %>1:<%= output %>
+  <%- end -%>
+<%- end -%>
+<%- if @nflog.include?('JSON') -%>
+stack=log1:NFLOG,base1:BASE,ifi1:IFINDEX,ip2str1:IP2STR,mac2str1:HWHDR,json1:JSON
+<%- end -%>
+<%- ['OPRINT', 'GPRINT', 'XML', 'PCAP'].each do |output| -%>
+  <%- if @nflog.include?(output) -%>
+stack=log1:NFLOG,<%= output.downcase %>1:<%= output %>
+  <%- end -%>
+<%- end -%>
+
+<%- if @nfct.include?('LOGEMU') -%>
+stack=ct1:NFCT,ip2str1:IP2STR,print1:PRINTFLOW,emunfct1:LOGEMU
+<%- end -%>
+<%- if @nfct.include?('JSON') -%>
+stack=ct2:NFCT,ip2str1:IP2STR,jsonnfct1:JSON
+<%- end -%>
+<%- ['OPRINT', 'GPRINT', 'XML', 'PCAP' 'NACCT'].each do |output| -%>
+  <%- if @nfct.include?(output) -%>
+stack=ct1:NFCT,ip2str1:IP2STR,<%= output.downcase %>1:<%= output %>
+  <%- end -%>
+<%- end -%>
+
+<%- ['OPRINT', 'GPRINT', 'XML', 'PCAP' 'NACCT'].each do |output| -%>
+  <%- if @acct.include?(output) -%>
+stack=acct1:NFACCT,<%= output.downcase %>1:<%= output %>
+  <%- end -%>
+<%- end -%>
+
+
+[ct1]
+
+[ct2]
+hash_enable=0
+
+[mark]
+
+[log1]
+group=0
+
+[log2]
+group=1
+
+[log3]
+group=2
+
+[logemu1]
+sync=<%= bool2int(@sync) %>
+file=<%= @logemu_logfile %>
+
+[emunfct1]
+sync=<%= bool2int(@sync) %>
+file=<%= @logemu_nfct_logfile %>
+
+[json1]
+sync=<%= bool2int(@sync) %>
+file=<%= @json_logfile %>
+
+[jsonnfct1]
+sync=<%= bool2int(@sync) %>
+file=<%= @json_nfct_logfile %>
+
+
+[oprint1]
+sync=<%= bool2int(@sync) %>
+file=<%= @oprint_logfile %>
+
+[gprint1]
+sync=<%= bool2int(@sync) %>
+file=<%= @gprint_logfile %>
+
+[json1]
+sync=<%= bool2int(@sync) %>
+file=<%= @json_logfile %>
+
+[xml1]
+sync=<%= bool2int(@sync) %>
+file=<%= @xml_directory %>
+
+[pcap1]
+sync=<%= bool2int(@sync) %>
+file=<%= @pcap_logfile %>
+
+[nacct1]
+sync=<%= bool2int(@sync) %>
+file=<%= @nacct_logfile %>
+
+[syslog1]
+facility=LOG_<%= @syslog_facility.upcase %>
+level=LOG_<%= @syslog_level.upcase %>
