@@ -174,11 +174,11 @@ cache::app_directors:
   releases_jenkins:
     backends:
       eqiad: 'releases1001.eqiad.wmnet'
-  ruthenium:
+  parsoid_testing:
     be_opts:
       port: 8001
     backends:
-      eqiad: 'ruthenium.eqiad.wmnet'
+      eqiad: 'scandium.eqiad.wmnet'
   people:
     backends:
       eqiad: 'people1001.eqiad.wmnet'
@@ -314,9 +314,9 @@ cache::alternate_domains:
   ores.wikimedia.org:
     director: 'ores'
   parsoid-rt-tests.wikimedia.org:
-    director: 'ruthenium'
+    director: 'parsoid_testing'
   parsoid-vd-tests.wikimedia.org:
-    director: 'ruthenium'
+    director: 'parsoid_testing'
   people.wikimedia.org:
     director: 'people'
     caching: 'pass'

@@ -115,10 +115,10 @@ profile::trafficserver::backend::mapping_rules:
       replacement: http://ores.discovery.wmnet:8081
     - type: map
       target: http://parsoid-rt-tests.wikimedia.org
-      replacement: http://ruthenium.eqiad.wmnet:8001
+      replacement: http://scandium.eqiad.wmnet:8001
     - type: map
       target: http://parsoid-vd-tests.wikimedia.org
-      replacement: http://ruthenium.eqiad.wmnet:8001
+      replacement: http://scandium.eqiad.wmnet:8001
     - type: map
       target: http://people.wikimedia.org
       replacement: http://people1001.eqiad.wmnet
