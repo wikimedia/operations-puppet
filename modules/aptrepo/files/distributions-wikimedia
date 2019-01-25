@@ -20,7 +20,7 @@ Codename: jessie-wikimedia
 AlsoAcceptFor: jessie jessie-backports
 Version: 8
 Architectures: source amd64 i386
-Components: main backports thirdparty experimental thirdparty/cloudera component/ci thirdparty/ci component/elastic55 thirdparty/elastic55 component/icu57 component/git component/cassandra22 component/zookeeper349 thirdparty/mono-project-jessie
+Components: main backports thirdparty experimental thirdparty/cloudera component/ci thirdparty/ci component/elastic55 thirdparty/elastic55 component/icu57 component/git component/cassandra22 component/zookeeper349 thirdparty/mono-project-jessie component/prometheus-node-exporter
 UDebComponents: main backports thirdparty experimental
 Update: hwraid cassandra cloudera-jessie grafana tor hp-mcp-jessie confluent elastic elasticsearch-curator docker jenkins elastic55 mono-project-jessie
 Description: Wikimedia packages for Debian Jessie
@@ -36,7 +36,7 @@ Codename: stretch-wikimedia
 AlsoAcceptFor: stretch stretch-backports
 Version: 9
 Architectures: source amd64 i386
-Components: main thirdparty/cloudera thirdparty/ci thirdparty/confluent thirdparty/hwraid thirdparty/k8s component/elastic55 thirdparty/elastic55 component/cassandra22 component/cassandra311 component/puppetdb4 component/pyall thirdparty/tor thirdparty/php72 component/ci thirdparty/mono-project-stretch component/vp9 component/node10 thirdparty/grafana component/spicerack component/thumbor component/kernel-proposed-updates
+Components: main thirdparty/cloudera thirdparty/ci thirdparty/confluent thirdparty/hwraid thirdparty/k8s component/elastic55 thirdparty/elastic55 component/cassandra22 component/cassandra311 component/puppetdb4 component/pyall thirdparty/tor thirdparty/php72 component/ci thirdparty/mono-project-stretch component/vp9 component/node10 thirdparty/grafana component/spicerack component/thumbor component/kernel-proposed-updates component/prometheus-node-exporter
 UDebComponents: main component/node10
 Update: hwraid-stretch hp-mcp-stretch jenkins-stretch confluent-stretch elastic55 tor-stretch php72-stretch mono-project-stretch grafana-stretch
 # NOTE:  Cloudera does not (yet) provide Stretch packages.  We use the Jessie ones,
