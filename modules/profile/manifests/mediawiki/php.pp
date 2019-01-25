@@ -53,6 +53,7 @@ class profile::mediawiki::php(
         'date.timezone'        => 'UTC',
         'display_errors'       => 'stderr',
         'memory_limit'         => '500M',
+        'error_reporting'      => 'E_ALL & ~E_STRICT',
     }
 
     # Custom config for php-fpm
