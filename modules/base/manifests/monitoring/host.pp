@@ -222,6 +222,23 @@ class base::monitoring::host(
         prometheus_url  => "http://prometheus.svc.${::site}.wmnet/ops",
     }
 
+    # Did an host log kernel messages from the EDAC subsystem over the last 4d? Might indicate faulty
+    # memory.
+    # Some of these events are not being caught through the usual node_edac_correctable_errors mechanism:
+    # https://phabricator.wikimedia.org/T214529
+    monitoring::check_prometheus { 'edac_syslog_events':
+        description     => 'EDAC syslog messages',
+        dashboard_links => ["https://grafana.wikimedia.org/dashboard/db/host-overview?orgId=1&var-server=${::hostname}&var-datasource=${::site} prometheus/ops"],
+        query           => "sum(increase(edac_events{hostname=\"${::hostname}\"}[4d]))",
+        warning         => 2,
+        critical        => 4,
+        check_interval  => 30,
+        retry_interval  => 5,
+        retries         => 3,
+        method          => 'ge',
+        prometheus_url  => "http://prometheus.svc.${::site}.wmnet/ops",
+    }
+
     # Alert on reported fs available being bigger than fs size
     # Ideally this would be in check_disk instead, see also https://phabricator.wikimedia.org/T199436
     monitoring::check_prometheus { 'filesystem_avail_bigger_than_size':
