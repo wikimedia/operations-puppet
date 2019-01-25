@@ -16,7 +16,7 @@ define wdqs::monitor::blazegraph_instance (
     }
 
     monitoring::check_prometheus { "blazegraph_allocators_${title}":
-        description     => 'Free Blazegraph allocators',
+        description     => "Free Blazegraph allocators ${title}",
         dashboard_links => ['https://grafana.wikimedia.org/dashboard/db/wikidata-query-service?orgId=1&panelId=32&fullscreen'],
         query           => "blazegraph_free_allocators{instance=\"${::hostname}:${prometheus_port}\"}",
         prometheus_url  => "http://prometheus.svc.${::site}.wmnet/ops",
