@@ -49,11 +49,9 @@ class keyholder($require_encrypted_keys='yes') {
         mode   => '0755',
     }
 
-    if os_version('debian >= jessie') {
-        systemd::tmpfile { 'keyholder':
-            content => 'd /run/keyholder 0755 keyholder keyholder',
-            require => User['keyholder'],
-        }
+    systemd::tmpfile { 'keyholder':
+        content => 'd /run/keyholder 0755 keyholder keyholder',
+        require => User['keyholder'],
     }
 
     file { '/etc/keyholder.d':
