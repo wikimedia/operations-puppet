@@ -532,6 +532,26 @@ host cloudcontrol1004 {
     filename "lpxelinux.0";
 }
 
+host cloudcontrol2001-dev {
+    hardware ethernet D0:94:66:93:B4:CE;
+    fixed-address cloudcontrol2001-dev.wikimedia.org;
+}
+
+host cloudvirt2001-dev {
+    hardware ethernet D0:94:66:93:97:77;
+    fixed-address cloudvirt2001-dev.wikimedia.org;
+}
+
+host cloudvirt2002-dev {
+    hardware ethernet D0:94:66:93:6D:A0;
+    fixed-address cloudvirt2002-dev.wikimedia.org;
+}
+
+host cloudvirt2003-dev {
+    hardware ethernet D0:94:66:93:F7:D8;
+    fixed-address cloudvirt2003-dev.wikimedia.org;
+}
+
 host cloudelastic1001 {
     hardware ethernet F4:E9:D4:DA:25:40;
     fixed-address cloudelastic1001.wikimedia.org;
