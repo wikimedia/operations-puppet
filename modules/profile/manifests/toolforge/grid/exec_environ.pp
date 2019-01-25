@@ -731,6 +731,7 @@ class profile::toolforge::grid::exec_environ {
           'libaio1',                     # T70615
           'libav-tools',                 # T55870.
           'libdmtx0a',                   # T55867.
+          'libexiv2-dev',                # T213965
           'libfcgi0ldbl',                # T58995
           'libffi-dev',                  # T67974.
           'libfreetype6',
