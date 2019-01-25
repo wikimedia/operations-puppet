@@ -1,7 +1,7 @@
 # sets up the planet index/portal site
 class planet::index_site (
-    $domain_name,
-    $meta_link,
+    Stdlib::Fqdn $domain_name,
+    Stdlib::Httpsurl $meta_link,
 ){
 
     httpd::site { "planet.${domain_name}":

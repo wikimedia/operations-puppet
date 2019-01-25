@@ -11,15 +11,15 @@
 #   example "planet.wikimedia.org
 # $languages - a hash with languages and UI translations
 #   see the role class for this
-# $meta_link - a protocol relative link
+# $meta_link - https:// link
 #   example: meta.wikimedia.org/wiki/Planet_Wikimedia
 # $http_proxy - set proxy to be used for downloading feeds
 #   example: http://url-downloader.${::site}.wikimedia.org:8080
 class planet (
-    $domain_name,
-    $languages,
-    $meta_link,
-    $http_proxy,
+    Stdlib::Fqdn $domain_name,
+    Hash $languages,
+    Stdlib::Httpsurl $meta_link,
+    Stdlib::Httpurl $http_proxy,
 ) {
 
     # things done once for all planet per languages

@@ -1,6 +1,6 @@
 # defined type: an apache site config for a planet language version
 define planet::apachesite (
-    $domain_name = $domain_name,
+    Stdlib::Fqdn $domain_name = $domain_name,
 ){
 
     if $title == 'en' {

@@ -11,5 +11,5 @@
     Redirect /rss10.xml https://en.planet.<%= @domain_name %>/rss10.xml
     Redirect /rss20.xml https://en.planet.<%= @domain_name %>/rss20.xml
 
-    RedirectTemp / https://<%= @meta_link %>
+    RedirectTemp / <%= @meta_link %>
 </VirtualHost>

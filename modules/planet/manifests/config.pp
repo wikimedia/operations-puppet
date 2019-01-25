@@ -1,9 +1,9 @@
 # defined type: a config dir and file for a planet language version
 define planet::config (
-    $domain_name = $domain_name,
-    $config_path = '/etc/rawdog',
-    $config_file = 'config',
-    $feed_src    = 'feeds',
+    Stdlib::Fqdn $domain_name = $domain_name,
+    Stdlib::Unixpath $config_path = '/etc/rawdog',
+    String $config_file = 'config',
+    String $feed_src    = 'feeds',
 ){
 
 
