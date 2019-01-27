@@ -41,7 +41,7 @@ class toollabs::toolviews (
         group  => 'root',
         mode   => '0555',
     }
-    file { '/etc/logrotate.d/nginx-postrotate/toolviews.sh':
+    file { '/etc/logrotate.d/nginx-postrotate/toolviews':
         ensure  => file,
         source  => 'puppet:///modules/toollabs/toolviews.sh',
         owner   => 'root',
