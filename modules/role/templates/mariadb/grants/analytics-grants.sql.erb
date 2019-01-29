@@ -3,7 +3,6 @@
 GRANT USAGE ON *.* TO 'research'@'%' IDENTIFIED BY <%= @research_pass %> WITH MAX_USER_CONNECTIONS 200;
 GRANT ALTER, CREATE, CREATE TEMPORARY TABLES, DELETE, DROP, INDEX, INSERT, SELECT, UPDATE ON `datasets`.* TO 'research'@'%';
 GRANT ALTER, CREATE, CREATE TEMPORARY TABLES, DELETE, DROP, INDEX, INSERT, SELECT, UPDATE ON `staging`.* TO 'research'@'%';
-GRANT SELECT, INSERT, UPDATE, DELETE, CREATE, DROP, INDEX, ALTER, CREATE TEMPORARY TABLES ON `project_illustration`.* TO 'research'@'%';
 
 GRANT SELECT ON `%wik%`.* TO 'research'@'%';
 GRANT SELECT ON `centralauth`.* TO 'research'@'%';
@@ -11,7 +10,6 @@ GRANT SELECT ON `log`.* TO 'research'@'%';
 GRANT SELECT ON `warehouse`.* TO 'research'@'%';
 GRANT SELECT ON `flowdb`.* TO 'research'@'%';
 GRANT SELECT ON `wikishared`.* TO 'research'@'%'
-GRANT SELECT ON `cognate\_wiktionary`.* TO 'research'@'%'
 
 
 -- Grants for 'globaldev'@'%'
