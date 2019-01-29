@@ -64,7 +64,7 @@ def get_remote_user(remote_host, remote_port, local_port):
 
     resp_parts = [r.strip() for r in resp.split(":")]
     if "USERID" not in resp_parts:
-        # Some auth error has occured. Abort!
+        # Some auth error has occurred. Abort!
         logging.log(logging.INFO, "Identd auth failed, sent %s got back %s" %
                     (request.strip(), resp.strip()))
         return None
