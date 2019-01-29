@@ -127,6 +127,11 @@ groups:
     gid: 808
     description: people who upload blubber releases
     members: [dduvall, jhuneidi, liw, thcipriani]
+  cloudelastic-roots:
+    gid: 809
+    description: manage cloudelastic nodes
+    members: [ebernhardson, dcausse, onimisionipe, bd808]
+    privileges: ['ALL = (ALL) NOPASSWD: ALL']
   udp2log-users:
     gid: 713
     description: general user tasks for udp2log (RT 5391)
