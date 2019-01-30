@@ -68,8 +68,8 @@ sub get_help{
        able to access the IPMI devices via the IPMI system interface).
   [-f <FreeIPMI config file>]
        path to the FreeIPMI configuration file.
-       Only neccessary for communication via network.
-       Not neccessary for access via IPMI system interface (\"-H localhost\").
+       Only necessary for communication via network.
+       Not necessary for access via IPMI system interface (\"-H localhost\").
        It should contain IPMI username, IPMI password, and IPMI privilege-level,
        for example:
          username monitoring
