@@ -1,0 +1,81 @@
+# General configs
+cluster: cloudelastic
+admin::groups:
+  - cloudelastic-roots
+
+# T130329
+# TODO: revisit later to check if this specific check is needed.
+profile::base::check_disk_options: -w 15% -c 10% -W 6% -K 3% -l -e -A -i "/srv/sd[a-b][1-3]" --exclude-type=tracefs
+
+profile::elasticsearch::cirrus::storage_device: md1
+profile::elasticsearch::cirrus::ferm_srange: '$LABS_NETWORKS'
+profile::elasticsearch::version: '6.5'
+profile::elasticsearch::config_version: '6'
+profile::elasticsearch::base_data_dir: /srv/elasticsearch
+profile::elasticsearch::instances:
+  cloudelastic-chi-eqiad:
+    cluster_name: cloudelastic-chi-eqiad
+    http_port: 9200
+    tls_port: 9243
+    transport_tcp_port: 9300
+  cloudelastic-omega-eqiad:
+    cluster_name: cloudelastic-omega-eqiad
+    http_port: 9400
+    tls_port: 9443
+    transport_tcp_port: 9500
+    heap_memory: '8G'
+  cloudelastic-psi-eqiad:
+    cluster_name: cloudelastic-psi-eqiad
+    http_port: 9600
+    tls_port: 9643
+    transport_tcp_port: 9700
+    heap_memory: '8G'
+profile::elasticsearch::common_settings:
+    awareness_attributes: 'row'
+    # We need these plugins to be loaded in order to work properly. This will keep
+    # elasticsearch from starting if these plugins are not available.
+    plugins_mandatory:
+      - analysis-hebrew
+      - analysis-icu
+      - analysis-smartcn
+      - analysis-stconvert
+      - analysis-stempel
+      - analysis-ukrainian
+      - experimental-highlighter
+      - extra
+      - extra-analysis-esperanto
+      - extra-analysis-serbian
+      - extra-analysis-slovak
+      - ltr
+
+    # More than 30G isn't very useful
+    heap_memory: '30G'
+
+    # Don't run if more than 1 master missing
+    minimum_master_nodes: 2
+
+    # wait that long for all nodes to restart. If not all nodes are present after
+    # `recover_after_time`, recover anyway, as long as at least
+    # `recover_after_nodes` are present.
+    recover_after_time: '5m'
+
+    # mwgrep queries one copy of each shard in the cluster, which is currently
+    # just over 3k shards. For it to work we need to increase the limit from
+    # default 1k
+    search_shard_count_limit: 5000
+
+    # Increase the per-node cache for compiled LTR models from default 10MB
+    ltr_cache_size: '100mb'
+
+    bulk_thread_pool_executors: 18
+    bulk_thread_pool_capacity: 1000
+    filter_cache_size: '20%'
+
+# Bulk daemon consumes per-datacenter to apply page updates to all clusters.
+# Disable until cloudelastic is setup.
+
+# profile::mjolnir::kafka_bulk_daemon::kafka_cluster: "main-%{::site}"
+# profile::mjolnir::kafka_bulk_daemon::group_id: "cirrussearch_updates_cloudelastic"
+# profile::mjolnir::kafka_bulk_daemon::topics:
+#  - eqiad.cirrussearch.page-index-update
+diamond::remove: true
