@@ -43,6 +43,7 @@ TOOLS_PREFIX_CLASSIFIER = {
     "proxy": "webproxy",
     "redis": "redis",
     "services": "services",
+    "sge":"sge",
     "sgebastion": "bastion-stretch",
     "sgecron": "cron-stretch",
     "sgeexec-09": "exec-stretch",
