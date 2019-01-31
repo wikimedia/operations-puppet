@@ -2,12 +2,10 @@ profile::maps::hosts:
   - 'maps2001.codfw.wmnet'
   - 'maps2002.codfw.wmnet'
   - 'maps2003.codfw.wmnet'
-  - 'maps2004.codfw.wmnet'
 profile::redis::master::clients:
   - 'maps2001.codfw.wmnet'
   - 'maps2002.codfw.wmnet'
   - 'maps2003.codfw.wmnet'
-  - 'maps2004.codfw.wmnet'
 
 profile::maps::apps::redis_server: 'redis://maps2001.codfw.wmnet'
 
@@ -16,12 +14,9 @@ profile::cassandra::single_instance::seeds:
   - '10.192.0.144'
   - '10.192.16.179'
   - '10.192.32.146'
-  - '10.192.48.57'
 
 profile::maps::osm_master::slaves:
   maps2002:
     ip_address: 10.192.16.179
   maps2003:
     ip_address: 10.192.32.146
-  maps2004:
-    ip_address: 10.192.48.57

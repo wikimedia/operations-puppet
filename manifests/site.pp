@@ -1465,8 +1465,12 @@ node 'maps2001.codfw.wmnet' {
     role(maps::master)
 }
 
-node /^maps200[2-4]\.codfw\.wmnet/ {
+node /^maps200[2-3]\.codfw\.wmnet/ {
     role(maps::slave)
+}
+
+node 'maps2004.codfw.wmnet' {
+    role(maps::master)
 }
 
 node 'matomo1001.eqiad.wmnet' {
