@@ -104,7 +104,7 @@ class NovaInstance(object):
                 "/usr/bin/rsync -S -avz -e \"ssh -o StrictHostKeyChecking=no "
                 "-o UserKnownHostsFile=/dev/null -i "
                 "/var/lib/nova/.ssh/id_rsa\" --progress "
-                "--exclude=console.log "
+                "--exclude=console.log* "
                 "%s nova@%s.eqiad.wmnet:%s" %
                 (imagedir, destination, imagebasedir)]
         print " ".join(args)
