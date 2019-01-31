@@ -210,4 +210,11 @@ class openstack::util::admin_scripts(
         mode   => '0755',
         source => 'puppet:///modules/openstack/util/updateproxies.py',
     }
+
+    file { '/usr/local/sbin/openstack-cvps':
+        source => 'puppet:///modules/openstack/util/openstack-cvps.sh',
+        mode   => '0555',
+        owner  => 'root',
+        group  => 'root',
+    }
 }
