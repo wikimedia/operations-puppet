@@ -1,1 +1,2 @@
 diamond::remove: true
+profile::prometheus::memcached_exporter::arguments: '--memcached.address="localhost:11000"'
