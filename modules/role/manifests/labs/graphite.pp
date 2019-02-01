@@ -14,7 +14,7 @@ class role::labs::graphite {
                     'headers', 'authnz_ldap', 'ldap'],
     }
 
-    class { 'role::graphite::base':
+    class { 'profile::graphite::base':
         storage_dir  => '/srv/carbon',
         auth         => false,
         hostname     => 'graphite-labs.wikimedia.org',
@@ -26,7 +26,7 @@ class role::labs::graphite {
         target  => '/srv/carbon',
         owner   => '_graphite',
         group   => '_graphite',
-        require => Class['role::graphite::base']
+        require => Class['profile::graphite::base']
     }
 
     ferm::service { 'carbon_c_relay-local_relay_udp':
