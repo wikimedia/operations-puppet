@@ -19,6 +19,14 @@ from keystoneclient.auth.identity import generic
 from keystoneclient import session as keystone_session
 from novaclient import client
 
+class ScriptConfig():
+
+    def __init__(self, datacenter, destination, mysql_password):
+        self.datacenter = datacenter
+        self.destination = destination
+        self.destination_fqdn = '{}.{}.wmnet'.format(destination, datacenter)
+        self.mysql_password = mysql_password
+
 
 class NovaInstance(object):
 
@@ -76,8 +84,13 @@ class NovaInstance(object):
             time.sleep(1)
             self.refresh_instance()
 
-    def migrate(self, destination, mysql_password):
+    def migrate(self, config):
+        destination = config.destination
+        destination_fqdn = config.destination_fqdn
+        mysql_password = config.mysql_password
         source = self.instance._info['OS-EXT-SRV-ATTR:host']
+        source_fqdn = '{}.{}.wmnet'.format(source, config.datacenter)
+
         print "Instance %s is now on host %s with state %s" % (
             self.instance_id,
             source,
@@ -100,13 +113,13 @@ class NovaInstance(object):
         # Don't bother to rsync the console log.  Nova can't read
         #  it, and we don't need it.
         args = ["ssh", "-i", "/root/.ssh/compute-hosts-key",
-                "nova@%s.eqiad.wmnet" % source,
+                "nova@%s" % source_fqdn,
                 "/usr/bin/rsync -S -avz -e \"ssh -o StrictHostKeyChecking=no "
                 "-o UserKnownHostsFile=/dev/null -i "
                 "/var/lib/nova/.ssh/id_rsa\" --progress "
                 "--exclude=console.log* "
-                "%s nova@%s.eqiad.wmnet:%s" %
-                (imagedir, destination, imagebasedir)]
+                "%s nova@%s:%s" %
+                (imagedir, destination_fqdn, imagebasedir)]
         print " ".join(args)
         r = subprocess.call(args)
         if r:
@@ -119,9 +132,9 @@ class NovaInstance(object):
         args = ["mysql", "--user=nova", "--password=%s" % mysql_password,
                 "--host", "m5-master.eqiad.wmnet", "nova_eqiad1",
                 "-e",
-                "update instances set host=\"%s\",node=\"%s.eqiad.wmnet\" "
+                "update instances set host=\"%s\",node=\"%s\" "
                 "where uuid=\"%s\";" %
-                (destination, destination, self.instance_id)]
+                (destination, destination_fqdn, self.instance_id)]
         r = subprocess.call(args)
         if r:
             print ("Failed to update the instance's db record."
@@ -143,7 +156,7 @@ class NovaInstance(object):
                     "'cleanup' to delete old instance files:  ")
             print "Cleaning up old instance files on %s" % source
             args = ["ssh", "-i", "/root/.ssh/compute-hosts-key",
-                    "nova@%s.eqiad.wmnet" % source,
+                    "nova@%s" % source_fqdn,
                     "rm -rf", imagedir]
             r = subprocess.call(args)
             if r:
@@ -197,10 +210,18 @@ if __name__ == "__main__":
         'destination',
         help='destination host, e.g. labvirt1005',
     )
+    argparser.add_argument(
+        '--datacenter',
+        help='datacenter for operations, to calculate FQDNs. Default is eqiad',
+        default="eqiad"
+    )
+
     args = argparser.parse_args()
 
+    config = ScriptConfig(args.datacenter, args.destination, args.mysql_password)
+
     sshargs = ["ssh", "-i", "/root/.ssh/compute-hosts-key",
-               "nova@%s.eqiad.wmnet" % args.destination, "true"]
+               "nova@%s" % config.destination_fqdn, "true"]
     r = subprocess.call(sshargs)
     if r:
         print "Remote execution failed; this whole enterprise is doomed."
@@ -216,4 +237,4 @@ if __name__ == "__main__":
     session = keystone_session.Session(auth=auth)
 
     instance = NovaInstance(session, args.instanceid, region=args.region)
-    instance.migrate(args.destination, args.mysql_password)
+    instance.migrate(config)
