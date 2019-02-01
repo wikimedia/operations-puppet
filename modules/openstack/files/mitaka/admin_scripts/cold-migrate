@@ -13,6 +13,8 @@ import os
 import requests
 import subprocess
 import time
+import logging
+import sys
 
 import glanceclient
 from keystoneclient.auth.identity import generic
@@ -49,19 +51,19 @@ class NovaInstance(object):
         # Because the glance devs can't be bothered to update their python
         #  bindings when new features are added, we have to do this the
         #  old-fasioned way.
-        print "Needed image is %s" % image.status
+        logging.info("Needed image is {}".format(image.status))
         if deactivate:
             action = 'deactivate'
             if image.status == 'deactivated':
                 # Nothing to do
                 return False
-            print "deactivating image %s" % image_id
+            logging.info("deactivating image {}".format(image_id))
         else:
             action = 'reactivate'
             if image.status == 'active':
                 # Nothing to do
                 return False
-            print "activating image %s" % image_id
+            logging.info("activating image {}".format(image_id))
 
         url = "%s/v2/images/%s/actions/%s" % (glanceendpoint, image_id, action)
 
@@ -80,8 +82,8 @@ class NovaInstance(object):
         while self.instance.status != desiredstatus:
             if self.instance.status != oldstatus:
                 oldstatus = self.instance.status
-                print "Current status is %s; waiting for it to change to %s." % (
-                    self.instance.status, desiredstatus)
+                logging.info("current status is {}; waiting for it to change to {}".format(
+                             self.instance.status, desiredstatus))
 
             time.sleep(1)
             self.refresh_instance()
@@ -102,9 +104,9 @@ class NovaInstance(object):
                 (destination, destination_fqdn, self.instance_id)]
         r = subprocess.call(args)
         if r:
-            print ("Failed to update the instance's db record."
-                   "Host not moved.  You will need to clean up files on %s" %
-                   destination)
+            logging.error("failed to update the instance's db record."
+                          "Host not moved. "
+                          "You will need to clean up files on {}".format(destination))
             return False
 
         return True
@@ -112,14 +114,14 @@ class NovaInstance(object):
 
     def instance_stop(self):
         if self.instance.status == 'SHUTOFF':
-            print("Not stopping instance already in SHUTOFF state")
+            logging.warning("not stopping instance already in SHUTOFF state")
             return
 
         try:
             self.instance.stop()
             self.wait_for_status('SHUTOFF')
         except client.exceptions.Conflict as e:
-            print("Failed to stop VM instance. Race condition?: {}".format(e))
+            logging.error("wailed to stop VM instance. Race condition?: {}".format(e))
             exit(1)
 
 
@@ -130,12 +132,10 @@ class NovaInstance(object):
         source = self.instance._info['OS-EXT-SRV-ATTR:host']
         source_fqdn = '{}.{}.wmnet'.format(source, config.datacenter)
 
-        print "Instance %s is now on host %s with state %s" % (
-            self.instance_id,
-            source,
-            self.instance.status)
+        logging.info("instance {} is now on host {} with state {}".format(
+                     self.instance_id, source, self.instance.status))
         if (source == destination):
-            print "source and destination host are the same.  Nothing to do."
+            logging.warning("source and destination host are the same. Nothing to do.")
             exit(0)
 
         self.instance_stop()
@@ -157,13 +157,13 @@ class NovaInstance(object):
                 "--exclude=console.log* "
                 "%s nova@%s:%s" %
                 (imagedir, destination_fqdn, imagebasedir)]
-        print " ".join(args)
+        logging.info("{}".format(" ".join(args)))
         r = subprocess.call(args)
         if r:
-            print ("rsync to new host failed.")
+            logging.error("rsync to new host failed.")
             return(1)
 
-        print "Instance copied.  Now updating nova db..."
+        logging.info("instance copied. Now updating nova db...")
         host_moved = self.update_nova_db(config)
 
         activated_image = self.activate_image(image_id)
@@ -172,29 +172,28 @@ class NovaInstance(object):
         self.wait_for_status('ACTIVE')
 
         if host_moved:
-            print "Instance is active."
+            logging.info("instance is active.")
             confirm = ""
             while (confirm != "cleanup"):
                 confirm = raw_input(
                     "Verify that the instance is healthy, then type "
                     "'cleanup' to delete old instance files:  ")
-            print "Cleaning up old instance files on %s" % source
+            logging.info("cleaning up old instance files on {}".format(source))
             args = ["ssh", "-i", "/root/.ssh/compute-hosts-key",
                     "nova@%s" % source_fqdn,
                     "rm -rf", imagedir]
             r = subprocess.call(args)
             if r:
-                print ("cleanup of %s on %s failed." % (imagedir, source))
+                logging.error("cleanup of {} on {} failed.".format(imagedir, source))
                 return(1)
 
         if activated_image:
             self.activate_image(image_id, deactivate=True)
 
-        print
-        print "Instance %s is now on host %s with status %s" % (
-            self.instance_id,
-            self.instance._info['OS-EXT-SRV-ATTR:host'],
-            self.instance.status)
+        logging.info("instance {} is now on host {} with status {}".format(
+                     self.instance_id,
+                     self.instance._info['OS-EXT-SRV-ATTR:host'],
+                     self.instance.status))
 
 
 if __name__ == "__main__":
@@ -254,12 +253,14 @@ if __name__ == "__main__":
 
     config = ScriptConfig(args.datacenter, args.destination, args.mysql_password,
                           args.nova_db_server, args.nova_db)
+    logging.basicConfig(format="%(filename)s: %(levelname)s: %(message)s",
+                        level=logging.INFO, stream=sys.stdout)
 
     sshargs = ["ssh", "-i", "/root/.ssh/compute-hosts-key",
                "nova@%s" % config.destination_fqdn, "true"]
     r = subprocess.call(sshargs)
     if r:
-        print "Remote execution failed; this whole enterprise is doomed."
+        logging.error("remote execution failed; this whole enterprise is doomed.")
         exit(1)
 
     auth = generic.Password(
@@ -273,3 +274,4 @@ if __name__ == "__main__":
 
     instance = NovaInstance(session, args.instanceid, region=args.region)
     instance.migrate(config)
+    logging.shutdown()
