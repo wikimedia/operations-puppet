@@ -110,6 +110,19 @@ class NovaInstance(object):
         return True
 
 
+    def instance_stop(self):
+        if self.instance.status == 'SHUTOFF':
+            print("Not stopping instance already in SHUTOFF state")
+            return
+
+        try:
+            self.instance.stop()
+            self.wait_for_status('SHUTOFF')
+        except client.exceptions.Conflict as e:
+            print("Failed to stop VM instance. Race condition?: {}".format(e))
+            exit(1)
+
+
     def migrate(self, config):
         destination = config.destination
         destination_fqdn = config.destination_fqdn
@@ -125,11 +138,9 @@ class NovaInstance(object):
             print "source and destination host are the same.  Nothing to do."
             exit(0)
 
+        self.instance_stop()
+
         image_id = self.instance.image['id']
-
-        self.instance.stop()
-        self.wait_for_status('SHUTOFF')
-
         imagebasedir = "/var/lib/nova/instances"
         imagedir = "%s/%s" % (imagebasedir, self.instance_id)
 
