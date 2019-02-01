@@ -21,11 +21,13 @@ from novaclient import client
 
 class ScriptConfig():
 
-    def __init__(self, datacenter, destination, mysql_password):
+    def __init__(self, datacenter, destination, mysql_password, nova_db_server, nova_db):
         self.datacenter = datacenter
         self.destination = destination
         self.destination_fqdn = '{}.{}.wmnet'.format(destination, datacenter)
         self.mysql_password = mysql_password
+        self.nova_db_server = nova_db_server
+        self.nova_db = nova_db
 
 
 class NovaInstance(object):
@@ -84,6 +86,30 @@ class NovaInstance(object):
             time.sleep(1)
             self.refresh_instance()
 
+
+    def update_nova_db(self, config):
+        mysql_password = config.mysql_password
+        nova_db_server = config.nova_db_server
+        nova_db = config.nova_db
+        destination = config.destination
+        destination_fqdn = config.destination_fqdn
+
+        args = ["mysql", "--user=nova", "--password=%s" % mysql_password,
+                "--host", "%s" % nova_db_server, "%s" % nova_db,
+                "-e",
+                "update instances set host=\"%s\",node=\"%s\" "
+                "where uuid=\"%s\";" %
+                (destination, destination_fqdn, self.instance_id)]
+        r = subprocess.call(args)
+        if r:
+            print ("Failed to update the instance's db record."
+                   "Host not moved.  You will need to clean up files on %s" %
+                   destination)
+            return False
+
+        return True
+
+
     def migrate(self, config):
         destination = config.destination
         destination_fqdn = config.destination_fqdn
@@ -127,20 +153,7 @@ class NovaInstance(object):
             return(1)
 
         print "Instance copied.  Now updating nova db..."
-
-        host_moved = True
-        args = ["mysql", "--user=nova", "--password=%s" % mysql_password,
-                "--host", "m5-master.eqiad.wmnet", "nova_eqiad1",
-                "-e",
-                "update instances set host=\"%s\",node=\"%s\" "
-                "where uuid=\"%s\";" %
-                (destination, destination_fqdn, self.instance_id)]
-        r = subprocess.call(args)
-        if r:
-            print ("Failed to update the instance's db record."
-                   "Host not moved.  You will need to clean up files on %s" %
-                   destination)
-            host_moved = False
+        host_moved = self.update_nova_db(config)
 
         activated_image = self.activate_image(image_id)
 
@@ -193,6 +206,16 @@ if __name__ == "__main__":
         default=os.environ.get('OS_AUTH_URL', None)
     )
     argparser.add_argument(
+        '--nova-db-server',
+        help='nova database server (FQDNs). Default is m5-master.eqiad.wmnet',
+        default="m5-master.eqiad.wmnet"
+    )
+    argparser.add_argument(
+        '--nova-db',
+        help='nova database name. Default is nova_eqiad1',
+        default="nova_eqiad1"
+    )
+    argparser.add_argument(
         '--region',
         help='nova region',
         default=os.environ.get('OS_REGION_NAME', None)
@@ -218,7 +241,8 @@ if __name__ == "__main__":
 
     args = argparser.parse_args()
 
-    config = ScriptConfig(args.datacenter, args.destination, args.mysql_password)
+    config = ScriptConfig(args.datacenter, args.destination, args.mysql_password,
+                          args.nova_db_server, args.nova_db)
 
     sshargs = ["ssh", "-i", "/root/.ssh/compute-hosts-key",
                "nova@%s" % config.destination_fqdn, "true"]
