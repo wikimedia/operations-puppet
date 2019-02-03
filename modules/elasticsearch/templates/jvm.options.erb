@@ -127,6 +127,9 @@
 # something is wrong and bailing is a reasonable solution.
 -XX:GCHeapFreeLimit=10
 
+# Exit on OutOfMemoryError, since in most cases the JVM does not recover
+-XX:ExitOnOutOfMemoryError
+
 # Custom flags for GC logging.
 <% @gc_log_flags.each do |gc_log_flag| -%>
 <%= gc_log_flag %>
