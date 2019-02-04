@@ -1,8 +1,0 @@
-description "Start MediaWiki-Vagrant on system startup"
-author "Bryan Davis <bd808@wikimedia.org>"
-task
-start on filesystem and net-device-up IFACE!=lo
-env LANG=en_US.UTF-8
-script
-    /usr/local/bin/start-mwvagrant.sh
-end script
