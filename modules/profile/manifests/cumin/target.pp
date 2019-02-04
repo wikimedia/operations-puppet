@@ -7,7 +7,7 @@ class profile::cumin::target(
     $cluster = hiera('cluster', 'misc'),
     $site = $::site,  # lint:ignore:wmf_styleguide
 ) {
-    if $::_roles {
+    if defined('$::_roles') {
         $roles = prefix(keys($::_roles), 'role::')
     } else {
         $roles = []

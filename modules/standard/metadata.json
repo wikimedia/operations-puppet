@@ -1,0 +1,15 @@
+{
+  "name": "wikimedia-standard",
+  "version": "0.0.1",
+  "author": "wikimedia",
+  "license": "",
+  "summary": "Wikimedia standard class",
+  "source": "https://gerrit.wikimedia.org/r/plugins/gitiles/operations/puppet/+/refs/heads/production/modules/standard",
+  "dependencies": [],
+  "operatingsystem_support": [
+    {
+      "operatingsystem" : "Debian",
+      "operatingsystemrelease": [ "8", "9", "10" ]
+    }
+  ]
+}
