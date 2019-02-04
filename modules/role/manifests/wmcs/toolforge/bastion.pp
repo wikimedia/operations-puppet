@@ -9,4 +9,5 @@ class role::wmcs::toolforge::bastion {
     include profile::toolforge::grid::base
     include profile::toolforge::grid::submit_host
     include profile::toolforge::bastion
+    include profile::toolforge::bastion::resourcecontrol
 }
