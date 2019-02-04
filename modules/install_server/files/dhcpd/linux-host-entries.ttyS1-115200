@@ -4312,7 +4312,7 @@ host ms-be2046 {
 }
 
 host ms-be2047 {
-    hardware ethernet B0:26:28:1A:50:52;
+    hardware ethernet B0:26:28:20:41:44;
     fixed-address ms-be2047.codfw.wmnet;
 }
 
