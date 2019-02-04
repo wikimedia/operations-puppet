@@ -3,6 +3,7 @@ class base::puppet(
     $certname=undef,
     $dns_alt_names=undef,
     $environment=undef,
+    $puppet_major_version=undef,
 ) {
     include ::passwords::puppet::database
     include ::base::puppet::params
@@ -13,7 +14,9 @@ class base::puppet(
     $ca_server = hiera('puppetmaster::ca_server', '')
 
 
-    include base::puppet::pins
+    if $puppet_major_version == 4 {
+        include base::puppet::puppet4
+    }
 
     package { [ 'puppet', 'facter' ]:
         ensure => present,
