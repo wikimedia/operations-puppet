@@ -244,26 +244,17 @@ class profile::graphite::base(
         content => template('role/graphite/graphite.apache.erb'),
     }
 
-    if $::initsystem == 'upstart' {
-        nrpe::monitor_service { 'carbon':
-            description  => 'Graphite Carbon',
-            nrpe_command => '/sbin/carbonctl check',
-        }
-    }
+    nrpe::monitor_systemd_unit_state{ 'carbon-frontend-relay': }
+    nrpe::monitor_systemd_unit_state{ 'carbon-local-relay': }
 
-    if $::initsystem == 'systemd' {
-        nrpe::monitor_systemd_unit_state{ 'carbon-frontend-relay': }
-        nrpe::monitor_systemd_unit_state{ 'carbon-local-relay': }
-
-        nrpe::monitor_systemd_unit_state{ 'carbon-cache@a': }
-        nrpe::monitor_systemd_unit_state{ 'carbon-cache@b': }
-        nrpe::monitor_systemd_unit_state{ 'carbon-cache@c': }
-        nrpe::monitor_systemd_unit_state{ 'carbon-cache@d': }
-        nrpe::monitor_systemd_unit_state{ 'carbon-cache@e': }
-        nrpe::monitor_systemd_unit_state{ 'carbon-cache@f': }
-        nrpe::monitor_systemd_unit_state{ 'carbon-cache@g': }
-        nrpe::monitor_systemd_unit_state{ 'carbon-cache@h': }
-    }
+    nrpe::monitor_systemd_unit_state{ 'carbon-cache@a': }
+    nrpe::monitor_systemd_unit_state{ 'carbon-cache@b': }
+    nrpe::monitor_systemd_unit_state{ 'carbon-cache@c': }
+    nrpe::monitor_systemd_unit_state{ 'carbon-cache@d': }
+    nrpe::monitor_systemd_unit_state{ 'carbon-cache@e': }
+    nrpe::monitor_systemd_unit_state{ 'carbon-cache@f': }
+    nrpe::monitor_systemd_unit_state{ 'carbon-cache@g': }
+    nrpe::monitor_systemd_unit_state{ 'carbon-cache@h': }
 
     ferm::service { 'graphite-http':
         proto => 'tcp',
