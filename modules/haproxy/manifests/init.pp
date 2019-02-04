@@ -51,42 +51,30 @@ class haproxy(
         content => template('haproxy/check_haproxy.erb'),
     }
 
-    if os_version('debian >= jessie') {
-
-        # defaults file cannot be dynamic anymore on systemd
-        # pregenerate them on systemd start/reload
-        file { '/usr/local/bin/generate_haproxy_default.sh':
-            ensure => present,
-            owner  => 'root',
-            group  => 'root',
-            mode   => '0755',
-            source => 'puppet:///modules/haproxy/generate_haproxy_default.sh',
-        }
-
-        # TODO: this should use the general systemd puppet abstraction instead
-        file { '/lib/systemd/system/haproxy.service':
-            ensure  => present,
-            mode    => '0644',
-            owner   => 'root',
-            group   => 'root',
-            content => template('haproxy/haproxy.service.erb'),
-            require => File['/usr/local/bin/generate_haproxy_default.sh'],
-            notify  => Exec['/bin/systemctl daemon-reload'],
-        }
-
-        exec { '/bin/systemctl daemon-reload':
-            user        => 'root',
-            refreshonly => true,
-        }
+    # defaults file cannot be dynamic anymore on systemd
+    # pregenerate them on systemd start/reload
+    file { '/usr/local/bin/generate_haproxy_default.sh':
+        ensure => present,
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0755',
+        source => 'puppet:///modules/haproxy/generate_haproxy_default.sh',
     }
-    else {
-        file { '/etc/default/haproxy':
-            ensure  => present,
-            mode    => '0444',
-            owner   => 'root',
-            group   => 'root',
-            content => template('haproxy/default.erb'),
-        }
+
+    # TODO: this should use the general systemd puppet abstraction instead
+    file { '/lib/systemd/system/haproxy.service':
+        ensure  => present,
+        mode    => '0644',
+        owner   => 'root',
+        group   => 'root',
+        content => template('haproxy/haproxy.service.erb'),
+        require => File['/usr/local/bin/generate_haproxy_default.sh'],
+        notify  => Exec['/bin/systemctl daemon-reload'],
+    }
+
+    exec { '/bin/systemctl daemon-reload':
+        user        => 'root',
+        refreshonly => true,
     }
 
     nrpe::monitor_service { 'haproxy':
