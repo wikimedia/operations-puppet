@@ -10,9 +10,5 @@ define module{
 
       allow_html_output  0
 
-      <% if scope.function_os_version(['ubuntu == trusty']) %>
-      modules          Cfg_password
-      <% else %>
       modules          auth-cfg-password
-      <% end %>
 }
