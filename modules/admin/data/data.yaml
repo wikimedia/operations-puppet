@@ -738,6 +738,11 @@ groups:
     gid: 810
     members: [ebernhardson]
     privileges: ['ALL = (ALL) NOPASSWD: ALL']
+  sessionstore-roots:
+    gid: 811
+    description: people who have full root on session storage cluster nodes
+    members: [eevans, mobrovac, ppchelko]
+    privileges: ['ALL = (ALL) NOPASSWD: ALL']
 
 users:
   rush:

@@ -1,0 +1,68 @@
+cluster: sessions
+
+#
+# Cassandra
+# FIXME: no graphite_host since graphite1003 decom'ed in T209357
+graphite_host: 'none'
+profile::cassandra::allow_analytics: false
+profile::cassandra::disable_graphite_metrics: true
+
+## Instances
+profile::cassandra::instances:
+  "sessionstore1001.eqiad.wmnet":
+    a:
+      listen_address: 10.64.0.141
+      jmx_exporter_enabled: true
+  "sessionstore1002.eqiad.wmnet":
+    a:
+      listen_address: 10.64.32.78
+      jmx_exporter_enabled: true
+  "sessionstore1003.eqiad.wmnet":
+    a:
+      listen_address: 10.64.48.175
+      jmx_exporter_enabled: true
+  "sessionstore2001.codfw.wmnet":
+    a:
+      listen_address: 10.192.16.79
+      jmx_exporter_enabled: true
+  "sessionstore2002.codfw.wmnet":
+    a:
+      listen_address: 10.192.32.15
+      jmx_exporter_enabled: true
+  "sessionstore2003.codfw.wmnet":
+    a:
+      listen_address: 10.192.48.118
+      jmx_exporter_enabled: true
+
+profile::cassandra::settings:
+  start_rpc: 'false'
+  tls_cluster_name: "sessions"
+  dc: "%{::site}"
+  cluster_name: "sessions"
+  application_username: sessions
+  application_password: "%{passwords::cassandra::sessions}"
+  target_version: '3.x'
+  default_instance_params:
+    max_heap_size: 12g
+    # 1/4 heap size, no more than 100m/thread
+    heap_newsize: 2048m
+    compaction_throughput_mb_per_sec: 20
+    concurrent_compactors: 10
+    concurrent_writes: 18
+    concurrent_reads: 18
+    internode_encryption: dc
+    permissions_validity_in_ms: 600000
+    trickle_fsync: false
+    client_encryption_enabled: true
+    disk_failure_policy: best_effort
+
+
+#
+# General
+#
+# role::lvs::realserver::pools:
+#   sessionstore: {}
+
+admin::groups:
+  - sessionstore-roots
+diamond::remove: true
