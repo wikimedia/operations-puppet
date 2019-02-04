@@ -58,14 +58,6 @@ class profile::statsd {
         input_counter => "statsd.${::hostname}-8131.received",
     }
 
-    if $::initsystem == 'upstart' {
-        nrpe::monitor_service { 'statsite_backends':
-            description  => 'statsite backend instances',
-            nrpe_command => '/sbin/statsitectl check',
-            require      => Service['statsite'],
-        }
-    }
-
     $prometheus_labels = "{instance=~\"${::hostname}.*\"}"
     monitoring::check_prometheus { 'statsd_udp_inbound_errors':
         description     => 'statsd UDP receive errors are elevated',

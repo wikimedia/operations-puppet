@@ -28,26 +28,16 @@ define statsite::instance(
 ) {
     $stream_cmd = "python /usr/lib/statsite/sinks/graphite.py ${graphite_host} ${graphite_port} \"\""
 
-    if $::initsystem == 'upstart' {
-        file { "/etc/statsite/${port}.ini":
-            content => template('statsite/statsite.ini.erb'),
-            require => Package['statsite'],
-            notify  => Service['statsite'],
-        }
+    file { "/etc/statsite/${port}.ini":
+        content => template('statsite/statsite.ini.erb'),
+        require => Package['statsite'],
+        notify  => Service["statsite@${port}"],
     }
 
-    if $::initsystem == 'systemd' {
-        file { "/etc/statsite/${port}.ini":
-            content => template('statsite/statsite.ini.erb'),
-            require => Package['statsite'],
-            notify  => Service["statsite@${port}"],
-        }
-
-        service { "statsite@${port}":
-            ensure   => 'running',
-            provider => 'systemd',
-            enable   => true,
-            require  => File['/lib/systemd/system/statsite@.service'],
-        }
+    service { "statsite@${port}":
+        ensure   => 'running',
+        provider => 'systemd',
+        enable   => true,
+        require  => File['/lib/systemd/system/statsite@.service'],
     }
 }

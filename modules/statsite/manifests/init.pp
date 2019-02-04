@@ -32,59 +32,24 @@ class statsite {
         mode   => '0555',
     }
 
-    if $::initsystem == 'upstart' {
-        file { '/sbin/statsitectl':
-            source => 'puppet:///modules/statsite/statsitectl',
-            mode   => '0755',
-        }
-
-        file { '/etc/init/statsite':
-            source  => 'puppet:///modules/statsite/init',
-            recurse => true,
-            purge   => true,
-            force   => true,
-            mode    => '0644',
-            owner   => 'root',
-            group   => 'root',
-        }
-
-        # prevent the system-wide statsite from starting
-        file { '/etc/init/statsite.override':
-            content => 'manual',
-            before  => Package['statsite'],
-        }
-
-        service { 'statsite':
-            ensure   => 'running',
-            provider => 'base',
-            restart  => '/sbin/statsitectl restart',
-            start    => '/sbin/statsitectl start',
-            status   => '/sbin/statsitectl status',
-            stop     => '/sbin/statsitectl stop',
-            require  => Package['statsite'],
-        }
+    # stop the default service and rely on statsite::instance to do the
+    # right thing
+    exec { 'mask_statsite':
+        command => '/bin/systemctl mask statsite.service',
+        creates => '/etc/systemd/system/statsite.service',
+        before  => Package['statsite'],
     }
 
-    if $::initsystem == 'systemd' {
-        # stop the default service and rely on statsite::instance to do the
-        # right thing
-        exec { 'mask_statsite':
-            command => '/bin/systemctl mask statsite.service',
-            creates => '/etc/systemd/system/statsite.service',
-            before  => Package['statsite'],
-        }
+    systemd::unit { 'statsite@':
+        ensure  => present,
+        restart => true,
+        content => systemd_template('statsite@')
+    }
 
-        systemd::unit { 'statsite@':
-            ensure  => present,
-            restart => true,
-            content => systemd_template('statsite@')
-        }
-
-        systemd::unit { 'statsite-instances':
-            ensure  => present,
-            restart => true,
-            content => systemd_template('statsite-instances')
-        }
+    systemd::unit { 'statsite-instances':
+        ensure  => present,
+        restart => true,
+        content => systemd_template('statsite-instances')
     }
 
     rsyslog::conf { 'statsite':
