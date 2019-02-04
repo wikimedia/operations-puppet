@@ -38,7 +38,9 @@ import urllib2
 
 
 TIMEOUT = 30
-BASE_URI = 'http://search.svc.eqiad.wmnet:9200/_all/page/_search'
+# Port 9243 queries the chi cluster. Access the omega and psi clusters through chi
+# by using elasticsearch cross-cluster-search uri syntax.
+BASE_URI = 'https://search.svc.eqiad.wmnet:9243/*,omega:*,psi:*/page/_search'
 NS_MEDIAWIKI = 8
 NS_USER = 2
 NS_MODULE = 828
@@ -152,7 +154,11 @@ try:
     private_wikis = open('/srv/mediawiki/dblists/private.dblist').read().splitlines()
 
     for hit in result['hits']:
-        db_name = hit['_index'].rsplit('_', 2)[0]
+        index_name = hit['_index']
+        if ':' in index_name:
+            # strip cross-cluster identifier
+            _, index_name = index_name.split(':', 1)
+        db_name = index_name.rsplit('_', 2)[0]
         title = hit['_source']['title']
         page_name = '%s%s' % (PREFIX_NS[args.ns], title)
         if db_name in private_wikis:
