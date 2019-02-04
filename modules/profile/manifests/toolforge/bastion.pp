@@ -86,6 +86,12 @@ class profile::toolforge::bastion(
 
     # we need systemd >= 239 for resource control using the user-.slice trick
     # this version is provied in stretch-backports
+    apt::pin { 'toolforge-bastion-systemd':
+        package  => 'systemd',
+        pin      => 'version 239*',
+        priority => '1001',
+    }
+
     package { 'systemd':
         ensure          => present,
         install_options => ['-t', 'stretch-backports'],
