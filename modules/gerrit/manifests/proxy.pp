@@ -23,6 +23,17 @@ class gerrit::proxy(
         contact_group => 'admins,gerrit',
     }
 
+    @monitoring::host { $host:
+        host_fqdn => $host,
+    }
+
+    monitoring::service { 'gerrit-json':
+        description   => 'Gerrit JSON',
+        check_command => "check_https_url_at_address_for_minsize!${host}!/r/changes/?n=25&O=81!10000",
+        contact_group => 'admins,gerrit',
+        host          => $host,
+    }
+
     $ssl_settings = ssl_ciphersuite('apache', 'mid', true)
 
     httpd::site { $tls_host:
