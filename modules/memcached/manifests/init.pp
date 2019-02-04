@@ -46,25 +46,6 @@ class memcached(
         before => Service['memcached'],
     }
 
-    # Debian still installs both, but then simply ignores them.
-    if $::initsystem != 'systemd' {
-        file { '/etc/memcached.conf':
-            content => template('memcached/memcached.conf.erb'),
-            owner   => 'root',
-            group   => 'root',
-            mode    => '0444',
-            before  => Service['memcached'],
-        }
-
-        file { '/etc/default/memcached':
-            source => 'puppet:///modules/memcached/memcached.default',
-            owner  => 'root',
-            group  => 'root',
-            mode   => '0444',
-            before => Service['memcached'],
-        }
-    }
-
     base::service_unit { 'memcached':
         ensure         => present,
         systemd        => systemd_template('memcached'),
