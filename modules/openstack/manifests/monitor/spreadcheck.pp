@@ -36,7 +36,7 @@ class openstack::monitor::spreadcheck(
         nrpe_command => '/usr/local/sbin/wmcs-spreadcheck --config /etc/wmcs-spreadcheck-tools.yaml',
         description  => 'Toolforge instance distribution',
         require      => File[
-            '/usr/local/sbin/wmcs-spreadcheck.py',
+            '/usr/local/sbin/wmcs-spreadcheck',
             '/etc/wmcs-spreadcheck-tools.yaml'
         ],
     }
