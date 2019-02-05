@@ -19,3 +19,5 @@ innodb_ft_max_token_size        = 84
 # ever a way to escape things or use set-variable here. For now, run a SET GLOBAL at startup:
 init_file                      = /etc/mysql/phabricator-init.sql
 
+# Disable local_infile T214248
+local_infile                    = OFF
