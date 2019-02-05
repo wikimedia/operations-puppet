@@ -83,7 +83,7 @@ class openstack::util::admin_scripts(
         owner  => 'root',
         group  => 'root',
         mode   => '0755',
-        source => "puppet:///modules/openstack/${version}/admin_scripts/novastats/wmcs-novastats-imagestats.py",
+        source => "puppet:///modules/openstack/${version}/admin_scripts/wmcs-novastats/wmcs-novastats-imagestats.py",
     }
 
     file { '/usr/local/sbin/wmcs-novastats-capacity':
@@ -91,7 +91,7 @@ class openstack::util::admin_scripts(
         owner  => 'root',
         group  => 'root',
         mode   => '0755',
-        source => "puppet:///modules/openstack/${version}/admin_scripts/novastats/wmcs-novastats-capacity.py",
+        source => "puppet:///modules/openstack/${version}/admin_scripts/wmcs-novastats/wmcs-novastats-capacity.py",
     }
 
     file { '/usr/local/sbin/wmcs-novastats-dnsleaks':
@@ -99,7 +99,7 @@ class openstack::util::admin_scripts(
         owner  => 'root',
         group  => 'root',
         mode   => '0755',
-        source => "puppet:///modules/openstack/${version}/admin_scripts/novastats/wmcs-novastats-dnsleaks.py",
+        source => "puppet:///modules/openstack/${version}/admin_scripts/wmcs-novastats/wmcs-novastats-dnsleaks.py",
     }
 
     file { '/usr/local/sbin/wmcs-novastats-proxyleaks':
@@ -107,7 +107,7 @@ class openstack::util::admin_scripts(
         owner  => 'root',
         group  => 'root',
         mode   => '0755',
-        source => "puppet:///modules/openstack/${version}/admin_scripts/novastats/wmcs-novastats-proxyleaks.py",
+        source => "puppet:///modules/openstack/${version}/admin_scripts/wmcs-novastats/wmcs-novastats-proxyleaks.py",
     }
 
     file { '/usr/local/sbin/wmcs-novastats-puppetleaks':
@@ -115,7 +115,7 @@ class openstack::util::admin_scripts(
         owner  => 'root',
         group  => 'root',
         mode   => '0755',
-        source => "puppet:///modules/openstack/${version}/admin_scripts/novastats/wmcs-novastats-puppetleaks.py",
+        source => "puppet:///modules/openstack/${version}/admin_scripts/wmcs-novastats/wmcs-novastats-puppetleaks.py",
     }
 
     file { '/usr/local/sbin/wmcs-novastats-flavorreport':
@@ -123,7 +123,7 @@ class openstack::util::admin_scripts(
         owner  => 'root',
         group  => 'root',
         mode   => '0755',
-        source => "puppet:///modules/openstack/${version}/admin_scripts/novastats/wmcs-novastats-flavorreport.py",
+        source => "puppet:///modules/openstack/${version}/admin_scripts/wmcs-novastats/wmcs-novastats-flavorreport.py",
     }
 
     file { '/usr/local/sbin/wmcs-novastats-alltrusty':
@@ -131,7 +131,7 @@ class openstack::util::admin_scripts(
         owner  => 'root',
         group  => 'root',
         mode   => '0755',
-        source => "puppet:///modules/openstack/${version}/admin_scripts/novastats/wmcs-novastats-alltrusty.py",
+        source => "puppet:///modules/openstack/${version}/admin_scripts/wmcs-novastats/wmcs-novastats-alltrusty.py",
     }
 
     file { '/usr/local/sbin/wmcs-wikitech-grep':
