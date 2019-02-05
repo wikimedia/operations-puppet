@@ -1,8 +1,8 @@
-# = Class; graphite::labs::archiver
+# = Class; graphite::wmcs::archiver
 #
 # Sets up a cron job that clears metrics from killed instances every
 # hour
-class graphite::labs::archiver {
+class graphite::wmcs::archiver {
 
     # FIXME: no logrotate config?
 

@@ -1269,7 +1269,7 @@ node 'labtestweb2001.wikimedia.org' {
 
 # WMCS Graphite and StatsD hosts
 node /labmon100[12]\.eqiad\.wmnet/ {
-    role(labs::monitoring)
+    role(wmcs::monitoring)
     interface::add_ip6_mapped { 'main': }
 }
 

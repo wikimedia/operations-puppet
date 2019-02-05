@@ -1,11 +1,6 @@
-# = Class: role::labs::graphite
-# Sets up graphite instance for monitoring labs, running on production hardware.
-# Instance is open to all, no password required to see metrics
-class role::labs::graphite {
+class profile::wmcs::graphite {
 
-    require ::profile::openstack::main::observerenv
-    include graphite::labs::archiver
-    include profile::statsite
+    include graphite::wmcs::archiver
 
     class { '::uwsgi': }
 
