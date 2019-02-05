@@ -61,11 +61,12 @@ class openstack::util::admin_scripts(
     }
 
     file { '/root/wmcs-nova-quota-sync/readme.md':
-        ensure => 'present',
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0555',
-        source => "puppet:///modules/openstack/${version}/admin_scripts/wmcs-nova-quota-sync/readme.md",
+        ensure  => 'present',
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0555',
+        source  => "puppet:///modules/openstack/${version}/admin_scripts/wmcs-nova-quota-sync/readme.md",
+        require => File['/root/wmcs-nova-quota-sync'],
     }
 
     # Set up keystone services (example script)
@@ -78,21 +79,19 @@ class openstack::util::admin_scripts(
     }
 
     file { '/usr/local/sbin/wmcs-novastats-imagestats':
-        ensure  => 'present',
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0755',
-        source  => "puppet:///modules/openstack/${version}/admin_scripts/novastats/wmcs-novastats-imagestats.py",
-        require => File['/usr/local/sbin/wmcs-novastats'],
+        ensure => 'present',
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0755',
+        source => "puppet:///modules/openstack/${version}/admin_scripts/novastats/wmcs-novastats-imagestats.py",
     }
 
     file { '/usr/local/sbin/wmcs-novastats-capacity':
-        ensure  => 'present',
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0755',
-        source  => "puppet:///modules/openstack/${version}/admin_scripts/novastats/wmcs-novastats-capacity.py",
-        require => File['/usr/local/sbin/wmcs-novastats'],
+        ensure => 'present',
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0755',
+        source => "puppet:///modules/openstack/${version}/admin_scripts/novastats/wmcs-novastats-capacity.py",
     }
 
     file { '/usr/local/sbin/wmcs-novastats-dnsleaks':
