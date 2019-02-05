@@ -22,16 +22,6 @@ class profile::ci::jenkins(
         builds_dir      => $builds_dir,
         workspaces_dir  => $workspaces_dir,
     }
-    # Nodepool spawns non ephemeral slaves which causes config-history plugin
-    # to fill up entries until it reaches the limit of 32k inodes. T126552
-    cron { 'tidy_jenkins_ephemeral_nodes_configs':
-        ensure      => present,
-        environment => 'MAILTO=jenkins-bot@wikimedia.org',
-        user        => 'jenkins',
-        command     => "/usr/bin/find /var/lib/jenkins/config-history/nodes -path '/var/lib/jenkins/config-history/nodes/ci-*' -mmin +60 -delete > /dev/null 2>&1",
-        minute      => '35',
-        hour        => '*',
-    }
 
     # Templates for Jenkins plugin Email-ext.  The templates are hosted in
     # the repository integration/jenkins.git, so link to there.
