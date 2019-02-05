@@ -55,12 +55,6 @@ class profile::graphite::production {
         directory => "${storage_dir}/whisper/gerrit",
     }
 
-    # Nodepool, which has several metrics for each of the Jenkins jobs
-    graphite::whisper_cleanup { 'graphite-nodepool':
-        directory => "${storage_dir}/whisper/nodepool",
-        keep_days => 15,
-    }
-
     # Cassandra metrics - T179057
     graphite::whisper_cleanup { 'graphite-cassandra':
         directory => "${storage_dir}/whisper/cassandra",
