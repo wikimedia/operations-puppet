@@ -14,30 +14,40 @@ class openstack::monitor::spreadcheck(
 
     # Script that checks how 'spread out' critical instances for a project
     # are. See T101635
-    file { '/usr/local/bin/spreadcheck.py':
+    file { '/usr/local/sbin/wmcs-spreadcheck':
         ensure => $ensure,
         owner  => 'root',
         group  => 'root',
         mode   => '0755',
-        source => 'puppet:///modules/openstack/monitor/spreadcheck.py',
+        source => 'puppet:///modules/openstack/monitor/wmcs-spreadcheck.py',
     }
 
     # Config file to check how spread out toolforge critical instances are
-    file { '/usr/local/etc/spreadcheck-tools.yaml':
+    file { '/etc/wmcs-spreadcheck-tools.yaml':
         ensure => $ensure,
         owner  => 'nagios',
         group  => 'nagios',
         mode   => '0400',
-        source => 'puppet:///modules/openstack/monitor/spreadcheck-tools.yaml',
+        source => 'puppet:///modules/openstack/monitor/wmcs-spreadcheck-tools.yaml',
     }
 
     nrpe::monitor_service { 'check-tools-spread':
         ensure       => $ensure,
-        nrpe_command => '/usr/local/bin/spreadcheck.py --config /usr/local/etc/spreadcheck-tools.yaml',
+        nrpe_command => '/usr/local/sbin/wmcs-spreadcheck --config /etc/wmcs-spreadcheck-tools.yaml',
         description  => 'Toolforge instance distribution',
         require      => File[
-            '/usr/local/bin/spreadcheck.py',
-            '/usr/local/etc/spreadcheck-tools.yaml'
+            '/usr/local/sbin/wmcs-spreadcheck.py',
+            '/etc/wmcs-spreadcheck-tools.yaml'
         ],
+    }
+
+    # renaming cleanup
+    $files = [
+        '/usr/local/bin/spreadcheck.py',
+        '/usr/local/etc/spreadcheck-tools.yaml',
+    ]
+
+    file { $files:
+        ensure => 'absent',
     }
 }
