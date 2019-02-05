@@ -47,19 +47,6 @@ class releases::reprepro (
     class { '::aptrepo::distribution':
         basedir  => $basedir,
         settings => {
-            'trusty' => {
-                'Origin'        => 'MediaWiki',
-                'Label'         => 'MediaWiki',
-                'Suite'         => 'trusty-mediawiki',
-                'Codename'      => 'trusty-mediawiki',
-                'AlsoAcceptFor' => 'trusty',
-                'Version'       => '14.04',
-                'Architectures' => 'source amd64 i386',
-                'Components'    => 'main',
-                'Description'   => 'MediaWiki packages for Ubuntu Trusty Tahr',
-                'SignWith'      => 'default',
-                'Log'           => "trusty-mediawiki\n  log",
-            },
             'jessie' => {
                 'Origin'        => 'MediaWiki',
                 'Label'         => 'MediaWiki',
