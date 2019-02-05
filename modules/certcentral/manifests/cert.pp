@@ -13,17 +13,6 @@ define certcentral::cert (
         }
     }
 
-    @@file { "/etc/certcentral/conf.d/authorisedhost_${title}__${::fqdn}.yaml":
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0444',
-        content => ordered_yaml({
-            'hostname' => $::fqdn,
-            'certname' => $title
-        }),
-        tag     => 'certcentral-authorisedhosts',
-    }
-
     ['rsa-2048', 'ec-prime256v1'].each |String $type| {
         # lint:ignore:puppet_url_without_modules
         file { "/etc/centralcerts/${title}.${type}.crt":
