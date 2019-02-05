@@ -1,7 +1,7 @@
 # == Class contint::packages::php
 class contint::packages::php {
 
-    if os_version('ubuntu == trusty || debian == jessie') {
+    if os_version('debian == jessie') {
       include ::contint::packages::php5
 
       require_package( [
@@ -33,48 +33,19 @@ class contint::packages::php {
       }
     }
 
-    if os_version('debian >= jessie') {
-        $php7_packages = [
-            # PHP 7.0 version of Mediawiki packages
-            'php7.0-cli',
-            'php7.0-common',
-            # Note: Missing luasandbox and wikidiff2
-            # PHP extensions
-            'php7.0-curl',
-            'php7.0-gmp',
-            # missing geoip
-            'php7.0-intl',
-            'php-memcached',
-            'php7.0-mysql',
-            'php-redis',
-            'php7.0-xmlrpc',
-            # CI packages from above
-            'php7.0-dev',
-            'php7.0-ldap',
-            'php7.0-gd',
-            'php7.0-pgsql',
-            'php7.0-sqlite3',
-            'php7.0-tidy',
-            'php-xdebug',
-            'php7.0-phpdbg',  # php70-phpdbg -qrr ...
-            'php7.0-zip', # composer wants it, and we install it for jessie below
-            # ..and these are part of php5-common,
-            # but now are separate packages
-            'php7.0-bcmath',
-            'php7.0-mbstring',
-            'php7.0-xml',
-            'php-imagick',
-            'php-tideways',
-            # for phan (T132636)
-            'php-ast',
-        ]
+    $php7_packages = ['php7.0-cli', 'php7.0-common', 'php7.0-curl',
+                      'php7.0-gmp', 'php7.0-intl', 'php-memcached',
+                      'php7.0-mysql', 'php-redis', 'php7.0-xmlrpc',
+                      'php7.0-dev', 'php7.0-ldap', 'php7.0-gd',
+                      'php7.0-pgsql', 'php7.0-sqlite3', 'php7.0-tidy',
+                      'php-xdebug', 'php7.0-phpdbg', 'php7.0-zip',
+                      'php7.0-bcmath','php7.0-mbstring', 'php7.0-xml',
+                      'php-imagick', 'php-tideways', 'php-ast']
 
-      exec { 'disable php-xdebug on cli':
-          command => '/usr/sbin/phpdismod -v 7.0 -s cli xdebug',
-          onlyif  => '/usr/sbin/phpquery -v 7.0 -s cli -m xdebug',
-          require => Package['php-xdebug'],
-      }
-
+    exec { 'disable php-xdebug on cli':
+        command => '/usr/sbin/phpdismod -v 7.0 -s cli xdebug',
+        onlyif  => '/usr/sbin/phpquery -v 7.0 -s cli -m xdebug',
+        require => Package['php-xdebug'],
     }
 
     if os_version('debian >= stretch') {
