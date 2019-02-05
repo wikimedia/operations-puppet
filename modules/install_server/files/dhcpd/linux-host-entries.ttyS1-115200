@@ -6575,6 +6575,11 @@ host sulfur {
     fixed-address sulfur.wikimedia.org;
 }
 
+host theemin {
+    hardware ethernet D0:94:66:5F:67:68;
+    fixed-address theemin.codfw.wmnet;
+}
+
 host torrelay1001 {
     hardware ethernet D0:94:66:5F:56:7C;
     fixed-address torrelay1001.wikimedia.org;
