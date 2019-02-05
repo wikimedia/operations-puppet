@@ -267,7 +267,8 @@ groups:
               kaldari, goransm, ema, dsaez, shiladsen, rho, mirrys, slaporte, jk,
               ayounsi, mepps, mmiller, seddon, gilles, tstarling, pirroh, rush, tieu, karen,
               cicalese, drossi, fsalutari, nathante, gbirke, isaacj, sbassett, jdl,
-              niharika29, ryanmax, afandian2, jgleeson, toddleroux, srishakatux, dsharpe]
+              niharika29, ryanmax, afandian2, jgleeson, toddleroux, srishakatux, dsharpe,
+              juliaglen]
     system_members: [analytics-search]
   analytics-admins:
     gid: 732
@@ -3164,6 +3165,17 @@ users:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIIVizg41yHoKMzYqsBQjMbcQa5YKjrZyQIxuM4nrfKv5 dsharpe@Davids-MBP
     uid: 20828
     email: dsharpe@wikimedia.org
+  juliaglen:
+    ensure: present
+    gid: 500
+    name: juliaglen
+    realname: Julia Komissarchik
+    ssh_keys:
+      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCL/2272t2XnknwF5gqkjYrAnVhQNs2ckRXYbpHSze3JjkzVzIZgMDKYABFMCqD0ELS4okdn/3kLiZYCCmTTINCEumxBxjvb2S8p6wAIN6fH28DYEmrEByX1XA51m4J3xZPtZYUjnr+vOR+aJrmvSplIP3HoEOkagcT4kD0s7skKFmPpzFaGt507RWfdfwuiplY6NiZnPGijpz/S8QjlSCzgWZkkgdph8xhocpQUo9Cg5XxIPUfXfntNIFyEwwyIjFzTxwMycP6hZ970+g6w4UCtCfbsPNao20tzflBLKkCVTso/mkOVED3Hoj3tWlLxdIwJaLxAlDto7V/Je5xwmOj
+    uid: 20916
+    email: julia@glenbrooknet.com
+    expiry_date: 2019-05-31
+    expiry_contact: nuria@wikimedia.org
 
 ldap_only_users:
   abartov:
