@@ -120,12 +120,12 @@ class role::prometheus::beta (
         proxy_pass => 'http://127.0.0.1:9903/beta',
     }
 
-    prometheus::rule { 'rules_beta':
+    prometheus::rule { 'rules_beta.yml':
         instance => 'beta',
         source   => 'puppet:///modules/role/prometheus/rules_beta.yml',
     }
 
-    prometheus::rule { 'alerts_beta':
+    prometheus::rule { 'alerts_beta.yml':
         instance => 'beta',
         source   => 'puppet:///modules/role/prometheus/alerts_beta.yml',
     }
