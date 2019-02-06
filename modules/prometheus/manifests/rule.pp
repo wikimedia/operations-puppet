@@ -20,15 +20,16 @@ define prometheus::rule (
     $instance_path = "/srv/prometheus/${instance}",
 ) {
     validate_ensure($ensure)
-    validate_re($title, '.conf$')
 
     $service_name = "prometheus@${instance}"
     $file_path = "${instance_path}/rules/${title}"
 
     $prometheus_v2 = hiera('prometheus::server::prometheus_v2', false)
     if $prometheus_v2 {
+      validate_re($title, '.yml$')
       $validate_cmd = '/usr/bin/promtool check rules %'
     } else {
+      validate_re($title, '.conf$')
       $validate_cmd = '/usr/bin/promtool check-rules %'
     }
 
