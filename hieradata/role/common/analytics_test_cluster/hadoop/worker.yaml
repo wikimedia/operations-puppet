@@ -3,6 +3,9 @@ cluster: analytics
 
 admin::groups:
   - analytics-admins
+admin::groups_no_ssh:
+  - analytics-users
+  - analytics-privatedata-users
 
 profile::hadoop::common::hadoop_cluster_name: 'analytics-test-hadoop'
 
