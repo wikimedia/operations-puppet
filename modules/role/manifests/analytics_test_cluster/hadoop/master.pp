@@ -3,7 +3,7 @@
 #
 # filtertags: labs-project-analytics labs-project-math
 class role::analytics_test_cluster::hadoop::master {
-    system::role { 'analytics_cluster::hadoop::master':
+    system::role { 'analytics_test_cluster::hadoop::master':
         description => 'Hadoop Master (NameNode & ResourceManager)',
     }
 

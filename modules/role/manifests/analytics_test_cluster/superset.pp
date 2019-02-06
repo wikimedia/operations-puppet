@@ -2,7 +2,7 @@
 #
 #
 class role::analytics_test_cluster::superset {
-    system::role { 'analytics_cluster::superset':
+    system::role { 'analytics_test_cluster::superset':
         description => 'Superset web GUI for analytics dashboards'
     }
 
