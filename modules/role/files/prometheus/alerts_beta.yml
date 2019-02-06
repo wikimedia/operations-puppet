@@ -16,8 +16,7 @@ groups:
     labels:
       severity: crit
     annotations:
-      SUMMARY: '{{$labels.instance}} sustained iowait at {{ printf "%3.2f" $value
-        }}%'
+      SUMMARY: '{{$labels.instance}} sustained iowait at {{ printf "%3.2f" $value }}%'
 - name: beta_puppet_alerts
   rules:
   - alert: PuppetHugeFail
@@ -26,7 +25,7 @@ groups:
     labels:
       severity: crit
     annotations:
-      SUMMARY: Puppet widespread failure: {{ printf "%3.2f" $value }}%
+      SUMMARY: 'Puppet widespread failure: {{ printf "%3.2f" $value }}%'
   - alert: meta_PuppetHugeFail
     expr: absent((sum(puppet_agent_failed) / count(puppet_agent_failed)) * 100)
     for: 10m
