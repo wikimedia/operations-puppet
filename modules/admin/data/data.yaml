@@ -3208,6 +3208,10 @@ ldap_only_users:
     ensure: present
     realname: (known to Legal)
     email: daimona.wiki@gmail.com
+  egardner:
+    ensure: present
+    realname: Eric Gardner
+    email: egardner@wikimedia.org
   ferdbold:
     ensure: present
     realname: Frederic Bolduc
