@@ -20,3 +20,4 @@ profile::mediawiki::vhost_feature_flags: {}
 # bail out in case a long-lasting C function is called and
 # excimer can't throw its exception
 profile::mediawiki::php::request_timeout: 201
+profile::tlsproxy::instance::bootstrap_protection: true

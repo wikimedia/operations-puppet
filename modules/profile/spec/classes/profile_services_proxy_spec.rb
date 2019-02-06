@@ -42,7 +42,7 @@ describe 'profile::services_proxy' do
                            .with_content(/upstream foobar_testsite/)
         }
         it {
-          is_expected.to contain_class('tlsproxy::instance')
+          is_expected.to contain_class('profile::tlsproxy::instance')
         }
       end
       context "with ensure absent" do

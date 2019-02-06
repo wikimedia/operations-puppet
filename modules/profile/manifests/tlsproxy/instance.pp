@@ -1,5 +1,12 @@
 # This defines the actual nginx daemon/instance which tlsproxy "sites" belong to
-class tlsproxy::instance {
+class profile::tlsproxy::instance(
+    Boolean $websocket_support = hiera('cache::websocket_support', false),
+    Boolean $lua_support = hiera('cache::lua_support', false),
+    Boolean $nginx_tune_for_media = hiera('cache::tune_for_media', false),
+    String $nginx_client_max_body_size = hiera('tlsproxy::nginx_client_max_body_size', '100m'),
+    Boolean $bootstrap_protection = hiera('profile::tlsproxy::instance::bootstrap_protection', false),
+    Enum['full', 'extras', 'light'] $nginx_variant = hiera('profile::tlsproxy::instance::nginx_variant', 'full')
+) {
     # Enable client/server TCP Fast Open (TFO)
     #
     # The values (bitmap) are:
@@ -16,12 +23,8 @@ class tlsproxy::instance {
         },
     }
 
-    $websocket_support = hiera('cache::websocket_support', false)
-    $lua_support = hiera('cache::lua_support', false)
     $nginx_worker_connections = '131072'
     $nginx_ssl_conf = ssl_ciphersuite('nginx', 'compat')
-    $nginx_tune_for_media = hiera('cache::tune_for_media', false)
-    $nginx_client_max_body_size = hiera('tlsproxy::nginx_client_max_body_size', '100m')
 
     # If numa_networking is turned on, use interface_primary for NUMA hinting,
     # otherwise use 'lo' for this purpose.  Assumes NUMA data has "lo" interface
@@ -33,7 +36,27 @@ class tlsproxy::instance {
         $numa_iface = 'lo'
     }
 
-    class { 'nginx': managed => false, }
+    # If nginx will be installed on a system where apache is already
+    # running, the postinst script will fail to start it with the default
+    # configuration as port 80 is already in use. This is considered working
+    # as designed by Debian, see
+    #    https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=754407
+    # However, we need the installation to complete correctly for puppet to
+    # work as expected, hence we pre-install a configuration that will make
+    # that possible. Note this file will be overwritten by puppet when
+    # the nginx configuration gets installed properly.
+    if $bootstrap_protection {
+        exec { 'Dummy nginx.conf for installation':
+            command => '/bin/mkdir -p /etc/nginx && /bin/echo -e "events { worker_connections 1; }\nhttp{ server{ listen 666; }}\n" > /etc/nginx/nginx.conf',
+            creates => '/etc/nginx/nginx.conf',
+            before  => Class['nginx'],
+        }
+    }
+
+    class { 'nginx':
+        variant => $nginx_variant,
+        managed => false,
+    }
 
     if $lua_support {
         require_package([ 'libnginx-mod-http-lua', 'libnginx-mod-http-ndk' ])
@@ -48,13 +71,13 @@ class tlsproxy::instance {
     }
 
     file { '/etc/nginx/nginx.conf':
-        content => template('tlsproxy/nginx.conf.erb'),
+        content => template('profile/tlsproxy/nginx.conf.erb'),
         tag     => 'nginx',
     }
 
     logrotate::conf { 'nginx':
         ensure => present,
-        source => 'puppet:///modules/tlsproxy/logrotate',
+        source => 'puppet:///modules/profile/tlsproxy/logrotate',
         tag    => 'nginx',
     }
 
@@ -75,7 +98,7 @@ class tlsproxy::instance {
         mode    => '0444',
         owner   => 'root',
         group   => 'root',
-        content => template('tlsproxy/nginx-numa.conf.erb'),
+        content => template('profile/tlsproxy/nginx-numa.conf.erb'),
         before  => Class['nginx'],
         require => File[$sysd_nginx_dir],
     }
@@ -85,7 +108,7 @@ class tlsproxy::instance {
         mode    => '0444',
         owner   => 'root',
         group   => 'root',
-        source  => 'puppet:///modules/tlsproxy/nginx-security.conf',
+        source  => 'puppet:///modules/profile/tlsproxy/nginx-security.conf',
         before  => Class['nginx'],
         require => File[$sysd_nginx_dir],
     }

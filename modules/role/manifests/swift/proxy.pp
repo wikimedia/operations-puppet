@@ -22,7 +22,7 @@ class role::swift::proxy (
     }
 
     if $use_tls {
-        include ::tlsproxy::nginx_bootstrap
+        require ::profile::tlsproxy::instance
 
         tlsproxy::localssl { 'unified':
             server_name    => $::swift::proxy::proxy_service_host,
@@ -100,4 +100,3 @@ class role::swift::proxy (
         check_command => "check_http_url!${::swift::proxy::proxy_service_host}!/monitoring/backend",
     }
 }
-

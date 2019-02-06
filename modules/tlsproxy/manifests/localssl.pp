@@ -87,8 +87,8 @@ define tlsproxy::localssl(
     if $redir_port != undef and $tls_port != 443 {
         fail('http -> https redirect only works with default 443 HTTPS port.')
     }
-
-    require tlsproxy::instance
+    # TODO: move this define to the profile module too?
+    require ::profile::tlsproxy::instance
 
     $websocket_support = hiera('cache::websocket_support', false)
     $nginx_proxy_request_buffering = hiera('tlsproxy::localssl::proxy_request_buffering', 'on')

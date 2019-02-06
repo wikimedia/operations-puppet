@@ -151,6 +151,7 @@ class profile::mediawiki::webserver(
     }
     if $has_tls {
         # TLSproxy instance to accept traffic on port 443
+        require ::profile::tlsproxy::instance
 
         # Get the cert name from
         if $has_lvs {
@@ -168,8 +169,6 @@ class profile::mediawiki::webserver(
         else {
             $certs = [$::fqdn]
         }
-
-        class { '::tlsproxy::nginx_bootstrap': }
 
         tlsproxy::localssl { 'unified':
             server_name    => 'www.wikimedia.org',

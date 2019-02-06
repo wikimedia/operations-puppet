@@ -7,7 +7,7 @@ class profile::etcd::tlsproxy(
     Wmflib::IpPort $upstream_port = hiera('profile::etcd::tlsproxy::upstream_port'),
     Boolean $tls_upstream = hiera('profile::etcd::tlsproxy::tls_upstream')
 ) {
-    require ::tlsproxy::instance
+    require ::profile::tlsproxy::instance
     require ::passwords::etcd
 
     $accounts = $::passwords::etcd::accounts

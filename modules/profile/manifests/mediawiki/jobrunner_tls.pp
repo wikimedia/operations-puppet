@@ -4,8 +4,7 @@
 #
 class profile::mediawiki::jobrunner_tls {
     require ::profile::mediawiki::jobrunner
-
-    class { '::tlsproxy::nginx_bootstrap': }
+    require ::profile::tlsproxy::instance
 
     each({'jobrunner' => 1200, 'videoscaler' => 86400}) |$sitename, $timeout| {
         $certname = "${sitename}.svc.${::site}.wmnet"

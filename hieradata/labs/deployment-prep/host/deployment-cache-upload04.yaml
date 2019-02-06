@@ -1,4 +1,4 @@
-nginx::variant: extras
+profile::tlsproxy::instance::nginx_variant: extras
 cache::lua_support: true
 cluster: cache_text
 "cache::cluster": upload

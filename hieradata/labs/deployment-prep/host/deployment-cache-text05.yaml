@@ -1,4 +1,4 @@
-nginx::variant: extras
+profile::tlsproxy::instance::nginx_variant: extras
 cache::lua_support: true
 cluster: cache_text
 "cache::cluster": text
@@ -103,4 +103,3 @@ cluster: cache_text
     - zh.m.wikipedia.beta.wmflabs.org
     - zh.zero.wikipedia.beta.wmflabs.org
     - commons.wikipedia.beta.wmflabs.org
-

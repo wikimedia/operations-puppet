@@ -20,13 +20,11 @@ class profile::services_proxy(
     ]] $services = hiera('profile::services_proxy::services', undef),
       ) {
     if $ensure == 'present' {
+
         if $services == undef {
             fail('You must declare services if the proxy is to be present')
         }
-        # TODO: rename "tlsproxy::instance" to signal it's really a profile
-        # lint:ignore:wmf_styleguide
-        require ::tlsproxy::instance
-        # lint:endignore
+        require profile::tlsproxy::instance
     }
     # Some parameters that we don't need to parametrize for now
     # How long to keepalive a connection
