@@ -33,6 +33,7 @@ message_logs = false
 # Policy control
 acl_smtp_connect = acl_check_connect
 acl_smtp_helo = acl_check_helo
+acl_smtp_mail = acl_check_mail
 acl_smtp_rcpt = acl_check_rcpt
 acl_smtp_data = acl_check_data
 
@@ -186,6 +187,15 @@ acl_check_helo:
 
 	accept
 
+acl_check_mail:
+
+	# warn if an unknown host attempts to issue a mail from from command containing one of our domains
+	# change from warn to delay & drop to enforce this
+	warn log_message = MAIL FROM FAILURE ref1 (Remote said: MAIL FROM: $sender_address - Problem: envelope from addresses containing domains listed in local_domains are only allowed from hosts listed in the wikimedia_nets or relay_from_hosts exim hostslists)
+		condition  = ${if match_domain{$sender_address_domain}{+local_domains}{yes}{no}}
+		!hosts     = +wikimedia_nets : +relay_from_hosts
+
+	accept
 
 acl_check_data:
 	# Let's trust local senders to not send out spam
