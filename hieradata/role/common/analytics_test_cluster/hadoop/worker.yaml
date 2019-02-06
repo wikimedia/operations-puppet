@@ -3,6 +3,10 @@ cluster: analytics
 
 admin::groups:
   - analytics-admins
+  # elasticsearch::analytics creates the analytics-search user and group
+  # that analytics-search-users are allowed to sudo to.  This is used
+  # for deploying files to HDFS.
+  - analytics-search-users
 admin::groups_no_ssh:
   - analytics-users
   - analytics-privatedata-users
