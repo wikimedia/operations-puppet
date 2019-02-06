@@ -6,4 +6,5 @@ class role::wmcs::openstack::eqiad1::virt {
     include ::profile::openstack::eqiad1::observerenv
     include ::profile::openstack::eqiad1::nova::common
     include ::profile::openstack::eqiad1::nova::compute::service
+    include ::profile::openstack::eqiad1::envscripts
 }
