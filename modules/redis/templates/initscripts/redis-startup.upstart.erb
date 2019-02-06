@@ -1,7 +1,0 @@
-description "create required directories for redis"
-
-start on mounted MOUNTPOINT=/run TYPE=tmpfs
-
-task
-
-exec install -d -o redis -g redis /var/run/redis

@@ -54,19 +54,11 @@ class redis {
     }
 
     # ensure that /var/run/redis is created at boot
-    if os_version('debian >= jessie') {
-        file { '/etc/tmpfiles.d/redis-startup.conf':
-            ensure  => present,
-            owner   => 'root',
-            group   => 'root',
-            mode    => '0444',
-            content => 'd /var/run/redis 0755 redis redis',
-        }
-    } else {
-        base::service_unit { 'redis-startup':
-            ensure          => present,
-            upstart         => upstart_template('redis-startup'),
-            declare_service => false,
-        }
+    file { '/etc/tmpfiles.d/redis-startup.conf':
+        ensure  => present,
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0444',
+        content => 'd /var/run/redis 0755 redis redis',
     }
 }
