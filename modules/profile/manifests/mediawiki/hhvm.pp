@@ -33,6 +33,7 @@ class profile::mediawiki::hhvm(
 
     $fcgi_settings =  {
         # See https://docs.hhvm.com/hhvm/configuration/INI-settings
+        # https://secure.php.net/ini.core#ini.auto-prepend-file
         auto_prepend_file => '/srv/mediawiki/wmf-config/PhpAutoPrepend.php',
         hhvm              =>
         {

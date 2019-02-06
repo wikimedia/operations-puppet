@@ -217,8 +217,6 @@ profile::memcached::port: '11211'
 "profile::cxserver::apertium_uri": http://apertium-beta.wmflabs.org
 role::deployment::mediawiki::key_fingerprint: f0:54:06:fa:17:27:97:a2:cc:69:a0:a7:df:4c:0a:e3
 mediawiki::hhvm::extra_fcgi:
-    # https://phabricator.wikimedia.org/T180183
-    auto_prepend_file: /srv/mediawiki/wmf-config/PhpAutoPrepend-labs.php
     hhvm:
         xenon:
           # Beta Cluster: Sample an HHVM thread once every 30 seconds
