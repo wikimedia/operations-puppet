@@ -1,23 +1,12 @@
 # profile class for WMCS monitoring specific stuff
 
 class profile::wmcs::monitoring (
-    $monitoring_master = hiera('profile::openstack::main::statsd_host'),
-    $monitoring_standby = hiera('profile::openstack::main::statsd_host_standby'),
+    String $monitoring_master = lookup('profile::wmcs::monitoring::statsd_master'),
+    String $monitoring_standby = lookup('profile::wmcs::monitoring::statsd_standby'),
 ) {
-    $packages = [
-        'python-keystoneauth1',
-        'python-keystoneclient',
-        'python-novaclient',
-        'rsync',
-    ]
+    require ::profile::openstack::eqiad1::clientpackages
 
-    package { $packages:
-        ensure => 'present',
-    }
-
-    #
     # hourly cron to rsync whisper files
-    #
     ssh::userkey { '_graphite':
         ensure  => 'present',
         content => secret('ssh/wmcs/monitoring/wmcs_monitoring_rsync.pub'),

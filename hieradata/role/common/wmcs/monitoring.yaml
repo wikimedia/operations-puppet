@@ -16,6 +16,8 @@ profile::grafana::ldap_edit_groups:
   - cn=wmf,ou=groups,dc=wikimedia,dc=org
   - cn=grafana-admin,ou=groups,dc=wikimedia,dc=org
   - cn=project-bastion,ou=groups,dc=wikimedia,dc=org
+profile::wmcs::monitoring::statsd_master: labmon1001.eqiad.wmnet
+profile::wmcs::monitoring::statsd_standby: labmon1002.eqiad.wmnet
 # In private repo
 #profile::grafana::secret_key:
 #profile::grafana::admin_password:
