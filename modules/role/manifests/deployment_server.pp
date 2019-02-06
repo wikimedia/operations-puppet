@@ -14,4 +14,6 @@ class role::deployment_server {
     include ::profile::kubernetes::deployment_server
     include ::profile::mediawiki::web_testing
     backup::set {'home': }
+    # proxy for connection to other servers
+    include ::profile::services_proxy
 }
