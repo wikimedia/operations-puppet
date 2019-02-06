@@ -39,12 +39,7 @@ define prometheus::rule (
         owner        => 'root',
         source       => $source,
         content      => $content,
-        notify       => Exec["${service_name}-rules-reload"],
+        notify       => Exec["${service_name}-reload"],
         validate_cmd => $validate_cmd,
-    }
-
-    exec { "${service_name}-rules-reload":
-        command     => "/bin/systemctl reload ${service_name}",
-        refreshonly => true,
     }
 }
