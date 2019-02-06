@@ -39,7 +39,7 @@ IDENTIFIED BY '<%= @root_pass %>';
 GRANT ALL PRIVILEGES
 ON *.* TO 'root'@'10.64.48.17';
 
--- parsoid testing database from ruthenium/scandium
+-- parsoid testing database from scandium
 CREATE USER 'testreduce'@'10.64.16.155'
 IDENTIFIED BY '<%= @testreduce_pass %>';
 
@@ -53,7 +53,7 @@ GRANT SELECT, INSERT, UPDATE, DELETE, CREATE, DROP, ALTER,
       CREATE TEMPORARY TABLES
 ON `testreduce_vd`.* TO 'testreduce'@'10.64.16.155';
 
--- parsoid testing database from ruthenium/scandium
+-- parsoid testing database from scandium
 -- (command line access for ssastry)
 CREATE USER 'ssastry'@'10.64.16.155'
 IDENTIFIED BY '<%= @testreduce_cli_pass %>';
@@ -140,22 +140,6 @@ IDENTIFIED BY '<%= @root_pass %>';
 
 GRANT ALL PRIVILEGES
 ON *.* TO 'root'@'10.64.48.17';
-
--- parsoid testing database from ruthenium
-CREATE USER 'testreduce'@'10.64.16.151' IDENTIFIED BY '<%= @testreduce_pass %>';
-GRANT SELECT, INSERT, UPDATE, DELETE, CREATE, DROP, ALTER, CREATE TEMPORARY TABLES
-ON `testreduce`.* TO 'testreduce'@'10.64.16.151';
-GRANT SELECT, INSERT, UPDATE, DELETE, CREATE, DROP, ALTER, CREATE TEMPORARY TABLES
-ON `testreduce_0715`.* TO 'testreduce'@'10.64.16.151';
-GRANT SELECT, INSERT, UPDATE, DELETE, CREATE, DROP, ALTER, CREATE TEMPORARY TABLES
-ON `testreduce_vd`.* TO 'testreduce'@'10.64.16.151';
-
--- parsoid testing database from ruthenium (command line access for ssastry)
-CREATE USER 'ssastry'@'10.64.16.151' IDENTIFIED BY '<%= @testreduce_cli_pass %>';
-GRANT SELECT, INSERT, UPDATE, DELETE, ALTER, DROP
-ON `testreduce_0715`.* TO 'ssastry'@'10.64.16.151';
-GRANT SELECT, INSERT, UPDATE, DELETE, ALTER, DROP
-ON `testreduce_vd`.* TO 'ssastry'@'10.64.16.151';
 
 -- parsoid testing database from scandium
 CREATE USER 'testreduce'@'10.64.48.94'
