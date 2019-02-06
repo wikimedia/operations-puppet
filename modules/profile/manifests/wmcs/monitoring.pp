@@ -1,6 +1,6 @@
-# profile class for labs monitoring specific stuff
+# profile class for WMCS monitoring specific stuff
 
-class profile::labs::monitoring (
+class profile::wmcs::monitoring (
     $monitoring_master = hiera('profile::openstack::main::statsd_host'),
     $monitoring_standby = hiera('profile::openstack::main::statsd_host_standby'),
 ) {
