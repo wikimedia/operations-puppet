@@ -12,6 +12,8 @@ define varnish::instance(
     $backend_caches={},
     $extra_vcl = [],
     $separate_vcl = [],
+    $wikimedia_nets = [],
+    $wikimedia_trust = [],
 ) {
 
     include ::varnish::common
@@ -98,6 +100,8 @@ define varnish::instance(
             app_directors   => $app_directors,
             app_def_be_opts => $app_def_be_opts,
             is_separate_vcl => $vcl_name in $separate_vcl,
+            wikimedia_nets  => $wikimedia_nets,
+            wikimedia_trust => $wikimedia_trust,
         }
 
         varnish::wikimedia_vcl { "/etc/varnish/wikimedia_${vcl_name}.vcl":
@@ -126,6 +130,8 @@ define varnish::instance(
             app_directors   => $app_directors,
             app_def_be_opts => $app_def_be_opts,
             is_separate_vcl => $vcl_name in $separate_vcl,
+            wikimedia_nets  => $wikimedia_nets,
+            wikimedia_trust => $wikimedia_trust,
         }
 
         varnish::wikimedia_vcl { "/usr/share/varnish/tests/wikimedia_${vcl_name}.vcl":
