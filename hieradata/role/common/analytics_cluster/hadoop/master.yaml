@@ -2,13 +2,13 @@ nagios_group: analytics_eqiad
 cluster: analytics
 admin::groups:
   - analytics-admins
+admin::groups_no_ssh:
+  - analytics-users
+  - analytics-privatedata-users
   # elasticsearch::analytics creates the analytics-search user and group
   # that analytics-search-users are allowed to sudo to.  This is used
   # for deploying files to HDFS.
   - analytics-search-users
-admin::groups_no_ssh:
-  - analytics-users
-  - analytics-privatedata-users
 
 profile::hadoop::master::monitoring_enabled: true
 profile::hadoop::logstash::enabled: false
