@@ -9,7 +9,7 @@ class profile::openstack::base::nova::compute::service(
     $network_flat_interface_vlan = hiera('profile::openstack::base::nova::network_flat_interface_vlan'),
     ) {
 
-    require_package('conntrack')
+    require_package('conntrack', 'libguestfs-tools')
 
     # If this node was previously a 'spare' node then it will have ferm installed
     #  which will interfere with various nova things
