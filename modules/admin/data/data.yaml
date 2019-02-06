@@ -3168,6 +3168,10 @@ ldap_only_users:
     ensure: present
     realname: Alex Ezell
     email: aezell@wikimedia.org
+  alaasarhan:
+    ensure: present
+    realname: Alaa Sarhan
+    email: alaa.sarhan@wikimedia.de
   albe:
     ensure: absent
     realname: Aleksey Bekh-Ivanov
