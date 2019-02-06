@@ -32,8 +32,3 @@ endif
 if $header_from: matches "<[0-9]+@qq.com" and $header_to: contains "owner" then
         fail text "Message rejected ref3"
 endif
-
-# Filter spam to our mailing lists with the same subject but with spoofed email addresses.
-if $header_subject: contains "Directorio Empresarial Mexicano 2019" then
-	fail text "Message rejected ref4"
-endif
