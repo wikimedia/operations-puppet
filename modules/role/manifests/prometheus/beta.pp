@@ -120,12 +120,14 @@ class role::prometheus::beta (
         proxy_pass => 'http://127.0.0.1:9903/beta',
     }
 
-    file { "${rules_path}/rules_beta.conf":
-        source => 'puppet:///modules/role/prometheus/rules_beta.conf',
+    prometheus::rule { 'rules_beta':
+        instance => 'beta',
+        source   => 'puppet:///modules/role/prometheus/rules_beta.yml',
     }
 
-    file { "${rules_path}/alerts_beta.conf":
-        source => 'puppet:///modules/role/prometheus/alerts_beta.conf',
+    prometheus::rule { 'alerts_beta':
+        instance => 'beta',
+        source   => 'puppet:///modules/role/prometheus/alerts_beta.yml',
     }
 
     $targets_file = "${targets_path}/node_project.yml"
