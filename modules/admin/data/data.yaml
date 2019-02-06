@@ -3196,6 +3196,10 @@ ldap_only_users:
     ensure: present
     realname: Matthias Geisler
     email: matthias.geisler@wikimedia.de
+  brennen:
+    ensure: present
+    realname: Brennen Bearnes
+    email: bbearnes@wikimedia.org
   cmadeo:
     ensure: present
     realname: Carolyn Li-Madeo
