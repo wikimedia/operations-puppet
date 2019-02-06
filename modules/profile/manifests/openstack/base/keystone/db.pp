@@ -1,5 +1,6 @@
 class profile::openstack::base::keystone::db(
     $labs_hosts_range = hiera('profile::openstack::base::labs_hosts_range'),
+    $labs_hosts_range_v6 = hiera('profile::openstack::base::labs_hosts_range_v6'),
     $puppetmaster_hostname = hiera('profile::openstack::base::puppetmaster_hostname'),
     $designate_host = hiera('profile::openstack::base::designate_host'),
     $second_region_designate_host = hiera('profile::openstack::base::second_region_designate_host'),
@@ -56,6 +57,11 @@ class profile::openstack::base::keystone::db(
     ferm::rule{'mysql_nova':
         ensure => 'present',
         rule   => "saddr ${labs_hosts_range} proto tcp dport (3306) ACCEPT;",
+    }
+
+    ferm::rule{'mysql_nova_v6':
+        ensure => 'present',
+        rule   => "saddr ${labs_hosts_range_v6} proto tcp dport (3306) ACCEPT;",
     }
 
     ferm::rule{'mysql_designate':

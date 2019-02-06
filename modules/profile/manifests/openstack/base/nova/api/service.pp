@@ -1,7 +1,8 @@
 class profile::openstack::base::nova::api::service(
     $version = hiera('profile::openstack::base::version'),
     $nova_api_host = hiera('profile::openstack::base::nova_api_host'),
-    $labs_hosts_range = hiera('profile::openstack::base::labs_hosts_range')
+    $labs_hosts_range = hiera('profile::openstack::base::labs_hosts_range'),
+    $labs_hosts_range_v6 = hiera('profile::openstack::base::labs_hosts_range_v6')
     ) {
 
     $prod_networks = join($::network::constants::production_networks, ' ')
@@ -23,5 +24,11 @@ class profile::openstack::base::nova::api::service(
     ferm::rule{'nova_metadata_labs_hosts':
         ensure => 'present',
         rule   => "saddr ${labs_hosts_range} proto tcp dport 8775 ACCEPT;",
+    }
+
+    # Allow neutron hosts to access the metadata service
+    ferm::rule{'nova_metadata_labs_hosts_v6':
+        ensure => 'present',
+        rule   => "saddr ${labs_hosts_range_v6} proto tcp dport 8775 ACCEPT;",
     }
 }

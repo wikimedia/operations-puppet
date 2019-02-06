@@ -33,6 +33,7 @@ class profile::openstack::base::keystone::service(
     $wiki_access_token = hiera('profile::openstack::base::keystone::wiki_access_token'),
     $wiki_access_secret = hiera('profile::openstack::base::keystone::wiki_access_secret'),
     $labs_hosts_range = hiera('profile::openstack::base::labs_hosts_range'),
+    $labs_hosts_range_v6 = hiera('profile::openstack::base::labs_hosts_range_v6'),
     $nova_controller_standby = hiera('profile::openstack::base::nova_controller_standby'),
     $nova_api_host = hiera('profile::openstack::base::nova_api_host'),
     $designate_host = hiera('profile::openstack::base::designate_host'),
@@ -97,7 +98,8 @@ class profile::openstack::base::keystone::service(
     # keystone admin API only for openstack services that might need it
     ferm::rule{'keystone_admin':
         ensure => 'present',
-        rule   => "saddr (${labs_hosts_range} @resolve(${nova_controller_standby}) @resolve(${nova_controller_standby}, AAAA) @resolve(${nova_api_host})
+        rule   => "saddr (${labs_hosts_range} ${labs_hosts_range_v6}
+                             @resolve(${nova_controller_standby}) @resolve(${nova_controller_standby}, AAAA) @resolve(${nova_api_host})
                              @resolve(${designate_host}) @resolve(${designate_host_standby})
                              @resolve(${designate_host}, AAAA) @resolve(${designate_host_standby}, AAAA)
                              @resolve(${second_region_designate_host}) @resolve(${second_region_designate_host}, AAAA)

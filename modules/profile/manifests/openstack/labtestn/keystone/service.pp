@@ -20,6 +20,7 @@ class profile::openstack::labtestn::keystone::service(
     $wiki_access_token = hiera('profile::openstack::labtestn::keystone::wiki_access_token'),
     $wiki_access_secret = hiera('profile::openstack::labtestn::keystone::wiki_access_secret'),
     $labs_hosts_range = hiera('profile::openstack::labtestn::labs_hosts_range'),
+    $labs_hosts_range_v6 = hiera('profile::openstack::labtestn::labs_hosts_range_v6'),
     $nova_controller_standby = hiera('profile::openstack::labtestn::nova_controller_standby'),
     $nova_api_host = hiera('profile::openstack::labtestn::nova_api_host'),
     $designate_host = hiera('profile::openstack::labtestn::designate_host'),
@@ -35,6 +36,7 @@ class profile::openstack::labtestn::keystone::service(
 
     class{'::profile::openstack::base::keystone::db':
         labs_hosts_range             => $labs_hosts_range,
+        labs_hosts_range_v6          => $labs_hosts_range_v6,
         puppetmaster_hostname        => $puppetmaster_hostname,
         designate_host               => $designate_host,
         second_region_designate_host => $second_region_designate_host,
@@ -64,6 +66,7 @@ class profile::openstack::labtestn::keystone::service(
         wiki_access_token                    => $wiki_access_token,
         wiki_access_secret                   => $wiki_access_secret,
         labs_hosts_range                     => $labs_hosts_range,
+        labs_hosts_range_v6                  => $labs_hosts_range_v6,
         nova_controller_standby              => $nova_controller_standby,
         nova_api_host                        => $nova_api_host,
         designate_host                       => $designate_host,
