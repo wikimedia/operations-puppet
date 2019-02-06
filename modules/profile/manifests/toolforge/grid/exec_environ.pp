@@ -974,8 +974,6 @@ class profile::toolforge::grid::exec_environ {
             'php7.2-zip',
             'opencv-data',                 # T142321
             'openjdk-11-jre-headless',
-            'python-flake8',
-            'python3-flake8',
             'tcl-thread',
             'libmariadb-dev',
             'libmariadb-dev-compat',

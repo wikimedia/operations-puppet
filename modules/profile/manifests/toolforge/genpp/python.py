@@ -8,18 +8,20 @@ import genpp
 import logging
 
 environ_packages = {
-    "dev": ["cffi", "coverage", "dev", "stdeb"],
+    "dev": ["coverage", "stdeb"],
     "exec": [
         "babel",  # T60220
         "beautifulsoup",  # For valhallasw.
         "bottle",  # T58995
         "celery",
         "cffi",  # T204422
+        "dev",
         "egenix-mxdatetime",
         "egenix-mxtools",
         "enum34",  # T111602
         "flask",
         "flask-login",
+        "flake8",
         "flickrapi",  # T86015
         "flup",
         "gdal",
