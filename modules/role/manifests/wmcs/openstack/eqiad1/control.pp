@@ -6,6 +6,7 @@ class role::wmcs::openstack::eqiad1::control {
     include ::profile::openstack::eqiad1::observerenv
     include ::profile::openstack::eqiad1::rabbitmq
     include ::profile::openstack::eqiad1::keystone::service
+    include ::profile::openstack::eqiad1::envscripts
     include ::profile::openstack::eqiad1::neutron::common
     include ::profile::openstack::eqiad1::neutron::service
     include ::profile::openstack::eqiad1::glance

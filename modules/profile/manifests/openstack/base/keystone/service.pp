@@ -32,9 +32,6 @@ class profile::openstack::base::keystone::service(
     $wiki_consumer_secret = hiera('profile::openstack::base::keystone::wiki_consumer_secret'),
     $wiki_access_token = hiera('profile::openstack::base::keystone::wiki_access_token'),
     $wiki_access_secret = hiera('profile::openstack::base::keystone::wiki_access_secret'),
-    $wmflabsdotorg_admin = hiera('profile::openstack::base::designate::wmflabsdotorg_admin'),
-    $wmflabsdotorg_pass = hiera('profile::openstack::base::designate::wmflabsdotorg_pass'),
-    $wmflabsdotorg_project = hiera('profile::openstack::base::designate::wmflabsdotorg_project'),
     $labs_hosts_range = hiera('profile::openstack::base::labs_hosts_range'),
     $nova_controller_standby = hiera('profile::openstack::base::nova_controller_standby'),
     $nova_api_host = hiera('profile::openstack::base::nova_api_host'),
@@ -88,18 +85,6 @@ class profile::openstack::base::keystone::service(
         wiki_access_secret          => $wiki_access_secret,
     }
     contain '::openstack::keystone::service'
-
-    class {'::openstack::util::envscripts':
-        ldap_user_pass        => $ldap_user_pass,
-        nova_controller       => $nova_controller,
-        keystone_host         => $keystone_host,
-        region                => $region,
-        nova_db_pass          => $nova_db_pass,
-        wmflabsdotorg_admin   => $wmflabsdotorg_admin,
-        wmflabsdotorg_pass    => $wmflabsdotorg_pass,
-        wmflabsdotorg_project => $wmflabsdotorg_project,
-    }
-    contain '::openstack::util::envscripts'
 
     class {'::openstack::util::admin_scripts':
         version => $version,
