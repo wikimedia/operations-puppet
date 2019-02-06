@@ -4,6 +4,7 @@
 class openstack::keystone::service(
     $active,
     $version,
+    $token_driver,
     $keystone_host,
     $osm_host,
     $db_name,
@@ -13,7 +14,6 @@ class openstack::keystone::service(
     $db_max_pool_size,
     $public_workers,
     $admin_workers,
-    $token_driver,
     $ldap_hosts,
     $ldap_base_dn,
     $ldap_user_id_attribute,
@@ -31,75 +31,42 @@ class openstack::keystone::service(
     $wiki_consumer_secret,
     $wiki_access_token,
     $wiki_access_secret,
-    ) {
-
-    include ::network::constants
-    $prod_networks = $network::constants::production_networks
-    $labs_networks = $network::constants::labs_networks
-
-    $packages = [
-        'keystone',
-        'alembic',
-        'python-alembic',
-        'python-amqp',
-        'python-castellan',
-        'python-cliff',
-        'python-cmd2',
-        'python-concurrent.futures',
-        'python-cryptography',
-        'python-dogpile.cache',
-        'python-eventlet',
-        'python-funcsigs',
-        'python-futurist',
-        'python-jinja2',
-        'python-jsonschema',
-        'python-oath',
-        'python-kombu',
-        'python-mysql.connector',
-        'python-memcache',
-        'python-migrate',
-        'python-openssl',
-        'python-pyasn1',
-        'python-pycadf',
-        'python-pyinotify',
-        'python-pymysql',
-        'python-pyparsing',
-        'python-routes',
-        'python-sqlalchemy',
-        'python-unicodecsv',
-        'python-warlock',
-        'ldapvi',
-        'python-ldap',
-        'python-ldappool',
-        'python3-ldap3',
-        'ruby-ldap',
-        'python-mwclient',
-    ]
-
-    if os_version('debian jessie') and ($version == 'mitaka') {
-        # bug: keystone requires this version of python-routes, but there are
-        # no versioned depends of the package itself
-        apt::pin { 'jessie_mitaka_pinning_python_routes':
-            package  => 'python-routes',
-            pin      => 'version 2.2-1~bpo8+1',
-            priority => '1002',
-        }
-        $install_options = ['-t', 'jessie-backports']
-    } else {
-        $install_options = ''
+) {
+    class { "openstack::keystone::service::${version}":
+        keystone_host               => $keystone_host,
+        osm_host                    => $osm_host,
+        db_name                     => $db_name,
+        db_user                     => $db_user,
+        db_pass                     => $db_pass,
+        db_host                     => $db_host,
+        db_max_pool_size            => $db_max_pool_size,
+        admin_workers               => $admin_workers,
+        public_workers              => $public_workers,
+        ldap_hosts                  => $ldap_hosts,
+        ldap_base_dn                => $ldap_base_dn,
+        ldap_user_id_attribute      => $ldap_user_id_attribute,
+        ldap_user_name_attribute    => $ldap_user_name_attribute,
+        ldap_user_dn                => $ldap_user_dn,
+        ldap_user_pass              => $ldap_user_pass,
+        auth_protocol               => $auth_protocol,
+        auth_port                   => $auth_port,
+        wiki_status_page_prefix     => $wiki_status_page_prefix,
+        wiki_status_consumer_token  => $wiki_status_consumer_token,
+        wiki_status_consumer_secret => $wiki_status_consumer_secret,
+        wiki_status_access_token    => $wiki_status_access_token,
+        wiki_status_access_secret   => $wiki_status_access_secret,
+        wiki_consumer_token         => $wiki_consumer_token,
+        wiki_consumer_secret        => $wiki_consumer_secret,
+        wiki_access_token           => $wiki_access_token,
+        wiki_access_secret          => $wiki_access_secret,
     }
 
-    package { $packages:
-        ensure          => 'present',
-        install_options => $install_options,
-    }
-
-    group {'keystone':
+    group { 'keystone':
         ensure  => 'present',
         require => Package['keystone'],
     }
 
-    user {'keystone':
+    user { 'keystone':
         ensure  => 'present',
         require => Package['keystone'],
     }
@@ -110,93 +77,25 @@ class openstack::keystone::service(
         }
     }
 
+    $require = [
+        Package['keystone'],
+        Group['keystone'],
+        User['keystone'],
+    ]
+
     file {
         '/var/log/keystone':
             ensure  => 'directory',
             owner   => 'keystone',
             group   => 'www-data',
             mode    => '0775',
-            require => Package['keystone'];
-        '/etc/logrotate.d/keystone':
-            ensure  => 'present',
-            owner   => 'root',
-            group   => 'root',
-            mode    => '0644',
-            source  => "puppet:///modules/openstack/${version}/keystone/keystone_logrotate",
-            require => Package['keystone'];
+            require => $require;
         '/etc/keystone':
             ensure  => 'directory',
             owner   => 'keystone',
             group   => 'keystone',
             mode    => '0755',
-            require => Package['keystone'];
-        '/etc/keystone/keystone.conf':
-            ensure  => 'present',
-            owner   => 'keystone',
-            group   => 'keystone',
-            mode    => '0444',
-            content => template("openstack/${version}/keystone/keystone.conf.erb"),
-            notify  => Service['keystone'],
-            require => Package['keystone'];
-        '/etc/keystone/keystone-paste.ini':
-            ensure  => 'present',
-            owner   => 'root',
-            group   => 'root',
-            mode    => '0644',
-            source  => "puppet:///modules/openstack/${version}/keystone/keystone-paste.ini",
-            notify  => Service['keystone'],
-            require => Package['keystone'];
-        '/etc/keystone/policy.json':
-            ensure  => 'present',
-            mode    => '0644',
-            owner   => 'root',
-            group   => 'root',
-            source  => "puppet:///modules/openstack/${version}/keystone/policy.json",
-            notify  => Service['keystone'],
-            require => Package['keystone'];
-        '/etc/keystone/logging.conf':
-            ensure  => 'present',
-            source  => "puppet:///modules/openstack/${version}/keystone/logging.conf",
-            owner   => 'root',
-            group   => 'root',
-            mode    => '0644',
-            notify  => Service['keystone'],
-            require => Package['keystone'];
-        '/etc/keystone/keystone.my.cnf':
-            ensure  => 'present',
-            owner   => 'root',
-            group   => 'root',
-            mode    => '0400',
-            content => template("openstack/${version}/keystone/keystone.my.cnf.erb");
-        '/usr/lib/python2.7/dist-packages/wmfkeystoneauth':
-            ensure  => 'present',
-            owner   => 'root',
-            group   => 'root',
-            mode    => '0644',
-            source  => "puppet:///modules/openstack/${version}/keystone/wmfkeystoneauth",
-            notify  => Service['keystone'],
-            recurse => true;
-        '/usr/lib/python2.7/dist-packages/wmfkeystoneauth.egg-info':
-            ensure  => 'present',
-            source  => "puppet:///modules/openstack/${version}/keystone/wmfkeystoneauth.egg-info",
-            owner   => 'root',
-            group   => 'root',
-            mode    => '0644',
-            notify  => Service['keystone'],
-            recurse => true;
-    }
-
-    if os_version('debian == jessie') {
-
-        file {'/etc/keystone/original':
-            ensure  => 'directory',
-            owner   => 'keystone',
-            group   => 'keystone',
-            mode    => '0755',
-            recurse => true,
-            source  => "puppet:///modules/openstack/${version}/keystone/original",
-            require => Package['keystone'],
-        }
+            require => $require,
     }
 
     file {'/var/lib/keystone/keystone.db':
