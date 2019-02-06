@@ -534,17 +534,17 @@ host cloudcontrol2001-dev {
 
 host cloudvirt2001-dev {
     hardware ethernet D0:94:66:93:97:77;
-    fixed-address cloudvirt2001-dev.wikimedia.org;
+    fixed-address cloudvirt2001-dev.codfw.wmnet;
 }
 
 host cloudvirt2002-dev {
     hardware ethernet D0:94:66:93:6D:A0;
-    fixed-address cloudvirt2002-dev.wikimedia.org;
+    fixed-address cloudvirt2002-dev.codfw.wmnet;
 }
 
 host cloudvirt2003-dev {
     hardware ethernet D0:94:66:93:F7:D8;
-    fixed-address cloudvirt2003-dev.wikimedia.org;
+    fixed-address cloudvirt2003-dev.codfw.wmnet;
 }
 
 host cloudelastic1001 {
