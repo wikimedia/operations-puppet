@@ -1,4 +1,5 @@
 -- This file is not yet used by any class, but it is better here than nowhere
+-- This file will be deprecated in favour of analytics-dbstore.sql (T214469)
 -- Grants for 'research'@'%'
 GRANT USAGE ON *.* TO 'research'@'%' IDENTIFIED BY <%= @research_pass %> WITH MAX_USER_CONNECTIONS 200;
 GRANT ALTER, CREATE, CREATE TEMPORARY TABLES, DELETE, DROP, INDEX, INSERT, SELECT, UPDATE ON `staging`.* TO 'research'@'%';
