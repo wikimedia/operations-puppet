@@ -739,6 +739,11 @@ groups:
     members: [pmiazga, bsitzmann, mholloway-shell, mbsantos, tgr, eevans, mobrovac, ppchelko]
     privileges: ['ALL = NOPASSWD: /usr/sbin/service proton *',
                  'ALL = (proton) NOPASSWD: ALL']
+  gpu-testers:
+    description: People with root access who test GPUs.
+    gid: 810
+    members: [ebernhardson]
+    privileges: ['ALL = (ALL) NOPASSWD: ALL']
 
 users:
   rush:
