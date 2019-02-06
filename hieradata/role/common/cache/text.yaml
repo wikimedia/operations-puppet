@@ -392,6 +392,8 @@ cache::alternate_domains:
 cache::fe_transient_gb: 5
 cache::be_transient_gb: 0
 # Profile::cache::base
+# NOTE: Add the public WMCS IP space when T209011 is done
+profile::cache::base::extra_nets: ['172.16.0.0/12']
 profile::cache::base::admission_policy: 'none'
 profile::cache::base::zero_site: 'https://zero.wikimedia.org'
 profile::cache::base::purge_host_only_upload_re: '^(upload|maps)\.wikimedia\.org$'
