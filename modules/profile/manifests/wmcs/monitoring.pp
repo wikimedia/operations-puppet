@@ -6,6 +6,10 @@ class profile::wmcs::monitoring (
 ) {
     require ::profile::openstack::eqiad1::clientpackages
 
+    package { 'rsync':
+        ensure => 'present',
+    }
+
     # hourly cron to rsync whisper files
     ssh::userkey { '_graphite':
         ensure  => 'present',
