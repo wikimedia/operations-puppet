@@ -1261,6 +1261,10 @@ node 'cloudcontrol2001-dev.wikimedia.org' {
     role(spare::system)
 }
 
+node /cloudvirt200[1-3]-dev\.codfw\.wmnet/ {
+    role(wmcs::openstack::labtestn::virt)
+}
+
 # This is the labtest server that implements wikitech, horizon, and striker.
 node 'labtestweb2001.wikimedia.org' {
     role(wmcs::openstack::labtest::labweb)
