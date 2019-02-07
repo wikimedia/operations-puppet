@@ -1,4 +1,4 @@
-profile::openstack::base::nova::instance_dev: '/dev/mapper/data'
+profile::openstack::base::nova::instance_dev: '/dev/mapper/cloudvirt2003--dev--vg-data'
 profile::openstack::labtestn::nova::network_flat_tagged_base_interface: eno2
 profile::openstack::labtestn::nova::network_flat_interface: 'eno2.2105'
 profile::openstack::labtestn::nova::physical_interface_mappings:
