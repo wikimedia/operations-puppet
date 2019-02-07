@@ -3159,12 +3159,12 @@ host labstore1007 {
 }
 
 host cloudstore1008 {
-    hardware ethernet d0:94:66:26:d5:6e;
+    hardware ethernet D0:94:66:26:D5:6A;
     fixed-address cloudstore1008.wikimedia.org;
 }
 
 host cloudstore1009 {
-    hardware ethernet d0:94:66:2d:94:3f;
+    hardware ethernet D0:94:66:2D:94:3B;
     fixed-address cloudstore1009.wikimedia.org;
 }
 
