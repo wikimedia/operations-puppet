@@ -1257,6 +1257,10 @@ node 'labcontrol1002.wikimedia.org' {
     interface::add_ip6_mapped { 'main': }
 }
 
+node 'cloudcontrol2001-dev.wikimedia.org' {
+    role(spare::system)
+}
+
 # This is the labtest server that implements wikitech, horizon, and striker.
 node 'labtestweb2001.wikimedia.org' {
     role(wmcs::openstack::labtest::labweb)
