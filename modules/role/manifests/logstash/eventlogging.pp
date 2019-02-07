@@ -11,7 +11,7 @@ class role::logstash::eventlogging {
     $kafka_config = kafka_config('jumbo')
 
     logstash::input::kafka { $topic:
-        tags              => [$topic, 'kafka'],
+        tags              => [$topic, 'kafka', 'input-kafka-eventlogging'],
         type              => 'eventlogging',
         bootstrap_servers => $kafka_config['brokers']['string'],
         codec             => 'json'
