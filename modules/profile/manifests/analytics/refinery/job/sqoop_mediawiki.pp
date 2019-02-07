@@ -28,6 +28,8 @@ class profile::analytics::refinery::job::sqoop_mediawiki {
     $private_db_host            = 'analytics-store.eqiad.wmnet'
     $private_db_user            = $::passwords::mysql::research::user
     $private_log_file           = "${::profile::analytics::refinery::log_dir}/sqoop-mediawiki-private.log"
+    # Separate log for sqoops from production replicas
+    $production_log_file        = "${::profile::analytics::refinery::log_dir}/sqoop-mediawiki-production.log"
     # These are rendered elsewhere by role::analytics_cluster::mysql_password.
     $db_password_labs           = '/user/hdfs/mysql-analytics-labsdb-client-pw.txt'
     $db_password_private        = '/user/hdfs/mysql-analytics-research-client-pw.txt'
