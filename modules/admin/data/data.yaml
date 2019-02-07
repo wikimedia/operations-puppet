@@ -74,7 +74,7 @@ groups:
               ladsgroup, bawolff, zfilipin, addshore, niharika29, ppchelko, pmiazga,
               musikanimal, jdrewniak, sbisson, jforrester, mbsantos,
               aaron, liw, sbassett, jdl, tarrow, lucaswerkmeister-wmde,
-              wmde-leszek, jhuneidi, wmde-fisch, mvolz]
+              wmde-leszek, jhuneidi, wmde-fisch, mvolz, dsharpe]
     privileges: ['ALL = (www-data,apache,mwdeploy,l10nupdate) NOPASSWD: ALL',
                  'ALL = NOPASSWD: /sbin/restart hhvm',
                  'ALL = NOPASSWD: /sbin/start hhvm',
@@ -267,7 +267,7 @@ groups:
               kaldari, goransm, ema, dsaez, shiladsen, rho, mirrys, slaporte, jk,
               ayounsi, mepps, mmiller, seddon, gilles, tstarling, pirroh, rush, tieu, karen,
               cicalese, drossi, fsalutari, nathante, gbirke, isaacj, sbassett, jdl,
-              niharika29, ryanmax, afandian2, jgleeson, toddleroux, srishakatux]
+              niharika29, ryanmax, afandian2, jgleeson, toddleroux, srishakatux, dsharpe]
     system_members: [analytics-search]
   analytics-admins:
     gid: 732
@@ -3155,6 +3155,15 @@ users:
       - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDTbsoRC1ieQ6+ru0TU7RistfbwsH7MqGYRy5fYNJtc0/MorLs+85LZ0YbgaaKeoUI9XwUk5ZN4DtHrki3X9vCKNu0ss4KKVD7O3XfVbTR8Oztbg11zhGGlUf/zU9mhIUVyqrk5TQFF8GfwfzImaXoBhkB6RtwaODVb2r+ZwKWQYseAVDBVrHHD2vCKjarQpDhJdPjuNw0bbwFk3QBKgAdKU0GBJHHR91WhTsB5tXSkZW8II83M9w+0tHIKUHMiMihuKRy61OgTvkZdYE3cvAJHB310Rl5KPEeihV3/2eqCW2BW6qRB+iMpaO72dh8QSn1CGR7UxUYJKULhr4fOi/K3 ssethi@wmf1699.local
     uid: 15861
     email: ssethi@wikimedia.org
+  dsharpe:
+    ensure: present
+    gid: 500
+    name: dsharpe
+    realname: David Lee Sharpe
+    ssh_keys:
+      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIIVizg41yHoKMzYqsBQjMbcQa5YKjrZyQIxuM4nrfKv5 dsharpe@Davids-MBP
+    uid: 20828
+    email: dsharpe@wikimedia.org
 
 ldap_only_users:
   abartov:
