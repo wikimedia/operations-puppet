@@ -3228,7 +3228,7 @@ ldap_only_users:
     ensure: present
     realname: Greta Doci
     email: greta.doci@wikimedia.de
-  h78na:
+  ha78na:
     ensure: present
     realname: Hana Worku
     email: hworku@wikimedia.org
