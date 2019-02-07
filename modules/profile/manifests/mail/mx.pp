@@ -16,12 +16,16 @@ class profile::mail::mx (
         key_group  => 'Debian-exim',
     }
 
+    $trusted_networks = $network::constants::aggregate_networks.filter |$x| {
+        $x !~ /127.0.0.0|::1/
+    }
+
     class { 'spamassassin':
         required_score   => '4.0',
         use_bayes        => '1',
         bayes_auto_learn => '1',
         max_children     => 32,
-        trusted_networks => $network::constants::aggregate_networks,
+        trusted_networks => $trusted_networks,
     }
 
     include passwords::exim

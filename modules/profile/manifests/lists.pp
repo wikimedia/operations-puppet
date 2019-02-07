@@ -16,11 +16,15 @@ class profile::lists {
         key_group  => 'Debian-exim',
     }
 
+    $trusted_networks = $network::constants::aggregate_networks.filter |$x| {
+        $x !~ /127.0.0.0|::1/
+    }
+
     class { 'spamassassin':
         required_score   => '4.0',
         use_bayes        => '0',
         bayes_auto_learn => '0',
-        trusted_networks => $network::constants::aggregate_networks,
+        trusted_networks => $trusted_networks,
     }
 
     $list_outbound_ips = [

@@ -14,6 +14,10 @@ class profile::otrs(
     include network::constants
     include ::profile::prometheus::apache_exporter
 
+    $trusted_networks = $network::constants::aggregate_networks.filter |$x| {
+        $x !~ /127.0.0.0|::1/
+    }
+
     class { '::otrs':
         otrs_database_host => $otrs_database_host,
         otrs_database_name => $otrs_database_name,
@@ -22,7 +26,7 @@ class profile::otrs(
         exim_database_name => $exim_database_name,
         exim_database_user => $exim_database_user,
         exim_database_pass => $exim_database_pass,
-        trusted_networks   => $network::constants::aggregate_networks,
+        trusted_networks   => $trusted_networks,
     }
 
     class { '::httpd':
