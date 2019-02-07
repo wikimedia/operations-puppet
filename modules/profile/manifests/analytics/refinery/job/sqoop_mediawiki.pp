@@ -60,7 +60,7 @@ class profile::analytics::refinery::job::sqoop_mediawiki {
 
     profile::analytics::systemd_timer { 'refinery-sqoop-mediawiki-production':
         description => 'Schedules sqoop to import MediaWiki databases from prod replicas into Hadoop monthly.',
-        command     => '/usr/local/bin/refinery-sqoop-mediawiki',
+        command     => '/usr/local/bin/refinery-sqoop-mediawiki-production',
         interval    => '*-*-07 00:00:00',
         user        => 'hdfs',
         require     => File['/usr/local/bin/refinery-sqoop-mediawiki-production'],
