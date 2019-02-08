@@ -5,7 +5,7 @@
 class profile::toolforge::bastion::resourcecontrol(
     $nproc = hiera('profile::toolforge::bastion::nproc',30),
 ){
-    systemd::slice::all_users { 'bastion-systemd-user-slice':
+    class { 'systemd::slice::all_users':
         all_users_slice_config  => file('profile/toolforge/bastion-user-resource-control.conf'),
     }
 
