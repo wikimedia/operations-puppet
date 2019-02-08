@@ -9,6 +9,15 @@ class facilities {
         ensure => installed,
     }
 
+    # ulsfo
+    @monitoring::host { 'ps1-22-ulsfo':
+        ip_address => '10.128.128.12',
+        group      => 'pdus',
+    }
+    @monitoring::host { 'ps1-23-ulsfo':
+        ip_address => '10.128.128.13',
+        group      => 'pdus',
+    }
     # eqiad
     # A
     facilities::monitor_pdu_3phase { 'ps1-a1-eqiad':
