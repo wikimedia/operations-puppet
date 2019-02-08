@@ -52,7 +52,7 @@ esac
 
 # Use a more recent kernel on jessie and deinstall nfs-common/rpcbind
 # (we don't want these to be installed in general, only pull them in
-# where actually needed. stretch doesn't install nfs-common/rpcbind
+# where actually needed. >= stretch doesn't install nfs-common/rpcbind
 # any longer (T106477)
 # (the upgrade is to grab our updated firmware packages first for initramfs)
 if [ "$(chroot /target /usr/bin/lsb_release --codename --short)" = "jessie" ]; then
