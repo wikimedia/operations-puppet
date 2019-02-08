@@ -6,6 +6,7 @@ class role::labs::instance {
     include ::base::instance_upstarts
     include ::profile::openstack::main::observerenv
     include ::profile::openstack::main::cumin::target
+    include ::profile::wmcs::root_tty
 
     sudo::group { 'ops':
         privileges => ['ALL=(ALL) NOPASSWD: ALL'],
