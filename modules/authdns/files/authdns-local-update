@@ -51,7 +51,7 @@ while :; do
             shift
             ;;
         --initial)
-            DEPLOY_INITIAL="--initial"
+            DEPLOY_INITIAL="--no-gdnsd"
             shift
             ;;
         --skip-review)
