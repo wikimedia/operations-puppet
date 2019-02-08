@@ -51,7 +51,7 @@ class prometheus::node_exporter (
         'textfile', 'time', 'uname', 'vmstat']
     $textfile_directory = '/var/lib/prometheus/node.d'
 
-    if ($upgrade_one_seven or os_version('debian == buster')) {
+    if ($upgrade_one_seven or $::lsbdistcodename == 'buster') {
         $collectors_enabled = concat($collectors_default, $collectors_extra)
         if (os_version('debian <= stretch')) {
             apt::repository { 'component-prometheus-node-exporter':
