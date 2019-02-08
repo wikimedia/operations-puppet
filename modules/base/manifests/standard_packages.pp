@@ -33,7 +33,6 @@ class base::standard_packages {
         'pigz',
         'psmisc',
         'pv',
-        'pxz',
         'python3',
         'quickstack',
         'screen',
@@ -51,6 +50,12 @@ class base::standard_packages {
     ])
 
     package { 'tzdata': ensure => latest }
+
+    # pxz was removed in buster. In xz >= 5.2 (so stretch and later), xz has
+    # builtin threading support using the -T option, so pxz was removed
+    if os_version('debian <= stretch') {
+        require_package('pxz')
+    }
 
     # uninstall these packages
     package { [
