@@ -975,8 +975,8 @@ class profile::toolforge::grid::exec_environ {
             'opencv-data',                 # T142321
             'openjdk-11-jre-headless',
             'tcl-thread',
-            'libmariadb-dev',
-            'libmariadb-dev-compat',
+            'libmariadbclient-dev',
+            'libmariadbclient-dev-compat',
             'libboost1.62-dev',
             'libboost-dev',
             'libkml-dev',
