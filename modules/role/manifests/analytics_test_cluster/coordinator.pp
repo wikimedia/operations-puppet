@@ -44,16 +44,12 @@ class role::analytics_test_cluster::coordinator {
     include ::profile::hadoop::balancer
 
     # Various crons that launch Hadoop jobs.
-    #include ::profile::analytics::refinery
+    include ::profile::analytics::refinery
 
     # Camus crons import data into
     # from Kafka into HDFS.
-    #include ::profile::analytics::refinery::job::camus
-    #include ::profile::analytics::refinery::job::data_check
-    #include ::profile::analytics::refinery::job::data_purge
-    #include ::profile::analytics::refinery::job::druid_load
-    #include ::profile::analytics::refinery::job::project_namespace_map
-    #include ::profile::analytics::refinery::job::sqoop_mediawiki
+    include ::profile::analytics::refinery::job::test::camus
+    #include ::profile::analytics::refinery::job::test::data_purge
     #include ::profile::analytics::refinery::job::refine
 
     include standard

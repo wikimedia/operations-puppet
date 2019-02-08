@@ -1,0 +1,121 @@
+y# NOTE: This file is managed by Puppet
+
+#
+# Camus properites file for consuming webrequest_* topics into HDFS.
+# The consumed data will later have external Hive partitions
+# automatically mapped on top of it.
+#
+
+# submit this job in the WMF Analytics Cluster's 'essential' queue.
+mapreduce.job.queuename=essential
+
+# Set HDFS umask so that webrequest files and directories created by Camus are not world readable.
+fs.permissions.umask-mode=027
+
+# final top-level data output directory, sub-directory will be dynamically created for each topic pulled
+etl.destination.path=hdfs://<%= @template_variables['hadoop_cluster_name'] %>/wmf/data/raw/test-webrequest
+# HDFS location where you want to keep execution files, i.e. offsets, error logs, and count files
+etl.execution.base.path=hdfs://<%= @template_variables['hadoop_cluster_name'] %>/wmf/camus/test-webrequest-00
+# where completed Camus job output directories are kept, usually a sub-dir in the base.path
+etl.execution.history.path=hdfs://<%= @template_variables['hadoop_cluster_name'] %>/wmf/camus/webrequest-00/history
+
+# Our timestamps look like 2013-09-20T15:40:17
+camus.message.timestamp.format=yyyy-MM-dd'T'HH:mm:ss
+
+# use the dt field
+camus.message.timestamp.field=dt
+
+# Store output into hourly buckets
+etl.output.file.time.partition.mins=60
+etl.keep.count.files=false
+etl.execution.history.max.of.quota=.8
+
+# records are delimited by newline
+etl.output.record.delimiter=\n
+
+# Concrete implementation of the Decoder class to use
+camus.message.decoder.class=com.linkedin.camus.etl.kafka.coders.JsonStringMessageDecoder
+
+# SequenceFileRecordWriterProvider writes the records as Hadoop Sequence files
+# so that they can be split even if they are compressed.  We Snappy compress these
+# by setting mapreduce.output.fileoutputformat.compress.codec to SnappyCodec
+# in /etc/hadoop/conf/mapred-site.xml.
+etl.record.writer.provider.class=com.linkedin.camus.etl.kafka.common.SequenceFileRecordWriterProvider
+
+# Max hadoop tasks to use, each task can pull multiple topic partitions.
+mapred.map.tasks=1
+
+# Connection parameters.
+kafka.brokers=<%= Array(@kafka_brokers).join(',') %>
+
+# max historical time that will be pulled from each partition based on event timestamp
+#  Note:  max.pull.hrs doesn't quite seem to be respected here.
+#  This will take some more sleuthing to figure out why, but in our case
+#  here its ok, as we hope to never be this far behind in Kafka messages to
+#  consume.
+kafka.max.pull.hrs=168
+# events with a timestamp older than this will be discarded.
+kafka.max.historical.days=7
+# Max minutes for each mapper to pull messages (-1 means no limit)
+# Let each mapper run for no more than 9 minutes.
+# Camus creates hourly directories, and we don't want a single
+# long running mapper keep other Camus jobs from being launched.
+# We run Camus every 10 minutes, so limiting it to 9 should keep
+# runs fresh.
+kafka.max.pull.minutes.per.task=9
+
+# if whitelist has values, only whitelisted topic are pulled.  nothing on the blacklist is pulled
+kafka.blacklist.topics=
+
+# These are the kafka topics camus brings to HDFS
+kafka.whitelist.topics=test_webrequest
+
+# Name of the client as seen by kafka
+kafka.client.name=camus-test-webrequest-00
+
+# Fetch Request Parameters
+#kafka.fetch.buffer.size=
+#kafka.fetch.request.correlationid=
+#kafka.fetch.request.max.wait=
+#kafka.fetch.request.min.bytes=
+
+kafka.client.buffer.size=20971520
+kafka.client.so.timeout=60000
+
+# If camus offsets and kafka offsets mismatch
+# then camus should start from the earliest offset.
+kafka.move.to.earliest.offset=true
+
+# Controls the submitting of counts to Kafka
+# Default value set to true
+post.tracking.counts.to.kafka=false
+
+# Stops the mapper from getting inundated with Decoder exceptions for the same topic
+# Default value is set to 10
+max.decoder.exceptions.to.print=5
+
+log4j.configuration=false
+
+# everything below this point can be ignored for the time being, will provide more documentation down the road
+##########################
+etl.run.tracking.post=false
+#kafka.monitor.tier=
+kafka.monitor.time.granularity=10
+
+etl.hourly=hourly
+etl.daily=daily
+etl.ignore.schema.errors=false
+
+# WMF relies on the relevant Hadoop properties for this,
+# not Camus' custom properties.
+#   i.e.  mapreduce.output.compression* properties
+# # configure output compression for deflate or snappy. Defaults to deflate.
+# etl.output.codec=deflate
+# etl.deflate.level=6
+# #etl.output.codec=snappy
+
+etl.default.timezone=UTC
+etl.output.file.time.partition.mins=60
+etl.keep.count.files=false
+#etl.counts.path=
+etl.execution.history.max.of.quota=.8
