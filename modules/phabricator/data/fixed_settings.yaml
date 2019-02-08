@@ -220,12 +220,6 @@ phabricator.serious-business: true
 # Replaces show-beta applications
 phabricator.show-prototypes: true
 
-metamta.mail-adapter: 'PhabricatorMailImplementationPHPMailerAdapter'
-
-phpmailer.mailer: 'smtp'
-
-phpmailer.smtp-port: '25'
-
 # Do not try to call out for external resouces such as avatars
 security.outbound-blacklist: ['0.0.0.0/0']
 
