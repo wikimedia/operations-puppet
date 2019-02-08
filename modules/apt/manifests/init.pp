@@ -115,8 +115,8 @@ class apt(
         comment_old => true,
     }
 
-    # enable backports for Debian systems
-    if $::operatingsystem == 'Debian' {
+    # enable backports for Debian systems, doesn't yet exist for buster
+    if os_version('debian <= stretch'){
         apt::repository { 'debian-backports':
             uri         => 'http://mirrors.wikimedia.org/debian/',
             dist        => "${::lsbdistcodename}-backports",
