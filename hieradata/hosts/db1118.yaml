@@ -1,2 +1,2 @@
-mariadb::shard: 'test-s1'
+mariadb::shard: 's1'
 profile::base::notifications: disabled

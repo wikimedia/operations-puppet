@@ -400,7 +400,7 @@ node 'db1067.eqiad.wmnet' {
     role(mariadb::core)
 }
 # eqiad replicas
-node /^db1(080|083|089|106|114|119)\.eqiad\.wmnet/ {
+node /^db1(080|083|089|106|118|119)\.eqiad\.wmnet/ {
     role(mariadb::core)
 }
 
@@ -475,7 +475,7 @@ node /^db1(111|112)\.eqiad\.wmnet/ {
 }
 
 # temporary test
-node 'db1118.eqiad.wmnet' {
+node 'db1114.eqiad.wmnet' {
     role(mariadb::core_test)
 }
 

@@ -8,7 +8,7 @@
   - db1099:13311
   - db1105:13311
   - db1106:9104
-  - db1114:9104
+  - db1118:9104
   - db1119:9104
 - labels:
     shard: s1
@@ -182,5 +182,5 @@
     shard: test-s1
     role: slave
   targets:
-  - db1118:9104
+  - db1114:9104
 
