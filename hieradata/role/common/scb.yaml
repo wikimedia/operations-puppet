@@ -92,6 +92,11 @@ profile::eventstreams::streams:
     topics:
       - eqiad.mediawiki.page-properties-change
       - codfw.mediawiki.page-properties-change
+  page-links-change:
+    description: "Mediawiki Page Links Change feed. Schema: https://github.com/wikimedia/mediawiki-event-schemas/blob/master/jsonschema/mediawiki/page/links-change"
+    topics:
+      - eqiad.mediawiki.page-links-change
+      - codfw.mediawiki.page-links-change
   recentchange:
     description: "Mediawiki RecentChanges feed. Schema: https://github.com/wikimedia/mediawiki-event-schemas/tree/master/jsonschema/mediawiki/recentchange"
     topics:

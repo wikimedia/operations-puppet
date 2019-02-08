@@ -445,6 +445,8 @@ profile::eventstreams::streams:
     topics: ["%{::site}.mediawiki.page-undelete"]
   page-properties-change:
     topics: ["%{::site}.mediawiki.page-properties-change"]
+  page-links-change:
+    topics: ["%{::site}.mediawiki.page-links-change"]
   revision-create:
     topics: ["%{::site}.mediawiki.revision-create"]
   revision-score:
