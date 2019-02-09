@@ -8,10 +8,10 @@ class profile::tor::relay (
     $controlpassword = $passwords::tor::hashed_control_password
 
     class { '::tor':
-        controlport     => '9051',
+        controlport     => 9051,
         controlpassword => $controlpassword,
-        orport          => '443',
-        dirport         => '80',
+        orport          => 443,
+        dirport         => 80,
         address         => 'tor-eqiad-1.wikimedia.org',
         nickname        => 'wikimediaeqiad1',
         contact         => 'noc@wikimedia.org',
@@ -23,10 +23,10 @@ class profile::tor::relay (
     }
 
     ::tor::instance { 'wikimediaeqiad2':
-        controlport     => '9052',
+        controlport     => 9052,
         controlpassword => $controlpassword,
-        orport          => '9002',
-        dirport         => '9032',
+        orport          => 9002,
+        dirport         => 9032,
         address         => 'tor-eqiad-1.wikimedia.org',
         nickname        => 'wikimediaeqiad2',
         contact         => 'noc@wikimedia.org',

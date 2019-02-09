@@ -1,15 +1,15 @@
 # sets up additional Tor instances
 # needs Tor >= 0.2.7.4-rc-1
 define tor::instance(
-    $address,
-    $nickname,
-    $contact,
-    $controlport,
-    $controlpassword,
-    $orport,
-    $dirport,
-    $exit_policy,
-    $fingerprints,
+    Variant[Stdlib::Ip_address, Stdlib::Fqdn] $address,
+    String $nickname,
+    String $contact,
+    Stdlib::Port $controlport,
+    String $controlpassword,
+    Stdlib::Port $orport,
+    Stdlib::Port $dirport,
+    String $exit_policy,
+    Array[String] $fingerprints,
 ) {
 
     if $name == 'default' {

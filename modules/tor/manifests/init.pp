@@ -1,17 +1,17 @@
 # sets up a Tor relay
 class tor(
-    $address,
-    $nickname,
-    $contact,
-    $controlport,
-    $controlpassword,
-    $orport,
-    $dirport,
-    $exit_policy,
-    $apt_uri,
-    $apt_dist,
-    $service_ensure,
-    $fingerprints,
+    Variant[Stdlib::Ip_address, Stdlib::Fqdn] $address,
+    String $nickname,
+    String $contact,
+    Stdlib::Port $controlport,
+    String $controlpassword,
+    Stdlib::Port $orport,
+    Stdlib::Port $dirport,
+    String $exit_policy,
+    Stdlib::Httpurl $apt_uri,
+    String $apt_dist,
+    Stdlib::Ensure::Service $service_ensure,
+    Array[String] $fingerprints,
 ) {
 
     if os_version('debian >= stretch') {
