@@ -10,7 +10,7 @@ class profile::wmcs::monitoring (
         ensure => 'present',
     }
 
-    # hourly cron to rsync whisper files
+    # hourly job to rsync whisper files
     ssh::userkey { '_graphite':
         ensure  => 'present',
         content => secret('ssh/wmcs/monitoring/wmcs_monitoring_rsync.pub'),
@@ -33,8 +33,8 @@ class profile::wmcs::monitoring (
     }
 
     # master / slave specific bits
-    if $facts['fqdn'] == $monitoring_master {
-        $cron_ensure = 'absent'
+    if $::facts['fqdn'] == $monitoring_master {
+        $rsync_ensure = 'absent'
 
         ferm::service { 'wmcs_monitoring_rsync_ferm':
             proto  => 'tcp',
@@ -67,13 +67,24 @@ class profile::wmcs::monitoring (
         }
     }
 
-    $whisper_dir = '/srv/carbon/whisper/'
+    # TODO: Remove after change is applied
     cron { 'wmcs_monitoring_rsync_cronjob':
-        ensure  => $cron_ensure,
-        command => "/usr/bin/rsync --delete --delete-after -aSOrd ${monitoring_master}:${whisper_dir} ${whisper_dir}",
-        minute  => 00,
-        hour    => '*/8',
-        user    => '_graphite',
-        require => Package['rsync'],
+        ensure => absent,
+        user   => '_graphite',
+    }
+
+    $whisper_dir = '/srv/carbon/whisper/'
+    systemd::timer::job { 'wmcs_monitoring_graphite_rsync':
+        ensure                    => $rsync_ensure,
+        description               => 'Mirror files from Graphite master to standby server',
+        command                   => "/usr/bin/rsync --delete --delete-after -aSOrd ${monitoring_master}:${whisper_dir} ${whisper_dir}",
+        interval                  => {
+            'start'    => 'OnCalendar',
+            'interval' => '*-*-* 00/8:00:00', # Every 8 hours
+        },
+        logging_enable            => false,
+        monitoring_enabled        => true,
+        monitoring_contact_groups => 'wmcs-team',
+        user                      => '_graphite',
     }
 }
