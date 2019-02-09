@@ -39,11 +39,22 @@ class profile::toolforge::clush::master(
         mode   => '0555',
     }
 
+    # TODO: Remove after change is applied
     cron { 'update_tools_clush':
-        ensure  => present,
-        command => "/usr/local/sbin/tools-clush-generator /etc/clustershell/tools.yaml --observer-pass ${observer_pass}",
-        hour    => '*/1',
-        user    => 'root',
+        ensure  => absent,
+    }
+
+    systemd::timer::job { 'toolfoge_clush_update':
+        ensure                    => present,
+        description               => 'Update list of Toolforge servers for clush',
+        command                   => "/usr/local/sbin/tools-clush-generator /etc/clustershell/tools.yaml --observer-pass ${observer_pass}",
+        interval                  => {
+            'start'    => 'OnCalendar',
+            'interval' => 'hourly',
+        },
+        monitoring_enabled        => true,
+        monitoring_contact_groups => 'wmcs-team',
+        user                      => 'root',
     }
 
     $groups_config = {
