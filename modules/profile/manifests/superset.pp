@@ -86,7 +86,10 @@ class profile::superset(
             # EventLogging mysql slave database.
             "mysql://${::passwords::mysql::research::user}@analytics-slave.eqiad.wmnet/log" =>
                 $::passwords::mysql::research::pass,
-        }
+            # new cluster, staging
+            "mysql://${::passwords::mysql::research::user}@staging-db-analytics.eqiad.wmnet:3340/staging" =>
+                $::passwords::mysql::research::pass,
+      }
     }
     else {
         $password_mapping = undef
