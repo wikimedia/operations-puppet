@@ -83,6 +83,7 @@ fullviews:
   - imagelinks
   - imagelinks_old
   - interwiki
+  - ipblocks_restrictions
   - iwlinks
   - l10n_cache
   - langlinks
