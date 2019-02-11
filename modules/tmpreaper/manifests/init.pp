@@ -10,15 +10,13 @@ class tmpreaper {
         ensure => present,
     }
 
-    # tmpreaper's cron.daily script declines to run unless the line
-    # below is removed from its config file, indicating that the user
-    # understands the security implications of having tmpreaper run
-    # automatically. See /usr/share/doc/tmpreaper/README.security.gz .
+    # We modify the original file shipped with debian for the following reasons:
+    # - we remove SHOWWARNING=true so that tmpreaper actually runs
+    # - we add an additional protect rule so that tmpreaper plays nice with
+    #   systemd's private temporary directories
 
-    file_line { 'enable_tmpreaper':
-        ensure  => absent,
-        line    => 'SHOWWARNING=true',
-        path    => '/etc/tmpreaper.conf',
-        require => Package['tmpreaper'],
+    file { '/etc/tmpreaper.conf':
+      ensure => present,
+      source => 'puppet:///modules/tmpreaper/tmpreaper.conf'
     }
 }
