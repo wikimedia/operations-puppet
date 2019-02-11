@@ -30,7 +30,6 @@ class postgresql::server(
     $pgversion        = $::lsbdistcodename ? {
         'stretch' => '9.6',
         'jessie'  => '9.4',
-        'trusty'  => '9.3',
     },
     $ensure           = 'present',
     $includes         = [],
