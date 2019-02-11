@@ -14,14 +14,9 @@ class profile::cache::text(
     $be_transient_gb = hiera('cache::be_transient_gb'),
     $backend_warming = hiera('cache::backend_warming', false),
     $admission_policy = hiera('profile::cache::base::admission_policy', 'nhw'),
-    $extra_nets = hiera('profile::cache::base::extra_nets', []),
-    $extra_trust = hiera('profile::cache::base::extra_trust', []),
 ) {
     # profile::cache::base needs to be evaluated before this one.
     require ::profile::cache::base
-    require network::constants
-    $wikimedia_nets = flatten(concat($::network::constants::aggregate_networks, $extra_nets))
-    $wikimedia_trust = flatten(concat($::network::constants::aggregate_networks, $extra_trust))
 
     $cache_route = $cache_route_table[$::site]
     # LVS configuration
@@ -98,8 +93,6 @@ class profile::cache::text(
         fe_transient_gb  => $fe_transient_gb,
         be_transient_gb  => $be_transient_gb,
         backend_warming  => $backend_warming,
-        wikimedia_nets   => $wikimedia_nets,
-        wikimedia_trust  => $wikimedia_trust,
     }
 
     # ResourceLoader browser cache hit rate and request volume stats.
