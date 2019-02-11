@@ -48,7 +48,6 @@ class ircecho (
         ensure         => $ensure,
         content        => systemd_template('ircecho'),
         service_params => {
-            ensure     => 'running',
             hasrestart => true,
         },
         require        => File['/usr/local/bin/ircecho'],
