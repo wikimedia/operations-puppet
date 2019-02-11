@@ -63,7 +63,7 @@ class prometheus::node_exporter (
         }
 
         package { 'prometheus-node-exporter':
-            ensure  => '0.17.0+ds-2',
+            ensure  => '0.17.0+ds-3',
             require => Exec['apt-get update'],
         }
 
