@@ -20,8 +20,6 @@ class profile::graphoid(
     $headers       = hiera('profile::graphoid::headers'),
     $error_headers = hiera('profile::graphoid::error_headers'),
 ) {
-    requires_os('debian >= jessie')
-
     $domain_map    = {}
     $timeout       = 5000
 

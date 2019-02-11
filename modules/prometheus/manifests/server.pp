@@ -68,8 +68,6 @@ define prometheus::server (
 ) {
     include ::prometheus
 
-    requires_os('debian >= jessie')
-
     require_package('prometheus')
 
     $global_config_default = {

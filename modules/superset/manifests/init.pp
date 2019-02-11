@@ -70,7 +70,6 @@ class superset(
     $statsd            = undef,
     $deployment_user   = 'analytics_deploy',
 ) {
-    requires_os('debian >= jessie')
     require_package(
         'virtualenv',
         'firejail',

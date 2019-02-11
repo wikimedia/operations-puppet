@@ -16,10 +16,6 @@
 # [*enable*] If service is to be enabled or not
 #
 define etcdmirror::instance($src, $src_path, $dst, $dst_path, $enable) {
-    unless ($::initsystem == 'systemd') {
-        fail('This manifest only works with systemd')
-    }
-
     require_package('etcd-mirror')
 
     # safe version of the title

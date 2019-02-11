@@ -6,7 +6,6 @@
 class role::ci::slave::rlang {
 
     requires_realm('labs')
-    requires_os('debian >= jessie')
 
     system::role { 'ci::slave::rlang':
         description => 'CI Jenkins slave for R language testing',

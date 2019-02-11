@@ -29,8 +29,6 @@ class turnilo(
     $scap_repo         = 'analytics/turnilo/deploy',
 ) {
 
-    requires_os('debian >= jessie')
-
     # Nodejs 10 upgrade - T210705
     if os_version('debian == stretch') {
         apt::repository { 'wikimedia-node10':

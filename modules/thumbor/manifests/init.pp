@@ -43,8 +43,6 @@ class thumbor (
     $logstash_port = 11514,
     $stl_support = undef,
 ) {
-    requires_os('debian >= jessie')
-
     require_package('firejail')
     require_package('python-logstash')
     require_package('binutils') # The find_library() function in ctypes/Python uses objdump

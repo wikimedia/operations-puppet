@@ -2,7 +2,6 @@
 #
 # Setup clock synchronisation using systemd-timesyncd
 class standard::ntp::timesyncd () {
-    requires_os('debian >= jessie')
     require standard::ntp
 
     package { 'ntp':

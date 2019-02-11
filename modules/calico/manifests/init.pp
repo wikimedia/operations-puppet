@@ -6,8 +6,6 @@ class calico(
     $registry,
     $calico_version='2.0',
 ) {
-    requires_os('debian >= jessie')
-
     file { '/etc/calico':
         ensure => directory,
         owner  => 'root',

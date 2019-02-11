@@ -1,7 +1,4 @@
 class labstore::fileserver::secondary {
-
-    requires_os('debian >= jessie')
-
     class {'::labstore':
         nfsd_threads => '300',
     }

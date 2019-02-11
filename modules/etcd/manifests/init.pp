@@ -62,9 +62,6 @@ class etcd (
     Integer $heartbeat_interval = 100,
     Integer $election_timeout = 1000,
 ) {
-    # This module is jessie only for now
-    requires_os('debian >= jessie')
-
     # Validation of parameters
     if ($use_client_certs and ! $use_ssl) {
         fail("Can't use SSL client certs if we don't use SSL")

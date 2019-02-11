@@ -10,9 +10,6 @@ class profile::pybal(
     $wikimedia_clusters = hiera('wikimedia_clusters'),
     $etcd_port = hiera('profile::pybal::etcd_port', 2379)
 ) {
-
-    requires_os('debian >= jessie')
-
     # Includes all the common configs.
     include ::lvs::configuration
 
