@@ -3295,6 +3295,10 @@ ldap_only_users:
     ensure: present
     realname: Marielle Volz
     email: mvolz@wikimedia.org
+  nharateh:
+    ensure: present
+    realname: Natalia Harateh
+    email: nharateh@wikimedia.org
   nirzar:
     ensure: present
     realname: Nirzar Pangarkar
