@@ -3322,6 +3322,10 @@ ldap_only_users:
     ensure: present
     realname: Tyler Romeo
     email: tylerromeo@gmail.com
+  petarpetkovic:
+    ensure: present
+    realname: Petar Petkovic
+    email: ppetkovic@wikimedia.org
   prtksxna:
     ensure: present
     realname: Prateek Saxena
