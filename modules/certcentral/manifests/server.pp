@@ -52,7 +52,7 @@ class certcentral::server (
             'dns-01' => {
                 zone_update_cmd          => $challenges['dns-01']['zone_update_cmd'],
                 sync_dns_servers         => $authdns_servers,
-                verification_dns_servers => $authdns_servers,
+                validation_dns_servers   => $authdns_servers,
             }
         },
         default => {},
