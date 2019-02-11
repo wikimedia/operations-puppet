@@ -1,6 +1,8 @@
 # Buffer pool sizes/instance enabled
-profile::mariadb::dbstore_multiinstance::num_instances: 3
+profile::mariadb::dbstore_multiinstance::num_instances: 4
 profile::mariadb::dbstore_multiinstance::s6: '100G'
-profile::mariadb::dbstore_multiinstance::s8: '230G'
-profile::mariadb::dbstore_multiinstance::x1: '80G'
+profile::mariadb::dbstore_multiinstance::s8: '220G'
+profile::mariadb::dbstore_multiinstance::x1: '70G'
+# Analytics staging database
+profile::mariadb::dbstore_multiinstance::staging: '20G'
 profile::base::notifications: disabled
