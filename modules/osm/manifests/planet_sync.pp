@@ -63,10 +63,7 @@ define osm::planet_sync (
     String $expire_levels                   = '15',
     Integer $memory_limit                   = floor($::memorysize_mb) / 12,
     Integer $num_threads                    = $::processorcount,
-    String $input_reader_format             = os_version('debian >= jessie') ? {
-        true    => 'xml',
-        default => 'libxml2',
-    },
+    String $input_reader_format             = 'xml',
     Optional[String] $postreplicate_command = undef,
     Boolean $disable_replication_cron       = false,
 ) {
