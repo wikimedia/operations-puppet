@@ -21,12 +21,12 @@ node 'achernar.wikimedia.org' {
 
 # Ganeti VMs for acme-chief service
 node 'acmechief1001.eqiad.wmnet' {
-    role(spare::system)
+    role(acme_chief)
     interface::add_ip6_mapped { 'main': }
 }
 
 node 'acmechief2001.codfw.wmnet' {
-    role(spare::system)
+    role(acme_chief)
     interface::add_ip6_mapped { 'main': }
 }
 
