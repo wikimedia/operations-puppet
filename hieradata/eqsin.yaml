@@ -10,3 +10,4 @@ public_tls_unified_cert_vendor: "globalsign-2018"
 # Reasonable expected max RTT in ms to furthest core DC
 # (given worst alternate network paths, and plus a small fudge factor)
 max_core_rtt: 300 # ulsfo-telia-tunnel(163)->worst-ulsfo-eqiad(92) -> ~255ms rounded up to 300
+prometheus::node_exporter::upgrade_one_seven: true
