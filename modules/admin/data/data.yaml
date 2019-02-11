@@ -3203,6 +3203,10 @@ ldap_only_users:
     ensure: present
     realname: Aeryn Palmer
     email: apalmer@wikimedia.org
+  runa:
+    ensure: present
+    realname: Runa Bhattacharjee
+    email: rbhattacharjee@wikimedia.org
   ashahrestani:
     ensure: present
     realname: A Shahrestani
