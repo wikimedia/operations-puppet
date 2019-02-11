@@ -16,5 +16,15 @@ class elasticsearch::nagios::check(
             check_command => "check_elasticsearch_shards_threshold!${http_port}!${threshold}",
             description   => "ElasticSearch health check for shards on ${http_port}",
         }
+
+        monitoring::service { "elasticsearch / unassigned shard check - ${http_port}":
+                check_command  => "check_elasticsearch_unassigned_shards!${http_port}",
+                description    => "ElasticSearch unassigned shard check - ${http_port})",
+                critical       => false,
+                check_interval => 720, # 12h
+                retry_interval => 120, # 2h
+                retries        => 1,
+                contact_group  => 'admins,team-discovery',
+        }
     }
 }
