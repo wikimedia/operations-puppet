@@ -207,3 +207,5 @@ ntp_peers:
     ulsfo: []
     eqsin: []
     esams: []
+
+prometheus::node_exporter::upgrade_one_seven: true
