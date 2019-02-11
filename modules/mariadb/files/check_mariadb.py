@@ -118,7 +118,7 @@ class WMFMariaDB:
                 mysql_sock = '/run/mysqld/mysqld.s' + str(port)[-1:] + '.sock'
             elif port == 3320:
                 mysql_sock = '/run/mysqld/mysqld.x1.sock'
-            elif port == 3340:
+            elif port == 3350:
                 mysql_sock = '/run/mysqld/mysqld.staging.sock'
             else:
                 mysql_sock = '/run/mysqld/mysqld.m' + str(port)[-1:] + '.sock'

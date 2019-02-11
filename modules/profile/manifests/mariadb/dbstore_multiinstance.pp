@@ -113,11 +113,11 @@ disabled, use mariadb@<instance_name> instead'; exit 1\"",
 # Analytics staging database
     if $staging {
         mariadb::instance { 'staging':
-            port                    => 3340,
+            port                    => 3350,
             innodb_buffer_pool_size => $staging,
         }
-        profile::mariadb::ferm { 'staging': port => '3340' }
-        profile::prometheus::mysqld_exporter_instance { 'staging': port => 13340, }
+        profile::mariadb::ferm { 'staging': port => '3350' }
+        profile::prometheus::mysqld_exporter_instance { 'staging': port => 13350, }
     }
 
 
