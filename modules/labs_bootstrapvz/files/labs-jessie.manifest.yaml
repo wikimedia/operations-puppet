@@ -132,6 +132,11 @@ plugins:
     assets: /etc/bootstrap-vz/puppet
     enable_agent: false
   file_copy:
+    mkdirs:
+      -
+        dir: /etc/systemd/system/getty@ttyS1.service.d
+        permissions: "755"
+        owner: root
     files:
       -
         src: /etc/bootstrap-vz/firstscripts/firstboot.sh
@@ -185,6 +190,12 @@ plugins:
       -
         src: /etc/ssl/certs/ca-certificates.crt
         dst: /etc/ssl/certs/ca-certificates.crt
+      -
+        src: /etc/systemd/system/getty@ttyS1.service.d/puppet-override.conf
+        dst: /etc/systemd/system/getty@ttyS1.service.d/puppet-override.conf
+        permissions: "644"
+        owner: root
+
   commands:
     # Current implementation does not specify an order between commands and
     #  file_copy.  This section should not depend on anything existing from
@@ -200,6 +211,7 @@ plugins:
       - ['chroot', '{root}', 'update-grub']
       - ['chroot', '{root}', 'puppet', 'agent', '--disable']
       - ['chroot', '{root}', 'update-rc.d', '-f', 'puppet', 'remove']
+      - ['chroot', '{root}', 'systemctl', 'enable', 'getty@ttyS1.service']
 
   unattended_upgrades:
     update_interval: 1
