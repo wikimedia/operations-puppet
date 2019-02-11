@@ -134,14 +134,34 @@ class profile::icinga(
         base::service_auto_restart { 'apache2': }
 
     }
-    else {
-        $partners.each |String $partner| {
-            ferm::service { "icinga-rsync-${partner}":
-              proto  => 'tcp',
-              port   => 873,
-              srange => "(@resolve(${partner}) @resolve(${partner}, AAAA))",
-            }
+
+    # In order to do failovers, we need to be able to rsync state
+    # from any one to any other, whether or not Puppet has run any subset
+    # of the hosts.
+    $all_icinga_hosts = $partners + $active_host
+
+    $all_icinga_hosts.each |String $partner| {
+        ferm::service { "icinga-rsync-${partner}":
+            proto  => 'tcp',
+            port   => 873,
+            srange => "(@resolve(${partner}) @resolve(${partner}, AAAA))",
         }
+    }
+
+    rsync::server::module { 'icinga-tmpfs':
+        read_only   => 'yes',
+        path        => '/var/icinga-tmpfs',
+        hosts_allow => $all_icinga_hosts
+    }
+    rsync::server::module { 'icinga-cache':
+        read_only   => 'yes',
+        path        => '/var/cache/icinga',
+        hosts_allow => $all_icinga_hosts
+    }
+    rsync::server::module { 'icinga-lib':
+        read_only   => 'yes',
+        path        => '/var/lib/icinga',
+        hosts_allow => $all_icinga_hosts
     }
 
     # allow NSCA (Nagios Service Check Acceptor)
@@ -150,22 +170,6 @@ class profile::icinga(
         proto  => 'tcp',
         port   => '5667',
         srange => '($PRODUCTION_NETWORKS $FRACK_NETWORKS)',
-    }
-
-    rsync::server::module { 'icinga-tmpfs':
-        read_only   => 'yes',
-        path        => '/var/icinga-tmpfs',
-        hosts_allow => $partners
-    }
-    rsync::server::module { 'icinga-cache':
-        read_only   => 'yes',
-        path        => '/var/cache/icinga',
-        hosts_allow => $partners
-    }
-    rsync::server::module { 'icinga-lib':
-        read_only   => 'yes',
-        path        => '/var/lib/icinga',
-        hosts_allow => $partners
     }
 
     # We absent the cron on active hosts, should only exist on passive ones
