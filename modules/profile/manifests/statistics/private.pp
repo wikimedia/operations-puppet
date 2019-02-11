@@ -12,6 +12,7 @@ class profile::statistics::private(
 ) {
 
     require ::profile::analytics::cluster::packages::statistics
+    require ::profile::analytics::cluster::repositories::statistics
 
     class {'::deployment::umask_wikidev': }
 

@@ -7,6 +7,7 @@ class profile::statistics::cruncher(
 ) {
 
     require ::profile::analytics::cluster::packages::statistics
+    require ::profile::analytics::cluster::repositories::statistics
 
     include ::profile::analytics::cluster::gitconfig
 

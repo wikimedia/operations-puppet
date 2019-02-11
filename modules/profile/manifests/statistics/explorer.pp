@@ -5,6 +5,7 @@ class profile::statistics::explorer(
 ) {
 
     require ::profile::analytics::cluster::packages::statistics
+    require ::profile::analytics::cluster::repositories::statistics
     include ::profile::analytics::cluster::gitconfig
 
     class { '::deployment::umask_wikidev': }

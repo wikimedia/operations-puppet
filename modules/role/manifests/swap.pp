@@ -10,6 +10,7 @@ class role::swap {
     include ::profile::swap
     include ::profile::analytics::cluster::packages::hadoop
     include ::profile::analytics::cluster::packages::statistics
+    require ::profile::analytics::cluster::repositories::statistics
     include ::profile::analytics::cluster::client
     # This is a Hadoop client, and should
     # have any special analytics system users on it
