@@ -1,0 +1,35 @@
+#!/bin/bash
+
+# Copyright 2018 Valentin Gutierrez
+# Copyright 2018 Wikimedia Foundation, Inc.
+#
+# This script is free software, and comes with ABSOLUTELY NO WARRANTY.
+# It may be used, redistributed and/or modified under the terms of the GNU
+# General Public Licence (see http://www.fsf.org/licensing/licenses/gpl.txt).
+#
+
+set -e
+
+CONFFILE=/etc/acme-chief/cert-sync.conf
+
+# Source the configuration file
+[ -f $CONFFILE ] && . $CONFFILE
+
+if [ -z "$PASSIVE_FQDN" ] || [ -z "$LIVE_CERTS_PATH" ]; then
+    echo "Missing config file options, system misconfigured"
+    exit 1
+fi
+
+if [ ! -r "$LIVE_CERTS_PATH" ]; then
+    echo "Unable to read $LIVE_CERTS_PATH"
+    exit 1
+fi
+
+# .rsync.status is touched to let the passive node check that the rsync has been received successfully
+/usr/bin/touch "$LIVE_CERTS_PATH"/.rsync.status
+
+SSH_AUTH_SOCK=/run/keyholder/proxy.sock /usr/bin/rsync -e /usr/bin/ssh \
+    -d -p -t "$LIVE_CERTS_PATH"/ acme-chief@"$PASSIVE_FQDN":"$LIVE_CERTS_PATH"/
+
+# .rsync.done is touched to let the active node check that this script has been run succesfully
+/usr/bin/touch "$LIVE_CERTS_PATH"/.rsync.done

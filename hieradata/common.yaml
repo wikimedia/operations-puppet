@@ -873,6 +873,8 @@ authdns_servers:
 
 # certcentral active host
 certcentral_host: 'certcentral1001.eqiad.wmnet'
+# acme-chief active host
+acmechief_host: 'acmechief1001.eqiad.wmnet'
 
 mail_smarthost:
 - 'mx1001.wikimedia.org'

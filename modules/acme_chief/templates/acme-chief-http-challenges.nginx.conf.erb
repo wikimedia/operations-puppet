@@ -1,0 +1,11 @@
+server {
+    listen [::]:80 default_server;
+    listen 80 default_server;
+    server_name <%= @fqdn %>;
+    error_log /var/log/nginx/acme-chief.insecure.error.log;
+    access_log off;
+    location /.well-known/acme-challenge/ {
+        alias /etc/acme-chief/http_challenges/;
+        autoindex off;
+    }
+}
