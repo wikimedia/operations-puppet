@@ -1,9 +1,2 @@
-profile::icinga::virtual_host: icinga.wikimedia.org
-profile::icinga::partner: icinga2001.wikimedia.org
-profile::tcpircbot::ensure: present
 do_acme: true
-profile::icinga::passive: false
-profile::icinga::icinga_user: nagios
-profile::icinga::icinga_group: nagios
-profile::icinga::retention_file: '/var/lib/icinga/retention.dat'
-profile::icinga::max_concurrent_checks: 0
+profile::tcpircbot::ensure: present

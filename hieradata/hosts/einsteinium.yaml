@@ -1,7 +1,0 @@
-profile::icinga::virtual_host: icinga-old.wikimedia.org
-# Note that our paging infrastructure (AQL as of 20161101) may need an update of it's sender whitelist
-profile::tcpircbot::ensure: absent
-do_acme: true
-profile::icinga::passive: true
-profile::icinga::max_concurrent_checks: 10000
-profile::base::notifications: disabled

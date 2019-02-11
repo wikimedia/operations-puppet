@@ -1,9 +1,2 @@
-profile::icinga::virtual_host: icinga.wikimedia.org
-# Note that our paging infrastructure (AQL as of 20161101) may need an update of it's sender whitelist
-# icinga2001 is the backup icinga server. All these flags need to be converted accordingly for it to assume the identity of the primary
-profile::tcpircbot::ensure: absent
 do_acme: false
-profile::icinga::icinga_user: nagios
-profile::icinga::icinga_group: nagios
-profile::icinga::retention_file: '/var/lib/icinga/retention.dat'
-profile::icinga::max_concurrent_checks: 0
+profile::tcpircbot::ensure: absent
