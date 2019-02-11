@@ -5,7 +5,7 @@ set -e
 download_dir="/srv/downloads/"
 osmosis_dir="/srv/osmosis"
 kartotherian_dir="/srv/deployment/kartotherian/deploy"
-postgis_vt_util_sql_lib="${kartotherian_dir}/node_modules/postgis-vt-util/lib.sql"
+postgis_vt_util_sql_lib="${kartotherian_dir}/node_modules/@kartotherian/postgis-vt-util/lib.sql"
 modules_with_sql="@kartotherian/osm-bright-source @kartotherian/geoshapes"
 replicate_lock="${osmosis_dir}/replicate-osm.lck"
 proxy=
