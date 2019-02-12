@@ -6,4 +6,5 @@ class role::statistics::gpu {
         description => 'Statistics node for GPU testing'
     }
     include ::standard
+    include ::profile::base::firewall
 }
