@@ -3,6 +3,9 @@
 # See also
 # http://docs.openstack.org/developer/swift/overview_container_sync.html
 swift::params::replication_accounts:
+    docker_registry:
+        cluster_codfw: 'https://swift.svc.codfw.wmnet/v1/'
+        cluster_eqiad: 'https://swift.svc.eqiad.wmnet/v1/'
     mw_media:
         cluster_codfw: 'http://ms-fe.svc.codfw.wmnet/v1/'
 

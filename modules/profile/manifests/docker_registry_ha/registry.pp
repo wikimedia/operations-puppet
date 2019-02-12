@@ -12,7 +12,9 @@ class profile::docker_registry_ha::registry(
     $swift_auth_url = hiera('profile::docker_registry_ha::registry::swift_auth_url'),
     # By default, the password will be extracted from swift, but can be overridden
     $swift_account_keys = hiera('swift::params::account_keys'),
-    $swift_container = hiera('profile::docker_registry_ha::registry::swift_container', 'docker_registry'),
+    $swift_container = hiera('profile::docker_registry_ha::registry::swift_container', undef),
+    $swift_replication_configuration = hiera('profile::docker_registry_ha::registry::swift_replication_configuration'),
+    $swift_replication_key = hiera('profile::docker_registry_ha::registry::swift_replication_key'),
     $swift_password = hiera('profile::docker_registry_ha::registry::swift_password', undef),
     $redis_host = hiera('profile::docker_registry_ha::registry::redis_host', undef),
     $redis_port = hiera('profile::docker_registry_ha::registry::redis_port', undef),
@@ -54,14 +56,16 @@ class profile::docker_registry_ha::registry(
     }
 
     class { '::docker_registry_ha':
-        swift_user             => $swift_account['user'],
-        swift_password         => $password,
-        swift_url              => $swift_auth_url,
-        swift_container        => $swift_container,
-        redis_host             => $redis_host,
-        redis_port             => $redis_port,
-        redis_passwd           => $redis_password,
-        registry_shared_secret => $docker_registry_shared_secret
+        swift_user                      => $swift_account['user'],
+        swift_password                  => $password,
+        swift_url                       => $swift_auth_url,
+        swift_replication_key           => $swift_replication_key,
+        swift_replication_configuration => $swift_replication_configuration,
+        swift_container                 => $swift_container,
+        redis_host                      => $redis_host,
+        redis_port                      => $redis_port,
+        redis_passwd                    => $redis_password,
+        registry_shared_secret          => $docker_registry_shared_secret
     }
 
     class { '::docker_registry_ha::web':
@@ -93,6 +97,7 @@ class profile::docker_registry_ha::registry(
         port   => '81',
         srange => '$DOMAIN_NETWORKS',
     }
+
 
     # Monitoring disabled for now,
     # need to adjust it to HA scenario.
