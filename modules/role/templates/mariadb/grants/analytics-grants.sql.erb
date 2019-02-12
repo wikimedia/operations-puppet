@@ -8,8 +8,3 @@ GRANT SELECT ON `%wik%`.* TO 'research'@'%';
 GRANT SELECT ON `centralauth`.* TO 'research'@'%';
 GRANT SELECT ON `flowdb`.* TO 'research'@'%';
 GRANT SELECT ON `wikishared`.* TO 'research'@'%'
-
-
--- Grants for 'globaldev'@'%'
-GRANT USAGE ON *.* TO 'globaldev'@'%' IDENTIFIED BY <%= @globaldev_pass %>;
-GRANT SELECT ON `%wiki%`.* TO 'globaldev'@'%';
