@@ -93,6 +93,8 @@ class profile::cache::text(
         fe_transient_gb  => $fe_transient_gb,
         be_transient_gb  => $be_transient_gb,
         backend_warming  => $backend_warming,
+        wikimedia_nets   => $profile::cache::base::wikimedia_nets,
+        wikimedia_trust  => $profile::cache::base::wikimedia_trust,
     }
 
     # ResourceLoader browser cache hit rate and request volume stats.

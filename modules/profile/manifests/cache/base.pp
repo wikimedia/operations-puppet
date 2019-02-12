@@ -26,7 +26,13 @@ class profile::cache::base(
     $log_slow_request_threshold = hiera('profile::cache::base::log_slow_request_threshold', '60.0'),
     $allow_iptables = hiera('profile::cache::base::allow_iptables', false),
     $max_core_rtt = hiera('max_core_rtt'),
+    $extra_nets = hiera('profile::cache::base::extra_nets', []),
+    $extra_trust = hiera('profile::cache::base::extra_trust', []),
 ) {
+    require network::constants
+    $wikimedia_nets = flatten(concat($::network::constants::aggregate_networks, $extra_nets))
+    $wikimedia_trust = flatten(concat($::network::constants::aggregate_networks, $extra_trust))
+
     # There is no better way to do this, so it can't be a class parameter. In fact,
     # I consider our requirement to make hiera calls parameters
     # harmful, as it prevents us to do hiera key interpolation in

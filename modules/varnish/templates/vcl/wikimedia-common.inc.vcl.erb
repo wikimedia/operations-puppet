@@ -25,7 +25,7 @@ acl local_host {
 
 // external trusted proxies aren't allowed to set XCIP (via XFF) to wikimedia_nets
 acl wikimedia_nets {
-<% scope.lookupvar('::network::constants::aggregate_networks').each do |entry|
+<% @wikimedia_nets.each do |entry|
 	subnet, mask = entry.split("/", 2)
 -%>
 	"<%= subnet %>"/<%= mask %>;
@@ -36,7 +36,7 @@ acl wikimedia_nets {
 // 1) frontends: only wikimedia_trust can fake X-F-P
 // 2) backends: port 3128 can only connect from wikimedia_trust
 acl wikimedia_trust {
-<% scope.lookupvar('::network::constants::aggregate_networks').each do |entry|
+<% @wikimedia_trust.each do |entry|
 	subnet, mask = entry.split("/", 2)
 -%>
 	"<%= subnet %>"/<%= mask %>;

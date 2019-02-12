@@ -105,6 +105,8 @@ class profile::cache::upload(
         cluster_nodes    => $cluster_nodes,
         cache_route      => $cache_route,
         backend_warming  => $backend_warming,
+        wikimedia_nets   => $profile::cache::base::wikimedia_nets,
+        wikimedia_trust  => $profile::cache::base::wikimedia_trust,
     }
 
     # Media browser cache hit rate and request volume stats.

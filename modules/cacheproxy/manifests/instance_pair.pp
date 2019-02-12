@@ -17,6 +17,8 @@ class cacheproxy::instance_pair (
     $be_transient_gb=0,
     $backend_warming=false,
     $separate_vcl=[],
+    $wikimedia_nets=[],
+    $wikimedia_trust=[],
 ) {
     # ideally this could be built with "map"...
     # also, in theory all caches sites should be listed here for flexibility,
@@ -87,6 +89,8 @@ class cacheproxy::instance_pair (
         app_directors   => $app_directors,
         app_def_be_opts => $app_def_be_opts,
         backend_caches  => $our_backend_caches,
+        wikimedia_nets  => $wikimedia_nets,
+        wikimedia_trust => $wikimedia_trust,
     }
 
     # Set a reduced keep value for frontends
@@ -112,6 +116,8 @@ class cacheproxy::instance_pair (
             },
         },
         vcl_config         => $fe_keep_vcl_config,
+        wikimedia_nets     => $wikimedia_nets,
+        wikimedia_trust    => $wikimedia_trust,
     }
     # lint:endignore
 }
