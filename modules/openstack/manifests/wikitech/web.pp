@@ -1,10 +1,10 @@
 # https://www.mediawiki.org/wiki/Extension:OpenStackManager
 class openstack::wikitech::web(
-    $webserver_hostname,
-    $webserver_hostname_aliases,
-    $wikidb,
-    $wikitech_nova_ldap_proxyagent_pass,
-    $wikitech_nova_ldap_user_pass,
+    String $webserver_hostname,
+    String $webserver_hostname_aliases,
+    String $wikidb,
+    String $wikitech_nova_ldap_proxyagent_pass,
+    String $wikitech_nova_ldap_user_pass,
 ) {
 
     class {'::openstack::wikitech::wikitechprivatesettings':
@@ -43,14 +43,31 @@ class openstack::wikitech::web(
             target => '/srv/mediawiki';
     }
 
-    cron {
-        'db-bak':
-            ensure  => absent;
-        'backup-cleanup':
-            ensure  => absent;
-        'run-jobs':
-            ensure  => 'present',
-            user    => $::mediawiki::users::web,
-            command => "/usr/local/bin/mwscript maintenance/runJobs.php --wiki=${wikidb} > /dev/null 2>&1";
+    # TODO: Remove after change is applied
+    cron { 'db-bak':
+        ensure => absent,
+    }
+
+    cron { 'backup-cleanup':
+        ensure => absent,
+    }
+
+    # TODO: Remove after change is applied
+    cron { 'run-jobs':
+        ensure => absent,
+    }
+
+    systemd::timer::job { 'wikitech_run_jobs':
+        ensure                    => present,
+        description               => 'Run Wikitech runJobs.php maintenance script',
+        command                   => "/usr/local/bin/mwscript maintenance/runJobs.php --wiki=${wikidb} > /dev/null 2>&1",
+        interval                  => {
+        'start'    => 'OnCalendar',
+        'interval' => '*-*-* *:*:*', # Every minute
+        },
+        logging_enabled           => false,
+        monitoring_enabled        => true,
+        monitoring_contact_groups => 'wmcs-team',
+        user                      => $::mediawiki::users::web,
     }
 }

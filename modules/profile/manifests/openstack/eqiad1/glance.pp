@@ -25,7 +25,6 @@ class profile::openstack::eqiad1::glance (
 
     class {'openstack::glance::image_sync':
         active                  => ($::fqdn == $nova_controller),
-        version                 => $version,
         glance_image_dir        => $glance_image_dir,
         nova_controller_standby => $nova_controller_standby,
     }

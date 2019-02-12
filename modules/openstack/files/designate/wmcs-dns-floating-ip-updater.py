@@ -47,7 +47,7 @@ argparser.add_argument(
 argparser.add_argument(
     '--config-file',
     help='Path to config file',
-    default='/etc/labs-floating-ips-dns-config.yaml',
+    default='/etc/wmcs-floating-ips-dns-config.yaml',
     type=argparse.FileType('r')
 )
 argparser.add_argument(

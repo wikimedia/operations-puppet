@@ -1,13 +1,23 @@
+# == openstack::glance::image_sync ==
+#
+# Transfers Glance images from master to standby server
+#
+# === Parameters ===
+# [*active*]
+#    If these definitions should be present or absent
+# [*glance_image_dir]
+#    Directory where Glance stores its uploaded images
+# [*nova_controller_standby*]
+#    Hostname of the standby server
+#
 class openstack::glance::image_sync(
-    $active,
-    $version,
-    $glance_image_dir,
-    $nova_controller_standby='',
+    Boolean $active,
+    String $glance_image_dir,
+    String $nova_controller_standby = undef,
 ) {
-
     require openstack::glance::service
 
-    # Cron doesn't take a bool
+    # systemd::timer::job does not take a boolean
     if $active {
         $ensure = 'present'
     }
@@ -50,33 +60,38 @@ class openstack::glance::image_sync(
         show_diff => false,
     }
 
-    if $active and !empty($nova_controller_standby) {
+    # If we are the master Glance server, then sync images to the standby
+    if $active and $nova_controller_standby {
+
+        # TODO: Remove after change is applied
         cron { 'rsync_glance_images':
-            ensure  => $ensure,
-            command => "/usr/bin/rsync --delete --delete-after -aSO ${glance_image_dir}/ ${nova_controller_standby}:${glance_image_dir}/",
-            minute  => 15,
-            user    => 'glancesync',
-            require => User['glancesync'],
+            ensure => absent,
+            user   => 'glancesync',
+        }
+
+        systemd::timer::job { 'glance_rsync_images':
+            ensure                    => $ensure,
+            description               => 'Copy Glance images to standby server',
+            command                   => "/usr/bin/rsync --delete --delete-after -aSO ${glance_image_dir}/ ${nova_controller_standby}:${glance_image_dir}/",
+            interval                  => {
+            'start'    => 'OnCalendar',
+            'interval' => '*-*-* *:15:00', # Every hour at minute 15
+            },
+            logging_enabled           => false,
+            monitoring_enabled        => true,
+            monitoring_contact_groups => 'wmcs-team',
+            user                      => 'root',
+            require                   => User['glancesync'],
         }
     }
 
-    # If we are not the active server and are definitely
-    # the standby then setup the permissions insurance
-    # XXX: what is this for?
-    if !($active) {
-
-        if ($::fqdn == $nova_controller_standby) {
-            $chown_ensure = 'present'
-        }
-        else {
-            $chown_ensure = 'absent'
-        }
-
-        cron { 'rsync_chown_images':
-            ensure  => $chown_ensure,
-            command => "chown -R glance ${glance_image_dir}/*",
-            minute  => 30,
-            user    => 'root',
+    # If we are the standby server, fix file ownership (glancesync->glance)
+    if !($active) and ($::fqdn == $nova_controller_standby) {
+        file { $glance_image_dir:
+            ensure  => directory,
+            owner   => 'glance',
+            group   => 'glance',
+            recurse => true,
         }
     }
 }
