@@ -1,4 +1,4 @@
-#!/bin/bash
+
 #
 # invoke shell if build fails.
 #
@@ -12,5 +12,6 @@ if [ "${SHELL_ON_FAILURE}" = "yes" ]; then
 	echo "itself and the chroot will be removed  immediately afterwards."
 	echo "**************************************************************"
 
+	set -a
 	/bin/bash < /dev/tty > /dev/tty 2> /dev/tty
 fi
