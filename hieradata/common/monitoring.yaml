@@ -230,12 +230,6 @@ monitoring::groups:
   wdqs-test_eqiad:
     description: Wikidata Query Service - Test cluster (eqiad)
 
-# Zotero
-  zotero_eqiad:
-    description: Zotero eqiad
-  zotero_codfw:
-    description: Zotero codfw
-
 # Labs
   labsnfs_eqiad:
     description: eqiad labsnfs server servers

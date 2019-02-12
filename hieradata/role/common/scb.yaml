@@ -7,7 +7,6 @@ admin::groups:
   - cxserver-admin
   - apertium-admins
   - graphoid-admin
-  - zotero-admin
   - mobileapps-admin
   - changeprop-admin
   - pdfrender-admin

@@ -355,11 +355,6 @@ groups:
                  'ALL = NOPASSWD: /srv/phab/phabricator/bin/policy',
                  'ALL = NOPASSWD: /srv/phab/phabricator/bin/worker',
                  'ALL = NOPASSWD: /srv/phab/phabricator/bin/auth strip --all-types --user *']
-  zotero-admin:
-    gid: 747
-    description: group of zotero admins
-    members: [mobrovac]
-    privileges: ['ALL = NOPASSWD: /usr/sbin/service zotero *']
   phabricator-roots:
     gid: 748
     description: people who have full root on phabricator
@@ -603,7 +598,6 @@ groups:
                'ALL = (proton) NOPASSWD: ALL',
                'ALL = NOPASSWD: /usr/sbin/service recommendation_api *',
                'ALL = (recommendation_api) NOPASSWD: ALL',
-               'ALL = NOPASSWD: /usr/sbin/service zotero *',
                'ALL = NOPASSWD: /usr/bin/firejail --join=*']
   notebook-roots:
     description: root access on experimental notebook servers

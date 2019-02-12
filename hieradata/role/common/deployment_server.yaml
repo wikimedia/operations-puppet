@@ -164,10 +164,6 @@ scap::sources:
   wdqs/wdqs:
     repository: wikidata/query/deploy
 #    lvs_service: wdqs
-  zotero/translation-server:
-    lvs_service: zotero
-  zotero/translators:
-    lvs_service: zotero
   # Cassandra logback encoder for Logstash
   cassandra/logstash-logback-encoder:
     repository: operations/software/logstash-logback-encoder
