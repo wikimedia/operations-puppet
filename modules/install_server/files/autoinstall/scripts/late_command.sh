@@ -65,6 +65,7 @@ fi
 # is built for buster-wikimedia/main (at some point we'll switch to facter 3 fleet-wide,
 # then we can drop this)
 if [ "$(chroot /target /usr/bin/lsb_release --codename --short)" = "buster" ]; then
+	in-target apt-get install net-tools
 	in-target apt-get -y install facter=2.4.6-1+deb10u1
 fi
 
