@@ -1,7 +1,7 @@
 # === Class profile::mediawiki::php
 #
 # This class declares packages that make up Wikimedia's PHP7-based
-# MediaWiki deployment stack. We'll be moving to this by mid-2018.
+# MediaWiki deployment stack.
 # See T172165
 #
 # overview of modules needed and their use:
@@ -21,6 +21,7 @@ class profile::mediawiki::php(
     Enum['7.0', '7.2'] $php_version = hiera('profile::mediawiki::php::php_version', '7.0'),
     Optional[Wmflib::UserIpPort] $port = hiera('profile::php_fpm::fcgi_port', undef),
     String $fcgi_pool = hiera('profile::mediawiki::fcgi_pool', 'www'),
+    Integer $request_timeout = hiera('profile::mediawiki::php::request_timeout', 240)
 ) {
     if os_version('debian == stretch') {
         # We get our packages for our repositories again
@@ -204,7 +205,7 @@ class profile::mediawiki::php(
                 'pm.min_spare_servers'      => $min_spare,
                 'pm.start_servers'          => $min_spare,
                 'pm.max_children'           => $num_workers,
-                'request_terminate_timeout' => 240,
+                'request_terminate_timeout' => $request_timeout,
             }
         }
 
