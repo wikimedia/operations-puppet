@@ -98,13 +98,21 @@ class base::standard_packages {
     }
 
     # real-hardware specific
-    # As of September 2015, mcelog still does not support newer AMD processors.
-    # See <https://www.mcelog.org/faq.html#18>.
-    if $facts['is_virtual'] == false and $::processor0 !~ /AMD/ {
-        require_package('intel-microcode')
-        if os_version('debian == jessie') or os_version('debian == stretch') {
-            require_package('mcelog')
-            base::service_auto_restart { 'mcelog': }
+    if $facts['is_virtual'] == false {
+        # As of September 2015, mcelog still does not support newer AMD processors.
+        # See <https://www.mcelog.org/faq.html#18>.
+        if $::processor0 !~ /AMD/ {
+          if os_version('debian == jessie') or os_version('debian == stretch') {
+              require_package('mcelog')
+              base::service_auto_restart { 'mcelog': }
+          }
+          require_package('intel-microcode')
+        }
+        # It should be possible to run mcelog and rasdaemon in parallel
+        # however we should first gain operational experience
+        if $::lsbdistcodename == 'buster' {
+            require_package('rasdaemon')
+            base::service_auto_restart { 'rasdaemon': }
         }
     }
 
