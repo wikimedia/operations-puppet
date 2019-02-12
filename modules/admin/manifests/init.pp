@@ -71,6 +71,9 @@ class admin(
         before => Exec['enforce-users-groups-cleanup'],
     }
 
+    # Ensure ordering of resources
+    Admin::Hashuser<| |> -> Admin::Groupmembers<| |>
+
     # Declarative gotcha: non-defined users can get left behind
     # Here we cleanup anyone not in a supplementary group above a certain UID
     exec { 'enforce-users-groups-cleanup':
