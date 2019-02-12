@@ -19,6 +19,17 @@ node 'achernar.wikimedia.org' {
     role(spare::system)
 }
 
+# Ganeti VMs for acme-chief service
+node 'acmechief1001.eqiad.wmnet' {
+    role(spare::system)
+    interface::add_ip6_mapped { 'main': }
+}
+
+node 'acmechief2001.codfw.wmnet' {
+    role(spare::system)
+    interface::add_ip6_mapped { 'main': }
+}
+
 # url-downloaders
 node /^(actinium|alcyone|alsafi|aluminium)\.wikimedia\.org$/ {
     role(url_downloader)
