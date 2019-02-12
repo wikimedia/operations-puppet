@@ -51,42 +51,12 @@ class prometheus::node_exporter (
         'textfile', 'time', 'uname', 'vmstat']
     $textfile_directory = '/var/lib/prometheus/node.d'
 
-    if ($upgrade_one_seven or $::lsbdistcodename == 'buster') {
-        $collectors_enabled = concat($collectors_default, $collectors_extra)
-        if (os_version('debian <= stretch')) {
-            apt::repository { 'component-prometheus-node-exporter':
-                uri        => 'http://apt.wikimedia.org/wikimedia',
-                dist       => "${::lsbdistcodename}-wikimedia",
-                components => 'component/prometheus-node-exporter',
-                before     => Package['prometheus-node-exporter'],
-            }
-        }
-
-        package { 'prometheus-node-exporter':
-            ensure  => '0.17.0+ds-3',
-            require => Exec['apt-get update'],
-        }
-
-        file { '/etc/default/prometheus-node-exporter':
-            ensure  => present,
-            mode    => '0444',
-            owner   => 'root',
-            group   => 'root',
-            content => template('prometheus/etc/default/prometheus-node-exporter-0.17.erb'),
-            notify  => Service['prometheus-node-exporter'],
-        }
-    } else {
+    # Replicate old behavior for 14.04 Trusty
+    if ($::lsbdistcodename == 'trusty') {
         $collectors_enabled = join(sort(concat($collectors_default, $collectors_extra)), ',')
 
         package { 'prometheus-node-exporter':
-            ensure => '0.14.0~git20170523-1'
-        }
-
-        apt::repository { 'component-prometheus-node-exporter':
-            ensure     => 'absent',
-            uri        => '',
-            dist       => '',
-            components => '',
+          ensure => 'present'
         }
 
         file { '/etc/default/prometheus-node-exporter':
@@ -97,8 +67,56 @@ class prometheus::node_exporter (
             content => template('prometheus/etc/default/prometheus-node-exporter.erb'),
             notify  => Service['prometheus-node-exporter'],
         }
-    }
+    } else {
+        if ($upgrade_one_seven or $::lsbdistcodename == 'buster') {
+            $collectors_enabled = concat($collectors_default, $collectors_extra)
 
+            if (os_version('debian <= stretch')) {
+                apt::repository { 'component-prometheus-node-exporter':
+                    uri        => 'http://apt.wikimedia.org/wikimedia',
+                    dist       => "${::lsbdistcodename}-wikimedia",
+                    components => 'component/prometheus-node-exporter',
+                    before     => Package['prometheus-node-exporter'],
+                }
+            }
+
+            package { 'prometheus-node-exporter':
+                ensure  => '0.17.0+ds-3',
+                require => Exec['apt-get update'],
+            }
+
+            file { '/etc/default/prometheus-node-exporter':
+                  ensure  => present,
+                  mode    => '0444',
+                  owner   => 'root',
+                  group   => 'root',
+                  content => template('prometheus/etc/default/prometheus-node-exporter-0.17.erb'),
+                  notify  => Service['prometheus-node-exporter'],
+            }
+        } else {
+            $collectors_enabled = join(sort(concat($collectors_default, $collectors_extra)), ',')
+
+            package { 'prometheus-node-exporter':
+                ensure => '0.14.0~git20170523-1'
+            }
+
+            apt::repository { 'component-prometheus-node-exporter':
+                ensure     => 'absent',
+                uri        => '',
+                dist       => '',
+                components => '',
+            }
+
+            file { '/etc/default/prometheus-node-exporter':
+                ensure  => present,
+                mode    => '0444',
+                owner   => 'root',
+                group   => 'root',
+                content => template('prometheus/etc/default/prometheus-node-exporter.erb'),
+                notify  => Service['prometheus-node-exporter'],
+            }
+        }
+    }
     # members of this group are able to publish metrics
     # via the 'textfile' collector by writing files to $textfile_directory.
     # prometheus-node-exporter will export all files matching *.prom
