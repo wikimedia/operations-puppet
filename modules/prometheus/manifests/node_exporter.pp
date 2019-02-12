@@ -44,7 +44,7 @@ class prometheus::node_exporter (
     Array[String] $collectors_extra = [],
     String $collector_ntp_server = '127.0.0.1',
     Pattern[/:\d+$/] $web_listen_address = ':9100',
-    Boolean $upgrade_one_seven = false,
+    Boolean $upgrade_one_seven = hiera('prometheus_upgrade_one_seven', false),
 ) {
     $collectors_default = ['buddyinfo', 'conntrack', 'diskstats', 'entropy', 'edac', 'filefd', 'filesystem', 'hwmon',
         'loadavg', 'mdadm', 'meminfo', 'netdev', 'netstat', 'sockstat', 'stat', 'tcpstat',
