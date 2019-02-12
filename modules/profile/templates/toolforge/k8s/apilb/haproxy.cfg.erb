@@ -1,0 +1,40 @@
+# Note: This file is managed by puppet.
+
+global
+    log /dev/log  local0
+    log /dev/log  local1 notice
+    chroot /var/lib/haproxy
+    stats socket /run/haproxy/admin.sock mode 660 level user
+    stats timeout 30s
+    user haproxy
+    group haproxy
+    daemon
+
+defaults
+    log global
+    mode  http
+    option  httplog
+    option  dontlognull
+    timeout connect 5000
+    timeout client  50000
+    timeout server  50000
+    timeout http-request 15s
+    timeout http-keep-alive 15s
+
+frontend k8s-api
+    bind 0.0.0.0:6443
+    mode tcp
+    option tcplog
+    timeout client 1h
+    default_backend k8s-api
+
+backend k8s-api
+    mode tcp
+    option tcplog
+    option tcp-check
+    balance roundrobin
+    timeout server 1h
+    default-server inter 10s downinter 5s rise 2 fall 2 slowstart 60s maxconn 250 maxqueue 256 weight 100
+<% @servers.each_pair do |name, config| -%>
+    server <%= name %> <%= config["fqdn"] %>:<%= config["port"] %> check
+<% end -%>
