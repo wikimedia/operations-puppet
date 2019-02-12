@@ -75,7 +75,7 @@ groups:
               ladsgroup, bawolff, zfilipin, addshore, niharika29, ppchelko, pmiazga,
               musikanimal, jdrewniak, sbisson, jforrester, mbsantos,
               aaron, liw, sbassett, jdl, tarrow, lucaswerkmeister-wmde,
-              wmde-leszek, jhuneidi, wmde-fisch, mvolz, dsharpe]
+              wmde-leszek, jhuneidi, wmde-fisch, mvolz, dsharpe, brennen]
     privileges: ['ALL = (www-data,apache,mwdeploy,l10nupdate) NOPASSWD: ALL',
                  'ALL = NOPASSWD: /sbin/restart hhvm',
                  'ALL = NOPASSWD: /sbin/start hhvm',
@@ -173,7 +173,7 @@ groups:
     description: users with some sudo permissions on the CI masters (Jenkins, Zuul).
     members: [bd808, cscott, dduvall, demon, krinkle, reedy, marktraceur,
               twentyafterfour, zfilipin, thcipriani, legoktm, gjg,
-              hashar, niedzielski, addshore, liw, jhuneidi]
+              hashar, niedzielski, addshore, liw, jhuneidi, brennen]
     privileges: ['ALL = (jenkins) NOPASSWD: ALL',
                  'ALL = (jenkins-slave) NOPASSWD: ALL',
                  'ALL = (gerritslave) NOPASSWD: ALL',
@@ -727,7 +727,7 @@ groups:
     # Allow this for CI users. There is no gid on purpose, to allow reusing the package provided one
     posix_name: docker # Use posix_name to avoid potential conflicts with other uses of the docker group
     description: Allow releng team to be in the docker group for contint. No gid on purpose
-    members: [*ops_members, dduvall, demon, gjg, hashar, thcipriani, twentyafterfour, zfilipin, legoktm, addshore, reedy, liw, jhuneidi, krinkle]
+    members: [*ops_members, dduvall, demon, gjg, hashar, thcipriani, twentyafterfour, zfilipin, legoktm, addshore, reedy, liw, jhuneidi, krinkle, brennen]
   builder-docker:
     # There is no gid on purpose, same as above
     posix_name: docker # Use posix_name to avoid potential conflicts with other uses of the docker group
@@ -3168,6 +3168,15 @@ users:
     email: julia@glenbrooknet.com
     expiry_date: 2019-05-31
     expiry_contact: nuria@wikimedia.org
+  brennen:
+    ensure: present
+    gid: 500
+    name: brennen
+    realname: Brennen Bearnes
+    ssh_keys:
+      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPyFRD5mRkxT+IFrBetgwWAl4jw7EH+XRmes61jfW+Rq bbearnes@wikimedia.org
+    uid: 20958
+    email: bbearnes@wikimedia.org
 
 ldap_only_users:
   abartov:
@@ -3209,10 +3218,6 @@ ldap_only_users:
     ensure: present
     realname: Matthias Geisler
     email: matthias.geisler@wikimedia.de
-  brennen:
-    ensure: present
-    realname: Brennen Bearnes
-    email: bbearnes@wikimedia.org
   cmadeo:
     ensure: present
     realname: Carolyn Li-Madeo
@@ -3533,7 +3538,3 @@ ldap_only_users:
     ensure: present
     realname: Holger Knust
     email: hknust@wikimedia.org
-  dsharpe:
-    ensure: present
-    realname: David Sharpe
-    email: dsharpe@wikimedia.org
