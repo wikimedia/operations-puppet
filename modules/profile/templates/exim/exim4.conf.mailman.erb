@@ -189,11 +189,12 @@ acl_check_helo:
 
 acl_check_mail:
 
-	# warn if an unknown host attempts to issue a mail from from command containing one of our domains
-	# change from warn to delay & drop to enforce this
-	warn log_message = MAIL FROM FAILURE ref1 (Remote said: MAIL FROM: $sender_address - Problem: envelope from addresses containing domains listed in local_domains are only allowed from hosts listed in the wikimedia_nets or relay_from_hosts exim hostslists)
+	# drop if an unknown host attempts to issue a mail from from command containing one of our domains
+	drop   log_message = MAIL FROM FAILURE ref1 (Remote said: MAIL FROM: $sender_address - Problem: envelope from addresses containing domains listed in local_domains are only allowed from hosts listed in the wikimedia_nets or relay_from_hosts exim hostslists)
+		message    = MAIL FROM FAILURE ref1
 		condition  = ${if match_domain{$sender_address_domain}{+local_domains}{yes}{no}}
 		!hosts     = +wikimedia_nets : +relay_from_hosts
+		delay      = 45s
 
 	accept
 
