@@ -9,9 +9,8 @@
 # === Parameters
 #
 # [*enable*]
-#   Whether or not the systemd unit or upstart job for the service
-#   should be running. This is passed through to the underlying
-#   base::service_unit resource. Default: true.
+#   Whether or not the systemd unit for the service should be running. This is
+#   passed through to the underlying base::service_unit resource. Default: true.
 #
 # [*port*]
 #   Port on which to run the service
@@ -96,7 +95,7 @@
 #  crashes. Default: true
 #
 # [*environment*]
-#  Environment variables that should be set in the service systemd or upstart unit.
+#  Environment variables that should be set in the service systemd unit
 #  Default: undef
 #
 # [*deployment*]
@@ -146,7 +145,7 @@
 #        },
 #    }
 #
-# You can supply additional enviroment variables for the service systemd or upstart unit:
+# You can supply additional enviroment variables for the service systemd unit
 #
 #    service::node { 'myservice':
 #        port   => 8520,
@@ -330,31 +329,12 @@ define service::node(
         }
     }
 
-    # on systemd, set up redirecting of stdout/stderr to a file
-    # that will be readable by any user.
-    if $::initsystem == 'systemd' {
-        systemd::syslog { $title:
-            readable_by => 'all',
-            base_dir    => $::service::configuration::log_dir,
-            group       => 'root',
-        }
+    # set up redirecting of stdout/stderr to a file that will be readable by any user.
+    systemd::syslog { $title:
+        readable_by => 'all',
+        base_dir    => $::service::configuration::log_dir,
+        group       => 'root',
     }
-    elsif $local_logging {
-        # Local logging is enabled, but we're
-        # not on systemd
-        file { $local_logdir:
-            ensure => directory,
-            owner  => $title,
-            group  => 'root',
-            mode   => '0755',
-        }
-
-        logrotate::conf { $title:
-            ensure  => present,
-            content => template('service/logrotate.erb'),
-        }
-    }
-
 
     if $local_logging {
         # convenience script to pretty-print logs
@@ -380,7 +360,6 @@ define service::node(
     base::service_unit { $title:
         ensure         => present,
         systemd        => systemd_template('node'),
-        upstart        => upstart_template('node'),
         refresh        => $auto_refresh,
         service_params => {
             enable     => $enable,
