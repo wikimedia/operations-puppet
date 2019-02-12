@@ -50,8 +50,9 @@ class profile::toolforge::clush::master(
         command                   => "/usr/local/sbin/tools-clush-generator /etc/clustershell/tools.yaml --observer-pass ${observer_pass}",
         interval                  => {
             'start'    => 'OnCalendar',
-            'interval' => 'hourly',
+            'interval' => '*-*-* *:00:00', # hourly
         },
+        logging_enabled           => false,
         monitoring_enabled        => true,
         monitoring_contact_groups => 'wmcs-team',
         user                      => 'root',
