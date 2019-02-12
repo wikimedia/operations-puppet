@@ -82,7 +82,7 @@ class profile::wmcs::monitoring (
             'start'    => 'OnCalendar',
             'interval' => '*-*-* 00/8:00:00', # Every 8 hours
         },
-        logging_enable            => false,
+        logging_enabled           => false,
         monitoring_enabled        => true,
         monitoring_contact_groups => 'wmcs-team',
         user                      => '_graphite',
