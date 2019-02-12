@@ -5,4 +5,3 @@ profile::mariadb::dbstore_multiinstance::s8: '220G'
 profile::mariadb::dbstore_multiinstance::x1: '70G'
 # Analytics staging database
 profile::mariadb::dbstore_multiinstance::staging: '20G'
-profile::base::notifications: disabled
