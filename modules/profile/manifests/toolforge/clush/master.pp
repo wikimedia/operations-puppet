@@ -44,7 +44,7 @@ class profile::toolforge::clush::master(
         ensure  => absent,
     }
 
-    systemd::timer::job { 'toolfoge_clush_update':
+    systemd::timer::job { 'toolforge_clush_update':
         ensure                    => present,
         description               => 'Update list of Toolforge servers for clush',
         command                   => "/usr/local/sbin/tools-clush-generator /etc/clustershell/tools.yaml --observer-pass ${observer_pass}",
