@@ -14,17 +14,18 @@ define labstore::device_backup (
 
     $block_sync='/usr/local/sbin/block_sync'
 
-    systemd::unit { "block_sync-${local_lv}.service":
-        ensure  => 'present',
-        content => systemd_template('block_sync'),
-    }
-
-    systemd::timer { "block_sync-${local_lv}":
-        timer_intervals => [{
+    systemd::timer::job { "block_sync-${local_lv}":
+        ensure                    => present,
+        description               => "Backup of remote ${remote_vg}/${remote_lv} to local ${local_vg}/${local_lv}",
+        command                   => "${block_sync} ${remote_ip} ${remote_vg} ${remote_lv} ${remote_snapshot} ${local_vg} ${local_lv} ${local_snapshot} ${local_snapshot_size}",
+        interval                  => {
             'start'    => 'OnCalendar',
             'interval' => $interval
-            }],
-        unit_name       => "block_sync-${local_lv}.service",
+            },
+        monitoring_enabled        => true,
+        monitoring_contact_groups => 'wmcs-team',
+        user                      => 'root',
+        logging_enabled           => false,
     }
 
     file { '/usr/local/sbin/snapshot-manager':

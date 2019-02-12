@@ -1,6 +1,0 @@
-[Unit]
-Description=Block Device Sync Job
-
-# Backup of remote <%= @remote_vg %>/<%= @remote_lv %> to local <%= @local_vg %>/<%= @local_lv %>
-[Service]
-ExecStart=<%= @block_sync %> <%= @remote_ip %> <%= @remote_vg %> <%= @remote_lv %> <%= @remote_snapshot %> <%= @local_vg %> <%= @local_lv %> <%= @local_snapshot %> <%= @local_snapshot_size %>
