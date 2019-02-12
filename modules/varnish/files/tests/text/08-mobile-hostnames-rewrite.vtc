@@ -115,9 +115,14 @@ client c1 {
     expect resp.http.location == "https://simple.m.wikipedia.org/w/index.php?title=MyPage&action=info"
     expect resp.status == 302
 
-    txreq -url "/w/index.php?title=MyPage&action=info"  -hdr "User-Agent: SMART-TV SamsungBrowser" -hdr "Host: simple.wikipedia.org" -hdr "X-Forwarded-Proto: https" -hdr "Via: 1.0 translate.google.com TWSFE/0.9"
+    txreq -url "/w/index.php?title=MyPage&action=info"  -hdr "User-Agent: firefox" -hdr "Host: en.wikipedia.org" -hdr "X-Forwarded-Proto: https" -hdr "Via: 1.0 translate.google.com TWSFE/0.9"
     rxresp
-    expect resp.http.location == "https://simple.m.wikipedia.org/w/index.php?title=MyPage&action=info"
+    expect resp.http.location == "https://en.m.wikipedia.org/w/index.php?title=MyPage&action=info"
+    expect resp.status == 302
+
+    txreq -url "/w/index.php?title=MyPage&action=info"  -hdr "User-Agent: SMART-TV SamsungBrowser" -hdr "Host: en.wikipedia.org" -hdr "X-Forwarded-Proto: https" -hdr "Via: 1.0 translate.google.com TWSFE/0.9"
+    rxresp
+    expect resp.http.location == "https://en.m.wikipedia.org/w/index.php?title=MyPage&action=info"
     expect resp.status == 302
 
     txreq -url "/wiki/Sonido" -hdr "User-Agent: firefox" -hdr "Host: es.wikipedia.org" -hdr "X-Forwarded-Proto: https" -hdr "Via: 1.0 translate.google.com TWSFE/0.9"
@@ -133,6 +138,11 @@ client c1 {
     expect resp.status == 200
 
     txreq -url "/wiki/Saturn"  -hdr "User-Agent: Googlebot" -hdr "Host: simple.wikipedia.org" -hdr "X-Forwarded-Proto: https" -hdr "Via: 1.0 translate.google.com TWSFE/0.9"
+    rxresp
+    expect resp.status == 200
+
+
+    txreq -url "/wiki/Jupiter"  -hdr "User-Agent: Googlebot" -hdr "Host: en.wikipedia.org" -hdr "X-Forwarded-Proto: https" -hdr "Via: 1.0 translate.google.com TWSFE/0.9"
     rxresp
     expect resp.status == 200
 
