@@ -58,6 +58,10 @@ profile::kubernetes::deployment_server::services:
     username: blubberoid
     group: wikidev
     mode: '0640'
+  eventgate-analytics:
+    username: eventgate-analytics
+    group: wikidev
+    mode: '0640'
 
 # Specified in the private repo in this form
 #profile::kubernetes::deployment_server::tokens:
@@ -67,7 +71,9 @@ profile::kubernetes::deployment_server::services:
 #    token: dummy
 #  graphoid
 #    token: dummy
-#  blubberoid
+#  blubberoid:
+#    token: dummy
+#  eventgate-analytics:
 #    token: dummy
 
 profile::ci::kubernetes_config::user: jenkins

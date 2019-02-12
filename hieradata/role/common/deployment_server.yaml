@@ -225,6 +225,11 @@ profile::kubernetes::deployment_server::services:
     group: wikidev
     mode: '0640'
     namespace: blubberoid
+  eventgate-analytics:
+    username: eventgate-analytics
+    group: wikidev
+    mode: '0640'
+    namespace: eventgate-analytics
 
 # Specified in the private repo in this form
 #profile::kubernetes::deployment_server::tokens:
@@ -234,9 +239,11 @@ profile::kubernetes::deployment_server::services:
 #    token: dummy
 #  zotero:
 #    token: dummy
-#  graphoid
+#  graphoid:
 #    token: dummy
-#  blubberoid
+#  blubberoid:
+#    token: dummy
+#  eventgate-analytics:
 #    token: dummy
 diamond::remove: true
 profile::mediawiki::php::php_version: "7.2"
