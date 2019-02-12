@@ -36,6 +36,14 @@ disabled, use mariadb@<instance_name> instead'; exit 1\"",
         mode   => '0755',
     }
 
+    # Note for Analytics dbstores:
+    #
+    # In case you change the following settings, please make sure
+    # that the following is consistent:
+    # 1) Analytics' DNS CNAMEs and SRV records
+    # 2) Analytics VLAN's firewall rules
+    # For more info ping one of the Analytics SREs.
+    #
     if $s1 {
         mariadb::instance { 's1':
             port                    => 3311,
