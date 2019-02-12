@@ -111,18 +111,62 @@
   # NOTE: We want to deny this for most services as it makes operations difficult
   # but we have zotero which we don't currently control
 - action: allow
-  destination:
-    net: 208.80.153.224/32
+  src_selector: calico/k8s_ns == 'zotero'
+  dst_net: 208.80.153.224/32
   protocol: tcp
   dst_ports:
     - 80
     - 443
 - action: allow
-  destination:
-    net: 208.80.154.224/32
+  src_selector: calico/k8s_ns == 'zotero'
+  dst_net: 208.80.154.224/32
   protocol: tcp
   dst_ports:
     - 80
+    - 443
+  # Kafka:
+- action: allow
+  src_selector: calico/k8s_ns == 'eventgate-analytics'
+  dst_net: 10.64.0.175/32
+  protocol: tcp
+  dst_ports:
+    - 9092
+- action: allow
+  src_selector: calico/k8s_ns == 'eventgate-analytics'
+  dst_net: 10.64.0.176/32
+  protocol: tcp
+  dst_ports:
+    - 9092
+- action: allow
+  src_selector: calico/k8s_ns == 'eventgate-analytics'
+  dst_net: 10.64.16.99/32
+  protocol: tcp
+  dst_ports:
+    - 9092
+- action: allow
+  src_selector: calico/k8s_ns == 'eventgate-analytics'
+  dst_net: 10.64.32.159/32
+  protocol: tcp
+  dst_ports:
+    - 9092
+- action: allow
+  src_selector: calico/k8s_ns == 'eventgate-analytics'
+  dst_net: 10.64.32.160/32
+  protocol: tcp
+  dst_ports:
+    - 9092
+- action: allow
+  src_selector: calico/k8s_ns == 'eventgate-analytics'
+  dst_net: 10.64.48.117/32
+  protocol: tcp
+  dst_ports:
+    - 9092
+  # NOTE: Gerrit: temporary for eventgate-analytics
+- action: allow
+  src_selector: calico/k8s_ns == 'eventgate-analytics'
+  dst_net: 208.80.154.85/32
+  protocol: tcp
+  dst_ports:
     - 443
   # Allow pod IP spaces, this should be locked down if needed in ingress by service owner
 - action: allow
