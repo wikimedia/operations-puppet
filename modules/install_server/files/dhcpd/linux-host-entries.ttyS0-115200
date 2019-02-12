@@ -6,11 +6,15 @@
 host acmechief1001 {
     hardware ethernet aa:00:00:e0:70:79;
     fixed-address acmechief1001.eqiad.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/buster-installer/";
+    filename "lpxelinux.0";
 }
 
 host acmechief2001 {
     hardware ethernet aa:00:00:11:4e:70;
     fixed-address acmechief2001.codfw.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/buster-installer/";
+    filename "lpxelinux.0";
 }
 
 host acrab {
