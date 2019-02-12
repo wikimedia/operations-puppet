@@ -3451,6 +3451,21 @@ host logstash1006 {
     filename "lpxelinux.0";
 }
 
+host logstash1010 {
+    hardware ethernet 4C:D9:8F:3F:A7:EF;
+    fixed-address logstash1010.eqiad.wmnet;
+}
+
+host logstash1011 {
+    hardware ethernet 4C:D9:8F:3F:A7:8F;
+    fixed-address logstash1011.eqiad.wmnet;
+}
+
+host logstash1012 {
+    hardware ethernet 4C:D9:8F:3F:CC:93;
+    fixed-address logstash1012.eqiad.wmnet;
+}
+
 host logstash2001 {
     hardware ethernet D0:94:66:97:9F:F1;
     fixed-address logstash2001.codfw.wmnet;
