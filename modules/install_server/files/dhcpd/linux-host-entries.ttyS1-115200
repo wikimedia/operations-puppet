@@ -6411,11 +6411,6 @@ host rhodium {
     fixed-address rhodium.eqiad.wmnet;
 }
 
-host ruthenium {
-    hardware ethernet 18:03:73:f1:58:82;
-    fixed-address ruthenium.eqiad.wmnet;
-}
-
 host sarin {
     hardware ethernet 90:B1:1C:2D:85:40;
     fixed-address sarin.codfw.wmnet;
