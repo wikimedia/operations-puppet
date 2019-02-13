@@ -57,9 +57,11 @@ LOGICAL_CONTEXTS = {
         'warning': True,
         'optimal_values': {
             'Predictive Failure Count': ['0'],
+            'ERROR': [''],
         },
         'print_keys': (
             'PD',
+            'ERROR',
             'Enclosure Device ID',
             'Slot Number',
             "Drive's position",
@@ -166,13 +168,21 @@ class RaidStatus():
             key     -- the key to be added to the new block
             value   -- the value to be added to the new block for the given key
         """
-
-        self.consolidate(final_context=context)
-        setattr(self, context, {
+        new_block = {
             'context': context,
             'optimal': True,
             'childs': [],
-        })
+            'values': {},
+        }
+
+        # Before initializing the new context, perform a sanity check of the current one
+        if (self.current_context is not None and self.current_context['context'] == 'physical_drive'
+                and len(self.current_context['values']) == 1):
+            # Only the PD key is present, the drive is broken and megacli fails to read its info.
+            self.set_property('ERROR', 'MISSING DRIVE INFO')
+
+        self.consolidate(final_context=context)
+        setattr(self, context, new_block)
 
         self.current_context = getattr(self, context)
         self.set_property(key, value)
@@ -189,7 +199,7 @@ class RaidStatus():
             value   -- the value to be added to the new block for the given key
         """
 
-        self.current_context[key] = value
+        self.current_context['values'][key] = value
 
         context_name = self.current_context['context']
         optimal_values = self.contexts[context_name]['optimal_values']
@@ -198,8 +208,8 @@ class RaidStatus():
             self.current_context['optimal'] = False
             self.failed[context_name] += 1
             sep = '====='
-            self.current_context[key] = '{}> {} <{}'.format(
-                sep, self.current_context[key], sep)
+            self.current_context['values'][key] = '{}> {} <{}'.format(
+                sep, self.current_context['values'][key], sep)
 
             # Mark as non optimal the whole parent chain
             while True:
@@ -302,8 +312,8 @@ class RaidStatus():
         status = []
         for key in self.contexts[block['context']]['print_keys']:
             try:
-                status.append('{}{}: {}'.format(prefix, key, block[key]))
-            except:
+                status.append('{}{}: {}'.format(prefix, key, block['values'][key]))
+            except KeyError:
                 pass  # Explicitely ignore missing keys
 
         status.append('')  # Separate each block
