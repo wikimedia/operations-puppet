@@ -46,16 +46,6 @@ Architectures: amd64 source
 VerifyRelease: 6005210E23B3D3B4
 ListShellHook: grep-dctrl -e -S '^megacli$' || [ $? -eq 1 ]
 
-Name: hp-mcp-trusty
-Method:  http://downloads.linux.hpe.com/SDR/repo/mcp
-Components: non-free>thirdparty
-UDebComponents:
-GetInRelease: no
-Suite: trusty/current
-Architectures: amd64
-VerifyRelease: FADD8D64B1275EA3|C208ADDE26C2B797
-ListShellHook: grep-dctrl -e -S '^hp-health|hpssa|hpssacli|hpssaducli|hpacucli$' || [ $? -eq 1 ]
-
 Name: hp-mcp-jessie
 Method:  http://downloads.linux.hpe.com/SDR/repo/mcp
 Components: non-free>thirdparty
@@ -186,15 +176,6 @@ Suite: stretch
 Architectures: amd64 source
 VerifyRelease: AC0E47584A7A714D
 ListShellHook: grep-dctrl \( -X -S php7.2 \) -o \( -X -S xdebug \) || [ $? -eq 1 ]
-
-Name: mono-project-trusty
-Method: https://download.mono-project.com/repo/ubuntu
-Components: main>thirdparty/mono-project-trusty
-UDebComponents:
-Suite: stable-trusty
-Architectures: amd64 source
-VerifyRelease: A6A19B38D3D831EF
-ListShellHook: grep-dctrl -e -S '^(cecil|cli-common|core-setup|fsharp|gtk-sharp2|libgdiplus|mod-mono|mono|mono-basic|mono-llvm|mono-tools|monodevelop|msbuild|nuget|nunit|referenceassemblies-pcl|xamarin-gtk-theme|xsp)$' || [ $? -eq 1 ]
 
 Name: mono-project-jessie
 Method: https://download.mono-project.com/repo/debian

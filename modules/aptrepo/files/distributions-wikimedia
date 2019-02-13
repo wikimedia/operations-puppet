@@ -6,7 +6,6 @@ Version: 14.04
 Architectures: source amd64 i386
 Components: main universe non-free thirdparty thirdparty/cloudera thirdparty/mono-project-trusty
 UDebComponents: main
-Update: hwraid elastic hp-mcp-trusty mono-project-trusty
 Description: Wikimedia specific packages for Ubuntu Trusty Tahr
 SignWith: 09DBD9F93F6CD44A
 DebOverride: deb-override
@@ -60,6 +59,7 @@ Version: 10
 Architectures: source amd64 i386
 Components: main thirdparty/hwraid
 UDebComponents: main
+Update: hwraid-stretch hp-mcp-stretch
 Description: Wikimedia packages for Debian buster
 SignWith: 9D392D3FFADF18FB
 DebOverride: deb-override
