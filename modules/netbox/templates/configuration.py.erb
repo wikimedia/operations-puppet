@@ -36,13 +36,7 @@ SECRET_KEY = '<%= @secret_key %>'
 
 # Specify one or more name and email address tuples representing NetBox administrators. These people will be notified of
 # application errors (assuming correct email settings are provided).
-ADMINS = (
-<%- if @admins -%>
-  <%= @admins%>
-<%- else -%>
-  # ('Your Name', 'your_email@example.com'),
-<%- end -%>
-)
+ADMINS = []
 
 # Optionally display a persistent banner at the top and/or bottom of every page. HTML is allowed. To display the same
 # content in both banners, define BANNER_TOP and set BANNER_BOTTOM = BANNER_TOP.

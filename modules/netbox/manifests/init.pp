@@ -19,9 +19,6 @@
 # [*port*]
 #   Port the pyton app listen on
 #
-# [*admins*]
-#   Name and email of the django admin contacts
-#
 # [*config_path*]
 #   Path to the deploy directory
 #
@@ -40,7 +37,6 @@ class netbox(
     String $db_password,
     Boolean $debug=false,
     Stdlib::Port $port=8001,
-    Variant[Boolean, String] $admins = false,
     Stdlib::Unixpath $config_path = '/srv/deployment/netbox/deploy',
     Stdlib::Unixpath $venv_path = '/srv/deployment/netbox/venv',
     Stdlib::Unixpath $directory = '/srv/deployment/netbox/deploy/src',

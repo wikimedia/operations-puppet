@@ -146,7 +146,6 @@ class profile::netbox (
         db_password   => $db_password,
         secret_key    => $secret_key,
         ldap_password => $proxypass,
-        admins        => '("Ops Team", "ops@lists.wikimedia.org")',
         reports_path  => $reports_path,
     }
     $ssl_settings = ssl_ciphersuite('apache', 'mid', true)
