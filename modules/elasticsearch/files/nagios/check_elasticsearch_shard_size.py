@@ -16,6 +16,7 @@ import argparse
 import sys
 
 from collections import defaultdict
+from statistics import mean
 
 import requests
 
@@ -32,15 +33,15 @@ def get_shards(base_url, timeout, unit):
     return resp.json()
 
 
-def extract_large_shards(shards, shard_size_warning, shard_size_critical):
+def extract_large_shards(indices, shard_size_warning, shard_size_critical):
     warnings = defaultdict(list)
     criticals = defaultdict(list)
-    for shard in shards:
-        if shard['prirep'] == 'p':
-            if int(shard['store']) > shard_size_critical:
-                criticals[shard['index']].append(int(shard['store']))
-            elif int(shard['store']) > shard_size_warning:
-                warnings[shard['index']].append(int(shard['store']))
+    for name, shard_sizes in indices.items():
+        mean_size = mean(shard_sizes)
+        if mean_size > shard_size_critical:
+            criticals[name].append(mean_size)
+        elif mean_size > shard_size_warning:
+            warnings[name].append(mean_size)
 
     return warnings, criticals
 
@@ -78,6 +79,14 @@ def log_output(status, msg):
     print("{status} - {msg}".format(status=status, msg=msg))
 
 
+def group_by_index(shards):
+    indices = defaultdict(list)
+    for shard in shards:
+        if shard['prirep'] == 'p':
+            indices[shard['index']].append(int(shard['store']))
+    return indices
+
+
 def main():
     parser = argparse.ArgumentParser(
         formatter_class=argparse.ArgumentDefaultsHelpFormatter)
@@ -98,8 +107,9 @@ def main():
 
     try:
         shards = get_shards(options.url, options.timeout, options.bytes)
+        indices = group_by_index(shards)
         warnings, criticals = extract_large_shards(
-            shards,
+            indices,
             options.shard_size_warning,
             options.shard_size_critical
         )
