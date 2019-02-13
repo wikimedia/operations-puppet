@@ -172,9 +172,16 @@ class profile::prometheus::k8s (
         proxy_pass => 'http://localhost:9906/k8s',
     }
 
-    prometheus::rule { 'rules_k8s.conf':
-        instance => 'k8s',
-        source   => 'puppet:///modules/profile/prometheus/rules_k8s.conf',
+    if $prometheus_v2 {
+        prometheus::rule { 'rules_k8s.yml':
+            instance => 'k8s',
+            source   => 'puppet:///modules/profile/prometheus/rules_k8s.yml',
+        }
+    } else {
+        prometheus::rule { 'rules_k8s.conf':
+            instance => 'k8s',
+            source   => 'puppet:///modules/profile/prometheus/rules_k8s.conf',
+        }
     }
 
     file { $bearer_token_file:

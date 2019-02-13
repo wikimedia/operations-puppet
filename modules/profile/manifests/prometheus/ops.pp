@@ -1158,9 +1158,16 @@ class profile::prometheus::ops (
         source => "puppet:///modules/role/prometheus/mysql-labs_${::site}.yaml",
     }
 
-    prometheus::rule { 'rules_ops.conf':
-        instance => 'ops',
-        source   => 'puppet:///modules/role/prometheus/rules_ops.conf',
+    if $prometheus_v2 {
+        prometheus::rule { 'rules_ops.yml':
+            instance => 'ops',
+            source   => 'puppet:///modules/role/prometheus/rules_ops.yml',
+        }
+    } else {
+        prometheus::rule { 'rules_ops.conf':
+            instance => 'ops',
+            source   => 'puppet:///modules/role/prometheus/rules_ops.conf',
+        }
     }
 
     prometheus::varnish_2layer{ 'text':

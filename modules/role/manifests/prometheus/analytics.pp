@@ -228,8 +228,15 @@ class role::prometheus::analytics {
         proxy_pass => 'http://localhost:9905/analytics',
     }
 
-    prometheus::rule { 'rules_analytics.conf':
-        instance => 'analytics',
-        source   => 'puppet:///modules/role/prometheus/rules_analytics.conf',
+    if $prometheus_v2 {
+        prometheus::rule { 'rules_analytics.yml':
+            instance => 'analytics',
+            source   => 'puppet:///modules/role/prometheus/rules_analytics.yml',
+        }
+    } else {
+        prometheus::rule { 'rules_analytics.conf':
+            instance => 'analytics',
+            source   => 'puppet:///modules/role/prometheus/rules_analytics.conf',
+        }
     }
 }

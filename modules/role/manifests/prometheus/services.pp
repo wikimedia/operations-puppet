@@ -72,8 +72,15 @@ class role::prometheus::services {
         proxy_pass => 'http://localhost:9903/services',
     }
 
-    prometheus::rule { 'rules_services.conf':
-        instance => 'services',
-        source   => 'puppet:///modules/role/prometheus/rules_services.conf',
+    if $prometheus_v2 {
+        prometheus::rule { 'rules_services.yml':
+            instance => 'services',
+            source   => 'puppet:///modules/role/prometheus/rules_services.yml',
+        }
+    } else {
+        prometheus::rule { 'rules_services.conf':
+            instance => 'services',
+            source   => 'puppet:///modules/role/prometheus/rules_services.conf',
+        }
     }
 }

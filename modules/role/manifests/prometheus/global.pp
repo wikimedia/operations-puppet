@@ -55,9 +55,16 @@ class role::prometheus::global {
       },
     ]
 
-    prometheus::rule { 'rules_global.conf':
-        instance => 'global',
-        source   => 'puppet:///modules/role/prometheus/rules_global.conf',
+    if $prometheus_v2 {
+        prometheus::rule { 'rules_global.yml':
+            instance => 'global',
+            source   => 'puppet:///modules/role/prometheus/rules_global.yml',
+        }
+    } else {
+        prometheus::rule { 'rules_global.conf':
+            instance => 'global',
+            source   => 'puppet:///modules/role/prometheus/rules_global.conf',
+        }
     }
 
     prometheus::server { 'global':
