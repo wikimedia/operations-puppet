@@ -139,7 +139,9 @@ acl_check_rcpt:
 	accept
 
 acl_check_connect:
-	accept
+
+	# Delay the banner for 5 seconds and drop connections of (spam) senders who do not wait
+	accept delay = 5
 
 acl_check_helo:
 
