@@ -2207,21 +2207,20 @@ node 'ununpentium.wikimedia.org' {
     interface::add_ip6_mapped { 'main': }
 }
 
+# To see labvirt nodes active in the scheduler look at hiera:
+#  key: profile::openstack::main::nova::scheduler_pool
+# We try to keep a few empty as emergency fail-overs
+#  or transition hosts for maintenance to come
 node /^labvirt100[0-9].eqiad.wmnet/ {
     role(wmcs::openstack::main::virt)
     include ::standard
 }
 
-# To see labvirt nodes active in the scheduler look at hiera:
-#  key: profile::openstack::main::nova::scheduler_pool
+# To see cloudvirt nodes active in the scheduler look at hiera:
+#  key: profile::openstack::eqiad1::nova::scheduler_pool
 # We try to keep a few empty as emergency fail-overs
 #  or transition hosts for maintenance to come
-node 'labvirt1012.eqiad.wmnet' {
-    role(wmcs::openstack::main::virt)
-    include ::standard
-}
-
-node /^cloudvirt101[3-9]\.eqiad\.wmnet$/ {
+node /^cloudvirt101[2-9]\.eqiad\.wmnet$/ {
     role(wmcs::openstack::eqiad1::virt)
     interface::add_ip6_mapped { 'main': }
 }
