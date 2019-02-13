@@ -15,6 +15,10 @@ class profile::lists {
         puppet_svc => 'apache2',
         key_group  => 'Debian-exim',
     }
+    acme_chief::cert{ 'lists':
+        puppet_svc => 'apache2',
+        key_group  => 'Debian-exim',
+    }
 
     $trusted_networks = $network::constants::aggregate_networks.filter |$x| {
         $x !~ /127.0.0.0|::1/
