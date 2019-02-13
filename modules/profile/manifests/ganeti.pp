@@ -2,6 +2,9 @@ class profile::ganeti (
     # Interpolate the ganeti_cluster fact to get the list of nodes in a
     # cluster
     $ganeti_nodes = hiera("profile::ganeti::${::ganeti_cluster}::nodes", []),
+    $rapi_nodes = hiera('profile::ganeti::rapi_nodes'),
+    $rapi_ro_user = hiera('profile::ganeti::rapi::ro_user'),
+    $rapi_ro_password = hiera('profile::ganeti::rapi::ro_password'),
 ) {
 
     class { '::ganeti': }
@@ -42,6 +45,16 @@ class profile::ganeti (
         source => 'puppet:///modules/profile/ganeti/makevm.sh',
     }
 
+    $ro_password_hash = md5("${rapi_ro_user}:Ganeti Remote API:${rapi_ro_password}")
+    # Authentication for RAPI (for now just a single read-only user)
+    file { '/var/lib/ganeti/rapi/users':
+        ensure  => present,
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0440',
+        content => "${rapi_ro_user} {HA1}${ro_password_hash} read\n",
+    }
+
     # If ganeti_cluster fact is not defined, the node has not been added to a
     # cluster yet, so don't monitor and don't setup a firewall.
     if $facts['ganeti_cluster'] {
@@ -64,6 +77,8 @@ class profile::ganeti (
 
         # Firewalling
         $ganeti_ferm_nodes = join($ganeti_nodes, ' ')
+        $rapi_access = join(concat($ganeti_nodes, $rapi_nodes), ' ')
+
 
         # Same ganeti actions require SSH
         ferm::service { 'ganeti_ssh_cluster':
@@ -76,7 +91,7 @@ class profile::ganeti (
         ferm::service { 'ganeti_rapi_cluster':
             proto  => 'tcp',
             port   => 5080,
-            srange => "@resolve((${ganeti_ferm_nodes}))",
+            srange => "@resolve((${rapi_access}))",
         }
 
         # Ganeti noded is responsible for all cluster/node actions

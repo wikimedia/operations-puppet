@@ -19,3 +19,9 @@ profile::ganeti::ganeti01.svc.eqiad.wmnet::nodes:
   - ganeti1007.eqiad.wmnet
   - ganeti1008.eqiad.wmnet
 diamond::remove: true
+profile::ganeti::rapi_nodes:
+    - netmon1002.eqiad.wmnet
+    - netmon2001.codfw.wmnet
+profile::ganeti::rapi::ro_user: ro_user
+# stored in private
+# profile::ganeti::rapi::ro_password:
