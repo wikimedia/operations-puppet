@@ -145,14 +145,13 @@ acl_check_connect:
 
 acl_check_helo:
 
-	# warn if remote tries to send HELO <any ip> because RFC2821 4.1.3
+	# drop if remote tries to send HELO <any ip> because RFC2821 4.1.3
 	# indicates HELO must be followed by domain or ip literal
-	# change from warn to delay & drop to enforce this
-	warn log_message = HELO failure ref0 (Remote said: HELO $sender_helo_name - Problem: HELO must contain a domain name or ip literal wrapped with square brackets [])
+	drop log_message = HELO failure ref0 (Remote said: HELO $sender_helo_name - Problem: HELO must contain a domain name or ip literal wrapped with square brackets [])
+		message     = HELO failure ref0
 		condition   = ${if isip{$sender_helo_name}}
 		!hosts      = +wikimedia_nets : +relay_from_hosts
-		#log_message = HELO failure ref0 (Remote said: HELO $sender_helo_name - Problem: HELO must contain a domain name or ip literal wrapped with square brackets [])
-		#delay       = 45s
+		delay       = 45s
 
 	# warn if remote tries to send HELO < a local domain >
 	# change from warn to delay & drop to enforce this
