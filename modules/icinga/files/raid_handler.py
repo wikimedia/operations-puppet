@@ -252,7 +252,7 @@ def main():
         logger.debug('Skipping NRPE RAID status gathering')
     else:
         raid_status += '$ sudo /usr/local/lib/nagios/plugins/{command}\n{status}'.format(
-            command=NRPE_REMOTE_COMMAND.format(args.raid_type),
+            command=NRPE_REMOTE_COMMAND.format(args.raid_type).replace('_', '-'),
             status=get_raid_status(args.host_address, args.raid_type))
 
     phab_client = get_phabricator_client()
