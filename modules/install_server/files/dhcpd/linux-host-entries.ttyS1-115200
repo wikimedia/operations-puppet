@@ -6078,29 +6078,21 @@ host phab2001 {
 host prometheus1003 {
     hardware ethernet 18:66:DA:7F:0D:96;
     fixed-address prometheus1003.eqiad.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
-    filename "lpxelinux.0";
 }
 
 host prometheus1004 {
     hardware ethernet 18:66:DA:7E:EE:A3;
     fixed-address prometheus1004.eqiad.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
-    filename "lpxelinux.0";
 }
 
 host prometheus2003 {
     hardware ethernet 18:66:DA:7F:19:80;
     fixed-address prometheus2003.codfw.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
-    filename "lpxelinux.0";
 }
 
 host prometheus2004 {
     hardware ethernet 18:66:DA:7F:20:93;
     fixed-address prometheus2004.codfw.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
-    filename "lpxelinux.0";
 }
 
 host promethium {
