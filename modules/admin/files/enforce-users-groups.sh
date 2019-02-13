@@ -15,8 +15,7 @@ EXCLUDE=("nobody" \
          "l10nupdate" \
          "mwdeploy" \   # eventlog*
          "releases" \   # deployment.eqiad.wmnet
-         "reprepro" \   # bromine.eqiad.wmnet
-         "parsoid-rt"); # ruthenium.eqiad.wmnet T90966
+         "reprepro");   # bromine.eqiad.wmnet
 
 log() {
     logger $1
