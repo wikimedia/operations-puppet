@@ -19,5 +19,5 @@ profile::grafana::ldap_edit_groups:
 profile::wmcs::monitoring::statsd_master: labmon1001.eqiad.wmnet
 profile::wmcs::monitoring::statsd_standby: labmon1002.eqiad.wmnet
 # In private repo
-profile::grafana::secret_key: notreal
-profile::grafana::admin_password: notreal
+#profile::grafana::secret_key:
+#profile::grafana::admin_password:
