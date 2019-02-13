@@ -74,6 +74,9 @@ class profile::gerrit::server(
         certcentral::cert { 'gerrit':
             puppet_svc => 'apache2',
         }
+        acme_chief::cert { 'gerrit':
+            puppet_svc => 'apache2',
+        }
     } else {
         if $slave {
             $tls_host = $slave_hosts[0]
