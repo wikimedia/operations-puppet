@@ -263,13 +263,13 @@ class profile::graphite::base(
 
     # This check goes to the backend, which is http.
     monitoring::service { 'graphite_render':
-        description   => $hostname,
+        description   => "${hostname} render",
         check_command => "check_http_url!${hostname}!/render",
     }
 
     # Probe the API, the "carbon" hierarchy should always exist
     monitoring::service { 'graphite_api':
-        description   => $hostname,
+        description   => "${hostname} api",
         check_command => "check_http_url!${hostname}!/metrics/find?query=carbon.*",
     }
 }
