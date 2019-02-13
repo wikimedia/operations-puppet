@@ -153,13 +153,12 @@ acl_check_helo:
 		!hosts      = +wikimedia_nets : +relay_from_hosts
 		delay       = 45s
 
-	# warn if remote tries to send HELO < a local domain >
-	# change from warn to delay & drop to enforce this
-	warn log_message = HELO failure ref1 (Remote said: HELO $sender_helo_name - Problem: HELO name matches a domain listed in local_domains)
-		condition   = ${if match_domain{$sender_helo_name}{+local_domains}{yes}{no}}
-		!hosts      = +wikimedia_nets : +relay_from_hosts
-		#log_message = HELO failure ref1 (Remote said: HELO $sender_helo_name - Problem: HELO name matches a domain listed in local_domains)
-		#delay       = 45s
+	# drop if remote tries to send HELO < a local domain >
+	drop log_message = HELO failure ref1 (Remote said: HELO $sender_helo_name - Problem: HELO name matches a domain listed in local_domains)
+		message    = HELO failure ref1
+		condition  = ${if match_domain{$sender_helo_name}{+local_domains}{yes}{no}}
+		!hosts     = +wikimedia_nets : +relay_from_hosts
+		delay      = 45s
 
 	# warn if remote tries to send HELO < my primary hostname >
 	# change from warn to delay & drop to enforce this
