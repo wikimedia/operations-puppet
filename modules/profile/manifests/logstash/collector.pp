@@ -223,6 +223,18 @@ class profile::logstash::collector (
         consumer_threads        => 3,
     }
 
+    $kafka_config_eventlogging_eqiad = kafka_config('jumbo', 'eqiad')
+    $kafka_topic_eventlogging        = 'eventlogging_EventError'
+
+    logstash::input::kafka { $kafka_topic_eventlogging:
+        topic             => $kafka_topic_eventlogging,
+        group_id          => $input_kafka_consumer_group_id,
+        tags              => [$kafka_topic_eventlogging, 'kafka', 'input-kafka-eventlogging'],
+        type              => 'eventlogging',
+        bootstrap_servers => $kafka_config_eventlogging_eqiad['brokers']['string'],
+        codec             => 'json'
+    }
+
     file { '/etc/logstash/kafka-logging-truststore.jks':
         ensure  => absent,
     }
@@ -337,6 +349,11 @@ class profile::logstash::collector (
 
     logstash::conf { 'filter_rsyslog_multiline':
         source   => 'puppet:///modules/profile/logstash/filter-rsyslog-multiline.conf',
+        priority => 50,
+    }
+
+    logstash::conf { 'filter_eventlogging':
+        source   => 'puppet:///modules/profile/logstash/filter-eventlogging.conf',
         priority => 50,
     }
 
