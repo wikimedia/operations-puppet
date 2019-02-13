@@ -1,6 +1,3 @@
--- ensure that authentication keyspace is replicated to the whole cluster
-ALTER KEYSPACE system_auth WITH replication = { 'class': 'SimpleStrategy', 'replication_factor': 4 };
-
 -- Cassandra grants for maps
 CREATE USER kartotherian  WITH PASSWORD '<%= @cassandra_kartotherian_pass %>';
 CREATE USER tilerator  WITH PASSWORD '<%= @cassandra_tilerator_pass %>';
