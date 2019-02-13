@@ -7,6 +7,9 @@ class profile::installserver::http {
     certcentral::cert { 'apt':
         puppet_svc => 'nginx',
     }
+    acme_chief::cert { 'apt':
+        puppet_svc => 'nginx',
+    }
 
     ferm::service { 'install_http':
         proto => 'tcp',
