@@ -20,6 +20,7 @@ class profile::elasticsearch(
     Wmflib::IpPort $logstash_gelf_port = hiera('logstash_gelf_port'),
     String $rack = hiera('profile::elasticsearch::rack'),
     String $row = hiera('profile::elasticsearch::row'),
+    Enum['5.5', '5.6'] $version = hiera('profile::elasticsearch::version', '5.5'),
 ) {
     # Rather than asking hiera to magically merge these settings for us, we
     # explicitly take two sets of defaults for global defaults and per-dc
@@ -75,10 +76,15 @@ class profile::elasticsearch(
         }
     }
 
+    $apt_component = $version ? {
+        '5.5' => 'elastic55',
+        '5.6' => 'elastic56',
+    }
+
     apt::repository { 'wikimedia-elastic':
         uri        => 'http://apt.wikimedia.org/wikimedia',
         dist       => "${::lsbdistcodename}-wikimedia",
-        components => 'component/elastic55 thirdparty/elastic55',
+        components => "component/${apt_component} thirdparty/${apt_component}",
         before     => Class['::elasticsearch'],
     }
 
