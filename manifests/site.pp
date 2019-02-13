@@ -2062,12 +2062,9 @@ node 'people1001.eqiad.wmnet' {
     interface::add_ip6_mapped { 'main': }
 }
 
-# ruthenium is a parsoid regression test server
-# https://www.mediawiki.org/wiki/Parsoid/Round-trip_testing
-# Right now, both rt-server and rt-clients run on the same node
-# But, we are likely going to split them into different boxes soon.
+# formerly parsoid-test system, replaced by scandium
 node 'ruthenium.eqiad.wmnet' {
-    role(parsoid::testing)
+    role(spare::system)
 }
 
 # cluster management (cumin master)
@@ -2077,7 +2074,10 @@ node 'sarin.codfw.wmnet' {
     interface::add_ip6_mapped { 'main': }
 }
 
-#Will replace old system ruthenium via T201366
+# scandium is a parsoid regression test server. it replaced ruthenium.
+# https://www.mediawiki.org/wiki/Parsoid/Round-trip_testing
+# Right now, both rt-server and rt-clients run on the same node
+# But, we are likely going to split them into different boxes soon.
 node 'scandium.eqiad.wmnet' {
     role(parsoid::testing)
 }
