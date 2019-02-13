@@ -64,8 +64,8 @@ trap "rm -f '$temp'" EXIT
 timedatectl > "$temp"
 ut=$(sed '/Universal time:/ { s/^[^:]*: *//; p}; d' "$temp")
 rtc=$(sed '/RTC time:/ { s/^[^:]*: *//; p}; d' "$temp")
-ntpenabled=$(sed '/\(NTP enabled\|Network time on\):/ { s/^[^:]*: *//; p}; d' "$temp")
-ntpsynced=$(sed '/NTP synchronized:/ { s/^[^:]*: *//; p}; d' "$temp")
+ntpenabled=$(sed '/\(NTP enabled\|Network time on\|NTP service\):/ { s/^[^:]*: *//; p}; d' "$temp")
+ntpsynced=$(sed '/\(NTP synchronized\|System clock synchronized\):/ { s/^[^:]*: *//; p}; d' "$temp")
 
 uts=$(TZ=UTC date -d "$ut" +%s)
 rtcs=$(TZ=UTC date -d "$rtc" +%s 2>/dev/null || echo "N/A")
@@ -90,7 +90,7 @@ else
 		exit 1
 	fi
 
-	if [ "$ntpenabled" != "yes" ]; then
+	if [ "$ntpenabled" != "yes" -a "$ntpenabled" != "active"  ]; then
 		echo "Warning: NTP not enabled!"
 		exit 1
 	fi
