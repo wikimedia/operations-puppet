@@ -51,8 +51,10 @@ class profile::prometheus::alerts {
     # main-eqiad -> jumbo MirrorMaker
     profile::kafka::mirror::alerts { 'main-eqiad_to_jumbo-eqiad':
         #  For now, alert analytics admins.  Change this back to admins soon.
-        contact_group   => 'analytics',
-        topic_blacklist => '.*(change-prop|\.job\.|changeprop).*',
+        contact_group         => 'analytics',
+        topic_blacklist       => '.*(change-prop|\.job\.|changeprop).*',
+        prometheus_url        => 'http://prometheus.svc.eqiad.wmnet/ops',
+        source_prometheus_url => 'http://prometheus.svc.eqiad.wmnet/ops',
     }
 
     # Cross DC main-eqiad <-> main-codfw MirrorMakers.
