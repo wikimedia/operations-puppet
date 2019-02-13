@@ -13,7 +13,7 @@ import sys
 
 # full path to an Icinga contacts.cfg file
 # this script is intended to run on an Icinga server
-CONTACTS_FILE = '/etc/icinga/contacts.cfg'
+CONTACTS_FILE = '/etc/icinga/objects/contacts.cfg'
 
 # mail sent from icinga1001.wikimedia.org (icinga server) uses these
 MAIL_FROM = 'icinga@wikimedia.org'
@@ -32,7 +32,7 @@ def get_address(contact_name):
     with open(CONTACTS_FILE, 'r') as contacts_data:
         contact_data = contacts_data.read()
     contact_data = contact_data.split('contact_name')
-    regex = re.compile('address1\s+\d+@.*(.*?)')
+    regex = re.compile('address1\s+[\da-f]+@.*(.*?)')
     for contact in contact_data:
         if contact_name + '\n' in contact:
             address1 = regex.search(contact).group(0).split('address1')
@@ -78,7 +78,7 @@ def list_contacts_sms(CONTACTS_FILE):
         contact_data = contact_data.split('define contact')
     for contact in contact_data:
         # print(contact)
-        regex = re.compile('address1\s+\d+@.*(.*?)')
+        regex = re.compile('address1\s+[\da-f]+@.*(.*?)')
         try:
             if regex.search(contact):
                 contact_name = contact.split('contact_name')
