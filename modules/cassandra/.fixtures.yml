@@ -1,0 +1,7 @@
+fixtures:
+    symlinks:
+        cassandra: "#{source_dir}"
+        apt: "../../../../apt"
+        stdlib: "../../../../stdlib"
+        systemd: "../../../../systemd"
+        wmflib: "../../../../wmflib"

@@ -194,8 +194,8 @@ class cassandra (
     }
 
     package { 'cassandra':
-      ensure  => $package_version,
-      require => Package['openjdk-8-jdk'],
+        ensure  => $package_version,
+        require => [ Package['openjdk-8-jdk'], Exec['apt-get update'] ],
     }
 
     package { 'cassandra-tools':
