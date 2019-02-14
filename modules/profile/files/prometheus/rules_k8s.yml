@@ -1,0 +1,12 @@
+groups:
+- name: /home/godog/src/wikimedia/puppet/modules/profile/files/prometheus/rules_k8s.conf
+  rules:
+  - record: instance_operation_type:kubelet_runtime_operations_latency_microseconds:avg5m
+    expr: sum by(instance) (rate(kubelet_runtime_operations_latency_microseconds_sum{job="k8s-node"}[5m]))
+      / sum by(instance) (rate(kubelet_runtime_operations_latency_microseconds_count{job="k8s-node"}[5m]))
+  - record: instance_verb:apiserver_request_latencies_summary:avg5m
+    expr: sum by(instance, verb) (rate(apiserver_request_latencies_summary_sum{job="k8s-api"}[5m]))
+      / sum by(instance, verb) (rate(apiserver_request_latencies_summary_count{job="k8s-api"}[5m]))
+  - record: instance_operation:etcd_request_latencies_summary:avg5m
+    expr: sum by(instance, operation) (rate(etcd_request_latencies_summary_sum{job="k8s-api"}[5m]))
+      / sum by(instance, operation) (rate(etcd_request_latencies_summary_count{job="k8s-api"}[5m]))
