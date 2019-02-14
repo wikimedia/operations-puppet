@@ -100,7 +100,7 @@ kubernetes-workers: P{O:kubernetes::worker}
 kubernetes-all: A:kubernetes-etcd or A:kubernetes-masters or A:kubernetes-staging or A:kubernetes-workers or A:kubernetes-etcd-network
 labcontrol: P{O:wmcs::openstack::main::control}
 labnet: P{O:wmcs::openstack::main::net or O:wmcs::openstack::main::net_standby}
-labpuppetmaster: P{O:wmcs::openstack::main::puppetmaster::frontend or O:wmcs::openstack::main::puppetmaster::backend}
+labmon: P{O:wmcs::monitoring}
 labs-nfs: P{O:labs::nfs::misc or O:dumps::distribution::server or O:labs::nfs::secondary or O:labs::nfs::secondary_backup::tools or O:labs::nfs::secondary_backup::misc}
 labservices: P{O:wmcs::openstack::main::services_primary or O:wmcs::openstack::main::services_secondary}
 labtest: P{O:wmcs::openstack::labtestn::net or O:wmcs::openstack::labtest::virt or O:wmcs::openstack::labtest::net or O:wmcs::openstack::labtest::control or O:wmcs::openstack::labtestn::control or O:wmcs::openstack::labtest::services or O:wmcs::openstack::labtestn::services or O:wmcs::openstack::labtest::net_standby or O:wmcs::openstack::labtest::puppetmaster::frontend or O:wmcs::openstack::labtest::labweb}
@@ -221,4 +221,4 @@ misc-nonprod: P{O:spare::system or O:test or O:pybaltest or O:authdns::testns or
 misc-ops: A:installserver or A:cumin or A:url-downloader or A:icinga or A:netmon or A:puppetboard or A:debmonitor or A:debmonitor or A:backup or A:ping or P{O:logging::webrequest::ops or O:builder or O:syslog::centralserver or O:pmacct or O:mirrors}
 misc-others: P{O:mw_rc_irc or O:etherpad or O:tor_relay or O:lists or O:netinsights}
 misc-releng: P{O:phabricator} or A:contint or A:gerrit or A:mw-maintenance
-misc-wmcs: A:labnet or A:labcontrol or A:labservices or A:labweb or A:osm or A:db-wmcs or P{O:labs::monitoring} or A:cloudcontrol or A:cloudnet or A:cloudservices
+misc-wmcs: A:labnet or A:labcontrol or A:labservices or A:labweb or A:osm or A:db-wmcs or P{O:wmcs::monitoring} or A:cloudcontrol or A:cloudnet or A:cloudservices
