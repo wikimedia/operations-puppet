@@ -58,4 +58,15 @@ class visualdiff {
         group  => 'testreduce',
         mode   => '0775',
     }
+
+    # create an empty testrun.ids but only if it does not exist
+    # don't change content in existing file (T215049)
+    file { '/srv/visualdiff/testreduce/testrun.ids':
+        ensure  => present,
+        replace => false,
+        content => 'puppet-init',
+        owner   => 'testreduce',
+        group   => 'testreduce',
+        mode    => '0775',
+    }
 }
