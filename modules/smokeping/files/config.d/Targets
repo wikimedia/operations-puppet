@@ -322,6 +322,11 @@ menu = cr1-eqsin
 title = cr1-eqsin.wikimedia.org
 host = cr1-eqsin.wikimedia.org
 
++++ cr2-eqsin
+menu = cr2-eqsin
+title = cr2-eqsin.wikimedia.org
+host = cr2-eqsin.wikimedia.org
+
 # Commented out until T186650 is solved
 #+++ asw1-eqsin
 #menu = asw1-eqsin
