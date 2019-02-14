@@ -84,6 +84,10 @@ hadoop_clusters:
     # Raised for T206943
     yarn_resourcemanager_zk_timeout_ms: 20000
 
+    # Since we are not sharing Zookeper with another cluster
+    # the Yarn rmstore path can stay unchanged.
+    yarn_resourcemanager_zk_state_store_parent_path: '/rmstore'
+
     # Hadoop process heapsizes and Prometheus JMX Exporter config templates.
     hadoop_namenode_opts: "-Xms1024m -Xmx1024m -XX:+UseParNewGC -XX:+UseConcMarkSweepGC -XX:CMSInitiatingOccupancyFraction=70 -XX:+CMSParallelRemarkEnabled -javaagent:/usr/share/java/prometheus/jmx_prometheus_javaagent.jar=%{::ipaddress}:10080:/etc/prometheus/hdfs_namenode_jmx_exporter.yaml"
     yarn_resourcemanager_opts: "-Xms512m -Xmx512m -javaagent:/usr/share/java/prometheus/jmx_prometheus_javaagent.jar=%{::ipaddress}:10083:/etc/prometheus/yarn_resourcemanager_jmx_exporter.yaml"

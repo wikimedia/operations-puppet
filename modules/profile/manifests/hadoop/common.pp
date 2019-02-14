@@ -189,6 +189,7 @@ class profile::hadoop::common (
 
     $zookeeper_cluster_name                   = $hadoop_config['zookeeper_cluster_name']
     $yarn_resourcemanager_zk_timeout_ms       = $hadoop_config['yarn_resourcemanager_zk_timeout_ms']
+    $yarn_resourcemanager_zk_state_store_parent_path = $hadoop_config['yarn_resourcemanager_zk_state_store_parent_path']
     $resourcemanager_hosts                    = $hadoop_config['resourcemanager_hosts']
     $namenode_hosts                           = $hadoop_config['namenode_hosts']
     $journalnode_hosts                        = $hadoop_config['journalnode_hosts']
@@ -291,80 +292,81 @@ class profile::hadoop::common (
     class { '::cdh::hadoop':
         # Default to using running resourcemanager on the same hosts
         # as the namenodes.
-        resourcemanager_hosts                       => $resourcemanager_hosts,
-        zookeeper_hosts                             => $zookeeper_hosts,
-        yarn_resourcemanager_zk_timeout_ms          => $yarn_resourcemanager_zk_timeout_ms,
-        dfs_name_dir                                => [$hadoop_name_directory],
-        dfs_journalnode_edits_dir                   => $hadoop_journal_directory,
-        dfs_datanode_failed_volumes_tolerated       => $datanode_volumes_failed_tolerated,
-        fs_trash_checkpoint_interval                => $hdfs_trash_checkpoint_interval,
-        fs_trash_interval                           => $hdfs_trash_interval,
+        resourcemanager_hosts                           => $resourcemanager_hosts,
+        zookeeper_hosts                                 => $zookeeper_hosts,
+        yarn_resourcemanager_zk_timeout_ms              => $yarn_resourcemanager_zk_timeout_ms,
+        yarn_resourcemanager_zk_state_store_parent_path => $yarn_resourcemanager_zk_state_store_parent_path,
+        dfs_name_dir                                    => [$hadoop_name_directory],
+        dfs_journalnode_edits_dir                       => $hadoop_journal_directory,
+        dfs_datanode_failed_volumes_tolerated           => $datanode_volumes_failed_tolerated,
+        fs_trash_checkpoint_interval                    => $hdfs_trash_checkpoint_interval,
+        fs_trash_interval                               => $hdfs_trash_interval,
 
-        cluster_name                                => $cluster_name,
-        namenode_hosts                              => $namenode_hosts,
-        journalnode_hosts                           => $journalnode_hosts,
+        cluster_name                                    => $cluster_name,
+        namenode_hosts                                  => $namenode_hosts,
+        journalnode_hosts                               => $journalnode_hosts,
 
-        datanode_mounts                             => $datanode_mounts,
+        datanode_mounts                                 => $datanode_mounts,
 
-        yarn_heapsize                               => $yarn_heapsize,
-        hadoop_heapsize                             => $hadoop_heapsize,
+        yarn_heapsize                                   => $yarn_heapsize,
+        hadoop_heapsize                                 => $hadoop_heapsize,
 
-        yarn_nodemanager_opts                       => $yarn_nodemanager_opts,
-        yarn_resourcemanager_opts                   => $yarn_resourcemanager_opts,
-        hadoop_namenode_opts                        => $hadoop_namenode_opts,
-        hadoop_datanode_opts                        => $hadoop_datanode_opts,
-        hadoop_journalnode_opts                     => $hadoop_journalnode_opts,
-        mapreduce_history_java_opts                 => $mapreduce_history_java_opts,
+        yarn_nodemanager_opts                           => $yarn_nodemanager_opts,
+        yarn_resourcemanager_opts                       => $yarn_resourcemanager_opts,
+        hadoop_namenode_opts                            => $hadoop_namenode_opts,
+        hadoop_datanode_opts                            => $hadoop_datanode_opts,
+        hadoop_journalnode_opts                         => $hadoop_journalnode_opts,
+        mapreduce_history_java_opts                     => $mapreduce_history_java_opts,
 
-        yarn_app_mapreduce_am_resource_mb           => $yarn_app_mapreduce_am_resource_mb,
-        yarn_app_mapreduce_am_command_opts          => $yarn_app_mapreduce_am_command_opts,
-        yarn_nodemanager_resource_memory_mb         => $yarn_nodemanager_resource_memory_mb,
-        yarn_scheduler_minimum_allocation_mb        => $yarn_scheduler_minimum_allocation_mb,
-        yarn_scheduler_maximum_allocation_mb        => $yarn_scheduler_maximum_allocation_mb,
-        yarn_scheduler_minimum_allocation_vcores    => $yarn_scheduler_minimum_allocation_vcores,
-        yarn_scheduler_maximum_allocation_vcores    => $yarn_scheduler_maximum_allocation_vcores,
+        yarn_app_mapreduce_am_resource_mb               => $yarn_app_mapreduce_am_resource_mb,
+        yarn_app_mapreduce_am_command_opts              => $yarn_app_mapreduce_am_command_opts,
+        yarn_nodemanager_resource_memory_mb             => $yarn_nodemanager_resource_memory_mb,
+        yarn_scheduler_minimum_allocation_mb            => $yarn_scheduler_minimum_allocation_mb,
+        yarn_scheduler_maximum_allocation_mb            => $yarn_scheduler_maximum_allocation_mb,
+        yarn_scheduler_minimum_allocation_vcores        => $yarn_scheduler_minimum_allocation_vcores,
+        yarn_scheduler_maximum_allocation_vcores        => $yarn_scheduler_maximum_allocation_vcores,
 
-        dfs_block_size                              => 268435456, # 256 MB
-        io_file_buffer_size                         => 131072,
+        dfs_block_size                                  => 268435456, # 256 MB
+        io_file_buffer_size                             => 131072,
 
         # Turn on Snappy compression by default for maps and final outputs
-        mapreduce_intermediate_compression_codec    => 'org.apache.hadoop.io.compress.SnappyCodec',
-        mapreduce_output_compression                => true,
-        mapreduce_output_compression_codec          => 'org.apache.hadoop.io.compress.SnappyCodec',
-        mapreduce_output_compression_type           => 'BLOCK',
+        mapreduce_intermediate_compression_codec        => 'org.apache.hadoop.io.compress.SnappyCodec',
+        mapreduce_output_compression                    => true,
+        mapreduce_output_compression_codec              => 'org.apache.hadoop.io.compress.SnappyCodec',
+        mapreduce_output_compression_type               => 'BLOCK',
 
-        mapreduce_job_reuse_jvm_num_tasks           => 1,
+        mapreduce_job_reuse_jvm_num_tasks               => 1,
 
-        mapreduce_reduce_shuffle_parallelcopies     => $mapreduce_reduce_shuffle_parallelcopies,
-        mapreduce_task_io_sort_mb                   => $mapreduce_task_io_sort_mb,
-        mapreduce_task_io_sort_factor               => $mapreduce_task_io_sort_factor,
-        mapreduce_map_memory_mb                     => $mapreduce_map_memory_mb,
-        mapreduce_map_java_opts                     => $mapreduce_map_java_opts,
-        mapreduce_reduce_memory_mb                  => $mapreduce_reduce_memory_mb,
-        mapreduce_reduce_java_opts                  => $mapreduce_reduce_java_opts,
+        mapreduce_reduce_shuffle_parallelcopies         => $mapreduce_reduce_shuffle_parallelcopies,
+        mapreduce_task_io_sort_mb                       => $mapreduce_task_io_sort_mb,
+        mapreduce_task_io_sort_factor                   => $mapreduce_task_io_sort_factor,
+        mapreduce_map_memory_mb                         => $mapreduce_map_memory_mb,
+        mapreduce_map_java_opts                         => $mapreduce_map_java_opts,
+        mapreduce_reduce_memory_mb                      => $mapreduce_reduce_memory_mb,
+        mapreduce_reduce_java_opts                      => $mapreduce_reduce_java_opts,
 
-        net_topology_script_content                 => $net_topology_script_content,
+        net_topology_script_content                     => $net_topology_script_content,
 
         # This needs to be set in order to use Impala
-        dfs_datanode_hdfs_blocks_metadata_enabled   => true,
+        dfs_datanode_hdfs_blocks_metadata_enabled       => true,
 
         # Use fair-scheduler.xml.erb to define FairScheduler queues.
-        fair_scheduler_template                     => 'profile/hadoop/fair-scheduler.xml.erb',
+        fair_scheduler_template                         => 'profile/hadoop/fair-scheduler.xml.erb',
 
         # Yarn App Master possible port ranges
-        yarn_app_mapreduce_am_job_client_port_range => '55000-55199',
+        yarn_app_mapreduce_am_job_client_port_range     => '55000-55199',
 
-        core_site_extra_properties                  => $core_site_extra_properties_default + $core_site_extra_properties,
-        yarn_site_extra_properties                  => $yarn_site_extra_properties_default + $yarn_site_extra_properties,
-        hdfs_site_extra_properties                  => $hdfs_site_extra_properties_default + $hdfs_site_extra_properties,
-        mapred_site_extra_properties                => $mapred_site_extra_properties_default + $mapred_site_extra_properties,
+        core_site_extra_properties                      => $core_site_extra_properties_default + $core_site_extra_properties,
+        yarn_site_extra_properties                      => $yarn_site_extra_properties_default + $yarn_site_extra_properties,
+        hdfs_site_extra_properties                      => $hdfs_site_extra_properties_default + $hdfs_site_extra_properties,
+        mapred_site_extra_properties                    => $mapred_site_extra_properties_default + $mapred_site_extra_properties,
 
-        ssl_client_config                           => $ssl_client_config,
-        ssl_server_config                           => $ssl_server_config,
+        ssl_client_config                               => $ssl_client_config,
+        ssl_server_config                               => $ssl_server_config,
 
-        yarn_nodemanager_container_executor_config  => $yarn_nm_container_executor_config,
+        yarn_nodemanager_container_executor_config      => $yarn_nm_container_executor_config,
 
-        java_home                                   => $java_home,
+        java_home                                       => $java_home,
     }
 
 
