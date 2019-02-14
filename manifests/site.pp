@@ -69,12 +69,6 @@ node 'analytics1002.eqiad.wmnet' {
     interface::add_ip6_mapped { 'main': }
 }
 
-# Old Analytics Hadoop coordinator, replaced in T204970
-node 'analytics1003.eqiad.wmnet' {
-    role(spare::system)
-    interface::add_ip6_mapped { 'main': }
-}
-
 # analytics1028-analytics1041 are Hadoop worker nodes.
 # These hosts are OOW but they are used as temporary
 # Hadoop testing cluster for T211836.
