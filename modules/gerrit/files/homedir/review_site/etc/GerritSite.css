@@ -468,3 +468,57 @@ li.ci_comment_test { list-style-type: none; }
 .screen .com-google-gerrit-client-editor-EditScreen_BinderImpl_GenCss_style-header {
   height: auto;
 }
+
+/**
+ * Styles for pipeline
+ *
+ * FIXME: this is both in static/gerrit-theme.html and here until we move to 2.16, after which, this can be removed
+ */
+#output span.wmf-badge-logo,
+.wmf-badge-logo {
+  display: inline-block;
+  background: url(/r/static/wikimedia-codereview-logo.cache.svg) no-repeat left/contain rgba(255, 255, 255, 1);
+  margin: 0 1rem 1rem 0;
+  padding: 0.25rem 0.5rem 0.25rem 2rem;
+  color: rgba(0, 0, 0, 0.8);
+  font-size: 0.8rem;
+  text-decoration: none;
+  border-radius: 0.5em;
+  border: 1px solid gainsboro;
+}
+
+#output span.wmf-badge-left,
+.wmf-badge-left {
+  display: inline-block;
+  background: rgba(0,0,0,0.7);
+  padding: 0.25em 0.5em;
+  font-size: 0.8rem;
+  color: white;
+  text-decoration: none;
+  border-radius: 0.5em 0 0 0.5em;
+  text-shadow: 1px 1px 1px black;
+}
+
+#output span.wmf-badge-SUCCESS,
+.wmf-badge-SUCCESS {
+  display: inline-block;
+  background: #339966;
+  padding: 0.25em 0.5em;
+  font-size: 0.8rem;
+  text-decoration: none;
+  color: white;
+  border-radius: 0 0.5em 0.5em 0;
+  text-shadow: 1px 1px 1px black;
+}
+
+#output span.wmf-badge-FAILURE,
+.wmf-badge-FAILURE {
+  display: inline-block;
+  background: #990000;
+  padding: 0.25em 0.5em;
+  font-size: 0.8rem;
+  text-decoration: none;
+  color: white;
+  border-radius: 0 0.5em 0.5em 0;
+  text-shadow: 1px 1px 1px black;
+}

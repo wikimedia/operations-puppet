@@ -78,6 +78,12 @@
 [commentlink "scid"]
     match = "\\b[sS][cC][iI][dD]\\:?\\s+#?(\\d+)\\b"
     link = https://meta.wikimedia.org/w/index.php?oldid=$1
+[commentlink "pipeline-dashboard"]
+    match = pipeline-dashboard:\\s+([a-z-]+)
+    html = <a href="https://integration.wikimedia.org/ci/blue/organizations/jenkins/$1/activity"><span class="wmf-badge-logo">Wikimedia Pipeline</span></a>
+[commentlink "pipeline-build-result"]
+    match = pipeline-build-result:\\s+(SUCCESS|FAILURE)\\s+\\(job:\\s+([a-z-]+),\\s+build:\\s+(\\d+)\\)
+    html = <a href="https://integration.wikimedia.org/ci/blue/organizations/jenkins/$2/detail/service-pipeline-test-and-publish/$3/pipeline"><span class="wmf-badge-left">Image Build</span><span class="wmf-badge-$1">$1</span></a>
 [commitmessage]
     maxSubjectLength = 100
     maxLineLength = 120
