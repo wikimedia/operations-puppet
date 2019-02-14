@@ -27,7 +27,7 @@ define service::deploy::gitclone(
     }
 
     git::clone { "${prefix}/${repository}":
-        directory          => $dir,
+        directory          => "${dir}/deploy",
         recurse_submodules => true,
         require            => File[$dir],
     }
