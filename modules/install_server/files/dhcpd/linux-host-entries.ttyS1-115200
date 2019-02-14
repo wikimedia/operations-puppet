@@ -4767,7 +4767,6 @@ host thumbor2001 {
 host thumbor2002 {
     hardware ethernet B0:83:FE:DF:10:A0;
     fixed-address thumbor2002.codfw.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
     filename "lpxelinux.0";
 }
 
