@@ -24,7 +24,8 @@ class profile::maps::alerts {
     monitoring::check_prometheus { 'maps-osm-sync-lag-codf':
         description     => 'Maps - OSM synchronization lag - codfw',
         dashboard_links => ['https://grafana.wikimedia.org/dashboard/db/maps-performances?panelId=12&fullscreen&orgId=1'],
-        query           => 'scalar(max(time()-osm_sync_timestamp{cluster="maps"}))',
+        # restrict check to maps2001 while data is being reloaded on maps2004
+        query           => 'scalar(max(time()-osm_sync_timestamp{cluster="maps", instance=~"maps2001.*"}))',
         warning         => 49 * 3600, # 49 hours
         critical        => 3 * 24 * 3600, # 3 days
         prometheus_url  => 'http://prometheus.svc.codfw.wmnet/ops',
