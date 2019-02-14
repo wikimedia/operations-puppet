@@ -12,29 +12,35 @@
 class systemd::slice::all_users (
     String $all_users_slice_config,
 ) {
+    # cleanup, delete after a puppet cycle
+    apt::pin { 'systemd udev':
+        ensure => absent,
+    }
 
     # we need systemd >= 239 for resource control using the user-.slice trick
     # this version is provied in stretch-backports
-    apt::pin { 'systemd udev':
-        package  => 'systemd udev',
-        pin      => 'version 239*',
-        priority => '1001',
-    }
-
-    $packages = [
+    $version = '239-12~bpo9+1'
+    $systemd_packages = [
         'systemd',
         'udev',
+        'libsystemd0',
     ]
-
-    package { $packages:
-        ensure          => present,
+    apt::pin { 'systemd_239_slice_all_users':
+        package  => join($systemd_packages, ', '),
+        pin      => "version ${version}",
+        priority => '1001',
+    }
+    package { $systemd_packages:
+        ensure          => $version,
         install_options => ['-t', 'stretch-backports'],
+        require         => Apt::Pin['systemd_239_slice_all_users'],
     }
 
     systemd::unit { 'user-.slice':
         ensure   => present,
         content  => $all_users_slice_config,
         override => true,
+        require  => Package[$systemd_packages],
     }
 
     # By default the root user does not have any limitation.
