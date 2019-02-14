@@ -14,6 +14,11 @@ class profile::analytics::refinery {
 
     require ::profile::analytics::refinery::repository
 
+    # Needed to make the analytics-mysql tool work
+    package { 'python3-dnspython':
+        ensure => installed,
+    }
+
     # Required by a lot of profiles dependent on this one
     # to find the correct path for scripts etc..
     $path = $::profile::analytics::refinery::repository::path
