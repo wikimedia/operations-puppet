@@ -3002,8 +3002,8 @@ users:
       - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCzc2xF3S5UnIFMnK0gbGBhYvsN+xjiJejtEZUnGb23vJTX7N955C7dBdHkTHpcV7+yWqpzzWkJCpnRs5Q0P+JyQ5hOikv7WrKcsjIODuUpMzkRIlWzmGwuA6fXvJqAcyqSdXeQAAczUnlItMl0BB0L0LsB5xY7aqkt0atm1CPkQcFKBc90KJiW8Tkuh5MiYIXe18o+mCI/Q+yPfUxaqQZ0rp9pmFk1L021D3BL7YNpTZYSwbulnxc/y++VD1Ot/2kmCX2HhB9APVP36VZwqDcb+Ik2ZMsrtxIBz2qQjsbUnZvS9rqqJrF8MQhLmfe/M1gK8pbR0yV8DXHSSG3uJ1Db matt@matt
     uid: 19981
     email: monipe@wikimedia.org
-    expiry_date: 2019-02-16
-    expiry_contact: ebjune@wikimedia.org
+    expiry_date: 2019-06-30
+    expiry_contact: nuria@wikimedia.org
   kharlan:
     ensure: present
     realname: Kosta Harlan
