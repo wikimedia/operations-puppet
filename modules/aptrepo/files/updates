@@ -185,7 +185,7 @@ UDebComponents:
 Suite: stretch
 Architectures: amd64 source
 VerifyRelease: AC0E47584A7A714D
-ListShellHook: grep-dctrl \( -X -S php7.2 \) -o \( -X -S xdebug \) || [ $? -eq 1 ]
+ListShellHook: grep-dctrl \( -X -S php7.2 \) -o \( -X -S xdebug \) -o \( -X -S pcre3 \) -o \( -X -S libzip \) || [ $? -eq 1 ]
 
 Name: mono-project-jessie
 Method: https://download.mono-project.com/repo/debian
