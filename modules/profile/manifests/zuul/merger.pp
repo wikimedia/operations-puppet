@@ -1,6 +1,7 @@
 class profile::zuul::merger(
     $conf_common = hiera('zuul::common'),
     $conf_merger = hiera('profile::zuul::merger::conf'),
+    $ferm_srange = hiera('profile::zuul::merger::ferm_srange'),
 ) {
 
     include ::zuul::monitoring::merger
@@ -40,6 +41,6 @@ class profile::zuul::merger(
     ferm::service { 'git-daemon_internal':
         proto  => 'tcp',
         port   => '9418',
-        srange => '(($LABS_NETWORKS @resolve(contint1001.wikimedia.org) @resolve(contint2001.wikimedia.org)))',
+        srange => $ferm_srange,
     }
 }

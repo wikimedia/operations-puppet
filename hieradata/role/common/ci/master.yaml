@@ -29,6 +29,11 @@ profile::zuul::server::conf:
     url_pattern: 'https://integration.wikimedia.org/ci/job/{job.name}/{build.number}/console'
     status_url: 'https://integration.wikimedia.org/zuul/'
 
+profile::zuul::merger::ferm_srange: >-
+    (($LABS_NETWORKS
+    @resolve((contint1001.wikimedia.org contint2001.wikimedia.org), A)
+    @resolve((contint1001.wikimedia.org contint2001.wikimedia.org), AAAA)))
+
 profile::zuul::server::email_server: localhost
 
 profile::ci::docker::settings:
