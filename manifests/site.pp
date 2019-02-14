@@ -1387,6 +1387,10 @@ node /^logstash100[4-6]\.eqiad\.wmnet$/ {
     include ::role::kafka::logging # lint:ignore:wmf_styleguide
 }
 
+node /^logstash101[0-2]\.eqiad\.wmnet$/ {
+    role(logstash::elasticsearch)
+}
+
 # eqiad logstash collectors (Ganeti)
 node /^logstash100[7-9]\.eqiad\.wmnet$/ {
     role(logstash)

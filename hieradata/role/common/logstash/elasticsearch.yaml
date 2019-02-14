@@ -16,7 +16,7 @@ profile::elasticsearch::common_settings:
     auto_create_index: true
     cluster_name: production-logstash-eqiad
     awareness_attributes: ''
-    expected_nodes: 3
+    expected_nodes: 6
     heap_memory: '30G'
     minimum_master_nodes: 2
     recover_after_nodes: 2
@@ -32,6 +32,9 @@ profile::elasticsearch::common_settings:
       - logstash1007.eqiad.wmnet
       - logstash1008.eqiad.wmnet
       - logstash1009.eqiad.wmnet
+      - logstash1010.eqiad.wmnet
+      - logstash1011.eqiad.wmnet
+      - logstash1012.eqiad.wmnet
     http_port: 9200
     transport_tcp_port: 9300
     # Dont encourage some sort of accidental feedback loop

@@ -19,7 +19,7 @@ profile::elasticsearch::common_settings:
     awareness_attributes: ''
     auto_create_index: true
     cluster_name: production-logstash-eqiad
-    expected_nodes: 3
+    expected_nodes: 6
     heap_memory: '4G'
     # The ES nodes that are run on the same box as Logstash+Kibana are only used
     # as client nodes to communicate with the backing cluster.
@@ -38,6 +38,9 @@ profile::elasticsearch::common_settings:
       - logstash1007.eqiad.wmnet
       - logstash1008.eqiad.wmnet
       - logstash1009.eqiad.wmnet
+      - logstash1010.eqiad.wmnet
+      - logstash1011.eqiad.wmnet
+      - logstash1012.eqiad.wmnet
     auto_create_index: true
     send_logs_to_logstash: false
     curator_uses_unicast_hosts: false
