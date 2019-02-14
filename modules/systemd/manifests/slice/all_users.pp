@@ -14,7 +14,9 @@ class systemd::slice::all_users (
 ) {
     # cleanup, delete after a puppet cycle
     apt::pin { 'systemd udev':
-        ensure => absent,
+        ensure   => absent,
+        pin      => 'version 239*',
+        priority => '1001',
     }
 
     # we need systemd >= 239 for resource control using the user-.slice trick
