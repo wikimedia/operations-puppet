@@ -43,3 +43,5 @@ profile::analytics::refinery::job::camus::monitoring_enabled: true
 profile::analytics::refinery::job::project_namespace_map::http_proxy: 'http://webproxy.eqiad.wmnet:8080'
 
 diamond::remove: true
+
+profile::base::notifications: disabled

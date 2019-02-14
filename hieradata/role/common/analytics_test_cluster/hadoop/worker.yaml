@@ -47,3 +47,5 @@ prometheus::node_exporter::collectors_extra:
   - meminfo_numa
 
 diamond::remove: true
+
+profile::base::notifications: disabled
