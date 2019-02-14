@@ -42,3 +42,5 @@ profile::hadoop::firewall::master::analytics_druid_srange: '(($ANALYTICS_NETWORK
 profile::hadoop::backup::namenode::monitoring_enabled: true
 
 diamond::remove: true
+
+profile::base::notifications: disabled
