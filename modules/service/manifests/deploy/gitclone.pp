@@ -31,6 +31,7 @@ define service::deploy::gitclone(
         recurse_submodules => true,
         owner              => 'root',
         group              => 'wikidev',
+        shared             => true,
         require            => File[$dir],
     }
 }
