@@ -100,6 +100,7 @@ kubernetes-workers: P{O:kubernetes::worker}
 kubernetes-all: A:kubernetes-etcd or A:kubernetes-masters or A:kubernetes-staging or A:kubernetes-workers or A:kubernetes-etcd-network
 labcontrol: P{O:wmcs::openstack::main::control}
 labnet: P{O:wmcs::openstack::main::net or O:wmcs::openstack::main::net_standby}
+labpuppetmaster: P{O:wmcs::openstack::main::puppetmaster::frontend or O:wmcs::openstack::main::puppetmaster::backend}
 labmon: P{O:wmcs::monitoring}
 labs-nfs: P{O:labs::nfs::misc or O:dumps::distribution::server or O:labs::nfs::secondary or O:labs::nfs::secondary_backup::tools or O:labs::nfs::secondary_backup::misc}
 labservices: P{O:wmcs::openstack::main::services_primary or O:wmcs::openstack::main::services_secondary}
