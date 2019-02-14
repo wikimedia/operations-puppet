@@ -57,6 +57,11 @@ class thumbor (
             notify     => Exec['apt-get update'],
             before     => [ Package['librsvg2-2'], Package['python-thumbor-wikimedia'] ]
         }
+
+        apt::pin { 'wikimedia-thumbor':
+            pin      => 'release c=component/thumbor',
+            priority => '1002',
+        }
     }
 
     # We are not planning on installing other jessie servers - T214597
