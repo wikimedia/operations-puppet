@@ -1137,9 +1137,6 @@ node /labweb100[12]\.wikimedia\.org/ {
     interface::add_ip6_mapped { 'main': }
 }
 
-node /^graphite100[13]\.eqiad\.wmnet/ {
-    role(spare::system)
-}
 node /^graphite200[12]\.codfw\.wmnet/ {
     role(spare::system)
 }
