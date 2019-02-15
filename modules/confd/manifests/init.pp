@@ -102,39 +102,20 @@ class confd(
     # Any change to a service configuration or to a template should reload confd.
     Confd::File <| |> ~> Service['confd']
 
-    if $::initsystem == 'systemd' {
-        nrpe::monitor_systemd_unit_state { 'confd':
-            require => Service['confd'],
-        }
-    } else {
-        nrpe::monitor_service {'confd':
-            description  => 'ensure confd service',
-            nrpe_command => '/usr/lib/nagios/plugins/check_procs -a /usr/bin/confd -c 1:2',
-            require      => Service['confd'],
-        }
+    nrpe::monitor_systemd_unit_state { 'confd':
+        require => Service['confd'],
     }
 
-    # Upstart will log confd output to a dedicated file in /var/log/upstart already
-    if $::initsystem == 'upstart' {
-        logrotate::conf { 'confd':
-            ensure => absent,
-        }
+    # Log to a dedicated file
+    logrotate::conf { 'confd':
+        ensure => present,
+        source => 'puppet:///modules/confd/logrotate.conf',
+    }
 
-        rsyslog::conf { 'confd':
-            ensure => absent,
-        }
-    } else {
-        # Log to a dedicated file
-        logrotate::conf { 'confd':
-            ensure => present,
-            source => 'puppet:///modules/confd/logrotate.conf',
-        }
-
-        rsyslog::conf { 'confd':
-            source   => 'puppet:///modules/confd/rsyslog.conf',
-            priority => 20,
-            require  => File['/etc/logrotate.d/confd'],
-        }
+    rsyslog::conf { 'confd':
+        source   => 'puppet:///modules/confd/rsyslog.conf',
+        priority => 20,
+        require  => File['/etc/logrotate.d/confd'],
     }
 
     file { '/usr/local/lib/nagios/plugins/check_confd_template':
