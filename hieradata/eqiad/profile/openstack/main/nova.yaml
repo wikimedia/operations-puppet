@@ -22,7 +22,7 @@ profile::openstack::main::nova::dnsmasq_classles_static_route: 'dhcp-option=opti
 #
 # The virt nodes allocated to eqiad are labvirt1001 through 1012.
 #
-# 1012 is depooled so we can drain it in preparation
+# 1009 and 1012 are depooled so we can drain it in preparation
 # for moving to eqiad1.
 # 1010 and 1011 no longer exist.
 profile::openstack::main::nova::scheduler_pool:
@@ -34,4 +34,3 @@ profile::openstack::main::nova::scheduler_pool:
   - labvirt1006
   - labvirt1007
   - labvirt1008
-  - labvirt1009
