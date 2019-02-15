@@ -10,7 +10,10 @@ test_on = {
 
 describe 'base::puppet' do
   let(:pre_condition) {
-    ['class passwords::puppet::database {}']
+    [
+      'class passwords::puppet::database {}',
+      'include apt'
+    ]
   }
   on_supported_os(test_on).each do |os, facts|
     context "On #{os}" do
