@@ -32,7 +32,6 @@ class profile::analytics::refinery::job::refine {
 
     # Refine EventLogging Analytics (capsule based) data.
     profile::analytics::refinery::job::refine_job { 'eventlogging_analytics':
-        ensure     => 'absent',
         job_config => merge($default_config, {
             input_path                      => '/wmf/data/raw/eventlogging',
             input_path_regex                => 'eventlogging_(.+)/hourly/(\\d+)/(\\d+)/(\\d+)/(\\d+)',
