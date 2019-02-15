@@ -3382,11 +3382,9 @@ host labvirt1008 {
     filename "lpxelinux.0";
 }
 
-host labvirt1009 {
+host cloudvirt1009 {
     hardware ethernet 40:a8:f0:38:06:40;
-    fixed-address labvirt1009.eqiad.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/trusty-installer/";
-    filename "lpxelinux.0";
+    fixed-address cloudvirt1009.eqiad.wmnet;
 }
 
 host labweb1001 {

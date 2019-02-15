@@ -1,1 +1,2 @@
 profile::openstack::base::nova::instance_dev: "/dev/sdb1"
+profile::base::notifications: disabled
