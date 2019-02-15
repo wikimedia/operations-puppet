@@ -23,6 +23,14 @@
 
     LogLevel warn
 
+    # Serve static contents directly from httpd,
+    # rather than having the Hue backend doing it.
+    Alias /static/ /usr/lib/hue/build/static/
+
+    <Directory /usr/lib/hue/build/static>
+        Require all granted
+    </Directory>
+
     # ProxyPreserveHost is needed to avoid CSRF errors like
     # "Referer checking failed -
     #   https://<%= @server_name %>/accounts/[..cut..]/list_oozie_coordinators/
@@ -30,6 +38,7 @@
     # ProxyPassReverse is also special since it matches https responses,
     # probably due to the secure_proxy_ssl_header=true hue option.
     ProxyPreserveHost On
+    ProxyPass /static/ !
     ProxyPass / http://localhost:<%= @hue_port %>/
     ProxyPassReverse / https://localhost:<%= @hue_port %>/
 </VirtualHost>
