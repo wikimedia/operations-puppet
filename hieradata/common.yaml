@@ -665,6 +665,11 @@ hadoop_clusters:
     yarn_scheduler_maximum_allocation_vcores:   32
     yarn_resourcemanager_zk_timeout_ms: 20000
 
+    # The default /rmstore should not be used for the Testing cluster,
+    # otherwise multiple yarn RM active (belonging to different clusters)
+    # will read/modify the same shared state.
+    yarn_resourcemanager_zk_state_store_parent_path: '/rmstore-analytics-test-hadoop'
+
     # Allow superset to impersonate users.
     # This is what allows superset to access files in
     # HDFS as users running Hive queries.
