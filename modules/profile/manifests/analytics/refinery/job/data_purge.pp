@@ -192,7 +192,9 @@ class profile::analytics::refinery::job::data_purge (
 
     # drop data older than 2 months from geoeditors_daily table
     # cron runs once a month
+    # Temporary stopped to prevent data to be dropped.
     profile::analytics::systemd_timer { 'mediawiki-geoeditors-drop-month':
+        ensure      => absent,
         description => 'Drop Geo-editors data from Hive/HDFS following data retention policies.',
         command     => "${refinery_path}/bin/refinery-drop-hive-partitions -d ${geoeditors_private_retention_days} -D wmf -t geoeditors_daily -l 1 -f ${geoeditors_log_file}",
         environment => $systemd_env,
