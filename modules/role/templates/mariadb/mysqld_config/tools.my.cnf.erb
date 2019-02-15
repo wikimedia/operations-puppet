@@ -82,6 +82,8 @@ innodb_thread_concurrency      = 0
 innodb_io_capacity             = 1000
 innodb_stats_sample_pages      = 16
 innodb_stats_method            = nulls_unequal
+# Temporary max_user_connections - T216170
+max_user_connections = 20
 
 # Enable innodb_large_prefix #T179614
 <% if @basedir == '/opt/wmf-mariadb10' or @basedir == '/opt/wmf-mariadb101' -%>
