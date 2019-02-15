@@ -3191,6 +3191,10 @@ ldap_only_users:
     ensure: absent
     realname: Aleksey Bekh-Ivanov
     email: aleksey.bekh-ivanov@wikimedia.de
+  amuigai:
+    ensure: present
+    realname: Angela Muigai
+    email: angie@wikimedia.org
   andrew-wmde:
     ensure: present
     realname: Andrew Kostka
