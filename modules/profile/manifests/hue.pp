@@ -7,7 +7,7 @@ class profile::hue (
     $database_host              = hiera('profile::hue::database_host'),
     $database_engine            = hiera('profile::hue::database_engine', 'mysql'),
     $database_user              = hiera('profile::hue::database_user', 'hue'),
-    $database_password          = hiera('profile::hue::database_password', undef),
+    $database_password          = hiera('profile::hue::database_password', 'hue'),
     $session_secret_key         = hiera('profile::hue::session_secret_key', undef),
     $database_port              = hiera('profile::hue::database_port', 3306),
     $database_name              = hiera('profile::hue::database_name', 'hue'),
