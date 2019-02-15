@@ -21,7 +21,7 @@ class profile::ci::docker(
     }
     class { '::docker':
         package_name => 'docker-ce',
-        version      => '17.12.1~ce-0~debian',
+        version      => '18.06.2~ce~3-0~debian',
         require      => [
             Apt::Repository['thirdparty-ci'],
             Exec['apt-get update']
