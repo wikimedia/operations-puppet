@@ -10,16 +10,19 @@
 #
 class profile::services_proxy(
     Wmflib::Ensure $ensure = hiera('profile::services_proxy::ensure', 'present'),
-    Hash[String, Struct[{
+    Optional[Hash[String, Struct[{
                         'hostname' => Stdlib::Host,
                         'localport' => Stdlib::Port::Unprivileged,
                         'port' => Stdlib::Port,
                         'scheme' => Enum['http', 'https'],
                         'timeout' => Integer,
                         }]
-    ] $services = hiera('profile::services_proxy::services'),
-) {
+    ]] $services = hiera('profile::services_proxy::services', undef),
+      ) {
     if $ensure == 'present' {
+        if $services == undef {
+            fail('You must declare services if the proxy is to be present')
+        }
         # TODO: rename "tlsproxy::instance" to signal it's really a profile
         # lint:ignore:wmf_styleguide
         require ::tlsproxy::instance
