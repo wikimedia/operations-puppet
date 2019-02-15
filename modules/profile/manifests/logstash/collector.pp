@@ -452,7 +452,7 @@ class profile::logstash::collector (
         startmsg_regex => '^\\\\[[0-9,-\\\\ \\\\:]+\\\\]',
     }
 
-    # use elasticsearch-curator pacakges from components/spicerack on stretch
+    # use elasticsearch-curator packages from components/spicerack on stretch
     if os_version('debian == stretch') {
 
         # Add spicerack component for elasticsearch-curator 5.x packages
@@ -460,12 +460,15 @@ class profile::logstash::collector (
             uri        => 'http://apt.wikimedia.org/wikimedia',
             dist       => 'stretch-wikimedia',
             components => 'component/spicerack',
+            before     => Package['elasticsearch-curator'],
         }
 
         # Pin elasticsearch-curator to component/spicerack
         apt::pin { 'elasticsearch-curator':
             pin      => 'release c=component/spicerack',
             priority => '1002',
+            before   => Package['elasticsearch-curator'],
+            require  => Exec['apt-get update'],
         }
 
     }
