@@ -136,7 +136,6 @@ class role::prometheus::tools {
         mode    => '0400',
         owner   => 'prometheus',
         group   => 'prometheus',
-        require => Prometheus::Server['tools'],
     }
 
     include ::role::prometheus::blackbox_exporter

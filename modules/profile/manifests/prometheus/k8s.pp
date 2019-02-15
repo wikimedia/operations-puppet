@@ -190,6 +190,5 @@ class profile::prometheus::k8s (
         mode    => '0400',
         owner   => 'prometheus',
         group   => 'prometheus',
-        require => Prometheus::Server['k8s'],
     }
 }
