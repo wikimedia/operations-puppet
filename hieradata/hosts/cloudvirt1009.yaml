@@ -1,2 +1,5 @@
-profile::openstack::base::nova::instance_dev: "/dev/sdb1"
-profile::base::notifications: disabled
+profile::openstack::base::nova::instance_dev: "/dev/mapper/tank-data"
+profile::openstack::eqiad1::nova::network_flat_tagged_base_interface: ens3f1
+profile::openstack::eqiad1::nova::network_flat_interface: 'ens3f1.1105'
+profile::openstack::eqiad1::nova::physical_interface_mappings:
+  cloudinstances2b: 'ens3f1.1105'
