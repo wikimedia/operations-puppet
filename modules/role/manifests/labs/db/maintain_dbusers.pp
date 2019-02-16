@@ -43,7 +43,7 @@ class role::labs::db::maintain_dbusers {
         },
         'labsdbs' => {
             'hosts' => {
-                'labsdb1005.eqiad.wmnet' => {
+                '172.16.7.153' => {
                     'grant-type' => 'legacy',
                 },
                 'labsdb1009.eqiad.wmnet' => {
@@ -54,7 +54,7 @@ class role::labs::db::maintain_dbusers {
                 },
                 'labsdb1011.eqiad.wmnet' => {
                     'grant-type' => 'role',
-                }
+                },
             },
             'username' => $::passwords::mysql::labsdb::user,
             'password' => $::passwords::mysql::labsdb::password,
