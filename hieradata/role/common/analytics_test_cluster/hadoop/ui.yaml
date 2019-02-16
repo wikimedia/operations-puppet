@@ -9,6 +9,8 @@ profile::hue::database_host: 'analytics1030.eqiad.wmnet'
 profile::hue::hive_server_host: 'analytics1030.eqiad.wmnet'
 profile::hue::monitoring_enabled: true
 
+profile::oozie::client::oozie_host: 'analytics1030.eqiad.wmnet'
+
 # Hive Client settings.
 # Hive configuration is common to multiple clients, but because of role based
 # hiera lookups, we need to repeat it in multiple places. If you change this,

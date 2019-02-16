@@ -8,6 +8,8 @@ profile::hadoop::common::hadoop_cluster_name: 'analytics-test-hadoop'
 # Periodical backups of the analytics-meta mysql database.
 profile::analytics::database::meta::backup::rsync_dest: 'analytics1029.eqiad.wmnet::backup/mysql/analytics-meta'
 
+profile::oozie::client::oozie_host: 'analytics1030.eqiad.wmnet'
+
 # Hive Client settings.
 # Hive configuration is common to multiple clients, but because of role based
 # hiera lookups, we need to repeat it in multiple places. If you change this,

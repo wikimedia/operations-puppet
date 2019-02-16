@@ -8,6 +8,7 @@ profile::hadoop::common::hadoop_cluster_name: 'analytics-hadoop'
 profile::hue::database_host: 'an-coord1001.eqiad.wmnet'
 profile::hue::hive_server_host: 'an-coord1001.eqiad.wmnet'
 profile::hue::monitoring_enabled: true
+profile::oozie::client::oozie_host: 'an-coord1001.eqiad.wmnet'
 
 # Hive Client settings.
 # Hive configuration is common to multiple clients, but because of role based

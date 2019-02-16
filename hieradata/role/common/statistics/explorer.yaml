@@ -6,6 +6,8 @@ cluster: analytics
 
 profile::hadoop::common::hadoop_cluster_name: 'analytics-hadoop'
 
+profile::oozie::client::oozie_host: 'an-coord1001.eqiad.wmnet'
+
 # Hive Client settings.
 # Hive configuration is common to multiple clients, but because of role based
 # hiera lookups, we need to repeat it in multiple places. If you change this,
