@@ -36,4 +36,17 @@ class role::labs::db::slave {
     #    multisource   => false,
     #    contact_group => 'labs',
     #}
+
+    $labs_networks = join($::network::constants::labs_networks, ' ')
+    ferm::rule{'vm_db_access':
+        ensure => 'present',
+        rule   => "saddr (${labs_networks})
+                          proto tcp dport 3306 ACCEPT;",
+    }
+    ferm::rule{'vm_rsync_access':
+        ensure => 'present',
+        rule   => "saddr (${labs_networks})
+                          proto tcp dport 873 ACCEPT;",
+    }
 }
+
