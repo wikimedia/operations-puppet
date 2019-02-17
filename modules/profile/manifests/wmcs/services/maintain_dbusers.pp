@@ -86,7 +86,7 @@ class profile::wmcs::services::maintain_dbusers(
     }
 
     file { $script:
-        source  => 'puppet:///modules/profile/wmcs/services/wmcs-maintain-dbusers.py',
+        source  => 'puppet:///modules/profile/wmcs/services/maintain_dbusers/wmcs-maintain-dbusers.py',
         owner   => 'root',
         group   => 'root',
         mode    => '0555',
@@ -96,7 +96,7 @@ class profile::wmcs::services::maintain_dbusers(
 
     systemd::service { 'wmcs-maintain-dbusers':
         ensure         => present,
-        content        => systemd_template('wmcs-maintain-dbusers'),
+        content        => systemd_template('wmcs/services/wmcs-maintain-dbusers'),
         restart        => true,
         override       => false,
         require        => File[$script],
