@@ -13,6 +13,11 @@ private:
       home: true
       project: true
       scratch: true
+  clouddb-services:
+    gid: 53757
+    mounts:
+      tools-home: true
+      tools-project: true
   cvn:
     gid: 50116
     mounts:
