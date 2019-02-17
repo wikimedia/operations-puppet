@@ -59,8 +59,9 @@ class Project:
         ',no_subtree_check,async,no_root_squash ' + \
         '{instance_ips}'
 
-    def __init__(self, name, gid, instance_ips, volumes):
+    def __init__(self, name, gid, instance_ips, volumes, exportdir):
         self.name = name
+        self.exportdir = exportdir
         self.instance_ips = instance_ips
         self.volumes = volumes
         self.gid = gid
@@ -68,7 +69,7 @@ class Project:
 
     def get_exports(self):
         return Project.EXPORTS_TEMPLATE.format(
-            name=self.name,
+            name=self.exportdir,
             gid=self.gid,
             instance_ips=' '.join(self.instance_ips)
         )
@@ -153,7 +154,14 @@ def get_projects_with_nfs(mounts_config, observer_pass):
             continue
         ips = get_instance_ips(name, observer_pass, regions)
         if ips:
-            project = Project(name, config['gid'], ips, mounts)
+            if 'exportdir' in config:
+                # exportdir allows us to override the default directory to export;
+                #  this is useful to e.g. export the 'tools' volumes into the
+                #  'clouddb-services' project
+                exportdir = config['exportdir']
+            else:
+                exportdir = name
+            project = Project(name, config['gid'], ips, mounts, exportdir)
             projects.append(project)
             logging.debug('project %s has %s instances',
                           name, len(project.instance_ips))

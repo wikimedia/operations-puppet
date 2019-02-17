@@ -15,6 +15,7 @@ private:
       scratch: true
   clouddb-services:
     gid: 53757
+    exportdir: tools
     mounts:
       tools-home: true
       tools-project: true
