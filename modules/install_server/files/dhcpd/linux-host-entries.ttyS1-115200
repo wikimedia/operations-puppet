@@ -6530,8 +6530,6 @@ host stat1004 {
 host stat1005 {
     hardware ethernet 18:66:DA:FA:0B:C4;
     fixed-address stat1005.eqiad.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/buster-installer/";
-    filename "lpxelinux.0";
 }
 
 host stat1006 {
