@@ -414,6 +414,10 @@ scap::sources:
   cassandra/logstash-logback-encoder:
     repository: operations/software/logstash-logback-encoder
 
+  # Time-window compaction strategy for Cassandra
+  cassandra/twcs:
+    repository: operations/software/cassandra-twcs
+
   # Wikimania scholarships app
   scholarships/scholarships:
     repository: wikimedia/wikimania-scholarships
