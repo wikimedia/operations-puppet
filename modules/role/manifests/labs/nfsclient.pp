@@ -112,31 +112,6 @@ class role::labs::nfsclient(
         }
     }
 
-    # Special case: mount the 'tools' home and project volumes
-    #  for the clouddb-services project project so we can
-    #  manage db credentials from there
-    if $::labsproject == 'clouddb-services' {
-        labstore::nfs_mount { 'tools-home-on-labstore-secondary':
-            mount_name  => 'tools-home',
-            project     => 'tools',
-            options     => ['rw', 'hard'],
-            mount_path  => '/mnt/nfs/labstore-secondary-tools-home',
-            server      => 'nfs-tools-project.svc.eqiad.wmnet',
-            share_path  => '/project/tools/home',
-            lookupcache => $lookupcache,
-        }
-
-        labstore::nfs_mount { 'tools-project-on-labstore-secondary':
-            mount_name  => 'tools-project',
-            project     => 'tools',
-            options     => ['rw', 'hard'],
-            mount_path  => '/mnt/nfs/labstore-secondary-tools-project',
-            server      => 'nfs-tools-project.svc.eqiad.wmnet',
-            share_path  => '/project/tools/project',
-            lookupcache => $lookupcache,
-        }
-    }
-
     labstore::nfs_mount { 'scratch-on-labstore1003':
         mount_name  => 'scratch',
         project     => $::labsproject,
