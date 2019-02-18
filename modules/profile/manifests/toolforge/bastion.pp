@@ -124,5 +124,6 @@ class profile::toolforge::bastion(
         mode           => '0555',
         source         => 'https://storage.googleapis.com/kubernetes-release/release/v1.4.12/bin/linux/amd64/kubectl',
         checksum_value => 'e0376698047be47f37f126fcc4724487dcc8edd2ffb993ae5885779786efb597',
+        checksum       => 'sha256',
     }
 }
