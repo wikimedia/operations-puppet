@@ -1,2 +1,20 @@
 cassandra::rack: c5
 do_paging: false
+
+# During migration to stretch, nodes are moved one by one, config is overridden
+# on a per-node basis. This will be cleaned once migration is completed. See
+# T198622 for details.
+
+profile::maps::hosts:
+  - 'maps2003.codfw.wmnet'
+  - 'maps2004.codfw.wmnet'
+
+profile::maps::apps::redis_server: 'redis://maps2004.codfw.wmnet'
+
+profile::cassandra::single_instance::dc: 'codfw'
+profile::cassandra::single_instance::seeds:
+  - '10.192.32.146' # maps2003.codfw.wmnet
+  - '10.192.48.57' # maps2004.codfw.wmnet
+
+profile::maps::osm_slave::master: 'maps2004.codfw.wmnet'
+cassandra::target_version: '2.2'

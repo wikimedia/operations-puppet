@@ -3436,8 +3436,6 @@ host maps2002 {
 host maps2003 {
     hardware ethernet 1c:98:ec:2c:82:a4;
     fixed-address maps2003.codfw.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
-    filename "lpxelinux.0";
 }
 
 host maps2004 {

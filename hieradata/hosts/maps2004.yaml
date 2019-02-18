@@ -6,8 +6,10 @@ do_paging: false
 # T198622 for details.
 
 profile::maps::hosts:
+  - 'maps2003.codfw.wmnet'
   - 'maps2004.codfw.wmnet'
 profile::redis::master::clients:
+  - 'maps2003.codfw.wmnet'
   - 'maps2004.codfw.wmnet'
 
 profile::maps::apps::redis_server: 'redis://maps2004.codfw.wmnet'
@@ -15,6 +17,7 @@ profile::maps::apps::tilerator_ncpu_ratio: 1.0  # all CPUs used by tilerator
 
 profile::cassandra::single_instance::dc: 'codfw'
 profile::cassandra::single_instance::seeds:
+  - '10.192.32.146' # maps2003.codfw.wmnet
   - '10.192.48.57'# maps2004.codfw.wmnet
 
 profile::maps::osm_master::planet_sync_day: '*'
@@ -22,6 +25,8 @@ profile::maps::osm_master::disable_replication_cron: false
 profile::maps::osm_master::disable_admin_cron: false
 
 profile::maps::osm_master::slaves:
+  maps2003:
+    ip_address: 10.192.32.146
   maps2004:
     ip_address: 10.192.48.57
 
