@@ -66,6 +66,12 @@ class icinga::monitor::toollabs {
         contact_group => 'wmcs-team',
     }
 
+    monitoring::service { 'tools-checker-toolsdb':
+        description   => 'toolschecker: toolsdb',
+        check_command => "${checker}!/toolsdb!OK",
+        host          => $test_entry_host,
+    }
+
     monitoring::service { 'tools-checker-dumps':
         description   => 'toolschecker: Make sure enwiki dumps are not empty',
         check_command => "${checker}!/dumps!OK",
