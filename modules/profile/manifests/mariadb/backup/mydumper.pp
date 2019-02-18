@@ -79,7 +79,7 @@ class profile::mariadb::backup::mydumper {
         group   => 'root',
         mode    => '0755',
         source  => 'puppet:///modules/profile/mariadb/recover_section.py',
-        require => File['/srv/backups/latest'],
+        require => File['/srv/backups/dumps/latest'],
     }
 
     cron { 'dumps-sections':
