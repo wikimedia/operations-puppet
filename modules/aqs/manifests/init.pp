@@ -54,6 +54,10 @@
 # [*druid_uri_pattern*]
 #   druid broker uri pattern for hyperswitch acceptance. Default: undef
 #
+# [*use_nodejs10*]
+#   Deploy an apt component for nodejs 10 for hosts running Debian Stretch.
+#   Default: false
+#
 class aqs(
     $cassandra_user                = 'cassandra',
     $cassandra_password            = 'cassandra',
@@ -72,6 +76,7 @@ class aqs(
     $druid_properties              = undef,
     $druid_datasources             = undef,
     $druid_uri_pattern             = undef,
+    $use_nodejs10                  = false,
 ) {
 
     service::node { 'aqs':
@@ -86,6 +91,7 @@ class aqs(
         auto_refresh    => false,
         init_restart    => false,
         deployment      => 'scap3',
+        use_nodejs10    => $use_nodejs10,
     }
 
 }

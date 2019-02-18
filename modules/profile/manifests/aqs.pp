@@ -13,6 +13,7 @@ class profile::aqs (
         $cassandra_default_consistency = hiera('profile::aqs::cassandra_default_consistency'),
         $cassandra_local_dc            = hiera('profile::aqs::cassandra_local_dc'),
         $statsd_host                   = hiera('profile::aqs::statsd_host', undef),
+        $use_nodejs10                  = hiera('profile::aqs::use_nodejs10', false),
 ){
 
     class { '::aqs':
@@ -26,6 +27,7 @@ class profile::aqs (
         cassandra_local_dc            => $cassandra_local_dc,
         statsd_host                   => $statsd_host,
         logstash_host                 => $logstash_host,
+        use_nodejs10                  => $use_nodejs10,
     }
 
     ferm::service {'aqs_web':
