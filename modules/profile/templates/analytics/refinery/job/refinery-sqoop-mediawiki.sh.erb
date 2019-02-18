@@ -5,12 +5,19 @@
 export PYTHONPATH=\${PYTHONPATH}:<%= @refinery_path %>/python
 
 /usr/bin/python3 <%= @refinery_path %>/bin/sqoop-mediawiki-tables \
-    -j sqoop-mediawiki-monthly-$(/bin/date --date="$(/bin/date +%Y-%m-15) -1 month" +'%Y-%m') \
-    -l -H <%= @labs_db_host %> -d <%= @output_directory_labs %> \
-    -w <%= @wiki_file_labs %> \
-    -t archive,ipblocks,logging,page,pagelinks,redirect,revision,user,user_groups \
-    -u <%= @labs_db_user %> -p <%= @db_password_labs %> \
-    -F 20010101000000 -T $(/bin/date '+%Y%m01000000') \
-    -s snapshot -x $(/bin/date --date="$(/bin/date +%Y-%m-15) -1 month" +'%Y-%m') \
-    -m <%= @num_mappers %> -a avrodata -k <%= @num_processors %> \
-    -o <%= @labs_log_file %>
+    --job-name sqoop-mediawiki-monthly-$(/bin/date --date="$(/bin/date +%Y-%m-15) -1 month" +'%Y-%m') \
+    --labsdb \
+    --jdbc-host <%= @labs_db_host %> \
+    --output-dir <%= @output_directory_labs %> \
+    --wiki-file <%= @wiki_file_labs %> \
+    --tables archive,change_tag,change_tag_def,ipblocks,logging,page,pagelinks,redirect,revision,user,user_groups \
+    --user <%= @labs_db_user %> \
+    --password-file <%= @db_password_labs %> \
+    --from-timestamp 20010101000000 \
+    --to-timestamp $(/bin/date '+%Y%m01000000') \
+    --partition-name snapshot \
+    --partition-value $(/bin/date --date="$(/bin/date +%Y-%m-15) -1 month" +'%Y-%m') \
+    --mappers <%= @num_mappers %> \
+    --processors <%= @num_processors %> \
+    --output-format avrodata \
+    --log-file <%= @labs_log_file %>
