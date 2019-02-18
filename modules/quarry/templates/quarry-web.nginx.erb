@@ -5,6 +5,13 @@ upstream quarry {
 server {
     listen 80;
 
+    # Specify Content-Security-Policy policy.
+    # Website fonts and part of the scripts are loaded from https://tools-static.wmflabs.org/, so these paths must be specified in the whitelist.
+    add_header Content-Security-Policy "default-src 'none'; connect-src 'self'; font-src data: https://tools-static.wmflabs.org; img-src 'self'; script-src 'self' 'unsafe-inline' https://tools-static.wmflabs.org/cdnjs/; style-src 'self' 'unsafe-inline' https://tools-static.wmflabs.org/cdnjs/ https://tools-static.wmflabs.org/fontcdn/";
+
+    # Disable content-type sniffing on some browsers.
+    add_header X-Content-Type-Options nosniff;
+
     # Enforce HTTPS only
     if ($http_x_forwarded_proto != "https") {
           rewrite ^(.*)$ https://$http_host$1 permanent;
