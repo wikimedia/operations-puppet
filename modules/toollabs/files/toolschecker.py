@@ -139,10 +139,10 @@ def db_query_check(host):
     return False
 
 
-@check('/labsdb/labsdb1005')
-def labsdb_check_labsdb1005():
+@check('/labsdb/clouddb1001')
+def labsdb_check_clouddb1001():
     connection = pymysql.connect(
-        'labsdb1005.eqiad.wmnet',
+        'clouddb1001.clouddb-services.eqiad.wmflabs',
         read_default_file=os.path.expanduser('~/replica.my.cnf')
     )
     cur = connection.cursor()
