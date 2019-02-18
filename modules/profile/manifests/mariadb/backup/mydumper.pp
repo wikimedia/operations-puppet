@@ -34,14 +34,24 @@ class profile::mariadb::backup::mydumper {
         group  => 'dump',
         mode   => '0600', # implicitly 0700 for dirs
     }
-    file { ['/srv/backups/ongoing',
-            '/srv/backups/latest',
-            '/srv/backups/archive',
+
+    file { [ '/srv/backups/dumps', '/srv/backups/snapshots',
+        ]:
+        ensure  => directory,
+        owner   => 'dump',
+        group   => 'dump',
+        mode    => '0600', # implicitly 0700 for dirs
+        require => File['/srv/backups'],
+    }
+
+    file { ['/srv/backups/dumps/ongoing',
+            '/srv/backups/dumps/latest',
+            '/srv/backups/dumps/archive',
         ]:
         ensure  => directory,
         owner   => 'dump',
         mode    => '0600', # implicitly 0700 for dirs
-        require => File['/srv/backups'],
+        require => File['/srv/backups/dumps'],
     }
 
     $user = $passwords::mysql::dump::user
@@ -53,7 +63,7 @@ class profile::mariadb::backup::mydumper {
         owner   => 'dump',
         group   => 'dump',
         mode    => '0400',
-        content => template("profile/mariadb/backups-${::site}.cnf.erb")
+        content => template("profile/mariadb/backups-${::site}.cnf.erb"),
     }
 
     file { '/usr/local/bin/dump_section.py':
@@ -80,7 +90,7 @@ class profile::mariadb::backup::mydumper {
         command => '/usr/bin/python3 /usr/local/bin/dump_section.py --config-file=/etc/mysql/backups.cnf >/dev/null 2>&1',
         require => [File['/usr/local/bin/dump_section.py'],
                     File['/etc/mysql/backups.cnf'],
-                    File['/srv/backups/ongoing'],
+                    File['/srv/backups/dumps/ongoing'],
         ],
     }
 }

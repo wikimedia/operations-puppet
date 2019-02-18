@@ -150,8 +150,8 @@ class profile::backup::director(
     bacula::director::fileset { 'mysql-srv-backups':
         includes => [ '/srv/backups' ]
     }
-    bacula::director::fileset { 'mysql-srv-backups-latest':
-        includes => [ '/srv/backups/latest' ]
+    bacula::director::fileset { 'mysql-srv-backups-dumps-latest':
+        includes => [ '/srv/backups/dumps/latest' ]
     }
     bacula::director::fileset { 'bugzilla-static':
         includes => [ '/srv/org/wikimedia/static-bugzilla' ]

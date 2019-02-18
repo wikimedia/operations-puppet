@@ -11,7 +11,7 @@ DEFAULT_THREADS = 16
 DEFAULT_HOST = 'localhost'
 DEFAULT_PORT = 3306
 DEFAULT_USER = 'root'
-BACKUP_DIR = '/srv/backups/latest'
+BACKUP_DIR = '/srv/backups/dumps/latest'
 # FIXME: backups will stop working on Jan 1st 2100
 DUMPNAME_REGEX = 'dump\.([a-z0-9\-]+)\.(20\d\d-[01]\d-[0123]\d\--\d\d-\d\d-\d\d)'
 
