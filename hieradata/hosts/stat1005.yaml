@@ -1,3 +1,4 @@
 admin::groups:
   - gpu-testers
 cluster: analytics
+profile::base::notifications: disabled
