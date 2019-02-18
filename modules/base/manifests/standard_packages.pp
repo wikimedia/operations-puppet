@@ -170,6 +170,15 @@ class base::standard_packages {
         }
     }
 
+    # An upgrade from stretch to buster leaves some old binary packages around, remove those
+    if os_version('debian == buster') {
+        package {['libbind9-140', 'libdns162', 'libevent-2.0-5', 'libisc160',
+                  'libisccc140', 'libisccfg140', 'liblwres141', 'libonig4',
+                  'libperl5.24', 'ruby2.3', 'libruby2.3', 'libunbound2']:
+            ensure => absent,
+        }
+    }
+
     if os_version('debian >= jessie') {
         base::service_auto_restart { 'lldpd': }
         base::service_auto_restart { 'cron': }
