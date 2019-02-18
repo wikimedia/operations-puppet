@@ -393,7 +393,7 @@ def logical_dump(name, config, rotate):
             source = config['host']
         else:
             source = config['host'] + ':' + str(config['port'])
-        stats = DatabaseBackupStatistics(dump_name=dump_name, section=name,
+        stats = DatabaseBackupStatistics(dump_name=dump_name, section=name, type=config['type'],
                                          config=config['statistics'], backup_dir=output_dir,
                                          source=source)
     else:
