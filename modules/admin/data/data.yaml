@@ -12,7 +12,7 @@ groups:
               nschaaf, zhousquared, gwicke, dpatrick, samwalton9, samtar, akrausetud, jgonsior,
               yuvipanda, shrlak, madhuvishy, groovier, khorn, ironholds, katie, chedasaurus,
               cy534, pnorman, mpany, deskana, arnad, nithum, banyek, imarlier, mkroetzsch,
-              mtizzoni, panisson, paolotti, ciro]
+              mtizzoni, panisson, paolotti, ciro, dartar]
   absent_ldap:
     description: meta group for absented users which had privileged LDAP access in the past, an automatic check verifies it has been really removed from the LDAP (but removal has to be handled separatelly)
     members: [adavenport, siddharth11, albe, audiohazel]
@@ -86,7 +86,7 @@ groups:
     gid: 706
     description: access to mwmaint hosts, mwlog hosts (private data) and bastion hosts
                  restricted folks use sudo to access apache / www-data resources
-    members: [dartar, bearloga, tjones, cparle, pearley, bpirkle, ktsouroupidou,
+    members: [bearloga, tjones, cparle, pearley, bpirkle, ktsouroupidou,
               ezachte, jamesur, jdlrobson, smalyshev, sguebo, thargrove,
               leila, santhosh, amire80, foks, chelsyx, dbarratt, bmansurov, karen,
               onimisionipe, kharlan]
@@ -141,7 +141,7 @@ groups:
     description: Access statistics number crunching hosts (like
                  statistics-users) and also provides access to research mysql
                  credentials on stat1006 (currently the only such host)
-    members: [awight, bmansurov, catrope, dartar, mneisler,
+    members: [awight, bmansurov, catrope, mneisler,
               dduvall, esanders, ezachte, gilles, halfak,
               jforrester, jkatz, jmorgan, kaldari, nathante,
               leila, mattflaschen, milimetric, nettrom, bearloga,
@@ -220,7 +220,7 @@ groups:
                  group.  If they want Hadoop access without rights to private data,
                  add them instead to the analytics-users group.  statistics-* groups
                  DO NOT EQUAL Hadoop/Hive cluster access.
-    members: [ezachte, milimetric, dartar, halfak, awight, dr0ptp4kt, nuria,
+    members: [ezachte, milimetric, halfak, awight, dr0ptp4kt, nuria,
               leila, nettrom, mforns, bmansurov, tbayer, joal,
               tjones, legoktm, dcausse, bearloga, atgomez, dstrine,
               marktraceur, melodykramer,
@@ -228,7 +228,7 @@ groups:
   statistics-users:
     gid: 726
     description: Access statistics number crunching hosts. NO PRIVS.
-    members: [dartar, halfak, jdlrobson, jmorgan, bearloga,
+    members: [halfak, jdlrobson, jmorgan, bearloga,
               mattflaschen, mhurd, awight, jforrester,
               marktraceur, nuria, leila, gilles,
               dbrant, tgr, dr0ptp4kt, brion, bsitzmann, amire80,
@@ -258,7 +258,7 @@ groups:
                  This will grant shell access on Hadoop client nodes and on
                  Hadoop NameNodes.  Some files in HDFS have sensitive data in them.
                  Those files are group readable by the analytics-privatedata-users group.
-    members: [dartar, milimetric, dfoy, aude, jforrester,
+    members: [milimetric, dfoy, aude, jforrester,
               halfak, dr0ptp4kt, bearloga, elukey, ppchelko, bawolff, mneisler,
               nuria, otto, jgreen, sguebo, thargrove,
               bsitzmann, dbrant, nettrom, leila, cwdent, jmm,
@@ -1327,13 +1327,12 @@ users:
     uid: 545
     email: daniel.kinzler@wikimedia.de
   dartar:
-    ensure: present
+    ensure: absent
     gid: 500
     name: dartar
     realname: Dario Taraborelli
-    ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDEtcZARpgz5vpANRs7OkQ/hcWBD4fzrKsOOf0Dzmsu3nMAXq/XI+znEe+upK2qxS1ZvZZoOl0a9JE4RT3v+GnCQ62II/26Zah5wQC0dtoRnAMnAwdE0783HeO/Lpeo4JnvbZXlMM6o/sEcKRCadqi501PiNM+p3UlmllxFVbHhEtlv6MJvkjwY9Rtvy6zzqQgXYhtjRnYUS1yv/i0ib/LPXQ0M4bGOotSX5Sxe8+sy3z9UoqZUc2hEw/fiAF+1JRkWEWIbU2EL++jSJbrAtOx7/Hbu16yvAmtoB/FpRHp4uSTgy24KanNqUWIrzarNe5uFADA9eVUjem2eHG9OsIFZPDIqDPKqJ+XJaxm8qp5r2T2Z1W5OcTMYmtJZ2vahaDAdxriXRCOY16a0yC6PaJTsByiSc/lF9XNkNVgF1ajpmCqYfbnRFVLQkm1Np3oT9DWy5mVCNe82rXgMJBg6TYZWH7U2NJDkRsLg37SZtmSArsrmmzdlG68B7trqjsCOecTIg+qJ3XOpn8W+WSP8BSCglCVgW2anFJasEeYK+Cck3kgk7Kc0YQAABMzj0sXTIdSlk/ckd3St1TQYtqZOHyqLrYltbIFrAWs1GnoCAuSURkRdsEJOSG2gRGsReINBGAaj7wbrea5DnQWa74rbGM8xQng/rc6JAB/yIjJJNQuLzw== dartar@goliath.local]
+    ssh_keys: []
     uid: 2117
-    email: dtaraborelli@wikimedia.org
   diederik:
     ensure: absent
     gid: 500
