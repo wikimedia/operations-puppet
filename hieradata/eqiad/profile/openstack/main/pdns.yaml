@@ -13,7 +13,7 @@ profile::openstack::main::pdns::monitor_target_fqdn: 'tools-grid-master.tools.eq
 # Used for things that would ideally be in a .svc. DNS zone but
 # we do not have one. REMEMBER THE TRAILING DOT.
 profile::openstack::main::pdns::recursor_aliaser_extra_records:
-  tools-db.tools.eqiad.wmflabs.: 10.64.37.9 # labsdb1005.eqiad.wmnet / tools-db
+  tools-db.tools.eqiad.wmflabs.: 172.16.7.153 # clouddb1001.clouddb-services.eqiad.wmnet / tools-db
   tools-redis.tools.eqiad.wmflabs.: 10.68.22.56 # tools-redis-1001.tools.eqiad.wmflabs
   tools-redis.eqiad.wmflabs.: 10.68.22.56 # tools-redis-1001.tools.eqiad.wmflabs
   puppet.: 208.80.154.158 # labpuppetmaster1001.wikimedia.org
