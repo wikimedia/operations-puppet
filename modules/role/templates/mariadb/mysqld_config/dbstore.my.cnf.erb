@@ -93,6 +93,10 @@ slave_transaction_retries = 4294967295
 # This host will be decommissioned very soon T210478
 slave_exec_mode = IDEMPOTENT
 
+# Setting dbstore1002 to read-only for good.
+# This host should never be writable again, as it is migrated to dbstore1003-dbstore1005 #T210478
+read-only
+
 s1.replicate-wild-do-table = %wik%.%
 s1.replicate-wild-do-table = heartbeat.%
 s2.replicate-wild-do-table = %wik%.%
