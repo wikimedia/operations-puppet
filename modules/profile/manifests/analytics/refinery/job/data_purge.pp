@@ -1,6 +1,6 @@
 # == Class profile::analytics::refinery::job::data_purge
 #
-# Installs cron job to drop old hive partitions,
+# Installs systemd-timer jobs to drop old hive partitions,
 # delete old data from HDFS and sanitize EventLogging data.
 #
 # [*deploy_jobs*]
@@ -16,11 +16,12 @@ class profile::analytics::refinery::job::data_purge (
     $geoeditors_log_file             = "${profile::analytics::refinery::log_dir}/drop-geoeditor-daily-partitions.log"
     $query_clicks_log_file           = "${profile::analytics::refinery::log_dir}/drop-query-clicks.log"
     $public_druid_snapshots_log_file = "${profile::analytics::refinery::log_dir}/drop-druid-public-snapshots.log"
+    $mediawiki_xmldumps_log_file     = "${profile::analytics::refinery::log_dir}/drop-mediawiki-xmldumps.log"
 
     # Shortcut to refinery path
     $refinery_path = $profile::analytics::refinery::path
 
-    # Shortcut var to DRY up cron commands.
+    # Shortcut var to DRY up commands.
     $env = "export PYTHONPATH=\${PYTHONPATH}:${refinery_path}/python"
     $systemd_env = {
         'PYTHONPATH' => "\${PYTHONPATH}:${refinery_path}/python",
@@ -108,7 +109,7 @@ class profile::analytics::refinery::job::data_purge (
 
 
     # keep this many public druid mediawiki history refined snapshots
-    # cron runs once a month
+    # runs once a month
     if $public_druid_host {
         $druid_public_keep_snapshots = 4
         $mediawiki_history_reduced_basename = 'mediawiki_history_reduced'
@@ -122,7 +123,7 @@ class profile::analytics::refinery::job::data_purge (
     }
 
     # keep this many mediawiki history snapshots, 6 minimum
-    # cron runs once a month
+    # runs once a month
     $keep_snapshots = 6
     profile::analytics::systemd_timer { 'mediawiki-history-drop-snapshot':
         description => 'Drop Druid Mediawiki History snapshots from deep storage following data retention policies.',
@@ -133,7 +134,7 @@ class profile::analytics::refinery::job::data_purge (
     }
 
     # keep this many days of banner activity success files
-    # cron runs once a day
+    # runs once a day
     $banner_activity_retention_days = 90
     profile::analytics::systemd_timer { 'refinery-drop-banner-activity':
         description => 'Drop Druid Banner Activity from deep storage following data retention policies.',
@@ -144,7 +145,7 @@ class profile::analytics::refinery::job::data_purge (
     }
 
     # create and rotate cryptographic salts for EventLogging sanitization
-    # cron runs once a day, at midnight, to coincide with salt rotation time
+    # runs once a day, at midnight, to coincide with salt rotation time
     # given that hdfs stores modified dates without milliseconds
     # 1 minute margin is given to avoid timestamp comparison problems
     profile::analytics::systemd_timer { 'refinery-eventlogging-saltrotate':
@@ -156,7 +157,7 @@ class profile::analytics::refinery::job::data_purge (
     }
 
     # Sanitize event database into event_sanitized.
-    # Cron job runs once an hour.  EventLoggingSanitization is a Refine job wrapper with
+    # job runs once an hour.  EventLoggingSanitization is a Refine job wrapper with
     # some extra features.  Use refine_job to configure and run it.
     profile::analytics::refinery::job::refine_job { 'sanitize_eventlogging_analytics':
         job_name            => 'sanitize_eventlogging_analytics',
@@ -180,7 +181,7 @@ class profile::analytics::refinery::job::data_purge (
 
 
     # drop data older than 2 months from cu_changes table, which is sqooped in
-    # cron runs once a month
+    # runs once a month
     $geoeditors_private_retention_days = 80
     profile::analytics::systemd_timer { 'mediawiki-raw-cu-changes-drop-month':
         description => 'Drop raw Mediawiki cu_changes from Hive/HDFS following data retention policies.',
@@ -191,7 +192,7 @@ class profile::analytics::refinery::job::data_purge (
     }
 
     # drop data older than 2 months from geoeditors_daily table
-    # cron runs once a month
+    # runs once a month
     # Temporary stopped to prevent data to be dropped.
     profile::analytics::systemd_timer { 'mediawiki-geoeditors-drop-month':
         ensure      => absent,
@@ -202,8 +203,25 @@ class profile::analytics::refinery::job::data_purge (
         user        => 'hdfs',
     }
 
+    # drop monthly xmldumps data (pages_meta_history) after 80 days (last day of month as reference)
+    # runs once a month
+    $xmldumps_retention_days = 80
+    file { '/usr/local/bin/refinery-drop-mediawiki-xmldumps-pages_meta_history':
+        content => template('profile/analytics/refinery/job/refinery-drop-mediawiki-xmldumps-pages_meta_history.sh.erb'),
+        mode    => '0550',
+        owner   => 'hdfs',
+
+    }
+    profile::analytics::systemd_timer { 'mediawiki-xmldumps-pages_meta_history':
+        description => 'Drop xmldumps pages_meta_history data from HDFS after 80 days.',
+        command     => '/usr/local/bin/refinery-drop-mediawiki-xmldumps-pages_meta_history',
+        interval    => '*-*-20 06:00:00',
+        user        => 'hdfs',
+        require     => File['/usr/local/bin/refinery-drop-mediawiki-xmldumps-pages_meta_history'],
+    }
+
     # keep this many days of search query click files
-    # cron runs once a day
+    # runs once a day
     $query_click_retention_days = 90
     cron {'refinery-drop-query-clicks':
         command     => "${env} && ${profile::analytics::refinery::path}/bin/refinery-drop-hive-partitions -d ${query_click_retention_days} -D discovery -t query_clicks_hourly,query_clicks_daily >> ${query_clicks_log_file}",

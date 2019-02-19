@@ -1,0 +1,13 @@
+#!/bin/bash
+# NOTE: This file is managed by puppet
+#
+
+export PYTHONPATH=\${PYTHONPATH}:<%= @refinery_path %>/python
+
+/usr/bin/python3 <%= @refinery_path %>/bin/refinery-drop-older-than \
+    --base-path=/wmf/data/raw/mediawiki/xmldumps/pages_meta_history \
+    --path-format '(?P<year>[0-9]{4})(?P<month>[0-9]{2})01' \
+    --older-than <%= @xmldumps_retention_days %> \
+    --log-file <%= @mediawiki_xmldumps_log_file %> \
+    --skip-trash \
+    --execute=0c84b530991d2f5202602c8ccee20219
