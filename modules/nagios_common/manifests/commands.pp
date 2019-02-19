@@ -24,9 +24,7 @@ class nagios_common::commands(
     }
 
     # Workaround for T205091
-    if os_version('debian >= jessie') {
-        require_package('python3-snimpy')
-    }
+    require_package('python3-snimpy')
 
     # replaced by libmonitoring-plugin-perl in stretch
     if os_version('debian == jessie') {
