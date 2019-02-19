@@ -222,12 +222,28 @@ class profile::mediawiki::php(
             log_filename => 'error.log'
         }
         # Set up profiling (T206152)
-        # Install tideways and mongodb, but activate them only if
+        # Install tideways-xhprof and mongodb, but activate them only if
         # $enable_profiling is true, as just installing tideways gives us a perf hit.
-        php::extension { ['tideways', 'mongodb']:
+        php::extension {  'mongodb':
             ensure   => present,
             priority => 30,
             sapis    => ['fpm']
+        }
+        # Remove the old version of tideways
+        php::extension { 'tideways':
+            ensure   => absent,
+            priority => 30,
+            sapis    => ['fpm']
+        }
+        # Install the newer version.
+        php::extension { 'tideways-xhprof':
+            ensure   => present,
+            priority => 30,
+            sapis    => ['fpm'],
+            config   => {
+                'extension'                       => 'tideways_xhprof.so',
+                'tideways_xhprof.clock_use_rdtsc' => '0',
+            }
         }
     }
     ## Install excimer, our php profiler, if we're on a newer version of php
