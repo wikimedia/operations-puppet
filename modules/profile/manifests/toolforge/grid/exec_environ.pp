@@ -11,9 +11,6 @@ class profile::toolforge::grid::exec_environ {
     class {'::identd': }
     class {'::redis::client::python': }
 
-    # T65000
-    class {'::imagemagick::install': }
-
     apt::repository { "mono-external-${::lsbdistcodename}":
         uri        => 'http://apt.wikimedia.org/wikimedia',
         dist       => "${::lsbdistcodename}-wikimedia",
@@ -1019,5 +1016,29 @@ class profile::toolforge::grid::exec_environ {
     service { 'hhvm':
         ensure  => 'stopped',
         require => Package['hhvm'],
+    }
+
+
+    # T65000
+    require_package('imagemagick')
+    require_package('webp')
+
+    if os_version('debian >= jessie || ubuntu >= wily') {
+        # configuration directory changed since ImageMagick 8:6.8.5.6-1
+        $confdir = '/etc/ImageMagick-6'
+    } else {
+        $confdir = '/etc/ImageMagick'
+    }
+
+    file { "${confdir}/policy.xml":
+        ensure  => present,
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0644',
+        source  => 'puppet:///modules/imagemagick/policy.xml',
+        require => [
+            Class['packages::imagemagick'],
+            Class['packages::webp']
+        ]
     }
 }
