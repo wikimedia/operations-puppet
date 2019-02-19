@@ -90,6 +90,16 @@ class aptrepo (
         mode   => '0755',
     }
 
+    # extra filter for jessie-backports required for openstack
+    file { '/usr/local/bin/reprepro-update-filter-wmcs-openstack-jessie-bpo.sh':
+        ensure => present,
+        mode   => '0755',
+        owner  => 'root',
+        group  => 'root',
+        source => 'puppet:///modules/aptrepo/reprepro-update-filter-wmcs-openstack-jessie-bpo.sh',
+        before => File["${basedir}/conf/updates"],
+    }
+
     file { "${basedir}/conf/updates":
         ensure => present,
         mode   => '0444',

@@ -204,3 +204,14 @@ Suite: stable-stretch
 Architectures: amd64 source
 VerifyRelease: A6A19B38D3D831EF
 ListShellHook: grep-dctrl -e -S '^(cecil|cli-common|core-setup|fsharp|gtk-sharp2|libgdiplus|mod-mono|mono|mono-basic|mono-llvm|mono-tools|monodevelop|msbuild|nuget|nunit|referenceassemblies-pcl|xamarin-gtk-theme|xsp)$' || [ $? -eq 1 ]
+
+Name: openstack-mitaka-jessie
+Method: http://archive.debian.org/debian-archive/debian
+Components: main>openstack-mitaka-jessie
+UDebComponents:
+Suite: jessie-backports
+Architectures: amd64 source
+VerifyRelease: 7638D0442B90D010
+Config: Acquire::Check-Valid-Until=false
+        Acquire::ForceIPv4=true
+ListHook: /usr/local/bin/reprepro-update-filter-wmcs-openstack-jessie-bpo.sh
