@@ -100,6 +100,12 @@ class profile::maps::osm_master (
         mode    => '0400',
         content => template('profile/maps/grants-tiles.sql.erb'),
     }
+    file { '/usr/local/bin/grants-populate-admin.sql':
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0400',
+        source => 'puppet:///modules/profile/maps/grants-populate-admin.sql',
+    }
 
     # DB setup
     postgresql::spatialdb { $db_name: }

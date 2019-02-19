@@ -17,9 +17,12 @@ define osm::populate_admin (
         group  => 'postgres',
         mode   => '0755',
     }
+
+    $populate_admin_cmd = "/usr/bin/psql -1Xq -d ${title} -c 'SELECT populate_admin();'"
+    $grant_admin_cmd = "/usr/bin/psql -1Xq -d ${title} -f /usr/local/bin/grants-populate-admin.sql"
     cron { "populate_admin-${title}":
         ensure  => $ensure_cron,
-        command => "/usr/bin/psql -1Xq -d ${title} -c 'SELECT populate_admin();' >> ${log_dir}/populate_admin.log 2>&1",
+        command => "(${populate_admin_cmd}; ${grant_admin_cmd}) >> ${log_dir}/populate_admin.log 2>&1",
         user    => 'postgres',
         weekday => $weekday,
         hour    => $hour,
