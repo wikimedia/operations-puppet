@@ -1,0 +1,1 @@
+PYTHONPATH=${PYTHONPATH}:/srv/deployment/analytics/refinery/python /srv/deployment/analytics/refinery/bin/analytics-mysql "$@"

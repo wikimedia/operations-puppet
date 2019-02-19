@@ -19,6 +19,13 @@ class profile::analytics::refinery {
         ensure => installed,
     }
 
+    # Wrapper script to ease the use of the analytics-mysql
+    # tool (shipped with Refinery)
+    file { '/usr/local/bin/analytics-mysql':
+        source => 'puppet:///modules/profile/analytics/refinery/analytics-mysql',
+        mode   => '0555'
+    }
+
     # Required by a lot of profiles dependent on this one
     # to find the correct path for scripts etc..
     $path = $::profile::analytics::refinery::repository::path
