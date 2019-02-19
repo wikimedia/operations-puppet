@@ -264,6 +264,11 @@ host kraz {
     filename "lpxelinux.0";
 }
 
+host kerberos1001 {
+    hardware ethernet aa:00:00:c1:72:d9;
+    fixed-address kerberos1001.eqiad.wmnet;
+}
+
 host krypton {
     hardware ethernet aa:00:00:7e:e0:22;
     fixed-address krypton.eqiad.wmnet;
