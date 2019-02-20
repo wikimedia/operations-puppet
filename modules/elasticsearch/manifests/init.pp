@@ -147,4 +147,17 @@ class elasticsearch (
         source  => 'puppet:///modules/elasticsearch/es-tool',
         require => [Package['python-elasticsearch'], Package['python-ipaddr']],
     }
+
+    $services_names = $configured_instances.map |$instance_title, $instance_params| {
+        "elasticsearch_${version}@${instance_params['cluster_name']}"
+    }
+
+    file { '/etc/elasticsearch/instances':
+        ensure  => file,
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0444',
+        content => join($services_names, "\n"),
+    }
+
 }
