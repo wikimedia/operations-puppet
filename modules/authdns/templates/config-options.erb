@@ -32,6 +32,9 @@ listen = {
     }
 }
 
+# Lock memory against swapout
+lock_mem = true
+
 # NSID for debugging the mapping of functional IPs to real servers
 nsid_ascii = <%= @hostname %>
 
