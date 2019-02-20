@@ -18,6 +18,7 @@ cloudcontrol: P{O:wmcs::openstack::eqiad1::control}
 cloudnet: P{O:wmcs::openstack::eqiad1::net}
 cloudservices: P{O:wmcs::openstack::eqiad1::services_primary or O:wmcs::openstack::eqiad1::services_secondary}
 cloudvirt: P{O:wmcs::openstack::eqiad1::virt}
+cloud-eqiad1: A:cloudcontrol or A:cloudnet or A:cloudservices or A:cloudvirt
 conf: P{O:configcluster or O:configcluster_stretch}
 conf-canary: P{conf2001.codfw.wmnet}
 conf-codfw: A:conf and A:codfw
