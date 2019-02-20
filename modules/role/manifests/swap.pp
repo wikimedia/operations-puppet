@@ -12,6 +12,10 @@ class role::swap {
     include ::profile::analytics::cluster::packages::statistics
     require ::profile::analytics::cluster::repositories::statistics
     include ::profile::analytics::cluster::client
+
+    # Include analytics/refinery deployment target.
+    include ::profile::analytics::refinery
+
     # This is a Hadoop client, and should
     # have any special analytics system users on it
     # for interacting with HDFS.

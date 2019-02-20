@@ -8,6 +8,9 @@ class role::statistics::cruncher {
 
     include ::profile::statistics::cruncher
 
+    # Include analytics/refinery deployment target.
+    include ::profile::analytics::refinery
+
     # Reportupdater jobs that get data from MySQL analytics slaves
     include ::profile::reportupdater::jobs::mysql
 }

@@ -5,3 +5,5 @@ admin::groups:
   - statistics-users
   - researchers
 diamond::remove: true
+
+profile::analytics::refinery::deploy_hadoop_config: false
