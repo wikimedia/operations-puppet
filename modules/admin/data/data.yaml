@@ -2429,7 +2429,7 @@ users:
     uid: 15297
     email: florian.lemmerich@cssh.rwth-aachen.de
     expiry_date: 2019-02-24
-    expiry_contact: leila@wikimedia.org
+    expiry_contact: isaac@wikimedia.org
   marostegui:
     ensure: present
     gid: 500
