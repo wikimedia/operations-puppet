@@ -3295,6 +3295,10 @@ ldap_only_users:
     ensure: present
     realname: Michael Grosse
     email: michael.grosse@wikimedia.de
+  pginer:
+    ensure: present
+    realname: Pau Giner
+    email: pginer@wikimedia.org
   skvjold:
     ensure: present
     realname: Margeigh Novotny
