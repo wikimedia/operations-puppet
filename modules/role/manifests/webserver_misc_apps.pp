@@ -24,6 +24,5 @@ class role::webserver_misc_apps {
 
     include ::profile::wikimania_scholarships # https://scholarships.wikimedia.org
     include ::profile::iegreview              # https://iegreview.wikimedia.org
-    include ::profile::grafana::production    # https://grafana.wikimedia.org
     include ::profile::racktables             # https://racktables.wikimedia.org
 }
