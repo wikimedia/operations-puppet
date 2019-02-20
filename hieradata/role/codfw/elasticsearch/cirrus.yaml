@@ -1,6 +1,8 @@
 role::lvs::realserver::pools:
   search: {}
 
+profile::elasticsearch::version: '5.6'
+
 profile::elasticsearch::instances:
     production-search-codfw:
         # codfw prod name
