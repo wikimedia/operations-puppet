@@ -21,5 +21,6 @@ class install_server::preseed_server {
         source  => 'puppet:///modules/install_server/autoinstall',
         recurse => true,
         links   => manage,
+        purge   => true,
     }
 }
