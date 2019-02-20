@@ -9,6 +9,7 @@ discovery::app_routes:
   mobileapps: "%{::site}"
   graphoid: "%{::site}"
   mathoid: "%{::site}"
+  eventgate-analytics: "%{::site}"
   aqs: 'eqiad'
 
 # dns

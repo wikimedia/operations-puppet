@@ -280,10 +280,10 @@ eqiad:
   kubernetes:
     argon.eqiad.wmnet: [kubemaster]
     chlorine.eqiad.wmnet: [kubemaster]
-    kubernetes1001.eqiad.wmnet: [mathoid, zotero, blubberoid]
-    kubernetes1002.eqiad.wmnet: [mathoid, zotero, blubberoid]
-    kubernetes1003.eqiad.wmnet: [mathoid, zotero, blubberoid]
-    kubernetes1004.eqiad.wmnet: [mathoid, zotero, blubberoid]
+    kubernetes1001.eqiad.wmnet: [mathoid, zotero, blubberoid, eventgate-analytics]
+    kubernetes1002.eqiad.wmnet: [mathoid, zotero, blubberoid, eventgate-analytics]
+    kubernetes1003.eqiad.wmnet: [mathoid, zotero, blubberoid, eventgate-analytics]
+    kubernetes1004.eqiad.wmnet: [mathoid, zotero, blubberoid, eventgate-analytics]
   druid-public:
     druid1004.eqiad.wmnet: [druid-public-broker]
     druid1005.eqiad.wmnet: [druid-public-broker]

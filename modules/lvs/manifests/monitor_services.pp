@@ -113,6 +113,22 @@ class lvs::monitor_services($contacts = 'admins,team-services', $critical = fals
         critical      => true,
     }
 
+    # eventgate-analytics
+    monitoring::service { 'check_eventgate_analytics_cluster_eqiad':
+        host          => 'eventgate-analytics.svc.eqiad.wmnet',
+        group         => 'lvs',
+        description   => 'eventgate-analytics LVS eqiad',
+        check_command => 'check_wmf_service!http://eventgate-analytics.svc.eqiad.wmnet:31192!15',
+    }
+
+    monitoring::service { 'check_eventgate_analytics_cluster_codfw':
+        host          => 'eventgate-analytics.svc.codfw.wmnet',
+        group         => 'lvs',
+        description   => 'eventgate-analytics LVS codfw',
+        check_command => 'check_wmf_service!http://eventgate-analytics.svc.codfw.wmnet:31192!15',
+    }
+
+
     # External monitoring for restbase and kartotherian, at the TLS terminators
 
     monitoring::service { 'check_maps_eqiad':

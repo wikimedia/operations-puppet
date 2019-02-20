@@ -94,3 +94,6 @@ discovery::services:
   blubberoid:
     lvs: blubberoid
     active_active: true
+  eventgate-analytics:
+    lvs: eventgate-analytics
+    active_active: true

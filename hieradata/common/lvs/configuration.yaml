@@ -149,6 +149,9 @@ lvs::configuration::lvs_service_ips:
   blubberoid: &ip_block046
     eqiad: 10.2.2.31
     codfw: 10.2.1.31
+  eventgate-analytics: &ip_block047
+    eqiad: 10.2.2.42
+    codfw: 10.2.1.42
 
 lvs::configuration::lvs_services:
   text:
@@ -1447,3 +1450,30 @@ lvs::configuration::lvs_services:
           hostname: blubberoid.svc.eqiad.wmnet
         codfw:
           hostname: blubberoid.svc.codfw.wmnet
+  eventgate-analytics:
+    description: "EventGate Analytics endpoint, eventgate-analytics.svc.%{::site}.wmnet"
+    class: low-traffic
+    sites:
+    - eqiad
+    - codfw
+    ip: *ip_block047
+    port: 31192
+    depool-threshold: '.5'
+    monitors:
+      ProxyFetch:
+        url:
+        - http://localhost/_info
+      IdleConnection:
+        timeout-clean-reconnect: 3
+        max-delay: 300
+    conftool:
+      cluster: kubernetes
+      service: eventgate-analytics
+    icinga:
+      check_command: "check_http_lvs_on_port!eventgate-analytics.svc.%{::site}.wmnet!31192!/_info"
+      critical: false
+      sites:
+        eqiad:
+          hostname: eventgate-analytics.svc.eqiad.wmnet
+        codfw:
+          hostname: eventgate-analytics.svc.codfw.wmnet
