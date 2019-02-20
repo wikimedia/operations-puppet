@@ -123,6 +123,7 @@ disabled, use mariadb@<instance_name> instead'; exit 1\"",
         mariadb::instance { 'staging':
             port                    => 3350,
             innodb_buffer_pool_size => $staging,
+            read_only               => 0,
         }
         profile::mariadb::ferm { 'staging': port => '3350' }
         profile::prometheus::mysqld_exporter_instance { 'staging': port => 13350, }

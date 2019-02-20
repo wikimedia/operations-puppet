@@ -7,3 +7,4 @@ extra-port = <%= Integer(@port) + 20 %>
 <% if @innodb_buffer_pool_size -%>
 innodb_buffer_pool_size = <%= @innodb_buffer_pool_size %>
 <% end -%>
+read-only = <%= @read_only %>

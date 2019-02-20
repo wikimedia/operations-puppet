@@ -18,6 +18,7 @@ define mariadb::instance(
     $innodb_buffer_pool_size = false,
     $template = 'mariadb/instance.cnf.erb',
     $is_critical = false,
+    $read_only = 1,
 ) {
     if $datadir == 'undefined' {
         $datadir_instance = "/srv/sqldata.${title}"
