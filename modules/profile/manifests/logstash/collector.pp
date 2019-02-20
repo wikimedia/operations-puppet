@@ -468,7 +468,6 @@ class profile::logstash::collector (
             pin      => 'release c=component/spicerack',
             priority => '1002',
             before   => Package['elasticsearch-curator'],
-            require  => Exec['apt-get update'],
         }
 
     }
