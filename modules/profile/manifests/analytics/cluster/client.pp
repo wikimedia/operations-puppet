@@ -21,7 +21,6 @@ class profile::analytics::cluster::client(
     class { '::cdh::pig': }
     class { '::cdh::sqoop': }
     class { '::cdh::mahout': }
-    class { '::cdh::spark': }
 
     # Mount HDFS via Fuse on Analytics client nodes.
     # This will mount HDFS at /mnt/hdfs read only.

@@ -47,15 +47,6 @@ class profile::hadoop::worker(
         class { 'cdh::hadoop::journalnode': }
     }
 
-    # Spark Python stopped working in Spark 1.5.0 with Oozie,
-    # for complicated reasons.  We need to be able to set
-    # SPARK_HOME in an oozie launcher, and that SPARK_HOME
-    # needs to point at a locally installed spark directory
-    # in order load Spark Python dependencies.
-    class { '::cdh::spark':
-        use_kerberos => $use_kerberos,
-    }
-
     # sqoop needs to be on worker nodes if Oozie is to
     # launch sqoop jobs.
     class { '::cdh::sqoop': }

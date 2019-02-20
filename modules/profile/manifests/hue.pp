@@ -32,7 +32,6 @@ class profile::hue (
     class { '::cdh::pig': }
     class { '::cdh::sqoop': }
     class { '::cdh::mahout': }
-    class { '::cdh::spark': }
 
     # LDAP Labs config is the same as LDAP in production.
     class { '::ldap::config::labs': }
