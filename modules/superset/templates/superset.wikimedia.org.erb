@@ -19,11 +19,13 @@
     </Directory>
 
     <Location />
-        AuthName "Developer account (use wiki login name not shell) - allowed groups: wmf, nda"
+        AuthName "Developer account (use shell login name not wiki) - allowed groups: wmf, nda"
         AuthType Basic
         AuthBasicProvider ldap
         AuthLDAPBindDN cn=proxyagent,ou=profile,dc=wikimedia,dc=org
         AuthLDAPBindPassword <%= @proxypass %>
+        # Note: uid is used instead of cn since Superset needs the shell username to properly
+        # create users when they log in.
         AuthLDAPURL "ldaps://ldap-labs.eqiad.wikimedia.org ldap-labs.codfw.wikimedia.org/ou=people,dc=wikimedia,dc=org?uid"
         Require ldap-group cn=wmf,ou=groups,dc=wikimedia,dc=org
         Require ldap-group cn=nda,ou=groups,dc=wikimedia,dc=org
