@@ -212,7 +212,7 @@ class profile::analytics::refinery::job::data_purge (
         owner   => 'hdfs',
 
     }
-    profile::analytics::systemd_timer { 'mediawiki-xmldumps-pages_meta_history':
+    profile::analytics::systemd_timer { 'mediawiki-drop-xmldumps-pages_meta_history':
         description => 'Drop xmldumps pages_meta_history data from HDFS after 80 days.',
         command     => '/usr/local/bin/refinery-drop-mediawiki-xmldumps-pages_meta_history',
         interval    => '*-*-20 06:00:00',
