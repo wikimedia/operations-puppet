@@ -6,7 +6,7 @@
 #
 class profile::kafkatee::webrequest::analytics(
     $kafka_cluster_name = hiera('profile::kafkatee::webrequest::analytics::kafka_cluster_name', 'jumbo-eqiad'),
-    $kafka_target_topic = hiera('profile::kafkatee::webrequest::analytics::kafka_target_topic', 'webrequest-test-text'),
+    $kafka_target_topic = hiera('profile::kafkatee::webrequest::analytics::kafka_target_topic', 'webrequest_test_text'),
 ) {
     require_package('kafkacat')
 
