@@ -68,6 +68,6 @@ define mariadb::instance(
     }
     mariadb::monitor_readonly{ $title:
         port      => $port,
-        read_only => 1,
+        read_only => $read_only,
     }
 }
