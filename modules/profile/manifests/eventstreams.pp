@@ -72,20 +72,12 @@ class profile::eventstreams(
     }
 
     if $monitoring_enabled {
-        file { '/usr/local/lib/nagios/plugins/check_eventstreams':
-            ensure => 'present',
-            source => 'puppet:///modules/profile/eventstreams/check_eventstreams.sh',
-            mode   => '0555',
-            owner  => 'root',
-            group  => 'root',
-        }
-        nrpe::monitor_service { 'eventstreams_endpoint':
-            description    => 'Check if active EventStreams endpoint is delivering messages.',
-            nrpe_command   => "/usr/local/lib/nagios/plugins/check_eventstreams http://${::fqdn}:${port}/v2/stream/recentchange",
-            check_interval => 30,
-            retries        => 2,
-            contact_group  => 'analytics',
-            require        => File['/usr/local/lib/nagios/plugins/check_eventstreams'],
+        # Check that The recentchange stream is delivering events on this host
+        class { '::profile::eventstreams::monitoring':
+            stream_url => "http://${::fqdn}:${port}/v2/stream/recentchange",
+            # Since this is a local check, we need to use nrpe so the remote
+            # icinga server can request the status.
+            use_nrpe   => true,
         }
     }
 }

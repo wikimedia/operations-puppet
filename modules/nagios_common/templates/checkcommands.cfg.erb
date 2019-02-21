@@ -553,3 +553,9 @@ define command {
     command_name    check_google_safebrowsing
     command_line    $USER1$/check_gsb.py $ARG1$ $ARG2$ $ARG3$
 }
+
+# Curls the stream url at ARG1 and makes sure there is data in the stream
+define command {
+    command_name check_eventstreams
+    command_line $USER1$/check_eventstreams $ARG1$
+}

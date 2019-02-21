@@ -70,9 +70,14 @@ class profile::icinga(
     class { '::profile::cache::kafka::alerts': }
     class { '::profile::prometheus::icinga_exporter': }
 
+    # Check that the public eventstreams endpoint's recentchange stream has data.
+    # See also: T215013. (The default params use the public endpoint.)
+    class { '::profile::eventstreams::monitoring': }
+
     class { '::icinga::monitor::etcd_mw_config':
         icinga_user => $icinga_user,
     }
+
 
     class { '::snmp::mibs': }
 
