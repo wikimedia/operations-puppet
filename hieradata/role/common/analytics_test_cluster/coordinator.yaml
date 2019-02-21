@@ -47,3 +47,5 @@ profile::analytics::refinery::job::project_namespace_map::http_proxy: 'http://we
 diamond::remove: true
 
 profile::base::notifications: disabled
+
+profile::hive::client::ensure_hive_site_in_hdfs: true
