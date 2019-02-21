@@ -2,6 +2,7 @@ admin::groups:
   - notebook-roots
   - researchers
   - analytics-users
+  - analytics-admins
   - statistics-privatedata-users
   - analytics-privatedata-users
 profile::swap::rsync_hosts_allow: notebook*.*.wmnet
