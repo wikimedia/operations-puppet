@@ -207,7 +207,6 @@ categorylinks,cl_type,K
 change_tag,ct_rc_id,K
 change_tag,ct_log_id,K
 change_tag,ct_rev_id,K
-change_tag,ct_tag,K
 change_tag,ct_params,K
 externallinks,el_from,K
 externallinks,el_to,K
