@@ -52,7 +52,7 @@ class profile::analytics::refinery::job::test::camus(
     camus::job { 'webrequest_test':
         check                 => $monitoring_enabled,
         kafka_brokers         => $kafka_brokers_jumbo,
-        check_topic_whitelist => 'test_webrequest_text',
+        check_topic_whitelist => 'webrequest_test_text',
         interval              => '*-*-* *:00/10:00',
     }
 }
