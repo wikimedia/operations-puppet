@@ -2645,7 +2645,7 @@ users:
       - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDrSCbT7GL3eYqdIISBaajhusTPvXhd/sK3ANdU46qzIbvRADGJjB1/OAIbq8NlWChv8RV2ahA409tphVJl2cKmu6a8++V4s1K73yLuASJR3t5q6M3vfZqHEncR6nPLc6aO5S8Vc76cV4DFFfeW83M5F4d43AvunRnzXakFODdWwwFtyqRHyc5eHUf++X2E8ghZ66MKOQ+9Q0RoBL+9d2vQvk5IFDR7FahIFX8eR5jNIQOQ9nf517IDQ8c2dt5+3MrZC+rux384txKsFV3ytJmctxlqaDJeLFRHweumNrE8pSYif+MfZNM6QLPW8kSjifZBekrWL2smdk5RncORbd5j a558989@600308a4c4c6
     uid: 10339
     email: shilad@gmail.com
-    expiry_date: 2019-02-17
+    expiry_date: 2019-09-30
     expiry_contact: ahalfaker@wikimedia.org
   cooltey:
     ensure: present
