@@ -49,8 +49,8 @@ class profile::ganeti (
     # Authentication for RAPI (for now just a single read-only user)
     file { '/var/lib/ganeti/rapi/users':
         ensure  => present,
-        owner   => 'root',
-        group   => 'root',
+        owner   => 'gnt-rapi',
+        group   => 'gnt-masterd',
         mode    => '0440',
         content => "${rapi_ro_user} {HA1}${ro_password_hash} read\n",
     }
