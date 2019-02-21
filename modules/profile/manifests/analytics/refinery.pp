@@ -4,9 +4,8 @@
 # and using the analytics/refinery repository.
 #
 class profile::analytics::refinery (
-    $deploy_hadoop_config = hiera('profile::analytics::refinery::deploy_hadoop_config', true),
+    $deploy_hadoop_config = hiera('profile::analytics::refinery::deploy_hadoop_config', true)
 ) {
-
     if $deploy_hadoop_config {
         # Make this class depend on hadoop::common configs.  Refinery
         # is intended to work with Hadoop, and many of the
@@ -47,18 +46,21 @@ class profile::analytics::refinery (
         'production' => 'analytics-admins',
         'labs'       => "project-${::labsproject}",
     }
-    file { $log_dir:
-        ensure => 'directory',
-        owner  => 'hdfs',
-        group  => $log_dir_group,
-        # setgid bit here to make refinery log files writeable
-        # by users in the $log_dir_group group.
-        mode   => '2775',
-    }
 
-    logrotate::conf { 'refinery':
-        source  => 'puppet:///modules/profile/analytics/refinery-logrotate.conf',
-        require => File[$log_dir],
+    if $deploy_hadoop_config {
+        file { $log_dir:
+            ensure => 'directory',
+            owner  => 'hdfs',
+            group  => $log_dir_group,
+            # setgid bit here to make refinery log files writeable
+            # by users in the $log_dir_group group.
+            mode   => '2775',
+        }
+
+        logrotate::conf { 'refinery':
+            source  => 'puppet:///modules/profile/analytics/refinery-logrotate.conf',
+            require => File[$log_dir],
+        }
     }
 
     # Clone mediawiki/event-schemas so refinery can use them.
