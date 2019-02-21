@@ -1,7 +1,6 @@
 class openstack::clientpackages::mitaka::jessie(
 ) {
-    # repo is jessie-backports, already enabled by ::apt
-    # we just need some apt pinning configuration here
+    require openstack::commonpackages::mitaka
 
     package{ 'mysql-client-5.5':
         ensure => 'present',

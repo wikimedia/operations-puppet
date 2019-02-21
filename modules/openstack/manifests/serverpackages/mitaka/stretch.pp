@@ -3,13 +3,7 @@ class openstack::serverpackages::mitaka::stretch(
 
     # hack, use the jessie-backports repository in stretch. This should work,
     # since jessie-backports packages are rebuilt from stretch anyway
-    apt::repository { 'jessie-backports-for-mitaka-on-stretch':
-        uri        => 'http://mirrors.wikimedia.org/debian/',
-        dist       => 'jessie-backports',
-        components => 'main',
-        trust_repo => true,
-        source     => false,
-    }
+    require openstack::commonpackages::mitaka
 
     # hack, use the jessie repository in stretch.
     apt::repository { 'jessie-for-mitaka-on-stretch':
@@ -44,5 +38,10 @@ class openstack::serverpackages::mitaka::stretch(
     # for this stuff anyway
     package { 'sqlite3':
         ensure => 'present',
+    }
+
+    # cleanup: remove after some puppet cycles
+    file { '/etc/apt/sources.list.d/jessie-backports-for-mitaka-on-stretch.list':
+        ensure => 'absent',
     }
 }
