@@ -11,7 +11,7 @@ profile::redis::master::clients:
   - 'maps2004.codfw.wmnet'
 
 profile::maps::apps::redis_server: 'redis://maps2004.codfw.wmnet'
-profile::maps::apps::tilerator_ncpu_ratio: 1  # all CPUs used by tilerator
+profile::maps::apps::tilerator_ncpu_ratio: 1.0  # all CPUs used by tilerator
 
 profile::cassandra::single_instance::dc: 'codfw'
 profile::cassandra::single_instance::seeds:
