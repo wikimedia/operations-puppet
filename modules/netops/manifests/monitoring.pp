@@ -45,7 +45,7 @@ class netops::monitoring {
         # eqsin
         'mr1-eqsin'  => { ipv4 => '103.102.166.128', ipv6 => '2001:df2:e500:ffff::1', },
         'cr1-eqsin'  => { ipv4 => '103.102.166.129', ipv6 => '2001:df2:e500:ffff::2', bgp => true, vrrp_peer => 'cr2-eqsin.wikimedia.org'},
-        'cr2-eqsin'  => { ipv4 => '103.102.166.130', ipv6 => '2001:df2:e500:ffff::3', bgp => true, },
+        'cr2-eqsin'  => { ipv4 => '103.102.166.130', ipv6 => '2001:df2:e500:ffff::3', bgp => true, alarms => false, },
 
     }
     create_resources(netops::check, $routers, $routers_defaults)
@@ -66,7 +66,7 @@ class netops::monitoring {
         're0.cr3-ulsfo' => { ipv4 => '10.128.128.4',    parents => ['mr1-ulsfo'] },
         're0.cr4-ulsfo' => { ipv4 => '10.128.128.5',    parents => ['mr1-ulsfo'] },
         're0.cr1-eqsin' => { ipv4 => '10.132.128.2',    parents => ['mr1-eqsin'] },
-
+        're0.cr2-eqsin' => { ipv4 => '10.132.128.6',    parents => ['mr1-eqsin'] },
     }
     create_resources(netops::check, $oob)
 
