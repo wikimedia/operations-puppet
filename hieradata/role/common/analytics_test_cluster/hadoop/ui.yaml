@@ -20,3 +20,5 @@ profile::hive::client::server_host: analytics1030.eqiad.wmnet
 profile::hive::client::server_port: 10000
 profile::hive::client::metastore_host: 'analytics1030.eqiad.wmnet'
 diamond::remove: true
+
+profile::hive::client::ensure_hive_site_in_hdfs: true
