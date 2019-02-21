@@ -82,8 +82,7 @@ def log_output(status, msg):
 def group_by_index(shards):
     indices = defaultdict(list)
     for shard in shards:
-        if shard['prirep'] == 'p':
-            indices[shard['index']].append(int(shard['store']))
+        indices[shard['index']].append(int(shard['store']))
     return indices
 
 
