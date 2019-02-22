@@ -12,9 +12,9 @@
     RequestHeader unset Proxy early
 
     SSLEngine on
-    SSLCertificateFile /etc/centralcerts/librenms.rsa-2048.crt
-    SSLCertificateChainFile /etc/centralcerts/librenms.rsa-2048.chain.crt
-    SSLCertificateKeyFile /etc/centralcerts/librenms.rsa-2048.key
+    SSLCertificateFile /etc/acmecerts/librenms.rsa-2048.crt
+    SSLCertificateChainFile /etc/acmecerts/librenms.rsa-2048.chain.crt
+    SSLCertificateKeyFile /etc/acmecerts/librenms.rsa-2048.key
     <%= @ssl_settings.join("\n    ") %>
 
     DocumentRoot <%= @install_dir %>/html
