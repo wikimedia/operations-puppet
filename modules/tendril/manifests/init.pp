@@ -25,6 +25,9 @@ class tendril (
     certcentral::cert { 'tendril':
         puppet_svc => 'apache2',
     }
+    acme_chief::cert { 'tendril':
+        puppet_svc => 'apache2',
+    }
 
     require_package(
         'php5-mysql',
