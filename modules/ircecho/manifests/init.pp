@@ -16,7 +16,7 @@ class ircecho (
     $ensure = 'present',
 ) {
 
-    require_package(['python3-pyinotify', 'python3-irc'])
+    require_package(['python-pyinotify', 'python-irc'])
 
     file { '/usr/local/bin/ircecho':
         ensure => 'present',
@@ -26,8 +26,7 @@ class ircecho (
         mode   => '0755',
         notify => Service['ircecho'],
     }
-
-    file { '/usr/local/lib/python3.5/dist-packages/ib3_auth.py':
+    file { '/usr/local/lib/python2.7/dist-packages/ib3_auth.py':
         ensure => 'present',
         source => 'puppet:///modules/ircecho/ib3_auth.py',
         owner  => 'root',
