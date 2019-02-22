@@ -226,6 +226,16 @@ profile::kubernetes::deployment_server::services:
     group: wikidev
     mode: '0640'
     namespace: eventgate-analytics
+  citoid:
+    username: citoid
+    group: wikidev
+    mode: '0640'
+    namespace: citoid
+  cxserver:
+    username: cxserver
+    group: wikidev
+    mode: '0640'
+    namespace: cxserver
 
 # Specified in the private repo in this form
 #profile::kubernetes::deployment_server::tokens:
@@ -240,6 +250,10 @@ profile::kubernetes::deployment_server::services:
 #  blubberoid:
 #    token: dummy
 #  eventgate-analytics:
+#    token: dummy
+#  citoid:
+#    token: dummy
+#  cxserver:
 #    token: dummy
 diamond::remove: true
 profile::mediawiki::php::php_version: "7.2"

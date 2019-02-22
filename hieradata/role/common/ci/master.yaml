@@ -67,6 +67,14 @@ profile::kubernetes::deployment_server::services:
     username: eventgate-analytics
     group: wikidev
     mode: '0640'
+  citoid:
+    username: citoid
+    group: wikidev
+    mode: '0640'
+  cxserver:
+    username: cxserver
+    group: wikidev
+    mode: '0640'
 
 # Specified in the private repo in this form
 #profile::kubernetes::deployment_server::tokens:
@@ -79,6 +87,10 @@ profile::kubernetes::deployment_server::services:
 #  blubberoid:
 #    token: dummy
 #  eventgate-analytics:
+#    token: dummy
+#  citoid:
+#    token: dummy
+#  cxserver:
 #    token: dummy
 
 profile::ci::kubernetes_config::user: jenkins
