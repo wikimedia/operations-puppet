@@ -40,9 +40,6 @@ class archiva::proxy(
 
         # Install the certificate if it is not the snakeoil cert
         if $certificate_name != 'ssl-cert-snakeoil' {
-            certcentral::cert { $certificate_name:
-                puppet_svc => 'nginx',
-            }
             acme_chief::cert { $certificate_name:
                 puppet_svc => 'nginx',
             }
