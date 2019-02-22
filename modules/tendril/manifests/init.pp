@@ -22,9 +22,6 @@ class tendril (
         content => template("tendril/apache/${site_name}.erb");
     }
 
-    certcentral::cert { 'tendril':
-        puppet_svc => 'apache2',
-    }
     acme_chief::cert { 'tendril':
         puppet_svc => 'apache2',
     }
