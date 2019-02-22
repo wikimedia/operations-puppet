@@ -1,0 +1,10 @@
+<ivysettings>
+  <settings defaultResolver="wmf-archiva"/>
+  <resolvers>
+    <chain name="wmf-archiva">
+      <ibiblio name="releases" m2compatible="true" root="https://archiva.wikimedia.org/repository/releases"/>
+      <ibiblio name="snapshots" m2compatible="true" root="https://archiva.wikimedia.org/repository/snapshots"/>
+      <ibiblio name="mirrored" m2compatible="true" root="https://archiva.wikimedia.org/repository/mirrored"/>
+    </chain>
+  </resolvers>
+</ivysettings>

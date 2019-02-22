@@ -52,7 +52,4 @@ class profile::analytics::cluster::client(
         'heirloom-mailx',
         'jupyter-notebook',
     )
-
-    # Maven to build jars for Hadoop.
-    class { '::maven': }
 }

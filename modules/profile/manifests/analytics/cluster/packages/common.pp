@@ -45,4 +45,8 @@ class profile::analytics::cluster::packages::common {
 
     # ores::base for ORES packages
     class { '::ores::base': }
+
+    # Include maven and our archiva settings everywhere to make it
+    # easier to resolve job dependencies at runtime from archiva.wikimedia.org
+    class { '::maven': }
 }
