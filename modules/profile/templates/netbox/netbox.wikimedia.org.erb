@@ -16,9 +16,9 @@
     ServerAdmin noc@wikimedia.org
 
     SSLEngine on
-    SSLCertificateFile /etc/centralcerts/netbox.rsa-2048.crt
-    SSLCertificateChainFile /etc/centralcerts/netbox.rsa-2048.chain.crt
-    SSLCertificateKeyFile /etc/centralcerts/netbox.rsa-2048.key
+    SSLCertificateFile /etc/acmecerts/netbox.rsa-2048.crt
+    SSLCertificateChainFile /etc/acmecerts/netbox.rsa-2048.chain.crt
+    SSLCertificateKeyFile /etc/acmecerts/netbox.rsa-2048.key
     <%= @ssl_settings.join("\n    ") %>
 
     # https://httpoxy.org/
