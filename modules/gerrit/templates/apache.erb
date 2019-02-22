@@ -56,9 +56,9 @@ MaxClients 50
 
     SSLEngine on
     <%- if @use_certcentral -%>
-    SSLCertificateFile /etc/centralcerts/gerrit.rsa-2048.crt
-    SSLCertificateChainFile /etc/centralcerts/gerrit.rsa-2048.chain.crt
-    SSLCertificateKeyFile /etc/centralcerts/gerrit.rsa-2048.key
+    SSLCertificateFile /etc/acmecerts/gerrit.rsa-2048.crt
+    SSLCertificateChainFile /etc/acmecerts/gerrit.rsa-2048.chain.crt
+    SSLCertificateKeyFile /etc/acmecerts/gerrit.rsa-2048.key
     <%- else -%>
     SSLCertificateFile /etc/acme/cert/gerrit.crt
     SSLCertificateChainFile /etc/acme/cert/gerrit.chain.crt
