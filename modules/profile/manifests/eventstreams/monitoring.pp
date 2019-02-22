@@ -48,6 +48,8 @@ class profile::eventstreams::monitoring (
 }'
         nagios_common::check_command::config { 'check_eventstreams':
             content => $check_command_config_content,
+            owner   => 'root',
+            group   => 'root',
         }
 
         $params = $common_params + {
