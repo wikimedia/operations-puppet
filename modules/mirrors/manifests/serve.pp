@@ -4,9 +4,6 @@ class mirrors::serve {
 
     # TODO: adopt role/profile pattern and drop the lint:ignore
     include ::sslcert::dhparam # lint:ignore:wmf_styleguide
-    certcentral::cert { 'mirrors':
-        puppet_svc => 'nginx',
-    }
     acme_chief::cert { 'mirrors':
         puppet_svc => 'nginx',
     }
