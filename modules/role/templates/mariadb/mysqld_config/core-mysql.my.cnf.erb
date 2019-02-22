@@ -4,13 +4,6 @@
 [client]
 port   = 3306
 socket = <%= @socket %>
-# ssl
-<% if @ssl == 'on' or @ssl == 'puppet-cert' %>
-ssl-ca=/etc/ssl/certs/Puppet_Internal_CA.pem
-ssl-cert=/etc/mysql/ssl/cert.pem
-ssl-key=/etc/mysql/ssl/server.key
-ssl-mode=VERIFY_IDENTITY
-<% end %>
 
 [mysqld]
 
