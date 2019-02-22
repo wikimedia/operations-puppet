@@ -154,9 +154,6 @@ class profile::netbox (
         content => template('profile/netbox/netbox.wikimedia.org.erb'),
     }
 
-    certcentral::cert { 'netbox':
-        puppet_svc => 'apache2',
-    }
     acme_chief::cert { 'netbox':
         puppet_svc => 'apache2',
     }
