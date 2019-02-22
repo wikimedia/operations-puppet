@@ -54,6 +54,8 @@ class base::monitoring::host(
         check_command => 'check_ssh',
     }
 
+    # Used by check_puppetrun
+    require_package('ruby-safe-yaml')
     file { '/usr/local/lib/nagios/plugins/check_puppetrun':
         ensure => present,
         owner  => 'root',
