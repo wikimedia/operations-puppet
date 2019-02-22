@@ -373,7 +373,7 @@ customviews:
       as fa_height, if(fa_deleted&1,null,fa_metadata) as fa_metadata, if(fa_deleted&1,null,fa_bits)
       as fa_bits, if(fa_deleted&1,null,fa_media_type) as fa_media_type, if(fa_deleted&1,null,fa_major_mime)
       as fa_major_mime, if(fa_deleted&1,null,fa_minor_mime) as fa_minor_mime,
-      if(fa_deleted&2,0,fa_description_id) as fa_description_id, 
+      if(fa_deleted&2,0,fa_description_id) as fa_description_id,
       fa_user, fa_user_text, fa_actor, fa_timestamp, fa_deleted, if(fa_deleted&1,null,fa_sha1) as fa_sha1
     where: (fa_deleted&4)=0
   global_preferences:
