@@ -428,7 +428,7 @@ scap::sources:
     scap_repository: operations/dumps/scap
 
 prometheus_nodes:
-  - deployment-prometheus01.deployment-prep.eqiad.wmflabs
+  - deployment-prometheus02.deployment-prep.eqiad.wmflabs
 
 arclamp_host: deployment-webperf12.deployment-prep.eqiad.wmflabs
 
