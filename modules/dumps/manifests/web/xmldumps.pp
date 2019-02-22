@@ -19,9 +19,6 @@ class dumps::web::xmldumps(
 
     $ssl_settings = ssl_ciphersuite('nginx', 'mid', true)
 
-    certcentral::cert { 'dumps':
-        puppet_svc => 'nginx',
-    }
     acme_chief::cert { 'dumps':
         puppet_svc => 'nginx',
     }
