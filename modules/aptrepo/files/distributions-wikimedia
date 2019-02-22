@@ -21,7 +21,7 @@ Version: 8
 Architectures: source amd64 i386
 Components: main backports thirdparty experimental thirdparty/cloudera component/ci thirdparty/ci component/elastic55 thirdparty/elastic55 component/icu57 component/git component/cassandra22 component/zookeeper349 thirdparty/mono-project-jessie component/prometheus-node-exporter openstack-mitaka-jessie
 UDebComponents: main backports thirdparty experimental
-Update: hwraid cassandra cloudera-jessie grafana tor hp-mcp-jessie confluent elastic elasticsearch-curator docker jenkins elastic55 mono-project-jessie openstack-mitaka-jessie
+Update: hwraid cassandra cloudera-jessie grafana hp-mcp-jessie confluent elastic elasticsearch-curator docker jenkins elastic55 mono-project-jessie openstack-mitaka-jessie
 Description: Wikimedia packages for Debian Jessie
 SignWith: 09DBD9F93F6CD44A
 DebOverride: deb-override

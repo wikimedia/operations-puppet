@@ -115,15 +115,6 @@ Architectures: amd64
 VerifyRelease: D27D666CD88E42B4
 ListShellHook: grep-dctrl -X -S elasticsearch-curator || [ $? -eq 1 ]
 
-Name: tor
-Method: http://deb.torproject.org/torproject.org/
-Components: main>thirdparty
-UDebComponents:
-Suite: jessie
-Architectures: amd64 source
-VerifyRelease: 74A941BA219EC810
-ListShellHook: grep-dctrl -X -S tor || [ $? -eq 1 ]
-
 Name: tor-stretch
 Method: http://deb.torproject.org/torproject.org/
 Components: main>thirdparty/tor
