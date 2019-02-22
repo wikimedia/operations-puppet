@@ -82,7 +82,5 @@ define prometheus::mysqld_exporter (
                     File['/var/lib/prometheus/.my.cnf']],
     }
 
-    if os_version('debian >= jessie') {
-        base::service_auto_restart { 'prometheus-mysqld-exporter': }
-    }
+    base::service_auto_restart { 'prometheus-mysqld-exporter': }
 }

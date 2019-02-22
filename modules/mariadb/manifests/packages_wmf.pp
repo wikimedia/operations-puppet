@@ -15,13 +15,18 @@ class mariadb::packages_wmf(
     )
 
     # Do not try to install xtrabackup on stretch, it has been removed.
-    # Maybe mariabackup is enough?
-    if (os_version('debian < stretch || ubuntu >= trusty')) {
+    if os_version('debian < stretch') {
         require_package ('percona-xtrabackup')
     }
+    elsif os_version('debian >= stretch') {
+        require_package('mariadb-backup')
+    }
+
     # if not defined, default to 10.1 on stretch, 10.0 elsewhere
     if $package == 'undefined' {
-        if os_version('debian >= stretch') {
+        if os_version('debian == buster'){
+            $mariadb_package = 'wmf-mariadb103'
+        } elsif os_version('debian == stretch') {
             $mariadb_package = 'wmf-mariadb101'
         } else {
             $mariadb_package = 'wmf-mariadb10'
