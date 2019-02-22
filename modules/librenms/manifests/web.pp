@@ -10,9 +10,6 @@ class librenms::web(
         content => template('librenms/apache.conf.erb'),
     }
 
-    certcentral::cert { 'librenms':
-        puppet_svc => 'apache2',
-    }
     acme_chief::cert { 'librenms':
         puppet_svc => 'apache2',
     }
