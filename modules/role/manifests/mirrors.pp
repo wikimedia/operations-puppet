@@ -35,7 +35,7 @@ class role::mirrors {
     ferm::service { 'mirrors_ssh':
         proto  => 'tcp',
         port   => 'ssh',
-        # syncproxy.cna.debian.org; ferm can't do both IPv4/IPv6 with @resolve
-        srange => '(128.101.240.216 2607:ea00:101:3c0b::1deb:216)',
+        # syncproxy2.wna.debian.org; ferm can't do both IPv4/IPv6 with @resolve
+        srange => '(149.20.4.16 2001:4f8:1:c::16)',
     }
 }
