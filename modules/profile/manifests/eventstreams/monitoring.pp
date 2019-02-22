@@ -42,6 +42,14 @@ class profile::eventstreams::monitoring (
 
     # Else use the check_command defined in checkcommands.cfg.erb.
     else {
+        $check_command_config_content = 'define command {
+    command_name check_eventstreams
+    command_line $USER4$/check_eventstreams $ARG1$
+}'
+        nagios_common::check_command::config { 'check_eventstreams':
+            content => $check_command_config_content,
+        }
+
         $params = $common_params + {
             'check_command' => "check_eventstreams!${stream_url}",
         }
