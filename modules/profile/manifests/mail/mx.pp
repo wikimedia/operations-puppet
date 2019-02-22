@@ -15,6 +15,10 @@ class profile::mail::mx (
         puppet_svc => undef,
         key_group  => 'Debian-exim',
     }
+    acme_chief::cert { 'mx':
+        puppet_svc => undef,
+        key_group  => 'Debian-exim',
+    }
 
     $trusted_networks = $network::constants::aggregate_networks.filter |$x| {
         $x !~ /127.0.0.0|::1/
