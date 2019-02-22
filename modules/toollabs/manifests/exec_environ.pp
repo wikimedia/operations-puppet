@@ -110,9 +110,6 @@ class toollabs::exec_environ {
         )
     }
 
-    # T65000
-    include ::imagemagick::install
-
     if $::operatingsystem == 'Ubuntu' {
       package { [
           # Please keep all packages in each group sorted in alphabetical order
@@ -851,5 +848,28 @@ class toollabs::exec_environ {
     service { 'hhvm':
         ensure  => 'stopped',
         require => Package['hhvm'],
+    }
+
+    # T65000
+    require_package('imagemagick')
+    require_package('webp')
+
+    if os_version('debian >= jessie || ubuntu >= wily') {
+        # configuration directory changed since ImageMagick 8:6.8.5.6-1
+        $confdir = '/etc/ImageMagick-6'
+    } else {
+        $confdir = '/etc/ImageMagick'
+    }
+
+    file { "${confdir}/policy.xml":
+        ensure  => present,
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0644',
+        source  => 'puppet:///modules/imagemagick/policy.xml',
+        require => [
+            Class['packages::imagemagick'],
+            Class['packages::webp']
+        ]
     }
 }
