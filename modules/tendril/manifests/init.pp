@@ -16,7 +16,7 @@ class tendril (
     $tendril_user_web = $passwords::tendril::db_user_web
     $tendril_pass_web = $passwords::tendril::db_pass_web
 
-    $ssl_settings = ssl_ciphersuite('apache', 'mid', true)
+    $ssl_settings = ssl_ciphersuite('apache', 'strong', true)
 
     httpd::site { $site_name:
         content => template("tendril/apache/${site_name}.erb");
