@@ -11,10 +11,6 @@ class profile::mail::mx (
         recipient => 'root@wikimedia.org',
     }
 
-    certcentral::cert { 'mx':
-        puppet_svc => undef,
-        key_group  => 'Debian-exim',
-    }
     acme_chief::cert { 'mx':
         puppet_svc => undef,
         key_group  => 'Debian-exim',
