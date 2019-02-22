@@ -11,10 +11,6 @@ class profile::lists {
     }
 
     class { '::sslcert::dhparam': }
-    certcentral::cert{ 'lists':
-        puppet_svc => 'apache2',
-        key_group  => 'Debian-exim',
-    }
     acme_chief::cert{ 'lists':
         puppet_svc => 'apache2',
         key_group  => 'Debian-exim',
