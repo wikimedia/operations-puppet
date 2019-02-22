@@ -4,9 +4,6 @@ class profile::installserver::http {
     include install_server::web_server
     class { '::sslcert::dhparam': }
 
-    certcentral::cert { 'apt':
-        puppet_svc => 'nginx',
-    }
     acme_chief::cert { 'apt':
         puppet_svc => 'nginx',
     }
