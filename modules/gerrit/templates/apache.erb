@@ -34,11 +34,11 @@ MaxClients 50
 
     CustomLog /var/log/apache2/<%= @host %>.http.access.log wmf
     ServerSignature Off
-    <%- if @use_certcentral == false -%>
+    <%- if @use_acmechief == false -%>
     IncludeOptional /etc/acme/challenge-apache.conf
     <%- end -%>
     RewriteEngine on
-    <%- if @use_certcentral == false -%>
+    <%- if @use_acmechief == false -%>
     RewriteCond %{REQUEST_URI} !^/\.well-known/acme-challenge/
     <%- end -%>
     RewriteRule ^/(.*)$ https://<%= @host %>/$1 [L,R=301,NE]
@@ -55,7 +55,7 @@ MaxClients 50
     RequestHeader unset Proxy early
 
     SSLEngine on
-    <%- if @use_certcentral -%>
+    <%- if @use_acmechief -%>
     SSLCertificateFile /etc/acmecerts/gerrit.rsa-2048.crt
     SSLCertificateChainFile /etc/acmecerts/gerrit.rsa-2048.chain.crt
     SSLCertificateKeyFile /etc/acmecerts/gerrit.rsa-2048.key

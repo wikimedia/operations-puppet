@@ -9,7 +9,7 @@ class gerrit(
     Optional[Stdlib::Fqdn] $log_host = undef,
     Optional[Stdlib::Fqdn] $avatars_host = undef,
     Hash $cache_text_nodes = {},
-    Boolean $use_certcentral = false,
+    Boolean $use_acmechief = false,
 ) {
 
     class { '::gerrit::jetty':
@@ -30,7 +30,7 @@ class gerrit(
         slave            => $slave,
         avatars_host     => $avatars_host,
         cache_text_nodes => $cache_text_nodes,
-        use_certcentral  => $use_certcentral,
+        use_acmechief    => $use_acmechief,
     }
 
     if !$slave {

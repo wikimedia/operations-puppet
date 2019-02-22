@@ -6,7 +6,7 @@ class gerrit::proxy(
     Boolean $maint_mode                          = false,
     Stdlib::Fqdn $avatars_host                   = $::gerrit::avatars_host,
     Hash $cache_text_nodes                       = $::gerrit::cache_text_nodes,
-    Boolean $use_certcentral                     = false,
+    Boolean $use_acmechief                       = false,
     Optional[Stdlib::Ipv6] $ipv6,
     Optional[Array[Stdlib::Fqdn]] $slave_hosts   = $::gerrit::slave_hosts,
     ) {

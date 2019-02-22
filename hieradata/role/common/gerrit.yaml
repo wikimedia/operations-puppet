@@ -9,7 +9,7 @@ gerrit::server::avatars_host: 'gerrit.wmfusercontent.org'
 gerrit::server::master_host: 'cobalt.wikimedia.org'
 gerrit::server::bacula: 'srv-gerrit-git'
 gerrit::server::config: 'gerrit.config.erb'
-gerrit::server::use_certcentral: true
+gerrit::server::use_acmechief: true
 
 # list of gerrit servers used in firewall rules
 gerrit::servers:

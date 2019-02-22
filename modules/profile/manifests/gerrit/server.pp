@@ -11,7 +11,7 @@ class profile::gerrit::server(
     String $config = hiera('gerrit::server::config'),
     Stdlib::Fqdn $log_host = hiera('logstash_host'),
     Hash $cache_text_nodes = hiera('cache::text::nodes', []),
-    Boolean $use_certcentral = hiera('gerrit::server::use_certcentral', false),
+    Boolean $use_acmechief = hiera('gerrit::server::use_acmechief', false),
     Optional[Stdlib::Ipv6] $ipv6 = hiera('gerrit::service::ipv6', undef),
     Optional[Stdlib::Fqdn] $avatars_host = hiera('gerrit::server::avatars_host', undef),
 ) {
@@ -69,11 +69,8 @@ class profile::gerrit::server(
         }
     }
 
-    if $use_certcentral {
+    if $use_acmechief {
         class { '::sslcert::dhparam': }
-        certcentral::cert { 'gerrit':
-            puppet_svc => 'apache2',
-        }
         acme_chief::cert { 'gerrit':
             puppet_svc => 'apache2',
         }
@@ -100,7 +97,7 @@ class profile::gerrit::server(
         log_host         => $log_host,
         avatars_host     => $avatars_host,
         cache_text_nodes => $cache_text_nodes,
-        use_certcentral  => $use_certcentral,
+        use_acmechief    => $use_acmechief,
     }
 
     class { '::gerrit::replication_key':
