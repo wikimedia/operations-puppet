@@ -99,6 +99,21 @@ class prometheus::node_exporter (
                   content => template('prometheus/etc/default/prometheus-node-exporter-0.17.erb'),
                   notify  => Service['prometheus-node-exporter'],
             }
+
+            # Disabled because broken (https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=922803)
+            service { 'prometheus-node-exporter-ipmitool-sensor.timer':
+                ensure   => 'stopped',
+                provider => 'systemd',
+                enable   => 'mask',
+            }
+
+            # Disabled in favor of internal smart module (smart-data-dump.py)
+            service { 'prometheus-node-exporter-smartmon.timer':
+                ensure   => 'stopped',
+                provider => 'systemd',
+                enable   => 'mask',
+            }
+
         } else {
             $collectors_enabled = join(sort(concat($collectors_default, $collectors_extra)), ',')
 
