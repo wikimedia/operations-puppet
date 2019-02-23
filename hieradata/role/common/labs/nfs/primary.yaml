@@ -13,3 +13,6 @@ profile::base::ssh_server_settings:
 
 admin::groups:
   - wmcs-roots
+
+profile::base::check_disk_critical: true
+profile::base::notifications: critical

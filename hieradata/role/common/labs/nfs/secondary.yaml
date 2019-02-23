@@ -16,3 +16,6 @@ admin::groups:
 
 prometheus::node_exporter::collectors_extra:
   - drbd
+
+profile::base::check_disk_critical: true
+profile::base::notifications: critical

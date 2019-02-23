@@ -28,3 +28,6 @@ role::labs::nfs::misc::maps_project_internal_ips:
   - '172.16.5.154'
 admin::groups:
   - wmcs-roots
+
+profile::base::check_disk_critical: true
+profile::base::notifications: critical
