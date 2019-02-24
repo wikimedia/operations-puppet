@@ -12,7 +12,7 @@ export OS_REGION_NAME="<%= @region %>"
                                    --project admin-monitoring \
                                    --prepend fullstackd \
                                    --network <%= @network %> \
-                                   --image debian-8.11-jessie \
+                                   --image debian-9.7-stretch \
                                    --flavor m1.small \
                                    --keyfile <%= @keyfile %> \
                                    --statsd statsd.eqiad.wmnet
