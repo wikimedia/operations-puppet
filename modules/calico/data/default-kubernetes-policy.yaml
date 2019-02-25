@@ -59,7 +59,6 @@
   # Allow logstash
 - action: allow
   dst_ports:
-    - 4560
     - 10514
     - 11514
   dst_net: 10.2.2.36/32

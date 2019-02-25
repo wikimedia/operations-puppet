@@ -108,21 +108,6 @@ class profile::logstash::collector (
         srange  => '$DOMAIN_NETWORKS',
     }
 
-    logstash::input::log4j { 'log4j':
-        tags => ['input-log4j-4560'],
-    }
-
-    ferm::service { 'logstash_log4j':
-        proto   => 'tcp',
-        port    => '4560',
-        notrack => true,
-        srange  => '$DOMAIN_NETWORKS',
-    }
-    nrpe::monitor_service { 'logstash_log4j_tcp':
-        description  => 'logstash log4j TCP port',
-        nrpe_command => '/usr/lib/nagios/plugins/check_tcp -H 127.0.0.1 -p 4560',
-    }
-
     logstash::input::udp { 'logback':
         port  => 11514,
         codec => 'json',

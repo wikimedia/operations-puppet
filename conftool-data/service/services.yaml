@@ -261,13 +261,6 @@ logstash:
     default_values:
       pooled: 'no'
       weight: 10
-  logstash-log4j:
-    port: 4560
-    datacenters:
-    - eqiad
-    default_values:
-      pooled: 'no'
-      weight: 10
   logstash-gelf:
     port: 12201 # UDP
     datacenters:

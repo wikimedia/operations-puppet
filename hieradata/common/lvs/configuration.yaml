@@ -1129,27 +1129,6 @@ lvs::configuration::lvs_services:
       cluster: kubernetes
       service: kubemaster
     # For now, no icinga monitoring for the same reasons as ProxyFetch
-  logstash-log4j:
-    description: Logstash ingestion log4j
-    class: low-traffic
-    sites:
-    - eqiad
-    ip: *ip_block037
-    port: 4560
-    depool-threshold: '.5'
-    scheduler: sh
-    monitors:
-      IdleConnection:
-        timeout-clean-reconnect: 3
-        max-delay: 300
-    conftool:
-      cluster: logstash
-      service: logstash-log4j
-    icinga:
-      check_command: "check_tcp!4560"
-      sites:
-        eqiad:
-          hostname: logstash.svc.eqiad.wmnet
   logstash-gelf:
     description: Logstash ingestion gelf
     class: low-traffic
