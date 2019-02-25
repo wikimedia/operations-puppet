@@ -15,8 +15,6 @@ class gerrit::jetty(
     String $heap_limit = '20g',
     Boolean $slave = false,
     Stdlib::Unixpath $java_home = '/usr/lib/jvm/java-8-openjdk-amd64/jre',
-    Optional[Stdlib::Fqdn] $log_host = undef,
-    Integer $log_port = 4560,
     String $config = 'gerrit.config.erb',
     Integer $git_open_files = 20000,
     String $smtp_encryption = 'none',

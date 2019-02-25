@@ -67,19 +67,6 @@
             <param name="ConversionPattern" value="[%d] [%t] %-5p %x: %m%n"/>
         </layout>
     </appender>
-    <% if @log_host %>
-    <!-- Logstash -->
-    <appender name="socket" class="org.apache.log4j.net.SocketAppender">
-        <param name="port" value="<%= @log_port %>"/>
-        <param name="remoteHost" value="<%= @log_host %>"/>
-        <param name="ReconnectionDelay" value="30000"/>
-    </appender>
-    <appender name="async" class="org.apache.log4j.AsyncAppender">
-        <param name="Blocking" value="false"/>
-        <param name="BufferSize" value="64"/>
-        <appender-ref ref="socket"/>
-    </appender>
-    <% end %>
     <logger name="com.google.gerrit.pgm.http.jetty.HttpLog" additivity="false">
         <level value="DEBUG"/>
         <appender-ref ref="httpd_log"/>
@@ -176,6 +163,5 @@
     <root>
         <level value="INFO"/>
         <appender-ref ref="error_log"/>
-        <% if @log_host %><appender-ref ref="async"/><% end %>
     </root>
 </log4j:configuration>
