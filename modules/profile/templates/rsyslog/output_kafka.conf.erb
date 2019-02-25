@@ -5,6 +5,9 @@ module(load="omkafka")
 # (leading space breaks existing grok/regex message filters)
 module(load="mmrm1stspace")
 
+# parse json messages when @cee cookie is found
+module(load="mmjsonparse")
+
 # define a template to be used by omkafka dynatopic
 template(name="kafka_topic" type="string" string="rsyslog-%syslogseverity-text%")
 
@@ -15,20 +18,44 @@ if ( $.log_outputs contains "kafka" ) then {
     # remove leading white space from msg field
     action(type="mmrm1stspace")
 
-    action(type="omkafka"
-           broker=<%= scope.lookupvar('logging_kafka_brokers').to_json %>
-           topic="kafka_topic"
-           dynatopic="on"
-           dynatopic.cachesize="1000"
-           partitions.auto="on"
-           template="syslog_json"
-           confParam=[ "security.protocol=ssl",
-                       "ssl.ca.location=/etc/ssl/certs/Puppet_Internal_CA.pem",
-                       "compression.codec=snappy",
-                       "socket.timeout.ms=10000",
-                       "socket.keepalive.enable=true",
-                       "queue.buffering.max.ms=50",
-                       "batch.num.messages=1000" ]
-    )
+    # try parsing the message as json if @cee cookie is found
+    action(type="mmjsonparse" name="mmjsonparse_kafka")
+
+    # the message is json, use a different template (syslog_cee vs syslog_json)
+    # unfortunately rsyslog doesn't allow variables to be used as template
+    # names, so the kafka action is duplicated here.
+    if $parsesuccess == "OK" then {
+        action(type="omkafka"
+               broker=<%= scope.lookupvar('logging_kafka_brokers').to_json %>
+               topic="kafka_topic"
+               dynatopic="on"
+               dynatopic.cachesize="1000"
+               partitions.auto="on"
+               template="syslog_cee"
+               confParam=[ "security.protocol=ssl",
+                           "ssl.ca.location=/etc/ssl/certs/Puppet_Internal_CA.pem",
+                           "compression.codec=snappy",
+                           "socket.timeout.ms=10000",
+                           "socket.keepalive.enable=true",
+                           "queue.buffering.max.ms=50",
+                           "batch.num.messages=1000" ]
+        )
+    } else {
+        action(type="omkafka"
+               broker=<%= scope.lookupvar('logging_kafka_brokers').to_json %>
+               topic="kafka_topic"
+               dynatopic="on"
+               dynatopic.cachesize="1000"
+               partitions.auto="on"
+               template="syslog_json"
+               confParam=[ "security.protocol=ssl",
+                           "ssl.ca.location=/etc/ssl/certs/Puppet_Internal_CA.pem",
+                           "compression.codec=snappy",
+                           "socket.timeout.ms=10000",
+                           "socket.keepalive.enable=true",
+                           "queue.buffering.max.ms=50",
+                           "batch.num.messages=1000" ]
+        )
+    }
 
 }
