@@ -64,7 +64,7 @@ groups:
   deployment:
     gid: 705
     description: replaces 'mortals' for software deployment
-    members: [dr0ptp4kt, anomie, aude, awight, awjrichards, bd808,
+    members: [dr0ptp4kt, anomie, aude, awjrichards, bd808,
               brion, cscott, daniel, demon, ebernhardson, esanders, gilles,
               gjg, halfak, hashar, hoo, kaldari, kartik, krinkle,
               maxsem, mattflaschen, marktraceur, milimetric, mlitn, andyrussg,
@@ -473,7 +473,7 @@ groups:
     description: Service deploy users
     members: [bd808, eevans, mobrovac, ppchelko, demon, twentyafterfour, thcipriani, dduvall,
               bsitzmann, mholloway-shell, kartik, halfak, ladsgroup, smalyshev, hoo, tgr,
-              ssastry, cscott, arlolra, jdlrobson, maxsem, awight, jforrester, niedzielski,
+              ssastry, cscott, arlolra, jdlrobson, maxsem, jforrester, niedzielski,
               pmiazga, phuedx, mbsantos, onimisionipe, bmansurov, mvolz]
     privileges: []
 
@@ -611,7 +611,7 @@ groups:
   ores-admin:
     description: ORES admins
     gid: 782
-    members: [awight, halfak, ladsgroup]
+    members: [halfak, ladsgroup]
     privileges: ['ALL = NOPASSWD: /usr/sbin/service uwsgi-ores *',
                  'ALL = NOPASSWD: /usr/sbin/service celery-ores-worker *',
                  'ALL = NOPASSWD: /usr/bin/lsof *']
