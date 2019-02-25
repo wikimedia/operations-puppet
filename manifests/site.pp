@@ -1370,9 +1370,7 @@ node 'lithium.eqiad.wmnet' {
 }
 
 node /^logstash100[4-6]\.eqiad\.wmnet$/ {
-    role(logstash::elasticsearch)
-    # Remove kafka::logging role after dedicated logging kafka hardware is online
-    include ::role::kafka::logging # lint:ignore:wmf_styleguide
+    role(kafka::logging)
 }
 
 node /^logstash101[0-2]\.eqiad\.wmnet$/ {

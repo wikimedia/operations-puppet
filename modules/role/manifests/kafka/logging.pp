@@ -5,5 +5,6 @@ class role::kafka::logging {
         description => "Kafka Broker in the logging-${::site} Kafka cluster",
     }
 
+    include ::profile::base::firewall
     include ::standard
 }
