@@ -4732,22 +4732,16 @@ host thorium {
 host thumbor1001 {
     hardware ethernet 14:18:77:61:3C:D3;
     fixed-address thumbor1001.eqiad.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
-    filename "lpxelinux.0";
 }
 
 host thumbor1002 {
     hardware ethernet 14:18:77:61:B0:87;
     fixed-address thumbor1002.eqiad.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
-    filename "lpxelinux.0";
 }
 
 host thumbor1003 {
     hardware ethernet B0:83:FE:CF:0C:3A;
     fixed-address thumbor1003.eqiad.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
-    filename "lpxelinux.0";
 }
 
 host thumbor1004 {
@@ -4758,8 +4752,6 @@ host thumbor1004 {
 host thumbor2001 {
     hardware ethernet B0:83:FE:DE:F7:BF;
     fixed-address thumbor2001.codfw.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
-    filename "lpxelinux.0";
 }
 
 host thumbor2002 {
@@ -4770,15 +4762,11 @@ host thumbor2002 {
 host thumbor2003 {
     hardware ethernet 18:66:DA:84:31:40;
     fixed-address thumbor2003.codfw.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
-    filename "lpxelinux.0";
 }
 
 host thumbor2004 {
     hardware ethernet 18:66:DA:84:0E:A4;
     fixed-address thumbor2004.codfw.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
-    filename "lpxelinux.0";
 }
 
 host mw1293 {
