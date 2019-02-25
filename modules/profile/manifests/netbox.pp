@@ -148,7 +148,7 @@ class profile::netbox (
         ldap_password => $proxypass,
         reports_path  => $reports_path,
     }
-    $ssl_settings = ssl_ciphersuite('apache', 'mid', true)
+    $ssl_settings = ssl_ciphersuite('apache', 'strong', true)
 
     httpd::site { 'netbox.wikimedia.org':
         content => template('profile/netbox/netbox.wikimedia.org.erb'),
