@@ -4,7 +4,7 @@ class librenms::web(
     Stdlib::Fqdn $active_server,
 ) {
 
-    $ssl_settings = ssl_ciphersuite('apache', 'mid', true)
+    $ssl_settings = ssl_ciphersuite('apache', 'strong', true)
 
     httpd::site { $sitename:
         content => template('librenms/apache.conf.erb'),
