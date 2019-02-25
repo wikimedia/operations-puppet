@@ -40,7 +40,7 @@ class icinga::web (
         }
     }
 
-    $ssl_settings = ssl_ciphersuite('apache', 'mid', true)
+    $ssl_settings = ssl_ciphersuite('apache', 'strong', true)
 
     acme_chief::cert { 'icinga':
         puppet_svc => 'apache2',
