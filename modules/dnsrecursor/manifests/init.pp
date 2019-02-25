@@ -63,7 +63,7 @@ class dnsrecursor(
             # jessie uses backports for v4
             apt::pin { 'pdns-recursor':
                 package  => 'pdns-recursor',
-                pin      => 'release a=jessie-backports',
+                pin      => 'release a=openstack-mitaka-jessie',
                 priority => '1001',
                 before   => Package['pdns-recursor'],
             }
