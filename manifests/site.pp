@@ -231,18 +231,6 @@ node 'centrallog1001.eqiad.wmnet' {
     role(syslog::centralserver)
 }
 
-# Ganeti VMs for certcentral service
-node 'certcentral1001.eqiad.wmnet' {
-    role(certcentral)
-    interface::add_ip6_mapped { 'main': }
-}
-
-node 'certcentral2001.codfw.wmnet' {
-    role(certcentral)
-    interface::add_ip6_mapped { 'main': }
-}
-
-
 node /cloudstore100[89]\.wikimedia\.org/ {
     role(wmcs::nfs::misc)
 }

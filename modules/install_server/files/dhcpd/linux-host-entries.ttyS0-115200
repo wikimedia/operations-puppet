@@ -90,16 +90,6 @@ host bromine {
     fixed-address bromine.eqiad.wmnet;
 }
 
-host certcentral1001 {
-    hardware ethernet aa:00:00:b0:ca:3e;
-    fixed-address certcentral1001.eqiad.wmnet;
-}
-
-host certcentral2001 {
-    hardware ethernet aa:00:00:00:6e:00;
-    fixed-address certcentral2001.codfw.wmnet;
-}
-
 host chlorine {
     hardware ethernet aa:00:00:37:a8:4d;
     fixed-address chlorine.eqiad.wmnet;
