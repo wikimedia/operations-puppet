@@ -242,7 +242,6 @@ $wikimail_smarthost = hiera('wikimail_smarthost')
 # Generic, default servers (order matters!)
 $mail_smarthost = hiera('mail_smarthost')
 
-$certcentral_host = hiera('certcentral_host')
 $acmechief_host = hiera('acmechief_host')
 
 $ntp_peers = hiera('ntp_peers')

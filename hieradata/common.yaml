@@ -368,12 +368,6 @@ wikimedia_clusters:
     sites:
       eqiad: []
       codfw: []
-  certcentral:
-    description: "Certcentral servers"
-    id: 78
-    sites:
-      eqiad: []
-      codfw: []
   wmcs:
     description: "WMCS servers"
     id: 79
@@ -884,8 +878,6 @@ authdns_servers:
   - 'authdns2001.wikimedia.org'
   - 'multatuli.wikimedia.org'
 
-# certcentral active host
-certcentral_host: 'certcentral1001.eqiad.wmnet'
 # acme-chief active host
 acmechief_host: 'acmechief1001.eqiad.wmnet'
 

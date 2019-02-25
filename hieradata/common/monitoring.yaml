@@ -378,12 +378,6 @@ monitoring::groups:
   management_codfw:
     description: Management servers (codfw)
 
-# Certcentral Servers
-  certcentral_eqiad:
-    description: Certcentral servers (eqiad)
-  certcentral_codfw:
-    description: Certcentral servers (codfw)
-
 # Acmechief Servers
   acmechief_eqiad:
     description: Acmechief servers (eqiad)
