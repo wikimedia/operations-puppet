@@ -2428,7 +2428,7 @@ users:
       - ssh-rsa AAAAB3NzaC1yc2EAAAABJQAAAQEAhAOVYD/NaXnew0HlVw4i/3LYT6wn6b8D+5Yun2tWRGd8DaODevafjW0Bzf+XwjSNoRIP52ZRM4Vmhg4H6sL4g31FuMfEVgLwjI0WCTxUxIrR2aGuumXRVYRwLOhFkC2RT7TcjTkDzeMa7DijyDxjI9+/rqCgGHcQwIk/c20VYZ4AzHPpGWqeb2JQblDRu/Jz1enmzUt1rwX/4Kxo/lmkLAtJxzVKgNfn13Acj3BSu1w0DIbPBT7EjKCuzKx7ZthanoYIh+BV5KyErp13AB6dxoxSQNfcIbftBoG6idlUSkEqnzednYoVBQSWa4xNaA2NDbjqpxfbMhERRs8FSn9/iw==
     uid: 15297
     email: florian.lemmerich@cssh.rwth-aachen.de
-    expiry_date: 2019-02-24
+    expiry_date: 2019-08-24
     expiry_contact: isaac@wikimedia.org
   marostegui:
     ensure: present
