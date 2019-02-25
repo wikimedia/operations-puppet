@@ -153,22 +153,6 @@ class profile::logstash::collector (
         nrpe_command => '/usr/lib/nagios/plugins/check_tcp -H 127.0.0.1 -p 11514',
     }
 
-    logstash::input::tcp { 'syslog_tls':
-        type       => 'syslog',
-        port       => 16514,
-        ssl_enable => true,
-        ssl_cert   => '/etc/logstash/ssl/cert.pem',
-        ssl_key    => '/etc/logstash/ssl/server.key',
-        tags       => ['input-tcp-syslog_tls-16514'],
-    }
-
-    ferm::service { 'logstash_syslog_tls':
-        proto   => 'tcp',
-        port    => '16514',
-        notrack => true,
-        srange  => '$DOMAIN_NETWORKS',
-    }
-
     # logstash collectors in both sites pull messages from both kafka clusters
     $kafka_config_eqiad = kafka_config('logging-eqiad')
     $kafka_config_codfw = kafka_config('logging-codfw')
@@ -253,13 +237,6 @@ class profile::logstash::collector (
         owner   => 'logstash',
         group   => 'logstash',
         mode    => '0640',
-    }
-
-    # disabled for troubleshooting T193766 -herron
-    monitoring::service { "${::hostname} logstash_syslog_tls":
-        ensure        => absent,
-        description   => 'Logstash syslog TLS listener on port 16514',
-        check_command => "check_ssl_on_host_port!${::fqdn}!${::fqdn}!16514",
     }
 
     ## Global pre-processing (15)
