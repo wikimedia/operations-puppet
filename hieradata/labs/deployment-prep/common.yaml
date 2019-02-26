@@ -474,22 +474,6 @@ profile::maps::apps::sources_to_invalidate:
 profile::maps::apps::tile_server_domain: maps-beta.wmflabs.org
 profile::maps::apps::wikidata_query_service: https://query.wikidata.org/bigdata/namespace/wdq/sparql
 
-certcentral_host: deployment-certcentral03.deployment-prep.eqiad.wmflabs
-profile::certcentral::accounts:
-  f1c0e9cfff35d9bf2c97fb4a6c2d41b2:
-    directory: "https://acme-v02.api.letsencrypt.org/directory"
-    regr: '{"body": {}, "uri": "https://acme-v02.api.letsencrypt.org/acme/acct/41714655"}'
-  6d05745f30db2f683230a11346214feb:
-    directory: "https://acme-staging-v02.api.letsencrypt.org/directory"
-    regr: '{"body": {}, "uri": "https://acme-staging-v02.api.letsencrypt.org/acme/acct/6894413"}'
-profile::certcentral::certificates: {}
-profile::certcentral::challenges: {}
-#  dns-01:
-#    zone_update_cmd: /usr/local/bin/certcentral-gdnsd-sync.py
-#    sync_dns_servers:
-#    - deployment-certcentral-testdns
-#    validation_dns_servers:
-#    - 10.68.21.242
 # Mediawiki web setup: beta has:
 # - no tls
 # - lvs
