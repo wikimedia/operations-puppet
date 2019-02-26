@@ -190,6 +190,7 @@ class profile::hadoop::common (
     $zookeeper_cluster_name                   = $hadoop_config['zookeeper_cluster_name']
     $yarn_resourcemanager_zk_timeout_ms       = $hadoop_config['yarn_resourcemanager_zk_timeout_ms']
     $yarn_resourcemanager_zk_state_store_parent_path = $hadoop_config['yarn_resourcemanager_zk_state_store_parent_path']
+    $yarn_resourcemanager_fs_state_store_uri  = $hadoop_config['yarn_resourcemanager_fs_state_store_uri']
     $resourcemanager_hosts                    = $hadoop_config['resourcemanager_hosts']
     $namenode_hosts                           = $hadoop_config['namenode_hosts']
     $journalnode_hosts                        = $hadoop_config['journalnode_hosts']
@@ -296,6 +297,7 @@ class profile::hadoop::common (
         zookeeper_hosts                                 => $zookeeper_hosts,
         yarn_resourcemanager_zk_timeout_ms              => $yarn_resourcemanager_zk_timeout_ms,
         yarn_resourcemanager_zk_state_store_parent_path => $yarn_resourcemanager_zk_state_store_parent_path,
+        yarn_resourcemanager_fs_state_store_uri         => $yarn_resourcemanager_fs_state_store_uri,
         dfs_name_dir                                    => [$hadoop_name_directory],
         dfs_journalnode_edits_dir                       => $hadoop_journal_directory,
         dfs_datanode_failed_volumes_tolerated           => $datanode_volumes_failed_tolerated,
