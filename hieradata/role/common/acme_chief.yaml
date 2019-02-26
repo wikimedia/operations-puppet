@@ -14,16 +14,6 @@ profile::acme_chief::certificates:
         challenge: dns-01
         authorized_hosts:
         - 'archiva1001.wikimedia.org'
-    cloudelastic:
-        CN: 'cloudelastic1001.wikimedia.org'
-        SNI:
-        - 'cloudelastic1001.wikimedia.org'
-        - 'cloudelastic1002.wikimedia.org'
-        - 'cloudelastic1003.wikimedia.org'
-        - 'cloudelastic1004.wikimedia.org'
-        challenge: dns-01
-        authorized_regexes:
-        - '^cloudelastic100[1-4]\.wikimedia\.org$'
     dumps:
         CN: 'dumps.wikimedia.org'
         SNI:
