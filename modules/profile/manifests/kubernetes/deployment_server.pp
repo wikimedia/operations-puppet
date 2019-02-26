@@ -7,16 +7,6 @@ class profile::kubernetes::deployment_server(
 ){
     class { '::helm': }
 
-    # DEPRECATED: Keep this around a bit longer but since we have a repo now we
-    # can remove it
-    git::clone { 'operations/deployment-charts':
-        ensure    => 'present', # Should be only updated by users
-        directory => '/srv/deployment-charts',
-        owner     => $git_owner,
-        group     => $git_group,
-        umask     => '002',
-    }
-
     # The deployment script
     file { '/usr/local/bin/scap-helm':
         ensure => file,
