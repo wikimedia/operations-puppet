@@ -46,6 +46,6 @@ class helm(
         command     => '/usr/bin/helm repo update >/dev/null 2>&1',
         environment => "HELM_HOME=${helm_home}",
         user        => 'helm',
-        minute      => '*/5',
+        minute      => '*/1',
     }
 }
