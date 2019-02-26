@@ -105,6 +105,7 @@ class prometheus::node_exporter (
                 ensure   => 'stopped',
                 provider => 'systemd',
                 enable   => 'mask',
+                require  => Package['prometheus-node-exporter'],
             }
 
             # Disabled in favor of internal smart module (smart-data-dump.py)
@@ -112,6 +113,7 @@ class prometheus::node_exporter (
                 ensure   => 'stopped',
                 provider => 'systemd',
                 enable   => 'mask',
+                require  => Package['prometheus-node-exporter'],
             }
 
         } else {
