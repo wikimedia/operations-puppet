@@ -15,19 +15,36 @@
 #  port to expose tls on
 #
 define elasticsearch::tlsproxy (
-    String $certificate_name,
     Wmflib::IpPort $upstream_port,
     Wmflib::IpPort $tls_port,
+    Optional[String] $certificate_name = undef,
+    Optional[String] $acme_subject = undef,
 ){
+    $certs = $certificate_name ? {
+        undef   => [],
+        default => [$certificate_name]
+    }
+
+    $server_name = $certificate_name ? {
+        undef   => $::fqdn,
+        default => $certificate_name
+    }
+
+    $acme_subjects = $acme_subject ? {
+        undef   => [],
+        default => [$acme_subject]
+    }
+
     tlsproxy::localssl { $title:
-        certs          => [$certificate_name],
-        server_name    => $certificate_name,
+        certs          => $certs,
+        server_name    => $server_name,
+        acme_subjects  => $acme_subjects,
         default_server => true,
         upstream_ports => [$upstream_port],
         tls_port       => $tls_port,
     } -> monitoring::service { "elasticsearch-https-${title}":
         ensure        => present,
         description   => "Elasticsearch HTTPS for ${title}",
-        check_command => "check_ssl_on_port!${certificate_name}!${tls_port}",
+        check_command => "check_ssl_on_port!${server_name}!${tls_port}",
     }
 }

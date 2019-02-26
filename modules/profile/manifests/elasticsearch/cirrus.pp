@@ -27,7 +27,6 @@ class profile::elasticsearch::cirrus(
 
     $::profile::elasticsearch::filtered_instances.each |$instance_title, $instance_params| {
         $cluster_name = $instance_params['cluster_name']
-        $certificate_name = $instance_params['certificate_name']
         $http_port = $instance_params['http_port']
         $tls_port = $instance_params['tls_port']
 
@@ -44,10 +43,18 @@ class profile::elasticsearch::cirrus(
             srange => $ferm_srange,
         }
 
-        elasticsearch::tlsproxy { $cluster_name:
-            certificate_name => $certificate_name,
-            upstream_port    => $http_port,
-            tls_port         => $tls_port,
+        if has_key($instance_params, 'certificate_name') {
+            elasticsearch::tlsproxy { $cluster_name:
+                certificate_name => $instance_params['certificate_name'],
+                upstream_port    => $http_port,
+                tls_port         => $tls_port,
+            }
+        } else {
+            elasticsearch::tlsproxy { $cluster_name:
+                upstream_port => $http_port,
+                tls_port      => $tls_port,
+                acme_subject  => $cluster_name,
+            }
         }
 
         elasticsearch::log::hot_threads_cluster { $cluster_name:
