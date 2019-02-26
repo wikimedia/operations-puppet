@@ -8,6 +8,7 @@ class profile::mediawiki::mcrouter_wancache(
     Integer $ssl_port = hiera('mcrouter::ssl_port', $port + 1),
     Integer $num_proxies = hiera('profile::mediawiki::mcrouter_wancache::num_proxies', 1),
     Optional[Integer] $timeouts_until_tko = lookup('profile::mediawiki::mcrouter_wancache::timeouts_until_tko', {'default_value' => 10}),
+    Boolean $async_replication = lookup('profile::mediawiki::mcrouter_wancache::async_replication', { 'default_value' => false }),
 ) {
     $servers_by_datacenter = $servers_by_datacenter_category['wancache']
     $proxies_by_datacenter = pick($servers_by_datacenter_category['proxies'], {})
@@ -29,22 +30,45 @@ class profile::mediawiki::mcrouter_wancache(
         $servers_by_datacenter.map |$region, $servers| {
             {
                 'aliases' => [ "/${region}/mw/" ],
-                'route'   => "PoolRoute|${region}"
+                'route'   => "PoolRoute|${region}" # @TODO: force $::site like mw-wan default?
             }
         },
-        # WAN cache: read locally, set/delete everywhere.
+        # WAN cache: issues reads and add/cas/touch locally and issues set/delete everywhere.
         # MediaWiki will set a prefix of /*/mw-wan when broadcasting, explicitly matching
         # all the mw-wan routes. Broadcasting is thus completely controlled by MediaWiki,
-        # but is only allowed for set/delete operations
+        # but is only allowed for set/delete operations.
         $servers_by_datacenter.map |$region, $servers| {
             {
                 'aliases' => [ "/${region}/mw-wan/" ],
                 'route'   => {
-                    'type'           => 'OperationSelectorRoute',
-                    'default_policy' => "PoolRoute|${::site}", # We want reads to always be local!
-                    'operation_policies' => {
-                        'set'    => "PoolRoute|${region}",
-                        'delete' => "PoolRoute|${region}",
+                    'type'               => 'OperationSelectorRoute',
+                    'default_policy'     => "PoolRoute|${::site}", # We want reads to always be local!
+                    # When async_replication is false, every set/delete
+                    # will need to wait the replication to the non-active DC.
+                    # When async_replication is true, AllAsyncRoute will be used
+                    # by mcrouter when replicating data to the non-active DC:
+                    # https://github.com/facebook/mcrouter/wiki/List-of-Route-Handles#allasyncroute
+                    'operation_policies' => $async_replication ? {
+                        true  => {
+                                    'set'    => {
+                                        'type'     => $region ? {
+                                            $::site => 'AllSyncRoute',
+                                            default => 'AllAsyncRoute'
+                                        },
+                                        'children' => [ "PoolRoute|${region}" ]
+                                    },
+                                    'delete' => {
+                                        'type'     => $region ? {
+                                            $::site => 'AllSyncRoute',
+                                            default => 'AllAsyncRoute'
+                                        },
+                                        'children' => [ "PoolRoute|${region}" ]
+                                    },
+                        },
+                        false => {
+                                    'set'    => "PoolRoute|${region}",
+                                    'delete' => "PoolRoute|${region}",
+                        }
                     }
                 }
             }
