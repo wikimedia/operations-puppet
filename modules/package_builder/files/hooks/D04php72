@@ -3,8 +3,8 @@
 # Avoid running hooks if PHP72 is not specified
 if [ "$PHP72" = "yes" ] && [ "$DIST" = "stretch" ]; then
     cat > /etc/apt/sources.list.d/wikimedia-php72.list <<-'EOF'
-    deb http://apt.wikimedia.org/wikimedia stretch-wikimedia thirdparty/php72
-    deb-src http://apt.wikimedia.org/wikimedia stretch-wikimedia thirdparty/php72
+    deb http://apt.wikimedia.org/wikimedia stretch-wikimedia component/php72
+    deb-src http://apt.wikimedia.org/wikimedia stretch-wikimedia component/php72
 EOF
     apt-get update
 fi
