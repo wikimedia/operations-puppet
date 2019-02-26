@@ -161,6 +161,7 @@ class profile::analytics::refinery::job::data_purge (
     # some extra features.  Use refine_job to configure and run it.
     profile::analytics::refinery::job::refine_job { 'sanitize_eventlogging_analytics':
         job_name            => 'sanitize_eventlogging_analytics',
+        refinery_job_jar    => "${refinery_path}/artifacts/org/wikimedia/analytics/refinery/refinery-job-0.0.85.jar",
         job_class           => 'org.wikimedia.analytics.refinery.job.refine.EventLoggingSanitization',
         monitor_class       => 'org.wikimedia.analytics.refinery.job.refine.EventLoggingSanitizationMonitor',
         job_config          => {
