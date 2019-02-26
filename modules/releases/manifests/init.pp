@@ -85,6 +85,12 @@ class releases (
         directory => '/srv/deployment-charts',
     }
 
+    cron { 'git_pull_charts':
+        ensure  => present,
+        command => 'cd /srv/deployment-charts && /usr/bin/git pull >/dev/null 2>&1',
+        minute  => '*/1',
+    }
+
     file { '/srv/org/wikimedia/releases/charts':
         ensure  => 'link',
         target  => '/srv/deployment-charts/charts',
