@@ -667,7 +667,7 @@ hadoop_clusters:
 
     # Yarn rmstore state stored on HDFS (rather than zookeeper)
     # T216952
-    yarn_resourcemanager_fs_state_store_uri: '/user/yarn/rmstore'
+    yarn_resourcemanager_fs_state_store_uri: 'hdfs://analytics-test-hadoop/user/yarn/rmstore'
 
     # Allow superset to impersonate users.
     # This is what allows superset to access files in
