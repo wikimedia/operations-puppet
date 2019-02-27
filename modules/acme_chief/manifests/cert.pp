@@ -40,11 +40,12 @@ define acme_chief::cert (
         }
 
         file { "/etc/acmecerts/${title}.${type}.key":
-            owner  => 'root',
-            group  => $key_group,
-            mode   => '0640',
-            source => "puppet://${::acmechief_host}/acmedata/${title}/${type}.key",
-            notify => Service[$puppet_svc],
+            owner     => 'root',
+            group     => $key_group,
+            mode      => '0640',
+            show_diff => false,
+            source    => "puppet://${::acmechief_host}/acmedata/${title}/${type}.key",
+            notify    => Service[$puppet_svc],
         }
         # lint:endignore
     }
