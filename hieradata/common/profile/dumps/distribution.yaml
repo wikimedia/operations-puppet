@@ -1,19 +1,17 @@
 # Hiera settings for dumps distribution servers (labstore1006|7)
 
-profile::dumps::distribution::basedatadir: "/srv/dumps/xmldatadumps"
-profile::dumps::distribution::miscdumpsdir: "/srv/dumps/xmldatadumps/public/other"
-profile::dumps::distribution::xmldumpspublicdir: "/srv/dumps/xmldatadumps/public"
+profile::dumps::distribution::basedatadir: '/srv/dumps/xmldatadumps'
+profile::dumps::distribution::miscdumpsdir: '/srv/dumps/xmldatadumps/public/other'
+profile::dumps::distribution::xmldumpspublicdir: '/srv/dumps/xmldatadumps/public'
 # Note that on many hosts this directory will not exist. This is a good thing.
-profile::dumps::distribution::xmldumpsprivatedir: "/srv/dumps/xmldatadumps/private"
-profile::dumps::distribution::dumpstempdir: "/srv/dumps/xmldatadumps/temp"
+profile::dumps::distribution::xmldumpsprivatedir: '/srv/dumps/xmldatadumps/private'
+profile::dumps::distribution::dumpstempdir: '/srv/dumps/xmldatadumps/temp'
 
-profile::base::check_disk_critical: true
-profile::base::notifications: critical
 profile::dumps::distribution::rsync_config:
-  dumps_user: "dumpsgen"
-  dumps_group: "dumpsgen"
-  dumps_deploygroup: "wikidev"
-  dumps_mntpoint: "/srv/dumps"
+  dumps_user: 'dumpsgen'
+  dumps_group: 'dumpsgen'
+  dumps_deploygroup: 'wikidev'
+  dumps_mntpoint: '/srv/dumps'
 
 profile::dumps::distribution::nfs_clients:
   - 10.68.0.0/16
@@ -25,113 +23,113 @@ profile::dumps::distribution::nfs_clients:
   - notebook1004.eqiad.wmnet
 
 profile::dumps::distribution::mirrors:
-  - url: "http://wikipedia.c3sl.ufpr.br"
-    hostname: "sagres.c3sl.ufpr.br"
-    ipv4: ["sagres.c3sl.ufpr.br"]
-    ipv6: ["sagres.c3sl.ufpr.br"]
-    contactname: "Carlos Carvalho"
-    contactaddy: "carlos@fisica.ufpr.br"
-    institution: "C3SL"
-    addedby: "atg"
-    addeddate: "Sept 6 2011"
-    active: "yes"
-  - url: "https://wikimedia.bytemark.co.uk"
-    hostname: "wikimedia.bytemark.co.uk"
-    ipv4: ["wikimedia.bytemark.co.uk"]
+  - url: 'http://wikipedia.c3sl.ufpr.br'
+    hostname: 'sagres.c3sl.ufpr.br'
+    ipv4: ['sagres.c3sl.ufpr.br']
+    ipv6: ['sagres.c3sl.ufpr.br']
+    contactname: 'Carlos Carvalho'
+    contactaddy: 'carlos@fisica.ufpr.br'
+    institution: 'C3SL'
+    addedby: 'atg'
+    addeddate: 'Sept 6 2011'
+    active: 'yes'
+  - url: 'https://wikimedia.bytemark.co.uk'
+    hostname: 'wikimedia.bytemark.co.uk'
+    ipv4: ['wikimedia.bytemark.co.uk']
     ipv6: []
-    contactname: "Matthew Bloch"
-    contactaddy: "promotion@support.bytemark.co.uk"
-    institution: "Bytemark"
-    addedby: "reedy"
-    addeddate: "March 1 2017"
-    active: "notyet"
-  - url: "http://ftp.fi.muni.cz/pub/wikimedia/"
-    hostname: "odysseus.fi.muni.cz"
-    ipv4: ["odysseus.fi.muni.cz", "odysseus.linux.cz"]
-    ipv6: ["odysseus.ip6.fi.muni.cz"]
-    contactname: "Jan Kasprzak"
-    contactaddy: "ftp-admin@fi.muni.cz"
-    institution: "Faculty of Informatics, Masaryk University"
-    addedby: "atg"
-    addeddate: "May 11, 2012"
-    active: "no"
-  - url: "http://ftp.acc.umu.se/mirror/wikimedia.org/dumps/"
-    hostname: "poincare.acc.umu.se"
-    ipv4: ["poincare.acc.umu.se"]
-    ipv6: ["poincare.acc.umu.se"]
-    contactname: "Mirror admin"
-    contactaddy: "ftp-adm@acc.umu.se"
-    institution: "Academic Computer Club, Umeå University"
-    addedby: "atg"
-    addeddate: "Oct 25 2016"
-    active: "yes"
-  - url: "http://mirror.fr.wickedway.nl/"
-    hostname: "mirror.fr.wickedway.nl"
-    ipv4: ["mirror.fr.wickedway.nl"]
+    contactname: 'Matthew Bloch'
+    contactaddy: 'promotion@support.bytemark.co.uk'
+    institution: 'Bytemark'
+    addedby: 'reedy'
+    addeddate: 'March 1 2017'
+    active: 'notyet'
+  - url: 'http://ftp.fi.muni.cz/pub/wikimedia/'
+    hostname: 'odysseus.fi.muni.cz'
+    ipv4: ['odysseus.fi.muni.cz', 'odysseus.linux.cz']
+    ipv6: ['odysseus.ip6.fi.muni.cz']
+    contactname: 'Jan Kasprzak'
+    contactaddy: 'ftp-admin@fi.muni.cz'
+    institution: 'Faculty of Informatics, Masaryk University'
+    addedby: 'atg'
+    addeddate: 'May 11, 2012'
+    active: 'no'
+  - url: 'http://ftp.acc.umu.se/mirror/wikimedia.org/dumps/'
+    hostname: 'poincare.acc.umu.se'
+    ipv4: ['poincare.acc.umu.se']
+    ipv6: ['poincare.acc.umu.se']
+    contactname: 'Mirror admin'
+    contactaddy: 'ftp-adm@acc.umu.se'
+    institution: 'Academic Computer Club, Umeå University'
+    addedby: 'atg'
+    addeddate: 'Oct 25 2016'
+    active: 'yes'
+  - url: 'http://mirror.fr.wickedway.nl/'
+    hostname: 'mirror.fr.wickedway.nl'
+    ipv4: ['mirror.fr.wickedway.nl']
     ipv6: []
-    contactname: "Mirror admin"
-    contactaddy: "mirror@wickedway.nl"
-    institution: "WickedWay Web Hosting"
-    addedby: "atg"
-    addeddate: "June 8 2012"
-    active: "no"
-  - url: "http://wikimedia.wansec.com/"
-    hostname: ""
-    ipv4: ["199.47.196.26", "wikimedia.wansec.com"]
+    contactname: 'Mirror admin'
+    contactaddy: 'mirror@wickedway.nl'
+    institution: 'WickedWay Web Hosting'
+    addedby: 'atg'
+    addeddate: 'June 8 2012'
+    active: 'no'
+  - url: 'http://wikimedia.wansec.com/'
+    hostname: ''
+    ipv4: ['199.47.196.26', 'wikimedia.wansec.com']
     ipv6: []
-    contactname: "Robert Smith"
-    contactaddy: "rtsmith@wansecurity.com"
-    institution: "WANSecurity"
-    addedby: "atg"
-    addeddate: ""
-    active: "notrightnow"
-  - url: "http://dumps.wikimedia.your.org/"
-    hostname: "your.org"
-    ipv4: ["ftpmirror.your.org", "ftpmirror-ae0-4.us.your.org"]
-    ipv6: ["ftpmirror.your.org"]
-    contactname: "Kevin Day"
-    contactaddy: "kevin@your.org"
-    institution: "Your.org"
-    addedby: "atg"
-    addeddate: "Feb 2 2012"
-    active: "yes"
-  - url: "http://wikimedia.iconic.vi"
-    hostname: "wikimedia.iconic.vi"
-    ipv4: ["wikimedia.iconic.vi"]
+    contactname: 'Robert Smith'
+    contactaddy: 'rtsmith@wansecurity.com'
+    institution: 'WANSecurity'
+    addedby: 'atg'
+    addeddate: ''
+    active: 'notrightnow'
+  - url: 'http://dumps.wikimedia.your.org/'
+    hostname: 'your.org'
+    ipv4: ['ftpmirror.your.org', 'ftpmirror-ae0-4.us.your.org']
+    ipv6: ['ftpmirror.your.org']
+    contactname: 'Kevin Day'
+    contactaddy: 'kevin@your.org'
+    institution: 'Your.org'
+    addedby: 'atg'
+    addeddate: 'Feb 2 2012'
+    active: 'yes'
+  - url: 'http://wikimedia.iconic.vi'
+    hostname: 'wikimedia.iconic.vi'
+    ipv4: ['wikimedia.iconic.vi']
     ipv6: []
-    contactname: "Valentino Vaschetto"
-    contactaddy: "val@iconicindustry.com"
-    institution: "Iconic Industry"
-    addedby: "atg"
-    addeddate: "Apr 28 2016"
-    active: "no"
-  - url: "http://wikimedia.crc.nd.edu/other/"
-    hostname: "crcdtn01.crc.nd.edu"
-    ipv4: ["crcdtn01.crc.nd.edu", "wmrsync.crc.nd.edu"]
+    contactname: 'Valentino Vaschetto'
+    contactaddy: 'val@iconicindustry.com'
+    institution: 'Iconic Industry'
+    addedby: 'atg'
+    addeddate: 'Apr 28 2016'
+    active: 'no'
+  - url: 'http://wikimedia.crc.nd.edu/other/'
+    hostname: 'crcdtn01.crc.nd.edu'
+    ipv4: ['crcdtn01.crc.nd.edu', 'wmrsync.crc.nd.edu']
     ipv6: []
-    contactname: "Matt"
-    contactaddy: "mvanderw@nd.edu"
-    institution: "Center for Research Computing, University of Notre Dame"
-    addedby: "atg"
-    addeddate: "Apr 25 2016"
-    active: "yes"
-  - url: "https://aws.amazon.com/public-datasets/"
-    hostname: "amazonaws.com"
-    ipv4: ["ec2-174-129-186-231.compute-1.amazonaws.com"]
+    contactname: 'Matt'
+    contactaddy: 'mvanderw@nd.edu'
+    institution: 'Center for Research Computing, University of Notre Dame'
+    addedby: 'atg'
+    addeddate: 'Apr 25 2016'
+    active: 'yes'
+  - url: 'https://aws.amazon.com/public-datasets/'
+    hostname: 'amazonaws.com'
+    ipv4: ['ec2-174-129-186-231.compute-1.amazonaws.com']
     ipv6: []
-    contactname: ""
-    contactaddy: ""
-    institution: "Amazon AWS"
-    addedby: "atg"
-    addeddate: "Oct 31 2012"
-    active: "no"
-  - url: "https://dumps.wikimedia.freemirror.org/"
-    hostname: "mirror.freemirror.org"
-    ipv4: ["mirror.freemirror.org"]
-    ipv6: ["mirror.freemirror.org"]
-    contactname: "Adam Quenneville"
-    contactaddy: "admin@freemirror.org"
-    institution: "The Free Mirror Project (FreeMirror.org)"
-    addedby: "atg"
-    addeddate: "Jan 14, 2019"
-    active: "yes"
+    contactname: ''
+    contactaddy: ''
+    institution: 'Amazon AWS'
+    addedby: 'atg'
+    addeddate: 'Oct 31 2012'
+    active: 'no'
+  - url: 'https://dumps.wikimedia.freemirror.org/'
+    hostname: 'mirror.freemirror.org'
+    ipv4: ['mirror.freemirror.org']
+    ipv6: ['mirror.freemirror.org']
+    contactname: 'Adam Quenneville'
+    contactaddy: 'admin@freemirror.org'
+    institution: 'The Free Mirror Project (FreeMirror.org)'
+    addedby: 'atg'
+    addeddate: 'Jan 14, 2019'
+    active: 'yes'
