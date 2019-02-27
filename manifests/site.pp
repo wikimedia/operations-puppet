@@ -1380,6 +1380,7 @@ node /^logstash100[5-6]\.eqiad\.wmnet$/ {
 node /^logstash1010\.eqiad\.wmnet$/ {
     role(logstash::elasticsearch)
     include ::role::kafka::logging # lint:ignore:wmf_styleguide
+    interface::add_ip6_mapped { 'main': } # lint:ignore:wmf_styleguide
 }
 
 node /^logstash101[1-2]\.eqiad\.wmnet$/ {
