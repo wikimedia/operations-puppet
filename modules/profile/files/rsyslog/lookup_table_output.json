@@ -20,4 +20,5 @@
     {"index" : "input-file-gerrit-multiline",  "value" : "kafka" },
     {"index" : "input-file-apache2-error", "value" : "kafka" },
     {"index" : "input-file-puppetdb", "value" : "kafka" },
+    {"index" : "scap", "value" : "kafka" },
     {"index" : "apache2", "value" : "kafka" }]}
