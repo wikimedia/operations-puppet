@@ -9,6 +9,9 @@
 #   top-level hash is used as a section in the app's ini file. If a second
 #   level key has a value that is an Array, that key is repeated for each
 #   value of the array
+# [* core_limit *]
+#   A string containing the core size limit to allow coredumps.
+#   Values: 'unlimited', 'nG' (n is a number of Gigabytes), or '0' for no core.
 #
 # === Examples
 #
@@ -28,6 +31,7 @@
 define uwsgi::app(
     $settings,
     $service_settings = '--die-on-term',
+    $core_limit = '0',
     $ensure   = present,
     $enabled  = true,
 ) {

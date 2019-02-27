@@ -9,5 +9,7 @@ User = www-data
 Group = www-data
 SyslogIdentifier = uwsgi-<%= @basename %>
 
+LimitCORE=<%= @core_limit %>
+
 [Install]
 WantedBy = multi-user.target
