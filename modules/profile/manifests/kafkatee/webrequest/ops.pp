@@ -40,10 +40,11 @@ class profile::kafkatee::webrequest::ops (
         type          => 'pipe',
     }
 
-    # Send 5xx to logstash, append "type: webrequest" for logstash to pick up
+    # Send 5xx to syslog, append "type: webrequest" and "@cee: " for syslog structured logging
+    # These logs will be injected into the logging pipeline and thus to logstash
     kafkatee::output { 'logstash-5xx':
         instance_name => 'webrequest',
-        destination   => "/bin/grep --line-buffered '\"http_status\":\"5' | jq --compact-output --arg type webrequest '. + {type: \$type}' | socat - TCP:${logstash_host}:${logstash_port}",
+        destination   => "/bin/grep --line-buffered '\"http_status\":\"5' | jq --compact-output --arg type webrequest '. + {type: \$type}' | sed 's/^/@cee: /' | logger -t webrequest",
         type          => 'pipe',
     }
 }
