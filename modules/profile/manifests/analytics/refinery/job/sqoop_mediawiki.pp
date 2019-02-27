@@ -21,11 +21,9 @@ class profile::analytics::refinery::job::sqoop_mediawiki {
     $wiki_file_labs             = '/mnt/hdfs/wmf/refinery/current/static_data/mediawiki/grouped_wikis/labs_grouped_wikis.csv'
     $wiki_file_private          = '/mnt/hdfs/wmf/refinery/current/static_data/mediawiki/grouped_wikis/prod_grouped_wikis.csv'
     # We sqoop most tables out of labsdb so that data is pre-sanitized.
-    $labs_db_host               = 'labsdb-analytics.eqiad.wmnet'
     $labs_db_user               = $::passwords::mysql::analytics_labsdb::user
     $labs_log_file              = "${::profile::analytics::refinery::log_dir}/sqoop-mediawiki.log"
     # Sqoop anything private out of analytics-store
-    $private_db_host            = 'analytics-store.eqiad.wmnet'
     $private_db_user            = $::passwords::mysql::research::user
     $private_log_file           = "${::profile::analytics::refinery::log_dir}/sqoop-mediawiki-private.log"
     # Separate log for sqoops from production replicas
