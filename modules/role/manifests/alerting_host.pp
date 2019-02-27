@@ -29,11 +29,11 @@ class role::alerting_host {
             mpm => 'prefork'
         }
 
-        $httpd_modules = ['headers', 'rewrite', 'authnz_ldap', 'cgi', 'ssl']
+        $httpd_modules = ['headers', 'rewrite', 'authnz_ldap', 'authn_file', 'cgi', 'ssl']
 
     } else {
 
-        $httpd_modules = ['headers', 'rewrite', 'authnz_ldap', 'cgi', 'ssl', 'php5']
+        $httpd_modules = ['headers', 'rewrite', 'authnz_ldap', 'authn_file', 'cgi', 'ssl', 'php5']
     }
 
     class { '::httpd':

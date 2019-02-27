@@ -44,12 +44,21 @@ Alias /icinga /usr/share/icinga/htdocs
             Require ip 85.17.12.83
             Require ip 195.12.224.49/28
         </Files>
+
         AuthName "Developer account (use wiki login name not shell) - nda/ops/wmf"
         AuthType Basic
-        AuthBasicProvider ldap
+        AuthBasicProvider file ldap
+
+        # File based auth for meta-monitoring
+        AuthUserFile "<%= @auth_user_file %>"
+
+        # LDAP based auth for all users
         AuthLDAPBindDN cn=proxyagent,ou=profile,dc=wikimedia,dc=org
         AuthLDAPBindPassword <%= @proxypass %>
         AuthLDAPURL "ldaps://ldap-labs.eqiad.wikimedia.org ldap-labs.codfw.wikimedia.org/ou=people,dc=wikimedia,dc=org?cn"
+
+        # Implicit RequireAny
+        Require user sre-monitoring-bot
         Require ldap-group cn=ops,ou=groups,dc=wikimedia,dc=org
         Require ldap-group cn=wmf,ou=groups,dc=wikimedia,dc=org
         Require ldap-group cn=nda,ou=groups,dc=wikimedia,dc=org

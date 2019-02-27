@@ -1,0 +1,3 @@
+<%- @apache2_auth_users.each do |username, password| -%>
+<%= username %>:<%= scope.function_htpasswd([ password, @apache2_htpasswd_salt]) %>
+<%- end -%>

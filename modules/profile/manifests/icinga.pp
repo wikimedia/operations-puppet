@@ -19,6 +19,8 @@ class profile::icinga(
     Stdlib::Unixpath $temp_path = hiera('profile::icinga::temp_path', '/var/icinga-tmpfs'),
     Stdlib::Unixpath $temp_file = hiera('profile::icinga::temp_file', '/var/icinga-tmpfs/icinga.tmp'),
     Stdlib::Unixpath $status_file = hiera('profile::icinga::status_file', '/var/icinga-tmpfs/status.dat'),
+    String $apache2_htpasswd_salt = hiera('profile::icinga::apache2_htpasswd_salt', ''),
+    Hash[String, String] $apache2_auth_users = hiera('profile::icinga::apache2_auth_users', {}),
 ){
     $is_passive = !($::fqdn == $active_host)
 
@@ -113,9 +115,11 @@ class profile::icinga(
 
     class { '::sslcert::dhparam': }
     class { '::icinga::web':
-        icinga_user  => $icinga_user,
-        icinga_group => $icinga_group,
-        virtual_host => $virtual_host,
+        icinga_user           => $icinga_user,
+        icinga_group          => $icinga_group,
+        virtual_host          => $virtual_host,
+        apache2_htpasswd_salt => $apache2_htpasswd_salt,
+        apache2_auth_users    => $apache2_auth_users,
     }
 
     class { '::icinga::naggen':
