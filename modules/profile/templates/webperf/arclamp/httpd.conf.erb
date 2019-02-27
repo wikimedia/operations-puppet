@@ -1,9 +1,10 @@
-# Apache configuration for xenon SVG hosting.
-
 # This file is managed by Puppet.
+
+# Apache configuration for hosting of sampling profiler logs
+# and SVG Flame graphs.
 <VirtualHost *:80>
     DocumentRoot "/var/www"
-    Alias /xenon "/srv/xenon"
+    Alias /arclamp "/srv/xenon"
 
     <Directory />
         AllowOverride None

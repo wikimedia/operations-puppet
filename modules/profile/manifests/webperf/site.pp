@@ -9,9 +9,9 @@
 #   Server name for the Apache VirtualHost of this site.
 #
 # [*arclamp_host*]
-#   HTTP host address where Xenon data is served (hostname or IP, port allowed).
+#   HTTP host address where Arc Lamp artefacts are served (hostname or IP, port allowed).
 #   For example "prof.example" or "127.0.0.2:8000".
-#   Optional. If undefined, the "/xenon" path is not proxied.
+#   Optional. If undefined, the "/arclamp" path is not proxied.
 #
 # [*xhgui_host*]
 #   HTTP host address where the XHGui application is served (hostname or IP, port allowed).

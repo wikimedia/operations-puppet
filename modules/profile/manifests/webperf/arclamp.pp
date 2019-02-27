@@ -5,7 +5,7 @@
 # exposing the trace logs and SVG flame graphs.
 #
 # See also profile::webperf::site, which provisions a reverse proxy
-# to expose the data at <https://performance.wikimedia.org/xenon/>.
+# to expose the data at <https://performance.wikimedia.org/arclamp/>.
 #
 # === Parameters
 #
@@ -24,11 +24,11 @@ class profile::webperf::arclamp (
         redis_port => $redis_port,
     }
 
-    httpd::site { 'xenon':
+    httpd::site { 'arclamp':
         content => template('profile/webperf/arclamp/httpd.conf.erb'),
     }
 
-    ferm::service { 'xenon_http':
+    ferm::service { 'arclamp_http':
         proto => 'tcp',
         port  => '80',
     }

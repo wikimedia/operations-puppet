@@ -22,8 +22,9 @@
     </Directory>
 
 <% if @arclamp_host -%>
-    ProxyPass /xenon http://<%= @arclamp_host %>/xenon
-    ProxyPassReverse /xenon http://<%= @arclamp_host %>/xenon
+    Redirect 301 /xenon /arclamp
+    ProxyPass /arclamp http://<%= @arclamp_host %>/arclamp
+    ProxyPassReverse /arclamp http://<%= @arclamp_host %>/arclamp
 <% end -%>
 
 <% if @xhgui_host -%>
