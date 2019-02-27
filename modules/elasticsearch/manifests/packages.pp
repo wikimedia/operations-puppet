@@ -4,6 +4,7 @@
 #
 class elasticsearch::packages (
     String $java_package,
+    String $package_name,
     Boolean $send_logs_to_logstash,
 ) {
     include ::java::tools
@@ -13,6 +14,7 @@ class elasticsearch::packages (
     package { 'elasticsearch':
         ensure  => present,
         require => Package[$java_package],
+        name    => $package_name,
     }
 
     require_package('curl')

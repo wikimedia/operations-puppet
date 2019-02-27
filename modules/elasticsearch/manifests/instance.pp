@@ -76,7 +76,8 @@
 #        127.0.10.*:9243, localhost:*). Scheme is ignored by the whitelist - only host
 #        and port are used. Defaults to undef, which means no remote reindex can occur.
 # - $script_max_compilations_per_minute: integer, max number of script
-#        compilations per minute, defaults to undef (see T171579).
+#        compilations per minute, defaults to undef (see T171579). (Deprecated)
+#        TODO: Remove
 # - $ltr_cache_size: string, Size of memory cache for LTR plugin.
 # - $curator_uses_unicast_hosts: should curator try to connect to hosts
 #        configured for unicast discovery or only to localhost. Curator
@@ -199,12 +200,11 @@ define elasticsearch::instance(
     file { "${config_dir}/logging.yml":
         ensure => absent,
     }
-    # log4j2.properties is used by elasticsearch 5.x
     file { "${config_dir}/log4j2.properties":
         ensure  => file,
         owner   => 'root',
         group   => 'root',
-        content => template('elasticsearch/log4j2.properties.erb'),
+        content => template("elasticsearch/log4j2_${version}.properties.erb"),
         mode    => '0444',
         require => Package['elasticsearch'],
     }
@@ -225,6 +225,28 @@ define elasticsearch::instance(
         group   => 'root',
         mode    => '0444',
         require => Package['elasticsearch'],
+    }
+
+    $ensure_keystore = $version ? {
+        5       => 'absent',
+        default => 'present'
+    }
+
+    if $ensure_keystore == 'present' {
+        exec { 'elasticsearch-create-keystore':
+            command     => '/usr/share/elasticsearch/bin/elasticsearch-keystore create',
+            environment => ["ES_PATH_CONF=${config_dir}"],
+            creates     => "${config_dir}/elasticsearch.keystore",
+            require     => Package['elasticsearch'],
+            before      => File["${config_dir}/elasticsearch.keystore"],
+        }
+    }
+
+    file { "${config_dir}/elasticsearch.keystore":
+            ensure => $ensure_keystore,
+            owner  => 'root',
+            group  => 'elasticsearch',
+            mode   => '0640',
     }
 
     file { $data_dir:

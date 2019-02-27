@@ -1,0 +1,66 @@
+monitorInterval=600
+rootLogger.level = info
+rootLogger.appenderRef.file.ref = file
+<% if @send_logs_to_logstash %>
+rootLogger.appenderRef.ship_to_logstash.ref = ship_to_logstash
+<% end %>
+
+# If you need to know more about shard allocation you to set this to debug.
+# Trace seems to generate enough logs to slow down the process.
+# logger.cluster.name = org.elasticsearch.cluster
+# logger.cluster.level = debug
+
+# peer shard recovery
+# logger.indices_recovery.name = org.elasticsearch.indices.recovery
+# logger.indices_recovery.level = debug
+
+# discovery
+# logger.discovery.name = org.elasticsearch.discovery
+# logger.discovery.level = trace
+
+logger.search_slowlog.name = index.search.slowlog
+logger.search_slowlog.level = trace
+logger.search_slowlog.additivity = false
+logger.search_slowlog.appenderRef.slowlog.ref = index_search_slow_log_file
+<% if @send_logs_to_logstash %>
+logger.search_slowlog.appenderRef.ship_to_logstash.ref = ship_to_logstash
+<% end %>
+logger.indexing_slowlog.name = index.indexing.slowlog
+logger.indexing_slowlog.level = info
+logger.indexing_slowlog.additivity = false
+logger.indexing_slowlog.appenderRef.slowlog.ref = index_search_slow_log_file
+<% if @send_logs_to_logstash %>
+logger.indexing_slowlog.appenderRef.ship_to_logstash.ref = ship_to_logstash
+<% end %>
+
+appender.file.name = file
+appender.file.type = File
+appender.file.fileName = ${sys:es.logs.base_path}${sys:file.separator}${sys:es.logs.cluster_name}.log
+appender.file.append = true
+appender.file.layout.type = PatternLayout
+appender.file.layout.pattern = [%d{ISO8601}][%-5p][%-25c] %m%n
+
+appender.index_search_slow_log_file.name = index_search_slow_log_file
+appender.index_search_slow_log_file.type = File
+appender.index_search_slow_log_file.fileName = ${sys:es.logs.base_path}${sys:file.separator}${sys:es.logs.cluster_name}_index_search_slowlog.log
+appender.index_search_slow_log_file.append = true
+appender.index_search_slow_log_file.layout.type = PatternLayout
+appender.index_search_slow_log_file.layout.pattern = [%d{ISO8601}][%-5p][%-25c] %m%n
+
+appender.index_indexing_slow_log_file.name = index_indexing_slow_log_file
+appender.index_indexing_slow_log_file.type = File
+appender.index_indexing_slow_log_file.fileName = ${sys:es.logs.base_path}${sys:file.separator}${sys:es.logs.cluster_name}_index_indexing_slowlog.log
+appender.index_indexing_slow_log_file.append = true
+appender.index_indexing_slow_log_file.layout.type = PatternLayout
+appender.index_indexing_slow_log_file.layout.pattern = [%d{ISO8601}][%-5p][%-25c] %m%n
+
+<% if @send_logs_to_logstash %>
+# ship_to_logstash needs to also be added to rootLogger and slow loggers to actually ship logs
+appender.ship_to_logstash.name = ship_to_logstash
+appender.ship_to_logstash.type = Gelf
+appender.ship_to_logstash.host = udp:<%= @logstash_host %>
+appender.ship_to_logstash.port = <%= @logstash_gelf_port %>
+appender.ship_to_logstash.originHost = <%= @hostname %>
+appender.ship_to_logstash.facility = elasticsearch
+appender.ship_to_logstash.extractStackTrace = true
+<% end %>

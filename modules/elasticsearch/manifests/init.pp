@@ -28,9 +28,14 @@ class elasticsearch (
     Optional[String] $rack                                           = undef,
     Optional[String] $row                                            = undef,
 ) {
-    # Check arguments
+    # Check arguments and set package
     case $version {
-        5: {}
+        5: {
+            $package_name = 'elasticsearch'
+        }
+        6: {
+            $package_name = 'elasticsearch-oss'
+        }
         default: { fail("Unsupported elasticsearch version: ${version}") }
     }
 
@@ -57,6 +62,7 @@ class elasticsearch (
 
     class { '::elasticsearch::packages':
         java_package          => $java_package,
+        package_name          => $package_name,
         # Hack to be resolved in followup patch
         send_logs_to_logstash => $configured_instances.reduce(false) |Boolean $agg, $kv_pair| {
             $agg or pick_default($kv_pair[1]['send_logs_to_logstash'], true)
@@ -65,9 +71,19 @@ class elasticsearch (
 
     class { '::elasticsearch::curator': }
 
-    # Remove any confusion about if this is used
+    # Overwrite default env file provided by elastic
+    # so that it does not conflict without our var set by systemd unit
+    $ensure_etc_default = $version ? {
+        5 => 'absent',
+        6 => 'file',
+    }
     file { '/etc/default/elasticsearch':
-        ensure => absent,
+        ensure  => $ensure_etc_default,
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0444',
+        content => file('elasticsearch/elasticsearch.env'),
+        require => Package['elasticsearch']
     }
 
     # main elasticsearch dir, purge it to ensure any undefined config file is removed

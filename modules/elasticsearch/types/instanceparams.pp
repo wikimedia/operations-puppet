@@ -32,6 +32,7 @@ type Elasticsearch::InstanceParams = Struct[{
     'gc_log'                             => Optional[Boolean],
     'search_shard_count_limit'           => Optional[Integer],
     'reindex_remote_whitelist'           => Optional[String],
+    # TODO: remove
     'script_max_compilations_per_minute' => Optional[Integer[0]],
     'ltr_cache_size'                     => Optional[String],
     'curator_uses_unicast_hosts'         => Optional[Boolean],
