@@ -18,12 +18,14 @@ profile::elasticsearch::instances:
         http_port: 9200
         tls_port: 9243
         transport_tcp_port: 9300
+        certificate_name: 'relforge.svc.eqiad.wmnet'
     relforge-eqiad-small-alpha:
         cluster_name: 'relforge-eqiad-small-alpha'
         heap_memory: '4G'
         http_port: 9400
         tls_port: 9443
         transport_tcp_port: 9500
+        certificate_name: 'relforge.svc.eqiad.wmnet'
 profile::elasticsearch::base_data_dir: /srv/elasticsearch
 profile::elasticsearch::common_settings:
     awareness_attributes: ''
