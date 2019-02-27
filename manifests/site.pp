@@ -1385,6 +1385,7 @@ node /^logstash1010\.eqiad\.wmnet$/ {
 
 node /^logstash101[1-2]\.eqiad\.wmnet$/ {
     role(logstash::elasticsearch)
+    interface::add_ip6_mapped { 'main': } # lint:ignore:wmf_styleguide
 }
 
 # eqiad logstash collectors (Ganeti)
