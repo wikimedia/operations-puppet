@@ -809,14 +809,9 @@ hadoop_clusters:
     # Raised for T206943
     yarn_resourcemanager_zk_timeout_ms: 20000
 
-    # The Analytics Hadoop cluster shares zookeeper with
-    # a testing cluster, but it was created way before we realized
-    # that the /rmstore zookeeper path needed to be separate for
-    # each cluster (the HA logic for example, share the same root zk znode
-    # but uses the cluster name to separate concerns). In order to avoid
-    # any issue with the running cluster we keep the 'old' convention
-    # (overriding the default of /rmstore-nameofthecluster).
-    yarn_resourcemanager_zk_state_store_parent_path: '/rmstore'
+    # Yarn rmstore state stored on HDFS (rather than zookeeper)
+    # T216952
+    yarn_resourcemanager_fs_state_store_uri: '/user/yarn/rmstore'
 
     # Allow superset to impersonate users.
     # This is what allows superset to access files in
