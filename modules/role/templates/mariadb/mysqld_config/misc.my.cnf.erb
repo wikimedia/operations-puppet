@@ -3,21 +3,6 @@
 [client]
 port   = 3306
 socket = <%= @socket %>
-<% if @ssl == 'on' %>
-# ssl
-ssl-ca=/etc/mysql/ssl/cacert.pem
-ssl-cert=/etc/mysql/ssl/server-cert.pem
-ssl-key=/etc/mysql/ssl/server-key.pem
-# skip server cert validation until we generate one cert per server
-# it would check the cert's common name against the host
-# ssl-verify-server-cert
-<% elsif @ssl == 'puppet-cert' %>
-# ssl
-ssl-ca=/etc/ssl/certs/Puppet_Internal_CA.pem
-ssl-cert=/etc/mysql/ssl/cert.pem
-ssl-key=/etc/mysql/ssl/server.key
-ssl-verify-server-cert
-<% end %>
 
 [mysqld]
 
@@ -102,13 +87,7 @@ aria_pagecache_buffer_size     = 512M
 
 gtid_domain_id  = <%= @gtid_domain_id %>
 
-<% if @ssl == 'on' %>
-# ssl
-ssl-ca=/etc/mysql/ssl/cacert.pem
-ssl-cert=/etc/mysql/ssl/server-cert.pem
-ssl-key=/etc/mysql/ssl/server-key.pem
-ssl-cipher=TLSv1.2
-<% elsif @ssl == 'puppet-cert' %>
+<% if @ssl == 'on' or @ssl == 'puppet-cert' %>
 # ssl
 ssl-ca=/etc/ssl/certs/Puppet_Internal_CA.pem
 ssl-cert=/etc/mysql/ssl/cert.pem
