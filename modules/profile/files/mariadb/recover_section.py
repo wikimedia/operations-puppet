@@ -1,5 +1,8 @@
 #!/usr/bin/python3
 
+# Dependencies: mydumper (for /usr/bin/myloader)
+#               tar at (/bin/tar)
+
 import argparse
 import os
 import re
@@ -13,7 +16,7 @@ DEFAULT_PORT = 3306
 DEFAULT_USER = 'root'
 BACKUP_DIR = '/srv/backups/dumps/latest'
 # FIXME: backups will stop working on Jan 1st 2100
-DUMPNAME_REGEX = 'dump\.([a-z0-9\-]+)\.(20\d\d-[01]\d-[0123]\d\--\d\d-\d\d-\d\d)'
+DUMPNAME_REGEX = r'dump\.([a-z0-9\-]+)\.(20\d\d-[01]\d-[0123]\d\--\d\d-\d\d-\d\d)'
 
 
 def parse_options():
