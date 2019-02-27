@@ -3551,3 +3551,7 @@ ldap_only_users:
     ensure: present
     realname: Holger Knust
     email: hknust@wikimedia.org
+  tsev:
+    ensure: present
+    realname: Toni Sevener
+    email: tsevener@wikimedia.org
