@@ -3218,6 +3218,11 @@ host labsdb1011 {
     fixed-address labsdb1011.eqiad.wmnet;
 }
 
+host labsdb1012 {
+    hardware ethernet b8:83:03:53:f0:48;
+    fixed-address labsdb1012.eqiad.wmnet;
+}
+
 host labservices1001 {
     hardware ethernet C8:1F:66:BF:82:9A;
     fixed-address labservices1001.wikimedia.org;
