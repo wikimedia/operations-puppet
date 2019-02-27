@@ -1369,11 +1369,20 @@ node 'lithium.eqiad.wmnet' {
     role(syslog::centralserver)
 }
 
-node /^logstash100[4-6]\.eqiad\.wmnet$/ {
+node /^logstash1004\.eqiad\.wmnet$/ {
+    role(spare::system)
+}
+
+node /^logstash100[5-6]\.eqiad\.wmnet$/ {
     role(kafka::logging)
 }
 
-node /^logstash101[0-2]\.eqiad\.wmnet$/ {
+node /^logstash1010\.eqiad\.wmnet$/ {
+    role(logstash::elasticsearch)
+    include ::role::kafka::logging # lint:ignore:wmf_styleguide
+}
+
+node /^logstash101[1-2]\.eqiad\.wmnet$/ {
     role(logstash::elasticsearch)
 }
 

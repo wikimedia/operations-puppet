@@ -570,7 +570,7 @@ kafka_clusters:
   logging-eqiad:
     zookeeper_cluster_name: main-eqiad
     brokers:
-      logstash1004.eqiad.wmnet:
+      logstash1010.eqiad.wmnet:
         id: 1004
         rack: A
       logstash1005.eqiad.wmnet:
