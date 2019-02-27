@@ -69,7 +69,9 @@ def check_backup_database(options):
     except (pymysql.err.OperationalError, pymysql.err.InternalError):
         return (CRITICAL, 'We could not connect to the backup metadata database')
     with db.cursor(pymysql.cursors.DictCursor) as cursor:
-            query = "SELECT * FROM backups " \
+            query = "SELECT id, name, status, source, host, type, section, start_date, " \
+                    "       end_date, total_size " \
+                    "FROM backups " \
                     "WHERE type = 'dump' and " \
                     "section = '{}' and " \
                     "host like '%.{}.wmnet' and " \
@@ -91,7 +93,11 @@ def check_backup_database(options):
                                     datetime.timedelta(seconds=freshness))
             present = arrow.utcnow()
             humanized_freshness = present.humanize(present.shift(seconds=freshness))
-            size = int(data[0]['total_size'])
+            size = data[0]['total_size']
+            if size is None:
+                size = 0
+            else:
+                size = int(size)
             humanized_size = str(round(size / 1024 / 1024 / 1024)) + ' GB'
             humanized_warn_size = str(round(WARN_SIZE / 1024 / 1024 / 1024)) + ' GB'
             humanized_crit_size = str(round(CRIT_SIZE / 1024)) + ' KB'
