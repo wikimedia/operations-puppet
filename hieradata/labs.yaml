@@ -212,4 +212,4 @@ ntp_peers:
 prometheus_upgrade_one_seven: true
 
 # Scap version is managed via puppet in labs
-scap::version: 3.9.0-1
+scap::version: 3.9.2-1
