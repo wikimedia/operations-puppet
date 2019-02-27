@@ -14,7 +14,7 @@ UNKNOWN = 3
 
 SECTIONS = ['s1', 's2', 's3', 's4', 's5', 's6', 's7', 's8',
             'x1', 'pc1', 'pc2', 'pc3', 'es1', 'es2', 'es3',
-            'm1', 'm2', 'm3', 'm4', 'm5']
+            'm1', 'm2', 'm3', 'm4', 'm5', 'tendril']
 DATACENTERS = ['eqiad', 'codfw']
 
 DEFAULT_FRESHNESS = 691200  # 8 days, in seconds
@@ -115,15 +115,15 @@ def check_backup_database(options):
                 return(CRITICAL, 'Backup for {} at {} ({}) is less than {}: '
                                  '{} bytes'.format(section,
                                                    datacenter,
-                                                   humanized_crit_size,
                                                    last_backup_date,
+                                                   humanized_crit_size,
                                                    size))
             if size < WARN_SIZE:
                 return (WARNING, 'Backup for {} at {} ({}) is less than {}: '
                                  '{} bytes.'.format(section,
                                                     datacenter,
-                                                    humanized_warn_size,
                                                     last_backup_date,
+                                                    humanized_warn_size,
                                                     size))
             # TODO: check files expected
             return (OK, 'Backup for {} at {} taken less than {} and larger than {}: '
