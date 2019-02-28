@@ -573,7 +573,7 @@ kafka_clusters:
       logstash1010.eqiad.wmnet:
         id: 1004
         rack: A
-      logstash1005.eqiad.wmnet:
+      logstash1011.eqiad.wmnet:
         id: 1005
         rack: B
       logstash1006.eqiad.wmnet:

@@ -129,8 +129,8 @@ class network::constants {
             'kafka_brokers_logging' => [
                     '10.64.0.181',                  # logstash1010.eqiad.wmnet
                     '2620:0:861:101:10:64:0:181',   # logstash1010.eqiad.wmnet
-                    '10.64.16.185',                 # logstash1005.eqiad.wmnet
-                    '2620:0:861:102:10:64:16:185',  # logstash1005.eqiad.wmnet
+                    '10.64.16.30',                  # logstash1011.eqiad.wmnet
+                    '2620:0:861:102:10:64:16:30',   # logstash1011.eqiad.wmnet
                     '10.64.48.109',                 # logstash1006.eqiad.wmnet
                     '2620:0:861:107:10:64:48:109',  # logstash1006.eqiad.wmnet
                     '10.192.0.112',                 # logstash2001.codfw.wmnet

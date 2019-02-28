@@ -1374,15 +1374,15 @@ node 'lithium.eqiad.wmnet' {
     role(syslog::centralserver)
 }
 
-node /^logstash1004\.eqiad\.wmnet$/ {
+node /^logstash100[4-5]\.eqiad\.wmnet$/ {
     role(spare::system)
 }
 
-node /^logstash100[5-6]\.eqiad\.wmnet$/ {
+node /^logstash1006\.eqiad\.wmnet$/ {
     role(kafka::logging)
 }
 
-node /^logstash1010\.eqiad\.wmnet$/ {
+node /^logstash101[0-1]\.eqiad\.wmnet$/ {
     role(logstash::elasticsearch)
     include ::role::kafka::logging # lint:ignore:wmf_styleguide
     interface::add_ip6_mapped { 'main': } # lint:ignore:wmf_styleguide
