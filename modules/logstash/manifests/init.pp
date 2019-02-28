@@ -89,10 +89,6 @@ class logstash (
             'path.config'      => '/etc/logstash/conf.d',
             'path.logs'        => '/var/log/logstash',
             'pipeline.workers' => $pipeline_workers,
-            # Spool inputs to disk. Helps with non backpressure-aware protocols and slow
-            # pipelines. See also T200960.
-            'queue.type'       => 'persisted',
-            'queue.drain'      => true,
         }),
         owner   => 'root',
         group   => 'root',
