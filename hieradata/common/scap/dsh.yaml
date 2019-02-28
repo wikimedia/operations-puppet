@@ -24,6 +24,15 @@ scap::dsh::groups:
   jobrunner:
     conftool:
       - {'cluster': 'jobrunner', 'service': 'apache2'}
+  appserver:
+    conftool:
+      - {'cluster': 'appserver', 'service': 'apache2'}
+  api_appserver:
+    conftool:
+      - {'cluster': 'api_appserver', 'service': 'apache2'}
+  testserver:
+    conftool:
+      - {'cluster': 'testserver', 'service': 'apache2'}
   mediawiki-installation:
     conftool:
       - {'cluster': 'appserver', 'service': 'apache2'}
