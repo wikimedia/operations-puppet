@@ -2,7 +2,7 @@ puppetmaster::servers:
   puppetmaster1001.eqiad.wmnet:
     - { worker: puppetmaster1001.eqiad.wmnet, loadfactor: 10 }
     - { worker: puppetmaster1002.eqiad.wmnet, loadfactor: 20 }
-    - { worker: rhodium.eqiad.wmnet, loadfactor: 20 }
+    - { worker: rhodium.eqiad.wmnet, loadfactor: 20, offline: true }
   puppetmaster2001.codfw.wmnet:
     - { worker: puppetmaster2001.codfw.wmnet, loadfactor: 10 }
     - { worker: puppetmaster2002.codfw.wmnet, loadfactor: 20 }
