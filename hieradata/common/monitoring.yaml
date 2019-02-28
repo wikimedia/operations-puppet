@@ -259,8 +259,6 @@ monitoring::groups:
     description: Networking equipment (routers/switches/etc.)
   asw1-eqsin:
     description: Equipment with asw1-eqsin as uplink
-  asw2-a5-eqiad:
-    description: Equipment with asw2-a5-eqiad as uplink
   asw2-a-eqiad:
     description: Equipment with asw2-a-eqiad as uplink
   asw2-b-eqiad:
