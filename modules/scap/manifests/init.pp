@@ -13,6 +13,7 @@ class scap (
     $deployment_server = 'deployment',
     $wmflabs_master = 'deployment-deploy01.deployment-prep.eqiad.wmflabs',
     $version = 'present',
+    Stdlib::Port::Unprivileged $php7_admin_port = 9181,
 ) {
     package { 'scap':
         ensure => $version,

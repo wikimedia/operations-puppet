@@ -60,7 +60,7 @@ dsh_app_canaries: mediawiki-appserver-canaries
 
 logstash_host: logstash1009.eqiad.wmnet:9200
 canary_service: mwdeploy
-php_version: php7.0
+php_version: php7.2
 
 [eqiad.wmnet]
 # Wikimedia Foundation production eqiad datacenter
@@ -79,7 +79,8 @@ tcpircbot_host: icinga.wikimedia.org
 udp2log_host: mwlog1001.eqiad.wmnet
 
 canary_dashboard_url: https://logstash.wikimedia.org/goto/db09a36be5ed3e81155041f7d46ad040
-
+php7_admin_port: <%= @php7_admin_port %>
+mw_web_clusters: "appserver,api_appserver,jobrunner,testserver"
 
 [eqiad.wmflabs]
 # Wikimedia Foundation beta eqiad datacenter
@@ -94,7 +95,8 @@ master_rsync: <%= @deployment_server %>
 statsd_host: statsd.eqiad.wmnet
 tcpircbot_host: icinga.wikimedia.org
 udp2log_host: mwlog1001.eqiad.wmnet
-
+# Note: not adding the php7 configuration here for now.
+# TODO: enable php7 on wikitech
 
 [wmflabs]
 # Wikimedia Foundation beta cluster configuration
