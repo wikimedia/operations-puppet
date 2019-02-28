@@ -1,6 +1,8 @@
 require 'spec_helper'
 
 describe 'install_server::tftp_server', :type => :class do
+    let(:pre_condition) { 'include base::auto_restarts' }
+
     it { should compile }
     it { should contain_package('atftpd').with_ensure('present') }
 

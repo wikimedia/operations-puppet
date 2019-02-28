@@ -4,6 +4,8 @@ fixtures:
         letsencrypt: "../../../../letsencrypt"
         nginx: "../../../../nginx"
         sslcert: "../../../../sslcert"
+        # For atleast base::service_restart
+        base: "../../../../base"
         # For atleast validate_re()
         stdlib: "../../../../stdlib"
         # For atleast ensure_service()
