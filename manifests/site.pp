@@ -279,14 +279,14 @@ node 'cp1008.wikimedia.org' {
 }
 
 # ex cp-misc_eqiad
-node /^cp10(45|5[18]|61)\.eqiad\.wmnet$/ {
+node /^cp10(|58|61)\.eqiad\.wmnet$/ {
     role(spare::system)
 }
 
 # 18 total systems here for decom (old eqiad caches not in use):
 # cp104[6789], cp1050, cp105[2345], cp1059, cp1060, cp106[2345678]
 # 4          + 1     + 4          + 1     + 1     + 7 = 18
-node /^cp10(4[6789]|5[023459]|6[02345678])\.eqiad\.wmnet$/ {
+node /^cp10(59|6[02345678])\.eqiad\.wmnet$/ {
     role(spare::system)
 }
 
