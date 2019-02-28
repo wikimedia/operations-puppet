@@ -39,6 +39,14 @@ class profile::mediawiki::php::monitoring(
         mode    => '0440'
     }
 
+    # Needed to allow scap to perform opcache invalidation.
+    ferm::service { 'phpadmin_deployment':
+        ensure => present,
+        proto  => 'tcp',
+        port   => $admin_port,
+        srange => '$DEPLOYMENT_HOSTS',
+    }
+
     $ferm_srange = "(@resolve((${prometheus_nodes_str})) @resolve((${prometheus_nodes_str}), AAAA))"
     ferm::service { 'prometheus-php-cache-exporter':
         proto  => 'tcp',
