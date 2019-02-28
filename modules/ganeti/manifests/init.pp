@@ -64,7 +64,7 @@ class ganeti(
         owner  => 'root',
         group  => 'root',
         mode   => '0644',
-        source => 'puppet:///modules/ganeti/files/etc_default_ganeti'
+        source => 'puppet:///modules/ganeti/etc_default_ganeti'
     }
 
 }
