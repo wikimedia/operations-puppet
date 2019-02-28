@@ -58,4 +58,13 @@ class ganeti(
         mode   => '0644',
         source => 'puppet:///modules/ganeti/lvm.conf',
     }
+
+    file { '/etc/default/ganeti':
+        ensure => present,
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0644',
+        source => 'puppet:///modules/ganeti/files/etc_default_ganeti'
+    }
+
 }
