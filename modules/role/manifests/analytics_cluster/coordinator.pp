@@ -45,6 +45,7 @@ class role::analytics_cluster::coordinator {
 
     # Various crons that launch Hadoop jobs.
     include ::profile::analytics::refinery
+    include ::profile::analytics::cluster::repositories::statistics
 
     # Camus crons import data into
     # from Kafka into HDFS.

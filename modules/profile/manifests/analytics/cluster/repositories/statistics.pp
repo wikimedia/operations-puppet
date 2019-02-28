@@ -1,7 +1,7 @@
 # == Class profile::analytics::cluster::repositories::statistics
 #
 # Specific repositories that should be deployed on analytics statistics
-# nodes.
+# nodes and the hadoop coordinator.
 #
 class profile::analytics::cluster::repositories::statistics {
 
