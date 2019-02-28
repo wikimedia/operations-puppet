@@ -6,12 +6,14 @@ class profile::mediawiki::php::monitoring(
     String $fcgi_pool = hiera('profile::mediawiki::fcgi_pool', 'www'),
     Boolean $monitor_page = hiera('profile::mediawiki::php::monitoring::monitor_page', true),
 ) {
-    require profile::mediawiki::php
+    require ::network::constants
+    require ::profile::mediawiki::php
     $fcgi_proxy = mediawiki::fcgi_endpoint($fcgi_port, $fcgi_pool)
     $admin_port = 9181
     $docroot = '/var/www/php-monitoring'
     $htpasswd_file = '/etc/apache2/htpasswd.php7adm'
     $prometheus_nodes_str = join($prometheus_nodes, ' ')
+    $deployment_nodes = $::network::constants::special_hosts[$::realm]['deployment_hosts']
     # Admin interface (and prometheus metrics) for APCu and opcache
     file { $docroot:
         ensure  => directory,

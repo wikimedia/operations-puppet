@@ -9,6 +9,14 @@
            Require local
        </RequireAny>
    </Location>
+   <Location /opcache-free>
+       <RequireAny>
+       <%- @deployment_nodes.each do |ip| -%>
+           Require ip <%= ip %>
+       <%- end -%>
+           Require local
+       </RequireAny>
+   </Location>
    # disabled for now, would need more apache modules
    # to be enabled
    #<LocationMatch "/(apcu|opcache)-free">
