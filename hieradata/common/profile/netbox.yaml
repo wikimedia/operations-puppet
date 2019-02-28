@@ -1,0 +1,8 @@
+profile::netbox::netbox_api: https://netbox.wikimedia.org/
+profile::netbox::ganeti_sync_profiles:
+    eqiad:
+        url: ganeti01.svc.eqiad.wmnet
+        port: 5080
+    codfw:
+        url: ganeti01.svc.eqiad.wmnet
+        port: 5080

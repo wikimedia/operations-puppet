@@ -1,0 +1,4 @@
+# Global Ganeti login information
+profile::ganeti::rapi::ro_user: 'ro_user'
+# stored in private
+# profile::ganeti::rapi::ro_password:

@@ -1,0 +1,15 @@
+# Managed by Puppet
+
+[auth]
+netbox_token="<%= @nb_token %>"
+ganeti_user="<%= @ganeti_user %>"
+ganeti_password="<%= @ganeti_password %>"
+
+[netbox]
+api=<%= @nb_api %>
+
+<%  @nb_ganeti_profiles.each_pair do |profile, profdata| -%>
+[profile:<%= profile %>]
+api="https://<%= profdata['url'] %>:<%= profdata['port'] %>/"
+cluster=<%= profdata['url'] %>
+<% end %>

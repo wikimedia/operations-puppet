@@ -13,10 +13,15 @@
 #       include profile::netbox
 #
 class profile::netbox (
-    $active_server = hiera('profile::netbox::active_server'),
-    $slaves = hiera('profile::netbox::slaves', undef),
-    $slave_ipv4 = hiera('profile::netbox::slave_ipv4'),
-    $slave_ipv6 = hiera('profile::netbox::slave_ipv6'),
+    String $active_server = hiera('profile::netbox::active_server'),
+    Optional[Array[String]] $slaves = hiera('profile::netbox::slaves', undef),
+    Stdlib::Ipv4 $slave_ipv4 = hiera('profile::netbox::slave_ipv4'),
+    Stdlib::Ipv6 $slave_ipv6 = hiera('profile::netbox::slave_ipv6'),
+    String $nb_token = hiera('profile::netbox::tokens::read_write'),
+    String $ganeti_user = hiera('profile::ganeti::rapi::ro_user'),
+    String $ganeti_password = hiera('profile::ganeti::rapi::ro_password'),
+    Stdlib::HTTPSUrl $nb_api = hiera('profile::netbox::netbox_api'),
+    Hash[String, Hash[String, Scalar, 2, 2]] $nb_ganeti_profiles = hiera('profile::netbox::ganeti_sync_profiles')
 ) {
 
     include passwords::netbox
@@ -174,5 +179,12 @@ class profile::netbox (
         description   => 'netbox HTTPS',
         check_command => 'check_https_url!netbox.wikimedia.org!https://netbox.wikimedia.org',
         notes_url     => 'https://wikitech.wikimedia.org/wiki/Netbox',
+    }
+
+    file { '/etc/netbox-ganeti-sync.cfg':
+        owner   => 'deploy-librenms',
+        group   => 'www-data',
+        mode    => '0400',
+        content => template('profile/netbox/netbox-ganeti-sync.cfg.erb')
     }
 }
