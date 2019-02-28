@@ -64,10 +64,7 @@ class profile::mediawiki::php(
         'opcache.memory_consumption'    => 256,
         'opcache.max_accelerated_files' => 24000,
         'opcache.max_wasted_percentage' => 10,
-        # TODO: is this ok or it will create race conditions during large deployments?
-        # It might be better to just disable revalidation and have scap do a rolling
-        # restart of the opcache upon deployments.
-        'opcache.revalidate_freq'       => 60,
+        'opcache.validate_timestamps'   => 0,
         'auto_prepend_file'             => '/srv/mediawiki/wmf-config/PhpAutoPrepend.php',
     }
     if $enable_fpm {
