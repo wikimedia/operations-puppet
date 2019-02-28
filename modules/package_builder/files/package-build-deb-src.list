@@ -1,7 +1,4 @@
-deb-src http://apt.wikimedia.org/wikimedia trusty-wikimedia main universe thirdparty
 deb-src http://apt.wikimedia.org/wikimedia jessie-wikimedia main backports thirdparty
-deb-src http://mirrors.wikimedia.org/ubuntu/ trusty main multiverse universe
-deb-src http://mirrors.wikimedia.org/ubuntu/ trusty-updates main multiverse universe
 deb-src http://mirrors.wikimedia.org/debian/ jessie main non-free contrib
 deb-src http://security.debian.org/ jessie/updates main contrib non-free
 deb-src http://mirrors.wikimedia.org/debian/ jessie-updates main contrib non-free

@@ -11,14 +11,6 @@ class package_builder::hooks(
         mode   => '0755',
     }
 
-    # Note: sid does not have a wikimedia repo and will never do so no hook for
-    # it for now
-    package_builder::pbuilder_hook { 'trusty':
-        distribution => 'trusty',
-        components   => 'main universe non-free thirdparty',
-        basepath     => $basepath,
-    }
-
     package_builder::pbuilder_hook { 'jessie':
         distribution => 'jessie',
         components   => 'main backports thirdparty',

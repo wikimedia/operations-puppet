@@ -1,1 +1,1 @@
-package_builder::pbuilder_base{ 'trusty': }
+package_builder::pbuilder_base{ 'stretch': }

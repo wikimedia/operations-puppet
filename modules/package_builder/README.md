@@ -16,7 +16,6 @@ with that class
 After puppet is done you will have a number of pristine cowbuilder environments. Those
 would be:
 
- * trusty-amd64
  * jessie-amd64
  * stretch-amd64
  * buster-amd64

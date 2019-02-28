@@ -7,7 +7,7 @@
 # Default: 'http://mirrors.wikimedia.org/debian
 #
 # [*distribution*]
-# Target Distribution (e.g: trusty, jessie, stretch, etc)
+# Target Distribution (e.g: jessie, stretch, buster, etc)
 # Default: 'stretch'
 #
 # [*components*]

@@ -4,15 +4,6 @@
 class package_builder::environments(
     Stdlib::Unixpath $basepath='/var/cache/pbuilder',
 ) {
-    # amd64 architecture
-    package_builder::pbuilder_base { 'trusty-amd64':
-        distribution => 'trusty',
-        components   => 'main universe',
-        architecture => 'amd64',
-        mirror       => 'http://mirrors.wikimedia.org/ubuntu',
-        keyring      => '/usr/share/keyrings/ubuntu-archive-keyring.gpg',
-        basepath     => $basepath,
-    }
     package_builder::pbuilder_base { 'jessie-amd64':
         distribution => 'jessie',
         components   => 'main',
