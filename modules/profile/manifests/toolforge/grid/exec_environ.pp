@@ -838,7 +838,7 @@ class profile::toolforge::grid::exec_environ {
         apt::repository { "php72-external-${::lsbdistcodename}": #T213666
             uri        => 'http://apt.wikimedia.org/wikimedia',
             dist       => "${::lsbdistcodename}-wikimedia",
-            components => 'thirdparty/php72',
+            components => 'component/php72',
         }
 
         # T212981 - installing npm requires some extra love
