@@ -17,6 +17,7 @@ class profile::analytics::refinery::job::data_purge (
     $query_clicks_log_file           = "${profile::analytics::refinery::log_dir}/drop-query-clicks.log"
     $public_druid_snapshots_log_file = "${profile::analytics::refinery::log_dir}/drop-druid-public-snapshots.log"
     $mediawiki_xmldumps_log_file     = "${profile::analytics::refinery::log_dir}/drop-mediawiki-xmldumps.log"
+    $el_unsanitized_log_file         = "${profile::analytics::refinery::log_dir}/drop-el-unsanitized-events.log"
 
     # Shortcut to refinery path
     $refinery_path = $profile::analytics::refinery::path
@@ -180,6 +181,15 @@ class profile::analytics::refinery::job::data_purge (
         interval            => '*-*-* *:00:00',
     }
 
+    # Drop unsanitized EventLogging data from the event database after retention period.
+    # Runs once a day.
+    profile::analytics::systemd_timer { 'drop-el-unsanitized-events':
+        description => 'Drop unsanitized EventLogging data from the event database after retention period.',
+        command     => "${refinery_path}/bin/refinery-drop-older-than --database='event' --tables='^(?!wmdebanner)[A-Za-z0-9]+$$' --base-path='/wmf/data/event' --path-format='(?!WMDEBanner)[A-Za-z0-9]+/year=(?P<year>[0-9]+)(/month=(?P<month>[0-9]+)(/day=(?P<day>[0-9]+)(/hour=(?P<hour>[0-9]+))?)?)?' --older-than='90' --execute='05c2f816807c528cf138bd0be2bdaba4' --log-file='${el_unsanitized_log_file}'",
+        interval    => '*-*-* 00:00:00',
+        environment => $systemd_env,
+        user        => 'hdfs',
+    }
 
     # drop data older than 2 months from cu_changes table, which is sqooped in
     # runs once a month
