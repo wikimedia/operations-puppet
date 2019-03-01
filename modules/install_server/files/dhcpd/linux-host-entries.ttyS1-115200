@@ -2034,13 +2034,6 @@ host dbstore1001 {
     fixed-address dbstore1001.eqiad.wmnet;
 }
 
-host dbstore1002 {
-    hardware ethernet C8:1F:66:B8:2E:90;
-    fixed-address dbstore1002.eqiad.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/trusty-installer/";
-    filename "lpxelinux.0";
-}
-
 host dbstore1003 {
     hardware ethernet D0:94:66:8F:5A:72;
     fixed-address dbstore1003.eqiad.wmnet;
