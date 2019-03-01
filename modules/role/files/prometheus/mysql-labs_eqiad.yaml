@@ -5,6 +5,7 @@
   - labsdb1009:9104
   - labsdb1010:9104
   - labsdb1011:9104
+  - labsdb1012:9104
 - labels:
     shard: s1
     role: slave

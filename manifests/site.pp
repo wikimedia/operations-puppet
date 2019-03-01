@@ -1309,12 +1309,8 @@ node 'labnet1002.eqiad.wmnet' {
 node /labsdb1009\.eqiad\.wmnet/ {
     role(labs::db::wikireplica_web)
 }
-node /labsdb10(10|11)\.eqiad\.wmnet/ {
+node /labsdb10(10|11|12)\.eqiad\.wmnet/ {
     role(labs::db::wikireplica_analytics)
-}
-
-node 'labsdb1012.eqiad.wmnet' {
-    role(spare::system)
 }
 
 node 'labsdb1004.eqiad.wmnet' {
