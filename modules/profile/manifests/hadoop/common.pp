@@ -16,6 +16,16 @@
 #  [*hadoop_clusters*]
 #    List of available/configured Hadoop clusters and their properties.
 #
+#  [*hadoop_clusters_secrets*]
+#    Hash of available/configured Hadoop clusters and their secret properties,
+#    like passwords, etc..
+#    The following values will be checked in the hash table only if any Yarn/HDFS/MapRed
+#    TLS config is enabled (see in the code for the exact values).
+#      - 'ssl_keystore_keypassword' -> Related parameter for ssl-(server|client).xml
+#      - 'ssl_keystore_password'    -> Related parameter for ssl-(server|client).xml
+#      - 'ssl_trustore_password'    -> Related parameter for ssl-(server|client).xml
+#    Default: {}
+#
 #  [*hadoop_cluster_name*]
 #    The Hadoop cluster name to pick up config properties from.
 #    Default: 'cdh'
@@ -168,10 +178,11 @@
 #    to render a script that will be used for Hadoop node rack awareness.
 #
 class profile::hadoop::common (
-    $zookeeper_clusters = hiera('zookeeper_clusters'),
-    $hadoop_clusters    = hiera('hadoop_clusters'),
-    $cluster_name       = hiera('profile::hadoop::common::hadoop_cluster_name'),
-    $config_override    = hiera('profile::hadoop::common::config_override', {}),
+    $zookeeper_clusters      = hiera('zookeeper_clusters'),
+    $hadoop_clusters         = hiera('hadoop_clusters'),
+    $cluster_name            = hiera('profile::hadoop::common::hadoop_cluster_name'),
+    $hadoop_clusters_secrets = hiera('hadoop_clusters_secrets', {}),
+    $config_override         = hiera('profile::hadoop::common::config_override', {}),
 ) {
     # Properties that are not meant to have undef as default value (a hash key
     # without a correspondent value returns undef) should be listed in here.
@@ -186,6 +197,11 @@ class profile::hadoop::common (
     # 2) Hadoop properies meant to be shared among all Hadoop daemons/services
     # 3) Hadoop properties that might get overridden by specific Hadoop role/profiles.
     $hadoop_config = $hadoop_default_config + $hadoop_clusters[$cluster_name] + $config_override
+
+    # This is a hash of secrets broken down by cluster name. Useful since 1) these info, like passwords,
+    # cannot be retrieved from the above $hadoop_config 2) All the roles that share this profile can
+    # get a single source of configuration, that avoids copy/paste config around.
+    $hadoop_secrets_config = $hadoop_clusters_secrets[$cluster_name]
 
     $zookeeper_cluster_name                   = $hadoop_config['zookeeper_cluster_name']
     $yarn_resourcemanager_zk_timeout_ms       = $hadoop_config['yarn_resourcemanager_zk_timeout_ms']
@@ -241,8 +257,6 @@ class profile::hadoop::common (
         undef   => {},
         default => $hadoop_config['mapred_site_extra_properties'],
     }
-    $ssl_server_config                        = $hadoop_config['ssl_server_config']
-    $ssl_client_config                        = $hadoop_config['ssl_client_config']
     $yarn_nm_container_executor_config        = $hadoop_config['yarn_nodemanager_container_executor_config']
 
     # Include Wikimedia's thirdparty/cloudera apt component
@@ -363,12 +377,90 @@ class profile::hadoop::common (
         hdfs_site_extra_properties                      => $hdfs_site_extra_properties_default + $hdfs_site_extra_properties,
         mapred_site_extra_properties                    => $mapred_site_extra_properties_default + $mapred_site_extra_properties,
 
-        ssl_client_config                               => $ssl_client_config,
-        ssl_server_config                               => $ssl_server_config,
-
         yarn_nodemanager_container_executor_config      => $yarn_nm_container_executor_config,
 
         java_home                                       => $java_home,
+    }
+
+
+    # If any of the following properties are true, the common TLS config needs to be deployed
+    $ensure_hdfs_ssl_config = ($hdfs_site_extra_properties['dfs.http.policy'] == 'HTTPS_ONLY')
+    $ensure_yarn_ssl_config = ($yarn_site_extra_properties['yarn.http.policy'] == 'HTTPS_ONLY')
+    $ensure_mapred_ssl_config = ($mapred_site_extra_properties['mapreduce.shuffle.ssl.enabled'] == true)
+    $ensure_ssl_config = ($ensure_hdfs_ssl_config or $ensure_yarn_ssl_config or $ensure_mapred_ssl_config)
+
+    # The following code deploys TLS certificates to the Hadoop cluster hosts.
+    # Very important note too keep in mind:
+    # "Ensure that common name (CN) matches exactly with the fully qualified domain name (FQDN) of the server.
+    # The client compares the CN with the DNS domain name to ensure
+    # that it is indeed connecting to the desired server, not the malicious one."
+    # Source: https://it.hortonworks.com/blog/deploying-https-hdfs/
+    # When 'ensure_ssl_config' is set to true, the following assumptions are made for
+    # the puppet private repository:
+    # 1) There is a directory called "hadoop_${cluster_name}" under the 'certificates'
+    #    section of the secrets module. So essentially one for each Hadoop cluster.
+    # 2) Inside the above directory there is a subdirectory for each hostname, that holds
+    #    keystore/trustore/etc..
+    # 3) keystores/trustores are all encrypted with the passwords stated in the $hadoop_clusters_secrets
+    #    hash (stored in the private repo as well).
+    # Also please remember that the configuration below takes care of deploying the trustores/keystores and
+    # the related ssl-(client|server).xml configs, but it does not enable any TLS setting for Yarn/HDFS.
+    # In order to do it, specific settings to the main hadoop_clusters hiera config need to be made.
+    if $ensure_ssl_config {
+        $hadoop_ssl_config_name = "hadoop_${cluster_name}"
+
+        $hostname_suffix = $::realm ? {
+            'labs'  => '.eqiad.wmflabs',
+            default => "${::site}.wmnet",
+        }
+
+        $hostname_tls_cn = "${::hostname}${hostname_suffix}"
+
+        # Ensure trustore/keystore files
+        $keystore_path = "${::cdh::hadoop::config_directory}/keystore.jks"
+        file { $keystore_path:
+            content => secret("certificates/${hadoop_ssl_config_name}/${hostname_tls_cn}/${hostname_tls_cn}.keystore.jks"),
+            owner   => 'root',
+            group   => 'hadoop',
+            mode    => '0440',
+            require => File[$::cdh::hadoop::config_directory],
+        }
+
+        $truststore_path = "${::cdh::hadoop::config_directory}/truststore.jks"
+        file { $truststore_path:
+            content => secret("certificates/${hadoop_ssl_config_name}/${hostname_tls_cn}/truststore.jks"),
+            owner   => 'root',
+            group   => 'hadoop',
+            mode    => '0440',
+            require => File[$::cdh::hadoop::config_directory],
+        }
+
+        $ssl_server_config = {
+            'ssl.server.keystore.type' => 'jks',
+            'ssl.server.keystore.keypassword' => $hadoop_secrets_config['ssl_keystore_keypassword'],
+            'ssl.server.keystore.password' => $hadoop_secrets_config['ssl_keystore_password'],
+            'ssl.server.keystore.location' => $keystore_path,
+            'ssl.server.truststore.type' => 'jks',
+            'ssl.server.truststore.location' => $truststore_path,
+            'ssl.server.truststore.password' => $hadoop_secrets_config['ssl_trustore_password'],
+        }
+
+        $ssl_client_config = {
+            'ssl.client.truststore.password' => $hadoop_secrets_config['ssl_trustore_password'],
+            'ssl.client.truststore.type' => 'jks',
+            'ssl.client.truststore.location' => $truststore_path,
+        }
+
+        class { 'cdh::hadoop::ssl_config':
+            config_directory  => $::cdh::hadoop::config_directory,
+            ssl_client_config => $ssl_client_config,
+            ssl_server_config => $ssl_server_config,
+        }
+
+        # Use a custom java.security on this host, so that we can restrict the allowed
+        # certificate's sigalgs. The 'contain' keywork at the end of the class should
+        # ensure that the java.security file is deployed before the Hadoop daemons.
+        class { 'java::security': }
     }
 
 
