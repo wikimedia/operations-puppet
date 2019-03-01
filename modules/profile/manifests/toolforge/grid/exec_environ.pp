@@ -8,7 +8,10 @@
 class profile::toolforge::grid::exec_environ {
 
     include ::profile::locales::extended
-    class {'::identd': }
+    # TODO: remove after oidentd has been deployed and pidentd cleaned up
+    class { '::identd':
+        ensure => absent,
+    }
     class {'::redis::client::python': }
 
     apt::repository { "mono-external-${::lsbdistcodename}":

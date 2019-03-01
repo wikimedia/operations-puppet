@@ -16,9 +16,10 @@ class role::wmcs::toolforge::grid::web::lighttpd {
         description => 'Toolforge lighttpd web exec node'
     }
 
-    include profile::toolforge::base
-    include profile::toolforge::apt_pinning
-    include profile::toolforge::grid::base
-    include profile::toolforge::grid::node::all
-    include profile::toolforge::grid::node::web::lighttpd
+    include ::profile::toolforge::base
+    include ::profile::toolforge::apt_pinning
+    include ::profile::toolforge::grid::base
+    include ::profile::toolforge::grid::node::all
+    include ::profile::toolforge::grid::node::web::lighttpd
+    include ::profile::wmcs::services::oidentd::client
 }

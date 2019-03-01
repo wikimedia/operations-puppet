@@ -1,0 +1,12 @@
+[Unit]
+Description=RFC 1413 compliant ident daemon (in proxy mode)
+After=network.target
+
+[Service]
+ExecStart=/usr/sbin/oidentd --error --forward --masq --nosyslog --user=oident --group=oident
+ExecReload=/bin/kill -HUP $MAINPID
+Restart=on-failure
+Type=forking
+
+[Install]
+WantedBy=multi-user.target

@@ -16,9 +16,10 @@ class role::wmcs::toolforge::grid::compute::dedicated {
         description => 'Toolforge dedicated computation node'
     }
 
-    include profile::toolforge::base
-    include profile::toolforge::apt_pinning
-    include profile::toolforge::grid::base
-    include profile::toolforge::grid::node::all
-    include profile::toolforge::grid::node::compute::dedicated
+    include ::profile::toolforge::base
+    include ::profile::toolforge::apt_pinning
+    include ::profile::toolforge::grid::base
+    include ::profile::toolforge::grid::node::all
+    include ::profile::toolforge::grid::node::compute::dedicated
+    include ::profile::wmcs::services::oidentd::client
 }

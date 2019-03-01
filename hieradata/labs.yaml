@@ -166,6 +166,8 @@ profile::base::use_apt_proxy: false
 # By default, nag project admins about puppet breakage
 send_puppet_failure_emails: true
 
+# Oident proxy via default gateway
+profile::wmcs::services::oidentd::client::proxy: 172.16.0.1
 
 # For any Analytics Cluster in labs:
 cdh::hadoop::datanode_mounts:

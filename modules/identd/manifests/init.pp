@@ -11,10 +11,12 @@
 #
 # Sample Usage:
 #
-class identd {
+class identd (
+    $ensure = present,
+) {
 
   file { '/etc/identd.conf':
-    ensure  => file,
+    ensure  => $ensure,
     mode    => '0444',
     owner   => 'root',
     group   => 'root',
@@ -23,7 +25,7 @@ class identd {
   }
 
   package { 'pidentd':
-    ensure => present,
+    ensure => $ensure,
   }
 
 }
