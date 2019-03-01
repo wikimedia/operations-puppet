@@ -17,4 +17,21 @@ define base::service_auto_restart(
         weekday => '1-5',
         require => File['/usr/local/sbin/wmf-auto-restart'],
     }
+
+    if $ensure == 'present' {
+        file_line { "auto_restart_file_presence_${title}":
+            ensure  => present,
+            path    => '/etc/debdeploy-autorestarts.conf',
+            line    => $title,
+            require => File['/etc/debdeploy-autorestarts.conf'],
+      }
+    } elsif $ensure == 'absent' {
+        file_line { "auto_restart_file_presence_${title}":
+            ensure            => absent,
+            path              => '/etc/debdeploy-autorestarts.conf',
+            match             => $title,
+            match_for_absence => true,
+            require           => File['/etc/debdeploy-autorestarts.conf'],
+        }
+    }
 }
