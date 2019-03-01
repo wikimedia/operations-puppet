@@ -468,7 +468,7 @@ customviews:
     logging_where:
       *allowed_logtypes
   logging_compat:
-    source: logging
+    source: logging, comment
     view: >
       select log_id, log_type, if(log_deleted&1,null,log_action) as log_action, log_timestamp,
       case when log_deleted&4 != 0 then null when log_actor = 0
