@@ -23,12 +23,6 @@ class openstack::nova::compute::service::mitaka::jessie(
         install_options => ['-t', 'jessie-backports']
     }
 
-    # /etc/default/libvirt-guests
-    # Guest management on host startup/reboot
-    service { 'libvirt-guests':
-        ensure => 'stopped',
-    }
-
     file {'/etc/libvirt/original':
         ensure  => 'directory',
         owner   => 'root',

@@ -11,7 +11,7 @@ class openstack::nova::compute::service(
     # trusty: libvirtd:x:117:nova
     # jessie: libvirt:x:121:nova
     # stretch: libvirt:x:121:nova
-    $libvirt_unix_sock_group = $facts['lsbdistcodename'] ? {
+    $libvirt_unix_sock_group = $::facts['lsbdistcodename'] ? {
         'trusty'  => 'libvirtd',
         'jessie'  => 'libvirt',
         'stretch' => 'libvirt',
@@ -104,4 +104,20 @@ class openstack::nova::compute::service(
             ],
         require   => Package['nova-compute'],
     }
+
+    # Guest management on host startup/reboot
+    file { '/etc/default/libvirt-guests':
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0444',
+        source  => 'puppet:///modules/openstack/nova/libvirt/libvirt-guests',
+        require => Package['libvirt-daemon-system'],
+    }
+
+    service { 'libvirt-guests':
+        ensure  => 'running',
+        enable  => true,
+        require => Package[libvirt-daemon-system],
+    }
+
 }

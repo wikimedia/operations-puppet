@@ -1,0 +1,8 @@
+# This file is managed by Puppet
+
+ON_BOOT=start
+START_DELAY=15
+
+ON_SHUTDOWN=shutdown
+PARALLEL_SHUTDOWN=5
+SHUTDOWN_TIMEOUT=300
