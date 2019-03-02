@@ -20,10 +20,11 @@ class profile::netbox (
     String $nb_token = hiera('profile::netbox::tokens::read_write'),
     String $ganeti_user = hiera('profile::ganeti::rapi::ro_user'),
     String $ganeti_password = hiera('profile::ganeti::rapi::ro_password'),
+    Integer $ganeti_sync_interval = hiera('profile::netbox::ganeti_sync_interval'),
     Stdlib::HTTPSUrl $nb_api = hiera('profile::netbox::netbox_api'),
     Stdlib::Host $puppetdb_host = hiera('puppetdb_host'),
     Integer $puppetdb_microservice_port = hiera('profile::puppetdb::microservice::port'),
-    Hash[String, Hash[String, Scalar, 2, 2]] $nb_ganeti_profiles = hiera('profile::netbox::ganeti_sync_profiles')
+    Array[Hash[String, Scalar, 3, 3]] $nb_ganeti_profiles = hiera('profile::netbox::ganeti_sync_profiles')
 ) {
 
     include passwords::netbox
@@ -126,7 +127,6 @@ class profile::netbox (
                 srange => "(@resolve((${slaves_ferm})) @resolve((${slaves_ferm}), AAAA))",
             }
         }
-
     } else {
         $require_class = 'postgresql::slave'
         class { '::postgresql::slave':
@@ -145,6 +145,30 @@ class profile::netbox (
             description => 'netbox Postgres',
         }
     }
+
+    if $active_server == $::fqdn {
+        $ganeti_sync_timer_ensure = 'present'
+    } else {
+        $ganeti_sync_timer_ensure = 'absent'
+    }
+    $nb_ganeti_profiles.each |Integer $prof_index, Hash $profile| {
+        systemd::timer::job { "netbox_ganeti_${profile['profile']}_sync":
+            ensure                    => $ganeti_sync_timer_ensure,
+            description               => "Automatically access Ganeti API at ${profile['profile']} to synchronize to Netbox",
+            command                   => "/srv/deployment/netbox/venv/bin/python3 /srv/deployment/netbox/deploy/scripts/ganeti-netbox-sync.py ${profile['profile']}",
+            interval                  => {
+                'start'    => 'OnCalendar',
+                # Splay by 1 minute per profile, offset by 5 minutes from 00 (sync process takes far less than 1 minute)
+                'interval' => "*-*-* *:${String($prof_index + 5, '%02d')}/${String($ganeti_sync_interval, '%02d')}:00",
+            },
+            logging_enabled           => true,
+            monitoring_enabled        => true,
+            monitoring_contact_groups => 'admins',
+            user                      => 'deploy-librenms',
+        }
+    }
+
+
 
     git::clone { 'operations/software/netbox-reports':
         ensure    => 'latest',

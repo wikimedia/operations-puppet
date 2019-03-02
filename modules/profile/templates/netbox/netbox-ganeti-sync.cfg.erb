@@ -9,8 +9,8 @@ ca_cert=<%= @nb_ganeti_ca_cert %>
 [netbox]
 api=<%= @nb_api %>
 
-<%  @nb_ganeti_profiles.each_pair do |profile, profdata| -%>
-[profile:<%= profile %>]
-api=https://<%= profdata['url'] %>:<%= profdata['port'] %>/
-cluster=<%= profdata['url'] %>
+<%  @nb_ganeti_profiles.each do |profile| -%>
+[profile:<%= profile['profile'] %>]
+api=https://<%= profile['url'] %>:<%= profile['port'] %>/
+cluster=<%= profile['url'] %>
 <% end %>
