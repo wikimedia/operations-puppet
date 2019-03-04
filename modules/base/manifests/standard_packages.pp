@@ -177,6 +177,11 @@ class base::standard_packages {
                   'libperl5.24', 'ruby2.3', 'libruby2.3', 'libunbound2']:
             ensure => absent,
         }
+
+        # mcelog is broken with the Linux kernel used in buster
+        package {['mcelog']:
+            ensure => purged,
+        }
     }
 
     if os_version('debian >= jessie') {
