@@ -98,8 +98,6 @@ scap::sources:
   changeprop/deploy:
     repository: mediawiki/services/change-propagation/deploy
 #    lvs_service: changeprop
-  citoid/deploy: {}
-#    lvs_service: citoid
   cpjobqueue/deploy: {
     repository: mediawiki/services/change-propagation/jobqueue-deploy
     }

@@ -1,8 +1,6 @@
 cluster: scb
 admin::groups:
   - sc-admins
-  - citoid-admin
-  - citoid-users
   - cpjobqueue-admin
   - cxserver-admin
   - apertium-admins
@@ -16,7 +14,6 @@ role::lvs::realserver::pools:
   mobileapps: {}
   graphoid: {}
   cxserver: {}
-  citoid: {}
   eventstreams: {}
   pdfrender: {}
   "recommendation-api": {}
@@ -47,10 +44,6 @@ profile::graphoid::headers:
 profile::graphoid::error_headers:
   'Cache-Control': 'public, s-maxage=300, max-age=300'
 ### END GRAPHOID ###
-
-profile::citoid::zotero_port: 1969
-profile::citoid::zotero_host: "zotero.discovery.wmnet"
-
 
 ### BEGIN EVENTSTREAMS ###
 # EventStreams is configured in discovery.yaml to be active/active.

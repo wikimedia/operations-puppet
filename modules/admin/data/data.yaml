@@ -298,12 +298,6 @@ groups:
     gid: 733
     description: Login access for EventLogging deployment and investigation
     members: [nuria, milimetric, mforns, joal, legoktm, fdans]
-  citoid-admin:
-    gid: 736
-    description: group of citoid admins
-    members: [catrope, mobrovac, mvolz]
-    privileges: ['ALL = NOPASSWD: /usr/sbin/service citoid *',
-                 'ALL = (citoid) NOPASSWD: ALL']
   eventlogging-roots:
     gid: 739
     description: Full root on EventLogging servers.
@@ -331,10 +325,6 @@ groups:
     description: people who have full root on restbase nodes
     members: [eevans, mobrovac, ppchelko]
     privileges: ['ALL = (ALL) NOPASSWD: ALL']
-  citoid-users:
-    gid: 745
-    description: Login rights for citoid in order to look at citoid logs
-    members: []
   phabricator-admin:
     gid: 746
     description: Users who can do sane CLI admin things
@@ -587,7 +577,6 @@ groups:
     members: [eevans, mobrovac, ppchelko]
     privileges: ['ALL = NOPASSWD: /usr/bin/puppet agent *',
                'ALL = NOPASSWD: /usr/sbin/service changeprop *',
-               'ALL = NOPASSWD: /usr/sbin/service citoid *',
                'ALL = NOPASSWD: /usr/sbin/service cpjobqueue *',
                'ALL = NOPASSWD: /usr/sbin/service cxserver *',
                'ALL = NOPASSWD: /usr/sbin/service graphoid *',
