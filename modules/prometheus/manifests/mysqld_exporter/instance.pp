@@ -34,12 +34,31 @@ define prometheus::mysqld_exporter::instance (
     $my_cnf = "/var/lib/prometheus/.my.${title}.cnf"
     $service = "prometheus-mysqld-exporter@${title}"
 
+    if $arguments == '' {
+        if os_version('debian >= buster') {
+            $options = "-collect.global_status \
+--collect.global_variables \
+--collect.info_schema.processlist \
+--collect.slave_status \
+--no-collect.info_schema.tables"
+        } else {
+            $options = "-collect.global_status \
+-collect.global_variables \
+-collect.info_schema.processlist \
+-collect.info_schema.processlist.min_time 0 \
+-collect.slave_status \
+-collect.info_schema.tables false"
+        }
+    } else {
+        $options = $arguments
+    }
+
     file { "/etc/default/prometheus-mysqld-exporter@${title}":
         ensure  => present,
         mode    => '0444',
         owner   => 'root',
         group   => 'root',
-        content => "ARGS='-web.listen-address \"${listen_address}\" -config.my-cnf \"${my_cnf}\" ${arguments}'",
+        content => "ARGS='-web.listen-address \"${listen_address}\" -config.my-cnf \"${my_cnf}\" ${options}'",
         notify  => Service[$service],
     }
 

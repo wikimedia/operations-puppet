@@ -47,12 +47,32 @@ define prometheus::mysqld_exporter (
         notify  => Service['prometheus-mysqld-exporter'],
     }
 
+    # Set default arguments
+    if $arguments == '' {
+        if os_version('debian >= buster') {
+            $options = "-collect.global_status \
+--collect.global_variables \
+--collect.info_schema.processlist \
+--collect.slave_status \
+--no-collect.info_schema.tables"
+        } else {
+            $options = "-collect.global_status \
+-collect.global_variables \
+-collect.info_schema.processlist \
+-collect.info_schema.processlist.min_time 0 \
+-collect.slave_status \
+-collect.info_schema.tables false"
+        }
+    } else {
+        $options = $arguments
+    }
+
     file { '/etc/default/prometheus-mysqld-exporter':
         ensure  => present,
         mode    => '0444',
         owner   => 'root',
         group   => 'root',
-        content => "ARGS=\"${arguments}\"",
+        content => "ARGS=\"${options}\"",
         notify  => Service['prometheus-mysqld-exporter'],
     }
 

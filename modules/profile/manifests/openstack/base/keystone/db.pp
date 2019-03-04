@@ -24,13 +24,6 @@ class profile::openstack::base::keystone::db(
     prometheus::mysqld_exporter { 'default':
         client_password => '',
         client_socket   => '/var/run/mysqld/mysqld.sock',
-        arguments       => "-collect.global_status \
--collect.global_variables \
--collect.info_schema.processlist \
--collect.info_schema.processlist.min_time 0 \
--collect.slave_status \
--collect.info_schema.tables false \
-"
     }
 
     $prometheus_ferm_nodes = join($prometheus_nodes, ' ')
