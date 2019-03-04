@@ -49,7 +49,7 @@ packages:
     - euca2ools
     - exim4-config
     - exim4-daemon-light
-    - facter
+    - facter=2.4.6-1+deb10u1
     - gdb
     - gdisk
     - git
