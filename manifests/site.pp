@@ -1346,8 +1346,12 @@ node /labstore100[45]\.eqiad\.wmnet/ {
     # include ::profile::base::firewall
 }
 
-node /labstore100[67]\.wikimedia\.org/ {
+node /labstore100[7]\.wikimedia\.org/ {
     role(dumps::distribution::server)
+}
+
+node /labstore100[6]\.wikimedia\.org/ {
+    role(dumps::distribution::server_nofetches)
 }
 
 node /labstore200[1-2]\.codfw\.wmnet/ {
