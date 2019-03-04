@@ -292,7 +292,7 @@ function dump_opcache_meta() {
 
 function clear_opcache() {
 	$result = [];
-	$file_name = isset($_POST['file']) ? realpath(MW_PATH . '/' . $_POST['file']) : null;
+	$file_name = isset($_GET['file']) ? realpath(MW_PATH . '/' . $_GET['file']) : null;
 	if (empty($file_name)) {
 		$result['*'] = opcache_reset();
 	} else{
