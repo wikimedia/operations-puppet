@@ -1,0 +1,210 @@
+---
+name: debian-{system.release}-{system.architecture}-{%Y}{%m}{%d}
+provider:
+  name: kvm
+bootstrapper:
+  workspace: /target
+system:
+  release: buster
+  architecture: amd64
+  bootloader: grub
+  charmap: UTF-8
+  locale: en_US
+  timezone: UTC
+volume:
+  backing: raw
+  partitions:
+    type: gpt
+    root:
+      filesystem: ext4
+      size: 19GiB
+    swap:
+      size: 512MiB
+packages:
+  sources:
+    wikimedia:
+      - deb  http://apt.wikimedia.org/wikimedia buster-wikimedia main
+      - deb-src http://apt.wikimedia.org/wikimedia buster-wikimedia main
+  trusted-keys:
+    - /etc/apt/trusted.gpg
+  install_standard: true
+  install:
+    - acct
+    - ack-grep
+    - apt-listchanges
+    - apt-show-versions
+    - apt-transport-https
+    - ca-certificates
+    - cloud-utils
+    - command-not-found
+    - coreutils
+    - curl
+    - debdeploy-client
+    - debian-goodies
+    - diamond
+    - dnsutils
+    - dstat
+    - emacs
+    - ethtool
+    - euca2ools
+    - exim4-config
+    - exim4-daemon-light
+    - facter
+    - gdb
+    - gdisk
+    - git
+    - git-fat
+    - htop
+    - httpry
+    - iperf
+    - jfsutils
+    - jq
+    - ldap-utils
+    - ldapvi
+    - libfile-next-perl
+    - libnss-db
+    - libnss-ldapd
+    - libpam-ldapd
+    - lldpd
+    - lockfile-progs
+    - lshw
+    - lvm2
+    - molly-guard
+    - moreutils
+    - nagios-nrpe-server
+    - nagios-plugins
+    - nagios-plugins-basic
+    - nagios-plugins-standard
+    - ncdu
+    - nfs-client
+    - ngrep
+    - nscd
+    - nslcd
+    - nslcd-utils
+    - nss-updatedb
+    - ntp
+    - openssh-server
+    - openssl
+    - os-prober
+    - parted
+    - prometheus-node-exporter
+    - puppet
+    - puppet-common
+    - pv
+    - python-apt
+    - python-ldap
+    - python-pycurl
+    - python-redis
+    - python-statsd
+    - rsyslog
+    - screen
+    - snmp
+    - ssl-cert
+    - strace
+    - sysstat
+    - tcpdump
+    - tmux
+    - tree
+    - tshark
+    - tzdata
+    - vim
+    - virt-what
+    - wipe
+    - wpasupplicant
+    - xfsprogs
+    - zsh
+plugins:
+  puppet:
+    assets: /etc/bootstrap-vz/puppet
+    enable_agent: false
+  file_copy:
+    mkdirs:
+      -
+        dir: /etc/systemd/system/getty@ttyS1.service.d
+        permissions: "0555"
+        owner: root
+    files:
+      -
+        src: /etc/bootstrap-vz/firstscripts/firstboot.sh
+        dst: /root/firstboot.sh
+        permissions: "755"
+        owner: root
+      -
+        src: /etc/bootstrap-vz/firstscripts/firstbootrc
+        dst: /etc/rc.local
+        permissions: "755"
+        owner: root
+      -
+        src: /etc/ldap.conf
+        dst: /etc/ldap.conf
+      -
+        src: /etc/bootstrap-vz/nss_ldap.conf
+        dst: /etc/ldap/ldap.conf
+      -
+        src: /etc/nscd.conf
+        dst: /etc/nscd.conf
+      -
+        src: /etc/bootstrap-vz/nslcd.conf
+        dst: /etc/nslcd.conf
+      -
+        src: /etc/nsswitch.conf
+        dst: /etc/nsswitch.conf
+      -
+        src: /etc/exim4/exim4.conf
+        dst: /etc/exim4/exim4.conf
+      -
+        src: /etc/sudoers
+        dst: /etc/sudoers
+      -
+        src: /etc/ssh/sshd_config
+        dst: /etc/ssh/sshd_config
+      -
+        src: /etc/ssh/sshd_banner
+        dst: /etc/ssh/sshd_banner
+      -
+        src: /etc/apt/trusted.gpg
+        dst: /etc/apt/trusted.gpg
+        permissions: "644"
+        owner: root
+      -
+        src: /etc/apt/trusted.gpg.d/trusted.gpg
+        dst: /etc/apt/trusted.gpg.d/trusted.gpg
+        permissions: "644"
+        owner: root
+      -
+        src: /etc/apt/sources.list.d/wikimedia.list
+        dst: /etc/apt/sources.list.d/wikimedia.list
+      -
+        src: /etc/apt/sources.list.d/debian-backports.list
+        dst: /etc/apt/sources.list.d/debian-backports.list
+      -
+        src: /etc/apt/preferences.d/wikimedia.pref
+        dst: /etc/apt/preferences.d/wikimedia.pref
+      -
+        src: /etc/ssl/certs/ca-certificates.crt
+        dst: /etc/ssl/certs/ca-certificates.crt
+      -
+        src: /etc/systemd/system/getty@ttyS1.service.d/puppet-override.conf
+        dst: /etc/systemd/system/getty@ttyS1.service.d/puppet-override.conf
+        permissions: "0444"
+        owner: root
+
+  commands:
+    # Current implementation does not specify an order between commands and
+    #  file_copy.  This section should not depend on anything existing from
+    #  file_copy; hence the touches and explicit copies below.
+    commands:
+      - ['chroot', '{root}', 'passwd', '-ld', 'root']
+      - ['SUDO_FORCE_REMOVE=yes chroot {root} apt-get --allow-remove-essential --allow-unauthenticated --assume-yes -o Dpkg::Options::="--force-confold" install sudo-ldap']
+      - ['chroot', '{root}', 'rm', '-f', '/etc/ssh/ssh_host*key*']
+      - ['chroot', '{root}', 'rm', '-f', '/etc/sudo-ldap.conf']
+      - ['chroot', '{root}', 'ln', '-s', '/etc/ldap/ldap.conf', '/etc/sudo-ldap.conf']
+      - ['chroot', '{root}', 'rm', '-f', '/etc/resolvconf/resolv.conf.d/original']
+      #- ['cp', '/etc/default/grub', '{root}/etc/default/grub']
+      #- ['chroot', '{root}', 'update-grub']
+      - ['chroot', '{root}', 'puppet', 'agent', '--disable']
+      - ['chroot', '{root}', 'systemctl', 'enable', 'getty@ttyS1.service']
+  unattended_upgrades:
+    update_interval: 1
+    download_interval: 1
+    upgrade_interval: 1
