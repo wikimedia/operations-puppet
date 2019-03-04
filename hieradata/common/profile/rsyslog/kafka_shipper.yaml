@@ -1,4 +1,4 @@
 profile::rsyslog::kafka_shipper::kafka_brokers:
   - logstash1010.eqiad.wmnet:9093
   - logstash1011.eqiad.wmnet:9093
-  - logstash1006.eqiad.wmnet:9093
+  - logstash1012.eqiad.wmnet:9093
