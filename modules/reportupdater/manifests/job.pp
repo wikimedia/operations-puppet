@@ -36,7 +36,7 @@ define reportupdater::job(
     $output_dir = $title,
     $interval = '*-*-* *:00:00',
     $monitoring_enabled = true,
-    $ensure = present,
+    $ensure = absent,
 )
 {
     Class['::reportupdater'] -> Reportupdater::Job[$title]
