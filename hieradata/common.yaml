@@ -408,7 +408,6 @@ statistics_servers:
   - stat1004.eqiad.wmnet
   - stat1006.eqiad.wmnet
   - stat1007.eqiad.wmnet
-  - labstore1006.wikimedia.org
   - labstore1007.wikimedia.org
 labstore_servers:
   - labstore1006.wikimedia.org
@@ -425,13 +424,13 @@ dumps_nfs_server: dumpsdata1001.eqiad.wmnet
 dumps_managed_subdirs: []
 
 # Dumps distribution servers actively serving NFS traffic
-dumps_dist_nfs_servers: [labstore1006.wikimedia.org, labstore1007.wikimedia.org]
+dumps_dist_nfs_servers: [labstore1007.wikimedia.org]
 
 # Dumps distribution server currently serving traffic over NFS to cloud vps instances
 dumps_dist_active_vps: labstore1007.wikimedia.org
 # Dumps distribution server currently serving web and rsync mirror traffic
 # Also serves stat* hosts over nfs
-dumps_dist_active_web: labstore1006.wikimedia.org
+dumps_dist_active_web: labstore1007.wikimedia.org
 
 # Cloud Services <
 #
