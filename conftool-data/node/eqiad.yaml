@@ -153,17 +153,17 @@ eqiad:
     cp1073.eqiad.wmnet: [ats-be]
     cp1074.eqiad.wmnet: [ats-be]
   scb:
-    scb1001.eqiad.wmnet: [mobileapps, graphoid, citoid, apertium, cxserver, eventstreams, pdfrender, "recommendation-api"]
-    scb1002.eqiad.wmnet: [mobileapps, graphoid, citoid, apertium, cxserver, eventstreams, pdfrender, "recommendation-api"]
-    scb1003.eqiad.wmnet: [mobileapps, graphoid, citoid, apertium, cxserver, eventstreams, pdfrender, "recommendation-api"]
-    scb1004.eqiad.wmnet: [mobileapps, graphoid, citoid, apertium, cxserver, eventstreams, pdfrender, "recommendation-api"]
+    scb1001.eqiad.wmnet: [mobileapps, graphoid, apertium, cxserver, eventstreams, pdfrender, "recommendation-api"]
+    scb1002.eqiad.wmnet: [mobileapps, graphoid, apertium, cxserver, eventstreams, pdfrender, "recommendation-api"]
+    scb1003.eqiad.wmnet: [mobileapps, graphoid, apertium, cxserver, eventstreams, pdfrender, "recommendation-api"]
+    scb1004.eqiad.wmnet: [mobileapps, graphoid, apertium, cxserver, eventstreams, pdfrender, "recommendation-api"]
     # TODO: This is wrong, but is on purpose right now. We want to be able to
     # gradually increase mathoid traffic sent to kubernetes and we currently
     # don't support a service being provided by >1 clusters, so reuse scb for now
-    kubernetes1001.eqiad.wmnet: [citoid]
-    kubernetes1002.eqiad.wmnet: [citoid]
-    kubernetes1003.eqiad.wmnet: [citoid]
-    kubernetes1004.eqiad.wmnet: [citoid]
+    kubernetes1001.eqiad.wmnet: []
+    kubernetes1002.eqiad.wmnet: []
+    kubernetes1003.eqiad.wmnet: []
+    kubernetes1004.eqiad.wmnet: []
   dns:
     dns1001.wikimedia.org: [pdns_recursor]
     dns1002.wikimedia.org: [pdns_recursor]

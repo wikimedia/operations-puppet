@@ -82,14 +82,6 @@ scb:
     datacenters:
     - eqiad
     - codfw
-  citoid:
-    port: 1970
-    default_values:
-      pooled: 'no'
-      weight: 10
-    datacenters:
-    - eqiad
-    - codfw
   apertium:
     port: 2737
     default_values:

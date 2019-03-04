@@ -269,19 +269,19 @@ codfw:
     restbase2017.codfw.wmnet: [restbase, cassandra]
     restbase2018.codfw.wmnet: [restbase, cassandra]
   scb:
-    scb2001.codfw.wmnet: [mobileapps, graphoid, citoid, apertium, cxserver, eventstreams, pdfrender, "recommendation-api"]
-    scb2002.codfw.wmnet: [mobileapps, graphoid, citoid, apertium, cxserver, eventstreams, pdfrender, "recommendation-api"]
-    scb2003.codfw.wmnet: [mobileapps, graphoid, citoid, apertium, cxserver, eventstreams, pdfrender, "recommendation-api"]
-    scb2004.codfw.wmnet: [mobileapps, graphoid, citoid, apertium, cxserver, eventstreams, pdfrender, "recommendation-api"]
-    scb2005.codfw.wmnet: [mobileapps, graphoid, citoid, apertium, cxserver, eventstreams, pdfrender, "recommendation-api"]
-    scb2006.codfw.wmnet: [mobileapps, graphoid, citoid, apertium, cxserver, eventstreams, pdfrender, "recommendation-api"]
+    scb2001.codfw.wmnet: [mobileapps, graphoid, apertium, cxserver, eventstreams, pdfrender, "recommendation-api"]
+    scb2002.codfw.wmnet: [mobileapps, graphoid, apertium, cxserver, eventstreams, pdfrender, "recommendation-api"]
+    scb2003.codfw.wmnet: [mobileapps, graphoid, apertium, cxserver, eventstreams, pdfrender, "recommendation-api"]
+    scb2004.codfw.wmnet: [mobileapps, graphoid, apertium, cxserver, eventstreams, pdfrender, "recommendation-api"]
+    scb2005.codfw.wmnet: [mobileapps, graphoid, apertium, cxserver, eventstreams, pdfrender, "recommendation-api"]
+    scb2006.codfw.wmnet: [mobileapps, graphoid, apertium, cxserver, eventstreams, pdfrender, "recommendation-api"]
     # TODO: This is wrong, but is on purpose right now. We want to be able to
     # gradually increase migrating service traffic sent to kubernetes and we currently
     # don't support a service being provided by >1 clusters, so reuse scb for now
-    kubernetes2001.codfw.wmnet: [citoid]
-    kubernetes2002.codfw.wmnet: [citoid]
-    kubernetes2003.codfw.wmnet: [citoid]
-    kubernetes2004.codfw.wmnet: [citoid]
+    kubernetes2001.codfw.wmnet: []
+    kubernetes2002.codfw.wmnet: []
+    kubernetes2003.codfw.wmnet: []
+    kubernetes2004.codfw.wmnet: []
   eventbus:
     kafka2001.codfw.wmnet: [eventbus]
     kafka2002.codfw.wmnet: [eventbus]
