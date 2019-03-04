@@ -1,4 +1,4 @@
-# == Class: profile::webperf::arclamp
+# == Class: profile::webperf::xhgui
 #
 # This class is still a work in progress!
 # See https://phabricator.wikimedia.org/T180761.
