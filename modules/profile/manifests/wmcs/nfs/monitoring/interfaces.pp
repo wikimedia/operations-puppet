@@ -9,12 +9,12 @@
 #   that serves NFS
 
 class profile::wmcs::nfs::monitoring::interfaces (
-    String $monitor_iface = lookup('profile::wmcs::nfs::monitoring::interfaces::monitor_iface'),
-    String $contact_groups = lookup('profile::wmcs::nfs::monitoring::interfaces::contact_groups'),
+    String  $monitor_iface       = lookup('profile::wmcs::nfs::monitoring::interfaces::monitor_iface'),
+    String  $contact_groups      = lookup('profile::wmcs::nfs::monitoring::interfaces::contact_groups'),
     Integer $int_throughput_warn = lookup('profile::wmcs::nfs::monitoring::interfaces::int_throughput_warn'),
     Integer $int_throughput_crit = lookup('profile::wmcs::nfs::monitoring::interfaces::int_throughput_crit'),
-    String $load_warn = lookup('profile::wmcs::nfs::monitoring::interfaces::load_warn'),
-    String $load_crit = lookup('profile::wmcs::nfs::monitoring::interfaces::load_crit'),
+    Float   $load_warn_ratio     = lookup('profile::wmcs::nfs::monitoring::interfaces::load_warn_ratio'),
+    Float   $load_crit_ratio     = lookup('profile::wmcs::nfs::monitoring::interfaces::load_crit_ratio'),
 ) {
 
     $interval = '10min' # see T188624
@@ -58,8 +58,8 @@ class profile::wmcs::nfs::monitoring::interfaces (
         dashboard_links => ['https://grafana.wikimedia.org/dashboard/db/labs-monitoring'],
         metric          => "servers.${::hostname}.loadavg.01",
         from            => '10min',
-        warning         => $load_warn,
-        critical        => $load_crit,
+        warning         => $::processorcount * $load_warn_ratio,
+        critical        => $::processorcount * $load_crit_ratio,
         percentage      => '85', # Don't freak out on spikes
         contact_group   => $contact_groups,
     }

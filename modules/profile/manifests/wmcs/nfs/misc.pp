@@ -1,5 +1,5 @@
 class profile::wmcs::nfs::misc (
-    Array[Stdlib::IP::Address] $maps_project_ips = lookup('profile::wmcs::nfs::misc:maps_project_ips'),
+    Array[Stdlib::IP::Address] $maps_project_ips = lookup('profile::wmcs::nfs::misc::maps_project_ips'),
 ) {
     file { '/etc/exports':
         ensure  => present,
@@ -11,10 +11,16 @@ class profile::wmcs::nfs::misc (
 
     file { '/srv/scratch':
         ensure => 'directory',
+        owner  => 'root',
+        group  => 'root',
+        mode   => '1777',
     }
 
     file {'/srv/maps':
         ensure => 'directory',
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0755',
     }
 
     mount { '/srv/scratch':
