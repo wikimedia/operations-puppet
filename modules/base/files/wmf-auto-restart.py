@@ -56,7 +56,12 @@ def check_restart(service_name, dry_run):
     detect_service_pid = str(pid_query.strip()).split("=")[1]
 
     if detect_service_pid == "0":  # Service using legacy init script and systemd-sysv-generator
-        pid_query = subprocess.check_output(["/bin/pidof", service_name], universal_newlines=True)
+        try:
+            pid_query = subprocess.check_output(
+                ["/bin/pidof", service_name], universal_newlines=True)
+        except subprocess.CalledProcessError as error:
+            logger.info("Could not query the PID of %s: %s", service_name, error.returncode)
+            return 1
         service_pids = pid_query.split()
         native_systemd_unit = False
     else:
