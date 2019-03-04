@@ -260,6 +260,14 @@ kubernetes:
     datacenters:
     - eqiad
     - codfw
+  citoid:
+    port: 1970
+    default_values:
+      pooled: 'yes'
+      weight: 10
+    datacenters:
+    - eqiad
+    - codfw
 logstash:
   kibana:
     port: 80

@@ -35,4 +35,5 @@ role::lvs::realserver::pools:
   zotero: {}
   blubberoid: {}
   eventgate-analytics: {}
+  citoid: {}
 diamond::remove: true
