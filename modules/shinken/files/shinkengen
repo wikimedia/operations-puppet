@@ -37,10 +37,7 @@ import yaml
 import requests
 from collections import OrderedDict
 
-from keystoneclient.session import Session as KeystoneSession
-from keystoneclient.auth.identity.v3 import Password as KeystonePassword
-
-from novaclient import client as novaclient
+import mwopenstackclients
 
 
 class ConfigObject():
@@ -62,38 +59,6 @@ class ConfigObject():
         return 'define %s {\n%s}\n' % (self.type, config_str)
 
 
-def get_instances(project, observer_pass, keystone_host, keystone_port):
-    client = novaclient.Client(
-        "2.0",
-        region_name='eqiad',
-        session=KeystoneSession(auth=KeystonePassword(
-            auth_url="http://{host}:{port}/v3".format(host=keystone_host,
-                                                      port=keystone_port),
-            username="novaobserver",
-            password=observer_pass,
-            project_name=project,
-            user_domain_name='default',
-            project_domain_name='default'
-        ))
-    )
-
-    hosts = []
-    for instance in client.servers.list():
-        if instance.status == 'SHUTOFF':
-            continue
-        hosts.append({
-            'ip': [
-                str(ip['addr']) for ip in instance.addresses['public']
-                if ip['OS-EXT-IPS:type'] == 'fixed'
-            ][0],
-            'project': project,
-            'name': instance.name,
-            'fqdn': '.'.join([instance.name, project, config['site'], 'wmflabs'])
-        })
-
-    return hosts
-
-
 def get_instance_roles(project, fqdn, enc_host):
     url = 'http://{enc_host}:8100/v1/{project}/node/{fqdn}'.format(
         enc_host=enc_host,
@@ -101,6 +66,7 @@ def get_instance_roles(project, fqdn, enc_host):
         fqdn=fqdn
     )
     return yaml.safe_load(requests.get(url).text)['roles']
+
 
 if __name__ == '__main__':
     argparser = argparse.ArgumentParser()
@@ -115,24 +81,35 @@ if __name__ == '__main__':
         nova_observer = yaml.safe_load(n)
         observer_pass = nova_observer['OS_PASSWORD']
 
+    clients = mwopenstackclients.clients('/etc/novaobserver.yaml')
     for project in config['projects']:
-        instances = get_instances(project, observer_pass,
-                                  config['keystone_host'],
-                                  config['keystone_port'])
+        instances = clients.allinstances(projectid=project, allregions=True)
         host_configs = []
+
         for instance in instances:
+            ip = ""
+            for value in instance.addresses.values():
+                for ipentry in value:
+                    if ipentry['OS-EXT-IPS:type'] == 'fixed':
+                        ip = str(ipentry['addr'])
+            if not ip:
+                # This VM is broken in some serious way; skip.
+                next
+
+            fqdn = '.'.join([instance.name, project, config['site'], 'wmflabs'])
+
             co = ConfigObject('host')
             co.properties['use'] = 'generic-host'
-            co.properties['host_name'] = instance['name']
-            co.properties['address'] = instance['ip']
+            co.properties['host_name'] = instance.name
+            co.properties['address'] = ip
             # Each role applied to this instance explicitly, via
             # wikitech, is added as a hostgroup, so we can target
             # particular roles with checks.  role::labs::instance is
             # implicitly applied to all instances via
             # manifests/site.pp, so we need to add it here explicitly.
             hostgroups = [project, 'role::labs::instance']
-            hostgroups += get_instance_roles(instance['project'],
-                                             instance['fqdn'],
+            hostgroups += get_instance_roles(project,
+                                             fqdn,
                                              config['puppet_enc_host'])
             co.properties['hostgroups'] = ','.join(sorted(set(hostgroups)))
             # For each project added to monitoring we expect a contactgroup with the same
