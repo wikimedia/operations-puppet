@@ -3027,11 +3027,15 @@ host labstore1007 {
 host cloudstore1008 {
     hardware ethernet D0:94:66:26:D5:6A;
     fixed-address cloudstore1008.wikimedia.org;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/buster-installer/";
+    filename "lpxelinux.0";
 }
 
 host cloudstore1009 {
     hardware ethernet D0:94:66:2D:94:3B;
     fixed-address cloudstore1009.wikimedia.org;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/buster-installer/";
+    filename "lpxelinux.0";
 }
 
 host labstore2001 {
