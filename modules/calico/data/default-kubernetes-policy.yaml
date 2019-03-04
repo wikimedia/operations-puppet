@@ -167,6 +167,19 @@
   protocol: tcp
   dst_ports:
     - 443
+  # Citoid needs to access zotero
+- action: allow
+  src_selector: calico/k8s_ns == 'citoid'
+  dst_net: 10.2.1.16/32
+  protocol: tcp
+  dst_ports:
+    - 1969
+- action: allow
+  src_selector: calico/k8s_ns == 'citoid'
+  dst_net: 10.2.2.16/32
+  protocol: tcp
+  dst_ports:
+    - 1969
   # Allow pod IP spaces, this should be locked down if needed in ingress by service owner
 - action: allow
   dst_net: 10.64.64.0/21
