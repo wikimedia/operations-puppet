@@ -147,6 +147,13 @@ node 'analytics-tool1003.eqiad.wmnet' {
     interface::add_ip6_mapped { 'main': }
 }
 
+# Future replacement of superset.wikimedia.org
+# https://wikitech.wikimedia.org/wiki/Analytics/Systems/Superset
+node 'analytics-tool1004.eqiad.wmnet' {
+    role(spare::system)
+    interface::add_ip6_mapped { 'main': }
+}
+
 # Analytics Query Service
 node /aqs100[456789]\.eqiad\.wmnet/ {
     role(aqs)

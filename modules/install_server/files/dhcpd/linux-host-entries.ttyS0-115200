@@ -75,6 +75,13 @@ host analytics-tool1003 {
     fixed-address analytics-tool1003.eqiad.wmnet;
 }
 
+host analytics-tool1004 {
+    hardware ethernet aa:00:00:cc:a2:a4;
+    fixed-address analytics-tool1004.eqiad.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/buster-installer/";
+    filename "lpxelinux.0";
+}
+
 host argon {
     hardware ethernet aa:00:00:fe:6b:df;
     fixed-address argon.eqiad.wmnet;
