@@ -242,3 +242,11 @@ remote_smtp:
 
 begin retry
 *   *   F,2h,15m; G,16h,1h,1.5; F,4d,6h
+
+#################
+# Rewrite rules #
+#################
+
+begin rewrite
+
+*@*.tools.eqiad.wmflabs  root@tools.wmflabs.org  F
