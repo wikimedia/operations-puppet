@@ -1,5 +1,9 @@
 class profile::wmcs::nfs::misc_backup {
 
+    include profile::wmcs::nfs::backup_keys
+    include profile::wmcs::nfs::bdsync
+    include profile::wmcs::nfs::snapshot_manager
+
     file {'/srv/backup':
         ensure  => 'directory',
     }
