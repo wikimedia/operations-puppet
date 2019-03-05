@@ -62,6 +62,7 @@ class profile::otrs(
     monitoring::service { 'smtp':
         description   => 'OTRS SMTP',
         check_command => 'check_smtp',
+        notes_url     => 'https://wikitech.wikimedia.org/wiki/OTRS#Troubleshooting',
     }
 
     nrpe::monitor_service{ 'clamd':

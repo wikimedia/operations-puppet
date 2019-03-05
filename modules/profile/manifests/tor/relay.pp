@@ -51,11 +51,13 @@ class profile::tor::relay (
     monitoring::service { 'tor_orport':
         description   => 'Tor ORPort',
         check_command => 'check_tcp!9002',
+        notes_url     => 'https://wikitech.wikimedia.org/wiki/Tor',
     }
 
     monitoring::service { 'tor_dirport':
         description   => 'Tor DirPort',
         check_command => 'check_tcp!9032',
+        notes_url     => 'https://wikitech.wikimedia.org/wiki/Tor'
     }
 
     backup::set { 'tor': }

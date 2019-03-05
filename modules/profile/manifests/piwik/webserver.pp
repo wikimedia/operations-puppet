@@ -63,6 +63,7 @@ class profile::piwik::webserver(
     monitoring::service { 'piwik':
         description   => 'piwik.wikimedia.org',
         check_command => 'check_http_unauthorized!piwik.wikimedia.org!/',
+        notes_url     => 'https://wikitech.wikimedia.org/wiki/Analytics/Systems/Piwik',
     }
 
     file_line { 'enable_php_opcache':

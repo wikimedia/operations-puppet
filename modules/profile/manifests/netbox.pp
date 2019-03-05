@@ -173,5 +173,6 @@ class profile::netbox (
         ensure        => $monitoring_ensure,
         description   => 'netbox HTTPS',
         check_command => 'check_https_url!netbox.wikimedia.org!https://netbox.wikimedia.org',
+        notes_url     => 'https://wikitech.wikimedia.org/wiki/Netbox',
     }
 }

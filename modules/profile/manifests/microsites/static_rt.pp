@@ -25,6 +25,7 @@ class profile::microsites::static_rt {
     #monitoring::service { 'static-rt-http':
     #    description   => 'Static RT HTTP',
     #    check_command => 'check_http_url!static-rt.wikimedia.org!/',
+    #    notes_url     => 'https://wikitech.wikimedia.org/wiki/RT',
     #}
 
     rsync::quickdatacopy { 'srv-org-wikimedia-static-rt':

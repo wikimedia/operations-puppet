@@ -43,11 +43,13 @@ class profile::releases::mediawiki (
     monitoring::service { 'http_releases':
         description   => "HTTP ${sitename}",
         check_command => "check_http_url!${sitename}!/",
+        notes_url     => 'https://wikitech.wikimedia.org/wiki/Releases.wikimedia.org',
     }
 
     monitoring::service { 'http_releases_jenkins':
         description   => "HTTP ${sitename_jenkins}",
         check_command => "check_http_url!${sitename_jenkins}!/login",
+        notes_url     => 'https://wikitech.wikimedia.org/wiki/Releases.wikimedia.org#Jenkins',
     }
 
     ferm::service { 'releases_http':
