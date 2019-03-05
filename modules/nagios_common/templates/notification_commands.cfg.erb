@@ -26,14 +26,14 @@
 # 'host-notify-by-email' command definition
 define command{
     command_name    host-notify-by-email
-    command_line    /usr/bin/printf "%b" "Notification Type: $NOTIFICATIONTYPE$\nHost: $HOSTNAME$\nState: $HOSTSTATE$\nAddress: $HOSTADDRESS$\nInfo: $HOSTOUTPUT$\n\nDate/Time: $LONGDATETIME$" | /usr/bin/mail -s "Host $HOSTSTATE$ alert for $HOSTNAME$!" $CONTACTEMAIL$
+    command_line    /usr/bin/printf "%b" "Notification Type: $NOTIFICATIONTYPE$\nHost: $HOSTNAME$\nState: $HOSTSTATE$\nAddress: $HOSTADDRESS$\nInfo: $HOSTOUTPUT$\n\nDate/Time: $LONGDATETIME$" | /usr/bin/mail -s "Host $HOSTSTATE$ alert for $HOSTNAME$!" -a "Reply-To: $CONTACTEMAIL$" $CONTACTEMAIL$
     }
 
 
 # 'notify-by-email' command definition
 define command{
     command_name    notify-by-email
-    command_line    /usr/bin/printf "%b" "Notification Type: $NOTIFICATIONTYPE$\n\nService: $SERVICEDESC$\nHost: $HOSTALIAS$\nAddress: $HOSTADDRESS$\nState: $SERVICESTATE$\n\nDate/Time: $LONGDATETIME$\n\nNotes URLs: $SERVICENOTESURL$\n\nAdditional Info:\n\n$SERVICEOUTPUT$" | sed -r -e 's/%27(https)/\1/g' -e 's/%27(\+|$$)/ /g' |  /usr/bin/mail -s "** $NOTIFICATIONTYPE$ alert - $HOSTALIAS$/$SERVICEDESC$ is $SERVICESTATE$ **" $CONTACTEMAIL$
+    command_line    /usr/bin/printf "%b" "Notification Type: $NOTIFICATIONTYPE$\n\nService: $SERVICEDESC$\nHost: $HOSTALIAS$\nAddress: $HOSTADDRESS$\nState: $SERVICESTATE$\n\nDate/Time: $LONGDATETIME$\n\nNotes URLs: $SERVICENOTESURL$\n\nAdditional Info:\n\n$SERVICEOUTPUT$" | sed -r -e 's/%27(https)/\1/g' -e 's/%27(\+|$$)/ /g' |  /usr/bin/mail -s "** $NOTIFICATIONTYPE$ alert - $HOSTALIAS$/$SERVICEDESC$ is $SERVICESTATE$ **" -a "Reply-To: $CONTACTEMAIL$" $CONTACTEMAIL$
     }
 
 # 'notify-by-email-per-service' command definition
@@ -42,7 +42,7 @@ define command{
 # This allows easy grouping in e-mail clients of state changes from the same alert.
 define command{
     command_name    notify-by-email-per-service
-    command_line    /usr/bin/printf "%b" "Notification Type: $NOTIFICATIONTYPE$\n\nService: $SERVICEDESC$\nHost: $HOSTALIAS$\nAddress: $HOSTADDRESS$\nState: $SERVICESTATE$\n\nDate/Time: $LONGDATETIME$\n\nNotes URLs: $SERVICENOTESURL$\n\nAdditional Info:\n\n$SERVICEOUTPUT$" | sed -r -e 's/%27(https)/\1/g' -e 's/%27(\+|$$)/ /g' |  /usr/bin/mail -s "** Alert - $SERVICEDESC$ **" $CONTACTEMAIL$
+    command_line    /usr/bin/printf "%b" "Notification Type: $NOTIFICATIONTYPE$\n\nService: $SERVICEDESC$\nHost: $HOSTALIAS$\nAddress: $HOSTADDRESS$\nState: $SERVICESTATE$\n\nDate/Time: $LONGDATETIME$\n\nNotes URLs: $SERVICENOTESURL$\n\nAdditional Info:\n\n$SERVICEOUTPUT$" | sed -r -e 's/%27(https)/\1/g' -e 's/%27(\+|$$)/ /g' |  /usr/bin/mail -s "** Alert - $SERVICEDESC$ **" -a "Reply-To: $CONTACTEMAIL$" $CONTACTEMAIL$
     }
 
 # 'notify-by-sms-gateway' command definitions
