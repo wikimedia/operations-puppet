@@ -11,7 +11,7 @@
 #
 class profile::webperf::xhgui {
 
-    require_package('libapache2-mod-php7.0')
+    require_package('libapache2-mod-php7.0', 'php-mongodb')
 
     ferm::service { 'webperf-xhgui-http':
         proto  => 'tcp',
