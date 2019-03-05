@@ -23,6 +23,8 @@ class profile::graphite::base(
     $cors_origins     = [ 'https://grafana.wikimedia.org' ],
     $c_relay_settings = {},
     $cluster_servers  = undef,
+    $uwsgi_max_request_duration_seconds = undef,  # lint:ignore:wmf_styleguide
+    $uwsgi_max_request_rss_megabytes = undef,     # lint:ignore:wmf_styleguide
 ) {
     include ::passwords::graphite
 
@@ -212,14 +214,16 @@ class profile::graphite::base(
     }
 
     class { '::graphite::web':
-        admin_user        => $::passwords::graphite::user,
-        admin_pass        => $::passwords::graphite::pass,
-        remote_user_auth  => true,
-        secret_key        => $::passwords::graphite::secret_key,
-        storage_dir       => $carbon_storage_dir,
-        documentation_url => '//wikitech.wikimedia.org/wiki/Graphite',
-        cluster_servers   => $cluster_servers,
-        cors_origins      => $cors_origins,
+        admin_user                         => $::passwords::graphite::user,
+        admin_pass                         => $::passwords::graphite::pass,
+        remote_user_auth                   => true,
+        secret_key                         => $::passwords::graphite::secret_key,
+        storage_dir                        => $carbon_storage_dir,
+        documentation_url                  => '//wikitech.wikimedia.org/wiki/Graphite',
+        cluster_servers                    => $cluster_servers,
+        cors_origins                       => $cors_origins,
+        uwsgi_max_request_duration_seconds => $uwsgi_max_request_duration_seconds,
+        uwsgi_max_request_rss_megabytes    => $uwsgi_max_request_rss_megabytes,
     }
 
 

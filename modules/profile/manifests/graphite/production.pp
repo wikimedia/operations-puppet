@@ -12,9 +12,11 @@ class profile::graphite::production {
     }
 
     class { 'profile::graphite::base':
-        storage_dir      => $storage_dir,
-        auth             => true,
-        c_relay_settings => {
+        storage_dir                        => $storage_dir,
+        auth                               => true,
+        uwsgi_max_request_duration_seconds => 60,
+        uwsgi_max_request_rss_megabytes    => 1024,
+        c_relay_settings                   => {
             forward_clusters => {
                 'default'   => [
                   'graphite1004.eqiad.wmnet:1903',
@@ -32,7 +34,7 @@ class profile::graphite::production {
             ],
             'queue_depth'    => 500000,
             'batch_size'     => 8000,
-        }
+        },
     }
 
     # Cleanup stale labs instances data - T143405

@@ -41,6 +41,12 @@
 #   An optional array of servers running graphite-web to be queried for
 #   metrics.
 #
+# [*uwsgi_max_request_duration_seconds*]
+#   If specified, have uwsgi kill a worker that takes longer than this to
+#   execute a request.
+#
+# [*uwsgi_max_request_rss_megabytes*]
+#   If specified, have uwsgi kill a worker whose RSS exceeds this value.
 class graphite::web(
     $admin_pass,
     $secret_key,
@@ -52,6 +58,8 @@ class graphite::web(
     $remote_user_auth  = false,
     $cors_origins      = undef,
     $cluster_servers   = undef,
+    $uwsgi_max_request_duration_seconds = undef,
+    $uwsgi_max_request_rss_megabytes = undef,
 ) {
     include ::graphite
 
@@ -119,7 +127,10 @@ class graphite::web(
 
     uwsgi::app { 'graphite-web':
         settings => {
-            uwsgi => {
+            # uwsgi::app will happily generate a config with 'key=undef' in the ini file.
+            # So, some messy stuff to only include our optional configuration settings iff
+            # they are provided.
+            uwsgi => merge({
                 'plugins'   => 'python',
                 'socket'    => '/run/uwsgi/graphite-web.sock',
                 'stats'     => '/run/uwsgi/graphite-web-stats.sock',
@@ -127,6 +138,8 @@ class graphite::web(
                 'master'    => true,
                 'processes' => $uwsgi_processes,
             },
+            if $uwsgi_max_request_duration_seconds != undef  { {'harakiri' => $uwsgi_max_request_duration_seconds} },
+            if $uwsgi_max_request_rss_megabytes != undef     { {'evil-reload-on-rss' => $uwsgi_max_request_rss_megabytes} })
         },
         require  => File['/var/log/graphite-web'],
     }
