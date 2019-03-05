@@ -20,7 +20,7 @@ profile::base::ssh_server_settings:
   explicit_macs: false
   # This is there because we have a ssh::userkey stanza
   # and it will not be used without this hack.  Same pattern ganeti uses.
-  authorized_keys_file: /etc/ssh/userkeys/%u /etc/ssh/userkeys/%u.d/cumin /etc/ssh/userkeys/%u.d/labstore
+  authorized_keys_file: /etc/ssh/userkeys/%u /etc/ssh/userkeys/%u.d/cumin /etc/ssh/userkeys/%u.d/cloudstore
 
 # IPs from the Maps project that are allowed to mount the maps volume
 profile::wmcs::nfs::misc::maps_project_ips:
