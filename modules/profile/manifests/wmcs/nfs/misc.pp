@@ -10,7 +10,7 @@ class profile::wmcs::nfs::misc (
     ferm::service { 'cloudstore_ssh_backup':
         proto  => 'tcp',
         port   => '22',
-        srange => "@resolve((${backup_server}), AAAA)",
+        srange => "(@resolve((${backup_server})) @resolve((${backup_server}), AAAA))",
     }
 
     file { '/etc/exports':
