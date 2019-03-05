@@ -22,6 +22,7 @@ class icinga::monitor::toollabs {
         contact_group  => 'team-paws',
         check_interval => 5,
         retry_interval => 5,
+        notes_url      => 'https://wikitech.wikimedia.org/wiki/PAWS',
     }
 
     # this homepage is served by a tool running within tools
@@ -35,6 +36,7 @@ class icinga::monitor::toollabs {
         description   => 'toolschecker: tools homepage (admin tool)',
         check_command => 'check_http_slow!20',
         host          => 'tools.wmflabs.org',
+        notes_url     => 'https://wikitech.wikimedia.org/wiki/Help:Toolforge/Monitoring',
     }
 
     # Monitors the tools nginx proxy by hitting the health endpoint
@@ -44,6 +46,7 @@ class icinga::monitor::toollabs {
         check_command => 'check_http_url!tools.wmflabs.org!/.well-known/healthz',
         host          => 'tools.wmflabs.org',
         contact_group => 'wmcs-team,admins',
+        notes_url     => 'https://wikitech.wikimedia.org/wiki/Help:Toolforge/Monitoring',
     }
 
     # complex checks via a wsgi app running on a cluster for this purpose.
@@ -64,12 +67,14 @@ class icinga::monitor::toollabs {
         check_command => "${checker}!/self!OK",
         host          => $test_entry_host,
         contact_group => 'wmcs-team',
+        notes_url     => 'https://wikitech.wikimedia.org/wiki/Help:Toolforge/Monitoring',
     }
 
     monitoring::service { 'tools-checker-toolsdb':
         description   => 'toolschecker: toolsdb',
         check_command => "${checker}!/toolsdb!OK",
         host          => $test_entry_host,
+        notes_url     => 'https://wikitech.wikimedia.org/wiki/Help:Toolforge/Monitoring',
     }
 
     monitoring::service { 'tools-checker-dumps':
@@ -82,6 +87,7 @@ class icinga::monitor::toollabs {
         description   => 'toolschecker: Redis set/get',
         check_command => "${checker}!/redis!OK",
         host          => $test_entry_host,
+        notes_url     => 'https://wikitech.wikimedia.org/wiki/Help:Toolforge/Monitoring',
     }
 
     monitoring::service { 'tools-checker-ldap':
@@ -90,6 +96,7 @@ class icinga::monitor::toollabs {
         check_command => "${checker}!/ldap!OK",
         host          => $test_entry_host,
         contact_group => 'wmcs-team',
+        notes_url     => 'https://wikitech.wikimedia.org/wiki/Help:Toolforge/Monitoring',
     }
 
     monitoring::service { 'tools-checker-labs-dns-private':
@@ -97,6 +104,7 @@ class icinga::monitor::toollabs {
         check_command => "${checker}!/labs-dns/private!OK",
         host          => $test_entry_host,
         contact_group => 'wmcs-team,admins',
+        notes_url     => 'https://wikitech.wikimedia.org/wiki/Help:Toolforge/Monitoring',
     }
 
     monitoring::service { 'tools-checker-nfs-home':
@@ -105,6 +113,7 @@ class icinga::monitor::toollabs {
         check_command => "${checker}!/nfs/home!OK",
         host          => $test_entry_host,
         contact_group => 'wmcs-team',
+        notes_url     => 'https://wikitech.wikimedia.org/wiki/Help:Toolforge/Monitoring',
     }
 
     # new instances will block on this for spinup if failing
@@ -112,6 +121,7 @@ class icinga::monitor::toollabs {
         description   => 'toolschecker: showmount succeeds on a labs instance',
         check_command => "${checker}!/nfs/secondary_cluster_showmount!OK",
         host          => $test_entry_host,
+        notes_url     => 'https://wikitech.wikimedia.org/wiki/Help:Toolforge/Monitoring',
     }
 
     # become toolschecker
@@ -120,6 +130,7 @@ class icinga::monitor::toollabs {
         description   => 'toolschecker: check mtime mod from tools cron job',
         check_command => "${checker}!/toolscron!OK",
         host          => $test_entry_host,
+        notes_url     => 'https://wikitech.wikimedia.org/wiki/Help:Toolforge/Monitoring',
     }
 
     # The mechanism for this test is too flaky to page.  We need to revise
@@ -131,6 +142,7 @@ class icinga::monitor::toollabs {
         check_interval => 5,
         retry_interval => 5,
         contact_group  => 'wmcs-bots,admins',
+        notes_url      => 'https://wikitech.wikimedia.org/wiki/Help:Toolforge/Monitoring',
     }
 
     monitoring::service { 'tools-checker-etcd-flannel':
@@ -140,6 +152,7 @@ class icinga::monitor::toollabs {
         check_interval => 5,
         retry_interval => 5,
         contact_group  => 'wmcs-team,admins',
+        notes_url      => 'https://wikitech.wikimedia.org/wiki/Help:Toolforge/Monitoring',
     }
 
     monitoring::service { 'tools-checker-etcd-k8s':
@@ -149,6 +162,7 @@ class icinga::monitor::toollabs {
         check_interval => 5,
         retry_interval => 5,
         contact_group  => 'wmcs-team,admins',
+        notes_url      => 'https://wikitech.wikimedia.org/wiki/Help:Toolforge/Monitoring',
     }
 
     monitoring::service { 'tools-checker-k8s-node-ready':
@@ -158,5 +172,6 @@ class icinga::monitor::toollabs {
         check_interval => 5,
         retry_interval => 5,
         contact_group  => 'wmcs-team,admins',
+        notes_url      => 'https://wikitech.wikimedia.org/wiki/Help:Toolforge/Monitoring',
     }
 }
