@@ -1551,6 +1551,8 @@ host db1113 {
 host db1114 {
     hardware ethernet 80:18:44:DF:D8:0C;
     fixed-address db1114.eqiad.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/buster-installer/";
+    filename "lpxelinux.0";
 }
 
 host db1115 {
