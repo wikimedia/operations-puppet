@@ -4,8 +4,17 @@ class labs_bootstrapvz() {
         ensure => 'present',
     }
 
-    package { 'bootstrap-vz':
-        ensure => present,
+    if os_version('debian == buster')
+    {
+        # Until upstream packaging catches up, use our custom
+        #  package for this.
+        package { 'python-bootstrap-vz':
+            ensure => present,
+        }
+    } else {
+        package { 'bootstrap-vz':
+            ensure => present,
+        }
     }
 
     package { 'zerofree':
