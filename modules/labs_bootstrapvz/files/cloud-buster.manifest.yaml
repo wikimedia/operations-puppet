@@ -114,9 +114,6 @@ packages:
     - xfsprogs
     - zsh
 plugins:
-  puppet:
-    assets: /etc/bootstrap-vz/puppet
-    enable_agent: false
   file_copy:
     mkdirs:
       -
