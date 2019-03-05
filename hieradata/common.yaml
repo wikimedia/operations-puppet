@@ -408,6 +408,8 @@ statistics_servers:
   - stat1004.eqiad.wmnet
   - stat1006.eqiad.wmnet
   - stat1007.eqiad.wmnet
+  - notebook1003.eqiad.wmnet
+  - notebook1004.eqiad.wmnet
   - labstore1007.wikimedia.org
 labstore_servers:
   - labstore1006.wikimedia.org

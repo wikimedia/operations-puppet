@@ -56,6 +56,11 @@ class profile::swap(
         statistics::mysql_credentials { 'research':
             group => 'researchers',
         }
+
+        # Include an rsync from /srv/published-datasets to
+        # thorium.eqiad.wmnet to publish datasets at
+        # analytics.wikimedia.org/datasets.
+        class { '::statistics::rsync::published_datasets': }
     }
     else {
         $web_proxy = undef

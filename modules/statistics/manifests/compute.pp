@@ -14,48 +14,9 @@ class statistics::compute {
         hosts_allow => $::statistics::servers,
     }
 
-    $published_datasets_path = "${working_path}/published-datasets"
-    # Create $working_path/published-datasets.  Anything in this directory
-    # will be available at analytics.wikimedia.org/datasets.
-    # See: class statistics::sites::analytics.
-    file { $published_datasets_path:
-        ensure => 'directory',
-        owner  => 'root',
-        group  => 'wikidev',
-        mode   => '0775',
-    }
-    file { "${published_datasets_path}/README":
-        ensure => 'present',
-        source => 'puppet:///modules/statistics/published-datasets-readme.txt',
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0644',
-    }
-
-    # Install a simple rsync script for published-datasets, so that
-    # stat users can push their work out manually if they want.
-    # TODO: hiera-ize thorium.eqiad.wmnet
-    $published_datasets_destination = "thorium.eqiad.wmnet::publshed-datasets-destination/${::hostname}/"
-    file { '/usr/local/bin/published-datasets-sync':
-        content => template('statistics/published-datasets-sync.sh.erb'),
-        owner   => 'root',
-        group   => 'root',
-        mode    =>  '0755',
-    }
-
-    # Rync push published-datasets from this host to thorium,
-    # the analytics.wikimedia.org web host.  These will end up at
-    # /srv/published-datasets-rsynced/$hostname, and then the hardsync script
-    # will sync them into /srv/analytics.wikimedia.org/datasets.
-    # See: statistics::sites::analytics.
-    cron { 'rsync-published-datasets':
-        # -gp preserve group (wikidev, usually) and permissions, but not
-        # ownership, as the owner users might not exist on the destination.
-        command => '/usr/local/bin/published-datasets-sync -q',
-        require => [File['/usr/local/bin/published-datasets-sync'], File[$published_datasets_path]],
-        user    => 'root',
-        minute  => '*/15',
-    }
+    # Install a job to rsync /srv/published-datasets => $published_datasets_host.
+    # The statistics::published_datasets class should be included on $published_datasets_host.
+    class { '::statistics::rsync::published_datasets': }
 
     file { "${::statistics::working_path}/mediawiki":
         ensure => 'directory',
