@@ -51,6 +51,13 @@ variable that can be defined to avoid that behavior. Example:
 
     SHELL_ON_FAILURE=no pdebuild
 
+If you reach the conclusion that your build fails because of some effort to write
+to HOME, and fixing the software to not do that is unfeasible, then you can set
+
+    BUILD\_HOME = /build
+
+in .pbuilderrc or /etc/pbuilderrc
+
 Using built packages as dependencies
 ====================================
 
