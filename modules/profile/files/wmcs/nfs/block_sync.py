@@ -20,7 +20,7 @@ def run_remote(cmd, r_host, r_user):
     :return returncode on success
     :raise CalledProcessError
     """
-    remote_cmd = '/usr/bin/ssh -i /root/.ssh/id_labstore {}@{} "{}"'.format(
+    remote_cmd = '/usr/bin/ssh -i /root/.ssh/id_cloudstore {}@{} "{}"'.format(
         r_user, r_host, cmd
     )
     return subprocess.check_call(shlex.split(remote_cmd))
@@ -49,7 +49,7 @@ def bdsync(local_device, r_host, r_vg, r_snapshot_name, r_user):
     remotenice = 10
     blocksize = 16384
     server = "/usr/bin/nice -{} {} --server".format(remotenice, BDSYNC)
-    remdata = '/usr/bin/ssh -i /root/.ssh/id_labstore {}@{} "{}"'.format(
+    remdata = '/usr/bin/ssh -i /root/.ssh/id_cloudstore {}@{} "{}"'.format(
         r_user, r_host, server
     )
     sync_cmd = "{} --blocksize={} --remdata '{}' {} /dev/{}/{}".format(
@@ -77,7 +77,7 @@ def main():
     argparser = argparse.ArgumentParser()
 
     argparser.add_argument(
-        "r_host", help="Remote host, e.g. 10.64.37.20 or labstore1004.eqiad.wmnet"
+        "r_host", help="Remote host, e.g. 208.80.155.125 or cloudstore1008.eqiad.wmnet"
     )
     argparser.add_argument("r_vg", help="Remote volume group, e.g. misc")
     argparser.add_argument("r_lv", help="Remote logical volume, e.g. test")
