@@ -12,6 +12,7 @@ class icinga::monitor::certs {
         description   => 'HTTPS-blog',
         check_command => 'check_ssl_http_letsencrypt!blog.wikimedia.org',
         host          => 'blog.wikimedia.org',
+        notes_url     => 'https://phabricator.wikimedia.org/tag/wikimedia-blog/',
     }
 
     # policy.wikimedia.org (external, Wordpress/Automattic)
@@ -22,12 +23,14 @@ class icinga::monitor::certs {
         description   => 'HTTPS-policy',
         check_command => 'check_ssl_http_letsencrypt!policy.wikimedia.org',
         host          => 'policy.wikimedia.org',
+        notes_url     => 'https://phabricator.wikimedia.org/tag/wmf-legal/',
     }
 
     monitoring::service { 'https_toolserver':
         description   => 'HTTPS-toolserver',
         check_command => 'check_ssl_http_letsencrypt!www.toolserver.org',
         host          => 'www.toolserver.org',
+        notes_url     => 'https://phabricator.wikimedia.org/tag/toolforge/',
     }
 
     # *.planet.wikimedia.org (has its own wildcard cert on misc cp cluster)
@@ -46,6 +49,7 @@ class icinga::monitor::certs {
         description   => 'HTTPS-wmflabs',
         check_command => 'check_ssl_http!tools.wmflabs.org',
         host          => 'tools.wmflabs.org',
+        notes_url     => 'https://phabricator.wikimedia.org/tag/toolforge/',
     }
 
     # *.wmfusercontent.org (wildcard cert, testing phab.wmfusercontent.org)
@@ -56,6 +60,7 @@ class icinga::monitor::certs {
         description   => 'HTTPS-wmfusercontent',
         check_command => 'check_ssl_http!phab.wmfusercontent.org',
         host          => 'phab.wmfusercontent.org',
+        notes_url     => 'https://phabricator.wikimedia.org/tag/phabricator/',
     }
 
     # wikitech-static.wikimedia.org (external, Rackspace)
@@ -68,6 +73,7 @@ class icinga::monitor::certs {
         check_command => 'check_ssl_http_letsencrypt!wikitech-static.wikimedia.org',
         host          => 'wikitech-static.wikimedia.org',
         contact_group => 'wmcs-bots,admins',
+        notes_url     => 'https://phabricator.wikimedia.org/project/view/2773/',
     }
 
     monitoring::service { 'https_status-wikimedia':
@@ -75,5 +81,6 @@ class icinga::monitor::certs {
         check_command => 'check_ssl_http_letsencrypt!status.wikimedia.org',
         host          => 'wikitech-static.wikimedia.org',
         contact_group => 'wikitech-static',
+        notes_url     => 'https://phabricator.wikimedia.org/project/view/2773/',
     }
 }

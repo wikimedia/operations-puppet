@@ -13,6 +13,7 @@ class icinga::monitor::wikidata {
         check_interval => 5,
         retry_interval => 1,
         contact_group  => 'admins,wikidata',
+        notes_url      => 'https://phabricator.wikimedia.org/project/view/71/',
     }
 
     monitoring::service { 'wikidata.org dispatch extreme lag':
@@ -22,5 +23,6 @@ class icinga::monitor::wikidata {
         check_interval => 5,
         retry_interval => 1,
         contact_group  => 'admins,wikidata',
+        notes_url      => 'https://phabricator.wikimedia.org/project/view/71/',
     }
 }

@@ -21,6 +21,7 @@ class icinga::monitor::legal {
         check_interval => 1440,
         retry_interval => 30,
         contact_group  => 'admins,legal',
+        notes_url      => 'https://phabricator.wikimedia.org/project/members/28/',
     }
 
     monitoring::service { 'en.m.wp.o-legal-html':
@@ -30,6 +31,7 @@ class icinga::monitor::legal {
         check_interval => 1440,
         retry_interval => 30,
         contact_group  => 'admins,legal',
+        notes_url      => 'https://phabricator.wikimedia.org/project/members/28/',
     }
 
     monitoring::service { 'en.wb.o-legal-html':
@@ -39,5 +41,6 @@ class icinga::monitor::legal {
         check_interval => 1440,
         retry_interval => 30,
         contact_group  => 'admins,legal',
+        notes_url      => 'https://phabricator.wikimedia.org/project/members/28/',
     }
 }

@@ -7,12 +7,14 @@ class icinga::monitor::ores (
     monitoring::grafana_alert { 'ores':
         dashboard_uid => '000000255',
         contact_group => 'team-scoring',
+        notes_url     => 'https://wikitech.wikimedia.org/wiki/ORES',
     }
 
     # T154175
     monitoring::grafana_alert { 'ores-extension':
         dashboard_uid => '000000263',
         contact_group => 'team-scoring',
+        notes_url     => 'https://wikitech.wikimedia.org/wiki/ORES',
     }
 
     @monitoring::host { 'ores.wmflabs.org':
@@ -28,6 +30,7 @@ class icinga::monitor::ores (
         check_command => 'check_http',
         host          => 'ores.wmflabs.org',
         contact_group => 'team-scoring',
+        notes_url     => 'https://wikitech.wikimedia.org/wiki/ORES',
     }
 
     $web_nodes = [ 'ores-web-01', 'ores-web-02' ]
@@ -40,6 +43,7 @@ class icinga::monitor::ores (
         check_command => 'check_ores_workers!oresweb',
         host          => 'ores.wmflabs.org',
         contact_group => 'team-scoring',
+        notes_url     => 'https://wikitech.wikimedia.org/wiki/ORES',
     }
 
     monitoring::service { 'ores_worker_production':
@@ -47,6 +51,7 @@ class icinga::monitor::ores (
         check_command => 'check_ores_workers!ores.wikimedia.org',
         host          => 'ores.wikimedia.org',
         contact_group => 'team-scoring',
+        notes_url     => 'https://wikitech.wikimedia.org/wiki/ORES',
     }
 
     # T122830

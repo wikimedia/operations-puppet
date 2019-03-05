@@ -11,6 +11,7 @@ class icinga::monitor::commons {
         host          => 'commons.wikimedia.org',
         contact_group => 'admins',
         critical      => true,
+        notes_url     => 'https://phabricator.wikimedia.org/project/view/1118/',
     }
 
 }

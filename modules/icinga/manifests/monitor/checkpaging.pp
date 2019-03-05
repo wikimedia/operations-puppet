@@ -10,5 +10,6 @@ class icinga::monitor::checkpaging {
         retry_interval => 1,
         contact_group  => 'admins',
         critical       => false,
+        notes_url      => 'https://phabricator.wikimedia.org/tag/monitoring/',
     }
 }
