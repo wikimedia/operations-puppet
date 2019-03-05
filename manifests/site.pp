@@ -2060,11 +2060,6 @@ node 'people1001.eqiad.wmnet' {
     interface::add_ip6_mapped { 'main': }
 }
 
-# formerly parsoid-test system, replaced by scandium
-node 'ruthenium.eqiad.wmnet' {
-    role(spare::system)
-}
-
 # cluster management (cumin master)
 node 'sarin.codfw.wmnet' {
     role(cluster::management)
