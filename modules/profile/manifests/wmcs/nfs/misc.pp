@@ -1,10 +1,17 @@
 class profile::wmcs::nfs::misc (
     Array[Stdlib::IP::Address] $maps_project_ips = lookup('profile::wmcs::nfs::misc::maps_project_ips'),
+    String                     $backup_server    = lookup('profile::wmcs::nfs::misc::backup_server'),
 ) {
 
     include profile::wmcs::nfs::backup_keys
     include profile::wmcs::nfs::bdsync
     include profile::wmcs::nfs::snapshot_manager
+
+    ferm::service { 'cloudstore_ssh_backup':
+        proto  => 'tcp',
+        port   => '22',
+        srange => "@resolve((${backup_server}), AAAA)",
+    }
 
     file { '/etc/exports':
         ensure  => present,
