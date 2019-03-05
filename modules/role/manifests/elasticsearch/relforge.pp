@@ -6,7 +6,7 @@ class role::elasticsearch::relforge {
     include ::standard
     include ::profile::base::firewall
     include ::profile::elasticsearch::cirrus
-    include ::elasticsearch::nagios::check
+    include ::profile::elasticsearch::nagios::check
     include ::profile::mjolnir::kafka_msearch_daemon
 
     system::role { 'elasticsearch::relforge':
