@@ -91,6 +91,6 @@ class role::xhgui::app {
         mode   => '0755',
     }
     -> httpd::site { 'xhgui_apache_site':
-        content => template('role/apache/sites/xhgui.erb'),
+        content => template('profile/webperf/xhgui/httpd.conf.erb'),
     }
 }

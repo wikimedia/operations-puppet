@@ -26,4 +26,31 @@ class profile::webperf::xhgui {
     }
 
     class { '::mongodb': }
+
+    $auth_ldap = {
+        name          => 'nda/ops/wmf',
+        bind_dn       => 'cn=proxyagent,ou=profile,dc=wikimedia,dc=org',
+        bind_password => $passwords::ldap::production::proxypass,
+        url           => 'ldaps://ldap-labs.eqiad.wikimedia.org ldap-labs.codfw.wikimedia.org/ou=people,dc=wikimedia,dc=org?cn',
+        groups        => [
+            'cn=ops,ou=groups,dc=wikimedia,dc=org',
+            'cn=nda,ou=groups,dc=wikimedia,dc=org',
+            'cn=wmf,ou=groups,dc=wikimedia,dc=org',
+        ],
+    }
+
+    git::clone { 'operations/software/xhgui':
+        ensure    => 'latest',
+        directory => '/srv/xhgui',
+        branch    => 'wmf_deploy',
+    }
+    -> file { '/srv/xhgui/cache':
+        ensure => directory,
+        owner  => 'www-data',
+        group  => 'www-data',
+        mode   => '0755',
+    }
+    -> httpd::site { 'xhgui_apache_site':
+        content => template('profile/webperf/xhgui/httpd.conf.erb'),
+    }
 }
