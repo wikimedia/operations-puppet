@@ -3555,3 +3555,9 @@ ldap_only_users:
     ensure: present
     realname: Toni Sevener
     email: tsevener@wikimedia.org
+  pbj: 
+    ensure: present
+    realname: Patrick Johnson
+    email: pbj@progresslabs.co
+    expiry_date: 2019-03-30
+    expiry_contact: apalmer@wikimedia.org
