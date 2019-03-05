@@ -6,8 +6,9 @@ class role::elasticsearch::relforge {
     include ::standard
     include ::profile::base::firewall
     include ::profile::elasticsearch::cirrus
-    include ::profile::elasticsearch::nagios::check
     include ::profile::mjolnir::kafka_msearch_daemon
+
+    icinga::monitor::elasticsearch::base_checks { $::hostname: }
 
     system::role { 'elasticsearch::relforge':
         ensure      => 'present',

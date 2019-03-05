@@ -53,7 +53,9 @@ class profile::icinga(
     class { 'icinga::monitor::certs': }
     class { 'icinga::monitor::gsb': }
     class { 'icinga::monitor::commons': }
-    class { 'icinga::monitor::elasticsearch': }
+
+    class { 'icinga::monitor::elasticsearch::cirrus_cluster_checks': }
+
     class { 'icinga::monitor::wdqs': }
     class { 'icinga::monitor::performance': }
     class { 'icinga::monitor::services': }

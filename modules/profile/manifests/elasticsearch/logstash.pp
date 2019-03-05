@@ -12,7 +12,7 @@ class profile::elasticsearch::logstash(
     # shard is present on each node). If one node is lost, 1/3 of the shards
     # will be unassigned, with no way to reallocate them on another node, which
     # is fine and should not raise an alert. So threshold needs to be > 1/3.
-    class { '::profile::elasticsearch::nagios::check':
+    icinga::monitor::elasticsearch::base_checks { "Base checks - ${::hostname}":
         threshold => '>=0.34',
     }
 
