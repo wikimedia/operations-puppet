@@ -16,6 +16,7 @@ class icinga::monitor::elasticsearch {
                 description   => "ElasticSearch health check for shards - ${cluster}(${instance['name']})",
                 critical      => false,
                 contact_group => 'admins,team-discovery',
+                notes_url     => 'https://wikitech.wikimedia.org/wiki/Search#Administration',
             }
 
             monitoring::service { "elasticsearch / cirrus frozen writes - ${cluster}(${instance['name']})":
@@ -24,6 +25,7 @@ class icinga::monitor::elasticsearch {
                 description   => "ElasticSearch health check for frozen writes - ${cluster}(${instance['name']})",
                 critical      => true,
                 contact_group => 'admins,team-discovery',
+                notes_url     => 'https://wikitech.wikimedia.org/wiki/Search#Pausing_Indexing',
             }
 
             monitoring::service { "elasticsearch / shard size check - ${cluster}(${instance['name']})":
@@ -35,6 +37,7 @@ class icinga::monitor::elasticsearch {
                 retry_interval => 180, # 3h
                 retries        => 3,
                 contact_group  => 'admins,team-discovery',
+                notes_url      => 'https://wikitech.wikimedia.org/wiki/Search#If_it_has_been_indexed',
             }
 
             monitoring::service { "elasticsearch / unassigned shard check - ${cluster}(${instance['name']})":
