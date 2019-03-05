@@ -4,7 +4,11 @@ class labs_bootstrapvz() {
         ensure => 'present',
     }
 
-    if os_version('debian == buster')
+    # This weird greater-than check is to deal with the fact that
+    #  Buster doesn't actually have a release number assigned
+    #  until it's released.  We need to remove that clause
+    #  sometime between Buster and Bullseye.
+    if os_version('debian == buster') or os_version('debian > buster')
     {
         # Until upstream packaging catches up, use our custom
         #  package for this.
