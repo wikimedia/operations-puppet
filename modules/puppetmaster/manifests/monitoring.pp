@@ -18,12 +18,14 @@ class puppetmaster::monitoring (
         monitoring::service { 'puppetmaster_https':
             description   => 'puppetmaster https',
             check_command => "check_https_port_status!8140!400!${puppetmaster_check_uri}",
+            notes_url     => 'https://wikitech.wikimedia.org/wiki/Puppet#Debugging',
         }
     }
     if $server_type == 'frontend' or $server_type == 'backend' {
         monitoring::service { 'puppetmaster_backend_https':
             description   => 'puppetmaster backend https',
             check_command => "check_https_port_status!8141!400!${puppetmaster_check_uri}",
+            notes_url     => 'https://wikitech.wikimedia.org/wiki/Puppet#Debugging',
         }
     }
 

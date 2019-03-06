@@ -81,5 +81,6 @@ class profile::puppetboard (
     monitoring::service { 'puppetboard-http':
         description   => 'puppetboard.wikimedia.org',
         check_command => 'check_http_unauthorized!puppetboard.wikimedia.org!/',
+        notes_url     => 'https://wikitech.wikimedia.org/wiki/Puppet#PuppetDB',
     }
 }
