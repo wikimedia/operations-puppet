@@ -30,7 +30,7 @@ packages:
   install_standard: true
   install:
     - acct
-    - ack-grep
+    - ack
     - apt-listchanges
     - apt-show-versions
     - apt-transport-https
