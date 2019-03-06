@@ -50,6 +50,7 @@ class pdfrender(
         monitoring::service { 'pdfrender':
             description   => 'pdfrender',
             check_command => "check_http_on_port!${port}",
+            notes_url     => 'https://phabricator.wikimedia.org/T174916',
         }
     }
 

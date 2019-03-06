@@ -36,6 +36,7 @@ class wdqs::monitor::blazegraph (
     monitoring::service { 'WDQS_External_SPARQL_Endpoint':
         description   => 'WDQS SPARQL',
         check_command => 'check_http!query.wikidata.org!/bigdata/namespace/wdq/sparql?query=prefix%20schema:%20%3Chttp://schema.org/%3E%20SELECT%20*%20WHERE%20%7B%3Chttp://www.wikidata.org%3E%20schema:dateModified%20?y%7D&format=json!"xsd:dateTime"',
+        notes_url     => 'https://wikitech.wikimedia.org/wiki/Wikidata_query_service/Runbook',
     }
 
     monitoring::check_prometheus { 'WDQS_Lag':

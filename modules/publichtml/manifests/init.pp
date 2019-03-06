@@ -45,5 +45,6 @@ class publichtml(
     monitoring::service { 'http-peopleweb':
         description   => 'HTTP-peopleweb',
         check_command => "check_http_url!${sitename}!http://${sitename}",
+        notes_url     => 'https://wikitech.wikimedia.org/wiki/People.wikimedia.org',
     }
 }

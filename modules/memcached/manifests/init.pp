@@ -66,6 +66,7 @@ class memcached(
         monitoring::service { 'memcached':
             description   => 'Memcached',
             check_command => "check_tcp!${port}",
+            notes_url     => 'https://wikitech.wikimedia.org/wiki/Memcached',
         }
     }
 

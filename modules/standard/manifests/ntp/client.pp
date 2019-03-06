@@ -23,6 +23,7 @@ class standard::ntp::client () {
         check_command  => 'check_ntp_time!0.5!1',
         check_interval => 30,
         retry_interval => 15,
+        notes_url      => 'https://wikitech.wikimedia.org/wiki/NTP',
     }
 
 }

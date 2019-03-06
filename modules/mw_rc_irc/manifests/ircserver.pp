@@ -56,5 +56,6 @@ class mw_rc_irc::ircserver {
         description   => 'ircd',
         check_command => 'check_ircd',
         critical      => true,
+        notes_url     => 'https://wikitech.wikimedia.org/wiki/Irc.wikimedia.org',
     }
 }

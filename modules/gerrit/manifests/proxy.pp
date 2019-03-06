@@ -21,6 +21,7 @@ class gerrit::proxy(
         description   => 'HTTPS',
         check_command => "check_ssl_on_host_port_letsencrypt!${tls_host}!${tls_host}!443",
         contact_group => 'admins,gerrit',
+        notes_url     => 'https://phabricator.wikimedia.org/project/view/330/',
     }
 
     $ssl_settings = ssl_ciphersuite('apache', 'mid', true)
