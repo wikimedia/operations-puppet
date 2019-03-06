@@ -11,9 +11,9 @@ stretch_facts = {
 describe 'nrpe', :type => :class do
     let(:facts) { stretch_facts }
     it { should contain_package('nagios-nrpe-server') }
-    it { should contain_package('nagios-plugins') }
-    it { should contain_package('nagios-plugins-basic') }
-    it { should contain_package('nagios-plugins-standard') }
+    it { should contain_package('monitoring-plugins') }
+    it { should contain_package('monitoring-plugins-basic') }
+    it { should contain_package('monitoring-plugins-standard') }
     it { should contain_file('/etc/nagios/nrpe_local.cfg') }
     it { should contain_file('/usr/local/lib/nagios/plugins/') }
     it { should contain_service('nagios-nrpe-server') }

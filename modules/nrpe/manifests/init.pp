@@ -18,9 +18,9 @@
 #
 class nrpe($allowed_hosts='127.0.0.1') {
     package { [ 'nagios-nrpe-server',
-                'nagios-plugins',
-                'nagios-plugins-basic',
-                'nagios-plugins-standard',
+                'monitoring-plugins',
+                'monitoring-plugins-basic',
+                'monitoring-plugins-standard',
             ]:
         ensure => present,
     }
