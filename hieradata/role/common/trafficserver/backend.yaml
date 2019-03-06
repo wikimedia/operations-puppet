@@ -325,4 +325,3 @@ profile::trafficserver::backend::logs:
     - purge
     mode: ascii_pipe
 diamond::remove: true
-profile::base::notifications: disabled
