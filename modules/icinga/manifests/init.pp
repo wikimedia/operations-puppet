@@ -217,6 +217,7 @@ class icinga(
         description    => 'Check correctness of the icinga configuration',
         check_command  => 'check_icinga_config',
         check_interval => 10,
+        notes_url      => 'https://wikitech.wikimedia.org/wiki/Icinga',
     }
 
     # script to manually send SMS to Icinga contacts (T82937)

@@ -88,6 +88,7 @@ class profile::icinga(
     monitoring::service { 'https':
         description   => 'HTTPS',
         check_command => "check_ssl_http_letsencrypt!${virtual_host}",
+        notes_url     => 'https://wikitech.wikimedia.org/wiki/Icinga',
     }
 
     $ircbot_present = $is_passive ? {
