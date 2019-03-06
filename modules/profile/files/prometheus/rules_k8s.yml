@@ -1,5 +1,5 @@
 groups:
-- name: /home/godog/src/wikimedia/puppet/modules/profile/files/prometheus/rules_k8s.conf
+- name: modules/profile/files/prometheus/rules_k8s.conf
   rules:
   - record: instance_operation_type:kubelet_runtime_operations_latency_microseconds:avg5m
     expr: sum by(instance) (rate(kubelet_runtime_operations_latency_microseconds_sum{job="k8s-node"}[5m]))
@@ -10,3 +10,21 @@ groups:
   - record: instance_operation:etcd_request_latencies_summary:avg5m
     expr: sum by(instance, operation) (rate(etcd_request_latencies_summary_sum{job="k8s-api"}[5m]))
       / sum by(instance, operation) (rate(etcd_request_latencies_summary_count{job="k8s-api"}[5m]))
+  - record: service_uri:service_runner_request_duration_seconds:50pct5m
+    expr: histogram_quantile(0.5, sum by(uri, le, service) (rate(service_runner_request_duration_seconds_bucket[5m])))
+  - record: service_uri:service_runner_request_duration_seconds:90pct5m
+    expr: histogram_quantile(0.9, sum by(uri, le, service) (rate(service_runner_request_duration_seconds_bucket[5m])))
+  - record: service_uri:service_runner_request_duration_seconds:99pct5m
+    expr: histogram_quantile(0.99, sum by(uri, le, service) (rate(service_runner_request_duration_seconds_bucket[5m])))
+  - record: service_method:service_runner_request_duration_seconds:50pct5m
+    expr: histogram_quantile(0.5, sum by(method, le, service) (rate(service_runner_request_duration_seconds_bucket[5m])))
+  - record: service_method:service_runner_request_duration_seconds:90pct5m
+    expr: histogram_quantile(0.9, sum by(method, le, service) (rate(service_runner_request_duration_seconds_bucket[5m])))
+  - record: service_method:service_runner_request_duration_seconds:99pct5m
+    expr: histogram_quantile(0.99, sum by(method, le, service) (rate(service_runner_request_duration_seconds_bucket[5m])))
+  - record: service_status:service_runner_request_duration_seconds:50pct5m
+    expr: histogram_quantile(0.5, sum by(status, le, service) (rate(service_runner_request_duration_seconds_bucket[5m])))
+  - record: service_status:service_runner_request_duration_seconds:90pct5m
+    expr: histogram_quantile(0.9, sum by(status, le, service) (rate(service_runner_request_duration_seconds_bucket[5m])))
+  - record: service_status:service_runner_request_duration_seconds:99pct5m
+    expr: histogram_quantile(0.99, sum by(status, le, service) (rate(service_runner_request_duration_seconds_bucket[5m])))
