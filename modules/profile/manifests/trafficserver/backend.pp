@@ -63,9 +63,6 @@ class profile::trafficserver::backend (
         endpoint => "http://127.0.0.1:${port}/_stats",
     }
 
-    # pool/depool/drain scripts
-    class { 'conftool::scripts': }
-
     # Purging
     class { '::varnish::htcppurger':
         host_regex => $purge_host_regex,
