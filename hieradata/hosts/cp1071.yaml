@@ -1,4 +1,1 @@
-profile::trafficserver::backend::port: 3128
-profile::trafficserver::backend::purge_endpoints:
-    - '127.0.0.1:3128'
 profile::trafficserver::backend::enable_xdebug: true

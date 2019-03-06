@@ -4,7 +4,7 @@
 # Nagios checks.
 #
 class profile::trafficserver::backend (
-    Wmflib::IpPort $port=hiera('profile::trafficserver::backend::port', 3129),
+    Wmflib::IpPort $port=hiera('profile::trafficserver::backend::port', 3128),
     String $outbound_tls_cipher_suite=hiera('profile::trafficserver::backend::outbound_tls_cipher_suite', ''),
     Boolean $enable_xdebug=hiera('profile::trafficserver::backend::enable_xdebug', false),
     Array[TrafficServer::Mapping_rule] $mapping_rules=hiera('profile::trafficserver::backend::mapping_rules', []),
@@ -16,7 +16,7 @@ class profile::trafficserver::backend (
     Array[TrafficServer::Log] $logs=hiera('profile::trafficserver::backend::logs', []),
     String $purge_host_regex=hiera('profile::trafficserver::backend::purge_host_regex', ''),
     Array[Stdlib::Compat::Ip_address] $purge_multicasts=hiera('profile::trafficserver::backend::purge_multicasts', ['239.128.0.112', '239.128.0.113', '239.128.0.114', '239.128.0.115']),
-    Array[String] $purge_endpoints=hiera('profile::trafficserver::backend::purge_endpoints', ['127.0.0.1:3129']),
+    Array[String] $purge_endpoints=hiera('profile::trafficserver::backend::purge_endpoints', ['127.0.0.1:3128']),
 ){
     # Add hostname as a parameter to the default global Lua plugin
     $global_lua_script = $default_lua_script? {
