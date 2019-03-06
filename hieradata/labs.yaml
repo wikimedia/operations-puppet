@@ -84,7 +84,7 @@ profile::trafficserver::backend::storage_elements:
     size: 256M
 profile::trafficserver::backend::log_formats:
   - name: wmf
-    format: 'ReqMethod:%<cqhm> RespStatus:%<pssc> OriginStatus:%<sssc> ReqURL:%<cquuc> ReqHeader:User-Agent:%<{User-agent}cqh> ReqHeader:Host:%<{Host}cqh> ReqHeader:X-Client-IP:%<{X-Client-IP}cqh> RespHeader:X-Cache-Status:%<{X-Cache-Status}psh>'
+    format: 'ReqMethod:%<cqhm> RespStatus:%<pssc> OriginStatus:%<sssc> ReqURL:%<cquuc> ReqHeader:User-Agent:%<{User-agent}cqh> ReqHeader:Host:%<{Host}cqh> ReqHeader:X-Client-IP:%<{X-Client-IP}cqh> RespHeader:X-Cache-Int:%<{X-Cache-Int}psh>'
 profile::trafficserver::backend::log_filters:
   - name: notpurge
     action: reject

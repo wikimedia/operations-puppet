@@ -35,7 +35,6 @@ end
 function do_global_send_response()
     local cache_status = cache_status_to_string(ts.http.get_cache_lookup_status())
     ts.client_response.header['X-Cache-Int'] = get_hostname() .. " " .. cache_status
-    ts.client_response.header['X-Cache-Status'] = cache_status
     return 0
 end
 
