@@ -36,7 +36,7 @@
 class coal::processor(
     $kafka_brokers,
     $kafka_consumer_group = "coal_${::site}",
-    $el_schemas = ['NavigationTiming', 'SaveTiming'],
+    $el_schemas = ['NavigationTiming', 'SaveTiming', 'PaintTiming'],
     $log_dir = '/var/log/coal',
     $graphite_host = 'localhost',
     $graphite_port = 2003,
