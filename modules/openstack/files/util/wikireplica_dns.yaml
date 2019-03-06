@@ -20,6 +20,8 @@ zones:
   db.svc.eqiad.wmflabs.:
     tools:
       - 172.16.7.153
+    osm:
+      - 172.16.6.105
   analytics.db.svc.eqiad.wmflabs.:
     s1:
       - 10.64.37.14
