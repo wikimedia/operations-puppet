@@ -48,13 +48,17 @@ class dumps::web::xmldumps(
 
     monitoring::service { 'http':
         description   => 'HTTP',
-        check_command => 'check_http'
+        check_command => 'check_http',
+        contact_group => 'wmcs-team,admins',
+        notes_url     => 'https://wikitech.wikimedia.org/wiki/Dumps/XML-SQL_Dumps#A_labstore_host_dies_(web_or_nfs_server_for_dumps)',
     }
 
     if ($do_acme == true) {
         monitoring::service { 'https':
             description   => 'HTTPS',
             check_command => "check_ssl_http_letsencrypt!${xmldumps_server}",
+            contact_group => 'wmcs-team,admins',
+            notes_url     => 'https://wikitech.wikimedia.org/wiki/Dumps/XML-SQL_Dumps#A_labstore_host_dies_(web_or_nfs_server_for_dumps)',
         }
     }
 }
