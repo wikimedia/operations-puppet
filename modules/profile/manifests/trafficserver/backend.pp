@@ -75,23 +75,27 @@ class profile::trafficserver::backend (
         description  => 'Ensure traffic_manager is running',
         nrpe_command => '/usr/lib/nagios/plugins/check_procs -c 1:1 -a "/usr/bin/traffic_manager --nosyslog"',
         require      => Class['::trafficserver'],
+        notes_url    => 'https://wikitech.wikimedia.org/wiki/Apache_Traffic_Server',
     }
 
     nrpe::monitor_service { 'traffic_server':
         description  => 'Ensure traffic_server is running',
         nrpe_command => "/usr/lib/nagios/plugins/check_procs -c 1:1 -a '/usr/bin/traffic_server -M --httpport ${port}'",
         require      => Class['::trafficserver'],
+        notes_url    => 'https://wikitech.wikimedia.org/wiki/Apache_Traffic_Server',
     }
 
     nrpe::monitor_service { 'trafficserver_exporter':
         description  => 'Ensure trafficserver_exporter is running',
         nrpe_command => '/usr/lib/nagios/plugins/check_procs -c 1:1 -a "/usr/bin/python3 /usr/bin/prometheus-trafficserver-exporter"',
         require      => Prometheus::Trafficserver_exporter['trafficserver_exporter'],
+        notes_url    => 'https://wikitech.wikimedia.org/wiki/Apache_Traffic_Server',
     }
 
     monitoring::service { 'traffic_manager_check_http':
         description   => 'Ensure traffic_manager binds on $port and responds to HTTP requests',
         check_command => "check_http_hostheader_port_url!localhost!${port}!/_stats",
+        notes_url     => 'https://wikitech.wikimedia.org/wiki/Apache_Traffic_Server',
     }
 
     profile::trafficserver::nrpe_monitor_script { 'check_trafficserver_config_status':

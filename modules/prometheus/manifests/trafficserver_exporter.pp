@@ -23,6 +23,7 @@ define prometheus::trafficserver_exporter (
     monitoring::service { 'trafficserver_exporter_check_http':
         description   => "Ensure traffic_exporter binds on port ${listen_port} and responds to HTTP requests",
         check_command => "check_http_port_url!${listen_port}!/",
+        notes_url     => 'https://wikitech.wikimedia.org/wiki/Apache_Traffic_Server',
     }
 
     base::service_auto_restart { 'prometheus-trafficserver-exporter': }
