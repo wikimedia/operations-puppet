@@ -36,7 +36,7 @@ define prometheus::mysqld_exporter::instance (
 
     if $arguments == '' {
         if os_version('debian >= buster') {
-            $options = "-collect.global_status \
+            $options = "--collect.global_status \
 --collect.global_variables \
 --collect.info_schema.processlist \
 --collect.slave_status \
