@@ -1895,12 +1895,6 @@ node /^oresrdb200[12]\.codfw\.wmnet$/ {
     include ::standard
 }
 
-# To be decommed in T211826
-node 'oxygen.eqiad.wmnet'
-{
-    role(spare::system)
-}
-
 # parser cache databases
 # eqiad
 # pc1
