@@ -60,9 +60,3 @@
   targets:
   - dbstore1001:13320
   - dbstore1005:13320
-
-- labels:
-    role: slave
-    shard: multi
-  targets:
-  - dbstore1002:9104

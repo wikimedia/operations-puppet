@@ -726,7 +726,7 @@ node 'dbstore1001.eqiad.wmnet' {
 }
 
 node 'dbstore1002.eqiad.wmnet' {
-    role(mariadb::dbstore)
+    role(spare::system)
 }
 
 #dbstore100[345] are new via T209620
