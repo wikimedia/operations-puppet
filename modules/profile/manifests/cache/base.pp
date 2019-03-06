@@ -154,14 +154,4 @@ class profile::cache::base(
         varnishes  => $purge_varnishes,
     }
     Class[varnish::packages] -> Class[varnish::htcppurger]
-
-    # new kernel packages for the new eqiad nodes - T203194
-    # get rid of it as soon as kernel >= 4.9.134 is available on stretch
-
-    apt::repository { 'wikimedia-kernel-updates':
-        ensure     => absent,
-        uri        => 'http://apt.wikimedia.org/wikimedia',
-        dist       => 'stretch-wikimedia',
-        components => 'component/kernel-proposed-updates',
-    }
 }
