@@ -5857,13 +5857,6 @@ host oresrdb2002 {
     filename "lpxelinux.0";
 }
 
-host oxygen {
-    hardware ethernet 78:2b:cb:08:a0:e7;
-    fixed-address oxygen.eqiad.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
-    filename "lpxelinux.0";
-}
-
 host pc1007 {
     hardware ethernet D0:94:66:75:D1:63;
     fixed-address pc1007.eqiad.wmnet;
