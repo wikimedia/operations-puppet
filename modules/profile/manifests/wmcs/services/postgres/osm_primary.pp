@@ -1,8 +1,12 @@
 
-class profile::wmcs::services::postgres::osm_primary {
+class profile::wmcs::services::postgres::osm_primary (
+    $osm_password = hiera('profile::wmcs::services::postgres::osm_password'),
+    $kolossos_password = hiera('profile::wmcs::services::postgres::kolossos_password'),
+    $aude_password = hiera('profile::wmcs::services::postgres::aude_password'),
+    $planemad_password = hiera('profile::wmcs::services::postgres::planemad_password'),
+){
     include profile::wmcs::services::postgres::primary
     class {'osm': }
-    include passwords::osm
 
     postgresql::user { 'prometheus@localhost':
         user     => 'prometheus',
@@ -52,7 +56,7 @@ class profile::wmcs::services::postgres::osm_primary {
     postgresql::user { 'osm@labs':
             ensure   => 'present',
             user     => 'osm',
-            password => $passwords::osm::osm_password,
+            password => $osm_password,
             cidr     => '10.68.16.0/21',
             type     => 'host',
             method   => 'trust',
@@ -61,7 +65,7 @@ class profile::wmcs::services::postgres::osm_primary {
     postgresql::user { 'osm@eqiad1r':
             ensure   => 'present',
             user     => 'osm',
-            password => $passwords::osm::osm_password,
+            password => $osm_password,
             cidr     => '172.16.0.0/21',
             type     => 'host',
             method   => 'trust',
@@ -73,7 +77,7 @@ class profile::wmcs::services::postgres::osm_primary {
     postgresql::user { 'kolossos@labs':
             ensure   => 'present',
             user     => 'kolossos',
-            password => $passwords::osm::kolossos_password,
+            password => $kolossos_password,
             cidr     => '10.68.16.0/21',
             type     => 'host',
             method   => 'md5',
@@ -82,7 +86,7 @@ class profile::wmcs::services::postgres::osm_primary {
     postgresql::user { 'kolossos@eqiad1r':
             ensure   => 'present',
             user     => 'kolossos',
-            password => $passwords::osm::kolossos_password,
+            password => $kolossos_password,
             cidr     => '172.16.0.0/21',
             type     => 'host',
             method   => 'md5',
@@ -93,7 +97,7 @@ class profile::wmcs::services::postgres::osm_primary {
     postgresql::user { 'aude@labs':
             ensure   => 'present',
             user     => 'aude',
-            password => $passwords::osm::aude_password,
+            password => $aude_password,
             cidr     => '10.68.16.0/21',
             type     => 'host',
             method   => 'md5',
@@ -102,7 +106,7 @@ class profile::wmcs::services::postgres::osm_primary {
     postgresql::user { 'aude@eqiad1r':
             ensure   => 'present',
             user     => 'aude',
-            password => $passwords::osm::aude_password,
+            password => $aude_password,
             cidr     => '172.16.0.0/21',
             type     => 'host',
             method   => 'md5',
@@ -113,7 +117,7 @@ class profile::wmcs::services::postgres::osm_primary {
     postgresql::user { 'planemad@labs':
             ensure   => 'present',
             user     => 'planemad',
-            password => $passwords::osm::planemad_password,
+            password => $planemad_password,
             cidr     => '10.68.16.0/21',
             type     => 'host',
             method   => 'md5',
@@ -122,7 +126,7 @@ class profile::wmcs::services::postgres::osm_primary {
     postgresql::user { 'planemad@eqiad1r':
             ensure   => 'present',
             user     => 'planemad',
-            password => $passwords::osm::planemad_password,
+            password => $planemad_password,
             cidr     => '172.16.0.0/21',
             type     => 'host',
             method   => 'md5',
