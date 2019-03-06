@@ -21,5 +21,9 @@ class base::debdeploy
         source => 'puppet:///modules/base/reboot-host',
     }
 
+    file {'/etc/debdeploy-client':
+      ensure  => directory,
+    }
+
     require_package('debdeploy-client', 'python-dateutil')
 }

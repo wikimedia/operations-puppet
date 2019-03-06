@@ -13,7 +13,7 @@ class base::auto_restarts
         mode   => '0555',
     }
 
-    file { '/etc/debdeploy-autorestarts.conf':
+    file { '/etc/debdeploy-client/autorestarts.conf':
         ensure => present,
         owner  => 'root',
         group  => 'root',
