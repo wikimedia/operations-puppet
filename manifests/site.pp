@@ -57,18 +57,6 @@ node 'an-coord1001.eqiad.wmnet' {
     interface::add_ip6_mapped { 'main': }
 }
 
-# Old hadoop master, replaced in T203635
-node 'analytics1001.eqiad.wmnet' {
-    role(spare::system)
-    interface::add_ip6_mapped { 'main': }
-}
-
-# Old hadoop master, replaced in T203635
-node 'analytics1002.eqiad.wmnet' {
-    role(spare::system)
-    interface::add_ip6_mapped { 'main': }
-}
-
 # analytics1028-analytics1041 are Hadoop worker nodes.
 # These hosts are OOW but they are used as temporary
 # Hadoop testing cluster for T211836.
