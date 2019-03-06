@@ -7,11 +7,12 @@ import argparse
 import os
 import logging
 import logging.handlers
+import json
 
 if os.geteuid() != 0:
     print("Needs to be run as root")
     sys.exit(1)
-
+CONF_FILE = '/etc/debdeploy-client/config.json'
 logger = logging.getLogger('servicerestart')
 logger.setLevel(logging.INFO)
 handler = logging.handlers.SysLogHandler('/dev/log')
@@ -19,12 +20,15 @@ handler.formatter = logging.Formatter('wmf-auto-restart: %(levelname)s: %(asctim
 logger.addHandler(handler)
 
 
-def check_restart(service_name, dry_run):
+def check_restart(service_name, dry_run, exclude_mounts=None):
     false_positives = ['/dev/zero']
+    command = ["/usr/bin/lsof", "+c", "15", "-nXd", "DEL"]
+    if exclude_mounts:
+        for exclude_mount in exclude_mounts:
+            command += ['-e', exclude_mount]
 
     try:
-        del_files = subprocess.check_output(["/usr/bin/lsof", "+c", "15", "-nXd", "DEL"],
-                                            universal_newlines=True)
+        del_files = subprocess.check_output(command, universal_newlines=True)
     except subprocess.CalledProcessError as e:
         logger.info("Could not query the PID(s) of %s: %s", service_name, e.returncode)
         return 1
@@ -128,6 +132,11 @@ def main():
                         help='Enable debug logging')
     args = parser.parse_args()
 
+    config = {}
+    if os.path.isfile(CONF_FILE):
+        with open(CONF_FILE, 'r') as config_file:
+            config = json.load(config_file)
+
     if args.debug:
         logging.getLogger().addHandler(logging.StreamHandler())
         logger.setLevel(logging.DEBUG)
@@ -140,7 +149,7 @@ def main():
                      ' '.join(missing_run_time_deps))
         return 1
 
-    return check_restart(args.servicename, args.dryrun)
+    return check_restart(args.servicename, args.dryrun, config.get('exclude_mounts', []))
 
 
 if __name__ == "__main__":
