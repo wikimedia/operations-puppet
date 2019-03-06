@@ -15,6 +15,7 @@ profile::elasticsearch::ferm_srange: ''
 profile::elasticsearch::instances: {}
 profile::elasticsearch::dc_settings: {}
 profile::elasticsearch::base_data_dir: '/srv/elasticsearch'
+profile::elasticsearch::version: '5.6'
 profile::elasticsearch::common_settings:
     awareness_attributes: ''
     auto_create_index: true
@@ -44,7 +45,6 @@ profile::elasticsearch::common_settings:
       - logstash1010.eqiad.wmnet
       - logstash1011.eqiad.wmnet
       - logstash1012.eqiad.wmnet
-    auto_create_index: true
     send_logs_to_logstash: false
     curator_uses_unicast_hosts: false
     http_port: 9200
