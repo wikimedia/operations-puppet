@@ -5,7 +5,7 @@ class profile::base(
     $environment   = hiera('profile::base::environment', ''),
     $use_apt_proxy = hiera('profile::base::use_apt_proxy', true),
     $purge_apt_sources = hiera('profile::base::purge_apt_sources', false),
-    $domain_search = hiera('profile::base::domain_search', $::domain),
+    $domain_search = hiera('profile::base::domain_search', $::domain), # lint:ignore:wmf_styleguide
     $nameservers   = hiera('profile::base::nameservers', $::nameservers), # lint:ignore:wmf_styleguide
     $remote_syslog = hiera('profile::base::remote_syslog', ['syslog.eqiad.wmnet', 'syslog.codfw.wmnet']),
     $remote_syslog_tls = hiera('profile::base::remote_syslog_tls', []),
@@ -24,6 +24,10 @@ class profile::base(
     $check_raid_retry = hiera('profile::base::check_raid_retry', 10),
     $check_smart = hiera('profile::base::check_smart', true),
     $overlayfs = hiera('profile::base::overlayfs', false),
+    # We have included a default here as this seems to be the convention even though 
+    # it contradicts https://wikitech.wikimedia.org/wiki/Puppet_coding
+    # TODO: need to clarify with _joe_ when he comes back of vacation 2019-03-11
+    $debdeploy_exclude_mounts = hiera('profile::base::debdeploy::exclude_mounts', []),
 ) {
     require ::profile::base::certificates
     class { '::apt':
@@ -108,7 +112,9 @@ class profile::base(
         class { 'prometheus::node_intel_microcode': }
     }
 
-    class { '::base::debdeploy': }
+    class { '::base::debdeploy':
+      exclude_mounts => $debdeploy_exclude_mounts,
+    }
 
     if $facts['has_ipmi'] {
         class { '::ipmi::monitor': }
