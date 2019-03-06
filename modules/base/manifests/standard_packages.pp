@@ -8,7 +8,6 @@ class base::standard_packages {
 
     require_package ([
         'acct',
-        'ack-grep',
         'apt-transport-https',
         'debian-goodies',
         'dnsutils',
@@ -55,6 +54,13 @@ class base::standard_packages {
     # builtin threading support using the -T option, so pxz was removed
     if os_version('debian <= stretch') {
         require_package('pxz')
+    }
+
+    # ack-grep was renamed to ack
+    if os_version('debian >= stretch') {
+        require_package('ack')
+    } else {
+        require_package('ack-grep')
     }
 
     # uninstall these packages
