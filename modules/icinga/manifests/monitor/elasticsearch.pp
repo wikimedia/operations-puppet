@@ -3,17 +3,16 @@ class icinga::monitor::elasticsearch {
 
     $clusters = ['eqiad', 'codfw']
     $instances = [
-        {'name' => 'search', 'port' => '9243'},
-        {'name' => 'search-omega', 'port' => '9443'},
-        {'name' => 'search-psi', 'port' => '9643'},
+        {'name' => 'search', 'https_port' => '9243'},
+        {'name' => 'search-omega', 'https_port' => '9443'},
+        {'name' => 'search-psi', 'https_port' => '9643'},
     ]
-    $scheme = 'https'
 
     $instances.each |$instance| {
         $clusters.each |$cluster| {
             monitoring::service { "elasticsearch shards - ${cluster}(${instance['name']})":
                 host          => "search.svc.${cluster}.wmnet",
-                check_command => "check_elasticsearch_shards_threshold!${scheme}!${instance['port']}!>=0.15",
+                check_command => "check_elasticsearch_shards_threshold_via_https!${instance['https_port']}!>=0.15",
                 description   => "ElasticSearch health check for shards - ${cluster}(${instance['name']})",
                 critical      => false,
                 contact_group => 'admins,team-discovery',
@@ -22,7 +21,7 @@ class icinga::monitor::elasticsearch {
 
             monitoring::service { "elasticsearch / cirrus frozen writes - ${cluster}(${instance['name']})":
                 host          => "search.svc.${cluster}.wmnet",
-                check_command => "check_cirrus_frozen_writes!${scheme}!${instance['port']}",
+                check_command => "check_cirrus_frozen_writes_via_https!${instance['https_port']}",
                 description   => "ElasticSearch health check for frozen writes - ${cluster}(${instance['name']})",
                 critical      => true,
                 contact_group => 'admins,team-discovery',
@@ -31,7 +30,7 @@ class icinga::monitor::elasticsearch {
 
             monitoring::service { "elasticsearch / shard size check - ${cluster}(${instance['name']})":
                 host           => "search.svc.${cluster}.wmnet",
-                check_command  => "check_elasticsearch_shard_size!${scheme}!${instance['port']}",
+                check_command  => "check_elasticsearch_shard_size_via_https!${instance['https_port']}",
                 description    => "ElasticSearch shard size check - ${cluster}(${instance['name']})",
                 critical       => false,
                 check_interval => 1440, # 24h
@@ -43,7 +42,7 @@ class icinga::monitor::elasticsearch {
 
             monitoring::service { "elasticsearch / unassigned shard check - ${cluster}(${instance['name']})":
                 host           => "search.svc.${cluster}.wmnet",
-                check_command  => "check_elasticsearch_unassigned_shards!${scheme}!${instance['port']}",
+                check_command  => "check_elasticsearch_unassigned_shards_via_https!${instance['https_port']}",
                 description    => "ElasticSearch unassigned shard check - ${cluster}(${instance['name']})",
                 critical       => false,
                 check_interval => 720, # 12h
