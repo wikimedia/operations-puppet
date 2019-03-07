@@ -9,7 +9,7 @@ class icinga::monitor::gerrit {
 
     monitoring::service { 'gerrit-healthcheck':
         description   => 'Gerrit Health Check',
-        check_command => 'check_https_url!gerrit.wikimedia.org!"/r/config/server/healthcheck~status',
+        check_command => 'check_https_url!gerrit.wikimedia.org!"/r/config/server/healthcheck~status"',
         contact_group => 'admins,gerrit',
         host          => 'gerrit.wikimedia.org',
         notes_url     => 'https://gerrit.wikimedia.org/r/config/server/healthcheck~status',
