@@ -37,11 +37,6 @@ menu = asw-a-eqiad
 title = asw-a-eqiad.mgmt.eqiad.wmnet
 host = asw-a-eqiad.mgmt.eqiad.wmnet
 
-+++ asw-c-eqiad
-menu = asw-c-eqiad
-title = asw-c-eqiad.mgmt.eqiad.wmnet
-host = asw-c-eqiad.mgmt.eqiad.wmnet
-
 +++ asw2-d-eqiad
 menu = asw2-d-eqiad
 title = asw2-d-eqiad.mgmt.eqiad.wmnet

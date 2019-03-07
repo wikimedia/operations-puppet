@@ -277,8 +277,6 @@ monitoring::groups:
     description: Equipment with asw-b-codfw as uplink
   asw-c-codfw:
     description: Equipment with asw-c-codfw as uplink
-  asw-c-eqiad:
-    description: Equipment with asw-c-eqiad as uplink
   asw-d-codfw:
     description: Equipment with asw-d-codfw as uplink
   asw-esams:
@@ -407,4 +405,3 @@ monitoring::groups:
     description: Syslog servers (eqiad)
   syslog_codfw:
     description: Syslog servers (codfw)
-

@@ -85,7 +85,6 @@ class netops::monitoring {
         'asw-a-eqiad'   => { ipv4 => '10.65.0.17',   parents => ['cr1-eqiad', 'cr2-eqiad'] },
         'asw2-a-eqiad'  => { ipv4 => '10.65.0.21',   parents => ['cr1-eqiad', 'cr2-eqiad'] },
         'asw2-b-eqiad'  => { ipv4 => '10.65.0.25',   parents => ['cr1-eqiad', 'cr2-eqiad'] },
-        'asw-c-eqiad'   => { ipv4 => '10.65.0.23',   parents => ['cr1-eqiad', 'cr2-eqiad'] },
         'asw2-c-eqiad'  => { ipv4 => '10.65.0.26',   parents => ['cr1-eqiad', 'cr2-eqiad'] },
         'asw2-d-eqiad'  => { ipv4 => '10.65.0.27',   parents => ['cr1-eqiad', 'cr2-eqiad'] },
         'msw1-eqiad'    => { ipv4 => '10.65.0.10',   parents => ['cr1-eqiad', 'cr2-eqiad'], vcp => false },
