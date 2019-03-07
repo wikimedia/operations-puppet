@@ -1,7 +1,7 @@
 # mysql groups for monitoring
 # * mysql_group (required): general usage of the server, for example:
 #   - 'core': production mediawiki servers
-#   - 'dbstore': servers for backup and analytics
+#   - 'dbstore': servers for backup
 #   - 'labs': production and labs replicas of production
 #   - 'misc': other services
 # * mysql_shard (optional): for 'core', 'misc' and 'pc' services, vertical
