@@ -1986,10 +1986,6 @@ node /^rdb200[46]\.codfw\.wmnet$/ {
     role(redis::misc::slave)
 }
 
-node /^rdb200[12]\.codfw\.wmnet$/ {
-    role(spare::system)
-}
-
 node /^registry[12]00[12]\.(eqiad|codfw)\.wmnet$/ {
     role(docker_registry_ha::registry)
 }

@@ -5967,16 +5967,6 @@ host rdb1010 {
     fixed-address rdb1010.eqiad.wmnet;
 }
 
-host rdb2001 {
-    hardware ethernet B0:83:FE:E4:6A:74;
-    fixed-address rdb2001.codfw.wmnet;
-}
-
-host rdb2002 {
-    hardware ethernet B0:83:FE:E4:37:66;
-    fixed-address rdb2002.codfw.wmnet;
-}
-
 host rdb2003 {
     hardware ethernet B0:83:FE:E4:38:49;
     fixed-address rdb2003.codfw.wmnet;
