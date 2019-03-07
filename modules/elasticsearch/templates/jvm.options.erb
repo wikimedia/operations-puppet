@@ -128,7 +128,7 @@
 -XX:GCHeapFreeLimit=10
 
 # Exit on OutOfMemoryError, since in most cases the JVM does not recover
--XX:ExitOnOutOfMemoryError
+-XX:+ExitOnOutOfMemoryError
 
 # Custom flags for GC logging.
 <% @gc_log_flags.each do |gc_log_flag| -%>
