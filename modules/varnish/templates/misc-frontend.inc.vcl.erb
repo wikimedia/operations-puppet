@@ -66,8 +66,8 @@ sub cluster_fe_backend_fetch { }
 sub cluster_fe_backend_response_early { }
 
 sub cluster_fe_backend_response {
-    // hit_for_pass on objects >= ~10MB or no CL
-    if (!beresp.http.Content-Length || beresp.http.Content-Length ~ "^[0-9]{8}") {
+    // hit_for_pass on objects >= 256K. Do *not* cache objects without CL
+    if (std.integer(beresp.http.Content-Length, 262144) >= 262144 || beresp.http.Content-Length ~ "^[0-9]{9}") {
         // HFP
         set beresp.http.X-CDIS = "pass";
         return(pass(beresp.ttl));

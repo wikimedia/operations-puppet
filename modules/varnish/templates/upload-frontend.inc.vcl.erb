@@ -151,7 +151,8 @@ sub cluster_fe_backend_response {
 
 <% if @vcl_config.fetch("admission_policy", "nhw") != "exp" -%>
 	// hit-for-pass objects >= 256K size. The "exp" admission policy does not
-	// need this as it implicitly takes object size into account.
+	// need this as it implicitly takes object size into account. Do cache if
+	// Content-Length is missing.
 	if (std.integer(beresp.http.Content-Length, 0) >= 262144 || beresp.http.Content-Length ~ "^[0-9]{9}") {
 		// HFP
 		set beresp.http.X-CDIS = "pass";
