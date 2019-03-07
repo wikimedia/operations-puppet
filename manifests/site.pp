@@ -1418,10 +1418,6 @@ node /lvs100[4-6]\.wikimedia\.org/ {
     role(lvs::balancer)
 }
 
-node /^lvs10(0[789]|1[012])\.eqiad\.wmnet$/ {
-    role(spare::system)
-}
-
 node 'lvs1015.eqiad.wmnet' {
     role(spare::system)
 }

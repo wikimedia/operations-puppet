@@ -3373,46 +3373,6 @@ host lvs1006 {
     filename "lpxelinux.0";
 }
 
-host lvs1007 {
-    hardware ethernet ec:b1:d7:7b:c6:d8;
-    fixed-address lvs1007.eqiad.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
-    filename "lpxelinux.0";
-}
-
-host lvs1008 {
-    hardware ethernet ec:b1:d7:7b:b8:58;
-    fixed-address lvs1008.eqiad.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
-    filename "lpxelinux.0";
-}
-
-host lvs1009 {
-    hardware ethernet ec:b1:d7:7b:1a:f8;
-    fixed-address lvs1009.eqiad.wmnet;
-}
-
-host lvs1010 {
-    hardware ethernet ec:b1:d7:7b:59:78;
-    fixed-address lvs1010.eqiad.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
-    filename "lpxelinux.0";
-}
-
-host lvs1011 {
-    hardware ethernet ec:b1:d7:7b:59:88;
-    fixed-address lvs1011.eqiad.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
-    filename "lpxelinux.0";
-}
-
-host lvs1012 {
-    hardware ethernet ec:b1:d7:7b:07:28;
-    fixed-address lvs1012.eqiad.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
-    filename "lpxelinux.0";
-}
-
 host lvs1015 {
     hardware ethernet F4:E9:D4:DB:30:20;
     fixed-address lvs1015.eqiad.wmnet;
