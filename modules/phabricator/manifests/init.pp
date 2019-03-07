@@ -116,7 +116,7 @@ class phabricator (
         apt::repository { 'wikimedia-php72':
             uri        => 'http://apt.wikimedia.org/wikimedia',
             dist       => "${::lsbdistcodename}-wikimedia",
-            components => 'thirdparty/php72',
+            components => 'component/php72',
             notify     => Exec['apt_update_php'],
         }
 
