@@ -3261,27 +3261,6 @@ host lithium {
     filename "lpxelinux.0";
 }
 
-host logstash1004 {
-    hardware ethernet 44:A8:42:11:68:6B;
-    fixed-address logstash1004.eqiad.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
-    filename "lpxelinux.0";
-}
-
-host logstash1005 {
-    hardware ethernet 44:A8:42:11:5E:81;
-    fixed-address logstash1005.eqiad.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
-    filename "lpxelinux.0";
-}
-
-host logstash1006 {
-    hardware ethernet 44:A8:42:11:74:B5;
-    fixed-address logstash1006.eqiad.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
-    filename "lpxelinux.0";
-}
-
 host logstash1010 {
     hardware ethernet 4C:D9:8F:3F:A7:EF;
     fixed-address logstash1010.eqiad.wmnet;
