@@ -42,6 +42,7 @@ class role::openldap::corp {
         description   => 'Corp OIT LDAP Mirror ',
         check_command => 'check_ldap!dc=corp,dc=wikimedia,dc=org',
         critical      => true,
+        notes_url     => 'https://wikitech.wikimedia.org/wiki/LDAP#Troubleshooting',
     }
 
     backup::openldapset {'openldap_oit':}

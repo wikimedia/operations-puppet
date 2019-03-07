@@ -46,6 +46,7 @@ class role::openldap::labs {
         description   => 'Labs LDAP ',
         check_command => 'check_ldap!dc=wikimedia,dc=org',
         critical      => false,
+        notes_url     => 'https://wikitech.wikimedia.org/wiki/LDAP#Troubleshooting',
     }
 
     # restart slapd if it uses more than 50% of memory (T130593)

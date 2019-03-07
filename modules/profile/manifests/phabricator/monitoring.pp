@@ -14,12 +14,14 @@ class profile::phabricator::monitoring (
             description   => 'PHD should be supervising processes',
             nrpe_command  => '/usr/lib/nagios/plugins/check_procs -c 3:150 -u phd',
             contact_group => $phab_contact_groups,
+            notes_url     => 'https://wikitech.wikimedia.org/wiki/Phabricator',
         }
 
         nrpe::monitor_service { 'check_phab_phd':
             description   => 'PHD should be running',
             nrpe_command  => "/usr/lib/nagios/plugins/check_procs -c 1: --ereg-argument-array  'php ./phd-daemon' -u phd",
             contact_group => $phab_contact_groups,
+            notes_url     => 'https://wikitech.wikimedia.org/wiki/Phabricator',
         }
 
         monitoring::host { 'phabricator.wikimedia.org':
@@ -31,6 +33,7 @@ class profile::phabricator::monitoring (
             check_command => 'check_https_phabricator',
             contact_group => $phab_contact_groups,
             host          => 'phabricator.wikimedia.org',
+            notes_url     => 'https://wikitech.wikimedia.org/wiki/Phabricator',
         }
     }
 }

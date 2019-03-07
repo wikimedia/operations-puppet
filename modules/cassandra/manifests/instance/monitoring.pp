@@ -43,6 +43,7 @@ define cassandra::instance::monitoring (
         description   => "${service_name} CQL ${listen_address}:9042",
         check_command => "check_tcp_ip!${listen_address}!9042",
         contact_group => $contact_group,
+        notes_url     => 'https://phabricator.wikimedia.org/T93886',
     }
 
     # SSL cert expiration monitoring (T120662)
@@ -52,6 +53,7 @@ define cassandra::instance::monitoring (
             description   => "${service_name} SSL ${listen_address}:7001",
             check_command => "check_ssl_on_host_port!${::hostname}-${instance_name}!${listen_address}!7001",
             contact_group => $contact_group,
+            notes_url     => 'https://phabricator.wikimedia.org/T120662',
         }
     }
 }

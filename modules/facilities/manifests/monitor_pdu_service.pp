@@ -39,6 +39,7 @@ define facilities::monitor_pdu_service(
         group         => 'pdus',
         description   => $title,
         check_command => "check_snmp_generic!${snmp_community}!${oid}!${title}!${warn_hi}!${crit_hi}",
+        notes_url     => 'https://wikitech.wikimedia.org/wiki/Dc-operations/Hardware_Troubleshooting_Runbook',
     }
 
 }

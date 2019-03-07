@@ -61,31 +61,37 @@ class profile::lists {
     monitoring::service { 'smtp':
         description   => 'Exim SMTP',
         check_command => 'check_smtp_tls_le',
+        notes_url     => 'https://wikitech.wikimedia.org/wiki/Exim',
     }
 
     monitoring::service { 'https':
         description   => 'HTTPS',
         check_command => 'check_ssl_http_letsencrypt!lists.wikimedia.org',
+        notes_url     => 'https://wikitech.wikimedia.org/wiki/Mailman',
     }
 
     nrpe::monitor_service { 'procs_mailmanctl':
         description  => 'mailman_ctl',
-        nrpe_command => '/usr/lib/nagios/plugins/check_procs -c 1:1 -u list --ereg-argument-array=\'/mailman/bin/mailmanctl\''
+        nrpe_command => '/usr/lib/nagios/plugins/check_procs -c 1:1 -u list --ereg-argument-array=\'/mailman/bin/mailmanctl\'',
+        notes_url    => 'https://wikitech.wikimedia.org/wiki/Mailman',
     }
 
     nrpe::monitor_service { 'procs_mailman_qrunner':
         description  => 'mailman_qrunner',
-        nrpe_command => '/usr/lib/nagios/plugins/check_procs -c 8:8 -u list --ereg-argument-array=\'/mailman/bin/qrunner\''
+        nrpe_command => '/usr/lib/nagios/plugins/check_procs -c 8:8 -u list --ereg-argument-array=\'/mailman/bin/qrunner\'',
+        notes_url    => 'https://wikitech.wikimedia.org/wiki/Mailman',
     }
 
     monitoring::service { 'mailman_listinfo':
         description   => 'mailman list info',
         check_command => 'check_https_url_for_string!lists.wikimedia.org!/mailman/listinfo/wikimedia-l!\'Wikimedia Mailing List\'',
+        notes_url     => 'https://wikitech.wikimedia.org/wiki/Mailman',
     }
 
     monitoring::service { 'mailman_archives':
         description   => 'mailman archives',
         check_command => 'check_https_url_for_string!lists.wikimedia.org!/pipermail/wikimedia-l/!\'The Wikimedia-l Archives\'',
+        notes_url     => 'https://wikitech.wikimedia.org/wiki/Mailman',
     }
 
     file { '/usr/local/lib/nagios/plugins/check_mailman_queue':
@@ -104,6 +110,7 @@ class profile::lists {
     nrpe::monitor_service { 'mailman_queue':
         description  => 'mailman_queue_size',
         nrpe_command => '/usr/bin/sudo -u list /usr/local/lib/nagios/plugins/check_mailman_queue 25 25 25',
+        notes_url    => 'https://wikitech.wikimedia.org/wiki/Mailman',
     }
 
     ferm::service { 'mailman-smtp':
