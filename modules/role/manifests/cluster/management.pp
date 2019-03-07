@@ -9,7 +9,10 @@ class role::cluster::management {
         description => 'Cluster management',
     }
 
-    include ::profile::mariadb::wmf_root_client
+    include ::standard
+    include ::profile::base::firewall
+    include ::profile::base::firewall::log
+
     include ::role::cumin::master
     include ::profile::ipmi::mgmt
     include ::profile::access_new_install
@@ -17,7 +20,7 @@ class role::cluster::management {
     include ::profile::spicerack
     include ::profile::debdeploy
     include ::profile::mediawiki::web_testing
-    include ::standard
-    include ::profile::base::firewall
-    include ::profile::base::firewall::log
+
+    include ::profile::mariadb::wmf_root_client
+    include ::profile::mariadb::backup::transfer
 }

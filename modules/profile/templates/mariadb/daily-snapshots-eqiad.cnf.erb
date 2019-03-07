@@ -1,0 +1,14 @@
+rotate: True
+retention: 1
+compress: True
+archive: False
+statistics:
+  host: 'db1115.eqiad.wmnet'
+  user: '<%= @stats_user %>'
+  password: '<%= @stats_password %>'
+  database: 'zarcillo'
+sections:
+  s1:
+    host: 'dbstore1001.eqiad.wmnet'
+    port: 3311
+    destination: 'dbstore1001.eqiad.wmnet'
