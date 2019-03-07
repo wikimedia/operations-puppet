@@ -49,7 +49,7 @@ db-core: P{O:mariadb::core or O:mariadb::core_multiinstance}
 db-core-codfw: A:db-core and A:codfw
 db-core-eqiad: A:db-core and A:eqiad
 db-dbproxy: P{O:mariadb::proxy::master or O:mariadb::proxy::replicas}
-db-dbstore: P{O:mariadb::backup or O:mariadb::dbstore or O:mariadb::dbstore_multiinstance or O:mariadb::backups_and_dbstore_multiinstance}
+db-dbstore: P{O:mariadb::backup or O:mariadb::dbstore_multiinstance or O:mariadb::backups_and_dbstore_multiinstance}
 db-labsdb: P{O:labs::db::wikireplica_analytics or O:labs::db::wikireplica_web}
 db-misc-servers: P{O:mariadb::sanitarium_multiinstance}
 db-parsercache: P{O:mariadb::parsercache}
