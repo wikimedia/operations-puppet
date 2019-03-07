@@ -51,7 +51,7 @@
 
     # PHP-FPM for .php files
     <FilesMatch \.php$>
-      SetHandler "proxy:unix:/run/php/php7.2-fpm.sock|fcgi://localhost/"
+      SetHandler "proxy:unix:/run/php/php7.0-fpm.sock|fcgi://localhost/"
     </FilesMatch>
 
 </VirtualHost>
