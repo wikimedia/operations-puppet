@@ -250,11 +250,6 @@ node 'cobalt.wikimedia.org', 'gerrit2001.wikimedia.org' {
     interface::add_ip6_mapped { 'main': }
 }
 
-# Old Zookeeper/Etcd nodes, to be decommed
-node /^conf100[123]\.eqiad\.wmnet$/ {
-    role(spare::system)
-}
-
 # Zookeeper and Etcd discovery service nodes in eqiad
 node /^conf100[456]\.eqiad\.wmnet$/ {
     role(configcluster_stretch)

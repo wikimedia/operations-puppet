@@ -700,27 +700,6 @@ host cobalt {
     filename "lpxelinux.0";
 }
 
-host conf1001 {
-    hardware ethernet d4:ae:52:73:60:e6;
-    fixed-address conf1001.eqiad.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
-    filename "lpxelinux.0";
-}
-
-host conf1002 {
-    hardware ethernet d4:ae:52:7c:c9:ec;
-    fixed-address conf1002.eqiad.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
-    filename "lpxelinux.0";
-}
-
-host conf1003 {
-    hardware ethernet d4:ae:52:7c:b5:ed;
-    fixed-address conf1003.eqiad.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
-    filename "lpxelinux.0";
-}
-
 host conf1004 {
     hardware ethernet 30:e1:71:52:05:18;
     fixed-address conf1004.eqiad.wmnet;
