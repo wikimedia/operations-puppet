@@ -19,6 +19,7 @@ import logging
 import re
 import subprocess
 import sys
+import xml.etree.ElementTree as ET
 
 from prometheus_client import CollectorRegistry
 from prometheus_client import Counter
@@ -78,6 +79,34 @@ def get_jobs_by_host(host):
     return [line for line in output.splitlines() if RE_JOBLINE.match(line)]
 
 
+def get_queue_problems():
+    output = grid_cmd(["/usr/bin/qstat", "-f", "-xml", "-explain", "aAcE"])
+    queue_problems = []
+    xml_root = ET.fromstring(output)
+    for queue in xml_root[0]:
+        if queue.find("state") is not None:
+            if queue.find("state").text == "d":
+                continue
+
+            queue_name_fields = queue.find("name").text.split("@")
+            queue_problems.append(
+                [queue_name_fields[1], queue_name_fields[0], queue.find("state").text]
+            )
+    return queue_problems
+
+
+def get_disabled_queues():
+    output = grid_cmd(["/usr/bin/qstat", "-f", "-xml"])
+    d_queues = []
+    xml_root = ET.fromstring(output)
+    for queue in xml_root[0]:
+        if queue.find("state") is not None:
+            if queue.find("state").text == "d":
+                queue_name_fields = queue.find("name").text.split("@")
+                d_queues.append([queue_name_fields[1], queue_name_fields[0]])
+    return d_queues
+
+
 def collect_sge_stats(registry):
     # This rolls over at 10million
     jobseqnum = Counter(
@@ -112,6 +141,27 @@ def collect_sge_stats(registry):
         host = line.strip()
         jcount = len(get_jobs_by_host(host))
         hostjobs.labels(host=host).inc(jcount)
+
+    queueproblems = Gauge(
+        "queueproblems",
+        "Queues or hosts that aren't healthy",
+        ("host", "queue", "state"),
+        namespace="sge",
+        registry=registry,
+    )
+    for prob in get_queue_problems():
+        host, queue, state = prob
+        queueproblems.labels(host=host, state=state, queue=queue).inc()
+
+    disabledqueues = Gauge(
+        "disabledqueues",
+        "Hosts/queues that are depooled",
+        ("host", "queue"),
+        namespace="sge",
+        registry=registry,
+    )
+    for dqueue in get_disabled_queues():
+        disabledqueues.labels(host=dqueue[0], queue=dqueue[1]).inc()
 
 
 def main():
