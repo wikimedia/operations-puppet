@@ -39,6 +39,7 @@ class openstack::monitor::spreadcheck(
             '/usr/local/sbin/wmcs-spreadcheck',
             '/etc/wmcs-spreadcheck-tools.yaml'
         ],
+        notes_url    => 'https://wikitech.wikimedia.org/wiki/Portal:Cloud_VPS/Admin/Troubleshooting',
     }
 
     # renaming cleanup

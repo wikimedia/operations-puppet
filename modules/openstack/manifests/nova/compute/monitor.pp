@@ -30,6 +30,7 @@ class openstack::nova::compute::monitor(
         description   => 'kvm ssl cert',
         nrpe_command  => "/usr/local/lib/nagios/plugins/check_ssl_certfile /etc/ssl/localcerts/${certname}.crt",
         contact_group => $contact_groups,
+        notes_url     => 'https://wikitech.wikimedia.org/wiki/Portal:Cloud_VPS/Admin/Troubleshooting',
     }
 
     # Having multiple nova-compute process running long term has been known to happen
@@ -46,6 +47,7 @@ class openstack::nova::compute::monitor(
         nrpe_command  => "/usr/lib/nagios/plugins/check_procs -c 1:1 --ereg-argument-array '^/usr/bin/pytho[n] /usr/bin/nova-compute'",
         retries       => 5,
         contact_group => $contact_groups,
+        notes_url     => 'https://wikitech.wikimedia.org/wiki/Portal:Cloud_VPS/Admin/Troubleshooting',
     }
 
     # Labvirts have been known to fully reboot in <=4 minutes and
@@ -59,6 +61,7 @@ class openstack::nova::compute::monitor(
         nrpe_command  => "/usr/lib/nagios/plugins/check_procs -c 1:2 --ereg-argument-array '^/usr/bin/pytho[n] /usr/bin/nova-compute'",
         retries       => 1,
         contact_group => $contact_groups,
+        notes_url     => 'https://wikitech.wikimedia.org/wiki/Portal:Cloud_VPS/Admin/Troubleshooting',
     }
 
     if ($active) and ($verify_instances) {
@@ -85,6 +88,7 @@ class openstack::nova::compute::monitor(
             nrpe_command  => "/usr/lib/nagios/plugins/check_procs -c 1:120 --ereg-argument-array ${kvmbinary}",
             retries       => 2,
             contact_group => $contact_groups,
+            notes_url     => 'https://wikitech.wikimedia.org/wiki/Portal:Cloud_VPS/Admin/Troubleshooting',
         }
     }
 }

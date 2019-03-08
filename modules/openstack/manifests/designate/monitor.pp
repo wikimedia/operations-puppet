@@ -23,6 +23,7 @@ class openstack::designate::monitor (
         description   => 'designate-sink process',
         nrpe_command  => "/usr/lib/nagios/plugins/check_procs -c 1: --ereg-argument-array '^/usr/bin/python /usr/bin/designate-sink'",
         contact_group => $contact_groups,
+        notes_url     => 'https://wikitech.wikimedia.org/wiki/Portal:Cloud_VPS/Admin/Troubleshooting',
     }
 
     nrpe::monitor_service { 'check_designate_api_process':
@@ -31,6 +32,7 @@ class openstack::designate::monitor (
         description   => 'designate-api process',
         nrpe_command  => "/usr/lib/nagios/plugins/check_procs -c 1: --ereg-argument-array '^/usr/bin/python /usr/bin/designate-api'",
         contact_group => $contact_groups,
+        notes_url     => 'https://wikitech.wikimedia.org/wiki/Portal:Cloud_VPS/Admin/Troubleshooting',
     }
 
     nrpe::monitor_service { 'check_designate_central_process':
@@ -39,6 +41,7 @@ class openstack::designate::monitor (
         description   => 'designate-central process',
         nrpe_command  => "/usr/lib/nagios/plugins/check_procs -c 1: --ereg-argument-array '^/usr/bin/python /usr/bin/designate-central'",
         contact_group => $contact_groups,
+        notes_url     => 'https://wikitech.wikimedia.org/wiki/Portal:Cloud_VPS/Admin/Troubleshooting',
     }
 
     nrpe::monitor_service { 'check_designate_mdns':
@@ -47,6 +50,7 @@ class openstack::designate::monitor (
         description   => 'designate-mdns process',
         nrpe_command  => "/usr/lib/nagios/plugins/check_procs -c 1: --ereg-argument-array '^/usr/bin/python /usr/bin/designate-mdns'",
         contact_group => $contact_groups,
+        notes_url     => 'https://wikitech.wikimedia.org/wiki/Portal:Cloud_VPS/Admin/Troubleshooting',
     }
 
     nrpe::monitor_service { 'check_designate_pool-manager':
@@ -55,11 +59,13 @@ class openstack::designate::monitor (
         description   => 'designate-pool-manager process',
         nrpe_command  => "/usr/lib/nagios/plugins/check_procs -c 1: --ereg-argument-array '^/usr/bin/python /usr/bin/designate-pool-manager'",
         contact_group => $contact_groups,
+        notes_url     => 'https://wikitech.wikimedia.org/wiki/Portal:Cloud_VPS/Admin/Troubleshooting',
     }
 
     monitoring::service { 'designate-api-http':
         ensure        => $ensure,
         description   => 'designate-api http',
         check_command => 'check_http_on_port!9001',
+        notes_url     => 'https://wikitech.wikimedia.org/wiki/Portal:Cloud_VPS/Admin/Troubleshooting',
     }
 }

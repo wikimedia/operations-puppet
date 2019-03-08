@@ -28,5 +28,6 @@ class openstack::nova::api::monitor(
         description   => 'nova-api http',
         check_command => 'check_http_on_port!8774',
         contact_group => $contact_groups,
+        notes_url     => 'https://wikitech.wikimedia.org/wiki/Portal:Cloud_VPS/Admin/Troubleshooting',
     }
 }

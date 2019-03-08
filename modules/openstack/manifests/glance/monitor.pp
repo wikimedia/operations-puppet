@@ -18,5 +18,6 @@ class openstack::glance::monitor(
         description   => 'glance-api http',
         check_command => 'check_http_on_port!9292',
         contact_group => $contact_groups,
+        notes_url     => 'https://wikitech.wikimedia.org/wiki/Portal:Cloud_VPS/Admin/Troubleshooting',
     }
 }

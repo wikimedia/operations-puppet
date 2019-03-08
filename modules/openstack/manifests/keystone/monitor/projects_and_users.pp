@@ -41,6 +41,7 @@ class openstack::keystone::monitor::projects_and_users(
         description   => 'novaobserver has only observer role',
         require       => File['/usr/local/bin/check_keystone_roles.py'],
         contact_group => $contact_groups,
+        notes_url     => 'https://wikitech.wikimedia.org/wiki/Portal:Cloud_VPS/Admin/Troubleshooting',
     }
 
     # Make sure 'novaadmin' has 'projectadmin' and 'user' everywhere
@@ -50,6 +51,7 @@ class openstack::keystone::monitor::projects_and_users(
         description   => 'novaadmin has roles in every project',
         require       => File['/usr/local/bin/check_keystone_roles.py'],
         contact_group => $contact_groups,
+        notes_url     => 'https://wikitech.wikimedia.org/wiki/Portal:Cloud_VPS/Admin/Troubleshooting',
     }
 
     # Verify service projects
@@ -59,6 +61,7 @@ class openstack::keystone::monitor::projects_and_users(
         description   => 'Keystone admin and observer projects exist',
         require       => File['/usr/local/bin/check_keystone_roles.py'],
         contact_group => $contact_groups,
+        notes_url     => 'https://wikitech.wikimedia.org/wiki/Portal:Cloud_VPS/Admin/Troubleshooting',
     }
 
 }
