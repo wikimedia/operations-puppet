@@ -1,5 +1,5 @@
 admin::groups:
     - wmcs-roots
-role::osm::master::osm_slave: 'labsdb1007.eqiad.wmnet'
-role::osm::master::osm_slave_v4: '10.64.37.12'
+role::osm::master::osm_slave: 'clouddb1003.clouddb-services.eqiad.wmflabs'
+role::osm::master::osm_slave_v4: '172.16.6.105'
 diamond::remove: true
