@@ -5884,34 +5884,6 @@ host rdb2006 {
     fixed-address rdb2006.codfw.wmnet;
 }
 
-host rdb1001 {
-    hardware ethernet 90:B1:1C:2D:7B:74;
-    fixed-address rdb1001.eqiad.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
-    filename "lpxelinux.0";
-}
-
-host rdb1002 {
-    hardware ethernet 90:B1:1C:2D:78:68;
-    fixed-address rdb1002.eqiad.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
-    filename "lpxelinux.0";
-}
-
-host rdb1003 {
-    hardware ethernet 90:B1:1C:36:A1:99;
-    fixed-address rdb1003.eqiad.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
-    filename "lpxelinux.0";
-}
-
-host rdb1004 {
-    hardware ethernet 90:B1:1C:36:A2:99;
-    fixed-address rdb1004.eqiad.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
-    filename "lpxelinux.0";
-}
-
 host rdb1005 {
     hardware ethernet 14:18:77:33:46:B1;
     fixed-address rdb1005.eqiad.wmnet;
@@ -5920,20 +5892,6 @@ host rdb1005 {
 host rdb1006 {
     hardware ethernet 14:18:77:33:3C:ED;
     fixed-address rdb1006.eqiad.wmnet;
-}
-
-host rdb1007 {
-    hardware ethernet 84:2b:2b:77:2a:16;
-    fixed-address rdb1007.eqiad.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
-    filename "lpxelinux.0";
-}
-
-host rdb1008 {
-    hardware ethernet 84:2b:2b:77:21:c3;
-    fixed-address rdb1008.eqiad.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
-    filename "lpxelinux.0";
 }
 
 host rdb1009 {
