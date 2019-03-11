@@ -1,0 +1,130 @@
+varnishtest "Normalize Thumbnail URL"
+
+server s1 {
+    rxreq
+    expect req.url == "/wikipedia/commons/thumb/b/b1/Santorin_%28GR%29%2C_Ia_--_2017_--_2698.jpg/1000px-Santorin_%28GR%29%2C_Ia_--_2017_--_2698.jpg"
+    txresp
+
+    rxreq
+    expect req.url == "/wikipedia/commons/thumb/b/b1/Santorin_%28GR%29%2C_Ia_--_2017_--_2698.jpg/1000px-Santorin_%28GR%29%2C_Ia_--_2017_--_2698.jpg"
+    txresp
+
+    rxreq
+    expect req.url == "/wikipedia/commons/thumb/b/b1/Santorin_%28GR%29%2C_Ia_--_2017_--_2698.jpg/1000px-Santorin_%28GR%29%2C_Ia_--_2017_--_2698.jpg"
+    txresp
+
+    rxreq
+    expect req.url == "/wikipedia/commons/thumb/b/b1/Santorin_%28GR%29%2C_Ia_--_2017_--_2698.jpg/1000px-Santorin_%28GR%29%2C_Ia_--_2017_--_2698.jpg"
+    txresp
+
+    rxreq
+    expect req.url == "/wikipedia/commons/thumb/b/b1/Santorin_%28GR%29%2C_Ia_--_2017_--_2698.jpg/1000px-Santorin_%28GR%29%2C_Ia_--_2017_--_2698.jpg.png"
+    txresp
+
+    rxreq
+    expect req.url == "/wikipedia/commons/thumb/7/7f/Foobar_2015.JPG/1600px-Foobar_2015.JPG"
+    txresp
+
+    rxreq
+    expect req.url == "/wikipedia/commons/thumb/7/7f/Foobar_2015.JPG/1600px-Foobar_2015.JPG"
+    txresp
+
+    rxreq
+    expect req.url == "/wikipedia/commons/thumb/9/96/Free_the_Nipple_UK%2C_Fringe_2017_video.webm/450px-seek%3d28-Free_the_Nipple_UK%2C_Fringe_2017_video.webm.jpg"
+    txresp
+
+    rxreq
+    expect req.url == "/wikipedia/commons/thumb/9/96/Free_the_Nipple_UK%2C_Fringe_2017_video.webm/450px-seek%3d28-Free_the_Nipple_UK%2C_Fringe_2017_video.webm.jpg"
+    txresp
+
+    rxreq
+    expect req.url == "/wikipedia/commons/thumb/9/96/Free_the_Nipple_UK%2C_Fringe_2017_video.webm/450px-seek%3d28-Free_the_Nipple_UK%2C_Fringe_2017_video.webm.jpg"
+    txresp
+
+    rxreq
+    expect req.url == "/wikipedia/commons/thumb/7/7a/Robert_Thorp_-_Durham_School_Reg.pdf/page2-847px-Robert_Thorp_-_Durham_School_Reg.pdf.jpg"
+    txresp
+
+    rxreq
+    expect req.url == "/wikipedia/commons/thumb/7/7a/Robert_Thorp_-_Durham_School_Reg.pdf/page2-847px-Robert_Thorp_-_Durham_School_Reg.pdf.jpg"
+    txresp
+
+    rxreq
+    expect req.url == "/wikipedia/commons/thumb/7/7a/Robert_Thorp_-_Durham_School_Reg.pdf/page2-847px-Robert_Thorp_-_Durham_School_Reg.pdf.jpg"
+    txresp
+
+    rxreq
+    expect req.url == "/wikipedia/commons/thumb/7/7a/0InV0EYT1y3zoKKAIUNkejbvnNIIIcwVwvgUxP3a9yt1r7HGzECbmXoaArfywciytY1byoD6QR37Dzqy391IT6UhEgSy8X7hxbox5aj5r1K9cE5ShgTDWvpkP32Srg05rHFa4fUFrrdD2EXp10DFpvhwf1SFXtFGodUvZzKZT9O8YD5mJEdkVXjbb6AwdTw8fA4vvBxY.pdf/page2-847px-thumbnail.jpg"
+    txresp
+
+    rxreq
+    expect req.url == "/wikipedia/commons/thumb/7/7a/0InV0EYT1y3zoKKAIUNkejbvnNIIIcwVwvgUxP3a9yt1r7HGzECbmXoaArfywciytY1byoD6QR37Dzqy391IT6UhEgSy8X7hxbox5aj5r1K9cE5ShgTDWvpkP32Srg05rHFa4fUFrrdD2EXp10DFpvhwf1SFXtFGodUvZzKZT9O8YD5mJEdkVXjbb6AwdTw8fA4vvBxY.pdf/page2-847px-thumbnail.jpg"
+    txresp
+
+    rxreq
+    expect req.url == "/wikipedia/commons/thumb/7/7a/0InV0EYT1y3zoKKAIUNkejbvnNIIIcwVwvgUxP3a9yt1r7HGzECbmXoaArfywciytY1byoD6QR37Dzqy391IT6UhEgSy8X7hxbox5aj5r1K9cE5ShgTDWvpkP32Srg05rHFa4fUFrrdD2EXp10DFpvhwf1SFXtFGodUvZzKZT9O8YD5mJEdkVXjbb6AwdTw8fA4vvBxY.pdf/page2-847px-thumbnail.jpg"
+    txresp
+
+    rxreq
+    txresp
+} -start
+
+varnish v1 -arg "-p vcl_path=${vcl_path} -p vcc_err_unref=false -p vcc_allow_inline_c=true -p cc_command='${cc_command}'" -vcl+backend {
+    backend vtc_backend {
+        .host = "${s1_addr}"; .port = "${s1_port}";
+    }
+
+    include "${basepath}/usr/share/varnish/tests/wikimedia_upload-frontend.vcl";
+} -start
+
+client c1 {
+    txreq -url "/wikipedia/commons/thumb/b/b1/Santorin_%28GR%29%2C_Ia_--_2017_--_2698.jpg/1000px-Santorin_%28GR%29%2C_Ia_--_2017_--_2698.jpg" -hdr "Host: upload.wikimedia.org" -hdr "X-Forwarded-Proto: https"
+    rxresp
+
+    txreq -url "/wikipedia/commons/thumb/b/b1/Santorin_%28GR%29%2C_Ia_--_2017_--_2698.jpg/1000px-foo.jpg" -hdr "Host: upload.wikimedia.org" -hdr "X-Forwarded-Proto: https"
+    rxresp
+
+    txreq -url "/wikipedia/commons/thumb/b/b1/Santorin_%28GR%29%2C_Ia_--_2017_--_2698.jpg/1000px-foo.JPG" -hdr "Host: upload.wikimedia.org" -hdr "X-Forwarded-Proto: https"
+    rxresp
+
+    txreq -url "/wikipedia/commons/thumb/b/b1/Santorin_%28GR%29%2C_Ia_--_2017_--_2698.jpg/1000px-Santorin_%28GR%29%2C_Ia_--_2017_--_2698.JPG" -hdr "Host: upload.wikimedia.org" -hdr "X-Forwarded-Proto: https"
+    rxresp
+
+    txreq -url "/wikipedia/commons/thumb/b/b1/Santorin_%28GR%29%2C_Ia_--_2017_--_2698.jpg/1000px-Santorin_%28GR%29%2C_Ia_--_2017_--_2698.jpg.png" -hdr "Host: upload.wikimedia.org" -hdr "X-Forwarded-Proto: https"
+    rxresp
+
+    txreq -url "/wikipedia/commons/thumb/7/7f/Foobar_2015.JPG/1600px-Foobar_2015.JPG" -hdr "Host: upload.wikimedia.org" -hdr "X-Forwarded-Proto: https"
+    rxresp
+
+    txreq -url "/wikipedia/commons/thumb/7/7f/Foobar_2015.JPG/1600px-Foobar_2015.jpg" -hdr "Host: upload.wikimedia.org" -hdr "X-Forwarded-Proto: https"
+    rxresp
+
+    txreq -url "/wikipedia/commons/thumb/9/96/Free_the_Nipple_UK%2C_Fringe_2017_video.webm/450px-seek%3D28-Free_the_Nipple_UK%2C_Fringe_2017_video.webm.jpg" -hdr "Host: upload.wikimedia.org" -hdr "X-Forwarded-Proto: https"
+    rxresp
+
+    txreq -url "/wikipedia/commons/thumb/9/96/Free_the_Nipple_UK%2C_Fringe_2017_video.webm/450px-seek%3D28-nothing.jpg" -hdr "Host: upload.wikimedia.org" -hdr "X-Forwarded-Proto: https"
+    rxresp
+
+    txreq -url "/wikipedia/commons/thumb/9/96/Free_the_Nipple_UK%2C_Fringe_2017_video.webm/450px-SeEk%3D28-nothing.jpg" -hdr "Host: upload.wikimedia.org" -hdr "X-Forwarded-Proto: https"
+    rxresp
+
+    txreq -url "/wikipedia/commons/thumb/7/7a/Robert_Thorp_-_Durham_School_Reg.pdf/page2-847px-Robert_Thorp_-_Durham_School_Reg.pdf.jpg" -hdr "Host: upload.wikimedia.org" -hdr "X-Forwarded-Proto: https"
+    rxresp
+
+    txreq -url "/wikipedia/commons/thumb/7/7a/Robert_Thorp_-_Durham_School_Reg.pdf/page2-847px-thumbnail.pdf.jpg" -hdr "Host: upload.wikimedia.org" -hdr "X-Forwarded-Proto: https"
+    rxresp
+
+    txreq -url "/wikipedia/commons/thumb/7/7a/Robert_Thorp_-_Durham_School_Reg.pdf/page2-847px-thumbnail.jpg" -hdr "Host: upload.wikimedia.org" -hdr "X-Forwarded-Proto: https"
+    rxresp
+
+    txreq -url "/wikipedia/commons/thumb/7/7a/0InV0EYT1y3zoKKAIUNkejbvnNIIIcwVwvgUxP3a9yt1r7HGzECbmXoaArfywciytY1byoD6QR37Dzqy391IT6UhEgSy8X7hxbox5aj5r1K9cE5ShgTDWvpkP32Srg05rHFa4fUFrrdD2EXp10DFpvhwf1SFXtFGodUvZzKZT9O8YD5mJEdkVXjbb6AwdTw8fA4vvBxY.pdf/page2-847px-thumbnail.jpg" -hdr "Host: upload.wikimedia.org" -hdr "X-Forwarded-Proto: https"
+    rxresp
+
+    txreq -url "/wikipedia/commons/thumb/7/7a/0InV0EYT1y3zoKKAIUNkejbvnNIIIcwVwvgUxP3a9yt1r7HGzECbmXoaArfywciytY1byoD6QR37Dzqy391IT6UhEgSy8X7hxbox5aj5r1K9cE5ShgTDWvpkP32Srg05rHFa4fUFrrdD2EXp10DFpvhwf1SFXtFGodUvZzKZT9O8YD5mJEdkVXjbb6AwdTw8fA4vvBxY.pdf/page2-847px-foo.jpg" -hdr "Host: upload.wikimedia.org" -hdr "X-Forwarded-Proto: https"
+    rxresp
+
+    txreq -url "/wikipedia/commons/thumb/7/7a/0InV0EYT1y3zoKKAIUNkejbvnNIIIcwVwvgUxP3a9yt1r7HGzECbmXoaArfywciytY1byoD6QR37Dzqy391IT6UhEgSy8X7hxbox5aj5r1K9cE5ShgTDWvpkP32Srg05rHFa4fUFrrdD2EXp10DFpvhwf1SFXtFGodUvZzKZT9O8YD5mJEdkVXjbb6AwdTw8fA4vvBxY.pdf/page2-847px-0InV0EYT1y3zoKKAIUNkejbvnNIIIcwVwvgUxP3a9yt1r7HGzECbmXoaArfywciytY1byoD6QR37Dzqy391IT6UhEgSy8X7hxbox5aj5r1K9cE5ShgTDWvpkP32Srg05rHFa4fUFrrdD2EXp10DFpvhwf1SFXtFGodUvZzKZT9O8YD5mJEdkVXjbb6AwdTw8fA4vvBxY.pdf.jpg" -hdr "Host: upload.wikimedia.org" -hdr "X-Forwarded-Proto: https"
+    rxresp
+}
+
+client c1 -run

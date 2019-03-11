@@ -6,7 +6,7 @@ server s1 {
     txresp
 
     rxreq
-    expect req.url == "/Thumb/test.PNG"
+    expect req.url == "/Thumb/test.png"
     txresp
 
     rxreq
