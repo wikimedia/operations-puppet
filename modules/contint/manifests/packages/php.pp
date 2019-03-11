@@ -63,12 +63,16 @@ class contint::packages::php {
             ],
         }
 
-        apt::repository { 'jessie-ci-php55':
-            uri        => 'http://apt.wikimedia.org/wikimedia',
-            dist       => 'jessie-wikimedia',
-            components => 'component/ci',
-            source     => false,
-        }
+        ensure_resource(
+          'apt::repository',
+          'component-ci',
+          {
+            'uri'        => 'http://apt.wikimedia.org/wikimedia',
+            'dist'       => "${::lsbdistcodename}-wikimedia",
+            'components' => 'component/ci',
+            'source'     => false,
+          }
+        )
 
         package { [
             'php5.5-cli',
@@ -92,7 +96,7 @@ class contint::packages::php {
             ]:
             ensure  => present,
             require => [
-                Apt::Repository['jessie-ci-php55'],
+                Apt::Repository['component-ci'],
                 Exec['apt-get update'],
             ],
         }

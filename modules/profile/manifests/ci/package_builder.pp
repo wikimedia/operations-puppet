@@ -32,14 +32,27 @@ class profile::ci::package_builder {
         basepath => '/srv/pbuilder',
     }
 
+    ensure_resource(
+      'apt::repository',
+      'component-ci',
+      {
+        'uri'        => 'http://apt.wikimedia.org/wikimedia',
+        'dist'       => "${::lsbdistcodename}-wikimedia",
+        'components' => 'component/ci',
+        'source'     => false,
+      }
+    )
     package { [
         'jenkins-debian-glue',
         'jenkins-debian-glue-buildenv',
         ]:
             ensure  => present,
-            # cowbuilder file hierarchy needs to be created after the symlink
-            # points to the mounted disk.
-            require => File['/var/cache/pbuilder'],
+            require => [
+              Apt::Repository['component-ci'],
+              # cowbuilder file hierarchy needs to be created after the symlink
+              # points to the mounted disk.
+              File['/var/cache/pbuilder'],
+            ],
     }
 
 }
