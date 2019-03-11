@@ -45,6 +45,10 @@ def email_members(subject, msg):
     with open('/etc/ldap.yaml') as f:
         config = yaml.safe_load(f)
 
+    # Ignore certain projects (T218009)
+    if project_name in ['tools', 'bastion']:
+        return
+
     conn = connect(config['servers'][0], config['user'], config['password'])
     roledn = 'cn=%s,ou=groups,%s' % ('project-' + project_name,
                                      config['basedn'])
