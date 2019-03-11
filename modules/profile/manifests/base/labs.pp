@@ -1,6 +1,7 @@
 class profile::base::labs(
     $unattended_wmf = hiera('profile::base::labs::unattended_wmf'),
     $unattended_distro = hiera('profile::base::labs::unattended_distro'),
+    $send_puppet_failure_emails = hiera('send_puppet_failure_emails', true),
     ) {
 
     include ::apt::noupgrade
@@ -47,14 +48,17 @@ class profile::base::labs(
         source => 'puppet:///modules/base/labs/puppet_alert.py',
     }
 
-    if hiera('send_puppet_failure_emails', false) {
-        cron { 'send_puppet_failure_emails':
-            ensure  => present,
-            command => '/usr/local/sbin/puppet_alert.py',
-            hour    => 8,
-            minute  => '15',
-            user    => 'root',
-        }
+    $ensure_puppet_emails_cron = $send_puppet_failure_emails ? {
+        true    => 'present',
+        default => 'absent',
+    }
+
+    cron { 'send_puppet_failure_emails':
+        ensure  => $ensure_puppet_emails_cron,
+        command => '/usr/local/sbin/puppet_alert.py',
+        hour    => 8,
+        minute  => '15',
+        user    => 'root',
     }
 
     # Set a root password only if we're still governed by the official Labs
