@@ -5,6 +5,7 @@ class role::labs::instance {
     include sudo
     include ::base::instance_upstarts
     include ::profile::openstack::main::observerenv
+    include ::profile::openstack::main::clientpackages
     include ::profile::openstack::main::cumin::target
 
     sudo::group { 'ops':

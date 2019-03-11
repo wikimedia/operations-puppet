@@ -19,26 +19,13 @@ meant to be run on the affected instance.
 """
 import sys
 sys.path.append('/usr/local/sbin/')
-from notify_maintainers import email_members
+from notify_maintainers import email_admins
 import calendar
 import time
-import ldap
 import socket
 
 # Nag if it's been 24 hours since the last puppet run
 NAG_INTERVAL = 60 * 60 * 24
-
-# Don't bother to notify the novaadmin user; that just
-#  sends spam to ops@
-USER_IGNORE_LIST = ['uid=novaadmin,ou=people,dc=wikimedia,dc=org']
-
-
-def connect(server, username, password):
-    conn = ldap.initialize('ldap://%s:389' % server)
-    conn.protocol_version = ldap.VERSION3
-    conn.start_tls_s()
-    conn.simple_bind_s(username, password)
-    return conn
 
 
 def lastrun():
@@ -76,7 +63,7 @@ For further support, visit #wikimedia-cloud on freenode or
 <https://wikitech.wikimedia.org>
 """.format(fqdn=fqdn)
 
-        email_members(subject, body)
+        email_admins(subject, body)
 
 
 if __name__ == '__main__':

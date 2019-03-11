@@ -25,6 +25,10 @@ import socket
 import yaml
 import subprocess
 
+from keystoneclient.auth.identity.v3 import Password as KeystonePassword
+from keystoneclient.session import Session as KeystoneSession
+from keystoneclient.v3 import client as keystone_client
+
 # Don't bother to notify the novaadmin user as it spams ops@
 USER_IGNORE_LIST = ['uid=novaadmin,ou=people,dc=wikimedia,dc=org']
 
@@ -37,42 +41,69 @@ def connect(server, username, password):
     return conn
 
 
+with open('/etc/wmflabs-project') as f:
+    project_name = f.read().strip()
+
+
+with open('/etc/ldap.yaml') as f:
+    ldap_config = yaml.safe_load(f)
+
+
+with open('/etc/novaobserver.yaml') as n:
+    nova_observer_config = yaml.safe_load(n)
+
+
+ldap_conn = connect(ldap_config['servers'][0], ldap_config['user'], ldap_config['password'])
+
+
+def email_admins(subject, msg):
+    keystone_session = KeystoneSession(auth=KeystonePassword(
+        auth_url=nova_observer_config['OS_AUTH_URL'],
+        username=nova_observer_config['OS_USERNAME'],
+        password=nova_observer_config['OS_PASSWORD'],
+        project_name=nova_observer_config['OS_PROJECT_NAME'],
+        user_domain_name='default',
+        project_domain_name='default'
+    ))
+    keystoneclient = keystone_client.Client(session=keystone_session, interface='public')
+    roleid = None
+    for r in keystoneclient.roles.list():
+        if r.name == 'projectadmin':
+            roleid = r.id
+            break
+
+    assert roleid is not None
+    for ra in keystoneclient.role_assignments.list(project=project_name, role=roleid):
+        dn = 'uid={},ou=people,{}'.format(ra.user['id'], ldap_config['basedn'])
+        _email_member(dn, subject, msg)
+
+
 def email_members(subject, msg):
-
-    with open('/etc/wmflabs-project') as f:
-        project_name = f.read().strip()
-
-    with open('/etc/ldap.yaml') as f:
-        config = yaml.safe_load(f)
-
-    # Ignore certain projects (T218009)
-    if project_name in ['tools', 'bastion']:
-        return
-
-    conn = connect(config['servers'][0], config['user'], config['password'])
     roledn = 'cn=%s,ou=groups,%s' % ('project-' + project_name,
-                                     config['basedn'])
+                                     ldap_config['basedn'])
 
-    body = msg
-
-    member_rec = conn.search_s(
+    member_rec = ldap_conn.search_s(
         roledn,
         ldap.SCOPE_BASE
     )
     members = member_rec[0][1]['member']
 
     for member in members:
-        if member.lower() in USER_IGNORE_LIST:
-            continue
+        _email_member(member, subject, msg)
 
-        userrec = conn.search_s(member, ldap.SCOPE_BASE)
-        email = userrec[0][1]['mail'][0]
 
-        args = ['/usr/bin/mail', '-s', subject, email]
+def _email_member(member, subject, body):
+    if member.lower() in USER_IGNORE_LIST:
+        return
 
-        p = subprocess.Popen(args, stdout=subprocess.PIPE,
-                             stdin=subprocess.PIPE, stderr=subprocess.STDOUT)
-        p.communicate(input=body)[0]
+    userrec = ldap_conn.search_s(member, ldap.SCOPE_BASE)
+    email = userrec[0][1]['mail'][0]
+
+    args = ['/usr/bin/mail', '-s', subject, email]
+
+    p = subprocess.Popen(args, stdout=subprocess.PIPE,
+                         stdin=subprocess.PIPE, stderr=subprocess.STDOUT)
+    p.communicate(input=body)[0]
 
 
 def main():
@@ -80,6 +111,7 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('-s', help='email subject', default=None)
     parser.add_argument('-m', help='email message', default=None)
+    parser.add_argument('--admins-only', help='admins only', action='store_true')
     args = parser.parse_args()
 
     if args.m is None:
@@ -92,7 +124,10 @@ def main():
     if args.s is None:
         args.s = "[WMCS notice] Project members for %s" % (socket.gethostname())
 
-    email_members(args.s, args.m)
+    if args.admins_only:
+        email_admins(args.s, args.m)
+    else:
+        email_members(args.s, args.m)
 
 
 if __name__ == '__main__':
