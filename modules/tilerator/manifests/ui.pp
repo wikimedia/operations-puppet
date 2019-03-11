@@ -75,24 +75,25 @@
 #   domain of the tile server, to be used in generating invalidation URIs
 #
 class tilerator::ui(
-    $cassandra_servers,
-    $cassandra_pass,
-    $pgsql_pass,
-    $redis_server,
-    $redis_pass,
-    $eventlogging_service_uri,
-    $sources_to_invalidate,
-    $tile_server_domain,
-    $port           = 6535,
-    $contact_groups = 'admins',
-    $statefile_dir  = '/var/run/tileratorui',
-    $from_zoom      = 10,
-    $before_zoom    = 16,
-    $generator_id   = 'gen',
-    $storage_id     = 'v3',
-    $delete_empty   = true,
-    $osmosis_dir    = '/srv/osmosis',
-    $expire_dir     = '/srv/osm_expire/',
+    Array[String] $cassandra_servers,
+    String $cassandra_pass,
+    String $pgsql_pass,
+    String $redis_server,
+    String $redis_pass,
+    Stdlib::Httpurl $eventlogging_service_uri,
+    Array[String] $sources_to_invalidate,
+    Stdlib::Fqdn $tile_server_domain,
+    Stdlib::Port $port               = 6535,
+    String  $contact_groups          = 'admins',
+    Stdlib::Unixpath  $statefile_dir = '/var/run/tileratorui',
+    Integer $from_zoom               = 10,
+    Integer $before_zoom             = 16,
+    String  $generator_id            = 'gen',
+    String  $storage_id              = 'v3',
+    Boolean $delete_empty            = true,
+    Stdlib::Unixpath  $osmosis_dir   = '/srv/osmosis',
+    Stdlib::Unixpath  $expire_dir    = '/srv/osm_expire/',
+    Boolean $use_nodejs10            = false,
 ) {
     $statefile = "${statefile_dir}/expire.state"
     $cassandra_user = 'tileratorui'
@@ -121,6 +122,7 @@ class tilerator::ui(
             tile_server_domain       => $tile_server_domain,
         },
         contact_groups    => $contact_groups,
+        use_nodejs10      => $use_nodejs10,
     }
 
     # HACK: service::node should add this sudo rule, but doesn't, because it deduplicates by repo name,

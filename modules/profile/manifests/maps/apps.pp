@@ -15,6 +15,7 @@ class profile::maps::apps(
     String $tile_server_domain = hiera('profile::maps::apps::tile_server_domain'),
     String $wikidata_query_service = hiera('profile::maps::apps::wikidata_query_service'),
     Float[0.0, 1.0] $tilerator_ncpu_ratio = hiera('profile::maps::apps::tilerator_ncpu_ratio', 0.5),
+    Boolean $use_nodejs10 = hiera('profile::maps::apps::use_nodejs10', false),
 ) {
 
 
@@ -33,7 +34,8 @@ class profile::maps::apps(
         eventlogging_service_uri => $eventlogging_service_uri,
         sources_to_invalidate    => $sources_to_invalidate,
         tile_server_domain       => $tile_server_domain,
-        num_workers              => $num_workers
+        num_workers              => $num_workers,
+        use_nodejs10             => $use_nodejs10,
     }
 
     class { '::tilerator::ui':
@@ -46,7 +48,8 @@ class profile::maps::apps(
         storage_id               => $tilerator_storage_id,
         eventlogging_service_uri => $eventlogging_service_uri,
         sources_to_invalidate    => $sources_to_invalidate,
-        tile_server_domain       => $tile_server_domain
+        tile_server_domain       => $tile_server_domain,
+        use_nodejs10             => $use_nodejs10,
     }
 
     class { 'kartotherian':
@@ -57,6 +60,7 @@ class profile::maps::apps(
         storage_id             => $kartotherian_storage_id,
         tilerator_storage_id   => $tilerator_storage_id,
         wikidata_query_service => $wikidata_query_service,
+        use_nodejs10           => $use_nodejs10,
     }
 
     # those fonts are needed for the new maps style (brighmed)

@@ -24,17 +24,18 @@
 #   List of cassandra server names used by Kartotherian
 #
 class kartotherian(
-    $cassandra_servers,
-    $cassandra_pass,
-    $pgsql_pass,
-    $storage_id,
-    $tilerator_storage_id,
-    $wikidata_query_service,
-    $contact_groups    = 'admins',
-    $port              = 6533,
-    $num_workers       = 'ncpu',
-    $cassandra_user = 'kartotherian',
-    $pgsql_user = 'kartotherian',
+    Array[String] $cassandra_servers,
+    String $cassandra_pass,
+    String $pgsql_pass,
+    String $storage_id,
+    String $tilerator_storage_id,
+    String $wikidata_query_service,
+    String  $contact_groups = 'admins',
+    Stdlib::Port $port      = 6533,
+    String  $num_workers    = 'ncpu',
+    String  $cassandra_user = 'kartotherian',
+    String  $pgsql_user     = 'kartotherian',
+    Boolean $use_nodejs10   = false,
 ) {
 
     validate_array($cassandra_servers)
@@ -60,5 +61,6 @@ class kartotherian(
         has_spec          => true,
         healthcheck_url   => '',
         contact_groups    => $contact_groups,
+        use_nodejs10      => $use_nodejs10,
     }
 }

@@ -46,7 +46,8 @@ class tilerator(
     Array[String] $sources_to_invalidate,
     String $tile_server_domain,
     Integer[0] $num_workers,
-    Optional[String] $contact_groups    = 'admins',
+    String  $contact_groups = 'admins',
+    Boolean $use_nodejs10   = false,
 ) {
 
     validate_array($cassandra_servers)
@@ -80,6 +81,7 @@ class tilerator(
             tile_server_domain       => $tile_server_domain,
         },
         contact_groups    => $contact_groups,
+        use_nodejs10      => $use_nodejs10,
     }
 
 }
