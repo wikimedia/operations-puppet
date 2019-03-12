@@ -192,6 +192,32 @@ class profile::logstash::collector (
         consumer_threads        => 3,
     }
 
+    logstash::input::kafka { 'rsyslog-logback-eqiad':
+        topics_pattern          => 'logback.*',
+        group_id                => $input_kafka_consumer_group_id,
+        type                    => 'logback',
+        tags                    => ['input-kafka-rsyslog-logback', 'kafka-logging-eqiad'],
+        codec                   => 'json',
+        bootstrap_servers       => $kafka_config_eqiad['brokers']['ssl_string'],
+        security_protocol       => 'SSL',
+        ssl_truststore_location => '/etc/logstash/kafka-logging-truststore-eqiad.jks',
+        ssl_truststore_password => $input_kafka_ssl_truststore_password,
+        consumer_threads        => 3,
+    }
+
+    logstash::input::kafka { 'rsyslog-logback-codfw':
+        topics_pattern          => 'logback.*',
+        group_id                => $input_kafka_consumer_group_id,
+        type                    => 'logback',
+        tags                    => ['input-kafka-rsyslog-logback', 'kafka-logging-codfw'],
+        codec                   => 'json',
+        bootstrap_servers       => $kafka_config_codfw['brokers']['ssl_string'],
+        security_protocol       => 'SSL',
+        ssl_truststore_location => '/etc/logstash/kafka-logging-truststore-codfw.jks',
+        ssl_truststore_password => $input_kafka_ssl_truststore_password,
+        consumer_threads        => 3,
+    }
+
     $kafka_config_eventlogging_eqiad = kafka_config('jumbo', 'eqiad')
     $kafka_topic_eventlogging        = 'eventlogging_EventError'
 

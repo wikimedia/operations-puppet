@@ -1,0 +1,38 @@
+# Provide a UDP input to accept JSON payloads on localhost and forward them to Kakfa.
+
+module(load="imudp")
+module(load="mmjsonparse")
+
+template(name="template_udp_json_logback_compat" type="list") {
+  property(name="$!all-json")
+}
+
+# Use the parsed json "level" field value as the kafka topic suffix
+template(name="udp_json_logback_compat_topic" type="string" string="logback-%!level:::lowercase%")
+
+# Use a separate (in memory) queue to limit message processing to this ruleset only.
+ruleset(name="ruleset_udp_json_logback_compat" queue.type="LinkedList") {
+
+  action(type="mmjsonparse" name="mmjsonparse_udp_json_logback_compat" cookie="" useRawMsg="on")
+
+  if $parsesuccess == "OK" then {
+    action(type="omkafka"
+           broker=<%= scope.lookupvar('logging_kafka_brokers').to_json %>
+           topic="udp_json_logback_compat_topic"
+           dynatopic="on"
+           dynatopic.cachesize="1000"
+           partitions.auto="on"
+           template="template_udp_json_logback_compat"
+           confParam=[ "security.protocol=ssl",
+                       "ssl.ca.location=/etc/ssl/certs/Puppet_Internal_CA.pem",
+                       "compression.codec=snappy",
+                       "socket.timeout.ms=60000",
+                       "socket.keepalive.enable=true",
+                       "queue.buffering.max.ms=50",
+                       "batch.num.messages=1000" ]
+    )
+  }
+
+}
+
+input(type="imudp" port="<%= @port %>" address="localhost" ruleset="ruleset_udp_json_logback_compat")
