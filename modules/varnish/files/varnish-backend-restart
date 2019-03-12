@@ -1,10 +1,13 @@
 #!/bin/bash
 
-set -ex
+set -e
 
 # Exit immediately if varnish-be is not pooled
-confctl --quiet select name=`hostname -f`,service='varnish-be' get |
-    jq ".[\"`hostname -f`\"].pooled" | grep -q '"yes"'
+if confctl --quiet select name=`hostname -f`,service='varnish-be' get |
+        jq ".[\"`hostname -f`\"].pooled" | grep -q '"no"'; then
+    echo "varnish-be is depooled. Exiting."
+    exit 1
+fi
 
 # Depool varnish-be
 confctl --quiet select name=`hostname -f`,service='varnish-be' set/pooled=no
