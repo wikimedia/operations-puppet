@@ -28,3 +28,18 @@ prometheus:
     datacenters:
       - eqiad
       - codfw
+ldap-ro:
+  ldap-ro:
+    port: 389
+    default_values:
+      "pooled": "no"
+      "weight": 10
+    datacenters:
+      - eqiad
+  ldap-ro-ssl:
+    port: 636
+    default_values:
+      "pooled": "no"
+      "weight": 10
+    datacenters:
+      - eqiad
