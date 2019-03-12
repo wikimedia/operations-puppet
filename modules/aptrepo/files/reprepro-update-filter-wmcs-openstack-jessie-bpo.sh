@@ -179,7 +179,6 @@ sqlalchemy
 sqlite3
 stevedore
 suds
-systemd
 underscore
 unittest2
 voluptuous
