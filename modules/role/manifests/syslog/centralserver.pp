@@ -21,6 +21,13 @@ class role::syslog::centralserver (
         srange  => '($PRODUCTION_NETWORKS $MGMT_NETWORKS)',
     }
 
+    ferm::service { 'rsyslog-netdev_kafka_relay_udp':
+        proto   => 'udp',
+        port    => 10514,
+        notrack => true,
+        srange  => '($PRODUCTION_NETWORKS $MGMT_NETWORKS)',
+    }
+
     ferm::service { 'rsyslog-receiver_tcp':
         proto   => 'tcp',
         port    => 6514,
@@ -29,6 +36,8 @@ class role::syslog::centralserver (
     }
 
     class { 'rsyslog::receiver': }
+
+    class { 'profile::rsyslog::netdev_kafka_relay': }
 
     monitoring::service { "syslog::centralserver ${::hostname} syslog-tls":
         description   => 'rsyslog TLS listener on port 6514',

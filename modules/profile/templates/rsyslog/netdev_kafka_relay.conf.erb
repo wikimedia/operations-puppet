@@ -1,0 +1,28 @@
+# Provide a UDP syslog input to accept syslogs and forward them to Kakfa.
+#
+# Kafka topic selection is based on the syslog message severity.
+
+template(name="netdev_kafka_relay_topic" type="string" string="rsyslog-%syslogseverity-text:::lowercase%")
+
+# Use a separate (in memory) queue to limit message processing to this ruleset only.
+ruleset(name="ruleset_netdev_kafka_relay" queue.type="LinkedList") {
+
+  action(type="omkafka"
+         broker=<%= scope.lookupvar('logging_kafka_brokers').to_json %>
+         topic="netdev_kafka_relay_topic"
+         dynatopic="on"
+         dynatopic.cachesize="1000"
+         partitions.auto="on"
+         template="syslog_json"
+         confParam=[ "security.protocol=ssl",
+                     "ssl.ca.location=/etc/ssl/certs/Puppet_Internal_CA.pem",
+                     "compression.codec=snappy",
+                     "socket.timeout.ms=60000",
+                     "socket.keepalive.enable=true",
+                     "queue.buffering.max.ms=50",
+                     "batch.num.messages=1000" ]
+  )
+
+}
+
+input(type="imudp" port="<%= @port %>" ruleset="ruleset_netdev_kafka_relay")
