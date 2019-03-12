@@ -152,6 +152,8 @@ lvs::configuration::lvs_service_ips:
   eventgate-analytics: &ip_block047
     eqiad: 10.2.2.42
     codfw: 10.2.1.42
+  ldap-ro: &ip_block48
+    eqiad: 208.80.154.252
 
 lvs::configuration::lvs_services:
   text:
@@ -1427,6 +1429,38 @@ lvs::configuration::lvs_services:
           hostname: proton.svc.eqiad.wmnet
         codfw:
           hostname: proton.svc.codfw.wmnet
+  ldap-ro:
+    description: "Ldap for cloud and developer accounts"
+    class: low-traffic
+    sites:
+    - eqiad
+    ip: &ip_block48
+    port: 389
+    bgp: 'yes'
+    depool-threshold: '.9'
+    monitors:
+      IdleConnection:
+        timeout-clean-reconnect: 3
+        max-delay: 30
+    conftool:
+      cluster: ldap
+      service: ldap
+  ldap-ro-ssl:
+    description: "Ldap for cloud and developer accounts (ssl access)"
+    class: low-traffic
+    sites:
+    - eqiad
+    ip: &ip_block48
+    port: 636
+    bgp: 'yes'
+    depool-threshold: '.9'
+    monitors:
+      IdleConnection:
+        timeout-clean-reconnect: 3
+        max-delay: 30
+    conftool:
+      cluster: ldap
+      service: ldap-ssl
   blubberoid:
     description: "Blubberoid, blubberoid.svc.%{::site}.wmnet"
     class: low-traffic
