@@ -86,7 +86,7 @@ class acme_chief::server (
         require => Package['acme-chief'],
     }
 
-    $live_certs_path = '/var/lib/acme-chief/live_certs'
+    $certs_path = '/var/lib/acme-chief/certs'
     file { '/etc/acme-chief/cert-sync.conf':
         owner   => 'acme-chief',
         group   => 'acme-chief',
@@ -246,13 +246,13 @@ class acme_chief::server (
     nrpe::monitor_service { 'cert_sync_active_node':
         ensure       => $ensure,
         description  => 'Ensure cert-sync script runs successfully in the active node',
-        nrpe_command => "sudo -u acme-chief /usr/lib/nagios/plugins/check_file_age -w 3600 -c 7200 ${live_certs_path}/.rsync.done",
+        nrpe_command => "sudo -u acme-chief /usr/lib/nagios/plugins/check_file_age -w 3600 -c 7200 ${certs_path}/.rsync.done",
     }
 
     nrpe::monitor_service { 'cert_sync_passive_node':
         ensure       => $ensure_passive,
         description  => 'Ensure that passive node gets the certificates from the active node as expected',
-        nrpe_command => "sudo -u acme-chief /usr/lib/nagios/plugins/check_file_age -w 3600 -c 7200 ${live_certs_path}/.rsync.status",
+        nrpe_command => "sudo -u acme-chief /usr/lib/nagios/plugins/check_file_age -w 3600 -c 7200 ${certs_path}/.rsync.status",
     }
 
     if $is_active {
