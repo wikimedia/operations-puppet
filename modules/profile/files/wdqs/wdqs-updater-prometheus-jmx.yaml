@@ -4,3 +4,5 @@ lowercaseOutputName: false
 startDelaySeconds: 10
 whitelistObjectNames:
   - 'metrics:name=*'
+  - 'kafka.consumer:*'
+  - 'wdqs-updater:name=*'
