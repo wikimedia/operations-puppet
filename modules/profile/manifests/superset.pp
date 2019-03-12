@@ -113,6 +113,7 @@ class profile::superset(
         description   => 'superset',
         check_command => "check_tcp!${::superset::port}",
         require       => Class['::superset'],
+        notes_url     => 'https://wikitech.wikimedia.org/wiki/Analytics/Systems/Superset',
     }
 
 }

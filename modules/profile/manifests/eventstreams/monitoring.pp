@@ -36,6 +36,7 @@ class profile::eventstreams::monitoring (
     if $use_nrpe {
         $params = $common_params + {
             'nrpe_command' => "/usr/local/lib/nagios/plugins/check_eventstreams ${stream_url}",
+                notes_url  => 'https://wikitech.wikimedia.org/wiki/Analytics/Systems/EventStreams',
         }
         ensure_resource('nrpe::monitor_service', 'eventstreams_endpoint', $params)
     }
@@ -54,6 +55,7 @@ class profile::eventstreams::monitoring (
 
         $params = $common_params + {
             'check_command' => "check_eventstreams!${stream_url}",
+                  notes_url => 'https://wikitech.wikimedia.org/wiki/Analytics/Systems/EventStreams',
         }
         ensure_resource('monitoring::service', 'eventstreams_endpoint', $params)
     }

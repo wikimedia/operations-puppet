@@ -40,6 +40,7 @@ class profile::aqs (
             description   => 'AQS root url',
             check_command => "check_http_port_url!${::aqs::port}!/",
             contact_group => 'admins,team-services',
+            notes_url     => 'https://wikitech.wikimedia.org/wiki/Analytics/Systems/AQS#Monitoring',
         }
         #TODO: add monitoring once we figure out what metrics we want
         #monitoring::graphite_threshold { 'restbase_analytics_<<some-metric-name>>':

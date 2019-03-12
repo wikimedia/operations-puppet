@@ -46,6 +46,7 @@ class profile::druid::turnilo(
         description   => 'turnilo',
         check_command => "check_tcp!${port}",
         contact_group => $contact_group,
+        notes_url     => 'https://wikitech.wikimedia.org/wiki/Analytics/Systems/Turnilo-Pivot',
     }
 
     if $proxy_enabled {
