@@ -46,5 +46,6 @@ define elasticsearch::tlsproxy (
         ensure        => present,
         description   => "Elasticsearch HTTPS for ${title}",
         check_command => "check_ssl_on_port!${server_name}!${tls_port}",
+        notes_url     => 'https://wikitech.wikimedia.org/wiki/Search',
     }
 }

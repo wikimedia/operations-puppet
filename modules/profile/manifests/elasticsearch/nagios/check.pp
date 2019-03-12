@@ -17,6 +17,7 @@ class profile::elasticsearch::nagios::check(
         monitoring::service { "elasticsearch shards ${http_port}":
             check_command => "check_elasticsearch_shards_threshold!${scheme}!${http_port}!${threshold}",
             description   => "ElasticSearch health check for shards on ${http_port}",
+            notes_url     => 'https://wikitech.wikimedia.org/wiki/Search',
         }
 
         monitoring::service { "elasticsearch / unassigned shard check - ${http_port}":
@@ -27,6 +28,7 @@ class profile::elasticsearch::nagios::check(
                 retry_interval => 120, # 2h
                 retries        => 1,
                 contact_group  => 'admins,team-discovery',
+                notes_url      => 'https://wikitech.wikimedia.org/wiki/Search',
         }
     }
 }
