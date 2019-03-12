@@ -145,6 +145,7 @@ fullviews:
 # - abusefilterprivatedetails  T187455
 # - spamblacklist              T178052
 # - suppress                   T178052
+# - oathauth_users             T218165
 # - titleblacklist             T178052
 # To show a log in the DB, it must appear here and this must be
 # referenced in the "logging_where" key under customviews.  The resulting
