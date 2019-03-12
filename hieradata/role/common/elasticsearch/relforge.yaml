@@ -11,6 +11,7 @@ profile::base::check_disk_options: -w 15% -c 10% -W 6% -K 3% -l -e -A -i "/srv/s
 profile::elasticsearch::rack: ''
 profile::elasticsearch::row: ''
 profile::elasticsearch::version: '6.5'
+profile::elasticsearch::config_version: '6'
 profile::elasticsearch::instances:
     relforge-eqiad:
         cluster_name: 'relforge-eqiad'
