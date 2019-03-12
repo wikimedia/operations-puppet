@@ -24,6 +24,7 @@ class profile::mediawiki::jobrunner_tls {
             check_command  => "check_https_url!${certname}!/rpc/RunJobs.php",
             retries        => 2,
             retry_interval => 2,
+            notes_url      => 'https://wikitech.wikimedia.org/wiki/Jobrunner',
         }
     }
 

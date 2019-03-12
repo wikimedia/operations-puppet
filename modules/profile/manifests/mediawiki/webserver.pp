@@ -136,6 +136,7 @@ class profile::mediawiki::webserver(
         check_command  => 'check_http_wikipedia',
         retries        => 2,
         retry_interval => 2,
+        notes_url      => 'https://wikitech.wikimedia.org/wiki/Application_servers',
     }
 
     monitoring::service { 'appserver_http_hhvm':
@@ -143,6 +144,7 @@ class profile::mediawiki::webserver(
         check_command  => 'check_http_wikipedia_main',
         retries        => 2,
         retry_interval => 2,
+        notes_url      => 'https://wikitech.wikimedia.org/wiki/Application_servers',
     }
 
     nrpe::monitor_service { 'hhvm':
@@ -185,6 +187,7 @@ class profile::mediawiki::webserver(
             check_command  => 'check_https_url!en.wikipedia.org!/',
             retries        => 2,
             retry_interval => 2,
+            notes_url      => 'https://wikitech.wikimedia.org/wiki/Application_servers',
         }
         ferm::service { 'mediawiki-https':
             proto   => 'tcp',

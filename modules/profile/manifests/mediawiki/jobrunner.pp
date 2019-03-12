@@ -115,6 +115,7 @@ class profile::mediawiki::jobrunner(
         description   => 'HHVM jobrunner',
         check_command => 'check_http_jobrunner',
         retries       => 2,
+        notes_url     => 'https://wikitech.wikimedia.org/wiki/Jobrunner',
     }
 
     # TODO: restrict this to monitoring and localhost only.

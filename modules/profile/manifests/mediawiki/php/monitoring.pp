@@ -85,6 +85,7 @@ class profile::mediawiki::php::monitoring(
             check_command  => 'check_http_wikipedia_main_php7',
             retries        => 2,
             retry_interval => 2,
+            notes_url      => 'https://wikitech.wikimedia.org/wiki/Application_servers',
         }
     }
     else {
@@ -94,6 +95,7 @@ class profile::mediawiki::php::monitoring(
             check_command  => 'check_http_jobrunner_php7',
             retries        => 2,
             retry_interval => 2,
+            notes_url      => 'https://wikitech.wikimedia.org/wiki/Application_servers',
         }
     }
     # TODO: add an else with a check for /w/health-check.php

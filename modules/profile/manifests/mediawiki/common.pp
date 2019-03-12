@@ -98,6 +98,7 @@ class profile::mediawiki::common(
         description    => 'mediawiki-installation DSH group',
         check_command  => 'check_dsh_groups!mediawiki-installation',
         check_interval => 60,
+        notes_url      => 'https://wikitech.wikimedia.org/wiki/Application_servers#Apache_setup_checklist',
     }
 
 }
