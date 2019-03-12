@@ -34,6 +34,7 @@ class role::swift::proxy (
         monitoring::service { 'swift-https':
             description   => 'Swift HTTPS',
             check_command => "check_https_url!${::swift::proxy::proxy_service_host}!/monitoring/frontend",
+            notes_url     => 'https://wikitech.wikimedia.org/wiki/Swift',
         }
 
         ferm::service { 'swift-proxy-https':
@@ -94,9 +95,11 @@ class role::swift::proxy (
     monitoring::service { 'swift-http-frontend':
         description   => 'Swift HTTP frontend',
         check_command => "check_http_url!${::swift::proxy::proxy_service_host}!/monitoring/frontend",
+        notes_url     => 'https://wikitech.wikimedia.org/wiki/Swift',
     }
     monitoring::service { 'swift-http-backend':
         description   => 'Swift HTTP backend',
         check_command => "check_http_url!${::swift::proxy::proxy_service_host}!/monitoring/backend",
+        notes_url     => 'https://wikitech.wikimedia.org/wiki/Swift',
     }
 }

@@ -7,5 +7,6 @@ define swift::storage::monitor_swift_daemon {
     nrpe::monitor_service { $title:
         description  => $title,
         nrpe_command => "/usr/lib/nagios/plugins/check_procs -c 1: --ereg-argument-array='^/usr/bin/python /usr/bin/${title}'",
+        notes_url    => 'https://wikitech.wikimedia.org/wiki/Swift',
     }
 }
