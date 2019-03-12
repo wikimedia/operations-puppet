@@ -132,6 +132,7 @@ class profile::mail::smarthost (
     monitoring::service { 'smtp':
         description   => 'Exim SMTP',
         check_command => 'check_smtp_tls_le',
+        notes_url     => 'https://wikitech.wikimedia.org/wiki/Mail#Troubleshooting',
     }
 
     nrpe::monitor_service { 'check_exim_queue':
@@ -140,6 +141,7 @@ class profile::mail::smarthost (
         check_interval => 30,
         retry_interval => 10,
         timeout        => 20,
+        notes_url      => 'https://wikitech.wikimedia.org/wiki/Mail',
     }
 
 }

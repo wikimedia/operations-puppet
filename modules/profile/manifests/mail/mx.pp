@@ -94,6 +94,7 @@ class profile::mail::mx (
     monitoring::service { 'smtp':
         description   => 'Exim SMTP',
         check_command => 'check_smtp_tls_le',
+        notes_url     => 'https://wikitech.wikimedia.org/wiki/Mail#Troubleshooting',
     }
 
     ferm::service { 'exim-smtp':
