@@ -707,6 +707,7 @@ class profile::toolforge::grid::exec_environ {
           'ufraw-batch',                 # T59008
           'virtualenvwrapper',           # T131840
           'whois',                       # T98555
+          'xauth',                       # T215699
           'xml2',                        # T134146.
           'xsltproc',                    # T68962.
           'xvfb',                        # T100268
