@@ -17,5 +17,6 @@ define authdns::monitoring::global($address, $prefixlen=undef) {
         description   => 'Auth DNS',
         check_command => 'check_dns!www.wikipedia.org',
         critical      => true,
+        notes_url     => 'https://wikitech.wikimedia.org/wiki/DNS',
     }
 }

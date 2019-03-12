@@ -10,6 +10,7 @@ class authdns::monitoring {
     monitoring::service { 'auth dns':
         description   => 'Auth DNS',
         check_command => 'check_dns!www.wikipedia.org',
+        notes_url     => 'https://wikitech.wikimedia.org/wiki/DNS',
     }
 
     # This is a local NRPE check to validate that the authdns server's config

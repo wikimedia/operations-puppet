@@ -9,5 +9,6 @@ define dnsrecursor::monitor() {
         host          => $title,
         description   => 'Recursive DNS',
         check_command => 'check_dns!www.wikipedia.org',
+        notes_url     => 'https://wikitech.wikimedia.org/wiki/DNS',
     }
 }
