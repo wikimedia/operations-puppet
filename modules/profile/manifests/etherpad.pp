@@ -20,6 +20,7 @@ class profile::etherpad {
     monitoring::service { 'etherpad-lite-http':
         description   => 'etherpad.wikimedia.org HTTP',
         check_command => 'check_http_port_url!9001!/',
+        notes_url     => 'https://wikitech.wikimedia.org/wiki/Etherpad.wikimedia.org',
     }
 
     ferm::service { 'etherpad_service':

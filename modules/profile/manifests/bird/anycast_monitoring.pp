@@ -16,5 +16,6 @@ class profile::bird::anycast_monitoring{
         host          => 'recdns.anycast.wmnet',
         description   => 'recursive DNS anycast VIP',
         check_command => 'check_dns!www.wikipedia.org',
+        notes_url     => 'https://wikitech.wikimedia.org/wiki/Anycast_recursive_DNS#Troubleshooting',
     }
 }

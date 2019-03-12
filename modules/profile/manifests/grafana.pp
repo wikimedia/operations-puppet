@@ -197,6 +197,7 @@ class profile::grafana (
         monitoring::service { 'grafana-admin':
             description   => $admin_domain,
             check_command => "check_http_unauthorized!${admin_domain}!/",
+            notes_url     => 'https://wikitech.wikimedia.org/wiki/Grafana.wikimedia.org',
         }
     }
 

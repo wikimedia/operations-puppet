@@ -141,7 +141,7 @@ class profile::mail::smarthost (
         check_interval => 30,
         retry_interval => 10,
         timeout        => 20,
-        notes_url      => 'https://wikitech.wikimedia.org/wiki/Mail',
+        notes_url      => 'https://wikitech.wikimedia.org/wiki/Mail#Troubleshooting',
     }
 
 }

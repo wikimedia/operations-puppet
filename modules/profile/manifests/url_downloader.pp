@@ -108,6 +108,7 @@ class profile::url_downloader (
     monitoring::service { 'url_downloader':
         description   => 'url_downloader',
         check_command => "check_tcp_ip!url-downloader.wikimedia.org!${url_downloader_port}",
+        notes_url     => 'https://wikitech.wikimedia.org/wiki/Url-downloader',
     }
 
     base::service_auto_restart { 'squid3': }

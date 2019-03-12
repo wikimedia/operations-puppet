@@ -54,6 +54,7 @@ class profile::etcd::replication(
             description   => 'Etcd replication lag',
             check_command => "check_http_url_for_regexp_on_port!${::fqdn}!${etcdmirror_web_port}!/lag!'^(-[1-9]|[0-5][^0-9]+)'",
             critical      => true,
+            notes_url     => 'https://wikitech.wikimedia.org/wiki/Etcd',
         }
     }
 
