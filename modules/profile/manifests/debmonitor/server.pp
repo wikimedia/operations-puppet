@@ -122,11 +122,13 @@ class profile::debmonitor::server (
     monitoring::service { 'debmonitor-http':
         description   => 'debmonitor.wikimedia.org',
         check_command => "check_http_redirect!debmonitor.wikimedia.org!/!301!https://${public_server_name}/",
+        notes_url     => 'https://wikitech.wikimedia.org/wiki/Debmonitor',
     }
 
     monitoring::service { 'debmonitor-https':
         description   => 'debmonitor.discovery.wmnet',
         check_command => 'check_https_unauthorized!debmonitor.discovery.wmnet!/!400',
+        notes_url     => 'https://wikitech.wikimedia.org/wiki/Debmonitor',
     }
 
     # Maintenance script
