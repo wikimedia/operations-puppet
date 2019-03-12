@@ -1,6 +1,6 @@
 #!/bin/bash
 
-set -e
+set -ex
 
 # Exit immediately if varnish-be is not pooled
 confctl --quiet select name=`hostname -f`,service='varnish-be' get |

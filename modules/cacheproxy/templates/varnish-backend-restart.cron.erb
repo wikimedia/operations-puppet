@@ -1,2 +1,2 @@
-<%= @be_restart_a_m %> <%= @be_restart_a_h %> * * <%= @be_restart_a_d %> root /usr/local/sbin/run-no-puppet /usr/local/sbin/varnish-backend-restart > /dev/null
-<%= @be_restart_b_m %> <%= @be_restart_b_h %> * * <%= @be_restart_b_d %> root /usr/local/sbin/run-no-puppet /usr/local/sbin/varnish-backend-restart > /dev/null
+<%= @be_restart_a_m %> <%= @be_restart_a_h %> * * <%= @be_restart_a_d %> root /usr/local/sbin/run-no-puppet /usr/local/sbin/varnish-backend-restart | /usr/bin/logger -t varnish-backend-restart
+<%= @be_restart_b_m %> <%= @be_restart_b_h %> * * <%= @be_restart_b_d %> root /usr/local/sbin/run-no-puppet /usr/local/sbin/varnish-backend-restart | /usr/bin/logger -t varnish-backend-restart
