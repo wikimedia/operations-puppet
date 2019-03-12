@@ -8,7 +8,7 @@
 #       and you don't want servers without any configuration to join your
 #       cluster.
 # - $version:  Version of elasticsearch to install and configure.
-#       Either 2 or 5. Default: 5
+#       Either 5 or 6.
 # - $http_port: Port for elasticsearch to live on. Default: 9200
 # - $transport_tcp_port: Port used for inter-node transport. Default: 9300
 # - $node_name: Node name exposed within elasticsearch
@@ -96,7 +96,7 @@
 define elasticsearch::instance(
     # the following parameters are injected by the main elasticsearch class
     String $cluster_name,
-    Integer $version,
+    String $version,
     Wmflib::IpPort $http_port,
     Wmflib::IpPort $transport_tcp_port,
     Stdlib::Absolutepath $base_data_dir,
@@ -228,12 +228,12 @@ define elasticsearch::instance(
     }
 
     $ensure_keystore = $version ? {
-        5       => 'absent',
+        '5'     => 'absent',
         default => 'present'
     }
 
     if $ensure_keystore == 'present' {
-        exec { 'elasticsearch-create-keystore':
+        exec { "elasticsearch-create-keystore-${title}":
             command     => '/usr/share/elasticsearch/bin/elasticsearch-keystore create',
             environment => ["ES_PATH_CONF=${config_dir}"],
             creates     => "${config_dir}/elasticsearch.keystore",

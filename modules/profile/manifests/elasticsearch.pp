@@ -8,6 +8,10 @@
 # - $logstash_gelf_port: Tcp port on $logstash_host to send gelf formatted logs to.
 # - $rack: Rack server is in. Used for allocation awareness.
 # - $row: Row server is in. Used for allocation awareness.
+# - $version: version of the package to install
+# - $config_version: configure for this versionof elastic. This is independant from $version as during the transition
+#                    ES5 -> ES6, we need to deploy the new package before applying the configuration.
+#                    TODO: remove this configuration option once all instances have been migrated to ES6.
 #
 #
 class profile::elasticsearch(
@@ -21,6 +25,7 @@ class profile::elasticsearch(
     String $rack = hiera('profile::elasticsearch::rack'),
     String $row = hiera('profile::elasticsearch::row'),
     Enum['5.5', '5.6', '6.5'] $version = hiera('profile::elasticsearch::version', '5.5'),
+    Enum['5', '6'] $config_version = hiera('profile::elasticsearch::config_version', '5'),
 ) {
     # Rather than asking hiera to magically merge these settings for us, we
     # explicitly take two sets of defaults for global defaults and per-dc
@@ -94,7 +99,7 @@ class profile::elasticsearch(
 
     # Install
     class { '::elasticsearch':
-        version            => 5,
+        version            => $config_version,
         instances          => $filtered_instances,
         base_data_dir      => $base_data_dir,
         logstash_host      => $logstash_host,

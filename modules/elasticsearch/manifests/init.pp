@@ -5,7 +5,7 @@
 # == Parameters:
 # - $default_instance_params: Parameter overrides for ::elasticsearch::instance
 # - $java_package: Name of package containing appropriate JDK. Default: openjdk-8-jdk.
-# - $version: Version of elasticsearch to configure. Either 2 or 5. Default: 5.
+# - $version: Version of elasticsearch to configure. Either 5 or 6. Default: 5.
 # - $logstash_host: Host to send logs to
 # - $logstash_gelf_port: Tcp port on $logstash_host to send gelf formatted logs to.
 #
@@ -21,7 +21,7 @@ class elasticsearch (
     Optional[Hash[String, Elasticsearch::InstanceParams]] $instances = undef,
     Elasticsearch::InstanceParams $default_instance_params           = {},
     String $java_package                                             = 'openjdk-8-jdk',
-    Integer $version                                                 = 5,
+    Enum['5', '6'] $version                                          = '5',
     Stdlib::Absolutepath $base_data_dir                              = '/srv/elasticsearch',
     Optional[String] $logstash_host                                  = undef,
     Optional[Wmflib::IpPort] $logstash_gelf_port                     = 12201,
@@ -30,10 +30,10 @@ class elasticsearch (
 ) {
     # Check arguments and set package
     case $version {
-        5: {
+        '5': {
             $package_name = 'elasticsearch'
         }
-        6: {
+        '6': {
             $package_name = 'elasticsearch-oss'
         }
         default: { fail("Unsupported elasticsearch version: ${version}") }
@@ -74,8 +74,8 @@ class elasticsearch (
     # Overwrite default env file provided by elastic
     # so that it does not conflict without our var set by systemd unit
     $ensure_etc_default = $version ? {
-        5 => 'absent',
-        6 => 'file',
+        '5' => 'absent',
+        '6' => 'file',
     }
     file { '/etc/default/elasticsearch':
         ensure  => $ensure_etc_default,
