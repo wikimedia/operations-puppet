@@ -18,8 +18,7 @@ profile::elasticsearch::common_settings:
     auto_create_index: '+logstash-*,-*'
     cluster_hosts:
       - deployment-logstash2.deployment-prep.eqiad.wmflabs
-profile::elasticsearch: '5.6'
-
+profile::elasticsearch::version: '5.6'
 # Kibana
 role::kibana::vhost: logstash-beta.wmflabs.org
 role::kibana::serveradmin: root@deployment-logstash2.deployment-prep.eqiad.wmflabs
