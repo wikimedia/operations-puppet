@@ -18,6 +18,7 @@ class systemd::slice::all_users (
         'systemd',
         'udev',
         'libsystemd0',
+        'libpam-systemd',
     ]
     apt::pin { 'systemd_239_slice_all_users':
         package  => join($systemd_packages, ' '),
