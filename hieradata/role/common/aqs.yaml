@@ -81,6 +81,8 @@ profile::cassandra::settings:
 profile::aqs::cassandra_user: aqs
 profile::aqs::cassandra_password: "%{passwords::aqs::aqs_user}"
 
+profile::aqs::use_nodejs10: true
+
 profile::aqs::monitoring_enabled: true
 
 profile::aqs::druid_properties:
