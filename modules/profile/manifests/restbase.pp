@@ -162,6 +162,7 @@ class profile::restbase(
         description   => 'Restbase root url',
         check_command => "check_http_port_url!${port}!/",
         contact_group => 'admins,team-services',
+        notes_url     => 'https://wikitech.wikimedia.org/wiki/RESTBase',
     }
 
     # RESTBase rate limiting DHT firewall rule

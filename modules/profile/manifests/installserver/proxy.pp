@@ -23,5 +23,6 @@ class profile::installserver::proxy {
     monitoring::service { 'squid':
         description   => 'Squid',
         check_command => 'check_tcp!8080',
+        notes_url     => 'https://wikitech.wikimedia.org/wiki/HTTP_proxy',
     }
 }

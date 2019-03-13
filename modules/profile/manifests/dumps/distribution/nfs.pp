@@ -84,5 +84,6 @@ class profile::dumps::distribution::nfs (
     monitoring::service { 'nfs':
         description   => 'NFS',
         check_command => 'check_tcp!2049',
+        notes_url     => 'https://wikitech.wikimedia.org/wiki/Portal:Data_Services/Admin/Labstore',
     }
 }

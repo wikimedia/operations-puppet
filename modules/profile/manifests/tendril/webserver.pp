@@ -29,18 +29,21 @@ class profile::tendril::webserver (
     # HTTP(S) monitoring
     monitoring::service { 'http-dbtree':
         description   => 'HTTP-dbtree',
-        check_command => 'check_http_url!dbtree.wikimedia.org!http://dbtree.wikimedia.org'
+        check_command => 'check_http_url!dbtree.wikimedia.org!http://dbtree.wikimedia.org',
+        notes_url     => 'https://wikitech.wikimedia.org/wiki/Dbtree.wikimedia.org',
     }
 
     if $monitor_https {
         monitoring::service { 'https-tendril':
             description   => 'HTTPS-tendril',
             check_command => 'check_ssl_http_letsencrypt!tendril.wikimedia.org',
+            notes_url     => 'https://wikitech.wikimedia.org/wiki/Tendril',
         }
         monitoring::service { 'https-tendril-unauthorized':
             description   => 'Tendril requires authentication',
             check_command => 'check_https_unauthorized!tendril.wikimedia.org!/!401',
             contact_group => 'dba',
+            notes_url     => 'https://wikitech.wikimedia.org/wiki/Tendril',
         }
     }
 }

@@ -12,6 +12,7 @@ class profile::maps::tlsproxy(
     monitoring::service { 'maps-https':
         description   => 'Maps HTTPS',
         check_command => "check_https_url!${servicename}!/osm-intl/6/23/24.png",
+        notes_url     => 'https://wikitech.wikimedia.org/wiki/Maps/RunBook',
     }
 
     ferm::service { 'maps-proxy-https':
