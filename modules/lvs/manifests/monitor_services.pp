@@ -16,6 +16,7 @@ class lvs::monitor_services($contacts = 'admins,team-services', $critical = fals
         description   => 'Mobileapps LVS eqiad',
         check_command => 'check_wmf_service!http://mobileapps.svc.eqiad.wmnet:8888!15',
         contact_group => 'admins,mobileapps',
+        notes_url     => 'https://wikitech.wikimedia.org/wiki/Mobileapps_(service)',
     }
 
     monitoring::service { 'check_mobileapps_cluster_codfw':
@@ -24,6 +25,7 @@ class lvs::monitor_services($contacts = 'admins,team-services', $critical = fals
         description   => 'Mobileapps LVS codfw',
         check_command => 'check_wmf_service!http://mobileapps.svc.codfw.wmnet:8888!15',
         contact_group => 'admins,mobileapps',
+        notes_url     => 'https://wikitech.wikimedia.org/wiki/Mobileapps_(service)',
     }
 
     # Graphoid
@@ -32,6 +34,7 @@ class lvs::monitor_services($contacts = 'admins,team-services', $critical = fals
         group         => 'lvs',
         description   => 'Graphoid LVS eqiad',
         check_command => 'check_wmf_service!http://graphoid.svc.eqiad.wmnet:19000!15',
+        notes_url     => 'https://wikitech.wikimedia.org/wiki/Graphoid',
     }
 
     monitoring::service { 'check_graphoid_cluster_codfw':
@@ -39,6 +42,7 @@ class lvs::monitor_services($contacts = 'admins,team-services', $critical = fals
         group         => 'lvs',
         description   => 'Graphoid LVS codfw',
         check_command => 'check_wmf_service!http://graphoid.svc.codfw.wmnet:19000!15',
+        notes_url     => 'https://wikitech.wikimedia.org/wiki/Graphoid',
     }
 
     # Citoid
@@ -47,6 +51,7 @@ class lvs::monitor_services($contacts = 'admins,team-services', $critical = fals
         group         => 'lvs',
         description   => 'Citoid LVS eqiad',
         check_command => 'check_wmf_service!http://citoid.svc.eqiad.wmnet:1970!15',
+        notes_url     => 'https://wikitech.wikimedia.org/wiki/Citoid',
     }
 
     monitoring::service { 'check_citoid_cluster_codfw':
@@ -54,6 +59,7 @@ class lvs::monitor_services($contacts = 'admins,team-services', $critical = fals
         group         => 'lvs',
         description   => 'Citoid LVS codfw',
         check_command => 'check_wmf_service!http://citoid.svc.codfw.wmnet:1970!15',
+        notes_url     => 'https://wikitech.wikimedia.org/wiki/Citoid',
     }
 
 
@@ -63,6 +69,7 @@ class lvs::monitor_services($contacts = 'admins,team-services', $critical = fals
         group         => 'lvs',
         description   => 'Restbase LVS eqiad',
         check_command => 'check_wmf_service!http://restbase.svc.eqiad.wmnet:7231/en.wikipedia.org/v1!15',
+        notes_url     => 'https://wikitech.wikimedia.org/wiki/RESTBase',
     }
 
     monitoring::service { 'check_restbase_cluster_codfw':
@@ -70,6 +77,7 @@ class lvs::monitor_services($contacts = 'admins,team-services', $critical = fals
         group         => 'lvs',
         description   => 'Restbase LVS codfw',
         check_command => 'check_wmf_service!http://restbase.svc.codfw.wmnet:7231/en.wikipedia.org/v1!15',
+        notes_url     => 'https://wikitech.wikimedia.org/wiki/RESTBase',
     }
 
 
@@ -79,6 +87,7 @@ class lvs::monitor_services($contacts = 'admins,team-services', $critical = fals
         group         => 'lvs',
         description   => 'Mathoid LVS eqiad',
         check_command => 'check_wmf_service!http://mathoid.svc.eqiad.wmnet:10042!15',
+        notes_url     => 'https://wikitech.wikimedia.org/wiki/Mathoid',
     }
 
     monitoring::service { 'check_mathoid_cluster_codfw':
@@ -86,6 +95,7 @@ class lvs::monitor_services($contacts = 'admins,team-services', $critical = fals
         group         => 'lvs',
         description   => 'Mathoid LVS codfw',
         check_command => 'check_wmf_service!http://mathoid.svc.codfw.wmnet:10042!15',
+        notes_url     => 'https://wikitech.wikimedia.org/wiki/Mathoid',
     }
 
     # Cxserver
@@ -94,6 +104,7 @@ class lvs::monitor_services($contacts = 'admins,team-services', $critical = fals
         group         => 'lvs',
         description   => 'Cxserver LVS eqiad',
         check_command => 'check_wmf_service!http://cxserver.svc.eqiad.wmnet:8080!15',
+        notes_url     => 'https://wikitech.wikimedia.org/wiki/CX',
     }
 
     monitoring::service { 'check_cxserver_cluster_codfw':
@@ -101,6 +112,7 @@ class lvs::monitor_services($contacts = 'admins,team-services', $critical = fals
         group         => 'lvs',
         description   => 'Cxserver LVS codfw',
         check_command => 'check_wmf_service!http://cxserver.svc.codfw.wmnet:8080!15',
+        notes_url     => 'https://wikitech.wikimedia.org/wiki/CX'
     }
 
     # Kartotherian
@@ -111,6 +123,7 @@ class lvs::monitor_services($contacts = 'admins,team-services', $critical = fals
         check_command => 'check_wmf_service!http://kartotherian.svc.codfw.wmnet:6533!15',
         contact_group => 'admins,team-interactive',
         critical      => true,
+        notes_url     => 'https://wikitech.wikimedia.org/wiki/Maps#Kartotherian',
     }
 
     # eventgate-analytics
@@ -119,6 +132,7 @@ class lvs::monitor_services($contacts = 'admins,team-services', $critical = fals
         group         => 'lvs',
         description   => 'eventgate-analytics LVS eqiad',
         check_command => 'check_wmf_service!http://eventgate-analytics.svc.eqiad.wmnet:31192!15',
+        notes_url     => 'https://wikitech.wikimedia.org/wiki/Event*#EventGate_(repository)',
     }
 
     monitoring::service { 'check_eventgate_analytics_cluster_codfw':
@@ -126,6 +140,7 @@ class lvs::monitor_services($contacts = 'admins,team-services', $critical = fals
         group         => 'lvs',
         description   => 'eventgate-analytics LVS codfw',
         check_command => 'check_wmf_service!http://eventgate-analytics.svc.codfw.wmnet:31192!15',
+        notes_url     => 'https://wikitech.wikimedia.org/wiki/Event*#EventGate_(repository)',
     }
 
 
@@ -135,7 +150,8 @@ class lvs::monitor_services($contacts = 'admins,team-services', $critical = fals
         host          => 'upload-lb.eqiad.wikimedia.org',
         group         => 'lvs',
         description   => 'Maps edge eqiad',
-        check_command => 'check_wmf_service!https://maps.wikimedia.org!15'
+        check_command => 'check_wmf_service!https://maps.wikimedia.org!15',
+        notes_url     => 'https://wikitech.wikimedia.org/wiki/Maps/RunBook',
     }
 
     monitoring::service { 'check_restbase_eqiad':
@@ -143,13 +159,15 @@ class lvs::monitor_services($contacts = 'admins,team-services', $critical = fals
         group         => 'lvs',
         description   => 'Restbase edge eqiad',
         check_command => 'check_wmf_service!https://en.wikipedia.org/api/rest_v1!15',
+        notes_url     => 'https://wikitech.wikimedia.org/wiki/RESTBase',
     }
 
     monitoring::service { 'check_maps_codfw':
         host          => 'upload-lb.codfw.wikimedia.org',
         group         => 'lvs',
         description   => 'Maps edge codfw',
-        check_command => 'check_wmf_service!https://maps.wikimedia.org!15'
+        check_command => 'check_wmf_service!https://maps.wikimedia.org!15',
+        notes_url     => 'https://wikitech.wikimedia.org/wiki/Maps/RunBook',
     }
 
     monitoring::service { 'check_restbase_codfw':
@@ -157,13 +175,15 @@ class lvs::monitor_services($contacts = 'admins,team-services', $critical = fals
         group         => 'lvs',
         description   => 'Restbase edge codfw',
         check_command => 'check_wmf_service!https://en.wikipedia.org/api/rest_v1!15',
+        notes_url     => 'https://wikitech.wikimedia.org/wiki/RESTBase',
     }
 
     monitoring::service { 'check_maps_esams':
         host          => 'upload-lb.esams.wikimedia.org',
         group         => 'lvs',
         description   => 'Maps edge esams',
-        check_command => 'check_wmf_service!https://maps.wikimedia.org!15'
+        check_command => 'check_wmf_service!https://maps.wikimedia.org!15',
+        notes_url     => 'https://wikitech.wikimedia.org/wiki/Maps/RunBook',
     }
 
     monitoring::service { 'check_restbase_esams':
@@ -171,13 +191,15 @@ class lvs::monitor_services($contacts = 'admins,team-services', $critical = fals
         group         => 'lvs',
         description   => 'Restbase edge esams',
         check_command => 'check_wmf_service!https://en.wikipedia.org/api/rest_v1!15',
+        notes_url     => 'https://wikitech.wikimedia.org/wiki/RESTBase',
     }
 
     monitoring::service { 'check_maps_ulsfo':
         host          => 'upload-lb.ulsfo.wikimedia.org',
         group         => 'lvs',
         description   => 'Maps edge ulsfo',
-        check_command => 'check_wmf_service!https://maps.wikimedia.org!15'
+        check_command => 'check_wmf_service!https://maps.wikimedia.org!15',
+        notes_url     => 'https://wikitech.wikimedia.org/wiki/Maps/RunBook',
     }
 
     monitoring::service { 'check_restbase_ulsfo':
@@ -185,13 +207,15 @@ class lvs::monitor_services($contacts = 'admins,team-services', $critical = fals
         group         => 'lvs',
         description   => 'Restbase edge ulsfo',
         check_command => 'check_wmf_service!https://en.wikipedia.org/api/rest_v1!15',
+        notes_url     => 'https://wikitech.wikimedia.org/wiki/RESTBase',
     }
 
     monitoring::service { 'check_maps_eqsin':
         host          => 'upload-lb.eqsin.wikimedia.org',
         group         => 'lvs',
         description   => 'Maps edge eqsin',
-        check_command => 'check_wmf_service!https://maps.wikimedia.org!15'
+        check_command => 'check_wmf_service!https://maps.wikimedia.org!15',
+        notes_url     => 'https://wikitech.wikimedia.org/wiki/Maps/RunBook',
     }
 
     monitoring::service { 'check_restbase_eqsin':
@@ -199,6 +223,7 @@ class lvs::monitor_services($contacts = 'admins,team-services', $critical = fals
         group         => 'lvs',
         description   => 'Restbase edge eqsin',
         check_command => 'check_wmf_service!https://en.wikipedia.org/api/rest_v1!15',
+        notes_url     => 'https://wikitech.wikimedia.org/wiki/RESTBase',
     }
 
 }

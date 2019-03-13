@@ -22,6 +22,7 @@ define lvs::monitor_service_http_https (
             check_command => $check_command,
             critical      => $critical,
             contact_group => $contact_group,
+            notes_url     => 'https://wikitech.wikimedia.org/wiki/LVS#Diagnosing_problems',
         }
     } else {
         @monitoring::service { $title:
@@ -31,6 +32,7 @@ define lvs::monitor_service_http_https (
             check_command => "check_http_lvs!${uri}",
             critical      => $critical,
             contact_group => $contact_group,
+            notes_url     => 'https://wikitech.wikimedia.org/wiki/LVS#Diagnosing_problems',
         }
 
         @monitoring::service { "${title}_https":
@@ -40,6 +42,7 @@ define lvs::monitor_service_http_https (
             check_command => "check_https_url!${uri}",
             critical      => $critical,
             contact_group => $contact_group,
+            notes_url     => 'https://wikitech.wikimedia.org/wiki/LVS#Diagnosing_problems',
         }
     }
     if $ip6_address {
@@ -57,6 +60,7 @@ define lvs::monitor_service_http_https (
                 check_command => $check_command,
                 critical      => $critical,
                 contact_group => $contact_group,
+                notes_url     => 'https://wikitech.wikimedia.org/wiki/LVS#Diagnosing_problems',
             }
         } else {
             @monitoring::service { "${title}_ipv6":
@@ -66,6 +70,7 @@ define lvs::monitor_service_http_https (
                 check_command => "check_http_lvs!${uri}",
                 critical      => $critical,
                 contact_group => $contact_group,
+                notes_url     => 'https://wikitech.wikimedia.org/wiki/LVS#Diagnosing_problems',
             }
 
             @monitoring::service { "${title}_ipv6_https":
@@ -75,6 +80,7 @@ define lvs::monitor_service_http_https (
                 check_command => "check_https_url!${uri}",
                 critical      => $critical,
                 contact_group => $contact_group,
+                notes_url     => 'https://wikitech.wikimedia.org/wiki/LVS#Diagnosing_problems',
             }
         }
     }
