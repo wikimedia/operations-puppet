@@ -612,7 +612,7 @@ class profile::toolforge::grid::exec_environ {
           # python-oursql is not in Debian
           'python-socketio-client',      # T86015
           #python-wikitools is apparently not in Debian (at least stretch)
-          #python-mwclient is apparently not in Debian (at least stretch)
+          'python-mwclient',             # T218242
           'python-pymysql',              # T189052
           'python3-pymysql',             # T189052
 
