@@ -4,19 +4,17 @@ class icinga::monitor::elasticsearch::cirrus_cluster_checks{
     $hosts = ['search.svc.eqiad.wmnet', 'search.svc.codfw.wmnet']
     $scheme = 'https'
 
-    $ports.each |$port| {
-        $hosts.each |$host| {
-            icinga::monitor::elasticsearch::base_checks { "Base checks - ${host}:${port}":
-                host   => $host,
-                scheme => $scheme,
-                port   => $port,
-            }
+    $hosts.each |$host| {
+        icinga::monitor::elasticsearch::base_checks { $host:
+            host   => $host,
+            scheme => $scheme,
+            ports  => $ports,
+        }
 
-            icinga::monitor::elasticsearch::cirrus_checks { "Cirrus checks - ${host}:${port}":
-                host   => $host,
-                scheme => $scheme,
-                port   => $port,
-            }
+        icinga::monitor::elasticsearch::cirrus_checks { $host:
+            host   => $host,
+            scheme => $scheme,
+            ports  => $ports,
         }
     }
 }

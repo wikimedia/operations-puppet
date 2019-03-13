@@ -8,7 +8,9 @@ class role::elasticsearch::relforge {
     include ::profile::elasticsearch::cirrus
     include ::profile::mjolnir::kafka_msearch_daemon
 
-    icinga::monitor::elasticsearch::base_checks { $::hostname: }
+    icinga::monitor::elasticsearch::base_checks { $::hostname:
+        ports => [9200, 9400]
+    }
 
     system::role { 'elasticsearch::relforge':
         ensure      => 'present',
