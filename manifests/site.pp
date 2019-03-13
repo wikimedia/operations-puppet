@@ -2062,6 +2062,11 @@ node /^(seaborgium|serpens)\.wikimedia\.org$/ {
     role(openldap::labs)
 }
 
+# Read-only ldap replicas
+node /^ldap-eqiad-replica0[1-2]\.wikimedia\.org$/ {
+    role(spare::system)
+}
+
 node 'sodium.wikimedia.org' {
     role(mirrors)
     interface::add_ip6_mapped { 'main': }
