@@ -1,1 +1,3 @@
+profile::openldap::server_id: 3
+
 profile::base::notifications: disabled

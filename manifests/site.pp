@@ -2060,7 +2060,7 @@ node /^(seaborgium|serpens)\.wikimedia\.org$/ {
 
 # Read-only ldap replicas
 node /^ldap-eqiad-replica0[1-2]\.wikimedia\.org$/ {
-    role(spare::system)
+    role(openldap::replica)
 }
 
 node 'sodium.wikimedia.org' {
