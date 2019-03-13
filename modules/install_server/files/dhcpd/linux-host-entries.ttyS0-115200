@@ -322,6 +322,16 @@ host kubstagetcd1003 {
     filename "lpxelinux.0";
 }
 
+host ldap-eqiad-replica01.wikimedia.org {
+    hardware ethernet aa:00:00:7f:6d:5b;
+    fixed-address ldap-eqiad-replica01.wikimedia.org;
+}
+
+host ldap-eqiad-replica02.wikimedia.org {
+    hardware ethernet aa:00:00:32:2c:7a;
+    fixed-address ldap-eqiad-replica02.wikimedia.org;
+}
+
 host logstash1007 {
     hardware ethernet aa:00:00:83:d6:d4;
     fixed-address logstash1007.eqiad.wmnet;
