@@ -580,15 +580,11 @@ host roentgenium {
 host seaborgium {
     hardware ethernet aa:00:00:4d:be:84;
     fixed-address seaborgium.wikimedia.org;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
-    filename "lpxelinux.0";
 }
 
 host serpens {
     hardware ethernet aa:00:00:0e:a4:81;
     fixed-address serpens.wikimedia.org;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
-    filename "lpxelinux.0";
 }
 
 host tureis {
