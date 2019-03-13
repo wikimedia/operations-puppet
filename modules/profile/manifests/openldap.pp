@@ -1,7 +1,6 @@
 # openldap server
 class profile::openldap (
     $hostname = hiera('profile::openldap::hostname'),
-    $secondary_hostname = hiera('profile::openldap::secondary_hostname'),
     $mirror_mode = hiera('profile::openldap::mirror_mode'),
     $backup = hiera('profile::openldap::backup'),
     $sync_pass = hiera('profile::openldap::sync_pass'),

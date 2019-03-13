@@ -3,7 +3,6 @@
 labs_keystone_host: 'labtestcontrol2003.wikimedia.org'
 
 profile::openldap::hostname: labtestservices2001.wikimedia.org
-profile::openldap::secondary_hostname: labtestservices2001.wikimedia.org
 profile::openldap::mirror_mode: false
 profile::openldap::backup: false
 profile::openldap::server_id: 1

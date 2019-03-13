@@ -1,4 +1,3 @@
 profile::openldap::hostname: labtestservices2001.wikimedia.org
-profile::openldap::secondary_hostname: labtestservices2001.wikimedia.org
 profile::openldap::mirror_mode: false
 profile::openldap::backup: false
