@@ -1,0 +1,4 @@
+profile::openldap::hostname: ldap-labs.codfw.wikimedia.org
+profile::openldap::secondary_hostname: ldap-labs.eqiad.wikimedia.org
+profile::openldap::mirror_mode: true
+profile::openldap::backup: true

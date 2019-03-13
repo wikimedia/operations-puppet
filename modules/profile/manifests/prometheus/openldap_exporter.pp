@@ -1,8 +1,7 @@
 class profile::prometheus::openldap_exporter (
     $prometheus_nodes = hiera('prometheus_nodes'),
+    $monitor_pass = hiera('profile::prometheus::openldap_exporter::monitor_pass')
 ) {
-    include passwords::openldap::labs
-
     $prometheus_ferm_nodes = join($prometheus_nodes, ' ')
     $ferm_srange = "(@resolve((${prometheus_ferm_nodes})) @resolve((${prometheus_ferm_nodes}), AAAA))"
 
@@ -27,7 +26,6 @@ class profile::prometheus::openldap_exporter (
         }
     }
 
-    $monitor_pass = $passwords::openldap::labs::monitor_pass
     file { '/etc/prometheus/openldap-exporter.yaml':
         ensure  => present,
         mode    => '0440',

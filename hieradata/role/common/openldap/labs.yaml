@@ -1,1 +1,2 @@
 diamond::remove: true
+profile::openldap::mirror_mode: true

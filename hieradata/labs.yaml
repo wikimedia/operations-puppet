@@ -168,6 +168,9 @@ labsldapconfig:
   hostname: ldap-labs.eqiad.wikimedia.org
   secondary_hostname: ldap-labs.codfw.wikimedia.org
 
+profile::openldap::hostname: ldap-labs.eqiad.wikimedia.org
+profile::openldap::secondary_hostname: ldap-labs.codfw.wikimedia.org
+
 profile::diffscan::ipranges:
   - 185.15.58.0/23
   - 91.198.174.0/24

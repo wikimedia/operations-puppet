@@ -1,3 +1,3 @@
-openldap::master: ldap-labs.codfw.wikimedia.org
-openldap::server_id: 1
-openldap::hash_passwords: SSHA
+profile::openldap::master: ldap-labs.codfw.wikimedia.org
+profile::openldap::server_id: 1
+profile::openldap::hash_passwords: SSHA
