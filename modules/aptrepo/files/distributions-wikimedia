@@ -37,7 +37,7 @@ Version: 9
 Architectures: source amd64 i386
 Components: main thirdparty/oath thirdparty/cloudera thirdparty/ci thirdparty/confluent thirdparty/hwraid thirdparty/k8s component/elastic55 thirdparty/elastic55 component/elastic56 thirdparty/elastic56 component/elastic65 thirdparty/elastic65 component/cassandra22 component/cassandra311 component/puppetdb4 component/pyall thirdparty/tor thirdparty/php72 component/ci thirdparty/mono-project-stretch component/vp9 component/node10 thirdparty/grafana component/spicerack component/thumbor component/prometheus-node-exporter component/php72
 UDebComponents: main component/node10
-Update: hwraid-stretch hp-mcp-stretch jenkins-stretch confluent-stretch elastic55 elastic56 tor-stretch php72-stretch mono-project-stretch grafana-stretch
+Update: hwraid-stretch hp-mcp-stretch jenkins-stretch confluent-stretch elastic55 elastic56 elastic65 tor-stretch php72-stretch mono-project-stretch grafana-stretch
 # NOTE:  Cloudera does not (yet) provide Stretch packages.  We use the Jessie ones,
 # along with a fake equivs to satisfy hadoop-mapreduce's (unnecessary) dependency on libssl1.0.0
 # which is not available in Stretch.  Once Cloudera releases Stretch packages, we can
