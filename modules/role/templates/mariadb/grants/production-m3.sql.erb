@@ -18,7 +18,7 @@ GRANT USAGE
 GRANT ALL PRIVILEGES
     ON `phabricator%`.* TO 'phadmin'@'10.64.16.8';
 
--- phadmin@phab1002
+-- phadmin@phab1003
 
 GRANT USAGE
     ON *.* TO 'phadmin'@'10.64.48.21'
@@ -55,7 +55,7 @@ GRANT CREATE, DROP
 GRANT DELETE, EXECUTE, INSERT, SELECT, SHOW VIEW, UPDATE
     ON `phabricator%`.* TO 'phuser'@'10.64.16.8';
 
--- phuser@phab1002
+-- phuser@phab1003
 
 GRANT REPLICATION CLIENT
     ON *.* TO 'phuser'@'10.64.48.21'
@@ -104,7 +104,7 @@ GRANT SELECT ON `phabricator_user`.* TO 'phstats'@'10.64.16.8';
 GRANT SELECT ON `phabricator_project`.* TO 'phstats'@'10.64.16.8';
 GRANT SELECT ON `phabricator_differential`.* TO 'phstats'@'10.64.16.8';
 
--- phstats@phab1002
+-- phstats@phab1003
 
 GRANT USAGE
     ON *.* TO 'phstats'@'10.64.48.21'
@@ -143,7 +143,7 @@ GRANT USAGE
 GRANT SELECT
     ON `phabricator_maniphest`.* TO 'phmanifest'@'10.64.16.8';
 
--- phmanifest@phab1002
+-- phmanifest@phab1003
 
 GRANT USAGE
     ON *.* TO 'phmanifest'@'10.64.48.21'
