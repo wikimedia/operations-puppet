@@ -271,9 +271,8 @@ class profile::kafka::broker(
         }
 
         # Use a custom java.security on this host, so that we can restrict the allowed
-        # certiifcate sigalgs.  See: https://phabricator.wikimedia.org/T182993
-        file { '/etc/java-8-openjdk/security/java.security':
-            source => 'puppet:///modules/profile/kafka/java.security',
+        # certificate's sigalgs.  See: https://phabricator.wikimedia.org/T182993
+        class { 'java::security':
             before => Class['::confluent::kafka::broker'],
         }
     }
