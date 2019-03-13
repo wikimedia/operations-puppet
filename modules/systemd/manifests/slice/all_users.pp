@@ -12,13 +12,6 @@
 class systemd::slice::all_users (
     String $all_users_slice_config,
 ) {
-    # cleanup, delete after a puppet cycle
-    apt::pin { 'systemd udev':
-        ensure   => absent,
-        pin      => 'version 239*',
-        priority => '1001',
-    }
-
     # we need systemd >= 239 for resource control using the user-.slice trick
     # this version is provied in stretch-backports
     $version = '239-12~bpo9+1'
