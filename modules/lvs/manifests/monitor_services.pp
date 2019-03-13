@@ -116,6 +116,16 @@ class lvs::monitor_services($contacts = 'admins,team-services', $critical = fals
     }
 
     # Kartotherian
+    monitoring::service { 'check_kartotherian_cluster_eqiad':
+        host          => 'kartotherian.svc.eqiad.wmnet',
+        group         => 'lvs',
+        description   => 'Kartotherian LVS eqiad',
+        check_command => 'check_wmf_service!http://kartotherian.svc.eqiad.wmnet:6533!15',
+        contact_group => 'admins,team-interactive',
+        critical      => true,
+        notes_url     => 'https://wikitech.wikimedia.org/wiki/Maps#Kartotherian',
+    }
+
     monitoring::service { 'check_kartotherian_cluster_codfw':
         host          => 'kartotherian.svc.codfw.wmnet',
         group         => 'lvs',
