@@ -15,6 +15,7 @@ class openstack::nova::compute::service::mitaka::jessie(
         'websockify',
         'virt-top',
         'dnsmasq-base',
+        'libguestfs-tools',
     ]
 
     package { $packages:

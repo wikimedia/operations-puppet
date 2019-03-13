@@ -17,15 +17,15 @@ class openstack::nova::common::base::mitaka::stretch(
         install_options => ['-t', 'jessie'],
     }
 
+    # packages will be installed from openstack-mitaka-jessie component from
+    # the jessie-wikimedia repo, since that has higher apt pinning by default
     package { 'python-nova':
-        ensure          => 'present',
-        install_options => ['-t', 'jessie-backports'],
-        require         => Package['python-dogpile.core'],
+        ensure  => 'present',
+        require => Package['python-dogpile.core'],
     }
 
     package { 'nova-common':
-        ensure          => 'present',
-        install_options => ['-t', 'jessie-backports'],
-        require         => [Package[$packages], Package['python-nova']],
+        ensure  => 'present',
+        require => [Package[$packages], Package['python-nova']],
     }
 }

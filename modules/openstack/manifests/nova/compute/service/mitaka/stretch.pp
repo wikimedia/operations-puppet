@@ -6,30 +6,38 @@ class openstack::nova::compute::service::mitaka::stretch(
 ) {
     require openstack::serverpackages::mitaka::stretch
 
+    # the libvirt-daemon-system install may trigger an update-initramfs run.
+    # under some circumstances, the busybox package may not be installed, thus
+    # failing the complete stack installation, because initramfs requires it,
+    # but is declared as Recommends and not Depends
+    package { 'busybox':
+        ensure => 'present',
+    }
+
     $packages = [
         'libvirt-daemon-system',
         'libvirt-clients',
         'qemu-system',
         'spice-html5',
         'websockify',
-        'virt-top',
         'dnsmasq-base',
         'qemu-utils',
-    ]
-
-    package { $packages:
-        ensure => 'present',
-    }
-
-    $packages_hack = [
+        'libguestfs-tools',
         'nova-compute',
         'nova-compute-kvm',
     ]
 
-    package { $packages_hack:
-        ensure          => 'present',
-        install_options => ['-t', 'jessie-backports'],
-        require         => Package[$packages],
+    # packages will be installed from openstack-mitaka-jessie component from
+    # the jessie-wikimedia repo, since that has higher apt pinning by default
+    package { $packages:
+        ensure  => 'present',
+        require => Package['busybox'],
+        before  => Package['virt-top'],
+    }
+
+    # install this later, once the right version of libvirt0 is already present
+    package { 'virt-top':
+        ensure => 'present',
     }
 
     # /etc/default/libvirt-guests
