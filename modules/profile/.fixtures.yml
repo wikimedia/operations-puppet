@@ -3,6 +3,7 @@ fixtures:
         profile: "#{source_dir}"
         apt: "../../../../apt"
         backup: "../../../../backup"
+        base: "../../../../base"
         conftool: "../../../../conftool"
         deployment: "../../../../deployment"
         etcd: "../../../../etcd"

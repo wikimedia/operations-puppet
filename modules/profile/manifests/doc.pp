@@ -68,4 +68,5 @@ class profile::doc {
         ],
     }
 
+    base::service_auto_restart { 'rsync': }
 }
