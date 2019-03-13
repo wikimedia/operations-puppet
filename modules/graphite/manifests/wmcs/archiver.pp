@@ -40,7 +40,7 @@ class graphite::wmcs::archiver {
     # Clean up archives more than a 90 days old
     cron { 'delete-old-instance-archives':
         ensure  => present,
-        command => 'find /srv/carbon/whisper/archived_metrics -mtime +90 -type f -delete',
+        command => 'find /srv/carbon/whisper/archived_metrics -mindepth 2 -maxdepth 2 -mtime +90 -type d -exec /bin/rm -rf \'{}\' \;',
         user    => '_graphite',
         minute  => 0,
         hour    => 12,
