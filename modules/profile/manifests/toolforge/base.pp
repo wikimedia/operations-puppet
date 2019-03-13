@@ -51,6 +51,14 @@ class profile::toolforge::base(
         source => 'puppet:///modules/profile/toolforge/40-tools-sudoers-no-warning',
     }
 
+    file { '/etc/security/limits.d/50-no-bigfiles.conf':
+        ensure => file,
+        mode   => '0444',
+        owner  => 'root',
+        group  => 'root',
+        source => 'puppet:///modules/profile/toolforge/50-no-bigfiles.conf',
+    }
+
     file { '/usr/local/bin/log-command-invocation':
         ensure => present,
         owner  => 'root',
