@@ -285,6 +285,7 @@ profile::elasticsearch::row: ''
 profile::elasticsearch::instances: {}
 profile::elasticsearch::dc_settings: {}
 profile::elasticsearch::common_settings:
+    auto_create_index: '+apifeatureusage-*,-*'
     expected_nodes: 3
     minimum_master_nodes: 2
     heap_memory: 4G
@@ -309,7 +310,7 @@ profile::elasticsearch::common_settings:
 
 role::logstash::collector::statsd_host: labmon1001.eqiad.wmnet
 role::logstash::apifeatureusage::elastic_hosts:
-  - deployment-logstash2.deployment-prep.eqiad.wmflabs
+  - deployment-elastic05.deployment-prep.eqiad.wmflabs
 nfs_mounts:
   project: false
   home: false
