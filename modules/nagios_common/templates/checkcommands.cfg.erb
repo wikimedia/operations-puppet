@@ -490,7 +490,7 @@ define command {
 
 define command {
     command_name    check_elasticsearch_shard_size
-    command_line    $USER1$/check_elasticsearch_shard_size.py --url $ARG1$://$HOSTNAME$:$ARG2$
+    command_line    $USER1$/check_elasticsearch_shard_size.py --url $ARG1$://$HOSTNAME$:$ARG2$ --shard-size-warning $ARG3$ --shard-size-critical $ARG4$
 }
 
 define command {

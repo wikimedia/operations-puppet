@@ -10,6 +10,8 @@ define icinga::monitor::elasticsearch::base_checks(
     Enum['http', 'https'] $scheme = 'http',
     String $host = $::hostname,
     Array[Wmflib::IpPort] $ports = [9200],
+    Integer $shard_size_warning = 50,
+    Integer $shard_size_critical = 60,
 ) {
     $ports.each |$port| {
         monitoring::service {
@@ -31,7 +33,7 @@ define icinga::monitor::elasticsearch::base_checks(
                 retries        => 1,
             ;
             "elasticsearch / shard size check - ${host}:${port})":
-                check_command  => "check_elasticsearch_shard_size!${scheme}!${port}",
+                check_command  => "check_elasticsearch_shard_size!${scheme}!${port}!${shard_size_warning}!${shard_size_critical}",
                 description    => "ElasticSearch shard size check - ${port}",
                 check_interval => 1440, # 24h
                 retry_interval => 180, # 3h

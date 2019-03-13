@@ -13,7 +13,9 @@ class profile::elasticsearch::logstash(
     # will be unassigned, with no way to reallocate them on another node, which
     # is fine and should not raise an alert. So threshold needs to be > 1/3.
     icinga::monitor::elasticsearch::base_checks { $::hostname:
-        threshold => '>=0.34',
+        threshold           => '>=0.34',
+        shard_size_warning  => 150,
+        shard_size_critical => 200,
     }
 
     file { '/usr/share/elasticsearch/plugins':
