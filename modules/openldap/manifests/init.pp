@@ -46,6 +46,8 @@
 #       cleartext passwords sent to it on account creation or password change.
 #       Defauts to SHA. Valid values: SHA, SSHA, MD5, SMD5, CRYPT, SASL
 #       Do not supply this if you don't know what you are doing!!!!
+#    $read_only
+#       Optional. Set to 'true' for read-only replica servers
 #
 # Actions:
 #       Install/configure slapd
@@ -74,6 +76,7 @@ class openldap(
     $size_limit=undef,
     $logging='sync',
     $hash_passwords='SHA',
+    $read_only=false,
 ) {
 
     require_package('slapd', 'ldap-utils', 'python-ldap')

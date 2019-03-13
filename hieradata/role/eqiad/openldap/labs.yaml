@@ -1,3 +1,4 @@
 profile::openldap::hostname: ldap-labs.eqiad.wikimedia.org
 profile::openldap::mirror_mode: true
 profile::openldap::backup: true
+profile::openldap::read_only: false

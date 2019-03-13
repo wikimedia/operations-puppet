@@ -7,6 +7,7 @@ class profile::openldap (
     $master = hiera('profile::openldap::master', undef),
     $server_id = hiera('profile::openldap::server_id'),
     $hash_passwords = hiera('profile::openldap::hash_passwords'),
+    $read_only = hiera('profile::openldap::read_only'),
 ){
     # Certificate needs to be readable by slapd
     sslcert::certificate { $hostname:
@@ -28,6 +29,7 @@ class profile::openldap (
         mirrormode     => $mirror_mode,
         master         => $master,
         hash_passwords => $hash_passwords,
+        read_only      => $read_only,
     }
 
     # Ldap services are used all over the place, including within

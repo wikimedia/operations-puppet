@@ -70,6 +70,7 @@ TLSCertificateKeyFile <%= @key %>
 
 database        monitor
 rootdn          "cn=admin,<%= @suffix %>"
+readonly        <%= @read_only %>
 
 access to dn.subtree="cn=monitor"
 	by dn="cn=admin,<%= @suffix %>" write
@@ -81,6 +82,7 @@ database            hdb
 suffix              <%= @suffix %>
 directory           <%= @datadir %>
 rootdn              "cn=admin,<%= @suffix %>"
+readonly            <%= @read_only %>
 # rootpw "..." # Not really needed, it is in-tree
 
 overlay auditlog
