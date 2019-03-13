@@ -173,6 +173,19 @@
   protocol: tcp
   dst_ports:
     - 1969
+  # cxserver needs to access apertium
+- action: allow
+  src_selector: calico/k8s_ns == 'cxserver'
+  dst_net: 10.2.1.11/32
+  protocol: tcp
+  dst_ports:
+    - 2737
+- action: allow
+  src_selector: calico/k8s_ns == 'cxserver'
+  dst_net: 10.2.2.11/32
+  protocol: tcp
+  dst_ports:
+    - 2737
   # Allow pod IP spaces, this should be locked down if needed in ingress by service owner
 - action: allow
   dst_net: 10.64.64.0/21
