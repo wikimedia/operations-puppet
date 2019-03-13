@@ -13,20 +13,19 @@ class systemd::slice::all_users (
     String $all_users_slice_config,
 ) {
     # we need systemd >= 239 for resource control using the user-.slice trick
-    # this version is provied in stretch-backports
-    $version = '239-12~bpo9+1'
+    # this version or higher is provided in stretch-backports
     $systemd_packages = [
         'systemd',
         'udev',
         'libsystemd0',
     ]
     apt::pin { 'systemd_239_slice_all_users':
-        package  => join($systemd_packages, ', '),
-        pin      => "version ${version}",
+        package  => join($systemd_packages, ' '),
+        pin      => 'release a=stretch-backports',
         priority => '1001',
     }
     package { $systemd_packages:
-        ensure          => $version,
+        ensure          => 'latest',
         install_options => ['-t', 'stretch-backports'],
         require         => Apt::Pin['systemd_239_slice_all_users'],
     }
