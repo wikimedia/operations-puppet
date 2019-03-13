@@ -5,15 +5,16 @@
 #
 class role::webperf::profiling_tools {
 
-    include ::standard
-    include ::profile::base::firewall
-    include ::profile::webperf::arclamp
-
     system::role { 'webperf::profiling_tools':
         description => 'profiling tools host'
     }
 
+    include ::standard
+    include ::profile::base::firewall
+    include ::profile::webperf::arclamp
     include ::profile::webperf::xhgui
+
+    class { '::passwords::ldap::production': }
 
     # class httpd installs mpm_event by default, and once installed,
     # it cannot easily be uninstalled. The xhgui profile installs
