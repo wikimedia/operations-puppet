@@ -160,13 +160,6 @@
   protocol: tcp
   dst_ports:
     - 9092
-  # NOTE: Gerrit: temporary for eventgate-analytics
-- action: allow
-  src_selector: calico/k8s_ns == 'eventgate-analytics'
-  dst_net: 208.80.154.85/32
-  protocol: tcp
-  dst_ports:
-    - 443
   # Citoid needs to access zotero
 - action: allow
   src_selector: calico/k8s_ns == 'citoid'
