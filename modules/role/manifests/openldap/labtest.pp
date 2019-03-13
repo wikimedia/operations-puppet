@@ -3,7 +3,6 @@
 class role::openldap::labtest {
     include ::standard
     include ::profile::base::firewall
-    include ::profile::prometheus::openldap_exporter
 
     include ::profile::openldap
 
