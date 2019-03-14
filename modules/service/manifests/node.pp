@@ -398,6 +398,7 @@ define service::node(
             nrpe_command  => "/usr/local/bin/check-${title}",
             subscribe     => File["/usr/local/bin/check-${title}"],
             contact_group => $contact_groups,
+            notes_url     => "https://wikitech.wikimedia.org/wiki/Services/Monitoring/${title}",
         }
         # we also support smart-releases
         service::deployment_script { $name:
@@ -411,6 +412,7 @@ define service::node(
             description   => $title,
             check_command => "check_http_port_url!${port}!${healthcheck_url}",
             contact_group => $contact_groups,
+            notes_url     => "https://wikitech.wikimedia.org/wiki/Services/Monitoring/${title}",
         }
     }
 

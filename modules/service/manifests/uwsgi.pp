@@ -211,6 +211,7 @@ define service::uwsgi(
                 description   => $title,
                 check_command => "check_http_port_url!${port}!${healthcheck_url}",
                 contact_group => $contact_groups,
+                notes_url     => "https://wikitech.wikimedia.org/wiki/Services/Monitoring/${title}",
             }
         }
     }
