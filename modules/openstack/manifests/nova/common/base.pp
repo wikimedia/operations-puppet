@@ -15,9 +15,10 @@ class openstack::nova::common::base(
     }
 
     file { '/etc/nova/policy.json':
-        source => "puppet:///modules/openstack/${version}/nova/common/policy.json",
-        mode   => '0644',
-        owner  => 'root',
-        group  => 'root',
+        source  => "puppet:///modules/openstack/${version}/nova/common/policy.json",
+        mode    => '0644',
+        owner   => 'root',
+        group   => 'root',
+        require => Package['nova-common'],
     }
 }
