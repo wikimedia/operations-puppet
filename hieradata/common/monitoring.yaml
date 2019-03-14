@@ -208,6 +208,12 @@ monitoring::groups:
   scb_codfw:
     description: Service Cluster B servers codfw
 
+# Session Storage
+  sessions_eqiad:
+    description: Session Storage servers eqiad
+  sessions_codfw:
+    description: Session Storage servers codfw
+
 # ORES
   ores_eqiad:
     description: ORES servers eqiad
