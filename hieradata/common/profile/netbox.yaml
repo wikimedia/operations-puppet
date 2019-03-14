@@ -4,5 +4,5 @@ profile::netbox::ganeti_sync_profiles:
         url: ganeti01.svc.eqiad.wmnet
         port: 5080
     codfw:
-        url: ganeti01.svc.eqiad.wmnet
+        url: ganeti01.svc.codfw.wmnet
         port: 5080
