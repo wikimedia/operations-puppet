@@ -681,7 +681,7 @@ lvs::configuration::lvs_services:
         timeout-clean-reconnect: 3
         max-delay: 300
     conftool:
-      cluster: scb
+      cluster: kubernetes
       service: cxserver
     icinga:
       check_command: "check_http_lvs_on_port!cxserver.svc.%{::site}.wmnet!8080!/_info"
