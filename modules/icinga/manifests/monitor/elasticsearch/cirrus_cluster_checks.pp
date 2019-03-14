@@ -18,6 +18,9 @@ class icinga::monitor::elasticsearch::cirrus_cluster_checks{
             ports  => $ports,
         }
 
+        # warning or critical here means critical
+        # value for critical was bumped a bit to make check_prometheus_metrics.py work
+        # This is the same for cirrus_update_lag_${site} check
         # Alert on mjolnir daemons - T214494
         monitoring::check_prometheus { "mjolnir_bulk_update_failure_${site}":
             description     => "Mjolnir bulk update failure check - ${site}",
@@ -25,7 +28,7 @@ class icinga::monitor::elasticsearch::cirrus_cluster_checks{
             query           => 'scalar(sum(increase(mjolnir_bulk_action_total{result="failed"}[4d])))',
             prometheus_url  => "http://prometheus.svc.${site}.wmnet/ops",
             method          => 'gt',
-            critical        => 1,
+            critical        => 2,
             warning         => 1,
             check_interval  => 1440, # 24h
             retries         => 1,
@@ -39,7 +42,7 @@ class icinga::monitor::elasticsearch::cirrus_cluster_checks{
             query           => "scalar(sum(min_over_time(kafka_burrow_partition_lag{exported_cluster=~\"main-${site}\", topic=\"${site}.cirrussearch.page-index-update\", group=~\"cirrussearch_updates_${site}\"}[7d])))",
             prometheus_url  => "http://prometheus.svc.${site}.wmnet/ops",
             method          => 'gt',
-            critical        => 1,
+            critical        => 2,
             warning         => 1,
             check_interval  => 1440, # 24h
             retries         => 1,
