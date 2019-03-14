@@ -42,6 +42,7 @@ profile::analytics::database::meta::backup_dest::oozie_host: 'analytics1030.eqia
 
 profile::hadoop::firewall::master::analytics_srange: '$ANALYTICS_NETWORKS'
 profile::hadoop::firewall::master::analytics_druid_srange: '(($ANALYTICS_NETWORKS $DRUID_PUBLIC_HOSTS))'
+profile::hadoop::firewall::master::hdfs::ssl_enabled: true
 
 profile::hadoop::backup::namenode::monitoring_enabled: true
 
