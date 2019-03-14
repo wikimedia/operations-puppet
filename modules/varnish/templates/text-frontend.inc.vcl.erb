@@ -377,6 +377,11 @@ sub cluster_fe_deliver {
 		}
 	}
 
+	// Age experiment for load.php T105657
+	if (req.url ~ "^/w/load\.php" ) {
+		set resp.http.Age = 0;
+	}
+
 	// Perform GeoIP look-up and send the result as a session cookie
 	if (req.http.X-Orig-Cookie !~ "(^|;\s*)GeoIP=[^;]"
 		&& req.http.Cookie !~ "(^|;\s*)GeoIP=[^;]") {
