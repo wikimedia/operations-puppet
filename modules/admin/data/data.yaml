@@ -274,7 +274,7 @@ groups:
               ayounsi, mepps, mmiller, seddon, gilles, tstarling, pirroh, rush, tieu, karen,
               cicalese, drossi, fsalutari, nathante, gbirke, isaacj, sbassett, jdl,
               niharika29, ryanmax, afandian2, jgleeson, toddleroux, srishakatux, dsharpe,
-              juliaglen, esanders]
+              juliaglen, esanders, sukhe]
     system_members: [analytics-search]
   analytics-admins:
     gid: 732
@@ -3176,6 +3176,17 @@ users:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPyFRD5mRkxT+IFrBetgwWAl4jw7EH+XRmes61jfW+Rq bbearnes@wikimedia.org
     uid: 20958
     email: bbearnes@wikimedia.org
+  sukhe:
+    ensure: present
+    gid: 500
+    name: sukhe
+    realname: Sukhbir Singh
+    ssh_keys:
+      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIAPE0Y9KGVkwRR1edkEe2/5LShc9s6nynwFQg+v9Uemd sukhe@sukhe
+    uid: 21131
+    email: ssingh@wikimedia.org
+    expiry_date: 2019-06-30
+    expiry_contact: nuria@wikimedia.org
 
 ldap_only_users:
   abartov:
@@ -3561,7 +3572,7 @@ ldap_only_users:
     ensure: present
     realname: Toni Sevener
     email: tsevener@wikimedia.org
-  pbj: 
+  pbj:
     ensure: present
     realname: Patrick Johnson
     email: pbj@progresslabs.co
