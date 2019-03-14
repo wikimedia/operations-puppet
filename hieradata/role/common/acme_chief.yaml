@@ -39,6 +39,23 @@ profile::acme_chief::certificates:
         challenge: dns-01
         authorized_regexes:
         - '^icinga[12]001\.wikimedia\.org$'
+    ldap:
+        CN: 'ldap-labs.eqiad.wikimedia.org'
+        SNI:
+        - 'ldap-labs.eqiad.wikimedia.org'
+        - 'ldap-labs.codfw.wikimedia.org'
+        - 'ldap-ro.eqiad.wikimedia.org'
+        - 'ldap-ro.codfw.wikimedia.org'
+        challenge: dns-01
+        authorized_regexes:
+        - '^ldap-(ro|labs)\.(eqiad|codfw)\.wikimedia\.org$'
+    ldap-labtest:
+        CN: 'ldap-labtest.eqiad.wikimedia.org'
+        SNI:
+        - 'labtestservices2001.wikimedia.org'
+        challenge: dns-01
+        authorized_regexes:
+        - '^labtestservices2001\.wikimedia\.org'
     librenms:
         CN: 'librenms.wikimedia.org'
         SNI:
