@@ -49,5 +49,6 @@ define monitoring::graphite_freshness(
         description   => "'${metric}' Graphite freshness",
         check_command => "check_graphite_freshness!${metric}!${graphite_url}!${warning}!${critical}",
         contact_group => $contact_group,
+        notes_url     => 'https://wikitech.wikimedia.org/wiki/Graphite#Operations_troubleshooting',
     }
 }
