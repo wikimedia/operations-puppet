@@ -19,4 +19,5 @@ class role::cluster::management {
     include ::profile::mediawiki::web_testing
     include ::standard
     include ::profile::base::firewall
+    include ::profile::base::firewall::log
 }
