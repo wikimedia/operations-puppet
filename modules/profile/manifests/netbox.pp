@@ -28,6 +28,7 @@ class profile::netbox (
     $db_password = $passwords::netbox::db_password
     $secret_key = $passwords::netbox::secret_key
     $replication_pass = $passwords::netbox::replication_password
+    $nb_ganeti_ca_cert = '/etc/ssl/certs/Puppet_Internal_CA.pem'
 
     $reports_path = '/srv/deployment/netbox-reports'
 
