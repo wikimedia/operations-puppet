@@ -73,12 +73,8 @@ class elasticsearch (
 
     # Overwrite default env file provided by elastic
     # so that it does not conflict without our var set by systemd unit
-    $ensure_etc_default = $version ? {
-        '5' => 'absent',
-        '6' => 'file',
-    }
     file { '/etc/default/elasticsearch':
-        ensure  => $ensure_etc_default,
+        ensure  => file,
         owner   => 'root',
         group   => 'root',
         mode    => '0444',
