@@ -414,7 +414,7 @@ class profile::hadoop::common (
             default => "${::site}.wmnet",
         }
 
-        $hostname_tls_cn = "${::hostname}${hostname_suffix}"
+        $hostname_tls_cn = "${::hostname}.${hostname_suffix}"
 
         # Ensure trustore/keystore files
         $keystore_path = "${::cdh::hadoop::config_directory}/keystore.jks"
