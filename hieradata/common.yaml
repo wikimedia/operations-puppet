@@ -609,7 +609,7 @@ hadoop_clusters:
     journalnode_hosts:
       - analytics1031.eqiad.wmnet
       - analytics1034.eqiad.wmnet
-      - analytics1041.eqiad.wmnet
+      - analytics1038.eqiad.wmnet
     # analytics* Dell R720s have mounts on disks sdb - sdm.
     # (sda is hardware raid on the 2 2.5 drives in the flex bays.)
     datanode_mounts:
@@ -637,7 +637,6 @@ hadoop_clusters:
       analytics1037.eqiad.wmnet:  /eqiad/D/8
       analytics1038.eqiad.wmnet:  /eqiad/D/4
       analytics1040.eqiad.wmnet:  /eqiad/D/4
-      analytics1041.eqiad.wmnet:  /eqiad/D/4
 
     datanode_volumes_failed_tolerated: 2
     mapreduce_reduce_shuffle_parallelcopies: 10

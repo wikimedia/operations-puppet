@@ -57,7 +57,7 @@ node 'an-coord1001.eqiad.wmnet' {
     interface::add_ip6_mapped { 'main': }
 }
 
-# analytics1028-analytics1041 are Hadoop worker nodes.
+# analytics1028-analytics1040 are Hadoop worker nodes.
 # These hosts are OOW but they are used as temporary
 # Hadoop testing cluster for T211836.
 #
