@@ -1,2 +1,3 @@
 diamond::remove: true
 profile::openldap::mirror_mode: true
+profile::openldap::certname: ldap

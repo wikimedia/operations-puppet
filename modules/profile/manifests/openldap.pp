@@ -8,10 +8,11 @@ class profile::openldap (
     $server_id = hiera('profile::openldap::server_id'),
     $hash_passwords = hiera('profile::openldap::hash_passwords'),
     $read_only = hiera('profile::openldap::read_only'),
+    $certname = hiera('profile::openldap::certname'),
 ){
     # Certificate needs to be readable by slapd
-    sslcert::certificate { $hostname:
-        group => 'openldap',
+    acme_chief::cert { $certname:
+        puppet_svc => 'slapd',
     }
 
     class { '::openldap':
@@ -20,8 +21,8 @@ class profile::openldap (
         suffix         => 'dc=wikimedia,dc=org',
         datadir        => '/var/lib/ldap/labs',
         ca             => '/etc/ssl/certs/ca-certificates.crt',
-        certificate    => "/etc/ssl/localcerts/${hostname}.crt",
-        key            => "/etc/ssl/private/${hostname}.key",
+        certificate    => "/etc/acmecerts/${certname}.rsa-2048.crt",
+        key            => "/etc/acmecerts/${certname}.rsa-2048.key",
         extra_schemas  => ['dnsdomain2.schema', 'nova_sun.schema', 'openssh-ldap.schema',
                           'puppet.schema', 'sudo.schema'],
         extra_indices  => 'openldap/labs-indices.erb',

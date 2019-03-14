@@ -9,3 +9,4 @@ profile::openldap::server_id: 1
 profile::openldap::master: ~
 profile::openldap::hash_passwords: SHA
 profile::openldap::read_only: false
+profile::openldap::certname: ldap-labtest
