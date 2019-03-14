@@ -14,6 +14,6 @@ define mariadb::monitor_backup (
         contact_group  => 'admins',
         check_interval => 30,  # Don't check too often
         require        => File['/usr/local/bin/check_mariadb_backups.py'],
-        notes_url      => 'https://wikitech.wikimedia.org/wiki/MariaDB/troubleshooting',
+        notes_url      => 'https://wikitech.wikimedia.org/wiki/MariaDB/Backups',
     }
 }
