@@ -11,5 +11,6 @@ class mariadb::monitor_process(
         nrpe_command  => "/usr/lib/nagios/plugins/check_procs -c ${process_count}:${process_count} -C ${process_name}",
         critical      => $is_critical,
         contact_group => $contact_group,
+        notes_url     => 'https://wikitech.wikimedia.org/wiki/MariaDB/troubleshooting',
     }
 }

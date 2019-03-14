@@ -14,5 +14,6 @@ class mariadb::monitor_disk(
 -w ${pct_warning}% -c ${pct_critical}% -l -e --exclude-type=tracefs",
         critical      => $is_critical,
         contact_group => $contact_group,
+        notes_url     => 'https://wikitech.wikimedia.org/wiki/MariaDB/troubleshooting',
     }
 }

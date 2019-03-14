@@ -16,5 +16,6 @@ define mariadb::monitor_readonly(
         critical      => $is_critical,
         contact_group => $contact_group,
         require       => File['/usr/bin/check_mariadb.py'],
+        notes_url     => 'https://wikitech.wikimedia.org/wiki/MariaDB/troubleshooting',
     }
 }
