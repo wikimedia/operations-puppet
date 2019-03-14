@@ -49,6 +49,9 @@ profile::acme_chief::certificates:
         challenge: dns-01
         authorized_regexes:
         - '^ldap-(ro|labs)\.(eqiad|codfw)\.wikimedia\.org$'
+        - '^seaborgium\.wikimedia\.org$'
+        - '^serpens\.wikimedia\.org$'
+        - '^ldap-eqiad-replica0[12]\.wikimedia\.org$'
     ldap-labtest:
         CN: 'ldap-labtest.eqiad.wikimedia.org'
         SNI:
