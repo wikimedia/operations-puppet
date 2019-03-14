@@ -31,6 +31,11 @@ profile::hadoop::common::config_override:
   hadoop_journalnode_opts: "-javaagent:/usr/share/java/prometheus/jmx_prometheus_javaagent.jar=%{::ipaddress}:10485:/etc/prometheus/hdfs_journalnode_jmx_exporter.yaml"
   yarn_nodemanager_opts: "-Xms4096m -javaagent:/usr/share/java/prometheus/jmx_prometheus_javaagent.jar=%{::ipaddress}:8141:/etc/prometheus/yarn_nodemanager_jmx_exporter.yaml"
   yarn_nodemanager_os_reserved_memory_mb: 12000
+  hdfs_site_extra_properties:
+    dfs.http.policy: 'HTTPS_ONLY'
+  mapred_site_extra_properties:
+    mapreduce.shuffle.ssl.enabled: true
+
 
 profile::hadoop::worker::ferm_srange: '(($ANALYTICS_NETWORKS $DRUID_PUBLIC_HOSTS))'
 

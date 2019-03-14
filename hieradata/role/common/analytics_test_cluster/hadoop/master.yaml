@@ -29,6 +29,10 @@ profile::hadoop::common::config_override:
   # 2) After a month a checkpoint is deleted.
   hdfs_trash_checkpoint_interval: 1440
   hdfs_trash_interval: 43200
+  hdfs_site_extra_properties:
+    dfs.http.policy: 'HTTPS_ONLY'
+  mapred_site_extra_properties:
+    mapreduce.shuffle.ssl.enabled: true
 
 # Ensure that users in these posix groups have home directories in HDFS.
 profile::hadoop::master::hadoop_user_groups: "analytics-users analytics-privatedata-users analytics-admins analytics-search-users"
