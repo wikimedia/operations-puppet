@@ -58,7 +58,7 @@ profile::acme_chief::certificates:
         - 'labtestservices2001.wikimedia.org'
         challenge: dns-01
         authorized_regexes:
-        - '^labtestservices2001\.wikimedia\.org'
+        - '^labtestservices2001\.wikimedia\.org$'
     librenms:
         CN: 'librenms.wikimedia.org'
         SNI:
