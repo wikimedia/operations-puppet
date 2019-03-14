@@ -139,6 +139,7 @@ define monitoring::host (
             group                 => 'mgmt',
             check_interval        => 60,
             retry_interval        => 60,
+            notes_url             => 'https://wikitech.wikimedia.org/wiki/Dc-operations/Hardware_Troubleshooting_Runbook',
         }
         monitoring::service { "ssh_${title}.mgmt":
             description           => "SSH ${title}.mgmt",
@@ -148,6 +149,7 @@ define monitoring::host (
             group                 => 'mgmt',
             check_interval        => 60,
             retry_interval        => 60,
+            notes_url             => 'https://wikitech.wikimedia.org/wiki/Dc-operations/Hardware_Troubleshooting_Runbook',
         }
     }
 }
