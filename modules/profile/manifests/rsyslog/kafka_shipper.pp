@@ -27,6 +27,7 @@ class profile::rsyslog::kafka_shipper (
         ensure  => present,
         source  => 'puppet:///modules/profile/rsyslog/lookup_table_output.json',
         require => File['/etc/rsyslog.lookup.d'],
+        notify  => Service['rsyslog'],
     }
 
     rsyslog::conf { 'max_message_size':
