@@ -278,10 +278,10 @@ codfw:
     # TODO: This is wrong, but is on purpose right now. We want to be able to
     # gradually increase migrating service traffic sent to kubernetes and we currently
     # don't support a service being provided by >1 clusters, so reuse scb for now
-    kubernetes2001.codfw.wmnet: []
-    kubernetes2002.codfw.wmnet: []
-    kubernetes2003.codfw.wmnet: []
-    kubernetes2004.codfw.wmnet: []
+    kubernetes2001.codfw.wmnet: [cxserver]
+    kubernetes2002.codfw.wmnet: [cxserver]
+    kubernetes2003.codfw.wmnet: [cxserver]
+    kubernetes2004.codfw.wmnet: [cxserver]
   eventbus:
     kafka2001.codfw.wmnet: [eventbus]
     kafka2002.codfw.wmnet: [eventbus]
@@ -305,10 +305,10 @@ codfw:
   kubernetes:
     acrab.codfw.wmnet: [kubemaster]
     acrux.codfw.wmnet: [kubemaster]
-    kubernetes2001.codfw.wmnet: [mathoid, zotero, blubberoid, eventgate-analytics, citoid]
-    kubernetes2002.codfw.wmnet: [mathoid, zotero, blubberoid, eventgate-analytics, citoid]
-    kubernetes2003.codfw.wmnet: [mathoid, zotero, blubberoid, eventgate-analytics, citoid]
-    kubernetes2004.codfw.wmnet: [mathoid, zotero, blubberoid, eventgate-analytics, citoid]
+    kubernetes2001.codfw.wmnet: [mathoid, zotero, blubberoid, eventgate-analytics, citoid, cxserver]
+    kubernetes2002.codfw.wmnet: [mathoid, zotero, blubberoid, eventgate-analytics, citoid, cxserver]
+    kubernetes2003.codfw.wmnet: [mathoid, zotero, blubberoid, eventgate-analytics, citoid, cxserver]
+    kubernetes2004.codfw.wmnet: [mathoid, zotero, blubberoid, eventgate-analytics, citoid, cxserver]
   ores:
     ores2001.codfw.wmnet: [ores]
     ores2002.codfw.wmnet: [ores]

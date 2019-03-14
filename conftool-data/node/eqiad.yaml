@@ -160,10 +160,10 @@ eqiad:
     # TODO: This is wrong, but is on purpose right now. We want to be able to
     # gradually increase mathoid traffic sent to kubernetes and we currently
     # don't support a service being provided by >1 clusters, so reuse scb for now
-    kubernetes1001.eqiad.wmnet: []
-    kubernetes1002.eqiad.wmnet: []
-    kubernetes1003.eqiad.wmnet: []
-    kubernetes1004.eqiad.wmnet: []
+    kubernetes1001.eqiad.wmnet: [cxserver]
+    kubernetes1002.eqiad.wmnet: [cxserver]
+    kubernetes1003.eqiad.wmnet: [cxserver]
+    kubernetes1004.eqiad.wmnet: [cxserver]
   dns:
     dns1001.wikimedia.org: [pdns_recursor]
     dns1002.wikimedia.org: [pdns_recursor]
@@ -288,10 +288,10 @@ eqiad:
   kubernetes:
     argon.eqiad.wmnet: [kubemaster]
     chlorine.eqiad.wmnet: [kubemaster]
-    kubernetes1001.eqiad.wmnet: [mathoid, zotero, blubberoid, eventgate-analytics, citoid]
-    kubernetes1002.eqiad.wmnet: [mathoid, zotero, blubberoid, eventgate-analytics, citoid]
-    kubernetes1003.eqiad.wmnet: [mathoid, zotero, blubberoid, eventgate-analytics, citoid]
-    kubernetes1004.eqiad.wmnet: [mathoid, zotero, blubberoid, eventgate-analytics, citoid]
+    kubernetes1001.eqiad.wmnet: [mathoid, zotero, blubberoid, eventgate-analytics, citoid, cxserver]
+    kubernetes1002.eqiad.wmnet: [mathoid, zotero, blubberoid, eventgate-analytics, citoid, cxserver]
+    kubernetes1003.eqiad.wmnet: [mathoid, zotero, blubberoid, eventgate-analytics, citoid, cxserver]
+    kubernetes1004.eqiad.wmnet: [mathoid, zotero, blubberoid, eventgate-analytics, citoid, cxserver]
   druid-public:
     druid1004.eqiad.wmnet: [druid-public-broker]
     druid1005.eqiad.wmnet: [druid-public-broker]

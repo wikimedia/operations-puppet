@@ -36,4 +36,5 @@ role::lvs::realserver::pools:
   blubberoid: {}
   eventgate-analytics: {}
   citoid: {}
+  cxserver: {}
 diamond::remove: true
