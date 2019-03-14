@@ -11,27 +11,27 @@ profile::cassandra::disable_graphite_metrics: true
 profile::cassandra::instances:
   "sessionstore1001.eqiad.wmnet":
     a:
-      listen_address: 10.64.0.141
+      listen_address: 10.64.0.144
       jmx_exporter_enabled: true
   "sessionstore1002.eqiad.wmnet":
     a:
-      listen_address: 10.64.32.78
+      listen_address: 10.64.32.85
       jmx_exporter_enabled: true
   "sessionstore1003.eqiad.wmnet":
     a:
-      listen_address: 10.64.48.175
+      listen_address: 10.64.48.178
       jmx_exporter_enabled: true
   "sessionstore2001.codfw.wmnet":
     a:
-      listen_address: 10.192.16.79
+      listen_address: 10.192.16.95
       jmx_exporter_enabled: true
   "sessionstore2002.codfw.wmnet":
     a:
-      listen_address: 10.192.32.15
+      listen_address: 10.192.32.101
       jmx_exporter_enabled: true
   "sessionstore2003.codfw.wmnet":
     a:
-      listen_address: 10.192.48.118
+      listen_address: 10.192.48.132
       jmx_exporter_enabled: true
 
 profile::cassandra::settings:
