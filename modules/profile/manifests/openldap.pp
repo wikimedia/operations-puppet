@@ -13,6 +13,7 @@ class profile::openldap (
     # Certificate needs to be readable by slapd
     acme_chief::cert { $certname:
         puppet_svc => 'slapd',
+        key_group  => 'openldap',
     }
 
     class { '::openldap':
