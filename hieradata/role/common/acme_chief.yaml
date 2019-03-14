@@ -52,13 +52,6 @@ profile::acme_chief::certificates:
         - '^seaborgium\.wikimedia\.org$'
         - '^serpens\.wikimedia\.org$'
         - '^ldap-eqiad-replica0[12]\.wikimedia\.org$'
-    ldap-labtest:
-        CN: 'ldap-labtest.eqiad.wikimedia.org'
-        SNI:
-        - 'labtestservices2001.wikimedia.org'
-        challenge: dns-01
-        authorized_regexes:
-        - '^labtestservices2001\.wikimedia\.org$'
     librenms:
         CN: 'librenms.wikimedia.org'
         SNI:
