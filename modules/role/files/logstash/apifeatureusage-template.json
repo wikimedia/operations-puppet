@@ -19,7 +19,7 @@
       "dynamic_templates" : [ {
         "string_fields" : {
           "match" : "*",
-          "match_mapping_type" : "text",
+          "match_mapping_type" : "string",
           "mapping" : {
             "index" : false
           }
