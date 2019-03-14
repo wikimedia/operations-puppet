@@ -5,15 +5,6 @@ class openstack::serverpackages::mitaka::stretch(
     # since jessie-backports packages are rebuilt from stretch anyway
     require openstack::commonpackages::mitaka
 
-    # hack, use the jessie repository in stretch.
-    apt::repository { 'jessie-for-mitaka-on-stretch':
-        uri        => 'http://mirrors.wikimedia.org/debian/',
-        dist       => 'jessie',
-        components => 'main',
-        trust_repo => true,
-        source     => false,
-    }
-
     # make sure we don't have libssl1.0.0 installed, and exclude
     # packages that depend on it
     package { 'libssl1.0.0':
@@ -42,6 +33,11 @@ class openstack::serverpackages::mitaka::stretch(
 
     # cleanup: remove after some puppet cycles
     file { '/etc/apt/sources.list.d/jessie-backports-for-mitaka-on-stretch.list':
+        ensure => 'absent',
+    }
+
+    # cleanup: remove after some puppet cycles
+    file { '/etc/apt/sources.list.d/jessie-for-mitaka-on-stretch.list':
         ensure => 'absent',
     }
 }
