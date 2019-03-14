@@ -25,11 +25,18 @@
 # You will likely need to manually inspect this generated list of source
 # packages though, and skip other unrelated cumin output bits.
 
+#
+# packages skipped on purpose, because they induce conflicts in the apt
+# resolver when using in a system with stretch repos enabled:
+#
+# libvirt (libvit-daemon-system and friends)
+# ceph (librados2, librbd1)
+# qemu (qemu-system, qemu-system-*)
+
 PKGS="alabaster
 alembic
 apparmor
 brltty
-ceph
 contextlib2
 dbconfig-common
 designate
@@ -53,7 +60,6 @@ libfastjson
 liblognorm
 libseccomp
 libsodium
-libvirt
 linux-base
 migrate
 msgpack-python
@@ -163,7 +169,6 @@ python-webob
 python-wrapt
 python-wsme
 pyudev
-qemu
 q-text-as-data
 quickstack
 requests
