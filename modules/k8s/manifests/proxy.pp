@@ -6,8 +6,6 @@ class k8s::proxy(
 ) {
     require ::k8s::infrastructure_config
 
-    $master_ip = ipresolve($master_host, 4, $::nameservers[0])
-
     require_package('kubernetes-node')
 
     file { '/etc/default/kube-proxy':
