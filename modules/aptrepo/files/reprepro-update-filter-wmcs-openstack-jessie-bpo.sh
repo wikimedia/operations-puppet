@@ -35,6 +35,7 @@
 # python-mysqldb
 # pulseaudio (libpulse0)
 # seabios
+# python-dogpile.cache
 
 PKGS="alabaster
 alembic
@@ -89,7 +90,6 @@ python-cryptography
 python-dateutil
 python-debtcollector
 python-designateclient
-python-dogpile.cache
 python-editor
 python-eventlet
 python-fasteners
