@@ -32,6 +32,9 @@
 # libvirt (libvit-daemon-system and friends)
 # ceph (librados2, librbd1)
 # qemu (qemu-system, qemu-system-*)
+# python-mysqldb
+# pulseaudio (libpulse0)
+# seabios
 
 PKGS="alabaster
 alembic
@@ -71,7 +74,6 @@ open-isns
 openssl
 pdns-recursor
 postgresql-9.6
-pulseaudio
 puppet
 pyasn1
 pyinotify
@@ -111,7 +113,6 @@ python-ldap3
 python-linecache2
 python-memcache
 python-monotonic
-python-mysqldb
 python-netaddr
 python-networkx
 python-neutronclient
@@ -176,7 +177,6 @@ routes
 rsyslog
 ruby-deep-merge
 ryu
-seabios
 six
 smartmontools
 sphinx
