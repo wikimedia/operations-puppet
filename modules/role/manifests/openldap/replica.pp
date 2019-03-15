@@ -7,8 +7,6 @@ class role::openldap::replica {
 
     include ::profile::openldap
 
-    include ::role::lvs::realserver
-
     system::role { 'openldap::labs':
         description => 'LDAP read-only replica'
     }
