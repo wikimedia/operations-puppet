@@ -81,6 +81,7 @@ class icinga::monitor::toollabs {
         description   => 'toolschecker: Make sure enwiki dumps are not empty',
         check_command => "${checker}!/dumps!OK",
         host          => $test_entry_host,
+        notes_url     => 'https://wikitech.wikimedia.org/wiki/Help:Toolforge/Monitoring',
     }
 
     monitoring::service { 'tools-checker-redis':
