@@ -29,6 +29,7 @@ from keystoneauth1 import session
 from keystoneauth1.identity import v3
 from keystoneclient.v3 import client as keystone_client
 from novaclient import client as novaclient
+import yaml
 
 
 VALID_DOMAINS = ["hostgroup", "checkpoint", "queue", "hosts"]
@@ -39,7 +40,7 @@ GRID_HOST_PREFIX = {
     "sgeexec": ["exec", "submit"],
     "sgebastion": "submit",
     "sgecron": "submit",
-    "sgegrid": "submit"
+    "sgegrid": "submit",
 }
 
 
@@ -483,7 +484,13 @@ def get_args():
     args = argparser.parse_args()
     if args.all_domains or "hosts" in args.domains:
         if not args.observer_pass:
-            argparser.error("To process hosts the --observer-pass argument is required")
+            if os.path.isfile("/etc/novaobserver.yaml"):
+                nova_observer_config = yaml.safe_load("/etc/novaobserver.yaml")
+                args.observer_pass = nova_observer_config["OS_PASSWORD"]
+            else:
+                argparser.error(
+                    "To process hosts the --observer-pass argument is required"
+                )
 
     return args
 
