@@ -485,7 +485,9 @@ def get_args():
     if args.all_domains or "hosts" in args.domains:
         if not args.observer_pass:
             if os.path.isfile("/etc/novaobserver.yaml"):
-                nova_observer_config = yaml.safe_load("/etc/novaobserver.yaml")
+                with open("/etc/novaobserver.yaml") as conf_fh:
+                    nova_observer_config = yaml.safe_load(conf_fh)
+
                 args.observer_pass = nova_observer_config["OS_PASSWORD"]
             else:
                 argparser.error(
