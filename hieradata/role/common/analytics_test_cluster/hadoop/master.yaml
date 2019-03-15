@@ -40,7 +40,7 @@ profile::hadoop::common::config_override:
   core_site_extra_properties:
     hadoop.ssl.enabled: true
     hadoop.ssl.require.client.cert: false
-    hadoop.ssl.hostname.verifier: false
+    hadoop.ssl.hostname.verifier: 'DEFAULT'
     hadoop.ssl.keystores.factory.class: 'org.apache.hadoop.security.ssl.FileBasedKeyStoresFactory'
     hadoop.ssl.server.conf: 'ssl-server.xml'
     hadoop.ssl.client.conf: 'ssl-client.xml'
