@@ -106,18 +106,19 @@ class openstack::nova::compute::service(
     }
 
     # Guest management on host startup/reboot
-    file { '/etc/default/libvirt-guests':
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0444',
-        source  => 'puppet:///modules/openstack/nova/libvirt/libvirt-guests',
-        require => Package['libvirt-daemon-system'],
-    }
+    if os_version('debian >= stretch') {
 
-    service { 'libvirt-guests':
-        ensure  => 'running',
-        enable  => true,
-        require => Package[libvirt-daemon-system],
+        file { '/etc/default/libvirt-guests':
+            owner  => 'root',
+            group  => 'root',
+            mode   => '0444',
+            source => 'puppet:///modules/openstack/nova/libvirt/libvirt-guests',
+        }
+
+        service { 'libvirt-guests':
+            ensure => 'running',
+            enable => true,
+        }
     }
 
 }
