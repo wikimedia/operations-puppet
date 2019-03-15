@@ -52,6 +52,7 @@ class base::monitoring::host(
     ::monitoring::service { 'ssh':
         description   => 'SSH',
         check_command => 'check_ssh',
+        notes_url     => 'https://wikitech.wikimedia.org/wiki/SSH/monitoring',
     }
 
     # Used by check_puppetrun
