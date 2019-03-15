@@ -186,6 +186,7 @@ class profile::grafana (
     monitoring::service { 'grafana':
         description   => $readonly_domain,
         check_command => "check_http_url!${readonly_domain}!/",
+        notes_url     => 'https://wikitech.wikimedia.org/wiki/Grafana.wikimedia.org',
     }
 
     if $admin_domain {
