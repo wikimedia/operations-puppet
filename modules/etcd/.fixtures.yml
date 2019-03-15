@@ -5,3 +5,4 @@ fixtures:
         rsyslog: "../../../../rsyslog"
         stdlib: "../../../../stdlib"
         wmflib: "../../../../wmflib"
+        base: "../../../../base"

@@ -26,4 +26,8 @@ class rsyslog {
         ensure  => running,
         require => Package['rsyslog'],
     }
+
+    if os_version('debian >= stretch') {
+        base::service_auto_restart { 'rsyslog': }
+    }
 }
