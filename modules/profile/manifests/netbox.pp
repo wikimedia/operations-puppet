@@ -173,6 +173,7 @@ class profile::netbox (
         ensure        => $monitoring_ensure,
         description   => 'netbox SSL',
         check_command => 'check_ssl_http_letsencrypt!netbox.wikimedia.org',
+        notes_url     => 'https://wikitech.wikimedia.org/wiki/Netbox',
     }
 
     monitoring::service { 'netbox-https':
