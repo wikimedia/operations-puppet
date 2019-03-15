@@ -153,6 +153,7 @@ def parse_config_file(config_file):
     backup_mariadb.py.
     == Example file ==
     rotate: True
+    retention: 1
     compress: True
     archive: False
     threads: 16
@@ -168,12 +169,14 @@ def parse_config_file(config_file):
         port: 3311
         destination: 'dbstore1001.eqiad.wmnet'
     """
+    allowed_options = ['host', 'port', 'password', 'destination', 'rotate', 'retention',
+                       'compress', 'archive', 'threads', 'statistics']
     logger = logging.getLogger('backup')
     try:
         read_config = yaml.load(open(config_file))
     except yaml.YAMLError:
         logger.error('Error opening or parsing the YAML file {}'.format(config_file))
-        return
+        sys.exit(2)
     except FileNotFoundError:  # noqa: F821
         logger.error('File {} not found'.format(config_file))
         sys.exit(2)
@@ -186,7 +189,10 @@ def parse_config_file(config_file):
 
     del default_options['sections']
     manual_config = read_config['sections']
-    if len(manual_config) > 1:
+    if len(manual_config) == 0:
+        logger.error('No actual backup was configured to run, please add at least one section')
+        sys.exit(2)
+    elif len(manual_config) > 1:
         # Limit the threads only if there is more than 1 backup
         default_options['threads'] = int(default_options['threads'] / CONCURRENT_BACKUPS)
     config = dict()
@@ -196,6 +202,15 @@ def parse_config_file(config_file):
         for default_key, default_value in default_options.items():
             if default_key not in config[section]:
                 config[section][default_key] = default_value
+    # Check sections don't have unknown parameters
+    for section in config.keys():
+        for key in config[section].keys():
+            if key not in allowed_options:
+                logger.error(
+                    'Found unknown config option "{}" on section {}'.format(
+                        str(key), str(section))
+                )
+                sys.exit(2)
     return config
 
 
@@ -293,8 +308,9 @@ def run_transfer(section, config, port):
     Executes transfer.py in mode xtrabackup, transfering the contents of a live mysql/mariadb
     server to the provisioning host
     """
+    logger = logging.getLogger('backup')
     # Create new target dir
-    print('Create a new empty directory at {}'.format(config['destination']))
+    logger.info('Create a new empty directory at {}'.format(config['destination']))
     backup_name = get_backup_name(section, 'snapshot')
     path = os.path.join(DEFAULT_TRANSFER_DIR, backup_name)
     cmd = ['/bin/mkdir', path]
@@ -304,7 +320,7 @@ def run_transfer(section, config, port):
         return returncode
 
     # transfer mysql data
-    print('Running XtraBackup at {} and sending it to {}'.format(
+    logger.info('Running XtraBackup at {} and sending it to {}'.format(
         config['host'] + ':' + str(config.get('port', DEFAULT_PORT)), config['destination']))
     cmd = get_transfer_cmd(config, port, path)
     # ignore stdout, stderr, which can deadlock/overflow the buffer for xtrabackup
@@ -321,7 +337,8 @@ def prepare_backup(section, config):
     with transfer.py so they are prepared, we gather statistics, and compress it according to
     the config
     """
-    print('Preparing backup at {}'.format(config['destination']))
+    logger = logging.getLogger('backup')
+    logger.info('Preparing backup at {}'.format(config['destination']))
     cmd = get_prepare_cmd(section, config)
     (returncode, out, err) = execute_remotely(config['destination'], cmd)
     return returncode
@@ -340,11 +357,13 @@ def run(section, config, port):
 
 
 def main():
-
+    logger = logging.basicConfig(
+        stream=sys.stdout,
+        level=logging.INFO,
+        format='[%(asctime)s]: %(levelname)s - %(message)s', datefmt='%H:%M:%S'
+    )
+    logger = logging.getLogger('backup')
     config = parse_config_file(DEFAULT_CONFIG_FILE)
-    if len(config) == 0:
-        sys.stderr.write('No backup was configured, exiting immediately')
-        sys.exit(-1)
     result = dict()
     backup_pool = Pool(CONCURRENT_BACKUPS)
     port = 4444
@@ -354,6 +373,7 @@ def main():
     backup_pool.close()
     backup_pool.join()
 
+    logger.info('Backup finished correctly')
     sys.exit(result[max(result, key=lambda key: result[key].get())].get())
 
 
