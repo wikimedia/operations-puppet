@@ -17,6 +17,9 @@ class role::scb {
     include ::profile::base::firewall
     include role::lvs::realserver
 
+    include ::profile::rsyslog::kafka_shipper
+    include ::profile::rsyslog::udp_localhost_compat
+
     include ::profile::nutcracker
 
     include ::profile::cpjobqueue
