@@ -151,6 +151,7 @@ class profile::mediawiki::webserver(
     nrpe::monitor_service { 'hhvm':
         description  => 'HHVM processes',
         nrpe_command => '/usr/lib/nagios/plugins/check_procs -c 1: -C hhvm',
+        notes_url    => 'https://wikitech.wikimedia.org/wiki/Application_servers',
     }
     if $has_tls {
         # TLSproxy instance to accept traffic on port 443
