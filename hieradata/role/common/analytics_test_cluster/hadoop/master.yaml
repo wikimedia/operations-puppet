@@ -33,6 +33,9 @@ profile::hadoop::common::config_override:
     dfs.http.policy: 'HTTPS_ONLY'
   mapred_site_extra_properties:
     mapreduce.shuffle.ssl.enabled: true
+    mapreduce.jobhistory.http.policy: 'HTTPS_ONLY'
+  yarn_site_extra_properties:
+    yarn.http.policy: 'HTTPS_ONLY'
 
 # Ensure that users in these posix groups have home directories in HDFS.
 profile::hadoop::master::hadoop_user_groups: "analytics-users analytics-privatedata-users analytics-admins analytics-search-users"
@@ -40,6 +43,7 @@ profile::hadoop::master::hadoop_user_groups: "analytics-users analytics-privated
 profile::hadoop::firewall::master::analytics_srange: '$ANALYTICS_NETWORKS'
 profile::hadoop::firewall::master::analytics_druid_srange: '(($ANALYTICS_NETWORKS $DRUID_PUBLIC_HOSTS))'
 profile::hadoop::firewall::master::hdfs::ssl_enabled: true
+profile::hadoop::firewall::master::yarn::ssl_enabled: true
 
 diamond::remove: true
 
