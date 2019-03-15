@@ -86,9 +86,11 @@ class profile::puppetdb(
             ensure   => present,
             settings => {
                 uwsgi => {
-                    'plugins'   => 'python3',
-                    'socket'    => '/run/uwsgi/puppetdb-microservice.sock',
-                    'wsgi-file' => '/srv/puppetdb-microservice.py',
+                    'plugins'     => 'python3',
+                    'socket'      => '/run/uwsgi/puppetdb-microservice.sock',
+                    'file'        => '/srv/puppetdb-microservice.py',
+                    'callable'    => 'app',
+                    'http-socket' => "127.0.0.1:${microservice_uwsgi_port}",
                 },
 
             },
