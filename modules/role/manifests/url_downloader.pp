@@ -5,5 +5,6 @@ class role::url_downloader {
 
     include ::standard
     include ::profile::base::firewall
+    include ::profile::base::firewall::log
     include ::profile::url_downloader
 }
