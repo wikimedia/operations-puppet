@@ -6,7 +6,7 @@ class sonofgridengine::master (
 
     include ::sonofgridengine
 
-    package { ['gridengine-master', 'gridengine-client']:
+    package { 'gridengine-master':
         ensure  => latest,
         require => Package['gridengine-common'],
     }
