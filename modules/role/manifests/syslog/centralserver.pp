@@ -47,6 +47,12 @@ class role::syslog::centralserver (
         notify => Service['mtail'],
     }
 
+    mtail::program { 'ulogd':
+        ensure => present,
+        source => 'puppet:///modules/mtail/programs/ulogd.mtail',
+        notify => Service['mtail'],
+    }
+
     $prometheus_nodes_ferm = join($prometheus_nodes, ' ')
     ferm::service { 'mtail':
         proto  => 'tcp',

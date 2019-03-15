@@ -1,0 +1,71 @@
+counter iptables_drops by ip_version, proto
+
+const MATCH_IPV4 /\d{1,3}(\.\d{1,3}){3}/
+const MATCH_IPV6 /[a-f0-9:]+/
+const MATCH_LEGACY_DATE /(?P<legacy_date>\w+\s+\d+\s+\d+:\d+:\d+)/
+const MATCH_RFC3339_DATE /(?P<rfc3339_date>\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}.\d+[+-]\d{2}:\d{2})/
+const IPTABLES_PRE /IN=(?P<interface_in>[a-z0-9]+)?\s/ +
+  /OUT=(?P<interface_out>[a-z0-9]+)?\s/ +
+  /MAC=(?P<mac_addr>[0-9a-f]{2}(:[0-9a-f]{2}){13})\s/ +
+  /SRC=(?P<src_ip>(/ + MATCH_IPV4 + /|/ + MATCH_IPV6 + /))\s/ +
+  /DST=(?P<dst_ip>(/ + MATCH_IPV4 + /|/ + MATCH_IPV6 + /))\s/ +
+  /LEN=(?P<length>\d+)\s/
+const IPTABLES4_PRE // + IPTABLES_PRE +
+  /TOS=(?P<tos>\d+)\s/ +
+  /PREC=(?P<prec>0x\d+)\s/ +
+  /TTL=(?P<ttl>\d+)\s/ +
+  /ID=(?P<id>\d+)\s/ +
+  /PROTO=(?P<proto>[A-Z]+)\s/ +
+  /SPT=(?P<src_port>\d+)\s/ +
+  /DPT=(?P<dst_port>\d+)\s/
+const IPTABLES4_UDP // + IPTABLES4_PRE +
+  /LEN=\d+/
+const IPTABLES4_TCP // + IPTABLES4_PRE +
+  /SEQ=(?P<seq>\d+)\s/ +
+  /ACK=(?P<ack>\d+)\s/ +
+  /WINDOW=(?P<window>\d+)\s/ +
+  /(?P<flags>[A-Z]+)/
+const IPTABLES6_PRE // + IPTABLES_PRE +
+  /TC=(?P<tc>\d+)\s/ +
+  /HOPLIMIT=(?P<ttl>\d+)\s/ +
+  /FLOWLBL=(?P<flow_label>\d+)\s/ +
+  /PROTO=(?P<proto>[A-Z]+)\s/ +
+  /SPT=(?P<src_port>\d+)\s/ +
+  /DPT=(?P<dst_port>\d+)\s/
+const IPTABLES6_UDP // + IPTABLES6_PRE +
+  /LEN=\d+/
+const IPTABLES6_TCP // + IPTABLES6_PRE +
+  /SEQ=(?P<seq>\d+)\s/ +
+  /ACK=(?P<ack>\d+)\s/ +
+  /WINDOW=(?P<window>\d+)\s/ +
+  /(?P<flags>[A-Z]+)/
+
+
+def syslog { /(?P<date>(/ + MATCH_LEGACY_DATE + /|/ + MATCH_RFC3339_DATE + /))/ +
+  /\s+(?:\w+@)?(?P<hostname>[\w\.-]+)\s+/ +
+  /(?P<application>[\w\.-]+)/ +
+  /(?:\[(?P<pid>\d+)\])?:\s+/ {
+
+        len($legacy_date) > 0 {
+            strptime($2, "Jan _2 15:04:05")
+        }
+        len($rfc3339_date) > 0 {
+            strptime($rfc3339_date, "2006-01-02T03:04:05-0700")
+        }
+        next
+    }
+}
+@syslog {
+  // + IPTABLES4_UDP {
+    iptables_drops["ipv4"]["udp"]++
+  }
+  // + IPTABLES4_TCP {
+    iptables_drops["ipv4"]["tcp"]++
+  }
+  // + IPTABLES6_UDP {
+    iptables_drops["ipv6"]["udp"]++
+  }
+  // + IPTABLES6_TCP {
+    iptables_drops["ipv6"]["tcp"]++
+  }
+}
