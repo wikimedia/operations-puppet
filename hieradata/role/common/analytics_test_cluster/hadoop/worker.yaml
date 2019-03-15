@@ -34,6 +34,7 @@ profile::hadoop::common::config_override:
   hdfs_site_extra_properties:
     dfs.http.policy: 'HTTPS_ONLY'
   mapred_site_extra_properties:
+    mapreduce.ssl.enabled: true
     mapreduce.shuffle.ssl.enabled: true
   yarn_site_extra_properties:
     yarn.http.policy: 'HTTPS_ONLY'
