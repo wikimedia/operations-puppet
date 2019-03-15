@@ -69,11 +69,13 @@ class profile::cache::ssl::unified(
         monitoring::service { 'https-ecdsa':
             description   => 'HTTPS Unified ECDSA',
             check_command => "check_ssl_unified!ECDSA!${check_cn}!${check_sans_str}",
+            notes_url     => 'https://wikitech.wikimedia.org/wiki/HTTPS',
         }
 
         monitoring::service { 'https-rsa':
             description   => 'HTTPS Unified RSA',
             check_command => "check_ssl_unified!RSA!${check_cn}!${check_sans_str}",
+            notes_url     => 'https://wikitech.wikimedia.org/wiki/HTTPS',
         }
     }
     # ordering ensures nginx/varnish config/service-start are
