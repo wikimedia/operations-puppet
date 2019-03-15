@@ -157,5 +157,6 @@ class profile::apertium {
     monitoring::service { 'apertium':
         description   => 'apertium apy',
         check_command => "check_http_hostheader_port_url!apertium.svc.${::site}.wmnet!${port}!/listPairs",
+        notes_url     => 'https://wikitech.wikimedia.org/wiki/CX',
     }
 }
