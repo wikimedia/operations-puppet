@@ -61,6 +61,7 @@ class profile::mediawiki::webserver(
             ensure        => present,
             description   => 'MediaWiki EtcdConfig up-to-date',
             check_command => "check_etcd_mw_config_lastindex!${::site}",
+            notes_url     => 'https://wikitech.wikimedia.org/wiki/Etcd',
         }
 
         # Restart HHVM if it is running since more than 3 days or
