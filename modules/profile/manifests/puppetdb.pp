@@ -1,12 +1,16 @@
 class profile::puppetdb(
-    $master = hiera('profile::puppetdb::master'),
-    $puppetmasters = hiera('puppetmaster::servers'),
-    $jvm_opts = hiera('profile::puppetdb::jvm_opts', '-Xmx4G'),
-    $prometheus_nodes = hiera('prometheus_nodes'),
-    $puppetdb_major_version = hiera('puppetdb_major_version', undef),
-    $ssldir = hiera('profile::puppetdb::ssldir', undef),
-    $ca_path = hiera('profile::puppetdb::ca_path', undef),
-    $puppetboard_hosts = hiera('profile::puppetdb::puppetboard_hosts', ''),
+    String $master = hiera('profile::puppetdb::master'),
+    Hash[String, Array[Hash]] $puppetmasters = hiera('puppetmaster::servers'),
+    String $jvm_opts = hiera('profile::puppetdb::jvm_opts', '-Xmx4G'),
+    Array[String] $prometheus_nodes = hiera('prometheus_nodes'),
+    Optional[Integer] $puppetdb_major_version = hiera('puppetdb_major_version', undef),
+    Optional[String] $ssldir = hiera('profile::puppetdb::ssldir', undef),
+    Optional[String] $ca_path = hiera('profile::puppetdb::ca_path', undef),
+    Optional[String] $puppetboard_hosts = hiera('profile::puppetdb::puppetboard_hosts', ''),
+    Boolean $microservice_enabled = hiera('profile::puppetdb::microservice::enabled'),
+    Integer $microservice_port = hiera('profile::puppetdb::microservice::port'),
+    Integer $microservice_uwsgi_port = hiera('profile::puppetdb::microservice::uwsgi_port'),
+    String $microservice_allowed_hosts = hiera('netmon_server'),
 ) {
 
     # Prometheus JMX agent for the Puppetdb's JVM
@@ -63,4 +67,51 @@ class profile::puppetdb(
         path => '/var/log/puppetlabs/puppetdb/puppetdb.log',
     }
 
+    if $microservice_enabled {
+        $ssl_settings = ssl_ciphersuite('nginx', 'strong', true)
+
+        nginx::site { 'puppetdb-microservice':
+            ensure  => present,
+            content => template('profile/puppetdb/nginx-puppetdb-microservice.conf.erb'),
+        }
+
+        file { '/srv/puppetdb-microservice.py':
+            ensure => present,
+            source => 'puppet:///modules/profile/puppetdb/puppetdb-microservice.py',
+            owner  => 'root',
+            mode   => '0644',
+        }
+        require_package('python3-flask')
+        uwsgi::app { 'puppetdb-microservice':
+            ensure   => present,
+            settings => {
+                uwsgi => {
+                    'plugins'   => 'python3',
+                    'socket'    => '/run/uwsgi/puppetdb-microservice.sock',
+                    'wsgi-file' => '/srv/puppetdb-microservice.py',
+                },
+
+            },
+        }
+        ferm::service { 'puppetdb-microservice':
+            ensure => present,
+            proto  => 'tcp',
+            port   => $microservice_port,
+            srange => "@resolve((${microservice_allowed_hosts}))",
+        }
+    }
+    else {
+        nginx::site { 'puppetdb-microservice':
+            ensure  => absent,
+        }
+        file { '/srv/puppetdb-microservice.py':
+            ensure => absent,
+        }
+        uwsgi::app { 'puppetdb-microservice':
+            ensure => absent,
+        }
+        ferm::service { 'puppetdb-microservice':
+            ensure => absent,
+        }
+    }
 }

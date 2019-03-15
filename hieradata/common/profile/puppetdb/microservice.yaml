@@ -1,0 +1,3 @@
+profile::puppetdb::microservice::enabled: true
+profile::puppetdb::microservice::port: 8090
+profile::puppetdb::microservice::uwsgi_port: 8091
