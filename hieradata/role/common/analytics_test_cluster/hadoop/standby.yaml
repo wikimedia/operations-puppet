@@ -40,6 +40,8 @@ profile::hadoop::common::config_override:
     mapreduce.jobhistory.http.policy: 'HTTPS_ONLY'
   yarn_site_extra_properties:
     yarn.http.policy: 'HTTPS_ONLY'
+  core_site_extra_properties:
+    hadoop.ssl.enabled: true
 
 profile::analytics::database::meta::backup_dest::hive::metastore_host: 'analytics1030.eqiad.wmnet'
 profile::analytics::database::meta::backup_dest::oozie_host: 'analytics1030.eqiad.wmnet'

@@ -38,7 +38,8 @@ profile::hadoop::common::config_override:
     mapreduce.shuffle.ssl.enabled: true
   yarn_site_extra_properties:
     yarn.http.policy: 'HTTPS_ONLY'
-
+  core_site_extra_properties:
+    hadoop.ssl.enabled: true
 
 profile::hadoop::worker::ferm_srange: '(($ANALYTICS_NETWORKS $DRUID_PUBLIC_HOSTS))'
 

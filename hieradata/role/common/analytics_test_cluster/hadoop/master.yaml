@@ -37,6 +37,8 @@ profile::hadoop::common::config_override:
     mapreduce.jobhistory.http.policy: 'HTTPS_ONLY'
   yarn_site_extra_properties:
     yarn.http.policy: 'HTTPS_ONLY'
+  core_site_extra_properties:
+    hadoop.ssl.enabled: true
 
 # Ensure that users in these posix groups have home directories in HDFS.
 profile::hadoop::master::hadoop_user_groups: "analytics-users analytics-privatedata-users analytics-admins analytics-search-users"
