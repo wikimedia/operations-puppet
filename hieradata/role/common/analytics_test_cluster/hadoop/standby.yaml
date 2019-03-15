@@ -36,6 +36,9 @@ profile::hadoop::common::config_override:
     dfs.http.policy: 'HTTPS_ONLY'
   mapred_site_extra_properties:
     mapreduce.shuffle.ssl.enabled: true
+    mapreduce.jobhistory.http.policy: 'HTTPS_ONLY'
+  yarn_site_extra_properties:
+    yarn.http.policy: 'HTTPS_ONLY'
 
 profile::analytics::database::meta::backup_dest::hive::metastore_host: 'analytics1030.eqiad.wmnet'
 profile::analytics::database::meta::backup_dest::oozie_host: 'analytics1030.eqiad.wmnet'
@@ -43,6 +46,7 @@ profile::analytics::database::meta::backup_dest::oozie_host: 'analytics1030.eqia
 profile::hadoop::firewall::master::analytics_srange: '$ANALYTICS_NETWORKS'
 profile::hadoop::firewall::master::analytics_druid_srange: '(($ANALYTICS_NETWORKS $DRUID_PUBLIC_HOSTS))'
 profile::hadoop::firewall::master::hdfs::ssl_enabled: true
+profile::hadoop::firewall::master::yarn::ssl_enabled: true
 
 profile::hadoop::backup::namenode::monitoring_enabled: true
 
