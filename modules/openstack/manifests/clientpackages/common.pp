@@ -1,15 +1,22 @@
 class openstack::clientpackages::common(
 ) {
-    $py2packages = [
+    $pypackages = [
         'python-novaclient',
+        'python3-novaclient',
         'python-glanceclient',
+        'python3-glanceclient',
         'python-keystoneclient',
+        'python3-keystoneclient',
+        'python3-keystoneauth1',
         'python-openstackclient',
+        'python3-openstackclient',
         'python-designateclient',
+        'python3-designateclient',
         'python-neutronclient',
+        'python3-neutronclient',
     ]
 
-    package{ $py2packages:
+    package { $pypackages:
         ensure => 'present',
     }
 
@@ -24,6 +31,13 @@ class openstack::clientpackages::common(
 
     # Wrapper python class to easily query openstack clients
     file { '/usr/lib/python2.7/dist-packages/mwopenstackclients.py':
+        ensure => 'present',
+        source => 'puppet:///modules/openstack/clientpackages/mwopenstackclients.py',
+        mode   => '0755',
+        owner  => 'root',
+        group  => 'root',
+    }
+    file { '/usr/lib/python3/dist-packages/mwopenstackclients.py':
         ensure => 'present',
         source => 'puppet:///modules/openstack/clientpackages/mwopenstackclients.py',
         mode   => '0755',
