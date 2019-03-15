@@ -111,6 +111,7 @@ class base::monitoring::host(
         ::nrpe::monitor_service { 'root_disk_space':
             description  => 'Disk space on /',
             nrpe_command => '/usr/lib/nagios/plugins/check_disk -w 5% -c 2% -l -e -p /',
+            notes_url    => 'https://wikitech.wikimedia.org/wiki/Monitoring/root_disk_space',
         }
     }
 
@@ -125,6 +126,7 @@ class base::monitoring::host(
     ::nrpe::monitor_service { 'dpkg':
         description  => 'DPKG',
         nrpe_command => '/usr/local/lib/nagios/plugins/check_dpkg',
+        notes_url    => 'https://wikitech.wikimedia.org/wiki/Monitoring/dpkg',
     }
     # Calculate freshness interval in seconds (hence *60)
     $warninginterval = $puppet_interval * 60 * 6
@@ -135,14 +137,17 @@ class base::monitoring::host(
         nrpe_command   => "/usr/bin/sudo /usr/local/lib/nagios/plugins/check_puppetrun -w ${warninginterval} -c ${criticalinterval}",
         check_interval => 5,
         retry_interval => 1,
+        notes_url      => 'https://wikitech.wikimedia.org/wiki/Monitoring/puppet_checkpuppetrun',
     }
     ::nrpe::monitor_service {'check_eth':
         description  => 'configured eth',
         nrpe_command => '/usr/local/lib/nagios/plugins/check_eth',
+        notes_url    => 'https://wikitech.wikimedia.org/wiki/Monitoring/check_eth',
     }
     ::nrpe::monitor_service { 'check_dhclient':
         description  => 'dhclient process',
         nrpe_command => '/usr/lib/nagios/plugins/check_procs -w 0:0 -c 0:0 -C dhclient',
+        notes_url    => 'https://wikitech.wikimedia.org/wiki/Monitoring/check_dhclient',
     }
 
     $ensure_monitor_systemd = $monitor_systemd ? {
@@ -163,6 +168,7 @@ class base::monitoring::host(
         ensure       => $ensure_monitor_systemd,
         description  => 'Check systemd state',
         nrpe_command => '/usr/local/lib/nagios/plugins/check_systemd_state',
+        notes_url    => 'https://wikitech.wikimedia.org/wiki/Monitoring/check_systemd_state',
     }
 
     if $::productname == 'PowerEdge R320' {
@@ -178,6 +184,7 @@ class base::monitoring::host(
         ::nrpe::monitor_service { 'check_cpufreq':
             description  => 'CPU frequency',
             nrpe_command => '/usr/local/lib/nagios/plugins/check_cpufreq 600',
+            notes_url    => 'https://wikitech.wikimedia.org/wiki/Monitoring/check_cpufreq',
         }
     }
 

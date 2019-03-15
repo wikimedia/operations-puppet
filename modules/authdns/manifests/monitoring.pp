@@ -30,5 +30,6 @@ class authdns::monitoring {
         description  => 'gdnsd checkconf',
         nrpe_command => '/usr/local/lib/nagios/plugins/check_gdnsd_checkconf',
         require      => File['/usr/local/lib/nagios/plugins/check_gdnsd_checkconf'],
+        notes_url    => 'https://wikitech.wikimedia.org/wiki/gdnsd',
     }
 }

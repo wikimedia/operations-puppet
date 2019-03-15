@@ -10,6 +10,7 @@ describe 'nrpe::monitor_service', :type => :define do
           :nrpe_command  => '/usr/local/bin/mycommand -i this -o that',
           :critical      => false,
           :timeout       => 42,
+          :notes_url     => 'https://wikitech.wikimedia.org/wiki/Monitoring'
           }
       end
 
@@ -24,7 +25,8 @@ describe 'nrpe::monitor_service', :type => :define do
               :retries       => 3,
               :ensure        => 'present',
               :check_command => 'nrpe_check!check_something!42',
-              :critical      => false
+              :critical      => false,
+              :notes_url     => 'https://wikitech.wikimedia.org/wiki/Monitoring'
           )
       end
     end
@@ -35,6 +37,7 @@ describe 'nrpe::monitor_service', :type => :define do
           :contact_group => 'none',
           :critical      => false,
           :timeout       => 42,
+          :notes_url     => 'https://wikitech.wikimedia.org/wiki/Monitoring'
           }
       end
       it 'does not compile' do
@@ -48,6 +51,7 @@ describe 'nrpe::monitor_service', :type => :define do
           :contact_group => 'none',
           :critical      => false,
           :timeout       => 42,
+          :notes_url     => 'https://wikitech.wikimedia.org/wiki/Monitoring'
           }
       end
       it 'does not compile' do
@@ -62,6 +66,7 @@ describe 'nrpe::monitor_service', :type => :define do
           :critical      => false,
           :timeout       => 42,
           :ensure        => 'absent',
+          :notes_url     => 'https://wikitech.wikimedia.org/wiki/Monitoring'
           }
       end
       it 'absents resources' do
@@ -75,7 +80,8 @@ describe 'nrpe::monitor_service', :type => :define do
             :retries       => 3,
             :ensure        => 'absent',
             :description   => 'foobar',
-            :critical      => false
+            :critical      => false,
+            :notes_url     => 'https://wikitech.wikimedia.org/wiki/Monitoring'
         )
       end
     end
@@ -87,6 +93,7 @@ describe 'nrpe::monitor_service', :type => :define do
           :critical      => false,
           :timeout       => 42,
           :ensure        => 'absent',
+          :notes_url     => 'https://wikitech.wikimedia.org/wiki/Monitoring'
           }
       end
       it 'absents resources' do

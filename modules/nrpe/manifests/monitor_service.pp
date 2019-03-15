@@ -6,6 +6,9 @@
 # using nrpe::check
 #
 # Parameters
+#    $notes_url
+#       A required URL used to provide information about the service.
+#       Ideally a runbook how to handle alerts on Wikitech. Must not be URL-encoded.
 #    $description
 #       Service check description
 #    $nrpe_command
@@ -24,16 +27,14 @@
 #    $event_handler
 #       Default to false. If present execute this registered command on the
 #       Nagios server.
-#    $notes_url
-#       An optional URL used to provide more information about the service.
-#       Must not be URL-encoded.
 #    $dashboard_link
 #       An optional URL to link to grafana or another monitoring dashboard.
 #       Must not be URL-encoded.
 #    $ensure
 #       Defaults to present
 #
-define nrpe::monitor_service( $description      = undef,
+define nrpe::monitor_service( Stdlib::HTTPSUrl $notes_url,
+                              $description      = undef,
                               $nrpe_command     = undef,
                               $contact_group    = hiera('contactgroups', 'admins'),
                               $retries          = 3,
@@ -42,7 +43,6 @@ define nrpe::monitor_service( $description      = undef,
                               $event_handler    = undef,
                               $check_interval   = 1,
                               $retry_interval   = 1,
-                              $notes_url        = 'https://wikitech.wikimedia.org/wiki/Monitoring/Missing_notes_link',
                               Optional[Array[Stdlib::HTTPSUrl, 1]] $dashboard_links = undef,
                               Wmflib::Ensure $ensure = present) {
     unless $ensure == 'absent' or ($description and $nrpe_command) {
