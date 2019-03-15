@@ -7,4 +7,5 @@ class role::wmcs::toolforge::grid::shadow {
     include profile::toolforge::apt_pinning
     include profile::toolforge::grid::base
     include profile::toolforge::grid::shadow
+    include profile::toolforge::grid::submit_host
 }

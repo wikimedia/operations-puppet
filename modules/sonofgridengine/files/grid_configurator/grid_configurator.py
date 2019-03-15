@@ -39,6 +39,7 @@ GRID_HOST_PREFIX = {
     "sgeexec": ["exec", "submit"],
     "sgebastion": "submit",
     "sgecron": "submit",
+    "sgegrid": "submit"
 }
 
 
