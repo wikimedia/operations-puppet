@@ -19,6 +19,7 @@ CONFIG proxy.config.url_remap.pristine_host_hdr INT 1
 CONFIG proxy.config.disable_configuration_modification INT 1
 
 # RAM Cache
+CONFIG proxy.config.cache.ram_cache.size INT <%= @ram_cache_size %>
 CONFIG proxy.config.cache.ram_cache_cutoff INT 8388608 # 8MB
 # 0=no compression, 1=Fastlz, 2=Libz, 3=Liblzma
 CONFIG proxy.config.cache.ram_cache.compress INT 2

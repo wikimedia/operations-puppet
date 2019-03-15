@@ -74,6 +74,12 @@
 #
 #   See https://docs.trafficserver.apache.org/en/latest/admin-guide/files/storage.config.en.html
 #
+# [*ram_cache_size*]
+#   The amount of memory in bytes to reserve for RAM cache. Traffic Server
+#   automatically determines the RAM cache size if this value is not specified
+#   or set to -1. (default: -1)
+#   See https://docs.trafficserver.apache.org/en/latest/admin-guide/files/records.config.en.html
+#
 # [*log_formats*]
 #   An array of Trafficserver::Log_formats. (default: []).
 #   See https://docs.trafficserver.apache.org/en/latest/admin-guide/files/logging.yaml.en.html
@@ -124,6 +130,7 @@ class trafficserver(
     Array[Trafficserver::Mapping_rule] $mapping_rules = [],
     Array[Trafficserver::Caching_rule] $caching_rules = [],
     Array[Trafficserver::Storage_element] $storage = [],
+    Integer $ram_cache_size = -1,
     Array[Trafficserver::Log_format] $log_formats = [],
     Array[Trafficserver::Log_filter] $log_filters = [],
     Array[Trafficserver::Log] $logs = [],

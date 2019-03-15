@@ -31,6 +31,7 @@ class profile::trafficserver::backend (
         enable_xdebug                => $enable_xdebug,
         global_lua_script            => $global_lua_script,
         storage                      => $storage,
+        ram_cache_size               => 2147483648, # 2G
         mapping_rules                => $mapping_rules,
         caching_rules                => $caching_rules,
         log_formats                  => $log_formats,
