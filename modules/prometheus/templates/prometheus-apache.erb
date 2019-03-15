@@ -10,4 +10,6 @@
         Allow from none
     </LocationMatch>
 
-    ProxyPass /<%= @title %> <%= @proxy_pass %>
+    # max connections _per apache child process_
+    # wait 1s to acquire a free connection before returning "server busy"
+    ProxyPass /<%= @title %> <%= @proxy_pass %> max=<%= @maxconn %> acquire=1000

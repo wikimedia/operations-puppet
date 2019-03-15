@@ -7,10 +7,15 @@
 # [*proxy_pass*]
 #   The address to proxy to, usually in the form of
 #   'http://localhost:<prometheus_port>/<prometheus_name>'
-
+#
+# [*maxconn*]
+#   The maximum number of connections per Apache worker to the instance.
+#   Keep under ThreadsPerChild setting (25 default) to ensure a single slow
+#   Prometheus instance does not starve other instances on the same host.
 define prometheus::web (
     $proxy_pass,
     $ensure = present,
+    $maxconn = 10,
 ) {
     include ::prometheus
 
