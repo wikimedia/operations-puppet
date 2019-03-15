@@ -8,16 +8,6 @@ class profile::elasticsearch::logstash(
 ) {
     include ::profile::elasticsearch
 
-    # the logstash cluster has 3 data nodes, and each shard has 3 replica (each
-    # shard is present on each node). If one node is lost, 1/3 of the shards
-    # will be unassigned, with no way to reallocate them on another node, which
-    # is fine and should not raise an alert. So threshold needs to be > 1/3.
-    icinga::monitor::elasticsearch::base_checks { $::hostname:
-        threshold           => '>=0.34',
-        shard_size_warning  => 150,
-        shard_size_critical => 200,
-    }
-
     file { '/usr/share/elasticsearch/plugins':
         ensure => 'directory',
         force  => true,
