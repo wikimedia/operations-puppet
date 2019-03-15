@@ -13,14 +13,23 @@
 # [*snmp_community*]
 #   The SNMP community to use to poll the device. Optional
 #
+# [*group*]
+# The Icinga group for the alert. Defaults to network
+#
 # [*alarms*]
 #   Whether to perform chassis alarms checks. Defaults to false.
 #
 # [*interfaces*]
 #   Whether to perform interface status checks. Defaults to false.
 #
+# [*bfd*]
+#   Whether to perform BFD status checks. Defaults to false.
+#
 # [*bgp*]
 #   Whether to perform BGP checks. Defaults to false.
+#
+# [*interfaces*]
+#   Whether to perform Interface down checks. Defaults to false.
 #
 # [*parents*]
 #   The parent devices of this device. Accepts either an array or a comma
@@ -28,6 +37,15 @@
 #
 # [*os*]
 #   The operating system of the device. Defaults to undef.
+#
+# [*ospf*]
+#   Whether to perform OSPF status checks. Defaults to false.
+#
+# [*vcp*]
+#   Whether to perform Virtual Chassis Ports checks. Defaults to false.
+#
+# [*vrrp_peer*]
+#   IP or FQDN of the VRRP peer, enables VRRP checks. Defaults to false.
 #
 # === Examples
 #
@@ -47,6 +65,7 @@ define netops::check(
     $interfaces=false,
     $parents=undef,
     $os=undef,
+    $ospf=false,
     $vcp=false,
     $vrrp_peer=false,
 ) {
@@ -134,6 +153,16 @@ define netops::check(
             description   => 'BFD status',
             check_command => "check_bfd!${snmp_community}",
             notes_url     => 'https://wikitech.wikimedia.org/wiki/Network_monitoring#BFD_status',
+        }
+    }
+
+    if $ospf {
+        @monitoring::service { "${title} OSPF status":
+            host          => $title,
+            group         => $group,
+            description   => 'OSPF status',
+            check_command => "check_ospf!${snmp_community}",
+            notes_url     => 'https://wikitech.wikimedia.org/wiki/Network_monitoring#OSPF_status',
         }
     }
 }

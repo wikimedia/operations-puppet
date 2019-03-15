@@ -18,6 +18,7 @@ class netops::monitoring {
         interfaces     => true,
         bfd            => true,
         os             => 'Junos',
+        ospf           => true,
     }
     $routers = {
         # eqiad
