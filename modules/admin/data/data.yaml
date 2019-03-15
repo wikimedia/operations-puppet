@@ -1902,6 +1902,7 @@ users:
     realname: Michael Holloway
     ssh_keys:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIIneKTP+6PaLMgGkOqtGe89r1i6e8lAPSZuBgGSbJaFS mholloway@wmf1256.local
+      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIK4utj9osWuPYu5lxsbNoWMaae6K7rtabeoUDRkBw8Rs 2019-03-15-new-ubuntu-prod
     uid: 11963
     email: mholloway@wikimedia.org
   madhuvishy:
