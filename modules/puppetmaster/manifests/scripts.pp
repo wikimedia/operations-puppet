@@ -12,7 +12,12 @@
 class puppetmaster::scripts(
     $keep_reports_minutes = 960, # 16 hours
 ) {
-    $servers = hiera('puppetmaster::servers', {})
+    $prodservers = hiera('puppetmaster::servers', {})
+
+    # This is a temporary hack; it can be removed once T171188 is resolved
+    #  and wmcs puppetmasters are more decoupled from prod
+    $wmcsservers = hiera('profile::openstack::eqiad1::puppetmaster::servers', {})
+    $servers = $prodservers + $wmcsservers
 
     file{'/usr/local/bin/puppet-merge':
         ensure  => present,

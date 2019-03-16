@@ -12,6 +12,7 @@ class profile::openstack::base::puppetmaster::common(
     $statsd_host = hiera('profile::openstack::base::puppetmaster::common::statsd_host'),
     $labweb_hosts = hiera('profile::openstack::base::labweb_hosts'),
     $nova_controller = hiera('profile::openstack::base::nova_controller'),
+    $prodservers = hiera('puppetmaster::servers', {}),
     ) {
 
     # array of puppetmasters
@@ -69,5 +70,17 @@ class profile::openstack::base::puppetmaster::common(
                           ${labweb_ips} ${labweb_aaaa}
                           @resolve((${all_puppetmasters})) @resolve((${all_puppetmasters}), AAAA))
                           proto tcp dport 8100 ACCEPT;",
+    }
+
+    # Allow ssh from the prod puppetmasters so that 'puppet merge' run there
+    #  can also happen here.  We're doing this as a special case
+    #  in the cloud profile because we only want one-way access:
+    #  prod can cause a merge here but we don't want cloud puppetmasters
+    #  with ssh access to the prod masters.
+    $puppetmaster_frontend_ferm = join(keys($prodservers), ' ')
+    ferm::service { 'ssh_puppet_merge_from_prod':
+        proto  => 'tcp',
+        port   => '22',
+        srange => "(@resolve((${puppetmaster_frontend_ferm})) @resolve((${puppetmaster_frontend_ferm}), AAAA))"
     }
 }
