@@ -38,13 +38,6 @@ class profile::openstack::base::puppetmaster::common(
         second_region_designate_host => $second_region_designate_host,
     }
 
-    # Update git checkout.  This is done via a cron
-    #  rather than via puppet_merge to increase isolation
-    #  between these puppetmasters and the production ones.
-    class { 'puppetmaster::gitsync':
-        run_every_minutes => '1',
-    }
-
     $labweb_ips = inline_template("@resolve((<%= @labweb_hosts.join(' ') %>))")
     $labweb_aaaa = inline_template("@resolve((<%= @labweb_hosts.join(' ') %>), AAAA)")
 
