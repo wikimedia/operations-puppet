@@ -2,10 +2,6 @@ class openstack::clientpackages::mitaka::jessie(
 ) {
     require openstack::commonpackages::mitaka
 
-    package{ 'mysql-client-5.5':
-        ensure => 'present',
-    }
-
     apt::pin { 'jessie_mitaka_pinning_python_cinderclient':
         package  => 'python-cinderclient',
         pin      => 'version 1:1.6.0-3~bpo8+1',
