@@ -31,6 +31,10 @@ class profile::toolforge::bastion(
     }
 
     file { '/usr/local/sbin/qstat-full':
+        ensure => absent,
+    }
+
+    file { '/usr/local/bin/qstat-full':
         ensure => file,
         owner  => 'root',
         group  => 'root',
