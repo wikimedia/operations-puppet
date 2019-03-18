@@ -54,25 +54,25 @@ keep=<%= @config[@configtype]['global']['keep'] %>
 chunksEnabled=<%= @config[@configtype]['global']['chunksEnabled'] %>
 <% end -%>
 <% if @config[@configtype]['global'].has_key?('recombineMetaCurrent') -%>
-recombineHistory=<%= @config[@configtype]['recombineMetaCurrent'] %>
+recombineHistory=<%= @config[@configtype]['global']['recombineMetaCurrent'] %>
 <% end -%>
 <% if @config[@configtype]['global'].has_key?('recombineHistory') -%>
-recombineHistory=<%= @config[@configtype]['recombineHistory'] %>
+recombineHistory=<%= @config[@configtype]['global']['recombineHistory'] %>
 <% end -%>
 <% if @config[@configtype]['global'].has_key?('checkpointTime') -%>
-checkpointTime=<%= @config[@configtype]['checkpointTime'] %>
+checkpointTime=<%= @config[@configtype]['global']['checkpointTime'] %>
 <% end -%>
 <% if @config[@configtype]['global'].has_key?('revsPerJob') -%>
-revsPerJob=<%= @config[@configtype]['revsPerJob'] %>
+revsPerJob=<%= @config[@configtype]['global']['revsPerJob'] %>
 <% end -%>
 <% if @config[@configtype]['global'].has_key?('retryWait') -%>
-retryWait=<%= @config[@configtype]['retryWait'] %>
+retryWait=<%= @config[@configtype]['global']['retryWait'] %>
 <% end -%>
 <% if @config[@configtype]['global'].has_key?('revsMargin') -%>
-revsMargin=<%= @config[@configtype]['revsMargin'] %>
+revsMargin=<%= @config[@configtype]['global']['revsMargin'] %>
 <% end -%>
 <% if @config[@configtype]['global'].has_key?('lbzip2threads') -%>
-lbzip2threads=<%= @config[@configtype]['lbzip2threads'] %>
+lbzip2threads=<%= @config[@configtype]['global']['lbzip2threads'] %>
 <% end -%>
 
 [otherformats]
