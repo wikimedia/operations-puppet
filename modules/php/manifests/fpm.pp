@@ -37,7 +37,6 @@ class php::fpm(
         'log_level'               => 'notice',
         'process_control_timeout' => 180,
         'systemd_interval'        => 10,
-        'display_errors'          => 0,
     }
 
     # These config values are set by the systemd unit shipped by
