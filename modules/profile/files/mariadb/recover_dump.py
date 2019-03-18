@@ -16,7 +16,7 @@ DEFAULT_PORT = 3306
 DEFAULT_USER = 'root'
 BACKUP_DIR = '/srv/backups/dumps/latest'
 # FIXME: backups will stop working on Jan 1st 2100
-DUMPNAME_REGEX = r'dump\.([a-z0-9\-]+)\.(20\d\d-[01]\d-[0123]\d\--\d\d-\d\d-\d\d)'
+DUMPNAME_REGEX = r'dump\.([a-z0-9\-]+)\.(20\d\d-[01]\d-[0123]\d\--\d\d-\d\d-\d\d)(\.tar\.gz)?'
 
 
 def parse_options():
@@ -102,38 +102,46 @@ def recover_logical_dump(options):
 
     if os.path.isabs(options.section):
         # Recover from absolute path
-        backup_dir = options.section.rstrip(os.sep)  # basename() differs from unix basename
+        path = options.section.rstrip(os.sep)  # basename() differs from unix basename
         pattern = re.compile('.+(' + DUMPNAME_REGEX + ')')
-        if os.path.isdir(backup_dir) and pattern.match(backup_dir) is not None:
-            backup_name = os.path.basename(backup_dir)
+        if pattern.match(path) is not None:
+            backup_name = os.path.basename(path)
+            backup_dir = os.path.dirname(path)
     else:
         # Recover from default dir
         files = sorted(os.listdir(BACKUP_DIR), reverse=True)
 
         for entry in files:
             path = os.path.join(BACKUP_DIR, entry)
-            if not os.path.isdir(path):
-                continue
             pattern = re.compile(DUMPNAME_REGEX)
             match = pattern.match(entry)
             if match is None:
                 continue
             if options.section == match.group(1):
                 backup_name = match.group(0)
-                backup_dir = path
+                backup_dir = os.path.dirname(path)
                 break
 
     if backup_name is None:
         print('Latest backup with name "{}" not found'.format(options.section))
         return -1
+
     print('Attempting to recover "{}" ...'.format(backup_name))
 
+    # decompress if we have a tarball
+    if backup_name.endswith('.tar.gz'):
+        print('Decompressing {}...'.format(backup_name))
+        untar_and_remove(backup_name, backup_dir)
+        backup_name = backup_name[:-7]
+
+    full_path = os.path.join(backup_dir, backup_name)
+
     # untar any files, if any
-    unarchive_databases(backup_dir, options)
+    unarchive_databases(full_path, options)
 
     # run myloader
     print('Running myloader...')
-    cmd = get_my_loader_cmd(backup_dir, options)
+    cmd = get_my_loader_cmd(full_path, options)
 
     # print(cmd)
     process = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
