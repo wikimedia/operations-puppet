@@ -76,6 +76,15 @@ class profile::mediawiki::php(
             'cli' => $config_cli,
             'fpm' => merge($config_cli, $base_config_fpm, $fpm_config)
         }
+        # Add systemd override for php-fpm, that should prevent a reload
+        # if the fpm config files are broken.
+        # This should prevent us from shooting our own foot as happened before.
+        systemd::unit { "php${php_version}-fpm.service":
+            ensure   => present,
+            content  => template('profile/mediawiki/php-fpm-systemd-override.conf.erb'),
+            override => true,
+            restart  => false,
+        }
     } else {
         $_sapis = ['cli']
         $_config = {
