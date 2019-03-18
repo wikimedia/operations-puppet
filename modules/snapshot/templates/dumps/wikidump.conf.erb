@@ -68,9 +68,6 @@ revsPerJob=<%= @config[@configtype]['revsPerJob'] %>
 <% if @config[@configtype]['global'].has_key?('retryWait') -%>
 retryWait=<%= @config[@configtype]['retryWait'] %>
 <% end -%>
-<% if @config[@configtype]['global'].has_key?('maxRetries') -%>
-maxRetries=<%= @config[@configtype]['maxRetries'] %>
-<% end -%>
 <% if @config[@configtype]['global'].has_key?('revsMargin') -%>
 revsMargin=<%= @config[@configtype]['revsMargin'] %>
 <% end -%>
@@ -83,6 +80,9 @@ multistream=1
 
 [misc]
 sevenzipprefetch=1
+<% if @config[@configtype]['global'].has_key?('maxRetries') -%>
+maxRetries=<%= @config[@configtype]['global']['maxRetries'] %>
+<% end -%>
 
 [stubs]
 orderrevs=0
