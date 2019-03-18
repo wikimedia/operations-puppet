@@ -16,6 +16,9 @@ class profile::hue (
     $kerberos_keytab            = hiera('profile::hue::kerberos_keytab', undef),
     $kerbersos_principal        = hiera('profile::hue::kerberos_principal', undef),
     $kerberos_kinit_path        = hiera('profile::hue::kerberos_kinit_path', undef),
+    $use_yarn_ssl_config        = hiera('profile::hue::use_yarn_ssl_config', false),
+    $use_hdfs_ssl_config        = hiera('profile::hue::use_hdfs_ssl_config', false),
+    $use_mapred_ssl_config      = hiera('profile::hue::use_mapred_ssl_config', false),
 ){
 
     # Require that all Hue applications
@@ -68,6 +71,9 @@ class profile::hue (
         kerberos_keytab            => $kerberos_keytab,
         kerbersos_principal        => $kerbersos_principal,
         kerberos_kinit_path        => $kerberos_kinit_path,
+        use_yarn_ssl_config        => $use_yarn_ssl_config,
+        use_hdfs_ssl_config        => $use_hdfs_ssl_config,
+        use_mapred_ssl_config      => $use_mapred_ssl_config,
     }
 
     # Include icinga alerts if production realm.
