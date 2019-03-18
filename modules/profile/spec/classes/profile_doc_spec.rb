@@ -14,8 +14,7 @@ describe 'profile::doc' do
     context "on #{os}" do
       let(:facts) { facts }
       let(:pre_condition) do
-          'exec { "apt-get update": path => "/bin/true" }
-           include base::auto_restarts'
+          'exec { "apt-get update": path => "/bin/true" }'
       end
       it { should compile }
     end

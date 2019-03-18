@@ -8,6 +8,8 @@
 define base::service_auto_restart(
     $ensure  = present,
 ) {
+    include base::auto_restarts
+
     cron { "wmf_auto_restart_${title}":
         ensure  => $ensure,
         command => "/usr/local/sbin/wmf-auto-restart -s ${title}",
