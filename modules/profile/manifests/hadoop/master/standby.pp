@@ -38,12 +38,14 @@ class profile::hadoop::master::standby(
             contact_group => 'admins,analytics',
             require       => Class['cdh::hadoop::namenode::standby'],
             critical      => true,
+            notes_url     => 'https://wikitech.wikimedia.org/wiki/Analytics/Systems/Cluster/Hadoop/Administration',
         }
         nrpe::monitor_service { 'hadoop-hdfs-zkfc':
             description   => 'Hadoop HDFS Zookeeper failover controller',
             nrpe_command  => '/usr/lib/nagios/plugins/check_procs -c 1:1 -C java -a "org.apache.hadoop.hdfs.tools.DFSZKFailoverController"',
             contact_group => 'admins,analytics',
             require       => Class['cdh::hadoop::namenode::standby'],
+            notes_url     => 'https://wikitech.wikimedia.org/wiki/Analytics/Systems/Cluster/Hadoop/Administration',
         }
 
         # Thresholds for the HDFS namenode are higher since it has always

@@ -73,6 +73,7 @@ class profile::hadoop::backup::namenode(
             description   => 'Age of most recent Hadoop NameNode backup files',
             nrpe_command  => "/usr/bin/sudo /usr/local/lib/nagios/plugins/check_newest_file_age -V -C -d ${destination} -w ${$warning_threshold_hours} -c ${critical_threshold_hours}",
             contact_group => 'analytics',
+            notes_url     => 'https://wikitech.wikimedia.org/wiki/Analytics/Systems/Cluster/Hadoop/Administration',
         }
     }
 

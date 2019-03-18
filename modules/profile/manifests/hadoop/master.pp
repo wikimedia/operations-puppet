@@ -77,24 +77,28 @@ class profile::hadoop::master(
             nrpe_command  => '/usr/lib/nagios/plugins/check_procs -c 1:1 -C java -a "org.apache.hadoop.hdfs.server.namenode.NameNode"',
             contact_group => 'admins,analytics',
             require       => Class['cdh::hadoop::master'],
+            notes_url     => 'https://wikitech.wikimedia.org/wiki/Analytics/Systems/Cluster/Hadoop/Administration',
         }
         nrpe::monitor_service { 'hadoop-hdfs-zkfc':
             description   => 'Hadoop HDFS Zookeeper failover controller',
             nrpe_command  => '/usr/lib/nagios/plugins/check_procs -c 1:1 -C java -a "org.apache.hadoop.hdfs.tools.DFSZKFailoverController"',
             contact_group => 'admins,analytics',
             require       => Class['cdh::hadoop::master'],
+            notes_url     => 'https://wikitech.wikimedia.org/wiki/Analytics/Systems/Cluster/Hadoop/Administration',
         }
         nrpe::monitor_service { 'hadoop-yarn-resourcemanager':
             description   => 'Hadoop ResourceManager',
             nrpe_command  => '/usr/lib/nagios/plugins/check_procs -c 1:1 -C java -a "org.apache.hadoop.yarn.server.resourcemanager.ResourceManager"',
             contact_group => 'admins,analytics',
             require       => Class['cdh::hadoop::master'],
+            notes_url     => 'https://wikitech.wikimedia.org/wiki/Analytics/Systems/Cluster/Hadoop/Administration',
         }
         nrpe::monitor_service { 'hadoop-mapreduce-historyserver':
             description   => 'Hadoop HistoryServer',
             nrpe_command  => '/usr/lib/nagios/plugins/check_procs -c 1:1 -C java -a "org.apache.hadoop.mapreduce.v2.hs.JobHistoryServer"',
             contact_group => 'admins,analytics',
             require       => Class['cdh::hadoop::master'],
+            notes_url     => 'https://wikitech.wikimedia.org/wiki/Analytics/Systems/Cluster/Hadoop/Administration',
         }
 
         # Allow nagios to run some scripts as hdfs user.
@@ -112,12 +116,14 @@ class profile::hadoop::master(
             check_interval => 30,
             retries        => 2,
             require        => File['/usr/local/lib/nagios/plugins/check_hdfs_topology'],
+            notes_url      => 'https://wikitech.wikimedia.org/wiki/Analytics/Systems/Cluster/Hadoop/Administration',
         }
         # Alert if there is no active NameNode
         nrpe::monitor_service { 'hadoop-hdfs-active-namenode':
             description   => 'At least one Hadoop HDFS NameNode is active',
             nrpe_command  => '/usr/bin/sudo /usr/local/bin/check_hdfs_active_namenode',
             contact_group => 'admins,analytics',
+            notes_url     => 'https://wikitech.wikimedia.org/wiki/Analytics/Systems/Cluster/Hadoop/Administration',
             require       => [
                 Class['cdh::hadoop::master'],
                 Sudo::User['nagios-check_hdfs_active_namenode'],

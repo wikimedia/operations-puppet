@@ -66,12 +66,14 @@ class profile::hadoop::worker(
             nrpe_command  => '/usr/lib/nagios/plugins/check_procs -c 1:1 -C java -a "org.apache.hadoop.hdfs.server.datanode.DataNode"',
             contact_group => 'admins,analytics',
             require       => Class['cdh::hadoop::worker'],
+            notes_url     => 'https://wikitech.wikimedia.org/wiki/Analytics/Systems/Cluster/Hadoop/Administration',
         }
         nrpe::monitor_service { 'hadoop-yarn-nodemanager':
             description   => 'Hadoop NodeManager',
             nrpe_command  => '/usr/lib/nagios/plugins/check_procs -c 1:1 -C java -a "org.apache.hadoop.yarn.server.nodemanager.NodeManager"',
             contact_group => 'admins,analytics',
             require       => Class['cdh::hadoop::worker'],
+            notes_url     => 'https://wikitech.wikimedia.org/wiki/Analytics/Systems/Cluster/Hadoop/Administration',
         }
 
         if $::fqdn in $::cdh::hadoop::journalnode_hosts {
@@ -80,6 +82,7 @@ class profile::hadoop::worker(
                 nrpe_command  => '/usr/lib/nagios/plugins/check_procs -c 1:1 -C java -a "org.apache.hadoop.hdfs.qjournal.server.JournalNode"',
                 contact_group => 'admins,analytics',
                 require       => Class['cdh::hadoop'],
+                notes_url     => 'https://wikitech.wikimedia.org/wiki/Analytics/Systems/Cluster/Hadoop/Administration',
             }
         }
 
@@ -90,6 +93,7 @@ class profile::hadoop::worker(
             description   => 'Disk space on Hadoop worker',
             nrpe_command  => '/usr/lib/nagios/plugins/check_disk --units GB -w 32 -c 16 -e -l  -r "/var/lib/hadoop/data"',
             contact_group => 'admins,analytics',
+            notes_url     => 'https://wikitech.wikimedia.org/wiki/Analytics/Systems/Cluster/Hadoop/Administration',
         }
 
         # Make sure that this worker node has NodeManager running in a RUNNING state.
@@ -105,6 +109,7 @@ class profile::hadoop::worker(
             nrpe_command   => '/usr/local/lib/nagios/plugins/check_hadoop_yarn_node_state',
             contact_group  => 'admins,analytics',
             retry_interval => 3,
+            notes_url      => 'https://wikitech.wikimedia.org/wiki/Analytics/Systems/Cluster/Hadoop/Administration',
         }
 
         monitoring::check_prometheus { 'analytics_hadoop_hdfs_datanode':

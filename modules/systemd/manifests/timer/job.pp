@@ -136,7 +136,6 @@ define systemd::timer::job(
             nrpe_command   => "/usr/local/lib/nagios/plugins/check_systemd_unit_status ${title}",
             check_interval => 10,
             retries        => 2,
-
             contact_group  => $monitoring_contact_groups,
             require        => File['/usr/local/lib/nagios/plugins/check_systemd_unit_status'],
         }
