@@ -372,6 +372,8 @@ def main():
                       If this option is set, then all group memberships are removed""")
     parser.add_option("--list-only", action="store_true", dest="dry_run", default=False,
                       help="Only list group memberships, don't do anything")
+    parser.add_option("--skip-analytics", action="store_true", dest="skip_analytics",
+                      help="When offboarding an LDAP user, skip the check for analytics groups")
     parser.add_option("--turn-volunteer", action="store_true", dest="turn_volunteer", default=False,
                       help="If a former WMF staff member wishes to resume under a volunteer NDA")
 
@@ -389,7 +391,8 @@ def main():
         offboard_ldap(options.ldap_username, options.remove_all_groups,
                       options.turn_volunteer, options.dry_run)
 
-        offboard_analytics(options.ldap_username)
+        if not options.skip_analytics:
+            offboard_analytics(options.ldap_username)
 
     else:
         print("Skipping LDAP offboarding, use -l USERNAME to run it at a later point")
