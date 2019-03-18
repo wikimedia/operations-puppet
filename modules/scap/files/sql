@@ -2,8 +2,8 @@
 
 # This file is managed by Puppet (modules/scap/files/sql).
 
-# hhvm -dhhvm.server.light_process_count=0 would also work, see T199152
-export PHP=php7.0
+# See T199152
+export PHP=php7.2
 
 case "$1" in
     "" | --help)
