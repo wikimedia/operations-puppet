@@ -69,6 +69,7 @@ class profile::mediawiki::php(
         'opcache.max_wasted_percentage' => 10,
         'opcache.validate_timestamps'   => 0,
         'auto_prepend_file'             => '/srv/mediawiki/wmf-config/PhpAutoPrepend.php',
+        'display_errors'                => 0,
     }
     if $enable_fpm {
         $_sapis = ['cli', 'fpm']
