@@ -21,6 +21,8 @@ class profile::netbox (
     String $ganeti_user = hiera('profile::ganeti::rapi::ro_user'),
     String $ganeti_password = hiera('profile::ganeti::rapi::ro_password'),
     Stdlib::HTTPSUrl $nb_api = hiera('profile::netbox::netbox_api'),
+    Stdlib::Host $puppetdb_host = hiera('puppetdb_host'),
+    Integer $puppetdb_microservice_port = hiera('profile::puppetdb::microservice::port'),
     Hash[String, Hash[String, Scalar, 2, 2]] $nb_ganeti_profiles = hiera('profile::netbox::ganeti_sync_profiles')
 ) {
 
@@ -29,6 +31,8 @@ class profile::netbox (
     $secret_key = $passwords::netbox::secret_key
     $replication_pass = $passwords::netbox::replication_password
     $nb_ganeti_ca_cert = '/etc/ssl/certs/Puppet_Internal_CA.pem'
+    $nb_puppetdb_ca_cert = $nb_ganeti_ca_cert
+    $puppetdb_api = "https://${puppetdb_host}:${puppetdb_microservice_port}/"
 
     $reports_path = '/srv/deployment/netbox-reports'
 
@@ -183,10 +187,18 @@ class profile::netbox (
         notes_url     => 'https://wikitech.wikimedia.org/wiki/Netbox',
     }
 
+
     file { '/etc/netbox-ganeti-sync.cfg':
         owner   => 'deploy-librenms',
         group   => 'www-data',
         mode    => '0400',
         content => template('profile/netbox/netbox-ganeti-sync.cfg.erb')
+    }
+
+    file { '/etc/netbox-reports.cfg':
+        owner   => 'deploy-librenms',
+        group   => 'www-data',
+        mode    => '0440',
+        content => template('profile/netbox/netbox-reports.cfg.erb')
     }
 }
