@@ -18,8 +18,8 @@ class profile::mariadb::backup::transfer {
     # Can contain private data like db passwords
     file { '/etc/mysql/backups.cnf':
         ensure  => present,
-        owner   => 'dump',
-        group   => 'dump',
+        owner   => 'root',
+        group   => 'root',
         mode    => '0400',
         content => template("profile/mariadb/daily-snapshots-${::site}.cnf.erb"),
         require => [File['/etc/mysql'],
