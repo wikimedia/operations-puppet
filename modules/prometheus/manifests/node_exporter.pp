@@ -79,16 +79,20 @@ class prometheus::node_exporter (
                     before     => Package['prometheus-node-exporter'],
                     notify     => Exec['post-repo-install apt update'],
                 }
-            }
 
-            exec { 'post-repo-install apt update':
-                command     => '/usr/bin/apt update',
-                refreshonly => true,
-            }
+                exec { 'post-repo-install apt update':
+                    command     => '/usr/bin/apt update',
+                    refreshonly => true,
+                }
 
-            package { 'prometheus-node-exporter':
-                ensure  => '0.17.0+ds-3',
-                require => [Exec['apt-get update'], Exec['post-repo-install apt update']],
+                package { 'prometheus-node-exporter':
+                    ensure  => '0.17.0+ds-3',
+                    require => [Exec['apt-get update'], Exec['post-repo-install apt update']],
+                }
+            } elsif ($::lsbdistcodename == 'buster') {
+                package { 'prometheus-node-exporter':
+                    ensure  => installed,
+                }
             }
 
             file { '/etc/default/prometheus-node-exporter':
