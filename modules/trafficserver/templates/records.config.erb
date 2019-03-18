@@ -25,7 +25,11 @@ CONFIG proxy.config.cache.ram_cache_cutoff INT 8388608 # 8MB
 CONFIG proxy.config.cache.ram_cache.compress INT 2
 
 # Disk Cache
-CONFIG proxy.config.cache.max_doc_size INT 1073741824 # 1GB
+# max_doc_size needs to be disabled in order for Read While Writer to function
+# properly. See cache-basics.en.html#read-while-writer. We use Lua to avoid
+# caching documents with explicit Content-Length > 1G, see
+# do_global_read_response().
+CONFIG proxy.config.cache.max_doc_size INT 0
 
 <% if @enable_xdebug -%>
 # XDebug Plugin
