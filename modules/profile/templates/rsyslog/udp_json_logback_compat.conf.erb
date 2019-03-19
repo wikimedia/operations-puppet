@@ -1,7 +1,8 @@
-# Provide a UDP input to accept JSON payloads on localhost and forward them to Kakfa.
+# Provide a UDP input to accept JSON payloads on localhost and forward them to logstash via Kakfa.
 
 module(load="imudp")
 module(load="mmjsonparse")
+module(load="omkafka")
 
 template(name="template_udp_json_logback_compat" type="list") {
   property(name="$!all-json")
