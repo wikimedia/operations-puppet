@@ -182,6 +182,7 @@ class jenkins(
             description   => 'jenkins_service_running',
             contact_group => 'contint',
             nrpe_command  => "/usr/lib/nagios/plugins/check_procs -w 1:1 -c 1:1 --ereg-argument-array '^/usr/bin/java .*-jar /usr/share/jenkins/jenkins.war'",
+            notes_url     => 'https://wikitech.wikimedia.org/wiki/Jenkins',
         }
     }
 
