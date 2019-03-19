@@ -8,5 +8,6 @@ define redis::monitoring::nrpe_instance($replica_warning=60, $replica_critical=6
         nrpe_command   => "/usr/bin/sudo ${cmd} ${port} ${replica_warning} ${replica_critical}",
         contact_group  => 'admins',
         retry_interval => 2,
+        notes_url      => 'https://wikitech.wikimedia.org/wiki/Redis',
     }
 }
