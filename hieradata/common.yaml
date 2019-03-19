@@ -914,3 +914,5 @@ ntp_peers:
 #    type: system:node
 #    token: dummydummydummy
 #    id: 2
+profile::base::firewall::log::log_rate: 1/second
+profile::base::firewall::log::log_burst: 5
