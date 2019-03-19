@@ -27,6 +27,7 @@ class pybal::monitoring(
         description  => 'PyBal backends health check',
         nrpe_command => '/usr/local/lib/nagios/plugins/check_pybal --url http://localhost:9090/alerts',
         require      => File['/usr/local/lib/nagios/plugins/check_pybal'],
+        notes_url    => 'https://wikitech.wikimedia.org/wiki/PyBal',
     }
 
     file { '/usr/local/lib/nagios/plugins/check_pybal_ipvs_diff':
@@ -43,6 +44,7 @@ class pybal::monitoring(
         check_interval => 5,
         timeout        => 60,
         require        => File['/usr/local/lib/nagios/plugins/check_pybal_ipvs_diff'],
+        notes_url      => 'https://wikitech.wikimedia.org/wiki/PyBal',
     }
 
     if $config_source == 'etcd' {
@@ -66,6 +68,7 @@ class pybal::monitoring(
             check_interval => 5,
             timeout        => 60,
             require        => File['/usr/lib/nagios/plugins/check_established_connections'],
+            notes_url      => 'https://wikitech.wikimedia.org/wiki/PyBal',
         }
     }
 
