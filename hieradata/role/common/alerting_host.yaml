@@ -13,7 +13,7 @@ profile::icinga::ircbot::ircecho_server: 'chat.freenode.net +6697'
 
 # NOTE: update the senders whitelist on our paging infrastructure (AQL as of 20190211) when modifying Icinga hostnames
 profile::icinga::virtual_host: icinga.wikimedia.org
-profile::icinga::active_host: icinga2001.wikimedia.org
+profile::icinga::active_host: icinga1001.wikimedia.org
 profile::icinga::partners:
-  - 'icinga1001.wikimedia.org'
+  - 'icinga2001.wikimedia.org'
 diamond::remove: true

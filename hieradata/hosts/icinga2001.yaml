@@ -1,2 +1,2 @@
-do_acme: true
-profile::tcpircbot::ensure: present
+do_acme: false
+profile::tcpircbot::ensure: absent
