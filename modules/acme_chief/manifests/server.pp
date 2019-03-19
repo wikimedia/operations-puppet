@@ -10,16 +10,6 @@ class acme_chief::server (
 ) {
     $is_active = $::fqdn == $active_host
 
-    if os_version('debian == stretch') {
-        apt::pin { 'acme':
-            package  => 'python3-acme',
-            pin      => 'release a=stretch-backports',
-            priority => '1001',
-            notify   => Exec['apt-get update'],
-            before   => Package['acme-chief'],
-        }
-    }
-
     user { 'acme-chief':
         ensure => present,
         system => true,
