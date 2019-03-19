@@ -277,8 +277,6 @@ monitoring::groups:
     description: Equipment with asw2-ulsfo as uplink
   asw-a-codfw:
     description: Equipment with asw-a-codfw as uplink
-  asw-a-eqiad:
-    description: Equipment with asw-a-eqiad as uplink
   asw-b-codfw:
     description: Equipment with asw-b-codfw as uplink
   asw-c-codfw:

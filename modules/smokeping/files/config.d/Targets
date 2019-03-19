@@ -32,11 +32,6 @@ menu = cr2-eqiad
 title = cr2-eqiad.wikimedia.org
 host = cr2-eqiad.wikimedia.org
 
-+++ asw-a-eqiad
-menu = asw-a-eqiad
-title = asw-a-eqiad.mgmt.eqiad.wmnet
-host = asw-a-eqiad.mgmt.eqiad.wmnet
-
 +++ asw2-d-eqiad
 menu = asw2-d-eqiad
 title = asw2-d-eqiad.mgmt.eqiad.wmnet
