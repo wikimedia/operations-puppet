@@ -1,1 +1,6 @@
 profile::base::debdeploy::exclude_mounts: []
+profile::base::debdeploy::filter_services:
+  bacula-fd:
+    - '*'
+  nginx:
+    - libtiff

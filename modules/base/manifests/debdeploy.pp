@@ -12,12 +12,34 @@
 #  be e.g. a mount point which only contains data and does not contain any
 #  executables or mount points on a network share which may not be reliably
 #  mounted.
+#[*filter_services*]
+# After a library is upgraded, the "query_restart" option of debdeploy prints a
+# list of all processes which need to be restarted to fully effect the security
+# update. There are however some services which cannot be restarted without a
+# reboot (e.g. dbus or systemd/pid1) and which are ignored for other purposes
+# (e.g. a service may link to a feature (and thus loads a library), but we don't
+# actually use the functionality.
+#
+# This variable allows one to configure a hash describing when a daemon should
+# not be listed as needing a restart
+#
+# The syntax is a hash of the form $daemon => [$libaries], whereby $daemon is the
+# name of the service as shown in the process list and $libraries a list of
+# library sonames. You can either list a group of libraries to ignore or use '*'
+# to skip it for all libraries, e.g.
+#  $filter_services = {
+#    'never_restart' => ['*'] 
+#    'never_restart_libssl' => ['libssl']
+#    'never_restart_multiple' => ['libssl', 'someotherlib']
+#  }
 #
 class base::debdeploy (
-  Optional[Array[Stdlib::Unixpath]] $exclude_mounts = [],
+  Optional[Array[Stdlib::Unixpath]]     $exclude_mounts  = [],
+  Optional[Hash[String, Array[String]]] $filter_services = [],
 ) {
     $config = {
-      'exclude_mounts' => $exclude_mounts,
+      'exclude_mounts'  => $exclude_mounts,
+      'filter_services' => $filter_services,
     }
     file { '/usr/local/bin/apt-upgrade-activity':
         ensure => present,
