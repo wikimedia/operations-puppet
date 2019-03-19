@@ -29,7 +29,6 @@ class profile::mediawiki::common(
     class { '::mediawiki::mwrepl': }
 
     class { '::mediawiki::syslog':
-        forward_syslog => "${logstash_host}:${logstash_syslog_port}",
         log_aggregator => $log_aggregator,
     }
 
