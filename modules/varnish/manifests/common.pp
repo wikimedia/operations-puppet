@@ -146,5 +146,6 @@ class varnish::common(
         retries        => 10,
         check_interval => 10,
         require        => File['/usr/local/lib/nagios/plugins/check_varnish_expiry_mailbox_lag'],
+        notes_url      => 'https://wikitech.wikimedia.org/wiki/Varnish',
     }
 }

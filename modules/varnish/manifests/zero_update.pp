@@ -21,6 +21,7 @@ class varnish::zero_update($site) {
         description  => 'Freshness of zerofetch successful run file',
         nrpe_command => "/usr/lib/nagios/plugins/check-fresh-files-in-dir.py ${check_args}",
         require      => File['/usr/lib/nagios/plugins/check-fresh-files-in-dir.py'],
+        notes_url    => 'https://wikitech.wikimedia.org/wiki/Varnish',
     }
 
     file { '/etc/zerofetcher':

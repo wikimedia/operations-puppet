@@ -21,5 +21,6 @@ class varnish::common::director_scripts {
     nrpe::monitor_service { 'confd_vcl_reload':
         description  => 'Confd vcl based reload',
         nrpe_command => '/usr/local/lib/nagios/plugins/check_vcl_reload',
+        notes_url    => 'https://wikitech.wikimedia.org/wiki/Varnish',
     }
 }

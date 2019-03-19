@@ -61,6 +61,7 @@ define varnish::logging::reqstats(
         ensure       => present,
         description  => 'Varnish traffic logger - varnishreqstats',
         nrpe_command => '/usr/lib/nagios/plugins/check_procs -w 1:1 -a "/usr/local/bin/varnishreqstats" -u root',
+        notes_url    => 'https://wikitech.wikimedia.org/wiki/Varnish',
     }
 
     mtail::program { 'varnishreqstats':
