@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 #
-# Copyright (c) 2017-2018 Wikimedia Foundation, Inc.
+# Copyright (c) 2017-2019 Wikimedia Foundation, Inc.
 
 # This script offboards a user from LDAP. In the default case a user can
 # retain standard Nova group memberships and only loses access to
@@ -33,6 +33,11 @@ try:
 except ImportError:
     print("Unable to import Python LDAP")
     sys.exit(1)
+
+base_dn = "dc=wikimedia,dc=org"
+projects_dn = "ou=projects," + base_dn
+groups_dn = "ou=groups," + base_dn
+servicegroups_dn = "ou=servicegroups," + base_dn
 
 
 def flatten(l, flattened=None):
@@ -106,15 +111,26 @@ def set_cookie(lc_object, pctrls, pagesize):
     return cookie
 
 
-def offboard_ldap(uid, remove_all_groups, turn_volunteer, dry_run):
+def does_user_attr_exist(uid, attribute):
+    ldap_conn = ldap.initialize('ldaps://ldap-labs.eqiad.wikimedia.org:636')
+    ldap_conn.protocol_version = ldap.VERSION3
+    ldapdata = ldap_conn.search_s(
+        base_dn,
+        ldap.SCOPE_SUBTREE,
+        "(&(objectclass=posixAccount)(uid=" + uid + "))",
+        attrlist=[attribute],
+    )
+
+    if not ldapdata[0][1]:
+        return False
+
+    return True
+
+
+def offboard_ldap(uid, remove_all_groups, turn_volunteer, dry_run, disable_user):
     ldap_conn = ldap.initialize('ldaps://ldap-labs.eqiad.wikimedia.org:636')
     ldap_conn.protocol_version = ldap.VERSION3
     ldif = ""
-
-    base_dn = "dc=wikimedia,dc=org"
-    projects_dn = "ou=projects," + base_dn
-    groups_dn = "ou=groups," + base_dn
-    servicegroups_dn = "ou=servicegroups," + base_dn
 
     ADD_GROUP = """dn: {group_name}
 changetype: modify
@@ -127,6 +143,11 @@ changetype: modify
 delete: member
 member: {user_dn}
 
+"""
+
+    REMOVE_PASSWORD = """dn: {user_dn}
+changetype: modify
+delete: userPassword
 """
 
     lc = ldap.controls.SimplePagedResultsControl(criticality=False, size=1024, cookie='')
@@ -240,16 +261,37 @@ member: {user_dn}
     else:
         print("Is not a member in any privileged group")
 
+    attrs_to_remove = ['mail', 'sshPublicKey']
+    if disable_user:
+        ldif += REMOVE_PASSWORD.format(user_dn=user_dn)
+        removed_attrs = 0
+        for attr in attrs_to_remove:
+            if does_user_attr_exist(uid, attr):
+                ldif += "-\n"
+                ldif += "delete: " + attr + "\n"
+                removed_attrs += 1
+        if removed_attrs:
+                ldif += "-\n"
+
+        print("  Removing user attributes")
+
     if not dry_run:
         try:
             with open(uid + ".ldif", "w") as ldif_file:
                 ldif_file.write(ldif)
             print("LDIF file written to ", uid + ".ldif")
             print("Please review and if all is well, you can effect the change running")
-            cmd = 'ldapmodify -h ldap-labs.eqiad.wikimedia.org -p 389 -x'
+            cmd = ""
+            if disable_user:
+                cmd += 'ldapsearch -x -D "cn=scriptuser,ou=profile,dc=wikimedia,dc=org" -W uid='
+                cmd += uid + ' > disable-' + uid + '.pre.ldif\n'
+            cmd += 'ldapmodify -h ldap-labs.eqiad.wikimedia.org -p 389 -x'
             cmd += ' -D "cn=scriptuser,ou=profile,dc=wikimedia,dc=org" -W -f ' + uid + ".ldif\n"
+            if disable_user:
+                cmd += 'ldapsearch -x -D "cn=scriptuser,ou=profile,dc=wikimedia,dc=org" -W uid='
+                cmd += uid + ' > disable-' + uid + '.post.ldif\n'
             cmd += 'To obtain the password run\n'
-            cmd += 'sudo cat /etc/ldap.scriptuser.yaml'
+            cmd += 'sudo cat /etc/ldapvi.conf'
             print(cmd)
         except IOError as e:
             print("Error:", e)
@@ -366,7 +408,8 @@ def offboard_phabricator(username, remove_all_groups, dry_run, turn_volunteer):
 def main():
 
     parser = OptionParser()
-    parser.set_usage("offboard-user [--drop-all] [--list-only] [--turn-volunteer] [ -p  | -l ]")
+    parser.set_usage("""offboard-user [--drop-all] [--list-only] [--skip-analytics]
+                     [--disable-user] [--turn-volunteer] [ -p  | -l ]""")
     parser.add_option("--drop-all", action="store_true", dest="remove_all_groups", default=False,
                       help="""By default unprivileged group group memberships are retained.
                       If this option is set, then all group memberships are removed""")
@@ -376,6 +419,8 @@ def main():
                       help="When offboarding an LDAP user, skip the check for analytics groups")
     parser.add_option("--turn-volunteer", action="store_true", dest="turn_volunteer", default=False,
                       help="If a former WMF staff member wishes to resume under a volunteer NDA")
+    parser.add_option("--disable-user", action="store_true", dest="disableuser",
+                      help="Ihis option is enabled, the user password and mail are removed")
 
     parser.add_option("--ldap-user", "-l", action="store", dest="ldap_username", default=False,
                       help="User name in LDAP/wikitech of the user to be removed")
@@ -389,7 +434,7 @@ def main():
 
     if options.ldap_username:
         offboard_ldap(options.ldap_username, options.remove_all_groups,
-                      options.turn_volunteer, options.dry_run)
+                      options.turn_volunteer, options.dry_run, options.disableuser)
 
         if not options.skip_analytics:
             offboard_analytics(options.ldap_username)
