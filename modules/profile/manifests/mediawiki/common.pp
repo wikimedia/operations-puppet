@@ -33,6 +33,10 @@ class profile::mediawiki::common(
         log_aggregator => $log_aggregator,
     }
 
+    # Compatibility endpoint to syslog via logging pipeline
+    include ::profile::rsyslog::kafka_shipper
+    include ::profile::rsyslog::udp_localhost_compat
+
     # These should properly be included in the role. Bear with me for now.
     include ::profile::mediawiki::hhvm
     include ::profile::mediawiki::php
