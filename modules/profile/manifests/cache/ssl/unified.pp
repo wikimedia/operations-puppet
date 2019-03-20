@@ -6,6 +6,7 @@
 #
 class profile::cache::ssl::unified(
     $monitoring=hiera('profile::cache::ssl::unified::monitoring'),
+    $acme_chief=hiera('profile::cache::ssl::unified::acme_chief'),
     $letsencrypt=hiera('profile::cache::ssl::unified::letsencrypt'),
     $ucv=hiera('public_tls_unified_cert_vendor', undef),
     $le_server_name=hiera('profile::cache::ssl::unified::le_server_name', undef),
@@ -36,6 +37,7 @@ class profile::cache::ssl::unified(
             server_name    => 'www.wikimedia.org',
             certs          => $certs,
             certs_active   => $certs_active,
+            acme_chief     => $acme_chief,
             default_server => true,
             do_ocsp        => true,
             upstream_ports => [3120, 3121, 3122, 3123, 3124, 3125, 3126, 3127],

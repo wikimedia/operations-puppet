@@ -125,6 +125,7 @@ profile::cache::base::allow_iptables: true
 # Profile::cache::ssl::unified
 profile::cache::ssl::unified::monitoring: true
 profile::cache::ssl::unified::letsencrypt: false
+profile::cache::ssl::unified::acme_chief: false
 
 # Enable varnishkafka-* instance monitoring.
 profile::cache::kafka::webrequest::monitoring_enabled: true

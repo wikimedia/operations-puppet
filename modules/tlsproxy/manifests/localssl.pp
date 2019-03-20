@@ -21,11 +21,20 @@
 #   fully deployed and OCSP stapled (ready for use), which aren't actually used
 #   to serve traffic.  Defaults to the entire set from "certs".
 #
+# [*acme_chief*]
+#   Optional - specify either this or acme_subjects.
+#   If true, use acme-chief to get the certificate.
+#   When used in conjunction with certs, acme-chief certificate will be deployed on
+#   the server but certs specified in $certs will be used to serve traffic
+#
 # [*acme_subjects*]
-#   Optional - specify either this or certs.
+#   Optional - Enable the old LE puppetization. specify either this or certs.
+#   This is also incompatible with using acme_chief
 #   Array of certificate subjects, beginning with the canonical one - the rest
 #   will be listed as Subject Alternative Names.
 #   There should be no more than 100 entries in this.
+#   This option will be removed in following changes. If you need to use LE certificates
+#   please migrate to acme-chief ASAP.
 #
 # [*upstream_ports*]
 #   TCP ports array to proxy to. Defaults to ['80']
@@ -68,6 +77,7 @@ define tlsproxy::localssl(
     $certs          = [],
     $certs_active   = [],
     $acme_subjects  = [],
+    $acme_chief     = false,
     $server_name    = $::fqdn,
     $server_aliases = [],
     $default_server = false,
@@ -80,8 +90,8 @@ define tlsproxy::localssl(
     Integer $keepalive_timeout = 60,
     Integer $read_timeout = 180,
 ) {
-    if (!empty($certs) and !empty($acme_subjects)) or (empty($certs) and empty($acme_subjects)) {
-        fail('Specify either certs or acme_subjects, not both and not neither.')
+    if (!empty($certs) and !empty($acme_subjects)) or ($acme_chief and !empty($acme_subjects)) or (empty($certs) and empty($acme_subjects) and !$acme_chief) {
+        fail('Specify exactly one of certs (and optionally acme_chief) or acme_subjects')
     }
 
     if $redir_port != undef and $tls_port != 443 {
@@ -129,6 +139,16 @@ define tlsproxy::localssl(
             }
         }
         # TODO: Maybe add monitoring to this in role::cache::ssl::unified
+    }
+    if $acme_chief {
+        if !defined(Acme_chief::Cert[$title]) {
+            acme_chief::cert { $title:
+                puppet_svc => 'nginx',
+                ocsp       => $do_ocsp,
+                proxy      => "webproxy.${::site}.wmnet:8080",
+                before     => Service['nginx']
+            }
+        }
     }
 
     if $do_ocsp and !empty($certs) {
