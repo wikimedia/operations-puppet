@@ -217,3 +217,15 @@ ntp_peers:
 scap::version: 3.9.2-1
 profile::base::debdeploy::exclude_filesystems:
   - nfs4
+
+# Firewall logging
+profile::base::firewall::log::log_rate: 1/second
+profile::base::firewall::log::log_burst: 5
+
+# Cumin
+profile::openstack::main::cumin::auth_group: cumin_masters
+profile::openstack::main::cumin::project_masters: []
+profile::openstack::main::cumin::project_pub_key: undef
+profile::openstack::base::keystone::auth_protocol: http
+profile::openstack::base::keystone::public_port: 5000
+profile::openstack::main::nova::dhcp_domain: 'eqiad.wmflabs'

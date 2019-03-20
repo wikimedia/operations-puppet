@@ -1,6 +1,7 @@
 require 'fileutils'
 require 'git'
 require 'set'
+require 'yaml'
 require 'rake'
 require 'rake/tasklib'
 require 'shellwords'
@@ -13,6 +14,7 @@ require 'rubocop/rake_task'
 require 'rake_modules/monkey_patch'
 require 'rake_modules/git'
 require 'rake_modules/specdeps'
+
 class TaskGen < ::Rake::TaskLib
   attr_accessor :tasks, :failed_specs
 
@@ -22,6 +24,7 @@ class TaskGen < ::Rake::TaskLib
       :typos,
       :syntax,
       :rubocop,
+      :common_yaml,
       :spec,
       :tox,
       :dhcp
@@ -256,6 +259,28 @@ class TaskGen < ::Rake::TaskLib
     end
 
     [:rubocop]
+  end
+
+  def setup_common_yaml
+    # ensure the common.yaml file has no qualified variables in it
+    common_yaml_file = filter_files_by("hieradata/common.yaml")
+    return [] if common_yaml_file.empty?
+    desc 'Check hieradata/common.yaml contains only unqualified names'
+    task :common_yaml do
+      failures = false
+      common_yaml = YAML.safe_load(File.open(common_yaml_file[0]))
+      common_yaml.each_key do |key|
+        next unless key.include?('::')
+        key_path = key.split('::')[0..-1].join('/')
+        $stderr.puts "#{key} in hieradata/common.yaml is qualified".red
+        $stderr.puts "\tIf this is for labs it should go in hieradata/labs.yaml".red
+        $stderr.puts "\tIf this is for production it should go in common/#{key_path}.yaml".red
+        failures = true
+      end
+      abort("hieradata/common.yaml: FAILED".red) if failures
+      puts "hieradata/common.yaml: OK".green
+    end
+    [:common_yaml]
   end
 
   def setup_spec

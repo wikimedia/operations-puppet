@@ -439,12 +439,6 @@ dumps_dist_active_web: labstore1006.wikimedia.org
 #
 # Cumin
 labs_tld: "wmflabs"
-profile::openstack::main::cumin::auth_group: cumin_masters
-profile::openstack::main::cumin::project_masters: []
-profile::openstack::main::cumin::project_pub_key: undef
-profile::openstack::base::keystone::auth_protocol: http
-profile::openstack::base::keystone::public_port: 5000
-profile::openstack::main::nova::dhcp_domain: 'eqiad.wmflabs'
 
 # /> Cloud Services
 #
@@ -841,8 +835,6 @@ install_server_failover: install2002.wikimedia.org
 netmon_server: netmon1002.wikimedia.org
 netmon_server_failover: netmon2001.wikimedia.org
 
-profile::netbox::netbox_server: netmon1002.wikimedia.org
-
 releases_server: releases1001.eqiad.wmnet
 releases_server_failover: releases2001.codfw.wmnet
 
@@ -924,5 +916,3 @@ ntp_peers:
 #    type: system:node
 #    token: dummydummydummy
 #    id: 2
-profile::base::firewall::log::log_rate: 1/second
-profile::base::firewall::log::log_burst: 5
