@@ -1,6 +1,8 @@
 # Create remote xtrabackup/mariabackup backups
 # By using transfer.py
 class profile::mariadb::backup::transfer {
+    include ::passwords::mysql::dump
+
     require_package(
         'python3',
         'python3-yaml',
@@ -13,6 +15,8 @@ class profile::mariadb::backup::transfer {
     # file { '/etc/mysql':
     # }
 
+    $stats_user = $passwords::mysql::dump::stats_user
+    $stats_password = $passwords::mysql::dump::stats_pass
     # Configuration file where the daily backup routine (source hosts,
     # destination, statistics db is configured
     # Can contain private data like db passwords
