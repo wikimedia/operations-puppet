@@ -20,13 +20,6 @@ class ldap::management(
         group   => 'ldap-admins',
     }
 
-    $yaml_config = {
-        servers  => [$server],
-        basedn   => $basedn,
-        user     => $user,
-        password => $password,
-    }
-
     file { '/usr/local/bin/modify-ldap-user':
         owner  => 'root',
         group  => 'ldap-admins',
@@ -39,17 +32,6 @@ class ldap::management(
         group  => 'ldap-admins',
         mode   => '0550',
         source => 'puppet:///modules/ldap/modify-ldap-group',
-    }
-
-    file { '/etc/ldap.scriptuser.yaml':
-        content => ordered_yaml($yaml_config),
-    }
-
-    file { '/usr/local/bin/reset-ldap-password':
-        source => 'puppet:///modules/ldap/reset-ldap-password',
-        mode   => '0554',
-        owner  => 'root',
-        group  => 'root',
     }
 
     file { '/usr/local/bin/rewrite-group-for-memberof':
