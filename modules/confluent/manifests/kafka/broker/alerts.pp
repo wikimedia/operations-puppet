@@ -41,7 +41,7 @@ class confluent::kafka::broker::alerts(
     # and will be removed from the ISR.
     monitoring::graphite_threshold { 'kafka-broker-UnderReplicatedPartitions':
         description     => 'Kafka Broker Under Replicated Partitions',
-        dashboard_links => ['https://grafana.wikimedia.org/dashboard/db/kafka?panelId=29&fullscreen&orgId=1'],
+        dashboard_links => ['https://grafana.wikimedia.org/d/000000523/kafka-graphite?refresh=5m&panelId=29&fullscreen&orgId=1'],
         metric          => "${group_prefix}kafka.${graphite_broker_key}.kafka.server.ReplicaManager.UnderReplicatedPartitions.Value",
         warning         => '1',
         critical        => '10',
@@ -55,7 +55,7 @@ class confluent::kafka::broker::alerts(
     # Alert if any Kafka Broker replica lag is too high
     monitoring::graphite_threshold { 'kafka-broker-Replica-MaxLag':
         description     => 'Kafka Broker Replica Max Lag',
-        dashboard_links => ['https://grafana.wikimedia.org/dashboard/db/kafka?panelId=16&fullscreen&orgId=1'],
+        dashboard_links => ['https://grafana.wikimedia.org/d/000000523/kafka-graphite?refresh=5m&panelId=16&fullscreen&orgId=1'],
         metric          => "${group_prefix}kafka.${graphite_broker_key}.kafka.server.ReplicaFetcherManager.MaxLag.Value",
         warning         => $replica_maxlag_warning,
         critical        => $replica_maxlag_critical,
