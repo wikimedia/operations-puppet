@@ -3,6 +3,7 @@ admin::groups:
   - deployment
   - ldap-admins
   - maintenance-log-readers
+  - perf-roots
 profile::base::domain_search:
   - wikimedia.org
   - eqiad.wmnet
