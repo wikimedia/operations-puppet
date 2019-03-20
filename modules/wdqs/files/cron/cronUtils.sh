@@ -15,6 +15,7 @@ fi
 
 HOST=${CATEGORY_ENDPOINT:-"http://localhost:9999"}
 NAMESPACE_URL="/bigdata/namespace/"
+DUMPS_DIR="${DATA_DIR}/dumps"
 today=$(date -u +'%Y%m%d')
 
 function loadFileIntoBlazegraph {
@@ -27,7 +28,7 @@ function loadFileIntoBlazegraph {
 	if [ ! -s ${DATA_DIR}/${fileName} ]; then
 		echo "Could not download $URL into ${fileName}"
 		exit 1
-	fi	
+	fi
 	curl -s -XPOST --data-binary update="LOAD <file://$DATA_DIR/$FILENAME>" $sparqlEndpoint
 }
 

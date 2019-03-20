@@ -4,9 +4,6 @@ set -e
 # NOTE: This should be run under user that has rights to
 # sudo systemctl reload nginx
 . /usr/local/bin/cronUtils.sh
-if [ -r /etc/wdqs/vars.sh ]; then
-  . /etc/wdqs/vars.sh
-fi
 ENDPOINT=${CATEGORY_ENDPOINT:-"http://localhost:9999"}
 
 echo "$(date --iso-8601=seconds) starting categories reload"
@@ -14,6 +11,7 @@ echo "$(date --iso-8601=seconds) starting categories reload"
 newNamespace="categories${today}"
 # Drop old dumps
 rm -f ${DATA_DIR}/*-categories.ttl.gz
+rm -f ${DATA_DIR}/dumps/*-categories.ttl.gz
 cd ${DEPLOY_DIR}
 # Create new namespace
 bash createNamespace.sh ${newNamespace} $ENDPOINT || exit 1

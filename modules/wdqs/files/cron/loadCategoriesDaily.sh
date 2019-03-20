@@ -6,6 +6,7 @@ echo "$(date --iso-8601=seconds) starting categories daily load"
 
 # Drop old diffs
 rm -f ${DATA_DIR}/*-daily.sparql.gz
+rm -f ${DATA_DIR}/dumps/*-daily.sparql.gz
 # Load the data
 cd ${DEPLOY_DIR}
 bash forAllCategoryWikis.sh loadCategoryDaily.sh
