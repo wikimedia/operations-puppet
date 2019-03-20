@@ -3,6 +3,8 @@ class profile::microsites::peopleweb (
     $deployment_server = hiera('deployment_server'),
 ){
 
+    include ::profile::waf::apache2::global_banned_addresses
+
     ferm::service { 'people-http':
         proto  => 'tcp',
         port   => '80',
