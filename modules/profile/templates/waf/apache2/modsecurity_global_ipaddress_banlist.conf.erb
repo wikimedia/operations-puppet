@@ -1,9 +1,0 @@
-<IfModule security2_module>
-    SecRuleEngine On
-    SecRequestBodyAccess On
-
-    # Drop connection if client IP address matches an entry in /etc/apache2/global_ipaddress_banlist.
-    SecRule REMOTE_ADDR "@ipMatchFromFile /etc/apache2/global_ipaddress_banlist" "id:200,drop,log,msg:'REMOTE_ADDRESS address %{REMOTE_ADDR} is present in /etc/apache2/global_ipaddress_banlist'"
-    SecRule REQUEST_HEADERS:X-Client-IP "@ipMatchFromFile /etc/apache2/global_ipaddress_banlist" "id:201,drop,log,msg:'X-Client-IP address %{REQUEST_HEADERS.X-Client-IP} is present in /etc/apache2/global_ipaddress_banlist'"
-
-</IfModule>

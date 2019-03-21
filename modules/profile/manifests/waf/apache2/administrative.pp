@@ -1,5 +1,5 @@
 
-class profile::waf::apache2::global_banned_addresses {
+class profile::waf::apache2::administrative {
 
     # Pin jessie hosts to jessie-backports for version 2.9
     if os_version('debian == jessie') {
@@ -27,17 +27,17 @@ class profile::waf::apache2::global_banned_addresses {
         require => Package['libapache2-mod-security2'],
     }
 
-    httpd::site { 'modsecurity_global_ipaddress_banlist':
+    httpd::site { 'modsecurity_administrative':
         priority => 00,
-        content  => template('profile/waf/apache2/modsecurity_global_ipaddress_banlist.conf.erb'),
+        content  => template('profile/waf/apache2/modsecurity_administrative.conf.erb'),
     }
 
-    file { '/etc/apache2/global_ipaddress_banlist':
+    file { '/etc/apache2/administrative':
         ensure  => present,
         mode    => '0644',
         owner   => 'root',
         group   => 'root',
-        content => secret('waf/global_ipaddress_banlist');
+        content => secret('waf/administrative');
     }
 
 }
