@@ -11,4 +11,6 @@ class profile::releases::common{
         priority => 1,
         content  => template('role/releases/rsync_source_warning.motd.erb'),
     }
+
+    base::service_auto_restart { 'rsync': }
 }
