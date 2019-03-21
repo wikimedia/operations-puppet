@@ -63,7 +63,7 @@ class openstack::wikitech::web(
         command                   => "/usr/local/bin/mwscript maintenance/runJobs.php --wiki=${wikidb}",
         interval                  => {
         'start'    => 'OnCalendar',
-        'interval' => '*-*-* *:*:0', # Every minute
+        'interval' => '*-*-* *:*:00', # Every minute
         },
         logging_enabled           => false,
         monitoring_enabled        => true,
