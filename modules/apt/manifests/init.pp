@@ -66,38 +66,12 @@ class apt(
                 value    => $http_proxy,
                 before   => File['/etc/apt/apt.conf']
             }
-        } elsif $::operatingsystem == 'Ubuntu' {
-            apt::conf { 'security-ubuntu-proxy':
-                ensure   => present,
-                priority => '80',
-                key      => 'Acquire::http::Proxy::security.ubuntu.com',
-                value    => $http_proxy,
-                before   => File['/etc/apt/apt.conf']
-            }
-
-            apt::conf { 'ubuntu-cloud-archive-proxy':
-                ensure   => present,
-                priority => '80',
-                key      => 'Acquire::http::Proxy::ubuntu-cloud.archive.canonical.com',
-                value    => $http_proxy,
-                before   => File['/etc/apt/apt.conf']
-            }
-
-            apt::conf { 'old-releases-proxy':
-                ensure   => present,
-                priority => '80',
-                key      => 'Acquire::http::Proxy::old-releases.ubuntu.com',
-                value    => $http_proxy,
-                before   => File['/etc/apt/apt.conf']
-            }
         } else {
             fail("Unknown operating system '${::operatingsystem}'.")
         }
     }
 
-    if os_version('ubuntu trusty') {
-        $components = 'main universe thirdparty'
-    } elsif os_version('debian jessie') {
+    if os_version('debian jessie') {
         $components = 'main backports thirdparty'
     } else {
         if $facts['is_virtual'] == false {

@@ -7,10 +7,6 @@ describe 'apt' do
         'operatingsystem'        => 'Debian',
         'operatingsystemrelease' => ['8', '9'],
       },
-      {
-        'operatingsystem' => 'Ubuntu',
-        'operatingsystemrelease' => ['14.04']
-      }
     ]
   }
   on_supported_os(test_on).each do |os, os_facts|

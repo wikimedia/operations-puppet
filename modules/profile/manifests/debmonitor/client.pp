@@ -70,11 +70,7 @@ class profile::debmonitor::client (
     }
 
     # Setup the daily reconciliation cron in case any debmonitor update fails.
-    if os_version('debian >= jessie') {
-        $cron = '/usr/bin/systemd-cat -t "debmonitor-client" /usr/bin/debmonitor-client'
-    } else {
-        $cron = '/usr/bin/debmonitor-client > /dev/null 2>&1'
-    }
+    $cron = '/usr/bin/systemd-cat -t "debmonitor-client" /usr/bin/debmonitor-client'
 
     cron { 'debmonitor-client':
         command => $cron,
