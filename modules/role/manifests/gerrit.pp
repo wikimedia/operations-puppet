@@ -11,6 +11,10 @@ class role::gerrit {
     include ::profile::gerrit::server
     include ::profile::rsyslog::kafka_shipper
 
+    if $::realm == 'production' {
+        include ::profile::waf::apache2::administrative
+    }
+
     class { '::httpd':
         modules => ['rewrite', 'headers', 'proxy', 'proxy_http', 'remoteip', 'ssl'],
     }
