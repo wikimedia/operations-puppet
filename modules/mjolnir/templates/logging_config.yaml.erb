@@ -2,13 +2,11 @@ version: 1
 disable_existing_loggers: False
 
 root:
-    handlers: [logstash]
+    handlers: [stdout_rsyslog]
     level: INFO
 
 handlers:
-    logstash:
-        class: logstash.TCPLogstashHandler
-        host: <%= @logstash_host %>
-        port: <%= @logstash_port %>
-        version: 1
-        message_type: mjolnir
+    stdout_rsyslog:
+        class: mjolnir.logging.StructuredLoggingHandler
+        rsyslog: True
+        fmt: "%(name)s %(pathname)s %(filename)s %(module)s %(process)s %(message)s %(exc_info)"

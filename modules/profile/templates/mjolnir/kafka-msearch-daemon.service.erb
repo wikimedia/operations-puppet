@@ -3,6 +3,7 @@ Description=MjoLniR kafka msearch daemon
 After=network.target
 
 [Service]
+SyslogIdentifier=mjolnir-kafka-msearch-daemon
 User=nobody
 Group=nogroup
 ExecStart=/srv/deployment/search/mjolnir/venv/bin/mjolnir-utilities.py kafka_msearch_daemon \
@@ -14,8 +15,6 @@ ExecStart=/srv/deployment/search/mjolnir/venv/bin/mjolnir-utilities.py kafka_mse
     --prometheus-port <%= @prometheus_port %>
 
 StandardInput=null
-StandardOutput=journal
-StandardError=journal
 RestartSec=2
 Restart=always
 

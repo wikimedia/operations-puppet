@@ -3,6 +3,7 @@ Description=MjoLniR kafka bulk daemon
 After=network.target
 
 [Service]
+SyslogIdentifier=mjolnir-kafka-bulk-daemon
 User=nobody
 Group=nogroup
 ExecStart=/srv/deployment/search/mjolnir/venv/bin/mjolnir-utilities.py kafka_bulk_daemon \
@@ -13,8 +14,6 @@ ExecStart=/srv/deployment/search/mjolnir/venv/bin/mjolnir-utilities.py kafka_bul
         --prometheus-port <%= @prometheus_port %>
 
 StandardInput=null
-StandardOutput=journal
-StandardError=journal
 RestartSec=2
 Restart=always
 
