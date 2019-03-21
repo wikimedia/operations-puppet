@@ -21,9 +21,7 @@ class ssh::server (
         subscribe => File['/etc/ssh/sshd_config'],
     }
 
-    if os_version('debian >= jessie') {
-        base::service_auto_restart { 'ssh': }
-    }
+    base::service_auto_restart { 'ssh': }
 
     if $authorized_keys_file {
         $ssh_authorized_keys_file = $authorized_keys_file

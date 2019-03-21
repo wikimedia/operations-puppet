@@ -1,11 +1,5 @@
 class base::standard_packages {
 
-    if os_version('ubuntu >= trusty') {
-        package { [ "linux-tools-${::kernelrelease}", 'linux-tools-generic' ]:
-            ensure => present,
-        }
-    }
-
     require_package ([
         'acct',
         'apt-transport-https',
@@ -87,15 +81,7 @@ class base::standard_packages {
         ensure => purged,
     }
 
-    # Installed by default on Ubuntu, but not used (and it's setuid root, so
-    # a potential security risk).
-    #
-    # Limited to Ubuntu, since Debian doesn't pull it in by default
-    if os_version('ubuntu >= trusty') {
-        package { 'ntfs-3g': ensure => absent }
-    }
-
-    # Can be dropped once trusty/jessie are gone, not installed by default in stretch onwards
+    # Can be dropped once jessie are gone, not installed by default in stretch onwards
     package { 'at': ensure => purged }
 
     # On Ubuntu, eject is installed via the ubuntu-minimal package
@@ -192,10 +178,8 @@ class base::standard_packages {
         }
     }
 
-    if os_version('debian >= jessie') {
-        base::service_auto_restart { 'lldpd': }
-        base::service_auto_restart { 'cron': }
-    }
+    base::service_auto_restart { 'lldpd': }
+    base::service_auto_restart { 'cron': }
 
     # Safe restarts are supported since systemd 219:
     # * systemd now provides a way to store file descriptors
