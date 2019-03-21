@@ -57,7 +57,7 @@ class role::labs::instance {
 
     # In production, puppet freshness checks are done by icinga. Labs has no
     # icinga, so collect puppet freshness metrics via diamond/graphite
-    if !lookup('diamond::remove', false) { # lint:ignore:wmf_styleguide
+    if !lookup('diamond::remove', Boolean, 'first' ,false) { # lint:ignore:wmf_styleguide
         diamond::collector::minimalpuppetagent { 'minimal-puppet-agent': }
 
         diamond::collector { 'SSHSessions':
