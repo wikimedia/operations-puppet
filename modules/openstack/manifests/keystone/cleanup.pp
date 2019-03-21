@@ -40,7 +40,7 @@ class openstack::keystone::cleanup (
     systemd::timer::job { 'keystone_delete_expired_tokens':
         ensure                    => $ensure,
         description               => 'Delete expired Keystone tokens',
-        command                   => '/usr/bin/keystone-manage token_flush > /dev/null 2>&1',
+        command                   => '/usr/bin/keystone-manage token_flush',
         interval                  => {
             'start'    => 'OnCalendar',
             'interval' => '*-*-* *:20:00', # Every hour at minute 20
