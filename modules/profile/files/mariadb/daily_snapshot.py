@@ -170,7 +170,7 @@ def parse_config_file(config_file):
         destination: 'dbstore1001.eqiad.wmnet'
     """
     allowed_options = ['host', 'port', 'password', 'destination', 'rotate', 'retention',
-                       'compress', 'archive', 'threads', 'statistics']
+                       'compress', 'archive', 'threads', 'statistics', 'only_postprocess']
     logger = logging.getLogger('backup')
     try:
         read_config = yaml.load(open(config_file))
@@ -350,9 +350,12 @@ def run(section, config, port):
     given config
     """
 
-    result = run_transfer(section, config, port)
-    if result == 0:
+    if 'only_postprocess' in config and config['only_postprocess']:
         result = prepare_backup(section, config)
+    else:
+        result = run_transfer(section, config, port)
+        if result == 0:
+            result = prepare_backup(section, config)
     return result
 
 
