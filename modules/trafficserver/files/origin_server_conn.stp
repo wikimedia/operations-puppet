@@ -1,0 +1,28 @@
+#!/usr/bin/env stap
+#
+# origin_server_conn.stp - trace origin server connection establishment
+#
+# Print the hostname of the origin servers to which a new connection is being
+# established.
+#
+# Sample output:
+# appservers-rw.discovery.wmnet origin_max_connections=0 min_keep_alive=0 sharing_pool=1 sharing_match=1
+# swift-ro.discovery.wmnet origin_max_connections=0 min_keep_alive=0 sharing_pool=1 sharing_match=1
+# swift-rw.discovery.wmnet origin_max_connections=0 min_keep_alive=0 sharing_pool=1 sharing_match=1
+#
+probe process("/usr/bin/traffic_server").statement("state_http_server_open@./proxy/http/HttpSM.cc:1718") {
+  server_name = user_string_n($this->t_state->current->server->name, 128)
+
+  # Ignore plugins. It's unclear to me why they'd go through
+  # state_http_server_open in the first place:
+  # https://lists.apache.org/thread.html/62c098bf9655ee3400ed423d1da0befbd3c5bc37b49b8c5fc0496bbf@%3Cusers.trafficserver.apache.org%3E 
+  if (server_name =~ "127.0.0.1|localhost|varnishcheck") { next }
+
+  min_keep_alive = $this->t_state->http_config_param->origin_min_keep_alive_connections
+  origin_max = $this->t_state->txn_conf->origin_max_connections
+  sharing_pool = $this->t_state->http_config_param->server_session_sharing_pool
+  sharing_match = $this->t_state->txn_conf->server_session_sharing_match
+
+  printf("%s origin_max_connections=%d min_keep_alive=%d sharing_pool=%d sharing_match=%d\n",
+    server_name, origin_max, min_keep_alive, sharing_pool, sharing_match)
+}
