@@ -9,16 +9,6 @@ class smart (
         fail('smart module is not supported on virtual hosts')
     }
 
-    # Prefer smartmontools version from backports (on Debian, if any) because of newer smart
-    # drivedb.
-    if os_version('debian >= jessie') {
-        apt::pin { 'smartmontools':
-            pin      => "release a=${::lsbdistcodename}-backports",
-            priority => '1001',
-            before   => Package['smartmontools'],
-        }
-    }
-
     package { 'smartmontools':
         ensure => $ensure,
     }
