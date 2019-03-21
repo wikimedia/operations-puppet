@@ -29,7 +29,7 @@ class profile::waf::apache2::administrative {
 
     httpd::site { 'modsecurity_administrative':
         priority => 00,
-        content  => template('profile/waf/apache2/modsecurity_administrative.conf.erb'),
+        content  => secret('waf/modsecurity_administrative.conf'),
     }
 
     file { '/etc/apache2/administrative':
