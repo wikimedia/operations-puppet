@@ -14,7 +14,7 @@ class snapshot::cron::dump_global_blocks(
     if !$filesonly {
         cron { 'global_blocks_dump':
             ensure      => 'present',
-            command     => "/usr/local/bin/dump-global-blocks.sh --config ${confsdir}/wikidump.conf.dumps",
+            command     => "/usr/local/bin/dump-global-blocks.sh --config ${confsdir}/wikidump.conf.other",
             environment => 'MAILTO=ops-dumps@wikimedia.org',
             user        => $user,
             minute      => '15',

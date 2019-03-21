@@ -35,7 +35,7 @@ class snapshot::cron::categoriesrdf(
 
         cron { 'categoriesrdf-dump':
             ensure      => 'present',
-            command     => "${scriptpath} --config ${confsdir}/wikidump.conf.dumps --list ${apachedir}/dblists/categories-rdf.dblist",
+            command     => "${scriptpath} --config ${confsdir}/wikidump.conf.other --list ${apachedir}/dblists/categories-rdf.dblist",
             environment => 'MAILTO=ops-dumps@wikimedia.org',
             user        => $user,
             minute      => '0',
@@ -57,7 +57,7 @@ class snapshot::cron::categoriesrdf(
     if !$filesonly {
         cron { 'categoriesrdf-dump-daily':
             ensure      => 'present',
-            command     => "${scriptpath_daily} --config ${confsdir}/wikidump.conf.dumps --list ${apachedir}/dblists/categories-rdf.dblist",
+            command     => "${scriptpath_daily} --config ${confsdir}/wikidump.conf.other --list ${apachedir}/dblists/categories-rdf.dblist",
             environment => 'MAILTO=ops-dumps@wikimedia.org',
             user        => $user,
             minute      => '0',

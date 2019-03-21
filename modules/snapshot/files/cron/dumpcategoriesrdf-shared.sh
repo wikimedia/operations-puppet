@@ -8,7 +8,7 @@
 
 source /usr/local/etc/dump_functions.sh
 
-configFile="${confsdir}/wikidump.conf.dumps"
+configFile="${confsdir}/wikidump.conf.other"
 dryrun="false"
 dbList="categories-rdf"
 
@@ -16,7 +16,7 @@ usage() {
 	echo "Usage: $0 --list wikis.dblist [--config <pathtofile>] [--dryrun]"
 	echo
 	echo "  --config  path to configuration file for dump generation"
-	echo "            (default value: ${confsdir}/wikidump.conf.dumps"
+	echo "            (default value: ${confsdir}/wikidump.conf.other"
 	echo "  --list    file containing list of the wikis to dump"
 	echo "  --dryrun  don't run dump, show what would have been done"
 	exit 1

@@ -13,12 +13,12 @@ usage() {
 	echo "Usage: $0 [--config <pathtofile>] [--dryrun]"
 	echo
 	echo "  --config  path to configuration file for dump generation"
-	echo "            (default value: ${confsdir}/wikidump.conf.dumps"
+	echo "            (default value: ${confsdir}/wikidump.conf.other"
 	echo "  --dryrun  don't run dump, show what would have been done"
 	exit 1
 }
 
-configFile="${confsdir}/wikidump.conf.dumps"
+configFile="${confsdir}/wikidump.conf.other"
 dryrun="false"
 
 while [ $# -gt 0 ]; do

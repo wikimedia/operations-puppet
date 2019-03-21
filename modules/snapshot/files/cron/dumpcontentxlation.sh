@@ -26,7 +26,7 @@ usage() {
     echo "Usage: $0 [--config <pathtofile>] [--dryrun]"
     echo
     echo "  --config   path to configuration file for dump generation"
-    echo "             (default value: ${confsdir}/wikidump.conf.dumps"
+    echo "             (default value: ${confsdir}/wikidump.conf.other"
     echo "  --dryrun   display dump command instead of running it"
     exit 1
 }
@@ -35,7 +35,7 @@ usage() {
 # MAIN
 #####################
 
-configfile="${confsdir}/wikidump.conf.dumps"
+configfile="${confsdir}/wikidump.conf.other"
 dryrun="false"
 
 #####################
