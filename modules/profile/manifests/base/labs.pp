@@ -48,17 +48,43 @@ class profile::base::labs(
         source => 'puppet:///modules/base/labs/puppet_alert.py',
     }
 
-    $ensure_puppet_emails_cron = $send_puppet_failure_emails ? {
+    $ensure_puppet_emails = $send_puppet_failure_emails ? {
         true    => 'present',
         default => 'absent',
     }
 
-    cron { 'send_puppet_failure_emails':
-        ensure  => $ensure_puppet_emails_cron,
-        command => '/usr/local/sbin/puppet_alert.py',
-        hour    => 8,
-        minute  => '15',
-        user    => 'root',
+    if os_version('debian >= jessie') {
+
+        # TODO: Remove after change is applied
+        cron { 'send_puppet_failure_emails':
+            ensure => absent,
+            user   => 'root',
+        }
+
+        systemd::timer::job { 'send_puppet_failure_emails':
+            ensure             => $ensure_puppet_emails,
+            description        => 'Send emails about Puppet failures',
+            command            => '/usr/local/sbin/puppet_alert.py',
+            interval           => {
+                'start'    => 'OnCalendar',
+                'interval' => '*-*-* *:08:15',
+            },
+            logging_enabled    => false,
+            monitoring_enabled => false,
+            user               => 'root',
+            require            => File['/usr/local/sbin/puppet_alert.py'],
+        }
+
+    } else {
+
+        # TODO: Remove once Trusty is deprecated
+        cron { 'send_puppet_failure_emails':
+            ensure  => $ensure_puppet_emails,
+            command => '/usr/local/sbin/puppet_alert.py',
+            hour    => 8,
+            minute  => '15',
+            user    => 'root',
+        }
     }
 
     # Set a root password only if we're still governed by the official Labs
