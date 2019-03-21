@@ -420,7 +420,7 @@ def main():
     parser.add_option("--turn-volunteer", action="store_true", dest="turn_volunteer", default=False,
                       help="If a former WMF staff member wishes to resume under a volunteer NDA")
     parser.add_option("--disable-user", action="store_true", dest="disableuser",
-                      help="Ihis option is enabled, the user password and mail are removed")
+                      help="If this option is enabled, the user password and mail are removed")
 
     parser.add_option("--ldap-user", "-l", action="store", dest="ldap_username", default=False,
                       help="User name in LDAP/wikitech of the user to be removed")
