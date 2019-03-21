@@ -36,6 +36,11 @@
 # pulseaudio (libpulse0)
 # seabios
 # python-dogpile.cache
+#
+# packages added by hand:
+#
+# python-cliff
+#
 
 PKGS="alabaster
 alembic
@@ -187,7 +192,8 @@ suds
 underscore
 unittest2
 voluptuous
-websockify"
+websockify
+python-cliff"
 
 OLD_FILE="$1"
 NEW_FILE="$2"
