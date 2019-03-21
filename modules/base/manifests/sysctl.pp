@@ -91,17 +91,6 @@ class base::sysctl {
         }
     }
 
-    # The perf subsystem is a significant attack vector for local privilege escalation vulnerabilities
-    # Setting kernel.perf_event_paranoid to 3 disables access to perf for unprivileged users
-    # The Debian kernel defaults to that parameter since 4.1.3-1
-    if os_version('ubuntu >= trusty') {
-        sysctl::parameters { 'disable_unprivileged_perf':
-            values => {
-            'kernel.perf_event_paranoid' => '3',
-            },
-        }
-    }
-
     # BBR congestion control (T147569)
     # https://lwn.net/Articles/701165/
     #
