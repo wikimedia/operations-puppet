@@ -10,7 +10,7 @@ class smokeping(
     Stdlib::Fqdn $active_server,
 ) {
 
-    require_package('smokeping', 'curl', 'dnsutils')
+    require_package('smokeping', 'dnsutils')
 
     file { '/etc/smokeping/config.d':
         ensure  => directory,

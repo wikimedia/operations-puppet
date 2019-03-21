@@ -9,6 +9,7 @@ class base::standard_packages {
     require_package ([
         'acct',
         'apt-transport-https',
+        'curl',
         'debian-goodies',
         'dnsutils',
         'dstat',

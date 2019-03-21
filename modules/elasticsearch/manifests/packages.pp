@@ -17,8 +17,6 @@ class elasticsearch::packages (
         name    => $package_name,
     }
 
-    require_package('curl')
-
     # library for elasticsearch
     require_package('python-elasticsearch')
     require_package('python-ipaddr')
