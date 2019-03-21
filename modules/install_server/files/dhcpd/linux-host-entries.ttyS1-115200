@@ -1911,6 +1911,16 @@ host db2096 {
     fixed-address db2096.codfw.wmnet;
 }
 
+host dbprov2001 {
+    hardware ethernet B0:26:28:21:6A:DE;
+    fixed-address dbprov2001.codfw.wmnet;
+}
+
+host dbprov2002 {
+    hardware ethernet B0:26:28:21:59:38;
+    fixed-address dbprov2002.codfw.wmnet;
+}
+
 host dbproxy1001 {
     hardware ethernet 84:2b:2b:fd:bd:56;
     fixed-address dbproxy1001.eqiad.wmnet;
