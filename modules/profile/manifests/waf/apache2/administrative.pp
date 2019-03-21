@@ -37,7 +37,8 @@ class profile::waf::apache2::administrative {
         mode    => '0644',
         owner   => 'root',
         group   => 'root',
-        content => secret('waf/administrative');
+        content => secret('waf/administrative'),
+        notify  => Service['apache2'],
     }
 
 }
