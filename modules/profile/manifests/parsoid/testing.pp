@@ -11,6 +11,8 @@ class profile::parsoid::testing (
         conf       => template('testreduce/parsoid-rt.config.yaml.erb'),
     }
 
+    require_package('php')
+
     base::service_auto_restart { 'parsoid': }
 
     file { '/usr/local/bin/update_parsoid.sh':
