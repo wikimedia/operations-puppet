@@ -80,7 +80,7 @@ class openstack::glance::image_sync(
             logging_enabled           => false,
             monitoring_enabled        => true,
             monitoring_contact_groups => 'wmcs-team',
-            user                      => 'root',
+            user                      => 'glancesync',
             require                   => User['glancesync'],
         }
     }
