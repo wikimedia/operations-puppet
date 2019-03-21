@@ -21,14 +21,8 @@ class base::remote_syslog (
     $central_hosts = [],
     $central_hosts_tls = [],
 ) {
-    # Remove once trusty is gone
-    if os_version('ubuntu == trusty') {
-        $owner = 'syslog'
-        $group = 'syslog'
-    } else {
-        $owner = 'root'
-        $group = 'root'
-    }
+    $owner = 'root'
+    $group = 'root'
 
     if $enable {
         require_package('rsyslog-gnutls')

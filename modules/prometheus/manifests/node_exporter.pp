@@ -115,11 +115,8 @@ class prometheus::node_exporter (
         ensure           => present,
         refresh          => true,
         systemd_override => init_template('prometheus-node-exporter', 'systemd_override'),
-        upstart          => upstart_template('prometheus-node-exporter'),
         require          => Package['prometheus-node-exporter'],
     }
 
-    if os_version('debian >= jessie') {
-        base::service_auto_restart { 'prometheus-node-exporter': }
-    }
+    base::service_auto_restart { 'prometheus-node-exporter': }
 }

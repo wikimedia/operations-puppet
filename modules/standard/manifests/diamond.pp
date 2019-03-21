@@ -31,16 +31,14 @@ class standard::diamond {
         # The prerm script in the packages for jessie and stretch is broken:
         # https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=910787
         # Clean this up via puppet as we're deprecating Diamond anyway
-        if os_version('debian >= jessie') {
-            exec { 'cleanup_diamond_state':
-                command => '/bin/systemctl reset-failed diamond',
-                onlyif  => '/bin/systemctl list-units --failed | grep --quiet diamond.service',
-                require => Package['diamond'],
-            }
+        exec { 'cleanup_diamond_state':
+            command => '/bin/systemctl reset-failed diamond',
+            onlyif  => '/bin/systemctl list-units --failed | grep --quiet diamond.service',
+            require => Package['diamond'],
+        }
 
-            base::service_auto_restart { 'diamond':
-                ensure => absent,
-            }
+        base::service_auto_restart { 'diamond':
+            ensure => absent,
         }
     }
     else {
@@ -59,8 +57,6 @@ class standard::diamond {
             },
         }
 
-        if os_version('debian >= jessie') {
-            base::service_auto_restart { 'diamond': }
-        }
+        base::service_auto_restart { 'diamond': }
     }
 }
