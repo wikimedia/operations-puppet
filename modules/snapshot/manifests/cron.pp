@@ -3,6 +3,18 @@ class snapshot::cron(
     $group         = undef,
     $filesonly     = false,
 ) {
+    $dblist = "${snapshot::dumps::dirs::apachedir}/dblists/all.dblist"
+    $tempdir = $snapshot::dumps::dirs::dumpstempdir
+    $confsdir = $snapshot::dumps::dirs::confsdir
+    file { "${confsdir}/wikidump.conf.other":
+        ensure  => 'present',
+        path    => "${confsdir}/wikidump.conf.other",
+        mode    => '0755',
+        owner   => 'root',
+        group   => 'root',
+        content => template('snapshot/wikidump.conf.other.erb'),
+    }
+
     file { '/usr/local/etc/dump_functions.sh':
         ensure => 'present',
         path   => '/usr/local/etc/dump_functions.sh',

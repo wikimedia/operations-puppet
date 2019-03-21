@@ -1,0 +1,21 @@
+#############################################################
+# This file is maintained by puppet!
+# modules/snapshot/templates/wikidump.conf.other.erb
+#############################################################
+
+# minimal config file with common settings used by 'misc' dumps
+# i.e. not xml/sql dumps, not adds/changes dumps
+
+[wiki]
+dblist=<%= scope.lookupvar('snapshot::cron::dblist') %>
+privatelist=<%= scope.lookupvar('snapshot::dumps::dirs::apachedir') -%>/dblists/private.dblist
+multiversion=<%= scope.lookupvar('snapshot::dumps::dirs::apachedir') -%>/multiversion
+
+[output]
+temp=<%= scope.lookupvar('snapshot::cron::tempdir') %>
+
+[tools]
+php=<%= scope.lookupvar('snapshot::dumps::configs::php') %>
+mysqldump=/usr/bin/mysqldump
+gzip=/bin/gzip
+lbzip2=/usr/bin/lbzip2
