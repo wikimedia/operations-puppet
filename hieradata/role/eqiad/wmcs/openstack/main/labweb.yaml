@@ -45,6 +45,8 @@ striker::uwsgi::config:
     STATIC_ROOT: /srv/deployment/striker/deploy/public_html/static
   openstack:
     URL: http://cloudcontrol1003.wikimedia.org:5000/v3
+  features:
+    ACCOUNT_CREATE: false
 
 striker::uwsgi::secret_config:
   # These values are only here to show the expected keys.
