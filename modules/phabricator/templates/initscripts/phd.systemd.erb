@@ -12,7 +12,8 @@ ExecStartPre=-/bin/mkdir -p /var/run/phd/
 ExecStartPre=/bin/chown -R phd:phd /var/run/phd/
 ExecStart=/srv/phab/phabricator/bin/phd start
 ExecStop=/srv/phab/phabricator/bin/phd stop --force
-RemainAfterExit=yes
+RestartSec=10
+Restart=always
 
 [Install]
 WantedBy=multi-user.target
