@@ -60,7 +60,7 @@ class openstack::wikitech::web(
     systemd::timer::job { 'wikitech_run_jobs':
         ensure                    => present,
         description               => 'Run Wikitech runJobs.php maintenance script',
-        command                   => "/usr/local/bin/mwscript maintenance/runJobs.php --wiki=${wikidb} > /dev/null 2>&1",
+        command                   => "/usr/local/bin/mwscript maintenance/runJobs.php --wiki=${wikidb}",
         interval                  => {
         'start'    => 'OnCalendar',
         'interval' => '*-*-* *:*:*', # Every minute
