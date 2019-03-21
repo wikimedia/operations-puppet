@@ -767,11 +767,16 @@ class WMFBackup:
         """
         self.name = name
         self.config = config
+        self.logger = logging.getLogger(name)
         if 'type' not in config:
             self.config['type'] = DEFAULT_BACKUP_TYPE
-        self.logger = logging.getLogger(name)
+        elif config['type'] not in ['dump', 'snapshot']:
+            self.logger.error('Unknown dump type {}'.format(config['type']))
+            sys.exit(-1)
         if 'retention' not in config:
             self.config['retention'] = DEFAULT_RETENTION_DAYS
+        else:
+            self.config['retention'] = int(config['retention'])
 
 
 def parse_options():
