@@ -57,10 +57,12 @@ class role::labs::instance {
 
     # In production, puppet freshness checks are done by icinga. Labs has no
     # icinga, so collect puppet freshness metrics via diamond/graphite
-    diamond::collector::minimalpuppetagent { 'minimal-puppet-agent': }
+    if !lookup('diamond::remove', false) { # lint:ignore:wmf_styleguide
+        diamond::collector::minimalpuppetagent { 'minimal-puppet-agent': }
 
-    diamond::collector { 'SSHSessions':
-        source => 'puppet:///modules/diamond/collector/sshsessions.py',
+        diamond::collector { 'SSHSessions':
+            source => 'puppet:///modules/diamond/collector/sshsessions.py',
+        }
     }
 
     if os_version('ubuntu >= trusty') {
