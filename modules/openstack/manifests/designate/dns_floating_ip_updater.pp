@@ -60,7 +60,10 @@ class openstack::designate::dns_floating_ip_updater(
             monitoring_enabled        => true,
             monitoring_contact_groups => 'wmcs-team',
             user                      => 'root',
-            require                   => File['/etc/dns-floating-ip-updater.py'],
+            require                   => [
+                File['/usr/local/sbin/wmcs-dns-floating-ip-updater'],
+                File['/etc/wmcs-dns-floating-ip-updater.yaml'],
+            ],
         }
     }
 }

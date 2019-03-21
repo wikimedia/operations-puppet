@@ -1,6 +1,6 @@
 # == openstack::keystone::cleanup ==
 #
-# Enables periodic jobs that will delete various classes of Keystone tokens 
+# Enables periodic jobs that will delete various classes of Keystone tokens
 #
 # === Parameters ===
 # [*active*]
@@ -22,7 +22,7 @@ class openstack::keystone::cleanup (
     String  $db_name,
 ) {
 
-    # systemd::timer::job does not take a boolean    
+    # systemd::timer::job does not take a boolean
     if $active {
         $ensure = 'present'
     }
@@ -53,7 +53,7 @@ class openstack::keystone::cleanup (
 
     # Delete service tokens that expire in less than 7 days.
     #
-    # Rationale: Tokens do not know when they were created, only when they 
+    # Rationale: Tokens do not know when they were created, only when they
     # expire. Since the token lifespan is 7.1 days (613440sec), any token
     # that expires in less than 7 days from now is already at least 2 hours
     # old.
