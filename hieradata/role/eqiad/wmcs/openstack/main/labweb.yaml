@@ -37,10 +37,7 @@ striker::uwsgi::config:
   https:
     REQUIRE_HTTPS: true
   logging:
-    HANDLERS: file logstash
-    FILE_FILENAME: /srv/log/striker/striker.log
-    LOGSTASH_HOST: logstash.svc.eqiad.wmnet
-    LOGSTASH_PORT: 11514
+    HANDLERS: cee
   static:
     STATIC_ROOT: /srv/deployment/striker/deploy/public_html/static
   openstack:

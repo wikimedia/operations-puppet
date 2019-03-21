@@ -25,4 +25,7 @@
     {"index" : "input-file-apache2-error", "value" : "kafka" },
     {"index" : "input-file-puppetdb", "value" : "kafka" },
     {"index" : "scap", "value" : "kafka" },
-    {"index" : "apache2", "value" : "kafka" }]}
+    {"index" : "apache2", "value" : "kafka" },
+    {"index" : "uwsgi-striker", "value" : "kafka" }
+  ]
+}

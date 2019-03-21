@@ -54,7 +54,7 @@ class striker::uwsgi(
     service::uwsgi { 'striker':
         port            => $port,
         config          => {
-            need-plugins => 'python3, logfile, logsocket',
+            need-plugins => 'python3, logfile',
             chdir        => "${deploy_dir}/striker",
             venv         => $venv_dir,
             wsgi         => 'striker.wsgi',
@@ -66,22 +66,8 @@ class striker::uwsgi(
                 'PYTHONENCODING=utf-8',
             ],
 
-            logger       => [
-                "local file:${log_dir}/main.log",
-                "logstash socket:${logstash_host}:${logstash_port}",
-            ],
-            log-route    => ['local .*', 'logstash .*'],
-            log-encoder  => [
-                # lint:ignore:single_quote_string_with_variables
-                # Add a timestamps to local log messages
-                'format:local [${strftime:%%Y-%%m-%%dT%%H:%%M:%%S}] ${msgnl}',
-
-                # Encode messages to the logstash logger as json datagrams.
-                # msgpack would be nicer, but the jessie uwsgi package doesn't
-                # include the msgpack formatter.
-                'json:logstash {"@timestamp":"${strftime:%%Y-%%m-%%dT%%H:%%M:%%S}","type":"striker","logger_name":"uwsgi","host":"%h","level":"INFO","message":"${msg}"}',
-                #lint:endignore
-            ],
+            # T217932:  Use default logging to stderr which will be picked up
+            # by journald and can be routed to rsyslog from there.
 
             # Access log apache combined log format + time to generate response
             # Mimics the WMF Apache logging standard
