@@ -67,7 +67,7 @@ class profile::base::labs(
             command            => '/usr/local/sbin/puppet_alert.py',
             interval           => {
                 'start'    => 'OnCalendar',
-                'interval' => '*-*-* *:08:15',
+                'interval' => '*-*-* 08:15:00',
             },
             logging_enabled    => false,
             monitoring_enabled => false,
