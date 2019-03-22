@@ -217,3 +217,5 @@ prometheus_upgrade_one_seven: true
 
 # Scap version is managed via puppet in labs
 scap::version: 3.9.2-1
+profile::base::debdeploy::exclude_filesystems:
+  - nfs4

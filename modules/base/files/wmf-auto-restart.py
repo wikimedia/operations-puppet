@@ -20,12 +20,23 @@ handler.formatter = logging.Formatter('wmf-auto-restart: %(levelname)s: %(asctim
 logger.addHandler(handler)
 
 
-def check_restart(service_name, dry_run, exclude_mounts=None):
+def get_mounts(filesystems):
+    '''Return an array of mount points matching file systems'''
+    with open('/proc/mounts', 'r') as proc_mounts:
+        mounts = [line.split() for line in proc_mounts.readlines()]
+        return [mount[1] for mount in mounts if mount[2] in filesystems]
+
+
+def check_restart(service_name, dry_run, exclude_mounts=None, exclude_filesystems=None):
+    """return a list of services that need to be restarted"""
     false_positives = ['/dev/zero']
     command = ["/usr/bin/lsof", "+c", "15", "-nXd", "DEL"]
     if exclude_mounts:
         for exclude_mount in exclude_mounts:
             command += ['-e', exclude_mount]
+    if exclude_filesystems:
+        for mount in get_mounts(exclude_filesystems):
+            command += ['-e', mount]
 
     try:
         del_files = subprocess.check_output(command, universal_newlines=True)
@@ -122,6 +133,7 @@ def check_restart(service_name, dry_run, exclude_mounts=None):
 
 
 def main():
+    """Main method"""
     parser = argparse.ArgumentParser()
     parser.add_argument('-s', '--servicename',
                         help='The name of the service for which a restart should be tested',
@@ -154,7 +166,11 @@ def main():
                      ' '.join(missing_run_time_deps))
         return 1
 
-    return check_restart(args.servicename, args.dryrun, config.get('exclude_mounts', []))
+    return check_restart(
+        args.servicename,
+        args.dryrun,
+        config.get('exclude_mounts', []),
+        config.get('exclude_filesystems', []))
 
 
 if __name__ == "__main__":

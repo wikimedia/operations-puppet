@@ -12,6 +12,9 @@
 #  be e.g. a mount point which only contains data and does not contain any
 #  executables or mount points on a network share which may not be reliably
 #  mounted.
+#[*exclude_filesystems*]
+#  This option is similar to exclude_mounts however it will exclude any mount
+#  points which have been mounted using one of the provided filesystems
 #[*filter_services*]
 # After a library is upgraded, the "query_restart" option of debdeploy prints a
 # list of all processes which need to be restarted to fully effect the security
@@ -34,12 +37,14 @@
 #  }
 #
 class base::debdeploy (
-  Optional[Array[Stdlib::Unixpath]]     $exclude_mounts  = [],
-  Optional[Hash[String, Array[String]]] $filter_services = [],
+  Optional[Array[Stdlib::Unixpath]]     $exclude_mounts      = [],
+  Optional[Array[String]]               $exclude_filesystems = [],
+  Optional[Hash[String, Array[String]]] $filter_services     = [],
 ) {
     $config = {
-      'exclude_mounts'  => $exclude_mounts,
-      'filter_services' => $filter_services,
+      'exclude_mounts'      => $exclude_mounts,
+      'exclude_filesystems' => $exclude_filesystems,
+      'filter_services'     => $filter_services,
     }
     file { '/usr/local/bin/apt-upgrade-activity':
         ensure => present,

@@ -28,6 +28,7 @@ class profile::base(
     # it contradicts https://wikitech.wikimedia.org/wiki/Puppet_coding
     # TODO: need to clarify with _joe_ when he comes back of vacation 2019-03-11
     $debdeploy_exclude_mounts = hiera('profile::base::debdeploy::exclude_mounts', []),
+    $debdeploy_exclude_filesystems = hiera('profile::base::debdeploy::exclude_filesystems', []),
     $debdeploy_filter_services = hiera('profile::base::debdeploy::filter_services', {}),
 ) {
     require ::profile::base::certificates
@@ -114,8 +115,9 @@ class profile::base(
     }
 
     class { '::base::debdeploy':
-      exclude_mounts  => $debdeploy_exclude_mounts,
-      filter_services => $debdeploy_filter_services,
+      exclude_mounts      => $debdeploy_exclude_mounts,
+      exclude_filesystems => $debdeploy_exclude_filesystems,
+      filter_services     => $debdeploy_filter_services,
     }
 
     if $facts['has_ipmi'] {
