@@ -28,3 +28,18 @@ profile::hadoop::common::config_override:
   hadoop_journalnode_opts: "-javaagent:/usr/share/java/prometheus/jmx_prometheus_javaagent.jar=%{::ipaddress}:10485:/etc/prometheus/hdfs_journalnode_jmx_exporter.yaml"
   yarn_nodemanager_opts: "-Xms4096m -javaagent:/usr/share/java/prometheus/jmx_prometheus_javaagent.jar=%{::ipaddress}:8141:/etc/prometheus/yarn_nodemanager_jmx_exporter.yaml"
   yarn_nodemanager_os_reserved_memory_mb: 12000
+  hdfs_site_extra_properties:
+  dfs.http.policy: 'HTTPS_ONLY'
+  mapred_site_extra_properties:
+    mapreduce.ssl.enabled: true
+    mapreduce.shuffle.ssl.enabled: true
+  yarn_site_extra_properties:
+    yarn.http.policy: 'HTTPS_ONLY'
+  core_site_extra_properties:
+    hadoop.ssl.enabled: true
+    hadoop.ssl.require.client.cert: false
+    hadoop.ssl.hostname.verifier: 'DEFAULT'
+    hadoop.ssl.keystores.factory.class: 'org.apache.hadoop.security.ssl.FileBasedKeyStoresFactory'
+    hadoop.ssl.server.conf: 'ssl-server.xml'
+    hadoop.ssl.client.conf: 'ssl-client.xml'
+    hadoop.ssl.enabled.protocols: 'TLSv1,TLSv1.1,TLSv1.2'
