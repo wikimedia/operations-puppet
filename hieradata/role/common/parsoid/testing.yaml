@@ -12,3 +12,6 @@ parsoid::statsd_prefix: parsoid-tests
 diamond::remove: true
 
 profile::base::notifications: disabled
+
+profile::mediawiki::php::php_version: "7.2"
+profile::mediawiki::php::enable_fpm: true

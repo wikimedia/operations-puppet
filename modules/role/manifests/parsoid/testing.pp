@@ -7,6 +7,7 @@ class role::parsoid::testing {
 
     include ::standard
     include ::profile::base::firewall
+    include ::profile::mediawiki::php
     include ::profile::parsoid::diffserver
     include ::profile::parsoid::rt_server
     include ::profile::parsoid::rt_client

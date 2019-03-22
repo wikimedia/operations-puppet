@@ -11,25 +11,6 @@ class profile::parsoid::testing (
         conf       => template('testreduce/parsoid-rt.config.yaml.erb'),
     }
 
-    apt::repository { 'wikimedia-php72':
-        uri        => 'http://apt.wikimedia.org/wikimedia',
-        dist       => 'stretch-wikimedia',
-        components => 'component/php72',
-        notify     => Exec['apt_update_php'],
-        before     => Package['php7.2-common', 'php7.2-opcache']
-    }
-
-    # First installs can trip without this
-    exec {'apt_update_php':
-        command     => '/usr/bin/apt-get update',
-        refreshonly => true,
-    }
-
-    class { '::php':
-        ensure  => present,
-        version => '7.2',
-    }
-
     base::service_auto_restart { 'parsoid': }
 
     file { '/usr/local/bin/update_parsoid.sh':
