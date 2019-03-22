@@ -11,11 +11,4 @@ class contint::packages::base {
     package { 'colordiff':
         ensure => present,
     }
-
-    # frontend tests use curl to make http requests to mediawiki
-    package { [
-        'curl',
-        ]:
-        ensure => present,
-    }
 }
