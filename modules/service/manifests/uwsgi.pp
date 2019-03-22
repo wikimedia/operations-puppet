@@ -63,6 +63,12 @@
 #   Default: hiera('contactgroups', 'admins') - use 'contactgroups' hiera
 #            variable with a fallback to 'admins' if 'contactgroups' isn't set.
 #
+# [*add_logging_config*]
+#   Boolean. Inject logging configuration into the generated uwsgi config file
+#   that will route logs to the Logstash ingest host defined in
+#   service::configuration::logstash_host and optionally local files if
+#   $local_logging is true. Default: true
+#
 # === Examples
 #
 #    service::uwsgi { 'myservice':
@@ -91,6 +97,7 @@ define service::uwsgi(
     $deployment             = 'scap3',
     $sudo_rules             = [],
     $contact_groups         = hiera('contactgroups', 'admins'),
+    $add_logging_config     = true,
 ) {
     if $deployment == 'scap3' {
         scap::target { $repo:
@@ -120,31 +127,57 @@ define service::uwsgi(
     $local_logdir = "${service::configuration::log_dir}/${title}"
     $local_logfile = "${local_logdir}/main.log"
 
-    if $local_logging {
-        ensure_resource('file', '/srv/log', {'ensure' => 'directory' })
-        file { $local_logdir:
-            ensure => directory,
-            owner  => 'www-data',
-            group  => 'root',
-            mode   => '0755',
-            before => Uwsgi::App[$title],
-        }
-        logrotate::conf { $title:
-            ensure  => present,
-            content => template('service/logrotate.uwsgi.erb'),
-        }
-        $local_log_config = {
-            logger => [
-                "local file:${local_logfile}",
-                "logstash socket:${service::configuration::logstash_host}:${service::configuration::logstash_port_logback}",
-            ]
-        }
+    if $add_logging_config {
+      if $local_logging {
+          ensure_resource('file', '/srv/log', {'ensure' => 'directory' })
+          file { $local_logdir:
+              ensure => directory,
+              owner  => 'www-data',
+              group  => 'root',
+              mode   => '0755',
+              before => Uwsgi::App[$title],
+          }
+          logrotate::conf { $title:
+              ensure  => present,
+              content => template('service/logrotate.uwsgi.erb'),
+          }
+          $log_config_local = {
+              log-route => ['local .*', 'logstash .*'],
+              logger    => [
+                  "local file:${local_logfile}",
+                  "logstash socket:${service::configuration::logstash_host}:${service::configuration::logstash_port_logback}",
+              ]
+          }
+      } else {
+          $log_config_local = {
+              log-route => ['logstash .*'],
+              logger    => [
+                  "logstash socket:${service::configuration::logstash_host}:${service::configuration::logstash_port_logback}",
+              ]
+          }
+      }
+      $log_config_shared = {
+          log-encoder => [
+              # lint:ignore:single_quote_string_with_variables
+              # Add a timestamps to local log messages
+              'format:local [${strftime:%%Y-%%m-%%dT%%H:%%M:%%S}] ${msgnl}',
+
+              # Encode messages to the logstash logger as json datagrams.
+              # msgpack would be nicer, but the jessie uwsgi package doesn't
+              # include the msgpack formatter.
+              join([
+                  'json:logstash {"@timestamp":"${strftime:%%Y-%%m-%%dT%%H:%%M:%%S}","type":"',
+                  $title,
+                  '","logger_name":"uwsgi","host":"%h","level":"INFO","message":"${msg}"}'], '')
+              #lint:endignore
+          ],
+      }
+      $logging_config = deep_merge($log_config_shared, $log_config_local)
     } else {
-        $local_log_config = {
-            logger => [
-                "logstash socket:${service::configuration::logstash_host}:${service::configuration::logstash_port_logback}",
-            ]
-        }
+      # Use the default log routing of uwsgi which will emit events to
+      # stdout/stderr with no special formatting. journald will add
+      # timestamps.
+      $logging_config = {}
     }
 
     if !defined(File["/etc/${title}"]) {
@@ -157,28 +190,13 @@ define service::uwsgi(
     }
 
     $base_config = {
-            plugins     => 'python, python3, logfile, logsocket',
-            master      => true,
-            http-socket => "0.0.0.0:${port}",
-            processes   => $no_workers,
-            die-on-term => true,
-            log-route     => ['local .*', 'logstash .*'],
-            log-encoder   => [
-                # lint:ignore:single_quote_string_with_variables
-                # Add a timestamps to local log messages
-                'format:local [${strftime:%%Y-%%m-%%dT%%H:%%M:%%S}] ${msgnl}',
-
-                # Encode messages to the logstash logger as json datagrams.
-                # msgpack would be nicer, but the jessie uwsgi package doesn't
-                # include the msgpack formatter.
-                join([
-                    'json:logstash {"@timestamp":"${strftime:%%Y-%%m-%%dT%%H:%%M:%%S}","type":"',
-                    $title,
-                    '","logger_name":"uwsgi","host":"%h","level":"INFO","message":"${msg}"}'], '')
-                #lint:endignore
-            ],
+        plugins     => 'python, python3, logfile, logsocket',
+        master      => true,
+        http-socket => "0.0.0.0:${port}",
+        processes   => $no_workers,
+        die-on-term => true,
     }
-    $complete_config = deep_merge($base_config, $local_log_config, $config)
+    $complete_config = deep_merge($base_config, $logging_config, $config)
 
     # TODO: firejail for containment. Not used yet, but the idea is to add it
     require_package('firejail')

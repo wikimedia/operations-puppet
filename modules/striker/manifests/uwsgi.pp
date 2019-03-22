@@ -52,8 +52,8 @@ class striker::uwsgi(
     $logstash_host = $config['logging']['LOGSTASH_HOST']
     $logstash_port = $config['logging']['LOGSTASH_PORT']
     service::uwsgi { 'striker':
-        port            => $port,
-        config          => {
+        port               => $port,
+        config             => {
             need-plugins => 'python3, logfile',
             chdir        => "${deploy_dir}/striker",
             venv         => $venv_dir,
@@ -66,23 +66,23 @@ class striker::uwsgi(
                 'PYTHONENCODING=utf-8',
             ],
 
-            # T217932:  Use default logging to stderr which will be picked up
-            # by journald and can be routed to rsyslog from there.
-
             # Access log apache combined log format + time to generate response
             # Mimics the WMF Apache logging standard
             req-logger   => "file:${log_dir}/access.log",
             log-format   => '%(addr) - %(user) [%(ltime)] "%(method) %(uri) (proto)" %(status) %(size) "%(referer)" "%(uagent)" %(micros)',
         },
-        healthcheck_url => '/',
-        icinga_check    => false,
-        repo            => 'striker/deploy',
-        sudo_rules      => [
+        healthcheck_url    => '/',
+        icinga_check       => false,
+        repo               => 'striker/deploy',
+        sudo_rules         => [
             'ALL=(root) NOPASSWD: /usr/sbin/service uwsgi-striker restart',
             'ALL=(root) NOPASSWD: /usr/sbin/service uwsgi-striker start',
             'ALL=(root) NOPASSWD: /usr/sbin/service uwsgi-striker status',
             'ALL=(root) NOPASSWD: /usr/sbin/service uwsgi-striker stop',
         ],
+        # T217932: Use default logging to stderr which will be picked up by
+        # journald and can be routed to rsyslog from there.
+        add_logging_config => false,
     }
 
     base::service_auto_restart { 'uwsgi-striker': }
