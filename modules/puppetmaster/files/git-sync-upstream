@@ -3,6 +3,7 @@
 # Rebase step is done in a temporary git clone that shares objects with the
 # repo being rebased. This helps avoid consumers of the clone seeing partial
 # application of local changes do to non-atomic operations.
+import argparse
 import datetime
 import logging
 import os
@@ -126,5 +127,15 @@ def rebase_repo(repo_path, track_branch):
     return True
 
 
-if rebase_repo("/var/lib/git/operations/puppet", "production"):
+parser = argparse.ArgumentParser(
+    description='Sync local puppet repo with upstream')
+parser.add_argument('--private-only', dest='private', action='store_true',
+                    help="Only sync the /labs/private repo")
+
+args = parser.parse_args()
+
+if args.private:
     rebase_repo("/var/lib/git/labs/private", "master")
+else:
+    if rebase_repo("/var/lib/git/operations/puppet", "production"):
+        rebase_repo("/var/lib/git/labs/private", "master")

@@ -38,6 +38,13 @@ class profile::openstack::base::puppetmaster::common(
         second_region_designate_host => $second_region_designate_host,
     }
 
+    # Update labs/private repo.  The main repo is updated
+    #  by puppet-merge from the prod puppetmasters.
+    class { 'puppetmaster::gitsync':
+        run_every_minutes => '1',
+        private_only      => true,
+    }
+
     $labweb_ips = inline_template("@resolve((<%= @labweb_hosts.join(' ') %>))")
     $labweb_aaaa = inline_template("@resolve((<%= @labweb_hosts.join(' ') %>), AAAA)")
 
