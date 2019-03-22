@@ -39,12 +39,7 @@ profile::hadoop::common::config_override:
     yarn.http.policy: 'HTTPS_ONLY'
   core_site_extra_properties:
     hadoop.ssl.enabled: true
-    hadoop.ssl.require.client.cert: false
-    hadoop.ssl.hostname.verifier: 'DEFAULT'
-    hadoop.ssl.keystores.factory.class: 'org.apache.hadoop.security.ssl.FileBasedKeyStoresFactory'
-    hadoop.ssl.server.conf: 'ssl-server.xml'
-    hadoop.ssl.client.conf: 'ssl-client.xml'
-    hadoop.ssl.enabled.protocols: 'TLSv1,TLSv1.1,TLSv1.2'
+    hadoop.ssl.enabled.protocols: 'TLSv1.2'
 
 # Ensure that users in these posix groups have home directories in HDFS.
 profile::hadoop::master::hadoop_user_groups: "analytics-users analytics-privatedata-users analytics-admins analytics-search-users"
