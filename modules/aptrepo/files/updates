@@ -179,15 +179,6 @@ Architectures: amd64
 VerifyRelease: F76221572C52609D
 ListShellHook: grep-dctrl -X -P docker-engine -a -F Version --gt 1.12.0 -a -F Version --lt 1.13.0 || [ $? -eq 1 ]
 
-Name: php72-stretch
-Method: https://packages.sury.org/php
-Components: main>thirdparty/php72
-UDebComponents:
-Suite: stretch
-Architectures: amd64 source
-VerifyRelease: AC0E47584A7A714D
-ListShellHook: grep-dctrl \( -X -S php7.2 \) -o \( -X -S php-defaults \) -o \( -X -S xdebug \) -o \( -X -S pcre3 \) -o \( -X -S libzip \) || [ $? -eq 1 ]
-
 Name: mono-project-jessie
 Method: https://download.mono-project.com/repo/debian
 Components: main>thirdparty/mono-project-jessie
