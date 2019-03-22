@@ -345,6 +345,11 @@ class profile::logstash::collector (
         priority => 50,
     }
 
+    logstash::conf { 'filter_icinga':
+        source   => 'puppet:///modules/profile/logstash/filter-icinga.conf',
+        priority => 50,
+    }
+
     ## Global post-processing (70)
 
     logstash::conf { 'filter_add_normalized_message':
