@@ -939,7 +939,9 @@ def parse_config_file(config_path):
 
 def main():
 
-    logging.basicConfig(filename='debug.log', level=logging.DEBUG)
+    logging.basicConfig(filename='/var/log/mariadb-backups/backups.log',
+                        level=logging.DEBUG,
+                        format='[%(asctime)s]: %(levelname)s - %(message)s', datefmt='%H:%M:%S')
     logger = logging.getLogger('backup')
 
     options = parse_options()

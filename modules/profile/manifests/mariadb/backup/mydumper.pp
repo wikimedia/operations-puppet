@@ -64,13 +64,21 @@ class profile::mariadb::backup::mydumper {
         mode    => '0400',
         content => template("profile/mariadb/backups-${::site}.cnf.erb"),
     }
+    # Logging support
+    file { '/var/log/mariadb-backups':
+        ensure => directory,
+        owner  => 'dump',
+        group  => 'dump',
+        mode   => '0740',
+    }
 
     file { '/usr/local/bin/backup_mariadb.py':
-        ensure => present,
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0755',
-        source => 'puppet:///modules/profile/mariadb/backup_mariadb.py',
+        ensure  => present,
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0755',
+        source  => 'puppet:///modules/profile/mariadb/backup_mariadb.py',
+        require => File['/var/log/mariadb-backups'],
     }
     file { '/usr/local/bin/recover_dump.py':
         ensure  => present,
