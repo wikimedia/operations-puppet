@@ -33,6 +33,9 @@ logger.indexing_slowlog.appenderRef.slowlog.ref = index_search_slow_log_file
 logger.indexing_slowlog.appenderRef.ship_to_logstash.ref = ship_to_logstash
 <% end %>
 
+# reduce noise level while https://phabricator.wikimedia.org/T218994 is being investigated
+logger.org.elasticsearch.deprecation.common.ParseField.level = error
+
 appender.file.name = file
 appender.file.type = File
 appender.file.fileName = ${sys:es.logs.base_path}${sys:file.separator}${sys:es.logs.cluster_name}.log
