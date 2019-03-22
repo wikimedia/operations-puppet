@@ -35,6 +35,13 @@
 #    hadoop_clusters's variable configuration.
 #    Default: {}
 #
+#  [*ensure_ssl_config*]
+#    Extra argument to force the profile to not deploy TLS keys if any of the
+#    Yarn/HDFS/MapReduce TLS config has been added. This is useful in places where
+#    we need the TLS config to be picked (for example to use the encrypted shuffle
+#    in map-reduce jobs) but not TLS keys are available for the host.
+#    Default: false
+#
 # == Hadoop properties
 #
 #  These properties can be added to either hadoop_clusters or config_override's
@@ -183,6 +190,7 @@ class profile::hadoop::common (
     $cluster_name            = hiera('profile::hadoop::common::hadoop_cluster_name'),
     $hadoop_clusters_secrets = hiera('hadoop_clusters_secrets', {}),
     $config_override         = hiera('profile::hadoop::common::config_override', {}),
+    $ensure_ssl_config       = hiera('profile::hadoop::common::ensure_ssl_config', false),
 ) {
     # Properties that are not meant to have undef as default value (a hash key
     # without a correspondent value returns undef) should be listed in here.
@@ -396,13 +404,6 @@ class profile::hadoop::common (
 
         java_home                                        => $java_home,
     }
-
-
-    # If any of the following properties are true, the common TLS config needs to be deployed
-    $ensure_hdfs_ssl_config = ($hdfs_site_extra_properties['dfs.http.policy'] == 'HTTPS_ONLY')
-    $ensure_yarn_ssl_config = ($yarn_site_extra_properties['yarn.http.policy'] == 'HTTPS_ONLY')
-    $ensure_mapred_ssl_config = ($mapred_site_extra_properties['mapreduce.shuffle.ssl.enabled'] == true)
-    $ensure_ssl_config = ($ensure_hdfs_ssl_config or $ensure_yarn_ssl_config or $ensure_mapred_ssl_config)
 
     # The following code deploys TLS certificates to the Hadoop cluster hosts.
     # Very important note too keep in mind:

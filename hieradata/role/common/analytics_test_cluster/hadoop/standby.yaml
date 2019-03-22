@@ -16,6 +16,9 @@ admin::groups_no_ssh:
 
 profile::hadoop::common::hadoop_cluster_name: 'analytics-test-hadoop'
 
+# Deploy TLS keys and xml configuration files
+profile::hadoop::common::ensure_ssl_config: true
+
 profile::hadoop::standby_master::monitoring_enabled: true
 profile::hadoop::logstash::enabled: false
 
@@ -32,17 +35,6 @@ profile::hadoop::common::config_override:
   # 2) After a month a checkpoint is deleted.
   hdfs_trash_checkpoint_interval: 1440
   hdfs_trash_interval: 43200
-  hdfs_site_extra_properties:
-    dfs.http.policy: 'HTTPS_ONLY'
-  mapred_site_extra_properties:
-    mapreduce.ssl.enabled: true
-    mapreduce.shuffle.ssl.enabled: true
-    mapreduce.jobhistory.http.policy: 'HTTPS_ONLY'
-  yarn_site_extra_properties:
-    yarn.http.policy: 'HTTPS_ONLY'
-  core_site_extra_properties:
-    hadoop.ssl.enabled: true
-    hadoop.ssl.enabled.protocols: 'TLSv1.2'
 
 profile::analytics::database::meta::backup_dest::hive::metastore_host: 'analytics1030.eqiad.wmnet'
 profile::analytics::database::meta::backup_dest::oozie_host: 'analytics1030.eqiad.wmnet'
