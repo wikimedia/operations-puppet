@@ -115,16 +115,6 @@ Architectures: amd64
 VerifyRelease: D27D666CD88E42B4
 ListShellHook: grep-dctrl \( -S 'elasticsearch-oss' -a -F Version --eq 6.5.4 \) -o \( -S 'kibana-oss' -a -F Version --eq 6.5.4 \) -o \( -S logstash -a -F Version --eq 1:6.5.4-1 \) || [ $? -eq 1 ]
 
-Name: elasticsearch-curator
-Method: http://packages.elastic.co/curator/5/debian
-Components: main>thirdparty
-UDebComponents:
-Suite: stable
-GetInRelease: no
-Architectures: amd64
-VerifyRelease: D27D666CD88E42B4
-ListShellHook: grep-dctrl -X -S elasticsearch-curator || [ $? -eq 1 ]
-
 Name: tor-stretch
 Method: http://deb.torproject.org/torproject.org/
 Components: main>thirdparty/tor
