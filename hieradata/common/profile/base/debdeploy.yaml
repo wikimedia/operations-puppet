@@ -6,3 +6,5 @@ profile::base::debdeploy::filter_services:
     - libtiff
   systemd:
     - '*'
+  dbus-daemon:
+    - '*'
