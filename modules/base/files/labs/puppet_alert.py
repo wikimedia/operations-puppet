@@ -1,6 +1,6 @@
 #!/usr/bin/python
-# Copyright 2016 Andrew Bogott <andrewbogott@gmail.com> and
-#   Yuvi Panda <yuvipanda@gmail.com>
+#
+# Copyright (c) 2019 Wikimedia Foundation and contributors
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -17,22 +17,27 @@
 Send an alert email to project members about a puppet failure.  This is
 meant to be run on the affected instance.
 """
-import sys
-sys.path.append('/usr/local/sbin/')
-from notify_maintainers import email_admins
 import calendar
-import time
+import logging
 import socket
+import sys
+import time
+
+from notify_maintainers import email_admins
+
+sys.path.append("/usr/local/sbin/")
 
 # Nag if it's been 24 hours since the last puppet run
 NAG_INTERVAL = 60 * 60 * 24
 
+logger = logging.getLogger(__name__)
+
 
 def lastrun():
-    datafile = file('/var/lib/puppet/state/last_run_summary.yaml')
+    datafile = file("/var/lib/puppet/state/last_run_summary.yaml")
     for line in datafile:
-        fields = line.strip().split(': ')
-        if fields[0] == 'last_run':
+        fields = line.strip().split(": ")
+        if fields[0] == "last_run":
             return int(fields[1])
     return 0
 
@@ -45,8 +50,9 @@ def main():
 
         subject = "[Cloud VPS alert] Puppet failure on %s" % (fqdn,)
 
-        print "It has been %s seconds since last Puppet run." \
-            "Sending nag emails." % NAG_INTERVAL
+        logger.info(
+            "It has been %s seconds since last Puppet run. Sending nag emails.", NAG_INTERVAL
+        )
 
         body = """
 Puppet is failing to run on the "{fqdn}" instance in Wikimedia Cloud VPS.
@@ -61,10 +67,12 @@ this instance or contact a Cloud VPS admin for assistance.
 
 For further support, visit #wikimedia-cloud on freenode or
 <https://wikitech.wikimedia.org>
-""".format(fqdn=fqdn)
+""".format(
+            fqdn=fqdn
+        )
 
         email_admins(subject, body)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()
