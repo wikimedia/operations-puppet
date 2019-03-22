@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 
 # Author: Filippo Giunchedi <filippo@wikimedia.org>
 # Copyright 2014 Wikimedia Foundation
@@ -19,7 +19,6 @@
 
 
 import argparse
-import json
 import operator
 import re
 import sys
@@ -34,7 +33,7 @@ EX_UNKNOWN = 3
 
 
 class Threshold(object):
-    '''Implement a simple threshold parser/checker with common predicates.'''
+    """Implement a simple threshold parser/checker with common predicates."""
 
     PREDICATES = {
         '<=': operator.le,
@@ -59,23 +58,23 @@ class Threshold(object):
     def _parse(self, threshold):
         m = self.FORMAT_RE.match(threshold)
         if not m:
-            raise ValueError('unable to parse threshold: %r' % threshold)
+            raise ValueError("unable to parse threshold: {threshold}".format(threshold=threshold))
         predicate, value = m.groups()
         try:
             value = float(value)
         except ValueError:
-            raise ValueError('unable to parse as float: %r' % value)
+            raise ValueError("unable to parse as float: {value}".format(value=value))
         if 0.0 > value or value > 1.0:
-            raise ValueError('threshold should be a ratio between 0.0 and 1.0: %r' % value)
+            raise ValueError("threshold should be a ratio between 0.0 and 1.0: {value}"
+                             .format(value=value))
         self.predicate = self.PREDICATES.get(predicate, operator.eq)
         self.threshold = value
 
 
 def _format_health(health):
     out = []
-    for k, v in health.iteritems():
-        health_item = '%s: %s' % (str(k).encode('utf8', 'ignore'),
-                                  str(v).encode('utf8', 'ignore'))
+    for k, v in health.items():
+        health_item = "{k}: {v}".format(k=k, v=v)
         out.append(health_item)
     return ', '.join(out)
 
@@ -87,26 +86,24 @@ def check_status(health):
 
 
 def log_critical(log):
-    print 'CRITICAL - elasticsearch %s' % log
+    print("CRITICAL - elasticsearch {log}".format(log=log))
 
 
 def log_ok(log):
-    print 'OK - elasticsearch %s' % log
+    print("OK - elasticsearch {log}".format(log=log))
 
 
 def check_shards_inactive(health, threshold):
-    total_shards = 0
-    inactive_shards = 0
-    for s in 'relocating', 'initializing', 'unassigned':
-        inactive_shards += health['%s_shards' % s]
-        total_shards += health['%s_shards' % s]
-    total_shards += health['active_shards']
+    inactive_shards = health['initializing_shards'] + health['unassigned_shards']
+    total_shards = health['active_shards'] + inactive_shards
     t = Threshold(threshold)
     if not t.breach(inactive_shards, total_shards):
         return EX_OK
 
-    log_critical('inactive shards %s threshold %s breach: %r' % (
-                 inactive_shards, threshold, _format_health(health)))
+    log_critical("inactive shards {inactive_shards} threshold {threshold} breach: {breach}".format(
+                    inactive_shards=inactive_shards,
+                    threshold=threshold,
+                    breach=_format_health(health)))
     return EX_CRITICAL
 
 
@@ -118,28 +115,21 @@ def fetch_url(url, timeout, retries):
             response = requests.get(url, timeout=timeout)
             response.raise_for_status()
             return response
-        except requests.exceptions.Timeout, e:
+        except requests.exceptions.Timeout as e:
             exception = e
             continue
     raise exception
 
 
 def check_elasticsearch(options):
+    cluster_health_url = options.url + '/_cluster/health'
     try:
-        cluster_health_url = options.url + '/_cluster/health'
-        response = fetch_url(cluster_health_url, options.timeout,
-                             options.retries)
-    except requests.exceptions.RequestException, e:
-        log_critical('%s error while fetching: %s' % (cluster_health_url, e))
+        response = fetch_url(cluster_health_url, options.timeout, options.retries)
+    except requests.exceptions.RequestException as e:
+        log_critical("{url} error while fetching: {e}".format(url=cluster_health_url, e=e))
         return EX_CRITICAL
 
-    try:
-        cluster_health = json.loads(response.content)
-    except ValueError, e:
-        log_critical('%s error while decoding json: %s' % (
-            cluster_health_url, e))
-        return EX_CRITICAL
-
+    cluster_health = response.json()
     r = check_shards_inactive(cluster_health, options.shards_inactive)
     if r != EX_OK:
         return r
@@ -147,10 +137,12 @@ def check_elasticsearch(options):
     if not options.ignore_status:
         r = check_status(cluster_health)
         if r != EX_OK:
+            log_critical("status {name}: {health}".format(name=cluster_health['cluster_name'],
+                                                          health=_format_health(cluster_health)))
             return r
 
-    log_ok('status %s: %s' % (cluster_health['cluster_name'],
-                              _format_health(cluster_health)))
+    log_ok("status {name}: {health}".format(name=cluster_health['cluster_name'],
+                                            health=_format_health(cluster_health)))
     return EX_OK
 
 

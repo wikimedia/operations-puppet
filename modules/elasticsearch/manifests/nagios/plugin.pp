@@ -44,5 +44,5 @@ class elasticsearch::nagios::plugin {
         tag    => 'nagiosplugin',
     }
 
-    require_package('python-requests', 'python3-requests', 'python3-dateutil')
+    require_package('python3-requests', 'python3-dateutil')
 }
