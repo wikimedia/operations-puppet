@@ -1,0 +1,58 @@
+[sssd]
+#debug_level=10
+domains = wikimedia.org
+default_domain_suffix = wikimedia.org
+full_name_format = %1$s
+services = nss, pam, ssh
+config_file_version = 2
+
+[nss]
+#debug_level=10
+filter_groups = root
+filter_users = root
+
+[pam]
+#debug_level=10
+# default to 0 days (no expiration)
+offline_credentials_expiration = 1
+
+[ssh]
+#debug_level=10
+
+[domain/wikimedia.org]
+#debug_level=10
+id_provider = ldap
+auth_provider = ldap
+ldap_uri = <% @ldapconfig["servernames"].each do |servername| -%>ldap://<%= servername %>:389 , <% end -%>
+
+ldap_default_bind_dn = cn=proxyagent,ou=profile,<%= @ldapconfig["basedn"] %>
+ldap_default_authtok = <%= @ldapconfig["proxypass"] %>
+ldap_search_base = <%= @ldapconfig["basedn"] %>
+ldap_tls_reqcert = demand
+ldap_id_use_start_tls = False
+ldap_tls_cacertdir = /etc/openldap/cacerts
+ldap_schema = rfc2307bis
+use_fully_qualified_names = True
+ldap_page_size = <%= @ldapconfig["pagesize"] %>
+# disable stuff not provided by LDAP (value of id_provider is used by default)
+sudo_provider = none
+selinux_provider = none
+autofs_provider = none
+subdomains_provider = none
+hostid_provider = none
+ldap_referrals = false
+#
+# cache options
+#
+# default to false, but make it explicit
+cache_credentials = False
+# default to false, but make it explicit
+enumerate = False
+# these next 2 are carried over from nscd
+entry_cache_user_timeout = 3600
+entry_cache_group_timeout = 300
+# 5400 seconds (90 mins) is the default, but make it explicit
+entry_cache_timeout = 5400
+entry_cache_ssh_host_timeout = 5400
+# 1 day max time accounts can be in cache, default is 0 days (unlimited)
+account_cache_expiration = 1
