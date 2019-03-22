@@ -94,6 +94,13 @@ class profile::elasticsearch(
         before     => Class['::elasticsearch'],
     }
 
+    apt::repository { 'wikimedia-curator':
+        uri        => 'http://apt.wikimedia.org/wikimedia',
+        dist       => "${::lsbdistcodename}-wikimedia",
+        components => 'thirdparty/elasticsearch-curator5',
+        before     => Class['::elasticsearch::curator'],
+    }
+
     # ensure that apt is refreshed before installing elasticsearch
     Exec['apt-get update'] -> Class['::elasticsearch']
 
