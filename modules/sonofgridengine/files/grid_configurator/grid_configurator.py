@@ -32,7 +32,7 @@ from novaclient import client as novaclient
 import yaml
 
 
-VALID_DOMAINS = ["hostgroup", "checkpoint", "queue", "hosts"]
+VALID_DOMAINS = ["checkpoint", "queue", "hosts"]
 GRID_HOST_TYPE = ["exec", "submit"]
 GRID_HOST_PREFIX = {
     "sgewebgrid-generic": ["exec", "submit"],
@@ -184,7 +184,7 @@ class GridHostGroup(GridConfig):
         current_state["hostlist"] = hosts
         return current_state
 
-    def compare_and_update(self, input_file, dryrun):
+    def compare_and_update(self, input_file, dryrun, host_processor):
         self.current_conf = self._get_config()
         with open(input_file) as inp_f:
             rawconfig = inp_f.read()
@@ -194,7 +194,9 @@ class GridHostGroup(GridConfig):
         [label1, hostgrp_name] = conf_lines.pop(0).split(maxsplit=1)
         self.desired_conf[label1] = hostgrp_name
         self.desired_conf["hostlist"] = [
-            host for host in conf_lines[0].split() if host != "hostlist"
+            host
+            for host in conf_lines[0].split()
+            if host != "hostlist" and host in host_processor.host_set["exec"]
         ]
 
         if not set(self.desired_conf.keys()) == set(self.current_conf.keys()):
@@ -506,7 +508,7 @@ def select_object(obj_type):
     return grid_obj_types[obj_type]
 
 
-def run_domain_updates(config_dir, domain, grid_class, dry_run):
+def run_domain_updates(config_dir, domain, grid_class, dry_run, *args):
     domain_dir = os.path.join(config_dir, domain + "s")
     try:
         conf_files = os.listdir(domain_dir)
@@ -519,10 +521,11 @@ def run_domain_updates(config_dir, domain, grid_class, dry_run):
             continue
 
         grid_object = grid_class(conf)
+        obj_args = (os.path.join(domain_dir, conf), dry_run) + args
         if not grid_object.check_exists():
-            grid_object.create(os.path.join(domain_dir, conf), dry_run)
+            grid_object.create(*obj_args)
         else:
-            grid_object.compare_and_update(os.path.join(domain_dir, conf), dry_run)
+            grid_object.compare_and_update(*obj_args)
 
 
 def main():
@@ -551,6 +554,11 @@ def main():
             args.config_dir,
             GRID_HOST_TYPE,
         )
+
+        run_domain_updates(
+            args.config_dir, "hostgroup", GridHostGroup, args.dry_run, host_processor
+        )
+
         host_processor.run_updates(args.dry_run, GRID_HOST_TYPE)
 
     for domain in domains:

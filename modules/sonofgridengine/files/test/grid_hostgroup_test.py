@@ -2,10 +2,18 @@ from os import path
 import sys
 import tempfile
 import unittest
-from unittest.mock import patch
+from unittest.mock import patch, Mock
 
 sys.path.append("../grid_configurator")
 from grid_configurator import grid_configurator
+
+OPENSTACK_MOCK_HOSTS = {
+    "exec": ["dummy01", "dummy02", "dummy03"],
+    "submit": [
+        "toolsbeta-sgecron-0000.toolsbeta.eqiad.wmflabs",
+        "toolsbeta-sgebastion-0000.toolsbeta.eqiad.wmflabs",
+    ],
+}
 
 
 class GridHostGroupTest(unittest.TestCase):
@@ -56,10 +64,11 @@ group_name              @dummies
 hostlist dummy01 dummy02 dummy03
 """
             )
-
+        mock_hp = Mock()
+        mock_hp.host_set = OPENSTACK_MOCK_HOSTS
         self.assertTrue(
             self.conf_object.compare_and_update(
-                path.join(tmp_dir, grid_resource), False
+                path.join(tmp_dir, grid_resource), False, mock_hp
             )
         )
 
@@ -70,12 +79,14 @@ hostlist dummy01 dummy02 dummy03
     @patch("grid_configurator.grid_configurator.subprocess.run")
     def test_compare_existing_resource(self, mock_run):
         tmp_dir = tempfile.mkdtemp()
-        grid_resource = "dummy_intance"
+        grid_resource = "dummy_instance"
         mock_run.return_value.returncode = 0
         mock_run.return_value.stdout = b"""\
 group_name              @dummies
 hostlist dummy01 dummy02 dummy03
 """
+        mock_hp = Mock()
+        mock_hp.host_set = OPENSTACK_MOCK_HOSTS
         with open(path.join(tmp_dir, grid_resource), "w") as input_file:
             input_file.write(
                 """\
@@ -85,7 +96,9 @@ hostlist dummy01 dummy02 dummy03
 """
             )
 
-        self.conf_object.compare_and_update(path.join(tmp_dir, grid_resource), False)
+        self.conf_object.compare_and_update(
+            path.join(tmp_dir, grid_resource), False, mock_hp
+        )
 
         # If they match, it should only call the subprocess once
         mock_run.assert_called_once_with(
