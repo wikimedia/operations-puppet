@@ -34,7 +34,8 @@ logger.indexing_slowlog.appenderRef.ship_to_logstash.ref = ship_to_logstash
 <% end %>
 
 # reduce noise level while https://phabricator.wikimedia.org/T218994 is being investigated
-logger.org.elasticsearch.deprecation.common.ParseField.level = error
+logger.parsefield.name = org.elasticsearch.deprecation.common.ParseField
+logger.parsefield.level = error
 
 appender.file.name = file
 appender.file.type = File
