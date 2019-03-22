@@ -1437,7 +1437,7 @@ lvs::configuration::lvs_services:
     ip: *ip_block048
     port: 389
     bgp: 'yes'
-    depool-threshold: '.9'
+    depool-threshold: '.5'
     monitors:
       IdleConnection:
         timeout-clean-reconnect: 3
@@ -1453,7 +1453,7 @@ lvs::configuration::lvs_services:
     ip: *ip_block048
     port: 636
     bgp: 'yes'
-    depool-threshold: '.9'
+    depool-threshold: '.5'
     monitors:
       IdleConnection:
         timeout-clean-reconnect: 3
