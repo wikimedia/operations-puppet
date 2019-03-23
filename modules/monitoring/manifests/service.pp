@@ -19,7 +19,11 @@ define monitoring::service(
 {
     # the list of characters is the default for illegal_object_name_chars
     # nagios/icinga option
-    $description_safe = regsubst($description, '[`~!$%^&*"|\'<>?,()=]', '-', 'G')
+    if $description {
+        $description_safe = regsubst($description, '[`~!$%^&*"|\'<>?,()=]', '-', 'G')
+    } else {
+        $description_safe = ''
+    }
 
     if ! $host {
         fail("Parameter ${host} not defined!")

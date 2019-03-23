@@ -30,8 +30,8 @@
 #    $ensure
 #       Defaults to present
 #
-define nrpe::monitor_service( $description,
-                              $nrpe_command,
+define nrpe::monitor_service( $description    = undef,
+                              $nrpe_command   = undef,
                               $contact_group  = hiera('contactgroups', 'admins'),
                               $retries        = 3,
                               $timeout        = 10,
@@ -40,8 +40,12 @@ define nrpe::monitor_service( $description,
                               $check_interval = 1,
                               $retry_interval = 1,
                               $notes_url      = undef,
-                              $ensure         = 'present') {
+                              Wmflib::Ensure $ensure = present) {
+    unless $ensure == 'absent' or ($description and $nrpe_command) {
+        fail('Description and nrpe_command parameters are mandatory for ensure != absent')
+    }
     nrpe::check { "check_${title}":
+        ensure  => $ensure,
         command => $nrpe_command,
         before  => Monitoring::Service[$title],
     }
