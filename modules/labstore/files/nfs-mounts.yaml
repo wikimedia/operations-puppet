@@ -93,6 +93,13 @@ private:
       home: true
       project: true
       scratch: true
+  paws:
+    gid: 52863
+    mounts:
+      dumps: true
+      scratch: true
+      home: true
+      project: true
   tools:
     gid: 50380
     mounts:
