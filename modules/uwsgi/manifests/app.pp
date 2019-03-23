@@ -29,7 +29,7 @@
 #  }
 #
 define uwsgi::app(
-    $settings,
+    $settings = {},
     $service_settings = '--die-on-term',
     $core_limit = '0',
     $ensure   = present,
@@ -39,29 +39,41 @@ define uwsgi::app(
 
     $basename = regsubst($title, '\W', '-', 'G')
 
-    if $ensure == 'present' {
-        file { "/etc/uwsgi/apps-available/${basename}.ini":
-            content => template('uwsgi/app.ini.erb'),
+    file { "/etc/uwsgi/apps-available/${basename}.ini":
+        ensure  => $ensure,
+        content => template('uwsgi/app.ini.erb'),
+    }
+
+    $inipath =  "/etc/uwsgi/apps-enabled/${basename}.ini"
+    if $ensure == 'present' and $enabled {
+        file { $inipath:
+            ensure => link,
+            target => "/etc/uwsgi/apps-available/${basename}.ini",
         }
 
-        if $enabled == true {
-            $inipath =  "/etc/uwsgi/apps-enabled/${basename}.ini"
-            file { $inipath:
-                ensure => link,
-                target => "/etc/uwsgi/apps-available/${basename}.ini",
-            }
+        base::service_unit { "uwsgi-${title}":
+            ensure    => present,
+            systemd   => systemd_template('uwsgi'),
+            subscribe => File["/etc/uwsgi/apps-available/${basename}.ini"],
+        }
 
-            base::service_unit { "uwsgi-${title}":
-                ensure    => present,
-                systemd   => systemd_template('uwsgi'),
-                subscribe => File["/etc/uwsgi/apps-available/${basename}.ini"],
-            }
+        nrpe::monitor_service { "uwsgi-${title}":
+            ensure       => present,
+            description  => "${title} uWSGI web app",
+            nrpe_command => "/usr/sbin/service uwsgi-${title} status",
+            require      => Base::Service_unit["uwsgi-${title}"],
+        }
+    } else {
+        file { $inipath:
+            ensure => absent,
+        }
 
-            nrpe::monitor_service { "uwsgi-${title}":
-                description  => "${title} uWSGI web app",
-                nrpe_command => "/usr/sbin/service uwsgi-${title} status",
-                require      => Base::Service_unit["uwsgi-${title}"],
-            }
+        base::service_unit { "uwsgi-${title}": # lint:ignore:wmf_styleguide
+            ensure => absent,
+        }
+
+        nrpe::monitor_service { "uwsgi-${title}":
+            ensure => absent,
         }
     }
 }
