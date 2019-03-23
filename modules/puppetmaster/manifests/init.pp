@@ -171,7 +171,16 @@ class puppetmaster(
         puppet_major_version => $puppet_major_version,
     }
 
-    include ::puppetmaster::scripts
+    if has_key($config, 'storeconfigs_backend') and $config['storeconfigs_backend'] == 'puppetdb' {
+        $has_puppetdb = true
+    } else {
+        $has_puppetdb = false
+    }
+
+    class { '::puppetmaster::scripts' :
+        has_puppetdb => $has_puppetdb
+    }
+
     include ::puppetmaster::geoip
     include ::puppetmaster::gitpuppet
     include ::puppetmaster::generators

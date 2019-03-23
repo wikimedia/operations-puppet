@@ -11,6 +11,7 @@
 #   to prevent excess load on the prod puppetmasters.
 class puppetmaster::scripts(
     $keep_reports_minutes = 960, # 16 hours
+    $has_puppetdb = true,
 ) {
     $prodservers = hiera('puppetmaster::servers', {})
 
@@ -29,12 +30,35 @@ class puppetmaster::scripts(
 
     # export and sanitize facts for puppet compiler
     require_package('python3-requests', 'python3-yaml')
-    file {'/usr/local/bin/puppet-facts-export':
+    file {'/usr/local/bin/puppet-facts-export-puppetdb':
         ensure => present,
         owner  => 'root',
         group  => 'root',
         mode   => '0555',
-        source => 'puppet:///modules/puppetmaster/puppet-facts-export.py',
+        source => 'puppet:///modules/puppetmaster/puppet-facts-export-puppetdb.py',
+    }
+
+    # this performs the same task as puppet-facts-export but can
+    #  run on a host without puppetdb.  This is useful because
+    #  the cloud puppetmasters don't use puppetdb to preserve
+    #  tenant separation
+    file {'/usr/local/bin/puppet-facts-export-nodb':
+        ensure => present,
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0555',
+        source => 'puppet:///modules/puppetmaster/puppet-facts-export-nodb.sh',
+    }
+
+    # Link to the appropriate fact exporter, as appropriate
+    #  depending on the presence of puppetdb
+    $puppet_facts_export = $has_puppetdb ? {
+        false   => '/usr/local/bin/puppet-facts-export-nodb',
+        default => '/usr/local/bin/puppet-facts-export-puppetdb',
+    }
+    file { '/usr/local/bin/puppet-facts-export':
+        ensure => link,
+        target => $puppet_facts_export
     }
 
     # Clear out older reports
