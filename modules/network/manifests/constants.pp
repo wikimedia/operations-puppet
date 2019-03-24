@@ -373,10 +373,6 @@ class network::constants {
             },
         'labs' => {
             'bastion_hosts' => concat([
-                    '10.68.17.232', # bastion-01.eqiad.wmflabs
-                    '10.68.18.65',  # bastion-02.eqiad.wmflabs
-                    '10.68.18.66',  # bastion-restricted-01.eqiad.wmflabs
-                    '10.68.18.68',  # bastion-restricted-02.eqiad.wmflabs
                     '172.16.1.136', # bastion-eqiad1-01.eqiad.wmflabs
                     '172.16.3.155', # bastion-eqiad1-02.eqiad.wmflabs
                     '172.16.1.135', # bastion-restricted-eqiad1-01.eqiad.wmflabs
@@ -387,9 +383,6 @@ class network::constants {
             'deployment_hosts' => hiera('network::allow_deployment_from_ips', []), # lint:ignore:wmf_styleguide
             'maintenance_hosts' => hiera('network::allow_maintenance_from_ips', []), # lint:ignore:wmf_styleguide
             'cumin_masters' => concat([  # As seen by labs instances
-                    '10.68.18.66',  # bastion-restricted-01.eqiad.wmflabs
-                    '10.68.18.68',  # bastion-restricted-02.eqiad.wmflabs
-                    '172.16.1.211', # bastion-restricted-eqiad1-02.eqiad.wmflabs
                     '172.16.1.135', # bastion-restricted-eqiad1-01.eqiad.wmflabs
                 ], hiera('network::allow_cumin_from_ips', [])), # lint:ignore:wmf_styleguide
             'cumin_real_masters' => [  # Where Cumin can be run
