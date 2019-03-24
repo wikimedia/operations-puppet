@@ -139,7 +139,7 @@ def main():
                 ','.join(failed_classes)))
         return 2
     else:
-        print("OK: All critical toolforge instances are spread out enough")
+        print("OK: All critical instances are spread out enough")
         return 1
 
 
