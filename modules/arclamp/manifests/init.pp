@@ -132,15 +132,17 @@ class arclamp(
         minute  => '*/15',
     }
 
-    # xenon-grep is a simple CLI tool for parsing xenon logs
-    # and printing a leaderboard of the functions which are most
-    # frequently on-CPU.
 
-    file { '/usr/local/bin/xenon-grep':
+    file { '/usr/local/bin/arclamp-grep':
         ensure => $ensure,
-        source => 'puppet:///modules/arclamp/xenon-grep',
+        source => 'puppet:///modules/arclamp/arclamp-grep',
         owner  => 'root',
         group  => 'root',
         mode   => '0555',
+    }
+
+    # TODO: Remove this once applied
+    file { '/usr/local/bin/xenon-grep':
+        ensure => absent,
     }
 }

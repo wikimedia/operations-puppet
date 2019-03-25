@@ -1,10 +1,12 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 """
-  xenon-grep -- analyze xenon logs
+  arclamp-grep -- analyze Arc Lamp logs. This is a CLI tool for parsing trace
+  logs and printing a leaderboard of the functions which are most
+  frequently on-CPU.
 
-  usage: xenon-grep [--resolution TIME] [--entrypoint NAME]
-                    [--grep STRING] [--slice SLICE] [--count COUNT]
+  usage: arclamp-grep [--resolution TIME] [--entrypoint NAME]
+                      [--grep STRING] [--slice SLICE] [--count COUNT]
 
   Options:
    --resolution TIME   Which log files to analyze. May be one of 'hourly',
