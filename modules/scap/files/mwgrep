@@ -33,8 +33,7 @@ import argparse
 import bisect
 import collections
 import json
-import urllib
-import urllib2
+import requests
 
 
 TIMEOUT = 30
@@ -120,7 +119,6 @@ filters = [
         'max_expand': 10,
         'case_sensitive': True,
         'locale': 'en',
-        'timeout': args.timeout,
     }},
 ]
 
@@ -145,10 +143,29 @@ query = {
 }
 
 matches = {'public': [], 'private': []}
-uri = BASE_URI + '?' + urllib.urlencode(query)
 try:
-    req = urllib2.urlopen(uri, json.dumps(search))
-    full_result = json.load(req)
+    resp = requests.post(BASE_URI, params=query, json=search)
+    try:
+        full_result = resp.json()
+        if resp.status_code >= 400:
+            error_body = resp.json()
+            if 'error' in error_body and 'root_cause' in error_body['error']:
+                for root_cause in error_body['error']['root_cause']:
+                    if root_cause['type'] == 'invalid_regex_exception':
+                        sys.stderr.write('Error while parsing regular expression: {0}\n{1}\n'\
+                            .format(args.term, root_cause['reason']))
+                        exit(1)
+                sys.stderr.write('Unknown error: {0}\n'.format(json.dumps(error_body, indent=4)))
+                exit(1)
+            else:
+                sys.stderr.write('Received unexpected json body from elasticsearch:\n{0}\n'\
+                    .format(json.dumps(error_body, indent=4, separators=(',', ': '))))
+            exit(1)
+    except ValueError as e:
+        sys.stderr.write("Error '{0}' while parsing elasticsearch response '{1}'.\n"\
+            .format(e.message, json.dumps(full_result, indent=4, separators=(',', ': '))))
+        exit(1)
+
     result = full_result['hits']
 
     private_wikis = open('/srv/mediawiki/dblists/private.dblist').read().splitlines()
@@ -201,20 +218,6 @@ the query:
   multiple queries where possible.
 """)
 
-except urllib2.HTTPError, error:
-    try:
-        error_body = json.load(error)
-        if 'error' in error_body and 'root_cause' in error_body['error']:
-            root_cause = error_body['error']['root_cause'][0]
-            if root_cause['type'] == 'invalid_regex_exception':
-                sys.stderr.write('Error while parsing regular expression: {0}\n{1}\n'\
-                    .format(args.term, root_cause['reason']))
-            else:
-                sys.stderr.write('Unknown error: {0}\n'.format(root_cause['reason']))
-        else:
-            sys.stderr.write('Received unexpected json body from elasticsearch:\n{0}\n'\
-                .format(json.dumps(error_body, indent=4, separators=(',', ': '))))
-    except ValueError, e:
-        sys.stderr.write("Error '{0}' while parsing elasticsearch response '{1}'.\n"\
-            .format(e.message, error))
+except requests.exceptions.RequestException as error:
+    sys.stderr.write("Failed to connect to elastic {0}.\n".format( error ))
     exit(1)
