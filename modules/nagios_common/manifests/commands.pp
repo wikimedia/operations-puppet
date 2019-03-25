@@ -50,10 +50,12 @@ class nagios_common::commands(
     ])
 
     file { "${config_dir}/commands":
-        ensure => directory,
-        owner  => $owner,
-        group  => $group,
-        mode   => '0755',
+        ensure  => directory,
+        owner   => $owner,
+        group   => $group,
+        mode    => '0755',
+        recurse => true,
+        purge   => true,
     }
 
     nagios_common::check_command { [
