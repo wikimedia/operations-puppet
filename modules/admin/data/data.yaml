@@ -12,7 +12,7 @@ groups:
               nschaaf, zhousquared, gwicke, dpatrick, samwalton9, samtar, akrausetud, jgonsior,
               yuvipanda, shrlak, madhuvishy, groovier, khorn, ironholds, katie, chedasaurus,
               cy534, pnorman, mpany, deskana, arnad, nithum, banyek, imarlier, mkroetzsch,
-              mtizzoni, panisson, paolotti, ciro, dartar]
+              mtizzoni, panisson, paolotti, ciro, dartar, melodykramer]
   absent_ldap:
     description: meta group for absented users which had privileged LDAP access in the past, an automatic check verifies it has been really removed from the LDAP (but removal has to be handled separatelly)
     members: [adavenport, siddharth11, albe, audiohazel, tbolliger]
@@ -223,7 +223,7 @@ groups:
     members: [ezachte, milimetric, halfak, awight, dr0ptp4kt, nuria,
               leila, nettrom, mforns, bmansurov, tbayer, joal,
               tjones, legoktm, dcausse, bearloga, atgomez, dstrine,
-              marktraceur, melodykramer,
+              marktraceur,
               fdans, shiladsen, esanders, risler, nathante, chelsyx, jdl]
   statistics-users:
     gid: 726
@@ -2472,14 +2472,12 @@ users:
     uid: 15213
     email: dtankersley@wikimedia.org
   melodykramer:
-    ensure: present
+    ensure: absent
     gid: 500
     name: melodykramer
     realname: Melody Kramer
-    ssh_keys:
-      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQC+0/t+joJHGh5gAGAl4qGNKMtVDc4jGefo6o/K8YUdLJiNHPFDv9hJKiRb4/7OMqh64JZUcrX2N11+SmpvSfC1bE4JBHZdzcErmuHChe4U7CuELZJW3qMxG6Yq1IzLoUJV6uH89Dn7nHmOskEFeiDmCyAwIvFYjhp7QxqYYYL2c2zF0ermLyS8+bXxT2fBZyFUtCJ/6jVSPEPmg0l130X7XEfHsvcfE5H27RNMib2kS87NjNYzt0pdYlqqUNO+49A1SaSiJ3V4ys8Hb66mtKYbkmyX1XyO9Np2Qduh+fwMynbKWw42idwgeJQ40eeX8X6yQZnxv6sECipm+CGmK96aQezSc/qefwP9oOco1u6AUkFr1FpmDun2yCZKwjyyLH+glVGQDGS0YV3A8FVXLbbX9WArme4mohrt/m/3Keg+fYS/OHlR9ai5S73TQNURkZWTonN4H4DeNfPYl8aLdGDbW8UlvqwyrL7PAMlEVrc90ou4BXbbJunpBpEPs2JUi8NsKREBnmqCxrN37hOxU0Dz5KJxQFsRnigaNuwc97k44Vhi7IFAK/imi4rB0YnmDKjwXbk/K2I2bAU964JQwiDVEc9jJxkTxbgq36gWCVTvpPKPAEARCPLZWV+rQKlCM9+ye9U7SxqJuJq3x4ltwuFRtPuGoDU5jKf81r3a61UMfw== mkramer@wikimedia.org
+    ssh_keys: []
     uid: 15457
-    email: mkramer@wikimedia.org
   samwalton9:
     ensure: absent
     gid: 500
