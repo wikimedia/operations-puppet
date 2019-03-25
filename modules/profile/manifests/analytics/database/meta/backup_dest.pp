@@ -50,6 +50,8 @@ class profile::analytics::database::meta::backup_dest(
         auto_ferm   => true,
     }
 
+    base::service_auto_restart { 'rsync': }
+
     if !defined(Sudo::User['nagios_check_newest_file_age']) {
         sudo::user { 'nagios_check_newest_file_age':
             user       => 'nagios',
