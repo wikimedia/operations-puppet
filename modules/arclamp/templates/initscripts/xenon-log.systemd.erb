@@ -1,11 +1,11 @@
 [Unit]
-Description=Xenon trace logger
+Description=Instance of Arc Lamp for HHVM Xenon trace logs
 
 [Service]
 User=xenon
 Group=xenon
 Restart=always
-ExecStart=/usr/bin/python /usr/local/bin/xenon-log /etc/arclamp-log-xenon.yaml
+ExecStart=/usr/bin/python /usr/local/bin/arclamp-log /etc/arclamp-log-xenon.yaml
 
 [Install]
 WantedBy=multi-user.target

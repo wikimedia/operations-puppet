@@ -86,7 +86,7 @@ class arclamp(
         notify  => Service['xenon-log'],
     }
 
-    file { '/usr/local/bin/xenon-log':
+    file { '/usr/local/bin/arclamp-log':
         ensure => $ensure,
         source => 'puppet:///modules/arclamp/arclamp-log',
         owner  => 'root',
@@ -143,6 +143,9 @@ class arclamp(
 
     # TODO: Remove this once applied
     file { '/usr/local/bin/xenon-grep':
+        ensure => absent,
+    }
+    file { '/usr/local/bin/xenon-log':
         ensure => absent,
     }
 }
