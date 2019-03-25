@@ -48,7 +48,7 @@ fi
 
 # labs hosts replicate all the sections in a multi-source setup
 
-if [ "$HOSTNAME" == "labsdb1009" ] || [ "$HOSTNAME" == "labsdb1010" ] || [ "$HOSTNAME" == "labsdb1011" ]
+if [ "$HOSTNAME" == "labsdb1009" ] || [ "$HOSTNAME" == "labsdb1010" ] || [ "$HOSTNAME" == "labsdb1011" ] || [ "$HOSTNAME" == "labsdb1012" ]
 then
 	echo "Start time: $(date)" > "$REPORT_PATH"
 	$PRIVATE_DATA >> "$REPORT_PATH" 2>&1
