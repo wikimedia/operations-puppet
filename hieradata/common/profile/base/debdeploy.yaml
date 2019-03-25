@@ -2,6 +2,8 @@ profile::base::debdeploy::exclude_mounts: []
 profile::base::debdeploy::filter_services:
   bacula-fd:
     - '*'
+  agetty:
+    - '*'
   nginx:
     - libtiff
   systemd:
