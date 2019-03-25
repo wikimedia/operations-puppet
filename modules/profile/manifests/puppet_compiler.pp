@@ -1,5 +1,6 @@
 class profile::puppet_compiler(
     $puppetdb_major_version = hiera('puppetdb_major_version', undef),
+    $cloud_puppetmaster = hiera('profile::puppet_compiler::cloud_puppetmaster')
 ) {
 
     case $::realm {
@@ -37,4 +38,7 @@ class profile::puppet_compiler(
         protocol   => 'http',
     }
 
+    class {'::openstack::puppet::master::enc':
+        puppetmaster => $cloud_puppetmaster,
+    }
 }
