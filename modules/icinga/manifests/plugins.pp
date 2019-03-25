@@ -102,16 +102,9 @@ class icinga::plugins(
         mode   => '0755',
     }
 
-    # Check if any website has recently been updated
+    # for "check_lastmod" - Check if any website has recently been updated
     # Originally added to check if Planet content updates working (T203208)
     require_package('python3-requests', 'python3-rfc3986')
-
-    file { '/usr/lib/nagios/plugins/check_lastmod.py':
-        source => 'puppet:///modules/icinga/check_lastmod.py',
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0755',
-    }
 
     # Wikidata dispatcher monitoring
     file { '/usr/lib/nagios/plugins/check_wikidata_crit':
