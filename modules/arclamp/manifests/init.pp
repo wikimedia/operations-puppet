@@ -4,8 +4,13 @@
 # write them to disk, and generate SVG flame graphs.
 #
 # The aggregator reads captured traces from a Redis instance using pub/sub.
-# MediaWiki servers capture these traces from Xenon, which is the built-in
-# sampling profiler for HHVM.
+#
+# MediaWiki servers capture these traces from PHP.
+#
+# For HHVM we use Xenon, the built-in sampling profiler for HHVM.
+# <https://github.com/facebook/hhvm/wiki/Profiling#xenon>.
+#
+# For PHP 7 we use Excimer. <https://www.mediawiki.org/wiki/Excimer>
 #
 # === Parameters
 #
@@ -71,7 +76,7 @@ class arclamp(
         before => Service['xenon-log'],
     }
 
-    file { '/etc/xenon-log.yaml':
+    file { '/etc/arclamp-log-xenon.yaml':
         ensure  => $ensure,
         content => ordered_yaml($config),
         owner   => 'root',
