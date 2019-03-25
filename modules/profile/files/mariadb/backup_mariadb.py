@@ -148,9 +148,13 @@ class DatabaseBackupStatistics(BackupStatistics):
                     return False
                 db.commit()
             elif status in ('finished', 'failed', 'deleted'):
-                query = "SELECT id, status FROM backups WHERE name = %s and status = 'ongoing'"
+                host = socket.getfqdn()
+                query = ("SELECT id FROM backups WHERE name = %s and "
+                         "status = 'ongoing' and type = %s and source = %s and "
+                         "host = %s and start_date > now() - INTERVAL 1 DAY")
                 try:
-                    result = cursor.execute(query, (self.dump_name, ))
+                    result = cursor.execute(query, (self.dump_name, self.type,
+                                                    self.source, host))
                 except (pymysql.err.ProgrammingError, pymysql.err.InternalError):
                     logger.error('A MySQL error occurred while finding the entry for the '
                                  'backup')
@@ -160,8 +164,7 @@ class DatabaseBackupStatistics(BackupStatistics):
                     return False
                 data = cursor.fetchall()
                 if len(data) != 1:
-                    logger.error('We could not find a single statistics entry for a non-ongoing '
-                                 'dump'.format(status))
+                    logger.error('We could not find one stat entry for an ongoing backup')
                     return False
                 else:
                     backup_id = str(data[0]['id'])
@@ -174,7 +177,7 @@ class DatabaseBackupStatistics(BackupStatistics):
                         return False
 
                     if result is None:
-                        logger.error('We could not set as finished the current dump')
+                        logger.error('We could not change the status of the current dump')
                         return False
                     db.commit()
                     return True
