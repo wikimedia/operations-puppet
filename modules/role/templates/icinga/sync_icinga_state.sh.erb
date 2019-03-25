@@ -2,7 +2,7 @@
 
 # Stop the service first to avoid inconsistencies
 /usr/sbin/service icinga stop
-/usr/bin/rsync -t rsync://<%= @active_host %>/icinga-tmpfs/status.dat /var/icinga-tmpfs/status.dat
-/usr/bin/rsync -t rsync://<%= @active_host %>/icinga-cache/objects.cache /var/cache/icinga/objects.cache
-/usr/bin/rsync -t rsync://<%= @active_host %>/icinga-lib/retention.dat /var/lib/icinga/retention.dat
+/usr/bin/rsync -a rsync://<%= @active_host %>/icinga-tmpfs/status.dat /var/icinga-tmpfs/status.dat
+/usr/bin/rsync -a rsync://<%= @active_host %>/icinga-cache/objects.cache /var/cache/icinga/objects.cache
+/usr/bin/rsync -a rsync://<%= @active_host %>/icinga-lib/retention.dat /var/lib/icinga/retention.dat
 /usr/sbin/service icinga start
