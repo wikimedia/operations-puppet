@@ -63,6 +63,7 @@ dns-auth-canary: P{multatuli.wikimedia.org}
 dns-rec: P{O:dnsrecursor}
 dns-rec-canary: P{dns2001.wikimedia.org}
 druid: P{O:druid::analytics::worker or O:druid::public::worker}
+druid-testcluster: P{O:druid::test_analytics::worker}
 dumps: P{O:dumps::generation::server::primary or O:dumps::generation::server::fallback or O:dumps::web::htmldumps}
 elastic: P{O:elasticsearch::cirrus}
 elastic-canary: P{elastic1017.eqiad.wmnet}
@@ -81,6 +82,7 @@ hadoop-master: P{O:analytics_cluster::hadoop::master}
 hadoop-standby: P{O:analytics_cluster::hadoop::standby}
 hadoop-worker: P{O:analytics_cluster::hadoop::worker}
 hadoop-worker-canary: P{analytics1042.eqiad.wmnet}
+hadoop-testcluster: P{O:analytics_test_cluster::hadoop::master or O:analytics_test_cluster::hadoop::standby or O:analytics_test_cluster::hadoop::worker or O:analytics_test_cluster::hadoop::ui or O:analytics_test_cluster::coordinator}
 icinga: P{O:alerting_host}
 installserver: P{O:installserver}
 kafka-all: A:kafka-analytics or A:kafka-main or A:kafka-jumbo
