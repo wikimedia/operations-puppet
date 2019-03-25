@@ -38,6 +38,9 @@ parser = argparse.ArgumentParser()
 #   host: [required]
 #   port: [required]
 #
+# redis_channel: The name of the Redis PubSub channel to subscribe to. [optional]
+#                Default: "xenon".
+#
 # logs: A list of one or more log file groups. [required]
 #
 #       Each log group has a date-time string that informs how much time a
@@ -115,7 +118,7 @@ class TimeLog(object):
 logs = [TimeLog(**log) for log in config['logs']]
 conn = redis.Redis(**config['redis'])
 pubsub = conn.pubsub()
-pubsub.subscribe('xenon')
+pubsub.subscribe(config.get('redis_channel', 'xenon'))
 
 
 def get_tag(raw_stack):

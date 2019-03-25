@@ -47,6 +47,7 @@ class arclamp(
             host => $redis_host,
             port => $redis_port,
         },
+        redis_channel => 'xenon',
         logs      => [
             # 336 hours is 14 days * 24 hours (T166624)
             { period => 'hourly',  format => '%Y-%m-%d_%H', retain => 336 },
