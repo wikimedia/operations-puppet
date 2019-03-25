@@ -1,4 +1,4 @@
-counter iptables_drops by ip_version, proto
+counter iptables_drops by hostname, ip_version, proto
 
 const MATCH_IPV4 /\d{1,3}(\.\d{1,3}){3}/
 const MATCH_IPV6 /[a-f0-9:]+/
@@ -40,11 +40,11 @@ const IPTABLES6_TCP // + IPTABLES6_PRE +
   /WINDOW=(?P<window>\d+)\s/ +
   /(?P<flags>[A-Z]+)/
 
-
-def syslog { /(?P<date>(/ + MATCH_LEGACY_DATE + /|/ + MATCH_RFC3339_DATE + /))/ +
+const SYSLOG /(?P<date>(/ + MATCH_LEGACY_DATE + /|/ + MATCH_RFC3339_DATE + /))/ +
   /\s+(?:\w+@)?(?P<hostname>[\w\.-]+)\s+/ +
   /(?P<application>[\w\.-]+)/ +
-  /(?:\[(?P<pid>\d+)\])?:\s+/ {
+  /(?:\[(?P<pid>\d+)\])?:\s+/ 
+def syslog { // + SYSLOG {
 
         len($legacy_date) > 0 {
             strptime($2, "Jan _2 15:04:05")
@@ -56,16 +56,18 @@ def syslog { /(?P<date>(/ + MATCH_LEGACY_DATE + /|/ + MATCH_RFC3339_DATE + /))/ 
     }
 }
 @syslog {
-  // + IPTABLES4_UDP {
-    iptables_drops["ipv4"]["udp"]++
+  # In older versions of mtail we need to add the SYSLOG pattern here 
+  # otherwise we dont have access to the hostname variable
+  // + SYSLOG + IPTABLES4_UDP {
+    iptables_drops[$hostname]["ipv4"]["udp"]++
   }
-  // + IPTABLES4_TCP {
-    iptables_drops["ipv4"]["tcp"]++
+  // + SYSLOG + IPTABLES4_TCP {
+    iptables_drops[$hostname]["ipv4"]["tcp"]++
   }
-  // + IPTABLES6_UDP {
-    iptables_drops["ipv6"]["udp"]++
+  // + SYSLOG + IPTABLES6_UDP {
+    iptables_drops[$hostname]["ipv6"]["udp"]++
   }
-  // + IPTABLES6_TCP {
-    iptables_drops["ipv6"]["tcp"]++
+  // + SYSLOG + IPTABLES6_TCP {
+    iptables_drops[$hostname]["ipv6"]["tcp"]++
   }
 }
