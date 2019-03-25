@@ -88,7 +88,7 @@ class arclamp(
 
     file { '/usr/local/bin/xenon-log':
         ensure => $ensure,
-        source => 'puppet:///modules/arclamp/xenon-log',
+        source => 'puppet:///modules/arclamp/arclamp-log',
         owner  => 'root',
         group  => 'root',
         mode   => '0555',

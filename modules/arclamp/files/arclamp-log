@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 """
-  xenon-log
+  arclamp-log
   ~~~~~~~~~
 
   This Arc Lamp components reads strack traces from a Redis channel,
@@ -32,14 +32,14 @@ parser = argparse.ArgumentParser()
 # Configuration keys:
 #
 # base_path: Directory in which files should be created. [optional]
-#            Default: "/srv/xenon/logs".
+#            Default: "/srv/arclamp/logs".
 #
 # redis: Parameters to establish a connection using python-redis.
 #   host: [required]
 #   port: [required]
 #
 # redis_channel: The name of the Redis PubSub channel to subscribe to. [optional]
-#                Default: "xenon".
+#                Default: "arclamp".
 #
 # logs: A list of one or more log file groups. [required]
 #
@@ -64,7 +64,7 @@ parser = argparse.ArgumentParser()
 #               a single application entry point. Once this has been exceeded,
 #               files exceeding this limit will be removed (oldest first).
 #
-parser.add_argument('config', nargs='?', default='/etc/xenon-log.yaml')
+parser.add_argument('config', nargs='?', default='/etc/arclamp-log.yaml')
 args = parser.parse_args()
 
 with open(args.config) as f:
@@ -73,7 +73,7 @@ with open(args.config) as f:
 
 class TimeLog(object):
 
-    base_path = config.get('base_path', '/srv/xenon/logs')
+    base_path = config.get('base_path', '/srv/arclamp/logs')
 
     def __init__(self, period, format, retain):
         self.period = period
@@ -118,7 +118,7 @@ class TimeLog(object):
 logs = [TimeLog(**log) for log in config['logs']]
 conn = redis.Redis(**config['redis'])
 pubsub = conn.pubsub()
-pubsub.subscribe(config.get('redis_channel', 'xenon'))
+pubsub.subscribe(config.get('redis_channel', 'arclamp'))
 
 
 def get_tag(raw_stack):
