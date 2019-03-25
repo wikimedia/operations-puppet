@@ -12,10 +12,8 @@ def syslog {/(?P<date>(?P<legacy_date>\w+\s+\d+\s+\d+:\d+:\d+)|(?P<rfc3339_date>
 }
 
 @syslog {
-counter systemd_respawn by unit
-
-/systemd\[\d+\]: (?P<unit>\S+) holdoff time over, scheduling restart./ {
-  systemd_respawn[$unit]++
-}
-
+counter systemd_respawn by hostname, unit
+  /\s+(?:\w+@)?(?P<hostname>[\w\.-]+)\s+systemd\[\d+\]: (?P<unit>\S+) holdoff time over, scheduling restart./ {
+    systemd_respawn[$hostname][$unit]++
+  }
 }

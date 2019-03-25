@@ -13,6 +13,6 @@ class SystemdTest(unittest.TestCase):
 
     def testRespawn(self):
         s = self.store.get_samples('systemd_respawn')
-        self.assertIn(('unit=tileratorui.service', 1), s)
-        self.assertIn(('unit=udp2log-mw.service', 1), s)
-        self.assertIn(('unit=thumbor@8836.service', 1), s)
+        self.assertIn(('hostname=maps2001,unit=tileratorui.service', 1), s)
+        self.assertIn(('hostname=mwlog1001,unit=udp2log-mw.service', 1), s)
+        self.assertIn(('hostname=thumbor1001,unit=thumbor@8836.service', 1), s)
