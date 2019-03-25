@@ -284,13 +284,30 @@ profile::elasticsearch::cirrus::ferm_srange: ''
 profile::elasticsearch::cirrus::storage_device: dm-0
 profile::elasticsearch::rack: ''
 profile::elasticsearch::row: ''
-profile::elasticsearch::instances: {}
+profile::elasticsearch::instances:
+    beta-search:
+      cluster_name: beta-search
+      heap_memory: 2G
+      http_port: 9200
+      tls_port: 9243
+      transport_tcp_port: 9300
+    beta-search-omega:
+      cluster_name: beta-search-omega
+      heap_memory: 1G
+      http_port: 9400
+      tls_port: 9443
+      transport_tcp_port: 9500
+    beta-search-psi:
+      cluster_name: beta-search-psi
+      heap_memory: 1G
+      http_port: 9600
+      tls_port: 9643
+      transport_tcp_port: 9700
 profile::elasticsearch::dc_settings: {}
 profile::elasticsearch::common_settings:
     auto_create_index: '+apifeatureusage-*,-*'
     expected_nodes: 3
     minimum_master_nodes: 2
-    heap_memory: 4G
     recover_after_nodes: 3
     bulk_thread_pool_executors: 5
     awareness_attributes: ''
@@ -302,13 +319,10 @@ profile::elasticsearch::common_settings:
       - deployment-elastic05.deployment-prep.eqiad.wmflabs
       - deployment-elastic06.deployment-prep.eqiad.wmflabs
       - deployment-elastic07.deployment-prep.eqiad.wmflabs
-    cluster_name: beta-search
     reindex_remote_whitelist: ''
     search_shard_count_limit: 1000
     # Increase the per-node cache for compiled LTR models from default 10MB
     ltr_cache_size: '100mb'
-    http_port: 9200
-    transport_tcp_port: 9300
 
 role::logstash::collector::statsd_host: labmon1001.eqiad.wmnet
 role::logstash::apifeatureusage::elastic_hosts:

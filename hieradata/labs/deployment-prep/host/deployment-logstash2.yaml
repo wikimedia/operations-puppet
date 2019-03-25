@@ -1,5 +1,7 @@
 profile::base::remote_syslog: []
 
+profile::elasticsearch::instances: {}
+
 # ES-specific
 # Override common_settings using hiera and not use elastic module
 # merge strategy default_instance_params as it will understand
