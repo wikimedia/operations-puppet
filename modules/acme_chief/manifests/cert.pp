@@ -34,6 +34,7 @@ define acme_chief::cert (
     ['rsa-2048', 'ec-prime256v1'].each |String $type| {
 
         file { "/etc/acmecerts/${title}.${type}.crt":
+            ensure => absent,
             owner  => 'root',
             group  => 'root',
             mode   => '0644',
@@ -42,6 +43,7 @@ define acme_chief::cert (
         }
 
         file { "/etc/acmecerts/${title}.${type}.chain.crt":
+            ensure => absent,
             owner  => 'root',
             group  => 'root',
             mode   => '0644',
@@ -50,6 +52,7 @@ define acme_chief::cert (
         }
 
         file { "/etc/acmecerts/${title}.${type}.chained.crt":
+            ensure => absent,
             owner  => 'root',
             group  => 'root',
             mode   => '0644',
@@ -58,6 +61,7 @@ define acme_chief::cert (
         }
 
         file { "/etc/acmecerts/${title}.${type}.key":
+            ensure    => absent,
             owner     => 'root',
             group     => $key_group,
             mode      => '0640',
