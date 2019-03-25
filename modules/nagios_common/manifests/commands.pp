@@ -94,7 +94,6 @@ class nagios_common::commands(
         'ftp',
         'http',
         'ifstatus',
-        'check_lastmod',
         'ldap',
         'load',
         'mail',
