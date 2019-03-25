@@ -33,17 +33,6 @@ class icinga::monitor::certs {
         notes_url     => 'https://phabricator.wikimedia.org/tag/toolforge/',
     }
 
-    # *.planet.wikimedia.org (has its own wildcard cert on misc cp cluster)
-    @monitoring::host { 'en.planet.wikimedia.org':
-        host_fqdn     => 'en.planet.wikimedia.org',
-    }
-    monitoring::service { 'https_planet':
-        description   => 'HTTPS-planet',
-        check_command => 'check_ssl_http!en.planet.wikimedia.org',
-        host          => 'en.planet.wikimedia.org',
-        notes_url     => 'https://wikitech.wikimedia.org/wiki/Planet.wikimedia.org',
-    }
-
     # *.wmflabs.org (labs wildcard cert, testing tools.wmflabs.org)
     monitoring::service { 'https_wmflabs':
         description   => 'HTTPS-wmflabs',
