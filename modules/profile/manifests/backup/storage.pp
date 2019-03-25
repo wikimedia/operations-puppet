@@ -57,6 +57,7 @@ class profile::backup::storage(
     nrpe::monitor_service { 'bacula_sd':
         description  => 'bacula sd process',
         nrpe_command => '/usr/lib/nagios/plugins/check_procs -w 1:1 -c 1:1 -u bacula -C bacula-sd',
+        notes_url    => 'https://wikitech.wikimedia.org/wiki/Bacula',
     }
 
     ferm::service { 'bacula-storage-demon':

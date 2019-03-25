@@ -35,6 +35,7 @@ class profile::tcpircbot(
         nrpe::monitor_service { 'tcpircbot':
             description  => 'tcpircbot_service_running',
             nrpe_command => '/usr/lib/nagios/plugins/check_procs -w 1:1 -c 1:1 -C python -a tcpircbot.py',
+            notes_url    => 'https://wikitech.wikimedia.org/wiki/Logmsgbot',
         }
     }
 

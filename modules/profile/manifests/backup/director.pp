@@ -260,6 +260,7 @@ class profile::backup::director(
     nrpe::monitor_service { 'bacula_director':
         description  => 'bacula director process',
         nrpe_command => '/usr/lib/nagios/plugins/check_procs -w 1:1 -c 1:1 -u bacula -C bacula-dir',
+        notes_url    => 'https://wikitech.wikimedia.org/wiki/Bacula',
     }
 
     ferm::service { 'bacula-director':

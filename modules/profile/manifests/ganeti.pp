@@ -62,17 +62,20 @@ class profile::ganeti (
         # Monitoring
         nrpe::monitor_service{ 'ganeti-noded':
             description  => 'ganeti-noded running',
-            nrpe_command => '/usr/lib/nagios/plugins/check_procs -w 1:2 -c 1:2 -u root -C ganeti-noded'
+            nrpe_command => '/usr/lib/nagios/plugins/check_procs -w 1:2 -c 1:2 -u root -C ganeti-noded',
+            notes_url    => 'https://wikitech.wikimedia.org/wiki/Ganeti',
         }
 
         nrpe::monitor_service{ 'ganeti-confd':
             description  => 'ganeti-confd running',
-            nrpe_command => '/usr/lib/nagios/plugins/check_procs -w 1:1 -c 1:1 -u gnt-confd -C ganeti-confd'
+            nrpe_command => '/usr/lib/nagios/plugins/check_procs -w 1:1 -c 1:1 -u gnt-confd -C ganeti-confd',
+            notes_url    => 'https://wikitech.wikimedia.org/wiki/Ganeti',
         }
 
         nrpe::monitor_service{ 'ganeti-mond':
             description  => 'ganeti-mond running',
-            nrpe_command => '/usr/lib/nagios/plugins/check_procs -w 1:1 -c 1:1 -u root -C ganeti-mond'
+            nrpe_command => '/usr/lib/nagios/plugins/check_procs -w 1:1 -c 1:1 -u root -C ganeti-mond',
+            notes_url    => 'https://wikitech.wikimedia.org/wiki/Ganeti',
         }
 
         # Firewalling

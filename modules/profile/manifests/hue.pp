@@ -83,6 +83,7 @@ class profile::hue (
             nrpe_command  => '/usr/lib/nagios/plugins/check_procs -c 1:1 -C python2.7 -a "/usr/lib/hue/build/env/bin/hue"',
             contact_group => 'admins,analytics',
             require       => Class['cdh::hue'],
+            notes_url     => 'https://wikitech.wikimedia.org/wiki/Analytics/Systems/Cluster/Hadoop/Administration',
         }
     }
 
