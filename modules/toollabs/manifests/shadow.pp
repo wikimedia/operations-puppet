@@ -1,4 +1,4 @@
-# This role sets up a grid shadow master in the Tool Labs model.
+# This role sets up a grid shadow master in the Toolforge model.
 #
 # [*gridmaster*]
 #   FQDN of the gridengine master

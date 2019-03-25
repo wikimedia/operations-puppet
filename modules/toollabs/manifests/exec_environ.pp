@@ -1,5 +1,5 @@
-# This class sets up a node as an execution environment for tool labs.
-# This is a "sub" role included by the actual tool labs roles and would
+# This class sets up a node as an execution environment for Toolforge.
+# This is a "sub" role included by the actual Toolforge roles and would
 # normally not be included directly in node definitions.
 #
 # Actual runtime dependencies for tools live here.

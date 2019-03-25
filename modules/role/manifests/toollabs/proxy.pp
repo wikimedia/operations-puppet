@@ -28,6 +28,6 @@ class role::toollabs::proxy {
     }
 
     system::role { 'toollabs::proxy':
-        description => 'Tool labs generic web proxy'
+        description => 'Toolforge generic web proxy'
     }
 }

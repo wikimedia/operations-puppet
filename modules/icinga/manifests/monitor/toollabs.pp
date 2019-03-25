@@ -1,11 +1,11 @@
-# Tool Labs end points worth production monitoring
+# Toolforge end points worth production monitoring
 #
 # * relevant cert expirary is monitored in
 #   icinga::monitor::certs
 
 class icinga::monitor::toollabs {
 
-    # toolserver.org (redirect page to Tool Labs)
+    # toolserver.org (redirect page to Toolforge)
     @monitoring::host { 'www.toolserver.org':
         host_fqdn     => 'www.toolserver.org',
     }

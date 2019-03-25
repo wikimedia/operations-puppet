@@ -1,4 +1,4 @@
--- Keep state about tool / user accounts on tool labs and their mysql
+-- Keep state about tool / user accounts on Toolforge and their mysql
 -- account counterparts. This is the canonical store of this information.
 -- Schema is set up to be able to trivially query the following things:
 --  1. What labsdb hosts does this tool / user *not* have an account on.

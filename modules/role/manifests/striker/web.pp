@@ -1,6 +1,6 @@
 # == Class: role::striker::web
 #
-# Striker is a Django application for managing data related to Tool Labs
+# Striker is a Django application for managing data related to Toolforge
 # tools.
 #
 # filtertags: labs-project-striker

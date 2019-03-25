@@ -1,4 +1,4 @@
-# This role sets up a grid compute node in the Tool Labs model.
+# This role sets up a grid compute node in the Toolforge model.
 #
 # On its own, this sets up a working node of the grid, but it is
 # useless without a more specific role from toollabs::node::* that

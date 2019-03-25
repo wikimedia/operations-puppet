@@ -3,7 +3,7 @@
 """
 LocalCrontabCollector. Collects the number of local user cron tabs.
 
-Main use is tool labs, where there should be no cron tabs on any
+Main use is Toolforge, where there should be no cron tabs on any
 host other than tools-submit.
 """
 

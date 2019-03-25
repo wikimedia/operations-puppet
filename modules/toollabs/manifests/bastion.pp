@@ -1,4 +1,4 @@
-# This role sets up an bastion/dev instance in the Tool Labs model.
+# This role sets up an bastion/dev instance in the Toolforge model.
 #
 # [*nproc]
 #  limits.conf nproc

@@ -7,7 +7,7 @@
 # filesystem.
 #
 # This is also normally a requirement of a HA installation of
-# gridengine, and the default for Tool Labs (which bind mounts
+# gridengine, and the default for Toolforge (which bind mounts
 # /var/lib/gridengine to a subdirectory of /data/project).
 #
 # Annoyingly, $etcdir is set in several places all over the module
