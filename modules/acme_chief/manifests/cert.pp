@@ -1,11 +1,4 @@
-# deploys the especified certificate on /etc/acmecerts
-# It currently deploys the certs using two file naming schemas:
-# files based:
-#   /etc/acmecerts/${title}.rsa-2048.key
-#   /etc/acmecerts/${title}.ec-prime256v1.key
-#   /etc/acmecerts/${title}.[rsa-2048,ec-prime256v1].[chain,chained].crt
-#   /etc/acmecerts/${title}.[rsa-2048,ec-prime256v1].crt
-# directory based:
+# deploys the especified certificate on /etc/acmecerts using the following structure:
 #   /etc/acmecerts/$title:
 #       live -> random_dir_name
 #       new  -> random_dir_name
@@ -14,7 +7,6 @@
 #           ec-prime256v1.key
 #           [rsa-2048,ec-prime256v1].[chain,chained].crt
 #           [rsa-2048,ec-prime256v1].crt
-# THIS is temporary, and in the long-term only the directory based will be kept
 define acme_chief::cert (
     Variant[String, Undef] $puppet_svc = undef,
     String $key_group = 'root',
@@ -31,45 +23,6 @@ define acme_chief::cert (
     }
 
     # lint:ignore:puppet_url_without_modules
-    ['rsa-2048', 'ec-prime256v1'].each |String $type| {
-
-        file { "/etc/acmecerts/${title}.${type}.crt":
-            ensure => absent,
-            owner  => 'root',
-            group  => 'root',
-            mode   => '0644',
-            source => "puppet://${::acmechief_host}/acmedata/${title}/${type}.crt",
-            notify => Service[$puppet_svc],
-        }
-
-        file { "/etc/acmecerts/${title}.${type}.chain.crt":
-            ensure => absent,
-            owner  => 'root',
-            group  => 'root',
-            mode   => '0644',
-            source => "puppet://${::acmechief_host}/acmedata/${title}/${type}.chain.crt",
-            notify => Service[$puppet_svc],
-        }
-
-        file { "/etc/acmecerts/${title}.${type}.chained.crt":
-            ensure => absent,
-            owner  => 'root',
-            group  => 'root',
-            mode   => '0644',
-            source => "puppet://${::acmechief_host}/acmedata/${title}/${type}.chained.crt",
-            notify => Service[$puppet_svc],
-        }
-
-        file { "/etc/acmecerts/${title}.${type}.key":
-            ensure    => absent,
-            owner     => 'root',
-            group     => $key_group,
-            mode      => '0640',
-            show_diff => false,
-            source    => "puppet://${::acmechief_host}/acmedata/${title}/${type}.key",
-            notify    => Service[$puppet_svc],
-        }
-    }
     file { "/etc/acmecerts/${title}":
         ensure    => directory,
         owner     => 'root',
