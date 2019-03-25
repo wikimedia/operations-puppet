@@ -38,6 +38,9 @@
 #   Local root log directory. The service's logs will be placed in its
 #   subdirectory. Default: /srv/log
 #
+# [*rsyslog_udp_port*]
+#   UDP endpoint for rsyslog port. Default: 10514
+#
 # [*use_dev_pkgs*]
 #   Whether the development packages declared for services should be installed.
 #   Default: false
@@ -53,6 +56,7 @@ class service::configuration(
     $logstash_port = 12201,
     $logstash_port_logback = 11514,
     $log_dir       = '/srv/log',
+    $rsyslog_udp_port = 10514,
     $use_dev_pkgs  = false,
 ){
 

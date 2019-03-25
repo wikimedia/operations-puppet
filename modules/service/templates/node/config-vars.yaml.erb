@@ -2,13 +2,14 @@
 # Do not modify it by hand
 <%-
 cvars = {
-  'mwapi'     => scope.lookupvar('service::configuration::mwapi_host'),
-  'restbase'  => scope.lookupvar('service::configuration::restbase_uri'),
-  'gelf_host' => scope.lookupvar('service::configuration::logstash_host'),
-  'gelf_port' => scope.lookupvar('service::configuration::logstash_port'),
-  'stat_host' => scope.lookupvar('service::configuration::statsd_host'),
-  'stat_port' => scope.lookupvar('service::configuration::statsd_port'),
-  'proxy'     => scope.lookupvar('service::configuration::http_proxy')
+  'mwapi'        => scope.lookupvar('service::configuration::mwapi_host'),
+  'restbase'     => scope.lookupvar('service::configuration::restbase_uri'),
+  'gelf_host'    => scope.lookupvar('service::configuration::logstash_host'),
+  'gelf_port'    => scope.lookupvar('service::configuration::logstash_port'),
+  'stat_host'    => scope.lookupvar('service::configuration::statsd_host'),
+  'stat_port'    => scope.lookupvar('service::configuration::statsd_port'),
+  'proxy'        => scope.lookupvar('service::configuration::http_proxy'),
+  'rsyslog_port' => scope.lookupvar('service::configuration::rsyslog_udp_port'),
 }
 
 cvars.keys.each do |k|
@@ -24,6 +25,7 @@ log_name: <%= @logging_name %>
 logstash_host: <%= cvars['gelf_host'] %>
 logstash_port: <%= cvars['gelf_port'] %>
 log_file: <%= @local_logfile %>
+rsyslog_port: <%= cvars['rsyslog_port'] %>
 # metrics
 metrics_name: <%= @statsd_prefix %>
 metrics_host: <%= cvars['stat_host'] %>
