@@ -224,6 +224,15 @@ customviews:
       afl_title, afl_wiki, afl_deleted, afl_patrolled_by, afl_rev_id
     where:
       afl_deleted=0
+  abuse_filter_history:
+    source: abuse_filter_history
+    view: >
+      select afh_id, afh_filter, afh_user, afh_user_text, afh_timestamp,
+      if (find_in_set("hidden",afh_flags),null,afh_pattern) as afh_pattern,
+      if (find_in_set("hidden",afh_flags),null,afh_comments) as afh_comments,
+      afh_flags, afh_public_comments,
+      if (find_in_set("hidden",afh_flags),null,afh_actions) as afh_actions,
+      afh_deleted, afh_changed_fields, afh_group
   actor:
     source: actor
     view: select actor_id, actor_user, actor_name
