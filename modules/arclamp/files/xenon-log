@@ -3,10 +3,10 @@
 """
   xenon-log
   ~~~~~~~~~
-  
-  `xenon` is a built-in HHVM extension that periodically captures
-  stacktraces of running PHP code. This tool reads xenon-generated
-  traces via redis and logs them to disk.
+
+  This Arc Lamp components reads strack traces from a Redis channel,
+  and writes them to one or more log files, organised by date
+  and application entry point.
 
 """
 from __future__ import print_function
@@ -29,6 +29,38 @@ import yaml
 
 
 parser = argparse.ArgumentParser()
+# Configuration keys:
+#
+# base_path: Directory in which files should be created. [optional]
+#            Default: "/srv/xenon/logs".
+#
+# redis: Parameters to establish a connection using python-redis.
+#   host: [required]
+#   port: [required]
+#
+# logs: A list of one or more log file groups. [required]
+#
+#       Each log group has a date-time string that informs how much time a
+#       single file in the group represents (e.g. an hour or a day), and what
+#       pattern to use for the file name.
+#
+#       format: Format string for Python strftime. This informs both the
+#               time aggregation and the filename.
+#
+#               The formatted time and the suffix ".{tag}.log" together
+#               form the log file name. The "tag" represents the application
+#               entry point. All traces are also written to a second file,
+#               with the tag "all", which combines all entry points.
+#               The tag is determined by the first frame of the stack trace.
+#               For example, a stack "index.php;main;Stuff::doIt 1" will be
+#               written to "{format}.all.log" and "{format}.index.log".
+#
+#       period: Directory name. The files formatted by 'format' will be
+#               placed in a sub directory of 'base_path' by this name.
+#       retain: How many files to keep in the 'period' directory for
+#               a single application entry point. Once this has been exceeded,
+#               files exceeding this limit will be removed (oldest first).
+#
 parser.add_argument('config', nargs='?', default='/etc/xenon-log.yaml')
 args = parser.parse_args()
 
