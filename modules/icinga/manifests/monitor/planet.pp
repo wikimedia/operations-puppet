@@ -1,6 +1,7 @@
 # monitor en.planet.wikimedia.org certificate
 # and check it's being updated regularly
 # T203208, T203208
+# warn / crit: time in hours before content is considered stale
 class icinga::monitor::planet(
     Stdlib::Httpsurl $url,
     Integer $warn,

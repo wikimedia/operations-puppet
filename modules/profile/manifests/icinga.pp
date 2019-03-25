@@ -63,6 +63,8 @@ class profile::icinga(
     class { 'icinga::monitor::traffic': }
     class { 'icinga::monitor::gerrit': }
 
+    # check planet for cert expiration and regular content updates
+    # warn/crit = hours before content is considered stale
     class { 'icinga::monitor::planet':
         url  => 'https://en.planet.wikimedia.org/',
         warn => 24,

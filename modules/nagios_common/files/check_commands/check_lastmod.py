@@ -63,8 +63,8 @@ def main():
     max_age_hours_warn = int(args['warn'])
     max_age_hours_crit = int(args['crit'])
 
-    max_age_secs_warn = int((max_age_hours_warn * 24 * 60))
-    max_age_secs_crit = int((max_age_hours_crit * 24 * 60))
+    max_age_secs_warn = int((max_age_hours_warn * 3600))
+    max_age_secs_crit = int((max_age_hours_crit * 3600))
 
     if max_age_secs_warn >= max_age_secs_crit:
         msg = "threshold for CRIT must be equal or \
