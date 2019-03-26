@@ -1,0 +1,11 @@
+[Unit]
+Description=Instance of Arc Lamp for <%= @description %> trace logs 
+
+[Service]
+User=xenon
+Group=xenon
+Restart=always
+ExecStart=/usr/bin/python /usr/local/bin/arclamp-log /etc/arclamp-log-<%= @title %>.yaml
+
+[Install]
+WantedBy=multi-user.target

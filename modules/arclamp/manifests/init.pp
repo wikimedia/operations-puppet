@@ -41,20 +41,7 @@ class arclamp(
     require_package('python-redis')
     require_package('python-yaml')
 
-    $config = {
-        base_path => '/srv/xenon/logs',
-        redis     => {
-            host => $redis_host,
-            port => $redis_port,
-        },
-        redis_channel => 'xenon',
-        logs      => [
-            # 336 hours is 14 days * 24 hours (T166624)
-            { period => 'hourly',  format => '%Y-%m-%d_%H', retain => 336 },
-            { period => 'daily',   format => '%Y-%m-%d',    retain => 90 },
-        ],
-    }
-
+    # Global setup
     group { 'xenon':
         ensure => $ensure,
     }
@@ -74,16 +61,6 @@ class arclamp(
         owner  => 'xenon',
         group  => 'xenon',
         mode   => '0755',
-        before => Service['xenon-log'],
-    }
-
-    file { '/etc/arclamp-log-xenon.yaml':
-        ensure  => $ensure,
-        content => ordered_yaml($config),
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0444',
-        notify  => Service['xenon-log'],
     }
 
     file { '/usr/local/bin/arclamp-log':
@@ -92,14 +69,7 @@ class arclamp(
         owner  => 'root',
         group  => 'root',
         mode   => '0555',
-        notify => Service['xenon-log'],
     }
-
-    systemd::service { 'xenon-log':
-        ensure  => $ensure,
-        content => systemd_template('xenon-log'),
-    }
-
     # This is the Perl script that generates flame graphs.
     # It comes from <https://github.com/brendangregg/FlameGraph>.
 
@@ -109,29 +79,25 @@ class arclamp(
         owner  => 'root',
         group  => 'root',
         mode   => '0555',
-        notify => Service['xenon-log'],
     }
-
-
     # Walks /srv/xenon/logs looking for log files which do not have a
     # corresponding SVG file and calls flamegraph.pl on each of them.
 
-    file { '/usr/local/bin/xenon-generate-svgs':
+    file { '/usr/local/bin/arclamp-generate-svgs':
         ensure => $ensure,
-        source => 'puppet:///modules/arclamp/xenon-generate-svgs',
+        source => 'puppet:///modules/arclamp/arclamp-generate-svgs',
         owner  => 'root',
         group  => 'root',
         mode   => '0555',
-        before => Cron['xenon_generate_svgs'],
     }
 
-    cron { 'xenon_generate_svgs':
+    cron { 'arclamp_generate_svgs':
         ensure  => $ensure,
-        command => '/usr/local/bin/xenon-generate-svgs > /dev/null',
+        command => '/usr/local/bin/arclamp-generate-svgs > /dev/null',
         user    => 'xenon',
         minute  => '*/15',
+        require => File['/usr/local/bin/arclamp-generate-svgs']
     }
-
 
     file { '/usr/local/bin/arclamp-grep':
         ensure => $ensure,
@@ -140,6 +106,27 @@ class arclamp(
         group  => 'root',
         mode   => '0555',
     }
+
+    $config_xenon = {
+        base_path => '/srv/xenon/logs',
+        redis     => {
+            host => $redis_host,
+            port => $redis_port,
+        },
+        redis_channel => 'xenon',
+        logs      => [
+            # 336 hours is 14 days * 24 hours (T166624)
+            { period => 'hourly',  format => '%Y-%m-%d_%H', retain => 336 },
+            { period => 'daily',   format => '%Y-%m-%d',    retain => 90 },
+        ],
+    }
+
+
+    arclamp::instance { 'xenon':
+        config      => $config_xenon,
+        description => 'HHVM Xenon'
+    }
+
 
     # TODO: Remove this once applied
     file { '/usr/local/bin/xenon-grep':

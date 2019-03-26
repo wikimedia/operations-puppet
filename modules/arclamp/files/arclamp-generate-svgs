@@ -1,6 +1,7 @@
 #!/bin/bash
 set +C  # OK to clobber out-of-date SVGs
 shopt -s globstar nullglob
+
 for log in /srv/xenon/**/*.log; do
     dir="$(dirname "$log")"
     period="$(basename "$dir")"
