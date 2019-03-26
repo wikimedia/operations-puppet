@@ -183,6 +183,8 @@ scap::sources:
     repository: search/MjoLniR/deploy
   statsv/statsv:
     repository: analytics/statsv
+  performance/asoranking:
+    repository: performance/asoranking
   performance/coal:
     repository: performance/coal
   performance/navtiming:

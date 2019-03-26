@@ -37,4 +37,8 @@ class role::statistics::private {
     # Deploy wikimedia/discovery/analytics repository
     # to this node.
     include ::profile::analytics::cluster::elasticsearch
+
+    # Deploy performance/asoranking repository
+    # to this node.
+    include ::profile::analytics::asoranking
 }
