@@ -1072,10 +1072,6 @@ node 'cloudnet2002-dev.codfw.wmnet' {
     role(wmcs::openstack::labtestn::net)
 }
 
-node /^labtestvirt200[1-2]\.codfw\.wmnet$/ {
-    role(spare::system)
-}
-
 node /^labtestvirt2003\.codfw\.wmnet$/ {
     role(wmcs::openstack::labtestn::virt)
 }
