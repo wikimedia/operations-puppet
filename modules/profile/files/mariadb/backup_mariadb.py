@@ -109,6 +109,32 @@ class DatabaseBackupStatistics(BackupStatistics):
         self.password = config['password']
         self.type = type
 
+    def find_backup_id(self, db):
+        """
+        Queries the metadata database to find an ongoing backup in the last
+        24 hours with the self properties (name, type, source & destination).
+        Returns its metadata backups.id value.
+        """
+        logger = logging.getLogger('backup')
+        host = socket.getfqdn()
+        query = ("SELECT id FROM backups WHERE name = %s and "
+                 "status = 'ongoing' and type = %s and source = %s and "
+                 "host = %s and start_date > now() - INTERVAL 1 DAY")
+        with db.cursor(pymysql.cursors.DictCursor) as cursor:
+            try:
+                cursor.execute(query, (self.dump_name, self.type,
+                                       self.source, host))
+            except (pymysql.err.ProgrammingError, pymysql.err.InternalError):
+                logger.error('A MySQL error occurred while finding the entry for the '
+                             'backup')
+                return None
+        data = cursor.fetchall()
+        if len(data) != 1:
+            logger.error('We could not find one stat entry for an ongoing backup')
+            return None
+        else:
+            return str(data[0]['id'])
+
     def set_status(self, status):
         """
         Updates or inserts the backup entry at the backup statistics
@@ -127,15 +153,15 @@ class DatabaseBackupStatistics(BackupStatistics):
         except (pymysql.err.OperationalError):
             logger.exception('We could not connect to {} to store the stats'.format(self.host))
             return False
-        with db.cursor(pymysql.cursors.DictCursor) as cursor:
-            if status == 'ongoing':
-                if self.section is None or self.source is None:
-                    logger.error('A new backup requires a section and a source parameters')
-                    return False
-                host = socket.getfqdn()
-                query = "INSERT INTO backups (name, status, section, source, host, type," \
-                        "start_date, end_date) " \
-                        "VALUES (%s, 'ongoing', %s, %s, %s, %s, now(), NULL)"
+        if status == 'ongoing':
+            if self.section is None or self.source is None:
+                logger.error('A new backup requires a section and a source parameters')
+                return False
+            host = socket.getfqdn()
+            query = "INSERT INTO backups (name, status, section, source, host, type," \
+                    "start_date, end_date) " \
+                    "VALUES (%s, 'ongoing', %s, %s, %s, %s, now(), NULL)"
+            with db.cursor(pymysql.cursors.DictCursor) as cursor:
                 try:
                     result = cursor.execute(query, (self.dump_name, self.section, self.source,
                                             host, self.type))
@@ -143,47 +169,32 @@ class DatabaseBackupStatistics(BackupStatistics):
                     logger.error('A MySQL error occurred while trying to insert the entry '
                                  'for the new backup')
                     return False
-                if result is None:
-                    logger.error('We could not store the information on the database')
-                    return False
-                db.commit()
-            elif status in ('finished', 'failed', 'deleted'):
-                host = socket.getfqdn()
-                query = ("SELECT id FROM backups WHERE name = %s and "
-                         "status = 'ongoing' and type = %s and source = %s and "
-                         "host = %s and start_date > now() - INTERVAL 1 DAY")
-                try:
-                    result = cursor.execute(query, (self.dump_name, self.type,
-                                                    self.source, host))
-                except (pymysql.err.ProgrammingError, pymysql.err.InternalError):
-                    logger.error('A MySQL error occurred while finding the entry for the '
-                                 'backup')
-                    return False
-                if result is None:
-                    logger.error('We could not select the database backup statistics server')
-                    return False
-                data = cursor.fetchall()
-                if len(data) != 1:
-                    logger.error('We could not find one stat entry for an ongoing backup')
-                    return False
-                else:
-                    backup_id = str(data[0]['id'])
-                    query = "UPDATE backups SET status = %s, end_date = now() WHERE id = %s"
-                    try:
-                        result = cursor.execute(query, (status, backup_id))
-                    except (pymysql.err.ProgrammingError, pymysql.err.InternalError):
-                        logger.error('A MySQL error occurred while trying to update the '
-                                     'entry for the new backup')
-                        return False
-
-                    if result is None:
-                        logger.error('We could not change the status of the current dump')
-                        return False
-                    db.commit()
-                    return True
-            else:
-                logger.error('Invalid status: {}'.format(status))
+            if result != 1:
+                logger.error('We could not store the information on the database')
                 return False
+            db.commit()
+            return True
+        elif status in ('finished', 'failed', 'deleted'):
+            backup_id = self.find_backup_id(db)
+            if backup_id is None:
+                return False
+            query = "UPDATE backups SET status = %s, end_date = now() WHERE id = %s"
+            with db.cursor(pymysql.cursors.DictCursor) as cursor:
+                try:
+                    result = cursor.execute(query, (status, backup_id))
+                except (pymysql.err.ProgrammingError, pymysql.err.InternalError):
+                    logger.error('A MySQL error occurred while trying to update the '
+                                 'entry for the new backup')
+                    return False
+
+            if result != 1:
+                logger.error('We could not change the status of the current dump')
+                return False
+            db.commit()
+            return True
+        else:
+            logger.error('Invalid status: {}'.format(status))
+            return False
 
     def recursive_file_traversal(self, db, backup_id, top_dir, directory):
         """
@@ -207,11 +218,14 @@ class DatabaseBackupStatistics(BackupStatistics):
                          "(backup_id, file_path, file_name, size, file_date, backup_object_id) "
                          "VALUES (%s, %s, %s, %s, FROM_UNIXTIME(%s), NULL)")
                 try:
-                    cursor.execute(query, (backup_id, directory, name, size, time))
+                    result = cursor.execute(query, (backup_id, directory, name, size, time))
                 except (pymysql.err.ProgrammingError, pymysql.err.InternalError):
                     logger.error('A MySQL error occurred while inserting the backup '
                                  'file details')
                     return None
+            if result != 1:
+                logger.error('We could not insert details about file {}'.format(name))
+                return None
             # traverse subdir
             # TODO: Check for links to avoid infinite recursivity
             if os.path.isdir(path):
@@ -239,23 +253,9 @@ class DatabaseBackupStatistics(BackupStatistics):
         except (pymysql.err.OperationalError):
             logger.exception('We could not connect to {} to store the stats'.format(self.host))
             return False
-        with db.cursor(pymysql.cursors.DictCursor) as cursor:
-            query = "SELECT id, status FROM backups WHERE name = %s AND status = 'ongoing'"
-            try:
-                result = cursor.execute(query, (self.dump_name,))
-            except (pymysql.err.ProgrammingError, pymysql.err.InternalError):
-                logger.error('A MySQL error occurred while finding the entry for the '
-                             'backup')
-                return False
-            if result is None:
-                logger.error('We could not update the database backup statistics server')
-                return False
-            data = cursor.fetchall()
-            if len(data) != 1:
-                logger.error('We could not find the existing statistics for the finished '
-                             'dump')
-                return False
-            backup_id = str(data[0]['id'])
+        backup_id = self.find_backup_id(db)
+        if backup_id is None:
+            return False
 
         # Insert the backup file list
         total_size = self.recursive_file_traversal(db=db, backup_id=backup_id,
@@ -273,7 +273,7 @@ class DatabaseBackupStatistics(BackupStatistics):
                 logger.error('A MySQL error occurred while updating the total backup size')
                 return False
         db.commit()
-        return True
+        return result == 1
 
     def start(self):
         self.set_status('ongoing')
