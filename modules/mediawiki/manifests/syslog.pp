@@ -7,7 +7,7 @@
 # local log files.
 #
 class mediawiki::syslog(
-    Optional[Variant[Boolean, String]] $forward_syslog = undef,
+    Optional[String] $forward_syslog = undef,
     Optional[String] $log_aggregator = undef
 ) {
 

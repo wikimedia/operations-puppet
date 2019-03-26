@@ -6,16 +6,15 @@
 # MediaWiki, and that the MediaWiki deployment directory exists and
 # contains a copy of MediaWiki.
 #
-class mediawiki::scap (
-    Stdlib::Unixpath $mediawiki_deployment_dir = '/srv/mediawiki',
-    Stdlib::Unixpath $mediawiki_staging_dir = '/srv/mediawiki-staging',
-    Stdlib::Unixpath $scap_bin_dir = '/usr/bin',
-    String $mediawiki_web_user = $::mediawiki::users::web,
-){
+class mediawiki::scap {
 
     include ::scap
     include ::mediawiki::users
 
+    $mediawiki_deployment_dir = '/srv/mediawiki'
+    $mediawiki_staging_dir = '/srv/mediawiki-staging'
+    $scap_bin_dir = '/usr/bin'
+    $mediawiki_web_user = $::mediawiki::users::web
 
     # /srv/mediawiki is the root path of the MediaWiki deployment tree.
 
