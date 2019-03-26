@@ -3,7 +3,7 @@
 # Sets up a standalone puppetmaster, without frontend/backend
 # separation.
 #
-# Useful only in labs.
+# Useful only on wmcs VMs.
 #
 # == Parameters
 #
