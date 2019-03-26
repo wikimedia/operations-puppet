@@ -155,6 +155,21 @@ profile::acme_chief::certificates:
         challenge: dns-01
         authorized_regexes:
         - '^cp50[0-1][0-9]\.eqsin\.wmnet$'
+    wikibase:
+        CN: 'wikiba.se'
+        SNI:
+        - 'wikiba.se'
+        - 'www.wikiba.se'
+        staging_time: 604800
+        challenge: dns-01
+        authorized_regexes:
+        - '^cp10[4-9][0-9]\.eqiad\.wmnet$'
+        - '^cp20[0-2][0-9]\.codfw\.wmnet$'
+        - '^cp30[3-4][0-9]\.esams\.wmnet$'
+        - '^cp40[2-3][0-9]\.ulsfo\.wmnet$'
+        - '^cp50[0-1][0-9]\.eqsin\.wmnet$'
+        authorized_hosts:
+        - 'cp1008.wikimedia.org'
 profile::acme_chief::challenges:
   dns-01:
     zone_update_cmd: /usr/local/bin/acme-chief-gdnsd-sync.py
