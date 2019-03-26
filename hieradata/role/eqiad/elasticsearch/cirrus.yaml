@@ -1,8 +1,6 @@
 role::lvs::realserver::pools:
   search: {}
 
-profile::elasticsearch::version: '6.5'
-profile::elasticsearch::config_version: '6'
 profile::elasticsearch::instances:
     production-search-eqiad:
         # eqiad prod name
