@@ -7,7 +7,7 @@ profile::openstack::main::pdns::host: 'labs-ns0.wikimedia.org'
 profile::openstack::main::pdns::host_secondary: 'labs-ns1.wikimedia.org'
 profile::openstack::main::pdns::recursor: 'labs-recursor0.wikimedia.org'
 profile::openstack::main::pdns::recursor_secondary: 'labs-recursor1.wikimedia.org'
-profile::openstack::main::pdns::monitor_target_fqdn: 'tools-grid-master.tools.eqiad.wmflabs'
+profile::openstack::main::pdns::monitor_target_fqdn: 'tools-sgegrid-master.tools.eqiad.wmflabs'
 
 # Extra records that the Labs DNS recursor should respond to.
 # Used for things that would ideally be in a .svc. DNS zone but
