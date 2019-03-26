@@ -1,0 +1,4 @@
+profile::openstack::eqiad1::puppetmaster::encapi::db_host: 'm5-master.eqiad.wmnet'
+profile::openstack::eqiad1::puppetmaster::encapi::db_name: 'labspuppet'
+profile::openstack::eqiad1::puppetmaster::encapi::db_user: 'labspuppet'
+profile::openstack::eqiad1::puppetmaster::encapi::statsd_prefix: 'labs.puppetbackend'

@@ -1,0 +1,7 @@
+profile::openstack::eqiad1::puppetmaster::web_hostname: 'labs-puppetmaster.wikimedia.org'
+profile::openstack::eqiad1::puppetmaster::ca: 'labpuppetmaster1001.wikimedia.org'
+profile::openstack::eqiad1::puppetmaster::servers:
+  labpuppetmaster1001.wikimedia.org:
+    - { worker: labpuppetmaster1001.wikimedia.org, loadfactor: 10 }
+    - { worker: labpuppetmaster1002.wikimedia.org, loadfactor: 20 }
+profile::openstack::eqiad1::puppetmaster::cert_secret_path: 'wmcspuppetmaster'
