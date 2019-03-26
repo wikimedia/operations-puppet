@@ -199,14 +199,14 @@ node 'bast1002.wikimedia.org' {
     interface::add_ip6_mapped { 'main': }
 }
 
-# Bastion in Texas
+# formerly Bastion in Texas
 node 'bast2001.wikimedia.org' {
-    role(bastionhost::general)
+    role(spare::host)
 
     interface::add_ip6_mapped { 'main': }
 }
 
-# new Bastion in Texas - to be setup (T196665)
+# Bastion in Texas - (T196665, replaced bast2001)
 node 'bast2002.wikimedia.org' {
     role(bastionhost::general)
 
