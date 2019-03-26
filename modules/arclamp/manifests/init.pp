@@ -121,18 +121,9 @@ class arclamp(
         ],
     }
 
-
     arclamp::instance { 'xenon':
         config      => $config_xenon,
         description => 'HHVM Xenon'
     }
 
-
-    # TODO: Remove this once applied
-    file { '/usr/local/bin/xenon-grep':
-        ensure => absent,
-    }
-    file { '/usr/local/bin/xenon-log':
-        ensure => absent,
-    }
 }
