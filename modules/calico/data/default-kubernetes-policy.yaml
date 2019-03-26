@@ -6,6 +6,7 @@
 # $ kubectl --namespace=kube-system create configmap wmf-default-policy --from-file=egress=default-kubernetes-policy.yaml
 #
 # NOTE: This is going to be deprecated when we move to calico 2.4.x
+#
 # Allow DNS
 - action: allow
   dst_ports:
@@ -17,6 +18,7 @@
     - 53
   dst_net: 208.80.154.254/32
   protocol: udp
+
   # Allow url-downloaders
 - action: allow
   dst_ports:
@@ -38,6 +40,7 @@
     - 8080
   dst_net: 208.80.154.80/32
   protocol: tcp
+
   # Allow statsd
 - action: allow
   dst_ports:
@@ -54,8 +57,10 @@
     - 8125
   dst_net: 10.192.16.33/32
   protocol: udp
+
   # Allow graphite
   # Re-evaluate this at some later point in time. For now deny
+
   # Allow logstash
 - action: allow
   dst_ports:
@@ -71,6 +76,7 @@
     - 12201
   dst_net: 10.2.2.36/32
   protocol: udp
+
   # Allow restbase
 - action: allow
   dst_ports:
@@ -82,6 +88,7 @@
     - 7231
   dst_net: 10.2.1.17/32
   protocol: tcp
+
   # Allow uncached API
 - action: allow
   dst_ports:
@@ -95,6 +102,7 @@
     - 443
   dst_net: 10.2.1.22/32
   protocol: tcp
+
   # Allow EventBus
 - action: allow
   dst_ports:
@@ -106,6 +114,7 @@
     - 8085
   dst_net: 10.2.2.23/32
   protocol: tcp
+
   # Cached API
   # NOTE: We want to deny this for most services as it makes operations difficult
   # but we have zotero which we don't currently control
@@ -123,7 +132,8 @@
   dst_ports:
     - 80
     - 443
-  # Kafka:
+
+  # Allow Kafka for eventgate
 - action: allow
   src_selector: calico/k8s_ns == 'eventgate-analytics'
   dst_net: 10.64.0.175/32
@@ -160,7 +170,44 @@
   protocol: tcp
   dst_ports:
     - 9092
-  # Citoid needs to access zotero
+- action: allow
+  src_selector: calico/k8s_ns == 'eventgate-analytics'
+  dst_net: 2620:0:861:101:10:64:0:175/128
+  protocol: tcp
+  dst_ports:
+    - 9092
+- action: allow
+  src_selector: calico/k8s_ns == 'eventgate-analytics'
+  dst_net: 2620:0:861:101:10:64:0:176/128
+  protocol: tcp
+  dst_ports:
+    - 9092
+- action: allow
+  src_selector: calico/k8s_ns == 'eventgate-analytics'
+  dst_net: 2620:0:861:102:10:64:16:99/128
+  protocol: tcp
+  dst_ports:
+    - 9092
+- action: allow
+  src_selector: calico/k8s_ns == 'eventgate-analytics'
+  dst_net: 2620:0:861:103:10:64:32:159/128
+  protocol: tcp
+  dst_ports:
+    - 9092
+- action: allow
+  src_selector: calico/k8s_ns == 'eventgate-analytics'
+  dst_net: 2620:0:861:103:10:64:32:160/128
+  protocol: tcp
+  dst_ports:
+    - 9092
+- action: allow
+  src_selector: calico/k8s_ns == 'eventgate-analytics'
+  dst_net: 2620:0:861:107:10:64:48:117/128
+  protocol: tcp
+  dst_ports:
+    - 9092
+
+  # Allow Citoid access to zotero
 - action: allow
   src_selector: calico/k8s_ns == 'citoid'
   dst_net: 10.2.1.16/32
@@ -173,7 +220,8 @@
   protocol: tcp
   dst_ports:
     - 1969
-  # cxserver needs to access apertium
+
+  # Allow cxserver access to apertium
 - action: allow
   src_selector: calico/k8s_ns == 'cxserver'
   dst_net: 10.2.1.11/32
@@ -186,6 +234,7 @@
   protocol: tcp
   dst_ports:
     - 2737
+
   # Allow pod IP spaces, this should be locked down if needed in ingress by service owner
 - action: allow
   dst_net: 10.64.64.0/21
