@@ -569,8 +569,8 @@ node /^db20(84|85|86|87|88|89|91)\.codfw\.wmnet/ {
     role(mariadb::core_multiinstance)
 }
 
-# Spare hosts to be provisioned #T211613
-node /^db11(26|27|28|29|30|31|32|33|34|35|36|37|38)\.eqiad\.wmnet/ {
+# Spare hosts to be provisioned #T211613 and #T218985
+node /^db11(26|27|28|29|30|31|32|33|34|35|36|37|38|39|40)\.eqiad\.wmnet/ {
     role(spare::system)
 }
 
