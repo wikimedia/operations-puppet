@@ -50,5 +50,6 @@ class webperf::statsv(
     nrpe::monitor_service { 'statsv':
         description  => 'statsv process',
         nrpe_command => '/usr/lib/nagios/plugins/check_procs -c 1: -C python -a statsv',
+        notes_url    => 'https://wikitech.wikimedia.org/wiki/Graphite#statsv',
     }
 }

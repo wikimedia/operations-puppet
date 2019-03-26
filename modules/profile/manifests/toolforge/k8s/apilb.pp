@@ -9,5 +9,6 @@ class profile::toolforge::k8s::apilb (
     nrpe::monitor_service { 'haproxy_failover':
         description  => 'haproxy failover',
         nrpe_command => '/usr/lib/nagios/plugins/check_haproxy --check=failover',
+        notes_url    => 'https://phabricator.wikimedia.org/tag/toolforge/',
     }
 }

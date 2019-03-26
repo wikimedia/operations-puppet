@@ -42,5 +42,6 @@ class profile::icinga::ircbot(
         ensure       => $ensure,
         description  => 'ircecho_service_running',
         nrpe_command => '/usr/lib/nagios/plugins/check_procs -w 1:4 -c 1:20 -a ircecho',
+        notes_url    => 'https://wikitech.wikimedia.org/wiki/Ircecho',
     }
 }
