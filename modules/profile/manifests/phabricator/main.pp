@@ -476,4 +476,8 @@ class profile::phabricator::main (
         path => '/var/log/apache2/*error*.log',
     }
 
+    rsyslog::input::file { 'apache2-access':
+        path => '/var/log/apache2/*access*.log',
+    }
+
 }
