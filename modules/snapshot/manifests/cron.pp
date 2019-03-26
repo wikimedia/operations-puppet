@@ -2,19 +2,8 @@ class snapshot::cron(
     $miscdumpsuser = undef,
     $group         = undef,
     $filesonly     = false,
+    $php           = undef,
 ) {
-    $dblist = "${snapshot::dumps::dirs::apachedir}/dblists/all.dblist"
-    $tempdir = $snapshot::dumps::dirs::dumpstempdir
-    $confsdir = $snapshot::dumps::dirs::confsdir
-    file { "${confsdir}/wikidump.conf.other":
-        ensure  => 'present',
-        path    => "${confsdir}/wikidump.conf.other",
-        mode    => '0755',
-        owner   => 'root',
-        group   => 'root',
-        content => template('snapshot/wikidump.conf.other.erb'),
-    }
-
     file { '/usr/local/etc/dump_functions.sh':
         ensure => 'present',
         path   => '/usr/local/etc/dump_functions.sh',
@@ -22,6 +11,10 @@ class snapshot::cron(
         owner  => 'root',
         group  => 'root',
         source => 'puppet:///modules/snapshot/cron/dump_functions.sh',
+    }
+
+    class { '::snapshot::cron::configure':
+        php => $php,
     }
 
     class { '::snapshot::cron::mediaperprojectlists':

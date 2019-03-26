@@ -13,3 +13,5 @@ profile::dumps::rsync_internal_clients:
     - stat1006.eqiad.wmnet
     - stat1007.eqiad.wmnet
   ipv6: []
+
+profile::dumps::generation_worker_cron_php: /usr/bin/php7.2

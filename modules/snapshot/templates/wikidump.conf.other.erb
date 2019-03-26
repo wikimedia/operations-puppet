@@ -7,15 +7,23 @@
 # i.e. not xml/sql dumps, not adds/changes dumps
 
 [wiki]
-dblist=<%= scope.lookupvar('snapshot::cron::dblist') %>
+dblist=<%= @configvals['global']['dblist'] %>
 privatelist=<%= scope.lookupvar('snapshot::dumps::dirs::apachedir') -%>/dblists/private.dblist
 multiversion=<%= scope.lookupvar('snapshot::dumps::dirs::apachedir') -%>/multiversion
 
 [output]
-temp=<%= scope.lookupvar('snapshot::cron::tempdir') %>
+temp=<%= scope.lookupvar('snapshot::cron::configure::tempdir') %>
 
 [tools]
-php=<%= scope.lookupvar('snapshot::dumps::configs::php') %>
+php=<%= scope.lookupvar('snapshot::cron::configure::php') %>
 mysqldump=/usr/bin/mysqldump
 gzip=/bin/gzip
 lbzip2=/usr/bin/lbzip2
+
+<% if @configvals.has_key?('wikidata') -%>
+# specific settings for wikidata entity dumps
+[wikidata]
+<% @configvals['wikidata'].keys.sort.each do |wdsetting| -%>
+<%= wdsetting %>=<%= @configvals['wikidata'][wdsetting] %>
+<% end -%>
+<% end -%>
