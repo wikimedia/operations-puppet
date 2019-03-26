@@ -20,29 +20,7 @@ qualify_domain = MAILDOMAIN
 smtp_banner = $smtp_active_hostname ESMTP
 
 domainlist local_domains = MAILDOMAIN : \
-                           *.INSTANCEPROJECT.eqiad.wmflabs : \
-                           # The following list names all grid submit
-                           # hosts that have an alias defined in
-                           # host_aliases which prevents them from
-                           # matching the wildcard above.  The list
-                           # can be generated with the command "qconf
-                           # -ss | grep -v
-                           # '\.tools\.eqiad\.wmflabs$'".  When
-                           # host_aliases has been decommissioned
-                           # (T109485), this list should be empty.
-                           tools-checker-02.eqiad.wmflabs : \
-                           tools-webgrid-generic-1401.eqiad.wmflabs : \
-                           tools-webgrid-generic-1402.eqiad.wmflabs : \
-                           tools-webgrid-generic-1403.eqiad.wmflabs : \
-                           tools-webgrid-lighttpd-1402.eqiad.wmflabs : \
-                           tools-webgrid-lighttpd-1403.eqiad.wmflabs : \
-                           tools-webgrid-lighttpd-1404.eqiad.wmflabs : \
-                           tools-webgrid-lighttpd-1405.eqiad.wmflabs : \
-                           tools-webgrid-lighttpd-1406.eqiad.wmflabs : \
-                           tools-webgrid-lighttpd-1407.eqiad.wmflabs : \
-                           tools-webgrid-lighttpd-1408.eqiad.wmflabs : \
-                           tools-webgrid-lighttpd-1409.eqiad.wmflabs : \
-                           tools-webgrid-lighttpd-1410.eqiad.wmflabs
+                           *.INSTANCEPROJECT.eqiad.wmflabs
 hostlist relay_from_hosts = 10.0.0.0/8 : 172.16.0.0/21
 
 acl_smtp_rcpt = acl_check_rcpt
