@@ -161,14 +161,12 @@ class profile::netbox (
                 # Splay by 1 minute per profile, offset by 5 minutes from 00 (sync process takes far less than 1 minute)
                 'interval' => "*-*-* *:${String($prof_index + 5, '%02d')}/${String($ganeti_sync_interval, '%02d')}:00",
             },
-            logging_enabled           => true,
+            logging_enabled           => false,
             monitoring_enabled        => true,
             monitoring_contact_groups => 'admins',
             user                      => 'deploy-librenms',
         }
     }
-
-
 
     git::clone { 'operations/software/netbox-reports':
         ensure    => 'latest',
