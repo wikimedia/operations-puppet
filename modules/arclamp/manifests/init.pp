@@ -107,23 +107,16 @@ class arclamp(
         mode   => '0555',
     }
 
-    $config_xenon = {
-        base_path => '/srv/xenon/logs',
-        redis     => {
-            host => $redis_host,
-            port => $redis_port,
-        },
-        redis_channel => 'xenon',
-        logs      => [
-            # 336 hours is 14 days * 24 hours (T166624)
-            { period => 'hourly',  format => '%Y-%m-%d_%H', retain => 336 },
-            { period => 'daily',   format => '%Y-%m-%d',    retain => 90 },
-        ],
-    }
 
-    arclamp::instance { 'xenon':
-        config      => $config_xenon,
-        description => 'HHVM Xenon'
+    arclamp::instance {
+        default:
+            ensure     => present,
+            redis_host => $redis_host,
+            redis_port => $redis_port;
+        'xenon':
+            description => 'HHVM Xenon',
+            label       => '';
+        'excimer':
+            description => 'PHP Excimer';
     }
-
 }
