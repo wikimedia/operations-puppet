@@ -44,8 +44,8 @@
 #  +/path/to/clone/container/+
 #
 #   # Example: check out from gerrit:
-#   git::clone { 'analytics/wikimetrics':
-#       directory = '/srv/wikimetrics',
+#   git::clone { 'analytics/wikistats2':
+#       directory = '/srv/wikistats2',
 #   }
 #
 define git::clone(

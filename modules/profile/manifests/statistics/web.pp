@@ -14,7 +14,6 @@ class profile::statistics::web(
     class { '::statistics::web': }
 
     # # include statistics web sites
-    class { '::statistics::sites::metrics': }
     class { '::statistics::sites::stats': }
     class { '::statistics::sites::analytics': }
 

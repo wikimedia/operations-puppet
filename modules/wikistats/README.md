@@ -26,4 +26,3 @@ wiki syntax tables for pages like "List of largest wikis"
 on meta and several similar ones for other projects
 
 this is not to be confused with stats.wm by analytics
-or the 'wikimetrics' classes

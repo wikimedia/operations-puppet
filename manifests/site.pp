@@ -1879,7 +1879,6 @@ node 'thorium.eqiad.wmnet' {
     # - https://stats.wikimedia.org (Wikistats)
     # - https://analytics.wikimedia.org (Analytics dashboards and datasets)
     # - https://datasets.wikimedia.org (deprecated, redirects to analytics.wm.org/datasets/archive)
-    # - https://metrics.wikimedia.org (https://metrics.wmflabs.org/ (Wikimetrics))
     #
     # For a complete and up to date list please check the
     # related role/module.
