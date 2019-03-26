@@ -155,7 +155,6 @@ rewrite	*wikinews.de	//de.wikinews.org
 rewrite	*wicipediacymraeg.org	//cy.wikipedia.org
 rewrite	*wikipedia.org.il	//he.wikipedia.org
 rewrite	*wikipedia.co.il	//he.wikipedia.org
-rewrite	*vikimedija.org	//rs.wikimedia.org
 rewrite	*wikipedia.bg	//bg.wikipedia.org
 rewrite	*wikipedia.is	//is.wikipedia.org
 rewrite	*wikipedia.co.za	//af.wikipedia.org
@@ -215,16 +214,11 @@ funnel	*wiktionary.eu	//www.wiktionary.org
 
 # Wikibooks - T87039
 
-rewrite	*.wikibook.org	//*.wikibooks.org
 rewrite	*.wikibook.com	//*.wikibooks.org
 rewrite	*.wikibooks.com	//*.wikibooks.org
 
-rewrite	wikibook.org	//www.wikibooks.org
 rewrite	wikibook.com	//www.wikibooks.org
 rewrite	wikibooks.com	//www.wikibooks.org
-
-rewrite	wikibooks.de	//de.wikibooks.org
-rewrite	www.wikibooks.de	//de.wikibooks.org
 
 rewrite	textbook.wikipedia.org	//www.wikibooks.org
 
@@ -259,10 +253,8 @@ rewrite	species.wikipedia.org	//species.wikimedia.org
 # Wikiversity
 
 rewrite	*.wikiversity.com	//*.wikiversity.org
-rewrite	*.wikiversity.info	//*.wikiversity.org
 
 rewrite	wikiversity.com	//www.wikiversity.org
-rewrite	wikiversity.info	//www.wikiversity.org
 
 # Wikivoyage
 rewrite	*.wikivoyage.com	//*.wikivoyage.org
@@ -387,9 +379,6 @@ funnel	*wikimedia.community	//www.wikimedia.org
 # wikimedia.us redirect
 funnel	*wikimedia.us	//www.wikimedia.org
 
-# tartupeedia.ee (WMEE-owned domain) - T46893
-funnel	*tartupeedia.ee	//et.wikipedia.org/wiki/Portaal:Tartupeedia
-
 # wikipedia.in
 funnel	*wikipedia.in	http://wikimedia.in/wikipedia.html
 
@@ -412,10 +401,10 @@ override	*careers.wikipedia.org/	//wikimediafoundation.org/about/jobs/
 override	*jobs.wikimedia.org/	//wikimediafoundation.org/about/jobs/
 override	*jobs.wikipedia.org/	//wikimediafoundation.org/about/jobs/
 
-# pywikipedia.org (T60803).
+# pywikipedia.org (T60803). This domain uses non-WMF DNS servers
 funnel	*pywikipedia.org	//tools.wmflabs.org/pywikibot/
 
-# pywikibot.org (T106311)
+# pywikibot.org (T106311). This domain uses non-WMF DNS servers
 funnel	*pywikibot.org	//tools.wmflabs.org/pywikibot/
 
 # w.wiki - upcoming URL shortener
