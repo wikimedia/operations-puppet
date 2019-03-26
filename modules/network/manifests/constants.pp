@@ -372,11 +372,11 @@ class network::constants {
                 ],
             },
         'labs' => {
-            'bastion_hosts' => concat([
+            'bastion_hosts' => [
                     '172.16.1.136', # bastion-eqiad1-01.eqiad.wmflabs
                     '172.16.3.155', # bastion-eqiad1-02.eqiad.wmflabs
                     '172.16.1.135', # bastion-restricted-eqiad1-01.eqiad.wmflabs
-                ], hiera('network::allow_ssh_from_ips', [])), # Allow labs projects to setup their own ssh origination points
+                ],
             'monitoring_hosts' => [
                     '172.16.7.178', # shinken-02.shinken.eqiad.wmflabs
                 ],
