@@ -110,4 +110,11 @@ class profile::gerrit::server(
         startmsg_regex => '^\\\\[[0-9,-\\\\+\\\\ \\\\:]+\\\\]',
     }
 
+    rsyslog::input::file { 'gerrit-apache2-error':
+        path => '/var/log/apache2/*error*.log',
+    }
+
+    rsyslog::input::file { 'gerrit-apache2-access':
+        path => '/var/log/apache2/*access*.log',
+    }
 }
