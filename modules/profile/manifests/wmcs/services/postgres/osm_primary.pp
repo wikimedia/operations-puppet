@@ -146,5 +146,6 @@ class profile::wmcs::services::postgres::osm_primary (
         nrpe_command => "/usr/lib/nagios/plugins/check_procs \
                          -w 1:1 -c 1:1 -C rsync --ereg-argument-array \
                          '/usr/bin/rsync --daemon --no-detach'",
+        notes_url    => 'https://wikitech.wikimedia.org/wiki/OSM_Tileserver',
     }
 }
