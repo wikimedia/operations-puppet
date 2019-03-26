@@ -1330,7 +1330,7 @@ users:
     realname: Daniel Kinzler
     ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQCv3VlykbJEOoH6PnTzWpT+FqrHe/sxWBZ+s63KgQVbzHkstUbFvyYKOphV7kCdsr/gUQ2QZ1SuGEOXVxJpQeMDGlzGVryXvQCfP8qizGHHSbPETUbV8GhYGwiKoLMSPVEpce5bvB1ky07rZYq+EnY9FxhNSCBmsq6u94Gl01hhl/RP+bnH5Qx/LRhhECIkEtKxsWG2SE2mLr8M29Dd14yz4siiB6nLsm4WiMHC9u23gy3Z6AS+BcW2yCOmP4x7NGTzSjMkVgULW7FYJzntbn8wGD9bs8jSfUZDZ07rsndNnbH4kE9tK1sUi0apdPBu+8kbX3HsOlgTdAJR+4BCvCmQvr/5oXVr0oe5/x9ShMMQdFRGts44LAr+KQe5GjEZyK6qBjjG9zxwfzQ7/JrmYOgrSFuS7wz/DeKEV4to4BI6Hrv4pERKZOxsyRDCUviZwq5X1IJquRTsdbEicmmulRUvydQXvRjMMr3D77+8o3dvDLXJnXRxV9YjYPneTHcbgTIW8kgYMvh3EoUhIVYWNkB2eEjD/7yeTaxfDNMPubn9htb2C68FnPL5B64l7mgQ3ZOmw2nX/c9UA+lPnHPsHGdCJnofok/nOJ+zm3Z9xHUumvsmHDNAic85k/EOTK4aN65xUbN6ASQSzh69mkR8myI40PsPXaS/tJ4q+4DgCAsRGQ== daki@C159]
     uid: 545
-    email: daniel.kinzler@wikimedia.de
+    email: dkinzler@wikimedia.org
   dartar:
     ensure: absent
     gid: 500
