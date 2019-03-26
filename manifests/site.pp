@@ -198,6 +198,8 @@ node 'bast2001.wikimedia.org' {
 # new Bastion in Texas - to be setup (T196665)
 node 'bast2002.wikimedia.org' {
     role(spare::system)
+
+    interface::add_ip6_mapped { 'main': }
 }
 
 # Bastion in the Netherlands (replaced bast3001)
