@@ -1,4 +1,4 @@
-; Re disable gc per T217497
-[gc]
-        auto = 0
-        autopacklimit = 0
+; Renable gc per T190045
+;[gc]
+;        auto = 0
+;        autopacklimit = 0
