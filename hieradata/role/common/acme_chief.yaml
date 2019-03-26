@@ -109,6 +109,52 @@ profile::acme_chief::certificates:
         challenge: dns-01
         authorized_regexes:
         - '^dbmonitor[12]001\.wikimedia\.org$'
+    unified:
+        CN: '*.wikipedia.org'
+        SNI:
+        - '*.wikipedia.org'
+        - 'wikimedia.org'
+        - 'mediawiki.org'
+        - 'wikibooks.org'
+        - 'wikidata.org'
+        - 'wikinews.org'
+        - 'wikiquote.org'
+        - 'wikisource.org'
+        - 'wikiversity.org'
+        - 'wikivoyage.org'
+        - 'wiktionary.org'
+        - 'wikimediafoundation.org'
+        - 'w.wiki'
+        - 'wmfusercontent.org'
+        - '*.m.wikipedia.org'
+        - '*.wikimedia.org'
+        - '*.m.wikimedia.org'
+        - '*.planet.wikimedia.org'
+        - '*.mediawiki.org'
+        - '*.m.mediawiki.org'
+        - '*.wikibooks.org'
+        - '*.m.wikibooks.org'
+        - '*.wikidata.org'
+        - '*.m.wikidata.org'
+        - '*.wikinews.org'
+        - '*.m.wikinews.org'
+        - '*.wikiquote.org'
+        - '*.m.wikiquote.org'
+        - '*.wikisource.org'
+        - '*.m.wikisource.org'
+        - '*.wikiversity.org'
+        - '*.m.wikiversity.org'
+        - '*.wikivoyage.org'
+        - '*.m.wikivoyage.org'
+        - '*.wiktionary.org'
+        - '*.m.wiktionary.org'
+        - '*.wikimediafoundation.org'
+        - '*.wmfusercontent.org'
+        - 'wikipedia.org'
+        staging_time: 604800
+        challenge: dns-01
+        authorized_regexes:
+        - '^cp50[0-1][0-9]\.eqsin\.wmnet$'
 profile::acme_chief::challenges:
   dns-01:
     zone_update_cmd: /usr/local/bin/acme-chief-gdnsd-sync.py
