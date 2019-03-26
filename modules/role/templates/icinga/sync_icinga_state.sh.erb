@@ -6,3 +6,11 @@
 /usr/bin/rsync -a rsync://<%= @active_host %>/icinga-cache/objects.cache /var/cache/icinga/objects.cache
 /usr/bin/rsync -a rsync://<%= @active_host %>/icinga-lib/retention.dat /var/lib/icinga/retention.dat
 /usr/sbin/service icinga start
+
+# icinga's init script 'stop' deletes the external commands named pipe after
+# icinga has stopped listening to it.  This means any nsca subprocesses that
+# were launched after that will be blocked forever trying to open() a pipe that
+# has no listener.  SIGSTOP will cause that open() to error with EINTR and they
+# will retry.
+/usr/bin/killall -STOP nsca
+/usr/bin/killall -CONT nsca
