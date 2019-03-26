@@ -58,6 +58,7 @@ class profile::mediawiki::php(
         'display_errors'       => 'stderr',
         'memory_limit'         => '500M',
         'error_reporting'      => 'E_ALL & ~E_STRICT',
+        'mysql'                => { 'connect_timeout' => 3},
     }
 
     # Custom config for php-fpm
