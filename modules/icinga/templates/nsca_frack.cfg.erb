@@ -504,7 +504,7 @@ define service {
     check_freshness          1
     freshness_threshold      360
     contact_groups           fr-tech-ops
-    check_command            nsca-fail!1!'passive check is awol'
+    check_command            nsca-fail!1!'passive check is awol - see T196336'
     notification_interval    0
     notification_period      24x7
     notification_options     c,r,f,w
