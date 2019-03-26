@@ -13,6 +13,8 @@ class toollabs::genpp::python_exec_trusty {
         # python3-beautifulsoup is not available
         'python-bottle',        # 0.12.0
         'python3-bottle',       # 0.12.0
+        'python-bs4',           # 4.2.1
+        'python3-bs4',          # 4.2.1
         'python-celery',        # 3.1.6
         # python3-celery is not available
         'python-cffi',          # 0.8.2

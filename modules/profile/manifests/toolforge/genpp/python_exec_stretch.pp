@@ -13,6 +13,8 @@ class profile::toolforge::genpp::python_exec_stretch {
         # python3-beautifulsoup is not available
         'python-bottle',        # 0.12.13
         'python3-bottle',       # 0.12.13
+        'python-bs4',           # 4.5.3
+        'python3-bs4',          # 4.5.3
         'python-celery',        # 3.1.23
         'python3-celery',       # 3.1.23
         'python-cffi',          # 1.9.1

@@ -13,6 +13,8 @@ class profile::toolforge::genpp::python_exec_jessie {
         # python3-beautifulsoup is not available
         'python-bottle',        # 0.12.7
         'python3-bottle',       # 0.12.7
+        'python-bs4',           # 4.3.2
+        'python3-bs4',          # 4.3.2
         'python-celery',        # 3.1.13
         'python3-celery',       # 3.1.13
         'python-cffi',          # 0.8.6

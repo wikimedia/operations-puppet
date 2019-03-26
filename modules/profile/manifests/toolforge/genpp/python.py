@@ -11,8 +11,9 @@ environ_packages = {
     "dev": ["coverage", "stdeb"],
     "exec": [
         "babel",  # T60220
-        "beautifulsoup",  # For valhallasw.
+        "beautifulsoup",  # For pywikibot
         "bottle",  # T58995
+        "bs4",  # T162570
         "celery",
         "cffi",  # T204422
         "dev",
