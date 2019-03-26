@@ -17,6 +17,7 @@ class profile::openstack::eqiad1::cumin::target(
     $project_pub_key = hiera('profile::openstack::eqiad1::cumin::project_pub_key'),
     $cluster = hiera('cluster', 'misc'),
     $site = $::site,  # lint:ignore:wmf_styleguide
+    Array[Stdlib::IP::Address] $cumin_masters = hiera('cumin_masters', []),
 ) {
     require ::network::constants
 
@@ -31,11 +32,11 @@ class profile::openstack::eqiad1::cumin::target(
     validate_array($project_masters)
 
     if $auth_group == 'cumin_masters' {
-        $ssh_authorized_sources_list = $::network::constants::special_hosts[$::realm][$auth_group]
+        $ssh_authorized_sources_list = $cumin_masters
     } else {
         # Authorize both the default cumin masters and the custom config, required for proxies.
         $ssh_authorized_sources_list = concat(
-            $::network::constants::special_hosts[$::realm]['cumin_masters'],
+            $cumin_masters,
             $::network::constants::special_hosts[$::realm][$auth_group])
     }
 

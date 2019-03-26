@@ -9,7 +9,7 @@
 class profile::ci::firewall (
     $zuul_merger_hosts = hiera('profile::ci::firewall::zuul_merger_hosts'),
 ) {
-    class { '::base::firewall': }
+    class { '::profile::base::firewall': }
     include ::network::constants
 
     # Restrict some services to be only reacheable from localhost over both

@@ -66,12 +66,6 @@ class network::constants {
                     '10.192.0.27',                # puppetmaster2001.codfw.wmnet
                     '2620:0:860:101:10:192:0:27', # puppetmaster2001.codfw.wmnet
                 ],
-            'cumin_masters' => [
-                    '10.64.32.25',                 # cumin1001.eqiad.wmnet
-                    '2620:0:861:103:10:64:32:25',  # cumin1001.eqiad.wmnet
-                    '10.192.48.16',                # cumin2001.codfw.wmnet
-                    '2620:0:860:104:10:192:48:16', # cumin2001.codfw.wmnet
-                ],
             'mysql_root_clients' => [
                     # ipv6 interfaces are not yet allowed due to mysql grants
                     # do not put dns names or hostnames here, only ipv4
@@ -380,9 +374,6 @@ class network::constants {
                 ],
             'deployment_hosts' => hiera('network::allow_deployment_from_ips', []), # lint:ignore:wmf_styleguide
             'maintenance_hosts' => hiera('network::allow_maintenance_from_ips', []), # lint:ignore:wmf_styleguide
-            'cumin_masters' => concat([  # As seen by labs instances
-                    '172.16.1.135', # bastion-restricted-eqiad1-01.eqiad.wmflabs
-                ], hiera('network::allow_cumin_from_ips', [])), # lint:ignore:wmf_styleguide
             'cumin_real_masters' => [  # Where Cumin can be run
                     '208.80.154.158',               # labpuppetmaster1001.wikimedia.org
                     '2620:0:861:2:208:80:154:158',  # labpuppetmaster1001.wikimedia.org

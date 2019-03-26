@@ -10,7 +10,7 @@ class role::kafka::jumbo::broker {
     if !defined(Class['::standard']) {
         include ::standard
     }
-    include base::firewall
+    include profile::base::firewall
     include profile::kafka::broker
 
     # Mirror main-eqiad -> jumbo-eqiad

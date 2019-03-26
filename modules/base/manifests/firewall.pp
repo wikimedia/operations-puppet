@@ -1,6 +1,8 @@
 # Don't include this sub class on all hosts yet
 # NOTE: Policy is DROP by default
-class base::firewall {
+class base::firewall (
+    Array[Stdlib::IP::Address] $cumin_masters = [],
+) {
     include ::network::constants
     include ::ferm
 

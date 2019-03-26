@@ -240,6 +240,9 @@ profile::openstack::base::keystone::auth_protocol: http
 profile::openstack::base::keystone::public_port: 5000
 profile::openstack::main::nova::dhcp_domain: 'eqiad.wmflabs'
 profile::openstack::eqiad1::nova::dhcp_domain: 'eqiad.wmflabs'
+cumin_masters:
+- 172.16.1.135 # bastion-restricted-eqiad1-01.eqiad.wmflabs
+
 # Url to use for reaching graphite
 graphite_url: 'https://graphite-labs.wikimedia.org'
 profile::base::puppet::puppet_major_version: 4
