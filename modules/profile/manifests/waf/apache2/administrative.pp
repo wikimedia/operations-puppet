@@ -27,18 +27,33 @@ class profile::waf::apache2::administrative {
         require => Package['libapache2-mod-security2'],
     }
 
-    httpd::site { 'modsecurity_administrative':
+    httpd::site { 'modsecurity_admin':
         priority => 00,
-        content  => secret('waf/modsecurity_administrative.conf'),
+        content  => secret('waf/modsecurity_admin.conf'),
     }
 
-    file { '/etc/apache2/administrative':
+    file { '/etc/apache2/admin1':
         ensure  => present,
         mode    => '0644',
         owner   => 'root',
         group   => 'root',
-        content => secret('waf/administrative'),
+        content => secret('waf/admin1'),
         notify  => Service['apache2'],
     }
-
+    file { '/etc/apache2/admin2':
+        ensure  => present,
+        mode    => '0644',
+        owner   => 'root',
+        group   => 'root',
+        content => secret('waf/admin2'),
+        notify  => Service['apache2'],
+    }
+    file { '/etc/apache2/admin3':
+        ensure  => present,
+        mode    => '0644',
+        owner   => 'root',
+        group   => 'root',
+        content => secret('waf/admin3'),
+        notify  => Service['apache2'],
+    }
 }
