@@ -7,6 +7,7 @@
 
   usage: arclamp-grep [--resolution TIME] [--entrypoint NAME]
                       [--grep STRING] [--slice SLICE] [--count COUNT]
+                      [--channel CHANNEL]
 
   Options:
    --resolution TIME   Which log files to analyze. May be one of 'hourly',
@@ -22,7 +23,7 @@
    --slice SLICE       Slice of files to analyze, in Python slice notation.
                        Files are ordered from oldest to newest, so
                        '--slice=-2:' means the two most recent files.
-
+   --channel CHANNEL   Which channel to look at. defaults to "xenon"
 
   Copyright 2015 Ori Livneh <ori@wikimedia.org>
 
@@ -125,9 +126,19 @@ arg_parser.add_argument(
     help='slice of files to consider',
     type=slicer,
 )
+arg_parser.add_argument(
+    '--channel',
+    default='xenon',
+    help='What channel to look at',
+    choices=['xenon', 'excimer'],
+)
 args = arg_parser.parse_args()
 
-glob_pattern = '/srv/xenon/logs/%(resolution)s/*.%(entrypoint)s.log'
+# Legacy: the 'xenon' channel has a generic filename for now.
+if args.channel == 'xenon':
+    glob_pattern = '/srv/xenon/logs/%(resolution)s/*.%(entrypoint)s.log'
+else:
+    glob_pattern = '/srv/xenon/logs/%(resolution)s/*.%(entrypoint)s.%(channel)s.log'
 file_names = glob.glob(glob_pattern % vars(args))
 file_names.sort(key=os.path.getctime)
 file_names = args.slice(file_names)
