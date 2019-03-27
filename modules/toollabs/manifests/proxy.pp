@@ -36,7 +36,7 @@ class toollabs::proxy(
             logo        => '/.error/tool-labs-logo.png',
             logo_2x     => '/.error/tool-labs-logo-2x.png',
             logo_alt    => 'Wikimedia Toolforge',
-            logo_height => '157',
+            logo_height => 157,
             favicon     => '/.error/favicon.ico',
         },
         banned_description   => 'You have been banned from accessing Toolforge. Please see <a href="https://wikitech.wikimedia.org/wiki/Help:Toolforge/Banned">Help:Toolforge/Banned</a> for more information on why and on how to resolve this.',

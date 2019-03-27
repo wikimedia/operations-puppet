@@ -50,12 +50,12 @@
 # [*logo_width*]
 #   Width attribute for logo image.
 #
-#   Default: '135'
+#   Default: 135
 #
 # [*logo_height*]
 #   Height attribute for logo image.
 #
-#   Default: '101'
+#   Default: 101
 #
 # [*logo_alt*]
 #   Alternate text for logo image.
@@ -78,8 +78,8 @@ define mediawiki::errorpage(
     Stdlib::Httpurl $logo_link = 'https://www.wikimedia.org',
     String $logo_src = 'https://www.wikimedia.org/static/images/wmf-logo.png',
     String $logo_srcset = 'https://www.wikimedia.org/static/images/wmf-logo-2x.png 2x',
-    Integer $logo_width = '135',
-    Integer $logo_height = '101',
+    Integer $logo_width = 135,
+    Integer $logo_height = 101,
     String $logo_alt = 'Wikimedia',
     Optional[String] $content = '',
     Optional[String] $footer = undef,
