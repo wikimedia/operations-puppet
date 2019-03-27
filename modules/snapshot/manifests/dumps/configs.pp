@@ -126,6 +126,7 @@ class snapshot::dumps::configs(
                         pagesPerChunkHistory  => "${wikidatachunkhistory1},${$wikidatachunkhistory2}",
                         orderrevs             => '1',
                         minpages              => '10',
+                        lbzip2forhistory      => '1',
                     },
                 },
             },
@@ -178,6 +179,7 @@ class snapshot::dumps::configs(
                     wikidatawiki => {
                         pagesPerChunkHistory  => '540000,30000,20000,30000',
                         pagesPerChunkAbstract => '25000',
+                        lbzip2forhistory      => '1',
                     },
                 },
             },
