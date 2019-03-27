@@ -21,4 +21,12 @@ class role::bastionhost::general {
         proto => 'tcp',
         port  => 'ssh',
     }
+
+    rsync::quickdatacopy { 'bast-home':
+        ensure      => present,
+        source_host => 'bast2001.wikimedia.org',
+        dest_host   => 'bast2002.wikimedia.org',
+        auto_sync   => false,
+        module_path => '/home',
+    }
 }
