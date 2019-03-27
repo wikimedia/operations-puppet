@@ -55,8 +55,6 @@ class icinga::plugins(
         mode    => '0755',
     }
 
-    File <| tag == nagiosplugin |>
-
     # WMF custom service checks
     file { '/usr/lib/nagios/plugins/check_ripe_atlas.py':
         source => 'puppet:///modules/icinga/check_ripe_atlas.py',
