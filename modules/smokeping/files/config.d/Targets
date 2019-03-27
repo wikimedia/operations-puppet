@@ -169,10 +169,10 @@ host = msw1-codfw.mgmt.codfw.wmnet
 menu = Hosts
 title = Sampled Hosts
 
-+++ bast2001
-menu = bast2001
-title = bast2001.wikimedia.org [A5]
-host = bast2001.wikimedia.org
++++ bast2002
+menu = bast2002
+title = bast2002.wikimedia.org [B5]
+host = bast2002.wikimedia.org
 
 +++ dns2001
 menu = dns2001
