@@ -138,7 +138,7 @@ args = arg_parser.parse_args()
 if args.channel == 'xenon':
     glob_pattern = '/srv/xenon/logs/%(resolution)s/*.%(entrypoint)s.log'
 else:
-    glob_pattern = '/srv/xenon/logs/%(resolution)s/*.%(entrypoint)s.%(channel)s.log'
+    glob_pattern = '/srv/xenon/logs/%(resolution)s/*.%(channel)s.%(entrypoint)s.log'
 file_names = glob.glob(glob_pattern % vars(args))
 file_names.sort(key=os.path.getctime)
 file_names = args.slice(file_names)
