@@ -20,6 +20,9 @@ include "errorpage.inc.vcl";
 
 acl local_host {
 	"127.0.0.1";
+}
+
+acl local_tls_terminator {
 	"<%= @ipaddress %>"; // note this matches nginx proxy_pass for TLS
 }
 
