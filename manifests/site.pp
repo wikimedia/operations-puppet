@@ -735,7 +735,7 @@ node 'dbstore2002.codfw.wmnet' {
 # database-provisioning and short-term/postprocessing backups servers
 # Pending full setup
 node 'dbprov2001.codfw.wmnet' {
-    role(spare::system)
+    role(mariadb::backups)
 }
 node 'dbprov2002.codfw.wmnet' {
     role(spare::system)
