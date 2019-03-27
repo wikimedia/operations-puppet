@@ -6,6 +6,7 @@ class profile::mariadb::backup::snapshot {
         'python3-yaml',
         'python3-pymysql',
     )
+    class { 'mariadb::packages_wmf': }  # needed for xbstream and --prepare
 
     file { '/srv/backups/snapshots':
         ensure  => directory,
