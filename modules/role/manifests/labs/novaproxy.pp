@@ -52,7 +52,7 @@ class role::labs::novaproxy(
     if $use_ssl {
         sslcert::certificate { 'star.wmflabs.org': skip_private => true }
 
-        $ssl_settings = ssl_ciphersuite('nginx', 'compat')
+        $ssl_settings = ssl_ciphersuite('nginx', 'compat', false)
         class { '::dynamicproxy':
             ssl_certificate_name => 'star.wmflabs.org',
             ssl_settings         => $ssl_settings,
