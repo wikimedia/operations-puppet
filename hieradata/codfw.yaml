@@ -72,4 +72,3 @@ mail_smarthost:
 wikimail_smarthost:
 - 'wiki-mail-codfw.wikimedia.org'
 - 'wiki-mail-eqiad.wikimedia.org'
-prometheus_upgrade_one_seven: true

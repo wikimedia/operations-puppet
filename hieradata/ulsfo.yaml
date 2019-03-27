@@ -10,4 +10,3 @@ public_tls_unified_cert_vendor: "globalsign-2018"
 # Reasonable expected max RTT in ms to furthest core DC
 # (given worst alternate network paths, and plus a small fudge factor)
 max_core_rtt: 100 # to eqiad via codfw->eqord, ~92ms rounded up to 100
-prometheus_upgrade_one_seven: true
