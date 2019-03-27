@@ -15,7 +15,7 @@ export PYTHONPATH=\${PYTHONPATH}:<%= @refinery_path %>/python
     --to-timestamp $(/bin/date '+%Y%m01000000') \
     --partition-name month \
     --partition-value $(/bin/date --date="$(/bin/date +%Y-%m-15) -1 month" +'%Y-%m')\
-    --mappers <%= @num_mappers %> \
+    --mappers <%= @num_mappers_one_month %> \
     --processors <%= @num_processors %> \
     --output-format avrodata \
     --log-file <%= @private_log_file %>

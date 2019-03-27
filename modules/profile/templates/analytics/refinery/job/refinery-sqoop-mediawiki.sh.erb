@@ -12,11 +12,9 @@ export PYTHONPATH=\${PYTHONPATH}:<%= @refinery_path %>/python
     --tables archive,change_tag,change_tag_def,ipblocks,ipblocks_restrictions,logging,page,pagelinks,redirect,revision,user,user_groups \
     --user <%= @labs_db_user %> \
     --password-file <%= @db_password_labs %> \
-    --from-timestamp 20010101000000 \
-    --to-timestamp $(/bin/date '+%Y%m01000000') \
     --partition-name snapshot \
     --partition-value $(/bin/date --date="$(/bin/date +%Y-%m-15) -1 month" +'%Y-%m') \
-    --mappers <%= @num_mappers %> \
+    --mappers <%= @num_mappers_all_times %> \
     --processors <%= @num_processors %> \
     --output-format avrodata \
     --log-file <%= @labs_log_file %>

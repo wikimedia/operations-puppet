@@ -11,11 +11,9 @@ export PYTHONPATH=\${PYTHONPATH}:<%= @refinery_path %>/python
     --tables actor,comment \
     --user <%= @private_db_user %> \
     --password-file <%= @db_password_private %> \
-    --from-timestamp 20010101000000 \
-    --to-timestamp $(/bin/date '+%Y%m01000000') \
     --partition-name snapshot \
     --partition-value $(/bin/date --date="$(/bin/date +%Y-%m-15) -1 month" +'%Y-%m') \
-    --mappers <%= @num_mappers %> \
+    --mappers <%= @num_mappers_all_times %> \
     --processors <%= @num_processors %> \
     --output-format avrodata \
     --log-file <%= @production_log_file %>
