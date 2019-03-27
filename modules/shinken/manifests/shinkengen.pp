@@ -2,7 +2,12 @@
 #
 # Sets up shinkengen python package to generate hosts & services
 # config for Shinken by hittig the wikitech API
-class shinken::shinkengen {
+class shinken::shinkengen(
+    $site,
+    $keystone_host,
+    $keystone_port,
+    $puppet_enc_host,
+) {
     include shinken
 
     require_package('python-requests',

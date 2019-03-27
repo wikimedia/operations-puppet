@@ -1,0 +1,5 @@
+profile::wmcs::shinken::puppet_enc_host: labs-puppetmaster.wikimedia.org
+profile::wmcs::shinken::auth_secret: 'not_a_real_password'
+profile::wmcs::shinken::ircbot: true
+profile::wmcs::shinken::ircbot_nick: 'shinken-wm'
+profile::wmcs::shinken::ircbot_server: 'chat.freenode.net +6697'

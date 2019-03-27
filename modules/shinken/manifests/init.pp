@@ -2,9 +2,18 @@
 # Sets up a shinken monitoring server
 
 class shinken(
-    $auth_secret
+    $auth_secret,
+    $site,
+    $keystone_host,
+    $keystone_port,
+    $puppet_enc_host,
 ) {
-    include shinken::shinkengen
+    class { 'shinken::shinkengen':
+        site            => $site,
+        keystone_host   => $keystone_host,
+        keystone_port   => $keystone_port,
+        puppet_enc_host => $puppet_enc_host,
+    }
 
     package { 'shinken':
         ensure => present,

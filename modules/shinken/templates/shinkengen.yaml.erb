@@ -1,6 +1,6 @@
 projects: [ 'tools', 'deployment-prep', 'extdist', 'analytics', 'integration', 'shinken', 'cvn', 'codesearch', 'clouddb-services' ]
 output_path: '/etc/shinken/generated'
-site: <%= scope.lookupvar("::site") %>
-keystone_host: <%= scope.call_function(:hiera, ['labs_keystone_host']) %>
-keystone_port: <%= scope.call_function(:hiera, ['keystone_public_port']) %>
-puppet_enc_host: <%= scope.call_function(:hiera, ['labs_puppet_master']) %>
+site: <%= @site %>
+keystone_host: <%= @keystone_host %>
+keystone_port: <%= @keystone_port %>
+puppet_enc_host: <%= @puppet_enc_host %>

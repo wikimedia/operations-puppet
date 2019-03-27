@@ -10,8 +10,8 @@
 # [*server*]
 #   IRC server the bot should connect to
 class shinken::ircbot(
-    $nick = 'shinken-wm',
-    $server = 'chat.freenode.net +6697',
+    $nick,
+    $server,
 ){
     include shinken
 
