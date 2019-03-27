@@ -29,16 +29,10 @@ profile::elasticsearch::common_settings:
     recover_after_nodes: 2
     recover_after_time: '1m'
     unicast_hosts:
-      - logstash1004.eqiad.wmnet
-      - logstash1005.eqiad.wmnet
-      - logstash1006.eqiad.wmnet
       - logstash1010.eqiad.wmnet
       - logstash1011.eqiad.wmnet
       - logstash1012.eqiad.wmnet
     cluster_hosts:
-      - logstash1004.eqiad.wmnet
-      - logstash1005.eqiad.wmnet
-      - logstash1006.eqiad.wmnet
       - logstash1007.eqiad.wmnet
       - logstash1008.eqiad.wmnet
       - logstash1009.eqiad.wmnet
