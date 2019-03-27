@@ -96,6 +96,17 @@ selected (e.g. stretch-backports), use either of:
     DIST=stretch BACKPORTS=yes pdebuild
     DIST=stretch-backports pdebuild
 
+Archived suites
+===============
+
+Backports is only available for the regular lifetime of a Debian release, not
+during the LTS stage. After that packages should ideally be rebuilt using
+internally built components. If this isn't possible for some reason, the
+ARCHIVE\_BACKPORTS hook can be used to pull in the backports repository from
+archive.debian.org.
+
+    DIST=jessie ARCHIVE\_BACKPORTS=yes pdebuild
+
 Combining Wikimedia and Backports repos
 =======================================
 

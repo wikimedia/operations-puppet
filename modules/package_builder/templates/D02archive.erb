@@ -1,0 +1,19 @@
+#!/bin/sh
+# Avoid running hooks if archive is not specified
+PROXY=http://webproxy.<%= @site %>.wmnet:8080
+if [ "${ARCHIVE_BACKPORTS}" = "yes" ]; then
+<%- if @distribution == 'jessie' -%>
+	cat > /etc/apt/sources.list.d/jessie-archive.list <<-'EOF'
+	deb http://archive.debian.org/debian jessie-backports main contrib non-free
+	deb-src http://archive.debian.org/debian jessie-backports main contrib non-free
+EOF
+	cat > /etc/apt/preferences.d/jessie-archive.pref <<-'EOF'
+	Package: *
+	Pin: release a=jessie-backports
+	Pin-Priority: 500
+EOF
+	apt-get -o 'Acquire::Check-Valid-Until=false' -o "Acquire::http::Proxy=${PROXY}" update
+<%- else -%>
+	printf '\033[0;31m ERROR: ARCHIVE_BACKPORTS should only be used on jessie \033[0m\n'
+<%- end -%>
+fi
