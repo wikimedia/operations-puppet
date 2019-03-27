@@ -19,6 +19,10 @@ class profile::ci::gitcache {
         ensure  => directory,
         require => File['/srv/git/mediawiki'],
     }
+    file { '/srv/git/mediawiki/skins':
+        ensure  => directory,
+        require => File['/srv/git/mediawiki'],
+    }
 
     git::clone { 'mediawiki/core':
         directory => '/srv/git/mediawiki/core.git',
@@ -38,8 +42,44 @@ class profile::ci::gitcache {
         require   => File['/srv/git/mediawiki/extensions'],
     }
 
+    git::clone { 'mediawiki/extensions/Cite':
+        directory => '/srv/git/mediawiki/extensions/Cite.git',
+        bare      => true,
+        require   => File['/srv/git/mediawiki/extensions'],
+    }
+
+    git::clone { 'mediawiki/extensions/cldr':
+        directory => '/srv/git/mediawiki/extensions/cldr.git',
+        bare      => true,
+        require   => File['/srv/git/mediawiki/extensions'],
+    }
+
+    git::clone { 'mediawiki/extensions/Echo':
+        directory => '/srv/git/mediawiki/extensions/Echo.git',
+        bare      => true,
+        require   => File['/srv/git/mediawiki/extensions'],
+    }
+
+    git::clone { 'mediawiki/extensions/EventLogging':
+        directory => '/srv/git/mediawiki/extensions/EventLogging.git',
+        bare      => true,
+        require   => File['/srv/git/mediawiki/extensions'],
+    }
+
     git::clone { 'mediawiki/extensions/MobileFrontend':
         directory => '/srv/git/mediawiki/extensions/MobileFrontend.git',
+        bare      => true,
+        require   => File['/srv/git/mediawiki/extensions'],
+    }
+
+    git::clone { 'mediawiki/extensions/Scribunto':
+        directory => '/srv/git/mediawiki/extensions/Scribunto.git',
+        bare      => true,
+        require   => File['/srv/git/mediawiki/extensions'],
+    }
+
+    git::clone { 'mediawiki/extensions/TemplateData':
+        directory => '/srv/git/mediawiki/extensions/TemplateData.git',
         bare      => true,
         require   => File['/srv/git/mediawiki/extensions'],
     }
@@ -60,5 +100,17 @@ class profile::ci::gitcache {
         directory => '/srv/git/mediawiki/extensions/Wikibase.git',
         bare      => true,
         require   => File['/srv/git/mediawiki/extensions'],
+    }
+
+    git::clone { 'mediawiki/skins/MinervaNeue':
+        directory => '/srv/git/mediawiki/skins/MinervaNeue.git',
+        bare      => true,
+        require   => File['/srv/git/mediawiki/skins'],
+    }
+
+    git::clone { 'mediawiki/skins/Vector':
+        directory => '/srv/git/mediawiki/skins/Vector.git',
+        bare      => true,
+        require   => File['/srv/git/mediawiki/skins'],
     }
 }
