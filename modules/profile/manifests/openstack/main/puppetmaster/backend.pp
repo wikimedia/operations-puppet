@@ -19,7 +19,7 @@ class profile::openstack::main::puppetmaster::backend(
     include ::profile::openstack::main::cumin::master
     class {'::profile::openstack::base::puppetmaster::backend':
         designate_host               => $designate_host,
-        second_region_designate_host => $designate_host,
+        second_region_designate_host => $second_region_designate_host,
         puppetmaster_webhostname     => $puppetmaster_webhostname,
         puppetmaster_ca              => $puppetmaster_ca,
         puppetmaster_hostname        => $puppetmaster_hostname,
