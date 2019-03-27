@@ -18,6 +18,9 @@
     </Directory>
 
     <Directory /srv/org/wikimedia/performance/public_html>
+        <IfModule mod_headers.c>
+            Header set Cache-Control "s-maxage=600, max-age=600, public, must-revalidate"
+        </IfModule>
         Require all granted
     </Directory>
 
