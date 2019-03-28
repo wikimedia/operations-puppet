@@ -507,6 +507,8 @@ class MyDumperBackup(NullBackup):
         if schema_files:
             pool.apply_async(self.backup.tar_and_remove, (source, name, schema_files))
 
+        # TODO: Missing error handling
+
         pool.close()
         pool.join()
 
@@ -595,6 +597,17 @@ class WMFBackup:
         self.log_file = os.path.join(backup_dir, '{}_log.{}'.format(type, name))
         return 0
 
+    def os_rename(self, source, destination):
+        """
+        os.rename only works between same devices (not physical rename with
+        copy + delete. Reimplement it with execution of mv and handle
+        the errors.
+        """
+        cmd = ['/bin/mv', source, destination]
+        process = subprocess.Popen(cmd, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+        returncode = subprocess.Popen.wait(process)
+        return returncode
+
     def move_backups(self, name, source, destination, regex):
         """
         Move directories (and all its contents) from source to destination
@@ -610,7 +623,10 @@ class WMFBackup:
             if name == match.group(1):
                 self.logger.debug('Archiving {}'.format(entry))
                 path = os.path.join(source, entry)
-                os.rename(path, os.path.join(destination, entry))
+                result = self.os_rename(path, os.path.join(destination, entry))
+                if result != 0:
+                    return result
+        return 0
 
     def purge_backups(self, source=None, days=None, regex=None):
         """
@@ -638,10 +654,14 @@ class WMFBackup:
             if (timestamp < (datetime.datetime.now() - datetime.timedelta(days=days)) and
                timestamp > datetime.datetime(2018, 1, 1)):
                 self.logger.debug('purging backup {}'.format(path))
-                if os.path.isdir(path):
-                    shutil.rmtree(path)
-                else:
-                    os.remove(path)
+                try:
+                    if os.path.isdir(path):
+                        shutil.rmtree(path)
+                    else:
+                        os.remove(path)
+                except OSError as e:
+                    return e.code
+        return 0
 
     def tar_and_remove(self, source, name, files, compression=None):
 
@@ -653,9 +673,9 @@ class WMFBackup:
         cmd.extend(files)
 
         self.logger.debug(cmd)
-        process = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-        subprocess.Popen.wait(process)
-        out, err = process.communicate()
+        process = subprocess.Popen(cmd, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+        returncode = subprocess.Popen.wait(process)
+        return returncode
 
     def run(self):
         """
@@ -746,19 +766,31 @@ class WMFBackup:
 
         if compress:
             # no consolidation per-db, just compress the whole thing
-            self.tar_and_remove(backup_dir, self.file_name, [self.dir_name, ],
-                                compression='/usr/bin/pigz -p {}'.format(threads))
+            result = self.tar_and_remove(backup_dir, self.file_name, [self.dir_name, ],
+                                         compression='/usr/bin/pigz -p {}'.format(threads))
+            if result != 0:
+                self.logger.error('The compression process failed')
+                stats.fail()
+                return 11
 
         if rotate:
             # perform rotations
             # move the old latest one to the archive, and the current as the latest
             # then delete old backups of the same section, according to the retention
             # config
-            self.move_backups(self.name, self.default_final_backup_dir,
-                              self.default_archive_backup_dir, self.name_regex)
-            os.rename(os.path.join(backup_dir, self.file_name),
-                      os.path.join(self.default_final_backup_dir, self.file_name))
-            self.purge_backups()
+            result = self.move_backups(self.name, self.default_final_backup_dir,
+                                       self.default_archive_backup_dir, self.name_regex)
+            if result != 0:
+                self.logger.warning('Archiving backups failed')
+            result = self.os_rename(os.path.join(backup_dir, self.file_name),
+                                    os.path.join(self.default_final_backup_dir, self.file_name))
+            if result != 0:
+                self.logger.error('Moving backup to final dir failed')
+                stats.fail()
+                return 12
+            result = self.purge_backups()
+            if result != 0:
+                self.logger.warning('Purging old backups failed')
 
         # we are done
         stats.finish()
