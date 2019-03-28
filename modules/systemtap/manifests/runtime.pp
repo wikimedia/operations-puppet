@@ -11,12 +11,4 @@ class systemtap::runtime {
     package { 'systemtap-runtime':
         ensure => 'present',
     }
-
-    if os_version('debian jessie') {
-        apt::pin { 'systemtap-runtime':
-            pin      => 'release a=jessie-backports',
-            priority => '1001',
-            before   => Package['systemtap-runtime'],
-        }
-    }
 }

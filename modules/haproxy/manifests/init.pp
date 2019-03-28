@@ -13,14 +13,6 @@ class haproxy(
         ensure => present,
     }
 
-    if os_version('debian == jessie') {
-        apt::pin {'haproxy':
-            pin      => 'release a=jessie-backports',
-            priority => '1001',
-            before   => Package['haproxy'],
-        }
-    }
-
     # FIXME: Migrate to systemd::tmpfile
     if $socket == '/run/haproxy/haproxy.sock' or $pid == '/run/haproxy/haproxy.pid' {
         file { '/run/haproxy':

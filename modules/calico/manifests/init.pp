@@ -19,15 +19,6 @@ class calico(
         require         => File['/etc/calico'],
     }
 
-    # Needed for calicoctl
-    apt::pin { 'go':
-        package  => 'golang-go-linux-amd64 golang-src',
-        pin      => 'release a=jessie-backports',
-        priority => '1001',
-        before   => Package['calicoctl'],
-    }
-
-
     case $calico_version {
         '2.0': {
             $calicoctl_version = '1.0.0-betarc5-1~wmf1'

@@ -9,23 +9,6 @@ class profile::prometheus::openldap_exporter (
         ensure => present,
     }
 
-    # Prometheus exporter needs Twisted 16.x
-    if os_version('debian == jessie') {
-        $twisted_packages = [
-            'python-twisted-bin',
-            'python-twisted-core',
-            'python-twisted-mail',
-            'python-twisted-names',
-            'python-twisted-web'
-        ]
-
-        apt::pin { $twisted_packages:
-            pin      => 'release a=jessie-backports',
-            priority => '1001',
-            before   => Package['prometheus-openldap-exporter'],
-        }
-    }
-
     file { '/etc/prometheus/openldap-exporter.yaml':
         ensure  => present,
         mode    => '0440',
