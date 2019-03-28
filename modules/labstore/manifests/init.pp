@@ -14,18 +14,11 @@ class labstore (
     require_package('nfs-common')
     require_package('rpcbind')
 
-    # Nethogs is useful to monitor NFS client resource utilization
-    # The version in jessie has a bug that shows up in linux kernel 4.2+,
-    # so using newer version from backports.
     if os_version('debian jessie') {
-        apt::pin {'nethogs':
-            pin      => 'release a=jessie-backports',
-            priority => '1001',
-            before   => Package['nethogs'],
-        }
         require_package('nfsd-ldap')
     }
 
+    # Nethogs is useful to monitor NFS client resource utilization
     package { 'nethogs':
         ensure => present,
     }
