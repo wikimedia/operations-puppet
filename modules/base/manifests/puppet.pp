@@ -12,9 +12,6 @@ class base::puppet(
     $use_srv_record = $base::puppet::params::use_srv_record
     $ca_server = hiera('puppetmaster::ca_server', '')
 
-
-    include base::puppet::pins
-
     package { [ 'puppet', 'facter' ]:
         ensure => present,
     }
