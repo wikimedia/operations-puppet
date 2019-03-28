@@ -2,7 +2,7 @@
 #
 # This configures the compute node as a general node dedicated to a tool
 #
-# Parameters: 
+# Parameters:
 #
 # Actions:
 #
@@ -11,6 +11,11 @@
 # Sample Usage:
 #
 # filtertags: toolforge
+# This class still requires the manual creation of a user_list on the grid master
+# once the user_list is created with a name that matches the "node_dedicated_tool"
+# hiera value, then you can use the puppet + grid-configurator with this, most
+# likely.  It is not well tested yet and rarely used now.
+# TODO: automate the user_list creation 
 class profile::toolforge::grid::node::compute::dedicated(
     $dedicated_tool = hiera('node_dedicated_tool', undef),
 ) {
@@ -28,7 +33,7 @@ class profile::toolforge::grid::node::compute::dedicated(
 
         sonofgridengine::collectors::queues { $dedicated_tool:
             store  => "${profile::toolforge::base::collectors}/queues",
-            config => 'toollabs/gridengine/queue-dedicated.erb',
+            config => 'profile/toolforge/grid/queue-dedicated.erb',
         }
     }
 
@@ -37,10 +42,6 @@ class profile::toolforge::grid::node::compute::dedicated(
         require => File['/var/lib/gridengine'],
     }
 
-    sonofgridengine::join { "hostgroups-${::fqdn}":
-        sourcedir => "${toollabs::collectors}/hostgroups",
-        list      => [ '@general' ],
-    }
 
     file { '/usr/local/bin/jobkill':
         ensure => file,
