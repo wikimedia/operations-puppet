@@ -4,13 +4,9 @@ class base::firewall {
     include ::network::constants
     include ::ferm
 
-    $defscontent = $::realm ? {
-        'labs'  => template('base/firewall/defs.erb', 'base/firewall/defs.labs.erb'),
-        default => template('base/firewall/defs.erb'),
-    }
     ferm::conf { 'defs':
         prio    => '00',
-        content => $defscontent,
+        content => template('base/firewall/defs.erb'),
     }
 
     # Increase the size of conntrack table size (default is 65536)
