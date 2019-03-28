@@ -3574,5 +3574,5 @@ ldap_only_users:
     ensure: present
     realname: Patrick Johnson
     email: pbj@progresslabs.co
-    expiry_date: 2019-03-30
+    expiry_date: 2019-04-13
     expiry_contact: apalmer@wikimedia.org
