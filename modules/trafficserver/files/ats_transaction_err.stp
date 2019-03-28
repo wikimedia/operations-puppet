@@ -1,0 +1,31 @@
+#!/usr/bin/env stap
+# ats_transaction_err.stp - debug ATS "abort" errors
+#
+# Line 8406 is case CLIENT_TRANSACTION_RESULT_ERROR_ABORT
+probe process("/usr/bin/traffic_server").statement("client_result_stat@./proxy/http/HttpTransact.cc:8406")
+{
+    # Get request URL
+    ui = $s->unmapped_url->m_url_impl
+    pp = @cast(ui, "URLImpl")->m_ptr_path
+    lp = @cast(ui, "URLImpl")->m_len_path
+    url = user_string_n(pp ,lp)
+
+    # Response Content-Length
+    resp_cl = $s->hdr_info->response_content_length
+
+    printf("URL: %s\nContent-Length: %d\n", url, resp_cl)
+
+    # Go searching for User-Agent through request headers
+    MIME_FIELD_BLOCK_SLOTS = 16
+    for (i=0; i<MIME_FIELD_BLOCK_SLOTS; i++) {
+        slot = &$s->hdr_info->client_request->m_mime->m_first_fblock->m_field_slots[i]
+
+        name  = user_string_n(slot->m_ptr_name, slot->m_len_name)
+        value = user_string_n(slot->m_ptr_value, slot->m_len_value)
+
+        if (name == "User-Agent") {
+            printf("User-Agent: %s\n", value)
+            break
+        }
+    }
+}
