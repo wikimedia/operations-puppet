@@ -2,17 +2,6 @@ class toollabs::maintain_kubeusers(
     $k8s_master,
 ) {
 
-    # We need a newer version of python3-ldap3 than what is in Jessie
-    # For the connection time out / server pool features
-    apt::pin { [
-        'python3-ldap3',
-        'python3-pyasn1',
-    ]:
-        pin      => 'release a=jessie-backports',
-        priority => '1001',
-        before   => Package['python3-ldap3'],
-    }
-
     # Not using require_package because of dependency cycle, see
     # https://gerrit.wikimedia.org/r/#/c/430539/
     package { 'python3-ldap3':
