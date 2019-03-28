@@ -445,8 +445,6 @@ host bast1002 {
 host bast2001 {
     hardware ethernet 90:B1:1C:00:9D:EB;
     fixed-address bast2001.wikimedia.org;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
-    filename "lpxelinux.0";
 }
 
 host bast2002 {
