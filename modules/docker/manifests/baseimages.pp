@@ -14,12 +14,12 @@
 #  The port of said proxy, if present. Undefined by default.
 #
 # [*distributions*]
-#  List of distributions to build. Defaults to both jessie and trusty.
+#  List of distributions to build. Defaults to both jessie
 class docker::baseimages(
     $docker_registry,
     $proxy_address=undef,
     $proxy_port=undef,
-    $distributions=['jessie', 'trusty'],
+    $distributions=['jessie'],
 ) {
     # We need docker running
     Service[docker] -> Class[docker::baseimages]

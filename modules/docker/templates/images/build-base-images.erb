@@ -20,13 +20,6 @@ docker push <%= @docker_registry %>/wikimedia-stretch
 <%- end -%>
 
 
-<%- if @distributions.include?('trusty') -%>
-# Build ubuntu trusty base image!
-/usr/share/docker-engine/contrib/mkimage-debootstrap.sh <%= @docker_registry %>/wikimedia-trusty trusty  http://mirrors.wikimedia.org/ubuntu/
-
-# Push it to the repo
-docker push <%= @docker_registry %>/wikimedia-trusty
-<%- end -%>
 <%- if @distributions.include?('alpine') -%>
 /usr/local/bin/build-alpine
 <%- end -%>
