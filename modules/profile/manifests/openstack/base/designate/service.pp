@@ -5,6 +5,7 @@ class profile::openstack::base::designate::service(
     $second_region_designate_host = hiera('profile::openstack::base::second_region_designate_host'),
     $second_region_designate_host_standby = hiera('profile::openstack::base::second_region_designate_host_standby'),
     $nova_controller = hiera('profile::openstack::base::nova_controller'),
+    $nova_controller_standby = hiera('profile::openstack::base::nova_controller_standby'),
     $keystone_host = hiera('profile::openstack::base::keystone_host'),
     $puppetmaster_hostname = hiera('profile::openstack::base::puppetmaster_hostname'),
     $db_user = hiera('profile::openstack::base::designate::db_user'),
@@ -73,7 +74,8 @@ class profile::openstack::base::designate::service(
     # Open designate API to Labs web UIs and the commandline on labcontrol
     ferm::rule { 'designate-api':
         rule => "saddr (@resolve(${osm_host}) ${labweb_ip6s} @resolve(${keystone_host}) @resolve(${keystone_host}, AAAA)
-                       ${labweb_ips} @resolve(${nova_controller}) @resolve(${nova_controller}, AAAA)
+                       ${labweb_ips} @resolve(${nova_controller}) @resolve(${nova_controller}, AAAA), @resolve(${nova_controller_standby}),
+                       @resolve(${nova_controller_standby}, AAAA)
                        @resolve(${monitoring_host})  @resolve(${monitoring_host}, AAAA)) proto tcp dport (9001) ACCEPT;",
     }
 
