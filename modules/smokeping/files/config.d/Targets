@@ -169,6 +169,11 @@ host = msw1-codfw.mgmt.codfw.wmnet
 menu = Hosts
 title = Sampled Hosts
 
++++ authdns2001
+menu = authdns2001
+title = authdns.wikimedia.org [A5]
+host = authdns.wikimedia.org
+
 +++ bast2002
 menu = bast2002
 title = bast2002.wikimedia.org [B5]
