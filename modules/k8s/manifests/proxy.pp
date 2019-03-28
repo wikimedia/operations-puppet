@@ -17,16 +17,6 @@ class k8s::proxy(
         notify  => Service['kube-proxy'],
     }
 
-
-    if os_version('ubuntu <= trusty') {
-      # Split this out into two, since we want to use the systemd unit
-      # file from the deb but from puppet on upstart
-      base::service_unit { 'kube-proxy':
-          upstart         => upstart_template('kube-proxy'),
-          declare_service => false,
-      }
-    }
-
     service { 'kube-proxy':
         ensure    => running,
         enable    => true,
