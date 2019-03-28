@@ -25,11 +25,13 @@ probe process("/usr/bin/traffic_server").function("is_response_cacheable") {
        lp = @cast(ui, "URLImpl")->m_len_path;
        url = user_string_n(pp ,lp);
 
+       cs = &$s->hdr_info->server_response->m_mime->m_cooked_stuff
+
        # get_cooked_cc_mask()
-       cc_mask = $s->hdr_info->server_response->m_mime->m_cooked_stuff->m_cache_control->m_mask;
+       cc_mask = cs->m_cache_control->m_mask;
 
        # get_cooked_pragma_no_cache()
-       pragma_no_cache = $s->hdr_info->server_response->m_mime->m_cooked_stuff->m_pragma->m_no_cache;
+       pragma_no_cache = cs->m_pragma->m_no_cache;
 
        printf("no_store %d private %d pragma_no_cache %d url %s\n",
            (cc_mask & MIME_COOKED_MASK_CC_NO_STORE) != 0,
