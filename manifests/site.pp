@@ -1321,12 +1321,11 @@ node 'labsdb1012.eqiad.wmnet'{
 }
 
 node 'labsdb1004.eqiad.wmnet' {
-    role(postgres::master)
-    include ::role::labs::db::slave
+    role(spare::system)
 }
 
 node 'labsdb1005.eqiad.wmnet' {
-    role(labs::db::master)
+    role(spare::system)
 }
 
 node 'labsdb1006.eqiad.wmnet' {
