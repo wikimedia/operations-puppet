@@ -46,8 +46,8 @@ class toollabs::checker inherits toollabs {
         'labsdb_clouddb1001'               => {
             path                          => '/labsdb/clouddb1001',
         },
-        'labsdb_labsdb1004rw'             => {
-            path                          => '/labsdb/labsdb1004rw',
+        'labsdb_wikilabelsrw'             => {
+            path                          => '/labsdb/wikilabelsrw',
         },
         'toolsdb'                         => {
             path                          => '/toolsdb',

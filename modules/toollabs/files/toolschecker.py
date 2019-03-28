@@ -244,7 +244,7 @@ def db_read_write_check(host, db):
     return success
 
 
-@check('/labsdb/labsdb1004rw')
+@check('/labsdb/wikilabelsrw')
 def postgres_read_write_check():
     dbconfig = ConfigParser.RawConfigParser()
     dbconfig.read(os.path.expanduser('~/postgres.my.cnf'))
@@ -254,7 +254,7 @@ def postgres_read_write_check():
 
     try:
         connection = psycopg2.connect(
-            "host=labsdb1004.eqiad.wmnet dbname=%s_rwtest user=%s password=%s"
+            "host=clouddb1002.clouddb-services.eqiad.wmflabs dbname=%s_rwtest user=%s password=%s"
             % (user, user, password))
         cur = connection.cursor()
         cur.execute("INSERT INTO test (test) VALUES (%s)" % magicnumber)
