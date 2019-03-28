@@ -177,6 +177,7 @@ class icinga::plugins(
         group      => $icinga_group,
     }
 
-    # Include check_elasticsearch from elasticsearch module
-    include ::elasticsearch::nagios::plugin
+    # Include elasticsearch checks
+    include ::icinga::elasticsearch::base_plugin
+    include ::icinga::elasticsearch::cirrus_plugin
 }
