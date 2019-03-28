@@ -5,7 +5,8 @@ class ores::web(
     $redis_host = '127.0.0.1',
     $redis_password = undef,
     $port = 8081,
-    $statsd_server = 'statsd.eqiad.wmnet',
+    $statsd_host = 'localhost',
+    $statsd_port = '8125',
     $deployment = 'scap3',
     $celery_workers = 35,
     $extra_config = undef,
@@ -49,7 +50,7 @@ class ores::web(
             processes     => $web_workers,
             add-header    => [ 'Access-Control-Allow-Origin: *', "Server: ${::fqdn}", 'Access-Control-Allow-Headers: X-Wikimedia-Debug' ],
             max-requests  => 200,
-            stats-push    => "statsd:${statsd_server}:8125,ores.${::hostname}.uwsgi",
+            stats-push    => "statsd:${statsd_host}:${statsd_port},ores.${::hostname}.uwsgi",
             memory-report => true,
         },
     }
@@ -58,7 +59,8 @@ class ores::web(
     $base_config = {
         'metrics_collectors' => {
             'wmflabs_statsd' => {
-                'host' => $statsd_server,
+                'host' => $statsd_host,
+                'port' => $statsd_port,
             },
         },
         'ores' => {
