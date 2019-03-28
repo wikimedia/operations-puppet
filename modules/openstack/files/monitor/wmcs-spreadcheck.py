@@ -140,7 +140,7 @@ def main():
         return 2
     else:
         print("OK: All critical instances are spread out enough")
-        return 1
+        return 0
 
 
 if __name__ == '__main__':
