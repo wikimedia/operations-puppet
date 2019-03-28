@@ -13,15 +13,15 @@ class openstack::glance::service(
     $keystone_public_uri,
 ) {
 
-    if os_version('debian jessie') and ($version == 'mitaka') {
-        $install_options = ['-t', 'jessie-backports']
-    } else {
-        $install_options = ''
-    }
-
-    package { 'glance':
-        ensure          => 'present',
-        install_options => $install_options,
+    class { "openstack::glance::service::${version}":
+        db_user             => $db_user,
+        db_pass             => $db_pass,
+        db_name             => $db_name,
+        db_host             => $db_host,
+        glance_data         => $glance_data,
+        ldap_user_pass      => $ldap_user_pass,
+        keystone_admin_uri  => $keystone_admin_uri,
+        keystone_public_uri => $keystone_public_uri,
     }
 
     file { $glance_data:
@@ -41,30 +41,6 @@ class openstack::glance::service(
             require => Package['glance'],
             mode    => '0775',
         }
-    }
-
-    file {
-        '/etc/glance/glance-api.conf':
-            content => template("openstack/${version}/glance/glance-api.conf.erb"),
-            owner   => 'glance',
-            group   => 'nogroup',
-            mode    => '0440',
-            notify  => Service['glance-api'],
-            require => Package['glance'];
-        '/etc/glance/glance-registry.conf':
-            content => template("openstack/${version}/glance/glance-registry.conf.erb"),
-            owner   => 'glance',
-            group   => 'nogroup',
-            mode    => '0440',
-            notify  => Service['glance-registry'],
-            require => Package['glance'];
-        '/etc/glance/policy.json':
-            source  => "puppet:///modules/openstack/${version}/glance/policy.json",
-            owner   => 'root',
-            group   => 'root',
-            mode    => '0644',
-            notify  => Service['glance-api'],
-            require => Package['glance'];
     }
 
     # Glance expects some images that are actually in /srv/glance/images to
