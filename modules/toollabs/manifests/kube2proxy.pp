@@ -5,15 +5,11 @@ class toollabs::kube2proxy(
     $kube_token='test',
 ) {
     if os_version('debian == jessie') {
-        apt::pin { 'python3-requests-pinning':
-            pin      => 'release a=jessie-backports',
-            package  => 'python3-requests',
-            priority => '1001',
-        }
-        apt::pin { 'python3-urllib3-pinning':
-            pin      => 'release a=jessie-backports',
-            package  => 'python3-urllib3',
-            priority => '1001',
+        apt::repository{ 'component/kube2proxy':
+            uri        => 'http://apt.wikimedia.org/wikimedia',
+            dist       => 'jessie-wikimedia',
+            components => 'component/kube2proxy',
+            source     => false,
         }
     }
 
