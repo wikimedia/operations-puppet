@@ -19,12 +19,12 @@ class profile::calico::builder(
     $node_version = $release['node']
     $k8s_policy_version = $release['kube-policy-controller']
     $cni_version = $release['cni']
-    # Needed to build calicoctl
-    apt::pin { 'go':
-        package  => 'golang-go',
-        pin      => 'release a=jessie-backports',
-        priority => '1001',
-        before   => Package['golang-go'],
+    # Needed to build install go
+    apt::repository{ 'component-ci':
+        uri        => 'http://apt.wikimedia.org/wikimedia',
+        dist       => "${::lsbdistcodename}-wikimedia",
+        components => 'component/ci',
+        source     => false,
     }
 
     package { 'golang-go':

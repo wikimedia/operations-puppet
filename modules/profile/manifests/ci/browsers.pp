@@ -8,17 +8,10 @@ class profile::ci::browsers {
         ensure => present,
     }
 
-    if os_version( 'debian == jessie' ) {
-        apt::pin { 'phantomjs':
-            pin      => 'release a=jessie-backports',
-            priority => '1001',
-        }
-    }
     $latest_packages = [
         'chromium',
         'chromedriver',
         'firefox-esr',
-        'phantomjs',
     ]
     file { '/usr/local/bin/chromedriver':
       ensure => link,

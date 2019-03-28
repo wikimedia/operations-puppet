@@ -7,11 +7,11 @@ class profile::zuul::merger(
     include ::zuul::monitoring::merger
 
     if os_version('debian == jessie') {
-        apt::pin { 'git_from_backports':
-            package  => 'git',
-            pin      => 'release a=jessie-backports',
-            priority => '1001',
-            before   => Class['contint::zuul::git_daemon'],
+        apt::repository{ 'component-ci':
+            uri        => 'http://apt.wikimedia.org/wikimedia',
+            dist       => "${::lsbdistcodename}-wikimedia",
+            components => 'component/ci',
+            source     => false,
         }
     }
 
