@@ -31,6 +31,7 @@ define logrotate::rule (
     Optional[String] $post_rotate = undef,
     Optional[String] $su = undef,
     Optional[String] $create = undef,
+    Optional[String] $old_dir = undef,
 ) {
 
     $actual_size = $size ? {

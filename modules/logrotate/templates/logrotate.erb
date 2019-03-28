@@ -34,10 +34,10 @@
     <%= @actual_size %>
 <% end -%>
 <% if @no_create -%>
-  nocreate
+    nocreate
 <% end -%>
 <% if @create -%>
-  create <%= @create %>
+    create <%= @create %>
 <% end -%>
 <% if @su -%>
     su <%= @su %>
@@ -47,5 +47,8 @@
     postrotate
         <%= @post_rotate %>
     endscript
+<% end -%>
+<% if @old_dir -%>
+    olddir <%= @old_dir %>
 <% end -%>
 }
