@@ -1506,10 +1506,6 @@ node 'multatuli.wikimedia.org' {
     interface::add_ip6_mapped { 'main': }
 }
 
-node 'ms1002.eqiad.wmnet' {
-    include ::standard
-}
-
 node /^ms-fe1005\.eqiad\.wmnet$/ {
     role(swift::proxy)
     include ::role::swift::stats_reporter
