@@ -5,28 +5,7 @@ class openstack::nova::api::service(
     $active,
     ) {
 
-    if os_version('debian jessie') and ($version == 'mitaka') {
-        $install_options = ['-t', 'jessie-backports']
-    } else {
-        $install_options = ''
-    }
-
-    package { 'nova-api':
-        ensure          => 'present',
-        install_options => $install_options,
-    }
-
-    # TEMP HOTPATCH for T198950
-    if os_version('debian jessie') and ($version == 'mitaka') {
-        file { '/usr/lib/python2.7/dist-packages/nova/api/manager.py':
-            ensure  => 'present',
-            owner   => 'root',
-            group   => 'root',
-            mode    => '0644',
-            source  => 'puppet:///modules/openstack/nova/api/manager.py',
-            require => Package['nova-api'],
-        }
-    }
+    class { "openstack::nova::api::service::${version}": }
 
     service { 'nova-api':
         ensure    => $active,

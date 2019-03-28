@@ -8,16 +8,7 @@ class openstack::nova::conductor::service(
     $active,
     ) {
 
-    if os_version('debian jessie') and ($version == 'mitaka') {
-        $install_options = ['-t', 'jessie-backports']
-    } else {
-        $install_options = ''
-    }
-
-    package { 'nova-conductor':
-        ensure          => 'present',
-        install_options => $install_options,
-    }
+    class { "openstack::nova::conductor::service::${version}": }
 
     service { 'nova-conductor':
         ensure    => $active,
