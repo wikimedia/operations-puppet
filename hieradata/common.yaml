@@ -660,9 +660,8 @@ hadoop_clusters:
     yarn_scheduler_maximum_allocation_vcores:   32
     yarn_resourcemanager_zk_timeout_ms: 20000
 
-    # Yarn rmstore state stored on HDFS (rather than zookeeper)
-    # T216952
-    yarn_resourcemanager_fs_state_store_uri: '/user/yarn/rmstore'
+    yarn_resourcemanager_zk_state_store_parent_path: '/yarn-rmstore/analytics-test-hadoop'
+    yarn_resourcemanager_max_completed_applications: 1000
 
     # TLS config
     hdfs_site_extra_properties:
