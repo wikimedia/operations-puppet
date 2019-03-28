@@ -171,8 +171,8 @@ title = Sampled Hosts
 
 +++ authdns2001
 menu = authdns2001
-title = authdns.wikimedia.org [A5]
-host = authdns.wikimedia.org
+title = authdns2001.wikimedia.org [A5]
+host = authdns2001.wikimedia.org
 
 +++ bast2002
 menu = bast2002
