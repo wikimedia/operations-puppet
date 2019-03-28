@@ -387,6 +387,8 @@ cache::alternate_domains:
     director: 'webserver_misc_static'
   turnilo.wikimedia.org:
     director: 'turnilo'
+  wikiba.se:
+    director: 'webserver_misc_static'
   yarn.wikimedia.org:
     director: 'hadoop_ui'
 cache::fe_transient_gb: 5

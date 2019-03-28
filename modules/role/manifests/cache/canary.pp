@@ -1,6 +1,7 @@
 class role::cache::canary {
     include ::profile::base::firewall
     include role::cache::text
+    include ::profile::cache::ssl::wikibase # TODO: move to role::cache::text after testing
 
     ferm::service { 'nginx-https':
         proto => 'tcp',

@@ -234,6 +234,10 @@ profile::trafficserver::backend::mapping_rules:
           - '@plugin=/usr/lib/trafficserver/modules/tslua.so'
           - '@pparam=/etc/trafficserver/lua/swift-thumb-origin-server.lua'
     - type: map
+      target: http://wikiba.se
+      replacement: http://bromine.eqiad.wmnet
+      #replacement: http://vega.codfw.wmnet
+    - type: map
       target: http://yarn.wikimedia.org
       replacement: http://analytics-tool1001.eqiad.wmnet
     - type: regex_map
