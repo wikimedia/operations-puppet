@@ -7,10 +7,6 @@ class role::aptly::server {
     include ::aptly
 
     # Auto setup published repositories for all available distros
-    aptly::repo { "trusty-${::labsproject}":
-        publish      => true,
-    }
-
     aptly::repo { "jessie-${::labsproject}":
         publish      => true,
     }
