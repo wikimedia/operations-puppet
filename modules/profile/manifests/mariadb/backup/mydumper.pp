@@ -49,6 +49,7 @@ class profile::mariadb::backup::mydumper {
         ]:
         ensure  => directory,
         owner   => 'dump',
+        group   => 'dump',
         mode    => '0600', # implicitly 0700 for dirs
         require => File['/srv/backups/dumps'],
     }

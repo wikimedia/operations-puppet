@@ -18,6 +18,8 @@ CONCURRENT_BACKUPS = 2
 DEFAULT_PORT = 3306
 DEFAULT_TRANSFER_DIR = '/srv/backups/snapshots/ongoing'
 DATE_FORMAT = '%Y-%m-%d--%H-%M-%S'
+DUMP_USER = 'dump'
+DUMP_GROUP = 'dump'
 
 
 class CommandReturn():
@@ -248,11 +250,21 @@ def get_transfer_cmd(config, using_port, path):
     return cmd
 
 
+def get_chown_cmd(path):
+    """
+    Returns list with command to run on destination host so files
+    transferred had the right owner- chown to the right user and group
+    """
+    cmd = ['/bin/chown', '--recursive', DUMP_USER + ':' + DUMP_GROUP, path]
+    return cmd
+
+
 def get_prepare_cmd(section, config):
     """
     returns a list with the command to run backup prepare with the given options
     """
-    cmd = ['/usr/bin/python3', '/usr/local/bin/backup_mariadb.py']
+    cmd = ['/usr/bin/sudo', '--user', DUMP_USER]
+    cmd.extend(['/usr/bin/python3', '/usr/local/bin/backup_mariadb.py'])
     cmd.extend([section, '--type', 'snapshot', '--only-postprocess'])
     cmd.extend(['--backup-dir', DEFAULT_TRANSFER_DIR])
     cmd.extend(['--host', config['host']])
@@ -316,7 +328,7 @@ def run_transfer(section, config, port):
     cmd = ['/bin/mkdir', path]
     (returncode, out, err) = execute_remotely(config['destination'], cmd)
     if returncode != 0:
-        print(err)
+        logger.error(err)
         return returncode
 
     # transfer mysql data
@@ -327,8 +339,16 @@ def run_transfer(section, config, port):
     # use asyncio to prevent the busy wait loop that Popen does (we don't need a quick response.
     # this should be a long-running process)
     process = subprocess.Popen(cmd, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
-    subprocess.Popen.wait(process)
-    return process.returncode
+    returncode = subprocess.Popen.wait(process)
+    if returncode != 0:
+        logger.error('Transfer failed!')
+        return returncode
+
+    # chown dir to dump user
+    logger.info('Making the resulting dir owned by someone else than root')
+    cmd = get_chown_cmd(path)
+    (returncode, out, err) = execute_remotely(config['destination'], cmd)
+    return returncode
 
 
 def prepare_backup(section, config):
