@@ -46,16 +46,6 @@ class aptrepo (
     $authorized_keys = [],
 ) {
 
-    # While runnning the repository on jessie, use 5.1.1 from
-    # backports which supports dbgsym packages and buildinfo files
-    if os_version('debian == jessie') {
-        apt::pin {'reprepro':
-            pin      => 'release a=jessie-backports',
-            priority => '1001',
-            before   => Package['reprepro'],
-        }
-    }
-
     package { 'reprepro':
         ensure => present,
     }

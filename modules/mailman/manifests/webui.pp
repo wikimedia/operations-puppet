@@ -45,17 +45,6 @@ class mailman::webui {
         recurse => 'remote',
     }
 
-    # Mod security used to rate limit HTTP requests
-    # Pin jessie hosts to jessie-backports for version 2.9
-    if os_version('debian == jessie') {
-        apt::pin { 'libapache2-mod-security2':
-            pin      => 'release a=jessie-backports',
-            package  => 'libapache2-mod-security2',
-            priority => '1001',
-            before   => Package['libapache2-mod-security2'],
-        }
-    }
-
     # Not using require_package so apt::pin may be applied
     # before attempting to install package.
     package { 'libapache2-mod-security2':
