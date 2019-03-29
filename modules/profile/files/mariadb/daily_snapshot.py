@@ -14,6 +14,7 @@ import yaml
 
 DEFAULT_CONFIG_FILE = '/etc/mysql/backups.cnf'
 DEFAULT_THREADS = 16
+DEFAULT_BACKUP_TYPE = 'dump'
 CONCURRENT_BACKUPS = 2
 DEFAULT_PORT = 3306
 DEFAULT_TRANSFER_DIR = '/srv/backups/snapshots/ongoing'
@@ -172,7 +173,8 @@ def parse_config_file(config_file):
         destination: 'dbstore1001.eqiad.wmnet'
     """
     allowed_options = ['host', 'port', 'password', 'destination', 'rotate', 'retention',
-                       'compress', 'archive', 'threads', 'statistics', 'only_postprocess']
+                       'compress', 'archive', 'threads', 'statistics', 'only_postprocess',
+                       'type']
     logger = logging.getLogger('backup')
     try:
         read_config = yaml.load(open(config_file))
@@ -188,6 +190,8 @@ def parse_config_file(config_file):
     default_options = read_config.copy()
     if 'threads' not in default_options:
         default_options['threads'] = DEFAULT_THREADS
+    if 'type' not in default_options:
+        default_options['type'] = DEFAULT_BACKUP_TYPE
 
     del default_options['sections']
     manual_config = read_config['sections']
@@ -265,7 +269,12 @@ def get_prepare_cmd(section, config):
     """
     cmd = ['/usr/bin/sudo', '--user', DUMP_USER]
     cmd.extend(['/usr/bin/python3', '/usr/local/bin/backup_mariadb.py'])
-    cmd.extend([section, '--type', 'snapshot', '--only-postprocess'])
+    cmd.extend([section, '--type', config['type']])
+    # snapshots have to be "only_postprocess"ed always
+    if (config['type'] == 'snapshot' or
+            ('only_postprocess' in config and config['only_postprocess'])):
+        cmd.append('--only-postprocess')
+
     cmd.extend(['--backup-dir', DEFAULT_TRANSFER_DIR])
     cmd.extend(['--host', config['host']])
     if 'port' in config and config['port'] != DEFAULT_PORT:
@@ -370,7 +379,8 @@ def run(section, config, port):
     given config
     """
 
-    if 'only_postprocess' in config and config['only_postprocess']:
+    if (('only_postprocess' in config and config['only_postprocess']) or
+            config['type'] != 'snapshot'):
         result = prepare_backup(section, config)
     else:
         result = run_transfer(section, config, port)
