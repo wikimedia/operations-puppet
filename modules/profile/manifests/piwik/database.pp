@@ -7,51 +7,32 @@
 #
 class profile::piwik::database {
 
-    # This is a hacky temporary measure
-    # to allow to configure a proper mariadb instance
-    # on the new Matomo/Piwik host keeping the other
-    # unchanged.
-    # Bug: T202962
-    if os_version('debian == jessie') {
-        require_package('mysql-server')
+    package { 'mysql-server':
+        ensure => absent,
+    }
 
-        file { '/etc/mysql/my.cnf':
-            ensure  => present,
-            owner   => 'root',
-            group   => 'root',
-            mode    => '0644',
-            source  => 'puppet:///modules/profile/piwik/my.cnf',
-            require => Package['mysql-server'],
-        }
-    } else {
+    $mariadb_socket = '/run/mysqld/mysqld.sock'
 
-        package { 'mysql-server':
-            ensure => absent,
-        }
+    class { '::mariadb::packages_wmf': }
 
-        $mariadb_socket = '/run/mysqld/mysqld.sock'
+    class { '::mariadb::config':
+        config    => 'profile/piwik/my.cnf.erb',
+        socket    => $mariadb_socket,
+        port      => 3306,
+        datadir   => '/var/lib/mysql',
+        basedir   => '/opt/wmf-mariadb101',
+        read_only => false,
+        require   => Class['mariadb::packages_wmf'],
+    }
 
-        class { '::mariadb::packages_wmf': }
+    class { '::mariadb::service':
+        ensure  => 'running',
+        manage  => true,
+        enable  => true,
+        require => Class['mariadb::config'],
+    }
 
-        class { '::mariadb::config':
-            config    => 'profile/piwik/my.cnf.erb',
-            socket    => $mariadb_socket,
-            port      => 3306,
-            datadir   => '/var/lib/mysql',
-            basedir   => '/opt/wmf-mariadb101',
-            read_only => false,
-            require   => Class['mariadb::packages_wmf'],
-        }
-
-        class { '::mariadb::service':
-            ensure  => 'running',
-            manage  => true,
-            enable  => true,
-            require => Class['mariadb::config'],
-        }
-
-        profile::prometheus::mysqld_exporter_instance {'matomo':
-            socket => $mariadb_socket,
-        }
+    profile::prometheus::mysqld_exporter_instance {'matomo':
+        socket => $mariadb_socket,
     }
 }
