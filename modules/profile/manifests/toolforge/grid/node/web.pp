@@ -18,11 +18,7 @@ class profile::toolforge::grid::node::web (
 ){
     include profile::toolforge::grid::node::compute
     include profile::toolforge::grid::submit_host
-
-    # New style webservices!
-    package { 'toollabs-webservice':
-        ensure => latest,
-    }
+    include profile::toolforge::k8s::client
 
     # We have a tmp file problem to clean up
     package { 'tmpreaper':
