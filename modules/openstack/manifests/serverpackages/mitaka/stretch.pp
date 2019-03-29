@@ -11,6 +11,12 @@ class openstack::serverpackages::mitaka::stretch(
         ensure => 'absent',
     }
 
+    apt::pin { 'mitaka_stretch_python-cryptography_nojessiebpo':
+        package  => 'python-cryptography',
+        pin      => 'version 1.7.1-3~bpo9*',
+        priority => '-1',
+    }
+
     apt::pin { 'mitaka_stretch_libpq5_nojessiebpo':
         package  => 'libpq5',
         pin      => 'version 9.6.6-0*',
