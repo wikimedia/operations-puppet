@@ -41,10 +41,10 @@ class xvfb(
         system => true,
     }
 
-    base::service_unit { 'xvfb':
+    systemd::service { 'xvfb':
         ensure         => present,
-        refresh        => true,
-        systemd        => systemd_template('xvfb'),
+        restart        => true,
+        content        => systemd_template('xvfb'),
         service_params => {
             # enable is needed to have the service to start on boot time.
             enable     => true,
