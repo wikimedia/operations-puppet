@@ -143,10 +143,15 @@ class openstack::util::admin_scripts(
     }
 
     # XXX: per deployment?
+    file { '/root/.ssh':
+        ensure => directory,
+    }
+
     file { '/root/.ssh/compute-hosts-key':
         content   => secret('ssh/nova/nova.key'),
         mode      => '0600',
         show_diff => false,
+        require   => File['/root/.ssh'],
     }
 
     # Script to rsync shutoff instances between compute nodes.
