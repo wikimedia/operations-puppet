@@ -216,35 +216,4 @@ class openstack::util::admin_scripts(
         owner  => 'root',
         group  => 'root',
     }
-
-    # rename cleanup
-    $files = [
-        '/root/cold-nova-migrate',
-        '/root/region-migrate',
-        '/root/region-migrate-security-groups',
-        '/root/live-migrate',
-        '/root/nova-quota-sync',
-        '/root/nova-quota-sync/nova-quota-sync',
-        '/root/nova-quota-sync/readme.md',
-        '/root/prod-example.sh',
-        '/root/novastats',
-        '/root/novastats/imagestats.py',
-        '/root/novastats/capacity.py',
-        '/root/novastats/dnsleaks.py',
-        '/root/novastats/proxyleaks.py',
-        '/root/novastats/puppetleaks.py',
-        '/root/novastats/flavorreport.py',
-        '/root/novastats/alltrusty.py',
-        '/usr/local/sbin/wikitech-grep',
-        '/root/cold-migrate',
-        '/usr/local/sbin/wikireplica_dns',
-        '/root/makedomain',
-        '/usr/local/sbin/webproxy',
-        '/root/updateproxies',
-        '/usr/local/sbin/openstack-cvps',
-    ]
-
-    file { $files:
-        ensure => 'absent',
-    }
 }
