@@ -1,0 +1,15 @@
+profile::openstack::codfw1dev::pdns::tld: 'labtest'
+profile::openstack::codfw1dev::pdns::private_reverse_zones:
+  - '16.172.in-addr.arpa'
+  - '196.10.in-addr.arpa'
+  - '17.196.10.in-addr.arpa'
+profile::openstack::codfw1dev::pdns::host: 'labtest-ns1.wikimedia.org'
+profile::openstack::codfw1dev::pdns::host_secondary: 'labtest-ns1.wikimedia.org'
+profile::openstack::codfw1dev::pdns::recursor: 'labtest-recursor1.wikimedia.org'
+profile::openstack::codfw1dev::pdns::recursor_secondary: 'labtest-recursor1.wikimedia.org'
+
+# Extra records that the Labs DNS recursor should respond to.
+# Used for things that would ideally be in a .svc. DNS zone but
+# we do not have one. REMEMBER THE TRAILING DOT.
+profile::openstack::codfw1dev::pdns::recursor_aliaser_extra_records:
+  puppet.: 208.80.153.108 # labtestpuppetmaster2001.wikimedia.org

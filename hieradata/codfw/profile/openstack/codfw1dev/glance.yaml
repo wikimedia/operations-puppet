@@ -1,0 +1,1 @@
+profile::openstack::codfw1dev::glance::db_host: 'cloudcontrol2001-dev.wikimedia.org'
