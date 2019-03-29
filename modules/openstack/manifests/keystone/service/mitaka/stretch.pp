@@ -45,7 +45,7 @@ class openstack::keystone::service::mitaka::stretch(
         'python-unicodecsv',
         'python-warlock',
         'ldapvi',
-        'python-ldap',
+        'python-pyldap',
         'python-ldappool',
         'python3-ldap3',
         'ruby-ldap',
