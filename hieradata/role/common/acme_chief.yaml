@@ -155,6 +155,8 @@ profile::acme_chief::certificates:
         challenge: dns-01
         authorized_regexes:
         - '^cp50[0-1][0-9]\.eqsin\.wmnet$'
+        authorized_hosts:
+        - 'cp1008.wikimedia.org'
     wikibase:
         CN: 'wikiba.se'
         SNI:
