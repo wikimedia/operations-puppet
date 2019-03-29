@@ -20,7 +20,7 @@ RUBY_SCRIPT
 
 ssh "$COMPILER" 'sudo rm -rf /tmp/facts; sudo mkdir -p /tmp/facts'
 # Gather all the facts from one of the masters.
-master=${PUPPET_MASTERS:-$(ruby -e "${RUBY_SCRIPT}" < hieradata/common/puppetmaster.yaml)}
+master=${PUPPET_MASTER:-$(ruby -e "${RUBY_SCRIPT}" < hieradata/common/puppetmaster.yaml)}
 echo -e "\n### Syncing facts from $master"
 ssh "$master" 'sudo /usr/local/bin/puppet-facts-export 1>/dev/null'
 # tunnel via your localhost without ever the file touching the disk
@@ -28,4 +28,4 @@ ssh "$master" cat /tmp/puppet-facts-export.tar.xz | ssh "$COMPILER" 'cat > puppe
 ssh "$master" 'sudo rm /tmp/puppet-facts-export.tar.xz'
 ssh "$COMPILER" 'sudo tar Jxf puppet-facts-export.tar.xz --directory /tmp/facts && sudo chown -R jenkins-deploy:wikidev /tmp/facts/yaml'
 # Finally, copy all the facts to destination and cleanup
-ssh "$COMPILER" 'sudo rsync --delete -au /tmp/facts/yaml/ /var/lib/catalog-differ/puppet/yaml/ && sudo rm -rf /tmp/facts'
+ssh "$COMPILER" "sudo rsync --delete -au /tmp/facts/yaml/ /var/lib/catalog-differ/puppet/yaml/$master && sudo rm -rf /tmp/facts"
