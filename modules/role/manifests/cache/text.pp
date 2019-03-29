@@ -7,6 +7,7 @@ class role::cache::text {
     include ::standard
     include ::profile::cache::base
     include ::profile::cache::ssl::unified
+    include ::profile::cache::ssl::wikibase
     include ::profile::cache::text
 
     # varnishkafka statsv listens for special stats related requests
