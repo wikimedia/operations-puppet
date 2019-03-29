@@ -1262,7 +1262,7 @@ node 'labcontrol1002.wikimedia.org' {
 }
 
 node 'cloudcontrol2001-dev.wikimedia.org' {
-    role(spare::system)
+    role(wmcs::openstack::codfw1dev::control)
 }
 
 node /cloudvirt200[1-3]-dev\.codfw\.wmnet/ {
