@@ -41,17 +41,8 @@ class openstack::keystone::service::mitaka::jessie(
         'python-mwclient',
     ]
 
-    # bug: keystone requires this version of python-routes, but there are
-    # no versioned depends of the package itself
-    apt::pin { 'jessie_mitaka_pinning_python_routes':
-        package  => 'python-routes',
-        pin      => 'version 2.2-1~bpo8+1',
-        priority => '1002',
-    }
-
     package { $packages:
-        ensure          => 'present',
-        install_options => ['-t', 'jessie-backports'],
+        ensure  => 'present',
     }
 
     file {'/etc/keystone/original':
