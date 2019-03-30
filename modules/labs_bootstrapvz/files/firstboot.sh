@@ -116,6 +116,7 @@ if [[ $domain = *"labtest"* ]]; then
 fi
 
 apt-get update
+DEBIAN_FRONTEND=noninteractive DEBIAN_PRIORITY=critical apt-get --force-yes -y -o "Dpkg::Options::=--force-confdef" -o "Dpkg::Options::=--force-confold" upgrade
 
 # Make sure nothing has leaked in certwise
 rm -rf /var/lib/puppet/ssl
