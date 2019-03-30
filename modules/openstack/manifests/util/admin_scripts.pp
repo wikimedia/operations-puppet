@@ -7,6 +7,7 @@ class openstack::util::admin_scripts(
     #  are used to store an instance volume.  That's important for
     #  when we rsync files via this host.
     $libvirt = $facts['lsbdistcodename'] ? {
+        'trusty'  => 'libvirt-bin',
         'jessie'  => 'libvirt-bin',
         'stretch' => 'libvirt-clients',
     }
