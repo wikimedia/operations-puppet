@@ -62,7 +62,7 @@ striker::uwsgi::secret_config:
 apache::logrotate::period: 'daily'
 apache::logrotate::rotate: 30
 
-profile::openstack::main::version: ocata
+profile::openstack::eqiad1::version: ocata
 
 lvs::realserver::realserver_ips:
     - '10.2.2.40' # labweb.svc.eqiad.wmnet
@@ -90,12 +90,12 @@ profile::openstack::base::nutcracker::redis::shards:
 
 
 # Wikitech things:
-profile::openstack::main::wikitech::web::osm_host: 'wikitech.wikimedia.org'
-profile::openstack::main::wikitech::web::webserver_hostname_aliases: 'wikitech.m.wikimedia.org wmflabs.org www.wmflabs.org'
-profile::openstack::main::wikitech::web::db_name: 'labswiki'
+profile::openstack::eqiad1::wikitech::web::osm_host: 'wikitech.wikimedia.org'
+profile::openstack::eqiad1::wikitech::web::webserver_hostname_aliases: 'wikitech.m.wikimedia.org wmflabs.org www.wmflabs.org'
+profile::openstack::eqiad1::wikitech::web::db_name: 'labswiki'
 
 # Horizon things:
-profile::openstack::main::horizon::maintenance_mode: false
+profile::openstack::eqiad1::horizon::maintenance_mode: false
 
 # We still don't enable fpm here
 profile::mediawiki::php::enable_fpm: false

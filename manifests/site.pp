@@ -1134,7 +1134,7 @@ node 'labtestservices2003.wikimedia.org' {
 }
 
 node /labweb100[12]\.wikimedia\.org/ {
-    role(wmcs::openstack::main::labweb)
+    role(wmcs::openstack::eqiad1::labweb)
 
     interface::add_ip6_mapped { 'main': }
 }

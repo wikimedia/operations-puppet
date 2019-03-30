@@ -111,7 +111,7 @@ labservices: P{O:wmcs::openstack::main::services_primary or O:wmcs::openstack::m
 labtest: P{O:wmcs::openstack::labtestn::net or O:wmcs::openstack::labtest::virt or O:wmcs::openstack::labtest::net or O:wmcs::openstack::labtest::control or O:wmcs::openstack::labtestn::control or O:wmcs::openstack::labtest::services or O:wmcs::openstack::labtestn::services or O:wmcs::openstack::labtest::net_standby or O:wmcs::openstack::labtest::puppetmaster::frontend or O:wmcs::openstack::labtest::labweb}
 labvirt: P{O:wmcs::openstack::main::virt}
 labvirt-canary: P{labvirt1001.eqiad.wmnet}
-labweb: P{O:wmcs::openstack::main::labweb}
+labweb: P{O:wmcs::openstack::eqiad1::labweb}
 logstash: P{O:logstash::collector or O:logstash::elasticsearch}
 logstash-canary: P{logstash1007.eqiad.wmnet}
 lvs: P{O:lvs::balancer}

@@ -1,2 +1,0 @@
-profile::openstack::main::horizon::webserver_hostname: 'horizon.wikimedia.org'
-profile::openstack::main::horizon::instance_network_id: '7425e328-560c-4f00-8e99-706f3fb90bb4'

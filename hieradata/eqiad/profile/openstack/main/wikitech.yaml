@@ -1,2 +1,0 @@
-profile::openstack::main::wikitech::webserver_hostname_aliases: 'wikitech.m.wikimedia.org wmflabs.org www.wmflabs.org'
-profile::openstack::main::wikitech::db_name: 'labswiki'

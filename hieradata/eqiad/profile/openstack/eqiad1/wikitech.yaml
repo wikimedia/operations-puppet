@@ -1,0 +1,2 @@
+profile::openstack::eqiad1::wikitech::webserver_hostname_aliases: 'wikitech.m.wikimedia.org wmflabs.org www.wmflabs.org'
+profile::openstack::eqiad1::wikitech::db_name: 'labswiki'
