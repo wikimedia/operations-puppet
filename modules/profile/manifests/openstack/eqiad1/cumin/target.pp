@@ -1,20 +1,20 @@
-# == profile::openstack::main::cumin::target
+# == profile::openstack::eqiad1::cumin::target
 #
 # Profile to allow a Cumin master for WMCS or a specific Cloud VPS project to
 # connect to this Cloud VPS instance.
 #
 # === Hiera Parameters required for a project-specific Cumin target
 #
-# [*profile::openstack::main::cumin::project_masters*]
+# [*profile::openstack::eqiad1::cumin::project_masters*]
 #   An array with the list of IPs of the Cumin master(s)
 #
-# [*profile::openstack::main::cumin::project_pub_key*]
+# [*profile::openstack::eqiad1::cumin::project_pub_key*]
 #   The SSH public key used by Cumin master
 #
-class profile::openstack::main::cumin::target(
-    $auth_group = hiera('profile::openstack::main::cumin::auth_group'),
-    $project_masters = hiera('profile::openstack::main::cumin::project_masters'),
-    $project_pub_key = hiera('profile::openstack::main::cumin::project_pub_key'),
+class profile::openstack::eqiad1::cumin::target(
+    $auth_group = hiera('profile::openstack::eqiad1::cumin::auth_group'),
+    $project_masters = hiera('profile::openstack::eqiad1::cumin::project_masters'),
+    $project_pub_key = hiera('profile::openstack::eqiad1::cumin::project_pub_key'),
     $cluster = hiera('cluster', 'misc'),
     $site = $::site,  # lint:ignore:wmf_styleguide
 ) {
@@ -48,7 +48,7 @@ class profile::openstack::main::cumin::target(
         ensure  => present,
         user    => 'root',
         skey    => 'cumin',
-        content => template('profile/openstack/main/cumin/userkey.erb'),
+        content => template('profile/openstack/eqiad1/cumin/userkey.erb'),
     }
 
     if $ssh_project_ferm_sources != '' {

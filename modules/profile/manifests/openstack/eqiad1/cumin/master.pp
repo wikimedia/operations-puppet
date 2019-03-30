@@ -1,28 +1,28 @@
-# == profile::openstack::main::cumin::master
+# == profile::openstack::eqiad1::cumin::master
 #
 # Profile for setting up a Cumin master for WMCS.
 # It allows to install Cumin master also inside a WMCS Cloud VPS project.
 #
 # === Hiera Parameters required for a project-specific Cumin master
 #
-# [*profile::openstack::main::cumin::project_ssh_priv_key_path*]
+# [*profile::openstack::eqiad1::cumin::project_ssh_priv_key_path*]
 #   The absolute path of an SSH passphrase-protected private key available on
 #   the host local filesystem.
 #
-# [*profile::openstack::main::cumin::aliases*]
+# [*profile::openstack::eqiad1::cumin::aliases*]
 #   Optional hash of Cumin aliases in the form:
 #     key: 'alias query'
 #
-class profile::openstack::main::cumin::master(
+class profile::openstack::eqiad1::cumin::master(
     $keystone_protocol = hiera('profile::openstack::base::keystone::auth_protocol'),
-    $keystone_host = hiera('profile::openstack::main::keystone_host'),
+    $keystone_host = hiera('profile::openstack::eqiad1::keystone_host'),
     $keystone_port = hiera('profile::openstack::base::keystone::public_port'),
     $observer_username = hiera('profile::openstack::base::observer_user'),
-    $observer_password = hiera('profile::openstack::main::observer_password'),
-    $nova_dhcp_domain = hiera('profile::openstack::main::nova::dhcp_domain'),
-    $aliases = hiera('profile::openstack::main::cumin::aliases'),
-    $project_ssh_priv_key_path = hiera('profile::openstack::main::cumin::project_ssh_priv_key_path'),
-    $region = hiera('profile::openstack::main::region'),
+    $observer_password = hiera('profile::openstack::eqiad1::observer_password'),
+    $nova_dhcp_domain = hiera('profile::openstack::eqiad1::nova::dhcp_domain'),
+    $aliases = hiera('profile::openstack::eqiad1::cumin::aliases'),
+    $project_ssh_priv_key_path = hiera('profile::openstack::eqiad1::cumin::project_ssh_priv_key_path'),
+    $region = hiera('profile::openstack::eqiad1::region'),
     ) {
         validate_hash($aliases)
 
@@ -72,7 +72,7 @@ class profile::openstack::main::cumin::master(
             owner   => 'root',
             group   => 'root',
             mode    => '0640',
-            content => template('profile/openstack/main/cumin/config.yaml.erb'),
+            content => template('profile/openstack/eqiad1/cumin/config.yaml.erb'),
             require => File['/etc/cumin'],
         }
 
@@ -81,7 +81,7 @@ class profile::openstack::main::cumin::master(
             owner   => 'root',
             group   => 'root',
             mode    => '0640',
-            content => template('profile/openstack/main/cumin/aliases.yaml.erb'),
+            content => template('profile/openstack/eqiad1/cumin/aliases.yaml.erb'),
             require => File['/etc/cumin'],
         }
 
@@ -90,7 +90,7 @@ class profile::openstack::main::cumin::master(
             owner   => 'root',
             group   => 'root',
             mode    => '0640',
-            content => template('profile/openstack/main/cumin/ssh_config.erb'),
+            content => template('profile/openstack/eqiad1/cumin/ssh_config.erb'),
             require => File['/etc/cumin'],
         }
 
@@ -107,7 +107,7 @@ class profile::openstack::main::cumin::master(
             owner   => 'root',
             group   => 'root',
             mode    => '0640',
-            source  => 'puppet:///modules/profile/openstack/main/cumin/cumin_file_backend.py',
+            source  => 'puppet:///modules/profile/openstack/eqiad1/cumin/cumin_file_backend.py',
             require => File['/etc/cumin'],
         }
 
@@ -116,7 +116,7 @@ class profile::openstack::main::cumin::master(
             owner   => 'root',
             group   => 'root',
             mode    => '0550',
-            source  => 'puppet:///modules/profile/openstack/main/cumin/nfs_hostlist.py',
+            source  => 'puppet:///modules/profile/openstack/eqiad1/cumin/nfs_hostlist.py',
             require => File['/etc/cumin'],
         }
 }

@@ -1,6 +1,0 @@
-profile::openstack::main::cumin::auth_group: cumin_masters
-profile::openstack::main::cumin::project_masters: []
-profile::openstack::main::cumin::project_pub_key: undef
-profile::openstack::main::cumin::project_ssh_priv_key_path: undef
-profile::openstack::main::cumin::aliases:
-    all: 'O{*} and not O{project:admin-monitoring}'

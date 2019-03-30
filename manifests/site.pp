@@ -1041,12 +1041,12 @@ node 'kraz.wikimedia.org' {
 
 
 node 'labpuppetmaster1001.wikimedia.org' {
-    role(wmcs::openstack::main::puppetmaster::frontend)
+    role(wmcs::openstack::eqiad1::puppetmaster::frontend)
     interface::add_ip6_mapped { 'main': }
 }
 
 node 'labpuppetmaster1002.wikimedia.org' {
-    role(wmcs::openstack::main::puppetmaster::backend)
+    role(wmcs::openstack::eqiad1::puppetmaster::backend)
     interface::add_ip6_mapped { 'main': }
 }
 
