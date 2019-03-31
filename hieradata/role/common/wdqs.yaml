@@ -18,6 +18,7 @@ cluster: wdqs
 contactgroups: admins,wdqs-admins
 role::lvs::realserver::pools:
   wdqs: {}
+profile::wdqs::use_revisions: false
 
 # exclude wdqs hosts from screen monitoring
 # they are often used to monitor logs, for example by smalyshev
