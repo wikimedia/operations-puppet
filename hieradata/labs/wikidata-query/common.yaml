@@ -15,3 +15,4 @@ profile::wdqs::high_query_time_port: true
 profile::wdqs::nodes: []
 profile::wdqs::blazegraph_extra_jvm_opts: []
 profile::wdqs::blazegraph_options: []
+profile::wdqs::use_revisions: true
