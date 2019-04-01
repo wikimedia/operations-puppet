@@ -21,7 +21,7 @@ Name: cloudera-jessie
 Method: http://archive.cloudera.com/cdh5/debian/jessie/amd64/cdh/
 Components: contrib>thirdparty/cloudera
 UDebComponents:
-Suite: jessie-cdh5.15.0
+Suite: jessie-cdh5.16.1
 Architectures: amd64 source
 VerifyRelease: 327574EE02A818DD
 ListShellHook: grep-dctrl -e -S '^(avro-libs|bigtop-jsvc|bigtop-tomcat|bigtop-utils|crunch|hadoop|hbase|hive|hue|impala|kite|llama|mahout|oozie|parquet|parquet-format|pig|pig-udf-datafu|sentry|solr|flume-ng|spark-core|sqoop|sqoop2|whirr|zookeeper)$' || [ $? -eq 1 ]
