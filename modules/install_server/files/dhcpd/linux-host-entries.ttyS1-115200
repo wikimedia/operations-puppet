@@ -3037,20 +3037,6 @@ host labstore2004 {
     filename "lpxelinux.0";
 }
 
-host labsdb1004 {
-    hardware ethernet d4:ae:52:76:66:59;
-    fixed-address labsdb1004.eqiad.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
-    filename "lpxelinux.0";
-}
-
-host labsdb1005 {
-    hardware ethernet d4:ae:52:76:5c:b2;
-    fixed-address labsdb1005.eqiad.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
-    filename "lpxelinux.0";
-}
-
 host labsdb1006 {
     hardware ethernet d4:be:d9:f0:21:31;
     fixed-address labsdb1006.eqiad.wmnet;
