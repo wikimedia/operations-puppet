@@ -23,7 +23,8 @@
 #
 # [*acme_chief*]
 #   Optional - specify either this or acme_subjects.
-#   If true, use acme-chief to get the certificate.
+#   If true, download, and potentially use, certificates from acme-chief.
+#   If $certs is empty, acme-chief certificates will be used to serve traffic.
 #   When used in conjunction with certs, acme-chief certificate will be deployed on
 #   the server but certs specified in $certs will be used to serve traffic
 

@@ -7,6 +7,8 @@
 class profile::cache::ssl::unified(
     $monitoring=hiera('profile::cache::ssl::unified::monitoring'),
     $acme_chief=hiera('profile::cache::ssl::unified::acme_chief'),
+    $certs_hiera=hiera('profile::cache::ssl::unified::certs', undef),
+    $certs_active_hiera=hiera('profile::cache::ssl::unified::certs_active', undef),
     $letsencrypt=hiera('profile::cache::ssl::unified::letsencrypt'),
     $ucv=hiera('public_tls_unified_cert_vendor', undef),
     $le_server_name=hiera('profile::cache::ssl::unified::le_server_name', undef),
@@ -24,15 +26,22 @@ class profile::cache::ssl::unified(
         }
 
     } else {
-        # TODO: generalize this a bit?
-        $certs_active = [
-            "${ucv}-ecdsa-unified", "${ucv}-rsa-unified",
-        ]
-        # These certs are deployed to all caches and OCSP stapled,
-        # ready for use in $certs_active as options
-        $certs = [
-            'globalsign-2018-ecdsa-unified', 'globalsign-2018-rsa-unified',
-        ]
+        if $certs_active_hiera {
+            $certs_active = $certs_active_hiera
+        } else {
+            $certs_active = [
+                "${ucv}-ecdsa-unified", "${ucv}-rsa-unified",
+            ]
+        }
+        if $certs_hiera {
+            $certs = $certs_hiera
+        } else {
+            # These certs are deployed to all caches and OCSP stapled,
+            # ready for use in $certs_active as options
+            $certs = [
+                'globalsign-2018-ecdsa-unified', 'globalsign-2018-rsa-unified',
+            ]
+        }
         tlsproxy::localssl { 'unified':
             server_name    => 'www.wikimedia.org',
             certs          => $certs,
