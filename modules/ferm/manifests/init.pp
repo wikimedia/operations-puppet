@@ -17,15 +17,13 @@ class ferm {
     #   systemd-sysctl.service has run, the sysctl settings are not applied.
     # Add the nf_conntrack module via /etc/modules-load.d/ which loads
     #   them before systemd-sysctl.service is executed.
-    if os_version('debian >= jessie') {
-        file { '/etc/modules-load.d/conntrack.conf':
-            ensure  => present,
-            owner   => 'root',
-            group   => 'root',
-            mode    => '0444',
-            content => "nf_conntrack\n",
-            require => File['/etc/modprobe.d/nf_conntrack.conf'],
-        }
+    file { '/etc/modules-load.d/conntrack.conf':
+        ensure  => present,
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0444',
+        content => "nf_conntrack\n",
+        require => File['/etc/modprobe.d/nf_conntrack.conf'],
     }
 
     package { ['ferm', 'libnet-dns-perl', 'conntrack']:

@@ -61,7 +61,7 @@ class profile::base(
     }
 
     class { '::rsyslog': }
-    if $enable_rsyslog_exporter and os_version('debian >= jessie') {
+    if $enable_rsyslog_exporter {
         include ::profile::prometheus::rsyslog_exporter
 
         class {'profile::rsyslog::kafka_shipper':
@@ -117,10 +117,8 @@ class profile::base(
         class { '::ipmi::monitor': }
     }
 
-    if os_version('debian >= jessie') {
-        class { '::base::initramfs': }
-        class { '::base::auto_restarts': }
-    }
+    class { '::base::initramfs': }
+    class { '::base::auto_restarts': }
 
     $notifications_enabled = $notifications ? {
         'disabled' => '0',
@@ -143,28 +141,6 @@ class profile::base(
         monitor_systemd          => $monitor_systemd,
         puppet_interval          => $profile::base::puppet::interval,
         raid_check               => $check_raid,
-    }
-
-    if os_version('ubuntu == trusty') {
-        # This should be identical to the packaged config, with the addition
-        #  of 'copytruncate'.  copytruncate isn't great,  but without it
-        #  we wind up with a lot of .1 logfiles that grow without bound and
-        #  are ignored by logrotate, e.g. prometheus-node-exporter.log.1
-        #
-        # Also somewhat related:
-        #
-        #    https://bugs.launchpad.net/ubuntu/+source/upstart/+bug/1350782
-        logrotate::rule { 'upstart':
-            ensure        => present,
-            file_glob     => '/var/log/upstart/*.log',
-            frequency     => 'daily',
-            missing_ok    => true,
-            rotate        => 7,
-            compress      => true,
-            not_if_empty  => true,
-            no_create     => true,
-            copy_truncate => true,
-        }
     }
 
     if $check_smart and $facts['is_virtual'] == false {

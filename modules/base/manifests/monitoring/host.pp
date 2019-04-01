@@ -143,24 +143,25 @@ class base::monitoring::host(
         description  => 'dhclient process',
         nrpe_command => '/usr/lib/nagios/plugins/check_procs -w 0:0 -c 0:0 -C dhclient',
     }
-    if ($::initsystem == 'systemd') {
-        $ensure_monitor_systemd = $monitor_systemd ? {
-            true    => present,
-            false   => absent,
-            default => present,
-        }
-        file { '/usr/local/lib/nagios/plugins/check_systemd_state':
-            ensure => $ensure_monitor_systemd,
-            source => 'puppet:///modules/base/check_systemd_state.py',
-            owner  => 'root',
-            group  => 'root',
-            mode   => '0555',
-        }
-        ::nrpe::monitor_service { 'check_systemd_state':
-            ensure       => $ensure_monitor_systemd,
-            description  => 'Check systemd state',
-            nrpe_command => '/usr/local/lib/nagios/plugins/check_systemd_state',
-        }
+
+    $ensure_monitor_systemd = $monitor_systemd ? {
+        true    => present,
+        false   => absent,
+        default => present,
+    }
+
+    file { '/usr/local/lib/nagios/plugins/check_systemd_state':
+        ensure => $ensure_monitor_systemd,
+        source => 'puppet:///modules/base/check_systemd_state.py',
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0555',
+    }
+
+    ::nrpe::monitor_service { 'check_systemd_state':
+        ensure       => $ensure_monitor_systemd,
+        description  => 'Check systemd state',
+        nrpe_command => '/usr/local/lib/nagios/plugins/check_systemd_state',
     }
 
     if $::productname == 'PowerEdge R320' {

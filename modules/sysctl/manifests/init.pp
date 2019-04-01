@@ -16,13 +16,8 @@ class sysctl {
         source  => 'puppet:///modules/sysctl/sysctl.d-empty',
     }
 
-    $sysctl_update = $::initsystem ? {
-        systemd => '/bin/systemctl restart systemd-sysctl.service',
-        default => '/usr/sbin/service procps start',
-    }
-
     exec { 'update_sysctl':
-        command     => $sysctl_update,
+        command     => '/bin/systemctl restart systemd-sysctl.service',
         refreshonly => true,
     }
 }
