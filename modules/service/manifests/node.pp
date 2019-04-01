@@ -225,11 +225,13 @@ define service::node(
 
     if $use_nodejs10 {
         if os_version('debian == stretch') {
-            apt::repository { 'wikimedia-node10':
-                uri        => 'http://apt.wikimedia.org/wikimedia',
-                dist       => 'stretch-wikimedia',
-                components => 'component/node10',
-                before     => Package['nodejs'],
+            if !defined(Apt::Repository['wikimedia-node10']) {
+                apt::repository { 'wikimedia-node10':
+                    uri        => 'http://apt.wikimedia.org/wikimedia',
+                    dist       => 'stretch-wikimedia',
+                    components => 'component/node10',
+                    before     => Package['nodejs'],
+                }
             }
         } else {
             fail('The use_nodejs10 parameter is only usable on Debian Stretch.')
