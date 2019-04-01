@@ -181,10 +181,17 @@ def run(args, user, log_path):
 
         lib.puppet_first_run(args.host)
 
-        downtime_ret = downtime.poll()
-        if downtime_ret != 0:
+        try:
+            downtime.wait(timeout=180)
+            downtime_success = (downtime.returncode == 0)
+            downtime_message = 'returned {ret}'.format(ret=downtime.returncode)
+        except subprocess.TimeoutExpired:
+            downtime_success = False
+            downtime_message = 'timed out'
+
+        if not downtime_success:
             lib.print_line(('WARNING: failed to downtime host on Icinga, wmf-downtime-host '
-                            'returned {ret}').format(ret=downtime_ret))
+                            '{msg}').format(msg=downtime_message))
 
     lib.check_bios_bootparams(args.host, args.mgmt)
 
