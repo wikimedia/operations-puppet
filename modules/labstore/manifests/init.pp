@@ -13,10 +13,7 @@ class labstore (
     require_package('lvm2')
     require_package('nfs-common')
     require_package('rpcbind')
-
-    if os_version('debian jessie') {
-        require_package('nfsd-ldap')
-    }
+    require_package('nfsd-ldap')
 
     # Nethogs is useful to monitor NFS client resource utilization
     package { 'nethogs':

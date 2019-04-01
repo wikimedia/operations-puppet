@@ -310,7 +310,7 @@ def main():
         try:
             with open(args.config_path) as f:
                 config = yaml.safe_load(f)
-        except:
+        except Exception:
             logging.exception('Could not load projects config file from %s', args.config_path)
             sys.exit(1)
 

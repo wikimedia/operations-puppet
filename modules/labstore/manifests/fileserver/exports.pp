@@ -54,7 +54,7 @@ class labstore::fileserver::exports(
         owner   => 'root',
         group   => 'root',
         mode    => '0555',
-        source  => 'puppet:///modules/labstore/nfs-exportd',
+        source  => 'puppet:///modules/labstore/nfs-exportd.py',
         require => File['/usr/local/sbin/nfs-manage-binds'],
         notify  => Service['nfs-exportd'],
     }
