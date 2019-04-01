@@ -2,13 +2,13 @@
 # Avoid running hooks if backports is not specified
 if [ "${BACKPORTS}" = "yes" ]; then
 <%- if @distribution == 'jessie' -%>
-        printf '\033[0;31m'
-        printf 'ERROR: jessie no longer support backports. packages should ideally be rebuilt with\n'
-        printf 'ERROR: internally built components. If this isn't possible for some reason, the\n'
-        printf 'ERROR: ARCHIVE_BACKPORTS hook can be used to pull in the backports repository from\n'
-        printf 'ERROR: archive.debian.org\n'
-        printf '\033[0m\n'
-		exit 1
+	printf "\033[0;31m"
+	printf "ERROR: jessie no longer support backports. packages should ideally be rebuilt with\n"
+	printf "ERROR: internally built components. If this isn't possible for some reason, the\n"
+	printf "ERROR: ARCHIVE_BACKPORTS hook can be used to pull in the backports repository from\n"
+	printf "ERROR: archive.debian.org\n"
+	printf "\033[0m\n"
+	exit 1
 <%- elsif @distribution == 'stretch' -%>
 	cat > /etc/apt/sources.list.d/<%= @distribution %>-backports.list <<-'EOF'
 	deb <%= @upstream_mirror %> <%= @distribution %>-backports main contrib non-free
@@ -21,6 +21,6 @@ EOF
 EOF
 	apt-get update
 <%- else -%>
-	printf '\033[0;31m ERROR: <%= @distribution %> does not have backports \033[0m\n'
+	printf "\033[0;31m ERROR: <%= @distribution %> does not have backports \033[0m\n"
 <%- end -%>
 fi

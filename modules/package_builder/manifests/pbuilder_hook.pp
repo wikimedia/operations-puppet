@@ -37,6 +37,14 @@ define package_builder::pbuilder_hook(
         content => template('package_builder/D02backports.erb'),
     }
 
+    file { "${basepath}/hooks/${distribution}/D02archive":
+        ensure  => present,
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0555',
+        content => template('package_builder/D02archive.erb'),
+    }
+
     file { "${basepath}/hooks/${distribution}/D05localsources":
         ensure  => present,
         owner   => 'root',
