@@ -12,7 +12,8 @@ class base::puppet(
     $use_srv_record = $base::puppet::params::use_srv_record
     $ca_server = hiera('puppetmaster::ca_server', '')
 
-    package { [ 'puppet', 'facter' ]:
+    # augparse is required to resolve the augeasversion in facter3
+    package { [ 'puppet', 'facter', 'augeas-tools' ]:
         ensure => present,
     }
 
