@@ -7,5 +7,4 @@ class role::logstash::elasticsearch {
     include ::standard
     include ::profile::base::firewall
     include ::profile::elasticsearch::logstash
-    include ::profile::elasticsearch::monitor::base_checks
 }

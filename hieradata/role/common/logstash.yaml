@@ -70,13 +70,3 @@ profile::prometheus::statsd_exporter::mappings:
     labels:
       sender: "$1"
       level: "$2"
-
-# these checks should not be here - T218691
-profile::elasticsearch::monitor::shard_size_warning: 150
-profile::elasticsearch::monitor::shard_size_critical: 200
-
-# the logstash cluster has 3 data nodes, and each shard has 3 replica (each
-# shard is present on each node). If one node is lost, 1/3 of the shards
-# will be unassigned, with no way to reallocate them on another node, which
-# is fine and should not raise an alert. So threshold needs to be > 1/3.
-profile::elasticsearch::monitor::threshold: '>=0.34'
