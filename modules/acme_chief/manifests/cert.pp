@@ -14,7 +14,7 @@ define acme_chief::cert (
     Variant[String, Undef] $puppet_svc = undef,
     String $key_group = 'root',
     Boolean $ocsp = false,
-    Variant[String, Undef] $proxy = undef,
+    Variant[String, Undef] $ocsp_proxy = undef,
 ) {
     require ::acme_chief
 

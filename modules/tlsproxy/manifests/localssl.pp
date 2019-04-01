@@ -94,6 +94,7 @@ define tlsproxy::localssl(
     $access_log     = false,
     Integer $keepalive_timeout = 60,
     Integer $read_timeout = 180,
+    String $ocsp_proxy = '',
 ) {
     if (!empty($certs) and !empty($acme_subjects)) or ($acme_chief and !empty($acme_subjects)) or (empty($certs) and empty($acme_subjects) and !$acme_chief) {
         fail('Specify exactly one of certs (and optionally acme_chief) or acme_subjects')
@@ -150,9 +151,9 @@ define tlsproxy::localssl(
         if !defined(Acme_chief::Cert[$acme_certname]) {
             require tlsproxy::ocsp
             acme_chief::cert { $acme_certname:
-                ocsp   => $do_ocsp,
-                proxy  => "webproxy.${::site}.wmnet:8080",
-                before => Service['nginx']
+                ocsp       => $do_ocsp,
+                ocsp_proxy => $ocsp_proxy,
+                before     => Service['nginx']
             }
         }
     }
@@ -162,7 +163,7 @@ define tlsproxy::localssl(
         $certs.each |String $cert| {
             if !defined(Sslcert::Ocsp::Conf[$cert]) {
                 sslcert::ocsp::conf { $cert:
-                    proxy  => "webproxy.${::site}.wmnet:8080",
+                    proxy  => $ocsp_proxy,
                     before => [Service['nginx'], Exec['nginx-reload']],
                 }
             }

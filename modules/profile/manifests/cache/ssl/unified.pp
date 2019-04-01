@@ -12,7 +12,8 @@ class profile::cache::ssl::unified(
     $letsencrypt=hiera('profile::cache::ssl::unified::letsencrypt'),
     $ucv=hiera('public_tls_unified_cert_vendor', undef),
     $le_server_name=hiera('profile::cache::ssl::unified::le_server_name', undef),
-    $le_subjects=hiera('profile::cache::ssl::le_subjects', undef)
+    $le_subjects=hiera('profile::cache::ssl::le_subjects', undef),
+    $ocsp_proxy = hiera('http_proxy', ''),
 ) {
     if $letsencrypt {
         tlsproxy::localssl { 'unified':
@@ -23,6 +24,7 @@ class profile::cache::ssl::unified(
             skip_private   => true,
             upstream_ports => [3120, 3121, 3122, 3123, 3124, 3125, 3126, 3127],
             redir_port     => 8080,
+            ocsp_proxy     => $ocsp_proxy,
         }
 
     } else {
@@ -51,6 +53,7 @@ class profile::cache::ssl::unified(
             do_ocsp        => true,
             upstream_ports => [3120, 3121, 3122, 3123, 3124, 3125, 3126, 3127],
             redir_port     => 8080,
+            ocsp_proxy     => $ocsp_proxy,
         }
     }
 

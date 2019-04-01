@@ -1,5 +1,6 @@
 class profile::maps::tlsproxy(
     $servicename = hiera('profile::maps::tlsproxy::servicename'),
+    $ocsp_proxy = hiera('http_proxy', ''),
 ) {
     tlsproxy::localssl { $servicename:
         server_name    => $servicename,
@@ -7,6 +8,7 @@ class profile::maps::tlsproxy(
         upstream_ports => [6533],
         default_server => true,
         do_ocsp        => false,
+        ocsp_proxy     => $ocsp_proxy,
     }
 
     monitoring::service { 'maps-https':

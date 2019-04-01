@@ -4,6 +4,7 @@ class profile::mediawiki::webserver(
     Optional[Wmflib::UserIpPort] $fcgi_port = hiera('profile::php_fpm::fcgi_port', undef),
     String $fcgi_pool = hiera('profile::mediawiki::fcgi_pool', 'www'),
     Mediawiki::Vhost_feature_flags $vhost_feature_flags = hiera('profile::mediawiki::vhost_feature_flags'),
+    String $ocsp_proxy = hiera('http_proxy', ''),
 ) {
     include ::lvs::configuration
     include ::profile::mediawiki::httpd
@@ -182,6 +183,7 @@ class profile::mediawiki::webserver(
             do_ocsp        => false,
             upstream_ports => [80],
             access_log     => true,
+            ocsp_proxy     => $ocsp_proxy,
         }
 
         monitoring::service { 'appserver https':

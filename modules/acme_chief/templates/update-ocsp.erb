@@ -1,4 +1,4 @@
 [Options]
-<% if @proxy %>Proxy=<%= @proxy %><% end %>
+<% if @ocsp_proxy %>Proxy=<%= @ocsp_proxy.gsub('http://', '') %><% end %>
 Certificates=<%= @cert_path %>
 Output=<%= @output %>

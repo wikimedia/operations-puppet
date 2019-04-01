@@ -9,7 +9,8 @@ class profile::cache::ssl::wikibase(
     $acme_chief=hiera('profile::cache::ssl::wikibase::acme_chief'),
     $letsencrypt=hiera('profile::cache::ssl::wikibase::letsencrypt'),
     $le_server_name=hiera('profile::cache::ssl::wikibase::le_server_name', undef),
-    $le_subjects=hiera('profile::cache::ssl::wikibase::le_subjects', undef)
+    $le_subjects=hiera('profile::cache::ssl::wikibase::le_subjects', undef),
+    $ocsp_proxy=hiera('http_proxy', ''),
 ) {
     if ($letsencrypt and $acme_chief) or (!$acme_chief and !$letsencrypt)
     {
@@ -36,6 +37,7 @@ class profile::cache::ssl::wikibase(
             do_ocsp        => true,
             upstream_ports => [3120, 3121, 3122, 3123, 3124, 3125, 3126, 3127],
             redir_port     => 8080,
+            ocsp_proxy     => $ocsp_proxy,
         }
     }
 

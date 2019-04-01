@@ -15,6 +15,7 @@ class profile::elasticsearch::cirrus(
     String $storage_device = hiera('profile::elasticsearch::cirrus::storage_device'),
     Boolean $use_acme_chief = hiera('profile::elasticsearch::cirrus::use_acme_chief', false),
     Array[String] $prometheus_nodes = hiera('prometheus_nodes'),
+    String $ocsp_proxy = hiera('http_proxy', ''),
 ) {
     include ::profile::elasticsearch
 
@@ -57,6 +58,7 @@ class profile::elasticsearch::cirrus(
                 upstream_port     => $http_port,
                 tls_port          => $tls_port,
                 server_name       => $instance_params['certificate_name'],
+                ocsp_proxy        => $ocsp_proxy,
             }
         } else {
             elasticsearch::tlsproxy { $cluster_name:
@@ -64,6 +66,7 @@ class profile::elasticsearch::cirrus(
                 tls_port      => $tls_port,
                 acme_chief    => true,
                 acme_certname => $instance_params['certificate_name'],
+                ocsp_proxy    => $ocsp_proxy,
             }
         }
 

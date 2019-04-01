@@ -1,4 +1,4 @@
 [Options]
-<% if @proxy %>Proxy=<%= @proxy %><% end %>
+<% if @proxy %>Proxy=<%= @proxy.gsub('http://', '') %><% end %>
 Certificates=<%= @certs.map{ |cert| "/etc/ssl/localcerts/#{cert}.crt" }.join(',') %>
 Output=<%= @output %>

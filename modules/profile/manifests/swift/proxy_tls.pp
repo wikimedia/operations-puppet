@@ -1,4 +1,6 @@
-class profile::swift::proxy_tls {
+class profile::swift::proxy_tls (
+    String $ocsp_proxy   = hiera('http_proxy', ''),
+) {
     require ::profile::tlsproxy::instance
 
     tlsproxy::localssl { 'unified':
@@ -6,6 +8,7 @@ class profile::swift::proxy_tls {
         certs          => [$::swift::proxy::proxy_service_host],
         default_server => true,
         do_ocsp        => false,
+        ocsp_proxy     => $ocsp_proxy,
     }
 
     monitoring::service { 'swift-https':

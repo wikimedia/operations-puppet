@@ -21,6 +21,7 @@ define elasticsearch::tlsproxy (
     Boolean $acme_chief = false,
     Optional[String] $acme_certname = undef,
     String $server_name = $::fqdn,
+    String $ocsp_proxy = undef,
 ){
     tlsproxy::localssl { $title:
         certs          => $certificate_names,
@@ -30,6 +31,7 @@ define elasticsearch::tlsproxy (
         acme_certname  => $acme_certname,
         upstream_ports => [$upstream_port],
         tls_port       => $tls_port,
+        ocsp_proxy     => $ocsp_proxy,
     } -> monitoring::service { "elasticsearch-https-${title}":
         ensure        => present,
         description   => "Elasticsearch HTTPS for ${title}",

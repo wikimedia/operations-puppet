@@ -2,7 +2,9 @@
 #
 # Sets up the TLS proxy to the jobrunner rpc endpoints
 #
-class profile::mediawiki::jobrunner_tls {
+class profile::mediawiki::jobrunner_tls (
+    String $ocsp_proxy = hiera('http_proxy', ''),
+) {
     require ::profile::mediawiki::jobrunner
     require ::profile::tlsproxy::instance
 
@@ -18,6 +20,7 @@ class profile::mediawiki::jobrunner_tls {
             upstream_ports => [$::profile::mediawiki::jobrunner::local_only_port],
             access_log     => false,
             read_timeout   => $timeout,
+            ocsp_proxy     => $ocsp_proxy,
         }
         monitoring::service { "${sitename} https":
             description    => "Nginx local proxy to ${sitename}",
