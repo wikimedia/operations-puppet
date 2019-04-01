@@ -3,11 +3,10 @@ class profile::openstack::codfw1dev::keystone::service(
     $region = hiera('profile::openstack::codfw1dev::region'),
     $nova_controller = hiera('profile::openstack::codfw1dev::nova_controller'),
     $keystone_host = hiera('profile::openstack::codfw1dev::keystone_host'),
-    $glance_host = hiera('profile::openstack::codfw1dev::glance_host'),
     $osm_host = hiera('profile::openstack::codfw1dev::osm_host'),
-    $db_host = hiera('profile::openstack::labtest::keystone::db_host'),
+    $db_host = hiera('profile::openstack::codfw1dev::keystone::db_host'),
     $token_driver = hiera('profile::openstack::codfw1dev::keystone::token_driver'),
-    $db_pass = hiera('profile::openstack::labtest::keystone::db_pass'),
+    $db_pass = hiera('profile::openstack::codfw1dev::keystone::db_pass'),
     $nova_db_pass = hiera('profile::openstack::codfw1dev::nova::db_pass'),
     $ldap_hosts = hiera('profile::openstack::codfw1dev::ldap_hosts'),
     $ldap_user_pass = hiera('profile::openstack::codfw1dev::ldap_user_pass'),
@@ -31,7 +30,6 @@ class profile::openstack::codfw1dev::keystone::service(
     $puppetmaster_hostname = hiera('profile::openstack::codfw1dev::puppetmaster_hostname'),
     $auth_port = hiera('profile::openstack::base::keystone::auth_port'),
     $public_port = hiera('profile::openstack::base::keystone::public_port'),
-    $labtest_nova_controller = hiera('profile::openstack::labtest::nova_controller'),
     ) {
 
     class{'::profile::openstack::base::keystone::db':
@@ -89,25 +87,4 @@ class profile::openstack::codfw1dev::keystone::service(
         public_port => $public_port,
     }
     contain '::openstack::keystone::monitor::services'
-
-    # allow foreign glance to call back to admin auth port
-    # to validate issued tokens
-    ferm::rule{'labtest_glance_35357':
-        ensure => 'present',
-        rule   => "saddr @resolve(${glance_host}) proto tcp dport (35357) ACCEPT;",
-    }
-
-    # allow foreign designate(and co) to call back to admin auth port
-    # to validate issued tokens
-    ferm::rule{'labtest_designate_35357':
-        ensure => 'present',
-        rule   => "saddr @resolve(${designate_host}) proto tcp dport (35357) ACCEPT;",
-    }
-
-    ferm::rule { 'labtest_nova_35357':
-        ensure => 'present',
-        rule   => "saddr (@resolve(${labtest_nova_controller})
-                          @resolve(${labtest_nova_controller}, AAAA))
-                   proto tcp dport (35357) ACCEPT;",
-    }
 }
