@@ -3130,11 +3130,9 @@ host labtestnet2002 {
     filename "lpxelinux.0";
 }
 
-host labtestnet2003 {
+host cloudnet2003-dev {
     hardware ethernet 18:66:DA:7E:B3:EE;
-    fixed-address labtestnet2003.codfw.wmnet;
-    option pxelinux.pathprefix "trusty-installer/";
-    filename "trusty-installer/ubuntu-installer/amd64/pxelinux.0";
+    fixed-address cloudnet2003-dev.codfw.wmnet;
 }
 
 host cloudnet2001-dev {

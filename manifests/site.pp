@@ -1086,6 +1086,10 @@ node 'cloudnet2002-dev.codfw.wmnet' {
     role(wmcs::openstack::labtestn::net)
 }
 
+node 'cloudnet2003-dev.codfw.wmnet' {
+    role(wmcs::openstack::codfw1dev::net)
+}
+
 node /^labtestvirt2003\.codfw\.wmnet$/ {
     role(wmcs::openstack::labtestn::virt)
 }
@@ -1096,10 +1100,6 @@ node 'labtestmetal2001.codfw.wmnet' {
 
 node 'labtestnet2002.codfw.wmnet' {
     role(wmcs::openstack::labtest::net)
-}
-
-node 'labtestnet2003.codfw.wmnet' {
-    role(wmcs::openstack::labtest::net_standby)
 }
 
 node 'labtestcontrol2001.wikimedia.org' {
