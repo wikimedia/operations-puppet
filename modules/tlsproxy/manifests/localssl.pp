@@ -143,10 +143,9 @@ define tlsproxy::localssl(
     if $acme_chief {
         if !defined(Acme_chief::Cert[$title]) {
             acme_chief::cert { $title:
-                puppet_svc => 'nginx',
-                ocsp       => $do_ocsp,
-                proxy      => "webproxy.${::site}.wmnet:8080",
-                before     => Service['nginx']
+                ocsp   => $do_ocsp,
+                proxy  => "webproxy.${::site}.wmnet:8080",
+                before => Service['nginx']
             }
         }
     }
