@@ -199,7 +199,7 @@ def certs_fetch_ocsp(out_temp, args):
         hosthdr = urlparse.urlparse(ocsp_uri).netloc
         cmd.extend([
             "-url", ocsp_uri,
-            "-header", "Host", hosthdr,
+            "-header", "Host={}".format(hosthdr),
         ])
 
     for cert in certs:
