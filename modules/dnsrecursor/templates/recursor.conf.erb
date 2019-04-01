@@ -27,20 +27,10 @@ setgid=pdns
 setuid=pdns
 
 daemon=yes
-<% if @pdns_rec_ver == '4' -%>
 # can later raise threads to 1/core (and +ulimit) on version 4.1+ w/ proper reuseport
 threads=4
 pdns-distributes-queries=no
 reuseport=yes
-<% else -%>
-# THREADS x MAX-MTHREADS < FD's
-threads=2
-
-# maximum number of simultaneous MTasker threads
-# This is explicitly lowered to avoid a known bug:
-#  http://blog.powerdns.com/2014/02/06/related-to-recent-dos-attacks-recursor-configuration-file-guidance/
-max-mthreads=384
-<% end -%>
 
 # local-address	IP addresses to listen on, separated by spaces or commas
 local-address=<%= flatten_ips(@listen_addresses).sort.join(" ") %>
@@ -63,10 +53,8 @@ allow-from=<%= (@allow_from + flatten_ips(@listen_addresses)).join(", ") %>
 # Zones for which we forward queries, comma separated domain=ip pairs
 forward-zones=<%= @forward_zones -%>, <%= @additional_forward_zones -%>
 
-<% if @pdns_rec_ver == '4' -%>
 # we need ECS to ensure our geoip resolution (e.g. for discovery hostnames) works correctly regardless of which recursor (x-dc) a client uses
 edns-subnet-whitelist=<%= @wmf_authdns.join(', ') %>
-<% end -%>
 <% if @lua_hooks -%>
 # lua scripts allow extending the resolver
 # with custom behavior
@@ -95,11 +83,7 @@ client-tcp-timeout=<%= @client_tcp_timeout %>
 
 # maximum number of packets to store statistics for
 # /usr/bin/rec_control top-remotes
-<% if @pdns_rec_ver == '4' -%>
 stats-ringbuffer-entries=1000
-<% else -%>
-remotes-ringbuffer-entries=1000
-<% end -%>
 
 # where the controlsocket will live
 socket-dir=/var/run/
@@ -113,49 +97,8 @@ export-etc-hosts=<%= @export_etc_hosts %>
 version-string=<%= @hostname %>
 <% end -%>
 
-<% if @pdns_rec_ver == '4' -%>
 # This prevents pdns from polling a public server to check for sec fixes
 security-poll-suffix=
 
 # Root hints distributed by Debian w/ 4.x
 hint-file=/usr/share/dns/root.hints
-<% else -%>
-# aaaa-additional-processing	turn on to do AAAA additional processing (slow)
-# aaaa-additional-processing=off
-
-# if we follow RFC 2181 to the letter, an authoritative server can lower the TTL of NS records
-# auth-can-lower-ttl=off
-
-# chroot	switch to chroot jail
-# chroot=
-
-# hint-file	If set, load root hints from this file
-# hint-file=
-
-# no-shuffle	Don't change
-# no-shuffle=off
-
-# query-local-address	Source IP address for sending queries
-# query-local-address=0.0.0.0
-
-# query-local-address6	Source IPv6 address for sending queries
-# query-local-address6=
-
-# serve-rfc1918	If we should be authoritative for RFC 1918 private IP space
-# serve-rfc1918=
-
-# returned when queried for 'server.id' TXT, defaults to hostname
-# server-id=
-
-# If set, only use a single socket for outgoing queries
-# single-socket=off
-
-# soa-minimum-ttl	Don't change
-# soa-minimum-ttl=0
-
-# soa-serial-offset	Don't change
-# soa-serial-offset=0
-
-# spoof-nearmiss-max	If non-zero, assume spoofing after this many near misses
-# spoof-nearmiss-max=20
-<% end -%>

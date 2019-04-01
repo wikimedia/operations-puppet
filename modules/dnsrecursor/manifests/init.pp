@@ -30,48 +30,40 @@ class dnsrecursor(
     $wmf_authdns_semi = join($wmf_authdns, ';')
     $forward_zones = "wmnet=${wmf_authdns_semi}, 10.in-addr.arpa=${wmf_authdns_semi}"
 
-    if os_version('debian >= jessie') {
-        $pdns_rec_ver = '4'
+    # systemd unit fragment to raise ulimits
+    $sysd_dir = '/etc/systemd/system/pdns-recursor.service.d'
+    $sysd_frag = "${sysd_dir}/ulimits.conf"
 
-        # systemd unit fragment to raise ulimits
-        $sysd_dir = '/etc/systemd/system/pdns-recursor.service.d'
-        $sysd_frag = "${sysd_dir}/ulimits.conf"
-
-        file { $sysd_dir:
-            ensure => directory,
-            mode   => '0555',
-            owner  => 'root',
-            group  => 'root',
-        }
-
-        file { $sysd_frag:
-            ensure => present,
-            mode   => '0444',
-            owner  => 'root',
-            group  => 'root',
-            source => 'puppet:///modules/dnsrecursor/ulimits.conf',
-        }
-
-        exec { "systemd reload for ${sysd_frag}":
-            refreshonly => true,
-            command     => '/bin/systemctl daemon-reload',
-            subscribe   => File[$sysd_frag],
-            before      => Service['pdns-recursor'],
-        }
-
-        if os_version('debian == jessie') {
-            # jessie uses backports for v4
-            apt::pin { 'pdns-recursor':
-                package  => 'pdns-recursor',
-                pin      => 'release a=openstack-mitaka-jessie',
-                priority => '1001',
-                before   => Package['pdns-recursor'],
-            }
-        }
+    file { $sysd_dir:
+        ensure => directory,
+        mode   => '0555',
+        owner  => 'root',
+        group  => 'root',
     }
-    else {
-        # trusty instances
-        $pdns_rec_ver = '3'
+
+    file { $sysd_frag:
+        ensure => present,
+        mode   => '0444',
+        owner  => 'root',
+        group  => 'root',
+        source => 'puppet:///modules/dnsrecursor/ulimits.conf',
+    }
+
+    exec { "systemd reload for ${sysd_frag}":
+        refreshonly => true,
+        command     => '/bin/systemctl daemon-reload',
+        subscribe   => File[$sysd_frag],
+        before      => Service['pdns-recursor'],
+    }
+
+    if os_version('debian == jessie') {
+        # jessie uses backports for v4
+        apt::pin { 'pdns-recursor':
+            package  => 'pdns-recursor',
+            pin      => 'release a=openstack-mitaka-jessie',
+            priority => '1001',
+            before   => Package['pdns-recursor'],
+        }
     }
 
     package { 'pdns-recursor':

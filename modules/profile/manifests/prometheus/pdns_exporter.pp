@@ -12,7 +12,5 @@ class profile::prometheus::pdns_exporter (
         srange => '@resolve((labmon1001.eqiad.wmnet labmon1002.eqiad.wmnet))', # Should be properly defined via Hiera for WMCS
     }
 
-    if os_version('debian >= jessie') {
-        base::service_auto_restart { 'prometheus-pdns-exporter': }
-    }
+    base::service_auto_restart { 'prometheus-pdns-exporter': }
 }
