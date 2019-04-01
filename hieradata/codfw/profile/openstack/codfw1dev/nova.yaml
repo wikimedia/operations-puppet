@@ -1,4 +1,7 @@
 # Much of this is a placeholder config for now
+profile::openstack::codfw1dev::nova::db_name: 'nova'
+profile::openstack::codfw1dev::nova::db_name_api: 'nova_api'
+profile::openstack::codfw1dev::nova::db_user: 'nova'
 profile::openstack::codfw1dev::nova::dhcp_domain: 'codfw.labtest'
 profile::openstack::codfw1dev::nova::dhcp_start: '172.16.128.10'
 profile::openstack::codfw1dev::nova::quota_floating_ips: '0'
