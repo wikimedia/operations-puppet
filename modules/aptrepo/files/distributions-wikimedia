@@ -1,19 +1,5 @@
 Origin: Wikimedia
 Label: Wikimedia
-Suite: trusty-wikimedia
-Codename: trusty-wikimedia
-Version: 14.04
-Architectures: source amd64 i386
-Components: main universe non-free thirdparty thirdparty/cloudera thirdparty/mono-project-trusty
-UDebComponents: main
-Description: Wikimedia specific packages for Ubuntu Trusty Tahr
-SignWith: 09DBD9F93F6CD44A
-DebOverride: deb-override
-Log:
- log
-
-Origin: Wikimedia
-Label: Wikimedia
 Suite: jessie-wikimedia
 Codename: jessie-wikimedia
 AlsoAcceptFor: jessie jessie-backports
