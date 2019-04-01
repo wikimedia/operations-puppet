@@ -92,22 +92,20 @@ class profile::toolforge::grid::exec_environ {
         'unpaper',                   # T204422
     )
 
-    if os_version('ubuntu >= trusty') {
-        require_package(
-            'ttf-bengali-fonts',
-            'ttf-devanagari-fonts',
-            'ttf-gujarati-fonts',
-            'ttf-kannada-fonts',
-            'ttf-oriya-fonts',
-            'ttf-punjabi-fonts',
-            'ttf-tamil-fonts',
-            'ttf-telugu-fonts',
-            'ttf-kochi-gothic',
-            'ttf-kochi-mincho',
-            'fonts-mgopen',
-            'sbt',
-        )
-    }
+    require_package(
+        'ttf-bengali-fonts',
+        'ttf-devanagari-fonts',
+        'ttf-gujarati-fonts',
+        'ttf-kannada-fonts',
+        'ttf-oriya-fonts',
+        'ttf-punjabi-fonts',
+        'ttf-tamil-fonts',
+        'ttf-telugu-fonts',
+        'ttf-kochi-gothic',
+        'ttf-kochi-mincho',
+        'fonts-mgopen',
+        'sbt',
+    )
 
     if os_version('debian == jessie') {
         require_package(
@@ -728,65 +726,7 @@ class profile::toolforge::grid::exec_environ {
         source => 'puppet:///modules/toollabs/override.my.cnf',
     }
 
-    if $::lsbdistcodename == 'trusty' {
-        include ::profile::toolforge::genpp::python_exec_trusty
-        # No obvious package available for libgdal
-        package { [
-            'hhvm',                        # T78783
-            'libboost-python1.54.0',
-            'libmpc3',
-            'libprotobuf8',
-            'libbytes-random-secure-perl', # T123824
-            'libvips37',
-            'nodejs-legacy',               # T1102
-            'mariadb-client',              # For /usr/bin/mysql
-            'php5-readline',               # T136519.
-            'opencv-data',                 # T142321
-            'python-flake8',
-            'python3-flake8',
-            'tcl-thread',
-            # Previously we installed libmariadbclient-dev, but that causes
-            # dependency issues on Trusty.  libmariadbclient-dev formerly
-            # provided libmysqlclient-dev, but not in trusty.
-            # https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=759309
-            'libmysqlclient-dev',
-            'libboost-python1.54-dev',
-            'openjdk-7-jdk',
-            'libpng12-dev',
-            'libtiff4-dev', # T54717
-            'tcl8.5-dev',
-            'libgdal1-dev',                # T58995
-            ]:
-            ensure => latest,
-        }
-
-        # T135861: PHP 5.5 sessionclean cron job hanging on tool labs bastions
-        file { '/usr/lib/php5/sessionclean':
-            ensure  => 'present',
-            owner   => 'root',
-            group   => 'root',
-            mode    => '0755',
-            source  => 'puppet:///modules/toollabs/sessionclean',
-            require => Package['php5-cli'],
-        }
-        # Using a file resource instead of a cron resource here as this is
-        # overwriting a file added by the php5-common deb.
-        file { '/etc/cron.d/php5':
-            ensure  => 'present',
-            owner   => 'root',
-            group   => 'root',
-            mode    => '0644',
-            source  => 'puppet:///modules/toollabs/php5.cron.d',
-            require => Package['php5-cli'],
-        }
-
-        # Enable PHP mcrypt module (T97857).
-        exec { 'tools_enable_php_mcrypt_module':
-            command => '/usr/sbin/php5enmod mcrypt',
-            unless  => '/usr/sbin/php5query -S | /usr/bin/xargs -rI {} /usr/sbin/php5query -s {} -m mcrypt',
-            require => Package['php5-cli', 'php5-mcrypt'],
-        }
-    } elsif $::lsbdistcodename == 'jessie' {
+    if $::lsbdistcodename == 'jessie' {
         include ::profile::toolforge::genpp::python_exec_jessie
         # No obvious package available for libgdal
         package { [
@@ -958,7 +898,7 @@ class profile::toolforge::grid::exec_environ {
     require_package('imagemagick')
     require_package('webp')
 
-    if os_version('debian >= jessie || ubuntu >= wily') {
+    if os_version('debian >= jessie') {
         # configuration directory changed since ImageMagick 8:6.8.5.6-1
         $confdir = '/etc/ImageMagick-6'
     } else {

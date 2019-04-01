@@ -6,12 +6,7 @@
 class profile::toolforge::shell_environ {
     class {'::phabricator::arcanist': } # T139738
 
-    if os_version('ubuntu trusty') {
-        include profile::toolforge::genpp::python_dev_trusty
-        package {'mytop':                   # T58999
-            ensure  => latest,
-        }
-    } elsif os_version('debian jessie') {
+    if os_version('debian jessie') {
         include profile::toolforge::genpp::python_dev_jessie
         package {'mytop':                   # T58999
             ensure  => latest,
