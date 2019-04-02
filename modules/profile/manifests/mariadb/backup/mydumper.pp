@@ -63,7 +63,7 @@ class profile::mariadb::backup::mydumper {
         owner   => 'dump',
         group   => 'dump',
         mode    => '0400',
-        content => template("profile/mariadb/backups-${::site}.cnf.erb"),
+        content => template("profile/mariadb/backups-${::hostname}.cnf.erb"),
     }
     # Logging support
     file { '/var/log/mariadb-backups':

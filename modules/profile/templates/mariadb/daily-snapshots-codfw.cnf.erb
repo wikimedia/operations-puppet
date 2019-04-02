@@ -2,6 +2,7 @@ type: 'snapshot'
 rotate: True
 retention: 1
 archive: False
+compress: True
 statistics:
   host: 'db1115.eqiad.wmnet'
   user: '<%= @stats_user %>'
@@ -12,11 +13,7 @@ sections:
     host: 'dbstore2002.codfw.wmnet'
     port: 3320
     destination: 'dbprov2001.codfw.wmnet'
-    compress: True
-  s3:
-    type: 'dump'
-    host: 'dbstore2002.codfw.wmnet'
-    port: 3313
-    destination: 'dbprov2001.codfw.wmnet'
-    archive: True
-    retention: 18
+  s8:
+    host: 'dbstore2001.codfw.wmnet'
+    port: 3318
+    destination: 'dbprov2002.codfw.wmnet'

@@ -1,0 +1,33 @@
+type: 'dump'
+user: '<%= @user %>'
+password: '<%= @password %>'
+rotate: True
+compress: False
+archive: False
+retention: 18
+statistics:
+  host: 'db1115.eqiad.wmnet'
+  user: '<%= @stats_user %>'
+  password: '<%= @stats_password %>'
+  database: 'zarcillo'
+sections:
+  s1:
+    host: 'dbstore2002.codfw.wmnet'
+    port: 3311
+  s2:
+    host: 'dbstore2001.codfw.wmnet'
+    port: 3312
+  s3:
+    host: 'dbstore2002.codfw.wmnet'
+    port: 3313
+    archive: True
+  s7:
+    host: 'dbstore2001.codfw.wmnet'
+    port: 3317
+  m1:
+    host: 'db2078.codfw.wmnet'
+    port: 3321
+  m3:
+    host: 'db2078.codfw.wmnet'
+    port: 3323
+# Missing tendril on codfw

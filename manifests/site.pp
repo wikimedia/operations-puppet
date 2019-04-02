@@ -743,7 +743,7 @@ node 'dbprov2001.codfw.wmnet' {
     role(mariadb::backups)
 }
 node 'dbprov2002.codfw.wmnet' {
-    role(spare::system)
+    role(mariadb::backups)
 }
 
 # Proxies for misc databases
@@ -923,13 +923,9 @@ node /^es201[89]\.codfw\.wmnet/ {
 }
 
 # Disaster recovery hosts for external storage
-# These nodes are temporarilly up until we get proper
-# storage on the backup system
-node 'es2001.codfw.wmnet' {
-    role(mariadb::backups)
-}
+# These nodes are in process of being decommissioned
 
-node /^es200[234]\.codfw\.wmnet/ {
+node /^es200[1-4]\.codfw\.wmnet/ {
     role(mariadb::temporary_storage)
 }
 
