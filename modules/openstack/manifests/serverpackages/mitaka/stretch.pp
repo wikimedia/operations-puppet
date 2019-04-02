@@ -35,6 +35,12 @@ class openstack::serverpackages::mitaka::stretch(
         priority => '-1',
     }
 
+    apt::pin { 'mitaka_stretch_python-sphinx_nojessiebpo':
+        package  => 'python-sphinx',
+        pin      => 'version 1.4.9-2~bpo8+1',
+        priority => '-1',
+    }
+
     apt::pin { 'mitaka_stretch_sqlite3_nojessiebpo':
         package  => 'sqlite3',
         pin      => 'version 3.16.2-3~bpo8+1',
