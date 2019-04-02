@@ -141,6 +141,10 @@ class graphite::web(
             if $uwsgi_max_request_duration_seconds != undef  { {'harakiri' => $uwsgi_max_request_duration_seconds} },
             if $uwsgi_max_request_rss_megabytes != undef     { {'evil-reload-on-rss' => $uwsgi_max_request_rss_megabytes} })
         },
+        routes   => [ # do not cache renders
+            {'route' => '^/render', 'action' => 'delheader:Cache-Control'},
+            {'route' => '^/render', 'action' => 'addheader:Cache-Control: no-store'},
+        ],
         require  => File['/var/log/graphite-web'],
     }
 
