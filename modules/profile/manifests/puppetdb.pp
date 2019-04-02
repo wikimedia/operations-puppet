@@ -112,8 +112,5 @@ class profile::puppetdb(
         uwsgi::app { 'puppetdb-microservice':
             ensure => absent,
         }
-        ferm::service { 'puppetdb-microservice':
-            ensure => absent,
-        }
     }
 }
