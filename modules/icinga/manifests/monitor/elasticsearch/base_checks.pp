@@ -20,20 +20,19 @@ define icinga::monitor::elasticsearch::base_checks(
                     contact_group => 'admins,team-discovery',
                     notes_url     => 'https://wikitech.wikimedia.org/wiki/Search#Administration',
                 ;
-                "elasticsearch shards ${host}:${port}":
+                "elasticsearch_shards_${host}:${port}":
                     check_command => "check_elasticsearch_shards_threshold!${scheme}!${port}!${threshold}",
                     description   => "ElasticSearch health check for shards on ${port}",
                 ;
-                "elasticsearch / unassigned shard check - ${host}:${port}":
+                "elasticsearch_unassigned_shard_check_${host}:${port}":
                     check_command  => "check_elasticsearch_unassigned_shards!${scheme}!${port}",
-                    description    => "ElasticSearch unassigned shard check - ${port})",
+                    description    => "ElasticSearch unassigned shard check - ${port}",
                     check_interval => 720, # 12h
                     retry_interval => 120, # 2h
                     retries        => 1,
                 ;
-                "elasticsearch / shard size check - ${host}:${port})":
-                    check_command  => "check_elasticsearch_shard_size!${scheme}!${port}!${shard_size_warning}!${
-                        shard_size_critical}",
+                "elasticsearch_shard_size_check_${host}:${port}":
+                    check_command  => "check_elasticsearch_shard_size!${scheme}!${port}!${shard_size_warning}!${shard_size_critical}",
                     description    => "ElasticSearch shard size check - ${port}",
                     check_interval => 1440, # 24h
                     retry_interval => 180, # 3h
