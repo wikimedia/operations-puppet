@@ -22,6 +22,8 @@ zones:
       - 172.16.7.153
     osm:
       - 172.16.6.105
+    wikilabels:
+      - 172.16.5.119
   analytics.db.svc.eqiad.wmflabs.:
     s1:
       - 10.64.37.14
