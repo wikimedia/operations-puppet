@@ -105,8 +105,8 @@ class profile::kubernetes::node(
         query           => "instance_operation_type:kubelet_runtime_operations_latency_microseconds:avg5m{instance=\"${::fqdn}\"}",
         prometheus_url  => $prometheus_url,
         nan_ok          => true,
-        warning         => 300000,
-        critical        => 450000,
+        warning         => 400000,
+        critical        => 850000,
         dashboard_links => ['https://grafana.wikimedia.org/dashboard/db/kubernetes-kubelets?orgId=1']
     }
 }
