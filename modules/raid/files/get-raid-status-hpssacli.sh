@@ -32,9 +32,22 @@ fi
 # hard coded message limit of 1k.
 EXCLUDE_PATTERN='(Heads|Sectors Per Track|Cylinders|Unique Identifier|Logical Drive Label):'
 OUTPUT=""
+EXIT_CODE=0
+
+# Gather the controllers slots while exposing the exit code to the parent shell
+set +e
+CONTROLLERS="$(/usr/bin/sudo /usr/sbin/hpssacli controller all show | grep -Eo 'Slot [0-9] ' | cut -d' ' -f2; exit "${PIPESTATUS[0]}")"
+EXIT_CODE=$((EXIT_CODE + ${?}))
+set -e
+
 while read -r CONTROLLER; do
-    OUTPUT="${OUTPUT}$(/usr/bin/sudo /usr/sbin/hpssacli controller slot="${CONTROLLER}" ld all show detail | grep -Ev "${EXCLUDE_PATTERN}")\n"
-done < <(/usr/bin/sudo /usr/sbin/hpssacli controller all show | grep -Eo 'Slot [0-9] ' | cut -d' ' -f2)
+    # Append the output while exposing the exit code of the hpssacli command to the parent shell
+    set +e
+    OUTPUT="${OUTPUT}$(/usr/bin/sudo /usr/sbin/hpssacli controller slot="${CONTROLLER}" ld all show detail | grep -Ev "${EXCLUDE_PATTERN}"; exit "${PIPESTATUS[0]}")\n"
+    # Sum all exit codes so that the check fails if any of them fail
+    EXIT_CODE=$((EXIT_CODE + ${?}))
+    set -e
+done <<< "${CONTROLLERS}"
 
 PYTHON_SCRIPT="
 import sys
@@ -49,3 +62,5 @@ if [[ "${COMPRESS}" -eq "1" ]]; then
 else
     echo -e "${OUTPUT}"
 fi
+
+exit "${EXIT_CODE}"
