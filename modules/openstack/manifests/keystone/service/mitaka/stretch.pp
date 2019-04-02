@@ -52,18 +52,9 @@ class openstack::keystone::service::mitaka::stretch(
         'python-mwclient',
     ]
 
-    # bug: keystone requires this version of python-routes, but there are
-    # no versioned depends of the package itself
-    apt::pin { 'stretch_mitaka_pinning_python_routes':
-        package  => 'python-routes',
-        pin      => 'version 2.2-1~bpo8+1',
-        priority => '1002',
-    }
-
     # packages will be installed from openstack-mitaka-jessie component from
     # the jessie-wikimedia repo, since that has higher apt pinning by default
     package { $packages:
         ensure  => 'present',
-        require => Apt::Pin[stretch_mitaka_pinning_python_routes],
     }
 }

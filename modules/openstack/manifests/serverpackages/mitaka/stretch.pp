@@ -29,12 +29,16 @@ class openstack::serverpackages::mitaka::stretch(
         priority => '-1',
     }
 
-    # this package is required by nova-common and neutron-common, i.e
-    # cloudvirt and cloudnet servers. And we need it installed not from
-    # jessie-backports, so put it here, since this class is the common place
-    # for this stuff anyway
-    package { 'sqlite3':
-        ensure => 'present',
+    apt::pin { 'mitaka_stretch_libjs-sphinxdoc_nojessiebpo':
+        package  => 'libjs-sphinxdoc',
+        pin      => 'version 1.4.9-2~bpo8+1',
+        priority => '-1',
+    }
+
+    apt::pin { 'mitaka_stretch_sqlite3_nojessiebpo':
+        package  => 'sqlite3',
+        pin      => 'version 3.16.2-3~bpo8+1',
+        priority => '-1',
     }
 
     # cleanup: remove after some puppet cycles
