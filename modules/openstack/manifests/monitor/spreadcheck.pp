@@ -22,7 +22,7 @@ class openstack::monitor::spreadcheck(
         source => 'puppet:///modules/openstack/monitor/wmcs-spreadcheck.py',
     }
 
-    ['tools', 'deployment-prep'].each |String $project| {
+    ['tools', 'deployment-prep', 'cloudinfra'].each |String $project| {
         file { "/etc/wmcs-spreadcheck-${project}.yaml":
             ensure => $ensure,
             owner  => 'nagios',

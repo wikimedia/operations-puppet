@@ -1,0 +1,7 @@
+project: cloudinfra
+
+classifier:
+  ntp: ntp
+  mx-out: mx-out
+  cloudinfra-db: db
+  cloud-puppetmaster: central-puppetmaster
