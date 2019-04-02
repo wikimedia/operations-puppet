@@ -1,5 +1,6 @@
 <VirtualHost *:80>
     ServerName <%= @server_name %>
+    ServerAlias www.<%= @server_name %>
     ServerAdmin <%= @server_admin %>
     DocumentRoot /srv/se/wikiba/output
 
@@ -18,6 +19,11 @@
         Options Indexes FollowSymLinks MultiViews
         AllowOverride None
         Require all granted
+
+        RewriteEngine On
+        RewriteCond %{HTTP_HOST} ^www\.(.*)$ [NC]
+        RewriteRule ^(.*)$ https://%1$1 [R=301,L,NE]
+
     </Directory>
 
 </VirtualHost>
