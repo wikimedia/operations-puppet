@@ -1,4 +1,4 @@
-# 
+#
 # Generic monitoring for all cloudstore NFS servers
 #
 # == Parameters
@@ -9,15 +9,20 @@
 #   that serves NFS
 
 class profile::wmcs::nfs::monitoring::interfaces (
-    String  $monitor_iface       = lookup('profile::wmcs::nfs::monitoring::interfaces::monitor_iface'),
-    String  $contact_groups      = lookup('profile::wmcs::nfs::monitoring::interfaces::contact_groups'),
-    Integer $int_throughput_warn = lookup('profile::wmcs::nfs::monitoring::interfaces::int_throughput_warn'),
-    Integer $int_throughput_crit = lookup('profile::wmcs::nfs::monitoring::interfaces::int_throughput_crit'),
-    Float   $load_warn_ratio     = lookup('profile::wmcs::nfs::monitoring::interfaces::load_warn_ratio'),
-    Float   $load_crit_ratio     = lookup('profile::wmcs::nfs::monitoring::interfaces::load_crit_ratio'),
+    String  $monitor_iface        = lookup('profile::wmcs::nfs::monitoring::interfaces::monitor_iface'),
+    String  $contact_groups       = lookup('profile::wmcs::nfs::monitoring::interfaces::contact_groups'),
+    Integer $int_throughput_warn  = lookup('profile::wmcs::nfs::monitoring::interfaces::int_throughput_warn'),
+    Integer $int_throughput_crit  = lookup('profile::wmcs::nfs::monitoring::interfaces::int_throughput_crit'),
+    Float   $load_warn_ratio      = lookup('profile::wmcs::nfs::monitoring::interfaces::load_warn_ratio'),
+    Float   $load_crit_ratio      = lookup('profile::wmcs::nfs::monitoring::interfaces::load_crit_ratio'),
+    Stdlib::HTTPUrl $graphite_url = lookup('graphite_url'),
 ) {
 
     $interval = '10min' # see T188624
+
+    Monitoring::Graphite_threshold {
+        graphite_url => $graphite_url,
+    }
 
     monitoring::graphite_threshold { 'network_out_saturated':
         description     => 'Outgoing network saturation',

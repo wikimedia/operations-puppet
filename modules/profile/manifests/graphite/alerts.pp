@@ -4,9 +4,13 @@
 # NOTE to be included only from one host, icinga will generate different alerts
 # for all hosts that include this class.
 #
-class profile::graphite::alerts {
+class profile::graphite::alerts($graphite_url = hiera('graphite_url')) {
 
     include ::graphite::monitoring::graphite
+
+    Monitoring::Graphite_threshold {
+        graphite_url => $graphite_url
+    }
 
     $kafka_config = kafka_config('analytics')
 

@@ -230,3 +230,5 @@ profile::openstack::main::cumin::project_pub_key: undef
 profile::openstack::base::keystone::auth_protocol: http
 profile::openstack::base::keystone::public_port: 5000
 profile::openstack::main::nova::dhcp_domain: 'eqiad.wmflabs'
+# Url to use for reaching graphite
+graphite_url: 'https://graphite-labs.wikimedia.org'

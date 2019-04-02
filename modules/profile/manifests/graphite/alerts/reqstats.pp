@@ -1,4 +1,7 @@
-class profile::graphite::alerts::reqstats {
+class profile::graphite::alerts::reqstats($graphite_url = hiera('graphite_url')) {
+    Monitoring::Graphite_threshold {
+        graphite_url => $graphite_url
+    }
 
     # Monitor production 5xx rates
 

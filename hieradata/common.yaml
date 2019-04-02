@@ -916,3 +916,6 @@ ntp_peers:
 #    type: system:node
 #    token: dummydummydummy
 #    id: 2
+
+# Url to use for reaching graphite
+graphite_url: 'http://graphite-in.eqiad.wmnet'

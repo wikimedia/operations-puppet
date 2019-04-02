@@ -1,5 +1,5 @@
 # Define various checks for Maps
-class profile::maps::alerts {
+class profile::maps::alerts($graphite_url = hiera('graphite_url')) {
     monitoring::graphite_threshold { 'tilerator-tile-generation':
         description     => 'Maps tiles generation',
         dashboard_links => ['https://grafana.wikimedia.org/dashboard/db/maps-performances?panelId=8&fullscreen&orgId=1'],
@@ -11,6 +11,7 @@ class profile::maps::alerts {
         critical        => 5,
         from            => '1day',
         percentage      => 90,
+        graphite_url    => $graphite_url,
     }
 
     monitoring::check_prometheus { 'maps-osm-sync-lag-eqiad':

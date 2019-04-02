@@ -2,7 +2,7 @@
 #
 # Monitoring Analytics graphite aggregated alarms.
 #
-class profile::cache::kafka::alerts {
+class profile::cache::kafka::alerts($graphite_url = hiera('graphite_url')) {
 
     # Generate an alert if too many delivery report errors per second
     # (logster only reports once a minute, but we can use perSecond() in graphite
@@ -14,6 +14,9 @@ class profile::cache::kafka::alerts {
     #
     # These alarms will be probably removed after https://phabricator.wikimedia.org/T196066
     # in favor of Prometheus based ones.
+    Monitoring::Graphite_threshold {
+        graphite_url => $graphite_url
+    }
 
     monitoring::graphite_threshold { 'varnishkafka-webrequest-text-kafka_drerr':
         ensure          => 'present',
