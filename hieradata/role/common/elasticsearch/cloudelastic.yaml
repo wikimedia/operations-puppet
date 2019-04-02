@@ -51,6 +51,11 @@ profile::elasticsearch::common_settings:
     # More than 30G isn't very useful
     heap_memory: '30G'
 
+    # Cloudelastic servers are on public vlan
+    bind_networks:
+      - _local_
+      - _global_
+
     # Don't run if more than 1 master missing
     minimum_master_nodes: 2
 
