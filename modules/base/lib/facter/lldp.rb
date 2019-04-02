@@ -19,7 +19,7 @@ Facter.add(:lldp) do
       interface.elements.each('chassis/name') do |switch|
         lldp[eth]['neighbor'] = switch.text
       end
-      interface.elements.each('port/descr') do |port|
+      interface.elements.each('port/id') do |port|
         lldp[eth]['port'] = port.text
       end
       interface.elements.each('vlan') do |vlan|
