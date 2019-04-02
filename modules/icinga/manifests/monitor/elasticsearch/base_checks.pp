@@ -55,12 +55,12 @@ define icinga::monitor::elasticsearch::base_checks(
                 ;
                 "elasticsearch_unassigned_shard_check_${port}":
                     nrpe_command   => "/usr/lib/nagios/plugins/check_elasticsearch_unassigned_shards.py --url http://localhost:${port}",
-                    description    => "ElasticSearch unassigned shard check - ${port})",
+                    description    => "ElasticSearch unassigned shard check - ${port}",
                     check_interval => 720, # 12h
                     retry_interval => 120, # 2h
                     retries        => 1,
                 ;
-                "elasticsearch_shard_size_check_${port})":
+                "elasticsearch_shard_size_check_${port}":
                     nrpe_command   => "/usr/lib/nagios/plugins/check_elasticsearch_shard_size.py --url http://localhost:${port} --shard-size-warning ${shard_size_warning} --shard-size-critical ${shard_size_critical}",
                     description    => "ElasticSearch shard size check - ${port}",
                     check_interval => 1440, # 24h
