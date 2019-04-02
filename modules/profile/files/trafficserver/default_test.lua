@@ -3,6 +3,7 @@ require("default")
 _G.ts = {
   http = {},
   server_response = { header = {} },
+  server_request = { header = {} },
   client_response = { header = {} },
   client_request = {},
 }
@@ -68,6 +69,12 @@ describe("Busted unit testing framework", function()
 
       assert.are.equals(0, do_global_send_response())
       assert.are.equals('pass-test-hostname hit', ts.client_response.header['X-Cache-Int'])
+    end)
+
+    it("test - do_global_send_request", function()
+      _G.ts.server_request.header['Accept-Encoding'] = 'gzip'
+      do_global_send_request()
+      assert.are.equals(nil, _G.ts.server_request.header['Accept-Encoding'])
     end)
   end)
 end)
