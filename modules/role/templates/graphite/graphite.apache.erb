@@ -6,7 +6,6 @@
     <Location />
         Order allow,deny
         Allow from all
-
 <%= @apache_auth -%>
 
         # uWSGI reverse-proxy
@@ -24,6 +23,7 @@
     <Location ~ "/(render|metrics|events/get_data)">
         Satisfy Any
         Allow from all
+        Header set Cache-Control no-store
     </Location>
 
 </VirtualHost>
