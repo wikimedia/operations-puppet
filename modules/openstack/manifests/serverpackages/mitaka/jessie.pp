@@ -7,10 +7,5 @@ class openstack::serverpackages::mitaka::jessie(
         pin      => 'release c=openstack-mitaka-jessie',
         priority => '2001',
     }
-
-    # cleanup: remove after some puppet cycles
-    file { '/etc/apt/preferences.d/openstack.pref':
-        ensure => 'absent',
-    }
 }
 

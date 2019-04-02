@@ -40,14 +40,4 @@ class openstack::serverpackages::mitaka::stretch(
         pin      => 'version 3.16.2-3~bpo8+1',
         priority => '-1',
     }
-
-    # cleanup: remove after some puppet cycles
-    file { '/etc/apt/sources.list.d/jessie-backports-for-mitaka-on-stretch.list':
-        ensure => 'absent',
-    }
-
-    # cleanup: remove after some puppet cycles
-    file { '/etc/apt/sources.list.d/jessie-for-mitaka-on-stretch.list':
-        ensure => 'absent',
-    }
 }
