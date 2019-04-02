@@ -47,6 +47,13 @@ describe("Busted unit testing framework", function()
       _G.ts.server_response.header['Content-Length'] = '1073741825'
       do_global_read_response()
       assert.are.equals("private, max-age=0, s-maxage=0", _G.ts.server_response.header['Cache-Control'])
+
+      -- PKP headers sanitation
+      _G.ts.server_response.header['Public-Key-Pins'] = 'test'
+      _G.ts.server_response.header['Public-Key-Pins-Report-Only'] = 'test'
+      do_global_read_response()
+      assert.are.equals(nil, _G.ts.server_response.header['Public-Key-Pins'])
+      assert.are.equals(nil, _G.ts.server_response.header['Public-Key-Pins-Report-Only'])
     end)
 
     it("test - do_global_send_response cache miss", function()

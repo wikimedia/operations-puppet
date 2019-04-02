@@ -51,6 +51,12 @@ function do_global_read_response()
         ts.error("Setting CC:private on response with CL:" .. ts.server_response.header['Content-Length'] ..", uri=" ..  ts.client_request.get_uri())
     end
 
+    -- Various fairly severe privacy/security/uptime risks exist if we allow
+    -- possibly compromised or misconfigured internal apps to emit these headers
+    -- through our CDN blindly.
+    ts.server_response.header['Public-Key-Pins'] = nil
+    ts.server_response.header['Public-Key-Pins-Report-Only'] = nil
+
     return 0
 end
 
