@@ -1,0 +1,18 @@
+-- Grants for replication user
+GRANT REPLICATION SLAVE
+    ON *.* TO 'repl'@'172.16.4.93'
+    IDENTIFIED BY '<%= @repl_pass %>';
+
+GRANT REPLICATION SLAVE
+    ON *.* TO 'repl'@'172.16.4.96'
+    IDENTIFIED BY '<%= @repl_pass %>';
+
+-- labspuppetbackend user, will run on the labs puppetmaster host --
+
+GRANT SELECT, INSERT, UPDATE, DELETE, ALTER
+ON `labspuppet`.* TO 'labspuppet'@'172.16.4.166'
+IDENTIFIED BY '<%= @labspuppet_pass %>';
+
+GRANT SELECT, INSERT, UPDATE, DELETE, ALTER
+ON `labspuppet`.* TO 'labspuppet'@'172.16.4.167'
+IDENTIFIED BY '<%= @labspuppet_pass %>';
