@@ -12,3 +12,6 @@
         <%- end -%>
     <%- end -%>
 <%- end -%>
+<%- @routes.each do |route| -%>
+route=<%= route['route'] %> <%= route['action'] %>
+<%- end -%>

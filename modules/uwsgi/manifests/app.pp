@@ -34,6 +34,7 @@ define uwsgi::app(
     $core_limit = '0',
     $ensure   = present,
     $enabled  = true,
+    Array[Struct[{'route' => String, 'action' => String}]] $routes = [],
 ) {
     include ::uwsgi
 
