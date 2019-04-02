@@ -281,7 +281,7 @@ groups:
     description: Admin access to analytics cluster.
                  This will grant shell access on all Analytics Cluster nodes, as well
                  as the ability to sudo to certain Analytics Cluster system users.
-    members: [joal, nuria, mforns, milimetric, fdans, tbayer]
+    members: [joal, nuria, mforns, milimetric, fdans]
     privileges: ['ALL = (hdfs)  NOPASSWD: ALL',
                  'ALL = (yarn)  NOPASSWD: ALL',
                  'ALL = (oozie) NOPASSWD: ALL',
