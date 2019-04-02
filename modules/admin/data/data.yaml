@@ -3132,6 +3132,7 @@ users:
     gid: 500
     name: jbond
     realname: John Bond
+    shell: /usr/bin/zsh
     ssh_keys:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAICSadkjU94IaCUrtnwvECGaGkDyICObEn35NvNpilUaD jbond@work-laptop
     uid: 20774
