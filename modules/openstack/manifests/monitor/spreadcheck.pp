@@ -22,44 +22,24 @@ class openstack::monitor::spreadcheck(
         source => 'puppet:///modules/openstack/monitor/wmcs-spreadcheck.py',
     }
 
-    # Config file to check how spread out toolforge critical instances are
-    file { '/etc/wmcs-spreadcheck-tools.yaml':
-        ensure => $ensure,
-        owner  => 'nagios',
-        group  => 'nagios',
-        mode   => '0400',
-        source => 'puppet:///modules/openstack/monitor/wmcs-spreadcheck-tools.yaml',
-    }
-
-    nrpe::monitor_service { 'check-tools-spread':
-        ensure       => $ensure,
-        nrpe_command => '/usr/local/sbin/wmcs-spreadcheck --config /etc/wmcs-spreadcheck-tools.yaml',
-        description  => 'Toolforge instance distribution',
-        require      => File[
-            '/usr/local/sbin/wmcs-spreadcheck',
-            '/etc/wmcs-spreadcheck-tools.yaml'
-        ],
-        notes_url    => 'https://wikitech.wikimedia.org/wiki/Portal:Cloud_VPS/Admin/Troubleshooting',
-    }
-
-    # Config file to check how spread out deployment-prep data instances are
-    file { '/etc/wmcs-spreadcheck-deployment-prep.yaml':
-        ensure => $ensure,
-        owner  => 'nagios',
-        group  => 'nagios',
-        mode   => '0400',
-        source => 'puppet:///modules/openstack/monitor/wmcs-spreadcheck-deployment-prep.yaml',
-    }
-
-    nrpe::monitor_service { 'check-deployment-prep-spread':
-        ensure       => $ensure,
-        nrpe_command => '/usr/local/sbin/wmcs-spreadcheck --config /etc/wmcs-spreadcheck-deployment-prep.yaml',
-        description  => 'Deployment-prep instance distribution',
-        require      => File[
-            '/usr/local/sbin/wmcs-spreadcheck',
-            '/etc/wmcs-spreadcheck-deployment-prep.yaml'
-        ],
-        notes_url    => 'https://wikitech.wikimedia.org/wiki/Portal:Cloud_VPS/Admin/Troubleshooting',
+    ['tools', 'deployment-prep'].each |String $project| {
+        file { "/etc/wmcs-spreadcheck-${project}.yaml":
+            ensure => $ensure,
+            owner  => 'nagios',
+            group  => 'nagios',
+            mode   => '0400',
+            source => "puppet:///modules/openstack/monitor/wmcs-spreadcheck-${project}.yaml",
+        }
+        nrpe::monitor_service { "check-${project}-spread":
+            ensure       => $ensure,
+            nrpe_command => "/usr/local/sbin/wmcs-spreadcheck --config /etc/wmcs-spreadcheck-${project}.yaml",
+            description  => "${project} project instance distribution",
+            require      => File[
+                '/usr/local/sbin/wmcs-spreadcheck',
+                "/etc/wmcs-spreadcheck-${project}.yaml"
+            ],
+            notes_url    => 'https://wikitech.wikimedia.org/wiki/Portal:Cloud_VPS/Admin/Troubleshooting',
+        }
     }
 
     # renaming cleanup
