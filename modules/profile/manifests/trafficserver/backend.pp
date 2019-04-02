@@ -138,4 +138,13 @@ class profile::trafficserver::backend (
         owner  => 'root',
         group  => 'root',
     }
+
+    # Script to depool, restart and repool ATS
+    file { '/usr/local/sbin/ats-backend-restart':
+        ensure => present,
+        source => 'puppet:///modules/profile/trafficserver/ats-backend-restart.sh',
+        mode   => '0555',
+        owner  => 'root',
+        group  => 'root',
+    }
 }
