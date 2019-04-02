@@ -387,8 +387,9 @@ cache::alternate_domains:
     director: 'webserver_misc_static'
   turnilo.wikimedia.org:
     director: 'turnilo'
-  wikiba.se:
+  '^(www\.)?wikiba\.se$':
     director: 'webserver_misc_static'
+    regex_key: true
   yarn.wikimedia.org:
     director: 'hadoop_ui'
 # Profile::cache::base

@@ -231,8 +231,8 @@ profile::trafficserver::backend::mapping_rules:
           - '@pparam="21 24 26 27 28 29 2A 2B 2C 3A 3B 3D 40 5B 5D"'
           - '@plugin=/usr/lib/trafficserver/modules/tslua.so'
           - '@pparam=/etc/trafficserver/lua/x-mediawiki-original.lua'
-    - type: map
-      target: http://wikiba.se
+    - type: regex_map
+      target: 'http://(www\.)?wikiba\.se'
       replacement: http://bromine.eqiad.wmnet
       #replacement: http://vega.codfw.wmnet
     - type: map
