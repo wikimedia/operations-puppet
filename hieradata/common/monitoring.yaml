@@ -54,6 +54,10 @@ monitoring::groups:
     description: ulsfo elasticsearch servers
   relforge_eqiad:
     description: eqiad elasticsearch relforge servers
+  cloudelastic_eqiad:
+    description: eqiad cloudelastic servers
+  cloudelastic_codfw:
+    description: codfw cloudelastic servers
 
 # Etcd
   etcd_eqiad:
