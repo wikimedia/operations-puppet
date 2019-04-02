@@ -41,14 +41,4 @@ class openstack::monitor::spreadcheck(
             notes_url    => 'https://wikitech.wikimedia.org/wiki/Portal:Cloud_VPS/Admin/Troubleshooting',
         }
     }
-
-    # renaming cleanup
-    $files = [
-        '/usr/local/bin/spreadcheck.py',
-        '/usr/local/etc/spreadcheck-tools.yaml',
-    ]
-
-    file { $files:
-        ensure => 'absent',
-    }
 }
