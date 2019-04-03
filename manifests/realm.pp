@@ -237,7 +237,6 @@ $private_tables = [
     'vote_log',
     'watchlist',
     'wikimedia_editor_tasks_counts',
-    'wikimedia_editor_tasks_entity_description_exists',
     'wikimedia_editor_tasks_keys',
     'wikimedia_editor_tasks_targets_passed' ]
 

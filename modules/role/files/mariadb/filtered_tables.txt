@@ -628,3 +628,7 @@ wikilove_log,wll_type,K
 wikilove_log,wll_subject,K
 wikilove_log,wll_message,K
 wikilove_log,wll_email,K
+wikimedia_editor_tasks_entity_description_exists,wetede_entity_id,K
+wikimedia_editor_tasks_entity_description_exists,wetede_language,K
+wikimedia_editor_tasks_entity_description_exists,wetede_description_exists,K
+wikimedia_editor_tasks_entity_description_exists,wetede_rand,K
