@@ -87,10 +87,9 @@ class profile::wmcs::nfs::maintain_dbusers (
     }
 
     systemd::service { 'maintain-dbusers':
-        ensure   => present,
-        override => true,
-        content  => systemd_template('wmcs/nfs/maintain-dbusers'),
-        restart  => true,
+        ensure  => present,
+        content => systemd_template('wmcs/nfs/maintain-dbusers'),
+        restart => true,
     }
 
     nrpe::monitor_systemd_unit_state { 'maintain-dbusers':
