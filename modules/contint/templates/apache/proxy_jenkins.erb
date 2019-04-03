@@ -40,8 +40,14 @@ ProxyRequests       Off
     SetEnvIf Request_URI ^<%= @prefix -%>/computer/.*/builds DENY_BUILDS_ACCESS
     SetEnvIf Request_URI ^<%= @prefix -%>/user/.*/builds DENY_BUILDS_ACCESS
     SetEnvIf Request_URI ^<%= @prefix -%>/view/.*/builds DENY_BUILDS_ACCESS
+
     # Blacklist RSS feeds entirely
     SetEnvIf Request_URI ^<%= @prefix -%>/.*/rss(All|Failed|Latest) DENY_BUILDS_ACCESS
     Order deny,allow
     deny from env=DENY_BUILDS_ACCESS
+
+    # SECURITY-991 - T219991
+    SetEnvIf Request_URI ^<%= @prefix -%>/descriptorByName/hudson.plugins.gearman.GearmanPluginConfig/testConnection DENY_GEARMAN_TEST_CONFIG
+    deny from env=DENY_GEARMAN_TEST_CONFIG
+
 </Proxy>
