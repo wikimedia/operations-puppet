@@ -164,7 +164,7 @@ def postgres_read_write_check():
 
     try:
         connection = psycopg2.connect(
-            host="'wikilabels.db.svc.eqiad.wmflabs",
+            host="wikilabels.db.svc.eqiad.wmflabs",
             dbname="{}_rwtest".format(user),
             user=user,
             password=password,
