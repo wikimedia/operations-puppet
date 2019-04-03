@@ -3,6 +3,8 @@ promptinit
 autoload -Uz compinit
 compinit
 
+bindkey -e
+
 PROMPT='%F{cyan}%m%f %F{green}%2~%f %(?.%F{green}.%F{red})%#%f '
 RPROMPT='[%F{yellow}%*%f]'
 
