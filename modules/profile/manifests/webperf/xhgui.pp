@@ -10,6 +10,7 @@
 # to expose the service at <https://performance.wikimedia.org/xhgui/>.
 #
 class profile::webperf::xhgui {
+    include ::passwords::ldap::production
 
     require_package('libapache2-mod-php7.0', 'php-mongodb')
 
