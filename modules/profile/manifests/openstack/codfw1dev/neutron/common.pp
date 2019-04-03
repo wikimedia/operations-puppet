@@ -11,7 +11,6 @@ class profile::openstack::codfw1dev::neutron::common(
     $log_agent_heartbeats = hiera('profile::openstack::codfw1dev::neutron::log_agent_heartbeats'),
     ) {
 
-    require ::profile::openstack::codfw1dev::clientpackages
     class {'::profile::openstack::base::neutron::common':
         version              => $version,
         nova_controller      => $nova_controller,

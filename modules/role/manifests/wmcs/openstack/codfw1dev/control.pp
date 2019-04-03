@@ -2,7 +2,6 @@ class role::wmcs::openstack::codfw1dev::control {
     system::role { $name: }
     include ::standard
     include ::profile::base::firewall
-    include ::profile::openstack::codfw1dev::clientpackages
     include ::profile::openstack::codfw1dev::observerenv
     include ::profile::openstack::codfw1dev::rabbitmq
     include ::profile::openstack::codfw1dev::keystone::service

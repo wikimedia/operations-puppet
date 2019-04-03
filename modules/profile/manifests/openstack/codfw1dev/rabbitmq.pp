@@ -14,7 +14,6 @@ class profile::openstack::codfw1dev::rabbitmq(
     $neutron_rabbit_password = hiera('profile::openstack::codfw1dev::neutron::rabbit_pass'),
 ){
 
-    require ::profile::openstack::codfw1dev::clientpackages
     class {'::profile::openstack::base::rabbitmq':
         nova_controller        => $nova_controller,
         monitor_user           => $monitor_user,

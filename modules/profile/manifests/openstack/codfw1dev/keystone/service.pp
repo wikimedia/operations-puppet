@@ -42,7 +42,6 @@ class profile::openstack::codfw1dev::keystone::service(
     }
     contain '::profile::openstack::base::keystone::db'
 
-    require ::profile::openstack::codfw1dev::clientpackages
     class {'::profile::openstack::base::keystone::service':
         version                              => $version,
         region                               => $region,

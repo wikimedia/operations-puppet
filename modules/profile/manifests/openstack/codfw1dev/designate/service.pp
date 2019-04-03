@@ -24,7 +24,6 @@ class profile::openstack::codfw1dev::designate::service(
     $coordination_host = hiera('profile::openstack::codfw1dev::designate_host'),
 ) {
 
-    require ::profile::openstack::codfw1dev::clientpackages
     class{'::profile::openstack::base::designate::service':
         version                              => $version,
         designate_host                       => $designate_host,

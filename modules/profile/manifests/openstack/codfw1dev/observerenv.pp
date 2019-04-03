@@ -4,7 +4,6 @@ class profile::openstack::codfw1dev::observerenv(
     $observer_password = hiera('profile::openstack::codfw1dev::observer_password'),
   ) {
 
-    require ::profile::openstack::codfw1dev::clientpackages
     class {'::profile::openstack::base::observerenv':
         region            => $region,
         keystone_host     => $keystone_host,

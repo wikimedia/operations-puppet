@@ -4,7 +4,6 @@ class profile::openstack::codfw1dev::neutron::dhcp_agent(
     $report_interval = hiera('profile::openstack::codfw1dev::neutron::report_interval'),
     ) {
 
-    require ::profile::openstack::codfw1dev::clientpackages
     require ::profile::openstack::codfw1dev::neutron::common
     class {'profile::openstack::base::neutron::dhcp_agent':
         version         => $version,

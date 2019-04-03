@@ -14,7 +14,6 @@ class profile::openstack::codfw1dev::nova::common(
     $metadata_proxy_shared_secret = hiera('profile::openstack::codfw1dev::neutron::metadata_proxy_shared_secret')
     ) {
 
-    require ::profile::openstack::codfw1dev::clientpackages
     class {'::profile::openstack::base::nova::common::neutron':
         version                      => $version,
         db_pass                      => $db_pass,

@@ -9,7 +9,6 @@ class profile::openstack::codfw1dev::glance(
     $labs_hosts_range = hiera('profile::openstack::codfw1dev::labs_hosts_range'),
     ) {
 
-    require ::profile::openstack::codfw1dev::clientpackages
     class {'::profile::openstack::base::glance':
         version                 => $version,
         nova_controller         => $nova_controller,
