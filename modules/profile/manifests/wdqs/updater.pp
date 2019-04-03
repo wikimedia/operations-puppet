@@ -14,7 +14,6 @@ class profile::wdqs::updater (
     String $rc_options = hiera('profile::wdqs::rc_updater_options', '-b 500 -T 1200'),
     Boolean $fetch_constraints = hiera('profile::wdqs::fetch_constraints', true),
     Boolean $enable_rdf_dump = hiera('profile::wdqs::enable_rdf_dump', false),
-    Boolean $use_revisions = hiera('profile::wdqs::use_revisions', false),
 ) {
     require ::profile::wdqs::common
 
@@ -56,14 +55,9 @@ class profile::wdqs::updater (
         true    => [ '--dumpDir', "${data_dir}/dumps" ],
         default => [],
     }
-    $revision_options = $use_revisions ? {
-        # TODO: make revision cutoff configurable?
-        true    => [ '--oldRevision', '3' ],
-        default => [],
-    }
 
     # 0 - Main, 120 - Property, 146 - Lexeme
-    $extra_updater_options = $poller_options + $fetch_constraints_options + $dump_options + $revision_options + [ '--entityNamespaces', '0,120,146' ]
+    $extra_updater_options = $poller_options + $fetch_constraints_options + $dump_options + [ '--entityNamespaces', '0,120,146' ]
 
     class { 'wdqs::updater':
         package_dir        => $package_dir,
