@@ -14,8 +14,6 @@ class role::webperf::profiling_tools {
     include ::profile::webperf::arclamp
     include ::profile::webperf::xhgui
 
-    class { '::passwords::ldap::production': }
-
     # class httpd installs mpm_event by default, and once installed,
     # it cannot easily be uninstalled. The xhgui profile installs
     # libapache2-mod-php7.0 which in turn installs mpm_prefork, which
