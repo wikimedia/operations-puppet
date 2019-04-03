@@ -39,7 +39,7 @@ class profile::aqs (
         monitoring::service { 'aqs_http_root':
             description   => 'AQS root url',
             check_command => "check_http_port_url!${::aqs::port}!/",
-            contact_group => 'admins,team-services',
+            contact_group => 'admins,team-services,analytics',
             notes_url     => 'https://wikitech.wikimedia.org/wiki/Analytics/Systems/AQS#Monitoring',
         }
         #TODO: add monitoring once we figure out what metrics we want

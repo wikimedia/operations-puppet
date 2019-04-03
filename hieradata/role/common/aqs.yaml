@@ -9,6 +9,9 @@ admin::groups:
     - aqs-users
     - deploy-aqs
 
+# Override service::node's monitoring contact groups
+contactgroups: 'admins,analytics'
+
 #
 # Cassandra for AQS
 #
