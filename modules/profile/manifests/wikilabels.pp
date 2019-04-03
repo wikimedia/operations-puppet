@@ -7,6 +7,6 @@ class profile::wikilabels (
     }
 
     class { '::wikilabels::db_proxy':
-        server => 'pgsql.eqiad.wmnet',
+        server => 'wikilabels.db.svc.eqiad.wmflabs',
     }
 }
