@@ -78,6 +78,7 @@ ganeti-eqiad: A:ganeti and A:eqiad
 gerrit: P{O:gerrit}
 graphite: P{O:graphite::production}
 hadoop: A:hadoop-worker or A:hadoop-master or A:hadoop-standby
+hadoop-coordinator: P{O:analytics_cluster::coordinator}
 hadoop-master: P{O:analytics_cluster::hadoop::master}
 hadoop-standby: P{O:analytics_cluster::hadoop::standby}
 hadoop-hdfs-journal: P{C:cdh::hadoop::journalnode} and A:hadoop-worker
@@ -196,6 +197,7 @@ sessionstore: P{O:sessionstore}
 snapshot: P{O:dumps::generation::worker::dumper or O:dumps::generation::worker::dumper_monitor or O:dumps::generation::worker::dumper_misc_crons_only}
 #snapshot-canary: P{O:dumps::generation::worker::testbed}
 stat: P{O:statistics::private or O:statistics::cruncher or O:statistics::gpu or O:statistics::explorer}
+stat-hdfs: P{O:statistics::private or O:statistics::explorer}
 swift: A:swift-fe or A:swift-be
 swift-be: P{O:swift::storage}
 swift-be-canary: P{ms-be1013.eqiad.wmnet}
