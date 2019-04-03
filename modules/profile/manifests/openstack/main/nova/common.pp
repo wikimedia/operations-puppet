@@ -24,8 +24,6 @@ class profile::openstack::main::nova::common(
     $compute_workers = hiera('profile::openstack::main::nova::compute_workers'),
     ) {
 
-    require ::profile::openstack::main::serverpackages
-
     class {'profile::openstack::base::nova::common::nova_network':
         version                  => $version,
         nova_controller          => $nova_controller,

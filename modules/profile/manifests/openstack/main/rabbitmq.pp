@@ -11,8 +11,6 @@ class profile::openstack::main::rabbitmq(
     $designate_host_standby = hiera('profile::openstack::main::designate_host_standby'),
     $nova_rabbit_password = hiera('profile::openstack::main::nova::rabbit_pass'),
 ){
-
-    require ::profile::openstack::main::serverpackages
     class {'::profile::openstack::base::rabbitmq':
         nova_controller        => $nova_controller,
         monitor_user           => $monitor_user,

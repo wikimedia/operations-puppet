@@ -23,7 +23,6 @@ class profile::openstack::labtest::nova::common(
     $spice_hostname = hiera('profile::openstack::labtest::spice_hostname'),
     ) {
 
-    require ::profile::openstack::labtest::serverpackages
     class {'::profile::openstack::base::nova::common::nova_network':
         version                  => $version,
         nova_controller          => $nova_controller,

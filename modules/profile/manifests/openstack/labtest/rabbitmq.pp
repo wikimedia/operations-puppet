@@ -12,7 +12,6 @@ class profile::openstack::labtest::rabbitmq(
     $nova_rabbit_password = hiera('profile::openstack::labtest::nova::rabbit_pass'),
 ){
 
-    require ::profile::openstack::labtest::serverpackages
     class {'::profile::openstack::base::rabbitmq':
         nova_controller        => $nova_controller,
         monitor_user           => $monitor_user,

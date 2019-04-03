@@ -10,7 +10,6 @@ class profile::openstack::labtest::glance(
     $labs_hosts_range = hiera('profile::openstack::labtest::labs_hosts_range'),
     ) {
 
-    require ::profile::openstack::labtest::serverpackages
     class {'::profile::openstack::base::glance':
         version                 => $version,
         nova_controller         => $nova_controller,
