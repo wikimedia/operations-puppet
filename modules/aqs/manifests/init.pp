@@ -77,6 +77,7 @@ class aqs(
     $druid_datasources             = undef,
     $druid_uri_pattern             = undef,
     $use_nodejs10                  = false,
+    $contact_groups                = 'admins,analytics',
 ) {
 
     service::node { 'aqs':
@@ -92,6 +93,7 @@ class aqs(
         init_restart    => false,
         deployment      => 'scap3',
         use_nodejs10    => $use_nodejs10,
+        contact_groups  => $contact_groups,
     }
 
 }
