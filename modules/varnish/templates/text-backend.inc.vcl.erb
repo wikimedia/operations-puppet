@@ -40,7 +40,7 @@ sub misspass_mangle {
 			set bereq.url = "/" + bereq.http.host + regsub(bereq.url, "^/api/rest_v1/", "/v1/");
 		}
 
-		// Redirect url shortener w.wiki urls to meta (T133485)
+		// Rewrite url shortener w.wiki urls to meta (T133485)
 		if (bereq.http.host == "<%= @vcl_config.fetch('shortener_domain') %>" && bereq.url != "/") {
 			set bereq.http.host = "meta.wikimedia.<%= @vcl_config.fetch('top_domain') %>";
 			set bereq.url = "/wiki/Special:UrlRedirector" + bereq.url;

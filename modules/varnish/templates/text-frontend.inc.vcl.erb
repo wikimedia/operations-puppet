@@ -222,9 +222,12 @@ sub cluster_fe_recv {
 
 	// shortener URLs can be validated and restricted here
 	if (req.http.host == "<%= @vcl_config.fetch('shortener_domain') %>") {
-		if (req.url !~ "^/[23456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz$_]*$") {
-			return (synth(404, "Short URL Not Found"));
+		// Only allow GET/HEAD to the shortener
+		if (req.method != "GET" && req.method != "HEAD") {
+			return (synth(405, "Method not allowed"));
 		}
+	        // Strip query args: we don't use them, but others may send junk which would hurt caching
+		set req.url = regsub(req.url, "\?.*$", "");
 	}
 
 	// Users that just logged out, should not get a 304 for their
