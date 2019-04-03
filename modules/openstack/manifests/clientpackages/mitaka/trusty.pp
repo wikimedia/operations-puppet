@@ -2,7 +2,6 @@ class openstack::clientpackages::mitaka::trusty(
 ) {
     # repo is same as for server packages!
     include ::openstack::serverpackages::mitaka::trusty
-    require openstack::clientpackages::anyopenstack_anydebian
 
     $python3packages = [
         'python3-keystoneclient',

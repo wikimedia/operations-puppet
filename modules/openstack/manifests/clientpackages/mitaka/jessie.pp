@@ -1,7 +1,6 @@
 class openstack::clientpackages::mitaka::jessie(
 ) {
     require openstack::commonpackages::mitaka
-    require openstack::clientpackages::anyopenstack_anydebian
 
     apt::pin { 'jessie_mitaka_pinning_python_cinderclient':
         package  => 'python-cinderclient',
