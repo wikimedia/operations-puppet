@@ -281,6 +281,7 @@ profile::etcd::tlsproxy::tls_upstream: false
 profile::elasticsearch::version: '6.5'
 profile::elasticsearch::config_version: '6'
 profile::elasticsearch::cirrus::ferm_srange: ''
+profile::elasticsearch::cirrus::expose_http: false
 profile::elasticsearch::cirrus::storage_device: dm-0
 profile::elasticsearch::rack: ''
 profile::elasticsearch::row: ''

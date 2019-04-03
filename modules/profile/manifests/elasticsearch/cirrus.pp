@@ -5,8 +5,13 @@
 #
 # For documentation of parameters, see the elasticsearch profile.
 #
+# [*expose_http*]
+#   For historical reason we expose HTTP endpoints. For new clusters, we want
+#   to disable that, and cleanup the old ones. For transition, let's make this
+#   configureable.
 class profile::elasticsearch::cirrus(
     String $ferm_srange = hiera('profile::elasticsearch::cirrus::ferm_srange'),
+    Boolean $expose_http = hiera('profile::elasticsearch::cirrus::expose_http'),
     String $storage_device = hiera('profile::elasticsearch::cirrus::storage_device'),
     Array[String] $prometheus_nodes = hiera('prometheus_nodes'),
 ) {
@@ -30,11 +35,13 @@ class profile::elasticsearch::cirrus(
         $http_port = $instance_params['http_port']
         $tls_port = $instance_params['tls_port']
 
-        ferm::service { "elastic-http-${http_port}":
-            proto   => 'tcp',
-            port    => $http_port,
-            notrack => true,
-            srange  => $ferm_srange,
+        if $expose_http {
+            ferm::service { "elastic-http-${http_port}":
+                proto   => 'tcp',
+                port    => $http_port,
+                notrack => true,
+                srange  => $ferm_srange,
+            }
         }
 
         ferm::service { "elastic-https-${tls_port}":

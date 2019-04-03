@@ -10,6 +10,7 @@ profile::elasticsearch::version: '6.5'
 profile::elasticsearch::config_version: '6'
 profile::elasticsearch::cirrus::storage_device: md1
 profile::elasticsearch::cirrus::ferm_srange: '$DOMAIN_NETWORKS'
+profile::elasticsearch::cirrus::expose_http: true
 profile::elasticsearch::base_data_dir: /srv/elasticsearch
 profile::elasticsearch::common_settings:
     awareness_attributes: 'row'
