@@ -1,5 +1,11 @@
 #!/bin/sh
 
+# Bail out if Icinga configuration is not valid, it would not restart
+if ! /usr/sbin/icinga -v /etc/icinga/icinga.cfg > /dev/null 2>&1; then
+    echo "Icinga configuration contains errors, skipping sync"
+    exit 1
+fi
+
 # Stop the service first to avoid inconsistencies
 /usr/sbin/service icinga stop
 /usr/bin/rsync -a rsync://<%= @active_host %>/icinga-tmpfs/status.dat /var/icinga-tmpfs/status.dat

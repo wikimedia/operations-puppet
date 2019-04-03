@@ -201,7 +201,7 @@ class profile::icinga(
     cron { 'sync-icinga-state':
         ensure  => $cron_presence,
         minute  => '33',
-        command => '/usr/local/sbin/run-no-puppet /usr/local/sbin/sync_icinga_state >/dev/null 2>&1',
+        command => "/usr/bin/systemd-cat -t 'sync_icinga_state' /usr/local/sbin/run-no-puppet /usr/local/sbin/sync_icinga_state",
     }
 
     # On the passive host, replace the downtime script with a warning.
