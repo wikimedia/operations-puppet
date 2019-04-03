@@ -18,11 +18,13 @@ PUPPETDB_URL = "http://localhost:8080/pdb/query/v4/facts/{fact}"
 app = Flask(__name__)
 
 
-@app.route("/v1/factcheck/<fact_name>")
+@app.route("/v1/facts/<fact_name>")
 def factcheck(fact_name):
     """Primary api endpoint.
 
-    Accepts a single fact name and returns a list of [hostname, value].
+    Accepts a single fact name and returns a dict of {hostname: value}.
+
+    'hostname' will only be the unique local host part.
     """
 
     if fact_name not in WHITELIST:
@@ -32,11 +34,13 @@ def factcheck(fact_name):
     if results.status_code != 200:
         abort(results.status_code)
 
-    fact_list = []
+    facts = {}
     for fact in results.json():
         value = fact["value"]
         if value == "Not Specified":
             value = None
-        fact_list.append((fact["certname"], value))
 
-    return jsonify(fact_list)
+        hostname = fact["certname"].split(".", 1)[0]
+        facts[hostname] = value
+
+    return jsonify(facts)
