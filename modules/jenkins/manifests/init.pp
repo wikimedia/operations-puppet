@@ -208,6 +208,19 @@ class jenkins(
         group  => 'adm',
     }
 
+    file { '/var/lib/jenkins/logs':
+        ensure => directory,
+        mode   => '0700',
+        owner  => 'jenkins',
+        group  => 'adm',
+    }
+    file { '/var/lib/jenkins/secrets':
+        ensure => directory,
+        mode   => '0700',
+        owner  => 'jenkins',
+        group  => 'adm',
+    }
+
     file { '/etc/default/jenkins':
         ensure  => absent,
         require => Package['jenkins'],
