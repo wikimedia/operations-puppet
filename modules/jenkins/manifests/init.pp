@@ -199,6 +199,14 @@ class jenkins(
         owner  => 'jenkins',
         group  => 'jenkins',
     }
+    # SECURITY-829 / CVE-2019-1003051
+    # Plugin stores credentials unencrypted.
+    file { '/var/lib/jenkins/hudson.plugins.ircbot.IrcPublisher.xml':
+        ensure => present,
+        mode   => '0660',
+        owner  => 'jenkins',
+        group  => 'adm',
+    }
 
     file { '/etc/default/jenkins':
         ensure  => absent,
