@@ -1,5 +1,8 @@
-class openstack::clientpackages::common(
+class openstack::clientpackages::anyopenstack_anydebian(
 ) {
+    # only put stuff here that makes sense for any openstack release, for any
+    # debian release, and obviously only client packages, libs, etc
+
     $py2packages = [
         'python-novaclient',
         'python-glanceclient',

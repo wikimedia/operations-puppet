@@ -1,6 +1,8 @@
 class openstack::clientpackages::newton::stretch(
 ) {
     # no special repo is configured, yet?
+    # i.e, openstack::commonpackages::newton or something similar
+    require openstack::clientpackages::anyopenstack_anydebian
 
     $python3packages = [
         'python3-keystoneauth1',

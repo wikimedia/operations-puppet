@@ -1,4 +1,5 @@
 class openstack::clientpackages::mitaka::stretch(
 ) {
-    notify { "${title}: no special configuration yet": }
+    require openstack::commonpackages::mitaka
+    require openstack::clientpackages::anyopenstack_anydebian
 }

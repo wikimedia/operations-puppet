@@ -1,4 +1,6 @@
 class openstack::clientpackages::newton::buster(
 ) {
-    notify { "${title}: no special configuration yet": }
+    # this probably requires the source repo for the openstack suite
+    # i.e, openstack::commonpackages::newton or something similar
+    require openstack::clientpackages::anyopenstack_anydebian
 }
