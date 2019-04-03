@@ -47,10 +47,6 @@ class network::constants {
                     '2620:0:861:3:208:80:154:84',       # icinga1001.wikimedia.org
                     '208.80.153.74',                    # icinga2001.wikimedia.org
                     '2620:0:860:3:208:80:153:74',       # icinga2001.wikimedia.org
-                    '208.80.154.82',                    # dbmonitor1001.wikimedia.org
-                    '2620:0:861:3:208:80:154:82',       # dbmonitor1001.wikimedia.org
-                    '208.80.153.52',                    # dbmonitor2001.wikimedia.org
-                    '2620:0:860:2:208:80:153:52',       # dbmonitor2001.wikimedia.org
                 ],
             'deployment_hosts' => [
                     '10.64.32.16',                      # deploy1001.eqiad.wmnet
