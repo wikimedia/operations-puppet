@@ -32,7 +32,7 @@ class profile::analytics::refinery::job::sqoop_mediawiki {
     $db_password_labs           = '/user/hdfs/mysql-analytics-labsdb-client-pw.txt'
     $db_password_private        = '/user/hdfs/mysql-analytics-research-client-pw.txt'
     # number of parallel processors to use when sqooping (querying MySQL)
-    $num_processors             = 3
+    $num_processors             = 10
     # number of sqoop mappers to use for jobs getting data
     # since the beginning of wiki times or since 1 month
     $num_mappers_all_times      = 64
