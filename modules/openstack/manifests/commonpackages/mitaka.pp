@@ -15,5 +15,18 @@ class openstack::commonpackages::mitaka(
         components => 'openstack-mitaka-jessie',
         trust_repo => true,
         source     => false,
+        notify     => Exec['openstack-mitaka-jessie-apt-upgrade'],
     }
+
+    # ensure apt can see the repo before any further Package[] declaration
+    # so this proper repo/pinning configuration applies in the same puppet
+    # agent run
+    exec { 'openstack-mitaka-jessie-apt-upgrade':
+        command     => '/usr/bin/apt-get update',
+        require     => Apt::Repository['openstack-mitaka-jessie'],
+        subscribe   => Apt::Repository['openstack-mitaka-jessie'],
+        refreshonly => true,
+        logoutput   => true,
+    }
+    Exec['openstack-mitaka-jessie-apt-upgrade'] -> Package <| |>
 }
