@@ -58,4 +58,6 @@ class mongodb (
         ensure    => running,
         subscribe => File['/etc/mongodb.conf'],
     }
+
+    base::service_auto_restart { 'mongodb': }
 }
