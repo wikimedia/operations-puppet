@@ -64,9 +64,9 @@ class postgresql::slave(
 
     file { "${data_dir}/recovery.conf":
         ensure  => $ensure,
-        owner   => 'root',
+        owner   => 'postgres',
         group   => 'root',
-        mode    => '0444',
+        mode    => '0644',
         content => template('postgresql/recovery.conf.erb'),
         before  => Service[$::postgresql::server::service_name],
         require => Exec["pg_basebackup-${master_server}"],
