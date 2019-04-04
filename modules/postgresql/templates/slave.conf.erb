@@ -1,0 +1,6 @@
+# replication slave
+hot_standby = on
+wal_level = hot_standby
+# Without this a restart of the DB is required after next puppet run
+# following failover
+max_wal_senders = <%= @max_wal_senders %>

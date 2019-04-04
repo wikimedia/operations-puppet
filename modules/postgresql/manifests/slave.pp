@@ -37,6 +37,7 @@ class postgresql::slave(
         'jessie'  => '9.4',
     },
     $ensure='present',
+    $max_wal_senders=5,
     $root_dir='/var/lib/postgresql',
     $use_ssl=false,
     $ssldir=undef,
@@ -58,7 +59,7 @@ class postgresql::slave(
         owner   => 'root',
         group   => 'root',
         mode    => '0444',
-        source  => 'puppet:///modules/postgresql/slave.conf',
+        content => template('postgresql/slave.conf.erb'),
         require => Package["postgresql-${pgversion}"],
     }
 
