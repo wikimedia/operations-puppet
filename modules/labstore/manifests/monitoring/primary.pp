@@ -1,4 +1,4 @@
-# == Class: labstore::monitoring::secondary
+# == Class: labstore::monitoring::primary
 #
 # This is the primary NFS server for Toolforge / Cloud VPS
 #
@@ -9,7 +9,7 @@
 # - check that cluster ip is assigned to DRBD primary
 # - NFS is being served over cluster IP
 
-class labstore::monitoring::secondary(
+class labstore::monitoring::primary(
     $drbd_role,
     $cluster_iface,
     $cluster_ip,

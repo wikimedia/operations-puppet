@@ -142,7 +142,7 @@ class profile::wmcs::nfs::primary(
         monitor_iface => $monitor_iface,
     }
 
-    class { 'labstore::monitoring::secondary':
+    class { 'labstore::monitoring::primary':
         drbd_role     => $drbd_role,
         cluster_iface => $monitor_iface,
         cluster_ip    => $cluster_ip,
