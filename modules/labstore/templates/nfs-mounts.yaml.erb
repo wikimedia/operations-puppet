@@ -1,3 +1,9 @@
+<% if @server_vols -%>
+volumes_served:
+  <% @server_vols.each do |vol| -%>
+  - <%= vol %>
+  <% end %>
+<% end -%>
 public:
   scratch: '/exp/scratch *(rw,sec=sys,sync,no_subtree_check,root_squash)'
   root: '/exp *(ro,fsid=0,sec=sys,sync,subtree_check,root_squash,nocrossmnt)'

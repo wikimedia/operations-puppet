@@ -12,10 +12,12 @@ module Puppet::Parser::Functions
   @@labs_nfs_config = nil
   newfunction(:mount_nfs_volume, :type => :rvalue, :arity => 2) do |args|
     module_path = function_get_module_path(['labstore'])
-    path = "#{module_path}/files/nfs-mounts.yaml"
+    path = "#{module_path}/templates/nfs-mounts.yaml.erb"
     mtime = File.stat(path).mtime
     if @@labs_nfs_config_touched.nil? || mtime != @@labs_nfs_config_touched
-        @@labs_nfs_config = function_loadyaml([path])
+        require 'yaml'
+        mount_yaml = function_template([path])
+        @@labs_nfs_config = YAML.safe_load(mount_yaml)
         @@labs_nfs_config_touched = mtime
     end
     config = @@labs_nfs_config['private']

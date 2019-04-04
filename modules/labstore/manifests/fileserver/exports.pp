@@ -1,5 +1,6 @@
 class labstore::fileserver::exports(
     $observer_pass,
+    $server_vols,
     ) {
     require_package(['python3-yaml'])
 
@@ -36,7 +37,7 @@ class labstore::fileserver::exports(
         owner   => 'root',
         group   => 'root',
         mode    => '0444',
-        source  => 'puppet:///modules/labstore/nfs-mounts.yaml',
+        content => template('labstore/nfs-mounts.yaml.erb'),
         require => [Package['python3'], Package['python3-yaml']],
         notify  => Service['nfs-exportd'],
     }
