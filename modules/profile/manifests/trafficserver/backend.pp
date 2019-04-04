@@ -34,7 +34,12 @@ class profile::trafficserver::backend (
         logo_height => '101',
         logo_alt    => 'Wikimedia',
         content     => template('varnish/errorpage.body.html.erb'),
-        footer      => '',
+        # An explanation for these (and more) fields is available here:
+        # https://docs.trafficserver.apache.org/en/latest/admin-guide/logging/formatting.en.html
+        # Rendered example:
+        # Request from 93.184.216.34 via cp1071.eqiad.wmnet, ATS/8.0.3
+        # Error: 502, connect failed at 2019-04-04 12:22:08 GMT
+        footer      => "<p>If you report this error to the Wikimedia System Administrators, please include the details below.</p><p class='text-muted'><code>Request from %<{X-Client-IP}cqh> via ${::fqdn}, %<{Server}psh><br>Error: %<pssc>, %<prrp> at %<cqtd> %<cqtt> GMT</code></p>",
     }
 
     class { '::trafficserver':
