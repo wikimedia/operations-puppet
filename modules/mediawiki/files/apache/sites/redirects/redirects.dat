@@ -152,7 +152,6 @@ funnel	education.wikimedia.org	//outreach.wikimedia.org/wiki/Special:MyLanguage/
 # Localised TLDs
 
 rewrite	*wikinews.de	//de.wikinews.org
-rewrite	*wicipediacymraeg.org	//cy.wikipedia.org
 rewrite	*wikipedia.org.il	//he.wikipedia.org
 rewrite	*wikipedia.co.il	//he.wikipedia.org
 rewrite	*wikipedia.bg	//bg.wikipedia.org
