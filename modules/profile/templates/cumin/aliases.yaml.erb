@@ -79,9 +79,10 @@ gerrit: P{O:gerrit}
 graphite: P{O:graphite::production}
 hadoop: A:hadoop-worker or A:hadoop-master or A:hadoop-standby
 hadoop-coordinator: P{O:analytics_cluster::coordinator}
+hadoop-hdfs-backup: P{flerovium.eqiad.wmnet or furud.codfw.wmnet}
+hadoop-hdfs-journal: P{C:cdh::hadoop::journalnode} and A:hadoop-worker
 hadoop-master: P{O:analytics_cluster::hadoop::master}
 hadoop-standby: P{O:analytics_cluster::hadoop::standby}
-hadoop-hdfs-journal: P{C:cdh::hadoop::journalnode} and A:hadoop-worker
 hadoop-worker: P{O:analytics_cluster::hadoop::worker}
 hadoop-worker-canary: P{analytics1042.eqiad.wmnet}
 hadoop-testcluster: P{O:analytics_test_cluster::hadoop::master or O:analytics_test_cluster::hadoop::standby or O:analytics_test_cluster::hadoop::worker or O:analytics_test_cluster::hadoop::ui or O:analytics_test_cluster::coordinator}
