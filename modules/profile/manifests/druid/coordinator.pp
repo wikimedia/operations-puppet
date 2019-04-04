@@ -52,6 +52,7 @@ class profile::druid::coordinator(
             description  => 'Druid coordinator',
             nrpe_command => '/usr/lib/nagios/plugins/check_procs -c 1:1 -C java -a \'io.druid.cli.Main server coordinator\'',
             critical     => false,
+            notes_url    => 'https://wikitech.wikimedia.org/wiki/Analytics/Systems/Druid',
         }
     }
 }

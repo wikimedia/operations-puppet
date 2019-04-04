@@ -58,6 +58,7 @@ class profile::druid::middlemanager(
             description  => 'Druid middlemanager',
             nrpe_command => '/usr/lib/nagios/plugins/check_procs -c 1:1 -C java -a \'io.druid.cli.Main server middleManager\'',
             critical     => false,
+            notes_url    => 'https://wikitech.wikimedia.org/wiki/Analytics/Systems/Druid',
         }
     }
 }
