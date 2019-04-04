@@ -36,6 +36,7 @@
 # pulseaudio (libpulse0)
 # seabios
 # python-dogpile.cache
+# python-psutil
 
 PKGS="alabaster
 alembic
@@ -147,7 +148,6 @@ python-pecan
 python-pika
 python-pika-pool
 python-positional
-python-psutil
 python-pycadf
 python-pymemcache
 python-pymysql
