@@ -92,6 +92,11 @@
 #   An array of Trafficserver::Logs. (default: []).
 #   See https://docs.trafficserver.apache.org/en/latest/admin-guide/files/logging.yaml.en.html
 #
+# [*error_page*]
+#   A string containing the error page to deliver to clients when there are
+#   problems with the HTTP transactions. (default: '<html><head><title>Error</title></head><body><p>Something went wrong</p></body></html>').
+#   See https://docs.trafficserver.apache.org/en/latest/admin-guide/monitoring/error-messages.en.html#body-factory
+#
 # === Examples
 #
 #  class { 'trafficserver':
@@ -134,6 +139,7 @@ class trafficserver(
     Array[Trafficserver::Log_format] $log_formats = [],
     Array[Trafficserver::Log_filter] $log_filters = [],
     Array[Trafficserver::Log] $logs = [],
+    String $error_page = '<html><head><title>Error</title></head><body><p>Something went wrong</p></body></html>',
 ) {
 
     ## Packages
@@ -155,6 +161,14 @@ class trafficserver(
                 content => template('trafficserver/udev_storage.rules.erb'),
             }
         }
+    }
+
+    $error_template_path = '/etc/trafficserver/error_template/default'
+    file {
+      ['/etc/trafficserver/error_template', $error_template_path]:
+        ensure => directory,
+        owner  => $user,
+        mode   => '0755',
     }
 
     ## Config files
@@ -191,6 +205,16 @@ class trafficserver(
           # Response body can be changed by pointing to a text file with actual
           # contents instead of /dev/null
           content => '/check /dev/null text/plain 200 403',;
+
+        "${error_template_path}/.body_factory_info":
+          # This file just needs to be there or ATS will refuse loading any
+          # template
+          content => '',
+          require => File[$error_template_path];
+
+        "${error_template_path}/default":
+          content => $error_page,
+          require => File[$error_template_path];
     }
 
     ## Service

@@ -84,3 +84,6 @@ CONFIG proxy.config.ssl.client.CA.cert.path STRING <%= @outbound_tls_cacert_dirp
 CONFIG proxy.config.ssl.client.CA.cert.filename STRING <%= @outbound_tls_cacert_filename %>
 <% end -%>
 <% end -%>
+
+# Location of HTML template for error pages
+CONFIG proxy.config.body_factory.template_sets_dir STRING <%= @error_template_path %>
