@@ -33,7 +33,7 @@ define netops::ripeatlas(
             host           => "ripe-atlas-${title}",
             group          => $group,
             check_interval => 5,
-            notes_url      => 'https://wikitech.wikimedia.org/wiki/Network_monitoring#RIPE_alerts',
+            notes_url      => 'https://wikitech.wikimedia.org/wiki/Network_monitoring#Atlas_alerts',
         }
     }
 
@@ -44,7 +44,7 @@ define netops::ripeatlas(
             host           => "ripe-atlas-${title} IPv6",
             group          => $group,
             check_interval => 5,
-            notes_url      => 'https://wikitech.wikimedia.org/wiki/Network_monitoring#RIPE_alerts',
+            notes_url      => 'https://wikitech.wikimedia.org/wiki/Network_monitoring#Atlas_alerts',
         }
     }
 }
