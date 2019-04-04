@@ -37,6 +37,7 @@
 # seabios
 # python-dogpile.cache
 # python-psutil
+# gdb
 
 PKGS="alabaster
 alembic
@@ -51,7 +52,6 @@ dnspython
 facter
 firmware-nonfree
 flask
-gdb
 glance
 ifupdown
 jinja2
