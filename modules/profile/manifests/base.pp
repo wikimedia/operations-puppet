@@ -29,7 +29,7 @@ class profile::base(
     # TODO: need to clarify with _joe_ when he comes back of vacation 2019-03-11
     $debdeploy_exclude_mounts = hiera('profile::base::debdeploy::exclude_mounts', []),
     $debdeploy_exclude_filesystems = hiera('profile::base::debdeploy::exclude_filesystems', []),
-    $debdeploy_filter_services = hiera('profile::base::debdeploy::filter_services', {}),
+    $debdeploy_filter_services = lookup('profile::base::debdeploy::filter_services', Hash, 'hash', {}),
 ) {
     require ::profile::base::certificates
     class { '::apt':
