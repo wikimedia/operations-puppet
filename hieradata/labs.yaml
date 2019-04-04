@@ -74,6 +74,8 @@ profile::cache::ssl::unified::acme_chief: false
 profile::cache::ssl::unified::le_server_name: 'beta.wmflabs.org'
 profile::cache::ssl::unified::le_subjects: ['beta.wmflabs.org']
 
+profile::cache::ssl::wikibase::monitoring: false
+
 profile::cache::upload::upload_domain: 'upload.beta.wmflabs.org'
 profile::cache::upload::upload_webp_hits_threshold: 10000
 profile::cache::upload::maps_domain: 'maps.beta.wmflabs.org'
