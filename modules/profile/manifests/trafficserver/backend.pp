@@ -24,6 +24,19 @@ class profile::trafficserver::backend (
         default => "/etc/trafficserver/lua/${default_lua_script}.lua ${::hostname}",
     }
 
+    $errorpage = {
+        title       => 'Wikimedia Error',
+        pagetitle   => 'Error',
+        logo_link   => 'https://www.wikimedia.org',
+        logo_src    => 'https://www.wikimedia.org/static/images/wmf-logo.png',
+        logo_srcset => 'https://www.wikimedia.org/static/images/wmf-logo-2x.png 2x',
+        logo_width  => '135',
+        logo_height => '101',
+        logo_alt    => 'Wikimedia',
+        content     => template('varnish/errorpage.body.html.erb'),
+        footer      => '',
+    }
+
     class { '::trafficserver':
         port                         => $port,
         outbound_tls_cipher_suite    => $outbound_tls_cipher_suite,
@@ -37,6 +50,7 @@ class profile::trafficserver::backend (
         log_formats                  => $log_formats,
         log_filters                  => $log_filters,
         logs                         => $logs,
+        error_page                   => template('mediawiki/errorpage.html.erb'),
     }
 
     # Install default Lua script
