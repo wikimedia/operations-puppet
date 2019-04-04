@@ -1,0 +1,65 @@
+cluster: cache_upload
+cache::cluster: upload
+cache::lua_support: true
+admin::groups:
+  - perf-roots
+  - varnish-log-readers
+prometheus::node_exporter::collectors_extra:
+  - qdisc
+  - meminfo_numa
+mtail::ensure: 'stopped'
+cache::tune_for_media: true
+cache::req_handling:
+  upload.wikimedia.org:
+    director: 'swift'
+    subpaths:
+      '^/+[^/]+/[^/]+/thumb/':
+        director: 'swift_thumbs'
+  maps.wikimedia.org:
+    director: 'kartotherian'
+# Profile parameters
+# Profile::cache::base
+# NOTE: Add the public WMCS IP space when T209011 is done
+profile::cache::base::extra_nets: ['172.16.0.0/12']
+profile::cache::base::admission_policy: 'none'
+profile::cache::base::zero_site: 'https://zero.wikimedia.org'
+profile::cache::base::purge_host_regex: '[um][pa][lp][os]'
+profile::cache::base::purge_multicasts: ['239.128.0.112', '239.128.0.113', '239.128.0.114', '239.128.0.115']
+profile::cache::base::purge_varnishes: ['127.0.0.1:3128', '127.0.0.1:3127,1.0']
+profile::cache::base::fe_runtime_params:
+    - default_ttl=86400
+    - gethdr_extrachance=0
+profile::cache::varnish::cache_be_opts:
+    port: 3128
+    connect_timeout: '5s'
+    first_byte_timeout: '35s'
+    between_bytes_timeout: '60s'
+    max_connections: 50000
+    probe: 'varnish'
+profile::cache::varnish::common_vcl_config:
+    allowed_methods: '^(GET|HEAD|OPTIONS|PURGE)$'
+    # accept only upload purge traffic
+    purge_host_regex: '^(upload|maps)\.wikimedia\.org$'
+    upload_domain: 'upload.wikimedia.org'
+    upload_webp_hits_threshold: 100
+    maps_domain: 'maps.wikimedia.org'
+profile::cache::varnish::frontend::backend_service: ats-be
+profile::cache::varnish::frontend::fe_vcl_config:
+    pass_random: false
+    admission_policy: 'none'
+    varnish_probe_ms: 100
+    keep: '1d'
+profile::cache::varnish::frontend::fe_jemalloc_conf: 'lg_dirty_mult:8,lg_chunk:17'
+profile::cache::varnish::frontend::fe_extra_vcl: ['upload-common', 'normalize_path']
+# Profile::cache::ssl::unified
+profile::cache::ssl::unified::monitoring: true
+profile::cache::ssl::unified::letsencrypt: false
+profile::cache::ssl::unified::acme_chief: false
+
+# Enable varnishkafka-webrequest instance monitoring.
+profile::cache::kafka::webrequest::monitoring_enabled: true
+profile::cache::kafka::webrequest::kafka_cluster_name: jumbo-eqiad
+profile::cache::kafka::webrequest::ssl_enabled: true
+
+profile::cache::upload::upload_webp_hits_threshold: 100
+diamond::remove: true
