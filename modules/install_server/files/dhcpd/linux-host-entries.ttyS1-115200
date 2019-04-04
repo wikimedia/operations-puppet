@@ -1594,11 +1594,6 @@ host db2031 {
     filename "lpxelinux.0";
 }
 
-host db2033 {
-    hardware ethernet 40:a8:f0:26:56:5c;
-    fixed-address db2033.codfw.wmnet;
-}
-
 host db2034 {
     hardware ethernet a0:d3:c1:fa:2d:80;
     fixed-address db2034.codfw.wmnet;

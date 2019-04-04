@@ -604,10 +604,15 @@ node 'db2034.codfw.wmnet' {
 }
 
 # x1 codfw slaves
-# db2033 BBU is broken - T184888
-node /^db20(33|69|96)\.codfw\.wmnet/ {
+node /^db20(69|96)\.codfw\.wmnet/ {
     role(mariadb::core)
 }
+
+# Ready for decommission T219493
+node 'db2033.codfw.wmnet' {
+    role(spare::system)
+}
+
 
 ## m1 shard
 
