@@ -1264,6 +1264,7 @@ node 'labcontrol1002.wikimedia.org' {
 
 node 'cloudcontrol2001-dev.wikimedia.org' {
     role(wmcs::openstack::codfw1dev::control)
+    interface::add_ip6_mapped { 'main': }
 }
 
 node /cloudvirt200[1-3]-dev\.codfw\.wmnet/ {
