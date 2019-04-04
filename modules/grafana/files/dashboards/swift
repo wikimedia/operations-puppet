@@ -26,1174 +26,1388 @@
   "editable": true,
   "gnetId": null,
   "graphTooltip": 0,
-  "hideControls": false,
-  "id": 602,
+  "iteration": 1553510952031,
   "links": [],
-  "refresh": false,
-  "rows": [
+  "panels": [
     {
-      "collapse": false,
-      "height": "300px",
-      "panels": [
-        {
-          "aliasColors": {},
-          "annotate": {
-            "enable": false
-          },
-          "bars": false,
-          "dashLength": 10,
-          "dashes": false,
-          "datasource": "graphite",
-          "fill": 1,
-          "grid": {
-            "max": null,
-            "min": null
-          },
-          "height": "",
-          "id": 10,
-          "interactive": true,
-          "legend": {
-            "avg": true,
-            "current": false,
-            "max": false,
-            "min": false,
-            "show": true,
-            "total": false,
-            "values": true
-          },
-          "legend_counts": true,
-          "lines": true,
-          "linewidth": 1,
-          "links": [],
-          "nullPointMode": "null",
-          "options": false,
-          "percentage": false,
-          "pointradius": 5,
-          "points": false,
-          "renderer": "flot",
-          "resolution": 100,
-          "scale": 1,
-          "seriesOverrides": [],
-          "spaceLength": 10,
-          "span": 6,
-          "spyable": true,
-          "stack": true,
-          "steppedLine": false,
-          "targets": [
-            {
-              "refId": "A",
-              "target": "alias(movingAverage(sumSeries(swift.$DC-prod.*.proxy-server.object.GET.2*.timing.sample_rate), 5), 'GET 2xx')"
-            },
-            {
-              "refId": "B",
-              "target": "alias(movingAverage(sumSeries(swift.$DC-prod.*.proxy-server.object.HEAD.2*.timing.sample_rate), 5), 'HEAD 2xx')"
-            },
-            {
-              "refId": "C",
-              "target": "alias(movingAverage(sumSeries(swift.$DC-prod.*.proxy-server.object.GET.3*.timing.sample_rate), 5), 'GET 3xx')"
-            }
-          ],
-          "thresholds": [],
-          "timeFrom": null,
-          "timeShift": null,
-          "timezone": "browser",
-          "title": "object not state-changing",
-          "tooltip": {
-            "query_as_alias": true,
-            "shared": true,
-            "sort": 0,
-            "value_type": "individual"
-          },
-          "type": "graph",
-          "xaxis": {
-            "buckets": null,
-            "mode": "time",
-            "name": null,
-            "show": true,
-            "values": []
-          },
-          "yaxes": [
-            {
-              "format": "short",
-              "label": "req/s",
-              "logBase": 1,
-              "max": null,
-              "min": null,
-              "show": true
-            },
-            {
-              "format": "short",
-              "logBase": 1,
-              "max": null,
-              "min": null,
-              "show": true
-            }
-          ],
-          "zerofill": true
-        },
-        {
-          "aliasColors": {},
-          "annotate": {
-            "enable": false
-          },
-          "bars": false,
-          "dashLength": 10,
-          "dashes": false,
-          "datasource": "graphite",
-          "fill": 1,
-          "grid": {
-            "max": null,
-            "min": null
-          },
-          "height": "",
-          "id": 7,
-          "interactive": true,
-          "legend": {
-            "avg": true,
-            "current": false,
-            "max": false,
-            "min": false,
-            "show": true,
-            "total": false,
-            "values": true
-          },
-          "legend_counts": true,
-          "lines": true,
-          "linewidth": 1,
-          "links": [],
-          "nullPointMode": "null",
-          "options": false,
-          "percentage": false,
-          "pointradius": 5,
-          "points": false,
-          "renderer": "flot",
-          "resolution": 100,
-          "scale": 1,
-          "seriesOverrides": [],
-          "spaceLength": 10,
-          "span": 6,
-          "spyable": true,
-          "stack": true,
-          "steppedLine": false,
-          "targets": [
-            {
-              "refId": "A",
-              "target": "alias(movingAverage(sumSeries(swift.$DC-prod.*.proxy-server.object.PUT.2*.timing.sample_rate), 5), 'PUT 2xx')"
-            },
-            {
-              "refId": "B",
-              "target": "alias(movingAverage(sumSeries(swift.$DC-prod.*.proxy-server.object.DELETE.2*.timing.sample_rate), 5), 'DELETE 2xx')"
-            }
-          ],
-          "thresholds": [],
-          "timeFrom": null,
-          "timeShift": null,
-          "timezone": "browser",
-          "title": "object state-changing",
-          "tooltip": {
-            "query_as_alias": true,
-            "shared": true,
-            "sort": 0,
-            "value_type": "individual"
-          },
-          "type": "graph",
-          "xaxis": {
-            "buckets": null,
-            "mode": "time",
-            "name": null,
-            "show": true,
-            "values": []
-          },
-          "yaxes": [
-            {
-              "format": "short",
-              "label": "req/s",
-              "logBase": 1,
-              "max": null,
-              "min": null,
-              "show": true
-            },
-            {
-              "format": "short",
-              "logBase": 1,
-              "max": null,
-              "min": null,
-              "show": true
-            }
-          ],
-          "zerofill": true
-        },
-        {
-          "aliasColors": {},
-          "annotate": {
-            "enable": false
-          },
-          "bars": false,
-          "dashLength": 10,
-          "dashes": false,
-          "datasource": "graphite",
-          "fill": 1,
-          "grid": {
-            "max": null,
-            "min": null
-          },
-          "height": "",
-          "id": 21,
-          "interactive": true,
-          "legend": {
-            "avg": true,
-            "current": false,
-            "hideEmpty": false,
-            "max": false,
-            "min": false,
-            "show": true,
-            "total": false,
-            "values": true
-          },
-          "legend_counts": true,
-          "lines": true,
-          "linewidth": 1,
-          "links": [],
-          "nullPointMode": "null",
-          "options": false,
-          "percentage": false,
-          "pointradius": 5,
-          "points": false,
-          "renderer": "flot",
-          "resolution": 100,
-          "scale": 1,
-          "seriesOverrides": [],
-          "spaceLength": 10,
-          "span": 6,
-          "spyable": true,
-          "stack": true,
-          "steppedLine": false,
-          "targets": [
-            {
-              "refId": "A",
-              "target": "alias(sumSeries(swift.$DC-prod.*.proxy-server.*.GET.4[0-8]*.timing.sample_rate), 'GET 4xx')"
-            },
-            {
-              "refId": "B",
-              "target": "alias(sumSeries(swift.$DC-prod.*.proxy-server.*.HEAD.4*.timing.sample_rate), 'HEAD 4xx')"
-            },
-            {
-              "refId": "C",
-              "target": "alias(sumSeries(swift.$DC-prod.*.proxy-server.*.DELETE.4*.timing.sample_rate), 'DELETE 4xx')"
-            },
-            {
-              "refId": "D",
-              "target": "alias(sumSeries(swift.$DC-prod.*.proxy-server.*.PUT.4[0-8]*.timing.sample_rate), 'PUT 4xx')"
-            },
-            {
-              "refId": "E",
-              "target": "alias(sumSeries(swift.$DC-prod.*.proxy-server.*.POST.4*.timing.sample_rate), 'POST 4xx')"
-            },
-            {
-              "refId": "F",
-              "target": "alias(sumSeries(swift.$DC-prod.*.proxy-server.*.GET.499.timing.sample_rate), 'GET 499')"
-            },
-            {
-              "refId": "G",
-              "target": "alias(sumSeries(swift.$DC-prod.*.proxy-server.*.PUT.499.timing.sample_rate), 'PUT 499')"
-            }
-          ],
-          "thresholds": [],
-          "timeFrom": null,
-          "timeShift": null,
-          "timezone": "browser",
-          "title": "client errors",
-          "tooltip": {
-            "query_as_alias": true,
-            "shared": true,
-            "sort": 0,
-            "value_type": "individual"
-          },
-          "type": "graph",
-          "xaxis": {
-            "buckets": null,
-            "mode": "time",
-            "name": null,
-            "show": true,
-            "values": []
-          },
-          "yaxes": [
-            {
-              "format": "short",
-              "label": "req/s",
-              "logBase": 1,
-              "max": null,
-              "min": null,
-              "show": true
-            },
-            {
-              "format": "short",
-              "logBase": 1,
-              "max": null,
-              "min": null,
-              "show": true
-            }
-          ],
-          "zerofill": true
-        },
-        {
-          "aliasColors": {},
-          "annotate": {
-            "enable": false
-          },
-          "bars": false,
-          "dashLength": 10,
-          "dashes": false,
-          "datasource": "graphite",
-          "fill": 1,
-          "grid": {
-            "max": null,
-            "min": null
-          },
-          "height": "",
-          "id": 22,
-          "interactive": true,
-          "legend": {
-            "avg": true,
-            "current": false,
-            "max": false,
-            "min": false,
-            "show": true,
-            "total": false,
-            "values": true
-          },
-          "legend_counts": true,
-          "lines": true,
-          "linewidth": 1,
-          "links": [],
-          "nullPointMode": "null as zero",
-          "options": false,
-          "percentage": false,
-          "pointradius": 5,
-          "points": false,
-          "renderer": "flot",
-          "resolution": 100,
-          "scale": 1,
-          "seriesOverrides": [],
-          "spaceLength": 10,
-          "span": 6,
-          "spyable": true,
-          "stack": true,
-          "steppedLine": false,
-          "targets": [
-            {
-              "refId": "A",
-              "target": "alias(sumSeries(swift.$DC-prod.*.proxy-server.*.GET.5*.timing.sample_rate), 'GET 5xx')"
-            },
-            {
-              "refId": "B",
-              "target": "alias(sumSeries(swift.$DC-prod.*.proxy-server.*.HEAD.5*.timing.sample_rate), 'HEAD 5xx')"
-            },
-            {
-              "refId": "C",
-              "target": "alias(sumSeries(swift.$DC-prod.*.proxy-server.*.DELETE.select metric), 'DELETE 5xx')"
-            },
-            {
-              "refId": "D",
-              "target": "alias(sumSeries(swift.$DC-prod.*.proxy-server.*.PUT.5*.timing.sample_rate), 'PUT 5xx')"
-            },
-            {
-              "refId": "E",
-              "target": "alias(sumSeries(swift.$DC-prod.*.proxy-server.*.POST.5*.timing.sample_rate), 'POST 5xx')"
-            },
-            {
-              "refId": "F",
-              "target": "alias(sumSeries(swift.$DC-prod.*.proxy-server.errors.rate), 'proxy-server errors')"
-            }
-          ],
-          "thresholds": [],
-          "timeFrom": null,
-          "timeShift": null,
-          "timezone": "browser",
-          "title": "server errors",
-          "tooltip": {
-            "query_as_alias": true,
-            "shared": true,
-            "sort": 0,
-            "value_type": "individual"
-          },
-          "type": "graph",
-          "xaxis": {
-            "buckets": null,
-            "mode": "time",
-            "name": null,
-            "show": true,
-            "values": []
-          },
-          "yaxes": [
-            {
-              "format": "short",
-              "label": "req/s",
-              "logBase": 1,
-              "max": null,
-              "min": 0,
-              "show": true
-            },
-            {
-              "format": "short",
-              "logBase": 1,
-              "max": null,
-              "min": 0,
-              "show": true
-            }
-          ],
-          "zerofill": true
-        }
-      ],
+      "collapsed": false,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 0
+      },
+      "id": 27,
+      "panels": [],
       "repeat": null,
-      "repeatIteration": null,
-      "repeatRowId": null,
-      "showTitle": true,
       "title": "frontend (swift-proxy)",
-      "titleSize": "h6"
+      "type": "row"
     },
     {
-      "collapse": false,
-      "height": "250px",
-      "panels": [
+      "aliasColors": {},
+      "annotate": {
+        "enable": false
+      },
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": "graphite",
+      "fill": 1,
+      "grid": {
+        "max": null,
+        "min": null
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 1
+      },
+      "height": "",
+      "id": 10,
+      "interactive": true,
+      "legend": {
+        "avg": true,
+        "current": false,
+        "max": false,
+        "min": false,
+        "show": true,
+        "total": false,
+        "values": true
+      },
+      "legend_counts": true,
+      "lines": true,
+      "linewidth": 1,
+      "links": [],
+      "nullPointMode": "null",
+      "options": false,
+      "percentage": false,
+      "pointradius": 5,
+      "points": false,
+      "renderer": "flot",
+      "resolution": 100,
+      "scale": 1,
+      "seriesOverrides": [],
+      "spaceLength": 10,
+      "spyable": true,
+      "stack": true,
+      "steppedLine": false,
+      "targets": [
         {
-          "aliasColors": {},
-          "annotate": {
-            "enable": false
-          },
-          "bars": false,
-          "dashLength": 10,
-          "dashes": false,
-          "datasource": "graphite",
-          "fill": 1,
-          "grid": {
-            "max": null,
-            "min": null
-          },
-          "height": "",
-          "id": 8,
-          "interactive": true,
-          "legend": {
-            "avg": true,
-            "current": false,
-            "max": false,
-            "min": false,
-            "show": true,
-            "total": false,
-            "values": true
-          },
-          "legend_counts": true,
-          "lines": true,
-          "linewidth": 1,
-          "links": [],
-          "nullPointMode": "connected",
-          "options": false,
-          "percentage": true,
-          "pointradius": 5,
-          "points": false,
-          "renderer": "flot",
-          "resolution": 100,
-          "scale": 1,
-          "seriesOverrides": [],
-          "spaceLength": 10,
-          "span": 6,
-          "spyable": true,
-          "stack": false,
-          "steppedLine": false,
-          "targets": [
-            {
-              "hide": false,
-              "refId": "A",
-              "target": "alias(keepLastValue(swift.$DC-prod.dispersion.container.pct_found), 'container')"
-            },
-            {
-              "refId": "B",
-              "target": "alias(keepLastValue(swift.$DC-prod.dispersion.object.pct_found), 'object')"
-            }
-          ],
-          "thresholds": [],
-          "timeFrom": null,
-          "timeShift": null,
-          "timezone": "browser",
-          "title": "swift-dispersion (availability)",
-          "tooltip": {
-            "query_as_alias": true,
-            "shared": true,
-            "sort": 0,
-            "value_type": "cumulative"
-          },
-          "type": "graph",
-          "xaxis": {
-            "buckets": null,
-            "mode": "time",
-            "name": null,
-            "show": true,
-            "values": []
-          },
-          "yaxes": [
-            {
-              "format": "percent",
-              "label": "avail %",
-              "logBase": 1,
-              "max": null,
-              "min": null,
-              "show": true
-            },
-            {
-              "format": "short",
-              "logBase": 1,
-              "max": null,
-              "min": null,
-              "show": true
-            }
-          ],
-          "zerofill": true
+          "refId": "A",
+          "target": "alias(movingAverage(sumSeries(swift.$DC-prod.*.proxy-server.object.GET.2*.timing.sample_rate), 5), 'GET 2xx')"
         },
         {
-          "aliasColors": {},
-          "annotate": {
-            "enable": false
-          },
-          "bars": false,
-          "dashLength": 10,
-          "dashes": false,
-          "datasource": "graphite",
-          "fill": 1,
-          "grid": {
-            "max": null,
-            "min": null
-          },
-          "height": "",
-          "id": 9,
-          "interactive": true,
-          "legend": {
-            "avg": true,
-            "current": false,
-            "max": false,
-            "min": false,
-            "show": true,
-            "total": false,
-            "values": true
-          },
-          "legend_counts": true,
-          "lines": true,
-          "linewidth": 1,
-          "links": [],
-          "nullPointMode": "null",
-          "options": false,
-          "percentage": false,
-          "pointradius": 5,
-          "points": false,
-          "renderer": "flot",
-          "resolution": 100,
-          "scale": 1,
-          "seriesOverrides": [
-            {
-              "alias": "containers",
-              "yaxis": 2
-            },
-            {
-              "alias": "objects",
-              "yaxis": 2
-            },
-            {
-              "alias": "avg cpu",
-              "yaxis": 2
-            }
-          ],
-          "spaceLength": 10,
-          "span": 6,
-          "spyable": true,
-          "stack": false,
-          "steppedLine": false,
-          "targets": [
-            {
-              "refId": "A",
-              "target": "alias(swift.$DC-prod.stats.AUTH_mw.bytes, 'used')"
-            },
-            {
-              "refId": "B",
-              "target": "alias(swift.$DC-prod.stats.AUTH_mw.containers, 'containers')"
-            },
-            {
-              "refId": "C",
-              "target": "alias(swift.$DC-prod.stats.AUTH_mw.objects, 'objects')"
-            }
-          ],
-          "thresholds": [],
-          "timeFrom": null,
-          "timeShift": null,
-          "timezone": "browser",
-          "title": "mediawiki prod",
-          "tooltip": {
-            "query_as_alias": true,
-            "shared": true,
-            "sort": 0,
-            "value_type": "individual"
-          },
-          "type": "graph",
-          "xaxis": {
-            "buckets": null,
-            "mode": "time",
-            "name": null,
-            "show": true,
-            "values": []
-          },
-          "yaxes": [
-            {
-              "format": "bytes",
-              "label": "",
-              "logBase": 1,
-              "max": null,
-              "min": null,
-              "show": true
-            },
-            {
-              "format": "short",
-              "logBase": 1,
-              "max": null,
-              "min": null,
-              "show": true
-            }
-          ],
-          "zerofill": true
+          "refId": "B",
+          "target": "alias(movingAverage(sumSeries(swift.$DC-prod.*.proxy-server.object.HEAD.2*.timing.sample_rate), 5), 'HEAD 2xx')"
         },
         {
-          "aliasColors": {},
-          "annotate": {
-            "enable": false
-          },
-          "bars": false,
-          "dashLength": 10,
-          "dashes": false,
-          "datasource": "graphite",
-          "fill": 1,
-          "grid": {
-            "max": null,
-            "min": null
-          },
-          "height": "",
-          "id": 26,
-          "interactive": true,
-          "legend": {
-            "avg": true,
-            "current": false,
-            "max": false,
-            "min": false,
-            "show": true,
-            "total": false,
-            "values": true
-          },
-          "legend_counts": true,
-          "lines": true,
-          "linewidth": 1,
-          "links": [],
-          "nullPointMode": "null",
-          "options": false,
-          "percentage": false,
-          "pointradius": 5,
-          "points": false,
-          "renderer": "flot",
-          "resolution": 100,
-          "scale": 1,
-          "seriesOverrides": [],
-          "spaceLength": 10,
-          "span": 6,
-          "spyable": true,
-          "stack": false,
-          "steppedLine": false,
-          "targets": [
-            {
-              "refId": "A",
-              "target": "alias(summarize(nonNegativeDerivative(keepLastValue(swift.$DC-prod.containers.mw-media.originals.objects, 100)), '1h', 'sum', false), 'Uploads')",
-              "textEditor": false
-            }
-          ],
-          "thresholds": [],
-          "timeFrom": null,
-          "timeShift": null,
-          "timezone": "browser",
-          "title": "MediaWiki Originals Uploads",
-          "tooltip": {
-            "query_as_alias": true,
-            "shared": true,
-            "sort": 0,
-            "value_type": "individual"
-          },
-          "type": "graph",
-          "xaxis": {
-            "buckets": null,
-            "mode": "time",
-            "name": null,
-            "show": true,
-            "values": []
-          },
-          "yaxes": [
-            {
-              "format": "short",
-              "label": "",
-              "logBase": 1,
-              "max": null,
-              "min": null,
-              "show": true
-            },
-            {
-              "format": "short",
-              "logBase": 1,
-              "max": null,
-              "min": null,
-              "show": true
-            }
-          ],
-          "zerofill": true
+          "refId": "C",
+          "target": "alias(movingAverage(sumSeries(swift.$DC-prod.*.proxy-server.object.GET.3*.timing.sample_rate), 5), 'GET 3xx')"
         }
       ],
+      "thresholds": [],
+      "timeFrom": null,
+      "timeRegions": [],
+      "timeShift": null,
+      "timezone": "browser",
+      "title": "object not state-changing",
+      "tooltip": {
+        "query_as_alias": true,
+        "shared": true,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "format": "short",
+          "label": "req/s",
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        },
+        {
+          "format": "short",
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        }
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      },
+      "zerofill": true
+    },
+    {
+      "aliasColors": {},
+      "annotate": {
+        "enable": false
+      },
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": "graphite",
+      "fill": 1,
+      "grid": {
+        "max": null,
+        "min": null
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 12,
+        "y": 1
+      },
+      "height": "",
+      "id": 7,
+      "interactive": true,
+      "legend": {
+        "avg": true,
+        "current": false,
+        "max": false,
+        "min": false,
+        "show": true,
+        "total": false,
+        "values": true
+      },
+      "legend_counts": true,
+      "lines": true,
+      "linewidth": 1,
+      "links": [],
+      "nullPointMode": "null",
+      "options": false,
+      "percentage": false,
+      "pointradius": 5,
+      "points": false,
+      "renderer": "flot",
+      "resolution": 100,
+      "scale": 1,
+      "seriesOverrides": [],
+      "spaceLength": 10,
+      "spyable": true,
+      "stack": true,
+      "steppedLine": false,
+      "targets": [
+        {
+          "refId": "A",
+          "target": "alias(movingAverage(sumSeries(swift.$DC-prod.*.proxy-server.object.PUT.2*.timing.sample_rate), 5), 'PUT 2xx')"
+        },
+        {
+          "refId": "B",
+          "target": "alias(movingAverage(sumSeries(swift.$DC-prod.*.proxy-server.object.DELETE.2*.timing.sample_rate), 5), 'DELETE 2xx')"
+        }
+      ],
+      "thresholds": [],
+      "timeFrom": null,
+      "timeRegions": [],
+      "timeShift": null,
+      "timezone": "browser",
+      "title": "object state-changing",
+      "tooltip": {
+        "query_as_alias": true,
+        "shared": true,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "format": "short",
+          "label": "req/s",
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        },
+        {
+          "format": "short",
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        }
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      },
+      "zerofill": true
+    },
+    {
+      "aliasColors": {},
+      "annotate": {
+        "enable": false
+      },
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": "graphite",
+      "fill": 1,
+      "grid": {
+        "max": null,
+        "min": null
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 9
+      },
+      "height": "",
+      "id": 21,
+      "interactive": true,
+      "legend": {
+        "avg": true,
+        "current": false,
+        "hideEmpty": false,
+        "max": false,
+        "min": false,
+        "show": true,
+        "total": false,
+        "values": true
+      },
+      "legend_counts": true,
+      "lines": true,
+      "linewidth": 1,
+      "links": [],
+      "nullPointMode": "null",
+      "options": false,
+      "percentage": false,
+      "pointradius": 5,
+      "points": false,
+      "renderer": "flot",
+      "resolution": 100,
+      "scale": 1,
+      "seriesOverrides": [],
+      "spaceLength": 10,
+      "spyable": true,
+      "stack": true,
+      "steppedLine": false,
+      "targets": [
+        {
+          "refId": "A",
+          "target": "alias(sumSeries(swift.$DC-prod.*.proxy-server.*.GET.4[0-8]*.timing.sample_rate), 'GET 4xx')"
+        },
+        {
+          "refId": "B",
+          "target": "alias(sumSeries(swift.$DC-prod.*.proxy-server.*.HEAD.4*.timing.sample_rate), 'HEAD 4xx')"
+        },
+        {
+          "refId": "C",
+          "target": "alias(sumSeries(swift.$DC-prod.*.proxy-server.*.DELETE.4*.timing.sample_rate), 'DELETE 4xx')"
+        },
+        {
+          "refId": "D",
+          "target": "alias(sumSeries(swift.$DC-prod.*.proxy-server.*.PUT.4[0-8]*.timing.sample_rate), 'PUT 4xx')"
+        },
+        {
+          "refId": "E",
+          "target": "alias(sumSeries(swift.$DC-prod.*.proxy-server.*.POST.4*.timing.sample_rate), 'POST 4xx')"
+        },
+        {
+          "refId": "F",
+          "target": "alias(sumSeries(swift.$DC-prod.*.proxy-server.*.GET.499.timing.sample_rate), 'GET 499')"
+        },
+        {
+          "refId": "G",
+          "target": "alias(sumSeries(swift.$DC-prod.*.proxy-server.*.PUT.499.timing.sample_rate), 'PUT 499')"
+        }
+      ],
+      "thresholds": [],
+      "timeFrom": null,
+      "timeRegions": [],
+      "timeShift": null,
+      "timezone": "browser",
+      "title": "client errors",
+      "tooltip": {
+        "query_as_alias": true,
+        "shared": true,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "format": "short",
+          "label": "req/s",
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        },
+        {
+          "format": "short",
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        }
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      },
+      "zerofill": true
+    },
+    {
+      "aliasColors": {},
+      "annotate": {
+        "enable": false
+      },
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": "graphite",
+      "fill": 1,
+      "grid": {
+        "max": null,
+        "min": null
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 12,
+        "y": 9
+      },
+      "height": "",
+      "id": 22,
+      "interactive": true,
+      "legend": {
+        "avg": true,
+        "current": false,
+        "max": false,
+        "min": false,
+        "show": true,
+        "total": false,
+        "values": true
+      },
+      "legend_counts": true,
+      "lines": true,
+      "linewidth": 1,
+      "links": [],
+      "nullPointMode": "null as zero",
+      "options": false,
+      "percentage": false,
+      "pointradius": 5,
+      "points": false,
+      "renderer": "flot",
+      "resolution": 100,
+      "scale": 1,
+      "seriesOverrides": [],
+      "spaceLength": 10,
+      "spyable": true,
+      "stack": true,
+      "steppedLine": false,
+      "targets": [
+        {
+          "refId": "A",
+          "target": "alias(sumSeries(swift.$DC-prod.*.proxy-server.*.GET.5*.timing.sample_rate), 'GET 5xx')"
+        },
+        {
+          "refId": "B",
+          "target": "alias(sumSeries(swift.$DC-prod.*.proxy-server.*.HEAD.5*.timing.sample_rate), 'HEAD 5xx')"
+        },
+        {
+          "refId": "C",
+          "target": "alias(sumSeries(swift.$DC-prod.*.proxy-server.*.DELETE.select metric), 'DELETE 5xx')"
+        },
+        {
+          "refId": "D",
+          "target": "alias(sumSeries(swift.$DC-prod.*.proxy-server.*.PUT.5*.timing.sample_rate), 'PUT 5xx')"
+        },
+        {
+          "refId": "E",
+          "target": "alias(sumSeries(swift.$DC-prod.*.proxy-server.*.POST.5*.timing.sample_rate), 'POST 5xx')"
+        },
+        {
+          "refId": "F",
+          "target": "alias(sumSeries(swift.$DC-prod.*.proxy-server.errors.rate), 'proxy-server errors')"
+        }
+      ],
+      "thresholds": [],
+      "timeFrom": null,
+      "timeRegions": [],
+      "timeShift": null,
+      "timezone": "browser",
+      "title": "server errors",
+      "tooltip": {
+        "query_as_alias": true,
+        "shared": true,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "format": "short",
+          "label": "req/s",
+          "logBase": 1,
+          "max": null,
+          "min": 0,
+          "show": true
+        },
+        {
+          "format": "short",
+          "logBase": 1,
+          "max": null,
+          "min": 0,
+          "show": true
+        }
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      },
+      "zerofill": true
+    },
+    {
+      "collapsed": false,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 17
+      },
+      "id": 28,
+      "panels": [],
       "repeat": null,
-      "repeatIteration": null,
-      "repeatRowId": null,
-      "showTitle": true,
       "title": "cluster",
-      "titleSize": "h6"
+      "type": "row"
     },
     {
-      "collapse": false,
-      "height": "250px",
-      "panels": [
+      "aliasColors": {},
+      "annotate": {
+        "enable": false
+      },
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": "graphite",
+      "fill": 1,
+      "grid": {
+        "max": null,
+        "min": null
+      },
+      "gridPos": {
+        "h": 7,
+        "w": 12,
+        "x": 0,
+        "y": 18
+      },
+      "height": "",
+      "id": 8,
+      "interactive": true,
+      "legend": {
+        "avg": true,
+        "current": false,
+        "max": false,
+        "min": false,
+        "show": true,
+        "total": false,
+        "values": true
+      },
+      "legend_counts": true,
+      "lines": true,
+      "linewidth": 1,
+      "links": [],
+      "nullPointMode": "connected",
+      "options": false,
+      "percentage": true,
+      "pointradius": 5,
+      "points": false,
+      "renderer": "flot",
+      "resolution": 100,
+      "scale": 1,
+      "seriesOverrides": [],
+      "spaceLength": 10,
+      "spyable": true,
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
         {
-          "aliasColors": {},
-          "annotate": {
-            "enable": false
-          },
-          "bars": false,
-          "dashLength": 10,
-          "dashes": false,
-          "datasource": "$prometheus",
-          "fill": 1,
-          "grid": {
-            "max": null,
-            "min": null
-          },
-          "height": "",
-          "id": 17,
-          "interactive": true,
-          "legend": {
-            "avg": true,
-            "current": false,
-            "max": false,
-            "min": false,
-            "show": true,
-            "total": false,
-            "values": true
-          },
-          "legend_counts": true,
-          "lines": true,
-          "linewidth": 1,
-          "links": [],
-          "nullPointMode": "null",
-          "options": false,
-          "percentage": true,
-          "pointradius": 5,
-          "points": false,
-          "renderer": "flot",
-          "resolution": 100,
-          "scale": 1,
-          "seriesOverrides": [
-            {
-              "alias": "InErrors",
-              "yaxis": 2
-            },
-            {
-              "alias": "NoPorts",
-              "yaxis": 2
-            },
-            {
-              "alias": "RcvbufErrors",
-              "yaxis": 2
-            }
-          ],
-          "spaceLength": 10,
-          "span": 6,
-          "spyable": true,
-          "stack": false,
-          "steppedLine": false,
-          "targets": [
-            {
-              "expr": "sum(irate(node_network_receive_bytes{instance=~\"ms-fe.*\",device=~\"(eth|en[0-9a-z]+)[0-9]*\"}[5m]) > 0)",
-              "format": "time_series",
-              "intervalFactor": 2,
-              "legendFormat": "receive",
-              "refId": "A"
-            },
-            {
-              "expr": "sum(irate(node_network_transmit_bytes{instance=~\"ms-fe.*\",device=~\"(eth|en[0-9a-z]+)[0-9]*\"}[5m]) > 0)",
-              "format": "time_series",
-              "intervalFactor": 2,
-              "legendFormat": "transmit",
-              "refId": "B"
-            }
-          ],
-          "thresholds": [],
-          "timeFrom": null,
-          "timeShift": null,
-          "timezone": "browser",
-          "title": "network IO (frontend)",
-          "tooltip": {
-            "query_as_alias": true,
-            "shared": true,
-            "sort": 0,
-            "value_type": "cumulative"
-          },
-          "type": "graph",
-          "xaxis": {
-            "buckets": null,
-            "mode": "time",
-            "name": null,
-            "show": true,
-            "values": []
-          },
-          "yaxes": [
-            {
-              "format": "Bps",
-              "label": "",
-              "logBase": 1,
-              "max": null,
-              "min": null,
-              "show": true
-            },
-            {
-              "format": "short",
-              "logBase": 1,
-              "max": null,
-              "min": null,
-              "show": true
-            }
-          ],
-          "zerofill": true
+          "hide": false,
+          "refId": "A",
+          "target": "alias(keepLastValue(swift.$DC-prod.dispersion.container.pct_found), 'container')"
         },
         {
-          "aliasColors": {},
-          "annotate": {
-            "enable": false
-          },
-          "bars": false,
-          "dashLength": 10,
-          "dashes": false,
-          "datasource": "$prometheus",
-          "fill": 1,
-          "grid": {
-            "max": null,
-            "min": null
-          },
-          "height": "",
-          "id": 23,
-          "interactive": true,
-          "legend": {
-            "avg": true,
-            "current": false,
-            "max": false,
-            "min": false,
-            "show": true,
-            "total": false,
-            "values": true
-          },
-          "legend_counts": true,
-          "lines": true,
-          "linewidth": 1,
-          "links": [],
-          "nullPointMode": "null",
-          "options": false,
-          "percentage": true,
-          "pointradius": 5,
-          "points": false,
-          "renderer": "flot",
-          "resolution": 100,
-          "scale": 1,
-          "seriesOverrides": [
-            {
-              "alias": "InErrors",
-              "yaxis": 2
-            },
-            {
-              "alias": "NoPorts",
-              "yaxis": 2
-            },
-            {
-              "alias": "RcvbufErrors",
-              "yaxis": 2
-            }
-          ],
-          "spaceLength": 10,
-          "span": 6,
-          "spyable": true,
-          "stack": false,
-          "steppedLine": false,
-          "targets": [
-            {
-              "expr": "sum(irate(node_network_receive_bytes{instance=~\"ms-be.*\",device=~\"(eth|en[0-9a-z]+)[0-9]*\"}[5m]) > 0)",
-              "format": "time_series",
-              "interval": "",
-              "intervalFactor": 2,
-              "legendFormat": "receive",
-              "refId": "A"
-            },
-            {
-              "expr": "sum(irate(node_network_transmit_bytes{instance=~\"ms-be.*\",device=~\"(eth|en[0-9a-z]+)[0-9]*\"}[5m]) > 0)",
-              "format": "time_series",
-              "intervalFactor": 2,
-              "legendFormat": "transmit",
-              "refId": "B"
-            }
-          ],
-          "thresholds": [],
-          "timeFrom": null,
-          "timeShift": null,
-          "timezone": "browser",
-          "title": "network IO (backend)",
-          "tooltip": {
-            "query_as_alias": true,
-            "shared": true,
-            "sort": 0,
-            "value_type": "cumulative"
-          },
-          "type": "graph",
-          "xaxis": {
-            "buckets": null,
-            "mode": "time",
-            "name": null,
-            "show": true,
-            "values": []
-          },
-          "yaxes": [
-            {
-              "format": "Bps",
-              "label": "",
-              "logBase": 1,
-              "max": null,
-              "min": 0,
-              "show": true
-            },
-            {
-              "format": "short",
-              "logBase": 1,
-              "max": null,
-              "min": 0,
-              "show": true
-            }
-          ],
-          "zerofill": true
-        },
-        {
-          "aliasColors": {},
-          "annotate": {
-            "enable": false
-          },
-          "bars": false,
-          "dashLength": 10,
-          "dashes": false,
-          "datasource": "$prometheus",
-          "fill": 0,
-          "grid": {
-            "max": null,
-            "min": null
-          },
-          "height": "",
-          "id": 24,
-          "interactive": true,
-          "legend": {
-            "avg": true,
-            "current": false,
-            "max": false,
-            "min": false,
-            "show": true,
-            "total": false,
-            "values": true
-          },
-          "legend_counts": true,
-          "lines": true,
-          "linewidth": 1,
-          "links": [],
-          "nullPointMode": "null",
-          "options": false,
-          "percentage": true,
-          "pointradius": 5,
-          "points": false,
-          "renderer": "flot",
-          "resolution": 100,
-          "scale": 1,
-          "seriesOverrides": [
-            {
-              "alias": "InErrors",
-              "yaxis": 2
-            },
-            {
-              "alias": "NoPorts",
-              "yaxis": 2
-            },
-            {
-              "alias": "RcvbufErrors",
-              "yaxis": 2
-            }
-          ],
-          "spaceLength": 10,
-          "span": 6,
-          "spyable": true,
-          "stack": false,
-          "steppedLine": false,
-          "targets": [
-            {
-              "expr": "topk(3, node_load1{instance=~\"ms-fe.*\"})",
-              "format": "time_series",
-              "intervalFactor": 2,
-              "legendFormat": "{{instance}}",
-              "refId": "A"
-            },
-            {
-              "expr": "topk(3, node_load1{instance=~\"ms-be.*\"})",
-              "format": "time_series",
-              "intervalFactor": 2,
-              "legendFormat": "{{instance}}",
-              "refId": "B"
-            }
-          ],
-          "thresholds": [],
-          "timeFrom": null,
-          "timeShift": null,
-          "timezone": "browser",
-          "title": "top3 load (1m, fe+be)",
-          "tooltip": {
-            "query_as_alias": true,
-            "shared": true,
-            "sort": 0,
-            "value_type": "cumulative"
-          },
-          "type": "graph",
-          "xaxis": {
-            "buckets": null,
-            "mode": "time",
-            "name": null,
-            "show": true,
-            "values": []
-          },
-          "yaxes": [
-            {
-              "format": "short",
-              "label": "",
-              "logBase": 1,
-              "max": null,
-              "min": 0,
-              "show": true
-            },
-            {
-              "format": "short",
-              "logBase": 1,
-              "max": null,
-              "min": 0,
-              "show": true
-            }
-          ],
-          "zerofill": true
-        },
-        {
-          "aliasColors": {},
-          "annotate": {
-            "enable": false
-          },
-          "bars": true,
-          "dashLength": 10,
-          "dashes": false,
-          "datasource": "$prometheus",
-          "fill": 0,
-          "grid": {
-            "max": null,
-            "min": null
-          },
-          "height": "",
-          "id": 25,
-          "interactive": true,
-          "legend": {
-            "avg": true,
-            "current": false,
-            "max": false,
-            "min": false,
-            "show": true,
-            "total": false,
-            "values": true
-          },
-          "legend_counts": true,
-          "lines": false,
-          "linewidth": 1,
-          "links": [],
-          "nullPointMode": "null",
-          "options": false,
-          "percentage": false,
-          "pointradius": 5,
-          "points": false,
-          "renderer": "flot",
-          "resolution": 100,
-          "scale": 1,
-          "seriesOverrides": [],
-          "spaceLength": 10,
-          "span": 6,
-          "spyable": true,
-          "stack": true,
-          "steppedLine": false,
-          "targets": [
-            {
-              "expr": "topk(10, node_disk_io_now{instance=~\"ms-be.*\",device=~\"[vs]d[a-z]+\"} > 5)",
-              "format": "time_series",
-              "intervalFactor": 2,
-              "legendFormat": "{{instance}}/{{device}}",
-              "refId": "A"
-            }
-          ],
-          "thresholds": [],
-          "timeFrom": null,
-          "timeShift": null,
-          "timezone": "browser",
-          "title": "top10 disks doing I/O",
-          "tooltip": {
-            "query_as_alias": true,
-            "shared": true,
-            "sort": 2,
-            "value_type": "individual"
-          },
-          "type": "graph",
-          "xaxis": {
-            "buckets": null,
-            "mode": "time",
-            "name": null,
-            "show": true,
-            "values": []
-          },
-          "yaxes": [
-            {
-              "format": "short",
-              "label": "",
-              "logBase": 1,
-              "max": null,
-              "min": 0,
-              "show": true
-            },
-            {
-              "format": "short",
-              "logBase": 1,
-              "max": null,
-              "min": 0,
-              "show": true
-            }
-          ],
-          "zerofill": true
+          "refId": "B",
+          "target": "alias(keepLastValue(swift.$DC-prod.dispersion.object.pct_found), 'object')"
         }
       ],
+      "thresholds": [],
+      "timeFrom": null,
+      "timeRegions": [],
+      "timeShift": null,
+      "timezone": "browser",
+      "title": "swift-dispersion (availability)",
+      "tooltip": {
+        "query_as_alias": true,
+        "shared": true,
+        "sort": 0,
+        "value_type": "cumulative"
+      },
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "format": "percent",
+          "label": "avail %",
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        },
+        {
+          "format": "short",
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        }
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      },
+      "zerofill": true
+    },
+    {
+      "aliasColors": {},
+      "annotate": {
+        "enable": false
+      },
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": "graphite",
+      "fill": 1,
+      "grid": {
+        "max": null,
+        "min": null
+      },
+      "gridPos": {
+        "h": 7,
+        "w": 12,
+        "x": 12,
+        "y": 18
+      },
+      "height": "",
+      "id": 9,
+      "interactive": true,
+      "legend": {
+        "avg": true,
+        "current": false,
+        "max": false,
+        "min": false,
+        "show": true,
+        "total": false,
+        "values": true
+      },
+      "legend_counts": true,
+      "lines": true,
+      "linewidth": 1,
+      "links": [],
+      "nullPointMode": "null",
+      "options": false,
+      "percentage": false,
+      "pointradius": 5,
+      "points": false,
+      "renderer": "flot",
+      "resolution": 100,
+      "scale": 1,
+      "seriesOverrides": [
+        {
+          "alias": "containers",
+          "yaxis": 2
+        },
+        {
+          "alias": "objects",
+          "yaxis": 2
+        },
+        {
+          "alias": "avg cpu",
+          "yaxis": 2
+        }
+      ],
+      "spaceLength": 10,
+      "spyable": true,
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
+        {
+          "refId": "A",
+          "target": "alias(swift.$DC-prod.stats.AUTH_mw.bytes, 'used')"
+        },
+        {
+          "refId": "B",
+          "target": "alias(swift.$DC-prod.stats.AUTH_mw.containers, 'containers')"
+        },
+        {
+          "refId": "C",
+          "target": "alias(swift.$DC-prod.stats.AUTH_mw.objects, 'objects')"
+        }
+      ],
+      "thresholds": [],
+      "timeFrom": null,
+      "timeRegions": [],
+      "timeShift": null,
+      "timezone": "browser",
+      "title": "mediawiki prod",
+      "tooltip": {
+        "query_as_alias": true,
+        "shared": true,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "format": "bytes",
+          "label": "",
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        },
+        {
+          "format": "short",
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        }
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      },
+      "zerofill": true
+    },
+    {
+      "aliasColors": {},
+      "annotate": {
+        "enable": false
+      },
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": "graphite",
+      "fill": 1,
+      "grid": {
+        "max": null,
+        "min": null
+      },
+      "gridPos": {
+        "h": 7,
+        "w": 12,
+        "x": 0,
+        "y": 25
+      },
+      "height": "",
+      "id": 26,
+      "interactive": true,
+      "legend": {
+        "avg": true,
+        "current": false,
+        "max": false,
+        "min": false,
+        "show": true,
+        "total": false,
+        "values": true
+      },
+      "legend_counts": true,
+      "lines": true,
+      "linewidth": 1,
+      "links": [],
+      "nullPointMode": "null",
+      "options": false,
+      "percentage": false,
+      "pointradius": 5,
+      "points": false,
+      "renderer": "flot",
+      "resolution": 100,
+      "scale": 1,
+      "seriesOverrides": [],
+      "spaceLength": 10,
+      "spyable": true,
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
+        {
+          "refId": "A",
+          "target": "alias(summarize(nonNegativeDerivative(keepLastValue(swift.$DC-prod.containers.mw-media.originals.objects, 100)), '1h', 'sum', false), 'Uploads')",
+          "textEditor": false
+        }
+      ],
+      "thresholds": [],
+      "timeFrom": null,
+      "timeRegions": [],
+      "timeShift": null,
+      "timezone": "browser",
+      "title": "MediaWiki Originals Uploads",
+      "tooltip": {
+        "query_as_alias": true,
+        "shared": true,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "format": "short",
+          "label": "",
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        },
+        {
+          "format": "short",
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        }
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      },
+      "zerofill": true
+    },
+    {
+      "aliasColors": {},
+      "annotate": {
+        "enable": false
+      },
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": "graphite",
+      "fill": 0,
+      "grid": {
+        "max": null,
+        "min": null
+      },
+      "gridPos": {
+        "h": 7,
+        "w": 12,
+        "x": 12,
+        "y": 25
+      },
+      "height": "",
+      "id": 30,
+      "interactive": true,
+      "legend": {
+        "avg": true,
+        "current": false,
+        "max": false,
+        "min": false,
+        "show": true,
+        "total": false,
+        "values": true
+      },
+      "legend_counts": true,
+      "lines": true,
+      "linewidth": 1,
+      "links": [],
+      "nullPointMode": "null",
+      "options": false,
+      "percentage": false,
+      "pointradius": 5,
+      "points": false,
+      "renderer": "flot",
+      "resolution": 100,
+      "scale": 1,
+      "seriesOverrides": [],
+      "spaceLength": 10,
+      "spyable": true,
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
+        {
+          "refId": "A",
+          "target": "aliasByNode(keepLastValue(swift.$DC-prod.containers.mw-media.*.objects, 100), 4)",
+          "textEditor": true
+        }
+      ],
+      "thresholds": [],
+      "timeFrom": null,
+      "timeRegions": [],
+      "timeShift": null,
+      "timezone": "browser",
+      "title": "Objects by container type",
+      "tooltip": {
+        "query_as_alias": true,
+        "shared": true,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "format": "short",
+          "label": "",
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        },
+        {
+          "format": "short",
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        }
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      },
+      "zerofill": true
+    },
+    {
+      "collapsed": false,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 32
+      },
+      "id": 29,
+      "panels": [],
       "repeat": null,
-      "repeatIteration": null,
-      "repeatRowId": null,
-      "showTitle": true,
       "title": "system stats",
-      "titleSize": "h6"
+      "type": "row"
+    },
+    {
+      "aliasColors": {},
+      "annotate": {
+        "enable": false
+      },
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": "$prometheus",
+      "fill": 1,
+      "grid": {
+        "max": null,
+        "min": null
+      },
+      "gridPos": {
+        "h": 7,
+        "w": 12,
+        "x": 0,
+        "y": 33
+      },
+      "height": "",
+      "id": 17,
+      "interactive": true,
+      "legend": {
+        "avg": true,
+        "current": false,
+        "max": false,
+        "min": false,
+        "show": true,
+        "total": false,
+        "values": true
+      },
+      "legend_counts": true,
+      "lines": true,
+      "linewidth": 1,
+      "links": [],
+      "nullPointMode": "null",
+      "options": false,
+      "percentage": true,
+      "pointradius": 5,
+      "points": false,
+      "renderer": "flot",
+      "resolution": 100,
+      "scale": 1,
+      "seriesOverrides": [
+        {
+          "alias": "InErrors",
+          "yaxis": 2
+        },
+        {
+          "alias": "NoPorts",
+          "yaxis": 2
+        },
+        {
+          "alias": "RcvbufErrors",
+          "yaxis": 2
+        }
+      ],
+      "spaceLength": 10,
+      "spyable": true,
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
+        {
+          "expr": "sum(irate(node_network_receive_bytes{instance=~\"ms-fe.*\",device=~\"(eth|en[0-9a-z]+)[0-9]*\"}[5m]) > 0)",
+          "format": "time_series",
+          "intervalFactor": 2,
+          "legendFormat": "receive",
+          "refId": "A"
+        },
+        {
+          "expr": "sum(irate(node_network_transmit_bytes{instance=~\"ms-fe.*\",device=~\"(eth|en[0-9a-z]+)[0-9]*\"}[5m]) > 0)",
+          "format": "time_series",
+          "intervalFactor": 2,
+          "legendFormat": "transmit",
+          "refId": "B"
+        }
+      ],
+      "thresholds": [],
+      "timeFrom": null,
+      "timeRegions": [],
+      "timeShift": null,
+      "timezone": "browser",
+      "title": "network IO (frontend)",
+      "tooltip": {
+        "query_as_alias": true,
+        "shared": true,
+        "sort": 0,
+        "value_type": "cumulative"
+      },
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "format": "Bps",
+          "label": "",
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        },
+        {
+          "format": "short",
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        }
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      },
+      "zerofill": true
+    },
+    {
+      "aliasColors": {},
+      "annotate": {
+        "enable": false
+      },
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": "$prometheus",
+      "fill": 1,
+      "grid": {
+        "max": null,
+        "min": null
+      },
+      "gridPos": {
+        "h": 7,
+        "w": 12,
+        "x": 12,
+        "y": 33
+      },
+      "height": "",
+      "id": 23,
+      "interactive": true,
+      "legend": {
+        "avg": true,
+        "current": false,
+        "max": false,
+        "min": false,
+        "show": true,
+        "total": false,
+        "values": true
+      },
+      "legend_counts": true,
+      "lines": true,
+      "linewidth": 1,
+      "links": [],
+      "nullPointMode": "null",
+      "options": false,
+      "percentage": true,
+      "pointradius": 5,
+      "points": false,
+      "renderer": "flot",
+      "resolution": 100,
+      "scale": 1,
+      "seriesOverrides": [
+        {
+          "alias": "InErrors",
+          "yaxis": 2
+        },
+        {
+          "alias": "NoPorts",
+          "yaxis": 2
+        },
+        {
+          "alias": "RcvbufErrors",
+          "yaxis": 2
+        }
+      ],
+      "spaceLength": 10,
+      "spyable": true,
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
+        {
+          "expr": "sum(irate(node_network_receive_bytes{instance=~\"ms-be.*\",device=~\"(eth|en[0-9a-z]+)[0-9]*\"}[5m]) > 0)",
+          "format": "time_series",
+          "interval": "",
+          "intervalFactor": 2,
+          "legendFormat": "receive",
+          "refId": "A"
+        },
+        {
+          "expr": "sum(irate(node_network_transmit_bytes{instance=~\"ms-be.*\",device=~\"(eth|en[0-9a-z]+)[0-9]*\"}[5m]) > 0)",
+          "format": "time_series",
+          "intervalFactor": 2,
+          "legendFormat": "transmit",
+          "refId": "B"
+        }
+      ],
+      "thresholds": [],
+      "timeFrom": null,
+      "timeRegions": [],
+      "timeShift": null,
+      "timezone": "browser",
+      "title": "network IO (backend)",
+      "tooltip": {
+        "query_as_alias": true,
+        "shared": true,
+        "sort": 0,
+        "value_type": "cumulative"
+      },
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "format": "Bps",
+          "label": "",
+          "logBase": 1,
+          "max": null,
+          "min": 0,
+          "show": true
+        },
+        {
+          "format": "short",
+          "logBase": 1,
+          "max": null,
+          "min": 0,
+          "show": true
+        }
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      },
+      "zerofill": true
+    },
+    {
+      "aliasColors": {},
+      "annotate": {
+        "enable": false
+      },
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": "$prometheus",
+      "fill": 0,
+      "grid": {
+        "max": null,
+        "min": null
+      },
+      "gridPos": {
+        "h": 7,
+        "w": 12,
+        "x": 0,
+        "y": 40
+      },
+      "height": "",
+      "id": 24,
+      "interactive": true,
+      "legend": {
+        "avg": true,
+        "current": false,
+        "max": false,
+        "min": false,
+        "show": true,
+        "total": false,
+        "values": true
+      },
+      "legend_counts": true,
+      "lines": true,
+      "linewidth": 1,
+      "links": [],
+      "nullPointMode": "null",
+      "options": false,
+      "percentage": true,
+      "pointradius": 5,
+      "points": false,
+      "renderer": "flot",
+      "resolution": 100,
+      "scale": 1,
+      "seriesOverrides": [
+        {
+          "alias": "InErrors",
+          "yaxis": 2
+        },
+        {
+          "alias": "NoPorts",
+          "yaxis": 2
+        },
+        {
+          "alias": "RcvbufErrors",
+          "yaxis": 2
+        }
+      ],
+      "spaceLength": 10,
+      "spyable": true,
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
+        {
+          "expr": "topk(3, node_load1{instance=~\"ms-fe.*\"})",
+          "format": "time_series",
+          "intervalFactor": 2,
+          "legendFormat": "{{instance}}",
+          "refId": "A"
+        },
+        {
+          "expr": "topk(3, node_load1{instance=~\"ms-be.*\"})",
+          "format": "time_series",
+          "intervalFactor": 2,
+          "legendFormat": "{{instance}}",
+          "refId": "B"
+        }
+      ],
+      "thresholds": [],
+      "timeFrom": null,
+      "timeRegions": [],
+      "timeShift": null,
+      "timezone": "browser",
+      "title": "top3 load (1m, fe+be)",
+      "tooltip": {
+        "query_as_alias": true,
+        "shared": true,
+        "sort": 0,
+        "value_type": "cumulative"
+      },
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "format": "short",
+          "label": "",
+          "logBase": 1,
+          "max": null,
+          "min": 0,
+          "show": true
+        },
+        {
+          "format": "short",
+          "logBase": 1,
+          "max": null,
+          "min": 0,
+          "show": true
+        }
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      },
+      "zerofill": true
+    },
+    {
+      "aliasColors": {},
+      "annotate": {
+        "enable": false
+      },
+      "bars": true,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": "$prometheus",
+      "fill": 0,
+      "grid": {
+        "max": null,
+        "min": null
+      },
+      "gridPos": {
+        "h": 7,
+        "w": 12,
+        "x": 12,
+        "y": 40
+      },
+      "height": "",
+      "id": 25,
+      "interactive": true,
+      "legend": {
+        "avg": true,
+        "current": false,
+        "max": false,
+        "min": false,
+        "show": true,
+        "total": false,
+        "values": true
+      },
+      "legend_counts": true,
+      "lines": false,
+      "linewidth": 1,
+      "links": [],
+      "nullPointMode": "null",
+      "options": false,
+      "percentage": false,
+      "pointradius": 5,
+      "points": false,
+      "renderer": "flot",
+      "resolution": 100,
+      "scale": 1,
+      "seriesOverrides": [],
+      "spaceLength": 10,
+      "spyable": true,
+      "stack": true,
+      "steppedLine": false,
+      "targets": [
+        {
+          "expr": "topk(10, node_disk_io_now{instance=~\"ms-be.*\",device=~\"[vs]d[a-z]+\"} > 5)",
+          "format": "time_series",
+          "intervalFactor": 2,
+          "legendFormat": "{{instance}}/{{device}}",
+          "refId": "A"
+        }
+      ],
+      "thresholds": [],
+      "timeFrom": null,
+      "timeRegions": [],
+      "timeShift": null,
+      "timezone": "browser",
+      "title": "top10 disks doing I/O",
+      "tooltip": {
+        "query_as_alias": true,
+        "shared": true,
+        "sort": 2,
+        "value_type": "individual"
+      },
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "format": "short",
+          "label": "",
+          "logBase": 1,
+          "max": null,
+          "min": 0,
+          "show": true
+        },
+        {
+          "format": "short",
+          "logBase": 1,
+          "max": null,
+          "min": 0,
+          "show": true
+        }
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      },
+      "zerofill": true
     }
   ],
-  "schemaVersion": 14,
+  "refresh": false,
+  "schemaVersion": 16,
   "style": "light",
   "tags": [
     "operations",
@@ -1208,11 +1422,11 @@
         "allValue": null,
         "current": {
           "selected": true,
-          "tags": [],
           "text": "eqiad",
           "value": "eqiad"
         },
         "datasource": null,
+        "definition": "",
         "hide": 0,
         "includeAll": true,
         "label": null,
@@ -1245,6 +1459,7 @@
         "refresh": 0,
         "refresh_on_load": false,
         "regex": "/(.*)-prod/",
+        "skipUrlSync": false,
         "sort": 0,
         "tagValuesQuery": "",
         "tags": [],
@@ -1254,6 +1469,7 @@
       },
       {
         "current": {
+          "selected": true,
           "text": "eqiad prometheus/ops",
           "value": "eqiad prometheus/ops"
         },
@@ -1263,7 +1479,8 @@
         "options": [],
         "query": "prometheus",
         "refresh": 1,
-        "regex": "/$DC prometheus\/ops/",
+        "regex": "/$DC prometheus/ops/",
+        "skipUrlSync": false,
         "type": "datasource"
       }
     ]
@@ -1298,5 +1515,6 @@
   },
   "timezone": "utc",
   "title": "Swift",
-  "version": 4
+  "uid": "OPgmB1Eiz",
+  "version": 1
 }
