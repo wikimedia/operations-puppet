@@ -1,0 +1,10 @@
+#!/bin/sh
+PROXY=http://webproxy.<%= @site %>.wmnet:8080
+# buster does not have security updates yet
+if [ "${SECURITY_UPDATES}" = "yes" -a "${DIST}" != "buster" ]; then
+	cat > /etc/apt/sources.list.d/security.list <<-'EOF'
+	deb http://security.debian.org/debian-security <%= @distribution %>/updates  main contrib non-free
+	deb-src http://security.debian.org/debian-security <%= @distribution %>/updates main contrib non-free
+EOF
+	printf "Acquire::http::Proxy::security.debian.org \"${PROXY}\";\n" >> /etc/apt/apt.conf.d/01Proxy
+fi

@@ -8,9 +8,19 @@ DIST=${DIST:-"$(lsb_release --short --codename)"}
 WIKIMEDIA=${WIKIMEDIA:-"no"}
 # Default to not use distribution backports
 BACKPORTS=${BACKPORTS:-"no"}
+# Default to not use distribution backports from archive.debian.org
+ARCHIVE_BACKPORTS=${ARCHIVE_BACKPORTS:-"no"}
 # Default to drop to shell on build failure
 SHELL_ON_FAILURE=${SHELL_ON_FAILURE:-"yes"}
 export SHELL_ON_FAILURE
+
+# Enable security backports by default on jessie
+if [ "${DIST%-*}" = "jessie" ]; then
+  SECURITY_UPDATES=${SECURITY_UPDATES:-"yes"}
+else
+  SECURITY_UPDATES=${SECURITY_UPDATES:-"no"}
+fi
+
 
 # If DIST has been declared like dist-wikimedia, handle it like as if the user
 # wanted to specify WIKIMEDIA="yes" which will satisfy build dependencies from

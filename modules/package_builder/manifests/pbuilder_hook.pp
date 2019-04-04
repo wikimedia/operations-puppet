@@ -29,6 +29,14 @@ define package_builder::pbuilder_hook(
         content => template('package_builder/D01apt.wikimedia.org.erb'),
     }
 
+    file { "${basepath}/hooks/${distribution}/D01security":
+        ensure  => present,
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0555',
+        content => template('package_builder/D01security.erb'),
+    }
+
     file { "${basepath}/hooks/${distribution}/D02backports":
         ensure  => present,
         owner   => 'root',
