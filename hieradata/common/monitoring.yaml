@@ -213,9 +213,9 @@ monitoring::groups:
     description: Service Cluster B servers codfw
 
 # Session Storage
-  sessions_eqiad:
+  sessionstore_eqiad:
     description: Session Storage servers eqiad
-  sessions_codfw:
+  sessionstore_codfw:
     description: Session Storage servers codfw
 
 # ORES
