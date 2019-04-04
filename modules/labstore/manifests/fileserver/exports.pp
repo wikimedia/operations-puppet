@@ -45,7 +45,7 @@ class labstore::fileserver::exports(
         owner   => 'root',
         group   => 'root',
         mode    => '0555',
-        source  => 'puppet:///modules/labstore/nfs-manage-binds',
+        source  => 'puppet:///modules/labstore/nfs-manage-binds.py',
         require => File['/etc/nfs-mounts.yaml'],
     }
 

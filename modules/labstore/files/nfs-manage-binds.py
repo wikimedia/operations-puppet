@@ -57,24 +57,24 @@ def bind_mount(src, dst):
 
 
 def create_binding(target, export, force=False, mounts=[]):
-        """ manage bind state on disk (with possible inline creations)
-        :param target: str
-        :param export: str
-        :param force: bool
-        """
+    """ manage bind state on disk (with possible inline creations)
+    :param target: str
+    :param export: str
+    :param force: bool
+    """
 
-        ensure_dir(export, recurse=True)
+    ensure_dir(export, recurse=True)
 
-        if force:
-            ensure_dir(target)
-            if 'home' in mounts:
-                ensure_dir('%s/home' % target)
-            if 'project' in mounts:
-                ensure_dir('%s/project' % target)
-        if os.path.exists(target):
-            bind_mount(target, export)
-        else:
-            logging.warning("no bind on %s as %s does not exist" % (export, target))
+    if force:
+        ensure_dir(target)
+        if 'home' in mounts:
+            ensure_dir('%s/home' % target)
+        if 'project' in mounts:
+            ensure_dir('%s/project' % target)
+    if os.path.exists(target):
+        bind_mount(target, export)
+    else:
+        logging.warning("no bind on %s as %s does not exist" % (export, target))
 
 
 def get_binds():
@@ -137,7 +137,7 @@ def main():
     try:
         with open('/etc/nfs-mounts.yaml') as f:
             config = yaml.safe_load(f)
-    except:
+    except Exception:
         logging.exception('Could not load projects config file from %s', args.config_path)
         sys.exit(1)
 
@@ -182,6 +182,7 @@ def main():
         srv = os.path.join(srv_device, 'shared', project)
         exp = os.path.join('/exp/project', project)
         create_binding(srv, exp, force=args.f, mounts=mounts)
+
 
 if __name__ == '__main__':
     main()
