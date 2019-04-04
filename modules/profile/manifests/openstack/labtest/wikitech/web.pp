@@ -12,5 +12,6 @@ class profile::openstack::labtest::wikitech::web(
         wikidb                             => $wikidb,
         wikitech_nova_ldap_proxyagent_pass => $wikitech_nova_ldap_proxyagent_pass,
         wikitech_nova_ldap_user_pass       => $wikitech_nova_ldap_user_pass,
+        phabricator_api_token              => '',
     }
 }

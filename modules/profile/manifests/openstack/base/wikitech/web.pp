@@ -4,6 +4,7 @@ class profile::openstack::base::wikitech::web(
     $wikidb = hiera('profile::openstack::base::wikitech::db_name'),
     $wikitech_nova_ldap_proxyagent_pass = hiera('profile::openstack::base::ldap_proxyuser_pass'),
     $wikitech_nova_ldap_user_pass = hiera('profile::openstack::base::ldap_user_pass'),
+    $phabricator_api_token = hiera('profile::openstack::base::wikitech::web::phabricator_api_token'),
     ) {
 
     require profile::mediawiki::common
@@ -71,6 +72,7 @@ class profile::openstack::base::wikitech::web(
         wikidb                             => $wikidb,
         wikitech_nova_ldap_proxyagent_pass => $wikitech_nova_ldap_proxyagent_pass,
         wikitech_nova_ldap_user_pass       => $wikitech_nova_ldap_user_pass,
+        phabricator_api_token              => $phabricator_api_token,
     }
 
     ferm::service { 'wikitech_http':

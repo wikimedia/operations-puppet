@@ -4,7 +4,8 @@
 class openstack::wikitech::wikitechprivatesettings(
     $wikitech_nova_ldap_proxyagent_pass,
     $wikitech_nova_ldap_user_pass,
-    ) {
+    $phabricator_api_token,
+) {
 
     file { '/etc/mediawiki':
         ensure => 'directory',
