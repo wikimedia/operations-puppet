@@ -401,6 +401,12 @@ wikimedia_clusters:
     id: 84
     sites:
       eqiad: []
+  sessionstore:
+    description: "Sessionstore cluster"
+    id: 85
+    sites:
+      eqiad: []
+      codfw: []
 
 puppetmaster: "puppet"
 
