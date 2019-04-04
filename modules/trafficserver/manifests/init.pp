@@ -163,9 +163,9 @@ class trafficserver(
         }
     }
 
-    $error_template_path = '/etc/trafficserver/error_template/default'
+    $error_template_path = '/etc/trafficserver/error_template'
     file {
-      ['/etc/trafficserver/error_template', $error_template_path]:
+      [$error_template_path, "${error_template_path}/default"]:
         ensure => directory,
         owner  => $user,
         mode   => '0755',
@@ -206,13 +206,13 @@ class trafficserver(
           # contents instead of /dev/null
           content => '/check /dev/null text/plain 200 403',;
 
-        "${error_template_path}/.body_factory_info":
+        "${error_template_path}/default/.body_factory_info":
           # This file just needs to be there or ATS will refuse loading any
           # template
           content => '',
           require => File[$error_template_path];
 
-        "${error_template_path}/default":
+        "${error_template_path}/default/default":
           content => $error_page,
           require => File[$error_template_path];
     }
