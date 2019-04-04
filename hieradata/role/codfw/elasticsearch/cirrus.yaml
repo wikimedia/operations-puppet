@@ -105,7 +105,7 @@ profile::elasticsearch::instances:
         unicast_hosts: # this is also the list of master eligible nodes
           - elastic2027.codfw.wmnet
           - elastic2029.codfw.wmnet
-          - elastic2048.codfw.wmnet
+          - elastic2049.codfw.wmnet
 
         cluster_hosts:
           # row A
