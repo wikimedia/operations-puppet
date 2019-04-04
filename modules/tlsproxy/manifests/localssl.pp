@@ -26,6 +26,9 @@
 #   If true, use acme-chief to get the certificate.
 #   When used in conjunction with certs, acme-chief certificate will be deployed on
 #   the server but certs specified in $certs will be used to serve traffic
+
+# [*acme_certname*]
+#   Optional - specify this if title of the resource and the acme-chief certname differs.
 #
 # [*acme_subjects*]
 #   Optional - Enable the old LE puppetization. specify either this or certs.
@@ -78,6 +81,7 @@ define tlsproxy::localssl(
     $certs_active   = [],
     $acme_subjects  = [],
     $acme_chief     = false,
+    $acme_certname  = $title,
     $server_name    = $::fqdn,
     $server_aliases = [],
     $default_server = false,
@@ -97,6 +101,7 @@ define tlsproxy::localssl(
     if $redir_port != undef and $tls_port != 443 {
         fail('http -> https redirect only works with default 443 HTTPS port.')
     }
+
     # TODO: move this define to the profile module too?
     require ::profile::tlsproxy::instance
 
@@ -141,8 +146,8 @@ define tlsproxy::localssl(
         # TODO: Maybe add monitoring to this in role::cache::ssl::unified
     }
     if $acme_chief {
-        if !defined(Acme_chief::Cert[$title]) {
-            acme_chief::cert { $title:
+        if !defined(Acme_chief::Cert[$acme_certname]) {
+            acme_chief::cert { $acme_certname:
                 ocsp   => $do_ocsp,
                 proxy  => "webproxy.${::site}.wmnet:8080",
                 before => Service['nginx']
