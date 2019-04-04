@@ -24,10 +24,10 @@ server {
 	ssl_certificate_key /etc/ssl/private/<%= cert %>.key;
 	<%- end -%>
 	<%- if @acme_chief and @certs_nginx.empty? -%>
-	ssl_certificate /etc/acmecerts/<%= @title %>/live/rsa-2048.chained.crt;
-	ssl_certificate_key /etc/acmecerts/<%= @title %>/live/rsa-2048.key;
-	ssl_certificate /etc/acmecerts/<%= @title %>/live/ec-prime256v1.chained.crt;
-	ssl_certificate_key /etc/acmecerts/<%= @title %>/live/ec-prime256v1.key;
+	ssl_certificate /etc/acmecerts/<%= @acme_certname %>/live/rsa-2048.chained.crt;
+	ssl_certificate_key /etc/acmecerts/<%= @acme_certname %>/live/rsa-2048.key;
+	ssl_certificate /etc/acmecerts/<%= @acme_certname %>/live/ec-prime256v1.chained.crt;
+	ssl_certificate_key /etc/acmecerts/<%= @acme_certname %>/live/ec-prime256v1.key;
 	<%- end -%>
 	<%- if !@acme_subjects.empty? -%>
 	ssl_certificate /etc/acme/cert/<%= @server_name.gsub(/\W/, '_') %>.chained.crt;
@@ -39,8 +39,8 @@ server {
 	ssl_stapling_file /var/cache/ocsp/<%= cert %>.ocsp;
 	  <%- end -%>
 	<%- if @acme_chief and @certs_nginx.empty? -%>
-	ssl_stapling_file /etc/acmecerts/<%= @title %>/live/rsa-2048.client.ocsp;
-	ssl_stapling_file /etc/acmecerts/<%= @title %>/live/ec-prime256v1.client.ocsp;
+	ssl_stapling_file /etc/acmecerts/<%= @acme_certname %>/live/rsa-2048.client.ocsp;
+	ssl_stapling_file /etc/acmecerts/<%= @acme_certname %>/live/ec-prime256v1.client.ocsp;
 	<%- end -%>
 	<%- end -%>
 
