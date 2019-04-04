@@ -1124,8 +1124,8 @@ node 'labtestservices2001.wikimedia.org' {
     interface::add_ip6_mapped { 'main': }
 }
 
-node 'labtestservices2002.wikimedia.org' {
-    role(wmcs::openstack::labtestn::services)
+node 'cloudservices2002-dev..wikimedia.org' {
+    role(wmcs::openstack::codfw1dev::services)
     interface::add_ip6_mapped { 'main': }
 }
 
