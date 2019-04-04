@@ -13,6 +13,7 @@ class profile::elasticsearch::cirrus(
     String $ferm_srange = hiera('profile::elasticsearch::cirrus::ferm_srange'),
     Boolean $expose_http = hiera('profile::elasticsearch::cirrus::expose_http'),
     String $storage_device = hiera('profile::elasticsearch::cirrus::storage_device'),
+    Boolean $use_acme_chief = hiera('profile::elasticsearch::cirrus::use_acme_chief', false),
     Array[String] $prometheus_nodes = hiera('prometheus_nodes'),
 ) {
     include ::profile::elasticsearch
@@ -50,17 +51,19 @@ class profile::elasticsearch::cirrus(
             srange => $ferm_srange,
         }
 
-        if has_key($instance_params, 'certificate_name') {
+        if !$use_acme_chief {
             elasticsearch::tlsproxy { $cluster_name:
-                certificate_name => $instance_params['certificate_name'],
-                upstream_port    => $http_port,
-                tls_port         => $tls_port,
+                certificate_names => [$instance_params['certificate_name']],
+                upstream_port     => $http_port,
+                tls_port          => $tls_port,
+                server_name       => $instance_params['certificate_name'],
             }
         } else {
             elasticsearch::tlsproxy { $cluster_name:
                 upstream_port => $http_port,
                 tls_port      => $tls_port,
-                acme_subject  => $cluster_name,
+                acme_chief    => true,
+                acme_certname => $instance_params['certificate_name'],
             }
         }
 
