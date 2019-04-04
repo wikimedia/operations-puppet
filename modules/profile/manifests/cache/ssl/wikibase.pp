@@ -9,7 +9,7 @@ class profile::cache::ssl::wikibase(
     $acme_chief=hiera('profile::cache::ssl::wikibase::acme_chief'),
     $letsencrypt=hiera('profile::cache::ssl::wikibase::letsencrypt'),
     $le_server_name=hiera('profile::cache::ssl::wikibase::le_server_name', undef),
-    $le_subjects=hiera('profile::cache::ssl::le_subjects', undef)
+    $le_subjects=hiera('profile::cache::ssl::wikibase::le_subjects', undef)
 ) {
     if ($letsencrypt and $acme_chief) or (!$acme_chief and !$letsencrypt)
     {
