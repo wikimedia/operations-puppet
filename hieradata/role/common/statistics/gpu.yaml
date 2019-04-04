@@ -1,6 +1,7 @@
 cluster: analytics
 admin::groups:
   - analytics-admins
+  - gpu-testers
 
 diamond::remove: true
-
+profile::base::notifications: disabled
