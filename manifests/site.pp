@@ -1332,12 +1332,13 @@ node 'labsdb1005.eqiad.wmnet' {
     role(spare::system)
 }
 
+# labsdb1006 and labsdb1007 are ready to be decommissioned T220144
 node 'labsdb1006.eqiad.wmnet' {
-    role(osm::master)
+    role(spare::system)
 }
 
 node 'labsdb1007.eqiad.wmnet' {
-    role(osm::slave)
+    role(spare::system)
 }
 
 node /labstore100[12]\.eqiad\.wmnet/ {
