@@ -24,6 +24,15 @@ class profile::trafficserver::backend (
         default => "/etc/trafficserver/lua/${default_lua_script}.lua ${::hostname}",
     }
 
+    # ATS is built against libhwloc5 1.11.12 from stretch-backports. Ensure we
+    # install that version and not the earlier one from stretch.
+    apt::pin { 'libhwloc5':
+        pin      => 'release a=stretch-backports',
+        package  => 'libhwloc5',
+        priority => '1001',
+        before   => Package['trafficserver', 'trafficserver-experimental-plugins'],
+    }
+
     $errorpage = {
         title       => 'Wikimedia Error',
         pagetitle   => 'Error',
