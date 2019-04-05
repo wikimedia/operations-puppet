@@ -7,8 +7,8 @@ puppetmaster: "puppet"
 labs_puppet_master: "labtest-puppetmaster.wikimedia.org"
 
 labsdnsconfig:
-  recursor: 'labtest-recursor0.wikimedia.org'
-  recursor_secondary: 'labtest-recursor0.wikimedia.org'
+  recursor: 'codfw1dev-recursor0.wikimedia.org'
+  recursor_secondary: 'codfw1dev-recursor0.wikimedia.org'
 
 labsldapconfig:
   hostname: "labtestservices2001.wikimedia.org"

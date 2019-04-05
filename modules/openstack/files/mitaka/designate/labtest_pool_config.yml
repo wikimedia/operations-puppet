@@ -9,9 +9,9 @@
   - host: 208.80.153.76
     port: 53
   ns_records:
-  - hostname: labtest-ns0.wikimedia.org.
+  - hostname: codfw1dev-ns0.wikimedia.org.
     priority: 1
-  - hostname: labtest-ns1.wikimedia.org.
+  - hostname: codfw1dev-ns1.wikimedia.org.
     priority: 2
 
   targets:

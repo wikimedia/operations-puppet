@@ -3,10 +3,10 @@ profile::openstack::labtest::pdns::private_reverse_zones:
   - '16.172.in-addr.arpa'
   - '196.10.in-addr.arpa'
   - '17.196.10.in-addr.arpa'
-profile::openstack::labtest::pdns::host: 'labtest-ns0.wikimedia.org'
-profile::openstack::labtest::pdns::host_secondary: 'labtest-ns0.wikimedia.org'
-profile::openstack::labtest::pdns::recursor: 'labtest-recursor0.wikimedia.org'
-profile::openstack::labtest::pdns::recursor_secondary: 'labtest-recursor0.wikimedia.org'
+profile::openstack::labtest::pdns::host: 'codfw1dev-ns0.wikimedia.org'
+profile::openstack::labtest::pdns::host_secondary: 'codfw1dev-ns0.wikimedia.org'
+profile::openstack::labtest::pdns::recursor: 'codfw1dev-recursor0.wikimedia.org'
+profile::openstack::labtest::pdns::recursor_secondary: 'codfw1dev-recursor0.wikimedia.org'
 
 # Extra records that the Labs DNS recursor should respond to.
 # Used for things that would ideally be in a .svc. DNS zone but
