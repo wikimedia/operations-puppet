@@ -97,6 +97,8 @@ def check_shards_inactive(health, threshold):
     inactive_shards = health['initializing_shards'] + health['unassigned_shards']
     total_shards = health['active_shards'] + inactive_shards
     t = Threshold(threshold)
+    if total_shards == 0:
+        return EX_OK
     if not t.breach(inactive_shards, total_shards):
         return EX_OK
 
