@@ -12,7 +12,7 @@ groups:
               nschaaf, zhousquared, gwicke, dpatrick, samwalton9, samtar, akrausetud, jgonsior,
               yuvipanda, shrlak, madhuvishy, groovier, khorn, ironholds, katie, chedasaurus,
               cy534, pnorman, mpany, deskana, arnad, nithum, banyek, imarlier, mkroetzsch,
-              mtizzoni, panisson, paolotti, ciro, dartar, melodykramer]
+              mtizzoni, panisson, paolotti, ciro, dartar, melodykramer, gtirloni]
   absent_ldap:
     description: meta group for absented users which had privileged LDAP access in the past, an automatic check verifies it has been really removed from the LDAP (but removal has to be handled separatelly)
     members: [adavenport, siddharth11, albe, audiohazel, tbolliger]
@@ -32,7 +32,7 @@ groups:
               dzahn, akosiaris, mark, ariel, cmjohnson, otto, robh, tstarling,
               ori, jmm, jynus, ema, elukey, gehel, volans, marostegui,
               ayounsi, herron, aborrero, bstorm, vgutierrez, jiji, cwhite,
-              gtirloni, crusnov, cdanis, fsero, jbond]
+              crusnov, cdanis, fsero, jbond]
     privileges: ['ALL = (ALL) NOPASSWD: ALL']
   ops-adm-group:
     # No gid for this group on purpose, it's a system provided one
@@ -2779,14 +2779,12 @@ users:
     uid: 18713
     email: bstorm@wikimedia.org
   gtirloni:
-    ensure: present
+    ensure: absent
     gid: 500
     name: gtirloni
     realname: Giovanni Tirloni
-    ssh_keys:
-    - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQCt9q+0J0QqlWE/A5KinQ0gpdj7BWApcxLc+b9AdzoiYkUHeKoxF4PjTyZyJ5Cm1K5/CmJU2V+27BHV+uyfeqLd1OtdZNYLC+MwRKuNs5CUa1NPbx1QKyfFjNNTQ5y6UoOI9cNYD8c2r9Eld5Q0lM/vX12RLwAb5aJqZxmQk2+IEUaSgZKkeot8ECQriIpQmo6QkFTkADdvp51EA30duM+5p4wwJSUY7Xi1HoU1INp7F1ciYsdGcC7UBeRx5v3RzM9SwooRGeBJECY19RhwkaGK00jnbZuJLLntuufLeyMnyptYwpKQbU9R6HPNhvME6qh6LASvG3Zb8WRr4477JGTrv7yDDv6tWoW1Vpss1sM1s/NQWYPCE23EthaHlV5FCUy6iIbTfxcoWgj8x9xZMlty2+KVtXN/L4froLb6oCIMUQw6h3f+yvRFVnZQlmZd5MNFKD9eA6XpguqvhgbyU2E2sTU7XUK3jYMjVe2AHgvMfIB+LijrVLY8jTGZw5tA0lz0GwfvfcPIhLt+4TC9TJyI8ZfxuJLWHgJdTsJ6S0UrA5dYx1bwvE5/UQFfyqKckbyTudAJB+65JL0vUYMjTKkpxioFmlFUJJn5YE/vcKaucPKNzcJ/RcfVTwDViVbSjRye0oeOyaCqZRmycUfMO3HUPsCjCVkCb0eZbtAFJOFTVw== gtirloni@wikimedia.org
+    ssh_keys: []
     uid: 20036
-    email: gtirloni@wikimedia.org
   vgutierrez:
     ensure: present
     gid: 500
