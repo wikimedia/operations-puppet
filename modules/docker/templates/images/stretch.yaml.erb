@@ -34,6 +34,13 @@ packages:
       - deb http://mirrors.wikimedia.org/debian/ stretch-backports main contrib
   trusted-keys:
     - <%= @stretch_keyring %>
+  preferences:
+    wikimedia:
+      - package: *
+        pin: release o=Wikimedia
+        pin-priority: 1001
+  apt.conf.d:
+    00InstallRecommends: APT::Install-Recommends "false";
 plugins:
 <%- if @proxy_address -%>
   apt_proxy:
