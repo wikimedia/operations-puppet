@@ -28,5 +28,6 @@ class keyholder::monitoring( $ensure = present ) {
         description  => 'Keyholder SSH agent',
         nrpe_command => "/usr/bin/sudo ${plugin_path}",
         require      => Sudo::User['nagios_check_keyholder'],
+        notes_url    => 'https://wikitech.wikimedia.org/wiki/Keyholder',
     }
 }

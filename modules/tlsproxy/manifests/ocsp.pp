@@ -31,6 +31,7 @@ class tlsproxy::ocsp {
         description  => 'Freshness of OCSP Stapling files',
         nrpe_command => "/usr/lib/nagios/plugins/check-fresh-files-in-dir.py ${check_args}",
         require      => File['/usr/lib/nagios/plugins/check-fresh-files-in-dir.py'],
+        notes_url    => 'https://wikitech.wikimedia.org/wiki/HTTPS/Unified_Certificates',
     }
 
     # systemd unit fragment for running ocsp updater from ExecStartPre

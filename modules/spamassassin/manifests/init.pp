@@ -97,6 +97,7 @@ class spamassassin(
     nrpe::monitor_service { 'spamd':
         description  => 'spamassassin',
         nrpe_command => '/usr/lib/nagios/plugins/check_procs -w 1:20 -c 1:40 -a spamd',
+        notes_url    => 'https://wikitech.wikimedia.org/wiki/Mail#SpamAssassin',
     }
 
     # If we need a proxy to reach the internet, we need a slightly modified

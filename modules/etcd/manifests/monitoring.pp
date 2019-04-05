@@ -39,6 +39,7 @@ class etcd::monitoring {
           File['/usr/local/bin/nrpe_etcd_cluster_health'],
           Sudo::User['nagios_check_etcd'],
         ],
+        notes_url    => 'https://wikitech.wikimedia.org/wiki/Etcd',
     }
 
 }

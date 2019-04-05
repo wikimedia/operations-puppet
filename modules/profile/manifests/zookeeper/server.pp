@@ -68,6 +68,7 @@ class profile::zookeeper::server (
             description  => 'Zookeeper Server',
             nrpe_command => '/usr/lib/nagios/plugins/check_procs -c 1:1 -C java -a "org.apache.zookeeper.server.quorum.QuorumPeerMain /etc/zookeeper/conf/zoo.cfg"',
             critical     => $is_critical,
+            notes_url    => 'https://wikitech.wikimedia.org/wiki/Zookeeper',
         }
 
         monitoring::check_prometheus { 'zookeeper_client_conns':

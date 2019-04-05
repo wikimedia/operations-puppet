@@ -20,6 +20,7 @@ class zuul::monitoring::server (
         # Zuul has a main process and a fork which is the gearman
         # server. Thus we need two process running.
         nrpe_command  => "/usr/lib/nagios/plugins/check_procs -w 2:2 -c 2:2 --ereg-argument-array '^/usr/share/python/zuul/bin/python /usr/bin/zuul-server'",
+        notes_url     => 'https://www.mediawiki.org/wiki/Continuous_integration/Zuul',
     }
 
     nrpe::monitor_service { 'zuul_gearman':
@@ -27,6 +28,7 @@ class zuul::monitoring::server (
         description   => 'zuul_gearman_service',
         contact_group => 'contint',
         nrpe_command  => '/usr/lib/nagios/plugins/check_tcp -H 127.0.0.1 -p 4730 --timeout=2',
+        notes_url     => 'https://www.mediawiki.org/wiki/Continuous_integration/Zuul',
     }
 
     monitoring::graphite_threshold{ 'zuul_gearman_wait_queue':
