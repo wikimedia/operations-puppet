@@ -1,6 +1,6 @@
 # = Define: icinga::monitor::elasticsearch::base_checks
 define icinga::monitor::elasticsearch::base_checks(
-    String $threshold = '>=0.15',
+    String $threshold = '>=0.2',
     Enum['http', 'https'] $scheme = 'http',
     String $host = $::hostname,
     Array[Wmflib::IpPort] $ports = [9200],
