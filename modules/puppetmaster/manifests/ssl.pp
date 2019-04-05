@@ -11,8 +11,6 @@ class puppetmaster::ssl(
         $before = undef
     }
 
-    include ::base::puppet::common
-
     # Move the puppetmaster's SSL files to a separate directory from the client
     file {
         [ '/var/lib/puppet/server',

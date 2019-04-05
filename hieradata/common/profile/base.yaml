@@ -1,2 +1,2 @@
-profile::base::environment: "production"
 profile::base::purge_apt_sources: true
+

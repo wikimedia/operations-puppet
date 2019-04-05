@@ -1,4 +1,2 @@
-# Remaining module embedded hiera lookup
-# modules/base/manifests/puppet.pp:    $ca_server = hiera('puppetmaster::ca_server', '')
-puppetmaster::ca_server: labtestpuppetmaster2001.wikimedia.org
+puppet_ca_server: labtestpuppetmaster2001.wikimedia.org
 profile::openstack::labtest::puppetmaster::ca: labtestpuppetmaster2001.wikimedia.org

@@ -1,18 +1,17 @@
 class base::puppet(
-    $server='puppet',
-    $certname=undef,
-    $dns_alt_names=undef,
-    $environment=undef,
-    Integer[4,5] $puppet_major_version = 4,
-    Integer[2,3] $facter_major_version = 2,
+    Stdlib::Host     $ca_server                   = 'puppet-ca',
+    Stdlib::Host     $server                      = 'puppet',
+    Optional[String] $certname                    = undef,
+    Optional[String] $dns_alt_names               = undef,
+    Optional[String] $environment                 = undef,
+    Integer          $interval                    = 30,
+    Boolean          $auto_puppetmaster_switching = false,
+    Integer[4,5]     $puppet_major_version = 4,
+    Integer[2,3]     $facter_major_version = 2,
 ) {
-    include ::passwords::puppet::database
-    include ::base::puppet::params
-    $interval = $base::puppet::params::interval
-    $crontime = $base::puppet::params::crontime
-    $freshnessinterval = $base::puppet::params::freshnessinterval
-    $use_srv_record = $base::puppet::params::use_srv_record
-    $ca_server = hiera('puppetmaster::ca_server', '')
+    include ::passwords::puppet::database # lint:ignore:wmf_styleguide
+
+    $crontime          = fqdn_rand(60, 'puppet-params-crontime')
 
     if os_version('debian < buster') {
       if $puppet_major_version == 5 {
@@ -43,13 +42,10 @@ class base::puppet(
     } elsif $facter_major_version != 3 or puppet_major_version != 5 {
       warning('buster only supports puppet5 and facter3')
     }
-    # augparse is required to resolve the augeasversion in facter3
-    package { [ 'puppet', 'facter', 'augeas-tools' ]:
-        ensure => present,
-    }
 
-    # facter needs this for proper "virtual"/"is_virtual" resolution
-    package { 'virt-what':
+    # augparse is required to resolve the augeasversion in facter3
+    # facter needs virt-what for proper "virtual"/"is_virtual" resolution
+    package { [ 'puppet', 'facter', 'augeas-tools', 'virt-what' ]:
         ensure => present,
     }
 
@@ -84,11 +80,6 @@ class base::puppet(
         }
     }
 
-    class { '::puppet_statsd':
-        statsd_host   => 'statsd.eqiad.wmnet',
-        metric_format => 'puppet.<%= metric %>',
-    }
-
     # Compile /etc/puppet/puppet.conf from individual files in /etc/puppet/puppet.conf.d
     exec { 'compile puppet.conf':
         path        => '/usr/bin:/bin',
@@ -102,7 +93,6 @@ class base::puppet(
         enable => false,
     }
 
-    $auto_puppetmaster_switching = hiera('auto_puppetmaster_switching', false)
     if ($auto_puppetmaster_switching) and ($::realm != 'labs') {
         fail('auto_puppetmaster_switching should never, ever be set on a production host.')
     }
@@ -179,7 +169,14 @@ class base::puppet(
         require  => File['/etc/logrotate.d/puppet'],
     }
 
-    include ::base::puppet::common
+    # Mode 0751 to make sure non-root users can access
+    # /var/lib/puppet/state/agent_disabled.lock to check if puppet is enabled
+    file { '/var/lib/puppet':
+        ensure => directory,
+        owner  => 'puppet',
+        group  => 'puppet',
+        mode   => '0751',
+    }
 
     file { '/usr/local/bin/puppet-enabled':
         mode   => '0555',
@@ -193,6 +190,4 @@ class base::puppet(
         priority => 97,
         source   => 'puppet:///modules/base/puppet/97-last-puppet-run',
     }
-
-    include ::prometheus::node_puppet_agent
 }

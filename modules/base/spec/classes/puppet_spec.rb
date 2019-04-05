@@ -22,9 +22,10 @@ describe 'base::puppet' do
 
       context 'when auto_puppetmaster_switching is enabled' do
         context 'on labs' do
-          let(:node_params) { { :realm => 'labs' } }
+          let(:node_params) { { realm: 'labs' } }
           it { should compile }
           context 'on a standalone puppetmaster' do
+            let(:params) { { auto_puppetmaster_switching: true } }
             let(:pre_condition) {
               super().concat(
                 [
@@ -39,6 +40,7 @@ describe 'base::puppet' do
           end
         end
         context 'on other realms' do
+          let(:params) { { auto_puppetmaster_switching: true } }
           let(:node_params) {{:realm => 'some_realm'}}
           it 'auto_puppetmaster_switching must not be enableable' do
             should compile.and_raise_error(/auto_puppetmaster_switching should never.*/)

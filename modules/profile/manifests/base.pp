@@ -1,8 +1,5 @@
 class profile::base(
     $puppetmaster  = hiera('puppetmaster'),
-    $dns_alt_names = hiera('profile::base::dns_alt_names', false),
-    # TODO/puppet4: revert to using "undef"
-    $environment   = hiera('profile::base::environment', ''),
     $use_apt_proxy = hiera('profile::base::use_apt_proxy', true),
     $purge_apt_sources = hiera('profile::base::purge_apt_sources', false),
     $domain_search = hiera('profile::base::domain_search', $::domain), # lint:ignore:wmf_styleguide
@@ -30,10 +27,6 @@ class profile::base(
     $debdeploy_exclude_mounts = hiera('profile::base::debdeploy::exclude_mounts', []),
     $debdeploy_exclude_filesystems = hiera('profile::base::debdeploy::exclude_filesystems', []),
     $debdeploy_filter_services = lookup('profile::base::debdeploy::filter_services', Hash, 'hash', {}),
-    Integer[4,5] $puppet_major_version = lookup('profile::base::puppet::puppet_major_version',
-                                                {'default_value' => 4}),
-    Integer[2,3] $facter_major_version = lookup('profile::base::puppet::facter_major_version',
-                                                {'default_value' => 2}),
 ) {
     require ::profile::base::certificates
     class { '::apt':
@@ -48,13 +41,7 @@ class profile::base(
         mode   => '0755',
     }
 
-    class { '::base::puppet':
-        server               => $puppetmaster,
-        dns_alt_names        => $dns_alt_names,
-        environment          => $environment,
-        puppet_major_version => $puppet_major_version,
-        facter_major_version => $facter_major_version,
-    }
+    include ::profile::base::puppet
 
     # Temporary workaround for T140100. Remove as soon as Labs instances get
     # grub-pc or trusty gets phased out from Labs, whichever comes first.
@@ -154,6 +141,7 @@ class profile::base(
         notifications_enabled    => $notifications_enabled,
         is_critical              => ($notifications == 'critical'),
         monitor_systemd          => $monitor_systemd,
+        puppet_interval          => $profile::base::puppet::interval,
     }
 
     if os_version('ubuntu == trusty') {

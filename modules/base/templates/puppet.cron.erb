@@ -3,13 +3,12 @@
 #####  as template('base/puppet.cron.erb')
 ######################################################################
 <%-
-interval = scope.lookupvar('base::puppet::interval').to_i
-crontime = scope.lookupvar('base::puppet::crontime').to_i
-numtimes = 60 / interval
-tmp = Array.new(numtimes) { |t| t = t * interval + crontime }
-tmp = tmp.map { |x| if x < 60 then x  else x - 60 end }
-tmp = tmp.sort()
-times = tmp.join(',')
+# the below calculates two random values between 0 and 60.  randomness is
+# provided by `crontime` which is calculated using `fqdn_rand`.  our interval
+# is 30 which means `numtimes` will always be two.  we then use modulus to
+# to ensure all values remain under 60
+numtimes = 60 / @interval
+times = Array.new(numtimes) { |t| t = (t * @interval + @crontime) % 60 }.sort.join(',')
 -%>
 <%= times %> * * * * root /usr/local/sbin/puppet-run > /dev/null 2>&1
 @reboot              root /usr/local/sbin/puppet-run > /dev/null 2>&1

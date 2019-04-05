@@ -2,9 +2,11 @@
 
 class profile::puppetmaster::backend(
     $config = hiera('profile::puppetmaster::backend::config', {}),
+    # should $secure_priviate really get its config from the same
+    # place as $config?
     $secure_private = hiera('profile::puppetmaster::backend::config', true),
     $prevent_cherrypicks = hiera('profile::puppetmaster::backend::prevent_cherrypicks', true),
-    $ca_server = hiera('puppetmaster::ca_server', 'puppetmaster1001.eqiad.wmnet'),
+    Stdlib::Host $ca_server = lookup('puppet_ca_server'),
     $puppetmasters = hiera('puppetmaster::servers'),
     $puppetdb_major_version = hiera('puppetdb_major_version', undef),
     $allow_from = [

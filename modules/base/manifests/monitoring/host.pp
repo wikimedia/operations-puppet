@@ -34,9 +34,8 @@ class base::monitoring::host(
     $notifications_enabled = '1',
     Boolean $is_critical = false,
     $monitor_systemd = true,
+    Integer $puppet_interval = 30,
 ) {
-    include ::base::puppet::params # In order to be able to use some variables
-
     # RAID checks
     class { 'raid':
         write_cache_policy => $raid_write_cache_policy,
@@ -120,8 +119,10 @@ class base::monitoring::host(
         description  => 'DPKG',
         nrpe_command => '/usr/local/lib/nagios/plugins/check_dpkg',
     }
-    $warninginterval = $base::puppet::params::freshnessinterval
-    $criticalinterval = $base::puppet::params::freshnessinterval * 2
+    # Calculate freshness interval in seconds (hence *60)
+    $warninginterval = $puppet_interval * 60 * 6
+    $criticalinterval = $warninginterval * 2
+
     ::nrpe::monitor_service { 'puppet_checkpuppetrun':
         description    => 'puppet last run',
         nrpe_command   => "/usr/bin/sudo /usr/local/lib/nagios/plugins/check_puppetrun -w ${warninginterval} -c ${criticalinterval}",

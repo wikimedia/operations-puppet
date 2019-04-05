@@ -11,4 +11,3 @@
   - "common"
   - "private/common"
   - "common/profile/base/puppet" # fake role backend
-
