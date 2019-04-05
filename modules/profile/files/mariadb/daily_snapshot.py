@@ -174,7 +174,7 @@ def parse_config_file(config_file):
     """
     allowed_options = ['host', 'port', 'password', 'destination', 'rotate', 'retention',
                        'compress', 'archive', 'threads', 'statistics', 'only_postprocess',
-                       'type']
+                       'type', 'stop_slave']
     logger = logging.getLogger('backup')
     try:
         read_config = yaml.load(open(config_file))
@@ -246,6 +246,8 @@ def get_transfer_cmd(config, using_port, path):
     cmd.extend(['--type', 'xtrabackup'])
     cmd.extend(['--compress', '--no-encrypt', '--no-checksum'])
     cmd.extend(['--port', str(using_port)])
+    if config.get('stop_slave', False):
+        cmd.append('--stop-slave')
     port = int(config.get('port', DEFAULT_PORT))
     socket = get_socket_from_port(port)
     cmd.extend([config['host'] + ':' + socket])
@@ -330,6 +332,9 @@ def run_transfer(section, config, port):
     server to the provisioning host
     """
     logger = logging.getLogger('backup')
+    db_host = config['host']
+    db_port = int(config.get('port', DEFAULT_PORT))
+
     # Create new target dir
     logger.info('Create a new empty directory at {}'.format(config['destination']))
     backup_name = get_backup_name(section, 'snapshot')
@@ -342,7 +347,7 @@ def run_transfer(section, config, port):
 
     # transfer mysql data
     logger.info('Running XtraBackup at {} and sending it to {}'.format(
-        config['host'] + ':' + str(config.get('port', DEFAULT_PORT)), config['destination']))
+        db_host + ':' + str(db_port), config['destination']))
     cmd = get_transfer_cmd(config, port, path)
     # ignore stdout, stderr, which can deadlock/overflow the buffer for xtrabackup
     # use asyncio to prevent the busy wait loop that Popen does (we don't need a quick response.
@@ -357,6 +362,7 @@ def run_transfer(section, config, port):
     logger.info('Making the resulting dir owned by someone else than root')
     cmd = get_chown_cmd(path)
     (returncode, out, err) = execute_remotely(config['destination'], cmd)
+
     return returncode
 
 
@@ -391,8 +397,7 @@ def run(section, config, port):
 
 def main():
     logger = logging.basicConfig(
-        stream=sys.stdout,
-        level=logging.INFO,
+        stream=sys.stdout, level=logging.INFO,
         format='[%(asctime)s]: %(levelname)s - %(message)s', datefmt='%H:%M:%S'
     )
     logger = logging.getLogger('backup')
