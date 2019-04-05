@@ -3201,7 +3201,7 @@ host labvirt1007 {
 
 host cloudvirt1008 {
     hardware ethernet F0:92:1C:05:BC:D8;
-    fixed-address labvirt1009.eqiad.wmnet;
+    fixed-address cloudvirt1008.eqiad.wmnet;
 }
 
 host cloudvirt1009 {
