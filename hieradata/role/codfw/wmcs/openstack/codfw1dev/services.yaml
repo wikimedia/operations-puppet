@@ -1,0 +1,9 @@
+profile::openldap::hostname: cloudservices2002-dev.wikimedia.org
+profile::openldap::mirror_mode: false
+profile::openldap::backup: false
+profile::openldap::server_id: 1
+profile::openldap::master: ~
+profile::openldap::hash_passwords: SHA
+profile::openldap::read_only: false
+profile::openldap::certname: ldap-codfw1dev
+profile::openldap::sync_pass: none
