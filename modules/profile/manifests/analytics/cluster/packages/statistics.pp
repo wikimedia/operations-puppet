@@ -101,9 +101,7 @@ class profile::analytics::cluster::packages::statistics {
         'enchant', # generic spell checking library (uses myspell as backend)
         'aspell-id',   # Indonesian dictionary for GNU aspell
         'hunspell-vi', # Vietnamese dictionary for hunspell
-        'myspell-af', # Afrikaans dictionary for myspell
         'myspell-bg', # Bulgarian dictionary for myspell
-        'myspell-ca', # Catalan dictionary for myspell
         'myspell-cs', # Czech dictionary for myspell
         # 'myspell-da', # The Comprehensive Danish Dictionary (DSDO) # conflicts with hunspell-vi
         'myspell-de-at', # Austrian (German) dictionary for myspell
@@ -111,9 +109,7 @@ class profile::analytics::cluster::packages::statistics {
         'myspell-de-de', # German dictionary for myspell
         'myspell-el-gr', # Greek (el_GR) dictionary for myspell
         'myspell-en-au', # English_australian dictionary for myspell
-        'myspell-en-gb', # English_british dictionary for myspell
         'hunspell-en-us', # English_american dictionary for myspell
-        'myspell-en-za', # English_southafrican dictionary for myspell
         'myspell-eo', # Esperanto dictionary for myspell
         'myspell-es', # Spanish dictionary for myspell
         'myspell-et', # Estonian dictionary for MySpell
@@ -127,9 +123,6 @@ class profile::analytics::cluster::packages::statistics {
         'myspell-hr', # Croatian dictionary for myspell
         'myspell-hu', # Hungarian dictionary for myspell
         'myspell-hy', # Armenian dictionary for myspell
-        'myspell-it', # Italian dictionary for myspell
-        'myspell-ku', # Kurdish (Kurmanji) dictionary for myspell
-        'myspell-lt', # myspell dictionary for Lithuanian (LT)
         'myspell-lv', # Latvian dictionary for Myspell
         'myspell-nb', # Norwegian Bokmal dictionary for myspell
         'myspell-nl', # Dutch dictionary for Hunspell
@@ -140,13 +133,26 @@ class profile::analytics::cluster::packages::statistics {
         'myspell-pt-pt', # European Portuguese dictionary for myspell
         'myspell-ru', # Russian dictionary for MySpell
         'myspell-sk', # Slovak dictionary for myspell
-        'myspell-sl', # Slovenian dictionary for myspell
         'myspell-sv-se', # transitional dummy package
-        'myspell-sw', # Swahili dictionary for myspell
-        'myspell-th', # Thai dictionary for myspell
         'myspell-tl', # Tagalog dictionary for myspell/hunspell
         'myspell-uk', # Ukrainian dictionary for myspell
     ])
+
+    # Some myspell packages are not available in Debian Buster
+    if os_version('debian <= stretch') {
+        require_package([
+            'myspell-ca', # Catalan dictionary for myspell
+            'myspell-en-gb', # English_british dictionary for myspell
+            'myspell-it', # Italian dictionary for myspell
+            'myspell-af', # Afrikaans dictionary for myspell
+            'myspell-en-za', # English_southafrican dictionary for myspell
+            'myspell-ku', # Kurdish (Kurmanji) dictionary for myspell
+            'myspell-lt', # myspell dictionary for Lithuanian (LT)
+            'myspell-sl', # Slovenian dictionary for myspell
+            'myspell-sw', # Swahili dictionary for myspell
+            'myspell-th', # Thai dictionary for myspell
+        ])
+    }
 
     # These are not available in Debian Stretch (I guess Ubuntu Trusty has more langs).
     # 'myspell-nr', # The Ndebele dictionary for myspell
