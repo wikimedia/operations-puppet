@@ -93,28 +93,6 @@ datasources:
    withCredentials: false
    version: 1
 
- - name: frack.eqiad prometheus
-   type: prometheus
-   access: proxy
-   orgId: 1
-   url: http://pay-lvs1001.frack.eqiad.wmnet:9090
-   database:
-   isDefault: false
-   editable: false
-   withCredentials: false
-   version: 1
-
- - name: frack.codfw prometheus
-   type: prometheus
-   access: proxy
-   orgId: 1
-   url: http://pay-lvs2001.frack.codfw.wmnet:9090
-   database:
-   isDefault: false
-   editable: false
-   withCredentials: false
-   version: 1
-
  - name: eqiad prometheus/services
    type: prometheus
    access: proxy
