@@ -7,4 +7,5 @@ if [ "${SECURITY_UPDATES}" = "yes" -a "${DIST}" != "buster" ]; then
 	deb-src http://security.debian.org/debian-security <%= @distribution %>/updates main contrib non-free
 EOF
 	printf "Acquire::http::Proxy::security.debian.org \"${PROXY}\";\n" >> /etc/apt/apt.conf.d/01Proxy
+    apt-get update
 fi

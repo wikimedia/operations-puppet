@@ -20,7 +20,7 @@ if [ "${DIST%-*}" = "jessie" ]; then
 else
   SECURITY_UPDATES=${SECURITY_UPDATES:-"no"}
 fi
-
+export SECURITY_UPDATES
 
 # If DIST has been declared like dist-wikimedia, handle it like as if the user
 # wanted to specify WIKIMEDIA="yes" which will satisfy build dependencies from
