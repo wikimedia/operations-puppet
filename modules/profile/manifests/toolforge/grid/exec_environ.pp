@@ -92,21 +92,6 @@ class profile::toolforge::grid::exec_environ {
         'unpaper',                   # T204422
     )
 
-    require_package(
-        'ttf-bengali-fonts',
-        'ttf-devanagari-fonts',
-        'ttf-gujarati-fonts',
-        'ttf-kannada-fonts',
-        'ttf-oriya-fonts',
-        'ttf-punjabi-fonts',
-        'ttf-tamil-fonts',
-        'ttf-telugu-fonts',
-        'ttf-kochi-gothic',
-        'ttf-kochi-mincho',
-        'fonts-mgopen',
-        'sbt',
-    )
-
     if os_version('debian == jessie') {
         require_package(
             'fonts-noto', # T184664

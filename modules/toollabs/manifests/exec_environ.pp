@@ -62,22 +62,6 @@ class toollabs::exec_environ {
         'unpaper',                   # T204422
     )
 
-    if os_version('ubuntu >= trusty') {
-        require_package(
-            'ttf-bengali-fonts',
-            'ttf-devanagari-fonts',
-            'ttf-gujarati-fonts',
-            'ttf-kannada-fonts',
-            'ttf-oriya-fonts',
-            'ttf-punjabi-fonts',
-            'ttf-tamil-fonts',
-            'ttf-telugu-fonts',
-            'ttf-kochi-gothic',
-            'ttf-kochi-mincho',
-            'fonts-mgopen'
-        )
-    }
-
     if os_version('debian == jessie') {
         require_package(
             'fonts-noto' # T184664
