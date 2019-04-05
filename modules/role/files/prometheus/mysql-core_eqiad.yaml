@@ -36,14 +36,14 @@
     shard: s3
     role: slave
   targets:
-  - db1075:9104
   - db1077:9104
+  - db1078:9104
   - db1123:9104
 - labels:
     shard: s3
     role: master
   targets:
-  - db1078:9104
+  - db1075:9104
 
 - labels:
     shard: s4
