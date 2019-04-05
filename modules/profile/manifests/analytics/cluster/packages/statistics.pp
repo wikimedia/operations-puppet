@@ -51,7 +51,6 @@ class profile::analytics::cluster::packages::statistics {
         'libgdal-dev',      # Requested by lzia for rgdal
         'g++',
         'libyaml-cpp-dev',  # Latest version of uaparser (https://github.com/ua-parser/uap-r) supports v0.5+
-        'libyaml-cpp0.5v5', # Latest version of uaparser (https://github.com/ua-parser/uap-r) supports v0.5+
         'php-cli',
         'php-curl',
         'php-mysql',
@@ -61,11 +60,13 @@ class profile::analytics::cluster::packages::statistics {
         require_package([
             'libgslcblas0',
             'mariadb-client-10.3',
+            'libyaml-cpp0.6',
         ])
     } else {
         require_package([
             'libgsl2',
             'mariadb-client-10.1',
+            'libyaml-cpp0.5v5',
         ])
     }
 
@@ -75,20 +76,31 @@ class profile::analytics::cluster::packages::statistics {
         'libapache2-mod-python',
         'python-mysqldb',               'python3-mysqldb',
         'python-boto',                  'python3-boto',  # Amazon S3 access (to get zero sms logs)
-        'python-ua-parser',             'python3-ua-parser',
+                                        'python3-ua-parser',
         'python-netaddr',               'python3-netaddr',
         'python-pymysql',               'python3-pymysql',
         'python-virtualenv',            'python3-virtualenv', # T84378
         'python-dev',                   'python3-dev',        # T83316
         'python-protobuf',              'python3-protobuf',
         'python-unidecode',             'python3-unidecode',
-        # WMF maintains python-google-api at
-        # https://gerrit.wikimedia.org/r/#/admin/projects/operations/debs/python-google-api
-        'python-google-api',            'python3-google-api',           # T190767
         'python-oauth2client',          'python3-oauth2client',         # T197896
         'python-oauthlib',              'python3-oauthlib',             # T197896
         'python-requests-oauthlib',     'python3-requests-oauthlib',    # T197896
     ])
+
+
+    # These packages need to be reviewed in the context of Debian Buster
+    # to figure out if we need to rebuild them or simply copy them over in reprepro.
+    if os_version('debian <= stretch') {
+        require_package([
+            # WMF maintains python-google-api at
+            # https://gerrit.wikimedia.org/r/#/admin/projects/operations/debs/python-google-api
+            'python-google-api',
+            'python3-google-api', # T190767
+            'python-ua-parser',
+        ])
+    }
+
 
     # FORTRAN packages (T89414)
     require_package([
@@ -97,14 +109,18 @@ class profile::analytics::cluster::packages::statistics {
         'libopenblas-dev', # Optimized BLAS (linear algebra) library
     ])
 
-    # Plotting packages
-    require_package([
-        'ploticus',
-        'libploticus0',
-        'libcairo2',
-        'libcairo2-dev',
-        'libxt-dev',
-    ])
+    # These packages need to be reviewed in the context of Debian Buster
+    # to figure out if we need to rebuild them or simply copy them over in reprepro.
+    if os_version('debian <= stretch') {
+        # Plotting packages
+        require_package([
+            'ploticus',
+            'libploticus0',
+            'libcairo2',
+            'libcairo2-dev',
+            'libxt-dev',
+        ])
+    }
 
     # Dictionary packages
     require_package([
