@@ -138,8 +138,20 @@ class profile::analytics::cluster::packages::statistics {
         'myspell-uk', # Ukrainian dictionary for myspell
     ])
 
-    # Some myspell packages are not available in Debian Buster
-    if os_version('debian <= stretch') {
+    # Some myspell packages have been renamed in Debian Buster
+    if os_version('debian >= buster') {
+        require_package([
+            'hunspell-ca', # Catalan dictionary for myspell
+            'hunspell-en-gb', # English_british dictionary for myspell
+            'hunspell-it', # Italian dictionary for myspell
+            'hunspell-af', # Afrikaans dictionary for myspell
+            'hunspell-en-za', # English_southafrican dictionary for myspell
+            'hunspell-lt', # myspell dictionary for Lithuanian (LT)
+            'hunspell-sl', # Slovenian dictionary for myspell
+            'hunspell-sw', # Swahili dictionary for myspell
+            'hunspell-th', # Thai dictionary for myspell
+        ])
+    } else {
         require_package([
             'myspell-ca', # Catalan dictionary for myspell
             'myspell-en-gb', # English_british dictionary for myspell
@@ -165,6 +177,9 @@ class profile::analytics::cluster::packages::statistics {
     # 'myspell-xh', # The Xhosa dictionary for myspell
     # 'myspell-zu', # The Zulu dictionary for myspell
 
+    # These are not available in Debian Buster
+    # 'myspell-ku', # Kurdish (Kurmanji) dictionary for myspell
+
 
     # T214089
     if os_version('debian == stretch') {
@@ -178,7 +193,7 @@ class profile::analytics::cluster::packages::statistics {
 
     # scap also deploys git-lfs to clients, so guarding
     # the package resource with a !defined as precaution.
-    if os_version('debian >= stretch') {
+    if os_version('debian <= stretch') {
         if !defined(Package['git-lfs']) {
             package { 'git-lfs':
                 ensure => present,
