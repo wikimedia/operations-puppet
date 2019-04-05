@@ -62,6 +62,13 @@ profile::acme_chief::certificates:
         - '^seaborgium\.wikimedia\.org$'
         - '^serpens\.wikimedia\.org$'
         - '^ldap-eqiad-replica0[12]\.wikimedia\.org$'
+    ldap-codfw1dev:
+        CN: 'cloudservices2002-dev.wikimedia.org'
+        SNI:
+        - 'cloudservices2002-dev.wikimedia.org'
+        challenge: dns-01
+        authorized_hosts:
+        - 'cloudservices2002-dev.wikimedia.org'
     ldap-labtest:
         CN: 'labtestservices2001.wikimedia.org'
         SNI:
