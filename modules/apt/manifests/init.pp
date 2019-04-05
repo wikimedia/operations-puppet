@@ -125,9 +125,18 @@ class apt(
         }
     }
 
-    # apt-get should not install recommended packages
-    apt::conf { 'no-recommends':
+    apt::conf { 'InstallRecommends':
         ensure   => 'present',
+        priority => '00',
+        key      => 'APT::Install-Recommends',
+        value    => false,
+        before   => File['/etc/apt/apt.conf'],
+    }
+
+    # 00InstallRecommends already provides this.
+    # TODO: remove once merged.
+    apt::conf { 'no-recommends':
+        ensure   => 'absent',
         priority => '90',
         key      => 'APT::Install-Recommends',
         value    => '0',
