@@ -2205,7 +2205,7 @@ node 'ununpentium.wikimedia.org' {
 #  key: profile::openstack::main::nova::scheduler_pool
 # We try to keep a few empty as emergency fail-overs
 #  or transition hosts for maintenance to come
-node /^labvirt100[0-8].eqiad.wmnet/ {
+node /^labvirt100[0-7].eqiad.wmnet/ {
     role(wmcs::openstack::main::virt)
     include ::standard
 }
@@ -2214,7 +2214,7 @@ node /^labvirt100[0-8].eqiad.wmnet/ {
 #  key: profile::openstack::eqiad1::nova::scheduler_pool
 # We try to keep a few empty as emergency fail-overs
 #  or transition hosts for maintenance to come
-node 'cloudvirt1009.eqiad.wmnet' {
+node /^cloudvirt100[8-9]\.eqiad\.wmnet$/ {
     role(wmcs::openstack::eqiad1::virt)
     interface::add_ip6_mapped { 'main': }
 }
