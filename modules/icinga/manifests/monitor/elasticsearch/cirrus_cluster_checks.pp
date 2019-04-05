@@ -54,6 +54,7 @@ class icinga::monitor::elasticsearch::cirrus_cluster_checks{
             metric          => "movingAverage(transformNull(MediaWiki.CirrusSearch.${site}.updates.all.sent.rate),\"10minutes\")",
             warning         => 80,
             critical        => 50,
+            under           => true,
             contact_group   => 'admins,team-discovery',
         }
     }
