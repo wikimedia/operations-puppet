@@ -7,6 +7,5 @@ class role::statistics::gpu {
     }
     include ::standard
     include ::profile::base::firewall
-
-    require_package('firmware-amd-graphics')
+    include ::profile::statistics::gpu
 }
