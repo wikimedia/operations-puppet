@@ -72,7 +72,7 @@ scap::keyholder_agents:
 
   analytics_deploy:
     trusted_groups:
-      - analytics-admins
+      - analytics-deployers
 
   deploy-librenms:
     trusted_groups:

@@ -731,6 +731,10 @@ groups:
     description: people who have full root on session storage cluster nodes
     members: [eevans, mobrovac, ppchelko]
     privileges: ['ALL = (ALL) NOPASSWD: ALL']
+  analytics-deployers:
+    gid: 812
+    description: People able to deploy to analytics misc nodes.
+    members: [joal, nuria, mforns, milimetric, fdans, gilles]
 
 users:
   rush:
