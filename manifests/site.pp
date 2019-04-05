@@ -1100,7 +1100,7 @@ node 'labtestmetal2001.codfw.wmnet' {
 }
 
 node 'labtestnet2002.codfw.wmnet' {
-    role(wmcs::openstack::labtest::net)
+    role(spare::system)
 }
 
 node 'labtestcontrol2001.wikimedia.org' {

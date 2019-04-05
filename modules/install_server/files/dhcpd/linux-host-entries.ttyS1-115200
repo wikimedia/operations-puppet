@@ -3107,8 +3107,6 @@ host labtestmetal2001 {
 host labtestnet2002 {
     hardware ethernet 30:e1:71:63:e6:c4;
     fixed-address labtestnet2002.codfw.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/trusty-installer/";
-    filename "lpxelinux.0";
 }
 
 host cloudnet2003-dev {
