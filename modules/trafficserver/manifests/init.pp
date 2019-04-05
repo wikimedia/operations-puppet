@@ -166,9 +166,10 @@ class trafficserver(
     $error_template_path = '/etc/trafficserver/error_template'
     file {
       [$error_template_path, "${error_template_path}/default"]:
-        ensure => directory,
-        owner  => $user,
-        mode   => '0755',
+        ensure  => directory,
+        owner   => $user,
+        mode    => '0755',
+        require => Package['trafficserver'],
     }
 
     ## Config files
