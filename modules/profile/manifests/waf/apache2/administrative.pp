@@ -17,7 +17,7 @@ class profile::waf::apache2::administrative {
         require => Package['libapache2-mod-security2'],
     }
 
-    httpd::site { 'modsecurity_admin':
+    httpd::conf { 'modsecurity_admin':
         priority => 00,
         content  => secret('waf/modsecurity_admin.conf'),
     }
