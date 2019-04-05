@@ -176,9 +176,10 @@ class trafficserver(
     file {
         default:
           * => {
-              owner  => $user,
-              mode   => '0400',
-              notify => Service['trafficserver'],
+              owner   => $user,
+              mode    => '0400',
+              require => Package['trafficserver'],
+              notify  => Service['trafficserver'],
           };
 
         '/etc/trafficserver/records.config':
