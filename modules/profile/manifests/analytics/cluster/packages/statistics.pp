@@ -46,7 +46,6 @@ class profile::analytics::cluster::packages::statistics {
         'libssh2-1-dev',          # ^
         'pandoc',                 # Requested by bearloga; necessary for using RMarkdown and performing format conversions
         'lynx',                   # Requested by dcausse to be able to inspect yarn's logs from analytics10XX hosts
-        'libgsl2',
         'gsl-bin',
         'libgsl-dev',
         'libgdal-dev',      # Requested by lzia for rgdal
@@ -56,8 +55,19 @@ class profile::analytics::cluster::packages::statistics {
         'php-cli',
         'php-curl',
         'php-mysql',
-        'mariadb-client-10.1',
     ])
+
+    if os_version('debian >= buster') {
+        require_package([
+            'libgslcblas0',
+            'mariadb-client-10.3',
+        ])
+    } else {
+        require_package([
+            'libgsl2',
+            'mariadb-client-10.1',
+        ])
+    }
 
     # Python packages
     require_package ([
