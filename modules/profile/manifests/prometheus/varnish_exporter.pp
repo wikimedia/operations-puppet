@@ -1,8 +1,6 @@
 # == Class: profile::prometheus::varnish_exporter
 #
-# The profile sets up one exporter per instance:
-#   default on tcp/9131
-#   frontend on tcp/9331 (ie. default + 200)
+# The profile sets up the prometheus exporter for varnish frontend on tcp/9331
 #
 # === Parameters
 # [*nodes*] List of prometheus nodes
@@ -14,14 +12,6 @@ class profile::prometheus::varnish_exporter(
 ) {
     $prometheus_ferm_nodes = join($nodes, ' ')
     $ferm_srange = "(@resolve((${prometheus_ferm_nodes})) @resolve((${prometheus_ferm_nodes}), AAAA))"
-
-    prometheus::varnish_exporter{ 'default': }
-
-    ferm::service { 'prometheus-varnish-exporter':
-        proto  => 'tcp',
-        port   => '9131',
-        srange => $ferm_srange,
-    }
 
     prometheus::varnish_exporter{ 'frontend':
         instance       => 'frontend',

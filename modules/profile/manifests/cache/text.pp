@@ -29,9 +29,6 @@ class profile::cache::text(
     class { '::geoip': }
     class { '::geoip::dev': }
 
-    class { 'tlsproxy::prometheus': }
-    class { 'prometheus::node_vhtcpd': }
-
     $fe_cache_be_opts = {
         'port'                  => 3128,
         'connect_timeout'       => '3s',

@@ -15,8 +15,6 @@ class profile::cache::upload(
     require ::profile::cache::base
 
     $cache_route = $cache_route_table[$::site]
-    class { 'tlsproxy::prometheus': }
-    class { 'prometheus::node_vhtcpd': }
 
     class { '::lvs::realserver':
         realserver_ips => $lvs::configuration::service_ips['upload'][$::site],
@@ -109,9 +107,5 @@ class profile::cache::upload(
         wikimedia_nets   => $profile::cache::base::wikimedia_nets,
         wikimedia_trust  => $profile::cache::base::wikimedia_trust,
         ats_backends     => $ats_backends,
-    }
-
-    # Media browser cache hit rate and request volume stats.
-    ::varnish::logging::media { 'media':
     }
 }

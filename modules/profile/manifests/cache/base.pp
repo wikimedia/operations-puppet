@@ -63,17 +63,14 @@ class profile::cache::base(
     }
 
     class { 'conftool::scripts': }
+    class { 'tlsproxy::prometheus': }
+    class { 'prometheus::node_vhtcpd': }
 
     # TODO: Spin off a profile::cache::base::production?
     if $::realm == 'production' {
         # Only production needs system perf tweaks
         class { '::cpufrequtils': }
         class { 'cacheproxy::performance': }
-        # Periodic cron restarts, we need this to mitigate T145661
-        class { 'cacheproxy::cron_restart':
-            nodes         => $nodes,
-            cache_cluster => $cache_cluster,
-        }
     }
     # Basic varnish classes
     class { '::varnish::packages':

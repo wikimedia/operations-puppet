@@ -7,6 +7,7 @@ class role::cache::upload {
     include ::standard
 
     include ::profile::cache::base
+    include ::profile::cache::varnish::backend
     include ::profile::cache::ssl::unified
     include ::profile::cache::upload
 

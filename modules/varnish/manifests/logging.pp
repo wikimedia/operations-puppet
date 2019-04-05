@@ -17,21 +17,11 @@
 # [*mtail_progs*]
 #   Directory with mtail programs. Defaults to /etc/mtail.
 #
-# [*varnishmtail_backend_progs*]
-#   Directory with varnish backend mtail programs.
-#   Defaults to /etc/varnishmtail-backend/.
-#
-# [*varnishmtail_backend_port*]
-#   Port on which to bind the varnish backend mtail instance.
-#   Defaults to 3904.
-#
 class varnish::logging(
     $cache_cluster,
     $statsd_host,
     $forward_syslog='',
     $mtail_progs='/etc/mtail',
-    $varnishmtail_backend_progs='/etc/varnishmtail-backend/',
-    $varnishmtail_backend_port=3904,
 ){
     require_package('python3-logstash')
 
@@ -56,30 +46,9 @@ class varnish::logging(
         require => File['/usr/local/bin/varnishmtail'],
     }
 
-    file { '/usr/local/bin/varnishmtail-backend':
-        ensure => present,
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0555',
-        source => 'puppet:///modules/varnish/varnishmtail-backend',
-        notify => Systemd::Service['varnishmtail-backend'],
-    }
-
-    systemd::service { 'varnishmtail-backend':
-        ensure  => present,
-        content => systemd_template('varnishmtail-backend'),
-        restart => true,
-        require => File['/usr/local/bin/varnishmtail-backend'],
-    }
-
     # Client connection stats from the 'X-Connection-Properties'
     # header set by the SSL terminators.
     ::varnish::logging::xcps { 'xcps':
-    }
-
-    ::varnish::logging::statsd { 'default':
-        statsd_server => $statsd_host,
-        key_prefix    => "varnish.${::site}.backends",
     }
 
     # Parse varnishlogs for request statistics and send to statsd.
@@ -91,9 +60,10 @@ class varnish::logging(
     ::varnish::logging::xcache { 'xcache':
     }
 
-    # Parse Backend-Timing origin server response header and make the values
-    # available to Prometheus
-    ::varnish::logging::backendtiming { 'backendtiming':
+    if $cache_cluster == 'upload' {
+        # Media browser cache hit rate and request volume stats.
+        ::varnish::logging::media { 'media':
+        }
     }
 
     file { "/usr/local/lib/python${::varnish::common::python_version}/dist-packages/wikimedia_varnishlogconsumer.py":
