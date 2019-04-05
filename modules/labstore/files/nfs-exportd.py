@@ -34,6 +34,9 @@ from keystoneclient.v3 import client as keystone_client
 
 from novaclient import client as novaclient
 
+# Volumes that need an entry in exports.d
+VOLUMES_NEEDING_EXPORTS = ['project', 'home', 'tools-home', 'tools-project']
+
 
 def is_valid_ipv4(ip):
     """
@@ -138,11 +141,10 @@ def get_projects_with_nfs(mounts_config, observer_pass):
     region_recs = keystoneclient.regions.list()
     regions = [region.id for region in region_recs]
 
-    server_vols = mounts_config['volumes_served']
     for name, config in mounts_config['private'].items():
         if 'mounts' in config:
             mounts = [k for k, v in config['mounts'].items()
-                      if k in server_vols and v]
+                      if k in VOLUMES_NEEDING_EXPORTS and v]
             if len(mounts) == 0:
                 # Skip project if it has no private mounts
                 logging.debug('skipping exports for %s, no private mounts', name)
