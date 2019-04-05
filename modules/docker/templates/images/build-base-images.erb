@@ -2,24 +2,21 @@
 # This script builds all the base images we need and pushes
 # them to the appropriate docker registry
 set -e
+DAY=$(date +%Y%m%d)
+DISTRIBUTIONS='<%= @distributions.join(" ") %>'
+REGISTRY='<%= @docker_registry %>'
 
-<%- if @distributions.include?('jessie') -%>
-# Build debian jessie image!
-/usr/bin/bootstrap-vz /srv/images/base/jessie.yaml
-
-# Push it to the repository
-docker push <%= @docker_registry %>/wikimedia-jessie
-<%- end -%>
-
-<%- if @distributions.include?('stretch') -%>
-# Build debian stretch image!
-/usr/bin/bootstrap-vz /srv/images/base/stretch.yaml
-
-# Push it to the repository
-docker push <%= @docker_registry %>/wikimedia-stretch
-<%- end -%>
-
-
-<%- if @distributions.include?('alpine') -%>
-/usr/local/bin/build-alpine
-<%- end -%>
+for distro in $DISTRIBUTIONS;
+do
+    if [[ "$distro" == 'alpine' ]]; then
+        /usr/local/bin/build-alpine
+    else
+        # Build debian $distro image!
+        IMG="${REGISTRY}/wikimedia-${distro}"
+        /usr/bin/bootstrap-vz "/srv/images/base/${distro}.yaml"
+        # tag the image with today's date too
+        docker tag "${IMG}:latest" "${IMG}:${DAY}"
+        docker push "${IMG}:latest"
+        docker push "${IMG}:${DAY}"
+    fi
+done
