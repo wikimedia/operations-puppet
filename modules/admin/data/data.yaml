@@ -723,10 +723,9 @@ groups:
     privileges: ['ALL = NOPASSWD: /usr/sbin/service proton *',
                  'ALL = (proton) NOPASSWD: ALL']
   gpu-testers:
-    description: People with root access who test GPUs.
+    description: People with access to Analytics hosts with GPUs.
     gid: 810
-    members: [ebernhardson]
-    privileges: ['ALL = (ALL) NOPASSWD: ALL']
+    members: [ebernhardson, mirrys, gilles]
   sessionstore-roots:
     gid: 811
     description: people who have full root on session storage cluster nodes
