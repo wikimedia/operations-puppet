@@ -268,6 +268,8 @@ codfw:
     restbase2016.codfw.wmnet: [restbase, cassandra]
     restbase2017.codfw.wmnet: [restbase, cassandra]
     restbase2018.codfw.wmnet: [restbase, cassandra]
+    restbase2019.codfw.wmnet: [restbase, cassandra]
+    restbase2020.codfw.wmnet: [restbase, cassandra]
   scb:
     scb2001.codfw.wmnet: [mobileapps, graphoid, apertium, cxserver, eventstreams, pdfrender, "recommendation-api"]
     scb2002.codfw.wmnet: [mobileapps, graphoid, apertium, cxserver, eventstreams, pdfrender, "recommendation-api"]

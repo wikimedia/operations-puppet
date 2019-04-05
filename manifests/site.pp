@@ -2025,7 +2025,7 @@ node /^restbase10(0[789]|1[012345678])\.eqiad\.wmnet$/ {
 }
 
 # restbase codfw cluster
-node /^restbase20(0[7-9]|1[0-8])\.codfw\.wmnet$/ {
+node /^restbase20(0[7-9]|1[0-9]|20)\.codfw\.wmnet$/ {
     role(restbase::production)
 }
 
