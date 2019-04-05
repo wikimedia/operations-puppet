@@ -444,8 +444,6 @@ profile::cache::ssl::unified::letsencrypt: false
 profile::cache::ssl::unified::acme_chief: false
 # Profile::cache::ssl::wikibase
 profile::cache::ssl::wikibase::monitoring: true
-profile::cache::ssl::wikibase::letsencrypt: false
-profile::cache::ssl::wikibase::acme_chief: true
 
 # Enable varnishkafka-* instance monitoring.
 profile::cache::kafka::webrequest::monitoring_enabled: true

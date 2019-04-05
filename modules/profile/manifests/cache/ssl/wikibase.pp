@@ -1,22 +1,16 @@
 # == Class profile::cache::ssl::wikibase
 #
-# Sets up TLS termination for a cache host. It can be used both with letsencrypt
-# and with a certificate from a commercial vendor (typically when a unified,
-# multiple-wildcard cert is needed, as in production).
+# Sets up TLS termination for a cache host. It can be used either with the old
+# letsencrypt puppetisation, in which case you will need to specify the server
+# name and other subjects, or with acme-chief.
 #
 class profile::cache::ssl::wikibase(
     $monitoring=hiera('profile::cache::ssl::wikibase::monitoring'),
-    $acme_chief=hiera('profile::cache::ssl::wikibase::acme_chief'),
-    $letsencrypt=hiera('profile::cache::ssl::wikibase::letsencrypt'),
+    $letsencrypt=hiera('profile::cache::ssl::wikibase::letsencrypt', false),
     $le_server_name=hiera('profile::cache::ssl::wikibase::le_server_name', undef),
     $le_subjects=hiera('profile::cache::ssl::wikibase::le_subjects', undef),
     $ocsp_proxy=hiera('http_proxy', ''),
 ) {
-    if ($letsencrypt and $acme_chief) or (!$acme_chief and !$letsencrypt)
-    {
-        fail('Specify exactly one of acme_chief or letsencrypt')
-    }
-
     if $letsencrypt {
         tlsproxy::localssl { 'wikibase':
             server_name    => $le_server_name,
