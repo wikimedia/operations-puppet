@@ -70,6 +70,11 @@ class openstack::puppet::master::encapi(
         subscribe => File["/usr/local/lib/${python_version}/dist-packages/labspuppetbackend.py"],
     }
 
+    nginx::site { 'default': # otherwise we'll cause nginx to be installed with the default port 80 config which will conflict with apache used by the puppetmaster itself
+        ensure => absent,
+        before => Nginx::Site['labspuppetbackendgetter'],
+    }
+
     $labs_instance_ranges = $network::constants::labs_networks
     # This is a GET-only front end that sits on port 8100.  We can
     #  open this up to the public even though the actual API has no
