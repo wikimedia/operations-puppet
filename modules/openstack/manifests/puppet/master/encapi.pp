@@ -23,8 +23,12 @@ class openstack::puppet::master::encapi(
                         'python-yaml')
     }
 
+    $python_version = $::lsbdistcodename ? {
+        'jessie'  => 'python3.4',
+        'stretch' => 'python3.5',
+    }
 
-    file { '/usr/local/lib/python3.4/dist-packages/labspuppetbackend.py':
+    file { "/usr/local/lib/${python_version}/dist-packages/labspuppetbackend.py":
         owner  => 'root',
         group  => 'root',
         mode   => '0444',
@@ -48,7 +52,7 @@ class openstack::puppet::master::encapi(
         settings  => {
             uwsgi => {
                 plugins     => 'python3',
-                'wsgi-file' => '/usr/local/lib/python3.4/dist-packages/labspuppetbackend.py',
+                'wsgi-file' => "/usr/local/lib/${python_version}/dist-packages/labspuppetbackend.py",
                 callable    => 'app',
                 master      => true,
                 http-socket => '0.0.0.0:8101',
@@ -63,7 +67,7 @@ class openstack::puppet::master::encapi(
                 ],
             },
         },
-        subscribe => File['/usr/local/lib/python3.4/dist-packages/labspuppetbackend.py'],
+        subscribe => File["/usr/local/lib/${python_version}/dist-packages/labspuppetbackend.py"],
     }
 
     $labs_instance_ranges = $network::constants::labs_networks
