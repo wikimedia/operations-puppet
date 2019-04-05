@@ -16,9 +16,5 @@ class role::phabricator {
     include ::profile::phabricator::monitoring
     include ::profile::prometheus::apache_exporter
     include ::profile::rsyslog::kafka_shipper
-
-    if $::realm == 'production' {
-        include ::profile::waf::apache2::administrative
-    }
-
+    include ::profile::waf::apache2::administrative
 }

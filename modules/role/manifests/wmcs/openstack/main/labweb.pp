@@ -24,9 +24,5 @@ class role::wmcs::openstack::main::labweb {
 
     # Striker:
     include ::profile::openstack::base::striker::web
-
-    if $::realm == 'production' {
-        include ::profile::waf::apache2::administrative
-    }
-
+    include ::profile::waf::apache2::administrative
 }
