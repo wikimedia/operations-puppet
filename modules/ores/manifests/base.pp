@@ -17,39 +17,46 @@ class ores::base(
     require_package('enchant')
 
     # Spellcheck packages for supported languages
-    # NOTE: aspell-id is imported in our apt:
-    # https://apt.wikimedia.org/wikimedia/pool/thirdparty/a/aspell-id/
-    require_package('aspell-ar', 'aspell-el', 'aspell-id', 'aspell-pl',
-                    'aspell-sv',
-                    'aspell-ro',
-                    'hunspell-vi',
-                    'myspell-ca',
-                    'myspell-cs',
-                    'myspell-de-at', 'myspell-de-ch', 'myspell-de-de',
-                    'myspell-en-au', 'myspell-en-gb',
-                    'myspell-es',
-                    'myspell-et',
-                    'myspell-fa',
-                    'myspell-fr',
-                    'myspell-he',
-                    'myspell-hu',
-                    'aspell-is',
-                    'myspell-it',
-                    'myspell-lv',
-                    'myspell-nb',
-                    'myspell-nl',
-                    'myspell-pt',
-                    'myspell-ru',
-                    'aspell-uk',
-                    'myspell-hr',
-                    'hunspell-gl',
-                    'hunspell-sr')
+    require_package([
+        'aspell-ar',
+        'aspell-el',
+        'aspell-pl',
+        'aspell-sv',
+        'aspell-ro',
+        'hunspell-vi',
+        'myspell-cs',
+        'myspell-de-at',
+        'myspell-de-ch',
+        'myspell-de-de',
+        'myspell-en-au',
+        'myspell-es',
+        'myspell-et',
+        'myspell-fa',
+        'myspell-fr',
+        'myspell-he',
+        'myspell-hu',
+        'aspell-is',
+        'myspell-lv',
+        'myspell-nb',
+        'myspell-nl',
+        'myspell-pt',
+        'myspell-ru',
+        'aspell-uk',
+        'myspell-hr',
+        'hunspell-gl',
+        'hunspell-sr',
+        'hunspell-en-us',
+        'hunspell-en-gb',
+        'hunspell-bs',
+        'hunspell-ca',
+        'hunspell-it',
+    ])
 
-    if os_version('debian >= stretch') {
-        require_package('hunspell-en-us',
-                        'hunspell-bs')
-    }
-    else {
-        require_package('myspell-en-us')
+    # NOTE: aspell-id is imported in our apt up to Stretch:
+    # https://apt.wikimedia.org/wikimedia/pool/thirdparty/a/aspell-id/
+    if os_version('debian >= buster') {
+        require_package('hunspell-id')
+    } else {
+        require_package('aspell-id')
     }
 }
