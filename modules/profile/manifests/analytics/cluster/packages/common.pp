@@ -39,10 +39,15 @@ class profile::analytics::cluster::packages::common {
         'python3-nltk',
         'python3-nose',
         'python3-setuptools',
-        'python3-mmh3',
         'python3-sklearn-lib',
         'libgomp1',
     )
+
+    # These packages need to be reviewed in the context of Debian Buster
+    # to figure out if we need to rebuild them or simply copy them over in reprepro.
+    if os_version('debian <= stretch') {
+        require_package('python3-mmh3')
+    }
 
     # Until https://gerrit.wikimedia.org/r/#/c/operations/puppet/+/501608/ is sorted,
     # avoid deploying ores::base to Debian Buster hosts.

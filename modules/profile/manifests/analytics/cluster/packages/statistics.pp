@@ -125,7 +125,6 @@ class profile::analytics::cluster::packages::statistics {
     # Dictionary packages
     require_package([
         'enchant', # generic spell checking library (uses myspell as backend)
-        'aspell-id',   # Indonesian dictionary for GNU aspell
         'hunspell-vi', # Vietnamese dictionary for hunspell
         'myspell-bg', # Bulgarian dictionary for myspell
         'myspell-cs', # Czech dictionary for myspell
@@ -176,6 +175,7 @@ class profile::analytics::cluster::packages::statistics {
             'hunspell-sl', # Slovenian dictionary for myspell
             'hunspell-sw', # Swahili dictionary for myspell
             'hunspell-th', # Thai dictionary for myspell
+            'hunspell-id', # Indonesian dictionary for GNU aspell
         ])
     } else {
         require_package([
@@ -189,6 +189,7 @@ class profile::analytics::cluster::packages::statistics {
             'myspell-sl', # Slovenian dictionary for myspell
             'myspell-sw', # Swahili dictionary for myspell
             'myspell-th', # Thai dictionary for myspell
+            'aspell-id', # Indonesian dictionary for GNU aspell
         ])
     }
 
