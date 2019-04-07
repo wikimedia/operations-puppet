@@ -1,6 +1,6 @@
 # Installs the puppet compiler and all the other software we need.
 class puppet_compiler(
-    $version = '0.3.3',
+    $version = '0.5.0',
     $workdir = '/srv/jenkins-workspace/puppet-compiler',
     $libdir  = '/var/lib/catalog-differ',
     $ensure  = 'present',
