@@ -120,9 +120,6 @@ cache::app_directors:
   netmon1002:
     backends:
       eqiad: 'netmon1002.wikimedia.org'
-  netmon1003:
-    backends:
-      eqiad: 'netmon1003.wikimedia.org'
   netmon2001:
     backends:
       eqiad: 'netmon2001.wikimedia.org'
@@ -359,8 +356,6 @@ cache::alternate_domains:
     director: 'ununpentium'
   scholarships.wikimedia.org:
     director: 'krypton'
-  servermon.wikimedia.org:
-    director: 'netmon1003'
   sitemaps.wikimedia.org:
     director: 'webserver_misc_static'
   smokeping.wikimedia.org:

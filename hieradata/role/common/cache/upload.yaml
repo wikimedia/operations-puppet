@@ -241,9 +241,6 @@ profile::trafficserver::backend::mapping_rules:
       target: http://scholarships.wikimedia.org
       replacement: http://krypton.eqiad.wmnet
     - type: map
-      target: http://servermon.wikimedia.org
-      replacement: http://netmon1003.wikimedia.org
-    - type: map
       target: http://sitemaps.wikimedia.org
       replacement: http://bromine.eqiad.wmnet
       #replacement: http://vega.codfw.wmnet
