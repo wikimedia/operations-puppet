@@ -4,7 +4,6 @@
 ## the installation at this time & the actual tarball must be downloaded from
 ## http://racktables.org/ and unzipped into /srv/org/wikimedia/racktables
 #
-# filtertags: labs-project-servermon
 class profile::racktables (
     $racktables_host = hiera('profile::racktables::racktables_host'),
 ){

@@ -1,6 +1,6 @@
 # Generic Server
 #
-# filtertags: labs-project-servermon labs-project-monitoring
+# filtertags: labs-project-monitoring
 class role::mariadb {
 
     system::role { 'mariadb':

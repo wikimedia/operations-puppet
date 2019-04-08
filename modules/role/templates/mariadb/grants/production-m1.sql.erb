@@ -95,23 +95,6 @@ CREATE ROUTINE, ALTER ROUTINE, TRIGGER
     ON `racktables`.* TO '<%=@racktables_user%>'@'%'
     IDENTIFIED BY '<%=@racktables_pass%>';
 
--- servermon
-GRANT USAGE
-    ON *.* TO 'servermon'@'10.64.0.165'
-    IDENTIFIED BY '<%=@servermon_pass%>';
-
-GRANT ALTER, CREATE, CREATE TEMPORARY TABLES, DELETE, DROP, INDEX, INSERT,
-SELECT, TRIGGER, UPDATE
-    ON `puppet`.* TO 'servermon'@'10.64.0.165';
-
-GRANT USAGE
-    ON *.* TO 'servermon'@'10.64.16.159'
-    IDENTIFIED BY '<%=@servermon_pass%>';
-
-GRANT ALTER, CREATE, CREATE TEMPORARY TABLES, DELETE, DROP, INDEX, INSERT,
-SELECT, TRIGGER, UPDATE
-    ON `puppet`.* TO 'servermon'@'10.64.16.159';
-
 -- rddmarc
 GRANT ALTER, CREATE, SELECT, INSERT, UPDATE, DELETE
     ON rddmarc.* TO 'rddmarc'@'10.64.0.165' IDENTIFIED BY '<%=@rddmarc_pass%>';

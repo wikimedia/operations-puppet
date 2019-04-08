@@ -15,7 +15,6 @@ class profile::mariadb::grants::production(
     include passwords::testreduce::mysql
     include passwords::racktables
     include passwords::prometheus
-    include passwords::servermon
     include passwords::striker
     include passwords::labsdbaccounts
     include passwords::mysql::phabricator
@@ -51,7 +50,6 @@ class profile::mariadb::grants::production(
         $testreduce_cli_pass = $passwords::testreduce::mysql::mysql_client_pass
         $racktables_user     = $passwords::racktables::racktables_db_user
         $racktables_pass     = $passwords::racktables::racktables_db_pass
-        $servermon_pass      = $passwords::servermon::db_password
         $striker_pass        = $passwords::striker::application_db_password
         $striker_admin_pass  = $passwords::striker::admin_db_password
         $labspuppet_pass     = hiera('labspuppetbackend_mysql_password')
