@@ -228,6 +228,13 @@ sub cluster_fe_recv {
 		}
 	        // Strip query args: we don't use them, but others may send junk which would hurt caching
 		set req.url = regsub(req.url, "\?.*$", "");
+		// Validate that we're only handling true short URLs, as
+		// otherwise there are potentially holes by which unrelated
+		// metawiki URLs can be accessed via w.wiki after the rewrite in
+		// text-backend.
+		if (req.url !~ "^/[23456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz$]*$") {
+			return (synth(404, "Short URL Not Found"));
+		}
 	}
 
 	// Users that just logged out, should not get a 304 for their
