@@ -1,0 +1,12 @@
+#####################################################################
+### puppet:///modules/labstore/rsync/rsyncd.conf.datasets_to_peers
+#####################################################################
+
+# for rolling rsyncs between dataset hosts
+[data]
+# using push model for rsync, so...
+uid = root
+gid = root
+read only = false
+path = <%= @datapath %>
+hosts allow = <%= @hosts_allow %>

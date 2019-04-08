@@ -246,12 +246,8 @@ node 'centrallog1001.eqiad.wmnet' {
     role(syslog::centralserver)
 }
 
-node 'cloudstore1008.wikimedia.org' {
-    role(wmcs::nfs::misc)
-}
-
-node 'cloudstore1009.wikimedia.org' {
-    role(wmcs::nfs::misc_backup)
+node /^cloudstore100[89]\.wikimedia\.org/ {
+    role(wmcs::nfs::secondary)
 }
 
 # All gerrit servers (swap master status in hiera)

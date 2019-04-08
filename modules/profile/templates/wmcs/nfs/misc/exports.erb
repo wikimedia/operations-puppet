@@ -1,7 +1,0 @@
-#  THIS FILE IS MANAGED BY PUPPET
-# /etc/exports: the access control list for filesystems which may be exported
-#		to NFS clients.  See exports(5).
-#
-
-/srv/scratch *(rw,sec=sys,async,no_subtree_check,root_squash)
-/srv/maps   -rw,sec=sys,async,no_subtree_check,root_squash <%= Array(@maps_project_internal_ips).join(' ') %>

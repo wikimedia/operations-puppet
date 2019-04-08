@@ -1,0 +1,16 @@
+#####################################################################
+### THIS FILE IS MANAGED BY PUPPET
+#####################################################################
+
+[Unit]
+Description=NFS Dir rsync service
+After=network.target
+
+[Service]
+User=root
+ExecStart=/usr/local/sbin/syncserver --interval <%= @interval %> --primary-host <%= @primary_host%>
+RestartSec=10
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target
