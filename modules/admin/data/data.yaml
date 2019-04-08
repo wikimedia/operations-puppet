@@ -3568,3 +3568,7 @@ ldap_only_users:
     ensure: present
     realname: Evan Prodromou
     email: eprodromou@wikimedia.org
+  wdoran:
+    ensure: present
+    realname: Will Doran
+    email: wdoran@wikimedia.org
