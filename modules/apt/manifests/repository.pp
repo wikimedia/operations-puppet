@@ -1,12 +1,12 @@
 define apt::repository(
-    Optional[Stdlib::HTTPUrl]  $uri         = undef,
-    Optional[String]           $dist        = undef,
-    Optional[String]           $components  = undef,
-    Boolean                    $source      = true,
-    Boolean                    $comment_old = false,
-    Optional[Stdlib::Unixpath] $keyfile     = undef,
-    Enum['present','absent']   $ensure      = present,
-    Boolean                    $trust_repo  = false,
+    Optional[Stdlib::HTTPUrl] $uri         = undef,
+    Optional[String]          $dist        = undef,
+    Optional[String]          $components  = undef,
+    Boolean                   $source      = true,
+    Boolean                   $comment_old = false,
+    Optional[String]          $keyfile     = undef,
+    Enum['present','absent']  $ensure      = present,
+    Boolean                   $trust_repo  = false,
 ) {
     if $ensure == 'present' and ! ($uri and $dist and $components) {
       fail('uri, dist and component are all required if ensure =>  present')
