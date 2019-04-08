@@ -156,7 +156,7 @@ class profile::wmcs::nfs::primary(
     }
 
     file {'/etc/logcleanup-config.yaml':
-        source => 'puppet:///modules/role/labs/labstore/secondary/logcleanup-config.yaml',
+        source => 'puppet:///modules/profile/wmcs/nfs/primary/logcleanup-config.yaml',
         mode   => '0644',
         owner  => 'root',
         group  => 'root',
