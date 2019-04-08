@@ -154,8 +154,6 @@ scap::sources:
     repository: mediawiki/services/chromium-render/deploy
   recommendation-api/deploy: {}
   restbase/deploy: {}
-  servermon/servermon:
-    repository: operations/software/servermon
   striker/deploy:
     repository: labs/striker/deploy
   horizon/deploy:
