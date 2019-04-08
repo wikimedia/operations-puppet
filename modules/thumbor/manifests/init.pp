@@ -53,12 +53,15 @@ class thumbor (
             dist       => 'stretch-wikimedia',
             components => 'component/thumbor',
             notify     => Exec['apt-get update'],
-            before     => [ Package['librsvg2-2'], Package['python-thumbor-wikimedia'] ]
+            before     => [ Package['librsvg2-2'], Package['librsvg2-common'],
+                            Package['librsvg2-bin'], Package['python-thumbor-wikimedia'] ]
         }
 
         apt::pin { 'wikimedia-thumbor':
             pin      => 'release c=component/thumbor',
             priority => '1002',
+            before   => [ Package['librsvg2-2'], Package['librsvg2-common'],
+                          Package['librsvg2-bin'] ]
         }
     }
 
