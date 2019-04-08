@@ -111,12 +111,23 @@ class profile::openstack::eqiad1::cumin::master(
             require => File['/etc/cumin'],
         }
 
+        file { '/etc/nfs-mounts.yaml':
+            ensure => 'present',
+            owner  => 'root',
+            group  => 'root',
+            mode   => '0444',
+            source => 'puppet:///modules/labstore/nfs-mounts.yaml',
+        }
+
         file { '/usr/local/sbin/nfs-hostlist':
             ensure  => 'present',
             owner   => 'root',
             group   => 'root',
             mode    => '0550',
             source  => 'puppet:///modules/profile/openstack/eqiad1/cumin/nfs_hostlist.py',
-            require => File['/etc/cumin'],
+            require => [
+                File['/etc/nfs-mounts.yaml'],
+                File['/etc/cumin'],
+            ],
         }
 }

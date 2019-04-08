@@ -22,7 +22,7 @@ import yaml
 from cumin import query
 
 
-NFS_MOUNT_FILE = '/etc/puppet/modules/labstore/files/nfs-mounts.yaml'
+NFS_MOUNT_FILE = '/etc/nfs-mounts.yaml'
 
 
 def get_all_hosts(share):
