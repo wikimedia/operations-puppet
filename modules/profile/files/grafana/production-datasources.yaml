@@ -2,6 +2,15 @@
 
 apiVersion: 1
 
+# These datasources will be removed at the next puppet run, and can be
+# eventually removed from this stanza.
+deleteDatasources:
+  - name: frack.codfw prometheus
+    orgId: 1
+  - name: frack.eqiad prometheus
+    orgId: 1
+
+
 datasources:
  - name: graphite
    type: graphite
