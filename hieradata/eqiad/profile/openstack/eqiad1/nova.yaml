@@ -18,10 +18,10 @@ profile::openstack::eqiad1::nova::physical_interface_mappings:
 #   cloudvirt1009: pooled
 #   cloudvirt1010: does not exist (formerly a leased system)
 #   cloudvirt1011: does not exist (formerly a leased system)
-#   cloudvirt1012: depooled, empty, candidate for pooling (newly rebuilt)
+#   cloudvirt1012: pooled
 #   cloudvirt1013: pooled
 #   cloudvirt1014: depooled but contains lots of VMs (Jessie, needs rebuild)
-#   cloudvirt1015: depooled, empty, candidate for pooling (newly rebuilt)
+#   cloudvirt1015: pooled
 #   cloudvirt1016: depooled but contains lots of VMs (Jessie, needs rebuild)
 #   cloudvirt1017: depooled but contains lots of VMs (Jessie, needs rebuild)
 #   cloudvirt1018: depooled, empty, emergency spare
@@ -56,7 +56,9 @@ profile::openstack::eqiad1::nova::physical_interface_mappings:
 profile::openstack::eqiad1::nova::scheduler_pool:
   - cloudvirt1008
   - cloudvirt1009
+  - cloudvirt1012
   - cloudvirt1013
+  - cloudvirt1015
   - cloudvirt1025
   - cloudvirt1026
   - cloudvirt1027
