@@ -3097,11 +3097,9 @@ host labtestvirt2003 {
     filename "lpxelinux.0";
 }
 
-host labtestmetal2001 {
+host clouddb2001-dev {
     hardware ethernet 30:e1:71:63:0e:88;
-    fixed-address labtestmetal2001.codfw.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
-    filename "lpxelinux.0";
+    fixed-address clouddb2001-dev.codfw.wmnet;
 }
 
 host labtestnet2002 {

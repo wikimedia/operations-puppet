@@ -1,1 +1,0 @@
-profile::openstack::base::nova::instance_dev: "/dev/mapper/labtestmetal2001--vg-data"

@@ -18,6 +18,5 @@ profile::openstack::codfw1dev::nova::physical_interface_mappings:
 
 profile::openstack::codfw1dev::nova::scheduler_pool:
   - labtestvirt2003
-  - labtestmetal2001
 
 profile::openstack::codfw1dev::nova::default_schedule_zone: 'nova'

@@ -15,6 +15,5 @@ profile::openstack::labtestn::nova::physical_interface_mappings:
 
 profile::openstack::labtestn::nova::scheduler_pool:
   - labtestvirt2003
-  - labtestmetal2001
 
 profile::openstack::labtestn::nova::default_schedule_zone: 'nova'
