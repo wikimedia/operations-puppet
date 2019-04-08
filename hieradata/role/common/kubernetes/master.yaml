@@ -5,10 +5,9 @@ profile::kubernetes::master::admission_controllers:
   NamespaceLifecycle: ''
   LimitRanger: ''
   ServiceAccount: "--service-account-key-file=/etc/ssl/private/kubemaster.svc.%{::site}.wmnet.key"
-  PersistentVolumeLabel: ''
   DefaultStorageClass: ''
-  ResourceQuota: ''
   DefaultTolerationSeconds: ''
+  ResourceQuota: ''
 profile::kubernetes::master::expose_puppet_certs: true
 profile::kubernetes::master::service_cert: "kubemaster.svc.%{::site}.wmnet"
 profile::kubernetes::master::ssl_cert_path: "/etc/ssl/localcerts/kubemaster.svc.%{::site}.wmnet.crt"

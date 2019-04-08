@@ -5,10 +5,9 @@ profile::kubernetes::master::admission_controllers:
   NamespaceLifecycle: ''
   LimitRanger: ''
   ServiceAccount: '--service-account-key-file=/etc/kubernetes/ssl/server.key'
-  PersistentVolumeLabel: ''
   DefaultStorageClass: ''
-  ResourceQuota: ''
   DefaultTolerationSeconds: ''
+  ResourceQuota: ''
 profile::kubernetes::master::expose_puppet_certs: true
 profile::kubernetes::master::ssl_cert_path: "/etc/kubernetes/ssl/cert.pem"
 profile::kubernetes::master::ssl_key_path: "/etc/kubernetes/ssl/server.key"
