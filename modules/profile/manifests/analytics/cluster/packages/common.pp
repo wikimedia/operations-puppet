@@ -49,12 +49,8 @@ class profile::analytics::cluster::packages::common {
         require_package('python3-mmh3')
     }
 
-    # Until https://gerrit.wikimedia.org/r/#/c/operations/puppet/+/501608/ is sorted,
-    # avoid deploying ores::base to Debian Buster hosts.
-    if os_version('debian <= stretch') {
-        # ores::base for ORES packages
-        class { '::ores::base': }
-    }
+    # ores::base for ORES packages
+    class { '::ores::base': }
 
     # Include maven and our archiva settings everywhere to make it
     # easier to resolve job dependencies at runtime from archiva.wikimedia.org
