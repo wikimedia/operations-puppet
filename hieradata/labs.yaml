@@ -74,6 +74,9 @@ profile::cache::ssl::unified::acme_chief: false
 profile::cache::ssl::unified::le_server_name: 'beta.wmflabs.org'
 profile::cache::ssl::unified::le_subjects: ['beta.wmflabs.org']
 
+profile::cache::ssl::wikibase::acme_chief: false
+profile::cache::ssl::wikibase::letsencrypt: true
+profile::cache::ssl::wikibase::le_subjects: ['wikibase.wmflabs.org']
 profile::cache::ssl::wikibase::monitoring: false
 
 profile::cache::upload::upload_domain: 'upload.beta.wmflabs.org'
