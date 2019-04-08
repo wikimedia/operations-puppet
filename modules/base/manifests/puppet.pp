@@ -3,6 +3,8 @@ class base::puppet(
     $certname=undef,
     $dns_alt_names=undef,
     $environment=undef,
+    Integer[4,5] $puppet_major_version = 4,
+    Integer[2,3] $facter_major_version = 2,
 ) {
     include ::passwords::puppet::database
     include ::base::puppet::params
@@ -12,6 +14,35 @@ class base::puppet(
     $use_srv_record = $base::puppet::params::use_srv_record
     $ca_server = hiera('puppetmaster::ca_server', '')
 
+    if os_version('debian < buster') {
+      if $puppet_major_version == 5 {
+        apt::repository {'component-puppet5':
+          uri        => 'http://apt.wikimedia.org/wikimedia',
+          dist       => "${::lsbdistcodename}-wikimedia",
+          components => 'component/puppet5',
+          before     => Package['puppet'],
+        }
+      } elsif $puppet_major_version == 4 {
+        apt::repository {'component-puppet5':
+          ensure => absent,
+        }
+      }
+
+      if $facter_major_version == 3 {
+        apt::repository {'component-facter3':
+          uri        => 'http://apt.wikimedia.org/wikimedia',
+          dist       => "${::lsbdistcodename}-wikimedia",
+          components => 'component/facter3',
+          before     => Package['facter'],
+        }
+      } elsif $facter_major_version == 2 {
+        apt::repository {'component-facter3':
+          ensure => absent,
+        }
+      }
+    } elsif $facter_major_version != 3 or puppet_major_version != 5 {
+      warning('buster only supports puppet5 and facter3')
+    }
     # augparse is required to resolve the augeasversion in facter3
     package { [ 'puppet', 'facter', 'augeas-tools' ]:
         ensure => present,

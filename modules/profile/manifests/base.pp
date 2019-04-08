@@ -30,6 +30,8 @@ class profile::base(
     $debdeploy_exclude_mounts = hiera('profile::base::debdeploy::exclude_mounts', []),
     $debdeploy_exclude_filesystems = hiera('profile::base::debdeploy::exclude_filesystems', []),
     $debdeploy_filter_services = lookup('profile::base::debdeploy::filter_services', Hash, 'hash', {}),
+    $puppet_major_version = lookup('profile::base::puppet::puppet_major_version', Integer[4,5]),
+    $facter_major_version = lookup('profile::base::puppet::facter_major_version', Integer[2,3]),
 ) {
     require ::profile::base::certificates
     class { '::apt':
@@ -45,9 +47,11 @@ class profile::base(
     }
 
     class { '::base::puppet':
-        server        => $puppetmaster,
-        dns_alt_names => $dns_alt_names,
-        environment   => $environment,
+        server               => $puppetmaster,
+        dns_alt_names        => $dns_alt_names,
+        environment          => $environment,
+        puppet_major_version => $puppet_major_version,
+        facter_major_version => $facter_major_version,
     }
 
     # Temporary workaround for T140100. Remove as soon as Labs instances get

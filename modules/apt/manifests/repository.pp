@@ -1,13 +1,16 @@
 define apt::repository(
-    $uri,
-    $dist,
-    $components,
-    $source=true,
-    $comment_old=false,
-    $keyfile='',
-    $ensure=present,
-    $trust_repo=false,
+    Optional[Stdlib::HTTPUrl]  $uri         = undef,
+    Optional[String]           $dist        = undef,
+    Optional[String]           $components  = undef,
+    Boolean                    $source      = true,
+    Boolean                    $comment_old = false,
+    Optional[Stdlib::Unixpath] $keyfile     = undef,
+    Enum['present','absent']   $ensure      = present,
+    Boolean                    $trust_repo  = false,
 ) {
+    if $ensure == 'present' and ! ($uri and $dist and $components) {
+      fail('uri, dist and component are all required if ensure =>  present')
+    }
     if $trust_repo {
         $trustedline = '[trusted=yes] '
     } else {
@@ -41,7 +44,7 @@ define apt::repository(
         }
     }
 
-    if $keyfile and $keyfile != '' {
+    if $keyfile {
         file { "/var/lib/apt/keys/${name}.gpg":
             ensure  => present,
             owner   => 'root',

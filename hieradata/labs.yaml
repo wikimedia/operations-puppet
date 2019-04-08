@@ -242,3 +242,5 @@ profile::openstack::main::nova::dhcp_domain: 'eqiad.wmflabs'
 profile::openstack::eqiad1::nova::dhcp_domain: 'eqiad.wmflabs'
 # Url to use for reaching graphite
 graphite_url: 'https://graphite-labs.wikimedia.org'
+profile::base::puppet::puppet_major_version: 4
+profile::base::puppet::facter_major_version: 2

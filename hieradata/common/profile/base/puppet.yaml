@@ -1,0 +1,2 @@
+profile::base::puppet::puppet_major_version: 4
+profile::base::puppet::facter_major_version: 2

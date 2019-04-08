@@ -2,3 +2,4 @@ fixtures:
     symlinks:
         apt: "#{source_dir}"
         wmflib: "../../../../wmflib"
+        stdlib: "../../../../stdlib"
