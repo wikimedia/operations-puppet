@@ -3,6 +3,7 @@
 # Do not modify it manually
 
 set -e
+<% if @deployment_user != 'root' %>/bin/chmod 0644 /etc/<%= @title %>/config.yaml || true<% end %>
 /usr/bin/scap deploy-local -D 'log_json:False' --repo <%= @repo %> --force config_deploy;
 <%- if @auto_refresh -%>
 <%- if @discovery -%>
@@ -10,5 +11,5 @@ set -e
 sleep $[ $RANDOM % <%= @max_splay %> ]
 <%- end -%>
 /usr/bin/scap deploy-local -D 'log_json:False' --repo <%= @repo %> --force restart_service;
-<% if @deployment_user != 'root' %>/bin/chmod 0444 /etc/<%= @title %>/config.yaml || true<% end %>
+<% if @deployment_user != 'root' %>/bin/chmod 0644 /etc/<%= @title %>/config.yaml || true<% end %>
 <%- end -%>
