@@ -22,8 +22,8 @@
 #
 # [*service_ensure*]
 #
-# Passed to Puppet Service['jenkins']. If set to 'unmanaged', pass undef to
-# prevent Puppet from managing the service. Default: 'running'.
+# Passed to systemd::service. either 'running' or 'stopped'.
+# Default: 'running'.
 #
 # [*service_enable*]
 #
@@ -122,17 +122,12 @@ class zuul::server (
         ensure  => absent,
     }
 
-    $real_ensure = $service_ensure ? {
-        'unmanaged' => undef,
-        default     => $service_ensure,
-    }
-
     systemd::service { 'zuul':
         ensure         => 'present',
         content        => systemd_template('zuul'),
         restart        => false,
         service_params => {
-            ensure     => $real_ensure,
+            ensure     => ensure_service($service_ensure),
             hasrestart => true,
         },
         require        => [
