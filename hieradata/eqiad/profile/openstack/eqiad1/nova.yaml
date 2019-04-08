@@ -12,16 +12,34 @@ profile::openstack::eqiad1::nova::physical_interface_mappings:
 
 # Nova is permitted to schedule new VMs on the following
 #  hosts.  Nodes currently allocated for eqiad1 are
-#  cloudvirt1009 through cloudvirt1030.
+#  cloudvirt1008 through cloudvirt1030.
 #
-# cloudvirt 1010 and 1011 were leased and no longer exist.
-#
-# cloudvirt1014-1023 are depooled so we can drain them and rebuild
-#  with Stretch.
-#
-# cloudvirt1024 and cloudvirt1030 are reserved as emergency spares.
-#  We're saving 1024 rather than the highest- or lowest-numbered
-#  server because 1024 has larger disks so will be big
+#   cloudvirt1008: pooled
+#   cloudvirt1009: pooled
+#   cloudvirt1010: does not exist (formerly a leased system)
+#   cloudvirt1011: does not exist (formerly a leased system)
+#   cloudvirt1012: depooled, empty, candidate for pooling (newly rebuilt)
+#   cloudvirt1013: pooled
+#   cloudvirt1014: depooled but contains lots of VMs (Jessie, needs rebuild)
+#   cloudvirt1015: depooled, empty, candidate for pooling (newly rebuilt)
+#   cloudvirt1016: depooled but contains lots of VMs (Jessie, needs rebuild)
+#   cloudvirt1017: depooled but contains lots of VMs (Jessie, needs rebuild)
+#   cloudvirt1018: depooled, empty, emergency spare
+#   cloudvirt1019: depooled, active host of database VMs
+#   cloudvirt1020: depooled, active host of database VMs
+#   cloudvirt1021: depooled but contains lots of VMs (Jessie, needs rebuild)
+#   cloudvirt1022: depooled but contains lots of VMs (Jessie, needs rebuild)
+#   cloudvirt1023: depooled but contains lots of VMs (Jessie, needs rebuild)
+#   cloudvirt1024: depooled, empty, WIP (soon to be an emergency spare)
+#   cloudvirt1025: pooled
+#   cloudvirt1026: pooled
+#   cloudvirt1027: pooled
+#   cloudvirt1028: pooled
+#   cloudvirt1029: pooled
+#   cloudvirt1030: pooled
+
+#  We're saving 1018 and 1024 as lifeboats 
+#  because they have larger disks that will be big
 #  enough to accept as refugees all the VMs from any other
 #  virt host.
 #
@@ -36,6 +54,8 @@ profile::openstack::eqiad1::nova::physical_interface_mappings:
 #
 #
 profile::openstack::eqiad1::nova::scheduler_pool:
+  - cloudvirt1008
+  - cloudvirt1009
   - cloudvirt1013
   - cloudvirt1025
   - cloudvirt1026
