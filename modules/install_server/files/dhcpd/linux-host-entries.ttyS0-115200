@@ -443,12 +443,6 @@ host netflow1001 {
     option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/buster-installer/";
 }
 
-host netmon1003 {
-    hardware ethernet aa:00:00:79:17:b5;
-    fixed-address netmon1003.wikimedia.org;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
-}
-
 host orespoolcounter1001 {
     hardware ethernet aa:00:00:dc:fc:24;
     fixed-address orespoolcounter1001.eqiad.wmnet;
