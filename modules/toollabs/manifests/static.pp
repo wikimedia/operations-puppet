@@ -4,7 +4,7 @@
 class toollabs::static(
     $web_domain = 'tools.wmflabs.org',
     $ssl_certificate_name = 'star.wmflabs.org',
-    $ssl_settings = ssl_ciphersuite('nginx', 'compat', false),
+    $ssl_settings = ssl_ciphersuite('nginx', 'compat'),
 ) {
 
     include ::toollabs::infrastructure

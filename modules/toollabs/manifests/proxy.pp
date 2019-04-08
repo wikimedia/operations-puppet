@@ -27,7 +27,7 @@ class toollabs::proxy(
     }
 
     class { '::dynamicproxy':
-        ssl_settings         => ssl_ciphersuite('nginx', 'compat', false),
+        ssl_settings         => ssl_ciphersuite('nginx', 'compat'),
         luahandler           => 'urlproxy',
         ssl_certificate_name => $ssl_certificate_name,
         redis_replication    => $redis_replication,

@@ -11,7 +11,7 @@ class toolserver_legacy {
         modules => ['rewrite', 'ssl'],
     }
 
-    $ssl_settings = ssl_ciphersuite('apache', 'compat', false)
+    $ssl_settings = ssl_ciphersuite('apache', 'compat')
 
     system::role { 'toolserver_legacy': description => 'Toolserver legacy server' }
 
