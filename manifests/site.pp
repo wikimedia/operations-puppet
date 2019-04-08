@@ -1852,13 +1852,6 @@ node 'netflow1001.eqiad.wmnet' {
     interface::add_ip6_mapped { 'main': }
 }
 
-# jessie VM for servermon until it supports stretch (T170653)
-node 'netmon1003.wikimedia.org' {
-    role(servermon)
-    include ::role::network::monitor
-    interface::add_ip6_mapped { 'main': }
-}
-
 node /^ores[12]00[1-9]\.(eqiad|codfw)\.wmnet$/ {
     role(ores)
 }
