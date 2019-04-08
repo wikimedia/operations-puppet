@@ -11,13 +11,13 @@ class profile::puppetmaster::frontend(
     $puppet_major_version = hiera('puppet_major_version', undef),
     $puppetdb_major_version = hiera('puppetdb_major_version', undef),
     $ssl_ca_revocation_check = hiera('profile::puppetmaster::frontend::ssl_ca_revocation_check', 'chain'),
-    $allow_from = [
+    $allow_from = hiera('profile::puppetmaster::frontend::allow_from', [
       '*.wikimedia.org',
       '*.eqiad.wmnet',
       '*.ulsfo.wmnet',
       '*.esams.wmnet',
       '*.codfw.wmnet',
-      '*.eqsin.wmnet'],
+      '*.eqsin.wmnet']),
     $extra_auth_rules = '',
     $mcrouter_ca_secret = hiera('profile::puppetmaster::frontend::mcrouter_ca_secret'),
 ) {
