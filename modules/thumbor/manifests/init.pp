@@ -72,6 +72,12 @@ class thumbor (
     package { 'librsvg2-2':
         ensure          => installed,
     }
+    package { 'librsvg2-bin':
+        ensure          => installed,
+    }
+    package { 'librsvg2-common':
+        ensure          => installed,
+    }
 
     file { '/usr/local/lib/thumbor/':
         ensure => directory,
