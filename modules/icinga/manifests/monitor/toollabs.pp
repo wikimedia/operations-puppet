@@ -206,13 +206,4 @@ class icinga::monitor::toollabs {
         contact_group => 'wmcs-team',
         notes_url     => 'https://wikitech.wikimedia.org/wiki/Portal:Toolforge/Admin/Toolschecker',
     }
-
-    # TODO (T219243) Remove after the legacy config is purged
-    monitoring::service { 'tools-checker-grid-start-trusty':
-        ensure        => 'absent',
-        description   => 'toolschecker: start a job and verify on trusty',
-        check_command => "${checker}!/grid/start/trusty!ok",
-        host          => $test_entry_host,
-        notes_url     => 'https://wikitech.wikimedia.org/wiki/portal:toolforge/admin/toolschecker',
-    }
 }
