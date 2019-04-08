@@ -16,6 +16,9 @@
     ServerAdmin noc@wikimedia.org
 
     SSLEngine on
+    SSLCertificateFile /etc/acmecerts/netbox/live/ec-prime256v1.crt
+    SSLCertificateChainFile /etc/acmecerts/netbox/live/ec-prime256v1.chain.crt
+    SSLCertificateKeyFile /etc/acmecerts/netbox/live/ec-prime256v1.key
     SSLCertificateFile /etc/acmecerts/netbox/live/rsa-2048.crt
     SSLCertificateChainFile /etc/acmecerts/netbox/live/rsa-2048.chain.crt
     SSLCertificateKeyFile /etc/acmecerts/netbox/live/rsa-2048.key
