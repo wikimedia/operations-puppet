@@ -30,6 +30,15 @@ node 'acmechief2001.codfw.wmnet' {
     interface::add_ip6_mapped { 'main': }
 }
 
+# Ganeti VMs for acme-chief staging environment
+node 'acmechief-test1001.eqiad.wmnet' {
+    role(spare::system)
+}
+
+node 'acmechief-test2001.codfw.wmnet' {
+    role(spare::system)
+}
+
 # url-downloaders
 node /^(actinium|alcyone|alsafi|aluminium)\.wikimedia\.org$/ {
     role(url_downloader)
