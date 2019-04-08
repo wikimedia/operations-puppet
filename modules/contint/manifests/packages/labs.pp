@@ -3,8 +3,6 @@
 class contint::packages::labs {
     requires_realm('labs')
 
-    Package['puppet-lint'] -> Class['contint::packages::labs']
-
     require ::contint::packages::apt
 
     include ::contint::packages::base
