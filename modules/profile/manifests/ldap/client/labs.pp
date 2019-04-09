@@ -11,7 +11,7 @@ class profile::ldap::client::labs(
             message => "The LDAP client stack for this host is: ${client_stack}",
         }
         $includes = $client_stack ? {
-            'classic' => ['openldap', 'pam', 'nss', 'sudo', 'utils'],
+            'classic' => ['openldap', 'pam', 'nss', 'sudo', 'utils', 'nosssd'],
             'sssd'    => ['openldap', 'sudo', 'utils', 'sssd'],
         }
 

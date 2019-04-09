@@ -42,4 +42,8 @@ class ldap::client::includes($ldapincludes, $ldapconfig) {
             ldapconfig => $ldapconfig
         }
     }
+
+    if 'nosssd' in $ldapincludes {
+        class { '::ldap::client::nosssd': }
+    }
 }
