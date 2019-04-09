@@ -56,6 +56,9 @@ MaxClients 50
 
     SSLEngine on
     <%- if @use_acmechief -%>
+    SSLCertificateFile /etc/acmecerts/gerrit/live/ec-prime256v1.crt
+    SSLCertificateChainFile /etc/acmecerts/gerrit/live/ec-prime256v1.chain.crt
+    SSLCertificateKeyFile /etc/acmecerts/gerrit/live/ec-prime256v1.key
     SSLCertificateFile /etc/acmecerts/gerrit/live/rsa-2048.crt
     SSLCertificateChainFile /etc/acmecerts/gerrit/live/rsa-2048.chain.crt
     SSLCertificateKeyFile /etc/acmecerts/gerrit/live/rsa-2048.key
