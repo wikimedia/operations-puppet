@@ -13,7 +13,7 @@ admin::groups:
   - wdqs-test-roots
 cluster: wdqs-test
 contactgroups: admins,wdqs-admins
-profile::wdqs::use_revisions: false
+profile::wdqs::use_revisions: true
 
 # exclude wdqs hosts from screen monitoring
 # they are often used to monitor logs, for example by smalyshev
