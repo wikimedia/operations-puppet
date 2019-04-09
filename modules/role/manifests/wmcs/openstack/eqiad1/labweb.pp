@@ -3,13 +3,6 @@
 class role::wmcs::openstack::eqiad1::labweb {
     system::role { $name: }
 
-    require_package('libapache2-mod-wsgi-py3')
-    class { '::httpd':
-        modules => ['alias', 'ssl', 'rewrite', 'headers', 'wsgi',
-                    'proxy', 'expires', 'proxy_http', 'proxy_balancer',
-                    'lbmethod_byrequests', 'proxy_fcgi'],
-    }
-
     include ::profile::ldap::client::labs
     include ::profile::base::firewall
     include ::profile::openstack::eqiad1::nutcracker
@@ -23,7 +16,7 @@ class role::wmcs::openstack::eqiad1::labweb {
     include ::profile::openstack::eqiad1::horizon::dashboard_source_deploy
 
     # Striker:
-    include ::profile::openstack::base::striker::web
+    include ::profile::wmcs::striker::web
 
     include ::profile::waf::apache2::administrative
 
