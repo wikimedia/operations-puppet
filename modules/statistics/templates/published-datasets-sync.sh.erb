@@ -18,7 +18,7 @@ Rsyncs ${source} to ${dest}, preserving group, timestamp and permissions with de
 "
     exit 0
 else
-    echo /usr/bin/flock -n $lockfile -c "/usr/bin/rsync -rgptL $verbose --delete $source/ $dest/"
+    echo /usr/bin/flock -n $lockfile -c "/usr/bin/rsync -rptL $verbose --delete $source/ $dest/"
 fi
 
-/usr/bin/flock -n $lockfile -c "/usr/bin/rsync -rgptL $verbose --delete $source/ $dest/"
+/usr/bin/flock -n $lockfile -c "/usr/bin/rsync -rptL $verbose --delete $source/ $dest/"
