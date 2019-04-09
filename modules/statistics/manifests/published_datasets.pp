@@ -15,6 +15,8 @@ class statistics::published_datasets(
     $source   = '/srv/published-datasets-rsynced',
     $temp_dir = '/srv'
 ) {
+    require statistics::user
+
     # Use hardsync script to hardlink merge files from various host published-dataset
     # directories.  These are rsync pushed here from those those hosts.
     file { $source:
@@ -32,6 +34,8 @@ class statistics::published_datasets(
         list        => 'yes',
         hosts_allow => $::statistics::servers,
         auto_ferm   => true,
+        uid         => $::statistics::user::username,
+        gid         => 'wikidev',
         require     => File[$source],
     }
 
