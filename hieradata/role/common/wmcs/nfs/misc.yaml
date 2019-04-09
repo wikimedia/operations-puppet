@@ -27,11 +27,9 @@ profile::wmcs::nfs::misc::backup_server: cloudstore1009.wikimedia.org
 
 # IPs from the Maps project that are allowed to mount the maps volume
 profile::wmcs::nfs::misc::maps_project_ips:
-  - '10.68.16.6'   # overpass-wiki
   - '10.68.17.110' # maps-tiles2
   - '10.68.16.103' # maps-tiles3
   - '10.68.16.70'  # maps-wma1
-  - '10.68.20.112' # not-found
   - '172.16.6.46'  # maps-warper2
   - '172.16.0.158' # maps-warper3
   - '172.16.1.144' # maps-wma

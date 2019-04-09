@@ -16,11 +16,9 @@ role::labs::nfs::misc::dump_servers_ips:
 # New instances must be manually added here for the nfs share to be available.
 # This is a temporary change for T147657 until the misc server exports are managed by nfs-exportd
 role::labs::nfs::misc::maps_project_internal_ips:
-  - '10.68.16.6'
   - '10.68.17.110'
   - '10.68.16.103'
   - '10.68.16.70'
-  - '10.68.20.112'
   - '172.16.6.46'
   - '172.16.0.158'
   - '172.16.1.144'
