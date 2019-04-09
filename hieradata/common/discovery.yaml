@@ -25,7 +25,7 @@ discovery::services:
     active_active: false
   swift-rw:
     lvs: swift
-    active_active: true
+    active_active: false
   swift-ro:
     lvs: swift
     active_active: true
