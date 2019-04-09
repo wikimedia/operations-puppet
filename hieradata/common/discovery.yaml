@@ -29,6 +29,9 @@ discovery::services:
   swift-ro:
     lvs: swift
     active_active: true
+  swift:
+    lvs: swift
+    active_active: true
   # Main microservices
   parsoid:
     lvs: parsoid
