@@ -221,7 +221,7 @@ profile::trafficserver::backend::mapping_rules:
       replacement: http://analytics-tool1002.eqiad.wmnet
     - type: map
       target: http://upload.wikimedia.org
-      replacement: https://swift-rw.discovery.wmnet
+      replacement: https://swift.discovery.wmnet
       params:
           - '@plugin=/usr/lib/trafficserver/modules/tslua.so'
           - '@pparam=/etc/trafficserver/lua/normalize-path.lua'
