@@ -12,7 +12,7 @@ groups:
               nschaaf, zhousquared, gwicke, dpatrick, samwalton9, samtar, akrausetud, jgonsior,
               yuvipanda, shrlak, madhuvishy, groovier, khorn, ironholds, katie, chedasaurus,
               cy534, pnorman, mpany, deskana, arnad, nithum, banyek, imarlier, mkroetzsch,
-              mtizzoni, panisson, paolotti, ciro, dartar, melodykramer, gtirloni]
+              mtizzoni, panisson, paolotti, ciro, dartar, melodykramer, gtirloni, tbayer]
   absent_ldap:
     description: meta group for absented users which had privileged LDAP access in the past, an automatic check verifies it has been really removed from the LDAP (but removal has to be handled separatelly)
     members: [adavenport, siddharth11, albe, audiohazel, tbolliger]
@@ -148,7 +148,7 @@ groups:
               nuria, ori, otto, cooltey, tonina,
               mforns, jdlrobson, dr0ptp4kt, tgr, marktraceur, jhernandez, joal,
               daisy, mholloway-shell, ebernhardson, niedzielski,
-              neilpquinn-wmf, tbayer, dbrant, maxsem,
+              neilpquinn-wmf, dbrant, maxsem,
               jminor, etonkovidova, sbisson, addshore, matmarex, elukey,
               nikerabbit, dstrine, jsamra,
               jdittrich, chelsyx, ovasileva, debt,
@@ -221,7 +221,7 @@ groups:
                  add them instead to the analytics-users group.  statistics-* groups
                  DO NOT EQUAL Hadoop/Hive cluster access.
     members: [ezachte, milimetric, halfak, awight, dr0ptp4kt, nuria,
-              leila, nettrom, mforns, bmansurov, tbayer, joal,
+              leila, nettrom, mforns, bmansurov, joal,
               tjones, legoktm, dcausse, bearloga, atgomez, dstrine,
               marktraceur,
               fdans, shiladsen, esanders, risler, nathante, chelsyx, jdl]
@@ -233,13 +233,13 @@ groups:
               marktraceur, nuria, leila, gilles,
               dbrant, tgr, dr0ptp4kt, brion, bsitzmann, amire80,
               dduvall, nettrom, mforns, jkatz, ebernhardson,
-              mlitn, tbayer, joal, kartik, nikerabbit, pcoombe,
+              mlitn, joal, kartik, nikerabbit, pcoombe,
               neilpquinn-wmf, maxsem, jminor, atgomez, dstrine,
               ladsgroup, ovasileva, shiladsen]
   statistics-admins:
     posix_name: stats
     description: access files created by stats user cron jobs
-    members: [ezachte, milimetric, joal, mforns, bearloga, nuria, fdans, tbayer]
+    members: [ezachte, milimetric, joal, mforns, bearloga, nuria, fdans]
     privileges: ['ALL = (stats) NOPASSWD: ALL']
   oit:
     gid: 727
@@ -264,7 +264,7 @@ groups:
               bsitzmann, dbrant, nettrom, leila, cwdent, jmm,
               ezachte, mforns, reedy, west1, phuedx, awight,
               joal, akosiaris, jkatz, tonina, pearley, ktsouroupidou,
-              andyrussg, niedzielski, maxsem, hoo, daniel, tbayer, krinkle, tgr,
+              andyrussg, niedzielski, maxsem, hoo, daniel, krinkle, tgr,
               smalyshev, ebernhardson, addshore, jminor, neilpquinn-wmf,
               dcausse, bd808, tjones, mobrovac, jdrewniak, ejegg, jdcc, ori,
               bmansurov, atgomez, amire80, kartik, pcoombe, foks, jsamra,
@@ -1777,11 +1777,11 @@ users:
     ssh_keys: []
     uid: 2170
   tbayer:
-    ensure: present
+    ensure: absent
     gid: 500
     name: tbayer
     realname: Tilman Bayer
-    ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDWtvR5ADWxY6uskCz05XZ6BdPsUsrSqdJNjsX3pOpbk/sy+S6Jw0GGJjf+rQl+w/3bGmaifYyw2EXFk7ipDuhYJXrjpFALZocqbS1CA7/whQRtFy1kN+MZS1KJHQl4386dsvw7vBO4cIdnbW7DO9jEZPZRZB9WXMh6C1sK9qx2665NYsZ2WH4S634avmjqKAufT95sVY10/VUAeP/RPKsiThjRnynUKQn+vRvzFT+B6w5jzkZ3GeNFw7Re3WAfMHt3d588aRZu45rJ2H8evfcU0xXPcTjYMuxjTcVKmeFMflDl+f/FzbZuH3tvr6UcfEV+/+Cug6nBzYbzRQ3LWoPmGIZAlJ51I9OVrdGfTi2v2gjL1Re+t7imXgCWKrilLMhdQm6roed/9KeH3oSqoyl7lVhtvHmf5nxbP2N14Oabpq5lfr9dhkmQP7tnfGH1tmU82mg4P2shc1b0p0gMM8AVEPXHAIFKKVaywrHt03xhQ0iOLHxJE/I20LWqlZiQ2OfEr/QtR/ijtGgBtDJLmF2REg8m6FvIiY4+OOfMmBKg0vpg/53FQqpdLKBZdXOaCAkGxLnV5X405UESGUQtru/3A6c/Ie0qwxougb9ytPhDMsLnS8M77vJ4VVuVn9E0nPkpHvwPDC91FFip92viXNxP3xGyfis9sE++TnTk1cWGTw== tbayer@wikimedia.org]
+    ssh_keys: []
     uid: 3029
     email: tbayer@wikimedia.org
   andyrussg:
