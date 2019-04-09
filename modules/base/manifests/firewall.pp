@@ -3,6 +3,7 @@
 class base::firewall (
     Array[Stdlib::IP::Address] $cumin_masters = [],
     Array[Stdlib::IP::Address] $bastion_hosts = [],
+    Array[Stdlib::IP::Address] $cache_hosts = [],
 ) {
     include ::network::constants
     include ::ferm

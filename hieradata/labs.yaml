@@ -257,3 +257,7 @@ bastion_hosts:
 - 172.16.1.136 # bastion-eqiad1-01.eqiad.wmflabs
 - 172.16.3.155 # bastion-eqiad1-02.eqiad.wmflabs
 - 172.16.1.135 # bastion-restricted-eqiad1-01.eqiad.wmflabs
+
+cache_hosts:
+- 172.16.0.164 # proxy-01.project-proxy.eqiad.wmflabs
+- 172.16.0.165 # proxy-02.project-proxy.eqiad.wmflabs
