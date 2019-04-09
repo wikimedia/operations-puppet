@@ -4,7 +4,7 @@ class profile::openstack::main::nova::fullstack::service(
     $region = hiera('profile::openstack::main::region'),
     ) {
 
-    require ::profile::openstack::main::clientpackages
+    require ::profile::openstack::eqiad1::clientpackages
     class { '::profile::openstack::base::nova::fullstack::service':
         nova_api_host      => $nova_api_host,
         osstackcanary_pass => $osstackcanary_pass,

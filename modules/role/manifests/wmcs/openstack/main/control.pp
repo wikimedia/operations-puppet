@@ -2,7 +2,7 @@ class role::wmcs::openstack::main::control {
     system::role { $name: }
     include ::standard
     include ::profile::base::firewall
-    include ::profile::openstack::main::observerenv
+    include ::profile::openstack::eqiad1::observerenv
     include ::profile::openstack::main::rabbitmq
     include ::profile::openstack::main::keystone::service
     include ::profile::openstack::main::envscripts

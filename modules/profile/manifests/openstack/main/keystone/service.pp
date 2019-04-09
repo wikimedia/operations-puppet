@@ -7,7 +7,7 @@ class profile::openstack::main::keystone::service(
     $region = hiera('profile::openstack::main::region'),
     ) {
 
-    require ::profile::openstack::main::clientpackages
+    require ::profile::openstack::eqiad1::clientpackages
 
     class {'::openstack::util::admin_scripts':
         version => $version,

@@ -3,8 +3,8 @@ class profile::wmcs::nfs::primary(
   $monitor_iface = hiera('profile::wmcs::nfs::primary::monitor_iface', 'eth0'),
   $data_iface    = hiera('profile::wmcs::nfs::primary::data_iface', 'eth1'),
 ) {
-    require ::profile::openstack::main::clientpackages
-    require ::profile::openstack::main::observerenv
+    require ::profile::openstack::eqiad1::clientpackages
+    require ::profile::openstack::eqiad1::observerenv
 
     class {'::labstore':
         nfsd_threads => '300',

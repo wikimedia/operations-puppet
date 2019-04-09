@@ -26,7 +26,7 @@ class profile::openstack::main::designate::service(
 
     # Note that coordination_host, below, refers to the eqiad1
     #  host; we can only have one coordinator and it lives in eqiad1.
-    require ::profile::openstack::main::clientpackages
+    require ::profile::openstack::eqiad1::clientpackages
     class{'::profile::openstack::base::designate::service':
         version                              => $version,
         designate_host                       => $designate_host,
