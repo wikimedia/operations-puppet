@@ -34,7 +34,6 @@ mgmt_networks = scope.lookupvar('network::constants::mgmt_networks')
 
 
 @def $CUMIN_MASTERS = (<%- @cumin_masters.each do |ip| -%><%= ip %> <% end -%>);
-@def $BASTION_HOSTS = (<%- @bastion_hosts.each do |ip| -%><%= ip %> <% end -%>);
 <%- special_hosts.sort.map do |realm, services | -%>
 	<%- if @realm != realm then next end -%>
 	<%- services.sort.map do |service, addresses| -%>

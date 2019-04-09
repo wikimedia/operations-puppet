@@ -5,6 +5,7 @@
 class profile::yubiauth::server (
     $auth_servers = hiera('yubiauth_servers'),
     $auth_server_primary = hiera('yubiauth_server_primary'),
+    $bastion_hosts = hiera('bastion_hosts'),
 ) {
 
     include ::profile::base::firewall
@@ -29,9 +30,10 @@ class profile::yubiauth::server (
         }
     }
 
+    $bastion_hosts_str = join($bastion_hosts, ' ')
     ferm::service { 'yubikey-validation-server':
         proto  => 'tcp',
         port   => '80',
-        srange => '$BASTION_HOSTS',
+        srange => "(${bastion_hosts_str})",
     }
 }

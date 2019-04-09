@@ -32,8 +32,9 @@ class base::firewall (
         source => 'puppet:///modules/base/firewall/main-input-default-drop.conf',
     }
 
+    $bastion_hosts_str = join($bastion_hosts, ' ')
     ferm::rule { 'bastion-ssh':
-        rule   => 'proto tcp dport ssh saddr $BASTION_HOSTS ACCEPT;',
+        rule   => "proto tcp dport ssh saddr ${bastion_hosts_str} ACCEPT;",
     }
 
     ferm::rule { 'monitoring-all':
