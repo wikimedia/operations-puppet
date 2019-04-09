@@ -3102,9 +3102,9 @@ host clouddb2001-dev {
     fixed-address clouddb2001-dev.codfw.wmnet;
 }
 
-host labtestnet2002 {
+host cloudweb2001-dev {
     hardware ethernet 30:e1:71:63:e6:c4;
-    fixed-address labtestnet2002.codfw.wmnet;
+    fixed-address cloudweb2001-dev.wikimedia.org;
 }
 
 host cloudnet2003-dev {

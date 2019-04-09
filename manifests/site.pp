@@ -1096,6 +1096,11 @@ node 'cloudnet2002-dev.codfw.wmnet' {
     role(wmcs::openstack::labtestn::net)
 }
 
+node 'cloudweb2001-dev.wikimedia.org' {
+    role(spare::system)
+    interface::add_ip6_mapped { 'main': }
+}
+
 node 'cloudnet2003-dev.codfw.wmnet' {
     role(wmcs::openstack::codfw1dev::net)
 }
@@ -1107,10 +1112,6 @@ node /^labtestvirt2003\.codfw\.wmnet$/ {
 node 'clouddb2001-dev.codfw.wmnet' {
     role(spare::system)
     interface::add_ip6_mapped { 'main': }
-}
-
-node 'labtestnet2002.codfw.wmnet' {
-    role(spare::system)
 }
 
 node 'labtestcontrol2001.wikimedia.org' {
