@@ -9,22 +9,7 @@ class toollabs::dev_environ {
 
     include ::toollabs::composer
 
-    if os_version('ubuntu trusty') {
-        include ::toollabs::genpp::python_dev_trusty
-        include ::phabricator::arcanist # T139738
-        package { [
-            'bundler',  # T120287
-            # Previously we installed libmariadbclient-dev, but that causes
-            # dependency issues on Trusty.  libmariadbclient-dev formerly
-            # provided libmysqlclient-dev, but not in trusty.
-            # https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=759309
-            'libmysqlclient-dev',
-            'libboost-python1.54-dev',
-            'redis-tools',
-        ]:
-            ensure  => latest,
-        }
-    } elsif os_version('debian jessie') {
+    if os_version('debian jessie') {
         include ::toollabs::genpp::python_dev_jessie
         include ::phabricator::arcanist # T139738
         package { [
