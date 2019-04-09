@@ -32,11 +32,13 @@ node 'acmechief2001.codfw.wmnet' {
 
 # Ganeti VMs for acme-chief staging environment
 node 'acmechief-test1001.eqiad.wmnet' {
-    role(spare::system)
+    role(acme_chief)
+    interface::add_ip6_mapped { 'main': }
 }
 
 node 'acmechief-test2001.codfw.wmnet' {
-    role(spare::system)
+    role(acme_chief)
+    interface::add_ip6_mapped { 'main': }
 }
 
 # url-downloaders
