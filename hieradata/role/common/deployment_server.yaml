@@ -13,6 +13,7 @@ admin::groups:
   - deploy-aqs
   - deploy-phabricator
   - analytics-admins
+  - analytics-deployers
   - gerrit-root
 
 # screen sessions are common on deployment servers (T165348)
