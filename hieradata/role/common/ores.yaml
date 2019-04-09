@@ -151,3 +151,5 @@ profile::prometheus::statsd_exporter::mappings:
     name: drop_undefined
     action: 'drop'
     match_type: 'regex'
+
+profile::ores::logstash_host: localhost

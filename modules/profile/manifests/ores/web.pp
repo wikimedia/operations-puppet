@@ -5,7 +5,7 @@ class profile::ores::web(
     $celery_workers = hiera('profile::ores::celery::workers'),
     $celery_queue_maxsize = hiera('profile::ores::celery::queue_maxsize'),
     $poolcounter_nodes = hiera('profile::ores::web::poolcounter_nodes'),
-    $logstash_host = hiera('logstash_host'),
+    $logstash_host = hiera('profile::ores::logstash_host'),
     $logstash_port = hiera('logstash_json_lines_port', 11514),
     $statsd = hiera('statsd'),
     $ores_config_user = hiera('profile::ores::web::ores_config_user', 'deploy-service'),
@@ -16,6 +16,11 @@ class profile::ores::web(
     # when both profile::ores::worker and profile::ores::web are included in the
     # same role class. scap::target also ends up using it
     include ::git::lfs # lint:ignore:wmf_styleguide
+
+    # rsyslog forwards json messages sent to localhost along to logstash via kafka
+    class { '::profile::rsyslog::udp_json_logback_compat':
+        port => $logstash_port,
+    }
 
     class { '::ores::web':
         redis_password       => $redis_password,
