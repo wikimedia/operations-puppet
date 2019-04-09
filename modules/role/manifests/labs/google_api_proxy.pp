@@ -35,8 +35,6 @@ class role::labs::google_api_proxy (
                 'deny all;',
             ],
             'trusted_xff' => [
-                '10.68.21.68',  # novaproxy-01.project-proxy.eqiad.wmflabs
-                '10.68.21.69',  # novaproxy-02.project-proxy.eqiad.wmflabs
                 '172.16.0.164',  # proxy-01.project-proxy.eqiad.wmflabs
                 '172.16.0.165',  # proxy-02.project-proxy.eqiad.wmflabs
             ],
