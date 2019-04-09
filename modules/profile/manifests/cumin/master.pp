@@ -30,7 +30,7 @@ class profile::cumin::master (
         ensure => directory,
         owner  => 'root',
         group  => 'root',
-        mode   => '0750',
+        mode   => '0755',
     }
 
     file { '/etc/cumin/config.yaml':
@@ -55,7 +55,7 @@ class profile::cumin::master (
         ensure  => present,
         owner   => 'root',
         group   => 'root',
-        mode    => '0640',
+        mode    => '0644',
         content => template('profile/cumin/aliases.yaml.erb'),
         require => File['/etc/cumin'],
     }
