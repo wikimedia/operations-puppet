@@ -47,12 +47,16 @@ class archiva::proxy(
             # regsubst is needed due to letsencrypt::cert::integrated's naming
             # conventions.
             $safe_cert_name = regsubst($certificate_name, '\W', '_', 'G')
-            $ssl_certificate_chained = "/etc/acmecerts/${safe_cert_name}/live/rsa-2048.chained.crt"
-            $ssl_certificate_key = "/etc/acmecerts/${safe_cert_name}/live/rsa-2048.key"
+            $ssl_ecdsa_certificate_chained = "/etc/acmecerts/${safe_cert_name}/live/ec-prime256v1.chained.crt"
+            $ssl_ecdsa_certificate_key = "/etc/acmecerts/${safe_cert_name}/live/ec-prime256v1.key"
+            $ssl_rsa_certificate_chained = "/etc/acmecerts/${safe_cert_name}/live/rsa-2048.chained.crt"
+            $ssl_rsa_certificate_key = "/etc/acmecerts/${safe_cert_name}/live/rsa-2048.key"
 
             $tls_server_properties = [
-                "ssl_certificate     ${ssl_certificate_chained};",
-                "ssl_certificate_key ${ssl_certificate_key};",
+                "ssl_certificate     ${ssl_ecdsa_certificate_chained};",
+                "ssl_certificate_key ${ssl_ecdsa_certificate_key};",
+                "ssl_certificate     ${ssl_rsa_certificate_chained};",
+                "ssl_certificate_key ${ssl_rsa_certificate_key};",
             ]
         } else {
             $ssl_certificate_chained = '/etc/ssl/certs/ssl-cert-snakeoil.pem'
