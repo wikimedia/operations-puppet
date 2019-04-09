@@ -21,6 +21,8 @@ server {
    listen [::]:443 ipv6only=on default_server ssl;
    server_name apt.wikimedia.org;
 
+   ssl_certificate /etc/acmecerts/apt/live/ec-prime256v1.chained.crt;
+   ssl_certificate_key /etc/acmecerts/apt/live/ec-prime256v1.key;
    ssl_certificate /etc/acmecerts/apt/live/rsa-2048.chained.crt;
    ssl_certificate_key /etc/acmecerts/apt/live/rsa-2048.key;
    <%= @ssl_settings.join("\n   ") %>
