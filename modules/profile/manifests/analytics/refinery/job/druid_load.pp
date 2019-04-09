@@ -38,4 +38,11 @@ class profile::analytics::refinery::job::druid_load {
             dimensions => 'event.action,event.editCountBucket,event.isAnon,event.issuesSeverity,event.issuesVersion,event.namespaceId,event.sectionNumbers,revision,wiki,useragent.browser_family,useragent.browser_major,useragent.browser_minor,useragent.device_family,useragent.is_bot,useragent.os_family,useragent.os_major,useragent.os_minor',
         },
     }
+
+    # Load event.PrefUpdate
+    profile::analytics::refinery::job::eventlogging_to_druid_job { 'prefupdate':
+        job_config => {
+            dimensions => 'event.property,event.isDefault,wiki,useragent.browser_family,useragent.browser_major,useragent.browser_minor,useragent.device_family,useragent.os_family,useragent.os_major,useragent.os_minor'
+        },
+    }
 }
