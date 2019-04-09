@@ -280,7 +280,7 @@ define elasticsearch::instance(
         ensure   => running,
         provider => 'systemd',
         enable   => true,
-        tag      => 'elasticsearch',
+        tag      => 'elasticsearch_services',
         require  => [
             Package['elasticsearch'],
             Systemd::Unit["elasticsearch_${version}@.service"],

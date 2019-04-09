@@ -25,7 +25,7 @@ class profile::elasticsearch::cirrus(
     # Since the elasticsearch service is dynamically named after the cluster
     # name, and because there can be multiple elasticsearch services on the
     # same node we need to use collectors.
-    Package['wmf-elasticsearch-search-plugins'] -> Service <| tag == 'elasticsearch' |>
+    Package['wmf-elasticsearch-search-plugins'] -> Service <| tag == 'elasticsearch_services' |>
 
     # Alternatively we could pass these again?
     # certificate_name and tls_port aren't even

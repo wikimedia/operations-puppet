@@ -107,11 +107,12 @@ class elasticsearch (
         ensure => absent,
     }
 
-    file { $base_data_dir:
-        ensure => directory,
-        owner  => 'elasticsearch',
-        group  => 'elasticsearch',
-        mode   => '0755',
+    file { [ $base_data_dir, '/var/log/elasticsearch' ]:
+        ensure  => directory,
+        owner   => 'elasticsearch',
+        group   => 'elasticsearch',
+        mode    => '0755',
+        require => Package['elasticsearch'],
     }
 
     logrotate::rule { 'elasticsearch':
