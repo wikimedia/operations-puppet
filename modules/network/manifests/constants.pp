@@ -54,12 +54,6 @@ class network::constants {
                     '10.192.32.24',                     # deploy2001.codfw.wmnet
                     '2620:0:860:103:10:192:32:24',      # deploy2001.codfw.wmnet
                 ],
-            'maintenance_hosts' => [
-                    '10.64.16.77',                      # mwmaint1002.eqiad.wmnet
-                    '2620:0:861:102:10:64:16:77',       # mwmaint1002.eqiad.wmnet
-                    '10.192.48.45',                     # mwmaint2001.codfw.wmnet
-                    '2620:0:860:104:10:192:48:45',      # mwmaint2001.codfw.wmnet
-                ],
             'puppet_frontends' => [
                     '10.64.16.73',                # puppetmaster1001.eqiad.wmnet
                     '2620:0:861:102:10:64:16:73', # puppetmaster1001.eqiad.wmnet
@@ -373,7 +367,6 @@ class network::constants {
                     '172.16.7.178', # shinken-02.shinken.eqiad.wmflabs
                 ],
             'deployment_hosts' => hiera('network::allow_deployment_from_ips', []), # lint:ignore:wmf_styleguide
-            'maintenance_hosts' => hiera('network::allow_maintenance_from_ips', []), # lint:ignore:wmf_styleguide
             'cumin_real_masters' => [  # Where Cumin can be run
                     '208.80.154.158',               # labpuppetmaster1001.wikimedia.org
                     '2620:0:861:2:208:80:154:158',  # labpuppetmaster1001.wikimedia.org

@@ -16,6 +16,7 @@ class profile::logstash::collector (
     $input_kafka_ssl_truststore_password = hiera('profile::logstash::collector::input_kafka_ssl_truststore_password'),
     $input_kafka_consumer_group_id = hiera('profile::logstash::collector::input_kafka_consumer_group_id', undef),
     $jmx_exporter_port = hiera('profile::logstash::collector::jmx_exporter_port', 7800),
+    $maintenance_hosts = hiera('maintenance_hosts', []),
 ) {
 
     nrpe::monitor_service { 'logstash':
@@ -91,10 +92,11 @@ class profile::logstash::collector (
         srange => '@resolve(krypton.eqiad.wmnet)',
     }
 
+    $maintenance_hosts_str = join($maintenance_hosts, ' ')
     ferm::service { 'logstash_canary_checker_reporting':
         proto  => 'tcp',
         port   => '9200',
-        srange => '($DEPLOYMENT_HOSTS $MAINTENANCE_HOSTS)',
+        srange => "(\$DEPLOYMENT_HOSTS ${maintenance_hosts_str})",
     }
 
     logstash::input::gelf { 'gelf':
