@@ -937,3 +937,19 @@ maintenance_hosts:
 - 2620:0:861:102:10:64:16:77  # mwmaint1002.eqiad.wmnet
 - 10.192.48.45                # mwmaint2001.codfw.wmnet
 - 2620:0:860:104:10:192:48:45 # mwmaint2001.codfw.wmnet
+
+bastion_hosts:
+- 208.80.154.86                 # bast1002.wikimedia.org
+- 2620:0:861:3:208:80:154:86    # bast1002.wikimedia.org
+- 208.80.153.5                  # bast2001.wikimedia.org
+- 2620:0:860:1:208:80:153:5     # bast2001.wikimedia.org
+- 208.80.153.54                 # bast2002.wikimedia.org
+- 2620:0:860:2:208:80:153:54    # bast2002.wikimedia.org
+- 91.198.174.113                # bast3002.wikimedia.org
+- 2620:0:862:1:91:198:174:113   # bast3002.wikimedia.org
+- 198.35.26.6                   # bast4002.wikimedia.org
+- 2620:0:863:1:198:35:26:6      # bast4002.wikimedia.org
+- 103.102.166.7                 # bast5001.wikimedia.org
+- 2001:df2:e500:1:103:102:166:7 # bast5001.wikimedia.org
+- 208.80.154.151                # iron.wikimedia.org
+- 2620:0:861:2:208:80:154:151   # iron.wikimedia.org

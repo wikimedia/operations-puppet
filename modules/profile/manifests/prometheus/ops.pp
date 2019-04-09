@@ -9,6 +9,7 @@ class profile::prometheus::ops (
     $memory_chunks = hiera('prometheus::server::memory_chunks', '1048576'),
     $targets_path = '/srv/prometheus/ops/targets',
     $prometheus_v2 = hiera('prometheus::server::prometheus_v2', false),
+    $bastion_hosts = hiera('bastion_hosts', []),
 ){
 
     $config_extra = {
@@ -130,11 +131,11 @@ class profile::prometheus::ops (
     # Ping and SSH probes for all bastions from all machines running
     # prometheus::ops
     file { "${targets_path}/blackbox_icmp_bastions.yaml":
-      content => ordered_yaml([{'targets' => $::network::constants::special_hosts[$::realm]['bastion_hosts']}]),
+      content => ordered_yaml([{'targets' => $bastion_hosts}]),
     }
     file { "${targets_path}/blackbox_ssh_bastions.yaml":
       content => ordered_yaml([{
-        'targets' => regsubst($::network::constants::special_hosts[$::realm]['bastion_hosts'], '(.*)', '[\0]:22')
+        'targets' => regsubst($bastion_hosts, '(.*)', '[\0]:22')
         }]),
     }
 

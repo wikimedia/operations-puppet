@@ -252,3 +252,8 @@ cumin_masters:
 graphite_url: 'https://graphite-labs.wikimedia.org'
 profile::base::puppet::puppet_major_version: 4
 profile::base::puppet::facter_major_version: 2
+
+bastion_hosts:
+- 172.16.1.136 # bastion-eqiad1-01.eqiad.wmflabs
+- 172.16.3.155 # bastion-eqiad1-02.eqiad.wmflabs
+- 172.16.1.135 # bastion-restricted-eqiad1-01.eqiad.wmflabs

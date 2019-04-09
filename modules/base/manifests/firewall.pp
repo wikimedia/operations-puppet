@@ -2,6 +2,7 @@
 # NOTE: Policy is DROP by default
 class base::firewall (
     Array[Stdlib::IP::Address] $cumin_masters = [],
+    Array[Stdlib::IP::Address] $bastion_hosts = [],
 ) {
     include ::network::constants
     include ::ferm

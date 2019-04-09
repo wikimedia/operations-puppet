@@ -26,22 +26,6 @@ class network::constants {
 
     $special_hosts = {
         'production' => {
-            'bastion_hosts' => [
-                    '208.80.154.86',                    # bast1002.wikimedia.org
-                    '2620:0:861:3:208:80:154:86',       # bast1002.wikimedia.org
-                    '208.80.153.5',                     # bast2001.wikimedia.org
-                    '2620:0:860:1:208:80:153:5',        # bast2001.wikimedia.org
-                    '208.80.153.54',                    # bast2002.wikimedia.org
-                    '2620:0:860:2:208:80:153:54',       # bast2002.wikimedia.org
-                    '91.198.174.113',                   # bast3002.wikimedia.org
-                    '2620:0:862:1:91:198:174:113',      # bast3002.wikimedia.org
-                    '198.35.26.6',                      # bast4002.wikimedia.org
-                    '2620:0:863:1:198:35:26:6',         # bast4002.wikimedia.org
-                    '103.102.166.7',                    # bast5001.wikimedia.org
-                    '2001:df2:e500:1:103:102:166:7',    # bast5001.wikimedia.org
-                    '208.80.154.151',                   # iron.wikimedia.org
-                    '2620:0:861:2:208:80:154:151',      # iron.wikimedia.org
-                ],
             'monitoring_hosts' => [
                     '208.80.154.84',                    # icinga1001.wikimedia.org
                     '2620:0:861:3:208:80:154:84',       # icinga1001.wikimedia.org
@@ -358,11 +342,6 @@ class network::constants {
                 ],
             },
         'labs' => {
-            'bastion_hosts' => [
-                    '172.16.1.136', # bastion-eqiad1-01.eqiad.wmflabs
-                    '172.16.3.155', # bastion-eqiad1-02.eqiad.wmflabs
-                    '172.16.1.135', # bastion-restricted-eqiad1-01.eqiad.wmflabs
-                ],
             'monitoring_hosts' => [
                     '172.16.7.178', # shinken-02.shinken.eqiad.wmflabs
                 ],
