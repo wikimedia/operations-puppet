@@ -10,7 +10,7 @@ class icinga::monitor::services {
 
     monitoring::grafana_alert { 'eventbus':
         dashboard_uid => '000000201',
-        contact_group => 'analytics,team-services',
+        contact_group => 'team-services',
         notes_url     => 'https://wikitech.wikimedia.org/wiki/EventBus',
     }
 
