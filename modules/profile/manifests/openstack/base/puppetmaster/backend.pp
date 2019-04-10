@@ -44,19 +44,12 @@ class profile::openstack::base::puppetmaster::backend(
         'autosign'          => true,
     }
 
-    # urls are different in v4 so we need to modify our auth rules accordingly
-    $puppet_major_version = hiera('puppet_major_version', 3)
-    $extra_auth_rules_template = $puppet_major_version ? {
-        4       => 'extra_auth_rules_v4.conf.erb',
-        default => 'extra_auth_rules.conf.erb',
-    }
-
     class { '::profile::puppetmaster::backend':
         config           => $config,
         secure_private   => false,
         allow_from       => $allow_from,
         puppetmasters    => $puppetmasters,
         ca_server        => $puppetmaster_ca,
-        extra_auth_rules => template("profile/openstack/base/puppetmaster/${extra_auth_rules_template}"),
+        extra_auth_rules => template('profile/openstack/base/puppetmaster/extra_auth_rules.conf.erb'),
     }
 }

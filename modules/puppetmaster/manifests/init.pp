@@ -37,8 +37,6 @@
 #        String - name of user who should own the git repositories
 #    - $git_group
 #        String - name of group which should own the git repositories
-#    - $puppet_major_version
-#        The major puppet version to configure
 class puppetmaster(
     $server_name='puppet',
     $bind_address='*',
@@ -62,7 +60,6 @@ class puppetmaster(
     $prevent_cherrypicks=true,
     $git_user='gitpuppet',
     $git_group='gitpuppet',
-    $puppet_major_version=undef,
     $puppetdb_major_version=undef,
 ){
 
@@ -87,14 +84,8 @@ class puppetmaster(
     # Install the puppetdb-terminus package, needed for puppetdbquery
     require_package($puppetdb_terminus_package)
 
-    # puppetmaster package name changed to puppet-master with version 4
-    $puppetmaster_package_name = $puppet_major_version ? {
-        4       => 'puppet-master',
-        default => 'puppetmaster',
-    }
-
     package { [
-        $puppetmaster_package_name,
+        'puppet-master',
         'vim-puppet',
         'puppet-el',
         'rails',
@@ -112,20 +103,16 @@ class puppetmaster(
     }
 
     class { '::puppetmaster::passenger':
-        bind_address         => $bind_address,
-        verify_client        => $verify_client,
-        allow_from           => $allow_from,
-        deny_from            => $deny_from,
-        puppet_major_version => $puppet_major_version,
+        bind_address  => $bind_address,
+        verify_client => $verify_client,
+        allow_from    => $allow_from,
+        deny_from     => $deny_from,
     }
 
     $ssl_settings = ssl_ciphersuite('apache', 'compat')
 
     # path and name change with puppet 4 packages
-    $puppetmaster_rack_path = $puppet_major_version ? {
-        4       => '/usr/share/puppet/rack/puppet-master',
-        default => '/usr/share/puppet/rack/puppetmasterd',
-    }
+    $puppetmaster_rack_path = '/usr/share/puppet/rack/puppet-master'
 
     # Part dependent on the server_type
     case $server_type {
@@ -167,9 +154,7 @@ class puppetmaster(
         group               => $git_group,
     }
 
-    class { '::puppetmaster::monitoring' :
-        puppet_major_version => $puppet_major_version,
-    }
+    include ::puppetmaster::monitoring
 
     if has_key($config, 'storeconfigs_backend') and $config['storeconfigs_backend'] == 'puppetdb' {
         $has_puppetdb = true
@@ -185,18 +170,11 @@ class puppetmaster(
     include ::puppetmaster::gitpuppet
     include ::puppetmaster::generators
 
-
-    # deploy updated auth template to puppet 4 masters
-    $puppetmaster_auth_template = $puppet_major_version ? {
-        4       => 'auth-master-v4.conf.erb',
-        default => 'auth-master.conf.erb',
-    }
-
     file { '/etc/puppet/auth.conf':
         owner   => 'root',
         group   => 'root',
         mode    => '0444',
-        content => template("puppetmaster/${puppetmaster_auth_template}"),
+        content => template('puppetmaster/auth-master.conf.erb'),
     }
 
     # Use hiera 3 backend configs on production stretch masters (stretch has hiera version 3)

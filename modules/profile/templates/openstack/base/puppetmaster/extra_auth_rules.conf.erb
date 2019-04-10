@@ -1,5 +1,5 @@
 # Allow Horizon to ask the puppetmaster about available roles
-path /resource_type
+path /puppet/v3/resource_type
 auth any
 <% @labweb_hosts.each do |labweb| -%>
 allow <%= labweb %>

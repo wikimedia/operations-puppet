@@ -63,8 +63,6 @@ public_tls_unified_cert_vendor: "globalsign-2018"
 # (given worst alternate network paths, and plus a small fudge factor)
 max_core_rtt: 60 # to eqiad via eqord, ~53ms rounded up to 60
 
-puppet_major_version: 4
-
 mail_smarthost:
 - 'mx2001.wikimedia.org'
 - 'mx1001.wikimedia.org'

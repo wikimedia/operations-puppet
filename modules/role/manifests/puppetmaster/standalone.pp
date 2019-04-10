@@ -33,9 +33,6 @@
 #  Hostname for the puppetmaster. Defaults to fqdn. Is used for SSL
 #  certificates, virtualhost routing, etc
 #
-# [*puppet_major_version*]
-#  Distinguishes version of puppet software e.g. 3 or 4
-#
 # filtertags: labs-common
 class role::puppetmaster::standalone(
     $autosign = false,
@@ -46,7 +43,6 @@ class role::puppetmaster::standalone(
     $server_name = $::fqdn,
     $use_enc = true,
     $labs_puppet_master = hiera('labs_puppet_master'),
-    $puppet_major_version = hiera('puppet_major_version', 3),
     $puppetdb_major_version = hiera('puppetdb_major_version', undef),
     $storeconfigs = false,
     $puppetdb_host = undef,
@@ -59,18 +55,10 @@ class role::puppetmaster::standalone(
         puppetmaster => $labs_puppet_master,
     }
 
-    $base_env_config = {
+    $env_config = {
         'environmentpath'  => '$confdir/environments',
         'default_manifest' => '$confdir/manifests',
     }
-
-    # Default to the future parser if on puppet 3
-    if $puppet_major_version < 4 {
-        $env_config = merge($base_env_config, {'parser' => 'future'})
-    } else {
-        $env_config = $base_env_config
-    }
-
 
     $base_config = {
         'node_terminus'     => 'exec',
@@ -112,7 +100,6 @@ class role::puppetmaster::standalone(
         prevent_cherrypicks    => $prevent_cherrypicks,
         extra_auth_rules       => $extra_auth_rules,
         config                 => $config,
-        puppet_major_version   => $puppet_major_version,
         puppetdb_major_version => $puppetdb_major_version,
     }
 

@@ -5,25 +5,16 @@
 #
 # $storeconfigs: Accepts values of 'puppetdb', 'activerecord', and 'none'
 #
-# $puppet_major_version: major version of puppet, defaults to 3.
-#
 class profile::puppetmaster::common (
     $base_config,
     $storeconfigs = hiera('profile::puppetmaster::common::storeconfigs', 'activerecord'),
-    $puppet_major_version = hiera('puppet_major_version', 3),
     $puppetdb_major_version = hiera('puppetdb_major_version', undef),
 ) {
     include passwords::puppet::database
 
-    $base_env_config = {
+    $env_config = {
         'environmentpath'  => '$confdir/environments',
         'default_manifest' => '$confdir/manifests',
-    }
-    # Default to the future parser if on puppet 3
-    if $puppet_major_version < 4 {
-        $env_config = merge($base_env_config, {'parser' => 'future'})
-    } else {
-        $env_config = $base_env_config
     }
 
     $activerecord_config =   {

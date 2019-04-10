@@ -1,5 +1,4 @@
 # Remaining module embedded hiera lookup
 # modules/base/manifests/puppet.pp:    $ca_server = hiera('puppetmaster::ca_server', '')
 puppetmaster::ca_server: labpuppetmaster1001.wikimedia.org
-puppet_major_version: 4
 profile::openstack::eqiad1::puppetmaster::enable_cumin: true

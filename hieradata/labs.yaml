@@ -201,10 +201,6 @@ role::logging::mediawiki::udp2log::logstash_host: 'deployment-logstash2.deployme
 # Don't use prod-style firewalls for k8s nodes
 profile::kubernetes::node::prod_firewalls: false
 
-# Until this is just taken for granted cluster-wide... make sure
-#  any new puppetmasters are built with v4
-puppet_major_version: 4
-
 # A dummy, empty prometheus config for default behavior on VMs
 prometheus_nodes: []
 

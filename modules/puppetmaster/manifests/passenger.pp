@@ -18,7 +18,6 @@ class puppetmaster::passenger(
     $verify_client,
     $allow_from,
     $deny_from,
-    $puppet_major_version=undef,
 ) {
     include ::apache::mod::passenger
     include ::sslcert::dhparam
@@ -55,13 +54,7 @@ class puppetmaster::passenger(
         require => File['/etc/apache2/sites-available/puppet-master.conf'],
     }
 
-    # puppetmaster-passenger package name changed to puppet-master-passenger with version 4
-    $puppetmaster_passenger_package_name = $puppet_major_version ? {
-        4       => 'puppet-master-passenger',
-        default => 'puppetmaster-passenger',
-    }
-
-    package { $puppetmaster_passenger_package_name:
+    package { 'puppet-master-passenger':
         ensure => present,
     }
 
@@ -82,7 +75,7 @@ class puppetmaster::passenger(
             mode    => '0444',
             source  => 'puppet:///modules/puppetmaster/default',
             require => [
-                Package[ $puppetmaster_passenger_package_name ]
+                Package['puppet-master-passenger']
             ],
         }
     }

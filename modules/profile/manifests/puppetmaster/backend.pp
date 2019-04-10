@@ -6,7 +6,6 @@ class profile::puppetmaster::backend(
     $prevent_cherrypicks = hiera('profile::puppetmaster::backend::prevent_cherrypicks', true),
     $ca_server = hiera('puppetmaster::ca_server', 'puppetmaster1001.eqiad.wmnet'),
     $puppetmasters = hiera('puppetmaster::servers'),
-    $puppet_major_version = hiera('puppet_major_version', undef),
     $puppetdb_major_version = hiera('puppetdb_major_version', undef),
     $allow_from = [
       '*.wikimedia.org',
@@ -36,7 +35,6 @@ class profile::puppetmaster::backend(
         prevent_cherrypicks    => $prevent_cherrypicks,
         allow_from             => $allow_from,
         extra_auth_rules       => $extra_auth_rules,
-        puppet_major_version   => $puppet_major_version,
         puppetdb_major_version => $puppetdb_major_version,
     }
 

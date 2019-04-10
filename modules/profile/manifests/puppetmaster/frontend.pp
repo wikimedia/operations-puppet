@@ -8,7 +8,6 @@ class profile::puppetmaster::frontend(
     $ca_server = hiera('puppetmaster::ca_server', 'puppetmaster1001.eqiad.wmnet'),
     Hash[String, Puppetmaster::Backends] $servers = hiera('puppetmaster::servers', {}),
     Puppetmaster::Backends $test_servers = hiera('profile::puppetmaster::frontend::test_servers', []),
-    $puppet_major_version = hiera('puppet_major_version', undef),
     $puppetdb_major_version = hiera('puppetdb_major_version', undef),
     $ssl_ca_revocation_check = hiera('profile::puppetmaster::frontend::ssl_ca_revocation_check', 'chain'),
     $allow_from = hiera('profile::puppetmaster::frontend::allow_from', [
@@ -73,7 +72,6 @@ class profile::puppetmaster::frontend(
         prevent_cherrypicks    => $prevent_cherrypicks,
         allow_from             => $allow_from,
         extra_auth_rules       => $extra_auth_rules,
-        puppet_major_version   => $puppet_major_version,
         puppetdb_major_version => $puppetdb_major_version,
     }
 

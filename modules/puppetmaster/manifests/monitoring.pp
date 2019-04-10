@@ -3,16 +3,12 @@
 
 class puppetmaster::monitoring (
     $server_type = $::puppetmaster::server_type,
-    $puppet_major_version = undef,
 ){
 
     # monitor HTTPS on puppetmasters
     # Note that for frontends both 8140 and 8141 ports will be checked since
     # both will be used
-    $puppetmaster_check_uri = $puppet_major_version ? {
-        4       => '/puppet/v3',
-        default => '/',
-    }
+    $puppetmaster_check_uri = '/puppet/v3'
 
     if $server_type == 'frontend' or $server_type == 'standalone' {
         monitoring::service { 'puppetmaster_https':
