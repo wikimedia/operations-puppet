@@ -61,7 +61,7 @@ profile::cache::base::admission_policy: 'none'
 profile::cache::base::zero_site: 'https://zero.wikimedia.org'
 profile::cache::base::purge_host_only_upload_re: '^(upload|maps)\.wikimedia\.org$'
 profile::cache::base::purge_host_not_upload_re: '^(?!(upload|maps)\.wikimedia\.org)'
-profile::cache::base::storage_parts: ['sda3', 'sdb3']
+profile::cache::varnish::backend::storage_parts: ['sda3', 'sdb3']
 profile::cache::base::purge_host_regex: '[um][pa][lp][os]'
 profile::cache::base::purge_multicasts: ['239.128.0.112', '239.128.0.113', '239.128.0.114', '239.128.0.115']
 profile::cache::base::purge_varnishes: ['127.0.0.1:3128', '127.0.0.1:3127']

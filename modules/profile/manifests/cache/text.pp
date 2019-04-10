@@ -71,7 +71,7 @@ class profile::cache::text(
         'varnish_probe_ms'   => 100,
     })
 
-    $text_storage_args = $::profile::cache::base::file_storage_args
+    $text_storage_args = $::profile::cache::varnish::backend::file_storage_args
 
     class { 'cacheproxy::instance_pair':
         cache_type       => 'text',

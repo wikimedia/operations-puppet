@@ -1,2 +1,2 @@
-profile::cache::base::storage_parts: [ 'nvme0n1p1', 'nvme0n1p1' ]
+profile::cache::varnish::backend::storage_parts: [ 'nvme0n1p1', 'nvme0n1p1' ]
 cache::ats_backends: true

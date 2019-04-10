@@ -4,7 +4,6 @@
 # - conftool
 # - monitoring
 # - logging/analytics
-# - storage
 #
 class profile::cache::base(
     $cache_cluster = hiera('cache::cluster'),
@@ -12,7 +11,6 @@ class profile::cache::base(
     $zero_site = hiera('profile::cache::base::zero_site'),
     $purge_host_only_upload_re = hiera('profile::cache::base::purge_host_only_upload_re'),
     $purge_host_not_upload_re = hiera('profile::cache::base::purge_host_not_upload_re'),
-    $storage_parts = hiera('profile::cache::base::storage_parts'),
     $packages_version = hiera('profile::cache::base::packages_version', 'installed'),
     $varnish_version = hiera('profile::cache::base::varnish_version', 5),
     $purge_host_regex = hiera('profile::cache::base::purge_host_regex', ''),
@@ -120,27 +118,6 @@ class profile::cache::base(
 
     # auto-depool on shutdown + conditional one-shot auto-pool on start
     class { 'cacheproxy::traffic_pool': }
-
-
-    ###########################################################################
-    # Storage configuration
-    ###########################################################################
-
-    # everything from here down is related to backend storage/weight config
-
-    $storage_size = $::hostname ? {
-        /^cp1008$/                 => 117,  # Intel X-25M 160G (test host!)
-        /^cp30(0[789]|10)$/        => 460,  # Intel M320 600G via H710 (esams misc)
-        /^cp[45]0[0-9]{2}$/        => 730,  # Intel S3710 800G (ulsfo + eqsin)
-        /^cp10(7[5-9]|8[0-9]|90)$/ => 1490, # Samsung PM1725a 1.6T (new eqiad nodes)
-        /^cp[0-9]{4}$/             => 360,  # Intel S3700 400G (codfw, esams text/upload, legacy eqiad)
-        default                    => 6,    # 6 is the bare min, for e.g. virtuals
-    }
-
-    $filesystems = unique($storage_parts)
-    varnish::setup_filesystem { $filesystems: }
-    Varnish::Setup_filesystem <| |> -> Varnish::Instance <| |>
-    $file_storage_args = join($filesystems.map |$idx, $store| { "-s main${$idx + 1}=file,/srv/${store}/varnish.main${$idx + 1},${storage_size}G" }, ' ')
 
     ###########################################################################
     # Purging

@@ -85,7 +85,7 @@ profile::cache::upload::maps_domain: 'maps.beta.wmflabs.org'
 profile::cache::text::static_host: 'deployment.wikimedia.beta.wmflabs.org'
 profile::cache::text::shortener_domain: 'w-beta.wmflabs.org'
 profile::cache::text::top_domain: 'beta.wmflabs.org'
-profile::cache::base::storage_parts:
+profile::cache::varnish::backend::storage_parts:
   - vdb
   - vdb
 profile::trafficserver::backend::storage_elements:
