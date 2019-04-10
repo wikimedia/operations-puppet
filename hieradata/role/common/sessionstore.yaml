@@ -41,6 +41,8 @@ profile::cassandra::settings:
   cluster_name: "sessions"
   application_username: sessions
   application_password: "%{passwords::cassandra::sessions}"
+  super_username: cassandra
+  super_password: "%{passwords::cassandra::super_password}"
   target_version: '3.x'
   default_instance_params:
     max_heap_size: 12g
