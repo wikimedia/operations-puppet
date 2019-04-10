@@ -10,5 +10,6 @@ class role::sessionstore {
     include ::profile::base::firewall
     include ::standard
     # include ::role::lvs::realserver
+    include ::profile::sessionstore
     include ::profile::cassandra
 }
