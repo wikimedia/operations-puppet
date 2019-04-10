@@ -1,12 +1,3 @@
-# TODO: Remove it after fixing T219414 to let the staging hosts mirror production certificates list
-profile::acme_chief::certificates:
-    apt:
-        CN: 'apt.wikimedia.org'
-        SNI:
-        - 'apt.wikimedia.org'
-        challenge: dns-01
-        authorized_regexes:
-        - '^install[12]002\.wikimedia\.org$'
 profile::acme_chief::accounts:
   6e01c693ed6e9d9a6b5930923ecef104:
     regr: '{"body": {}, "uri": "https://acme-staging-v02.api.letsencrypt.org/acme/acct/7090084"}'
