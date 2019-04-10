@@ -35,7 +35,8 @@ class profile::debmonitor::server (
     $directory = "${deploy_path}/src"
     $ssl_config = ssl_ciphersuite('nginx', 'strong')
     $settings_module = 'debmonitor.settings.prod'
-    $hosts = query_nodes('Class[Role::Debmonitor::Server]')
+    # Ensure to add FQDN of the current host also the first time the role is applied
+    $hosts = unique(concat(query_nodes('Class[Role::Debmonitor::Server]'), [$::fqdn]))
     $proxy_hosts = query_nodes('Class[Role::Cluster::Management]')
 
     # Configuration file for the Django-based WebUI and API
