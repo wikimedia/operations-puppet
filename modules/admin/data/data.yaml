@@ -3016,7 +3016,7 @@ users:
     uid: 20110
     email: nathante@uw.edu
     expiry_date: 2019-06-05
-    expiry_contact: tbayer@wikimedia.org
+    expiry_contact: ovasileva@wikimedia.org
   isaacj:
     ensure: present
     realname: Isaac Johnson
