@@ -82,7 +82,13 @@ profile::druid::broker::properties:
   druid.processing.numMergeBuffers: 10
   druid.server.http.numThreads: 20
   druid.broker.http.numConnections: 20
-  druid.broker.http.readTimeout: PT5M
+  # To avoid excessive queueing on the Historicals,
+  # the Broker fails fast if it doesn't receive any data
+  # from the Historical after 30s (as opposed to minutes
+  # like set in the defaults) or if a query takes more than
+  # a minute to complete.
+  druid.broker.http.readTimeout: PT30S
+  druid.server.http.defaultQueryTimeout: 60000
   # Increase druid broker query cache size to 2G.
   # TBD: Perhaps we should also try using memcached?
   druid.cache.sizeInBytes: 2147483648
@@ -109,17 +115,21 @@ profile::druid::historical::properties:
   druid.emitter: composing
   druid.emitter.composing.emitters: ["logging","http"]
   druid.emitter.http.recipientBaseUrl: "http://localhost:8000/"
-  druid.processing.numThreads: 10
+  # 40 cpus listed by nproc, leaving some space for os
+  druid.processing.numThreads: 36
   druid.processing.buffer.sizeBytes: 268435456 # 1024 * 1024 * 256
   # Set numMergeBuffers to use v2 groupBy engine
   druid.processing.numMergeBuffers: 10
-  druid.server.http.numThreads: 20
+  # 20 Druid http client threads * 3 brokers
+  druid.server.http.numThreads: 60
   druid.server.maxSize: 2748779069440 # 2.5 TB
   druid.segmentCache.locations: '[{"path":"/var/lib/druid/segment-cache","maxSize"\:2748779069440}]'
   # For small clusters it is reccomended to only enable caching on brokers
   # See: http://druid.io/docs/latest/querying/caching.html
   druid.historical.cache.useCache: false
   druid.historical.cache.populateCache: false
+  # Sane value to abort a query that takes more than 20s to complete
+  druid.server.http.defaultQueryTimeout: 20000
   druid.monitoring.monitors: ["io.druid.server.metrics.HistoricalMetricsMonitor"]
 profile::druid::historical::env:
   DRUID_HEAP_OPTS: "-Xmx8g -Xms4g"
