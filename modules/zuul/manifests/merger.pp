@@ -101,8 +101,11 @@ class zuul::merger (
         user        => 'zuul',
         hour        => '4',
         minute      => '7',
-        command     => "MAILTO='jenkins-bot@wikimedia.org' find ${git_dir} -maxdepth 3 -type d -name '.git' -exec git --git-dir='{}' pack-refs --all \\;",
-        environment => 'PATH=/usr/bin:/bin:/usr/sbin:/sbin',
+        command     => "find ${git_dir} -maxdepth 3 -type d -name '.git' -exec git --git-dir='{}' pack-refs --all \\;",
+        environment => [
+            'PATH=/usr/bin:/bin:/usr/sbin:/sbin',
+            'MAILTO="jenkins-bot@wikimedia.org"',
+        ],
         require     => File[$git_dir],
     }
 }
