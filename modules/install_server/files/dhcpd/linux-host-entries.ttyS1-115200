@@ -1904,6 +1904,36 @@ host db2096 {
     fixed-address db2096.codfw.wmnet;
 }
 
+host db2097 {
+    hardware ethernet 80:30:e0:2f:f6:18;
+    fixed-address db2097.codfw.wmnet;
+}
+
+host db2098 {
+    hardware ethernet 80:30:e0:2f:f6:5c;
+    fixed-address db2098.codfw.wmnet;
+}
+
+host db2099 {
+    hardware ethernet 80:30:e0:2c:bf:e4;
+    fixed-address db2099.codfw.wmnet;
+}
+
+host db2100 {
+    hardware ethernet 80:30:e0:2f:f6:80;
+    fixed-address db2100.codfw.wmnet;
+}
+
+host db2101 {
+    hardware ethernet 80:30:e0:2f:f6:78;
+    fixed-address db2101.codfw.wmnet;
+}
+
+host db2102 {
+    hardware ethernet 80:30:e0:2f:74:64;
+    fixed-address db2102.codfw.wmnet;
+}
+
 host dbprov2001 {
     hardware ethernet B0:26:28:21:6A:DE;
     fixed-address dbprov2001.codfw.wmnet;
