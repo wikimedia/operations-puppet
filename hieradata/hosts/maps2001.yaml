@@ -1,2 +1,24 @@
 cassandra::rack: a5
 do_paging: false
+
+# During migration to stretch, nodes are moved one by one, config is overridden
+# on a per-node basis. This will be cleaned once migration is completed. See
+# T198622 for details.
+
+profile::maps::hosts:
+  - 'maps2001.codfw.wmnet'
+profile::redis::master::clients:
+  - 'maps2001.codfw.wmnet'
+
+profile::maps::apps::redis_server: 'redis://maps2001.codfw.wmnet'
+profile::maps::apps::tilerator_ncpu_ratio: 0.5  # all CPUs used by tilerator
+
+profile::cassandra::single_instance::dc: 'codfw'
+profile::cassandra::single_instance::seeds:
+  - '10.192.0.144'
+
+profile::maps::osm_master::planet_sync_day: '*/2'
+
+profile::maps::osm_master::slaves: {}
+
+cassandra::target_version: '2.1'
