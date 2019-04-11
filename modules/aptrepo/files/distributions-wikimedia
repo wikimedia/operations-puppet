@@ -19,9 +19,37 @@ Codename: jessie-wikimedia
 AlsoAcceptFor: jessie jessie-backports
 Version: 8
 Architectures: source amd64 i386
-Components: main backports thirdparty experimental thirdparty/cloudera component/ci thirdparty/ci component/elastic55 thirdparty/elastic55 component/icu57 component/git component/cassandra22 component/zookeeper349 thirdparty/mono-project-jessie component/prometheus-node-exporter openstack-mitaka-jessie component/kube2proxy component/facter3 component/puppet5
+Components: main backports thirdparty experimental openstack-mitaka-jessie
+# sorted list, leading whitespace matters!
+ component/cassandra22
+ component/ci
+ component/elastic55
+ component/facter3
+ component/git
+ component/icu57
+ component/kube2proxy
+ component/prometheus-node-exporter
+ component/puppet5
+ component/zookeeper349
+ thirdparty/ci
+ thirdparty/cloudera
+ thirdparty/elastic55
+ thirdparty/mono-project-jessie
 UDebComponents: main backports thirdparty experimental
-Update: hwraid cassandra cloudera-jessie grafana hp-mcp-jessie confluent elastic docker jenkins elastic55 mono-project-jessie openstack-mitaka-jessie
+Update:
+# sorted list, leading whitespace matters!
+ cassandra
+ cloudera-jessie
+ confluent
+ docker
+ elastic
+ elastic55
+ grafana
+ hp-mcp-jessie
+ hwraid
+ jenkins
+ mono-project-jessie
+ openstack-mitaka-jessie
 Description: Wikimedia packages for Debian Jessie
 SignWith: 09DBD9F93F6CD44A
 DebOverride: deb-override
@@ -35,9 +63,52 @@ Codename: stretch-wikimedia
 AlsoAcceptFor: stretch stretch-backports
 Version: 9
 Architectures: source amd64 i386
-Components: main thirdparty/oath thirdparty/cloudera thirdparty/ci thirdparty/confluent thirdparty/hwraid thirdparty/k8s component/elastic55 thirdparty/elastic55 component/elastic56 thirdparty/elastic56 component/elastic65 thirdparty/elastic65 thirdparty/elasticsearch-curator5 component/cassandra22 component/cassandra311 component/puppetdb4 component/pyall thirdparty/tor thirdparty/php72 component/ci thirdparty/mono-project-stretch component/vp9 component/node10 thirdparty/grafana component/spicerack component/thumbor component/prometheus-node-exporter component/php72 component/facter3 component/puppet5
+Components: main
+# sorted list, leading whitespace matters!
+ component/cassandra22
+ component/cassandra311
+ component/ci
+ component/elastic55
+ component/elastic56
+ component/elastic65
+ component/facter3
+ component/node10
+ component/php72
+ component/prometheus-node-exporter
+ component/puppet5
+ component/puppetdb4
+ component/pyall
+ component/spicerack
+ component/thumbor
+ component/vp9
+ thirdparty/ci
+ thirdparty/cloudera
+ thirdparty/confluent
+ thirdparty/elastic55
+ thirdparty/elastic56
+ thirdparty/elastic65
+ thirdparty/elasticsearch-curator5
+ thirdparty/grafana
+ thirdparty/hwraid
+ thirdparty/k8s
+ thirdparty/mono-project-stretch
+ thirdparty/oath
+ thirdparty/php72
+ thirdparty/tor
 UDebComponents: main component/node10
-Update: hwraid-stretch hp-mcp-stretch jenkins-stretch confluent-stretch elastic55 elastic56 elastic65 elasticsearch-curator5 tor-stretch mono-project-stretch grafana-stretch
+Update:
+# sorted list, leading whitespace matters!
+ confluent-stretch
+ elastic55
+ elastic56
+ elastic65
+ elasticsearch-curator5
+ grafana-stretch
+ hp-mcp-stretch
+ hwraid-stretch
+ jenkins-stretch
+ mono-project-stretch
+ tor-stretch
 # NOTE:  Cloudera does not (yet) provide Stretch packages.  We use the Jessie ones,
 # along with a fake equivs to satisfy hadoop-mapreduce's (unnecessary) dependency on libssl1.0.0
 # which is not available in Stretch.  Once Cloudera releases Stretch packages, we can
