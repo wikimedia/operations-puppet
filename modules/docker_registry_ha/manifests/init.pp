@@ -42,11 +42,19 @@ class docker_registry_ha (
             content => "export ST_AUTH=${swift_url}/auth/v1.0\nexport ST_USER=${swift_user}\nexport ST_KEY=${swift_password}\n"
     }
 
+    file { '/usr/local/bin/registry_ha_swift_container_replication.sh':
+        source => 'puppet:///modules/docker_registry_ha/registry_ha_swift_container_replication.sh',
+        mode   => '0544',
+        owner  => 'docker-registry',
+        group  => 'docker-registry',
+    }
     exec { 'create_swift_container_replication':
-        command => "source ${account_file} && swift post \
-                    -t '${swift_replication_configuration}' \
-                    -k ${swift_replication_key} ${swift_container}",
-        unless  => "source ${account_file} && swift stat ${swift_container}",
+        command => "/usr/local/bin/registry_ha_swift_container_replication.sh -x -a ${account_file} \
+                    -r ${swift_replication_configuration} \
+                    -k ${swift_replication_key} \
+                    -c ${swift_container}",
+        unless  => "/usr/local/bin/registry_ha_swift_container_replication.sh -t -a ${account_file} \
+                    -c ${swift_container}",
         cwd     => '/tmp',
         path    => '/bin:/sbin:/usr/bin:/usr/sbin',
         user    => 'docker-registry'
