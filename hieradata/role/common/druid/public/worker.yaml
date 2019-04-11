@@ -133,7 +133,7 @@ profile::druid::historical::properties:
   druid.monitoring.monitors: ["io.druid.server.metrics.HistoricalMetricsMonitor"]
 profile::druid::historical::env:
   DRUID_HEAP_OPTS: "-Xmx8g -Xms4g"
-  DRUID_EXTRA_JVM_OPTS: "-XX:NewSize=2g -XX:MaxNewSize=2g -XX:MaxDirectMemorySize=10g -XX:+UseConcMarkSweepGC -XX:+PrintGCDetails -XX:+PrintGCTimeStamps -Djava.util.logging.manager=org.apache.logging.log4j.jul.LogManager"
+  DRUID_EXTRA_JVM_OPTS: "-XX:NewSize=2g -XX:MaxNewSize=2g -XX:MaxDirectMemorySize=12g -XX:+UseConcMarkSweepGC -XX:+PrintGCDetails -XX:+PrintGCTimeStamps -Djava.util.logging.manager=org.apache.logging.log4j.jul.LogManager"
 
 
 # --- Druid MiddleManager
