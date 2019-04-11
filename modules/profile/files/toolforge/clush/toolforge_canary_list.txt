@@ -15,7 +15,7 @@ tools-paws-master-01.tools.eqiad.wmflabs
 tools-paws-worker-1019.tools.eqiad.wmflabs
 tools-prometheus-02.tools.eqiad.wmflabs
 tools-proxy-02.tools.eqiad.wmflabs
-tools-redis-1002.tools.eqiad.wmflabs
+tools-redis-1001.tools.eqiad.wmflabs
 tools-sge-services-03.tools.eqiad.wmflabs
 tools-static-13.tools.eqiad.wmflabs
 tools-webgrid-generic-1404.tools.eqiad.wmflabs

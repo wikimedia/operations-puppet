@@ -1,5 +1,5 @@
 tools-logs-02.tools.eqiad.wmflabs
-tools-redis-1002.tools.eqiad.wmflabs
+tools-redis-1001.tools.eqiad.wmflabs
 tools-cron-01.tools.eqiad.wmflabs
 tools-static-13.tools.eqiad.wmflabs
 tools-exec-1442.tools.eqiad.wmflabs
