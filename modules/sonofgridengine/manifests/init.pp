@@ -17,7 +17,7 @@ class sonofgridengine(
         ensure  => 'file',
         mode    => '0600',
         backup  => false,
-        content => template('gridengine/gridengine.preseed.erb'),
+        content => template('sonofgridengine/gridengine.preseed.erb'),
         require => File['/var/local/preseed'],
     }
 
