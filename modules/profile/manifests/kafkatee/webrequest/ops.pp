@@ -44,7 +44,7 @@ class profile::kafkatee::webrequest::ops (
     # These logs will be injected into the logging pipeline and thus to logstash
     kafkatee::output { 'logstash-5xx':
         instance_name => 'webrequest',
-        destination   => "/bin/grep --line-buffered '\"http_status\":\"5' | jq --compact-output --arg type webrequest '. + {type: \$type}' | sed 's/^/@cee: /' | logger -t webrequest",
+        destination   => "/bin/grep --line-buffered '\"http_status\":\"5' | jq --compact-output --arg type webrequest '. + {type: \$type}' | sed 's/^/@cee: /' | logger --size 16384 -t webrequest",
         type          => 'pipe',
     }
 }
