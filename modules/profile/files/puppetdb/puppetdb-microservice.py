@@ -10,7 +10,7 @@ import requests
 from flask import Flask, abort, jsonify
 
 # Allowed Facts
-WHITELIST = ["serialnumber"]
+WHITELIST = ["serialnumber", "is_virtual"]
 
 # PuppetDB api URL template
 PUPPETDB_URL = "http://localhost:8080/pdb/query/v4/facts/{fact}"
@@ -19,7 +19,7 @@ app = Flask(__name__)
 
 
 @app.route("/v1/facts/<fact_name>")
-def factcheck(fact_name):
+def fact(fact_name):
     """Primary api endpoint.
 
     Accepts a single fact name and returns a dict of {hostname: value}.
