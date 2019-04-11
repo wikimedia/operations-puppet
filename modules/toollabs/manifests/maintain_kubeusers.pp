@@ -17,8 +17,8 @@ class toollabs::maintain_kubeusers(
         mode   => '0555',
     }
 
-    base::service_unit { 'maintain-kubeusers':
+    systemd::service { 'maintain-kubeusers':
         ensure  => present,
-        systemd => systemd_template('maintain-kubeusers'),
+        content => systemd_template('maintain-kubeusers'),
     }
 }
