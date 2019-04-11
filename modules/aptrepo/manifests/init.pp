@@ -66,6 +66,8 @@ class aptrepo (
         require    => Group['reprepro'],
     }
 
+    $deb822_validate_cmd = '/usr/bin/python -c "import apt_pkg; f=\'%\'; list(apt_pkg.TagFile(f))"'
+
     file { $basedir:
         ensure => directory,
         owner  => 'root',
@@ -91,43 +93,48 @@ class aptrepo (
     }
 
     file { "${basedir}/conf/updates":
-        ensure => present,
-        mode   => '0444',
-        owner  => 'root',
-        group  => 'root',
-        source => 'puppet:///modules/aptrepo/updates',
+        ensure       => present,
+        mode         => '0444',
+        owner        => 'root',
+        group        => 'root',
+        source       => 'puppet:///modules/aptrepo/updates',
+        validate_cmd => $deb822_validate_cmd,
     }
 
     file { "${basedir}/conf/pulls":
-        ensure => present,
-        mode   => '0444',
-        owner  => 'root',
-        group  => 'root',
-        source => 'puppet:///modules/aptrepo/pulls',
+        ensure       => present,
+        mode         => '0444',
+        owner        => 'root',
+        group        => 'root',
+        source       => 'puppet:///modules/aptrepo/pulls',
+        validate_cmd => $deb822_validate_cmd,
     }
 
     file { "${basedir}/conf/options":
-        ensure  => file,
-        owner   => $user,
-        group   => $group,
-        mode    => '0444',
-        content => inline_template("<%= @options.join(\"\n\") %>\n"),
+        ensure       => file,
+        owner        => $user,
+        group        => $group,
+        mode         => '0444',
+        content      => inline_template("<%= @options.join(\"\n\") %>\n"),
+        validate_cmd => $deb822_validate_cmd,
     }
 
     file { "${basedir}/conf/uploaders":
-        ensure  => file,
-        owner   => $user,
-        group   => $group,
-        mode    => '0444',
-        content => inline_template("<%= @uploaders.join(\"\n\") %>\n"),
+        ensure       => file,
+        owner        => $user,
+        group        => $group,
+        mode         => '0444',
+        content      => inline_template("<%= @uploaders.join(\"\n\") %>\n"),
+        validate_cmd => $deb822_validate_cmd,
     }
 
     file { "${basedir}/conf/incoming":
-        ensure  => present,
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0444',
-        content => template("aptrepo/${incomingconf}.erb"),
+        ensure       => present,
+        owner        => 'root',
+        group        => 'root',
+        mode         => '0444',
+        content      => template("aptrepo/${incomingconf}.erb"),
+        validate_cmd => $deb822_validate_cmd,
     }
 
     file { "${basedir}/conf/log":
