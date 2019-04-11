@@ -68,6 +68,7 @@ Components: main
  component/cassandra22
  component/cassandra311
  component/ci
+ component/elastalert
  component/elastic55
  component/elastic56
  component/elastic65
