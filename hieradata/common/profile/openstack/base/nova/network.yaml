@@ -1,0 +1,1 @@
+profile::openstack::base::nova::network::nova_dnsmasq_aliases: {}
