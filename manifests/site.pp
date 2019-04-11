@@ -1356,15 +1356,11 @@ node /labstore200[1-2]\.codfw\.wmnet/ {
 }
 
 node 'labstore2003.codfw.wmnet' {
-    role(labs::nfs::secondary_backup::tools)
-    # Do not enable yet
-    # include ::profile::base::firewall
+    role(wmcs::nfs::primary_backup::tools)
 }
 
 node 'labstore2004.codfw.wmnet' {
-    role(labs::nfs::secondary_backup::misc)
-    # Do not enable yet
-    # include ::profile::base::firewall
+    role(wmcs::nfs::primary_backup::misc)
 }
 
 node 'lithium.eqiad.wmnet' {

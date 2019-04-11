@@ -1,15 +1,21 @@
-class role::labs::nfs::secondary_backup::misc {
+class profile::wmcs::nfs::backup::primary::misc (
+    String $passive_server = lookup(
+        'profile::wmcs::nfs::primary::passive_server',
+        String,
+        'first',
+        'labstore1005.eqiad.wmnet'
+    ),
+){
 
     include ::standard
-    include role::labs::nfs::secondary_backup::base
 
     file { '/srv/backup/misc':
         ensure  => 'directory',
         require => File['/srv/backup'],
     }
 
-    labstore::device_backup { 'secondary-misc':
-        remotehost          => 'labstore1005.eqiad.wmnet',
+    labstore::device_backup { 'primary-misc':
+        remotehost          => $passive_server,
         remote_vg           => 'misc',
         remote_lv           => 'misc-project',
         remote_snapshot     => 'misc-snap',
