@@ -1783,7 +1783,6 @@ users:
     realname: Tilman Bayer
     ssh_keys: []
     uid: 3029
-    email: tbayer@wikimedia.org
   andyrussg:
     ensure: present
     gid: 500
