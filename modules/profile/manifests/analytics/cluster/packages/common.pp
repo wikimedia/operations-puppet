@@ -41,6 +41,8 @@ class profile::analytics::cluster::packages::common {
         'python3-setuptools',
         'python3-sklearn-lib',
         'libgomp1',
+        # For pyhive
+        'libsasl2-dev',
     )
 
     # These packages need to be reviewed in the context of Debian Buster
