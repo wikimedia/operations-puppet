@@ -1,8 +1,0 @@
-#!/bin/bash
-
-# The grid engine outputs "infinity" numbers as "0^HINFINITY".  On
-# consoles, this will properly display "INFINITY", in mails however it
-# causes them to be encoded as application/octet-stream, so we replace
-# "0^HINFINITY" with "INFINITY" here.
-
-sed "s/0"$'\b'"INFINITY/INFINITY/g" | mail "$@"
