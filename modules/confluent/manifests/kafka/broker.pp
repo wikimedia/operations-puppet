@@ -5,7 +5,7 @@
 # == Parameters:
 #
 # [*enabled*]
-#  Boolean.  If true, base::service_unit will be passed
+#  Boolean.  If true, systemd::service will be passed
 #  ensure => present, otherwise ensure => absent.  Default: true.
 #
 # [*brokers*]
