@@ -105,7 +105,7 @@ profile::druid::coordinator::properties:
   druid.emitter.composing.emitters: ["logging","http"]
   druid.emitter.http.recipientBaseUrl: "http://localhost:8000/"
 profile::druid::coordinator::env:
-  DRUID_HEAP_OPTS: "-Xmx4g -Xms2g"
+  DRUID_HEAP_OPTS: "-Xmx2g -Xms2g"
   DRUID_EXTRA_JVM_OPTS: "-XX:NewSize=512m -XX:MaxNewSize=512m -XX:+UseG1GC -XX:+PrintGCDetails -XX:+PrintGCTimeStamps"
 
 
@@ -159,6 +159,6 @@ profile::druid::overlord::properties:
   druid.indexer.runner.type: remote
   druid.indexer.storage.type: metadata
 profile::druid::overlord::env:
-  DRUID_HEAP_OPTS: "-Xmx4g -Xms2g"
+  DRUID_HEAP_OPTS: "-Xmx1g -Xms1g"
   DRUID_EXTRA_JVM_OPTS: "-XX:NewSize=256m -XX:MaxNewSize=256m -XX:+UseConcMarkSweepGC -XX:+PrintGCDetails -XX:+PrintGCTimeStamps"
 diamond::remove: true
