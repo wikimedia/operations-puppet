@@ -26,6 +26,6 @@ class sonofgridengine::submit_host {
     sonofgridengine::resource { "submit-${::fqdn}":
         rname  => $::fqdn,
         dir    => 'submithosts',
-        config => 'gridengine/nothing.erb', # the content here doesn't actually matter
+        config => 'sonofgridengine/nothing.erb', # the content here doesn't actually matter
     }
 }
