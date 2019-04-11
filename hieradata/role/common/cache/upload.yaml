@@ -44,7 +44,7 @@ cache::app_directors:
       max_connections:    1000
     backends:
       eqiad: 'kartotherian.svc.eqiad.wmnet'
-      codfw: 'kartotherian.svc.codfw.wmnet'
+      # codfw: 'kartotherian.svc.codfw.wmnet'
 cache::req_handling:
   upload.wikimedia.org:
     director: 'swift'
