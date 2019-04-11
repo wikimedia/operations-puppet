@@ -1,0 +1,70 @@
+#compdef debdeploy
+# ZSH completion function for debdeploy
+
+local line
+_arguments -C \
+  "-h[show this help message and exit]" \
+  "-help[show this help message and exit]" \
+  "--verbose[status-deploy and status-rollback]" \
+  "1: :(query_deps deploy query_restart query_version)" \
+  "*::arg:->args"
+
+case $line[1] in
+  query_deps)
+    _debdeploy_query_deps
+  ;;
+  deploy)
+    _debdeploy_deploy
+  ;;
+  query_restart)
+    _debdeploy_query_restart
+  ;;
+  query_version)
+    _debdeploy_query_version
+  ;;
+esac
+
+function _cumin_aliases {
+  _values 'cumin aliases' ${$(awk -F\: '/^[a-z]/ {printf "%s ", $1}' /etc/cumin/aliases.yaml)}
+}
+
+function _debdeploy_query_deps {
+  _arguments \
+    "-h[show this help message and exit]" \
+    "--help[show this help message and exit]" \
+    "--packages[Packages to query reverse dependencies]:packages:_deb_packages avail" \
+    "--servers[The group of servers for which reverse dependencies should be queried]:aliases:_cumin_aliases" \
+    "-s[The group of servers for which reverse dependencies should be queried]:aliases:_cumin_aliases"
+}
+
+function _debdeploy_deploy {
+  _arguments \
+    "-h[show this help message and exit]" \
+    "--help[show this help message and exit]" \
+    "--servers[The group of servers for which reverse dependencies should be queried]:aliases:_cumin_aliases" \
+    "-s[The group of servers for which reverse dependencies should be queried]:aliases:_cumin_aliases" \
+    "-u[A YAML file containing the update specification]:filename:_files" \
+    "--update[A YAML file containing the update specification]:filename:_files"
+}
+
+function _debdeploy_query_restart {
+  _arguments \
+    "-h[show this help message and exit]" \
+    "--help[show this help message and exit]" \
+    "--servers[The group of servers for which reverse dependencies should be queried]:aliases:_cumin_aliases" \
+    "-s[The group of servers for which reverse dependencies should be queried]:aliases:_cumin_aliases" \
+    "-u[A YAML file containing the update specification]:filename:_files" \
+    "--update[A YAML file containing the update specification]:filename:_files" \
+    "--printall[print all filtered processes]"
+}
+
+function _debdeploy_query_version {
+  _arguments \
+    "-h[show this help message and exit]" \
+    "--help[show this help message and exit]" \
+    "--packages[Packages to query reverse dependencies]:packages:_deb_packages avail" \
+    "--servers[The group of servers for which reverse dependencies should be queried]:aliases:_cumin_aliases" \
+    "-s[The group of servers for which reverse dependencies should be queried]:aliases:_cumin_aliases"
+}
+
+# :vim set syntax=zsh:
