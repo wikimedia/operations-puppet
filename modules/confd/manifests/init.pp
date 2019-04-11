@@ -1,6 +1,6 @@
 # == Class confd
 #
-# Installs confd and (optionally) starts it via a systemd::service define.
+# Installs confd and (optionally) starts it via a base::service_unit define.
 #
 # === Parameters
 #
@@ -47,10 +47,10 @@ class confd(
         $params = { ensure => 'stopped'}
     }
 
-    systemd::service { 'confd':
+    base::service_unit { 'confd':
         ensure         => $ensure,
-        restart        => true,
-        content        => systemd_template('confd'),
+        refresh        => true,
+        systemd        => systemd_template('confd'),
         service_params => $params,
         require        => Package['confd'],
     }
