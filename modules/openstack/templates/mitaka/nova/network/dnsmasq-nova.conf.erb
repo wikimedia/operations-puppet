@@ -3,10 +3,6 @@ cache-size=1200
 #dnsmasq sets TTL to 0 if the record is coming out of the DHCP leases it maintans
 #This doesn't sound very good, and is causing a fair amount of load. Incrase it.
 local-ttl=300
-<% @nova_dnsmasq_aliases.sort.map do |k,v| -%>
-# <%= k %>
-alias=<%= v['public_ip'] %>,<%= v['private_ip'] %>
-<% end -%>
 
 # Use official (designate-managed) dns servers
 server=<%= @recursor_ip %>

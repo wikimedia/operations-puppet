@@ -8,7 +8,6 @@ class openstack::nova::network::service(
     $dns_recursor_secondary,
     $dnsmasq_classles_static_route,
     $tftp_host='install1002.wikimedia.org',
-    $nova_dnsmasq_aliases={},
     ) {
 
     $recursor_ip = ipresolve($dns_recursor,4)
