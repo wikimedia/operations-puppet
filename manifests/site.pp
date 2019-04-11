@@ -1112,7 +1112,7 @@ node /^labtestvirt2003\.codfw\.wmnet$/ {
 }
 
 node 'clouddb2001-dev.codfw.wmnet' {
-    role(spare::system)
+    role(mariadb)
     interface::add_ip6_mapped { 'main': }
 }
 
