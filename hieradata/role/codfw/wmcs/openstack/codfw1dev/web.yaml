@@ -68,13 +68,13 @@ profile::openstack::labtest::version: ocata
 profile::openstack::base::nutcracker::redis::shards:
   jobqueue:
     eqiad:
-      labtestweb2001:
-        host: 208.80.153.14
+      cloudweb2001-dev:
+        host: 208.80.153.60
         port: 6378
   sessions:
     eqiad:
-      labtestweb2001:
-        host: 208.80.153.14
+      cloudweb2001-dev:
+        host: 208.80.153.60
         port: 6378
 
 

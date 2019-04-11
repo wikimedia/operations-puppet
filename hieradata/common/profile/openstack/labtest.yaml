@@ -19,6 +19,6 @@ profile::openstack::labtest::rabbit_file_handles: 8192
 profile::openstack::labtest::osm_host: 'labtestwikitech.wikimedia.org'
 profile::openstack::labtest::ldap_hosts: ['labtestservices2001.wikimedia.org']
 profile::openstack::labtest::labweb_hosts:
-  - 'labtestweb2001.wikimedia.org'
+  - 'cloudweb2001-dev.wikimedia.org'
 profile::openstack::labtest::statsd_host: 'labmon1001.eqiad.wmnet'
 profile::openstack::labtest::all_regions: ['codfw', 'codfw1dev-r']

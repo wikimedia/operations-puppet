@@ -209,7 +209,7 @@ GRANT DELETE, INSERT, SELECT, UPDATE ON `labswiki`.* TO 'wikiuser'@'208.80.155.1
 IDENTIFIED BY '<%= @wikiuser_pass %>';
 
 -- wikiadmin user for labtestwikitech aka 'labtestwiki' --
--- Will connect from labtestweb2001, mwmaint1002/mwmaint2001, deployment --
+-- Will connect from cloudweb2001-dev, mwmaint1002/mwmaint2001, deployment --
 
 GRANT ALL ON `labtestwiki`.* TO 'wikiadmin'@'208.80.153.14'
 IDENTIFIED BY '<%= @wikiadmin_pass %>';

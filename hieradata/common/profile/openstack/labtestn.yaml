@@ -18,5 +18,5 @@ profile::openstack::labtestn::osm_host: 'labtestwikitech.wikimedia.org'
 profile::openstack::labtestn::ldap_hosts: ['labtestservices2001.wikimedia.org']
 profile::openstack::labtestn::region: 'codfw1dev-r'
 profile::openstack::labtestn::labweb_hosts:
-  - labtestweb2001.wikimedia.org
+  - cloudweb2001-dev.wikimedia.org
 profile::openstack::labtestn::all_regions: ['codfw', 'codfw1dev-r']

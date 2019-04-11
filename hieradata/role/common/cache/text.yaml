@@ -86,9 +86,9 @@ cache::app_directors:
   doc:
     backends:
       eqiad: 'doc1001.eqiad.wmnet'
-  labtestweb2001:
+  cloudweb2001-dev:
     backends:
-      eqiad: 'labtestweb2001.wikimedia.org'
+      eqiad: 'cloudweb2001-dev.wikimedia.org'
   etherpad1001:
     be_opts:
       port: 9001
@@ -300,11 +300,11 @@ cache::alternate_domains:
   integration.wikimedia.org:
     director: 'contint1001'
   labtesthorizon.wikimedia.org:
-    director: 'labtestweb2001'
+    director: 'cloudweb2001-dev'
   labtestwikitech.wikimedia.org:
-    director: 'labtestweb2001'
+    director: 'cloudweb2001-dev'
   labtesttoolsadmin.wikimedia.org:
-    director: 'labtestweb2001'
+    director: 'cloudweb2001-dev'
   logstash.wikimedia.org:
     director: 'logstash_director'
   metrics.wikimedia.org:

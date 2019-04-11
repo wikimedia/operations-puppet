@@ -1282,10 +1282,7 @@ node /cloudvirt200[1-3]-dev\.codfw\.wmnet/ {
 
 # This is the labtest server that implements wikitech, horizon, and striker.
 node 'labtestweb2001.wikimedia.org' {
-    role(wmcs::openstack::labtest::labweb)
-
-    include ::role::mariadb::labtestwikitech
-
+    role(spare::system)
     interface::add_ip6_mapped { 'main': }
 }
 

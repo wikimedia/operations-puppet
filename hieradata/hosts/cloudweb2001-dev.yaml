@@ -7,7 +7,7 @@ profile::openstack::labtest::version: ocata
 
 
 profile::openstack::main::labweb_hosts:
-  - labtestweb2001.wikimedia.org
+  - cloudweb2001-dev.wikimedia.org
 
 profile::openstack::base::nutcracker::redis::shards:
   jobqueue:
@@ -46,7 +46,7 @@ striker::uwsgi::config:
     ENGINE: django.db.backends.mysql
     NAME: striker
     USER: striker
-    HOST: labtestweb2001.wikimedia.org
+    HOST: cloudweb2001-dev.wikimedia.org
     PORT: 3306
   cache:
     LOCATION: 127.0.0.1:11212

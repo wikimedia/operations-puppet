@@ -92,10 +92,10 @@ profile::trafficserver::backend::mapping_rules:
       replacement: http://contint1001.wikimedia.org
     - type: map
       target: http://labtesthorizon.wikimedia.org
-      replacement: http://labtestweb2001.wikimedia.org
+      replacement: http://cloudweb2001-dev.wikimedia.org
     - type: map
       target: http://labtestwikitech.wikimedia.org
-      replacement: http://labtestweb2001.wikimedia.org
+      replacement: http://cloudweb2001-dev.wikimedia.org
     - type: map
       target: http://logstash.wikimedia.org
       replacement: http://kibana.svc.eqiad.wmnet
