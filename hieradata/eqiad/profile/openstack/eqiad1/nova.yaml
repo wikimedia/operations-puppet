@@ -21,7 +21,7 @@ profile::openstack::eqiad1::nova::physical_interface_mappings:
 #   cloudvirt1012: pooled
 #   cloudvirt1013: pooled
 #   cloudvirt1014: depooled but contains lots of VMs (Jessie, needs rebuild)
-#   cloudvirt1015: pooled
+#   cloudvirt1015: depooled due to possible hardware issues -- T220853
 #   cloudvirt1016: depooled but contains lots of VMs (Jessie, needs rebuild)
 #   cloudvirt1017: depooled but contains lots of VMs (Jessie, needs rebuild)
 #   cloudvirt1018: depooled, empty, emergency spare
@@ -58,7 +58,6 @@ profile::openstack::eqiad1::nova::scheduler_pool:
   - cloudvirt1009
   - cloudvirt1012
   - cloudvirt1013
-  - cloudvirt1015
   - cloudvirt1025
   - cloudvirt1026
   - cloudvirt1027
