@@ -64,10 +64,9 @@ class toollabs::proxy(
         require => Class['::redis::client::python'],
     }
 
-    base::service_unit { 'proxylistener':
+    systemd::service { 'proxylistener':
         ensure  => present,
-        upstart => upstart_template('proxylistener'),
-        systemd => systemd_template('proxylistener'),
+        content => systemd_template('proxylistener'),
         require => File['/usr/local/sbin/proxylistener'],
     }
 
