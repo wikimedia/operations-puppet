@@ -17,7 +17,7 @@ class mariadb::packages_client {
     # Do not try to install xtrabackup on stretch, it has been removed.
     if os_version('debian < stretch') {
         require_package('percona-xtrabackup')
-    } elsif os_version('debian >= stretch') {
+    } elsif os_version('debian >= buster') {
         require_package('mariadb-backup')
     }
 }
