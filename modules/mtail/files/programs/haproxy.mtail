@@ -1,0 +1,87 @@
+counter haproxy_http_request_duration_bucket by backend, backend_server, status_code, le
+counter haproxy_http_request_duration_sum by backend, backend_server, status_code
+counter haproxy_http_request_duration_count by backend, backend_server, status_code
+
+/haproxy/ {
+    /(?P<date>(?P<legacy_date>\w+\s+\d+\s+\d+:\d+:\d+)|(?P<rfc3339_date>\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}.\d+[+-]\d{2}:\d{2}))\s+(?:\w+@)?(?P<hostname>[\w\.-]+)\s+(?P<application>[\w\.-]+)(?:\[(?P<pid>\d+)\])?:\s+(?P<client_ip>[\w\.]+):(?P<client_port>\d+) \[(?P<req_date>.+)\] (?P<frontend>[\w\~-]+) (?P<backend>[\w-]+)\/(?P<backend_server>[^ ]+) (?P<tr_receive_time>[^\/]+)\/(?P<tw_queue_time>[^\/]+)\/(?P<tc_connect_time>[^\/]+)\/(?P<tr_resp_time>[^\/]+)\/(?P<ta_active_time>[^\/]+) (?P<status_code>\d+) (?P<bytes_read>\d+) (?P<req_cookie>[^ ]+) (?P<res_cookie>[^ ]+) (?P<term_state>[\w-]+) (?P<actconn>\d+)\/(?P<feconn>\d+)\/(?P<beconn>\d+)\/(?P<srv_conn>\d+)\/(?P<retries>\d+) (?P<srv_queue>\d+)\/(?P<backend_queue>\d+) \{?(?P<req_headers>[^}]*)\}? ?\{?(?P<res_headers>[^}]*)\}? ?"(?P<request>[^"]*)"/ {
+        haproxy_http_request_duration_count[$backend][$backend_server][string($status_code)]++
+        haproxy_http_request_duration_sum[$backend][$backend_server][string($status_code)] += float($ta_active_time) * 0.0001
+
+        # 5ms bucket
+        int($ta_active_time) < 5 {
+            haproxy_http_request_duration_bucket[$backend][$backend_server][string($status_code)]["0.005"]++
+        }
+
+        # 10ms bucket.
+        int($ta_active_time) <= 10 {
+            haproxy_http_request_duration_bucket[$backend][$backend_server][string($status_code)]["0.01"]++
+        }
+
+        # 25ms bucket.
+        int($ta_active_time) <= 25 {
+            haproxy_http_request_duration_bucket[$backend][$backend_server][string($status_code)]["0.025"]++
+        }
+
+        # 50ms bucket.
+        int($ta_active_time) <= 50 {
+            haproxy_http_request_duration_bucket[$backend][$backend_server][string($status_code)]["0.05"]++
+        }
+
+        # 100ms bucket.
+        int($ta_active_time) <= 100 {
+            haproxy_http_request_duration_bucket[$backend][$backend_server][string($status_code)]["0.1"]++
+        }
+
+        # 250ms bucket.
+        int($ta_active_time) <= 250 {
+            haproxy_http_request_duration_bucket[$backend][$backend_server][string($status_code)]["0.25"]++
+        }
+
+        # 500ms bucket.
+        int($ta_active_time) <= 500 {
+            haproxy_http_request_duration_bucket[$backend][$backend_server][string($status_code)]["0.5"]++
+        }
+
+        # 1s bucket.
+        int($ta_active_time) <= 1000 {
+            haproxy_http_request_duration_bucket[$backend][$backend_server][string($status_code)]["1"]++
+        }
+
+        # 2.5s bucket.
+        int($ta_active_time) <= 2500 {
+            haproxy_http_request_duration_bucket[$backend][$backend_server][string($status_code)]["2.5"]++
+        }
+
+        # 5s bucket.
+        int($ta_active_time) <= 5000 {
+            haproxy_http_request_duration_bucket[$backend][$backend_server][string($status_code)]["5"]++
+        }
+
+        # 10s bucket.
+        int($ta_active_time) <= 10000 {
+            haproxy_http_request_duration_bucket[$backend][$backend_server][string($status_code)]["10"]++
+        }
+
+        # 15s bucket.
+        int($ta_active_time) <= 15000 {
+            haproxy_http_request_duration_bucket[$backend][$backend_server][string($status_code)]["15"]++
+        }
+
+        # 20s bucket.
+        int($ta_active_time) <= 20000 {
+            haproxy_http_request_duration_bucket[$backend][$backend_server][string($status_code)]["20"]++
+        }
+
+        # 30s bucket.
+        int($ta_active_time) <= 30000 {
+            haproxy_http_request_duration_bucket[$backend][$backend_server][string($status_code)]["30"]++
+        }
+
+        # 60s bucket.
+        int($ta_active_time) <= 60000 {
+            haproxy_http_request_duration_bucket[$backend][$backend_server][string($status_code)]["60"]++
+        }
+
+        haproxy_http_request_duration_bucket[$backend][$backend_server][string($status_code)]["+Inf"]++
+    }
+}

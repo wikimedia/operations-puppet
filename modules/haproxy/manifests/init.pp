@@ -1,9 +1,18 @@
-# Class haproxy
+# == Class: haproxy
+#
+# === Parameters
+#
+# [*logging*]
+#   If set to true, logs will be saved to disk under /var/log/haproxy/haproxy.log.
+#   It will work only if 'log /dev/log local0 info' is set. This implementation
+#   will simply direct *all* haproxy logs.
+#
 
 class haproxy(
     $template = 'haproxy/haproxy.cfg.erb',
     $socket   = '/run/haproxy/haproxy.sock',
     $pid      = '/run/haproxy/haproxy.pid',
+    $logging  = false,
 ) {
 
     package { [
@@ -86,4 +95,32 @@ class haproxy(
         description  => 'haproxy alive',
         nrpe_command => '/usr/lib/nagios/plugins/check_haproxy --check=alive',
     }
+
+    if $logging {
+        file { '/var/log/haproxy':
+          ensure => directory,
+          owner  => 'root',
+          group  => 'adm',
+          mode   => '0750',
+        }
+
+        logrotate::conf { 'haproxy':
+          ensure => present,
+          source => 'puppet:///modules/haproxy/haproxy.logrotate',
+        }
+
+        rsyslog::conf { 'haproxy':
+          source   => 'puppet:///modules/haproxy/haproxy.rsyslog',
+          priority => 49,
+          require  => File['/var/log/haproxy'],
+        }
+
+        # The debian package originaly will cause the creation
+        # of this file, it will be simply confusing if it remains there
+        file { '/var/log/haproxy.log':
+          ensure => absent,
+        }
+
+    }
+
 }
