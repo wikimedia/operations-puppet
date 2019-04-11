@@ -59,10 +59,10 @@ class toollabs::kube2proxy(
         mode    => '0440',
     }
 
-    base::service_unit{ 'kube2proxy':
+    systemd::service { 'kube2proxy':
         ensure         => present,
-        refresh        => true,
-        systemd        => systemd_template('kube2proxy'),
+        restart        => true,
+        content        => systemd_template('kube2proxy'),
         service_params => $service_params,
         subscribe      => File[
             '/usr/local/sbin/kube2proxy',
