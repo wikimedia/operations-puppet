@@ -74,6 +74,27 @@ profile::cache::base::be_runtime_params:
     - nuke_limit=1000
     - lru_interval=31
     - gethdr_extrachance=0
+profile::cache::varnish::cache_be_opts:
+    port: 3128
+    connect_timeout: '5s'
+    first_byte_timeout: '35s'
+    between_bytes_timeout: '60s'
+    max_connections: 50000
+    probe: 'varnish'
+profile::cache::varnish::common_vcl_config:
+    allowed_methods: '^(GET|HEAD|OPTIONS|PURGE)$'
+    # accept only upload purge traffic
+    purge_host_regex: '^(upload|maps)\.wikimedia\.org$'
+    upload_domain: 'upload.wikimedia.org'
+    upload_webp_hits_threshold: 100
+    maps_domain: 'maps.wikimedia.org'
+profile::cache::varnish::frontend::fe_vcl_config:
+    pass_random: false
+    admission_policy: 'none'
+    varnish_probe_ms: 100
+    keep: '1d'
+profile::cache::varnish::frontend::fe_jemalloc_conf: 'lg_dirty_mult:8,lg_chunk:17'
+profile::cache::varnish::frontend::fe_extra_vcl: ['upload-common', 'normalize_path']
 # Profile::cache::ssl::unified
 profile::cache::ssl::unified::monitoring: true
 profile::cache::ssl::unified::letsencrypt: false

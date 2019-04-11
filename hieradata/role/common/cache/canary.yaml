@@ -2,7 +2,7 @@ bbr_congestion_control: true
 varnish::dynamic_backend_caches: false
 cache::lua_support: true
 cluster: cache_canary
-cache::cluster: canary
+cache::cluster: text
 admin::groups:
   - perf-roots
   - varnish-log-readers
@@ -122,6 +122,32 @@ profile::cache::base::be_runtime_params:
     - lru_interval=31
 profile::cache::base::admission_policy: 'none'
 profile::cache::base::allow_iptables: true
+profile::cache::varnish::cache_be_opts:
+    port: 3128
+    connect_timeout: '3s'
+    first_byte_timeout: '65s'
+    between_bytes_timeout: '33s'
+    max_connections: 50000
+    probe: 'varnish'
+profile::cache::varnish::common_vcl_config:
+    allowed_methods: '^(GET|HEAD|OPTIONS|POST|PURGE|PUT|DELETE)$'
+    # accept "not upload" purge traffic
+    purge_host_regex: '^(?!(upload|maps)\.wikimedia\.org)'
+    static_host: 'en.wikipedia.org'
+    top_domain: 'org'
+    shortener_domain: 'w.wiki'
+    pass_random: true
+profile::cache::varnish::separate_vcl: ['misc']
+profile::cache::varnish::frontend::fe_vcl_config:
+    enable_geoiplookup: true
+    admission_policy: 'none'
+    # RTT is ~0, but 100ms is to accomodate small local hiccups, similar to
+    # the +100 added in $::profile::cache::base::core_probe_timeout_ms
+    varnish_probe_ms: 100
+    keep: '1d'
+profile::cache::varnish::frontend::fe_jemalloc_conf: 'lg_dirty_mult:8,lg_chunk:16'
+profile::cache::varnish::frontend::fe_extra_vcl: ['text-common', 'misc-common', 'zero', 'normalize_path', 'geoip']
+profile::cache::varnish::frontend::transient_gb: 5
 # Profile::cache::ssl::unified
 profile::cache::ssl::unified::monitoring: true
 profile::cache::ssl::unified::letsencrypt: false
