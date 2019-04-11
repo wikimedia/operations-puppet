@@ -51,26 +51,31 @@ class profile::mediawiki::php(
     }
 
     $config_cli = {
-        'include_path'         => '".:/usr/share/php:/srv/mediawiki/php"',
-        'error_log'            => 'syslog',
-        'pcre.backtrack_limit' => 5000000,
-        'date.timezone'        => 'UTC',
-        'display_errors'       => 'stderr',
-        'memory_limit'         => '500M',
-        'error_reporting'      => 'E_ALL & ~E_STRICT',
-        'mysql'                => { 'connect_timeout' => 3},
+        'include_path'           => '".:/usr/share/php"',
+        'error_log'              => 'syslog',
+        'pcre.backtrack_limit'   => 5000000,
+        'date.timezone'          => 'UTC',
+        'display_errors'         => 'stderr',
+        'memory_limit'           => '500M',
+        'error_reporting'        => 'E_ALL & ~E_STRICT',
+        'mysql'                  => { 'connect_timeout' => 3},
+        'default_socket_timeout' => 60,
+        'doc_root'               => '/srv/mediawiki/docroot'
     }
 
     # Custom config for php-fpm
     # basic optimizations for opcache. See T206341
     $base_config_fpm = {
-        'opcache.enable'                => 1,
-        'opcache.memory_consumption'    => 256,
-        'opcache.max_accelerated_files' => 24000,
-        'opcache.max_wasted_percentage' => 10,
-        'opcache.validate_timestamps'   => 0,
-        'auto_prepend_file'             => '/srv/mediawiki/wmf-config/PhpAutoPrepend.php',
-        'display_errors'                => 0,
+        'opcache.enable'                  => 1,
+        'opcache.interned_strings_buffer' => 50,
+        'opcache.memory_consumption'      => 300,
+        'opcache.max_accelerated_files'   => 24000,
+        'opcache.max_wasted_percentage'   => 10,
+        'opcache.validate_timestamps'     => 0,
+        'auto_prepend_file'               => '/srv/mediawiki/wmf-config/PhpAutoPrepend.php',
+        'display_errors'                  => 0,
+        'session.upload_progress.enabled' => 0,
+        'enable_dl'                       => 0,
     }
     if $enable_fpm {
         $_sapis = ['cli', 'fpm']
@@ -147,16 +152,23 @@ class profile::mediawiki::php(
         'memcached':
             priority => 25,
             config   => {
-                'extension'            => 'memcached.so',
-                'memcached.serializer' => 'php',
+                'extension'                   => 'memcached.so',
+                'memcached.serializer'        => 'php',
+                'memcached.store_retry_count' => '0'
             };
         'igbinary':
             config   => {
-                'extension'       => 'igbinary.so',
-                'compact_strings' => 'Off',
+                'extension'                => 'igbinary.so',
+                'igbinary.compact_strings' => 'Off',
             };
         'mysqli':
-            package_name => "php${php_version}-mysql";
+            package_name => "php${php_version}-mysql",
+            config       => {
+                'extension'                 => 'mysqli.so',
+                'mysqli.allow_local_infile' => 'Off',
+            }
+            ;
+
         'dba':
             package_name => "php${php_version}-dba",
     }
