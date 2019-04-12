@@ -5,12 +5,6 @@ class openstack::serverpackages::mitaka::stretch(
     # since jessie-backports packages are rebuilt from stretch anyway
     require openstack::commonpackages::mitaka
 
-    # make sure we don't have libssl1.0.0 installed, and exclude
-    # packages that depend on it
-    package { 'libssl1.0.0':
-        ensure => 'absent',
-    }
-
     # in stretch, these packages are included in both our custom repo component
     # and in the stretch stable repo. Avoid conflicts with apt by avoiding
     # installing the version from our custom repo.
