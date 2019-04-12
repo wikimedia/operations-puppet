@@ -24,20 +24,12 @@ class raid (
         $check_raid = "/usr/bin/sudo /usr/local/lib/nagios/plugins/check_raid --policy ${write_cache_policy}"
     }
 
-    if 'megaraid' in $facts['raid'] {
-      include raid::megaraid
-    }
-
-    if 'hpsa' in $facts['raid'] {
-      include raid::hpsa
-    }
-
-    if 'mpt' in $facts['raid'] {
-      include raid::mpt
-    }
-
-    if 'md' in $facts['raid'] {
-      include raid::md
+    if 'raid' in $facts {
+      $facts['raid'].each |String $raid| {
+        include "raid::${raid}"
+      }
+    } else {
+      warning('no raid controller detected')
     }
 
     file { '/usr/local/lib/nagios/plugins/check_raid':

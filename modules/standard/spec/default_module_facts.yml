@@ -34,3 +34,4 @@ raid:
   - md
   - megaraid
   - mpt
+  - ssacli
