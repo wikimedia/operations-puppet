@@ -86,7 +86,7 @@ cache::app_directors:
   doc:
     backends:
       eqiad: 'doc1001.eqiad.wmnet'
-  cloudweb2001-dev:
+  cloudweb2001_dev:
     backends:
       eqiad: 'cloudweb2001-dev.wikimedia.org'
   etherpad1001:
@@ -300,11 +300,11 @@ cache::alternate_domains:
   integration.wikimedia.org:
     director: 'contint1001'
   labtesthorizon.wikimedia.org:
-    director: 'cloudweb2001-dev'
+    director: 'cloudweb2001_dev'
   labtestwikitech.wikimedia.org:
-    director: 'cloudweb2001-dev'
+    director: 'cloudweb2001_dev'
   labtesttoolsadmin.wikimedia.org:
-    director: 'cloudweb2001-dev'
+    director: 'cloudweb2001_dev'
   logstash.wikimedia.org:
     director: 'logstash_director'
   metrics.wikimedia.org:
