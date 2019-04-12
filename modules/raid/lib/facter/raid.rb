@@ -1,8 +1,16 @@
 Facter.add('raid') do
   confine :kernel => :linux
+  # ref: http://pci-ids.ucw.cz/v2.2/pci.ids
+  pci_ids = {
+    '9005028f' => 'ssacli' # Smart Storage PQI 12G SAS/PCIe 3
+  }
   setcode do
     raids = []
 
+    File.open('/proc/bus/pci/devices').each do |line|
+      words = line.split
+      raids.push(pci_ids[words[1]]) if pci_ids.key?(words[1])
+    end
     if FileTest.exist?('/dev/cciss/') || FileTest.exist?('/sys/module/hpsa/')
       raids.push('hpsa')
     end
