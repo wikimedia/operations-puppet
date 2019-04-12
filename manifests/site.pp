@@ -2002,13 +2002,18 @@ node /^restbase10(0[789]|1[012345678])\.eqiad\.wmnet$/ {
 }
 
 # restbase codfw cluster
-node /^restbase20(0[7-9]|1[0-9]|20)\.codfw\.wmnet$/ {
+node /^restbase20(09|1[0-9]|20)\.codfw\.wmnet$/ {
     role(restbase::production)
 }
 
 # cassandra/restbase dev cluster
 node /^restbase-dev100[4-6]\.eqiad\.wmnet$/ {
     role(restbase::dev_cluster)
+}
+
+# restbase hosts to be decommissioned - T208087
+node /^restbase200[78]\.codfw\.wmnet$/ {
+    role(spare::system)
 }
 
 # network insights (netflow/pmacct, etc.)
