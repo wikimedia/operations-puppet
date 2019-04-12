@@ -2,6 +2,7 @@
 import urllib2
 import json
 import sys
+import syslog
 import traceback
 
 if '-h' in sys.argv:
@@ -67,5 +68,13 @@ if __name__ == "__main__":
     try:
         main()
     except Exception:
-        traceback.print_exc()
+        # Log any issues to syslog as otherwise they disappear into the ether.
+        syslog.openlog(logoption=syslog.LOG_PID)
+        tb_lines = traceback.format_exc().splitlines()
+        for line in tb_lines:
+            syslog.syslog(syslog.LOG_WARNING, line)
+        # The final line of format_exc() will be e.g.
+        # "URLError: <urlopen error [Errno -2] Name or service not known>"
+        # which is useful to give to Icinga
+        print 'CRITICAL - %s failed with %s' % (sys.argv[0], tb_lines[-1])
         sys.exit(2)
