@@ -1,4 +1,4 @@
-profile::openstack::labtest::designate::db_host: 'labtestcontrol2001.wikimedia.org'
+profile::openstack::labtest::designate::db_host: 'cloudcontrol2001-dev.wikimedia.org'
 profile::openstack::labtest::designate::wmflabsdotorg_project: 'wmflabsdotorg'
 profile::openstack::labtest::designate::domain_id_internal_forward: 'e1ac328c-b932-43f2-b12f-407fb9477925'
 profile::openstack::labtest::designate::domain_id_internal_reverse: '9b60f3ab-d64b-4e30-9d6f-7535811b0fa8'

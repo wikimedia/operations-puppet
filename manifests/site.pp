@@ -1113,7 +1113,7 @@ node 'clouddb2001-dev.codfw.wmnet' {
 }
 
 node 'labtestcontrol2001.wikimedia.org' {
-    role(wmcs::openstack::labtest::control)
+    role(spare::system)
     interface::add_ip6_mapped { 'main': }
 }
 

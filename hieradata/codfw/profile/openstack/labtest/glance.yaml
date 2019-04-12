@@ -1,1 +1,1 @@
-profile::openstack::labtest::glance::db_host: 'labtestcontrol2001.wikimedia.org'
+profile::openstack::labtest::glance::db_host: 'cloudcontrol2001-dev.wikimedia.org'

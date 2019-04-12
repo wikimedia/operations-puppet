@@ -44,7 +44,7 @@ striker::uwsgi::config:
   static:
     STATIC_ROOT: /srv/deployment/striker/deploy/public_html/static
   openstack:
-    URL: http://labtestcontrol2001.wikimedia.org:5000/v3
+    URL: http://cloudcontrol2001-dev.wikimedia.org:5000/v3
 
 striker::uwsgi::secret_config:
   # These values are only here to show the expected keys.

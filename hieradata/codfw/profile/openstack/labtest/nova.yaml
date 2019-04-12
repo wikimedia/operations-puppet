@@ -17,6 +17,6 @@ profile::openstack::labtest::nova::network_public_interface: 'eth0'
 profile::openstack::labtest::nova::network_public_ip: '208.80.155.255'
 profile::openstack::labtest::nova::zone: 'codfw'
 profile::openstack::labtest::nova::scheduler_pool: ['labtestvirt2001', 'labtestvirt2002']
-profile::openstack::labtest::nova::db_host: 'labtestcontrol2001.wikimedia.org'
+profile::openstack::labtest::nova::db_host: 'cloudcontrol2001-dev.wikimedia.org'
 profile::openstack::labtest::nova::live_migration_uri: 'test'
 profile::openstack::labtest::nova::dnsmasq_classles_static_route: 'dhcp-option=option:classless-static-route,0.0.0.0/0,10.196.16.1,172.16.128.0/24,10.196.16.3'
