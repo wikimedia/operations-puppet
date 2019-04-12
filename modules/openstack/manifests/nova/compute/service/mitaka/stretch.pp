@@ -6,8 +6,9 @@ class openstack::nova::compute::service::mitaka::stretch(
 ) {
     require openstack::serverpackages::mitaka::stretch
 
-    # make sure we don't have libssl1.0.0 installed. I don't remember
-    # the exact reasons for this.
+    # make sure we don't have libssl1.0.0 installed. We don't need it in
+    # cloudvirt servers running stretch, and it can cause conflicts resolving
+    # dependencies
     package { 'libssl1.0.0':
         ensure => 'absent',
     }
