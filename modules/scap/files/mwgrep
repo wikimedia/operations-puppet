@@ -4,7 +4,7 @@
   usage: mwgrep [-h] [--max-results N] [--timeout N] [--user | --module]
                 [--title TITLE | --etitle REGEX] [--no-private] regex
 
-  Grep for Lua or CSS and JS code fragments on (per default) MediaWiki wiki pages
+  Grep for Lua, CSS, JS and JSON code fragments on (per default) MediaWiki wiki pages
 
   positional arguments:
     regex            regex to search for
@@ -51,7 +51,7 @@ PREFIX_NS = {
 
 ap = argparse.ArgumentParser(
     prog='mwgrep',
-    description='Grep for CSS and JS code fragments in MediaWiki wiki pages',
+    description='Grep for CSS, JS and JSON code fragments in MediaWiki wiki pages',
     epilog='mwgrep will grep the MediaWiki namespace across Wikimedia wikis. '
            'specify --user to search the user namespace instead.'
 )
@@ -128,7 +128,7 @@ if args.title is not None:
 elif args.etitle is not None:
     filters.append( {'regexp': {'title.keyword': args.etitle}} )
 elif args.ns == NS_USER or args.ns == NS_MEDIAWIKI:
-    filters.append( {'regexp': {'title.keyword': '.*\\.(js|css)'}} )
+    filters.append( {'regexp': {'title.keyword': '.*\\.(js|css|json)'}} )
 
 search = {
     'size': args.max_results,
