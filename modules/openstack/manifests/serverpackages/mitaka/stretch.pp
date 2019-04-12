@@ -23,6 +23,8 @@ class openstack::serverpackages::mitaka::stretch(
         'sphinx-common',
         'sqlite3',
         'pdns-recursor',
+        'python-openssl',
+        'openssl',
     ]
 
     $avoid_packages_list = join($avoid_packages, ' ')
