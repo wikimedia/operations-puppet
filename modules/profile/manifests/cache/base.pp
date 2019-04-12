@@ -23,22 +23,12 @@ class profile::cache::base(
     $logstash_json_lines_port = hiera('logstash_json_lines_port', undef),
     $log_slow_request_threshold = hiera('profile::cache::base::log_slow_request_threshold', '60.0'),
     $allow_iptables = hiera('profile::cache::base::allow_iptables', false),
-    $max_core_rtt = hiera('max_core_rtt'),
     $extra_nets = hiera('profile::cache::base::extra_nets', []),
     $extra_trust = hiera('profile::cache::base::extra_trust', []),
 ) {
     require network::constants
     $wikimedia_nets = flatten(concat($::network::constants::aggregate_networks, $extra_nets))
     $wikimedia_trust = flatten(concat($::network::constants::aggregate_networks, $extra_trust))
-
-    # There is no better way to do this, so it can't be a class parameter. In fact,
-    # I consider our requirement to make hiera calls parameters
-    # harmful, as it prevents us to do hiera key interpolation in
-    # subsequent hiera calls, but we did this because of the way the
-    # WM Cloud puppet UI works. meh. So, just disable the linter here.
-    # lint:ignore:wmf_styleguide
-    $nodes = hiera("cache::${cache_cluster}::nodes")
-    # lint:endignore
 
     # Needed profiles
     require ::profile::conftool::client
@@ -96,10 +86,6 @@ class profile::cache::base(
     }
 
     class { 'varnish::trusted_proxies': }
-
-    # Varnish probes normally take 2xRTT, so for WAN cases give them
-    # an outer max of 3xRTT, + 100ms for local hiccups
-    $core_probe_timeout_ms = ($max_core_rtt * 3) + 100
 
     ###########################################################################
     # Analytics/Logging stuff

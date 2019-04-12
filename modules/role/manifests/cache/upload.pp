@@ -7,9 +7,9 @@ class role::cache::upload {
     include ::standard
 
     include ::profile::cache::base
-    include ::profile::cache::varnish::backend
     include ::profile::cache::ssl::unified
-    include ::profile::cache::upload
+    include ::profile::cache::varnish::frontend
+    include ::profile::cache::varnish::backend
 
     # TODO: refactor all this so that we have separate roles for production and labs
     if $::realm == 'production' {

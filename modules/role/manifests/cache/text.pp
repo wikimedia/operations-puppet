@@ -6,10 +6,10 @@ class role::cache::text {
     }
     include ::standard
     include ::profile::cache::base
-    include ::profile::cache::varnish::backend
     include ::profile::cache::ssl::unified
     include ::profile::cache::ssl::wikibase
-    include ::profile::cache::text
+    include ::profile::cache::varnish::frontend
+    include ::profile::cache::varnish::backend
 
     # varnishkafka statsv listens for special stats related requests
     # and sends them to the 'statsv' topic in Kafka. A kafka consumer

@@ -95,6 +95,9 @@ profile::cache::varnish::frontend::fe_vcl_config:
     keep: '1d'
 profile::cache::varnish::frontend::fe_jemalloc_conf: 'lg_dirty_mult:8,lg_chunk:17'
 profile::cache::varnish::frontend::fe_extra_vcl: ['upload-common', 'normalize_path']
+profile::cache::varnish::backend::be_vcl_config:
+    pass_random: true
+profile::cache::varnish::backend::be_extra_vcl: ['upload-common', 'normalize_path']
 # Profile::cache::ssl::unified
 profile::cache::ssl::unified::monitoring: true
 profile::cache::ssl::unified::letsencrypt: false
