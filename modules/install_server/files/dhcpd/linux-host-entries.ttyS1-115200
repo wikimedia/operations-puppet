@@ -3142,11 +3142,6 @@ host cloudnet2003-dev {
     fixed-address cloudnet2003-dev.codfw.wmnet;
 }
 
-host cloudnet2001-dev {
-    hardware ethernet 78:2b:cb:48:f9:61;
-    fixed-address cloudnet2001-dev.codfw.wmnet;
-}
-
 host cloudnet2002-dev {
     hardware ethernet 30:e1:71:55:a2:40;
     fixed-address cloudnet2002-dev.codfw.wmnet;
