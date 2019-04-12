@@ -61,7 +61,7 @@ Method:  http://downloads.linux.hpe.com/SDR/repo/mcp
 Components: non-free>thirdparty/hwraid
 UDebComponents:
 GetInRelease: no
-Suite: jessie/current
+Suite: stretch/current
 Architectures: amd64
 VerifyRelease: FADD8D64B1275EA3|C208ADDE26C2B797
 ListShellHook: grep-dctrl -e -S '^hp-health|hpssa|hpssacli|hpssaducli|hpacucli|ssacli$' || [ $? -eq 1 ]
