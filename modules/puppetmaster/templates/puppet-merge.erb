@@ -188,6 +188,11 @@ if [ "${confirmed}" -eq "1" ]; then
     fi
 
     echo "HEAD is now $(git rev-parse HEAD)."
+
+    if [ -d "/srv/config-master" ]; then
+        echo $(git rev-parse HEAD) > /srv/config-master/puppet-sha1.txt
+    fi
+
     cd -
 else
     echo "Aborting merge."
