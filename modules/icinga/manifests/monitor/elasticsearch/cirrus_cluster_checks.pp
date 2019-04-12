@@ -47,8 +47,8 @@ class icinga::monitor::elasticsearch::cirrus_cluster_checks{
             contact_group   => 'admins,team-discovery',
         }
 
-        monitoring::graphite_threshold { "mediawiki_cirrus_update_lag_${site}":
-            description     => "Mediawiki Cirrussearch update lag - ${site}",
+        monitoring::graphite_threshold { "mediawiki_cirrus_update_rate_${site}":
+            description     => "Mediawiki Cirrussearch update rate - ${site}",
             dashboard_links => ['https://grafana.wikimedia.org/d/JLK3I_siz/elasticsearch-indexing?panelId=44&fullscreen&orgId=1'],
             host            => $host,
             metric          => "movingAverage(transformNull(MediaWiki.CirrusSearch.${site}.updates.all.sent.rate),\"10minutes\")",
