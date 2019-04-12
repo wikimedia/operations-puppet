@@ -6,9 +6,7 @@ class profile::prometheus::pdns_rec_exporter_wmcs (
         ensure  => running,
     }
 
-    if os_version('debian >= jessie') {
-        base::service_auto_restart { 'prometheus-pdns-rec-exporter': }
-    }
+    base::service_auto_restart { 'prometheus-pdns-rec-exporter': }
 
     ferm::service { 'prometheus-pdns-rec-exporter':
         proto  => 'tcp',
