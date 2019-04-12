@@ -1,2 +1,2 @@
-profile::openstack::codfw1dev::keystone::db_host: 'cloudcontrol2001-dev.wikimedia.org'
+profile::openstack::codfw1dev::keystone::db_host: 'clouddb2001-dev.codfw.wmnet'
 profile::openstack::codfw1dev::keystone::token_driver: 'normal'

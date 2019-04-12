@@ -11,7 +11,7 @@ profile::openstack::codfw1dev::nova::network_flat_interface: 'eth1.2105'
 profile::openstack::codfw1dev::nova::flat_network_bridge: 'br2105'
 profile::openstack::codfw1dev::nova::fixed_range: '172.16.128.0/21'
 profile::openstack::codfw1dev::nova::zone: 'codfw'
-profile::openstack::codfw1dev::nova::db_host: 'cloudcontrol2001-dev.wikimedia.org'
+profile::openstack::codfw1dev::nova::db_host: 'clouddb2001-dev.codfw.wmnet'
 profile::openstack::codfw1dev::nova::live_migration_uri: 'test'
 profile::openstack::codfw1dev::nova::physical_interface_mappings:
   cloudinstances2b: 'eth1.2105'
