@@ -29,3 +29,8 @@ mail_smarthost:
 # auges is not installed in the test environment
 # so we mock its version fact
 augeasversion: 1.2.0
+raid:
+  - hpsa
+  - md
+  - megaraid
+  - mpt
