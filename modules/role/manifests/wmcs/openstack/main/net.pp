@@ -6,5 +6,4 @@ class role::wmcs::openstack::main::net {
     include ::profile::openstack::main::nova::common
     include ::profile::openstack::main::nova::network::service
     include ::profile::openstack::main::nova::api::service
-    include ::profile::openstack::main::nova::fullstack::service
 }
