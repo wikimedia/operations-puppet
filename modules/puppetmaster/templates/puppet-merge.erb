@@ -171,9 +171,9 @@ if [ "${confirmed}" -eq "1" ]; then
         echo "${cmd}"
         if [ $running_user = $git_user ]; then
             cd ${BASEDIR} && ${cmd}
-	else
+        else
             su - $git_user -c "cd ${BASEDIR} && ${cmd}"
-	fi
+        fi
     fi
 
     # git clean to remove any untracked
