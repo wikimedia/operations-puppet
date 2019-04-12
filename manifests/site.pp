@@ -2202,10 +2202,15 @@ node 'ununpentium.wikimedia.org' {
 #  key: profile::openstack::main::nova::scheduler_pool
 # We try to keep a few empty as emergency fail-overs
 #  or transition hosts for maintenance to come
-node /^labvirt100[0-7].eqiad.wmnet/ {
+node /^labvirt100[0-4].eqiad.wmnet/ {
     role(wmcs::openstack::main::virt)
     include ::standard
 }
+
+node /^cloudvirt100[5-7].eqiad.wmnet/ {
+    role(spare::system)
+}
+
 
 # To see cloudvirt nodes active in the scheduler look at hiera:
 #  key: profile::openstack::eqiad1::nova::scheduler_pool
