@@ -514,7 +514,7 @@ cache::text::nodes:
       - 'deployment-cache-text05.deployment-prep.eqiad.wmflabs'
 cache::upload::nodes:
     eqiad:
-      - 'deployment-cache-upload04.deployment-prep.eqiad.wmflabs'
+      - 'deployment-cache-upload05.deployment-prep.eqiad.wmflabs'
 
 logstash::heap_memory: 1G
 profile::services_proxy::ensure: absent
