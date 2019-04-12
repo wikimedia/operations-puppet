@@ -1,3 +1,5 @@
+# this class is currently unused. Perhaps worth reallocating code
+# to profile::openstack::codfw1dev::db
 class profile::openstack::base::keystone::db(
     $labs_hosts_range = hiera('profile::openstack::base::labs_hosts_range'),
     $labs_hosts_range_v6 = hiera('profile::openstack::base::labs_hosts_range_v6'),
