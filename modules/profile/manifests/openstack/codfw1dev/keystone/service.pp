@@ -32,16 +32,6 @@ class profile::openstack::codfw1dev::keystone::service(
     $public_port = hiera('profile::openstack::base::keystone::public_port'),
     ) {
 
-    class{'::profile::openstack::base::keystone::db':
-        labs_hosts_range             => $labs_hosts_range,
-        labs_hosts_range_v6          => $labs_hosts_range_v6,
-        puppetmaster_hostname        => $puppetmaster_hostname,
-        designate_host               => $designate_host,
-        second_region_designate_host => $second_region_designate_host,
-        osm_host                     => $osm_host,
-    }
-    contain '::profile::openstack::base::keystone::db'
-
     class {'::profile::openstack::base::keystone::service':
         version                              => $version,
         region                               => $region,
