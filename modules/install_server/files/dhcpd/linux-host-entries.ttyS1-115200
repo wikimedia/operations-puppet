@@ -3159,32 +3159,24 @@ host labtestservices2003 {
     filename "lpxelinux.0";
 }
 
-host labvirt1001 {
+host cloudvirt1001 {
     hardware ethernet 28:80:23:9a:d4:08;
-    fixed-address labvirt1001.eqiad.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/trusty-installer/";
-    filename "lpxelinux.0";
+    fixed-address cloudvirt1001.eqiad.wmnet;
 }
 
-host labvirt1002 {
+host cloudvirt1002 {
     hardware ethernet 28:80:23:9a:cd:f4;
-    fixed-address labvirt1002.eqiad.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/trusty-installer/";
-    filename "lpxelinux.0";
+    fixed-address cloudvirt1002.eqiad.wmnet;
 }
 
-host labvirt1003 {
+host cloudvirt1003 {
     hardware ethernet 28:80:23:9a:c7:f4;
-    fixed-address labvirt1003.eqiad.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/trusty-installer/";
-    filename "lpxelinux.0";
+    fixed-address cloudvirt1003.eqiad.wmnet;
 }
 
-host labvirt1004 {
+host cloudvirt1004 {
     hardware ethernet 28:80:23:9a:d6:74;
-    fixed-address labvirt1004.eqiad.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/trusty-installer/";
-    filename "lpxelinux.0";
+    fixed-address cloudvirt1004.eqiad.wmnet;
 }
 
 host cloudvirt1005 {

@@ -1,4 +1,4 @@
-profile::openstack::base::nova::instance_dev: "/dev/mapper/cloudvirt1008--vg-srv"
+profile::openstack::base::nova::instance_dev: "/dev/mapper/cloudvirt1007--vg-srv"
 profile::openstack::eqiad1::nova::network_flat_tagged_base_interface: eno2
 profile::openstack::eqiad1::nova::network_flat_interface: 'eno2.1105'
 profile::openstack::eqiad1::nova::physical_interface_mappings:
