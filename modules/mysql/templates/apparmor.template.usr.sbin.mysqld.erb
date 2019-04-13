@@ -33,7 +33,7 @@
   <%= @config_hash['datadir'] %>/** rwk,
   /var/log/mysql/ r,
   /var/log/mysql/* rw,
-  <%= pidfile %> w,
+  <%= @pidfile %> w,
   <%= socket %> w,
 
   /sys/devices/system/cpu/ r,
