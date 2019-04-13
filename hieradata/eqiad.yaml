@@ -38,11 +38,11 @@ labs_keystone_host: &labskeystonehost "cloudcontrol1003.wikimedia.org"
 # These are the up-and-coming, better dns servers:
 # used in manifests/realm.pp
 labsdnsconfig:
-  host: 'labs-ns0.wikimedia.org'
-  host_secondary: 'labs-ns1.wikimedia.org'
+  host: 'cloud-ns0.wikimedia.org'
+  host_secondary: 'cloud-ns1.wikimedia.org'
   dbserver: 'localhost'
-  recursor: 'labs-recursor0.wikimedia.org'
-  recursor_secondary: 'labs-recursor1.wikimedia.org'
+  recursor: 'cloud-recursor0.wikimedia.org'
+  recursor_secondary: 'cloud-recursor1.wikimedia.org'
 
 labsldapconfig:
   hostname: ldap-labs.eqiad.wikimedia.org

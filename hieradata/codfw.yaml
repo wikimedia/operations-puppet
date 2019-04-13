@@ -34,13 +34,12 @@ mediawiki_memcached_servers:
 labs_puppet_master: "labtest-puppetmaster.wikimedia.org"
 labs_keystone_host: "cloudcontrol1003.wikimedia.org"
 
-# These are the up-and-coming, better dns servers:
 labsdnsconfig:
-  host: 'labs-ns0.wikimedia.org'
-  host_secondary: 'labs-ns1.wikimedia.org'
+  host: 'cloud-ns0.wikimedia.org'
+  host_secondary: 'cloud-ns1.wikimedia.org'
   dbserver: 'm5-master.eqiad.wmnet'
-  recursor: 'labs-recursor0.wikimedia.org'
-  recursor_secondary: 'labs-recursor1.wikimedia.org'
+  recursor: 'cloud-recursor0.wikimedia.org'
+  recursor_secondary: 'cloud-recursor1.wikimedia.org'
 
 labsldapconfig:
   hostname: ldap-labs.codfw.wikimedia.org

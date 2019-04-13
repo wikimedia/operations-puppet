@@ -1,0 +1,32 @@
+- name: default
+  also_notifies: []
+  attributes: {}
+  description: Pool for eqiad1/cloudservices1003
+  id: 794ccc2c-d751-44fe-b57f-8894c9f5c842
+  nameservers:
+  - host: 208.80.154.135
+    port: 53
+  - host: 208.80.154.11
+    port: 53
+  ns_records:
+  - hostname: cloud-ns0.wikimedia.org.
+    priority: 10
+  - hostname: cloud-ns1.wikimedia.org.
+    priority: 11
+  targets:
+  - masters:
+    - host: 208.80.154.135
+      port: 5354
+    options:
+      connection: mysql://pdns:<password>@208.80.154.135/pdns
+      host: 208.80.154.135
+      port: '53'
+    type: powerdns
+  - masters:
+    - host: 208.80.154.135
+      port: 5354
+    options:
+      connection: mysql://pdns:<password>@208.80.154.11/pdns
+      host: 208.80.154.11
+      port: '53'
+    type: powerdns

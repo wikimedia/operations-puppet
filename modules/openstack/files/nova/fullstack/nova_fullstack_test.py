@@ -395,7 +395,7 @@ def main():
     argparser.add_argument(
         '--dns-resolvers',
         help='Comma separated list of nameservers',
-        default='208.80.155.118,208.80.154.20',
+        default='208.80.154.143,208.80.154.24',
     )
 
     argparser.add_argument(

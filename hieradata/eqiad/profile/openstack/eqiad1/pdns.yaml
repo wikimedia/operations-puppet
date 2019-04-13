@@ -3,10 +3,10 @@ profile::openstack::eqiad1::pdns::private_reverse_zones:
   - '68.10.in-addr.arpa'
   - '16.172.in-addr.arpa'
   - '56.15.185.in-addr.arpa'
-profile::openstack::eqiad1::pdns::host: 'labs-ns2.wikimedia.org'
-profile::openstack::eqiad1::pdns::host_secondary: 'labs-ns3.wikimedia.org'
-profile::openstack::eqiad1::pdns::recursor: 'labs-recursor2.wikimedia.org'
-profile::openstack::eqiad1::pdns::recursor_secondary: 'labs-recursor3.wikimedia.org'
+profile::openstack::eqiad1::pdns::host: 'cloud-ns0.wikimedia.org'
+profile::openstack::eqiad1::pdns::host_secondary: 'cloud-ns1.wikimedia.org'
+profile::openstack::eqiad1::pdns::recursor: 'cloud-recursor0.wikimedia.org'
+profile::openstack::eqiad1::pdns::recursor_secondary: 'cloud-recursor1.wikimedia.org'
 profile::openstack::eqiad1::pdns::monitor_target_fqdn: 'tools-sgegrid-master.tools.eqiad.wmflabs'
 
 # Extra records that the Labs DNS recursor should respond to.

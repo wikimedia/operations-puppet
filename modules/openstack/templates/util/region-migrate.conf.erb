@@ -6,7 +6,7 @@ password = <%= @ldap_user_pass %>
 ssh_root_key_path = /home/andrew/vps_root_key
 <% if @site == "eqiad" -%>
 vps_domain = eqiad.wmflabs
-dns_server = labs-ns0.wikimedia.org
+dns_server = cloud-ns0.wikimedia.org
 <% elsif @site == "codfw" -%>
 vps_domain = codfw.labtest
 dns_server = labtest-ns0.wikimedia.org
