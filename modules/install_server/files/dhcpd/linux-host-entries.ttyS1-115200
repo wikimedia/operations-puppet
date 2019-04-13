@@ -3180,7 +3180,7 @@ host cloudvirt1004 {
 }
 
 host cloudvirt1005 {
-    hardware ethernet 28:80:23:9a:d6:bc;
+    hardware ethernet f0:92:1c:05:f5:20;
     fixed-address cloudvirt1005.eqiad.wmnet;
 }
 
@@ -3190,7 +3190,7 @@ host cloudvirt1006 {
 }
 
 host cloudvirt1007 {
-    hardware ethernet 40:a8:f0:38:1a:40;
+    hardware ethernet F0:92:1C:05:4A:98;
     fixed-address cloudvirt1007.eqiad.wmnet;
 }
 
