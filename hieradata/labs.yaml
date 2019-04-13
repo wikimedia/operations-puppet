@@ -28,6 +28,7 @@ profile::openstack::eqiad1::nova_controller: 'cloudcontrol1003.wikimedia.org'
 profile::openstack::main::keystone_host: 'cloudcontrol1003.wikimedia.org'
 profile::openstack::eqiad1::keystone_host: 'cloudcontrol1003.wikimedia.org'
 profile::openstack::base::observer_user: 'novaobserver'
+profile::openstack::eqiad1::region: 'eqiad1-r'
 # publicly available read-only credentials
 profile::openstack::main::observer_password: 'Fs6Dq2RtG8KwmM2Z'
 profile::openstack::eqiad1::observer_password: 'Fs6Dq2RtG8KwmM2Z'
