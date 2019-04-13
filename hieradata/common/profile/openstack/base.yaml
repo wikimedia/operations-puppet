@@ -1,5 +1,5 @@
 profile::openstack::base::ldap_proxyuser_pass: 'Eche0ieng8UaNoo'
-profile::openstack::base::region: "%{::site}"
+profile::openstack::base::region: "eqiad1-r"
 profile::openstack::base::observer_user: 'novaobserver'
 profile::openstack::base::observer_project: 'observer'
 profile::openstack::base::ldap_base_dn: 'dc=wikimedia,dc=org'

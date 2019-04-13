@@ -22,7 +22,7 @@ profile::base::labs::unattended_wmf: 'present'
 profile::base::labs::unattended_distro: 'present'
 profile::openstack::main::version: 'mitaka'
 profile::openstack::eqiad1::version: 'mitaka'
-profile::openstack::base::region: "%{::site}"
+profile::openstack::base::region: "eqiad1-r"
 profile::openstack::main::nova_controller: 'labcontrol1001.wikimedia.org'
 profile::openstack::eqiad1::nova_controller: 'cloudcontrol1003.wikimedia.org'
 profile::openstack::main::keystone_host: 'cloudcontrol1003.wikimedia.org'

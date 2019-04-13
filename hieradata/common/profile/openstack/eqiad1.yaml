@@ -22,4 +22,4 @@ profile::openstack::eqiad1::labs_hosts_range: '10.64.20.0/24'
 profile::openstack::eqiad1::labs_hosts_range_v6: '2620:0:861:118::/64'
 profile::openstack::eqiad1::glance_host: 'cloudcontrol1003.wikimedia.org'
 profile::openstack::eqiad1::keystone_host: 'cloudcontrol1003.wikimedia.org'
-profile::openstack::eqiad1::all_regions: ['eqiad', 'eqiad1-r']
+profile::openstack::eqiad1::all_regions: ['eqiad1-r']
