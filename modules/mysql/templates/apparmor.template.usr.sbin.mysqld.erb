@@ -24,7 +24,7 @@
   /etc/mysql/*.pem r,
   /etc/mysql/conf.d/ r,
   /etc/mysql/conf.d/* r,
-  <%= config_file %> r,
+  <%= @config_file %> r,
   /usr/sbin/mysqld mr,
   /usr/share/mysql/** r,
   /var/log/mysql.log rw,
