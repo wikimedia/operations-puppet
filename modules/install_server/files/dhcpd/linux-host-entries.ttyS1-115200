@@ -3160,22 +3160,22 @@ host labtestservices2003 {
 }
 
 host cloudvirt1001 {
-    hardware ethernet 28:80:23:9a:d4:08;
+    hardware ethernet f0:92:1c:05:a7:70;
     fixed-address cloudvirt1001.eqiad.wmnet;
 }
 
 host cloudvirt1002 {
-    hardware ethernet 28:80:23:9a:cd:f4;
+    hardware ethernet f0:92:1c:05:d5:48;
     fixed-address cloudvirt1002.eqiad.wmnet;
 }
 
 host cloudvirt1003 {
-    hardware ethernet 28:80:23:9a:c7:f4;
+    hardware ethernet f0:92:1c:05:18:e8;
     fixed-address cloudvirt1003.eqiad.wmnet;
 }
 
 host cloudvirt1004 {
-    hardware ethernet 28:80:23:9a:d6:74;
+    hardware ethernet f0:92:1c:05:f5:70;
     fixed-address cloudvirt1004.eqiad.wmnet;
 }
 
