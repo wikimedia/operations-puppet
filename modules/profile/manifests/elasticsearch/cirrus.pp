@@ -75,18 +75,8 @@ class profile::elasticsearch::cirrus(
         }
     }
 
-    file { '/etc/udev/rules.d/elasticsearch-readahead.rules':
-        ensure  => present,
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0444',
+    udev::rule { 'elasticsearch-readahead':
         content => "SUBSYSTEM==\"block\", KERNEL==\"${storage_device}\", ACTION==\"add|change\", ATTR{bdi/read_ahead_kb}=\"128\"",
-        notify  => Exec['elasticsearch_udev_reload'],
-    }
-
-    exec { 'elasticsearch_udev_reload':
-        command     => '/sbin/udevadm control --reload && /sbin/udevadm trigger',
-        refreshonly => true,
     }
 
     # Install prometheus data collection
