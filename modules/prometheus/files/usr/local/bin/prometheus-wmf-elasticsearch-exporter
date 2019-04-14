@@ -34,7 +34,8 @@ class PrometheusWMFElasticsearchExporter(object):
             nodes = data['nodes']
 
             # we only want to collect latencies for the local node, so let's filter out everything else
-            latencies = next(n['latencies'] for _, n in nodes.iteritems() if n['name'] == hostname)
+            # reported names are something like: elastic1034-production-search-eqiad
+            latencies = next(n['latencies'] for _, n in nodes.iteritems() if n['name'].startswith(hostname))
 
             per_node_latency = GaugeMetricFamily('elasticsearch_per_node_latency', 'Per node latency percentiles',
                                                  labels=['bucket', 'percentile'])
