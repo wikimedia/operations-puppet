@@ -11,7 +11,8 @@ class profile::swift::storage::labs {
   }
 
   udev::rule { 'swift_storage_labs':
-    content => 'ENV{DM_LV_NAME}=="lv-a1", ENV{DM_VG_NAME}=="vd", SYMLINK+="swift/lv-a1"',
-    require => Lvm::Logical_volume['lv-a1'],
+    content  => "ENV{DM_LV_NAME}==\"lv-a1\", ENV{DM_VG_NAME}==\"vd\", SYMLINK+=\"swift/lv-a1\"\n",
+    priority => 57,
+    require  => Lvm::Logical_volume['lv-a1'],
   }
 }
