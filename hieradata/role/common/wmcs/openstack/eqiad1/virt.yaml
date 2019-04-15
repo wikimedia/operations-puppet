@@ -1,1 +1,4 @@
 cluster: wmcs
+profile::base::debdeploy::filter_services:
+  qemu-system-x86:
+    - '*'
