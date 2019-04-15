@@ -61,7 +61,6 @@ class profile::openstack::codfw1dev::keystone::service(
         second_region_designate_host         => $second_region_designate_host,
         second_region_designate_host_standby => $second_region_designate_host_standby,
         labweb_hosts                         => $labweb_hosts,
-        require                              => Class['profile::openstack::base::keystone::db'],
     }
     contain '::profile::openstack::base::keystone::service'
 
