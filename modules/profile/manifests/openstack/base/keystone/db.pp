@@ -7,34 +7,7 @@ class profile::openstack::base::keystone::db(
     $designate_host = hiera('profile::openstack::base::designate_host'),
     $second_region_designate_host = hiera('profile::openstack::base::second_region_designate_host'),
     $osm_host = hiera('profile::openstack::base::osm_host'),
-    $prometheus_nodes = hiera('prometheus_nodes'),
     ) {
-
-    package {'mysql-server':
-        ensure => 'present',
-    }
-
-    file {'/etc/mysql/my.cnf':
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0644',
-        content => template("profile/openstack/base/keystone/db/${::lsbdistcodename}.my.cnf.erb"),
-        require => Package['mysql-server'],
-    }
-
-    # prometheus monitoring
-    prometheus::mysqld_exporter { 'default':
-        client_password => '',
-        client_socket   => '/var/run/mysqld/mysqld.sock',
-    }
-
-    $prometheus_ferm_nodes = join($prometheus_nodes, ' ')
-
-    ferm::service { 'prometheus-mysqld-exporter':
-        proto  => 'tcp',
-        port   => '9104',
-        srange => "@resolve((${prometheus_ferm_nodes}))",
-    }
 
     # mysql monitoring and administration from root clients/tendril
     $mysql_root_clients = join($::network::constants::special_hosts['production']['mysql_root_clients'], ' ')
