@@ -24,7 +24,7 @@ http:
       path: /metrics
 redis:
   addr: <%= @redis_host + ":" + @redis_port.to_s %>
-  password: <%= @redis_password %>
+  password: <%= @redis_passwd %>
   db: 0
   dialtimeout: 100ms
   readtimeout: 100ms
