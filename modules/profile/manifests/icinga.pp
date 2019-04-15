@@ -24,7 +24,7 @@ class profile::icinga(
 ){
     $is_passive = !($::fqdn == $active_host)
 
-    require_package('mariadb-client')
+    require_package('mariadb-client', 'python3-yaml')
 
     # leaving address blank means also using IPv6
     class { 'rsync::server':
@@ -230,4 +230,15 @@ class profile::icinga(
         priority => 1,
         content  => template('profile/icinga/inactive.motd.erb'),
     }
+
+    # Script to generate the contacts configuration for the Icinga meta-monitoring
+    file { '/usr/local/bin/generate-check-icinga-contacts':
+        ensure  => present,
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0550',
+        source  => 'puppet:///modules/icinga/generate_check_icinga_contacts.py',
+        require => Package['python3-yaml'],
+    }
+
 }
