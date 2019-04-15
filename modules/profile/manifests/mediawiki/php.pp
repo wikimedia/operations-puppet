@@ -245,8 +245,7 @@ class profile::mediawiki::php(
         }
 
         # Set up profiling (T206152)
-        # Install tideways-xhprof and mongodb, but activate them only if
-        # $enable_profiling is true, as just installing tideways gives us a perf hit.
+        # Install tideways-xhprof and mongodb
         php::extension {  'mongodb':
             ensure   => present,
             priority => 30,
