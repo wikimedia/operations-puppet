@@ -154,7 +154,7 @@ groups:
               jdittrich, chelsyx, ovasileva, debt,
               fdans, mlitn, niharika29, goransm, pmiazga, dsaez, shiladsen, cicalese,
               mirrys, sharvaniharan, mmiller, amire80, rush, tieu, kharlan, gbirke,
-              isaacj, jdl, joewalsh, phuedx]
+              isaacj, jdl, joewalsh, phuedx, bd808]
   ldap-admins:
     gid: 715
     description: ldap admins
