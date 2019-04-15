@@ -89,6 +89,7 @@ class cacheproxy::instance_pair (
         vcl_config      => $be_warming_vcl_config,
         app_directors   => $app_directors,
         app_def_be_opts => $app_def_be_opts,
+        cache_route     => $cache_route,
         backend_caches  => $our_backend_caches,
         wikimedia_nets  => $wikimedia_nets,
         wikimedia_trust => $wikimedia_trust,
@@ -117,6 +118,7 @@ class cacheproxy::instance_pair (
         admin_port         => 6082,
         storage            => "-s malloc,${::varnish::common::fe_mem_gb}G ${fe_transient_storage}",
         jemalloc_conf      => $fe_jemalloc_conf,
+        cache_route        => $cache_route,
         backend_caches     => {
             'cache_local' => {
                 'dc'       => $::site,

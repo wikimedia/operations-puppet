@@ -2,6 +2,7 @@ define varnish::wikimedia_vcl(
     $varnish_testing = false,
     $template_path = '',
     $vcl_config = {},
+    $cache_route = '',
     $backend_caches = {},
     $vcl = '',
     $inst = '',
@@ -24,9 +25,6 @@ define varnish::wikimedia_vcl(
 
     # Hieradata switch to shut users out of a DC/cluster. T129424
     $traffic_shutdown = hiera('cache::traffic_shutdown', false)
-
-    # TODO: fix this horror through proper parameter-passing or scoping
-    $cache_route = $::cacheproxy::instance_pair::cache_route
 
     $varnish_version = $::varnish::common::varnish_version
 
