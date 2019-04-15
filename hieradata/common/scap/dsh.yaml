@@ -45,7 +45,6 @@ scap::dsh::groups:
       - deploy2001.codfw.wmnet
       - mwmaint1002.eqiad.wmnet
       - mwmaint2001.codfw.wmnet
-      - cloudweb2001-dev.wikimedia.org
       - snapshot1006.eqiad.wmnet
       - snapshot1007.eqiad.wmnet
       - snapshot1008.eqiad.wmnet
