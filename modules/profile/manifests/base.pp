@@ -30,8 +30,10 @@ class profile::base(
     $debdeploy_exclude_mounts = hiera('profile::base::debdeploy::exclude_mounts', []),
     $debdeploy_exclude_filesystems = hiera('profile::base::debdeploy::exclude_filesystems', []),
     $debdeploy_filter_services = lookup('profile::base::debdeploy::filter_services', Hash, 'hash', {}),
-    $puppet_major_version = lookup('profile::base::puppet::puppet_major_version', Integer[4,5]),
-    $facter_major_version = lookup('profile::base::puppet::facter_major_version', Integer[2,3]),
+    Integer[4,5] $puppet_major_version = lookup('profile::base::puppet::puppet_major_version',
+                                                {'default_value' => 4}),
+    Integer[2,3] $facter_major_version = lookup('profile::base::puppet::facter_major_version',
+                                                {'default_value' => 2}),
 ) {
     require ::profile::base::certificates
     class { '::apt':
