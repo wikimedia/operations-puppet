@@ -43,7 +43,7 @@ cache::app_directors:
       port:               6533
       max_connections:    1000
     backends:
-      eqiad: 'kartotherian.svc.eqiad.wmnet'
+      #eqiad: 'kartotherian.svc.eqiad.wmnet'
       codfw: 'kartotherian.svc.codfw.wmnet'
 cache::req_handling:
   upload.wikimedia.org:
