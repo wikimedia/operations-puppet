@@ -24,9 +24,9 @@ function create_container {
 function check_container {
     local account_file=$1
     local swift_container=$2
-
+    logger -t "docker_registry_ha_swift" "checking if ${swift_container} exists."
     source "${account_file}" && swift stat "${swift_container}"
-    logger -t "docker_registry_ha_swift" "checked if ${swift_container} exists."
+    exit $?
 
 }
 

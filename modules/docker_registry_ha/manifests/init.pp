@@ -34,6 +34,12 @@ class docker_registry_ha (
         shell  => '/bin/bash',
         before => Package['docker-registry'],
     }
+    file { '/etc/swift':
+        ensure => 'directory',
+        owner  => 'root',
+        group  => 'docker-registry',
+        mode   => '0750',
+    }
     $account_file = "/etc/swift/account_${swift_user}.env"
     file { $account_file:
             owner   => 'root',
