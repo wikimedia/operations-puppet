@@ -442,11 +442,6 @@ host bast1002 {
     fixed-address bast1002.wikimedia.org;
 }
 
-host bast2001 {
-    hardware ethernet 90:B1:1C:00:9D:EB;
-    fixed-address bast2001.wikimedia.org;
-}
-
 host bast2002 {
     hardware ethernet D0:94:66:5F:4B:B8;
     fixed-address bast2002.wikimedia.org;
