@@ -39,7 +39,7 @@ health:
     interval: 10s
     threshold: 3
   tcp:
-    - addr: <%= @redis_addr %>
+    - addr: <%= @redis_host + ":" + @redis_port.to_s %>
       timeout: 3s
       interval: 10s
       threshold: 3
