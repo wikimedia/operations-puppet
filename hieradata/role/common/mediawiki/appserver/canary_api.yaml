@@ -19,3 +19,5 @@ profile::mediawiki::vhost_feature_flags: {}
 # excimer can't throw its exception
 profile::mediawiki::php::request_timeout: 201
 profile::tlsproxy::instance::bootstrap_protection: true
+profile::base::puppet::puppet_major_version: 5
+profile::base::puppet::facter_major_version: 3
