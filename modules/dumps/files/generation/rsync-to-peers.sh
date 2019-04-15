@@ -130,7 +130,7 @@ while [ 1 ]; do
 
     # rsync of misc dumps, not necessarily to/from the same tree as the public wikis
     for dest in $miscremotedirs_list; do
-        /usr/bin/rsync -a  --contimeout=600 --timeout=600 --bwlimit=$BWLIMIT ${miscdumpsdir}/* "$dest" > /dev/null 2>&1
+        /usr/bin/rsync -a  --contimeout=600 --timeout=600 --bwlimit=$BWLIMIT --exclude='*.lock' ${miscdumpsdir}/* "$dest" > /dev/null 2>&1
     done
 
     # when dumps aren't being generated, no reason to try over and over again to push new files.
