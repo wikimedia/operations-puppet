@@ -1,5 +1,7 @@
 class openstack::clientpackages::common(
 ) {
+    include openstack::designate::makedomain
+
     $py2packages = [
         'python-novaclient',
         'python-glanceclient',
@@ -26,15 +28,6 @@ class openstack::clientpackages::common(
     file { '/usr/lib/python2.7/dist-packages/mwopenstackclients.py':
         ensure => 'present',
         source => 'puppet:///modules/openstack/clientpackages/mwopenstackclients.py',
-        mode   => '0755',
-        owner  => 'root',
-        group  => 'root',
-    }
-
-    # Functions to create or delete designate domains under .wmflabs.org
-    file { '/usr/lib/python2.7/dist-packages/designatemakedomain.py':
-        ensure => 'present',
-        source => 'puppet:///modules/openstack/clientpackages/designatemakedomain.py',
         mode   => '0755',
         owner  => 'root',
         group  => 'root',

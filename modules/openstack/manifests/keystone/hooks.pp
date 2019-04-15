@@ -3,6 +3,7 @@
 class openstack::keystone::hooks(
     $version,
     ) {
+    include openstack::designate::makedomain
     include openstack::keystone::service
 
     file { '/usr/lib/python2.7/dist-packages/wmfkeystonehooks':
