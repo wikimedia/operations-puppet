@@ -15,7 +15,7 @@ groups:
               mtizzoni, panisson, paolotti, ciro, dartar, melodykramer, gtirloni, tbayer]
   absent_ldap:
     description: meta group for absented users which had privileged LDAP access in the past, an automatic check verifies it has been really removed from the LDAP (but removal has to be handled separatelly)
-    members: [adavenport, siddharth11, albe, audiohazel, tbolliger]
+    members: [adavenport, siddharth11, albe, audiohazel, tbolliger, pbj]
   wikidev:
     gid: 500
     description: container group for primary user groups.
@@ -3379,7 +3379,6 @@ ldap_only_users:
   siddharth11:
     ensure: absent
     realname: Siddarth Parmar
-    email: sparmar@wikimedia.org
   spatton:
     ensure: present
     realname: Sam Patton
@@ -3387,7 +3386,6 @@ ldap_only_users:
   tbolliger:
     ensure: absent
     realname: Trevor Bolliger
-    email: tbolliger@wikimedia.org
   tchanders:
     ensure: present
     realname: Thalia Chan
@@ -3561,11 +3559,8 @@ ldap_only_users:
     realname: Toni Sevener
     email: tsevener@wikimedia.org
   pbj:
-    ensure: present
+    ensure: absent
     realname: Patrick Johnson
-    email: pbj@progresslabs.co
-    expiry_date: 2019-04-13
-    expiry_contact: apalmer@wikimedia.org
   evanp:
     ensure: present
     realname: Evan Prodromou
