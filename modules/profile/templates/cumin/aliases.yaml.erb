@@ -9,11 +9,14 @@ all-mw-codfw: (A:mw-api or A:mw or A:mw-jobrunner) and A:codfw
 all-mw-eqiad: (A:mw-api or A:mw or A:mw-jobrunner) and A:eqiad
 analytics-all-eqiad: A:hadoop or A:aqs or A:druid or A:notebook or A:kafka-analytics or A:kafka-jumbo or A:misc-analytics
 analytics-tools: P{O:analytics_cluster::hadoop::ui or O:analytics_cluster::turnilo or O:analytics_cluster::superset}
+analytics-web: P{O:analytics_cluster::webserver}
 aqs: P{O:aqs}
 aqs-canary: P{aqs1004.eqiad.wmnet}
+archiva: P{O:archiva}
 backup: P{O:backup::offsite or O:backup}
 bastion: P{O:bastionhost::general or O:bastionhost::twofa}
 bastion-canary: P{bast4002.wikimedia.org}
+centrallog: P{O:syslog::centralserver}
 cloudcontrol: P{O:wmcs::openstack::eqiad1::control}
 cloudnet: P{O:wmcs::openstack::eqiad1::net}
 cloudservices: P{O:wmcs::openstack::eqiad1::services_primary or O:wmcs::openstack::eqiad1::services_secondary}
@@ -61,6 +64,7 @@ deployment-servers: P{O:deployment_server}
 dns-auth: P{O:authdns::server}
 dns-auth-canary: P{multatuli.wikimedia.org}
 dns-rec: P{O:dnsrecursor}
+docker-registry: P{O:docker::registry or O:docker_registry_ha::registry}
 dns-rec-canary: P{dns2001.wikimedia.org}
 druid: P{O:druid::analytics::worker or O:druid::public::worker}
 druid-testcluster: P{O:druid::test_analytics::worker}
@@ -129,6 +133,7 @@ memcached: P{O:mediawiki::memcached}
 memcached-canary: P{mc1019.eqiad.wmnet}
 memcached-codfw: A:memcached and A:codfw
 memcached-eqiad: A:memcached and A:eqiad
+mirrors: P{O:mirrors}
 mw: P{O:mediawiki::appserver}
 mw-api: P{O:mediawiki::appserver::api}
 mw-api-canary: P{O:mediawiki::appserver::canary_api}
@@ -163,6 +168,7 @@ parsoid-codfw: A:parsoid and A:codfw
 parsoid-eqiad: A:parsoid and A:eqiad
 planet: P{O:planet}
 ping: P{O:ping_offload}
+piwik: P{O:piwik}
 poolcounter: P{O:poolcounter::server}
 poolcounter-codfw: A:poolcounter and A:codfw
 poolcounter-eqiad: A:poolcounter and A:eqiad
@@ -175,7 +181,9 @@ puppetdb: P{O:puppetmaster::puppetdb}
 puppetmaster: A:puppetmaster-backend or A:puppetmaster-frontend
 puppetmaster-backend: P{O:puppetmaster::backend}
 puppetmaster-frontend: P{O:puppetmaster::frontend}
+pybaltest: P{O:pybaltest}
 redis: A:redis-misc-master or A:redis-misc-slave
+redis-misc-canary: P{rdb1006.eqiad.wmnet}
 redis-misc-codfw: (A:redis-misc-master or A:redis-misc-slave) and A:codfw
 redis-misc-eqiad: (A:redis-misc-master or A:redis-misc-slave) and A:eqiad
 redis-misc-master: P{O:redis::misc::master}
@@ -216,6 +224,7 @@ wdqs-main: P{O:wdqs or O:wdqs::internal}
 wdqs-internal: P{O:wdqs::internal}
 wdqs-public: P{O:wdqs}
 wdqs-test: P{O:wdqs::test}
+weblog: P{O:logging::webrequest::ops}
 webperf: P{O:webperf::processors_and_site or O:webperf::profiling_tools}
 yubiauth: P{O:yubiauth_server}
 
