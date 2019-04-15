@@ -590,6 +590,21 @@ host registry1001 {
     fixed-address registry1001.eqiad.wmnet;
 }
 
+host registry1002 {
+    hardware ethernet aa:00:00:9d:f3:e7;
+    fixed-address registry1002.eqiad.wmnet;
+}
+
+host registry2001 {
+    hardware ethernet aa:00:00:a9:96:a2;
+    fixed-address registry2001.codfw.wmnet;
+}
+
+host registry2002 {
+    hardware ethernet aa:00:00:5a:cb:48;
+    fixed-address registry2002.codfw.wmnet;
+}
+
 host releases2001 {
     hardware ethernet aa:00:00:ae:36:40;
     fixed-address releases2001.codfw.wmnet;
