@@ -67,6 +67,13 @@ class profile::docker::builder(
         mode   => '0500'
     }
 
+    file { '/usr/local/bin/manage-production-images':
+        ensure => present,
+        source => 'puppet:///modules/profile/docker/manage-production-images.sh',
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0500'
+    }
     # Ship the entire docker iptables configuration via ferm
     # This is here to make sure docker and ferm play nice together.
     # For now we only want this on builder hosts, which is why we don't put it in
@@ -75,5 +82,13 @@ class profile::docker::builder(
         ensure => present,
         prio   => 20,
         source => 'puppet:///modules/profile/docker/builder-docker-ferm',
+    }
+    # Cleanup old images at the start of the month.
+    systemd::timer::job { 'prune-production-images':
+        description        => 'Periodic job to prune old docker images',
+        command            => '/usr/local/bin/manage-production-images prune',
+        interval           => {'start' => 'OnCalendar', 'interval' => '*-*-01 04:00:00'},
+        user               => 'root',
+        monitoring_enabled => true,
     }
 }
