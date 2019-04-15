@@ -201,7 +201,7 @@ node 'bast1002.wikimedia.org' {
 
 # formerly Bastion in Texas
 node 'bast2001.wikimedia.org' {
-    role(spare::host)
+    role(spare::system)
 
     interface::add_ip6_mapped { 'main': }
 }
