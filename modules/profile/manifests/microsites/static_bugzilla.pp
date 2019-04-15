@@ -11,12 +11,4 @@ class profile::microsites::static_bugzilla {
         check_command => 'check_http_url!static-bugzilla.wikimedia.org!/bug1.html',
         notes_url     => 'https://wikitech.wikimedia.org/wiki/Bugzilla',
     }
-
-    rsync::quickdatacopy { 'srv-org-wikimedia-static-bugzilla':
-      ensure      => absent,
-      auto_sync   => false,
-      source_host => 'vega.codfw.wmnet',
-      dest_host   => 'bromine.eqiad.wmnet',
-      module_path => '/srv/org/wikimedia/static-bugzilla',
-    }
 }
