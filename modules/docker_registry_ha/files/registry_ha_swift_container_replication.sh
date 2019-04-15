@@ -14,10 +14,11 @@ function create_container {
     local swift_replication_configuration=$3
     local swift_replication_key=$4
 
+    logger -t "docker_registry_ha_swift" "Replicated swift container ${swift_container} created."
     source "${account_file}" && swift post \
                     -t "${swift_replication_configuration}" \
                     -k "${swift_replication_key}" "${swift_container}"
-    logger -t "docker_registry_ha_swift" "Replicated swift container ${swift_container} created."
+    exit $?
 
 }
 
