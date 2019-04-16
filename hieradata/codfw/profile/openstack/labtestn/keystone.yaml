@@ -1,2 +1,0 @@
-profile::openstack::labtestn::keystone::db_host: 'labtestcontrol2003.wikimedia.org'
-profile::openstack::labtestn::keystone::token_driver: 'normal'

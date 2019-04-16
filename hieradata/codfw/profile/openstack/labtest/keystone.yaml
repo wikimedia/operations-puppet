@@ -1,2 +1,0 @@
-profile::openstack::labtest::keystone::db_host: 'cloudcontrol2001-dev.wikimedia.org'
-profile::openstack::labtest::keystone::token_driver: 'normal'

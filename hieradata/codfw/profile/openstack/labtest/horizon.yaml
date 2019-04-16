@@ -1,2 +1,0 @@
-profile::openstack::labtest::horizon::webserver_hostname: 'labtesthorizon.wikimedia.org'
-profile::openstack::labtest::horizon::instance_network_id: '05a5494a-184f-4d5c-9e98-77ae61c56daa'

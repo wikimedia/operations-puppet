@@ -1,7 +1,0 @@
-profile::openstack::labtestn::designate::db_host: 'labtestcontrol2002.wikimedia.org'
-profile::openstack::labtestn::designate::wmflabsdotorg_project: 'wmflabsdotorg'
-profile::openstack::labtestn::designate::domain_id_internal_forward: 'e1ac328c-b932-43f2-b12f-407fb9477925'
-profile::openstack::labtestn::designate::domain_id_internal_reverse: '2091af39-397d-45b4-9eb8-dab329f63b6e'
-profile::openstack::labtestn::designate::floating_ip_ptr_zone: '17.196.10.in-addr.arpa.'
-profile::openstack::labtestn::designate::floating_ip_ptr_fqdn_matching_regex: '^(.*)$'
-profile::openstack::labtestn::designate::floating_ip_ptr_fqdn_replacement_pattern: '\1'

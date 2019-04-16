@@ -1,1 +1,0 @@
-profile::openstack::base::nova::instance_dev: "/dev/sda2"

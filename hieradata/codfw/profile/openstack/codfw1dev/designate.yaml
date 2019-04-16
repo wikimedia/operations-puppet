@@ -1,4 +1,4 @@
-profile::openstack::codfw1dev::designate::db_host: 'labtestcontrol2002.wikimedia.org'
+profile::openstack::codfw1dev::designate::db_host: 'clouddb2001-dev.codfw.wmnet'
 profile::openstack::codfw1dev::designate::wmflabsdotorg_project: 'wmflabsdotorg'
 profile::openstack::codfw1dev::designate::domain_id_internal_forward: 'e1ac328c-b932-43f2-b12f-407fb9477925'
 profile::openstack::codfw1dev::designate::domain_id_internal_reverse: '2091af39-397d-45b4-9eb8-dab329f63b6e'
