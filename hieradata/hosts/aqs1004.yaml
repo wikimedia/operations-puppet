@@ -1,10 +1,3 @@
 # Analytics Query Service - rack1 instances
 
 profile::cassandra::rack: 'rack1'
-
-# Override after T197062. The 2.2.6-wmf5 version depends on python-cassandra,
-# but the most up to date version in jessie-backports is very far from what
-# we have in Stretch. This mismatch breaks cqlsh on Jessie. aqs1004 has been
-# already upgraded to 2.2.6-wmf5, so to please puppet we'll keep this special
-# override until all the aqs hosts will be reimaged to Stretch.
-cassandra::version: '2.2.6-wmf5'
