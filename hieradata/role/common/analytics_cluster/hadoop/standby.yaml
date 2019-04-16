@@ -1,9 +1,5 @@
 nagios_group: analytics_eqiad
 cluster: analytics
-# FIXME:
-# indirect hiera lookup due to includes in the role:
-# role::analytics::hadoop::client
-hadoop_zookeeper_cluster_name: main-eqiad
 admin::groups:
   - analytics-admins
 admin::groups_no_ssh:
