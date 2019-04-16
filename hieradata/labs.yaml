@@ -256,4 +256,5 @@ cache_hosts:
 - 172.16.0.164 # proxy-01.project-proxy.eqiad.wmflabs
 - 172.16.0.165 # proxy-02.project-proxy.eqiad.wmflabs
 # use aliases to provide for backwards compatibility
-profile::base::puppet::puppetmaster: "%{alias('puppetmaster')}"
+# perhaps this doesn't work with our current version of puppet
+# profile::base::puppet::puppetmaster: "%{alias('puppetmaster')}"
