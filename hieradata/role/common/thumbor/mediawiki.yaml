@@ -118,4 +118,5 @@ profile::prometheus::statsd_exporter::mappings:
 
 diamond::remove: true
 mtail::logs:
-  - /var/log/haproxy
+  - /var/log/haproxy/haproxy.log
+mtail::group: 'adm'
