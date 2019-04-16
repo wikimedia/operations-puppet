@@ -1,6 +1,6 @@
 :backends:
-  - nuyaml
-  - role
+  - nuyaml3
+  - role3
 :role:
   :datadir: /etc/puppet/hieradata
 :nuyaml:

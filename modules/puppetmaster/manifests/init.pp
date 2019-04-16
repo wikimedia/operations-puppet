@@ -177,13 +177,7 @@ class puppetmaster(
         content => template('puppetmaster/auth-master.conf.erb'),
     }
 
-    # Use hiera 3 backend configs on production stretch masters (stretch has hiera version 3)
-    # limit to production realm until a labs_hiera3.hiera.yaml is created
-    if os_version('debian >= stretch') and $::realm == 'production' {
-        $hiera_source = "puppet:///modules/puppetmaster/${hiera_config}_hiera3.hiera.yaml"
-    } else {
-        $hiera_source = "puppet:///modules/puppetmaster/${hiera_config}.hiera.yaml"
-    }
+    $hiera_source = "puppet:///modules/puppetmaster/${hiera_config}.hiera.yaml"
 
     # This is required for the mwyaml hiera backend
     require_package('ruby-httpclient')
