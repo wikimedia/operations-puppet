@@ -60,7 +60,7 @@ groups:
     description: assist in managing gerrit server
     # qchris is RT 6720
     # Rest is the Release Engineering team
-    members: [qchris, dduvall, zfilipin]
+    members: [qchris, dduvall, zfilipin, brennen]
   deployment:
     gid: 705
     description: replaces 'mortals' for software deployment
