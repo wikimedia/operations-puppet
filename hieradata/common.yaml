@@ -668,13 +668,50 @@ hadoop_clusters:
     yarn_resourcemanager_zk_state_store_parent_path: '/yarn-rmstore/analytics-test-hadoop'
     yarn_resourcemanager_max_completed_applications: 1000
 
-    # TLS config
+    hdfs_site_extra_properties:
+      dfs.cluster.administrators: 'analytics-admins,ops'
+      dfs.block.access.token.enable: 'true'
+      dfs.namenode.keytab.file: '/etc/security/keytabs/hadoop/hdfs.keytab'
+      dfs.namenode.kerberos.principal: 'hdfs/_HOST@WIKIMEDIA'
+      dfs.secondary.namenode.keytab.file: '/etc/security/keytabs/hadoop/hdfs.keytab'
+      dfs.secondary.namenode.kerberos.principal: 'hdfs/_HOST@WIKIMEDIA'
+      dfs.journalnode.keytab.file: '/etc/security/keytabs/hadoop/hdfs.keytab'
+      dfs.journalnode.kerberos.principal: 'hdfs/_HOST@WIKIMEDIA'
+      dfs.journalnode.kerberos.internal.spnego.principal: 'HTTP/_HOST@WIKIMEDIA'
+      dfs.datanode.keytab.file: '/etc/security/keytabs/hadoop/hdfs.keytab'
+      dfs.datanode.kerberos.principal: 'hdfs/_HOST@WIKIMEDIA'
+      dfs.encrypt.data.transfer: 'true'
+      dfs.data.transfer.protection: 'privacy'
+      dfs.encrypt.data.transfer.cipher.suites: 'AES/CTR/NoPadding'
+      dfs.encrypt.data.transfer.cipher.key.bitlength: '128'
+
     mapred_site_extra_properties:
       mapreduce.ssl.enabled: true
       mapreduce.shuffle.ssl.enabled: true
+      mapreduce.jobhistory.principal: 'mapred/_HOST@WIKIMEDIA'
+      mapreduce.jobhistory.keytab: '/etc/security/keytabs/hadoop/mapred.keytab'
+
+    yarn_site_extra_properties:
+      yarn.resourcemanager.principal: 'yarn/_HOST@WIKIMEDIA'
+      yarn.resourcemanager.keytab: '/etc/security/keytabs/hadoop/yarn.keytab'
+      yarn.nodemanager.principal: 'yarn/_HOST@WIKIMEDIA'
+      yarn.nodemanager.keytab: '/etc/security/keytabs/hadoop/yarn.keytab'
+      yarn.nodemanager.container-executor.class: 'org.apache.hadoop.yarn.server.nodemanager.LinuxContainerExecutor'
+      yarn.nodemanager.linux-container-executor.group: 'yarn'
+
+    yarn_nodemanager_container_executor_config:
+      min.user.id: '1000'
+      allowed.system.users: 'nobody,hive'
+      banned.users: 'root,hdfs,yarn,mapred,bin'
+
     core_site_extra_properties:
       hadoop.ssl.enabled: true
       hadoop.ssl.enabled.protocols: 'TLSv1.2'
+      hadoop.rpc.protection: 'privacy'
+      hadoop.security.authentication: 'kerberos'
+      # https://www.cloudera.com/documentation/enterprise/5-16-x/topics/cdh_sg_hiveserver2_security.html#concept_vxf_pgx_nm
+      hadoop.proxyuser.hive.hosts: '*'
+      hadoop.proxyuser.hive.groups: '*'
 
   analytics-hadoop:
     zookeeper_cluster_name: main-eqiad

@@ -36,6 +36,19 @@ profile::hadoop::common::config_override:
 
 profile::hadoop::worker::ferm_srange: '(($ANALYTICS_NETWORKS $DRUID_PUBLIC_HOSTS))'
 
+profile::hadoop::worker::use_kerberos: true
+
+profile::hadoop::spark2::extra_settings:
+  spark.authenticate: true
+  spark.network.crypto.enabled: true
+  spark.network.crypto.keyLength: 128
+  spark.network.crypto.keyFactoryAlgorithm: PBKDF2WithHmacSHA1
+  spark.authenticate.enableSaslEncryption: true
+  spark.network.sasl.serverAlwaysEncrypt: true
+  spark.io.encryption.enabled: true
+  spark.io.encryption.keySizeBits: 128
+  spark.io.encryption.keygen.algorithm: HmacSHA1
+
 # Hive Client settings.
 # Hive configuration is common to multiple clients, but because of role based
 # hiera lookups, we need to repeat it in multiple places. If you change this,

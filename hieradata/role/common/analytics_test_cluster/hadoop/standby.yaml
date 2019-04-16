@@ -31,6 +31,9 @@ profile::hadoop::common::config_override:
   hdfs_trash_checkpoint_interval: 1440
   hdfs_trash_interval: 43200
 
+profile::hadoop::standby_master::use_kerberos: true
+profile::hadoop::backup::namenode::use_kerberos: true
+
 profile::analytics::database::meta::backup_dest::hive::metastore_host: 'analytics1030.eqiad.wmnet'
 profile::analytics::database::meta::backup_dest::oozie_host: 'analytics1030.eqiad.wmnet'
 

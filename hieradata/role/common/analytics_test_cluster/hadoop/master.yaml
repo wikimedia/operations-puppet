@@ -32,6 +32,9 @@ profile::hadoop::common::config_override:
   hdfs_trash_checkpoint_interval: 1440
   hdfs_trash_interval: 43200
 
+profile::hadoop::master::use_kerberos: true
+profile::hadoop::mysql_password::use_kerberos: true
+
 # Ensure that users in these posix groups have home directories in HDFS.
 profile::hadoop::master::hadoop_user_groups: "analytics-users analytics-privatedata-users analytics-admins analytics-search-users"
 

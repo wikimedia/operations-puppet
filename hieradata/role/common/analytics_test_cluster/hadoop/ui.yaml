@@ -9,6 +9,11 @@ profile::hue::database_host: 'analytics1030.eqiad.wmnet'
 profile::hue::hive_server_host: 'analytics1030.eqiad.wmnet'
 profile::hue::monitoring_enabled: true
 
+# Kerberos config
+profile::hue::kerberos_keytab: '/etc/security/keytabs/hue/hue.keytab'
+profile::hue::kerberos_principal: 'hue/_HOST@WIKIMEDIA'
+profile::hue::kerberos_kinit_path: '/usr/bin/kinit'
+
 profile::oozie::client::oozie_host: 'analytics1030.eqiad.wmnet'
 
 # Hive Client settings.
@@ -22,6 +27,7 @@ profile::hive::client::metastore_host: 'analytics1030.eqiad.wmnet'
 diamond::remove: true
 
 profile::hive::client::ensure_hive_site_in_hdfs: true
+profile::hive::site_hdfs::use_kerberos: true
 
 profile::kerberos::keytabs::keytabs_metadata:
   - role: 'hue'

@@ -49,6 +49,7 @@ profile::analytics::refinery::job::camus::monitoring_enabled: true
 # Http proxy to get project-namespace infos from API using python
 profile::analytics::refinery::job::project_namespace_map::http_proxy: 'http://webproxy.eqiad.wmnet:8080'
 
+# Kerberos config
 profile::kerberos::keytabs::keytabs_metadata:
   - role: 'hive'
     owner: 'hive'
@@ -62,6 +63,31 @@ profile::kerberos::keytabs::keytabs_metadata:
     owner: 'analytics'
     group: 'analytics'
     filename: 'analytics.keytab'
+
+profile::hadoop::balancer::use_kerberos: true
+profile::hive::client::hive_metastore_sasl_enabled: true
+profile::hive::client::hive_metastore_kerberos_keytab_file: '/etc/security/keytabs/hive/hive.keytab'
+profile::hive::client::hive_metastore_kerberos_principal: 'hive/_HOST@WIKIMEDIA'
+profile::hive::client::hive_server2_authentication: 'KERBEROS'
+profile::hive::client::hive_server2_authentication_kerberos_principal: 'hive/_HOST@WIKIMEDIA'
+profile::hive::client::hive_server2_authentication_kerberos_keytab: '/etc/security/keytabs/hive/hive.keytab'
+profile::oozie::server::oozie_service_kerberos_enabled: true
+profile::oozie::server::local_realm: 'ANALYTICS.EQIAD.WMFLABS'
+profile::oozie::server::oozie_service_keytab_file: '/etc/security/keytabs/oozie/oozie.keytab'
+profile::oozie::server::oozie_service_kerberos_principal: 'oozie/_HOST@WIKIMEDIA'
+profile::oozie::server::oozie_authentication_type: 'kerberos'
+profile::oozie::server::oozie_authentication_kerberos_principal: 'HTTP/_HOST@WIKIMEDIA'
+
+profile::hadoop::spark2::extra_settings:
+  spark.authenticate: true
+  spark.network.crypto.enabled: true
+  spark.network.crypto.keyLength: 128
+  spark.network.crypto.keyFactoryAlgorithm: PBKDF2WithHmacSHA1
+  spark.authenticate.enableSaslEncryption: true
+  spark.network.sasl.serverAlwaysEncrypt: true
+  spark.io.encryption.enabled: true
+  spark.io.encryption.keySizeBits: 128
+  spark.io.encryption.keygen.algorithm: HmacSHA1
 
 diamond::remove: true
 
