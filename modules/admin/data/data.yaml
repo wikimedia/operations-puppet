@@ -3419,6 +3419,10 @@ ldap_only_users:
     ensure: present
     realname: Moriel Schottlender
     email: mschottlender@wikimedia.org
+  wpao:
+    ensure: present
+    realname: Willy Pao
+    email: wpao@wikimedia.org
   wubwubwub:
     ensure: present
     realname: Amanda Bittaker
