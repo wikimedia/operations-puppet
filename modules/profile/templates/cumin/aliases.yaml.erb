@@ -22,6 +22,12 @@ cloudnet: P{O:wmcs::openstack::eqiad1::net}
 cloudservices: P{O:wmcs::openstack::eqiad1::services_primary or O:wmcs::openstack::eqiad1::services_secondary}
 cloudvirt: P{O:wmcs::openstack::eqiad1::virt}
 cloud-eqiad1: A:cloudcontrol or A:cloudnet or A:cloudservices or A:cloudvirt
+cloudcontrol-codfw1dev: P{O:wmcs::openstack::codfw1dev::control}
+cloudnet-codfw1dev: P{O:wmcs::openstack::codfw1dev::net}
+cloudservices-codfw1dev: P{O:wmcs::openstack::codfw1dev::services_primary or O:wmcs::openstack::codfw1dev::services_secondary}
+cloudvirt-codfw1dev: P{O:wmcs::openstack::codfw1dev::virt}
+clouddb-codfw1dev: P{O:wmcs::openstack::codfw1dev::db}
+cloud-codfw1dev: A:cloudcontrol-codfw1dev or A:cloudnet-codfw1dev or A:cloudservices-codfw1dev or A:cloudvirt-codfw1dev or A:clouddb-codfw1dev
 conf: P{O:configcluster or O:configcluster_stretch}
 conf-canary: P{conf2001.codfw.wmnet}
 conf-codfw: A:conf and A:codfw
@@ -114,7 +120,6 @@ labpuppetmaster: P{O:wmcs::openstack::main::puppetmaster::frontend or O:wmcs::op
 labmon: P{O:wmcs::monitoring}
 labs-nfs: P{O:labs::nfs::misc or O:dumps::distribution::server or O:labs::nfs::secondary or O:labs::nfs::secondary_backup::tools or O:labs::nfs::secondary_backup::misc}
 labservices: P{O:wmcs::openstack::main::services_primary or O:wmcs::openstack::main::services_secondary}
-labtest: P{O:wmcs::openstack::labtestn::net or O:wmcs::openstack::labtest::virt or O:wmcs::openstack::labtest::net or O:wmcs::openstack::labtest::control or O:wmcs::openstack::labtestn::control or O:wmcs::openstack::labtest::services or O:wmcs::openstack::labtestn::services or O:wmcs::openstack::labtest::net_standby or O:wmcs::openstack::labtest::puppetmaster::frontend or O:wmcs::openstack::labtest::labweb}
 labvirt: P{O:wmcs::openstack::main::virt}
 labvirt-canary: P{labvirt1001.eqiad.wmnet}
 labweb: P{O:wmcs::openstack::eqiad1::labweb}
