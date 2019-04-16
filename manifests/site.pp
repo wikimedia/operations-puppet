@@ -1090,16 +1090,12 @@ node 'cloudservices1004.wikimedia.org' {
     interface::add_ip6_mapped { 'main': }
 }
 
-node 'cloudnet2002-dev.codfw.wmnet' {
-    role(wmcs::openstack::labtestn::net)
-}
-
 node 'cloudweb2001-dev.wikimedia.org' {
     role(spare::system)
     interface::add_ip6_mapped { 'main': }
 }
 
-node 'cloudnet2003-dev.codfw.wmnet' {
+node /^cloudnet200[23]-dev\.codfw\.wmnet$/ {
     role(wmcs::openstack::codfw1dev::net)
 }
 
