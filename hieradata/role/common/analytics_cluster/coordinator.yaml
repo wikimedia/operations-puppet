@@ -39,6 +39,9 @@ profile::oozie::server::jvm_opts: '-Xms2g -Xmx2g'
 # Build and install oozie sharelib for our custom spark2 package.
 profile::hadoop::spark2::install_oozie_sharelib: true
 
+# Upload the spark2-assembly.zip file to HDFS
+profile::hadoop::spark2::install_assembly: true
+
 profile::analytics::refinery::job::camus::monitoring_enabled: true
 
 # Http proxy to get project-namespace infos from API using python

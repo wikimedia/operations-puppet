@@ -18,6 +18,12 @@
 #   Spark 2 version.  This only needs to happen once, so you should only
 #   Set this to true on a single Hadoop client node (probably whichever one runs
 #   Oozie server).
+#   Default: false
+#
+# [*install_assembly]
+#   Deploy the spark2-assembly.zip to HDFS if not already present.
+#   Set this to true on a single Hadoop client node.
+#   Default: false
 #
 # [*deploy_hive_config*]
 #   If true, the Hadoop Hive client config will be deployed in order to allow
@@ -36,6 +42,7 @@
 class profile::hadoop::spark2(
     $install_yarn_shuffle_jar = hiera('profile::hadoop::spark2::install_yarn_shuffle_jar', true),
     $install_oozie_sharelib   = hiera('profile::hadoop::spark2::install_oozie_sharelib', false),
+    $install_assembly         = hiera('profile::hadoop::spark2::install_assembly', false),
     $extra_settings           = hiera('profile::hadoop::spark2::extra_settings', {}),
     $use_kerberos             = hiera('profile::hadoop::spark2::use_kerberos', false),
 ) {
@@ -64,7 +71,7 @@ class profile::hadoop::spark2(
     if $install_yarn_shuffle_jar {
         # Add Spark 2 spark-yarn-shuffle.jar to the Hadoop Yarn NodeManager classpath.
         file { '/usr/local/bin/spark2_yarn_shuffle_jar_install':
-            source => 'puppet:///modules/profile/hadoop/spark2_yarn_shuffle_jar_install.sh',
+            source => 'puppet:///modules/profile/hadoop/spark2/spark2_yarn_shuffle_jar_install.sh',
             mode   => '0744',
         }
         exec { 'spark2_yarn_shuffle_jar_install':
@@ -84,7 +91,7 @@ class profile::hadoop::spark2(
     # sharelib in HDFS so that oozie actions can launch spark2 jobs.
     if $install_oozie_sharelib {
         file { '/usr/local/bin/spark2_oozie_sharelib_install':
-            source  => 'puppet:///modules/profile/hadoop/spark2_oozie_sharelib_install.sh',
+            source  => 'puppet:///modules/profile/hadoop/spark2/spark2_oozie_sharelib_install.sh',
             owner   => 'oozie',
             group   => 'root',
             mode    => '0744',
@@ -98,6 +105,25 @@ class profile::hadoop::spark2(
             # version of spark2 has a oozie sharelib installed already.
             unless       => '/usr/local/bin/spark2_oozie_sharelib_install',
             require      => File['/usr/local/bin/spark2_oozie_sharelib_install'],
+            use_kerberos => $use_kerberos,
+        }
+    }
+
+    if $install_assembly {
+        file { '/usr/local/bin/spark2_upload_assembly.sh':
+            source => 'puppet:///modules/profile/hadoop/spark2/spark2_upload_assembly.sh',
+            owner  => 'hdfs',
+            group  => 'root',
+            mode   => '0550',
+        }
+
+        cdh::exec { 'spark2_upload_assembly':
+            command      => '/usr/local/bin/spark2_upload_assembly.sh',
+            user         => 'hdfs',
+            # spark2_upload_assembly.sh will exit 0 if the current installed
+            # version of spark2 has a spark2-assembly.zip file already uplaoded to HDFS.
+            unless       => '/usr/local/bin/spark2_upload_assembly.sh',
+            require      => Package['spark2'],
             use_kerberos => $use_kerberos,
         }
     }
