@@ -1,6 +1,7 @@
 class profile::cassandra::single_instance(
   $cassandra_hosts = hiera('profile::cassandra::single_instance::seeds'),
   $cluster_name = hiera('cluster'),
+  $prometheus_nodes = hiera('prometheus_nodes'),
   $graphite_host = hiera('profile::cassandra::single_instance::graphite_host'),
   $dc = hiera('profile::cassandra::single_instance::dc'),
   $super_pass = hiera('profile::cassandra::single_instance::super_pass'),
@@ -33,6 +34,7 @@ class profile::cassandra::single_instance(
   }
 
   $cassandra_hosts_ferm = join($cassandra_hosts, ' ')
+  $prometheus_nodes_ferm = join($prometheus_nodes, ' ')
 
   # Cassandra intra-node messaging
   ferm::service { 'maps-cassandra-intra-node':
@@ -54,6 +56,13 @@ class profile::cassandra::single_instance(
     proto  => 'tcp',
     port   => '9042',
     srange => "(${cassandra_hosts_ferm})",
+  }
+
+  # Prometheus jmx_exporter for Cassandra
+  ferm::service { 'cassandra-jmx_exporter':
+      proto  => 'tcp',
+      port   => '7800',
+      srange => "@resolve((${prometheus_nodes_ferm}))",
   }
 
   # Cassandra Thrift interface, used by cqlsh

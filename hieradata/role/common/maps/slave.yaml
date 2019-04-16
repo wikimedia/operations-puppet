@@ -20,7 +20,7 @@ admin::groups:
 cluster: 'maps'
 
 profile::cassandra::single_instance::graphite_host: 'graphite-in.eqiad.wmnet'
-profile::cassandra::single_instance::jmx_exporter_enabled: false
+profile::cassandra::single_instance::jmx_exporter_enabled: true
 
 cassandra::metrics::blacklist:
   - .*\.metrics\.Table\..*$
