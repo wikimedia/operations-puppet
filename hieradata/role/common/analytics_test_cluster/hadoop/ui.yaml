@@ -24,3 +24,5 @@ diamond::remove: true
 profile::hive::client::ensure_hive_site_in_hdfs: true
 
 profile::base::notifications: disabled
+profile::base::puppet::puppet_major_version: 5
+profile::base::puppet::facter_major_version: 3
