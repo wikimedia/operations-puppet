@@ -3101,11 +3101,9 @@ host labservices1002 {
     filename "lpxelinux.0";
 }
 
-host labtestcontrol2003 {
+host cloudcontrol2003-dev {
     hardware ethernet 30:e1:71:63:0e:dc;
-    fixed-address labtestcontrol2003.wikimedia.org;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
-    filename "lpxelinux.0";
+    fixed-address cloudcontrol2003-dev.wikimedia.org;
 }
 
 host labtestvirt2003 {
