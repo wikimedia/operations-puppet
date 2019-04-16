@@ -1,1 +1,3 @@
 profile::base::notifications: disabled
+admin::groups:
+  - labtest-roots
