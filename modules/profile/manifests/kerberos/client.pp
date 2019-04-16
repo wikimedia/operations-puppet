@@ -1,8 +1,8 @@
 class profile::kerberos::client (
-    $krb_realm_name = hiera('kerberos::realm_name'),
-    $krb_kdc_servers = hiera('kerberos::kdc_servers'),
-    $krb_kadmin_primary = hiera('kerberos::kadmin_server_primary'),
-    $krb_kadmin_fallback = hiera('kerberos::kadmin_server_fallback'),
+    $krb_realm_name = hiera('kerberos_realm_name'),
+    $krb_kdc_servers = hiera('kerberos_kdc_servers'),
+    $krb_kadmin_primary = hiera('kerberos_kadmin_server_primary'),
+    $krb_kadmin_fallback = hiera('kerberos_kadmin_server_fallback'),
 ) {
 
     file { '/etc/krb5.conf':

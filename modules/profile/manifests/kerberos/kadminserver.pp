@@ -1,6 +1,6 @@
 class profile::kerberos::kadminserver (
-    Stdlib::Fqdn $krb_realm_name = lookup('profile::kerberos::realm_name'),
-    Stdlib::Fqdn $krb_kadmin_primary = lookup('profile::kerberos::kadmin_server_primary'),
+    Stdlib::Fqdn $krb_realm_name = lookup('kerberos_realm_name'),
+    Stdlib::Fqdn $krb_kadmin_primary = lookup('kerberos_kadmin_server_primary'),
 ) {
     package { 'krb5-admin-server':
         ensure => present,
