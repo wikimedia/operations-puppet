@@ -156,6 +156,7 @@ profile::base::ssh_server_settings:
 labs_puppet_master: "labs-puppetmaster.wikimedia.org"
 labs_keystone_host: "cloudcontrol1003.wikimedia.org"
 puppetmaster: "labs-puppetmaster.wikimedia.org"
+puppet_ca_server: ""
 keystone_public_port: '5000'
 
 # All labs instances have internet connectivity, so do not bother with proxies

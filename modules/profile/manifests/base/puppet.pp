@@ -1,6 +1,6 @@
 class profile::base::puppet(
   String           $puppetmaster  = lookup('puppetmaster'),
-  Stdlib::Host     $ca_server     = lookup('puppet_ca_server'),
+  String           $ca_server     = lookup('puppet_ca_server'),
   Integer[1,59]    $interval      = lookup('profile::base::puppet::interval',
                                           {'default_value' => 30}),
   Optional[String] $dns_alt_names = lookup('profile::base::puppet::dns_alt_names',

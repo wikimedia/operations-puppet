@@ -1,13 +1,13 @@
 class base::puppet(
-    Stdlib::Host     $ca_server                   = 'puppet-ca',
-    Stdlib::Host     $server                      = 'puppet',
-    Optional[String] $certname                    = undef,
-    Optional[String] $dns_alt_names               = undef,
-    Optional[String] $environment                 = undef,
-    Integer          $interval                    = 30,
-    Boolean          $auto_puppetmaster_switching = false,
-    Integer[4,5]     $puppet_major_version = 4,
-    Integer[2,3]     $facter_major_version = 2,
+    String                 $ca_server                   = '',
+    Stdlib::Host           $server                      = 'puppet',
+    Optional[String]       $certname                    = undef,
+    Optional[String]       $dns_alt_names               = undef,
+    Optional[String]       $environment                 = undef,
+    Integer                $interval                    = 30,
+    Boolean                $auto_puppetmaster_switching = false,
+    Integer[4,5]           $puppet_major_version        = 4,
+    Integer[2,3]           $facter_major_version        = 2,
 ) {
     include ::passwords::puppet::database # lint:ignore:wmf_styleguide
 
