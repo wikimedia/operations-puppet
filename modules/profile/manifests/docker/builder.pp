@@ -90,5 +90,6 @@ class profile::docker::builder(
         interval           => {'start' => 'OnCalendar', 'interval' => '*-*-01 04:00:00'},
         user               => 'root',
         monitoring_enabled => true,
+        logfile_basedir    => '/var/log'
     }
 }
