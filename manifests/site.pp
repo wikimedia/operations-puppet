@@ -962,7 +962,7 @@ node 'furud.codfw.wmnet' {
 # what hardware to get etc..
 # More details: T211836
 node 'kerberos1001.eqiad.wmnet' {
-    role(spare::system)
+    role(kerberos::kdc)
 }
 
 # Etcd cluster for kubernetes
