@@ -4,6 +4,10 @@ admin::groups:
   - analytics-admins
 cluster: analytics
 
+# Configure hive client profile to copy hive-site.xml from stat1004
+# to HDFS.  This is here because it only needs to happen from one node.
+profile::hive::client::ensure_hive_site_in_hdfs: true
+
 profile::hadoop::common::hadoop_cluster_name: 'analytics-hadoop'
 
 profile::oozie::client::oozie_host: 'an-coord1001.eqiad.wmnet'
