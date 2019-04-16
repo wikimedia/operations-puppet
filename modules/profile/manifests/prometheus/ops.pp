@@ -525,6 +525,24 @@ class profile::prometheus::ops (
         site => $::site,
     }
 
+    # T221099
+    $docker_registry_jobs = [
+      {
+        'job_name'        => 'docker-registry',
+        'scheme'          => 'http',
+        'file_sd_configs' => [
+          { 'files' => [ "${targets_path}/docker_registry_*.yaml" ]}
+        ],
+      },
+    ]
+
+    prometheus::class_config{ "docker_registry_${::site}":
+        dest       => "${targets_path}/docker_registry_${::site}.yaml",
+        site       => $::site,
+        class_name => 'profile::docker_registry_ha::registry',
+        port       => 5001,
+    }
+
     $ircd_jobs = [
       {
         'job_name'        => 'ircd',
@@ -1101,7 +1119,7 @@ class profile::prometheus::ops (
             $etherpad_jobs, $elasticsearch_jobs, $wmf_elasticsearch_jobs,
             $blazegraph_jobs, $nutcracker_jobs, $postgresql_jobs,
             $kafka_burrow_jobs, $logstash_jobs, $haproxy_jobs, $statsd_exporter_jobs,
-            $mjolnir_jobs, $rsyslog_jobs, $php_jobs, $php_fpm_jobs, $icinga_jobs,
+            $mjolnir_jobs, $rsyslog_jobs, $php_jobs, $php_fpm_jobs, $icinga_jobs, $docker_registry_jobs,
         ),
         global_config_extra   => $config_extra,
         prometheus_v2         => $prometheus_v2,
