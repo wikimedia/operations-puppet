@@ -30,7 +30,8 @@ EX_UNKNOWN = 3
 def get_shards(base_url, timeout, unit):
     url = "{base_url}/_cat/shards?format=json&bytes={unit}".format(base_url=base_url, unit=unit)
     resp = requests.get(url, timeout=timeout)
-    return resp.json()
+    shards = [shard for shard in resp.json() if shard['state'] != 'UNASSIGNED']
+    return shards
 
 
 def extract_large_shards(indices, shard_size_warning, shard_size_critical):
