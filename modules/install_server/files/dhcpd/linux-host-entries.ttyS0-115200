@@ -336,6 +336,26 @@ host kubestagetcd1003 {
     filename "lpxelinux.0";
 }
 
+host kubernetes1005 {
+    hardware ethernet aa:00:00:46:b6:6f;
+    fixed-address kubernetes1005.eqiad.wmnet;
+}
+
+host kubernetes1006 {
+    hardware ethernet aa:00:00:08:91:88;
+    fixed-address kubernetes1006.eqiad.wmnet;
+}
+
+host kubernetes2005 {
+    hardware ethernet aa:00:00:e5:cc:53;
+    fixed-address kubernetes2005.codfw.wmnet;
+}
+
+host kubernetes2006 {
+    hardware ethernet aa:00:00:81:03:e8;
+    fixed-address kubernetes2006.codfw.wmnet;
+}
+
 host ldap-eqiad-replica01.wikimedia.org {
     hardware ethernet aa:00:00:7f:6d:5b;
     fixed-address ldap-eqiad-replica01.wikimedia.org;

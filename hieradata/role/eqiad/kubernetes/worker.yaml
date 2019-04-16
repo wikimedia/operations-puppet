@@ -7,5 +7,7 @@ profile::calico::kubernetes::bgp_peers:
 - kubernetes1002.eqiad.wmnet
 - kubernetes1003.eqiad.wmnet
 - kubernetes1004.eqiad.wmnet
+- kubernetes1005.eqiad.wmnet
+- kubernetes1006.eqiad.wmnet
 - cr1-eqiad.wikimedia.org
 - cr2-eqiad.wikimedia.org
