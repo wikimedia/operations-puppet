@@ -664,14 +664,9 @@ hadoop_clusters:
     yarn_resourcemanager_max_completed_applications: 1000
 
     # TLS config
-    hdfs_site_extra_properties:
-      dfs.http.policy: 'HTTPS_ONLY'
     mapred_site_extra_properties:
       mapreduce.ssl.enabled: true
       mapreduce.shuffle.ssl.enabled: true
-      mapreduce.jobhistory.http.policy: 'HTTPS_ONLY'
-    yarn_site_extra_properties:
-      yarn.http.policy: 'HTTPS_ONLY'
     core_site_extra_properties:
       hadoop.ssl.enabled: true
       hadoop.ssl.enabled.protocols: 'TLSv1.2'
