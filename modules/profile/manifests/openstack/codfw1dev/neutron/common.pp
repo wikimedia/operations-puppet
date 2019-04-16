@@ -1,4 +1,5 @@
 class profile::openstack::codfw1dev::neutron::common(
+    Stdlib::Fqdn $db_host = lookup('profile::openstack::codfw1dev::neutron::db_host'),
     $version = hiera('profile::openstack::codfw1dev::version'),
     $region = hiera('profile::openstack::codfw1dev::region'),
     $db_pass = hiera('profile::openstack::codfw1dev::neutron::db_pass'),
@@ -16,7 +17,7 @@ class profile::openstack::codfw1dev::neutron::common(
         nova_controller      => $nova_controller,
         keystone_host        => $keystone_host,
         db_pass              => $db_pass,
-        db_host              => $nova_controller,
+        db_host              => $db_host,
         region               => $region,
         ldap_user_pass       => $ldap_user_pass,
         rabbit_pass          => $rabbit_pass,

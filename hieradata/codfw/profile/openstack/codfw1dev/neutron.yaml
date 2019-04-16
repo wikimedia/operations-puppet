@@ -1,3 +1,4 @@
+profile::openstack::codfw1dev::neutron::db_host: clouddb2001-dev.codfw.wmnet
 profile::openstack::codfw1dev::neutron::base_interface: 'eno2'
 profile::openstack::codfw1dev::neutron::network_flat_interface_vlan: '2105'
 profile::openstack::codfw1dev::neutron::network_flat_interface_vlan_external: '2120'
