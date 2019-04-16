@@ -136,10 +136,14 @@ class thumbor (
     nginx::site { 'thumbor':
         content => template('thumbor/nginx.conf.erb'),
     }
-
+    # lint:ignore:wmf_styleguide
+    class {'haproxy': logging => true}
     haproxy::site { 'thumbor':
         content => template('thumbor/haproxy.cfg.erb'),
     }
+
+    include ::haproxy::mtail
+    # lint:endignore
 
     # Multi instance setup.
     # * Mask default service from package

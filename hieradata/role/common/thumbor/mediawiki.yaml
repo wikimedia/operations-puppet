@@ -117,4 +117,5 @@ profile::prometheus::statsd_exporter::mappings:
         port: "$2"
 
 diamond::remove: true
-
+mtail::logs:
+  - /var/log/haproxy

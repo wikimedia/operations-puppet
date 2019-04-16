@@ -36,5 +36,4 @@ class profile::thumbor(
         port   => '8800',
         srange => '$DOMAIN_NETWORKS',
     }
-
 }

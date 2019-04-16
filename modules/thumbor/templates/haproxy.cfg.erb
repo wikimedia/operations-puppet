@@ -1,6 +1,8 @@
 listen thumbor
     mode http
     bind *:<%= @listen_port + 1000 %>
+    option httplog
+    log /dev/log local0 info
 
     # Short because if Haproxy attempts to connect, the Thumbor instance it tries must be
     # free (no other connection, because maxconn is 1)

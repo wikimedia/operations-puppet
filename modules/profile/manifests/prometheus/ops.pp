@@ -844,6 +844,13 @@ class profile::prometheus::ops (
         port       => 3903,
     }
 
+    prometheus::class_config{ "mtail_thumbor_haproxy_${::site}":
+        dest       => "${targets_path}/mtail_thumbor_haproxy_${::site}.yaml",
+        site       => $::site,
+        class_name => 'role::thumbor',
+        port       => 3903,
+    }
+
     $ldap_jobs = [
       {
         'job_name'        => 'ldap',
