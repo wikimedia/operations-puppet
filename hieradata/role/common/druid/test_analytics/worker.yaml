@@ -159,3 +159,5 @@ profile::druid::overlord::env:
   DRUID_HEAP_OPTS: "-Xmx4g -Xms2g"
   DRUID_EXTRA_JVM_OPTS: "-XX:NewSize=256m -XX:MaxNewSize=256m -XX:+UseConcMarkSweepGC -XX:+PrintGCDetails -XX:+PrintGCTimeStamps"
 diamond::remove: true
+profile::base::puppet::puppet_major_version: 5
+profile::base::puppet::facter_major_version: 3
