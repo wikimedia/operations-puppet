@@ -8,10 +8,6 @@ profile::hadoop::common::hadoop_cluster_name: 'analytics-test-hadoop'
 profile::hue::database_host: 'analytics1030.eqiad.wmnet'
 profile::hue::hive_server_host: 'analytics1030.eqiad.wmnet'
 profile::hue::monitoring_enabled: true
-profile::hue::use_yarn_ssl_config: true
-profile::hue::use_hdfs_ssl_config: true
-profile::hue::use_mapred_ssl_config: true
-
 
 profile::oozie::client::oozie_host: 'analytics1030.eqiad.wmnet'
 
