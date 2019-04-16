@@ -80,11 +80,6 @@ class profile::trafficserver::backend (
         unit_test => 'puppet:///modules/profile/trafficserver/x-mediawiki-original_test.lua',
     }
 
-    trafficserver::lua_script { 'swift-thumb-origin-server':
-        source    => 'puppet:///modules/profile/trafficserver/swift-thumb-origin-server.lua',
-        unit_test => 'puppet:///modules/profile/trafficserver/swift-thumb-origin-server_test.lua',
-    }
-
     trafficserver::lua_script { 'normalize-path':
         source    => 'puppet:///modules/profile/trafficserver/normalize-path.lua',
     }
