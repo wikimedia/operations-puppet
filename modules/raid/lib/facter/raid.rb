@@ -35,29 +35,6 @@ Facter.add('raid') do
       raids.push('mpt')
     end
 
-    if FileTest.exist?('/dev/aac0')
-      raids.push('aacraid')
-    end
-
-    if FileTest.exist?('/proc/scsi/scsi')
-      IO.foreach('/proc/scsi/scsi') do |x|
-        if x =~ /Vendor: 3ware/
-          raids.push('3ware')
-          break
-        end
-      end
-    end
-
-    supported_devs = ['aac', 'twe']
-    dev_re = Regexp.new(/^\s*\d+\s+(\w+)/)
-    IO.foreach('/proc/devices') do |x|
-      m = x.match(dev_re)
-      if m
-        dev = m[1]
-        raids.push(dev) if supported_devs.include?(dev)
-      end
-    end
-
     raids.sort.uniq
   end
 end
