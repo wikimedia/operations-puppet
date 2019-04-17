@@ -111,6 +111,8 @@ codfw:
     mw2221.codfw.wmnet: [apache2,nginx]
     mw2222.codfw.wmnet: [apache2,nginx]
     mw2223.codfw.wmnet: [apache2,nginx]
+    mw2244.codfw.wmnet: [apache2,nginx]
+    mw2245.codfw.wmnet: [apache2,nginx]
     mw2251.codfw.wmnet: [apache2,nginx]
     mw2252.codfw.wmnet: [apache2,nginx]
     mw2253.codfw.wmnet: [apache2,nginx]
@@ -125,6 +127,7 @@ codfw:
     mw2289.codfw.wmnet: [apache2,nginx]
     mw2290.codfw.wmnet: [apache2,nginx]
   jobrunner: &jobrunner
+    mw2150.codfw.wmnet: [apache2,nginx]
     mw2151.codfw.wmnet: [apache2,nginx]
     mw2152.codfw.wmnet: [apache2,nginx]
     mw2153.codfw.wmnet: [apache2,nginx]

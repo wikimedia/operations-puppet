@@ -1706,8 +1706,8 @@ node /^mw22(1[5-9]|2[0123])\.codfw\.wmnet$/ {
     role(mediawiki::appserver::api)
 }
 
-# mw2251-2253 are rack A4
-node /^mw225[1-3]\.codfw\.wmnet$/ {
+# mw2244-mw2245,mw2251-2253 are rack A4
+node /^mw22(4[45]|5[1-3])\.codfw\.wmnet$/ {
     role(mediawiki::appserver::api)
 }
 
@@ -1737,18 +1737,6 @@ node /^mw22(8[3-9]|90)\.codfw\.wmnet$/ {
     role(mediawiki::appserver::api)
 }
 
-# Former imagescalers (T192457)
-
-# Row C (C3)
-node /^mw2150\.codfw\.wmnet$/ {
-    role(spare::system)
-}
-
-# Row A (A4)
-node /^mw224[45]\.codfw\.wmnet$/ {
-    role(spare::system)
-}
-
 # Jobrunners
 
 # Row A
@@ -1772,8 +1760,8 @@ node /^mw226[3-7]\.codfw\.wmnet$/ {
 
 # Row C
 
-# mw2151-62 are in rack C3
-node /^mw21(5[1-9]|6[0-2])\.codfw\.wmnet$/ {
+# mw2150-62 are in rack C3
+node /^mw21(5[0-9]|6[0-2])\.codfw\.wmnet$/ {
     role(mediawiki::jobrunner)
 }
 
