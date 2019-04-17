@@ -5,7 +5,7 @@ server s1 {
     txresp
 } -start
 
-varnish v1 -arg "-p vcc_err_unref=false -p vcc_allow_inline_c=true" -vcl+backend {
+varnish v1 -arg "-p vcc_err_unref=false -p vcc_allow_inline_c=true -p cc_command='exec gcc -std=gnu99 -g -O2 -fstack-protector-strong -Wformat -Werror=format-security -Wall -pthread -fpic -shared -Wl,-x -o %o %s'" -vcl+backend {
     backend vtc_backend {
         .host = "${s1_addr}"; .port = "${s1_port}";
     }
