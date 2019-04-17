@@ -1,5 +1,5 @@
 kerberos_realm_name: WIKIMEDIA
 kerberos_kadmin_server_primary: kerberos1001.eqiad.wmnet
-kerberos_kdc_servers::
+kerberos_kdc_servers:
     - 'kerberos1001.eqiad.wmnet'
 diamond::remove: true
