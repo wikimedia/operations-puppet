@@ -163,7 +163,12 @@ node 'an-tool1005.eqiad.wmnet' {
 }
 
 # Analytics Query Service
-node /aqs100[456789]\.eqiad\.wmnet/ {
+node 'aqs1004.eqiad.wmnet' {
+    role(aqs::canary)
+    interface::add_ip6_mapped { 'main': }
+}
+
+node /aqs100[56789]\.eqiad\.wmnet/ {
     role(aqs)
     interface::add_ip6_mapped { 'main': }
 }

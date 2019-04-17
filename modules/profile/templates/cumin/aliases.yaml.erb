@@ -11,7 +11,7 @@ analytics-all-eqiad: A:hadoop or A:aqs or A:druid or A:notebook or A:kafka-analy
 analytics-tools: P{O:analytics_cluster::hadoop::ui or O:analytics_cluster::turnilo or O:analytics_cluster::superset}
 analytics-web: P{O:analytics_cluster::webserver}
 aqs: P{O:aqs}
-aqs-canary: P{aqs1004.eqiad.wmnet}
+aqs-canary: P{O:aqs::canary}
 archiva: P{O:archiva}
 backup: P{O:backup::offsite or O:backup}
 bastion: P{O:bastionhost::general or O:bastionhost::twofa}
