@@ -11,8 +11,18 @@ Facter.add('raid') do
       words = line.split
       raids.push(pci_ids[words[1]]) if pci_ids.key?(words[1])
     end
+
+    if FileTest.exist?('/proc/mdstat')
+      IO.foreach('/proc/mdstat') do |x|
+        if x =~ /md[0-9]+ : active/
+          raids.push('md')
+          break
+        end
+      end
+    end
+
     if FileTest.exist?('/dev/cciss/') || FileTest.exist?('/sys/module/hpsa/')
-      raids.push('hpsa')
+      raids.push('hpsa') unless raids.include?('ssacli')
     end
 
     if FileTest.exist?('/dev/megadev0') ||
@@ -45,15 +55,6 @@ Facter.add('raid') do
       if m
         dev = m[1]
         raids.push(dev) if supported_devs.include?(dev)
-      end
-    end
-
-    if FileTest.exist?('/proc/mdstat')
-      IO.foreach('/proc/mdstat') do |x|
-        if x =~ /md[0-9]+ : active/
-          raids.push('md')
-          break
-        end
       end
     end
 
