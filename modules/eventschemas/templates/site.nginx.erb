@@ -1,0 +1,33 @@
+# NOTE: This file is maintained by puppet!
+
+# /index.html loads pretty-autoindex static JS to render the autoindex_format json
+# directory tree inside of the /repositories directory.
+
+server {
+    listen <%= @port %>;
+    server_name <%= @server_name %><%= @server_alias ? ' ' + Array(@server_alias).sort.join(' ') : '' %>;
+    root <%= @document_root %>
+
+    location / {
+        index index.html;
+        autoindex on;
+        autoindex_format json;
+        charset utf-8;
+
+        # Enable browser access for pretty-autoindex javascript.
+        add_header  Access-Control-Allow-Origin "http://<%= @server_name %>";
+    }
+
+    # Deny all files that start with . (e.g. .git).
+    location ~ ^\. {
+        deny all;
+    }
+
+    # By setting the content-type of these files to text/plain,
+    # we make them viewable in browsers.
+    # yaml, avsc|idl (Avro), Markdown, and extensionless schema files (yaml)
+    # should be text.
+    location ~ (\.yaml|\.avsc|\.idl|\.md|\d\.\d\.\d)$ {
+        types { } default_type "text/plain; charset=utf-8";
+    }
+}

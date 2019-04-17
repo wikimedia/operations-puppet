@@ -1,14 +1,14 @@
 # == Class eventschemas
-# Clones the mediawiki/event-schemas repo at /srv/event-schemas.
+# Base class, just ensures /srv/schemas/repositories exists.
 #
 # == Parameters
 # [*ensure*] Passed directly to git::clone.  Default: latest.
 #
-class eventschemas($ensure = 'latest') {
-    $path = '/srv/event-schemas'
+class eventschemas {
+    $base_path = '/srv/eventschemas'
+    $repositories_path = "${base_path}/repositories"
 
-    git::clone { 'mediawiki/event-schemas':
-        ensure    => $ensure,
-        directory => $path,
+    file { [$base_path, $repositories_path]:
+        ensure => 'directory',
     }
 }

@@ -15,7 +15,7 @@ class profile::eventlogging::analytics::mysql(
     # NOTE: If an event schema changes, the eventlogging-consumer process(es) will
     # not be automatically restarted.  You must manually restart this for the consumer
     # process to pick up changes to local schemas.
-    class { 'eventschemas': }
+    class { '::eventschemas::mediawiki': }
 
     ## MySQL / MariaDB
 
@@ -79,7 +79,7 @@ class profile::eventlogging::analytics::mysql(
         output       => "mysql://${mysql_user}:${mysql_pass}@${mysql_db}?charset=utf8&statsd_host=${statsd_host}&replace=True",
         # Load and cache local (EventBus) schemas so those events can be inserted into MySQL too.
         # This will require a restart of the consumer process(es) when there are any new schemas.
-        schemas_path => "${::eventschemas::path}/jsonschema",
+        schemas_path => "${::eventschemas::mediawiki::path}/jsonschema",
         sid          => 'eventlogging_consumer_mysql_eventbus_00',
         # Restrict permissions on this config file since it contains a password.
         owner        => 'root',

@@ -1,0 +1,15 @@
+var conf = {
+      name: 'Event Schemas',
+      address: '<%= @server_name %>:<%= @port %>/repositories',
+
+      visibilityOptions: {
+          size: {
+              use: true,
+              type: 'readable' //raw, readable, both
+          },
+          date: {
+              use: false,
+              type: 'raw' //raw, moment, both
+          }
+      }
+};

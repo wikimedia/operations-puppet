@@ -64,5 +64,5 @@ class profile::analytics::refinery (
     }
 
     # Clone mediawiki/event-schemas so refinery can use them.
-    class { '::eventschemas': }
+    class { '::eventschemas::mediawiki': }
 }

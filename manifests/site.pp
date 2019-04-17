@@ -2047,6 +2047,10 @@ node 'scandium.eqiad.wmnet' {
     role(parsoid::testing)
 }
 
+node /schema[12]00[12].(eqiad|codfw).wmnet/ {
+    role(eventschemas::service)
+}
+
 # new sessionstore servers via T209393 & T209389
 node /sessionstore[1-2]00[1-3].(eqiad|codfw).wmnet/ {
     role(sessionstore)

@@ -12,7 +12,7 @@ class profile::eventbus(
     $logstash_host           = hiera('logstash_host'),
     $logstash_port           = hiera('logstash_gelf_port', 12201),
 ) {
-    class { '::eventschemas': }
+    class { '::eventschemas::mediawiki': }
 
     # for /srv/log dir creation
     class { '::service::configuration': }
@@ -90,8 +90,8 @@ class profile::eventbus(
     }
 
     eventlogging::service::service { 'eventbus':
-        schemas_path    => "${::eventschemas::path}/jsonschema",
-        topic_config    => "${::eventschemas::path}/config/eventbus-topics.yaml",
+        schemas_path    => "${::eventschemas::mediawiki::path}/jsonschema",
+        topic_config    => "${::eventschemas::mediawiki::path}/config/eventbus-topics.yaml",
         outputs         => $outputs,
         error_output    => 'file:///srv/log/eventlogging/eventlogging-service-eventbus.failed_events.log',
         statsd          => $statsd_host,
