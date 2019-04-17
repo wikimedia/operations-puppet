@@ -113,6 +113,7 @@ class base::monitoring::host(
         description  => 'Disk space',
         critical     => $nrpe_check_disk_critical,
         nrpe_command => "/usr/lib/nagios/plugins/check_disk ${nrpe_check_disk_options}",
+        notes_url    => 'https://wikitech.wikimedia.org/wiki/Monitoring/Disk_space',
     }
 
     ::nrpe::monitor_service { 'dpkg':
