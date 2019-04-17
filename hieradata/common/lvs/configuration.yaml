@@ -1047,6 +1047,7 @@ lvs::configuration::lvs_services:
     - codfw
     ip: *ip_block032
     port: 80
+    scheduler: sh
     depool-threshold: '.5'
     monitors:
       ProxyFetch:
