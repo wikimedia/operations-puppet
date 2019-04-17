@@ -148,6 +148,7 @@ define tlsproxy::localssl(
     }
     if $acme_chief {
         if !defined(Acme_chief::Cert[$acme_certname]) {
+            require tlsproxy::ocsp
             acme_chief::cert { $acme_certname:
                 ocsp   => $do_ocsp,
                 proxy  => "webproxy.${::site}.wmnet:8080",
