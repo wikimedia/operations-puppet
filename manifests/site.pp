@@ -748,7 +748,14 @@ node 'dbstore2002.codfw.wmnet' {
 }
 
 # database-provisioning and short-term/postprocessing backups servers
-# Pending full setup
+
+# eqiad ones pending full setup
+node 'dbprov1001.eqiad.wmnet' {
+    role(spare::system)
+}
+node 'dbprov1002.eqiad.wmnet' {
+    role(spare::system)
+}
 node 'dbprov2001.codfw.wmnet' {
     role(mariadb::backups)
 }

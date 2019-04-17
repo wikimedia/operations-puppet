@@ -1919,6 +1919,16 @@ host db2102 {
     fixed-address db2102.codfw.wmnet;
 }
 
+host dbprov1001 {
+    hardware ethernet B0:26:28:23:50:90;
+    fixed-address dbprov1001.eqiad.wmnet;
+}
+
+host dbprov1002 {
+    hardware ethernet B0:26:28:23:5A:C2;
+    fixed-address dbprov1002.eqiad.wmnet;
+}
+
 host dbprov2001 {
     hardware ethernet B0:26:28:21:6A:DE;
     fixed-address dbprov2001.codfw.wmnet;
