@@ -49,12 +49,6 @@ sub upload_common_recv {
 	}
 }
 
-sub upload_common_hit {
-	if (req.http.If-Cached && req.http.If-Cached != obj.http.Etag) {
-		return (synth(412, "Etag mismatch"));
-	}
-}
-
 sub upload_common_miss {
     // Convert range requests into pass
     if (req.http.Range) {

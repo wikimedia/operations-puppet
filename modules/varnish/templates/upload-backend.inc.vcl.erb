@@ -38,17 +38,10 @@ sub cluster_be_recv {
 
 sub cluster_be_recv_tail { }
 sub cluster_be_hash { }
-
-sub cluster_be_hit {
-	call upload_common_hit;
-}
+sub cluster_be_hit { }
 
 sub cluster_be_miss {
 	call upload_common_miss;
-
-	if (req.http.If-Cached) {
-		return (synth(412, "Entity not in cache"));
-	}
 }
 
 sub cluster_be_pass { }

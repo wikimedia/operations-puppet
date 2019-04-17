@@ -74,10 +74,7 @@ sub cluster_fe_recv {
 
 sub cluster_fe_recv_tail { }
 sub cluster_fe_hash { }
-
-sub cluster_fe_hit {
-	call upload_common_hit;
-}
+sub cluster_fe_hit { }
 
 sub cluster_fe_ratelimit {
 	// ratelimit FB in an attempt to mitigate awful outbound traffic spike
@@ -101,11 +98,6 @@ sub cluster_fe_ratelimit {
 sub cluster_fe_miss {
 	call cluster_fe_ratelimit;
 	call upload_common_miss;
-
-	// Make sure If-Cached requests won't pollute the cache
-	if (req.http.If-Cached) {
-		return (pass);
-	}
 }
 
 sub cluster_fe_pass {
