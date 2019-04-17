@@ -1,7 +1,7 @@
 # https://docs.trafficserver.apache.org/en/latest/admin-guide/files/plugin.config.en.html
 # This file is managed by Puppet.
 
-healthchecks.so /etc/trafficserver/healtchecks.config
+healthchecks.so <%= @healthchecks_config_path %>
 stats_over_http.so
 <% if @enable_xdebug -%>
 xdebug.so --header=X-ATS-Debug

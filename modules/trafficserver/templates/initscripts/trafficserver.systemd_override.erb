@@ -1,14 +1,22 @@
 [Service]
 ExecStart=
+<% if @default_instance -%>
 ExecStart=/usr/bin/traffic_manager --nosyslog
+<% else -%>
+ExecStart=/usr/bin/traffic_manager --run-root=/srv/trafficserver/<%= @title %> --nosyslog
+<% end -%>
 Restart=always
 RestartSec=1
 ExecReload=
 # XXX: `traffic_server -C verify_config` is broken: it causes configuration
 # reloads, which cause errors with ascii_pipe logs
+<% if @default_instance -%>
 #ExecReload=/usr/bin/traffic_server -C verify_config
 ExecReload=/usr/bin/traffic_ctl config reload
-
+<% else -%>
+#ExecReload=/usr/bin/traffic_server --run-root=/srv/trafficserver/<%= @title %> -C verify_config
+ExecReload=/usr/bin/traffic_ctl --run-root=/srv/trafficserver/<%= @title %> config reload
+<% end -%>
 # traffic_manager is terminated with SIGTERM and exits with the received signal
 # number (15)
 SuccessExitStatus=15

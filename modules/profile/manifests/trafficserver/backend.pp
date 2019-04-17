@@ -3,6 +3,7 @@
 # Sets up a Traffic Server backend instance with relevant Nagios checks.
 #
 class profile::trafficserver::backend (
+    String $user=hiera('profile::trafficserver::user', 'trafficserver'),
     Wmflib::IpPort $port=hiera('profile::trafficserver::backend::port', 3128),
     Trafficserver::Outbound_TLS_settings $outbound_tls_settings=hiera('profile::trafficserver::backend::outbound_tls_settings'),
     Boolean $enable_xdebug=hiera('profile::trafficserver::backend::enable_xdebug', false),
@@ -47,7 +48,8 @@ class profile::trafficserver::backend (
         footer      => "<p>If you report this error to the Wikimedia System Administrators, please include the details below.</p><p class='text-muted'><code>Request from %<{X-Client-IP}cqh> via ${::fqdn}, %<{Server}psh><br>Error: %<pssc>, %<prrp> at %<cqtd> %<cqtt> GMT</code></p>",
     }
 
-    class { '::trafficserver':
+    trafficserver::instance { 'backend':
+        default_instance      => true,
         port                  => $port,
         outbound_tls_settings => $outbound_tls_settings,
         enable_xdebug         => $enable_xdebug,
@@ -116,18 +118,18 @@ class profile::trafficserver::backend (
     }
 
     profile::trafficserver::nrpe_monitor_script { 'check_trafficserver_config_status':
-        sudo_user => $trafficserver::user,
+        sudo_user => $user,
     }
 
     # XXX: Avoid `traffic_server -C verify_config` for now
     #profile::trafficserver::nrpe_monitor_script { 'check_trafficserver_verify_config':
-    #    sudo_user => $trafficserver::user,
+    #    sudo_user => $user,
     #}
 
     $logs.each |TrafficServer::Log $log| {
         if $log['mode'] == 'ascii_pipe' {
             fifo_log_demux::instance { $log['filename']:
-                user      => $trafficserver::user,
+                user      => $user,
                 fifo      => "/var/log/trafficserver/${log['filename']}.pipe",
                 socket    => "/var/run/trafficserver/${log['filename']}.sock",
                 wanted_by => 'trafficserver.service',
