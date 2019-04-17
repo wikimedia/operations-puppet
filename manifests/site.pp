@@ -1577,8 +1577,8 @@ node 'mw1312.eqiad.wmnet' {
 
 # Row B
 
-# mw1284-1290 are in rack B6
-node /^mw12(8[4-9]|90)\.eqiad\.wmnet$/ {
+# mw1284-1290,mw1297 are in rack B6
+node /^mw12(8[4-9]|9[07])\.eqiad\.wmnet$/ {
     role(mediawiki::appserver::api)
 }
 
@@ -1607,10 +1607,9 @@ node 'mwmaint1002.eqiad.wmnet' {
     interface::add_ip6_mapped { 'main': }
 }
 
-# Former imagescalers (replaced by thumbor) T192457
-
+# Former imagescaler (replaced by thumbor) T192457
 # Row B (B6)
-node /^mw129[78]\.eqiad\.wmnet$/ {
+node /^mw1298\.eqiad\.wmnet$/ {
     role(spare::system)
 }
 
