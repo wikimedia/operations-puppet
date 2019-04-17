@@ -621,6 +621,27 @@ host seaborgium {
     fixed-address seaborgium.wikimedia.org;
 }
 
+# schema* (Ganeti VMs)
+host schema1001 {
+    hardware ethernet aa:00:00:d0:90:00;
+    fixed-address schema1001.eqiad.wmnet;
+}
+
+host schema1002 {
+    hardware ethernet aa:00:00:a0:5c:cf;
+    fixed-address schema1002.eqiad.wmnet;
+}
+
+host schema2001 {
+    hardware ethernet aa:00:00:25:b5:b3;
+    fixed-address schema2001.codfw.wmnet;
+}
+
+host schema2002 {
+    hardware ethernet aa:00:00:f6:d7:82;
+    fixed-address schema2002.coodfw.wmnet;
+}
+
 host serpens {
     hardware ethernet aa:00:00:0e:a4:81;
     fixed-address serpens.wikimedia.org;
