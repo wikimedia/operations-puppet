@@ -22,9 +22,8 @@ class profile::discovery_dashboards::production {
         branch    => 'master',
     }
     git::clone { 'wikimedia/discovery/prince':
-        ensure    => 'latest',
+        ensure    => 'absent',
         directory => '/srv/shiny-server/portal',
-        notify    => Service['shiny-server'],
         branch    => 'master',
     }
     git::clone { 'wikimedia/discovery/wetzel':
