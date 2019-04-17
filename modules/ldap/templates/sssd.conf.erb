@@ -34,8 +34,13 @@ ldap_tls_cacertdir = /etc/openldap/cacerts
 ldap_schema = rfc2307bis
 use_fully_qualified_names = True
 ldap_page_size = <%= @ldapconfig["pagesize"] %>
+
+<%- if @ldapincludes.include?('sudo') then -%>
+# https://linux.die.net/man/5/sudoers.ldap
+sudo_provider = ldap
+ldap_sudo_search_base = <%= @ldapconfig["sudobasedn"] %>
+<%- end -%>
 # disable stuff not provided by LDAP (value of id_provider is used by default)
-sudo_provider = none
 selinux_provider = none
 autofs_provider = none
 subdomains_provider = none
@@ -51,6 +56,12 @@ enumerate = False
 # these next 2 are carried over from nscd
 entry_cache_user_timeout = 3600
 entry_cache_group_timeout = 300
+# sudo rules cache
+entry_cache_sudo_timeout = 3600
+## 5 minutes because new tools won't work until new sudoer rules are seen
+## Should stay in sync with entry_cache_group_timeout which is related
+ldap_sudo_smart_refresh_interval = 300
+ldap_sudo_full_refresh_interval = 5400
 # 5400 seconds (90 mins) is the default, but make it explicit
 entry_cache_timeout = 5400
 entry_cache_ssh_host_timeout = 5400

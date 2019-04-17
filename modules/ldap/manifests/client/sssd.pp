@@ -4,6 +4,7 @@
 
 class ldap::client::sssd(
     $ldapconfig,
+    $ldapincludes,
 ) {
     $packages_present = [
         'libpam-sss',
