@@ -96,10 +96,14 @@ class profile::docker_registry_ha::registry(
         srange => '$DOMAIN_NETWORKS',
     }
 
+    $metrics_ferm_nodes = join($metrics_allowed_hosts, ' ')
+    $ferm_srange = "(@resolve((${metrics_ferm_nodes})) @resolve((${metrics_ferm_nodes}), AAAA))"
+
+
     ferm::service { 'registry-prometheus-metrics':
         proto  => 'tcp',
         port   => '5001',
-        srange => "(@resolve((${metrics_allowed_hosts})) @resolve((${metrics_allowed_hosts}), AAAA))",
+        srange => $ferm_srange,
     }
 
     # Monitoring disabled for now,
