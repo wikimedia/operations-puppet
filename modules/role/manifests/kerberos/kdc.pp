@@ -6,4 +6,5 @@ class role::kerberos::kdc {
 
     include ::profile::kerberos::kdc
     include ::profile::kerberos::kadminserver
+    include ::profile::kerberos::client
 }
