@@ -7,28 +7,24 @@ host acmechief1001 {
     hardware ethernet aa:00:00:e0:70:79;
     fixed-address acmechief1001.eqiad.wmnet;
     option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/buster-installer/";
-    filename "lpxelinux.0";
 }
 
 host acmechief2001 {
     hardware ethernet aa:00:00:11:4e:70;
     fixed-address acmechief2001.codfw.wmnet;
     option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/buster-installer/";
-    filename "lpxelinux.0";
 }
 
 host acmechief-test1001 {
     hardware ethernet aa:00:00:43:e6:18;
     fixed-address acmechief-test1001.eqiad.wmnet;
     option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/buster-installer/";
-    filename "lpxelinux.0";
 }
 
 host acmechief-test2001 {
     hardware ethernet aa:00:00:43:0c:cb;
     fixed-address acmechief-test2001.codfw.wmnet;
     option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/buster-installer/";
-    filename "lpxelinux.0";
 }
 
 host acrab {
@@ -45,28 +41,24 @@ host actinium {
     hardware ethernet aa:00:00:1c:4b:fe;
     fixed-address actinium.wikimedia.org;
     option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
-    filename "lpxelinux.0";
 }
 
 host alcyone {
     hardware ethernet aa:00:00:e9:8a:d0;
     fixed-address alcyone.wikimedia.org;
     option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
-    filename "lpxelinux.0";
 }
 
 host alsafi {
     hardware ethernet aa:00:00:c7:16:43;
     fixed-address alsafi.wikimedia.org;
     option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
-    filename "lpxelinux.0";
 }
 
 host aluminium {
     hardware ethernet aa:00:00:81:9e:0f;
     fixed-address aluminium.wikimedia.org;
     option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
-    filename "lpxelinux.0";
 }
 
 host archiva1001 {
@@ -88,14 +80,12 @@ host analytics-tool1004 {
     hardware ethernet aa:00:00:cc:a2:a4;
     fixed-address analytics-tool1004.eqiad.wmnet;
     option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/buster-installer/";
-    filename "lpxelinux.0";
 }
 
 host an-tool1005 {
     hardware ethernet aa:00:00:ae:a1:8c;
     fixed-address an-tool1005.eqiad.wmnet;
     option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/buster-installer/";
-    filename "lpxelinux.0";
 }
 
 host argon {
@@ -122,21 +112,18 @@ host darmstadtium {
     hardware ethernet aa:00:00:00:8a:ae;
     fixed-address darmstadtium.eqiad.wmnet;
     option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
-    filename "lpxelinux.0";
 }
 
 host dbmonitor1001 {
     hardware ethernet aa:00:00:d6:5c:05;
     fixed-address dbmonitor1001.wikimedia.org;
     option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
-    filename "lpxelinux.0";
 }
 
 host dbmonitor2001 {
     hardware ethernet aa:00:00:de:d7:57;
     fixed-address dbmonitor2001.wikimedia.org;
     option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
-    filename "lpxelinux.0";
 }
 
 host debmonitor1001 {
@@ -164,63 +151,54 @@ host dubnium {
     hardware ethernet aa:00:00:2f:d8:57;
     fixed-address dubnium.wikimedia.org;
     option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
-    filename "lpxelinux.0";
 }
 
 host etcd1001 {
     hardware ethernet aa:00:00:34:69:70;
     fixed-address etcd1001.eqiad.wmnet;
     option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
-    filename "lpxelinux.0";
 }
 
 host etcd1002 {
     hardware ethernet aa:00:00:e8:d2:90;
     fixed-address etcd1002.eqiad.wmnet;
     option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
-    filename "lpxelinux.0";
 }
 
 host etcd1003 {
     hardware ethernet aa:00:00:42:5d:36;
     fixed-address etcd1003.eqiad.wmnet;
     option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
-    filename "lpxelinux.0";
 }
 
 host etcd1004 {
     hardware ethernet aa:00:00:24:5f:97;
     fixed-address etcd1004.eqiad.wmnet;
     option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
-    filename "lpxelinux.0";
 }
 
 host etcd1005 {
     hardware ethernet aa:00:00:bf:3f:d7;
     fixed-address etcd1005.eqiad.wmnet;
     option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
-    filename "lpxelinux.0";
 }
 
 host etcd1006 {
     hardware ethernet aa:00:00:dd:26:03;
     fixed-address etcd1006.eqiad.wmnet;
     option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
-    filename "lpxelinux.0";
 }
 
 host etherpad1001 {
     hardware ethernet AA:00:00:EE:AD:01;
     fixed-address etherpad1001.eqiad.wmnet;
     option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
-    filename "lpxelinux.0";
 }
 
 host fermium {
     hardware ethernet aa:00:00:a4:ac:f1;
     fixed-address fermium.wikimedia.org;
     option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
-    filename "lpxelinux.0";
 }
 
 host grafana1001 {
@@ -232,14 +210,12 @@ host hassaleh {
     hardware ethernet aa:00:00:3f:8c:a0;
     fixed-address hassaleh.codfw.wmnet;
     option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
-    filename "lpxelinux.0";
 }
 
 host hassium {
     hardware ethernet aa:00:00:aa:c7:02;
     fixed-address hassium.eqiad.wmnet;
     option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
-    filename "lpxelinux.0";
 }
 
 host install1002 {
@@ -248,7 +224,6 @@ host install1002 {
 
     next-server 208.80.153.53; # install2002 (tftp server)
     option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
-    filename "lpxelinux.0";
 }
 
 host install2002 {
@@ -257,7 +232,6 @@ host install2002 {
 
     next-server 208.80.154.22; # install1002 (tftp server)
     option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
-    filename "lpxelinux.0";
 }
 
 host kafkamon1001 {
@@ -274,7 +248,6 @@ host kraz {
     hardware ethernet aa:00:00:e9:b4:28;
     fixed-address kraz.wikimedia.org;
     option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
-    filename "lpxelinux.0";
 }
 
 host kerberos1001 {
@@ -286,49 +259,42 @@ host krypton {
     hardware ethernet aa:00:00:7e:e0:22;
     fixed-address krypton.eqiad.wmnet;
     option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
-    filename "lpxelinux.0";
 }
 
 host kubetcd2001 {
     hardware ethernet aa:00:00:70:df:e9;
     fixed-address kubetcd2001.codfw.wmnet;
     option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
-    filename "lpxelinux.0";
 }
 
 host kubetcd2002 {
     hardware ethernet aa:00:00:fd:89:d2;
     fixed-address kubetcd2002.codfw.wmnet;
     option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
-    filename "lpxelinux.0";
 }
 
 host kubetcd2003 {
     hardware ethernet aa:00:00:cd:aa:4b;
     fixed-address kubetcd2003.codfw.wmnet;
     option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
-    filename "lpxelinux.0";
 }
 
 host kubestagetcd1001 {
     hardware ethernet aa:00:00:3b:54:53;
     fixed-address kubestagetcd1001.eqiad.wmnet;
     option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
-    filename "lpxelinux.0";
 }
 
 host kubestagetcd1002 {
     hardware ethernet aa:00:00:5c:31:1c;
     fixed-address kubestagetcd1002.eqiad.wmnet;
     option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
-    filename "lpxelinux.0";
 }
 
 host kubestagetcd1003 {
     hardware ethernet aa:00:00:60:a7:fe;
     fixed-address kubestagetcd1003.eqiad.wmnet;
     option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
-    filename "lpxelinux.0";
 }
 
 host kubernetes1005 {
@@ -400,7 +366,6 @@ host mendelevium {
     hardware ethernet aa:00:00:58:6a:10;
     fixed-address mendelevium.eqiad.wmnet;
     option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
-    filename "lpxelinux.0";
 }
 
 host mwdebug1001 {
@@ -442,7 +407,6 @@ host netmon1003 {
     hardware ethernet aa:00:00:79:17:b5;
     fixed-address netmon1003.wikimedia.org;
     option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
-    filename "lpxelinux.0";
 }
 
 host orespoolcounter1001 {
@@ -469,7 +433,6 @@ host oresrdb2001 {
     hardware ethernet aa:00:00:3b:a3:0e;
     fixed-address oresrdb2001.codfw.wmnet;
     option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
-    filename "lpxelinux.0";
 }
 
 host people1001 {
@@ -501,35 +464,30 @@ host pollux {
     hardware ethernet aa:00:00:2d:a2:76;
     fixed-address pollux.wikimedia.org;
     option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
-    filename "lpxelinux.0";
 }
 
 host poolcounter1001 {
     hardware ethernet aa:00:00:de:ad:e5;
     fixed-address poolcounter1001.eqiad.wmnet;
     option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
-    filename "lpxelinux.0";
 }
 
 host poolcounter1003 {
     hardware ethernet aa:00:00:ce:f1:77;
     fixed-address poolcounter1003.eqiad.wmnet;
     option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
-    filename "lpxelinux.0";
 }
 
 host poolcounter2001 {
     hardware ethernet aa:00:00:cb:8a:b8;
     fixed-address poolcounter2001.codfw.wmnet;
     option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
-    filename "lpxelinux.0";
 }
 
 host poolcounter2002 {
     hardware ethernet aa:00:00:09:b0:32;
     fixed-address poolcounter2002.codfw.wmnet;
     option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
-    filename "lpxelinux.0";
 }
 
 host proton1001 {
@@ -582,7 +540,6 @@ host pybal-test2001 {
     hardware ethernet aa:00:00:16:8d:f9;
     fixed-address pybal-test2001.codfw.wmnet;
     option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
-    filename "lpxelinux.0";
 }
 
 host pybal-test2002 {
@@ -628,7 +585,6 @@ host roentgenium {
     hardware ethernet aa:00:00:d9:85:e2;
     fixed-address roentgenium.eqiad.wmnet;
     option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
-    filename "lpxelinux.0";
 }
 
 host rpki1001 {
@@ -676,14 +632,12 @@ host tureis {
     hardware ethernet aa:00:00:45:62:2d;
     fixed-address tureis.codfw.wmnet;
     option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
-    filename "lpxelinux.0";
 }
 
 host ununpentium {
     hardware ethernet aa:00:00:66:fb:d9;
     fixed-address ununpentium.wikimedia.org;
     option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
-    filename "lpxelinux.0";
 }
 
 host vega {
