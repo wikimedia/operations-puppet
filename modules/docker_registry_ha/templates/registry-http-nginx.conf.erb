@@ -38,19 +38,4 @@ server {
         proxy_set_header X-Real-IP $remote_addr;
         proxy_set_header Host $host;
     }
-    <%- if @expose_metrics -%>
-    location /metrics {
-      # IP whitelisting
-      satisfy any;
-      <%- @metrics_allowed_hosts.each do |host| -%>
-      allow <%= scope.function_ipresolve([host]) %>;
-      <%- end -%>
-      deny all;
-      proxy_pass http://registry_metrics;
-      proxy_redirect off;
-      proxy_buffering off;
-      proxy_http_version 1.1;
-      proxy_set_header Host $host;
-    }
-    <%- end -%>
 }

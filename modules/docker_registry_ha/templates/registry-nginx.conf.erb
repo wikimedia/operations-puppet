@@ -2,10 +2,6 @@ upstream registry {
   server 127.0.0.1:5000;
 }
 
-upstream registry_metrics {
-  server 127.0.0.1:5001;
-}
-
 map $http_upgrade $connection_upgrade {
     default upgrade;
     '' close;
@@ -108,19 +104,4 @@ server {
       proxy_set_header X-Forwarded-Proto $scheme;
       proxy_set_header Host $host;
     }
-    <%- if @expose_metrics -%>
-    location /metrics {
-      satisfy any;
-      <%- @metrics_allowed_hosts.each do |host| -%>
-      allow <%= scope.function_ipresolve([host]) %>;
-      <%- end -%>
-      deny all;
-      proxy_pass http://registry_metrics;
-      proxy_redirect off;
-      proxy_buffering off;
-      proxy_http_version 1.1;
-      proxy_set_header Host $host;
-    }
-    <%- end -%>
-
 }

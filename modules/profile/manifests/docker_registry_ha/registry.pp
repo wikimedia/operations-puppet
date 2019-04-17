@@ -69,16 +69,14 @@ class profile::docker_registry_ha::registry(
     }
 
     class { '::docker_registry_ha::web':
-        docker_username       => $username,
-        docker_password_hash  => $hash,
-        allow_push_from       => $image_builders,
-        ssl_settings          => ssl_ciphersuite('nginx', 'mid'),
-        use_puppet_certs      => $use_puppet,
-        ssl_certificate_name  => $certname,
-        http_endpoint         => true,
-        http_allowed_hosts    => $http_allowed_hosts,
-        metrics_allowed_hosts => $metrics_allowed_hosts,
-        expose_metrics        => true,
+        docker_username      => $username,
+        docker_password_hash => $hash,
+        allow_push_from      => $image_builders,
+        ssl_settings         => ssl_ciphersuite('nginx', 'mid'),
+        use_puppet_certs     => $use_puppet,
+        ssl_certificate_name => $certname,
+        http_endpoint        => true,
+        http_allowed_hosts   => $http_allowed_hosts,
     }
 
     # T209709
@@ -98,6 +96,11 @@ class profile::docker_registry_ha::registry(
         srange => '$DOMAIN_NETWORKS',
     }
 
+    ferm::service { 'registry-prometheus-metrics':
+        proto  => 'tcp',
+        port   => '5001',
+        srange => "(@resolve((${metrics_allowed_hosts})) @resolve((${metrics_allowed_hosts}), AAAA))",
+    }
 
     # Monitoring disabled for now,
     # need to adjust it to HA scenario.

@@ -7,8 +7,6 @@ class docker_registry_ha::web (
     Optional[String] $ssl_certificate_name=undef,
     Boolean $http_endpoint=false,
     Array[Stdlib::Host] $http_allowed_hosts=[],
-    Array[Stdlib::Host] $metrics_allowed_hosts=[],
-    Boolean $expose_metrics=true,
 ) {
     if (!$use_puppet_certs and ($ssl_certificate_name == undef)) {
         fail('Either puppet certs should be used, or an ssl cert name should be provided')
