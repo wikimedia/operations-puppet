@@ -64,6 +64,12 @@ class role::prometheus::services {
         site       => $::site,
     }
 
+    prometheus::jmx_exporter_config{ "cassandra_maps_production_${::site}":
+        dest       => "${targets_path}/cassandra_maps_production_${::site}.yaml",
+        class_name => 'profile::maps::cassandra',
+        site       => $::site,
+    }
+
     prometheus::server { 'services':
         listen_address        => '127.0.0.1:9903',
         storage_retention     => $storage_retention,
