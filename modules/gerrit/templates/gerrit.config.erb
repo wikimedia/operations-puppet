@@ -146,7 +146,7 @@
 [ldap]
     server =<% @ldap_hosts.each do |ldap_host| %> ldaps://<%= ldap_host %><% end %>
     accountBase = ou=people,<%= @ldap_base_dn %>
-    accountPattern = (&(objectClass=person)(cn=${username}))
+    accountPattern = (&(objectClass=person)(cn=${username})(!(pwdPolicySubentry=cn=disabled,ou=ppolicies,dc=wikimedia,dc=org)))
     accountFullName = cn
     groupBase = ou=groups,<%= @ldap_base_dn %>
     groupMemberPattern = (&(objectClass=groupOfNames)(member=${dn}))
