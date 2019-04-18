@@ -608,7 +608,7 @@ groups:
   analytics-wmde-users:
     description: Group of WMDE analytics users
     gid: 784
-    members: [addshore, goransm, ladsgroup]
+    members: [addshore, goransm, ladsgroup, lucaswerkmeister-wmde]
     privileges: ['ALL = (analytics-wmde) NOPASSWD: ALL']
   eventbus-admins:
     gid: 785
