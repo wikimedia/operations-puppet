@@ -639,7 +639,7 @@ host schema2001 {
 
 host schema2002 {
     hardware ethernet aa:00:00:f6:d7:82;
-    fixed-address schema2002.coodfw.wmnet;
+    fixed-address schema2002.codfw.wmnet;
 }
 
 host serpens {
