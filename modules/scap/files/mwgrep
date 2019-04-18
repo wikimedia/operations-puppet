@@ -128,7 +128,7 @@ if args.title is not None:
 elif args.etitle is not None:
     filters.append( {'regexp': {'title.keyword': args.etitle}} )
 elif args.ns == NS_USER or args.ns == NS_MEDIAWIKI:
-    filters.append( {'regexp': {'title.keyword': '.*\\.(js|css|json)'}} )
+    filters.append( {'regexp': {'title.keyword': '(Gadgets-definition|.*\\.(js|css|json))'}} )
 
 search = {
     'size': args.max_results,
