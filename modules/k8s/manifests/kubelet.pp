@@ -9,6 +9,8 @@ class k8s::kubelet(
     $cni_bin_dir = '/opt/cni/bin',
     $cni_conf_dir = '/etc/cni/net.d',
     $kubeconfig = '/etc/kubernetes/kubeconfig',
+    $node_labels = [],
+    $node_taints = [],
     $extra_params = undef,
 ) {
     require ::k8s::infrastructure_config

@@ -14,6 +14,8 @@ class profile::kubernetes::node(
   $kubelet_username = hiera('profile::kubernetes::node::kubelet_username', undef),
   $kubelet_token = hiera('profile::kubernetes::node::kubelet_token', undef),
   $kubelet_extra_params = hiera('profile::kubernetes::node::kubelet_extra_params', undef),
+  $kubelet_node_labels = hiera('profile::kubernetes::node::kubelet_node_labels', []),
+  $kubelet_node_taints = hiera('profile::kubernetes::node::kubelet_node_taints', []),
   $kubeproxy_username = hiera('profile::kubernetes::node::kubeproxy_username', undef),
   $kubeproxy_token = hiera('profile::kubernetes::node::kubeproxy_token', undef),
   ) {
@@ -46,6 +48,8 @@ class profile::kubernetes::node(
         tls_cert                  => '/etc/kubernetes/ssl/cert.pem',
         tls_key                   => '/etc/kubernetes/ssl/server.key',
         kubeconfig                => $kubelet_config,
+        node_labels               => $kubelet_node_labels,
+        node_taints               => $kubelet_node_taints,
         extra_params              => $kubelet_extra_params,
     }
 

@@ -36,6 +36,12 @@ if @cni
 	daemon_args.push("--cni-bin-dir=#{@cni_bin_dir}")
 	daemon_args.push("--cni-conf-dir=#{@cni_conf_dir}")
 end
+if !@node_labels.empty?
+  daemon_args.push("--node_labels=#{@node_labels.join(',')}")
+end
+if !@node_taints.empty?
+  daemon_args.push("--register-with-taints=#{@node_taints.join(',')}")
+end
 if @extra_params
   daemon_args.concat(@extra_params)
 end
