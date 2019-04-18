@@ -865,7 +865,7 @@ class profile::prometheus::ops (
     prometheus::class_config{ "mtail_thumbor_haproxy_${::site}":
         dest       => "${targets_path}/mtail_thumbor_haproxy_${::site}.yaml",
         site       => $::site,
-        class_name => 'role::thumbor',
+        class_name => 'role::thumbor::mediawiki',
         port       => 3903,
     }
 
