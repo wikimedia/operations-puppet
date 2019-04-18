@@ -428,7 +428,7 @@ host authdns2001 {
 }
 
 host backup1001 {
-    hardware ethernet D0:94:66:5F:8C:FD;
+    hardware ethernet b0:26:28:29:5b:70;
     fixed-address backup1001.eqiad.wmnet;
 }
 
