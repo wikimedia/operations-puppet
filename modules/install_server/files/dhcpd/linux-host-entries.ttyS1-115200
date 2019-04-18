@@ -5754,9 +5754,9 @@ host phab1001 {
     filename "lpxelinux.0";
 }
 
-host phab1002 {
-    hardware ethernet 14:18:77:33:4A:D8;
-    fixed-address phab1002.eqiad.wmnet;
+host phab1003 {
+    hardware ethernet D0:94:66:5F:4B:28;
+    fixed-address phab1003.eqiad.wmnet;
 }
 
 host phab2001 {
