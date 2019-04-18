@@ -18,6 +18,6 @@ bash createNamespace.sh ${newNamespace} $ENDPOINT || exit 1
 # Load the data
 echo "loading categories in ${newNamespace}"
 bash forAllCategoryWikis.sh loadCategoryDump.sh $newNamespace
-replaceNamespace categories ${newNamespace}
+replaceNamespace categories ${newNamespace} ${CATEGORY_ENDPOINT}
 
 echo "$(date --iso-8601=seconds) categories reload done"

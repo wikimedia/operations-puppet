@@ -13,7 +13,6 @@ if [ -z "${DATA_DIR}" -o -z "${LOG_DIR}" -o -z "${DEPLOY_DIR}" ]; then
 	exit 1
 fi
 
-HOST=${CATEGORY_ENDPOINT:-"http://localhost:9999"}
 NAMESPACE_URL="/bigdata/namespace/"
 DUMPS_DIR="${DATA_DIR}/dumps"
 today=$(date -u +'%Y%m%d')
@@ -37,6 +36,7 @@ function loadFileIntoBlazegraph {
 function replaceNamespace {
 	local mainName=$1
 	local currentAlias=$2
+	local endpoint=$3
 	local oldNamespace=$(cat $ALIAS_FILE | grep $mainName | cut -d' ' -f2 | cut -d ';' -f1)
 	if [ "${oldNamespace}" = ${currentAlias} ]; then
 		# nothing to do
@@ -51,6 +51,6 @@ function replaceNamespace {
 	sudo systemctl reload nginx
 	if [ -n "${oldNamespace}" ]; then
 		# Drop old namespace
-		curl -s -X DELETE "${HOST}${NAMESPACE_URL}${oldNamespace}"
+		curl -s -X DELETE "${endpoint}${NAMESPACE_URL}${oldNamespace}"
 	fi
 }
