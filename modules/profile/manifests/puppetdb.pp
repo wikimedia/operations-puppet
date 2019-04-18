@@ -8,9 +8,10 @@ class profile::puppetdb(
     Optional[String] $ca_path = hiera('profile::puppetdb::ca_path', undef),
     Optional[String] $puppetboard_hosts = hiera('profile::puppetdb::puppetboard_hosts', ''),
     Boolean $microservice_enabled = hiera('profile::puppetdb::microservice::enabled'),
-    Integer $microservice_port = hiera('profile::puppetdb::microservice::port'),
-    Integer $microservice_uwsgi_port = hiera('profile::puppetdb::microservice::uwsgi_port'),
-    String $microservice_allowed_hosts = hiera('netmon_server'),
+    Integer $microservice_port = hiera('profile::puppetdb::microservice::port', 0),
+    Integer $microservice_uwsgi_port = hiera('profile::puppetdb::microservice::uwsgi_port', 0),
+    String $microservice_allowed_hosts = hiera('netmon_server', ''),
+    Boolean $elk_logging = lookup('profile::puppetdb::rsyslog::elk', {'default_value' => false})
 ) {
 
     # Prometheus JMX agent for the Puppetdb's JVM
@@ -62,9 +63,11 @@ class profile::puppetdb(
         }
     }
 
-    # Ship PuppetDB logs to ELK
-    rsyslog::input::file { 'puppetdb':
-        path => '/var/log/puppetlabs/puppetdb/puppetdb.log',
+    if $elk_logging {
+        # Ship PuppetDB logs to ELK
+        rsyslog::input::file { 'puppetdb':
+            path => '/var/log/puppetlabs/puppetdb/puppetdb.log',
+        }
     }
 
     if $microservice_enabled {

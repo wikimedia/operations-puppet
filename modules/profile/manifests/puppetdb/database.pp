@@ -4,12 +4,12 @@
 #
 class profile::puppetdb::database(
     $master = hiera('profile::puppetdb::master'),
-    $slaves = hiera('profile::puppetdb::slaves'),
+    $slaves = hiera('profile::puppetdb::slaves', []),
     $shared_buffers = hiera('profile::puppetdb::database::shared_buffers', '7680MB'),
     $replication_password = hiera('puppetdb::password::replication'),
     $puppetdb_password =  hiera('puppetdb::password::rw'),
     $users = hiera('profile::puppetdb::database::users', {}),
-    $ssldir = undef,
+    $ssldir = hiera('profile::puppetdb::database::ssldir', undef),
 ) {
     include ::passwords::postgres
 
