@@ -3289,6 +3289,10 @@ ldap_only_users:
     ensure: present
     realname: David Lynch
     email: dlynch@wikimedia.org
+  ldoan:
+    ensure: present
+    realname: Linnea Doan
+    email: ldoan@wikimedia.org
   lmixter:
     ensure: present
     realname: Leighanna Mixter
@@ -3373,6 +3377,10 @@ ldap_only_users:
     ensure: present
     realname: Tim Landscheidt
     email: tim@tim-landscheidt.de
+  schang:
+    ensure: present
+    realname: Stella Chang
+    email: schang@wikimedia.org
   schoenbaechler:
     ensure: present
     realname: Robin Schoenbaechler
