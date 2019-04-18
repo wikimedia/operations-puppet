@@ -1312,16 +1312,6 @@ node 'labsdb1012.eqiad.wmnet'{
     role(labs::db::wikireplica_analytics::dedicated)
 }
 
-
-# labsdb1004 and labsdb1005 are ready to be decommissioned T216749
-node 'labsdb1004.eqiad.wmnet' {
-    role(spare::system)
-}
-
-node 'labsdb1005.eqiad.wmnet' {
-    role(spare::system)
-}
-
 # labsdb1006 and labsdb1007 are ready to be decommissioned T220144
 node 'labsdb1006.eqiad.wmnet' {
     role(spare::system)
