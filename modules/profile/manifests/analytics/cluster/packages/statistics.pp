@@ -80,6 +80,7 @@ class profile::analytics::cluster::packages::statistics {
         'python-netaddr',               'python3-netaddr',
         'python-pymysql',               'python3-pymysql',
         'python-virtualenv',            'python3-virtualenv', # T84378
+                                        'python3-venv',
         'python-dev',                   'python3-dev',        # T83316
         'python-protobuf',              'python3-protobuf',
         'python-unidecode',             'python3-unidecode',
