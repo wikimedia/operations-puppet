@@ -841,7 +841,7 @@ releases_server: releases1001.eqiad.wmnet
 releases_server_failover: releases2001.codfw.wmnet
 
 phabricator_server: 'phab1001.eqiad.wmnet'
-phabricator_server_failover: 'phab1002.eqiad.wmnet'
+phabricator_server_failover: 'phab2001.codfw.wmnet'
 
 # Etcd client global configuration
 etcd_client_srv_domain: "conftool.%{::site}.wmnet"
