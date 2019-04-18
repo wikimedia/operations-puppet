@@ -1238,7 +1238,7 @@ node 'krypton.eqiad.wmnet' {
     role(webserver_misc_apps)
 }
 
-node /kubernetes[12]00[1-4]\.(codfw|eqiad)\.wmnet/ {
+node /kubernetes[12]00[1-6]\.(codfw|eqiad)\.wmnet/ {
     role(kubernetes::worker)
     include ::standard
 

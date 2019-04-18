@@ -1,0 +1,8 @@
+profile::docker::storage::physical_volumes: "/dev/vdb"
+profile::docker::storage::vg_to_remove: 'todelete'
+profile::kubernetes::node::kubelet_node_labels:
+  - failure-domain.beta.kubernetes.io/region=codfw
+  - failure-domain.beta.kubernetes.io/zone=row-b
+profile::kubernetes::node::kubelet_node_taints:
+  - dedicated=kask:NoExecute
+  - dedicated=kask:NoSchedule
