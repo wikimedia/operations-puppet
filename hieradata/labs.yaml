@@ -100,12 +100,6 @@ profile::cache::ssl::wikibase::letsencrypt: true
 profile::cache::ssl::wikibase::le_subjects: ['wikibase.wmflabs.org']
 profile::cache::ssl::wikibase::monitoring: false
 
-profile::cache::upload::upload_domain: 'upload.beta.wmflabs.org'
-profile::cache::upload::upload_webp_hits_threshold: 10000
-profile::cache::upload::maps_domain: 'maps.beta.wmflabs.org'
-profile::cache::text::static_host: 'deployment.wikimedia.beta.wmflabs.org'
-profile::cache::text::shortener_domain: 'w-beta.wmflabs.org'
-profile::cache::text::top_domain: 'beta.wmflabs.org'
 profile::cache::varnish::backend::storage_parts:
   - vdb
   - vdb
