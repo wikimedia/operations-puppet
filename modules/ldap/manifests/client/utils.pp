@@ -36,7 +36,7 @@ class ldap::client::utils($ldapconfig) {
             owner  => 'root',
             group  => 'root',
             mode   => '0555',
-            source => 'puppet:///modules/ldap/scripts/ssh-key-ldap-lookup',
+            source => 'puppet:///modules/ldap/scripts/ssh-key-ldap-lookup.py',
         }
         # For security purposes, sshd will only run ssh-key-ldap-lookup as the 'ssh-key-ldap-lookup' user.
         user { 'ssh-key-ldap-lookup':

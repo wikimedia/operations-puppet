@@ -21,11 +21,14 @@ exit with a non zero status code and thus prevents login, which
 is the behavior we want
 """
 import argparse
-import ldap
-import yaml
 import os.path
 import sys
 
+import ldap
+import yaml
+
+
+DISABLED_PWDPOLICY = "cn=disabled,ou=ppolicies,dc=wikimedia,dc=org"
 
 with open('/etc/wmflabs-project') as f:
     PROJECT_NAME = f.read().strip()
@@ -45,12 +48,20 @@ def get_user_keys(conn, user):
     try:
         response = conn.search_s(
             user,
-            ldap.SCOPE_BASE
+            ldap.SCOPE_BASE,
+            filterstr=(
+                "(&"
+                "(objectClass=ldapPublicKey)"
+                "(!(pwdPolicySubentry={}))"
+                ")"
+            ).format(DISABLED_PWDPOLICY),
+            attrlist=['sshPublicKey'],
         )
     except ldap.NO_SUCH_OBJECT:
-        return []
-    for _, user in response:
-        return user['sshPublicKey']
+        response = None
+    if response:
+        return response[0][1].get('sshPublicKey', [])
+    return []
 
 
 def get_group_keys(conn, groupname):
@@ -73,7 +84,7 @@ def get_group_keys(conn, groupname):
 def robust_connect(servers, user, password, position=0):
     try:
         return connect(servers[position], user, password)
-    except ldap.SERVER_DOWN as e:
+    except ldap.SERVER_DOWN:
         if position == len(servers) - 1:
             return
         position += 1
