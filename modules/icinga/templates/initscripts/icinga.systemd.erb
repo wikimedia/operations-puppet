@@ -25,4 +25,10 @@ RemainAfterExit=yes
 SuccessExitStatus=5 6
 ExecStart=/etc/init.d/icinga start
 ExecStop=/etc/init.d/icinga stop
+
+# An attempt at kludging a fix for how icinga's processing of external commands (e.g. downtimes,
+# passive checks) seems to sometimes break after puppet restarts icinga.
+# See also https://phabricator.wikimedia.org/T196336
+ExecReload=-/usr/bin/killall -STOP nsca
 ExecReload=/etc/init.d/icinga reload
+ExecReload=-/usr/bin/killall -CONT nsca
