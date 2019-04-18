@@ -24,4 +24,12 @@ class profile::hadoop::users {
         gid    => 'analytics-search',
         system => true,
     }
+
+    # The analytics user will be used to run any Analytics
+    # job running on Yarn/HDFS (as replacement for 'hdfs').
+    # T220971
+    user { 'analytics':
+        ensure => present,
+        system => true,
+    }
 }

@@ -11,7 +11,7 @@
 #   sudo -u hdfs hdfs dfs -chmod 775 /user/$user
 #
 class profile::analytics::cluster::users {
-    # analytics-search user will be use to deploy
+    # analytics-search user will be used to deploy
     # wikimedia/discovery/analytics into HDFS.
     # The analytics-search-users group will be allowed to
     # sudo -u analytics-search.
@@ -22,6 +22,14 @@ class profile::analytics::cluster::users {
     user { 'analytics-search':
         ensure => present,
         gid    => 'analytics-search',
+        system => true,
+    }
+
+    # The analytics user will be used to run any Analytics
+    # job running on Yarn/HDFS (as replacement for 'hdfs').
+    # T220971
+    user { 'analytics':
+        ensure => present,
         system => true,
     }
 }

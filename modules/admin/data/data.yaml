@@ -275,7 +275,7 @@ groups:
               cicalese, drossi, fsalutari, nathante, gbirke, isaacj, sbassett, jdl,
               niharika29, ryanmax, afandian2, jgleeson, toddleroux, srishakatux, dsharpe,
               juliaglen, esanders, sukhe]
-    system_members: [analytics-search]
+    system_members: [analytics-search, analytics]
   analytics-admins:
     gid: 732
     description: Admin access to analytics cluster.
