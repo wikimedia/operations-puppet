@@ -192,6 +192,11 @@ node /^authdns[12]001\.wikimedia\.org$/ {
     interface::add_ip6_mapped { 'main': }
 }
 
+# backup1001 entry until service deployment via T196478
+node 'backup1001.eqiad.wmnet' {
+    role(spare::system)
+}
+
 # Bastion in Virginia
 node 'bast1002.wikimedia.org' {
     role(bastionhost::general)
