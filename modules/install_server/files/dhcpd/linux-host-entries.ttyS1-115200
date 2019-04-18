@@ -3,16 +3,6 @@
 #### puppet:///modules/install_server/dhcpd/linux-host-entries.ttyS1-115200
 ######################################################################
 
-host acamar {
-    hardware ethernet D4:AE:52:AC:4D:C8;
-    fixed-address acamar.wikimedia.org;
-}
-
-host achernar {
-    hardware ethernet D4:AE:52:AD:56:10;
-    fixed-address achernar.wikimedia.org;
-}
-
 host an-master1001 {
     hardware ethernet D0:94:66:71:AA:C1;
     fixed-address an-master1001.eqiad.wmnet;
