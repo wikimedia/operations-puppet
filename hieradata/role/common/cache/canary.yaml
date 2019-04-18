@@ -105,14 +105,10 @@ cache::alternate_domains:
         caching: 'websockets'
   phab.wmfusercontent.org:
     director: 'phabricator'
-cache::fe_transient_gb: 5
-cache::be_transient_gb: 2
 # Profile::cache::base
 # NOTE: Add the public WMCS IP space when T209011 is done
 profile::cache::base::extra_nets: ['172.16.0.0/12']
 profile::cache::base::zero_site: 'https://zero.wikimedia.org'
-profile::cache::base::purge_host_only_upload_re: '^(upload|maps)\.wikimedia\.org$'
-profile::cache::base::purge_host_not_upload_re: '^(?!(upload|maps)\.wikimedia\.org)'
 profile::cache::varnish::backend::storage_parts: ['sda3', 'sdb3']
 profile::cache::base::fe_runtime_params:
     - default_ttl=86400

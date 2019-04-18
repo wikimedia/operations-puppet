@@ -479,9 +479,6 @@ profile::eventstreams::streams:
   test:
     topics: ["%{::site}.test.event"]
 
-cache::be_transient_gb: 0
-cache::fe_transient_gb: 0
-
 profile::kubernetes::deployment_server::git_owner: trebuchet
 profile::kubernetes::deployment_server::git_group: wikidev
 

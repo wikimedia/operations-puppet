@@ -9,8 +9,6 @@ class profile::cache::base(
     $cache_cluster = hiera('cache::cluster'),
     $statsd_host = hiera('statsd'),
     $zero_site = hiera('profile::cache::base::zero_site'),
-    $purge_host_only_upload_re = hiera('profile::cache::base::purge_host_only_upload_re'),
-    $purge_host_not_upload_re = hiera('profile::cache::base::purge_host_not_upload_re'),
     $packages_version = hiera('profile::cache::base::packages_version', 'installed'),
     $varnish_version = hiera('profile::cache::base::varnish_version', 5),
     $purge_host_regex = hiera('profile::cache::base::purge_host_regex', ''),
