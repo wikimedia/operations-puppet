@@ -7,6 +7,7 @@ import argparse
 import datetime
 import logging
 import os
+import requests
 import shutil
 import sys
 
@@ -24,12 +25,12 @@ logger = logging.getLogger('sync-upstream')
 import git
 
 
-def rebase_repo(repo_path, track_branch):
+def rebase_repo(repo_path, latest_upstream_commit):
     """Rebase the current HEAD of the given clone on top of the given tracking
     branch of it's origin repo.
 
     :param repo_path: git clone to rebase
-    :param track_branch: origin branch to track
+    :param latest_upstream_commit: latest upstream commit
     """
     datestring = datetime.datetime.now().strftime('%Y%m%d%H%M')
     branchname = "oot-branch-%s" % datestring
@@ -38,8 +39,6 @@ def rebase_repo(repo_path, track_branch):
 
     repo = git.Repo(repo_path)
     assert not repo.bare
-
-    upstream_branch = "origin/%s" % track_branch
 
     # diff index against working copy
     if repo.index.diff(None):
@@ -50,8 +49,7 @@ def rebase_repo(repo_path, track_branch):
 
     current_branch = repo.git.rev_parse('--abbrev-ref', 'HEAD')
     latest_commit = repo.git.rev_parse(current_branch)
-    latest_upstream_commit = repo.git.show_ref("-s", upstream_branch)
-    latest_merged_commit = repo.git.merge_base(upstream_branch, "HEAD")
+    latest_merged_commit = repo.git.merge_base(latest_upstream_commit, "HEAD")
 
     if latest_upstream_commit == latest_merged_commit:
         logger.info("Up-to-date: %s" % repo_path)
@@ -80,7 +78,7 @@ def rebase_repo(repo_path, track_branch):
         tmprepo.git.fetch(
             "-n", repo_path,
             "%s:oot-rebase/%s" % (current_branch, current_branch),
-            "%s:oot-rebase/%s" % (upstream_branch, upstream_branch))
+            "%s:oot-rebase/upstream" % (latest_upstream_commit))
         tmprepo.git.checkout("oot-rebase/%s" % current_branch)
 
         # And... rebase.
@@ -89,7 +87,7 @@ def rebase_repo(repo_path, track_branch):
             "--stat",
             "--strategy=recursive",
             "--strategy-option=patience",
-            "oot-rebase/%s" % upstream_branch)
+            "oot-rebase/upstream")
 
         # Now 'oot-rebase' in tmprepo has the final state we need.  Push that
         # branch to a temporary branch ('branchname') in the main repo.
@@ -135,7 +133,13 @@ parser.add_argument('--private-only', dest='private', action='store_true',
 args = parser.parse_args()
 
 if args.private:
-    rebase_repo("/var/lib/git/labs/private", "master")
+    resp = requests.get('https://config-master.wikimedia.org/labsprivate-sha1.txt')
+    assert resp.status_code == 200
+    rebase_repo("/var/lib/git/labs/private", resp.content.decode('ascii').strip())
 else:
-    if rebase_repo("/var/lib/git/operations/puppet", "production"):
-        rebase_repo("/var/lib/git/labs/private", "master")
+    resp = requests.get('https://config-master.wikimedia.org/puppet-sha1.txt')
+    assert resp.status_code == 200
+    if rebase_repo("/var/lib/git/operations/puppet", resp.content.decode('ascii').strip()):
+        resp = requests.get('https://config-master.wikimedia.org/labsprivate-sha1.txt')
+        assert resp.status_code == 200
+        rebase_repo("/var/lib/git/labs/private", resp.content.decode('ascii').strip())

@@ -8,6 +8,7 @@ class puppetmaster::gitsync(
 
     ensure_packages([
         'python3-git',
+        'python3-requests',
         ])
 
 
