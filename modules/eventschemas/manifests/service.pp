@@ -44,7 +44,7 @@ class eventschemas::service(
     # These include the pretty-autoindex static files.
     file { $document_root:
         ensure  => 'directory',
-        source  => 'eventschemas/site',
+        source  => 'puppet:///modules/eventschemas/site',
         recurse => 'remote',
     }
 
