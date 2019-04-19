@@ -1182,6 +1182,14 @@ node 'phab1002.eqiad.wmnet' {
     # lint:endignore
 }
 
+# temp phab host
+node 'phab1003.eqiad.wmnet' {
+    role(spare::system)
+    # lint:ignore:wmf_styleguide
+    interface::add_ip6_mapped { 'main': }
+    # lint:endignore
+}
+
 node 'iron.wikimedia.org' {
     system::role { 'misc':
         description => 'Experimental Yubico two factor authentication bastion',
