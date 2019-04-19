@@ -33,7 +33,7 @@
 #
 class eventschemas::service(
     String $server_name  = "schema.svc.${::site}.wmnet",
-    String $server_alias = undef,
+    Optional[String] $server_alias = undef,
     Wmflib::IpPort $port = 8190,
 ) {
     require ::eventschemas
