@@ -101,7 +101,7 @@ class profile::eventbus(
         # The service will be reloaded (SIGHUPed, not restarted)
         # if any of these resources change.
         # Reload if mediawiki/event-schemas has a change.
-        reload_on       =>  Class['::eventschemas'],
+        reload_on       =>  Class['::eventschemas::mediawiki'],
         num_processes   => 16,
         noisy_log_level => $noisy_log_level,
         require         => [

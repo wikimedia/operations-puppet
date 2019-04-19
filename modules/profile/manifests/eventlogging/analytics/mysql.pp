@@ -88,6 +88,6 @@ class profile::eventlogging::analytics::mysql(
         # The consumer will be reloaded (SIGHUPed, not restarted)
         # if any of these resources change.
         # Reload if mediawiki/event-schemas has a change.
-        reload_on    =>  Class['::eventschemas'],
+        reload_on    =>  Class['::eventschemas::mediawiki'],
     }
 }
