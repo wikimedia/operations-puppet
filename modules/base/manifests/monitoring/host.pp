@@ -194,6 +194,7 @@ class base::monitoring::host(
             retry_interval => 10,
             description    => 'Long running screen/tmux',
             nrpe_command   => '/usr/bin/sudo /usr/local/lib/nagios/plugins/check_long_procs -w 240 -c 480',
+            notes_url      => 'https://wikitech.wikimedia.org/wiki/Monitoring/Long_running_screens',
         }
     }
 
