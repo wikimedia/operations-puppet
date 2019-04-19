@@ -10,6 +10,7 @@ phabricator_active_server_fqdn: 'phab1001.eqiad.wmnet'
 
 phabricator_servers:
   - phab1001.eqiad.wmnet
+  - phab1003.eqiad.wmnet
   - phab2001.codfw.wmnet
 
 profile::base::domain_search:

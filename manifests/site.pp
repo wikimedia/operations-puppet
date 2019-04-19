@@ -1170,7 +1170,7 @@ node /^(phab1001\.eqiad|phab2001\.codfw)\.wmnet$/ {
     interface::add_ip6_mapped { 'main': }
 }
 
-# to be decom'ed, replaced by phab1003
+# to be decom'ed, replaced by phab1003 (T221391)
 node 'phab1002.eqiad.wmnet' {
     role(spare::system)
     # lint:ignore:wmf_styleguide
@@ -1178,9 +1178,9 @@ node 'phab1002.eqiad.wmnet' {
     # lint:endignore
 }
 
-# temp phab host
+# temp phab host (T221389)
 node 'phab1003.eqiad.wmnet' {
-    role(spare::system)
+    role(phabricator)
     # lint:ignore:wmf_styleguide
     interface::add_ip6_mapped { 'main': }
     # lint:endignore
