@@ -6,7 +6,7 @@
 server {
     listen <%= @port %>;
     server_name <%= @server_name %><%= @server_alias ? ' ' + Array(@server_alias).sort.join(' ') : '' %>;
-    root <%= @document_root %>
+    root <%= @document_root %>;
 
     location / {
         index index.html;

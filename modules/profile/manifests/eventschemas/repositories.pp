@@ -10,7 +10,7 @@
 #   Default: { mediawiki => mediawiki/eventschemas }
 #
 class profile::eventschemas::repositories(
-    $repositories = hiera('profile::eventschemas::repositories', {'mediawiki' => 'mediawiki/eventschemas'})
+    $repositories = hiera('profile::eventschemas::repositories', {'mediawiki' => 'mediawiki/event-schemas'})
 ) {
     keys($repositories).each |String $name| {
         eventschemas::repository { $name:
