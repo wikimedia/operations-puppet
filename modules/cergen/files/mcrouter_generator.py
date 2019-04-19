@@ -69,9 +69,14 @@ def main():
                         default='/etc/cergen/mcrouter.manifests.d')
     parser.add_argument('--generate', help='Run cergen after having generated the files',
                         action='store_true')
+    parser.add_argument('--add',
+                        help='List of hosts to add to the '
+                        'generated manifest (for new installations)',
+                        metavar='HOSTNAMES', nargs="+", default=None)
     args = parser.parse_args()
-
     hosts = hosts_from_puppetdb(args.puppetdb_config)
+    if args.add is not None:
+        hosts.extend(args.add)
     if not os.path.isdir(args.manifests_path):
         os.mkdir(args.manifests_path)
     manifest_file = os.path.join(args.manifests_path, 'mediawiki-hosts.certs.yaml')
