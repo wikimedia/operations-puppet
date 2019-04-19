@@ -21,12 +21,21 @@ def hosts_from_puppetdb(configfile):
     c = configparser.ConfigParser()
     c.read(configfile)
     puppetdb_url = "{}/pdb/query/v4/resources".format(c['main']['server_urls'])
-    r = requests.post(puppetdb_url,
-                      json={'query': ["and", ['=', 'type', 'Class'], ["=", "title", "Mediawiki"]]},
-                      verify=True)
+    r = requests.post(
+        puppetdb_url,
+        json={
+            'query': [
+                "and",
+                ['=', 'type', 'Class'],
+                ["=", "title", "Profile::Mediawiki::Mcrouter_wancache"]
+            ]
+        },
+        verify=True)
     if r.status_code != requests.codes.ok:
         raise ValueError("Got non-OK status code from puppetdb: %d", r.status_code)
     hosts = set([el['certname'] for el in r.json()])
+    if not len(hosts):
+        raise ValueError('No hosts found, maybe the puppetdb query needs fixing?')
     return list(hosts)
 
 
