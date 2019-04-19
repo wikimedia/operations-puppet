@@ -9,6 +9,7 @@
 
 import argparse
 import configparser
+import glob
 import os
 import requests
 import socket
@@ -58,6 +59,17 @@ def cergen_manifests(hosts):
     return {name: definition_for(socket.gethostbyname(name)) for name in hosts}
 
 
+def audit(path, hosts):
+    hosts_set = set(hosts)
+    on_disk = {os.path.basename(d) for d in glob.glob(path + '/*') if os.path.isdir(d)}
+    should_not_be_there = on_disk - hosts_set
+    if not should_not_be_there:
+        print('All good.')
+    else:
+        print('The following certs are present but do not correspond to hosts found live:\n\t')
+    '\n\t'.join(should_not_be_there)
+
+
 def main():
     parser = argparse.ArgumentParser(description='generate the yaml files for cergen, then runs it')
     parser.add_argument('--puppetdb-config', '-c', help='puppetdb config file',
@@ -67,12 +79,15 @@ def main():
                         default='/srv/private/modules/secret/secrets/mcrouter/')
     parser.add_argument('--manifests-path', '-m', help='The directory where to read manifests',
                         default='/etc/cergen/mcrouter.manifests.d')
-    parser.add_argument('--generate', help='Run cergen after having generated the files',
-                        action='store_true')
     parser.add_argument('--add',
                         help='List of hosts to add to the '
                         'generated manifest (for new installations)',
                         metavar='HOSTNAMES', nargs="+", default=None)
+    action = parser.add_mutually_exclusive_group()
+    action.add_argument('--generate', help='Run cergen after having generated the files',
+                        action='store_true')
+    action.add_argument('--audit', help='Find stale hosts in the destination directory',
+                        action='store_true')
     args = parser.parse_args()
     hosts = hosts_from_puppetdb(args.puppetdb_config)
     if args.add is not None:
@@ -87,6 +102,8 @@ def main():
 
     if args.generate:
         cergen_main(['--base-path', args.base_path, '--generate', args.manifests_path])
+    elif args.audit:
+        audit(args.base_path, hosts)
     else:
         output_tpl = """
 IMPORTANT: add the definition of the mcrouter_ca.certs.yaml in {base}.
