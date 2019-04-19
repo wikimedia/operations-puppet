@@ -184,8 +184,8 @@ eventbus:
     default_values:
       pooled: 'yes'
       weight: 10
-eventbus:
-  eventbus:
+eventschemas:
+  eventschemas:
     port: 8190
     datacenters:
     - eqiad
