@@ -71,7 +71,7 @@ kafka.blacklist.topics=
 # These are the kafka topics camus brings to HDFS
 # The datacenter names are extracted out into Hive partitions
 # during refinement.
-kafka.whitelist.topics=(eqiad|codfw)\.(resource_change|mediawiki\.(page|revision|user|recentchange).*)
+kafka.whitelist.topics=(eqiad|codfw)\.(resource_change|mediawiki\.(page|revision|user|recentchange|api-request|cirrussearch-request).*)
 
 # Name of the client as seen by kafka
 kafka.client.name=camus-eventbus-00
