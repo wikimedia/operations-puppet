@@ -1,5 +1,5 @@
 cluster: eventschemas
 admin::groups:
   - eventbus-admins
-role::lvs::realserver::pools:
+profile::lvs::realserver::pools:
   eventschemas: {}
