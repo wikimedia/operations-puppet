@@ -528,7 +528,3 @@ define command {
     command_line    $USER1$/check_http -I $HOSTADDRESS$ -H $ARG1$ -p $ARG2$ -P '[{"itemType":"journalArticle"}]' -T 'application/json' -u "$ARG3$"
 }
 
-define command {
-    command_name    check_google_safebrowsing
-    command_line    $USER1$/check_gsb.py $ARG1$ $ARG2$ $ARG3$
-}

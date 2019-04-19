@@ -51,7 +51,6 @@ class profile::icinga(
     class { 'icinga::monitor::toollabs': }
     class { 'icinga::monitor::legal': }
     class { 'icinga::monitor::certs': }
-    class { 'icinga::monitor::gsb': }
     class { 'icinga::monitor::commons': }
 
     class { 'icinga::monitor::elasticsearch::cirrus_cluster_checks': }

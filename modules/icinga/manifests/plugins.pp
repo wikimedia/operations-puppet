@@ -92,13 +92,6 @@ class icinga::plugins(
         group  => 'root',
         mode   => '0755',
     }
-    # Google safebrowsing lookup API client
-    file { '/usr/lib/nagios/plugins/check_gsb.py':
-        source => 'puppet:///modules/icinga/check_gsb.py',
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0755',
-    }
 
     # for "check_lastmod" - Check if any website has recently been updated
     # Originally added to check if Planet content updates working (T203208)
