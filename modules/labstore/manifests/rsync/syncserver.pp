@@ -6,6 +6,7 @@ class labstore::rsync::syncserver(
     String $group='',
     String $rsync_opts='',
     Stdlib::Host $primary_host=undef,
+    String $niceness = '+10',
 )  {
     include labstore::rsync::common
 

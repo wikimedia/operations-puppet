@@ -11,6 +11,7 @@ User=root
 ExecStart=/usr/local/sbin/syncserver --interval <%= @interval %> --primary-host <%= @primary_host%>
 RestartSec=10
 Restart=on-failure
+Nice=<%= @niceness %>
 
 [Install]
 WantedBy=multi-user.target

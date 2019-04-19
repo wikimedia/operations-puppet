@@ -2,7 +2,9 @@ ldap::client::nss::nsswitch_conf_source: file:///usr/share/base-files/nsswitch.c
 
 profile::wmcs::nfs::rsync::user: root
 profile::wmcs::nfs::rsync::group: root
-profile::wmcs::nfs::rsync::mntpoint: /exp
+profile::wmcs::nfs::rsync::datapath: /exp
+profile::wmcs::nfs::secondary::monitor_iface: eno0
+profile::wmcs::nfs::rsync::primary_host: cloudstore1008.wikimedia.org
 # the snapshots created by the backup process cannot be checked
 # by the check_disk nrpe plugin so need to be excluded.
 profile::base::check_disk_options: -w 10% -c 5% -W 6% -K 3% -l -e -A -i /run/lock/storage-replicate-.*/snapshot -i /exp/.* --exclude-type=tracefs
