@@ -1,7 +1,23 @@
+# @summary Sets up the basic functionalities of a jobrunner.
+#
+# @param statsd
+#    The address of the statsd server.
+#
+# @param fcgi_port
+#    If defined, sets up php-fpm to listen to that IP port instead of a unix socket
+#
+# @param fcgi_pool
+#    Defines the name of the pool for php-fpm. Defaults to 'www'
+#
+# @param expose_endpoint
+#    If true, the jobrunner endpoint is exposed to all clients. Defaults to false, should
+#    only be set to true if no TLS setup is used (as in deployment-prep).
+#
 class profile::mediawiki::jobrunner(
     $statsd = hiera('statsd'),
     Optional[Wmflib::UserIpPort] $fcgi_port = hiera('profile::php_fpm::fcgi_port', undef),
     String $fcgi_pool = hiera('profile::mediawiki::fcgi_pool', 'www'),
+    Boolean $expose_endpoint = hiera('profile::mediawiki::jobrunner::expose_endpoint', false)
 ) {
     # Parameters we don't need to override
     $port = 9005
@@ -124,5 +140,14 @@ class profile::mediawiki::jobrunner(
         port    => $port,
         notrack => true,
         srange  => '$DOMAIN_NETWORKS',
+    }
+    # If no TLS proxy is present in front of the jobrunner, expose the port directly.
+    if $expose_endpoint {
+        ::ferm::service { 'mediawiki-jobrunner-notls':
+            proto   => 'tcp',
+            port    => $local_only_port,
+            notrack => true,
+            srange  => '$DOMAIN_NETWORKS',
+        }
     }
 }

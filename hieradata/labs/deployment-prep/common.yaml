@@ -234,6 +234,7 @@ statsd: labmon1001.eqiad.wmnet:8125
 profile::mediawiki::jobrunner::runners:
   basic: 5
   gwt: 1
+profile::mediawiki::jobrunner::expose_endpoint: true
 "hhvm::base_jit_size": 183500800
 "role::logging::mediawiki::log_directory": /data/project/logs
 "beta::syncsiteresources::user": www-data
