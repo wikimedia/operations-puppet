@@ -265,6 +265,9 @@ eqiad:
     kafka1001.eqiad.wmnet: [eventbus]
     kafka1002.eqiad.wmnet: [eventbus]
     kafka1003.eqiad.wmnet: [eventbus]
+  eventschemas:
+    schema1001.eqiad.wmnet: [eventschemas]
+    schema1002.eqiad.wmnet: [eventschemas]
   thumbor:
     thumbor1001.eqiad.wmnet: [thumbor]
     thumbor1002.eqiad.wmnet: [thumbor]

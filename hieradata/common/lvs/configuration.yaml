@@ -154,6 +154,9 @@ lvs::configuration::lvs_service_ips:
     codfw: 10.2.1.42
   ldap-ro: &ip_block048
     eqiad: 208.80.154.252
+  eventschemas: &ip_block049 # schema.svc.*
+    eqiad: 10.2.2.43
+    codfw: 10.2.1.43
 
 lvs::configuration::lvs_services:
   text:
@@ -1511,3 +1514,30 @@ lvs::configuration::lvs_services:
           hostname: eventgate-analytics.svc.eqiad.wmnet
         codfw:
           hostname: eventgate-analytics.svc.codfw.wmnet
+  schema:
+    description: Event Schema HTTP service
+    class: low-traffic
+    sites:
+    - eqiad
+    - codfw
+    ip: *ip_block049
+    port: 8190
+    depool-threshold: '.5'
+    conftool:
+      cluster: eventschemas
+      service: eventschemas
+    icinga:
+      check_command: "check_http_lvs_on_port!schema.svc.%{::site}.wmnet!8190!/repositories/"
+      critical: false
+      sites:
+        eqiad:
+          hostname: schema.svc.eqiad.wmnet
+        codfw:
+          hostname: schema.svc.codfw.wmnet
+    monitors:
+      ProxyFetch:
+        url:
+        - http://localhost:8190/repositories/
+      IdleConnection:
+        max-delay: 300
+        timeout-clean-reconnect: 3

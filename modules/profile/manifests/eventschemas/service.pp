@@ -13,4 +13,9 @@ class profile::eventschemas::service(
     class { '::eventschemas::service':
         server_name => $server_name,
     }
+
+    ferm::service { 'eventschemas_service_http':
+        proto => 'tcp',
+        port  => $::eventschemas::service::port,
+    }
 }

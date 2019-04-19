@@ -184,6 +184,15 @@ eventbus:
     default_values:
       pooled: 'yes'
       weight: 10
+eventbus:
+  eventbus:
+    port: 8190
+    datacenters:
+    - eqiad
+    - codfw
+    default_values:
+      pooled: 'yes'
+      weight: 10
 thumbor:
   thumbor:
     port: 8800
@@ -330,3 +339,4 @@ proton:
     default_values:
       pooled: 'yes'
       weight: '10'
+

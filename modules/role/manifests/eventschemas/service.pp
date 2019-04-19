@@ -6,4 +6,5 @@ class role::eventschemas::service {
     }
 
     include ::profile::eventschemas::service
+    include ::profile::lvs::realserver
 }
