@@ -118,6 +118,7 @@ class profile::puppetmaster::frontend(
     class { '::puppetmaster::rsync':
         server      => $ca_server,
         cron_ensure => $cron,
+        frontends   => keys($servers),
     }
 
     ferm::service { 'puppetmaster-frontend':

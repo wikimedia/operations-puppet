@@ -38,12 +38,6 @@ class network::constants {
                     '10.192.32.24',                     # deploy2001.codfw.wmnet
                     '2620:0:860:103:10:192:32:24',      # deploy2001.codfw.wmnet
                 ],
-            'puppet_frontends' => [
-                    '10.64.16.73',                # puppetmaster1001.eqiad.wmnet
-                    '2620:0:861:102:10:64:16:73', # puppetmaster1001.eqiad.wmnet
-                    '10.192.0.27',                # puppetmaster2001.codfw.wmnet
-                    '2620:0:860:101:10:192:0:27', # puppetmaster2001.codfw.wmnet
-                ],
             'mysql_root_clients' => [
                     # ipv6 interfaces are not yet allowed due to mysql grants
                     # do not put dns names or hostnames here, only ipv4

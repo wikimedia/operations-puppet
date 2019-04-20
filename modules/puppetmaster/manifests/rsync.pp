@@ -2,13 +2,16 @@
 #
 # Simple class to allow syncing of the volatile and CA directories
 #
-class puppetmaster::rsync($server, $cron_ensure='absent') {
+class puppetmaster::rsync(
+    $server,
+    $cron_ensure='absent',
+    Array[String] $frontends = [],
+) {
     include ::rsync::server
-    include ::network::constants
 
     Rsync::Server::Module {
         read_only   => 'yes',
-        hosts_allow => $::network::constants::special_hosts[$::realm]['puppet_frontends'],
+        hosts_allow => $frontends,
     }
 
 
