@@ -23,7 +23,7 @@ class gerrit::proxy(
         notes_url     => 'https://phabricator.wikimedia.org/project/view/330/',
     }
 
-    $ssl_settings = ssl_ciphersuite('apache', 'mid', true)
+    $ssl_settings = ssl_ciphersuite('apache', 'strong', true)
 
     httpd::site { $tls_host:
         content => template('gerrit/apache.erb'),
