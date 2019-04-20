@@ -1137,3 +1137,85 @@ cache_hosts:
 - 2001:df2:e500:101:10:132:0:106 # cp5006.eqsin.wmnet
 - 208.80.154.42                  # pinkunicorn.wikimedia.org
 - 2620:0:861:1:208:80:154:42     # pinkunicorn.wikimedia.org
+
+kafka_brokers_main:
+- 10.64.0.11                   # kafka1001.eqiad.wmnet
+- 2620:0:861:101:10:64:0:11    # kafka1001.eqiad.wmnet
+- 10.64.16.41                  # kafka1002.eqiad.wmnet
+- 2620:0:861:102:10:64:16:41   # kafka1002.eqiad.wmnet
+- 10.64.32.127                 # kafka1003.eqiad.wmnet
+- 2620:0:861:103:10:64:32:127  # kafka1003.eqiad.wmnet
+- 10.192.0.139                 # kafka2001.codfw.wmnet
+- 2620:0:860:101:10:192:0:139  # kafka2001.codfw.wmnet
+- 10.192.16.169                # kafka2002.codfw.wmnet
+- 2620:0:860:102:10:192:16:169 # kafka2002.codfw.wmnet
+- 10.192.32.150                # kafka2003.codfw.wmnet
+- 2620:0:860:103:10:192:32:150 # kafka2003.codfw.wmnet
+kafka_brokers_analytics:
+- 10.64.5.12                  # kafka1012.eqiad.wmnet
+- 2620:0:861:104:10:64:5:12   # kafka1012.eqiad.wmnet
+- 10.64.5.13                  # kafka1013.eqiad.wmnet
+- 2620:0:861:104:10:64:5:13   # kafka1013.eqiad.wmnet
+- 10.64.36.114                # kafka1014.eqiad.wmnet
+- 2620:0:861:106:10:64:36:114 # kafka1014.eqiad.wmnet
+- 10.64.53.12                 # kafka1020.eqiad.wmnet
+- 2620:0:861:108:10:64:53:12  # kafka1020.eqiad.wmnet
+- 10.64.36.122                # kafka1022.eqiad.wmnet
+- 2620:0:861:106:10:64:36:122 # kafka1022.eqiad.wmnet
+- 10.64.5.14                  # kafka1023.eqiad.wmnet
+- 2620:0:861:104:10:64:5:14   # kafka1023.eqiad.wmnet
+kafka_brokers_jumbo:
+- 10.64.0.175                 # kafka-jumbo1001.eqiad.wmnet
+- 2620:0:861:101:10:64:0:175  # kafka-jumbo1001.eqiad.wmnet
+- 10.64.0.176                 # kafka-jumbo1002.eqiad.wmnet
+- 2620:0:861:101:10:64:0:176  # kafka-jumbo1002.eqiad.wmnet
+- 10.64.16.99                 # kafka-jumbo1003.eqiad.wmnet
+- 2620:0:861:102:10:64:16:99  # kafka-jumbo1003.eqiad.wmnet
+- 10.64.32.159                # kafka-jumbo1004.eqiad.wmnet
+- 2620:0:861:103:10:64:32:159 # kafka-jumbo1004.eqiad.wmnet
+- 10.64.32.160                # kafka-jumbo1005.eqiad.wmnet
+- 2620:0:861:103:10:64:32:160 # kafka-jumbo1005.eqiad.wmnet
+- 10.64.48.117                # kafka-jumbo1006.eqiad.wmnet
+- 2620:0:861:107:10:64:48:117 # kafka-jumbo1006.eqiad.wmnet
+kafka_brokers_logging:
+- 10.64.0.181                  # logstash1010.eqiad.wmnet
+- 2620:0:861:101:10:64:0:181   # logstash1010.eqiad.wmnet
+- 10.64.16.30                  # logstash1011.eqiad.wmnet
+- 2620:0:861:102:10:64:16:30   # logstash1011.eqiad.wmnet
+- 10.64.48.177                 # logstash1012.eqiad.wmnet
+- 2620:0:861:107:10:64:48:177  # logstash1012.eqiad.wmnet
+- 10.192.0.112                 # logstash2001.codfw.wmnet
+- 2620:0:860:101:10:192:0:112  # logstash2001.codfw.wmnet
+- 10.192.32.180                # logstash2002.codfw.wmnet
+- 2620:0:860:103:10:192:32:180 # logstash2002.codfw.wmnet
+- 10.192.48.131                # logstash2003.codfw.wmnet
+- 2620:0:860:104:10:192:48:131 # logstash2003.codfw.wmnet
+zookeeper_hosts_main:
+- 10.64.0.23                         # conf1004.eqiad.wmnet
+- 2620:0:861:101:10:64:0:23          # conf1004.eqiad.wmnet
+- 10.64.16.29                        # conf1005.eqiad.wmnet
+- 2620:0:861:102:10:64:16:29         # conf1005.eqiad.wmnet
+- 10.64.48.167                       # conf1006.eqiad.wmnet
+- 2620:0:861:107:10:64:48:167        # conf1006.eqiad.wmnet
+- 10.192.0.143                       # conf2001.codfw.wmnet
+- 2620:0:860:101:1618:77ff:fe5e:a72c # conf2001.codfw.wmnet
+- 10.192.32.141                      # conf2002.codfw.wmnet
+- 2620:0:860:103:1618:77ff:fe5e:a175 # conf2002.codfw.wmnet
+- 10.192.48.52                       # conf2003.codfw.wmnet
+- 2620:0:860:104:1618:77ff:fe5e:a4c2 # conf2003.codfw.wmnet
+hadoop_masters:
+- 10.64.5.26                  # an-master1001.eqiad.wmnet
+- 2620:0:861:104:10:64:5:26   # an-master1001.eqiad.wmnet
+- 10.64.21.110                # an-master1002.eqiad.wmnet
+- 2620:0:861:105:10:64:21:110 # an-master1002.eqiad.wmnet
+- 10.64.36.128                # analytics1028.eqiad.wmnet
+- 2620:0:861:106:10:64:36:128 # analytics1028.eqiad.wmnet
+- 10.64.36.129                # analytics1029.eqiad.wmnet
+- 2620:0:861:106:10:64:36:129 # analytics1029.eqiad.wmnet
+druid_public_hosts:
+- 10.64.0.35                  # druid1004.eqiad.wmnet
+- 2620:0:861:101:10:64:0:35   # druid1004.eqiad.wmnet
+- 10.64.16.172                # druid1005.eqiad.wmnet
+- 2620:0:861:102:10:64:16:172 # druid1005.eqiad.wmnet
+- 10.64.48.171                # druid1006.eqiad.wmnet
+- 2620:0:861:107:10:64:48:171 # druid1006.eqiad.wmnet

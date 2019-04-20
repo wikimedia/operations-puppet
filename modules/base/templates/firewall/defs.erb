@@ -35,6 +35,13 @@ mgmt_networks = scope.lookupvar('network::constants::mgmt_networks')
 
 @def $CUMIN_MASTERS = (<%- @cumin_masters.each do |ip| -%><%= ip %> <% end -%>);
 @def $CACHES = (<%- @cache_hosts.each do |ip| -%><%= ip %> <% end -%>);
+@def $KAFKA_BROKERS_MAIN = (<%- @kafka_brokers_main.each do |ip| -%><%= ip %> <% end -%>);
+@def $KAFKA_BROKERS_ANALYTICS = (<%- @kafka_brokers_analytics.each do |ip| -%><%= ip %> <% end -%>);
+@def $KAFKA_BROKERS_JUMBO = (<%- @kafka_brokers_jumbo.each do |ip| -%><%= ip %> <% end -%>);
+@def $KAFKA_BROKERS_LOGGING = (<%- @kafka_brokers_logging.each do |ip| -%><%= ip %> <% end -%>);
+@def $ZOOKEEPER_HOSTS_MAIN = (<%- @zookeeper_hosts_main.each do |ip| -%><%= ip %> <% end -%>);
+@def $HADOOP_MASTERS = (<%- @hadoop_masters.each do |ip| -%><%= ip %> <% end -%>);
+@def $DRUID_PUBLIC_HOSTS = (<%- @druid_public_hosts.each do |ip| -%><%= ip %> <% end -%>);
 <%- special_hosts.sort.map do |realm, services | -%>
 	<%- if @realm != realm then next end -%>
 	<%- services.sort.map do |service, addresses| -%>
