@@ -3,6 +3,7 @@ class profile::openstack::base::pdns::auth::db(
     $second_region_designate_host = hiera('profile::openstack::base::second_region_designate_host'),
     $pdns_db_pass = hiera('profile::openstack::base::pdns:db_pass'),
     $pdns_admin_db_pass = hiera('profile::openstack::base::pdns::db_admin_pass'),
+    Array[String] $mysql_root_clients = hiera('mysql_root_clients', []),
     ) {
 
     $designate_host_ip = ipresolve($designate_host,4)
@@ -13,8 +14,9 @@ class profile::openstack::base::pdns::auth::db(
     # install mysql locally on all dns servers
     include ::profile::mariadb::monitor::dba
     # for DBA admin root purposes
+    $mysql_root_clients_str = join($mysql_root_clients, ' ')
     ferm::rule { 'mariadb_dba':
-        rule => 'saddr ($MYSQL_ROOT_CLIENTS) proto tcp dport (3306) ACCEPT;',
+        rule => "saddr (${mysql_root_clients_str}) proto tcp dport (3306) ACCEPT;",
     }
 
     # Note:  This will install mariadb but won't set up the

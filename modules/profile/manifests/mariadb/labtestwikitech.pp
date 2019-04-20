@@ -1,5 +1,6 @@
 class profile::mariadb::labtestwikitech(
     $maintenance_hosts = hiera('maintenance_hosts'),
+    Array[String] $mysql_root_clients = hiera('mysql_root_clients', []),
 ){
     include passwords::misc::scripts
     include mariadb::packages_wmf
@@ -13,16 +14,16 @@ class profile::mariadb::labtestwikitech(
     }
 
     # mysql monitoring and administration from root clients/tendril
-    $mysql_root_clients = join($::network::constants::special_hosts['production']['mysql_root_clients'], ' ')
+    $mysql_root_clients_str = join($mysql_root_clients, ' ')
     ferm::service { 'mysql_admin_standard':
         proto  => 'tcp',
         port   => '3306',
-        srange => "(${mysql_root_clients})",
+        srange => "(${mysql_root_clients_str})",
     }
     ferm::service { 'mysql_admin_alternative':
         proto  => 'tcp',
         port   => '3307',
-        srange => "(${mysql_root_clients})",
+        srange => "(${mysql_root_clients_str})",
     }
 
     # mysql from deployment master servers and maintenance hosts (T98682, T109736)

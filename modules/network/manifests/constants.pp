@@ -38,16 +38,6 @@ class network::constants {
                     '10.192.32.24',                     # deploy2001.codfw.wmnet
                     '2620:0:860:103:10:192:32:24',      # deploy2001.codfw.wmnet
                 ],
-            'mysql_root_clients' => [
-                    # ipv6 interfaces are not yet allowed due to mysql grants
-                    # do not put dns names or hostnames here, only ipv4
-                    '10.64.0.122',                 # db1115.eqiad.wmnet
-                    '10.192.48.91',                # db2093.codfw.wmnet
-                    '10.64.32.20',                 # neodymium.eqiad.wmnet
-                    '10.192.0.140',                # sarin.codfw.wmnet
-                    '10.64.32.25',                 # cumin1001.eqiad.wmnet
-                    '10.192.48.16',                # cumin2001.codfw.wmnet
-                ],
             },
         'labs' => {
             'monitoring_hosts' => [

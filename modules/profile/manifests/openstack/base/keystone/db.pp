@@ -7,19 +7,20 @@ class profile::openstack::base::keystone::db(
     $designate_host = hiera('profile::openstack::base::designate_host'),
     $second_region_designate_host = hiera('profile::openstack::base::second_region_designate_host'),
     $osm_host = hiera('profile::openstack::base::osm_host'),
+    Array[String] $mysql_root_clients = hiera('mysql_root_clients', []),
     ) {
 
     # mysql monitoring and administration from root clients/tendril
-    $mysql_root_clients = join($::network::constants::special_hosts['production']['mysql_root_clients'], ' ')
+    $mysql_root_clients_str = join($mysql_root_clients, ' ')
     ferm::service { 'mysql_admin_standard':
         proto  => 'tcp',
         port   => '3306',
-        srange => "(${mysql_root_clients})",
+        srange => "(${mysql_root_clients_str})",
     }
     ferm::service { 'mysql_admin_alternative':
         proto  => 'tcp',
         port   => '3307',
-        srange => "(${mysql_root_clients})",
+        srange => "(${mysql_root_clients_str})",
     }
 
     ferm::rule{'mysql_nova':
