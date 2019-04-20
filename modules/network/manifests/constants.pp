@@ -134,14 +134,6 @@ class network::constants {
                     '10.64.36.129',                       # analytics1029.eqiad.wmnet
                     '2620:0:861:106:10:64:36:129',        # analytics1029.eqiad.wmnet
                 ],
-            'druid_analytics_hosts' => [
-                    '10.64.5.101',                        # druid1001.eqiad.wmnet
-                    '2620:0:861:104:10:64:5:101',         # druid1001.eqiad.wmnet
-                    '10.64.36.102',                       # druid1002.eqiad.wmnet
-                    '2620:0:861:106:10:64:36:102',        # druid1002.eqiad.wmnet
-                    '10.64.53.103',                       # druid1003.eqiad.wmnet
-                    '2620:0:861:108:10:64:53:103',        # druid1003.eqiad.wmnet
-                ],
             'druid_public_hosts' => [
                     '10.64.0.35',                         # druid1004.eqiad.wmnet
                     '2620:0:861:101:10:64:0:35',          # druid1004.eqiad.wmnet
