@@ -58,9 +58,8 @@ class profile::mediawiki::php(
         'display_errors'         => 'stderr',
         'memory_limit'           => '500M',
         'error_reporting'        => 'E_ALL & ~E_STRICT',
-        'mysql'                  => { 'connect_timeout' => 3},
+        'mysql'                  => { 'connect_timeout' => 3 },
         'default_socket_timeout' => 60,
-        'doc_root'               => '/srv/mediawiki/docroot'
     }
 
     # Custom config for php-fpm
