@@ -10,6 +10,7 @@
 # Always bind to specific addresses - pdns complains when using INADDR_ANY.
 # Change this to the external interface address
 local-address=<%= @dns_auth_ipaddress %>
+<% if @dns_auth_ipaddress6 then %>local-ipv6=<%= @dns_auth_ipaddress6 %><% end %>
 query-local-address=<% if has_variable?("dns_auth_query_address") then %><%= @dns_auth_query_address %><% else %><%= @dns_auth_ipaddress %><% end %>
 
 # dig SOA wmflabs.org

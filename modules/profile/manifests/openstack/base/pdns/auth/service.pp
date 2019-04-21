@@ -7,6 +7,7 @@ class profile::openstack::base::pdns::auth::service(
 
     class { '::pdns_server':
         dns_auth_ipaddress     => $facts['ipaddress'],
+        dns_auth_ipaddress6    => $facts['ipaddress6'],
         dns_auth_query_address => $facts['ipaddress'],
         dns_auth_soa_name      => $host,
         pdns_db_host           => $db_host,

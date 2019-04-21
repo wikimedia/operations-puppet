@@ -1,7 +1,8 @@
 # pdns_server/init.pp
 #
 # Parameters:
-# - $dns_auth_ipaddress:IP address PowerDNS will bind to and send packets from
+# - $dns_auth_ipaddress:IPv4 address PowerDNS will bind to and send packets from
+# - $dns_auth_ipaddress6:IPv6 address PowerDNS will bind to and send packets from
 # - $dns_auth_soa_name:DNS SOA name of the server
 # - $pdns_db_host:Database server backing PDNS
 # - $pdns_db_password:PDNS user database password
@@ -9,6 +10,7 @@
 
 class pdns_server(
     $dns_auth_ipaddress,
+    $dns_auth_ipaddress6,
     $dns_auth_soa_name,
     $pdns_db_host,
     $pdns_db_password,
