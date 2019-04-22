@@ -266,6 +266,3 @@ GRANT ALL PRIVILEGES ON nova_eqiad1.* TO 'nova'@'208.80.154.23' IDENTIFIED BY '<
 GRANT ALL PRIVILEGES ON nova_api_eqiad1.* TO 'nova'@'208.80.154.23' IDENTIFIED BY '<%= @nova_dbpass %>' WITH MAX_USER_CONNECTIONS 100;
 GRANT ALL PRIVILEGES ON nova_eqiad1.* TO 'nova'@'208.80.154.132' IDENTIFIED BY '<%= @nova_dbpass %>' WITH MAX_USER_CONNECTIONS 100;
 GRANT ALL PRIVILEGES ON nova_api_eqiad1.* TO 'nova'@'208.80.154.132' IDENTIFIED BY '<%= @nova_dbpass %>' WITH MAX_USER_CONNECTIONS 100;
--- For legacy support, allow labcontrol1001 to access these as well
-GRANT ALL PRIVILEGES ON nova_eqiad1.* TO 'nova'@'208.80.154.92' IDENTIFIED BY '<%= @nova_dbpass %>' WITH MAX_USER_CONNECTIONS 100;
-GRANT ALL PRIVILEGES ON nova_api_eqiad1.* TO 'nova'@'208.80.154.92' IDENTIFIED BY '<%= @nova_dbpass %>' WITH MAX_USER_CONNECTIONS 100;

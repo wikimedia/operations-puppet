@@ -2895,20 +2895,6 @@ host kubestage1002 {
      fixed-address kubestage1002.eqiad.wmnet;
 }
 
-host labcontrol1001 {
-    hardware ethernet 84:2b:2b:77:cf:ca;
-    fixed-address labcontrol1001.wikimedia.org;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/trusty-installer/";
-    filename "lpxelinux.0";
-}
-
-host labcontrol1002 {
-    hardware ethernet 18:03:73:f5:2c:2b;
-    fixed-address labcontrol1002.wikimedia.org;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/trusty-installer/";
-    filename "lpxelinux.0";
-}
-
 host labpuppetmaster1001 {
     hardware ethernet 30:e1:71:5d:23:48;
     fixed-address labpuppetmaster1001.wikimedia.org;

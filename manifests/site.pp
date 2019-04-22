@@ -1247,19 +1247,11 @@ node /kubestage100[12]\.eqiad\.wmnet/ {
 }
 
 node 'labcontrol1001.wikimedia.org' {
-    role(wmcs::openstack::main::control)
-    interface::add_ip6_mapped { 'main': }
+    role(spare::system)
 }
 
-# labcontrol1002 is a hot spare for 1001.
-#  Switching it on involves changing the values in hiera
-#  that trigger 1002 to start designate.
-#  Changing the keystone catalog to point to labcontrol1002:
-#  basically repeated use of 'keystone endpoint-list,'
-#  'keystone endpoint-create' and 'keystone endpoint-delete.'
 node 'labcontrol1002.wikimedia.org' {
-    role(wmcs::openstack::main::control)
-    interface::add_ip6_mapped { 'main': }
+    role(spare::system)
 }
 
 node 'cloudcontrol2001-dev.wikimedia.org' {
