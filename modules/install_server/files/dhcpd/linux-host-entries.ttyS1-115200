@@ -2923,20 +2923,6 @@ host labmon1002 {
     filename "lpxelinux.0";
 }
 
-host labnet1001 {
-    hardware ethernet d4:be:d9:af:66:ba;
-    fixed-address labnet1001.eqiad.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/trusty-installer/";
-    filename "lpxelinux.0";
-}
-
-host labnet1002 {
-    hardware ethernet 18:03:73:ed:d9:95;
-    fixed-address labnet1002.eqiad.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/trusty-installer/";
-    filename "lpxelinux.0";
-}
-
 host cloudservices1003 {
     hardware ethernet 30:e1:71:70:ad:48;
     fixed-address cloudservices1003.wikimedia.org;
