@@ -23,7 +23,9 @@ define profile::mariadb::ferm (
     } else {
         $extra_port = 20 + $port
     }
-    ferm::rule { "${title}_mariadb_dba":
-        rule => "saddr (\$MYSQL_ROOT_CLIENTS) proto tcp dport (${extra_port}) ACCEPT;",
+    ferm::service { "${title}_mariadb_dba":
+        proto  => 'tcp',
+        port   => $extra_port,
+        srange => '$MYSQL_ROOT_CLIENTS',
     }
 }
