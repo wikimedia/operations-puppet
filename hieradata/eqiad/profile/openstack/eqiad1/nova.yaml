@@ -14,6 +14,13 @@ profile::openstack::eqiad1::nova::physical_interface_mappings:
 #  hosts.  Nodes currently allocated for eqiad1 are
 #  cloudvirt1008 through cloudvirt1030.
 #
+#   cloudvirt1001: depooled but ready
+#   cloudvirt1002: depooled but ready
+#   cloudvirt1003: depooled but ready
+#   cloudvirt1004: depooled but ready
+#   cloudvirt1005: pooled
+#   cloudvirt1006: pooled
+#   cloudvirt1007: offline pending a drive replacement
 #   cloudvirt1008: pooled
 #   cloudvirt1009: pooled
 #   cloudvirt1010: does not exist (formerly a leased system)
@@ -54,6 +61,8 @@ profile::openstack::eqiad1::nova::physical_interface_mappings:
 #
 #
 profile::openstack::eqiad1::nova::scheduler_pool:
+  - cloudvirt1005
+  - cloudvirt1006
   - cloudvirt1008
   - cloudvirt1009
   - cloudvirt1012
