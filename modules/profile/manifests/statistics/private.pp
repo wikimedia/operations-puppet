@@ -66,7 +66,7 @@ class profile::statistics::private(
     # rsync mediawiki logs from logging hosts
     class { '::statistics::rsync::mediawiki': }
 
-    # Allowing statistics nodes (mostly labsdb100[6,7] in this case)
+    # Allowing statistics nodes (mostly clouddb hosts in this case)
     # to push nginx access logs to a specific /srv path. We usually
     # allow only pull based rsyncs, but after T211330 we needed a way
     # to unbreak that use case. This rsync might be removed in the future.

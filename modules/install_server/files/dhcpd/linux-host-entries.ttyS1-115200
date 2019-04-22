@@ -3052,16 +3052,6 @@ host labstore2004 {
     filename "lpxelinux.0";
 }
 
-host labsdb1006 {
-    hardware ethernet d4:be:d9:f0:21:31;
-    fixed-address labsdb1006.eqiad.wmnet;
-}
-
-host labsdb1007 {
-    hardware ethernet d4:be:d9:f0:0d:81;
-    fixed-address labsdb1007.eqiad.wmnet;
-}
-
 host labsdb1009 {
     hardware ethernet 1c:98:ec:1a:6b:68;
     fixed-address labsdb1009.eqiad.wmnet;
