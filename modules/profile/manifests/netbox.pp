@@ -6,6 +6,7 @@
 #       Deploy Netbox
 #       Install apache, gunicorn, configure reverse proxy to gunicorn, LDAP
 #       authentication and database
+#       set up Netbox report alerts / automated running.
 #
 # Requires:
 #
@@ -24,7 +25,8 @@ class profile::netbox (
     Stdlib::HTTPSUrl $nb_api = hiera('profile::netbox::netbox_api'),
     Stdlib::Host $puppetdb_host = hiera('puppetdb_host'),
     Integer $puppetdb_microservice_port = hiera('profile::puppetdb::microservice::port'),
-    Array[Hash[String, Scalar, 3, 3]] $nb_ganeti_profiles = hiera('profile::netbox::ganeti_sync_profiles')
+    Array[Hash[String, Scalar, 3, 3]] $nb_ganeti_profiles = hiera('profile::netbox::ganeti_sync_profiles'),
+    Array[Hash] $nb_report_checks = hiera('profile::netbox::netbox_report_checks'),
 ) {
 
     include passwords::netbox
@@ -222,5 +224,59 @@ class profile::netbox (
         group   => 'www-data',
         mode    => '0440',
         content => template('profile/netbox/netbox-reports.cfg.erb')
+    }
+
+    # packages required by report checker
+    require_package('python3-pynetbox', 'python3-requests')
+
+    # Deploy the report checker
+    file { '/usr/local/lib/nagios/plugins/check_netbox_report.py':
+        ensure => present,
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0555',
+        source => 'puppet:///modules/icinga/check_netbox_report.py',
+    }
+
+    # Generate report checker icinga checks from Hier data
+    $nb_report_checks.each |$report| {
+        $repname = $report['name']
+        $reports = $report['classes']
+
+        if $report['alert'] {
+            $check_args = ''
+        }
+        else {
+            $check_args = '-w'
+        }
+
+        if $report['check_interval'] {
+            ::nrpe::monitor_service { "check_netbox_${repname}":
+                ensure         => $monitoring_ensure,
+                description    => "Check the Netbox report(s) `${repname}` for fail status.",
+                nrpe_command   => "/usr/bin/python3 /usr/local/lib/nagios/plugins/check_netbox_report.py ${check_args} ${reports}",
+                check_interval => $report['check_interval'],
+                notes_url      => 'https://wikitech.wikimedia.org/wiki/Netbox#Reports',
+            }
+        }
+        else {
+            ::nrpe::monitor_service { "check_${repname}":
+                ensure       => absent,
+            }
+        }
+        if $report['run_interval'] {
+            ::nrpe::monitor_service { "check_netbox_${repname}_run":
+                ensure         => $monitoring_ensure,
+                description    => "Run the Netbox report(s) `${repname}` and check for fail status.",
+                nrpe_command   => "/usr/bin/python3 /usr/local/lib/nagios/plugins/check_netbox_report.py ${check_args} ${reports}",
+                check_interval => $report['run_interval'],
+                notes_url      => 'https://wikitech.wikimedia.org/wiki/Netbox#Reports',
+            }
+        }
+        else {
+            ::nrpe::monitor_service { "check_${repname}_run":
+                ensure       => absent,
+            }
+        }
     }
 }

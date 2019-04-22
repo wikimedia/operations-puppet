@@ -6,3 +6,24 @@ profile::netbox::slave_ipv4: '208.80.153.110'
 profile::netbox::slave_ipv6: '2620:0:860:4:208:80:153:110'
 profile::netbox::ganeti_sync_interval: 15
 diamond::remove: true
+profile::netbox::netbox_report_checks:
+    -   name: oldhardware
+        classes: 'oldhardware.OldHardwareReport'
+        alert: false
+        check_interval: null # never do a non-run check
+        run_interval: 1440   # once a day!
+    -   name: puppetdb
+        classes: 'puppetdb.PuppetDB'
+        alert: false
+        check_interval: 5
+        run_interval: 30
+    -   name: coherence
+        classes: 'coherence.Coherence'
+        alert: false
+        check_interval: 5
+        run_interval: 30
+    -   name: management
+        classes: 'management.ManagementConsole'
+        alert: false
+        check_interval: 5
+        run_interval: 30
