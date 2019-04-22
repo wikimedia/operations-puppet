@@ -225,8 +225,8 @@ labtest:
   # no Icinga SMS for test machines
   do_paging: false
   labsldapconfig:
-    hostname: labtestservices2001.wikimedia.org
-    secondary_hostname: labtestservices2001.wikimedia.org
+    hostname: cloudservices2002-dev.wikimedia.org
+    secondary_hostname: cloudservices2002-dev.wikimedia.org
   mariadb::monitor_process::is_critical: false
   mariadb::monitor_disk::is_critical: false
 

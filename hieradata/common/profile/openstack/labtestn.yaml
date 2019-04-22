@@ -6,8 +6,8 @@ profile::openstack::labtestn::keystone_host: 'labtestcontrol2003.wikimedia.org'
 profile::openstack::labtestn::nova_api_host: 'labtestcontrol2003.wikimedia.org'
 profile::openstack::labtestn::designate_host: 'cloudservices2002-dev.wikimedia.org'
 profile::openstack::labtestn::designate_host_standby: 'cloudservices2002-dev.wikimedia.org'
-profile::openstack::labtestn::second_region_designate_host: 'labtestservices2001.wikimedia.org'
-profile::openstack::labtestn::second_region_designate_host_standby: 'labtestservices2001.wikimedia.org'
+profile::openstack::labtestn::second_region_designate_host: 'cloudservices2002-dev.wikimedia.org'
+profile::openstack::labtestn::second_region_designate_host_standby: 'cloudservices2002-dev.wikimedia.org'
 profile::openstack::labtestn::puppetmaster_hostname: 'labtest-puppetmaster.wikimedia.org'
 profile::openstack::labtestn::labs_hosts_range: '10.192.20.0/24'
 profile::openstack::labtestn::labs_hosts_range_v6: '2620:0:860:118::/64'
@@ -15,7 +15,7 @@ profile::openstack::labtestn::spice_hostname: 'labtestnspice.wikimedia.org'
 profile::openstack::labtestn::rabbit_monitor_user: 'monitoring'
 profile::openstack::labtestn::rabbit_file_handles: 8192
 profile::openstack::labtestn::osm_host: 'labtestwikitech.wikimedia.org'
-profile::openstack::labtestn::ldap_hosts: ['labtestservices2001.wikimedia.org']
+profile::openstack::labtestn::ldap_hosts: ['cloudservices2002-dev.wikimedia.org']
 profile::openstack::labtestn::region: 'codfw1dev-r'
 profile::openstack::labtestn::labweb_hosts:
   - cloudweb2001-dev.wikimedia.org

@@ -11,8 +11,8 @@ labsdnsconfig:
   recursor_secondary: 'codfw1dev-recursor0.wikimedia.org'
 
 labsldapconfig:
-  hostname: "labtestservices2001.wikimedia.org"
-  secondary_hostname: "labtestservices2001.wikimedia.org"
+  hostname: "cloudservices2002-dev.wikimedia.org"
+  secondary_hostname: "cloudservices2002-dev.wikimedia.org"
 
 labs_tld: "labtest"
 

@@ -1,4 +1,4 @@
-profile::openldap::hostname: labtestservices2001.wikimedia.org
+profile::openldap::hostname: cloudservices2002-dev.wikimedia.org
 profile::openldap::mirror_mode: false
 profile::openldap::backup: false
 profile::openldap::read_only: false

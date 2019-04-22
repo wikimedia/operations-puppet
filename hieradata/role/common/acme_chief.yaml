@@ -70,12 +70,12 @@ profile::acme_chief::certificates:
         authorized_hosts:
         - 'cloudservices2002-dev.wikimedia.org'
     ldap-labtest:
-        CN: 'labtestservices2001.wikimedia.org'
+        CN: 'cloudservices2002-dev.wikimedia.org'
         SNI:
-        - 'labtestservices2001.wikimedia.org'
+        - 'cloudservices2002-dev.wikimedia.org'
         challenge: dns-01
         authorized_regexes:
-        - '^labtestservices2001\.wikimedia\.org$'
+        - '^cloudservices2002-dev\.wikimedia\.org$'
     librenms:
         CN: 'librenms.wikimedia.org'
         SNI:

@@ -35,7 +35,7 @@ striker::uwsgi::config:
   debug:
     DEBUG: false
   ldap:
-    SERVER_URI: ldap://labtestservices2001.wikimedia.org:389
+    SERVER_URI: ldap://cloudservices2002-dev.wikimedia.org:389
     BIND_USER: uid=novaadmin,ou=people,dc=wikimedia,dc=org
     TLS: true
   oauth:

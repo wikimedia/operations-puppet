@@ -1,7 +1,7 @@
 - name: default
   also_notifies: []
   attributes: {}
-  description: Pool built from configuration on labtestservices2001
+  description: Pool built from configuration on cloudservices2002-dev
   id: 794ccc2c-d751-44fe-b57f-8894c9f5c842
   nameservers:
   - host: 208.80.153.48
