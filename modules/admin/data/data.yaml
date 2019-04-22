@@ -328,8 +328,10 @@ groups:
                  * Reset authentication of users
                  * Delete users (e.g. unverified accounts due to wrong email address)
                  * Delete files (e.g. copyright violations)
+                 * Convert projects to subprojects or milestones of another project 
     members: [aklapper, gjg]
     privileges: ['ALL = NOPASSWD: /srv/phab/phabricator/bin/cache purge --caches user',
+                 'ALL = NOPASSWD: /srv/phab/phabricator/bin/move_project',
                  'ALL = NOPASSWD: /srv/phab/phabricator/bin/remove destroy F*',
                  'ALL = NOPASSWD: /srv/phab/phabricator/bin/remove destroy H*',
                  'ALL = NOPASSWD: /srv/phab/phabricator/bin/remove destroy W*',
