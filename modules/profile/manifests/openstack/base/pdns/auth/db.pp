@@ -27,7 +27,7 @@ class profile::openstack::base::pdns::auth::db(
 
     # this override/split should probably go elsewhere, but hey
     if $::lsbdistcodename == 'stretch' {
-        $mariadb_pkg = 'wmf-mariadb103'
+        $mariadb_pkg = 'wmf-mariadb101'
     } else {
         $mariadb_pkg = 'wmf-mariadb10'
     }
