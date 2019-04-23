@@ -1,7 +1,6 @@
 # === class profile::trafficserver::backend
 #
-# Sets up a Traffic Server backend instance with HTCP-based HTTP purging and
-# Nagios checks.
+# Sets up a Traffic Server backend instance with relevant Nagios checks.
 #
 class profile::trafficserver::backend (
     Wmflib::IpPort $port=hiera('profile::trafficserver::backend::port', 3128),
@@ -14,9 +13,6 @@ class profile::trafficserver::backend (
     Array[TrafficServer::Log_format] $log_formats=hiera('profile::trafficserver::backend::log_formats', []),
     Array[TrafficServer::Log_filter] $log_filters=hiera('profile::trafficserver::backend::log_filters', []),
     Array[TrafficServer::Log] $logs=hiera('profile::trafficserver::backend::logs', []),
-    String $purge_host_regex=hiera('profile::trafficserver::backend::purge_host_regex', ''),
-    Array[Stdlib::Compat::Ip_address] $purge_multicasts=hiera('profile::trafficserver::backend::purge_multicasts', ['239.128.0.112', '239.128.0.113', '239.128.0.114', '239.128.0.115']),
-    Array[String] $purge_endpoints=hiera('profile::trafficserver::backend::purge_endpoints', ['127.0.0.1:3128']),
 ){
     # Add hostname as a parameter to the default global Lua plugin
     $global_lua_script = $default_lua_script? {
@@ -90,13 +86,6 @@ class profile::trafficserver::backend (
 
     prometheus::trafficserver_exporter { 'trafficserver_exporter':
         endpoint => "http://127.0.0.1:${port}/_stats",
-    }
-
-    # Purging
-    class { '::varnish::htcppurger':
-        host_regex => $purge_host_regex,
-        mc_addrs   => $purge_multicasts,
-        varnishes  => $purge_endpoints,
     }
 
     # Nagios checks
