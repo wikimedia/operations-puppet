@@ -10,4 +10,5 @@
   - "private/%{::site}"
   - "common"
   - "private/common"
-  - "common/profile/base/puppet" # fake role backend
+  - "common/profile/base/puppet" # fake nuyaml backend
+  - "common/profile/rsyslog/kafka_shipper" # fake nuyaml backend

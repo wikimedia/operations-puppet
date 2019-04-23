@@ -15,6 +15,5 @@ class role::phabricator {
     include ::profile::phabricator::httpd
     include ::profile::phabricator::monitoring
     include ::profile::prometheus::apache_exporter
-    include ::profile::rsyslog::kafka_shipper
     include ::profile::waf::apache2::administrative
 }

@@ -7,6 +7,7 @@ class profile::base(
     $remote_syslog = hiera('profile::base::remote_syslog', ['syslog.eqiad.wmnet', 'syslog.codfw.wmnet']),
     $remote_syslog_tls = hiera('profile::base::remote_syslog_tls', []),
     $enable_rsyslog_exporter = hiera('profile::base::enable_rsyslog_exporter', false),
+    $enable_kafka_shipping = hiera('profile::base::enable_kafka_shipping', true),
     Enum['critical', 'disabled', 'enabled'] $notifications = hiera('profile::base::notifications', 'enabled'),
     $monitor_systemd = hiera('profile::base::monitor_systemd', true),
     $core_dump_pattern = hiera('profile::base::core_dump_pattern', '/var/tmp/core/core.%h.%e.%p.%t'),
@@ -61,6 +62,9 @@ class profile::base(
     class { '::rsyslog': }
     if $enable_rsyslog_exporter and os_version('debian >= jessie') {
         include ::profile::prometheus::rsyslog_exporter
+    }
+    class {'profile::rsyslog::kafka_shipper':
+      enable => $enable_kafka_shipping,
     }
 
     unless empty($remote_syslog) and empty($remote_syslog_tls) {

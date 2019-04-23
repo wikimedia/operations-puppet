@@ -35,7 +35,6 @@ class role::ci::master {
     include ::profile::kubernetes::deployment_server
     include ::profile::ci::kubernetes_config
 
-    include ::profile::rsyslog::kafka_shipper
 
     # TODO: T186790. Force the order of docker group ensuring to be before
     # adding jenkins-slave to it. This is a flawed approach and should be better

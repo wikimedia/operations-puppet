@@ -6,8 +6,6 @@
 class profile::grafana::production {
     include ::profile::grafana
 
-    include ::profile::rsyslog::kafka_shipper
-
     # On Grafana 5 and later, datasource configurations are stored in Puppet
     # as YAML and pushed to Grafana that way, which reads them at startup.
     # Being on stretch is a proxy for Grafana>=5.

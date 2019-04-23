@@ -16,6 +16,4 @@ class role::deployment_server {
     backup::set {'home': }
     # proxy for connection to other servers
     include ::profile::services_proxy
-    # ship logs through the logging pipeline
-    include ::profile::rsyslog::kafka_shipper
 }

@@ -273,3 +273,4 @@ cache_hosts:
 # use aliases to provide for backwards compatibility
 # perhaps this doesn't work with our current version of puppet
 # profile::base::puppet::puppetmaster: "%{alias('puppetmaster')}"
+profile::base::enable_kafka_shipping: false

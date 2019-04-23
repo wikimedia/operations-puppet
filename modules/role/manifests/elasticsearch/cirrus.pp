@@ -9,7 +9,6 @@ class role::elasticsearch::cirrus {
     include ::profile::elasticsearch::cirrus
     include ::profile::mjolnir::kafka_bulk_daemon
     include ::profile::mjolnir::kafka_msearch_daemon
-    include ::profile::rsyslog::kafka_shipper
 
     system::role { 'elasticsearch::cirrus':
         ensure      => 'present',
