@@ -32,7 +32,7 @@ profile::redis::master::settings:
 profile::maps::apps::kartotherian_storage_id: v4
 profile::maps::apps::tilerator_storage_id: v4
 
-profile::maps::apps::tilerator_ncpu_ratio: 0.5  # half the CPU used by tilerator
+profile::maps::apps::tilerator_ncpu_ratio: 0.3
 
 profile::maps::apps::use_proxy: true
 
