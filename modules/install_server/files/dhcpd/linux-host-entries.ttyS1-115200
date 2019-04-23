@@ -5948,20 +5948,6 @@ host restbase1018 {
     filename "lpxelinux.0";
 }
 
-host restbase2007 {
-    hardware ethernet 14:02:ec:06:a9:dc;
-    fixed-address restbase2007.codfw.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
-    filename "lpxelinux.0";
-}
-
-host restbase2008 {
-    hardware ethernet 14:02:ec:07:90:08;
-    fixed-address restbase2008.codfw.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
-    filename "lpxelinux.0";
-}
-
 host restbase2009 {
     hardware ethernet 14:02:ec:06:9a:fc;
     fixed-address restbase2009.codfw.wmnet;

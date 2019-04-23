@@ -2006,11 +2006,6 @@ node /^restbase-dev100[4-6]\.eqiad\.wmnet$/ {
     role(restbase::dev_cluster)
 }
 
-# restbase hosts to be decommissioned - T208087
-node /^restbase200[78]\.codfw\.wmnet$/ {
-    role(spare::system)
-}
-
 # network insights (netflow/pmacct, etc.)
 node 'rhenium.wikimedia.org' {
     role(netinsights)
