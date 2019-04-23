@@ -117,13 +117,6 @@ class profile::openstack::eqiad1::keystone::service(
         rule   => "saddr @resolve(${designate_host}) proto tcp dport (35357) ACCEPT;",
     }
 
-    ferm::rule { 'main_nova_35357':
-        ensure => 'present',
-        rule   => "saddr (@resolve(${main_nova_controller})
-                          @resolve(${main_nova_controller}, AAAA))
-                   proto tcp dport (35357) ACCEPT;",
-    }
-
     file { '/etc/cron.hourly/keystone':
         ensure => absent,
     }
