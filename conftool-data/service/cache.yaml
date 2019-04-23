@@ -71,6 +71,7 @@ cache_upload:
     datacenters:
       - codfw
       - eqiad
+      - ulsfo
   nginx:
     port: 443
     default_values:
