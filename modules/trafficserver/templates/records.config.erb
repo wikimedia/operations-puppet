@@ -69,19 +69,28 @@ CONFIG proxy.config.log.rolling_enabled INT 0
 # Flush logs immediately
 CONFIG proxy.config.log.max_secs_per_buffer INT 0
 
+<% if @outbound_tls_settings -%>
 # Outbound TLS settings
-CONFIG proxy.config.ssl.client.TLSv1 INT <%= @outbound_tlsv1 %>
-CONFIG proxy.config.ssl.client.TLSv1_1 INT <%= @outbound_tlsv1_1 %>
-CONFIG proxy.config.ssl.client.TLSv1_2 INT <%= @outbound_tlsv1_2 %>
-<% if @outbound_tls_cipher_suite != '' -%>
-CONFIG proxy.config.ssl.client.cipher_suite STRING <%= @outbound_tls_cipher_suite %>
+CONFIG proxy.config.ssl.client.TLSv1 INT <%= @outbound_tls_settings['common']['enable_tlsv1'] %>
+CONFIG proxy.config.ssl.client.TLSv1_1 INT <%= @outbound_tls_settings['common']['enable_tlsv1_1'] %>
+CONFIG proxy.config.ssl.client.TLSv1_2 INT <%= @outbound_tls_settings['common']['enable_tlsv1_2'] %>
+CONFIG proxy.config.ssl.client.TLSv1_3 INT <%= @outbound_tls_settings['common']['enable_tlsv1_3'] %>
+<% if @outbound_tls_settings['common']['cipher_suite'] -%>
+CONFIG proxy.config.ssl.client.cipher_suite STRING <%= @outbound_tls_settings['common']['cipher_suite'] %>
 <% end -%>
-<% if @outbound_tls_verify_origin -%>
+<% if @outbound_tls_settings['common']['cipher_suite_tlsv1_3'] -%>
+CONFIG proxy.config.ssl.client.TLSv1_3.cipher_suites STRING <%= @outbound_tls_settings['common']['cipher_suite_tlsv1_3'] %>
+<% end -%>
+<% if @outbound_tls_settings['common']['groups_list'] -%>
+CONFIG proxy.config.ssl.client.groups_list STRING <%= @outbound_tls_settings['common']['groups_list'] %>
+<% end -%>
+<% if @outbound_tls_settings['verify_origin'] -%>
 # Origin server certificate validation settings
 CONFIG proxy.config.ssl.client.verify.server INT 2
-CONFIG proxy.config.ssl.client.CA.cert.path STRING <%= @outbound_tls_cacert_dirpath %>
-<% if @outbound_tls_cacert_filename != '' -%>
-CONFIG proxy.config.ssl.client.CA.cert.filename STRING <%= @outbound_tls_cacert_filename %>
+CONFIG proxy.config.ssl.client.CA.cert.path STRING <%= @outbound_tls_settings['cacert_dirpath'] %>
+<% if @outbound_tls_settings['cacert_filename'] -%>
+CONFIG proxy.config.ssl.client.CA.cert.filename STRING <%= @outbound_tls_settings['cacert_filename'] %>
+<% end -%>
 <% end -%>
 <% end -%>
 

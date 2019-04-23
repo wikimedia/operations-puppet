@@ -4,7 +4,7 @@
 #
 class profile::trafficserver::backend (
     Wmflib::IpPort $port=hiera('profile::trafficserver::backend::port', 3128),
-    String $outbound_tls_cipher_suite=hiera('profile::trafficserver::backend::outbound_tls_cipher_suite', ''),
+    Trafficserver::Outbound_TLS_settings $outbound_tls_settings=hiera('profile::trafficserver::backend::outbound_tls_settings'),
     Boolean $enable_xdebug=hiera('profile::trafficserver::backend::enable_xdebug', false),
     Array[TrafficServer::Mapping_rule] $mapping_rules=hiera('profile::trafficserver::backend::mapping_rules', []),
     Array[TrafficServer::Caching_rule] $caching_rules=hiera('profile::trafficserver::backend::caching_rules', []),
@@ -48,19 +48,18 @@ class profile::trafficserver::backend (
     }
 
     class { '::trafficserver':
-        port                         => $port,
-        outbound_tls_cipher_suite    => $outbound_tls_cipher_suite,
-        outbound_tls_cacert_filename => 'Puppet_Internal_CA.pem',
-        enable_xdebug                => $enable_xdebug,
-        global_lua_script            => $global_lua_script,
-        storage                      => $storage,
-        ram_cache_size               => 2147483648, # 2G
-        mapping_rules                => $mapping_rules,
-        caching_rules                => $caching_rules,
-        log_formats                  => $log_formats,
-        log_filters                  => $log_filters,
-        logs                         => $logs,
-        error_page                   => template('mediawiki/errorpage.html.erb'),
+        port                  => $port,
+        outbound_tls_settings => $outbound_tls_settings,
+        enable_xdebug         => $enable_xdebug,
+        global_lua_script     => $global_lua_script,
+        storage               => $storage,
+        ram_cache_size        => 2147483648, # 2G
+        mapping_rules         => $mapping_rules,
+        caching_rules         => $caching_rules,
+        log_formats           => $log_formats,
+        log_filters           => $log_filters,
+        logs                  => $logs,
+        error_page            => template('mediawiki/errorpage.html.erb'),
     }
 
     # Install default Lua script

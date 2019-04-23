@@ -297,7 +297,16 @@ profile::trafficserver::backend::caching_rules:
       value: thorium.eqiad.wmnet
       action: never-cache
 profile::trafficserver::backend::default_lua_script: 'default'
-profile::trafficserver::backend::outbound_tls_cipher_suite: '-ALL:ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384'
+profile::trafficserver::backend::outbound_tls_settings:
+  common:
+    cipher_suite: '-ALL:ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384'
+    enable_tlsv1: 0
+    enable_tlsv1_1: 0
+    enable_tlsv1_2: 1
+    enable_tlsv1_3: 0
+  verify_origin: true
+  cacert_dirpath: '/etc/ssl/certs'
+  cacert_filename: 'Puppet_Internal_CA.pem'
 profile::trafficserver::backend::storage_elements:
     - devname: sda3
       id: disk.0
