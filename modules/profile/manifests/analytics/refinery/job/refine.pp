@@ -74,7 +74,7 @@ class profile::analytics::refinery::job::refine {
             transform_functions             => 'org.wikimedia.analytics.refinery.job.refine.deduplicate_eventbus',
             # Get JSONSchemas from the HTTP schema service.
             # Schema URIs are extracted from the $schema field in each event.
-            schema_base_uri                 => "http://schema.svc.${::site}.wmnet/repositories/mediawiki/jsonschema",
+            schema_base_uri                 => "http://schema.svc.${::site}.wmnet:8190/repositories/mediawiki/jsonschema",
         }),
         # Need to use webproxy to reach schema.svc.$site.wmnet until T221690 is resolved.
         spark_extra_opts => '--driver-java-options=\'-Dhttp.proxyHost=webproxy.eqiad.wmnet -Dhttp.proxyPort=8080 -Dhttps.proxyHost=webproxy.eqiad.wmnet -Dhttps.proxyPort=8080\'',
