@@ -1,6 +1,5 @@
 class profile::cache::varnish::frontend (
     $cache_cluster = hiera('cache::cluster'),
-    $cache_route_table = hiera('cache::route_table'),
     $common_vcl_config = hiera('profile::cache::varnish::common_vcl_config'),
     $fe_vcl_config = hiera('profile::cache::varnish::frontend::fe_vcl_config'),
     $fe_cache_be_opts = hiera('profile::cache::varnish::cache_be_opts'),
@@ -73,7 +72,6 @@ class profile::cache::varnish::frontend (
         admin_port         => 6082,
         storage            => "-s malloc,${fe_mem_gb}G ${fe_transient_storage}",
         jemalloc_conf      => $fe_jemalloc_conf,
-        cache_route        => $cache_route_table[$::site],
         backend_caches     => {
           'cache_local' => {
                 'dc'       => $::site,
