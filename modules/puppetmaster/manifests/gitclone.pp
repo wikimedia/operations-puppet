@@ -202,25 +202,27 @@ class puppetmaster::gitclone(
                 force  => true;
         }
     } else {
-        file { '/var/lib/git/labs':
-            ensure => directory,
-            owner  => $user,
-            group  => $group,
-            mode   => '0755',
-        }
-
-        git::clone { 'labs/private':
-            require   => File["${puppetmaster::gitdir}/labs"],
-            owner     => $user,
-            group     => $group,
-            directory => "${puppetmaster::gitdir}/labs/private",
-        }
-
         file { '/etc/puppet/private':
             ensure => link,
             target => "${puppetmaster::gitdir}/labs/private",
             force  => true,
         }
+    }
+
+    # The labs/private repo isn't used by production
+    #  puppet, but it is maintained by puppet-merge
+    #  so we need a check-out.
+    file { '/var/lib/git/labs':
+        ensure => directory,
+        owner  => $user,
+        group  => $group,
+        mode   => '0755',
+    }
+    git::clone { 'labs/private':
+        require   => File["${puppetmaster::gitdir}/labs"],
+        owner     => $user,
+        group     => $group,
+        directory => "${puppetmaster::gitdir}/labs/private",
     }
 
     git::clone {

@@ -14,7 +14,6 @@ FORCE=0
 USAGE=0
 QUIET=0
 DIFF_ONLY=0
-BASEDIR="/var/lib/git/operations/puppet"
 CONFFILE="/etc/puppet-merge.conf"
 
 usage="$(basename ${0}) [-y|--yes] [SHA1]
@@ -41,6 +40,7 @@ while true; do
         -h|--help) USAGE=1; shift ;;
         -q|--quiet) QUIET=1; shift ;;
         -d|--diffs) DIFF_ONLY=1; shift ;;
+        -p|--labsprivate) LABS_PRIVATE=1; shift ;;
         --) shift ; break ;;
         *) echo "Internal error!"; exit 1 ;;
     esac
@@ -60,7 +60,12 @@ git_user='gitpuppet'
 # We might be running this as root, or as gitpuppet (from an ssh session to a backend)
 running_user=`whoami`
 
-# Default to /var/lib/git/operations/puppet unless $1 is specified
+if [ $LABS_PRIVATE -eq 1 ]; then
+    BASEDIR="/var/lib/git/labs/private"
+else
+    BASEDIR="/var/lib/git/operations/puppet"
+fi
+
 cd "${BASEDIR}"
 
 echo "Fetching new commits from $(git config --get remote.origin.url)"
@@ -190,7 +195,11 @@ if [ "${confirmed}" -eq "1" ]; then
     echo "HEAD is now $(git rev-parse HEAD)."
 
     if [ -d "/srv/config-master" ]; then
-        echo $(git rev-parse HEAD) > /srv/config-master/puppet-sha1.txt
+        if [ $LABS_PRIVATE -eq 1 ]; then
+            echo $(git rev-parse HEAD) > /srv/config-master/labsprivate-sha1.txt
+        else
+            echo $(git rev-parse HEAD) > /srv/config-master/puppet-sha1.txt
+        fi
     fi
 
     cd -
@@ -208,15 +217,22 @@ set +e
 <%- if @servers.has_key?(@fqdn) -%>
 # Note: The "true" command is passed on purpose to show that the command passed
 # to the SSH sessions is irrelevant. It's the SSH forced command trick on the
-# worker end that does the actual work. Note that the $sha1 however is important
+# worker end that does the actual work. Note that args (including
+# the $sha1 and possible --labs-private switch) are used.
+
+if [ $LABS_PRIVATE -eq 1 ]; then
+    $private_arg="--labsprivate"
+else
+    $private_arg=""
+fi
 
 if [ -z ${sha1} ]; then # Only loop through the other servers if called without sha1
   <%- @servers.each do |frontend, workers| -%>
     <%- workers.map{ |w| w['worker']}.select{|name| name != @fqdn}.each do |worker| -%>
     if [ $running_user = $git_user ]; then
-        ssh -t -t <%= worker -%> true ${fetch_head_sha1} 2>&1
+        ssh -t -t <%= worker -%> true ${private_arg} ${fetch_head_sha1} 2>&1
     else
-        su - $git_user -c "ssh -t -t <%= worker -%> true ${fetch_head_sha1} 2>&1"
+        su - $git_user -c "ssh -t -t <%= worker -%> true ${private_arg} ${fetch_head_sha1} 2>&1"
     fi
     if [ $? -eq 0 ]; then
         echo "${GREEN}OK${RESET}: puppet-merge on <%= worker %> succeeded"
