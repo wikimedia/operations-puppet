@@ -3,8 +3,11 @@
 domains = wikimedia.org
 default_domain_suffix = wikimedia.org
 full_name_format = %1$s
-services = nss, pam, ssh
+services = nss, pam, ssh, sudo
 config_file_version = 2
+
+[sudo]
+#debug_level=10
 
 [nss]
 #debug_level=10

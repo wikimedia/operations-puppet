@@ -5,6 +5,7 @@ class ldap::client::nosssd
     $packages_absent = [
         'libpam-sss',
         'libnss-sss',
+        'libsss-sudo',
         'sssd',
     ]
 

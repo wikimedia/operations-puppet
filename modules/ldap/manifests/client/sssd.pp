@@ -9,6 +9,7 @@ class ldap::client::sssd(
     $packages_present = [
         'libpam-sss',
         'libnss-sss',
+        'libsss-sudo',
         'sssd',
     ]
 
