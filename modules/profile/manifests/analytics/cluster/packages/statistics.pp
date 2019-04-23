@@ -135,11 +135,9 @@ class profile::analytics::cluster::packages::statistics {
 
     # scap also deploys git-lfs to clients, so guarding
     # the package resource with a !defined as precaution.
-    if os_version('debian <= stretch') {
-        if !defined(Package['git-lfs']) {
-            package { 'git-lfs':
-                ensure => present,
-            }
+    if !defined(Package['git-lfs']) {
+        package { 'git-lfs':
+            ensure => present,
         }
     }
 }
