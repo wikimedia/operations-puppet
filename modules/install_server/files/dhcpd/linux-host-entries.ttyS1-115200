@@ -2923,11 +2923,6 @@ host labpuppetmaster1002 {
     filename "lpxelinux.0";
 }
 
-host labtestweb2001 {
-    hardware ethernet 90:B1:1C:2D:7F:19;
-    fixed-address labtestweb2001.wikimedia.org;
-}
-
 host labmon1001 {
     hardware ethernet 14:58:d0:5f:84:20;
     fixed-address labmon1001.eqiad.wmnet;

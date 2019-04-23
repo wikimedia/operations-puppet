@@ -1277,13 +1277,6 @@ node /cloudvirt200[1-3]-dev\.codfw\.wmnet/ {
     role(wmcs::openstack::codfw1dev::virt)
 }
 
-# This is the labtest server that implements wikitech, horizon, and striker.
-node 'labtestweb2001.wikimedia.org' {
-    role(spare::system)
-    interface::add_ip6_mapped { 'main': }
-}
-
-
 # WMCS Graphite and StatsD hosts
 node /labmon100[12]\.eqiad\.wmnet/ {
     role(wmcs::monitoring)
