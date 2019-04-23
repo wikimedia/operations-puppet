@@ -45,12 +45,7 @@ class profile::base(
 
     include ::profile::base::puppet
 
-    # Temporary workaround for T140100. Remove as soon as Labs instances get
-    # grub-pc or trusty gets phased out from Labs, whichever comes first.
-    if ($::realm == 'production') or (os_version('debian >= jessie')) {
-        class { '::grub::defaults':
-        }
-    }
+    class { '::grub::defaults': }
 
     include ::passwords::root
     include ::network::constants
