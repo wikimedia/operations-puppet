@@ -3583,3 +3583,7 @@ ldap_only_users:
     ensure: present
     realname: Will Doran
     email: wdoran@wikimedia.org
+  jfishback:
+    ensure: present
+    realname: James Fishback
+    email: jfishback@wikimedia.org
