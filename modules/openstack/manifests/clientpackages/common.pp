@@ -15,20 +15,6 @@ class openstack::clientpackages::common(
         ensure => 'present',
     }
 
-    $python3packages = [
-        'python3-keystoneauth1',
-        'python3-keystoneclient',
-        'python3-novaclient',
-        'python3-glanceclient',
-        'python3-openstackclient',
-        'python3-designateclient',
-        'python3-neutronclient',
-    ]
-
-    package{ $python3packages:
-        ensure => 'present',
-    }
-
     $otherpackages = [
         'ebtables',
         'python-netaddr',

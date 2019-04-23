@@ -1,4 +1,5 @@
 ldap::client::nss::nsswitch_conf_source: file:///usr/share/base-files/nsswitch.conf
+profile::openstack::eqiad1::version: newton
 profile::wmcs::nfs::rsync::user: root
 profile::wmcs::nfs::rsync::group: root
 profile::wmcs::nfs::rsync::datapath: /exp
