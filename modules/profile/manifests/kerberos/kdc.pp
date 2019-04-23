@@ -20,6 +20,14 @@ class profile::kerberos::kdc (
         before  => Package['krb5-kdc'],
     }
 
+    file { '/etc/krb5kdc/kadm5.acl':
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0444',
+        source => 'puppet:///modules/profile/kerberos/kadm5.acl',
+        before => Package['krb5-kdc'],
+    }
+
     service { 'krb5-kdc':
         ensure    => running,
     }
