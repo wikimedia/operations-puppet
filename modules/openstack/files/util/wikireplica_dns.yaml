@@ -10,13 +10,16 @@
 #       - Address 2
 #       - ...
 # cnames:
-#   shard_name:
-#     - hostname 1
-#     - hostname 2
+#   host.zone_name.:  # trailing . is important!
+#     - fqdn 1.
+#     - fqdn 2.
 #     - ...
 #
 # This file is managed by Puppet
 zones:
+  svc.eqiad.wmflabs.:
+    tools-redis:
+      - 172.16.5.84
   db.svc.eqiad.wmflabs.:
     tools:
       - 172.16.7.153
@@ -59,7 +62,16 @@ zones:
     s8:
       - 10.64.37.15
 cnames:
-  s7:
-    - centralauth
+  s7.analytics.db.svc.eqiad.wmflabs.:
+    - centralauth.analytics.db.svc.eqiad.wmflabs.
     # [[wikitech:Help:Toolforge/Database#Metadata_database]]
-    - meta
+    - meta.analytics.db.svc.eqiad.wmflabs.
+  s7.web.db.svc.eqiad.wmflabs.:
+    - centralauth.web.db.svc.eqiad.wmflabs.
+    # [[wikitech:Help:Toolforge/Database#Metadata_database]]
+    - meta.web.db.svc.eqiad.wmflabs.
+  tools-redis.svc.eqiad.wmflabs.:
+    - tools-redis.tools.eqiad.wmflabs.
+    - tools-redis.eqiad.wmflabs.
+  tools.db.svc.eqiad.wmflabs.:
+    - tools-db.tools.eqiad.wmflabs.

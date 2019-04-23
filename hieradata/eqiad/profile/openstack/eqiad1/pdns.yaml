@@ -10,10 +10,6 @@ profile::openstack::eqiad1::pdns::recursor_secondary: 'cloud-recursor1.wikimedia
 profile::openstack::eqiad1::pdns::monitor_target_fqdn: 'tools-sgegrid-master.tools.eqiad.wmflabs'
 
 # Extra records that the Labs DNS recursor should respond to.
-# Used for things that would ideally be in a .svc. DNS zone but
-# we do not have one. REMEMBER THE TRAILING DOT.
+# REMEMBER THE TRAILING DOT.
 profile::openstack::eqiad1::pdns::recursor_aliaser_extra_records:
-  tools-db.tools.eqiad.wmflabs.: 172.16.7.153 # clouddb1001.clouddb-services.eqiad.wmnet / tools-db
-  tools-redis.tools.eqiad.wmflabs.: 172.16.5.84 # tools-redis-1002.tools.eqiad.wmflabs
-  tools-redis.eqiad.wmflabs.: 172.16.5.84 # tools-redis-1002.tools.eqiad.wmflabs
   puppet.: 208.80.154.158 # labpuppetmaster1001.wikimedia.org

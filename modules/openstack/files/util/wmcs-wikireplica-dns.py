@@ -27,6 +27,22 @@ import requests
 logger = logging.getLogger(__name__)
 
 
+def find_zone_for_fqdn(client, fqdn):
+    """Find the correct zone to place a fqdn's record in.
+
+    Searches for the longest existing zone that the record could be placed in.
+    """
+    parts = fqdn.split('.')
+    host = parts.pop(0)  # noqa: F841 local variable never used
+    for i in range(len(parts)):
+        domain = '.'.join(parts[i:])
+        if domain:
+            r = client.zones(name=domain)
+            if r:
+                return r[0]
+    return False
+
+
 def main():
     """Manage Designate DNS records for Wiki Replicas."""
     parser = argparse.ArgumentParser(description='Wiki Replica DNS Manager')
@@ -115,12 +131,15 @@ def main():
                         # Take a small break to be nicer to Designate
                         time.sleep(0.25)
 
-                if svc in config['cnames']:
-                    # Add additional aliases for this shard
-                    for host in config['cnames'][svc]:
-                        db_fqdn = '{}.{}'.format(host, zone)
+            if fqdn in config['cnames']:
+                # Add additional aliases for this fqdn
+                for cname in config['cnames'][fqdn]:
+                    zone = find_zone_for_fqdn(dns, cname)
+                    if zone:
                         dns.ensure_recordset(
-                            zone_id, db_fqdn, 'CNAME', [fqdn])
+                            zone['id'], cname, 'CNAME', [fqdn])
+                    else:
+                        logger.warning('Failed to find zone for %s', cname)
 
 
 if __name__ == '__main__':
