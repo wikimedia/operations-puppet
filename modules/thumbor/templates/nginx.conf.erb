@@ -29,7 +29,8 @@ upstream thumbor {
 }
 
 server {
-    listen <%= @listen_port %>;
+# This nginx instance is replaced by haproxy and will soon be removed
+    listen <%= @listen_port + 1000 %>;
 
     location / {
         ssi on;

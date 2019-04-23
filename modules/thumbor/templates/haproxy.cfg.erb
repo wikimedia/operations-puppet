@@ -1,6 +1,6 @@
 listen thumbor
     mode http
-    bind *:<%= @listen_port + 1000 %>
+    bind *:<%= @listen_port %>
     option httplog
     log /dev/log local0 info
 
