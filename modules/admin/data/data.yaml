@@ -982,7 +982,7 @@ users:
     gid: 500
     name: brion
     realname: Brion Vibber
-    ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC8VCaFjLWMBNFmij4lWEIGpfmhoaFxyuLq9DFzZnjjWWXOKvMf0ySuGBAw1lbCfmirKpzRiAw82TVjSHfRKzcmuqyDy0SQolffqrSwk3rghE9yORVN6EfkJCkQQw8h8RX1Dz92hqV32LMT0G9J3oHSixPhUU9SFdtO+eFwZbVKJSlGiWzQItkxoKmLs/Q3Vw2XDYT3hATijXjbnJcOvlIDuys4Timt4goVzg2WEctCP6KFqNrZ0IQnIa88MIL7LwhCw+X6tRBKt7LXhMppHJo62P4ogDnRFKhvjiymCTbTP7KIHn77QGK6qQHlf7z9D8UluEd7md1fo/zbs1UaQOL3 brion@Orac.local]
+    ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDkW110qkapVpZeAYASuZTVYKt3KTr3v9S/5uFQ3SZGpZBjhBu5ly3TaEIxfzbvZqX3FJCyuECEN6NMjLegp6iJBA+HBG8v+fm2Sx4OaPR7oCqEdRhqCaXRYHYPqlA89dY3qBmHLUdyr9HrkViZ1Oa9KdWoJpTgL6A6rozKGXBN7MjuDoX592JMo7HUPCqf3ncb//5/viT3gzSN/lz91i7aApEB2JRV1ozmi2dcTAhNEBLa8mnSwohwyMjaDZhDPfYjz3kprnv8BcmZHUZSSH380VBz9mEsQBNH2+7SCIEfzHLChb5Oczl63Sf4AuIs/veOXpT6Px7IBkaUxAgJrH3L brion@flexo.local]
     uid: 500
     email: bvibber@wikimedia.org
   bsitu:
