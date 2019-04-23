@@ -115,7 +115,7 @@
     shard: s8
     role: slave
   targets:
-  - db2079:9104
+  - db2045:9104
   - db2080:9104
   - db2081:9104
   - db2082:9104
@@ -126,7 +126,7 @@
     shard: s8
     role: master
   targets:
-  - db2045:9104
+  - db2079:9104
 
 - labels:
     shard: es1

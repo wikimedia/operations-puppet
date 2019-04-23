@@ -564,12 +564,12 @@ node /^db1(104|092|087|109)\.eqiad\.wmnet/ {
 
 # s8 (wikidata) core production dbs on codfw
 # codfw master
-node 'db2045.codfw.wmnet' {
+node 'db2079.codfw.wmnet' {
     role(mariadb::core)
 }
 
 # See also db2085 and db2086 below
-node /^db20(79|80|81|82|83)\.codfw\.wmnet/ {
+node /^db20(45|80|81|82|83)\.codfw\.wmnet/ {
     role(mariadb::core)
 }
 
