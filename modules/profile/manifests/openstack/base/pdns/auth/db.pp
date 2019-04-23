@@ -24,6 +24,9 @@ class profile::openstack::base::pdns::auth::db(
     #  Then export the 'pdns' db from a working labservices host and import
     #  Then, run 'designate-manage powerdns sync' for the new host
     #
+    #  The by-hand bootstrap instructions can be found at
+    #   https://computingforgeeks.com/install-powerdns-and-powerdns-admin-on-ubuntu-18-04-debian-9-mariadb-backend/
+    #
 
     # this override/split should probably go elsewhere, but hey
     if $::lsbdistcodename == 'stretch' {
