@@ -10,7 +10,6 @@ profile::redis::master::clients:
   - 'maps1001.eqiad.wmnet'
 
 profile::maps::apps::redis_server: 'redis://maps1004.eqiad.wmnet'
-profile::maps::apps::tilerator_ncpu_ratio: 0.5  # half the CPU used by tilerator
 
 profile::cassandra::single_instance::dc: 'eqiad'
 profile::cassandra::single_instance::seeds:
