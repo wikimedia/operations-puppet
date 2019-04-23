@@ -65,7 +65,7 @@ class profile::analytics::refinery::job::refine {
     # Refine Mediawiki event data.
     # This will replace the eventlogging_eventbus job above.
     profile::analytics::refinery::job::refine_job { 'mediawiki_events':
-        job_config => merge($default_config, {
+        job_config       => merge($default_config, {
             input_path                      => '/wmf/data/raw/event',
             input_path_regex                => '.*(eqiad|codfw)_(.+)/hourly/(\\d+)/(\\d+)/(\\d+)/(\\d+)',
             input_path_regex_capture_groups => 'datacenter,table,year,month,day,hour',
@@ -76,7 +76,9 @@ class profile::analytics::refinery::job::refine {
             # Schema URIs are extracted from the $schema field in each event.
             schema_base_uri                 => "http://schema.svc.${::site}.wmnet/repositories/mediawiki/jsonschema",
         }),
-        interval   => '*-*-* *:20:00',
+        # Need to use webproxy to reach schema.svc.$site.wmnet until T221690 is resolved.
+        spark_extra_opts => '--driver-java-options=\'-Dhttp.proxyHost=webproxy.eqiad.wmnet -Dhttp.proxyPort=8080 -Dhttps.proxyHost=webproxy.eqiad.wmnet -Dhttps.proxyPort=8080\'',
+        interval         => '*-*-* *:20:00',
     }
 
 
