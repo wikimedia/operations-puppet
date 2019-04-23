@@ -32,6 +32,7 @@
     {"index" : "uwsgi-striker", "value" : "kafka" },
     {"index" : "webrequest", "value" : "kafka" },
     {"index" : "mjolnir-kafka-bulk-daemon", "value": "kafka" },
-    {"index" : "mjolnir-kafka-msearch-daemon", "value": "kafka" }
+    {"index" : "mjolnir-kafka-msearch-daemon", "value": "kafka" },
+    {"index" : "ulogd", "value": "kafka local" }
   ]
 }
