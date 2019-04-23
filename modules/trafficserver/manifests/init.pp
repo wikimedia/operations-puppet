@@ -146,11 +146,13 @@ class trafficserver(
     $ext_pkgs = [ 'trafficserver-experimental-plugins' ]
 
     package { 'trafficserver':
-        ensure => present,
+        ensure  => present,
+        require => Exec['apt-get update'],
     }
 
     package { $ext_pkgs:
-        ensure => present,
+        ensure  => present,
+        require => Exec['apt-get update'],
     }
 
     # Change the ownership of all raw devices so that the trafficserver user

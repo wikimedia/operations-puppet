@@ -27,7 +27,6 @@ class profile::trafficserver::backend (
         package  => 'libhwloc5',
         priority => '1001',
         before   => Package['trafficserver', 'trafficserver-experimental-plugins'],
-        require  => Exec['apt-get update'],
     }
 
     $errorpage = {
