@@ -1,6 +1,0 @@
----
-mount_nfs: false
-mediawiki::hhvm::extra_cli:
-    hhvm:
-        server:
-            light_process_count: 0
