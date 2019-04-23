@@ -586,6 +586,12 @@ node /^db2(097|098|099|100|101|102)\.codfw\.wmnet/ {
     role(spare::system)
 }
 
+# Spare codfw hosts to be provisioned #T221532
+node /^db2(103|104|105|106|107|108|109|110|111|112|113|114|115|116|117|118|119|120)\.codfw\.wmnet/ {
+    role(spare::system)
+}
+
+
 ## x1 shard
 # eqiad
 # x1 eqiad master
