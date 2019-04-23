@@ -3140,13 +3140,6 @@ host labtestpuppetmaster2001 {
     filename "lpxelinux.0";
 }
 
-host labtestservices2001 {
-    hardware ethernet d4:be:d9:af:68:4f;
-    fixed-address labtestservices2001.wikimedia.org;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/trusty-installer/";
-    filename "lpxelinux.0";
-}
-
 host cloudservices2002-dev {
     hardware ethernet 30:e1:71:70:a3:34;
     fixed-address cloudservices2002-dev.wikimedia.org;

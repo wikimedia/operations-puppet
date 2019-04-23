@@ -1130,11 +1130,6 @@ node 'labtestpuppetmaster2001.wikimedia.org' {
     interface::add_ip6_mapped { 'main': }
 }
 
-node 'labtestservices2001.wikimedia.org' {
-    role(spare::system)
-    interface::add_ip6_mapped { 'main': }
-}
-
 node 'cloudservices2002-dev.wikimedia.org' {
     role(wmcs::openstack::codfw1dev::services)
     interface::add_ip6_mapped { 'main': }
