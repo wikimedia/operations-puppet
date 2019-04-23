@@ -18,6 +18,12 @@ class profile::cache::varnish::frontend (
 
     $cluster_nodes = $cache_nodes[$cache_cluster]
 
+    # The distinction between Varnish and ATS nodes is needed because both must
+    # be listed as backends by Varnish frontends, but IPsec needs to be
+    # configured only for Varnish nodes.
+    $varnish_backends = $cluster_nodes[$::site]
+    $ats_backends = pick($cluster_nodes["${::site}_ats"], [])
+
     class { '::lvs::realserver':
         realserver_ips => $lvs::configuration::service_ips[$cache_cluster][$::site],
     }
@@ -74,7 +80,7 @@ class profile::cache::varnish::frontend (
           'cache_local' => {
                 'dc'       => $::site,
                 'service'  => $backend_service,
-                'backends' => $cluster_nodes[$::site],
+                'backends' => $varnish_backends + $ats_backends,
                 'be_opts'  => $fe_cache_be_opts,
           },
         },

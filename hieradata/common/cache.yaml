@@ -78,8 +78,9 @@ cache::nodes:
       - 'cp3046.esams.wmnet'
       - 'cp3047.esams.wmnet'
       - 'cp3049.esams.wmnet'
-    ulsfo:
+    ulsfo_ats:
       - 'cp4021.ulsfo.wmnet'
+    ulsfo:
       - 'cp4022.ulsfo.wmnet'
       - 'cp4023.ulsfo.wmnet'
       - 'cp4024.ulsfo.wmnet'
