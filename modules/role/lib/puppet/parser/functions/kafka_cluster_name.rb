@@ -38,9 +38,9 @@ module Puppet::Parser::Functions
     prefix = args.shift
     site = args.shift || lookupvar('::site')
     realm = lookupvar('::realm')
-    labsp = lookupvar('::labsproject')
 
     if realm == 'labs'
+      labsp = lookupvar('::labsproject')
       "#{prefix}-#{labsp}"
     # There is only one analytics cluster, it lives in eqiad.
     # For historical reasons, the name of this cluster is 'eqiad'.
