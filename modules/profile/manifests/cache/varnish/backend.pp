@@ -173,4 +173,23 @@ class profile::cache::varnish::backend (
         port   => '9131',
         srange => $ferm_srange,
     }
+
+    # We have found a correlation between the 503 errors described in T145661
+    # and the expiry thread not being able to catch up with its mailbox
+    file { '/usr/local/lib/nagios/plugins/check_varnish_expiry_mailbox_lag':
+        ensure => present,
+        source => 'puppet:///modules/profile/cache/varnish/check_varnish_expiry_mailbox_lag.sh',
+        mode   => '0555',
+        owner  => 'root',
+        group  => 'root',
+    }
+
+    nrpe::monitor_service { 'check_varnish_expiry_mailbox_lag':
+        description    => 'Check Varnish expiry mailbox lag',
+        nrpe_command   => '/usr/local/lib/nagios/plugins/check_varnish_expiry_mailbox_lag',
+        retries        => 10,
+        check_interval => 10,
+        require        => File['/usr/local/lib/nagios/plugins/check_varnish_expiry_mailbox_lag'],
+        notes_url      => 'https://wikitech.wikimedia.org/wiki/Varnish',
+    }
 }
