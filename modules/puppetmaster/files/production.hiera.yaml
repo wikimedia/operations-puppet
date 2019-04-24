@@ -1,8 +1,5 @@
 :backends:
   - nuyaml3
-  - role3
-:role:
-  :datadir: /etc/puppet/hieradata
 :nuyaml:
   :datadir: /etc/puppet/hieradata
   :expand_path:
@@ -18,9 +15,7 @@
   - "private/%{::site}"
   - "common"
   - "private/common"
-
-:role_hierarchy:
-  - "%{::site}"
-  - "common"
-  - "private/%{::site}"
-  - "private/common"
+  - "role/%{::site}/%{::_role}"
+  - "role/common/%{::_role}"
+  - "private/role/%{::site}/%{::_role}"
+  - "private/role/common/%{::_role}"
