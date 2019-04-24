@@ -1,0 +1,33 @@
+user: '<%= @user %>'
+password: '<%= @password %>'
+rotate: True
+compress: False
+archive: False
+retention: 18
+statistics:
+  host: 'db1115.eqiad.wmnet'
+  user: '<%= @stats_user %>'
+  password: '<%= @stats_password %>'
+  database: 'zarcillo'
+sections:
+  s1:
+    host: 'dbstore1001.eqiad.wmnet'
+    port: 3311
+  s2:
+    host: 'db1095.eqiad.wmnet'
+    port: 3312
+  s3:
+    host: 'db1095.eqiad.wmnet'
+    port: 3313
+    archive: True
+  s7:
+    host: 'db1116.eqiad.wmnet'
+    port: 3317
+  m1:
+    host: 'db1117.eqiad.wmnet'
+    port: 3321
+  m3:
+    host: 'db1117.eqiad.wmnet'
+    port: 3323
+  tendril:
+    host: 'db1115.eqiad.wmnet'

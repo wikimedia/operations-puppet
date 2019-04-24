@@ -736,11 +736,6 @@ node 'db1116.eqiad.wmnet' {
 }
 
 node 'dbstore1001.eqiad.wmnet' {
-    role(mariadb::backups_and_dbstore_multiinstance)
-}
-
-#dbstore100[345] are new via T209620
-node /^dbstore100(3|4|5)\.eqiad\.wmnet$/ {
     role(mariadb::dbstore_multiinstance)
 }
 
@@ -752,14 +747,20 @@ node 'dbstore2002.codfw.wmnet' {
     role(mariadb::dbstore_multiinstance)
 }
 
+# Analytics production replicas
+node /^dbstore100(3|4|5)\.eqiad\.wmnet$/ {
+    role(mariadb::dbstore_multiinstance)
+}
+
+
 # database-provisioning and short-term/postprocessing backups servers
 
 # eqiad ones pending full setup
 node 'dbprov1001.eqiad.wmnet' {
-    role(spare::system)
+    role(mariadb::backups)
 }
 node 'dbprov1002.eqiad.wmnet' {
-    role(spare::system)
+    role(mariadb::backups)
 }
 node 'dbprov2001.codfw.wmnet' {
     role(mariadb::backups)
