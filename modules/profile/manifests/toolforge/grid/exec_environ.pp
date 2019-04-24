@@ -405,7 +405,6 @@ class profile::toolforge::grid::exec_environ {
           'hugin-tools',                 # T108210
           'hunspell',                    # T125193
           'inkscape',                    # T126933
-          'iotop',                       # useful for labs admins to monitor tools
           'ksh',
           'lame',                        # T168128
           'libaio1',                     # T70615
@@ -639,7 +638,6 @@ class profile::toolforge::grid::exec_environ {
           'hugin-tools',                 # T108210
           'hunspell',                    # T125193
           'inkscape',                    # T126933
-          'iotop',                       # useful for labs admins to monitor tools
           'ksh',
           'lame',                        # T168128
           'libaio1',                     # T70615
