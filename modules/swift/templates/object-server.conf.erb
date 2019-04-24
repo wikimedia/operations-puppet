@@ -33,6 +33,15 @@ allowed_headers = content-disposition,
 <% if @object_replicator_concurrency -%>
 concurrency = <%= @object_replicator_concurrency %>
 <% end -%>
+# Don't let replication rsyncs starve other processes of CPU or I/O.
+nice_priority = 1
+# ionice_class and ionice_priority must be specified together.
+# (However, we currently use the deadline I/O schedule everywhere, which
+# does not pay attention to ionice settings.  But set them here anyway, as
+# schedulers can be changed via sysfs, and this makes experimentation
+# easier.)
+ionice_class = IOPRIO_CLASS_BE  # the default
+ionice_priority = 5  # default is 4; higher number => less important
 
 [object-updater]
 concurrency = 1
