@@ -123,7 +123,7 @@ class profile::docker_registry_ha::registry(
 
     # This will test both nginx and the docker registry application
     monitoring::service { 'check_docker_registry_health':
-        description   => 'Docker registry HTTP interface',
+        description   => 'Docker registry health',
         check_command => "check_https_url_for_string!${::fqdn}:5001!/debug/health!{}",
         notes_url     => 'https://wikitech.wikimedia.org/wiki/Docker',
     }
