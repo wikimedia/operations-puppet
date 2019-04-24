@@ -73,6 +73,16 @@ class postgresql::slave(
         require => Exec["pg_basebackup-${master_server}"],
     }
 
+    # Having this file here helps perform slave initialization.
+    file { "${data_dir}/.pgpass":
+        ensure  => $ensure,
+        owner   => 'postgres',
+        group   => 'postgres',
+        mode    => '0600',
+        content => template('postgresql/.pgpass.erb'),
+        require => Package["postgresql-${pgversion}"],
+    }
+
     # Let's sync once all our content from the master
     if $ensure == 'present' {
         exec { "pg_basebackup-${master_server}":
