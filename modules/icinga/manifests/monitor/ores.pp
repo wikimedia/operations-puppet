@@ -5,7 +5,7 @@ class icinga::monitor::ores (
 ){
 
     monitoring::grafana_alert { 'ores':
-        dashboard_uid => '000000255',
+        dashboard_uid => 'vAN_bQemz',
         contact_group => 'team-scoring',
         notes_url     => 'https://wikitech.wikimedia.org/wiki/ORES',
     }
