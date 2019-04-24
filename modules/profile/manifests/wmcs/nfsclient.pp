@@ -1,8 +1,18 @@
-class role::labs::nfsclient(
-    $mode = 'hard',
-    $lookupcache = 'all',
+class profile::wmcs::nfsclient(
+    String $mode = lookup('profile::wmcs::nfsclient::mode', {'default_value' => 'hard'}),
+    String $lookupcache = lookup('profile::wmcs::nfsclient::lookupcache', {'default_value' => 'all'}),
+    Array[Stdlib::Host] $dumps_servers = hiera('dumps_dist_nfs_servers'),
+    Stdlib::Host $dumps_active_server = hiera('dumps_dist_active_vps'),
+    Array[Stdlib::Host] $secondary_servers = lookup('secondary_nfs_servers', {'default_value' => []}),
+    Stdlib::Host $scratch_active_server = lookup('scratch_active_server'),
+    # The following is intentionally using the same value as for scratch.  This may not always
+    # be desireable, so a separate parameter is offered.
+    Stdlib::Host $maps_active_server = lookup('scratch_active_server'),
 ) {
 
+    # TODO: Change these "secondary" mentions to "primary"
+    # The primary cluster is mounted as secondary for historical reasons and
+    # changing this would be quite disruptive.
     labstore::nfs_mount { 'project-on-labstore-secondary':
         mount_name  => 'project',
         project     => $::labsproject,
@@ -41,6 +51,29 @@ class role::labs::nfsclient(
         }
     }
 
+    # These are actually the secondary servers, not the servers formerly known as
+    # secondary.  These are not connected to the above TODO
+    # Commented out for now until scratch is migrated off labstore1003
+    # $secondary_servers.each |String $server| {
+    #     labstore::nfs_mount { $server:
+    #         mount_name  => 'scratch',
+    #         project     => $::labsproject,
+    #         options     => ['ro', 'soft', 'timeo=300', 'retrans=3'],
+    #         mount_path  => "/mnt/nfs/secondary-${server}",
+    #         share_path  => '/scratch',
+    #         server      => $server,
+    #         lookupcache => $lookupcache,
+    #     }
+    # }
+    # if mount_nfs_volume($::labsproject, 'scratch') {
+    #     file { '/data/scratch':
+    #         ensure  => 'link',
+    #         target  => "/mnt/nfs/secondary-${scratch_active_server}-scratch",
+    #         require => Labstore::Nfs_mount[$scratch_active_server]
+    #     }
+    # }
+
+    # TODO: Replace when migrated to cloudstore1008/9
     if $::labsproject == 'maps' {
 
         labstore::nfs_mount { 'maps-on-labstore1003':
@@ -112,6 +145,7 @@ class role::labs::nfsclient(
         }
     }
 
+    # TODO: Remove when scratch is migrated to cloudstore1008/9
     labstore::nfs_mount { 'scratch-on-labstore1003':
         mount_name  => 'scratch',
         project     => $::labsproject,
@@ -129,8 +163,6 @@ class role::labs::nfsclient(
             require => Labstore::Nfs_mount['scratch-on-labstore1003'],
         }
     }
-
-    $dumps_servers = hiera('dumps_dist_nfs_servers')
 
     $dumps_servers.each |String $server| {
         labstore::nfs_mount { $server:
@@ -153,7 +185,6 @@ class role::labs::nfsclient(
             mode   => '0755',
         }
 
-        $dumps_active_server = hiera('dumps_dist_active_vps')
         $dumps_share_root = "/mnt/nfs/dumps-${dumps_active_server}/xmldatadumps"
 
         $defaults = {

@@ -37,7 +37,7 @@ class role::labs::instance {
     # Allows per-host overriding of NFS mounts
     $mount_nfs = hiera('mount_nfs', true)
     if $mount_nfs {
-        require role::labs::nfsclient
+        require profile::wmcs::nfsclient
     }
 
     # In production, we try to be punctilious about having Puppet manage
