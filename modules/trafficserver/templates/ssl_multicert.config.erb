@@ -1,0 +1,11 @@
+# https://docs.trafficserver.apache.org/en/latest/admin-guide/files/ssl_multicert.config.en.html
+# This file is managed by Puppet.
+<% if @inbound_tls_settings -%>
+<% if @inbound_tls_settings['ocsp_stapling_path'] and @inbound_tls_settings['ocsp_stapling_files'] -%>
+dest_ip=* ssl_cert_name=<%= @inbound_tls_settings['cert_files'].join(",") %> ssl_key_name=<%= @inbound_tls_settings['private_key_files'].join(",") %> ssl_ocsp_name=<%= @inbound_tls_settings['ocsp_stapling_files'].join(",") %>
+<% else -%>
+dest_ip=* ssl_cert_name=<%= @inbound_tls_settings['cert_files'].join(",") %> ssl_key_name=<%= @inbound_tls_settings['private_key_files'].join(",") %>
+<% end -%>
+<% else -%>
+# Incoming TLS has not been enabled for this ATS instance. File empty on purpose
+<% end -%>

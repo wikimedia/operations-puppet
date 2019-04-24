@@ -24,6 +24,25 @@
 # [*config_prefix*]
 #   Base path for trafficserver configuration base path. (default: /etc/trafficserver)
 #
+# [*inbound_tls_settings*]
+#   Inbound TLS settings. (default: undef).
+#   for example:
+#   {
+#       common => {
+#           cipher_suite   => '-ALL:ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384',
+#           enable_tlsv1   => 0,
+#           enable_tlsv1_1 => 0,
+#           enable_tlsv1_2 => 1,
+#           enable_tlsv1_3 => 1,
+#       },
+#       cert_path         => '/etc/ssl/localcerts',
+#       cert_files        => ['globalsign-2018-ecdsa-unified.chained.crt','globalsign-2018-rsa-unified.chained.crt'],
+#       private_key_path  => '/etc/ssl/private',
+#       private_key_files => ['globalsign-2018-ecdsa-unified.key','globalsign-2018-rsa-unified.key'],
+#       dhparams_file     => '/etc/ssl/dhparam.pem',
+#       max_record_size   => 16383,
+#   }
+#
 # [*outbound_tls_settings*]
 #   Outbound TLS settings. (default: undef).
 #   for example:
@@ -120,6 +139,7 @@ define trafficserver::instance(
     Boolean $default_instance = false,
     Wmflib::IpPort $port = 8080,
     Stdlib::Absolutepath $config_prefix = '/etc/trafficserver',
+    Optional[Trafficserver::Inbound_TLS_settings] $inbound_tls_settings = undef,
     Optional[Trafficserver::Outbound_TLS_settings] $outbound_tls_settings = undef,
     Boolean $enable_xdebug = false,
     Boolean $collapsed_forwarding = false,
@@ -195,6 +215,9 @@ define trafficserver::instance(
 
         "${config_prefix}/plugin.config":
           content => template('trafficserver/plugin.config.erb'),;
+
+        "${config_prefix}/ssl_multicert.config":
+          content => template('trafficserver/ssl_multicert.config.erb'),;
 
         "${config_prefix}/logging.yaml":
           content => template('trafficserver/logging.yaml.erb');

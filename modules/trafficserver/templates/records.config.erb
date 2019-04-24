@@ -2,7 +2,11 @@
 # This file is managed by Puppet.
 
 # traffic_manager TCP ports
+<% if @inbound_tls_settings -%>
+CONFIG proxy.config.http.server_ports STRING <%= @port %>:ssl <%= @port %>:ipv6:ssl
+<% else -%>
 CONFIG proxy.config.http.server_ports STRING <%= @port %> <%= @port %>:ipv6
+<% end -%>
 
 CONFIG proxy.config.admin.user_id STRING <%= @user %>
 
@@ -69,6 +73,39 @@ CONFIG proxy.config.log.rolling_enabled INT 0
 # Flush logs immediately
 CONFIG proxy.config.log.max_secs_per_buffer INT 0
 
+<% if @inbound_tls_settings -%>
+# Incoming TLS settings
+CONFIG proxy.config.ssl.TLSv1 INT <%= @inbound_tls_settings['common']['enable_tlsv1'] %>
+CONFIG proxy.config.ssl.TLSv1_1 INT <%= @inbound_tls_settings['common']['enable_tlsv1_1'] %>
+CONFIG proxy.config.ssl.TLSv1_2 INT <%= @inbound_tls_settings['common']['enable_tlsv1_2'] %>
+CONFIG proxy.config.ssl.TLSv1_3 INT <%= @inbound_tls_settings['common']['enable_tlsv1_3'] %>
+<% if @inbound_tls_settings['common']['cipher_suite'] -%>
+CONFIG proxy.config.ssl.server.cipher_suite STRING <%= @inbound_tls_settings['common']['cipher_suite'] %>
+<% end -%>
+<% if @inbound_tls_settings['common']['cipher_suite_tlsv1_3'] -%>
+CONFIG proxy.config.ssl.server.TLSv1_3.cipher_suites STRING <%= @inbound_tls_settings['common']['cipher_suite_tlsv1_3'] %>
+<% end -%>
+<% if @inbound_tls_settings['common']['groups_list'] -%>
+CONFIG proxy.config.ssl.server.groups_list STRING <%= @inbound_tls_settings['common']['groups_list'] %>
+<% end -%>
+CONFIG proxy.config.ssl.server.cert.path STRING <%= @inbound_tls_settings['cert_path'] %>
+CONFIG proxy.config.ssl.server.private_key.path STRING <%= @inbound_tls_settings['private_key_path'] %>
+CONFIG proxy.config.ssl.max_record_size INT <%= @inbound_tls_settings['max_record_size'] %>
+<% if @inbound_tls_settings['dhparams_file'] -%>
+CONFIG proxy.config.ssl.server.dhparams_file STRING <%= @inbound_tls_settings['dhparams_file'] %>
+<% end -%>
+<% if @inbound_tls_settings['ocsp_stapling_path'] and @inbound_tls_settings['ocsp_stapling_files'] -%>
+CONFIG proxy.config.ssl.ocsp.enabled INT 1
+CONFIG proxy.config.ssl.ocsp.response.path STRING <%= @inbound_tls_settings['ocsp_stapling_path'] %>
+<% end -%>
+CONFIG proxy.config.ssl.session_cache INT <%= @inbound_tls_settings['session_cache'] %>
+<% if @inbound_tls_settings['session_cache_timeout'] -%>
+CONFIG proxy.config.ssl.session_cache.timeout INT <%= @inbound_tls_settings['session_cache_timeout'] %>
+<% end -%>
+CONFIG proxy.config.ssl.session_cache.auto_clear INT <%= @inbound_tls_settings['session_cache_auto_clear'] %>
+CONFIG proxy.config.ssl.session_cache.size INT <%= @inbound_tls_settings['session_cache_size'] %>
+CONFIG proxy.config.ssl.session_cache.num_buckets INT <%= @inbound_tls_settings['session_cache_buckets'] %>
+<% end -%>
 <% if @outbound_tls_settings -%>
 # Outbound TLS settings
 CONFIG proxy.config.ssl.client.TLSv1 INT <%= @outbound_tls_settings['common']['enable_tlsv1'] %>
