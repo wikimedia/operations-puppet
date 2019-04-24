@@ -6,5 +6,5 @@ pluginpath="/usr/lib/nagios/plugins"
 host=$1
 urlhost=$2
 
-$pluginpath/check_http -f follow -H $host -I $host -u "http://${urlhost}/scores/testwiki/reverted/${timestamp}/"
+$pluginpath/check_http -f follow -H $host -I $host -u "http://${urlhost}/v3/scores/fakewiki/${timestamp}/"
 
