@@ -20,6 +20,7 @@ class base::standard_packages {
         'git',
         'htop',
         'httpry',
+        'iotop',
         'iperf',
         'jq',
         'libtemplate-perl', # Suggested by vim-scripts
