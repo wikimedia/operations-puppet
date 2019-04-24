@@ -39,7 +39,7 @@
 class base::debdeploy (
   Optional[Array[Stdlib::Unixpath]]     $exclude_mounts      = [],
   Optional[Array[String]]               $exclude_filesystems = [],
-  Optional[Hash[String, Array[String]]] $filter_services     = [],
+  Optional[Hash[String, Array[String]]] $filter_services     = {},
 ) {
     $config = {
       'exclude_mounts'      => $exclude_mounts,
