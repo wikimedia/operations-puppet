@@ -261,7 +261,7 @@ class profile::prometheus::ops (
     prometheus::class_config{ "trafficserver_${::site}":
         dest       => "${targets_path}/trafficserver_${::site}.yaml",
         site       => $::site,
-        class_name => 'role::trafficserver::backend',
+        class_name => 'profile::trafficserver::backend',
         port       => 9122,
     }
 
