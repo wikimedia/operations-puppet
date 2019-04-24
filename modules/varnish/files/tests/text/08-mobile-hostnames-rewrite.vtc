@@ -127,11 +127,13 @@ client c1 {
 
     txreq -url "/wiki/Sonido" -hdr "User-Agent: firefox" -hdr "Host: es.wikipedia.org" -hdr "X-Forwarded-Proto: https" -hdr "Via: 1.0 translate.google.com TWSFE/0.9"
     rxresp
-    expect resp.status == 200
+    expect resp.http.location == "https://es.m.wikipedia.org/wiki/Sonido"
+    expect resp.status == 302
 
     txreq -url "/wiki/Sonido" -hdr "User-Agent: SMART-TV SamsungBrowser" -hdr "Host: es.wikipedia.org" -hdr "X-Forwarded-Proto: https" -hdr "Via: 1.0 translate.google.com TWSFE/0.9"
     rxresp
-    expect resp.status == 200
+    expect resp.http.location == "https://es.m.wikipedia.org/wiki/Sonido"
+    expect resp.status == 302
 
     txreq -url "/wiki/Sonido" -hdr "User-Agent: SMART-TV SamsungBrowser" -hdr "Host: es.wikipedia.org" -hdr "X-Forwarded-Proto: https"
     rxresp
