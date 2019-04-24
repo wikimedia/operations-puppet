@@ -507,12 +507,13 @@ network::allow_deployment_from_ips:
 profile::rsyslog::kafka_shipper::kafka_brokers:
   - 'deployment-logstash2.deployment-prep.eqiad.wmflabs:9093'
 
-cache::text::nodes:
-    eqiad:
-      - 'deployment-cache-text05.deployment-prep.eqiad.wmflabs'
-cache::upload::nodes:
-    eqiad:
-      - 'deployment-cache-upload05.deployment-prep.eqiad.wmflabs'
+cache::nodes:
+    text:
+        eqiad:
+          - 'deployment-cache-text05.deployment-prep.eqiad.wmflabs'
+    upload:
+        eqiad:
+          - 'deployment-cache-upload05.deployment-prep.eqiad.wmflabs'
 
 logstash::heap_memory: 1G
 profile::services_proxy::ensure: absent

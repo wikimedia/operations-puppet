@@ -5,7 +5,7 @@ class profile::docker_registry_ha::registry(
     # Which machines are allowed to build images.
     $image_builders = hiera('profile::docker_registry_ha::registry::image_builders', undef),
     # cache text nodes are allowed to connect via HTTP, if defined
-    $hnodes = hiera('cache::text::nodes', {}),
+    $cache_nodes = hiera('cache::nodes', {}),
     # Storage configuration
     $certname = hiera('profile::docker_registry_ha::registry::certname', undef),
     $swift_accounts = hiera('swift::params::accounts'),
@@ -32,7 +32,10 @@ class profile::docker_registry_ha::registry(
     } else {
         $builders = $image_builders
     }
-    $http_allowed_hosts = pick($hnodes[$::site], [])
+
+    if has_key($cache_nodes, 'text') {
+        $http_allowed_hosts = pick($cache_nodes['text'][$::site], [])
+    }
 
     # Nginx frontend
     class { '::sslcert::dhparam': }

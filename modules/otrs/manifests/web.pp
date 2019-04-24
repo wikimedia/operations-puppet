@@ -26,7 +26,7 @@ class otrs::web {
     }
 
     # this site's cache_text proxies hostnames
-    $cache_text_nodes = hiera('cache::text::nodes')
+    $cache_text_nodes = hiera('cache::nodes')['text']
     $trusted_proxies = $cache_text_nodes[$::site]
 
     httpd::site { 'ticket.wikimedia.org':

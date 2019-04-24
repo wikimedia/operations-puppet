@@ -9,7 +9,7 @@ class profile::gerrit::server(
     String $bacula = hiera('gerrit::server::bacula'),
     Array[Stdlib::Fqdn] $gerrit_servers = hiera('gerrit::servers'),
     String $config = hiera('gerrit::server::config'),
-    Hash $cache_text_nodes = hiera('cache::text::nodes', []),
+    Hash $cache_nodes = hiera('cache::nodes', {}),
     Boolean $use_acmechief = hiera('gerrit::server::use_acmechief', false),
     Optional[Stdlib::Ipv6] $ipv6 = hiera('gerrit::service::ipv6', undef),
     Optional[Stdlib::Fqdn] $avatars_host = hiera('gerrit::server::avatars_host', undef),
@@ -95,7 +95,7 @@ class profile::gerrit::server(
         slave_hosts      => $slave_hosts,
         config           => $config,
         avatars_host     => $avatars_host,
-        cache_text_nodes => $cache_text_nodes,
+        cache_text_nodes => pick($cache_nodes['text'], {}),
         use_acmechief    => $use_acmechief,
     }
 

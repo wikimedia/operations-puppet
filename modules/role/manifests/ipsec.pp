@@ -14,8 +14,8 @@ class role::ipsec ($hosts = undef) {
         #    eqiad+codfw <=> esams+ulsfo+eqsin
 
         if $::hostname =~ /^cp/ {
-            $ipsec_cluster = regsubst(hiera('cluster'), '_', '::')
-            $cluster_nodes = hiera("${ipsec_cluster}::nodes")
+            $ipsec_cluster = hiera('cache::cluster')
+            $cluster_nodes = hiera('cache::nodes')[$ipsec_cluster]
 
             if $::site == 'esams' or $::site == 'ulsfo' or $::site == 'eqsin' {
                 $targets = array_concat(

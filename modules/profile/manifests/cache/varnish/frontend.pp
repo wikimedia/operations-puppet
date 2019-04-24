@@ -1,4 +1,5 @@
 class profile::cache::varnish::frontend (
+    $cache_nodes = hiera('cache::nodes'),
     $cache_cluster = hiera('cache::cluster'),
     $common_vcl_config = hiera('profile::cache::varnish::common_vcl_config'),
     $fe_vcl_config = hiera('profile::cache::varnish::frontend::fe_vcl_config'),
@@ -15,11 +16,7 @@ class profile::cache::varnish::frontend (
     $wikimedia_nets = $profile::cache::base::wikimedia_nets
     $wikimedia_trust = $profile::cache::base::wikimedia_trust
 
-    # lint:ignore:wmf_styleguide
-    # TODO: consider using a single cache::nodes hash with the cache cluster as
-    # key: { 'text': ..., 'upload':, ... }
-    $cluster_nodes = hiera("cache::${cache_cluster}::nodes")
-    # lint:endignore
+    $cluster_nodes = $cache_nodes[$cache_cluster]
 
     class { '::lvs::realserver':
         realserver_ips => $lvs::configuration::service_ips[$cache_cluster][$::site],

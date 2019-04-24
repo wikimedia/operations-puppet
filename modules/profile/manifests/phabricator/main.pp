@@ -2,7 +2,7 @@
 #
 # filtertags: labs-project-deployment-prep labs-project-phabricator
 class profile::phabricator::main (
-    Hash $cache_text_nodes = hiera('cache::text::nodes', []),
+    Hash $cache_nodes = hiera('cache::nodes', {}),
     String $domain = hiera('phabricator_domain', 'phabricator.wikimedia.org'),
     String $altdom = hiera('phabricator_altdomain', 'phab.wmfusercontent.org'),
     Stdlib::Fqdn $mysql_host = hiera('phabricator::mysql::master', 'localhost'),
@@ -188,6 +188,8 @@ class profile::phabricator::main (
             }
         }
     ]
+
+    $cache_text_nodes = pick($cache_nodes['text'], {})
 
     # lint:ignore:arrow_alignment
     class { '::phabricator':

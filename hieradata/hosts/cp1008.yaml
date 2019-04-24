@@ -1,12 +1,13 @@
-cache::canary::nodes:
-    eqiad:
-      - 'cp1008.wikimedia.org'
-    codfw:
-      - 'cp1008.wikimedia.org'
-cache::text::nodes:
-    eqiad:
-      - 'cp1071.eqiad.wmnet'
-    codfw:
-      - 'cp1008.wikimedia.org'
+cache::nodes:
+    canary:
+        eqiad:
+          - 'cp1008.wikimedia.org'
+        codfw:
+          - 'cp1008.wikimedia.org'
+    text:
+        eqiad:
+          - 'cp1071.eqiad.wmnet'
+        codfw:
+          - 'cp1008.wikimedia.org'
 
 profile::base::notifications: disabled

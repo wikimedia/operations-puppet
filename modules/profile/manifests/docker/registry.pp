@@ -5,7 +5,7 @@ class profile::docker::registry(
     # Which machines are allowed to build images.
     $image_builders = hiera('profile::docker::registry::image_builders', undef),
     # cache text nodes are allowed to connect via HTTP, if defined
-    $hnodes = hiera('cache::text::nodes', {}),
+    $cache_nodes = hiera('cache::nodes', {}),
     # Storage configuration
     $storage_backend = hiera('profile::docker::registry::storage_backend', 'filebackend'),
     $certname = hiera('profile::docker::registry::certname', undef),
@@ -17,7 +17,10 @@ class profile::docker::registry(
     } else {
         $builders = $image_builders
     }
-    $http_allowed_hosts = pick($hnodes[$::site], [])
+
+    if has_key($cache_nodes, 'text') {
+        $http_allowed_hosts = pick($cache_nodes['text'][$::site], [])
+    }
 
     if $storage_backend == 'filebackend' {
         include ::profile::docker::registry::filebackend

@@ -20,6 +20,7 @@
 class profile::cache::varnish::backend (
     $statsd_host = hiera('statsd'),
     $prometheus_nodes = hiera('prometheus_nodes'),
+    $cache_nodes = hiera('cache::nodes'),
     $cache_cluster = hiera('cache::cluster'),
     $cache_route_table = hiera('cache::route_table'),
     $app_directors = hiera('cache::app_directors'),
@@ -39,12 +40,7 @@ class profile::cache::varnish::backend (
     $wikimedia_nets = $profile::cache::base::wikimedia_nets
     $wikimedia_trust = $profile::cache::base::wikimedia_trust
 
-    # lint:ignore:wmf_styleguide
-    # TODO: as in profile::cache::varnish::frontend, consider using a single
-    # cache::nodes hash with the cache cluster as key:
-    # { 'text': ..., 'upload':, ... }
-    $cluster_nodes = hiera("cache::${cache_cluster}::nodes")
-    # lint:endignore
+    $cluster_nodes = $cache_nodes[$cache_cluster]
 
     # Varnish probes normally take 2xRTT, so for WAN cases give them
     # an outer max of 3xRTT, + 100ms for local hiccups
