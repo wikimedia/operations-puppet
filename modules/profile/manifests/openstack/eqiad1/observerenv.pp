@@ -4,7 +4,6 @@ class profile::openstack::eqiad1::observerenv(
     $observer_password = hiera('profile::openstack::eqiad1::observer_password'),
   ) {
 
-    require ::profile::openstack::eqiad1::clientpackages
     class {'::profile::openstack::base::observerenv':
         region            => $region,
         keystone_host     => $keystone_host,

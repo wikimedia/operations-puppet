@@ -6,7 +6,7 @@ class profile::toolforge::grid::master (
     $geconf = lookup('profile::toolforge::grid::base::geconf'),
     $collectors = lookup('profile::toolforge::grid::base::collectors'),
 ){
-    include profile::openstack::eqiad1::clientpackages
+    include profile::openstack::eqiad1::clientpackages::vms
     include profile::openstack::eqiad1::observerenv
     include profile::toolforge::infrastructure
 

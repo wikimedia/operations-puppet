@@ -4,7 +4,7 @@ class profile::toolforge::grid::shadow(
     $gridmaster = hiera('sonofgridengine::gridmaster'),
     $geconf = lookup('profile::toolforge::grid::base::geconf'),
 ){
-    include profile::openstack::eqiad1::clientpackages
+    include profile::openstack::eqiad1::clientpackages::vms
     include profile::openstack::eqiad1::observerenv
     include profile::toolforge::infrastructure
 

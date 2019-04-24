@@ -4,7 +4,7 @@ class role::labs::instance {
     include ::profile::base::labs
     include sudo
     include ::profile::openstack::eqiad1::observerenv
-    include ::profile::openstack::eqiad1::clientpackages
+    include ::profile::openstack::eqiad1::clientpackages::vms
     include ::profile::openstack::eqiad1::cumin::target
 
     sudo::group { 'ops':
