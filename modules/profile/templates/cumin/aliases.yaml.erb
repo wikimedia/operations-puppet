@@ -24,7 +24,7 @@ cloudvirt: P{O:wmcs::openstack::eqiad1::virt}
 cloud-eqiad1: A:cloudcontrol or A:cloudnet or A:cloudservices or A:cloudvirt
 cloudcontrol-codfw1dev: P{O:wmcs::openstack::codfw1dev::control}
 cloudnet-codfw1dev: P{O:wmcs::openstack::codfw1dev::net}
-cloudservices-codfw1dev: P{O:wmcs::openstack::codfw1dev::services_primary or O:wmcs::openstack::codfw1dev::services_secondary}
+cloudservices-codfw1dev: P{O:wmcs::openstack::codfw1dev::services}
 cloudvirt-codfw1dev: P{O:wmcs::openstack::codfw1dev::virt}
 clouddb-codfw1dev: P{O:wmcs::openstack::codfw1dev::db}
 cloud-codfw1dev: A:cloudcontrol-codfw1dev or A:cloudnet-codfw1dev or A:cloudservices-codfw1dev or A:cloudvirt-codfw1dev or A:clouddb-codfw1dev
@@ -62,7 +62,6 @@ db-dbstore: P{O:mariadb::backup or O:mariadb::dbstore_multiinstance or O:mariadb
 db-labsdb: P{O:labs::db::wikireplica_analytics or O:labs::db::wikireplica_web}
 db-misc-servers: P{O:mariadb::sanitarium_multiinstance}
 db-parsercache: P{O:mariadb::parsercache}
-db-wmcs: P{O:postgres::master or O:labs::db::master}
 dbmonitor: P{O:tendril}
 debmonitor: P{O:debmonitor::server}
 debugproxy: P{O:debug_proxy}
@@ -114,14 +113,9 @@ kubernetes-masters: P{O:kubernetes::master}
 kubernetes-staging: P{O:kubernetes::staging::etcd or O:kubernetes::staging::master or O:kubernetes::staging::worker}
 kubernetes-workers: P{O:kubernetes::worker}
 kubernetes-all: A:kubernetes-etcd or A:kubernetes-masters or A:kubernetes-staging or A:kubernetes-workers or A:kubernetes-etcd-network
-labcontrol: P{O:wmcs::openstack::main::control}
-labnet: P{O:wmcs::openstack::main::net or O:wmcs::openstack::main::net_standby}
-labpuppetmaster: P{O:wmcs::openstack::main::puppetmaster::frontend or O:wmcs::openstack::main::puppetmaster::backend}
+labpuppetmaster: P{O:wmcs::openstack::eqiad1::puppetmaster::frontend or O:wmcs::openstack::eqiad1::puppetmaster::backend}
 labmon: P{O:wmcs::monitoring}
 labs-nfs: P{O:labs::nfs::misc or O:dumps::distribution::server or O:labs::nfs::secondary or O:labs::nfs::secondary_backup::tools or O:labs::nfs::secondary_backup::misc}
-labservices: P{O:wmcs::openstack::main::services_primary or O:wmcs::openstack::main::services_secondary}
-labvirt: P{O:wmcs::openstack::main::virt}
-labvirt-canary: P{labvirt1001.eqiad.wmnet}
 labweb: P{O:wmcs::openstack::eqiad1::labweb}
 logstash: P{O:logstash::collector or O:logstash::elasticsearch}
 logstash-canary: P{logstash1007.eqiad.wmnet}
@@ -241,4 +235,4 @@ misc-nonprod: P{O:spare::system or O:test or O:pybaltest or O:authdns::testns or
 misc-ops: A:installserver or A:cumin or A:url-downloader or A:icinga or A:netmon or A:puppetboard or A:debmonitor or A:debmonitor or A:backup or A:ping or P{O:logging::webrequest::ops or O:builder or O:syslog::centralserver or O:pmacct or O:mirrors}
 misc-others: P{O:mw_rc_irc or O:etherpad or O:tor_relay or O:lists or O:netinsights}
 misc-releng: P{O:phabricator} or A:contint or A:gerrit or A:mw-maintenance
-misc-wmcs: A:labnet or A:labcontrol or A:labservices or A:labweb or A:osm or A:db-wmcs or P{O:wmcs::monitoring} or A:cloudcontrol or A:cloudnet or A:cloudservices
+misc-wmcs: A:labweb or P{O:wmcs::monitoring} or A:cloudcontrol or A:cloudnet or A:cloudservices
