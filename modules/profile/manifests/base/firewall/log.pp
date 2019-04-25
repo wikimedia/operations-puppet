@@ -14,7 +14,7 @@ class profile::base::firewall::log (
   }
 
   ferm::rule { 'log-everything':
-      rule => "NFLOG mod limit limit ${log_rate} limit-burst ${log_burst};",
+      rule => "NFLOG mod limit limit ${log_rate} limit-burst ${log_burst} nflog-prefix \"[fw-out-drop]\";",
       prio => '99',
   }
 
