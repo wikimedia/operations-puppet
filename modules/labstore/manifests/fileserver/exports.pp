@@ -1,3 +1,4 @@
+# sets up NFS exports on a labstore fileserver
 class labstore::fileserver::exports(
     $observer_pass,
     $server_vols,
@@ -83,11 +84,9 @@ class labstore::fileserver::exports(
         source => 'puppet:///modules/labstore/archive-project-volumes',
     }
 
-    base::service_unit { 'nfs-exportd':
-        systemd        => systemd_template('nfs-exportd'),
-        service_params => {
-            enable => true,
-        },
-        require        => File['/usr/local/bin/nfs-exportd'],
+    systemd::service { 'nfs-exportd':
+        ensure  => 'present',
+        content => systemd_template('nfs-exportd'),
+        require => File['/usr/local/bin/nfs-exportd'],
     }
 }
