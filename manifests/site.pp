@@ -1226,7 +1226,6 @@ node /kafkamon[12]001\.(codfw|eqiad)\.wmnet/ {
 #
 # profile::wikimania_scholarships - https://scholarships.wikimedia.org/
 # profile::iegreview              - https://iegreview.wikimedia.org
-# profile::grafana::production    - https://grafana.wikimedia.org
 # profile::racktables             - https://racktables.wikimedia.org
 node 'krypton.eqiad.wmnet' {
     role(webserver_misc_apps)
