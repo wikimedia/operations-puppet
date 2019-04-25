@@ -9,3 +9,5 @@ profile::docker_registry_ha::registry::swift_username: "docker"
 profile::docker_registry_ha::registry::swift_container: "docker_registry"
 profile::docker_registry_ha::registry::certname: "docker-registry.discovery.wmnet"
 diamond::remove: true
+profile::lvs::realserver::pools:
+  docker-registry: {}

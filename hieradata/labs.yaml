@@ -12,7 +12,7 @@ discovery::app_routes:
   eventgate-analytics: "%{::site}"
   eventschemas: "%{::site}"
   aqs: 'eqiad'
-
+  docker-registry: 'codfw'
 # dns
 labsdnsconfig:
   recursor: 'cloud-recursor0.wikimedia.org'

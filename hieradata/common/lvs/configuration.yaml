@@ -157,6 +157,10 @@ lvs::configuration::lvs_service_ips:
   eventschemas: &ip_block049 # schema.svc.*
     eqiad: 10.2.2.43
     codfw: 10.2.1.43
+  docker-registry: &ip_block050 # docker-registry.svc.*
+    eqiad: 10.2.2.44
+    codfw: 10.2.1.44
+
 
 lvs::configuration::lvs_services:
   text:
@@ -1539,6 +1543,30 @@ lvs::configuration::lvs_services:
       ProxyFetch:
         url:
         - http://localhost:8190/repositories/
+      IdleConnection:
+        max-delay: 300
+        timeout-clean-reconnect: 3
+  docker-registry:
+    description: docker registry service
+    class: low-traffic
+    sites:
+    - eqiad
+    - codfw
+    ip: *ip_block050
+    port: 443
+    depool-threshold: '.5'
+    conftool:
+      cluster: docker-registry
+      service: docker-registry
+    icinga:
+      check_command: "check_http_lvs_on_port!docker-registry.svc.%{::site}.wmnet!443!/v2/"
+      critical: false
+      sites:
+        eqiad:
+          hostname: docker-registry.svc.eqiad.wmnet
+        codfw:
+          hostname: docker-registry.svc.codfw.wmnet
+    monitors:
       IdleConnection:
         max-delay: 300
         timeout-clean-reconnect: 3

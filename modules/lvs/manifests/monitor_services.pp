@@ -153,6 +153,22 @@ class lvs::monitor_services($contacts = 'admins,team-services', $critical = fals
         notes_url     => 'https://wikitech.wikimedia.org/wiki/Event*#EventGate_(repository)',
     }
 
+    # docker-registry
+    monitoring::service { 'check_docker_registry_cluster_eqiad':
+        host          => 'docker-registry.svc.eqiad.wmnet',
+        group         => 'lvs',
+        description   => 'docker-registry LVS eqiad',
+        check_command => 'check_https_url_for_string!docker-registry.svc.eqiad.wmnet!/v2!\'\\\\{\\\\}\'',
+        notes_url     => 'https://wikitech.wikimedia.org/wiki/Docker-registry-runbook',
+    }
+
+    monitoring::service { 'check_docker_registry_cluster_codfw':
+        host          => 'docker-registry.svc.codfw.wmnet',
+        group         => 'lvs',
+        description   => 'docker-registry LVS codfw',
+        check_command => 'check_https_url_for_string!docker-registry.svc.codfw.wmnet!/v2!\'\\\\{\\\\}\'',
+        notes_url     => 'https://wikitech.wikimedia.org/wiki/Docker-registry-runbook',
+    }
 
     # External monitoring for restbase and kartotherian, at the TLS terminators
 

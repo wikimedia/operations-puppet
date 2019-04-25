@@ -311,3 +311,6 @@ eqiad:
   proton:
     proton1001.eqiad.wmnet: [proton]
     proton1002.eqiad.wmnet: [proton]
+  docker-registry:
+    registry1001.eqiad.wmnet: [docker-registry]
+    registry1002.eqiad.wmnet: [docker-registry]

@@ -339,4 +339,12 @@ proton:
     default_values:
       pooled: 'yes'
       weight: '10'
-
+docker-registry:
+  docker-registry:
+    port: 443
+    datacenters:
+    - eqiad
+    - codfw
+    default_values:
+      pooled: 'no'
+      weight: 10
