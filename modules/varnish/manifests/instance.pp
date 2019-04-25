@@ -28,23 +28,10 @@ define varnish::instance(
         $instance_opt = "-n ${instance_name}"
     }
 
-    # T157430 - vcl reloads should delay between load and use for the whole
-    # probe window to avoid possibility of spurious 503s.
-    # 5 probe window -> timeout*5 + interval*4, then round up whole seconds,
-    # then set a sane mininum of 2s
-    $vcl_reload_delay_s = max(2, ceiling((($vcl_config['varnish_probe_ms'] * 5) + (100 * 4)) / 1000.0))
-
-    # Build $reload_vcl_opts
-    $separate_vcl_filenames = $separate_vcl.map |$vcl_name| { "/etc/varnish/wikimedia_${vcl_name}.vcl" }
-
-    if (size($separate_vcl_filenames) > 0) {
-        $separate_vcl_string = sprintf(' -s %s', join($separate_vcl_filenames, ' '))
-    }
-    else {
-        $separate_vcl_string = ''
-    }
-
-    $reload_vcl_opts = "${instance_opt} -f /etc/varnish/wikimedia_${vcl}.vcl -d ${vcl_reload_delay_s} -a${separate_vcl_string}"
+    $reload_vcl_opts = varnish::reload_vcl_opts($vcl_config['varnish_probe_ms'],
+                                                $separate_vcl,
+                                                $instance_name,
+                                                $vcl)
 
     # Install VCL include files shared by all instances
     require ::varnish::common::vcl
@@ -186,7 +173,7 @@ define varnish::instance(
         File["/etc/varnish/wikimedia_${vcl}.vcl"],
         File["/etc/varnish/wikimedia-common_${vcl}.inc.vcl"],
         File[suffix(prefix($extra_vcl, '/etc/varnish/'),'.inc.vcl')],
-    ], $separate_vcl_filenames.map |$vcl_name| { File[$vcl_name] })
+    ], $separate_vcl.map |$vcl_name| { File["/etc/varnish/wikimedia_${vcl_name}.vcl"] })
 
     systemd::service { "varnish${instancesuffix}":
         content        => systemd_template('varnish'),
