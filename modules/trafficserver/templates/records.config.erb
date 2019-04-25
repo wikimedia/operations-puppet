@@ -10,17 +10,18 @@ CONFIG proxy.config.http.server_ports STRING <%= @port %> <%= @port %>:ipv6
 
 CONFIG proxy.config.admin.user_id STRING <%= @user %>
 
-CONFIG proxy.config.http.cache.required_headers INT 0
-CONFIG proxy.config.http.cache.cache_responses_to_cookies INT 1
-# Do not accept inbound connections until the cache is enabled
-CONFIG proxy.config.http.wait_for_cache INT 2
-
 CONFIG proxy.config.http.insert_request_via_str INT 0
 CONFIG proxy.config.http.insert_client_ip INT 0
 CONFIG proxy.config.http.insert_squid_x_forwarded_for INT 0
 
 CONFIG proxy.config.url_remap.pristine_host_hdr INT 1
 CONFIG proxy.config.disable_configuration_modification INT 1
+
+<% if @enable_caching -%>
+CONFIG proxy.config.http.cache.required_headers INT 0
+CONFIG proxy.config.http.cache.cache_responses_to_cookies INT 1
+# Do not accept inbound connections until the cache is enabled
+CONFIG proxy.config.http.wait_for_cache INT 2
 
 # RAM Cache
 CONFIG proxy.config.cache.ram_cache.size INT <%= @ram_cache_size %>
@@ -34,6 +35,9 @@ CONFIG proxy.config.cache.ram_cache.compress INT 2
 # caching documents with explicit Content-Length > 1G, see
 # do_global_read_response().
 CONFIG proxy.config.cache.max_doc_size INT 0
+<% else -%>
+CONFIG proxy.config.http.cache.http INT 0
+<% end -%>
 
 <% if @enable_xdebug -%>
 # XDebug Plugin

@@ -2,6 +2,10 @@
 # This file is managed by Puppet.
 
 # pathname [$size] [volume=$number] [id=$string]
+<% if @enable_caching and @storage -%>
 <% @storage.each do |element| -%>
 <% if element.fetch('devname', nil) %>/dev/<%= element['devname'] %><% else %><%= element['pathname'] %><% end %> <%= element.fetch('size', '') %><% if element.fetch('volume', nil) %> volume=<%= element['volume'] %><% end %><% if element.fetch('id', nil) %> id=<%= element['id'] %><% end %>
+<% end -%>
+<% else -%>
+# Caching has not been enabled for this ATS instance. File empty on purpose
 <% end -%>

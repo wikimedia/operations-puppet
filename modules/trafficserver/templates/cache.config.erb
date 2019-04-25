@@ -1,6 +1,10 @@
 # https://docs.trafficserver.apache.org/en/latest/admin-guide/files/cache.config.en.html
 # This file is managed by Puppet.
 
+<% if @enable_caching and @caching_rules -%>
 <% @caching_rules.each do |rule| -%>
 <%= rule['primary_destination'] %>=<%= rule['value'] %> action=<%= rule['action'] %>
+<% end -%>
+<% else -%>
+# Caching has not been enabled for this ATS instance. File empty on purpose
 <% end -%>

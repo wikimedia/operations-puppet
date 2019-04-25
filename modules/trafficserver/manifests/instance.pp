@@ -75,12 +75,15 @@
 #   An array of Trafficserver::Mapping_rules, each representing a mapping rule. (default: []).
 #   See https://docs.trafficserver.apache.org/en/latest/admin-guide/files/remap.config.en.html
 #
+# [*enable_caching*]
+#   Enable caching of HTTP requests. (default: true)
+#
 # [*caching_rules*]
-#   An array of Trafficserver::Caching_rules, each representing a caching rule. (default: []).
+#   An array of Trafficserver::Caching_rules, each representing a caching rule. (default: undef).
 #   See https://docs.trafficserver.apache.org/en/latest/admin-guide/files/cache.config.en.html
 #
 # [*storage*]
-#   An array of Trafficserver::Storage_elements. (default: []).
+#   An array of Trafficserver::Storage_elements. (default: undef).
 #
 #   Partitions can be specified by setting the 'devname' key, while files or
 #   directories use 'pathname'. For example:
@@ -145,9 +148,10 @@ define trafficserver::instance(
     Boolean $collapsed_forwarding = false,
     String $global_lua_script = '',
     Array[Trafficserver::Mapping_rule] $mapping_rules = [],
-    Array[Trafficserver::Caching_rule] $caching_rules = [],
-    Array[Trafficserver::Storage_element] $storage = [],
-    Integer $ram_cache_size = -1,
+    Boolean $enable_caching = true,
+    Optional[Array[Trafficserver::Caching_rule]] $caching_rules = undef,
+    Optional[Array[Trafficserver::Storage_element]] $storage = undef,
+    Optional[Integer] $ram_cache_size = -1,
     Array[Trafficserver::Log_format] $log_formats = [],
     Array[Trafficserver::Log_filter] $log_filters = [],
     Array[Trafficserver::Log] $logs = [],
@@ -170,12 +174,14 @@ define trafficserver::instance(
 
     # Change the ownership of all raw devices so that the trafficserver user
     # has read/write access to them
-    $storage.each |Trafficserver::Storage_element $element| {
-        if has_key($element, 'devname') {
-            udev::rule { $element['devname']:
-                content => template('trafficserver/udev_storage.rules.erb'),
-            }
-        }
+    if $enable_caching and $storage {
+      $storage.each |Trafficserver::Storage_element $element| {
+          if has_key($element, 'devname') {
+              udev::rule { $element['devname']:
+                  content => template('trafficserver/udev_storage.rules.erb'),
+              }
+          }
+      }
     }
 
     $error_template_path = "${config_prefix}/error_template"
