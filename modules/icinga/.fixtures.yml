@@ -1,0 +1,8 @@
+fixtures:
+    symlinks:
+        icinga: "#{source_dir}"
+        stdlib: "../../../../stdlib"
+        wmflib: "../../../../wmflib"
+        nrpe: "../../../../nrpe"
+        elasticsearch: "../../../../elasticsearch"
+        monitoring: "../../../../monitoring"

@@ -15,6 +15,7 @@ class profile::elasticsearch::cirrus(
     Boolean $expose_http = hiera('profile::elasticsearch::cirrus::expose_http'),
     String $storage_device = hiera('profile::elasticsearch::cirrus::storage_device'),
     Boolean $use_acme_chief = hiera('profile::elasticsearch::cirrus::use_acme_chief', false),
+    Boolean $enable_remote_search = hiera('profile::elasticsearch::cirrus::enable_remote_search'),
     Array[String] $prometheus_nodes = hiera('prometheus_nodes'),
     String $ocsp_proxy = hiera('http_proxy', ''),
 ) {
@@ -96,6 +97,17 @@ class profile::elasticsearch::cirrus(
 
         elasticsearch::log::hot_threads_cluster { $cluster_name:
             http_port => $http_port,
+        }
+
+        # Also limit this check to only the master nodes to reduce duplication
+        # of this check on all nodes until we find a better way to run this check
+        # only on icinga nodes
+        if $facts['fqdn'] in $instance_params['unicast_hosts'] {
+            icinga::monitor::elasticsearch::cirrus_settings_check { $instance_title:
+                port                 => $http_port,
+                settings             => $::profile::elasticsearch::configured_instances,
+                enable_remote_search => $enable_remote_search,
+            }
         }
     }
 
