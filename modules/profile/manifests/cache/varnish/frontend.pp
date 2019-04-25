@@ -54,15 +54,14 @@ class profile::cache::varnish::frontend (
     $reload_vcl_opts = varnish::reload_vcl_opts($vcl_config['varnish_probe_ms'],
         $separate_vcl_frontend, 'frontend', "${cache_cluster}-frontend")
 
-    # This creates a list of keyspaces such as, for example:
-    # [ '/conftool/v1/pools/eqiad/cache_text/varnish-be', ]
-    $keyspaces = $directors.map |$name, $director| {
-        "${conftool_prefix}/pools/${director['dc']}/cache_${cache_cluster}/varnish-be"
-    }
+    $keyspaces = [
+        "${conftool_prefix}/pools/${::site}/cache_${cache_cluster}/ats-be",
+        "${conftool_prefix}/pools/${::site}/cache_${cache_cluster}/varnish-be",
+    ]
     confd::file { '/etc/varnish/directors.frontend.vcl':
         ensure     => present,
         watch_keys => $keyspaces,
-        content    => template('varnish/vcl/directors.vcl.tpl.erb'),
+        content    => template('profile/cache/varnish-frontend.directors.vcl.tpl.erb'),
         reload     => "/usr/local/bin/confd-reload-vcl varnish-frontend ${reload_vcl_opts}",
         before     => Service['varnish-frontend'],
     }
