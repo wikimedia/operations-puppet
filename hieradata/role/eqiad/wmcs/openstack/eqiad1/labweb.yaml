@@ -2,6 +2,7 @@
 admin::groups:
   - wmcs-roots
   - deployment
+  - ldap-admins
 
 striker::apache::server_name: toolsadmin.wikimedia.org
 striker::apache::docroot: /srv/deployment/striker/deploy/public_html

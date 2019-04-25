@@ -160,12 +160,14 @@ groups:
   ldap-admins:
     gid: 715
     description: ldap admins
-    members: [reedy, demon]
+    members: [reedy, demon, foks]
     privileges: ['ALL = NOPASSWD: /usr/local/sbin/add-ldap-user',
                  'ALL = NOPASSWD: /usr/local/sbin/delete-ldap-user',
                  'ALL = NOPASSWD: /usr/local/sbin/modify-ldap-user',
                  'ALL = NOPASSWD: /usr/local/sbin/add-labs-user',
-                 'ALL = NOPASSWD: /usr/local/sbin/modify-ldap-group']
+                 'ALL = NOPASSWD: /usr/local/sbin/modify-ldap-group',
+                 'ALL = (www-data) NOPASSWD: ALL']
+
   contint-users:
     gid: 718
     description: users with accounts on jenkins hosts
