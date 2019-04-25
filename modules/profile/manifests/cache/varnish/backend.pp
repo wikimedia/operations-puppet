@@ -22,6 +22,7 @@ class profile::cache::varnish::backend (
     $prometheus_nodes = hiera('prometheus_nodes'),
     $cache_nodes = hiera('cache::nodes'),
     $cache_cluster = hiera('cache::cluster'),
+    $conftool_prefix = hiera('conftool_prefix'),
     $cache_route_table = hiera('cache::route_table'),
     $app_directors = hiera('cache::app_directors'),
     $app_def_be_opts = hiera('cache::app_def_be_opts'),
@@ -53,6 +54,8 @@ class profile::cache::varnish::backend (
         alternate_domains => $alternate_domains,
     }
 
+    $separate_vcl_backend = $separate_vcl.map |$vcl| { "${vcl}-backend" }
+
     ###########################################################################
     # Find out which backend caches to use
     ###########################################################################
@@ -81,7 +84,22 @@ class profile::cache::varnish::backend (
         $becaches_filtered = $backend_caches
     }
 
-    $our_backend_caches = hash_deselect_re("^cache_${::site}", $becaches_filtered)
+    $directors = hash_deselect_re("^cache_${::site}", $becaches_filtered)
+
+    # Backend caches used by this Backend from Etcd
+    $reload_vcl_opts = varnish::reload_vcl_opts($vcl_config['varnish_probe_ms'],
+        $separate_vcl_backend, '', "${cache_cluster}-backend")
+
+    $keyspaces = $directors.map |$name, $director| {
+        "${conftool_prefix}/pools/${director['dc']}/cache_${cache_cluster}/varnish-be"
+    }
+    confd::file { '/etc/varnish/directors.backend.vcl':
+        ensure     => present,
+        watch_keys => $keyspaces,
+        content    => template('varnish/vcl/directors.vcl.tpl.erb'),
+        reload     => "/usr/local/bin/confd-reload-vcl varnish ${reload_vcl_opts}",
+        before     => Service['varnish'],
+    }
 
     ###########################################################################
     # Storage configuration
@@ -131,7 +149,7 @@ class profile::cache::varnish::backend (
         instance_name   => '',
         layer           => 'backend',
         vcl             => "${cache_cluster}-backend",
-        separate_vcl    => $separate_vcl.map |$vcl| { "${vcl}-backend" },
+        separate_vcl    => $separate_vcl_backend,
         extra_vcl       => $be_extra_vcl,
         ports           => [ '3128' ],
         admin_port      => 6083,
@@ -140,7 +158,7 @@ class profile::cache::varnish::backend (
         app_directors   => $app_directors,
         app_def_be_opts => $app_def_be_opts,
         cache_route     => $cache_route_table[$::site],
-        backend_caches  => $our_backend_caches,
+        backend_caches  => $directors,
         wikimedia_nets  => $wikimedia_nets,
         wikimedia_trust => $wikimedia_trust,
     }

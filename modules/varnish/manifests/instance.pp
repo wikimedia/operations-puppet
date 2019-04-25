@@ -70,16 +70,6 @@ define varnish::instance(
 
     $runtime_params = join(prefix($runtime_parameters, '-p '), ' ')
 
-    varnish::common::directors { $vcl:
-        instance        => $inst,
-        directors       => $backend_caches,
-        reload_vcl_opts => $reload_vcl_opts,
-        before          => [
-            File["/etc/varnish/wikimedia_${vcl}.vcl"],
-            Service["varnish${instancesuffix}"]
-        ],
-    }
-
     array_concat([$vcl], $separate_vcl).each |String $vcl_name| {
         varnish::wikimedia_vcl { "/etc/varnish/wikimedia-common_${vcl_name}.inc.vcl":
             template_path   => "${module_name}/vcl/wikimedia-common.inc.vcl.erb",

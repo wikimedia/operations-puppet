@@ -1,6 +1,7 @@
 class profile::cache::varnish::frontend (
     $cache_nodes = hiera('cache::nodes'),
     $cache_cluster = hiera('cache::cluster'),
+    $conftool_prefix = hiera('conftool_prefix'),
     $common_vcl_config = hiera('profile::cache::varnish::common_vcl_config'),
     $fe_vcl_config = hiera('profile::cache::varnish::frontend::fe_vcl_config'),
     $fe_cache_be_opts = hiera('profile::cache::varnish::cache_be_opts'),
@@ -24,6 +25,15 @@ class profile::cache::varnish::frontend (
     $varnish_backends = $cluster_nodes[$::site]
     $ats_backends = pick($cluster_nodes["${::site}_ats"], [])
 
+    $directors = {
+        'cache_local' => {
+            'dc'       => $::site,
+            'service'  => $backend_service,
+            'backends' => $varnish_backends + $ats_backends,
+            'be_opts'  => $fe_cache_be_opts,
+        },
+    }
+
     class { '::lvs::realserver':
         realserver_ips => $lvs::configuration::service_ips[$cache_cluster][$::site],
     }
@@ -36,6 +46,25 @@ class profile::cache::varnish::frontend (
     # VCL files common to all instances
     class { 'varnish::common::vcl':
         vcl_config => $vcl_config,
+    }
+
+    $separate_vcl_frontend = $separate_vcl.map |$vcl| { "${vcl}-frontend" }
+
+    # Backend caches used by this Frontend from Etcd
+    $reload_vcl_opts = varnish::reload_vcl_opts($vcl_config['varnish_probe_ms'],
+        $separate_vcl_frontend, 'frontend', "${cache_cluster}-frontend")
+
+    # This creates a list of keyspaces such as, for example:
+    # [ '/conftool/v1/pools/eqiad/cache_text/varnish-be', ]
+    $keyspaces = $directors.map |$name, $director| {
+        "${conftool_prefix}/pools/${director['dc']}/cache_${cache_cluster}/varnish-be"
+    }
+    confd::file { '/etc/varnish/directors.frontend.vcl':
+        ensure     => present,
+        watch_keys => $keyspaces,
+        content    => template('varnish/vcl/directors.vcl.tpl.erb'),
+        reload     => "/usr/local/bin/confd-reload-vcl varnish-frontend ${reload_vcl_opts}",
+        before     => Service['varnish-frontend'],
     }
 
     if $cache_cluster == 'text' {
@@ -70,20 +99,13 @@ class profile::cache::varnish::frontend (
         instance_name      => 'frontend',
         layer              => 'frontend',
         vcl                => "${cache_cluster}-frontend",
-        separate_vcl       => $separate_vcl.map |$vcl| { "${vcl}-frontend" },
+        separate_vcl       => $separate_vcl_frontend,
         extra_vcl          => $fe_extra_vcl,
         ports              => [ '80', '3120', '3121', '3122', '3123', '3124', '3125', '3126', '3127' ],
         admin_port         => 6082,
         storage            => "-s malloc,${fe_mem_gb}G ${fe_transient_storage}",
         jemalloc_conf      => $fe_jemalloc_conf,
-        backend_caches     => {
-          'cache_local' => {
-                'dc'       => $::site,
-                'service'  => $backend_service,
-                'backends' => $varnish_backends + $ats_backends,
-                'be_opts'  => $fe_cache_be_opts,
-          },
-        },
+        backend_caches     => $directors,
         vcl_config         => $vcl_config,
         wikimedia_nets     => $wikimedia_nets,
         wikimedia_trust    => $wikimedia_trust,

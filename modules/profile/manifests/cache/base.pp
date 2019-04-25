@@ -76,6 +76,7 @@ class profile::cache::base(
     class { [
         '::varnish::common::errorpage',
         '::varnish::common::browsersec',
+        '::varnish::common::director_scripts',
     ]:
     }
 
