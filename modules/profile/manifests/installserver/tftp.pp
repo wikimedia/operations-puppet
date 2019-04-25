@@ -30,6 +30,7 @@ class profile::installserver::tftp {
     nrpe::monitor_service { 'atftpd':
         description  => 'TFTP service',
         nrpe_command => '/usr/lib/nagios/plugins/check_procs -c 1:1 -u nobody --ereg-argument-array=\'.*/usr/sbin/atftpd .*\'',
+        notes_url    => 'https://wikitech.wikimedia.org/wiki/Monitoring/atftpd',
     }
 
 }
