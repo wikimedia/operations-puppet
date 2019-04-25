@@ -20,6 +20,7 @@ class raid::mpt {
     check_interval => $raid::check_interval,
     retry_interval => $raid::retry_interval,
     event_handler  => "raid_handler!mpt!${::site}",
+    notes_url      => 'https://wikitech.wikimedia.org/wiki/MegaCli#Monitoring',
   }
 
   nrpe::check { 'get_raid_status_mpt':

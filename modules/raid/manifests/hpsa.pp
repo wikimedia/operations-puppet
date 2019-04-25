@@ -43,6 +43,7 @@ class raid::hpsa {
     check_interval => $raid::check_interval,
     retry_interval => $raid::retry_interval,
     event_handler  => "raid_handler!hpssacli!${::site}",
+    notes_url      => 'https://wikitech.wikimedia.org/wiki/Dc-operations/Hardware_Troubleshooting_Runbook#Hardware_Raid_Information_Gathering',
   }
 
   $get_raid_status_hpssacli = '/usr/local/lib/nagios/plugins/get-raid-status-hpssacli'

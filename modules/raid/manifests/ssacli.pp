@@ -25,6 +25,7 @@ class raid::ssacli {
     check_interval => $raid::check_interval,
     retry_interval => $raid::retry_interval,
     event_handler  => "raid_handler!ssacli!${::site}",
+    notes_url      => 'https://wikitech.wikimedia.org/wiki/Dc-operations/Hardware_Troubleshooting_Runbook#Hardware_Raid_Information_Gathering',
   }
 
   file { '/usr/local/lib/nagios/plugins/check_ssacli':
