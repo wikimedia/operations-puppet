@@ -10,7 +10,7 @@ import requests
 from flask import Flask, abort, jsonify
 
 # Allowed Facts
-WHITELIST = ["serialnumber", "is_virtual"]
+WHITELIST = ["serialnumber", "is_virtual", "productname", "manufacturer"]
 
 # PuppetDB api URL template
 PUPPETDB_URL = "http://localhost:8080/pdb/query/v4/facts/{fact}"
