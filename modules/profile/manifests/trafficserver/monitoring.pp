@@ -4,6 +4,7 @@ define profile::trafficserver::monitoring(
     Wmflib::UserIpPort $prometheus_exporter_port,
     Boolean $inbound_tls = false,
     Boolean $default_instance = false,
+    Boolean $do_ocsp = false,
     String $instance_name = 'backend',
     String $user = 'trafficserver',
 ){
@@ -66,6 +67,23 @@ define profile::trafficserver::monitoring(
         checkname => 'check_trafficserver_config_status',
         args      => $check_trafficserver_config_status_args,
         require   => Trafficserver::Instance[$instance_name],
+    }
+
+    if $do_ocsp {
+        $check_args = '-c 259500 -w 173100 -d /var/cache/ocsp -g "*.ocsp"'
+        $check_args_acme_chief = '-c 259500 -w 173100 -d /var/cache/ocsp -g "*/*.ocsp"'
+        nrpe::monitor_service { 'ocsp-freshness':
+            description  => 'Freshness of OCSP Stapling files',
+            nrpe_command => "/usr/lib/nagios/plugins/check-fresh-files-in-dir.py ${check_args}",
+            require      => File['/usr/lib/nagios/plugins/check-fresh-files-in-dir.py'],
+            notes_url    => 'https://wikitech.wikimedia.org/wiki/HTTPS/Unified_Certificates',
+        }
+        nrpe::monitor_service { 'ocsp-freshness-acme-chief':
+            description  => 'Freshness of OCSP Stapling files',
+            nrpe_command => "/usr/lib/nagios/plugins/check-fresh-files-in-dir.py ${check_args_acme_chief}",
+            require      => File['/usr/lib/nagios/plugins/check-fresh-files-in-dir.py'],
+            notes_url    => 'https://wikitech.wikimedia.org/wiki/HTTPS/Unified_Certificates',
+        }
     }
 
     # XXX: Avoid `traffic_server -C verify_config` for now

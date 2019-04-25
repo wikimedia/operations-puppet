@@ -1,4 +1,7 @@
 [Service]
+<% if @do_ocsp -%>
+ExecStartPre=/usr/local/sbin/update-ocsp-all
+<% end -%>
 ExecStart=
 <% if @default_instance -%>
 ExecStart=/usr/bin/traffic_manager --nosyslog
