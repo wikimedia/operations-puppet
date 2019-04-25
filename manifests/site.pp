@@ -1849,11 +1849,6 @@ node /^pc20(09)\.codfw\.wmnet$/ {
     role(mariadb::parsercache)
 }
 
-# pc1004, pc1005 and pc1006 will be decommissioned - T210969
-node /^pc10(04|05|06)\.eqiad\.wmnet$/ {
-    role(spare::system)
-}
-
 # virtual machines for https://wikitech.wikimedia.org/wiki/Ping_offload
 node /^ping[12]001\.(eqiad|codfw)\.wmnet$/ {
     role(ping_offload)
