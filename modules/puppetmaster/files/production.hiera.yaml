@@ -16,7 +16,6 @@
   - "%{::site}"
   - "private/hosts/%{::hostname}" # Currently only used for labtest hosts
   - "private/%{::site}"
-  - "canary/%{::canary_name}"
   - "common"
   - "private/common"
 
