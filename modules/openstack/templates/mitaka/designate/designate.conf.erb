@@ -194,7 +194,7 @@ targets = f26e0b32-736f-4f0a-831b-039a415c481e
 <% end %>
 
 # A 'pool_nameserver' is a pdns instance that receives axfr updates.
-# This is the primary dns server, currently 'labservices1001'
+# This is the primary dns server, currently 'cloudservices1003'
 [pool_nameserver:0f66b842-96c2-4189-93fc-1dc95a08b012]
 port = 53
 host = <%= @primary_pdns_ip %>
@@ -202,7 +202,7 @@ host = <%= @primary_pdns_ip %>
 
 <% if @secondary_pdns_ip != @primary_pdns_ip %>
 # A 'pool_nameserver' is a pdns instance that receives axfr updates.
-# This is the secondary dns server, 'labservices1002'
+# This is the secondary dns server, 'cloudservices1004'
 [pool_nameserver:17474d59-a989-48fb-9f8b-19fbdaeff243]
 port = 53
 host = <%= @secondary_pdns_ip %>
