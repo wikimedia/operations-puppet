@@ -1073,12 +1073,16 @@ node 'labpuppetmaster1002.wikimedia.org' {
     interface::add_ip6_mapped { 'main': }
 }
 
+# labservices1001 hosts openstack-designate
+# and the powerdns auth and recursive services for instances.
 node 'labservices1001.wikimedia.org' {
-    role(spare::system)
+    role(wmcs::openstack::main::services_primary)
+    interface::add_ip6_mapped { 'main': }
 }
 
 node 'labservices1002.wikimedia.org' {
-    role(spare::system)
+    role(wmcs::openstack::main::services_secondary)
+    interface::add_ip6_mapped { 'main': }
 }
 
 # cloudservices1003/1004 hosts openstack-designate

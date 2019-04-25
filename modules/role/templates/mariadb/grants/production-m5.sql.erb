@@ -1,6 +1,36 @@
 -- haproxy
 CREATE USER 'haproxy'@'10.64.16.155';
 
+-- designate, labservices1002
+
+CREATE USER 'designate'@'10.64.16.155'
+IDENTIFIED BY '<%= @designate_pass %>';
+
+GRANT SELECT, INSERT, UPDATE, DELETE, CREATE, DROP, ALTER,
+      CREATE TEMPORARY TABLES
+ON `designate`.* TO 'designate'@'10.64.16.155';
+
+-- designate, labservices1001
+
+CREATE USER 'designate'@'10.64.16.155'
+IDENTIFIED BY '<%= @designate_pass %>';
+
+GRANT SELECT, INSERT, UPDATE, DELETE, CREATE, DROP, ALTER,
+      CREATE TEMPORARY TABLES
+ON `designate`.* TO 'designate'@'10.64.16.155';
+
+-- designate_pool_manager, labservices1002
+
+GRANT SELECT, INSERT, UPDATE, DELETE, CREATE, DROP, ALTER,
+      CREATE TEMPORARY TABLES
+ON `designate\_pool\_manager`.* TO 'designate'@'10.64.16.155';
+
+-- designate_pool_manager, labservices1001
+
+GRANT SELECT, INSERT, UPDATE, DELETE, CREATE, DROP, ALTER,
+      CREATE TEMPORARY TABLES
+ON `designate\_pool\_manager`.* TO 'designate'@'10.64.16.155';
+
 -- backups to dbstore1001
 
 CREATE USER 'root'@'10.64.16.155'
@@ -47,6 +77,24 @@ IDENTIFIED BY '<%= @keystone_pass %>';
 GRANT ALL PRIVILEGES ON `neutron`.* TO 'neutron'@'%'
 
 
+-- designate, labservices1002
+
+CREATE USER 'designate'@'208.80.154.12'
+IDENTIFIED BY '<%= @designate_pass %>';
+
+GRANT SELECT, INSERT, UPDATE, DELETE, CREATE, DROP, ALTER,
+      CREATE TEMPORARY TABLES
+ON `designate`.* TO 'designate'@'208.80.154.12';
+
+-- designate, labservices1001
+
+CREATE USER 'designate'@'208.80.155.117'
+IDENTIFIED BY '<%= @designate_pass %>';
+
+GRANT SELECT, INSERT, UPDATE, DELETE, CREATE, DROP, ALTER,
+      CREATE TEMPORARY TABLES
+ON `designate`.* TO 'designate'@'208.80.155.117';
+
 -- designate, cloudservices1003
 
 CREATE USER 'designate'@'208.80.154.135'
@@ -64,6 +112,16 @@ IDENTIFIED BY '<%= @designate_pass %>';
 GRANT SELECT, INSERT, UPDATE, DELETE, CREATE, DROP, ALTER,
       CREATE TEMPORARY TABLES
 ON `designate`.* TO 'designate'@'208.80.154.11';
+
+-- designate_pool_manager, labservices1002
+
+GRANT SELECT, INSERT, UPDATE, DELETE, CREATE, DROP, ALTER, CREATE TEMPORARY TABLES
+    ON `designate\_pool\_manager`.* TO 'designate'@'208.80.154.12';
+
+-- designate_pool_manager, labservices1001
+
+GRANT SELECT, INSERT, UPDATE, DELETE, CREATE, DROP, ALTER, CREATE TEMPORARY TABLES
+    ON `designate\_pool\_manager`.* TO 'designate'@'208.80.155.117';
 
 -- designate_pool_manager, cloudservices1003
 
