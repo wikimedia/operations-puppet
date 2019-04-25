@@ -38,6 +38,7 @@ class profile::lvs(
     nrpe::monitor_service { 'check_rp_filter_disabled':
         description  => 'Check rp_filter disabled',
         nrpe_command => "/usr/lib/nagios/plugins/check_sysctl ${rp_args}",
+        notes_url    => 'https://wikitech.wikimedia.org/wiki/Monitoring/check_rp_filter_disabled',
     }
 
     # Set up tagged interfaces to all subnets with real servers in them
