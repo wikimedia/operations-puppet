@@ -46,13 +46,9 @@ class memcached(
         before => Service['memcached'],
     }
 
-    base::service_unit { 'memcached':
-        ensure         => present,
-        systemd        => systemd_template('memcached'),
-        strict         => false,
-        service_params => {
-            enable => true
-        }
+    systemd::service { 'memcached':
+        ensure  => present,
+        content => systemd_template('memcached'),
     }
 
     # Prefer a direct check if memcached is not running on localhost.
