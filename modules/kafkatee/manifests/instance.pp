@@ -91,8 +91,9 @@ define kafkatee::instance (
         require => Package['kafkatee'],
     }
 
-    base::service_unit { "kafkatee-${title}":
-        systemd   => systemd_template('kafkatee'),
+    systemd::service { "kafkatee-${title}":
+        content   => systemd_template('kafkatee'),
+        restart   => true,
         subscribe => File["/etc/kafkatee/${title}.conf"],
     }
 }
