@@ -136,10 +136,6 @@ eqiad:
     cp1085.eqiad.wmnet: [varnish-fe, varnish-be, nginx]
     cp1087.eqiad.wmnet: [varnish-fe, varnish-be, nginx]
     cp1089.eqiad.wmnet: [varnish-fe, varnish-be, nginx]
-    cp1071.eqiad.wmnet: [ats-be]
-    cp1072.eqiad.wmnet: [ats-be]
-    cp1073.eqiad.wmnet: [ats-be]
-    cp1074.eqiad.wmnet: [ats-be]
   cache_upload:
     cp1076.eqiad.wmnet: [varnish-fe, varnish-be, nginx]
     cp1078.eqiad.wmnet: [varnish-fe, varnish-be, nginx]
@@ -149,10 +145,6 @@ eqiad:
     cp1086.eqiad.wmnet: [varnish-fe, varnish-be, nginx]
     cp1088.eqiad.wmnet: [varnish-fe, varnish-be, nginx]
     cp1090.eqiad.wmnet: [varnish-fe, varnish-be, nginx]
-    cp1071.eqiad.wmnet: [ats-be]
-    cp1072.eqiad.wmnet: [ats-be]
-    cp1073.eqiad.wmnet: [ats-be]
-    cp1074.eqiad.wmnet: [ats-be]
   scb:
     scb1001.eqiad.wmnet: [mobileapps, graphoid, apertium, cxserver, eventstreams, pdfrender, "recommendation-api"]
     scb1002.eqiad.wmnet: [mobileapps, graphoid, apertium, cxserver, eventstreams, pdfrender, "recommendation-api"]

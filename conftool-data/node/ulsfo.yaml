@@ -7,12 +7,12 @@ ulsfo:
     cp4031.ulsfo.wmnet: [varnish-fe, varnish-be, nginx]
     cp4032.ulsfo.wmnet: [varnish-fe, varnish-be, nginx]
   cache_upload:
-    cp4021.ulsfo.wmnet: [varnish-fe, varnish-be, ats-be, nginx]
-    cp4022.ulsfo.wmnet: [varnish-fe, varnish-be, ats-be, nginx]
-    cp4023.ulsfo.wmnet: [varnish-fe, varnish-be, ats-be, nginx]
-    cp4024.ulsfo.wmnet: [varnish-fe, varnish-be, ats-be, nginx]
-    cp4025.ulsfo.wmnet: [varnish-fe, varnish-be, ats-be, nginx]
-    cp4026.ulsfo.wmnet: [varnish-fe, varnish-be, ats-be, nginx]
+    cp4021.ulsfo.wmnet: [varnish-fe, ats-be, nginx]
+    cp4022.ulsfo.wmnet: [varnish-fe, varnish-be, nginx]
+    cp4023.ulsfo.wmnet: [varnish-fe, varnish-be, nginx]
+    cp4024.ulsfo.wmnet: [varnish-fe, varnish-be, nginx]
+    cp4025.ulsfo.wmnet: [varnish-fe, varnish-be, nginx]
+    cp4026.ulsfo.wmnet: [varnish-fe, varnish-be, nginx]
   dns:
     dns4001.wikimedia.org: [pdns_recursor]
     dns4002.wikimedia.org: [pdns_recursor]

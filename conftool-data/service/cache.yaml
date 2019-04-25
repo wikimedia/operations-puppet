@@ -21,14 +21,6 @@ cache_text:
       - esams
       - ulsfo
       - eqsin
-  ats-be:
-    port: 3128
-    default_values:
-      "pooled": "no"
-      "weight": 100
-    datacenters:
-      - codfw
-      - eqiad
   nginx:
     port: 443
     default_values:
@@ -69,8 +61,6 @@ cache_upload:
       "pooled": "no"
       "weight": 100
     datacenters:
-      - codfw
-      - eqiad
       - ulsfo
   nginx:
     port: 443
