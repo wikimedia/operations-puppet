@@ -305,12 +305,6 @@ groups:
     description: Full root on EventLogging servers.
     members: [nuria, milimetric, mforns, joal]
     privileges: ['ALL = (ALL) NOPASSWD: ALL']
-  cxserver-admin:
-    gid: 741
-    description: group of cxserver admins
-    members: [kartik, nikerabbit, mobrovac]
-    privileges: ['ALL = NOPASSWD: /usr/sbin/service cxserver *',
-                 'ALL = (cxserver) NOPASSWD: ALL']
   chromium-admin:
     gid: 742
     description: people who run benchmarking tests with chromium (and xvfb)
@@ -580,7 +574,6 @@ groups:
     privileges: ['ALL = NOPASSWD: /usr/bin/puppet agent *',
                'ALL = NOPASSWD: /usr/sbin/service changeprop *',
                'ALL = NOPASSWD: /usr/sbin/service cpjobqueue *',
-               'ALL = NOPASSWD: /usr/sbin/service cxserver *',
                'ALL = NOPASSWD: /usr/sbin/service graphoid *',
                'ALL = NOPASSWD: /usr/sbin/service mathoid *',
                'ALL = NOPASSWD: /usr/sbin/service mobileapps *',

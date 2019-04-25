@@ -90,14 +90,6 @@ scb:
     datacenters:
     - eqiad
     - codfw
-  cxserver:
-    port: 8080
-    default_values:
-      pooled: 'no'
-      weight: 10
-    datacenters:
-    - eqiad
-    - codfw
   ores:
     port: 8081
     default_values:

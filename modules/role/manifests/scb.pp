@@ -3,7 +3,7 @@
 class role::scb {
 
     $services = [
-        'ORES', 'changeprop', 'cpjobqueue', 'cxserver',
+        'ORES', 'changeprop', 'cpjobqueue',
         'eventstreams', 'graphoid', 'mobileapps',
         'pdfrender',
     ]
@@ -25,7 +25,6 @@ class role::scb {
     include ::profile::recommendation_api
     include ::profile::mobileapps
     include ::profile::graphoid
-    include ::profile::cxserver
     include ::profile::changeprop
     include ::profile::apertium
     include ::profile::eventstreams

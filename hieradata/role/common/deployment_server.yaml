@@ -101,8 +101,6 @@ scap::sources:
   cpjobqueue/deploy: {
     repository: mediawiki/services/change-propagation/jobqueue-deploy
     }
-  cxserver/deploy: {}
-#    lvs_service: cxserver
   dumps/dumps:
     repository: operations/dumps
     scap_repository: operations/dumps/scap
