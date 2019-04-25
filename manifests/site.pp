@@ -1270,7 +1270,7 @@ node /labmon100[12]\.eqiad\.wmnet/ {
 }
 
 node 'labnet1001.eqiad.wmnet' {
-    role(wmcs::openstack::main::net)
+    role(spare::system)
 }
 
 node /^cloudcontrol100[3-4].wikimedia.org$/ {
@@ -1287,9 +1287,8 @@ node /^cloudnet100[3-4].eqiad.wmnet$/ {
     role(wmcs::openstack::eqiad1::net)
 }
 
-
 node 'labnet1002.eqiad.wmnet' {
-    role(wmcs::openstack::main::net)
+    role(spare::system)
 }
 
 ## labsdb dbs
