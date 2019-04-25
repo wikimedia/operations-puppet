@@ -65,6 +65,7 @@ class base::firewall (
         nrpe_command  => '/usr/lib/nagios/plugins/check_conntrack 80 90',
         require       => File['/usr/lib/nagios/plugins/check_conntrack'],
         contact_group => 'admins',
+        notes_url     => 'https://wikitech.wikimedia.org/wiki/Monitoring/check_conntrack',
     }
 
     sudo::user { 'nagios_check_ferm':
@@ -85,5 +86,6 @@ class base::firewall (
         nrpe_command  => '/usr/bin/sudo /usr/lib/nagios/plugins/check_ferm',
         require       =>  [File['/usr/lib/nagios/plugins/check_ferm'], Sudo::User['nagios_check_ferm']],
         contact_group => 'admins',
+        notes_url     => 'https://wikitech.wikimedia.org/wiki/Monitoring/check_ferm',
     }
 }
