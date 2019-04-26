@@ -6,7 +6,6 @@
 #
 class apache::monitoring {
     include ::apache::mod::status
-    include ::standard
 
     # Use `links -dump http://127.0.0.1/server-status` to generate
     # an Apache status report.
