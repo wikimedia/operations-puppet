@@ -1,7 +1,9 @@
 # == Class standard::ntp::client
 #
 # Class most servers must include
-class standard::ntp::client () {
+class standard::ntp::client (
+    Array[String] $monitoring_hosts = [],
+) {
     require standard::ntp
 
     # This maps the servers that regular clients use
@@ -15,7 +17,7 @@ class standard::ntp::client () {
 
     ntp::daemon { 'client':
         servers   => $client_upstreams[$::site],
-        query_acl => $::standard::ntp::monitoring_acl,
+        query_acl => $monitoring_hosts,
     }
 
     monitoring::service { 'ntp':

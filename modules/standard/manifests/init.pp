@@ -4,6 +4,7 @@
 class standard(
     $has_default_mail_relay = true,
     $has_admin = true,
+    Array[String] $monitoring_hosts = [],
     ) {
     include ::profile::base
     include ::standard::ntp
@@ -17,7 +18,9 @@ class standard(
         if (os_version('debian >= jessie')) {
             include ::standard::ntp::timesyncd
         } else {
-            include ::standard::ntp::client
+            class { '::standard::ntp::client':
+                monitoring_hosts => $monitoring_hosts,
+            }
         }
     }
 

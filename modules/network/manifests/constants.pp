@@ -26,12 +26,6 @@ class network::constants {
 
     $special_hosts = {
         'production' => {
-            'monitoring_hosts' => [
-                    '208.80.154.84',                    # icinga1001.wikimedia.org
-                    '2620:0:861:3:208:80:154:84',       # icinga1001.wikimedia.org
-                    '208.80.153.74',                    # icinga2001.wikimedia.org
-                    '2620:0:860:3:208:80:153:74',       # icinga2001.wikimedia.org
-                ],
             'deployment_hosts' => [
                     '10.64.32.16',                      # deploy1001.eqiad.wmnet
                     '2620:0:861:103:10:64:32:16',       # deploy1001.eqiad.wmnet
@@ -40,9 +34,6 @@ class network::constants {
                 ],
             },
         'labs' => {
-            'monitoring_hosts' => [
-                    '172.16.7.178', # shinken-02.shinken.eqiad.wmflabs
-                ],
             'deployment_hosts' => hiera('network::allow_deployment_from_ips', []), # lint:ignore:wmf_styleguide
             'cumin_real_masters' => [  # Where Cumin can be run
                     '208.80.154.158',               # labpuppetmaster1001.wikimedia.org

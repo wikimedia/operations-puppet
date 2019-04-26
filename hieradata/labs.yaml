@@ -160,7 +160,6 @@ zookeeper_clusters:
     hosts:
       "%{::fqdn}": 1
 
-profile::base::nrpe_allowed_hosts: '172.16.7.178'
 profile::base::ssh_server_settings:
   disable_agent_forwarding: false
   challenge_response_auth: false
@@ -268,3 +267,6 @@ cache_hosts:
 # perhaps this doesn't work with our current version of puppet
 # profile::base::puppet::puppetmaster: "%{alias('puppetmaster')}"
 profile::base::enable_kafka_shipping: false
+
+monitoring_hosts:
+- 172.16.7.178 # shinken-02.shinken.eqiad.wmflabs

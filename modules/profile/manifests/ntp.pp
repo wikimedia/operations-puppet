@@ -1,7 +1,9 @@
 # == Class profile::ntp
 #
 # Ntp server profile
-class profile::ntp {
+class profile::ntp (
+    Array[String] $monitoring_hosts = hiera('monitoring_hosts', []),
+) {
     # A list of all global peers, used in the core sites' case below
     $wmf_all_peers = array_concat(
         $::ntp_peers['eqiad'],
@@ -82,7 +84,7 @@ class profile::ntp {
             peers        => $wmf_server_peers,
             time_acl     => $our_networks_acl,
             extra_config => $extra_config,
-            query_acl    => $::standard::ntp::monitoring_acl,
+            query_acl    => $monitoring_hosts,
         }
     }
 

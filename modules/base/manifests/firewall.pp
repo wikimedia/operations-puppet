@@ -1,6 +1,7 @@
 # Don't include this sub class on all hosts yet
 # NOTE: Policy is DROP by default
 class base::firewall (
+    Array[Stdlib::IP::Address] $monitoring_hosts = [],
     Array[Stdlib::IP::Address] $cumin_masters = [],
     Array[Stdlib::IP::Address] $bastion_hosts = [],
     Array[Stdlib::IP::Address] $cache_hosts = [],
@@ -46,8 +47,9 @@ class base::firewall (
         rule   => "proto tcp dport ssh saddr (${bastion_hosts_str}) ACCEPT;",
     }
 
+    $monitoring_hosts_str = join($monitoring_hosts, ' ')
     ferm::rule { 'monitoring-all':
-        rule   => 'saddr $MONITORING_HOSTS ACCEPT;',
+        rule   => "saddr (${monitoring_hosts_str}) ACCEPT;",
     }
 
     ::ferm::service { 'ssh-from-cumin-masters':

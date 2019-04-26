@@ -12,7 +12,6 @@ class profile::base(
     $monitor_systemd = hiera('profile::base::monitor_systemd', true),
     $core_dump_pattern = hiera('profile::base::core_dump_pattern', '/var/tmp/core/core.%h.%e.%p.%t'),
     $ssh_server_settings = hiera('profile::base::ssh_server_settings', {}),
-    $nrpe_allowed_hosts = hiera('profile::base::nrpe_allowed_hosts', undef),
     $group_contact = hiera('contactgroups', 'admins'),
     $check_disk_options = hiera('profile::base::check_disk_options', '-w 6% -c 3% -W 6% -K 3% -l -e -A -i "/srv/sd[a-b][1-3]" -i "/srv/nvme[0-9]n[0-9]p[0-9]" --exclude-type=tracefs'),
     $check_disk_critical = hiera('profile::base::check_disk_critical', false),
@@ -29,6 +28,7 @@ class profile::base(
     $debdeploy_exclude_mounts = hiera('profile::base::debdeploy::exclude_mounts', []),
     $debdeploy_exclude_filesystems = hiera('profile::base::debdeploy::exclude_filesystems', []),
     $debdeploy_filter_services = lookup('profile::base::debdeploy::filter_services', Hash, 'hash', {}),
+    $monitoring_hosts = hiera('monitoring_hosts', []),
 ) {
     require ::profile::base::certificates
     class { '::apt':
@@ -95,14 +95,8 @@ class profile::base(
 
     create_resources('class', {'ssh::server' => $ssh_server_settings})
 
-    if $nrpe_allowed_hosts != undef {
-        $allowed_nrpe_hosts = $nrpe_allowed_hosts
-    } else {
-        $allowed_nrpe_hosts = join($network::constants::special_hosts[$realm]['monitoring_hosts'], ',')
-    }
-
     class { '::nrpe':
-        allowed_hosts => $allowed_nrpe_hosts,
+        allowed_hosts => join($monitoring_hosts, ','),
     }
 
     class { '::base::kernel':
