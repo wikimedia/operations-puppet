@@ -5,6 +5,8 @@ class profile::openstack::base::wikitech::web(
     $wikitech_nova_ldap_proxyagent_pass = hiera('profile::openstack::base::ldap_proxyuser_pass'),
     $wikitech_nova_ldap_user_pass = hiera('profile::openstack::base::ldap_user_pass'),
     $phabricator_api_token = hiera('profile::openstack::base::wikitech::web::phabricator_api_token'),
+    $gerrit_api_user = hiera('profile::openstack::base::wikitech::web::gerrit_api_user'),
+    $gerrit_api_password = hiera('profile::openstack::base::wikitech::web::gerrit_api_password'),
     ) {
 
     require profile::mediawiki::common
@@ -73,6 +75,8 @@ class profile::openstack::base::wikitech::web(
         wikitech_nova_ldap_proxyagent_pass => $wikitech_nova_ldap_proxyagent_pass,
         wikitech_nova_ldap_user_pass       => $wikitech_nova_ldap_user_pass,
         phabricator_api_token              => $phabricator_api_token,
+        gerrit_api_user                    => $gerrit_api_user,
+        gerrit_api_password                => $gerrit_api_password,
     }
 
     ferm::service { 'wikitech_http':

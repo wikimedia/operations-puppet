@@ -6,12 +6,16 @@ class openstack::wikitech::web(
     String $wikitech_nova_ldap_proxyagent_pass,
     String $wikitech_nova_ldap_user_pass,
     String $phabricator_api_token,
+    String $gerrit_api_user,
+    String $gerrit_api_password,
 ) {
 
     class {'::openstack::wikitech::wikitechprivatesettings':
         wikitech_nova_ldap_proxyagent_pass => $wikitech_nova_ldap_proxyagent_pass,
         wikitech_nova_ldap_user_pass       => $wikitech_nova_ldap_user_pass,
         phabricator_api_token              => $phabricator_api_token,
+        gerrit_api_user                    => $gerrit_api_user,
+        gerrit_api_password                => $gerrit_api_password,
     }
 
     require_package([

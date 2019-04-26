@@ -13,5 +13,7 @@ class profile::openstack::labtest::wikitech::web(
         wikitech_nova_ldap_proxyagent_pass => $wikitech_nova_ldap_proxyagent_pass,
         wikitech_nova_ldap_user_pass       => $wikitech_nova_ldap_user_pass,
         phabricator_api_token              => '',
+        gerrit_api_user                    => '',
+        gerrit_api_password                => '',
     }
 }
