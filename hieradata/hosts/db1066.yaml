@@ -1,3 +1,4 @@
+# db1066
 mariadb::shard: 's2'
 mariadb::binlog_format: 'STATEMENT'
 mariadb::mysql_role: 'master'

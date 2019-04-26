@@ -1,3 +1,4 @@
+# dbstore2001
 # Buffer pool sizes/instance enabled
 profile::mariadb::dbstore_multiinstance::num_instances: 5
 profile::mariadb::dbstore_multiinstance::s2: '15G'

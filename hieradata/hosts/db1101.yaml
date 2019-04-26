@@ -1,3 +1,4 @@
+# db1101
 # Buffer pool sizes/instance enabled
 profile::mariadb::core::multiinstance::num_instances: 2
 profile::mariadb::core::multiinstance::s8: '185G'
