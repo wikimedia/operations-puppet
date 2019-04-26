@@ -49,6 +49,7 @@ class profile::wmcs::nfs::secondary(
     #     interface => $monitor_iface,
     # }
 
+    # The service should remain running always on this because there's no DRBD
     service { 'nfs-server':
         ensure  => 'running',
         require => Package['nfs-kernel-server'],
