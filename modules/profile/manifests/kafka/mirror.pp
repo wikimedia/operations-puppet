@@ -248,6 +248,7 @@ class profile::kafka::mirror(
                 description  => "Kafka MirrorMaker ${mirror_process_name}",
                 nrpe_command => "/usr/lib/nagios/plugins/check_procs -c 1:1 -C java  --ereg-argument-array 'kafka.tools.MirrorMaker.+/etc/kafka/mirror/${mirror_process_name}/producer\\.properties'",
                 require      => Confluent::Kafka::Mirror::Instance[$mirror_process_name],
+                notes_url    => 'https://wikitech.wikimedia.org/wiki/Kafka/Administration#MirrorMaker',
             }
 
             # More alerts can be added by declaring

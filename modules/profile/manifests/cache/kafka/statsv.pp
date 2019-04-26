@@ -57,6 +57,7 @@ class profile::cache::kafka::statsv(
             nrpe_command  => "/usr/lib/nagios/plugins/check_procs -c 1:1 -a '/usr/bin/varnishkafka -S /etc/varnishkafka/statsv.conf'",
             contact_group => 'admins,analytics',
             require       => Class['::varnishkafka'],
+            notes_url     => 'https://wikitech.wikimedia.org/wiki/Analytics/Systems/Varnishkafka',
         }
 
         # Sets up Logster to read from the Varnishkafka instance stats JSON file

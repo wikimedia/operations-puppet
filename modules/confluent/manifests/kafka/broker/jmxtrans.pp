@@ -62,6 +62,7 @@ class confluent::kafka::broker::jmxtrans(
             description  => 'jmxtrans',
             nrpe_command => '/usr/lib/nagios/plugins/check_procs -c 1:1 -C java --ereg-argument-array "-jar.+jmxtrans-all.jar"',
             require      => Class['::jmxtrans'],
+            notes_url    => 'https://wikitech.wikimedia.org/wiki/Kafka',
         }
     }
 

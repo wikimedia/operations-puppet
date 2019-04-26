@@ -178,6 +178,7 @@ class profile::cache::kafka::webrequest(
             nrpe_command  => "/usr/lib/nagios/plugins/check_procs -c 1:1 -a '/usr/bin/varnishkafka -S /etc/varnishkafka/webrequest.conf'",
             contact_group => 'admins,analytics',
             require       => Class['::varnishkafka'],
+            notes_url     => 'https://wikitech.wikimedia.org/wiki/Analytics/Systems/Varnishkafka',
         }
 
         # Sets up Logster to read from the Varnishkafka instance stats JSON file

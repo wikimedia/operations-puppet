@@ -46,6 +46,7 @@ class profile::kafka::broker::monitoring (
         description  => 'Kafka Broker Server',
         nrpe_command => '/usr/lib/nagios/plugins/check_procs -c 1:1 -C java -a "Kafka /etc/kafka/server.properties"',
         critical     => true,
+        notes_url    => 'https://wikitech.wikimedia.org/wiki/Kafka/Administration',
     }
 
     # Prometheus labels for this Kafka Broker instance

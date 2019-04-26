@@ -102,6 +102,7 @@ class profile::cache::kafka::eventlogging(
             nrpe_command  => "/usr/lib/nagios/plugins/check_procs -c 1:1 -a '/usr/bin/varnishkafka -S /etc/varnishkafka/eventlogging.conf'",
             contact_group => 'admins,analytics',
             require       => Varnishkafka::Instance['eventlogging'],
+            notes_url     => 'https://wikitech.wikimedia.org/wiki/Analytics/Systems/Varnishkafka',
         }
 
         # Sets up Logster to read from the Varnishkafka instance stats JSON file

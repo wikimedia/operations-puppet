@@ -30,6 +30,7 @@ class confluent::kafka::broker::alerts(
         nrpe_command  => '/usr/lib/nagios/plugins/check_procs -c 1:1 -C java -a "Kafka /etc/kafka/server.properties"',
         contact_group => $nrpe_contact_group,
         critical      => true,
+        notes_url     => 'https://wikitech.wikimedia.org/wiki/Kafka',
     }
 
     # jmxtrans statsd writer emits fqdns in keys
