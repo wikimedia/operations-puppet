@@ -1,6 +1,11 @@
 class profile::wmcs::nfs::secondary(
-  $observer_pass = hiera('profile::openstack::eqiad1::observer_password'),
-  $monitor_iface = hiera('profile::wmcs::nfs::secondary::monitor_iface', 'eno0'),
+    $observer_pass = hiera('profile::openstack::eqiad1::observer_password'),
+    $monitor_iface = hiera('profile::wmcs::nfs::secondary::monitor_iface', 'eno0'),
+    Stdlib::Host $scratch_active_server = lookup('scratch_active_server'),
+    # The following is intentionally using the same value as for scratch.  This may not always
+    # be desireable, so a separate parameter is offered.
+    Stdlib::Host $maps_active_server = lookup('scratch_active_server'),
+    Stdlib::IP::Address $cluster_ip = lookup('profile::wmcs::nfs::secondary::cluster_ip'),
 ) {
     require ::profile::openstack::eqiad1::clientpackages
     require ::profile::openstack::eqiad1::observerenv
@@ -48,6 +53,24 @@ class profile::wmcs::nfs::secondary(
         ensure  => 'running',
         require => Package['nfs-kernel-server'],
     }
+
+    # Manage the cluster IP for maps from hiera
+    $ipadd_command = "ip addr add ${cluster_ip}/27 dev ${monitor_iface}"
+    $ipdel_command = "ip addr del ${cluster_ip}/27 dev ${monitor_iface}"
+    if $facts['fqdn'] == $maps_active_server {
+        exec { $ipadd_command:
+            path    => '/bin:/usr/bin',
+            returns => [0, 2],
+            unless  => "ip address show ${monitor_iface} | grep -q ${cluster_ip}/27",
+        }
+    } else {
+        exec { $ipdel_command:
+            path    => '/bin:/usr/bin',
+            returns => [0, 2],
+            onlyif  => "ip address show ${monitor_iface} | grep -q ${cluster_ip}/27",
+        }
+    }
+
 
     # TODO: enable monitoring when appropriate
     # class {'labstore::monitoring::exports': }
