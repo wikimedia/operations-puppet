@@ -1,3 +1,4 @@
 if ($programname == 'coal') then {
-    action(type="omfile" file="<%= @log_dir %>/coal.log" FileCreateMode="0644" FileOwner="coal" FileGroup="coal")
+    action(type="omfile" file="<%= @log_dir %>/coal.log" FileCreateMode="0640" FileOwner="root" FileGroup="adm")
+    stop
 }

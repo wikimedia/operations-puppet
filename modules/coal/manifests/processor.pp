@@ -52,8 +52,8 @@ class coal::processor(
 
     file { $log_dir:
         ensure => directory,
-        owner  => 'nobody',
-        group  => 'nogroup',
+        owner  => 'root',
+        group  => 'adm',
         mode   => '0755',
     }
 
