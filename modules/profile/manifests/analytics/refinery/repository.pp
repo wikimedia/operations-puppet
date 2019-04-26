@@ -13,11 +13,11 @@ class profile::analytics::refinery::repository {
     # The analytics user/groups are deployed/managed by Scap.
     # The analytics_deploy SSH keypair files are stored in the private repo,
     # and since manage_user is true the analytics_deploy public ssh key
-    # will be added to the 'analytics' user's ssh config. The rationale is to
+    # will be added to the 'analytics-deploy' user's ssh config. The rationale is to
     # have a single 'analytics' multi-purpose user that owns refinery files
     # deployed via scap and could possibly do other things (not yet defined).
     scap::target { 'analytics/refinery':
-        deploy_user => 'analytics',
+        deploy_user => 'analytics-deploy',
         key_name    => 'analytics_deploy',
         manage_user => true,
     }

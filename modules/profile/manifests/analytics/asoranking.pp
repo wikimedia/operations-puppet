@@ -4,7 +4,7 @@
 #
 class profile::analytics::asoranking {
     scap::target { 'performance/asoranking':
-        deploy_user => 'analytics',
+        deploy_user => 'analytics-deploy',
         key_name    => 'analytics_deploy',
         manage_user => true,
     }
