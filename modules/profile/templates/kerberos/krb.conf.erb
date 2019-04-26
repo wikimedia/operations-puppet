@@ -9,7 +9,9 @@
 
 [realms]
         <%= @krb_realm_name.upcase %> = {
-                kdc = <%= @krb_kdc_servers %>
+                <%- @krb_kdc_servers.each do |krb_kdc_server| -%>
+                kdc = <%= krb_kdc_server %>
+                <%- end -%>
                 admin_server = <%= @krb_kadmin_primary %>
         }
 
