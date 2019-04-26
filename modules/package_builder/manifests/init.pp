@@ -32,6 +32,15 @@ class package_builder(
         ])
     }
 
+    # Install lintian from backports to make sure it checks the latest version
+    # of the Debian Policy
+    apt::pin { 'lintian':
+        pin      => "release a=${::lsbdistcodename}-backports",
+        package  => 'lintian',
+        priority => '1001',
+        before   => Package['lintian'],
+    }
+
     require_package([
         'cowbuilder',
         'build-essential',
