@@ -1,6 +1,6 @@
 #!/bin/sh
 EXIT_CODE=0
-for INTERFACE in <%= @interfaces.split(',').select{|i| not i =~ /\w+[_:]\w+|tap\d+|vnet\d+|virbr\d|teredo|docker\d|veth[a-z0-9]|cali/}.join(' ') %> ; do
+for INTERFACE in <%= @interfaces.split(',').select{|i| not i =~ /\w+[_:.]\w+|tap\d+|vnet\d+|virbr\d|teredo|docker\d|veth[a-z0-9]|cali/}.join(' ') %> ; do
 	REQ_SPEED=1000 # The default for now
 	STATUS=`ip link show ${INTERFACE}`
 	if [ "$?" != "0" ]; then
