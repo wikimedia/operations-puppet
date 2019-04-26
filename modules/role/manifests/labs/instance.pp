@@ -1,6 +1,6 @@
 class role::labs::instance {
 
-    include ::standard
+    include ::profile::standard
     include ::profile::base::labs
     include sudo
     include ::profile::openstack::eqiad1::observerenv

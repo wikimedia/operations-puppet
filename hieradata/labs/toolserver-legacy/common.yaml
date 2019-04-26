@@ -1,1 +1,1 @@
-standard::has_default_mail_relay: false
+profile::standard::has_default_mail_relay: false

@@ -3,4 +3,4 @@ phabricator:
     source:
       key_fingerprint: '36:75:c2:fa:34:02:c8:8c:ff:30:09:aa:f7:77:96:41'
       trusted_groups: 'project-phabricator'
-standard::has_default_mail_relay: false
+profile::standard::has_default_mail_relay: false
