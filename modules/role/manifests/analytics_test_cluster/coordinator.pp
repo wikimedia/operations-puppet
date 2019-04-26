@@ -59,4 +59,6 @@ class role::analytics_test_cluster::coordinator {
 
     include standard
     include ::profile::base::firewall
+
+    include ::profile::kerberos::client
 }

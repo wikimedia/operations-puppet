@@ -52,3 +52,8 @@ diamond::remove: true
 profile::base::notifications: disabled
 profile::base::puppet::puppet_major_version: 5
 profile::base::puppet::facter_major_version: 3
+
+kerberos_realm_name: WIKIMEDIA
+kerberos_kadmin_server_primary: kerberos1001.eqiad.wmnet
+kerberos_kdc_servers:
+    - 'kerberos1001.eqiad.wmnet'
