@@ -11,7 +11,7 @@ class profile::cache::varnish::frontend (
     $alternate_domains = hiera('cache::alternate_domains', {}),
     $separate_vcl = hiera('profile::cache::varnish::separate_vcl', []),
     $fe_transient_gb = hiera('profile::cache::varnish::frontend::transient_gb', 0),
-    $backend_service = hiera('profile::cache::varnish::frontend::backend_service', 'varnish-be'),
+    $backend_services = hiera('profile::cache::varnish::frontend::backend_services', ['varnish-be']),
 ) {
     require ::profile::cache::base
     $wikimedia_nets = $profile::cache::base::wikimedia_nets
@@ -28,7 +28,6 @@ class profile::cache::varnish::frontend (
     $directors = {
         'cache_local' => {
             'dc'       => $::site,
-            'service'  => $backend_service,
             'backends' => $varnish_backends + $ats_backends,
             'be_opts'  => $fe_cache_be_opts,
         },
@@ -54,10 +53,9 @@ class profile::cache::varnish::frontend (
     $reload_vcl_opts = varnish::reload_vcl_opts($vcl_config['varnish_probe_ms'],
         $separate_vcl_frontend, 'frontend', "${cache_cluster}-frontend")
 
-    $keyspaces = [
-        "${conftool_prefix}/pools/${::site}/cache_${cache_cluster}/ats-be",
-        "${conftool_prefix}/pools/${::site}/cache_${cache_cluster}/varnish-be",
-    ]
+    $keyspaces = $backend_services.map |$service| {
+        "${conftool_prefix}/pools/${::site}/cache_${cache_cluster}/${service}"
+    }
     confd::file { '/etc/varnish/directors.frontend.vcl':
         ensure     => present,
         watch_keys => $keyspaces,

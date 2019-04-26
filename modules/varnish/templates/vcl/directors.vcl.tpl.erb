@@ -2,7 +2,7 @@
 director = @directors[director_name] -%>
 new <%= director_name %> = directors.shard();
 new <%= director_name %>_random = directors.random();
-<%- keyspace = "#{@conftool_prefix}/pools/#{director['dc']}/cache_#{@cache_cluster}/#{director['service']}" -%>
+<%- keyspace = "#{@conftool_prefix}/pools/#{director['dc']}/cache_#{@cache_cluster}/varnish-be" -%>
 {{range $node := ls "<%= keyspace %>/"}}{{ $key := printf "<%= keyspace %>/%s" $node }}{{ $data := json (getv $key) }}{{ if eq $data.pooled "yes"}}
 <%= director_name %>.add_backend(be_{{ $parts := split $node "." }}{{ join $parts "_" }});
 <%= director_name %>_random.add_backend(be_{{ $parts := split $node "." }}{{ join $parts "_" }}, {{ $data.weight }});
