@@ -1,1 +1,3 @@
 monitor_screens: false
+profile::base::puppet::puppet_major_version: 5
+profile::base::puppet::facter_major_version: 3
