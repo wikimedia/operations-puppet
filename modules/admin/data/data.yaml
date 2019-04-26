@@ -76,7 +76,7 @@ groups:
               musikanimal, jdrewniak, sbisson, jforrester, mbsantos,
               aaron, liw, sbassett, jdl, tarrow, lucaswerkmeister-wmde,
               wmde-leszek, jhuneidi, wmde-fisch, mvolz, dsharpe, brennen]
-    privileges: ['ALL = (www-data,apache,mwdeploy,l10nupdate) NOPASSWD: ALL',
+    privileges: ['ALL = (www-data,mwdeploy,l10nupdate) NOPASSWD: ALL',
                  'ALL = NOPASSWD: /sbin/restart hhvm',
                  'ALL = NOPASSWD: /sbin/start hhvm',
                  'ALL = NOPASSWD: /usr/sbin/apache2ctl',
@@ -85,12 +85,12 @@ groups:
   restricted:
     gid: 706
     description: access to mwmaint hosts, mwlog hosts (private data) and bastion hosts
-                 restricted folks use sudo to access apache / www-data resources
+                 restricted folks use sudo to access www-data resources
     members: [bearloga, tjones, cparle, pearley, bpirkle, ktsouroupidou,
               ezachte, jamesur, jdlrobson, smalyshev, sguebo, thargrove,
               leila, santhosh, amire80, foks, chelsyx, dbarratt, bmansurov, karen,
               onimisionipe, kharlan]
-    privileges: ['ALL = (www-data,apache) NOPASSWD: ALL']
+    privileges: ['ALL = (www-data) NOPASSWD: ALL']
   cassandra-test-roots:
     gid: 708
     description: users with root on cassandra hosts
