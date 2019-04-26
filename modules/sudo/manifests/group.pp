@@ -11,6 +11,10 @@
 #   User to which privileges should be assigned.
 #   Defaults to the resource title.
 #
+# [*sudo_flavor*]
+#   sudo flavor to require. Options are sudo or sudo-ldap.
+#   Defaults to 'sudo'.
+#
 # === Examples
 #
 #  sudo::group { 'nagios_check_raid':
@@ -22,10 +26,15 @@
 #
 define sudo::group(
     $privileges,
-    $ensure  = present,
-    $group   = $title,
+    $ensure             = present,
+    $group              = $title,
+    String $sudo_flavor = 'sudo',
 ) {
-    require sudo
+    if $sudo_flavor == 'sudo-ldap' {
+        require sudo::sudoldap
+    } else {
+        require sudo
+    }
 
     validate_ensure($ensure)
 

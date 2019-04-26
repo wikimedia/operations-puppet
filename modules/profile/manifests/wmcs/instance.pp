@@ -2,11 +2,21 @@
 class profile::wmcs::instance(
     Boolean $mount_nfs      = lookup('mount_nfs', {default_value => true}),
     Boolean $diamond_remove = lookup('diamond::remove', {default_value => false}),
+    String  $sudo_flavor    = lookup('sudo_flavor', {default_value => 'sudoldap'}),
 ) {
-    include ::sudo
+    if $sudo_flavor == 'sudo' {
+        if ! defined(Class['Sudo']) {
+            class { '::sudo': }
+        }
+    } else {
+        if ! defined(Class['Sudo::Sudoldap']) {
+            class { '::sudo::sudoldap': }
+        }
+    }
 
     sudo::group { 'ops':
-        privileges => ['ALL=(ALL) NOPASSWD: ALL'],
+        privileges  => ['ALL=(ALL) NOPASSWD: ALL'],
+        sudo_flavor => $sudo_flavor,
     }
 
     class { 'profile::ldap::client::labs':
