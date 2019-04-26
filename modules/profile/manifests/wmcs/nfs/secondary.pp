@@ -59,11 +59,14 @@ class profile::wmcs::nfs::secondary(
     # Manage the cluster IP for maps from hiera
     $ipadd_command = "ip addr add ${cluster_ip}/27 dev ${monitor_iface}"
     $ipdel_command = "ip addr del ${cluster_ip}/27 dev ${monitor_iface}"
+
+    # Because in this simple failover, we don't have STONITH, don't claim
+    # the IP unless is doesn't work
     if $facts['fqdn'] == $maps_active_server {
         exec { $ipadd_command:
             path    => '/bin:/usr/bin',
             returns => [0, 2],
-            unless  => "ip address show ${monitor_iface} | grep -q ${cluster_ip}/27",
+            unless  => "ping -n -c1 ${cluster_ip} > /dev/null",
         }
     } else {
         exec { $ipdel_command:
