@@ -10,3 +10,5 @@ profile::base::debdeploy::filter_services:
     - '*'
   dbus-daemon:
     - '*'
+  (sd-pam:
+    - '*'
