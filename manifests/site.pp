@@ -587,7 +587,7 @@ node /^db11(26|27|28|29|30|31|32|33|34|35|36|37|38|39|40)\.eqiad\.wmnet/ {
 }
 
 # Spare codfw hosts to be provisioned #T219463 and #T219461
-node /^db2(097|098|099|100|101|102)\.codfw\.wmnet/ {
+node /^db2(098|099|100|101|102)\.codfw\.wmnet/ {
     role(spare::system)
 }
 
@@ -736,6 +736,12 @@ node 'db1116.eqiad.wmnet' {
 }
 
 node 'dbstore1001.eqiad.wmnet' {
+    role(mariadb::dbstore_multiinstance)
+}
+
+# codfw backup sources
+
+node 'db2097.codfw.wmnet' {
     role(mariadb::dbstore_multiinstance)
 }
 

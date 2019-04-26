@@ -3,6 +3,7 @@
     role: slave
   targets:
   - dbstore2002:13311
+  - db2097:13311
 
 - labels:
     shard: s2
@@ -33,6 +34,7 @@
     role: slave
   targets:
   - dbstore2001:13316
+  - db2097:13316
 
 - labels:
     shard: s7
