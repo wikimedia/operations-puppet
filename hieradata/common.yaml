@@ -422,7 +422,7 @@ statistics_servers:
 labstore_servers:
   - labstore1006.wikimedia.org
   - labstore1007.wikimedia.org
-scratch_active_server: cloudstore1008.wikimedia.org
+scratch_active_server: cloudstore1009.wikimedia.org
 secondary_nfs_servers:
   - cloudstore1008.wikimedia.org
   - cloudstore1009.wikimedia.org
