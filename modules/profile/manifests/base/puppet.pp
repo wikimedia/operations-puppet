@@ -7,6 +7,10 @@ class profile::base::puppet(
                                           {'default_value' => undef}),
   String           $environment   = lookup('profile::base::puppet::environment',
                                           {'default_value' => 'production'}),
+  Integer[2,3]     $facter_major_version = lookup('profile::base::puppet::facter_major_version',
+                                                  {'default_value' => 2}),
+  Integer[4,5]     $puppet_major_version = lookup('profile::base::puppet::puppet_major_version',
+                                                  {'default_value' => 4}),
   # is the below paramater still used?
   Boolean $auto_puppetmaster_switching = lookup('profile::base::puppet::auto_puppetmaster_switching',
                                                 {'default_value' => false}),
@@ -18,6 +22,8 @@ class profile::base::puppet(
       dns_alt_names               => $dns_alt_names,
       environment                 => $environment,
       interval                    => $interval,
+      facter_major_version        => $facter_major_version,
+      puppet_major_version        => $puppet_major_version,
       auto_puppetmaster_switching => $auto_puppetmaster_switching,
   }
   class { '::puppet_statsd':
