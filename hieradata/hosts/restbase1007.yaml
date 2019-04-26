@@ -1,2 +1,4 @@
 profile::cassandra::rack: 'a'
 cassandra::jbod_devices: ['sda4', 'sdb4', 'sdc4', 'sdd4', 'sde4']
+profile::base::puppet::puppet_major_version: 5
+profile::base::puppet::facter_major_version: 3
