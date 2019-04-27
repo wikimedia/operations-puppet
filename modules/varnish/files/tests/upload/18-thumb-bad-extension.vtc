@@ -1,0 +1,54 @@
+varnishtest "Return 400 to thumb requests with bad file extension"
+
+server s1 {
+    rxreq
+    expect req.url == "/thumb/test.jpg"
+    txresp
+
+    rxreq
+    expect req.url == "/Thumb/test.PNG"
+    txresp
+
+    rxreq
+    expect req.url == "/test"
+    txresp
+} -start
+
+varnish v1 -arg "-p vcc_err_unref=false -p vcc_allow_inline_c=true -p cc_command='exec gcc -std=gnu99 -g -O2 -fstack-protector-strong -Wformat -Werror=format-security -Wall -pthread -fpic -shared -Wl,-x -o %o %s'" -vcl+backend {
+    backend vtc_backend {
+        .host = "${s1_addr}"; .port = "${s1_port}";
+    }
+
+    include "/usr/share/varnish/tests/wikimedia_upload-frontend.vcl";
+} -start
+
+client c1 {
+    txreq -url "/thumb/test.not-ok" -hdr "X-Forwarded-Proto: https" -hdr "Host: upload.wikimedia.org"
+    rxresp
+
+    expect resp.status == 400
+
+    txreq -url "/Thumb/test.webpx" -hdr "X-Forwarded-Proto: https" -hdr "Host: upload.wikimedia.org"
+    rxresp
+
+    expect resp.status == 400
+    txreq -url "/Thumb/test" -hdr "X-Forwarded-Proto: https" -hdr "Host: upload.wikimedia.org"
+    rxresp
+
+    expect resp.status == 400
+
+    txreq -url "/thumb/test.jpg" -hdr "X-Forwarded-Proto: https" -hdr "Host: upload.wikimedia.org"
+    rxresp
+
+    expect resp.status == 200
+
+    txreq -url "/Thumb/test.PNG" -hdr "X-Forwarded-Proto: https" -hdr "Host: upload.wikimedia.org"
+    rxresp
+
+    expect resp.status == 200
+
+    txreq -url "/test" -hdr "X-Forwarded-Proto: https" -hdr "Host: upload.wikimedia.org"
+    rxresp
+
+    expect resp.status == 200
+} -run

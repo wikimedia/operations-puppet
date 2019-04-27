@@ -64,6 +64,14 @@ sub cluster_fe_recv {
 
 		// Replace double slashes
 		set req.url = regsuball(req.url, "/{2,}", "/");
+
+		// Thumb fixups
+		if (req.url ~ "(?i)/thumb/") {
+			if (req.url !~ "(?i)\.(jpg|jpeg|jpe|gif|png|webp)$") {
+				// Invalid file extension
+				return (synth(400, "Bad Request"));
+			}
+		}
 	}
 
 	// Fixup borked client Range: headers
