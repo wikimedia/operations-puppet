@@ -29,12 +29,13 @@ class profile::microsites::transparency {
     # LDAP configuration. Interpolated into the Apache site template
     # to provide mod_authnz_ldap-based user authentication.
     $auth_ldap = {
-        name          => 'ops/wmf',
+        name          => 'ops/wmf/nda',
         bind_dn       => 'cn=proxyagent,ou=profile,dc=wikimedia,dc=org',
         bind_password => $passwords::ldap::production::proxypass,
         url           => 'ldaps://ldap-labs.eqiad.wikimedia.org ldap-labs.codfw.wikimedia.org/ou=people,dc=wikimedia,dc=org?cn',
         groups        => [
             'cn=ops,ou=groups,dc=wikimedia,dc=org',
+            'cn=nda,ou=groups,dc=wikimedia,dc=org',
             'cn=wmf,ou=groups,dc=wikimedia,dc=org',
         ],
     }
