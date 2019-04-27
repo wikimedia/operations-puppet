@@ -1,14 +1,16 @@
 class labstore::rsync::syncserver(
     Array[Stdlib::Host] $hosts_allow = [],
-    Stdlib::Unixpath $datapath = '',
+    Stdlib::Unixpath $datapath = '/exp',
     Integer $interval=600,
-    String $user='',
-    String $group='',
+    String $user='nobody',
+    String $group='nogroup',
     String $rsync_opts='',
     Stdlib::Host $primary_host=undef,
     String $niceness = '+10',
+    Boolean $is_active = false,
 )  {
     include labstore::rsync::common
+    include labstore::backup_keys
 
     file { '/etc/rsyncd.d/10-rsync-datasets_to_peers.conf':
         ensure  => 'present',
@@ -27,9 +29,12 @@ class labstore::rsync::syncserver(
         source => 'puppet:///modules/labstore/syncserver.py',
     }
 
+    $ensure = $is_active? {
+        true    => 'present',
+        default => 'absent',
+    }
     systemd::service { 'syncserver':
-        ensure    => 'present',
-        restart   => true,
+        ensure    => $ensure,
         content   => systemd_template('syncserver'),
         subscribe => File['/usr/local/sbin/syncserver'],
     }

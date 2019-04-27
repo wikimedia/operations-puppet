@@ -21,9 +21,6 @@ class profile::wmcs::nfs::secondary(
         ensure => present,
     }
 
-    # This may or may not work for the purpose of rsync for failover
-    # class {'labstore::backup_keys': }
-
     # The following is from the primary cluster and will only be enabled if required
     # sysctl::parameters { 'cloudstore base':
     #     values   => {

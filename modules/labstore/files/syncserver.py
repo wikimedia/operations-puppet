@@ -20,7 +20,9 @@
 
 import argparse
 import logging
+import netifaces
 import subprocess
+import sys
 import time
 
 
@@ -42,7 +44,9 @@ class Rsyncer:
             "--bwlimit={}".format(self.bwlimit),
             "{}:{}".format(self.dest, self.path),
         ]
-        return subprocess.run(command)
+        return subprocess.run(
+            command, stdout=subprocess.PIPE, stderr=subprocess.PIPE
+        )
 
 
 def parse_args():
@@ -52,8 +56,13 @@ def parse_args():
         "--sync-path", default="/exp/", help="Dir to sync between peer servers"
     )
 
+    argparser.add_argument("--partner-host", help="FQDN of remote host")
+
     argparser.add_argument(
-        "--primary-host", help="The ip address of the primary NFS server"
+        "--bwlimit",
+        help="Limit on bandwitdth for rsync in KBps",
+        type=int,
+        default=40000,
     )
 
     argparser.add_argument(
@@ -70,10 +79,32 @@ def parse_args():
     )
 
     argparser.add_argument(
+        "--cluster-ip", help="The floating ip address of the cluster"
+    )
+
+    argparser.add_argument(
         "--debug", help="Turn on debug logging", action="store_true"
     )
 
     return argparser.parse_args()
+
+
+def is_active_nfs(cluster_ip):
+    """
+    Return true if current host is the active NFS host
+
+    It looks for an interface attached to the current host that has an IP
+    that is the NFS cluster service IP.
+    """
+    for iface in netifaces.interfaces():
+        ifaddress = netifaces.ifaddresses(iface)
+        if netifaces.AF_INET not in ifaddress:
+            continue
+        if any(
+            [ip["addr"] == cluster_ip for ip in ifaddress[netifaces.AF_INET]]
+        ):
+            return True
+    return False
 
 
 def main():
@@ -83,10 +114,22 @@ def main():
         level=logging.DEBUG if args.debug else logging.INFO,
     )
 
+    rsyncer = Rsyncer(args.sync_path, args.partner_host, args.bwlimit)
+
+    if not args.interval and is_active_nfs(args.cluster_ip):
+        result = rsyncer.sync()
+        return result.returncode
+
     # TODO: actually do something instead of just burning cycles
     while True:
         time.sleep(args.interval)
+        if is_active_nfs(args.cluster_ip):
+            result = rsyncer.sync()
+            if result.returncode != 0:
+                logging.error(result.stderr)
+                logging.error(result.stdout)
+                return result.returncode
 
 
 if __name__ == "__main__":
-    main()
+    sys.exit(main())
