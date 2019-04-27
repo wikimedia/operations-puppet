@@ -1,5 +1,4 @@
 # db2097
-profile::base::notifications: disabled
 # Buffer pool sizes/instance enabled
 profile::mariadb::dbstore_multiinstance::num_instances: 2
 profile::mariadb::dbstore_multiinstance::s1: '192G'
