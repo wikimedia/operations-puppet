@@ -1,0 +1,12 @@
+In order to run the tests, you need to install the following packages from
+https://wikitech.wikimedia.org/wiki/APT_repository:
+
+- varnish
+- varnish-modules
+- libvmod-netmapper
+
+libmaxminddb-dev also needs to be installed, any version will do.
+
+Use run.py to test a Gerrit changeset against a given cache host. For example:
+
+  ./run.py cp4022.ulsfo.wmnet 506868

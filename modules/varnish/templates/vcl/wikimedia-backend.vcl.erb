@@ -1,10 +1,10 @@
 vcl 4.0;
 
 // common backend code for all clusters
-include "<%= @varnish_include_path %>wikimedia-common_<%= @vcl %>.inc.vcl";
+include "wikimedia-common_<%= @vcl %>.inc.vcl";
 
 /* Include the VCL file for this role */
-include "<%= @varnish_include_path %><%= @vcl %>.inc.vcl";
+include "<%= @vcl %>.inc.vcl";
 
 sub vcl_init {
 	call wm_common_directors_init;

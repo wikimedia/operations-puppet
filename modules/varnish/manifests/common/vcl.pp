@@ -17,16 +17,11 @@ class varnish::common::vcl($vcl_config={}) {
         content => template('varnish/analytics.inc.vcl.erb'),
     }
 
-    # VTC tests
+    # Directory with test versions of VCL files to run VTC tests
     file { '/usr/share/varnish/tests':
-        source  => 'puppet:///modules/varnish/tests',
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0644',
-        recurse => true,
-    }
-
-    file { '/usr/local/bin/varnishtest-runner':
-        ensure => absent,
+        ensure => directory,
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0755',
     }
 }

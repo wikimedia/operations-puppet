@@ -14,11 +14,9 @@ define varnish::wikimedia_vcl(
     $wikimedia_trust=[],
 ) {
     if $varnish_testing  {
-        $varnish_include_path = '/usr/share/varnish/tests/'
         $dynamic_backend_caches = false
-        $netmapper_dir = $varnish_include_path
+        $netmapper_dir = '/usr/share/varnish/tests'
     } else {
-        $varnish_include_path = ''
         $dynamic_backend_caches = hiera('varnish::dynamic_backend_caches', true)
         $netmapper_dir = '/var/netmapper'
     }
