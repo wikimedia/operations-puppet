@@ -350,7 +350,7 @@ rewrite	hu.wikimedia.org	http://wiki.media.hu
 
 rewrite	it.wikimedia.org	http://www.wikimedia.it
 
-funnel	kr.wikimedia.org	//meta.wikimedia.org/wiki/위키미디어_대한민국
+funnel	kr.wikimedia.org	//meta.wikimedia.org/wiki/위키미디어_한국
 
 # pk.wikimedia.org (T56780)
 funnel	pk.wikimedia.org	http://wikimediapakistan.org
