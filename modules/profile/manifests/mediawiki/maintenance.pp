@@ -32,7 +32,7 @@ class profile::mediawiki::maintenance {
     # Mediawiki maintenance scripts (cron jobs)
     profile::mediawiki::periodic_job { 'mediawiki_tor_exit_node':
         command  => '/usr/local/bin/mwscript extensions/TorBlock/maintenance/loadExitNodes.php --wiki=aawiki --force',
-        interval => '*-*-* *:*:00/20',
+        interval => '*-*-* *:00/20:00',
     }
     class { 'mediawiki::maintenance::pagetriage': ensure => $ensure }
     class { 'mediawiki::maintenance::translationnotifications': ensure => $ensure }
