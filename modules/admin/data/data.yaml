@@ -12,7 +12,7 @@ groups:
               nschaaf, zhousquared, gwicke, dpatrick, samwalton9, samtar, akrausetud, jgonsior,
               yuvipanda, shrlak, madhuvishy, groovier, khorn, ironholds, katie, chedasaurus,
               cy534, pnorman, mpany, deskana, arnad, nithum, banyek, imarlier, mkroetzsch,
-              mtizzoni, panisson, paolotti, ciro, dartar, melodykramer, gtirloni, tbayer]
+              mtizzoni, panisson, paolotti, ciro, dartar, melodykramer, gtirloni, tbayer, pirroh]
   absent_ldap:
     description: meta group for absented users which had privileged LDAP access in the past, an automatic check verifies it has been really removed from the LDAP (but removal has to be handled separatelly)
     members: [adavenport, siddharth11, albe, audiohazel, tbolliger]
@@ -271,7 +271,7 @@ groups:
               jdlrobson, chelsyx, ovasileva, flemmerich, filippo, pmiazga, faidon,
               piccardi, fdans, eevans, anomie, demon, ladsgroup, musikanimal,
               kaldari, goransm, ema, dsaez, shiladsen, rho, mirrys, slaporte, jk,
-              ayounsi, mepps, mmiller, seddon, gilles, tstarling, pirroh, rush, tieu, karen,
+              ayounsi, mepps, mmiller, seddon, gilles, tstarling, rush, tieu, karen,
               cicalese, drossi, fsalutari, nathante, gbirke, isaacj, sbassett, jdl,
               niharika29, ryanmax, afandian2, jgleeson, toddleroux, srishakatux, dsharpe,
               juliaglen, esanders, sukhe]
@@ -2847,16 +2847,12 @@ users:
     uid: 19579
     email: mbsantos@wikimedia.org
   pirroh:
-    ensure: present
+    ensure: absent
     realname: Michele Catasta
     name: pirroh
     gid: 500
-    ssh_keys:
-      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQCwms9/RJYJkac1m4+rV0FCg4c2DKjxpJbrp2PNSfTx/xePfssZA3Y6h8hzqMTKFdX1WCBmMD5z1d3YsKL9FZ/6RFE+jBweaCCo9tMMGFQwnj2t6Z/ZOUVR2gnUBTKdUzVGhdcAW5PFnE5WosgXnTm5hLNMWKa18lYcFa9nlgduI6TXNZyA4UpEiZOThw1pUtnlMeVA0ysU6MWmofOu1yHvief+2P1ep7sSMWVaJq9mDeoRNpm3py4hFW+cCxnReJWDG4GPu48y/5mBrhx+5rKEMWURppmL69GXP3qchRAOn26+1gjqmNY0KVuJimkB4sdFIARmN+O6Z6SxBKdCCtBwhZNwkfO72YyF4qS/1BWVSFMRIyJdtSUf6lMefQWkMccaRLspShYzdEGEiN8J7Zml9wO/PdF1WcV0J8Q/ZCmp0x2FS0Hp4jQkrosxaVTkqjXTdh6SWW8SuST5QYkgjeTCP066og68Q28bWpzUaUINrs8XJ6Fq4/WUqsitH/Xbi1laHUY27h5oGY9Mbm1AJ/5oeVAHy0XeOHqfhpS74RxCnm/yk3DRbsnXnxwM1zoayJR3wxu/bct4jkD8R29nl0UPgpzHHmGWmiZ2y+Syga/JnKkgJ3b534sKiPIzl7Gu3SrOExfepmLSPWQ9bLrna4pZ7RHEUajW0gb8lhlinTufOw== pirroh@cs.stanford.edu
+    ssh_keys: []
     uid: 19707
-    email: pirroh@cs.stanford.edu
-    expiry_date: 2019-05-29
-    expiry_contact: mredi@wikimedia.org
   tieu:
     ensure: present
     realname: Tim Eulitz
