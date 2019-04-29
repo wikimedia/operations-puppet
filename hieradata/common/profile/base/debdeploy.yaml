@@ -6,6 +6,7 @@ profile::base::debdeploy::filter_services:
     - '*'
   nginx:
     - libtiff
+    - libpng16
   systemd:
     - '*'
   dbus-daemon:
