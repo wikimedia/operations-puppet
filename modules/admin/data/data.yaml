@@ -3068,6 +3068,7 @@ users:
     shell: /usr/bin/zsh
     ssh_keys:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPhmLO5JSeJ7IK13C3mjckZF/HwdCQ32bqfaZgRfUfiw cdanis@cdanis
+      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDUatmrEVyhGBiJDtv1q/t9rt+z3TVb3tNLQ6y6Ou4TvZSfZjslJc/vlAHBKcYdiAqPyVremn9BBeghf6ylV7XnElySXJmdptx5/PiV0B7gajAcg4jz1bw8LFzCjuVThxv8N8pGkoCsNywBBv6xnuWUl4fk1AToqe/8+k7JSQYUsQobp+LUa45rVwe3OzXHT/T/rR6UAM48Xqllaycl16/68zwTEnU5tIpbzzNpR8dtUUA+ok/j35/Knc4CoNMY8+iXEFJleSslFFr+0qjVaUp/PtTINIeYSfOT4j3raDB12gSFG2YvrIM2dPhCL/rkIdmBrKXGvWY6+MEBsWbDzEvj cdanis@yubikey
     uid: 20431
     email: cdanis@wikimedia.org
   jhuneidi:
