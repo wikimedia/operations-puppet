@@ -8,7 +8,7 @@ After=network.target
 
 [Service]
 User=root
-ExecStart=/usr/local/sbin/syncserver --interval <%= @interval %> --primary-host <%= @primary_host%>
+ExecStart=/usr/local/sbin/syncserver --interval <%= @interval %> --partner-host <%= @partner_host%> --cluster-ip <%= @cluster_ip %>
 RestartSec=10
 Restart=on-failure
 Nice=<%= @niceness %>

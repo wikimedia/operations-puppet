@@ -1,11 +1,8 @@
 class labstore::rsync::syncserver(
-    Array[Stdlib::Host] $hosts_allow = [],
     Stdlib::Unixpath $datapath = '/exp',
     Integer $interval=600,
-    String $user='nobody',
-    String $group='nogroup',
-    String $rsync_opts='',
     Stdlib::Host $primary_host=undef,
+    Stdlib::Host $partner_host=undef,
     String $niceness = '+10',
     Boolean $is_active = false,
 )  {

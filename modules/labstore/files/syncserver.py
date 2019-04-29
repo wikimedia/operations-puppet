@@ -38,6 +38,7 @@ class Rsyncer:
         command = [
             "/usr/bin/rsync",
             "-a",
+            "-e \"/usr/bin/ssh -i /root/.ssh/id_labstore\""
             "--delete-after",
             "--contimeout=600",
             "--timeout=600",
