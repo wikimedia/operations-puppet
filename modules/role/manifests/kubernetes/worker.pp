@@ -1,5 +1,5 @@
 class role::kubernetes::worker {
-    include ::standard
+    include ::profile::standard
     include ::profile::base::firewall
 
     # Sets up docker on the machine

@@ -1236,15 +1236,11 @@ node 'krypton.eqiad.wmnet' {
 
 node /kubernetes[12]00[1-6]\.(codfw|eqiad)\.wmnet/ {
     role(kubernetes::worker)
-    include ::standard
-
     interface::add_ip6_mapped { 'main': }
 }
 
 node /kubestage100[12]\.eqiad\.wmnet/ {
     role(kubernetes::staging::worker)
-    include ::standard
-
     interface::add_ip6_mapped { 'main': }
 }
 
