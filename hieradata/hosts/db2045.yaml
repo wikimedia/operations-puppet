@@ -1,2 +1,4 @@
 # db2045
-mariadb::shard: 's8'
+mariadb::shard: 'x1'
+mariadb::binlog_format: 'ROW'
+profile::base::notifications: disabled
