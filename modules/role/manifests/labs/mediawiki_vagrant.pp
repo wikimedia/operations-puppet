@@ -7,9 +7,7 @@
 #
 # filtertags: labs-common
 class role::labs::mediawiki_vagrant {
-    include ::vagrant
-    include ::vagrant::lxc
-    include ::vagrant::mediawiki
+    include ::profile::wmcs::mediawiki_vagrant
 
     # Ensure that secondary disks are mounted first if they are being used.
     Labs_lvm::Volume <| |> -> Class['role::labs::mediawiki_vagrant']

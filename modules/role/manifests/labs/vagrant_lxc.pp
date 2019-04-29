@@ -5,8 +5,7 @@
 #
 # filtertags: labs-project-search labs-project-shiny-r
 class role::labs::vagrant_lxc {
-    include ::vagrant
-    include ::vagrant::lxc
+    include ::profile::wmcs::vagrant_lxc
 
     # Ensure that secondary disks are mounted first if they are being used.
     Labs_lvm::Volume <| |> -> Class['role::labs::vagrant_lxc']
