@@ -16,5 +16,9 @@ class profile::openstack::eqiad1::wikitech::web(
 
     class {'::openstack::wikitech::wikitech_static_sync': }
 
-    class {'::mediawiki::maintenance::tor_exit_node': ensure => 'present', wiki => 'labswiki' }
+    cron { 'tor_exit_node_update':
+        command => '/usr/local/bin/mwscript extensions/TorBlock/maintenance/loadExitNodes.php --wiki=labswiki --force > /dev/null',
+        user    => 'www-data',
+        minute  => '*/20',
+    }
 }
