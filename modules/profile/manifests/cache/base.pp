@@ -32,7 +32,7 @@ class profile::cache::base(
     require ::profile::conftool::client
     require ::profile::prometheus::varnish_exporter
     require ::profile::cache::ssl::unified
-    require ::standard
+    require ::profile::standard
 
     # FIXME: this cannot be required or it will cause a dependency cycle. It might be a good idea not to include it here
     include ::profile::cache::kafka::webrequest

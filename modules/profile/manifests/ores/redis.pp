@@ -6,7 +6,7 @@ class profile::ores::redis(
     $slaveof  = hiera('profile::ores::redis::slaveof', undef),
     $prometheus_nodes = hiera('prometheus_nodes'),
 ){
-    include ::standard
+    include ::profile::standard
     include ::profile::base::firewall
 
     $instances = ['6379', '6380']

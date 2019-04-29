@@ -10,7 +10,7 @@ class profile::racktables (
 ){
     system::role { 'racktables': description => 'Racktables server' }
 
-    include ::standard
+    include ::profile::standard
     include ::passwords::racktables
 
     ferm::service { 'racktables-http':

@@ -7,7 +7,7 @@ class profile::wmcs::nfs::backup::primary::misc (
     ),
 ){
 
-    include ::standard
+    include ::profile::standard
 
     file { '/srv/backup/misc':
         ensure  => 'directory',

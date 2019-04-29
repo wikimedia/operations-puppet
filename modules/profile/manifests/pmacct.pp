@@ -37,7 +37,7 @@ class profile::pmacct (
         librdkafka_config => $pmacct_librdkafka_conf,
     }
 
-    include ::standard
+    include ::profile::standard
 
     $loopbacks = [
         # eqiad

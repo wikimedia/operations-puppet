@@ -4,7 +4,7 @@ class profile::openstack::codfw1dev::db(
     Stdlib::Fqdn        $cloudcontrol_fqdn = lookup('profile::openstack::codfw1dev::keystone_host'),
     Array[Stdlib::Fqdn] $prometheus_nodes  = lookup('prometheus_nodes'),
 ) {
-    class { '::standard': }
+    include ::profile::standard
 
     package {'mysql-server':
         ensure => 'present',

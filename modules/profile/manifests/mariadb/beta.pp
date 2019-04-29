@@ -1,7 +1,7 @@
 # Beta Cluster DB server
 class profile::mariadb::beta {
 
-    include ::standard
+    include ::profile::standard
     include mariadb::packages_wmf
     include passwords::misc::scripts
     include mariadb::stock_heartbeat
