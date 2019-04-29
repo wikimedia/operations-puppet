@@ -77,7 +77,7 @@ class phragile(
     git::clone { 'composer':
         ensure             => 'latest',
         directory          => $composer_dir,
-        origin             => 'https://gerrit.wikimedia.org/r/p/integration/composer.git',
+        origin             => 'https://gerrit.wikimedia.org/r/integration/composer.git',
         owner              => 'phragile',
         group              => 'phragile',
         recurse_submodules => true,
