@@ -34,7 +34,7 @@ class beta::autoupdater {
 
     git::clone { 'beta-mediawiki-core':
         directory => "${stage_dir}/php-master",
-        origin    => 'https://gerrit.wikimedia.org/r/p/mediawiki/core.git',
+        origin    => 'https://gerrit.wikimedia.org/r/mediawiki/core.git',
         branch    => 'master',
         owner     => 'jenkins-deploy',
         group     => 'wikidev',
@@ -43,7 +43,7 @@ class beta::autoupdater {
 
     git::clone { 'beta-portal':
         directory => "${stage_dir}/portal-master",
-        origin    => 'https://gerrit.wikimedia.org/r/p/wikimedia/portals.git',
+        origin    => 'https://gerrit.wikimedia.org/r/wikimedia/portals.git',
         branch    => 'master',
         owner     => 'jenkins-deploy',
         group     => 'wikidev',
@@ -82,7 +82,7 @@ class beta::autoupdater {
 
     git::clone { 'beta-mediawiki-extensions':
         directory          => "${stage_dir}/php-master/extensions",
-        origin             => 'https://gerrit.wikimedia.org/r/p/mediawiki/extensions.git',
+        origin             => 'https://gerrit.wikimedia.org/r/mediawiki/extensions.git',
         branch             => 'master',
         owner              => 'jenkins-deploy',
         group              => 'wikidev',
@@ -98,7 +98,7 @@ class beta::autoupdater {
     # Also hardcoded in modules/beta/templates/wmf-beta-autoupdate.py.erb
     $mw_skins_dest = "${stage_dir}/php-master/skins"
 
-    $mw_skins_git_url = 'https://gerrit.wikimedia.org/r/p/mediawiki/skins.git'
+    $mw_skins_git_url = 'https://gerrit.wikimedia.org/r/mediawiki/skins.git'
 
     exec { 'beta_mediawiki_skins_git_init':
         command => "/usr/bin/git init ${mw_skins_dest}",
@@ -118,7 +118,7 @@ class beta::autoupdater {
 
     git::clone { 'beta-mediawiki-skins':
         directory          => $mw_skins_dest,
-        origin             => 'https://gerrit.wikimedia.org/r/p/mediawiki/skins.git',
+        origin             => 'https://gerrit.wikimedia.org/r/mediawiki/skins.git',
         branch             => 'master',
         owner              => 'jenkins-deploy',
         group              => 'wikidev',
