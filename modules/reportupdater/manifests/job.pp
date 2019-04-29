@@ -61,7 +61,7 @@ define reportupdater::job(
         git::clone { $repository_name:
             ensure    => 'latest',
             directory => $path,
-            origin    => "https://gerrit.wikimedia.org/r/p/${repository_name}.git",
+            origin    => "https://gerrit.wikimedia.org/r/${repository_name}.git",
             owner     => $::reportupdater::user,
         }
     }

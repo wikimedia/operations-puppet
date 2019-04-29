@@ -48,7 +48,7 @@ class reportupdater(
     git::clone { 'analytics/reportupdater':
         ensure    => 'latest',
         directory => $path,
-        origin    => 'https://gerrit.wikimedia.org/r/p/analytics/reportupdater.git',
+        origin    => 'https://gerrit.wikimedia.org/r/analytics/reportupdater.git',
         owner     => $user,
         require   => File[$base_path],
     }
