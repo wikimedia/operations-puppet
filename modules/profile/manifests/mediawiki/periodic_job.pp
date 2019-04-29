@@ -23,12 +23,13 @@ define profile::mediawiki::periodic_job(
     require ::profile::conftool::state
 
     systemd::timer::job { "mediawiki_job_${title}":
-        description     => "MediaWiki periodic job ${title}",
-        command         => "/usr/local/bin/mw-cli-wrapper ${command}",
-        interval        => {'start'    => 'OnCalendar', 'interval' => $interval},
-        user            => $::mediawiki::users::web,
-        logfile_basedir => '/var/log/mediawiki',
-        logfile_group   => $::mediawiki::users::web,
-        require         => File['/usr/local/bin/mw-cli-wrapper']
+        description       => "MediaWiki periodic job ${title}",
+        command           => "/usr/local/bin/mw-cli-wrapper ${command}",
+        interval          => {'start' => 'OnCalendar', 'interval' => $interval},
+        user              => $::mediawiki::users::web,
+        logfile_basedir   => '/var/log/mediawiki',
+        logfile_group     => $::mediawiki::users::web,
+        syslog_identifier => "mediawiki_job_${title}",
+        require           => File['/usr/local/bin/mw-cli-wrapper']
     }
 }
