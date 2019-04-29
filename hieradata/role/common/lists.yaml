@@ -1,4 +1,4 @@
-standard::has_default_mail_relay: false
+profile::standard::has_default_mail_relay: false
 mailman::lists_servername: 'lists.wikimedia.org'
 mailman::lists::ipv4: '208.80.154.21'
 mailman::lists::ipv6: '2620:0:861:1:208:80:154:21'

@@ -3,7 +3,7 @@ class role::lists {
 
     system::role { 'lists': description => 'Mailing list server', }
 
-    include ::standard
+    include ::profile::standard
     include ::profile::backup::host
     include ::profile::base::firewall
 

@@ -6,7 +6,7 @@ class role::webserver_misc_apps {
         description => 'WMF misc apps web server'
     }
 
-    include ::standard
+    include ::profile::standard
     include ::profile::base::firewall
 
     $apache_modules_common = ['ssl', 'rewrite', 'headers', 'authnz_ldap', 'proxy', 'proxy_http']

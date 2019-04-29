@@ -6,4 +6,4 @@ profile::otrs::exim_database_user: exim
 # Set up in the private repo
 #profile::otrs::database_pass:
 #profile::otrs::exim_database_pass:
-standard::has_default_mail_relay: false
+profile::standard::has_default_mail_relay: false
