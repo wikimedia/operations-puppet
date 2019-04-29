@@ -38,11 +38,13 @@ class Rsyncer:
         command = [
             "/usr/bin/rsync",
             "-a",
-            "-e \"/usr/bin/ssh -i /root/.ssh/id_labstore\""
+            "-e",
+            "/usr/bin/ssh -i /root/.ssh/id_labstore",
             "--delete-after",
             "--contimeout=600",
             "--timeout=600",
             "--bwlimit={}".format(self.bwlimit),
+            self.path,
             "{}:{}".format(self.dest, self.path),
         ]
         return subprocess.run(
