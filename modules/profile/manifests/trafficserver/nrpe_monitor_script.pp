@@ -8,28 +8,22 @@
 #   User to execute this monitoring script as.
 #
 # [*checkname*]
-#   Optional script name, defaulting to $title.
+#  Script name, defaulting to $title.
 #
 # [*args*]
 #   Optional arguments to pass to the script.
 #
 define profile::trafficserver::nrpe_monitor_script(
     String $sudo_user,
-    Optional[String] $checkname = undef,
+    String $checkname = $title,
     String $args = '',
 ){
-    if $checkname != undef {
-        $check_filename = $checkname
-    } else {
-        $check_filename = $title
-    }
-
-    $full_path =  "/usr/local/lib/nagios/plugins/${check_filename}"
+    $full_path = "/usr/local/lib/nagios/plugins/${checkname}"
 
     unless defined(File[$full_path]) {
         file { $full_path:
             ensure => present,
-            source => "puppet:///modules/profile/trafficserver/${check_filename}.sh",
+            source => "puppet:///modules/profile/trafficserver/${checkname}.sh",
             mode   => '0555',
             owner  => 'root',
             group  => 'root',

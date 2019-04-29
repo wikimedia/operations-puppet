@@ -15,6 +15,7 @@ class profile::trafficserver::backend (
     Array[TrafficServer::Log_format] $log_formats=hiera('profile::trafficserver::backend::log_formats', []),
     Array[TrafficServer::Log_filter] $log_filters=hiera('profile::trafficserver::backend::log_filters', []),
     Array[TrafficServer::Log] $logs=hiera('profile::trafficserver::backend::logs', []),
+    Wmflib::UserIpPort $prometheus_exporter_port=hiera('profile::trafficserver::backend::prometheus_exporter_port', 9122),
 ){
     # Add hostname as a parameter to the default global Lua plugin
     $global_lua_script = $default_lua_script? {
@@ -92,46 +93,15 @@ class profile::trafficserver::backend (
         source    => 'puppet:///modules/profile/trafficserver/rb-mw-mangling.lua',
     }
 
-    prometheus::trafficserver_exporter { 'trafficserver_exporter':
-        endpoint => "http://127.0.0.1:${port}/_stats",
+    # Monitoring
+    profile::trafficserver::monitoring { "trafficserver_${instance_name}_monitoring":
+        paths                    => $paths,
+        port                     => $port,
+        prometheus_exporter_port => $prometheus_exporter_port,
+        default_instance         => true,
+        instance_name            => $instance_name,
+        user                     => $user,
     }
-
-    # Nagios checks
-    nrpe::monitor_service { 'traffic_manager':
-        description  => 'Ensure traffic_manager is running',
-        nrpe_command => '/usr/lib/nagios/plugins/check_procs -c 1:1 -a "/usr/bin/traffic_manager --nosyslog"',
-        require      => Class['::trafficserver'],
-        notes_url    => 'https://wikitech.wikimedia.org/wiki/Apache_Traffic_Server',
-    }
-
-    nrpe::monitor_service { 'traffic_server':
-        description  => 'Ensure traffic_server is running',
-        nrpe_command => "/usr/lib/nagios/plugins/check_procs -c 1:1 -a '/usr/bin/traffic_server -M --httpport ${port}'",
-        require      => Class['::trafficserver'],
-        notes_url    => 'https://wikitech.wikimedia.org/wiki/Apache_Traffic_Server',
-    }
-
-    nrpe::monitor_service { 'trafficserver_exporter':
-        description  => 'Ensure trafficserver_exporter is running',
-        nrpe_command => '/usr/lib/nagios/plugins/check_procs -c 1:1 -a "/usr/bin/python3 /usr/bin/prometheus-trafficserver-exporter"',
-        require      => Prometheus::Trafficserver_exporter['trafficserver_exporter'],
-        notes_url    => 'https://wikitech.wikimedia.org/wiki/Apache_Traffic_Server',
-    }
-
-    monitoring::service { 'traffic_manager_check_http':
-        description   => 'Ensure traffic_manager binds on $port and responds to HTTP requests',
-        check_command => "check_http_hostheader_port_url!localhost!${port}!/_stats",
-        notes_url     => 'https://wikitech.wikimedia.org/wiki/Apache_Traffic_Server',
-    }
-
-    profile::trafficserver::nrpe_monitor_script { 'check_trafficserver_config_status':
-        sudo_user => $user,
-    }
-
-    # XXX: Avoid `traffic_server -C verify_config` for now
-    #profile::trafficserver::nrpe_monitor_script { 'check_trafficserver_verify_config':
-    #    sudo_user => $user,
-    #}
 
     $logs.each |TrafficServer::Log $log| {
         if $log['mode'] == 'ascii_pipe' {

@@ -7,9 +7,11 @@
 # It may be used, redistributed and/or modified under the terms of the GNU
 # General Public Licence (see http://www.fsf.org/licensing/licenses/gpl.txt).
 #
+records_path="$1"
+runroot="$2"
 
-if [ ! -r /etc/trafficserver/records.config ]; then
-    echo "UNKNOWN: user $(whoami) cannot read records.config"
+if [ ! -r "$records_path" ]; then
+    echo "UNKNOWN: user $(whoami) cannot read $records_path"
     exit 3
 fi
 
@@ -19,7 +21,11 @@ fi
 #  Started at Tue Oct 30 16:13:34 2018
 #  Last reconfiguration at Mon Nov  5 15:37:14 2018
 #  Configuration is current
-res="$(/usr/bin/traffic_ctl config status | grep -E 'requires restarting|Reconfiguration required')"
+if [ -z "$runroot" ]; then
+    res="$(/usr/bin/traffic_ctl config status | grep -E 'requires restarting|Reconfiguration required')"
+else
+    res="$(/usr/bin/traffic_ctl --run-root="$runroot" config status | grep -E 'requires restarting|Reconfiguration required')"
+fi
 
 if [ -z "$res" ]; then
     echo "OK: configuration is current"
