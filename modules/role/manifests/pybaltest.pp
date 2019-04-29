@@ -3,6 +3,7 @@ class role::pybaltest {
         description => 'pybal testing/development'
     }
 
+    include ::profile::standard
     include ::profile::base::firewall
     $pybaltest_hosts_ferm = join(hiera('pybaltest::hosts'), ' ')
 

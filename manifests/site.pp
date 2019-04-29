@@ -1907,7 +1907,6 @@ node /^puppetdb[12]001\.(codfw|eqiad)\.wmnet$/ {
 # pybal-test200X VMs are used for pybal testing/development
 node /^pybal-test200[123]\.codfw\.wmnet$/ {
     role(pybaltest)
-    include ::standard
     interface::add_ip6_mapped { 'main': }
 }
 
