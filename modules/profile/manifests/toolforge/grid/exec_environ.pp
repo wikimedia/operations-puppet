@@ -30,7 +30,7 @@ class profile::toolforge::grid::exec_environ {
     git::clone { 'composer':
         ensure             => 'latest',
         directory          => '/srv/composer',
-        origin             => 'https://gerrit.wikimedia.org/r/p/integration/composer.git',
+        origin             => 'https://gerrit.wikimedia.org/r/integration/composer.git',
         recurse_submodules => true,
         require            => File['/srv/composer'],
     }
