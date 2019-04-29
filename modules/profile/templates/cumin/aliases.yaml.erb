@@ -35,14 +35,11 @@ conf-eqiad: A:conf and A:eqiad
 contint: P{O:ci::master}
 cp: P{O:cache::upload or O:cache::upload_ats or O:cache::text}
 cp-canary: P{O:cache::canary}
-cp-codfw: A:cp and A:codfw
-cp-eqiad: A:cp and A:eqiad
-cp-esams: A:cp and A:esams
-cp-ulsfo: A:cp and A:ulsfo
-cp-eqsin: A:cp and A:eqsin
-<% [ 'text', 'upload', 'upload_ats' ].each do |cache| -%>
-cp-<%= cache %>: P{O:cache::<%= cache %>}
+cp-upload: P{O:cache::upload} or P{O:cache::upload_ats}
+cp-text: P{O:cache::text}
 <% @datacenters.each do |dc| -%>
+cp-<%= dc %>: A:cp and A:<%= dc %>
+<% [ 'text', 'upload' ].each do |cache| -%>
 cp-<%= cache %>_<%= dc %>: A:cp-<%= cache %> and A:<%= dc %>
 <% end -%>
 <% end -%>
