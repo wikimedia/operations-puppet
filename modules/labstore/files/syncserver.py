@@ -120,17 +120,20 @@ def main():
     rsyncer = Rsyncer(args.sync_path, args.partner_host, args.bwlimit)
 
     if not args.interval and is_active_nfs(args.cluster_ip):
+        logging.info("starting a sync...")
         result = rsyncer.sync()
+        logging.info(result.stderr.decode("utf-8"))
+        logging.info(result.stdout.decode("utf-8"))
         return result.returncode
 
-    # TODO: actually do something instead of just burning cycles
     while True:
         time.sleep(args.interval)
         if is_active_nfs(args.cluster_ip):
+            logging.info("starting a sync...")
             result = rsyncer.sync()
             if result.returncode != 0:
-                logging.error(result.stderr)
-                logging.error(result.stdout)
+                logging.error(result.stderr.decode("utf-8"))
+                logging.error(result.stdout.decode("utf-8"))
                 return result.returncode
 
 
