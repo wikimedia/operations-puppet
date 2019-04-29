@@ -40,7 +40,7 @@ Puppet::Type.type(:scap_source).provide(:default) do
   def origin(repo_name)
     case resource[:origin]
     when :gerrit
-      "https://gerrit.wikimedia.org/r/p/#{repo_name}.git"
+      "https://gerrit.wikimedia.org/r/#{repo_name}.git"
     when :phabricator
       "https://phabricator.wikimedia.org/source/#{repo_name}.git"
     end
@@ -49,7 +49,12 @@ Puppet::Type.type(:scap_source).provide(:default) do
   def repo_name(origin)
     case resource[:origin]
     when :gerrit
+      # First try with the legacy URL having /p/ which can come from an
+      # existing clone for which the remote still points to the old legacy URL.
+      #
+      # A better fix would be to normalize the url when accessing it in repository()
       origin.slice! "https://gerrit.wikimedia.org/r/p/"
+      origin.slice! "https://gerrit.wikimedia.org/r/"
     when :phabricator
       origin.slice! "https://phabricator.wikimedia.org/source/"
     end

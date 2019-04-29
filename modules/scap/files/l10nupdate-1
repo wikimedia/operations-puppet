@@ -8,7 +8,7 @@
 
 # The configuration in CommonSettings.php should match GITDIR and GITREPOS
 GITDIR=/var/lib/l10nupdate/mediawiki
-GITURL=https://gerrit.wikimedia.org/r/p/mediawiki
+GITURL=https://gerrit.wikimedia.org/r/mediawiki
 GITREPOS="core extensions skins"
 QUIET=--quiet
 # Ensure that $LOGNAME is set and has a non-null value.
