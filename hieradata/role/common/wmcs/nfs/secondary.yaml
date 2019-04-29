@@ -1,6 +1,7 @@
 ldap::client::nss::nsswitch_conf_source: file:///usr/share/libc-bin/nsswitch.conf
 profile::openstack::eqiad1::version: newton
 profile::wmcs::nfs::rsync::user: root
+diamond::remove: true
 profile::wmcs::nfs::rsync::group: root
 profile::wmcs::nfs::rsync::datapath: /exp
 profile::wmcs::nfs::secondary::monitor_iface: eno1

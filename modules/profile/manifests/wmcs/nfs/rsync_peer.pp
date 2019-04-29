@@ -15,6 +15,8 @@ class profile::wmcs::nfs::rsync_peer(
         primary_host => $primary_host,
         is_active    => false,
     }
-    class {'::vm::higher_min_free_kbytes':}
+
+    # This may not be needed
+    # class {'::vm::higher_min_free_kbytes':}
 
 }
