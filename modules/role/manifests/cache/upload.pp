@@ -4,7 +4,7 @@ class role::cache::upload {
         description => 'upload Varnish cache server',
     }
 
-    include ::standard
+    include ::profile::standard
 
     include ::profile::cache::base
     include ::profile::cache::ssl::unified

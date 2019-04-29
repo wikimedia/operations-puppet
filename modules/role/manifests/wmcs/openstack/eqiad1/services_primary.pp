@@ -1,6 +1,6 @@
 class role::wmcs::openstack::eqiad1::services_primary {
     system::role { $name: }
-    include ::standard
+    include ::profile::standard
     include ::profile::base::firewall
     include ::profile::openstack::eqiad1::pdns::auth::db
     include ::profile::openstack::eqiad1::pdns::auth::service

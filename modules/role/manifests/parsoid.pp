@@ -7,7 +7,7 @@ class role::parsoid {
         description => "Parsoid ${::realm}"
     }
 
-    include ::standard
+    include ::profile::standard
     include ::profile::base::firewall
     include ::profile::parsoid
 }

@@ -15,7 +15,7 @@ class role::striker::web {
         }
     }
 
-    include ::standard
+    include ::profile::standard
     include ::memcached
     include ::striker::apache
     include ::striker::uwsgi

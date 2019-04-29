@@ -1,6 +1,6 @@
 class role::wmcs::openstack::main::net {
     system::role { $name: }
-    include ::standard
+    include ::profile::standard
     include ::profile::openstack::eqiad1::clientpackages
     include ::profile::openstack::eqiad1::observerenv
     include ::profile::openstack::main::nova::common

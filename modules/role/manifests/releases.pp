@@ -8,7 +8,7 @@ class role::releases {
         description => 'Wikimedia Software Releases Server',
     }
 
-    include ::standard
+    include ::profile::standard
     include ::profile::base::firewall
     include ::profile::backup::host
     include ::profile::releases::common

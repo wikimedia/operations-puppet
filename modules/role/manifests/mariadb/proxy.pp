@@ -1,6 +1,6 @@
 # generic config for a database proxy using haproxy
 class role::mariadb::proxy {
-    include ::standard
+    include ::profile::standard
 
     system::role { 'mariadb::proxy':
         description => 'DB Proxy',

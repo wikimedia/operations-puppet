@@ -1,6 +1,6 @@
 class role::wmcs::openstack::eqiad1::control {
     system::role { $name: }
-    include ::standard
+    include ::profile::standard
     include ::profile::base::firewall
     include ::profile::openstack::eqiad1::metrics
     include ::profile::openstack::eqiad1::observerenv

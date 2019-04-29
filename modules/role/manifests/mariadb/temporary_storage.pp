@@ -22,7 +22,7 @@ class role::mariadb::temporary_storage {
         description => 'MariaDB temporary storage',
     }
 
-    include ::standard
+    include ::profile::standard
     include ::profile::base::firewall
     # mariadb port not open to the world (change for remote managing)
     # include ::role::mariadb::ferm

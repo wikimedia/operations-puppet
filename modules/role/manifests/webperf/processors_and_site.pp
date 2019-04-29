@@ -1,7 +1,7 @@
 # == Class: role::webperf::processors_and_site
 #
 class role::webperf::processors_and_site {
-    include ::standard
+    include ::profile::standard
     include ::profile::base::firewall
     include ::profile::webperf::processors
     include ::profile::webperf::coal_web

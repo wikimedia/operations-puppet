@@ -8,7 +8,7 @@ class role::prometheus {
     include ::conftool::scripts # lint:ignore:wmf_styleguide
     include ::profile::rsyslog::kafka_shipper
 
-    include ::standard
+    include ::profile::standard
     # TODO: use role::lvs::realserver instead
     include ::lvs::realserver
 

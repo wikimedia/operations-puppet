@@ -1,5 +1,5 @@
 class role::configcluster {
-    include ::standard
+    include ::profile::standard
     include ::profile::base::firewall
 
     # Temporary to ease the migration process

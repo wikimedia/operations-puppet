@@ -1,7 +1,7 @@
 class role::dumps::distribution::server_nofetches {
     system::role { 'dumps::distribution::server': description => 'labstore host in public VLAN that distributes Dumps to clients, no dataset fetches' }
 
-    include ::standard
+    include ::profile::standard
     include ::profile::base::firewall
     include ::profile::wmcs::nfs::ferm
 

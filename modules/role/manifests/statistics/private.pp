@@ -3,7 +3,7 @@ class role::statistics::private {
         description => 'Statistics private data host and general compute node'
     }
 
-    include ::standard
+    include ::profile::standard
 
     include ::profile::analytics::cluster::gitconfig
 

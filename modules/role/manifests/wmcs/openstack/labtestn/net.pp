@@ -1,7 +1,7 @@
 class role::wmcs::openstack::labtestn::net {
     system::role { $name: }
     # Do not add base firewall
-    include ::standard
+    include ::profile::standard
     include ::profile::openstack::labtestn::clientpackages
     include ::profile::openstack::labtestn::observerenv
     include ::profile::openstack::labtestn::neutron::common

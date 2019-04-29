@@ -3,7 +3,7 @@ class role::wikilabels::staging {
 
     system::role { $name: }
 
-    include ::standard
+    include ::profile::standard
     include ::wikilabels::session
 
     class { '::profile::wikilabels':

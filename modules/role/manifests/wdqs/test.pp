@@ -2,7 +2,7 @@
 #
 # This class sets up Wikidata Query Service
 class role::wdqs::test {
-    include ::standard
+    include ::profile::standard
     include ::profile::base::firewall
     require ::profile::wdqs::common
     require ::profile::wdqs::blazegraph

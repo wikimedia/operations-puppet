@@ -4,7 +4,7 @@ class role::cache::upload_ats {
         description => 'upload Varnish/ATS cache server',
     }
 
-    include ::standard
+    include ::profile::standard
 
     include ::profile::cache::base
     include ::profile::cache::ssl::unified

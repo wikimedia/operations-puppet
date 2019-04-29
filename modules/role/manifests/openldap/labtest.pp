@@ -1,7 +1,7 @@
 # LDAP servers for labs (based on OpenLDAP)
 
 class role::openldap::labtest {
-    include ::standard
+    include ::profile::standard
     include ::profile::base::firewall
 
     include ::profile::openldap

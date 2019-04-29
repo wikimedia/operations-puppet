@@ -7,7 +7,7 @@
 class role::archiva {
     system::role { 'archiva': description => 'Apache Archiva Host' }
 
-    include ::standard
+    include ::profile::standard
     include ::profile::base::firewall
     include ::profile::archiva
     include ::profile::archiva::proxy

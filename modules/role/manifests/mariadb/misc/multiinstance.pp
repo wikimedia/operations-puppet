@@ -5,7 +5,7 @@ class role::mariadb::misc::multiinstance {
         description => 'Misc Services Multiinstance Databases',
     }
 
-    include ::standard
+    include ::profile::standard
     include ::profile::base::firewall
 
     include ::profile::mariadb::misc::multiinstance

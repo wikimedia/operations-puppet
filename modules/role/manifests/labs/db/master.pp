@@ -4,7 +4,7 @@ class role::labs::db::master {
         description => 'Labs user database master',
     }
 
-    include ::standard
+    include ::profile::standard
     include ::mariadb::packages_wmf
     include ::mariadb::service
     include ::profile::mariadb::monitor

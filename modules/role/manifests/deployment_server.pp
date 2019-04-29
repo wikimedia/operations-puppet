@@ -1,6 +1,6 @@
 # Mediawiki Deployment Server (prod)
 class role::deployment_server {
-    include ::standard
+    include ::profile::standard
     include ::profile::base::firewall
     # All needed classes for deploying mediawiki
     include ::profile::mediawiki::common

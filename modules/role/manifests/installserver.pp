@@ -1,7 +1,7 @@
 class role::installserver {
     system::role { 'installserver': }
 
-    include ::standard
+    include ::profile::standard
     include ::profile::base::firewall
     include ::profile::backup::host
 

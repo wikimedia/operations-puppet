@@ -6,7 +6,7 @@ class role::proton {
     system::role { 'proton':
         description => 'Chromium-based PDF renderer',
     }
-    include ::standard
+    include ::profile::standard
     include ::profile::base::firewall
     include role::lvs::realserver
 

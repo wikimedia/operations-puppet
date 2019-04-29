@@ -12,7 +12,7 @@ class role::mariadb::misc::phabricator(
         description => "Misc Services Database ${shard} (phabricator)",
     }
 
-    include ::standard
+    include ::profile::standard
     include mariadb::packages_wmf
     include mariadb::service
 

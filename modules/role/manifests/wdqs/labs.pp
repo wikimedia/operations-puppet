@@ -6,7 +6,7 @@
 class role::wdqs::labs () {
     require role::labs::lvm::srv
 
-    include ::standard
+    include ::profile::standard
     include ::profile::base::firewall
     require ::profile::wdqs::common
     require ::profile::wdqs::blazegraph

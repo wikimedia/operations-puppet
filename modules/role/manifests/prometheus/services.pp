@@ -7,7 +7,7 @@ class role::prometheus::services {
         description => 'Prometheus server (services)',
     }
 
-    include ::standard
+    include ::profile::standard
     include ::profile::base::firewall
 
     $targets_path = '/srv/prometheus/services/targets'

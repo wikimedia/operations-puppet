@@ -24,6 +24,6 @@ class role::analytics_test_cluster::hadoop::standby {
     include ::profile::analytics::database::meta::backup_dest
 
     include ::profile::base::firewall
-    include standard
+    include ::profile::standard
 
 }

@@ -5,7 +5,7 @@ class role::webserver_misc_static {
         description => 'WMF misc sites web server'
     }
 
-    include ::standard
+    include ::profile::standard
     include ::profile::base::firewall
     include ::profile::backup::host
     include ::profile::microsites::httpd

@@ -8,7 +8,7 @@ class role::druid::test_analytics::worker {
         description => "Druid worker in the analytics-test-${::site} cluster",
     }
 
-    include ::standard
+    include ::profile::standard
     include ::profile::base::firewall
     include ::profile::druid::broker
     include ::profile::druid::coordinator

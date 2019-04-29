@@ -18,7 +18,7 @@ class role::mariadb::misc(
         false => 'slave',
     }
 
-    include ::standard
+    include ::profile::standard
     include ::profile::mariadb::monitor
     include ::passwords::misc::scripts
     include ::profile::base::firewall

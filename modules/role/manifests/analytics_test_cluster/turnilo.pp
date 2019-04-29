@@ -7,5 +7,5 @@ class role::analytics_test_cluster::turnilo {
 
     include ::profile::druid::turnilo
     include ::profile::base::firewall
-    include standard
+    include ::profile::standard
 }

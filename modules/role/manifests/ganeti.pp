@@ -5,7 +5,7 @@ class role::ganeti {
         description => 'Ganeti Node',
     }
 
-    include ::standard
+    include ::profile::standard
     include ::profile::ganeti
     include ::profile::base::firewall
 }

@@ -5,7 +5,7 @@ class role::gerrit {
 
     system::role { 'Gerrit': description => "Gerrit server in ${::realm}" }
 
-    include ::standard
+    include ::profile::standard
     include ::profile::backup::host
     include ::profile::base::firewall
     include ::profile::gerrit::server

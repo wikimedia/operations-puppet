@@ -13,7 +13,7 @@ class role::scb {
         description => "Service cluster B; includes:\n\t${msg_services}"
     }
 
-    include ::standard
+    include ::profile::standard
     include ::profile::base::firewall
     include role::lvs::realserver
 

@@ -1,6 +1,6 @@
 # Sets up a maps server slave
 class role::maps::slave {
-    include ::standard
+    include ::profile::standard
     include ::profile::base::firewall
     include ::role::lvs::realserver
 

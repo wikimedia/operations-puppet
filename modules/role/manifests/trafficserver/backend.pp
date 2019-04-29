@@ -1,5 +1,5 @@
 class role::trafficserver::backend {
-    include ::standard
+    include ::profile::standard
     include ::profile::trafficserver::backend
 
     # pool/depool/drain scripts

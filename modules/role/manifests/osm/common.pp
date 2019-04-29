@@ -1,5 +1,5 @@
 class role::osm::common {
-    include ::standard
+    include ::profile::standard
     $pgversion = $::lsbdistcodename ? {
         'stretch' => '9.6',
         'jessie'  => '9.4',

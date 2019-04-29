@@ -4,7 +4,7 @@ class role::kafka::monitoring {
         description => 'Kafka consumer groups lag monitoring'
     }
 
-    include ::standard
+    include ::profile::standard
     include ::profile::base::firewall
     include ::profile::kafka::monitoring
 }

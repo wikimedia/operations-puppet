@@ -8,5 +8,5 @@ class role::analytics_cluster::superset {
 
     include ::profile::superset
     include ::profile::base::firewall
-    include standard
+    include ::profile::standard
 }

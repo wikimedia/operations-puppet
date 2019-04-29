@@ -3,7 +3,7 @@ class role::grafana {
         description => 'Grafana monitoring web server'
     }
 
-    include ::standard
+    include ::profile::standard
     include ::profile::base::firewall
 
     class { '::httpd':

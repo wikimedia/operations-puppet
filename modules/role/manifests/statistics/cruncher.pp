@@ -3,7 +3,7 @@ class role::statistics::cruncher {
         description => 'Statistics general compute node (non private data)'
     }
 
-    include ::standard
+    include ::profile::standard
     include ::profile::base::firewall
 
     include ::profile::statistics::cruncher

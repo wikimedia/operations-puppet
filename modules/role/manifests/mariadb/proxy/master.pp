@@ -1,6 +1,6 @@
 # db master failover with a proxy
 class role::mariadb::proxy::master {
-    include ::standard
+    include ::profile::standard
 
     system::role { 'mariadb::proxy::master':
         description => 'DB Proxy with failover',

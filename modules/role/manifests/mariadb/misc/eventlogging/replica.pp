@@ -1,6 +1,6 @@
 class role::mariadb::misc::eventlogging::replica {
 
-    include ::standard
+    include ::profile::standard
     include ::profile::base::firewall
     ::profile::mariadb::ferm { 'eventlogging_replica': }
     include ::profile::mariadb::monitor

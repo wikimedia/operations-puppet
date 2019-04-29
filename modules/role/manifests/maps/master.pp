@@ -1,6 +1,6 @@
 # Sets up a maps server master
 class role::maps::master {
-    include ::standard
+    include ::profile::standard
     include ::profile::base::firewall
     include ::role::lvs::realserver
 

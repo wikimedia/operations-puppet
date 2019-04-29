@@ -1,4 +1,4 @@
 class role::backup::offsite {
-    include ::standard
+    include ::profile::standard
     include ::profile::backup::storage
 }

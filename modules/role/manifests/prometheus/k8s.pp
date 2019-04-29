@@ -7,7 +7,7 @@ class role::prometheus::k8s {
         description => 'Prometheus server (k8s)',
     }
 
-    include ::standard
+    include ::profile::standard
     include ::profile::base::firewall
     include ::profile::prometheus::k8s
 

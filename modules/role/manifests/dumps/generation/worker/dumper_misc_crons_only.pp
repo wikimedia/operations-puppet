@@ -1,5 +1,5 @@
 class role::dumps::generation::worker::dumper_misc_crons_only {
-    include standard
+    include ::profile::standard
     include ::profile::base::firewall
 
     include profile::dumps::generation::worker::common

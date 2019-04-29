@@ -25,5 +25,5 @@ class role::analytics_cluster::hadoop::ui {
     include ::profile::hadoop::yarn_proxy
 
     include ::profile::base::firewall
-    include standard
+    include ::profile::standard
 }

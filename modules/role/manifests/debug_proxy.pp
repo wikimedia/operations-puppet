@@ -9,7 +9,7 @@ class role::debug_proxy {
         description => 'X-Wikimedia-Debug proxy',
     }
 
-    include ::standard
+    include ::profile::standard
     include ::profile::base::firewall
 
     # Backward compatibility

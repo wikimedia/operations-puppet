@@ -5,7 +5,7 @@ class role::bastionhost::opsonly {
     }
 
     include ::bastionhost
-    include ::standard
+    include ::profile::standard
     include ::profile::base::firewall
     include ::profile::backup::host
 

@@ -4,7 +4,7 @@
 #
 # filtertags: labs-project-deployment-prep labs-project-packaging labs-project-tools
 class role::package::builder {
-    include ::standard
+    include ::profile::standard
     include ::profile::base::firewall
     include ::profile::package_builder
 

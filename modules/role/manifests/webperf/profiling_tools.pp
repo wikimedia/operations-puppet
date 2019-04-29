@@ -9,7 +9,7 @@ class role::webperf::profiling_tools {
         description => 'profiling tools host'
     }
 
-    include ::standard
+    include ::profile::standard
     include ::profile::base::firewall
     include ::profile::webperf::arclamp
     include ::profile::webperf::xhgui

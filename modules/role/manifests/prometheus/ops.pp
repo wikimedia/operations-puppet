@@ -7,7 +7,7 @@ class role::prometheus::ops {
         description => 'Prometheus server (ops)',
     }
 
-    include ::standard
+    include ::profile::standard
     include ::profile::base::firewall
     include ::profile::prometheus::ops
     include ::prometheus::blackbox_exporter

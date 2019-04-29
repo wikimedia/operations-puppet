@@ -1,6 +1,6 @@
 class role::wmcs::openstack::labtestn::virt {
     system::role { $name: }
-    include ::standard
+    include ::profile::standard
     # include ::profile::base::firewall
     include ::profile::openstack::labtestn::clientpackages
     include ::profile::openstack::labtestn::observerenv

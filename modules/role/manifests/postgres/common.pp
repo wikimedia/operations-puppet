@@ -1,5 +1,5 @@
 class role::postgres::common {
-    include ::standard
+    include ::profile::standard
 
     $root_dir = '/srv/postgres'
 

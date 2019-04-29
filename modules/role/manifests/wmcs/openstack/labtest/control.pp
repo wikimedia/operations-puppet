@@ -1,6 +1,6 @@
 class role::wmcs::openstack::labtest::control {
     system::role { $name: }
-    include ::standard
+    include ::profile::standard
     include ::profile::base::firewall
     include ::profile::openstack::labtest::observerenv
     include ::profile::openstack::labtest::rabbitmq

@@ -8,5 +8,5 @@ class role::analytics_cluster::hadoop::worker {
     include ::profile::hadoop::worker
     include ::profile::hadoop::logstash
     include ::profile::base::firewall
-    include standard
+    include ::profile::standard
 }

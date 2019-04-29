@@ -5,7 +5,7 @@
 # filtertags: labs-project-deployment-prep
 
 class role::thumbor::mediawiki {
-    include ::standard
+    include ::profile::standard
     include ::profile::base::firewall
     include ::mediawiki::packages::fonts
     include ::profile::statsite

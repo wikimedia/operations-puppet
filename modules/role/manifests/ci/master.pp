@@ -11,7 +11,7 @@ class role::ci::master {
 
     system::role { 'ci::master': description => 'CI Jenkins master' }
 
-    include ::standard
+    include ::profile::standard
     include ::profile::ci::backup
     include ::profile::ci::firewall
 

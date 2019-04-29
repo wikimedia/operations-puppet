@@ -5,7 +5,7 @@ class role::mariadb::misc::tendril_and_zarcillo {
         description => 'tendril and zarcillo database server',
     }
 
-    include ::standard
+    include ::profile::standard
     include ::profile::base::firewall
     ::profile::mariadb::ferm { 'tendril': }
 

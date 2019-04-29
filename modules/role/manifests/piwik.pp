@@ -6,7 +6,7 @@ class role::piwik {
         description => 'Analytics Piwik/Matomo server',
     }
 
-    include ::standard
+    include ::profile::standard
     include ::profile::base::firewall
 
     include ::profile::piwik::webserver

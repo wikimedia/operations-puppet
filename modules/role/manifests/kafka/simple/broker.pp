@@ -7,7 +7,7 @@ class role::kafka::simple::broker {
         description => "Kafka Broker in a 'simple' Kafka cluster",
     }
 
-    include standard
+    include ::profile::standard
     include profile::base::firewall
     include profile::kafka::broker
 }

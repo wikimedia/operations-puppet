@@ -3,7 +3,7 @@ class role::wmcs::nfs::primary {
         description => 'NFS primary share cluster',
     }
 
-    include ::standard
+    include ::profile::standard
     include ::profile::wmcs::nfs::primary
     include ::profile::wmcs::nfs::maintain_dbusers
 }

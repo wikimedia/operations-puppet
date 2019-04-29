@@ -10,7 +10,7 @@ class role::aqs {
         description => 'Analytics Query Service Node',
     }
 
-    include ::standard
+    include ::profile::standard
     include ::profile::base::firewall
 
     require ::passwords::aqs

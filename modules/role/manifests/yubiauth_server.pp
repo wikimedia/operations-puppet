@@ -5,7 +5,7 @@ class role::yubiauth_server {
         description => 'Yubi 2FA authentication server',
     }
 
-    include ::standard
+    include ::profile::standard
     include ::profile::backup::host
     include ::profile::yubiauth::server
 }

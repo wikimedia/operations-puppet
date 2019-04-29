@@ -7,7 +7,7 @@ class role::mariadb::labtestwikitech {
         description => 'Wikitech Database',
     }
 
-    include ::standard
+    include ::profile::standard
     include ::profile::mariadb::grants::core
     include ::profile::mariadb::monitor
     include ::profile::mariadb::labtestwikitech

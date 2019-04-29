@@ -3,7 +3,7 @@ class role::backup {
     include ::profile::backup::host
     include ::profile::backup::director
     include ::profile::backup::storage
-    include ::standard
+    include ::profile::standard
 
     system::role { 'backup':
         description => 'Backup server',

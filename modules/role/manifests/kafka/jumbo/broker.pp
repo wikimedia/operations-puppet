@@ -7,8 +7,8 @@ class role::kafka::jumbo::broker {
     }
 
     # Something in labs is including standard.  Only include if not already defined.
-    if !defined(Class['::standard']) {
-        include ::standard
+    if !defined(Class['::profile::standard']) {
+        include ::profile::standard
     }
     include profile::base::firewall
     include profile::kafka::broker

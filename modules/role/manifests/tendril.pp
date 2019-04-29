@@ -4,7 +4,7 @@
 
 class role::tendril {
     include ::profile::base::firewall
-    include ::standard
+    include ::profile::standard
 
     interface::add_ip6_mapped { 'main': }
 

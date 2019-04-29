@@ -13,7 +13,7 @@
 #
 # filtertags: labs-project-deployment-prep
 class role::dumps::generation::worker::beta_testbed {
-    include standard
+    include ::profile::standard
 
     include profile::dumps::generation::worker::common
     include profile::dumps::generation::worker::crontester

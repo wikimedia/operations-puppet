@@ -1,6 +1,6 @@
 # filtertags: labs-project-deployment-prep
 class role::poolcounter::server {
-    include ::standard
+    include ::profile::standard
     include ::poolcounter
     include ::profile::base::firewall
 

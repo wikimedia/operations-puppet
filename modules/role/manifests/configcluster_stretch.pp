@@ -2,7 +2,7 @@ class role::configcluster_stretch {
     system::role { 'Configcluster':
         description => 'Configuration cluster server (stretch)'
     }
-    include ::standard
+    include ::profile::standard
     include ::profile::base::firewall
 
     include ::profile::zookeeper::server

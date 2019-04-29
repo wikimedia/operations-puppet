@@ -9,7 +9,7 @@ class role::cluster::management {
         description => 'Cluster management',
     }
 
-    include ::standard
+    include ::profile::standard
     include ::profile::base::firewall
     include ::profile::base::firewall::log
 

@@ -8,6 +8,6 @@ class role::kafka::analytics {
 
     include ::role::kafka::analytics::broker
 
-    include ::standard
+    include ::profile::standard
     include ::profile::base::firewall
 }

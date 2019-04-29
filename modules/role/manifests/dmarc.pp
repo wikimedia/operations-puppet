@@ -4,7 +4,7 @@
 #
 class role::dmarc {
 
-    include ::standard
+    include ::profile::standard
     include ::profile::base::firewall
 
     system::role { 'dmarc':

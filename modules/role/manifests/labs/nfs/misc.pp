@@ -13,7 +13,7 @@ class role::labs::nfs::misc(
         description => 'Labs NFS service (misc)',
     }
 
-    include ::standard
+    include ::profile::standard
     include labstore
     include rsync::server
     include labstore::backup_keys

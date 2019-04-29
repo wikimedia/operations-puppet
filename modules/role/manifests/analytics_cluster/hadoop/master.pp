@@ -17,5 +17,5 @@ class role::analytics_cluster::hadoop::master {
     include ::profile::analytics::cluster::druid_deep_storage
 
     include ::profile::base::firewall
-    include standard
+    include ::profile::standard
 }

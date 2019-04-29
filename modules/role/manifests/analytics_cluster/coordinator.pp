@@ -57,6 +57,6 @@ class role::analytics_cluster::coordinator {
     include ::profile::analytics::refinery::job::sqoop_mediawiki
     include ::profile::analytics::refinery::job::refine
 
-    include standard
+    include ::profile::standard
     include ::profile::base::firewall
 }

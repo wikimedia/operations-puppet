@@ -5,7 +5,7 @@ class role::ores {
         description => 'ORES service'
     }
 
-    include ::standard
+    include ::profile::standard
     include ::profile::base::firewall
     include role::lvs::realserver
 

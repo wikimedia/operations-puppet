@@ -13,7 +13,7 @@ class role::mariadb::cloudinfra (
         false => 'slave',
     }
 
-    include ::standard
+    include ::profile::standard
     include ::profile::mariadb::monitor
     include ::profile::base::firewall
 

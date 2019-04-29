@@ -5,7 +5,7 @@ class role::puppetmaster::frontend {
         description => 'Puppetmaster frontend'
     }
 
-    include ::standard
+    include ::profile::standard
     include ::profile::base::firewall
 
     include ::profile::backup::host

@@ -18,7 +18,7 @@ class role::mariadb::core {
         description => "Core DB Server ${shard}",
     }
 
-    include ::standard
+    include ::profile::standard
     include ::profile::base::firewall
     include ::passwords::misc::scripts
     include ::role::mariadb::ferm

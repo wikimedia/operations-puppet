@@ -21,5 +21,5 @@ class role::kafka::main {
         include ::profile::kafka::mirror
     }
 
-    include ::standard
+    include ::profile::standard
 }

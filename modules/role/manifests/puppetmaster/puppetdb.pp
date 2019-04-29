@@ -1,6 +1,6 @@
 # filtertags: labs-project-deployment-prep labs-project-automation-framework labs-project-toolsbeta
 class role::puppetmaster::puppetdb {
-    include ::standard
+    include ::profile::standard
     include ::profile::base::firewall
     include ::profile::puppetdb::database
     include ::profile::puppetdb

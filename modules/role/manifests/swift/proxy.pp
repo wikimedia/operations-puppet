@@ -6,7 +6,7 @@ class role::swift::proxy (
         description => 'swift frontend proxy',
     }
 
-    include ::standard
+    include ::profile::standard
     include ::profile::base::firewall
     include ::swift::params
     include ::swift

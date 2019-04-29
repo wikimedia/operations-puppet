@@ -4,7 +4,7 @@ class role::labs::db::wikireplica_web {
         description => 'Labs replica database - webrequests',
     }
 
-    include ::standard
+    include ::profile::standard
     class { '::mariadb::packages_wmf': }
     class { '::mariadb::service': }
     include ::profile::mariadb::monitor

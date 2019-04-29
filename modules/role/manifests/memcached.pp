@@ -4,7 +4,7 @@
 class role::memcached {
     system::role { 'memcached': }
 
-    include ::standard
+    include ::profile::standard
     include ::base::mysterious_sysctl
     include ::profile::base::firewall
     include profile::memcached::instance

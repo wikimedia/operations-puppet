@@ -5,7 +5,7 @@
 class role::syslog::centralserver (
     $prometheus_nodes = hiera('prometheus_nodes', []), # lint:ignore:wmf_styleguide
 ) {
-    include ::standard
+    include ::profile::standard
     include ::profile::base::firewall
     include ::profile::backup::host
 

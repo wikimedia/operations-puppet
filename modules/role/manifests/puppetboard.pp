@@ -13,6 +13,6 @@ class role::puppetboard {
     system::role { 'puppetboard': description => 'Puppetboard server' }
 
     include ::profile::base::firewall
-    include ::standard
+    include ::profile::standard
     include ::profile::puppetboard
 }

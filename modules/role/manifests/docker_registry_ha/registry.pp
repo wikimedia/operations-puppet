@@ -1,5 +1,5 @@
 class role::docker_registry_ha::registry {
-    include ::standard
+    include ::profile::standard
     include ::profile::base::firewall
     include ::profile::docker_registry_ha::registry
     system::role { 'docker_registry_ha':

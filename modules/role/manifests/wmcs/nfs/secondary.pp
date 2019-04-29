@@ -3,7 +3,7 @@ class role::wmcs::nfs::secondary {
         description => 'NFS secondary share cluster',
     }
 
-    include ::standard
+    include ::profile::standard
     include ::profile::base::firewall
     include ::profile::wmcs::nfs::ferm
     include ::profile::wmcs::nfs::secondary

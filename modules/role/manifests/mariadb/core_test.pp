@@ -18,7 +18,7 @@ class role::mariadb::core_test {
         description => "Core Test DB Server ${shard}",
     }
 
-    include ::standard
+    include ::profile::standard
     include ::profile::base::firewall
     include ::profile::mariadb::monitor
     include ::passwords::misc::scripts

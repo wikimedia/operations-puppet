@@ -20,6 +20,6 @@ class role::hmmp {
 
     system::role { 'HMMP': description => 'httpd - memcached - mariadb - php' }
 
-    include ::standard
+    include ::profile::standard
     include ::profile::hmmp
 }

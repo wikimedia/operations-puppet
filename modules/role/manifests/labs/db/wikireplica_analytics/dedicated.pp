@@ -15,7 +15,7 @@ class role::labs::db::wikireplica_analytics::dedicated {
         description => 'Labs replica database - analytics (Analytics team\'s special db host)',
     }
 
-    include ::standard
+    include ::profile::standard
     class { '::mariadb::packages_wmf': }
     class { '::mariadb::service': }
     include ::profile::mariadb::monitor

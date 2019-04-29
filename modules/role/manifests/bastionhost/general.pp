@@ -5,7 +5,7 @@ class role::bastionhost::general {
     }
 
     include ::bastionhost
-    include ::standard
+    include ::profile::standard
     include ::profile::base::firewall
     include ::profile::backup::host
 

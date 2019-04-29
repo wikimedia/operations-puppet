@@ -3,7 +3,7 @@
 # This class sets up Elasticsearch specifically for CirrusSearch on cloudelastic nodes.
 #
 class role::elasticsearch::cloudelastic {
-    include ::standard
+    include ::profile::standard
     include ::profile::base::firewall
     include ::profile::elasticsearch::cirrus
     include ::profile::elasticsearch::monitor::base_checks
