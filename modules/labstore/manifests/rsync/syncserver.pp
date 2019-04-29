@@ -9,17 +9,7 @@ class labstore::rsync::syncserver(
     String $niceness = '+10',
     Boolean $is_active = false,
 )  {
-    include labstore::rsync::common
     include labstore::backup_keys
-
-    file { '/etc/rsyncd.d/10-rsync-datasets_to_peers.conf':
-        ensure  => 'present',
-        mode    => '0444',
-        owner   => 'root',
-        group   => 'root',
-        content => template('labstore/rsync/rsyncd.conf.datasets_to_peers.erb'),
-        notify  => Exec['update-rsyncd.conf'],
-    }
 
     file { '/usr/local/sbin/syncserver':
         ensure => 'present',

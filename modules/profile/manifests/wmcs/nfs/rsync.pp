@@ -1,4 +1,4 @@
-class profile::wmcs::nfs::rsync_peer(
+class profile::wmcs::nfs::rsync(
     String $user = lookup('profile::wmcs::nfs::rsync::user'),
     String $group = lookup('profile::wmcs::nfs::rsync::group'),
     String $datapath = lookup('profile::wmcs::nfs::rsync::datapath'),
