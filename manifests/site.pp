@@ -2207,7 +2207,7 @@ node /^wtp20(0[1-9]|1[0-9]|2[0-4])\.codfw\.wmnet$/ {
 
 node default {
     if $::realm == 'production' {
-        include ::standard
+        include ::profile::standard
         interface::add_ip6_mapped { 'main': }
     } else {
         # Require instead of include so we get NFS and other
