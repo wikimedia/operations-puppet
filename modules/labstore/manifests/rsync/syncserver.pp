@@ -5,6 +5,7 @@ class labstore::rsync::syncserver(
     Stdlib::Host $partner_host=undef,
     String $niceness = '+10',
     Boolean $is_active = false,
+    Stdlib::IP::Address $cluster_ip = undef,
 )  {
     include labstore::backup_keys
 
