@@ -2,6 +2,17 @@ class openstack::clientpackages::mitaka::jessie(
 ) {
     require openstack::commonpackages::mitaka
 
+    include openstack::designate::makedomain
+
+    # Wrapper python class to easily query openstack clients
+    file { '/usr/lib/python2.7/dist-packages/mwopenstackclients.py':
+        ensure => 'present',
+        source => 'puppet:///modules/openstack/clientpackages/mwopenstackclients.py',
+        mode   => '0755',
+        owner  => 'root',
+        group  => 'root',
+    }
+
     apt::pin { 'jessie_mitaka_pinning_python_cinderclient':
         package  => 'python-cinderclient',
         pin      => 'version 1:1.6.0-3~bpo8+1',
@@ -132,5 +143,27 @@ class openstack::clientpackages::mitaka::jessie(
         package  => 'nova-common',
         pin      => 'version 2:13.1.0-2~bpo8+1',
         priority => '1002',
+    }
+
+    $py2packages = [
+        'python-novaclient',
+        'python-glanceclient',
+        'python-keystoneclient',
+        'python-openstackclient',
+        'python-designateclient',
+        'python-neutronclient',
+    ]
+
+    package{ $py2packages:
+        ensure => 'present',
+    }
+
+    $otherpackages = [
+        'ebtables',
+        'python-netaddr',
+    ]
+
+    package { $otherpackages:
+        ensure => 'present',
     }
 }
