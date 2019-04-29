@@ -25,16 +25,8 @@ class network::constants {
     $frack_networks = slice_network_constants('frack')
 
     $special_hosts = {
-        'production' => {
-            'deployment_hosts' => [
-                    '10.64.32.16',                      # deploy1001.eqiad.wmnet
-                    '2620:0:861:103:10:64:32:16',       # deploy1001.eqiad.wmnet
-                    '10.192.32.24',                     # deploy2001.codfw.wmnet
-                    '2620:0:860:103:10:192:32:24',      # deploy2001.codfw.wmnet
-                ],
-            },
+        'production' => {},
         'labs' => {
-            'deployment_hosts' => hiera('network::allow_deployment_from_ips', []), # lint:ignore:wmf_styleguide
             'cumin_real_masters' => [  # Where Cumin can be run
                     '208.80.154.158',               # labpuppetmaster1001.wikimedia.org
                     '2620:0:861:2:208:80:154:158',  # labpuppetmaster1001.wikimedia.org

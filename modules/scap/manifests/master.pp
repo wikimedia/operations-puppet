@@ -9,6 +9,7 @@ class scap::master(
     $statsd_host        = 'statsd.eqiad.wmnet',
     $statsd_port        = 8125,
     $deployment_group   = 'wikidev',
+    Array[String] $deployment_hosts = [],
 ) {
     include scap::scripts
     include rsync::server
@@ -52,7 +53,7 @@ class scap::master(
     rsync::server::module { 'patches':
         path        => $patches_path,
         read_only   => 'yes',
-        hosts_allow => $::network::constants::special_hosts[$::realm]['deployment_hosts'];
+        hosts_allow => $deployment_hosts
     }
 
     # TODO: pass this down from a profile (or convert this to a profile!)

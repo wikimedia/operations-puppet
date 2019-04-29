@@ -9,11 +9,12 @@ class profile::docker::registry(
     # Storage configuration
     $storage_backend = hiera('profile::docker::registry::storage_backend', 'filebackend'),
     $certname = hiera('profile::docker::registry::certname', undef),
+    Array[String] $deployment_hosts = hiera('deployment_hosts', []),
 ) {
     require ::network::constants
     # Hiera configurations
     if !$image_builders {
-        $builders = $network::constants::special_hosts[$::realm]['deployment_hosts']
+        $builders = $deployment_hosts
     } else {
         $builders = $image_builders
     }

@@ -20,7 +20,8 @@ class profile::docker_registry_ha::registry(
     $redis_port = hiera('profile::docker_registry_ha::registry::redis_port', undef),
     $redis_password = hiera('profile::docker_registry_ha::registry::redis_password', undef),
     $docker_registry_shared_secret = hiera('profile::docker_registry_ha::registry::shared_secret', undef),
-    $metrics_allowed_hosts = hiera('prometheus_nodes')
+    $metrics_allowed_hosts = hiera('prometheus_nodes'),
+    Array[String] $deployment_hosts = hiera('deployment_hosts', []),
 ) {
     # if this looks pretty similar to profile::docker::registry
     # is intended.
@@ -28,7 +29,7 @@ class profile::docker_registry_ha::registry(
     require ::network::constants
     # Hiera configurations
     if !$image_builders {
-        $builders = $network::constants::special_hosts[$::realm]['deployment_hosts']
+        $builders = $deployment_hosts
     } else {
         $builders = $image_builders
     }

@@ -5,6 +5,7 @@ class profile::mediawiki::deployment::server(
     $deployment_server = hiera('deployment_server'),
     $main_deployment_server = hiera('scap::deployment_server'),
     $base_path = hiera('base_path', '/srv/deployment'),
+    Array[String] $deployment_hosts = hiera('deployment_hosts', []),
 ) {
 
     ## Scap Config ##
@@ -82,6 +83,7 @@ class profile::mediawiki::deployment::server(
     class { '::deployment::rsync':
         deployment_server => $deployment_server,
         cron_ensure       => $deploy_ensure,
+        deployment_hosts  => $deployment_hosts,
     }
 
     motd::script { 'inactive_warning':

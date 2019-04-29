@@ -6,7 +6,7 @@ class role::deployment::mediawiki(
 ) {
     include ::profile::mediawiki::nutcracker
     include ::profile::conftool::client
-    include ::scap::master
+    include ::profile::deployment::mediawiki
     include ::profile::scap::dsh
     include ::scap::ferm
 
