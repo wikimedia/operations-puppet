@@ -10,12 +10,14 @@
     role: slave
   targets:
   - dbstore2001:13312
+  - db2098:13312
 
 - labels:
     shard: s3
     role: slave
   targets:
   - dbstore2002:13313
+  - db2098:13313
 
 - labels:
     shard: s4
