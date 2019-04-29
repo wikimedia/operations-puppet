@@ -122,6 +122,8 @@ scap::sources:
     repository: analytics/superset/deploy
   gerrit/gerrit:
     repository: operations/software/gerrit
+  gervert/deploy:
+    repository: operations/software/gerrit/tools/gervert/deploy
   graphoid/deploy: {}
 #    lvs_service: graphoid
   iegreview/iegreview:

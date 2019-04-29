@@ -68,9 +68,19 @@ class gerrit::jetty(
     require_package([
         'openjdk-8-jdk',
         'libmysql-java',
+        'python3',
+        'python3-virtualenv',
+        'virtualenv',
+        'python3-pip'
     ])
 
     scap::target { 'gerrit/gerrit':
+        deploy_user => 'gerrit2',
+        manage_user => false,
+        key_name    => 'gerrit',
+    }
+
+    scap::target { 'gervert/deploy':
         deploy_user => 'gerrit2',
         manage_user => false,
         key_name    => 'gerrit',
