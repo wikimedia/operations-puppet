@@ -1812,12 +1812,10 @@ node /orespoolcounter[12]00[12]\.(codfw|eqiad)\.wmnet/ {
 
 node /^oresrdb100[12]\.eqiad\.wmnet$/ {
     role(ores::redis)
-    include ::standard
 }
 
 node /^oresrdb200[12]\.codfw\.wmnet$/ {
     role(ores::redis)
-    include ::standard
 }
 
 # parser cache databases
