@@ -18,7 +18,7 @@ class puppetmaster::base_repo (
     git::clone { 'operations/puppet':
         directory          => "${gitdir}/operations/puppet",
         branch             => 'production',
-        origin             => 'https://gerrit.wikimedia.org/r/p/operations/puppet',
+        origin             => 'https://gerrit.wikimedia.org/r/operations/puppet',
         recurse_submodules => true,
         owner              => $gitowner,
         group              => $gitowner,

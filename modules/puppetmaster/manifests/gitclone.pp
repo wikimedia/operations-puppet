@@ -231,7 +231,7 @@ class puppetmaster::gitclone(
             owner     => $user,
             group     => $group,
             directory => "${puppetmaster::gitdir}/operations/software",
-            origin    => 'https://gerrit.wikimedia.org/r/p/operations/software';
+            origin    => 'https://gerrit.wikimedia.org/r/operations/software';
     }
 
     # These symlinks will allow us to use /etc/puppet for the puppetmaster to
