@@ -12,8 +12,6 @@ class profile::wmcs::nfs::rsync(
         default       => false,
     }
     class {'::labstore::rsync::syncserver':
-        user         => $user,
-        group        => $group,
         primary_host => $primary_host,
         partner_host => $secondary_host,
         is_active    => $service_running,
