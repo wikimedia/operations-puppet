@@ -5,7 +5,7 @@
 # dzahn 11/2016
 
 tempdir="/tmp/mgmtips"
-dnsrepo="https://gerrit.wikimedia.org/r/p/operations/dns.git"
+dnsrepo="https://gerrit.wikimedia.org/r/operations/dns.git"
 resultfile="${tempdir}/ip_list.txt"
 rejectsfile="${tempdir}/rejects.txt"
 
