@@ -24,12 +24,14 @@
     role: slave
   targets:
   - dbstore2002:13314
+  - db2099:13314
 
 - labels:
     shard: s5
     role: slave
   targets:
   - dbstore2001:13315
+  - db2099:13315
 
 - labels:
     shard: s6
