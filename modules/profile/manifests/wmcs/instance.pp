@@ -1,11 +1,9 @@
-class role::labs::instance {
-
-    include ::profile::standard
-    include ::profile::base::labs
-    include sudo
-    include ::profile::openstack::eqiad1::observerenv
-    include ::profile::openstack::eqiad1::clientpackages::vms
-    include ::profile::openstack::eqiad1::cumin::target
+# basic profile for every CloudVPS instance
+class profile::wmcs::instance(
+    Boolean $mount_nfs      = lookup('mount_nfs', {default_value => true}),
+    Boolean $diamond_remove = lookup('diamond::remove', {default_value => false}),
+) {
+    include ::sudo
 
     sudo::group { 'ops':
         privileges => ['ALL=(ALL) NOPASSWD: ALL'],
@@ -35,7 +33,6 @@ class role::labs::instance {
     }
 
     # Allows per-host overriding of NFS mounts
-    $mount_nfs = hiera('mount_nfs', true)
     if $mount_nfs {
         require profile::wmcs::nfsclient
     }
@@ -56,7 +53,7 @@ class role::labs::instance {
 
     # In production, puppet freshness checks are done by icinga. Labs has no
     # icinga, so collect puppet freshness metrics via diamond/graphite
-    if !lookup('diamond::remove', Boolean, 'first' ,false) { # lint:ignore:wmf_styleguide
+    if ! $diamond_remove {
         diamond::collector::minimalpuppetagent { 'minimal-puppet-agent': }
 
         diamond::collector { 'SSHSessions':

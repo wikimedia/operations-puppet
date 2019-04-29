@@ -2216,6 +2216,6 @@ node default {
     } else {
         # Require instead of include so we get NFS and other
         # base things setup properly
-        require ::role::labs::instance
+        require ::role::wmcs::instance
     }
 }

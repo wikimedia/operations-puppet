@@ -21,7 +21,7 @@ Emits a host definition for each instance in the whitelisted projects
 
 Sets as hostgroup for each instance:
     - Name of project instance is a part of
-    - role::labs::instance
+    - role::wmcs::instance
     - Each puppet role explicitly applied to it (via Wikitech)
 
 Sets as contact for each instance a contactgroup with the same name as the
@@ -104,10 +104,10 @@ if __name__ == '__main__':
             co.properties['address'] = ip
             # Each role applied to this instance explicitly, via
             # wikitech, is added as a hostgroup, so we can target
-            # particular roles with checks.  role::labs::instance is
+            # particular roles with checks.  role::wmcs::instance is
             # implicitly applied to all instances via
             # manifests/site.pp, so we need to add it here explicitly.
-            hostgroups = [project, 'role::labs::instance']
+            hostgroups = [project, 'role::wmcs::instance']
             hostgroups += get_instance_roles(project,
                                              fqdn,
                                              config['puppet_enc_host'])
