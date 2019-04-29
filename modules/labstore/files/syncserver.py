@@ -29,7 +29,7 @@ import time
 class Rsyncer:
     """ The primary operator building and running rsync commands """
 
-    def init(self, path, dest, bwlimit):
+    def __init__(self, path, dest, bwlimit):
         self.path = path
         self.dest = dest
         self.bwlimit = bwlimit
