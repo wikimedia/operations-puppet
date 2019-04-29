@@ -54,7 +54,7 @@ def fetch_yaml_data():
     os.chdir(tmp_dir)
     try:
         subprocess.check_output(["git", "clone",
-                                 "https://gerrit.wikimedia.org/r/p/operations/puppet.git"],
+                                 "https://gerrit.wikimedia.org/r/operations/puppet.git"],
                                 stderr=subprocess.STDOUT, shell=False)
     except subprocess.CalledProcessError as e:
         print "git checkout failed", e.returncode
