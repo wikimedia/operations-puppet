@@ -332,10 +332,6 @@ node /^cp30(0[78]|10)\.esams\.wmnet$/ {
     role(spare::system)
 }
 
-node 'cp3022.esams.wmnet' {
-    include ::standard
-}
-
 node /^cp30(3[0123]|4[012])\.esams\.wmnet$/ {
     interface::add_ip6_mapped { 'main': }
     role(cache::text)
