@@ -22,7 +22,7 @@ define profile::mediawiki::periodic_job(
     require ::profile::mediawiki::common
     require ::profile::conftool::state
 
-    systemd::timer::job { "MediaWiki job ${title}":
+    systemd::timer::job { "mediawiki_job_${title}":
         description     => "MediaWiki periodic job ${title}",
         command         => "/usr/local/bin/mw-cli-wrapper ${command}",
         interval        => {'start'    => 'OnCalendar', 'interval' => $interval},
