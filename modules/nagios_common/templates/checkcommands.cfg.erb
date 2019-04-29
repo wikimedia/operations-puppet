@@ -324,6 +324,11 @@ define command {
     }
 
 define command {
+    command_name    check_https_hostheader_port_url
+    command_line    $USER1$/check_http -S -I $HOSTADDRESS$ -H $ARG1$ -p $ARG2$ -u "$ARG3$"
+    }
+
+define command {
     command_name    check_https_url
     command_line    $USER1$/check_http -H $ARG1$ -S -I $HOSTADDRESS$ -u $ARG2$
     }
