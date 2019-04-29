@@ -7,6 +7,7 @@ class role::mail::mx(
     $verp_bounce_post_url = 'api-rw.discovery.wmnet/w/api.php',
     $prometheus_nodes = hiera('prometheus_nodes', []), # lint:ignore:wmf_styleguide
 ) {
+    include ::profile::standard
     include network::constants
     include privateexim::aliases::private
     include ::profile::base::firewall

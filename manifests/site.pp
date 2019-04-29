@@ -1757,7 +1757,6 @@ node 'mwlog1001.eqiad.wmnet' {
 
 node 'mx1001.wikimedia.org' {
     role(mail::mx)
-    include ::standard
     interface::add_ip6_mapped { 'main': }
 
     interface::alias { 'wiki-mail-eqiad.wikimedia.org':
@@ -1768,7 +1767,6 @@ node 'mx1001.wikimedia.org' {
 
 node 'mx2001.wikimedia.org' {
     role(mail::mx)
-    include ::standard
     interface::add_ip6_mapped { 'main': }
 
     interface::alias { 'wiki-mail-codfw.wikimedia.org':
