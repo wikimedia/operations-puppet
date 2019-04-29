@@ -9,7 +9,7 @@
 #
 # filtertags: labs-project-discovery-stats
 class role::product_analytics::deep_learner {
-    # include ::standard
+    # include ::profile::standard
     # include ::profile::base::firewall
     include ::profile::product_analytics::deep_learning
 

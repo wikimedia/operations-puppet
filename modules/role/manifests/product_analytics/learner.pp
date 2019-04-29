@@ -8,7 +8,7 @@
 #
 # filtertags: labs-project-discovery-stats
 class role::product_analytics::learner {
-    # include ::standard
+    # include ::profile::standard
     # include ::profile::base::firewall
     include ::profile::product_analytics::machine_learning
 
