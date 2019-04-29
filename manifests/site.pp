@@ -966,16 +966,12 @@ node /^es200[1-4]\.codfw\.wmnet/ {
 # This is a reserved system. Ask Otto or Faidon.
 node 'flerovium.eqiad.wmnet' {
     role(analytics_cluster::hadoop::client)
-
-    include ::standard
 }
 
 # Backup system, see T176506.
 # This is a reserved system. Ask Otto or Faidon.
 node 'furud.codfw.wmnet' {
     role(analytics_cluster::hadoop::client)
-
-    include ::standard
 }
 
 # Test Ganeti instance aimed to iron out all
