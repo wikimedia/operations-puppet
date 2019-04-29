@@ -31,4 +31,16 @@ class profile::kerberos::kdc (
     service { 'krb5-kdc':
         ensure    => running,
     }
+
+    ferm::service { 'kerberos_kdc_tcp':
+        proto  => 'tcp',
+        port   => '88',
+        srange => '$DOMAIN_NETWORKS',
+    }
+
+    ferm::service { 'kerberos_kdc_udp':
+        proto  => 'udp',
+        port   => '88',
+        srange => '$DOMAIN_NETWORKS',
+    }
 }
