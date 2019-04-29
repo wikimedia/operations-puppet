@@ -64,16 +64,6 @@ class profile::cache::varnish::frontend (
         before     => Service['varnish-frontend'],
     }
 
-    if $cache_cluster == 'text' {
-        # for VCL compilation using libGeoIP
-        class { '::geoip': }
-        class { '::geoip::dev': }
-
-        # ResourceLoader browser cache hit rate and request volume stats.
-        ::varnish::logging::rls { 'rls':
-        }
-    }
-
     # Frontend memory cache sizing
     $mem_gb = $::memorysize_mb / 1024.0
     if ($mem_gb < 90.0) {

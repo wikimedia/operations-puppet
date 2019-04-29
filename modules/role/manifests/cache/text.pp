@@ -9,6 +9,7 @@ class role::cache::text {
     include ::profile::cache::ssl::unified
     include ::profile::cache::ssl::wikibase
     include ::profile::cache::varnish::frontend
+    include ::profile::cache::varnish::frontend::text
     include ::profile::cache::varnish::backend
 
     # varnishkafka statsv listens for special stats related requests
