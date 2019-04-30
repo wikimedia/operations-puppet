@@ -1,6 +1,6 @@
 var conf = {
       name: 'Event Schemas',
-      address: '<%= @server_name %>:<%= @port %>/repositories',
+      address: './repositories',
 
       visibilityOptions: {
           size: {
