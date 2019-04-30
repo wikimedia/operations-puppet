@@ -30,7 +30,9 @@ allowed_headers = content-disposition,
 	x-content-dimensions
 
 [object-replicator]
-concurrency = 3
+<% if @object_replicator_concurrency -%>
+concurrency = <%= @object_replicator_concurrency %>
+<% end -%>
 
 [object-updater]
 concurrency = 1

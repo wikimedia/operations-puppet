@@ -1,9 +1,10 @@
 class swift::storage (
-    $statsd_host               = undef,
-    $statsd_port               = 8125,
-    $statsd_metric_prefix      = undef,
-    $statsd_sample_rate_factor = '1',
-    $memcached_servers         = ['127.0.0.1:11211'],
+    $statsd_host                   = undef,
+    $statsd_port                   = 8125,
+    $statsd_metric_prefix          = undef,
+    $statsd_sample_rate_factor     = '1',
+    $memcached_servers             = ['127.0.0.1:11211'],
+    $object_replicator_concurrency = undef,
 ) {
     package {
         [ 'swift-account',
