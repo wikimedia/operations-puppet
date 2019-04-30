@@ -13,7 +13,6 @@ admin::groups_no_ssh:
 profile::hadoop::common::hadoop_cluster_name: 'analytics-hadoop'
 
 profile::hadoop::standby_master::monitoring_enabled: true
-profile::hadoop::logstash::enabled: false
 
 profile::hadoop::common::config_override:
   # This is the heap zize of YARN daemons ResourceManager and NodeManagers.

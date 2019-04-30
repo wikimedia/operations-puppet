@@ -11,7 +11,6 @@ class role::analytics_cluster::hadoop::standby {
     include ::profile::hadoop::master::standby
     include ::profile::hadoop::firewall::master
     include ::profile::hadoop::users
-    include ::profile::hadoop::logstash
     include ::profile::hadoop::backup::namenode
 
     # an-master1002 is usually inactive, and it has a

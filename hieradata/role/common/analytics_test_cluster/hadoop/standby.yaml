@@ -16,7 +16,6 @@ profile::hadoop::common::hadoop_cluster_name: 'analytics-test-hadoop'
 profile::hadoop::common::ensure_ssl_config: true
 
 profile::hadoop::standby_master::monitoring_enabled: true
-profile::hadoop::logstash::enabled: false
 
 profile::hadoop::common::config_override:
   # This is the heap zize of YARN daemons ResourceManager and NodeManagers.

@@ -7,7 +7,6 @@ admin::groups:
 profile::hadoop::common::hadoop_cluster_name: 'analytics-hadoop'
 
 profile::hadoop::worker::monitoring_enabled: true
-profile::hadoop::logstash::enabled: false
 
 # Analytics worker disks are large.  We will install a custom
 # NRPE check for them, so the base module's should ignore them.

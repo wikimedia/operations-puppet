@@ -11,7 +11,6 @@ class role::analytics_cluster::hadoop::master {
     include ::profile::hadoop::users
     include ::profile::hadoop::mysql_password
     include ::profile::hadoop::firewall::master
-    include ::profile::hadoop::logstash
 
     # Set up druid cluster deep storage directories.
     include ::profile::analytics::cluster::druid_deep_storage

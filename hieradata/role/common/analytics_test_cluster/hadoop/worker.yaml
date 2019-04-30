@@ -17,7 +17,6 @@ profile::hadoop::common::hadoop_cluster_name: 'analytics-test-hadoop'
 profile::hadoop::common::ensure_ssl_config: true
 
 profile::hadoop::worker::monitoring_enabled: true
-profile::hadoop::logstash::enabled: false
 
 # Analytics worker disks are large.  We will install a custom
 # NRPE check for them, so the base module's should ignore them.
