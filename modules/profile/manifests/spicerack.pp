@@ -10,10 +10,24 @@
 # [*tcpircbot_port*]
 #   Port to use with the IRC bot.
 #
+# [*redis_shards*]
+#   A hash of Redis shards, with the top level key `sessions`, containing a hash
+#   keyed by data center, and then by shard name, each shard having a host and port
+#   key.
+#
+# [*ganeti_user*]
+#   A Ganeti RAPI user name for Spicerack to use.
+#
+# [*ganeti_password*]
+#   The password for the above user.
+#
+
 class profile::spicerack(
     String $tcpircbot_host = hiera('tcpircbot_host'),
     Wmflib::IpPort $tcpircbot_port = hiera('tcpircbot_port'),
     Hash $redis_shards = hiera('redis::shards'),
+    String $ganeti_user = hiera('profile::ganeti::rapi::ro_user'),
+    String $ganeti_password = hiera('profile::ganeti::rapi::ro_password'),
 ) {
     # Ensure pre-requisite profiles are included
     require ::profile::conftool::client
@@ -75,5 +89,24 @@ class profile::spicerack(
         group   => 'ops',
         mode    => '0440',
         content => ordered_yaml($redis_sessions_data),
+    }
+
+    # Install Ganeti RAPI configuration
+    file { '/etc/spicerack/ganeti':
+        ensure => directory,
+        owner  => 'root',
+        group  => 'ops',
+        mode   => '0550',
+    }
+    $ganeti_auth_data = {
+        'username' => $ganeti_user,
+        'password' => $ganeti_password,
+    }
+    file { '/etc/spicerack/ganeti/config.yaml':
+        ensure  => present,
+        owner   => 'root',
+        group   => 'ops',
+        mode    => '0440',
+        content => ordered_yaml($ganeti_auth_data),
     }
 }
