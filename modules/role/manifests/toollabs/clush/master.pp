@@ -18,7 +18,7 @@
 #
 # filtertags: labs-project-toolsbeta labs-project-tools
 class role::toollabs::clush::master(
-    $observer_pass = hiera('profile::openstack::main::observer_password'),
+    $observer_pass = hiera('profile::openstack::eqiad1::observer_password'),
     ) {
 
     include ::toollabs::base

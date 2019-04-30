@@ -5,15 +5,11 @@
 class profile::mariadb::ferm_wmcs(
     $eqiad1_nova_controller = hiera('profile::openstack::eqiad1::nova_controller'),
     $eqiad1_nova_controller_standby = hiera('profile::openstack::eqiad1::nova_controller_standby'),
-    $main_nova_controller = hiera('profile::openstack::main::nova_controller'),
-    $main_nova_controller_standby = hiera('profile::openstack::main::nova_controller_standby'),
-    $designate_host = hiera('profile::openstack::main::designate_host'),
-    $designate_host_standby = hiera('profile::openstack::main::designate_host_standby'),
-    $designate_host_eqiad1 = hiera('profile::openstack::eqiad1::designate_host'),
-    $designate_host_eqiad1_standby = hiera('profile::openstack::eqiad1::designate_host_standby'),
-    $labweb_hosts = hiera('profile::openstack::main::labweb_hosts'),
+    $designate_host = hiera('profile::openstack::eqiad1::designate_host'),
+    $designate_host_standby = hiera('profile::openstack::eqiad1::designate_host_standby'),
+    $labweb_hosts = hiera('profile::openstack::eqiad1::labweb_hosts'),
     $labtestweb_hosts = hiera('profile::openstack::labtest::labweb_hosts'),
-    $osm_host = hiera('profile::openstack::main::osm_host'),
+    $osm_host = hiera('profile::openstack::eqiad1::osm_host'),
     ) {
     $port = '3306'
 
@@ -24,18 +20,11 @@ class profile::mariadb::ferm_wmcs(
         srange  => "(@resolve(${eqiad1_nova_controller}) @resolve(${eqiad1_nova_controller_standby}))",
     }
 
-    ferm::service{ 'main_nova_controller':
-        proto   => 'tcp',
-        port    => $port,
-        notrack => true,
-        srange  => "(@resolve(${main_nova_controller}) @resolve(${main_nova_controller_standby}))",
-    }
-
     ferm::service{ 'designate':
         proto   => 'tcp',
         port    => $port,
         notrack => true,
-        srange  => "(@resolve(${designate_host}) @resolve(${designate_host_standby}) @resolve(${designate_host_eqiad1_standby}) @resolve(${designate_host_eqiad1}))",
+        srange  => "(@resolve(${designate_host}) @resolve(${designate_host_standby}))",
     }
 
     ferm::service{ 'wmcs_puppetmasters':

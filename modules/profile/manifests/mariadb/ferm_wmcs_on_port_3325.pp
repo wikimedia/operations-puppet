@@ -3,13 +3,13 @@
 #  run on hosts with public IPs)
 
 class profile::mariadb::ferm_wmcs_on_port_3325(
-    $nova_controller = hiera('profile::openstack::main::nova_controller'),
-    $nova_controller_standby = hiera('profile::openstack::main::nova_controller_standby'),
-    $designate_host = hiera('profile::openstack::main::designate_host'),
-    $designate_host_standby = hiera('profile::openstack::main::designate_host_standby'),
-    $labweb_hosts = hiera('profile::openstack::main::labweb_hosts'),
+    $nova_controller = hiera('profile::openstack::eqiad1::nova_controller'),
+    $nova_controller_standby = hiera('profile::openstack::eqiad1::nova_controller_standby'),
+    $designate_host = hiera('profile::openstack::eqiad1::designate_host'),
+    $designate_host_standby = hiera('profile::openstack::eqiad1::designate_host_standby'),
+    $labweb_hosts = hiera('profile::openstack::eqiad1::labweb_hosts'),
     $labtestweb_hosts = hiera('profile::openstack::labtest::labweb_hosts'),
-    $osm_host = hiera('profile::openstack::main::osm_host'),
+    $osm_host = hiera('profile::openstack::eqiad1::osm_host'),
     ) {
     $port = '3325'
 
