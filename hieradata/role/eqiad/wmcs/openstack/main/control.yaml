@@ -1,4 +1,0 @@
-admin::groups:
-  - wmcs-roots
-
-profile::base::notifications: critical

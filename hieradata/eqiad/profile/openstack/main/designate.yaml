@@ -1,7 +1,0 @@
-profile::openstack::main::designate::db_host: 'm5-master.eqiad.wmnet'
-profile::openstack::main::designate::wmflabsdotorg_project: 'wmflabsdotorg'
-profile::openstack::main::designate::domain_id_internal_forward: '114f1333-c2c1-44d3-beb4-ebed1a91742b'
-profile::openstack::main::designate::domain_id_internal_reverse: '8d114f3c-815b-466c-bdd4-9b91f704ea60'
-profile::openstack::main::designate::floating_ip_ptr_zone: '128-25.155.80.208.in-addr.arpa.'
-profile::openstack::main::designate::floating_ip_ptr_fqdn_matching_regex: '^(\d{1,3})\.155\.80\.208\.in-addr\.arpa\.'
-profile::openstack::main::designate::floating_ip_ptr_fqdn_replacement_pattern: '\1.128-25.155.80.208.in-addr.arpa.'

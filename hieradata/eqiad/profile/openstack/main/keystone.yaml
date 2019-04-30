@@ -1,2 +1,0 @@
-profile::openstack::main::keystone::db_host: 'm5-master.eqiad.wmnet'
-profile::openstack::main::keystone::token_driver: 'normal'
