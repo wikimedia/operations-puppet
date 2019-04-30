@@ -59,11 +59,12 @@ class profile::mariadb::backup::mydumper {
     $stats_user = $passwords::mysql::dump::stats_user
     $stats_password = $passwords::mysql::dump::stats_pass
     file { '/etc/mysql/backups.cnf':
-        ensure  => present,
-        owner   => 'dump',
-        group   => 'dump',
-        mode    => '0400',
-        content => template("profile/mariadb/backups-${::hostname}.cnf.erb"),
+        ensure    => present,
+        owner     => 'dump',
+        group     => 'dump',
+        mode      => '0400',
+        show_diff => false,
+        content   => template("profile/mariadb/backups-${::hostname}.cnf.erb"),
     }
     # Logging support
     file { '/var/log/mariadb-backups':

@@ -27,10 +27,11 @@ class profile::mariadb::wmf_root_client {
     $replication_user = $passwords::misc::scripts::mysql_repl_user
     $replication_password = $passwords::misc::scripts::mysql_repl_pass
     file { '/root/.my.cnf':
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0400',
-        content => template('profile/mariadb/mysqld_config/root.my.cnf.erb'),
+        owner     => 'root',
+        group     => 'root',
+        mode      => '0400',
+        show_diff => false,
+        content   => template('profile/mariadb/mysqld_config/root.my.cnf.erb'),
     }
 
     file { '/usr/local/sbin/mysql.py':
