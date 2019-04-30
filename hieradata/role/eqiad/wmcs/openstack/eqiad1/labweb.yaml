@@ -43,7 +43,7 @@ striker::uwsgi::config:
   openstack:
     URL: http://cloudcontrol1003.wikimedia.org:5000/v3
   features:
-    ACCOUNT_CREATE: false
+    ACCOUNT_CREATE: true
 
 striker::uwsgi::secret_config:
   # These values are only here to show the expected keys.
