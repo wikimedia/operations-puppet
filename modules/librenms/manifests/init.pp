@@ -51,6 +51,14 @@ class librenms(
         mode   => '0755',
     }
 
+    file { '/var/log/librenms':
+        ensure  => 'directory',
+        owner   => 'www-data',
+        group   => 'librenms',
+        mode    => '0775',
+        require => Group['librenms'],
+    }
+
     file { "${install_dir}/config.php":
         ensure  => present,
         owner   => 'www-data',
