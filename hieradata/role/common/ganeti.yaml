@@ -22,6 +22,8 @@ diamond::remove: true
 profile::ganeti::rapi_nodes:
     - netmon1002.wikimedia.org
     - netmon2001.wikimedia.org
+    - cumin1001.eqiad.wmnet
+    - cumin2001.codfw.wmnet
 profile::base::debdeploy::filter_services:
   qemu-system-x86:
     - '*'

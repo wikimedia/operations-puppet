@@ -1,10 +1,37 @@
+# === Class: profile::ganeti
+#
+# This profile configures Ganeti's keys, RAPI users, and configures
+# the firewall on the host.
+#
+# Actions:
+#
+# Requires:
+#
+# Sample Usage:
+#       include profile::ganeti
+#
+# === Parameters
+#
+# [*ganeti_nodes*]
+#   A list of Ganeti nodes in this particular cluster.
+#
+# [*rapi_nodes*]
+#   A list of nodes to open the RAPI port to.
+#
+# [*rapi_ro_user*]
+#   A string containing the name of the read-only user to configure in RAPI.
+#
+# [*rapi_ro_password*]
+#   A string containing the password for the aforementioned user.
+#
+
 class profile::ganeti (
     # Interpolate the ganeti_cluster fact to get the list of nodes in a
     # cluster
-    $ganeti_nodes = hiera("profile::ganeti::${::ganeti_cluster}::nodes", []),
-    $rapi_nodes = hiera('profile::ganeti::rapi_nodes'),
-    $rapi_ro_user = hiera('profile::ganeti::rapi::ro_user'),
-    $rapi_ro_password = hiera('profile::ganeti::rapi::ro_password'),
+    Array[Stdlib::Fqdn] $ganeti_nodes = hiera("profile::ganeti::${::ganeti_cluster}::nodes", []),
+    Array[Stdlib::Fqdn] $rapi_nodes = hiera('profile::ganeti::rapi_nodes', []),
+    Optional[String] $rapi_ro_user = hiera('profile::ganeti::rapi::ro_user', undef),
+    Optional[String] $rapi_ro_password = hiera('profile::ganeti::rapi::ro_password', undef),
 ) {
 
     class { '::ganeti': }
@@ -45,16 +72,28 @@ class profile::ganeti (
         source => 'puppet:///modules/profile/ganeti/makevm.sh',
     }
 
-    $ro_password_hash = md5("${rapi_ro_user}:Ganeti Remote API:${rapi_ro_password}")
-    # Authentication for RAPI (for now just a single read-only user)
-    file { '/var/lib/ganeti/rapi/users':
-        ensure  => present,
-        owner   => 'gnt-rapi',
-        group   => 'gnt-masterd',
-        mode    => '0440',
-        content => "${rapi_ro_user} {HA1}${ro_password_hash} read\n",
+    if defined('$rapi_ro_user') and defined('$rapi_ro_password') {
+        $ro_password_hash = md5("${rapi_ro_user}:Ganeti Remote API:${rapi_ro_password}")
+        # Authentication for RAPI (for now just a single read-only user)
+        file { '/var/lib/ganeti/rapi/users':
+            ensure  => present,
+            owner   => 'gnt-rapi',
+            group   => 'gnt-masterd',
+            mode    => '0440',
+            content => "${rapi_ro_user} {HA1}${ro_password_hash} read\n",
+        }
     }
+    else {
+        # Provide a blank authentication file for the RAPI server (no users will be defined, thus denying all)
+        file { '/var/lib/ganeti/rapi/users':
+            ensure  => present,
+            owner   => 'gnt-rapi',
+            group   => 'gnt-masterd',
+            mode    => '0440',
+            content => '',
+        }
 
+    }
     # If ganeti_cluster fact is not defined, the node has not been added to a
     # cluster yet, so don't monitor and don't setup a firewall.
     if $facts['ganeti_cluster'] {
