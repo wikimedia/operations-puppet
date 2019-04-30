@@ -343,15 +343,15 @@ node /^cp30(3[4-9]|4[345679])\.esams\.wmnet$/ {
 }
 
 #
-# ulsfo varnishes
+# ulsfo caches
 #
 
-node /^cp402[2-6]\.ulsfo\.wmnet$/ {
+node /^cp402[3-6]\.ulsfo\.wmnet$/ {
     interface::add_ip6_mapped { 'main': }
     role(cache::upload)
 }
 
-node 'cp4021.ulsfo.wmnet' {
+node /^cp402[1-2]\.ulsfo\.wmnet$/ {
     interface::add_ip6_mapped { 'main': }
     role(cache::upload_ats)
 }
