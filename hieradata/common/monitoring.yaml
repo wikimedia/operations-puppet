@@ -73,6 +73,12 @@ monitoring::groups:
   eventbus_codfw:
     description: eventbus codfw servers
 
+  # eventschemas (schema.svc.$site.wmnet backend servers)
+  eventschemas_eqiad:
+    description: Event Schemas HTTP eqiad servers
+  eventschemas_codfw:
+    description: Event Schemas HTTP codfw servers
+
 # Ganeti
   ganeti_eqiad:
     description: Ganeti virt cluster eqiad
