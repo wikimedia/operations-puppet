@@ -54,11 +54,6 @@ class eventschemas::service(
         target => $::eventschemas::repositories_path
     }
 
-    # Configure pretty-autoindex to serve up event schemas in document_root/repositories/
-    file { "${document_root}/config.js":
-        content => template('eventschemas/site/config.js.erb')
-    }
-
     nginx::site { $server_name:
         content => template('eventschemas/site.nginx.erb')
     }
