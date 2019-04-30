@@ -87,6 +87,12 @@ if File.exists?(summaryfile)
         else
             failcount = :failed
         end
+
+        if failcount == 0 && summary["resources"]["total"] == 0
+            # When Puppet fails due to a dependency cycle all counters are zero, treat it as a failure.
+            failcount = :failed_no_resources
+        end
+
     rescue
         failcount = :failed_to_parse_summary_file
         summary = nil
@@ -109,6 +115,12 @@ def time_ago(s)
     return "#{s / len} #{unit}#{'s' if s / len > 1}" if s >= len
   end
   "Indeterminate amount of time (see time_ago)"
+end
+
+if failcount == :failed_no_resources
+    puts "CRITICAL: Failed to apply catalog, zero resources tracked by Puppet. " +
+         "It might be a dependency cycle."
+    exit 2
 end
 
 if failcount == :failed
