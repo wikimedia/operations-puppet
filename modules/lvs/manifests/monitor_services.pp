@@ -158,7 +158,7 @@ class lvs::monitor_services($contacts = 'admins,team-services', $critical = fals
         host          => 'docker-registry.svc.eqiad.wmnet',
         group         => 'lvs',
         description   => 'docker-registry LVS eqiad',
-        check_command => 'check_https_url_for_string!docker-registry.svc.eqiad.wmnet!/v2/!\'\\\\{\\\\}\'',
+        check_command => 'check_https_url!docker-registry.svc.eqiad.wmnet!/v2/',
         notes_url     => 'https://wikitech.wikimedia.org/wiki/Docker-registry-runbook',
     }
 
@@ -166,7 +166,7 @@ class lvs::monitor_services($contacts = 'admins,team-services', $critical = fals
         host          => 'docker-registry.svc.codfw.wmnet',
         group         => 'lvs',
         description   => 'docker-registry LVS codfw',
-        check_command => 'check_https_url_for_string!docker-registry.svc.codfw.wmnet!/v2/!\'\\\\{\\\\}\'',
+        check_command => 'check_https_url!docker-registry.svc.codfw.wmnet!/v2/',
         notes_url     => 'https://wikitech.wikimedia.org/wiki/Docker-registry-runbook',
     }
 
