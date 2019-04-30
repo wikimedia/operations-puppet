@@ -351,9 +351,11 @@ begin transports
 
 remote_smtp:
 	driver = smtp
+	multi_domain = false
 
 remote_smtp_signed:
 	driver = smtp
+	multi_domain = false
 	dkim_domain = <%= @dkim_domain %>
 	dkim_selector = wikimedia
 	dkim_private_key = ${if exists{/etc/exim4/dkim/${dkim_domain}-${dkim_selector}.key}{/etc/exim4/dkim/${dkim_domain}-${dkim_selector}.key}{0}}
@@ -364,6 +366,7 @@ remote_smtp_signed:
 # but using a separate selector that only allows "wiki" as the local part
 bulk_smtp:
 	driver = smtp
+	multi_domain = false
 	interface = WIKI_INTERFACE
 	helo_data = wiki-mail-<%= @site %>.wikimedia.org
 	dkim_domain = <%= @dkim_domain %>
