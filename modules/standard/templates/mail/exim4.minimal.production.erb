@@ -6,6 +6,9 @@ local_interfaces = <; 127.0.0.1; ::1
 check_spool_space = 50M
 remote_max_parallel = 10
 
+smtp_connect_backlog = 40
+smtp_accept_max = 40
+
 # Allow the -f cli option to work
 untrusted_set_sender = *
 local_from_check = false
