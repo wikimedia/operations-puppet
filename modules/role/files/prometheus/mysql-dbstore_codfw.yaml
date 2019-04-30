@@ -45,16 +45,20 @@
     role: slave
   targets:
   - dbstore2001:13317
+  - db2100:13317
 
 - labels:
     shard: s8
     role: slave
   targets:
   - dbstore2001:13318
+  - db2100:13318
 
 - labels:
     shard: x1
     role: slave
   targets:
   - dbstore2002:13320
+  - db2101:13320
+
 
