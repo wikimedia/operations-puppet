@@ -33,7 +33,6 @@ class profile::openstack::eqiad1::keystone::service(
     $puppetmaster_hostname = hiera('profile::openstack::eqiad1::puppetmaster_hostname'),
     $auth_port = hiera('profile::openstack::base::keystone::auth_port'),
     $public_port = hiera('profile::openstack::base::keystone::public_port'),
-    $main_nova_controller = hiera('profile::openstack::main::nova_controller'),
     $glance_host = hiera('profile::openstack::eqiad1::glance_host'),
     ) {
 

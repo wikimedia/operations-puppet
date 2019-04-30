@@ -4,7 +4,7 @@
 #                    list of instances
 
 class profile::toolforge::clush::master(
-    String $observer_pass = lookup('profile::openstack::main::observer_password'),
+    String $observer_pass = lookup('profile::openstack::eqiad1::observer_password'),
     ) {
 
     require ::profile::openstack::eqiad1::clientpackages::vms

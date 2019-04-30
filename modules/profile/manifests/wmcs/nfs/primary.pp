@@ -1,5 +1,5 @@
 class profile::wmcs::nfs::primary(
-  $observer_pass = hiera('profile::openstack::main::observer_password'),
+  $observer_pass = hiera('profile::openstack::eqiad1::observer_password'),
   $monitor_iface = hiera('profile::wmcs::nfs::primary::monitor_iface', 'eth0'),
   $data_iface    = hiera('profile::wmcs::nfs::primary::data_iface', 'eth1'),
 ) {
