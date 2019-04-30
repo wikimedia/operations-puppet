@@ -21,6 +21,7 @@ labsdnsconfig:
 profile::base::overlayfs: true
 profile::base::labs::unattended_wmf: 'present'
 profile::base::labs::unattended_distro: 'present'
+profile::base::check_raid: false
 profile::openstack::main::version: 'mitaka'
 profile::openstack::eqiad1::version: 'mitaka'
 profile::openstack::base::region: "eqiad1-r"

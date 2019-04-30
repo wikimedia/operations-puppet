@@ -20,6 +20,7 @@ class profile::base(
     $check_raid_policy = hiera('profile::base::check_raid_policy', ''),
     $check_raid_interval = hiera('profile::base::check_raid_interval', 10),
     $check_raid_retry = hiera('profile::base::check_raid_retry', 10),
+    Boolean $check_raid = lookup('profile::base::check_raid', {default_value => true}),
     $check_smart = hiera('profile::base::check_smart', true),
     $overlayfs = hiera('profile::base::overlayfs', false),
     # We have included a default here as this seems to be the convention even though 
@@ -146,6 +147,7 @@ class profile::base(
         is_critical              => ($notifications == 'critical'),
         monitor_systemd          => $monitor_systemd,
         puppet_interval          => $profile::base::puppet::interval,
+        raid_check               => $check_raid,
     }
 
     if os_version('ubuntu == trusty') {

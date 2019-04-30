@@ -22,6 +22,8 @@
 #
 # nrpe_check_disk_critical  - Make disk space alerts paging, defaults to not paging
 #
+# raid_monitor              - Boolean. Include or not RAID checks.
+#
 class base::monitoring::host(
     $contact_group = 'admins',
     # the -A -i ... part is a gross hack to workaround Varnish partitions
@@ -35,12 +37,15 @@ class base::monitoring::host(
     Boolean $is_critical = false,
     $monitor_systemd = true,
     Integer $puppet_interval = 30,
+    Boolean $raid_check = true,
 ) {
-    # RAID checks
-    class { 'raid':
-        write_cache_policy => $raid_write_cache_policy,
-        check_interval     => $raid_check_interval,
-        retry_interval     => $raid_retry_interval,
+    if $raid_check {
+        # RAID checks
+        class { 'raid':
+            write_cache_policy => $raid_write_cache_policy,
+            check_interval     => $raid_check_interval,
+            retry_interval     => $raid_retry_interval,
+        }
     }
 
     ::monitoring::host { $::hostname:
