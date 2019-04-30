@@ -1109,7 +1109,7 @@ node /^cloudnet200[23]-dev\.codfw\.wmnet$/ {
 }
 
 node /^labtestvirt2003\.codfw\.wmnet$/ {
-    role(wmcs::openstack::labtestn::virt)
+    role(spare::system)
 }
 
 node 'clouddb2001-dev.codfw.wmnet' {

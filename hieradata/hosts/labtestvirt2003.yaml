@@ -1,2 +1,0 @@
-profile::openstack::labtestn::version: 'mitaka'
-profile::openstack::base::nova::instance_dev: "/dev/mapper/labtestvirt2003--vg-data"

@@ -17,6 +17,6 @@ profile::openstack::codfw1dev::nova::physical_interface_mappings:
   cloudinstances2b: 'eth1.2105'
 
 profile::openstack::codfw1dev::nova::scheduler_pool:
-  - labtestvirt2003
+  - cloudvirt2001-dev
 
 profile::openstack::codfw1dev::nova::default_schedule_zone: 'nova'

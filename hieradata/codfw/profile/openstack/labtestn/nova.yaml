@@ -14,6 +14,6 @@ profile::openstack::labtestn::nova::physical_interface_mappings:
   cloudinstances2b: 'eth1.2105'
 
 profile::openstack::labtestn::nova::scheduler_pool:
-  - labtestvirt2003
+  - example.com
 
 profile::openstack::labtestn::nova::default_schedule_zone: 'nova'
