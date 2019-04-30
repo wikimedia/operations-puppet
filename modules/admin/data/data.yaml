@@ -3268,6 +3268,10 @@ ldap_only_users:
     ensure: present
     realname: Heather Walls
     email: hwalls@wikimedia.org
+  hmonroy:
+    ensure: present
+    realname: Harumi Monroy
+    email: hmonroy@wikimedia.org
   jrbranaa:
     ensure: present
     realname: Jean-Rene Branaa
