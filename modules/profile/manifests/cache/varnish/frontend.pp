@@ -79,6 +79,8 @@ class profile::cache::varnish::frontend (
     # Transient storage limits T164768
     if $fe_transient_gb > 0 {
         $fe_transient_storage = "-s Transient=malloc,${fe_transient_gb}G"
+    } else {
+        $fe_transient_storage = ''
     }
 
     # lint:ignore:arrow_alignment
