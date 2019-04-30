@@ -195,6 +195,9 @@ scb: P{O:scb}
 scb-canary: P{scb1001.eqiad.wmnet}
 scb-codfw: A:scb and A:codfw
 scb-eqiad: A:scb and A:eqiad
+schema: P{O:eventschemas::service}
+schema-eqiad: A:schema and A:eqiad
+schema-codfw: A:schema and A:codfw
 sessionstore: P{O:sessionstore}
 snapshot: P{O:dumps::generation::worker::dumper or O:dumps::generation::worker::dumper_monitor or O:dumps::generation::worker::dumper_misc_crons_only}
 #snapshot-canary: P{O:dumps::generation::worker::testbed}
