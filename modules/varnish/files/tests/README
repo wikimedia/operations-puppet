@@ -1,4 +1,9 @@
-In order to run the tests, you need to install the following packages from
+The easiest way to run VTC tests is to use vagrant:
+
+  vagrant up
+  vagrant ssh -c "export JENKINS_USERNAME=$JENKINS_USERNAME ; export JENKINS_API_TOKEN=$JENKINS_API_TOKEN ; cd /vagrant/ ; ./run.py cp4022.ulsfo.wmnet 506868 /utils/pcc"
+
+Alternatively, on a Debian system, you can install the following packages from
 https://wikitech.wikimedia.org/wiki/APT_repository:
 
 - varnish

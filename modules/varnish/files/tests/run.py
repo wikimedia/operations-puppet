@@ -13,7 +13,6 @@ PATH_RE = re.compile("^(/etc/varnish/|/usr/share/varnish/)")
 COMPILER_RE = re.compile(
     ".*(https://puppet-compiler.wmflabs.org/compiler[0-9]{4}/[0-9]+/)"
 )
-PCC = "../../../../utils/pcc"
 TIMEOUT = 30
 
 CC_COMMAND = (
@@ -38,8 +37,8 @@ def find_cluster(hostname):
     raise Exception("Unknown cluster for {}".format(hostname))
 
 
-def get_pcc_url(hostname, patch_id):
-    cmd = " ".join((PCC, patch_id, hostname))
+def get_pcc_url(hostname, patch_id, pcc):
+    cmd = " ".join((pcc, patch_id, hostname))
     for line in os.popen(cmd).readlines():
         match = COMPILER_RE.match(line)
         if match:
@@ -67,9 +66,9 @@ def dump_files(url, hostname):
             f.write(resource["parameters"]["content"].encode("utf-8"))
 
 
-def main(hostname, patch_id="HEAD"):
+def main(hostname, patch_id, pcc):
     print("[*] running PCC for change {}...".format(patch_id))
-    pcc_url = get_pcc_url(hostname, patch_id)
+    pcc_url = get_pcc_url(hostname, patch_id, pcc)
     print("\tPCC URL: {}\n".format(pcc_url))
 
     print("[*] Dumping files...")
@@ -94,8 +93,13 @@ def main(hostname, patch_id="HEAD"):
 
 
 if __name__ == "__main__":
-    if len(sys.argv) != 3:
-        print("Usage: {} hostname patch_id".format(sys.argv[0]))
+    if len(sys.argv) < 3:
+        print("Usage: {} hostname patch_id [pcc_path]".format(sys.argv[0]))
         sys.exit(1)
 
-    main(sys.argv[1], sys.argv[2])
+    if len(sys.argv) == 4:
+        pcc = sys.argv[3]
+    else:
+        pcc = "../../../../utils/pcc"
+
+    main(sys.argv[1], sys.argv[2], pcc)
