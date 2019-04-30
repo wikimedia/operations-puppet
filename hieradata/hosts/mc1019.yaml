@@ -7,5 +7,3 @@ profile::memcached::max_seq_reqs: 200
 # Performance test to see how evictions/hit-ratio
 # changes adding more memory dedicated to memcached.
 profile::memcached::size: '102400'
-profile::base::puppet::puppet_major_version: 5
-profile::base::puppet::facter_major_version: 3

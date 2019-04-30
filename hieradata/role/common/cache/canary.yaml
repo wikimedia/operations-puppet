@@ -175,5 +175,3 @@ profile::cache::kafka::eventlogging::monitoring_enabled: true
 profile::cache::kafka::eventlogging::kafka_cluster_name: jumbo-eqiad
 profile::cache::kafka::eventlogging::ssl_enabled: true
 diamond::remove: true
-profile::base::puppet::puppet_major_version: 5
-profile::base::puppet::facter_major_version: 3

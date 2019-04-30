@@ -42,5 +42,3 @@ profile::hadoop::backup::namenode::monitoring_enabled: true
 diamond::remove: true
 
 profile::base::notifications: disabled
-profile::base::puppet::puppet_major_version: 5
-profile::base::puppet::facter_major_version: 3
