@@ -85,21 +85,21 @@ class profile::wmcs::prometheus(
     prometheus::class_config{ "rabbitmq_${::site}":
         dest       => "${targets_path}/rabbitmq_${::site}.yaml",
         site       => $::site,
-        class_name => 'role::wmcs::openstack::main::control',
+        class_name => 'role::wmcs::openstack::eqiad1::control',
         port       => 9195,
     }
 
     prometheus::class_config{ "pdns_${::site}":
         dest       => "${targets_path}/pdns_${::site}.yaml",
         site       => $::site,
-        class_name => 'role::wmcs::openstack::main::services_primary',
+        class_name => 'role::wmcs::openstack::eqiad1::services_primary',
         port       => 9192,
     }
 
     prometheus::class_config{ "pdns-rec_${::site}":
         dest       => "${targets_path}/pdns-rec_${::site}.yaml",
         site       => $::site,
-        class_name => 'role::wmcs::openstack::main::services_primary',
+        class_name => 'role::wmcs::openstack::eqiad1::services_primary',
         port       => 9199,
     }
 
