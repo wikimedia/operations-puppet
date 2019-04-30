@@ -41,7 +41,6 @@ class Rsyncer:
             "-e",
             "/usr/bin/ssh -i /root/.ssh/id_labstore",
             "--delete-after",
-            "--contimeout=600",
             "--timeout=600",
             "--bwlimit={}".format(self.bwlimit),
             self.path,
