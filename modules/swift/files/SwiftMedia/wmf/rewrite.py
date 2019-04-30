@@ -88,10 +88,12 @@ class _WMFRewriteContext(WSGIContext):
         except urllib2.HTTPError as error:
             # Wrap the urllib2 HTTPError into a swob HTTPException
             status = error.code
+            body = error.fp.read()
+            headers = error.hdrs.items()
             if status not in swob.RESPONSE_REASONS:
                 # Generic status description in case of unknown status reasons.
                 status = "%s Error" % status
-            return swob.HTTPException(status=status, body=error.msg, headers=error.hdrs.items())
+            return swob.HTTPException(status=status, body=body, headers=headers)
         except urllib2.URLError as error:
             msg = 'There was a problem while contacting the thumbnailing service: %s' % \
                   error.reason
