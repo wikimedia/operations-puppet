@@ -20,6 +20,7 @@
 class profile::cache::varnish::backend (
     $statsd_host = hiera('statsd'),
     $prometheus_nodes = hiera('prometheus_nodes'),
+    $datacenters = hiera('datacenters'),
     $cache_nodes = hiera('cache::nodes'),
     $cache_cluster = hiera('cache::cluster'),
     $conftool_prefix = hiera('conftool_prefix'),
@@ -170,6 +171,7 @@ class profile::cache::varnish::backend (
         class { 'cacheproxy::cron_restart':
             nodes         => $cluster_nodes,
             cache_cluster => $cache_cluster,
+            datacenters   => $datacenters,
         }
     }
 

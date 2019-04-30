@@ -7,9 +7,10 @@
 #
 # [*nodes*] The list of nodes we need to stagger restarts across.
 #
-class cacheproxy::cron_restart ($nodes, $cache_cluster) {
-    #TODO: maybe use the list of datacenters to do this?
-    $all_nodes = array_concat($nodes['eqiad'], $nodes['esams'], $nodes['ulsfo'], $nodes['codfw'], $nodes['eqsin'])
+class cacheproxy::cron_restart ($nodes, $cache_cluster, $datacenters) {
+    $all_nodes = sort($datacenters.reduce([]) |Array $memo, String $dc| {
+        $memo + $nodes[$dc] + pick($nodes["${dc}_ats"], [])
+    })
 
     # Semiweekly cron entries for restarts every 3.5 days
     $times = cron_splay($all_nodes, 'semiweekly', "${cache_cluster}-backend-restarts")
