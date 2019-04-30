@@ -14,7 +14,7 @@ class role::netmon {
     include ::profile::prometheus::postgres_exporter
 
     if os_version('debian >= stretch') {
-        $php_module = 'php7.0'
+        $php_module = 'php7.2'
     } else {
         $php_module = 'php5'
     }
