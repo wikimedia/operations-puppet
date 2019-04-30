@@ -781,6 +781,11 @@ hadoop_clusters:
     # datanode working in case of one/two (two is very unlikey on the same host)
     # disk failures.
     datanode_volumes_failed_tolerated: 2
+
+    # https://community.hortonworks.com/articles/43839/scaling-the-hdfs-namenode-part-2.html
+    # 20 * log2(Cluster Size)
+    dfs_namenode_handler_count: 115
+
     mapreduce_reduce_shuffle_parallelcopies: 10
     mapreduce_task_io_sort_mb: 200
     mapreduce_task_io_sort_factor: 10
