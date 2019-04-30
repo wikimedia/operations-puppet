@@ -6,7 +6,7 @@ striker::apache::server_name: labtesttoolsadmin.wikimedia.org
 profile::openstack::labtest::version: ocata
 
 
-profile::openstack::main::labweb_hosts:
+profile::openstack::labtest::labweb_hosts:
   - cloudweb2001-dev.wikimedia.org
 
 profile::openstack::base::nutcracker::redis::shards:
@@ -23,9 +23,9 @@ profile::openstack::base::nutcracker::redis::shards:
 
 
 # Wikitech things:
-profile::openstack::main::wikitech::web::osm_host: 'labtestwikitech.wikimedia.org'
-profile::openstack::main::wikitech::web::webserver_hostname_aliases: 'labtestwikitech.m.wikimedia.org'
-profile::openstack::main::wikitech::web::db_name: 'labtestwiki'
+profile::openstack::labtest::wikitech::web::osm_host: 'labtestwikitech.wikimedia.org'
+profile::openstack::labtest::wikitech::web::webserver_hostname_aliases: 'labtestwikitech.m.wikimedia.org'
+profile::openstack::labtest::wikitech::web::db_name: 'labtestwiki'
 
 # We still don't enable fpm here
 profile::mediawiki::php::enable_fpm: false

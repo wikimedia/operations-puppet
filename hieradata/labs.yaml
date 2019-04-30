@@ -22,17 +22,13 @@ profile::base::overlayfs: true
 profile::base::labs::unattended_wmf: 'present'
 profile::base::labs::unattended_distro: 'present'
 profile::base::check_raid: false
-profile::openstack::main::version: 'mitaka'
 profile::openstack::eqiad1::version: 'mitaka'
 profile::openstack::base::region: "eqiad1-r"
-profile::openstack::main::nova_controller: 'labcontrol1001.wikimedia.org'
 profile::openstack::eqiad1::nova_controller: 'cloudcontrol1003.wikimedia.org'
-profile::openstack::main::keystone_host: 'cloudcontrol1003.wikimedia.org'
 profile::openstack::eqiad1::keystone_host: 'cloudcontrol1003.wikimedia.org'
 profile::openstack::base::observer_user: 'novaobserver'
 profile::openstack::eqiad1::region: 'eqiad1-r'
 # publicly available read-only credentials
-profile::openstack::main::observer_password: 'Fs6Dq2RtG8KwmM2Z'
 profile::openstack::eqiad1::observer_password: 'Fs6Dq2RtG8KwmM2Z'
 
 # Additional base overrides
@@ -245,15 +241,11 @@ profile::base::firewall::log::log_rate: 1/second
 profile::base::firewall::log::log_burst: 5
 
 # Cumin
-profile::openstack::main::cumin::auth_group: cumin_masters
 profile::openstack::eqiad1::cumin::auth_group: cumin_masters
-profile::openstack::main::cumin::project_masters: []
 profile::openstack::eqiad1::cumin::project_masters: []
-profile::openstack::main::cumin::project_pub_key: undef
 profile::openstack::eqiad1::cumin::project_pub_key: undef
 profile::openstack::base::keystone::auth_protocol: http
 profile::openstack::base::keystone::public_port: 5000
-profile::openstack::main::nova::dhcp_domain: 'eqiad.wmflabs'
 profile::openstack::eqiad1::nova::dhcp_domain: 'eqiad.wmflabs'
 cumin_masters:
 - 172.16.1.135 # bastion-restricted-eqiad1-01.eqiad.wmflabs
