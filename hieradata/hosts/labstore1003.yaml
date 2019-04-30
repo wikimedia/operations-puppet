@@ -6,3 +6,4 @@ profile::dumps::distribution::dumpstempdir: '/srv/dumps/temp'
 profile::base::domain_search:
   - wikimedia.org
   - eqiad.wmnet
+profile::base::enable_kafka_shipping: false

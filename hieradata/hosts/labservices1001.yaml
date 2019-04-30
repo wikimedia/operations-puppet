@@ -1,0 +1,1 @@
+profile::base::enable_kafka_shipping: false
