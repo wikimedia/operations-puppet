@@ -96,6 +96,7 @@ profile::cache::varnish::frontend::fe_extra_vcl: ['upload-common', 'normalize_pa
 profile::cache::varnish::backend::be_vcl_config:
     pass_random: true
 profile::cache::varnish::backend::be_extra_vcl: ['upload-common', 'normalize_path']
+profile::cache::varnish::backend::cron_restarts: true
 # Profile::cache::ssl::unified
 profile::cache::ssl::unified::monitoring: true
 profile::cache::ssl::unified::letsencrypt: false

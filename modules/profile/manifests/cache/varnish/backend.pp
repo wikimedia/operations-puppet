@@ -37,6 +37,7 @@ class profile::cache::varnish::backend (
     $alternate_domains = hiera('cache::alternate_domains', {}),
     $separate_vcl = hiera('profile::cache::varnish::separate_vcl', []),
     $backend_warming = hiera('cache::backend_warming', false),
+    $cron_restarts = hiera('profile::cache::varnish::backend::cron_restarts', false),
 ) {
     require ::profile::cache::base
     $wikimedia_nets = $profile::cache::base::wikimedia_nets
@@ -164,8 +165,7 @@ class profile::cache::varnish::backend (
         wikimedia_trust => $wikimedia_trust,
     }
 
-    # TODO: the production conditional is sad
-    if $::realm == 'production' {
+    if $cron_restarts {
         # Periodic varnish backend cron restarts, we need this to mitigate
         # T145661
         class { 'cacheproxy::cron_restart':
