@@ -8,9 +8,9 @@ class profile::base::puppet(
   String           $environment   = lookup('profile::base::puppet::environment',
                                           {'default_value' => 'production'}),
   Integer[2,3]     $facter_major_version = lookup('profile::base::puppet::facter_major_version',
-                                                  {'default_value' => 2}),
+                                                  {'default_value' => 3}),
   Integer[4,5]     $puppet_major_version = lookup('profile::base::puppet::puppet_major_version',
-                                                  {'default_value' => 4}),
+                                                  {'default_value' => 5}),
   # is the below paramater still used?
   Boolean $auto_puppetmaster_switching = lookup('profile::base::puppet::auto_puppetmaster_switching',
                                                 {'default_value' => false}),
