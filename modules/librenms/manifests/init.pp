@@ -104,6 +104,7 @@ class librenms(
         'php7.2-snmp',
         'php7.2-xml',
         'php7.2-zip',
+        'php7.2-ldap',
         'libapache2-mod-php7.2']:
             ensure  => present,
             require => Apt::Repository['wikimedia-php72'],
