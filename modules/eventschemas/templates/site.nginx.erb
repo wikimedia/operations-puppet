@@ -30,4 +30,9 @@ server {
     location ~ (\.yaml|\.avsc|\.idl|\.md|\d\.\d\.\d)$ {
         types { } default_type "text/plain; charset=utf-8";
     }
+
+    # Serve minified .js and .css files from the gzipped files.
+    gzip_static on;
+    gzip_proxied  any;
+    gzip_vary on;
 }
