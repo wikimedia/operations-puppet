@@ -79,33 +79,34 @@ class librenms(
         source => 'puppet:///modules/librenms/logrotate',
     }
 
-    if os_version('debian >= stretch') {
+    apt::repository { 'wikimedia-php72':
+        uri        => 'http://apt.wikimedia.org/wikimedia',
+        dist       => 'stretch-wikimedia',
+        components => 'component/php72',
+        notify     => Exec['apt_update_php'],
+    }
 
-        package { [
-                'php-cli',
-                'php-curl',
-                'php-gd',
-                'php-mcrypt',
-                'php-mysql',
-                'php-snmp',
-                'php-ldap',
-            ]:
-            ensure => present,
-        }
+    # First installs can trip without this
+    exec {'apt_update_php':
+        command     => '/usr/bin/apt-get update',
+        refreshonly => true,
+        logoutput   => true,
+    }
 
-    } else {
-
-        package { [
-                'php5-cli',
-                'php5-curl',
-                'php5-gd',
-                'php5-mcrypt',
-                'php5-mysql',
-                'php5-snmp',
-                'php5-ldap',
-            ]:
-            ensure => present,
-        }
+  # Package requirements from https://docs.librenms.org/Installation/Installation-Ubuntu-1804-Apache/
+    package { [
+        'php7.2-cli',
+        'php7.2-curl',
+        'php7.2-gd',
+        'php7.2-json',
+        'php7.2-mbstring',
+        'php7.2-mysql',
+        'php7.2-snmp',
+        'php7.2-xml',
+        'php7.2-zip',
+        'libapache2-mod-php7.2']:
+            ensure  => present,
+            require => Apt::Repository['wikimedia-php72'],
     }
 
     package { [
