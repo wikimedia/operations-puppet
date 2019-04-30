@@ -25,8 +25,8 @@ class ldap::client::includes($ldapincludes, $ldapconfig) {
         }
     }
 
-    if 'sudoldap' in $ldapincludes {
-        class { '::ldap::client::sudoldap':
+    if 'sudo' in $ldapincludes {
+        class { '::ldap::client::sudo':
             ldapconfig => $ldapconfig,
         }
     }

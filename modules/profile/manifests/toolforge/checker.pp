@@ -6,9 +6,7 @@
 #
 # Used for external monitoring / collection of availability metrics
 #
-class profile::toolforge::checker(
-    String $sudo_flavor = lookup('sudo_flavor', {default_value => 'sudo-ldap'}),
-) {
+class profile::toolforge::checker {
     include profile::toolforge::grid::base
     include profile::toolforge::grid::submit_host
     include profile::toolforge::k8s::client
@@ -158,12 +156,11 @@ class profile::toolforge::checker(
 
     # Allow the www-data user to perform actions as related tools.
     sudo::user { 'www-data':
-        privileges  => [
+        privileges => [
             "ALL=(${::labsproject}.toolschecker) NOPASSWD: ALL",
             "ALL=(${::labsproject}.toolschecker-k8s-ws) NOPASSWD: ALL",
             "ALL=(${::labsproject}.toolschecker-ge-ws) NOPASSWD: ALL",
         ],
-        sudo_flavor => $sudo_flavor,
     }
 
     # Configure the $HOME of the toolschecker tool. Assumes that the basic
