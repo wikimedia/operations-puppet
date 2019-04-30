@@ -41,10 +41,6 @@ class package_builder(
         before   => Package['lintian'],
     }
 
-    package { 'lintian':
-        ensure => present,
-    }
-
     require_package([
         'cowbuilder',
         'build-essential',
@@ -62,6 +58,7 @@ class package_builder(
         'git-buildpackage',
         'quilt',
         'wdiff',
+        'lintian',
         'zip',
         'unzip',
         'debian-archive-keyring',
