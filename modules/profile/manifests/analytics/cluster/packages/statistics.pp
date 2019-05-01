@@ -12,6 +12,10 @@ class profile::analytics::cluster::packages::statistics {
 
     class { '::imagemagick::install': }
 
+    # We sometimes run eventlogging code from stat boxes for backfilling, etc.
+    # Include eventlogging::dependencies.
+    class { '::eventlogging::dependencies': }
+
     require_package([
         'openjdk-8-jdk',
         'time',
@@ -88,6 +92,7 @@ class profile::analytics::cluster::packages::statistics {
         'python-oauthlib',              'python3-oauthlib',             # T197896
         'python-requests-oauthlib',     'python3-requests-oauthlib',    # T197896
     ])
+
 
 
     # These packages need to be reviewed in the context of Debian Buster
