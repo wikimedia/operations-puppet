@@ -17,7 +17,7 @@ $config['alert']['macros']['rule']['is_main_intf'] = '%ports.ifAlias REGEXP "^(C
 $config['alert']['macros']['rule']['junos_state_down'] = '%sensors.sensor_class = "state" && %sensors.sensor_current != "6" && %sensors.sensor_type = "jnxFruState" && %sensors.sensor_current != "2"';
 
 # All types of Junos Alarms that is not "off"/(no alarm)
-$config['alert']['macros']['rule']['junos_alarm'] = '%sensors.sensor_class = "state" && %sensors.sensor_type REGEX "Jnx.*AlarmState" && %sensors.sensor_current != "2"';
+$config['alert']['macros']['rule']['junos_alarm'] = '%sensors.sensor_class = "state" && %sensors.sensor_type REGEXP "Jnx.*AlarmState" && %sensors.sensor_current != "2"';
 
 # Workaround a bug where the puppet array value '+6697' is converted to "6697"
 # The plus is necessary to use TLS
