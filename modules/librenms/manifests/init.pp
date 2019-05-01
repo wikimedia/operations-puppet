@@ -19,6 +19,7 @@
 #
 class librenms(
     Stdlib::Fqdn $active_server,
+    String $laravel_app_key,
     Hash $config={},
     Stdlib::Unixpath $install_dir='/srv/librenms',
     Stdlib::Unixpath $rrd_dir="${install_dir}/rrd",
@@ -69,6 +70,21 @@ class librenms(
         notify  => Service['librenms-ircbot'],
     }
 
+    file { "${install_dir}/.env":
+        ensure  => present,
+        owner   => 'www-data',
+        group   => 'librenms',
+        mode    => '0440',
+        content => template('librenms/.env.erb'),
+        require => Group['librenms'],
+    }
+
+    file { "${install_dir}/storage":
+        ensure  => directory,
+        owner   => 'www-data',
+        recurse => true,
+    }
+
     file { $rrd_dir:
         ensure  => directory,
         mode    => '0775',
@@ -80,6 +96,10 @@ class librenms(
     file { $install_dir:
         mode    => 'g+w',
         require => User['librenms'],
+    }
+
+    file { "${install_dir}/.ircbot.alert":
+        mode  => 'a+w',
     }
 
     logrotate::conf { 'librenms':

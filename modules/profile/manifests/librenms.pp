@@ -10,7 +10,8 @@ class profile::librenms (
     $install_dir = hiera('profile::librenms::install_dir'),
     $active_server = hiera('netmon_server'),
     $graphite_host = hiera('graphite_host', 'graphite-in.eqiad.wmnet'),
-    $graphite_prefix = hiera('graphite_prefix', 'librenms')
+    $graphite_prefix = hiera('graphite_prefix', 'librenms'),
+    String $laravel_app_key = hiera('profile::librenms::laravel_app_key'),
 ){
 
     include ::network::constants
@@ -125,10 +126,11 @@ class profile::librenms (
     }
 
     class { '::librenms':
-        install_dir   => $install_dir,
-        rrd_dir       => '/srv/librenms/rrd',
-        config        => $config,
-        active_server => $active_server,
+        install_dir     => $install_dir,
+        rrd_dir         => '/srv/librenms/rrd',
+        config          => $config,
+        active_server   => $active_server,
+        laravel_app_key => $laravel_app_key,
     }
     class { '::librenms::syslog':
         require => Class['::librenms']

@@ -6,3 +6,11 @@
     missingok
     create 0660 librenms root
 }
+/var/log/librenms/daily.log {
+    rotate 7
+    daily
+    compress
+    delaycompress
+    missingok
+    create 0660 librenms root
+}
