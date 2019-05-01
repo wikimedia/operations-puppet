@@ -12,10 +12,6 @@ class profile::analytics::cluster::packages::statistics {
 
     class { '::imagemagick::install': }
 
-    # We sometimes run eventlogging code from stat boxes for backfilling, etc.
-    # Include eventlogging::dependencies.
-    class { '::eventlogging::dependencies': }
-
     require_package([
         'openjdk-8-jdk',
         'time',
@@ -72,6 +68,12 @@ class profile::analytics::cluster::packages::statistics {
             'mariadb-client-10.1',
             'libyaml-cpp0.5v5',
         ])
+
+        # We sometimes run eventlogging code from stat boxes for backfilling, etc.
+        # Include eventlogging::dependencies.
+        # Not all eventlogging dependencies are built for buster, so we don't include
+        # on buster hosts.
+        class { '::eventlogging::dependencies': }
     }
 
     # Python packages
