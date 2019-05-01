@@ -40,6 +40,7 @@ class profile::librenms (
         'irc_debug'        => false,
         'irc_alert_chan'   => '#wikimedia-operations',
         'irc_alert_utf8'   => true,
+        'irc_alert_short'  => true,
         'irc_nick'         => 'librenms-wmf',
         'irc_pass'         => "librenms-wmf:${passwords::librenms::ircbot_pass}",
 
