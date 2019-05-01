@@ -16,6 +16,17 @@ class profile::puppet_compiler(
                 prio   => '30',
                 srange => '$LABS_NETWORKS'
             }
+
+            # delete output files older than a month (T222072)
+            $output_dir = '/srv/jenkins-workspace/puppet-compiler/output'
+            cron { 'delete-old-output-files':
+                ensure   => 'present',
+                command  => "find ${output_dir} -ctime +31 -delete",
+                user     => 'root',
+                monthday => '1',
+                hour     => '1',
+                minute   => '30',
+            }
         }
         default     : { fail("Realm ${::realm} NOT supported by this role.") }
     }
