@@ -77,7 +77,6 @@ class profile::librenms (
             '65005' => 'confed-eqsin',
             '65517' => 'Equinix',
         },
-        'email_from' => 'librenms',
         'twofactor' => true,
         'twofactor_lock' => 300,
         'rancid_configs'         => ['/var/lib/rancid/core/configs/'],
