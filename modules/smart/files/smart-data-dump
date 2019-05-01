@@ -81,7 +81,7 @@ IGNORE_ATTRIBUTES = [
 def get_fact(fact_name):
     """Ask 'facter' for the given fact name. Return the fact's value or None."""
 
-    raw_output = subprocess.check_output(['/usr/bin/facter', '--puppet', '--json', fact_name])
+    raw_output = subprocess.check_output(['/usr/bin/facter', '-l', 'error', '--puppet', '--json', fact_name])
     try:
         fact_value = json.loads(str(raw_output, 'utf8', 'ignore')).get(fact_name, None)
     except ValueError:
