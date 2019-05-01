@@ -1558,27 +1558,6 @@ host db1125 {
     fixed-address db1125.eqiad.wmnet;
 }
 
-host db2014 {
-    hardware ethernet D4:AE:52:7C:94:CA;
-    fixed-address db2014.codfw.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
-    filename "lpxelinux.0";
-}
-
-host db2020 {
-    hardware ethernet d4:ae:52:95:4a:e0;
-    fixed-address db2020.codfw.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
-    filename "lpxelinux.0";
-}
-
-host db2031 {
-    hardware ethernet d4:ae:52:88:cf:16;
-    fixed-address db2031.codfw.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
-    filename "lpxelinux.0";
-}
-
 host db2034 {
     hardware ethernet a0:d3:c1:fa:2d:80;
     fixed-address db2034.codfw.wmnet;
