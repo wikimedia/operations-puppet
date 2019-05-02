@@ -721,12 +721,11 @@ node 'db1116.eqiad.wmnet' {
     role(mariadb::dbstore_multiinstance)
 }
 
-# Pending to be provisioned #T211613
 node 'db1139.eqiad.wmnet' {
-    role(system::spare)
+    role(mariadb::dbstore_multiinstance)
 }
 node 'db1140.eqiad.wmnet' {
-    role(system::spare)
+    role(mariadb::dbstore_multiinstance)
 }
 
 # codfw backup sources
