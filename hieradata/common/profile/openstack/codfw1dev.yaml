@@ -20,3 +20,4 @@ profile::openstack::codfw1dev::region: 'codfw1dev-r'
 profile::openstack::codfw1dev::labweb_hosts:
   - cloudweb2001-dev.wikimedia.org
 profile::openstack::codfw1dev::all_regions: ['codfw', 'codfw1dev-r']
+profile::openstack::codfw1dev::statsd_host: 'labmon1001.eqiad.wmnet'

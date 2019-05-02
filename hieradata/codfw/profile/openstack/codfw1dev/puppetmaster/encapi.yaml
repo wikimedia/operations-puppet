@@ -1,0 +1,5 @@
+profile::openstack::codfw1dev::puppetmaster::encapi::db_host: 'cloudcontrol2001-dev.wikimedia.org'
+profile::openstack::codfw1dev::puppetmaster::encapi::db_name: 'labspuppet'
+profile::openstack::codfw1dev::puppetmaster::encapi::db_user: 'labspuppet'
+profile::openstack::codfw1dev::puppetmaster::encapi::statsd_prefix: 'labtest.puppetbackend'
+

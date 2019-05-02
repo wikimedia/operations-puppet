@@ -1127,7 +1127,7 @@ node 'cloudcontrol2003-dev.wikimedia.org' {
 }
 
 node 'labtestpuppetmaster2001.wikimedia.org' {
-    role(wmcs::openstack::labtest::puppetmaster::frontend)
+    role(wmcs::openstack::codfw1dev::puppetmaster::frontend)
     interface::add_ip6_mapped { 'main': }
 }
 

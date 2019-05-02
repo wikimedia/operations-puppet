@@ -1,0 +1,6 @@
+profile::openstack::codfw1dev::puppetmaster::web_hostname: labtest-puppetmaster.wikimedia.org
+profile::openstack::codfw1dev::puppetmaster::ca: labtestpuppetmaster2001.wikimedia.org
+profile::openstack::codfw1dev::puppetmaster::servers:
+  labtestpuppetmaster2001.wikimedia.org:
+    - { worker: labtestpuppetmaster2001.wikimedia.org, loadfactor: 10 }
+profile::openstack::codfw1dev::puppetmaster::cert_secret_path: 'labtestpuppetmaster'

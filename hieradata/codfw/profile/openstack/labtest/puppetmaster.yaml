@@ -1,6 +1,0 @@
-profile::openstack::labtest::puppetmaster::web_hostname: labtest-puppetmaster.wikimedia.org
-profile::openstack::labtest::puppetmaster::ca: labtestpuppetmaster2001.wikimedia.org
-profile::openstack::labtest::puppetmaster::servers:
-  labtestpuppetmaster2001.wikimedia.org:
-    - { worker: labtestpuppetmaster2001.wikimedia.org, loadfactor: 10 }
-profile::openstack::labtest::puppetmaster::cert_secret_path: 'labtestpuppetmaster'
