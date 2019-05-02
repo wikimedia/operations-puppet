@@ -288,6 +288,7 @@ groups:
                  'ALL = (hive)  NOPASSWD: ALL',
                  'ALL = (turnilo)  NOPASSWD: ALL',
                  'ALL = (superset)  NOPASSWD: ALL',
+                 'ALL = (analytics)  NOPASSWD: ALL',
                  'ALL = NOPASSWD: /bin/journalctl *',
                  'ALL = NOPASSWD: /bin/systemctl * turnilo',
                  'ALL = NOPASSWD: /bin/systemctl * hadoop-*',
