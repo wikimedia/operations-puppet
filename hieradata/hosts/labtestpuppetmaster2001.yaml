@@ -1,2 +1,2 @@
 puppet_ca_server: labtestpuppetmaster2001.wikimedia.org
-profile::openstack::labtest::puppetmaster::ca: labtestpuppetmaster2001.wikimedia.org
+profile::openstack::codfw1dev::puppetmaster::ca: labtestpuppetmaster2001.wikimedia.org

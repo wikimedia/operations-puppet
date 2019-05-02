@@ -63,7 +63,7 @@ striker::uwsgi::secret_config:
 apache::logrotate::period: 'daily'
 apache::logrotate::rotate: 30
 
-profile::openstack::labtest::version: ocata
+profile::openstack::codfw1dev::version: ocata
 
 profile::openstack::base::nutcracker::redis::shards:
   jobqueue:
@@ -79,6 +79,6 @@ profile::openstack::base::nutcracker::redis::shards:
 
 
 # Wikitech things:
-profile::openstack::labtest::wikitech::web::osm_host: 'labtestwikitech.wikimedia.org'
-profile::openstack::labtest::wikitech::web::webserver_hostname_aliases: ''
-profile::openstack::labtest::wikitech::web::db_name: 'labtestwiki'
+profile::openstack::codfw1dev::wikitech::web::osm_host: 'labtestwikitech.wikimedia.org'
+profile::openstack::codfw1dev::wikitech::web::webserver_hostname_aliases: ''
+profile::openstack::codfw1dev::wikitech::web::db_name: 'labtestwiki'
