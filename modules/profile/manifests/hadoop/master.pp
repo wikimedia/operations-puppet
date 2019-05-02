@@ -164,6 +164,16 @@ class profile::hadoop::master(
             prometheus_url  => "http://prometheus.svc.${::site}.wmnet/analytics",
         }
 
+        monitoring::check_prometheus { 'hadoop-hdfs-rpc-queue-length':
+            description     => 'HDFS Namenode RPC 8020 call queue length',
+            dashboard_links => ["https://grafana.wikimedia.org/dashboard/db/hadoop?var-hadoop_cluster=${cluster_name}&orgId=1&panelId=54&fullscreen"],
+            query           => "scalar(Hadoop_NameNode_CallQueueLength{name=\"RpcActivityForPort8020\", instance=\"${::hostname}:10080\"})",
+            warning         => 10,
+            critical        => 20,
+            contact_group   => 'analytics',
+            prometheus_url  => "http://prometheus.svc.${::site}.wmnet/analytics",
+        }
+
         # Thresholds for the HDFS namenode are higher since it has always
         # filled most of its heap. This is not bad of course, but we'd like to know
         # if the usage stays above 90% over time to see if anything is happening.
