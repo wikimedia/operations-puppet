@@ -1,7 +1,7 @@
 class profile::openstack::base::nova::fullstack::service(
     $osstackcanary_pass = hiera('profile::openstack::base::nova::fullstack_pass'),
     $nova_api_host = hiera('profile::openstack::base::nova_api_host'),
-    $region = hiera('profile::openstack::labtestn::region'),
+    $region = hiera('profile::openstack::base::region'),
     $network = hiera('profile::openstack::base::nova::instance_network_id'),
     ) {
 
