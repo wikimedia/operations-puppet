@@ -290,13 +290,11 @@ groups:
                  'ALL = (superset)  NOPASSWD: ALL',
                  'ALL = (analytics)  NOPASSWD: ALL',
                  'ALL = NOPASSWD: /bin/journalctl *',
-                 'ALL = NOPASSWD: /bin/systemctl * turnilo',
-                 'ALL = NOPASSWD: /bin/systemctl * hadoop-*',
-                 'ALL = NOPASSWD: /bin/systemctl * superset',
-                 'ALL = NOPASSWD: /bin/systemctl * hive',
-                 'ALL = NOPASSWD: /bin/systemctl * oozie',
-                 'ALL = NOPASSWD: /bin/systemctl * jupyterhub',
-                 'ALL = NOPASSWD: /bin/systemctl * jupyter-*']
+                 'ALL = NOPASSWD: /bin/systemctl start *',
+                 'ALL = NOPASSWD: /bin/systemctl restart *',
+                 'ALL = NOPASSWD: /bin/systemctl stop *',
+                 'ALL = NOPASSWD: /bin/systemctl status *',
+                 'ALL = NOPASSWD: /bin/systemctl reset-failed *']
   eventlogging-admins:
     gid: 733
     description: Login access for EventLogging deployment and investigation
