@@ -208,6 +208,7 @@
     connectTimeout = 1 min
     smtpServer = localhost
     smtpEncryption = <%= @smtp_encryption %>
+    threadPoolSize = 2
 [sshd]
     <%- if @slave %>
     listenAddress = off
