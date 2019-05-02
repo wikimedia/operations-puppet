@@ -12,7 +12,7 @@ class gerrit::jetty(
     String $db_user = 'gerrit',
     String $git_dir = 'git',
     Optional[String] $ssh_host_key = undef,
-    String $heap_limit = '20g',
+    String $heap_limit = '24g',
     Boolean $slave = false,
     Stdlib::Unixpath $java_home = '/usr/lib/jvm/java-8-openjdk-amd64/jre',
     String $config = 'gerrit.config.erb',
