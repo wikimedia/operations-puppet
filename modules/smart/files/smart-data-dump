@@ -78,10 +78,20 @@ IGNORE_ATTRIBUTES = [
 ]
 
 
-def get_fact(fact_name):
+def get_facter_version():
+    '''return the major version of facter'''
+    raw_output = subprocess.check_output(['/usr/bin/facter', '--version'])
+    return int(raw_output.split(b'.')[0])
+
+
+def get_fact(fact_name, facter_version=2):
     """Ask 'facter' for the given fact name. Return the fact's value or None."""
 
-    raw_output = subprocess.check_output(['/usr/bin/facter', '--puppet', '--json', fact_name])
+    command = ['/usr/bin/facter', '--puppet', '--json', fact_name]
+    if facter_version == 3:
+        command.extend(['-l', 'error'])
+
+    raw_output = subprocess.check_output(command)
     try:
         fact_value = json.loads(str(raw_output, 'utf8', 'ignore')).get(fact_name, None)
     except ValueError:
@@ -292,9 +302,10 @@ def main():
     if args.outfile and not args.outfile.endswith('.prom'):
         parser.error('Output file does not end with .prom')
 
+    facter_version = get_facter_version()
     physical_disks = []
 
-    raid_drivers = get_fact('raid')
+    raid_drivers = get_fact('raid', facter_version)
     if raid_drivers is None:
         log.error('Invalid value for "raid" fact: %r', raid_drivers)
         return 1
