@@ -37,12 +37,9 @@ ldap_tls_cacertdir = /etc/openldap/cacerts
 ldap_schema = rfc2307bis
 use_fully_qualified_names = True
 ldap_page_size = <%= @ldapconfig["pagesize"] %>
-
-<%- if @ldapincludes.include?('sudo') then -%>
 # https://linux.die.net/man/5/sudoers.ldap
 sudo_provider = ldap
 ldap_sudo_search_base = <%= @ldapconfig["sudobasedn"] %>
-<%- end -%>
 # disable stuff not provided by LDAP (value of id_provider is used by default)
 selinux_provider = none
 autofs_provider = none
