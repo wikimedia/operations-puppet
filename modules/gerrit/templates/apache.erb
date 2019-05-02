@@ -123,6 +123,9 @@ MaxClients 50
     # Gerrit in Firefox and look in the Network Monitor for a similarly named .cache.js file.
     RewriteRule ^/r/gerrit_ui/undefined.cache.js$ https://<%= @host %>/r/gerrit_ui/AFCF57AB10C0BF746D7926C5246142C1.cache.js
 
+    # In gerrit 2.16, cloning over /p/ is broken, so redirect /r/p/ to /r/
+    RewriteRule ^/r/p/(.+)/info/(.+)$ https://<%= @host %>/r/$1/info/$2 [L,R=301,NE]
+
     <%- if @maint_mode -%>
     RedirectMatch temp "/r" "/error.html#"
     <%- else -%>
