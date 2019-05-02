@@ -1,4 +1,5 @@
 class profile::ldap::client::labs(
+    String $sudo_flavor  = lookup('sudo_flavor', {default_value => 'sudoldap'}),
     String $client_stack = lookup('profile::ldap::client::labs::client_stack', String, 'first', 'classic'),
     $ldapincludes=hiera('profile::ldap::client::labs::ldapincludes', ['openldap', 'utils']),
     $restricted_to=hiera('profile::ldap::client::labs::restricted_to', $::restricted_to),
@@ -8,11 +9,16 @@ class profile::ldap::client::labs(
 
     if ( $::realm == 'labs' ) {
         notify { 'LDAP client stack':
-            message => "The LDAP client stack for this host is: ${client_stack}",
+            message => "The LDAP client stack for this host is: ${client_stack}/${sudo_flavor}",
         }
+
+        if $client_stack == 'sssd' and $sudo_flavor != 'sudo' {
+            fail('to run sssd you need sudo instead of sudoldap')
+        }
+
         $includes = $client_stack ? {
-            'classic' => ['openldap', 'pam', 'nss', 'sudo', 'utils', 'nosssd'],
-            'sssd'    => ['openldap', 'sudo', 'utils', 'sssd'],
+            'classic' => ['openldap', 'pam', 'nss', 'sudoldap', 'utils', 'nosssd'],
+            'sssd'    => ['openldap', 'utils', 'sssd'],
         }
 
         # bypass pam_access restrictions for local commands

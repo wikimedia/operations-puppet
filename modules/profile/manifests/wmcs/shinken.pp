@@ -1,10 +1,11 @@
 class profile::wmcs::shinken(
-    $keystone_host   = lookup('profile::openstack::eqiad1::keystone_host'),
-    $keystone_port   = lookup('profile::openstack::base::keystone::public_port'),
-    $puppet_enc_host = lookup('profile::wmcs::shinken::puppet_enc_host'),
-    $ircbot          = lookup('profile::wmcs::shinken::ircbot'),
-    $ircbot_nick     = lookup('profile::wmcs::shinken::ircbot_nick'),
-    $ircbot_server   = lookup('profile::wmcs::shinken::ircbot_server'),
+    $keystone_host      = lookup('profile::openstack::eqiad1::keystone_host'),
+    $keystone_port      = lookup('profile::openstack::base::keystone::public_port'),
+    $puppet_enc_host    = lookup('profile::wmcs::shinken::puppet_enc_host'),
+    $ircbot             = lookup('profile::wmcs::shinken::ircbot'),
+    $ircbot_nick        = lookup('profile::wmcs::shinken::ircbot_nick'),
+    $ircbot_server      = lookup('profile::wmcs::shinken::ircbot_server'),
+    String $sudo_flavor = lookup('sudo_flavor', {default_value => 'sudoldap'}),
 ) {
     class { '::shinken':
         auth_secret     => 'This is insecure, should switch to using private repo',
@@ -17,8 +18,9 @@ class profile::wmcs::shinken(
     #  Allow shinken to run the check_dhcp test as root.  It doesn't
     #   work as user.
     sudo::user { 'shinken_sudo_for_dhcp':
-        user       => 'shinken',
-        privileges => ['ALL=(root) NOPASSWD: /usr/lib/nagios/plugins/check_dhcp'],
+        user        => 'shinken',
+        privileges  => ['ALL=(root) NOPASSWD: /usr/lib/nagios/plugins/check_dhcp'],
+        sudo_flavor => $sudo_flavor,
     }
 
     # Basic WMCS instance & infrastructure monitoring

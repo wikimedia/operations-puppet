@@ -29,6 +29,7 @@ class profile::base(
     $debdeploy_exclude_mounts = hiera('profile::base::debdeploy::exclude_mounts', []),
     $debdeploy_exclude_filesystems = hiera('profile::base::debdeploy::exclude_filesystems', []),
     $debdeploy_filter_services = lookup('profile::base::debdeploy::filter_services', Hash, 'hash', {}),
+    String $sudo_flavor = lookup('sudo_flavor', {default_value => 'sudo'}),
 ) {
     require ::profile::base::certificates
     class { '::apt':
@@ -148,6 +149,7 @@ class profile::base(
         monitor_systemd          => $monitor_systemd,
         puppet_interval          => $profile::base::puppet::interval,
         raid_check               => $check_raid,
+        sudo_flavor              => $sudo_flavor,
     }
 
     if os_version('ubuntu == trusty') {

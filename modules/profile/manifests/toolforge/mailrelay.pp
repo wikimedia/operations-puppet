@@ -2,6 +2,7 @@ class profile::toolforge::mailrelay(
     String $external_hostname = hiera('profile::toolforge::mailrelay::external_hostname', 'mail.tools.wmflabs.org'),
     String $mail_domain = hiera('profile::toolforge::mail_domain', 'tools.wmflabs.org'),
     String $cert_name = hiera('profile::toolforge::cert_name', 'tools_mail'),
+    String $sudo_flavor = lookup('sudo_flavor', {default_value => 'sudoldap'}),
 ) {
     class { '::exim4':
         queuerunner => 'combined',
@@ -67,5 +68,7 @@ class profile::toolforge::mailrelay(
         port  => '80',
     }
 
-    diamond::collector::extendedexim { 'extended_exim_collector': }
+    diamond::collector::extendedexim { 'extended_exim_collector':
+        sudo_flavor => $sudo_flavor,
+    }
 }

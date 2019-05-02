@@ -1,5 +1,8 @@
-class ldap::client::sudo($ldapconfig) {
-    require ::sudo
+class ldap::client::sudoldap($ldapconfig) {
+    # this is probably declared elsewhere, but let's be extra sure
+    if ! defined(Class['Sudo::Sudoldap']) {
+        class { 'sudo::sudoldap': }
+    }
 
     # sudo-ldap.conf has always been a duplicate of /etc/ldap/ldap.conf.
     #  Make it official.
@@ -8,4 +11,3 @@ class ldap::client::sudo($ldapconfig) {
         target => '/etc/ldap/ldap.conf',
     }
 }
-

@@ -11,6 +11,7 @@ class base::firewall (
     Array[Stdlib::IP::Address] $zookeeper_hosts_main = [],
     Array[Stdlib::IP::Address] $hadoop_masters = [],
     Array[Stdlib::IP::Address] $druid_public_hosts = [],
+    String                     $sudo_flavor = 'sudo',
 ) {
     include ::network::constants
     include ::ferm
@@ -69,9 +70,10 @@ class base::firewall (
     }
 
     sudo::user { 'nagios_check_ferm':
-        user       => 'nagios',
-        privileges => [ 'ALL = NOPASSWD: /usr/lib/nagios/plugins/check_ferm' ],
-        require    => File['/usr/lib/nagios/plugins/check_ferm'],
+        user        => 'nagios',
+        privileges  => [ 'ALL = NOPASSWD: /usr/lib/nagios/plugins/check_ferm' ],
+        require     => File['/usr/lib/nagios/plugins/check_ferm'],
+        sudo_flavor => $sudo_flavor,
     }
 
     file { '/usr/lib/nagios/plugins/check_ferm':

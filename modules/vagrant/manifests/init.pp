@@ -7,7 +7,12 @@
 #   Directory where Vagrant stores global state.
 #   (default: '/srv/vagrant-data')
 #
+# [*sudo_flavor*]
+#   Which sudo flavor to use, 'sudo' or 'sudoldap'.
+#   Default: sudoldap
+#
 class vagrant(
+    String $sudo_flavor  = 'sudoldap',
     $vagrant_home = '/srv/vagrant-data',
 ) {
     package { 'vagrant':
@@ -37,10 +42,11 @@ class vagrant(
     }
 
     sudo::group { 'wikidev_mwvagrant':
-        privileges => [
+        privileges  => [
             'ALL=(mwvagrant) NOPASSWD: ALL',
         ],
-        group      => 'wikidev',
+        group       => 'wikidev',
+        sudo_flavor => $sudo_flavor,
     }
 
     # Wrapper script to make it easier to invoke vagrant in a shared

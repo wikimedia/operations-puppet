@@ -5,7 +5,8 @@
 # * $master - FQDN of the host that should be allowed SSH access
 
 class profile::toolforge::clush::target(
-    String $master = lookup('profile::toolforge::clush::master'),
+    String $master      = lookup('profile::toolforge::clush::master'),
+    String $sudo_flavor = lookup('sudo_flavor', {default_value => 'sudoldap'}),
 ) {
     ::clush::target { 'clushuser':
         ensure => present,
@@ -24,7 +25,8 @@ class profile::toolforge::clush::target(
 
     # Give `clushuser` complete sudo rights
     sudo::user { 'clushuser':
-        ensure     => present,
-        privileges => ['ALL = (ALL) NOPASSWD: ALL'],
+        ensure      => present,
+        privileges  => ['ALL = (ALL) NOPASSWD: ALL'],
+        sudo_flavor => $sudo_flavor,
     }
 }

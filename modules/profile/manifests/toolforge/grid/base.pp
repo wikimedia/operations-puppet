@@ -10,6 +10,7 @@ class profile::toolforge::grid::base (
     $sysdir = lookup('profile::toolforge::grid::base::sysdir'),
     $geconf = lookup('profile::toolforge::grid::base::geconf'),
     $collectors = lookup('profile::toolforge::grid::base::collectors'),
+    String $sudo_flavor = lookup('sudo_flavor', {default_value => 'sudoldap'}),
 ) {
 
     class { '::labs_lvm': }
@@ -103,5 +104,7 @@ class profile::toolforge::grid::base (
         content => $active_proxy,
     }
 
-    diamond::collector::localcrontab { 'localcrontabcollector': }
+    diamond::collector::localcrontab { 'localcrontabcollector':
+        sudo_flavor => $sudo_flavor,
+    }
 }

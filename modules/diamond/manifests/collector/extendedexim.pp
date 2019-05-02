@@ -15,6 +15,7 @@
 define diamond::collector::extendedexim(
     $settings = {},
     $ensure   = present,
+    String $sudo_flavor = 'sudo'
 ) {
     # lint:ignore:quoted_booleans
     # This is jammed straight into a config file, needs quoting.
@@ -30,9 +31,10 @@ define diamond::collector::extendedexim(
 
     if str2bool($merged_settings[use_sudo]) {
         sudo::user { 'diamond_sudo_for_exim':
-            ensure     => $ensure,
-            user       => 'diamond',
-            privileges => ['ALL=(root) NOPASSWD: /usr/sbin/exim, /bin/cat /var/log/exim4/paniclog'],
+            ensure      => $ensure,
+            user        => 'diamond',
+            privileges  => ['ALL=(root) NOPASSWD: /usr/sbin/exim, /bin/cat /var/log/exim4/paniclog'],
+            sudo_flavor => $sudo_flavor,
         }
     }
 }
