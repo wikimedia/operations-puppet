@@ -9,7 +9,7 @@ class profile::prometheus::pdns_exporter (
     ferm::service { 'prometheus-pdns-exporter':
         proto  => 'tcp',
         port   => '9192',
-        srange => '@resolve(labmon1001.eqiad.wmnet)', # Should be properly defined via Hiera for WMCS
+        srange => '@resolve((labmon1001.eqiad.wmnet labmon1002.eqiad.wmnet))', # Should be properly defined via Hiera for WMCS
     }
 
     if os_version('debian >= jessie') {
