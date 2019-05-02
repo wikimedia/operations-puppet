@@ -172,3 +172,9 @@
     role: master
   targets:
   - db2034:9104
+
+- labels:
+    shard: test-s1
+    role: slave
+  targets:
+  - db2102:9104

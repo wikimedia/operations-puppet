@@ -466,11 +466,6 @@ node /^db1(111|112)\.eqiad\.wmnet/ {
     role(mariadb::core_test)
 }
 
-# temporary test
-node 'db1114.eqiad.wmnet' {
-    role(mariadb::core_test)
-}
-
 # s4 (commons) core production dbs on codfw
 # codfw master
 node 'db2051.codfw.wmnet' {
@@ -577,13 +572,8 @@ node /^db20(84|85|86|87|88|89|91)\.codfw\.wmnet/ {
     role(mariadb::core_multiinstance)
 }
 
-# Spare eqiad hosts to be provisioned #T211613 and #T218985
-node /^db11(26|27|28|29|30|31|32|33|34|35|36|37|38|39|40)\.eqiad\.wmnet/ {
-    role(spare::system)
-}
-
-# codfw hosts to be provisioned #T220572
-node 'db2102.codfw.wmnet' {
+# Spare eqiad hosts to be provisioned #T211613
+node /^db11(26|27|28|29|30|31|32|33|34|35|36|37|38)\.eqiad\.wmnet/ {
     role(spare::system)
 }
 
@@ -731,8 +721,12 @@ node 'db1116.eqiad.wmnet' {
     role(mariadb::dbstore_multiinstance)
 }
 
-node 'dbstore1001.eqiad.wmnet' {
-    role(mariadb::dbstore_multiinstance)
+# Pending to be provisioned #T211613
+node 'db1139.eqiad.wmnet' {
+    role(system::spare)
+}
+node 'db1140.eqiad.wmnet' {
+    role(system::spare)
 }
 
 # codfw backup sources
@@ -753,6 +747,21 @@ node 'db2101.codfw.wmnet' {
     role(mariadb::dbstore_multiinstance)
 }
 
+# backup testing hosts
+node 'db1114.eqiad.wmnet' {
+    role(mariadb::core_test)
+}
+
+node 'db2102.codfw.wmnet' {
+    role(mariadb::core_test)
+}
+
+# old eqiad dbstores
+node 'dbstore1001.eqiad.wmnet' {
+    role(mariadb::dbstore_multiinstance)
+}
+
+# old codfw dbstores
 node 'dbstore2001.codfw.wmnet' {
     role(mariadb::dbstore_multiinstance)
 }

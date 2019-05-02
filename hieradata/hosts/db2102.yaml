@@ -1,2 +1,3 @@
 # db2102
+mariadb::shard: 'test-s1'
 profile::base::notifications: disabled
