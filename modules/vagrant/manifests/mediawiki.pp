@@ -88,23 +88,10 @@ class vagrant::mediawiki(
         content => template('vagrant/start-mwvagrant.sh.erb'),
     }
 
-    base::service_unit { 'mediawiki-vagrant':
-        ensure          => present,
-        systemd         => systemd_template('mediawiki-vagrant'),
-        refresh         => false,
-        declare_service => false,
-        require         => File['/usr/local/bin/start-mwvagrant.sh'],
-    }
-
-    # FIXME: just use the normal
-    # 'declare_service' behavior of ::base::service_unit instead of this
-    # manual declaration. Our service unit uses 'RemainAfterExit=yes', so
-    # systemd will treat it as running even though it is a one-time
-    # script.
-    service { 'mediawiki-vagrant':
-        ensure   => 'running',
-        enable   => true,
-        provider => 'systemd',
-        require  => Base::Service_unit['mediawiki-vagrant'],
+    systemd::service { 'mediawiki-vagrant':
+        ensure  => present,
+        content => systemd_template('mediawiki-vagrant'),
+        restart => false,
+        require => File['/usr/local/bin/start-mwvagrant.sh'],
     }
 }
