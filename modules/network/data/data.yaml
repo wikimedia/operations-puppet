@@ -15,7 +15,6 @@ network::aggregate_networks:
   - 127.0.0.0/8 # localhost is always implicitly trusted
   - '::1/128'
   labs:
-  - 208.80.155.128/25
   - 172.16.0.0/12
   - 2620:0:860:117::/64 # labs-hosts1-a-codfw. Not on proper boundary aggregation wise
   - 2620:0:860:118::/63 # labs-hosts codfw
