@@ -16,6 +16,7 @@ profile::elasticsearch::config_version: '6'
 profile::elasticsearch::instances:
     relforge-eqiad:
         cluster_name: 'relforge-eqiad'
+        short_cluster_name: chi
         heap_memory: '30G'
         http_port: 9200
         tls_port: 9243
@@ -23,6 +24,7 @@ profile::elasticsearch::instances:
         certificate_name: 'relforge.svc.eqiad.wmnet'
     relforge-eqiad-small-alpha:
         cluster_name: 'relforge-eqiad-small-alpha'
+        short_cluster_name: omega
         heap_memory: '4G'
         http_port: 9400
         tls_port: 9443

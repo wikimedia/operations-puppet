@@ -15,6 +15,7 @@ profile::elasticsearch::base_data_dir: '/srv/elasticsearch'
 profile::elasticsearch::common_settings:
     auto_create_index: true
     cluster_name: production-logstash-codfw
+    short_cluster_name: omega
     awareness_attributes: ''
     expected_nodes: 3
     heap_memory: '30G'

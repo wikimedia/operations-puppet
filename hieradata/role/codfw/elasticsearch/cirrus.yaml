@@ -5,6 +5,7 @@ profile::elasticsearch::instances:
     production-search-codfw:
         # codfw prod name
         cluster_name: production-search-codfw
+        short_cluster_name: chi
         http_port: 9200
         tls_port: 9243
         transport_tcp_port: 9300
@@ -54,6 +55,7 @@ profile::elasticsearch::instances:
     production-search-omega-codfw:
         # codfw prod name
         cluster_name: production-search-omega-codfw
+        short_cluster_name: omega
         http_port: 9400
         tls_port: 9443
         transport_tcp_port: 9500
@@ -97,6 +99,7 @@ profile::elasticsearch::instances:
     production-search-psi-codfw:
         # codfw prod name
         cluster_name: production-search-psi-codfw
+        short_cluster_name: psi
         http_port: 9600
         tls_port: 9643
         transport_tcp_port: 9700

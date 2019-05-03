@@ -5,6 +5,7 @@ describe 'elasticsearch', :type => :class do
     let(:params) { {
         :default_instance_params => {
             :cluster_name          => 'my_cluster_name',
+            :short_cluster_name    => 'the_short_cluster_name',
             :send_logs_to_logstash => false,
             :publish_host          => '127.0.0.1',
         }
@@ -22,6 +23,7 @@ describe 'elasticsearch', :type => :class do
         :logstash_host => 'logstash.example.net',
         :default_instance_params => {
             :cluster_name          => 'my_cluster_name',
+            :short_cluster_name    => 'the_short_cluster_name',
             :send_logs_to_logstash => true,
             :publish_host          => '127.0.0.1',
         }

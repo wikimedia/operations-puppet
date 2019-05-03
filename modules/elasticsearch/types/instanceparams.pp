@@ -40,8 +40,9 @@ type Elasticsearch::InstanceParams = Struct[{
 
     # Dummy parameters consumed upstream of elasticsearch::instance,
     # but convenient to declare per-cluster
-    'certificate_name' => Optional[String],
-    'cluster_hosts'    => Optional[Array[String]],
-    'tls_port'         => Optional[Stdlib::Port],
-    'tls_ro_port'      => Optional[Stdlib::Port],
+    'certificate_name'   => Optional[String],
+    'cluster_hosts'      => Optional[Array[String]],
+    'tls_port'           => Optional[Stdlib::Port],
+    'tls_ro_port'        => Optional[Stdlib::Port],
+    'short_cluster_name' => Optional[String],
 }]

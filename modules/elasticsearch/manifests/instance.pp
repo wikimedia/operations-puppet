@@ -100,6 +100,7 @@ define elasticsearch::instance(
     Stdlib::Port $http_port,
     Stdlib::Port $transport_tcp_port,
     Stdlib::Absolutepath $base_data_dir,
+    String $short_cluster_name,
     Optional[String] $logstash_host                          = undef,
     Optional[Stdlib::Port] $logstash_gelf_port             = 12201,
     Optional[String] $row                                    = undef,

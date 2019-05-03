@@ -20,6 +20,7 @@ profile::elasticsearch::common_settings:
     awareness_attributes: ''
     auto_create_index: true
     cluster_name: production-logstash-eqiad
+    short_cluster_name: omega
     expected_nodes: 6
     heap_memory: '4G'
     # The ES nodes that are run on the same box as Logstash+Kibana are only used

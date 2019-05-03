@@ -18,12 +18,14 @@ profile::elasticsearch::base_data_dir: /srv/elasticsearch
 profile::elasticsearch::instances:
   cloudelastic-chi-eqiad:
     cluster_name: cloudelastic-chi-eqiad
+    short_cluster_name: chi
     http_port: 9200
     tls_port: 9243
     tls_ro_port: 8243
     transport_tcp_port: 9300
   cloudelastic-omega-eqiad:
     cluster_name: cloudelastic-omega-eqiad
+    short_cluster_name: omega
     http_port: 9400
     tls_port: 9443
     tls_ro_port: 8443
@@ -31,6 +33,7 @@ profile::elasticsearch::instances:
     heap_memory: '8G'
   cloudelastic-psi-eqiad:
     cluster_name: cloudelastic-psi-eqiad
+    short_cluster_name: psi
     http_port: 9600
     tls_port: 9643
     tls_ro_port: 8643
