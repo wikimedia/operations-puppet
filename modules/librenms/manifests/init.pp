@@ -97,6 +97,7 @@ class librenms(
     file { $install_dir:
         mode    => 'g+w',
         group   => 'librenms',
+        links   => follow,
         require => Group['librenms'],
     }
 
