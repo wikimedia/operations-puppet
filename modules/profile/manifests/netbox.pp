@@ -212,6 +212,14 @@ class profile::netbox (
     }
 
 
+    file { '/etc/netbox/':
+        ensure => 'directory',
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0755',
+    }
+
+    # Configuration for the Netbox-Ganeti synchronizer
     file { '/etc/netbox-ganeti-sync.cfg':
         owner   => 'deploy-librenms',
         group   => 'www-data',
@@ -219,11 +227,23 @@ class profile::netbox (
         content => template('profile/netbox/netbox-ganeti-sync.cfg.erb')
     }
 
+    # Configuration for Netbox reports in general
     file { '/etc/netbox-reports.cfg':
         owner   => 'deploy-librenms',
         group   => 'www-data',
         mode    => '0440',
         content => template('profile/netbox/netbox-reports.cfg.erb')
+    }
+
+    # Configurations for the report checker
+    file { '/etc/netbox/report_check.yaml':
+        owner   => 'root',
+        group   => 'nagios',
+        mode    => '0440',
+        content => ordered_yaml({
+            url   => $nb_api,
+            token => $nb_token,
+        })
     }
 
     # packages required by report checker

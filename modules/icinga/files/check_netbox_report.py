@@ -58,7 +58,7 @@ def parse_args():
         "-c",
         "--config",
         help="The path to the config file to load. Default: %(default)s.",
-        default="/etc/netbox/tools.yaml",
+        default="/etc/netbox/report_check.yaml",
     )
     parser.add_argument(
         "-r", "--run", help="Run the report before returning the result.", action="store_true"
@@ -116,7 +116,7 @@ def main():
         failedstatus = STATUS_WARNING
 
     netboxconfig = safe_load(open(args.config, "r"))
-    api = pynetbox.api(url=netboxconfig["url"], token=netboxconfig["rw_token"])
+    api = pynetbox.api(url=netboxconfig["url"], token=netboxconfig["token"])
     try:
         # We have to get all reports rather than getting them one at a time, because .get()
         # returns report objects that are not fully populated.
