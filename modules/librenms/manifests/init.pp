@@ -93,9 +93,11 @@ class librenms(
         require => Group['librenms'],
     }
 
+    # This is to allow various lock files to be created by the cronjobs
     file { $install_dir:
         mode    => 'g+w',
-        require => User['librenms'],
+        group   => 'librenms',
+        require => Group['librenms'],
     }
 
     file { "${install_dir}/.ircbot.alert":
