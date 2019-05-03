@@ -11,7 +11,12 @@
     AllowEncodedSlashes <%= @encoded_slashes %>
 
     # Set the variable if php7 is required
+<% if @php72_only %>
+    # This host only serves via PHP7, we are not setting
+    # the PHP_ENGINE cookie
+<%- else -%>
     SetEnvIf Cookie "PHP_ENGINE=php7" backend=php7
+ <%- end -%>
 
     RewriteEngine On
 <% if @https_only %>
@@ -90,6 +95,11 @@
     # Forbid accessing files under /w/extensions
     RewriteRule ^/w/extensions/.*\.php - [F,L]
     <FilesMatch "\.php$">
+    <%- if @php72_only -%>
+    # This host only serves via PHP7, it is not
+    # using the HHVM backend
+    SetHandler "proxy:<%= @php_fpm_fcgi_endpoint %>"
+    <%- else -%>
     # Send all php files to the FCGI backend (HHVM/PHP7)
     # This takes precedence over the catchall in the general configuration
     <If "reqenv('backend') == 'php7'">
@@ -98,5 +108,6 @@
     <Else>
         SetHandler "proxy:fcgi://127.0.0.1:9000"
     </Else>
+    <%- end -%>
     </FilesMatch>
 </VirtualHost>
