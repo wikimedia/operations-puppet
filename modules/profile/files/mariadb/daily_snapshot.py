@@ -168,9 +168,9 @@ def parse_config_file(config_file):
       database: 'zarcillo'
     sections:
       section1:
-        host: 'dbstore1001.eqiad.wmnet'
+        host: 'db1139.eqiad.wmnet'
         port: 3311
-        destination: 'dbstore1001.eqiad.wmnet'
+        destination: 'dbprov1001.eqiad.wmnet'
     """
     allowed_options = ['host', 'port', 'password', 'destination', 'rotate', 'retention',
                        'compress', 'archive', 'threads', 'statistics', 'only_postprocess',

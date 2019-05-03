@@ -3,7 +3,6 @@
     role: slave
   targets:
   - db1139:13311
-  - dbstore1001:13311
   - dbstore1003:13311
 
 - labels:
@@ -39,7 +38,6 @@
     role: slave
   targets:
   - db1139:13316
-  - dbstore1001:13316
   - dbstore1005:13316
 
 - labels:
@@ -61,5 +59,4 @@
     role: slave
   targets:
   - db1140:13320
-  - dbstore1001:13320
   - dbstore1005:13320

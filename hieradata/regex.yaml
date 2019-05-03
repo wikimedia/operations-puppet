@@ -134,11 +134,11 @@ es_eqiad_500G_disk:
   profile::base::check_disk_options: -w 10% -c 5% -W 6% -K 3% -l -e -A -i "/srv/sd[a-b][1-3]" --exclude-type=tracefs
 
 mysql_eqiad:
-  __regex: !ruby/regexp /^(db1[01][0-9][0-9]|dbstore100[1-5]|dbproxy10[01][0-9]|es101[1-9]|pc10(07|08|09|10)|labsdb10[01][0-9]|dbprov100[0-9])\.eqiad\.wmnet$/
+  __regex: !ruby/regexp /^(db1[01][0-9][0-9]|dbstore100[3-5]|dbproxy10[01][0-9]|es101[1-9]|pc10(07|08|09|10)|labsdb10[01][0-9]|dbprov100[0-9])\.eqiad\.wmnet$/
   cluster: mysql
 
 mysql_codfw:
-  __regex: !ruby/regexp /^(db2[01][0-9][0-9]|dbstore200[1-2]|es200[1-4]|pc20(07|08|09|10)|es201[1-9]|dbprov200[0-9])\.codfw\.wmnet$/
+  __regex: !ruby/regexp /^(db2[01][0-9][0-9]|es200[1-4]|pc20(07|08|09|10)|es201[1-9]|dbprov200[0-9])\.codfw\.wmnet$/
   cluster: mysql
 
 db_eqiad:

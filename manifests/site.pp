@@ -752,16 +752,16 @@ node 'db2102.codfw.wmnet' {
 
 # old eqiad dbstores
 node 'dbstore1001.eqiad.wmnet' {
-    role(mariadb::dbstore_multiinstance)
+    role(system::spare)
 }
 
 # old codfw dbstores
 node 'dbstore2001.codfw.wmnet' {
-    role(mariadb::dbstore_multiinstance)
+    role(system::spare)
 }
 
 node 'dbstore2002.codfw.wmnet' {
-    role(mariadb::dbstore_multiinstance)
+    role(system::spare)
 }
 
 # Analytics production replicas

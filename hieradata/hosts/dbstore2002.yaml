@@ -1,7 +1,0 @@
-# dbstore2002
-# Buffer pool sizes/instance enabled
-profile::mariadb::dbstore_multiinstance::num_instances: 4
-profile::mariadb::dbstore_multiinstance::x1: '15G'
-profile::mariadb::dbstore_multiinstance::s3: '25G'
-profile::mariadb::dbstore_multiinstance::s1: '30G'
-profile::mariadb::dbstore_multiinstance::s4: '30G'
