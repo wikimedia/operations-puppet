@@ -213,17 +213,11 @@ class profile::netbox (
 
 
     #
-    # FIXME service::uwsgi seems to create this directory, counter intuitively.
+    # FIXME service::uwsgi seems to create the directory /etc/netbox/, counter intuitively.
     #
-    # file { '/etc/nenotbox/':
-    #     ensure => 'directory',
-    #     owner  => 'root',
-    #     group  => 'root',
-    #     mode   => '0755',
-    # }
 
     # Configuration for the Netbox-Ganeti synchronizer
-    file { '/etc/netbox-ganeti-sync.cfg':
+    file { '/etc/netbox/ganeti-sync.cfg':
         owner   => 'deploy-librenms',
         group   => 'www-data',
         mode    => '0400',
