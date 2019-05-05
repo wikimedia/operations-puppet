@@ -118,6 +118,10 @@
     # Used in gerrit 2.16+
     # see https://gerrit-review.googlesource.com/Documentation/config-gerrit.html#gerrit.listProjectsFromIndex
     listProjectsFromIndex = true
+    # Remove when we upgrade to gerrit 3.0
+    # as this config is renamed to enableReverseDnsLookup and enabled by default.
+    # This is done for performance reasons.
+    disableReverseDnsLookup = true
     reportBugUrl = https://phabricator.wikimedia.org/maniphest/task/create/?projects=PHID-PROJ-lc5rwomzjp6fmcdpbw43
     serverId = e9e9afe9-4712-486d-8885-f54b72dd1951
 [groups]
