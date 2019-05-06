@@ -133,7 +133,7 @@
     - 80
     - 443
 
-  # Allow Kafka for eventgate
+  # Allow Kafka for eventgate-analytics
 - action: allow
   src_selector: calico/k8s_ns == 'eventgate-analytics'
   dst_net: 10.64.0.175/32
@@ -203,6 +203,83 @@
 - action: allow
   src_selector: calico/k8s_ns == 'eventgate-analytics'
   dst_net: 2620:0:861:107:10:64:48:117/128
+  protocol: tcp
+  dst_ports:
+    - 9092
+
+
+  # Allow Kafka for eventgate-main
+  # main-eqiad:
+- action: allow
+  src_selector: calico/k8s_ns == 'eventgate-main'
+  dst_net: 10.64.0.11/32 # kafka1001
+  protocol: tcp
+  dst_ports:
+    - 9092
+- action: allow
+  src_selector: calico/k8s_ns == 'eventgate-main'
+  dst_net: 10.64.16.41/32 # kafka1002
+  protocol: tcp
+  dst_ports:
+    - 9092
+- action: allow
+  src_selector: calico/k8s_ns == 'eventgate-main'
+  dst_net: 10.64.32.127/32 # kafka1003
+  protocol: tcp
+  dst_ports:
+    - 9092
+- action: allow
+  src_selector: calico/k8s_ns == 'eventgate-main'
+  dst_net: 2620:0:861:101:10:64:0:11/128 # kafka1001
+  protocol: tcp
+  dst_ports:
+    - 9092
+- action: allow
+  src_selector: calico/k8s_ns == 'eventgate-main'
+  dst_net: 2620:0:861:102:10:64:16:41/128 # kafka1002
+  protocol: tcp
+  dst_ports:
+    - 9092
+- action: allow
+  src_selector: calico/k8s_ns == 'eventgate-main'
+  dst_net: 2620:0:861:103:10:64:32:127/128 # kafka1003
+  protocol: tcp
+  dst_ports:
+    - 9092
+  # main-codfw:
+- action: allow
+  src_selector: calico/k8s_ns == 'eventgate-main'
+  dst_net: 10.192.0.139/32 # kafka2001
+  protocol: tcp
+  dst_ports:
+    - 9092
+- action: allow
+  src_selector: calico/k8s_ns == 'eventgate-main'
+  dst_net: 10.192.16.169/32 # kafka2002
+  protocol: tcp
+  dst_ports:
+    - 9092
+- action: allow
+  src_selector: calico/k8s_ns == 'eventgate-main'
+  dst_net: 10.192.32.150/32 # kafka2003
+  protocol: tcp
+  dst_ports:
+    - 9092
+- action: allow
+  src_selector: calico/k8s_ns == 'eventgate-main'
+  dst_net: 2620:0:860:101:10:192:0:139/128 # kafka2001
+  protocol: tcp
+  dst_ports:
+    - 9092
+- action: allow
+  src_selector: calico/k8s_ns == 'eventgate-main'
+  dst_net: 2620:0:860:102:10:192:16:169/128 # kafka2002
+  protocol: tcp
+  dst_ports:
+    - 9092
+- action: allow
+  src_selector: calico/k8s_ns == 'eventgate-main'
+  dst_net: 2620:0:860:103:10:192:32:150/128 # kafka2003
   protocol: tcp
   dst_ports:
     - 9092
