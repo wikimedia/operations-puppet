@@ -282,11 +282,23 @@ class profile::prometheus::ops (
       },
     ]
 
-    prometheus::class_config{ "trafficserver_${::site}":
-        dest       => "${targets_path}/trafficserver_${::site}.yaml",
+    prometheus::class_config{ "trafficserver_backend_${::site}":
+        dest       => "${targets_path}/trafficserver_backend_${::site}.yaml",
         site       => $::site,
         class_name => 'profile::trafficserver::backend',
         port       => 9122,
+        labels     => {
+          'layer' => 'backend',
+        }
+    }
+    prometheus::class_config{ "trafficserver_tls_${::site}":
+        dest       => "${targets_path}/trafficserver_tls_${::site}.yaml",
+        site       => $::site,
+        class_name => 'profile::trafficserver::tls',
+        port       => 9322,
+        labels     => {
+          'layer' => 'tls',
+        }
     }
 
     # Job definition for memcache_exporter
