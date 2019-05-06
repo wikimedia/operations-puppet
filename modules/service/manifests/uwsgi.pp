@@ -69,6 +69,13 @@
 #   service::configuration::logstash_host and optionally local files if
 #   $local_logging is true. Default: true
 #
+# [*core_limit*]
+#   This setting adds the LimitCore functionality of the uwsgi's systemd unit.
+#   Useful when segfaults are happening regualarly and a more detailed report
+#   is needed.
+#   Values: 'unlimited', 'nG' (n is a number of Gigabytes), or '0' for no core.
+#   Default: '0'
+#
 # === Examples
 #
 #    service::uwsgi { 'myservice':
@@ -98,6 +105,7 @@ define service::uwsgi(
     $sudo_rules             = [],
     $contact_groups         = hiera('contactgroups', 'admins'),
     $add_logging_config     = true,
+    $core_limit             = '0',
 ) {
     if $deployment == 'scap3' {
         scap::target { $repo:
@@ -202,7 +210,8 @@ define service::uwsgi(
     require_package('firejail')
 
     uwsgi::app { $title:
-        settings => {
+        core_limit => $core_limit,
+        settings   => {
             uwsgi => $complete_config,
         }
     }
