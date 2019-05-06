@@ -1,4 +1,3 @@
 # db2034
 mariadb::shard: 'x1'
-mariadb::mysql_role: 'master'
 mariadb::binlog_format: 'ROW'
