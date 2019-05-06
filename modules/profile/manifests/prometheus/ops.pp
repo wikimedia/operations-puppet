@@ -195,7 +195,8 @@ class profile::prometheus::ops (
       {
         'job_name'        => 'varnish-upload',
         'file_sd_configs' => [
-          { 'files' => [ "${targets_path}/varnish-upload_*.yaml"] },
+          { 'files' => ["${targets_path}/varnish-upload_*.yaml",
+                        "${targets_path}/varnish-upload-ats_*.yaml"] },
         ],
         'metric_relabel_configs' => [$varnish_be_uuid_relabel],
       },
