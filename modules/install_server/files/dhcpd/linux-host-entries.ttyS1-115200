@@ -1968,6 +1968,96 @@ host db2102 {
     fixed-address db2102.codfw.wmnet;
 }
 
+host db2103 {
+    hardware ethernet 4C:D9:8F:68:EB:F8;
+    fixed-address db2103.codfw.wmnet;
+}
+
+host db2104 {
+    hardware ethernet 4C:D9:8F:68:DE:D0;
+    fixed-address db2104.codfw.wmnet;
+}
+
+host db2105 {
+    hardware ethernet 4C:D9:8F:68:BC:C4;
+    fixed-address db2105.codfw.wmnet;
+}
+
+host db2106 {
+    hardware ethernet 4C:D9:8F:68:D8:55;
+    fixed-address db2106.codfw.wmnet;
+}
+
+host db2107 {
+    hardware ethernet 4C:D9:8F:68:E7:B5;
+    fixed-address db2107.codfw.wmnet;
+}
+
+host db2108 {
+    hardware ethernet 4C:D9:8F:68:E6:32 ;
+    fixed-address db2108.codfw.wmnet;
+}
+
+host db2109 {
+    hardware ethernet 4C:D9:8F:68:E3:63;
+    fixed-address db2109.codfw.wmnet;
+}
+
+host db2110 {
+    hardware ethernet 4C:D9:8F:68:B1:7C;
+    fixed-address db2110.codfw.wmnet;
+}
+
+host db2111 {
+    hardware ethernet 4C:D9:8F:68:ED:99;
+    fixed-address db2111.codfw.wmnet;
+}
+
+host db2112 {
+    hardware ethernet 4C:D9:8F:68:E9:E2;
+    fixed-address db2112.codfw.wmnet;
+}
+
+host db2113 {
+    hardware ethernet 4C:D9:8F:68:E8:45;
+    fixed-address db2113.codfw.wmnet;
+}
+
+host db2114 {
+    hardware ethernet 4C:D9:8F:68:F1:F5;
+    fixed-address db2114.codfw.wmnet;
+}
+
+host db2115 {
+    hardware ethernet 4C:D9:8F:68:E3:2B;
+    fixed-address db2115.codfw.wmnet;
+}
+
+host db2116 {
+    hardware ethernet 4C:D9:8F:68:DE:68;
+    fixed-address db2116.codfw.wmnet;
+}
+
+host db2117 {
+    hardware ethernet 4C:D9:8F:68:EF:31;
+    fixed-address db2117.codfw.wmnet;
+}
+
+host db2118 {
+    hardware ethernet 4C:D9:8F:68:DE:60;
+    fixed-address db2118.codfw.wmnet;
+}
+
+host db2119 {
+    hardware ethernet 4C:D9:8F:68:E6:62;
+    fixed-address db2119.codfw.wmnet;
+}
+
+host db2120 {
+    hardware ethernet 4C:D9:8F:68:D9:26;
+    fixed-address db2120.codfw.wmnet;
+}
+
 host dbprov1001 {
     hardware ethernet B0:26:28:23:50:90;
     fixed-address dbprov1001.eqiad.wmnet;
