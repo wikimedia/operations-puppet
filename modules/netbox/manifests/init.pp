@@ -93,6 +93,7 @@ class netbox(
           'ALL=(root) NOPASSWD: /usr/sbin/service uwsgi-netbox status',
           'ALL=(root) NOPASSWD: /usr/sbin/service uwsgi-netbox stop',
       ],
+      core_limit      => '30G',
   }
 
   base::service_auto_restart { 'uwsgi-netbox': }

@@ -71,7 +71,7 @@
 #
 # [*core_limit*]
 #   This setting adds the LimitCore functionality of the uwsgi's systemd unit.
-#   Useful when segfaults are happening regualarly and a more detailed report
+#   Useful when segfaults are happening regularly and a more detailed report
 #   is needed.
 #   Values: 'unlimited', 'nG' (n is a number of Gigabytes), or '0' for no core.
 #   Default: '0'
