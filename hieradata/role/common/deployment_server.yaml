@@ -12,7 +12,6 @@ admin::groups:
   - aqs-admins
   - deploy-aqs
   - deploy-phabricator
-  - analytics-admins
   - analytics-deployers
   - gerrit-root
 
