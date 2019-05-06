@@ -221,6 +221,12 @@ class profile::prometheus::ops (
         class_name => 'role::cache::upload',
         port       => 3903,
     }
+    prometheus::class_config{ "varnish-upload-ats_mtail_${::site}":
+        dest       => "${targets_path}/varnish-upload-ats_mtail_${::site}.yaml",
+        site       => $::site,
+        class_name => 'role::cache::upload_ats',
+        port       => 3903,
+    }
     prometheus::class_config{ "varnish-text_mtail_${::site}":
         dest       => "${targets_path}/varnish-text_mtail_${::site}.yaml",
         site       => $::site,
