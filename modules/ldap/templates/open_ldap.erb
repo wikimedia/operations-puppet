@@ -4,7 +4,7 @@ URI             <% @ldapconfig["servernames"].each do |servername| -%>ldap://<%=
 # The next settings are not honored by OpenLDAP but are honored by sudo-ldap and /etc/sudo-ldap.conf is a symlink to /etc/ldap/ldap.conf
 BINDDN          cn=proxyagent,ou=profile,<%= @ldapconfig["basedn"] %>
 BINDPW          <%= @ldapconfig["proxypass"] %>
-<% if @ldapincludes.include?('sudoldap') then %>SUDOERS_BASE    <%= @ldapconfig["sudobasedn"] %><% end -%>
+<% if @ldapincludes.include?('sudo') then %>SUDOERS_BASE    <%= @ldapconfig["sudobasedn"] %><% end -%>
 
 SSL             start_tls
 TLS_CHECKPEER   yes

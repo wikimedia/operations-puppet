@@ -10,7 +10,6 @@ class profile::base::firewall (
     Array[Stdlib::IP::Address] $zookeeper_hosts_main = hiera('zookeeper_hosts_main', []),
     Array[Stdlib::IP::Address] $hadoop_masters = hiera('hadoop_masters', []),
     Array[Stdlib::IP::Address] $druid_public_hosts = hiera('druid_public_hosts', []),
-    String                     $sudo_flavor = lookup('sudo_flavor', {default_value => 'sudo'}),
 ) {
     class { '::base::firewall':
         cumin_masters           => $cumin_masters,
@@ -23,6 +22,5 @@ class profile::base::firewall (
         zookeeper_hosts_main    => $zookeeper_hosts_main,
         hadoop_masters          => $hadoop_masters,
         druid_public_hosts      => $druid_public_hosts,
-        sudo_flavor             => $sudo_flavor,
     }
 }

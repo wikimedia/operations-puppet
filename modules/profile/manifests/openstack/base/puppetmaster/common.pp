@@ -13,7 +13,6 @@ class profile::openstack::base::puppetmaster::common(
     $labweb_hosts = hiera('profile::openstack::base::labweb_hosts'),
     $nova_controller = hiera('profile::openstack::base::nova_controller'),
     $prodservers = hiera('puppetmaster::servers', {}),
-    String $sudo_flavor = lookup('sudo_flavor', {default_value => 'sudo'}),
     ) {
 
     # array of puppetmasters
@@ -45,7 +44,6 @@ class profile::openstack::base::puppetmaster::common(
     class { 'puppetmaster::gitsync':
         run_every_minutes => '1',
         private_only      => true,
-        sudo_flavor       => $sudo_flavor,
     }
 
     $labweb_ips = inline_template("@resolve((<%= @labweb_hosts.join(' ') %>))")

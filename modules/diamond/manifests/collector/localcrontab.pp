@@ -11,7 +11,6 @@
 define diamond::collector::localcrontab(
     $settings = {},
     $ensure   = present,
-    String $sudo_flavor = 'sudo',
 ) {
 
     # lint:ignore:quoted_booleans
@@ -28,10 +27,9 @@ define diamond::collector::localcrontab(
 
     if str2bool($merged_settings[use_sudo]) {
         sudo::user { 'diamond_sudo_for_localcrontab':
-            ensure      => $ensure,
-            user        => 'diamond',
-            privileges  => ['ALL=(root) NOPASSWD: /bin/ls /var/spool/cron/crontabs/'],
-            sudo_flavor => $sudo_flavor,
+            ensure     => $ensure,
+            user       => 'diamond',
+            privileges => ['ALL=(root) NOPASSWD: /bin/ls /var/spool/cron/crontabs/'],
         }
     }
 }

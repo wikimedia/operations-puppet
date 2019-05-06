@@ -38,7 +38,6 @@ class base::monitoring::host(
     $monitor_systemd = true,
     Integer $puppet_interval = 30,
     Boolean $raid_check = true,
-    String  $sudo_flavor = 'sudo',
 ) {
     if $raid_check {
         # RAID checks
@@ -100,9 +99,8 @@ class base::monitoring::host(
     }
 
     ::sudo::user { 'nagios_puppetrun':
-        user        => 'nagios',
-        privileges  => ['ALL = NOPASSWD: /usr/local/lib/nagios/plugins/check_puppetrun'],
-        sudo_flavor => $sudo_flavor,
+        user       => 'nagios',
+        privileges => ['ALL = NOPASSWD: /usr/local/lib/nagios/plugins/check_puppetrun'],
     }
 
     # Check for disk usage on the root partition for labs instances
@@ -192,9 +190,8 @@ class base::monitoring::host(
         }
 
         ::sudo::user { 'nagios_long_procs':
-            user        => 'nagios',
-            privileges  => ['ALL = NOPASSWD: /usr/local/lib/nagios/plugins/check_long_procs'],
-            sudo_flavor => $sudo_flavor,
+            user       => 'nagios',
+            privileges => ['ALL = NOPASSWD: /usr/local/lib/nagios/plugins/check_long_procs'],
         }
 
         ::nrpe::monitor_service { 'check_long_procs':

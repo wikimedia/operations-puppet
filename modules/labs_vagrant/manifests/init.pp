@@ -5,11 +5,9 @@
 # == Parameters:
 # - $install_directory: Directory to install MediaWiki-Vagrant in.
 #   Default /srv/vagrant
-# - $sudo_flavor: the sudo flavor in use for sudo::user and sudo::group
 #
 class labs_vagrant(
-    $install_directory  = '/srv/vagrant',
-    String $sudo_flavor = 'sudoldap',
+    $install_directory = '/srv/vagrant',
 ) {
 
     $legacy_directory = '/mnt/vagrant'
@@ -29,18 +27,16 @@ class labs_vagrant(
     }
 
     sudo::user { 'vagrant' :
-        privileges  => [
+        privileges => [
             'ALL=(ALL) NOPASSWD: ALL',
         ],
-        sudo_flavor => $sudo_flavor,
     }
 
     sudo::group { 'wikidev_vagrant':
-        privileges  => [
+        privileges => [
             'ALL=(vagrant) NOPASSWD: ALL',
         ],
-        group       => 'wikidev',
-        sudo_flavor => $sudo_flavor,
+        group      => 'wikidev',
     }
 
     git::clone { 'vagrant':

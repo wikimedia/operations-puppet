@@ -7,7 +7,6 @@ class ldap::client::nosssd
         'libnss-sss',
         'libsss-sudo',
         'sssd',
-        'sudo',
     ]
 
     package { $packages_absent:

@@ -46,7 +46,6 @@ class role::puppetmaster::standalone(
     $puppetdb_major_version = hiera('puppetdb_major_version', undef),
     $storeconfigs = false,
     $puppetdb_host = undef,
-    String $sudo_flavor = lookup('sudo_flavor', {default_value => 'sudo'}),
 ) {
     if ! $use_enc {
         fail('Ldap puppet node definitions are no longer supported.  The $use_enc param must be true.')
@@ -116,7 +115,6 @@ class role::puppetmaster::standalone(
     # Update git checkout
     class { 'puppetmaster::gitsync':
         run_every_minutes => $git_sync_minutes,
-        sudo_flavor       => $sudo_flavor,
     }
 
     ferm::service { 'puppetmaster-standalone':

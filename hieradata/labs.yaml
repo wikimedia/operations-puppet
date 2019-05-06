@@ -188,7 +188,6 @@ cdh::hadoop::datanode_mounts:
 # users in the current Labs Project.
 cdh::hadoop::users::groups: project-%{::labsproject}
 
-sudo_flavor: 'sudoldap'
 labsldapconfig:
   hostname: ldap-labs.eqiad.wikimedia.org
   secondary_hostname: ldap-labs.codfw.wikimedia.org

@@ -42,7 +42,6 @@ class ldap::client::sssd(
     $packages_absent = [
         'nscd',
         'nslcd',
-        'sudo-ldap',
     ]
 
     package { $packages_absent:
@@ -52,7 +51,6 @@ class ldap::client::sssd(
     $files_absent = [
         '/etc/nscd.conf',
         '/etc/nslcd.conf',
-        '/etc/sudo-ldap.conf',
     ]
 
     file { $files_absent:
