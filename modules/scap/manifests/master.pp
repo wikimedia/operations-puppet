@@ -14,7 +14,6 @@ class scap::master(
     include scap::scripts
     include rsync::server
     include network::constants
-    include mediawiki::scap
 
     package { [
         'dsh',
