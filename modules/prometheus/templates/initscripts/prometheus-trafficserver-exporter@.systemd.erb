@@ -6,7 +6,11 @@ Documentation=https://prometheus.io/docs/introduction/overview/
 Restart=always
 User=prometheus
 Group=prometheus
+<% if @verify_ssl_certificate -%>
 ExecStart=/usr/bin/prometheus-trafficserver-exporter --no-procstats --endpoint <%= @endpoint %> --port <%= @listen_port %>
+<% else -%>
+ExecStart=/usr/bin/prometheus-trafficserver-exporter --no-procstats --no-ssl-verification --endpoint <%= @endpoint %> --port <%= @listen_port %>
+<% end -%>
 
 [Install]
 WantedBy=multi-user.target
