@@ -1,7 +1,7 @@
 profile::openstack::base::nova::instance_dev: '/dev/mapper/tank-data'
 profile::openstack::eqiad1::nova::network_flat_tagged_base_interface: enp175s0f1d1
-profile::openstack::eqiad1::nova::network_flat_interface: 'enp175s0f1d1.1105'
+profile::openstack::eqiad1::nova::network_flat_interface: 'p175s0f1d1.1105'
 profile::openstack::eqiad1::nova::physical_interface_mappings:
-  cloudinstances2b: 'enp175s0f1d1.1105'
+  cloudinstances2b: 'p175s0f1d1.1105'
 
 profile::base::notifications: disabled
