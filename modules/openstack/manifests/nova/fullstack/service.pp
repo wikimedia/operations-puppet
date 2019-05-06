@@ -49,41 +49,25 @@ class openstack::nova::fullstack::service(
         show_diff => false,
     }
 
-    if os_version('ubuntu == trusty') {
-        file { '/etc/init/nova-fullstack.conf':
-            ensure  => 'present',
-            mode    => '0544',
-            owner   => 'root',
-            group   => 'root',
-            content => template('openstack/initscripts/nova-fullstack.upstart.erb'),
-        }
-
-        service { 'nova-fullstack':
-            ensure  => $active,
-            require => File['/etc/init/nova-fullstack.conf'],
-        }
-    } else {
-        $ensure = $active ? {
-            true    => 'present',
-            default => 'absent',
-        }
-
-        file { '/usr/local/bin/nova-fullstack':
-            ensure  => 'present',
-            mode    => '0544',
-            owner   => 'root',
-            group   => 'root',
-            content => template('openstack/initscripts/nova-fullstack.erb'),
-        }
-
-        systemd::service { 'nova-fullstack':
-            ensure  => $ensure,
-            content => systemd_template('nova-fullstack'),
-            restart => true,
-            require => [
-                File['/usr/local/bin/nova-fullstack'],
-            ],
-        }
+    $ensure = $active ? {
+        true    => 'present',
+        default => 'absent',
     }
 
+    file { '/usr/local/bin/nova-fullstack':
+        ensure  => 'present',
+        mode    => '0544',
+        owner   => 'root',
+        group   => 'root',
+        content => template('openstack/initscripts/nova-fullstack.erb'),
+    }
+
+    systemd::service { 'nova-fullstack':
+        ensure  => $ensure,
+        content => systemd_template('nova-fullstack'),
+        restart => true,
+        require => [
+                    File['/usr/local/bin/nova-fullstack'],
+                    ],
+    }
 }

@@ -66,11 +66,7 @@ class openstack::nova::compute::monitor(
 
     if ($active) and ($verify_instances) {
 
-        if os_version('ubuntu trusty') {
-            $kvmbinary = '/usr/bin/kvm'
-        } else {
-            $kvmbinary = 'qemu-system-x86_64'
-        }
+        $kvmbinary = 'qemu-system-x86_64'
 
         # Where a stopped nova-compute processes means we are no longer processing
         # control plane messaging above, this check makes sure that at least one (even

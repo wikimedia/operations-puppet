@@ -8,11 +8,9 @@ class openstack::nova::compute::service(
     $ca_target,
     ){
 
-    # trusty: libvirtd:x:117:nova
     # jessie: libvirt:x:121:nova
     # stretch: libvirt:x:121:nova
     $libvirt_unix_sock_group = $::facts['lsbdistcodename'] ? {
-        'trusty'  => 'libvirtd',
         'jessie'  => 'libvirt',
         'stretch' => 'libvirt',
     }

@@ -14,14 +14,11 @@ class openstack::puppet::master::encapi(
     require_package('python3-pymysql',
                     'python3-statsd',
                     'python3-flask',
-                    'python3-yaml')
-
-    if os_version('debian >= jessie') {
-        require_package('python-flask',
-                        'python-pymysql',
-                        'python-statsd',
-                        'python-yaml')
-    }
+                    'python3-yaml',
+                    'python-flask',
+                    'python-pymysql',
+                    'python-statsd',
+                    'python-yaml')
 
     $python_version = $::lsbdistcodename ? {
         'jessie'  => 'python3.4',

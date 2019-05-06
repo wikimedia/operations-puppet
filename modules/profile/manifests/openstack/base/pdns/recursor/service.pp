@@ -42,11 +42,7 @@ class profile::openstack::base::pdns::recursor::service(
     }
 
     #  We need to alias some public IPs to their corresponding private IPs.
-    if os_version('ubuntu trusty') {
-        $aliaser_source = 'puppet:///modules/profile/openstack/base/pdns/recursor/labsaliaser.lua.trusty'
-    } else {
-        $aliaser_source = 'puppet:///modules/profile/openstack/base/pdns/recursor/labsaliaser.lua'
-    }
+    $aliaser_source = 'puppet:///modules/profile/openstack/base/pdns/recursor/labsaliaser.lua'
 
     $aliaser_file = '/etc/powerdns/labs-ip-aliaser.lua'
     file { $aliaser_file:

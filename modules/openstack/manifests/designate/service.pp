@@ -147,24 +147,6 @@ class openstack::designate::service(
         show_diff => false,
     }
 
-    file {'/etc/init/designate-pool-manager.conf':
-        ensure  => 'present',
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0544',
-        content => template('openstack/initscripts/designate-pool-manager.upstart.erb'),
-        notify  => Service['designate-pool-manager'],
-    }
-
-    file {'/etc/init/designate-mdns.conf':
-        ensure  => 'present',
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0544',
-        content => template('openstack/initscripts/designate-mdns.upstart.erb'),
-        notify  => Service['designate-mdns'],
-    }
-
     # include rootwrap.d entries
 
     service {'designate-api':
