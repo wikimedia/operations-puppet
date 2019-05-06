@@ -24,7 +24,6 @@ class openstack::nova::compute::service(
         libvirt_unix_sock_group => $libvirt_unix_sock_group,
     }
 
-    require openstack::nova::compute::audit
     include openstack::nova::compute::kmod
 
     # use exec to set the shell to not shadow the manage
