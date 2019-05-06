@@ -1779,8 +1779,7 @@ node /notebook100[34].eqiad.wmnet/ {
 
 # cluster management (cumin master) + other management tools
 node 'neodymium.eqiad.wmnet' {
-    role(cluster::management)
-    include ::role::mgmt::drac_ilo
+    role(spare::system)
     interface::add_ip6_mapped { 'main': }
 }
 
@@ -1970,7 +1969,7 @@ node 'people1001.eqiad.wmnet' {
 
 # cluster management (cumin master)
 node 'sarin.codfw.wmnet' {
-    role(cluster::management)
+    role(spare::system)
 
     interface::add_ip6_mapped { 'main': }
 }
