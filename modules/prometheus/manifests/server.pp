@@ -203,7 +203,7 @@ define prometheus::server (
     # rate computations being lower than they should be, etc.
     # Report to IRC any Prometheis with too-low uptime.
     monitoring::check_prometheus { "uptime-${::hostname}-${service_name}":
-      query           => 'time() - scalar(process_start_time_seconds{job="prometheus", instance=~"127\\.0\\.0\\.1:.*")',
+      query           => 'time() - scalar(process_start_time_seconds{job="prometheus", instance=~"127\\.0\\.0\\.1:.*"})',
       method          => 'lt',
       warning         => 1800,
       critical        => 600,
