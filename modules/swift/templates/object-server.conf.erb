@@ -40,8 +40,10 @@ nice_priority = 1
 # does not pay attention to ionice settings.  But set them here anyway, as
 # schedulers can be changed via sysfs, and this makes experimentation
 # easier.)
-ionice_class = IOPRIO_CLASS_BE  # the default
-ionice_priority = 5  # default is 4; higher number => less important
+# BE is the default
+ionice_class = IOPRIO_CLASS_BE
+# default is 4; higher number => less important
+ionice_priority = 5
 
 [object-updater]
 concurrency = 1
