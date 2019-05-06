@@ -28,6 +28,7 @@ class profile::spicerack(
     Hash $redis_shards = hiera('redis::shards'),
     String $ganeti_user = hiera('profile::ganeti::rapi::ro_user'),
     String $ganeti_password = hiera('profile::ganeti::rapi::ro_password'),
+    Integer $ganeti_timeout = hiera('profile::spicerack::ganeti_rapi_timeout', 30),
 ) {
     # Ensure pre-requisite profiles are included
     require ::profile::conftool::client
@@ -101,6 +102,7 @@ class profile::spicerack(
     $ganeti_auth_data = {
         'username' => $ganeti_user,
         'password' => $ganeti_password,
+        'timeout'  => $ganeti_timeout,
     }
     file { '/etc/spicerack/ganeti/config.yaml':
         ensure  => present,
