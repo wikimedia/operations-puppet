@@ -1,0 +1,14 @@
+#!/bin/bash
+# NOTE: This file is managed by puppet
+#
+# This file is a wrapper running sqoop for whole mediawiki tables.
+# It first runs sqooping from labs, and if successful runs sqooping from
+# analytics-store (production replica).
+#
+# Labs tables: archive, change_tag, change_tag_def, ipblocks,
+#              ipblocks_restrictions, logging, page, pagelinks, redirect,
+#              revision, user, user_groups
+# Prod tables: actor, comment
+#
+
+/usr/local/bin/refinery-sqoop-mediawiki && /usr/local/bin/refinery-sqoop-mediawiki-production

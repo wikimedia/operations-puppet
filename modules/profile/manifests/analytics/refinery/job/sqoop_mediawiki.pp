@@ -39,47 +39,38 @@ class profile::analytics::refinery::job::sqoop_mediawiki {
     $num_mappers_one_month      = 4
 
     ############################################################################
-    # Whole tables from labsdb, expected to last less than 15 hours
+    # Wrapper running entire-tables sqoop from labsdb, followed by entire-tables
+    # sqoop from analytics-store
     # Template uses num_mappers_all_times
-    # Tables: archive, change_tag, change_tag_def, ipblocks, ipblocks_restrictions,
-    # logging, page, pagelinks, redirect, revision, user, user_groups
 
     file { '/usr/local/bin/refinery-sqoop-mediawiki':
         content => template('profile/analytics/refinery/job/refinery-sqoop-mediawiki.sh.erb'),
         mode    => '0550',
-        owner   => 'hdfs',
-        group   => 'hdfs',
+        owner   => 'analytics',
+        group   => 'analytics',
     }
-
-    profile::analytics::systemd_timer { 'refinery-sqoop-mediawiki':
-        description => 'Schedules sqoop to import MediaWiki databases into Hadoop monthly.',
-        command     => '/usr/local/bin/refinery-sqoop-mediawiki',
-        interval    => '*-*-01 00:00:00',
-        user        => 'hdfs',
-        require     => File['/usr/local/bin/refinery-sqoop-mediawiki'],
-    }
-
-    ############################################################################
-    # Whole tables from analytics-store, expected to last less than 3 hours
-    # Template uses num_mappers_all_times
-    # Tables: actor, comment
 
     file { '/usr/local/bin/refinery-sqoop-mediawiki-production':
         content => template('profile/analytics/refinery/job/refinery-sqoop-mediawiki-production.sh.erb'),
         mode    => '0550',
-        owner   => 'hdfs',
-        group   => 'hdfs',
+        owner   => 'analytics',
+        group   => 'analytics',
     }
 
-    # starting the job 18 hours after the sqooping from labsdb so that it should be finished.
-    # We do so as we want actors and comments referenced in labsdb tables to be present in
-    # the sqooped tables, meaning this sqooping needs to happen after the labsd one.
-    profile::analytics::systemd_timer { 'refinery-sqoop-mediawiki-production':
-        description => 'Schedules sqoop to import MediaWiki databases from prod replicas into Hadoop monthly.',
-        command     => '/usr/local/bin/refinery-sqoop-mediawiki-production',
-        interval    => '*-*-01 18:00:00',
-        user        => 'hdfs',
-        require     => File['/usr/local/bin/refinery-sqoop-mediawiki-production'],
+    file { '/usr/local/bin/refinery-sqoop-whole-mediawiki':
+        content => template('profile/analytics/refinery/job/refinery-sqoop-whole-mediawiki.sh.erb'),
+        mode    => '0550',
+        owner   => 'analytics',
+        group   => 'analytics',
+        require => File['/usr/local/bin/refinery-sqoop-mediawiki', '/usr/local/bin/refinery-sqoop-mediawiki-production'],
+    }
+
+    profile::analytics::systemd_timer { 'refinery-sqoop-whole-mediawiki':
+        description => 'Schedules sqoop to import whole MediaWiki databases into Hadoop monthly.',
+        command     => '/usr/local/bin/refinery-sqoop-whole-mediawiki',
+        interval    => '*-*-01 00:00:00',
+        user        => 'analytics',
+        require     => File['/usr/local/bin/refinery-sqoop-whole-mediawiki'],
     }
 
     ############################################################################
@@ -90,16 +81,37 @@ class profile::analytics::refinery::job::sqoop_mediawiki {
     file { '/usr/local/bin/refinery-sqoop-mediawiki-private':
         content => template('profile/analytics/refinery/job/refinery-sqoop-mediawiki-private.sh.erb'),
         mode    => '0550',
-        owner   => 'hdfs',
-        group   => 'hdfs',
+        owner   => 'analytics',
+        group   => 'analytics',
     }
 
     profile::analytics::systemd_timer { 'refinery-sqoop-mediawiki-private':
         description => 'Schedules sqoop to import MediaWiki databases (containing PII data) into Hadoop monthly.',
         command     => '/usr/local/bin/refinery-sqoop-mediawiki-private',
         interval    => '*-*-02 00:00:00',
-        user        => 'hdfs',
+        user        => 'analytics',
         require     => File['/usr/local/bin/refinery-sqoop-mediawiki-private'],
     }
-}
 
+    ############################################################################
+    # Old entire-tables sqoop jobs, kept with ensure => absent to prevent
+    # any leftover
+
+    profile::analytics::systemd_timer { 'refinery-sqoop-mediawiki':
+        ensure      => 'absent',
+        description => 'Schedules sqoop to import MediaWiki databases into Hadoop monthly.',
+        command     => '/usr/local/bin/refinery-sqoop-mediawiki',
+        interval    => '*-*-01 00:00:00',
+        user        => 'hdfs',
+        require     => File['/usr/local/bin/refinery-sqoop-mediawiki'],
+    }
+
+    profile::analytics::systemd_timer { 'refinery-sqoop-mediawiki-production':
+        ensure      => 'absent',
+        description => 'Schedules sqoop to import MediaWiki databases from prod replicas into Hadoop monthly.',
+        command     => '/usr/local/bin/refinery-sqoop-mediawiki-production',
+        interval    => '*-*-01 18:00:00',
+        user        => 'hdfs',
+        require     => File['/usr/local/bin/refinery-sqoop-mediawiki-production'],
+    }
+}
