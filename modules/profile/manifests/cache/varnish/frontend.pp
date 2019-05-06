@@ -22,7 +22,7 @@ class profile::cache::varnish::frontend (
     # The distinction between Varnish and ATS nodes is needed because both must
     # be listed as backends by Varnish frontends, but IPsec needs to be
     # configured only for Varnish nodes.
-    $varnish_backends = $cluster_nodes[$::site]
+    $varnish_backends = pick($cluster_nodes[$::site], [])
     $ats_backends = pick($cluster_nodes["${::site}_ats"], [])
 
     $directors = {

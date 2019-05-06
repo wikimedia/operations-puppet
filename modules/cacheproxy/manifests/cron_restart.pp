@@ -9,7 +9,7 @@
 #
 class cacheproxy::cron_restart ($nodes, $cache_cluster, $datacenters) {
     $all_nodes = sort($datacenters.reduce([]) |Array $memo, String $dc| {
-        $memo + $nodes[$dc] + pick($nodes["${dc}_ats"], [])
+        $memo + pick($nodes[$dc], []) + pick($nodes["${dc}_ats"], [])
     })
 
     # Semiweekly cron entries for restarts every 3.5 days
