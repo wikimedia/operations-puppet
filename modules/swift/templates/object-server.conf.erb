@@ -51,3 +51,7 @@ concurrency = 1
 [object-auditor]
 files_per_second = 5
 bytes_per_second = 5000000
+# object auditing is less important than replication
+nice_priority = 2
+ionice_class = IOPRIO_CLASS_BE
+ionice_priority = 6
