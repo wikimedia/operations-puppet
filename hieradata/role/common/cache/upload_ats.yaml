@@ -375,9 +375,10 @@ profile::trafficserver::backend::storage_elements:
       id: disk.0
     - devname: sdb3
       id: disk.1
+# See https://docs.trafficserver.apache.org/en/latest/admin-guide/logging/formatting.en.html
 profile::trafficserver::backend::log_formats:
   - name: wmf
-    format: 'Date:%<cqtd> Time:%<cqtt> CacheResultCode:%<crc> CacheWriteResult:%<cwr> ReqMethod:%<cqhm> RespStatus:%<pssc> OriginStatus:%<sssc> ReqURL:%<cquuc> BereqURL:%<cqtx> ReqHeader:User-Agent:%<{User-agent}cqh> ReqHeader:Host:%<{Host}cqh> ReqHeader:X-Client-IP:%<{X-Client-IP}cqh> RespHeader:X-Cache-Int:%<{X-Cache-Int}psh>'
+    format: 'Date:%<cqtd> Time:%<cqtt> ConnAttempts:%<sca> ConnReuse:%<sstc> TTFetchHeaders:%<{TS_MILESTONE_SERVER_READ_HEADER_DONE-TS_MILESTONE_SM_START}msdms> OriginServerTime:%<stms> CacheResultCode:%<crc> CacheWriteResult:%<cwr> ReqMethod:%<cqhm> RespStatus:%<pssc> OriginStatus:%<sssc> ReqURL:%<cquuc> BereqURL:%<cqtx> ReqHeader:User-Agent:%<{User-agent}cqh> ReqHeader:Host:%<{Host}cqh> ReqHeader:X-Client-IP:%<{X-Client-IP}cqh> RespHeader:X-Cache-Int:%<{X-Cache-Int}psh>'
 profile::trafficserver::backend::log_filters:
   - name: notpurge
     action: reject
