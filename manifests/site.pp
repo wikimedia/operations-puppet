@@ -288,10 +288,10 @@ node 'cp1008.wikimedia.org' {
     interface::add_ip6_mapped { 'main': }
 }
 
-# ATS Test Cluster
+# ATS Test Cluster -- used for T213263 and not needed anymore
 node /^cp107[1-4]\.eqiad\.wmnet$/ {
     interface::add_ip6_mapped { 'main': }
-    role(trafficserver::backend)
+    role(test)
 }
 
 # new canary, to replace cp1008 in future work
@@ -321,10 +321,10 @@ node /^cp20(0[258]|1[1478]|2[02456])\.codfw\.wmnet$/ {
     role(cache::upload)
 }
 
-# ATS Test Cluster
+# ATS Test Cluster -- used for T213263 and not needed anymore
 node /^cp20(0[39]|15|21)\.codfw\.wmnet$/ {
     interface::add_ip6_mapped { 'main': }
-    role(trafficserver::backend)
+    role(test)
 }
 
 # ex cp-misc_esams
