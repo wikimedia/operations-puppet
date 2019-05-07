@@ -43,7 +43,7 @@ class profile::analytics::refinery (
     # Create directory in /var/log for general purpose Refinery job logging.
     $log_dir = '/var/log/refinery'
     $log_dir_group = $::realm ? {
-        'production' => 'analytics-admins',
+        'production' => 'analytics',
         'labs'       => "project-${::labsproject}",
     }
 
