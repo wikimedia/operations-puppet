@@ -33,6 +33,8 @@ my $timeout_limit = 3; # how many timeouts to tolerate before dropping a server
 my $timeout = 10; # seconds before LWP gives up on a web request
 my $pad_length = 25; # server hostname column width in report
 my $default_staging_server = 'mwdebug1001.eqiad.wmnet';
+# This intentially has no value. This is given it's value in process_queue_task.
+my $request_url;
 
 # get a list of servers to test
 my $servers;
@@ -163,7 +165,14 @@ sub process_queue_task {
 				my ($protocol,$host,$path) = ($1,$2,$3);
 				$path = (defined $path) ? $path : '';
 				my $ua = LWP::UserAgent->new(timeout => $timeout);
-				my $request = HTTP::Request->new(GET => "http://$ip$path");
+				# You can use ARG2 to define a https url as in a https world
+				# we have http -> https redirects (thus get 301 redirects).
+				if (defined $ARGV[2]) {
+					$request_url = "https://$host$path"
+				} else {
+					$request_url = "http://$ip$path"
+				}
+				my $request = HTTP::Request->new(GET => "$request_url");
 				$request->header(
 					'Host' => $host,
 					'User_Agent' => $0,
