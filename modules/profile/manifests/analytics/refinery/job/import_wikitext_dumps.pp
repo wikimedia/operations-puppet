@@ -17,15 +17,15 @@ class profile::analytics::refinery::job::import_wikitext_dumps {
     file { '/usr/local/bin/refinery-import-page-history-dumps':
         content => template('profile/analytics/refinery/job/refinery-import-wikitext-dumps.sh.erb'),
         mode    => '0550',
-        owner   => 'hdfs',
-        group   => 'hdfs',
+        owner   => 'analytics',
+        group   => 'analytics',
     }
 
     profile::analytics::systemd_timer { 'refinery-import-page-history-dumps':
         description => 'Schedules daily an incremental import of the current month of page-history xmldumps into Hadoop',
         command     => '/usr/local/bin/refinery-import-page-history-dumps',
         interval    => '*-*-* 03:00:00',
-        user        => 'hdfs',
+        user        => 'analytics',
         require     => File['/usr/local/bin/refinery-import-page-history-dumps'],
     }
 }
