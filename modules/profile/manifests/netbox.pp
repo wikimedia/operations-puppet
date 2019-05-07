@@ -229,7 +229,15 @@ class profile::netbox (
         owner   => 'deploy-librenms',
         group   => 'www-data',
         mode    => '0440',
-        content => template('profile/netbox/netbox-reports.cfg.erb')
+        content => template('profile/netbox/netbox-reports.cfg.erb'),
+    }
+
+    # Configuration for Accounting report which contains secrets
+    file { '/etc/netbox/gsheets.cfg':
+        owner   => 'deploy-librenms',
+        group   => 'www-data',
+        mode    => '0440',
+        content => secret('netbox/gsheets.cfg'),
     }
 
     # Configurations for the report checker
