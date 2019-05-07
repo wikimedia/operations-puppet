@@ -54,7 +54,7 @@ if ($ARGV[1]) {
                 "http://config-master.eqiad.wmnet/pybal/$dc/apaches",
                 "http://config-master.eqiad.wmnet/pybal/$dc/api"
             ));
-        } elsif (/^([\w\.]+)$/) {
+        } elsif (/^([\w\.\-]+)$/) {
             $servers->{$1} = 1;
         }
     }
