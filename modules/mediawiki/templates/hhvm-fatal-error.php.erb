@@ -47,7 +47,7 @@ code { font-family: inherit; }
   <?php
 	// Increment a Statsd counter
 <% if @statsd_host != :undef && @statsd_port != :undef -%>
-	$destAddr = "<%= @statsd %>";
+	$destAddr = "<%= @statsd_host %>";
 	$destPort = <%= @statsd_port.to_i %>;
 	$sock = socket_create( AF_INET, SOCK_DGRAM, SOL_UDP );
 	$stat = 'MediaWiki.errors.fatal:1|c';
