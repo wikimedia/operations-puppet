@@ -1,14 +1,7 @@
 define interface::tagged($base_interface, $vlan_id, $address=undef, $netmask=undef, $family='inet', $method='static', $up=undef, $down=undef, $remove=undef) {
     require_package('vlan')
 
-    $intf_fl = "${base_interface}.${vlan_id}"
-
-    # make sure that the interface name doesn't exceed IFNAMSIZ (T209707)
-    if os_version('debian == stretch') {
-        $intf = $intf_fl[-15, 15]
-    } else {
-        $intf = $intf_fl
-    }
+    $intf = "${base_interface}.${vlan_id}"
 
     if $address {
         $addr_cmd = "set iface[. = '${intf}']/address '${address}'"
