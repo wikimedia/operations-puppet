@@ -1563,6 +1563,11 @@ host db1126 {
     fixed-address db1126.eqiad.wmnet;
 }
 
+host db1127 {
+    hardware ethernet D0:94:66:8E:53:82;
+    fixed-address db1127.eqiad.wmnet;
+}
+
 host db1128 {
     hardware ethernet D0:94:66:90:BC:6E;
     fixed-address db1128.eqiad.wmnet;
