@@ -43,9 +43,8 @@ cp-<%= dc %>: A:cp and A:<%= dc %>
 cp-<%= cache %>_<%= dc %>: A:cp-<%= cache %> and A:<%= dc %>
 <% end -%>
 <% end -%>
-cp-ats: P{O:trafficserver::backend}
-cp-ats-codfw: A:cp-ats and A:codfw
-cp-ats-eqiad: A:cp-ats and A:eqiad
+cp-ats: P{P:trafficserver::backend}
+cp-ats-ulsfo: A:cp-ats and A:ulsfo
 cumin: P{O:cluster::management}
 db-all-codfw: (A:db-parsercache or A:db-labsdb or A:db-dbstore or A:db-core or A:db-misc or A:db-misc-servers or A:db-backups) and A:codfw
 db-all-eqiad: (A:db-parsercache or A:db-labsdb or A:db-dbstore or A:db-core or A:db-misc or A:db-misc-servers or A:db-backups) and A:eqiad
