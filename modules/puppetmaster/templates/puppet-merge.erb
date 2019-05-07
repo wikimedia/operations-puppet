@@ -31,7 +31,7 @@ It also runs the conftool merge if necessary.
 SHA1 equals HEAD if not specified
 "
 
-TEMP=$(getopt -o yhqd --long yes,help,quiet,diffs -n "$0" -- "$@")
+TEMP=$(getopt -o yhqd --long yes,help,quiet,labsprivate,diffs -n "$0" -- "$@")
 if [ $? != 0 ] ; then echo "Terminating..." >&2 ; exit 1 ; fi
 
 eval set -- "$TEMP"
@@ -219,7 +219,7 @@ set +e
 # Note: The "true" command is passed on purpose to show that the command passed
 # to the SSH sessions is irrelevant. It's the SSH forced command trick on the
 # worker end that does the actual work. Note that args (including
-# the $sha1 and possible --labs-private switch) are used.
+# the $sha1 and possible --labsprivate switch) are used.
 
 if [ $LABS_PRIVATE -eq 1 ]; then
     $private_arg="--labsprivate"
