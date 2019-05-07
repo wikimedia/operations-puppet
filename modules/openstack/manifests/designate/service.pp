@@ -168,7 +168,6 @@ class openstack::designate::service(
         ensure  => $active,
         require =>  [
             Package['designate'],
-            File['/etc/init/designate-mdns.conf'],
         ],
     }
 
@@ -176,7 +175,6 @@ class openstack::designate::service(
         ensure  => $active,
         require =>  [
             Package['designate'],
-            File['/etc/init/designate-pool-manager.conf'],
         ],
     }
 }
