@@ -268,3 +268,4 @@ profile::kubernetes::deployment_server::services:
 #    token: dummy
 diamond::remove: true
 profile::mediawiki::php::php_version: "7.2"
+profile::mediawiki::deployment::server::rsync_host: "deployment.%{::site}.wmnet"

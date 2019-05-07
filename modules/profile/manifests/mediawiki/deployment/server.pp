@@ -10,6 +10,8 @@ class profile::mediawiki::deployment::server(
     $main_deployment_server = hiera('scap::deployment_server'),
     $base_path = hiera('base_path', '/srv/deployment'),
     Array[String] $deployment_hosts = hiera('deployment_hosts', []),
+    Stdlib::Host $rsync_host = lookup('profile::mediawiki::deployment::server::rsync_host'),
+    String $statsd = lookup('statsd'),
     Hash[String, Struct[{
                         'origin'          => Optional[String],
                         'repository'      => Optional[String],
@@ -23,6 +25,18 @@ class profile::mediawiki::deployment::server(
     include network::constants
     $deployable_networks = $::network::constants::deployable_networks
     $deployable_networks_ferm = join($deployable_networks, ' ')
+    # Install the scap master
+    class { 'rsync::server': }
+
+    class { '::scap::master':
+        deployment_hosts => $deployment_hosts,
+    }
+
+    class { '::scap::scripts':
+        rsync_host  => $rsync_host,
+        sql_scripts => 'present',
+        statsd      => $statsd,
+    }
 
     # Create an instance of scap_source for each of the key specs in hiera.
 
@@ -37,9 +51,6 @@ class profile::mediawiki::deployment::server(
     }
 
     ## End scap config ###
-    class { '::scap::master':
-        deployment_hosts => $deployment_hosts,
-    }
 
     class {'::deployment::umask_wikidev': }
 

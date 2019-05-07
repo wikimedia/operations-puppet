@@ -16,6 +16,9 @@ class scap::dsh (
     $scap_proxies = [],
     $scap_masters = [],
 ){
+    package { 'dsh':
+        ensure => present,
+    }
     file { '/etc/dsh':
         ensure => directory,
         owner  => 'root',

@@ -7,6 +7,8 @@
 # FIXME: Why man pages for some but not all?
 # FIXME: What on earth does MW have to do with this? Send it to the right module
 class scap::scripts (
+    Stdlib::Host $rsync_host = "deployment.${::site}.wmnet",
+    String $statsd = 'statsd.eqiad.wmnet:8125',
     Wmflib::Ensure $sql_scripts = present,
 ){
 

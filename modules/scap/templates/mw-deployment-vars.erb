@@ -7,8 +7,8 @@ MEDIAWIKI_STAGING_DIR="<%= scope.lookupvar('scap::master::common_source_path') %
 MW_COMMON="$MEDIAWIKI_DEPLOYMENT_DIR"
 MW_COMMON_SOURCE="$MEDIAWIKI_STAGING_DIR"
 
-MW_RSYNC_HOST="<%= scope.lookupvar('scap::master::rsync_host') %>"
+MW_RSYNC_HOST="<%= @rsync_host %>"
 MW_DSH_ARGS=('-cM' '-g' 'mediawiki-installation' '-o' '-oSetupTimeout=30' '-F30')
 MW_RSYNC_ARGS=('-a' '--delete-delay' '--delay-updates' '--compress' '--delete' '--exclude=**/.svn/lock' '--exclude=**/.git/objects' '--exclude=**/.git/**/objects' '--exclude=**/cache/l10n/*.cdb' '--no-perms')
-MW_STATSD_HOST="<%= scope.lookupvar('scap::master::statsd_host') %>"
-MW_STATSD_PORT=<%= scope.lookupvar('scap::master::statsd_port') %>
+MW_STATSD_HOST="<%= @statsd.split(':')[0] %>"
+MW_STATSD_PORT=<%= @statsd.split(':')[1] %>

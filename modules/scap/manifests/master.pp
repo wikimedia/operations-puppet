@@ -5,20 +5,12 @@ class scap::master(
     $common_path        = '/srv/mediawiki',
     $common_source_path = '/srv/mediawiki-staging',
     $patches_path       = '/srv/patches',
-    $rsync_host         = "deployment.${::site}.wmnet",
-    $statsd_host        = 'statsd.eqiad.wmnet',
-    $statsd_port        = 8125,
     $deployment_group   = 'wikidev',
     Array[String] $deployment_hosts = [],
 ) {
-    include scap::scripts
-    include rsync::server
     include network::constants
 
-    package { [
-        'dsh',
-        'python-service-checker',
-    ]:
+    package { 'python-service-checker':
         ensure => present,
     }
 
@@ -55,8 +47,6 @@ class scap::master(
         hosts_allow => $deployment_hosts
     }
 
-    # TODO: pass this down from a profile (or convert this to a profile!)
-    $main_deployment_server = hiera('scap::deployment_server')
     class { 'scap::l10nupdate':
         deployment_group => $deployment_group,
         run_l10nupdate   => false,
