@@ -222,18 +222,18 @@ set +e
 # the $sha1 and possible --labsprivate switch) are used.
 
 if [ $LABS_PRIVATE -eq 1 ]; then
-    $private_arg="--labsprivate"
+    PRIVATE_ARG="--labsprivate"
 else
-    $private_arg=""
+    PRIVATE_ARG=""
 fi
 
 if [ -z ${sha1} ]; then # Only loop through the other servers if called without sha1
   <%- @servers.each do |frontend, workers| -%>
     <%- workers.map{ |w| w['worker']}.select{|name| name != @fqdn}.each do |worker| -%>
     if [ $running_user = $git_user ]; then
-        ssh -t -t <%= worker -%> true ${private_arg} ${fetch_head_sha1} 2>&1
+        ssh -t -t <%= worker -%> true ${PRIVATE_ARG} ${fetch_head_sha1} 2>&1
     else
-        su - $git_user -c "ssh -t -t <%= worker -%> true ${private_arg} ${fetch_head_sha1} 2>&1"
+        su - $git_user -c "ssh -t -t <%= worker -%> true ${PRIVATE_ARG} ${fetch_head_sha1} 2>&1"
     fi
     if [ $? -eq 0 ]; then
         echo "${GREEN}OK${RESET}: puppet-merge on <%= worker %> succeeded"
