@@ -334,14 +334,18 @@ nfs_mounts:
 mediawiki::web::sites::domain_suffix: "beta.wmflabs.org"
 
 
-# NOTE: The production scap::server $keyholder_agents and $sources used by
-# The scap::server class are in role/common/deployment/server.yaml.
+# NOTE: The production keyholder_agents and sources used by
+# the scap server are in role/common/deployment_server.yaml.
 # These override the production ones for deployment-prep in labs.
 
 # deployment-prep keyholder::agent declarations.  These are created
-# by the scap::server class.  Each agent listed here
+# by the profile::keyholder::server class.  Each agent listed here
 # will be present and useable by scap on the scap deploy server.
-scap::keyholder_agents:
+profile::keyholder::server::agents:
+  mwdeploy:
+    trusted_groups:
+      - wikidev
+      - mwdeploy
 
   phabricator:
     trusted_groups:

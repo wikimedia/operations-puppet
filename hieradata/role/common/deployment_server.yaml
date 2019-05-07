@@ -35,17 +35,21 @@ mediawiki::hhvm::extra_cli:
 # We still don't enable fpm here
 profile::mediawiki::php::enable_fpm: false
 
-# Default scap::server configuration.  This is used in production.
-# If you are setting up scap::server in labs, these will be used
+# Default scap server configuration.  This is used in production.
+# If you are setting up a scap server in labs, these will be used
 # unless you override them for your labs project.
 # See the overrides in hieradata/labs/deployment-prep/common.yaml
 # for an example.
 
 # keyholder::agent declarations.  These are created
-# by the scap::server class.  Each agent listed here
+# by the profile::keyholder::server class.  Each agent listed here
 # will be present and useable by scap on the scap deploy server.
 # NOTE: since labs
-scap::keyholder_agents:
+profile::keyholder::server::agents:
+  mwdeploy:
+    trusted_groups:
+      - wikidev
+      - mwdeploy
 
   phabricator:
     trusted_groups:

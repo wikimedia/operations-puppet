@@ -15,7 +15,6 @@ class profile::mediawiki::deployment::server(
                         'repository'      => Optional[String],
                         'scap_repository' => Optional[String]
     }]] $sources  = hiera('scap::sources'),
-    $keyholder_agents = hiera('scap::keyholder_agents', {})
 ) {
     # Class scap gets included via profile::mediawiki::common
     # Also a lot of needed things are called from there.
@@ -25,25 +24,6 @@ class profile::mediawiki::deployment::server(
     $deployable_networks = $::network::constants::deployable_networks
     $deployable_networks_ferm = join($deployable_networks, ' ')
 
-    ## keyholder Config ##
-    $keyholder_user = 'mwdeploy'
-    $keyholder_group = ['wikidev', 'mwdeploy']
-
-
-    # Keyholder
-    require ::keyholder
-    require ::keyholder::monitoring
-
-    keyholder::agent { $keyholder_user:
-        trusted_groups  => $keyholder_group,
-    }
-
-    # Create an instance of $keyholder_agents for each of the key specs.
-    $keyholder_agents.each | $name, $params| {
-        keyholder::agent { $name:
-            * => $params
-        }
-    }
     # Create an instance of scap_source for each of the key specs in hiera.
 
     Scap::Source {
