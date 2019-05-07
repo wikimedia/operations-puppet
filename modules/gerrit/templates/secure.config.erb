@@ -4,3 +4,7 @@
     registerEmailPrivateKey = <%= @email_key %>
 [its-phabricator]
     token = <%= @phab_token %>
+<% if @prometheus_bearer_token %>
+[plugin "javamelody"]
+    prometheusBearerToken = <%= @prometheus_bearer_token %>
+<% end %>
