@@ -1,15 +1,11 @@
-# This role sets up a redis node for use by tool-labs
 # Restricts usage of certain commands, to prevent
 # people from trampling on others' keys
 # Uses default amount of RAM (1G) specified by redis class
-
-class toollabs::redis (
-    $maxmemory = '12GB',
+class profile::toolforge::redis (
+    Stdlib::Fqdn $active_redis = lookup('active_redis'),
+    String       $maxmemory    = lookup('profile::toolforge::redis::maxmemory', {default_value => '12GB'}),
 ) {
-
-    include ::toollabs::infrastructure
-    include ::redis::client::python
-    include ::labs_lvm
+    class { '::redis::client::python': }
 
     package { 'python-virtualenv':
         ensure => latest,
@@ -20,7 +16,6 @@ class toollabs::redis (
         size    => '100%FREE',
     }
 
-    $active_redis = hiera('active_redis')
     if $active_redis != $::fqdn {
         $slaveof = "${active_redis} 6379"
     } else {
