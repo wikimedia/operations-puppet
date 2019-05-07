@@ -18,7 +18,7 @@ describe("Busted unit testing framework", function()
   describe("script for ATS Lua Plugin", function()
 
     it("test - do_global_read_response Set-Cookie", function()
-      stub(ts, "error")
+      stub(ts, "debug")
 
       -- Without Set-Cookie
       _G.ts.server_response.header = {}
@@ -32,7 +32,7 @@ describe("Busted unit testing framework", function()
     end)
 
     it("test - do_global_read_response large Content-Length", function()
-      stub(ts, "error")
+      stub(ts, "debug")
 
       -- No Content-Length
       _G.ts.server_response.header = {}
