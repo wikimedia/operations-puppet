@@ -568,7 +568,7 @@ node /^db20(84|85|86|87|88|89|91)\.codfw\.wmnet/ {
 }
 
 # Spare eqiad hosts to be provisioned #T211613
-node /^db11(26|27|28|29|30|31|32|33|34|35|36|37|38)\.eqiad\.wmnet/ {
+node /^db11(26|28|29|30|31|32|33|34|35|36|38)\.eqiad\.wmnet/ {
     role(spare::system)
 }
 
@@ -592,6 +592,15 @@ node 'db1064.eqiad.wmnet' {
 node 'db1120.eqiad.wmnet' {
     role(mariadb::core)
 }
+
+node 'db1127.eqiad.wmnet' {
+    role(mariadb::core)
+}
+
+node 'db1137.eqiad.wmnet' {
+    role(mariadb::core)
+}
+
 
 
 # codfw
