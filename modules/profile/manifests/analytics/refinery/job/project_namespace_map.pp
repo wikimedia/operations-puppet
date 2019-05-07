@@ -25,8 +25,8 @@ class profile::analytics::refinery::job::project_namespace_map(
     file { '/usr/local/bin/refinery-download-project-namespace-map':
         content => template('profile/analytics/refinery/job/refinery-download-project-namespace-map.sh.erb'),
         mode    => '0550',
-        owner   => 'hdfs',
-        group   => 'hdfs',
+        owner   => 'analytics',
+        group   => 'analytics',
     }
 
     systemd::timer::job { 'refinery-download-project-namespace-map':
@@ -36,15 +36,15 @@ class profile::analytics::refinery::job::project_namespace_map(
             'start'    => 'OnCalendar',
             'interval' => '*-*-01 00:00:00'
         },
-        user                      => 'hdfs',
+        user                      => 'analytics',
         environment               => $systemd_env,
         monitoring_enabled        => $monitoring_enabled,
         monitoring_contact_groups => 'analytics',
         logging_enabled           => true,
         logfile_basedir           => $::profile::analytics::refinery::log_dir,
         logfile_name              => 'syslog.log',
-        logfile_owner             => 'hdfs',
-        logfile_group             => 'hdfs',
+        logfile_owner             => 'analytics',
+        logfile_group             => 'analytics',
         logfile_perms             => 'all',
         syslog_force_stop         => true,
         syslog_identifier         => $title,
