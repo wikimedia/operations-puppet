@@ -6031,6 +6031,51 @@ host restbase1018 {
     filename "lpxelinux.0";
 }
 
+host restbase1019 {
+     hardware ethernet 4C:D9:8F:5A:05:D1;
+     fixed-address restbase1019.eqiad.wmnet;
+}
+
+host restbase1020 {
+     hardware ethernet 4C:D9:8F:5A:1D:9B;
+     fixed-address restbase1020.eqiad.wmnet;
+}
+
+host restbase1021 {
+     hardware ethernet 4C:D9:8F:59:FB:DA;
+     fixed-address restbase1021.eqiad.wmnet;
+}
+
+host restbase1022 {
+     hardware ethernet 4C:D9:8F:5A:0A:EE;
+     fixed-address restbase1022.eqiad.wmnet;
+}
+
+host restbase1023 {
+     hardware ethernet 4C:D9:8F:59:E4:D0;
+     fixed-address restbase1023.eqiad.wmnet;
+}
+
+host restbase1024 {
+     hardware ethernet 4C:D9:8F:59:FB:BA;
+     fixed-address restbase1024.eqiad.wmnet;
+}
+
+host restbase1025 {
+     hardware ethernet 4C:D9:8F:5A:0B:16;
+     fixed-address restbase1025.eqiad.wmnet;
+}
+
+host restbase1026 {
+     hardware ethernet 4C:D9:8F:5A:3A:9E;
+     fixed-address restbase1026.eqiad.wmnet;
+}
+
+host restbase1027 {
+     hardware ethernet 4C:D9:8F:5A:03:20;
+     fixed-address restbase1027.eqiad.wmnet;
+}
+
 host restbase2009 {
     hardware ethernet 14:02:ec:06:9a:fc;
     fixed-address restbase2009.codfw.wmnet;
