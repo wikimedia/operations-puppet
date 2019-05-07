@@ -2,7 +2,6 @@ class profile::mediawiki::common(
     $logstash_host = hiera('logstash_host'),
     $logstash_syslog_port = hiera('logstash_syslog_port'),
     $log_aggregator = hiera('udp2log_aggregator'),
-    $deployment_server = hiera('scap::deployment_server'),
 ){
 
     # GeoIP is needed for MW
@@ -19,11 +18,7 @@ class profile::mediawiki::common(
         web => 'www-data'
     }
     # Install scap
-    class { '::scap':
-        deployment_server => $deployment_server,
-    }
-    # Now install MW-specific scap content
-    class { '::mediawiki::scap': }
+    include ::profile::mediawiki::scap_client
 
     # mwrepl
     class { '::mediawiki::mwrepl': }
@@ -92,8 +87,6 @@ class profile::mediawiki::common(
     sysctl::parameters { 'tcp_tw_reuse':
         values => { 'net.ipv4.tcp_tw_reuse' => 1 },
     }
-
-    include scap::ferm
 
     monitoring::service { 'mediawiki-installation DSH group':
         description    => 'mediawiki-installation DSH group',

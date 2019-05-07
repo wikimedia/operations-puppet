@@ -7,8 +7,6 @@
 # contains a copy of MediaWiki.
 #
 class mediawiki::scap {
-
-    include ::scap
     include ::mediawiki::users
 
     $mediawiki_deployment_dir = '/srv/mediawiki'

@@ -9,5 +9,4 @@ class role::deployment_server::base {
     include ::profile::conftool::client
     include ::scap::master
     include ::profile::scap::dsh
-    include ::scap::ferm
 }
