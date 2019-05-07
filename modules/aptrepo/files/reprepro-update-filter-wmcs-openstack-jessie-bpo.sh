@@ -38,6 +38,7 @@
 # python-dogpile.cache
 # python-psutil
 # gdb
+# facter
 
 PKGS="alabaster
 alembic
@@ -49,7 +50,6 @@ designate
 device-tree-compiler
 diamond
 dnspython
-facter
 firmware-nonfree
 flask
 glance
