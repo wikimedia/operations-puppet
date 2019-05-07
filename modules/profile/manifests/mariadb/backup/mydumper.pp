@@ -32,14 +32,14 @@ class profile::mariadb::backup::mydumper {
         ensure => directory,
         owner  => 'dump',
         group  => 'dump',
-        mode   => '0600', # implicitly 0700 for dirs
+        mode   => '0711', # o+x so we can mount and check /ongoing
     }
 
     file { '/srv/backups/dumps':
         ensure  => directory,
         owner   => 'dump',
         group   => 'dump',
-        mode    => '0600', # implicitly 0700 for dirs
+        mode    => '0711', # o+x so we can mount and check /ongoing
         require => File['/srv/backups'],
     }
 
