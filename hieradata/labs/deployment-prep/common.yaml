@@ -187,9 +187,6 @@ logstash_json_lines_port: 11514
 # UDP logback/json input
 logstash_logback_port: 11514
 
-mediawiki_memcached_servers:
-    - deployment-memc04:11211:1
-    - deployment-memc05:11211:1
 "mcrouter::shards":
   wancache:
     eqiad:
