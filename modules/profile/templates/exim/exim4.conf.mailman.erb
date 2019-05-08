@@ -93,7 +93,7 @@ acl_check_rcpt:
 
 	# Disable list subscription via email due to excessive suspicious subscriptions --herron 2018-05-14 T194032
 	deny message = Support for list subscription via email has been disabled. Please use the web interface at https://lists.wikimedia.org
-		local_parts = ^.*-join
+		local_parts = ^.*-(join|subscribe)\$
 
 	# If there have been ~4 times as many previous RCPT rejects than
 	# accepts, drop the connection
