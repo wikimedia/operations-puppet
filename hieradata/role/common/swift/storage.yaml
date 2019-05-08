@@ -5,7 +5,7 @@ profile::prometheus::statsd_exporter::mappings:
   - match: swift.*.*.account-auditor.passes
     name: swift_account_auditor_passes_total
   - match: swift.*.*.account-auditor.timing
-    name: swift_account_auditor_milliseconds
+    name: swift_account_auditor_seconds
 
   - match: swift.*.*.account-reaper.errors
     name: swift_account_reaper_errors_total
@@ -27,10 +27,10 @@ profile::prometheus::statsd_exporter::mappings:
   - match: swift.*.*.account-replicator.successes
     name: swift_account_replicator_successes_total
   - match: swift.*.*.account-replicator.timing
-    name: swift_account_replicator_milliseconds
+    name: swift_account_replicator_seconds
 
   - match: swift.*.*.account-server.*.timing
-    name: swift_account_server_milliseconds
+    name: swift_account_server_seconds
     labels:
       method: "$3"
 
@@ -39,7 +39,7 @@ profile::prometheus::statsd_exporter::mappings:
   - match: swift.*.*.container-auditor.passes
     name: swift_container_auditor_passes_total
   - match: swift.*.*.container-auditor.timing
-    name: swift_container_auditor_milliseconds
+    name: swift_container_auditor_seconds
 
   - match: swift.*.*.container-replicator.attempts
     name: swift_container_replicator_attempts_total
@@ -60,14 +60,14 @@ profile::prometheus::statsd_exporter::mappings:
   - match: swift.*.*.container-replicator.successes
     name: swift_container_replicator_successes_total
   - match: swift.*.*.container-replicator.timing
-    name: swift_container_replicator_milliseconds
+    name: swift_container_replicator_seconds
 
   - match: swift.*.*.container-server.*.timing
-    name: swift_container_server_success_milliseconds
+    name: swift_container_server_success_seconds
     labels:
         method: "$3"
   - match: swift.*.*.container-server.*.errors.timing
-    name: swift_container_server_errors_milliseconds
+    name: swift_container_server_errors_seconds
     labels:
         method: "$3"
 
@@ -83,7 +83,7 @@ profile::prometheus::statsd_exporter::mappings:
   - match: swift.*.*.container-updater.successes
     name: swift_container_updater_successes_total
   - match: swift.*.*.container-updater.timing
-    name: swift_container_updater_milliseconds
+    name: swift_container_updater_seconds
 
 
   # Object-related services
@@ -92,16 +92,16 @@ profile::prometheus::statsd_exporter::mappings:
   - match: swift.*.*.object-auditor.quarantines
     name: swift_object_auditor_quarantines_total
   - match: swift.*.*.object-auditor.timing
-    name: swift_object_auditor_milliseconds
+    name: swift_object_auditor_seconds
 
   - match: swift.*.*.object-replicator.partition.delete.timing
-    name: swift_object_replicator_partition_delete_milliseconds
+    name: swift_object_replicator_partition_delete_seconds
   - match: swift.*.*.object-replicator.partition.delete.count.*
     name: swift_object_replicator_partition_delete_total
     labels:
        device: "$3"
   - match: swift.*.*.object-replicator.partition.update.timing
-    name: swift_object_replicator_partition_update_milliseconds
+    name: swift_object_replicator_partition_update_seconds
   - match: swift.*.*.object-replicator.partition.update.count.*
     name: swift_object_replicator_partition_update_total
     labels:
@@ -117,16 +117,16 @@ profile::prometheus::statsd_exporter::mappings:
     name: swift_object_server_async_pendings_total
   # Drop the generic timing in favor of per-device timing below
   - match: swift.*.*.object-server.*.timing
-    name: swift_object_server_success_milliseconds
+    name: swift_object_server_success_seconds
     action: drop
     labels:
         method: "$3"
   - match: swift.*.*.object-server.*.errors.timing
-    name: swift_object_server_errors_milliseconds
+    name: swift_object_server_errors_seconds
     labels:
         method: "$3"
   - match: swift.*.*.object-server.*.*.timing
-    name: swift_object_server_success_milliseconds
+    name: swift_object_server_success_seconds
     labels:
         method: "$3"
         device: "$4"
@@ -138,7 +138,7 @@ profile::prometheus::statsd_exporter::mappings:
   - match: swift.*.*.object-updater.successes
     name: swift_object_updater_successes_total
   - match: swift.*.*.object-updater.timing
-    name: swift_object_updater_milliseconds
+    name: swift_object_updater_seconds
   - match: swift.*.*.object-updater.unlinks
     name: swift_object_updater_unlinks_total
 
@@ -151,12 +151,12 @@ profile::prometheus::statsd_exporter::mappings:
   - match: swift.*.*.proxy-server.account.handoff_count
     name: swift_proxy_server_account_handoff_total
   - match: swift.*.*.proxy-server.account.*.*.timing
-    name: swift_proxy_server_account_milliseconds
+    name: swift_proxy_server_account_seconds
     labels:
       method: "$3"
       status: "$4"
   - match: swift.*.*.proxy-server.account.*.*.first-byte.timing
-    name: swift_proxy_server_account_first_byte_milliseconds
+    name: swift_proxy_server_account_first_byte_seconds
     labels:
       method: "$3"
       status: "$4"
@@ -174,12 +174,12 @@ profile::prometheus::statsd_exporter::mappings:
   - match: swift.*.*.proxy-server.container.handoff_count
     name: swift_proxy_server_container_handoff_total
   - match: swift.*.*.proxy-server.container.*.*.timing
-    name: swift_proxy_server_container_milliseconds
+    name: swift_proxy_server_container_seconds
     labels:
       method: "$3"
       status: "$4"
   - match: swift.*.*.proxy-server.container.*.*.first-byte.timing
-    name: swift_proxy_server_container_first_byte_milliseconds
+    name: swift_proxy_server_container_first_byte_seconds
     labels:
       method: "$3"
       status: "$4"

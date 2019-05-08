@@ -29,7 +29,7 @@ profile::prometheus::statsd_exporter::mappings:
 
   # Rate Limiting
   - match: swift.*.*.proxy-server.RL.*.*.timing
-    name: swift_proxy_server_ratelimit_milliseconds
+    name: swift_proxy_server_ratelimit_seconds
     labels:
       method: "$3"
       status: "$4"
@@ -58,13 +58,13 @@ profile::prometheus::statsd_exporter::mappings:
     action: drop
   # Per-policy metrics
   - match: swift.*.*.proxy-server.object.policy.*.*.*.timing
-    name: swift_proxy_server_object_milliseconds
+    name: swift_proxy_server_object_seconds
     labels:
       policy: "$3"
       method: "$4"
       status: "$5"
   - match: swift.*.*.proxy-server.object.policy.*.*.*.first-byte.timing
-    name: swift_proxy_server_object_first_byte_milliseconds
+    name: swift_proxy_server_object_first_byte_seconds
     labels:
       policy: "$3"
       method: "$4"
@@ -84,12 +84,12 @@ profile::prometheus::statsd_exporter::mappings:
   - match: swift.*.*.proxy-server.account.handoff_count
     name: swift_proxy_server_account_handoff_total
   - match: swift.*.*.proxy-server.account.*.*.timing
-    name: swift_proxy_server_account_milliseconds
+    name: swift_proxy_server_account_seconds
     labels:
       method: "$3"
       status: "$4"
   - match: swift.*.*.proxy-server.account.*.*.first-byte.timing
-    name: swift_proxy_server_account_first_byte_milliseconds
+    name: swift_proxy_server_account_first_byte_seconds
     labels:
       method: "$3"
       status: "$4"
@@ -107,12 +107,12 @@ profile::prometheus::statsd_exporter::mappings:
   - match: swift.*.*.proxy-server.container.handoff_count
     name: swift_proxy_server_container_handoff_total
   - match: swift.*.*.proxy-server.container.*.*.timing
-    name: swift_proxy_server_container_milliseconds
+    name: swift_proxy_server_container_seconds
     labels:
       method: "$3"
       status: "$4"
   - match: swift.*.*.proxy-server.container.*.*.first-byte.timing
-    name: swift_proxy_server_container_first_byte_milliseconds
+    name: swift_proxy_server_container_first_byte_seconds
     labels:
       method: "$3"
       status: "$4"
