@@ -144,7 +144,12 @@ class mediawiki::web::prod_sites(String $fcgi_proxy) {
                 'zh-mo', 'zh-sg', 'zh-tw'
             ],
             additional_rewrites => {
-                'early' => [],
+                'early' => [ # Allow expressly fetching the blank page from either PHP engine
+                    'RewriteCond %{QUERY_STRING} force_php7',
+                    '    RewriteRule ^/wiki/Special:BlankPage - [E=backend:php7]',
+                    '    RewriteCond %{QUERY_STRING} force_hhvm',
+                    '    RewriteRule ^/wiki/Special:BlankPage - [E=backend:hhvm]',
+                ],
                 'late'  => [
                     '    # moved wikistats off NFS',
                     '    RewriteRule ^/wikistats(/(.*$)|$) %{ENV:RW_PROTO}://stats.wikimedia.org/$2 [R=302,L]'
