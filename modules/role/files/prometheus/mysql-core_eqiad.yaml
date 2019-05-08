@@ -87,6 +87,7 @@
   - db1096:13316
   - db1098:13316
   - db1113:13316
+  - db1131:9104
 - labels:
     shard: s6
     role: master
