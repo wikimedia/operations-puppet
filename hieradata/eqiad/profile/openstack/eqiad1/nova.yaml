@@ -37,7 +37,7 @@ profile::openstack::eqiad1::nova::physical_interface_mappings:
 #   cloudvirt1021: depooled but contains lots of VMs (Jessie, needs rebuild)
 #   cloudvirt1022: depooled but contains lots of VMs (Jessie, needs rebuild)
 #   cloudvirt1023: depooled but contains lots of VMs (Jessie, needs rebuild)
-#   cloudvirt1024: depooled, empty, WIP (soon to be an emergency spare)
+#   cloudvirt1024: depooled, empty, emergency spare
 #   cloudvirt1025: pooled
 #   cloudvirt1026: pooled
 #   cloudvirt1027: pooled
