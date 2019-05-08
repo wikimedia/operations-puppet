@@ -10,6 +10,7 @@ from multiprocessing import Process, Pipe
 import os
 import os.path
 import re
+import sys
 import time
 
 
@@ -145,8 +146,8 @@ def option_parse():
     """
     parser = argparse.ArgumentParser()
     parser.add_argument("--port", type=int, default=4444)
-    parser.add_argument("--type", choices=['file', 'xtrabackup'], dest='transfer_type',
-                        default='file')
+    parser.add_argument("--type", choices=['file', 'xtrabackup', 'decompress'],
+                        dest='transfer_type', default='file')
     parser.add_argument("source")
     parser.add_argument("target", nargs='+')
 
@@ -164,6 +165,8 @@ def option_parse():
     checksum_group.add_argument('--checksum', action='store_true', dest='checksum')
     checksum_group.add_argument('--no-checksum', action='store_false', dest='checksum')
     parser.set_defaults(checksum=True)
+
+    parser.add_argument('--stop-slave', action='store_true', dest='stop_slave')
 
     options = parser.parse_args()
     source_host = options.source.split(':', 1)[0]
@@ -208,6 +211,10 @@ class Transferer(object):
     @property
     def is_xtrabackup(self):
         return self.options['type'] == 'xtrabackup'
+
+    @property
+    def is_decompress(self):
+        return self.options['type'] == 'decompress'
 
     def is_dir(self, host, path):
         command = ['/bin/bash', '-c', r'"[ -d "{}" ]"'.format(path)]
@@ -259,6 +266,9 @@ class Transferer(object):
         """
         if is_xtrabackup:
             path = self.get_datadir_from_socket(path)
+        # Sadly, our .tar.gz s, created with a pigz streaming pipe do not store
+        # accurate file sizes, so a minimum number of the size of the tarball
+        # will be used instead
         command = ['/usr/bin/du', '--bytes', '--summarize', '{}'.format(path)]
         result = self.run_command(host, command)
         if result.returncode != 0:
@@ -280,6 +290,8 @@ class Transferer(object):
         if self.options['compress']:
             if self.source_is_dir or self.is_xtrabackup:
                 compress_command = '| /usr/bin/pigz -c'
+            elif self.is_decompress:
+                compress_command = '/bin/cat'  # file is already compressed
             else:
                 compress_command = '/usr/bin/pigz -c'
         else:
@@ -306,9 +318,7 @@ class Transferer(object):
 
     @property
     def netcat_listen_command(self):
-        netcat_listen_command = '/bin/nc -l -p {} {} {}'.format(self.options['port'],
-                                                                self.decrypt_command,
-                                                                self.decompress_command)
+        netcat_listen_command = '/bin/nc -l -p {}'.format(self.options['port'])
 
         return netcat_listen_command
 
@@ -318,7 +328,10 @@ class Transferer(object):
 
     @property
     def untar_command(self):
-        return '| /bin/tar xf -'
+        if self.is_decompress:  # ignore subdir
+            return '| /bin/tar --strip-components=1 -xf -'
+        else:
+            return '| /bin/tar xf -'
 
     def get_datadir_from_socket(self, socket):
         if socket.endswith('mysqld.sock'):
@@ -387,9 +400,16 @@ class Transferer(object):
             src_command = ['/bin/bash', '-c', r'"{} {} {} {}"'
                            .format(self.xtrabackup_command, self.compress_command,
                                    self.encrypt_command, self.netcat_send_command(target_host))]
-            dst_command = ['/bin/bash', '-c', r'"cd {} && {} {}"'
-                           .format(target_path, self.netcat_listen_command,
-                                   self.mbstream_command)]
+            dst_command = ['/bin/bash', '-c', r'"cd {} && {} {} {}"'
+                           .format(target_path, self.netcat_listen_command, self.decrypt_command,
+                                   self.decompress_command, self.mbstream_command)]
+        elif self.is_decompress:
+            src_command = ['/bin/bash', '-c', r'"{} < {} {} {}"'
+                           .format(self.compress_command, self.source_path, self.encrypt_command,
+                                   self.netcat_send_command(target_host))]
+            dst_command = ['/bin/bash', '-c', r'"cd {} && {} {} {} {}"'
+                           .format(target_path, self.netcat_listen_command, self.decrypt_command,
+                                   self.decompress_command, self.untar_command)]
         elif self.source_is_dir:
             source_parent_dir = os.path.normpath(os.path.join(self.source_path, '..'))
             source_basename = os.path.basename(os.path.normpath(self.source_path))
@@ -398,8 +418,9 @@ class Transferer(object):
                                    source_basename, self.compress_command, self.encrypt_command,
                                    self.netcat_send_command(target_host))]
 
-            dst_command = ['/bin/bash', '-c', r'"cd {} && {} {}"'
-                           .format(target_path, self.netcat_listen_command, self.untar_command)]
+            dst_command = ['/bin/bash', '-c', r'"cd {} && {} {} {} {}"'
+                           .format(target_path, self.netcat_listen_command, self.decrypt_command,
+                                   self.decompress_command, self.untar_command)]
         else:
             src_command = ['/bin/bash', '-c', r'"{} < {} {} {}"'
                            .format(self.compress_command, self.source_path, self.encrypt_command,
@@ -407,8 +428,9 @@ class Transferer(object):
 
             final_file = os.path.join(os.path.normpath(target_path),
                                       os.path.basename(self.source_path))
-            dst_command = ['/bin/bash', '-c', r'"{} > {}"'
-                           .format(self.netcat_listen_command, final_file)]
+            dst_command = ['/bin/bash', '-c', r'"{} {} {} > {}"'
+                           .format(self.netcat_listen_command, self.decrypt_command,
+                                   self.decompress_command, final_file)]
 
         job = self.remote_executor.start_job(target_host, dst_command)
         time.sleep(1)  # FIXME: Work on a better way to wait for nc to be listening
@@ -437,64 +459,88 @@ class Transferer(object):
         return result.returncode
 
     def sanity_checks(self):
+        """
+        Set of preflight checks for the transfer- raise an exception if
+        they are not met.
+        """
+        # Does the source path (file or dir) exist?
         self.source_path = os.path.normpath(self.source_path)
         if not self.file_exists(self.source_host, self.source_path):
             raise ValueError("The specified source path {} doesn't exist on {}"
                              .format(self.source_path, self.source_host))
         self.original_size = self.disk_usage(self.source_host, self.source_path,
                                              self.is_xtrabackup)
+        # Does the target dir exist
         for target_host, target_path in zip(self.target_hosts, self.target_paths):
             if not self.file_exists(target_host, target_path):
                 raise ValueError("The specified target path {} doesn't exist on {}"
                                  .format(target_path, target_host))
-            if self.is_xtrabackup:
+            # If it is a backup, is the target path emtpy
+            if self.is_xtrabackup or self.is_decompress:
                 if not self.dir_is_empty(target_path, target_host):
                     raise ValueError("The final target path {} is not empty on {}."
                                      .format(target_path, target_host))
             else:
+                # Will the final path (target path + final dir or file) overwrite
+                # an existing file or dir?
                 target_final_path = os.path.join(os.path.normpath(target_path),
                                                  os.path.basename(self.source_path))
                 if self.file_exists(target_host, target_final_path):
                     raise ValueError("The final target path {} already exists on {}."
                                      .format(target_final_path, target_host))
+            # To the best of our knowledge, is there enough free space on target?
             if not self.has_available_disk_space(target_host, target_path,
                                                  self.original_size):
                 raise ValueError("{} doesn't have enough space on {}"
                                  .format(target_host, target_path))
 
+        # For xtrabackup, is the source patch a socket?
         if self.is_xtrabackup:
             self.source_is_socket = self.is_socket(self.source_host, self.source_path)
             if not self.source_is_socket:
                 raise ValueError("The specified source path {} is not a valid socket"
                                  .format(self.source_path))
         else:
+            # If not xtrabackup, is the source a directory or a file?
             self.source_is_dir = self.is_dir(self.source_host, self.source_path)
 
+        # Calculate the checksum
         if self.options['checksum']:
             self.checksum = self.calculate_checksum(self.source_host, self.source_path)
 
     def after_transfer_checks(self, result, target_host, target_path):
-        # post-transfer checks
+        """
+        Post-transfer checks: Was the transfer really successful. Yes- return 0; No-
+        return 1 or more.
+        """
+        # Return code was not 0?
         if result != 0:
             print('ERROR: Copy from {}:{} to {}:{} failed'
                   .format(self.source_host, self.source_path, target_host, target_path))
             return 1
 
-        if self.is_xtrabackup:
+        # if creating or restoring a backup, does it include an xtrabackup_info file,
+        # otherwise, does the copied file or dir exists?
+        if self.is_xtrabackup or self.is_decompress:
             target_final_path = os.path.normpath(target_path)
             check_path = os.path.join(os.path.normpath(target_path), 'xtrabackup_info')
         else:
             target_final_path = os.path.join(os.path.normpath(target_path),
                                              os.path.basename(self.source_path))
             check_path = target_final_path
+
         if not self.file_exists(target_host, check_path):
             print(('ERROR: file was not found on the target path {} after transfer'
                    ' to {}').format(check_path, target_host))
             return 2
+
+        # Is original and final size the same? Otherwise throw a warning
         final_size = self.disk_usage(target_host, target_final_path)
         if self.original_size != final_size:
             print('WARNING: Original size is {} but transferred size is {} for'
                   ' copy to {}'.format(self.original_size, final_size, target_host))
+
+        # Was checksum requested, and does it match the original?
         if self.options['checksum']:
             target_checksum = self.calculate_checksum(target_host, target_final_path)
             if self.checksum != target_checksum:
@@ -505,9 +551,31 @@ class Transferer(object):
             else:
                 print(('Checksum of all original files on {} and the transmitted ones'
                        ' on {} match.').format(self.source_host, target_host))
+
+        # All checks seem right, return success
         print('{} bytes correctly transferred from {} to {}'
               .format(final_size, self.source_host, target_host))
         return 0
+
+    def start_slave(self, host, socket):
+        """
+        Stop slave on instance of the given host and socket
+        """
+        command = ['/usr/local/bin/mysql', '--socket', socket,
+                   '--connect-timeout=10',
+                   '--execute="STOP SLAVE"']
+        result = self.run_command(host, command)
+        return result.returncode
+
+    def stop_slave(self, host, socket):
+        """
+        Start slave on instance of the given host and socket
+        """
+        command = ['/usr/local/bin/mysql', '--socket', socket,
+                   '--connect-timeout=10',
+                   '--execute="START SLAVE"']
+        result = self.run_command(host, command)
+        return result.returncode
 
     def run(self):
         """
@@ -523,6 +591,13 @@ class Transferer(object):
             print("ERROR: {}".format(str(e)))
             return -1
 
+        # stop slave if requested
+        if self.options.stop_slave:
+            result = self.stop_slave(self.source_host, self.source_path)
+            if result != 0:
+                print("ERROR: Stop slave failed")
+                return -2
+
         print('About to transfer {} from {} to {}:{} ({} bytes)'
               .format(self.source_path, self.source_host,
                       self.target_hosts, self.target_paths,
@@ -533,7 +608,6 @@ class Transferer(object):
         # multicast-like process
         for target_host, target_path in zip(self.target_hosts, self.target_paths):
             self.open_firewall(target_host)
-
             result = self.copy_to(target_host, target_path)
 
             if self.close_firewall(target_host) != 0:
@@ -543,13 +617,20 @@ class Transferer(object):
                                                                  target_host,
                                                                  target_path))
 
+        if self.options.stop_slave:
+            result = self.start_slave(self.source_host, self.source_path)
+            if result != 0:
+                print("ERROR: Start slave failed")
+                return -3
+
         return transfer_sucessful
 
 
 def main():
     (source_host, source_path, target_hosts, target_paths, other_options) = option_parse()
     t = Transferer(source_host, source_path, target_hosts, target_paths, other_options)
-    t.run()
+    result = t.run()
+    sys.exit(max(result))
 
 
 if __name__ == "__main__":
