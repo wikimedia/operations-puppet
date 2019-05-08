@@ -1295,6 +1295,8 @@ lvs::configuration::lvs_services:
       ProxyFetch:
         url:
         - https://localhost/w/health-check.php
+        - "https://localhost/w/health-check.php?force_php7=1"
+        check_all: true
       IdleConnection:
         timeout-clean-reconnect: 3
         max-delay: 300
@@ -1322,6 +1324,8 @@ lvs::configuration::lvs_services:
       ProxyFetch:
         url:
         - https://localhost/w/health-check.php
+        - "https://localhost/w/health-check.php?force_php7=1"
+        check_all: true
       IdleConnection:
         timeout-clean-reconnect: 3
         max-delay: 300
