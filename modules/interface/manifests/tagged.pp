@@ -1,7 +1,13 @@
-define interface::tagged($base_interface, $vlan_id, $address=undef, $netmask=undef, $family='inet', $method='static', $up=undef, $down=undef, $remove=undef) {
+define interface::tagged($base_interface, $vlan_id, $address=undef, $netmask=undef, $family='inet', $method='static', $up=undef, $down=undef, $remove=undef, $legacy_vlan_naming=true) {
     require_package('vlan')
 
-    $intf = "${base_interface}.${vlan_id}"
+    if $legacy_vlan_naming {
+        $intf = "${base_interface}.${vlan_id}"
+        $vlan_raw_device_cmd = ''
+    } else {
+        $intf = "vlan${vlan_id}"
+        $vlan_raw_device_cmd = "set iface[. = '${intf}']/vlan-raw-device ${base_interface}"
+    }
 
     if $address {
         $addr_cmd = "set iface[. = '${intf}']/address '${address}'"
@@ -39,7 +45,8 @@ define interface::tagged($base_interface, $vlan_id, $address=undef, $netmask=und
                 $netmask_cmd,
                 $up_cmd,
                 $down_cmd,
-            ]
+                $vlan_raw_device_cmd,
+            ].delete('')
     }
 
     if $remove == true {
