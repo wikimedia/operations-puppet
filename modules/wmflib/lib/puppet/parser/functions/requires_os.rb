@@ -10,8 +10,8 @@
 #  # Fail unless version is exactly Debian jessie
 #  requires_os('debian jessie')
 #
-#  # Fail unless Ubuntu Trusty or newer or Debian jessie or newer
-#  requires_os('ubuntu >= trusty || debian >= jessie')
+#  # Fail unless Debian jessie or newer
+#  requires_os(debian >= jessie')
 #
 module Puppet::Parser::Functions
   newfunction(:requires_os, :arity => 1) do |args|

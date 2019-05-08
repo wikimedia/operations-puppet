@@ -161,7 +161,7 @@ class phabricator (
         }
     }
 
-    # common packages that exist in trusty/jessie/stretch
+    # common packages that exist in jessie/stretch
     package { [
         'python-pygments',
         'python-phabricator',

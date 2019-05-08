@@ -153,7 +153,7 @@ def noraid_list_pd():
     """List all physical disks. Generator to yield PD objects."""
 
     try:
-        # starting with stretch, lsblk has --json but not on trusty/jessie
+        # starting with stretch, lsblk has --json but not on jessie
         raw_output = subprocess.check_output(['/usr/bin/timeout', '60', '/bin/lsblk',
                                               '--noheadings', '--output', 'NAME,TYPE', '--raw'])
     except subprocess.CalledProcessError:

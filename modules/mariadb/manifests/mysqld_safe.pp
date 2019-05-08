@@ -1,8 +1,7 @@
 # Make /opt/wmf-mariadb10/bin/mysqld_safe managed by puppet.
 # This allows us to make quick changes to harden the wrapper
 # without rebuilding the custom wmf-mariadb10 package
-# Once all trusty dbs are gone, we can hopefully discard
-# mysqld_safe in favour of a custom
+# In the future we can hopefully discard mysqld_safe in favour of a custom
 # systemd service unit
 class mariadb::mysqld_safe(
     $package = 'wmf-mariadb10',

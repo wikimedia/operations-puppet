@@ -1,10 +1,5 @@
 class base::sysctl {
-    # Ubuntu-inspired default sysctl parameters.
-    #
-    # These are up-to-date as of *trusty*. These are hand-picked and deemed to
-    # be a good idea, so we install them in Debian systems as well.
-    #
-    # We also set them ourselves so we can purge /etc/sysctl.d.
+    # Systemctl hardening settings. We set them ourselves so we can purge /etc/sysctl.d.
     sysctl::parameters { 'ubuntu defaults':
         values   => {
             # 10-console-messages.conf

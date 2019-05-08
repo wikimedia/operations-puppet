@@ -1,7 +1,7 @@
 # Make /etc/init/mysql managed by puppet. This allows us to make quick
 # changes to harden the wrapper without rebuilding the custom wmf-mariadb10
 # package
-# Once all trusty dbs and jessies with 10.0 are gone, we can hopefully
+# Once all jessies with 10.0 are gone, we can hopefully
 # discard init.d in favour of the package systemd service unit
 #
 # Default behavior is for the service to be unmanaged and manually
