@@ -1973,6 +1973,11 @@ node 'roentgenium.eqiad.wmnet' {
     role(failoid)
 }
 
+# virtual machines for https://wikitech.wikimedia.org/wiki/RPKI#Validation
+node /^rpki[12]001\.(eqiad|codfw)\.wmnet$/ {
+    role(rpkivalidator)
+}
+
 # people.wikimedia.org, for all shell users
 # replaced rutherfordium in T210036
 node 'people1001.eqiad.wmnet' {

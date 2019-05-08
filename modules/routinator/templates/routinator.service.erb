@@ -1,0 +1,39 @@
+# Managed by Puppet
+[Unit]
+Description=Routinator 3000
+Documentation=man:routinator(1)
+After=network.target
+
+[Service]
+ExecStart=/usr/bin/routinator --syslog --tal-dir=/etc/routinator/tals --repository-dir=/var/lib/routinator/repository rtrd -a -l 0.0.0.0:<%= @rtr_port %> --listen-http 0.0.0.0:9556
+Type=exec
+RestartSec=0
+SyslogIdentifier=routinator
+<% if @proxy %>
+Environment=RSYNC_PROXY=<%= @proxy %>
+<% end %>
+User=routinator
+Group=routinator
+Restart=on-failure
+AmbientCapabilities=CAP_NET_BIND_SERVICE
+CapabilityBoundingSet=CAP_NET_BIND_SERVICE
+LockPersonality=yes
+MemoryDenyWriteExecute=yes
+NoNewPrivileges=yes
+PrivateDevices=yes
+PrivateTmp=yes
+ProtectControlGroups=yes
+ProtectHome=yes
+ProtectKernelModules=yes
+ProtectKernelTunables=yes
+ProtectSystem=strict
+ReadWritePaths=/var/lib/routinator/
+RestrictAddressFamilies=AF_UNIX AF_INET AF_INET6
+RestrictNamespaces=yes
+RestrictRealtime=yes
+StateDirectory=routinator
+SystemCallArchitectures=native
+SystemCallErrorNumber=EPERM
+
+[Install]
+WantedBy=multi-user.target
