@@ -179,9 +179,10 @@ def option_parse():
     other_options = {
         'port': options.port,
         'type': options.transfer_type,
-        'compress': options.compress,
+        'compress': True if options.transfer_type == 'decompress' else options.compress,
         'encrypt': options.encrypt,
-        'checksum': False if options.transfer_type == 'xtrabackup' else options.checksum
+        'checksum': False if not options.transfer_type == 'file' else options.checksum,
+        'stop_slave': False if not options.transfer_type == 'xtrabackup' else options.stop_slave
     }
     return source_host, source_path, target_hosts, target_paths, other_options
 
@@ -592,7 +593,7 @@ class Transferer(object):
             return -1
 
         # stop slave if requested
-        if self.options.stop_slave:
+        if self.options.get('stop_slave', False):
             result = self.stop_slave(self.source_host, self.source_path)
             if result != 0:
                 print("ERROR: Stop slave failed")
@@ -617,7 +618,7 @@ class Transferer(object):
                                                                  target_host,
                                                                  target_path))
 
-        if self.options.stop_slave:
+        if self.options.get('stop_slave', False):
             result = self.start_slave(self.source_host, self.source_path)
             if result != 0:
                 print("ERROR: Start slave failed")
