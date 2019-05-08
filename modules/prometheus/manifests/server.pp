@@ -203,11 +203,11 @@ define prometheus::server (
     # rate computations being lower than they should be, etc.
     # Report to IRC any Prometheis with too-low uptime.
     monitoring::check_prometheus { "uptime-${::hostname}-${service_name}":
-      query           => 'time() - scalar(process_start_time_seconds{job="prometheus", instance=~"127\\.0\\.0\\.1:.*"})',
+      query           => 'time() - process_start_time_seconds{job="prometheus", instance=~"127\\.0\\.0\\.1:.*"}',
       method          => 'lt',
       warning         => 1800,
       critical        => 600,
-      description     => "Prometheus ${::fqdn}/${title} was restarted; expect possible monitoring artifacts",
+      description     => "Prometheus ${::hostname}/${title} restarted: beware possible monitoring artifacts",
       prometheus_url  => "http://${::fqdn}/${title}",
       dashboard_links => ["https://grafana.wikimedia.org/d/000000271/prometheus-stats?var-datasource=${::site} prometheus/${title}"],
     }
