@@ -15,9 +15,9 @@ class profile::maps::apps(
     String $tile_server_domain = hiera('profile::maps::apps::tile_server_domain'),
     String $wikidata_query_service = hiera('profile::maps::apps::wikidata_query_service'),
     Float[0.0, 1.0] $tilerator_ncpu_ratio = hiera('profile::maps::apps::tilerator_ncpu_ratio'),
-    Boolean $use_nodejs10 = hiera('profile::maps::apps::use_nodejs10', false),
 ) {
 
+    $use_nodejs10 = true
 
     $contact_groups = 'admins,team-interactive'
 
