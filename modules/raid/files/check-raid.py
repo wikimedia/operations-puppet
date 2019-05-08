@@ -130,6 +130,20 @@ def checkmptsas():
     return status
 
 
+def getMegaSasPhyCnt():
+    """return the number of physical drives as reported by MegaRaid"""
+    try:
+        output = subprocess.check_output(['/usr/sbin/megacli', '-EncInfo', '-aALL'])
+    except subprocess.CalledProcessError as error:
+        print 'WARNING:  error executing megacli: {error}'.format(error=error)
+        raise SystemExit(1)
+    match = re.search('Number\s+of\s+Physical\s+Drives\s+:\s+(\d+)', output, re.MULTILINE)
+    if match:
+        return int(match.group(1))
+    print 'WARNING: error while detecting megacli physical device'
+    raise SystemExit(1)
+
+
 def checkMegaSas(policy=None):
     try:
         proc = subprocess.Popen(['/usr/sbin/megacli',
@@ -140,6 +154,7 @@ def checkMegaSas(policy=None):
         print 'WARNING: error executing megacli: %s' % str(error)
         return 1
 
+    physicalDeviceCnt = getMegaSasPhyCnt()
     stateRegex = re.compile('^State\s*:\s*([^\n]*)')
     drivesRegex = re.compile('^Number Of Drives( per span)?\s*:\s*([^\n]*)')
     configuredRegex = re.compile('^Adapter \d+: No Virtual Drive Configured')
@@ -198,6 +213,11 @@ def checkMegaSas(policy=None):
     if not match:
         print 'WARNING: parse error processing megacli output'
         return 1
+
+    if numPD != physicalDeviceCnt:
+        print 'CRITICAL: Devices ({device}) not equal to PDs ({drive})'.format(
+                device=physicalDeviceCnt, drive=numPD)
+        return 2
 
     if numLD == 0:
         print 'OK: no disks configured for RAID'
