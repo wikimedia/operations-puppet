@@ -87,8 +87,8 @@ sub cluster_fe_hit { }
 sub cluster_fe_ratelimit {
 	// ratelimit FB in an attempt to mitigate awful outbound traffic spike
 	if (std.ip(req.http.X-Client-IP, "192.0.2.1") ~ fb_nets) {
-		if (vsthrottle.is_denied("fb_limiter", 100, 10s)) {
-			return (synth(429, "Please stop, you are saturating one of our outbound links :P"));
+		if (vsthrottle.is_denied("fb_limiter", 1000, 30s)) {
+			return (synth(429, "Too Many Requests"));
 		}
 	}
 
