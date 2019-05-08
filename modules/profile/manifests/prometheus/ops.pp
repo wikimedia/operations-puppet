@@ -11,6 +11,9 @@ class profile::prometheus::ops (
     $bastion_hosts = hiera('bastion_hosts', []),
 ){
 
+    include ::passwords::gerrit
+    $gerrit_client_token = $passwords::gerrit::prometheus_bearer_token
+
     $config_extra = {
         # All metrics will get an additional 'site' label when queried by
         # external systems (e.g. via federation)
@@ -137,6 +140,17 @@ class profile::prometheus::ops (
         'targets' => regsubst($bastion_hosts, '(.*)', '[\0]:22')
         }]),
     }
+
+    $gerrit_jobs = [
+      {
+        'job_name'          => 'gerrit',
+        'bearer_token_file' => '/srv/prometheus/ops/gerrit.token',
+        'scheme'            => 'https',
+        'tls_config'        => {
+            'server_name'   => 'gerrit.wikimedia.org/r/monitoring?format=prometheus',
+        },
+      },
+    ]
 
     # Add one job for each of mysql 'group' (i.e. their broad function)
     # Each job will look for new files matching the glob and load the job
@@ -1126,6 +1140,7 @@ class profile::prometheus::ops (
             $blazegraph_jobs, $nutcracker_jobs, $postgresql_jobs,
             $kafka_burrow_jobs, $logstash_jobs, $haproxy_jobs, $statsd_exporter_jobs,
             $mjolnir_jobs, $rsyslog_jobs, $php_jobs, $php_fpm_jobs, $icinga_jobs, $docker_registry_jobs,
+            $gerrit_jobs,
         ),
         global_config_extra   => $config_extra,
     }
@@ -1143,6 +1158,14 @@ class profile::prometheus::ops (
 
     prometheus::web { 'ops':
         proxy_pass => 'http://localhost:9900/ops',
+    }
+
+    file { '/srv/prometheus/ops/gerrit.token':
+        ensure  => present,
+        content => $gerrit_client_token,
+        mode    => '0400',
+        owner   => 'prometheus',
+        group   => 'prometheus',
     }
 
     ferm::service { 'prometheus-web':
