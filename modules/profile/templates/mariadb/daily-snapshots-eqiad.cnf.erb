@@ -9,6 +9,11 @@ statistics:
   password: '<%= @stats_password %>'
   database: 'zarcillo'
 sections:
+  s1:
+    host: 'db1139.eqiad.wmnet'
+    port: 3311
+    destination: 'dbprov1002.eqiad.wmnet'
+    stop_slave: True
   s6:
     host: 'db1139.eqiad.wmnet'
     port: 3316
