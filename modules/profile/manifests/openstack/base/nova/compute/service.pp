@@ -7,6 +7,7 @@ class profile::openstack::base::nova::compute::service(
     $network_flat_interface = hiera('profile::openstack::base::nova::network_flat_interface'),
     $network_flat_tagged_base_interface = hiera('profile::openstack::base::nova::network_flat_tagged_base_interface'),
     $network_flat_interface_vlan = hiera('profile::openstack::base::nova::network_flat_interface_vlan'),
+    Boolean $legacy_vlan_naming = lookup('legacy_vlan_naming', {default_value => true}),
     ) {
 
     require_package('conntrack')
@@ -18,11 +19,12 @@ class profile::openstack::base::nova::compute::service(
     }
 
     interface::tagged { $network_flat_interface:
-        base_interface => $network_flat_tagged_base_interface,
-        vlan_id        => $network_flat_interface_vlan,
-        method         => 'manual',
-        up             => 'ip link set $IFACE up',
-        down           => 'ip link set $IFACE down',
+        base_interface     => $network_flat_tagged_base_interface,
+        vlan_id            => $network_flat_interface_vlan,
+        method             => 'manual',
+        up                 => 'ip link set $IFACE up',
+        down               => 'ip link set $IFACE down',
+        legacy_vlan_naming => $legacy_vlan_naming,
     }
 
     if $::fqdn =~ /^labvirt100[0-9].eqiad.wmnet/ {
