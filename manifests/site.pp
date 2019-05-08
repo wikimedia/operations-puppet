@@ -398,7 +398,7 @@ node 'db2048.codfw.wmnet' {
 }
 
 # codfw replicas
-node /^db20(55|62|70|71|72|92)\.codfw\.wmnet/ {
+node /^db2(055|062|070|071|072|092|103|112|116)\.codfw\.wmnet/ {
     role(mariadb::core)
 }
 
@@ -573,7 +573,7 @@ node /^db11(26|28|29|30|32|33|34|35|36|38)\.eqiad\.wmnet/ {
 }
 
 # Spare codfw hosts to be provisioned #T221532
-node /^db2(103|104|105|106|107|108|109|110|111|112|113|114|116|117|118|119|120)\.codfw\.wmnet/ {
+node /^db2(104|105|106|107|108|109|110|111|113|114|117|118|119|120)\.codfw\.wmnet/ {
     role(spare::system)
 }
 
