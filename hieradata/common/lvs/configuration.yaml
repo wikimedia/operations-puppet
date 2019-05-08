@@ -336,6 +336,8 @@ lvs::configuration::lvs_services:
       ProxyFetch:
         url:
         - http://en.wikipedia.org/wiki/Special:BlankPage
+        - "http://test.wikidata.org/wiki/Special:BlankPage?force_php7=1"
+        check_all: true
       IdleConnection:
         timeout-clean-reconnect: 3
         max-delay: 300
@@ -394,6 +396,8 @@ lvs::configuration::lvs_services:
       ProxyFetch:
         url:
         - http://en.wikipedia.org/w/api.php
+        - "http://test.wikidata.org/wiki/Special:BlankPage?force_php7=1"
+        check_all: true
       IdleConnection:
         timeout-clean-reconnect: 3
         max-delay: 300
@@ -425,6 +429,8 @@ lvs::configuration::lvs_services:
       ProxyFetch:
         url:
         - https://en.wikipedia.org/w/api.php
+        - "https://test.wikidata.org/wiki/Special:BlankPage?force_php7=1"
+        check_all: true
       IdleConnection:
         timeout-clean-reconnect: 3
         max-delay: 300
