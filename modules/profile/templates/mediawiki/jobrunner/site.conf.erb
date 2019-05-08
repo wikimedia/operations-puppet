@@ -36,9 +36,10 @@
     # Only selected paths are allowed here
     RewriteCond %{REQUEST_URI} !^/(w/health-check|rpc/RunSingleJob|rpc/RunJobs)\.php
     RewriteRule ^ - [R=404,L]
-
     # Set the variable if php7 is required
     SetEnvIf Cookie "PHP_ENGINE=php7" backend=php7
+    RewriteCond %{QUERY_STRING} force_php7
+    RewriteRule ^ - [E:backend:php7]
 
     <FilesMatch "\.php$">
     <If "reqenv('backend') == 'php7'">
@@ -70,6 +71,8 @@
 
     # Set the variable if php7 is required
     SetEnvIf Cookie "PHP_ENGINE=php7" backend=php7
+    RewriteCond %{QUERY_STRING} force_php7
+    RewriteRule ^ - [E:backend:php7]
 
     <FilesMatch "\.php$">
     <If "reqenv('backend') == 'php7'">
