@@ -367,6 +367,8 @@ lvs::configuration::lvs_services:
       ProxyFetch:
         url:
         - https://en.wikipedia.org/wiki/Special:BlankPage
+        - "https://test.wikidata.org/wiki/Special:BlankPage?force_php7=1"
+        check_all: true
       IdleConnection:
         timeout-clean-reconnect: 3
         max-delay: 300
