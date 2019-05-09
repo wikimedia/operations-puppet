@@ -172,6 +172,12 @@ sub cluster_fe_deliver {
 	unset resp.http.Set-Cookie;
 	unset resp.http.X-MediaWiki-Original;
 
+	if (req.http.host == "<%= @vcl_config.fetch('upload_domain') %>") {
+		// In general, do not send Cache-Control. Exceptions such as setting CC for
+		// specific clients can be specified further down in this subroutine.
+		unset resp.http.Cache-Control;
+	}
+
 	// Strip away unnecessary response headers set by Thumbor: T194814
 	unset resp.http.Thumbor-Request-Id;
 	unset resp.http.Thumbor-Request-Date;
