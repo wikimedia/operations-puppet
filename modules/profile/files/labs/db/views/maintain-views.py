@@ -99,6 +99,7 @@ class SchemaOperations:
         :param database: str
         :returns: bool
         """
+
         return table in self.tables(database=database)
 
     def database_exists(self, database):
@@ -220,7 +221,8 @@ class SchemaOperations:
         # in the sources array
         if len(sources) > 1 and "join" in view_details:
             logging.warning(
-                "I don't know how to do joins with multiple sources"
+                "I don't know how to do joins with multiple sources: %s",
+                view_name,
             )
             return
 
