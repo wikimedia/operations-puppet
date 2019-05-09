@@ -11,6 +11,7 @@ ExecStart=<%= @celery_bin_path %> worker \
     --loglevel <%= @log_level %>
 SyslogIdentifier=celery-<%= @title %>
 LimitNOFILE=8192
+LimitCORE=<%= @core_limit %>
 
 [Install]
 WantedBy=multi-user.target
