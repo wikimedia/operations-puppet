@@ -5,6 +5,6 @@ class role::wmcs::services::ntp {
 
     system::role { 'ntp': description => 'NTP server for WMCS' }
 
-    include ::profile::standard::ntp
+    include ::standard::ntp
     include ::profile::wmcs::services::ntp
 }
