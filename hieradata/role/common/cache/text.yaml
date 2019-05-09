@@ -68,12 +68,6 @@ cache::app_directors:
   labweb:
     backends:
       eqiad: 'labweb.svc.eqiad.wmnet'
-  darmstadtium:
-    be_opts:
-      port: 81
-      max_connections: 5
-    backends:
-      eqiad: 'darmstadtium.eqiad.wmnet'
   # PSA: DO NOT CONFUSE DB Monitor (database) with deb Monitor (Debian packages)
   dbtree:
     backends:
@@ -220,6 +214,14 @@ cache::app_directors:
     backends:
       eqiad: 'blubberoid.svc.eqiad.wmnet'
       codfw: 'blubberoid.svc.codfw.wmnet'
+  docker_registry:
+      be_opts:
+        port: 81
+        max_connections: 5
+      backends:
+        # eqiad is the passive one for now. enabled temporarily to avoid cache loops
+        eqiad: 'registry1001.eqiad.wmnet'
+        codfw: 'registry2001.codfw.wmnet'
 cache::req_handling:
   cxserver.wikimedia.org:
     director: 'cxserver_backend'
@@ -263,7 +265,7 @@ cache::alternate_domains:
   design.wikimedia.org:
     director: 'webserver_misc_static'
   docker-registry.wikimedia.org:
-    director: 'darmstadtium'
+    director: 'docker_registry'
   doc.wikimedia.org:
     director: 'doc'
   etherpad.wikimedia.org:
