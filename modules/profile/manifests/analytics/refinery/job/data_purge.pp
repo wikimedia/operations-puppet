@@ -151,7 +151,7 @@ class profile::analytics::refinery::job::data_purge (
     # 1 minute margin is given to avoid timestamp comparison problems
     profile::analytics::systemd_timer { 'refinery-eventlogging-saltrotate':
         description => 'Create and rotate cryptographic salts for EventLogging sanitization.',
-        command     => "${refinery_path}/bin/saltrotate --verbose -p '3 months' -b '14 days' /user/hdfs/eventlogging-sanitization-salt.txt",
+        command     => "${refinery_path}/bin/saltrotate -p '3 months' -b '14 days' /user/hdfs/eventlogging-sanitization-salt.txt",
         environment => $systemd_env,
         interval    => '*-*-* 01:00:00',
         user        => 'hdfs',
