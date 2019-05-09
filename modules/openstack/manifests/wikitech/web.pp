@@ -58,11 +58,6 @@ class openstack::wikitech::web(
         ensure => absent,
     }
 
-    # TODO: Remove after change is applied
-    cron { 'run-jobs':
-        ensure => absent,
-    }
-
     systemd::timer::job { 'wikitech_run_jobs':
         ensure                    => present,
         description               => 'Run Wikitech runJobs.php maintenance script',
