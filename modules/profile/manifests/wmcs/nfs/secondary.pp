@@ -38,7 +38,7 @@ class profile::wmcs::nfs::secondary(
 
     class {'::labstore::fileserver::exports':
         observer_pass => $observer_pass,
-        server_vols   => ['maps-home', 'maps-project'],
+        server_vols   => ['maps'],
     }
 
     # Enable RPS to balance IRQs over CPUs
