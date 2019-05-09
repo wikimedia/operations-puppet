@@ -1,0 +1,36 @@
+#!/usr/bin/env stap
+#
+# coalesce_retries.stp - debug request coalescing retries
+#
+# Print failures to obtain cache read/write locks due to simultaneous requests
+# to the same object and related retries.
+#
+# Sample output:
+# state_cache_open_write: open_write_tries=27 max_cache_open_write_retries=150
+#
+probe process("/usr/bin/traffic_server").statement("state_cache_open_read@./proxy/http/HttpCacheSM.cc:136") {
+    printf("state_cache_open_read: open_read_tries=%d max_cache_open_read_retries=%d\n",
+            $this->open_read_tries,
+            $this->master_sm->t_state->txn_conf->max_cache_open_read_retries)
+}
+
+probe process("/usr/bin/traffic_server").statement("state_cache_open_write@./proxy/http/HttpCacheSM.cc:190") {
+    printf("state_cache_open_write: open_write_tries=%d max_cache_open_write_retries=%d\n",
+            $this->open_write_tries,
+            $this->master_sm->t_state->txn_conf->max_cache_open_write_retries)
+
+    if ($this->open_write_tries == $this->master_sm->t_state->txn_conf->max_cache_open_write_retries) {
+        printf("reached max_cache_open_write_retries %d\n", $this->open_write_tries)
+    }
+}
+
+probe process("/usr/bin/traffic_server").statement("open_write@./proxy/http/HttpCacheSM.cc:329") {
+    # The comment in the code says "Make sure we are not stuck in a loop".
+    # This is a 502 if open_write_tries > redirection_tries && open_write_tries > max_cache_open_write_retries.
+    if ($this->open_write_tries > 1) {
+        printf("open_write: open_write_tries=%d redirection_tries=%d max_cache_open_write_retries=%d\n",
+                $this->open_write_tries,
+                $this->master_sm->redirection_tries,
+                $this->master_sm->t_state->txn_conf->max_cache_open_write_retries)
+    }
+}
