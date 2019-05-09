@@ -13,7 +13,7 @@ if [ "$delete_empty" = false ]; then
 fi
 
 /usr/bin/flock -xn "${osmosis_dir}/replicate-osm.lck" \
-    /usr/bin/nodejs /srv/deployment/tilerator/deploy/node_modules/tilerator/scripts/tileshell.js \
+    /usr/bin/nodejs /srv/deployment/tilerator/deploy/node_modules/@kartotherian/tilerator/scripts/tileshell.js \
         --config /etc/tileratorui/config.yaml \
         -j.zoom $zoom \
         -j.fromZoom $from_zoom \
