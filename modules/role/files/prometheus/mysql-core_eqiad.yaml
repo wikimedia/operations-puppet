@@ -26,6 +26,7 @@
   - db1103:13312
   - db1105:13312
   - db1122:9104
+  - db1129:9104
 - labels:
     shard: s2
     role: master

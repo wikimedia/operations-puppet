@@ -410,7 +410,7 @@ node 'db1066.eqiad.wmnet' {
 
 # eqiad replicas
 # see also db1090, db1103, db1105 bellow
-node /^db1(074|076|122)\.eqiad\.wmnet/ {
+node /^db1(074|076|122|129)\.eqiad\.wmnet/ {
     role(mariadb::core)
 }
 
@@ -420,7 +420,7 @@ node 'db2035.codfw.wmnet' {
     role(mariadb::core)
 }
 
-node /^db20(41|49|56|63)\.codfw\.wmnet/ {
+node /^db2(041|049|056|063|104|107|108)\.codfw\.wmnet/ {
     role(mariadb::core)
 }
 
@@ -568,12 +568,12 @@ node /^db20(84|85|86|87|88|89|91)\.codfw\.wmnet/ {
 }
 
 # Spare eqiad hosts to be provisioned #T211613
-node /^db11(26|28|29|30|32|33|34|35|36|38)\.eqiad\.wmnet/ {
+node /^db11(26|28|30|32|33|34|35|36|38)\.eqiad\.wmnet/ {
     role(spare::system)
 }
 
 # Spare codfw hosts to be provisioned #T221532
-node /^db2(104|105|106|107|108|109|110|111|113|114|118|119|120)\.codfw\.wmnet/ {
+node /^db2(105|106|109|110|111|113|114|118|119|120)\.codfw\.wmnet/ {
     role(spare::system)
 }
 
