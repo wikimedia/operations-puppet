@@ -46,6 +46,8 @@
   - db2050:9104
   - db2057:9104
   - db2074:9104
+  - db2105:9104
+  - db2109:9104
 - labels:
     shard: s3
     role: master
