@@ -53,7 +53,7 @@ CONFIG proxy.config.http.number_of_redirections INT 10
 CONFIG proxy.config.http.redirect_use_orig_cache_key INT 1
 <% else -%>
 CONFIG proxy.config.http.cache.max_open_read_retries INT 50
-CONFIG proxy.config.http.cache.max_open_write_retries INT 50
+CONFIG proxy.config.http.cache.max_open_write_retries INT 150
 CONFIG proxy.config.http.cache.open_write_fail_action INT 1
 <% end -%>
 # Defaults
