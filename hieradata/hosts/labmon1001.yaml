@@ -1,4 +1,3 @@
 statsite::instance::graphite_host: 'localhost'
 statsite::instance::extended_counters: 1
 profile::base::notifications: critical
-prometheus::server::prometheus_v2: true

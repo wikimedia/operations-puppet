@@ -8,7 +8,6 @@ class profile::prometheus::ops (
     $max_chunks_to_persist = hiera('prometheus::server::max_chunks_to_persist', '524288'),
     $memory_chunks = hiera('prometheus::server::memory_chunks', '1048576'),
     $targets_path = '/srv/prometheus/ops/targets',
-    $prometheus_v2 = hiera('prometheus::server::prometheus_v2', false),
     $bastion_hosts = hiera('bastion_hosts', []),
 ){
 
@@ -1129,7 +1128,6 @@ class profile::prometheus::ops (
             $mjolnir_jobs, $rsyslog_jobs, $php_jobs, $php_fpm_jobs, $icinga_jobs, $docker_registry_jobs,
         ),
         global_config_extra   => $config_extra,
-        prometheus_v2         => $prometheus_v2,
     }
 
     monitoring::check_prometheus { 'prometheus_config_reload_fail':
@@ -1191,16 +1189,9 @@ class profile::prometheus::ops (
         source => "puppet:///modules/role/prometheus/mysql-labs_${::site}.yaml",
     }
 
-    if $prometheus_v2 {
-        prometheus::rule { 'rules_ops.yml':
-            instance => 'ops',
-            source   => 'puppet:///modules/role/prometheus/rules_ops.yml',
-        }
-    } else {
-        prometheus::rule { 'rules_ops.conf':
-            instance => 'ops',
-            source   => 'puppet:///modules/role/prometheus/rules_ops.conf',
-        }
+    prometheus::rule { 'rules_ops.yml':
+        instance => 'ops',
+        source   => 'puppet:///modules/role/prometheus/rules_ops.yml',
     }
 
     prometheus::varnish_2layer{ 'text':

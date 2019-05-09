@@ -3,7 +3,6 @@
 #
 class profile::prometheus::k8s::staging (
     $users = hiera('k8s_infrastructure_users'), # lint:ignore:wmf_styleguide
-    $prometheus_v2 = hiera('prometheus::server::prometheus_v2', false),
 ){
     $targets_path = '/srv/prometheus/k8s-staging/targets'
     $storage_retention = hiera('prometheus::server::storage_retention', '4032h') # lint:ignore:wmf_styleguide
@@ -165,23 +164,15 @@ class profile::prometheus::k8s::staging (
         memory_chunks         => $memory_chunks,
         global_config_extra   => $config_extra,
         scrape_configs_extra  => $scrape_configs_extra,
-        prometheus_v2         => $prometheus_v2,
     }
 
     prometheus::web { 'k8s-staging':
         proxy_pass => 'http://localhost:9907/k8s-staging',
     }
 
-    if $prometheus_v2 {
-        prometheus::rule { 'rules_k8s-staging.yml':
-            instance => 'k8s-staging',
-            source   => 'puppet:///modules/profile/prometheus/rules_k8s.yml',
-        }
-    } else {
-        prometheus::rule { 'rules_k8s-staging.conf':
-            instance => 'k8s-staging',
-            source   => 'puppet:///modules/profile/prometheus/rules_k8s.conf',
-        }
+    prometheus::rule { 'rules_k8s-staging.yml':
+        instance => 'k8s-staging',
+        source   => 'puppet:///modules/profile/prometheus/rules_k8s.yml',
     }
 
     file { $bearer_token_file:

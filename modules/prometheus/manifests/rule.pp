@@ -24,14 +24,8 @@ define prometheus::rule (
     $service_name = "prometheus@${instance}"
     $file_path = "${instance_path}/rules/${title}"
 
-    $prometheus_v2 = hiera('prometheus::server::prometheus_v2', false)
-    if $prometheus_v2 {
-      validate_re($title, '.yml$')
-      $validate_cmd = '/usr/bin/promtool check rules %'
-    } else {
-      validate_re($title, '.conf$')
-      $validate_cmd = '/usr/bin/promtool check-rules %'
-    }
+    validate_re($title, '.yml$')
+    $validate_cmd = '/usr/bin/promtool check rules %'
 
     file { $file_path:
         ensure       => file,

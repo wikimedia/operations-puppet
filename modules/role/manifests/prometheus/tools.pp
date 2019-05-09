@@ -9,7 +9,6 @@ class role::prometheus::tools {
     $bearer_token_file = '/srv/prometheus/tools/k8s.token'
     $master_host = hiera('k8s::master_host')
     $targets_path = '/srv/prometheus/tools/targets'
-    $prometheus_v2 = hiera('prometheus::server::prometheus_v2', false)
 
     require ::profile::labs::lvm::srv
 
@@ -20,7 +19,6 @@ class role::prometheus::tools {
     prometheus::server { 'tools':
         listen_address       => '127.0.0.1:9902',
         external_url         => 'https://tools-prometheus.wmflabs.org/tools',
-        prometheus_v2        => $prometheus_v2,
         scrape_configs_extra => [
             {
                 'job_name'              => 'k8s-api',
