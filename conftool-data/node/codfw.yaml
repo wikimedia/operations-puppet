@@ -304,10 +304,10 @@ codfw:
   kubernetes:
     acrab.codfw.wmnet: [kubemaster]
     acrux.codfw.wmnet: [kubemaster]
-    kubernetes2001.codfw.wmnet: [mathoid, zotero, blubberoid, eventgate-analytics, citoid, cxserver]
-    kubernetes2002.codfw.wmnet: [mathoid, zotero, blubberoid, eventgate-analytics, citoid, cxserver]
-    kubernetes2003.codfw.wmnet: [mathoid, zotero, blubberoid, eventgate-analytics, citoid, cxserver]
-    kubernetes2004.codfw.wmnet: [mathoid, zotero, blubberoid, eventgate-analytics, citoid, cxserver]
+    kubernetes2001.codfw.wmnet: [mathoid, zotero, blubberoid, eventgate-analytics, eventgate-main, citoid, cxserver]
+    kubernetes2002.codfw.wmnet: [mathoid, zotero, blubberoid, eventgate-analytics, eventgate-main, citoid, cxserver]
+    kubernetes2003.codfw.wmnet: [mathoid, zotero, blubberoid, eventgate-analytics, eventgate-main, citoid, cxserver]
+    kubernetes2004.codfw.wmnet: [mathoid, zotero, blubberoid, eventgate-analytics, eventgate-main, citoid, cxserver]
   ores:
     ores2001.codfw.wmnet: [ores]
     ores2002.codfw.wmnet: [ores]

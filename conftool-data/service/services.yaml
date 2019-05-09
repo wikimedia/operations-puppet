@@ -253,6 +253,14 @@ kubernetes:
     datacenters:
     - eqiad
     - codfw
+  eventgate-main:
+    port: 32192
+    default_values:
+      pooled: 'yes'
+      weight: 10
+    datacenters:
+    - eqiad
+    - codfw
   citoid:
     port: 1970
     default_values:

@@ -10,6 +10,7 @@ discovery::app_routes:
   graphoid: "%{::site}"
   mathoid: "%{::site}"
   eventgate-analytics: "%{::site}"
+  eventgate-main: "%{::site}"
   eventschemas: "%{::site}"
   aqs: 'eqiad'
   docker-registry: 'codfw'

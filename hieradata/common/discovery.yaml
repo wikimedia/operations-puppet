@@ -103,3 +103,6 @@ discovery::services:
   docker-registry:
     lvs: docker-registry
     active_active: false
+  eventgate-main:
+    lvs: eventgate-main
+    active_active: true

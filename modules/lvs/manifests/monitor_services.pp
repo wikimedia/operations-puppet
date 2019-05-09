@@ -153,6 +153,23 @@ class lvs::monitor_services($contacts = 'admins,team-services', $critical = fals
         notes_url     => 'https://wikitech.wikimedia.org/wiki/Event*#EventGate_(repository)',
     }
 
+    # eventgate-main
+    monitoring::service { 'check_eventgate_main_cluster_eqiad':
+        host          => 'eventgate-main.svc.eqiad.wmnet',
+        group         => 'lvs',
+        description   => 'eventgate-main LVS eqiad',
+        check_command => 'check_wmf_service!http://eventgate-main.svc.eqiad.wmnet:32192!15',
+        notes_url     => 'https://wikitech.wikimedia.org/wiki/Event*#EventGate_(repository)',
+    }
+
+    monitoring::service { 'check_eventgate_main_cluster_codfw':
+        host          => 'eventgate-main.svc.codfw.wmnet',
+        group         => 'lvs',
+        description   => 'eventgate-main LVS codfw',
+        check_command => 'check_wmf_service!http://eventgate-main.svc.codfw.wmnet:32192!15',
+        notes_url     => 'https://wikitech.wikimedia.org/wiki/Event*#EventGate_(repository)',
+    }
+
     # docker-registry
     monitoring::service { 'check_docker_registry_cluster_eqiad':
         host          => 'docker-registry.svc.eqiad.wmnet',

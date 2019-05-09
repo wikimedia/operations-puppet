@@ -160,6 +160,9 @@ lvs::configuration::lvs_service_ips:
   docker-registry: &ip_block050 # docker-registry.svc.*
     eqiad: 10.2.2.44
     codfw: 10.2.1.44
+  eventgate-main: &ip_block051
+    eqiad: 10.2.2.45
+    codfw: 10.2.1.45
 
 
 lvs::configuration::lvs_services:
@@ -1531,6 +1534,34 @@ lvs::configuration::lvs_services:
           hostname: eventgate-analytics.svc.eqiad.wmnet
         codfw:
           hostname: eventgate-analytics.svc.codfw.wmnet
+  eventgate-main:
+    description: "EventGate main endpoint, eventgate-main.svc.%{::site}.wmnet"
+    class: low-traffic
+    sites:
+    - eqiad
+    - codfw
+    ip: *ip_block051
+    port: 32192
+    depool-threshold: '.5'
+    monitors:
+      ProxyFetch:
+        url:
+        - http://localhost/_info
+      IdleConnection:
+        timeout-clean-reconnect: 3
+        max-delay: 300
+    conftool:
+      cluster: kubernetes
+      service: eventgate-main
+    icinga:
+      check_command: "check_http_lvs_on_port!eventgate-main.svc.%{::site}.wmnet!32192!/_info"
+      critical: false
+      sites:
+        eqiad:
+          hostname: eventgate-main.svc.eqiad.wmnet
+        codfw:
+          hostname: eventgate-main.svc.codfw.wmnet
+
   schema:
     description: Event Schema HTTP service
     class: low-traffic
