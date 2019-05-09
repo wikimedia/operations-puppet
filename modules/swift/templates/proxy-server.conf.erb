@@ -12,7 +12,7 @@ log_statsd_sample_rate_factor = <%= @statsd_sample_rate_factor %>
 <% end -%>
 
 [pipeline:main]
-pipeline = rewrite healthcheck cache container_sync tempurl ratelimit tempauth cors proxy-logging proxy-server
+pipeline = ensure_max_age rewrite healthcheck cache container_sync tempurl ratelimit tempauth cors proxy-logging proxy-server
 
 [app:proxy-server]
 use = egg:swift#proxy
@@ -57,6 +57,13 @@ memcache_max_connections = 12
 
 [filter:cors]
 paste.filter_factory = wmf.cors:filter_factory
+
+[filter:ensure_max_age]
+paste.filter_factory = wmf.ensure_max_age:filter_factory
+methods_list = HEAD GET
+status_list = 200
+max_age = 86400
+host_list = upload.wikimedia.org
 
 [filter:proxy-logging]
 use = egg:swift#proxy_logging
