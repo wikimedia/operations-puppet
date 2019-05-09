@@ -23,6 +23,13 @@ CONFIG proxy.config.http.cache.cache_responses_to_cookies INT 1
 # Do not accept inbound connections until the cache is enabled
 CONFIG proxy.config.http.wait_for_cache INT 2
 
+<% if @negative_caching -%>
+# Negative Response Caching
+CONFIG proxy.config.http.negative_caching_enabled INT 1
+CONFIG proxy.config.http.negative_caching_list STRING <%= @negative_caching['status_codes'].join(' ') %>
+CONFIG proxy.config.http.negative_caching_lifetime INT <%= @negative_caching['lifetime'] %>
+<% end -%>
+
 # RAM Cache
 CONFIG proxy.config.cache.ram_cache.size INT <%= @ram_cache_size %>
 CONFIG proxy.config.cache.ram_cache_cutoff INT 8388608 # 8MB

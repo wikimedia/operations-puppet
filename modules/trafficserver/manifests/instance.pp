@@ -82,6 +82,12 @@
 #   An array of Trafficserver::Caching_rules, each representing a caching rule. (default: undef).
 #   See https://docs.trafficserver.apache.org/en/latest/admin-guide/files/cache.config.en.html
 #
+# [*negative_caching*]
+#   Settings controlling whether or not Negative Response Caching should be
+#   enabled, for which status codes, and the lifetime to apply to objects
+#   without explicit Cache-Control or Expires. (default: undef).
+#   See https://docs.trafficserver.apache.org/en/latest/admin-guide/files/records.config.en.html#negative-response-caching
+#
 # [*storage*]
 #   An array of Trafficserver::Storage_elements. (default: undef).
 #
@@ -150,6 +156,7 @@ define trafficserver::instance(
     Array[Trafficserver::Mapping_rule] $mapping_rules = [],
     Boolean $enable_caching = true,
     Optional[Array[Trafficserver::Caching_rule]] $caching_rules = undef,
+    Trafficserver::Negative_Caching $negative_caching = undef,
     Optional[Array[Trafficserver::Storage_element]] $storage = undef,
     Optional[Integer] $ram_cache_size = -1,
     Array[Trafficserver::Log_format] $log_formats = [],

@@ -9,6 +9,7 @@ class profile::trafficserver::backend (
     Boolean $enable_xdebug=hiera('profile::trafficserver::backend::enable_xdebug', false),
     Array[TrafficServer::Mapping_rule] $mapping_rules=hiera('profile::trafficserver::backend::mapping_rules', []),
     Array[TrafficServer::Caching_rule] $caching_rules=hiera('profile::trafficserver::backend::caching_rules', []),
+    TrafficServer::Negative_Caching $negative_caching=hiera('profile::trafficserver::backend::negative_caching', undef),
     String $default_lua_script=hiera('profile::trafficserver::backend::default_lua_script', ''),
     Array[TrafficServer::Storage_element] $storage=hiera('profile::trafficserver::backend::storage_elements', []),
     Array[TrafficServer::Log_format] $log_formats=hiera('profile::trafficserver::backend::log_formats', []),
@@ -58,6 +59,7 @@ class profile::trafficserver::backend (
         ram_cache_size        => 2147483648, # 2G
         mapping_rules         => $mapping_rules,
         caching_rules         => $caching_rules,
+        negative_caching      => $negative_caching,
         log_formats           => $log_formats,
         log_filters           => $log_filters,
         logs                  => $logs,
