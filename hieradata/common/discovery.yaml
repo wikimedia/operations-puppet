@@ -100,3 +100,6 @@ discovery::services:
   eventgate-analytics:
     lvs: eventgate-analytics
     active_active: true
+  docker-registry:
+    lvs: docker-registry
+    active_active: false
