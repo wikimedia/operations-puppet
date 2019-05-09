@@ -560,21 +560,21 @@ class Transferer(object):
 
     def start_slave(self, host, socket):
         """
-        Stop slave on instance of the given host and socket
-        """
-        command = ['/usr/local/bin/mysql', '--socket', socket,
-                   '--connect-timeout=10',
-                   '--execute="STOP SLAVE"']
-        result = self.run_command(host, command)
-        return result.returncode
-
-    def stop_slave(self, host, socket):
-        """
         Start slave on instance of the given host and socket
         """
         command = ['/usr/local/bin/mysql', '--socket', socket,
                    '--connect-timeout=10',
                    '--execute="START SLAVE"']
+        result = self.run_command(host, command)
+        return result.returncode
+
+    def stop_slave(self, host, socket):
+        """
+        Stop slave on instance of the given host and socket
+        """
+        command = ['/usr/local/bin/mysql', '--socket', socket,
+                   '--connect-timeout=10',
+                   '--execute="STOP SLAVE"']
         result = self.run_command(host, command)
         return result.returncode
 
