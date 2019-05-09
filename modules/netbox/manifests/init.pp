@@ -69,6 +69,13 @@ class netbox(
       notify  => Service['uwsgi-netbox'],
   }
 
+  # Netbox is controlled via a custom systemd unit (uwsgi-netbox),
+  # so avoid the generic uwsgi sysvinit script shipped in the package
+  exec { 'mask_default_uwsgi':
+      command => '/bin/systemctl mask uwsgi.service',
+      creates => '/etc/systemd/system/uwsgi.service',
+  }
+
   service::uwsgi { 'netbox':
       port            => $port,
       deployment_user => 'deploy-librenms',
