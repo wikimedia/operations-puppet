@@ -401,7 +401,7 @@ class Transferer(object):
             src_command = ['/bin/bash', '-c', r'"{} {} {} {}"'
                            .format(self.xtrabackup_command, self.compress_command,
                                    self.encrypt_command, self.netcat_send_command(target_host))]
-            dst_command = ['/bin/bash', '-c', r'"cd {} && {} {} {}"'
+            dst_command = ['/bin/bash', '-c', r'"cd {} && {} {} {} {}"'
                            .format(target_path, self.netcat_listen_command, self.decrypt_command,
                                    self.decompress_command, self.mbstream_command)]
         elif self.is_decompress:
