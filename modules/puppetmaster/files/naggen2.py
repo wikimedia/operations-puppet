@@ -8,9 +8,10 @@ try:
 except ImportError:
     import configparser
 import logging
-from logging.handlers import SysLogHandler
 import sys
 import time
+
+from logging.handlers import SysLogHandler
 
 import jinja2
 import requests
@@ -104,6 +105,7 @@ VALID_SERVICE_PARAMS = [
     'icon_image',
     'icon_image_alt'
 ]
+
 
 class NagiosGeneratorBase(object):
     restype = {
@@ -229,14 +231,17 @@ class NagiosGeneratorPuppetDB(NagiosGeneratorBase):
                 self.restype[what]
             )
         except configparser.NoOptionError:
-            self.log.debug('PuppetDB version 4 setting "server_urls" not found in configfile. Trying PuppetDB version 2 settings "server" "port" and PuppetDB API v3.')
+            self.log.debug(
+                    'PuppetDB version 4 setting "server_urls" not found in configfile. ',
+                    'Trying PuppetDB version 2 settings "server" "port" and PuppetDB API v3.')
             url = "https://%s:%s/v3/resources/%s" % (
                 self.config.get('main', 'server'),
                 self.config.get('main', 'port'),
                 self.restype[what]
             )
         else:
-            self.log.debug('Found PuppetDB version 4 setting "server_urls" in configfile. Using PuppetDB API v4.')
+            self.log.debug('Found PuppetDB version 4 setting "server_urls" in configfile. ',
+                           'Using PuppetDB API v4.')
 
         resources_raw = requests.get(url, params={
             'query': '["and", \
@@ -262,14 +267,17 @@ class NagiosGeneratorPuppetDB(NagiosGeneratorBase):
 
 
 def main():
-    parser = argparse.ArgumentParser(description='Nagios config file generator -- Outputs a Nagios service or host config from a PuppetDB or MySQL(deprecated) backend.',
-                                     epilog='Note: Environment variable REQUESTS_CA_BUNDLE may be used to specify the CA certificate bundle location (file or directory) used when establishing HTTPS connection to PuppetDB.' )
-    parser.add_argument('--type', '-t',
-                        dest='type',
-                        help="type of file to generate",
+    parser = argparse.ArgumentParser(
+        description=(
+            'Nagios config file generator -- Outputs a Nagios service or host config from a ',
+            'PuppetDB or MySQL(deprecated) backend.'),
+        epilog=(
+            'Note: Environment variable REQUESTS_CA_BUNDLE may be used to specify the CA ',
+            'certificate bundle location (file or directory) used when establishing HTTPS ',
+            'connection to PuppetDB.'))
+    parser.add_argument('--type', '-t', dest='type', help="type of file to generate",
                         choices=['services', 'hosts'])
-    parser.add_argument(
-        '--configfile', '-c', dest='configfile', default='/etc/puppet/puppet.conf')
+    parser.add_argument('--configfile', '-c', dest='configfile', default='/etc/puppet/puppet.conf')
     parser.add_argument('--debug', action='store_true', default=False)
     parser.add_argument('--puppetdb', action='store_true', default=False)
     parser.add_argument('--activerecord', action='store_false', dest='puppetdb')
@@ -309,6 +317,7 @@ def main():
     for entity in n.render(args.type):
         print(entity)
     log.info('Run completed in %.2f seconds', (time.time() - tstart))
+
 
 if __name__ == '__main__':
     main()

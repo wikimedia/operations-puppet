@@ -7,13 +7,15 @@ import argparse
 import datetime
 import logging
 import os
-import requests
 import shutil
-import sys
+
+import requests
 
 # Send all git output to stdout
 # This has to be set before git is imported.
 os.environ["GIT_PYTHON_TRACE"] = 'full'
+import git  # noqa: I100
+
 logging.basicConfig(
     level=logging.INFO,
     format='%(asctime)s %(levelname)-8s %(name)s: %(message)s',
@@ -21,8 +23,6 @@ logging.basicConfig(
 )
 logging.captureWarnings(True)
 logger = logging.getLogger('sync-upstream')
-
-import git
 
 
 def rebase_repo(repo_path, latest_upstream_commit):
@@ -68,7 +68,7 @@ def rebase_repo(repo_path, latest_upstream_commit):
         # This bit of magic should prevent us from needing to create a full
         # duplicate of all the objects in repo_path.
         # See: https://git-scm.com/docs/gitrepository-layout
-        alt_file = os.path.join(tempdir,".git/objects/info/alternates")
+        alt_file = os.path.join(tempdir, ".git/objects/info/alternates")
         with open(alt_file, "w") as alternates:
             alternates.write("%s/.git/objects" % repo_path)
 
@@ -94,7 +94,7 @@ def rebase_repo(repo_path, latest_upstream_commit):
         tmprepo.git.push(
             "--force-with-lease=%s:%s" % (current_branch, latest_commit),
             repo_path,
-            "oot-rebase/%s:%s" % (current_branch,branchname))
+            "oot-rebase/%s:%s" % (current_branch, branchname))
 
         # Finally reset our original repo to this new branch and discard the
         # 'branchname' branch

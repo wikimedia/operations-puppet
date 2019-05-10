@@ -14,7 +14,7 @@ class puppetmaster::gitsync(
 
     file { '/usr/local/bin/git-sync-upstream':
         ensure => present,
-        source => 'puppet:///modules/puppetmaster/git-sync-upstream',
+        source => 'puppet:///modules/puppetmaster/git-sync-upstream.py',
         owner  => 'root',
         group  => 'root',
         mode   => '0555',

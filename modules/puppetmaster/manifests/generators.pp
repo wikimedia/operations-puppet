@@ -9,7 +9,7 @@ class puppetmaster::generators($ensure = 'present'){
         owner   => 'root',
         group   => 'root',
         mode    => '0555',
-        source  => 'puppet:///modules/puppetmaster/naggen2',
+        source  => 'puppet:///modules/puppetmaster/naggen2.py',
         require => Package[$packages],
     }
 
@@ -22,7 +22,7 @@ class puppetmaster::generators($ensure = 'present'){
         owner   => 'root',
         group   => 'root',
         mode    => '0555',
-        source  => 'puppet:///modules/puppetmaster/prometheus-ganglia-gen',
+        source  => 'puppet:///modules/puppetmaster/prometheus-ganglia-gen.py',
         require => Package[$packages],
     }
 }

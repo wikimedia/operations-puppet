@@ -66,12 +66,12 @@ class PrometheusClusterGen(object):
                     attrs[k].append(v)
 
                 h = Host(
-                        fqdn = entity['title'],
-                        name = entity['title'].split('.')[0],
-                        cluster = attrs['cluster'][0],
-                        site = attrs['site'][0])
+                        fqdn=entity['title'],
+                        name=entity['title'].split('.')[0],
+                        cluster=attrs['cluster'][0],
+                        site=attrs['site'][0])
                 yield h
-        except Exception as e:
+        except Exception:
             self.log.exception(
                     'Could not generate output for resource Ganglia::Cluster')
             sys.exit(30)
@@ -106,14 +106,14 @@ class PrometheusClusterGen(object):
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('--configfile', '-c', dest='configfile',
-            default='/etc/puppet/puppet.conf')
+                        default='/etc/puppet/puppet.conf')
     parser.add_argument('--site', dest='sites', metavar='SITE', nargs='+')
     parser.add_argument('--filter-hostname', dest='filter_hostnames',
-            metavar='REGEXP', nargs='+')
+                        metavar='REGEXP', nargs='+')
     parser.add_argument('--debug', action='store_true', default=False)
     args = parser.parse_args()
 
-    log_format='%(name)s: %(levelname)s - %(message)s'
+    log_format = '%(name)s: %(levelname)s - %(message)s'
     log = logging.getLogger('prometheus-ganglia-gen')
 
     logging.basicConfig(level=logging.DEBUG, format=log_format, stream=sys.stderr)
@@ -131,7 +131,7 @@ def main():
     log.info('Generating prometheus cluster targets for sites %r' % args.sites)
     clustergen = PrometheusClusterGen(args.configfile, args.debug)
     print yaml.dump(clustergen.site_targets(args.sites, args.filter_hostnames),
-            default_flow_style=False)
+                    default_flow_style=False)
     log.info('Run completed')
 
 
