@@ -3,7 +3,7 @@
 class prometheus::wmf_elasticsearch_exporter::common {
     file { '/usr/local/bin/prometheus-wmf-elasticsearch-exporter':
         ensure => present,
-        source => 'puppet:///modules/prometheus/usr/local/bin/prometheus-wmf-elasticsearch-exporter',
+        source => 'puppet:///modules/prometheus/usr/local/bin/prometheus-wmf-elasticsearch-exporter.py',
         owner  => 'root',
         group  => 'root',
         mode   => '0555',
