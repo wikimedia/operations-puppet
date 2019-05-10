@@ -43,6 +43,7 @@ profile::cache::varnish::common_vcl_config:
     upload_domain: 'upload.wikimedia.org'
     upload_webp_hits_threshold: 100
     maps_domain: 'maps.wikimedia.org'
+profile::cache::varnish::frontend::backend_services: [ats-be,varnish-be]
 profile::cache::varnish::frontend::fe_vcl_config:
     pass_random: false
     admission_policy: 'none'
