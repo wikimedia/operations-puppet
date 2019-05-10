@@ -30,6 +30,7 @@ define udp2log::instance::monitoring(
             description   => "udp2log log age for ${name}",
             nrpe_command  => "/usr/lib/nagios/plugins/check_udp2log_log_age ${name}",
             contact_group => 'admins,analytics',
+            notes_url     => 'https://wikitech.wikimedia.org/wiki/Udp2log',
         }
     }
     # TODO else ensure absent,
@@ -44,6 +45,7 @@ define udp2log::instance::monitoring(
             nrpe_command  => "/usr/lib/nagios/plugins/check_udp2log_procs ${name}",
             contact_group => 'admins,analytics',
             retries       => 10,
+            notes_url     => 'https://wikitech.wikimedia.org/wiki/Udp2log',
         }
     }
     # TODO else ensure absent,
