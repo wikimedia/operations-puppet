@@ -1,0 +1,7 @@
+#!/bin/bash
+# NOTE: This file is managed by puppet
+#
+# This file is a wrapper running the saltrotate script and its related
+# HDFS cleanup commands.
+#
+<%= @refinery_path %>/bin/saltrotate -p '3 months' -b '50 days' <%= @refinery_config_dir %>/salts/eventlogging_sanitization && hdfs dfs -rm -r /user/hdfs/salts/eventlogging_sanitization && hdfs dfs -put <%= @refinery_config_dir %>/salts/eventlogging_sanitization /user/hdfs/salts"

@@ -152,13 +152,22 @@ class profile::analytics::refinery::job::data_purge (
         ensure => 'directory',
         owner  => 'hdfs',
     }
+
+    file { '/usr/local/bin/refinery-eventlogging-saltrotate':
+        content => template('profile/analytics/refinery/job/refinery-eventlogging-saltrotate.erb'),
+        mode    => '0550',
+        owner   => 'hdfs',
+        group   => 'hdfs',
+    }
+
     # Timer runs at midnight (salt rotation time):
     profile::analytics::systemd_timer { 'refinery-eventlogging-saltrotate':
         description => 'Create, rotate and delete cryptographic salts for EventLogging sanitization.',
-        command     => "${refinery_path}/bin/saltrotate -p '3 months' -b '50 days' ${refinery_config_dir}/salts/eventlogging_sanitization && hdfs dfs -rm -r /user/hdfs/salts/eventlogging_sanitization && hdfs dfs -put ${refinery_config_dir}/salts/eventlogging_sanitization /user/hdfs/salts",
+        command     => '/usr/local/bin/refinery-eventlogging-saltrotate',
         environment => $systemd_env,
         interval    => '*-*-* 00:00:00',
         user        => 'hdfs',
+        require     => File['/usr/local/bin/refinery-eventlogging-saltrotate']
     }
 
     # EventLogging sanitization. Runs in two steps.
