@@ -44,5 +44,6 @@ define burrow::check_consumer_lag(
         # Only alert if lag remains present for 3 checks in 10 minute intervals, i.e. 30 minutes.
         retries        => 3,
         retry_interval => 10,
+        notes_url      => 'https://wikitech.wikimedia.org/wiki/Analytics/Systems/EventLogging/Administration#Consumption_Lag_%22Alarms%22:_Burrow',
     }
 }
