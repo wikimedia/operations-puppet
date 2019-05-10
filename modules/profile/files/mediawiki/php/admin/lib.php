@@ -293,7 +293,12 @@ function dump_opcache_meta() {
 function clear_opcache() {
 	$result = [];
 	$file_name = isset($_GET['file']) ? realpath(MW_PATH . '/' . $_GET['file']) : null;
-	if (empty($file_name)) {
+	// It seems possible that partial opcache clears (of just a subset of
+	// files) cause more opcache corruption than resetting the entire opcache
+	// wholesale.  For the time being, let's try ignoring any provided
+	// filenames and always do full resets.
+	// c.f. https://phabricator.wikimedia.org/T221347
+	if (true || empty($file_name)) {
 		$result['*'] = opcache_reset();
 	} else{
 		if (strpos($file_name, MW_PATH) !== 0) {
