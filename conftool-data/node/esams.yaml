@@ -12,7 +12,7 @@ esams:
     cp3035.esams.wmnet: [varnish-fe, varnish-be, nginx]
     cp3036.esams.wmnet: [varnish-fe, varnish-be, nginx]
     cp3037.esams.wmnet: [varnish-fe, varnish-be, nginx]
-    cp3038.esams.wmnet: [varnish-fe, varnish-be, nginx]
+    cp3038.esams.wmnet: [varnish-fe, ats-be, nginx]
     cp3039.esams.wmnet: [varnish-fe, varnish-be, nginx]
     cp3043.esams.wmnet: [varnish-fe, varnish-be, nginx]
     cp3044.esams.wmnet: [varnish-fe, varnish-be, nginx]
