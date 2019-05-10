@@ -103,17 +103,16 @@ class profile::gerrit::server(
         require => Class['gerrit'],
     }
 
-    # Ship gerrit logs to ELK using startmsg_regex pattern to join multi-line events based on datestamp
-    # example: [2018-11-28 21:53:07,446]
-    rsyslog::input::file { 'gerrit-multiline':
-        path           => '/var/log/gerrit/*_log',
-        startmsg_regex => '^\\\\[[0-9,-\\\\+\\\\ \\\\:]+\\\\]',
+    # Ship gerrit logs to ELK, everything should be in the JSON file now.
+    # Just the sshd_log has a custom format.
+    rsyslog::input::file { 'gerrit-json':
+        path => '/var/log/gerrit/gerrit.json',
     }
 
+    # Apache reverse proxies to jetty
     rsyslog::input::file { 'gerrit-apache2-error':
         path => '/var/log/apache2/*error*.log',
     }
-
     rsyslog::input::file { 'gerrit-apache2-access':
         path => '/var/log/apache2/*access*.log',
     }
