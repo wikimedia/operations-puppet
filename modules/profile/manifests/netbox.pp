@@ -202,20 +202,20 @@ class profile::netbox (
         puppet_svc => 'apache2',
     }
     if $active_server == $::fqdn {
-        $monitoring_ensure = 'present'
+        $active_ensure = 'present'
     } else {
-        $monitoring_ensure = 'absent'
+        $active_ensure = 'absent'
     }
 
     monitoring::service { 'netbox-ssl':
-        ensure        => $monitoring_ensure,
+        ensure        => $active_ensure,
         description   => 'netbox SSL',
         check_command => 'check_ssl_http_letsencrypt!netbox.wikimedia.org',
         notes_url     => 'https://wikitech.wikimedia.org/wiki/Netbox',
     }
 
     monitoring::service { 'netbox-https':
-        ensure        => $monitoring_ensure,
+        ensure        => $active_ensure,
         description   => 'netbox HTTPS',
         check_command => 'check_https_url!netbox.wikimedia.org!https://netbox.wikimedia.org',
         notes_url     => 'https://wikitech.wikimedia.org/wiki/Netbox',
@@ -287,7 +287,7 @@ class profile::netbox (
 
         if $report['check_interval'] {
             ::nrpe::monitor_service { "check_netbox_${repname}":
-                ensure         => $monitoring_ensure,
+                ensure         => $active_ensure,
                 description    => "Check the Netbox report(s) `${repname}` for fail status.",
                 nrpe_command   => "/usr/bin/python3 /usr/local/lib/nagios/plugins/check_netbox_report.py ${check_args} ${reports}",
                 check_interval => $report['check_interval'],
@@ -295,21 +295,27 @@ class profile::netbox (
             }
         }
         else {
-            ::nrpe::monitor_service { "check_${repname}":
+            ::nrpe::monitor_service { "check_netbox_${repname}":
                 ensure       => absent,
             }
         }
         if $report['run_interval'] {
-            ::nrpe::monitor_service { "check_netbox_${repname}_run":
-                ensure         => $monitoring_ensure,
-                description    => "Run the Netbox report(s) `${repname}` and check for fail status.",
-                nrpe_command   => "/usr/bin/python3 /usr/local/lib/nagios/plugins/check_netbox_report.py ${check_args} ${reports}",
-                check_interval => $report['run_interval'],
-                notes_url      => 'https://wikitech.wikimedia.org/wiki/Netbox#Reports',
+            systemd::timer::job { "netbox_report_${repname}_run":
+                ensure                    => $active_ensure,
+                description               => "Run reports ${reports} in Netbox.",
+                command                   => "/usr/bin/python3 /usr/local/lib/nagios/plugins/check_netbox_report.py -r ${reports}",
+                interval                  => {
+                    'start'    => 'OnCalendar',
+                    'interval' => $report['run_interval']
+                },
+                logging_enabled           => false,
+                monitoring_enabled        => false,
+                monitoring_contact_groups => 'admins',
+                user                      => 'deploy-librenms',
             }
         }
         else {
-            ::nrpe::monitor_service { "check_${repname}_run":
+            systemd::timer::job{ "netbox_report_${repname}_run":
                 ensure       => absent,
             }
         }
