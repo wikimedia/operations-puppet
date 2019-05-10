@@ -72,16 +72,15 @@ class profile::wmcs::nfsclient(
         }
     }
 
-    # TODO: Replace when migrated to cloudstore1008/9
     if $::labsproject == 'maps' {
 
-        labstore::nfs_mount { 'maps-on-labstore1003':
+        labstore::nfs_mount { 'maps-on-secondary':
             mount_name  => 'maps',
             project     => $::labsproject,
             options     => ['rw', 'hard'],
-            mount_path  => '/mnt/nfs/labstore1003-maps',
-            server      => 'labstore1003.eqiad.wmnet',
-            share_path  => '/maps',
+            mount_path  => '/mnt/nfs/secondary-maps',
+            server      => 'nfs-maps.wikimedia.org',
+            share_path  => '/project/maps',
             lookupcache => $lookupcache,
         }
 
@@ -90,15 +89,15 @@ class profile::wmcs::nfsclient(
             file { '/data/project':
                 ensure  => 'link',
                 force   => true,
-                target  => '/mnt/nfs/labstore1003-maps/project',
-                require => Labstore::Nfs_mount['maps-on-labstore1003'],
+                target  => '/mnt/nfs/secondary-maps/project',
+                require => Labstore::Nfs_mount['maps-on-secondary'],
             }
 
             file { '/home':
                 ensure  => 'link',
                 force   => true,
-                target  => '/mnt/nfs/labstore1003-maps/home',
-                require => Labstore::Nfs_mount['maps-on-labstore1003'],
+                target  => '/mnt/nfs/secondary-maps/home',
+                require => Labstore::Nfs_mount['maps-on-secondary'],
             }
         }
     }
