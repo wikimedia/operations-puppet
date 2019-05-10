@@ -1,16 +1,11 @@
 #!/usr/bin/python
-
-#####################################################################
-### THIS FILE IS MANAGED BY PUPPET
-### puppet:///modules/ldap/scripts/add-ldap-group
-#####################################################################
-
-import sys
 import grp
 import pwd
+import sys
 import traceback
-import ldapsupportlib
 from optparse import OptionParser
+
+import ldapsupportlib
 
 try:
     import ldap
@@ -24,22 +19,25 @@ def main():
     parser = OptionParser(conflict_handler="resolve")
     parser.set_usage('add-ldap-group [options] <groupname>\nexample: add-ldap-group wikidev')
 
-    ldapSupportLib = ldapsupportlib.LDAPSupportLib()
-    ldapSupportLib.addParserOptions(parser, "scriptuser")
+    ldap_support_lib = ldapsupportlib.LDAPSupportLib()
+    ldap_support_lib.addParserOptions(parser, "scriptuser")
 
-    parser.add_option("-m", "--directorymanager", action="store_true", dest="directorymanager", help="Use the Directory Manager's credentials, rather than your own")
-    parser.add_option("--gid", action="store", dest="gidNumber", help="The group's gid (default: next available gid)")
-    parser.add_option("--members", action="store", dest="members", help="A comma separated list of group members to add to this group")
+    parser.add_option("-m", "--directorymanager", action="store_true", dest="directorymanager",
+                      help="Use the Directory Manager's credentials, rather than your own")
+    parser.add_option("--gid", action="store", dest="gid_number",
+                      help="The group's gid (default: next available gid)")
+    parser.add_option("--members", action="store", dest="members",
+                      help="A comma separated list of group members to add to this group")
     (options, args) = parser.parse_args()
 
     if len(args) != 1:
         parser.error("add-ldap-group expects exactly one argument.")
 
-    ldapSupportLib.setBindInfoByOptions(options, parser)
+    ldap_support_lib.setBindInfoByOptions(options, parser)
 
-    base = ldapSupportLib.getBase()
+    base = ldap_support_lib.getBase()
 
-    ds = ldapSupportLib.connect()
+    ds = ldap_support_lib.connect()
 
     # w00t We're in!
     try:
@@ -47,13 +45,13 @@ def main():
 
         dn = 'cn=' + groupname + ',ou=groups,' + base
         cn = groupname
-        objectClasses = ['posixGroup', 'groupOfNames', 'top']
-        if options.gidNumber:
+        object_classes = ['posixGroup', 'groupOfNames', 'top']
+        if options.gid_number:
             try:
-                groupcheck = grp.getgrgid(options.gidNumber)
+                grp.getgrgid(options.gid_number)
                 raise ldap.TYPE_OR_VALUE_EXISTS()
             except KeyError:
-                gidNumber = options.gidNumber
+                gid_number = options.gid_number
         else:
             # Find the next gid
             # TODO: make this use LDAP calls instead of getent
@@ -63,8 +61,8 @@ def main():
                 if tmpgid < 50000:
                     gids.append(group[2])
             gids.sort()
-            gidNumber = gids.pop()
-            gidNumber = str(gidNumber + 1)
+            gid_number = gids.pop()
+            gid_number = str(gid_number + 1)
 
         members = []
         if options.members:
@@ -73,23 +71,24 @@ def main():
                 try:
                     # Ensure the user exists
                     # TODO: make this use LDAP calls instead of getent
-                    checkuid = pwd.getpwnam(raw_member)
+                    pwd.getpwnam(raw_member)
 
                     # member expects DNs
                     members.append('uid=' + raw_member + ',ou=people,' + base)
                 except KeyError:
-                    sys.stderr.write(raw_member + " doesn't exist, and won't be added to the group.\n")
+                    sys.stderr.write(
+                        raw_member + " doesn't exist, and won't be added to the group.\n")
 
-        groupEntry = {}
-        groupEntry['objectclass'] = objectClasses
-        groupEntry['gidNumber'] = gidNumber
-        groupEntry['cn'] = cn
+        group_entry = {}
+        group_entry['objectclass'] = object_classes
+        group_entry['gidNumber'] = gid_number
+        group_entry['cn'] = cn
         if members:
-            groupEntry['member'] = members
+            group_entry['member'] = members
 
-        modlist = ldap.modlist.addModlist(groupEntry)
+        modlist = ldap.modlist.addModlist(group_entry)
         ds.add_s(dn, modlist)
-    except ldap.UNWILLING_TO_PERFORM, msg:
+    except ldap.UNWILLING_TO_PERFORM as msg:
         sys.stderr.write("LDAP was unwilling to create the group. Error was: %s\n" % msg[0]["info"])
         ds.unbind()
         sys.exit(1)
@@ -115,6 +114,7 @@ def main():
 
     ds.unbind()
     sys.exit(0)
+
 
 if __name__ == "__main__":
     main()

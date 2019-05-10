@@ -16,7 +16,7 @@ class ldap::client::utils($ldapconfig) {
         owner  => 'root',
         group  => 'root',
         mode   => '0544',
-        source => 'puppet:///modules/ldap/scripts/add-ldap-group',
+        source => 'puppet:///modules/ldap/scripts/add-ldap-group.py',
     }
 
     file { '/usr/local/sbin/ldaplist':
@@ -28,7 +28,7 @@ class ldap::client::utils($ldapconfig) {
         owner  => 'root',
         group  => 'root',
         mode   => '0555',
-        source => 'puppet:///modules/ldap/scripts/ldaplist',
+        source => 'puppet:///modules/ldap/scripts/ldaplist.py',
     }
 
     if $::realm == 'labs' {

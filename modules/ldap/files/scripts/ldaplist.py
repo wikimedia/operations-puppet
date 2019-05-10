@@ -1,16 +1,9 @@
 #!/usr/bin/python
-
-#####################################################################
-### THIS FILE IS MANAGED BY PUPPET
-### puppet:///modules/ldap/scripts/ldaplist
-#####################################################################
-
 import ldapsupportlib
 from optparse import OptionParser
 import re
 from signal import signal, SIGPIPE, SIG_DFL
 import sys
-import traceback
 
 try:
     import ldap
@@ -21,6 +14,7 @@ except ImportError:
 # Avoid "IOError: [Errno 32] Broken pipe" when piping to head & Co.
 signal(SIGPIPE, SIG_DFL)
 
+
 def main():
     "An application that implements the functionality of Solaris's ldaplist."
 
@@ -30,23 +24,33 @@ def main():
     print 'before 30 August 2016. If nobody comments, ldaplist will be removed!'
     print '\033[0m'
     parser = OptionParser(conflict_handler="resolve")
-    parser.set_usage("ldaplist [options] [database] [object-name]\n\nexample: ldaplist -l passwd ldap_user")
+    parser.set_usage(
+        "ldaplist [options] [database] [object-name]\n\nexample: ldaplist -l passwd ldap_user")
 
-    ldapSupportLib = ldapsupportlib.LDAPSupportLib()
-    ldapSupportLib.addParserOptions(parser)
+    ldap_support_lib = ldapsupportlib.LDAPSupportLib()
+    ldap_support_lib.addParserOptions(parser)
 
-    parser.add_option("-v", "--verbose", action="store_true", dest="verbose", help="Show the database and search filter used for this search")
-    parser.add_option("-l", "--longlisting", action="store_true", dest="longlisting", help="List all the attributes for each entry matching the search criteria.  By default, ldaplist lists only the Distinguished Name of the entries found.")
-    parser.add_option("-h", action="store_true", dest="helpme", help="Show available databases to search")
-    parser.add_option("-d", "--showdatabase", action="store_true", dest="showdatabase", help="Show the base dn being used for this database")
-    parser.add_option("-a", "--showattributes", dest="showattributes", help="Show the given attributes")
-    parser.add_option("-r", "--recursive", action="store_true", dest="recursive", help="Recurse netgroups")
-    parser.add_option("--like", action="store_true", dest="like", help="Search for objects that equal or sound like [object-name]")
+    parser.add_option("-v", "--verbose", action="store_true", dest="verbose",
+                      help="Show the database and search filter used for this search")
+    parser.add_option("-l", "--longlisting", action="store_true", dest="longlisting",
+                      help=('List all the attributes for each entry matching the search',
+                            ' criteria.  By default, ldaplist lists only the Distinguished',
+                            ' Name of the entries found.'))
+    parser.add_option("-h", action="store_true", dest="helpme",
+                      help="Show available databases to search")
+    parser.add_option("-d", "--showdatabase", action="store_true", dest="showdatabase",
+                      help="Show the base dn being used for this database")
+    parser.add_option("-a", "--showattributes", dest="showattributes",
+                      help="Show the given attributes")
+    parser.add_option("-r", "--recursive", action="store_true", dest="recursive",
+                      help="Recurse netgroups")
+    parser.add_option("--like", action="store_true", dest="like",
+                      help="Search for objects that equal or sound like [object-name]")
     (options, args) = parser.parse_args()
 
-    ldapSupportLib.setBindInfoByOptions(options, parser)
+    ldap_support_lib.setBindInfoByOptions(options, parser)
 
-    base = ldapSupportLib.getBase()
+    base = ldap_support_lib.getBase()
 
     objectbasedns = {"base": base,
                      "passwd": "ou=people," + base,
@@ -88,14 +92,16 @@ def main():
         print 'database'.ljust(17) + 'default type'.ljust(20) + 'objectclass'
         print '============='.ljust(17) + '================='.ljust(20) + '============='
 
-        for a, b, c in zip(objectbasedns.keys(), objectdefaulttypes.values(), objectobjectclasses.values()):
+        for a, b, c in zip(objectbasedns.keys(),
+                           objectdefaulttypes.values(),
+                           objectobjectclasses.values()):
             print '%s%s%s' % (a.ljust(17), b.ljust(20), c)
         sys.exit()
 
     if len(args) >= 1:
         if args[0].find('auto_') != -1:
             objectbasedns["auto_*"] = objectbasedns["auto_*"].replace("auto_AUTO", args[0])
-            searchkeysave = args[0]
+            # searchkeysave = args[0]
             args[0] = "auto_*"
         if args[0] in objectbasedns:
             database = args[0]
@@ -112,26 +118,27 @@ def main():
                         first = False
                     else:
                         searchkey = searchkey + " " + key
-            #elif args[0] == "auto_*":
-                #searchkey = searchkeysave
+            # elif args[0] == "auto_*":
+                # searchkey = searchkeysave
             else:
                 searchkey = "*"
         else:
-            print 'The database you selected does not exist. Please use "ldaplist -h" to see available databases.'
+            print('The database you selected does not exist. Please use ',
+                  '"ldaplist -h" to see available databases.')
             sys.exit(1)
     else:
         database = "base"
         objectclass = "*"
         attribute = ""
 
-    ds = ldapSupportLib.connect()
+    ds = ldap_support_lib.connect()
 
     # w00t We're in!
     try:
         if database == "uids":
             options.like = True
             if options.showattributes is not None:
-                options.showattributes = options.showattributes + " cn uid departmentNumber employeeType seeAlso"
+                options.showattributes += " cn uid departmentNumber employeeType seeAlso"
             else:
                 options.showattributes = "cn uid departmentNumber employeeType seeAlso"
             options.longlisting = True
@@ -148,22 +155,27 @@ def main():
                     attributes = ""
                 else:
                     attributes = options.showattributes
+                search_str = '(&(objectclass={objectclass})({search})) {attributes}'.format(
+                    objectclass,
+                    attribute + searchoperator + searchkey,
+                    attributes)
                 print "+++ database=" + database
-                print "+++ filter=(&(objectclass=" + objectclass + ")(" + attribute + searchoperator + searchkey + ")) " + attributes
-            PosixData = ds.search_s(base, ldap.SCOPE_SUBTREE,
-                                    "(&(objectclass=" + objectclass + ")(" + attribute + searchoperator + searchkey + "))",
-                                    attrlist)
+                print "+++ filter=" + search_str
+            posix_data = ds.search_s(base, ldap.SCOPE_SUBTREE, search_str, attrlist)
         else:
             if options.verbose:
                 print "(objectclass=" + objectclass + ")"
-            PosixData = ds.search_s(base, ldap.SCOPE_SUBTREE,
-                                    "(objectclass=" + objectclass + ")")
+            posix_data = ds.search_s(base, ldap.SCOPE_SUBTREE,
+                                     "(objectclass=" + objectclass + ")")
     except ldap.NO_SUCH_OBJECT:
-        sys.stderr.write("Object not found. If you are trying to use * in your search, make sure that you wrap your string in single quotes to avoid shell expansion.\n")
+        sys.stderr.write("Object not found. If you are trying to use * in your search, make ",
+                         "sure that you wrap your string in single quotes to avoid shell ",
+                         "expansion.\n")
         ds.unbind()
         sys.exit(1)
     except ldap.PROTOCOL_ERROR:
-        sys.stderr.write("The search returned a protocol error, this shouldn't ever happen, please submit a trouble ticket.\n")
+        sys.stderr.write("The search returned a protocol error, this shouldn't ever happen, ",
+                         "please submit a trouble ticket.\n")
         ds.unbind()
         sys.exit(1)
     except Exception:
@@ -171,12 +183,12 @@ def main():
         ds.unbind()
         sys.exit(1)
 
-    PosixData.sort()
+    posix_data.sort()
     # /End of stolen stuff
 
-    # PosixData is a list of lists where:
-    # index 0 of PosixData[N]: contains the distinquished name
-    # index 1 of PosixData[N]: contains a dictionary of lists hashed by the following keys:
+    # posix_data is a list of lists where:
+    # index 0 of posix_data[N]: contains the distinquished name
+    # index 1 of posix_data[N]: contains a dictionary of lists hashed by the following keys:
     #               telephoneNumber, departmentNumber, uid, objectClass, loginShell,
     #               uidNumber, gidNumber, sn, homeDirectory, givenName, cn
 
@@ -185,11 +197,11 @@ def main():
         triples = []
 
         # get the members and triples from the entry we are looking for
-        for i in range(len(PosixData)):
-            if 'memberNisNetgroup' in PosixData[i][1]:
-                members_array.extend(PosixData[i][1]['memberNisNetgroup'])
-            if 'nisNetgroupTriple' in PosixData[i][1]:
-                triples.extend(PosixData[i][1]['nisNetgroupTriple'])
+        for i in range(len(posix_data)):
+            if 'memberNisNetgroup' in posix_data[i][1]:
+                members_array.extend(posix_data[i][1]['memberNisNetgroup'])
+            if 'nisNetgroupTriple' in posix_data[i][1]:
+                triples.extend(posix_data[i][1]['nisNetgroupTriple'])
 
         # get triples from any sub-members
         triples = recursenetgroups(base, ds, members_array, triples)
@@ -201,13 +213,13 @@ def main():
         ds.unbind()
         sys.exit(0)
 
-    for i in range(len(PosixData)):
+    for i in range(len(posix_data)):
         print ""
         if not options.longlisting:
-            print "dn: " + PosixData[i][0]
+            print "dn: " + posix_data[i][0]
         else:
-            print "dn: " + PosixData[i][0]
-            for (k, v) in PosixData[i][1].items():
+            print "dn: " + posix_data[i][0]
+            for (k, v) in posix_data[i][1].items():
                 if len(v) > 1:
                     for v2 in v:
                         print "\t%s: %s" % (k, v2)
@@ -250,10 +262,10 @@ def recursenetgroups(base, ds, members_array, triples, oldmembers=[]):
         members_array.remove(member)
 
         # get the triples and members for this member, and add them to the current members list
-        PosixData = ds.search_s(base,
-                                ldap.SCOPE_SUBTREE,
-                                "(&(objectclass=nisNetgroup)(cn=" + member + "))")
-        for data in PosixData:
+        posix_data = ds.search_s(base,
+                                 ldap.SCOPE_SUBTREE,
+                                 "(&(objectclass=nisNetgroup)(cn=" + member + "))")
+        for data in posix_data:
             if 'nisNetgroupTriple' in data[1]:
                 triples.extend(data[1]['nisNetgroupTriple'])
             if 'memberNisNetgroup' in data[1]:
@@ -261,6 +273,7 @@ def recursenetgroups(base, ds, members_array, triples, oldmembers=[]):
 
         # Recurse iteratively (tail recursion)
         return recursenetgroups(base, ds, members_array, triples, oldmembers)
+
 
 if __name__ == "__main__":
     main()
