@@ -23,13 +23,13 @@
 # [*bwlimit*] Optionally limit the maxmium bandwith used
 #
 define rsync::quickdatacopy(
-  $source_host,
-  $dest_host,
-  $module_path,
-  $file_path = '*',
-  $auto_sync = true,
-  $ensure = present,
-  $bwlimit = undef,
+  Stdlib::Fqdn $source_host,
+  Stdlib::Fqdn $dest_host,
+  Stdlib::Unixpath $module_path,
+  Optional[Stdlib::Unixpath] $file_path = undef,
+  Boolean $auto_sync = true,
+  Wmflib::Ensure $ensure = present,
+  Optional[Integer] $bwlimit = undef,
   ) {
 
       if $source_host == $::fqdn {
