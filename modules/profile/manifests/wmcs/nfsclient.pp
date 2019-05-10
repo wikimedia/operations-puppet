@@ -12,7 +12,7 @@ class profile::wmcs::nfsclient(
 
     # TODO: Change these "secondary" mentions to "primary"
     # The primary cluster is mounted as secondary for historical reasons and
-    # changing this would be quite disruptive.
+    # changing this would be quite disruptive so put off for a while.
     labstore::nfs_mount { 'project-on-labstore-secondary':
         mount_name  => 'project',
         project     => $::labsproject,
@@ -53,25 +53,24 @@ class profile::wmcs::nfsclient(
 
     # These are actually the secondary servers, not the servers formerly known as
     # secondary.  These are not connected to the above TODO
-    # Commented out for now until scratch is migrated off labstore1003
-    # $secondary_servers.each |String $server| {
-    #     labstore::nfs_mount { $server:
-    #         mount_name  => 'scratch',
-    #         project     => $::labsproject,
-    #         options     => ['ro', 'soft', 'timeo=300', 'retrans=3'],
-    #         mount_path  => "/mnt/nfs/secondary-${server}",
-    #         share_path  => '/scratch',
-    #         server      => $server,
-    #         lookupcache => $lookupcache,
-    #     }
-    # }
-    # if mount_nfs_volume($::labsproject, 'scratch') {
-    #     file { '/data/scratch':
-    #         ensure  => 'link',
-    #         target  => "/mnt/nfs/secondary-${scratch_active_server}-scratch",
-    #         require => Labstore::Nfs_mount[$scratch_active_server]
-    #     }
-    # }
+    $secondary_servers.each |String $server| {
+        labstore::nfs_mount { $server:
+            mount_name  => 'scratch',
+            project     => $::labsproject,
+            options     => ['ro', 'soft', 'timeo=300', 'retrans=3'],
+            mount_path  => "/mnt/nfs/secondary-${server}-scratch",
+            share_path  => '/scratch',
+            server      => $server,
+            lookupcache => $lookupcache,
+        }
+    }
+    if mount_nfs_volume($::labsproject, 'scratch') {
+        file { '/data/scratch':
+            ensure  => 'link',
+            target  => "/mnt/nfs/secondary-${scratch_active_server}-scratch",
+            require => Labstore::Nfs_mount[$scratch_active_server]
+        }
+    }
 
     # TODO: Replace when migrated to cloudstore1008/9
     if $::labsproject == 'maps' {
@@ -142,25 +141,6 @@ class profile::wmcs::nfsclient(
                 target  => '/mnt/nfs/labstore-secondary-tools-home',
                 require => Labstore::Nfs_mount['tools-home-on-labstore-secondary'],
             }
-        }
-    }
-
-    # TODO: Remove when scratch is migrated to cloudstore1008/9
-    labstore::nfs_mount { 'scratch-on-labstore1003':
-        mount_name  => 'scratch',
-        project     => $::labsproject,
-        options     => ['rw', 'soft', 'timeo=300', 'retrans=3', 'nosuid', 'noexec', 'nodev'],
-        mount_path  => '/mnt/nfs/labstore1003-scratch',
-        server      => 'labstore1003.eqiad.wmnet',
-        share_path  => '/scratch',
-        lookupcache => $lookupcache,
-    }
-
-    if mount_nfs_volume($::labsproject, 'scratch') {
-        file { '/data/scratch':
-            ensure  => 'link',
-            target  => '/mnt/nfs/labstore1003-scratch',
-            require => Labstore::Nfs_mount['scratch-on-labstore1003'],
         }
     }
 
