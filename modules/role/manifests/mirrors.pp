@@ -16,12 +16,14 @@ class role::mirrors {
     nrpe::monitor_service {'check_ubuntu_mirror':
         description  => 'Ubuntu mirror in sync with upstream',
         nrpe_command => '/usr/local/lib/nagios/plugins/check_apt_mirror /srv/mirrors/ubuntu',
+        notes_url    => 'https://wikitech.wikimedia.org/wiki/Mirrors',
     }
 
     include mirrors::debian
     nrpe::monitor_service {'check_debian_mirror':
         description  => 'Debian mirror in sync with upstream',
         nrpe_command => '/usr/local/lib/nagios/plugins/check_apt_mirror /srv/mirrors/debian',
+        notes_url    => 'https://wikitech.wikimedia.org/wiki/Mirrors',
     }
 
     ferm::service { 'mirrors_http':
