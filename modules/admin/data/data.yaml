@@ -75,7 +75,7 @@ groups:
               ladsgroup, bawolff, zfilipin, addshore, niharika29, ppchelko, pmiazga,
               musikanimal, jdrewniak, sbisson, jforrester, mbsantos,
               aaron, liw, sbassett, jdl, tarrow, lucaswerkmeister-wmde,
-              wmde-leszek, jhuneidi, wmde-fisch, mvolz, dsharpe, brennen]
+              wmde-leszek, jhuneidi, wmde-fisch, mvolz, dsharpe, brennen, cparle]
     privileges: ['ALL = (www-data,mwdeploy,l10nupdate) NOPASSWD: ALL',
                  'ALL = NOPASSWD: /sbin/restart hhvm',
                  'ALL = NOPASSWD: /sbin/start hhvm',
