@@ -10,10 +10,10 @@
   Whisper files.
 
 """
-import os
 import fnmatch
-import tempfile
+import os
 import shutil
+import tempfile
 
 from graphite import settings
 

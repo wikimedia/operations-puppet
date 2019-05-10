@@ -8,28 +8,28 @@
    Copyright (c) 2013 Ori Livneh and Wikimedia Foundation. All Rights Reserved.
 
 """
-import sys
 import argparse
-import socket
 import os
+import socket
+import sys
 
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'graphite.settings')
 
 # django 1.7 compatibility
-import django
+import django  # noqa: E402
 try:
     django.setup()
 except AttributeError:
     pass
 
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User  # noqa: E402
 
 
 def check_admin(args):
     try:
         user = User.objects.get(username=args.user)
         return user.check_password(args.password)
-    except:
+    except User.DoesNotExist:
         return False
 
 
@@ -39,14 +39,14 @@ def set_admin(args):
         user.set_password(args.password)
         user.save()
         return True
-    except:
+    except User.DoesNotExist:
         pass
 
     try:
         User.objects.create_superuser(
             args.user, 'admin@' + socket.gethostname(), args.password)
         return True
-    except:
+    except Exception:
         pass
 
     return False

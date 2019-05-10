@@ -22,7 +22,7 @@ class graphite::wmcs::archiver {
     }
 
     file { '/usr/local/bin/archive-instances':
-        source => 'puppet:///modules/graphite/archive-instances',
+        source => 'puppet:///modules/graphite/archive-instances.py',
         owner  => '_graphite',
         group  => '_graphite',
         mode   => '0700',

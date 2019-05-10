@@ -15,17 +15,16 @@ for now.
 Logs to /var/log/graphite/instance-archiver.log
 '''
 import errno
+import logging
 import os
 import time
-import logging
-import sys
+
 import yaml
 
-from keystoneclient.session import Session as KeystoneSession
 from keystoneclient.auth.identity.v3 import Password as KeystonePassword
 from keystoneclient.client import Client as KeystoneClient
 from keystoneclient.exceptions import Unauthorized as KeystoneUnauthorisedException
-
+from keystoneclient.session import Session as KeystoneSession
 from novaclient import client as novaclient
 
 WHISPER_PATH = '/srv/carbon/whisper'
@@ -132,6 +131,7 @@ def get_deleted_instances():
             deleted_hosts[project] = deleted
     return deleted_hosts
 
+
 if __name__ == '__main__':
     logging.basicConfig(filename='/var/log/graphite/instance-archiver.log',
                         format='%(asctime)s %(message)s',
@@ -147,5 +147,5 @@ if __name__ == '__main__':
             for project, hosts in deleted_hosts.items():
                 for host in hosts:
                     archived_name = archive_host(project, host)
-    except:
+    except Exception:
         logging.exception('Exception!')
