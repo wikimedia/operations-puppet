@@ -360,11 +360,6 @@ profile::trafficserver::backend::caching_rules:
     - primary_destination: dest_host
       value: thorium.eqiad.wmnet
       action: never-cache
-profile::trafficserver::backend::negative_caching:
-    status_codes:
-        - 404
-        - 414
-    lifetime: 600
 profile::trafficserver::backend::default_lua_script: 'default'
 profile::trafficserver::backend::outbound_tls_settings:
   common:

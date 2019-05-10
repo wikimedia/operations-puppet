@@ -156,7 +156,7 @@ define trafficserver::instance(
     Array[Trafficserver::Mapping_rule] $mapping_rules = [],
     Boolean $enable_caching = true,
     Optional[Array[Trafficserver::Caching_rule]] $caching_rules = undef,
-    Trafficserver::Negative_Caching $negative_caching = undef,
+    Optional[Trafficserver::Negative_Caching] $negative_caching = undef,
     Optional[Array[Trafficserver::Storage_element]] $storage = undef,
     Optional[Integer] $ram_cache_size = -1,
     Array[Trafficserver::Log_format] $log_formats = [],
