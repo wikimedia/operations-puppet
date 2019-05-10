@@ -167,14 +167,21 @@ def parse_config_file(config_file):
       password: 'a_password'
       database: 'zarcillo'
     sections:
-      section1:
+      s1:
         host: 'db1139.eqiad.wmnet'
         port: 3311
         destination: 'dbprov1001.eqiad.wmnet'
+        stop_slave: True
+        order: 1
+      x1:
+        host: 'db1139.eqiad.wmnet'
+        port: 3316
+        destination: 'dbprov1002.eqiad.wmnet'
+        order: 2
     """
     allowed_options = ['host', 'port', 'password', 'destination', 'rotate', 'retention',
                        'compress', 'archive', 'threads', 'statistics', 'only_postprocess',
-                       'type', 'stop_slave']
+                       'type', 'stop_slave', 'order']
     logger = logging.getLogger('backup')
     try:
         read_config = yaml.load(open(config_file))
@@ -405,7 +412,9 @@ def main():
     result = dict()
     backup_pool = Pool(CONCURRENT_BACKUPS)
     port = 4444
-    for section, section_config in config.items():
+    sorted_config = sorted(config.items(),
+                           key=lambda section: section[1].get('order', sys.maxsize))
+    for section, section_config in sorted_config:
         result[section] = backup_pool.apply_async(run, (section, section_config, port))
         port += 1
     backup_pool.close()
