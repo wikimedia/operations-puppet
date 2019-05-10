@@ -43,14 +43,14 @@ define service::docker(
         fail('Meta tags like "latest" are not allowed')
     }
     # The config file will be mounted as a read-only volume inside the container
-    file { "/etc/${image_name}":
+    file { "/etc/${title}":
         ensure => ensure_directory($ensure),
         owner  => 'root',
         group  => 'root',
         mode   => '0755',
     }
 
-    file { "/etc/${image_name}/config.yaml":
+    file { "/etc/${title}/config.yaml":
         ensure  => $ensure,
         content => ordered_yaml($config),
         owner   => 'root',
@@ -60,7 +60,7 @@ define service::docker(
 
     # Make sure we have at least one version installed. It's strongly
     # recommended that you properly configure this.
-    exec { "docker pull of ${image_name}:${version}":
+    exec { "docker pull of ${image_name}:${version} for ${title}":
         command => "/usr/bin/docker pull '${image_full_name}:${version}'",
         unless  => "/usr/bin/docker images | fgrep '${image_full_name}' | fgrep -q '${version}'",
         notify  => Systemd::Service[$title],
