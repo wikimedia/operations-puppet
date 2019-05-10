@@ -1,3 +1,2 @@
 # db2109
 mariadb::shard: 's3'
-profile::base::notifications: disabled
