@@ -11,19 +11,19 @@ Source of canonical truth is the tokenauth.csv file.
    - abac.json for access config
    - create the namespace with appropriate annotation
 """
-import logging
 import argparse
+import csv
+import json
+import logging
+import os
+import random
+import stat
+import string
+import subprocess
+import time
+
 import ldap3
 import yaml
-import json
-import subprocess
-import os
-import string
-import random
-import time
-import csv
-import stat
-
 TOOL_ALLOWED_RESOURCES = [
     'pods',
     'replicationcontrollers',
@@ -228,7 +228,8 @@ def write_abac(users, path):
 
         for user in users:
             if user.group == 'tool':
-                yield from abac_tool_generator(user)
+                # ignore flake8 error as check is currently python2 T184435
+                yield from abac_tool_generator(user)  # noqa: E999
             elif user.group == 'infrastructure-readonly':
                 yield from abac_infra_generator(user, readonly=True)
             elif user.group == 'infrastructure-readwrite':
@@ -286,7 +287,7 @@ def write_kubeconfig(user, master):
         os.fchown(f, int(user.id), int(user.id))
         os.fchmod(f, 0o400)
         logging.info('Wrote config in %s', path)
-    except:
+    except os.error:
         logging.exception('Error creating %s', path)
         raise
     finally:
@@ -355,7 +356,8 @@ def main():
     argparser.add_argument('--ldapconfig', help='Path to YAML LDAP config file',
                            default='/etc/ldap.yaml')
     argparser.add_argument('--infrastructure-users',
-                           help='Path to CSV file with infrastructure users config (tokenauth format)',
+                           help=('Path to CSV file with infrastructure users config'
+                                 ' (tokenauth format)'),
                            default='/etc/kubernetes/infrastructure-users.csv')
     argparser.add_argument('--debug', help='Turn on debug logging',
                            action='store_true')

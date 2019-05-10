@@ -1,6 +1,7 @@
 #!/usr/bin/python
-import yaml
 import argparse
+
+import yaml
 
 parser = argparse.ArgumentParser()
 parser.add_argument(

@@ -52,7 +52,7 @@ class profile::toolforge::grid::node::web (
         owner   => 'root',
         group   => 'root',
         mode    => '0555',
-        source  => 'puppet:///modules/profile/toolforge/portgrabber',
+        source  => 'puppet:///modules/profile/toolforge/portgrabber_cli.py',
         require => File['/usr/local/lib/python2.7/dist-packages/portgrabber.py'],
     }
 
@@ -61,7 +61,7 @@ class profile::toolforge::grid::node::web (
         owner   => 'root',
         group   => 'root',
         mode    => '0555',
-        source  => 'puppet:///modules/profile/toolforge/portreleaser',
+        source  => 'puppet:///modules/profile/toolforge/portreleaser.py',
         require => File['/usr/local/lib/python2.7/dist-packages/portgrabber.py'],
     }
 

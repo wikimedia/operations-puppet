@@ -8,6 +8,7 @@ import time
 
 import MySQLdb
 
+
 def wmflabs_project():
     try:
         return wmflabs_project.project_name
@@ -15,6 +16,7 @@ def wmflabs_project():
         with open('/etc/wmflabs-project', 'r') as f:
             wmflabs_project.project_name = f.read().rstrip('\n')
         return wmflabs_project.project_name
+
 
 def update_tools_table(db):
     def read_normalized_file(path, default=None):
@@ -30,22 +32,33 @@ def update_tools_table(db):
         return read_normalized_file(homedir + '/.description', '')
 
     def get_tool_toolinfo(homedir):
-        return read_normalized_file(homedir + '/toolinfo.json',
-                                    read_normalized_file(homedir + '/public_html/toolinfo.json', ''))
+        return read_normalized_file(
+            homedir + '/toolinfo.json',
+            read_normalized_file(homedir + '/public_html/toolinfo.json', ''))
 
     # Get list of all accounts starting with "tools.".
     tool_accounts = {account.pw_name[len(wmflabs_project()) + 1:]:
                      {'home': account.pw_dir.rstrip('/'),
                       'id': account.pw_uid,
                       'maintainers': ' '.join(grp.getgrnam(account.pw_name)[3])}
-                     for account in pwd.getpwall() if account.pw_name.startswith(wmflabs_project() + '.') and os.access(account.pw_dir, os.X_OK)}
+                     for account in pwd.getpwall() if account.pw_name.startswith(
+                         wmflabs_project() + '.') and os.access(account.pw_dir, os.X_OK)}
 
     # Update tools table.
     cur = db.cursor()
     cur.execute('DELETE FROM tools')
     for tool_account_name, tool_account in tool_accounts.iteritems():
-        cur.execute('INSERT INTO tools (name, id, home, maintainers, description, toolinfo, updated) VALUES (%s, %s, %s, %s, %s, %s, UNIX_TIMESTAMP())', (tool_account_name, tool_account['id'], tool_account['home'], tool_account['maintainers'], get_tool_description(tool_account['home']), get_tool_toolinfo(tool_account['home'])))
+        cur.execute(
+                ('INSERT INTO tools (name, id, home, maintainers, description,',
+                 'toolinfo, updated) VALUES (%s, %s, %s, %s, %s, %s, UNIX_TIMESTAMP())'),
+                (tool_account_name,
+                 tool_account['id'],
+                 tool_account['home'],
+                 tool_account['maintainers'],
+                 get_tool_description(tool_account['home']),
+                 get_tool_toolinfo(tool_account['home'])))
     db.commit()
+
 
 def update_users_table(db):
     # Get list of all accounts in the project-tools group.
@@ -62,6 +75,7 @@ def update_users_table(db):
                      str.upper(account.pw_gecos[0]) + account.pw_gecos[1:],
                      account.pw_dir))
     db.commit()
+
 
 if __name__ == '__main__':
     while True:

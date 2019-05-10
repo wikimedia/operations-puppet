@@ -17,7 +17,7 @@ class profile::toolforge::clush::master(
 
     file { '/usr/local/sbin/tools-clush-generator':
         ensure => file,
-        source => 'puppet:///modules/profile/toolforge/clush/tools-clush-generator',
+        source => 'puppet:///modules/profile/toolforge/clush/tools-clush-generator.py',
         owner  => 'root',
         group  => 'root',
         mode   => '0555',
@@ -25,7 +25,7 @@ class profile::toolforge::clush::master(
 
     file { '/usr/local/sbin/tools-clush-interpreter':
         ensure => file,
-        source => 'puppet:///modules/profile/toolforge/clush/tools-clush-interpreter',
+        source => 'puppet:///modules/profile/toolforge/clush/tools-clush-interpreter.py',
         owner  => 'root',
         group  => 'root',
         mode   => '0555',

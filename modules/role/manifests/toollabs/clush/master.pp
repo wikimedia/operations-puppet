@@ -33,7 +33,7 @@ class role::toollabs::clush::master(
 
     file { '/usr/local/sbin/tools-clush-generator':
         ensure => file,
-        source => 'puppet:///modules/role/toollabs/clush/tools-clush-generator',
+        source => 'puppet:///modules/role/toollabs/clush/tools-clush-generator.py',
         owner  => 'root',
         group  => 'root',
         mode   => '0555',
@@ -41,7 +41,7 @@ class role::toollabs::clush::master(
 
     file { '/usr/local/sbin/tools-clush-interpreter':
         ensure => file,
-        source => 'puppet:///modules/role/toollabs/clush/tools-clush-interpreter',
+        source => 'puppet:///modules/role/toollabs/clush/tools-clush-interpreter.py',
         owner  => 'root',
         group  => 'root',
         mode   => '0555',

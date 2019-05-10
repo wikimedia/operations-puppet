@@ -11,7 +11,7 @@ class toollabs::maintain_kubeusers(
     require_package('python3-yaml')
 
     file { '/usr/local/bin/maintain-kubeusers':
-        source => 'puppet:///modules/toollabs/maintain-kubeusers',
+        source => 'puppet:///modules/toollabs/maintain-kubeusers.py',
         owner  => 'root',
         group  => 'root',
         mode   => '0555',

@@ -10,12 +10,12 @@ allow arbitrary command execution on targeted list of instances.
 This is run in a cron every hour.
 """
 import argparse
+
 import yaml
 
-from keystoneclient.session import Session as KeystoneSession
 from keystoneclient.auth.identity.v3 import Password as KeystonePassword
+from keystoneclient.session import Session as KeystoneSession
 from keystoneclient.v3 import client as keystone_client
-
 from novaclient import client as novaclient
 
 
@@ -43,7 +43,7 @@ TOOLS_PREFIX_CLASSIFIER = {
     "proxy": "webproxy",
     "redis": "redis",
     "services": "services",
-    "sge":"sge",
+    "sge": "sge",
     "sgebastion": "bastion-stretch",
     "sgecron": "cron-stretch",
     "sgeexec-09": "exec-stretch",

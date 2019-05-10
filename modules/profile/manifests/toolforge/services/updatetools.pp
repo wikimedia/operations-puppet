@@ -9,7 +9,7 @@ class profile::toolforge::services::updatetools(
         owner  => 'root',
         group  => 'root',
         mode   => '0555',
-        source => 'puppet:///modules/profile/toolforge/services/updatetools',
+        source => 'puppet:///modules/profile/toolforge/services/updatetools.py',
     }
 
     systemd::service { 'updatetools':
