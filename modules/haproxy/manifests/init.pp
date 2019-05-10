@@ -89,11 +89,13 @@ class haproxy(
     nrpe::monitor_service { 'haproxy':
         description  => 'haproxy process',
         nrpe_command => '/usr/lib/nagios/plugins/check_procs -c 1: -C haproxy',
+        notes_url    => 'https://wikitech.wikimedia.org/wiki/HAProxy',
     }
 
     nrpe::monitor_service { 'haproxy_alive':
         description  => 'haproxy alive',
         nrpe_command => '/usr/lib/nagios/plugins/check_haproxy --check=alive',
+        notes_url    => 'https://wikitech.wikimedia.org/wiki/HAProxy',
     }
 
     if $logging {
