@@ -3,11 +3,10 @@ import argparse
 import json
 import logging
 import socket
-
 import sys
-
 import time
-from urllib2 import Request, urlopen, URLError
+
+from urllib2 import Request, URLError, urlopen
 
 from prometheus_client import start_http_server, Summary
 from prometheus_client.core import GaugeMetricFamily, REGISTRY
@@ -33,11 +32,14 @@ class PrometheusWMFElasticsearchExporter(object):
             hostname = socket.gethostname()
             nodes = data['nodes']
 
-            # we only want to collect latencies for the local node, so let's filter out everything else
-            # reported names are something like: elastic1034-production-search-eqiad
-            latencies = next(n['latencies'] for _, n in nodes.iteritems() if n['name'].startswith(hostname))
+            # we only want to collect latencies for the local node, so let's
+            # filter out everything else reported names are something like:
+            # elastic1034-production-search-eqiad
+            latencies = next(n['latencies'] for _, n in nodes.iteritems() if
+                             n['name'].startswith(hostname))
 
-            per_node_latency = GaugeMetricFamily('elasticsearch_per_node_latency', 'Per node latency percentiles',
+            per_node_latency = GaugeMetricFamily('elasticsearch_per_node_latency',
+                                                 'Per node latency percentiles',
                                                  labels=['bucket', 'percentile'])
 
             for handler, latency in latencies.iteritems():

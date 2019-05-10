@@ -18,7 +18,7 @@ class prometheus::node_puppet_agent (
         mode   => '0555',
         owner  => 'root',
         group  => 'root',
-        source => 'puppet:///modules/prometheus/usr/local/bin/prometheus-puppet-agent-stats',
+        source => 'puppet:///modules/prometheus/usr/local/bin/prometheus-puppet-agent-stats.py',
     }
 
     # Collect every minute

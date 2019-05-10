@@ -24,6 +24,6 @@ class prometheus::wmcs_scripts {
         mode   => '0555',
         owner  => 'root',
         group  => 'root',
-        source => 'puppet:///modules/prometheus/usr/local/bin/prometheus-labs-targets',
+        source => 'puppet:///modules/prometheus/usr/local/bin/prometheus-labs-targets.py',
     }
 }

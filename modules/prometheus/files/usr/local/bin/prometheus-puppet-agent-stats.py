@@ -48,11 +48,11 @@ def _summary_stats(puppet_state_dir, registry):
         with open(summary_file) as f:
             log.debug("Parsing %s", summary_file)
             summary_yaml = yaml.safe_load(f)
-    except yaml.YAMLError as e:
+    except yaml.YAMLError:
         log.debug('Failed to parse yaml', exc_info=True)
         summary_parse_fail.set(1)
         return
-    except IOError as e:
+    except IOError:
         log.debug('Failed to read run summary', exc_info=True)
         collection_error.set(1)
         return

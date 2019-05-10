@@ -45,7 +45,7 @@ class prometheus::snmp_exporter {
         mode   => '0555',
         owner  => 'root',
         group  => 'root',
-        source => 'puppet:///modules/prometheus/usr/local/bin/prometheus-snmp-exporter-config',
+        source => 'puppet:///modules/prometheus/usr/local/bin/prometheus-snmp-exporter-config.py',
     }
 
     exec { 'prometheus-snmp-exporter-config':

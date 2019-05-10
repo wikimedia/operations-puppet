@@ -22,7 +22,7 @@ class prometheus::node_vhtcpd (
         mode   => '0555',
         owner  => 'root',
         group  => 'root',
-        source => 'puppet:///modules/prometheus/usr/local/bin/prometheus-vhtcpd-stats',
+        source => 'puppet:///modules/prometheus/usr/local/bin/prometheus-vhtcpd-stats.py',
     }
 
     # Collect every minute
