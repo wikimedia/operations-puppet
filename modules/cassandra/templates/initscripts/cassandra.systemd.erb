@@ -1,6 +1,9 @@
 [Unit]
 Description=distributed storage system for structured data
 After=network.target
+# On bootstrap / provisioning, don't attempt to start all instances,
+# wait instead for the guard file to exist, see also T214166
+ConditionPathExists="<%= @config_directory %>/service-enabled"
 
 [Service]
 User=cassandra
