@@ -32,7 +32,7 @@ class profile::eventlogging::analytics::server(
 
     # Commonly used Kafka input URIs.
     $kafka_mixed_uri = "${kafka_consumer_scheme}/${kafka_brokers_string}?topic=eventlogging-valid-mixed&auto_offset_reset=earliest"
-    $kafka_client_side_raw_uri = "${kafka_consumer_scheme}/${kafka_brokers_string}?topic=eventlogging-client-side&auto_offset_reset=earliest,max_poll_records=100,max_poll_interval_ms=600000,session_timeout_ms=30000,heartbeat_interval_ms=10000"
+    $kafka_client_side_raw_uri = "${kafka_consumer_scheme}/${kafka_brokers_string}?topic=eventlogging-client-side&auto_offset_reset=earliest,max_poll_records=50"
 
     eventlogging::plugin { 'plugins':
         source => 'puppet:///modules/eventlogging/plugins.py',
