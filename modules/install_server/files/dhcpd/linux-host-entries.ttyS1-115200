@@ -2029,7 +2029,7 @@ host db2113 {
 }
 
 host db2114 {
-    hardware ethernet 4C:D9:8F:68:F1:F5;
+    hardware ethernet D0:94:66:7F:B0:E4;
     fixed-address db2114.codfw.wmnet;
 }
 
