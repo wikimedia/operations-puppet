@@ -16,7 +16,7 @@ def check_cluster_ip(node, role, interface, ip):
     # Check if the ip is present in the list of IPv4 IPs assigned to interface
     ip_assigned = ip in str(subprocess.check_output(['/bin/ip', '-4', 'a', 'list', interface]))
     if (role == 'primary' and ip_assigned) or \
-        (role == 'secondary' and not ip_assigned):
+       (role == 'secondary' and not ip_assigned):
         print('Cluster IP assignment OK')
         return True
 

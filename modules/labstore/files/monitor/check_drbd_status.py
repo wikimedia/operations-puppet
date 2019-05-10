@@ -89,5 +89,6 @@ def main():
 
     print('DRBD Status OK')
 
+
 if __name__ == '__main__':
     main()

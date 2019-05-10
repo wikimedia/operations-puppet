@@ -40,5 +40,6 @@ def main():
 
     print('DRBD role OK')
 
+
 if __name__ == '__main__':
     main()

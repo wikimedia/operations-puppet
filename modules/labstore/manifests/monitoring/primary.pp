@@ -29,7 +29,7 @@ class labstore::monitoring::primary(
     }
 
     file { '/usr/local/sbin/check_drbd_status':
-        source => 'puppet:///modules/labstore/monitor/check_drbd_status',
+        source => 'puppet:///modules/labstore/monitor/check_drbd_status.py',
         mode   => '0755',
         owner  => 'root',
         group  => 'root',
@@ -44,7 +44,7 @@ class labstore::monitoring::primary(
     }
 
     file { '/usr/local/sbin/check_drbd_role':
-        source => 'puppet:///modules/labstore/monitor/check_drbd_role',
+        source => 'puppet:///modules/labstore/monitor/check_drbd_role.py',
         mode   => '0755',
         owner  => 'root',
         group  => 'root',
@@ -59,7 +59,7 @@ class labstore::monitoring::primary(
     }
 
     file { '/usr/local/sbin/check_drbd_cluster_ip':
-        source => 'puppet:///modules/labstore/monitor/check_drbd_cluster_ip',
+        source => 'puppet:///modules/labstore/monitor/check_drbd_cluster_ip.py',
         mode   => '0755',
         owner  => 'root',
         group  => 'root',
@@ -81,7 +81,7 @@ class labstore::monitoring::primary(
     }
 
     file { '/usr/local/sbin/check_nfs_status':
-        source => 'puppet:///modules/labstore/monitor/check_nfs_status',
+        source => 'puppet:///modules/labstore/monitor/check_nfs_status.py',
         mode   => '0755',
         owner  => 'root',
         group  => 'root',
