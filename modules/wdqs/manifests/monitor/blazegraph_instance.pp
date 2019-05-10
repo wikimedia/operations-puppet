@@ -26,6 +26,7 @@ define wdqs::monitor::blazegraph_instance (
         warning         => 1000,
         critical        => 800,
         contact_group   => $contact_groups,
+        notes_link      => 'https://wikitech.wikimedia.org/wiki/Wikidata_query_service/Runbook',
     }
 
 }

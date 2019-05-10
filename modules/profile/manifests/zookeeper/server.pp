@@ -79,6 +79,7 @@ class profile::zookeeper::server (
             critical        => $max_client_connections,
             method          => 'ge',
             dashboard_links => ['https://grafana.wikimedia.org/dashboard/db/zookeeper?refresh=5m&orgId=1&panelId=6&fullscreen'],
+            notes_link      => 'https://wikitech.wikimedia.org/wiki/Zookeeper',
         }
 
         # Experimental Analytics alarms on JVM usage
@@ -92,6 +93,7 @@ class profile::zookeeper::server (
             critical        => 0.95,
             contact_group   => 'analytics',
             prometheus_url  => "http://prometheus.svc.${::site}.wmnet/${prometheus_instance}",
+            notes_link      => 'https://wikitech.wikimedia.org/wiki/Zookeeper',
         }
     }
 }

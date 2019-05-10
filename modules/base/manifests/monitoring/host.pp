@@ -216,6 +216,7 @@ class base::monitoring::host(
             retry_interval  => 5,
             retries         => 3,
             prometheus_url  => "http://prometheus.svc.${::site}.wmnet/ops",
+            notes_link      => 'https://wikitech.wikimedia.org/wiki/SMART#Alerts',
         }
     }
 
@@ -232,6 +233,7 @@ class base::monitoring::host(
         retries         => 3,
         method          => 'ge',
         prometheus_url  => "http://prometheus.svc.${::site}.wmnet/ops",
+        notes_link      => 'https://wikitech.wikimedia.org/wiki/Monitoring/Memory#Memory_correctable_errors_-EDAC-',
     }
 
     # Did an host log kernel messages from the EDAC subsystem over the last 4d? Might indicate faulty
@@ -249,6 +251,7 @@ class base::monitoring::host(
         retries         => 3,
         method          => 'ge',
         prometheus_url  => "http://prometheus.svc.${::site}.wmnet/ops",
+        notes_link      => 'https://wikitech.wikimedia.org/wiki/Monitoring/Memory#Memory_correctable_errors_-EDAC-'
     }
 
     # Alert on reported fs available being bigger than fs size
@@ -266,5 +269,6 @@ class base::monitoring::host(
         retries         => 3,
         method          => 'ge',
         prometheus_url  => "http://prometheus.svc.${::site}.wmnet/ops",
+        notes_link      => 'https://phabricator.wikimedia.org/T199436',
     }
 }

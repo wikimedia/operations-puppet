@@ -73,6 +73,10 @@
 #   Links to the Grafana dashboard for this alarm.
 #   URLs must not be URL-encoded as they will be encoded by Icinga.
 #
+# [*notes_links*]
+#   Additional link to add to the Icinga notes_url
+#   URLs must not be URL-encoded as they will be encoded by Icinga.
+#
 define monitoring::check_prometheus(
     String $description,
     String $query,
@@ -89,24 +93,18 @@ define monitoring::check_prometheus(
     Wmflib::Ensure $ensure          = present,
     Boolean $nagios_critical = false,
     String $contact_group   = 'admins',
+    Stdlib::HTTPUrl $notes_link = 'https://wikitech.wikimedia.org/wiki/Monitoring/Missing_notes_link',
 ) {
-    $dashboard_link_fail_message = 'The $dashboard_links URLs must not be URL-encoded'
+    $link_fail_message = 'The $dashboard_links and $notes_links URLs must not be URL-encoded'
+    # notes link always has to com first to ensure the correct icon is used in icinga
+    # we start with `[]` so puppet knows we want a array
+    $links = [] + $notes_link + $dashboard_links
 
-    # Validate the dashboard_links and generate the notes_urls
-    if size($dashboard_links) == 1 {
-        if $dashboard_links[0] =~ /%\h\h/ {
-            fail($dashboard_link_fail_message)
+    $notes_urls = $links.reduce('') |$urls, $link| {
+        if $link =~ /%\h\h/ {
+            fail($link_fail_message)
         }
-        # Puppet reduce doesn't call the lambda if there is only one element
-        $notes_urls = "'${dashboard_links[0]}'"
-    } else {
-        $notes_urls = $dashboard_links.reduce('') |$urls, $dashboard_link| {
-            if $dashboard_link =~ /%\h\h/ {
-                fail($dashboard_link_fail_message)
-            }
-
-            "${urls}'${dashboard_link}' "
-        }
+        "${urls}'${link}' "
     }
 
     $command = $nan_ok ? {

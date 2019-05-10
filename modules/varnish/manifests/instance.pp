@@ -66,6 +66,7 @@ define varnish::instance(
         warning         => 1,
         critical        => 3,
         prometheus_url  => "http://prometheus.svc.${::site}.wmnet/ops",
+        notes_link      => 'https://wikitech.wikimedia.org/wiki/Varnish',
     }
 
     $runtime_params = join(prefix($runtime_parameters, '-p '), ' ')

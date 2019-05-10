@@ -104,6 +104,7 @@ class profile::hadoop::worker(
             critical        => 0.95,
             contact_group   => 'analytics',
             prometheus_url  => "http://prometheus.svc.${::site}.wmnet/analytics",
+            notes_link      => 'https://wikitech.wikimedia.org/wiki/Analytics/Systems/Cluster/Hadoop/Administration',
         }
 
         monitoring::check_prometheus { 'analytics_hadoop_yarn_nodemanager':
@@ -114,6 +115,7 @@ class profile::hadoop::worker(
             critical        => 0.95,
             contact_group   => 'analytics',
             prometheus_url  => "http://prometheus.svc.${::site}.wmnet/analytics",
+            notes_link      => 'https://wikitech.wikimedia.org/wiki/Analytics/Systems/Cluster/Hadoop/Administration',
         }
     }
 }

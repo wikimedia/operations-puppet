@@ -135,6 +135,7 @@ class profile::hadoop::master(
             method          => 'le',
             contact_group   => 'analytics',
             prometheus_url  => "http://prometheus.svc.${::site}.wmnet/analytics",
+            notes_link      => 'https://wikitech.wikimedia.org/wiki/Analytics/Systems/Cluster/Hadoop/Administration',
         }
 
         # Alert in case of HDFS currupted or missing blocks. In the ideal state
@@ -147,6 +148,7 @@ class profile::hadoop::master(
             critical        => 5,
             contact_group   => 'analytics',
             prometheus_url  => "http://prometheus.svc.${::site}.wmnet/analytics",
+            notes_link      => 'https://wikitech.wikimedia.org/wiki/Analytics/Systems/Cluster/Hadoop/Administration',
         }
 
         monitoring::check_prometheus { 'hadoop-hdfs-missing-blocks':
@@ -157,6 +159,7 @@ class profile::hadoop::master(
             critical        => 5,
             contact_group   => 'analytics',
             prometheus_url  => "http://prometheus.svc.${::site}.wmnet/analytics",
+            notes_link      => 'https://wikitech.wikimedia.org/wiki/Analytics/Systems/Cluster/Hadoop/Administration',
         }
 
         monitoring::check_prometheus { 'hadoop-hdfs-rpc-queue-length':
@@ -167,6 +170,7 @@ class profile::hadoop::master(
             critical        => 20,
             contact_group   => 'analytics',
             prometheus_url  => "http://prometheus.svc.${::site}.wmnet/analytics",
+            notes_link      => 'https://wikitech.wikimedia.org/wiki/Analytics/Systems/Cluster/Hadoop/Administration',
         }
 
         monitoring::check_prometheus { 'hadoop-yarn-unhealthy-workers':
@@ -190,6 +194,7 @@ class profile::hadoop::master(
             critical        => 0.95,
             contact_group   => 'analytics',
             prometheus_url  => "http://prometheus.svc.${::site}.wmnet/analytics",
+            notes_link      => 'https://wikitech.wikimedia.org/wiki/Analytics/Systems/Cluster/Hadoop/Administration',
         }
 
         monitoring::check_prometheus { 'hadoop-yarn-resourcemananager-heap-usage':
@@ -200,6 +205,7 @@ class profile::hadoop::master(
             critical        => 0.95,
             contact_group   => 'analytics',
             prometheus_url  => "http://prometheus.svc.${::site}.wmnet/analytics",
+            notes_link      => 'https://wikitech.wikimedia.org/wiki/Analytics/Systems/Cluster/Hadoop/Administration',
         }
     }
 }

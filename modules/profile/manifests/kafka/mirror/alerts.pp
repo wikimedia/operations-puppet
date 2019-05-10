@@ -79,11 +79,13 @@ define profile::kafka::mirror::alerts(
     monitoring::check_prometheus { "kafka-mirror-${mirror_name}-consume_rate":
         description => "Kafka MirrorMaker ${mirror_name} average message consume rate in last ${monitoring_period}",
         query       => "scalar(sum(avg_over_time(kafka_consumer_consumer_fetch_manager_metrics_all_topics_records_consumed_rate{mirror_name=\"${mirror_name}\"} [${monitoring_period}])))",
+        notes_link  => 'https://wikitech.wikimedia.org/wiki/Kafka/Administration#MirrorMaker',
     }
 
     monitoring::check_prometheus { "kafka-mirror-${mirror_name}-produce_rate":
         description => "Kafka MirrorMaker ${mirror_name} average message produce rate in last ${monitoring_period}",
         query       => "scalar(sum(avg_over_time(kafka_producer_producer_metrics_record_send_rate{mirror_name=\"${mirror_name}\"} [${monitoring_period}])))",
+        notes_link  => 'https://wikitech.wikimedia.org/wiki/Kafka/Administration',
     }
 
     monitoring::check_prometheus { "kafka-mirror-${mirror_name}-dropped_messages":
@@ -98,6 +100,7 @@ define profile::kafka::mirror::alerts(
         # We alert on this, but are lenient about them.
         warning     => 100,
         critical    => 1000,
+        notes_link  => 'https://wikitech.wikimedia.org/wiki/Kafka/Administration',
     }
 
     # Alert on max consumer lag in last $lag_check_period minutes.
@@ -123,5 +126,6 @@ define profile::kafka::mirror::alerts(
         retry_interval => 10,
         retries        => 3,
         prometheus_url => $source_prometheus_url,
+        notes_link     => 'https://wikitech.wikimedia.org/wiki/Kafka/Administration',
     }
 }

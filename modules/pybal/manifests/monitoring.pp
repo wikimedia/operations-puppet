@@ -83,5 +83,6 @@ class pybal::monitoring(
         critical        => 0,
         nan_ok          => true,
         prometheus_url  => "http://prometheus.svc.${::site}.wmnet/ops",
+        notes_link      => 'https://wikitech.wikimedia.org/wiki/PyBal',
     }
 }

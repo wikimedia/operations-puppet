@@ -47,6 +47,7 @@ class wdqs::monitor::blazegraph (
         warning         => $lag_warning,
         critical        => $lag_critical,
         contact_group   => $contact_groups,
+        notes_link      => 'https://wikitech.wikimedia.org/wiki/Wikidata_query_service/Runbook#Update_lag',
     }
 
 }

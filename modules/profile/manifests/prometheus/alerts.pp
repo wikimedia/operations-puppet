@@ -31,7 +31,8 @@ class profile::prometheus::alerts {
         retry_interval  => 15,
         retries         => 6,
         contact_group   => 'analytics',
-        dashboard_links => ['https://grafana.wikimedia.org/dashboard/db/druid?refresh=1m&panelId=46&fullscreen&orgId=1&var-cluster=druid_analytics&var-druid_datasource=All']
+        dashboard_links => ['https://grafana.wikimedia.org/dashboard/db/druid?refresh=1m&panelId=46&fullscreen&orgId=1&var-cluster=druid_analytics&var-druid_datasource=All'],
+        notes_link      => 'https://wikitech.wikimedia.org/wiki/Analytics/Systems/Druid#Troubleshooting',
     }
 
     monitoring::check_prometheus { 'druid_coordinator_segments_unavailable_public':
@@ -44,7 +45,8 @@ class profile::prometheus::alerts {
         retry_interval  => 15,
         retries         => 6,
         contact_group   => 'analytics',
-        dashboard_links => ['https://grafana.wikimedia.org/dashboard/db/druid?refresh=1m&panelId=46&fullscreen&orgId=1&var-cluster=druid_public&var-druid_datasource=All']
+        dashboard_links => ['https://grafana.wikimedia.org/dashboard/db/druid?refresh=1m&panelId=46&fullscreen&orgId=1&var-cluster=druid_public&var-druid_datasource=All'],
+        notes_link      => 'https://wikitech.wikimedia.org/wiki/Analytics/Systems/Druid#Troubleshooting',
     }
 
     # Monitor throughput and dropped messages on MirrorMaker instances.
@@ -86,6 +88,7 @@ class profile::prometheus::alerts {
         method          => 'ge',
         contact_group   => 'analytics',
         dashboard_links => ['https://grafana.wikimedia.org/dashboard/db/eventlogging?panelId=13&fullscreen&orgId=1'],
+        notes_link      => 'https://wikitech.wikimedia.org/wiki/Analytics/Systems/EventLogging/Administration',
     }
 
     # Alarms if p50 of Navigation Timing event throughput goes under 1 req/sec
@@ -100,6 +103,7 @@ class profile::prometheus::alerts {
         method          => 'le',
         contact_group   => 'analytics',
         dashboard_links => ['https://grafana.wikimedia.org/dashboard/db/eventlogging?panelId=6&fullscreen&orgId=1'],
+        notes_link      => 'https://wikitech.wikimedia.org/wiki/Analytics/Systems/EventLogging/Administration',
     }
 
     # Warn if p50 of overall event throughput goes beyond 1500 events/s
@@ -114,6 +118,7 @@ class profile::prometheus::alerts {
         method          => 'ge',
         contact_group   => 'analytics',
         dashboard_links => ['https://grafana.wikimedia.org/dashboard/db/eventlogging?panelId=6&fullscreen&orgId=1'],
+        notes_link      => 'https://wikitech.wikimedia.org/wiki/Analytics/Systems/EventLogging/Administration',
     }
 
     # Alert if the Kafka consumer lag of EL's processors builds up. This usually means that EL
@@ -128,6 +133,7 @@ class profile::prometheus::alerts {
         method          => 'ge',
         contact_group   => 'analytics',
         dashboard_links => ['https://grafana.wikimedia.org/d/000000484/kafka-consumer-lag?orgId=1&prometheus=ops&var-cluster=jumbo-eqiad&var-topic=All&var-consumer_group=eventlogging_processor_client_side_00'],
+        notes_link      => 'https://wikitech.wikimedia.org/wiki/Analytics/Systems/EventLogging/Administration',
     }
 
     monitoring::alerts::kafka_topic_throughput { 'eventgate-analytics_validation_errors':
@@ -176,5 +182,6 @@ class profile::prometheus::alerts {
         check_interval  => 120,
         retry_interval  => 10,
         retries         => 5,
+        notes_link      => 'https://phabricator.wikimedia.org/T202307',
     }
 }

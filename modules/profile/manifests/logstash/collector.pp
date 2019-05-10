@@ -450,6 +450,7 @@ class profile::logstash::collector (
         critical        => 0.10,
         method          => 'ge',
         prometheus_url  => "http://prometheus.svc.${::site}.wmnet/ops",
+        notes_link      => 'https://wikitech.wikimedia.org/wiki/Logstash',
     }
 
     # Ship logstash server logs to ELK using startmsg_regex pattern to join multi-line events based on datestamp

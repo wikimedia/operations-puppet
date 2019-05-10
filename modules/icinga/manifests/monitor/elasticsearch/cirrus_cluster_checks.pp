@@ -29,6 +29,7 @@ class icinga::monitor::elasticsearch::cirrus_cluster_checks{
             critical        => 0.01, # 1%
             warning         => 0.005, # 0.5%
             contact_group   => 'admins,team-discovery',
+            notes_link      => 'https://phabricator.wikimedia.org/T214494',
         }
 
         # ensure kafka queue is empty at least once in a week
@@ -45,6 +46,7 @@ class icinga::monitor::elasticsearch::cirrus_cluster_checks{
             check_interval  => 1440, # 24h
             retries         => 1,
             contact_group   => 'admins,team-discovery',
+            notes_link      => 'https://wikitech.wikimedia.org/wiki/Search',
         }
 
         monitoring::graphite_threshold { "mediawiki_cirrus_update_rate_${site}":
@@ -56,6 +58,7 @@ class icinga::monitor::elasticsearch::cirrus_cluster_checks{
             critical        => 50,
             under           => true,
             contact_group   => 'admins,team-discovery',
+            notes_link      => 'https://wikitech.wikimedia.org/wiki/Search',
         }
     }
 }

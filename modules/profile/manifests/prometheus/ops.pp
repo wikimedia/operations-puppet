@@ -1184,6 +1184,7 @@ class profile::prometheus::ops (
         # Check each Prometheus server host individually, not through the LVS service IP
         prometheus_url  => "http://${::fqdn}/ops",
         dashboard_links => ["https://grafana.wikimedia.org/dashboard/db/host-overview?var-server=${::hostname}&var-datasource=${::site} prometheus/ops"],
+        notes_link      => 'https://wikitech.wikimedia.org/wiki/Prometheus#Configuration_reload_failure',
     }
 
     prometheus::web { 'ops':

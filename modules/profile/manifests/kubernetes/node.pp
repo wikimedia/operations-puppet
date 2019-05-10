@@ -113,6 +113,7 @@ class profile::kubernetes::node(
         nan_ok          => true,
         warning         => 400000,
         critical        => 850000,
-        dashboard_links => ['https://grafana.wikimedia.org/dashboard/db/kubernetes-kubelets?orgId=1']
+        dashboard_links => ['https://grafana.wikimedia.org/dashboard/db/kubernetes-kubelets?orgId=1'],
+        notes_link      => 'https://wikitech.wikimedia.org/wiki/Kubernetes',
     }
 }

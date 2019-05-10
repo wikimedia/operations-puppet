@@ -60,6 +60,7 @@ class profile::kafka::broker::monitoring (
         warning         => 1,
         critical        => 10,
         prometheus_url  => "http://prometheus.svc.${::site}.wmnet/ops",
+        notes_link      => 'https://wikitech.wikimedia.org/wiki/Kafka/Administration',
     }
 
     # Alert on the average max replica lag over the last 30 minutes.
@@ -70,5 +71,6 @@ class profile::kafka::broker::monitoring (
         warning         => $replica_maxlag_warning,
         critical        => $replica_maxlag_critical,
         prometheus_url  => "http://prometheus.svc.${::site}.wmnet/ops",
+        notes_link      => 'https://wikitech.wikimedia.org/wiki/Kafka/Administration',
     }
 }

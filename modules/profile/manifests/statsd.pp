@@ -67,5 +67,6 @@ class profile::statsd {
         warning         => 1,
         critical        => 2,
         prometheus_url  => "http://prometheus.svc.${::site}.wmnet/ops",
+        notes_link      => 'https://wikitech.wikimedia.org/wiki/Statsd',
     }
 }
