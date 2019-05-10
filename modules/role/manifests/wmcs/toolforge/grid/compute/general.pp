@@ -21,5 +21,6 @@ class role::wmcs::toolforge::grid::compute::general {
     include profile::toolforge::grid::base
     include profile::toolforge::grid::node::all
     include profile::toolforge::grid::node::compute::general
+    include profile::toolforge::grid::sysctl
     include ::profile::wmcs::services::oidentd::client
 }

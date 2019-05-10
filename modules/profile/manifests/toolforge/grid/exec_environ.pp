@@ -865,13 +865,6 @@ class profile::toolforge::grid::exec_environ {
         ensure => latest,
     }
 
-    sysctl::parameters { 'toolforge':
-        values => {
-            'vm.overcommit_memory' => 2,
-            'vm.overcommit_ratio'  => 95,
-        },
-    }
-
     # The hhvm deb starts a demon process automatically that we don't need
     # running.
     service { 'hhvm':
