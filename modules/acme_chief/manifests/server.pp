@@ -220,12 +220,14 @@ class acme_chief::server (
         description  => 'Ensure acme-chief-backend is running only in the active node',
         nrpe_command => "/usr/lib/nagios/plugins/check_procs -c ${ac_backend_process} -a acme-chief-backend",
         require      => Package['acme-chief'],
+        notes_url    => 'https://wikitech.wikimedia.org/wiki/Acme-chief',
     }
 
     nrpe::monitor_service { 'acme-chief_api':
         description  => 'Ensure acme-chief-api is running',
         nrpe_command => "/usr/lib/nagios/plugins/check_procs -c 1:1 -a '/usr/bin/uwsgi --die-on-term --ini /etc/uwsgi/apps-enabled/acme-chief.ini'",
         require      => Package['acme-chief'],
+        notes_url    => 'https://wikitech.wikimedia.org/wiki/Acme-chief',
     }
 
     sudo::user { 'nagios_acme-chief_fileage_checks':
@@ -237,6 +239,7 @@ class acme_chief::server (
         ensure       => $ensure,
         description  => 'Ensure cert-sync script runs successfully in the active node',
         nrpe_command => "sudo -u acme-chief /usr/lib/nagios/plugins/check_file_age -w 3600 -c 7200 ${certs_path}/.rsync.done",
+        notes_url    => 'https://wikitech.wikimedia.org/wiki/Acme-chief',
     }
 
     nrpe::monitor_service { 'cert_sync_passive_node':
