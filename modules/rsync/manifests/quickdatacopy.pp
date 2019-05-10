@@ -20,6 +20,8 @@
 #
 # [*ensure*] The usual meaning, set to absent to clean up when done
 #
+# [*bwlimit*] Optionally limit the maxmium bandwith used
+#
 define rsync::quickdatacopy(
   $source_host,
   $dest_host,
@@ -27,6 +29,7 @@ define rsync::quickdatacopy(
   $file_path = '*',
   $auto_sync = true,
   $ensure = present,
+  $bwlimit = undef,
   ) {
 
       if $source_host == $::fqdn {
