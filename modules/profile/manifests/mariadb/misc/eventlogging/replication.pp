@@ -86,5 +86,6 @@ class profile::mariadb::misc::eventlogging::replication (
         nrpe_command  => '/usr/lib/nagios/plugins/check_procs -c 1:2 -u root -a "/bin/bash /usr/local/bin/eventlogging_sync.sh"',
         critical      => false,
         contact_group => 'admins', # show on icinga/irc only
+        notes_url     => 'https://wikitech.wikimedia.org/wiki/Analytics/Systems/EventLogging',
     }
 }
