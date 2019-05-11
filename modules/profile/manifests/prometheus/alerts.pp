@@ -116,6 +116,21 @@ class profile::prometheus::alerts {
         dashboard_links => ['https://grafana.wikimedia.org/dashboard/db/eventlogging?panelId=6&fullscreen&orgId=1'],
     }
 
+    # Alert if the Kafka consumer lag of EL's processors builds up. This usually means that EL
+    # is not processing events, or for some reason it slowed down a lot and can't keep up anymore.
+    monitoring::check_prometheus { 'eventlogging_processors_kafka_lag':
+        description     => 'Kafka Consumer lag of the EventLogging processors',
+        query           => 'scalar(sum(kafka_burrow_partition_lag{exported_cluster="jumbo-eqiad",topic="eventlogging-client-side",group="eventlogging_processor_client_side_00"}))',
+        prometheus_url  => 'http://prometheus.svc.eqiad.wmnet/ops',
+        warning         => 1000,
+        critical        => 5000,
+        check_interval  => 60,
+        method          => 'ge',
+        contact_group   => 'analytics',
+        dashboard_links => ['https://grafana.wikimedia.org/d/000000484/kafka-consumer-lag?orgId=1&var-datasource=eqiad%20prometheus%2Fops&var-cluster=jumbo-eqiad&var-topic=All&var-consumer_group=eventlogging_processor_client_side_00'],
+    }
+
+
     monitoring::alerts::http_availability{'http_availability_eqiad': site => 'eqiad'}
     monitoring::alerts::http_availability{'http_availability_codfw': site => 'codfw'}
     monitoring::alerts::http_availability{'http_availability_esams': site => 'esams'}
