@@ -127,7 +127,7 @@ class profile::prometheus::alerts {
         check_interval  => 60,
         method          => 'ge',
         contact_group   => 'analytics',
-        dashboard_links => ['https://grafana.wikimedia.org/d/000000484/kafka-consumer-lag?orgId=1&var-datasource=eqiad%20prometheus%2Fops&var-cluster=jumbo-eqiad&var-topic=All&var-consumer_group=eventlogging_processor_client_side_00'],
+        dashboard_links => ['https://grafana.wikimedia.org/d/000000484/kafka-consumer-lag?orgId=1&prometheus=ops&var-cluster=jumbo-eqiad&var-topic=All&var-consumer_group=eventlogging_processor_client_side_00'],
     }
 
 
