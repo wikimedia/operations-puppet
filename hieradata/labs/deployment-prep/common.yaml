@@ -139,7 +139,7 @@ profile::restbase::cassandra_local_dc: "datacenter1"
 profile::restbase::parsoid_uri: http://deployment-parsoid09.deployment-prep.eqiad.wmflabs:8000
 profile::restbase::graphoid_uri: http://deployment-sca01.deployment-prep.eqiad.wmflabs:19000
 profile::restbase::mobileapps_uri: http://deployment-mcs01.deployment-prep.eqiad.wmflabs:8888
-profile::restbase::mathoid_uri: http://deployment-mathoid.deployment-prep.eqiad.wmflabs:10042
+profile::restbase::mathoid_uri: http://deployment-docker-mathoid01.deployment-prep.eqiad.wmflabs:10044
 profile::restbase::aqs_uri: https://wikimedia.org/api/rest_v1/metrics
 profile::restbase::eventlogging_service_uri: http://deployment-kafka-main-1.deployment-prep.eqiad.wmflabs:8085/v1/events
 profile::restbase::pdfrender_uri: http://deployment-pdfrender02.deployment-prep.eqiad.wmflabs:5252
