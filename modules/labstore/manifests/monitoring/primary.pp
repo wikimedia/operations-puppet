@@ -41,6 +41,7 @@ class labstore::monitoring::primary(
         nrpe_command  => "/usr/bin/sudo /usr/local/sbin/check_drbd_status ${resource}",
         contact_group => $contact_groups,
         require       => File['/usr/local/sbin/check_drbd_status'],
+        notes_url     => 'https://wikitech.wikimedia.org/wiki/Portal:Data_Services/Admin/Labstore',
     }
 
     file { '/usr/local/sbin/check_drbd_role':
@@ -56,6 +57,7 @@ class labstore::monitoring::primary(
         nrpe_command  => "/usr/bin/sudo /usr/local/sbin/check_drbd_role ${::hostname} ${drbd_role}",
         contact_group => $contact_groups,
         require       => File['/usr/local/sbin/check_drbd_role'],
+        notes_url     => 'https://wikitech.wikimedia.org/wiki/Portal:Data_Services/Admin/Labstore',
     }
 
     file { '/usr/local/sbin/check_drbd_cluster_ip':
@@ -71,6 +73,7 @@ class labstore::monitoring::primary(
         nrpe_command  => "/usr/bin/sudo /usr/local/sbin/check_drbd_cluster_ip ${::hostname} ${drbd_role} ${cluster_iface} ${cluster_ip}",
         contact_group => $contact_groups,
         require       => File['/usr/local/sbin/check_drbd_cluster_ip'],
+        notes_url     => 'https://wikitech.wikimedia.org/wiki/Portal:Data_Services/Admin/Labstore',
     }
 
     # Set up DRBD service monitoring
@@ -78,6 +81,7 @@ class labstore::monitoring::primary(
         critical      => $critical,
         contact_group => $contact_groups,
         require       => Service['drbd'],
+        notes_url     => 'https://wikitech.wikimedia.org/wiki/Portal:Data_Services/Admin/Labstore',
     }
 
     file { '/usr/local/sbin/check_nfs_status':
@@ -93,5 +97,6 @@ class labstore::monitoring::primary(
         nrpe_command  => "/usr/bin/sudo /usr/local/sbin/check_nfs_status ${cluster_ip}",
         contact_group => $contact_groups,
         require       => File['/usr/local/sbin/check_nfs_status'],
+        notes_url     => 'https://wikitech.wikimedia.org/wiki/Portal:Data_Services/Admin/Labstore',
     }
 }

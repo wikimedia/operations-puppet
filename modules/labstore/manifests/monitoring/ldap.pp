@@ -19,5 +19,6 @@ class labstore::monitoring::ldap(
         description   => 'Getent speed check',
         require       => File['/usr/local/bin/getent_check'],
         contact_group => $contact_groups,
+        notes_url     => 'https://wikitech.wikimedia.org/wiki/Portal:Data_Services/Admin/Labstore',
     }
 }
