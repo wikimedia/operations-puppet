@@ -12,6 +12,10 @@ server {
     # Disable content-type sniffing on some browsers.
     add_header X-Content-Type-Options nosniff;
 
+    # Set custom error pages
+    error_page 500 /static/error/500.html;
+    error_page 502 /static/error/502.html;
+
     # Enforce HTTPS only
     if ($http_x_forwarded_proto != "https") {
           rewrite ^(.*)$ https://$http_host$1 permanent;
