@@ -32,5 +32,6 @@ define nrpe::monitor_systemd_unit_state(
         retries      => $retries,
         timeout      => $timeout,
         critical     => $nagios_critical,
+        notes_url    => 'https://wikitech.wikimedia.org/wiki/Monitoring/systemd_unit_state',
     }
 }
