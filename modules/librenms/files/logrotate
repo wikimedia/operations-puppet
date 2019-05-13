@@ -13,4 +13,5 @@
     delaycompress
     missingok
     create 0660 librenms root
+    su www-data librenms
 }
