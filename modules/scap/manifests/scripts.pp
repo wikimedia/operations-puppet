@@ -27,7 +27,7 @@ class scap::scripts (
         owner  => 'root',
         group  => 'root',
         mode   => '0555',
-        source => 'puppet:///modules/scap/mwgrep',
+        source => 'puppet:///modules/scap/mwgrep.py',
     }
     file { '/usr/local/bin/foreachwiki':
         owner  => 'root',

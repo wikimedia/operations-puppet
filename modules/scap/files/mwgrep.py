@@ -24,14 +24,13 @@
   for org.apache.lucene.util.automaton.RegExp for supported syntax. The current
   lucene version is available from `curl search.svc.eqiad.wmnet:9200`.
 
-"""
+"""  # noqa: E501
 import sys
 reload(sys)
 sys.setdefaultencoding('utf-8')
 
 import argparse
 import bisect
-import collections
 import json
 import requests
 
@@ -124,11 +123,11 @@ filters = [
 
 
 if args.title is not None:
-    filters.append( {'term': {'title.keyword': args.title}} )
+    filters.append({'term': {'title.keyword': args.title}})
 elif args.etitle is not None:
-    filters.append( {'regexp': {'title.keyword': args.etitle}} )
+    filters.append({'regexp': {'title.keyword': args.etitle}})
 elif args.ns == NS_USER or args.ns == NS_MEDIAWIKI:
-    filters.append( {'regexp': {'title.keyword': '(Gadgets-definition|.*\\.(js|css|json))'}} )
+    filters.append({'regexp': {'title.keyword': '(Gadgets-definition|.*\\.(js|css|json))'}})
 
 search = {
     'size': args.max_results,
@@ -152,18 +151,21 @@ try:
             if 'error' in error_body and 'root_cause' in error_body['error']:
                 for root_cause in error_body['error']['root_cause']:
                     if root_cause['type'] == 'invalid_regex_exception':
-                        sys.stderr.write('Error while parsing regular expression: {0}\n{1}\n'\
-                            .format(args.term, root_cause['reason']))
+                        sys.stderr.write(
+                            'Error while parsing regular expression: {0}\n{1}\n'.format(
+                                args.term, root_cause['reason']))
                         exit(1)
                 sys.stderr.write('Unknown error: {0}\n'.format(json.dumps(error_body, indent=4)))
                 exit(1)
             else:
-                sys.stderr.write('Received unexpected json body from elasticsearch:\n{0}\n'\
-                    .format(json.dumps(error_body, indent=4, separators=(',', ': '))))
+                sys.stderr.write(
+                    'Received unexpected json body from elasticsearch:\n{0}\n'.format(
+                        json.dumps(error_body, indent=4, separators=(',', ': '))))
             exit(1)
     except ValueError as e:
-        sys.stderr.write("Error '{0}' while parsing elasticsearch response '{1}'.\n"\
-            .format(e.message, json.dumps(full_result, indent=4, separators=(',', ': '))))
+        sys.stderr.write(
+            "Error '{0}' while parsing elasticsearch response '{1}'.\n".format(
+                e.message, json.dumps(full_result, indent=4, separators=(',', ': '))))
         exit(1)
 
     result = full_result['hits']
@@ -185,7 +187,7 @@ try:
 
     if matches['public']:
         if matches['private'] and args.no_private is False:
-             print('## Public wiki results')
+            print('## Public wiki results')
         for db_name, page_name in matches['public']:
             print('{:<20}{}'.format(db_name, page_name))
 
@@ -219,5 +221,5 @@ the query:
 """)
 
 except requests.exceptions.RequestException as error:
-    sys.stderr.write("Failed to connect to elastic {0}.\n".format( error ))
+    sys.stderr.write("Failed to connect to elastic {0}.\n".format(error))
     exit(1)
