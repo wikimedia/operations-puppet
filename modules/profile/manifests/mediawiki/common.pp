@@ -39,7 +39,7 @@ class profile::mediawiki::common(
     include ::profile::mediawiki::php
 
     file { '/usr/local/bin/mediawiki-firejail-convert':
-        source => 'puppet:///modules/mediawiki/mediawiki-firejail-convert',
+        source => 'puppet:///modules/mediawiki/mediawiki-firejail-convert.py',
         owner  => 'root',
         group  => 'root',
         mode   => '0555',
@@ -53,7 +53,7 @@ class profile::mediawiki::common(
     }
 
     file { '/usr/local/bin/mediawiki-firejail-ghostscript':
-        source => 'puppet:///modules/mediawiki/mediawiki-firejail-ghostscript',
+        source => 'puppet:///modules/mediawiki/mediawiki-firejail-ghostscript.py',
         owner  => 'root',
         group  => 'root',
         mode   => '0555',
