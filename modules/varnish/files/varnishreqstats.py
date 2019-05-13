@@ -117,5 +117,6 @@ class ReqStatsSender(CacheStatsSender):
 
         self.stats[remote_party + '.total'] += 1
 
+
 if __name__ == "__main__":
     ReqStatsSender(sys.argv[1:]).main()
