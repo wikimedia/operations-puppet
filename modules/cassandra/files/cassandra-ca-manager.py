@@ -88,6 +88,7 @@ import logging
 import os
 import os.path
 import subprocess
+
 import yaml    # PyYAML (python-yaml)
 
 
@@ -103,12 +104,14 @@ class Subject(object):
 
     def __repr__(self):
         return "%s(cn=%s, o=%s, c=%s, u=%s)" \
-            % (self.__class__.__name__, self.common_name, self.organization, self.country, self.unit)
+            % (self.__class__.__name__, self.common_name,
+               self.organization, self.country, self.unit)
 
 
 class KeytoolSubject(Subject):
     def __str__(self):
-        return "cn=%s, ou=%s, o=%s, c=%s" % (self.common_name, self.unit, self.organization, self.country)
+        return "cn=%s, ou=%s, o=%s, c=%s" \
+            % (self.common_name, self.unit, self.organization, self.country)
 
 
 class Keystore(object):
@@ -236,7 +239,8 @@ class Keystore(object):
 
 class OpensslSubject(Subject):
     def __str__(self):
-        return "/CN=%s/OU=%s/O=%s/C=%s/" % (self.common_name, self.unit, self.organization, self.country)
+        return "/CN=%s/OU=%s/O=%s/C=%s/" \
+            % (self.common_name, self.unit, self.organization, self.country)
 
 
 class OpensslCertificate(object):
@@ -275,7 +279,8 @@ class OpensslCertificate(object):
             return
 
         # Import the CA certificate to a Java truststore
-        # FIXME: -storepass should use :file or :env specifier to avoid exposing password to process list
+        # FIXME: -storepass should use :file or :env specifier to avoid exposing
+        # password to process list
         command = [
             "keytool",
             "-importcert",
@@ -313,7 +318,8 @@ class OpensslKey(object):
             raise RuntimeError("CA key generation failed")
 
     def __repr__(self):
-        return "%s(name=%s, filename=%s, size=%s)" % (self.__class__.__name__, self.name, self.filename, self.size)
+        return "%s(name=%s, filename=%s, size=%s)" \
+            % (self.__class__.__name__, self.name, self.filename, self.size)
 
 
 class Authority(object):
@@ -324,7 +330,9 @@ class Authority(object):
 
         self.base_directory = base_directory
         self.key = OpensslKey("rootCa", self.base_directory, **(kwargs.get("key", dict())))
-        self.certificate = OpensslCertificate("rootCa", self.base_directory, self.key, self.password, **(kwargs.get("cert", dict())))
+        self.certificate = OpensslCertificate(
+                "rootCa", self.base_directory, self.key, self.password,
+                **(kwargs.get("cert", dict())))
 
     def generate(self):
         self.key.generate()
@@ -342,11 +350,13 @@ def read_manifest(manifest):
 def run_command(command):
     try:
         output = subprocess.check_output(command, stderr=subprocess.STDOUT)
-        for ln in output.splitlines(): logging.debug(ln)
+        for ln in output.splitlines():
+            logging.debug(ln)
         logging.debug("command succeeded: %s", " ".join(command))
-    except subprocess.CalledProcessError, e:
-        for ln in e.output.splitlines(): logging.error(ln)
-        logging.error("command returned status %d: %s", e.returncode, " ".join(command))
+    except subprocess.CalledProcessError as error:
+        for ln in error.output.splitlines():
+            logging.error(ln)
+        logging.error("command returned status %d: %s", error.returncode, " ".join(command))
         return False
     return True
 

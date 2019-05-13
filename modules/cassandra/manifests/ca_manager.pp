@@ -11,7 +11,7 @@
 
 class cassandra::ca_manager {
     file { '/usr/local/bin/cassandra-ca-manager':
-        source => 'puppet:///modules/cassandra-ca-manager',
+        source => 'puppet:///modules/cassandra-ca-manager.py',
         owner  => 'root',
         group  => 'root',
         mode   => '0555',
