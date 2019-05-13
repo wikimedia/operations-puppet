@@ -88,6 +88,7 @@ CONFIG proxy.config.log.max_secs_per_buffer INT 0
 
 <% if @inbound_tls_settings -%>
 # Incoming TLS settings
+CONFIG proxy.config.ssl.server.honor_cipher_order INT 1
 CONFIG proxy.config.ssl.TLSv1 INT <%= @inbound_tls_settings['common']['enable_tlsv1'] %>
 CONFIG proxy.config.ssl.TLSv1_1 INT <%= @inbound_tls_settings['common']['enable_tlsv1_1'] %>
 CONFIG proxy.config.ssl.TLSv1_2 INT <%= @inbound_tls_settings['common']['enable_tlsv1_2'] %>
