@@ -61,7 +61,7 @@ class letsencrypt {
         owner  => 'root',
         group  => 'root',
         mode   => '0555',
-        source => 'puppet:///modules/letsencrypt/acme-setup',
+        source => 'puppet:///modules/letsencrypt/acme-setup.py',
     }
 
     file { '/etc/acme':

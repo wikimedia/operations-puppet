@@ -254,7 +254,7 @@ def parse_ossl_stamp(stamp):
 def check_expiry(txt, exp_days, exp_rand):
     """Checks openssl text output for expiry < d+/-r days away"""
 
-    v_pat = '^\s*Validity\n\s*Not Before: ([^\n]+)\n\s*Not After : ([^\n]+)\n'
+    v_pat = r'^\s*Validity\n\s*Not Before: ([^\n]+)\n\s*Not After : ([^\n]+)\n'
     v_res = re.search(v_pat, txt, re.M)
     if not v_res:
         return True
@@ -270,7 +270,7 @@ def check_expiry(txt, exp_days, exp_rand):
     exp_secs = exp_days * 86400
     if exp_rand:
         plusminus = exp_rand * 86400
-        s_res = re.search('^\s*Serial Number:(.*)$', txt, re.M)
+        s_res = re.search(r'^\s*Serial Number:(.*)$', txt, re.M)
         if not s_res:
             return True
         random.seed(s_res.group(1))
@@ -288,24 +288,24 @@ def chk_ossl(file, which, subjects, check_ss, exp_days, exp_rand):
 
     try:
         txt = check_output_errtext([OSSL, which, '-in', file, '-text'])[0]
-    except:
+    except Exception:
         return True
 
-    subj_re = '^\s*Subject:\s*(.*/)?\s*CN\s*=\s*' + re.escape(subjects[0]) + '(/|\s*$)'
+    subj_re = r'^\s*Subject:\s*(.*/)?\s*CN\s*=\s*' + re.escape(subjects[0]) + r'(/|\s*$)'
     if not re.search(subj_re, txt, re.M):
         return True
 
     san_re = (
-        '^\s*X509v3 Subject Alternative Name:\s*' +
-        (',\s*'.join(['DNS:' + re.escape(s) for s in subjects])) +
-        '\s*$'
+        r'^\s*X509v3 Subject Alternative Name:\s*'
+        + (r',\s*'.join(['DNS:' + re.escape(s) for s in subjects]))
+        + r'\s*$'
     )
     if not re.search(san_re, txt, re.M):
         return True
 
     if check_ss:
-        sm = re.search('^\s*Subject:\s*(.*)$', txt, re.M)
-        im = re.search('^\s*Issuer:\s*(.*)$', txt, re.M)
+        sm = re.search(r'^\s*Subject:\s*(.*)$', txt, re.M)
+        im = re.search(r'^\s*Issuer:\s*(.*)$', txt, re.M)
         if not sm or not im or sm.group(1) == im.group(1):
             return True
 
@@ -376,10 +376,10 @@ def acme_challenge(id, cert_dir, acct_key, csr, chal_dir, acme_user):
         check_output_errtext([X5B, '-c', ctn, '-o', c_chain, '-s', '-f'])
         check_output_errtext([X5B, '-c', ctn, '-o', c_chained, '-s'])
         os.rename(ctn, tls_crt)
-    except:
+    except Exception:
         try:
             os.unlink(cert_tmp.name)
-        except:
+        except Exception:
             pass
         raise
 
@@ -413,11 +413,11 @@ def ensure_crt_self(id, cert_dir, tls_key, csr, subjects, force):
         info('Creating self-signed cert ' + tls_crt)
         with tempfile.NamedTemporaryFile() as extfile:
             extfile.write(
-                '[v3_req]\n' +
-                'keyUsage=critical,digitalSignature,keyEncipherment\n' +
-                'basicConstraints=CA:FALSE\n' +
-                'extendedKeyUsage=serverAuth\n' +
-                'subjectAltName=' +
+                '[v3_req]\n'
+                'keyUsage=critical,digitalSignature,keyEncipherment\n'
+                'basicConstraints=CA:FALSE\n'
+                'extendedKeyUsage=serverAuth\n'
+                'subjectAltName='
                 ','.join(['DNS:' + s for s in subjects]) + '\n'
             )
             extfile.flush()
@@ -456,7 +456,7 @@ def acme_setup(id, subjects, mode, exp_days, exp_rand, acme_user, svc,
     ensure_dir(chal_dir, acme_user.pw_uid, 0, 0o755)
 
     # Keys
-    os.umask(077)
+    os.umask(0o077)
     acct_key = os.path.join(acct_dir, 'acct.key')
     ensure_key(acct_key, acme_user.pw_uid, 0, 0o400, 4096)
     tls_key = os.path.join(key_dir, '%s.key' % id)
@@ -465,7 +465,7 @@ def acme_setup(id, subjects, mode, exp_days, exp_rand, acme_user, svc,
     else:
         key_mode = 0o400
     force_csr = ensure_key(tls_key, key_uid, key_gid, key_mode, 2048)
-    os.umask(022)
+    os.umask(0o022)
 
     # CSR based on tls_key + subjects
     csr = os.path.join(csr_dir, '%s.pem' % id)
@@ -481,7 +481,7 @@ def acme_setup(id, subjects, mode, exp_days, exp_rand, acme_user, svc,
 def main():
     """Basic pre-setup: CLI parse, sanity-checks, etc"""
 
-    os.umask(022)
+    os.umask(0o022)
     args = parse_options()
     if os.geteuid() != 0 or os.getegid() != 0:
         raise Exception('This script must run as root')
