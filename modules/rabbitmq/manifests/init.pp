@@ -39,7 +39,7 @@ class rabbitmq(
         owner   => 'root',
         group   => 'root',
         mode    => '0655',
-        source  => 'puppet:///modules/rabbitmq/rabbitmqadmin',
+        source  => 'puppet:///modules/rabbitmq/rabbitmqadmin.py',
         require => Package['rabbitmq-server'],
     }
 

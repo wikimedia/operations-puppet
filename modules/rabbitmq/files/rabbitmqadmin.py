@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-
 #   The contents of this file are subject to the Mozilla Public License
 #   Version 1.1 (the "License"); you may not use this file except in
 #   compliance with the License. You may obtain a copy of the License at
@@ -21,7 +20,6 @@ if sys.version_info[0] < 2 or (sys.version_info[0] == 2 and sys.version_info[1] 
     sys.exit(1)
 
 from optparse import OptionParser, TitledHelpFormatter
-import urllib
 import base64
 import json
 import os
@@ -32,19 +30,22 @@ if sys.version_info[0] == 2:
     import httplib
     import urlparse
     from urllib import quote_plus
+
     def b64(s):
         return base64.b64encode(s)
+
 else:
     from configparser import ConfigParser, NoSectionError
     import http.client as httplib
     import urllib.parse as urlparse
     from urllib.parse import quote_plus
+
     def b64(s):
         return base64.b64encode(s.encode('utf-8')).decode('utf-8')
 
 VERSION = '%%VSN%%'
 
-LISTABLE = {'connections': {'vhost': False, 'cols': ['name','user','channels']},
+LISTABLE = {'connections': {'vhost': False, 'cols': ['name', 'user', 'channels']},
             'channels':    {'vhost': False, 'cols': ['name', 'user']},
             'consumers':   {'vhost': True},
             'exchanges':   {'vhost': True,  'cols': ['name', 'type']},
@@ -54,7 +55,7 @@ LISTABLE = {'connections': {'vhost': False, 'cols': ['name','user','channels']},
             'users':       {'vhost': False},
             'vhosts':      {'vhost': False, 'cols': ['name', 'messages']},
             'permissions': {'vhost': False},
-            'nodes':       {'vhost': False, 'cols': ['name','type','mem_used']},
+            'nodes':       {'vhost': False, 'cols': ['name', 'type', 'mem_used']},
             'parameters':  {'vhost': False, 'json': ['value']},
             'policies':    {'vhost': False, 'json': ['definition']}}
 
@@ -67,15 +68,15 @@ PROMOTE_COLUMNS = ['vhost', 'name', 'type',
                    'source', 'destination', 'destination_type', 'routing_key']
 
 URIS = {
-    'exchange':   '/exchanges/{vhost}/{name}',
-    'queue':      '/queues/{vhost}/{name}',
-    'binding':    '/bindings/{vhost}/e/{source}/{destination_char}/{destination}',
-    'binding_del':'/bindings/{vhost}/e/{source}/{destination_char}/{destination}/{properties_key}',
-    'vhost':      '/vhosts/{name}',
-    'user':       '/users/{name}',
-    'permission': '/permissions/{vhost}/{user}',
-    'parameter':  '/parameters/{component}/{vhost}/{name}',
-    'policy':     '/policies/{vhost}/{name}'
+    'exchange':    '/exchanges/{vhost}/{name}',
+    'queue':       '/queues/{vhost}/{name}',
+    'binding':     '/bindings/{vhost}/e/{source}/{destination_char}/{destination}',
+    'binding_del': '/bindings/{vhost}/e/{source}/{destination_char}/{destination}/{properties_key}',
+    'vhost':       '/vhosts/{name}',
+    'user':        '/users/{name}',
+    'permission':  '/permissions/{vhost}/{user}',
+    'parameter':   '/parameters/{component}/{vhost}/{name}',
+    'policy':      '/policies/{vhost}/{name}'
     }
 
 DECLARABLE = {
@@ -103,7 +104,7 @@ DECLARABLE = {
     # Priority is 'json' to convert to int
     'policy':     {'mandatory': ['name', 'pattern', 'definition'],
                    'json':      ['definition', 'priority'],
-                   'optional':  {'priority' : 0, 'apply-to': None}}
+                   'optional':  {'priority': 0, 'apply-to': None}}
     }
 
 DELETABLE = {
@@ -152,11 +153,14 @@ for k in DELETABLE:
     DELETABLE[k]['optional'] = {}
 DELETABLE['binding']['uri'] = URIS['binding_del']
 
+
 def short_usage():
     return "rabbitmqadmin [options] subcommand"
 
+
 def title(name):
     return "\n%s\n%s\n\n" % (name, '=' * len(name))
+
 
 def subcommands_usage():
     usage = """Usage
@@ -191,6 +195,7 @@ def subcommands_usage():
 """
     return usage
 
+
 def config_usage():
     usage = "Usage\n=====\n" + short_usage()
     usage += "\n" + title("Configuration File")
@@ -224,6 +229,7 @@ def config_usage():
     usage += """  rabbitmqadmin -c rabbitmqadmin.conf.example -N host_normal ..."""
     return usage
 
+
 def more_help():
     return """
 More Help
@@ -234,6 +240,7 @@ For more help use the help subcommand:
   rabbitmqadmin help subcommands  # For a list of available subcommands
   rabbitmqadmin help config       # For help with the configuration file
 """
+
 
 def fmt_usage_stanza(root, verb):
     def fmt_args(args):
@@ -250,25 +257,28 @@ def fmt_usage_stanza(root, verb):
         text += " {0} {1} {2}\n".format(verb, k, fmt_args(root[k]))
     return text
 
-default_options = { "hostname"        : "localhost",
-                    "port"            : "15672",
-                    "declare_vhost"   : "/",
-                    "username"        : "guest",
-                    "password"        : "guest",
-                    "ssl"             : False,
-                    "verbose"         : True,
-                    "format"          : "table",
-                    "depth"           : 1,
-                    "bash_completion" : False }
+
+default_options = {"hostname": "localhost",
+                   "port": "15672",
+                   "declare_vhost": "/",
+                   "username": "guest",
+                   "password": "guest",
+                   "ssl": False,
+                   "verbose": True,
+                   "format": "table",
+                   "depth": 1,
+                   "bash_completion": False}
 
 
 class MyFormatter(TitledHelpFormatter):
     def format_epilog(self, epilog):
         return epilog
 
+
 parser = OptionParser(usage=short_usage(),
                       formatter=MyFormatter(),
                       epilog=more_help())
+
 
 def make_parser():
     def add(*args, **kwargs):
@@ -282,11 +292,11 @@ def make_parser():
         help="configuration file [default: ~/.rabbitmqadmin.conf]",
         metavar="CONFIG")
     add("-N", "--node", dest="node",
-        help="node described in the configuration file [default: 'default'" + \
+        help="node described in the configuration file [default: 'default'"
              " only if configuration file is specified]",
         metavar="NODE")
     add("-H", "--host", dest="hostname",
-        help="connect to host HOST" ,
+        help="connect to host HOST",
         metavar="HOST")
     add("-P", "--port", dest="port",
         help="connect to port PORT",
@@ -309,7 +319,7 @@ def make_parser():
     add("--ssl-cert-file", dest="ssl_cert_file",
         help="PEM format certificate file for SSL")
     add("-f", "--format", dest="format",
-        help="format for listing commands - one of [" + ", ".join(FORMATS.keys())  + "]")
+        help="format for listing commands - one of [" + ", ".join(FORMATS.keys()) + "]")
     add("-S", "--sort", dest="sort", help="sort key for listing queries")
     add("-R", "--sort-reverse", action="store_true", dest="sort_reverse",
         help="reverse the sort order")
@@ -322,6 +332,7 @@ def make_parser():
         dest="version",
         help="Display version and exit")
 
+
 def default_config():
     home = os.getenv('USERPROFILE') or os.getenv('HOME')
     if home is not None:
@@ -329,6 +340,7 @@ def default_config():
         if os.path.isfile(config_file):
             return config_file
     return None
+
 
 def make_configuration():
     make_parser()
@@ -342,8 +354,8 @@ def make_configuration():
             setattr(options, "config", config_file)
     else:
         if not os.path.isfile(options.config):
-            assert_usage(False,
-                "Could not read config file '%s'" % options.config)
+            assert_usage(
+                False, "Could not read config file '%s'" % options.config)
 
     if options.node is None and options.config:
         options.node = "default"
@@ -362,8 +374,8 @@ def make_configuration():
             if options.node == "default":
                 pass
             else:
-                assert_usage(False, ("Could not read section '%s' in config file"  +
-                             " '%s':\n   %s") %
+                assert_usage(False, ("Could not read section '%s' in config file"
+                             + " '%s':\n   %s") %
                              (options.node, options.config, error))
         else:
             for key, val in new_conf.items():
@@ -371,21 +383,25 @@ def make_configuration():
 
     return (options, args)
 
+
 def assert_usage(expr, error):
     if not expr:
         output("\nERROR: {0}\n".format(error))
         output("{0} --help for help\n".format(os.path.basename(sys.argv[0])))
         sys.exit(1)
 
+
 def print_version():
     output("rabbitmqadmin {0}".format(VERSION))
     sys.exit(0)
+
 
 def column_sort_key(col):
     if col in PROMOTE_COLUMNS:
         return (1, PROMOTE_COLUMNS.index(col))
     else:
         return (2, col)
+
 
 def main():
     (options, args) = make_configuration()
@@ -400,12 +416,15 @@ def main():
     method = getattr(mgmt, "invoke_%s" % args[0])
     method()
 
+
 def output(s):
     print(maybe_utf8(s, sys.stdout))
+
 
 def die(s):
     sys.stderr.write(maybe_utf8("*** {0}\n".format(s), sys.stderr))
     exit(1)
+
 
 def maybe_utf8(s, stream):
     if sys.version_info[0] == 3 or stream.isatty():
@@ -414,6 +433,7 @@ def maybe_utf8(s, stream):
     else:
         # It won't have an encoding, and Python will pick ASCII by default
         return s.encode('utf-8')
+
 
 class Management:
     def __init__(self, options, args):
@@ -479,7 +499,7 @@ class Management:
     def use_cols(self):
         # Deliberately do not cast to int here; we only care about the
         # default, not explicit setting.
-        return self.options.depth == 1 and not 'json' in self.options.format
+        return self.options.depth == 1 and 'json' not in self.options.format
 
     def invoke_help(self):
         if len(self.args) == 0:
@@ -499,7 +519,7 @@ class Management:
 
     def invoke_publish(self):
         (uri, upload) = self.parse_args(self.args, EXTRA_VERBS['publish'])
-        if not 'payload' in upload:
+        if 'payload' not in upload:
             data = sys.stdin.read()
             upload['payload'] = b64(data)
             upload['payload_encoding'] = 'base64'
@@ -606,7 +626,7 @@ class Management:
         return (obj_type, uri, upload)
 
     def parse_args(self, args, obj):
-        mandatory =  obj['mandatory']
+        mandatory = obj['mandatory']
         optional = obj['optional']
         uri_template = obj['uri']
         upload = {}
@@ -645,6 +665,7 @@ class Management:
             print("Could not parse JSON:\n  {0}".format(text))
             sys.exit(1)
 
+
 def format_list(json_list, columns, args, options):
     format = options.format
     formatter = None
@@ -657,10 +678,11 @@ def format_list(json_list, columns, args, options):
         return
     else:
         formatter = FORMATS[format]
-    assert_usage(formatter != None,
+    assert_usage(formatter is not None,
                  "Format {0} not recognised".format(format))
     formatter_instance = formatter(columns, args, options)
     formatter_instance.display(json_list)
+
 
 class Lister:
     def verbose(self, string):
@@ -730,6 +752,7 @@ class Lister:
 
         return (columns, table)
 
+
 class TSVList(Lister):
     def __init__(self, columns, obj_info, options):
         self.columns = columns
@@ -743,6 +766,7 @@ class TSVList(Lister):
         for row in table:
             line = "\t".join(row)
             output(line)
+
 
 class LongList(Lister):
     def __init__(self, columns, obj_info, options):
@@ -762,6 +786,7 @@ class LongList(Lister):
                 output(fmt.format(columns[j], table[i][j]))
             output(sep)
 
+
 class TableList(Lister):
     def __init__(self, columns, obj_info, options):
         self.columns = columns
@@ -774,7 +799,6 @@ class TableList(Lister):
         self.ascii_table(total)
 
     def ascii_table(self, rows):
-        table = ""
         col_widths = [0] * len(rows[0])
         for i in range(0, len(rows[0])):
             for j in range(0, len(rows)):
@@ -799,6 +823,7 @@ class TableList(Lister):
             txt += ("-" * (w + 2)) + "+"
         output(txt)
 
+
 class KeyValueList(Lister):
     def __init__(self, columns, obj_info, options):
         self.columns = columns
@@ -811,6 +836,7 @@ class KeyValueList(Lister):
             for j in range(0, len(columns)):
                 row.append("{0}=\"{1}\"".format(columns[j], table[i][j]))
             output(" ".join(row))
+
 
 # TODO handle spaces etc in completable names
 class BashList(Lister):
@@ -830,15 +856,17 @@ class BashList(Lister):
                 res.append(row[ix])
             output(" ".join(res))
 
+
 FORMATS = {
-    'raw_json'    : None, # Special cased
-    'pretty_json' : None, # Ditto
-    'tsv'         : TSVList,
-    'long'        : LongList,
-    'table'       : TableList,
-    'kvp'         : KeyValueList,
-    'bash'        : BashList
+    'raw_json': None,  # Special cased
+    'pretty_json': None,  # Ditto
+    'tsv': TSVList,
+    'long': LongList,
+    'table': TableList,
+    'kvp': KeyValueList,
+    'bash': BashList
 }
+
 
 def write_payload_file(payload_file, json_list):
     result = json.loads(json_list)[0]
@@ -851,6 +879,7 @@ def write_payload_file(payload_file, json_list):
         data = payload
     f.write(data)
     f.close()
+
 
 def print_bash_completion():
     script = """# This is a bash completion script for rabbitmqadmin.
@@ -868,7 +897,8 @@ _rabbitmqadmin()
 
     case "${prev}" in
     list)
-        COMPREPLY=( $(compgen -W '""" + " ".join(LISTABLE) + """' -- ${cur}) )
+        COMPREPLY=( $(compgen -W '"""  # noqa: E501
+    script += " ".join(LISTABLE) + """' -- ${cur}) )
             return 0
             ;;
     show)
@@ -960,6 +990,7 @@ _rabbitmqadmin()
 complete -F _rabbitmqadmin rabbitmqadmin
 """
     output(script)
+
 
 if __name__ == "__main__":
     main()

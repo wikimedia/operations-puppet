@@ -29,11 +29,14 @@ import urllib.parse
 
 
 def eprint(*args, **kwargs):
-    print(*args, file=sys.stderr, **kwargs)
+    # disable qa as we are testing with python2 flake8 T184435
+    print(*args, file=sys.stderr, **kwargs)  # noqa: E999
+
 
 def die(s):
     eprint('*** {}'.format(s))
     exit(1)
+
 
 def http_req(username, password, verb, path, body=None):
     path = '/api%s' % path
@@ -84,13 +87,12 @@ def http_json(username, password, verb, path, body=None):
 
 def message_count(username, password, queue):
     out = http_json(username,
-                     password,
-                     'GET',
-                     '/queues/%2F/{}'.format(queue))
+                    password,
+                    'GET',
+                    '/queues/%2F/{}'.format(queue))
     if not out:
         return None
     return out['messages_ready']
-
 
 
 def main():
