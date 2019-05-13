@@ -15,7 +15,7 @@ groups:
               mtizzoni, panisson, paolotti, ciro, dartar, melodykramer, gtirloni, tbayer, pirroh]
   absent_ldap:
     description: meta group for absented users which had privileged LDAP access in the past, an automatic check verifies it has been really removed from the LDAP (but removal has to be handled separatelly)
-    members: [adavenport, siddharth11, albe, audiohazel, tbolliger]
+    members: [adavenport, siddharth11, albe, audiohazel, tbolliger, jmatazzoni]
   wikidev:
     gid: 500
     description: container group for primary user groups.
@@ -3276,9 +3276,8 @@ ldap_only_users:
     realname: James Buatti
     email: jbuatti@wikimedia.org
   jmatazzoni:
-    ensure: present
+    ensure: absent
     realname: James Matazzoni
-    email: jmatazzoni@wikimedia.org
   jrobell:
     ensure: present
     realname: Jessica Robell
