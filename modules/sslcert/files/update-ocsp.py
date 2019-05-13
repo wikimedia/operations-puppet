@@ -213,7 +213,7 @@ def certs_fetch_ocsp(out_temp, args):
                         (ocsp_err))
 
     # Check the response says successful rather than revoked
-    if not re.search('^\s*OCSP Response Status: successful \(0x0\)$',
+    if not re.search(r'^\s*OCSP Response Status: successful \(0x0\)$',
                      ocsp_text, re.M):
         raise Exception("OCSP Response Status not successful:\n%s" %
                         (ocsp_text))
@@ -228,8 +228,8 @@ def certs_fetch_ocsp(out_temp, args):
     for cert in certs:
         pat = (
             '^' + re.escape(cert) + ': good\n'
-            + '\s*This Update: ([^\n]+)\n'
-            + '\s*Next Update: ([^\n]+)\n'
+            + r'\s*This Update: ([^\n]+)\n'
+            + r'\s*Next Update: ([^\n]+)\n'
         )
         res = re.search(pat, ocsp_text, re.M)
         if not res:
@@ -243,9 +243,9 @@ def certs_fetch_ocsp(out_temp, args):
 
     # Check the signing cert's validity, if included in response
     v_pat = (
-        '^\s*Validity\n'
-        + '\s*Not Before: ([^\n]+)\n'
-        + '\s*Not After : ([^\n]+)\n'
+        r'^\s*Validity\n'
+        + r'\s*Not Before: ([^\n]+)\n'
+        + r'\s*Not After : ([^\n]+)\n'
     )
     v_res = re.search(v_pat, ocsp_text, re.M)
     if v_res:

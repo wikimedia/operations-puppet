@@ -17,7 +17,7 @@ class sslcert::ocsp::init {
         mode   => '0555',
         owner  => 'root',
         group  => 'root',
-        source => 'puppet:///modules/sslcert/update-ocsp',
+        source => 'puppet:///modules/sslcert/update-ocsp.py',
     }
 
     file { '/usr/local/sbin/update-ocsp-all':

@@ -46,7 +46,7 @@ class sslcert {
         owner  => 'root',
         group  => 'root',
         mode   => '0755',
-        source => 'puppet:///modules/sslcert/x509-bundle',
+        source => 'puppet:///modules/sslcert/x509-bundle.py',
     }
 
     # Limit AppArmor support to just Ubuntu, for now

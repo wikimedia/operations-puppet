@@ -18,16 +18,18 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import os
 import argparse
-from subprocess import check_output
 import glob
+import os
+from subprocess import check_output
+
 
 def file_exists(fname):
     """Helper for argparse to do check if a filename argument exists"""
     if not os.path.exists(fname):
         raise argparse.ArgumentTypeError("{0} does not exist".format(fname))
     return fname
+
 
 def parse_options():
     """Parse command-line options, return args hash"""
@@ -51,6 +53,7 @@ def parse_options():
 
     return parser.parse_args()
 
+
 def issuer_hash(filename):
     """Returns the issuer_hash of the certificate"""
     return check_output([
@@ -58,6 +61,7 @@ def issuer_hash(filename):
             "-in", filename,
             "-issuer_hash",
          ]).rstrip()
+
 
 def traverse_tree(cert, cadir):
     """Construct a tree of the certificate up to a root CA.
@@ -73,11 +77,11 @@ def traverse_tree(cert, cadir):
     issuer = issuer_hash(cert)
     issuer_files = glob.glob(os.path.join(cadir, issuer + '.[0-9]'))
     if len(issuer_files) == 0:
-        return [ cert, ]
+        return [cert, ]
 
     paths = []
     for issuer_variant in issuer_files:
-        output = [ cert, ]
+        output = [cert, ]
         if issuer == issuer_hash(issuer_variant):
             # self-signed, end of the road
             output.extend([issuer_variant])
@@ -91,6 +95,7 @@ def traverse_tree(cert, cadir):
     shortest_path = sorted(paths, key=len)[0]
     return shortest_path
 
+
 def main():
     args = parse_options()
     certpath = traverse_tree(args.cert, args.cadir)
@@ -100,7 +105,7 @@ def main():
         certpath.pop(0)
 
     if len(certpath):
-        pretty = [ certpath[0] ] + [ os.readlink(f) for f in certpath[1:] ]
+        pretty = [certpath[0]] + [os.readlink(f) for f in certpath[1:]]
         print(" -> ".join(pretty))
     else:
         print("empty chain (due to skipped root/first?)")
@@ -115,6 +120,7 @@ def main():
                 if incontents[-1] != "\n":
                     incontents += "\n"
                 outfile.write(incontents)
+
 
 if __name__ == '__main__':
     main()
