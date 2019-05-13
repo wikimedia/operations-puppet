@@ -22,7 +22,7 @@ class base::phaste( $ensure = present ) {
 
     file { '/usr/local/bin/phaste':
         ensure  => $ensure,
-        source  => 'puppet:///modules/base/phaste',
+        source  => 'puppet:///modules/base/phaste.py',
         owner   => 'root',
         group   => 'root',
         mode    => '0555',

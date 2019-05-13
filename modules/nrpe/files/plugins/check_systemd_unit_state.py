@@ -41,11 +41,10 @@ to <expect>:
                valid when a timer exists for the unit)
 """
 
-import time
 import datetime
 import subprocess
-import re
 import sys
+import time
 
 
 def unknown(msg):
@@ -133,6 +132,7 @@ def main():
                     % unit)
 
     ok("Last run for unit %s was successful" % unit)
+
 
 if __name__ == "__main__":
     main()

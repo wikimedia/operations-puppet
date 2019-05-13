@@ -75,7 +75,7 @@ class keyholder($require_encrypted_keys='yes') {
     }
 
     file { '/usr/local/bin/ssh-agent-proxy':
-        source => 'puppet:///modules/keyholder/ssh-agent-proxy',
+        source => 'puppet:///modules/keyholder/ssh-agent-proxy.py',
         owner  => 'root',
         group  => 'root',
         mode   => '0555',

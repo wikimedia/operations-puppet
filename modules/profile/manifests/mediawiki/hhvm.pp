@@ -128,7 +128,7 @@ class profile::mediawiki::hhvm(
     # are just left around
 
     file { '/usr/local/sbin/hhvm_cleanup_cache':
-        source => 'puppet:///modules/profile/mediawiki/hhvm/cleanup_cache',
+        source => 'puppet:///modules/profile/mediawiki/hhvm/cleanup_cache.py',
         owner  => 'root',
         group  => 'root',
         mode   => '0555',

@@ -10,7 +10,6 @@ import sys
 import time
 
 from elasticsearch import Elasticsearch, TransportError
-from elasticsearch.exceptions import ConnectionError
 from subprocess import CalledProcessError
 
 
@@ -338,6 +337,7 @@ def es_unban_node():
     else:
         print "Failed to unban " + args.node
         return os.EX_UNAVAILABLE
+
 
 # And register them here
 commands = {

@@ -7,13 +7,14 @@
 """
 import argparse
 import os
-import socket
 import sys
 
 os.environ.setdefault('SENTRY_CONF', '/etc/sentry.conf.py')
 
-from sentry.utils.runner import configure; configure()
 from sentry.models import User
+from sentry.utils.runner import configure
+
+configure()
 
 
 def check_admin(args):

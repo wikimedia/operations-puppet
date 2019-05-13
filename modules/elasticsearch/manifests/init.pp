@@ -157,7 +157,7 @@ class elasticsearch (
         owner   => 'root',
         group   => 'root',
         mode    => '0755',
-        source  => 'puppet:///modules/elasticsearch/es-tool',
+        source  => 'puppet:///modules/elasticsearch/es-tool.py',
         require => [Package['python-elasticsearch'], Package['python-ipaddr']],
     }
 

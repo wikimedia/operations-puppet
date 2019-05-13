@@ -20,7 +20,7 @@ class shinken::shinkengen(
     }
 
     file { '/usr/local/bin/shinkengen':
-        source  => 'puppet:///modules/shinken/shinkengen',
+        source  => 'puppet:///modules/shinken/shinkengen.py',
         owner   => 'shinken',
         group   => 'shinken',
         mode    => '0555',

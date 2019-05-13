@@ -73,7 +73,7 @@ class sentry (
     }
 
     file { '/usr/local/sbin/sentry-auth':
-        source  => 'puppet:///modules/sentry/sentry-auth',
+        source  => 'puppet:///modules/sentry/sentry-auth.py',
         owner   => 'root',
         group   => 'root',
         mode    => '0555',

@@ -135,12 +135,12 @@ def hpsa_list_pd():
     in_controller = False
     for line in raw_output.splitlines():
         line = str(line, 'utf8', 'ignore')
-        m = re.match('^Smart Array .* in Slot (\d+)', line)
+        m = re.match(r'^Smart Array .* in Slot (\d+)', line)
         if m:
             in_controller = True
             disk_id = 0
 
-        m = re.match('^\s+physicaldrive', line)
+        m = re.match(r'^\s+physicaldrive', line)
         if m and in_controller:
             device = 'cciss,%s' % disk_id
             # TODO(filippo) assumes /dev/sda

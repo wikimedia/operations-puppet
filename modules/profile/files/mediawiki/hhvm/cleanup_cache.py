@@ -108,5 +108,6 @@ def main():
         log.error("Execution failed with error %s", e)
         sys.exit(1)
 
+
 if __name__ == '__main__':
     main()
