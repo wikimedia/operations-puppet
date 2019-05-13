@@ -118,7 +118,7 @@ class swift::storage (
         owner  => 'root',
         group  => 'root',
         mode   => '0755',
-        source => 'puppet:///modules/swift/swift-drive-audit',
+        source => 'puppet:///modules/swift/swift-drive-audit.py',
     }
     file { '/etc/swift/swift-drive-audit.conf':
         owner  => 'root',

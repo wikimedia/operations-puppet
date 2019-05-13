@@ -23,12 +23,12 @@ except ImportError:
 CONTAINER_SETS = {
     # MediaWiki containers used for media storage
     'mw-media': {
-        re.compile('-thumb(\.[a-z0-9][a-z0-9])?$'):      'thumb',
-        re.compile('-public(\.[a-z0-9][a-z0-9])?$'):     'originals',
-        re.compile('-temp(\.[a-z0-9][a-z0-9])?$'):       'temp',
-        re.compile('-deleted(\.[a-z0-9][a-z0-9])?$'):    'deleted',
-        re.compile('-transcoded(\.[a-z0-9][a-z0-9])?$'): 'transcoded',
-        re.compile('-render(\.[a-z0-9][a-z0-9])?$'):     'render',
+        re.compile(r'-thumb(\.[a-z0-9][a-z0-9])?$'):      'thumb',
+        re.compile(r'-public(\.[a-z0-9][a-z0-9])?$'):     'originals',
+        re.compile(r'-temp(\.[a-z0-9][a-z0-9])?$'):       'temp',
+        re.compile(r'-deleted(\.[a-z0-9][a-z0-9])?$'):    'deleted',
+        re.compile(r'-transcoded(\.[a-z0-9][a-z0-9])?$'): 'transcoded',
+        re.compile(r'-render(\.[a-z0-9][a-z0-9])?$'):     'render',
     },
 }
 

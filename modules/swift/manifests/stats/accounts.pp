@@ -18,7 +18,7 @@ class swift::stats::accounts(
         owner   => 'root',
         group   => 'root',
         mode    => '0555',
-        source  => "puppet:///modules/${module_name}/swift-account-stats",
+        source  => "puppet:///modules/${module_name}/swift-account-stats.py",
         require => $required_packages,
     }
 
@@ -28,7 +28,7 @@ class swift::stats::accounts(
         owner   => 'root',
         group   => 'root',
         mode    => '0555',
-        source  => "puppet:///modules/${module_name}/swift-container-stats",
+        source  => "puppet:///modules/${module_name}/swift-container-stats.py",
         require => $required_packages,
     }
 

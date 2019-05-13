@@ -145,7 +145,11 @@ if __name__ == '__main__':
     if not c.read(conf_path):
         print "Unable to read config file %s" % conf_path
         sys.exit(os.EX_CONFIG)
+
     conf = dict(c.items('drive-audit'))
+    conf['log_name'] = conf.get('log_name', 'drive-audit')
+    logger = get_logger(conf, log_route='drive-audit')
+
     device_dir = conf.get('device_dir', '/srv/node')
     minutes = int(conf.get('minutes', 60))
     error_limit = int(conf.get('error_limit', 1))
@@ -167,8 +171,6 @@ if __name__ == '__main__':
             re.compile(r'\berror\b.*\b(sd[a-z]{1,2}\d?)\b'),
             re.compile(r'\b(sd[a-z]{1,2}\d?)\b.*\berror\b'),
         ]
-    conf['log_name'] = conf.get('log_name', 'drive-audit')
-    logger = get_logger(conf, log_route='drive-audit')
     devices = get_devices(device_dir, logger)
     logger.debug("Devices found: %s" % str(devices))
     if not devices:

@@ -16,7 +16,7 @@ class swift::stats::dispersion(
         owner   => 'root',
         group   => 'root',
         mode    => '0555',
-        source  => 'puppet:///modules/swift/swift-dispersion-stats',
+        source  => 'puppet:///modules/swift/swift-dispersion-stats.py',
         require => $required_packages,
     }
 
