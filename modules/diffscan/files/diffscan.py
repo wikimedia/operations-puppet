@@ -6,20 +6,20 @@
 # Copyright (c) 2015 Mozilla Corporation
 # Author: ameihm@mozilla.com
 
-import sys
-import os
-import fcntl
-from string import Template
-import getopt
-import re
-import time
-import subprocess
-import tempfile
+import calendar
 import cPickle
 import errno
-import tempfile
+import fcntl
+import getopt
+import os
+import re
 import shutil
-import calendar
+import subprocess
+import sys
+import tempfile
+import time
+
+from string import Template
 
 # Edit the nmap_scanoptions variable below to configure generic options
 # that are passed by nmap to the script. This script generates email using
@@ -40,6 +40,7 @@ nmap_portspec = Template('-p $portspec')
 
 append_path = ':/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:' + \
         '/usr/local/sbin:/usr/lib'
+
 
 class ScanData(object):
     def __init__(self):
@@ -77,9 +78,10 @@ class ScanData(object):
         self.dnsmap[addr] = hn
         self.hosts[addr].append([int(port), proto])
 
+
 class Alert(object):
-    def __init__(self, host, port, proto, dns, open_prev, closed_prev,
-        statstr):
+
+    def __init__(self, host, port, proto, dns, open_prev, closed_prev, statstr):
         self.host = host
         self.port = port
         self.proto = proto
@@ -93,10 +95,12 @@ class Alert(object):
         return 'STATUS HOST PORT PROTO OPREV CPREV DNS'
 
     def __str__(self):
-        return '%s %s %s %s %s %s %s' % (self.statstr, self.host,
+        return '%s %s %s %s %s %s %s' % (
+            self.statstr, self.host,
             str(self.port), self.proto,
             str(self.open_prev), str(self.closed_prev),
             self.dns)
+
 
 class ScanState(object):
     KEEP_SCANS = 7
@@ -179,12 +183,12 @@ class ScanState(object):
                     # If this host isn't in the previous up or down list,
                     # note it as a new host
                     if (i not in prevscan.uphosts) and \
-                        (i not in prevscan.downhosts):
+                       (i not in prevscan.downhosts):
                         statstr = 'OPENNEWHOST'
                     openprev, closedprev = \
                         self.prev_service_status(i, p[0], p[1])
-                    self._alerts_open.append(Alert(i, p[0], p[1], dns,
-                        openprev, closedprev, statstr))
+                    self._alerts_open.append(Alert(
+                        i, p[0], p[1], dns, openprev, closedprev, statstr))
 
     def calculate_new_closed(self):
         if len(self._scanlist) <= 1:
@@ -205,8 +209,8 @@ class ScanState(object):
                         dns = prevscan.dnsmap[i]
                     openprev, closedprev = \
                         self.prev_service_status(i, p[0], p[1])
-                    self._alerts_closed.append(Alert(i, p[0], p[1], dns,
-                        openprev, closedprev, statstr))
+                    self._alerts_closed.append(Alert(
+                        i, p[0], p[1], dns, openprev, closedprev, statstr))
 
     def print_open_alerts(self):
         self._outfile.write('%s\n' % Alert.alert_header())
@@ -223,6 +227,7 @@ class ScanState(object):
             return True
         return False
 
+
 lockfile = None
 state = None
 tmpfile = None
@@ -238,18 +243,21 @@ quiet = False
 statefile = './diffscan.state'
 outdir = './diffscan_out'
 
+
 def outdir_setup():
     if not os.path.isdir(outdir):
-        os.mkdir(outdir, 0755)
+        os.mkdir(outdir, 0o755)
     if not os.access(outdir, os.W_OK):
         sys.stderr.write('%s not writable\n' % outdir)
         sys.exit(1)
+
 
 def copy_nmap_out(p):
     tval = int(calendar.timegm(time.gmtime()))
     pidval = os.getpid()
     fname = os.path.join(outdir, 'nmap-%d-%d.out' % (tval, pidval))
     shutil.copyfile(p, fname)
+
 
 def load_scanstate():
     try:
@@ -263,10 +271,12 @@ def load_scanstate():
     f.close()
     return ret
 
+
 def write_scanstate():
     f = open(statefile, 'w')
     cPickle.dump(state, f)
     f.close()
+
 
 def parse_output(path):
     new = ScanData()
@@ -274,21 +284,21 @@ def parse_output(path):
     f = open(path, 'r')
     while True:
         buf = f.readline()
-        if buf == None:
+        if buf is None:
             break
         if buf == '':
             break
         buf = buf.strip()
-        m = re.search('Host: (\S+) \(([^)]*)\).*Status: Up', buf)
-        if m != None:
+        m = re.search(r'Host: (\S+) \(([^)]*)\).*Status: Up', buf)
+        if m is not None:
             addr = m.group(1)
             new.uphosts.append(addr)
-        m = re.search('Host: (\S+) \(([^)]*)\).*Status: Down', buf)
-        if m != None:
+        m = re.search(r'Host: (\S+) \(([^)]*)\).*Status: Down', buf)
+        if m is not None:
             addr = m.group(1)
             new.downhosts.append(addr)
-        m = re.search('Host: (\S+) \(([^)]*)\).*Ports: (.*)$', buf)
-        if m != None:
+        m = re.search(r'Host: (\S+) \(([^)]*)\).*Ports: (.*)$', buf)
+        if m is not None:
             addr = m.group(1)
             hn = m.group(2)
             if len(hn) == 0:
@@ -302,6 +312,7 @@ def parse_output(path):
 
     state.set_last(new)
 
+
 def diffscan_fail_notify(errmsg):
     if nosmtp:
         return
@@ -314,13 +325,14 @@ def diffscan_fail_notify(errmsg):
     sp = subprocess.Popen(['sendmail', '-t'], stdin=subprocess.PIPE)
     sp.communicate(buf)
 
+
 def run_nmap(targets):
     nmap_args = []
     nmap_args += nmap_scanoptions.split()
 
     tf = tempfile.mkstemp()
     os.close(tf[0])
-    if portspec != None:
+    if portspec is not None:
         nmap_args += nmap_portspec.substitute(portspec=portspec).split()
     else:
         nmap_args += nmap_topports.substitute(topports=topports).split()
@@ -329,7 +341,7 @@ def run_nmap(targets):
 
     nfd = open('/dev/null', 'w')
     try:
-        ret = subprocess.call(['nmap',] + nmap_args, stdout=nfd)
+        ret = subprocess.call(['nmap', ] + nmap_args, stdout=nfd)
     except Exception as e:
         os.remove(tf[1])
         diffscan_fail_notify('executing of nmap failed, %s' % str(e))
@@ -347,18 +359,21 @@ def run_nmap(targets):
     os.remove(tf[1])
     return True
 
+
 def usage():
-    sys.stdout.write('usage: diffscan.py [options] targets_file' \
-        ' recipients groupname\n\n' \
-        'options:\n\n' \
-        '\t-h\t\tusage information\n' \
-        '\t-m num\t\ttop ports to scan (2000, see nmap --top-ports)\n' \
-        '\t-n\t\tno smtp, write output to stdout (recipient ignored)\n' \
-        '\t-o path\t\tdirectory to save nmap output (./diffscan_out)\n' \
-        '\t-p spec\t\tinstead of top ports use port spec (see nmap -p)\n' \
-        '\t-s path\t\tpath to state file (./diffscan.state)\n' \
+    sys.stdout.write(
+        'usage: diffscan.py [options] targets_file'
+        ' recipients groupname\n\n'
+        'options:\n\n'
+        '\t-h\t\tusage information\n'
+        '\t-m num\t\ttop ports to scan (2000, see nmap --top-ports)\n'
+        '\t-n\t\tno smtp, write output to stdout (recipient ignored)\n'
+        '\t-o path\t\tdirectory to save nmap output (./diffscan_out)\n'
+        '\t-p spec\t\tinstead of top ports use port spec (see nmap -p)\n'
+        '\t-s path\t\tpath to state file (./diffscan.state)\n'
         '\t-q\t\tDon\'t send email if no changes \n\n')
     sys.exit(0)
+
 
 def create_lock():
     global lockfile
@@ -369,11 +384,13 @@ def create_lock():
     lockfile.write(str(os.getpid()))
     lockfile.flush()
 
+
 def release_lock():
     lfname = statefile + '.lock'
 
     lockfile.close()
     os.remove(lfname)
+
 
 def domain():
     global statefile
@@ -454,15 +471,11 @@ def domain():
     state.print_closed_alerts()
 
     tmpfile.write('\n')
-    tmpfile.write('OPREV: number of times service was open in previous ' \
-        'scans\n')
-    tmpfile.write('CPREV: number of times service was closed in ' \
-        'previous scans\n')
+    tmpfile.write('OPREV: number of times service was open in previous scans\n')
+    tmpfile.write('CPREV: number of times service was closed in previous scans\n')
     tmpfile.write('maximum previous scans stored: %d\n' % state.KEEP_SCANS)
-    tmpfile.write('current total services: %d\n' % \
-        state.last_scan_total_services())
-    tmpfile.write('previous total services: %d\n' % \
-        state.previous_scan_total_services())
+    tmpfile.write('current total services: %d\n' % state.last_scan_total_services())
+    tmpfile.write('previous total services: %d\n' % state.previous_scan_total_services())
     tmpfile.write('up trend: %s\n' % state.up_trend())
     tmpfile.write('down trend: %s\n' % state.down_trend())
 
@@ -483,6 +496,7 @@ def domain():
         os.remove(tmpout[1])
 
     release_lock()
+
 
 if __name__ == '__main__':
     domain()

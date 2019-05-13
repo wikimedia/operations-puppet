@@ -41,7 +41,7 @@ class diffscan(
         owner  => 'root',
         group  => 'root',
         mode   => '0554',
-        source => 'puppet:///modules/diffscan/diffscanpy',
+        source => 'puppet:///modules/diffscan/diffscan.py',
     }
     cron { "diffscan-${groupname}":
         ensure  => present,
