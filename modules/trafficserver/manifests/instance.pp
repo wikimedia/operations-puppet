@@ -78,6 +78,11 @@
 # [*enable_caching*]
 #   Enable caching of HTTP requests. (default: true)
 #
+# [*required_headers*]
+#   The type of headers required in a request for the request to be cacheable.
+#   (default: 2)
+#   See https://docs.trafficserver.apache.org/en/latest/admin-guide/files/records.config.en.html
+#
 # [*caching_rules*]
 #   An array of Trafficserver::Caching_rules, each representing a caching rule. (default: undef).
 #   See https://docs.trafficserver.apache.org/en/latest/admin-guide/files/cache.config.en.html
@@ -155,6 +160,7 @@ define trafficserver::instance(
     String $global_lua_script = '',
     Array[Trafficserver::Mapping_rule] $mapping_rules = [],
     Boolean $enable_caching = true,
+    Optional[Integer[0,2]] $required_headers = undef,
     Optional[Array[Trafficserver::Caching_rule]] $caching_rules = undef,
     Optional[Trafficserver::Negative_Caching] $negative_caching = undef,
     Optional[Array[Trafficserver::Storage_element]] $storage = undef,

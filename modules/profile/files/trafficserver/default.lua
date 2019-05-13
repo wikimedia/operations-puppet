@@ -38,24 +38,46 @@ function do_global_send_response()
     return 0
 end
 
+function do_not_cache()
+    -- We cache responses if and only if Cache-Control or Expires allow
+    -- caching (proxy.config.http.cache.required_headers = 2).
+    ts.server_response.header['Cache-Control'] = nil
+    ts.server_response.header['Expires'] = nil
+end
+
 function do_global_read_response()
-    if ts.server_response.header['Set-Cookie'] then
-        ts.server_response.header['Cache-Control'] = 'private, max-age=0, s-maxage=0'
-        ts.debug("Setting CC:private on response with Set-Cookie for uri " ..  ts.client_request.get_uri())
-    end
-
-    -- Do not cache files bigger than 1GB
-    local content_length = ts.server_response.header['Content-Length']
-    if content_length and tonumber(content_length) > 1024 * 16 * 16 * 16 * 16 * 16 then
-        ts.server_response.header['Cache-Control'] = 'private, max-age=0, s-maxage=0'
-        ts.debug("Setting CC:private on response with CL:" .. ts.server_response.header['Content-Length'] ..", uri=" ..  ts.client_request.get_uri())
-    end
-
     -- Various fairly severe privacy/security/uptime risks exist if we allow
     -- possibly compromised or misconfigured internal apps to emit these headers
     -- through our CDN blindly.
     ts.server_response.header['Public-Key-Pins'] = nil
     ts.server_response.header['Public-Key-Pins-Report-Only'] = nil
+
+    local response_status = ts.server_response.get_status()
+
+    -------------------------------------------------------------
+    -- Force caching responses that would not be cached otherwise
+    -------------------------------------------------------------
+    if response_status == 404 then
+        -- Cache 404s for 10 minutes
+        ts.server_response.header['Cache-Control'] = 's-maxage=600'
+    end
+
+    ----------------------------------------------------------
+    -- Avoid caching responses that might get cached otherwise
+    ----------------------------------------------------------
+    local content_length = ts.server_response.header['Content-Length']
+
+    if ts.server_response.header['Set-Cookie'] then
+        ts.debug("Do not cache response with Set-Cookie for uri " ..  ts.client_request.get_uri())
+        do_not_cache()
+    elseif content_length and tonumber(content_length) > 1024 * 16 * 16 * 16 * 16 * 16 then
+        -- Do not cache files bigger than 1GB
+        ts.debug("Do not cache response with CL:" .. ts.server_response.header['Content-Length'] ..", uri=" ..  ts.client_request.get_uri())
+        do_not_cache()
+    elseif response_status > 499 then
+        -- Do not cache server errors under any circumstances
+        do_not_cache()
+    end
 
     return 0
 end

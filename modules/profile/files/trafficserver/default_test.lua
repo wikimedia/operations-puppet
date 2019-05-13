@@ -13,6 +13,7 @@ _G.TS_LUA_CACHE_LOOKUP_HIT_FRESH = 1
 
 _G.ts.client_request.get_uri = function() return "/" end
 _G.get_hostname = function() return 'pass-test-hostname' end
+_G.ts.server_response.get_status = function() return 200 end
 
 describe("Busted unit testing framework", function()
   describe("script for ATS Lua Plugin", function()
@@ -21,14 +22,15 @@ describe("Busted unit testing framework", function()
       stub(ts, "debug")
 
       -- Without Set-Cookie
-      _G.ts.server_response.header = {}
+      _G.ts.server_response.header['Cache-Control'] = 'public, max-age=10'
       do_global_read_response()
-      assert.are.equals(nil, _G.ts.server_response.header['Cache-Control'])
+      assert.are.equals('public, max-age=10', _G.ts.server_response.header['Cache-Control'])
 
       -- With Set-Cookie
       _G.ts.server_response.header['Set-Cookie'] = 'banana potato na'
+      _G.ts.server_response.header['Cache-Control'] = 'public, max-age=10'
       do_global_read_response()
-      assert.are.equals("private, max-age=0, s-maxage=0", _G.ts.server_response.header['Cache-Control'])
+      assert.is_nil(_G.ts.server_response.header['Cache-Control'])
     end)
 
     it("test - do_global_read_response large Content-Length", function()
@@ -36,18 +38,19 @@ describe("Busted unit testing framework", function()
 
       -- No Content-Length
       _G.ts.server_response.header = {}
+      _G.ts.server_response.header['Cache-Control'] = 'public, max-age=10'
       do_global_read_response()
-      assert.are.equals(nil, _G.ts.server_response.header['Cache-Control'])
+      assert.are.equals('public, max-age=10', _G.ts.server_response.header['Cache-Control'])
 
       -- Small enough object
       _G.ts.server_response.header['Content-Length'] = '120'
       do_global_read_response()
-      assert.are.equals(nil, _G.ts.server_response.header['Cache-Control'])
+      assert.are.equals('public, max-age=10', _G.ts.server_response.header['Cache-Control'])
 
       -- Large enough object
       _G.ts.server_response.header['Content-Length'] = '1073741825'
       do_global_read_response()
-      assert.are.equals("private, max-age=0, s-maxage=0", _G.ts.server_response.header['Cache-Control'])
+      assert.is_nil(_G.ts.server_response.header['Cache-Control'])
 
       -- PKP headers sanitation
       _G.ts.server_response.header['Public-Key-Pins'] = 'test'
@@ -55,6 +58,19 @@ describe("Busted unit testing framework", function()
       do_global_read_response()
       assert.are.equals(nil, _G.ts.server_response.header['Public-Key-Pins'])
       assert.are.equals(nil, _G.ts.server_response.header['Public-Key-Pins-Report-Only'])
+    end)
+
+    it("test - do_global_read_response 503 error with Cache-Control", function()
+      _G.ts.server_response.header = {}
+      -- 200 response with Cache-Control
+      _G.ts.server_response.header['Cache-Control'] = 'public, max-age=10'
+      do_global_read_response()
+      assert.are.equals('public, max-age=10', _G.ts.server_response.header['Cache-Control'])
+
+      -- 503 response with Cache-Control
+      _G.ts.server_response.get_status = function() return 503 end
+      do_global_read_response()
+      assert.is_nil(_G.ts.server_response.header['Cache-Control'])
     end)
 
     it("test - do_global_send_response cache miss", function()

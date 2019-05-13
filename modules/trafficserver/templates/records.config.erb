@@ -18,7 +18,9 @@ CONFIG proxy.config.url_remap.pristine_host_hdr INT 1
 CONFIG proxy.config.disable_configuration_modification INT 1
 
 <% if @enable_caching -%>
-CONFIG proxy.config.http.cache.required_headers INT 0
+<% if @required_headers -%>
+CONFIG proxy.config.http.cache.required_headers INT <%= @required_headers %>
+<% end -%>
 CONFIG proxy.config.http.cache.cache_responses_to_cookies INT 1
 # Do not accept inbound connections until the cache is enabled
 CONFIG proxy.config.http.wait_for_cache INT 2
