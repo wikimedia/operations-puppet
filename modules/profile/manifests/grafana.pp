@@ -157,7 +157,7 @@ class profile::grafana (
     require_package('python-sqlalchemy')
 
     file { '/usr/local/sbin/grafana_create_anon_user':
-        source  => 'puppet:///modules/grafana/grafana_create_anon_user',
+        source  => 'puppet:///modules/grafana/grafana_create_anon_user.py',
         owner   => 'root',
         group   => 'root',
         mode    => '0555',

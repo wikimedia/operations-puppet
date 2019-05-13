@@ -4,7 +4,6 @@
 # pretty printing and sorting the JSON representation should minimise
 # differences when code-reviewing changes
 
-import StringIO
 import argparse
 import json
 import logging
@@ -29,7 +28,7 @@ def dump_dashboard(url, tags=None):
 
     # when saved to disk we might add .json extension, strip it
     if name.endswith('.json'):
-        name = re.sub('\.json$', '', name)
+        name = re.sub(r'\.json$', '', name)
 
     req = requests.get(url)
     req.raise_for_status()
