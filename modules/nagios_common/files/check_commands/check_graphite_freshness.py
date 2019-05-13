@@ -30,7 +30,6 @@ sys.setdefaultencoding("utf-8")
 import argparse
 import datetime
 import json
-import time
 import urllib2
 
 

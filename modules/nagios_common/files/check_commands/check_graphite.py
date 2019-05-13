@@ -14,14 +14,15 @@ Based on the original plugin from disquis:
    <metric-name> --from 15min -C 1 -W 2 --under
 '''
 
-import os
-import json
-import urllib2
-from numbers import Real
 import argparse
-import sys
-from collections import defaultdict
+import json
+import os
 import re
+import sys
+import urllib2
+
+from collections import defaultdict
+from numbers import Real
 
 try:
     # python 3.x compat
@@ -116,7 +117,6 @@ class GraphiteCheck(object):
 
         return json.load(response)
 
-
     @classmethod
     def create_parser(cls, parser):
         '''
@@ -160,7 +160,7 @@ class Threshold(GraphiteCheck):
     Checks if the metric exceeds the desired threshold
     '''
     parser_name = 'check_threshold'
-    timespec_regex = re.compile('^-(\d+)(\w+)$')
+    timespec_regex = re.compile(r'^-(\d+)(\w+)$')
     _accepted_time_defs = ['hours', 'hour', 'h',
                            'weeks', 'week', 'w',
                            'days', 'day', 'd',
@@ -206,8 +206,8 @@ class Threshold(GraphiteCheck):
                 'the value of the %s argument is invalid: %s' %
                 (param_name, param_value))
         if m.group(2) not in self._accepted_time_defs:
-            raise ValueError('The unit specification for %s' % param_name +
-                             'should be one of the following: %s' %
+            raise ValueError('The unit specification for %s' % param_name
+                             + 'should be one of the following: %s' %
                              ','.join(self._accepted_time_defs))
 
     def get_all(self, args):
@@ -343,7 +343,7 @@ class SeriesThreshold(Threshold):
         :returns: Message string containing the status.
         :raises: NagiosException on non-OK statuses
         '''
-        messages = {'OK': [], 'CRITICAL': [], 'WARNING':[]}
+        messages = {'OK': [], 'CRITICAL': [], 'WARNING': []}
         if self.allow_undefined:
             messages['UNKNOWN'] = []
 
@@ -362,8 +362,8 @@ class SeriesThreshold(Threshold):
                 # Very simple count, no timeseries evaluation, no flap detection.
             if t < lengths['UNKNOWN']:
                 if self.allow_undefined:
-                    messages['UNKNOWN'].append((target,
-                        'More than half of the datapoints are undefined'))
+                    messages['UNKNOWN'].append((
+                        target, 'More than half of the datapoints are undefined'))
                     continue
                 else:
                     raise NagiosException(
@@ -376,10 +376,6 @@ class SeriesThreshold(Threshold):
             else:
                 messages['OK'].append((target, 100.0))
 
-        report = 'above'
-        if self.under:
-            report = 'under'
-
         message = self.format_message(messages)
         if messages['CRITICAL']:
             raise NagiosException('CRITICAL', message)
@@ -389,7 +385,8 @@ class SeriesThreshold(Threshold):
             return message
 
     def format_message(self, messages):
-        if not (messages['CRITICAL'] or messages['WARNING'] or ('UNKNOWN' in messages and messages['UNKNOWN'])):
+        if not (messages['CRITICAL'] or messages['WARNING']
+                or ('UNKNOWN' in messages and messages['UNKNOWN'])):
             return 'All targets OK'
         sign = '<' if self.under else '>'
         message = ''
@@ -399,7 +396,7 @@ class SeriesThreshold(Threshold):
             message += ' '.join(['%s (%s%3.2f%%)' % (k, sign, v) for k, v in messages['CRITICAL']])
         if messages['WARNING']:
             if messages['CRITICAL']:
-                message += ' WARN: ' # only add WARN: if there are also CRIT messages
+                message += ' WARN: '  # only add WARN: if there are also CRIT messages
             message += ' '.join(['%s (%s%3.2f%%)' % (k, sign, v) for k, v in messages['WARNING']])
         return message
 
@@ -414,10 +411,11 @@ class SeriesThreshold(Threshold):
         super(SeriesThreshold, self).get_all(args)
         self.allow_undefined = args.allow_undefined
 
-class Anomaly(GraphiteCheck):
 
+class Anomaly(GraphiteCheck):
     '''
-    Checks if the metric is out of the forecasted bounds for a number of times in the last iterations
+    Checks if the metric is out of the forecasted bounds for a number of times
+    in the last iterations
     '''
     parser_name = 'check_anomaly'
 
@@ -479,13 +477,13 @@ sampling (we will still require 1w of data)''',
         upperbound = result[2]['datapoints'][my_slice:]
         for i in xrange(self.check_window):
             data, time = measures[i]
-            l = lowerbound[i][0]
-            u = upperbound[i][0]
+            lower = lowerbound[i][0]
+            upper = upperbound[i][0]
             if not isinstance(data, Real):
                 datapoints['unknown'].append((time, data))
-            elif data >= u:
+            elif data >= upper:
                 datapoints['higher'].append((time, data))
-            elif data <= l:
+            elif data <= lower:
                 datapoints['lower'].append((time, data))
             else:
                 datapoints['ok'].append((time, data))
@@ -499,52 +497,50 @@ sampling (we will still require 1w of data)''',
         :returns: Message string containing the status.
         :raises: NagiosException on non-OK statuses
         '''
-        u = len(datapoints['unknown'])
-        h = len(datapoints['higher'])
-        l = len(datapoints['lower'])
-        ok = len(datapoints['ok'])
-        t = h + l + ok
-        if not t:
+        unknown_len = len(datapoints['unknown'])
+        higher_len = len(datapoints['higher'])
+        lower_len = len(datapoints['lower'])
+        ok_len = len(datapoints['ok'])
+        total_len = higher_len + lower_len + ok_len
+        if not total_len:
             raise NagiosException('UNKNOWN', 'No valid datapoints found')
 
-        if t < u:
+        if total_len < unknown_len:
             raise NagiosException(
                 'UNKNOWN', 'More than half of the datapoints are undefined')
 
-        # Simple check, with basic flap detection
-        crit = (h >= self.crit) or (l >= self.crit)
-        crit_flap = (h >= self.crit) and (l >= self.crit)
-        if (h >= self.crit) or (l >= self.crit):
-            if (h >= self.crit) and (l >= self.crit):
+        if (higher_len >= self.crit) or (lower_len >= self.crit):
+            if (higher_len >= self.crit) and (lower_len >= self.crit):
                 raise NagiosException(
                     'UNKNOWN',
-                    'Service is critically flapping: %s data below and %s above the confidence bounds' % (h, l))
+                    'Service is critically flapping: %s data below and %s above'
+                    ' the confidence bounds' % (higher_len, lower_len))
 
-            if self.over and h < self.crit:
+            if self.over and higher_len < self.crit:
                 return 'No anomaly detected'
 
-            if self.under and l < self.crit:
+            if self.under and lower_len < self.crit:
                 return 'No anomaly detected'
-
 
             raise NagiosException(
                 'CRITICAL', 'Anomaly detected: %s data above and %s below the confidence bounds' %
-                (h, l))
+                (higher_len, lower_len))
 
-        if (h >= self.warn) or (l >= self.warn):
-            if (h >= self.warn) and (l >= self.warn):
+        if (higher_len >= self.warn) or (lower_len >= self.warn):
+            if (higher_len >= self.warn) and (lower_len >= self.warn):
                 raise NagiosException(
                     'UNKNOWN',
-                    'Service is flapping: %s data below and %s above the confidence bounds' % (h, l))
-            if self.over and h < self.warn:
+                    'Service is flapping: %s data below and %s above the confidence bounds' % (
+                        higher_len, lower_len))
+            if self.over and higher_len < self.warn:
                 return 'No anomaly detected'
 
-            if self.under and l < self.warn:
+            if self.under and lower_len < self.warn:
                 return 'No anomaly detected'
 
             raise NagiosException(
                 'WARNING', 'Anomaly detected: %s data above and %s below the confidence bounds' %
-                (h, l))
+                (higher_len, lower_len))
 
         return 'No anomaly detected'
 
@@ -578,11 +574,11 @@ def main():
         help='use with --help for additional help',
         dest='check_type')
 
-    threshold = Threshold.create_parser(subparsers)
+    Threshold.create_parser(subparsers)
 
-    series_threshold = SeriesThreshold.create_parser(subparsers)
+    SeriesThreshold.create_parser(subparsers)
 
-    anomaly = Anomaly.create_parser(subparsers)
+    Anomaly.create_parser(subparsers)
 
     parser.add_argument('-U', '--url', dest='url',
                         default=os.environ.get(
