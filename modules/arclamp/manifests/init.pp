@@ -65,7 +65,7 @@ class arclamp(
 
     file { '/usr/local/bin/arclamp-log':
         ensure => $ensure,
-        source => 'puppet:///modules/arclamp/arclamp-log',
+        source => 'puppet:///modules/arclamp/arclamp-log.py',
         owner  => 'root',
         group  => 'root',
         mode   => '0555',
@@ -101,7 +101,7 @@ class arclamp(
 
     file { '/usr/local/bin/arclamp-grep':
         ensure => $ensure,
-        source => 'puppet:///modules/arclamp/arclamp-grep',
+        source => 'puppet:///modules/arclamp/arclamp-grep.py',
         owner  => 'root',
         group  => 'root',
         mode   => '0555',

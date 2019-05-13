@@ -19,7 +19,6 @@ import argparse
 import datetime
 import errno
 import fnmatch
-import logging
 import os
 import os.path
 import re
@@ -83,7 +82,8 @@ class TimeLog(object):
         try:
             os.makedirs(self.path, 0755)
         except OSError as exc:
-            if exc.errno != errno.EEXIST: raise
+            if exc.errno != errno.EEXIST:
+                raise
 
     def write(self, message, time=None, tag='all'):
         time = datetime.datetime.utcnow() if time is None else time
@@ -112,7 +112,6 @@ class TimeLog(object):
                 os.remove(file_path)
             except OSError:
                 continue
-
 
 
 logs = [TimeLog(**log) for log in config['logs']]
