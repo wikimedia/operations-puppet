@@ -74,7 +74,8 @@ class postgresql::slave(
     }
 
     # Having this file here helps perform slave initialization.
-    file { "${data_dir}/.pgpass":
+    # This file should not be deleted when performing slave init.
+    file { "/etc/postgresql/${pgversion}/main/.pgpass":
         ensure  => $ensure,
         owner   => 'postgres',
         group   => 'postgres',
