@@ -19,6 +19,7 @@ class openstack::serverpackages::mitaka::stretch(
         'pdns-recursor',
         'python-openssl',
         'openssl',
+        'libjs-jquery',
     ]
 
     $avoid_packages_list = join($avoid_packages, ' ')
