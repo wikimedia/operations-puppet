@@ -1,10 +1,10 @@
 class profile::redis::master(
-    $instances = hiera('profile::redis::master::instances'),
-    $settings = hiera('profile::redis::master::settings'),
-    $password = hiera('profile::redis::master::password'),
-    $aof = hiera('profile::redis::master::aof', false),
-    $clients = hiera('profile::redis::master::clients', []),
-    $prometheus_nodes = hiera('prometheus_nodes'),
+    $instances = lookup('profile::redis::master::instances'),
+    $settings = lookup('profile::redis::master::settings'),
+    $password = lookup('profile::redis::master::password'),
+    $aof = lookup('profile::redis::master::aof', {'default_value' => false}),
+    $clients = lookup('profile::redis::master::clients', {'default_value' => []}),
+    $prometheus_nodes = lookup('prometheus_nodes'),
 ){
     $uris = apply_format("localhost:%s/${password}", $instances)
     $redis_ports = join($instances, ' ')
