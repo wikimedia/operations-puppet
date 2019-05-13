@@ -173,7 +173,8 @@ groups:
     description: users with some sudo permissions on the CI masters (Jenkins, Zuul).
     members: [bd808, cscott, dduvall, demon, krinkle, reedy, marktraceur,
               twentyafterfour, zfilipin, thcipriani, legoktm, gjg,
-              hashar, niedzielski, addshore, liw, jhuneidi, brennen]
+              hashar, niedzielski, addshore, liw, jhuneidi, brennen,
+              jforrester]
     privileges: ['ALL = (jenkins) NOPASSWD: ALL',
                  'ALL = (jenkins-slave) NOPASSWD: ALL',
                  'ALL = (gerritslave) NOPASSWD: ALL',
@@ -702,7 +703,7 @@ groups:
     # Allow this for CI users. There is no gid on purpose, to allow reusing the package provided one
     posix_name: docker # Use posix_name to avoid potential conflicts with other uses of the docker group
     description: Allow releng team to be in the docker group for contint. No gid on purpose
-    members: [*ops_members, dduvall, demon, gjg, hashar, thcipriani, twentyafterfour, zfilipin, legoktm, addshore, reedy, liw, jhuneidi, krinkle, brennen]
+    members: [*ops_members, dduvall, demon, gjg, hashar, thcipriani, twentyafterfour, zfilipin, legoktm, addshore, reedy, liw, jhuneidi, krinkle, brennen, jforrester]
   builder-docker:
     # There is no gid on purpose, same as above
     posix_name: docker # Use posix_name to avoid potential conflicts with other uses of the docker group
