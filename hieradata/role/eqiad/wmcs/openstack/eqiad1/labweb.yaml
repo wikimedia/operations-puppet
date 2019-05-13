@@ -97,7 +97,6 @@ profile::openstack::eqiad1::wikitech::web::db_name: 'labswiki'
 # Horizon things:
 profile::openstack::eqiad1::horizon::maintenance_mode: false
 
-# We still don't enable fpm here
-profile::mediawiki::php::enable_fpm: false
+profile::mediawiki::php::enable_fpm: true
 profile::base::notifications: critical
 profile::mediawiki::php::php_version: "7.2"
