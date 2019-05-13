@@ -225,7 +225,7 @@ class profile::netbox (
     }
 
     # Configuration for Netbox reports in general
-    file { '/etc/netbox-reports.cfg':
+    file { '/etc/netbox/reports.cfg':
         owner   => 'deploy-librenms',
         group   => 'www-data',
         mode    => '0440',
