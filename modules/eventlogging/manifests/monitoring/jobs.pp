@@ -16,5 +16,6 @@ class eventlogging::monitoring::jobs($ensure = 'present') {
         nrpe_command  => '/usr/lib/nagios/plugins/check_eventlogging_jobs',
         require       => File['/usr/lib/nagios/plugins/check_eventlogging_jobs'],
         contact_group => 'admins,analytics',
+        notes_url     => 'https://wikitech.wikimedia.org/wiki/Analytics/Systems/EventLogging',
     }
 }

@@ -160,6 +160,7 @@ define eventlogging::service::service(
         description  => "Check that ${service_name} is running",
         nrpe_command => "/usr/lib/nagios/plugins/check_procs -c 1: -C python -a '${eventlogging_path}/bin/eventlogging-service @${config_file}'",
         require      => Systemd::Service[$service_name],
+        notes_url    => 'https://wikitech.wikimedia.org/wiki/Analytics/Systems/EventLogging',
     }
 
     # Spec-based monitoring
@@ -167,5 +168,6 @@ define eventlogging::service::service(
     nrpe::monitor_service{ "endpoints_${service_name}":
         description  => "${service_name} endpoints health",
         nrpe_command => "/usr/bin/service-checker-swagger -t 5 ${::ipaddress} ${monitor_url}",
+        notes_url    => 'https://wikitech.wikimedia.org/wiki/Analytics/Systems/EventLogging',
     }
 }
