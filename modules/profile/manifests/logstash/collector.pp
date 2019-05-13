@@ -262,6 +262,12 @@ class profile::logstash::collector (
         priority => 15,
     }
 
+    # Enforce a maximum length on "message" and "msg" fields
+    logstash::conf { 'filter_truncate':
+        soucre   => 'puppet:///modules/profile/logstash/filter-truncate.conf',
+        priority => 15,
+    }
+
     ## Input specific processing (20)
 
     logstash::conf { 'filter_syslog':
