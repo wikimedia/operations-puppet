@@ -62,6 +62,7 @@ class profile::mariadb::backup::transfer {
     cron { 'daily_snapshot':
         minute  => 0,
         hour    => 20,
+        weekday => [0,3,4],
         user    => 'root',
         command => '/usr/bin/systemd-cat -t mariadb-snapshots /usr/bin/python3 /usr/local/bin/daily_snapshot.py 2>&1',
         require => [File['/usr/local/bin/daily_snapshot.py'],
