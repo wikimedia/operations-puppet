@@ -68,7 +68,7 @@ class profile::openstack::base::rabbitmq(
 
     ferm::rule { 'rabbit_for_standby_node':
         ensure => 'present',
-        rule   => "saddr (@resolve(${nova_controller_standby}) @resolve(${nova_controller_standby}, AAAA)
+        rule   => "saddr (@resolve(${nova_controller_standby}) @resolve(${nova_controller_standby}, AAAA))
                    proto tcp dport 5672 ACCEPT;",
     }
 }
