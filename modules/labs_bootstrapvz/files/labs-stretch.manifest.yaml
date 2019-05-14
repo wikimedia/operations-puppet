@@ -91,7 +91,6 @@ packages:
     - parted
     - prometheus-node-exporter
     - puppet
-    - puppet-common
     - pv
     - python-apt
     - python-ldap
