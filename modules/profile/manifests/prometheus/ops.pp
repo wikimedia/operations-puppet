@@ -145,12 +145,20 @@ class profile::prometheus::ops (
       {
         'job_name'          => 'gerrit',
         'bearer_token_file' => '/srv/prometheus/ops/gerrit.token',
+        'metrics_path'      => '/r/monitoring?format=prometheus',
         'scheme'            => 'https',
+        'file_sd_configs' => [
+          { 'files' => [ "${targets_path}/gerrit.yaml" ] }
+        ],
         'tls_config'        => {
-            'server_name'   => 'gerrit.wikimedia.org/r/monitoring?format=prometheus',
+            'server_name'   => 'gerrit.wikimedia.org',
         },
       },
     ]
+
+    file { "${targets_path}/gerrit.yaml":
+      content => ordered_yaml([{'targets' => 'cobalt.wikimedia.org:443'}]),
+    }
 
     # Add one job for each of mysql 'group' (i.e. their broad function)
     # Each job will look for new files matching the glob and load the job
