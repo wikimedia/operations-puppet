@@ -15,7 +15,7 @@ class role::labs::nfs::misc(
 
     include ::profile::standard
     include labstore
-    include rsync::server
+    # include rsync::server
     include labstore::backup_keys
     include labstore::monitoring::interfaces
     # to be included post ldap integration
@@ -24,21 +24,21 @@ class role::labs::nfs::misc(
     # some files will be owned by this user
     include ::profile::dumps::web::dumpsuser
 
-    rsync::server::module { 'pagecounts':
-        path        => '/srv/dumps/pagecounts',
-        read_only   => 'no',
-        hosts_allow => $dump_servers_ips,
-        auto_ferm   => true,
-    }
+    # rsync::server::module { 'pagecounts':
+    #     path        => '/srv/dumps/pagecounts',
+    #     read_only   => 'no',
+    #     hosts_allow => $dump_servers_ips,
+    #     auto_ferm   => true,
+    # }
 
-    rsync::server::module { 'dumps':
-        path        => '/srv/dumps',
-        read_only   => 'no',
-        hosts_allow => $dump_servers_ips,
-        auto_ferm   => true,
-    }
+    # rsync::server::module { 'dumps':
+    #     path        => '/srv/dumps',
+    #     read_only   => 'no',
+    #     hosts_allow => $dump_servers_ips,
+    #     auto_ferm   => true,
+    # }
 
-    rsync::quickdatacopy {'labstore-migration-src':
+    rsync::quickdatacopy {'srv':
         source_host => 'labstore1003.eqiad.wmflabs',
         dest_host   => 'cloudstore1008.wikimedia.org',
         module_path => '/srv',
@@ -47,13 +47,13 @@ class role::labs::nfs::misc(
     }
     # This also exports /srv/statistics to allow statistics servers
     # a way to rsync public data in from production.
-    rsync::server::module { 'statistics':
-        path        => '/srv/statistics',
-        read_only   => 'no',
-        hosts_allow => $statistics_servers,
-        require     => File['/srv/statistics'],
-        auto_ferm   => true,
-    }
+    # rsync::server::module { 'statistics':
+    #     path        => '/srv/statistics',
+    #     read_only   => 'no',
+    #     hosts_allow => $statistics_servers,
+    #     require     => File['/srv/statistics'],
+    #     auto_ferm   => true,
+    # }
 
     # This has a flat exports list
     # because it only exports data

@@ -67,7 +67,7 @@ class profile::wmcs::nfs::secondary(
         }
 
         # This is temporary for data migration.  Remove when done.
-        rsync::quickdatacopy {'labstore-migration-dest':
+        rsync::quickdatacopy {'srv':
             source_host => 'labstore1003.eqiad.wmflabs',
             dest_host   => $facts['fqdn'],
             module_path => '/srv',
