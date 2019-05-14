@@ -26,6 +26,7 @@ class role::ci::master {
     include ::profile::ci::docker
     include ::profile::ci::pipeline::publisher
     include ::profile::ci::shipyard
+    include ::profile::local_dev::docker_publish
 
     include ::profile::zuul::merger
 
