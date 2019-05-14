@@ -3,22 +3,12 @@
 # [*cert_path*]
 #   The location of the SSL certificates and chains used for accepting and validaating new SSL sessions.
 #
-# [*cert_files*]
-#   Array containing the file names of the SSL certificates.
-#
 # [*private_key_path*]
 #   The location of the SSL certificate private keys.
-#
-# [*private_key_files*]
-#   Array containing the file names of the SSL certificate private keys.
 #
 # [*ocsp_stapling_path*]
 #   The location of the prefetched OCSP stapling responses. Not setting this parameter will result in OCSP stapling
 #   being disabled.
-#
-# [*ocsp_stapling_files*]
-#   Array containing the file names of the OCSP stapling responses. Not setting this parameter will result in
-#   OCSP stapling being disabled.
 #
 # [*dhparams_file*]
 #   The name of a file containing a set of Diffie-Hellman key exchange parameters.
@@ -62,11 +52,9 @@
 type Trafficserver::Inbound_TLS_settings = Struct[{
     'common'                   => Trafficserver::TLS_settings,
     'cert_path'                => Stdlib::Absolutepath,
-    'cert_files'               => Array[String],
     'private_key_path'         => Stdlib::Absolutepath,
-    'private_key_files'        => Array[String],
     'ocsp_stapling_path'       => Optional[Stdlib::Absolutepath],
-    'ocsp_stapling_files'      => Optional[Array[String]],
+    'certificates'             => Array[Trafficserver::TLS_certificate],
     'dhparams_file'            => Optional[Stdlib::Absolutepath],
     'max_record_size'          => Integer[-1, 16383],
     'session_cache'            => Integer[0, 2],
