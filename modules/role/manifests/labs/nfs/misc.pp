@@ -39,7 +39,7 @@ class role::labs::nfs::misc(
     # }
 
     rsync::quickdatacopy {'srv':
-        source_host => 'labstore1003.eqiad.wmflabs',
+        source_host => 'labstore1003.eqiad.wmnet',
         dest_host   => 'cloudstore1008.wikimedia.org',
         module_path => '/srv',
         auto_sync   => false,
@@ -82,14 +82,14 @@ class role::labs::nfs::misc(
         ensure => 'directory',
     }
 
-    mount { '/srv/dumps':
-        ensure  => mounted,
-        fstype  => ext4,
-        options => 'defaults,noatime',
-        atboot  => true,
-        device  => '/dev/srv/dumps',
-        require => File['/srv/dumps'],
-    }
+    # mount { '/srv/dumps':
+    #     ensure  => mounted,
+    #     fstype  => ext4,
+    #     options => 'defaults,noatime',
+    #     atboot  => true,
+    #     device  => '/dev/srv/dumps',
+    #     require => File['/srv/dumps'],
+    # }
 
     mount { '/srv/scratch':
         ensure  => mounted,
@@ -100,14 +100,14 @@ class role::labs::nfs::misc(
         require => File['/srv/scratch'],
     }
 
-    mount { '/srv/statistics':
-        ensure  => mounted,
-        fstype  => ext4,
-        options => 'defaults,noatime',
-        atboot  => true,
-        device  => '/dev/srv/statistics/',
-        require => File['/srv/statistics'],
-    }
+    # mount { '/srv/statistics':
+    #     ensure  => mounted,
+    #     fstype  => ext4,
+    #     options => 'defaults,noatime',
+    #     atboot  => true,
+    #     device  => '/dev/srv/statistics/',
+    #     require => File['/srv/statistics'],
+    # }
 
     mount { '/srv/maps':
         ensure  => mounted,
