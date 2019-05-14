@@ -1,0 +1,2 @@
+#!/usr/bin/env sh
+# not really needed trying to avoid a rake parsing bug
