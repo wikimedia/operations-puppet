@@ -1,4 +1,5 @@
 class profile::openstack::base::rabbitmq(
+    Stdlib::Fqdn $nova_controller_standby = lookup('profile::openstack::base::nova_controller_standby'),
     $nova_controller = hiera('profile::openstack::base::nova_controller'),
     $monitor_user = hiera('profile::openstack::base::rabbit_monitor_user'),
     $monitor_password = hiera('profile::openstack::base::rabbit_monitor_pass'),
@@ -63,5 +64,11 @@ class profile::openstack::base::rabbitmq(
     ferm::rule{'beam_nova':
         ensure => 'present',
         rule   =>  "saddr (${labs_hosts_range} ${labs_hosts_range_v6}) proto tcp dport (5672 56918) ACCEPT;",
+    }
+
+    ferm::rule { 'rabbit_for_standby_node':
+        ensure => 'present',
+        rule   => "saddr (@resolve(${nova_controller_standby}) @resolve(${nova_controller_standby}, AAAA)
+                   proto tcp dport 5672 ACCEPT;",
     }
 }

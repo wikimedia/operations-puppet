@@ -1,11 +1,12 @@
 class openstack::neutron::service(
+    Boolean $active,
     $version,
     ) {
 
     class { "openstack::neutron::service::${version}": }
 
     service {'neutron-server':
-        ensure    => 'running',
+        ensure    => $active,
         require   => Package['neutron-server'],
         subscribe => [
                       File['/etc/neutron/neutron.conf'],

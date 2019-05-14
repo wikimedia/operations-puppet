@@ -1,4 +1,5 @@
 class profile::openstack::base::neutron::service(
+    Stdlib::Fqdn $nova_controller = lookup('profile::openstack::base::nova_controller'),
     $version = hiera('profile::openstack::base::version'),
     ) {
 
@@ -8,6 +9,7 @@ class profile::openstack::base::neutron::service(
 
     class {'::openstack::neutron::service':
         version => $version,
+        active  => ($::fqdn == $nova_controller),
     }
     contain '::openstack::neutron::service'
 
