@@ -175,7 +175,6 @@
     shard: x1
     role: slave
   targets:
-  - db2034:9104
   - db2069:9104
   - db2096:9104
   - db2115:9104
