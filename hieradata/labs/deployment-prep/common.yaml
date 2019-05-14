@@ -514,5 +514,3 @@ cache::nodes:
 
 logstash::heap_memory: 1G
 profile::services_proxy::ensure: absent
-profile::base::puppet::puppet_major_version: 5
-profile::base::puppet::facter_major_version: 3
