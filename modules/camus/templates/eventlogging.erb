@@ -38,7 +38,7 @@ camus.message.decoder.class=com.linkedin.camus.etl.kafka.coders.JsonStringMessag
 # in /etc/hadoop/conf/mapred-site.xml.
 etl.record.writer.provider.class=com.linkedin.camus.etl.kafka.common.SequenceFileRecordWriterProvider
 
-mapred.map.tasks=25
+mapred.map.tasks=100
 
 # Connection parameters.
 kafka.brokers=<%= Array(@kafka_brokers).join(',') %>
