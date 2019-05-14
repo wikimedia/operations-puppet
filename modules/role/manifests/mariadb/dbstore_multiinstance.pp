@@ -1,5 +1,5 @@
 class role::mariadb::dbstore_multiinstance {
-    system::role { 'mariadb::core':
+    system::role { 'mariadb::dbstore_multiinstance':
         description => 'DBStore multi-instance server',
     }
 
