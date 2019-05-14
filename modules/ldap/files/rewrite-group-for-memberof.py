@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-
+# flake8: noqa
 import ldap, argparse, sys, time
 from ldap import modlist as modlist
 

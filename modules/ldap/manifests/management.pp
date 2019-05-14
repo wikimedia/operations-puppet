@@ -35,7 +35,7 @@ class ldap::management(
     }
 
     file { '/usr/local/bin/rewrite-group-for-memberof':
-        source => 'puppet:///modules/ldap/rewrite-group-for-memberof',
+        source => 'puppet:///modules/ldap/rewrite-group-for-memberof.py',
         mode   => '0554',
         owner  => 'root',
         group  => 'root',
