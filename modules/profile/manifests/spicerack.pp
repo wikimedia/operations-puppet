@@ -24,7 +24,7 @@
 
 class profile::spicerack(
     String $tcpircbot_host = hiera('tcpircbot_host'),
-    Wmflib::IpPort $tcpircbot_port = hiera('tcpircbot_port'),
+    Stdlib::Port $tcpircbot_port = hiera('tcpircbot_port'),
     Hash $redis_shards = hiera('redis::shards'),
     String $ganeti_user = hiera('profile::ganeti::rapi::ro_user'),
     String $ganeti_password = hiera('profile::ganeti::rapi::ro_password'),

@@ -21,7 +21,7 @@ class profile::elasticsearch(
     Stdlib::AbsolutePath $base_data_dir = hiera('profile::elasticsearch::base_data_dir'),
 
     String $logstash_host = hiera('logstash_host'),
-    Wmflib::IpPort $logstash_gelf_port = hiera('logstash_gelf_port'),
+    Stdlib::Port $logstash_gelf_port = hiera('logstash_gelf_port'),
     String $rack = hiera('profile::elasticsearch::rack'),
     String $row = hiera('profile::elasticsearch::row'),
     Enum['5.5', '5.6', '6.5'] $version = hiera('profile::elasticsearch::version', '5.5'),

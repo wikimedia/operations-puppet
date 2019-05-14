@@ -3,8 +3,8 @@ class profile::etcd::tlsproxy(
     $acls = hiera('profile::etcd::tlsproxy::acls'),
     $salt = hiera('profile::etcd::tlsproxy::salt'),
     $read_only = hiera('profile::etcd::tlsproxy::read_only'),
-    Wmflib::IpPort $listen_port = hiera('profile::etcd::tlsproxy::listen_port'),
-    Wmflib::IpPort $upstream_port = hiera('profile::etcd::tlsproxy::upstream_port'),
+    Stdlib::Port $listen_port = hiera('profile::etcd::tlsproxy::listen_port'),
+    Stdlib::Port $upstream_port = hiera('profile::etcd::tlsproxy::upstream_port'),
     Boolean $tls_upstream = hiera('profile::etcd::tlsproxy::tls_upstream')
 ) {
     require ::profile::tlsproxy::instance

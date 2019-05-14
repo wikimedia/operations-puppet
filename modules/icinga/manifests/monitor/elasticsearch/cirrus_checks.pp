@@ -2,7 +2,7 @@
 define icinga::monitor::elasticsearch::cirrus_checks(
     Enum['http', 'https'] $scheme = 'http',
     String $host = $::hostname,
-    Array[Wmflib::IpPort] $ports = [9200],
+    Array[Stdlib::Port] $ports = [9200],
 ) {
     $ports.each |$port| {
         monitoring::service { "elasticsearch / cirrus frozen writes - ${host}:${port}":

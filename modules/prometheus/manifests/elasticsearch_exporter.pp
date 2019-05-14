@@ -1,6 +1,6 @@
 define prometheus::elasticsearch_exporter(
-    Wmflib::IpPort $prometheus_port,
-    Wmflib::IpPort $elasticsearch_port,
+    Stdlib::Port $prometheus_port,
+    Stdlib::Port $elasticsearch_port,
 ) {
   include ::prometheus::elasticsearch_exporter::common
 

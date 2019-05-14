@@ -15,8 +15,8 @@
 #  port to expose tls on
 #
 define elasticsearch::tlsproxy (
-    Wmflib::IpPort $upstream_port,
-    Wmflib::IpPort $tls_port,
+    Stdlib::Port $upstream_port,
+    Stdlib::Port $tls_port,
     Array[String] $certificate_names = [],
     Boolean $acme_chief = false,
     Optional[String] $acme_certname = undef,

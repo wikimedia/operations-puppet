@@ -27,7 +27,7 @@ define prometheus::class_config(
     String $dest,
     String $site,
     String $class_name,
-    Wmflib::IpPort $port,
+    Stdlib::Port $port,
     Hash $labels = {},
     Hash $class_parameters = {},
 ) {

@@ -4,7 +4,7 @@
 #
 class profile::trafficserver::backend (
     String $user=hiera('profile::trafficserver::user', 'trafficserver'),
-    Wmflib::IpPort $port=hiera('profile::trafficserver::backend::port', 3128),
+    Stdlib::Port $port=hiera('profile::trafficserver::backend::port', 3128),
     Trafficserver::Outbound_TLS_settings $outbound_tls_settings=hiera('profile::trafficserver::backend::outbound_tls_settings'),
     Boolean $enable_xdebug=hiera('profile::trafficserver::backend::enable_xdebug', false),
     Array[TrafficServer::Mapping_rule] $mapping_rules=hiera('profile::trafficserver::backend::mapping_rules', []),

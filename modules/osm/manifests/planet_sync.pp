@@ -51,7 +51,7 @@
 define osm::planet_sync (
     Boolean $use_proxy,
     String $proxy_host,
-    Wmflib::IpPort $proxy_port,
+    Stdlib::Port $proxy_port,
     Wmflib::Ensure $ensure                  = present,
     String $osmosis_dir                     = '/srv/osmosis',
     String $expire_dir                      = '/srv/osm_expire',

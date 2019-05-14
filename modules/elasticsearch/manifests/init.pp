@@ -24,7 +24,7 @@ class elasticsearch (
     Enum['5', '6'] $version                                          = '5',
     Stdlib::Absolutepath $base_data_dir                              = '/srv/elasticsearch',
     Optional[String] $logstash_host                                  = undef,
-    Optional[Wmflib::IpPort] $logstash_gelf_port                     = 12201,
+    Optional[Stdlib::Port] $logstash_gelf_port                     = 12201,
     Optional[String] $rack                                           = undef,
     Optional[String] $row                                            = undef,
 ) {

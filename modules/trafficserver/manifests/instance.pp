@@ -146,7 +146,7 @@
 #
 define trafficserver::instance(
     Boolean $default_instance = false,
-    Wmflib::IpPort $port = 8080,
+    Stdlib::Port $port = 8080,
     Stdlib::Absolutepath $config_prefix = '/etc/trafficserver',
     Optional[Trafficserver::Inbound_TLS_settings] $inbound_tls_settings = undef,
     Optional[Trafficserver::Outbound_TLS_settings] $outbound_tls_settings = undef,

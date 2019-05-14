@@ -19,7 +19,7 @@ class wdqs::updater(
     Stdlib::Unixpath $package_dir,
     Stdlib::Unixpath $data_dir,
     Stdlib::Unixpath $log_dir,
-    Wmflib::IpPort $logstash_json_port,
+    Stdlib::Port $logstash_json_port,
     String $username,
     Array[String] $extra_jvm_opts,
     Boolean $log_sparql = false,

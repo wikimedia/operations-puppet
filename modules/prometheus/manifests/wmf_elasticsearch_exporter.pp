@@ -1,8 +1,8 @@
 # Collect metrics exposed by the search-extra elasticsearch plugin.
 # See https://github.com/wikimedia/search-extra/blob/master/src/main/java/org/wikimedia/search/extra/latency/LatencyStatsAction.java
 define prometheus::wmf_elasticsearch_exporter(
-    Wmflib::IpPort $prometheus_port,
-    Wmflib::IpPort $elasticsearch_port,
+    Stdlib::Port $prometheus_port,
+    Stdlib::Port $elasticsearch_port,
 ) {
     include ::prometheus::wmf_elasticsearch_exporter::common
 

@@ -1,7 +1,7 @@
 class profile::wdqs::updater (
     String $options = hiera('profile::wdqs::updater_options', '-n wdq'),
     String $logstash_host = hiera('logstash_host'),
-    Wmflib::IpPort $logstash_json_port = hiera('logstash_json_lines_port'),
+    Stdlib::Port $logstash_json_port = hiera('logstash_json_lines_port'),
     Stdlib::Unixpath $package_dir = hiera('profile::wdqs::package_dir', '/srv/deployment/wdqs/wdqs'),
     Stdlib::Unixpath $data_dir = hiera('profile::wdqs::data_dir', '/srv/wdqs'),
     Stdlib::Unixpath $log_dir = hiera('profile::wdqs::log_dir', '/var/log/wdqs'),

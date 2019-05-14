@@ -97,11 +97,11 @@ define elasticsearch::instance(
     # the following parameters are injected by the main elasticsearch class
     String $cluster_name,
     String $version,
-    Wmflib::IpPort $http_port,
-    Wmflib::IpPort $transport_tcp_port,
+    Stdlib::Port $http_port,
+    Stdlib::Port $transport_tcp_port,
     Stdlib::Absolutepath $base_data_dir,
     Optional[String] $logstash_host                          = undef,
-    Optional[Wmflib::IpPort] $logstash_gelf_port             = 12201,
+    Optional[Stdlib::Port] $logstash_gelf_port             = 12201,
     Optional[String] $row                                    = undef,
     Optional[String] $rack                                   = undef,
 
@@ -137,7 +137,7 @@ define elasticsearch::instance(
     # but convenient to unify per-cluster configuration
     Optional[String] $certificate_name = undef,
     Array[String] $cluster_hosts       = [],
-    Optional[Wmflib::IpPort] $tls_port = undef,
+    Optional[Stdlib::Port] $tls_port = undef,
 ) {
 
     # Check arguments

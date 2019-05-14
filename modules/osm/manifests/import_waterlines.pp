@@ -8,7 +8,7 @@
 class osm::import_waterlines (
     Boolean $use_proxy,
     String $proxy_host,
-    Wmflib::IpPort $proxy_port,
+    Stdlib::Port $proxy_port,
     String $database = 'gis',
 ) {
 

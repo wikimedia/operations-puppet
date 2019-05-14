@@ -69,7 +69,7 @@ class etcd::v3 (
     String $peer_listen_host = $::fqdn,
     Stdlib::Compat::Ipv4 $peer_listen_ip = $::facts['ipaddress'],
     String $cluster_name = $::domain,
-    Wmflib::IpPort $adv_client_port = 2379,
+    Stdlib::Port $adv_client_port = 2379,
     Integer $max_latency_ms = 10,
     Enum['new', 'existing'] $cluster_state = 'existing',
     Stdlib::Compat::String $srv_dns = undef,

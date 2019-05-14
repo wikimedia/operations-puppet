@@ -3,7 +3,7 @@
 # Configure an elasticsearch instance to collect hot threads logs.
 #
 define elasticsearch::log::hot_threads_cluster(
-    Wmflib::IpPort $http_port,
+    Stdlib::Port $http_port,
     String $cluster_name = $title,
 ){
     include ::elasticsearch::log::hot_threads

@@ -4,8 +4,8 @@
 type Elasticsearch::InstanceParams = Struct[{
     # the following parameters are injected by the main elasticsearch class
     'cluster_name'       => Optional[String],
-    'http_port'          => Optional[Wmflib::IpPort],
-    'transport_tcp_port' => Optional[Wmflib::IpPort],
+    'http_port'          => Optional[Stdlib::Port],
+    'transport_tcp_port' => Optional[Stdlib::Port],
 
     # the following parameters need specific default values for single instance
     'node_name'        => Optional[String],
@@ -42,5 +42,5 @@ type Elasticsearch::InstanceParams = Struct[{
     # but convenient to declare per-cluster
     'certificate_name' => Optional[String],
     'cluster_hosts'    => Optional[Array[String]],
-    'tls_port'         => Optional[Wmflib::IpPort],
+    'tls_port'         => Optional[Stdlib::Port],
 }]

@@ -27,7 +27,7 @@ define prometheus::cluster_config(
   String $dest,
   String $site,
   String $cluster,
-  Wmflib::IpPort $port,
+  Stdlib::Port $port,
   Hash $labels,
 ) {
     file { $dest:

@@ -5,7 +5,7 @@
 #
 class mjolnir(
     String $logstash_host,
-    Wmflib::IpPort $logstash_port
+    Stdlib::Port $logstash_port
 ) {
 
     require_package('virtualenv', 'zip')

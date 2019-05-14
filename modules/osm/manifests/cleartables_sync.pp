@@ -1,7 +1,7 @@
 define osm::cleartables_sync (
     Boolean $use_proxy,
     String $proxy_host,
-    Wmflib::IpPort $proxy_port,
+    Stdlib::Port $proxy_port,
     Wmflib::Ensure $ensure            = 'present',
     String $postreplicate_command     = undef,
     Boolean $disable_replication_cron = false,

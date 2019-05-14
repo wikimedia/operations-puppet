@@ -1,5 +1,5 @@
 type Mcrouter::Ssl = Variant[Undef, Struct[{
-    'port' => Wmflib::IpPort,
+    'port' => Stdlib::Port,
     'ca_cert' => Stdlib::Unixpath,
     'cert' => Stdlib::Unixpath,
     'key'  => Stdlib::Unixpath
