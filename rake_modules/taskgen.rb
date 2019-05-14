@@ -25,6 +25,7 @@ class TaskGen < ::Rake::TaskLib
       :syntax,
       :rubocop,
       :common_yaml,
+      :python_extensions,
       :spec,
       :tox,
       :dhcp
@@ -259,6 +260,28 @@ class TaskGen < ::Rake::TaskLib
     end
 
     [:rubocop]
+  end
+
+  def setup_python_extensions
+    # Ensure python files have the correct extension so they are picked up by tox
+    source_files = filter_files_by("**/files/**")
+    return [] if source_files.empty?
+    desc 'Ensure python files have a .py extensions so they can be checked'
+    task :python_extensions do
+      failures = false
+      source_files.each do |source_file|
+        # We don't need to preform CI on user files as such we skip them
+        next if source_file.end_with?('.py') || source_file.start_with?('modules/admin/files/home')
+        shebang = File.open(source_file) {|f| f.readline}
+        if shebang =~ /^#!.*python/
+          failures = true
+          $stderr.puts "#{source_file} have been recognized as a Python source file, hence MUST have a '.py' file extension".red
+        end
+      end
+      abort("python_extensions: FAILED".red) if failures
+      puts "python_extensions: OK".green
+    end
+    [:python_extensions]
   end
 
   def setup_common_yaml
