@@ -65,6 +65,15 @@ class profile::wmcs::nfs::secondary(
             returns => [0, 2],
             unless  => "ping -n -c1 ${cluster_ip} > /dev/null",
         }
+
+        # This is temporary for data migration.  Remove when done.
+        rsync::quickdatacopy {'labstore-migration-dest':
+            source_host => 'labstore1003.eqiad.wmflabs',
+            dest_host   => $facts['fqdn'],
+            module_path => '/srv',
+            auto_sync   => false,
+            bwlimit     => 4000,
+        }
     } else {
         exec { $ipdel_command:
             path    => '/bin:/usr/bin',

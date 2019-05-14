@@ -38,7 +38,13 @@ class role::labs::nfs::misc(
         auto_ferm   => true,
     }
 
-
+    rsync::quickdatacopy {'labstore-migration-src':
+        source_host => 'labstore1003.eqiad.wmflabs',
+        dest_host   => 'cloudstore1008.wikimedia.org',
+        module_path => '/srv',
+        auto_sync   => false,
+        bwlimit     => 4000,
+    }
     # This also exports /srv/statistics to allow statistics servers
     # a way to rsync public data in from production.
     rsync::server::module { 'statistics':
