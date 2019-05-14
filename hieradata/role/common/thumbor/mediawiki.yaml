@@ -5,9 +5,9 @@ cluster: thumbor
 
 profile::prometheus::statsd_exporter::mappings:
     - match: thumbor.*.result_storage.incoming_time
-      name: thumbor_result_storage_receive_milliseconds
+      name: thumbor_result_storage_receive_seconds
     - match: thumbor.*.result_storage.outgoing_time
-      name: thumbor_result_storage_transmit_milliseconds
+      name: thumbor_result_storage_transmit_seconds
     - match: thumbor.*.result_storage.bytes_read
       name: thumbor_result_storage_receive_bytes
     - match: thumbor.*.result_storage.bytes_written
@@ -35,7 +35,7 @@ profile::prometheus::statsd_exporter::mappings:
     - match: thumbor.*.poolcounter.throttled
       name: thumbor_poolcounter_throttled_total
     - match: thumbor.*.poolcounter.time
-      name: thumbor_poolcounter_milliseconds
+      name: thumbor_poolcounter_seconds
 
     - match: thumbor.*.memcache.*
       name: thumbor_memcache_total
@@ -43,14 +43,14 @@ profile::prometheus::statsd_exporter::mappings:
         operation: "$2"
 
     - match: thumbor.*.poolcounter.time
-      name: thumbor_poolcounter_milliseconds
+      name: thumbor_poolcounter_seconds
 
     - match: thumbor.*.response.status.*
       name: thumbor_response_total
       labels:
         status: "$2"
     - match: thumbor.*.response.time.([0-9]+)
-      name: thumbor_response_milliseconds
+      name: thumbor_response_seconds
       match_type: regex
       labels:
         status: "$2"
@@ -63,7 +63,7 @@ profile::prometheus::statsd_exporter::mappings:
       labels:
         format: "$2"
     - match: thumbor.*.response.time.([a-z]+)
-      name: thumbor_response_format_milliseconds
+      name: thumbor_response_format_seconds
       match_type: regex
       labels:
         format: "$2"
@@ -103,11 +103,11 @@ profile::prometheus::statsd_exporter::mappings:
         status: "$2"
 
     - match: thumbor.*.engine.processing_utime.*.engine.*
-      name: thumbor_engine_user_milliseconds
+      name: thumbor_engine_user_seconds
       labels:
         engine: "$3"
     - match: thumbor.*.engine.processing_time.*.engine.*
-      name: thumbor_engine_milliseconds
+      name: thumbor_engine_seconds
       labels:
         engine: "$3"
 
