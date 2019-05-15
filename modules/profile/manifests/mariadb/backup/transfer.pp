@@ -26,7 +26,7 @@ class profile::mariadb::backup::transfer {
         group     => 'root',
         mode      => '0400',
         show_diff => false,
-        content   => template("profile/mariadb/daily-snapshots-${::site}.cnf.erb"),
+        content   => template("profile/mariadb/backups-${::hostname}.cnf.erb"),
         require   => [File['/etc/mysql'],
         ],
     }
@@ -40,32 +40,34 @@ class profile::mariadb::backup::transfer {
         mode    => '0755',
         source  => 'puppet:///modules/profile/mariadb/transfer.py',
         require => [Package['python3'],
-                    Package['python3-yaml'],
-                    Package['python3-pymysql'],
                     Package['cumin'],
         ],
     }
 
     # Small utility that reads the backup configuration and produces
     # snapshots of all configured hosts
-    file { '/usr/local/bin/daily_snapshot.py':
+    file { '/usr/local/bin/remote_backup_mariadb.py':
         ensure  => present,
         owner   => 'root',
         group   => 'root',
         mode    => '0755',
-        source  => 'puppet:///modules/profile/mariadb/daily_snapshot.py',
+        source  => 'puppet:///modules/profile/mariadb/remote_backup_mariadb.py',
         require => [File['/usr/local/bin/transfer.py'],
                     File['/etc/mysql/backups.cnf'],
+                    Package['python3'],
+                    Package['python3-yaml'],
+                    Package['cumin'],
         ],
     }
 
-    cron { 'daily_snapshot':
+    cron { 'regular_snapshot':
         minute  => 0,
-        hour    => 20,
-        weekday => [0,3,4],
+        hour    => 19,
+        weekday => [0,2,4],
         user    => 'root',
-        command => '/usr/bin/systemd-cat -t mariadb-snapshots /usr/bin/python3 /usr/local/bin/daily_snapshot.py 2>&1',
-        require => [File['/usr/local/bin/daily_snapshot.py'],
+        command => "/usr/bin/systemd-cat -t mariadb-snapshots /usr/bin/python3 \
+/usr/local/bin/remote_backup_mariadb.py 2>&1",
+        require => [File['/usr/local/bin/remote_backup_mariadb.py'],
         ],
     }
 }

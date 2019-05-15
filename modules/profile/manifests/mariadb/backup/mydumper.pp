@@ -93,7 +93,7 @@ class profile::mariadb::backup::mydumper {
 
     cron { 'dumps-sections':
         minute  => 0,
-        hour    => 17,
+        hour    => 0,
         weekday => 2,
         user    => 'dump',
         command => '/usr/bin/python3 /usr/local/bin/backup_mariadb.py --config-file=/etc/mysql/backups.cnf >/dev/null 2>&1',
