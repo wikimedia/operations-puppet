@@ -1,3 +1,19 @@
+# this provides the listen_address for sshd_config, used for admin logins
+# all other IPs are used by phabricator::vcs (aka git-ssh.wikimedia.org)
+profile::base::ssh_server_settings:
+  listen_address: "10.64.48.21"
+
+# phabricator's git backend uses a separate sshd with separate IPs on both
+# the public and private networks.
+# This is used in modules/phabricator/templates/sshd_config.phabricator.erb
+phabricator::vcs::listen_addresses:
+  - "10.64.48.22"
+  - "[2620:0:861:107:10:64:48:22]"
+# - "208.80.154.250"
+
+phabricator::vcs::address::v4: "10.64.48.22"
+phabricator::vcs::address::v6: "2620:0:861:107:10:64:48:22"
+
 phabricator_logmail: false
 
 phabricator_enable_php_fpm: true
