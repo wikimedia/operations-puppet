@@ -272,8 +272,11 @@ class TaskGen < ::Rake::TaskLib
       source_files.each do |source_file|
         # We don't need to preform CI on user files as such we skip them
         next if source_file.end_with?('.py') || source_file.start_with?('modules/admin/files/home')
+        # skip zero byte files
+        next if File.zero?(source_file)
         shebang = File.open(source_file) {|f| f.readline}
-        if shebang =~ /^#!.*python/
+        mime_type = `file --mime-type -b '#{source_file}'`.chomp
+        if shebang =~ /^#!.*python/ || mime_type == 'text/x-python'
           failures = true
           $stderr.puts "#{source_file} have been recognized as a Python source file, hence MUST have a '.py' file extension".red
         end
