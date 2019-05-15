@@ -1,0 +1,3 @@
+phabricator_logmail: false
+
+phabricator_enable_php_fpm: true
