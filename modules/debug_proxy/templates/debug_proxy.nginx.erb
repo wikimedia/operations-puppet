@@ -58,6 +58,7 @@ server {
                 return string.gsub(ngx.var.http_cookie, php_engine_cookie, cookie_snippet_to_set);
             end
         }
+        proxy_http_version 1.1;
         proxy_set_header Cookie $cookies;
         proxy_set_header Host $host;
         proxy_pass_header Server;
