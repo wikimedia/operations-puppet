@@ -81,7 +81,7 @@ class labstore::fileserver::exports(
         owner  => 'root',
         group  => 'root',
         mode   => '0555',
-        source => 'puppet:///modules/labstore/archive-project-volumes',
+        source => 'puppet:///modules/labstore/archive-project-volumes.py',
     }
 
     systemd::service { 'nfs-exportd':

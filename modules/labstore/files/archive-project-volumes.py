@@ -27,6 +27,7 @@ import os
 import shutil
 import subprocess
 from optparse import OptionParser
+
 import yaml
 
 
@@ -121,9 +122,9 @@ class VolumeArchiver:
                 logging.error("Volume directory %s not found. " % vol)
                 return 1
 
-            if (os.path.isdir(os.path.join(vol, 'home')) or
-               os.path.isdir(os.path.join(vol, 'project')) or
-               not os.listdir(vol)):
+            if (os.path.isdir(os.path.join(vol, 'home'))
+                    or os.path.isdir(os.path.join(vol, 'project'))
+                    or not os.listdir(vol)):
                 logging.info("Archiving %s" % vol)
                 if not self.archive(vol):
                     logging.error("Archive failed, giving up.")
@@ -134,6 +135,7 @@ class VolumeArchiver:
 def main():
     archiver = VolumeArchiver()
     archiver.run()
+
 
 if __name__ == "__main__":
     main()
