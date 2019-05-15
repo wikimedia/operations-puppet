@@ -63,9 +63,10 @@ class profile::base(
     class { '::rsyslog': }
     if $enable_rsyslog_exporter and os_version('debian >= jessie') {
         include ::profile::prometheus::rsyslog_exporter
-    }
-    class {'profile::rsyslog::kafka_shipper':
-      enable => $enable_kafka_shipping,
+
+        class {'profile::rsyslog::kafka_shipper':
+            enable => $enable_kafka_shipping,
+        }
     }
 
     unless empty($remote_syslog) and empty($remote_syslog_tls) {
