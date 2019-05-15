@@ -103,30 +103,11 @@ class profile::trafficserver::backend (
         user                     => $user,
     }
 
-    $logs.each |TrafficServer::Log $log| {
-        if $log['mode'] == 'ascii_pipe' {
-            fifo_log_demux::instance { $log['filename']:
-                user      => $user,
-                fifo      => "/var/log/trafficserver/${log['filename']}.pipe",
-                socket    => "/var/run/trafficserver/${log['filename']}.sock",
-                wanted_by => 'trafficserver.service',
-            }
-
-            profile::trafficserver::nrpe_monitor_script { "check_trafficserver_log_fifo_${log['filename']}":
-                sudo_user => 'root',
-                checkname => 'check_trafficserver_log_fifo',
-                args      => "/var/log/trafficserver/${log['filename']}.pipe",
-            }
-        }
-    }
-
-    # Wrapper script to print ATS logs to stdout using fifo-log-tailer
-    file { '/usr/local/bin/atslog':
-        ensure => present,
-        source => 'puppet:///modules/profile/trafficserver/atslog.sh',
-        mode   => '0555',
-        owner  => 'root',
-        group  => 'root',
+    profile::trafficserver::logs { "trafficserver_${instance_name}_logs":
+        instance_name => $instance_name,
+        user          => $user,
+        logs          => $logs,
+        paths         => $paths,
     }
 
     # Script to depool, restart and repool ATS
