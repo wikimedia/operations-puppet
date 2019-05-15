@@ -97,7 +97,18 @@ class profile::mediawiki::nutcracker(
         pools     => $nutcracker_pools,
     }
 
-    class { '::nutcracker::monitoring': }
+    # monitor memcached if present, redis otherwise.
+    if $memcached_servers != [] {
+        class { '::nutcracker::monitoring':
+            port => 11212
+        }
+    }
+    else {
+        class { '::nutcracker::monitoring':
+            port   => 0,
+            socket => "/var/run/nutcracker/redis_${::site}.sock",
+        }
+    }
 
 
     ferm::rule { 'skip_nutcracker_conntrack_out':
