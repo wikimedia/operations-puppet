@@ -81,7 +81,7 @@ class profile::kubernetes::master(
     # thresholds
     monitoring::check_prometheus { 'apiserver_request_latencies':
         description     => 'Request latencies',
-        query           => "instance_verb:apiserver_request_latencies_summary:avg5m{verb\\!~\"WATCH(LIST)?\",instance=\"${::ipaddress}:6443\"}",
+        query           => "instance_verb:apiserver_request_latencies_summary:avg5m{verb\\!~\"(CONNECT|WATCH|WATCHLIST)\",instance=\"${::ipaddress}:6443\"}",
         prometheus_url  => $prometheus_url,
         nan_ok          => true,
         warning         => 50000,
