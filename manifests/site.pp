@@ -1951,14 +1951,8 @@ node /^relforge100[1-2]\.eqiad\.wmnet/ {
 }
 
 # restbase eqiad cluster
-node /^restbase10(0[789]|1[0123456789])\.eqiad\.wmnet$/ {
+node /^restbase10(0[789]|1[0-9]|2[0-7])\.eqiad\.wmnet$/ {
     role(restbase::production)
-}
-
-# new restbase hosts, ready to be pushed into service (and status in netbox set to active)
-# T219404
-node /^restbase102[0-7]\.eqiad\.wmnet$/ {
-    role(spare::system)
 }
 
 # restbase codfw cluster
