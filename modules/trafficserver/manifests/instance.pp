@@ -11,6 +11,9 @@
 #
 # === Parameters
 #
+# [*paths*]
+#   Mapping of trafficserver paths. See Trafficserver::Paths and trafficserver::get_paths()
+#
 # [*default_instance*]
 #  Setup ATS default instance. (default: false)
 #  Setting this value to true must be only done in one ATS instance per server. This will trigger the usage of
@@ -20,9 +23,6 @@
 #
 # [*port*]
 #   Bind trafficserver to this port (default: 8080).
-#
-# [*config_prefix*]
-#   Base path for trafficserver configuration base path. (default: /etc/trafficserver)
 #
 # [*inbound_tls_settings*]
 #   Inbound TLS settings. (default: undef).
@@ -150,9 +150,9 @@
 #  }
 #
 define trafficserver::instance(
+    Trafficserver::Paths $paths,
     Boolean $default_instance = false,
     Stdlib::Port $port = 8080,
-    Stdlib::Absolutepath $config_prefix = '/etc/trafficserver',
     Optional[Trafficserver::Inbound_TLS_settings] $inbound_tls_settings = undef,
     Optional[Trafficserver::Outbound_TLS_settings] $outbound_tls_settings = undef,
     Boolean $enable_xdebug = false,
@@ -176,7 +176,7 @@ define trafficserver::instance(
 
     if !$default_instance {
         trafficserver::layout { $title:
-            sysconfdir => $config_prefix,
+            paths => $paths,
         }
         $config_requires = Trafficserver::Layout[$title]
         $service_name = "trafficserver-${title}"
@@ -197,7 +197,7 @@ define trafficserver::instance(
       }
     }
 
-    $error_template_path = "${config_prefix}/error_template"
+    $error_template_path = "${paths['sysconfdir']}/error_template"
     file {
       [$error_template_path, "${error_template_path}/default"]:
         ensure  => directory,
@@ -206,7 +206,7 @@ define trafficserver::instance(
         require => $config_requires,
     }
 
-    $healthchecks_config_path = "${config_prefix}/healthchecks.config" # needed by plugin.config.erb
+    $healthchecks_config_path = "${paths['sysconfdir']}/healthchecks.config" # needed by plugin.config.erb
     ## Config files
     file {
         default:
@@ -217,28 +217,28 @@ define trafficserver::instance(
               notify  => Service[$service_name],
           };
 
-        "${config_prefix}/records.config":
+        $paths['records']:
           content => template('trafficserver/records.config.erb'),;
 
-        "${config_prefix}/remap.config":
+        "${paths['sysconfdir']}/remap.config":
           content => template('trafficserver/remap.config.erb'),;
 
-        "${config_prefix}/cache.config":
+        "${paths['sysconfdir']}/cache.config":
           content => template('trafficserver/cache.config.erb'),;
 
-        "${config_prefix}/ip_allow.config":
+        "${paths['sysconfdir']}/ip_allow.config":
           content => template('trafficserver/ip_allow.config.erb'),;
 
-        "${config_prefix}/storage.config":
+        "${paths['sysconfdir']}/storage.config":
           content => template('trafficserver/storage.config.erb'),;
 
-        "${config_prefix}/plugin.config":
+        "${paths['sysconfdir']}/plugin.config":
           content => template('trafficserver/plugin.config.erb'),;
 
-        "${config_prefix}/ssl_multicert.config":
+        $paths['ssl_multicert']:
           content => template('trafficserver/ssl_multicert.config.erb'),;
 
-        "${config_prefix}/logging.yaml":
+        "${paths['sysconfdir']}/logging.yaml":
           content => template('trafficserver/logging.yaml.erb');
 
         $healthchecks_config_path:

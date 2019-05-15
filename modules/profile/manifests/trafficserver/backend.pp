@@ -49,8 +49,13 @@ class profile::trafficserver::backend (
         footer      => "<p>If you report this error to the Wikimedia System Administrators, please include the details below.</p><p class='text-muted'><code>Request from %<{X-Client-IP}cqh> via ${::fqdn}, %<{Server}psh><br>Error: %<pssc>, %<prrp> at %<cqtd> %<cqtt> GMT</code></p>",
     }
 
-    trafficserver::instance { 'backend':
-        default_instance      => true,
+    $default_instance = true
+    $instance_name = 'backend'
+    $paths = trafficserver::get_paths($default_instance, 'backend')
+
+    trafficserver::instance { $instance_name:
+        paths                 => $paths,
+        default_instance      => $default_instance,
         port                  => $port,
         outbound_tls_settings => $outbound_tls_settings,
         enable_xdebug         => $enable_xdebug,
