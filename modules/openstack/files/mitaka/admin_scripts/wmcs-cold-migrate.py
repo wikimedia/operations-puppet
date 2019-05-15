@@ -150,7 +150,7 @@ class NovaInstance(object):
         args = ["ssh", "-i", "/root/.ssh/compute-hosts-key",
                 "nova@%s" % source_fqdn,
                 "/usr/bin/rsync -S -avW -e \"ssh -o Compression=no -o StrictHostKeyChecking=no "
-                "-o UserKnownHostsFile=/dev/null -i -T -x "
+                "-o UserKnownHostsFile=/dev/null -T -x -i "
                 "/var/lib/nova/.ssh/id_rsa\" --progress "
                 "--exclude=console.log* "
                 "%s nova@%s:%s" %
