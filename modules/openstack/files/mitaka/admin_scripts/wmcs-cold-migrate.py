@@ -76,6 +76,7 @@ class NovaInstance(object):
 
     def refresh_instance(self):
         self.instance = self.novaclient.servers.get(self.instance_id)
+        self.instance_name = self.instance._info['name']
 
     def wait_for_status(self, desiredstatus):
         oldstatus = ""
@@ -129,8 +130,8 @@ class NovaInstance(object):
         source = self.instance._info['OS-EXT-SRV-ATTR:host']
         source_fqdn = '{}.{}.wmnet'.format(source, config.datacenter)
 
-        logging.info("instance {} is now on host {} with state {}".format(
-                     self.instance_id, source, self.instance.status))
+        logging.info("instance {} ({}) is now on host {} with state {}".format(
+                     self.instance_id, self.instance_name, source, self.instance.status))
         if (source == destination):
             logging.warning("source and destination host are the same. Nothing to do.")
             exit(0)
@@ -160,7 +161,7 @@ class NovaInstance(object):
             logging.error("rsync to new host failed.")
             return(1)
 
-        logging.info("instance copied. Now updating nova db...")
+        logging.info("{} instance copied. Now updating nova db...".format(self.instance_name))
         host_moved = self.update_nova_db(config)
 
         activated_image = self.activate_image(image_id)
@@ -187,8 +188,9 @@ class NovaInstance(object):
         if activated_image:
             self.activate_image(image_id, deactivate=True)
 
-        logging.info("instance {} is now on host {} with status {}".format(
+        logging.info("instance {} ({}) is now on host {} with status {}".format(
                      self.instance_id,
+                     self.instance_name,
                      self.instance._info['OS-EXT-SRV-ATTR:host'],
                      self.instance.status))
 
