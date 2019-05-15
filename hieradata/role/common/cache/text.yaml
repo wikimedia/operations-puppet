@@ -178,7 +178,7 @@ cache::app_directors:
       eqiad: 'people1001.eqiad.wmnet'
   superset:
     backends:
-      eqiad: 'analytics-tool1003.eqiad.wmnet'
+      eqiad: 'analytics-tool1004.eqiad.wmnet'
   thorium:
     backends:
       eqiad: 'thorium.eqiad.wmnet'

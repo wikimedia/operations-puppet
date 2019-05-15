@@ -265,7 +265,7 @@ profile::trafficserver::backend::mapping_rules:
       replacement: http://eventstreams.discovery.wmnet:8092
     - type: map
       target: http://superset.wikimedia.org
-      replacement: http://analytics-tool1003.eqiad.wmnet
+      replacement: http://analytics-tool1004.eqiad.wmnet
     - type: map
       target: http://ticket.wikimedia.org
       replacement: http://mendelevium.eqiad.wmnet
