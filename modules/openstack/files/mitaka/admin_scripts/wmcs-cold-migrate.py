@@ -21,6 +21,7 @@ from keystoneclient.auth.identity import generic
 from keystoneclient import session as keystone_session
 from novaclient import client
 
+
 class ScriptConfig():
 
     def __init__(self, datacenter, destination, mysql_password, nova_db_server, nova_db):
@@ -88,7 +89,6 @@ class NovaInstance(object):
             time.sleep(1)
             self.refresh_instance()
 
-
     def update_nova_db(self, config):
         mysql_password = config.mysql_password
         nova_db_server = config.nova_db_server
@@ -111,7 +111,6 @@ class NovaInstance(object):
 
         return True
 
-
     def instance_stop(self):
         if self.instance.status == 'SHUTOFF':
             logging.warning("not stopping instance already in SHUTOFF state")
@@ -121,14 +120,12 @@ class NovaInstance(object):
             self.instance.stop()
             self.wait_for_status('SHUTOFF')
         except client.exceptions.Conflict as e:
-            logging.error("wailed to stop VM instance. Race condition?: {}".format(e))
+            logging.error("failed to stop VM instance. Race condition?: {}".format(e))
             exit(1)
-
 
     def migrate(self, config):
         destination = config.destination
         destination_fqdn = config.destination_fqdn
-        mysql_password = config.mysql_password
         source = self.instance._info['OS-EXT-SRV-ATTR:host']
         source_fqdn = '{}.{}.wmnet'.format(source, config.datacenter)
 
