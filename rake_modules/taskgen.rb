@@ -76,6 +76,37 @@ class TaskGen < ::Rake::TaskLib
     tasks
   end
 
+  def sort_python_files(files, default = :py2)
+    py_files = { py2: [], py3: [] }
+    files_unknown_version = []
+    deps = SpecDependencies.new
+    have_own_tox = deps.files_with_own_tox(files)
+
+    files.reject{ |file| have_own_tox.include?(file) }.each do |file|
+      next if File.zero?(file)
+      # skip files copied from upstream
+      next if file.end_with?('.original.py')
+      # skip scripts in user home dirs
+      next if file.start_with?('modules/admin/files/home')
+      shebang = File.open(file) {|f| f.readline}
+      match = shebang.match(/#!.*python(\d)/)
+      if !match || !match.captures
+        files_unknown_version << file
+      elsif match.captures[0] == '2'
+        py_files[:py2] << file
+      elsif match.captures[0] == '3'
+        py_files[:py3] << file
+      else
+        # might be more sensible to fail here?
+        files_unknown_version << file
+      end
+    end
+    py_files[default] += files_unknown_version
+    puts "python2 files: #{py_files[:py2].length}".green
+    puts "python3 files: #{py_files[:py3].length}".green
+    py_files
+  end
+
   def puppet_changed_files(files = @changed_files)
     files.select{ |x| File.fnmatch("*.pp", x) }
   end
@@ -397,6 +428,9 @@ class TaskGen < ::Rake::TaskLib
     tasks = []
     namespace :tox do
       if @changed_files.include?('tox.ini')
+        py_files = sort_python_files(Dir.glob('**/*.py'))
+        ENV['TOX_PY2_FILES'] = py_files[:py2].join(' ')
+        ENV['TOX_PY3_FILES'] = py_files[:py3].join(' ')
         desc 'Refresh the tox environment'
         task :update do
           raise "Running tox failed" unless system('tox -r')
@@ -458,18 +492,27 @@ class TaskGen < ::Rake::TaskLib
           tasks << 'tox:sonofgridengine'
         end
         # Get all python files that don't have a tox.ini in their module
-        tox_files = filter_files_by("*.py")
-        deps = SpecDependencies.new
-        have_own_tox = deps.files_with_own_tox(tox_files)
-        tox_files.reject!{ |py_file| have_own_tox.include?(py_file)  }
-        unless tox_files.empty?
-          desc 'Run flake8 on python files via tox'
+        py_files = sort_python_files(filter_files_by("*.py"))
+
+        unless python2_files.empty?
+          desc 'Run flake8 on python2 files via tox'
           task :flake8 do
-            shell_tox_files = Shellwords.join(tox_files)
-            raise "Flake8 failed".red unless system("tox -e pep8 #{shell_tox_files}")
+            shell_python2_files = Shellwords.join(py_files[:py2])
+            raise "Flake8 failed".red unless system("tox -e py2-pep8 #{shell_python2_files}")
           end
           tasks << 'tox:flake8'
         end
+
+        unless python3_files.empty?
+          desc 'Run flake8 on python3 files via tox'
+          task :flake8_3 do
+            shell_python3_files = Shellwords.join(py_files[:py3])
+            raise "Flake8 failed" unless system("tox -e py3-pep8 #{shell_python3_files}")
+          end
+          tasks << 'tox:flake8_3'
+        end
+
+        # commit message
         desc 'Check commit message'
         task :commit_message do
           raise 'Invalid commit message'.red unless system("tox -e commit-message")
