@@ -156,8 +156,12 @@ class profile::prometheus::ops (
       },
     ]
 
+    $gerrit_targets = {
+      'targets' => ['cobalt.wikimedia.org:443'],
+      'labels'  => {'cluster' => 'misc', 'site' => 'eqiad'},
+    }
     file { "${targets_path}/gerrit.yaml":
-      content => ordered_yaml([{'targets' => 'cobalt.wikimedia.org:443'}]),
+      content => ordered_yaml([$gerrit_targets]),
     }
 
     # Add one job for each of mysql 'group' (i.e. their broad function)
