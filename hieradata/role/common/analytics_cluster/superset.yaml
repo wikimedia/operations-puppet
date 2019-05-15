@@ -5,7 +5,7 @@ admin::groups:
 
 # Database password will be filled added in profile::superset from the
 # profile::superset::database_password hiera variable stored in the private repo.
-profile::superset::database_uri: mysql://superset@an-coord1001.eqiad.wmnet/superset
+profile::superset::database_uri: mysql://superset@an-coord1001.eqiad.wmnet/superset_production
 profile::superset::workers: 8
 profile::superset::ldap_proxy_enabled: true
 diamond::remove: true
