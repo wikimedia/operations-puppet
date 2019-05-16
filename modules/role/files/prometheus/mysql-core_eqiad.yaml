@@ -123,6 +123,7 @@
   - db1101:13318
   - db1104:9104
   - db1109:9104
+  - db1126:9104
 - labels:
     shard: s8
     role: master
