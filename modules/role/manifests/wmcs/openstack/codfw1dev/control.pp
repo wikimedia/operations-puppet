@@ -14,6 +14,7 @@ class role::wmcs::openstack::codfw1dev::control {
     include ::profile::openstack::codfw1dev::nova::api::service
     include ::profile::openstack::codfw1dev::neutron::common
     include ::profile::openstack::codfw1dev::neutron::service
+    include ::profile::ldap::client::labs
     # include ::profile::openstack::codfw1dev::neutron::metadata_agent
     # include ::profile::openstack::codfw1dev::nova::spiceproxy::service
     # include ::profile::openstack::codfw1dev::pdns::dns_floating_ip_updater
