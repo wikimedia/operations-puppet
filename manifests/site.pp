@@ -495,7 +495,7 @@ node 'db2052.codfw.wmnet' {
 }
 
 # See also db2084 and db2089 below
-node /^db20(38|59|66|75)\.codfw\.wmnet/ {
+node /^db2(038|059|066|075|111|113)\.codfw\.wmnet/ {
     role(mariadb::core)
 }
 
@@ -578,7 +578,7 @@ node /^db11(28|32|33|34|35|36)\.eqiad\.wmnet/ {
 }
 
 # Spare codfw hosts to be provisioned #T221532
-node /^db2(111|113|114|118|120)\.codfw\.wmnet/ {
+node /^db2(114|118|120)\.codfw\.wmnet/ {
     role(spare::system)
 }
 

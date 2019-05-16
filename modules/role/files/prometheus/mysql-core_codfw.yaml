@@ -82,6 +82,8 @@
   - db2075:9104
   - db2084:13315
   - db2089:13315
+  - db2111:9104
+  - db2113:9104
 - labels:
     shard: s5
     role: master
