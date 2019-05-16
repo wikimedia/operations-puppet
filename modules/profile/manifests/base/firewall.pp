@@ -12,6 +12,7 @@ class profile::base::firewall (
     Array[Stdlib::IP::Address] $hadoop_masters = hiera('hadoop_masters', []),
     Array[Stdlib::IP::Address] $druid_public_hosts = hiera('druid_public_hosts', []),
     Array[Stdlib::IP::Address] $mysql_root_clients = hiera('mysql_root_clients', []),
+    Array[Stdlib::IP::Address] $deployment_hosts = hiera('deployment_hosts', []),
 ) {
     class { '::base::firewall':
         monitoring_hosts        => $monitoring_hosts,
@@ -26,5 +27,6 @@ class profile::base::firewall (
         hadoop_masters          => $hadoop_masters,
         druid_public_hosts      => $druid_public_hosts,
         mysql_root_clients      => $mysql_root_clients,
+        deployment_hosts        => $deployment_hosts,
     }
 }

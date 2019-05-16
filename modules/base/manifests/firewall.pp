@@ -13,6 +13,7 @@ class base::firewall (
     Array[Stdlib::IP::Address] $hadoop_masters = [],
     Array[Stdlib::IP::Address] $druid_public_hosts = [],
     Array[Stdlib::IP::Address] $mysql_root_clients = [],
+    Array[Stdlib::IP::Address] $deployment_hosts = [],
 ) {
     include ::network::constants
     include ::ferm

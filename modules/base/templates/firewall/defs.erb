@@ -33,6 +33,7 @@ mgmt_networks = scope.lookupvar('network::constants::mgmt_networks')
 @def $MGMT_NETWORKS = (<%- mgmt_networks.each do |net| -%><%= net %> <% end -%>);
 
 
+@def $DEPLOYMENT_HOSTS = (<%- @deployment_hosts.each do |ip| -%><%= ip %> <% end -%>);
 @def $CUMIN_MASTERS = (<%- @cumin_masters.each do |ip| -%><%= ip %> <% end -%>);
 @def $CACHES = (<%- @cache_hosts.each do |ip| -%><%= ip %> <% end -%>);
 @def $KAFKA_BROKERS_MAIN = (<%- @kafka_brokers_main.each do |ip| -%><%= ip %> <% end -%>);
