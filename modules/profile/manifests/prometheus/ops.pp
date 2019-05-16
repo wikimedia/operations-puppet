@@ -143,16 +143,17 @@ class profile::prometheus::ops (
 
     $gerrit_jobs = [
       {
-        'job_name'          => 'gerrit',
-        'bearer_token_file' => '/srv/prometheus/ops/gerrit.token',
-        'metrics_path'      => '/r/monitoring?format=prometheus',
-        'scheme'            => 'https',
-        'file_sd_configs' => [
-          { 'files' => [ "${targets_path}/gerrit.yaml" ] }
-        ],
-        'tls_config'        => {
-            'server_name'   => 'gerrit.wikimedia.org',
-        },
+          'job_name'          => 'gerrit',
+          'bearer_token_file' => '/srv/prometheus/ops/gerrit.token',
+          'metrics_path'      => '/r/monitoring',
+          'params'            => { 'format' => 'prometheus' },
+          'scheme'            => 'https',
+          'file_sd_configs' => [
+              { 'files' => [ "${targets_path}/gerrit.yaml" ] }
+          ],
+          'tls_config'        => {
+              'server_name'   => 'gerrit.wikimedia.org',
+          },
       },
     ]
 
