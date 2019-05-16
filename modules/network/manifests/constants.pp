@@ -24,12 +24,6 @@ class network::constants {
     # $frack_networks will always contain just the fundraising networks
     $frack_networks = slice_network_constants('frack')
 
-    $special_hosts = {
-        'production' => {},
-        'labs' => {}
-    }
-
-
     # Networks hosting MediaWiki application servers
     # These are:
     #  - public hosts in eqiad/codfw

@@ -1,7 +1,6 @@
 <%-
 domain_networks = scope.lookupvar('network::constants::domain_networks')
 all_network_subnets = scope.lookupvar('network::constants::all_network_subnets')
-special_hosts = scope.lookupvar('network::constants::special_hosts')
 production_networks = scope.lookupvar('network::constants::production_networks')
 labs_networks = scope.lookupvar('network::constants::labs_networks')
 frack_networks = scope.lookupvar('network::constants::frack_networks')
@@ -44,12 +43,6 @@ mgmt_networks = scope.lookupvar('network::constants::mgmt_networks')
 @def $HADOOP_MASTERS = (<%- @hadoop_masters.each do |ip| -%><%= ip %> <% end -%>);
 @def $DRUID_PUBLIC_HOSTS = (<%- @druid_public_hosts.each do |ip| -%><%= ip %> <% end -%>);
 @def $MYSQL_ROOT_CLIENTS = (<%- @mysql_root_clients.each do |ip| -%><%= ip %> <% end -%>);
-<%- special_hosts.sort.map do |realm, services | -%>
-	<%- if @realm != realm then next end -%>
-	<%- services.sort.map do |service, addresses| -%>
-@def $<%= service.upcase() -%> = (<%- addresses.each do |address| -%><%= address %> <% end -%>);
-	<%- end -%>
-<%- end -%>
 <%-
 all_network_subnets.sort.map do |realm, sites|
 	sites.sort.map do |site, spheres|
