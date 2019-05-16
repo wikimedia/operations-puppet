@@ -62,4 +62,11 @@ class profile::wmcs::instance(
     }
 
     hiera_include('classes', [])
+
+    # Signal to rc.local that this VM is up and we don't need to run the firstboot
+    #  script anymore
+    file { '/root/firstboot_done':
+        ensure  => present,
+        content => '',
+    }
 }
