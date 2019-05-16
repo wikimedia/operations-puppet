@@ -177,7 +177,13 @@ def main():
         mounts = [mount for mount in mount_config.keys() if mount_config[mount]]
 
         srv_device = device_paths.get(project, device_path_default)
-        srv = os.path.join(srv_device, "shared", project)
+
+        # This simplifies the file migration by mirroring the existing location
+        # of the maps files
+        if project == "maps":
+            srv = device_paths.get(project, device_path_default)
+        else:
+            srv = os.path.join(srv_device, "shared", project)
         exp = os.path.join("/exp/project", project)
         create_binding(srv, exp, force=args.f, mounts=mounts)
 
