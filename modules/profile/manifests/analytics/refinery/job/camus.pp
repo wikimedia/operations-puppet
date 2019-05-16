@@ -66,6 +66,7 @@ class profile::analytics::refinery::job::camus(
         kafka_brokers         => $kafka_brokers_jumbo,
         check_topic_whitelist => 'webrequest_(upload|text)',
         interval              => '*-*-* *:00/10:00',
+        user                  => 'analytics',
     }
 
     # Import eventlogging_* topics into /wmf/data/raw/eventlogging
