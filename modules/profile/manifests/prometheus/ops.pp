@@ -146,7 +146,7 @@ class profile::prometheus::ops (
           'job_name'          => 'gerrit',
           'bearer_token_file' => '/srv/prometheus/ops/gerrit.token',
           'metrics_path'      => '/r/monitoring',
-          'params'            => { 'format' => 'prometheus' },
+          'params'            => { 'format' => ['prometheus'] },
           'scheme'            => 'https',
           'file_sd_configs' => [
               { 'files' => [ "${targets_path}/gerrit.yaml" ] }
