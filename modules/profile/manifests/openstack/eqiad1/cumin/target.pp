@@ -12,12 +12,12 @@
 #   The SSH public key used by Cumin master
 #
 class profile::openstack::eqiad1::cumin::target(
-    $auth_group = hiera('profile::openstack::eqiad1::cumin::auth_group'),
     $project_masters = hiera('profile::openstack::eqiad1::cumin::project_masters'),
     $project_pub_key = hiera('profile::openstack::eqiad1::cumin::project_pub_key'),
     $cluster = hiera('cluster', 'misc'),
     $site = $::site,  # lint:ignore:wmf_styleguide
     Array[Stdlib::IP::Address] $cumin_masters = hiera('cumin_masters', []),
+    Boolean $permit_port_forwarding = hiera('profile::openstack::eqiad1::cumin::permit_port_forwarding', false),
 ) {
     require ::network::constants
 
@@ -31,16 +31,7 @@ class profile::openstack::eqiad1::cumin::target(
 
     validate_array($project_masters)
 
-    if $auth_group == 'cumin_masters' {
-        $ssh_authorized_sources_list = $cumin_masters
-    } else {
-        # Authorize both the default cumin masters and the custom config, required for proxies.
-        $ssh_authorized_sources_list = concat(
-            $cumin_masters,
-            $::network::constants::special_hosts[$::realm][$auth_group])
-    }
-
-    $ssh_authorized_sources = join($ssh_authorized_sources_list, ',')
+    $ssh_authorized_sources = join($cumin_masters, ',')
     $ssh_project_authorized_sources = join($project_masters, ',')
     $ssh_project_ferm_sources = join($project_masters, ' ')
     $pub_key = secret('keyholder/cumin_openstack_master.pub')

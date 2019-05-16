@@ -1,4 +1,3 @@
-profile::openstack::eqiad1::cumin::auth_group: cumin_masters
 profile::openstack::eqiad1::cumin::project_masters: []
 profile::openstack::eqiad1::cumin::project_pub_key: undef
 profile::openstack::eqiad1::cumin::project_ssh_priv_key_path: undef

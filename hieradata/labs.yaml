@@ -241,7 +241,6 @@ profile::base::firewall::log::log_rate: 1/second
 profile::base::firewall::log::log_burst: 5
 
 # Cumin
-profile::openstack::eqiad1::cumin::auth_group: cumin_masters
 profile::openstack::eqiad1::cumin::project_masters: []
 profile::openstack::eqiad1::cumin::project_pub_key: undef
 profile::openstack::base::keystone::auth_protocol: http
