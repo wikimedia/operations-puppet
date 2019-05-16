@@ -8,9 +8,11 @@ class profile::releases::reprepro(
   class { '::releases::reprepro': }
 
   # ssh-based uploads from deployment servers
-  ferm::rule { 'deployment_package_upload':
+  ferm::service { 'deployment_package_upload':
       ensure => present,
-      rule   => 'proto tcp dport ssh saddr $DEPLOYMENT_HOSTS ACCEPT;',
+      proto  => 'tcp',
+      port   => 'ssh',
+      srange => '$DEPLOYMENT_HOSTS',
   }
 
     rsync::quickdatacopy { 'srv-org-wikimedia-reprepro':

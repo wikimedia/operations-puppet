@@ -3,8 +3,10 @@
 #
 class scap::ferm {
     # allow ssh from deployment hosts
-    ferm::rule { 'deployment-ssh':
+    ferm::service { 'deployment-ssh':
         ensure => present,
-        rule   => 'proto tcp dport ssh saddr $DEPLOYMENT_HOSTS ACCEPT;',
+        proto  => 'tcp',
+        port   => 'ssh',
+        srange => '$DEPLOYMENT_HOSTS',
     }
 }
