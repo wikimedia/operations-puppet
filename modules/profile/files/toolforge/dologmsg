@@ -1,0 +1,24 @@
+#!/bin/bash
+
+# Send a !log message for the current tool to #wikimedia-cloud.
+# Usage:
+#     dologmsg webservice restart
+#     dologmsg 'deployed commit ab12de34 (T123456)'
+
+labsproject=$(</etc/wmflabs-project)
+if ! [[ $USER == "$labsproject"* ]]; then
+    printf >&2 '%s: user name does not start with "%s": %s\n' "$0" "$labsproject" "$group"
+    exit 1
+fi
+
+message=$*
+if [[ $message == "" ]]; then
+    printf >&2 '%s: no message\n' "$0"
+    exit 1
+fi
+
+if [[ $SUDO_USER ]]; then
+    message="<$SUDO_USER> $message"
+fi
+
+printf '#wikimedia-cloud !log %s %s\n' "$USER" "$message" > /dev/tcp/wm-bot2.wm-bot.eqiad.wmflabs/64834

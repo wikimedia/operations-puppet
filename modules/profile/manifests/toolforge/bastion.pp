@@ -72,4 +72,12 @@ class profile::toolforge::bastion(
         mode   => '0444',
         source => 'puppet:///modules/profile/toolforge/submithost-ssh_config',
     }
+
+    file { '/usr/local/bin/dologmsg':
+        ensure => present,
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0555',
+        source => 'puppet:///modules/profile/toolforge/dologmsg',
+    }
 }
