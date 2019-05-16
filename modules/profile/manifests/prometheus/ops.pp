@@ -157,7 +157,7 @@ class profile::prometheus::ops (
     ]
 
     $gerrit_targets = {
-      'targets' => ['cobalt.wikimedia.org:443'],
+      'targets' => ['gerrit.wikimedia.org:443'],
       'labels'  => {'cluster' => 'misc', 'site' => 'eqiad'},
     }
     file { "${targets_path}/gerrit.yaml":
