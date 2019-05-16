@@ -1,7 +1,7 @@
-profile::mariadb::backup::check::datacenters:
+profile::mariadb::backup::check::dump::datacenters:
  - eqiad
  - codfw
-profile::mariadb::backup::check::sections:
+profile::mariadb::backup::check::dump::sections:
  - s1
  - s2
  - s3
@@ -15,5 +15,18 @@ profile::mariadb::backup::check::sections:
  - m2
  - m3
  - m5
+profile::mariadb::backup::check::snapshot::datacenters:
+ - eqiad
+ - codfw
+profile::mariadb::backup::check::snapshot::sections:
+ - s1
+ - s2
+ - s3
+ - s4
+ - s5
+ - s6
+ - s7
+ - s8
+ - x1
 monitor_screens: false
 diamond::remove: true

@@ -5,27 +5,30 @@
 # Only metadata checks are done- full backup tests are to be
 # done on a separate class.
 class profile::mariadb::backup::check (
-    $datacenters = hiera('profile::mariadb::backup::check::datacenters', ),
-    $sections    = hiera('profile::mariadb::backup::check::sections', ),
+    $dump_dcs          = hiera('profile::mariadb::backup::check::dump::datacenters', ),
+    $dump_sections     = hiera('profile::mariadb::backup::check::dump::sections', ),
+    $snapshot_dcs      = hiera('profile::mariadb::backup::check::snapshot::datacenters', ),
+    $snapshot_sections = hiera('profile::mariadb::backup::check::snapshot::sections', ),
 ) {
-    require_package(
-        'python3-pymysql',  # to connect to the backup metadata db
-        'python3-arrow',    # to print human-friendly dates
-    )
+    class { 'mariadb::monitor_backup_script': }
 
-    file { '/usr/local/bin/check_mariadb_backups.py':
-        ensure => present,
-        mode   => '0555',
-        owner  => 'root',
-        group  => 'root',
-        source => 'puppet:///modules/profile/mariadb/check_mariadb_backups.py',
-    }
-
-    $datacenters.each |String $datacenter| {
-        $sections.each |String $section| {
-            mariadb::monitor_backup { "${datacenter}-${section}":
+    $dump_dcs.each |String $datacenter| {
+        $dump_sections.each |String $section| {
+            mariadb::monitor_backup { "${datacenter}-${section}-dump":
                 section    => $section,
                 datacenter => $datacenter,
+                type       => 'dump',
+                freshness  => 691200,  # 8 days
+            }
+        }
+    }
+    $snapshot_dcs.each |String $datacenter| {
+        $snapshot_sections.each |String $section| {
+            mariadb::monitor_backup { "${datacenter}-${section}-snapshot":
+                section    => $section,
+                datacenter => $datacenter,
+                type       => 'snapshot',
+                freshness  => 345600,  # 4 days
             }
         }
     }

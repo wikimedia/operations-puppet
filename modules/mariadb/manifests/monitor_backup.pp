@@ -1,14 +1,17 @@
-# Checks the metadata database backups of a particular section and datacenter,
-# and sets up an icinga alert about it
+# Checks the metadata database backups of a particular section, datacenter
+# and type, and sets up an icinga alert about it
 define mariadb::monitor_backup (
     $section,
     $datacenter,
+    $type       = 'dump',
+    $freshness  = 691200,  # 8 days
 ) {
 
-    $check_command = "/usr/local/bin/check_mariadb_backups.py --section='${section}' --datacenter='${datacenter}'"
+    $check_command = "/usr/local/bin/check_mariadb_backups.py --section='${section}' --datacenter='${datacenter}' \
+--type='${type}' --freshness='${freshness}'"
 
-    nrpe::monitor_service { "mariadb_backup_${section}_${datacenter}":
-        description    => "Backup of ${section} in ${datacenter}",
+    nrpe::monitor_service { "mariadb_${type}_${section}_${datacenter}":
+        description    => "${type} of ${section} in ${datacenter}",
         nrpe_command   => $check_command,
         critical       => false,
         contact_group  => 'admins',
