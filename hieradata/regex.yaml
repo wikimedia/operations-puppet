@@ -302,10 +302,3 @@ mediawiki_test_environment:
   profile::mediawiki::php::fpm_config:
     opcache.interned_strings_buffer: 50
     opcache.memory_consumption: 300
-
-
-# Test to see if Nutcracker is still used for Memcached
-# T214275
-mediawiki_nutcracker_test_servers:
-  __regex: !ruby/regexp /^mw1(238|293|313)\.eqiad\.wmnet$/
-  mediawiki_memcached_servers: []
