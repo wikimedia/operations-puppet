@@ -2,7 +2,7 @@ groups:
 - name: alerts_beta.conf
   rules:
   - alert: InstanceDiskFullCrit
-    expr: (node_filesystem_avail{fstype!~"(rpc_pipefs|rootfs)"} / node_filesystem_size)
+    expr: (node_filesystem_avail_bytes{fstype!~"(rpc_pipefs|rootfs)"} / node_filesystem_size_bytes)
       * 100 < 5
     for: 15m
     labels:

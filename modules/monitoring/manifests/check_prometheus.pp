@@ -23,7 +23,7 @@
 #
 #   monitoring::check_prometheus { 'loadavg-1min-vs-cpus':
 #       description    => 'load average exceeds the number of CPUs',
-#       query          => "scalar(node_load1{instance=\"${::hostname}:9100\"}) / scalar(count(node_cpu{instance=\"${::hostname}:9100\",mode=\"idle\"}) by (instance))",
+#       query          => "scalar(node_load1{instance=\"${::hostname}:9100\"}) / scalar(count(node_cpu_seconds_total{instance=\"${::hostname}:9100\",mode=\"idle\"}) by (instance))",
 #       prometheus_url => "http://prometheus.svc.${::site}.wmnet/ops",
 #       warning        => 0.7,
 #       critical       => 1,
