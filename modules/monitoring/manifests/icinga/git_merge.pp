@@ -27,6 +27,7 @@ define monitoring::icinga::git_merge (
         nrpe_command => "/usr/bin/sudo ${filename}",
         retries      => $interval,
         require      => File[$file_resource],
+        notes_url    => 'https://wikitech.wikimedia.org/wiki/Monitoring/unmerged_changes',
     }
 
     file { "sudo_nagios_${sane_title}":
