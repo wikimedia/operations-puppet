@@ -17,6 +17,11 @@ class profile::openstack::base::wikitech::web(
 
     class { '::scap::scripts': }
 
+    # Wikitech needs to talk to LDAP directories
+    php::extension { 'ldap':
+        package_name => 'php7.2-ldap',
+    }
+
     # Packages (potentially) used for local image scaling, this can be removed once
     # Thumbor has been setup for labweb:
     package { [

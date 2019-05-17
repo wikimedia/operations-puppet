@@ -14,20 +14,20 @@
     AllowEncodedSlashes On
     RewriteEngine On
 
-    ProxyPass       /wiki                fcgi://127.0.0.1:9000/srv/mediawiki/docroot/wikimedia.org/w/index.php retry=0
-    ProxyPass       /w/thumb_handler.php fcgi://127.0.0.1:9000/srv/mediawiki/docroot/wikimedia.org/w/thumb_handler.php retry=0
-    ProxyPass       /w/extensions        !
-    ProxyPassMatch  ^/w/(.*\.(php|hh))$  fcgi://127.0.0.1:9000/srv/mediawiki/docroot/wikimedia.org/w/$1 retry=0
-    RewriteRule     ^/$                  fcgi://127.0.0.1:9000/srv/mediawiki/docroot/wikimedia.org/w/index.php    [P]
-    RewriteRule     ^/robots\.txt$       fcgi://127.0.0.1:9000/srv/mediawiki/docroot/wikimedia.org/w/robots.php   [P]
-    RewriteRule     ^/favicon\.ico$      fcgi://127.0.0.1:9000/srv/mediawiki/docroot/wikimedia.org/w/favicon.php  [P]
+    # Force HTTPS
+    RewriteCond %{HTTP:X-Forwarded-Proto} !https
+    RewriteRule ^/(.*)$ https://%{SERVER_NAME}/$1 [R=301,L,NE]
+    RewriteRule . - [E=RW_PROTO:%{HTTP:X-Forwarded-Proto}]
+
+    ### Common rewrite rules for all wikis
+
+    # Redirect /wiki, /w to the fcgi backend
     # /w/wiki.phtml is severely underperforming on HHVM
     RewriteRule     ^/w/wiki.phtml$      /w/index.php [L,QSA,NE]
 
     # Primary wiki redirector:
-    Alias /wiki /srv/mediawiki/docroot/wikimedia.org/w/index.php
-    # Common include for all public wikis
-
+    RewriteRule ^/wiki /w/index.php [L]
+<%- if @public_rewrites -%>
     # Make robots.txt editable via Mediawiki:robots.txt
     RewriteRule ^/robots\.txt$ /w/robots.php [L]
     # Primary wiki redirector:
@@ -36,19 +36,14 @@
     RewriteRule ^/favicon\.ico$ /w/favicon.php [L]
     # Configurable apple-touch-icon.png
     RewriteRule ^/apple-touch-icon\.png$ /w/touch.php [L]
+<%- end -%>
 
     # Multiversion static files (T99096)
     RewriteRule ^/w/skins/.*$ /w/static.php [PT]
     RewriteRule ^/w/resources/.*$ /w/static.php [PT]
     RewriteRule ^/w/extensions/.*$ /w/static.php [PT]
 
-    # /api/ rewrites
-    RewriteRule . - [E=RW_PROTO:%{HTTP:X-Forwarded-Proto}]
-    RewriteCond %{ENV:RW_PROTO} !=https
-    RewriteRule . - [E=RW_PROTO:http]
-
     # Common API-related rewrites
-
     # API listing
     RewriteRule ^/api$ %{ENV:RW_PROTO}://%{SERVER_NAME}/api/ [R=301]
     RewriteRule ^/api/$ /w/extract2.php?template=API_listing_template [L]
@@ -57,6 +52,14 @@
     RewriteCond %{ENV:RW_PROTO} !=""
     RewriteRule ^/math/(.*) %{ENV:RW_PROTO}://upload.wikimedia.<%= @domain_suffix %>/math/$1 [R=301]
     RewriteRule ^/math/(.*) https://upload.wikimedia.<%= @domain_suffix %>/math/$1 [R=301]
+
+    # Forbid accessing files under /w/extensions
+    RewriteRule ^/w/extensions/.*\.php - [F,L]
+    <FilesMatch "\.php$">
+    # Send all php files to the FCGI backend (HHVM/PHP7)
+    # This takes precedence over the catchall in the general configuration
+    SetHandler "proxy:<%= @php_fpm_fcgi_endpoint %>"
+    </FilesMatch>
 
     # ShortUrl support, for wikis where it's enabled
     RewriteRule ^/s/.*$     /w/index.php 

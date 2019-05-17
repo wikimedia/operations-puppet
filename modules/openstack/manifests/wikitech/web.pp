@@ -8,6 +8,8 @@ class openstack::wikitech::web(
     String $phabricator_api_token,
     String $gerrit_api_user,
     String $gerrit_api_password,
+    Boolean $public_rewrites = true,
+    String $php_fpm_fcgi_endpoint = 'unix:/run/php/fpm-www.sock|fcgi://localhost',
 ) {
 
     class {'::openstack::wikitech::wikitechprivatesettings':
