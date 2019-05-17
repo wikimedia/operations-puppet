@@ -826,6 +826,11 @@ node /^dbproxy101[2-7]\.eqiad\.wmnet$/ {
     role(spare::system)
 }
 
+# new dbproxy hosts to be productionized T223492
+node /^dbproxy200[1-4]\.codfw\.wmnet$/ {
+    role(spare::system)
+}
+
 node /^dbmonitor[12]001\.wikimedia\.org$/ {
     role(tendril)
 }
