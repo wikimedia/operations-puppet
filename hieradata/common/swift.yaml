@@ -10,9 +10,6 @@ swift::proxyhosts:
   - ms-fe2008.codfw.wmnet
 
 swift::storagehosts:
-  - ms-be1013.eqiad.wmnet
-  - ms-be1014.eqiad.wmnet
-  - ms-be1015.eqiad.wmnet
   - ms-be1016.eqiad.wmnet
   - ms-be1017.eqiad.wmnet
   - ms-be1018.eqiad.wmnet
@@ -48,9 +45,6 @@ swift::storagehosts:
   - ms-be1048.eqiad.wmnet
   - ms-be1049.eqiad.wmnet
   - ms-be1050.eqiad.wmnet
-  - ms-be2013.codfw.wmnet
-  - ms-be2014.codfw.wmnet
-  - ms-be2015.codfw.wmnet
   - ms-be2016.codfw.wmnet
   - ms-be2017.codfw.wmnet
   - ms-be2018.codfw.wmnet
