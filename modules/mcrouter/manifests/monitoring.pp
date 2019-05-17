@@ -26,7 +26,7 @@ class mcrouter::monitoring {
         description    => 'mcrouter certs expiration check',
         # forcing --no-server-check as check doesnt send client cert
         # for validation and would fail against mcrouter
-        nrpe_command   => 'sudo -u mcrouter /usr/lib/nagios/plugins/nrpe_check_client_cert --no-server-check',
+        nrpe_command   => 'sudo /usr/lib/nagios/plugins/nrpe_check_client_cert --no-server-check',
         require        => [
           File['/usr/lib/nagios/plugins/nrpe_check_client_cert'],
           Sudo::User['nagios_check_mcrouter_client'],
