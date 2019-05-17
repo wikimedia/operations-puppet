@@ -1,0 +1,3 @@
+labsldapconfig:
+  hostname: cloudservices2002-dev.wikimedia.org
+  secondary_hostname: cloudservices2002-dev.wikimedia.org
