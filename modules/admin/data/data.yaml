@@ -156,7 +156,7 @@ groups:
               jdittrich, chelsyx, ovasileva, debt,
               fdans, mlitn, niharika29, goransm, pmiazga, dsaez, shiladsen, cicalese,
               mirrys, sharvaniharan, mmiller, amire80, rush, tieu, kharlan, gbirke,
-              isaacj, jdl, joewalsh, phuedx, bd808]
+              isaacj, jdl, joewalsh, phuedx, bd808, iflorez]
   ldap-admins:
     gid: 715
     description: ldap admins
@@ -277,7 +277,7 @@ groups:
               ayounsi, mepps, mmiller, seddon, gilles, tstarling, rush, tieu, karen,
               cicalese, drossi, fsalutari, nathante, gbirke, isaacj, sbassett, jdl,
               niharika29, ryanmax, afandian2, jgleeson, toddleroux, srishakatux, dsharpe,
-              juliaglen, esanders, sukhe, jfishback]
+              juliaglen, esanders, sukhe, jfishback, iflorez]
     system_members: [analytics-search, analytics]
   analytics-admins:
     gid: 732
@@ -3189,7 +3189,17 @@ users:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIIArd1VWJLSPUzG+J758/6TtLeGNTWm2M4aNoaIZZdor urbanecm+wmnet@notebook
     uid: 13367
     email: martin.urbanec@wikimedia.cz
-
+  iflorez:
+    ensure: present
+    gid: 500
+    name: iflorez
+    realname: Irene Florez
+    ssh_keys:
+      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOqMsQAdABxLhrBi2MoGHqkrNEOMJXePZXwTAnuGu//O iflorez@LoanerWMF1954
+    uid: 21341
+    email: iflorez-ctr@wikimedia.org
+    expiry_date: 2020-05-31
+    expiry_contact: gfields@wikimedia.org
 ldap_only_users:
   abartov:
     ensure: present
