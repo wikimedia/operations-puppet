@@ -10,6 +10,7 @@
   - db1106:9104
   - db1118:9104
   - db1119:9104
+  - db1134:9104
 - labels:
     shard: s1
     role: master

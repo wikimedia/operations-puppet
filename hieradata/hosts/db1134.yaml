@@ -1,0 +1,4 @@
+# db1134
+mariadb::shard: 's1'
+mariadb::binlog_format: 'STATEMENT'
+profile::base::notifications: disabled
