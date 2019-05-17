@@ -18,5 +18,6 @@ class strongswan::monitoring::host {
         description  => 'IPsec',
         nrpe_command => '/usr/bin/sudo /usr/local/lib/nagios/plugins/check_strongswan',
         retries      => 7, # default 3, this is temporary during rolling cache restarts (--bblack 2016-02-05)
+        notes_url    => 'https://wikitech.wikimedia.org/wiki/Monitoring/strongswan',
     }
 }
