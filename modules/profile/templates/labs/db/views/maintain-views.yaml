@@ -684,7 +684,7 @@ customviews:
       select rev_id, rev_page, if(rev_deleted&1,null,rev_text_id) as rev_text_id,
       if(rev_deleted&2,0,coalesce(revcomment_comment_id,0)) as rev_comment_id,
       rev_user, rev_user_text,
-      coalesce(revactor_actor,0) as rev_actor,
+      revactor_actor as rev_actor,
       rev_timestamp, rev_minor_edit, rev_deleted,
       if(rev_deleted&1,null,rev_len) as rev_len, rev_parent_id, if(rev_deleted&1,null,rev_sha1) as rev_sha1,
       rev_content_model, rev_content_format
