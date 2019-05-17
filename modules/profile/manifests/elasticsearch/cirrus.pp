@@ -11,6 +11,7 @@
 #   configureable.
 class profile::elasticsearch::cirrus(
     String $ferm_srange = hiera('profile::elasticsearch::cirrus::ferm_srange'),
+    String $ferm_ro_srange = hiera('profile::elasticsearch::cirrus::ferm_ro_srange', ''),
     Boolean $expose_http = hiera('profile::elasticsearch::cirrus::expose_http'),
     String $storage_device = hiera('profile::elasticsearch::cirrus::storage_device'),
     Boolean $use_acme_chief = hiera('profile::elasticsearch::cirrus::use_acme_chief', false),
@@ -36,6 +37,7 @@ class profile::elasticsearch::cirrus(
         $cluster_name = $instance_params['cluster_name']
         $http_port = $instance_params['http_port']
         $tls_port = $instance_params['tls_port']
+        $tls_ro_port = $instance_params['tls_ro_port']
 
         if $expose_http {
             ferm::service { "elastic-http-${http_port}":
@@ -53,20 +55,42 @@ class profile::elasticsearch::cirrus(
         }
 
         if !$use_acme_chief {
-            elasticsearch::tlsproxy { $cluster_name:
+            $proxy_cert_params = {
                 certificate_names => [$instance_params['certificate_name']],
-                upstream_port     => $http_port,
-                tls_port          => $tls_port,
                 server_name       => $instance_params['certificate_name'],
-                ocsp_proxy        => $ocsp_proxy,
             }
         } else {
-            elasticsearch::tlsproxy { $cluster_name:
-                upstream_port => $http_port,
-                tls_port      => $tls_port,
+            $proxy_cert_params = {
                 acme_chief    => true,
                 acme_certname => $instance_params['certificate_name'],
-                ocsp_proxy    => $ocsp_proxy,
+            }
+        }
+
+        $proxy_params = merge($proxy_cert_params, {
+            upstream_port => $http_port,
+            tls_port      => $tls_port,
+            ocsp_proxy    => $ocsp_proxy,
+        })
+
+        elasticsearch::tlsproxy { $cluster_name:
+            * => $proxy_params,
+        }
+        if $tls_ro_port {
+            if empty($ferm_ro_srange) {
+                fail('Read only port specified without a read only srange')
+            }
+
+            ferm::service { "elastic-https-${tls_ro_port}":
+                proto  => 'tcp',
+                port   => $tls_ro_port,
+                srange => $ferm_ro_srange,
+            }
+
+            elasticsearch::tlsproxy { "${cluster_name}-ro":
+                * => merge($proxy_params, {
+                    tls_port  => $tls_ro_port,
+                    read_only => true,
+                })
             }
         }
 

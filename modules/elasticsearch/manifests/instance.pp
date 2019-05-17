@@ -138,6 +138,7 @@ define elasticsearch::instance(
     Optional[String] $certificate_name = undef,
     Array[String] $cluster_hosts       = [],
     Optional[Stdlib::Port] $tls_port = undef,
+    Optional[Stdlib::Port] $tls_ro_port = undef,
 ) {
 
     # Check arguments

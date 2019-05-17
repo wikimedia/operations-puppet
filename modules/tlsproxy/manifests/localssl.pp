@@ -76,6 +76,9 @@
 #   transmission of the whole response. If the proxied server does not transmit
 #   anything within this time, the connection is closed.  It should be set to
 #   a value that corresponds to the backend timeout. Defaults to 180 seconds.
+#
+# [*only_get_requests*]
+#  Deny all non-GET requests to this endpoint. Defaults to false.
 
 define tlsproxy::localssl(
     $certs          = [],
@@ -95,6 +98,7 @@ define tlsproxy::localssl(
     Integer $keepalive_timeout = 60,
     Integer $read_timeout = 180,
     String $ocsp_proxy = '',
+    Boolean $only_get_requests = false,
 ) {
     if (!empty($certs) and !empty($acme_subjects)) or ($acme_chief and !empty($acme_subjects)) or (empty($certs) and empty($acme_subjects) and !$acme_chief) {
         fail('Specify exactly one of certs (and optionally acme_chief) or acme_subjects')

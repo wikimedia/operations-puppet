@@ -50,6 +50,11 @@ server {
 	include /etc/acme/challenge-nginx.conf;
 <% end -%>
 	location / {
+<% if @only_get_requests -%>
+		limit_except GET {
+			deny all;
+		}
+<% end -%>
 		proxy_pass http://local_fe_<%= @basename %>;
 		proxy_http_version 1.1;
 <% if @websocket_support -%>
