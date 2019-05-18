@@ -3362,6 +3362,16 @@ host lvs1006 {
     filename "lpxelinux.0";
 }
 
+host lvs1013 {
+    hardware ethernet F4:E9:D4:DB:0C:00;
+    fixed-address lvs1013.eqiad.wmnet;
+}
+
+host lvs1014 {
+    hardware ethernet F4:E9:D4:DB:27:40;
+    fixed-address lvs1014.eqiad.wmnet;
+}
+
 host lvs1015 {
     hardware ethernet F4:E9:D4:DB:30:20;
     fixed-address lvs1015.eqiad.wmnet;
