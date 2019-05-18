@@ -5,20 +5,42 @@
 #     dologmsg webservice restart
 #     dologmsg 'deployed commit ab12de34 (T123456)'
 
-labsproject=$(</etc/wmflabs-project)
-if ! [[ $USER == "$labsproject"* ]]; then
-    printf >&2 '%s: user name does not start with "%s": %s\n' "$0" "$labsproject" "$group"
-    exit 1
-fi
+function usage {
+    cat << EOF
+Usage: $(basename -- "$0") MESSAGE...
+
+Arguments are concatenated into a log message for the current tool
+account and sent to #wikimedia-cloud. For example, when user johndoe
+runs the command 'dologmsg webservice restart' from the tools.example
+account, the following message will be sent to #wikimedia-cloud:
+
+!log tools.example <johndoe> webservice restart
+
+stashbot will then add a '<johndoe> webservice restart' log entry to
+https://wikitech.wikimedia.org/wiki/Nova_Resource:Tools.example/SAL .
+EOF
+}
 
 message=$*
 if [[ $message == "" ]]; then
     printf >&2 '%s: no message\n' "$0"
+    usage
     exit 1
+fi
+if [[ $message == -h || $message == --help ]]; then
+    usage
+    exit 0
 fi
 
 if [[ $SUDO_USER ]]; then
     message="<$SUDO_USER> $message"
+fi
+
+labsproject=$(</etc/wmflabs-project)
+if ! [[ $USER == "$labsproject"* ]]; then
+    printf >&2 '%s: user name does not start with "%s": %s\n' "$0" "$labsproject" "$group"
+    usage
+    exit 1
 fi
 
 printf '#wikimedia-cloud !log %s %s\n' "$USER" "$message" > /dev/tcp/wm-bot2.wm-bot.eqiad.wmflabs/64834
