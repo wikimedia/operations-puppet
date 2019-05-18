@@ -43,4 +43,4 @@ if ! [[ $USER == "$labsproject"* ]]; then
     exit 1
 fi
 
-printf '#wikimedia-cloud !log %s %s\n' "$USER" "$message" > /dev/tcp/wm-bot2.wm-bot.eqiad.wmflabs/64834
+printf '<%= @dologmsg_prefix %>%s %s\n' "$USER" "$message" > /dev/tcp/<%= @dologmsg_host %>/<%= @dologmsg_port %>
