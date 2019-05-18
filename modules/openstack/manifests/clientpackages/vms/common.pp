@@ -2,7 +2,6 @@
 class openstack::clientpackages::vms::common(
 ) {
     requires_realm('labs')
-    include openstack::designate::makedomain
 
     $py2packages = [
         'python-novaclient',
