@@ -87,7 +87,7 @@ class openstack::keystone::service(
         '/var/log/keystone':
             ensure  => 'directory',
             owner   => 'keystone',
-            group   => 'www-data',
+            group   => 'keystone',
             mode    => '0775',
             require => $require;
         '/etc/keystone':
