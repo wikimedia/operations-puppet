@@ -9,7 +9,7 @@ lvs::interfaces::vlan_data:
       'lvs1005': 'eth1:10.64.1.5'
       'lvs1006': 'eth1:10.64.1.6'
       'lvs1014': 'enp4s0f1:10.64.1.14'
-      'lvs1015': 'enp4s0f1:10.64.1.15'
+      'lvs1015': 'enp5s0f0:10.64.1.15'
       'lvs1016': 'enp4s0f1:10.64.1.16'
   private1-b-eqiad:
     id: "1018"
@@ -21,7 +21,7 @@ lvs::interfaces::vlan_data:
       'lvs1005': 'eth0:10.64.17.5'
       'lvs1006': 'eth0:10.64.17.6'
       'lvs1013': 'enp4s0f1:10.64.17.13'
-      'lvs1015': 'enp5s0f0:10.64.17.15'
+      'lvs1015': 'enp4s0f1:10.64.17.15'
       'lvs1016': 'enp5s0f0:10.64.17.16'
   private1-c-eqiad:
     id: "1019"
@@ -56,7 +56,7 @@ lvs::interfaces::vlan_data:
       'lvs1006': 'eth1:208.80.154.60'
       'lvs1013': 'enp4s0f0:208.80.154.51'
       'lvs1014': 'enp4s0f1:208.80.154.53'
-      'lvs1015': 'enp4s0f1:208.80.154.54'
+      'lvs1015': 'enp5s0f0:208.80.154.54'
       'lvs1016': 'enp4s0f1:208.80.154.61'
   public1-b-eqiad:
     id: "1002"
@@ -66,7 +66,7 @@ lvs::interfaces::vlan_data:
       'lvs1002': 'eth1:208.80.154.141'
       'lvs1013': 'enp4s0f1:208.80.154.167'
       'lvs1014': 'enp4s0f0:208.80.154.168'
-      'lvs1015': 'enp5s0f0:208.80.154.169'
+      'lvs1015': 'enp4s0f1:208.80.154.169'
       'lvs1016': 'enp5s0f0:208.80.154.170'
   public1-c-eqiad:
     id: "1003"
