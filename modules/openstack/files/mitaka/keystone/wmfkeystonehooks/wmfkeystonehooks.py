@@ -17,8 +17,8 @@ from keystoneauth1.identity import v3
 from keystoneauth1 import session as keystone_session
 from keystone.common import dependency
 from keystone import exception
-from novaclient import client as nova_client
-from novaclient import exceptions
+from neutronclient.v2_0 import client as neutron_client
+from neutronclient.common import exceptions
 
 from oslo_log import log as logging
 from oslo_config import cfg
@@ -163,6 +163,28 @@ class KeystoneHooks(notifier.Driver):
         self.page_editor.edit_page(fields_string, resource_name, False,
                                    template='Nova Resource')
 
+    @staticmethod
+    def _security_group_dict(group_id, protocol, from_port, to_port, cidr=None, group=None):
+        newrule = {'security_group_rule': {
+                   'security_group_id': group_id,
+                   'direction': 'ingress',
+                   'ethertype': 'IPv4',
+                   'protocol': protocol,
+                   'port_range_min': from_port,
+                   'port_range_max': to_port}}
+
+        if from_port < 0 and to_port < 0:
+            del newrule['security_group_rule']['port_range_min']
+            del newrule['security_group_rule']['port_range_max']
+
+        if cidr:
+            newrule['security_group_rule']['remote_ip_prefix'] = cidr
+
+        if group:
+            newrule['security_group_rule']['remote_group_id'] = group
+
+        return newrule
+
     def _on_project_create(self, project_id):
 
         LOG.warning("Beginning wmf hooks for project creation: %s" % project_id)
@@ -191,7 +213,7 @@ class KeystoneHooks(notifier.Driver):
                                                          roledict[CONF.wmfhooks.observer_role_name])
 
         LOG.warning("Adding security groups to project %s" % project_id)
-        # Use the nova api to set up security groups for the new project
+        # Use the neutron api to set up security groups for the new project
         auth = v3.Password(
             auth_url=CONF.wmfhooks.auth_url,
             username=CONF.wmfhooks.admin_user,
@@ -200,63 +222,59 @@ class KeystoneHooks(notifier.Driver):
             project_domain_name='Default',
             project_name=project_id)
         session = keystone_session.Session(auth=auth)
-        client = nova_client.Client('2', session=session, connect_retries=5)
-        allgroups = client.security_groups.list()
-        defaultgroup = filter(lambda group: group.name == 'default', allgroups)
+        client = neutron_client.Client(session=session, connect_retries=5)
+        allgroups = client.list_security_groups()['security_groups']
+        defaultgroup = filter(lambda group: group['name'] == 'default', allgroups)
         if defaultgroup:
-            groupid = defaultgroup[0].id
+            groupid = defaultgroup[0]["id"]
             try:
-                client.security_group_rules.create(groupid,
-                                                   ip_protocol='icmp',
-                                                   from_port='-1',
-                                                   to_port='-1',
-                                                   cidr='0.0.0.0/0')
-            except (exceptions.ClientException):
+                client.create_security_group_rule(
+                    KeystoneHooks._security_group_dict(groupid,
+                                                       'icmp',
+                                                       -1,
+                                                       -1,
+                                                       cidr='0.0.0.0/0'))
+            except (exceptions.NeutronClientException):
                 LOG.warning("icmp security rule already exists.")
+
             try:
-                client.security_group_rules.create(groupid,
-                                                   ip_protocol='tcp',
-                                                   from_port='22',
-                                                   to_port='22',
-                                                   cidr='10.0.0.0/8')
-            except (exceptions.ClientException):
+                client.create_security_group_rule(
+                    KeystoneHooks._security_group_dict(groupid,
+                                                       'tcp',
+                                                       22,
+                                                       22,
+                                                       cidr='172.16.0.0/21'))
+            except (exceptions.NeutronClientException):
                 LOG.warning("Port 22 security rule already exists.")
+
             try:
-                client.security_group_rules.create(groupid,
-                                                   ip_protocol='tcp',
-                                                   from_port='22',
-                                                   to_port='22',
-                                                   cidr='172.16.0.0/21')
-            except (exceptions.ClientException):
-                LOG.warning("Port 22 neutron security rule already exists.")
-            try:
-                client.security_group_rules.create(groupid,
-                                                   ip_protocol='tcp',
-                                                   from_port='1',
-                                                   to_port='65535',
-                                                   cidr='',
-                                                   group_id=groupid)
-            except (exceptions.ClientException):
+                client.create_security_group_rule(
+                    KeystoneHooks._security_group_dict(groupid,
+                                                       'tcp',
+                                                       22,
+                                                       22,
+                                                       group=groupid))
+            except (exceptions.NeutronClientException):
                 LOG.warning("Project security rule for TCP already exists.")
 
             try:
-                client.security_group_rules.create(groupid,
-                                                   ip_protocol='udp',
-                                                   from_port='1',
-                                                   to_port='65535',
-                                                   cidr='',
-                                                   group_id=groupid)
-            except (exceptions.ClientException):
+                client.create_security_group_rule(
+                    KeystoneHooks._security_group_dict(groupid,
+                                                       'udp',
+                                                       1,
+                                                       65535,
+                                                       group=groupid))
+            except (exceptions.NeutronClientException):
                 LOG.warning("Project security rule for UDP already exists.")
 
             try:
-                client.security_group_rules.create(groupid,
-                                                   ip_protocol='icmp',
-                                                   from_port='1',
-                                                   to_port='65535',
-                                                   cidr='',
-                                                   group_id=groupid)
-            except (exceptions.ClientException):
+                client.create_security_group_rule(
+                    KeystoneHooks._security_group_dict(groupid,
+                                                       'icmp',
+                                                       -1,
+                                                       -1,
+                                                       group=groupid))
+            except (exceptions.NeutronClientException):
                 LOG.warning("Project security rule for ICMP already exists.")
         else:
             LOG.warning("Failed to find default security group in new project.")
