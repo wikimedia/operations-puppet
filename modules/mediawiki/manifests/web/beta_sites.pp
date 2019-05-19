@@ -108,7 +108,11 @@ class mediawiki::web::beta_sites {
             ;
         'wikivoyage':
             server_aliases  => ['*.wikivoyage.beta.wmflabs.org'],
-            variant_aliases => [],
+            variant_aliases => [
+                'zh', 'zh-hans', 'zh-hant',
+                'zh-cn', 'zh-hk', 'zh-mo',
+                'zh-my', 'zh-sg', 'zh-tw'
+            ],
             priority        => 17,
     }
 
