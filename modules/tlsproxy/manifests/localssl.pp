@@ -151,25 +151,26 @@ define tlsproxy::localssl(
         }
         # TODO: Maybe add monitoring to this in role::cache::ssl::unified
     }
-    if $acme_chief {
-        if !defined(Acme_chief::Cert[$acme_certname]) {
-            require tlsproxy::ocsp
-            acme_chief::cert { $acme_certname:
-                ocsp       => $do_ocsp,
-                ocsp_proxy => $ocsp_proxy,
-                before     => Service['nginx']
-            }
-        }
-    }
 
-    if $do_ocsp and !empty($certs) {
+    if $do_ocsp {
         require tlsproxy::ocsp
+
         $certs.each |String $cert| {
             if !defined(Sslcert::Ocsp::Conf[$cert]) {
                 sslcert::ocsp::conf { $cert:
                     proxy  => $ocsp_proxy,
                     before => [Service['nginx'], Exec['nginx-reload']],
                 }
+            }
+        }
+    }
+
+    if $acme_chief {
+        if !defined(Acme_chief::Cert[$acme_certname]) {
+            acme_chief::cert { $acme_certname:
+                ocsp       => $do_ocsp,
+                ocsp_proxy => $ocsp_proxy,
+                before     => Service['nginx']
             }
         }
     }
