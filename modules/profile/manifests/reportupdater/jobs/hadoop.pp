@@ -14,10 +14,10 @@ class profile::reportupdater::jobs::hadoop {
 
     # Set up reportupdater.
     # Reportupdater here launches Hadoop jobs, and
-    # the 'hdfs' user is the only 'system' user that has
+    # the 'analytics' user is the Analytics 'system' user that has
     # access to required files in Hadoop.
     class { 'reportupdater':
-        user      => 'hdfs',
+        user      => 'analytics',
         base_path => $base_path,
     }
 
