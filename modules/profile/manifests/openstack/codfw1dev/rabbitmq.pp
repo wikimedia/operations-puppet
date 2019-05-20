@@ -13,6 +13,7 @@ class profile::openstack::codfw1dev::rabbitmq(
     $nova_rabbit_password = hiera('profile::openstack::codfw1dev::nova::rabbit_pass'),
     $neutron_rabbit_user = hiera('profile::openstack::base::neutron::rabbit_user'),
     $neutron_rabbit_password = hiera('profile::openstack::codfw1dev::neutron::rabbit_pass'),
+    $rabbit_erlang_cookie = hiera('profile::openstack::codfw1dev::rabbit_erlang_cookie'),
 ){
 
     class {'::profile::openstack::base::rabbitmq':
@@ -28,6 +29,7 @@ class profile::openstack::codfw1dev::rabbitmq(
         designate_host          => $designate_host,
         designate_host_standby  => $designate_host_standby,
         nova_rabbit_password    => $nova_rabbit_password,
+        rabbit_erlang_cookie    => $rabbit_erlang_cookie,
     }
     contain '::profile::openstack::base::rabbitmq'
 

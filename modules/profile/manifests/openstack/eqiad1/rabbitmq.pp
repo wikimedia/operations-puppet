@@ -13,6 +13,7 @@ class profile::openstack::eqiad1::rabbitmq(
     $nova_rabbit_password = hiera('profile::openstack::eqiad1::nova::rabbit_pass'),
     $neutron_rabbit_user = hiera('profile::openstack::base::neutron::rabbit_user'),
     $neutron_rabbit_password = hiera('profile::openstack::eqiad1::neutron::rabbit_pass'),
+    $rabbit_erlang_cookie = hiera('profile::openstack::eqiad1::rabbit_erlang_cookie'),
 ){
 
     require ::profile::openstack::eqiad1::clientpackages
@@ -29,6 +30,7 @@ class profile::openstack::eqiad1::rabbitmq(
         designate_host          => $designate_host,
         designate_host_standby  => $designate_host_standby,
         nova_rabbit_password    => $nova_rabbit_password,
+        rabbit_erlang_cookie    => $rabbit_erlang_cookie,
     }
     contain '::profile::openstack::base::rabbitmq'
 

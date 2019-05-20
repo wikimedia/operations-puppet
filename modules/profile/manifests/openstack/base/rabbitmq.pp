@@ -13,10 +13,12 @@ class profile::openstack::base::rabbitmq(
     $labs_hosts_range_v6 = hiera('profile::openstack::base::labs_hosts_range_v6'),
     $nova_rabbit_user = hiera('profile::openstack::base::nova::rabbit_user'),
     $nova_rabbit_password = hiera('profile::openstack::base::nova::rabbit_pass'),
+    $rabbit_erlang_cookie = hiera('profile::openstack::base::rabbit_erlang_cookie'),
 ){
 
     class { '::rabbitmq':
-        file_handles => $file_handles,
+        file_handles  => $file_handles,
+        erlang_cookie => $rabbit_erlang_cookie,
     }
     contain '::rabbitmq'
     class{'::rabbitmq::plugins':}

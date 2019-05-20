@@ -18,6 +18,7 @@
 class rabbitmq(
     $running = true,
     $file_handles = '1024',
+    $erlang_cookie = '',
     ) {
 
     package { [ 'rabbitmq-server' ]:
@@ -59,6 +60,20 @@ class rabbitmq(
         mode    => '0655',
         source  => 'puppet:///modules/rabbitmq/rabbit_random_guest.sh',
         require => Package['rabbitmq-server'],
+    }
+
+    # For multi-node setups, the two servers need to share
+    #  this secret string.  For single-node setups
+    #  we can just let rabbit generate whatever.
+    if $erlang_cookie {
+        file { '/var/lib/rabbitmq/.erlang.cookie':
+            ensure  => 'present',
+            owner   => 'rabbitmq',
+            group   => 'rabbitmq',
+            mode    => '0400',
+            content => $erlang_cookie,
+            require => Package['rabbitmq-server'],
+        }
     }
 
     exec { 'invalidate_rabbitmq_guest_account':
