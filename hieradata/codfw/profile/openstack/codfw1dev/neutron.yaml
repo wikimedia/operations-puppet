@@ -2,7 +2,6 @@ profile::openstack::codfw1dev::neutron::db_host: clouddb2001-dev.codfw.wmnet
 profile::openstack::codfw1dev::neutron::base_interface: 'eno2'
 profile::openstack::codfw1dev::neutron::network_flat_interface_vlan: '2105'
 profile::openstack::codfw1dev::neutron::network_flat_interface_vlan_external: '2120'
-profile::openstack::codfw1dev::neutron::network_compat_interface_vlan: '2102'
 profile::openstack::codfw1dev::neutron::rabbit_user: 'neutron'
 profile::openstack::codfw1dev::neutron::network_flat_name: 'cloudinstances2b'
 profile::openstack::codfw1dev::neutron::network_public_ip: '172.16.129.254'
@@ -15,12 +14,9 @@ profile::openstack::codfw1dev::neutron::l3_agent_bridges:
     addif: 'eno2.2120'
   br-internal:
     addif: 'eno2.2105'
-  br-compat:
-    addif: 'eno2.2102'
 profile::openstack::codfw1dev::neutron::l3_agent_bridge_mappings:
   br-external: 'br-external'
   cloudinstances2b: 'br-internal'
-  br-compat: 'br-compat'
 profile::openstack::codfw1dev::neutron::report_interval: '30'
 profile::openstack::codfw1dev::neutron::agent_down_time: '64'
 profile::openstack::codfw1dev::neutron::log_agent_heartbeats: 'True'

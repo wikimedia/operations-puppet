@@ -2,7 +2,6 @@ profile::openstack::eqiad1::neutron::base_interface: 'eno50'
 profile::openstack::eqiad1::neutron::db_host: m5-master.eqiad.wmnet
 profile::openstack::eqiad1::neutron::network_flat_interface_vlan: '1105'
 profile::openstack::eqiad1::neutron::network_flat_interface_vlan_external: '1120'
-profile::openstack::eqiad1::neutron::network_compat_interface_vlan: '1102'
 profile::openstack::eqiad1::neutron::rabbit_user: 'neutron'
 profile::openstack::eqiad1::neutron::network_flat_name: 'cloudinstances2b'
 # T193496
@@ -20,12 +19,9 @@ profile::openstack::eqiad1::neutron::l3_agent_bridges:
     addif: 'eno50.1120'
   br-internal:
     addif: 'eno50.1105'
-  br-compat:
-    addif: 'eno50.1102'
 profile::openstack::eqiad1::neutron::l3_agent_bridge_mappings:
   br-external: 'br-external'
   cloudinstances2b: 'br-internal'
-  br-compat: 'br-compat'
 profile::openstack::eqiad1::neutron::report_interval: '5'
 profile::openstack::eqiad1::neutron::agent_down_time: '64'
 profile::openstack::eqiad1::neutron::log_agent_heartbeats: 'True'

@@ -7,7 +7,6 @@ class profile::openstack::codfw1dev::neutron::l3_agent(
     $dmz_cidr = hiera('profile::openstack::codfw1dev::neutron::dmz_cidr'),
     $network_public_ip = hiera('profile::openstack::codfw1dev::neutron::network_public_ip'),
     $report_interval = hiera('profile::openstack::codfw1dev::neutron::report_interval'),
-    $network_compat_interface_vlan = hiera('profile::openstack::codfw1dev::neutron::network_compat_interface_vlan'),
     $base_interface = lookup('profile::openstack::codfw1dev::neutron::base_interface'),
     ) {
 
@@ -20,7 +19,6 @@ class profile::openstack::codfw1dev::neutron::l3_agent(
         network_public_ip                    => $network_public_ip,
         report_interval                      => $report_interval,
         base_interface                       => $base_interface,
-        network_compat_interface_vlan        => $network_compat_interface_vlan,
         network_flat_interface_vlan          => $network_flat_interface_vlan,
         network_flat_interface_vlan_external => $network_flat_interface_vlan_external,
     }

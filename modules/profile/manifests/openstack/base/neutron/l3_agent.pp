@@ -4,18 +4,9 @@ class profile::openstack::base::neutron::l3_agent(
     $network_public_ip = hiera('profile::openstack::base::neutron::network_public_ip'),
     $report_interval = hiera('profile::openstack::base::neutron::report_interval'),
     $base_interface = lookup('profile::openstack::base::neutron::base_interface'),
-    $network_compat_interface_vlan = lookup('profile::openstack::base::neutron::network_compat_interface_vlan'),
     $network_flat_interface_vlan_external = lookup('profile::openstack::base::neutron::network_flat_interface_vlan_external'),
     $network_flat_interface_vlan = lookup('profile::openstack::base::neutron::network_flat_interface_vlan'),
     ) {
-
-    interface::tagged { "${base_interface}.${network_compat_interface_vlan}":
-        base_interface => $base_interface,
-        vlan_id        => $network_compat_interface_vlan,
-        method         => 'manual',
-        up             => 'ip link set $IFACE up',
-        down           => 'ip link set $IFACE down',
-    }
 
     interface::tagged { "${base_interface}.${$network_flat_interface_vlan_external}":
         base_interface => $base_interface,
