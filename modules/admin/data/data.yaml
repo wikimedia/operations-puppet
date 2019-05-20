@@ -3590,3 +3590,7 @@ ldap_only_users:
     ensure: present
     realname: James Fishback
     email: jfishback@wikimedia.org
+  ppel:
+    ensure: present
+    realname: Peter Pelberg
+    email: ppelberg@wikimedia.org
