@@ -7,4 +7,3 @@ profile::lvs::interface_tweaks:
     txqlen: 10000
   enp5s0f1:
     txqlen: 10000
-profile::pybal::primary: false

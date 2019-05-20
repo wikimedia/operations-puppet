@@ -205,7 +205,7 @@ swift_be_eqiad_sda:
   swift_aux_partitions: ['/dev/sda3', '/dev/sdb3', '/dev/sda4', '/dev/sdb4']
 
 lvs_eqiad_backup:
-  __regex: !ruby/regexp /^lvs100[4-6]\.wikimedia\.org$/
+  __regex: !ruby/regexp /^lvs100[1-6]\.wikimedia\.org$/
   profile::pybal::primary: false
 
 lvs_codfw_backup:
