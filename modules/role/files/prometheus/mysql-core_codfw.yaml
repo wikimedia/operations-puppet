@@ -42,7 +42,6 @@
     shard: s3
     role: slave
   targets:
-  - db2036:9104
   - db2050:9104
   - db2057:9104
   - db2074:9104
