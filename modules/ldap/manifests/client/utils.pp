@@ -4,7 +4,13 @@
 # ldap database will then be listed as users of the system, so use care.
 
 class ldap::client::utils($ldapconfig) {
-    require_package('python-ldap', 'python-pycurl')
+    require_package('python-pycurl')
+
+    # this may be already declared by openstack's keystone, where
+    # we need python-pyldap rather than python-ldap (so is ensure => absent there)
+    if ! defined(Package['python-ldap']) {
+        require_package('python-ldap')
+    }
 
     file { '/usr/local/sbin/add-ldap-group':
         owner  => 'root',
