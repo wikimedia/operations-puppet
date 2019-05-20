@@ -70,7 +70,7 @@
 define camus::job (
     $kafka_brokers,
     $script                 = '/srv/deployment/analytics/refinery/bin/camus',
-    $user                   = 'hdfs',
+    $user                   = 'analytics',
     $camus_jar              = undef,
     $check                  = undef,
     $check_jar              = undef,

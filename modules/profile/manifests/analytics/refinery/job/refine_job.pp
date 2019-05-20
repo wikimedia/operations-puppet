@@ -36,7 +36,7 @@ define profile::analytics::refinery::job::refine_job (
     $spark_driver_memory    = '8G',
     $spark_max_executors    = 64,
     $spark_extra_opts       = '',
-    $user                   = 'hdfs',
+    $user                   = 'analytics',
     $interval               = '*-*-* *:00:00',
     $ensure                 = 'present',
 ) {
