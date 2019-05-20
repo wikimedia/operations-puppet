@@ -1,5 +1,5 @@
-profile::mariadb::proxy::master::primary_name: 'labsdb1011'
-profile::mariadb::proxy::master::primary_addr: '10.64.37.24:3306'
+profile::mariadb::proxy::master::primary_name: 'labsdb1009'
+profile::mariadb::proxy::master::primary_addr: '10.64.64.14:3306'
 profile::mariadb::proxy::master::secondary_name: 'labsdb1010'
 profile::mariadb::proxy::master::secondary_addr: '10.64.37.23:3306'
 profile::mariadb::proxy::firewall: 'disabled'
