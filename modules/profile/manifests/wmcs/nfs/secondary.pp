@@ -72,7 +72,7 @@ class profile::wmcs::nfs::secondary(
             dest_host   => $facts['fqdn'],
             module_path => '/srv',
             auto_sync   => false,
-            bwlimit     => 4000,
+            bwlimit     => 40000,
         }
     } else {
         exec { $ipdel_command:

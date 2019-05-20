@@ -43,7 +43,7 @@ class role::labs::nfs::misc(
         dest_host   => 'cloudstore1008.wikimedia.org',
         module_path => '/srv',
         auto_sync   => false,
-        bwlimit     => 4000,
+        bwlimit     => 40000,
     }
     # This also exports /srv/statistics to allow statistics servers
     # a way to rsync public data in from production.
