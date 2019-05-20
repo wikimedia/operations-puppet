@@ -38,7 +38,7 @@ class profile::analytics::refinery::job::data_purge (
         command     => "${refinery_path}/bin/refinery-drop-webrequest-partitions -d ${raw_retention_days} -D wmf_raw -l /wmf/data/raw/webrequest -w raw",
         interval    => '*-*-* 00/4:15:00',
         environment => $systemd_env,
-        user        => 'hdfs',
+        user        => 'analytics',
     }
 
     # Keep this many days of refined webrequest data.
@@ -48,7 +48,7 @@ class profile::analytics::refinery::job::data_purge (
         command     => "${refinery_path}/bin/refinery-drop-webrequest-partitions -d ${refined_retention_days} -D wmf -l /wmf/data/wmf/webrequest -w refined",
         interval    => '*-*-* 00/4:45:00',
         environment => $systemd_env,
-        user        => 'hdfs',
+        user        => 'analytics',
     }
 
     # Keep this many days of eventlogging data.
@@ -58,7 +58,7 @@ class profile::analytics::refinery::job::data_purge (
         command     => "${refinery_path}/bin/refinery-drop-eventlogging-partitions -d ${eventlogging_retention_days} -l /wmf/data/raw/eventlogging",
         interval    => '*-*-* 00/4:15:00',
         environment => $systemd_env,
-        user        => 'hdfs',
+        user        => 'analytics',
     }
 
     profile::analytics::systemd_timer { 'refinery-drop-eventlogging-client-side-partitions':
@@ -66,7 +66,7 @@ class profile::analytics::refinery::job::data_purge (
         command     => "${refinery_path}/bin/refinery-drop-eventlogging-partitions -d ${eventlogging_retention_days} -l /wmf/data/raw/eventlogging_client_side",
         interval    => '*-*-* 00/4:30:00',
         environment => $systemd_env,
-        user        => 'hdfs',
+        user        => 'analytics',
     }
 
     # keep this many days of wdqs_extract data
@@ -76,7 +76,7 @@ class profile::analytics::refinery::job::data_purge (
         command     => "${refinery_path}/bin/refinery-drop-hourly-partitions -d ${wdqs_extract_retention_days} -p hive -D wmf -t wdqs_extract -l /wmf/data/wmf/wdqs_extract",
         interval    => '*-*-* 01:00:00',
         environment => $systemd_env,
-        user        => 'hdfs',
+        user        => 'analytics',
     }
 
     # keep this many days of mediawiki application logs
@@ -86,7 +86,7 @@ class profile::analytics::refinery::job::data_purge (
         command     => "${refinery_path}/bin/refinery-drop-hourly-partitions -d ${mediawiki_log_retention_days} -D wmf_raw -t apiaction -p camus -l /wmf/data/raw/mediawiki/mediawiki_ApiAction/hourly",
         interval    => '*-*-* 00/4:15:00',
         environment => $systemd_env,
-        user        => 'hdfs',
+        user        => 'analytics',
     }
 
     profile::analytics::systemd_timer { 'refinery-drop-cirrussearchrequestset-partitions':
@@ -94,7 +94,7 @@ class profile::analytics::refinery::job::data_purge (
         command     => "${refinery_path}/bin/refinery-drop-hourly-partitions -d ${mediawiki_log_retention_days} -D wmf_raw -t cirrussearchrequestset -p camus -l /wmf/data/raw/mediawiki/mediawiki_CirrusSearchRequestSet/hourly",
         interval    => '*-*-* 00/4:25:00',
         environment => $systemd_env,
-        user        => 'hdfs',
+        user        => 'analytics',
     }
 
     # keep this many days of druid webrequest sampled
@@ -105,7 +105,7 @@ class profile::analytics::refinery::job::data_purge (
         command     => "${refinery_path}/bin/refinery-drop-druid-deep-storage-data -d ${druid_webrequest_sampled_retention_days} webrequest_sampled_128",
         interval    => '*-*-* 05:15:00',
         environment => $systemd_env,
-        user        => 'hdfs',
+        user        => 'analytics',
     }
 
 
@@ -119,7 +119,7 @@ class profile::analytics::refinery::job::data_purge (
             command     => "${refinery_path}/bin/refinery-drop-druid-snapshots -d ${mediawiki_history_reduced_basename} -t ${public_druid_host} -s ${druid_public_keep_snapshots} -f ${public_druid_snapshots_log_file}",
             environment => $systemd_env,
             interval    => '*-*-15 07:00:00',
-            user        => 'hdfs',
+            user        => 'analytics',
         }
     }
 
@@ -131,7 +131,7 @@ class profile::analytics::refinery::job::data_purge (
         command     => "${refinery_path}/bin/refinery-drop-mediawiki-snapshots -s ${keep_snapshots}",
         environment => $systemd_env,
         interval    => '*-*-15 06:15:00',
-        user        => 'hdfs',
+        user        => 'analytics',
     }
 
     # keep this many days of banner activity success files
@@ -142,7 +142,7 @@ class profile::analytics::refinery::job::data_purge (
         command     => "${refinery_path}/bin/refinery-drop-banner-activity-partitions -d ${banner_activity_retention_days} -l /wmf/data/wmf/banner_activity",
         environment => $systemd_env,
         interval    => '*-*-* 02:00:00',
-        user        => 'hdfs',
+        user        => 'analytics',
     }
 
     # Create, rotate and delete EventLogging salts (for hashing).
@@ -150,14 +150,14 @@ class profile::analytics::refinery::job::data_purge (
     $refinery_config_dir = $::profile::analytics::refinery::config_dir
     file { ["${refinery_config_dir}/salts", "${refinery_config_dir}/salts/eventlogging_sanitization"]:
         ensure => 'directory',
-        owner  => 'hdfs',
+        owner  => 'analytics',
     }
 
     file { '/usr/local/bin/refinery-eventlogging-saltrotate':
         content => template('profile/analytics/refinery/job/refinery-eventlogging-saltrotate.erb'),
         mode    => '0550',
-        owner   => 'hdfs',
-        group   => 'hdfs',
+        owner   => 'analytics',
+        group   => 'analytics',
     }
 
     # Timer runs at midnight (salt rotation time):
@@ -166,7 +166,7 @@ class profile::analytics::refinery::job::data_purge (
         command     => '/usr/local/bin/refinery-eventlogging-saltrotate',
         environment => $systemd_env,
         interval    => '*-*-* 00:00:00',
-        user        => 'hdfs',
+        user        => 'analytics',
         require     => File['/usr/local/bin/refinery-eventlogging-saltrotate']
     }
 
@@ -215,7 +215,7 @@ class profile::analytics::refinery::job::data_purge (
         command     => "${refinery_path}/bin/refinery-drop-older-than --database='event' --tables='^(?!wmdebanner)[A-Za-z0-9]+$$' --base-path='/wmf/data/event' --path-format='(?!WMDEBanner)[A-Za-z0-9]+/year=(?P<year>[0-9]+)(/month=(?P<month>[0-9]+)(/day=(?P<day>[0-9]+)(/hour=(?P<hour>[0-9]+))?)?)?' --older-than='90' --execute='05c2f816807c528cf138bd0be2bdaba4' --log-file='${el_unsanitized_log_file}'",
         interval    => '*-*-* 00:00:00',
         environment => $systemd_env,
-        user        => 'hdfs',
+        user        => 'analytics',
     }
 
     # drop data older than 2 months from cu_changes table, which is sqooped in
@@ -226,7 +226,7 @@ class profile::analytics::refinery::job::data_purge (
         command     => "${refinery_path}/bin/refinery-drop-hive-partitions -d ${geoeditors_private_retention_days} -D wmf_raw -t mediawiki_private_cu_changes -l 1 -f ${mediawiki_private_log_file}",
         environment => $systemd_env,
         interval    => '*-*-16 05:00:00',
-        user        => 'hdfs',
+        user        => 'analytics',
     }
 
     # drop data older than 2 months from geoeditors_daily table
@@ -238,7 +238,7 @@ class profile::analytics::refinery::job::data_purge (
         command     => "${refinery_path}/bin/refinery-drop-hive-partitions -d ${geoeditors_private_retention_days} -D wmf -t geoeditors_daily -l 1 -f ${geoeditors_log_file}",
         environment => $systemd_env,
         interval    => '*-*-16 06:00:00',
-        user        => 'hdfs',
+        user        => 'analytics',
     }
 
     # drop monthly xmldumps data (pages_meta_history) after 80 days (last day of month as reference)
@@ -247,14 +247,14 @@ class profile::analytics::refinery::job::data_purge (
     file { '/usr/local/bin/refinery-drop-mediawiki-xmldumps-pages_meta_history':
         content => template('profile/analytics/refinery/job/refinery-drop-mediawiki-xmldumps-pages_meta_history.sh.erb'),
         mode    => '0550',
-        owner   => 'hdfs',
+        owner   => 'analytics',
 
     }
     profile::analytics::systemd_timer { 'mediawiki-drop-xmldumps-pages_meta_history':
         description => 'Drop xmldumps pages_meta_history data from HDFS after 80 days.',
         command     => '/usr/local/bin/refinery-drop-mediawiki-xmldumps-pages_meta_history',
         interval    => '*-*-20 06:00:00',
-        user        => 'hdfs',
+        user        => 'analytics',
         require     => File['/usr/local/bin/refinery-drop-mediawiki-xmldumps-pages_meta_history'],
     }
 
