@@ -237,7 +237,7 @@ translation.override:
   # T173208
   'Dat Boi': 'Insectivore'
   # T179126
-  'Usernames must contain only numbers, letters, period, underscore and hyphen, and can not end with a period. They must have no more than %d characters.': 'Usernames must contain only numbers, Latin letters, period, underscore and hyphen, and can not end with a period. They must have no more than %d characters. Spaces should be replaced with an underscore (_).'
+  'Usernames must contain only numbers, letters, period, underscore, and hyphen, and can not end with a period. They must have no more than %d characters.': 'Usernames must contain only numbers, Latin letters, period, underscore and hyphen, and can not end with a period. They must have no more than %d characters. Spaces should be replaced with an underscore (_).'
 
 # We don't host local docs or use the wiki :)
 phabricator.uninstalled-applications:
