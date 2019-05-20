@@ -17,7 +17,6 @@ class profile::elasticsearch::cirrus(
     Boolean $use_acme_chief = hiera('profile::elasticsearch::cirrus::use_acme_chief', false),
     Boolean $enable_remote_search = hiera('profile::elasticsearch::cirrus::enable_remote_search'),
     Array[String] $prometheus_nodes = hiera('prometheus_nodes'),
-    String $ocsp_proxy = hiera('http_proxy', ''),
 ) {
     include ::profile::elasticsearch
 
@@ -70,7 +69,6 @@ class profile::elasticsearch::cirrus(
         $proxy_params = merge($proxy_cert_params, {
             upstream_port => $http_port,
             tls_port      => $tls_port,
-            ocsp_proxy    => $ocsp_proxy,
         })
 
         elasticsearch::tlsproxy { $cluster_name:
@@ -81,7 +79,7 @@ class profile::elasticsearch::cirrus(
                 fail('Read only port specified without a read only srange')
             }
 
-            ferm::service { "elastic-https-${tls_ro_port}":
+            ferm::service { "elastic-ro-https-${tls_ro_port}":
                 proto  => 'tcp',
                 port   => $tls_ro_port,
                 srange => $ferm_ro_srange,
