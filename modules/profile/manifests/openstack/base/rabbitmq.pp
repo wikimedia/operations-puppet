@@ -80,4 +80,10 @@ class profile::openstack::base::rabbitmq(
         rule   => "saddr (@resolve(${nova_controller_standby}) @resolve(${nova_controller_standby}, AAAA))
                    proto tcp dport 4369 ACCEPT;",
     }
+
+    ferm::rule { 'rabbit_internode':
+        ensure => 'present',
+        rule   => "saddr (@resolve(${nova_controller_standby}) @resolve(${nova_controller_standby}, AAAA))
+                   proto tcp dport 25672 ACCEPT;",
+    }
 }
