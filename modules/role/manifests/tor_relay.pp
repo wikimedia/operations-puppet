@@ -2,6 +2,7 @@
 class role::tor_relay {
     include ::profile::standard
     include ::profile::base::firewall
+    include ::profile::base::firewall::log
     include ::profile::backup::host
     include ::profile::tor::relay
 

@@ -5,6 +5,7 @@ class role::microsites::peopleweb {
 
     include ::profile::standard
     include ::profile::base::firewall
+    include ::profile::base::firewall::log
     include ::profile::backup::host
     include ::profile::microsites::peopleweb
 }
