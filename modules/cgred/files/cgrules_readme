@@ -1,5 +1,0 @@
-This directory is managed by puppet.
-
-Rule fragments are placed here to be concatenated
-into a final configuration by the start script
-of the rules enforcment engine.
