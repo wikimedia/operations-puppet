@@ -338,12 +338,15 @@ connection = mysql://<%= @db_user %>:<%= @db_pass %>@<%= @db_host %>/<%= @pool_m
 #retry_interval = 10
 
 [oslo_messaging_rabbit]
-# RabbitMQ Config
+rabbit_hosts=<%= @rabbit_host_primary %>:5672,<%= @rabbit_host_secondary %>:5672
+rabbit_retry_interval=1
+rabbit_retry_backoff=2
+rabbit_max_retries=0
+rabbit_durable_queues=true
+rabbit_ha_queues=true
+rabbit_use_ssl = False
 rabbit_userid = <%= @rabbit_user %>
 rabbit_password = <%= @rabbit_pass %>
-rabbit_use_ssl = False
-rabbit_hosts = <%= @rabbit_host %>
-rabbit_port = 5672
 
 <% if @coordination_host %>
 [coordination]
