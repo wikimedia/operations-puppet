@@ -11,6 +11,7 @@ define nrpe::monitor_systemd_unit_state(
     $ensure = 'present',
     $expected_state = 'active',
     $lastrun = '',
+    Stdlib::Httpsurl $notes_url = 'https://wikitech.wikimedia.org/wiki/Monitoring/systemd_unit_state',
     ){
 
     if $::initsystem != 'systemd' {
@@ -32,6 +33,6 @@ define nrpe::monitor_systemd_unit_state(
         retries      => $retries,
         timeout      => $timeout,
         critical     => $nagios_critical,
-        notes_url    => 'https://wikitech.wikimedia.org/wiki/Monitoring/systemd_unit_state',
+        notes_url    => $notes_url,
     }
 }
