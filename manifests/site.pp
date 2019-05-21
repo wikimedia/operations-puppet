@@ -141,13 +141,6 @@ node 'analytics-tool1002.eqiad.wmnet' {
 
 # superset.wikimedia.org
 # https://wikitech.wikimedia.org/wiki/Analytics/Systems/Superset
-node 'analytics-tool1003.eqiad.wmnet' {
-    role(analytics_cluster::superset)
-    interface::add_ip6_mapped { 'main': }
-}
-
-# superset.wikimedia.org
-# https://wikitech.wikimedia.org/wiki/Analytics/Systems/Superset
 # T212243
 node 'analytics-tool1004.eqiad.wmnet' {
     role(analytics_cluster::superset)

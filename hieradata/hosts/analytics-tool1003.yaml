@@ -1,3 +1,0 @@
-profile::superset::database_uri: mysql://superset@an-coord1001.eqiad.wmnet/superset
-
-profile::base::notifications: disabled
