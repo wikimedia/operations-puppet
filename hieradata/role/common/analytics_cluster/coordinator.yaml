@@ -10,6 +10,10 @@ profile::analytics::database::meta::backup::rsync_dest: 'an-master1002.eqiad.wmn
 
 profile::oozie::client::oozie_host: 'an-coord1001.eqiad.wmnet'
 
+# Set the hive-site.xml file with group ownership 'analytics' so systemd timers
+# can read the file.
+profile::hive::client::config_files_group_ownership: 'analytics'
+
 # Hive Client settings.
 # Hive configuration is common to multiple clients, but because of role based
 # hiera lookups, we need to repeat it in multiple places. If you change this,

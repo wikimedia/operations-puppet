@@ -21,6 +21,7 @@ class profile::hive::client(
     $hive_metastore_jdbc_user                       = hiera('profile::hive::client::hive_metastore_jdbc_user', undef),
     $hive_metastore_jdbc_password                   = hiera('profile::hive::client::hive_metastore_jdbc_password', undef),
     $hive_metastore_database                        = hiera('profile::hive::client::hive_metastore_jdbc_database', undef),
+    $config_files_group_ownership                   = hiera('profile::hive::client::config_files_group_ownership', 'hdfs'),
 ) {
     require ::profile::hadoop::common
 
@@ -69,6 +70,7 @@ class profile::hive::client(
         jdbc_username                                  => $hive_metastore_jdbc_user,
         jdbc_password                                  => $hive_metastore_jdbc_password,
         jdbc_database                                  => $hive_metastore_database,
+        config_files_group_ownership                   => $config_files_group_ownership,
     }
 
     # Set up a wrapper script for beeline, the command line
