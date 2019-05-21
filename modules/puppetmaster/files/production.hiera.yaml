@@ -13,9 +13,9 @@
   - "%{::site}"
   - "private/hosts/%{::hostname}" # Currently only used for labtest hosts
   - "private/%{::site}"
-  - "common"
-  - "private/common"
   - "role/%{::site}/%{::_role}"
   - "role/common/%{::_role}"
   - "private/role/%{::site}/%{::_role}"
   - "private/role/common/%{::_role}"
+  - "common"
+  - "private/common"
