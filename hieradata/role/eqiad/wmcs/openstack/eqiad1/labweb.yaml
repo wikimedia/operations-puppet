@@ -45,19 +45,7 @@ striker::uwsgi::config:
   features:
     ACCOUNT_CREATE: true
 
-striker::uwsgi::secret_config:
-  # These values are only here to show the expected keys.
-  # Actual values should be provided in the private or secret repos
-  secrets:
-    SECRET_KEY: "50 char random string used by Django to salt things"
-  ldap:
-    BIND_PASSWORD: "striker::uwsgi::config::ldap::BIND_USER's password"
-  oauth:
-    CONSUMER_SECRET: "striker::uwsgi::config::oauth::CONSUMER_KEY's secret"
-  phabricator:
-    TOKEN: "striker::uwsgi::config::phabricator::USER's API token"
-  db:
-    PASSWORD: "striker::uwsgi::config::db::USER's password"
+# striker::uwsgi::secret_config: exists in private repo
 
 apache::logrotate::period: 'daily'
 apache::logrotate::rotate: 30
