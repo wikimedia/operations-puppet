@@ -194,7 +194,7 @@ function prometheus_metrics(): array {
 			'type'  => 'counter',
 			'label' => ['type', 'misses'],
 			'desc'  => '',
-			'value' => $ac['num_hits'],
+			'value' => $ac['num_misses'],
 		],
 		[
 			'name'  => 'php_apcu_cache_ops',
