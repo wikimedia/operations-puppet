@@ -4,6 +4,7 @@ class role::authdns::server {
 
     include ::profile::standard
     include ::profile::base::firewall
+    include ::profile::base::firewall::log
     include prometheus::node_gdnsd
     include role::authdns::data
     include ::profile::authdns::acmechief_target
