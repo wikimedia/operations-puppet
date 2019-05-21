@@ -1436,6 +1436,18 @@ define service {
 
 define service {
     use                      passive-service
+    service_description      check_freeradius
+    hostgroup_name           fundraising-auth
+}
+
+define service {
+    use                      passive-service
+    service_description      check_krb5kdc
+    hostgroup_name           fundraising-auth
+}
+
+define service {
+    use                      passive-service
     service_description      check_load
     hostgroup_name           fundraising-auth
 }
@@ -1478,10 +1490,15 @@ define service {
 
 define service {
     use                      passive-service
-    service_description      check_zombie
+    service_description      check_yubico
     hostgroup_name           fundraising-auth
 }
 
+define service {
+    use                      passive-service
+    service_description      check_zombie
+    hostgroup_name           fundraising-auth
+}
 
 # fundraising-network hostgroup
 
