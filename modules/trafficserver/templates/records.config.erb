@@ -119,6 +119,9 @@ CONFIG proxy.config.ssl.session_cache.timeout INT <%= @inbound_tls_settings['ses
 CONFIG proxy.config.ssl.session_cache.auto_clear INT <%= @inbound_tls_settings['session_cache_auto_clear'] %>
 CONFIG proxy.config.ssl.session_cache.size INT <%= @inbound_tls_settings['session_cache_size'] %>
 CONFIG proxy.config.ssl.session_cache.num_buckets INT <%= @inbound_tls_settings['session_cache_buckets'] %>
+<% if @inbound_tls_settings['load_elevated'] -%>
+CONFIG proxy.config.ssl.cert.load_elevated INT <%= @inbound_tls_settings['load_elevated'] %>
+<% end -%>
 <% end -%>
 <% if @outbound_tls_settings -%>
 # Outbound TLS settings
