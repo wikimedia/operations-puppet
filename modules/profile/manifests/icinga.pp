@@ -230,4 +230,16 @@ class profile::icinga(
         content  => template('profile/icinga/inactive.motd.erb'),
     }
 
+    user { 'metamonitor':
+        ensure => present,
+        system => true,
+        home   => '/nonexistent',
+        shell  => '/bin/bash',
+        groups => $icinga_group,
+    }
+
+    ::keyholder::agent { 'metamonitor':
+        trusted_groups => ['metamonitor'],
+    }
+
 }
