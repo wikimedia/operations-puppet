@@ -23,6 +23,7 @@ CONFIG_DIR = '/etc/icinga/objects'
 EXCLUDE_CONTACTS = ('team-operations',)
 # See modules/nagios_common/files/timeperiods.cfg
 CHECK_ICINGA_START_END = {
+    'none': (None, None),
     '24x7': (0, 23),
     'CET_awake_hours': (7, 22),
     'CEST_awake_hours': (6, 21),
@@ -114,6 +115,10 @@ def main():
         contact = contacts['contact'][name]
         check_icinga_config['emails'][name] = contact['email']
         start, end = CHECK_ICINGA_START_END[contact['service_notification_period']]
+
+        if start is None or end is None:  # Notification disabled
+            continue
+
         if 'address1' in contact:
             check_icinga_config['pagers'][name] = {
                 'email': contact['address1'], 'start': start, 'end': end}
