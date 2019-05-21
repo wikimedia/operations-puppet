@@ -1,3 +1,0 @@
-# db2041
-mariadb::shard: 's2'
-mariadb::binlog_format: 'STATEMENT'

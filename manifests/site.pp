@@ -418,7 +418,7 @@ node 'db2035.codfw.wmnet' {
     role(mariadb::core)
 }
 
-node /^db2(041|049|056|063|104|107|108)\.codfw\.wmnet/ {
+node /^db2(049|056|063|104|107|108)\.codfw\.wmnet/ {
     role(mariadb::core)
 }
 
@@ -616,6 +616,10 @@ node 'db2036.codfw.wmnet' {
     role(spare::system)
 }
 
+# To be decommissioned # T223950
+node 'db2041.codfw.wmnet' {
+    role(spare::system)
+}
 
 ## m1 shard
 
