@@ -1,0 +1,34 @@
+# This file is managed by puppet. Do not edit by hand.
+<%- if @enable_forensic_log -%>
+/var/log/apache2/forensic/*.log {
+    <%= @period %>
+    missingok
+    rotate 2
+    compress
+    delaycompress
+    notifempty
+    create 640 root adm
+    sharedscripts
+}
+
+<%- end -%>
+/var/log/apache2/*.log {
+	<%= @period %>
+	missingok
+	rotate <%= @rotate %>
+	compress
+	delaycompress
+	notifempty
+	create 640 root adm
+	sharedscripts
+	postrotate
+                if /etc/init.d/apache2 status > /dev/null ; then \
+                    /etc/init.d/apache2 reload > /dev/null; \
+                fi;
+	endscript
+	prerotate
+		if [ -d /etc/logrotate.d/httpd-prerotate ]; then \
+			run-parts /etc/logrotate.d/httpd-prerotate; \
+		fi; \
+	endscript
+}

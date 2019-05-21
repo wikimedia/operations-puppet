@@ -3,6 +3,7 @@ class httpd(
     Wmflib::Ensure $legacy_compat = present,
     Enum['daily', 'weekly'] $period='daily',
     Integer $rotate=30,
+    Boolean $enable_forensic_log = false,
 ) {
     # Package and service. Links is needed for the status page below
     require_package('apache2', 'links')
@@ -60,19 +61,6 @@ class httpd(
         priority => 0,
     }
 
-    # manage logrotate periodicity and keeping period
-    #
-    # The augeas rule in apache::logrotate needs /etc/logrotate.d/apache2 which
-    # is provided by package apache2
-    augeas { 'Apache2 logs':
-        lens    => 'Logrotate.lns',
-        incl    => '/etc/logrotate.d/apache2',
-        changes => [
-            "set rule/schedule ${period}",
-            "set rule/rotate ${rotate}",
-        ],
-    }
-
     # Apache httpd 2.2 compatibility
     httpd::mod_conf { ['filter', 'access_compat']:
         ensure => $legacy_compat,
@@ -115,5 +103,48 @@ class httpd(
         owner  => 'root',
         group  => 'root',
         mode   => '0555',
+    }
+
+    # Forensic logging (logs requests at both beginning and end of request processing)
+    if $enable_forensic_log {
+        file { '/var/log/apache2/forensic':
+            ensure => directory,
+            owner  => 'root',
+            group  => 'adm',
+            mode   => '0750',
+            before => Httpd::Conf['log_forensic'],
+        }
+
+        httpd::mod_conf { 'log_forensic':
+            ensure => present,
+            before => Httpd::Conf['log_forensic'],
+        }
+
+        httpd::conf { 'log_forensic':
+            ensure => present,
+            source => 'puppet:///modules/httpd/log_forensic.conf',
+        }
+
+        # In the case we use log_forensic, we want to
+        # ensure log_forensic logs get rotated just before
+        # the main logs, and that apache gets restarted afterwards.
+        logrotate::conf { 'apache2':
+            ensure  => present,
+            content => template('httpd/logrotate.erb')
+        }
+    }
+    else {
+        # manage logrotate periodicity and keeping period
+        #
+        # The augeas rule in apache::logrotate needs /etc/logrotate.d/apache2 which
+        # is provided by package apache2
+        augeas { 'Apache2 logs':
+            lens    => 'Logrotate.lns',
+            incl    => '/etc/logrotate.d/apache2',
+            changes => [
+                "set rule/schedule ${period}",
+                "set rule/rotate ${rotate}",
+            ],
+        }
     }
 }

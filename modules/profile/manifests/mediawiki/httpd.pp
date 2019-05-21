@@ -6,16 +6,18 @@
 # - Any specific website
 # - Any special listening port
 class profile::mediawiki::httpd(
-    Integer $logrotate_retention = hiera('profile::mediawiki::httpd::logrotate_retention', 30),
-    Optional[Integer] $workers_limit = hiera('profile::mediawiki::httpd::workers_limit', undef),
+    Integer $logrotate_retention = lookup('profile::mediawiki::httpd::logrotate_retention', {'default_value' => 30}),
+    Optional[Integer] $workers_limit = lookup('profile::mediawiki::httpd::workers_limit', {'default_value' => undef}),
     String $cluster = lookup('cluster'),
+    Optional[Boolean] $enable_forensic_log = lookup('profile::mediawiki::httpd::enable_forensic_log', {'default_value' => false}),
 ) {
     tag 'mediawiki', 'mw-apache-config'
 
     class { '::httpd':
-        period  => 'daily',
-        rotate  => $logrotate_retention,
-        modules => [
+        period              => 'daily',
+        rotate              => $logrotate_retention,
+        enable_forensic_log => $enable_forensic_log,
+        modules             => [
             'alias',
             'authz_host',
             'autoindex',
