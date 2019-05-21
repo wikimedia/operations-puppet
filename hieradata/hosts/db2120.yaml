@@ -1,0 +1,3 @@
+# db2120
+mariadb::shard: 's7'
+profile::base::notifications: disabled
