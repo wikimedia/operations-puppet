@@ -11,6 +11,7 @@
 class role::spare::system {
     include ::profile::standard
     include ::profile::base::firewall
+    include ::profile::base::firewall::log
 
     system::role { 'spare::system': description => 'Unused spare system' }
 }

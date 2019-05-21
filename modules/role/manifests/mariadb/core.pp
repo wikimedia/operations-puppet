@@ -20,6 +20,7 @@ class role::mariadb::core {
 
     include ::profile::standard
     include ::profile::base::firewall
+    include ::profile::base::firewall::log
     include ::passwords::misc::scripts
     include ::role::mariadb::ferm
 

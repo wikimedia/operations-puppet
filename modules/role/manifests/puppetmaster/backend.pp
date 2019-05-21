@@ -7,6 +7,7 @@ class role::puppetmaster::backend {
 
     include ::profile::standard
     include ::profile::base::firewall
+    include ::profile::base::firewall::log
 
     include ::profile::puppetmaster::backend
 

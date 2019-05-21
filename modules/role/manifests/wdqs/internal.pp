@@ -5,6 +5,7 @@ class role::wdqs::internal {
     include ::profile::standard
     include ::role::lvs::realserver
     include ::profile::base::firewall
+    include ::profile::base::firewall::log
     require ::profile::wdqs::common
     require ::profile::wdqs::blazegraph
     require ::profile::wdqs::updater

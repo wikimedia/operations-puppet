@@ -4,6 +4,7 @@
 class role::wdqs::autodeploy {
     include ::profile::standard
     include ::profile::base::firewall
+    include ::profile::base::firewall::log
     require ::profile::wdqs::common
     require ::profile::wdqs::blazegraph
     require ::profile::wdqs::updater

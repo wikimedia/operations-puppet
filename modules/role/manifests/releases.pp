@@ -10,6 +10,7 @@ class role::releases {
 
     include ::profile::standard
     include ::profile::base::firewall
+    include ::profile::base::firewall::log
     include ::profile::backup::host
     include ::profile::releases::common
     include ::profile::releases::mediawiki

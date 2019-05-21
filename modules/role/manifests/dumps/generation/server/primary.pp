@@ -3,6 +3,7 @@ class role::dumps::generation::server::primary {
 
     include ::profile::standard
     include ::profile::base::firewall
+    include ::profile::base::firewall::log
     include ::profile::dumps::generation::server::primary
     include ::profile::dumps::generation::server::rsync
     include ::profile::dumps::rsyncer_peer

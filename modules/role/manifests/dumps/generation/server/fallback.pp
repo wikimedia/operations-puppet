@@ -3,6 +3,7 @@ class role::dumps::generation::server::fallback {
 
     include ::profile::standard
     include ::profile::base::firewall
+    include ::profile::base::firewall::log
     include ::profile::dumps::generation::server::common
     include ::profile::dumps::generation::server::rsync
     include ::profile::dumps::rsyncer_peer

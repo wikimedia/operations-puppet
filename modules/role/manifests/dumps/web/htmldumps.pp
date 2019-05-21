@@ -5,5 +5,6 @@ class role::dumps::web::htmldumps {
 
     include ::profile::standard
     include ::profile::base::firewall
+    include ::profile::base::firewall::log
     include ::profile::dumps::web::htmldumps
 }

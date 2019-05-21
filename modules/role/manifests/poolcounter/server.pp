@@ -3,6 +3,7 @@ class role::poolcounter::server {
     include ::profile::standard
     include ::poolcounter
     include ::profile::base::firewall
+    include ::profile::base::firewall::log
 
     system::role { 'poolcounter':
         description => 'PoolCounter server',

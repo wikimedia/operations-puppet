@@ -3,6 +3,7 @@ class role::installserver {
 
     include ::profile::standard
     include ::profile::base::firewall
+    include ::profile::base::firewall::log
     include ::profile::backup::host
 
     include ::profile::installserver::tftp
