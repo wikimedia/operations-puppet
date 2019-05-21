@@ -3,7 +3,6 @@
 #
 class profile::microsites::transparency {
 
-    include ::passwords::misc::private_static_site
     include ::passwords::ldap::production
 
     $repo_dir = '/srv/org/wikimedia/TransparencyReport'
@@ -16,15 +15,6 @@ class profile::microsites::transparency {
         ensure    => latest,
         directory => $repo_dir,
     }
-
-    $user = $passwords::misc::private_static_site::user
-    $pass = $passwords::misc::private_static_site::pass
-
-    #git::clone { 'wikimedia/TransparencyReport-private':
-    #    ensure    => latest,
-    #    origin    => "https://${user}:${pass}@gerrit.wikimedia.org/r/wikimedia/TransparencyReport-private",
-    #    directory => $private_repo_dir,
-    #}
 
     # LDAP configuration. Interpolated into the Apache site template
     # to provide mod_authnz_ldap-based user authentication.
