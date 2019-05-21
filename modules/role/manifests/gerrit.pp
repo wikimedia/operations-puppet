@@ -8,6 +8,7 @@ class role::gerrit {
     include ::profile::standard
     include ::profile::backup::host
     include ::profile::base::firewall
+    include ::passwords::gerrit
     include ::profile::gerrit::server
     include ::profile::waf::apache2::administrative
 

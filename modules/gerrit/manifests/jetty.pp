@@ -34,7 +34,6 @@ class gerrit::jetty(
     }
 
     # Private config
-    include ::passwords::gerrit
     $email_key = $passwords::gerrit::gerrit_email_key
     $db_pass = $passwords::gerrit::gerrit_db_pass
     $phab_token = $passwords::gerrit::gerrit_phab_token
