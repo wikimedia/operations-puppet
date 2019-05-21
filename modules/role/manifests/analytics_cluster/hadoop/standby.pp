@@ -23,6 +23,7 @@ class role::analytics_cluster::hadoop::standby {
     include ::profile::analytics::database::meta::backup_dest
 
     include ::profile::base::firewall
+    include ::profile::base::firewall::log
     include ::profile::standard
 
 }
