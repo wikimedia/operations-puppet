@@ -1,5 +1,4 @@
 define swift::storage::monitor_swift_daemon {
-    include ::nrpe
 
     # nrpe::monitor_service will create
     # nrpe::check command definition and a

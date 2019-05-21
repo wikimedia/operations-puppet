@@ -1,5 +1,4 @@
 class swift::storage::monitoring {
-    include ::nrpe
 
     # T80722. Moved here from nrpe_local.cfg
     swift::storage::monitor_swift_daemon { [
