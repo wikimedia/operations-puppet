@@ -33,8 +33,6 @@ class gerrit::jetty(
         managehome => true,
     }
 
-    include ::nrpe
-
     # Private config
     include ::passwords::gerrit
     $email_key = $passwords::gerrit::gerrit_email_key
