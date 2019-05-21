@@ -4,6 +4,7 @@ class role::mediawiki::appserver::api {
     include ::role::mediawiki::common
 
     include ::profile::base::firewall
+    include ::profile::base::firewall::log
     include ::profile::prometheus::apache_exporter
     include ::profile::prometheus::hhvm_exporter
     include ::profile::prometheus::php_fpm_exporter
