@@ -146,7 +146,7 @@ node 'analytics-tool1003.eqiad.wmnet' {
     interface::add_ip6_mapped { 'main': }
 }
 
-# Future replacement of superset.wikimedia.org
+# superset.wikimedia.org
 # https://wikitech.wikimedia.org/wiki/Analytics/Systems/Superset
 # T212243
 node 'analytics-tool1004.eqiad.wmnet' {
@@ -154,11 +154,11 @@ node 'analytics-tool1004.eqiad.wmnet' {
     interface::add_ip6_mapped { 'main': }
 }
 
-# Future staging environment of superset.wikimedia.org
+# Staging environment of superset.wikimedia.org
 # https://wikitech.wikimedia.org/wiki/Analytics/Systems/Superset
 # T212243
 node 'an-tool1005.eqiad.wmnet' {
-    role(spare::system)
+    role(analytics_cluster::superset::staging)
     interface::add_ip6_mapped { 'main': }
 }
 
