@@ -35,7 +35,7 @@ define profile::analytics::refinery::job::spark_job(
     $spark_opts          = undef,
     $job_opts            = undef,
     $log_file            = "/var/log/refinery/${job_name}.log",
-    $user                = 'hdfs',
+    $user                = 'analytics',
     $interval            = '*-*-* *:00:00',
     $environment         = undef,
     $ensure              = 'present',

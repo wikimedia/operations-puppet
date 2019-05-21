@@ -264,7 +264,7 @@ class profile::analytics::refinery::job::data_purge (
     cron {'refinery-drop-query-clicks':
         command     => "${env} && ${profile::analytics::refinery::path}/bin/refinery-drop-hive-partitions -d ${query_click_retention_days} -D discovery -t query_clicks_hourly,query_clicks_daily >> ${query_clicks_log_file}",
         environment => 'MAILTO=discovery-alerts@lists.wikimedia.org',
-        user        => 'hdfs',
+        user        => 'analytics',
         minute      => '30',
         hour        => '3',
     }

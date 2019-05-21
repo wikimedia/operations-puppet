@@ -39,7 +39,7 @@ class profile::analytics::refinery::job::streams_check(
     cron { 'refinery-relaunch-banner-streaming':
         command     => $command,
         environment => 'MAILTO=analytics-alerts@wikimedia.org',
-        user        => 'hdfs',
+        user        => 'analytics',
         minute      => '*/5'
     }
 }

@@ -92,26 +92,4 @@ class profile::analytics::refinery::job::sqoop_mediawiki {
         user        => 'analytics',
         require     => File['/usr/local/bin/refinery-sqoop-mediawiki-private'],
     }
-
-    ############################################################################
-    # Old entire-tables sqoop jobs, kept with ensure => absent to prevent
-    # any leftover
-
-    profile::analytics::systemd_timer { 'refinery-sqoop-mediawiki':
-        ensure      => 'absent',
-        description => 'Schedules sqoop to import MediaWiki databases into Hadoop monthly.',
-        command     => '/usr/local/bin/refinery-sqoop-mediawiki',
-        interval    => '*-*-01 00:00:00',
-        user        => 'hdfs',
-        require     => File['/usr/local/bin/refinery-sqoop-mediawiki'],
-    }
-
-    profile::analytics::systemd_timer { 'refinery-sqoop-mediawiki-production':
-        ensure      => 'absent',
-        description => 'Schedules sqoop to import MediaWiki databases from prod replicas into Hadoop monthly.',
-        command     => '/usr/local/bin/refinery-sqoop-mediawiki-production',
-        interval    => '*-*-01 18:00:00',
-        user        => 'hdfs',
-        require     => File['/usr/local/bin/refinery-sqoop-mediawiki-production'],
-    }
 }

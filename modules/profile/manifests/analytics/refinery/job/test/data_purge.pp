@@ -1,6 +1,6 @@
 # == Class profile::analytics::refinery::job::test::data_purge
 #
-# Installs cron job to drop old hive partitions,
+# Installs systemd timers to drop old hive partitions,
 # delete old data from HDFS (Testing cluster)
 #
 class profile::analytics::refinery::job::test::data_purge {
@@ -14,7 +14,7 @@ class profile::analytics::refinery::job::test::data_purge {
     # Shortcut to refinery path
     $refinery_path = $profile::analytics::refinery::path
 
-    # Shortcut var to DRY up cron commands.
+    # Shortcut var to DRY up commands.
     $env = "export PYTHONPATH=\${PYTHONPATH}:${refinery_path}/python"
     $systemd_env = {
         'PYTHONPATH' => "\${PYTHONPATH}:${refinery_path}/python",
@@ -30,7 +30,7 @@ class profile::analytics::refinery::job::test::data_purge {
         command     => "${refinery_path}/bin/refinery-drop-webrequest-partitions -d ${raw_retention_days} -D wmf_raw -l /wmf/data/raw/test-webrequest -w raw",
         interval    => '*-*-* 00/4:15:00',
         environment => $systemd_env,
-        user        => 'hdfs',
+        user        => 'analytics',
     }
 
     # Keep this many days of refined webrequest data.
@@ -40,7 +40,7 @@ class profile::analytics::refinery::job::test::data_purge {
         command     => "${refinery_path}/bin/refinery-drop-webrequest-partitions -d ${refined_retention_days} -D wmf -l /wmf/data/wmf/test-webrequest -w refined",
         interval    => '*-*-* 00/4:45:00',
         environment => $systemd_env,
-        user        => 'hdfs',
+        user        => 'analytics',
     }
 
     # keep this many days of druid webrequest sampled
@@ -51,6 +51,6 @@ class profile::analytics::refinery::job::test::data_purge {
         command     => "${refinery_path}/bin/refinery-drop-druid-deep-storage-data --druid-host analytics1041.eqiad.wmnet -d ${druid_webrequest_sampled_retention_days} webrequest_sampled_128",
         interval    => '*-*-* 05:15:00',
         environment => $systemd_env,
-        user        => 'hdfs',
+        user        => 'analytics',
     }
 }

@@ -15,7 +15,7 @@
 #
 # [*user*]
 #   User that runs the Systemd unit.
-#   Default: 'hdfs'
+#   Default: 'analytics'
 #
 #  [*environment*]
 #   Hash containing 'Environment=' related values to insert in the
@@ -65,14 +65,14 @@ define profile::analytics::systemd_timer(
     $description,
     $command,
     $interval,
-    $user = 'hdfs',
+    $user = 'analytics',
     $environment = {},
     $monitoring_enabled = true,
     $monitoring_contact_groups = 'analytics',
     $logfile_basedir = "/var/log/${title}",
     $logfile_name = undef,
-    $logfile_owner = 'hdfs',
-    $logfile_group = 'hdfs',
+    $logfile_owner = 'analytics',
+    $logfile_group = 'analytics',
     $logfile_perms = 'all',
     $syslog_force_stop = true,
     $ensure = present,

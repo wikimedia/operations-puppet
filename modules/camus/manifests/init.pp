@@ -15,7 +15,7 @@ class camus {
     file { $log_directory:
         ensure => 'directory',
         owner  => 'root',
-        group  => 'hdfs',
+        group  => 'analytics',
         # setgid bit here to make camus log files writeable
         # by users in the hdfs group.
         mode   => '2775',
@@ -30,6 +30,6 @@ class camus {
         missing_ok   => true,
         not_if_empty => true,
         no_create    => true,
-        su           => 'root hdfs',
+        su           => 'root analytics',
     }
 }
