@@ -38,7 +38,7 @@ fi
 
 labsproject=$(</etc/wmflabs-project)
 if [[ $labsproject == "tools" ]] && ! [[ $USER == "${labsproject}."* ]]; then
-    printf >&2 '%s: user name does not start with "%s": %s\n' "$0" "$labsproject" "$group"
+    printf >&2 '%s: user name does not start with "%s": %s\n' "$0" "$labsproject" "$USER"
     usage
     exit 1
 fi
