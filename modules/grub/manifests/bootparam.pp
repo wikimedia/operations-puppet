@@ -47,10 +47,6 @@ define grub::bootparam(
 ) {
     include ::grub
 
-    if versioncmp($::augeasversion, '1.2.0') < 0 {
-        fail('not supported on systems running an old augeas')
-    }
-
     # Logical sanity contraints:
     if $mode == 'keyvalue' {
         if $ensure == 'present' and $value == undef {
