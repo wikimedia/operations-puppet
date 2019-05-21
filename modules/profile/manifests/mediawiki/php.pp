@@ -76,6 +76,7 @@ class profile::mediawiki::php(
         'display_errors'                  => 0,
         'session.upload_progress.enabled' => 0,
         'enable_dl'                       => 0,
+        'apc.shm_size'                    => '512M',
     }
     if $enable_fpm {
         $_sapis = ['cli', 'fpm']
