@@ -180,9 +180,11 @@ define trafficserver::instance(
         }
         $config_requires = Trafficserver::Layout[$title]
         $service_name = "trafficserver-${title}"
+        $service_override = false
     } else {
         $config_requires = Package['trafficserver']
         $service_name = 'trafficserver'
+        $service_override = true
     }
 
     # Change the ownership of all raw devices so that the trafficserver user
@@ -260,7 +262,7 @@ define trafficserver::instance(
     ## Service
     systemd::service { $service_name:
         content        => init_template('trafficserver', 'systemd_override'),
-        override       => true,
+        override       => $service_override,
         restart        => true,
         service_params => {
             restart    => "systemctl reload ${service_name}",
