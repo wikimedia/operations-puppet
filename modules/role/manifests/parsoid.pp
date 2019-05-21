@@ -9,6 +9,7 @@ class role::parsoid {
 
     include ::profile::standard
     include ::profile::base::firewall
+    include ::profile::base::firewall::log
     include ::profile::parsoid
 
     include ::profile::rsyslog::udp_localhost_compat

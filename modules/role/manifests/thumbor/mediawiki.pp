@@ -7,6 +7,7 @@
 class role::thumbor::mediawiki {
     include ::profile::standard
     include ::profile::base::firewall
+    include ::profile::base::firewall::log
     include ::mediawiki::packages::fonts
     include ::profile::statsite
     include ::profile::prometheus::haproxy_exporter
