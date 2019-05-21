@@ -43,7 +43,7 @@ class nagios_common::contacts(
             source    => $source,
             owner     => $owner,
             group     => $group,
-            mode      => '0600', # Only $owner:$group can read/write
+            mode      => '0440', # Only $owner:$group can read
             show_diff => false,
         }
     } else {

@@ -229,6 +229,18 @@ class icinga(
         mode   => '0550',
     }
 
+    require_package('python3-yaml')
+
+    # Script to generate the contacts configuration for the Icinga meta-monitoring
+    file { '/usr/local/bin/generate-check-icinga-contacts':
+        ensure  => present,
+        owner   => 'root',
+        group   => $icinga_group,
+        mode    => '0550',
+        source  => 'puppet:///modules/icinga/generate_check_icinga_contacts.py',
+        require => Package['python3-yaml'],
+    }
+
     # Purge unmanaged nagios_host and nagios_services resources
     # This will only happen for non exported resources, that is resources that
     # are declared by the icinga host itself
