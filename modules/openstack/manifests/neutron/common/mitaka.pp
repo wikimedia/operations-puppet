@@ -1,5 +1,6 @@
 class openstack::neutron::common::mitaka(
     $nova_controller,
+    $nova_controller_standby,
     $keystone_host,
     $db_pass,
     $db_user,

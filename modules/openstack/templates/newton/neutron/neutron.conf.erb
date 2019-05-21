@@ -90,7 +90,13 @@ lock_path = /var/lock/neutron
 [oslo_messaging_notifications]
 
 [oslo_messaging_rabbit]
-rabbit_host = <%= @nova_controller %>
+rabbit_hosts=<%= @nova_controller %>:5672,<%= @nova_controller_standby %>:5672
+rabbit_retry_interval=1
+rabbit_retry_backoff=2
+rabbit_max_retries=0
+rabbit_durable_queues=true
+rabbit_ha_queues=true
+rabbit_use_ssl = False
 rabbit_userid = <%= @rabbit_user %>
 rabbit_password = <%= @rabbit_pass %>
 

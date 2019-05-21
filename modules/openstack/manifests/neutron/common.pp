@@ -1,6 +1,7 @@
 class openstack::neutron::common(
     $version,
     $nova_controller,
+    $nova_controller_standby,
     $keystone_host,
     $db_pass,
     $db_user,
@@ -15,18 +16,19 @@ class openstack::neutron::common(
     ) {
 
     class { "openstack::neutron::common::${version}":
-        nova_controller      => $nova_controller,
-        keystone_host        => $keystone_host,
-        db_pass              => $db_pass,
-        db_user              => $db_user,
-        db_host              => $db_host,
-        region               => $region,
-        ldap_user_pass       => $ldap_user_pass,
-        rabbit_user          => $rabbit_user,
-        rabbit_pass          => $rabbit_pass,
-        tld                  => $tld,
-        log_agent_heartbeats => $log_agent_heartbeats,
-        agent_down_time      => $agent_down_time,
+        nova_controller         => $nova_controller,
+        nova_controller_standby => $nova_controller_standby,
+        keystone_host           => $keystone_host,
+        db_pass                 => $db_pass,
+        db_user                 => $db_user,
+        db_host                 => $db_host,
+        region                  => $region,
+        ldap_user_pass          => $ldap_user_pass,
+        rabbit_user             => $rabbit_user,
+        rabbit_pass             => $rabbit_pass,
+        tld                     => $tld,
+        log_agent_heartbeats    => $log_agent_heartbeats,
+        agent_down_time         => $agent_down_time,
     }
 
     $invalid_files = [
