@@ -2834,6 +2834,13 @@ host graphite1004 {
     fixed-address graphite1004.eqiad.wmnet;
 }
 
+host graphite2001 {
+    hardware ethernet B0:83:FE:DF:24:CA;
+    fixed-address graphite2001.codfw.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/buster-installer/";
+    filename "lpxelinux.0";
+}
+
 host graphite2002 {
     hardware ethernet 14:18:77:5B:2C:CA;
     fixed-address graphite2002.codfw.wmnet;
