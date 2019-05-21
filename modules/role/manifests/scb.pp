@@ -15,6 +15,7 @@ class role::scb {
 
     include ::profile::standard
     include ::profile::base::firewall
+    include ::profile::base::firewall::log
     include role::lvs::realserver
 
     include ::profile::rsyslog::udp_localhost_compat
