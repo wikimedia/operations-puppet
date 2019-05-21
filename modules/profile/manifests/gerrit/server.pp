@@ -13,6 +13,7 @@ class profile::gerrit::server(
     Boolean $use_acmechief = hiera('gerrit::server::use_acmechief', false),
     Optional[Stdlib::Ipv6] $ipv6 = hiera('gerrit::service::ipv6', undef),
     Optional[Stdlib::Fqdn] $avatars_host = hiera('gerrit::server::avatars_host', undef),
+    Optional[Hash] $ldap_config = hiera('gerrit::server::ldap_config', undef),
 ) {
 
     interface::alias { 'gerrit server':
@@ -97,6 +98,7 @@ class profile::gerrit::server(
         avatars_host     => $avatars_host,
         cache_text_nodes => pick($cache_nodes['text'], {}),
         use_acmechief    => $use_acmechief,
+        ldap_config      => $ldap_config,
     }
 
     class { '::gerrit::replication_key':

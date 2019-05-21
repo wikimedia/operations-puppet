@@ -19,6 +19,7 @@ class gerrit::jetty(
     String $config = 'gerrit.config.erb',
     Integer $git_open_files = 20000,
     String $smtp_encryption = 'none',
+    Optional[Hash] $ldap_config = undef,
     ) {
 
     group { 'gerrit2':
@@ -41,8 +42,12 @@ class gerrit::jetty(
     $prometheus_bearer_token = $passwords::gerrit::prometheus_bearer_token
 
     # Setup LDAP
-    include ::ldap::config::labs
-    $ldapconfig = $::ldap::config::labs::ldapconfig
+    if $ldap_config {
+        $ldapconfig = $ldap_config
+    } else {
+        include ::ldap::config::labs
+        $ldapconfig = $::ldap::config::labs::ldapconfig
+    }
 
     $ldap_hosts = $ldapconfig['servernames']
     $ldap_base_dn = $ldapconfig['basedn']
