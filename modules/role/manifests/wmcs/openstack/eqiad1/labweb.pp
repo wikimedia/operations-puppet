@@ -6,6 +6,7 @@ class role::wmcs::openstack::eqiad1::labweb {
     include ::profile::standard
     include ::profile::ldap::client::labs
     include ::profile::base::firewall
+    include ::profile::base::firewall::log
     include ::profile::openstack::eqiad1::nutcracker
     include ::role::lvs::realserver
 
