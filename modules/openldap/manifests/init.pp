@@ -162,13 +162,16 @@ class openldap(
         command => '/bin/rm -rf /etc/ldap/slapd.d',
     }
 
-    # Mostly here to avoid unencrypted user initiated connections
-    file { '/etc/ldap/ldap.conf':
-        ensure  => present,
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0444',
-        content => template('openldap/ldap.conf.erb'),
+    # Mostly here to avoid unencrypted user initiated connections, in Cloud VPS
+    # instances a WMCS-wide ldap.conf available, which is used instead
+    if !defined(Class['ldap::client::openldap']) {
+        file { '/etc/ldap/ldap.conf':
+            ensure  => present,
+            owner   => 'root',
+            group   => 'root',
+            mode    => '0444',
+            content => template('openldap/ldap.conf.erb'),
+        }
     }
 
     # Relationships
