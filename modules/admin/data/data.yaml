@@ -276,7 +276,7 @@ groups:
               ayounsi, mepps, mmiller, seddon, gilles, tstarling, rush, tieu, karen,
               cicalese, drossi, fsalutari, nathante, gbirke, isaacj, sbassett, jdl,
               niharika29, ryanmax, afandian2, jgleeson, toddleroux, srishakatux, dsharpe,
-              juliaglen, esanders, sukhe]
+              juliaglen, esanders, sukhe, jfishback]
     system_members: [analytics-search, analytics]
   analytics-admins:
     gid: 732
