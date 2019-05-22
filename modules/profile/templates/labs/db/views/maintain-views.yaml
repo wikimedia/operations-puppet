@@ -680,12 +680,14 @@ customviews:
         condition: on actor_id = revactor_actor
   revision_userindex:
     source: revision
+    # Use aliases revactor_page as rev_page, revactor_timestamp as rev_timestamp so queries against
+    # this view can take advantage of indexes on revision_actor_temp
     view: >
-      select rev_id, rev_page, if(rev_deleted&1,null,rev_text_id) as rev_text_id,
+      select rev_id, revactor_page as rev_page, if(rev_deleted&1,null,rev_text_id) as rev_text_id,
       if(rev_deleted&2,0,coalesce(revcomment_comment_id,0)) as rev_comment_id,
       rev_user, rev_user_text,
       revactor_actor as rev_actor,
-      rev_timestamp, rev_minor_edit, rev_deleted,
+      revactor_timestamp as rev_timestamp, rev_minor_edit, rev_deleted,
       if(rev_deleted&1,null,rev_len) as rev_len, rev_parent_id, if(rev_deleted&1,null,rev_sha1) as rev_sha1,
       rev_content_model, rev_content_format
     where: (rev_deleted&4)=0
