@@ -38,7 +38,7 @@ class profile::openstack::base::designate::service(
     $secondary_pdns_ip = ipresolve($secondary_pdns,4)
 
     class{'::openstack::designate::service':
-        active                     => ($::fqdn == $designate_host),
+        active                     => true,
         version                    => $version,
         designate_host             => $designate_host,
         keystone_host              => $keystone_host,

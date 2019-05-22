@@ -51,7 +51,7 @@ class profile::openstack::eqiad1::designate::service(
     }
 
     class {'::openstack::designate::monitor':
-        active         => ($::fqdn == $designate_host),
+        active         => true,
         critical       => true,
         contact_groups => 'wmcs-team',
     }
