@@ -73,7 +73,7 @@ groups:
               tgr, phuedx, ejegg, twentyafterfour, legoktm, catrope,
               mobrovac, nuria, thcipriani, joal, eevans, mforns, dcausse,
               bsitzmann, mholloway-shell, dduvall, dereckson,
-              ladsgroup, bawolff, zfilipin, addshore, niharika29, ppchelko, pmiazga,
+              ladsgroup, zfilipin, addshore, niharika29, ppchelko, pmiazga,
               musikanimal, jdrewniak, sbisson, jforrester, mbsantos,
               aaron, liw, sbassett, jdl, tarrow, lucaswerkmeister-wmde,
               wmde-leszek, jhuneidi, wmde-fisch, mvolz, dsharpe, brennen, cparle]
@@ -261,7 +261,7 @@ groups:
                  Hadoop NameNodes.  Some files in HDFS have sensitive data in them.
                  Those files are group readable by the analytics-privatedata-users group.
     members: [milimetric, dfoy, aude, jforrester,
-              halfak, dr0ptp4kt, bearloga, elukey, ppchelko, bawolff, mneisler,
+              halfak, dr0ptp4kt, bearloga, elukey, ppchelko, mneisler,
               nuria, otto, jgreen, sguebo, thargrove,
               bsitzmann, dbrant, nettrom, leila, cwdent, jmm,
               ezachte, mforns, reedy, west1, phuedx, awight,
