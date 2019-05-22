@@ -32,7 +32,7 @@ class profile::memcached::instance (
     $version          = lookup('profile::memcached::version'),
     $port             = lookup('profile::memcached::port'),
     $size             = lookup('profile::memcached::size'),
-    $max_seq_reqs     = lookup('profile::memcached::max_seq_reqs', {'default_value' => undef}),
+    $max_seq_reqs     = lookup('profile::memcached::max_seq_reqs', {'default_value' => 200}),
 ) {
     include ::profile::prometheus::memcached_exporter
 
