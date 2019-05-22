@@ -5,6 +5,9 @@
 # in Phabricator but only for administrators.  If you do not have the ability to restart the
 # associated daemons do not merge changes to this file.
 
+# read-only mode for maintenance periods
+cluster.read-only: true
+
 ui.logo:
   'logoImagePHID': 'PHID-FILE-rs3pf2brupiulr6zcnrg'
   'wordmarkText': 'Phabricator'
