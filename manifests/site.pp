@@ -396,7 +396,7 @@ node 'db2048.codfw.wmnet' {
 }
 
 # codfw replicas
-node /^db2(055|062|070|071|072|092|103|112|116)\.codfw\.wmnet/ {
+node /^db2(055|062|071|072|092|103|112|116)\.codfw\.wmnet/ {
     role(mariadb::core)
 }
 
@@ -686,7 +686,7 @@ node 'db1073.eqiad.wmnet' {
     }
 }
 
-node 'db2037.codfw.wmnet' {
+node /^db20(37|70)\.codfw\.wmnet/ {
     class { '::role::mariadb::misc':
         shard => 'm5',
     }

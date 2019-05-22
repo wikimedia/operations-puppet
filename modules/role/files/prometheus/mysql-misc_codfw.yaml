@@ -23,6 +23,7 @@
     role: slave
   targets:
   - db2037:9104
+  - db2070:9104
   - db2078:13325
 
 - labels:
