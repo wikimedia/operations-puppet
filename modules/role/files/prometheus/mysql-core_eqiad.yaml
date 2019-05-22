@@ -108,6 +108,7 @@
   - db1094:9104
   - db1098:13317
   - db1101:13317
+  - db1136:9104
 - labels:
     shard: s7
     role: master

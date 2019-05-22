@@ -520,7 +520,7 @@ node 'db1062.eqiad.wmnet' {
 }
 
 # See also db1090, db1098 and db1101 bellow
-node /^db10(69|79|86|94)\.eqiad\.wmnet/ {
+node /^db1(069|079|086|094|136)\.eqiad\.wmnet/ {
     role(mariadb::core)
 }
 
@@ -566,7 +566,7 @@ node /^db20(84|85|86|87|88|89|91)\.codfw\.wmnet/ {
 }
 
 # Spare eqiad hosts to be provisioned #T211613
-node /^db11(28|32|33|35|36)\.eqiad\.wmnet/ {
+node /^db11(28|32|33|35)\.eqiad\.wmnet/ {
     role(spare::system)
 }
 
