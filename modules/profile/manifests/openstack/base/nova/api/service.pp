@@ -1,6 +1,5 @@
 class profile::openstack::base::nova::api::service(
     $version = hiera('profile::openstack::base::version'),
-    $nova_api_host = hiera('profile::openstack::base::nova_api_host'),
     $labs_hosts_range = hiera('profile::openstack::base::labs_hosts_range'),
     $labs_hosts_range_v6 = hiera('profile::openstack::base::labs_hosts_range_v6')
     ) {
@@ -10,7 +9,7 @@ class profile::openstack::base::nova::api::service(
 
     class {'::openstack::nova::api::service':
         version => $version,
-        active  => ($::fqdn == $nova_api_host),
+        active  => true,
     }
     contain '::openstack::nova::api::service'
 
