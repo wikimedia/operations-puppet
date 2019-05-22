@@ -3,9 +3,9 @@
 <% if @inbound_tls_settings -%>
 <% @inbound_tls_settings['certificates'].each do |certificate| %>
 <% if @inbound_tls_settings['ocsp_stapling_path'] and certificate['ocsp_stapling_files'] -%>
-<%= certificate['default'] ? 'dst_ip=* ' : '' %>ssl_cert_name=<%= certificate['cert_files'].join(",") %> ssl_key_name=<%= certificate['private_key_files'].join(",") %> ssl_ocsp_name=<%= certificate['ocsp_stapling_files'].join(",") %>
+<%= certificate['default'] ? 'dest_ip=* ' : '' %>ssl_cert_name=<%= certificate['cert_files'].join(",") %> ssl_key_name=<%= certificate['private_key_files'].join(",") %> ssl_ocsp_name=<%= certificate['ocsp_stapling_files'].join(",") %>
 <% else -%>
-<%= certificate['default'] ? 'dst_ip=* ' : '' %>ssl_cert_name=<%= certificate['cert_files'].join(",") %> ssl_key_name=<%= certificate['private_key_files'].join(",") %>
+<%= certificate['default'] ? 'dest_ip=* ' : '' %>ssl_cert_name=<%= certificate['cert_files'].join(",") %> ssl_key_name=<%= certificate['private_key_files'].join(",") %>
 <% end -%>
 <% end %>
 <% else -%>
