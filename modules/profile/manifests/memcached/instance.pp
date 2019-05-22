@@ -27,12 +27,12 @@
 #   Default: undef (memcached's default is 20)
 #
 class profile::memcached::instance (
-    $growth_factor    = hiera('profile::memcached::growth_factor'),
-    $extended_options = hiera_array('profile::memcached::extended_options'),
-    $version          = hiera('profile::memcached::version'),
-    $port             = hiera('profile::memcached::port'),
-    $size             = hiera('profile::memcached::size'),
-    $max_seq_reqs     = hiera('profile::memcached::max_seq_reqs', undef),
+    $growth_factor    = lookup('profile::memcached::growth_factor'),
+    $extended_options = lookup('profile::memcached::extended_options', {merge => unique}),
+    $version          = lookup('profile::memcached::version'),
+    $port             = lookup('profile::memcached::port'),
+    $size             = lookup('profile::memcached::size'),
+    $max_seq_reqs     = lookup('profile::memcached::max_seq_reqs', {'default_value' => undef}),
 ) {
     include ::profile::prometheus::memcached_exporter
 
