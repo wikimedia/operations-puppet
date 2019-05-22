@@ -16,7 +16,6 @@ class profile::openstack::eqiad1::puppetmaster::backend(
     $enable_cumin = hiera('profile::openstack::eqiad1::puppetmaster::enable_cumin'),
     ) {
 
-    require ::profile::openstack::eqiad1::clientpackages
     if $enable_cumin {
         include ::profile::openstack::eqiad1::cumin::master
     }
