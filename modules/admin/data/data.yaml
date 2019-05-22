@@ -3171,6 +3171,16 @@ users:
       - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDWLuC4OYjtqt3meBmMk9aipLH4h3xiFxaGgY1iy2ZYKRD/+bHnvGkrsfTePV+1qENBv8Hn6BahmISN2OMr9VzIv4CdCmhg7nGu2TeNTjv8js2tn6Zbcp3E6XwffqI6a9mRI0ENT7w0N3sQ1KbeNw5vlq99W2II6XVtdyvP7HcuDPN+ftSjscp2x4n5B0/14iBi9JDMzMV7Q/h6k+O4q8v9nb+0+xECwFHz+H8pHL7x8wYy5nYHoOqLdxLtmgh3gglLDnaUiMg6G2tx5cJDN+Mp2wuTlOCZj4aHIJH9/pbY5pLXm/QqgvrULrzMChKrBD/JNflsttKgnh57tMhUkKOz2cZ8b51d+P3kCh3qyPlhY2KblyTwcDYaW3s4L3Wo0uFAEqJmF3pGk/zBqq2lj6rFeImr7FseoDdNjVaAnBGSidoSZqU9/DhDYsZ+oWPj/Asa6aqpthuV3GlhjTF74Q1kyCRHXpa+60ABzfKxsjS1KPmjFoan4uQn8o8wLhKfdjtX3jDcUTqq+GFgZ4RypIvqh+I1soQz433aGS2rL9HROPoAKjckOh9/agohtsMRbNqJzj1Qh143hgSB8FCy1uG9StStg2FTJNcB4vBJ0i3tk+FIY+puXY8zf/qOTeJERPb4Rp8AVbSqDREjFltfcW+QQaE/9jpDUyEwzDcHIQjYFw== wpao@Willys-MBP.westell.com
     uid: 21258
     email: wpao@wikimedia.org
+  jfishback:
+    ensure: present
+    gid: 500
+    name: jfishback
+    realname: James Fishback
+    ssh_keys:
+      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOvQPxrbAfdwDNnWroKYoHrSLGgAudhmpRbryJ3Vd6eL jfishback@wikimedia.org
+    uid: 21257
+    email: jfishback@wikimedia.org
+
 ldap_only_users:
   abartov:
     ensure: present
@@ -3583,10 +3593,6 @@ ldap_only_users:
     ensure: present
     realname: Will Doran
     email: wdoran@wikimedia.org
-  jfishback:
-    ensure: present
-    realname: James Fishback
-    email: jfishback@wikimedia.org
   ppel:
     ensure: present
     realname: Peter Pelberg
