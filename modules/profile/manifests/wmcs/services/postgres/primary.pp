@@ -15,11 +15,11 @@ class profile::wmcs::services::postgres::primary (
     if $postgres_secondary {
         $postgres_secondary_v4 = ipresolve($postgres_secondary, 4)
         if $postgres_secondary_v4 {
-            postgresql::user { "replication@${::postgres_secondary}-v4":
+            postgresql::user { "replication@${postgres_secondary}-v4":
                 ensure   => 'present',
                 user     => 'replication',
                 password => $replication_pass,
-                cidr     => "${::postgres_secondary_v4}/32",
+                cidr     => "${postgres_secondary_v4}/32",
                 type     => 'host',
                 method   => 'md5',
                 attrs    => 'REPLICATION',
