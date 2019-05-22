@@ -12,7 +12,8 @@ groups:
               nschaaf, zhousquared, gwicke, dpatrick, samwalton9, samtar, akrausetud, jgonsior,
               yuvipanda, shrlak, madhuvishy, groovier, khorn, ironholds, katie, chedasaurus,
               cy534, pnorman, mpany, deskana, arnad, nithum, banyek, imarlier, mkroetzsch,
-              mtizzoni, panisson, paolotti, ciro, dartar, melodykramer, gtirloni, tbayer, pirroh]
+              mtizzoni, panisson, paolotti, ciro, dartar, melodykramer, gtirloni, tbayer, pirroh,
+              bawolff]
   absent_ldap:
     description: meta group for absented users which had privileged LDAP access in the past, an automatic check verifies it has been really removed from the LDAP (but removal has to be handled separatelly)
     members: [adavenport, siddharth11, albe, audiohazel, tbolliger, jmatazzoni, pbj]
@@ -2259,12 +2260,11 @@ users:
     uid: 14815
     email: joewalsh@wikimedia.org
   bawolff:
-    ensure: present
+    ensure: absent
     gid: 500
     name: bawolff
     realname: Brian Wolff
-    ssh_keys:
-      - ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAgEAva6Q3qQ5IRXx3HtQkfb46D57AZW+8iY+ZBXc9zXdQS1RSL+KK2rcrQz+Hjuc5DjrLkVpJ+hoQnzURi2JfODOGcCz1DqjZPauz03avBvKXAAyIR0W8Td4Av6ENj77YJ1MpX3La69D4HM5Ws6gRC/tOPln+2hvxHnhO7QPF1oj2eI4NRyTZ0tRgaCBNqFclFtwYnA6RYyDeOm4E9k8bxItsT5mfptumNM29W6diuyqDT64oJwK+sbP0bZaxR8JKQ43m7KOiBZN5MIwT2sWNNsEaIHK2iVUKUP4wjOUKrp1QKM3KmbG1PnIRQAPyt0ifyC6MkQNIikdQO6geNx8DX5jf24YpRjDeWADhsJzjNyzwyvTWXbbA7mB+5VQkT1i4EE0JPaq9MBtN3W5x/q03gClGJT7g5p/t2j8decmc8eqjOtnnb5xLh2WKJAWSWTz+psH+0D/v6ORA37wcWxRSTkmPKVWXSl+iESs67a1CARR5hVbihD0jJ9AYxsr8PL6PeBEiTmrQ89xepnJL+k/HnijTLGGECUrMKOeUkT4wJ8ZNPJy63Qwt0MKP0zkSsnnUWMd/nTccRx1N67KL8NgqDg2FegidNEYmSAv9pb4OtCQD7+Ao6FTZuZD+0RBrpbVbfeeyjhFTEtWymOry1b058AOS/B4Ogux2oQWAv7B+w2Gsr8= bawolff@Bawolff-L
+    ssh_keys: []
     uid: 1235
     email: bwolff@wikimedia.org
   mpany:
