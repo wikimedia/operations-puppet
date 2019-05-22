@@ -27,5 +27,6 @@ class profile::hadoop::balancer(
         logfile_name    => 'balancer.log',
         logfile_basedir => '/var/log/hadoop-hdfs',
         require         => File['/usr/local/bin/hdfs-balancer'],
+        user            => 'hdfs',
     }
 }
