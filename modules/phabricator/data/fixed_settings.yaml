@@ -1,4 +1,4 @@
-# These custom values are hardcoded here to persist across Phabriactor Mediawiki installs.
+# These custom values are hardcoded here to persist across Phabricator Wikimedia installs.
 # Values set here should only be default settings that apply to all installs.  Environment
 # specific settings go in the role under manifests.  Changes to these settings usually
 # require a phd daemon restart to be fully affective.  This message will show up as a banner
