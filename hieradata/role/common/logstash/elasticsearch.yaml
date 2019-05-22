@@ -15,7 +15,6 @@ profile::elasticsearch::base_data_dir: '/srv/elasticsearch'
 profile::elasticsearch::version: '5.6'
 profile::elasticsearch::common_settings:
     auto_create_index: true
-    cluster_name: production-logstash-eqiad
     short_cluster_name: omega
     awareness_attributes: ''
     expected_nodes: 6
@@ -23,19 +22,6 @@ profile::elasticsearch::common_settings:
     minimum_master_nodes: 2
     recover_after_nodes: 2
     recover_after_time: '1m'
-    unicast_hosts:
-      - logstash1010.eqiad.wmnet
-      - logstash1011.eqiad.wmnet
-      - logstash1012.eqiad.wmnet
-    cluster_hosts:
-      - logstash1007.eqiad.wmnet
-      - logstash1008.eqiad.wmnet
-      - logstash1009.eqiad.wmnet
-      - logstash1010.eqiad.wmnet
-      - logstash1011.eqiad.wmnet
-      - logstash1012.eqiad.wmnet
-    http_port: 9200
-    transport_tcp_port: 9300
     # Dont encourage some sort of accidental feedback loop
     send_logs_to_logstash: false
     http_port: 9200

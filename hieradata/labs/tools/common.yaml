@@ -22,6 +22,7 @@ profile::elasticsearch::common_settings:
     awareness_attributes: ''
     auto_create_index: true
     cluster_name: labs-tools
+    short_cluster_name: omega
     expected_nodes: 3
     heap_memory: '8G'
     minimum_master_nodes: 2

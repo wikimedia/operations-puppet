@@ -1,3 +1,20 @@
 lvs::realserver::realserver_ips:
     - '10.2.2.33' # kibana.svc.eqiad.wmnet
     - '10.2.2.36' # logstash.svc.eqiad.wmnet
+
+# ES-specific
+# NOTE: cluster_name must be kept in sync with the backend
+# node config in hieradata/role/common/logstash/elasticsearch.yaml
+profile::elasticsearch::dc_settings:
+    cluster_name: production-logstash-eqiad
+    unicast_hosts:
+        - logstash1010.eqiad.wmnet
+        - logstash1011.eqiad.wmnet
+        - logstash1012.eqiad.wmnet
+    cluster_hosts:
+        - logstash1007.eqiad.wmnet
+        - logstash1008.eqiad.wmnet
+        - logstash1009.eqiad.wmnet
+        - logstash1010.eqiad.wmnet
+        - logstash1011.eqiad.wmnet
+        - logstash1012.eqiad.wmnet

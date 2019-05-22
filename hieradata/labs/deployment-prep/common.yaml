@@ -286,18 +286,21 @@ profile::elasticsearch::row: ''
 profile::elasticsearch::instances:
     beta-search:
       cluster_name: beta-search
+      short_cluster_name: chi
       heap_memory: 2G
       http_port: 9200
       tls_port: 9243
       transport_tcp_port: 9300
     beta-search-omega:
       cluster_name: beta-search-omega
+      short_cluster_name: omega
       heap_memory: 1G
       http_port: 9400
       tls_port: 9443
       transport_tcp_port: 9500
     beta-search-psi:
       cluster_name: beta-search-psi
+      short_cluster_name: psi
       heap_memory: 1G
       http_port: 9600
       tls_port: 9643
