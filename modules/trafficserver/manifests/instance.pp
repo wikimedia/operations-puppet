@@ -122,6 +122,12 @@
 #   An array of Trafficserver::Logs. (default: []).
 #   See https://docs.trafficserver.apache.org/en/latest/admin-guide/files/logging.yaml.en.html
 #
+# [*parent_rules*]
+#   An optional array of Trafficserver::Parent_Rule.
+#   See https://docs.trafficserver.apache.org/en/8.0.x/admin-guide/files/parent.config.en.html and
+#   the type definition (modules/trafficserver/types/parent_rule.pp) cause only a partial implementation
+#   of parent rules is provided.
+#
 # [*error_page*]
 #   A string containing the error page to deliver to clients when there are
 #   problems with the HTTP transactions. (default: '<html><head><title>Error</title></head><body><p>Something went wrong</p></body></html>').
@@ -168,6 +174,7 @@ define trafficserver::instance(
     Array[Trafficserver::Log_format] $log_formats = [],
     Array[Trafficserver::Log_filter] $log_filters = [],
     Array[Trafficserver::Log] $logs = [],
+    Optional[Array[Trafficserver::Parent_rule]] $parent_rules = undef,
     String $error_page = '<html><head><title>Error</title></head><body><p>Something went wrong</p></body></html>',
 ) {
 
@@ -239,6 +246,9 @@ define trafficserver::instance(
 
         $paths['ssl_multicert']:
           content => template('trafficserver/ssl_multicert.config.erb'),;
+
+        "${paths['sysconfdir']}/parent.config":
+          content => template('trafficserver/parent.config.erb'),;
 
         "${paths['sysconfdir']}/logging.yaml":
           content => template('trafficserver/logging.yaml.erb');

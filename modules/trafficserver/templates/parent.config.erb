@@ -1,0 +1,9 @@
+# https://docs.trafficserver.apache.org/en/latest/admin-guide/files/parent.config.en.html
+# This file is managed by Puppet.
+<% if @parent_rules -%>
+<% @parent_rules.each do |parent_rule| -%>
+dest_domain=<%= parent_rule['dest_domain'] %> parent="<%= parent_rule['parent'].join(',') %>" parent_is_proxy=<%= parent_rule['parent_is_proxy'] %> round_robin=<%= parent_rule['round_robin'] %>
+<% end -%>
+<% else -%>
+# Parent proxies support has not been enabled for this ATS instance. File empty on purpose
+<% end -%>

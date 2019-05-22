@@ -48,6 +48,11 @@ CONFIG proxy.config.cache.max_doc_size INT 0
 CONFIG proxy.config.http.cache.http INT 0
 <% end -%>
 
+<% if @parent_rules -%>
+# Parent proxy
+CONFIG proxy.config.http.parent_proxy_routing_enable INT 1
+<% end -%>
+
 <% if @enable_xdebug -%>
 # XDebug Plugin
 CONFIG proxy.config.diags.debug.enabled INT 1
