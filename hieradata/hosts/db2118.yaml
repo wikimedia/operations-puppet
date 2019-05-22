@@ -1,4 +1,3 @@
 # db2118
 mariadb::shard: 's7'
 mariadb::binlog_format: 'STATEMENT'
-profile::base::notifications: disabled
