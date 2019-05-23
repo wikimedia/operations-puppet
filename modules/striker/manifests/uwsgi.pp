@@ -1,9 +1,9 @@
-# = Class: striker::uwsgi
+# == Class: striker::uwsgi
 #
 # Striker is a Django application for managing data related to Toolforge
 # tools.
 #
-# == Parameters:
+# === Parameters:
 # [*port*]
 #   Port that uWSGI demon should listen on
 # [*config*]
@@ -21,6 +21,60 @@
 #   values that for one reason or another cannot be provided via `config`
 #   (probably because the values need to be kept out of public hiera files).
 #   Default {}.
+#
+# === Examples
+#
+#  class {'striker::uwsgi':
+#    port                     => 8080,
+#    config         => {
+#      'debug'                => { 'DEBUG' => false },
+#      'ldap'           => {
+#        'SERVER_URI'         => 'ldap://example.net:389',
+#        'BIND_USER'          => 'example_user',
+#        'TLS'                => true,
+#      },
+#      'oauth'                => { 'CONSUMER_KEY' => 'BEEF' },
+#      'phabricator'          => { 'USER' => 'example_phab_user' },
+#      'db'             => {
+#        'ENGINE'             => 'django.db.backends.mysql',
+#        'NAME'               => 'db_name',
+#        'USER'               => 'db_user',
+#        'HOST'               => 'db.example.net',
+#        'PORT'               => 3306,
+#      },
+#      'cache'                => { 'LOCATION' => '127.0.0.1:11212' },
+#      'xff'            => {
+#        'USE_XFF_HEADER'     => true,
+#        'TRUSTED_PROXY_LIST' => '127.0.0.1',
+#      },
+#      'https'                => { 'REQUIRE_HTTPS' => true },
+#      'logging'        => {
+#        'HANDLERS'           => 'file logstash',
+#        'FILE_FILENAME'      => '/srv/log/striker/striker.log',
+#        'LOGSTASH_HOST'      => 'logstash.example.net',
+#        'LOGSTASH_PORT'      => 11514,
+#      }
+#      'static'               => { 'STATIC_ROOT' => '/srv/www' },
+#      'openstack'            => { 'URL' => 'http://openstack.example.net/v3' },
+#     }
+#     secret_config => {
+#       'secrets'       => {
+#         'SECRET_KEY'        => '50 char random string used by Django to salt things',
+#       },
+#      'ldap'            => {
+#         'BIND_PASSWORD'     => 'password for striker::uwsgi::config::ldap::BIND_USER',
+#       },
+#      'oauth'           => {
+#         'CONSUMER_SECRET'   => 'secret for striker::uwsgi::config::oauth::CONSUMER_KEY',
+#       },
+#      'phabricator'     => {
+#         'TOKEN              => 'API token for striker::uwsgi::config::phabricator::USER',
+#       },
+#      'db'              => {
+#         'password'          => 'password for striker::uwsgi::config::db::USER'
+#      }
+#    }
+#  }
 #
 class striker::uwsgi(
     $port,
