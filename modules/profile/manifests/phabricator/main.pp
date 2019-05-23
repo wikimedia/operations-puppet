@@ -473,14 +473,6 @@ class profile::phabricator::main (
       }
     }
 
-    rsync::quickdatacopy { 'srv-repos-1003':
-        ensure      => present,
-        source_host => 'phab1001.eqiad.wmnet',
-        dest_host   => 'phab1003.eqiad.wmnet',
-        auto_sync   => false,
-        module_path => '/srv/repos',
-    }
-
     # Ship apache error logs to ELK - T141895
     rsyslog::input::file { 'apache2-error':
         path => '/var/log/apache2/*error*.log',
