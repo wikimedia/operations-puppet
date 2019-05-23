@@ -105,7 +105,7 @@ class profile::graphite::alerts($graphite_url = hiera('graphite_url')) {
     # Percent difference in the number of thumbs between eqiad and codfw
     monitoring::graphite_threshold { 'swift_thumbs_eqiad_codfw_diff':
         description     => 'Number of thumbnails in eqiad greater than codfw',
-        dashboard_links => ['https://grafana.wikimedia.org/dashboard/file/swift.json'],
+        dashboard_links => ['https://grafana.wikimedia.org/d/OPgmB1Eiz/swift?var-DC=eqiad&var-prometheus=eqiad%20prometheus%2Fops'],
         metric          => 'keepLastValue(divideSeries(swift.eqiad-prod.containers.mw-media.thumb.objects, swift.codfw-prod.containers.mw-media.thumb.objects))',
         warning         => 1.02,
         critical        => 1.05,
@@ -115,7 +115,7 @@ class profile::graphite::alerts($graphite_url = hiera('graphite_url')) {
     }
     monitoring::graphite_threshold { 'swift_thumbs_codfw_eqiad_diff':
         description     => 'Number of thumbnails in codfw greater than eqiad',
-        dashboard_links => ['https://grafana.wikimedia.org/dashboard/file/swift.json'],
+        dashboard_links => ['https://grafana.wikimedia.org/d/OPgmB1Eiz/swift?var-DC=codfw&var-prometheus=codfw%20prometheus%2Fops'],
         metric          => 'keepLastValue(divideSeries(swift.codfw-prod.containers.mw-media.thumb.objects, swift.eqiad-prod.containers.mw-media.thumb.objects))',
         warning         => 1.02,
         critical        => 1.05,
