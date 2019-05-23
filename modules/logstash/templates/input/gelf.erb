@@ -8,7 +8,9 @@ input {
     id   => "<%= @plugin_id %>"
 <%- end -%>
 <%- if @tags -%>
-    tags => ["<%= @tags.join('", "') %>"]
+    tags => ["<%= @tags.join('", "') %>", "deprecated-input"]
+<%- else -%>
+    tags => [ "deprecated-input" ]
 <%- end -%>
   }
 }
