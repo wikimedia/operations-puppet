@@ -9,8 +9,10 @@ class role::analytics_test_cluster::hadoop::master {
 
     include ::profile::hadoop::master
     include ::profile::hadoop::users
-    include ::profile::hadoop::mysql_password
     include ::profile::hadoop::firewall::master
+
+    # This needs to be included only on single Hadoop node.
+    include ::profile::analytics::cluster::secrets
 
     # Set up druid cluster deep storage directories.
     include ::profile::analytics::cluster::druid_deep_storage
