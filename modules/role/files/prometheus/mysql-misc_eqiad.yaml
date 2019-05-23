@@ -33,6 +33,7 @@
     role: slave
   targets:
   - db1117:13323
+  - db1128:9104
 
 - labels:
     shard: m4
