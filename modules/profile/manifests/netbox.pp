@@ -18,15 +18,24 @@ class profile::netbox (
     Optional[Array[String]] $slaves = hiera('profile::netbox::slaves', undef),
     Stdlib::Ipv4 $slave_ipv4 = hiera('profile::netbox::slave_ipv4'),
     Stdlib::Ipv6 $slave_ipv6 = hiera('profile::netbox::slave_ipv6'),
+
     String $nb_token = hiera('profile::netbox::tokens::read_write'),
+
     String $ganeti_user = hiera('profile::ganeti::rapi::ro_user'),
     String $ganeti_password = hiera('profile::ganeti::rapi::ro_password'),
     Integer $ganeti_sync_interval = hiera('profile::netbox::ganeti_sync_interval'),
+
     Stdlib::HTTPSUrl $nb_api = hiera('profile::netbox::netbox_api'),
     Stdlib::Host $puppetdb_host = hiera('puppetdb_host'),
     Integer $puppetdb_microservice_port = hiera('profile::puppetdb::microservice::port'),
     Array[Hash[String, Scalar, 3, 3]] $nb_ganeti_profiles = hiera('profile::netbox::ganeti_sync_profiles'),
     Array[Hash] $nb_report_checks = hiera('profile::netbox::netbox_report_checks'),
+
+    String $librenms_db_user = hiera('profile::librenms::dbuser'),
+    String $librenms_db_password = hiera('profile::librenms::dbpassword'),
+    Stdlib::Fqdn $librenms_db_host = hiera('profile::librenms::dbhost'),
+    String $librenms_db_name = hiera('profile::librenms::dbname'),
+    Stdlib::Port $librenms_db_port = hiera('profile::librenms::dbport', 3306),
 ) {
 
     include passwords::netbox
@@ -36,6 +45,7 @@ class profile::netbox (
     $nb_ganeti_ca_cert = '/etc/ssl/certs/Puppet_Internal_CA.pem'
     $nb_puppetdb_ca_cert = $nb_ganeti_ca_cert
     $puppetdb_api = "https://${puppetdb_host}:${puppetdb_microservice_port}/"
+
 
     $reports_path = '/srv/deployment/netbox-reports'
 
