@@ -43,6 +43,11 @@ swift::params::accounts:
         account_name: 'AUTH_pagecompilation'
         auth:         'https://ms-fe.svc.eqiad.wmnet'
         user:         'pagecompilation:zim'
+    analytics_admin:
+        access:       '.admin'
+        account_name: 'AUTH_analytics'
+        auth:         'https://ms-fe.svc.eqiad.wmnet'
+        user:         'analytics:admin'
 # keys are to be defined in private repo, e.g.:
 #swift::params::account_keys:
 #    super_admin: <key>
