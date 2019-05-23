@@ -1,0 +1,5 @@
+# Defined in private
+# profile::librenms::dbpassword
+profile::librenms::dbuser: 'librenms'
+profile::librenms::dbhost: 'm1-master.eqiad.wmnet'
+profile::librenms::dbname: 'librenms'

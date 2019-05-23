@@ -6,16 +6,20 @@
 # Switch it in hieradata/common.yaml, the default is just a fallback.
 #
 class profile::librenms (
-    $sitename = hiera('profile::librenms::sitename'),
-    $install_dir = hiera('profile::librenms::install_dir'),
-    $active_server = hiera('netmon_server'),
-    $graphite_host = hiera('graphite_host', 'graphite-in.eqiad.wmnet'),
-    $graphite_prefix = hiera('graphite_prefix', 'librenms'),
+    Stdlib::Fqdn $sitename = hiera('profile::librenms::sitename'),
+    Stdlib::Unixpath $install_dir = hiera('profile::librenms::install_dir'),
+    Stdlib::Fqdn $active_server = hiera('netmon_server'),
+    Stdlib::Fqdn $graphite_host = hiera('graphite_host', 'graphite-in.eqiad.wmnet'),
+    Stdlib::Fqdn $graphite_prefix = hiera('graphite_prefix', 'librenms'),
     String $laravel_app_key = hiera('profile::librenms::laravel_app_key'),
+
+    String $librenms_db_user = hiera('profile::librenms::dbuser'),
+    String $librenms_db_password = hiera('profile::librenms::dbpassword'),
+    Stdlib::Fqdn $librenms_db_host = hiera('profile::librenms::dbhost'),
+    String $librenms_db_name = hiera('profile::librenms::dbname'),
 ){
 
     include ::network::constants
-    include ::passwords::librenms
     include ::passwords::network
 
     $config = {
@@ -24,10 +28,10 @@ class profile::librenms (
         # disable evil daily auto-git pull
         'update'           => 0,
 
-        'db_host'          => 'm1-master.eqiad.wmnet',
-        'db_user'          => $passwords::librenms::db_user,
-        'db_pass'          => $passwords::librenms::db_pass,
-        'db_name'          => 'librenms',
+        'db_host'          => $librenms_db_host,
+        'db_user'          => $librenms_db_user,
+        'db_pass'          => $librenms_db_password,
+        'db_name'          => $librenms_db_name,
         'db'               => {
             'extension' => 'mysqli',
         },
