@@ -40,7 +40,6 @@ define profile::lvs::interface_tweaks(
     $ring_size = $facts['net_driver'][$interface]['driver'] ? {
         'bnx2x' => 4078,
         'bnxt_en' => 2047,
-        'bnx2' => 2040,
     }
 
     if $facts['net_driver'][$interface]['driver'] =~ /^bnx(2x|t_en)$/ {
@@ -54,23 +53,12 @@ define profile::lvs::interface_tweaks(
         interface::noflow { $interface: }
     }
 
+    # bnxt_en also needs the tx set explicitly, unlike bnx2x above
     if $facts['net_driver'][$interface]['driver'] == 'bnxt_en' {
         interface::ring { "${name} txring":
             interface => $interface,
             setting   => 'tx',
             value     => $ring_size,
         }
-    }
-    elsif $facts['net_driver'][$interface]['driver'] == 'bnx2' {
-        # lvs1001-6 have bnx2 1G cards, different maximum but still useful!
-        # unlike bnx(2x|t_en), tx is different and we haven't historically tuned it
-        interface::ring { "${name} rxring":
-            interface => $interface,
-            setting   => 'rx',
-            value     => $ring_size,
-        }
-
-        # We don't use noflow here because PAUSE is doing useful things for this
-        # case.  lvs1003 in particular can get overwhelmed in small bursts...
     }
 }

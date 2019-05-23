@@ -204,10 +204,6 @@ swift_be_eqiad_sda:
   ]
   swift_aux_partitions: ['/dev/sda3', '/dev/sdb3', '/dev/sda4', '/dev/sdb4']
 
-lvs_eqiad_backup:
-  __regex: !ruby/regexp /^lvs100[1-6]\.wikimedia\.org$/
-  profile::pybal::primary: false
-
 lvs_codfw_backup:
   __regex: !ruby/regexp /^lvs200[4-6]\.codfw\.wmnet$/
   profile::pybal::primary: false
@@ -253,7 +249,7 @@ analytics_no_monitor_screens:
 # Old hosts with mpt controllers and to be decom'd
 # smartmontools broken out of the box - T179078 and T86552
 smart_health_mpt:
-  __regex: !ruby/regexp /^(lvs100[1-6]|labnet1002).*/
+  __regex: !ruby/regexp /^labnet1002.*/
   profile::base::check_smart: false
 
 puppetdb4_servers:
