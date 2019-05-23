@@ -522,3 +522,4 @@ cache::nodes:
 logstash::heap_memory: 1G
 profile::services_proxy::ensure: absent
 profile::mediawiki::deployment::server::rsync_host: deployment-deploy01.deployment-prep.eqiad.wmflabs
+profile::mediawiki::apc_shm_size: 128M

@@ -9,3 +9,4 @@ diamond::remove: true
 profile::base::debdeploy::filter_services:
   hhvm:
     - '*'
+profile::mediawiki::apc_shm_size: 128M

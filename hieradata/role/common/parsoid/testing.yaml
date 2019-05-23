@@ -15,3 +15,4 @@ profile::base::notifications: disabled
 
 profile::mediawiki::php::php_version: "7.2"
 profile::mediawiki::php::enable_fpm: true
+profile::mediawiki::apc_shm_size: 128M

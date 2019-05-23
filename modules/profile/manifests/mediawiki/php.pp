@@ -21,7 +21,8 @@ class profile::mediawiki::php(
     Enum['7.0', '7.2'] $php_version = hiera('profile::mediawiki::php::php_version', '7.0'),
     Optional[Wmflib::UserIpPort] $port = hiera('profile::php_fpm::fcgi_port', undef),
     String $fcgi_pool = hiera('profile::mediawiki::fcgi_pool', 'www'),
-    Integer $request_timeout = hiera('profile::mediawiki::php::request_timeout', 240)
+    Integer $request_timeout = hiera('profile::mediawiki::php::request_timeout', 240),
+    String $apc_shm_size = hiera('profile::mediawiki::apc_shm_size')
 ) {
     if os_version('debian == stretch') {
         # We get our packages for our repositories again
@@ -76,7 +77,7 @@ class profile::mediawiki::php(
         'display_errors'                  => 0,
         'session.upload_progress.enabled' => 0,
         'enable_dl'                       => 0,
-        'apc.shm_size'                    => '512M',
+        'apc.shm_size'                    => $apc_shm_size,
     }
     if $enable_fpm {
         $_sapis = ['cli', 'fpm']

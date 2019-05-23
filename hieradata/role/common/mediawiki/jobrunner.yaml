@@ -30,3 +30,4 @@ profile::mediawiki::php::monitoring::monitor_page: false
 # we need to allow the scripts to run for 1 day for transcoding.
 profile::mediawiki::php::request_timeout: 86400
 profile::tlsproxy::instance::bootstrap_protection: true
+profile::mediawiki::apc_shm_size: 512M

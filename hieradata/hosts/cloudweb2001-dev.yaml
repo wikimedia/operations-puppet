@@ -29,7 +29,7 @@ profile::openstack::codfw1dev::wikitech::web::db_name: 'labtestwiki'
 
 # We still don't enable fpm here
 profile::mediawiki::php::enable_fpm: false
-
+profile::mediawiki::apc_shm_size: 128M
 # Striker things
 striker::uwsgi::config:
   debug:
@@ -69,3 +69,4 @@ striker::uwsgi::config:
   wikitech:
     SERVER_URL: https://labtestwikitech.wikimedia.org
     USER: Striker
+profile::mediawiki::apc_shm_size: 128M

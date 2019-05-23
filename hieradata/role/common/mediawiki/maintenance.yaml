@@ -30,9 +30,11 @@ profile::openldap::management::cron_active: false
 # We don't need php-fpm here
 profile::mediawiki::php::enable_fpm: false
 profile::mediawiki::php::php_version: "7.2"
+profile::mediawiki::apc_shm_size: 128M
 diamond::remove: true
 
 # maintenance servers need conftool state to determine the
 # active data center and decide whether periodic jobs should run
 profile::conftool::state::ensure: present
 profile::conftool::state::query_interval: 30
+profile::mediawiki::apc_shm_size: 128M
