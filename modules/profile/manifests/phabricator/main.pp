@@ -266,12 +266,14 @@ class profile::phabricator::main (
             'gmp',
             'intl',
             'mbstring',
+            'ldap',
         ]
 
         $core_extensions.each |$extension| {
             php::extension { $extension:
                 package_name => "php7.2-${extension}",
                 require      => Apt::Repository['wikimedia-php72'],
+                sapis        => ['cli', 'fpm'],
             }
         }
 
