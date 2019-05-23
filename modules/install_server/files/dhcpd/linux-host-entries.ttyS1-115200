@@ -2976,6 +2976,11 @@ host kafka-jumbo1006 {
     fixed-address kafka-jumbo1006.eqiad.wmnet;
 }
 
+host kafka-main2001 {
+    hardware ethernet B0:26:28:3D:AB:60;
+    fixed-address kafka-main2001.codfw.wmnet;
+}
+
 host kubernetes1001 {
      hardware ethernet 18:66:DA:56:64:A1;
      fixed-address kubernetes1001.eqiad.wmnet;
