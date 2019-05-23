@@ -40,6 +40,8 @@ class profile::analytics::cluster::packages::common {
         'python3-nose',
         'python3-setuptools',
         'python3-sklearn-lib',
+        # for uploading files from Hadoop, etc. to Swift object store.
+        'python3-swiftclient',
         'libgomp1',
         # For pyhive
         'libsasl2-dev',
