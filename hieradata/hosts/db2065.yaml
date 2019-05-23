@@ -1,2 +1,3 @@
 # db2065
 mariadb::shard: 's4'
+profile::base::notifications: disabled
