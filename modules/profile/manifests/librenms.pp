@@ -17,6 +17,8 @@ class profile::librenms (
     String $librenms_db_password = hiera('profile::librenms::dbpassword'),
     Stdlib::Fqdn $librenms_db_host = hiera('profile::librenms::dbhost'),
     String $librenms_db_name = hiera('profile::librenms::dbname'),
+
+    String $librenms_irc_password = hiera('profile::librenms::irc_password'),
 ){
 
     include ::network::constants
@@ -47,7 +49,7 @@ class profile::librenms (
         'irc_alert_utf8'   => true,
         'irc_alert_short'  => true,
         'irc_nick'         => 'librenms-wmf',
-        'irc_pass'         => "librenms-wmf:${passwords::librenms::ircbot_pass}",
+        'irc_pass'         => "librenms-wmf:${librenms_irc_password}",
 
         'autodiscovery'    => {
             'xdp'      => true,
