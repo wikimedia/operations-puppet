@@ -26,6 +26,8 @@ def get_api_settings(base_url, timeout):
 def get_file_settings(setting_file):
     with open(setting_file) as raw_settings:
         settings = yaml.safe_load(raw_settings)
+    if not settings:
+        return []
     return settings
 
 
