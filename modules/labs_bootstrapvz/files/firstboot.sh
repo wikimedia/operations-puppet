@@ -125,7 +125,7 @@ puppet agent --enable
 # Run puppet, twice.  The second time is just to pick up packages
 #  that may have been unavailable in apt before the first puppet run
 #  updated sources.list
-puppet agent --onetime --verbose --no-daemonize --no-splay --show_diff --waitforcert=10 --certname=${fqdn} --server=${master}
+puppet agent --onetime --verbose --no-daemonize --no-splay --show_diff --certname=${fqdn} --server=${master}
 
 # Refresh ldap now that puppet has updated our ldap.conf
 systemctl restart nslcd.service
