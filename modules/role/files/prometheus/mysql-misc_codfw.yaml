@@ -2,6 +2,7 @@
     shard: m1
     role: slave
   targets:
+  - db2062:9104
   - db2078:13321
 
 - labels:
