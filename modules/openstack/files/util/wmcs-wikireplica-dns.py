@@ -94,7 +94,7 @@ def main():
     if args.shard:
         if args.shard not in all_shards:
             parser.error(
-                'Unknown shard "{}}. Expected one of:\n\t- {}'.format(
+                'Unknown shard "{}". Expected one of:\n\t- {}'.format(
                     args.shard, '\n\t- '.join(all_shards)))
         shards = [args.shard]
     else:
