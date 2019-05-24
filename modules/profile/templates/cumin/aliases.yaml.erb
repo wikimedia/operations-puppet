@@ -193,6 +193,7 @@ restbase-canary: P{restbase1007.eqiad.wmnet}
 restbase-codfw: A:restbase and A:codfw
 restbase-eqiad: A:restbase and A:eqiad
 restbase-dev: P{O:restbase::dev_cluster}
+rpki: P{O:rpkivalidator}
 scb: P{O:scb}
 scb-canary: P{scb1001.eqiad.wmnet}
 scb-codfw: A:scb and A:codfw
@@ -234,7 +235,7 @@ misc-analytics: P{O:statistics::web or O:statistics::cruncher or O:statistics::p
 misc-apache: P{O:microsites::peopleweb or C:grafana::production or O:requesttracker or O:otrs or O:webserver_misc_static or O:webserver_misc_apps} or A:planet or A:releases
 misc-devel: P{O:webperf::processors_and_site or O:webperf::profiling_tools or O:ve or O:archiva or O:docker::registry} or A:debugproxy or A:mwlog
 misc-nonprod: P{O:spare::system or O:test or O:pybaltest or O:authdns::testns or O:cache::canary}
-misc-ops: A:installserver or A:cumin or A:url-downloader or A:icinga or A:netmon or A:puppetboard or A:debmonitor or A:debmonitor or A:backup or A:ping or P{O:logging::webrequest::ops or O:builder or O:syslog::centralserver or O:pmacct or O:mirrors}
+misc-ops: A:installserver or A:cumin or A:url-downloader or A:icinga or A:netmon or A:puppetboard or A:debmonitor or A:debmonitor or A:backup or A:ping or A:rpki or P{O:logging::webrequest::ops or O:builder or O:syslog::centralserver or O:pmacct or O:mirrors}
 misc-others: P{O:mw_rc_irc or O:etherpad or O:tor_relay or O:lists or O:netinsights}
 misc-releng: P{O:phabricator} or A:contint or A:gerrit or A:mw-maintenance
 misc-wmcs: A:labweb or P{O:wmcs::monitoring} or A:cloudcontrol or A:cloudnet or A:cloudservices
