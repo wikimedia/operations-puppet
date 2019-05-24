@@ -1975,7 +1975,7 @@ node /^restbase-dev100[4-6]\.eqiad\.wmnet$/ {
 
 # network insights (netflow/pmacct, etc.)
 node 'rhenium.wikimedia.org' {
-    role(netinsights)
+    role(spare::system)
 }
 
 # Failoid service (Ganeti VM)
