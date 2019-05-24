@@ -3180,6 +3180,15 @@ users:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOvQPxrbAfdwDNnWroKYoHrSLGgAudhmpRbryJ3Vd6eL jfishback@wikimedia.org
     uid: 21257
     email: jfishback@wikimedia.org
+  urbanecm:
+    ensure: present
+    gid: 500
+    name: urbanecm
+    realname: Martin Urbanec
+    ssh_keys:
+      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIIArd1VWJLSPUzG+J758/6TtLeGNTWm2M4aNoaIZZdor urbanecm+wmnet@notebook
+    uid: 13367
+    email: martin.urbanec@wikimedia.cz
 
 ldap_only_users:
   abartov:
