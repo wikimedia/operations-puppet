@@ -64,6 +64,8 @@
     RewriteEngine on
     RewriteCond %{HTTP_HOST} =wiki.toolserver.org [NC]
     RewriteRule ^/view/(.*)$ https://www.mediawiki.org/wiki/Toolserver:$1 [L,R]
+    # T224265
+    RewriteRule ^/~nikola/svgtranslate.php?svg=(.*)$ https://tools.wmflabs.org/svgtranslate/search?filename=$1 [L,NE,R]
 
     # Redirects from www.toolserver.org
     #
@@ -232,6 +234,7 @@
     Redirect 301 /~mzmcbride/yanker https://tools.wmflabs.org/pirsquared/ts_archive/mzmcbride/yanker.py
     Redirect 301 /~mzmcbride https://tools.wmflabs.org/mzmcbride
     Redirect 301 /~nikola/articlesby.php https://xtools.wmflabs.org/pages
+    Redirect 301 /~nikola/svgtranslate.php https://tools.wmflabs.org/svgtranslate/
     Redirect 301 /~nlwikibots https://tools.wmflabs.org/nlwikibots
     Redirect 301 /~para/region.php https://tools.wmflabs.org/para/geo/worldadmin98
     Redirect 301 /~para/GeoCommons/kml.php https://tools.wmflabs.org/geocommons/kml
