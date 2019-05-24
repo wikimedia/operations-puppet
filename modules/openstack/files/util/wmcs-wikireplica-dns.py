@@ -134,10 +134,10 @@ def main():
             if fqdn in config['cnames']:
                 # Add additional aliases for this fqdn
                 for cname in config['cnames'][fqdn]:
-                    zone = find_zone_for_fqdn(dns, cname)
-                    if zone:
+                    cname_zone = find_zone_for_fqdn(dns, cname)
+                    if cname_zone:
                         dns.ensure_recordset(
-                            zone['id'], cname, 'CNAME', [fqdn])
+                            cname_zone['id'], cname, 'CNAME', [fqdn])
                     else:
                         logger.warning('Failed to find zone for %s', cname)
 
