@@ -1,0 +1,27 @@
+# maintain-kubeusers
+#
+# A simple script that autocreates kubernetes accounts for tools users
+# Also maintains infrastructure accounts
+[Unit]
+Description="Create & Maintain kubernetes tool & infrastructure users"
+
+[Service]
+# Run as root since it needs to write to /data/project as various users
+# We attempt to restrict the paths it can write to as some form of mitigation
+User=root
+Group=root
+# TODO: ABAC? we should use RBAC:
+ExecStart=/usr/local/bin/maintain-kubeusers \
+          --infrastructure-users /etc/kubernetes/infrastructure-users \
+          --project <%= @labsproject %> \
+          https://<%= @k8s_master %>:6443 /etc/kubernetes/tokenauth /etc/kubernetes/abac
+ReadWriteDirectories=/data/project /etc/kubernetes
+ReadOnlyDirectories=/
+# We need CAP_CHOWN because we chown the .kube/config files to belong to the tools
+# We need CAP_DAC_OVERRIDE because we are writing files into /data/project/$toolname, which
+# belongs to the tools themselves and we need to use our root powers to ignore that.
+CapabilityBoundingSet=CAP_CHOWN CAP_DAC_OVERRIDE
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
