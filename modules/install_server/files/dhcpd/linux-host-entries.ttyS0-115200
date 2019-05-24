@@ -631,6 +631,16 @@ host roentgenium {
     filename "lpxelinux.0";
 }
 
+host rpki1001 {
+    hardware ethernet aa:00:00:64:75:b9;
+    fixed-address rpki1001.eqiad.wmnet;
+}
+
+host rpki2001 {
+    hardware ethernet aa:00:00:b9:9b:6d;
+    fixed-address rpki2001.codfw.wmnet;
+}
+
 host seaborgium {
     hardware ethernet aa:00:00:4d:be:84;
     fixed-address seaborgium.wikimedia.org;
