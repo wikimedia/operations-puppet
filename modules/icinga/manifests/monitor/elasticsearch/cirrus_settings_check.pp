@@ -18,8 +18,8 @@ define icinga::monitor::elasticsearch::cirrus_settings_check(
         }
     }
 
-    # This file is used to make sure settings align with API settings
-    file { "/etc/elasticsearch/${title}/cirrus_settings.yaml":
+    # This file is used to make sure puppet settings are aligned with API settings
+    file { "/etc/elasticsearch/${title}/cirrus_check_settings.yaml":
         ensure  => file,
         owner   => 'root',
         group   => 'root',
@@ -31,7 +31,7 @@ define icinga::monitor::elasticsearch::cirrus_settings_check(
         critical       => false,
         contact_group  => 'admins,team-discovery',
         notes_url      => 'https://wikitech.wikimedia.org/wiki/Search#Administration',
-        nrpe_command   => "/usr/lib/nagios/plugins/check_cirrus_setting.py --url http://localhost:${port}  --setting-file /etc/elasticsearch/${title}/cirrus_settings.yaml",
+        nrpe_command   => "/usr/lib/nagios/plugins/check_cirrus_settings.py --url http://localhost:${port}  --settings-file /etc/elasticsearch/${title}/cirrus_check_settings.yaml",
         description    => "ElasticSearch setting check - ${port}",
         check_interval => 720, # 12h
         retry_interval => 120, # 2h

@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 
-"""Cirrus cluster setting check"""
+"""Cirrus cluster settings check"""
 
 import argparse
 import requests
@@ -84,7 +84,7 @@ def main():
                         help='Timeout for the request to complete'),
     parser.add_argument('--settings-file', required=True,
                         help='settings file path '
-                             'e.g "/etc/elasticsearch/cirrus_settings.yaml"')
+                             'e.g "/etc/elasticsearch/cirrus_check_settings.yaml"')
 
     options = parser.parse_args()
 
