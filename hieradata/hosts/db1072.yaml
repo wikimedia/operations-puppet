@@ -1,3 +1,2 @@
 # db1072
-mariadb::shard: 's3'
 mariadb::binlog_format: 'ROW'
