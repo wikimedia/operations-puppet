@@ -478,8 +478,6 @@ host cloudcontrol1003 {
 host cloudcontrol1004 {
     hardware ethernet 30:e1:71:60:f0:50;
     fixed-address cloudcontrol1004.wikimedia.org;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
-    filename "lpxelinux.0";
 }
 
 host cloudcontrol2001-dev {
