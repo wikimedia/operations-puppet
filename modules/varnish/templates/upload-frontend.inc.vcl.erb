@@ -71,6 +71,12 @@ sub cluster_fe_recv {
 				// Invalid file extension
 				return (synth(400, "Bad Request"));
 			}
+			if (req.url ~ "(?i)/224px\-") {
+				if (req.http.user-agent ~ "wget2/1.0.0") {
+					// Temp blockade for abusive user
+					return (synth(400, "Bad Request"));
+				}
+			}
 		}
 	}
 
