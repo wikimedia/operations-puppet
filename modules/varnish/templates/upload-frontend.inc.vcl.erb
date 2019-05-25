@@ -91,18 +91,26 @@ sub cluster_fe_hash { }
 sub cluster_fe_hit { }
 
 sub cluster_fe_ratelimit {
-	// ratelimit FB in an attempt to mitigate awful outbound traffic spike
-	if (std.ip(req.http.X-Client-IP, "192.0.2.1") ~ fb_nets) {
-		if (vsthrottle.is_denied("fb_limiter", 1000, 30s)) {
-			return (synth(429, "Too Many Requests"));
+	// dont apply any rate limiting to internal networks
+	// Fallback to 192.0.2.1, from rfc5735's TEST-NET-1, which is not in wikimedia_nets
+	if (std.ip(req.http.X-Client-IP, "192.0.2.1") !~ wikimedia_nets) {
+		// ratelimit FB in an attempt to mitigate awful outbound traffic spike
+		if (std.ip(req.http.X-Client-IP, "192.0.2.1") ~ fb_nets) {
+			if (vsthrottle.is_denied("fb_limiter", 1000, 30s)) {
+				return (synth(429, "Too Many Requests"));
+			}
 		}
-	}
 
-	// Maps rate limiting: 1000/10s (100/s long term, with 1000 burst)
-	if (req.http.Host == "<%= @vcl_config.fetch('maps_domain') %>") {
-		// Fallback to 192.0.2.1, from rfc5735's TEST-NET-1, which is not in wikimedia_nets
-		if (std.ip(req.http.X-Client-IP, "192.0.2.1") !~ wikimedia_nets) {
+		// Maps rate limiting: 1000/10s (100/s long term, with 1000 burst)
+		if (req.http.Host == "<%= @vcl_config.fetch('maps_domain') %>") {
 			if (vsthrottle.is_denied("maps:" + req.http.X-Client-IP, 1000, 10s)) {
+				return (synth(429, "Too Many Requests"));
+			}
+		}
+		// Thumbor rate limiting: 1000/10s (100/s long term, with 1000 burst)
+		if (req.url ~ "/thumb/") {
+			// No idea what the correct values should be here?
+			if (vsthrottle.is_denied("thumbor:" + req.http.X-Client-IP, 1000, 10s)) {
 				return (synth(429, "Too Many Requests"));
 			}
 		}
@@ -279,3 +287,4 @@ sub cluster_fe_err_synth {
 		}
 	}
 }
+# vim: set autoindent noexpandtab tabstop=4 shiftwidth=4:
