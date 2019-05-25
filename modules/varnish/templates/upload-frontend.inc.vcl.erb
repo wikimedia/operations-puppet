@@ -20,9 +20,6 @@ acl fb_nets {
 	"2620:0:1c00::0"/40;
 	"2620:0:1cff::0"/48;
 	"2a03:2880::0"/32;
-// 130.193.45.0/24 and 2a00:1370::/32 is not really facebook, but rather Yandex, but we add this in an emergency
-	"130.193.45.0"/24;
-	"2a00:1370::0"/32;
 }
 
 sub cluster_fe_vcl_switch { }
