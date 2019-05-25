@@ -3067,8 +3067,6 @@ host cloudservices1003 {
 host cloudservices1004 {
     hardware ethernet D0:94:66:5F:48:9A;
     fixed-address cloudservices1004.wikimedia.org;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
-    filename "lpxelinux.0";
 }
 
 host labstore1001 {
