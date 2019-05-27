@@ -13,7 +13,7 @@ class profile::openstack::base::pdns3hack(
     $repo_url      = 'http://archive.debian.org/debian-archive/debian/'
 
     apt::pin { 'pdns3hack':
-        package  => 'pdns-server pdns-recursor pdns-backend-mysql',
+        package  => 'pdns-server pdns-backend-mysql',
         pin      => 'release n=jessie',
         priority => '1001',
         before   => File[$repo_filename],
