@@ -7,6 +7,14 @@
 #
 # NOTE: This is going to be deprecated when we move to calico 2.4.x
 #
+# Allow pod IP spaces, this should be locked down if needed in ingress by service owner
+- action: allow
+  dst_net: 10.64.64.0/21
+- action: allow
+  dst_net: 10.192.64.0/21
+- action: allow
+  dst_net: 10.64.75.0/24
+
 # Allow DNS
 - action: allow
   dst_ports:
@@ -312,12 +320,134 @@
   dst_ports:
     - 2737
 
-  # Allow pod IP spaces, this should be locked down if needed in ingress by service owner
+  # Allow sessionstore kask to access sessionstore cassandra.
+  # Note: we are reusing the restbase-dev cassandra cluster for staging
 - action: allow
-  dst_net: 10.64.64.0/21
+  src_selector: calico/k8s_ns == 'sessionstore'
+  dst_net: 10.64.0.141/32   # sessionstore1001
+  protocol: tcp
+  dst_ports:
+    - 9042
 - action: allow
-  dst_net: 10.192.64.0/21
+  src_selector: calico/k8s_ns == 'sessionstore'
+  dst_net: 10.64.0.144/32   # sessionstore1001-a
+  protocol: tcp
+  dst_ports:
+    - 9042
 - action: allow
-  dst_net: 10.64.75.0/24
+  src_selector: calico/k8s_ns == 'sessionstore'
+  dst_net: 10.64.32.78/32   # sessionstore1002
+  protocol: tcp
+  dst_ports:
+    - 9042
+- action: allow
+  src_selector: calico/k8s_ns == 'sessionstore'
+  dst_net: 10.64.32.85/32   # sessionstore1002-a
+  protocol: tcp
+  dst_ports:
+    - 9042
+- action: allow
+  src_selector: calico/k8s_ns == 'sessionstore'
+  dst_net: 10.64.48.175/32  # sessionstore1003
+  protocol: tcp
+  dst_ports:
+    - 9042
+- action: allow
+  src_selector: calico/k8s_ns == 'sessionstore'
+  dst_net: 10.64.48.178/32  # sessionstore1003-a
+  protocol: tcp
+  dst_ports:
+    - 9042
+- action: allow
+  src_selector: calico/k8s_ns == 'sessionstore'
+  dst_net: 10.192.16.79/32  # sessionstore2001
+  protocol: tcp
+  dst_ports:
+    - 9042
+- action: allow
+  src_selector: calico/k8s_ns == 'sessionstore'
+  dst_net: 10.192.16.95/32  # sessionstore2001-a
+  protocol: tcp
+  dst_ports:
+    - 9042
+- action: allow
+  src_selector: calico/k8s_ns == 'sessionstore'
+  dst_net: 10.192.32.15/32  # sessionstore2002
+  protocol: tcp
+  dst_ports:
+    - 9042
+- action: allow
+  src_selector: calico/k8s_ns == 'sessionstore'
+  dst_net: 10.192.32.101/32 # sessionstore2002-a
+  protocol: tcp
+  dst_ports:
+    - 9042
+- action: allow
+  src_selector: calico/k8s_ns == 'sessionstore'
+  dst_net: 10.192.48.118/32 # sessionstore2003
+  protocol: tcp
+  dst_ports:
+    - 9042
+- action: allow
+  src_selector: calico/k8s_ns == 'sessionstore'
+  dst_net: 10.192.48.132/32 # sessionstore2003-a
+  protocol: tcp
+  dst_ports:
+    - 9042
+- action: allow
+  src_selector: calico/k8s_ns == 'sessionstore'
+  dst_net: 10.64.0.89/32   # restbase-dev1004
+  protocol: tcp
+  dst_ports:
+    - 9042
+- action: allow
+  src_selector: calico/k8s_ns == 'sessionstore'
+  dst_net: 10.64.0.167/32  # restbase-dev1004-a
+  protocol: tcp
+  dst_ports:
+    - 9042
+- action: allow
+  src_selector: calico/k8s_ns == 'sessionstore'
+  dst_net: 10.64.0.168/32  # restbase-dev1004-b
+  protocol: tcp
+  dst_ports:
+    - 9042
+- action: allow
+  src_selector: calico/k8s_ns == 'sessionstore'
+  dst_net: 10.64.16.96/32  # restbase-dev1005
+  protocol: tcp
+  dst_ports:
+    - 9042
+- action: allow
+  src_selector: calico/k8s_ns == 'sessionstore'
+  dst_net: 10.64.16.97/32  # restbase-dev1005-a
+  protocol: tcp
+  dst_ports:
+    - 9042
+- action: allow
+  src_selector: calico/k8s_ns == 'sessionstore'
+  dst_net: 10.64.16.98/32  # restbase-dev1005-b
+  protocol: tcp
+  dst_ports:
+    - 9042
+- action: allow
+  src_selector: calico/k8s_ns == 'sessionstore'
+  dst_net: 10.64.48.10/32  # restbase-dev1006
+  protocol: tcp
+  dst_ports:
+    - 9042
+- action: allow
+  src_selector: calico/k8s_ns == 'sessionstore'
+  dst_net: 10.64.48.168/32 # restbase-dev1006-a
+  protocol: tcp
+  dst_ports:
+    - 9042
+- action: allow
+  src_selector: calico/k8s_ns == 'sessionstore'
+  dst_net: 10.64.48.169/32 # restbase-dev1006-b
+  protocol: tcp
+  dst_ports:
+    - 9042
+
   # Deny everything else
 - action: deny

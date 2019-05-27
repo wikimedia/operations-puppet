@@ -79,6 +79,10 @@ profile::kubernetes::deployment_server::services:
     username: cxserver
     group: wikidev
     mode: '0640'
+  sessionstore:
+    username: sessionstore
+    group: wikidev
+    mode: '0640'
 
 # Specified in the private repo in this form
 #profile::kubernetes::deployment_server::tokens:
@@ -97,6 +101,8 @@ profile::kubernetes::deployment_server::services:
 #  citoid:
 #    token: dummy
 #  cxserver:
+#    token: dummy
+#  sessionstore:
 #    token: dummy
 
 profile::ci::kubernetes_config::user: jenkins
