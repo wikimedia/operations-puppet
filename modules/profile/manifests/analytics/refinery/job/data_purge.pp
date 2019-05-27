@@ -269,14 +269,4 @@ class profile::analytics::refinery::job::data_purge (
         interval                  => '*-*-* 03:30:00',
         user                      => 'hdfs',
     }
-
-    cron {'refinery-drop-query-clicks':
-        # Converted to systemd_timer may 2019
-        ensure      => absent,
-        command     => "${env} && ${profile::analytics::refinery::path}/bin/refinery-drop-hive-partitions -d ${query_clicks_retention_days} -D discovery -t query_clicks_hourly,query_clicks_daily >> ${query_clicks_log_file}",
-        environment => 'MAILTO=discovery-alerts@lists.wikimedia.org',
-        user        => 'analytics',
-        minute      => '30',
-        hour        => '3',
-    }
 }
