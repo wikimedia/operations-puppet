@@ -2,13 +2,7 @@ class role::wmcs::openstack::eqiad1::control {
     system::role { $name: }
     include ::profile::standard
     include ::profile::base::firewall
-
-    # FIXME: We definitely want to include metrics on Stretch!  Remove this
-    #        when T224345 is resolved
-    if os_version('debian == jessie') {
-        include ::profile::openstack::eqiad1::metrics
-    }
-
+    include ::profile::openstack::eqiad1::metrics
     include ::profile::openstack::eqiad1::observerenv
     include ::profile::openstack::eqiad1::rabbitmq
     include ::profile::openstack::eqiad1::keystone::service
