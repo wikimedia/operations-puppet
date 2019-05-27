@@ -20,6 +20,7 @@ class openstack::serverpackages::mitaka::stretch(
         'python-openssl',
         'openssl',
         'libjs-jquery',
+        'python3-msgpack',
     ]
 
     $avoid_packages_list = join($avoid_packages, ' ')
