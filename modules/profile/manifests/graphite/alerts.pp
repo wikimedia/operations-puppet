@@ -106,7 +106,7 @@ class profile::graphite::alerts($graphite_url = hiera('graphite_url')) {
     monitoring::graphite_threshold { 'swift_thumbs_eqiad_codfw_diff':
         description     => 'Number of thumbnails in eqiad greater than codfw',
         dashboard_links => ['https://grafana.wikimedia.org/d/OPgmB1Eiz/swift?var-DC=eqiad&var-prometheus=eqiad%20prometheus%2Fops'],
-        metric          => 'keepLastValue(divideSeries(swift.eqiad-prod.containers.mw-media.thumb.objects, swift.codfw-prod.containers.mw-media.thumb.objects))',
+        metric          => 'divideSeries(keepLastValue(swift.eqiad-prod.containers.mw-media.thumb.objects, 20), keepLastValue(swift.codfw-prod.containers.mw-media.thumb.objects, 20))',
         warning         => 1.02,
         critical        => 1.05,
         from            => '90min',
@@ -116,7 +116,7 @@ class profile::graphite::alerts($graphite_url = hiera('graphite_url')) {
     monitoring::graphite_threshold { 'swift_thumbs_codfw_eqiad_diff':
         description     => 'Number of thumbnails in codfw greater than eqiad',
         dashboard_links => ['https://grafana.wikimedia.org/d/OPgmB1Eiz/swift?var-DC=codfw&var-prometheus=codfw%20prometheus%2Fops'],
-        metric          => 'keepLastValue(divideSeries(swift.codfw-prod.containers.mw-media.thumb.objects, swift.eqiad-prod.containers.mw-media.thumb.objects))',
+        metric          => 'divideSeries(keepLastValue(swift.codfw-prod.containers.mw-media.thumb.objects, 20), keepLastValue(swift.eqiad-prod.containers.mw-media.thumb.objects, 20))',
         warning         => 1.02,
         critical        => 1.05,
         from            => '90min',
