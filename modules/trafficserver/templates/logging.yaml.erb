@@ -25,12 +25,12 @@ logs:
 <% @logs.each do |log| -%>
     - filename: <%= log['filename'] %>
       format: <%= log['format'] %>
+      mode: <%= log['mode'] %>
 <% if log['filters'] -%>
       filters:
 <% log['filters'].each do |filter| -%>
       - <%= filter %>
 <% end %>
-      mode: <%= log['mode'] %>
 <% end -%>
 
 <% end -%>
