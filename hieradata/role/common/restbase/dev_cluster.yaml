@@ -2,6 +2,9 @@
 do_paging: false
 monitor_screens: false
 
+# Icinga
+contactgroups: 'admins,team-services'
+
 #
 # RESTBase
 #
