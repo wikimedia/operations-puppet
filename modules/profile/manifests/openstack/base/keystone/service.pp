@@ -47,15 +47,8 @@ class profile::openstack::base::keystone::service(
     $prod_networks = join($::network::constants::production_networks, ' ')
     $labs_networks = join($::network::constants::labs_networks, ' ')
 
-    if ($daemon_active) {
-        # support for a 2 controller nodes deployment
-        $active = ($::fqdn == $keystone_host)
-    } else {
-        $active = false
-    }
-
     class {'::openstack::keystone::service':
-        active                      => $active,
+        active                      => $daemon_active,
         version                     => $version,
         keystone_host               => $keystone_host,
         osm_host                    => $osm_host,
