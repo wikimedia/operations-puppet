@@ -22,4 +22,32 @@ define trafficserver::layout(
         creates => "${paths['prefix']}/runroot.yaml",
         require => File["/etc/trafficserver/${title}-layout.yaml"],
     }
+
+    file { $paths['runtimedir']:
+        ensure  => directory,
+        owner   => $trafficserver::user,
+        mode    => '0755',
+        require => Exec["bootstrap-${title}-ats-runroot"],
+    }
+
+    file { $paths['logdir']:
+        ensure  => directory,
+        owner   => $trafficserver::user,
+        mode    => '0755',
+        require => Exec["bootstrap-${title}-ats-runroot"],
+    }
+
+    file { $paths['localstatedir']:
+        ensure  => directory,
+        owner   => $trafficserver::user,
+        mode    => '0755',
+        require => Exec["bootstrap-${title}-ats-runroot"],
+    }
+
+    file { $paths['cachedir']:
+        ensure  => directory,
+        owner   => $trafficserver::user,
+        mode    => '0755',
+        require => Exec["bootstrap-${title}-ats-runroot"],
+    }
 }
