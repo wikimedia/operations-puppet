@@ -70,20 +70,23 @@ class profile::openstack::base::rabbitmq(
 
     ferm::rule { 'rabbit_for_standby_node':
         ensure => 'present',
-        rule   => "saddr (@resolve(${nova_controller_standby}) @resolve(${nova_controller_standby}, AAAA))
+        rule   => "saddr (@resolve(${nova_controller_standby}) @resolve(${nova_controller_standby}, AAAA)
+                          @resolve(${nova_controller}) @resolve(${nova_controller}, AAAA))
                    proto tcp dport 5672 ACCEPT;",
     }
 
     # Rabbit uses epmd for clustering
     ferm::rule { 'epmd_for_rabbit':
         ensure => 'present',
-        rule   => "saddr (@resolve(${nova_controller_standby}) @resolve(${nova_controller_standby}, AAAA))
+        rule   => "saddr (@resolve(${nova_controller_standby}) @resolve(${nova_controller_standby}, AAAA)
+                          @resolve(${nova_controller}) @resolve(${nova_controller}, AAAA))
                    proto tcp dport 4369 ACCEPT;",
     }
 
     ferm::rule { 'rabbit_internode':
         ensure => 'present',
-        rule   => "saddr (@resolve(${nova_controller_standby}) @resolve(${nova_controller_standby}, AAAA))
+        rule   => "saddr (@resolve(${nova_controller_standby}) @resolve(${nova_controller_standby}, AAAA)
+                          @resolve(${nova_controller}) @resolve(${nova_controller}, AAAA))
                    proto tcp dport 25672 ACCEPT;",
     }
 }
