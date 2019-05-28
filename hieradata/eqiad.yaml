@@ -33,7 +33,7 @@ mediawiki_memcached_servers:
 # Cloud Services <
 #
 labs_puppet_master: &labspuppetmaster "labs-puppetmaster.wikimedia.org"
-labs_keystone_host: &labskeystonehost "cloudcontrol1003.wikimedia.org"
+labs_keystone_host: &labskeystonehost "cloudcontrol1004.wikimedia.org"
 
 # These are the up-and-coming, better dns servers:
 # used in manifests/realm.pp

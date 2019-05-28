@@ -41,7 +41,7 @@ striker::uwsgi::config:
   static:
     STATIC_ROOT: /srv/deployment/striker/deploy/public_html/static
   openstack:
-    URL: http://cloudcontrol1003.wikimedia.org:5000/v3
+    URL: http://cloudcontrol1004.wikimedia.org:5000/v3
   features:
     ACCOUNT_CREATE: true
 
