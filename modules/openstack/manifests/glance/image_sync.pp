@@ -72,7 +72,7 @@ class openstack::glance::image_sync(
         systemd::timer::job { 'glance_rsync_images':
             ensure                    => $ensure,
             description               => 'Copy Glance images to standby server',
-            command                   => "/usr/bin/rsync --delete --delete-after -aSO ${glance_image_dir}/ ${nova_controller_standby}:${glance_image_dir}/",
+            command                   => "/usr/bin/rsync -aSO ${glance_image_dir}/ ${nova_controller_standby}:${glance_image_dir}/",
             interval                  => {
             'start'    => 'OnCalendar',
             'interval' => '*-*-* *:15:00', # Every hour at minute 15
