@@ -20,6 +20,7 @@ if first_delivery then
 			headers add "X-Spam-Flag: NO"
 		endif
 		# add a hook for OTRS to filter list mail
+		# stewards is exempt. T224404
 		if
 			($message_headers contains "\nList-Id:" or
 			$message_headers contains "\nList-Help:" or
@@ -28,7 +29,8 @@ if first_delivery then
 			$message_headers contains "\nList-Post:" or
 			$message_headers contains "\nList-Owner:" or
 			$message_headers contains "\nList-Archive:") and
-			$header_precedence: does not match "^(bulk|junk|list)"
+			$header_precedence: does not match "^(bulk|junk|list)" and
+			$header_to: does not match "stewards@wikimedia.org"
 		then
 			headers remove Precedence
 			headers add "Precedence: bulk"
