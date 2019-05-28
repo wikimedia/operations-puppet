@@ -1,0 +1,12 @@
+SERIAL 0x3F8 115200
+CONSOLE 0
+
+DISPLAY pxelinux.cfg/boot.txt
+
+default server
+prompt 1
+timeout 100
+
+LABEL server
+	kernel debian-installer/amd64/linux
+	append initrd=debian-installer/amd64/initrd.gz vga=normal auto-install/enable=true preseed/url=http://apt.wikimedia.org/autoinstall/preseed.cfg DEBCONF_DEBUG=5 netcfg/choose_interface=auto netcfg/get_hostname=unassigned netcfg/get_domain=unassigned netcfg/dhcp_timeout=60 --- console=ttyS0,115200n8
