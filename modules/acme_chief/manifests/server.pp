@@ -41,6 +41,8 @@ class acme_chief::server (
         true    => {
             'dns-01' => {
                 zone_update_cmd          => $challenges['dns-01']['zone_update_cmd'],
+                issuing_ca               => $challenges['dns-01']['issuing_ca'],
+                ns_records               => $challenges['dns-01']['ns_records'],
                 sync_dns_servers         => $authdns_servers,
                 validation_dns_servers   => $authdns_servers,
             }

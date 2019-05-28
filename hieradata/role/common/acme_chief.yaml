@@ -149,6 +149,8 @@ profile::acme_chief::certificates:
         challenge: dns-01
         authorized_hosts:
         - 'cp1008.wikimedia.org'
+        prevalidate: true
+        skip_invalid_snis: true
     non-canonical-redirect-2:
         CN: '*.wikimania.com'
         SNI:
@@ -194,6 +196,8 @@ profile::acme_chief::certificates:
         challenge: dns-01
         authorized_hosts:
         - 'cp1008.wikimedia.org'
+        prevalidate: true
+        skip_invalid_snis: true
     non-canonical-redirect-3:
         CN: '*.wikipedia.bg'
         SNI:
@@ -237,6 +241,8 @@ profile::acme_chief::certificates:
         challenge: dns-01
         authorized_hosts:
         - 'cp1008.wikimedia.org'
+        prevalidate: true
+        skip_invalid_snis: true
     non-canonical-redirect-4:
         CN: '*.wikispecies.net'
         SNI:
@@ -268,6 +274,8 @@ profile::acme_chief::certificates:
         challenge: dns-01
         authorized_hosts:
         - 'cp1008.wikimedia.org'
+        prevalidate: true
+        skip_invalid_snis: true
     pinkunicorn:
         CN: 'pinkunicorn.wikimedia.org'
         SNI:
@@ -348,6 +356,11 @@ profile::acme_chief::certificates:
 profile::acme_chief::challenges:
   dns-01:
     zone_update_cmd: /usr/local/bin/acme-chief-gdnsd-sync.py
+    issuing_ca: 'letsencrypt.org'
+    ns_records:
+    - ns0.wikimedia.org.
+    - ns1.wikimedia.org.
+    - ns2.wikimedia.org.
 profile::acme_chief::accounts:
   cb6556464272a118e117b3b0039bd261:
     regr: '{"body": {}, "uri": "https://acme-v02.api.letsencrypt.org/acme/acct/45156774"}'
