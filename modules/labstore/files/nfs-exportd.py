@@ -78,7 +78,7 @@ def get_instance_ips(project, observer_pass, regions):
     This uses the Nova API to fetch this data
     """
     session = KeystoneSession(auth=KeystonePassword(
-        auth_url="http://cloudcontrol1003.wikimedia.org:5000/v3",
+        auth_url="http://cloudcontrol1004.wikimedia.org:5000/v3",
         username="novaobserver",
         password=observer_pass,
         project_name=project,
@@ -127,7 +127,7 @@ def get_projects_with_nfs(mounts_config, observer_pass):
 
     # Special one-off session just to grab the list of regions
     session = KeystoneSession(auth=KeystonePassword(
-        auth_url="http://cloudcontrol1003.wikimedia.org:5000/v3",
+        auth_url="http://cloudcontrol1004.wikimedia.org:5000/v3",
         username="novaobserver",
         password=observer_pass,
         project_name='observer',
