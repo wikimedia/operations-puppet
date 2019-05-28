@@ -15,8 +15,9 @@ profile::acme_chief::certificates:
         authorized_hosts:
         - 'archiva1001.wikimedia.org'
     cloudelastic:
-        CN: 'cloudelastic1001.wikimedia.org'
+        CN: 'cloudelastic.wikimedia.org'
         SNI:
+        - 'cloudelastic.wikimedia.org'
         - 'cloudelastic1001.wikimedia.org'
         - 'cloudelastic1002.wikimedia.org'
         - 'cloudelastic1003.wikimedia.org'

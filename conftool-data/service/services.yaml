@@ -57,6 +57,49 @@ elasticsearch:
     datacenters:
     - eqiad
     - codfw
+cloudelastic:
+  cloudelastic-chi-ssl:
+    port: 9243
+    default_values:
+        pooled: 'no'
+        weight: 10
+    datacenters:
+    - eqiad
+  cloudelastic-omega-ssl:
+    port: 9443
+    default_values:
+        pooled: 'no'
+        weight: 10
+    datacenters:
+    - eqiad
+  cloudelastic-psi-ssl:
+    port: 9643
+    default_values:
+        pooled: 'no'
+        weight: 10
+    datacenters:
+    - eqiad
+  cloudelastic-chi-ssl-public:
+    port: 8243
+    default_values:
+        pooled: 'no'
+        weight: 10
+    datacenters:
+    - eqiad
+  cloudelastic-omega-ssl-public:
+    port: 8443
+    default_values:
+        pooled: 'no'
+        weight: 10
+    datacenters:
+    - eqiad
+  cloudelastic-psi-ssl-public:
+    port: 8643
+    default_values:
+        pooled: 'no'
+        weight: 10
+    datacenters:
+    - eqiad
 scb:
   mobileapps:
     port: 8888

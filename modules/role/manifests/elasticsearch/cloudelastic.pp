@@ -5,6 +5,7 @@
 class role::elasticsearch::cloudelastic {
     include ::profile::standard
     include ::profile::base::firewall
+    include ::role::lvs::realserver
     include ::profile::elasticsearch::cirrus
     include ::profile::elasticsearch::monitor::base_checks
 

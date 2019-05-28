@@ -242,6 +242,11 @@ eqiad:
     elastic1050.eqiad.wmnet: [elasticsearch, elasticsearch-ssl, elasticsearch-psi-ssl]
     elastic1051.eqiad.wmnet: [elasticsearch, elasticsearch-ssl, elasticsearch-psi-ssl]
     elastic1052.eqiad.wmnet: [elasticsearch, elasticsearch-ssl, elasticsearch-psi-ssl]
+  cloudelastic:
+    cloudelastic1001.wikimedia.org: [cloudelastic-chi-ssl, cloudelastic-psi-ssl, cloudelastic-omega-ssl, cloudelastic-chi-ssl-public, cloudelastic-psi-ssl-public, cloudelastic-omega-ssl-public]
+    cloudelastic1002.wikimedia.org: [cloudelastic-chi-ssl, cloudelastic-psi-ssl, cloudelastic-omega-ssl, cloudelastic-chi-ssl-public, cloudelastic-psi-ssl-public, cloudelastic-omega-ssl-public]
+    cloudelastic1003.wikimedia.org: [cloudelastic-chi-ssl, cloudelastic-psi-ssl, cloudelastic-omega-ssl, cloudelastic-chi-ssl-public, cloudelastic-psi-ssl-public, cloudelastic-omega-ssl-public]
+    cloudelastic1004.wikimedia.org: [cloudelastic-chi-ssl, cloudelastic-psi-ssl, cloudelastic-omega-ssl, cloudelastic-chi-ssl-public, cloudelastic-psi-ssl-public, cloudelastic-omega-ssl-public]
   swift:
     ms-fe1005.eqiad.wmnet: [swift-fe, nginx]
     ms-fe1006.eqiad.wmnet: [swift-fe, nginx]
