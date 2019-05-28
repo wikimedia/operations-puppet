@@ -13,7 +13,7 @@ groups:
               yuvipanda, shrlak, madhuvishy, groovier, khorn, ironholds, katie, chedasaurus,
               cy534, pnorman, mpany, deskana, arnad, nithum, banyek, imarlier, mkroetzsch,
               mtizzoni, panisson, paolotti, ciro, dartar, melodykramer, gtirloni, tbayer, pirroh,
-              bawolff]
+              bawolff, dkg]
   absent_ldap:
     description: meta group for absented users which had privileged LDAP access in the past, an automatic check verifies it has been really removed from the LDAP (but removal has to be handled separatelly)
     members: [adavenport, siddharth11, albe, audiohazel, tbolliger, jmatazzoni, pbj]
@@ -359,7 +359,7 @@ groups:
   traceback-roots:
     gid: 751
     description: people who have full root on traceback hosts
-    members: [dkg]
+    members: []
     privileges: ['ALL = (ALL) NOPASSWD: ALL']
   maps-admins:
     gid: 753
@@ -1921,13 +1921,12 @@ users:
     uid: 12049
     email: nquinn@wikimedia.org
   dkg:
-    ensure: present
+    ensure: absent
     gid: 500
     name: dkg
     realname: Daniel Kahn Gillmor
-    ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC8NY6C8j5WYDAeXbs3C0L9Prr+cAuOgvkoeYwLpV3l+WuYTC6m0LpnaZ53d9o/r5zqKaIDC4F2FgP4cU52qikFqNorqvsZ3sFHAy5XWFtvSzsaRTGUKhs+Y14TKKpQ2Y+oynsuZFN8wm4N6U8ZepeFT+fDtPBPT9lrzooxGydnyw2246LRhx7jtrYwnAMi78+dPTBTNXVQm5oHHAwDpLnEgNe35ii78qZxSlS1qnfwXKfNrdRafCwHDetR8VEiZgsVkZ15GaKZ441rvXYsLkuzBqC1BseRfaPAYZ5hFq3ikP2zW6JNJ5IS8k8JfR9wMmuSB8J+U2op/qoCJQQ3HMAb dkg]
+    ssh_keys: []
     uid: 12138
-    email: dkg@fifthhorseman.net
   jynus:
     ensure: present
     gid: 500
