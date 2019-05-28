@@ -1,4 +1,0 @@
-
-
-Ubuntu 14.04 Trusty Tahr amd64 (Wikimedia edition)
-

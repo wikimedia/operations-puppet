@@ -3054,7 +3054,6 @@ host labstore1002 {
 host labstore1003 {
     hardware ethernet 78:2b:cb:0a:16:60;
     fixed-address labstore1003.eqiad.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/trusty-installer/";
 }
 
 host labstore1004 {
