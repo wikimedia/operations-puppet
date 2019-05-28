@@ -468,7 +468,6 @@ host centrallog1001 {
 host cloudcontrol1003 {
     hardware ethernet 30:e1:71:5f:6e:5c;
     fixed-address cloudcontrol1003.wikimedia.org;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
 }
 
 host cloudcontrol1004 {
