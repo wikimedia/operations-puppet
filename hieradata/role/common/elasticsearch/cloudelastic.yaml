@@ -8,7 +8,7 @@ admin::groups:
 profile::base::check_disk_options: -w 15% -c 10% -W 6% -K 3% -l -e -A -i "/srv/sd[a-b][1-3]" --exclude-type=tracefs
 
 profile::elasticsearch::cirrus::use_acme_chief: true
-profile::elasticsearch::cirrus::storage_device: md1
+profile::elasticsearch::cirrus::storage_device: dm-0
 profile::elasticsearch::cirrus::ferm_srange: '(($CUMIN_MASTERS $MW_APPSERVER_NETWORKS))'
 profile::elasticsearch::cirrus::ferm_ro_srange: '$LABS_NETWORKS'
 profile::elasticsearch::cirrus::expose_http: false
