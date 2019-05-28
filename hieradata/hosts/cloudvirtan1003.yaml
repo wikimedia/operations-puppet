@@ -1,1 +1,6 @@
 profile::openstack::base::nova::instance_dev: '/dev/mapper/cloudvirtan1003--vg-srv'
+
+profile::openstack::eqiad1::nova::network_flat_tagged_base_interface: enp130s0f1
+profile::openstack::eqiad1::nova::network_flat_interface: 'enp130s0f1.1105'
+profile::openstack::eqiad1::nova::physical_interface_mappings:
+  cloudinstances2b: 'enp130s0f1.1105'
