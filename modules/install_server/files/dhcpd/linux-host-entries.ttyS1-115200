@@ -2135,6 +2135,26 @@ host dbproxy1017 {
     fixed-address dbproxy1017.eqiad.wmnet;
 }
 
+host dbproxy2001 {
+    hardware ethernet 4C:D9:8F:6C:AC:B0;
+    fixed-address dbproxy2001.codfw.wmnet;
+}
+
+host dbproxy2002 {
+    hardware ethernet 4C:D9:8F:6C:9A:CD;
+    fixed-address dbproxy2002.codfw.wmnet;
+}
+
+host dbproxy2003 {
+    hardware ethernet 4C:D9:8F:6C:A5:E2;
+    fixed-address dbproxy2003.codfw.wmnet;
+}
+
+host dbproxy2004 {
+    hardware ethernet 4C:D9:8F:6C:A5:5E;
+    fixed-address dbproxy2004.codfw.wmnet;
+}
+
 host dbstore1001 {
     hardware ethernet C8:1F:66:B8:2A:04;
     fixed-address dbstore1001.eqiad.wmnet;
