@@ -369,16 +369,6 @@ class profile::phabricator::main (
         }
     }
 
-    # restart apache periodically to free up deadlocked workers. See T187790
-    cron { 'phab_restart':
-        ensure  => 'present',
-        command => 'systemctl restart apache2 >/dev/null 2>&1',
-        user    => 'root',
-        minute  => '15',
-        hour    => '23',
-        weekday => '7',
-    }
-
     # Backup repositories
     backup::set { 'srv-repos': }
 
