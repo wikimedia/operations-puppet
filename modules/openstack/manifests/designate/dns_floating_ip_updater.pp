@@ -51,7 +51,7 @@ class openstack::designate::dns_floating_ip_updater(
         systemd::timer::job { 'designate_floating_ip_ptr_records_updater':
             ensure                    => present,
             description               => 'Designate Floating IP PTR records updater',
-            command                   => '/etc/dns-floating-ip-updater.py',
+            command                   => '/usr/local/sbin/wmcs-dns-floating-ip-updater',
             interval                  => {
             'start'    => 'OnCalendar',
             'interval' => '*-*-* *:00/10:00', # Every 10 minutes
