@@ -1375,20 +1375,10 @@ node /^logstash101[0-2]\.eqiad\.wmnet$/ {
     interface::add_ip6_mapped { 'main': } # lint:ignore:wmf_styleguide
 }
 
-node /^logstash101[1-2]\.eqiad\.wmnet$/ {
-    role(logstash::elasticsearch)
-    interface::add_ip6_mapped { 'main': } # lint:ignore:wmf_styleguide
-}
-
 # eqiad logstash collectors (Ganeti)
 node /^logstash100[7-9]\.eqiad\.wmnet$/ {
     role(logstash)
     include ::lvs::realserver
-}
-
-# New logstash servers being setup via T214608
-node /^logstash101[012]\.eqiad\.wmnet$/ {
-    role(spare::system)
 }
 
 # codfw logstash kafka/elasticsearch
