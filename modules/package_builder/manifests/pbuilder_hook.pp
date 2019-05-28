@@ -80,6 +80,15 @@ define package_builder::pbuilder_hook(
         source => 'puppet:///modules/package_builder/hooks/D03spicerack'
     }
 
+    # on stretch, add a hook for building VP9/ffmpeg dependencies from a dedicated component
+    file { "${basepath}/hooks/${distribution}/D04vp9":
+        ensure => present,
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0555',
+        source => 'puppet:///modules/package_builder/hooks/D04vp9'
+    }
+
     # Dependency info
     File["${basepath}/hooks/${distribution}"] -> File["${basepath}/hooks/${distribution}/C10shell.wikimedia.org"]
     File["${basepath}/hooks/${distribution}"] -> File["${basepath}/hooks/${distribution}/D01apt.wikimedia.org"]

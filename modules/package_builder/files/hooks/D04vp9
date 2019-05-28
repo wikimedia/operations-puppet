@@ -1,0 +1,9 @@
+#!/bin/sh
+
+if [ "$VP9" = "yes" ] && [ "$DIST" = "stretch" ]; then
+    cat > /etc/apt/sources.list.d/wikimedia-vp9.list <<-'EOF'
+    deb http://apt.wikimedia.org/wikimedia stretch-wikimedia component/vp9
+    deb-src http://apt.wikimedia.org/wikimedia stretch-wikimedia component/vp9
+EOF
+    apt-get update
+fi
