@@ -2043,7 +2043,7 @@ node /^rhodium.eqiad.wmnet/ {
 
 # NEW network insights (netflow/pmacct, etc.) via T201364
 node 'sulfur.wikimedia.org' {
-    role(netinsights)
+    role(spare::system)
 }
 
 
