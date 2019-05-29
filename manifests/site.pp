@@ -1213,17 +1213,9 @@ node /^icinga[12]001\.wikimedia.org$/ {
 }
 
 # Phabricator
-node /^(phab1001\.eqiad|phab2001\.codfw)\.wmnet$/ {
+node /^(phab1003\.eqiad|phab2001\.codfw)\.wmnet$/ {
     role(phabricator)
     interface::add_ip6_mapped { 'main': }
-}
-
-# temp phab host (T221389)
-node 'phab1003.eqiad.wmnet' {
-    role(phabricator)
-    # lint:ignore:wmf_styleguide
-    interface::add_ip6_mapped { 'main': }
-    # lint:endignore
 }
 
 node 'iron.wikimedia.org' {
