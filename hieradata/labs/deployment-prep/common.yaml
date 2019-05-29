@@ -519,6 +519,11 @@ cache::nodes:
         eqiad:
           - 'deployment-cache-upload05.deployment-prep.eqiad.wmflabs'
 
+# Beta requires slower replication - T160990
+# Container server
+swift::storage::object_replicator_concurrency: 1
+swift::storage::object_replicator_interval: 1800 # seconds
+
 logstash::heap_memory: 1G
 profile::services_proxy::ensure: absent
 profile::mediawiki::deployment::server::rsync_host: deployment-deploy01.deployment-prep.eqiad.wmflabs
