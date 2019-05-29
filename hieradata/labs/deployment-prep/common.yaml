@@ -523,6 +523,8 @@ cache::nodes:
 # Container server
 swift::storage::object_replicator_concurrency: 1
 swift::storage::object_replicator_interval: 1800 # seconds
+# Object server
+swift::storage::object_server_default_workers: 12
 
 logstash::heap_memory: 1G
 profile::services_proxy::ensure: absent
