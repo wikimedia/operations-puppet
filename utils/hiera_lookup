@@ -77,6 +77,8 @@ def determine_scope
   # Transform roles in the form puppet expects
   if scope['::roles']
     scope['_roles'] = Hash[scope['::roles'].split(',').map { |role| [role.gsub('role::', ''), true] }]
+    # Mimic the changes in the role() function
+    scope['::_role'] = scope['_roles'].keys[0].gsub(/::/, '/')
     scope.delete('::roles')
   end
   scope
