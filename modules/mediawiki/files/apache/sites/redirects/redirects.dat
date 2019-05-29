@@ -190,9 +190,6 @@ rewrite	en.wikipedia.com	//en.wikipedia.org
 rewrite	*.wikipedia.com	//*.wikipedia.org
 rewrite	*.wikipedia.net	//*.wikipedia.org
 rewrite	*.wikipedia.info	//*.wikipedia.org
-rewrite	www.*.wikipedia.com	//*.wikipedia.org
-rewrite	www.*.wikipedia.net	//*.wikipedia.org
-rewrite	www.*.wikipedia.info	//*.wikipedia.org
 rewrite	*.wiki-pedia.org	//*.wikipedia.org
 rewrite	wiki-pedia.org	//www.wikipedia.org
 
