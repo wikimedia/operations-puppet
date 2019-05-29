@@ -74,7 +74,7 @@ class Project:
         )
 
 
-def get_instance_ips(project, observer_pass, regions):
+def get_instance_ips(project, observer_pass, regions, auth_url):
     """
     Return a list of Instance internal IPs for a given project
 
@@ -82,7 +82,7 @@ def get_instance_ips(project, observer_pass, regions):
     """
     session = KeystoneSession(
         auth=KeystonePassword(
-            auth_url="http://cloudcontrol1004.wikimedia.org:5000/v3",
+            auth_url=auth_url,
             username="novaobserver",
             password=observer_pass,
             project_name=project,
@@ -126,7 +126,7 @@ def get_instance_ips(project, observer_pass, regions):
     return ips
 
 
-def get_projects_with_nfs(mounts_config, observer_pass):
+def get_projects_with_nfs(mounts_config, observer_pass, auth_url):
     """
     Get populated project objects that need NFS exports
     :param mounts_config: dict
@@ -137,7 +137,7 @@ def get_projects_with_nfs(mounts_config, observer_pass):
     # Special one-off session just to grab the list of regions
     session = KeystoneSession(
         auth=KeystonePassword(
-            auth_url="http://cloudcontrol1004.wikimedia.org:5000/v3",
+            auth_url=auth_url,
             username="novaobserver",
             password=observer_pass,
             project_name="observer",
@@ -163,7 +163,7 @@ def get_projects_with_nfs(mounts_config, observer_pass):
                 continue
         else:
             continue
-        ips = get_instance_ips(name, observer_pass, regions)
+        ips = get_instance_ips(name, observer_pass, regions, auth_url)
         if ips:
             project = Project(name, config["gid"], ips, mounts)
             projects.append(project)
@@ -208,12 +208,14 @@ def write_public_exports(public_exports, exports_d_path):
     return public_paths
 
 
-def write_project_exports(mounts_config, exports_d_path, observer_pass):
+def write_project_exports(
+    mounts_config, exports_d_path, observer_pass, auth_url
+):
     """ output project export definitions
     :param mounts_config: dict of defined exports
     """
     project_paths = []
-    projects = get_projects_with_nfs(mounts_config, observer_pass)
+    projects = get_projects_with_nfs(mounts_config, observer_pass, auth_url)
     for project in projects:
         logging.debug("writing exports file for %s", project.name)
         path = os.path.join(exports_d_path, "%s.exports" % project.name)
@@ -285,8 +287,14 @@ def main():
 
     argparser.add_argument(
         "--observer-pass",
-        required=True,
+        default="",
         help="Password for the OpenStack observer account",
+    )
+
+    argparser.add_argument(
+        "--auth-url",
+        default="",
+        help="Keystone URL -- can be obtained from novaobserver.yaml",
     )
 
     argparser.add_argument(
@@ -307,6 +315,23 @@ def main():
     )
 
     args = argparser.parse_args()
+
+    if not args.observer_pass:
+        if os.path.isfile("/etc/novaobserver.yaml"):
+            with open("/etc/novaobserver.yaml") as conf_fh:
+                nova_observer_config = yaml.safe_load(conf_fh)
+
+            args.observer_pass = nova_observer_config["OS_PASSWORD"]
+            args.auth_url = nova_observer_config["OS_AUTH_URL"]
+        else:
+            argparser.error(
+                "The --observer-pass argument is required without /etc/novaobserver.yaml"
+            )
+
+    if not args.auth_url:
+        argparser.error(
+            "The --auth-url argument is required without /etc/novaobserver.yaml"
+        )
 
     logging.basicConfig(
         format="%(asctime)s %(levelname)s %(message)s",
@@ -337,7 +362,7 @@ def main():
 
         public_paths = write_public_exports(config["public"], exports_d_path)
         project_paths = write_project_exports(
-            config, exports_d_path, args.observer_pass
+            config, exports_d_path, args.observer_pass, args.auth_url
         )
 
         # compile list of entries in export_d path that are not defined in current config

@@ -34,7 +34,6 @@ class profile::wmcs::nfs::primary(
     }
 
     class {'::labstore::fileserver::exports':
-        observer_pass => $observer_pass,
         server_vols   => ['project', 'home', 'tools-home', 'tools-project'],
     }
 

@@ -1,6 +1,5 @@
 # sets up NFS exports on a labstore fileserver
 class labstore::fileserver::exports(
-    $observer_pass,
     $server_vols,
     ) {
     require_package(['python3-yaml'])
@@ -85,8 +84,9 @@ class labstore::fileserver::exports(
     }
 
     systemd::service { 'nfs-exportd':
-        ensure  => 'present',
-        content => systemd_template('nfs-exportd'),
-        require => File['/usr/local/bin/nfs-exportd'],
+        ensure    => 'present',
+        content   => systemd_template('nfs-exportd'),
+        require   => File['/usr/local/bin/nfs-exportd'],
+        subscribe => File['/etc/novaobserver.yaml'],
     }
 }

@@ -37,7 +37,6 @@ class profile::wmcs::nfs::secondary(
     # }
 
     class {'::labstore::fileserver::exports':
-        observer_pass => $observer_pass,
         server_vols   => ['maps'],
     }
 
