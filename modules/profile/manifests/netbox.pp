@@ -311,7 +311,7 @@ class profile::netbox (
                 logging_enabled           => false,
                 monitoring_enabled        => false,
                 monitoring_contact_groups => 'admins',
-                user                      => 'deploy-librenms',
+                user                      => 'nagios',
             }
         }
         else {
