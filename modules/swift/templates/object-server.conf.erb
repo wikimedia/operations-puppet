@@ -2,7 +2,9 @@
 bind_ip = 0.0.0.0
 bind_port = 6000
 devices = /srv/swift-storage/
-workers = 100
+<% if @object_server_default_workers -%>
+workers = <%= @object_server_default_workers %>
+<% end -%>
 <% if @statsd_host -%>
 log_statsd_host = <%= @statsd_host %>
 log_statsd_port = <%= @statsd_port %>

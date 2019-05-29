@@ -6,6 +6,7 @@ class swift::storage (
     $memcached_servers             = ['127.0.0.1:11211'],
     $object_replicator_concurrency = undef,
     $object_replicator_interval    = undef,
+    $object_server_default_workers = undef,
 ) {
     package {
         [ 'swift-account',
