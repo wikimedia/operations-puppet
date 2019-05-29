@@ -368,6 +368,11 @@ host mendelevium {
     option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
 }
 
+host miscweb2001 {
+    hardware ethernet aa:00:00:4b:9d:24;
+    fixed-address miscweb2001.codfw.wmnet;
+}
+
 host mwdebug1001 {
     hardware ethernet aa:00:00:6e:80:dc;
     fixed-address mwdebug1001.eqiad.wmnet;
