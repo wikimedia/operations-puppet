@@ -55,6 +55,14 @@ profile::restbase::hosts:
 graphite_host: 'none'
 profile::cassandra::allow_analytics: false
 profile::cassandra::disable_graphite_metrics: true
+profile::cassandra::client_ips:
+  # Add the kubernetes pod IPs here
+  - 10.64.64.0/21
+  - 2620:0:861:cabe::/64
+  - 10.64.75.0/24
+  - 2620:0:861:babe::/64
+  - 10.192.64.0/21
+  - 2620:0:860:cabe::/64
 
 ## Monitoring
 # skip Icinga monitoring on dev servers (T189050)

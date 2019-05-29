@@ -6,6 +6,7 @@ class profile::cassandra(
     $cassandra_settings = hiera('profile::cassandra::settings'),
     $graphite_host = hiera('graphite_host'),
     $prometheus_nodes = hiera('prometheus_nodes'),
+    Array[Stdlib::IP::Address] $client_ips = hiera('profile::cassandra::client_ips', []),
     $allow_analytics = hiera('profile::cassandra::allow_analytics'),
     $metrics_blacklist = hiera('profile::cassandra::metrics_blacklist', undef),
     $metrics_whitelist = hiera('profile::cassandra::metrics_whitelist', undef),
@@ -80,6 +81,7 @@ class profile::cassandra(
 
     $cassandra_hosts_ferm = join($ferm_seeds, ' ')
     $prometheus_nodes_ferm = join($prometheus_nodes, ' ')
+    $client_ips_ferm = join($client_ips, ' ')
 
     # Cassandra intra-node messaging
     ferm::service { 'cassandra-intra-node':
@@ -106,10 +108,11 @@ class profile::cassandra(
     }
 
     # Cassandra CQL query interface
+    # Note: $client_ips is presumed to be IPs and not be resolved
     ferm::service { 'cassandra-cql':
         proto  => 'tcp',
         port   => '9042',
-        srange => "@resolve((${cassandra_hosts_ferm}))",
+        srange => "(@resolve((${cassandra_hosts_ferm})) ${client_ips_ferm})",
     }
     # Prometheus jmx_exporter for Cassandra
     ferm::service { 'cassandra-jmx_exporter':
