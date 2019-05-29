@@ -210,11 +210,6 @@ module DomainRedirects
           :domain_regex => '^(.+)\.' << Regexp.quote(Regexp.last_match[1]) << '$',
           :alias        => '*.' << Regexp.last_match[1],
         }]
-      when /^([^*]*)\.\*\.([^*]*)/
-        [{
-          :domain_regex => '^' << Regexp.quote(Regexp.last_match[1]) << '\.(.+)\.' << Regexp.quote(Regexp.last_match[2]) << '$',
-          :alias        => wildcard,
-        }]
       when /\*/
         error("invalid use of asterisk in domain pattern")
       else
