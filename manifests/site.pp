@@ -330,12 +330,12 @@ node /^cp30(3[0123]|4[012])\.esams\.wmnet$/ {
     role(cache::text)
 }
 
-node /^cp30(3[4579]|4[34579])\.esams\.wmnet$/ {
+node /^cp30(3[4579]|4[3579])\.esams\.wmnet$/ {
     interface::add_ip6_mapped { 'main': }
     role(cache::upload)
 }
 
-node /^cp30(3[68]|46)\.esams\.wmnet$/ {
+node /^cp30(3[68]|4[46])\.esams\.wmnet$/ {
     interface::add_ip6_mapped { 'main': }
     role(cache::upload_ats)
 }

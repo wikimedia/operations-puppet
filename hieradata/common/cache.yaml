@@ -71,13 +71,13 @@ cache::nodes:
       - 'cp3037.esams.wmnet'
       - 'cp3039.esams.wmnet'
       - 'cp3043.esams.wmnet' # on loan from cache_text
-      - 'cp3044.esams.wmnet'
       - 'cp3045.esams.wmnet'
       - 'cp3047.esams.wmnet'
       - 'cp3049.esams.wmnet'
     esams_ats:
       - 'cp3036.esams.wmnet'
       - 'cp3038.esams.wmnet'
+      - 'cp3044.esams.wmnet'
       - 'cp3046.esams.wmnet'
     ulsfo_ats:
       - 'cp4021.ulsfo.wmnet'
