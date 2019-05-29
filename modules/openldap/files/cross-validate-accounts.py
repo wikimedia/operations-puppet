@@ -209,7 +209,7 @@ def validate_all_yaml_group_members_are_defined(known_users, yamldata):
 # Make sure all members of a privileged LDAP group are defined in YAML
 def validate_all_ldap_group_members_are_defined(known_users):
     log = ""
-    for group in ['ops', 'wmf', 'nda']:
+    for group in ['ops', 'wmf', 'nda', 'wmde']:
         ldap_members = get_ldap_group_members(group)
 
         for i in ldap_members:
