@@ -31,6 +31,7 @@ class routinator(
         ensure     => present,
         gid        => 'routinator',
         home       => '/etc/routinator',
+        system     => true,
         managehome => true,
     }
 
