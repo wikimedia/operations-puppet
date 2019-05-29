@@ -22,6 +22,10 @@ class openstack::keystone::cleanup (
     String  $db_name,
 ) {
 
+    package { 'default-mysql-client':
+        ensure => 'present',
+    }
+
     # systemd::timer::job does not take a boolean
     if $active {
         $ensure = 'present'
