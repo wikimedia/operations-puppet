@@ -22,7 +22,7 @@ class profile::releases::mediawiki (
 
     # Master connect to itself via the fqdn / primary IP ipaddress
     class { 'jenkins::slave':
-        ssh_key => jenkins_agent_key,
+        ssh_key => $jenkins_agent_key,
         user    => $jenkins_agent_username,
         workdir => '/srv/jenkins-slave',
     }
