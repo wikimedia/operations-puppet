@@ -2525,7 +2525,7 @@ users:
       - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQC/gM+ET26j1I16ZWjbbcoWQhMNYj3AlS0yZQCSnLKbv6pbGCOs9xtTsxQQLH71ITdrlvS9E7KTjR4Ycn/gbgprkrtxCT89U4kU41kQTDHfAow8zodB7S99B0NR2cfUzAVglzw28mDfiCnlk7RS761Zgw+vJhrvGIwwwQngDXR7Y3PN8I3n6h4Jvv3Sm+NvWZD2j/OzeGWZF6XE60sRxXR9IriEjSpETqTwrAk6l0PhrJgzccfEtFWWcLy+ueSrSjL7TF6rxG663C8WA3F2NGm3GTGJCwxGyH94urPOoHZ/Xfqwa3vt6al8DLNpgVziUPnARXN0DsNsT0bUV2MIhRm1b0vapWUySFHr4yyGYjoMzB4WWqQZXeswJr4LYhf2j8RRhjacKp4ucKwbNO/ytwXzwvAGXXxgA+RGqxcKp6wwGVyZNDS0kRyI23xlaIM7N9nJxsK+q9n7uTDeeR+beUxmqoRg0x4pt8nNI2C+NnNL0vKdZtPtHBhunIN2ARycBm8Q8oEfOq/eA7RDw+srPFCaadG0z9jQ0qJB69RHCVZZohCHv7Jryz+iHTdiRcAPqUBCB9MwcpzqkWUirdpSQR1kz0qJpGN3BWxU6VlDpBpMRnjByTcAigVPfei2fOzAH3P7k1yE9eoT7ooyU+RtLreYbtCODpp03sTwRTOzvbjWiQ==
     uid: 15999
     email: tiziano.piccardi@epfl.ch
-    expiry_date: 2019-05-29
+    expiry_date: 2019-11-29
     expiry_contact: leila@wikimedia.org
   fdans:
     ensure: present
