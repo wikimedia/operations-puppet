@@ -25,8 +25,8 @@ profile::base::labs::unattended_distro: 'present'
 profile::base::check_raid: false
 profile::openstack::eqiad1::version: 'mitaka'
 profile::openstack::base::region: "eqiad1-r"
-profile::openstack::eqiad1::nova_controller: 'cloudcontrol1004.wikimedia.org'
-profile::openstack::eqiad1::keystone_host: 'cloudcontrol1004.wikimedia.org'
+profile::openstack::eqiad1::nova_controller: 'cloudcontrol1003.wikimedia.org'
+profile::openstack::eqiad1::keystone_host: 'cloudcontrol1003.wikimedia.org'
 profile::openstack::base::observer_user: 'novaobserver'
 profile::openstack::eqiad1::region: 'eqiad1-r'
 # publicly available read-only credentials
@@ -165,7 +165,7 @@ profile::base::ssh_server_settings:
   challenge_response_auth: false
 
 labs_puppet_master: "labs-puppetmaster.wikimedia.org"
-labs_keystone_host: "cloudcontrol1004.wikimedia.org"
+labs_keystone_host: "cloudcontrol1003.wikimedia.org"
 puppetmaster: "labs-puppetmaster.wikimedia.org"
 puppet_ca_server: ""
 keystone_public_port: '5000'
