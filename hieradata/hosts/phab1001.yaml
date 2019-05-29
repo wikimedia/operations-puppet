@@ -15,4 +15,4 @@ phabricator::vcs::listen_addresses:
 phabricator::vcs::address::v4: "10.64.16.100"
 phabricator::vcs::address::v6: "2620:0:861:102:10:64:16:100"
 
-phabricator_logmail: true
+phabricator_logmail: false
