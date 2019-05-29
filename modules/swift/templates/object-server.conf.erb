@@ -33,6 +33,9 @@ allowed_headers = content-disposition,
 <% if @object_replicator_concurrency -%>
 concurrency = <%= @object_replicator_concurrency %>
 <% end -%>
+<% if @object_replicator_interval -%>
+interval = <%= @object_replicator_interval %>
+<% end -%>
 # Don't let replication rsyncs starve other processes of CPU or I/O.
 nice_priority = 1
 # ionice_class and ionice_priority must be specified together.

@@ -12,7 +12,8 @@ class role::swift::storage {
     class { '::swift::storage':
         statsd_metric_prefix          => "swift.${::swift::params::swift_cluster}.${::hostname}",
         memcached_servers             => hiera('swift::proxy::memcached_servers'),
-        object_replicator_concurrency => hiera('swift::storage::object_replicator_concurrency')  # lint:ignore:wmf_styleguide
+        object_replicator_concurrency => hiera('swift::storage::object_replicator_concurrency'),  # lint:ignore:wmf_styleguide
+        object_replicator_interval    => hiera('swift::storage::object_replicator_interval', undef),  # lint:ignore:wmf_styleguide
     }
     include ::swift::container_sync
     include ::swift::storage::monitoring
