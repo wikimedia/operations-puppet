@@ -360,8 +360,8 @@ rewrite	uk.wikimedia.org	https://wikimedia.org.uk/
 rewrite	ve.wikimedia.org	http://wikimedia.org.ve
 
 # Wikimania
-rewrite	*wikimania.org	//wikimania%{TIME_YEAR}.wikimedia.org
-rewrite	*wikimania.com	//wikimania%{TIME_YEAR}.wikimedia.org
+rewrite	*wikimania.org	//wikimania.wikimedia.org
+rewrite	*wikimania.com	//wikimania.wikimedia.org
 rewrite	wikimania2019.wikimedia.org	//wikimania.wikimedia.org
 
 # Labs redirects -> wikitech
