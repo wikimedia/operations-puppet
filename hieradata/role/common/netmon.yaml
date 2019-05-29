@@ -9,21 +9,21 @@ diamond::remove: true
 profile::netbox::netbox_report_checks:
     -   name: puppetdb
         classes: 'puppetdb.PuppetDB'
-        alert: false
+        alert: true
         check_interval: 5
         run_interval: '*-*-* *:06/30:00' # every 30 minutes
     -   name: coherence
         classes: 'coherence.Coherence'
-        alert: false
+        alert: true
         check_interval: 5
         run_interval: '*-*-* *:09/30:00' # every 30 minutes
     -   name: management
         classes: 'management.ManagementConsole'
-        alert: false
+        alert: true
         check_interval: 5
         run_interval: '*-*-* *:03/30:00' # every 30 minutes
     -   name: accounting
         classes: 'accounting.Accounting'
-        alert: false
+        alert: true
         check_interval: null
         run_interval: '*-*-* 23:12:00' # once a day at 23:12 UTC

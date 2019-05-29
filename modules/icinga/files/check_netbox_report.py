@@ -89,7 +89,8 @@ def run_report(report_result):
 
     """
     logger.info("Running report %s", report_result.name)
-    url = report_result.url + "run/"
+    # for some reason the URL field switches the scheme, but we know better
+    url = (report_result.url + "run/").replace('http://', 'https://')
     headers = {
         "Authorization": "Token {}".format(report_result.api.token),
         "Accept": "application/json",
