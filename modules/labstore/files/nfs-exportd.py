@@ -112,7 +112,7 @@ def get_instance_ips(project, observer_pass, regions):
         except keystoneauth1.exceptions.http.Unauthorized:
             logging.error("Failed to get server list for project %s."
                           "  Maybe the project was deleted." % project)
-            ips = []
+            raise
 
     return ips
 
