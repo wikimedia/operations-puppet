@@ -23,7 +23,12 @@ recon_cache_path = /var/cache/swift
 use = egg:swift#container
 
 [container-replicator]
-concurrency = 1
+<% if @container_replicator_concurrency -%>
+concurrency = <%= @container_replicator_concurrency %>
+<% end -%>
+<% if @container_replicator_interval -%>
+interval = <%= @container_replicator_interval %>
+<% end -%>
 
 [container-updater]
 concurrency = 1
