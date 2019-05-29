@@ -2,6 +2,9 @@
 #debug_level=10
 domains = wikimedia.org
 default_domain_suffix = wikimedia.org
+<% if @lsbdistcodename == 'jessie' %>
+domain_resolution_order = wikimedia.org
+<% end %>
 full_name_format = %1$s
 services = nss, pam, ssh, sudo
 config_file_version = 2
@@ -35,7 +38,11 @@ ldap_tls_reqcert = demand
 ldap_id_use_start_tls = False
 ldap_tls_cacertdir = /etc/openldap/cacerts
 ldap_schema = rfc2307bis
+<% if @lsbdistcodename == 'jessie' %>
+use_fully_qualified_names = False
+<% else %>
 use_fully_qualified_names = True
+<% end %>
 ldap_page_size = <%= @ldapconfig["pagesize"] %>
 # https://linux.die.net/man/5/sudoers.ldap
 sudo_provider = ldap
