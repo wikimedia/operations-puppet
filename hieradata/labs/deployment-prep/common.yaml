@@ -526,6 +526,9 @@ swift::storage::object_replicator_interval: 1800 # seconds
 # Object server
 swift::storage::object_server_default_workers: 12
 
+swift::storage::container_replicator_concurrency: 1
+swift::storage::container_replicator_interval: 1200 # seconds
+
 logstash::heap_memory: 1G
 profile::services_proxy::ensure: absent
 profile::mediawiki::deployment::server::rsync_host: deployment-deploy01.deployment-prep.eqiad.wmflabs
