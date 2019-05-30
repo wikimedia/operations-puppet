@@ -39,7 +39,8 @@ def check_restart(service_name, dry_run, exclude_mounts=None, exclude_filesystem
             command += ['-e', mount]
 
     try:
-        del_files = subprocess.check_output(command, universal_newlines=True)
+        del_files = subprocess.check_output(
+            command, universal_newlines=True, stderr=subprocess.DEVNULL)
     except subprocess.CalledProcessError as e:
         logger.info("Could not query the PID(s) of %s: %s", service_name, e.returncode)
         return 1
