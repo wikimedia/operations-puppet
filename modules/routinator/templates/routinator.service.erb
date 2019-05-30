@@ -5,7 +5,7 @@ Documentation=man:routinator(1)
 After=network.target
 
 [Service]
-ExecStart=/usr/bin/routinator --syslog --tal-dir=/etc/routinator/tals --repository-dir=/var/lib/routinator/repository rtrd -a -l 0.0.0.0:<%= @rtr_port %> --listen-http 0.0.0.0:9556
+ExecStart=/usr/bin/routinator --syslog --tal-dir=/etc/routinator/tals --repository-dir=/var/lib/routinator/repository rtrd -a -l [::]:<%= @rtr_port %> --listen-http [::]:9556
 Type=exec
 RestartSec=0
 SyslogIdentifier=routinator
