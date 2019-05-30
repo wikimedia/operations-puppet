@@ -3202,6 +3202,15 @@ users:
     email: iflorez-ctr@wikimedia.org
     expiry_date: 2020-05-31
     expiry_contact: gfields@wikimedia.org
+  jeh:
+    ensure: present
+    gid: 500
+    name: jeh
+    realname: Jason Hedden
+    ssh_keys:
+      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPjZq2lUicJxSAKeKAsb8KT8rm7RbG8MEF3NCjn5ymw/ jhedden@wikimedia.org
+    uid: 21436
+    email: jhedden@wikimedia.org
 ldap_only_users:
   abartov:
     ensure: present
