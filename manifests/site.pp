@@ -1968,6 +1968,7 @@ node 'roentgenium.eqiad.wmnet' {
 # virtual machines for https://wikitech.wikimedia.org/wiki/RPKI#Validation
 node /^rpki[12]001\.(eqiad|codfw)\.wmnet$/ {
     role(rpkivalidator)
+    interface::add_ip6_mapped { 'main': }
 }
 
 # people.wikimedia.org, for all shell users
