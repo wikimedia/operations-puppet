@@ -322,4 +322,4 @@ syntax.filemap:
   '@\\.divinerconfig$@': 'js'
   '@\\.rs$@': 'rust'
 
-log.ssh.path: '/var/log/phd/ssh.log
+log.ssh.path: '/var/log/phd/ssh.log'
