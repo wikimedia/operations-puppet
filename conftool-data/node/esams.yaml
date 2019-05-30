@@ -19,7 +19,7 @@ esams:
     cp3045.esams.wmnet: [varnish-fe, varnish-be, nginx]
     cp3046.esams.wmnet: [varnish-fe, ats-be, nginx]
     cp3047.esams.wmnet: [varnish-fe, ats-be, nginx]
-    cp3049.esams.wmnet: [varnish-fe, varnish-be, nginx]
+    cp3049.esams.wmnet: [varnish-fe, ats-be, nginx]
   dns:
     maerlant.wikimedia.org: [pdns_recursor]
     nescio.wikimedia.org: [pdns_recursor]
