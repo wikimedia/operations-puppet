@@ -9,7 +9,7 @@ profile::base::ssh_server_settings:
 phabricator::vcs::listen_addresses:
 # - "208.80.154.250"
   - "10.64.16.100"
-  - "[2620:0:861:ed1a::3:16]"
+#  - "[2620:0:861:ed1a::3:16]"
   - "[2620:0:861:102:10:64:16:100]"
 
 phabricator::vcs::address::v4: "10.64.16.100"

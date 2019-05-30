@@ -7,9 +7,10 @@ profile::base::ssh_server_settings:
 # the public and private networks.
 # This is used in modules/phabricator/templates/sshd_config.phabricator.erb
 phabricator::vcs::listen_addresses:
-  - "10.64.48.22"
-  - "[2620:0:861:107:10:64:48:22]"
   - "208.80.154.250"
+  - "10.64.48.22"
+  - "[2620:0:861:ed1a::3:16]"
+  - "[2620:0:861:107:10:64:48:22]"
 
 phabricator::vcs::address::v4: "10.64.48.22"
 phabricator::vcs::address::v6: "2620:0:861:107:10:64:48:22"
