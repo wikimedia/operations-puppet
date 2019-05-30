@@ -33,8 +33,16 @@ module DomainRedirects
   class Parser
     attr_accessor :line_num
 
-    def initialize(source)
+    def initialize(source, web_server = 'apache')
       @lines = source.lines.map(&:rstrip)
+      @web_server = web_server
+      if @web_server == 'apache'
+        @original_request = '$0'
+        @group_dest = '%1'
+      else
+        @original_request = '$request_uri'
+        @group_dest = '$1'
+      end
       @rules = {
         :wildcard           => [],
         :plain              => [],
@@ -59,7 +67,11 @@ module DomainRedirects
       end
       check_orphan_overrides
       check_loops
-      write_apache_conf(dest)
+      if @web_server == 'apache'
+        write_apache_conf(dest)
+      else
+        write_nginx_conf(dest)
+      end
     end
 
     def error(msg, line_num = @line_num)
@@ -74,7 +86,7 @@ module DomainRedirects
         wildcard_list.each do |wildcard|
           domain_regex = wildcard[:domain_regex]
           if domain_regex.include? '('
-            wildcard_dest = dest_info[:dest].gsub('*', '%1')
+            wildcard_dest = dest_info[:dest].gsub('*', @group_dest)
           else
             wildcard_dest = dest_info[:dest]
           end
@@ -111,13 +123,13 @@ module DomainRedirects
         wildcard_list.each do |wildcard|
           domain_regex = wildcard[:domain_regex]
           wildcard_dest = dest_info[:dest]
-          wildcard_dest.gsub!('*', '%1') if domain_regex.include? '('
+          wildcard_dest.gsub!('*', @group_dest) if domain_regex.include? '('
           @rules[:wildcard] << {
             :domain       => domain,
             :domain_regex => domain_regex,
             :alias        => wildcard[:alias],
             :path_regex   => '^[^\x00-\x1F]*',
-            :dest         => "#{wildcard_dest}$0",
+            :dest         => "#{wildcard_dest}#{@original_request}",
             :dest_domain  => dest_info[:domain],
             :line_num     => @line_num,
           }
@@ -128,7 +140,7 @@ module DomainRedirects
           :domain_regex => "=#{domain}",
           :alias        => domain,
           :path_regex   => '^[^\x00-\x1F]*',
-          :dest         => dest_info[:dest] + '$0',
+          :dest         => dest_info[:dest] + @original_request,
           :dest_domain  => dest_info[:domain],
           :line_num     => @line_num,
         }
@@ -145,7 +157,7 @@ module DomainRedirects
         wildcard_list.each do |wildcard|
           domain_regex = wildcard[:domain_regex]
           if domain_regex.include? '('
-            wildcard_dest = dest_info[:dest].gsub('*', '%1')
+            wildcard_dest = dest_info[:dest].gsub('*', @group_dest)
           else
             wildcard_dest = dest_info[:dest]
           end
@@ -153,6 +165,7 @@ module DomainRedirects
             :domain       => domain,
             :domain_regex => domain_regex,
             :alias        => wildcard[:alias],
+            :path         => Regexp.quote(path),
             :path_regex   => '^/' + Regexp.quote(path) + '$',
             :dest         => wildcard_dest,
             :dest_domain  => dest_info[:domain],
@@ -164,6 +177,7 @@ module DomainRedirects
           :domain       => domain,
           :domain_regex => "=#{domain}",
           :alias        => domain,
+          :path         => Regexp.quote(path),
           :path_regex   => '^/' + Regexp.quote(path) + '$',
           :dest         => dest_info[:dest],
           :dest_domain  => dest_info[:domain],
@@ -175,8 +189,15 @@ module DomainRedirects
     # Interpret a <dest> token and return information about it. See the comment
     # in redirects.dat for information about forms it can take.
     def interpret_dest(dest)
+      if @web_server == 'apache'
+        escape_char = '\\%'
+        same_proto_redirect = '%{ENV:RW_PROTO}:'
+      else
+        escape_char = '%'
+        same_proto_redirect = '$scheme:'
+      end
       dest = dest.gsub(/[^\p{ASCII}]/) do |c|
-        '\\%' + c.unpack('H2' * c.bytesize).join('\\%').upcase
+        escape_char + c.unpack('H2' * c.bytesize).join(escape_char).upcase
       end
       case dest
       when %r{^(https?://)([^/]*)(/.*$|$)}
@@ -184,7 +205,7 @@ module DomainRedirects
         path = Regexp.last_match[3]
         dest += '/' if path.empty?
       when %r{^//([^/]*)(/.*$|$)}
-        dest = '%{ENV:RW_PROTO}:' + dest
+        dest = same_proto_redirect + dest
         domain = Regexp.last_match[1]
         path = Regexp.last_match[2]
         dest += '/' if path.empty?
@@ -241,7 +262,7 @@ module DomainRedirects
           outbound_domain = outbound_rule[:dest_domain]
           inbound_domain = inbound_rule[:domain]
           inbound_regex = inbound_rule[:domain_regex]
-          if outbound_domain =~ /%1/
+          if outbound_domain =~ /#{@group_dest.sub('$', '\$')}/
             if inbound_domain.end_with? $'
               error("double redirect: rule has destination domain #{outbound_domain} "\
                     "which matches relevant suffix of source domain '#{inbound_domain}' "\
@@ -259,6 +280,39 @@ module DomainRedirects
           end
         end
       end
+    end
+
+    def write_nginx_conf(dest)
+      dest.puts "map $host $rewrite {\n\thostnames;\n"
+      [:plain, :wildcard].each do |type|
+        lower_camel_name = type.to_s.gsub(/_(\w)/) { Regexp.last_match[1].upcase }
+        dest.puts "\n\t# Type: #{lower_camel_name}\n"
+        @rules[type].each do |rule|
+          dest.puts "\t# #{@lines[rule[:line_num] - 1]}"
+          if rule[:dest] =~ /#{@group_dest.sub('$', '\$')}/
+            dest.puts "\t~#{rule[:domain_regex]}\t#{rule[:dest]};"
+          else
+            dest.puts "\t#{rule[:alias]}\t#{rule[:dest]};"
+          end
+        end
+      end
+      dest.puts "}\n"
+
+      dest.puts "map $host$uri $override {\n\thostnames;\n"
+      [:plain_override, :wildcard_override].each do |type|
+        lower_camel_name = type.to_s.gsub(/_(\w)/) { Regexp.last_match[1].upcase }
+        dest.puts "\n\t# Type: #{lower_camel_name}\n"
+        @rules[type].each do |rule|
+          dest.puts "\t# #{@lines[rule[:line_num] - 1]}"
+          if rule[:dest] =~ /#{@group_dest.sub('$', '\$')}/
+            dest.puts "\t~#{rule[:domain_regex]}\t#{rule[:dest]};"
+          else
+            dest.puts "\t#{rule[:alias]}/#{rule[:path]}\t#{rule[:dest]};"
+          end
+        end
+      end
+      dest.puts "}"
+      dest
     end
 
     # Write the collected rules to the output file.
@@ -335,22 +389,32 @@ module DomainRedirects
 end
 
 if __FILE__ == $PROGRAM_NAME
-  abort "Usage: #{$PROGRAM_NAME} DAT_FILE" if ARGV.empty?
-  parser = DomainRedirects::Parser.new(File.read(ARGV.shift))
+  abort "Usage: #{$PROGRAM_NAME} DAT_FILE [apache|nginx]" if ARGV.length < 1 || ARGV.length > 2
+  if ARGV.length == 1
+    web_server = 'apache'
+  else
+    web_server = ARGV[1]
+  end
+  parser = DomainRedirects::Parser.new(File.read(ARGV[0]), web_server)
   parser.parse_to(STDOUT)
   exit 0
 end
 
 module Puppet::Parser::Functions
   newfunction(:compile_redirects, :type => :rvalue) do |args|
-    raise Puppet::ParseError, 'compile_redirects() takes one argument' if args.length != 1
+    raise Puppet::ParseError, 'compile_redirects() requires at least one argument' if args.length < 1 || args.length > 2
     Puppet::Parser::Functions.autoloader.loadall
     input = case args.first
             when %r{^puppet://.*} then Puppet::FileServing::Content.indirection.find($&).content.force_encoding("utf-8")
             when %r{^/} then function_file(args)
             else args.first
             end
-    parser = DomainRedirects::Parser.new(input)
+    if args.length == 1
+      web_server = 'apache'
+    else
+      web_server = args[1]
+    end
+    parser = DomainRedirects::Parser.new(input, web_server)
     parser.parse
   end
 end
