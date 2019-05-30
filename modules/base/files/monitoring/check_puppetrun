@@ -119,7 +119,7 @@ end
 
 if failcount == :failed_no_resources
     puts "CRITICAL: Failed to apply catalog, zero resources tracked by Puppet. " +
-         "It might be a dependency cycle."
+         "Could be an interrupted request or a dependency cycle."
     exit 2
 end
 
