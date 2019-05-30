@@ -321,3 +321,5 @@ syntax.filemap:
   '@\\.arclint$@': 'js'
   '@\\.divinerconfig$@': 'js'
   '@\\.rs$@': 'rust'
+
+log.ssh.path: '/var/log/phd/ssh.log
