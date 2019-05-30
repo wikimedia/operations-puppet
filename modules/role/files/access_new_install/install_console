@@ -15,6 +15,6 @@ if [ "$#" -le 0 ]; then
     exit 1
 fi
 
-exec ssh -i /root/.ssh/new_install \
+exec ssh -4 -i /root/.ssh/new_install \
     -o UserKnownHostsFile=/dev/null \
     -o StrictHostKeyChecking=no $@
