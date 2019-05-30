@@ -19,13 +19,13 @@ class phabricator::aphlict(
     $aphlict_start_cmd = "${phabdir}bin/aphlict start --config ${aphlict_conf}"
     $aphlict_stop_cmd = "${phabdir}bin/aphlict stop --config ${aphlict_conf}"
 
-    # Ordering
-    Package['nodejs'] -> File[$aphlict_conf] ~> Service['aphlict']
-    File['/var/run/aphlict/'] -> File['/var/log/aphlict/'] -> Service['aphlict']
-    User[$user] -> Service['aphlict']
-    File[$node_modules] ~> Service['aphlict']
-
     if $ensure == 'present' {
+        # Ordering
+        Package['nodejs'] -> File[$aphlict_conf] ~> Service['aphlict']
+        File['/var/run/aphlict'] -> File['/var/log/aphlict'] -> Service['aphlict']
+        User[$user] -> Service['aphlict']
+        File[$node_modules] ~> Service['aphlict']
+
         $directory = 'directory'
         $service_ensure = 'running'
     } else {
@@ -48,13 +48,13 @@ class phabricator::aphlict(
         mode    => '0644',
     }
 
-    file { '/var/run/aphlict/':
+    file { '/var/run/aphlict':
         ensure => $directory,
         owner  => $user,
         group  => $group,
     }
 
-    file { '/var/log/aphlict/':
+    file { '/var/log/aphlict':
         ensure => $directory,
         owner  => $user,
         group  => $group,
@@ -63,7 +63,7 @@ class phabricator::aphlict(
     logrotate::conf { 'aphlict':
         ensure  => $ensure,
         source  => 'puppet:///modules/phabricator/logrotate_aphlict',
-        require => File['/var/log/aphlict/'],
+        require => File['/var/log/aphlict'],
     }
 
     # accounts
