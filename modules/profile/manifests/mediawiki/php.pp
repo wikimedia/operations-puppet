@@ -72,7 +72,7 @@ class profile::mediawiki::php(
         'opcache.max_accelerated_files'   => 24000,
         'opcache.max_wasted_percentage'   => 10,
         'opcache.validate_timestamps'     => 1,
-        'opcache.revalidate_freq'         => 60,
+        'opcache.revalidate_freq'         => 10,
         'auto_prepend_file'               => '/srv/mediawiki/wmf-config/PhpAutoPrepend.php',
         'display_errors'                  => 0,
         'session.upload_progress.enabled' => 0,
