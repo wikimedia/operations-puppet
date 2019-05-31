@@ -57,7 +57,7 @@ class profile::wmcs::nfsclient(
         labstore::nfs_mount { $server:
             mount_name  => 'scratch',
             project     => $::labsproject,
-            options     => ['ro', 'soft', 'timeo=300', 'retrans=3'],
+            options     => ['rw', 'soft', 'timeo=300', 'retrans=3'],
             mount_path  => "/mnt/nfs/secondary-${server}-scratch",
             share_path  => '/scratch',
             server      => $server,
