@@ -3618,3 +3618,7 @@ ldap_only_users:
     ensure: present
     realname: Peter Pelberg
     email: ppelberg@wikimedia.org
+  darthmon:
+    ensure: present
+    realname: Monica Pinedo
+    email: monica.pinedo@wikimedia.de
