@@ -298,6 +298,11 @@ puppetmaster_labtest:
 mediawiki_test_environment:
   __regex: !ruby/regexp /^mwdebug(1[0-9]+\.eqiad|2[0-9]+\.codfw)\.wmnet$/
   profile::base::environment: mediawiki_test
+  profile::mediawiki::apc_shm_size: 128M
+  profile::mediawiki::php::fpm_config:
+    opcache.interned_strings_buffer: 50
+    opcache.memory_consumption: 300
+
 
 # Test to see if Nutcracker is still used for Memcached
 # T214275
