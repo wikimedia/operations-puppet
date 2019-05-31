@@ -126,7 +126,6 @@ class snapshot::dumps::configs(
                 wikis => {
                     wikidatawiki => {
                         pagesPerChunkHistory  => "${wikidatachunkhistory1},${$wikidatachunkhistory2}",
-                        orderrevs             => '1',
                         minpages              => '10',
                         lbzip2forhistory      => '1',
                     },
