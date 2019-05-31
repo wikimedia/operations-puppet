@@ -82,9 +82,10 @@ class profile::wmcs::nfs::secondary(
     }
 
 
-    # TODO: enable monitoring when appropriate
-    # class {'labstore::monitoring::exports': }
-    # class {'labstore::monitoring::ldap': }
+    class {'labstore::monitoring::exports': }
+    class {'labstore::monitoring::ldap': }
+
+    # TODO: Modify this for 10G ethernet
     # class { 'labstore::monitoring::interfaces':
     #     monitor_iface => $monitor_iface,
     # }
