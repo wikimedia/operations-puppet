@@ -113,6 +113,11 @@ class profile::prometheus::k8s (
         {
             'job_name'              => 'k8s-pods',
             'bearer_token_file'     => $bearer_token_file,
+            # Note: We dont verify the cert on purpose. Issues IP SAN based
+            # certs for all pods is impossible
+            'tls_config'            => {
+                insecure_skip_verify =>  true,
+            },
             'kubernetes_sd_configs' => [
                 {
                     'api_server'        => "https://${master_host}:6443",
@@ -130,6 +135,12 @@ class profile::prometheus::k8s (
                     'action'        => 'replace',
                     'source_labels' => ['__meta_kubernetes_pod_annotation_prometheus_io_path'],
                     'target_label'  => '__metrics_path__',
+                    'regex'         => '(.+)',
+                },
+                {
+                    'action'        => 'replace',
+                    'source_labels' => ['__meta_kubernetes_pod_annotation_prometheus_io_scheme'],
+                    'target_label'  => '__scheme__',
                     'regex'         => '(.+)',
                 },
                 {
