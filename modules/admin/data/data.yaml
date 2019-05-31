@@ -2694,7 +2694,7 @@ users:
     name: aborrero
     realname: Arturo Borrero Gonzalez
     ssh_keys:
-      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC6RtPrxlPVQo8LuBeSZiOJ3yo0M+LQPlLWTsCjxe/Tuk7LbiQy/Now7mAbMmDhOLfmkEfyDkfq0ZWqiqdqVqxcuGuxWNNfnUyTVsoamIbTv+VXx/XUoVvBT2MJt42VWNanZeK/0qqHE0bnGnZ5peMrwfj2dQsklE9FEJV1r+hVtvAhkSmkxpHnPg0GdJEubyUOnp1mSaDsjdTeYC1Ct2L4fZgD2eql3kDtxzzZGqdnF4GbgDi4KIghd4XzZXQIbjMrt17WsiY4G7zlqh9DanAA1pf6f+q+Xt+Bs837uPZHX+eU27K/O6peHf+l7qHYctr33S9La6wSNl2wfhRuKCIV aborrero@wikimedia.org
+      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIInHKi3MxDy91mgCV3x3MBFxCFWbM5QziRGJwdRRiVun aborrero@wikimedia.org production
     uid: 18194
     email: aborrero@wikimedia.org
   phedenskog:
