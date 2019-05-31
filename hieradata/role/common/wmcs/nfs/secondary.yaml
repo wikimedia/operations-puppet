@@ -22,5 +22,5 @@ admin::groups:
   - wmcs-roots
 
 # For after deploy
-# profile::base::check_disk_critical: true
-# profile::base::notifications: critical
+profile::base::check_disk_critical: true
+profile::base::notifications: critical

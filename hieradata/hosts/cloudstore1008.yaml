@@ -1,2 +1,1 @@
-profile::base::notifications: disabled
 profile::openstack::eqiad1::version: newton

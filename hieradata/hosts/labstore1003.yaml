@@ -2,6 +2,8 @@ profile::dumps::distribution::datasets::cleanup::isreplica: false
 profile::dumps::distribution::xmldumpspublicdir: '/srv/dumps/public'
 profile::dumps::distribution::miscdumpsdir: '/srv/dumps'
 profile::dumps::distribution::dumpstempdir: '/srv/dumps/temp'
+profile::base::notifications: disabled
+
 
 profile::base::domain_search:
   - wikimedia.org
