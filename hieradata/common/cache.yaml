@@ -68,7 +68,7 @@ cache::nodes:
     esams:
       - 'cp3034.esams.wmnet'
       - 'cp3035.esams.wmnet'
-      - 'cp3037.esams.wmnet'
+      # - 'cp3037.esams.wmnet' dead in T222041
       - 'cp3039.esams.wmnet'
       - 'cp3043.esams.wmnet' # on loan from cache_text
       - 'cp3045.esams.wmnet'
