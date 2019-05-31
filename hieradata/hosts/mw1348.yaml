@@ -5,3 +5,4 @@ profile::mediawiki::php::fpm_config:
   opcache.interned_strings_buffer: 96
   opcache.memory_consumption: 512
   apc.ttl: 10
+  opcache.revalidate_freq: 10
