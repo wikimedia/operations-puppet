@@ -3,21 +3,21 @@ groups:
 - name: rules_ops.conf
   rules:
   - record: cluster_device:network_transmit_bytes:rate5m
-    expr: sum by(cluster, device) (rate(node_network_transmit_bytes{job="node"}[5m]))
+    expr: sum by(cluster, device) (rate(node_network_transmit_bytes_total{job="node"}[5m]))
   - record: cluster_device:network_receive_bytes:rate5m
-    expr: sum by(cluster, device) (rate(node_network_receive_bytes{job="node"}[5m]))
+    expr: sum by(cluster, device) (rate(node_network_receive_bytes_total{job="node"}[5m]))
   - record: cluster_device:network_transmit_packets:rate5m
-    expr: sum by(cluster, device) (rate(node_network_transmit_packets{job="node"}[5m]))
+    expr: sum by(cluster, device) (rate(node_network_transmit_packets_total{job="node"}[5m]))
   - record: cluster_device:network_receive_packets:rate5m
-    expr: sum by(cluster, device) (rate(node_network_receive_packets{job="node"}[5m]))
+    expr: sum by(cluster, device) (rate(node_network_receive_packets_total{job="node"}[5m]))
   - record: cluster_device:network_transmit_drop:rate5m
-    expr: sum by(cluster, device) (rate(node_network_transmit_drop{job="node"}[5m]))
+    expr: sum by(cluster, device) (rate(node_network_transmit_drop_total{job="node"}[5m]))
   - record: cluster_device:network_receive_drop:rate5m
-    expr: sum by(cluster, device) (rate(node_network_receive_drop{job="node"}[5m]))
+    expr: sum by(cluster, device) (rate(node_network_receive_drop_total{job="node"}[5m]))
   - record: cluster_device:network_transmit_errs:rate5m
-    expr: sum by(cluster, device) (rate(node_network_transmit_errs{job="node"}[5m]))
+    expr: sum by(cluster, device) (rate(node_network_transmit_errs_total{job="node"}[5m]))
   - record: cluster_device:network_receive_errs:rate5m
-    expr: sum by(cluster, device) (rate(node_network_receive_errs{job="node"}[5m]))
+    expr: sum by(cluster, device) (rate(node_network_receive_errs_total{job="node"}[5m]))
   - record: cluster:netstat_IpExt_InCsumErrors:rate5m
     expr: sum by(cluster) (rate(node_netstat_IpExt_InCsumErrors{job="node"}[5m]))
   - record: cluster:netstat_Ip_FragFails:rate5m
@@ -135,43 +135,43 @@ groups:
   - record: cluster:sockstat_sockets_used:rate5m
     expr: sum by(cluster) (rate(node_sockstat_sockets_used{job="node"}[5m]))
   - record: cluster_mode:cpu:rate5m
-    expr: avg by(cluster, mode) (rate(node_cpu{job="node"}[5m]))
+    expr: avg by(cluster, mode) (rate(node_cpu_seconds_total{job="node"}[5m]))
   - record: instance_mode:cpu:rate5m
-    expr: avg by(instance, mode) (rate(node_cpu{job="node"}[5m]))
+    expr: avg by(instance, mode) (rate(node_cpu_seconds_total{job="node"}[5m]))
   - record: instance_cluster:node_cpu:count
-    expr: count by(instance, cluster) (node_cpu{job="node",mode="idle"})
+    expr: count by(instance, cluster) (node_cpu_seconds_total{job="node",mode="idle"})
   - record: cluster:cpu:sum
     expr: sum by(cluster) (instance_cluster:node_cpu:count)
   - record: cluster:cpu_count:sum
     expr: cluster:cpu:sum
   - record: cluster_mountpoint:node_filesystem_size:sum
-    expr: sum by(cluster, mountpoint) (node_filesystem_size{fstype!~"(tmpfs|rpc_pipefs)"})
+    expr: sum by(cluster, mountpoint) (node_filesystem_size_bytes{fstype!~"(tmpfs|rpc_pipefs)"})
   - record: cluster_mountpoint:node_filesystem_avail:sum
-    expr: sum by(cluster, mountpoint) (node_filesystem_avail{fstype!~"(tmpfs|rpc_pipefs)"})
+    expr: sum by(cluster, mountpoint) (node_filesystem_avail_bytes{fstype!~"(tmpfs|rpc_pipefs)"})
   - record: cluster_mountpoint:node_filesystem_free:sum
-    expr: sum by(cluster, mountpoint) (node_filesystem_free{fstype!~"(tmpfs|rpc_pipefs)"})
+    expr: sum by(cluster, mountpoint) (node_filesystem_free_bytes{fstype!~"(tmpfs|rpc_pipefs)"})
   - record: cluster:memory_MemTotal:sum
-    expr: sum by(cluster) (node_memory_MemTotal{job="node"})
+    expr: sum by(cluster) (node_memory_MemTotal_bytes{job="node"})
   - record: cluster:memory_MemFree:sum
-    expr: sum by(cluster) (node_memory_MemFree{job="node"})
+    expr: sum by(cluster) (node_memory_MemFree_bytes{job="node"})
   - record: cluster:memory_Buffers:sum
-    expr: sum by(cluster) (node_memory_Buffers{job="node"})
+    expr: sum by(cluster) (node_memory_Buffers_bytes{job="node"})
   - record: cluster:memory_Cached:sum
-    expr: sum by(cluster) (node_memory_Cached{job="node"})
+    expr: sum by(cluster) (node_memory_Cached_bytes{job="node"})
   - record: cluster:memory_Writeback:sum
-    expr: sum by(cluster) (node_memory_Writeback{job="node"})
+    expr: sum by(cluster) (node_memory_Writeback_bytes{job="node"})
   - record: cluster:memory_Dirty:sum
-    expr: sum by(cluster) (node_memory_Dirty{job="node"})
+    expr: sum by(cluster) (node_memory_Dirty_bytes{job="node"})
   - record: cluster:memory_HardwareCorrupted:sum
-    expr: sum by(cluster) (node_memory_HardwareCorrupted{job="node"})
+    expr: sum by(cluster) (node_memory_HardwareCorrupted_bytes{job="node"})
   - record: cluster:memory_CommitLimit:sum
-    expr: sum by(cluster) (node_memory_CommitLimit{job="node"})
+    expr: sum by(cluster) (node_memory_CommitLimit_bytes{job="node"})
   - record: cluster:memory_Committed_AS:sum
-    expr: sum by(cluster) (node_memory_Committed_AS{job="node"})
+    expr: sum by(cluster) (node_memory_Committed_AS_bytes{job="node"})
   - record: cluster:memory_SwapTotal:sum
-    expr: sum by(cluster) (node_memory_SwapTotal{job="node"})
+    expr: sum by(cluster) (node_memory_SwapTotal_bytes{job="node"})
   - record: cluster:memory_SwapFree:sum
-    expr: sum by(cluster) (node_memory_SwapFree{job="node"})
+    expr: sum by(cluster) (node_memory_SwapFree_bytes{job="node"})
   - record: cluster:memory_SwapUsed:sum
     expr: cluster:memory_SwapTotal:sum - cluster:memory_SwapFree:sum
   - record: cluster:memory_Used:sum
@@ -188,11 +188,11 @@ groups:
   - record: cluster:procs_blocked:sum
     expr: sum by(cluster) (node_procs_blocked{job="node"})
   - record: cluster:forks:rate5m
-    expr: sum by(cluster) (rate(node_forks{job="node"}[5m]))
+    expr: sum by(cluster) (rate(node_forks_total{job="node"}[5m]))
   - record: cluster:intr:rate5m
-    expr: sum by(cluster) (rate(node_intr{job="node"}[5m]))
+    expr: sum by(cluster) (rate(node_intr_total{job="node"}[5m]))
   - record: cluster:context_switches:rate5m
-    expr: sum by(cluster) (rate(node_context_switches{job="node"}[5m]))
+    expr: sum by(cluster) (rate(node_context_switches_total{job="node"}[5m]))
   - record: status_cc_xc:varnish_resourceloader_resp:irate5m
     expr: sum by(status, cache_control, x_cache) (irate(varnish_resourceloader_resp[5m]))
   - record: none:varnish_resourceloader_inm:irate5m
