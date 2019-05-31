@@ -2,6 +2,6 @@ profile::mediawiki::vhost_feature_flags:
   php72_only: true
 profile::mediawiki::apc_shm_size: 4096M
 profile::mediawiki::php::fpm_config:
-  opcache.interned_strings_buffer: 256
+  opcache.interned_strings_buffer: 96
   opcache.memory_consumption: 512
   apc.ttl: 10
