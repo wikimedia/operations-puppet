@@ -101,12 +101,21 @@ sub cluster_fe_ratelimit {
 			}
 		}
 
+		// Requests in violation of the User-Agent policy
+		if (req.http.User-Agent ~ "^python-requests") {
+			// UA-policy violations: 10/10s (1/s long term, with 10 burst)
+			if (vsthrottle.is_denied("ua-policy:" + req.http.X-Client-IP, 10, 10s)) {
+				return (synth(429, "Too many requests. Please comply with the User-Agent policy to get a higher rate limit: https://meta.wikimedia.org/wiki/User-Agent_policy"));
+			}
+		}
+
 		// Maps rate limiting: 1000/10s (100/s long term, with 1000 burst)
 		if (req.http.Host == "<%= @vcl_config.fetch('maps_domain') %>") {
 			if (vsthrottle.is_denied("maps:" + req.http.X-Client-IP, 1000, 10s)) {
 				return (synth(429, "Too Many Requests"));
 			}
 		}
+
 		// Thumbor rate limiting: 1000/10s (100/s long term, with 1000 burst)
 		if (req.url ~ "/thumb/") {
 			// No idea what the correct values should be here?
@@ -114,11 +123,11 @@ sub cluster_fe_ratelimit {
 				return (synth(429, "Too Many Requests"));
 			}
 		}
-	}
 
-	// Requests in violation of the User-Agent policy
-	if (req.http.User-Agent ~ "^python-requests") {
-	    return (synth(403, "Please provide a valid User-Agent: https://meta.wikimedia.org/wiki/User-Agent_policy"));
+		// General upload rate limiting: 1000/10s (100/s long term, with 1000 burst)
+		if (vsthrottle.is_denied("general:" + req.http.X-Client-IP, 1000, 10s)) {
+			return (synth(429, "Too Many Requests"));
+		}
 	}
 }
 
