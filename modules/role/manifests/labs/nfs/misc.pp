@@ -4,9 +4,6 @@
 #
 
 class role::labs::nfs::misc(
-    $dump_servers_ips,
-    $maps_project_internal_ips,
-    $statistics_servers = hiera('statistics_servers'),
     ) {
 
     system::role { 'labs::nfs::misc':
@@ -58,13 +55,13 @@ class role::labs::nfs::misc(
     # This has a flat exports list
     # because it only exports data
     # available to all
-    file { '/etc/exports':
-        ensure  => present,
-        content => template('labstore/exports.labs_extras.erb'),
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0444',
-    }
+    # file { '/etc/exports':
+    #     ensure  => present,
+    #     content => template('labstore/exports.labs_extras.erb'),
+    #     owner   => 'root',
+    #     group   => 'root',
+    #     mode    => '0444',
+    # }
 
     file { '/srv/scratch':
         ensure => 'directory',
@@ -91,14 +88,14 @@ class role::labs::nfs::misc(
     #     require => File['/srv/dumps'],
     # }
 
-    mount { '/srv/scratch':
-        ensure  => mounted,
-        fstype  => ext4,
-        options => 'defaults,noatime',
-        atboot  => true,
-        device  => '/dev/srv/scratch',
-        require => File['/srv/scratch'],
-    }
+    # mount { '/srv/scratch':
+    #     ensure  => mounted,
+    #     fstype  => ext4,
+    #     options => 'defaults,noatime',
+    #     atboot  => true,
+    #     device  => '/dev/srv/scratch',
+    #     require => File['/srv/scratch'],
+    # }
 
     # mount { '/srv/statistics':
     #     ensure  => mounted,
@@ -109,12 +106,12 @@ class role::labs::nfs::misc(
     #     require => File['/srv/statistics'],
     # }
 
-    mount { '/srv/maps':
-        ensure  => mounted,
-        fstype  => ext4,
-        options => 'defaults,noatime',
-        atboot  => true,
-        device  => '/dev/srv/maps/',
-        require => File['/srv/maps'],
-    }
+    # mount { '/srv/maps':
+    #     ensure  => mounted,
+    #     fstype  => ext4,
+    #     options => 'defaults,noatime',
+    #     atboot  => true,
+    #     device  => '/dev/srv/maps/',
+    #     require => File['/srv/maps'],
+    # }
 }
