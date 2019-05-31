@@ -7,4 +7,4 @@ profile::openstack::base::keystone::auth_protocol: 'http'
 profile::openstack::base::keystone::auth_port: '35357'
 profile::openstack::base::keystone::public_port: '5000'
 profile::openstack::base::keystone::wiki_status_page_prefix: 'Nova_Resource:'
-profile::openstack::base::keystone::daemon_active: 'True'
+profile::openstack::base::keystone::daemon_active: true
