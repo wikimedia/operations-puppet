@@ -29,8 +29,8 @@ class profile::analytics::refinery::job::sqoop_mediawiki {
     # Separate log for sqoops from production replicas
     $production_log_file        = "${::profile::analytics::refinery::log_dir}/sqoop-mediawiki-production.log"
     # These are rendered elsewhere by role::analytics_cluster::mysql_password.
-    $db_password_labs           = '/user/hdfs/mysql-analytics-labsdb-client-pw.txt'
-    $db_password_private        = '/user/hdfs/mysql-analytics-research-client-pw.txt'
+    $db_password_labs           = '/user/analytics/mysql-analytics-labsdb-client-pw.txt'
+    $db_password_private        = '/user/analytics/mysql-analytics-research-client-pw.txt'
     # number of parallel processors to use when sqooping (querying MySQL)
     $num_processors             = 10
     # number of sqoop mappers to use for jobs getting data
