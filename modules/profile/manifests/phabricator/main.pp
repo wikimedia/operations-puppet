@@ -279,6 +279,9 @@ class profile::phabricator::main (
 
         # Extensions that require configuration.
         php::extension {
+            'mailparse':
+                package_name => 'php-mailparse',
+                sapis        => ['cli', 'fpm'];
             'mysqlnd':
                 package_name => 'php7.2-mysqlnd',
                 sapis        => ['cli', 'fpm'],
