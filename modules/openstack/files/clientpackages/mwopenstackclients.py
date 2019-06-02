@@ -10,6 +10,7 @@ from keystoneclient.auth.identity import generic
 from keystoneclient import session as keystone_session
 from keystoneclient.v3 import client as keystone_client
 from novaclient import client as nova_client
+from designateclient.v2 import client as designateclient
 
 
 class Clients(object):
@@ -36,6 +37,7 @@ class Clients(object):
         self.keystoneclients = {}
         self.novaclients = {}
         self.glanceclients = {}
+        self.designateclients = {}
 
         if envfile:
             if username or password or url or project:
@@ -137,6 +139,16 @@ class Clients(object):
             self.glanceclients[project] = glanceclient.Client(
                 '1', session=session, connect_retries=5, region_name=self.region)
         return self.glanceclients[project]
+
+    def designateclient(self, project=None):
+        if not project:
+            project = self.project
+
+        if project not in self.designateclients:
+            session = self.session(project)
+            self.designateclients[project] = designateclient.Client(
+                session=session, sudo_project_id=project, region_name=self.region)
+        return self.designateclients[project]
 
     def allprojects(self):
         client = self.keystoneclient()
