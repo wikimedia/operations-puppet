@@ -1,0 +1,51 @@
+:man source: Puppet
+:man version: 1.0
+:man manual: Wikimedia Manual
+
+dologmsg(1)
+===========
+:doctype: manpage
+
+NAME
+----
+
+dologmsg - send a message to an IRC relay
+
+SYNOPSIS
+--------
+
+[verse]
+'dologmsg' MESSAGE...
+
+DESCRIPTION
+-----------
+
+'dologmsg' will instruct wm-bot to relay the 'MESSAGE' to the #wikimedia-cloud IRC channel,
+where it will be picked up by stashbot and stored in the tool's Server Admin Log
+at https://wikitech.wikimedia.org/wiki/Nova_Resource:Tools.'toolname'/SAL.
+The message is prepended by the current tool user name and, if available,
+the real user behind it (**$SUDO_USER**).
+If multiple arguments are specified, they are concatenated separated by spaces,
+but messages containing shell special characters must still be quoted.
+
+OPTIONS
+-------
+*-h, --help*::
+  Print a help message.
+  This option is only recognized if there are no other arguments.
+
+EXAMPLES
+--------
+
+---------------------------
+dologmsg webservice restart
+---------------------------
+
+-------------------------------------------
+dologmsg 'deployed a1b2c3e4 (cool feature)'
+-------------------------------------------
+
+// For vim users:
+// Syntax file is availaible on github at:
+// https://github.com/dagwieers/asciidoc-vim
+// vim: set syntax=asciidoc:

@@ -10,4 +10,12 @@ class profile::wmcs::dologmsg(
         mode    => '0555',
         content => template('profile/wmcs/dologmsg.erb'),
     }
+
+    file { '/usr/local/share/man/man1/dologmsg.1':
+        ensure => file,
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0444',
+        source => 'puppet:///modules/profile/manpages/man/dologmsg.1',
+    }
 }

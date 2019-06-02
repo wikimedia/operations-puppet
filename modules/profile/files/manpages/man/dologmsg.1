@@ -1,0 +1,66 @@
+'\" t
+.\"     Title: dologmsg
+.\"    Author: [FIXME: author] [see http://docbook.sf.net/el/author]
+.\" Generator: DocBook XSL Stylesheets v1.79.1 <http://docbook.sf.net/>
+.\"      Date: 06/02/2019
+.\"    Manual: Wikimedia Manual
+.\"    Source: Puppet 1.0
+.\"  Language: English
+.\"
+.TH "DOLOGMSG" "1" "06/02/2019" "Puppet 1\&.0" "Wikimedia Manual"
+.\" -----------------------------------------------------------------
+.\" * Define some portability stuff
+.\" -----------------------------------------------------------------
+.\" ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+.\" http://bugs.debian.org/507673
+.\" http://lists.gnu.org/archive/html/groff/2009-02/msg00013.html
+.\" ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+.ie \n(.g .ds Aq \(aq
+.el       .ds Aq '
+.\" -----------------------------------------------------------------
+.\" * set default formatting
+.\" -----------------------------------------------------------------
+.\" disable hyphenation
+.nh
+.\" disable justification (adjust text to left margin only)
+.ad l
+.\" -----------------------------------------------------------------
+.\" * MAIN CONTENT STARTS HERE *
+.\" -----------------------------------------------------------------
+.SH "NAME"
+dologmsg \- send a message to an IRC relay
+.SH "SYNOPSIS"
+.sp
+.nf
+\fIdologmsg\fR MESSAGE\&...
+.fi
+.SH "DESCRIPTION"
+.sp
+\fIdologmsg\fR will instruct wm\-bot to relay the \fIMESSAGE\fR to the #wikimedia\-cloud IRC channel, where it will be picked up by stashbot and stored in the tool\(cqs Server Admin Log at https://wikitech\&.wikimedia\&.org/wiki/Nova_Resource:Tools\&.\fItoolname\fR/SAL\&. The message is prepended by the current tool user name and, if available, the real user behind it (\fB$SUDO_USER\fR)\&. If multiple arguments are specified, they are concatenated separated by spaces, but messages containing shell special characters must still be quoted\&.
+.SH "OPTIONS"
+.PP
+\fB\-h, \-\-help\fR
+.RS 4
+Print a help message\&. This option is only recognized if there are no other arguments\&.
+.RE
+.SH "EXAMPLES"
+.sp
+.if n \{\
+.RS 4
+.\}
+.nf
+dologmsg webservice restart
+.fi
+.if n \{\
+.RE
+.\}
+.sp
+.if n \{\
+.RS 4
+.\}
+.nf
+dologmsg \*(Aqdeployed a1b2c3e4 (cool feature)\*(Aq
+.fi
+.if n \{\
+.RE
+.\}
