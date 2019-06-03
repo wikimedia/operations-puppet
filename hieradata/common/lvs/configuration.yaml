@@ -1603,7 +1603,6 @@ lvs::configuration::lvs_services:
       service: docker-registry
     icinga:
       check_command: "check_https_url!docker-registry.svc.%{::site}.wmnet!/v2/"
-      critical: false
       sites:
         eqiad:
           hostname: docker-registry.svc.eqiad.wmnet
