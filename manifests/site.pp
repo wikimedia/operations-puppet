@@ -373,10 +373,6 @@ node /^cumin[12]001\.(eqiad|codfw)\.wmnet$/ {
     interface::add_ip6_mapped { 'main': }
 }
 
-node 'darmstadtium.eqiad.wmnet' {
-    role(docker::registry)
-}
-
 # MariaDB 10
 
 # s1 (enwiki) core production dbs on eqiad

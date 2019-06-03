@@ -108,12 +108,6 @@ host chlorine {
     fixed-address chlorine.eqiad.wmnet;
 }
 
-host darmstadtium {
-    hardware ethernet aa:00:00:00:8a:ae;
-    fixed-address darmstadtium.eqiad.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
-}
-
 host dbmonitor1001 {
     hardware ethernet aa:00:00:d6:5c:05;
     fixed-address dbmonitor1001.wikimedia.org;
