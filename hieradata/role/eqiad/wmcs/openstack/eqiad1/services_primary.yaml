@@ -2,3 +2,8 @@ admin::groups:
   - wmcs-roots
 
 profile::base::notifications: critical
+
+# for prometheus-pdns-exporter:
+prometheus_nodes:
+    - labmon1001.eqiad.wmnet
+    - labmon1002.eqiad.wmnet
