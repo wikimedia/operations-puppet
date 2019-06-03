@@ -108,9 +108,9 @@ sub cluster_fe_ratelimit {
 		}
 	}
 
-	// Uncomment in case of abusive traffic from the given UA
+	// Requests in violation of the User-Agent policy
 	if (req.http.User-Agent ~ "^python-requests") {
-	    return (synth(429, "Too Many Requests"));
+	    return (synth(403, "Please provide a valid User-Agent: https://meta.wikimedia.org/wiki/User-Agent_policy"));
 	}
 }
 
