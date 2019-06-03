@@ -2953,6 +2953,26 @@ host kafka-main2001 {
     fixed-address kafka-main2001.codfw.wmnet;
 }
 
+host kafka-main2002 {
+    hardware ethernet B0:26:28:3D:A1:10;
+    fixed-address kafka-main2002.codfw.wmnet;
+}
+
+host kafka-main2003 {
+    hardware ethernet B0:26:28:3D:65:80;
+    fixed-address kafka-main2003.codfw.wmnet;
+}
+
+host kafka-main2004 {
+    hardware ethernet B0:26:28:3D:55:40;
+    fixed-address kafka-main2004.codfw.wmnet;
+}
+
+host kafka-main2005 {
+    hardware ethernet B0:26:28:3D:7D:50;
+    fixed-address kafka-main2005.codfw.wmnet;
+}
+
 host kubernetes1001 {
      hardware ethernet 18:66:DA:56:64:A1;
      fixed-address kubernetes1001.eqiad.wmnet;
