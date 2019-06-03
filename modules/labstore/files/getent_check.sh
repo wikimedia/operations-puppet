@@ -12,13 +12,8 @@ timeout() {
 trap timeout 14
 sleep 1 && kill -14 $$ &
 
-# Try to fetch a known group via LDAP hee
-
-<% if @lsbdistcodename == 'jessie' %>
+# Try to fetch a known group via LDAP
 /usr/bin/useldap /usr/bin/getent group tools.admin >/dev/null 2>&1
-<% else %>
-/usr/bin/getent group tools.admin >/dev/null 2>&1
-<% end %>
 rv=$?
 
 # At this point, the command returns (worked or failed, so
