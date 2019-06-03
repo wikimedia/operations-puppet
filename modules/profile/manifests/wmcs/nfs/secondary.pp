@@ -85,15 +85,14 @@ class profile::wmcs::nfs::secondary(
     class {'labstore::monitoring::exports': }
     class {'labstore::monitoring::ldap': }
 
-    # TODO: Modify this for 10G ethernet
-    # class { 'labstore::monitoring::interfaces':
-    #     monitor_iface => $monitor_iface,
-    # }
+    class { 'labstore::monitoring::interfaces':
+        monitor_iface       => 'eno1',
+        int_throughput_warn => '937500000',  # 7500Mbps
+        int_throughput_crit => '1062500000', # 8500Mbps
+    }
 
-    # TODO: replace this
-    # class { 'labstore::monitoring::primary':
-    #     drbd_role     => $drbd_role,
-    #     cluster_iface => $monitor_iface,
-    #     cluster_ip    => $cluster_ip,
-    # }
+    class { 'labstore::monitoring::secondary':
+        cluster_iface => 'eno1',
+        cluster_ip    => $cluster_ip,
+    }
 }
