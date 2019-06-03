@@ -297,6 +297,57 @@ customviews:
       OR exists( select 1 from logging where log_comment_id = comment_id AND log_deleted&2 = 0 AND $INSERTED_EXPR$ )
     logging_where:
       *allowed_logtypes
+  comment_image:
+    source: comment
+    view: >
+      select comment_id, comment_hash, comment_text, comment_data
+    where: >
+      exists( select 1 from image where img_description_id = comment_id )
+  comment_filearchive:
+    source: comment
+    view: >
+      select comment_id, comment_hash, comment_text, comment_data
+    where: >
+      exists( select 1 from filearchive where fa_deleted_reason_id = comment_id )
+      OR exists( select 1 from filearchive where fa_description_id = comment_id AND fa_deleted&2 = 0 )
+  comment_ipblocks:
+    source: comment
+    view: >
+      select comment_id, comment_hash, comment_text, comment_data
+    where: >
+      exists( select 1 from ipblocks where ipb_reason_id = comment_id and ipb_deleted = 0 )
+  comment_oldimage:
+    source: comment
+    view: >
+      select comment_id, comment_hash, comment_text, comment_data
+    where: >
+      exists( select 1 from oldimage where oi_description_id = comment_id AND oi_deleted&2 = 0 )
+  comment_protected_titles:
+    source: comment
+    view: >
+      select comment_id, comment_hash, comment_text, comment_data
+    where: >
+      exists( select 1 from protected_titles where pt_reason_id = comment_id )
+  comment_recentchanges:
+    source: comment
+    view: >
+      select comment_id, comment_hash, comment_text, comment_data
+    where: >
+      exists( select 1 from recentchanges where rc_comment_id = comment_id AND rc_deleted&2 = 0 )
+  comment_revision:
+    source: comment
+    view: >
+      select comment_id, comment_hash, comment_text, comment_data
+    where: >
+      exists( select 1 from revision JOIN revision_comment_temp ON(revcomment_rev = rev_id) where revcomment_comment_id = comment_id AND rev_deleted&2 = 0 )
+  comment_logging:
+    source: comment
+    view: >
+      select comment_id, comment_hash, comment_text, comment_data
+    where: >
+      exists( select 1 from logging where log_comment_id = comment_id AND log_deleted&2 = 0 AND $INSERTED_EXPR$ )
+    logging_where:
+      *allowed_logtypes
   content:
     source: content
     view: >
