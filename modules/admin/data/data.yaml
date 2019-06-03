@@ -13,7 +13,7 @@ groups:
               yuvipanda, shrlak, madhuvishy, groovier, khorn, ironholds, katie, chedasaurus,
               cy534, pnorman, mpany, deskana, arnad, nithum, banyek, imarlier, mkroetzsch,
               mtizzoni, panisson, paolotti, ciro, dartar, melodykramer, gtirloni, tbayer, pirroh,
-              bawolff, dkg]
+              bawolff, dkg, juliaglen]
   absent_ldap:
     description: meta group for absented users which had privileged LDAP access in the past, an automatic check verifies it has been really removed from the LDAP (but removal has to be handled separatelly)
     members: [adavenport, siddharth11, albe, audiohazel, tbolliger, jmatazzoni, pbj]
@@ -279,7 +279,7 @@ groups:
               ayounsi, mepps, mmiller, seddon, gilles, tstarling, rush, tieu, karen,
               cicalese, drossi, fsalutari, nathante, gbirke, isaacj, sbassett, jdl,
               niharika29, ryanmax, afandian2, jgleeson, toddleroux, srishakatux, dsharpe,
-              juliaglen, esanders, sukhe, jfishback, iflorez]
+              esanders, sukhe, jfishback, iflorez]
     system_members: [analytics-search, analytics]
   analytics-admins:
     gid: 732
@@ -3134,16 +3134,12 @@ users:
     uid: 20828
     email: dsharpe@wikimedia.org
   juliaglen:
-    ensure: present
+    ensure: absent
     gid: 500
     name: juliaglen
     realname: Julia Komissarchik
-    ssh_keys:
-      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIMcu40AphAxdPcy1t1NtYFkwEXheQYjwpEzsdOBEfamd
+    ssh_keys: []
     uid: 20916
-    email: julia@glenbrooknet.com
-    expiry_date: 2019-05-31
-    expiry_contact: nuria@wikimedia.org
   brennen:
     ensure: present
     gid: 500
