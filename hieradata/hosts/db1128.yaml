@@ -1,3 +1,2 @@
 # db1128
 mariadb::binlog_format: 'ROW'
-profile::base::notifications: disabled
