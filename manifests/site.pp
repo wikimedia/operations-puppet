@@ -1336,9 +1336,7 @@ node /labstore100[12]\.eqiad\.wmnet/ {
 }
 
 node 'labstore1003.eqiad.wmnet' {
-    role(labs::nfs::misc)
-    # Do not enable yet
-    # include ::profile::base::firewall
+    role(spare::system)
 }
 
 node /labstore100[45]\.eqiad\.wmnet/ {
