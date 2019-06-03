@@ -107,6 +107,11 @@ sub cluster_fe_ratelimit {
 			}
 		}
 	}
+
+	// Uncomment in case of abusive traffic from the given UA
+	if (req.http.User-Agent ~ "^python-requests") {
+	    return (synth(429, "Too Many Requests"));
+	}
 }
 
 sub cluster_fe_miss {
