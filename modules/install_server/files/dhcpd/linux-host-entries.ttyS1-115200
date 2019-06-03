@@ -3030,7 +3030,6 @@ host labmon1002 {
 host cloudservices1003 {
     hardware ethernet 30:e1:71:70:ad:48;
     fixed-address cloudservices1003.wikimedia.org;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
 }
 
 host cloudservices1004 {
