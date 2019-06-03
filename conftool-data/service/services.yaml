@@ -277,6 +277,14 @@ kubernetes:
     datacenters:
     - eqiad
     - codfw
+  sessionstore:
+    port: 8081
+    default_values:
+      pooled: 'yes'
+      weight: 10
+    datacenters:
+    - eqiad
+    - codfw
 logstash:
   kibana:
     port: 80

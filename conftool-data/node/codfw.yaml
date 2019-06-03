@@ -278,6 +278,8 @@ codfw:
     kubernetes2002.codfw.wmnet: []
     kubernetes2003.codfw.wmnet: []
     kubernetes2004.codfw.wmnet: []
+    kubernetes2005.codfw.wmnet: []
+    kubernetes2006.codfw.wmnet: []
   eventbus:
     kafka2001.codfw.wmnet: [eventbus]
     kafka2002.codfw.wmnet: [eventbus]
@@ -304,10 +306,12 @@ codfw:
   kubernetes:
     acrab.codfw.wmnet: [kubemaster]
     acrux.codfw.wmnet: [kubemaster]
-    kubernetes2001.codfw.wmnet: [mathoid, zotero, blubberoid, eventgate-analytics, eventgate-main, citoid, cxserver]
-    kubernetes2002.codfw.wmnet: [mathoid, zotero, blubberoid, eventgate-analytics, eventgate-main, citoid, cxserver]
-    kubernetes2003.codfw.wmnet: [mathoid, zotero, blubberoid, eventgate-analytics, eventgate-main, citoid, cxserver]
-    kubernetes2004.codfw.wmnet: [mathoid, zotero, blubberoid, eventgate-analytics, eventgate-main, citoid, cxserver]
+    kubernetes2001.codfw.wmnet: [mathoid, zotero, blubberoid, eventgate-analytics, eventgate-main, citoid, cxserver, sessionstore]
+    kubernetes2002.codfw.wmnet: [mathoid, zotero, blubberoid, eventgate-analytics, eventgate-main, citoid, cxserver, sessionstore]
+    kubernetes2003.codfw.wmnet: [mathoid, zotero, blubberoid, eventgate-analytics, eventgate-main, citoid, cxserver, sessionstore]
+    kubernetes2004.codfw.wmnet: [mathoid, zotero, blubberoid, eventgate-analytics, eventgate-main, citoid, cxserver, sessionstore]
+    kubernetes2005.codfw.wmnet: [mathoid, zotero, blubberoid, eventgate-analytics, eventgate-main, citoid, cxserver, sessionstore]
+    kubernetes2006.codfw.wmnet: [mathoid, zotero, blubberoid, eventgate-analytics, eventgate-main, citoid, cxserver, sessionstore]
   ores:
     ores2001.codfw.wmnet: [ores]
     ores2002.codfw.wmnet: [ores]

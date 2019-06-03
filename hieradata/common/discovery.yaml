@@ -106,3 +106,6 @@ discovery::services:
   eventgate-main:
     lvs: eventgate-main
     active_active: true
+  sessionstore:
+    lvs: sessionstore
+    active_active: true

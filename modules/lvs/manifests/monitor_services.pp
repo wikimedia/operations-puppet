@@ -269,4 +269,19 @@ class lvs::monitor_services($contacts = 'admins,team-services', $critical = fals
         notes_url     => 'https://wikitech.wikimedia.org/wiki/RESTBase',
     }
 
+    monitoring::service { 'check_sessionstore':
+        host          => 'sessionstore.svc.eqiad.wmnet',
+        group         => 'lvs',
+        description   => 'Sessionstore eqiad',
+        check_command => 'check_wmf_service!https://sessionstore.svc.eqiad.wmnet/openapi!15',
+        notes_url     => 'https://www.mediawiki.org/wiki/Kask',
+    }
+    monitoring::service { 'check_sessionstore':
+        host          => 'sessionstore.svc.codfw.wmnet',
+        group         => 'lvs',
+        description   => 'Sessionstore codfw',
+        check_command => 'check_wmf_service!https://sessionstore.svc.codfw.wmnet/openapi!15',
+        notes_url     => 'https://www.mediawiki.org/wiki/Kask',
+    }
+
 }

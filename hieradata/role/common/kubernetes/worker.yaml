@@ -38,4 +38,5 @@ role::lvs::realserver::pools:
   eventgate-main: {}
   citoid: {}
   cxserver: {}
+  sessionstore: {}
 diamond::remove: true

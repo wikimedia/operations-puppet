@@ -157,6 +157,8 @@ eqiad:
     kubernetes1002.eqiad.wmnet: []
     kubernetes1003.eqiad.wmnet: []
     kubernetes1004.eqiad.wmnet: []
+    kubernetes1005.eqiad.wmnet: []
+    kubernetes1006.eqiad.wmnet: []
   dns:
     dns1001.wikimedia.org: [pdns_recursor]
     dns1002.wikimedia.org: [pdns_recursor]
@@ -296,10 +298,12 @@ eqiad:
   kubernetes:
     argon.eqiad.wmnet: [kubemaster]
     chlorine.eqiad.wmnet: [kubemaster]
-    kubernetes1001.eqiad.wmnet: [mathoid, zotero, blubberoid, eventgate-analytics, eventgate-main, citoid, cxserver]
-    kubernetes1002.eqiad.wmnet: [mathoid, zotero, blubberoid, eventgate-analytics, eventgate-main, citoid, cxserver]
-    kubernetes1003.eqiad.wmnet: [mathoid, zotero, blubberoid, eventgate-analytics, eventgate-main, citoid, cxserver]
-    kubernetes1004.eqiad.wmnet: [mathoid, zotero, blubberoid, eventgate-analytics, eventgate-main, citoid, cxserver]
+    kubernetes1001.eqiad.wmnet: [mathoid, zotero, blubberoid, eventgate-analytics, eventgate-main, citoid, cxserver, sessionstore]
+    kubernetes1002.eqiad.wmnet: [mathoid, zotero, blubberoid, eventgate-analytics, eventgate-main, citoid, cxserver, sessionstore]
+    kubernetes1003.eqiad.wmnet: [mathoid, zotero, blubberoid, eventgate-analytics, eventgate-main, citoid, cxserver, sessionstore]
+    kubernetes1004.eqiad.wmnet: [mathoid, zotero, blubberoid, eventgate-analytics, eventgate-main, citoid, cxserver, sessionstore]
+    kubernetes1005.eqiad.wmnet: [mathoid, zotero, blubberoid, eventgate-analytics, eventgate-main, citoid, cxserver, sessionstore]
+    kubernetes1006.eqiad.wmnet: [mathoid, zotero, blubberoid, eventgate-analytics, eventgate-main, citoid, cxserver, sessionstore]
   druid-public:
     druid1004.eqiad.wmnet: [druid-public-broker]
     druid1005.eqiad.wmnet: [druid-public-broker]
