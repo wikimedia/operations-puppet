@@ -7,6 +7,7 @@ class role::analytics_test_cluster::superset {
     }
 
     include ::profile::superset
+    include ::profile::kerberos::client
     include ::profile::base::firewall
     include ::profile::standard
 }

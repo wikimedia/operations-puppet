@@ -7,6 +7,7 @@ class role::analytics_test_cluster::hadoop::worker {
     }
     include ::profile::hadoop::worker
     include ::profile::hadoop::users
+    include ::profile::kerberos::client
     include ::profile::base::firewall
     include ::profile::standard
 }
