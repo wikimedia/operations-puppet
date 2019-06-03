@@ -40,7 +40,7 @@ network::infrastructure:
   - 208.80.154.192/27 # eqiad
   - 2620:0:861:fe00::/55 # eqiad
   - 103.102.166.128/27 # eqsin
-  - 2001:df2:e500:fe00::/56 # eqsin
+  - 2001:df2:e500:fe00::/55 # eqsin
 
 network::management:
   - 10.65.0.0/16 # eqiad
