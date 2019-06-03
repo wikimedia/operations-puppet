@@ -1,4 +1,0 @@
-# db1064
-mariadb::shard: 'x1'
-mariadb::binlog_format: 'ROW'
-profile::base::notifications: disabled
