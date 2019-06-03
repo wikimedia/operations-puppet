@@ -90,6 +90,11 @@ profile::keyholder::server::agents:
     trusted_groups:
       - ops
 
+  apache2modsec:
+    trusted_groups:
+      - ops
+      - gerrit-admin
+
 # scap::source declarations.  These are created
 # by the scap::server class.  Each source listed here
 # will be cloned on the scap deploy server.

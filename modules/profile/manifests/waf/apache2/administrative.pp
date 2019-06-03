@@ -30,6 +30,7 @@ class profile::waf::apache2::administrative {
         content => secret('waf/admin1'),
         notify  => Service['apache2'],
     }
+
     file { '/etc/apache2/admin2':
         ensure  => present,
         mode    => '0644',
@@ -38,6 +39,7 @@ class profile::waf::apache2::administrative {
         content => secret('waf/admin2'),
         notify  => Service['apache2'],
     }
+
     file { '/etc/apache2/admin3':
         ensure  => present,
         mode    => '0644',
@@ -45,5 +47,17 @@ class profile::waf::apache2::administrative {
         group   => 'root',
         content => secret('waf/admin3'),
         notify  => Service['apache2'],
+    }
+
+    # TBD: add link from /etc/apache/modsec_rules
+    # to deploy location.  Requires change to
+    # modsec template
+    # file { '/etc/apache/modsec_rules':
+    #     ensure  => 'link',
+    #     target  => '/srv/deployment/apache2modsec',
+    # }
+    scap::target { 'apache2modsec/apache2modsec':
+        deploy_user => 'apache2modsec',
+        key_name    => 'apache2modsec',
     }
 }
