@@ -29,9 +29,9 @@ class profile::openstack::base::designate::service(
     $keystone_auth_port = hiera('profile::openstack::base::keystone::auth_port'),
     $osm_host = hiera('profile::openstack::base::osm_host'),
     $labweb_hosts = hiera('profile::openstack::base::labweb_hosts'),
-    $monitoring_host = hiera('profile::openstack::base::monitoring_host'),
     $region = hiera('profile::openstack::base::region'),
     $coordination_host = hiera('profile::openstack::base::designate_host'),
+    Array[Stdlib::Fqdn] $prometheus_nodes = lookup('prometheus_nodes'),
     ) {
 
     $primary_pdns_ip = ipresolve($primary_pdns,4)
@@ -72,12 +72,15 @@ class profile::openstack::base::designate::service(
 
     $labweb_ips = inline_template("@resolve((<%= @labweb_hosts.join(' ') %>))")
     $labweb_ip6s = inline_template("@resolve((<%= @labweb_hosts.join(' ') %>), AAAA)")
-    # Open designate API to Labs web UIs and the commandline on labcontrol
+    $prometheus_ferm_nodes = join($prometheus_nodes, ' ')
+    $prometheus_ferm_srange = "@resolve(${prometheus_ferm_nodes}) @resolve(${prometheus_ferm_nodes}, AAAA)"
+    # Open designate API to WMCS web UIs and the commandline on control servers, also prometheus
     ferm::rule { 'designate-api':
         rule => "saddr (@resolve(${osm_host}) ${labweb_ip6s} @resolve(${keystone_host}) @resolve(${keystone_host}, AAAA)
                        ${labweb_ips} @resolve(${nova_controller}) @resolve(${nova_controller}, AAAA) @resolve(${nova_controller_standby})
                        @resolve(${nova_controller_standby}, AAAA)
-                       @resolve(${monitoring_host})  @resolve(${monitoring_host}, AAAA)) proto tcp dport (9001) ACCEPT;",
+                       ${prometheus_ferm_srange}
+                 ) proto tcp dport (9001) ACCEPT;",
     }
 
     # Allow labs instances to hit the designate api.
