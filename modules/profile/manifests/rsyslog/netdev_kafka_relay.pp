@@ -17,8 +17,4 @@ class profile::rsyslog::netdev_kafka_relay (
         priority => 50,
     }
 
-    rsyslog::conf { 'template_syslog_json':
-        source   => 'puppet:///modules/profile/rsyslog/template_syslog_json.conf',
-        priority => 10,
-    }
 }
