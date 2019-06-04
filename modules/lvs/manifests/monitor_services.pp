@@ -274,14 +274,14 @@ class lvs::monitor_services($contacts = 'admins,team-services', $critical = fals
         host          => 'sessionstore.svc.eqiad.wmnet',
         group         => 'lvs',
         description   => 'Sessionstore eqiad',
-        check_command => 'check_wmf_service!https://sessionstore.svc.eqiad.wmnet:8081/openapi!15',
+        check_command => 'check_wmf_service_url!https://sessionstore.svc.eqiad.wmnet:8081/openapi!15!/openapi',
         notes_url     => 'https://www.mediawiki.org/wiki/Kask',
     }
     monitoring::service { 'check_sessionstore_codfw':
         host          => 'sessionstore.svc.codfw.wmnet',
         group         => 'lvs',
         description   => 'Sessionstore codfw',
-        check_command => 'check_wmf_service!https://sessionstore.svc.codfw.wmnet:8081/openapi!15',
+        check_command => 'check_wmf_service_url!https://sessionstore.svc.codfw.wmnet:8081/openapi!15!/openapi',
         notes_url     => 'https://www.mediawiki.org/wiki/Kask',
     }
 
