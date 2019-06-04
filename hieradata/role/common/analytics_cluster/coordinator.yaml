@@ -36,8 +36,8 @@ profile::oozie::server::monitoring_enabled: true
 profile::oozie::server::ferm_srange: '$ANALYTICS_NETWORKS'
 
 # Following Cloudera recommandations for ~20 users
-profile::hive::client::hive_metastore_opts: '-Xms4g -Xmx10g -Xms4g -Xmx10g -javaagent:/usr/share/java/prometheus/jmx_prometheus_javaagent.jar=%{::ipaddress}:9183:/etc/prometheus/hive_metastore_jmx_exporter.yaml'
-profile::hive::client::hive_server_opts: '-Xms4g -Xmx6g -javaagent:/usr/share/java/prometheus/jmx_prometheus_javaagent.jar=%{::ipaddress}:10100:/etc/prometheus/hive_server_jmx_exporter.yaml'
+profile::hive::client::hive_metastore_opts: '-Xms4g -Xmx6g -XX:+UseParNewGC -XX:+UseConcMarkSweepGC -XX:CMSInitiatingOccupancyFraction=70 -XX:+CMSParallelRemarkEnabled -javaagent:/usr/share/java/prometheus/jmx_prometheus_javaagent.jar=%{::ipaddress}:9183:/etc/prometheus/hive_metastore_jmx_exporter.yaml'
+profile::hive::client::hive_server_opts: '-Xms4g -Xmx8g -XX:+UseParNewGC -XX:+UseConcMarkSweepGC -XX:CMSInitiatingOccupancyFraction=70 -XX:+CMSParallelRemarkEnabled -javaagent:/usr/share/java/prometheus/jmx_prometheus_javaagent.jar=%{::ipaddress}:10100:/etc/prometheus/hive_server_jmx_exporter.yaml'
 profile::oozie::server::jvm_opts: '-Xms2g -Xmx2g'
 
 # Build and install oozie sharelib for our custom spark2 package.
