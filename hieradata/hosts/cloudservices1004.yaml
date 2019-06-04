@@ -1,4 +1,7 @@
-# for prometheus-pdns-exporter:
+# prometheus-pdns-exporter is scrapped by labmons
+# prometheus-node-exporter by prod servers
 prometheus_nodes:
     - labmon1001.eqiad.wmnet
     - labmon1002.eqiad.wmnet
+    - prometheus1003.eqiad.wmnet
+    - prometheus1004.eqiad.wmnet
