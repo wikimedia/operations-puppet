@@ -1332,14 +1332,6 @@ node 'labsdb1007.eqiad.wmnet' {
     role(spare::system)
 }
 
-node /labstore100[12]\.eqiad\.wmnet/ {
-    role(spare::system)
-}
-
-node 'labstore1003.eqiad.wmnet' {
-    role(spare::system)
-}
-
 node /labstore100[45]\.eqiad\.wmnet/ {
     role(wmcs::nfs::primary)
     # Do not enable yet
