@@ -140,6 +140,12 @@ fullviews:
   - wbqc_constraints
   - wbs_propertypairs
   - watchlist_count
+  - wbt_text           # T225038
+  - wbt_type           # T225038
+  - wbt_text_in_lang   # T225038
+  - wbt_term_in_lang   # T225038
+  - wbt_property_terms # T225038
+  - wbt_item_terms     # T225038
 
 # Deliberately excluded:
 # - abusefilterprivatedetails  T187455
