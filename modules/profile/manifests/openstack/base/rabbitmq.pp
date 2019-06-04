@@ -1,9 +1,9 @@
 class profile::openstack::base::rabbitmq(
-    Stdlib::Fqdn $nova_controller_standby = lookup('profile::openstack::base::nova_controller_standby'),
+    Array[Stdlib::Fqdn] $prometheus_nodes        = lookup('prometheus_nodes'),
+    Stdlib::Fqdn        $nova_controller_standby = lookup('profile::openstack::base::nova_controller_standby'),
     $nova_controller = hiera('profile::openstack::base::nova_controller'),
     $monitor_user = hiera('profile::openstack::base::rabbit_monitor_user'),
     $monitor_password = hiera('profile::openstack::base::rabbit_monitor_pass'),
-    $monitoring_host = hiera('profile::openstack::base::monitoring_host'),
     $cleanup_password = hiera('profile::openstack::base::rabbit_cleanup_pass'),
     $file_handles = hiera('profile::openstack::base::rabbit_file_handles'),
     $nova_api_host = hiera('profile::openstack::base::nova_api_host'),
@@ -45,7 +45,7 @@ class profile::openstack::base::rabbitmq(
     }
 
     class { '::profile::prometheus::rabbitmq_exporter':
-        prometheus_nodes        => $monitoring_host,
+        prometheus_nodes        => $prometheus_nodes,
         rabbit_monitor_username => $monitor_user,
         rabbit_monitor_password => $monitor_password,
     }

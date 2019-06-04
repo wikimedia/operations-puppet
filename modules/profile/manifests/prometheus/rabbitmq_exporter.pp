@@ -1,5 +1,5 @@
 class profile::prometheus::rabbitmq_exporter (
-    $prometheus_nodes = hiera('profile::prometheus::rabbit_monitoring_host'),
+    Array[Stdlib::Fqdn] $prometheus_nodes = lookup('prometheus_nodes'),
     $rabbit_monitor_username = hiera('profile::prometheus::rabbit_monitor_user'),
     $rabbit_monitor_password = hiera('profile::prometheus::rabbit_monitor_pass'),
 ) {
@@ -29,9 +29,11 @@ class profile::prometheus::rabbitmq_exporter (
 
     base::service_auto_restart { 'prometheus-rabbitmq-exporter': }
 
+    $prometheus_ferm_nodes = join($prometheus_nodes, ' ')
+    $prometheus_ferm_srange = "@resolve((${prometheus_ferm_nodes})) @resolve((${prometheus_ferm_nodes}), AAAA)"
     ferm::service { 'prometheus-rabbitmq-exporter':
         proto  => 'tcp',
         port   => '9195',
-        srange => "@resolve((${prometheus_nodes}))",
+        srange => $prometheus_ferm_srange,
     }
 }

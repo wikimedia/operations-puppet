@@ -1,5 +1,5 @@
 class profile::openstack::base::metrics(
-    $prometheus_nodes = hiera('profile::openstack::base::monitoring_host'),
+    Array[Stdlib::Fqdn] $prometheus_nodes = lookup('prometheus_nodes'),
     $cpu_allocation_ratio = hiera('profile::openstack::base::metrics::cpu_allocation_ratio'),
     $ram_allocation_ratio = hiera('profile::openstack::base::metrics::ram_allocation_ratio'),
     $disk_allocation_ratio = hiera('profile::openstack::base::metrics::disck_allocation_ratio'),

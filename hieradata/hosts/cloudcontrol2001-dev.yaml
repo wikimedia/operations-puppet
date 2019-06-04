@@ -1,3 +1,11 @@
 labsldapconfig:
   hostname: cloudservices2002-dev.wikimedia.org
   secondary_hostname: cloudservices2002-dev.wikimedia.org
+
+# prometheus-node-exporter by prod servers
+# prometheus-openstack-exporter by cloud servers
+prometheus_nodes:
+    - labmon1001.eqiad.wmnet
+    - labmon1002.eqiad.wmnet
+    - prometheus2003.codfw.wmnet
+    - prometheus2004.codfw.wmnet

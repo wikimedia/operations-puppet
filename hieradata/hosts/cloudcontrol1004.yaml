@@ -1,0 +1,7 @@
+# prometheus-node-exporter by prod servers
+# prometheus-openstack-exporter by cloud servers
+prometheus_nodes:
+    - labmon1001.eqiad.wmnet
+    - labmon1002.eqiad.wmnet
+    - prometheus1003.eqiad.wmnet
+    - prometheus1004.eqiad.wmnet

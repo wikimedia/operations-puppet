@@ -1,5 +1,5 @@
 class profile::prometheus::openstack_exporter (
-    $prometheus_nodes = hiera('profile::prometheus::prometheus_nodes'),
+    Array[Stdlib::Fqdn] $prometheus_nodes = lookup('prometheus_nodes'),
     $cpu_allocation_ratio = hiera('profile::prometheus::cpu_allocation_ratio'),
     $ram_allocation_ratio = hiera('profile::prometheus::ram_allocation_ratio'),
     $disk_allocation_ratio = hiera('profile::prometheus::disk_allocation_ratio'),
@@ -56,9 +56,11 @@ class profile::prometheus::openstack_exporter (
         group  => 'prometheus',
     }
 
+    $prometheus_ferm_nodes = join($prometheus_nodes, ' ')
+    $prometheus_ferm_srange = "@resolve((${prometheus_ferm_nodes})) @resolve((${prometheus_ferm_nodes}), AAAA)"
     ferm::service { 'prometheus-openstack-exporter':
         proto  => 'tcp',
         port   => $listen_port,
-        srange => "@resolve((${prometheus_nodes}))",
+        srange => $prometheus_ferm_srange,
     }
 }
