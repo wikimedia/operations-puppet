@@ -1,3 +1,4 @@
 # db2058
-mariadb::shard: 's4'
+mariadb::shard: 's6'
 mariadb::binlog_format: 'STATEMENT'
+profile::base::notifications: disabled
