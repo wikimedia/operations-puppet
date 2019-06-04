@@ -34,7 +34,7 @@
 class eventschemas::service(
     String $server_name  = "schema.svc.${::site}.wmnet",
     Optional[String] $server_alias = undef,
-    Stdlib::Port $port = 8190,
+    $port = 8190,
 ) {
     require ::eventschemas
 
