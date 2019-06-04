@@ -36,21 +36,24 @@
 #  include postgresql::master
 
 class postgresql::master(
-    $master_server=$::fqdn,
-    $includes=[],
-    $pgversion = $::lsbdistcodename ? {
+    Stdlib::Host $master_server=$::fqdn,
+    Array $includes=[],
+    String $pgversion = $::lsbdistcodename ? {
         'buster'  => '11',
         'stretch' => '9.6',
         'jessie'  => '9.4',
     },
-    $ensure='present',
-    $max_wal_senders=5,
-    $checkpoint_segments=64,
-    $wal_keep_segments=128,
-    $root_dir='/var/lib/postgresql',
-    $use_ssl=false,
-    $ssldir=undef,
-    $locale='en_US.UTF-8',
+    Wmflib::Ensure $ensure='present',
+    Integer $max_wal_senders=5,
+    Integer $checkpoint_segments=64,
+    Integer $wal_keep_segments=128,
+    Stdlib::Unixpath $root_dir='/var/lib/postgresql',
+    Boolean $use_ssl=false,
+    Optional[Stdlib::Unixpath] $ssldir=undef,
+    String $locale='en_US.UTF-8',
+    Optional[Array[String]] $sync_replicas=undef,
+    Integer $sync_count=1,
+    String $sync_mode='on',
 ) {
 
     $data_dir = "${root_dir}/${pgversion}/main"

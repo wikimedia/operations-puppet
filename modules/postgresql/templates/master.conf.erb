@@ -5,3 +5,7 @@ max_wal_senders = <%= @max_wal_senders %>
 checkpoint_segments = <%= @checkpoint_segments %>
 <% end %>
 wal_keep_segments = <%= @wal_keep_segments %>
+<% if @sync_replicas %>
+synchronous_commit = <%= @sync_mode %>
+synchronous_standby_names = '<%= @sync_count %> (<%= @sync_replicas.join(',') %>)'
+<% end %>

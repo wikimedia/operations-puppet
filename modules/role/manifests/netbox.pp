@@ -1,4 +1,4 @@
-# Class: role::netbox
+# Class: role::netbox::frontend
 #
 # This role installs all the Netbox related parts as WMF requires it
 #
@@ -15,6 +15,6 @@ class role::netbox {
     system::role { 'netbox': description => 'Netbox server' }
 
     include ::profile::netbox
-    include ::profile::netbox::httpd
+    include ::profile::netbox::postgres
     include ::profile::prometheus::postgres_exporter
 }

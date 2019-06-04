@@ -10,8 +10,6 @@ class role::netmon {
     include ::profile::librenms
     include ::profile::rancid
     include ::profile::smokeping
-    include ::profile::netbox
-    include ::profile::prometheus::postgres_exporter
 
     class { '::httpd':
         modules => ['headers',
@@ -19,7 +17,6 @@ class role::netmon {
                     'proxy',
                     'proxy_http',
                     'ssl',
-                    'wsgi',
                     'fcgid',
                     'php7.2',
                     ],

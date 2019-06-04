@@ -17,6 +17,8 @@
 #       See $postgresql::server::root_dir
 #   use_ssl
 #       Enable ssl for both clients and replication
+#   rep_app
+#       The replication label to use for this host
 #
 # Actions:
 #  Install/configure postgresql in a slave configuration
@@ -30,19 +32,22 @@
 #  }
 #
 class postgresql::slave(
-    $master_server,
-    $replication_pass,
-    $includes=[],
-    $pgversion = $::lsbdistcodename ? {
+    Stdlib::Host $master_server,
+    String $replication_pass,
+    # this should probably be an array and properly fixed to match the semantics
+    # of postgresql::server / postgresql::master
+    String $includes='',
+    String $pgversion = $::lsbdistcodename ? {
         'buster'  => '11',
         'stretch' => '9.6',
         'jessie'  => '9.4',
     },
-    $ensure='present',
-    $max_wal_senders=5,
-    $root_dir='/var/lib/postgresql',
-    $use_ssl=false,
-    $ssldir=undef,
+    Optional[String] $rep_app=undef,
+    String $ensure='present',
+    Integer $max_wal_senders=5,
+    Stdlib::Unixpath $root_dir='/var/lib/postgresql',
+    Boolean $use_ssl=false,
+    Optional[Stdlib::Unixpath] $ssldir=undef,
 ) {
 
     $data_dir = "${root_dir}/${pgversion}/main"
@@ -64,7 +69,6 @@ class postgresql::slave(
         content => template('postgresql/slave.conf.erb'),
         require => Package["postgresql-${pgversion}"],
     }
-
     file { "${data_dir}/recovery.conf":
         ensure  => $ensure,
         owner   => 'postgres',

@@ -1,0 +1,8 @@
+profile::netbox::db::primary: netboxdb1001.eqiad.wmnet
+profile::netbox::db::secondaries:
+    - netboxdb2001.codfw.wmnet
+profile::netbox::db::ipv6_ok: true
+
+# Private data
+# profile::netbox::db::password: FAKE
+# profile::netbox::db::replication_password: FAKE

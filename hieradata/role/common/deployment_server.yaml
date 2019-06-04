@@ -95,6 +95,11 @@ profile::keyholder::server::agents:
       - ops
       - gerrit-admin
 
+  netbox:
+    trusted_groups:
+      - ops
+
+
 # scap::source declarations.  These are created
 # by the scap::server class.  Each source listed here
 # will be cloned on the scap deploy server.

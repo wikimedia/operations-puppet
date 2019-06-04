@@ -7,6 +7,8 @@
 <VirtualHost *:80>
     ServerName <%= @nb_service_hostname %>
     ServerAdmin noc@wikimedia.org
+
+<%- if @deploy_acme -%>
     RewriteEngine on
     RewriteRule ^/(.*)$ https://<%= @nb_service_hostname %>/$1 [L,R=301]
 </VirtualHost>
@@ -23,6 +25,7 @@
     SSLCertificateChainFile /etc/acmecerts/netbox/live/rsa-2048.chain.crt
     SSLCertificateKeyFile /etc/acmecerts/netbox/live/rsa-2048.key
     <%= @ssl_settings.join("\n    ") %>
+<%- end -%>
 
     # https://httpoxy.org/
     RequestHeader unset Proxy early

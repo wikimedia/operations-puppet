@@ -10,15 +10,16 @@
 # Example: ALLOWED_HOSTS = ['netbox.example.com', 'netbox.internal.local']
 # We are behind an apache httpd server, so use X-Forwarded_Host header
 USE_X_FORWARDED_HOST = True
-ALLOWED_HOSTS = ['<%= @service_hostname %>']
+
+ALLOWED_HOSTS = ['<%= @service_hostname %>', '<%= @fqdn %>']
 
 # PostgreSQL database configuration.
 DATABASE = {
     'NAME': 'netbox',         # Database name
-    'USER': 'netbox',               # PostgreSQL username
+    'USER': '<%= @db_user %>',               # PostgreSQL username
     'PASSWORD': '<%= @db_password %>',           # PostgreSQL password
-    'HOST': 'localhost',      # Database server
-    'PORT': '',               # Database port (leave blank for default)
+    'HOST': '<%= @db_host %>',      # Database server
+    'PORT': '<%= @db_port %>',               # Database port (leave blank for default)
 }
 
 # This key is used for secure generation of random numbers and strings. It must never be exposed outside of this file.
