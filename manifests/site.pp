@@ -1271,6 +1271,11 @@ node /kafka[12]00[123]\.(eqiad|codfw)\.wmnet/ {
     interface::add_ip6_mapped { 'main': }
 }
 
+# Apply kafka::main role to new kafka-main hosts one by one initially
+node 'kafka-main2003.codfw.wmnet' {
+    role(kafka::main)
+}
+
 # kafka-jumbo is a large general purpose Kafka cluster.
 # This cluster exists only in eqiad, and serves various uses, including
 # mirroring all data from the main Kafka clusters in both main datacenters.

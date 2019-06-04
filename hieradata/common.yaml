@@ -513,7 +513,7 @@ kafka_clusters:
       kafka2002.codfw.wmnet:
         id: 2002
         rack: B
-      kafka2003.codfw.wmnet:
+      kafka-main2003.codfw.wmnet:
         id: 2003
         rack: C
 
@@ -1158,8 +1158,8 @@ kafka_brokers_main:
 - 2620:0:860:101:10:192:0:139  # kafka2001.codfw.wmnet
 - 10.192.16.169                # kafka2002.codfw.wmnet
 - 2620:0:860:102:10:192:16:169 # kafka2002.codfw.wmnet
-- 10.192.32.150                # kafka2003.codfw.wmnet
-- 2620:0:860:103:10:192:32:150 # kafka2003.codfw.wmnet
+- 10.192.32.136                # kafka-main2003.codfw.wmnet
+- 2620:0:860:103:10:192:32:136 # kafka-main2003.codfw.wmnet
 kafka_brokers_jumbo:
 - 10.64.0.175                 # kafka-jumbo1001.eqiad.wmnet
 - 2620:0:861:101:10:64:0:175  # kafka-jumbo1001.eqiad.wmnet

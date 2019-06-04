@@ -283,7 +283,7 @@ codfw:
   eventbus:
     kafka2001.codfw.wmnet: [eventbus]
     kafka2002.codfw.wmnet: [eventbus]
-    kafka2003.codfw.wmnet: [eventbus]
+    kafka-main2003.codfw.wmnet: [eventbus]
   eventschemas:
     schema2001.codfw.wmnet: [eventschemas]
     schema2002.codfw.wmnet: [eventschemas]
