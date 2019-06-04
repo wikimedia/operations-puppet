@@ -1,2 +1,0 @@
-# Specific settings for T203786
-profile::memcached::max_seq_reqs: 200

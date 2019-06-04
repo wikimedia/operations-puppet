@@ -1,5 +1,0 @@
-# Specific settings for T208844
-# Will be moved to role level once applied
-# to all the shards.
-profile::memcached::max_seq_reqs: 200
-
