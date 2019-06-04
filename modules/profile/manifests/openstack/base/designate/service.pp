@@ -73,7 +73,7 @@ class profile::openstack::base::designate::service(
     $labweb_ips = inline_template("@resolve((<%= @labweb_hosts.join(' ') %>))")
     $labweb_ip6s = inline_template("@resolve((<%= @labweb_hosts.join(' ') %>), AAAA)")
     $prometheus_ferm_nodes = join($prometheus_nodes, ' ')
-    $prometheus_ferm_srange = "@resolve(${prometheus_ferm_nodes}) @resolve(${prometheus_ferm_nodes}, AAAA)"
+    $prometheus_ferm_srange = "@resolve((${prometheus_ferm_nodes})) @resolve((${prometheus_ferm_nodes}), AAAA)"
     # Open designate API to WMCS web UIs and the commandline on control servers, also prometheus
     ferm::rule { 'designate-api':
         rule => "saddr (@resolve(${osm_host}) ${labweb_ip6s} @resolve(${keystone_host}) @resolve(${keystone_host}, AAAA)
