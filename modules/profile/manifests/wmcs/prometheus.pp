@@ -102,6 +102,20 @@ class profile::wmcs::prometheus(
         port       => 9199,
     }
 
+    prometheus::class_config{ "pdns_secondary_${::site}":
+        dest       => "${targets_path}/pdns_secondary_${::site}.yaml",
+        site       => $::site,
+        class_name => 'role::wmcs::openstack::eqiad1::services_secondary',
+        port       => 9192,
+    }
+
+    prometheus::class_config{ "pdns-rec_secondary_${::site}":
+        dest       => "${targets_path}/pdns-rec_secondary_${::site}.yaml",
+        site       => $::site,
+        class_name => 'role::wmcs::openstack::eqiad1::services_secondary',
+        port       => 9199,
+    }
+
     prometheus::class_config{ "openstack_${::site}":
         dest       => "${targets_path}/openstack_${::site}.yaml",
         site       => $::site,
