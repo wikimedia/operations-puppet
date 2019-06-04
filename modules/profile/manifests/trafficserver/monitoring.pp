@@ -49,7 +49,7 @@ define profile::trafficserver::monitoring(
 
     nrpe::monitor_service { "trafficserver_exporter_${instance_name}":
         description  => 'Ensure trafficserver_exporter is running',
-        nrpe_command => "/usr/lib/nagios/plugins/check_procs -c 1:1 -a '/usr/bin/python3 /usr/bin/prometheus-trafficserver-exporter --no-procstats --endpoint ${endpoint} --port ${prometheus_exporter_port}'",
+        nrpe_command => "/usr/lib/nagios/plugins/check_procs -c 1:1 -a '/usr/bin/python3 /usr/bin/prometheus-trafficserver-exporter --no-procstats --no-ssl-verification --endpoint ${endpoint} --port ${prometheus_exporter_port}'",
         require      => Prometheus::Trafficserver_exporter["trafficserver_exporter_${instance_name}"],
         notes_url    => 'https://wikitech.wikimedia.org/wiki/Apache_Traffic_Server',
     }
