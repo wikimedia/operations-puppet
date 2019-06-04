@@ -1626,7 +1626,7 @@ lvs::configuration::lvs_services:
     monitors:
       ProxyFetch:
         url:
-        - http://localhost/healthz
+        - https://localhost/healthz
       IdleConnection:
         timeout-clean-reconnect: 3
         max-delay: 300
