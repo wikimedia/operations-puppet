@@ -28,6 +28,9 @@
 # [*bgp*]
 #   Whether to perform BGP checks. Defaults to false.
 #
+# [*critical*]
+#   Whether to page. Defaults to false.
+#
 # [*interfaces*]
 #   Whether to perform Interface down checks. Defaults to false.
 #
@@ -62,6 +65,7 @@ define netops::check(
     $alarms=false,
     $bfd=false,
     $bgp=false,
+    $critical=false,
     $interfaces=false,
     $parents=undef,
     $os=undef,
@@ -79,6 +83,7 @@ define netops::check(
     }
 
     @monitoring::host { $title:
+        critical   => $critical,
         ip_address => $ipv4,
         group      => $group,
         parents    => $real_parents,
