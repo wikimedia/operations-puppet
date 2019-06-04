@@ -368,7 +368,7 @@ sub cluster_fe_deliver {
 	}
 
 	// Strip s-maxage Cache-Control of wiki pages. The s-maxage still applies to Varnish (sent
-	// by MediaWiki $wgUseSquid, sends purges internally). But pages musn't be cached elsewhere.
+	// by MediaWiki $wgUseCdn, sends purges internally). But pages musn't be cached elsewhere.
 	// NOTE: Language variants URLs are not currently covered by these regexps.
 	// Instead of writing regexps for every edge-case, we should impose some order and coherence
 	// on our URL routing schemes.
