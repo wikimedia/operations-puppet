@@ -1135,13 +1135,8 @@ node 'labpuppetmaster1002.wikimedia.org' {
 
 # cloudservices1003/1004 hosts openstack-designate
 # and the powerdns auth and recursive services for instances in eqiad1.
-node 'cloudservices1003.wikimedia.org' {
-    role(wmcs::openstack::eqiad1::services_primary)
-    interface::add_ip6_mapped { 'main': }
-}
-
-node 'cloudservices1004.wikimedia.org' {
-    role(wmcs::openstack::eqiad1::services_secondary)
+node /^cloudservices100[34]\.wikimedia\.org$/ {
+    role(wmcs::openstack::eqiad1::services)
     interface::add_ip6_mapped { 'main': }
 }
 

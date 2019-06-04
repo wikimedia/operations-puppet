@@ -19,7 +19,7 @@ bastion-canary: P{bast4002.wikimedia.org}
 centrallog: P{O:syslog::centralserver}
 cloudcontrol: P{O:wmcs::openstack::eqiad1::control}
 cloudnet: P{O:wmcs::openstack::eqiad1::net}
-cloudservices: P{O:wmcs::openstack::eqiad1::services_primary or O:wmcs::openstack::eqiad1::services_secondary}
+cloudservices: P{O:wmcs::openstack::eqiad1::services}
 cloudvirt: P{O:wmcs::openstack::eqiad1::virt}
 cloud-eqiad1: A:cloudcontrol or A:cloudnet or A:cloudservices or A:cloudvirt
 cloudcontrol-codfw1dev: P{O:wmcs::openstack::codfw1dev::control}
