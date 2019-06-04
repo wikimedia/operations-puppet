@@ -17,6 +17,7 @@
     role: slave
   targets:
   - db2042:9104
+  - db2065:9104
   - db2078:13323
 
 - labels:

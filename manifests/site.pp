@@ -466,7 +466,7 @@ node 'db2051.codfw.wmnet' {
 }
 
 # see also db2084 and db2091 below
-node /^db2(058|065|073|090|106|110|119)\.codfw\.wmnet/ {
+node /^db2(058|073|090|106|110|119)\.codfw\.wmnet/ {
     role(mariadb::core)
 }
 
@@ -687,6 +687,11 @@ node 'db1128.eqiad.wmnet' {
 node 'db2042.codfw.wmnet' {
     role(mariadb::misc::phabricator)
 }
+
+node 'db2065.codfw.wmnet' {
+    role(mariadb::misc::phabricator)
+}
+
 
 ## m4 shard
 
