@@ -34,28 +34,28 @@ define profile::trafficserver::monitoring(
     }
 
     nrpe::monitor_service { "traffic_manager_${instance_name}":
-        description  => 'Ensure traffic_manager is running',
+        description  => "Ensure traffic_manager is running for instance ${instance_name}",
         nrpe_command => $traffic_manager_nrpe_command,
         require      => Trafficserver::Instance[$instance_name],
         notes_url    => 'https://wikitech.wikimedia.org/wiki/Apache_Traffic_Server',
     }
 
     nrpe::monitor_service { "traffic_server_${instance_name}":
-        description  => 'Ensure traffic_server is running',
+        description  => "Ensure traffic_server is running for instance ${instance_name}",
         nrpe_command => $traffic_server_nrpe_command,
         require      => Trafficserver::Instance[$instance_name],
         notes_url    => 'https://wikitech.wikimedia.org/wiki/Apache_Traffic_Server',
     }
 
     nrpe::monitor_service { "trafficserver_exporter_${instance_name}":
-        description  => 'Ensure trafficserver_exporter is running',
+        description  => "Ensure trafficserver_exporter is running for instance ${instance_name}",
         nrpe_command => "/usr/lib/nagios/plugins/check_procs -c 1:1 -a '/usr/bin/python3 /usr/bin/prometheus-trafficserver-exporter --no-procstats --no-ssl-verification --endpoint ${endpoint} --port ${prometheus_exporter_port}'",
         require      => Prometheus::Trafficserver_exporter["trafficserver_exporter_${instance_name}"],
         notes_url    => 'https://wikitech.wikimedia.org/wiki/Apache_Traffic_Server',
     }
 
     monitoring::service { "traffic_manager_${instance_name}_check_http":
-        description   => 'Ensure traffic_manager binds on $port and responds to HTTP requests',
+        description   => "Ensure traffic_manager binds on ${port} and responds to HTTP requests",
         check_command => "${traffic_manager_http_check}!localhost!${port}!/_stats",
         require       => Prometheus::Trafficserver_exporter["trafficserver_exporter_${instance_name}"],
         notes_url     => 'https://wikitech.wikimedia.org/wiki/Apache_Traffic_Server',
