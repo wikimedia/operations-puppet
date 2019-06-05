@@ -11,7 +11,7 @@ class profile::lvs(
 
     ## Kernel setup
 
-    # defaults to "performance", Ubuntu default is "ondemand"
+    # defaults to "performance"
     class { '::cpufrequtils': }
 
     # kernel-level parameters
