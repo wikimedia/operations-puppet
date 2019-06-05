@@ -13,6 +13,15 @@ class profile::kerberos::kadminserver (
         }
     }
 
+    # Util script to help generating keytabs
+    file{ '/usr/local/sbin/generate_keytabs.py':
+        ensure => file,
+        mode   => '0550',
+        owner  => 'root',
+        group  => 'root',
+        source => 'puppet:///modules/profile/kerberos/generate_keytabs.py',
+    }
+
     # Keytabs will be generated manually, via a script that uses kadmin.local,
     # under /srv/kerberos/keytabs
     file{ '/srv/kerberos':
