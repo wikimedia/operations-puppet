@@ -1530,7 +1530,7 @@ lvs::configuration::lvs_services:
       service: eventgate-analytics
     icinga:
       check_command: "check_http_lvs_on_port!eventgate-analytics.svc.%{::site}.wmnet!31192!/_info"
-      critical: false
+      critical: true
       sites:
         eqiad:
           hostname: eventgate-analytics.svc.eqiad.wmnet
@@ -1557,7 +1557,7 @@ lvs::configuration::lvs_services:
       service: eventgate-main
     icinga:
       check_command: "check_http_lvs_on_port!eventgate-main.svc.%{::site}.wmnet!32192!/_info"
-      critical: false
+      critical: true
       sites:
         eqiad:
           hostname: eventgate-main.svc.eqiad.wmnet
