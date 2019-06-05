@@ -230,12 +230,28 @@ class profile::icinga(
         content  => template('profile/icinga/inactive.motd.erb'),
     }
 
+    $metamonitor_home = '/var/lib/metamonitor'
     user { 'metamonitor':
         ensure => present,
         system => true,
-        home   => '/nonexistent',
+        home   => $metamonitor_home,
         shell  => '/bin/bash',
         groups => $icinga_group,
+    }
+
+    file { "${metamonitor_home}/.ssh":
+        ensure => directory,
+        owner  => 'metamonitor',
+        group  => 'metamonitor',
+        mode   => '0700',
+    }
+
+    file { "${metamonitor_home}/.ssh/known_hosts":
+        ensure => present,
+        source => 'puppet:///modules/profile/icinga/metamonitor_known_hosts',
+        owner  => 'metamonitor',
+        group  => 'metamonitor',
+        mode   => '0644',
     }
 
     ::keyholder::agent { 'metamonitor':
