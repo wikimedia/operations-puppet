@@ -125,12 +125,6 @@ class BaseAddressWMFHandler(BaseAddressHandler):
         rcode = p.wait()
         return out, error, rcode
 
-        if rcode:
-            LOG.warning('Remote call %s to server %s failed: \n%s\n%s' %
-                        (command, server, out, error))
-            return False
-        return True
-
     def _delete_puppet_config(self, projectid, fqdn):
         endpoint = cfg.CONF[self.name].puppet_config_backend
         url = "%s/%s/prefix/%s" % (endpoint, projectid, fqdn)
