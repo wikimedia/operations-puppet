@@ -2,7 +2,7 @@
 #
 # Installs a X.509 certificate authority.
 #
-# This is deeply integrated with Debian/Ubuntu's mechanism for installing
+# This is deeply integrated with Debian's mechanism for installing
 # certificates. The ca-certificates package is used, which eventually would
 # install the certificate under /etc/ssl/certs as well as a symlink with its
 # hash, in openssl's c_rehash format.

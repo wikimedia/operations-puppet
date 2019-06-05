@@ -48,21 +48,4 @@ class sslcert {
         mode   => '0755',
         source => 'puppet:///modules/sslcert/x509-bundle.py',
     }
-
-    # Limit AppArmor support to just Ubuntu, for now
-    if $::operatingsystem == 'Ubuntu' {
-        include apparmor
-
-        # modify the default ssl_certs abstraction to support
-        # /etc/ssl/localcerts, as defined above
-        file { '/etc/apparmor.d/abstractions/ssl_certs':
-            ensure  => present,
-            owner   => 'root',
-            group   => 'root',
-            mode    => '0444',
-            source  => 'puppet:///modules/sslcert/apparmor/ssl_certs',
-            require => Package['apparmor'],
-            notify  => Service['apparmor'],
-        }
-    }
 }
