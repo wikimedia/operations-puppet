@@ -230,9 +230,57 @@ customviews:
       OR exists( select 1 from oldimage where oi_actor = actor_id AND oi_deleted&4 = 0 )
       OR exists( select 1 from filearchive where fa_actor = actor_id AND fa_deleted&4 = 0 )
       OR exists( select 1 from recentchanges where rc_actor = actor_id AND rc_deleted&4 = 0 )
-      OR exists( select 1 from logging where log_actor = actor_id AND log_deleted&4 = 0 )
-      OR exists( select 1 from revision JOIN revision_actor_temp ON(revactor_rev = rev_id)
-      where rev_deleted&4 = 0 )
+      OR exists( select 1 from logging where log_actor = actor_id AND log_deleted&4 = 0 AND $INSERTED_EXPR$ )
+      OR exists( select 1 from revision JOIN revision_actor_temp ON(revactor_rev = rev_id) where rev_deleted&4 = 0 )
+    logging_where:
+      *allowed_logtypes
+  actor_user:
+    source: actor
+    view: select actor_id, actor_user, actor_name
+    where: >
+      exists( select 1 from user where user_id = actor_user )
+  actor_archive:
+    source: actor
+    view: select actor_id, actor_user, actor_name
+    where: >
+      exists( select 1 from archive where ar_actor = actor_id AND ar_deleted&4 = 0 )
+  actor_ipblocks:
+    source: actor
+    view: select actor_id, actor_user, actor_name
+    where: >
+      exists( select 1 from ipblocks where ipb_by_actor = actor_id AND ipb_deleted=0 )
+  actor_image:
+    source: actor
+    view: select actor_id, actor_user, actor_name
+    where: >
+      exists( select 1 from image where img_actor = actor_id )
+  actor_oldimage:
+    source: actor
+    view: select actor_id, actor_user, actor_name
+    where: >
+      exists( select 1 from oldimage where oi_actor = actor_id AND oi_deleted&4 = 0 )
+  actor_filearchive:
+    source: actor
+    view: select actor_id, actor_user, actor_name
+    where: >
+      exists( select 1 from filearchive where fa_actor = actor_id AND fa_deleted&4 = 0 )
+  actor_recentchanges:
+    source: actor
+    view: select actor_id, actor_user, actor_name
+    where: >
+      exists( select 1 from recentchanges where rc_actor = actor_id AND rc_deleted&4 = 0 )
+  actor_logging:
+    source: actor
+    view: select actor_id, actor_user, actor_name
+    where: >
+      exists( select 1 from logging where log_actor = actor_id AND log_deleted&4 = 0 AND $INSERTED_EXPR$ )
+    logging_where:
+      *allowed_logtypes
+  actor_revision:
+    source: actor
+    view: select actor_id, actor_user, actor_name
+    where: >
+      exists( select 1 from revision JOIN revision_actor_temp ON(revactor_rev = rev_id) where rev_deleted&4 = 0 )
   archive:
     source: archive
     view: >
