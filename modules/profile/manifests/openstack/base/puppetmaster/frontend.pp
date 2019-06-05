@@ -53,7 +53,7 @@ class profile::openstack::base::puppetmaster::frontend(
         $cleaner2_ip = ipresolve($second_region_designate_host, 4)
         $cleaner2_ip6 = ipresolve($second_region_designate_host, 6)
         class { 'puppetmaster::certmanager':
-            remote_cert_cleaners => "${cleaner1_ip},${cleaner1_ip6},${cleaner2_ip},${cleaner2_ip6}"
+            remote_cert_cleaners => [$cleaner1_ip, $cleaner1_ip6, $cleaner2_ip, $cleaner2_ip6]
         }
     }
 

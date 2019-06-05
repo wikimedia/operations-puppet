@@ -1,5 +1,5 @@
 class puppetmaster::certmanager(
-    $remote_cert_cleaners=''
+    $remote_cert_cleaners=[]
 ){
     user { 'certmanager':
         home   => '/',
@@ -16,5 +16,11 @@ class puppetmaster::certmanager(
         privileges => [
             'ALL = (root) NOPASSWD: /usr/bin/puppet cert clean *',
         ],
+    }
+
+    $remote_cert_cleaners_spaced = join($remote_cert_cleaners, ' ')
+    security::access::config { 'certmanager':
+        content  => "+ : certmanager : ${remote_cert_cleaners_spaced}\n",
+        priority => 60,
     }
 }
