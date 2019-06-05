@@ -835,7 +835,8 @@ phabricator_server: 'phab1003.eqiad.wmnet'
 phabricator_server_failover: 'phab2001.codfw.wmnet'
 
 kerberos_realm_name: WIKIMEDIA
-kerberos_kadmin_server_primary: kerberos1001.eqiad.wmnet
+kerberos_kadmin_server_primary: 'kerberos1001.eqiad.wmnet'
+kerberos_kadmin_keytabs_repo: 'puppetmaster1001.eqiad.wmnet'
 kerberos_kdc_servers:
     - 'kerberos1001.eqiad.wmnet'
 
