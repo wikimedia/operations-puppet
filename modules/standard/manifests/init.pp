@@ -15,13 +15,7 @@ class standard(
     }
 
     unless $::fqdn in $::ntp_peers[$::site] {
-        if (os_version('debian >= jessie')) {
-            include ::standard::ntp::timesyncd
-        } else {
-            class { '::standard::ntp::client':
-                monitoring_hosts => $monitoring_hosts,
-            }
-        }
+        include ::standard::ntp::timesyncd
     }
 
     include ::standard::diamond
