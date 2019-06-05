@@ -1,3 +1,2 @@
 # db2065
 mariadb::binlog_format: 'ROW'
-profile::base::notifications: disabled
