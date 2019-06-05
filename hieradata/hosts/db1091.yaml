@@ -1,2 +1,3 @@
 # db1091
 mariadb::shard: 's4'
+profile::base::notifications: disabled
