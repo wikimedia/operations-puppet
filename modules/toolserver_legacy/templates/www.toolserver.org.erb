@@ -60,12 +60,15 @@
 
     ErrorDocument 404 /notfound.html
 
-    # Redirect wiki.toolserver.org to mediawiki.org.
     RewriteEngine on
+
+    # Redirect wiki.toolserver.org to mediawiki.org.
     RewriteCond %{HTTP_HOST} =wiki.toolserver.org [NC]
     RewriteRule ^/view/(.*)$ https://www.mediawiki.org/wiki/Toolserver:$1 [L,R]
-    # T224265
-    RewriteRule ^/~nikola/svgtranslate.php?svg=(.*)$ https://tools.wmflabs.org/svgtranslate/search?filename=$1 [L,NE,R]
+
+    # T224265 - Redirect ~nikola/svgtranslate.php?svg=* to svgtranslate tool
+    RewriteCond %{QUERY_STRING} ^svg=(.*)$
+    RewriteRule ^/~nikola/svgtranslate.php$ https://tools.wmflabs.org/svgtranslate/search?filename=%1 [L,R=301]
 
     # Redirects from www.toolserver.org
     #
