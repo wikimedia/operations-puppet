@@ -13,6 +13,7 @@ EOF
 	Pin-Priority: 500
 EOF
 	printf "Acquire::http::Proxy::archive.debian.org \"${PROXY}\";\n" >> /etc/apt/apt.conf.d/01Proxy
+	printf "Acquire::Check-Valid-Until false;\n" >> /etc/apt/apt.conf.d/01Proxy
 	apt-get -o 'Acquire::Check-Valid-Until=false' update
 <%- else -%>
 	printf '\033[0;31m ERROR: ARCHIVE_BACKPORTS should only be used on jessie \033[0m\n'
