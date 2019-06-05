@@ -1504,6 +1504,7 @@ lvs::configuration::lvs_services:
       service: blubberoid
     icinga:
       check_command: "check_http_lvs_on_port!blubberoid.svc.%{::site}.wmnet!8748!/?spec"
+      critical: false
       sites:
         eqiad:
           hostname: blubberoid.svc.eqiad.wmnet
