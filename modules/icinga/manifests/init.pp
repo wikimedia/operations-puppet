@@ -241,6 +241,17 @@ class icinga(
         require => Package['python3-yaml'],
     }
 
+    require_package('python3-clustershell')
+    # Script to parse and query the status.dat file
+    file { '/usr/local/bin/icinga-status':
+        ensure  => present,
+        owner   => 'root',
+        group   => 'ops',
+        mode    => '0550',
+        source  => 'puppet:///modules/icinga/icinga_status.py',
+        require => Package['python3-clustershell'],
+    }
+
     # Purge unmanaged nagios_host and nagios_services resources
     # This will only happen for non exported resources, that is resources that
     # are declared by the icinga host itself
