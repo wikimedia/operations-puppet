@@ -820,15 +820,6 @@ hadoop_clusters:
 
     yarn_resourcemanager_zk_state_store_parent_path: '/yarn-rmstore/analytics-hadoop'
 
-    # Allow superset to impersonate users.
-    # This is what allows superset to access files in
-    # HDFS as users running Hive queries.
-    # We only want to allow access from analytics-tool1004 (where superset runs)
-    # and for users in specific groups.
-    core_site_extra_properties:
-      hadoop.proxyuser.superset.hosts: analytics-tool1004.eqiad.wmnet
-      hadoop.proxyuser.superset.groups: analytics-users,analytics-privatedata-users
-
 deployment_server: deploy1001.eqiad.wmnet
 
 install_server: install1002.wikimedia.org
