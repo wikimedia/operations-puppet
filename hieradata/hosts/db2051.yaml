@@ -1,3 +1,4 @@
 # db2051
 mariadb::shard: 's4'
 mariadb::binlog_format: 'STATEMENT'
+profile::base::notifications: disabled
