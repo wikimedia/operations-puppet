@@ -1,3 +1,4 @@
 # db2090
 mariadb::shard: 's4'
+mariadb::mysql_role: 'master'
 mariadb::binlog_format: 'STATEMENT'

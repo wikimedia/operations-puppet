@@ -457,12 +457,12 @@ node /^db1(111|112)\.eqiad\.wmnet/ {
 
 # s4 (commons) core production dbs on codfw
 # codfw master
-node 'db2051.codfw.wmnet' {
+node 'db2090.codfw.wmnet' {
     role(mariadb::core)
 }
 
 # see also db2084 and db2091 below
-node /^db2(073|090|106|110|119)\.codfw\.wmnet/ {
+node /^db2(051|073|106|110|119)\.codfw\.wmnet/ {
     role(mariadb::core)
 }
 
