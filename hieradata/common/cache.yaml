@@ -66,16 +66,16 @@ cache::nodes:
       - 'cp1088.eqiad.wmnet'
       - 'cp1090.eqiad.wmnet'
     esams:
-      - 'cp3035.esams.wmnet'
       # - 'cp3037.esams.wmnet' dead in T222041
       - 'cp3039.esams.wmnet'
       - 'cp3043.esams.wmnet' # on loan from cache_text
     esams_ats:
       - 'cp3034.esams.wmnet'
-      - 'cp3045.esams.wmnet'
+      - 'cp3035.esams.wmnet'
       - 'cp3036.esams.wmnet'
       - 'cp3038.esams.wmnet'
       - 'cp3044.esams.wmnet'
+      - 'cp3045.esams.wmnet'
       - 'cp3046.esams.wmnet'
       - 'cp3047.esams.wmnet'
       - 'cp3049.esams.wmnet'
