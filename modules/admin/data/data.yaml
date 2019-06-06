@@ -3263,6 +3263,10 @@ ldap_only_users:
     ensure: present
     realname: Corey Floyd
     email: cfloyd@wikimedia.org
+  cstone:
+    ensure: present
+    realname: Christine Stone
+    email: cstone@wikimedia.org
   daimona:
     ensure: present
     realname: (known to Legal)
