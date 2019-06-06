@@ -3,10 +3,24 @@
 set -e
 set -x
 
+LSB_RELEASE=$(chroot /target /usr/bin/lsb_release --codename --short)
+
 # Install the public root ssh key
 mkdir /target/root/.ssh
 wget -O /target/root/.ssh/authorized_keys http://apt.wikimedia.org/autoinstall/ssh/authorized_keys
 chmod go-rwx /target/root/.ssh/authorized_keys
+
+# We need to pin add the puppet and facter components before installing puppet
+# for now we don't do this on puppet management servers
+# https://phabricator.wikimedia.org/T219803
+if hostname | egrep -vq '^(puppet(db|master)|rhodium|labpuppetmaster)' && printf $LSB_RELEASE | grep -qv buster
+then
+  BASE_REPO="http://apt.wikimedia.org/wikimedia ${LSB_RELEASE}-wikimedia component"
+  printf 'deb %s/puppet5\n' $BASE_REPO > /target/etc/apt/sources.list.d/component-puppet5.list
+  printf 'deb %s/facter3\n' $BASE_REPO > /target/etc/apt/sources.list.d/component-facter3.list
+  in-target apt-get update
+fi
+
 
 # openssh-server: to make the machine accessible
 # puppet: because we'll need it soon anyway
@@ -16,7 +30,7 @@ apt-install openssh-server puppet lldpd lsb-release
 
 # nvme-cli: on machines with NVMe drives, this allows late_command to change
 # LBA format below, but this package doesn't exist in jessie
-if [ "$(chroot /target /usr/bin/lsb_release --codename --short)" != "jessie" ]; then
+if [ "${LSB_RELEASE}" != "jessie" ]; then
 	apt-install nvme-cli
 fi
 
