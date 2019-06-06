@@ -33,4 +33,12 @@ class conftool::scripts {
         mode   => '0555',
         source => 'puppet:///modules/conftool/conftool-simple-command.sh',
     }
+
+    file { '/usr/local/bin/safe-service-restart':
+        ensure => present,
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0555',
+        source => 'puppet:///modules/conftool/safe-service-restart.py'
+    }
 }
