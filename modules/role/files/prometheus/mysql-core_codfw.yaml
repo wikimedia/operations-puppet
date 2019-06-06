@@ -89,7 +89,7 @@
     shard: s6
     role: slave
   targets:
-  - db2046:9104
+  - db2039:9104
   - db2053:9104
   - db2058:9104
   - db2060:9104
@@ -103,7 +103,7 @@
     shard: s6
     role: master
   targets:
-  - db2039:9104
+  - db2046:9104
 
 - labels:
     shard: s7

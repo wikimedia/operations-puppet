@@ -501,11 +501,11 @@ node /^db1(085|088|093|131)\.eqiad\.wmnet/ {
 
 # s6 core production dbs on codfw
 # codfw master
-node 'db2039.codfw.wmnet' {
+node 'db2046.codfw.wmnet' {
     role(mariadb::core)
 }
 
-node /^db2(046|053|058|060|067|076|114|117)\.codfw\.wmnet/ {
+node /^db2(039|053|058|060|067|076|114|117)\.codfw\.wmnet/ {
     role(mariadb::core)
 }
 
