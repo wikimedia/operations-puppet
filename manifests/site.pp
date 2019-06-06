@@ -628,6 +628,12 @@ node 'db2041.codfw.wmnet' {
     role(spare::system)
 }
 
+# To be decommissioned # T225090
+node 'db2042.codfw.wmnet' {
+    role(spare::system)
+}
+
+
 ## m1 shard
 
 # See also multiinstance misc hosts db1117 and db2078 below
@@ -680,10 +686,6 @@ node 'db1128.eqiad.wmnet' {
 
 
 # codfw
-node 'db2042.codfw.wmnet' {
-    role(mariadb::misc::phabricator)
-}
-
 node 'db2065.codfw.wmnet' {
     role(mariadb::misc::phabricator)
 }
