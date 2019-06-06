@@ -1,5 +1,5 @@
 #!/bin/bash
-RUNBOOK_URL="https://wikitech.wikimedia.org/wiki/Application_servers"
+#RUNBOOK_URL="https://wikitech.wikimedia.org/wiki/Application_servers"
 usage() { echo "Usage: $0 -w <int> -c <int>" 1>&2; exit 3; }
 
 numGe() {
@@ -33,7 +33,7 @@ if [ $retval -ne 0 ]; then
 fi
 # First check if the opcache is full
 if [[ $(echo "$OUT" | jq .cache_full) == "true" ]]; then
-    echo "CRITICAL: opcache full. See $RUNBOOK_URL"
+    echo "CRITICAL: opcache full."
     exit 2
 fi
 
