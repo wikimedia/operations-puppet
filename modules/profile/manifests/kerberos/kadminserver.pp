@@ -41,9 +41,9 @@ class profile::kerberos::kadminserver (
     # Add the rsync server configuration only to the
     # active kerberos host.
     if $trusted['certname'] == $krb_kadmin_primary {
-        $ensure_rsync = true
+        $ensure_rsync = 'present'
     } else {
-        $ensure_rsync = false
+        $ensure_rsync = 'absent'
     }
 
     class { 'rsync::server': }
