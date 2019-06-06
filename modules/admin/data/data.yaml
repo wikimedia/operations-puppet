@@ -3540,6 +3540,10 @@ ldap_only_users:
     ensure: present
     realname: Tonina Zhelyazkova
     email: tonina.zhelyazkova@wikimedia.de
+  tskaff:
+    ensure: present
+    realname: Thea Skaff
+    email: tskaff@wikimedia.org
   samtar:
     ensure: present
     realname: Sam Tarling
