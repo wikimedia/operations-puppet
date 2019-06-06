@@ -281,7 +281,8 @@ class profile::phabricator::main (
         php::extension {
             'mailparse':
                 package_name => 'php-mailparse',
-                sapis        => ['cli', 'fpm'];
+                sapis        => ['cli', 'fpm'],
+                priority     => 21;
             'mysqlnd':
                 package_name => 'php7.2-mysqlnd',
                 sapis        => ['cli', 'fpm'],
