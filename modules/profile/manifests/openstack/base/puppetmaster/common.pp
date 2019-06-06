@@ -1,6 +1,8 @@
 class profile::openstack::base::puppetmaster::common(
     $designate_host = hiera('profile::openstack::base::puppetmaster::common::designate_host'),
+    $designate_host_standby = hiera('profile::openstack::base::puppetmaster::common::designate_host_standby'),
     $second_region_designate_host = hiera('profile::openstack::base::puppetmaster::common::second_region_designate_host'),
+    $second_region_designate_host_standby = hiera('profile::openstack::base::puppetmaster::common::second_region_designate_host_standby'),
     $puppetmaster_webhostname = hiera('profile::openstack::base::puppetmaster::web_hostname'),
     $puppetmaster_hostname = hiera('profile::openstack::base::puppetmaster::common::puppetmaster_hostname'),
     $puppetmasters = hiera('profile::openstack::base::puppetmaster::common::puppetmasters'),
@@ -25,17 +27,19 @@ class profile::openstack::base::puppetmaster::common(
 
     $labs_networks = join($network::constants::labs_networks, ' ')
     class { '::openstack::puppet::master::encapi':
-        mysql_host                   => $encapi_db_host,
-        mysql_db                     => $encapi_db_name,
-        mysql_username               => $encapi_db_user,
-        mysql_password               => $encapi_db_pass,
-        statsd_host                  => $statsd_host,
-        statsd_prefix                => $encapi_statsd_prefix,
-        puppetmasters                => $puppetmasters,
-        labweb_hosts                 => $labweb_hosts,
-        nova_controller              => $nova_controller,
-        designate_host               => $designate_host,
-        second_region_designate_host => $second_region_designate_host,
+        mysql_host                           => $encapi_db_host,
+        mysql_db                             => $encapi_db_name,
+        mysql_username                       => $encapi_db_user,
+        mysql_password                       => $encapi_db_pass,
+        statsd_host                          => $statsd_host,
+        statsd_prefix                        => $encapi_statsd_prefix,
+        puppetmasters                        => $puppetmasters,
+        labweb_hosts                         => $labweb_hosts,
+        nova_controller                      => $nova_controller,
+        designate_host                       => $designate_host,
+        designate_host_standby               => $designate_host_standby,
+        second_region_designate_host         => $second_region_designate_host,
+        second_region_designate_host_standby => $second_region_designate_host_standby,
     }
 
     # Update labs/private repo.
@@ -57,6 +61,8 @@ class profile::openstack::base::puppetmaster::common(
         ensure => 'present',
         rule   => "saddr (@resolve((${designate_host} ${second_region_designate_host}))
                           @resolve((${designate_host} ${second_region_designate_host}), AAAA)
+                          @resolve((${designate_host_standby} ${second_region_designate_host_standby}))
+                          @resolve((${designate_host_standby} ${second_region_designate_host_standby}), AAAA)
                           ${labweb_ips} ${labweb_aaaa} @resolve(${nova_controller}) @resolve(${nova_controller}, AAAA))
                           proto tcp dport 8101 ACCEPT;",
     }

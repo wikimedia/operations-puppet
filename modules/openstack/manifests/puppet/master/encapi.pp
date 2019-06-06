@@ -9,7 +9,9 @@ class openstack::puppet::master::encapi(
     $labweb_hosts,
     $nova_controller,
     $designate_host,
+    $designate_host_standby,
     $second_region_designate_host,
+    $second_region_designate_host_standby,
 ) {
     require_package('python3-pymysql',
                     'python3-statsd',
@@ -40,8 +42,12 @@ class openstack::puppet::master::encapi(
         ipresolve($nova_controller, 4),
         ipresolve($second_region_designate_host, 4),
         ipresolve($second_region_designate_host, 6),
+        ipresolve($second_region_designate_host_standby, 4),
+        ipresolve($second_region_designate_host_standby, 6),
         ipresolve($designate_host, 4),
-        ipresolve($designate_host, 6)]),',')
+        ipresolve($designate_host, 6),
+        ipresolve($designate_host_standby, 4),
+        ipresolve($designate_host_standby, 6)]),',')
 
     # We override service_settings because the default includes autoload
     #  which insists on using python2
