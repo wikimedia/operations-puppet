@@ -6054,7 +6054,6 @@ host rhodium {
 host sarin {
     hardware ethernet 90:B1:1C:2D:85:40;
     fixed-address sarin.codfw.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
 }
 
 host scandium {
