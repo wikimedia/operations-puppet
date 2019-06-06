@@ -5,6 +5,7 @@ import logging
 import socket
 import subprocess
 import re
+import sys
 import time
 
 from urllib import parse
@@ -12,6 +13,7 @@ from urllib import parse
 import requests
 
 from conftool.cli.tool import ToolCliBase
+from conftool.drivers import BackendError
 
 logger = logging.getLogger('service_restarter')
 
@@ -29,6 +31,7 @@ class ServiceRestarter(ToolCliBase):
         self.pools = args.pools
         self.lvs_uris = args.lvs_urls
         self.services = args.services
+        self.timeout = args.timeout
 
     def announce(self):
         pass
@@ -86,7 +89,7 @@ class ServiceRestarter(ToolCliBase):
             # now let's wait for the service to be depooled in pybal
             self._verify_status(False)
             return True
-        except PoolStatusError as e:
+        except (BackendError, PoolStatusError) as e:
             logger.error('Error depooling the servers: {}'.format(e))
             return False
 
@@ -97,7 +100,7 @@ class ServiceRestarter(ToolCliBase):
                 obj.update({'pooled': 'yes'})
             self._verify_status(True)
             return True
-        except PoolStatusError as e:
+        except (BackendError, PoolStatusError) as e:
             logger.error('Error depooling the servers: {}'.format(e))
             return False
 
@@ -119,13 +122,25 @@ class ServiceRestarter(ToolCliBase):
             'accept': 'application/json'
         }
         for _ in range(0, self.retries):
-            r = requests.get(url, headers=headers, timeout=1)
-            # If we don't get a valid response, we bail out of checking.
-            # This will account for servers that are inactive (which will
-            # return 404) and for backing off if pybal is unable to respond
-            # (5xx errors)
-            if r.status_code != requests.codes.ok:
+            try:
+                r = requests.get(url, headers=headers, timeout=self.timeout)
+                r.raise_for_status()
+            except requests.exceptions.HTTPError:
+                # If we don't get a valid response, we bail out of checking.
+                # This will account for servers that are inactive (which will
+                # return 404) and for backing off if pybal is unable to respond
+                # (5xx errors)
                 return
+            except requests.exceptions.Timeout:
+                logger.warning("Timed out checking %s", url)
+            except requests.exceptions.RequestException as e:
+                logger.warning(
+                    'Issues connecting to %s: %s',
+                    parsed.netloc,
+                    e
+                )
+                # For such errors, we just retry again
+                continue
 
             # Malformed response. We bail out as well
             try:
@@ -197,6 +212,12 @@ def parse_args():
         help='How many seconds to wait before the next check upon an error'
     )
     parser.add_argument(
+        '--timeout',
+        default=5,
+        type=int,
+        help='Number of seconds to wait a response from the lbs'
+    )
+    parser.add_argument(
         '--lvs-urls', dest='lvs_urls', nargs='+', metavar='URL',
         help='Full urls to check for results in pybal.'
     )
@@ -223,4 +244,4 @@ def main():
 
 
 if __name__ == '__main__':
-    main()
+    sys.exit(main())
