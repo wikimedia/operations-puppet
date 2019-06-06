@@ -3,12 +3,14 @@
 set -e
 set -x
 
-LSB_RELEASE=$(chroot /target /usr/bin/lsb_release --codename --short)
-
 # Install the public root ssh key
 mkdir /target/root/.ssh
 wget -O /target/root/.ssh/authorized_keys http://apt.wikimedia.org/autoinstall/ssh/authorized_keys
 chmod go-rwx /target/root/.ssh/authorized_keys
+
+# lsb-release: allows conditionals in this script on in-target release codename
+apt-install lsb-release
+LSB_RELEASE=$(chroot /target /usr/bin/lsb_release --codename --short)
 
 # We need to pin add the puppet and facter components before installing puppet
 # for now we don't do this on puppet management servers
@@ -25,8 +27,7 @@ fi
 # openssh-server: to make the machine accessible
 # puppet: because we'll need it soon anyway
 # lldpd: announce the machine on the network
-# lsb-release: allows conditionals in this script on in-target release codename
-apt-install openssh-server puppet lldpd lsb-release
+apt-install openssh-server puppet lldpd
 
 # nvme-cli: on machines with NVMe drives, this allows late_command to change
 # LBA format below, but this package doesn't exist in jessie
