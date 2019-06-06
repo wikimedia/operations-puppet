@@ -2,6 +2,7 @@ class profile::kerberos::kadminserver (
     Stdlib::Fqdn $krb_realm_name = lookup('kerberos_realm_name'),
     Stdlib::Fqdn $krb_kadmin_primary = lookup('kerberos_kadmin_server_primary'),
     Stdlib::Fqdn $krb_kadmin_keytabs_repo = lookup('kerberos_kadmin_keytabs_repo'),
+    Array[String] $rsync_secrets_file_auth_users = lookup('profile::kerberos::kadminserver', { 'default_value' => ['kerb'] }),
 ) {
     package { 'krb5-admin-server':
         ensure => present,
@@ -66,6 +67,7 @@ class profile::kerberos::kadminserver (
         hosts_allow    => [$krb_kadmin_keytabs_repo],
         auto_ferm      => true,
         auto_ferm_ipv6 => true,
+        auth_users     => $rsync_secrets_file_auth_users,
         secrets_file   => $rsync_secrets_file,
         require        => File[$rsync_secrets_file],
     }
