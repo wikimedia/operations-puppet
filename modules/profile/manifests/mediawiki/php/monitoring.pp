@@ -101,7 +101,7 @@ class profile::mediawiki::php::monitoring(
     # Monitor opcache status
     file { '/usr/local/lib/nagios/plugins/nrpe_check_opcache':
         ensure => present,
-        source => 'puppet:///modules/profile/mediawiki/php/nrpe_check_opcache.py',
+        source => 'puppet:///modules/profile/mediawiki/php/nrpe_check_opcache.sh',
         owner  => 'root',
         group  => 'root',
         mode   => '0555',
