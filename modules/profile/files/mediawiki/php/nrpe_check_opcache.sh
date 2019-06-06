@@ -40,13 +40,15 @@ fi
 # Now check for the opcache cache-hit ratio. If it's below 99.85%, it's a critical alert.
 # Skip the check if the service has been restarted since a few minutes.
 hits=$(echo $OUT | jq .opcache_statistics.hits)
-if numGe "$hits" 700000; then
+# We have around 4k files to accelerate. Use 5k for good measure as a base value of expected misses at startup.
+if numGe "$hits" 3300000; then
     hitrate=$(echo $OUT | jq .opcache_statistics.opcache_hit_rate)
     if numGe 99.85 "$hitrate"; then
         echo "CRITICAL: opcache cache-hit ratio is below 99.85%"
         exit 2
     fi
-    if numGe 99.99 "$hitrate"; then
+
+    if numGe "$hits" 50000000 && numGe 99.99 "$hitrate"; then
         echo "WARNING: opcache cache-hit ratio is below 99.99"
         exit 1
     fi

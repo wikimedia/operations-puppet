@@ -108,7 +108,7 @@ class profile::mediawiki::php::monitoring(
     }
     nrpe::monitor_service { 'opcache':
         description  => 'PHP opcache health',
-        nrpe_command => '/usr/local/lib/nagios/plugins/nrpe_check_opcache -w 50 -c 10',
+        nrpe_command => '/usr/local/lib/nagios/plugins/nrpe_check_opcache -w 100 -c 50',
         notes_url    => 'https://wikitech.wikimedia.org/wiki/Application_servers',
     }
 
