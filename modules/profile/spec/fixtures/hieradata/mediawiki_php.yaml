@@ -1,0 +1,48 @@
+lvs::configuration::lvs_service_ips:
+  apaches: &ip_block001
+    testsite: 1.1.1.1
+    testsite1: 8.8.8.8
+    eqiad: 1.2.3.4
+lvs::configuration::lvs_services:
+  apaches:
+    description: "apache"
+    class: high-traffic1
+    sites:
+      - testsite
+      - testsite1
+      - eqiad
+    ip: *ip_block001
+    port: 80
+    scheduler: sh
+    depool-threshold: '.5'
+    conftool:
+      cluster: appserver
+      service: apache2
+    monitors:
+      IdleConnection:
+        timeout-clean-reconnect: 3
+        max-delay: 300
+  appservers-https:
+    description: "nginx"
+    class: low-traffic
+    sites:
+      - testsite
+      - testsite1
+      - eqiad
+    ip: *ip_block001
+    port: 443
+    scheduler: sh
+    depool-threshold: '.5'
+    conftool:
+      cluster: appserver
+      service: nginx
+    monitors:
+      IdleConnection:
+        timeout-clean-reconnect: 3
+        max-delay: 300
+
+profile::mediawiki::vhost_feature_flags: {}
+profile::lvs::realserver::pools:
+  apaches:
+    service: hhvm
+profile::lvs::realserver::use_conftool: false

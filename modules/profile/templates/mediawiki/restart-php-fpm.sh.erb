@@ -1,0 +1,38 @@
+#!/bin/bash
+<%-
+def calculate_lvs_args(pool_names)
+  uris = []
+  pools = []
+  site = scope.lookupvar('::site')
+  realm = scope.lookupvar('::realm')
+  lvs_hosts = scope.lookupvar('::lvs::configuration::lvs_class_hosts')
+  services = scope.lookupvar('lvs::configuration::lvs_services')
+  pool_names.each do |pool_name|
+    service = services[pool_name]
+    port = service['port'] || 80
+    pybal_name = "#{pool_name}_#{port}"
+    uris += lvs_hosts[service['class']].map{ |h| "http://#{h}:9090/pools/#{pybal_name}" }
+    pools << service['conftool']['service']
+  end
+  cli = "--lvs-urls #{uris.join ' '} --pools #{pools.join ' '}"
+  cli
+end
+# TODO: generalize this, move this all to profile::lvs::realserver
+case @cluster
+when 'appserver'
+  lvs_pools = ['apaches', 'appservers-https']
+when 'api_appserver'
+  lvs_pools = ['api', 'api-https']
+when 'jobrunner'
+  lvs_pools = ['jobrunner', 'videoscaler']
+else
+  lvs_pools = []
+end
+
+-%>
+<% if scope.lookupvar('::realm') != 'production' || lvs_pools == nil -%>
+echo "Safe-restart is not needed here."
+systemctl restart php<%= @php_version %>-fpm.service
+<%- else -%>
+/usr/local/bin/safe-service-restart <%= calculate_lvs_args lvs_pools %> --services php<%= @php_version %>-fpm.service --retries 10 --interval 5
+<%- end -%>

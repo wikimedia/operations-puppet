@@ -22,8 +22,14 @@ class profile::mediawiki::php(
     Optional[Wmflib::UserIpPort] $port = hiera('profile::php_fpm::fcgi_port', undef),
     String $fcgi_pool = hiera('profile::mediawiki::fcgi_pool', 'www'),
     Integer $request_timeout = hiera('profile::mediawiki::php::request_timeout', 240),
-    String $apc_shm_size = hiera('profile::mediawiki::apc_shm_size')
-) {
+    String $apc_shm_size = hiera('profile::mediawiki::apc_shm_size'),
+    # temporary, for php restarts
+    String $cluster = lookup('cluster', {'default_value' => $::cluster}),
+    ) {
+
+    # Needed for the restart script
+    require ::lvs::configuration
+
     if os_version('debian == stretch') {
         # We get our packages for our repositories again
         file { '/etc/apt/preferences.d/php_wikidiff2.pref':
@@ -264,6 +270,15 @@ class profile::mediawiki::php(
                 'extension'                       => 'tideways_xhprof.so',
                 'tideways_xhprof.clock_use_rdtsc' => '0',
             }
+        }
+
+        # Install a script to safely restart php
+        file { '/usr/local/bin/restart-php-fpm':
+            ensure  => present,
+            mode    => '0555',
+            owner   => 'root',
+            group   => 'root',
+            content => template('profile/mediawiki/restart-php-fpm.sh.erb')
         }
     }
     ## Install excimer, our php profiler, if we're on a newer version of php
