@@ -3406,6 +3406,10 @@ ldap_only_users:
     ensure: present
     realname: Raz Shuty
     email: raz.shuty@wikimedia.de
+  rmaung:
+    ensure: present
+    realname: Rebecca Maung
+    email: rmaung@wikimedia.org
   ryasmeen:
     ensure: present
     realname: Rummana Yasmeen
