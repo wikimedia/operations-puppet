@@ -26,6 +26,3 @@ profile::mediawiki::php::fpm_config:
   opcache.interned_strings_buffer: 96
   opcache.memory_consumption: 512
   apc.ttl: 10
-
-# Bump the number of timeouts before marking a memcached server with TKO, see T203786
-profile::mediawiki::mcrouter_wancache::timeouts_until_tko: 10
