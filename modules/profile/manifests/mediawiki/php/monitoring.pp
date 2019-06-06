@@ -98,5 +98,18 @@ class profile::mediawiki::php::monitoring(
             notes_url      => 'https://wikitech.wikimedia.org/wiki/Application_servers',
         }
     }
-    # TODO: add an else with a check for /w/health-check.php
+    # Monitor opcache status
+    file { '/usr/local/lib/nagios/plugins/nrpe_check_opcache':
+        ensure => present,
+        source => 'puppet:///modules/profile/mediawiki/nrpe_check_opcache.py',
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0555',
+    }
+    nrpe::monitor_service { 'opcache':
+        description  => 'PHP opcache health',
+        nrpe_command => '/usr/local/lib/nagios/plugins/nrpe_check_opcache -w 50 -c 10',
+        notes_url    => 'https://wikitech.wikimedia.org/wiki/Application_servers',
+    }
+
 }
