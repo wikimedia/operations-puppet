@@ -18,8 +18,8 @@ LSB_RELEASE=$(chroot /target /usr/bin/lsb_release --codename --short)
 if hostname | egrep -vq '^(puppet(db|master)|rhodium|labpuppetmaster)' && printf $LSB_RELEASE | grep -qv buster
 then
   BASE_REPO="http://apt.wikimedia.org/wikimedia ${LSB_RELEASE}-wikimedia component"
-  printf 'deb %s/puppet5\n' $BASE_REPO > /target/etc/apt/sources.list.d/component-puppet5.list
-  printf 'deb %s/facter3\n' $BASE_REPO > /target/etc/apt/sources.list.d/component-facter3.list
+  printf 'deb %s/puppet5\n' "$BASE_REPO" > /target/etc/apt/sources.list.d/component-puppet5.list
+  printf 'deb %s/facter3\n' "$BASE_REPO" > /target/etc/apt/sources.list.d/component-facter3.list
   in-target apt-get update
 fi
 
