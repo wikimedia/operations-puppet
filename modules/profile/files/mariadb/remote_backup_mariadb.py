@@ -350,7 +350,7 @@ def run_transfer(section, config, port):
     (returncode, out, err) = execute_remotely(config['destination'], cmd)
     if returncode != 0:
         logger.error(err)
-        return returncode
+        return (returncode, path)
 
     # transfer mysql data
     logger.info('Running XtraBackup at {} and sending it to {}'.format(
@@ -363,14 +363,14 @@ def run_transfer(section, config, port):
     returncode = subprocess.Popen.wait(process)
     if returncode != 0:
         logger.error('Transfer failed!')
-        return returncode
+        return (returncode, path)
 
     # chown dir to dump user
     logger.info('Making the resulting dir owned by someone else than root')
     cmd = get_chown_cmd(path)
     (returncode, out, err) = execute_remotely(config['destination'], cmd)
 
-    return returncode
+    return (returncode, path)
 
 
 def prepare_backup(section, config):
@@ -396,9 +396,9 @@ def run(section, config, port):
             config['type'] != 'snapshot'):
         result = prepare_backup(section, config)
     else:
-        result = run_transfer(section, config, port)
+        result, path = run_transfer(section, config, port)
         if result == 0:
-            result = prepare_backup(section, config)
+            result = prepare_backup(path, config)
     return result
 
 
