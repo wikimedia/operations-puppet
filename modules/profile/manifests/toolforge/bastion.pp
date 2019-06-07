@@ -1,9 +1,6 @@
 # This profile sets up an bastion/dev instance in the Toolforge model.
 class profile::toolforge::bastion(
     $active_cronrunner = hiera('profile::toolforge::active_cronrunner'),
-    String $dologmsg_prefix = lookup('dologmsg_prefix', {'default_value' => '#wikimedia-cloud !log '}),
-    Stdlib::Host $dologmsg_host = lookup('dologmsg_host', {'default_value' => 'wm-bot2.wm-bot.eqiad.wmflabs'}),
-    Stdlib::Port $dologmsg_port = lookup('dologmsg_port', {'default_value' => 64834}),
 ){
     # Son of Grid Engine Configuration
     # admin_host???
@@ -74,14 +71,5 @@ class profile::toolforge::bastion(
         group  => 'root',
         mode   => '0444',
         source => 'puppet:///modules/profile/toolforge/submithost-ssh_config',
-    }
-
-    # dologmsg to send log messages, configured using $dologmsg_* parameters
-    file { '/usr/local/bin/dologmsg':
-        ensure  => present,
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0555',
-        content => template('profile/toolforge/dologmsg.erb'),
     }
 }

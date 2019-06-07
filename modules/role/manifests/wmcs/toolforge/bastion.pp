@@ -11,4 +11,5 @@ class role::wmcs::toolforge::bastion {
     include profile::toolforge::grid::sysctl
     include profile::toolforge::bastion
     include profile::toolforge::bastion::resourcecontrol
+    include profile::wmcs::dologmsg
 }

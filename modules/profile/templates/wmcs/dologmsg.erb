@@ -37,10 +37,10 @@ if [[ $SUDO_USER ]]; then
 fi
 
 labsproject=$(</etc/wmflabs-project)
-if ! [[ $USER == "$labsproject"* ]]; then
+if [[ $labsproject == "tools"]] && ! [[ $USER == "${labsproject}."* ]]; then
     printf >&2 '%s: user name does not start with "%s": %s\n' "$0" "$labsproject" "$group"
     usage
     exit 1
 fi
 
-printf '<%= @dologmsg_prefix %>%s %s\n' "$USER" "$message" > /dev/tcp/<%= @dologmsg_host %>/<%= @dologmsg_port %>
+printf '#wikimedia-cloud !log %s %s\n' "$USER" "$message" > /dev/tcp/<%= @dologmsg_host %>/<%= @dologmsg_port %>
