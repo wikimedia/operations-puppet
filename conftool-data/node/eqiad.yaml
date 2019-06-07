@@ -298,12 +298,12 @@ eqiad:
   kubernetes:
     argon.eqiad.wmnet: [kubemaster]
     chlorine.eqiad.wmnet: [kubemaster]
-    kubernetes1001.eqiad.wmnet: [mathoid, zotero, blubberoid, eventgate-analytics, eventgate-main, citoid, cxserver, sessionstore]
-    kubernetes1002.eqiad.wmnet: [mathoid, zotero, blubberoid, eventgate-analytics, eventgate-main, citoid, cxserver, sessionstore]
-    kubernetes1003.eqiad.wmnet: [mathoid, zotero, blubberoid, eventgate-analytics, eventgate-main, citoid, cxserver, sessionstore]
-    kubernetes1004.eqiad.wmnet: [mathoid, zotero, blubberoid, eventgate-analytics, eventgate-main, citoid, cxserver, sessionstore]
-    kubernetes1005.eqiad.wmnet: [mathoid, zotero, blubberoid, eventgate-analytics, eventgate-main, citoid, cxserver, sessionstore]
-    kubernetes1006.eqiad.wmnet: [mathoid, zotero, blubberoid, eventgate-analytics, eventgate-main, citoid, cxserver, sessionstore]
+    kubernetes1001.eqiad.wmnet: [mathoid, zotero, blubberoid, eventgate-analytics, eventgate-main, citoid, cxserver, sessionstore, termbox]
+    kubernetes1002.eqiad.wmnet: [mathoid, zotero, blubberoid, eventgate-analytics, eventgate-main, citoid, cxserver, sessionstore, termbox]
+    kubernetes1003.eqiad.wmnet: [mathoid, zotero, blubberoid, eventgate-analytics, eventgate-main, citoid, cxserver, sessionstore, termbox]
+    kubernetes1004.eqiad.wmnet: [mathoid, zotero, blubberoid, eventgate-analytics, eventgate-main, citoid, cxserver, sessionstore, termbox]
+    kubernetes1005.eqiad.wmnet: [mathoid, zotero, blubberoid, eventgate-analytics, eventgate-main, citoid, cxserver, sessionstore, termbox]
+    kubernetes1006.eqiad.wmnet: [mathoid, zotero, blubberoid, eventgate-analytics, eventgate-main, citoid, cxserver, sessionstore, termbox]
   druid-public:
     druid1004.eqiad.wmnet: [druid-public-broker]
     druid1005.eqiad.wmnet: [druid-public-broker]

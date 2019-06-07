@@ -285,4 +285,19 @@ class lvs::monitor_services($contacts = 'admins,team-services', $critical = fals
         notes_url     => 'https://www.mediawiki.org/wiki/Kask',
     }
 
+    #termbox
+    monitoring::service { 'check_termbox_eqiad':
+        host          => 'termbox.svc.eqiad.wmnet',
+        group         => 'lvs',
+        description   => 'termbox eqiad',
+        check_command => 'check_wmf_service!https://termbox.svc.eqiad.wmnet:3030!15!',
+        notes_url     => 'https://wikitech.wikimedia.org/wiki/WMDE/Wikidata/SSR_Service',
+    }
+    monitoring::service { 'check_termbox_codfw':
+        host          => 'termbox.svc.codfw.wmnet',
+        group         => 'lvs',
+        description   => 'termbox codfw',
+        check_command => 'check_wmf_service!https://termbox.svc.codfw.wmnet:3030!15!',
+        notes_url     => 'https://wikitech.wikimedia.org/wiki/WMDE/Wikidata/SSR_Service',
+    }
 }

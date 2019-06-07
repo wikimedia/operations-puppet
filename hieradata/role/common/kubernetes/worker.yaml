@@ -39,4 +39,5 @@ role::lvs::realserver::pools:
   citoid: {}
   cxserver: {}
   sessionstore: {}
+  termbox: {}
 diamond::remove: true

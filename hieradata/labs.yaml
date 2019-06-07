@@ -12,6 +12,7 @@ discovery::app_routes:
   eventgate-analytics: "%{::site}"
   eventgate-main: "%{::site}"
   sessionstore: "%{::site}"
+  termbox: "%{::site}"
   eventschemas: "%{::site}"
   aqs: 'eqiad'
   docker-registry: 'codfw'

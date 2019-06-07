@@ -109,3 +109,6 @@ discovery::services:
   sessionstore:
     lvs: sessionstore
     active_active: true
+  termbox:
+    lvs: sessionstore
+    active_active: true

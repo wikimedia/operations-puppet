@@ -166,6 +166,9 @@ lvs::configuration::lvs_service_ips:
   sessionstore: &ip_block052
     eqiad: 10.2.2.29
     codfw: 10.2.1.29
+  termbox: &ip_block053
+    eqiad: 10.2.2.46
+    codfw: 10.2.1.46
 
 lvs::configuration::lvs_services:
   text:
@@ -1642,3 +1645,30 @@ lvs::configuration::lvs_services:
           hostname: sessionstore.svc.eqiad.wmnet
         codfw:
           hostname: sessionstore.svc.codfw.wmnet
+  termbox:
+    description: "Wikidata Termbox SSR termbox.svc.%{::site}.wmnet"
+    class: low-traffic
+    sites:
+    - eqiad
+    - codfw
+    ip: *ip_block053
+    port: 3030
+    depool-threshold: '.5'
+    monitors:
+      ProxyFetch:
+        url:
+        - http://localhost/_info
+      IdleConnection:
+        timeout-clean-reconnect: 3
+        max-delay: 300
+    conftool:
+      cluster: kubernetes
+      service: termbox
+    icinga:
+      check_command: "check_http_lvs_on_port!termbox.svc.%{::site}.wmnet!3030!/_info"
+      critical: false
+      sites:
+        eqiad:
+          hostname: termbox.svc.eqiad.wmnet
+        codfw:
+          hostname: termbox.svc.codfw.wmnet
