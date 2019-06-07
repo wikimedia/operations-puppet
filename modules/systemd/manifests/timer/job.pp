@@ -120,15 +120,8 @@ define systemd::timer::job(
 
 
     if $monitoring_enabled {
-        if !defined(File['/usr/local/lib/nagios/plugins/check_systemd_unit_status']) {
-            file { '/usr/local/lib/nagios/plugins/check_systemd_unit_status':
-                ensure => $ensure,
-                source => 'puppet:///modules/systemd/check_systemd_unit_status',
-                mode   => '0555',
-                owner  => 'root',
-                group  => 'root',
-            }
-        }
+        # T225268 - always provision NRPE plugin script
+        require ::systemd::timer::nrpe_plugin
 
         nrpe::monitor_service { "check_${title}_status":
             ensure         => $ensure,
@@ -137,7 +130,6 @@ define systemd::timer::job(
             check_interval => 10,
             retries        => 2,
             contact_group  => $monitoring_contact_groups,
-            require        => File['/usr/local/lib/nagios/plugins/check_systemd_unit_status'],
         }
     }
 }
