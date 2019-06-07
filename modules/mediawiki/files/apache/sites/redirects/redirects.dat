@@ -382,14 +382,14 @@ funnel	moon.wikimedia.org	//meta.wikimedia.org/wiki/Wikipedia_to_the_Moon
 funnel	*wikipediazero.org	//foundation.wikimedia.org/wiki/Wikipedia_Zero
 
 # jobs/careers - T82975
-rewrite	*careers.wikimedia.org	//wikimediafoundation.org/about/jobs/
-rewrite	*careers.wikipedia.org	//wikimediafoundation.org/about/jobs/
-rewrite	*jobs.wikimedia.org	//wikimediafoundation.org/about/jobs/
-rewrite	*jobs.wikipedia.org	//wikimediafoundation.org/about/jobs/
-override	*careers.wikimedia.org/	//wikimediafoundation.org/about/jobs/
-override	*careers.wikipedia.org/	//wikimediafoundation.org/about/jobs/
-override	*jobs.wikimedia.org/	//wikimediafoundation.org/about/jobs/
-override	*jobs.wikipedia.org/	//wikimediafoundation.org/about/jobs/
+rewrite	careers.wikimedia.org	//wikimediafoundation.org/about/jobs/
+rewrite	careers.wikipedia.org	//wikimediafoundation.org/about/jobs/
+rewrite	jobs.wikimedia.org	//wikimediafoundation.org/about/jobs/
+rewrite	jobs.wikipedia.org	//wikimediafoundation.org/about/jobs/
+override	careers.wikimedia.org/	//wikimediafoundation.org/about/jobs/
+override	careers.wikipedia.org/	//wikimediafoundation.org/about/jobs/
+override	jobs.wikimedia.org/	//wikimediafoundation.org/about/jobs/
+override	jobs.wikipedia.org/	//wikimediafoundation.org/about/jobs/
 
 # pywikipedia.org (T60803). This domain uses non-WMF DNS servers
 funnel	*pywikipedia.org	//tools.wmflabs.org/pywikibot/
