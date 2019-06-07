@@ -330,13 +330,7 @@ node /^cp30(3[0123]|4[012])\.esams\.wmnet$/ {
     role(cache::text)
 }
 
-# cp3037 died in April 2019: T222041
-node 'cp3037.esams.wmnet' {
-    interface::add_ip6_mapped { 'main': }
-    role(cache::upload)
-}
-
-node /^cp30(3[45689]|4[345679])\.esams\.wmnet$/ {
+node /^cp30(3[456879]|4[345679])\.esams\.wmnet$/ {
     interface::add_ip6_mapped { 'main': }
     role(cache::upload_ats)
 }
