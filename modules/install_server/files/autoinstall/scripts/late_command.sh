@@ -15,7 +15,9 @@ LSB_RELEASE=$(chroot /target /usr/bin/lsb_release --codename --short)
 # We need to pin add the puppet and facter components before installing puppet
 # for now we don't do this on puppet management servers
 # https://phabricator.wikimedia.org/T219803
-if hostname | egrep -vq '^(puppet(db|master)|rhodium|labpuppetmaster)' && printf $LSB_RELEASE | grep -qv buster
+#if hostname | egrep -vq '^(puppet(db|master)|rhodium|labpuppetmaster)' && printf $LSB_RELEASE | grep -qv buster
+# just enable for theses two hosts while testnig
+if hostname | egrep '^(sarin|neodymium)'
 then
   BASE_REPO="http://apt.wikimedia.org/wikimedia ${LSB_RELEASE}-wikimedia component"
   printf 'deb %s/puppet5\n' "$BASE_REPO" > /target/etc/apt/sources.list.d/component-puppet5.list
