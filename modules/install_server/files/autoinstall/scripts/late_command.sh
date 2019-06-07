@@ -22,6 +22,8 @@ then
   BASE_REPO="http://apt.wikimedia.org/wikimedia ${LSB_RELEASE}-wikimedia component"
   printf 'deb %s/puppet5\n' "$BASE_REPO" > /target/etc/apt/sources.list.d/component-puppet5.list
   printf 'deb %s/facter3\n' "$BASE_REPO" > /target/etc/apt/sources.list.d/component-facter3.list
+  # we dont use this service, also the reimage script assumes it is the first to run puppet
+  in-target systemctl mask puppet.service
   in-target apt-get update
 fi
 
