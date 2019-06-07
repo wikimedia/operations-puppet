@@ -177,10 +177,8 @@ rewrite	*en-wp.org	//en.wikipedia.org
 rewrite	wikipedia.com	//www.wikipedia.org
 rewrite	wikipedia.net	//www.wikipedia.org
 rewrite	wikipedia.info	//www.wikipedia.org
-rewrite	www.wikipedia.com	//www.wikipedia.org
 rewrite	www.wikipedia.net	//www.wikipedia.org
 
-rewrite	en.wikipedia.com	//en.wikipedia.org
 
 rewrite	*.wikipedia.com	//*.wikipedia.org
 rewrite	*.wikipedia.net	//*.wikipedia.org
