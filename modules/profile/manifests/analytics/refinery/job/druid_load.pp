@@ -45,4 +45,16 @@ class profile::analytics::refinery::job::druid_load {
             dimensions => 'event.property,event.isDefault,wiki,useragent.browser_family,useragent.browser_major,useragent.browser_minor,useragent.device_family,useragent.os_family,useragent.os_major,useragent.os_minor'
         },
     }
+
+    # Load wmf.netflow
+    # Note that this data set does not belong to EventLogging, but the
+    # eventlogging_to_druid_job wrapper is compatible and very convenient!
+    profile::analytics::refinery::job::eventlogging_to_druid_job { 'netflow':
+        job_config => {
+            database         => 'wmf',
+            timestamp_column => 'stamp_inserted',
+            dimensions       => 'as_dst,as_path,peer_as_dst',
+            metrics          => 'bytes,packets',
+        },
+    }
 }
