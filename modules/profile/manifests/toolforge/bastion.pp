@@ -78,10 +78,10 @@ class profile::toolforge::bastion(
 
     # dologmsg to send log messages, configured using $dologmsg_* parameters
     file { '/usr/local/bin/dologmsg':
-        ensure => present,
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0555',
-        source => template('profile/toolforge/dologmsg.erb'),
+        ensure  => present,
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0555',
+        content => template('profile/toolforge/dologmsg.erb'),
     }
 }
