@@ -1,0 +1,2 @@
+profile::cache::base::fe_runtime_params:
+    - default_ttl=86400
