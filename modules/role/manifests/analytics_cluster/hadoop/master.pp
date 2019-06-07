@@ -17,6 +17,8 @@ class role::analytics_cluster::hadoop::master {
     # Set up druid cluster deep storage directories.
     include ::profile::analytics::cluster::druid_deep_storage
 
+    include ::profile::kerberos::keytabs
+
     include ::profile::base::firewall
     include ::profile::base::firewall::log
     include ::profile::standard

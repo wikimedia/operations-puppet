@@ -18,6 +18,7 @@ class role::analytics_test_cluster::hadoop::master {
     include ::profile::analytics::cluster::druid_deep_storage
 
     include ::profile::kerberos::client
+    include ::profile::kerberos::keytabs
 
     include ::profile::base::firewall
     include ::profile::base::firewall::log

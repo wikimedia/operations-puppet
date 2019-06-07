@@ -23,6 +23,7 @@ class role::analytics_test_cluster::hadoop::standby {
     include ::profile::analytics::database::meta::backup_dest
 
     include ::profile::kerberos::client
+    include ::profile::kerberos::keytabs
 
     include ::profile::base::firewall
     include ::profile::base::firewall::log

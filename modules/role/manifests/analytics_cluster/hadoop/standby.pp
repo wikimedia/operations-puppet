@@ -22,6 +22,8 @@ class role::analytics_cluster::hadoop::standby {
     # enough space to store backups.
     include ::profile::analytics::database::meta::backup_dest
 
+    include ::profile::kerberos::keytabs
+
     include ::profile::base::firewall
     include ::profile::base::firewall::log
     include ::profile::standard

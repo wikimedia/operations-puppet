@@ -62,6 +62,8 @@ class role::analytics_test_cluster::coordinator {
     #include ::profile::analytics::refinery::job::test::data_purge
     #include ::profile::analytics::refinery::job::refine
 
+    include ::profile::kerberos::keytabs
+
     include ::profile::standard
     include ::profile::base::firewall
     include ::profile::base::firewall::log

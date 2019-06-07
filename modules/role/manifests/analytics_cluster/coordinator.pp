@@ -62,6 +62,8 @@ class role::analytics_cluster::coordinator {
     include ::profile::analytics::refinery::job::sqoop_mediawiki
     include ::profile::analytics::refinery::job::refine
 
+    include ::profile::kerberos::keytabs
+
     include ::profile::standard
     include ::profile::base::firewall
     include ::profile::base::firewall::log
