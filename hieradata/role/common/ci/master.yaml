@@ -83,6 +83,10 @@ profile::kubernetes::deployment_server::services:
     username: sessionstore
     group: wikidev
     mode: '0640'
+  termbox:
+    username: termbox
+    group: wikidev
+    mode: '0640'
 
 # Specified in the private repo in this form
 #profile::kubernetes::deployment_server::tokens:
@@ -103,6 +107,8 @@ profile::kubernetes::deployment_server::services:
 #  cxserver:
 #    token: dummy
 #  sessionstore:
+#    token: dummy
+#  termbox:
 #    token: dummy
 
 profile::ci::kubernetes_config::user: jenkins
