@@ -182,13 +182,13 @@ rewrite	wikipedia.info	//www.wikipedia.org
 rewrite	*.wikipedia.com	//*.wikipedia.org
 rewrite	*.wikipedia.net	//*.wikipedia.org
 rewrite	*.wikipedia.info	//*.wikipedia.org
-rewrite	*.wiki-pedia.org	//*.wikipedia.org
-rewrite	wiki-pedia.org	//www.wikipedia.org
+# rewrite	*.wiki-pedia.org	//*.wikipedia.org
+# rewrite	wiki-pedia.org	//www.wikipedia.org
 
 # wikipedia typo domains to www. instead of en - T165733#3355736
-funnel	*wiikipedia.com	//www.wikipedia.org
-funnel	*wikiepdia.com	//www.wikipedia.org
-funnel	*wikiepdia.org	//www.wikipedia.org
+# funnel	*wiikipedia.com	//www.wikipedia.org
+# funnel	*wikiepdia.com	//www.wikipedia.org
+# funnel	*wikiepdia.org	//www.wikipedia.org
 funnel	*wikiipedia.org	//www.wikipedia.org
 funnel	*wikpedia.org	//www.wikipedia.org
 
@@ -259,10 +259,10 @@ rewrite	wikivoyager.org	//www.wikivoyage.org
 rewrite	wikivoyager.de	//www.wikivoyage.org
 
 # Voyagewiki (T165733#3355736)
-rewrite	*.voyagewiki.com	//*.wikivoyage.org
-rewrite	*.voyagewiki.org	//*.wikivoyage.org
-rewrite	voyagewiki.com	//www.wikivoyage.org
-rewrite	voyagewiki.org	//www.wikivoyage.org
+# rewrite	*.voyagewiki.com	//*.wikivoyage.org
+# rewrite	*.voyagewiki.org	//*.wikivoyage.org
+# rewrite	voyagewiki.com	//www.wikivoyage.org
+# rewrite	voyagewiki.org	//www.wikivoyage.org
 
 # wikimediafoundation
 rewrite	*wikimediafoundation.com	//foundation.wikimedia.org
@@ -272,12 +272,12 @@ rewrite	*.wikimediafoundation.org	//foundation.wikimedia.org
 
 # Commons
 
-rewrite	*wikimediacommons.net	//commons.wikimedia.org
-rewrite	*wikimediacommons.info	//commons.wikimedia.org
-rewrite	*wikimediacommons.mobi	//commons.wikimedia.org
-rewrite	*wikimediacommons.org	//commons.wikimedia.org
-rewrite	*wikimediacommons.jp.net	//commons.wikimedia.org
-rewrite	*wikimediacommons.co.uk	//commons.wikimedia.org
+# rewrite	*wikimediacommons.net	//commons.wikimedia.org
+# rewrite	*wikimediacommons.info	//commons.wikimedia.org
+# rewrite	*wikimediacommons.mobi	//commons.wikimedia.org
+# rewrite	*wikimediacommons.org	//commons.wikimedia.org
+# rewrite	*wikimediacommons.jp.net	//commons.wikimedia.org
+# rewrite	*wikimediacommons.co.uk	//commons.wikimedia.org
 
 rewrite	commons.wikipedia.org	//commons.wikimedia.org
 
