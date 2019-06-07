@@ -48,6 +48,11 @@ swift::params::accounts:
         account_name: 'AUTH_analytics'
         auth:         'https://ms-fe.svc.codfw.wmnet'
         user:         'analytics:admin'
+    netbox_attachments:
+        access:       '.admin'
+        account_name: 'AUTH_netbox'
+        auth:         'https://ms-fe.svc.eqiad.wmnet'
+        user:         'netbox:attachments'
 # keys are to be defined in private repo, e.g.:
 #swift::params::account_keys:
 #    super_admin: <key>
