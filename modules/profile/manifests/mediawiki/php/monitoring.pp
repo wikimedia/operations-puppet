@@ -85,7 +85,7 @@ class profile::mediawiki::php::monitoring(
             check_command  => 'check_http_wikipedia_main_php7',
             retries        => 2,
             retry_interval => 2,
-            notes_url      => 'https://wikitech.wikimedia.org/wiki/Application_servers',
+            notes_url      => 'https://wikitech.wikimedia.org/wiki/Application_servers/Runbook#PHP7_rendering',
         }
     }
     else {
@@ -95,7 +95,7 @@ class profile::mediawiki::php::monitoring(
             check_command  => 'check_http_jobrunner_php7',
             retries        => 2,
             retry_interval => 2,
-            notes_url      => 'https://wikitech.wikimedia.org/wiki/Application_servers',
+            notes_url      => 'https://wikitech.wikimedia.org/wiki/Application_servers/Runbook#PHP7_rendering',
         }
     }
     # Monitor opcache status
@@ -109,7 +109,7 @@ class profile::mediawiki::php::monitoring(
     nrpe::monitor_service { 'opcache':
         description  => 'PHP opcache health',
         nrpe_command => '/usr/local/lib/nagios/plugins/nrpe_check_opcache -w 100 -c 50',
-        notes_url    => 'https://wikitech.wikimedia.org/wiki/Application_servers',
+        notes_url    => 'https://wikitech.wikimedia.org/wiki/Application_servers/Runbook#PHP7_opcache_health',
     }
 
 }
