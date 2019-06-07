@@ -712,7 +712,7 @@ customviews:
       select rev_id, rev_page, if(rev_deleted&1,null,rev_text_id) as rev_text_id,
       if(rev_deleted&2,0,coalesce(revcomment_comment_id,0)) as rev_comment_id,
       if(rev_deleted&4,0,coalesce(revactor_actor,0)) as rev_actor,
-      rev_timestamp, rev_minor_edit, rev_deleted, if(rev_deleted&1,null,rev_len) as rev_len, rev_parent_id,
+      rev_timestamp, rev_minor_edit, rev_deleted, rev_len, rev_parent_id,
       if(rev_deleted&1,null,rev_sha1) as rev_sha1, rev_content_model, rev_content_format
     join:
       - table: revision_comment_temp
@@ -730,7 +730,7 @@ customviews:
       case when rev_deleted&4 != 0 then null else COALESCE( actor_user, 0 ) END AS rev_user,
       case when rev_deleted&4 != 0 then null else actor_name END AS rev_user_text,
       if(rev_deleted&4,0,coalesce(revactor_actor,0)) as rev_actor,
-      rev_timestamp, rev_minor_edit, rev_deleted, if(rev_deleted&1,null,rev_len) as rev_len, rev_parent_id,
+      rev_timestamp, rev_minor_edit, rev_deleted, rev_len, rev_parent_id,
       if(rev_deleted&1,null,rev_sha1) as rev_sha1, if(model_name, model_name,
       rev_content_model) as rev_content_model, if(model_name,NULL,rev_content_format)
       as rev_content_format
@@ -764,7 +764,7 @@ customviews:
       if(rev_deleted&2,0,coalesce(revcomment_comment_id,0)) as rev_comment_id,
       revactor_actor as rev_actor,
       revactor_timestamp as rev_timestamp, rev_minor_edit, rev_deleted,
-      if(rev_deleted&1,null,rev_len) as rev_len, rev_parent_id, if(rev_deleted&1,null,rev_sha1) as rev_sha1,
+      rev_len, rev_parent_id, if(rev_deleted&1,null,rev_sha1) as rev_sha1,
       rev_content_model, rev_content_format
     where: (rev_deleted&4)=0
     join:
