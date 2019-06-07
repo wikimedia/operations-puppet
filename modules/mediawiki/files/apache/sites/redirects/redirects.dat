@@ -196,7 +196,6 @@ funnel	*wikpedia.org	//www.wikipedia.org
 
 rewrite	*.wiktionary.com	//*.wiktionary.org
 rewrite	wiktionary.com	//www.wiktionary.org
-rewrite	www.wiktionary.com	//www.wiktionary.org
 funnel	*wiktionary.eu	//www.wiktionary.org
 
 # Wikibooks - T87039
