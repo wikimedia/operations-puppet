@@ -38,7 +38,9 @@ class profile::analytics::refinery::job::refine {
             input_path_regex_capture_groups => 'table,year,month,day,hour',
             table_blacklist_regex           => '^Edit|ChangesListHighlights|InputDeviceDynamics$',
             # Deduplicate basd on uuid field and geocode ip in EventLogging analytics data.
-            transform_functions             => 'org.wikimedia.analytics.refinery.job.refine.filter_out_non_wiki_hostname,org.wikimedia.analytics.refinery.job.refine.deduplicate_eventlogging,org.wikimedia.analytics.refinery.job.refine.geocode_ip',
+            # NOTE:
+            # org.wikimedia.analytics.refinery.job.refine.filter_out_non_wiki_hostname removed - T225342
+            transform_functions             => 'org.wikimedia.analytics.refinery.job.refine.deduplicate_eventlogging,org.wikimedia.analytics.refinery.job.refine.geocode_ip',
             # Get EventLogging JSONSchemas from meta.wikimedia.org.
             schema_base_uri                 => 'eventlogging',
         }),
