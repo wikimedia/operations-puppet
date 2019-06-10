@@ -133,6 +133,7 @@ class profile::prometheus::alerts {
     monitoring::alerts::kafka_topic_throughput { 'eventgate-analytics_validation_errors':
         kafka_cluster_name => 'jumbo-eqiad',
         topic              => '.*\.eventgate-analytics\.error\.validation',
+        method             => 'gt',
         warning            => 0.0,
         # 1 per second rate over the last 15 minutes.
         critical           => 1.0,
@@ -142,6 +143,7 @@ class profile::prometheus::alerts {
     monitoring::alerts::kafka_topic_throughput { 'eventgate-main_validation_errors':
         kafka_cluster_name => 'jumbo-eqiad',
         topic              => '.*\.eventgate-main\.error\.validation',
+        method             => 'gt',
         warning            => 0.0,
         # 0.5 per second rate over the last 15 minutes.
         critical           => 0.5,

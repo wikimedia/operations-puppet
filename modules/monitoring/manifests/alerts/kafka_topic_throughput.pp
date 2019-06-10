@@ -48,6 +48,7 @@ define monitoring::alerts::kafka_topic_throughput (
         dashboard_links => $dashboard_links,
         # Examine the rate in the $quantile percentile over the last $period.
         query           => "scalar(sum(rate(kafka_server_BrokerTopicMetrics_MessagesIn_total{kafka_cluster=\"${kafka_cluster_name}\",topic=~\"${topic}\"}[${period}])))",
+        method          => $method,
         warning         => $warning,
         critical        => $critical,
         prometheus_url  => $prometheus_url,
