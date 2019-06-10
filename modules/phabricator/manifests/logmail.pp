@@ -48,6 +48,7 @@ define phabricator::logmail (
 ) {
 
     require_package('mariadb-client')
+    require_package('bsd-mailx')
 
     file { "${basedir}/${script_name}":
         ensure  => present,
