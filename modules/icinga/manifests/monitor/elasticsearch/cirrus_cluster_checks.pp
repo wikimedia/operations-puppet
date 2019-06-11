@@ -25,7 +25,7 @@ class icinga::monitor::elasticsearch::cirrus_cluster_checks{
         monitoring::check_prometheus { "mjolnir_bulk_update_failure_${site}":
             description     => "Mjolnir bulk update failure check - ${site}",
             dashboard_links => ['https://grafana.wikimedia.org/d/000000591/elasticsearch-mjolnir-bulk-updates?orgId=1&from=now-7d&to=now&panelId=1&fullscreen'],
-            query           => 'scalar(sum(increase(mjolnir_bulk_action_total{result="failed"}[24h])))',
+            query           => 'scalar(sum(increase(mjolnir_bulk_action_total{result="failed"}[5m])))/scalar(sum(increase(mjolnir_bulk_action_total[5m]))) * 100',
             prometheus_url  => "http://prometheus.svc.${site}.wmnet/ops",
             method          => 'gt',
             critical        => 2,
