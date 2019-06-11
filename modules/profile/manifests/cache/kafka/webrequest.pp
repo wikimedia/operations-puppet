@@ -93,7 +93,7 @@ class profile::cache::kafka::webrequest(
     # when the request started to be processed by Varnish (SLT_Timestamp Start)
     # or the time of the response flush (SLT_Timestamp Resp).
     # The "end:" prefix forces the latter and it is not be part of the final output.
-    $timestamp_formatter = '%{end:%FT%T@dt}t'
+    $timestamp_formatter = '%{end:%FT%TZ@dt}t'
 
     # estimated peak reqs/sec we need to reasonably handle on a single cache.
     # The current maximal "reasonable" case is in the text cluster, where if we
