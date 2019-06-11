@@ -19,7 +19,7 @@ class profile::analytics::refinery::job::refine {
 
     # These configs will be used for all refine jobs unless otherwise overridden.
     $default_config = {
-        'emails_to'           => 'analytics-alerts@wikimedia.org',
+        'to_emails'           => 'analytics-alerts@wikimedia.org',
         'should_email_report' => true,
         'database'            => 'event',
         'output_path'         => '/wmf/data/event',

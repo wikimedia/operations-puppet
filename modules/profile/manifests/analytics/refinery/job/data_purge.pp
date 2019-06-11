@@ -180,7 +180,7 @@ class profile::analytics::refinery::job::data_purge (
         'salts_path'          => '/user/hdfs/salts/eventlogging_sanitization',
         'parallelism'         => '16',
         'should_email_report' => true,
-        'emails_to'           => 'analytics-alerts@wikimedia.org',
+        'to_emails'           => 'analytics-alerts@wikimedia.org',
     }
     # Execute 1st sanitization pass, right after data collection. Runs once per hour.
     # Job starts a couple minutes after the hour, to leave time for the salt files to be updated.
