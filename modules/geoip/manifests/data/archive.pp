@@ -48,15 +48,4 @@ class geoip::data::archive(
         logging_enabled           => false,
         require                   => File[$archive_script],
     }
-
-
-    cron { 'archive-maxmind-geoip-database':
-        ensure      => 'absent',
-        command     => $archive_command,
-        environment => 'MAILTO=analytics-alerts@wikimedia.org',
-        user        => 'root',
-        weekday     => 3,
-        hour        => 5,
-        minute      => 30
-    }
 }
