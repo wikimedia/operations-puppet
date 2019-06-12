@@ -5,12 +5,28 @@ define swift::mount_filesystem (
     $dev_suffix  = regsubst($dev, '^\/dev\/(.*)$', '\1')
     $mount_point = "${mount_base}/${dev_suffix}"
 
-    file { "mountpoint-${mount_point}":
-        ensure => directory,
-        path   => $mount_point,
-        owner  => 'swift',
-        group  => 'swift',
-        mode   => '0750',
+    # When the filesystem is _not_ mounted, its mountpoint permissions must not
+    # allow 'swift' to write to it. Conversely, when the filesystem is mounted
+    # then the owner must be 'swift' for things to work.
+    # Note these checks are racy, as mountpoint status can change just after
+    # checking, however it is a very small chance and will be likely rectified
+    # at the next puppet run.
+    exec { "mountpoint-root-${mount_point}":
+        command  => "install -d -o root -g root -m 750 ${mount_point}",
+        provider => 'shell',
+        onlyif   => [
+          "! mountpoint -q ${mount_point}",
+          "[ \"$( stat -c %U ${mount_point} )\" != \"root\" ]",
+        ],
+    }
+
+    exec { "mountpoint-swift-${mount_point}":
+        command  => "install -d -o swift -g swift -m 750 ${mount_point}",
+        provider => 'shell',
+        onlyif   => [
+          "mountpoint -q ${mount_point}",
+          "[ \"$( stat -c %U ${mount_point} )\" != \"swift\" ]",
+        ],
     }
 
     # nobarrier for xfs has been removed in buster / linux 4.19
