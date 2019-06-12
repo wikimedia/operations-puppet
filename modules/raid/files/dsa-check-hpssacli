@@ -83,20 +83,49 @@ if ($params->{'help'}) {
 };
 die ($usage) unless (scalar @ARGV == 0);
 
-my $ctrlallshow = runcmd("controller all show");
-my @controllers;
+my $ctrlallshow = runcmd("controller all show detail");
+my $slot;
+my %controllers;
 for (@$ctrlallshow) {
 	chomp;
 	next if /^$/;
 	next if ($params->{'ignore-controller'} && /$params->{'ignore-controller'}/);
 	if (/in Slot ([0-9a-z]+)/) {
-		push @controllers, $1;
-		next;
+		$slot = $1;
+		$controllers{$slot} = ();
+	} elsif (/^ *(Controller|Cache|Battery\/Capacitor) Status: (.*)$/) {
+		my $system = $1;
+		my $status = $2;
+
+		if ($system eq 'Cache') {
+			# Can be:
+			# - 'OK'
+			# - 'Not Configured' (for e.g. HP SSD Smart Path)
+			# - 'Permanently Disabled'
+			# - ...?
+			next if $status =~ /^(OK|Not Configured)$/;
+			if ($params->{'ignore-cache'}) {
+				push @{$controllers{$slot}}, "$system: $status (ignored)";
+				next;
+			}
+		}
+
+		push @{$controllers{$slot}}, "$system: $status";
+		if ($status ne 'OK') {
+			next if ($params->{'no-battery'} && $system eq 'Battery/Capacitor');
+			record('WARNING');
+		};
+	} elsif (/^ *(Cache Status Details): (Cable Error)/) {
+		push @{$controllers{$slot}}, $2;
+		record('CRITICAL');
+	} elsif (/^ *(Battery\/Capacitor Count): (.*)/) {
+		next if $params->{'no-battery'} || int($2) > 0;
+		push @{$controllers{$slot}}, "Battery count: $2";
+		record('CRITICAL');
 	};
-	die ("Cannot read line '$_' gotten from hpssacli controller all show\n");
 };
 
-if (scalar @controllers == 0) {
+if (scalar keys %controllers == 0) {
 	if ($params->{'no-controller-ok'}) {
 		print "No smartarray controllers found with hpssacli\n";
 		exit $CODE{'OK'}
@@ -108,56 +137,41 @@ if (scalar @controllers == 0) {
 
 my @resultstr;
 
-for my $slot (sort @controllers) {
-	my @drives;
+for my $slot (sort keys %controllers) {
 	my $nodrives = 0;
 	my %status;
-	my @freetext;
-
-	my $ldallshow = runcmd("controller slot=$slot ld all show");
-	my @logicaldrives;
-	for (@$ldallshow) {
-		chomp;
-		next if /^$/;
-		next if (/^\S.*in Slot $slot/);
-		next if /^ *array [A-Z]$/;
-		if (/logicaldrive ([0-9a-z]+)/) {
-			push @logicaldrives, $1;
-			next;
-		} elsif (/^Error: The specified device does not have any logical drives.$/) {
-			$nodrives = 1;
-		} else {
-			die ("Cannot read line '$_' gotten from hpssacli controller slot = $slot logicaldrive all show\n");
-		}
-	};
 
 	# check logicaldrives
-	for my $logicaldrive (sort @logicaldrives) {
-		my $lds = runcmd("controller slot=$slot ld $logicaldrive show");
-		for (@$lds) {
-			chomp;
-			next if /^$/;
-			if (/^ *Parity Initialization Status: (Initialization Completed|Initialization Failed|Rebuilding)$/) {
-				my $status = $1;
-				if ($status eq 'Initialization Completed') {
-					push @{$status{'OK'}}, "Parity LD$logicaldrive";
-				} elsif ($status eq 'Rebuilding') {
-					push @{$status{'Failed'}}, "Parity LD$logicaldrive";
-					record('WARNING');
-				} elsif ($status eq 'Initialization Failed') {
-					push @{$status{'Failed'}}, "Parity LD$logicaldrive";
-					record('CRITICAL');
-				} else {
-					record('UNKNOWN');
-				}
+	my $logicaldrive;
+	my @logicaldrives;
+	my $lds = runcmd("controller slot=$slot ld all show detail");
+	for (@$lds) {
+		chomp;
+		next if /^$/;
+		if (/Logical Drive: ([0-9a-z]+)/) {
+			$logicaldrive = $1;
+			push @logicaldrives, $logicaldrive;
+		} elsif (/^Error: The specified device does not have any logical drives.$/) {
+			$nodrives = 1;
+		} elsif (/^ *Parity Initialization Status: (Initialization Completed|Initialization Failed|Rebuilding)$/) {
+			my $status = $1;
+			if ($status eq 'Initialization Completed') {
+				push @{$status{'OK'}}, "Parity LD$logicaldrive";
+			} elsif ($status eq 'Rebuilding') {
+				push @{$status{'Failed'}}, "Parity LD$logicaldrive";
+				record('WARNING');
+			} elsif ($status eq 'Initialization Failed') {
+				push @{$status{'Failed'}}, "Parity LD$logicaldrive";
+				record('CRITICAL');
+			} else {
+				record('UNKNOWN');
 			}
-			if (/^ *LD Acceleration Method: (.*)$/) {
-				my $status = $1;
-				# can at least be "Controller Cache" or HP SSD Smart Path", both OK
-				if ($status eq 'All disabled') {
-					push @{$status{'Acceleration method'}}, "LD$logicaldrive disabled";
-					record('WARNING');
-				}
+		} elsif (/^ *LD Acceleration Method: (.*)$/) {
+			my $status = $1;
+			# can at least be "Controller Cache" or HP SSD Smart Path", both OK
+			if ($status eq 'All disabled') {
+				push @{$status{'Acceleration method'}}, "LD$logicaldrive disabled";
+				record('WARNING');
 			}
 		}
 	}
@@ -173,8 +187,9 @@ for my $slot (sort @controllers) {
 		push @resultstr, "Slot $slot: no logical drives";
 	};
 
-
-	my $pds = runcmd("controller slot=$slot pd all show");
+	my $pds = runcmd("controller slot=$slot pd all show detail");
+	my $drive;
+	my %drives;
 	for (@$pds) {
 		chomp;
 		next if /^$/;
@@ -192,30 +207,34 @@ for my $slot (sort @controllers) {
 			push @{$status{'Failed'}}, $1;
 		} elsif (/^Error: The specified controller does not have any physical drives on it.$/) {
 			$nodrives = 1;
-		} elsif (/^ *physicaldrive (\S+) .* (OK|Predictive Failure|Failed|Rebuilding)(?:, (?:active )?spare.*)?\)$/) {
-			my $drive = $1;
-			my $status = $2;
-			push @{$status{$status}}, $drive;
-			if ($status eq 'OK') {
-			} elsif ($status eq 'Predictive Failure' ||
-			         $status eq 'Rebuilding') {
-				record('WARNING');
-			} elsif ($status eq 'Failed') {
-				record('CRITICAL');
-			} else {
-				record('UNKNOWN');
-			};	
-			push @drives, $drive;
+		} elsif (/^ *physicaldrive (\S+)/) {
+			$drive = $1;
+			$drives{$drive} = {};
+		} elsif (defined $drive && m/^\s*(.*?):\s*(.*?)\s*$/) {
+			$drives{$drive}{$1} = $2;
 		} else {
 			die ("Cannot read line '$_' gotten from hpssacli controller slot=$slot pd all show\n");
-		};
+		}
 	};
 
 	# Check that all drives have the proper transfer speed.
 	# sometimes stuff breaks and they fall back to 10mb/sec.
-	for my $drive (@drives) {
-		# skip drives that are known to have failed
-		next if (exists $status{'Failed'} && grep {$drive eq $_} @{$status{'Failed'}});
+	for my $drive (sort keys %drives) {
+		my $value = $drives{$drive};
+		my $status = $value->{'Status'};
+		push @{$status{$status}}, $drive;
+		if ($status eq 'OK') {
+		} elsif ($status eq 'Predictive Failure' ||
+			 $status eq 'Rebuilding') {
+			record('WARNING');
+		} elsif ($status eq 'Failed') {
+			record('CRITICAL');
+			# skip drives that are known to have failed
+			next;
+		} else {
+			record('UNKNOWN');
+		}
+
 		my $type;
 		if ($drive =~ /^[0-9]+:[0-9]+$/) { # scsi drives
 			$type = 'SCSI';
@@ -224,46 +243,33 @@ for my $slot (sort @controllers) {
 		} elsif ($drive =~ /^[0-9]+[C]:[0-9]+:[0-9]+$/) { # New 6GBPS SAS
 			$type = 'SAS+';
 		} else {
-			# I'm not going to run pass arguments of unknown form to the shell..
 			warn ("Unknown diskdrive ID $drive\n");
 			next;
-		}
-
-		my $pd = runcmd("controller slot=$slot pd $drive show");
-		while (defined $pd->[0] && !($pd->[0] =~ /physicaldrive/)) {
-			shift @$pd;
-		};
-		shift @$pd;
-		my %value;
-		for (@$pd) {
-			if (m/^\s*(.*?):\s*(.*?)\s*$/) {
-				$value{$1} = $2;
-			}
 		}
 
 		my $key;
 		my $expected;
 		if ($type eq 'SCSI') {
 			$key = 'Transfer Speed';
-			if (!defined $value{'Transfer Mode'}) {
+			if (!defined $value->{'Transfer Mode'}) {
 				record('WARNING');
 				push @{$status{'unknown transfer mode'}}, $drive;
 				next;
-			} elsif ($value{'Transfer Mode'} eq 'Ultra 3 Wide') {
+			} elsif ($value->{'Transfer Mode'} eq 'Ultra 3 Wide') {
 				$expected = '160 MB/Sec';
-			} elsif ($value{'Transfer Mode'} eq 'Ultra 320 Wide') {
+			} elsif ($value->{'Transfer Mode'} eq 'Ultra 320 Wide') {
 				$expected = '320 MB/Sec';
 			} else {
 				record('WARNING');
-				push @{$status{'unknown transfer mode'}}, $drive."(".$value{'Transfer Mode'}.")";
+				push @{$status{'unknown transfer mode'}}, $drive."(".$value->{'Transfer Mode'}.")";
 				next;
 			};
 		} elsif ($type eq 'SAS' || $type eq 'SAS+') {
 			$key = 'PHY Transfer Rate';
-			if ($value{'Interface Type'} eq 'SATA') {
+			if ($value->{'Interface Type'} eq 'SATA') {
 				$expected = [ '1.5Gbps', '3.0Gbps', '6.0Gbps' ];
-			} elsif ($value{'PHY Count'} eq '2') {
-				if (defined($value{'Redundant Path(s)'})) {
+			} elsif ($value->{'PHY Count'} eq '2') {
+				if (defined($value->{'Redundant Path(s)'})) {
 					$expected = [ '3.0GBPS, 3.0GBPS', '6.0GBPS, 6.0GBPS',
 					       	      '12.0GBPS, 12.0GBPS' ];
 				} else {
@@ -281,21 +287,21 @@ for my $slot (sort @controllers) {
 
 		if ($params->{'ignore-transfer-speed'}) {
 			if (grep { $drive eq $_ } @{$params->{'ignore-transfer-speed'}}) {
-				push @{$status{'ignored transfer speed'}}, $drive."(".$value{$key}.")";
+				push @{$status{'ignored transfer speed'}}, $drive."(".$value->{$key}.")";
 				next;
 			};
 		};
-		if (!defined $value{$key}) {
+		if (!defined $value->{$key}) {
 			record('WARNING');
 			push @{$status{'unknown transfer speed'}}, $drive;
 		} elsif (ref($expected) eq 'ARRAY') {
-			if (scalar(grep { uc($value{$key}) eq uc($_) } @$expected) == 0) {
+			if (scalar(grep { uc($value->{$key}) eq uc($_) } @$expected) == 0) {
 				record('WARNING');
-				push @{$status{'bad transfer speed'}}, $drive."(".$value{$key}.")";
+				push @{$status{'bad transfer speed'}}, $drive."(".$value->{$key}.")";
 			};
-		} elsif (uc($value{$key}) ne uc($expected)) {
+		} elsif (uc($value->{$key}) ne uc($expected)) {
 			record('WARNING');
-			push @{$status{'bad transfer speed'}}, $drive."(".$value{$key}.")";
+			push @{$status{'bad transfer speed'}}, $drive."(".$value->{$key}.")";
 		};
 	};
 
@@ -308,44 +314,7 @@ for my $slot (sort @controllers) {
 		next;
 	};
 
-	my $cst = runcmd("controller slot=$slot show detail");
-	for (@$cst) {
-		chomp;
-		next if /^$/;
-		next if (/^\S.*in Slot $slot/);
-		if (/^ *(Controller|Cache|Battery\/Capacitor) Status: (.*)$/) {
-			my $system = $1;
-			my $status = $2;
-
-			if ($system eq 'Cache') {
-				# Can be:
-				# - 'OK'
-				# - 'Not Configured' (for e.g. HP SSD Smart Path)
-				# - 'Permanently Disabled'
-				# - ...?
-				next if $status =~ /^(OK|Not Configured)$/;
-				if ($params->{'ignore-cache'}) {
-					push @freetext, "$system: $status (ignored)";
-					next;
-				}
-			}
-
-			push @freetext, "$system: $status";
-			if ($status ne 'OK') {
-				next if ($params->{'no-battery'} && $system eq 'Battery/Capacitor');
-				record('WARNING');
-			};
-		} elsif (/^ *(Cache Status Details): (Cable Error)/) {
-			push @freetext, $2;
-			record('CRITICAL');
-		} elsif (/^ *(Battery\/Capacitor Count): (.*)/) {
-			next if $params->{'no-battery'} || int($2) > 0;
-			push @freetext, "Battery count: $2";
-			record('CRITICAL');
-		};
-	};
-
-	my $status = join(" - ", ((map { $_.": ".join(", ", @{$status{$_}}) } keys %status), @freetext));
+	my $status = join(" - ", ((map { $_.": ".join(", ", @{$status{$_}}) } keys %status), @{$controllers{$slot}}));
 
 	push @resultstr, "Slot $slot: $status";
 };
