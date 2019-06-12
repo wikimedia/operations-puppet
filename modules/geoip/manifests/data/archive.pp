@@ -34,13 +34,27 @@ class geoip::data::archive(
         $wrapper = ''
     }
 
-    $archive_command = "${wrapper}${archive_script} ${maxmind_db_source_dir} ${archive_dir} ${hdfs_archive_dir} > /dev/null"
+    $archive_command = "${wrapper}${archive_script} ${maxmind_db_source_dir} ${archive_dir} ${hdfs_archive_dir}"
+
+    systemd::timer::job { 'archive-maxmind-geoip-database':
+        description               => 'Archives Maxmind GeoIP files',
+        command                   => $archive_command,
+        interval                  => {
+            'start'    => 'OnCalendar',
+            'interval' => 'Tue *-*-* 05:30:00',
+        },
+        user                      => 'root',
+        monitoring_contact_groups => 'analytics',
+        logging_enabled           => false,
+        require                   => File[$archive_script],
+    }
+
 
     cron { 'archive-maxmind-geoip-database':
-        ensure      => present,
+        ensure      => 'absent',
         command     => $archive_command,
         environment => 'MAILTO=analytics-alerts@wikimedia.org',
-        user        => root,
+        user        => 'root',
         weekday     => 3,
         hour        => 5,
         minute      => 30
