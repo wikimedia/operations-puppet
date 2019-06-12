@@ -36,7 +36,7 @@ class profile::analytics::refinery::job::refine {
             input_path                      => '/wmf/data/raw/eventlogging',
             input_path_regex                => 'eventlogging_(.+)/hourly/(\\d+)/(\\d+)/(\\d+)/(\\d+)',
             input_path_regex_capture_groups => 'table,year,month,day,hour',
-            table_blacklist_regex           => '^Edit|ChangesListHighlights|InputDeviceDynamics$',
+            table_blacklist_regex           => '^Edit|ChangesListHighlights|InputDeviceDynamics|PageIssues$',
             # Deduplicate basd on uuid field and geocode ip in EventLogging analytics data.
             # NOTE:
             # org.wikimedia.analytics.refinery.job.refine.filter_out_non_wiki_hostname removed - T225342
