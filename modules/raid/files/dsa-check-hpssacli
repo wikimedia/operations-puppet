@@ -64,13 +64,14 @@ sub record($) {
 	};
 }
 
-my $usage = "$PROGRAM_NAME: Usage: $PROGRAM_NAME [--no-battery] [--ignore-controller=<regex>] [--no-controller-ok] [--ignore-transfer-speed=<pd> [--ignore-transfer-speed=<pd> ...]]\n";
+my $usage = "$PROGRAM_NAME: Usage: $PROGRAM_NAME [--no-battery] [--ignore-cache] [--ignore-controller=<regex>] [--no-controller-ok] [--ignore-transfer-speed=<pd> [--ignore-transfer-speed=<pd> ...]]\n";
 my $params;
 Getopt::Long::Configure('bundling');
 if (!GetOptions (
 	'--help'                      => \$params->{'help'},
 	'--no-battery'                => \$params->{'no-battery'},
 	'--no-controller-ok'          => \$params->{'no-controller-ok'},
+	'--ignore-cache'              => \$params->{'ignore-cache'},
 	'--ignore-controller=s'       => \$params->{'ignore-controller'},
 	'--ignore-transfer-speed=s@'  => \$params->{'ignore-transfer-speed'},
 	)) {
@@ -191,7 +192,7 @@ for my $slot (sort @controllers) {
 			push @{$status{'Failed'}}, $1;
 		} elsif (/^Error: The specified controller does not have any physical drives on it.$/) {
 			$nodrives = 1;
-		} elsif (/^ *physicaldrive (\S+) .* (OK|Predictive Failure|Failed|Rebuilding)(?:, (?:active )?spare)?\)$/) {
+		} elsif (/^ *physicaldrive (\S+) .* (OK|Predictive Failure|Failed|Rebuilding)(?:, (?:active )?spare.*)?\)$/) {
 			my $drive = $1;
 			my $status = $2;
 			push @{$status{$status}}, $drive;
@@ -323,6 +324,10 @@ for my $slot (sort @controllers) {
 				# - 'Permanently Disabled'
 				# - ...?
 				next if $status =~ /^(OK|Not Configured)$/;
+				if ($params->{'ignore-cache'}) {
+					push @freetext, "$system: $status (ignored)";
+					next;
+				}
 			}
 
 			push @freetext, "$system: $status";
