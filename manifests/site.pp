@@ -840,11 +840,11 @@ node /^dbproxy10(01|02|03|04|05|06|07|08|09)\.eqiad\.wmnet$/ {
 # labsdb proxies (controling replica service dbs)
 # analytics proxy
 node 'dbproxy1010.eqiad.wmnet' {
-    role(mariadb::proxy::replicas)
+    role(mariadb::proxy::master)
 }
 # web proxy
 node 'dbproxy1011.eqiad.wmnet' {
-    role(mariadb::proxy::master)
+    role(mariadb::proxy::replicas)
 }
 
 # new dbproxy hosts to be pressed into service by DBA team T196690
