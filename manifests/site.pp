@@ -1311,10 +1311,13 @@ node /^cloudnet100[3-4].eqiad.wmnet$/ {
 }
 
 ## labsdb dbs
-node /labsdb1009\.eqiad\.wmnet/ {
+node 'labsdb1009.eqiad.wmnet' {
     role(labs::db::wikireplica_web)
 }
-node /labsdb10(10|11)\.eqiad\.wmnet/ {
+node 'labsdb1010.eqiad.wmnet' {
+    role(labs::db::wikireplica_web)
+}
+node 'labsdb1011.eqiad.wmnet' {
     role(labs::db::wikireplica_analytics)
 }
 
