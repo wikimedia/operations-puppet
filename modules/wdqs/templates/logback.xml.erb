@@ -31,6 +31,7 @@
             <maxFileSize>100MB</maxFileSize>
             <maxHistory>30</maxHistory>
         </rollingPolicy>
+        <filter class="org.wikidata.query.rdf.common.log.PerLoggerThrottler" />
         <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
             <pattern><%= @pattern %></pattern>
             <outputPatternAsHeader>true</outputPatternAsHeader>
