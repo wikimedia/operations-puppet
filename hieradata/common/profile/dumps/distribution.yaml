@@ -133,3 +133,13 @@ profile::dumps::distribution::mirrors:
     addedby: 'atg'
     addeddate: 'Jan 14, 2019'
     active: 'yes'
+  - url: 'https://wikimedia.mirror.us.dev/'
+    hostname: 'wikimedia.mirror.us.dev'
+    ipv4: ['wikimedia.mirror.us.dev']
+    ipv6: ['wikimedia.mirror.us.dev']
+    contactname: 'Chip Wasson'
+    contactaddy: 'wikimedia_mirror@wasson.io'
+    institution: 'none'
+    addedby: 'atg'
+    addeddate: 'Aug 9, 2019'
+    active: 'yes'
