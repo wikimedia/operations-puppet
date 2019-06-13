@@ -13,6 +13,10 @@ server {
     listen [::]:<%= @port %> default_server;
     listen <%= @additional_port %> default_server;
     listen [::]:<%= @additional_port %> default_server;
+    # Ban empty User-Agents per policy.
+    if ($http_user_agent ~ ^\s*-?\s*$) {
+        return 403;
+    }
 
     add_header X-Served-By <%= @hostname %> always;
 
