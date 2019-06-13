@@ -847,8 +847,8 @@ node 'dbproxy1011.eqiad.wmnet' {
     role(mariadb::proxy::replicas)
 }
 
-# new dbproxy hosts to be pressed into service by DBA team T196690
-node /^dbproxy101[2-7]\.eqiad\.wmnet$/ {
+# new dbproxy hosts to be pressed into service by DBA team T202367
+node /^dbproxy10(12|13|14|15|16|17|18|19|20|21)\.eqiad\.wmnet$/ {
     role(spare::system)
 }
 
