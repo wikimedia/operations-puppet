@@ -1,7 +1,7 @@
 #!/usr/bin/perl -w
 
-# check _physical_ disk status of disks on HP smart array controllers
-# requires hpssacli
+# check _physical_ disk status of disks on Smart Array controllers
+# requires hpssacli or ssacli
 #
 # does _not_ check raid status.  use arrayprobe for that.
 
@@ -45,9 +45,17 @@ $SIG{'__DIE__'} = sub {
 	exit $CODE{'UNKNOWN'};
 };
 
+# support both the older hpssacli and the newer ssacli
+my $BIN;
+if ($0 =~ /hpssacli/) {
+	$BIN = "hpssacli";
+} else {
+	$BIN = "ssacli";
+}
+
 sub runcmd($) {
 	my ($cmd) = @_;
-	$cmd = "sudo hpssacli $cmd";
+	$cmd = "sudo $BIN $cmd";
 	open(FH, $cmd."|") or die ("Cannot run $cmd: $!");
 	my @lines = <FH>;
 	close FH;
@@ -127,10 +135,10 @@ for (@$ctrlallshow) {
 
 if (scalar keys %controllers == 0) {
 	if ($params->{'no-controller-ok'}) {
-		print "No smartarray controllers found with hpssacli\n";
+		print "No Smart Array controllers found with $BIN\n";
 		exit $CODE{'OK'}
 	} else {
-		print "UNKNOWN: No smartarray controllers found with hpssacli\n";
+		print "UNKNOWN: No Smart Array controllers found with $BIN\n";
 		exit $CODE{'UNKNOWN'}
 	}
 };
@@ -194,7 +202,7 @@ for my $slot (sort keys %controllers) {
 		chomp;
 		next if /^$/;
 		next if (/^\S.*in Slot $slot/);
-		next if /^ *array [A-Z]$/;
+		next if /^ *Array [A-Z]$/i;
 		next if /^ *unassigned/;
 		if (/^ *HBA Drives/) {
 			# HBA mode implies to logical drives, thus reset the "drives found" check and proceed with
@@ -202,7 +210,7 @@ for my $slot (sort keys %controllers) {
 			$nodrives = 0;
 			next;
 		}
-		if (/^ *(array [A-Z]) \(Failed\)$/) {
+		if (/^ *(Array [A-Z]) \(Failed\)$/i) {
 			record('CRITICAL');
 			push @{$status{'Failed'}}, $1;
 		} elsif (/^Error: The specified controller does not have any physical drives on it.$/) {
@@ -213,7 +221,7 @@ for my $slot (sort keys %controllers) {
 		} elsif (defined $drive && m/^\s*(.*?):\s*(.*?)\s*$/) {
 			$drives{$drive}{$1} = $2;
 		} else {
-			die ("Cannot read line '$_' gotten from hpssacli controller slot=$slot pd all show\n");
+			die ("Cannot read line '$_' gotten from $BIN controller slot=$slot pd all show\n");
 		}
 	};
 

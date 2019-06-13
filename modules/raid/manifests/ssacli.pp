@@ -35,7 +35,7 @@ class raid::ssacli {
     owner  => 'root',
     group  => 'root',
     mode   => '0555',
-    source => 'puppet:///modules/raid/dsa-check-ssacli',
+    source => 'puppet:///modules/raid/dsa-check-hpssacli',
   }
 
   $get_raid_status_ssacli = '/usr/local/lib/nagios/plugins/get-raid-status-ssacli'
