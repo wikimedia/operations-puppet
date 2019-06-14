@@ -34,6 +34,9 @@ define phabricator::redirector(
     file { $redirect_config:
         content => template('phabricator/redirect_config.json.erb'),
         notify  => Service['apache2'],
+        owner   => 'root',
+        group   => 'www-data',
+        mode    => '0640',
     }
 
     file { "${rootdir}/phabricator/support/redirect_config.json":
