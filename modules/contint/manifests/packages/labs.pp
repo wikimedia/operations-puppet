@@ -5,8 +5,6 @@ class contint::packages::labs {
 
     require ::contint::packages::apt
 
-    include ::contint::packages::base
-
     # We're no longer installing PHP on app servers starting with
     # jessie, but we still need it for CI
     if os_version('debian == jessie') {

@@ -8,7 +8,6 @@ class role::ci::slave::labs::common {
 
     # Jenkins slaves need to access beta cluster for the browsertests
     include contint::firewall::labs
-    include contint::packages::base
 
     # New file layout based on /srv
 

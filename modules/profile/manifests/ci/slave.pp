@@ -8,7 +8,6 @@
 #
 
 class profile::ci::slave {
-    include contint::packages::base
     include contint::slave_scripts
     include ::profile::zuul::cloner
 
