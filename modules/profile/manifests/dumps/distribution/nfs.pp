@@ -39,9 +39,8 @@ class profile::dumps::distribution::nfs (
         require => Package['nfs-kernel-server'],
     }
 
-    # Manage state manually
     service { 'nfs-kernel-server':
-        enable  => false,
+        enable  => true,
         require => Package['nfs-kernel-server'],
     }
 
