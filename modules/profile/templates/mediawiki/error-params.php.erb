@@ -1,0 +1,10 @@
+<?php
+# This file is managed by Puppet.
+
+<% if @statsd_host != :undef && @statsd_port != :undef -%>
+$statsd_host = "<%= @statsd_host %>";
+$statsd_port = <%= @statsd_port.to_i %>;
+<% else -%>
+$statsd_host = $statsd_port = null;
+<% end -%>
+

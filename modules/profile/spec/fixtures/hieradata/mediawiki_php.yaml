@@ -46,3 +46,4 @@ profile::lvs::realserver::pools:
   apaches:
     service: hhvm
 profile::lvs::realserver::use_conftool: false
+statsd: "something:8080"

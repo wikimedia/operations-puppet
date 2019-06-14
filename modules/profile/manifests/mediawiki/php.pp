@@ -25,6 +25,9 @@ class profile::mediawiki::php(
     String $apc_shm_size = hiera('profile::mediawiki::apc_shm_size'),
     # temporary, for php restarts
     String $cluster = lookup('cluster', {'default_value' => $::cluster}),
+    # temporary, feature flag to install wmerrors
+    Boolean $wmerrors = lookup('profile::mediawiki::php::wmerrors', {'default_value' => false}),
+    String $statsd = hiera('statsd'),
     ) {
 
     # Needed for the restart script
@@ -285,6 +288,38 @@ class profile::mediawiki::php(
     if $php_version != '7.0' {
         php::extension { 'excimer':
             ensure => present,
+        }
+    }
+
+    ## Install wmerrors
+    if $php_version != '7.0' and $wmerrors {
+        php::extension { 'wmerrors':
+            ensure => present,
+            sapis  => ['fpm'],
+            config => {
+                'extension'                  => 'wmerrors.so',
+                'wmerrors.error_script_file' => '/etc/php/php7-fatal-error.php',
+                'wmerrors.enabled'           => true,
+            },
+        }
+        file { '/etc/php/php7-fatal-error.php':
+            ensure => present,
+            mode   => '0444',
+            owner  => 'root',
+            group  => 'root',
+            source => 'puppet:///modules/profile/mediawiki/php/php7-fatal-error.php',
+        }
+
+        $statsd_parts = split($statsd, ':')
+        $statsd_host = $statsd_parts[0]
+        $statsd_port = $statsd_parts[1]
+
+        file { '/etc/php/error-params.php':
+            ensure  => present,
+            mode    => '0444',
+            owner   => 'root',
+            group   => 'root',
+            content => template('profile/mediawiki/error-params.php.erb'),
         }
     }
 }
