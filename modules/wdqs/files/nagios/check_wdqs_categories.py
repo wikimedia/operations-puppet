@@ -17,6 +17,8 @@ EX_UNKNOWN = 3
 
 CATEGORIES_DATE_QUERY = 'SELECT (min(?date) as ?mindate) { ?wiki schema:dateModified ?date }'
 
+HEADERS = {'User-Agent': 'wmf-icinga/check_wdqs_categories (root@wikimedia.org)'}
+
 
 def check_categories_lag(base_url, timeout, warning_delay, critical_delay):
     try:
@@ -62,7 +64,8 @@ def execute_query(base_url, timeout, query):
         params={
             'format': 'json',
             'query': query
-        })
+        },
+        headers=HEADERS)
     response.raise_for_status()
     return response.json()
 
