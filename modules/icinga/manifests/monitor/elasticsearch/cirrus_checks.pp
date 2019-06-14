@@ -13,5 +13,14 @@ define icinga::monitor::elasticsearch::cirrus_checks(
             contact_group => 'admins,team-discovery',
             notes_url     => 'https://wikitech.wikimedia.org/wiki/Search#Pausing_Indexing',
         }
+
+        monitoring::service { "elasticsearch / masters eligible - ${host}:${port}":
+            host          => $host,
+            check_command => "check_masters_eligible!${scheme}!${port}",
+            description   => "ElasticSearch numbers of masters eligible - ${port}",
+            critical      => false,
+            contact_group => 'admins,team-discovery',
+            notes_url     => 'https://wikitech.wikimedia.org/wiki/Search#Expected_eligible_masters_check_and_alert',
+        }
     }
 }

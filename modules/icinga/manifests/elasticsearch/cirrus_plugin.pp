@@ -3,11 +3,18 @@
 # include this class on your Nagios/Icinga node.
 #
 class icinga::elasticsearch::cirrus_plugin {
-    file { '/usr/lib/nagios/plugins/check_cirrus_frozen_writes.py':
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0755',
-        source => 'puppet:///modules/icinga/elasticsearch/check_cirrus_frozen_writes.py',
+    file {
+        default:
+            owner => 'root',
+            group => 'root',
+            mode  => '0755',
+        ;
+        '/usr/lib/nagios/plugins/check_cirrus_frozen_writes.py':
+            source => 'puppet:///modules/icinga/elasticsearch/check_cirrus_frozen_writes.py',
+        ;
+        '/usr/lib/nagios/plugins/check_masters_eligible.py':
+            source => 'puppet:///modules/icinga/elasticsearch/check_masters_eligible.py',
+        ;
     }
     require_package('python3-requests', 'python3-dateutil')
 }
