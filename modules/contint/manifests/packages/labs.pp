@@ -22,46 +22,4 @@ class contint::packages::labs {
         ensure => present,
     }
 
-    # Development packages
-    package { [
-        'librsvg2-2',
-
-        'asciidoc',
-
-        'pep8',
-        'python-simplejson',  # For mw/ext/Translate among others
-
-        'libevent-dev',  # PoolCounter daemon
-        'g++',
-
-        'python-sphinx',  # python documentation
-        ]:
-        ensure => present,
-    }
-
-    # For image and video extension tests
-    package { [
-        'ffmpeg',
-        'fontconfig-config',
-        'libimage-exiftool-perl',
-        'libjpeg-turbo-progs',
-        'libogg0',
-        'libvorbisenc2',
-        'netpbm',
-        'oggvideotools',
-    ]:
-        ensure => present,
-    }
-
-    # For Sphinx based documentation contain blockdiag diagrams
-    require_package('libjpeg-dev')
-
-    # For mediawiki/extensions/Collection/OfflineContentGenerator/bundler
-    require_package('zip')
-
-    package { [
-        'ocaml-nox',
-        ]:
-        ensure => present;
-    }
 }
