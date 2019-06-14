@@ -19,6 +19,11 @@ class profile::ci::slave {
         workdir => '/srv/jenkins-slave',
     }
 
+    file { '/var/lib/jenkins-slave':
+        ensure => 'directory',
+        owner  => 'jenkins-slave',
+    }
+
     # .gitconfig file required for rare git write operations
     git::userconfig { '.gitconfig for jenkins-slave user':
         homedir  => '/var/lib/jenkins-slave',
@@ -28,6 +33,6 @@ class profile::ci::slave {
                 'email' => "jenkins-slave@${::fqdn}",
             },  # end of [user] section
         },  # end of settings
-        require  => User['jenkins-slave'],
+        require  => [ User['jenkins-slave'], File['/var/lib/jenkins-slave'] ]
     }
 }
