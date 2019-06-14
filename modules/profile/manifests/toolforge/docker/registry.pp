@@ -24,12 +24,16 @@ class profile::toolforge::docker::registry(
         ssl_settings         => ssl_ciphersuite('nginx', 'compat'),
     }
 
-    # make sure we have a backup server ready to take over
-    rsync::quickdatacopy { 'docker-registry-sync':
-        ensure      => present,
-        auto_sync   => true,
-        source_host => $active_node,
-        dest_host   => $standby_node,
-        module_path => '/srv/registry',
+    # This may deliberately be un-set for some cases, like toolsbeta
+    if $standby_node {
+        # make sure we have a backup server ready to take over
+        rsync::quickdatacopy { 'docker-registry-sync':
+            ensure      => present,
+            auto_sync   => true,
+            source_host => $active_node,
+            dest_host   => $standby_node,
+            module_path => '/srv/registry',
+        }
     }
+
 }
