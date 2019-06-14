@@ -13,7 +13,6 @@ class contint::packages::labs {
 
     include ::contint::packages::javascript
     include ::contint::packages::php
-    include ::contint::packages::python
     include ::contint::packages::ruby
 
     # Database related
