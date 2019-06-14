@@ -18,7 +18,6 @@ class contint::packages::labs {
 
     # Database related
     package { [
-        'mysql-server',
         'sqlite3',
         ]:
         ensure => present,
