@@ -32,7 +32,7 @@
 #   }
 #
 define reportupdater::job(
-    $repository,
+    $repository = 'reportupdater-queries',
     $output_dir = $title,
     $interval = '*-*-* *:00:00',
     $monitoring_enabled = true,

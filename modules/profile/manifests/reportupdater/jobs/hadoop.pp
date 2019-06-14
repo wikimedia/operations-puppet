@@ -38,12 +38,10 @@ class profile::reportupdater::jobs::hadoop {
 
     # Set up a job to create browser reports on hive db.
     reportupdater::job { 'browser':
-        repository => 'reportupdater-queries',
         output_dir => 'metrics/browser',
     }
 
     reportupdater::job { 'interlanguage':
-        repository => 'limn-language-data',
         output_dir => 'metrics/interlanguage',
     }
 }

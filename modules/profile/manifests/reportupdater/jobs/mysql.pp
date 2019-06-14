@@ -33,47 +33,36 @@ class profile::reportupdater::jobs::mysql {
     # Set up various jobs to be executed by reportupdater
     # creating several reports on mysql research db.
     reportupdater::job { 'flow':
-        repository => 'limn-flow-data',
         output_dir =>  'flow/datafiles',
     }
     reportupdater::job { 'flow-beta-features':
-        repository => 'limn-flow-data',
         output_dir =>  'metrics/beta-feature-enables',
     }
     reportupdater::job { 'edit-beta-features':
-        repository => 'limn-edit-data',
         output_dir => 'metrics/beta-feature-enables',
     }
     reportupdater::job { 'language':
-        repository => 'limn-language-data',
         output_dir => 'metrics/beta-feature-enables',
     }
     reportupdater::job { 'published_cx2_translations':
-        repository => 'limn-language-data',
         output_dir => 'metrics/published_cx2_translations',
     }
     reportupdater::job { 'mt_engines':
-        repository => 'limn-language-data',
         output_dir => 'metrics/mt_engines',
     }
     reportupdater::job { 'cx':
-        repository => 'limn-language-data',
         output_dir => 'metrics/cx',
     }
     reportupdater::job { 'ee':
-        repository => 'limn-ee-data',
         output_dir => 'metrics/echo',
     }
     reportupdater::job { 'ee-beta-features':
-        repository => 'limn-ee-data',
         output_dir => 'metrics/beta-feature-enables',
     }
     reportupdater::job { 'page-creation':
-        repository => 'reportupdater-queries',
         output_dir => 'metrics/page-creation',
     }
     reportupdater::job { 'pingback':
-        repository => 'reportupdater-queries',
         output_dir => 'metrics/pingback',
     }
 }
