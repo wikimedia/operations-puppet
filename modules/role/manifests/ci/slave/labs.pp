@@ -16,14 +16,6 @@ class role::ci::slave::labs {
 
     include ::profile::ci::package_builder
 
-    # And a second mounted on /srv
-    contint::tmpfs { 'tmpfs for jenkins CI labs slave on /srv':
-        # Jobs expect the tmpfs to be in $HOME/tmpfs
-        mount_point => '/srv/home/jenkins-deploy/tmpfs',
-        size        => '256M',
-        require     => File['/srv/home/jenkins-deploy'],
-    }
-
     include contint::composer
     include contint::slave_scripts
 
