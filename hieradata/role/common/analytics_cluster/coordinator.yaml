@@ -31,7 +31,7 @@ profile::hive::metastore::ferm_srange: '$ANALYTICS_NETWORKS'
 
 profile::analytics::database::meta::monitoring_enabled: true
 profile::analytics::database::meta::ferm_srange: '(($DRUID_PUBLIC_HOSTS $ANALYTICS_NETWORKS))'
-profile::analytics::refinery::job::data_purge::public_druid_host: 'druid1004.eqiad.wmnet:8081'
+profile::analytics::refinery::job::data_purge::public_druid_host: 'druid1004.eqiad.wmnet'
 profile::oozie::server::monitoring_enabled: true
 profile::oozie::server::ferm_srange: '$ANALYTICS_NETWORKS'
 
