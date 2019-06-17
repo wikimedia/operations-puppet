@@ -8,4 +8,4 @@ search <%= @labsproject %>.<%= @site %>.<%= @labs_tld %> <%= @site %>.<%= @labs_
 <% scope.lookupvar('::nameservers').each do |nsip| -%>
 nameserver <%= nsip %>
 <% end -%>
-options timeout:2 ndots:2
+options timeout:2 ndots:1
