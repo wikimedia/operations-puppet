@@ -1,0 +1,7 @@
+profile::cache::base::fe_runtime_params:
+    - default_ttl=86400
+profile::cache::base::be_runtime_params:
+    - default_ttl=86400
+    - timeout_idle=120
+    - nuke_limit=1000
+    - lru_interval=31
