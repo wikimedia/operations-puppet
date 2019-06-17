@@ -11,6 +11,8 @@ ExecStart=<%= @java_home %>/bin/java <% @java_options.each do |jvm_opt| %><%= jv
 KillSignal=SIGINT
 # NOFILE :  GERRIT_FDS, determined by "core.packedGitOpenFiles" in the script
 LimitNOFILE=<%= @git_open_files %>
+Restart=always
+RestartSec=2s
 
 [Install]
 WantedBy=multi-user.target
