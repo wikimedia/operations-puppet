@@ -127,7 +127,7 @@ class profile::analytics::refinery::job::data_purge (
     # runs once a month
     $keep_snapshots = 6
     profile::analytics::systemd_timer { 'mediawiki-history-drop-snapshot':
-        description => 'Drop Druid Mediawiki History snapshots from deep storage following data retention policies.',
+        description => 'Drop snapshots from multiple raw and refined mediawiki datasets, configured in the refinery-drop script.',
         command     => "${refinery_path}/bin/refinery-drop-mediawiki-snapshots -s ${keep_snapshots}",
         environment => $systemd_env,
         interval    => '*-*-15 06:15:00',
@@ -138,7 +138,7 @@ class profile::analytics::refinery::job::data_purge (
     # runs once a day
     $banner_activity_retention_days = 90
     profile::analytics::systemd_timer { 'refinery-drop-banner-activity':
-        description => 'Drop Druid Banner Activity from deep storage following data retention policies.',
+        description => 'Clean old Banner Activity _SUCCESS flags from HDFS.',
         command     => "${refinery_path}/bin/refinery-drop-banner-activity-partitions -d ${banner_activity_retention_days} -l /wmf/data/wmf/banner_activity",
         environment => $systemd_env,
         interval    => '*-*-* 02:00:00',
