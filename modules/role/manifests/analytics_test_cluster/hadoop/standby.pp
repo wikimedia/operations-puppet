@@ -10,7 +10,7 @@ class role::analytics_test_cluster::hadoop::standby {
     include ::profile::hadoop::common
     include ::profile::hadoop::master::standby
     include ::profile::hadoop::firewall::master
-    include ::profile::hadoop::users
+    include ::profile::analytics::cluster::users
     include ::profile::hadoop::backup::namenode
 
     # an-master1002 is usually inactive, and it has a

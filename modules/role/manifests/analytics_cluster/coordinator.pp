@@ -30,7 +30,7 @@ class role::analytics_cluster::coordinator {
     # This is a Hadoop client, and should
     # have any special analytics system users on it
     # for interacting with HDFS.
-    include ::profile::hadoop::users
+    include ::profile::analytics::cluster::users
 
     # Back up analytics-meta MySQL instance
     # to an-master1002.

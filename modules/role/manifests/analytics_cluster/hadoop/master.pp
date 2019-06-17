@@ -8,7 +8,7 @@ class role::analytics_cluster::hadoop::master {
     }
 
     include ::profile::hadoop::master
-    include ::profile::hadoop::users
+    include ::profile::analytics::cluster::users
     include ::profile::hadoop::firewall::master
 
     # This needs to be included only on single Hadoop node.
