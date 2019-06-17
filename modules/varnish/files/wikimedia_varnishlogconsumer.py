@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
 """
   VarnishLogConsumer
-  ~~~~~~~~~~~~~~
+  ~~~~~~~~~~~~~~~~~~
   Base class for scripts consuming varnishlog data.
 
-  Copyright 2016-2018 Emanuele Rocca <ema@wikimedia.org>
-  Copyright 2017-2018 Gilles Dubuc <gilles@wikimedia.org>
+  Copyright 2016-2019 Emanuele Rocca <ema@wikimedia.org>
+  Copyright 2017-2019 Gilles Dubuc <gilles@wikimedia.org>
 
   Licensed under the Apache License, Version 2.0 (the "License");
   you may not use this file except in compliance with the License.
@@ -111,8 +111,11 @@ class BaseVarnishLogConsumer(object):
         if len(splitline) < 2:
             return
 
-        # Ignore any line that doesn't contain transaction data
-        if splitline[0] != '-':
+        # Ignore any line that doesn't contain transaction data. Interesting
+        # lines have either - or -- in the first field depending on the chosen
+        # grouping: single dash for vxid grouping, double when grouping by
+        # request
+        if splitline[0] not in ('-', '--'):
             return
 
         tag = splitline[1]

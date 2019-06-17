@@ -210,6 +210,22 @@ define varnish::instance(
 
     base::service_auto_restart { "varnish${instancesuffix}-hospital": }
 
+    systemd::service { "varnish${instancesuffix}-fetcherr":
+        ensure         => present,
+        content        => systemd_template('varnishfetcherr'),
+        restart        => true,
+        service_params => {
+            require => Service["varnish${instancesuffix}"],
+            enable  => true,
+        },
+        subscribe      => [
+            File['/usr/local/bin/varnishfetcherr'],
+            File["/usr/local/lib/python${::varnish::common::python_version}/dist-packages/wikimedia_varnishlogconsumer.py"],
+        ]
+    }
+
+    base::service_auto_restart { "varnish${instancesuffix}-fetcherr": }
+
     # This mechanism with the touch/rm conditionals in the pair of execs
     #   below should ensure that reload-vcl failures are retried on
     #   future puppet runs until they succeed.

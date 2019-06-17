@@ -1,0 +1,12 @@
+[Unit]
+Description=Varnish <%= @inst %> Fetch Errors
+After=varnish<%= @instancesuffix %>.service
+Requires=varnish<%= @instancesuffix %>.service
+
+[Service]
+ExecStart=/usr/local/bin/varnishfetcherr <% if @instance_name and @instance_name != '' -%> --varnishd-instance-name <%= @instance_name %> <% end %> --logstash-server=<%= scope['::varnish::common::logstash_host'] %>:<%= scope['::varnish::common::logstash_json_lines_port'] %>
+Restart=always
+RestartSec=5s
+
+[Install]
+WantedBy=multi-user.target

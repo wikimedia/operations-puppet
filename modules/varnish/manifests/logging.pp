@@ -87,6 +87,13 @@ class varnish::logging(
         mode   => '0555',
     }
 
+    file { '/usr/local/bin/varnishfetcherr':
+        source => 'puppet:///modules/varnish/varnishfetcherr.py',
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0555',
+    }
+
     file { '/usr/local/bin/varnishtlsinspector':
         source => 'puppet:///modules/varnish/varnishtlsinspector.py',
         owner  => 'root',
