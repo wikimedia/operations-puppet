@@ -6,6 +6,7 @@ class profile::wmcs::nfs::secondary(
     # be desireable, so a separate parameter is offered.
     Stdlib::Host $maps_active_server = lookup('scratch_active_server'),
     Stdlib::IP::Address $cluster_ip = lookup('profile::wmcs::nfs::secondary::cluster_ip'),
+    Array[Stdlib::Host] $secondary_servers = lookup('secondary_nfs_servers'),
 ) {
     require ::profile::openstack::eqiad1::clientpackages
     require ::profile::openstack::eqiad1::observerenv
@@ -20,21 +21,6 @@ class profile::wmcs::nfs::secondary(
         ]:
         ensure => present,
     }
-
-    # The following is from the primary cluster and will only be enabled if required
-    # sysctl::parameters { 'cloudstore base':
-    #     values   => {
-    #         # Increase TCP max buffer size
-    #         'net.core.rmem_max' => 67108864,
-    #         'net.core.wmem_max' => 67108864,
-
-    #         # Increase Linux auto-tuning TCP buffer limits
-    #         # Values represent min, default, & max num. of bytes to use.
-    #         'net.ipv4.tcp_rmem' => [ 4096, 87380, 33554432 ],
-    #         'net.ipv4.tcp_wmem' => [ 4096, 65536, 33554432 ],
-    #     },
-    #     priority => 70,
-    # }
 
     class {'::labstore::fileserver::exports':
         server_vols   => ['maps'],
@@ -81,7 +67,6 @@ class profile::wmcs::nfs::secondary(
         }
     }
 
-
     class {'labstore::monitoring::exports': }
     class {'labstore::monitoring::ldap': }
 
@@ -91,8 +76,27 @@ class profile::wmcs::nfs::secondary(
         int_throughput_crit => '1062500000', # 8500Mbps
     }
 
-    class { 'labstore::monitoring::secondary':
-        cluster_iface => 'eno1',
-        cluster_ip    => $cluster_ip,
+    file { '/usr/local/sbin/check_nfs_status':
+        source => 'puppet:///modules/labstore/monitor/check_nfs_status.py',
+        mode   => '0755',
+        owner  => 'root',
+        group  => 'root',
     }
+
+    $secondary_servers_ferm = join($secondary_servers, ' ')
+    ferm::service { 'labstore_nfs_portmapper_udp_monitor':
+        proto  => 'udp',
+        port   => '111',
+        srange => "(@resolve((${secondary_servers_ferm})) @resolve((${secondary_servers_ferm}), AAAA))",
+    }
+
+    nrpe::monitor_service { 'check_nfs_status':
+        critical      => true,
+        description   => 'NFS served over cluster IP',
+        nrpe_command  => "/usr/bin/sudo /usr/local/sbin/check_nfs_status ${cluster_ip}",
+        contact_group => 'wmcs-team',
+        require       => File['/usr/local/sbin/check_nfs_status'],
+        notes_url     => 'https://wikitech.wikimedia.org/wiki/Portal:Data_Services/Admin/Labstore',
+    }
+
 }
