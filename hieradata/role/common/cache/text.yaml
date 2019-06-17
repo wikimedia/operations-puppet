@@ -404,13 +404,11 @@ profile::cache::base::purge_multicasts: ['239.128.0.112','239.128.0.115']
 profile::cache::base::purge_varnishes: ['127.0.0.1:3128', '127.0.0.1:3127']
 profile::cache::base::fe_runtime_params:
     - default_ttl=86400
-    - gethdr_extrachance=0
 profile::cache::base::be_runtime_params:
     - default_ttl=86400
     - timeout_idle=120
     - nuke_limit=1000
     - lru_interval=31
-    - gethdr_extrachance=0
 profile::cache::varnish::cache_be_opts:
     port: 3128
     connect_timeout: '3s'
