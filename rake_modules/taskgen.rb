@@ -275,6 +275,8 @@ class TaskGen < ::Rake::TaskLib
         # skip zero byte files
         next if File.zero?(source_file)
         shebang = File.open(source_file) {|f| f.readline}
+        # If the first line is not correctly encoded its likely a binary file
+        next unless shebang.valid_encoding?
         mime_type = `file --mime-type -b '#{source_file}'`.chomp
         if shebang =~ /^#!.*python/ || mime_type == 'text/x-python'
           failures = true
