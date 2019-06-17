@@ -55,6 +55,9 @@ class base::sysctl {
             'net.ipv4.tcp_keepalive_intvl'     => 1,
             'net.ipv4.tcp_keepalive_probes'    => 2,
 
+            # Disable TCP selective acknowledgements
+            'net.ipv4.tcp_sack'                => 0,
+
             # Default IPv6 route table max_size is too small for the modern
             # Internet.  It's tempting to set this only for public-facing
             # caches and LVS, but when surveying hosts there are non-obvious
