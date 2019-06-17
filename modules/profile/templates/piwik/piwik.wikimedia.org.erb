@@ -18,7 +18,7 @@
     <% end -%>
     # Public endpoints -- must be open to all for piwik to work properly.
     # See <http://piwik.org/docs/how-to-secure-piwik/>.
-    Require expr %{REQUEST_URI} in { '/piwik.php', '/piwik.js' }
+    Require expr %{REQUEST_URI} in { '/piwik.php', '/piwik.js', '/matomo.php', '/matomo.js' }
 
     # The query string regex deliberately omits the end-of-line anchor ('$').
     # To successfully opt-out, the user must be able to POST to a URL which
