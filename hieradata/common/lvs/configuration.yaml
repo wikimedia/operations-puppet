@@ -1639,7 +1639,6 @@ lvs::configuration::lvs_services:
       service: sessionstore
     icinga:
       check_command: check_https_port_status!8081!200!/healthz
-      critical: false
       sites:
         eqiad:
           hostname: sessionstore.svc.eqiad.wmnet
