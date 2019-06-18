@@ -121,7 +121,8 @@ class base::sysctl {
     # hardcoded default of 48 for backwards compatibility reasons. We're setting it to
     # 538 which is the minimum MTU for IPv4 minus the size of the headers, which should
     # allow all legitimate traffic while avoiding the resource exhaustion.
-    if $facts['kernel_details']['sysctl_settings']['net.ipv4.tcp_min_snd_mss'] {
+    if $facts.has_key('kernel_details') and
+        $facts['kernel_details']['sysctl_settings']['net.ipv4.tcp_min_snd_mss'] {
         sysctl::parameters{'tcp_min_snd_mss':
             values  => { 'net.ipv4.tcp_min_snd_mss' => '538' },
         }
