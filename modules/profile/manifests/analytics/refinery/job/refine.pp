@@ -47,9 +47,21 @@ class profile::analytics::refinery::job::refine {
         interval         => '*-*-* *:30:00',
     }
 
+
     # Refine EventBus data.
     # TODO: deprecate this job in favor of the mediawiki_events job;
     # need to make sure JSONSchemas are compatible with existing Hive table schemas.
+    $eventbus_tables = [
+        'mediawiki_revision_create',
+        'mediawiki_revision_score',
+        'mediawiki_revision_visibility_change',
+        'mediawiki_page_create',
+        'mediawiki_page_delete',
+        'mediawiki_page_undelete',
+        'mediawiki_page_move',
+        'resource_change',
+    ]
+    $eventbus_table_whitelist_regex = "^(${join($eventbus_tables, '|')})$"
     profile::analytics::refinery::job::refine_job { 'eventlogging_eventbus':
         job_config => merge($default_config, {
             input_path                      => '/wmf/data/raw/event',
@@ -59,7 +71,7 @@ class profile::analytics::refinery::job::refine {
             # job to the JSONSchema based one below.  These match all tables refined by this
             # job as of 2019-04-19.  This excludes mediawiki_page_properties_change and
             # mediawiki_recentchange since those don't have a strong enough schema.
-            table_whitelist_regex           => '^(mediawiki_(page_(create|delete|move|undelete)|revision_(create|score|visibility_change)|user)|resource_change).*$',
+            table_whitelist_regex           => $eventbus_table_whitelist_regex,
             # Deduplicate eventbus based data based on meta.id field
             transform_functions             => 'org.wikimedia.analytics.refinery.job.refine.deduplicate_eventbus',
         }),
