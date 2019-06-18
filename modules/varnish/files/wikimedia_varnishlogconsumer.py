@@ -129,19 +129,19 @@ class BaseVarnishLogConsumer(object):
         elif tag == 'End':
             self.handle_end()
             self.tx = {}
-        elif tag == 'ReqMethod':
+        elif tag in ('ReqMethod', 'BereqMethod'):
             self.tx['http-method'] = value
-        elif tag == 'ReqURL':
+        elif tag in ('ReqURL', 'BereqURL'):
             self.tx['http-url'] = value
-        elif tag == 'ReqProtocol':
+        elif tag in ('ReqProtocol', 'BereqProtocol'):
             self.tx['http-protocol'] = value
-        elif tag == 'RespStatus':
+        elif tag in ('RespStatus', 'BerespStatus'):
             self.tx['http-status'] = value
         elif tag == 'Timestamp':
             splitagain = value.split()
             ts_name = splitagain[0][:-1].lower()
             self.tx['time-' + ts_name] = float(splitagain[3])
-        elif tag == 'ReqHeader':
+        elif tag in ('ReqHeader', 'BereqHeader'):
             splitagain = value.split(None, 1)
             header_name = splitagain[0][:-1]
 
@@ -153,7 +153,7 @@ class BaseVarnishLogConsumer(object):
                 header_value = ''
 
             self.tx['request-' + header_name] = header_value
-        elif tag == 'RespHeader':
+        elif tag in ('RespHeader', 'BerespHeader'):
             splitagain = value.split(None, 1)
             header_name = splitagain[0][:-1]
 

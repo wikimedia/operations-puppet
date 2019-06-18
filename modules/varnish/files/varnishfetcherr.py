@@ -39,6 +39,16 @@ class VarnishFetchErr(BaseVarnishLogConsumer):
             "-T", "%d" % self.args.transaction_timeout,
         ]
 
+    def handle_end(self):
+        if "fetcherror" in self.tx and "http-url" in self.tx:
+            self.logger.info(
+                "%s %s", self.tx["fetcherror"], self.tx["http-url"], extra=self.tx
+            )
+
+    def handle_tag(self, tag, value):
+        if tag.startswith("Backend") or tag in ["HttpGarbage", "FetchError"]:
+            self.tx[tag.lower()] = value
+
 
 if __name__ == "__main__":
     VarnishFetchErr(sys.argv[1:]).main()
