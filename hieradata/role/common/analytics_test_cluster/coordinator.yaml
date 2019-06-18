@@ -24,9 +24,7 @@ profile::hive::client::server_port: 10000
 profile::hive::client::metastore_host: 'analytics1030.eqiad.wmnet'
 
 # Hive Server Settings
-profile::hive::server::monitoring_enabled: true
 profile::hive::server::ferm_srange: '$ANALYTICS_NETWORKS'
-profile::hive::metastore::monitoring_enabled: true
 profile::hive::metastore::ferm_srange: '$ANALYTICS_NETWORKS'
 
 profile::analytics::database::meta::monitoring_enabled: true
