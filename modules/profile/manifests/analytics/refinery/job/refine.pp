@@ -59,12 +59,25 @@ class profile::analytics::refinery::job::refine {
             # job to the JSONSchema based one below.  These match all tables refined by this
             # job as of 2019-04-19.  This excludes mediawiki_page_properties_change and
             # mediawiki_recentchange since those don't have a strong enough schema.
-            table_whitelist_regex           => '^(mediawiki_(page_(create|delete|links_change|move|restrictions_change|undelete)|revision|user)|resource_change).*$',
+            table_whitelist_regex           => '^(mediawiki_(page_(create|delete|move|undelete)|revision_(create|score|visibility_change)|user)|resource_change).*$',
             # Deduplicate eventbus based data based on meta.id field
             transform_functions             => 'org.wikimedia.analytics.refinery.job.refine.deduplicate_eventbus',
         }),
         interval   => '*-*-* *:40:00',
     }
+
+    # List of mediawiki event tables to refine.
+    # Not all event tables are in this list, as some are not refineable.
+    # E.g. mediawiki_page_properties change has freeform type: object fields.
+    $mediawiki_event_tables = [
+        'mediawiki_api_request',
+        'mediawiki_cirrussearch_request',
+        'mediawiki_user_blocks_change',
+        'mediawiki_page_links_change',
+        'mediawiki_page_restrictions_change',
+        'mediawiki_revision_tags_change',
+    ]
+    $mediawiki_event_table_whitelist_regex = "^(${join($mediawiki_event_tables, '|')})$"
 
     # Refine Mediawiki event data.
     # This will replace the eventlogging_eventbus job above.
@@ -73,7 +86,7 @@ class profile::analytics::refinery::job::refine {
             input_path                      => '/wmf/data/raw/event',
             input_path_regex                => '.*(eqiad|codfw)_(.+)/hourly/(\\d+)/(\\d+)/(\\d+)/(\\d+)',
             input_path_regex_capture_groups => 'datacenter,table,year,month,day,hour',
-            table_whitelist_regex           => '^mediawiki_(api_request|cirrussearch_request)$',
+            table_whitelist_regex           => $mediawiki_event_table_whitelist_regex,
             # Deduplicate eventbus based data based on meta.id field
             transform_functions             => 'org.wikimedia.analytics.refinery.job.refine.deduplicate_eventbus',
             # Get JSONSchemas from the HTTP schema service.
