@@ -285,7 +285,7 @@ kubernetes:
     datacenters:
     - eqiad
     - codfw
-  sessionstore:
+  termbox:
     port: 3030
     default_values:
       pooled: 'yes'
