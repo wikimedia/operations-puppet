@@ -1,9 +1,6 @@
 # Note: This file is managed by puppet.
 
 global
-	log 127.0.0.1	local0
-	log 127.0.0.1	local1 notice
-	#log loghost	local0 info
 	maxconn 4096
 	#debug
 	#quiet
@@ -13,7 +10,6 @@ global
 
 
 defaults
-	log	global
 	mode	http
 	option	httplog
 	option	dontlognull
