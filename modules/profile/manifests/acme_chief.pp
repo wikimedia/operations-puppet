@@ -34,15 +34,22 @@
 class profile::acme_chief (
     Hash[String, Hash[String, String]] $accounts = hiera('profile::acme_chief::accounts'),
     Hash[String, Hash[String, Any]] $certificates = hiera('profile::acme_chief::certificates'),
+    Optional[Hash[String, Hash[String, Any]]] $shared_acme_certificates = hiera('shared_acme_certificates', undef),
     Hash[String, Hash[String, Any]] $challenges = hiera('profile::acme_chief::challenges'),
     String $http_proxy = hiera('http_proxy'),
     String $active_host = hiera('profile::acme_chief::active'),
     String $passive_host = hiera('profile::acme_chief::passive'),
     Array[String] $authdns_servers = hiera('authdns_servers'),
 ) {
+    if(!empty($shared_acme_certificates)) {
+        $acme_chief_certificates = $certificates + $shared_acme_certificates
+    } else {
+        $acme_chief_certificates = $certificates
+    }
+
     class { '::acme_chief::server':
         accounts        => $accounts,
-        certificates    => $certificates,
+        certificates    => $acme_chief_certificates,
         challenges      => $challenges,
         http_proxy      => $http_proxy,
         active_host     => $active_host,
