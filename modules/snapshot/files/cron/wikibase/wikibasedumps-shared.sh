@@ -1,10 +1,11 @@
 #!/bin/bash
 #############################################################
 # This file is maintained by puppet!
-# modules/snapshot/cron/wikidatadumps-shared.sh
+# modules/snapshot/cron/wikibase/wikibasedumps-shared.sh
 #############################################################
 #
-# Shared variable and function declarations for creating Wikidata dumps
+# Shared variable and function declarations for creating Wikibase dumps
+# of any sort
 #
 # Marius Hoch < hoo@online.de >
 
@@ -27,7 +28,7 @@ for settingname in "multiversion" "tempDir"; do
     checkval "$settingname" "${!settingname}"
 done
 
-targetDirBase=${cronsdir}/wikibase/wikidatawiki
+targetDirBase=${cronsdir}/wikibase/${projectName}wiki
 targetDir=$targetDirBase/$today
 
 multiversionscript="${multiversion}/MWScript.php"
@@ -37,25 +38,27 @@ mkdir -p $targetDir
 
 function pruneOldLogs {
 	# Remove old logs (keep 35 days)
-	find /var/log/wikidatadump/ -name 'dumpwikidata*-*-*.log' -mtime +36 -delete
+	find /var/log/${projectName}dump/ -name "dump${projectName}"'*-*-*.log' -mtime +36 -delete
 }
 
 function runDcat {
-	$php /usr/local/share/dcat/DCAT.php --config=/usr/local/etc/dcatconfig.json --dumpDir=$targetDirBase --outputDir=$targetDirBase
+	if [[ -n "$dcatConfig" ]]; then
+		$php /usr/local/share/dcat/DCAT.php --config=$dcatConfig --dumpDir=$targetDirBase --outputDir=$targetDirBase
+	fi
 }
 
 # Add the checksums for $1 to today's checksum files
 function putDumpChecksums {
 	md5=`md5sum "$1" | awk '{print $1}'`
-	echo "$md5  `basename $1`" >> $targetDir/wikidata-$today-md5sums.txt
+	echo "$md5  `basename $1`" >> $targetDir/${projectName}-$today-md5sums.txt
 
 	sha1=`sha1sum "$1" | awk '{print $1}'`
-	echo "$sha1  `basename $1`" >> $targetDir/wikidata-$today-sha1sums.txt
+	echo "$sha1  `basename $1`" >> $targetDir/${projectName}-$today-sha1sums.txt
 }
 
-# Get the number of batches needed to dump all of Wikidata, stored in $numberOfBatchesNeeded.
+# Get the number of batches needed to dump all of the particular project, stored in $numberOfBatchesNeeded.
 function getNumberOfBatchesNeeded {
-	maxPageId=`$php $multiversionscript maintenance/sql.php --wiki wikidatawiki --json --query 'SELECT MAX(page_id) AS max_page_id FROM page' | grep max_page_id | grep -oP '\d+'`
+	maxPageId=`$php $multiversionscript maintenance/sql.php --wiki ${projectName}wiki --json --query 'SELECT MAX(page_id) AS max_page_id FROM page' | grep max_page_id | grep -oP '\d+'`
 	if [[ $maxPageId -lt 1 ]]; then
 		echo "Couldn't get MAX(page_id) from db."
 		exit 1

@@ -3,10 +3,20 @@ class snapshot::cron::wikidatadumps(
     $group     = undef,
     $filesonly = false,
 ) {
-    class {'::snapshot::cron::wikidatadumps::common':
-        user  => $user,
-        group => $group,
+    file { '/var/log/wikidatadump':
+        ensure => 'directory',
+        mode   => '0755',
+        owner  => $user,
+        group  => $group,
     }
+
+    file { '/usr/local/etc/dcat_wikidata_config.json':
+        mode   => '0644',
+        owner  => 'root',
+        group  => 'root',
+        source => 'puppet:///modules/snapshot/cron/wikibase/dcat_wikidata_config.json',
+    }
+
     class { '::snapshot::cron::wikidatadumps::json':
         user      => $user,
         filesonly => $filesonly,

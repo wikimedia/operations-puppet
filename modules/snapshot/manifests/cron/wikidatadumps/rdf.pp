@@ -2,21 +2,19 @@ class snapshot::cron::wikidatadumps::rdf(
     $user      = undef,
     $filesonly = false,
 ) {
-    $scriptpath = '/usr/local/bin/dumpwikidatardf.sh'
-    # serdi for translating ttl to nt
-    require_package('serdi')
-    file { $scriptpath:
-        mode    => '0755',
-        owner   => 'root',
-        group   => 'root',
-        source  => 'puppet:///modules/snapshot/cron/dumpwikidatardf.sh',
-        require => Class['snapshot::cron::wikidatadumps::common'],
+    # functions for wikibase rdf dumps, with values specific to wikidata
+    file { '/usr/local/bin/wikidatardf_functions.sh':
+        mode   => '0755',
+        owner  => 'root',
+        group  => 'root',
+        source => 'puppet:///modules/snapshot/cron/wikibase/wikidatardf_functions.sh',
     }
 
+    $scriptpath = '/usr/local/bin/dumpwikibaserdf.sh'
     if !$filesonly {
         cron { 'wikidatardf-dumps':
             ensure      => 'present',
-            command     => "${scriptpath} all ttl nt; ${scriptpath} truthy nt; ${scriptpath} lexemes ttl nt",
+            command     => "${scriptpath} wikidata all ttl nt; ${scriptpath} wikidata truthy nt; ${scriptpath} wikidata lexemes ttl nt",
             environment => 'MAILTO=ops-dumps@wikimedia.org',
             user        => $user,
             minute      => '0',

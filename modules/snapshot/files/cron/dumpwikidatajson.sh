@@ -8,7 +8,13 @@
 #
 # Marius Hoch < hoo@online.de >
 
-. /usr/local/bin/wikidatadumps-shared.sh
+# when/if commons or other projects are included in json entity
+# dumps, this script can become dumpwikibasejson.sh with shared
+# functions analogous to the rdf dumps. For now however, hardcode
+# the projectName here and leave the rest alone.
+
+projectName="wikidata"
+. /usr/local/bin/wikibasedumps-shared.sh
 
 if [[ "$1" == '--help' ]]; then
 	echo -e "Usage: $0 [--continue]\n"

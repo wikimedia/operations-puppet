@@ -37,11 +37,6 @@ class snapshot::cron(
         user      => $miscdumpsuser,
         filesonly => $filesonly,
     }
-    class { '::snapshot::cron::wikidatadumps':
-        user      => $miscdumpsuser,
-        group     => $group,
-        filesonly => $filesonly,
-    }
     class { '::snapshot::cron::contentxlation':
         user      => $miscdumpsuser,
         filesonly => $filesonly,
@@ -52,6 +47,21 @@ class snapshot::cron(
     }
     class { '::snapshot::addschanges':
         user      => $miscdumpsuser,
+        filesonly => $filesonly,
+    }
+    # this class does not do any dumps, it just sets up
+    # requirements for any wikibase type dumps
+    # it cannot be imply included in those dumps classes
+    # because we need to pass in the user/group params
+    class { '::snapshot::cron::wikibase':
+        user  => $miscdumpsuser,
+        group => $group,
+    }
+
+    # wikibase type dump
+    class { '::snapshot::cron::wikidatadumps':
+        user      => $miscdumpsuser,
+        group     => $group,
         filesonly => $filesonly,
     }
 }

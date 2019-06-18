@@ -8,7 +8,7 @@ class snapshot::cron::wikidatadumps::json(
         owner   => 'root',
         group   => 'root',
         source  => 'puppet:///modules/snapshot/cron/dumpwikidatajson.sh',
-        require => Class['snapshot::cron::wikidatadumps::common'],
+        require => Class['snapshot::cron::wikibase'],
     }
 
     if !$filesonly {
