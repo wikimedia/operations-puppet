@@ -1,1 +1,3 @@
 cluster: wmcs
+profile::base::check_disk_critical: true
+profile::base::notifications: critical

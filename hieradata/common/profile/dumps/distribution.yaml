@@ -7,9 +7,6 @@ profile::dumps::distribution::xmldumpspublicdir: '/srv/dumps/xmldatadumps/public
 profile::dumps::distribution::xmldumpsprivatedir: '/srv/dumps/xmldatadumps/private'
 profile::dumps::distribution::dumpstempdir: '/srv/dumps/xmldatadumps/temp'
 
-profile::base::check_disk_critical: true
-profile::base::notifications: critical
-
 profile::dumps::distribution::rsync_config:
   dumps_user: 'dumpsgen'
   dumps_group: 'dumpsgen'
