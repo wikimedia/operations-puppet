@@ -500,7 +500,7 @@ node 'db2046.codfw.wmnet' {
     role(mariadb::core)
 }
 
-node /^db2(039|053|058|060|067|076|114|117)\.codfw\.wmnet/ {
+node /^db2(053|058|060|067|076|114|117)\.codfw\.wmnet/ {
     role(mariadb::core)
 }
 
@@ -610,6 +610,11 @@ node 'db2036.codfw.wmnet' {
 
 # To be decommissioned # T224720
 node 'db2037.codfw.wmnet' {
+    role(spare::system)
+}
+
+# To be decommissioned # T225988
+node 'db2039.codfw.wmnet' {
     role(spare::system)
 }
 
