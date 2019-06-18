@@ -35,3 +35,6 @@ raid:
   - megaraid
   - mpt
   - ssacli
+kernel_details:
+  sysctl_settings:
+    net.ipv4.tcp_min_snd_mss: true

@@ -116,4 +116,14 @@ class base::sysctl {
             },
         }
     }
+    # The security fix for CVE-2019-11479 introduced a new sysctl setting which clamps
+    # the lower value for the advertised MSS. The Linux patch retains the formerly
+    # hardcoded default of 48 for backwards compatibility reasons. We're setting it to
+    # 538 which is the minimum MTU for IPv4 minus the size of the headers, which should
+    # allow all legitimate traffic while avoiding the resource exhaustion.
+    if $facts['kernel_details']['sysctl_settings']['net.ipv4.tcp_min_snd_mss'] {
+        sysctl::parameters{'tcp_min_snd_mss':
+            values  => { 'net.ipv4.tcp_min_snd_mss' => '538' },
+        }
+    }
 }
