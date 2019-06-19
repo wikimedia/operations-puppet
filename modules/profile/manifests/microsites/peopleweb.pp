@@ -17,16 +17,8 @@ class profile::microsites::peopleweb (
         srange => "(@resolve((${deployment_server})) @resolve((${deployment_server}), AAAA))"
     }
 
-    if os_version('debian == jessie') {
-        $php_version = '5'
-    } else {
-        $php_version = '7.0'
-    }
-
-    require_package("libapache2-mod-php${php_version}")
-
     class { '::httpd':
-        modules => ['userdir', 'cgi', "php${php_version}", 'rewrite', 'headers'],
+        modules => ['userdir', 'rewrite', 'headers'],
     }
 
     class { '::httpd::mpm':
@@ -50,4 +42,3 @@ class profile::microsites::peopleweb (
     }
 
 }
-
