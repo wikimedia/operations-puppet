@@ -128,6 +128,7 @@ class NovaInstance(object):
         destination = config.destination
         destination_fqdn = config.destination_fqdn
         source = self.instance._info['OS-EXT-SRV-ATTR:host']
+        virshid = self.instance._info['OS-EXT-SRV-ATTR:instance_name']
         source_fqdn = '{}.{}.wmnet'.format(source, config.datacenter)
 
         logging.info("instance {} ({}) is now on host {} with state {}".format(
@@ -176,12 +177,22 @@ class NovaInstance(object):
                 confirm = raw_input(
                     "Verify that the instance is healthy, then type "
                     "'cleanup' to delete old instance files:  ")
+
+            logging.info("removing old instance from libvirt on {}".format(source))
+            undefine_args = ["ssh", "-i", "/root/.ssh/compute-hosts-key",
+                             "nova@%s" % source_fqdn,
+                             "virsh", "-c", "qemu:///system", "undefine", virshid]
+            undefine_status = subprocess.call(undefine_args)
+            if undefine_status:
+                logging.error("undefine of {} on {} failed.".format(virshid, source))
+                return(1)
+
             logging.info("cleaning up old instance files on {}".format(source))
-            args = ["ssh", "-i", "/root/.ssh/compute-hosts-key",
-                    "nova@%s" % source_fqdn,
-                    "rm -rf", imagedir]
-            r = subprocess.call(args)
-            if r:
+            rmimage_args = ["ssh", "-i", "/root/.ssh/compute-hosts-key",
+                            "nova@%s" % source_fqdn,
+                            "rm -rf", imagedir]
+            rmimage_status = subprocess.call(rmimage_args)
+            if rmimage_status:
                 logging.error("cleanup of {} on {} failed.".format(imagedir, source))
                 return(1)
 
