@@ -89,6 +89,17 @@ profile::kubernetes::deployment_server::services:
     mode: '0640'
 
 # Specified in the private repo in this form
+#profile::kubernetes::deployment_server_secrets::services:
+#    zotero:
+#      staging:
+#         somekey: somevalue
+#      codfw:
+#         somekey: somevalue
+#      eqiad:
+#         somekey: somevalue
+
+
+# Specified in the private repo in this form
 #profile::kubernetes::deployment_server::tokens:
 #  mathoid:
 #    token: dummy
