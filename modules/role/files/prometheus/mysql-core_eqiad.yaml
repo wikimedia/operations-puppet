@@ -40,6 +40,7 @@
   targets:
   - db1077:9104
   - db1078:9104
+  - db1112:9104
   - db1123:9104
 - labels:
     shard: s3
@@ -177,11 +178,6 @@
     role: master
   targets:
   - es1017:9104
-- labels:
-    shard: test-s4
-    role: slave
-  targets:
-  - db1112:9104
 - labels:
     shard: test-s4
     role: master
