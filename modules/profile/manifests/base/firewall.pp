@@ -1,18 +1,32 @@
 # Temporary solution until someone has input about what to do with base::firewall
 class profile::base::firewall (
-    Array[Stdlib::IP::Address] $monitoring_hosts = hiera('monitoring_hosts', []),
-    Array[Stdlib::IP::Address] $cumin_masters = hiera('cumin_masters', []),
-    Array[Stdlib::IP::Address] $bastion_hosts = hiera('bastion_hosts', []),
-    Array[Stdlib::IP::Address] $cache_hosts = hiera('cache_hosts', []),
-    Array[Stdlib::IP::Address] $kafka_brokers_main = hiera('kafka_brokers_main', []),
-    Array[Stdlib::IP::Address] $kafka_brokers_analytics = hiera('kafka_brokers_analytics', []),
-    Array[Stdlib::IP::Address] $kafka_brokers_jumbo = hiera('kafka_brokers_jumbo', []),
-    Array[Stdlib::IP::Address] $kafka_brokers_logging = hiera('kafka_brokers_logging', []),
-    Array[Stdlib::IP::Address] $zookeeper_hosts_main = hiera('zookeeper_hosts_main', []),
-    Array[Stdlib::IP::Address] $hadoop_masters = hiera('hadoop_masters', []),
-    Array[Stdlib::IP::Address] $druid_public_hosts = hiera('druid_public_hosts', []),
-    Array[Stdlib::IP::Address] $mysql_root_clients = hiera('mysql_root_clients', []),
-    Array[Stdlib::IP::Address] $deployment_hosts = hiera('deployment_hosts', []),
+    Array[Stdlib::IP::Address] $monitoring_hosts        = lookup('monitoring_hosts',
+                                                                {default_value => []}),
+    Array[Stdlib::IP::Address] $cumin_masters           = lookup('cumin_masters',
+                                                                {default_value => []}),
+    Array[Stdlib::IP::Address] $bastion_hosts           = lookup('bastion_hosts',
+                                                                {default_value => []}),
+    Array[Stdlib::IP::Address] $cache_hosts             = lookup('cache_hosts',
+                                                                {default_value => []}),
+    Array[Stdlib::IP::Address] $kafka_brokers_main      = lookup('kafka_brokers_main',
+                                                                {default_value => []}),
+    Array[Stdlib::IP::Address] $kafka_brokers_analytics = lookup('kafka_brokers_analytics',
+                                                                {default_value => []}),
+    Array[Stdlib::IP::Address] $kafka_brokers_jumbo     = lookup('kafka_brokers_jumbo',
+                                                                {default_value => []}),
+    Array[Stdlib::IP::Address] $kafka_brokers_logging   = lookup('kafka_brokers_logging',
+                                                                {default_value => []}),
+    Array[Stdlib::IP::Address] $zookeeper_hosts_main    = lookup('zookeeper_hosts_main',
+                                                                {default_value => []}),
+    Array[Stdlib::IP::Address] $hadoop_masters          = lookup('hadoop_masters',
+                                                                {default_value => []}),
+    Array[Stdlib::IP::Address] $druid_public_hosts      = lookup('druid_public_hosts',
+                                                                {default_value => []}),
+    Array[Stdlib::IP::Address] $mysql_root_clients      = lookup('mysql_root_clients',
+                                                                {default_value => []}),
+    Array[Stdlib::IP::Address] $deployment_hosts        = lookup('deployment_hosts',
+                                                                {default_value => []}),
+    Boolean                    $enable_logging  = lookup('profile::base::firewall::enable_logging')
 ) {
     class { '::base::firewall':
         monitoring_hosts        => $monitoring_hosts,
@@ -28,5 +42,8 @@ class profile::base::firewall (
         druid_public_hosts      => $druid_public_hosts,
         mysql_root_clients      => $mysql_root_clients,
         deployment_hosts        => $deployment_hosts,
+    }
+    if $enable_logging {
+        include profile::base::firewall::log
     }
 }

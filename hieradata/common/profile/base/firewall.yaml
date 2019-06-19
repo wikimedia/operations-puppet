@@ -1,0 +1,1 @@
+profile::base::firewall::enable_logging: true

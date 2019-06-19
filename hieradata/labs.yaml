@@ -240,6 +240,7 @@ profile::base::debdeploy::exclude_filesystems:
   - nfs4
 
 # Firewall logging
+profile::base::firewall::enable_logging: true
 profile::base::firewall::log::log_rate: 1/second
 profile::base::firewall::log::log_burst: 5
 
