@@ -21,6 +21,7 @@ class profile::toolforge::k8s::etcd(
     $peers_list = join(($peers_list_array), ',')
 
     class { '::etcd::v3':
+        member_name   => $::fqdn,
         cluster_state => $cluster_state,
         peers_list    => $peers_list,
         client_cert   => "/var/lib/puppet/ssl/certs/${::fqdn}.pem",
