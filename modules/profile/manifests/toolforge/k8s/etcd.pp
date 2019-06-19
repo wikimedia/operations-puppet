@@ -23,6 +23,8 @@ class profile::toolforge::k8s::etcd(
     class { '::etcd::v3':
         cluster_state => $cluster_state,
         peers_list    => $peers_list,
+        client_cert   => "/var/lib/puppet/ssl/certs/${::fqdn}.pem",
+        client_key    => "/var/lib/puppet/ssl/private_keys/${::fqdn}.pem",
         trusted_ca    => '/var/lib/puppet/ssl/certs/ca.pem',
         peer_cert     => "/var/lib/puppet/ssl/certs/${::fqdn}.pem",
         peer_key      => "/var/lib/puppet/ssl/private_keys/${::fqdn}.pem",
