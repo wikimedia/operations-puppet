@@ -3,6 +3,8 @@ class profile::base::firewall::log (
   Integer                                  $log_burst = hiera('profile::base::firewall::log::log_burst'),
   Pattern[/\d+\/(second|minute|hour|day)/] $log_rate = hiera('profile::base::firewall::log::log_rate'),
 ) {
+  # we only call this class from profile::base::firewall
+  assert_private()
   class { '::ulogd': }
 
   # Explicitly drop pxe/dhcp packets packets so they dont hit the log
