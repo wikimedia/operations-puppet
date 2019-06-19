@@ -3,7 +3,6 @@ class role::planet {
 
     include ::profile::standard
     include ::profile::base::firewall
-    include ::profile::base::firewall::log
     include ::profile::planet
 
     # locales are essential for planet

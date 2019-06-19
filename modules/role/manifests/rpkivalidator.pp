@@ -15,6 +15,5 @@ class role::rpkivalidator {
 
     include ::profile::standard
     include ::profile::base::firewall
-    include ::profile::base::firewall::log
     include ::profile::rpkivalidator
 }

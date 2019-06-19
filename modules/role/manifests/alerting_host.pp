@@ -13,7 +13,6 @@ class role::alerting_host {
 
     include ::profile::standard
     include ::profile::base::firewall
-    include ::profile::base::firewall::log
 
     include ::profile::icinga
     include ::profile::tcpircbot

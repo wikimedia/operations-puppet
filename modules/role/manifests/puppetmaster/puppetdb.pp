@@ -2,7 +2,6 @@
 class role::puppetmaster::puppetdb {
     include ::profile::standard
     include ::profile::base::firewall
-    include ::profile::base::firewall::log
     include ::profile::puppetdb::database
     include ::profile::puppetdb
 

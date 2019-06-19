@@ -1,7 +1,6 @@
 class role::mediawiki::maintenance {
     include ::profile::standard
     include ::profile::base::firewall
-    include ::profile::base::firewall::log
 
     # Mediawiki
     include ::role::mediawiki::common

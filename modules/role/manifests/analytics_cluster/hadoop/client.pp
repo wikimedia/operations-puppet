@@ -8,6 +8,5 @@ class role::analytics_cluster::hadoop::client {
 
     include ::profile::standard
     include ::profile::base::firewall
-    include ::profile::base::firewall::log
     require ::profile::hadoop::common
 }

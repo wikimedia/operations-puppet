@@ -2,7 +2,6 @@
 class role::kafka::main {
 
     include ::profile::base::firewall
-    include ::profile::base::firewall::log
     include ::profile::kafka::broker
     system::role { 'kafka::main':
         description => "Kafka Broker in the main-${::site} Kafka cluster",

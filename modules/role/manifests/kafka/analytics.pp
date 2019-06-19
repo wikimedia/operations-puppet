@@ -10,5 +10,4 @@ class role::kafka::analytics {
 
     include ::profile::standard
     include ::profile::base::firewall
-    include ::profile::base::firewall::log
 }

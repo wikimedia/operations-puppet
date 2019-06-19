@@ -66,7 +66,6 @@ class role::analytics_test_cluster::coordinator {
 
     include ::profile::standard
     include ::profile::base::firewall
-    include ::profile::base::firewall::log
 
     include ::profile::kerberos::client
 }

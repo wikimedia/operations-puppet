@@ -3,7 +3,6 @@
 class role::webperf::processors_and_site {
     include ::profile::standard
     include ::profile::base::firewall
-    include ::profile::base::firewall::log
     include ::profile::webperf::processors
     include ::profile::webperf::coal_web
     include ::profile::webperf::site

@@ -21,6 +21,5 @@ class role::logstash::collector (
 
     include ::role::logstash::elasticsearch
     include ::profile::base::firewall
-    include ::profile::base::firewall::log
 
 }

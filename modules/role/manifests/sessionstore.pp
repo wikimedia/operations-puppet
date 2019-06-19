@@ -8,7 +8,6 @@ class role::sessionstore {
     }
 
     include ::profile::base::firewall
-    include ::profile::base::firewall::log
     include ::profile::standard
     # include ::role::lvs::realserver
     include ::profile::sessionstore

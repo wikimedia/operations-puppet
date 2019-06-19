@@ -7,7 +7,6 @@ class role::mariadb::misc::tendril_and_zarcillo {
 
     include ::profile::standard
     include ::profile::base::firewall
-    include ::profile::base::firewall::log
     ::profile::mariadb::ferm { 'tendril': }
 
     include ::profile::mariadb::misc::tendril

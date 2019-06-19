@@ -6,7 +6,6 @@ class role::lists {
     include ::profile::standard
     include ::profile::backup::host
     include ::profile::base::firewall
-    include ::profile::base::firewall::log
 
     include ::profile::lists
     include ::profile::locales::extended

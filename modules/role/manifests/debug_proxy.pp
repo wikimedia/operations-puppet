@@ -11,7 +11,6 @@ class role::debug_proxy {
 
     include ::profile::standard
     include ::profile::base::firewall
-    include ::profile::base::firewall::log
 
     # Backward compatibility
     $aliases = {

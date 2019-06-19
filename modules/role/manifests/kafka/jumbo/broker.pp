@@ -11,7 +11,6 @@ class role::kafka::jumbo::broker {
         include ::profile::standard
     }
     include profile::base::firewall
-    include ::profile::base::firewall::log
     include profile::kafka::broker
 
     # Mirror main-eqiad -> jumbo-eqiad

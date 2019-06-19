@@ -10,7 +10,6 @@ class role::phabricator {
     include ::profile::standard
     include ::lvs::realserver
     include ::profile::base::firewall
-    include ::profile::base::firewall::log
     include ::profile::backup::host
     include ::profile::phabricator::main
     include ::profile::phabricator::httpd

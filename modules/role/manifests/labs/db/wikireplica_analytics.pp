@@ -9,7 +9,6 @@ class role::labs::db::wikireplica_analytics {
     class { '::mariadb::service': }
     include ::profile::mariadb::monitor
     include ::profile::base::firewall
-    include ::profile::base::firewall::log
 
     include ::profile::labs::db::wikireplica
 

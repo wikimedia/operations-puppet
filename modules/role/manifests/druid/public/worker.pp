@@ -10,7 +10,6 @@ class role::druid::public::worker {
 
     include ::profile::standard
     include ::profile::base::firewall
-    include ::profile::base::firewall::log
     include ::profile::druid::broker
     include ::profile::druid::coordinator
     include ::profile::druid::historical

@@ -11,7 +11,6 @@ class role::cluster::management {
 
     include ::profile::standard
     include ::profile::base::firewall
-    include ::profile::base::firewall::log
 
     include ::role::cumin::master
     include ::profile::ipmi::mgmt

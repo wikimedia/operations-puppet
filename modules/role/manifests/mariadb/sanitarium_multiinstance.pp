@@ -14,7 +14,6 @@ class role::mariadb::sanitarium_multiinstance {
 
     include ::profile::standard
     include ::profile::base::firewall
-    include ::profile::base::firewall::log
 
     include role::labs::db::common
     include role::labs::db::check_private_data

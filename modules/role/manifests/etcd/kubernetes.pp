@@ -3,7 +3,6 @@
 class role::etcd::kubernetes {
     include ::profile::standard
     include ::profile::base::firewall
-    include ::profile::base::firewall::log
     include ::profile::etcd
     include ::profile::etcd::auth
 

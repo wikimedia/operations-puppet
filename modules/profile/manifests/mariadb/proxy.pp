@@ -22,16 +22,13 @@ class profile::mariadb::proxy (
 
     if $firewall == 'internal' {
         include ::profile::base::firewall
-        include ::profile::base::firewall::log
         ::profile::mariadb::ferm { 'dbproxy': }
     } elsif $firewall == 'misc' {
         include ::profile::base::firewall
-        include ::profile::base::firewall::log
         ::profile::mariadb::ferm { 'dbproxy': }
         include ::profile::mariadb::ferm_misc
     } elsif $firewall == 'cloud' {
         include ::profile::base::firewall
-        include ::profile::base::firewall::log
         ::profile::mariadb::ferm { 'dbproxy': }
         include ::profile::mariadb::ferm_wmcs
     } elsif $firewall != 'disabled' {

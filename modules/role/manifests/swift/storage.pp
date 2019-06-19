@@ -6,7 +6,6 @@ class role::swift::storage {
 
     include ::profile::standard
     include ::profile::base::firewall
-    include ::profile::base::firewall::log
     include ::swift::params
     include ::swift
     include ::swift::ring

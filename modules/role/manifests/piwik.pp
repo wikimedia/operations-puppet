@@ -8,7 +8,6 @@ class role::piwik {
 
     include ::profile::standard
     include ::profile::base::firewall
-    include ::profile::base::firewall::log
 
     include ::profile::piwik::webserver
 

@@ -28,6 +28,5 @@ class role::analytics_test_cluster::hadoop::ui {
     include ::profile::kerberos::keytabs
 
     include ::profile::base::firewall
-    include ::profile::base::firewall::log
     include ::profile::standard
 }
