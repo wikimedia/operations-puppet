@@ -41,13 +41,23 @@ class VarnishFetchErr(BaseVarnishLogConsumer):
 
     def handle_end(self):
         if "fetcherror" in self.tx and "http-url" in self.tx:
+            self.tx["fetcherror"] = " - ".join(self.tx["fetcherror"])
             self.logger.info(
                 "%s %s", self.tx["fetcherror"], self.tx["http-url"], extra=self.tx
             )
 
     def handle_tag(self, tag, value):
-        if tag.startswith("Backend") or tag in ["HttpGarbage", "FetchError"]:
-            self.tx[tag.lower()] = value
+        key = tag.lower()
+
+        if key.startswith("backend") or key == "httpgarbage":
+            self.tx[key] = value
+
+        # FetchError tags can be repeated, use a list
+        if key == "fetcherror":
+            if key not in self.tx:
+                self.tx[key] = [value]
+            else:
+                self.tx[key].append(value)
 
 
 if __name__ == "__main__":
