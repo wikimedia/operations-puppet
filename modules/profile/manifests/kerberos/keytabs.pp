@@ -14,7 +14,19 @@
 class profile::kerberos::keytabs (
     Array $keytabs_metadata = lookup('profile::kerberos::keytabs::keytabs_metadata', { 'default_value' => [] })
 ){
+
     $keytabs_metadata.each |Hash $keytab_metadata| {
+
+        if !defined(File["/etc/security/keytabs/${keytab_metadata['role']}'"]) {
+            file { "/etc/security/keytabs/${keytab_metadata['role']}":
+                ensure  => 'directory',
+                owner   => $keytab_metadata['owner'],
+                group   => $keytab_metadata['group'],
+                mode    => '0550',
+                require => File['/etc/security/keytabs']
+            }
+        }
+
         file { "/etc/security/keytabs/${keytab_metadata['role']}/${keytab_metadata['filename']}":
             ensure    => 'present',
             owner     => $keytab_metadata['owner'],
@@ -22,7 +34,7 @@ class profile::kerberos::keytabs (
             mode      => '0440',
             content   => secret("kerberos/keytabs/${::fqdn}/${keytab_metadata['role']}/${keytab_metadata['filename']}"),
             show_diff => false,
-            require   => [File['/etc/security/keytabs'], User[$keytab_metadata['owner']]]
+            require   => [File["/etc/security/keytabs/${keytab_metadata['role']}"], User[$keytab_metadata['owner']]]
         }
     }
 }
