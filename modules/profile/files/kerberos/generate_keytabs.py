@@ -22,6 +22,7 @@ keytab_specs = {
     'oozie': ('oozie', 'oozie', 'oozie', 'oozie', 'oozie'),
     'HTTP-oozie': ('HTTP', 'HTTP-oozie', 'oozie', 'oozie', 'oozie'),
     'analytics': ('analytics', 'analytics', 'analytics', 'analytics', 'analytics'),
+    'hue': ('hue', 'hue', 'hue', 'hue', 'hue'),
 }
 
 actions = ['create_princ', 'create_keytab', 'merge_keytab', 'delete_keytab']

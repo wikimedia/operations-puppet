@@ -45,6 +45,16 @@ profile::hive::client::server_host: analytics1030.eqiad.wmnet
 profile::hive::client::server_port: 10000
 profile::hive::client::metastore_host: 'analytics1030.eqiad.wmnet'
 
+profile::kerberos::keytabs::keytabs_metadata:
+  - role: 'hadoop'
+    owner: 'hdfs'
+    group: 'hdfs'
+    filename: 'hdfs.keytab'
+  - role: 'hadoop'
+    owner: 'yarn'
+    group: 'yarn'
+    filename: 'yarn.keytab'
+
 prometheus::node_exporter::collectors_extra:
   - meminfo_numa
 

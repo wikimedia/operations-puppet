@@ -23,4 +23,10 @@ diamond::remove: true
 
 profile::hive::client::ensure_hive_site_in_hdfs: true
 
+profile::kerberos::keytabs::keytabs_metadata:
+  - role: 'hue'
+    owner: 'hue'
+    group: 'hue'
+    filename: 'hue.keytab'
+
 profile::base::notifications: disabled

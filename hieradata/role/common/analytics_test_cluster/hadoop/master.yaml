@@ -38,6 +38,20 @@ profile::hadoop::master::hadoop_user_groups: "analytics-users analytics-privated
 profile::hadoop::firewall::master::analytics_srange: '$ANALYTICS_NETWORKS'
 profile::hadoop::firewall::master::analytics_druid_srange: '(($ANALYTICS_NETWORKS $DRUID_PUBLIC_HOSTS))'
 
+profile::kerberos::keytabs::keytabs_metadata:
+  - role: 'hadoop'
+    owner: 'hdfs'
+    group: 'hdfs'
+    filename: 'hdfs.keytab'
+  - role: 'hadoop'
+    owner: 'yarn'
+    group: 'yarn'
+    filename: 'yarn.keytab'
+  - role: 'hadoop'
+    owner: 'mapred'
+    group: 'mapred'
+    filename: 'mapred.keytab'
+
 diamond::remove: true
 
 profile::base::notifications: disabled
