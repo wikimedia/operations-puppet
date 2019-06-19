@@ -49,6 +49,20 @@ profile::analytics::refinery::job::camus::monitoring_enabled: true
 # Http proxy to get project-namespace infos from API using python
 profile::analytics::refinery::job::project_namespace_map::http_proxy: 'http://webproxy.eqiad.wmnet:8080'
 
+profile::kerberos::keytabs::keytabs_metadata:
+  - role: 'hive'
+    owner: 'hive'
+    group: 'hive'
+    filename: 'hive.keytab'
+  - role: 'oozie'
+    owner: 'oozie'
+    group: 'oozie'
+    filename: 'oozie.keytab'
+  - role: 'analytics'
+    owner: 'analytics'
+    group: 'analytics'
+    filename: 'analytics.keytab'
+
 diamond::remove: true
 
 profile::base::notifications: disabled
