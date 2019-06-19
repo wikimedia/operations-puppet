@@ -17,7 +17,7 @@ class profile::kerberos::keytabs (
 
     $keytabs_metadata.each |Hash $keytab_metadata| {
 
-        if !defined(File["/etc/security/keytabs/${keytab_metadata['role']}'"]) {
+        if !defined(File["/etc/security/keytabs/${keytab_metadata['role']}"]) {
             file { "/etc/security/keytabs/${keytab_metadata['role']}":
                 ensure  => 'directory',
                 owner   => $keytab_metadata['owner'],
