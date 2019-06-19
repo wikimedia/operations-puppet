@@ -61,11 +61,32 @@ fi
 temp="$(mktemp)"
 trap "rm -f '$temp'" EXIT
 
-timedatectl > "$temp"
-ut=$(sed '/Universal time:/ { s/^[^:]*: *//; p}; d' "$temp")
-rtc=$(sed '/RTC time:/ { s/^[^:]*: *//; p}; d' "$temp")
-ntpenabled=$(sed '/\(NTP enabled\|Network time on\|NTP service\):/ { s/^[^:]*: *//; p}; d' "$temp")
-ntpsynced=$(sed '/\(NTP synchronized\|System clock synchronized\):/ { s/^[^:]*: *//; p}; d' "$temp")
+systemdversion="$(timedatectl --version | head -n1 | awk '{print $2}')"
+if [ -z "$systemdversion" ]; then
+	echo "Unknown: Cannot get systemd version"
+	exit 3
+fi
+if [ "$systemdversion" -lt 241 ] ; then # before buster (Debian 10)
+	LC_ALL=C timedatectl > "$temp"
+	ut=$(sed '/Universal time:/ { s/^[^:]*: *//; p}; d' "$temp")
+	rtc=$(sed '/RTC time:/ { s/^[^:]*: *//; p}; d' "$temp")
+	ntpenabled=$(sed '/\(NTP enabled\|Network time on\|NTP service\):/ { s/^[^:]*: *//; p}; d' "$temp")
+	ntpsynced=$(sed '/\(NTP synchronized\|System clock synchronized\):/ { s/^[^:]*: *//; p}; d' "$temp")
+else
+	LC_ALL=C timedatectl show > "$temp"
+	ut=$(sed '/^TimeUSec=/ { s/^[^=]*=//; p}; d' "$temp")
+	rtc=$(sed '/^RTCTimeUSec=/ { s/^[^=]*=//; p}; d' "$temp")
+	ntpenabled=$(sed '/^NTP=/ { s/^[^=]*=//; p}; d' "$temp")
+	ntpsynced=$(sed '/^NTPSynchronized=/ { s/^[^=]*=//; p}; d' "$temp")
+	if [ "$ntpenabled" = "no" ]; then # in buster (Debian 10) ntpenabled no longer also considers the ntp service
+		ntp_status=$(systemctl is-enabled 'ntp.service' 2>/dev/null) && rc=$? || rc=$?
+		if [ "$rc" = 0 ] && [ "$ntp_status" = "enabled" ] ; then
+			if systemctl --quiet is-active ntp.service; then
+				ntpenabled=yes
+			fi
+		fi
+	fi
+fi
 
 uts=$(TZ=UTC date -d "$ut" +%s)
 rtcs=$(TZ=UTC date -d "$rtc" +%s 2>/dev/null || echo "N/A")
