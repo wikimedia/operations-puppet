@@ -30,6 +30,12 @@ class profile::toolforge::k8s::etcd(
         peer_key      => "/var/lib/puppet/ssl/private_keys/${::fqdn}.pem",
     }
 
+    # add the etcd user to the puppet group so it can read puppet certs
+    user { 'etcd':
+        ensure => 'present',
+        groups => 'puppet',
+    }
+
     $checker_hosts_string = join(($checker_hosts), ' ')
     $k8s_hosts_string     = join(($k8s_hosts), ' ')
     $firewall_clients     = "@resolve((${checker_hosts_string} ${k8s_hosts_string}))"
