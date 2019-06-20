@@ -46,14 +46,17 @@ profile::kerberos::keytabs::keytabs_metadata:
     owner: 'hdfs'
     group: 'hdfs'
     filename: 'hdfs.keytab'
+    parent_dir_grp: 'hadoop'
   - role: 'hadoop'
     owner: 'yarn'
     group: 'yarn'
     filename: 'yarn.keytab'
+    parent_dir_grp: 'hadoop'
   - role: 'hadoop'
     owner: 'mapred'
     group: 'mapred'
     filename: 'mapred.keytab'
+    parent_dir_grp: 'hadoop'
 
 diamond::remove: true
 
