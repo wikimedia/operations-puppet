@@ -58,7 +58,7 @@ profile::kerberos::keytabs::keytabs_metadata:
   - role: 'oozie'
     owner: 'oozie'
     group: 'oozie'
-    filename: 'oozie.keytab'
+    filename: 'HTTP-oozie.keytab'
   - role: 'analytics'
     owner: 'analytics'
     group: 'analytics'
@@ -76,7 +76,7 @@ profile::hive::client::hive_server2_authentication_kerberos_principal: 'hive/_HO
 profile::hive::client::hive_server2_authentication_kerberos_keytab: '/etc/security/keytabs/hive/hive.keytab'
 profile::oozie::server::oozie_service_kerberos_enabled: true
 profile::oozie::server::local_realm: 'ANALYTICS.EQIAD.WMFLABS'
-profile::oozie::server::oozie_service_keytab_file: '/etc/security/keytabs/oozie/oozie.keytab'
+profile::oozie::server::oozie_service_keytab_file: '/etc/security/keytabs/oozie/HTTP-oozie.keytab'
 profile::oozie::server::oozie_service_kerberos_principal: 'oozie/_HOST@WIKIMEDIA'
 profile::oozie::server::oozie_authentication_type: 'kerberos'
 profile::oozie::server::oozie_authentication_kerberos_principal: 'HTTP/_HOST@WIKIMEDIA'
