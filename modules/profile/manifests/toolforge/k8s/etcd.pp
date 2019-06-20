@@ -1,5 +1,5 @@
 class profile::toolforge::k8s::etcd(
-    Array[Stdlib::Fqdn] $peer_hosts    = lookup('profile::k8s::etcd_hosts',              {default_value => ['localhost']}),
+    Array[Stdlib::Fqdn] $peer_hosts    = lookup('profile::toolforge::k8s::etcd_hosts',   {default_value => ['localhost']}),
     Array[Stdlib::Fqdn] $checker_hosts = lookup('profile::toolforge::checker_hosts',     {default_value => ['tools-checker-03.tools.eqiad.wmflabs']}),
     Array[Stdlib::Fqdn] $k8s_hosts     = lookup('profile::toolforge::k8s_masters_hosts', {default_value => ['localhost']}),
     Boolean             $bootstrap     = lookup('profile::etcd::cluster_bootstrap',      {default_value => false}),
@@ -11,12 +11,11 @@ class profile::toolforge::k8s::etcd(
     }
 
     # for $peers_list we need a string like this:
-    # node1=https://1.1.1.1:2380,node2=https://2.2.2.2:2380,node3=https://3.3.3.3:2380
+    # node1=https://node1.eqiad.wmflabs:2380,node2=https://node2.eqiad.wmflabs:2380,node3=https://node3.eqiad.wmflabs:2380
     $protocol    = 'https://'
     $port        = ':2380'
     $peers_list_array = map($peer_hosts) |$element| {
-        $addr  =  ipresolve($element, 4)
-        $value = "${element}=${protocol}${addr}${port}"
+        $value = "${element}=${protocol}${element}${port}"
     }
     $peers_list = join(($peers_list_array), ',')
 
