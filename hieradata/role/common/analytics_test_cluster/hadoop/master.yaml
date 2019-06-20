@@ -34,6 +34,7 @@ profile::hadoop::common::config_override:
 
 profile::hadoop::master::use_kerberos: true
 profile::hadoop::mysql_password::use_kerberos: true
+profile::analytics::cluster::secrets::use_kerberos: true
 
 # Ensure that users in these posix groups have home directories in HDFS.
 profile::hadoop::master::hadoop_user_groups: "analytics-users analytics-privatedata-users analytics-admins analytics-search-users"
