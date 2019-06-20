@@ -58,8 +58,13 @@ class snapshot::cron(
         group => $group,
     }
 
-    # wikibase type dump
+    # wikibase type dumps
     class { '::snapshot::cron::wikidatadumps':
+        user      => $miscdumpsuser,
+        group     => $group,
+        filesonly => $filesonly,
+    }
+    class { '::snapshot::cron::commonsdumps':
         user      => $miscdumpsuser,
         group     => $group,
         filesonly => $filesonly,

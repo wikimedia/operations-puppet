@@ -14,7 +14,7 @@
 # suffix. If someday we move to run wikibase on wiktionaries
 # or what have you, we'll redo the project and file name logic!
 
-PROJECTS="wikidata"
+PROJECTS="wikidata|commons"
 
 if [[ "$1" == '--help' ]]; then
     echo -e "$0 $PROJECTS --help for help"
@@ -27,7 +27,7 @@ if [ -z "$projectName" ]; then
     echo -e "$0 $PROJECTS --help for help"
     exit 1
 fi
-if [ "$projectName" != "wikidata" ]; then
+if [ "$projectName" != "wikidata" -a  "$projectName" != "commons" ]; then
     echo -e "Unknown project name."
     echo -e "$0 $PROJECTS --help for help"
     exit 1
