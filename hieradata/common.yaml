@@ -678,6 +678,7 @@ hadoop_clusters:
       dfs.journalnode.keytab.file: '/etc/security/keytabs/hadoop/hdfs.keytab'
       dfs.journalnode.kerberos.principal: 'hdfs/_HOST@WIKIMEDIA'
       dfs.journalnode.kerberos.internal.spnego.principal: 'HTTP/_HOST@WIKIMEDIA'
+      dfs.web.authentication.kerberos.keytab: '/etc/security/keytabs/hadoop/http.keytab'
       dfs.datanode.keytab.file: '/etc/security/keytabs/hadoop/hdfs.keytab'
       dfs.datanode.kerberos.principal: 'hdfs/_HOST@WIKIMEDIA'
       dfs.encrypt.data.transfer: 'true'

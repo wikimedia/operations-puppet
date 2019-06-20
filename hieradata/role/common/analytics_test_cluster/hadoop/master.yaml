@@ -57,6 +57,11 @@ profile::kerberos::keytabs::keytabs_metadata:
     group: 'mapred'
     filename: 'mapred.keytab'
     parent_dir_grp: 'hadoop'
+  - role: 'hadoop'
+    owner: 'hdfs'
+    group: 'hdfs'
+    filename: 'http.keytab'
+    parent_dir_grp: 'hadoop'
 
 diamond::remove: true
 
