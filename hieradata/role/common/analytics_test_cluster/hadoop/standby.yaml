@@ -61,7 +61,7 @@ profile::kerberos::keytabs::keytabs_metadata:
   - role: 'hadoop'
     owner: 'hdfs'
     group: 'hdfs'
-    filename: 'http.keytab'
+    filename: 'HTTP.keytab'
     parent_dir_grp: 'hadoop'
 
 diamond::remove: true
