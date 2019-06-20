@@ -180,6 +180,11 @@
   - es1017:9104
 - labels:
     shard: test-s4
+    role: slave
+  targets:
+  - db1077:9104
+- labels:
+    shard: test-s4
     role: master
   targets:
   - db1111:9104

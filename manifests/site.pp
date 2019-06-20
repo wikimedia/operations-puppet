@@ -420,7 +420,7 @@ node 'db1075.eqiad.wmnet' {
     role(mariadb::core)
 }
 
-node /^db1(077|078|112|123)\.eqiad\.wmnet/ {
+node /^db1(078|112|123)\.eqiad\.wmnet/ {
     role(mariadb::core)
 }
 
@@ -446,7 +446,7 @@ node /^db1(068|084|091|121|135|138)\.eqiad\.wmnet/ {
 }
 
 # s4-test hosts on eqiad
-node /^db1(111)\.eqiad\.wmnet/ {
+node /^db1(077|111)\.eqiad\.wmnet/ {
     role(mariadb::core_test)
 }
 
