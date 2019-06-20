@@ -48,11 +48,11 @@
             },
             "ttl":  {
                 "contentType": "text/turtle",
-                "prefix": "all-BETA"
+                "prefix": "all"
             },
             "nt":  {
                 "contentType": "application/n-triples",
-                "prefix": "truthy-BETA"
+                "prefix": "truthy"
             }
         },
         "compression": {

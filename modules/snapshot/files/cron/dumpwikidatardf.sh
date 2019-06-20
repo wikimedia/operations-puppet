@@ -63,7 +63,7 @@ if [ -n "$extraFormat" ]; then
 	fi
 fi
 
-filename=wikidata-$today-$dumpName-BETA
+filename=wikidata-$today-$dumpName
 failureFile=/tmp/dumpwikidata$dumpFormat-$dumpName-failure
 mainLogFile=/var/log/wikidatadump/dumpwikidata$dumpFormat-$filename-main.log
 
