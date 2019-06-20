@@ -35,7 +35,7 @@ def main():
 
     load('OSPF-MIB')
     load('OSPFV3-MIB')
-    snimpyManager = Manager(options.host, options.community, 2, cache=True)
+    snimpyManager = Manager(options.host, options.community, 2, timeout=30, cache=True)
 
     return_code = ICINGA_OK
     output_messages = []
