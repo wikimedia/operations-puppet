@@ -13,6 +13,8 @@ class role::mediawiki::jobrunner {
     include ::profile::mediawiki::jobrunner
     include ::profile::mediawiki::videoscaler
     include ::profile::mediawiki::php::monitoring
+    include ::profile::prometheus::php_fpm_exporter
+
 
     # TODO: change role used in beta
     if hiera('has_lvs', true) {
