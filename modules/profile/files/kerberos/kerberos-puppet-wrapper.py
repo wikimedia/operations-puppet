@@ -5,7 +5,9 @@ import socket
 import subprocess
 
 keytabs = {
-    'hdfs': '/etc/security/keytabs/hadoop/hdfs.keytab'
+    'hdfs': '/etc/security/keytabs/hadoop/hdfs.keytab',
+    'oozie': '/etc/security/keytabs/oozie/oozie.keytab',
+    'analytics': '/etc/security/keytabs/analytics/analytics.keytab'
 }
 
 realm_name = ""
