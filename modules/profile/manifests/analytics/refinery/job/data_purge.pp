@@ -19,6 +19,7 @@ class profile::analytics::refinery::job::data_purge (
     $public_druid_snapshots_log_file = "${profile::analytics::refinery::log_dir}/drop-druid-public-snapshots.log"
     $mediawiki_xmldumps_log_file     = "${profile::analytics::refinery::log_dir}/drop-mediawiki-xmldumps.log"
     $el_unsanitized_log_file         = "${profile::analytics::refinery::log_dir}/drop-el-unsanitized-events.log"
+    $data_quality_hourly_log_file    = "${profile::analytics::refinery::log_dir}/drop-data-quality-hourly.log"
 
     # Shortcut to refinery path
     $refinery_path = $profile::analytics::refinery::path
@@ -289,5 +290,15 @@ class profile::analytics::refinery::job::data_purge (
         interval                  => '*-*-* 03:30:00',
         user                      => 'hdfs',
         use_kerberos              => $use_kerberos,
+    }
+
+    # Drop old records in data quality hourly table. Runs once a day.
+    kerberos::systemd_timer { 'drop-data-quality-hourly':
+        description  => 'Drop old records in data quality hourly table.',
+        command      => "${refinery_path}/bin/refinery-drop-older-than --database='wmf' --tables='data_quality_hourly' --base-path='/wmf/data/wmf/data_quality/hourly' --path-format='.+/.+/year=(?P<year>[0-9]+)(/month=(?P<month>[0-9]+)(/day=(?P<day>[0-9]+)(/hour=(?P<hour>[0-9]+))?)?)?' --older-than='90' --skip-trash --execute='e96222d1885ff1b86d61a455b151c094' --log-file='${data_quality_hourly_log_file}'",
+        interval     => '*-*-* 00:00:00',
+        environment  => $systemd_env,
+        user         => 'analytics',
+        use_kerberos => $use_kerberos,
     }
 }
