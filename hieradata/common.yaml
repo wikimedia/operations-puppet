@@ -682,6 +682,9 @@ hadoop_clusters:
       dfs.datanode.kerberos.principal: 'hdfs/_HOST@WIKIMEDIA'
       dfs.encrypt.data.transfer: 'true'
       dfs.data.transfer.protection: 'privacy'
+      # This is required to allow the datanode to start:
+      # https://hadoop.apache.org/docs/r2.6.0/hadoop-project-dist/hadoop-common/SecureMode.html#Secure_DataNode
+      dfs.http.policy: 'HTTPS_ONLY'
       dfs.encrypt.data.transfer.cipher.suites: 'AES/CTR/NoPadding'
       dfs.encrypt.data.transfer.cipher.key.bitlength: '128'
 
