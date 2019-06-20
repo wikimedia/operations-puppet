@@ -90,6 +90,11 @@ class profile::wmcs::nfs::secondary(
         srange => "(@resolve((${secondary_servers_ferm})) @resolve((${secondary_servers_ferm}), AAAA))",
     }
 
+    sudo::user { 'nagios_check_nfs_status':
+        user       => 'nagios',
+        privileges => ['ALL = NOPASSWD: /usr/local/sbin/check_nfs_status'],
+    }
+
     nrpe::monitor_service { 'check_nfs_status':
         critical      => true,
         description   => 'NFS served over cluster IP',
