@@ -84,3 +84,9 @@ thumborhost = <%= @thumborhost %>
 inactivedc_thumborhost = <%= @inactivedc_thumborhost %>
 
 paste.filter_factory = wmf.rewrite:filter_factory
+
+# thumbnail expiry
+thumbnail_update_expiry_headers = true
+thumbnail_expiry = 2592000 # 30 days
+thumbnail_user = 'user_thumbor'
+thumbnail_key = <%= @credentials['thumbor'] %>
