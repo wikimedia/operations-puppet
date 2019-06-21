@@ -27,7 +27,7 @@ class profile::toolforge::k8s::etcd(
     $puppet_cert_priv = "/var/lib/puppet/ssl/private_keys/${::fqdn}.pem"
     $puppet_cert_ca   = '/var/lib/puppet/ssl/certs/ca.pem'
 
-    file { '/etc/etcd/ssl/':
+    file { ['/etc/etcd/', '/etc/etcd/ssl/']:
         ensure => directory,
     }
 
