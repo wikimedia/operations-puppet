@@ -2,6 +2,7 @@
 # TODO: add concurrency protection with poolcounter.
 import argparse
 import logging
+import shlex
 import socket
 import subprocess
 import re
@@ -66,11 +67,13 @@ class ServiceRestarter(ToolCliBase):
     def _restart_services(self):
         for svc in self.services:
             cmd = ['systemctl', 'restart', svc + '.service']
+            cmd_str = ' '.join(map(shlex.quote, cmd))
             try:
                 subprocess.check_call(cmd)
+                logger.debug('Execution of command %s successful', cmd_str)
                 return 0
             except subprocess.CalledProcessError as e:
-                logger.error('Executing command %s failed: %s', ' '.join(cmd), e)
+                logger.error('Executing command %s failed: %s', cmd_str, e)
                 return e.returncode
 
     def _get_objects(self):
@@ -86,7 +89,7 @@ class ServiceRestarter(ToolCliBase):
             # First let's depool in etcd
             for obj in pooled:
                 obj.update({'pooled': 'no'})
-            # now let's wait for the service to be depooled in pybal
+            # now let's wait for the services to be depooled in pybal
             self._verify_status(False)
             return True
         except (BackendError, PoolStatusError) as e:
@@ -123,6 +126,7 @@ class ServiceRestarter(ToolCliBase):
         }
         for _ in range(0, self.retries):
             try:
+                logger.debug('Fetching url %s', url)
                 r = requests.get(url, headers=headers, timeout=self.timeout)
                 r.raise_for_status()
             except requests.exceptions.HTTPError:
@@ -130,9 +134,13 @@ class ServiceRestarter(ToolCliBase):
                 # This will account for servers that are inactive (which will
                 # return 404) and for backing off if pybal is unable to respond
                 # (5xx errors)
+                logger.debug('Invalid response (status code %s) for % - aborting',
+                             r.status_code, url)
                 return
             except requests.exceptions.Timeout:
+                # In this case, we don't want to stampede pybal, we bail out
                 logger.warning("Timed out checking %s", url)
+                return
             except requests.exceptions.RequestException as e:
                 logger.warning(
                     'Issues connecting to %s: %s',
@@ -142,12 +150,20 @@ class ServiceRestarter(ToolCliBase):
                 # For such errors, we just retry again
                 continue
 
-            # Malformed response. We bail out as well
+            # Now let's parse the response
             try:
                 status = PoolStatus(**r.json())
             except Exception:
+                # Malformed response. We bail out as well
                 return
+
             if status.has_state(want_pooled):
+                logger.debug(
+                    'OK - LB %s reports pool %s as %s',
+                    parsed.netloc,
+                    parsed.path.replace('/pools/', ''),
+                    status
+                )
                 return
             else:
                 logger.warning(
