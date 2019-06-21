@@ -85,6 +85,9 @@ class snapshot::dumps::configs(
                     arwiki => {
                         pagesPerChunkHistory  => '186249,444457,797927,988530,1342181,970511',
                     },
+                    svwiki => {
+                        pagesPerChunkHistory  => '149665,488964,999678,1911420,2515721,2250556',
+                    },
                 },
             },
             en => {

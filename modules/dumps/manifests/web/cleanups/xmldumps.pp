@@ -17,7 +17,7 @@ class dumps::web::cleanups::xmldumps(
     # each type of wiki we keep.
     $bigwikis = ['dewiki', 'eswiki', 'frwiki', 'itwiki', 'jawiki',
                   'metawiki', 'nlwiki', 'plwiki', 'ptwiki', 'ruwiki',
-                  'commonswiki', 'zhwiki']
+                  'commonswiki', 'svwiki', 'zhwiki']
     $bigwikis_dblist = join($bigwikis, "\n")
 
     $hugewikis = ['enwiki', 'wikidatawiki']

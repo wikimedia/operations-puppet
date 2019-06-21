@@ -7,7 +7,7 @@ class snapshot::dumps::dblists {
 
     $bigwikis = ['arwiki', 'dewiki', 'commonswiki', 'frwiki', 'eswiki', 'hewiki',
                 'huwiki', 'itwiki', 'jawiki', 'metawiki', 'nlwiki', 'plwiki',
-                'ptwiki', 'ruwiki', 'zhwiki']
+                'ptwiki', 'ruwiki', 'svwiki', 'zhwiki']
     $bigwikis_dblist = join($bigwikis, "\n")
 
     # for testing in deployment-prep
