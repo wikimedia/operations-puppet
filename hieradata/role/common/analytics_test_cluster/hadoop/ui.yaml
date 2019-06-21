@@ -13,6 +13,7 @@ profile::hue::monitoring_enabled: true
 profile::hue::kerberos_keytab: '/etc/security/keytabs/hue/hue.keytab'
 profile::hue::kerberos_principal: 'hue/_HOST@WIKIMEDIA'
 profile::hue::kerberos_kinit_path: '/usr/bin/kinit'
+profile::hue::oozie_security_enabled: true
 
 profile::oozie::client::oozie_host: 'analytics1030.eqiad.wmnet'
 

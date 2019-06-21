@@ -19,6 +19,7 @@ class profile::hue (
     $use_yarn_ssl_config        = hiera('profile::hue::use_yarn_ssl_config', false),
     $use_hdfs_ssl_config        = hiera('profile::hue::use_hdfs_ssl_config', false),
     $use_mapred_ssl_config      = hiera('profile::hue::use_mapred_ssl_config', false),
+    $oozie_security_enabled     = hiera('profile::hue::oozie_security_enabled', false),
 ){
 
     # Require that all Hue applications
@@ -68,6 +69,7 @@ class profile::hue (
         ssl_private_key            => false,
         ssl_certificate            => false,
         secure_proxy_ssl_header    => true,
+        oozie_security_enabled     => $oozie_security_enabled,
         kerberos_keytab            => $kerberos_keytab,
         kerbersos_principal        => $kerbersos_principal,
         kerberos_kinit_path        => $kerberos_kinit_path,
