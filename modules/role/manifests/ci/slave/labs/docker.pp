@@ -24,7 +24,6 @@ class role::ci::slave::labs::docker(
     include profile::ci::gitcache
     include profile::ci::worker_localhost
     include profile::phabricator::arcanist
-    include profile::zuul::cloner
 
     # If specified, give Docker its own volume mounted at /var/lib/docker
     if $docker_lvm_volume {
