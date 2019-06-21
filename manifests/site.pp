@@ -857,10 +857,16 @@ node 'dbprov2002.codfw.wmnet' {
     role(mariadb::backups)
 }
 
-# Proxies for misc databases
+# Active eqiad proxies for misc databases
 node /^dbproxy10(01|02|03|04|05|06|07|08|09)\.eqiad\.wmnet$/ {
     role(mariadb::proxy::master)
 }
+
+# Passive codfw proxies for misc databases
+node /^dbproxy20(01)\.codfw\.wmnet$/ {
+    role(mariadb::proxy::master)
+}
+
 
 # labsdb proxies (controling replica service dbs)
 # analytics proxy
@@ -878,7 +884,7 @@ node /^dbproxy10(12|13|14|15|16|17|18|19|20|21)\.eqiad\.wmnet$/ {
 }
 
 # new dbproxy hosts to be productionized T223492
-node /^dbproxy200[1-4]\.codfw\.wmnet$/ {
+node /^dbproxy200[2-4]\.codfw\.wmnet$/ {
     role(spare::system)
 }
 
