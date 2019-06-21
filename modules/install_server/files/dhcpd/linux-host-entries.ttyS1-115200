@@ -2807,6 +2807,56 @@ host ganeti2008 {
     fixed-address ganeti2008.codfw.wmnet;
 }
 
+host ganeti2009 {
+    hardware ethernet 4C:D9:8F:6D:AD:20;
+    fixed-address ganeti2009.codfw.wmnet;
+}
+
+host ganeti2010 {
+    hardware ethernet 4C:D9:8F:6D:A0:85;
+    fixed-address ganeti2010.codfw.wmnet;
+}
+
+host ganeti2011 {
+    hardware ethernet 4C:D9:8F:6D:B6:B5;
+    fixed-address ganeti2011.codfw.wmnet;
+}
+
+host ganeti2012 {
+    hardware ethernet 4C:D9:8F:6D:A7:76;
+    fixed-address ganeti2012.codfw.wmnet;
+}
+
+host ganeti2013 {
+    hardware ethernet 4C:D9:8F:6D:A8:86;
+    fixed-address ganeti2013.codfw.wmnet;
+}
+
+host ganeti2014 {
+    hardware ethernet 4C:D9:8F:6D:AE:22;
+    fixed-address ganeti2014.codfw.wmnet;
+}
+
+host ganeti2015 {
+    hardware ethernet 4C:D9:8F:6D:A9:78;
+    fixed-address ganeti2015.codfw.wmnet;
+}
+
+host ganeti2016 {
+    hardware ethernet 4C:D9:8F:6D:B7:15;
+    fixed-address ganeti2016.codfw.wmnet;
+}
+
+host ganeti2017 {
+    hardware ethernet 4C:D9:8F:6D:B0:5D;
+    fixed-address ganeti2017.codfw.wmnet;
+}
+
+host ganeti2018 {
+    hardware ethernet 4C:D9:8F:6D:A9:70;
+    fixed-address ganeti2018.codfw.wmnet;
+}
+
 host gerrit2001 {
     hardware ethernet 14:18:77:5B:0D:7E;
     fixed-address gerrit2001.wikimedia.org;
