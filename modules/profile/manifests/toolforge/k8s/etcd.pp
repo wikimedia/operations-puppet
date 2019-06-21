@@ -38,14 +38,14 @@ class profile::toolforge::k8s::etcd(
 
     $checker_hosts_string = join(($checker_hosts), ' ')
     $k8s_hosts_string     = join(($k8s_hosts), ' ')
-    $firewall_clients     = "@resolve((${checker_hosts_string} ${k8s_hosts_string}))"
+    $peer_hosts_string    = join(($peer_hosts), ' ')
+    $firewall_clients     = "@resolve((${checker_hosts_string} ${k8s_hosts_string} ${peer_hosts_string}))"
     ferm::service { 'etcd_clients':
         proto  => 'tcp',
         port   => 2379,
         srange => $firewall_clients,
     }
 
-    $peer_hosts_string = join(($peer_hosts), ' ')
     $firewall_peers    = "@resolve((${peer_hosts_string}))"
     ferm::service { 'etcd_peers':
         proto  => 'tcp',
