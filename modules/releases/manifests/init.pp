@@ -81,7 +81,7 @@ class releases (
     }
 
     git::clone { 'operations/deployment-charts':
-        ensure    => 'latest',
+        ensure    => 'present',
         directory => '/srv/deployment-charts',
     }
 
