@@ -705,7 +705,7 @@ hadoop_clusters:
 
     yarn_nodemanager_container_executor_config:
       yarn.nodemanager.linux-container-executor.group: 'yarn'
-      min.user.id: '1000'
+      min.user.id: '100'
       allowed.system.users: 'nobody,hive'
       banned.users: 'root,hdfs,yarn,mapred,bin'
 
