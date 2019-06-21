@@ -85,7 +85,6 @@ class profile::analytics::refinery::job::refine {
         'mediawiki_api_request',
         'mediawiki_cirrussearch_request',
         'mediawiki_user_blocks_change',
-        'mediawiki_page_links_change',
         'mediawiki_page_restrictions_change',
         'mediawiki_revision_tags_change',
     ]
