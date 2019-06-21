@@ -72,13 +72,6 @@ sub cluster_fe_recv {
 				return (synth(400, "Bad Request"));
 			}
 
-			if (req.url ~ "(?i)/224px\-") {
-				if (req.http.user-agent ~ "wget2/1.0.0") {
-					// Temp blockade for abusive user
-					return (synth(403, "Please contact noc@wikimedia.org about mass thumbnail requests"));
-				}
-			}
-
 			// Normalize end of thumbnail URL (redundant filename)
 			// Lowercase last part of the URL, to avoid case variations on extension or thumbnail parameters
 			// eg. /wikipedia/commons/thumb/0/06/Foo.jpg/120px-FOO.JPG => /wikipedia/commons/thumb/0/06/Foo.jpg/120px-foo.jpg
