@@ -37,7 +37,7 @@ if [[ $SUDO_USER ]]; then
 fi
 
 labsproject=$(</etc/wmflabs-project)
-if [[ $labsproject == "tools"]] && ! [[ $USER == "${labsproject}."* ]]; then
+if [[ $labsproject == "tools" ]] && ! [[ $USER == "${labsproject}."* ]]; then
     printf >&2 '%s: user name does not start with "%s": %s\n' "$0" "$labsproject" "$group"
     usage
     exit 1
