@@ -2283,7 +2283,7 @@ users:
       - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQD2q9U+VYKkFz/WjwG0B+dF01CE4l8NZgBDXGU4AYXqxFk7Vuz2lWTEOeij4r8UgmSsdqq65yOfZYUtjYRm8iHdoIUufWar2XORcBCWqNMeRnId/XX9kMNefzhfl2z7j7UtiAVPsIJZQ0nSFwYY6AxrJdmpBOvinwz8X47FL955/ig4gZvvvV1qzBJ4pvx54U3/e7fwcMGpYrxCUoWuAgIYsc2OS9rW5meBln2bVlJjWRRcid5u9ZM9Za6Jqy/2OIrwhG2AzjpO+5RerflbiVAb6pP7cjU4t+4Cg8fzPTfXuwZ6sjEq6sWJkaz9BaQKC8LDC+nTugokNRlhNj/XxAe3 jasmeetsamra@Jasmeets-MacBook.local
     uid: 15103
     email: jksamra2014@gmail.com
-    expiry_date: 2019-06-30
+    expiry_date: 2020-01-30
     expiry_contact: jrobell@wikimedia.org
   hjiang:
     ensure: absent
