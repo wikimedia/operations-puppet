@@ -1113,7 +1113,7 @@ node /^ganeti[12]00[0-9]\.(codfw|eqiad)\.wmnet$/ {
 }
 
 # new ulsfo ganeti hosts T226444
-node /^ganeti400[1-3]\.(codfw|eqiad)\.wmnet$/ {
+node /^ganeti400[1-3]\.ulsfo.wmnet$/ {
     role(spare::system)
 }
 
