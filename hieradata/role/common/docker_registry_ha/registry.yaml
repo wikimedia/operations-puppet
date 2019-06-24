@@ -9,5 +9,11 @@ profile::docker_registry_ha::registry::swift_username: "docker"
 profile::docker_registry_ha::registry::swift_container: "docker_registry"
 profile::docker_registry_ha::registry::certname: "docker-registry.discovery.wmnet"
 diamond::remove: true
+profile::lvs::realserver::use_safe_restart: true
 profile::lvs::realserver::pools:
-  docker-registry: {}
+  docker-registry:
+    services:
+      - docker-registry
+      - nginx
+# Envoy will be added later, see T215810
+#      - envoyproxy
