@@ -2857,6 +2857,21 @@ host ganeti2018 {
     fixed-address ganeti2018.codfw.wmnet;
 }
 
+host ganeti4001 {
+    hardware ethernet B0:26:28:3A:F2:A0;
+    fixed-address ganeti4001.wikimedia.org;
+}
+
+host ganeti4002 {
+    hardware ethernet B0:26:28:3A:EA:00;
+    fixed-address ganeti4002.wikimedia.org;
+}
+
+host ganeti4003 {
+    hardware ethernet B0:26:28:3A:FB:A0;
+    fixed-address ganeti4003.wikimedia.org;
+}
+
 host gerrit2001 {
     hardware ethernet 14:18:77:5B:0D:7E;
     fixed-address gerrit2001.wikimedia.org;

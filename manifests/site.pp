@@ -1112,6 +1112,12 @@ node /^ganeti[12]00[0-9]\.(codfw|eqiad)\.wmnet$/ {
     role(ganeti)
 }
 
+# new ulsfo ganeti hosts T226444
+node /^ganeti400[1-3]\.(codfw|eqiad)\.wmnet$/ {
+    role(spare::system)
+}
+
+
 # Virtual machine being turned up to run Grafana (T210416)
 node 'grafana1001.eqiad.wmnet' {
     role(grafana)
