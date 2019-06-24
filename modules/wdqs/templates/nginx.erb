@@ -18,6 +18,11 @@ server {
         return 403;
     }
 
+    # Temporarily ban a User-Agent sending problematic queries
+    if ($http_user_agent ~ GuzzleHttp/6.2.1) {
+        return 429;
+    }
+
     add_header X-Served-By <%= @hostname %> always;
 
     # etag in nginx are based on mtime, which is not guaranteed to be the same
