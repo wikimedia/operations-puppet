@@ -40,10 +40,11 @@ class profile::toolforge::k8s::master(
     }
 
     # we need a string like:
-    # node1.example.com:2379,node2.example.com:2379
-    $port = '2380'
+    # https://node1.example.com:2379,https://node2.example.com:2379
+    $scheme = 'https://'
+    $port   = '2379'
     $etcd_servers_array = map($etcd_servers) |$element| {
-        $value = "${element}:${port}"
+        $value = "${scheme}${element}:${port}"
     }
     $etcd_servers_string = join($etcd_servers_array, ',')
     class { '::k8s::apiserver':
