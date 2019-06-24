@@ -17,6 +17,7 @@ pipeline = ensure_max_age rewrite healthcheck cache container_sync tempurl ratel
 [app:proxy-server]
 use = egg:swift#proxy
 account_autocreate = true
+conn_timeout = 1.0
 
 [filter:tempurl]
 use = egg:swift#tempurl
