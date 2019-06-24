@@ -1,8 +1,11 @@
 cluster: eventbus
 admin::groups:
   - eventbus-admins
+profile::lvs::realserver::use_safe_restart: true
 profile::lvs::realserver::pools:
-  eventbus: {}
+  eventbus:
+    services:
+      - eventbus
 
 
 profile::kafka::broker::kafka_cluster_name: main
