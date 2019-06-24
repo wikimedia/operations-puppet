@@ -669,7 +669,7 @@ hadoop_clusters:
     yarn_resourcemanager_max_completed_applications: 1000
 
     hdfs_site_extra_properties:
-      dfs.cluster.administrators: 'hdfs,analytics-admins,ops'
+      dfs.cluster.administrators: 'hdfs analytics-admins,ops'
       dfs.block.access.token.enable: 'true'
       dfs.namenode.keytab.file: '/etc/security/keytabs/hadoop/hdfs.keytab'
       dfs.namenode.kerberos.principal: 'hdfs/_HOST@WIKIMEDIA'
