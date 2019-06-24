@@ -1,0 +1,30 @@
+# A disk completely broken caused
+# /var/lib/hadoop/data/l to become read-only,
+# so puppet cannot enforce the directory and fails.
+# If we simply umount /var/lib/hadoop/data/l then
+# puppet creates the new directories and yarn/hdfs
+# start using them, allocating space on the root
+# partition.
+profile::hadoop::common::config_override:
+  datanode_mounts:
+    - /var/lib/hadoop/data/b
+    - /var/lib/hadoop/data/c
+    - /var/lib/hadoop/data/d
+    - /var/lib/hadoop/data/e
+    - /var/lib/hadoop/data/f
+    - /var/lib/hadoop/data/g
+    - /var/lib/hadoop/data/h
+    - /var/lib/hadoop/data/i
+    - /var/lib/hadoop/data/k
+    - /var/lib/hadoop/data/j
+    - /var/lib/hadoop/data/m
+
+  # Increased Heap sizes for Datanode/Nodemanager Hadoop daemons from 2G to 4G
+  # in https://phabricator.wikimedia.org/T178876
+  yarn_heapsize: 4096
+  hadoop_heapsize: 4096
+  # Prometheus JMX Exporter config templates.
+  hadoop_datanode_opts: "-Xms4096m -javaagent:/usr/share/java/prometheus/jmx_prometheus_javaagent.jar=%{::ipaddress}:51010:/etc/prometheus/hdfs_datanode_jmx_exporter.yaml"
+  hadoop_journalnode_opts: "-javaagent:/usr/share/java/prometheus/jmx_prometheus_javaagent.jar=%{::ipaddress}:10485:/etc/prometheus/hdfs_journalnode_jmx_exporter.yaml"
+  yarn_nodemanager_opts: "-Xms4096m -javaagent:/usr/share/java/prometheus/jmx_prometheus_javaagent.jar=%{::ipaddress}:8141:/etc/prometheus/yarn_nodemanager_jmx_exporter.yaml"
+  yarn_nodemanager_os_reserved_memory_mb: 12000
