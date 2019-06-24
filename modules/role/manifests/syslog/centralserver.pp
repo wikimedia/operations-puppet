@@ -24,7 +24,7 @@ class role::syslog::centralserver (
         proto   => 'udp',
         port    => 10514,
         notrack => true,
-        srange  => '($PRODUCTION_NETWORKS $MGMT_NETWORKS)',
+        srange  => '($PRODUCTION_NETWORKS $MGMT_NETWORKS $NETWORK_INFRA)',
     }
 
     ferm::service { 'rsyslog-receiver_tcp':
