@@ -1,0 +1,13 @@
+# Make parquet handler a file handler
+parquet.handlers= java.util.logging.ConsoleHandler
+
+# Default global logging level.
+# Loggers and Handlers may override this level
+.level=INFO
+
+# Override of global logging level is set to SEVERE
+# to prevent logging not needed parquet info
+java.util.logging.ConsoleHandler.level=SEVERE
+
+# Style of output (Simple or XML):
+java.util.logging.ConsoleHandler.formatter=java.util.logging.SimpleFormatter

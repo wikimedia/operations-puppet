@@ -1,0 +1,26 @@
+# If the Java System property 'httpfs.log.dir' is not defined at HttpFSServer start up time
+# Setup sets its value to '${httpfs.home}/logs'
+
+log4j.appender.httpfs=org.apache.log4j.DailyRollingFileAppender
+log4j.appender.httpfs.DatePattern='.'yyyy-MM-dd
+log4j.appender.httpfs.File=${httpfs.log.dir}/httpfs.log
+log4j.appender.httpfs.Append=true
+log4j.appender.httpfs.layout=org.apache.log4j.PatternLayout
+log4j.appender.httpfs.layout.ConversionPattern=%d{ISO8601} %5p %c{1} [%X{hostname}][%X{user}:%X{doAs}] %X{op} %m%n
+# The MaxHistory controls how many log files will be retained (336 hours / 24 hours per day = 14 days); -1 to disable
+log4j.appender.httpfs.RollingPolicy.MaxHistory=336
+
+
+log4j.appender.httpfsaudit=org.apache.log4j.DailyRollingFileAppender
+log4j.appender.httpfsaudit.DatePattern='.'yyyy-MM-dd
+log4j.appender.httpfsaudit.File=${httpfs.log.dir}/httpfs-audit.log
+log4j.appender.httpfsaudit.Append=true
+log4j.appender.httpfsaudit.layout=org.apache.log4j.PatternLayout
+log4j.appender.httpfsaudit.layout.ConversionPattern=%d{ISO8601} %5p [%X{hostname}][%X{user}:%X{doAs}] %X{op} %m%n
+# The MaxHistory controls how many log files will be retained (336 hours / 24 hours per day = 14 days); -1 to disable
+log4j.appender.httpfsaudit.RollingPolicy.MaxHistory=336
+
+log4j.logger.httpfsaudit=INFO, httpfsaudit
+
+log4j.logger.org.apache.hadoop.fs.http.server=INFO, httpfs
+log4j.logger.org.apache.hadoop.lib=INFO, httpfs

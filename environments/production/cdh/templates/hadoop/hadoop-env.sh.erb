@@ -1,0 +1,56 @@
+# Note: This file is managed by Puppet.
+
+<% if @java_home -%>
+export JAVA_HOME=<%= @java_home %>
+<% end -%>
+
+# Use YARN for all hadoop commands
+export HADOOP_MAPRED_HOME=/usr/lib/hadoop-mapreduce
+
+<% if @mapreduce_history_jmxremote_port -%>
+# Enable MapReduce JMX connections on port <%= @mapreduce_history_jmxremote_port %>
+HADOOP_JOB_HISTORYSERVER_OPTS="-Dcom.sun.management.jmxremote.port=<%= @mapreduce_history_jmxremote_port %> -Dcom.sun.management.jmxremote.ssl=false -Dcom.sun.management.jmxremote.authenticate=false"
+<% end -%>
+
+<% if @mapreduce_history_java_opts -%>
+# Any additionally supplied HADOOP_JOB_HISTORYSERVER_OPTS
+HADOOP_JOB_HISTORYSERVER_OPTS="<%= @mapreduce_history_java_opts %> $HADOOP_JOB_HISTORYSERVER_OPTS"
+<% end -%>
+
+<% if @namenode_jmxremote_port -%>
+# Enable NameNode JMX connections on port <%= @namenode_jmxremote_port %>
+HADOOP_NAMENODE_OPTS="-Dcom.sun.management.jmxremote.port=<%= @namenode_jmxremote_port %> -Dcom.sun.management.jmxremote.ssl=false -Dcom.sun.management.jmxremote.authenticate=false"
+<% end -%>
+
+HADOOP_NAMENODE_OPTS="-Dhdfs.audit.logger=INFO,RFAAUDIT -Dhadoop.security.logger=INFO,RFAS $HADOOP_NAMENODE_OPTS"
+HADOOP_SECONDARYNAMENODE_OPTS="-Dhdfs.audit.logger=INFO,RFAAUDIT -Dhadoop.security.logger=INFO,RFAS $HADOOP_SECONDARYNAMENODE_OPTS"
+
+<% if @datanode_jmxremote_port -%>
+# Enable DateNode JMX connections on port <%= @datanode_jmxremote_port %>
+HADOOP_DATANODE_OPTS="-Dcom.sun.management.jmxremote.port=<%= @datanode_jmxremote_port %> -Dcom.sun.management.jmxremote.ssl=false -Dcom.sun.management.jmxremote.authenticate=false"
+<% end -%>
+
+<% if @journalnode_jmxremote_port -%>
+# Enable JournalNode JMX connections on port <%= @journalnode_jmxremote_port %>
+HADOOP_JOURNALNODE_OPTS="-Dcom.sun.management.jmxremote.port=<%= @journalnode_jmxremote_port %> -Dcom.sun.management.jmxremote.ssl=false -Dcom.sun.management.jmxremote.authenticate=false"
+<% end -%>
+
+<% if @hadoop_heapsize -%>
+# Hadoop daemons (NameNode, DataNode) will use this many MB for JVM Heap
+HADOOP_HEAPSIZE=<%= @hadoop_heapsize %>
+<% end -%>
+
+<% if @hadoop_namenode_opts -%>
+# Any additionally supplied HADOOP_NAMENODE_OPTS
+HADOOP_NAMENODE_OPTS="$HADOOP_NAMENODE_OPTS <%= @hadoop_namenode_opts %>"
+<% end -%>
+
+<% if @hadoop_datanode_opts -%>
+# Any additionally supplied HADOOP_DATANODE_OPTS
+HADOOP_DATANODE_OPTS="$HADOOP_DATANODE_OPTS <%= @hadoop_datanode_opts %>"
+<% end -%>
+
+<% if @hadoop_journalnode_opts -%>
+# Any additionally supplied HADOOP_JOURNALNODE_OPTS
+HADOOP_JOURNALNODE_OPTS="$HADOOP_JOURNALNODE_OPTS <%= @hadoop_journalnode_opts %>"
+<% end -%>

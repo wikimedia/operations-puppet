@@ -1,0 +1,39 @@
+hive.log.threshold=INFO
+hive.root.logger=INFO,RFA
+hive.log.dir=/var/log/hive
+hive.log.file=${hive.query.id}.log
+
+# Define the root logger to the system property "hive.root.logger".
+log4j.rootLogger=${hive.root.logger}, EventCounter
+
+# Logging Threshold
+log4j.threshhold=${hive.log.threshold}
+
+#
+# Rolling File Appender - cap space usage at 256MB
+#
+hive.log.maxfilesize=256MB
+hive.log.maxbackupindex=2
+log4j.appender.RFA=org.apache.log4j.RollingFileAppender
+log4j.appender.RFA.File=${hive.log.dir}/${hive.log.file}
+log4j.appender.RFA.MaxFileSize=${hive.log.maxfilesize}
+log4j.appender.RFA.MaxBackupIndex=${hive.log.maxbackupindex}
+log4j.appender.RFA.layout=org.apache.log4j.PatternLayout
+# Pattern format: Date LogLevel LoggerName LogMessage
+log4j.appender.RFA.layout.ConversionPattern=%d{ISO8601} %p %c: %m%n
+
+#
+# Event Counter Appender
+# Sends counts of logging messages at different severity levels to Hadoop Metrics.
+#
+log4j.appender.EventCounter=org.apache.hadoop.metrics.jvm.EventCounter
+
+log4j.category.DataNucleus=ERROR,RFA
+log4j.category.Datastore=ERROR,RFA
+log4j.category.Datastore.Schema=ERROR,RFA
+log4j.category.JPOX.Datastore=ERROR,RFA
+log4j.category.JPOX.Plugin=ERROR,RFA
+log4j.category.JPOX.MetaData=ERROR,RFA
+log4j.category.JPOX.Query=ERROR,RFA
+log4j.category.JPOX.General=ERROR,RFA
+log4j.category.JPOX.Enhancer=ERROR,RFA

@@ -1,0 +1,185 @@
+<%
+# Convert a namenode hostname to a NameNode ID.
+# We can't use '.' characters because NameNode IDs.
+# will be used in the names of some Java properties,
+# which are '.' delimited.
+def namenode_host_to_id(host)
+  host.tr('.', '-')
+end
+
+-%>
+<?xml version="1.0"?>
+<!-- NOTE:  This file is managed by Puppet. -->
+
+<?xml-stylesheet type="text/xsl" href="configuration.xsl"?>
+
+<!-- Put site-specific property overrides in this file. -->
+
+<configuration>
+  <property>
+   <name>dfs.permissions.superusergroup</name>
+   <value>hadoop</value>
+  </property>
+
+<% if @dfs_datanode_failed_volumes_tolerated -%>
+  <property>
+    <name>dfs.datanode.failed.volumes.tolerated</name>
+    <value><%= @dfs_datanode_failed_volumes_tolerated %></value>
+  </property>
+<% end -%>
+
+<% if @ha_enabled and @zookeeper_hosts %>
+  <property>
+    <name>dfs.ha.automatic-failover.enabled</name>
+    <value>true</value>
+  </property>
+<% end -%>
+
+<% if @ha_enabled -%>
+  <property>
+    <name>dfs.nameservices</name>
+    <value><%= @nameservice_id %></value>
+  </property>
+
+  <property>
+    <name>dfs.ha.namenodes.<%= @nameservice_id %></name>
+    <value><%= @namenode_hosts.sort.collect { |host| namenode_host_to_id(host) }.join(',') %></value>
+  </property>
+
+<% @namenode_hosts.sort.each do |host| -%>
+  <property>
+    <name>dfs.namenode.rpc-address.<%= @nameservice_id %>.<%= namenode_host_to_id(host) %></name>
+    <value><%= host %>:8020</value>
+  </property>
+<% end # @namenode_hosts.each -%>
+
+<% @namenode_hosts.sort.each do |host| -%>
+  <property>
+    <name>dfs.namenode.http-address.<%= @nameservice_id %>.<%= namenode_host_to_id(host) %></name>
+    <value><%= host %>:50070</value>
+  </property>
+<% end # @namenode_hosts.each -%>
+
+  <property>
+    <name>dfs.namenode.shared.edits.dir</name>
+    <value>qjournal://<%= @journalnode_hosts.sort.join(':8485;') %>:8485/<%= @nameservice_id %></value>
+  </property>
+
+  <property>
+    <name>dfs.journalnode.edits.dir</name>
+    <value><%= @dfs_journalnode_edits_dir %></value>
+  </property>
+
+  <property>
+    <name>dfs.client.failover.proxy.provider.<%= @nameservice_id %></name>
+    <value>org.apache.hadoop.hdfs.server.namenode.ha.ConfiguredFailoverProxyProvider</value>
+  </property>
+
+  <!-- Quorum-based JournalNode HA does not require fencing. -->
+  <property>
+    <name>dfs.ha.fencing.methods</name>
+    <value>shell(/bin/true)</value>
+  </property>
+
+<% end # if @ha_enabled -%>
+  <property>
+   <name>dfs.namenode.name.dir</name>
+   <value>file://<%= (@dfs_name_dir.class == Array) ? @dfs_name_dir.join(',file://') : @dfs_name_dir %></value>
+  </property>
+
+<% if @datanode_mounts -%>
+  <property>
+   <name>dfs.datanode.data.dir</name>
+   <value>file://<%= @datanode_mounts.sort.collect { |mount| mount + "/" + @dfs_data_path }.join(',file://') %></value>
+  </property>
+<% end -%>
+
+<% if @dfs_namenode_handler_count -%>
+  <property>
+   <name>dfs.namenode.handler.count</name>
+   <value><%= @dfs_namenode_handler_count %></value>
+  </property>
+<% end -%>
+
+  <property>
+   <!--
+    Deprecated in CDH5. Replaced by dfs.blocksize.
+    We keep it around for a bit nonetheless, in case some application
+    still try to access it directly.
+   -->
+   <name>dfs.block.size</name>
+   <value><%= @dfs_block_size %></value>
+  </property>
+
+  <property>
+   <!-- Replaces dfs.block.size in CDH5 -->
+   <name>dfs.blocksize</name>
+   <value><%= @dfs_block_size %></value>
+  </property>
+
+<% if @dfs_datanode_hdfs_blocks_metadata_enabled -%>
+  <property>
+    <name>dfs.datanode.hdfs-blocks-metadata.enabled</name>
+    <value><%= @dfs_datanode_hdfs_blocks_metadata_enabled %></value>
+  </property>
+<% end -%>
+
+  <!--
+  Enable space choosing policy when choosing from data directories on which
+  to allocate new blocks.  This will help keep disks space usage balanced.
+  -->
+  <property>
+    <name>dfs.datanode.fsdataset.volume.choosing.policy</name>
+    <value>org.apache.hadoop.hdfs.server.datanode.fsdataset.AvailableSpaceVolumeChoosingPolicy</value>
+  </property>
+
+  <property>
+    <name>dfs.webhdfs.enabled</name>
+    <value><%= @webhdfs_enabled %></value>
+  </property>
+
+  <property>
+    <name>dfs.hosts.exclude</name>
+    <value><%= @config_directory %>/hosts.exclude</value>
+    <description>
+      A file that contains a list of DataNodes to exclude.
+      This is useful for decommissioning nodes.
+    </description>
+  </property>
+
+  <!--
+  From https://community.hortonworks.com/articles/43838/scaling-the-hdfs-namenode-part-1.html
+  it seems that dfs.namenode.audit.log.async is required to avoid locking RPC worker
+  threads on the Namenode more than necessary (to wait for the log file to be written).
+  The corresponding jira is https://issues.apache.org/jira/browse/HDFS-7964,
+  that seems to deliver the feature only for 2.8+, but CDH 5.9 seems to have included it:
+  https://www.cloudera.com/documentation/enterprise/release-notes/topics/cdh_rn_fixed_in_59.html
+  -->
+  <property>
+    <name>dfs.namenode.audit.log.async</name>
+    <value>true</value>
+  </property>
+
+<% if @hdfs_site_impala_extra_properties
+# Impala requires that a special hdfs-site.xml file is rendered at
+# /etc/impala/conf/hdfs-site.xml.  This property allows the
+# cdh::impala::config class to inherit from cdh::hadoop and
+# render a similar hdfs-site.xml, but with these additional values.
+-%>
+<% @hdfs_site_impala_extra_properties.sort.map do |key, value| -%>
+  <property>
+    <name><%= key %></name>
+    <value><%= value %></value>
+  </property>
+<% end -%>
+<% end -%>
+
+<% if @hdfs_site_extra_properties -%>
+<% @hdfs_site_extra_properties.sort.map do |key, value| -%>
+  <property>
+      <name><%= key %></name>
+      <value><%= value %></value>
+  </property>
+<% end -%>
+<% end -%>
+</configuration>

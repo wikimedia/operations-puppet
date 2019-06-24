@@ -1,0 +1,370 @@
+<?xml version="1.0"?>
+<!-- NOTE:  This file is managed by Puppet. -->
+
+<?xml-stylesheet type="text/xsl" href="configuration.xsl"?>
+
+<configuration>
+
+  <!-- Hive Configuration can either be stored in this file or in the hadoop configuration files  -->
+  <!-- that are implied by Hadoop setup variables.                                                -->
+  <!-- Aside from Hadoop setup variables - this file is provided as a convenience so that Hive    -->
+  <!-- users do not have to edit hadoop configuration files (that may be managed as a centralized -->
+  <!-- resource).                                                                                 -->
+
+  <!-- Hive metastore configuration -->
+  <property>
+    <name>hive.metastore.uris</name>
+    <value>thrift://<%= @metastore_host %>:9083</value>
+    <description>Fully-qualified domain name and port of the metastore host</description>
+  </property>
+<%
+
+# if this node is the metastore_host, then render out
+# metastore backend database connection credentials
+# TODO: Possibly use hive-default.xml + hive-site.xml to only
+# render hive-site.xml with these credentials on metastore_host.
+if (@metastore_host == @fqdn)
+-%>
+
+  <property>
+    <name>javax.jdo.option.ConnectionURL</name>
+    <value><%= "jdbc:#{@jdbc_protocol}://#{@jdbc_host}:#{@jdbc_port}/#{@jdbc_database}" %></value>
+    <description>JDBC connect string for a JDBC metastore</description>
+  </property>
+
+  <property>
+    <name>javax.jdo.option.ConnectionDriverName</name>
+    <value><%= @jdbc_driver %></value>
+    <description>Driver class name for a JDBC metastore</description>
+  </property>
+
+<% if @jdbc_username -%>
+  <property>
+    <name>javax.jdo.option.ConnectionUserName</name>
+    <value><%= @jdbc_username %></value>
+  </property>
+<% end -%>
+
+<% if @jdbc_password and @jdbc_password.empty? == false -%>
+  <property>
+    <name>javax.jdo.option.ConnectionPassword</name>
+    <value><%= @jdbc_password %></value>
+  </property>
+<% end -%>
+
+  <property>
+    <name>datanucleus.autoCreateSchema</name>
+    <value>false</value>
+  </property>
+
+  <property>
+    <name>datanucleus.fixedDatastore</name>
+    <value>true</value>
+  </property>
+
+  <property>
+    <name>datanucleus.autoStartMechanism</name>
+    <value>SchemaTable</value>
+  </property>
+
+<% if @hive_metastore_kerberos_keytab_file -%>
+  <property>
+    <name>hive.metastore.kerberos.keytab.file</name>
+    <value><%= @hive_metastore_kerberos_keytab_file %></value>
+  </property>
+<% end -%>
+
+<% if @hive_metastore_kerberos_principal -%>
+  <property>
+    <name>hive.metastore.kerberos.principal</name>
+    <value><%= @hive_metastore_kerberos_principal %></value>
+  </property>
+<% end -%>
+
+<% if @hive_metastore_sasl_enabled -%>
+  <property>
+    <name>hive.metastore.sasl.enabled</name>
+    <value><%= @hive_metastore_sasl_enabled %></value>
+  </property>
+<% end -%>
+<% end -%>
+
+  <property>
+    <name>hive.support.concurrency</name>
+    <description>Enable Hive's Table Lock Manager Service</description>
+    <value><%= @support_concurrency %></value>
+  </property>
+
+<% if @zookeeper_hosts and !@zookeeper_hosts.empty? -%>
+  <!-- Hive can use Zookeeper for table lock management -->
+
+  <property>
+    <name>hive.zookeeper.quorum</name>
+    <description>Zookeeper quorum used by Hive's Table Lock Manager</description>
+    <value><%= @zookeeper_hosts.sort.join(',') %></value>
+  </property>
+<% end -%>
+
+  <property>
+    <name>hive.metastore.execute.setugi</name>
+    <value>true</value>
+    <description>
+      In unsecure mode, setting this property to true will cause the metastore
+      to execute DFS operations using the client's reported user and group permissions.
+    </description>
+  </property>
+
+  <!-- Hive Execution Parameters -->
+  <property>
+    <name>hive.cli.print.current.db</name>
+    <description>Whether to include the current database in the hive prompt.</description>
+    <value>true</value>
+  </property>
+
+  <property>
+    <name>hive.cli.print.header</name>
+    <description>Whether to print the names of the columns in query output.</description>
+    <value>true</value>
+  </property>
+
+
+  <property>
+    <name>hive.mapred.mode</name>
+    <description>
+      The mode in which the hive operations are being performed.
+       In strict mode, some risky queries are not allowed to run. They include:
+       Cartesian Product.
+       No partition being picked up for a query.
+       Comparing bigints and strings.
+       Comparing bigints and doubles.
+       Orderby without limit.
+    </description>
+    <value>strict</value>
+  </property>
+
+  <property>
+    <name>hive.start.cleanup.scratchdir</name>
+    <description>To cleanup the hive scratchdir while starting the hive server.</description>
+    <value>true</value>
+  </property>
+
+  <property>
+    <name>hive.exec.stagingdir</name>
+    <value>/tmp/hive-staging</value>
+    <description>
+      Directory name that will be created inside table locations in order
+      to support HDFS encryption.This is the replacement of ${hive.exec.scratchdir}
+      for all Hive statements that deals with HDFS encryption zones. ${hive.exec.scratchdir}
+      is still used for other temporary, such as job plans.
+      NOTE:  This is being set explicitly as a work around for
+      https://issues.cloudera.org/browse/DISTRO-681?page=com.atlassian.jira.plugin.system.issuetabpanels:all-tabpanel
+      See also: http://community.cloudera.com/t5/Batch-SQL-Apache-Hive/CDH-5-3-Hive-staging-directory-has-wrong-default-value/td-p/23585
+    </description>
+  </property>
+
+
+  <property>
+    <name>hive.error.on.empty.partition</name>
+    <description>Whether to throw an exception if dynamic partition insert generates empty results.</description>
+    <value>true</value>
+  </property>
+
+  <property>
+    <name>hive.exec.parallel</name>
+    <description>Whether to execute jobs in parallel</description>
+    <value><%= @exec_parallel_thread_number.to_i > 0 ? 'true' : 'false' %></value>
+  </property>
+
+  <property>
+    <name>hive.exec.parallel.thread.number</name>
+    <description>How many jobs at most can be executed in parallel</description>
+    <value><%= @exec_parallel_thread_number %></value>
+  </property>
+
+<% if @optimize_skewjoin -%>
+  <property>
+    <name>hive.optimize.skewjoin</name>
+    <value><%= @optimize_skewjoin %></value>
+    <description>
+      Whether to enable skew join optimization.
+      The algorithm is as follows: At runtime, detect the keys with a large skew. Instead of
+      processing those keys, store them temporarily in a hdfs directory. In a follow-up map-reduce
+      job, process those skewed keys. The same key need not be skewed for all the tables, and so,
+      the follow-up map-reduce job (for the skewed keys) would be much faster, since it would be a
+      map-join.
+    </description>
+  </property>
+
+  <property>
+    <name>hive.skewjoin.key</name>
+    <value><%= @skewjoin_key %></value>
+    <description>
+      Determine if we get a skew key in join. If we see more
+      than the specified number of rows with the same key in join operator,
+      we think the key as a skew join key.
+    </description>
+  </property>
+
+  <property>
+    <name>hive.skewjoin.mapjoin.map.tasks</name>
+    <value><%= @skewjoin_mapjoin_map_tasks %></value>
+    <description>
+      Determine the number of map task used in the follow up map join job
+      for a skew join. It should be used together with hive.skewjoin.mapjoin.min.split
+      to perform a fine grained control.
+    </description>
+  </property>
+
+  <property>
+    <name>hive.skewjoin.mapjoin.min.split</name>
+    <value><%= @skewjoin_mapjoin_min_split %></value>
+    <description>
+      Determine the number of map task at most used in the follow up map join job
+      for a skew join by specifying the minimum split size. It should be used together with
+      hive.skewjoin.mapjoin.map.tasks to perform a fine grained control.
+    </description>
+  </property>
+<% end -%>
+
+  <!-- Hive stats configuration -->
+  <property>
+    <name>hive.stats.autogather</name>
+    <value><%= @stats_enabled ? 'true' : 'false' %></value>
+    <description>A flag to gather statistics automatically during the INSERT OVERWRITE command.</description>
+  </property>
+
+<% if @stats_enabled -%>
+  <property>
+    <name>hive.stats.dbclass</name>
+    <value><%= @stats_dbclass %></value>
+    <description>The default database that stores temporary hive statistics.</description>
+  </property>
+
+  <property>
+    <name>hive.stats.jdbcdriver</name>
+    <value><%= @stats_jdbcdriver %></value>
+    <description>The JDBC driver for the database that stores temporary hive statistics.</description>
+  </property>
+
+  <property>
+    <name>hive.stats.dbconnectionstring</name>
+    <value><%= @stats_dbconnectionstring %></value>
+    <description>The default connection string for the database that stores temporary hive statistics.</description>
+  </property>
+
+  <property>
+    <name>hive.stats.default.publisher</name>
+    <value></value>
+    <description>The Java class (implementing the StatsPublisher interface) that is used by default if hive.stats.dbclass is not JDBC or HBase.</description>
+  </property>
+
+  <property>
+    <name>hive.stats.default.aggregator</name>
+    <value></value>
+    <description>The Java class (implementing the StatsAggregator interface) that is used by default if hive.stats.dbclass is not JDBC or HBase.</description>
+  </property>
+
+  <property>
+    <name>hive.stats.jdbc.timeout</name>
+    <value>30</value>
+    <description>Timeout value (number of seconds) used by JDBC connection and statements.</description>
+  </property>
+
+  <property>
+    <name>hive.stats.retries.max</name>
+    <value>0</value>
+    <description>Maximum number of retries when stats publisher/aggregator got an exception updating intermediate database. Default is no tries on failures.</description>
+  </property>
+
+  <property>
+    <name>hive.stats.retries.wait</name>
+    <value>3000</value>
+    <description>The base waiting window (in milliseconds) before the next retry. The actual wait time is calculated by baseWindow * failues + baseWindow * (failure + 1) * (random number between [0.0,1.0]).</description>
+  </property>
+
+  <property>
+    <name>hive.stats.reliable</name>
+    <value>false</value>
+    <description>Whether queries will fail because stats cannot be collected completely accurately.
+      If this is set to true, reading/writing from/into a partition may fail becuase the stats
+      could not be computed accurately.
+    </description>
+  </property>
+
+  <property>
+    <name>hive.stats.collect.tablekeys</name>
+    <value>true</value>
+    <description>Whether join and group by keys on tables are derived and maintained in the QueryPlan.
+      This is useful to identify how tables are accessed and to determine if they should be bucketed.
+    </description>
+  </property>
+
+<% end -%>
+
+<% if @variable_substitute_depth -%>
+<property>
+  <name>hive.variable.substitute.depth</name>
+  <value><%= @variable_substitute_depth %></value>
+  <description>The maximum replacements the substitution engine will do.</description>
+</property>
+<% end -%>
+
+<% if @auxpath -%>
+  <property>
+    <name>hive.aux.jars.path</name>
+    <description>The location of the plugin jars that contain implementations
+       of user defined functions and serdes.
+    </description>
+    <value><%= @auxpath %></value>
+  </property>
+<% end -%>
+
+<% if @parquet_compression -%>
+  <!-- Default parquet output compressions codec to use. -->
+  <!-- See: http://www.cloudera.com/content/cloudera/en/documentation/core/latest/topics/cdh_ig_parquet.html -->
+  <property>
+    <name>parquet.compression</name>
+    <value><%= @parquet_compression %></value>
+    <description>The valid options for compression are: UNCOMPRESSED, GZIP, SNAPPY</description>
+  </property>
+<% end -%>
+
+<% if @hive_server_udf_blacklist -%>
+  <property>
+    <name>hive.server2.builtin.udf.blacklist</name>
+    <value><%= @hive_server_udf_blacklist %></value>
+    <description>A comma separated list of built-in UDFs that are not allowed to be executed. A UDF that is included in the list will return an error if invoked from a query.</description>
+  </property>
+<% end -%>
+
+  <property>
+    <name>hive.resultset.use.unique.column.names</name>
+    <value>false</value>
+    <description> Stop hive from printing the table name when printing column headers </description>
+  </property>
+
+  <!-- https://phabricator.wikimedia.org/T209536 -->
+  <property>
+    <name>hive.auto.convert.join</name>
+    <value>false</value>
+  </property>
+
+<% if @hive_server2_authentication -%>
+  <property>
+    <name>hive.server2.authentication</name>
+    <value><%= @hive_server2_authentication %></value>
+  </property>
+<% end -%>
+<% if @hive_server2_authentication_kerberos_principal -%>
+  <property>
+    <name>hive.server2.authentication.kerberos.principal</name>
+    <value><%= @hive_server2_authentication_kerberos_principal %></value>
+  </property>
+<% end -%>
+<% if @hive_server2_authentication_kerberos_keytab -%>
+  <property>
+    <name>hive.server2.authentication.kerberos.keytab</name>
+    <value><%= @hive_server2_authentication_kerberos_keytab %></value>
+  </property>
+<% end -%>
+</configuration>

@@ -1,0 +1,134 @@
+# Note: This file is managed by Puppet.
+
+# User for YARN daemons
+export HADOOP_YARN_USER=${HADOOP_YARN_USER:-yarn}
+
+# resolve links - $0 may be a softlink
+export YARN_CONF_DIR="${YARN_CONF_DIR:-$HADOOP_YARN_HOME/conf}"
+
+<% if @java_home -%>
+export JAVA_HOME=<%= @java_home %>
+<% end -%>
+if [ "$JAVA_HOME" != "" ]; then
+  #echo "run java in $JAVA_HOME"
+  JAVA_HOME=$JAVA_HOME
+fi
+
+if [ "$JAVA_HOME" = "" ]; then
+  echo "Error: JAVA_HOME is not set."
+  exit 1
+fi
+
+JAVA=$JAVA_HOME/bin/java
+JAVA_HEAP_MAX=-Xmx1000m
+
+# For setting YARN specific HEAP sizes please use this
+# Parameter and set appropriately
+<%= @yarn_heapsize ? "YARN_HEAPSIZE=#{@yarn_heapsize}" : '# YARN_HEAPSIZE=1000' %>
+
+# check envvars which might override default args
+if [ "$YARN_HEAPSIZE" != "" ]; then
+  JAVA_HEAP_MAX="-Xmx""$YARN_HEAPSIZE""m"
+fi
+
+# Resource Manager specific parameters
+
+# Specify the max Heapsize for the ResourceManager using a numerical value
+# in the scale of MB. For example, to specify an jvm option of -Xmx1000m, set
+# the value to 1000.
+# This value will be overridden by an Xmx setting specified in either YARN_OPTS
+# and/or YARN_RESOURCEMANAGER_OPTS.
+# If not specified, the default value will be picked from either YARN_HEAPMAX
+# or JAVA_HEAP_MAX with YARN_HEAPMAX as the preferred option of the two.
+#export YARN_RESOURCEMANAGER_HEAPSIZE=1000
+
+# Specify the max Heapsize for the timeline server using a numerical value
+# in the scale of MB. For example, to specify an jvm option of -Xmx1000m, set
+# the value to 1000.
+# This value will be overridden by an Xmx setting specified in either YARN_OPTS
+# and/or YARN_TIMELINESERVER_OPTS.
+# If not specified, the default value will be picked from either YARN_HEAPMAX
+# or JAVA_HEAP_MAX with YARN_HEAPMAX as the preferred option of the two.
+#export YARN_TIMELINESERVER_HEAPSIZE=1000
+
+# Specify the JVM options to be used when starting the ResourceManager.
+# These options will be appended to the options specified as YARN_OPTS
+# and therefore may override any similar flags set in YARN_OPTS
+<% if @resourcemanager_jmxremote_port -%>
+# Enable YARN ResourceManager JMX connections on port <%= @resourcemanager_jmxremote_port %>
+YARN_RESOURCEMANAGER_OPTS="-Dcom.sun.management.jmxremote.port=<%= @resourcemanager_jmxremote_port %> -Dcom.sun.management.jmxremote.ssl=false -Dcom.sun.management.jmxremote.authenticate=false"
+<% end -%>
+
+<% if @yarn_resourcemanager_opts -%>
+YARN_RESOURCEMANAGER_OPTS="$YARN_RESOURCEMANAGER_OPTS <%= @yarn_resourcemanager_opts %>"
+<% end -%>
+
+
+# Node Manager specific parameters
+
+# Specify the max Heapsize for the NodeManager using a numerical value
+# in the scale of MB. For example, to specify an jvm option of -Xmx1000m, set
+# the value to 1000.
+# This value will be overridden by an Xmx setting specified in either YARN_OPTS
+# and/or YARN_NODEMANAGER_OPTS.
+# If not specified, the default value will be picked from either YARN_HEAPMAX
+# or JAVA_HEAP_MAX with YARN_HEAPMAX as the preferred option of the two.
+#export YARN_NODEMANAGER_HEAPSIZE=1000
+
+# Specify the JVM options to be used when starting the NodeManager.
+# These options will be appended to the options specified as YARN_OPTS
+# and therefore may override any similar flags set in YARN_OPTS
+<% if @nodemanager_jmxremote_port -%>
+# Enable YARN NodeManager JMX connections on port <%= @nodemanager_jmxremote_port %>
+YARN_NODEMANAGER_OPTS="-Dcom.sun.management.jmxremote.port=<%= @nodemanager_jmxremote_port %> -Dcom.sun.management.jmxremote.ssl=false -Dcom.sun.management.jmxremote.authenticate=false"
+<% end -%>
+
+<% if @yarn_nodemanager_opts -%>
+YARN_NODEMANAGER_OPTS="$YARN_NODEMANAGER_OPTS <%= @yarn_nodemanager_opts %>"
+<% end -%>
+
+# so that filenames w/ spaces are handled correctly in loops below
+IFS=
+
+
+# default log directory & file
+if [ "$YARN_LOG_DIR" = "" ]; then
+  YARN_LOG_DIR="$HADOOP_YARN_HOME/logs"
+fi
+if [ "$YARN_LOGFILE" = "" ]; then
+  YARN_LOGFILE='yarn.log'
+fi
+
+# default policy file for service-level authorization
+if [ "$YARN_POLICYFILE" = "" ]; then
+  YARN_POLICYFILE="hadoop-policy.xml"
+fi
+
+# restore ordinary behaviour
+unset IFS
+
+
+YARN_OPTS="$YARN_OPTS -Dhadoop.log.dir=$YARN_LOG_DIR"
+YARN_OPTS="$YARN_OPTS -Dyarn.log.dir=$YARN_LOG_DIR"
+YARN_OPTS="$YARN_OPTS -Dhadoop.log.file=$YARN_LOGFILE"
+YARN_OPTS="$YARN_OPTS -Dyarn.log.file=$YARN_LOGFILE"
+YARN_OPTS="$YARN_OPTS -Dyarn.home.dir=$YARN_COMMON_HOME"
+YARN_OPTS="$YARN_OPTS -Dyarn.id.str=$YARN_IDENT_STRING"
+YARN_OPTS="$YARN_OPTS -Dhadoop.root.logger=${YARN_ROOT_LOGGER:-INFO,console}"
+YARN_OPTS="$YARN_OPTS -Dyarn.root.logger=${YARN_ROOT_LOGGER:-INFO,console}"
+if [ "x$JAVA_LIBRARY_PATH" != "x" ]; then
+  YARN_OPTS="$YARN_OPTS -Djava.library.path=$JAVA_LIBRARY_PATH"
+fi
+YARN_OPTS="$YARN_OPTS -Dyarn.policy.file=$YARN_POLICYFILE"
+
+
+<% if @proxyserver_jmxremote_port -%>
+
+# Enable YARN ProxyServer JMX connections on port <%= @proxyserver_jmxremote_port %>
+YARN_PROXYSERVER_OPTS="-Dcom.sun.management.jmxremote.port=<%= @proxyserver_jmxremote_port %> -Dcom.sun.management.jmxremote.ssl=false -Dcom.sun.management.jmxremote.authenticate=false"
+<% end -%>
+
+# In order to support Spark with Python 3, all python processes
+# must start with the same random seed.  See:
+# http://blog.stuartowen.com/python-3-on-spark-return-of-the-pythonhashseed
+export PYTHONHASHSEED=0

@@ -1,0 +1,832 @@
+# Note: This file is managed by Puppet.
+
+# Hue configuration file
+# ===================================
+#
+# For complete documentation about the contents of this file, run
+#   $ <hue_root>/build/env/bin/hue config_help
+#
+# All .ini files under the current directory are treated equally.  Their
+# contents are merged to form the Hue configuration, which can
+# can be viewed on the Hue at
+#   http://<hue_host>:<port>/dump_config
+
+
+###########################################################################
+# General configuration for core Desktop features (authentication, etc)
+###########################################################################
+
+[desktop]
+
+  # Set this to a random string, the longer the better.
+  # This is used for secure hashing in the session store.
+  secret_key=<%= @secret_key ? @secret_key : '' %>
+
+  # Webserver listens on this address and port
+  http_host=<%= @http_host %>
+  http_port=<%= @http_port %>
+
+  # Need to set allowed_hosts in order to access hue from localhost and other domains.
+  # See: http://community.cloudera.com/t5/Web-UI-Hue-Beeswax/New-Cloudera-installation-Hue-Bad-Request-400/td-p/50344/page/5
+  allowed_hosts=*
+
+  # Time zone name
+  time_zone=<%= @timezone %>
+
+  # Turn off debug
+  django_debug_mode=0
+
+  # Turn off backtrace for server error
+  http_500_debug_mode=0
+
+  # Enable or disable memory profiling.
+  ## memory_profiler=false
+
+  # Server email for internal error messages
+  ## django_server_email='hue@localhost.localdomain'
+
+  # Email backend
+  ## django_email_backend=django.core.mail.backends.smtp.EmailBackend
+
+  # Webserver runs as this user
+  ## server_user=hue
+  ## server_group=hue
+
+  # If set to false, runcpserver will not actually start the web server.
+  # Used if Apache is being used as a WSGI container.
+  ## enable_server=yes
+
+  # Number of threads used by the CherryPy web server
+  ## cherrypy_server_threads=10
+
+  # Truste Certificate authority
+  <%= @ssl_cacerts ? "ssl_cacerts=#{@ssl_cacerts}" : '## ssl_cacerts=' %>
+
+  # Filename of SSL RSA Private Key
+  <%= @ssl_private_key ? "ssl_private_key=#{@ssl_private_key}" : '## ssl_private_key=' %>
+
+  # Filename of SSL Certificate
+  <%= @ssl_certificate ? "ssl_certificate=#{@ssl_certificate}" : '## ssl_certificate=' %>
+
+  # Support for HTTPS termination at the load-balancer level with SECURE_PROXY_SSL_HEADER.
+  secure_proxy_ssl_header=<%= @secure_proxy_ssl_header %>
+
+  # List of allowed and disallowed ciphers in cipher list format.
+  # See http://www.openssl.org/docs/apps/ciphers.html for more information on cipher list format.
+  ## ssl_cipher_list=DEFAULT:!aNULL:!eNULL:!LOW:!EXPORT:!SSLv2
+
+  # LDAP password of the hue user used for LDAP authentications. For example for LDAP Authentication with HiveServer2.
+  # ldap_password=
+
+  # Default encoding for site data
+  ## default_site_encoding=utf-8
+
+  # Help improve Hue with anonymous usage analytics.
+  # Use Google Analytics to see how many times an application or specific section of an application is used, nothing more.
+  collect_usage=false
+
+  # Comma-separated list of Django middleware classes to use.
+  # See https://docs.djangoproject.com/en/1.4/ref/middleware/ for more details on middlewares in Django.
+  ## middleware=desktop.auth.backend.LdapSynchronizationBackend
+
+  # Comma-separated list of regular expressions, which match the redirect URL.
+  # For example, to restrict to your local domain and FQDN, the following value can be used:
+  # ^\/.*$,^http:\/\/www.mydomain.com\/.*$
+  ## redirect_whitelist=
+
+  # Comma separated list of apps to not load at server startup.
+  # e.g.: pig,zookeeper
+  <%= @app_blacklist ? "app_blacklist=#{Array(@app_blacklist).join(',')}" : '## app_blacklist=' %>
+  # The directory where to store the auditing logs. Auditing is disable if the value is empty.
+  # e.g. /var/log/hue/audit.log
+  ## audit_event_log_dir=
+
+  # Size in KB/MB/GB for audit log to rollover.
+  ## audit_log_max_file_size=100MB
+
+  # Administrators
+  # ----------------
+  [[django_admins]]
+    ## [[[admin1]]]
+    ## name=john
+    ## email=john@doe.com
+
+  # UI customizations
+  # -------------------
+  [[custom]]
+
+    # Top banner HTML code
+    # e.g. <H2>Test Lab A2 Hue Services</H2>
+    ## banner_top_html=
+
+  # Configuration options for user authentication into the web application
+  # ------------------------------------------------------------------------
+  [[auth]]
+
+    # Authentication backend. Common settings are:
+    # - django.contrib.auth.backends.ModelBackend (entirely Django backend)
+    # - desktop.auth.backend.AllowAllBackend (allows everyone)
+    # - desktop.auth.backend.AllowFirstUserDjangoBackend
+    #     (Default. Relies on Django and user manager, after the first login)
+    # - desktop.auth.backend.LdapBackend
+    # - desktop.auth.backend.PamBackend
+    # - desktop.auth.backend.SpnegoDjangoBackend
+    # - desktop.auth.backend.RemoteUserDjangoBackend
+    # - libsaml.backend.SAML2Backend
+    # - libopenid.backend.OpenIDBackend
+    # - liboauth.backend.OAuthBackend
+    #     (Support Twitter, Facebook, Google+ and Linkedin
+    <%= @ldap_url ? 'backend=desktop.auth.backend.LdapBackend' : '## backend=desktop.auth.backend.AllowFirstUserDjangoBackend' %>
+
+    # The service to use when querying PAM.
+    ## pam_service=login
+
+    # When using the desktop.auth.backend.RemoteUserDjangoBackend, this sets
+    # the normalized name of the header that contains the remote user.
+    # The HTTP header in the request is converted to a key by converting
+    # all characters to uppercase, replacing any hyphens with underscores
+    # and adding an HTTP_ prefix to the name. So, for example, if the header
+    # is called Remote-User that would be configured as HTTP_REMOTE_USER
+    #
+    # Defaults to HTTP_REMOTE_USER
+    ## remote_user_header=HTTP_REMOTE_USER
+
+    # Synchronize a users groups when they login
+    ## sync_groups_on_login=false
+
+    # Ignore the case of usernames when searching for existing users.
+    # Only supported in remoteUserDjangoBackend.
+    ## ignore_username_case=false
+
+    # Ignore the case of usernames when searching for existing users to authenticate with.
+    # Only supported in remoteUserDjangoBackend.
+    ## force_username_lowercase=false
+
+  # Configuration options for connecting to LDAP and Active Directory
+  # -------------------------------------------------------------------
+  [[ldap]]
+
+    # The search base for finding users and groups
+    <%= @ldap_base_dn          ? "base_dn=\"#{@ldap_base_dn}\""                        : '## base_dn="DC=mycompany,DC=com"' %>
+
+    # The NT domain to connect to (only for use with Active Directory)
+    <%= @ldap_nt_domain        ? "nt_domain=#{@ldap_nt_domain}"                        : '## nt_domain=mycompany.com' %>
+
+    # URL of the LDAP server
+    <%= @ldap_url              ? "ldap_url=\"#{@ldap_url}\""                           : '## ldap_url=ldap://auth.mycompany.com' %>
+
+    # A PEM-format file containing certificates for the CA's that
+    # Hue will trust for authentication over TLS.
+    # The certificate for the CA that signed the
+    # LDAP server certificate must be included among these certificates.
+    # See more here http://www.openldap.org/doc/admin24/tls.html.
+    <%= @ldap_cert             ? "ldap_cert=#{@ldap_cert}"                             : '## ldap_cert=' %>
+    ## use_start_tls=true
+
+    # Distinguished name of the user to bind as -- not necessary if the LDAP server
+    # supports anonymous searches
+    <%= @ldap_bind_dn          ? "bind_dn=\"#{@ldap_bind_dn}\""                        : '## bind_dn="CN=ServiceAccount,DC=mycompany,DC=com"' %>
+
+    # Password of the bind user -- not necessary if the LDAP server supports
+    # anonymous searches
+    <%= @ldap_bind_password    ? "bind_password=#{@ldap_bind_password}"                : '## bind_password=' %>
+
+    # Pattern for searching for usernames -- Use <username> for the parameter
+    # For use when using LdapBackend for Hue authentication
+    <%= @ldap_username_pattern ? "ldap_username_pattern=\"#{@ldap_username_pattern}\"" : '## ldap_username_pattern="uid=<username>,ou=People,dc=mycompany,dc=com"' %>
+
+    # Create users in Hue when they try to login with their LDAP credentials
+    # For use when using LdapBackend for Hue authentication
+    ## create_users_on_login = true
+    create_users_on_login=<%= @ldap_create_users_on_login %>
+
+    # Ignore the case of usernames when searching for existing users in Hue.
+    ## ignore_username_case=false
+
+    # Force usernames to lowercase when creating new users from LDAP.
+    ## force_username_lowercase=false
+
+    # Use search bind authentication.
+    ## search_bind_authentication=true
+
+      [[[users]]]
+
+      # Base filter for searching for users
+      <%= @ldap_user_filter       ? "user_filter=\"#{@ldap_user_filter}\""             : '## user_filter="objectclass=*"' %>
+
+      # The username attribute in the LDAP schema
+      <%= @ldap_user_name_attr    ? "user_name_attr=\"#{@ldap_user_name_attr}\""       : '## user_name_attr=sAMAccountName' %>
+
+      [[[groups]]]
+
+      # Base filter for searching for groups
+      <%= @ldap_group_filter      ? "group_filter=\"#{@ldap_group_filter}\""           : '## group_filter="objectclass=*"' %>
+
+      # The group name attribute in the LDAP schema
+      <%= @ldap_group_name_attr   ? "group_name_attr=\"#{ldap_group_name_attr}\""     : '## group_name_attr=cn' %>
+
+      # The attribute of the group object which identifies the members of the group
+      <%= @ldap_group_member_attr ? "group_member_attr=\"#{@ldap_group_member_attr}\"" : '## group_member_attr=members' %>
+
+  # Configuration options for specifying the Desktop Database.  For more info,
+  # see http://docs.djangoproject.com/en/1.1/ref/settings/#database-engine
+  # ------------------------------------------------------------------------
+  [[database]]
+    # Database engine is typically one of:
+    # postgresql_psycopg2, mysql, or sqlite3
+    #
+    # Note that for sqlite3, 'name', below is a filename;
+    # for other backends, it is the database name.
+    engine=<%= @database_engine %>
+    name=<%= @database_name %>
+  <% if @database_engine != 'sqlite3' -%>
+    host=<%= @database_host %>
+    port=<%= @database_port %>
+    user=<%= @database_user %>
+    password=<%= @database_password %>
+  <% end -%>
+    #options={}
+
+  # Configuration options for specifying the Desktop session.
+  # For more info, see https://docs.djangoproject.com/en/1.4/topics/http/sessions/
+  # ------------------------------------------------------------------------
+  [[session]]
+    # The cookie containing the users' session ID will expire after this amount of time in seconds.
+    # Default is 2 weeks.
+    ## ttl=1209600
+
+    # The cookie containing the users' session ID will be secure.
+    # Should only be enabled with HTTPS.
+    ## secure=false
+
+    # The cookie containing the users' session ID will use the HTTP only flag.
+    ## http_only=false
+
+    # Use session-length cookies. Logs out the user when she closes the browser window.
+    ## expire_at_browser_close=false
+
+
+  # Configuration options for connecting to an external SMTP server
+  # ------------------------------------------------------------------------
+  [[smtp]]
+
+    # The SMTP server information for email notification delivery
+    host=<%= @smtp_host %>
+    port=<%= @smtp_port %>
+    user=<%= @smtp_user %>
+    password=<%= @smtp_password %>
+
+    # Whether to use a TLS (secure) connection when talking to the SMTP server
+    tls=<%= (@smtp_user and !@smtp_user.empty?) ? 'yes' : 'no' %>
+
+    # Default email address to use for various automated notification from Hue
+    <%= @smtp_from_email ? "default_from_email=#{@smtp_from_email}" : '## default_from_email=hue@localhost' %>
+
+
+  # Configuration options for Kerberos integration for secured Hadoop clusters
+  # ------------------------------------------------------------------------
+  [[kerberos]]
+
+    # Path to Hue's Kerberos keytab file
+    <% if @kerberos_keytab -%>
+    hue_keytab=<%= @kerberos_keytab %>
+    <% else -%>
+    ## hue_keytab=
+    <% end -%>
+    # Kerberos principal name for Hue
+    <% if @kerberos_principal -%>
+    hue_principal=<%= @kerberos_principal %>
+    <% else -%>
+    ## hue_principal=hue/hostname.foo.com
+    <% end -%>
+    # Path to kinit
+    <% if @kerberos_kinit_path -%>
+    kinit_path=<%= @kerberos_kinit_path %>
+    <% else -%>
+    ## kinit_path=/path/to/kinit
+    <% end -%>
+
+
+  # Configuration options for using OAuthBackend (core) login
+  # ------------------------------------------------------------------------
+  [[oauth]]
+    # The Consumer key of the application
+    ## consumer_key=XXXXXXXXXXXXXXXXXXXXX
+
+    # The Consumer secret of the application
+    ## consumer_secret=XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+
+    # The Request token URL
+    ## request_token_url=https://api.twitter.com/oauth/request_token
+
+    # The Access token URL
+    ## access_token_url=https://api.twitter.com/oauth/access_token
+
+    # The Authorize URL
+    ## authenticate_url=https://api.twitter.com/oauth/authorize
+
+
+###########################################################################
+# Settings to configure SAML
+###########################################################################
+
+[libsaml]
+  # Xmlsec1 binary path. This program should be executable by the user running Hue.
+  ## xmlsec_binary=/usr/local/bin/xmlsec1
+
+  # Entity ID for Hue acting as service provider.
+  # Can also accept a pattern where '<base_url>' will be replaced with server URL base.
+  ## entity_id="<base_url>/saml2/metadata/"
+
+  # Create users from SSO on login.
+  ## create_users_on_login=true
+
+  # Required attributes to ask for from IdP.
+  # This requires a comma separated list.
+  ## required_attributes=uid
+
+  # Optional attributes to ask for from IdP.
+  # This requires a comma separated list.
+  ## optional_attributes=
+
+  # IdP metadata in the form of a file. This is generally an XML file containing metadata that the Identity Provider generates.
+  ## metadata_file=
+
+  # Private key to encrypt metadata with.
+  ## key_file=
+
+  # Signed certificate to send along with encrypted metadata.
+  ## cert_file=
+
+  # A mapping from attributes in the response from the IdP to django user attributes.
+  ## user_attribute_mapping={'uid':'username'}
+
+  # Have Hue initiated authn requests be signed and provide a certificate.
+  ## authn_requests_signed=false
+
+  # Have Hue initiated logout requests be signed and provide a certificate.
+  ## logout_requests_signed=false
+
+  ## Username can be sourced from 'attributes' or 'nameid'.
+  ## username_source=attributes
+
+  # Performs the logout or not.
+  ## logout_enabled=true
+
+
+###########################################################################
+# Settings to configure OPENID
+###########################################################################
+
+[libopenid]
+  # (Required) OpenId SSO endpoint url.
+  ## server_endpoint_url=https://www.google.com/accounts/o8/id
+
+  # OpenId 1.1 identity url prefix to be used instead of SSO endpoint url
+  # This is only supported if you are using an OpenId 1.1 endpoint
+  ## identity_url_prefix=https://app.onelogin.com/openid/your_company.com/
+
+  # Create users from OPENID on login.
+  ## create_users_on_login=true
+
+  # Use email for username
+  ## use_email_for_username=true
+
+
+###########################################################################
+# Settings to configure OAuth
+###########################################################################
+
+[liboauth]
+  # NOTE:
+  # To work, each of the active (i.e. uncommented) service must have
+  # applications created on the social network.
+  # Then the "consumer key" and "consumer secret" must be provided here.
+  #
+  # The addresses where to do so are:
+  # Twitter:  https://dev.twitter.com/apps
+  # Google+ : https://cloud.google.com/
+  # Facebook: https://developers.facebook.com/apps
+  # Linkedin: https://www.linkedin.com/secure/developer
+  #
+  # Additionnaly, the following must be set in the application settings:
+  # Twitter:  Callback URL (aka Redirect URL) must be set to http://YOUR_HUE_IP_OR_DOMAIN_NAME/oauth/social_login/oauth_authenticated
+  # Google+ : CONSENT SCREEN must have email address
+  # Facebook: Sandbox Mode must be DISABLED
+  # Linkedin: "In OAuth User Agreement", r_emailaddress is REQUIRED
+
+  # The Consumer key of the application
+  ## consumer_key_twitter=
+  ## consumer_key_google=
+  ## consumer_key_facebook=
+  ## consumer_key_linkedin=
+
+  # The Consumer secret of the application
+  ## consumer_secret_twitter=
+  ## consumer_secret_google=
+  ## consumer_secret_facebook=
+  ## consumer_secret_linkedin=
+
+  # The Request token URL
+  ## request_token_url_twitter=https://api.twitter.com/oauth/request_token
+  ## request_token_url_google=https://accounts.google.com/o/oauth2/auth
+  ## request_token_url_linkedin=https://www.linkedin.com/uas/oauth2/authorization
+  ## request_token_url_facebook=https://graph.facebook.com/oauth/authorize
+
+  # The Access token URL
+  ## access_token_url_twitter=https://api.twitter.com/oauth/access_token
+  ## access_token_url_google=https://accounts.google.com/o/oauth2/token
+  ## access_token_url_facebook=https://graph.facebook.com/oauth/access_token
+  ## access_token_url_linkedin=https://api.linkedin.com/uas/oauth2/accessToken
+
+  # The Authenticate URL
+  ## authenticate_url_twitter=https://api.twitter.com/oauth/authorize
+  ## authenticate_url_google=https://www.googleapis.com/oauth2/v1/userinfo?access_token=
+  ## authenticate_url_facebook=https://graph.facebook.com/me?access_token=
+  ## authenticate_url_linkedin=https://api.linkedin.com/v1/people/~:(email-address)?format=json&oauth2_access_token=
+
+
+###########################################################################
+# Settings for the RDBMS application
+###########################################################################
+
+[librdbms]
+  # The RDBMS app can have any number of databases configured in the databases
+  # section. A database is known by its section name
+  # (IE sqlite, mysql, psql, and oracle in the list below).
+
+  [[databases]]
+    # sqlite configuration.
+    ## [[[sqlite]]]
+      # Name to show in the UI.
+      ## nice_name=SQLite
+
+      # For SQLite, name defines the path to the database.
+      ## name=/tmp/sqlite.db
+
+      # Database backend to use.
+      ## engine=sqlite
+
+    # mysql, oracle, or postgresql configuration.
+    ## [[[mysql]]]
+      # Name to show in the UI.
+      ## nice_name="My SQL DB"
+
+      # For MySQL and PostgreSQL, name is the name of the database.
+      # For Oracle, Name is instance of the Oracle server. For express edition
+      # this is 'xe' by default.
+      ## name=mysqldb
+
+      # Database backend to use. This can be:
+      # 1. mysql
+      # 2. postgresql
+      # 3. oracle
+      ## engine=mysql
+
+      # IP or hostname of the database to connect to.
+      ## host=localhost
+
+      # Port the database server is listening to. Defaults are:
+      # 1. MySQL: 3306
+      # 2. PostgreSQL: 5432
+      # 3. Oracle Express Edition: 1521
+      ## port=3306
+
+      # Username to authenticate with when connecting to the database.
+      ## user=example
+
+      # Password matching the username to authenticate with when
+      # connecting to the database.
+      ## password=example
+
+
+###########################################################################
+# Settings to configure your Hadoop cluster.
+###########################################################################
+
+[hadoop]
+
+  # Configuration for HDFS NameNode
+  # ------------------------------------------------------------------------
+  [[hdfs_clusters]]
+    # HA support by using HttpFs
+
+    [[[default]]]
+      # Enter the filesystem uri
+      fs_defaultfs=hdfs://<%= @namenode_host %>/
+
+      # NameNode logical name.
+      ## logical_name=
+
+<% if @httpfs_enabled or @webhdfs_enabled -%>
+      # Use WebHdfs/HttpFs as the communication mechanism.
+      # Domain should be the NameNode or HttpFs host.
+      # Default port is 14000 for HttpFs.
+      webhdfs_url=<%= @hdfs_nn_http_protocol %>://<%= @namenode_host %>:<%= @httpfs_enabled ? '14000' : @hdfs_nn_port %>/webhdfs/v1/
+<% end -%>
+
+      # Change this if your HDFS cluster is Kerberos-secured
+      ## security_enabled=false
+
+  # Configuration for YARN (MRv2)
+  # ------------------------------------------------------------------------
+  [[yarn_clusters]]
+
+    [[[default]]]
+      # Enter the host on which you are running the ResourceManager
+      resourcemanager_host=<%= @namenode_host %>
+
+      # The port where the ResourceManager IPC listens on
+      resourcemanager_port=8032
+
+      # Whether to submit jobs to this cluster
+      submit_to=true
+
+      # Change this if your YARN cluster is Kerberos-secured
+      ## security_enabled=false
+
+      # URL of the ResourceManager API
+      resourcemanager_api_url=<%= @yarn_rm_http_protocol %>://<%= @namenode_host %>:<%= @yarn_rm_port -%>
+
+      # URL of the ProxyServer API
+      proxy_api_url=<%= @yarn_rm_http_protocol %>://<%= @namenode_host %>:<%= @yarn_rm_port -%>
+
+      # URL of the HistoryServer API
+      history_server_api_url=<%= @mapred_history_http_protocol %>://<%= @namenode_host %>:<%= @mapred_history_port -%>
+
+
+<%
+# Enable Hue <-> Oozie API interface if @oozie_url is set.
+if @oozie_url
+-%>
+###########################################################################
+# Settings to configure liboozie
+###########################################################################
+
+[liboozie]
+  # The URL where the Oozie service runs on. This is required in order for
+  # users to submit jobs.
+  oozie_url=<%= @oozie_url %>
+
+  <%= @oozie_security_enabled ? "security_enabled=true" : "## security_enabled=false" %>
+
+  # Location on HDFS where the workflows/coordinator are deployed when submitted.
+  ## remote_deployement_dir=/user/hue/oozie/deployments
+
+
+###########################################################################
+# Settings to configure the Oozie app
+###########################################################################
+
+[oozie]
+  # Location on local FS where the examples are stored.
+  ## local_data_dir=..../examples
+
+  # Location on local FS where the data for the examples is stored.
+  ## sample_data_dir=...thirdparty/sample_data
+
+  # Location on HDFS where the oozie examples and workflows are stored.
+  ## remote_data_dir=/user/hue/oozie/workspaces
+
+  # Maximum of Oozie workflows or coodinators to retrieve in one API call.
+  ## oozie_jobs_count=100
+
+  # Use Cron format for defining the frequency of a Coordinator instead of the old frequency number/unit.
+  ## enable_cron_scheduling=true
+
+  # Indicate that workflows, coordinators, and bundles should be shared with all users.
+  # If set to false, they will be visible only to the owner and administrators.
+  share_jobs=true
+<% end # if @oozie_url -%>
+
+
+###########################################################################
+# Settings to configure Beeswax with Hive
+###########################################################################
+
+[beeswax]
+
+  # Host where Hive server Thrift daemon is running.
+  # If Kerberos security is enabled, use fully-qualified domain name (FQDN).
+  <%= @hive_server_host ? "hive_server_host=#{@hive_server_host}" : '## hive_server_host=<FQDN of Hive Server>' %>
+
+  # Port where HiveServer2 Thrift server runs on.
+  ## hive_server_port=10000
+
+  # Hive configuration directory, where hive-site.xml is located
+  ## hive_conf_dir=/etc/hive/conf
+
+  # Timeout in seconds for thrift calls to Hive service
+  ## server_conn_timeout=120
+
+  # Path to HiveServer2 start script
+  ## hive_server_bin=/usr/lib/hive/bin/hiveserver2
+
+  # Set a LIMIT clause when browsing a partitioned table.
+  # A positive value will be set as the LIMIT. If 0 or negative, do not set any limit.
+  ## browse_partitioned_table_limit=250
+
+  # A limit to the number of rows that can be downloaded from a query.
+  # A value of -1 means there will be no limit.
+  # A maximum of 65,000 is applied to XLS downloads.
+  ## download_row_limit=1000000
+
+  # Hue will try to close the Hive query when the user leaves the editor page.
+  # This will free all the query resources in HiveServer2, but also make its results inaccessible.
+  ## close_queries=false
+
+  [[ssl]]
+    # SSL communication enabled for this server.
+    ## enabled=false
+
+    # Path to Certificate Authority certificates.
+    ## cacerts=/etc/hue/cacerts.pem
+
+    # Path to the private key file.
+    ## key=/etc/hue/key.pem
+
+    # Path to the public certificate file.
+    ## cert=/etc/hue/cert.pem
+
+    # Choose whether Hue should validate certificates received from the server.
+    ## validate=true
+
+
+###########################################################################
+# Settings to configure Pig
+###########################################################################
+
+[pig]
+  # Location of piggybank.jar on local filesystem.
+  ## local_sample_dir=/usr/share/hue/apps/pig/examples
+
+  # Location piggybank.jar will be copied to in HDFS.
+  ## remote_data_dir=/user/hue/pig/examples
+
+
+<% if false
+# This puppet module does not yet support Sqoop 2
+-%>
+###########################################################################
+# Settings to configure Sqoop 2
+###########################################################################
+
+[sqoop]
+  # For autocompletion, fill out the librdbms section.
+
+  # Sqoop server URL
+  ## server_url=http://localhost:12000/sqoop
+
+<% end -%>
+###########################################################################
+# Settings to configure Proxy
+###########################################################################
+
+[proxy]
+  # Comma-separated list of regular expressions,
+  # which match 'host:port' of requested proxy target.
+  <%= @proxy_whitelist_final ? "whitelist=#{Array(@proxy_whitelist_final).join(',')}" : '## whitelist=(localhost|127\.0\.0\.1):(50030|50070|50060|50075)' %>
+
+  # Comma-separated list of regular expressions,
+  # which match any prefix of 'host:port/path' of requested proxy target.
+  # This does not support matching GET parameters.
+  <%= @proxy_blacklist ? "blacklist=#{Array(@proxy_blacklist).join(',')}" : '## blacklist=' %>
+
+<%
+# This puppet module does not yet support Impala.
+if false
+-%>
+###########################################################################
+# Settings to configure Impala
+###########################################################################
+
+[impala]
+  # Host of the Impala Server (one of the Impalad)
+  ## server_host=localhost
+
+  # Port of the Impala Server
+  ## server_port=21050
+
+  # Kerberos principal
+  ## impala_principal=impala/hostname.foo.com
+
+  # Turn on/off impersonation mechanism when talking to Impala
+  ## impersonation_enabled=False
+
+  # Number of initial rows of a result set to ask Impala to cache in order
+  # to support re-fetching them for downloading them.
+  # Set to 0 for disabling the option and backward compatibility.
+  ## querycache_rows=50000
+
+  # Timeout in seconds for thrift calls
+  ## server_conn_timeout=120
+
+  # Hue will try to close the Impala query when the user leaves the editor page.
+  # This will free all the query resources in Impala, but also make its results inaccessible.
+  ## close_queries=true
+
+
+<% end -%>
+<% if false
+# This puppet module does not yet support HBase
+-%>
+###########################################################################
+# Settings to configure Hbase
+###########################################################################
+
+[hbase]
+  # Comma-separated list of HBase Thrift servers for
+  # clusters in the format of '(name|host:port)'.
+  ## hbase_clusters=(Cluster|localhost:9090)
+
+  # Hard limit of rows or columns per row fetched before truncating.
+  ## truncate_limit = 500
+
+
+<% end -%>
+<% if false
+# This puppet module does not yet support Solr Search
+-%>
+###########################################################################
+# Settings to configure Solr Search
+###########################################################################
+
+[search]
+
+  # URL of the Solr Server
+  ## solr_url=http://localhost:8983/solr/
+
+  # Requires FQDN in solr_url if enabled
+  ## security_enabled=false
+
+  ## Query sent when no term is entered
+  ## empty_query=*:*
+
+
+<% end -%>
+###########################################################################
+# Settings to configure Job Designer
+###########################################################################
+
+[jobsub]
+
+  # Location on HDFS where the jobsub examples and templates are stored.
+  ## remote_data_dir=/user/hue/jobsub
+
+  # Location on local FS where examples and template are stored.
+  ## local_data_dir=..../data
+
+  # Location on local FS where sample data is stored
+  ## sample_data_dir=...thirdparty/sample_data
+
+
+###########################################################################
+# Settings to configure Job Browser.
+###########################################################################
+
+[jobbrowser]
+  # Share submitted jobs information with all users. If set to false,
+  # submitted jobs are visible only to the owner and administrators.
+  share_jobs=true
+
+<% if false
+# This puppet module does not yet support Zookeeper
+-%>
+###########################################################################
+# Settings to configure the Zookeeper application.
+###########################################################################
+
+[zookeeper]
+
+  [[clusters]]
+
+    [[[default]]]
+      # Zookeeper ensemble. Comma separated list of Host/Port.
+      # e.g. localhost:2181,localhost:2182,localhost:2183
+      ## host_ports=localhost:2181
+
+      # The URL of the REST contrib service (required for znode browsing)
+      ## rest_url=http://localhost:9998
+
+
+<% end -%>
+<% if false
+# This puppet module does not yet support Spark
+-%>
+###########################################################################
+# Settings to configure the Spark application.
+###########################################################################
+
+[spark]
+  # URL of the REST Spark Job Server.
+  ## server_url=http://localhost:8090/
+
+
+<% end -%>
+###########################################################################
+# Settings for the User Admin application
+###########################################################################
+
+[useradmin]
+  # The name of the default user group that users will be a member of
+  ## default_user_group=default

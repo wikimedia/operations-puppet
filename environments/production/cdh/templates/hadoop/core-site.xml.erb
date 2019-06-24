@@ -1,0 +1,105 @@
+<?xml version="1.0"?>
+<!-- NOTE:  This file is managed by Puppet. -->
+
+<?xml-stylesheet type="text/xsl" href="configuration.xsl"?>
+
+<!-- Put site-specific property overrides in this file. -->
+
+<configuration>
+
+  <property>
+    <name>fs.defaultFS</name>
+    <value>hdfs://<%= @ha_enabled ? @nameservice_id : @primary_namenode_host %>/</value>
+  </property>
+
+<% if @ha_enabled and @zookeeper_hosts %>
+  <property>
+    <name>ha.zookeeper.quorum</name>
+    <value><%= Array(@zookeeper_hosts).sort.join(',') %></value>
+  </property>
+
+<% end -%>
+<% if @io_file_buffer_size -%>
+  <property>
+    <name>io.file.buffer.size</name>
+    <value><%= @io_file_buffer_size %></value>
+  </property>
+
+<% end -%>
+  <!-- mapred proxy user -->
+  <property>
+    <name>hadoop.proxyuser.mapred.hosts</name>
+    <value>*</value>
+  </property>
+  <property>
+    <name>hadoop.proxyuser.mapred.groups</name>
+    <value>*</value>
+  </property>
+
+  <!-- Hue proxy user -->
+  <property>
+    <name>hadoop.proxyuser.hue.hosts</name>
+    <value>*</value>
+  </property>
+  <property>
+    <name>hadoop.proxyuser.hue.groups</name>
+    <value>*</value>
+  </property>
+
+  <!-- Oozie proxy user -->
+  <property>
+    <name>hadoop.proxyuser.oozie.hosts</name>
+    <value>*</value>
+  </property>
+  <property>
+    <name>hadoop.proxyuser.oozie.groups</name>
+    <value>*</value>
+  </property>
+
+<% if @fs_trash_checkpoint_interval -%>
+  <property>
+    <!-- Emptier interval specifies how long (in minutes) the NameNode waits
+         before running a thread to manage checkpoints. -->
+    <name>fs.trash.checkpoint.interval</name>
+    <value><%= @fs_trash_checkpoint_interval %></value>
+  </property>
+<% end -%>
+<% if @fs_trash_interval -%>
+  <!-- Deletion interval specifies how long (in minutes) a checkpoint
+       will be expired before it is deleted. -->
+  <property>
+    <name>fs.trash.interval</name>
+    <value><%= @fs_trash_interval %></value>
+  </property>
+<% end -%>
+
+<% if @httpfs_enabled -%>
+  <!-- httpfs proxy user -->
+  <property>
+    <name>hadoop.proxyuser.httpfs.hosts</name>
+    <value>*</value>
+  </property>
+  <property>
+    <name>hadoop.proxyuser.httpfs.groups</name>
+    <value>*</value>
+  </property>
+
+<% end -%>
+<% if @net_topology_script_path -%>
+  <!-- Script used to map nodes to rack or rows in datacenter. -->
+  <property>
+      <name>net.topology.script.file.name</name>
+      <value><%= @net_topology_script_path %></value>
+  </property>
+
+<% end -%>
+<% if @core_site_extra_properties -%>
+<% @core_site_extra_properties.sort.map do |key, value| -%>
+  <property>
+      <name><%= key %></name>
+      <value><%= value %></value>
+  </property>
+
+<% end -%>
+<% end -%>
+</configuration>

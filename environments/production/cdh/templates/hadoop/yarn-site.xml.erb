@@ -1,0 +1,337 @@
+<%
+# Convert a hostname to a Node ID.
+# We can't use '.' characters because IDs.
+# will be used in the names of some Java properties,
+# which are '.' delimited.
+def host_to_id(host)
+  host.tr('.', '-')
+end
+
+-%>
+<?xml version="1.0"?>
+<!-- NOTE:  This file is managed by Puppet. -->
+
+<?xml-stylesheet type="text/xsl" href="configuration.xsl"?>
+
+<!-- Put site-specific property overrides in this file. -->
+
+<configuration>
+
+<% if @yarn_ha_enabled -%>
+  <property>
+    <name>yarn.resourcemanager.cluster-id</name>
+    <value><%= @yarn_cluster_id %></value>
+  </property>
+
+  <property>
+    <name>yarn.resourcemanager.ha.rm-ids</name>
+    <value><%= @resourcemanager_hosts.sort.collect { |host| host_to_id(host) }.join(',') %></value>
+  </property>
+
+<% if @resourcemanager_hosts.include?(@fqdn) -%>
+  <property>
+    <name>yarn.resourcemanager.ha.id</name>
+    <value><%= host_to_id(@fqdn) %></value>
+  </property>
+<% end -%>
+
+  <property>
+    <name>yarn.resourcemanager.connect.retry-interval.ms</name>
+    <value>2000</value>
+  </property>
+
+  <property>
+    <name>yarn.resourcemanager.ha.enabled</name>
+    <value>true</value>
+  </property>
+
+  <property>
+    <name>yarn.resourcemanager.ha.automatic-failover.enabled</name>
+    <value>true</value>
+  </property>
+
+  <property>
+    <name>yarn.resourcemanager.ha.automatic-failover.embedded</name>
+    <value>true</value>
+  </property>
+
+  <property>
+    <name>yarn.resourcemanager.recovery.enabled</name>
+    <value>true</value>
+  </property>
+
+  <property>
+    <name>yarn.resourcemanager.zk-address</name>
+    <value><%= Array(@zookeeper_hosts).sort.join(',') %></value>
+  </property>
+
+<% if @yarn_resourcemanager_zk_state_store_parent_path -%>
+  <property>
+    <name>yarn.resourcemanager.zk-state-store.parent-path</name>
+    <value><%= @yarn_resourcemanager_zk_state_store_parent_path %></value>
+  </property>
+
+  <property>
+    <name>yarn.resourcemanager.store.class</name>
+    <value>org.apache.hadoop.yarn.server.resourcemanager.recovery.ZKRMStateStore</value>
+  </property>
+<% end -%>
+
+<% if @yarn_resourcemanager_fs_state_store_uri -%>
+  <property>
+    <name>yarn.resourcemanager.fs.state-store.uri</name>
+    <value>hdfs://<%= @ha_enabled ? @nameservice_id : @primary_namenode_host %><%= @yarn_resourcemanager_fs_state_store_uri %></value>
+  </property>
+
+  <property>
+    <name>yarn.resourcemanager.store.class</name>
+    <value>org.apache.hadoop.yarn.server.resourcemanager.recovery.FileSystemRMStateStore</value>
+  </property>
+
+  <property>
+    <name>yarn.resourcemanager.fs.state-store.retry-policy-spec</name>
+    <value><%= @yarn_resourcemanager_fs_state_store_retry_policy %></value>
+  </property>
+<% end -%>
+
+  <property>
+    <name>yarn.resourcemanager.max-completed-applications</name>
+    <value><%= @yarn_resourcemanager_max_completed_applications %></value>
+  </property>
+
+
+<% if @yarn_resourcemanager_zk_timeout_ms -%>
+  <property>
+    <name>yarn.resourcemanager.zk-timeout-ms</name>
+    <value><%= @yarn_resourcemanager_zk_timeout_ms %></value>
+  </property>
+<% end -%>
+
+  <property>
+    <name>yarn.app.mapreduce.am.scheduler.connection.wait.interval-ms</name>
+    <value>5000</value>
+  </property>
+
+  <property>
+    <name>yarn.resourcemanager.work-preserving-recovery.enabled</name>
+    <value>true</value>
+  </property>
+
+  <property>
+    <name>yarn.resourcemanager.am.max-attempts</name>
+    <value>6</value>
+  </property>
+
+<% @resourcemanager_hosts.sort.each do |host| -%>
+  <property>
+    <name>yarn.resourcemanager.hostname.<%= host_to_id(host) %></name>
+    <value><%= host %></value>
+  </property>
+<% end # @resourcemanager_hosts.each -%>
+
+  <!--
+  Set YARN ResourceManager WebApp address to the primary resourcemanager
+  to work around https://issues.apache.org/jira/browse/YARN-2713
+  -->
+  <property>
+    <name>yarn.resourcemanager.webapp.address</name>
+    <value><%= @primary_resourcemanager_host %>:8088</value>
+  </property>
+
+<% else -%>
+  <property>
+    <name>yarn.resourcemanager.hostname</name>
+    <value><%= @primary_resourcemanager_host %></value>
+  </property>
+<% end # if @yarn_ha_enabled -%>
+
+
+<% if @fair_scheduler_enabled -%>
+  <property>
+    <name>yarn.resourcemanager.scheduler.class</name>
+    <value>org.apache.hadoop.yarn.server.resourcemanager.scheduler.fair.FairScheduler</value>
+  </property>
+
+  <property>
+    <name>yarn.scheduler.fair.allocation.file</name>
+    <value><%= @config_directory %>/fair-scheduler.xml</value>
+    <description>
+      Path to allocation file. An allocation file is an XML manifest describing queues
+      and their properties, in addition to certain policy defaults. This file must be
+      in XML format as described in the next section.
+    </description>
+  </property>
+
+  <property>
+    <name>yarn.scheduler.fair.user-as-default-queue</name>
+    <value>false</value>
+    <description>
+      Whether to use the username associated with the allocation as the default queue
+      name, in the event that a queue name is not specified. If this is set to "false"
+      or unset, all jobs have a shared default queue, called "default". Defaults to true.
+    </description>
+  </property>
+<% end -%>
+
+  <property>
+    <name>yarn.nodemanager.recovery.enabled</name>
+    <value>true</value>
+  </property>
+
+  <property>
+    <name>yarn.nodemanager.localizer.address</name>
+    <value>0.0.0.0:8040</value>
+  </property>
+  <property>
+    <name>yarn.nodemanager.address</name>
+    <value>0.0.0.0:8041</value>
+  </property>
+  <property>
+    <name>yarn.nodemanager.webapp.address</name>
+    <value>0.0.0.0:8042</value>
+  </property>
+
+  <property>
+    <name>yarn.nodemanager.aux-services</name>
+    <value>mapreduce_shuffle,spark_shuffle</value>
+  </property>
+
+  <property>
+    <name>yarn.nodemanager.aux-services.mapreduce.shuffle.class</name>
+    <value>org.apache.hadoop.mapred.ShuffleHandler</value>
+  </property>
+
+  <property>
+    <name>yarn.nodemanager.aux-services.spark_shuffle.class</name>
+    <value>org.apache.spark.network.yarn.YarnShuffleService</value>
+  </property>
+
+  <property>
+    <description>RSS usage of a process computed via /proc/pid/stat is not very accurate as it includes shared pages of a process. /proc/pid/smaps provides useful information like Private_Dirty, Private_Clean, Shared_Dirty, Shared_Clean which can be used for computing more accurate RSS. When this flag is enabled, RSS is computed as Min(Shared_Dirty, Pss) + Private_Clean + Private_Dirty. It excludes read-only shared mappings in RSS computation.</description>
+    <name>yarn.nodemanager.container-monitor.procfs-tree.smaps-based-rss.enabled</name>
+    <value>true</value>
+  </property>
+
+<% if @datanode_mounts -%>
+  <property>
+    <description>List of directories to store localized files in.</description>
+    <name>yarn.nodemanager.local-dirs</name>
+    <value><%= @datanode_mounts.collect { |mount| mount + "/" + @yarn_local_path }.join(',') %></value>
+  </property>
+
+  <property>
+    <description>Where to store container logs.</description>
+    <name>yarn.nodemanager.log-dirs</name>
+    <value><%= @datanode_mounts.collect { |mount| mount + "/" + @yarn_logs_path}.join(',') %></value>
+  </property>
+<% end -%>
+
+<% if @yarn_nodemanager_resource_memory_mb -%>
+  <property>
+    <name>yarn.nodemanager.resource.memory-mb</name>
+    <value><%= @yarn_nodemanager_resource_memory_mb %></value>
+  </property>
+<% end -%>
+
+<% if @yarn_nodemanager_resource_cpu_vcores -%>
+  <property>
+    <name>yarn.nodemanager.resource.cpu-vcores</name>
+    <value><%= @yarn_nodemanager_resource_cpu_vcores %></value>
+  </property>
+<% end -%>
+
+<% if @yarn_scheduler_minimum_allocation_mb -%>
+  <property>
+    <name>yarn.scheduler.minimum-allocation-mb</name>
+    <value><%= @yarn_scheduler_minimum_allocation_mb %></value>
+  </property>
+<% end -%>
+
+<% if @yarn_scheduler_maximum_allocation_mb -%>
+  <property>
+    <name>yarn.scheduler.maximum-allocation-mb</name>
+    <value><%= @yarn_scheduler_maximum_allocation_mb %></value>
+  </property>
+<% end -%>
+
+<% if @yarn_scheduler_minimum_allocation_vcores -%>
+  <property>
+    <name>yarn.scheduler.minimum-allocation-vcores</name>
+    <value><%= @yarn_scheduler_minimum_allocation_vcores %></value>
+  </property>
+<% end -%>
+
+<% if @yarn_scheduler_maximum_allocation_vcores -%>
+  <property>
+    <name>yarn.scheduler.maximum-allocation-vcores</name>
+    <value><%= @yarn_scheduler_maximum_allocation_vcores %></value>
+  </property>
+<% end -%>
+
+  <property>
+    <name>yarn.log-aggregation-enable</name>
+    <value>true</value>
+  </property>
+
+  <property>
+    <description>Where to aggregate logs to.</description>
+    <name>yarn.nodemanager.remote-app-log-dir</name>
+    <value>/var/log/hadoop-yarn/apps</value>
+  </property>
+
+
+  <property>
+      <name>yarn.app.mapreduce.am.staging-dir</name>
+      <value>/user</value>
+  </property>
+
+  <property>
+    <name>yarn.resourcemanager.nodes.exclude-path</name>
+    <value><%= @config_directory %>/hosts.exclude</value>
+    <description>
+      A file that contains a list of NodeManagers to exclude.
+      This is useful for decommissioning nodes.
+    </description>
+  </property>
+
+  <property>
+    <description>Classpath for typical applications.</description>
+     <name>yarn.application.classpath</name>
+     <value>
+        $HADOOP_CONF_DIR,
+        $HADOOP_COMMON_HOME/*,$HADOOP_COMMON_HOME/lib/*,
+        $HADOOP_HDFS_HOME/*,$HADOOP_HDFS_HOME/lib/*,
+        $HADOOP_MAPRED_HOME/*,$HADOOP_MAPRED_HOME/lib/*,
+        $HADOOP_YARN_HOME/*,$HADOOP_YARN_HOME/lib/*
+     </value>
+  </property>
+
+  <property>
+      <name>yarn.log-aggregation.retain-seconds</name>
+      <value><%= @yarn_log_aggregation_retain_seconds %></value>
+      <description>
+        How long (in secs) to keep aggregation logs before deleting them. -1 disables.
+        Be careful, if you set this too small you will spam the name node.
+        If yarn.log-aggregation.retain-check-interval-seconds is not set
+        or set to 0 or a negative value (default) then the check interval is
+        one-tenth of the aggregated log retention time.
+      </description>
+  </property>
+
+  <property>
+      <name>yarn.log-aggregation.retain-check-interval-seconds</name>
+      <value><%= @yarn_log_aggregation_retain_check_interval_seconds %></value>
+      <description>
+        How long to wait between aggregated log retention checks.
+      </description>
+  </property>
+<% if @yarn_site_extra_properties -%>
+<% @yarn_site_extra_properties.sort.map do |key, value| -%>
+  <property>
+      <name><%= key %></name>
+      <value><%= value %></value>
+  </property>
+
+<% end -%>
+<% end -%>
+</configuration>

@@ -1,0 +1,180 @@
+<?xml version="1.0"?>
+<!-- NOTE:  This file is managed by Puppet. -->
+
+<?xml-stylesheet type="text/xsl" href="configuration.xsl"?>
+
+<!-- Put site-specific property overrides in this file. -->
+<configuration>
+
+  <property>
+   <name>mapreduce.framework.name</name>
+   <value>yarn</value>
+  </property>
+
+  <property>
+   <name>mapreduce.jobhistory.address</name>
+   <value><%= @primary_namenode_host %>:10020</value>
+  </property>
+
+  <property>
+   <name>mapreduce.jobhistory.webapp.address</name>
+   <value>0.0.0.0:19888</value>
+  </property>
+
+  <property>
+    <name>mapreduce.jobhistory.intermediate-done-dir</name>
+    <value>/user/history/done_intermediate</value>
+  </property>
+
+  <property>
+    <name>mapreduce.jobhistory.done-dir</name>
+    <value>/user/history/done</value>
+  </property>
+
+<% if @mapreduce_shuffle_port -%>
+  <property>
+    <name>mapreduce.shuffle.port</name>
+    <value><%= @mapreduce_shuffle_port %></value>
+  </property>
+
+<% end -%>
+  <property>
+    <name>mapred.job.tracker</name>
+     <!-- Hue gets confused if mapred.job.tracker is not set,
+       even though we are using YARN and the jobtracker is not running. -->
+    <value>localhost:8021</value>
+  </property>
+
+<% if @mapreduce_map_tasks_maximum -%>
+  <property>
+   <name>mapreduce.tasktracker.map.tasks.maximum</name>
+   <value><%= @mapreduce_map_tasks_maximum %></value>
+  </property>
+<% end -%>
+
+<% if @mapreduce_reduce_tasks_maximum -%>
+  <property>
+   <name>mapreduce.tasktracker.reduce.tasks.maximum</name>
+   <value><%= @mapreduce_reduce_tasks_maximum %></value>
+  </property>
+<% end -%>
+
+<% if @mapreduce_job_reuse_jvm_num_tasks -%>
+  <property>
+    <name>mapreduce.job.reuse.jvm.num.tasks</name>
+    <value><%= @mapreduce_job_reuse_jvm_num_tasks %></value>
+  </property>
+<% end -%>
+
+<% if @mapreduce_reduce_shuffle_parallelcopies -%>
+  <property>
+    <name>mapreduce.reduce.parallel.copies</name>
+    <value><%= @mapreduce_reduce_shuffle_parallelcopies %></value>
+  </property>
+<% end -%>
+
+<% if @mapreduce_map_memory_mb -%>
+  <property>
+   <name>mapreduce.map.memory.mb</name>
+   <value><%= @mapreduce_map_memory_mb %></value>
+  </property>
+<% end -%>
+
+<% if @mapreduce_reduce_memory_mb -%>
+  <property>
+   <name>mapreduce.reduce.memory.mb</name>
+   <value><%= @mapreduce_reduce_memory_mb %></value>
+  </property>
+<% end -%>
+
+<% if @mapreduce_task_io_sort_mb -%>
+  <property>
+    <name>mapreduce.task.io.sort.mb</name>
+    <value><%= @mapreduce_task_io_sort_mb %></value>
+  </property>
+<% end -%>
+
+<% if @mapreduce_task_io_sort_factor -%>
+  <property>
+    <name>mapreduce.task.io.sort.factor</name>
+    <value><%= @mapreduce_task_io_sort_factor %></value>
+  </property>
+<% end -%>
+
+<% if @mapreduce_map_java_opts -%>
+  <property>
+    <name>mapreduce.map.java.opts</name>
+    <value><%= @mapreduce_map_java_opts %></value>
+  </property>
+<% end -%>
+
+<% if @mapreduce_reduce_java_opts -%>
+  <property>
+    <name>mapreduce.reduce.java.opts</name>
+    <value><%= @mapreduce_reduce_java_opts %></value>
+  </property>
+<% end -%>
+
+<% if @yarn_app_mapreduce_am_resource_mb -%>
+  <property>
+    <name>yarn.app.mapreduce.am.resource.mb</name>
+    <value><%= @yarn_app_mapreduce_am_resource_mb %></value>
+  </property>
+<% end -%>
+
+<% if @yarn_app_mapreduce_am_command_opts -%>
+  <property>
+    <name>yarn.app.mapreduce.am.command-opts</name>
+    <value><%= @yarn_app_mapreduce_am_command_opts %></value>
+  </property>
+<% end -%>
+
+<% if @yarn_app_mapreduce_am_job_client_port_range -%>
+  <property>
+    <name>yarn.app.mapreduce.am.job.client.port-range</name>
+    <value><%= @yarn_app_mapreduce_am_job_client_port_range %></value>
+  </property>
+<% end -%>
+
+  <!-- MapReduce intermediate compression -->
+  <property>
+    <name>mapreduce.map.output.compress</name>
+    <value><%= @mapreduce_intermediate_compression %></value>
+  </property>
+  <property>
+    <name>mapreduce.map.output.compress.codec</name>
+    <value><%= @mapreduce_intermediate_compression_codec %></value>
+  </property>
+
+  <!-- MapReduce final output compression -->
+  <property>
+    <name>mapreduce.output.fileoutputformat.compress</name>
+    <value><%= @mapreduce_output_compression %></value>
+  </property>
+  <property>
+    <name>mapreduce.output.fileoutputformat.compress.codec</name>
+    <value><%= @mapreduce_output_compression_codec %></value>
+  </property>
+  <property>
+    <name>mapreduce.output.fileoutputformat.compress.type</name>
+    <value><%= @mapreduce_output_compression_type %></value>
+  </property>
+
+  <property>
+    <name>mapred.hosts.exclude</name>
+    <value><%= @config_directory %>/hosts.exclude</value>
+    <description>
+      A file that contains a list of mapreduce hosts to exclude.
+      This is useful for decommissioning nodes.
+    </description>
+  </property>
+
+<% if @mapred_site_extra_properties -%>
+<% @mapred_site_extra_properties.sort.map do |key, value| -%>
+  <property>
+      <name><%= key %></name>
+      <value><%= value %></value>
+  </property>
+<% end -%>
+<% end -%>
+</configuration>

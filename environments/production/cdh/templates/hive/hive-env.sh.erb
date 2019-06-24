@@ -1,0 +1,27 @@
+#! /bin/bash
+# Note: This file is managed by Puppet
+
+<% if @java_home -%>
+export JAVA_HOME=<%= @java_home %>
+<% end -%>
+
+# Adding java-logging configuration file as hadoop-client option
+export HADOOP_CLIENT_OPTS=-Djava.util.logging.config.file=<%= @java_logging_config_file %>
+
+# https://issues.apache.org/jira/browse/HIVE-12179
+# Avoid logging spam when Hive is used via CLI.
+export HIVE_SKIP_SPARK_ASSEMBLY=true
+
+if [ "$SERVICE" = "metastore" ]; then
+    export HIVE_METASTORE_HADOOP_OPTS="$HIVE_METASTORE_HADOOP_OPTS <%= @hive_metastore_opts %>"
+    <% if @hive_metastore_jmx_port %>
+    export HIVE_METASTORE_HADOOP_OPTS="$HIVE_METASTORE_HADOOP_OPTS -Dcom.sun.management.jmxremote.port=<%= @hive_metastore_jmx_port %> -Dcom.sun.management.jmxremote.ssl=false -Dcom.sun.management.jmxremote.authenticate=false"
+    <% end %>
+fi
+
+if [ "$SERVICE" = "hiveserver2" ]; then
+    export HIVE_SERVER2_HADOOP_OPTS="$HIVE_SERVER2_HADOOP_OPTS <%= @hive_server_opts %>"
+    <% if @hive_server_jmx_port %>
+    export HIVE_SERVER2_HADOOP_OPTS="$HIVE_SERVER2_HADOOP_OPTS -Dcom.sun.management.jmxremote.port=<%= @hive_server_jmx_port %> -Dcom.sun.management.jmxremote.ssl=false -Dcom.sun.management.jmxremote.authenticate=false"
+    <% end %>
+fi

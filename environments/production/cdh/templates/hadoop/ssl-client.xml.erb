@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+
+<!-- NOTE:  This file is managed by Puppet. -->
+
+<?xml-stylesheet type="text/xsl" href="configuration.xsl"?>
+
+<configuration>
+<% @ssl_client_config.sort.map do |key, value| -%>
+  <% if value != :undef  -%>
+  <property>
+      <name><%= key %></name>
+      <value><%= value %></value>
+  </property>
+  <% end -%>
+<% end -%>
+</configuration>

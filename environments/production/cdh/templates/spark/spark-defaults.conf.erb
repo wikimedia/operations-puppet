@@ -1,0 +1,39 @@
+# Note: This file is managed by Puppet.
+
+# Default system properties included when running spark-submit.
+# This is useful for setting default environmental settings.
+
+# Example:
+# spark.master                                      spark://master:7077
+# spark.eventLog.enabled                            true
+# spark.eventLog.dir                                hdfs://namenode:8021/directory
+# spark.serializer                                  org.apache.spark.serializer.KryoSerializer
+# spark.driver.memory                               5g
+# spark.executor.extraJavaOptions                   -XX:+PrintGCDetails -Dkey=value -Dnumbers="one two three"
+
+# Set spark.yarn.jar to the spark-assembly.jar in HDFS.  This makes it so
+# that the spark jar doesn't have to be uploaded to HDFS every time
+# a user submits a job.
+# See: http://www.cloudera.com/content/cloudera/en/documentation/core/latest/topics/cdh_ig_running_spark_apps.html
+# If you upgrade spark, be sure to upload the new spark-assembly.jar
+# to this HDFS path.
+spark.yarn.jar                                      <%= @spark_jar_hdfs_path %>
+
+<% if @dynamic_allocation_enabled -%>
+# Dynamic allocation allows Spark to dynamically scale the cluster resources
+# allocated for an application based on the workload. Only available in YARN mode.
+# More info: http://spark.apache.org/docs/1.5.0/configuration.html#dynamic-allocation
+spark.dynamicAllocation.enabled                     true
+spark.shuffle.service.enabled                       true
+spark.dynamicAllocation.executorIdleTimeout         <%= @dynamic_allocation_executor_idle_timeout %>
+spark.dynamicAllocation.cachedExecutorIdleTimeout   <%= @dynamic_allocation_cached_executor_idle_timeout %>
+<% end -%>
+
+<%
+# If configuring a stand alone (non YARN) Spark Cluster,
+# we need to set a few more properties.
+if @standalone_enabled
+-%>
+spark.eventLog.dir                                  hdfs://<%= @namenode_address -%>/user/spark/applicationHistory
+spark.eventLog.enabled                              true
+<% end -%>

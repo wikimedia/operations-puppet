@@ -1,0 +1,38 @@
+# NOTE: This file is managed by Puppet.
+
+# syntax: [prefix].[source|sink].[instance].[options]
+# See javadoc of package-info.java for org.apache.hadoop.metrics2 for details
+
+# default sampling period, in seconds
+*.period=10
+
+<% if @ganglia_hosts
+ganglia_hosts_string = ganglia_hosts.sort.join(',')
+-%>
+#
+# Below are for sending metrics to Ganglia
+#
+
+# for Ganglia 3.1 support
+*.sink.ganglia.class=org.apache.hadoop.metrics2.sink.ganglia.GangliaSink31
+
+*.sink.ganglia.period=10
+
+# default for supportsparse is false
+# *.sink.ganglia.supportsparse=true
+
+*.sink.ganglia.slope=jvm.metrics.gcCount=zero,jvm.metrics.memHeapUsedM=both
+*.sink.ganglia.dmax=jvm.metrics.threadsBlocked=70,jvm.metrics.memHeapUsedM=40
+
+namenode.sink.ganglia.servers=<%= ganglia_hosts_string %>
+datanode.sink.ganglia.servers=<%= ganglia_hosts_string %>
+
+resourcemanager.sink.ganglia.servers=<%= ganglia_hosts_string %>
+nodemanager.sink.ganglia.servers=<%= ganglia_hosts_string %>
+
+maptask.sink.ganglia.servers=<%= ganglia_hosts_string %>
+reducetask.sink.ganglia.servers=<%= ganglia_hosts_string %>
+
+secondarynamenode.sink.ganglia.servers=<%= ganglia_hosts_string %>
+
+<% end -%>

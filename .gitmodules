@@ -4,6 +4,3 @@
 [submodule "modules/nginx"]
 	path = modules/nginx
 	url = https://gerrit.wikimedia.org/r/operations/puppet/nginx
-[submodule "modules/cdh"]
-	path = modules/cdh
-	url = https://gerrit.wikimedia.org/r/operations/puppet/cdh

@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<!-- NOTE:  This file is managed by Puppet. -->
+
+<?xml-stylesheet type="text/xsl" href="configuration.xsl"?>
+
+<!-- Put site-specific property overrides in this file. -->
+
+<configuration>
+  <!-- Hue HttpFS proxy user setting -->
+  <property>
+    <name>httpfs.proxyuser.hue.hosts</name>
+    <value>*</value>
+  </property>
+  <property>
+    <name>httpfs.proxyuser.hue.groups</name>
+    <value>*</value>
+  </property>
+
+  <!-- Oozie HttpFS proxy user -->
+  <property>
+    <name>httpfs.proxyuser.oozie.hosts</name>
+    <value>*</value>
+  </property>
+  <property>
+    <name>httpfs.proxyuser.oozie.groups</name>
+    <value>*</value>
+  </property>
+
+  <property>
+    <name>httpfs.hadoop.config.dir</name>
+    <value>/etc/hadoop/conf</value>
+  </property>
+</configuration>

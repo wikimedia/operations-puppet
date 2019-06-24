@@ -1,0 +1,46 @@
+# Note: This file is managed by Puppet.
+
+IMPALA_CATALOG_SERVICE_HOST=<%= @master_host %>
+IMPALA_STATE_STORE_HOST=<%= @master_host %>
+IMPALA_STATE_STORE_PORT=24000
+IMPALA_BACKEND_PORT=22000
+IMPALA_LOG_DIR=/var/log/impala
+
+IMPALA_CATALOG_ARGS=" -log_dir=${IMPALA_LOG_DIR} "
+IMPALA_STATE_STORE_ARGS=" -log_dir=${IMPALA_LOG_DIR} -state_store_port=${IMPALA_STATE_STORE_PORT}"
+# By default impalad seems to report itself using its short hostname, and YARN
+# refers to it by its full hostname.  This makes Impala work with YARN.
+# adding -hostname forces impalad to report itself using FQDN.
+IMPALA_SERVER_ARGS=" \
+    -hostname=<%= @fqdn %> \
+    -log_dir=${IMPALA_LOG_DIR} \
+    -catalog_service_host=${IMPALA_CATALOG_SERVICE_HOST} \
+    -state_store_port=${IMPALA_STATE_STORE_PORT} \
+    -use_statestore \
+    -state_store_host=${IMPALA_STATE_STORE_HOST} \
+    -be_port=${IMPALA_BACKEND_PORT} \
+    -enable_rm \
+    -llama_host=<%= @master_host %> \
+    -cgroup_hierarchy_path=<%= @cgroup_path %> \
+    -local_nodemanager_url=http://127.0.0.1:8042 \
+<%
+# Default to asking for 1 core (instead of 2) if running with only one core.
+# This helps in development environments.
+if @processorcount == 1 -%>
+    -rm_default_cpu_vcores=1 \
+<% end -%>
+    -rm_always_use_defaults<% if not @fair_scheduler_enabled -%>"<% else -%> \
+    -fair_scheduler_allocation_path=<%= @hadoop_config_directory%>/fair-scheduler.xml"<% end -%>
+
+ENABLE_CORE_DUMPS=false
+
+# LIBHDFS_OPTS=-Djava.library.path=/usr/lib/impala/lib
+# MYSQL_CONNECTOR_JAR=/usr/share/java/mysql-connector-java.jar
+# IMPALA_BIN=/usr/lib/impala/sbin
+# IMPALA_HOME=/usr/lib/impala
+# HIVE_HOME=/usr/lib/hive
+# HBASE_HOME=/usr/lib/hbase
+# IMPALA_CONF_DIR=/etc/impala/conf
+# HADOOP_CONF_DIR=/etc/impala/conf
+# HIVE_CONF_DIR=/etc/impala/conf
+# HBASE_CONF_DIR=/etc/impala/conf
