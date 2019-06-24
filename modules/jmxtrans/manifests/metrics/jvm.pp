@@ -19,10 +19,12 @@ define jmxtrans::metrics::jvm(
     $statsd       = undef,
     $outfile      = undef,
     $group_prefix = '',
+    $ensure       = 'present',
 )
 {
     jmxtrans::metrics { "${title}-jvm-metrics":
         # lint:ignore:arrow_alignment
+        ensure               => $ensure,
         jmx                  => $jmx,
         outfile              => $outfile,
         ganglia              => $ganglia,

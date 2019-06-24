@@ -123,6 +123,7 @@ class role::kafka::analytics::broker {
     }
 
     class { '::confluent::kafka::broker::jmxtrans':
+        ensure       => 'absent',
         group_prefix => $group_prefix,
         statsd       => hiera('statsd', undef),
     }
@@ -130,6 +131,7 @@ class role::kafka::analytics::broker {
     # Monitor kafka in production
     if $::realm == 'production' {
         class { '::confluent::kafka::broker::alerts':
+            ensure                  => 'absent',
             nagios_servicegroup     => "analytics_${::site}",
             nrpe_contact_group      => 'admins,analytics',
             # TODO: tweak these

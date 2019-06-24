@@ -28,14 +28,6 @@ class { 'confluent::kafka::broker':
     log_dirs          => ['/var/spool/kafka/a', '/var/spool/kafka/b'],
 }
 
-# Set up jmxtrans emitting Kafka Broker metrics to statsd
-class { 'confluent::kafka::broker::jmxtrans':
-    statsd => 'statsd.example.org:8285',
-}
-
-# Set up basic Kafka Broker alerting via icinga
-class { 'confluent::kafka::broker::alerts': }
-
 ```
 
 See `manifests/kafka/broker.pp` for class documentation.

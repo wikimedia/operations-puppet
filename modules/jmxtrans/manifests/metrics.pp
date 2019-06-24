@@ -49,11 +49,13 @@ define jmxtrans::metrics(
     $statsd_root_prefix   = undef,
     $outfile              = undef,
     $json_dir             = '/etc/jmxtrans',
+    $ensure               = 'present',
 )
 {
     include jmxtrans
 
     file { "${json_dir}/${title}.json":
+        ensure  => $ensure,
         content => template('jmxtrans/jmxtrans.json.erb'),
         notify  => Service['jmxtrans'],
         require => Package['jmxtrans'],

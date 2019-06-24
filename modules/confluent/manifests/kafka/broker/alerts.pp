@@ -16,7 +16,8 @@ class confluent::kafka::broker::alerts(
     $nagios_servicegroup     = undef,
     $replica_maxlag_warning  = '1000',
     $replica_maxlag_critical = '10000',
-    $nrpe_contact_group      = 'admins'
+    $nrpe_contact_group      = 'admins',
+    $ensure                  = 'present',
 ) {
     require ::confluent::kafka::broker
     require ::confluent::kafka::broker::jmxtrans
@@ -26,11 +27,12 @@ class confluent::kafka::broker::alerts(
 
     # Generate icinga alert if Kafka Server is not running.
     nrpe::monitor_service { 'kafka':
+        ensure        => $ensure,
         description   => 'Kafka Broker Server',
         nrpe_command  => '/usr/lib/nagios/plugins/check_procs -c 1:1 -C java -a "Kafka /etc/kafka/server.properties"',
         contact_group => $nrpe_contact_group,
         critical      => true,
-        notes_url     => 'https://wikitech.wikimedia.org/wiki/Kafka',
+        notes_url     => 'https://wikitech.wikimedia.org/wiki/Kafka'
     }
 
     # jmxtrans statsd writer emits fqdns in keys
@@ -41,6 +43,7 @@ class confluent::kafka::broker::alerts(
     # If it does, this means a broker replica is falling behind
     # and will be removed from the ISR.
     monitoring::graphite_threshold { 'kafka-broker-UnderReplicatedPartitions':
+        ensure          => $ensure,
         description     => 'Kafka Broker Under Replicated Partitions',
         dashboard_links => ['https://grafana.wikimedia.org/d/000000523/kafka-graphite?refresh=5m&panelId=29&fullscreen&orgId=1'],
         metric          => "${group_prefix}kafka.${graphite_broker_key}.kafka.server.ReplicaManager.UnderReplicatedPartitions.Value",
@@ -55,6 +58,7 @@ class confluent::kafka::broker::alerts(
 
     # Alert if any Kafka Broker replica lag is too high
     monitoring::graphite_threshold { 'kafka-broker-Replica-MaxLag':
+        ensure          => $ensure,
         description     => 'Kafka Broker Replica Max Lag',
         dashboard_links => ['https://grafana.wikimedia.org/d/000000523/kafka-graphite?refresh=5m&panelId=16&fullscreen&orgId=1'],
         metric          => "${group_prefix}kafka.${graphite_broker_key}.kafka.server.ReplicaFetcherManager.MaxLag.Value",

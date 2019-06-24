@@ -42,6 +42,7 @@ class confluent::kafka::broker::jmxtrans(
     $objects        = undef,
     $run_interval   = 15,
     $log_level      = 'info',
+    $ensure         = 'present',
 )
 {
     require ::confluent::kafka::broker
@@ -59,6 +60,7 @@ class confluent::kafka::broker::jmxtrans(
     if !defined(Nrpe::Monitor_service['jmxtrans']) {
         # Generate icinga alert if this jmxtrans instance is not running.
         nrpe::monitor_service { 'jmxtrans':
+            ensure       => $ensure,
             description  => 'jmxtrans',
             nrpe_command => '/usr/lib/nagios/plugins/check_procs -c 1:1 -C java --ereg-argument-array "-jar.+jmxtrans-all.jar"',
             require      => Class['::jmxtrans'],
@@ -68,6 +70,7 @@ class confluent::kafka::broker::jmxtrans(
 
     # query for metrics from Kafka's JVM
     jmxtrans::metrics::jvm { $jmx:
+        ensure       => $ensure,
         graphite     => $graphite,
         statsd       => $statsd,
         outfile      => $outfile,
@@ -330,6 +333,7 @@ class confluent::kafka::broker::jmxtrans(
 
     # Query kafka for jmx metrics.
     jmxtrans::metrics { "kafka-${::hostname}-${jmx_port}":
+        ensure               => $ensure,
         jmx                  => $jmx,
         outfile              => $outfile,
         graphite             => $graphite,
