@@ -25,6 +25,6 @@ class profile::calico::kubernetes(
     ferm::service { 'calico-bird':
         proto  => 'tcp',
         port   => '179', # BGP
-        srange => "(@resolve((${bgp_peers_ferm})))",
+        srange => "(@resolve((${bgp_peers_ferm})) @resolve((${bgp_peers_ferm}), AAAA))",
     }
 }
