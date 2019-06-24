@@ -8,19 +8,11 @@
 #   to look up brokers from which Camus will import data.
 #   Default: 'jumbo'
 #
-# [*kafka_cluster_name_mediawiki*]
-#   Name of the Kafka cluster that handles the mediawiki avro events.
-#   In production it represents the last job to migrate to Jumbo, but for
-#   reason outlined in T188136 we are still not ready to do it.
-#   This option ease the deployment of this profile in labs.
-#   Default: 'analytics'
-#
 # [*monitoring_enabled*]
 #   Enable monitoring for Camus data imported.
 #
 class profile::analytics::refinery::job::camus(
     $kafka_cluster_name           = hiera('profile::analytics::refinery::job::camus::kafka_cluster_name', 'jumbo'),
-    $kafka_cluster_name_mediawiki = hiera('profile::analytics::refinery::job::camus::kafka_cluster_name_mediawiki', 'analytics'),
     $monitoring_enabled           = hiera('profile::analytics::refinery::job::camus::monitoring_enabled', false),
 ) {
     require ::profile::hadoop::common
@@ -29,10 +21,6 @@ class profile::analytics::refinery::job::camus(
     $kafka_config  = kafka_config($kafka_cluster_name)
     $kafka_brokers = suffix($kafka_config['brokers']['array'], ':9092')
 
-    # Temporary while we migrate camus jobs over to new kafka cluster.
-    $kafka_config_analytics  = kafka_config($kafka_cluster_name_mediawiki)
-
-    $kafka_brokers_analytics = suffix($kafka_config_analytics['brokers']['array'], ':9092')
     $kafka_brokers_jumbo     = suffix($kafka_config['brokers']['array'], ':9092')
 
     $env = "export PYTHONPATH=\${PYTHONPATH}:${profile::analytics::refinery::path}/python"
@@ -99,23 +87,6 @@ class profile::analytics::refinery::job::camus(
         # Only check this topic, since it should always have data for every hour
         check_topic_whitelist => "${primary_mediawiki_dc}.mediawiki.revision-create",
         interval              => '*-*-* *:05:00',
-    }
-
-    # Import mediawiki_* topics into /wmf/data/raw/mediawiki
-    # once every hour.  This data is expected to be Avro binary.
-    # TODO: This camus job will be removed once all mediawiki avro topics have moved
-    # to Modern Event Platform.
-    # See: https://phabricator.wikimedia.org/T188136
-    camus::job { 'mediawiki-analytics':
-        # TODO: remove after applying
-        ensure        => 'absent',
-        check         => $monitoring_enabled,
-        # refinery-camus contains some custom decoder classes which
-        # are needed to import Avro binary data.
-        libjars       => "${profile::analytics::refinery::path}/artifacts/org/wikimedia/analytics/refinery/refinery-camus-0.0.28.jar",
-        kafka_brokers => $kafka_brokers_analytics,
-        interval      => '*-*-* *:15:00',
-
     }
 
     # Import eventbus mediawiki.job queue topics into /wmf/data/raw/mediawiki_job
