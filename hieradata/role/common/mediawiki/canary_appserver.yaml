@@ -11,7 +11,7 @@ profile::mediawiki::mcrouter_wancache::num_proxies: 5
 has_lvs: true
 profile::mediawiki::webserver::has_tls: true
 profile::mediawiki::httpd::logrotate_retention: 12
-profile::lvs::realserver::use_safe_restart: true
+
 profile::lvs::realserver::pools:
   apaches:
     services:

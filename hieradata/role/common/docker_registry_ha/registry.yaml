@@ -10,7 +10,7 @@ profile::docker_registry_ha::registry::swift_username: "docker"
 profile::docker_registry_ha::registry::certname: "docker-registry.discovery.wmnet"
 profile::docker_registry_ha::registry::read_only_mode: false
 diamond::remove: true
-profile::lvs::realserver::use_safe_restart: true
+
 profile::lvs::realserver::pools:
   docker-registry:
     services:

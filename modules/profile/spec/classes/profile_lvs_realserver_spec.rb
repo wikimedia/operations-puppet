@@ -37,7 +37,6 @@ describe 'profile::lvs::realserver' do
               'appservers-https' => {'services' => ['apache2', 'php', 'mcrouter', 'nginx']},
             },
             'use_conftool' => true,
-            'use_safe_restart' => true,
           }
         }
         let(:pre_condition) {

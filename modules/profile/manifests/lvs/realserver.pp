@@ -3,15 +3,15 @@
 #
 # === Parameters
 #
-# [*pools*] Pools in the format: {$lvs_name => { service => $svc_name, lvs_group => $group}}
-#           where
-#           - lvs_name is the name of the pool referenced in lvs::configuration::service_ips
-#           - svc_name is the name of the service we manage via the conftool scripts
-#           - lvs_group is the subgroup (if present) of the lvs pool
+# [*pools*] Pools in the format: {$lvs_name => { services => [$svc1,$svc2,...] }
+#           where the services listed are the ones that are needed to serve the lvs pool.
+#           So for example if you need both apache and php7 to serve a request from a pool,
+#           both should be included.
+#
+# [*use_conftool*] Whether to use conftool or not.
 class profile::lvs::realserver(
     Hash $pools = hiera('profile::lvs::realserver::pools', {}),
     Boolean $use_conftool = hiera('profile::lvs::realserver::use_conftool'),
-    Boolean $use_safe_restart = hiera('profile::lvs::realserver::use_safe_restart', false)
 ) {
     require ::lvs::configuration
 
@@ -37,37 +37,21 @@ class profile::lvs::realserver(
 
     if $use_conftool {
         require ::profile::conftool::client
-        # New script version
-        if $use_safe_restart {
-            # Extract from $pools a {service => [pool1, ...]} hash
-            # that contains all the pools in which each service is included.
-            $all_services = $pools.map |$lvs_name, $pool| {
-                    $pool['services']
-            }
-            unique(flatten($all_services)).each |$service| {
-                $service_pools = $pools.filter |$lvs_name, $pool| { $service in $pool['services'] }
-                conftool::scripts::safe_service_restart { $service:
-                    lvs_pools       => keys($service_pools),
-                    lvs_class_hosts => $::lvs::configuration::lvs_class_hosts,
-                    lvs_services    => $::lvs::configuration::lvs_services
-                }
-            }
+        $all_services = $pools.map |$lvs_name, $pool| {
+            $pool['services']
         }
-        else {
-            # Old-style declaration. TODO: fix this.
-            $pools.each |$lvs_name, $pool| {
-                $svc_name = $pool['service'] ? {
-                    undef   => $lvs_name,
-                    default => $pool['service']
-                }
-
-                conftool::scripts::service {$svc_name:
-                    lvs_name            => $lvs_name,
-                    lvs_class_hosts     => $::lvs::configuration::lvs_class_hosts,
-                    lvs_services_config => $lvs::configuration::lvs_services,
-                }
+        unique(flatten($all_services)).each |$service| {
+            # Extract all the pools in which the service is included.
+            $service_pools = $pools.filter |$lvs_name, $pool| { $service in $pool['services'] }
+            conftool::scripts::safe_service_restart { $service:
+                lvs_pools       => keys($service_pools),
+                lvs_class_hosts => $::lvs::configuration::lvs_class_hosts,
+                lvs_services    => $::lvs::configuration::lvs_services
+            }
+            # Remove the old-style restart script, temporary
+            file { "/usr/local/bin/restart-${service}":
+                ensure => absent,
             }
         }
     }
-
 }

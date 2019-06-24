@@ -2,7 +2,7 @@ admin::groups:
   - parsoid-roots
   - parsoid-admin
 cluster: parsoid
-profile::lvs::realserver::use_safe_restart: true
+
 profile::lvs::realserver::pools:
   parsoid:
     services:
