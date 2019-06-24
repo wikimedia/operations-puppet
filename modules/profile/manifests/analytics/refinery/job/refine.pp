@@ -57,6 +57,7 @@ class profile::analytics::refinery::job::refine {
         'mediawiki_revision_visibility_change',
         'mediawiki_page_create',
         'mediawiki_page_delete',
+        'mediawiki_page_links_change',
         'mediawiki_page_undelete',
         'mediawiki_page_move',
         'resource_change',
