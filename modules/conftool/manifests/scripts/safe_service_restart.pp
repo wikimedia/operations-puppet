@@ -21,7 +21,7 @@
 # [*lvs_class_hosts*] LVS hosts classes, as defined in lvs::configuration::lvs_class_hosts.
 #
 define conftool::scripts::safe_service_restart(
-    Array[Str] $lvs_pools,
+    Array[String] $lvs_pools,
     Hash $lvs_services,
     Hash $lvs_class_hosts,
 ) {

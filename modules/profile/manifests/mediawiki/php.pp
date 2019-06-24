@@ -272,7 +272,7 @@ class profile::mediawiki::php(
             }
         }
 
-        # Install a script to safely restart php
+        # TODO: remove once we're done with the transition
         file { '/usr/local/bin/restart-php-fpm':
             ensure  => present,
             mode    => '0555',

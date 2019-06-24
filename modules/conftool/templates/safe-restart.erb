@@ -1,23 +1,24 @@
 #!/bin/bash
 <%-
+def get_cli
+  site = scope.lookupvar('::site')
+  uris = []
+  pools = []
+  # Build the lvs-urls and the pools
+  @lvs_pools.each do |pool_name|
+    service = @lvs_services[pool_name]
+    port = service['port'] || 80
+    pybal_name = "#{pool_name}_#{port}"
+    uris += @lvs_class_hosts[service['class']].map{ |h| "http://#{h}:9090/pools/#{pybal_name}" }
+    pools << service['conftool']['service']
+  end
+  cli = "--lvs-urls #{uris.join ' '} --pools #{pools.join ' '}"
+end
+
 realm = scope.lookupvar('::realm')
 if realm != 'production' || @lvs_pools == nil -%>
 echo "Safe-restart is not needed here."
 systemctl restart php<%= @php_version %>-fpm.service
 <%- else -%>
-
-site = scope.lookupvar('::site')
-uris = []
-pools = []
-# Build the lvs-urls and the pools
-@lvs_pools.each do |pool_name|
-  service = @lvs_services[pool_name]
-  port = service['port'] || 80
-  pybal_name = "#{pool_name}_#{port}"
-  uris += @lvs_class_hosts[service['class']].map{ |h| "http://#{h}:9090/pools/#{pybal_name}" }
-  pools << service['conftool']['service']
-end
-cli = "--lvs-urls #{uris.join ' '} --pools #{pools.join ' '}"
--%>
-/usr/local/bin/safe-service-restart <%= cli %> --services php<%= @php_version %>-fpm --retries 10 --wait 5
+/usr/local/bin/safe-service-restart <%= get_cli() %> --services php<%= @php_version %>-fpm --retries 10 --wait 5
 <%- end -%>

@@ -2,4 +2,4 @@ cluster: eventschemas
 admin::groups:
   - eventbus-admins
 profile::lvs::realserver::pools:
-  eventschemas: {}
+  schema: {}

@@ -23,6 +23,42 @@ lvs::configuration::lvs_services:
       IdleConnection:
         timeout-clean-reconnect: 3
         max-delay: 300
+  apaches:
+    description: "Main wiki platform LVS service, text.%{::site}.wikimedia.org (Varnish)"
+    class: high-traffic1
+    sites:
+      - testsite
+      - testsite1
+      - eqiad
+    ip: *ip_block001
+    scheduler: sh
+    depool-threshold: '.5'
+    conftool:
+      cluster: appserver
+      service: apache2
+    monitors:
+      IdleConnection:
+        timeout-clean-reconnect: 3
+        max-delay: 300
+  appservers-https:
+    description: "Main wiki platform LVS service, text.%{::site}.wikimedia.org (Varnish)"
+    class: high-traffic1
+    sites:
+      - testsite
+      - testsite1
+      - eqiad
+    ip: *ip_block001
+    scheduler: sh
+    depool-threshold: '.5'
+    port: 443
+    conftool:
+      cluster: appserver
+      service: nginx
+    monitors:
+      IdleConnection:
+        timeout-clean-reconnect: 3
+        max-delay: 300
+
 etcd_client_srv_domain: example.com
 etcd_host: ''
 etcd_port: 4100
