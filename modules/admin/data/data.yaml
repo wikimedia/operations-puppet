@@ -13,7 +13,7 @@ groups:
               yuvipanda, shrlak, madhuvishy, groovier, khorn, ironholds, katie, chedasaurus,
               cy534, pnorman, mpany, deskana, arnad, nithum, banyek, imarlier, mkroetzsch,
               mtizzoni, panisson, paolotti, ciro, dartar, melodykramer, gtirloni, tbayer, pirroh,
-              bawolff, dkg, juliaglen, dzahn]
+              bawolff, dkg, juliaglen, dzahn, cwdent]
   absent_ldap:
     description: meta group for absented users which had privileged LDAP access in the past, an automatic check verifies it has been really removed from the LDAP (but removal has to be handled separatelly)
     members: [adavenport, siddharth11, albe, audiohazel, tbolliger, jmatazzoni, pbj]
@@ -266,7 +266,7 @@ groups:
     members: [milimetric, dfoy, aude, jforrester,
               halfak, dr0ptp4kt, bearloga, elukey, ppchelko, mneisler,
               nuria, otto, jgreen, sguebo, thargrove,
-              bsitzmann, dbrant, nettrom, leila, cwdent, jmm,
+              bsitzmann, dbrant, nettrom, leila, jmm,
               ezachte, mforns, reedy, west1, phuedx, awight,
               joal, akosiaris, jkatz, tonina, pearley, ktsouroupidou,
               andyrussg, niedzielski, maxsem, hoo, daniel, krinkle, tgr,
@@ -2140,13 +2140,12 @@ users:
     uid: 2501
     email: bdziewonski@wikimedia.org
   cwdent:
-    ensure: present
+    ensure: absent
     gid: 500
     name: cwdent
     realname: Casey Dentinger
-    ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDnScww0ojcxQV3pjOBA+QII1EKeTRwnqW7k/hc1ZQbB4IHMSt1xvUnX71JLNHworWATzAWYS5zXwO9CTeq29yG8PYudgfGZNORigg6G21K/tClZdVxgTNzoH72mfx2k/S+fWURSZ7PNw6b9dlAy9O2VKeEboYaZVR9B5CMzGuV2Ekp4Glb3vcj6aFcrZIWjTR0jnSM0yGcjVpVjw1uGGNrPqTL5CKfyNJ9oDfy3VrGZJo3RJabIQZyfTl4JAT4OcuBVJisEhapSb770nAW71zJdvtyYhluo3ZNqi+6Wg5JWnMwK3Us+SI/JQeGq893MbIcHTZzjOWIu51LNiyzJeTf]
+    ssh_keys: []
     uid: 12179
-    email: cdentinger@wikimedia.org
   ema:
     ensure: present
     gid: 500
