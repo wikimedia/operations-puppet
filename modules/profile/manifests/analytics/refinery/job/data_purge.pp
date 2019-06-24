@@ -87,6 +87,7 @@ class profile::analytics::refinery::job::data_purge (
         interval    => '*-*-* 00/4:15:00',
         environment => $systemd_env,
         user        => 'analytics',
+        # TODO: remove after 2019-09-22
     }
 
     profile::analytics::systemd_timer { 'refinery-drop-cirrussearchrequestset-partitions':
@@ -95,6 +96,7 @@ class profile::analytics::refinery::job::data_purge (
         interval    => '*-*-* 00/4:25:00',
         environment => $systemd_env,
         user        => 'analytics',
+        # TODO: remove after 2019-09-22
     }
 
     # keep this many days of druid webrequest sampled

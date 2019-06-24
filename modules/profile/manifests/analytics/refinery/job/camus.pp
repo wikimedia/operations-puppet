@@ -107,12 +107,15 @@ class profile::analytics::refinery::job::camus(
     # to Modern Event Platform.
     # See: https://phabricator.wikimedia.org/T188136
     camus::job { 'mediawiki-analytics':
+        # TODO: remove after applying
+        ensure        => 'absent',
         check         => $monitoring_enabled,
         # refinery-camus contains some custom decoder classes which
         # are needed to import Avro binary data.
         libjars       => "${profile::analytics::refinery::path}/artifacts/org/wikimedia/analytics/refinery/refinery-camus-0.0.28.jar",
         kafka_brokers => $kafka_brokers_analytics,
         interval      => '*-*-* *:15:00',
+
     }
 
     # Import eventbus mediawiki.job queue topics into /wmf/data/raw/mediawiki_job
