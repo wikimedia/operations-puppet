@@ -39,7 +39,13 @@ class profile::toolforge::k8s::master(
         group  => 'kube',
     }
 
-    $etcd_servers_string = join($etcd_servers, ',')
+    # we need a string like:
+    # node1.example.com:2379,node2.example.com:2379
+    $port = '2380'
+    $etcd_servers_array = map($etcd_servers) |$element| {
+        $value = "${element}:${port}"
+    }
+    $etcd_servers_string = join($etcd_servers_array, ',')
     class { '::k8s::apiserver':
         etcd_servers             => $etcd_servers_string,
         ssl_cert_path            => $k8s_cert_pub,
