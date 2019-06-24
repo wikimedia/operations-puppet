@@ -441,7 +441,7 @@ node 'db1081.eqiad.wmnet' {
 }
 
 # see also db1097 and db1103 below
-node /^db1(068|084|091|121|135|138)\.eqiad\.wmnet/ {
+node /^db1(068|084|091|121|138)\.eqiad\.wmnet/ {
     role(mariadb::core)
 }
 
@@ -641,6 +641,13 @@ node 'db1063.eqiad.wmnet' {
     class { '::role::mariadb::misc':
         shard  => 'm1',
         master => true,
+    }
+}
+
+node 'db1135.eqiad.wmnet' {
+    class { '::role::mariadb::misc':
+        shard  => 'm1',
+        master => false,
     }
 }
 

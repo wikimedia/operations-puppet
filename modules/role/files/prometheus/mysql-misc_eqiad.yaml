@@ -9,6 +9,7 @@
     role: slave
   targets:
   - db1117:13321
+  - db1135:9104
 
 - labels:
     shard: m2
