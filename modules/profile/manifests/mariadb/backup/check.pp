@@ -22,15 +22,15 @@ class profile::mariadb::backup::check (
             }
         }
     }
-    #$snapshot_dcs.each |String $datacenter| {
-    #    $snapshot_sections.each |String $section| {
-    #        mariadb::monitor_backup { "${datacenter}-${section}-snapshot":
-    #            section    => $section,
-    #            datacenter => $datacenter,
-    #            type       => 'snapshot',
-    #            freshness  => 345600,  # 4 days
-    #        }
-    #    }
-    #}
+    $snapshot_dcs.each |String $datacenter| {
+        $snapshot_sections.each |String $section| {
+            mariadb::monitor_backup { "${datacenter}-${section}-snapshot":
+                section    => $section,
+                datacenter => $datacenter,
+                type       => 'snapshot',
+                freshness  => 345600,  # 4 days
+            }
+        }
+    }
 }
 
