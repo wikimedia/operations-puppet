@@ -15,7 +15,13 @@
 #
 # [*enable*] If service is to be enabled or not
 #
-define etcdmirror::instance($src, $src_path, $dst, $dst_path, $enable) {
+define etcdmirror::instance(
+    Stdlib::HTTPUrl  $src,
+    Stdlib::Unixpath $src_path,
+    Stdlib::HTTPUrl  $dst,
+    Stdlib::Unixpath $dst_path,
+    Boolean          $enable
+) {
     require_package('etcd-mirror')
 
     # safe version of the title
@@ -26,7 +32,10 @@ define etcdmirror::instance($src, $src_path, $dst, $dst_path, $enable) {
         default => 'stopped',
     }
 
-    $service_params = { ensure => $service_status, }
+    $service_params = {
+        ensure => $service_status,
+        enable => $enable,
+    }
 
     systemd::service { $prefix:
         ensure         => present,
