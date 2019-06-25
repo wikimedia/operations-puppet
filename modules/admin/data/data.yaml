@@ -3155,7 +3155,7 @@ users:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIAPE0Y9KGVkwRR1edkEe2/5LShc9s6nynwFQg+v9Uemd sukhe@sukhe
     uid: 21131
     email: ssingh@wikimedia.org
-    expiry_date: 2019-06-30
+    expiry_date: 2019-09-30
     expiry_contact: nuria@wikimedia.org
   wpao:
     ensure: present
