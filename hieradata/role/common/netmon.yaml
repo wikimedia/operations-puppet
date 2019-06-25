@@ -27,3 +27,8 @@ profile::netbox::netbox_report_checks:
         alert: true
         check_interval: null
         run_interval: '*-*-* 23:12:00' # once a day at 23:12 UTC
+    -   name: cables
+        classes: 'cables.Cables'
+        alert: true
+        check_interval: 5
+        run_interval: '*-*-* *:06/30:00' # every 30 minutes
