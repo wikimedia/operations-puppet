@@ -212,10 +212,6 @@ node 'bast3002.wikimedia.org' {
 }
 
 # Bastion in California
-node 'bast4001.wikimedia.org' {
-    role(spare::system)
-}
-
 node 'bast4002.wikimedia.org' {
     role(bastionhost::pop)
 
