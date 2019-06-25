@@ -56,7 +56,7 @@ define wdqs::blazegraph(
         logstash_host => $logstash_host,
         logstash_port => $logstash_json_port,
         log_dir       => $log_dir,
-        pattern       => '%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} IP:%X{req.remoteHost} UA:%X{req.userAgent} - %msg%n%rEx{1,QUERY_TIMEOUT,SYNTAX_ERROR}',
+        pattern       => '%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg - MDC:{%mdc}%n%rEx{1,QUERY_TIMEOUT,SYNTAX_ERROR}',
         evaluators    => true,
     }
 
