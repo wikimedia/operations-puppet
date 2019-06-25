@@ -25,6 +25,8 @@ define conftool::scripts::safe_service_restart(
     Hash $lvs_services,
     Hash $lvs_class_hosts,
 ) {
+    require ::conftool::scripts
+
     file { "/usr/local/sbin/restart-${title}":
         ensure  => present,
         content => template('conftool/safe-restart.erb'),
