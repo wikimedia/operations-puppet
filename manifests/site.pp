@@ -1259,7 +1259,7 @@ node 'iron.wikimedia.org' {
 
 # Analytics Kafka Brokers
 node /kafka10(12|13|14|20|22|23)\.eqiad\.wmnet/ {
-    role(kafka::analytics)
+    role(spare::system)
     interface::add_ip6_mapped { 'main': }
 }
 
