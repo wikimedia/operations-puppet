@@ -60,6 +60,7 @@
     role: slave
   targets:
   - db1117:13325
+  - db1135:9104
 
 - labels:
     shard: tendril

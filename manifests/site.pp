@@ -556,11 +556,6 @@ node /^db20(84|85|86|87|88|89|91)\.codfw\.wmnet/ {
     role(mariadb::core_multiinstance)
 }
 
-# Spare eqiad hosts to be provisioned #T211613
-node /^db11(32|33)\.eqiad\.wmnet/ {
-    role(spare::system)
-}
-
 ## x1 shard
 # eqiad
 # x1 eqiad master
@@ -725,6 +720,13 @@ node 'db1073.eqiad.wmnet' {
     class { '::role::mariadb::misc':
         shard  => 'm5',
         master => true,
+    }
+}
+
+node 'db1133.eqiad.wmnet' {
+    class { '::role::mariadb::misc':
+        shard  => 'm5',
+        master => false,
     }
 }
 
