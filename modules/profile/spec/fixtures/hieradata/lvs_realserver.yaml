@@ -3,7 +3,7 @@ lvs::configuration::lvs_service_ips:
     testsite:
       textlb: 1.1.1.1
       textlb6: 2620:0:861:102:1:1:1:1
-    testsite1:
+    eqiad:
       textlb: 8.8.8.8
       textlb6: 2620:0:861:102:8:8:8:8
 lvs::configuration::lvs_services:

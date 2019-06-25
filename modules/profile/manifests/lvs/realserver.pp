@@ -45,9 +45,7 @@ class profile::lvs::realserver(
                     $pool['services']
             }
             unique(flatten($all_services)).each |$service| {
-                $service_pools = $pools.filter |$lvs_name, $pool| {
-                    ($lvs_name == $service) or ($service in $pool)
-                }
+                $service_pools = $pools.filter |$lvs_name, $pool| { $service in $pool['services'] }
                 conftool::scripts::safe_service_restart { $service:
                     lvs_pools       => keys($service_pools),
                     lvs_class_hosts => $::lvs::configuration::lvs_class_hosts,

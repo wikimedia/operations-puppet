@@ -20,5 +20,5 @@ if realm != 'production' || @lvs_pools == nil -%>
 echo "Safe-restart is not needed here."
 systemctl restart php<%= @php_version %>-fpm.service
 <%- else -%>
-/usr/local/bin/safe-service-restart <%= get_cli() %> --services php<%= @php_version %>-fpm --retries 10 --wait 5
+/usr/local/bin/safe-service-restart <%= get_cli() %> --services <%= @title %> --retries 10 --wait 5
 <%- end -%>

@@ -28,7 +28,7 @@ describe 'profile::lvs::realserver' do
         }
       end
       context "with conftool" do
-        let(:node_params) { { :site => 'testsite', :realm => 'production',
+        let(:node_params) { { :site => 'eqiad', :realm => 'production',
                               :test_name => 'lvs_realserver'} }
         let(:params) {
           {
@@ -45,9 +45,14 @@ describe 'profile::lvs::realserver' do
         }
         it { is_expected.to compile.with_all_deps }
         it { is_expected.to contain_class('lvs::realserver')
-                              .with_realserver_ips(["1.1.1.1", "2620:0:861:102:1:1:1:1"])
+                              .with_realserver_ips(["8.8.8.8", "2620:0:861:102:8:8:8:8"])
         }
-        it { is_expected.to contain_file('/usr/local/sbin/restart-apache2') }
+        it { is_expected.to contain_conftool__scripts__safe_service_restart('nginx')
+                              .with_lvs_pools(['appservers-https'])
+        }
+        it { is_expected.to contain_file('/usr/local/sbin/restart-apache2')
+                              .with_content(%r{http:\/\/lvs1016:9090\/pools\/apaches_80})
+        }
       end
     end
   end
