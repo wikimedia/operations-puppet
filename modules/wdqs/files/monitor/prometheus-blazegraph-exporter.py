@@ -30,6 +30,8 @@ from prometheus_client.core import CounterMetricFamily, GaugeMetricFamily, REGIS
 
 log = logging.getLogger(__name__)
 
+HEADERS = {'User-Agent': 'wmf-prometheus/prometheus-blazegraph-exporter (root@wikimedia.org)'}
+
 
 class PrometheusBlazeGraphExporter(object):
 
@@ -68,14 +70,14 @@ class PrometheusBlazeGraphExporter(object):
 
     def execute_sparql(self, query):
         params = {'format': 'json', 'query': query}
-        response = requests.get(self.sparql_endpoint, params=params)
+        response = requests.get(self.sparql_endpoint, params=params, headers=HEADERS)
         return response.json()
 
     def fetch_allocators(self):
         allocators = 0
         try:
             url = "{base_url}/status?dumpJournal".format(base_url=self.url)
-            response = requests.get(url).text
+            response = requests.get(url, headers=HEADERS).text
             split_info = response.split('AllocatorSize')
             for alloc_line in split_info[1].splitlines():
                 # empty line finishes the table
