@@ -1,6 +1,7 @@
 class profile::toolforge::k8s::node(
     Array[Stdlib::Fqdn] $k8s_master_hosts = lookup('profile::toolforge::k8s_masters_hosts', {default_value => ['localhost']}),
     Stdlib::Fqdn        $k8s_master_fqdn  = lookup('profile::toolforge::k8s_master_fqdn',   {default_value => 'k8smaster.eqiad.wmflabs'}),
+    Boolean             $swap_partition   = lookup('swap_partition',                        {default_value => true}),
 ) {
     # This profile is for Debian Stretch specifically. No support for Buster yet.
     requires_os('debian == stretch')
@@ -9,6 +10,15 @@ class profile::toolforge::k8s::node(
     # iteration of the puppet code, as well as some other ferm configs
     # TODO: no proxy setup yet.
     # TODO: track Buster support for k8s in prod deployments
+
+    # disable swap: kubelet doesn't want it
+    if $swap_partition {
+        fail('Please set the swap_partition hiera key to false for this VM')
+    }
+    exec { 'toolforge_k8s_disable_swap':
+        command => '/sbin/swapoff -a',
+        onlyif  => '/usr/bin/test $(swapon -s | wc -l) -gt 0',
+    }
 
     # the certificate trick
     $k8s_cert_pub     = '/etc/kubernetes/ssl/cert.pem'
