@@ -71,21 +71,7 @@ class profile::mediawiki::webserver(
         # on long-running HHVM processes. T147773
 
         # first load the list of all nodes in the current DC
-        $module_path = get_module_path($module_name)
-        $site_nodes = loadyaml("${module_path}/../../conftool-data/node/${::site}.yaml")[$::site]
-
-        # Now build a non-flattened list of all servers in the site from all pools
-        # configured here.
-        $all_nodes = $::profile::lvs::realserver::pools.map |$pool, $data| {
-            if $::lvs::configuration::lvs_services[$pool] {
-                keys($site_nodes[$::lvs::configuration::lvs_services[$pool]['conftool']['cluster']])
-            }
-            else {
-                []
-            }
-        }
-
-        $pool_nodes = unique(flatten($all_nodes))
+        $pool_nodes = profile::lvs_pool_nodes(keys($::profile::lvs::realserver::pools), $::lvs::configuration::lvs_services)
         # If we are not in a pool it's not savy to restart hhvm
         if member($pool_nodes, $::fqdn) {
             $times = cron_splay($pool_nodes, 'daily', 'hhvm-conditional-restarts')
