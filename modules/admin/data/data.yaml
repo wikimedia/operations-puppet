@@ -228,7 +228,7 @@ groups:
     members: [ezachte, milimetric, halfak, awight, dr0ptp4kt, nuria,
               leila, nettrom, mforns, bmansurov, joal,
               tjones, legoktm, dcausse, bearloga, atgomez, dstrine,
-              marktraceur,
+              marktraceur, accraze,
               fdans, shiladsen, esanders, risler, nathante, chelsyx, jdl]
   statistics-users:
     gid: 726
@@ -597,7 +597,7 @@ groups:
   ores-admin:
     description: ORES admins
     gid: 782
-    members: [halfak]
+    members: [halfak, accraze]
     privileges: ['ALL = NOPASSWD: /usr/sbin/service uwsgi-ores *',
                  'ALL = NOPASSWD: /usr/sbin/service celery-ores-worker *',
                  'ALL = NOPASSWD: /usr/bin/lsof *']
@@ -3204,6 +3204,15 @@ users:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPjZq2lUicJxSAKeKAsb8KT8rm7RbG8MEF3NCjn5ymw/ jhedden@wikimedia.org
     uid: 21436
     email: jhedden@wikimedia.org
+  accraze:
+    ensure: present
+    gid: 500
+    name: accraze
+    realname: Andy Craze
+    ssh_keys:
+      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIGLtClyxT1BEaiary3mlGhyWrqytMGOtnGYC5/kaSVOa acraze@Andys-MacBook-Pro.local
+    uid: 21437
+    email: acraze@wikimedia.org
 ldap_only_users:
   abartov:
     ensure: present
