@@ -15,10 +15,12 @@ class raid::hpsa {
     user       => 'nagios',
     privileges => [
       'ALL = NOPASSWD: /usr/sbin/hpssacli controller all show',
+      'ALL = NOPASSWD: /usr/sbin/hpssacli controller all show detail',
       'ALL = NOPASSWD: /usr/sbin/hpssacli controller slot=[0-9] ld all show',
       'ALL = NOPASSWD: /usr/sbin/hpssacli controller slot=[0-9] ld all show detail',
       'ALL = NOPASSWD: /usr/sbin/hpssacli controller slot=[0-9] ld * show',
       'ALL = NOPASSWD: /usr/sbin/hpssacli controller slot=[0-9] pd all show',
+      'ALL = NOPASSWD: /usr/sbin/hpssacli controller slot=[0-9] pd all show detail',
       'ALL = NOPASSWD: /usr/sbin/hpssacli controller slot=[0-9] pd [0-9]\:[0-9] show',
       'ALL = NOPASSWD: /usr/sbin/hpssacli controller slot=[0-9] pd [0-9][EIC]\:[0-9]\:[0-9] show',
       'ALL = NOPASSWD: /usr/sbin/hpssacli controller slot=[0-9] pd [0-9][EIC]\:[0-9]\:[0-9][0-9] show',
