@@ -118,4 +118,10 @@ class profile::trafficserver::backend (
         owner  => 'root',
         group  => 'root',
     }
+
+    # Make sure the default varnish.service is never started
+    exec { 'mask_default_varnish':
+        command => '/bin/systemctl mask varnish.service',
+        creates => '/etc/systemd/system/varnish.service',
+    }
 }
