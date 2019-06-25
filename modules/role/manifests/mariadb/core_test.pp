@@ -1,8 +1,8 @@
 class role::mariadb::core_test {
-    if os_version('debian >= stretch') {
-        $default_package = 'wmf-mariadb101'
+    if os_version('debian >= buster') {
+        $default_package = 'wmf-mariadb103'
     } else {
-        $default_package = 'wmf-mariadb10'
+        $default_package = 'wmf-mariadb101'
     }
     $package = hiera('mariadb::package', $default_package)
     $basedir = hiera('mariadb::basedir',  "/opt/${package}")
