@@ -1272,7 +1272,7 @@ node 'kafka2003.codfw.wmnet' {
 }
 
 # Apply kafka::main role to new kafka-main hosts one by one initially
-node 'kafka-main2003.codfw.wmnet' {
+node /kafka-main200[23]\.codfw\.wmnet/ {
     role(kafka::main)
 }
 
