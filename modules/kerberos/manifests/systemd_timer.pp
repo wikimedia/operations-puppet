@@ -1,8 +1,9 @@
-# == Define: profile::analytics::systemd_timer
+# == Define: kerberos::systemd_timer
 #
-# This is prototype of a possible replacement (or evolution) of the
-# Analytics' cron job definitions. This used to be its own define, which got abstracted
-# to the more general systemd::timer::job define
+# This used to be its own define, which got abstracted
+# to the more general systemd::timer::job define.
+# This is a wrapper to allow executing kinit before
+# executing commands.
 #
 # [*description*]
 #   Description to place in the systemd unit.
@@ -61,7 +62,12 @@
 #   of space consumed on disk.
 #   Default: true
 #
-define profile::analytics::systemd_timer(
+#  [*use_kerberos*]
+#   Force a kinit before executing the command to properly authenticate
+#   via Kerberos.
+#   Default: false
+#
+define kerberos::systemd_timer(
     $description,
     $command,
     $interval,
@@ -75,8 +81,18 @@ define profile::analytics::systemd_timer(
     $logfile_group = 'analytics',
     $logfile_perms = 'all',
     $syslog_force_stop = true,
+    $use_kerberos = false,
     $ensure = present,
 ) {
+
+    require ::kerberos::wrapper
+
+    if $use_kerberos {
+        $wrapper = "${kerberos::wrapper::kerberos_run_command_script} ${user} "
+    } else {
+        $wrapper = ''
+    }
+
 
     $logging = $logfile_name ? {
         undef   => false,
@@ -85,7 +101,7 @@ define profile::analytics::systemd_timer(
     systemd::timer::job { $title:
         ensure                    => $ensure,
         description               => $description,
-        command                   => $command,
+        command                   => "${wrapper}${command}",
         interval                  => {
             'start'    => 'OnCalendar',
             'interval' => $interval

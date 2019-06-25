@@ -5,7 +5,9 @@
 # exists in HDFS.  (We can't require it here, since it needs to only be included once
 # on a different node.)
 #
-class profile::analytics::refinery::job::sqoop_mediawiki {
+class profile::analytics::refinery::job::sqoop_mediawiki (
+    $use_kerberos = lookup('profile::analytics::refinery::job::sqoop_mediawiki::use_kerberos', { 'default_value' => false }),
+){
     require ::profile::analytics::refinery
 
     include ::passwords::mysql::analytics_labsdb
@@ -65,12 +67,13 @@ class profile::analytics::refinery::job::sqoop_mediawiki {
         require => File['/usr/local/bin/refinery-sqoop-mediawiki', '/usr/local/bin/refinery-sqoop-mediawiki-production'],
     }
 
-    profile::analytics::systemd_timer { 'refinery-sqoop-whole-mediawiki':
-        description => 'Schedules sqoop to import whole MediaWiki databases into Hadoop monthly.',
-        command     => '/usr/local/bin/refinery-sqoop-whole-mediawiki',
-        interval    => '*-*-01 00:00:00',
-        user        => 'analytics',
-        require     => File['/usr/local/bin/refinery-sqoop-whole-mediawiki'],
+    kerberos::systemd_timer { 'refinery-sqoop-whole-mediawiki':
+        description  => 'Schedules sqoop to import whole MediaWiki databases into Hadoop monthly.',
+        command      => '/usr/local/bin/refinery-sqoop-whole-mediawiki',
+        interval     => '*-*-01 00:00:00',
+        user         => 'analytics',
+        use_kerberos => $use_kerberos,
+        require      => File['/usr/local/bin/refinery-sqoop-whole-mediawiki'],
     }
 
     ############################################################################
@@ -85,11 +88,12 @@ class profile::analytics::refinery::job::sqoop_mediawiki {
         group   => 'analytics',
     }
 
-    profile::analytics::systemd_timer { 'refinery-sqoop-mediawiki-private':
-        description => 'Schedules sqoop to import MediaWiki databases (containing PII data) into Hadoop monthly.',
-        command     => '/usr/local/bin/refinery-sqoop-mediawiki-private',
-        interval    => '*-*-02 00:00:00',
-        user        => 'analytics',
-        require     => File['/usr/local/bin/refinery-sqoop-mediawiki-private'],
+    kerberos::systemd_timer { 'refinery-sqoop-mediawiki-private':
+        description  => 'Schedules sqoop to import MediaWiki databases (containing PII data) into Hadoop monthly.',
+        command      => '/usr/local/bin/refinery-sqoop-mediawiki-private',
+        interval     => '*-*-02 00:00:00',
+        user         => 'analytics',
+        use_kerberos => $use_kerberos,
+        require      => File['/usr/local/bin/refinery-sqoop-mediawiki-private'],
     }
 }

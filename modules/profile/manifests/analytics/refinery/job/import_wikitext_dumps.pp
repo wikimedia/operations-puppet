@@ -4,7 +4,9 @@
 # NOTE: This class assumes the xmldatadumps folder under which public dumps
 # can be found is mounted under /mnt/data
 #
-class profile::analytics::refinery::job::import_wikitext_dumps {
+class profile::analytics::refinery::job::import_wikitext_dumps (
+    $use_kerberos = lookup('profile::analytics::refinery::job::import_wikitext_dumps::use_kerberos', { 'default_value' => false }),
+) {
     require ::profile::analytics::refinery
 
     $refinery_path          = $profile::analytics::refinery::path
@@ -21,12 +23,13 @@ class profile::analytics::refinery::job::import_wikitext_dumps {
         group   => 'analytics',
     }
 
-    profile::analytics::systemd_timer { 'refinery-import-page-history-dumps':
-        description => 'Schedules daily an incremental import of the current month of page-history xmldumps into Hadoop',
-        command     => '/usr/local/bin/refinery-import-page-history-dumps',
-        interval    => '*-*-* 03:00:00',
-        user        => 'analytics',
-        require     => File['/usr/local/bin/refinery-import-page-history-dumps'],
+    kerberos::systemd_timer { 'refinery-import-page-history-dumps':
+        description  => 'Schedules daily an incremental import of the current month of page-history xmldumps into Hadoop',
+        command      => '/usr/local/bin/refinery-import-page-history-dumps',
+        interval     => '*-*-* 03:00:00',
+        user         => 'analytics',
+        use_kerberos => $use_kerberos,
+        require      => File['/usr/local/bin/refinery-import-page-history-dumps'],
     }
 }
 

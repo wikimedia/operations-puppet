@@ -86,12 +86,17 @@ class profile::mariadb::misc::eventlogging::sanitization(
     # records sanitized if the script fails and does not commit a new timestamp.
     $eventlogging_cleaner_command = "/usr/local/bin/eventlogging_cleaner --whitelist ${whitelist_path} --yaml --older-than 90 --start-ts-file ${state_directory_path}/eventlogging_cleaner --batch-size 10000 --sleep-between-batches 2 ${extra_parameters}"
 
-    profile::analytics::systemd_timer { 'eventlogging_db_sanitization':
-        description => 'Apply Analytics data retetion policies to the Eventlogging database',
-        command     => $eventlogging_cleaner_command,
-        interval    => '*-*-* 11:00:00',
-        user        => 'eventlogcleaner',
-        require     => [
+    systemd::timer::job { 'eventlogging_db_sanitization':
+        description               => 'Apply Analytics data retetion policies to the Eventlogging database',
+        command                   => $eventlogging_cleaner_command,
+        interval                  => {
+            'start'    => 'OnCalendar',
+            'interval' => '*-*-* 11:00:00',
+        },
+        logging_enabled           => false,
+        user                      => 'eventlogcleaner',
+        monitoring_contact_groups => 'analytics',
+        require                   => [
             File['/usr/local/bin/eventlogging_cleaner'],
             File[$log_directory_path],
             File[$state_directory_path],
