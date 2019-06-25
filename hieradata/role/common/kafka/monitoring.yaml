@@ -5,12 +5,6 @@ profile::kafka::monitoring::config:
   main-codfw:
     burrow_port: 8100
     burrow_exporter_port: 9500
-  analytics:
-    burrow_port: 8000
-    burrow_exporter_port: 9000
-    api_version: '0.9.0.1'
-    to_email: 'analytics-alerts@wikimedia.org'
-    alert_whitelist: 'eventlogging_consumer_mysql_eventbus_00'
   jumbo-eqiad:
     burrow_port: 8700
     burrow_exporter_port: 9700

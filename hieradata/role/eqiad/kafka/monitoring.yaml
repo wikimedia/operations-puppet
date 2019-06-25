@@ -1,5 +1,4 @@
 profile::kafka::monitoring::clusters:
-  - 'analytics'
   - 'main-eqiad'
   - 'jumbo-eqiad'
   - 'logging-eqiad'

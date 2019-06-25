@@ -190,11 +190,6 @@ wikimedia_clusters:
     id: 43
     sites:
       eqiad: []
-  analytics_kafka:
-    description: "Analytics Kafka cluster"
-    id: 45
-    sites:
-      eqiad: []
   restbase:
     description: "Restbase"
     id: 48
@@ -495,31 +490,6 @@ zookeeper_clusters:
 kafka_message_max_bytes: 4194304
 
 kafka_clusters:
-  # This is the analytics Kafka cluster, named just 'eqiad' for
-  # historical reasons.
-  eqiad:
-    # Optional api_version indicates the Kafka API version the
-    # brokers are running.  Clients can use this to override
-    # version discovery for versions of Kafka where the version
-    # request API doesn't exist (< 0.10).  Once all brokers
-    # are on 0.10, this shouldn't be needed.
-    # Note: kafka1023 holds the '18' broker id after T181518
-    # since kafka1018 is not available anymore (hw failures).
-    api_version: 0.9
-    zookeeper_cluster_name: main-eqiad
-    brokers:
-      kafka1012.eqiad.wmnet:
-        id: 12  # Row A
-      kafka1013.eqiad.wmnet:
-        id: 13  # Row A
-      kafka1014.eqiad.wmnet:
-        id: 14  # Row C
-      kafka1023.eqiad.wmnet:
-        id: 18  # Row D
-      kafka1020.eqiad.wmnet:
-        id: 20  # Row D
-      kafka1022.eqiad.wmnet:
-        id: 22  # Row C
 
   main-eqiad:
     zookeeper_cluster_name: main-eqiad
@@ -1190,19 +1160,6 @@ kafka_brokers_main:
 - 2620:0:860:102:10:192:16:169 # kafka2002.codfw.wmnet
 - 10.192.32.150                # kafka2003.codfw.wmnet
 - 2620:0:860:103:10:192:32:150 # kafka2003.codfw.wmnet
-kafka_brokers_analytics:
-- 10.64.5.12                  # kafka1012.eqiad.wmnet
-- 2620:0:861:104:10:64:5:12   # kafka1012.eqiad.wmnet
-- 10.64.5.13                  # kafka1013.eqiad.wmnet
-- 2620:0:861:104:10:64:5:13   # kafka1013.eqiad.wmnet
-- 10.64.36.114                # kafka1014.eqiad.wmnet
-- 2620:0:861:106:10:64:36:114 # kafka1014.eqiad.wmnet
-- 10.64.53.12                 # kafka1020.eqiad.wmnet
-- 2620:0:861:108:10:64:53:12  # kafka1020.eqiad.wmnet
-- 10.64.36.122                # kafka1022.eqiad.wmnet
-- 2620:0:861:106:10:64:36:122 # kafka1022.eqiad.wmnet
-- 10.64.5.14                  # kafka1023.eqiad.wmnet
-- 2620:0:861:104:10:64:5:14   # kafka1023.eqiad.wmnet
 kafka_brokers_jumbo:
 - 10.64.0.175                 # kafka-jumbo1001.eqiad.wmnet
 - 2620:0:861:101:10:64:0:175  # kafka-jumbo1001.eqiad.wmnet

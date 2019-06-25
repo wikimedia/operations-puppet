@@ -42,10 +42,6 @@ module Puppet::Parser::Functions
     if realm == 'labs'
       labsp = lookupvar('::labsproject')
       "#{prefix}-#{labsp}"
-    # There is only one analytics cluster, it lives in eqiad.
-    # For historical reasons, the name of this cluster is 'eqiad'.
-    elsif prefix == 'analytics'
-      'eqiad'
     # Else expect that the caller wants the kafka cluster for prefix in the current datacenter.
     else
       "#{prefix}-#{site}"

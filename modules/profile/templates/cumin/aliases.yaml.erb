@@ -7,7 +7,7 @@ all: P{*}
 # Server group definitions
 all-mw-codfw: (A:mw-api or A:mw or A:mw-jobrunner) and A:codfw
 all-mw-eqiad: (A:mw-api or A:mw or A:mw-jobrunner) and A:eqiad
-analytics-all-eqiad: A:hadoop or A:aqs or A:druid or A:notebook or A:kafka-analytics or A:kafka-jumbo or A:misc-analytics
+analytics-all-eqiad: A:hadoop or A:aqs or A:druid or A:notebook or  A:kafka-jumbo or A:misc-analytics
 analytics-tools: P{O:analytics_cluster::hadoop::ui or O:analytics_cluster::turnilo or O:analytics_cluster::superset}
 analytics-web: P{O:analytics_cluster::webserver}
 aqs: P{O:aqs}
@@ -93,9 +93,7 @@ hadoop-worker-canary: P{analytics1042.eqiad.wmnet}
 hadoop-testcluster: P{O:analytics_test_cluster::hadoop::master or O:analytics_test_cluster::hadoop::standby or O:analytics_test_cluster::hadoop::worker or O:analytics_test_cluster::hadoop::ui or O:analytics_test_cluster::coordinator}
 icinga: P{O:alerting_host}
 installserver: P{O:installserver}
-kafka-all: A:kafka-analytics or A:kafka-main or A:kafka-jumbo
-kafka-analytics: P{O:kafka::analytics}
-kafka-analytics-canary: P{kafka1012.eqiad.wmnet}
+kafka-all: A:kafka-main or A:kafka-jumbo
 kafka-main: P{O:kafka::main}
 kafka-main-canary: P{kafka2001.codfw.wmnet}
 kafka-main-codfw: A:kafka-main and A:codfw

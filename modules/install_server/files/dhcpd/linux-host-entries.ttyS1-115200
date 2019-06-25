@@ -2942,42 +2942,6 @@ host kafka1003 {
     fixed-address kafka1003.eqiad.wmnet;
 }
 
-host kafka1012 {
-    hardware ethernet 90:b1:1c:06:a9:5d;
-    fixed-address kafka1012.eqiad.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
-}
-
-host kafka1013 {
-    hardware ethernet 90:b1:1c:06:7f:ee;
-    fixed-address kafka1013.eqiad.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
-}
-
-host kafka1014 {
-    hardware ethernet 90:b1:1c:06:75:01;
-    fixed-address kafka1014.eqiad.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
-}
-
-host kafka1020 {
-    hardware ethernet 90:B1:1C:12:98:D9;
-    fixed-address kafka1020.eqiad.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
-}
-
-host kafka1022 {
-    hardware ethernet 90:b1:1c:12:88:3c;
-    fixed-address kafka1022.eqiad.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
-}
-
-host kafka1023 {
-    hardware ethernet 90:b1:1c:06:c9:a2;
-    fixed-address kafka1023.eqiad.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
-}
-
 host kafka2001 {
     hardware ethernet 14:18:77:39:6F:37;
     fixed-address kafka2001.codfw.wmnet;
