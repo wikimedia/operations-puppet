@@ -326,7 +326,7 @@ class profile::hadoop::common (
     $hdfs_site_extra_properties_default = {}
     $mapred_site_extra_properties_default = {}
 
-    class { '::cdh::hadoop':
+    class { 'cdh::hadoop':
         # Default to using running resourcemanager on the same hosts
         # as the namenodes.
         resourcemanager_hosts                            => $resourcemanager_hosts,
