@@ -85,7 +85,7 @@ class profile::mediawiki::webserver(
             }
         }
 
-        $pool_nodes = flatten($all_nodes)
+        $pool_nodes = unique(flatten($all_nodes))
         # If we are not in a pool it's not savy to restart hhvm
         if member($pool_nodes, $::fqdn) {
             $times = cron_splay($pool_nodes, 'daily', 'hhvm-conditional-restarts')
