@@ -98,7 +98,7 @@ class profile::hadoop::spark2(
             require => Class['::profile::oozie::server'],
         }
 
-        cdh::exec { 'spark2_oozie_sharelib_install':
+        kerberos::exec { 'spark2_oozie_sharelib_install':
             command      => '/usr/local/bin/spark2_oozie_sharelib_install',
             user         => 'oozie',
             # spark2_oozie_sharelib_install will exit 0 if the current installed
@@ -117,7 +117,7 @@ class profile::hadoop::spark2(
             mode   => '0550',
         }
 
-        cdh::exec { 'spark2_upload_assembly':
+        kerberos::exec { 'spark2_upload_assembly':
             command      => '/usr/local/bin/spark2_upload_assembly.sh',
             user         => 'hdfs',
             # spark2_upload_assembly.sh will exit 0 if the current installed

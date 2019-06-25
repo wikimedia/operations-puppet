@@ -21,7 +21,7 @@ class cdh::hadoop::namenode::primary(
     if ($::cdh::hadoop::ha_enabled) {
         $primary_namenode_id = $::cdh::hadoop::primary_namenode_id
 
-        cdh::exec { 'haaadmin-transitionToActive':
+        kerberos::exec { 'haaadmin-transitionToActive':
             # $namenode_id is set in parent cdh::hadoop::namenode class.
             command     => "/usr/bin/hdfs haadmin -transitionToActive ${primary_namenode_id}",
             unless      => "/usr/bin/hdfs haadmin -getServiceState    ${primary_namenode_id} | /bin/grep -q active",

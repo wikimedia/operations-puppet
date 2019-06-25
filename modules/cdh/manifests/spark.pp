@@ -124,7 +124,7 @@ class cdh::spark(
         # doesn't have to be loaded for each spark job submission.
 
         $spark_jar_hdfs_path = "hdfs://${namenode_address}/user/spark/share/lib/spark-assembly.jar"
-        cdh::exec { 'spark_assembly_jar_install':
+        kerberos::exec { 'spark_assembly_jar_install':
             command      => "/usr/bin/hdfs dfs -put -f /usr/lib/spark/lib/spark-assembly.jar ${spark_jar_hdfs_path}",
             unless       => '/usr/bin/hdfs dfs -ls /user/spark/share/lib/spark-assembly.jar | grep -q /user/spark/share/lib/spark-assembly.jar',
             user         => 'spark',

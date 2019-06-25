@@ -28,7 +28,7 @@ class cdh::hadoop::users(
         mode   => '0554',
     }
 
-    cdh::exec { 'create_hdfs_user_directories':
+    kerberos::exec { 'create_hdfs_user_directories':
         command      => "/usr/local/bin/create_hdfs_user_directories.sh --verbose ${groups}",
         unless       => "/usr/local/bin/create_hdfs_user_directories.sh --check-for-changes ${groups}",
         user         => 'hdfs',

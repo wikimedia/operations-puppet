@@ -44,7 +44,7 @@ define cdh::hadoop::directory (
     Class['cdh::hadoop'] -> Cdh::Hadoop::Directory[$title]
 
     if $ensure == 'present' {
-        cdh::exec { "cdh::hadoop::directory ${title}":
+        kerberos::exec { "cdh::hadoop::directory ${title}":
             command      => "/usr/bin/hdfs dfs -mkdir ${path} && /usr/bin/hdfs dfs -chmod ${mode} ${path} && /usr/bin/hdfs dfs -chown ${owner}:${group} ${path}",
             unless       => "/usr/bin/hdfs dfs -test -e ${path}",
             user         => 'hdfs',
@@ -53,7 +53,7 @@ define cdh::hadoop::directory (
         }
     }
     else {
-        cdh::exec { "cdh::hadoop::directory ${title}":
+        kerberos::exec { "cdh::hadoop::directory ${title}":
             command      => "/usr/bin/hdfs dfs -rm -R -skipTrash ${path}",
             onlyif       => "/usr/bin/hdfs dfs -test -e ${path}",
             user         => 'hdfs',

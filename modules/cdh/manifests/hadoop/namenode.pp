@@ -57,7 +57,7 @@ class cdh::hadoop::namenode(
     # If $dfs_name_dir/current/VERSION doesn't exist, assume
     # NameNode has not been formated.  Format it before
     # the namenode service is started.
-    cdh::exec { 'hadoop-namenode-format':
+    kerberos::exec { 'hadoop-namenode-format':
         command => $namenode_format_command,
         creates => "${::cdh::hadoop::dfs_name_dir_main}/current/VERSION",
         user    => 'hdfs',
@@ -84,7 +84,7 @@ class cdh::hadoop::namenode(
             '<%= Array(@zookeeper_hosts).join(",") %>'
         )
 
-        cdh::exec { 'hadoop-hdfs-zkfc-init':
+        kerberos::exec { 'hadoop-hdfs-zkfc-init':
             # If the znode created by -formatZK already exists, and for
             # some buggy reason it happens to run, -formatZK will prompt
             # the user to confirm if the znode should be reformatted.

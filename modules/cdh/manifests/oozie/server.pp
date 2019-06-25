@@ -173,7 +173,7 @@ class cdh::oozie::server(
         require => Package['oozie'],
     }
 
-    cdh::exec { 'oozie_sharelib_install':
+    kerberos::exec { 'oozie_sharelib_install':
         command => "/usr/bin/oozie-setup sharelib create -fs ${hdfs_uri} -locallib ${oozie_sharelib_archive}",
         unless  => '/usr/bin/hdfs dfs -ls /user/oozie | grep -q /user/oozie/share',
         user    => 'oozie',

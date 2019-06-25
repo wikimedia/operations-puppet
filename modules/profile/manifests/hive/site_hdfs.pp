@@ -15,7 +15,7 @@ class profile::hive::site_hdfs (
     $hdfs_path = '/user/hive/hive-site.xml'
     # Put /etc/hive/conf/hive-site.xml in HDFS whenever puppet
     # notices that it has changed.
-    cdh::exec { 'put-hive-site-in-hdfs':
+    kerberos::exec { 'put-hive-site-in-hdfs':
         command      => "/usr/bin/hdfs dfs -put -f ${cdh::hive::config_directory}/hive-site.xml ${hdfs_path} && /usr/bin/hdfs dfs -chmod 644 ${hdfs_path} && /usr/bin/hdfs dfs -chown hdfs:hdfs ${hdfs_path}",
         user         => 'hdfs',
         refreshonly  => true,

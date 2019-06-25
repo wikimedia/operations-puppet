@@ -22,7 +22,7 @@ class profile::analytics::cluster::secrets(
     $research_pass = $::passwords::mysql::research::pass
     $research_path = "/user/${secrets_user}/mysql-analytics-research-client-pw.txt"
 
-    cdh::exec { 'hdfs_put_mysql-analytics-research-client-pw.txt':
+    kerberos::exec { 'hdfs_put_mysql-analytics-research-client-pw.txt':
         command      => "/bin/echo -n '${research_pass}' | /usr/bin/hdfs dfs -put - ${research_path} && /usr/bin/hdfs dfs -chmod 600 ${research_path} && /usr/bin/hdfs dfs -chown ${secrets_user}:${secrets_group} ${research_path}",
         unless       => "/usr/bin/hdfs dfs -test -e ${research_path}",
         user         => $secrets_user,
@@ -34,7 +34,7 @@ class profile::analytics::cluster::secrets(
     $labsdb_user = $::passwords::mysql::analytics_labsdb::user
     $labsdb_pass = $::passwords::mysql::analytics_labsdb::pass
     $labsdb_path = "/user/${secrets_user}/mysql-analytics-labsdb-client-pw.txt"
-    cdh::exec { 'hdfs_put_mysql-analytics-labsdb-client-pw.txt':
+    kerberos::exec { 'hdfs_put_mysql-analytics-labsdb-client-pw.txt':
         command      => "/bin/echo -n '${labsdb_pass}' | /usr/bin/hdfs dfs -put - ${labsdb_path} && /usr/bin/hdfs dfs -chmod 600 ${labsdb_path} && /usr/bin/hdfs dfs -chown ${secrets_user}:${secrets_group} ${labsdb_path}",
         unless       => "/usr/bin/hdfs dfs -test -e ${labsdb_path}",
         user         => $secrets_user,
@@ -54,7 +54,7 @@ class profile::analytics::cluster::secrets(
     $swift_analytics_admin_key      = $swift_account_keys['analytics_admin']
     $swift_analytics_admin_auth_env_content = "export ST_AUTH=${swift_analytics_admin_auth_url}/auth/v1.0\nexport ST_USER=${swift_analytics_admin_user}\nexport ST_KEY=${swift_analytics_admin_key}\n"
     $swift_analytics_admin_auth_env_path    = "/user/${secrets_user}/swift_auth_analytics_admin.env"
-    cdh::exec { 'hdfs_put_swift_auth_analytics_admin.env':
+    kerberos::exec { 'hdfs_put_swift_auth_analytics_admin.env':
         command      => "/bin/echo -n '${swift_analytics_admin_auth_env_content}' | /usr/bin/hdfs dfs -put - ${swift_analytics_admin_auth_env_path} && /usr/bin/hdfs dfs -chmod 600 ${swift_analytics_admin_auth_env_path} && /usr/bin/hdfs dfs -chown ${secrets_user}:${secrets_group} ${swift_analytics_admin_auth_env_path}",
         unless       => "/usr/bin/hdfs dfs -test -e ${swift_analytics_admin_auth_env_path}",
         user         => $secrets_user,

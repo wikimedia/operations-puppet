@@ -4,18 +4,13 @@ class profile::kerberos::client (
     Stdlib::Fqdn $krb_kadmin_primary = lookup('kerberos_kadmin_server_primary'),
 ) {
 
+    class { 'kerberos::wrapper': }
+
     file { '/etc/krb5.conf':
         owner   => 'root',
         group   => 'root',
         mode    => '0444',
         content => template('profile/kerberos/krb.conf.erb')
-    }
-
-    file { '/usr/local/bin/kerberos-puppet-wrapper':
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0555',
-        source => 'puppet:///modules/profile/kerberos/kerberos-puppet-wrapper.py',
     }
 
     file { '/var/log/kerberos':
