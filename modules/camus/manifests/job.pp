@@ -83,6 +83,7 @@ define camus::job (
     $interval               = undef,
     $environment            = undef,
     $monitoring_enabled     = true,
+    $use_kerberos           = false,
     $ensure                 = 'present',
 )
 {
@@ -128,19 +129,15 @@ define camus::job (
 
     $unit_command = "${script} --run --job-name camus-${title} ${camus_jar_opt} ${libjars_opt} ${check_opts} ${properties_file}"
 
-    systemd::timer::job { "camus-${title}":
+    kerberos::systemd_timer { "camus-${title}":
         ensure                    => $ensure,
         description               => "Hadoop Map-Reduce Camus job for ${title}",
         command                   => $unit_command,
-        interval                  => {
-            'start'    => 'OnCalendar',
-            'interval' => $interval
-        },
+        interval                  => $interval,
         user                      => $user,
         environment               => $environment,
         monitoring_enabled        => $monitoring_enabled,
         monitoring_contact_groups => 'analytics',
-        logging_enabled           => true,
         logfile_basedir           => $camus::log_directory,
         logfile_name              => "${title}.log",
         logfile_owner             => $user,
@@ -148,5 +145,6 @@ define camus::job (
         logfile_perms             => 'all',
         syslog_force_stop         => true,
         syslog_identifier         => "camus-${title}",
+        use_kerberos              => $use_kerberos,
     }
 }

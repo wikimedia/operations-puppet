@@ -68,6 +68,7 @@ profile::hadoop::balancer::use_kerberos: true
 profile::oozie::server::use_kerberos: true
 profile::hive::server::use_kerberos: true
 profile::hadoop::spark2::use_kerberos: true
+profile::analytics::refinery::job::camus::use_kerberos: true
 profile::hive::client::hive_metastore_sasl_enabled: true
 profile::hive::client::hive_metastore_kerberos_keytab_file: '/etc/security/keytabs/hive/hive.keytab'
 profile::hive::client::hive_metastore_kerberos_principal: 'hive/_HOST@WIKIMEDIA'

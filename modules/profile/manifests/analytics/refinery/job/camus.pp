@@ -11,9 +11,14 @@
 # [*monitoring_enabled*]
 #   Enable monitoring for Camus data imported.
 #
+# [*use_kerberos*]
+#   Run kinit before executing any command.
+#   Default: false
+#
 class profile::analytics::refinery::job::camus(
-    $kafka_cluster_name           = hiera('profile::analytics::refinery::job::camus::kafka_cluster_name', 'jumbo'),
-    $monitoring_enabled           = hiera('profile::analytics::refinery::job::camus::monitoring_enabled', false),
+    $kafka_cluster_name = lookup('profile::analytics::refinery::job::camus::kafka_cluster_name', { 'default_value' => 'jumbo' }),
+    $monitoring_enabled = lookup('profile::analytics::refinery::job::camus::monitoring_enabled', { 'default_value' => false }),
+    $use_kerberos       = lookup('profile::analytics::refinery::job::camus::use_kerberos', { 'default_value' => false }),
 ) {
     require ::profile::hadoop::common
     require ::profile::analytics::refinery
@@ -43,7 +48,8 @@ class profile::analytics::refinery::job::camus(
         environment         => $systemd_env,
         template_variables  => {
             'hadoop_cluster_name' => $::profile::hadoop::common::cluster_name
-        }
+        },
+        use_kerberos        => $use_kerberos,
     }
 
 

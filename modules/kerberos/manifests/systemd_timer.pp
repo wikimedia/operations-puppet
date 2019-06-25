@@ -82,6 +82,7 @@ define kerberos::systemd_timer(
     $logfile_perms = 'all',
     $syslog_force_stop = true,
     $use_kerberos = false,
+    $syslog_identifier = undef,
     $ensure = present,
 ) {
 
@@ -92,7 +93,6 @@ define kerberos::systemd_timer(
     } else {
         $wrapper = ''
     }
-
 
     $logging = $logfile_name ? {
         undef   => false,
@@ -116,6 +116,7 @@ define kerberos::systemd_timer(
         logfile_owner             => $logfile_owner,
         logfile_group             => $logfile_group,
         logfile_perms             => $logfile_perms,
+        syslog_identifier         => $syslog_identifier,
         syslog_force_stop         => $syslog_force_stop,
     }
 }
