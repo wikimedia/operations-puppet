@@ -49,7 +49,7 @@ class VarnishFetchErr(BaseVarnishLogConsumer):
     def handle_tag(self, tag, value):
         key = tag.lower()
 
-        if key.startswith("backend") or key == "httpgarbage":
+        if key.startswith("backend") or key == "httpgarbage" or key == "bogoheader":
             self.tx[key] = value
 
         # FetchError tags can be repeated, use a list
