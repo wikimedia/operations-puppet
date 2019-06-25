@@ -1262,9 +1262,18 @@ node /kafka10(12|13|14|20|22|23)\.eqiad\.wmnet/ {
 # Kafka Brokers - main-eqiad and main-codfw Kafka clusters.
 # For now, eventlogging-service-eventbus is also colocated
 # on these brokers.
-node /kafka[12]00[123]\.(eqiad|codfw)\.wmnet/ {
+node /kafka100[123]\.eqiad\.wmnet/ {
     role(kafka::main)
     interface::add_ip6_mapped { 'main': }
+}
+
+node /kafka200[12]\.codfw\.wmnet/ {
+    role(kafka::main)
+    interface::add_ip6_mapped { 'main': }
+}
+
+node 'kafka2003.codfw.wmnet' {
+    role(spare::system)
 }
 
 # Apply kafka::main role to new kafka-main hosts one by one initially
