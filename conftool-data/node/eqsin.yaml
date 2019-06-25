@@ -7,7 +7,7 @@ eqsin:
     cp5011.eqsin.wmnet: [varnish-fe, varnish-be, nginx]
     cp5012.eqsin.wmnet: [varnish-fe, varnish-be, nginx]
   cache_upload:
-    cp5001.eqsin.wmnet: [varnish-fe, varnish-be, nginx]
+    cp5001.eqsin.wmnet: [varnish-fe, ats-be, nginx]
     cp5002.eqsin.wmnet: [varnish-fe, varnish-be, nginx]
     cp5003.eqsin.wmnet: [varnish-fe, varnish-be, nginx]
     cp5004.eqsin.wmnet: [varnish-fe, varnish-be, nginx]
