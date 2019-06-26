@@ -19,7 +19,7 @@ class profile::mediawiki::php::restarts(
     $service = $::profile::mediawiki::php::fpm_programname
     # Check, then restart php-fpm if needed.
     # This implicitly depends on the other MediaWiki/PHP profiles
-    file { "/usr/local/sbin/check-and-restart-${service}":
+    file { '/usr/local/sbin/check-and-restart-php':
         ensure => $ensure,
         owner  => 'root',
         group  => 'root',
@@ -36,7 +36,7 @@ class profile::mediawiki::php::restarts(
         # Using a systemd timer should ensure we can track if the job fails
         systemd::timer::job { "${service}_check_restart":
             description       => 'Cronjob to check the status of the opcache space on PHP7, and restart the service if needed',
-            command           => "/usr/local/sbin/check-and-restart-${service} ${opcache_limit}",
+            command           => "/usr/local/sbin/check-and-restart-php ${service} ${opcache_limit}",
             interval          => {'start' => 'OnCalendar', 'interval' => $systemd_timer_interval},
             user              => 'root',
             logfile_basedir   => '/var/log/mediawiki',
