@@ -55,9 +55,6 @@ class base::sysctl {
             'net.ipv4.tcp_keepalive_intvl'     => 1,
             'net.ipv4.tcp_keepalive_probes'    => 2,
 
-            # Disable TCP selective acknowledgements
-            'net.ipv4.tcp_sack'                => 0,
-
             # Default IPv6 route table max_size is too small for the modern
             # Internet.  It's tempting to set this only for public-facing
             # caches and LVS, but when surveying hosts there are non-obvious
@@ -121,10 +118,22 @@ class base::sysctl {
     # hardcoded default of 48 for backwards compatibility reasons. We're setting it to
     # 538 which is the minimum MTU for IPv4 minus the size of the headers, which should
     # allow all legitimate traffic while avoiding the resource exhaustion.
+    #
+    # All the kernels which have CVE-2019-11479 backported, also have the fixes for
+    # CVE-2019-11477 and CVE-2019-11478 applied. Re-enable TCP selective acknowledments
+    # on all hosts which have been rebooted to that kernel and keep it disabled for all
+    # servers still running an unfixed kernel.
     if $facts.has_key('kernel_details') and
         $facts['kernel_details']['sysctl_settings']['net.ipv4.tcp_min_snd_mss'] {
         sysctl::parameters{'tcp_min_snd_mss':
-            values  => { 'net.ipv4.tcp_min_snd_mss' => '538' },
+            values  => {
+                'net.ipv4.tcp_min_snd_mss' => '538',
+                'net.ipv4.tcp_sack'        => 1,
+            },
+        }
+    } else {
+        sysctl::parameters{'disable_tcp_sack':
+            values  => { 'net.ipv4.tcp_sack' => 0 },
         }
     }
 }
