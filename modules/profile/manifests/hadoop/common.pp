@@ -449,7 +449,7 @@ class profile::hadoop::common (
             content => secret("certificates/${hadoop_ssl_config_name}/${hostname_tls_cn}/truststore.jks"),
             owner   => 'root',
             group   => 'hadoop',
-            mode    => '0440',
+            mode    => '0444',
             require => File[$::cdh::hadoop::config_directory],
         }
 
