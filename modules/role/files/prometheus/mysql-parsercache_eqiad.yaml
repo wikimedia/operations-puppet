@@ -1,9 +1,13 @@
 - labels:
     shard: pc1
+    role: slave
+  targets:
+  - pc1010:9104
+- labels:
+    shard: pc1
     role: master
   targets:
   - pc1007:9104
-  - pc1010:9104
 
 - labels:
     shard: pc2

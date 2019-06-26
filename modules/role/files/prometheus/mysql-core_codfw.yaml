@@ -151,24 +151,24 @@
     role: slave
   targets:
   - es2014:9104
-  - es2016:9104
+  - es2015:9104
 - labels:
     shard: es2
     role: master
   targets:
-  - es2015:9104
+  - es2016:9104
 
 - labels:
     shard: es3
     role: slave
   targets:
-  - es2017:9104
+  - es2018:9104
   - es2019:9104
 - labels:
     shard: es3
     role: master
   targets:
-  - es2018:9104
+  - es2017:9104
 
 - labels:
     shard: x1
