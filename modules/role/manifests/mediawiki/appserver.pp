@@ -10,4 +10,6 @@ class role::mediawiki::appserver {
     include ::profile::prometheus::php_fpm_exporter
     include ::profile::mediawiki::php::monitoring
     include ::profile::mediawiki::webserver
+    # restart php-fpm if the opcache available is too low
+    include ::profile::mediawiki::php::restarts
 }

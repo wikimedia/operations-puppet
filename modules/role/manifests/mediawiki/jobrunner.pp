@@ -15,6 +15,8 @@ class role::mediawiki::jobrunner {
     include ::profile::mediawiki::php::monitoring
     include ::profile::prometheus::php_fpm_exporter
 
+    # restart php-fpm if the opcache available is too low
+    include ::profile::mediawiki::php::restarts
 
     # TODO: change role used in beta
     if hiera('has_lvs', true) {

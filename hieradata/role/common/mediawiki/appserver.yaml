@@ -38,3 +38,8 @@ profile::mediawiki::php::fpm_config:
   opcache.interned_strings_buffer: 96
   opcache.memory_consumption: 1024
   apc.ttl: 10
+# Configure php-fpm restarts
+profile::mediawiki::php::restarts::ensure: present
+# We set the restart watermark at 200 MB, which is approximately how much
+# opcache one full day of deployments consume.
+profile::mediawiki::php::restarts::opcache_limit: 200
