@@ -73,8 +73,20 @@ class profile::toolforge::k8s::node(
         require         => Class['::profile::docker::storage'],
     }
 
-    class { '::k8s::infrastructure_config':
-        master_host => $k8s_master_fqdn,
+    file { '/etc/kubernetes':
+        ensure => directory,
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0755',
+    }
+
+    file { '/etc/kubernetes/kubeconfig':
+        ensure  => present,
+        content => template('toolforge/k8s/kubeconfig-node.yaml.erb'),
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0400',
+        require => File['/etc/kubernetes'],
     }
 
     class { '::k8s::kubelet':
