@@ -72,6 +72,6 @@ class profile::toolforge::k8s::master(
     ferm::service { 'apiserver-https':
         proto  => 'tcp',
         port   => '6443',
-        srange => '127.0.0.1',
+        srange => '172.16.0.0/16',
     }
 }
