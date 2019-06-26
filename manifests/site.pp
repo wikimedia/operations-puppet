@@ -567,11 +567,11 @@ node /^db20(84|85|86|87|88|89|91)\.codfw\.wmnet/ {
 ## x1 shard
 # eqiad
 # x1 eqiad master
-node 'db1069.eqiad.wmnet' {
+node 'db1120.eqiad.wmnet' {
     role(mariadb::core)
 }
-
-node 'db1120.eqiad.wmnet' {
+# Host be decommissioned
+node 'db1069.eqiad.wmnet' {
     role(mariadb::core)
 }
 

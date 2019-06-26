@@ -1,3 +1,4 @@
 # db1120
 mariadb::shard: 'x1'
 mariadb::binlog_format: 'ROW'
+mariadb::mysql_role: 'master'
