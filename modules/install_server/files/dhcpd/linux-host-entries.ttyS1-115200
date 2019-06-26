@@ -2859,17 +2859,17 @@ host ganeti2018 {
 
 host ganeti4001 {
     hardware ethernet B0:26:28:3A:F2:A0;
-    fixed-address ganeti4001.wikimedia.org;
+    fixed-address ganeti4001.ulsfo.wmnet;
 }
 
 host ganeti4002 {
     hardware ethernet B0:26:28:3A:EA:00;
-    fixed-address ganeti4002.wikimedia.org;
+    fixed-address ganeti4002.ulsfo.wmnet;
 }
 
 host ganeti4003 {
     hardware ethernet B0:26:28:3A:FB:A0;
-    fixed-address ganeti4003.wikimedia.org;
+    fixed-address ganeti4003.ulsfo.wmnet;
 }
 
 host gerrit2001 {
