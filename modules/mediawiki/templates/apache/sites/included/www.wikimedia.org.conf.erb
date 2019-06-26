@@ -12,7 +12,7 @@
 
     # Main page portal
     RewriteRule ^/$ /portal/wikimedia.org/index.html [L]
-    <Location "^/$|^/portal/">
+    <Location ~ "^/$|^/portal/">
         Header set Cache-Control "s-maxage=3600, must-revalidate, max-age=0"
     </Location>
 
@@ -31,8 +31,8 @@
     RewriteRule ^/api$ %{ENV:RW_PROTO}://%{SERVER_NAME}/api/ [R=301]
     RewriteRule ^/api/$ /w/extract2.php?template=API_listing_template [L]
 
-    # T223835
-    <Location "^/.well-known/matrix/">
+    # T223835 - Add CORS for matrix requests that are redirected from wikimedia.org
+    <Location "/.well-known/matrix/">
         Header set Access-Control-Allow-Origin "*"
     </Location>
 
