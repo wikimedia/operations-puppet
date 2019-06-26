@@ -3,7 +3,6 @@
 # https://wiki.openstack.org/wiki/Nova
 class openstack::nova::compute::monitor(
     $active,
-    $certname,
     $verify_instances=false,
     $contact_groups='wmcs-bots,admins',
 ){
@@ -22,15 +21,6 @@ class openstack::nova::compute::monitor(
         group  => 'root',
         mode   => '0755',
         source => 'puppet:///modules/nagios_common/check_commands/check_ssl_certfile',
-    }
-
-    # T116332
-    nrpe::monitor_service { 'kvm_ssl_cert':
-        ensure        => $ensure,
-        description   => 'kvm ssl cert',
-        nrpe_command  => "/usr/local/lib/nagios/plugins/check_ssl_certfile /etc/ssl/localcerts/${certname}.crt",
-        contact_group => $contact_groups,
-        notes_url     => 'https://wikitech.wikimedia.org/wiki/Portal:Cloud_VPS/Admin/Troubleshooting',
     }
 
     # Having multiple nova-compute process running long term has been known to happen

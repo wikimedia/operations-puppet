@@ -7,8 +7,6 @@ class profile::openstack::codfw1dev::nova::compute::service(
     $physical_interface_mappings = hiera('profile::openstack::codfw1dev::nova::physical_interface_mappings'),
     ) {
 
-    $certname = "labvirt-star.${::site}.wmnet"
-    $ca_target = '/etc/ssl/certs/wmf_ca_2017_2020.pem'
     require ::profile::openstack::codfw1dev::neutron::common
     class {'::profile::openstack::base::neutron::linuxbridge_agent':
         version                     => $version,
@@ -19,11 +17,10 @@ class profile::openstack::codfw1dev::nova::compute::service(
     require ::profile::openstack::codfw1dev::nova::common
     class {'::profile::openstack::base::nova::compute::service':
         version                            => $version,
-        certname                           => $certname,
-        ca_target                          => $ca_target,
         network_flat_interface             => $network_flat_interface,
         network_flat_tagged_base_interface => $network_flat_tagged_base_interface,
         network_flat_interface_vlan        => $network_flat_interface_vlan,
+        all_cloudvirts                     => unique(concat(query_nodes('Class[profile::openstack::codfw1dev::nova::compute::service]'), [$::fqdn])),
         require                            => Class['::profile::openstack::base::neutron::linuxbridge_agent'],
     }
     contain '::profile::openstack::base::nova::compute::service'

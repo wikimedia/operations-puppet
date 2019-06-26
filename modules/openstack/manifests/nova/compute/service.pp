@@ -3,8 +3,8 @@
 # https://wiki.openstack.org/wiki/Nova
 class openstack::nova::compute::service(
     $version,
-    $certname,
-    $ca_target,
+    $certpath,
+    $all_cloudvirts,
     ){
 
     # jessie: libvirt:x:121:nova
@@ -60,34 +60,6 @@ class openstack::nova::compute::service(
         require => File['/var/lib/nova/.ssh'],
     }
 
-    sslcert::certificate { $certname: }
-
-    file { "/var/lib/nova/${certname}.key":
-        owner     => 'nova',
-        group     => $libvirt_unix_sock_group,
-        mode      => '0440',
-        content   => secret("ssl/${certname}.key"),
-        require   => Package['nova-compute'],
-        show_diff => false,
-    }
-
-    file { '/var/lib/nova/clientkey.pem':
-        ensure => link,
-        target => "/var/lib/nova/${certname}.key",
-    }
-
-    file { '/var/lib/nova/clientcert.pem':
-        ensure  => link,
-        target  => "/etc/ssl/localcerts/${certname}.crt",
-        require => Sslcert::Certificate[$certname],
-    }
-
-    file { '/var/lib/nova/cacert.pem':
-        ensure  => link,
-        target  => $ca_target,
-        require => Sslcert::Certificate[$certname],
-    }
-
     service { 'nova-compute':
         ensure    => 'running',
         subscribe => [
@@ -129,7 +101,7 @@ class openstack::nova::compute::service(
         mode    => '0444',
         content => template('openstack/mitaka/nova/compute/libvirtd.conf.erb'),
         notify  => Service['libvirtd'],
-        require => Package['nova-compute'],
+        require => [Package['nova-compute'], File['/var/lib/nova/ssl/ca.pem']]
     }
 
     file { '/etc/default/libvirtd':
