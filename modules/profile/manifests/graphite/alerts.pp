@@ -12,8 +12,6 @@ class profile::graphite::alerts($graphite_url = hiera('graphite_url')) {
         graphite_url => $graphite_url
     }
 
-    $kafka_config = kafka_config('analytics')
-
     # Eventlogging
     #   Warn/Alert if the db inserts of EventLogging data have dropped dramatically
     #   Since the MySQL consumer is at the bottom of the pipeline
