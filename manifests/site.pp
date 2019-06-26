@@ -1262,12 +1262,12 @@ node /kafka100[123]\.eqiad\.wmnet/ {
     interface::add_ip6_mapped { 'main': }
 }
 
-node /kafka200[12]\.codfw\.wmnet/ {
+node 'kafka2001.codfw.wmnet' {
     role(kafka::main)
     interface::add_ip6_mapped { 'main': }
 }
 
-node 'kafka2003.codfw.wmnet' {
+node /kafka200[23]\.codfw\.wmnet/ {
     role(spare::system)
 }
 
