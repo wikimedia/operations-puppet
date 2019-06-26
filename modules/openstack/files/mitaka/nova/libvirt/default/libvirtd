@@ -5,7 +5,7 @@
 start_libvirtd="yes"
 
 # options passed to libvirtd, add "-l" to listen on tcp
-#libvirtd_opts=""
+libvirtd_opts="-l"
 
 # pass in location of kerberos keytab
 #export KRB5_KTNAME=/etc/libvirt/libvirt.keytab
