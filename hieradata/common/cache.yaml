@@ -28,6 +28,7 @@ cache::nodes:
       - 'cp3040.esams.wmnet'
       - 'cp3041.esams.wmnet'
       - 'cp3042.esams.wmnet'
+      - 'cp3043.esams.wmnet'
     ulsfo:
       - 'cp4027.ulsfo.wmnet'
       - 'cp4028.ulsfo.wmnet'
@@ -72,7 +73,6 @@ cache::nodes:
       # - 'cp3037.esams.wmnet' dead in T222041
       - 'cp3039.esams.wmnet'
       - 'cp3038.esams.wmnet'
-      - 'cp3043.esams.wmnet' # on loan from cache_text
       - 'cp3044.esams.wmnet'
       - 'cp3045.esams.wmnet'
       - 'cp3046.esams.wmnet'
