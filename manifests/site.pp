@@ -349,12 +349,12 @@ node /^cp40(2[789]|3[012])\.ulsfo\.wmnet$/ {
 # eqsin caches
 #
 
-node /^cp500[1-2]\.eqsin\.wmnet$/ {
+node /^cp500[1-3]\.eqsin\.wmnet$/ {
     interface::add_ip6_mapped { 'main': }
     role(cache::upload_ats)
 }
 
-node /^cp500[3-6]\.eqsin\.wmnet$/ {
+node /^cp500[4-6]\.eqsin\.wmnet$/ {
     interface::add_ip6_mapped { 'main': }
     role(cache::upload)
 }
