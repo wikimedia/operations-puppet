@@ -86,10 +86,10 @@ cache::nodes:
       - 'cp4025.ulsfo.wmnet'
       - 'cp4026.ulsfo.wmnet'
     eqsin:
-      - 'cp5004.eqsin.wmnet'
       - 'cp5005.eqsin.wmnet'
       - 'cp5006.eqsin.wmnet'
     eqsin_ats:
       - 'cp5001.eqsin.wmnet'
       - 'cp5002.eqsin.wmnet'
       - 'cp5003.eqsin.wmnet'
+      - 'cp5004.eqsin.wmnet'
