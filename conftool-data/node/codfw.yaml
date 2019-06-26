@@ -281,7 +281,7 @@ codfw:
     kubernetes2005.codfw.wmnet: []
     kubernetes2006.codfw.wmnet: []
   eventbus:
-    kafka2001.codfw.wmnet: [eventbus]
+    kafka-main2001.codfw.wmnet: [eventbus]
     kafka-main2002.codfw.wmnet: [eventbus]
     kafka-main2003.codfw.wmnet: [eventbus]
   eventschemas:

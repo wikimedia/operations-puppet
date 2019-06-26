@@ -507,7 +507,7 @@ kafka_clusters:
   main-codfw:
     zookeeper_cluster_name: main-codfw
     brokers:
-      kafka2001.codfw.wmnet:
+      kafka-main2001.codfw.wmnet:
         id: 2001
         rack: A
       kafka-main2002.codfw.wmnet:
@@ -1156,8 +1156,8 @@ kafka_brokers_main:
 - 2620:0:861:102:10:64:16:41   # kafka1002.eqiad.wmnet
 - 10.64.32.127                 # kafka1003.eqiad.wmnet
 - 2620:0:861:103:10:64:32:127  # kafka1003.eqiad.wmnet
-- 10.192.0.139                 # kafka2001.codfw.wmnet
-- 2620:0:860:101:10:192:0:139  # kafka2001.codfw.wmnet
+- 10.192.0.17                  # kafka-main2001.codfw.wmnet
+- 2620:0:860:101:10:192:0:17   # kafka-main2001.codfw.wmnet
 - 10.192.16.8                  # kafka-main2002.codfw.wmnet
 - 2620:0:860:102:10:192:16:8   # kafka-main2002.codfw.wmnet
 - 10.192.32.136                # kafka-main2003.codfw.wmnet
