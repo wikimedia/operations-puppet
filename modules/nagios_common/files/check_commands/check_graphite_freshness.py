@@ -30,6 +30,7 @@ sys.setdefaultencoding("utf-8")
 import argparse
 import datetime
 import json
+import os
 import urllib2
 
 
@@ -59,8 +60,13 @@ if args.critical is None and args.warning is None:
 
 
 try:
-    url = args.render_url + '?format=json&target=' + args.metric
-    data = json.load(urllib2.urlopen(url))[0]
+    req = urllib2.Request('{}?format=json&target={}'.format(
+        args.render_url,
+        args.metric))
+    req.add_header(
+        'User-Agent',
+        'wmf-icinga/{} root@wikimedia.org'.format(os.path.basename(__file__)))
+    data = json.load(urllib2.urlopen(req))[0]
     most_recent = datetime.datetime.utcfromtimestamp(max(
             ts for value, ts in data['datapoints'] if value is not None))
     staleness = datetime.datetime.utcnow() - most_recent

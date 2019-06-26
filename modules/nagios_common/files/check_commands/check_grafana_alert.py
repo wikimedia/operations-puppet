@@ -27,6 +27,7 @@ sys.setdefaultencoding("utf-8")
 
 import argparse
 import json
+import os
 import urllib2
 
 
@@ -40,10 +41,13 @@ dashboard_id = ''
 dashboard_url = ''
 dashboard_title = ''
 try:
-    dashboard_info = json.load(urllib2.urlopen('%s/api/dashboards/uid/%s' % (
+    req = urllib2.Request('{}/api/dashboards/uid/{}'.format(
         args.grafana_url,
-        args.dashboard_uid
-    )))
+        args.dashboard_uid))
+    req.add_header(
+        'User-Agent',
+        'wmf-icinga/{} root@wikimedia.org'.format(os.path.basename(__file__)))
+    dashboard_info = json.load(urllib2.urlopen(req))
     dashboard_id = dashboard_info['dashboard']['id']
     dashboard_url = '%s%s' % (
         args.grafana_url,
@@ -57,10 +61,13 @@ except Exception as e:
 
 alerting_names = []
 try:
-    data = json.load(urllib2.urlopen('%s/api/alerts?dashboardId=%s&state=alerting' % (
+    req = urllib2.Request('{}/api/alerts?dashboardId={}&state=alerting'.format(
         args.grafana_url,
-        dashboard_id
-    )))
+        args.dashboard_uid))
+    req.add_header(
+        'User-Agent',
+        'wmf-icinga/{} root@wikimedia.org'.format(os.path.basename(__file__)))
+    data = json.load(urllib2.urlopen(req))
     alerting_names = list(map(lambda alert: alert['name'], data))
 except Exception as e:
     print('UNKNOWN: failed to check dashboard %s ( %s ) due to exception: %s' % (

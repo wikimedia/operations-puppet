@@ -99,12 +99,13 @@ class GraphiteCheck(object):
         :raises: NagiosException on non-OK statuses
         '''
 
-        h = {'User-Agent': 'check_graphite/1.0'}
+        header = {
+            'User-Agent': 'wmf-icinga/{} root@wikimedia.org'.format(os.path.basename(__file__))}
 
         full_url = '%s/render?%s' % (self.base_url, urlencode(self.params))
 
         try:
-            req = urllib2.Request(full_url, None, h)
+            req = urllib2.Request(full_url, None, header)
             response = urllib2.urlopen(req, None, self.http_timeout)
         except urllib2.HTTPError as e:
             raise NagiosException(
