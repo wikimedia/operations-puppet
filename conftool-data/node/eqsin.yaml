@@ -11,7 +11,7 @@ eqsin:
     cp5002.eqsin.wmnet: [varnish-fe, ats-be, nginx]
     cp5003.eqsin.wmnet: [varnish-fe, ats-be, nginx]
     cp5004.eqsin.wmnet: [varnish-fe, ats-be, nginx]
-    cp5005.eqsin.wmnet: [varnish-fe, varnish-be, nginx]
+    cp5005.eqsin.wmnet: [varnish-fe, ats-be, nginx]
     cp5006.eqsin.wmnet: [varnish-fe, varnish-be, nginx]
   dns:
     dns5001.wikimedia.org: [pdns_recursor]
