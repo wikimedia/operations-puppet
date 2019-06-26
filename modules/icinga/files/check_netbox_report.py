@@ -2,6 +2,7 @@
 
 import argparse
 import logging
+import os
 import sys
 
 from yaml import safe_load
@@ -94,6 +95,7 @@ def run_report(report_result):
     headers = {
         "Authorization": "Token {}".format(report_result.api.token),
         "Accept": "application/json",
+        'User-agent': 'wmf-icinga/{} (root@wikimedia.org)'.format(os.path.basename(__file__)),
     }
     result = requests.post(url, headers=headers)
     if result.status_code != 200:

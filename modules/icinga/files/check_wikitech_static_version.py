@@ -21,6 +21,7 @@
 
 from __future__ import print_function
 
+import os
 import sys
 
 import requests
@@ -55,7 +56,9 @@ def mwapi(server, **kwargs):
     url = 'https://{}/w/api.php'.format(server)
     query = {'format': 'json', 'formatversion': '2'}
     query.update(kwargs)
-    req = requests.get(url, params=query)
+    headers = requests.utils.default_headers()
+    headers['User-agent'] = 'wmf-icinga/{} (root@wikimedia.org)'.format(os.path.basename(__file__))
+    req = requests.get(url, params=query, headers=headers)
     req.raise_for_status()
     return req.json()
 
@@ -69,7 +72,7 @@ try:
         action='expandtemplates', prop='wikitext',
         text='MediaWiki {{MW stable release number}}',
     )['expandtemplates']['wikitext']
-except:
+except Exception:
     icinga_exit(
         UNKNOWN,
         'Failed to fetch latest MediaWiki version from mediawiki.org')
@@ -80,7 +83,7 @@ try:
         TARGET,
         action='query', meta='siteinfo', siprop='general',
     )['query']['general']['generator']
-except:
+except Exception:
     icinga_exit(
         UNKNOWN, 'Failed to fetch MediaWiki version for {}', TARGET)
 

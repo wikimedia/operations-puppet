@@ -6,9 +6,11 @@
 convert it to UNIX epoch, compare to local time
 and alert if it's too old."""
 
-import sys
 import argparse
-from time import time, mktime, strptime
+import os
+import sys
+from time import mktime, strptime, time
+
 import requests
 from rfc3986 import is_valid_uri
 
@@ -37,6 +39,7 @@ def handle_args():
 
 
 def positive_int(string):
+    """Check string is positive integer"""
     value = int(string)
     if value <= 0:
         msg = "%r is not a positive integer" % int
@@ -45,6 +48,7 @@ def positive_int(string):
 
 
 def valid_url(string):
+    """Check string is a valid url"""
     if not is_valid_uri(string):
         msg = "%r is not a valid URI" % int
         raise argparse.ArgumentTypeError(msg)
@@ -72,11 +76,14 @@ def main():
         raise argparse.ArgumentTypeError(msg)
 
     try:
-        req = requests.get(check_url)
+        headers = requests.utils.default_headers()
+        headers['User-agent'] = 'wmf-icinga/{} (root@wikimedia.org)'.format(
+            os.path.basename(__file__))
+        req = requests.get(check_url, headers=headers)
         req.raise_for_status()
         last_modified_string = req.headers['Last-Modified']
-    except requests.exceptions.RequestException as e:
-        print('CRITICAL - exception while fetching the URL. ' + str(e))
+    except requests.exceptions.RequestException as error:
+        print('CRITICAL - exception while fetching the URL. ' + str(error))
         sys.exit(2)
 
     last_modified_epoch = mktime(strptime(last_modified_string,

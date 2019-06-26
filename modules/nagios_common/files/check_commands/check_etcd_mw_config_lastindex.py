@@ -9,6 +9,7 @@ It will return OK if the two indexes match each other, WARNING if the host has a
 the reference one and CRITICAL if it's lower. In all other cases UNKNOWN will be returned.
 """
 import argparse
+import os
 import sys
 
 from enum import IntEnum
@@ -72,7 +73,11 @@ def main(master_etcd_index, hostname):
     """
     url = 'http://{host}/w/api.php?action=query&meta=siteinfo&format=json&formatversion=2'.format(
         host=hostname)
-    headers = {'X-Forwarded-Proto': 'https', 'Host': 'en.wikipedia.org'}
+    headers = {
+        'X-Forwarded-Proto': 'https',
+        'Host': 'en.wikipedia.org',
+        'User-agent': 'wmf-icinga/{} (root@wikimedia.org)'.format(os.path.basename(__file__)),
+    }
 
     response = requests.get(url, headers=headers)
     response.raise_for_status()

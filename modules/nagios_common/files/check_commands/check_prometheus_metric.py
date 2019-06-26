@@ -29,6 +29,7 @@ import argparse
 import logging
 import math
 import operator
+import os
 import sys
 
 import requests
@@ -62,6 +63,8 @@ class PrometheusCheck(object):
         self.timeout = timeout
         self.session = requests.Session()
         self.session.mount(url, requests.adapters.HTTPAdapter(max_retries=retries))
+        self.session.headers['User-agent'] = 'wmf-icinga/{} (root@wikimedia.org)'.format(
+            os.path.basename(__file__))
 
     def _run_query(self, query):
         try:
@@ -69,12 +72,12 @@ class PrometheusCheck(object):
             response = self.session.get(self.query_url, params={'query': query},
                                         timeout=self.timeout)
             return (EX_OK, response.json())
-        except requests.exceptions.Timeout as e:
-            return (EX_UNKNOWN, '{} timeout while fetching: {}'.format(self.query_url, e))
-        except requests.exceptions.RequestException as e:
-            return (EX_UNKNOWN, '{} error while fetching: {}'.format(self.query_url, e))
-        except ValueError as e:
-            return (EX_UNKNOWN, '{} error while decoding json: {}'.format(self.query_url, e))
+        except requests.exceptions.Timeout as error:
+            return (EX_UNKNOWN, '{} timeout while fetching: {}'.format(self.query_url, error))
+        except requests.exceptions.RequestException as error:
+            return (EX_UNKNOWN, '{} error while fetching: {}'.format(self.query_url, error))
+        except ValueError as error:
+            return (EX_UNKNOWN, '{} error while decoding json: {}'.format(self.query_url, error))
 
     @staticmethod
     def _group_all_labels(metrics):
@@ -125,13 +128,12 @@ class PrometheusCheck(object):
         # what labels should be grouped together.
         if critical_metrics:
             return (EX_CRITICAL, ' '.join(PrometheusCheck._group_all_labels(critical_metrics)))
-        elif warning_metrics:
+        if warning_metrics:
             return (EX_WARNING, ' '.join(PrometheusCheck._group_all_labels(warning_metrics)))
-        elif not warning_metrics and not critical_metrics:
+        if not warning_metrics and not critical_metrics:
             text = 'All metrics within thresholds.'
             return (EX_OK, text)
-        else:
-            return (EX_UNKNOWN, 'Unable to determine status from {!r}'.format(result))
+        return (EX_UNKNOWN, 'Unable to determine status from {!r}'.format(result))
 
     def _check_scalar(self, result, predicate, warning, critical, nan_ok=False):
         """Check a scalar value against the warning/critical thresholds."""
@@ -145,20 +147,18 @@ class PrometheusCheck(object):
         if math.isnan(value):
             if nan_ok:
                 return (EX_OK, 'NaN')
-            else:
-                return (EX_UNKNOWN, 'NaN')
+            return (EX_UNKNOWN, 'NaN')
 
         predicate_str = PREDICATE_TO_STR.get(predicate)
         if predicate(value, critical):
             text = '{:.4g} {} {:.4g}'.format(value, predicate_str, critical)
             return (EX_CRITICAL, text)
-        elif predicate(value, warning):
+        if predicate(value, warning):
             text = '{:.4g} {} {:.4g}'.format(value, predicate_str, warning)
             return (EX_WARNING, text)
-        else:
-            text = '(C){:.4g} {} (W){:.4g} {} {:.4g}'.format(
-                critical, predicate_str, warning, predicate_str, value)
-            return (EX_OK, text)
+        text = '(C){0:.4g} {1} (W){2:.4g} {1} {3:.4g}'.format(
+            critical, predicate_str, warning, value)
+        return (EX_OK, text)
 
     def check_query(self, query, warning, critical, predicate=operator.ge, nan_ok=False):
         """Run a query on Prometheus and check the result against warning and critical
@@ -187,11 +187,11 @@ class PrometheusCheck(object):
 
         if want_scalar:
             return self._check_scalar(metric_data, predicate, warning, critical, nan_ok)
-        else:
-            return self._check_vector(metric_data, predicate, warning, critical, nan_ok)
+        return self._check_vector(metric_data, predicate, warning, critical, nan_ok)
 
 
 def main():
+    """Main entry point"""
     parser = argparse.ArgumentParser(
         formatter_class=argparse.ArgumentDefaultsHelpFormatter)
     parser.add_argument('--url', default='http://localhost:9090',
