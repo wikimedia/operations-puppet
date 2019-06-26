@@ -3,5 +3,13 @@ class profile::toolforge::k8s::apilb (
     ) {
     class { 'haproxy':
         template => 'profile/toolforge/k8s/apilb/haproxy.cfg.erb',
+        monitor  => false,
+    }
+
+    file { '/etc/haproxy/conf.d/k8s-api-servers.cfg':
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0444',
+        content => template('profile/toolforge/k8s/apilb/k8s-api-servers.cfg.erb'),
     }
 }
