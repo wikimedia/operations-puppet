@@ -1,6 +1,5 @@
 class profile::openstack::base::nova::compute::service(
     $version = hiera('profile::openstack::base::version'),
-    $libvirt_type = hiera('profile::openstack::base::nova::libvirt_type'),
     $certname = hiera('profile::openstack::base::nova::certname'),
     $ca_target = hiera('profile::openstack::base::nova::ca_target'),
     $instance_dev = hiera('profile::openstack::base::nova::instance_dev'),
@@ -61,11 +60,10 @@ class profile::openstack::base::nova::compute::service(
     }
 
     class {'::openstack::nova::compute::service':
-        version      => $version,
-        libvirt_type => $libvirt_type,
-        certname     => $certname,
-        ca_target    => $ca_target,
-        require      => Mount['/var/lib/nova/instances'],
+        version   => $version,
+        certname  => $certname,
+        ca_target => $ca_target,
+        require   => Mount['/var/lib/nova/instances'],
     }
     contain '::openstack::nova::compute::service'
 }

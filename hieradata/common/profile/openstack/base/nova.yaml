@@ -1,4 +1,3 @@
-profile::openstack::base::nova::libvirt_type: 'kvm'
 profile::openstack::base::nova::db_user: 'nova'
 profile::openstack::base::nova::db_name: 'nova'
 profile::openstack::base::nova::db_name_api: 'nova_api'

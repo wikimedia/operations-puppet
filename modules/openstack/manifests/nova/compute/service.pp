@@ -3,7 +3,6 @@
 # https://wiki.openstack.org/wiki/Nova
 class openstack::nova::compute::service(
     $version,
-    $libvirt_type,
     $certname,
     $ca_target,
     ){
