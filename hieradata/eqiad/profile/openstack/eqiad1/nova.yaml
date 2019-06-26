@@ -77,3 +77,4 @@ profile::openstack::eqiad1::nova::scheduler_pool:
   - cloudvirt1027
   - cloudvirt1028
   - cloudvirt1029
+  - cloudvirt1030
