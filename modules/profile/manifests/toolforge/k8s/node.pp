@@ -82,7 +82,7 @@ class profile::toolforge::k8s::node(
 
     file { '/etc/kubernetes/kubeconfig':
         ensure  => present,
-        content => template('toolforge/k8s/kubeconfig-node.yaml.erb'),
+        content => template('profile/toolforge/k8s/kubeconfig-node.yaml.erb'),
         owner   => 'root',
         group   => 'root',
         mode    => '0400',
