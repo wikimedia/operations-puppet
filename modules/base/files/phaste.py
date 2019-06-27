@@ -8,6 +8,7 @@ import sys
 reload(sys)
 sys.setdefaultencoding('utf-8')
 
+from argparse import ArgumentParser
 import fileinput
 import hashlib
 import json
@@ -64,9 +65,20 @@ class Conduit(object):
         return self._do_request(method, data)
 
 
-with open('/etc/phaste.conf') as f:
+parser = ArgumentParser(description='Post input into a Phabricator Paste, and output the URL.')
+parser.add_argument('--config', default='/etc/phaste.conf',
+                    help='Path to the configuration file with credentials')
+parser.add_argument('-t', '--title', help='Set a title on the paste')
+parser.add_argument('files', metavar='FILE', nargs='*', help='Files to read; if empty, stdin')
+args = parser.parse_args()
+
+with open(args.config) as f:
     config = json.load(f)
 
 p = Conduit(phab=config['phab'], user=config['user'], cert=config['cert'])
-res = p.call('paste.create', content=''.join(fileinput.input()))
+call_kwargs = {}
+call_kwargs['content'] = ''.join(fileinput.input(args.files))
+if args.title is not None:
+    call_kwargs['title'] = args.title
+res = p.call('paste.create', **call_kwargs)
 print res['uri']
