@@ -215,7 +215,7 @@ Components: main>thirdparty/kubeadm-k8s
 UDebComponents:
 Architectures: amd64
 VerifyRelease: 6A030B21BA07F4FB
-ListShellHook: grep-dctrl -P '^kubeadm|kubectl|kubelet|kubernetes-cni$' || [ $? -eq 1 ]
+ListShellHook: grep-dctrl -e -P '^kubeadm|kubectl|kubelet|kubernetes-cni$' || [ $? -eq 1 ]
 
 Name: thirdparty/kubeadm-k8s-docker.com
 Method: https://download.docker.com/linux/debian/
@@ -224,4 +224,4 @@ Components: stable>thirdparty/kubeadm-k8s
 UDebComponents:
 Architectures: amd64
 VerifyRelease: 7EA0A9C3F273FCD8
-ListShellHook: grep-dctrl -P '^docker-ce|docker-ce-cli$' || [ $? -eq 1 ]
+ListShellHook: grep-dctrl -e -P '^docker-ce|docker-ce-cli$' || [ $? -eq 1 ]
