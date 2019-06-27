@@ -15,7 +15,7 @@ class openstack::nova::fullstack::monitor {
         owner  => 'root',
         group  => 'root',
         mode   => '0755',
-        source => 'puppet:///modules/openstack/monitor/fullstack/check_fullstack_leaks.py',
+        source => 'puppet:///modules/openstack/monitor/fullstack/check_nova_fullstack_leaks.py',
     }
 
     nrpe::monitor_service { 'check-fullstack-failures':
