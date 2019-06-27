@@ -39,6 +39,7 @@ rm -f $failureFile
 
 getNumberOfBatchesNeeded
 numberOfBatchesNeeded=$(($numberOfBatchesNeeded / $shards))
+function returnWithCode { return $1; }
 
 while [ $i -lt $shards ]; do
 	(
@@ -73,7 +74,9 @@ while [ $i -lt $shards ]; do
 				--dbgroupdefault dump \
 				$firstPageIdParam \
 				$lastPageIdParam; \
-				[ $lastRun -eq 0 ] && echo ',' || true ) \
+				dumpExitCode=$?; \
+				[ $lastRun -eq 0 ] && echo ','; \
+				returnWithCode $dumpExitCode ) \
 				2>> $errorLog | gzip -9 > $tempDir/wikidataJson.$i-batch$batch.gz
 
 			exitCode=$?
