@@ -26,6 +26,7 @@ class phabricator::vcs (
     $vcs_user = $settings['diffusion.ssh-user']
     $ssh_hook_path = '/usr/libexec/phabricator-ssh-hook.sh'
     $sshd_config = '/etc/ssh/sshd_config.phabricator'
+    $phd_log_dir = $settings['phd.log-directory'];
 
     user { $vcs_user:
         gid        => 'phd',
@@ -45,6 +46,14 @@ class phabricator::vcs (
         ensure  => 'link',
         target  => '/usr/lib/git-core/git-http-backend',
         require => Package['git'],
+    }
+
+    file { "${phd_log_dir}/ssh.log":
+        ensure  => 'present',
+        owner   => $vcs_user,
+        group   => 'root',
+        mode    => '0640',
+        require => File[$phd_log_dir],
     }
 
     # Configure all git repositories we host
