@@ -305,9 +305,14 @@ node /^cp20(0[1467]|1[02369]|23)\.codfw\.wmnet$/ {
     role(cache::text)
 }
 
-node /^cp20(0[258]|1[1478]|2[02456])\.codfw\.wmnet$/ {
+node /^cp20(0[58]|1[1478]|2[02456])\.codfw\.wmnet$/ {
     interface::add_ip6_mapped { 'main': }
     role(cache::upload)
+}
+
+node 'cp2002.codfw.wmnet' {
+    interface::add_ip6_mapped { 'main': }
+    role(cache::upload_ats)
 }
 
 # ATS Test Cluster -- used for T213263 and not needed anymore
