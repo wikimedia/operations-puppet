@@ -101,7 +101,7 @@ class openstack::nova::compute::service(
         mode    => '0444',
         content => template('openstack/mitaka/nova/compute/libvirtd.conf.erb'),
         notify  => Service['libvirtd'],
-        require => [Package['nova-compute'], File['/var/lib/nova/ssl/cacert.pem']]
+        require => [Package['nova-compute'], File['/var/lib/nova/cacert.pem']]
     }
 
     file { '/etc/default/libvirtd':
