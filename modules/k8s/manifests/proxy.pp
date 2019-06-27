@@ -1,8 +1,8 @@
 class k8s::proxy(
-    $master_host,
-    $proxy_mode = 'iptables',
-    $masquerade_all = true,
-    $kubeconfig = '/etc/kubernetes/kubeconfig',
+    String $master_host,
+    String $proxy_mode = 'iptables',
+    Boolean $masquerade_all = true,
+    String $kubeconfig = '/etc/kubernetes/kubeconfig',
 ) {
     require ::k8s::infrastructure_config
 

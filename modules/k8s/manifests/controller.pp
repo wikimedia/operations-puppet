@@ -1,5 +1,5 @@
 class k8s::controller(
-    $service_account_private_key_file=undef,
+    Optional[String] $service_account_private_key_file=undef,
 ){
 
     require_package('kubernetes-master')

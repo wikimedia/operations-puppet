@@ -1,6 +1,6 @@
 class k8s::infrastructure_config(
-    $master_host,
-    $username = 'client-infrastructure',
+    String $master_host,
+    String $username = 'client-infrastructure',
 ) {
     file { '/etc/kubernetes':
         ensure => directory,

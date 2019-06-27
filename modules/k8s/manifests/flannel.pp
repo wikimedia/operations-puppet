@@ -1,5 +1,5 @@
 class k8s::flannel(
-    $etcd_endpoints,
+    String $etcd_endpoints,
 ) {
     require_package('flannel')
 

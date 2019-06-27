@@ -3,11 +3,11 @@
 # To be usable by the k8s binaries
 # Note: Only copies public components, no private keys
 class k8s::ssl(
-    $provide_private = false,
-    $user = 'root',
-    $group = 'root',
-    $ssldir = '/var/lib/puppet/ssl',
-    $target_basedir = '/var/lib/kubernetes'
+    Boolean $provide_private = false,
+    String $user = 'root',
+    String $group = 'root',
+    String $ssldir = '/var/lib/puppet/ssl',
+    String $target_basedir = '/var/lib/kubernetes'
 ) {
     $puppet_cert_name = $::fqdn
 
