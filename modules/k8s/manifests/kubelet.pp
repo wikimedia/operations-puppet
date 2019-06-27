@@ -11,7 +11,7 @@ class k8s::kubelet(
     String $kubeconfig = '/etc/kubernetes/kubeconfig',
     Optional[Array[String]] $node_labels = [],
     Optional[Array[String]] $node_taints = [],
-    Optional[String] $extra_params = undef,
+    Optional[Array[String]] $extra_params = undef,
 ) {
     require ::k8s::infrastructure_config
 
