@@ -73,6 +73,7 @@ Components: main
  component/elastic56
  component/elastic65
  component/facter3
+ component/kubeadm-k8s
  component/node10
  component/php72
  component/prometheus-node-exporter
