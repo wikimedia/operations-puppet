@@ -1267,18 +1267,12 @@ node /kafka100[123]\.eqiad\.wmnet/ {
     interface::add_ip6_mapped { 'main': }
 }
 
-node 'kafka2001.codfw.wmnet' {
-    role(kafka::main)
-    interface::add_ip6_mapped { 'main': }
-}
-
-node /kafka200[23]\.codfw\.wmnet/ {
-    role(spare::system)
-}
-
-# Apply kafka::main role to new kafka-main hosts one by one initially
 node /kafka-main200[123]\.codfw\.wmnet/ {
     role(kafka::main)
+}
+
+node /kafka200[123]\.codfw\.wmnet/ {
+    role(spare::system)
 }
 
 # kafka-jumbo is a large general purpose Kafka cluster.
