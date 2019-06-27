@@ -17,6 +17,9 @@ class role::druid::test_analytics::worker {
     include ::profile::druid::overlord
     include ::profile::prometheus::druid_exporter
 
+    # For convenience, this is also a Hadoop client
+    include ::profile::analytics::cluster::client
+
     # Zookeeper is co-located on some analytics druid hosts, but not all.
     if $::fqdn in $::profile::druid::common::zookeeper_hosts {
         include profile::zookeeper::server
