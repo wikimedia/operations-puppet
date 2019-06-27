@@ -59,7 +59,7 @@ profile::druid::common::properties:
   druid.metadata.storage.connector.host: analytics1030.eqiad.wmnet
   # druid.metadata.storage.connector.password is set in the private repo.
   druid.storage.type: hdfs
-  druid.hadoop.security.kerberos.principal: 'druid/_HOST@WIKIMEDIA'
+  druid.hadoop.security.kerberos.principal: "druid/%{::fqdn}@WIKIMEDIA"
   druid.hadoop.security.kerberos.keytab: '/etc/security/keytabs/druid/druid.keytab'
   druid.request.logging.type: slf4j
   druid.request.logging.dir: /var/log/druid
@@ -79,6 +79,7 @@ profile::druid::common::properties:
     - 'druid-parquet-extensions'
     - 'druid-avro-extensions'
     - 'druid-kafka-indexing-service'
+    - 'druid-kerberos'
 
 # -- Druid worker service configurations
 
