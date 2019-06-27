@@ -27,6 +27,13 @@ profile::zookeeper::zookeeper_version: '3.4.9-3+deb9u1'
 profile::zookeeper::firewall::srange: '$ANALYTICS_NETWORKS'
 profile::zookeeper::prometheus_instance: 'analytics'
 
+# Deploy kerberos keytabs for Druid
+profile::kerberos::keytabs::keytabs_metadata:
+  - role: 'druid'
+    owner: 'druid'
+    group: 'druid'
+    filename: 'druid.keytab'
+
 # -- Druid common configuration
 
 # The logical name of this druid cluster
@@ -52,6 +59,8 @@ profile::druid::common::properties:
   druid.metadata.storage.connector.host: analytics1030.eqiad.wmnet
   # druid.metadata.storage.connector.password is set in the private repo.
   druid.storage.type: hdfs
+  druid.hadoop.security.kerberos.principal: 'druid/_HOST@WIKIMEDIA'
+  druid.hadoop.security.kerberos.keytab: '/etc/security/keytabs/druid/druid.keytab'
   druid.request.logging.type: slf4j
   druid.request.logging.dir: /var/log/druid
   # Historically, the analytics-eqiad Druid cluster was the only one,
