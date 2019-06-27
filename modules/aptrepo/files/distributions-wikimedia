@@ -111,6 +111,8 @@ Update:
  jenkins-stretch
  mono-project-stretch
  tor-stretch
+ thirdparty/kubeadm-k8s-kubernetes.io
+ thirdparty/kubeadm-k8s-docker.com
 # NOTE:  Cloudera does not (yet) provide Stretch packages.  We use the Jessie ones,
 # along with a fake equivs to satisfy hadoop-mapreduce's (unnecessary) dependency on libssl1.0.0
 # which is not available in Stretch.  Once Cloudera releases Stretch packages, we can

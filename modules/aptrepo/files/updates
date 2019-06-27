@@ -209,21 +209,19 @@ Config: Acquire::Check-Valid-Until=false
 ListHook: /usr/local/bin/reprepro-update-filter-wmcs-openstack-jessie-bpo.sh
 
 Name: thirdparty/kubeadm-k8s-kubernetes.io
-Method:  https://apt.kubernetes.io/
+Method: https://apt.kubernetes.io/
 Suite: kubernetes-xenial
 Components: main>thirdparty/kubeadm-k8s
 UDebComponents:
-GetInRelease: no
 Architectures: amd64
-VerifyRelease: 54A647F9048D5688D7DA2ABE6A030B21BA07F4FB
+VerifyRelease: 6A030B21BA07F4FB
 ListShellHook: grep-dctrl -P '^kubeadm|kubectl|kubelet|kubernetes-cni$' || [ $? -eq 1 ]
 
 Name: thirdparty/kubeadm-k8s-docker.com
-Method:  https://download.docker.com/linux/debian/
+Method: https://download.docker.com/linux/debian/
 Suite: stretch
 Components: stable>thirdparty/kubeadm-k8s
 UDebComponents:
-GetInRelease: no
 Architectures: amd64
-VerifyRelease: 9DC858229FC7DD38854AE2D88D81803C0EBFCD88
+VerifyRelease: 7EA0A9C3F273FCD8
 ListShellHook: grep-dctrl -P '^docker-ce|docker-ce-cli$' || [ $? -eq 1 ]
