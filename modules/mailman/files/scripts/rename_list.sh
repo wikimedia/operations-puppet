@@ -67,7 +67,7 @@ echo -e "\nPlease add the following code to './modules/profile/files/exim/listse
 echo -e "${oldlist}: ${newlist} \n--------\n"
 sleep 1
 
-echo -e "Please add the following code to './modules/mailman/templates/lists.wikimedia.org.org':\n--------\n"
+echo -e "Please add the following code to './modules/mailman/templates/lists.wikimedia.org.erb':\n--------\n"
 echo -e "Redirect permanent /mailman/listinfo/${oldlist} https://<%= @lists_servername %>/mailm
 an/listinfo/${newlist}\n--------\n\n"
 sleep 1

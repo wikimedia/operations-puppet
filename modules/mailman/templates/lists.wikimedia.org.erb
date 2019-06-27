@@ -132,6 +132,8 @@
     Redirect permanent /mailman/listinfo/wikimedia-search     https://<%= @lists_servername %>/mailman/listinfo/discovery
     Redirect permanent /mailman/listinfo/wikimedia-search-private     https://<%= @lists_servername %>/mailman/listinfo/discovery-private
     Redirect permanent /mailman/listinfo/tool-labs-standards-committee https://<%= @lists_servername %>/mailman/listinfo/toolforge-standards-committee
+    Redirect permanent /mailman/listinfo/wmfcc-l https://<%= @lists_servername %>/mailman/listinfo/movecom
+
 
     ErrorLog /var/log/apache2/<%= @lists_servername %>-error.log
     CustomLog /var/log/apache2/<%= @lists_servername %>-access.log wmf
