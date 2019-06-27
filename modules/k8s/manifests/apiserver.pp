@@ -1,10 +1,10 @@
 class k8s::apiserver(
     String $etcd_servers,
-    Optional[String] $ssl_cert_path=undef,
-    Optional[String] $ssl_key_path=undef,
-    Optional[Integer] $kube_api_port = undef,
-    Optional[Integer] $kubelet_port = undef,
-    String $service_cluster_ip_range = '192.168.0.0/17',
+    Optional[Stdlib::Unixpath] $ssl_cert_path=undef,
+    Optional[Stdlib::Unixpath] $ssl_key_path=undef,
+    Optional[Stdlib::Port] $kube_api_port = undef,
+    Optional[Stdlib::Port] $kubelet_port = undef,
+    Stdlib::IP::Address $service_cluster_ip_range = '192.168.0.0/17',
     Optional[String] $service_node_port_range = undef,
     Hash[String, String] $admission_controllers = {
         'NamespaceLifecycle' => '',

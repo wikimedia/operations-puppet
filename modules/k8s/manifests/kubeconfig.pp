@@ -3,7 +3,7 @@ define k8s::kubeconfig(
     String $username,
     String $token,
     Optional[String] $namespace=undef,
-    String $mode='0400',
+    Stdlib::Filemode $mode='0400',
     String $owner='root',
     String $group='root',
 ) {
