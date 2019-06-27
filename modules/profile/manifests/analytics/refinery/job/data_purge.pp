@@ -130,7 +130,7 @@ class profile::analytics::refinery::job::data_purge (
             description  => 'Drop Druid Public snapshots from deep storage following data retention policies.',
             command      => "${refinery_path}/bin/refinery-drop-druid-snapshots -d ${mediawiki_history_reduced_basename} -t ${public_druid_host} -s ${druid_public_keep_snapshots} -f ${public_druid_snapshots_log_file}",
             environment  => $systemd_env,
-            interval     => '*-*-15 07:00:00',
+            interval     => 'Mon,Tue,Wed,Thu,Fri *-*-15 09:00:00',
             user         => 'analytics',
             use_kerberos => $use_kerberos,
         }
