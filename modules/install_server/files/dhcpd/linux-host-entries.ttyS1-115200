@@ -463,6 +463,7 @@ host bohrium {
 host centrallog1001 {
     hardware ethernet D0:94:66:61:18:AF;
     fixed-address centrallog1001.eqiad.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/buster-installer/";
 }
 
 host cloudcontrol1003 {
