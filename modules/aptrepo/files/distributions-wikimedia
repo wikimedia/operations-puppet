@@ -73,7 +73,6 @@ Components: main
  component/elastic56
  component/elastic65
  component/facter3
- component/kubeadm-k8s
  component/node10
  component/php72
  component/prometheus-node-exporter
@@ -93,6 +92,7 @@ Components: main
  thirdparty/grafana
  thirdparty/hwraid
  thirdparty/k8s
+ thirdparty/kubeadm-k8s
  thirdparty/mono-project-stretch
  thirdparty/oath
  thirdparty/php72
