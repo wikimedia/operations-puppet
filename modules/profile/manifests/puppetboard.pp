@@ -35,6 +35,13 @@ class profile::puppetboard (
         notify  => Service['uwsgi-puppetboard'],
     }
 
+    # Puppetboard is controlled via a custom systemd unit (uwsgi-puppetboard),
+    # so avoid the generic uwsgi sysvinit script shipped in the Debian package
+    exec { 'mask_default_uwsgi_puppetboard':
+        command => '/bin/systemctl mask uwsgi.service',
+        creates => '/etc/systemd/system/uwsgi.service',
+    }
+
     service::uwsgi { 'puppetboard':
         port            => $port,
         no_workers      => 4,
