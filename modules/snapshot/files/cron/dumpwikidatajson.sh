@@ -105,7 +105,7 @@ i=0
 while [ $i -lt $shards ]; do
 	getTempFiles "$tempDir/wikidataJson.$i-batch*.gz"
 	getFileSize "$tempFiles"
-	if [ $fileSize -lt `expr 20000000000 / $shards` ]; then
+	if [ $fileSize -lt `expr 58000000000 / $shards` ]; then
 		echo "File size for shard $i is only $fileSize. Aborting." >> $mainLogFile
 		exit 1
 	fi
