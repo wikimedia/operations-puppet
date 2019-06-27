@@ -27,6 +27,9 @@ class role::analytics_test_cluster::hadoop::ui {
     include ::profile::kerberos::client
     include ::profile::kerberos::keytabs
 
+    # For convenience, this is also a Hadoop client
+    include ::profile::analytics::cluster::client
+
     include ::profile::base::firewall
     include ::profile::standard
 }
