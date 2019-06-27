@@ -269,6 +269,18 @@ class druid(
 
     require_package('druid-common')
 
+    # Useful to resources that need the druid user to
+    # work properly. The user is created by druid-common.
+    user { 'druid':
+        gid        => 'druid',
+        comment    => 'Druid',
+        home       => '/nonexistent',
+        shell      => '/bin/false',
+        managehome => false,
+        system     => true,
+        require    => Package['druid-common'],
+    }
+
     file { '/etc/druid/common.runtime.properties':
         content => template('druid/runtime.properties.erb'),
     }
