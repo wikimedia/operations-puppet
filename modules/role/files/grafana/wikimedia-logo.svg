@@ -10,8 +10,8 @@
   </clipPath>
 </defs>
 <g clip-path="url(#mask)">
-  <circle id="green parts" fill="#396" r="336.5"/>
-  <circle id="blue arc" fill="none" stroke="#069" r="480.25" stroke-width="135.5" />
+  <circle id="internal" fill="#fff" r="336.5"/>
+  <circle id="outer arc" fill="none" stroke="#fff" r="480.25" stroke-width="135.5" />
 </g>
-<circle fill="#900" cy="-379.5" r="184.5" id="red circle"/>
+<circle fill="#fff" cy="-379.5" r="184.5" id="top circle"/>
 </svg>
