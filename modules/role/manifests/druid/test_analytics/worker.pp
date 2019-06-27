@@ -17,9 +17,6 @@ class role::druid::test_analytics::worker {
     include ::profile::druid::overlord
     include ::profile::prometheus::druid_exporter
 
-    # For convenience, this is also a Hadoop client
-    include ::profile::analytics::cluster::client
-
     include ::profile::kerberos::keytabs
     include ::profile::kerberos::client
 
