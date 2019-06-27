@@ -394,11 +394,12 @@ class _WMFRewriteContext(WSGIContext):
                     resp = swob.HTTPNotFound('File not found: %s' % req.path)
                     return resp(env, start_response)
             else:
-                for key, value in headers:
-                    if key == 'X-Delete-At' and self.thumbnail_update_expiry_headers:
-                        # Update expiry header asynchronously
-                        eventlet.spawn(self.update_expiry, env)
-                        break
+                if zone == 'thumb':
+                    for key, value in headers:
+                        if key == 'X-Delete-At' and self.thumbnail_update_expiry_headers:
+                            # Update expiry header asynchronously
+                            eventlet.spawn(self.update_expiry, env)
+                            break
 
                 # Return the response verbatim
                 return swob.Response(status=status, headers=headers,
