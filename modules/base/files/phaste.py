@@ -27,11 +27,13 @@ class Conduit(object):
 
     def _do_request(self, method, data):
         url = '%s/api/%s' % (self.phab, method)
-        req = urllib2.urlopen(url, data=urllib.urlencode(data))
-        resp = json.load(req)
-        if resp.get('error_info'):
-            raise RuntimeError('%(error_code)s: %(error_info)s' % resp)
-        return resp['result']
+        headers = {'User-Agent': 'wmf/phaste.py urllib2 (root@wikimedia.org)'}
+        req = urllib2.Request(url, data=urllib.urlencode(data), headers=headers)
+        resp = urllib2.urlopen(req)
+        resp_data = json.load(resp)
+        if resp_data.get('error_info'):
+            raise RuntimeError('%(error_code)s: %(error_info)s' % resp_data)
+        return resp_data['result']
 
     def _get_credentials(self):
         if self.credentials is None:
