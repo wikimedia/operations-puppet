@@ -175,3 +175,15 @@ profile::hive::client::metastore_host: 'analytics1030.eqiad.wmnet'
 # to know how to authenticate to Hive.
 profile::hive::client::hive_server2_authentication: 'KERBEROS'
 profile::hive::client::hive_server2_authentication_kerberos_principal: 'hive/_HOST@WIKIMEDIA'
+profile::oozie::client::oozie_host: 'analytics1030.eqiad.wmnet'
+
+profile::hadoop::spark2::extra_settings:
+  spark.authenticate: true
+  spark.network.crypto.enabled: true
+  spark.network.crypto.keyLength: 128
+  spark.network.crypto.keyFactoryAlgorithm: PBKDF2WithHmacSHA1
+  spark.authenticate.enableSaslEncryption: true
+  spark.network.sasl.serverAlwaysEncrypt: true
+  spark.io.encryption.enabled: true
+  spark.io.encryption.keySizeBits: 128
+  spark.io.encryption.keygen.algorithm: HmacSHA1
