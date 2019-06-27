@@ -4,8 +4,6 @@ class k8s::proxy(
     Boolean $masquerade_all = true,
     String $kubeconfig = '/etc/kubernetes/kubeconfig',
 ) {
-    require ::k8s::infrastructure_config
-
     require_package('kubernetes-node')
 
     file { '/etc/default/kube-proxy':

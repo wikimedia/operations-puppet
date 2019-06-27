@@ -13,8 +13,6 @@ class k8s::kubelet(
     Optional[Array[String]] $node_taints = [],
     Optional[Array[String]] $extra_params = undef,
 ) {
-    require ::k8s::infrastructure_config
-
     require_package('kubernetes-node')
 
     # Needed on k8s nodes for kubectl proxying to work

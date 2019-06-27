@@ -51,6 +51,7 @@ class profile::kubernetes::node(
         node_labels               => $kubelet_node_labels,
         node_taints               => $kubelet_node_taints,
         extra_params              => $kubelet_extra_params,
+        require                   => Class['::k8s::infrastructure_config'],
     }
 
     # Funnily enough, this is not $kubeproxy_config cause we still need to support
@@ -67,6 +68,7 @@ class profile::kubernetes::node(
         master_host    => $master_fqdn,
         masquerade_all => $masquerade_all,
         kubeconfig     => $kubeproxy_config,
+        require        => Class['::k8s::infrastructure_config'],
     }
 
     # Set the host as a router for IPv6 in order to allow pods to have an IPv6
