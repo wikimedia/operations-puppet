@@ -25,6 +25,11 @@ profile::hive::client::zookeeper_cluster_name: main-eqiad
 profile::hive::client::server_host: analytics1030.eqiad.wmnet
 profile::hive::client::server_port: 10000
 profile::hive::client::metastore_host: 'analytics1030.eqiad.wmnet'
+# These kerberos configs are needed since Hue looks into hive-site.xml
+# to know how to authenticate to Hive.
+profile::hive::client::hive_server2_authentication: 'KERBEROS'
+profile::hive::client::hive_server2_authentication_kerberos_principal: 'hive/_HOST@WIKIMEDIA'
+
 diamond::remove: true
 
 profile::hive::client::ensure_hive_site_in_hdfs: true
