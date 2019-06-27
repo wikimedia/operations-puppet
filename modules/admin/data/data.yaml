@@ -2999,7 +2999,7 @@ users:
       - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCy8qCBdONqJpa3piqbRQO4hQIzXtL+rPEvL7uA0vxHdlmOj8ci/6rs6JEUm8okr0mxoBEZB1eLubFZnoNJOpYPXnCJJTIiz8ROFPNETf+3Y7rDwBwLB6gGG+1+gSuF7zvMo9jVlJVl4A39X9rBU1+0G2wiyg7bnXI4FUNk67R5LTKe+iPoeEw32Y3EuSDvb5mzWf/euaXm0TsCtEd83FUQlytHaxG0A6R96oriZDLVj7hxw4O1EUUluPGwPIZTtQuN3jlWja9K3aMxzTxEybZtqyegjccquiSyl+S4da4lp9t7m1hkWHuVrTAMmz40IOguT11+kBHCmHOukeGcL2zr nathante@nathante-x1
     uid: 20110
     email: nathante@uw.edu
-    expiry_date: 2019-06-30
+    expiry_date: 2019-12-31
     expiry_contact: halfak@wikimedia.org
   isaacj:
     ensure: present
