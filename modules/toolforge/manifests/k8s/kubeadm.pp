@@ -16,4 +16,7 @@ class toolforge::k8s::kubeadm(
         ensure => 'present',
     }
 
+    file { '/etc/kubernetes/':
+        ensure => 'directory',
+    }
 }

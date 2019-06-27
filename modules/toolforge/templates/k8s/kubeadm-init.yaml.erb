@@ -1,0 +1,72 @@
+apiVersion: kubeadm.k8s.io/v1beta2
+kind: InitConfiguration
+<% if @node_token %>
+bootstrapTokens:
+- token: "<%= @node_token -%>"
+  description: "Node Token"
+  usages:
+  - authentication
+  - signing
+  groups:
+  - system:bootstrappers:kubeadm:default-node-token
+<% end %>
+localAPIEndpoint:
+  advertiseAddress: "<%= @apiserver -%>"
+  bindPort: 6443
+certificateKey: "<%= @encryption_key -%>"
+---
+apiVersion: kubeadm.k8s.io/v1beta2
+kind: ClusterConfiguration
+etcd:
+  external:
+    endpoints:
+    <% @etcd_hosts.each do |host| -%>
+      - "<%= host -%>:2379"
+    <% end -%>
+networking:
+  serviceSubnet: "<%= @service_subnet -%>"
+  podSubnet: "<%= @pod_subnet -%>"
+  dnsDomain: "<%= @dns_domain -%>"
+kubernetesVersion: "<%= @kubernetes_version -%>"
+controlPlaneEndpoint: "<%= @apiserver -%>:6443"
+apiServer:
+  extraArgs:
+    authorization-mode: "Node,RBAC"
+    # By default these admission plugins are enabled (enable-admission-plugins adds to them):
+    # (NamespaceLifecycle, LimitRanger, ServiceAccount, TaintNodesByCondition, Priority, DefaultTolerationSeconds, DefaultStorageClass, PersistentVolumeClaimResize, MutatingAdmissionWebhook, ValidatingAdmissionWebhook, ResourceQuota)
+    enable-admission-plugins: PodSecurityPolicy
+    anonymous-auth: false
+    advertise-address: "<%= @apiserver -%>"
+  certSANs:
+  - "<% @apiserver_ip -%>"
+  - "<%= @apiserver -%>"
+  timeoutForControlPlane: 4m0s
+controllerManager:
+  extraArgs:
+    "node-cidr-mask-size": "20"
+  # extraVolumes:
+  # We probably don't need this
+  #- name: "some-volume"
+  #  hostPath: "/etc/some-path"
+  #  mountPath: "/etc/some-pod-path"
+  #  readOnly: false
+  #  pathType: File
+scheduler:
+  extraArgs:
+    address: "<%= @apiserver -%>"
+# extraVolumes:
+#- name: "some-volume"
+#  hostPath: "/etc/some-path"
+#  mountPath: "/etc/some-pod-path"
+#  readOnly: false
+#  pathType: File
+certificatesDir: "/etc/kubernetes/pki"
+clusterName: "toolforge"
+---
+apiVersion: kubelet.config.k8s.io/v1beta1
+kind: KubeletConfiguration
+# kubelet specific options here
+---
+apiVersion: kubeproxy.config.k8s.io/v1alpha1
+kind: KubeProxyConfiguration
+# kube-proxy specific options here

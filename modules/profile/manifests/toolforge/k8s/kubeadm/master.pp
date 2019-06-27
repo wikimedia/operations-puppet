@@ -1,6 +1,16 @@
 class profile::toolforge::k8s::kubeadm::master(
+    Array[Stdlib::Fqdn] $etcd_hosts = lookup('profile::toolforge::k8s::etcd_hosts'),
+    Stdlib::Fqdn        $apiserver  = lookup('profile::toolforge::k8s::apiserver'),
+    String              $dns_domain = lookup('profile::toolforge::k8s::dns_domain'),
+    String              $node_token = lookup('profile::toolforge::k8s::node_token'),
 ) {
     class { 'toolforge::k8s::kubeadm': }
-
-    # TODO: write the rest of the code :-)
+    class { 'toolforge::k8s::kubeadm_init':
+        etcd_hosts     => $etcd_hosts,
+        apiserver      => $apiserver,
+        pod_subnet     => '192.168.0.0/24', # TODO: review this
+        service_subnet => '192.168.1.0/24', # TODO: review this
+        dns_domain     => $dns_domain,
+        node_token     => $node_token,
+    }
 }
