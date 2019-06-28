@@ -80,12 +80,21 @@ class profile::hue (
 
     # Include icinga alerts if production realm.
     if $monitoring_enabled {
-        nrpe::monitor_service { 'hue':
-            description   => 'Hue Server',
-            nrpe_command  => '/usr/lib/nagios/plugins/check_procs -c 1:1 -C python2.7 -a "/usr/lib/hue/build/env/bin/hue"',
-            contact_group => 'admins,analytics',
+        nrpe::monitor_service { 'hue-cherrypy':
+            description   => 'Hue CherryPy python server',
+            nrpe_command  => '/usr/lib/nagios/plugins/check_procs -c 1:1 -C python2.7 -a "/usr/lib/hue/build/env/bin/hue runcherrypyserver"',
+            contact_group => 'analytics',
             require       => Class['cdh::hue'],
-            notes_url     => 'https://wikitech.wikimedia.org/wiki/Analytics/Systems/Cluster/Hadoop/Administration',
+            notes_url     => 'https://wikitech.wikimedia.org/wiki/Analytics/Cluster/Hue/Administration',
+        }
+        if $kerberos_kinit_path {
+            nrpe::monitor_service { 'hue-kt-renewer':
+                description   => 'Hue Kerberos keytab renewer',
+                nrpe_command  => '/usr/lib/nagios/plugins/check_procs -c 1:1 -C python2.7 -a "/usr/lib/hue/build/env/bin/hue kt_renewer"',
+                contact_group => 'analytics',
+                require       => Class['cdh::hue'],
+                notes_url     => 'https://wikitech.wikimedia.org/wiki/Analytics/Cluster/Hue/Administration',
+            }
         }
     }
 
