@@ -1827,6 +1827,12 @@ node /^netmon(1002|2001)\.wikimedia\.org$/ {
     role(netmon)
 }
 
+# Network insights (netflow/pmacct, etc.)
+node 'netflow1001.eqiad.wmnet' {
+    role(netinsights)
+    interface::add_ip6_mapped { 'main': }
+}
+
 # jessie VM for servermon until it supports stretch (T170653)
 node 'netmon1003.wikimedia.org' {
     role(servermon)
@@ -1988,7 +1994,6 @@ node /^restbase-dev100[4-6]\.eqiad\.wmnet$/ {
     role(restbase::dev_cluster)
 }
 
-# network insights (netflow/pmacct, etc.)
 node 'rhenium.wikimedia.org' {
     role(spare::system)
 }
@@ -2062,7 +2067,6 @@ node /^rhodium.eqiad.wmnet/ {
     interface::add_ip6_mapped { 'main': }
 }
 
-# NEW network insights (netflow/pmacct, etc.) via T201364
 node 'sulfur.wikimedia.org' {
     role(spare::system)
 }
