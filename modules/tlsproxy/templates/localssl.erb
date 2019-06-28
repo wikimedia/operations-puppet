@@ -87,7 +87,11 @@ server {
 		# headers in the first such chunk, it fails with 502.  Upping
 		# this to 8k (from def 4k) solves the one reported case in
 		# https://phabricator.wikimedia.org/T161819
-		proxy_buffer_size 8k;
+		# --
+		# Raising this further from 8K to 32K, at least temporarily, due to T226840
+		# Note 32KB is also the similar default limit in our varnishes (http_resp_size)
+		proxy_buffer_size       32k;
+		proxy_buffers         4 32k;
 	}
 }
 <% if @redir_port -%>
