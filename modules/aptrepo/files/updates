@@ -224,4 +224,4 @@ Components: stable>thirdparty/kubeadm-k8s
 UDebComponents:
 Architectures: amd64
 VerifyRelease: 7EA0A9C3F273FCD8
-ListShellHook: grep-dctrl -e -P '^docker-ce|docker-ce-cli$' || [ $? -eq 1 ]
+ListShellHook: grep-dctrl -e -P '^docker-ce|docker-ce-cli|containerd\.io$' || [ $? -eq 1 ]

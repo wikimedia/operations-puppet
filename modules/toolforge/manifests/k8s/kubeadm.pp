@@ -8,6 +8,7 @@ class toolforge::k8s::kubeadm(
         'kubernetes-cni',
         'docker-ce',
         'docker-ce-cli',
+        'containerd.io',
     ]
 
     package { $packages:
