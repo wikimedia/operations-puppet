@@ -59,7 +59,7 @@ class profile::analytics::refinery::job::data_purge (
     $eventlogging_retention_days = 90
     kerberos::systemd_timer { 'refinery-drop-eventlogging-partitions':
         description  => 'Drop Eventlogging data imported on HDFS following data retention policies.',
-        command      => "${refinery_path}/bin/refinery-drop-eventlogging-partitions -d ${eventlogging_retention_days} -l /wmf/data/raw/eventlogging",
+        command      => "${refinery_path}/bin/refinery-drop-older-than --base-path='/wmf/data/raw/eventlogging' --path-format='.+/hourly/(?P<year>[0-9]+)(/(?P<month>[0-9]+)(/(?P<day>[0-9]+)(/(?P<hour>[0-9]+))?)?)?' --older-than='${eventlogging_retention_days}' --execute='49fe6dfef6a2b00927ee8c989e72a33e'",
         interval     => '*-*-* 00/4:15:00',
         environment  => $systemd_env,
         user         => 'analytics',
@@ -68,7 +68,7 @@ class profile::analytics::refinery::job::data_purge (
 
     kerberos::systemd_timer { 'refinery-drop-eventlogging-client-side-partitions':
         description  => 'Drop Eventlogging Client Side data imported on HDFS following data retention policies.',
-        command      => "${refinery_path}/bin/refinery-drop-eventlogging-partitions -d ${eventlogging_retention_days} -l /wmf/data/raw/eventlogging_client_side",
+        command      => "${refinery_path}/bin/refinery-drop-older-than --base-path='/wmf/data/raw/eventlogging_client_side' --path-format='eventlogging-client-side/hourly/(?P<year>[0-9]+)(/(?P<month>[0-9]+)(/(?P<day>[0-9]+)(/(?P<hour>[0-9]+))?)?)?' --older-than='${eventlogging_retention_days}' --execute='301c767c9cdffa69a797e65543f3621e'",
         interval     => '*-*-* 00/4:30:00',
         environment  => $systemd_env,
         user         => 'analytics',
