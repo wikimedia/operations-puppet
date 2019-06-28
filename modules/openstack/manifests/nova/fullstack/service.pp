@@ -9,7 +9,7 @@ class openstack::nova::fullstack::service(
     $password,
     $region,
     $interval = 300,
-    $max_pool = 7,
+    $max_pool = 11,
     $creation_timeout = 900,
     $ssh_timeout = 900,
     $puppet_timeout = 900,
