@@ -3649,3 +3649,7 @@ ldap_only_users:
     ensure: present
     realname: Jose Pita
     email: jpita-ctr@wikimedia.org
+  cdenes:
+    ensure: present
+    realname: Camille de Nes
+    email: cdenes@wikimedia.org
