@@ -402,6 +402,12 @@ host neon {
     fixed-address neon.eqiad.wmnet;
 }
 
+host netflow1001 {
+    hardware ethernet aa:00:00:3a:1d:c3;
+    fixed-address netflow1001.eqiad.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/buster-installer/";
+}
+
 host netmon1003 {
     hardware ethernet aa:00:00:79:17:b5;
     fixed-address netmon1003.wikimedia.org;
