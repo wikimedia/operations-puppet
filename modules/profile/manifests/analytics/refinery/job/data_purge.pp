@@ -78,6 +78,7 @@ class profile::analytics::refinery::job::data_purge (
     # keep this many days of wdqs_extract data
     $wdqs_extract_retention_days = 90
     kerberos::systemd_timer { 'refinery-drop-wdqs-extract-partitions':
+        ensure       => absent,
         description  => 'Drop WDQS data imported on HDFS following data retention policies.',
         command      => "${refinery_path}/bin/refinery-drop-hourly-partitions -d ${wdqs_extract_retention_days} -p hive -D wmf -t wdqs_extract -l /wmf/data/wmf/wdqs_extract",
         interval     => '*-*-* 01:00:00',
