@@ -7,12 +7,6 @@ class profile::hadoop::balancer(
 ) {
     require ::profile::hadoop::common
 
-    if $use_kerberos {
-        $wrapper = '/usr/local/bin/kerberos-puppet-wrapper hdfs '
-    } else {
-        $wrapper = ''
-    }
-
     file { '/usr/local/bin/hdfs-balancer':
         source => 'puppet:///modules/profile/hadoop/hdfs-balancer',
         mode   => '0754',
@@ -22,7 +16,7 @@ class profile::hadoop::balancer(
 
     kerberos::systemd_timer { 'hdfs-balancer':
         description     => 'Run the HDFS balancer script to keep HDFS blocks replicated in the most redundant and efficient way.',
-        command         => "${wrapper}/usr/local/bin/hdfs-balancer",
+        command         => '/usr/local/bin/hdfs-balancer',
         interval        => '*-*-* 06:00:00',
         logfile_name    => 'balancer.log',
         logfile_basedir => '/var/log/hadoop-hdfs',
