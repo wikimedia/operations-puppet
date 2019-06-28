@@ -110,7 +110,7 @@ class icinga::monitor::toollabs {
 
     monitoring::service { 'tools-checker-grid-continuious-stretch':
         description    => 'toolschecker: expect a long running job on stretch',
-        check_command  => "${checker}!/grid/continuous/stretch!ok",
+        check_command  => "${checker}!/grid/continuous/stretch!OK",
         host           => $test_entry_host,
         check_interval => 5,
         retry_interval => 5,
@@ -122,7 +122,7 @@ class icinga::monitor::toollabs {
     # if persisting with SMS notification.
     monitoring::service { 'tools-checker-grid-start-stretch':
         description    => 'toolschecker: start a job and verify on stretch',
-        check_command  => "${checker}!/grid/start/stretch!ok",
+        check_command  => "${checker}!/grid/start/stretch!OK",
         host           => $test_entry_host,
         check_interval => 5,
         retry_interval => 5,
