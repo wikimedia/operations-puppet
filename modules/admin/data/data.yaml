@@ -3645,3 +3645,7 @@ ldap_only_users:
     ensure: present
     realname: Monica Pinedo
     email: monica.pinedo@wikimedia.de
+  josepita:
+    ensure: present
+    realname: Jose Pita
+    email: jpita-ctr@wikimedia.org
