@@ -466,6 +466,17 @@ host centrallog1001 {
     option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/buster-installer/";
 }
 
+host cloudbackup2001 {
+    hardware ethernet B0:26:28:5A:DD:30;
+    fixed-address cloudbackup2001.codfw.wmnet;
+}
+
+host cloudbackup2002 {
+    hardware ethernet B0:26:28:5A:DE:BC;
+    fixed-address cloudbackup2002.codfw.wmnet;
+}
+
+
 host cloudcontrol1003 {
     hardware ethernet 30:e1:71:5f:6e:5c;
     fixed-address cloudcontrol1003.wikimedia.org;
