@@ -36,26 +36,25 @@ class profile::hadoop::backup::namenode(
         require => File['/srv/backup']
     }
 
-    if $use_kerberos {
-        $wrapper = '/usr/local/bin/kerberos-puppet-wrapper hdfs '
-    } else {
-        $wrapper = ''
-    }
-
-    cron { 'hadoop-namenode-backup-fetchimage':
-        command => "${wrapper}/usr/bin/hdfs dfsadmin -fetchImage ${destination} > /dev/null 2>&1 ",
-        user    => 'hdfs',
-        hour    => 0,
-        minute  => 0,
+    kerberos::systemd_timer { 'hadoop-namenode-backup-fetchimage':
+        description  => 'Downloads the most recent fsimage from the NameNode and saves it in the specified local directory.',
+        command      => "/usr/bin/hdfs dfsadmin -fetchImage ${destination}",
+        interval     => '*-*-* 00:00:00',
+        user         => 'hdfs',
+        use_kerberos => $use_kerberos,
     }
 
     $retention_days = 30
-    # Delete files older than $retention_days.
-    cron { 'hadoop-namenode-backup-prune':
-        command => "/usr/bin/find ${destination} -mtime +${retention_days} -delete > /dev/null 2>&1",
-        user    => 'hdfs',
-        hour    => 1,
-        minute  => 0,
+    systemd::timer::job { 'hadoop-namenode-backup-prune':
+        description               => "Deletes namenode's fsimage backups in ${destination} older than ${retention_days} days.",
+        command                   => "/usr/bin/find ${destination} -mtime +${retention_days} -delete",
+        interval                  => {
+            'start'    => 'OnCalendar',
+            'interval' => '*-*-* 01:00:00',
+        },
+        logging_enabled           => false,
+        user                      => 'hdfs',
+        monitoring_contact_groups => 'analytics',
     }
 
     if !defined(Sudo::User['nagios_check_newest_file_age']) {
