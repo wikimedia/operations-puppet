@@ -2,487 +2,357 @@
   "annotations": {
     "list": [
       {
-        "datasource": "graphite",
+        "builtIn": 1,
+        "datasource": "-- Grafana --",
         "enable": true,
-        "iconColor": "rgba(255, 96, 96, 1)",
-        "name": "Show Deployments",
-        "target": "exclude(aliasByNode(deploy.*.count,-2),\"all\")"
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "type": "dashboard"
       }
     ]
   },
+  "description": "",
   "editable": true,
   "gnetId": null,
-  "hideControls": true,
-  "id": 140,
+  "graphTooltip": 1,
+  "id": 464,
+  "iteration": 1561563517237,
   "links": [],
-  "rows": [
+  "panels": [
     {
-      "collapse": false,
-      "height": "50px",
-      "panels": [
+      "aliasColors": {},
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": "eqiad prometheus/global",
+      "fill": 1,
+      "gridPos": {
+        "h": 7,
+        "w": 24,
+        "x": 0,
+        "y": 0
+      },
+      "id": 1,
+      "legend": {
+        "avg": false,
+        "current": false,
+        "max": false,
+        "min": false,
+        "show": true,
+        "total": false,
+        "values": false
+      },
+      "lines": true,
+      "linewidth": 1,
+      "links": [],
+      "nullPointMode": "null",
+      "percentage": false,
+      "pointradius": 5,
+      "points": false,
+      "renderer": "flot",
+      "seriesOverrides": [],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
         {
-          "content": "Data comes from `varnishreqstats` ([varnish::logging::reqstats](https://github.com/wikimedia/puppet/blob/HEAD/modules/varnish/manifests/logging/reqstats.pp)) and is sent to Graphite via [statsd](https://wikitech.wikimedia.org/wiki/Statsd).",
-          "height": "",
-          "id": 8,
-          "links": [],
-          "mode": "markdown",
-          "span": 12,
-          "title": "",
-          "type": "text"
+          "expr": "sum(job_method_status:varnish_requests:rate5m{method=~\"$method\", site=~\"$site\", job=~\"$cache_type\",status=~\"($status_type).*\"}) by (method) > 0",
+          "format": "time_series",
+          "intervalFactor": 2,
+          "legendFormat": "{{method}}",
+          "refId": "A",
+          "target": ""
         }
       ],
-      "repeat": null,
-      "repeatIteration": null,
-      "repeatRowId": null,
-      "showTitle": false,
-      "title": "Legend",
-      "titleSize": "h6"
-    },
-    {
-      "collapse": false,
-      "height": "300px",
-      "panels": [
+      "thresholds": [],
+      "timeFrom": null,
+      "timeRegions": [],
+      "timeShift": null,
+      "title": "Requests by method",
+      "tooltip": {
+        "shared": true,
+        "sort": 2,
+        "value_type": "individual"
+      },
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
         {
-          "aliasColors": {},
-          "bars": false,
-          "datasource": null,
-          "decimals": null,
-          "editable": true,
-          "error": false,
-          "fill": 3,
-          "grid": {},
-          "id": 7,
-          "legend": {
-            "alignAsTable": false,
-            "avg": true,
-            "current": false,
-            "hideEmpty": false,
-            "max": false,
-            "min": false,
-            "rightSide": false,
-            "show": true,
-            "total": false,
-            "values": true
-          },
-          "lines": true,
-          "linewidth": 1,
-          "links": [],
-          "nullPointMode": "null as zero",
-          "percentage": false,
-          "pointradius": 5,
-          "points": false,
-          "renderer": "flot",
-          "seriesOverrides": [],
-          "span": 12,
-          "stack": true,
-          "steppedLine": false,
-          "targets": [
-            {
-              "refId": "A",
-              "target": "sortByMaxima(aliasSub(sumSeriesWithWildcards(varnish.$site.$cache_type.frontend.request.client.method.{get,post,head,connect,options,put,delete,trace}.rate, 1, 2), '^varnish\\.frontend\\.request\\.client\\.method\\.([^.]+)\\.rate$', '\\1'))",
-              "textEditor": true
-            }
-          ],
-          "thresholds": [],
-          "timeFrom": null,
-          "timeShift": null,
-          "title": "All status_type @ $site / $cache_type (non-PURGE)",
-          "tooltip": {
-            "msResolution": true,
-            "shared": true,
-            "sort": 0,
-            "value_type": "individual"
-          },
-          "type": "graph",
-          "xaxis": {
-            "mode": "time",
-            "name": null,
-            "show": true,
-            "values": []
-          },
-          "yaxes": [
-            {
-              "format": "short",
-              "label": "rate per second",
-              "logBase": 1,
-              "max": null,
-              "min": 0,
-              "show": true
-            },
-            {
-              "format": "short",
-              "logBase": 1,
-              "max": null,
-              "min": null,
-              "show": true
-            }
-          ]
+          "format": "short",
+          "label": "rps",
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
         },
         {
-          "aliasColors": {},
-          "bars": false,
-          "datasource": null,
-          "decimals": null,
-          "editable": true,
-          "error": false,
-          "fill": 3,
-          "grid": {},
-          "id": 6,
-          "legend": {
-            "alignAsTable": false,
-            "avg": true,
-            "current": false,
-            "hideEmpty": false,
-            "max": false,
-            "min": false,
-            "rightSide": false,
-            "show": true,
-            "total": false,
-            "values": true
-          },
-          "lines": true,
-          "linewidth": 1,
-          "links": [],
-          "nullPointMode": "null as zero",
-          "percentage": false,
-          "pointradius": 5,
-          "points": false,
-          "renderer": "flot",
-          "seriesOverrides": [
-            {
-              "alias": "Total",
-              "fill": 0,
-              "linewidth": 0,
-              "stack": false
-            }
-          ],
-          "span": 12,
-          "stack": true,
-          "steppedLine": false,
-          "targets": [
-            {
-              "refId": "A",
-              "target": "sortByMaxima(aliasSub(sumSeriesWithWildcards(varnish.$site.$cache_type.frontend.request.client.method.purge.rate, 1, 2), '^varnish\\.frontend\\.request\\.client\\.method\\.([^.]+)\\.rate$', '\\1'))",
-              "textEditor": false
-            }
-          ],
-          "thresholds": [],
-          "timeFrom": null,
-          "timeShift": null,
-          "title": "All status_type @ $site / $cache_type (PURGE)",
-          "tooltip": {
-            "msResolution": true,
-            "shared": true,
-            "sort": 0,
-            "value_type": "individual"
-          },
-          "type": "graph",
-          "xaxis": {
-            "mode": "time",
-            "name": null,
-            "show": true,
-            "values": []
-          },
-          "yaxes": [
-            {
-              "format": "short",
-              "label": "rate per second",
-              "logBase": 1,
-              "max": null,
-              "min": 0,
-              "show": true
-            },
-            {
-              "format": "short",
-              "logBase": 1,
-              "max": null,
-              "min": null,
-              "show": true
-            }
-          ]
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
         }
       ],
-      "repeat": null,
-      "repeatIteration": null,
-      "repeatRowId": null,
-      "showTitle": false,
-      "title": "Total",
-      "titleSize": "h6"
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
     },
     {
-      "collapse": false,
-      "height": "350px",
-      "panels": [
+      "aliasColors": {},
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": "eqiad prometheus/global",
+      "fill": 1,
+      "gridPos": {
+        "h": 7,
+        "w": 24,
+        "x": 0,
+        "y": 7
+      },
+      "id": 2,
+      "legend": {
+        "avg": false,
+        "current": false,
+        "max": false,
+        "min": false,
+        "show": true,
+        "total": false,
+        "values": false
+      },
+      "lines": true,
+      "linewidth": 1,
+      "links": [],
+      "nullPointMode": "null",
+      "percentage": false,
+      "pointradius": 5,
+      "points": false,
+      "renderer": "flot",
+      "seriesOverrides": [],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
         {
-          "aliasColors": {},
-          "bars": false,
-          "datasource": null,
-          "decimals": 1,
-          "editable": true,
-          "error": false,
-          "fill": 1,
-          "grid": {},
-          "id": 3,
-          "legend": {
-            "alignAsTable": false,
-            "avg": true,
-            "current": false,
-            "hideEmpty": false,
-            "max": false,
-            "min": false,
-            "show": true,
-            "total": false,
-            "values": true
-          },
-          "lines": true,
-          "linewidth": 1,
-          "links": [],
-          "nullPointMode": "connected",
-          "percentage": false,
-          "pointradius": 5,
-          "points": false,
-          "renderer": "flot",
-          "seriesOverrides": [],
-          "span": 12,
-          "stack": false,
-          "steppedLine": false,
-          "targets": [
-            {
-              "refId": "A",
-              "target": "aliasSub(sumSeriesWithWildcards(varnish.$site.$cache_type.frontend.request.client.status.$status_type[x]x.rate, 1,2), \"^.*\\.(\\dxx)\\.rate$\", \"\\1\")",
-              "textEditor": false
-            }
-          ],
-          "thresholds": [],
-          "timeFrom": null,
-          "timeShift": null,
-          "title": "Status Cat - type $status_type @ $site / $cache_type",
-          "tooltip": {
-            "msResolution": true,
-            "shared": true,
-            "sort": 0,
-            "value_type": "cumulative"
-          },
-          "type": "graph",
-          "xaxis": {
-            "mode": "time",
-            "name": null,
-            "show": true,
-            "values": []
-          },
-          "yaxes": [
-            {
-              "format": "short",
-              "label": "rate per second",
-              "logBase": 1,
-              "max": null,
-              "min": null,
-              "show": true
-            },
-            {
-              "format": "short",
-              "logBase": 1,
-              "max": null,
-              "min": null,
-              "show": true
-            }
-          ]
-        },
-        {
-          "aliasColors": {},
-          "bars": false,
-          "datasource": null,
-          "decimals": 2,
-          "editable": true,
-          "error": false,
-          "fill": 1,
-          "grid": {},
-          "id": 2,
-          "legend": {
-            "alignAsTable": false,
-            "avg": true,
-            "current": false,
-            "hideEmpty": false,
-            "max": false,
-            "min": false,
-            "rightSide": false,
-            "show": true,
-            "total": false,
-            "values": true
-          },
-          "lines": true,
-          "linewidth": 1,
-          "links": [],
-          "nullPointMode": "null as zero",
-          "percentage": false,
-          "pointradius": 5,
-          "points": false,
-          "renderer": "flot",
-          "seriesOverrides": [],
-          "span": 12,
-          "stack": false,
-          "steppedLine": false,
-          "targets": [
-            {
-              "hide": false,
-              "refId": "A",
-              "target": "aliasSub(sortByMaxima(sumSeriesWithWildcards(varnish.$site.$cache_type.frontend.request.client.status.$status_type[0-9][0-9].rate,1,2)),\"^.*\\.(\\d+)\\.rate$\",\"\\1\")",
-              "textEditor": false
-            }
-          ],
-          "thresholds": [],
-          "timeFrom": null,
-          "timeShift": null,
-          "title": "Status Code - type $status_type @ $site / $cache_type",
-          "tooltip": {
-            "msResolution": true,
-            "shared": true,
-            "sort": 0,
-            "value_type": "cumulative"
-          },
-          "transparent": false,
-          "type": "graph",
-          "xaxis": {
-            "mode": "time",
-            "name": null,
-            "show": true,
-            "values": []
-          },
-          "yaxes": [
-            {
-              "format": "short",
-              "label": "rate per second",
-              "logBase": 1,
-              "max": null,
-              "min": null,
-              "show": true
-            },
-            {
-              "format": "short",
-              "logBase": 1,
-              "max": null,
-              "min": null,
-              "show": true
-            }
-          ]
+          "expr": "sum(job_method_status:varnish_requests:rate5m{method=~\"$method\", site=~\"$site\", job=~\"$cache_type\",status=~\"($status_type).*\"}) by (status) > 0",
+          "format": "time_series",
+          "intervalFactor": 2,
+          "legendFormat": "{{status}}",
+          "refId": "A",
+          "target": ""
         }
       ],
-      "repeat": null,
-      "repeatIteration": null,
-      "repeatRowId": null,
-      "showTitle": false,
-      "title": "Cat / Codes",
-      "titleSize": "h6"
+      "thresholds": [],
+      "timeFrom": null,
+      "timeRegions": [],
+      "timeShift": null,
+      "title": "Responses by status",
+      "tooltip": {
+        "shared": true,
+        "sort": 2,
+        "value_type": "individual"
+      },
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "format": "short",
+          "label": "rps",
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        },
+        {
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        }
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
+    },
+    {
+      "aliasColors": {},
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": "eqiad prometheus/global",
+      "fill": 1,
+      "gridPos": {
+        "h": 7,
+        "w": 24,
+        "x": 0,
+        "y": 14
+      },
+      "id": 3,
+      "legend": {
+        "avg": false,
+        "current": true,
+        "max": true,
+        "min": true,
+        "show": true,
+        "total": false,
+        "values": true
+      },
+      "lines": true,
+      "linewidth": 1,
+      "links": [],
+      "nullPointMode": "null",
+      "percentage": false,
+      "pointradius": 5,
+      "points": false,
+      "renderer": "flot",
+      "seriesOverrides": [],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
+        {
+          "expr": "\n1 - sum(job_method_status:varnish_requests:sum{method=~\"$method\", site=~\"$site\", job=~\"$cache_type\",status=~\"5..\"}) / on (job) sum(job_method_status:varnish_requests:sum{method=~\"$method\", site=~\"$site\", job=~\"$cache_type\",status=~\"[12345]..\"})",
+          "format": "time_series",
+          "intervalFactor": 2,
+          "legendFormat": "1 - (5xx / [12345]xx)",
+          "refId": "A",
+          "target": ""
+        }
+      ],
+      "thresholds": [],
+      "timeFrom": null,
+      "timeRegions": [],
+      "timeShift": null,
+      "title": "Availability for $cache_type in $site",
+      "tooltip": {
+        "shared": true,
+        "sort": 1,
+        "value_type": "individual"
+      },
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "decimals": 5,
+          "format": "percentunit",
+          "label": "",
+          "logBase": 1,
+          "max": "1",
+          "min": "0.999",
+          "show": true
+        },
+        {
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        }
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
     }
   ],
-  "schemaVersion": 13,
-  "sharedCrosshair": true,
+  "refresh": false,
+  "schemaVersion": 16,
   "style": "dark",
   "tags": [
-    "operations",
     "traffic",
+    "operations",
     "source:puppet.git",
     "readonly"
   ],
   "templating": {
     "list": [
       {
-        "allFormat": "glob",
         "allValue": null,
         "current": {
-          "text": "All",
-          "value": "$__all"
-        },
-        "datasource": null,
-        "hide": 0,
-        "includeAll": true,
-        "label": "",
-        "multi": true,
-        "multiFormat": "glob",
-        "name": "site",
-        "options": [
-          {
-            "selected": true,
-            "text": "All",
-            "value": "$__all"
-          },
-          {
-            "selected": false,
-            "text": "eqiad",
-            "value": "eqiad"
-          },
-          {
-            "selected": false,
-            "text": "codfw",
-            "value": "codfw"
-          },
-          {
-            "selected": false,
-            "text": "esams",
-            "value": "esams"
-          },
-          {
-            "selected": false,
-            "text": "ulsfo",
-            "value": "ulsfo"
-          },
-          {
-            "selected": false,
-            "text": "eqsin",
-            "value": "eqsin"
-          }
-        ],
-        "query": "eqiad,codfw,esams,ulsfo,eqsin",
-        "refresh": 1,
-        "refresh_on_load": false,
-        "regex": "/^(?!clients)/",
-        "type": "custom"
-      },
-      {
-        "allFormat": "glob",
-        "allValue": null,
-        "current": {
-          "tags": [],
-          "text": "All",
+          "text": "codfw + eqiad + eqsin + esams + ulsfo",
           "value": [
-            "$__all"
+            "codfw",
+            "eqiad",
+            "eqsin",
+            "esams",
+            "ulsfo"
           ]
         },
-        "datasource": null,
+        "datasource": "eqiad prometheus/global",
+        "definition": "",
         "hide": 0,
-        "includeAll": true,
+        "includeAll": false,
         "label": "",
         "multi": true,
-        "multiFormat": "glob",
-        "name": "cache_type",
-        "options": [
-          {
-            "selected": true,
-            "text": "All",
-            "value": "$__all"
-          },
-          {
-            "selected": false,
-            "text": "text",
-            "value": "text"
-          },
-          {
-            "selected": false,
-            "text": "upload",
-            "value": "upload"
-          }
-        ],
-        "query": "text,upload",
+        "name": "site",
+        "options": [],
+        "query": "label_values(job_method_status:varnish_requests:sum, site)",
         "refresh": 1,
-        "refresh_on_load": false,
         "regex": "",
-        "type": "custom"
+        "skipUrlSync": false,
+        "sort": 0,
+        "tagValuesQuery": "",
+        "tags": [],
+        "tagsQuery": "",
+        "type": "query",
+        "useTags": false
       },
       {
-        "allFormat": "glob",
         "allValue": null,
         "current": {
-          "tags": [],
+          "text": "varnish-text + varnish-upload",
+          "value": [
+            "varnish-text",
+            "varnish-upload"
+          ]
+        },
+        "datasource": "eqiad prometheus/global",
+        "definition": "",
+        "hide": 0,
+        "includeAll": false,
+        "label": null,
+        "multi": true,
+        "name": "cache_type",
+        "options": [],
+        "query": "label_values(job_method_status:varnish_requests:sum, job)",
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 0,
+        "tagValuesQuery": "",
+        "tags": [],
+        "tagsQuery": "",
+        "type": "query",
+        "useTags": true
+      },
+      {
+        "allValue": null,
+        "current": {
           "text": "1 + 2 + 3 + 4 + 5",
           "value": [
             "1",
@@ -492,12 +362,10 @@
             "5"
           ]
         },
-        "datasource": null,
         "hide": 0,
         "includeAll": false,
-        "label": "",
+        "label": null,
         "multi": true,
-        "multiFormat": "glob",
         "name": "status_type",
         "options": [
           {
@@ -527,9 +395,38 @@
           }
         ],
         "query": "1,2,3,4,5",
-        "refresh": 0,
-        "refresh_on_load": false,
+        "skipUrlSync": false,
         "type": "custom"
+      },
+      {
+        "allValue": null,
+        "current": {
+          "tags": [],
+          "text": "GET + HEAD + POST",
+          "value": [
+            "GET",
+            "HEAD",
+            "POST"
+          ]
+        },
+        "datasource": "eqiad prometheus/global",
+        "definition": "label_values(job_method_status:varnish_requests:sum, method)",
+        "hide": 0,
+        "includeAll": false,
+        "label": null,
+        "multi": true,
+        "name": "method",
+        "options": [],
+        "query": "label_values(job_method_status:varnish_requests:sum, method)",
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 1,
+        "tagValuesQuery": "",
+        "tags": [],
+        "tagsQuery": "",
+        "type": "query",
+        "useTags": true
       }
     ]
   },
@@ -538,7 +435,6 @@
     "to": "now"
   },
   "timepicker": {
-    "now": true,
     "refresh_intervals": [
       "5s",
       "10s",
@@ -563,7 +459,8 @@
       "30d"
     ]
   },
-  "timezone": "utc",
+  "timezone": "",
   "title": "Varnish: Aggregate Client Status Codes",
-  "version": 23
+  "uid": "000000464",
+  "version": 29
 }
