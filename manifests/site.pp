@@ -305,12 +305,12 @@ node /^cp20(0[1467]|1[02369]|23)\.codfw\.wmnet$/ {
     role(cache::text)
 }
 
-node /^cp20(08|1[1478]|2[02456])\.codfw\.wmnet$/ {
+node /^cp20(1[1478]|2[02456])\.codfw\.wmnet$/ {
     interface::add_ip6_mapped { 'main': }
     role(cache::upload)
 }
 
-node /^cp200[25]\.codfw\.wmnet$/ {
+node /^cp200[258]\.codfw\.wmnet$/ {
     interface::add_ip6_mapped { 'main': }
     role(cache::upload_ats)
 }
