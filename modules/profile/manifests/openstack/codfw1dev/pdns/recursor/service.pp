@@ -19,4 +19,6 @@ class profile::openstack::codfw1dev::pdns::recursor::service(
         private_reverse_zones => $private_reverse_zones,
         aliaser_extra_records => $aliaser_extra_records,
     }
+
+    class{'::profile::openstack::base::pdns::recursor::monitor::rec_control':}
 }
