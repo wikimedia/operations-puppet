@@ -142,7 +142,7 @@ class profile::analytics::refinery::job::data_purge (
     $banner_activity_retention_days = 90
     kerberos::systemd_timer { 'refinery-drop-banner-activity':
         description  => 'Clean old Banner Activity _SUCCESS flags from HDFS.',
-        command      => "${refinery_path}/bin/refinery-drop-banner-activity-partitions -d ${banner_activity_retention_days} -l /wmf/data/wmf/banner_activity",
+        command      => "${refinery_path}/bin/refinery-drop-older-than --base-path='/wmf/data/wmf/banner_activity' --path-format='daily/year=(?P<year>[0-9]+)(/month=(?P<month>[0-9]+)(/day=(?P<day>[0-9]+))?)?' --older-than='${banner_activity_retention_days}' --execute='375ad8c358676ee1bd8bf166ee82d050'",
         environment  => $systemd_env,
         interval     => '*-*-* 02:00:00',
         user         => 'analytics',
