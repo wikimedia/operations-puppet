@@ -4,7 +4,6 @@ class toolforge::k8s::kubeadmrepo(
         uri        => 'http://apt.wikimedia.org/wikimedia/',
         dist       => 'stretch-wikimedia',
         components => 'thirdparty/kubeadm-k8s',
-        trust_repo => true,
         source     => false,
         notify     => Exec['toolforge-k8s-kubeadmrepo-apt-update'],
     }
