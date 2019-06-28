@@ -13,7 +13,7 @@ key_file = "<%= @certpath %>/clientkey.pem"
 cert_file = "<%= @certpath %>/clientcert.pem"
 ca_file = "<%= @certpath %>/cacert.pem"
 tls_allowed_dn_list = [
-<% @all_cloudvirts.each do |host| -%>
+<% @all_cloudvirts.sort.each do |host| -%>
                        "CN=<%= host %>",
 <% end -%>
     ]
