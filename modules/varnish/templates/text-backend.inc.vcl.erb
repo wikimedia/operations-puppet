@@ -106,16 +106,6 @@ sub cluster_be_backend_response {
 		}
 	}
 
-	// Workaround for lack of ULS Vary:AL output, used only on this wiki
-	// Being fixed upstream in ULS in https://gerrit.wikimedia.org/r/c/mediawiki/extensions/UniversalLanguageSelector/+/456650
-	if (bereq.http.host == "fixcopyright.wikimedia.org" && beresp.http.Vary !~ "(?i)Accept-Language") {
-		if (beresp.http.Vary) {
-			set beresp.http.Vary = beresp.http.Vary + ",Accept-Language";
-		} else {
-			set beresp.http.Vary = "Accept-Language";
-		}
-	}
-
 	call text_common_backend_response;
 
 	return (deliver);
