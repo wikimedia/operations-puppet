@@ -196,7 +196,7 @@ codfw:
     cp2002.codfw.wmnet: [varnish-fe, ats-be, nginx]
     cp2005.codfw.wmnet: [varnish-fe, ats-be, nginx]
     cp2008.codfw.wmnet: [varnish-fe, ats-be, nginx]
-    cp2011.codfw.wmnet: [varnish-fe, varnish-be, nginx]
+    cp2011.codfw.wmnet: [varnish-fe, ats-be, nginx]
     cp2014.codfw.wmnet: [varnish-fe, varnish-be, nginx]
     cp2017.codfw.wmnet: [varnish-fe, varnish-be, nginx]
     cp2018.codfw.wmnet: [varnish-fe, varnish-be, nginx]
