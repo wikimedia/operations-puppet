@@ -45,7 +45,6 @@ cache::nodes:
       - 'cp5012.eqsin.wmnet'
   upload:
     codfw:
-      - 'cp2005.codfw.wmnet'
       - 'cp2008.codfw.wmnet'
       - 'cp2011.codfw.wmnet'
       - 'cp2014.codfw.wmnet'
@@ -58,6 +57,7 @@ cache::nodes:
       - 'cp2026.codfw.wmnet'
     codfw_ats:
       - 'cp2002.codfw.wmnet'
+      - 'cp2005.codfw.wmnet'
     eqiad:
       - 'cp1076.eqiad.wmnet'
       - 'cp1078.eqiad.wmnet'
