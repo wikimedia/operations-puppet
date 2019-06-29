@@ -467,7 +467,7 @@ def main():
         sys.exit(1)
 
     def stat(metric, value):
-        metric_prepend = 'servers.{}.nova'.format(socket.gethostname())
+        metric_prepend = 'cloudvps.novafullstack.{}'.format(socket.gethostname())
         submit_stat(args.statsd,
                     8125,
                     metric_prepend,
