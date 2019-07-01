@@ -3209,7 +3209,7 @@ users:
     name: accraze
     realname: Andy Craze
     ssh_keys:
-      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIGLtClyxT1BEaiary3mlGhyWrqytMGOtnGYC5/kaSVOa acraze@Andys-MacBook-Pro.local
+      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDoseoHpPEYpbXzJZ6FL+R7S3AKk3nv7lGoVzCTJF8Br acraze@Andys-MacBook-Pro.local
     uid: 21437
     email: acraze@wikimedia.org
 ldap_only_users:
