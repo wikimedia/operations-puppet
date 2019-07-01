@@ -25,8 +25,7 @@ class profile::mediawiki::php(
     String $apc_shm_size = hiera('profile::mediawiki::apc_shm_size'),
     # temporary, for php restarts
     String $cluster = lookup('cluster', {'default_value' => $::cluster}),
-    # temporary, feature flag to install wmerrors
-    Boolean $wmerrors = lookup('profile::mediawiki::php::wmerrors', {'default_value' => false}),
+    # Needed for wmerrors
     String $statsd = hiera('statsd'),
     ) {
 
@@ -292,7 +291,7 @@ class profile::mediawiki::php(
     }
 
     ## Install wmerrors
-    if $php_version != '7.0' and $wmerrors {
+    if $php_version != '7.0' {
         php::extension { 'wmerrors':
             ensure => present,
             sapis  => ['fpm'],

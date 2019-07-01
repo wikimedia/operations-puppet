@@ -225,8 +225,6 @@ mediawiki::hhvm::extra_fcgi:
 
 # Enable php-fpm
 profile::mediawiki::php::enable_fpm: true
-# Experimentally enable wmerrors in beta
-profile::mediawiki::php::wmerrors: true
 profile::php_fpm::fcgi_port: 8000
 
 statsd: labmon1001.eqiad.wmnet:8125

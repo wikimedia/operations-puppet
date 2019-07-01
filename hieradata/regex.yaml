@@ -303,4 +303,3 @@ mediawiki_test_environment:
     opcache.interned_strings_buffer: 50
     opcache.memory_consumption: 300
   profile::mediawiki::php::restarts::opcache_limit: 100
-  profile::mediawiki::php::wmerrors: true
