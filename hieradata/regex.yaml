@@ -302,5 +302,5 @@ mediawiki_test_environment:
   profile::mediawiki::php::fpm_config:
     opcache.interned_strings_buffer: 50
     opcache.memory_consumption: 300
-    profile::mediawiki::php::restarts::opcache_limit: 100
-    profile::mediawiki::php::wmerrors: true
+  profile::mediawiki::php::restarts::opcache_limit: 100
+  profile::mediawiki::php::wmerrors: true
