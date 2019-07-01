@@ -290,8 +290,8 @@ class profile::mediawiki::php(
         }
     }
 
-    ## Install wmerrors
-    if $php_version != '7.0' {
+    ## Install wmerrors, on fpm only.
+    if $php_version != '7.0' and $enable_fpm {
         php::extension { 'wmerrors':
             ensure => present,
             sapis  => ['fpm'],
@@ -319,6 +319,12 @@ class profile::mediawiki::php(
             owner   => 'root',
             group   => 'root',
             content => template('profile/mediawiki/error-params.php.erb'),
+        }
+    }
+    else {
+        # Temoprary cleanup for the previous error
+        php::extension { 'wmerrors':
+            ensure => absent,
         }
     }
 }
