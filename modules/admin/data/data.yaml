@@ -3055,7 +3055,7 @@ users:
     shell: /usr/bin/zsh
     ssh_keys:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPhmLO5JSeJ7IK13C3mjckZF/HwdCQ32bqfaZgRfUfiw cdanis@cdanis
-      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDUatmrEVyhGBiJDtv1q/t9rt+z3TVb3tNLQ6y6Ou4TvZSfZjslJc/vlAHBKcYdiAqPyVremn9BBeghf6ylV7XnElySXJmdptx5/PiV0B7gajAcg4jz1bw8LFzCjuVThxv8N8pGkoCsNywBBv6xnuWUl4fk1AToqe/8+k7JSQYUsQobp+LUa45rVwe3OzXHT/T/rR6UAM48Xqllaycl16/68zwTEnU5tIpbzzNpR8dtUUA+ok/j35/Knc4CoNMY8+iXEFJleSslFFr+0qjVaUp/PtTINIeYSfOT4j3raDB12gSFG2YvrIM2dPhCL/rkIdmBrKXGvWY6+MEBsWbDzEvj cdanis@yubikey
+      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQC6Gqh/8Dox0/1BDBqP5X9NLyUgQ6eNRFMb3un2hdUQF5g78UFiAz4twMbC7rVvrL6d/9ZLmZnTbFJdAwf1YjCySeOyYjvtyToRnXUUVb62hfrvpfF16fe5M9E5Yyss87dkGPMY8IWJ9hRqxBDJHPXdAi8foUwEe+AoabjmArd2jOUP80wCKl0hP54XM7MXKbuGWNjBmEuLDcHy/OwIlUO6c1OIGZO4nLJTzfL5/R9Q/lIt65MwLBkkegALiBBoGEYIKm324KAaOmP9bwYh7bn5GsIkcfsj4FxCHx1UH+qOyi6YcOKFEMt5DB0GYCCqDN1FfN2CSDRuzigY5wsmpDs6+g9i5dT23IzvGGkI4nADRBcJb5BMVEDjZRKEQfZbxKctiQQgkW3/YYY31pLRrRTmNlybf4t9dlYK3BuraA6ZtGCwkZ6195CuCA8biMHAGv1rMa9FK3hm5bUrDGUa+5/MzIldzB5nuhugiAzg5C+iz6oEp5cuoMB5rjK0Ni2T1dloaPOmrzQMmObghDaAnS8kDhzvXv69dIAJ+P1lrHiQLhmEnwuKb9/ueX++Nkfp+NXxjHynxmJkUwYXwzMtcvymPywtEoaYS84YBCkx9oVgNfEwQtvx+/9LsVukL/d7dcg1FA2D46No0h3Tgx/8/qAlHt1bQrnBrpgrLxEd6LXwLw== cdanis@yubikey-wmf
     uid: 20431
     email: cdanis@wikimedia.org
   jhuneidi:
