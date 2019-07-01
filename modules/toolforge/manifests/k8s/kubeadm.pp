@@ -16,9 +16,12 @@ class toolforge::k8s::kubeadm(
         ensure => 'present',
     }
 
-
     file { '/etc/systemd/system/docker.service.d':
         ensure => 'directory',
+    }
+
+    service { 'docker':
+        ensure => 'running'
     }
 
     file { '/etc/docker/daemon.json':
