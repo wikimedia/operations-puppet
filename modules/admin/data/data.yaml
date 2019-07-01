@@ -13,7 +13,7 @@ groups:
               yuvipanda, shrlak, madhuvishy, groovier, khorn, ironholds, katie, chedasaurus,
               cy534, pnorman, mpany, deskana, arnad, nithum, banyek, imarlier, mkroetzsch,
               mtizzoni, panisson, paolotti, ciro, dartar, melodykramer, gtirloni, tbayer, pirroh,
-              bawolff, dkg, juliaglen, dzahn, cwdent]
+              bawolff, dkg, juliaglen, dzahn, cwdent, bmansurov]
   absent_ldap:
     description: meta group for absented users which had privileged LDAP access in the past, an automatic check verifies it has been really removed from the LDAP (but removal has to be handled separatelly)
     members: [adavenport, siddharth11, albe, audiohazel, tbolliger, jmatazzoni, pbj]
@@ -90,7 +90,7 @@ groups:
                  restricted folks use sudo to access www-data resources
     members: [bearloga, tjones, cparle, pearley, bpirkle, ktsouroupidou,
               ezachte, jamesur, jdlrobson, smalyshev, sguebo, thargrove,
-              leila, santhosh, amire80, foks, chelsyx, dbarratt, bmansurov, karen,
+              leila, santhosh, amire80, foks, chelsyx, dbarratt, karen,
               onimisionipe, kharlan]
     privileges: ['ALL = (www-data) NOPASSWD: ALL']
   cassandra-test-roots:
@@ -143,7 +143,7 @@ groups:
     description: Access statistics number crunching hosts (like
                  statistics-users) and also provides access to research mysql
                  credentials on stat1006 (currently the only such host)
-    members: [awight, bmansurov, catrope, mneisler,
+    members: [awight, catrope, mneisler,
               dduvall, esanders, ezachte, gilles, halfak,
               jforrester, jkatz, jmorgan, kaldari, nathante,
               leila, mattflaschen, milimetric, nettrom, bearloga,
@@ -226,7 +226,7 @@ groups:
                  add them instead to the analytics-users group.  statistics-* groups
                  DO NOT EQUAL Hadoop/Hive cluster access.
     members: [ezachte, milimetric, halfak, awight, dr0ptp4kt, nuria,
-              leila, nettrom, mforns, bmansurov, joal,
+              leila, nettrom, mforns, joal,
               tjones, legoktm, dcausse, bearloga, atgomez, dstrine,
               marktraceur, accraze,
               fdans, shiladsen, esanders, risler, nathante, chelsyx, jdl]
@@ -272,7 +272,7 @@ groups:
               andyrussg, niedzielski, maxsem, hoo, daniel, krinkle, tgr,
               smalyshev, ebernhardson, addshore, jminor, neilpquinn-wmf,
               dcausse, bd808, tjones, mobrovac, jdrewniak, ejegg, jdcc, ori,
-              bmansurov, atgomez, amire80, kartik, pcoombe, foks, jsamra,
+              atgomez, amire80, kartik, pcoombe, foks, jsamra,
               jdlrobson, chelsyx, ovasileva, flemmerich, filippo, pmiazga, faidon,
               piccardi, fdans, eevans, anomie, demon, ladsgroup, musikanimal,
               kaldari, goransm, ema, dsaez, shiladsen, rho, mirrys, slaporte, jk,
@@ -462,7 +462,7 @@ groups:
     members: [bd808, eevans, mobrovac, ppchelko, demon, twentyafterfour, thcipriani, dduvall,
               bsitzmann, mholloway-shell, kartik, halfak, ladsgroup, smalyshev, hoo, tgr,
               ssastry, cscott, arlolra, jdlrobson, maxsem, jforrester, niedzielski,
-              pmiazga, phuedx, mbsantos, onimisionipe, bmansurov, mvolz, santhosh]
+              pmiazga, phuedx, mbsantos, onimisionipe, mvolz, santhosh]
     privileges: []
 
   deploy-aqs:
@@ -653,7 +653,7 @@ groups:
   recommendation-admin:
     description: Group of recommendation-api admins
     gid: 794
-    members: [ppchelko, eevans, mobrovac, bmansurov]
+    members: [ppchelko, eevans, mobrovac]
     privileges: ['ALL = NOPASSWD: /usr/sbin/service recommendation_api *',
                  'ALL = (recommendation_api) NOPASSWD: ALL']
   cpjobqueue-admin:
@@ -1715,13 +1715,12 @@ users:
     uid: 10747
     email: jkatz@wikimedia.org
   bmansurov:
-    ensure: present
+    ensure: absent
     gid: 500
     name: bmansurov
     realname: Bahodir Mansurov
-    ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDo4whVVoxM3qhsE2FPfQslsnkoZMQozoOlQln//9fEqQmm6ixZjrTqBLFlSD88ZBISR/42o7gxhEFNGYud70A46+txvnC5JoQjXlkRcZIhcegO1xJYu+dvmQAOAHSfwnM9XgZd55ib03v3ib8dVlQNwlMbO/ONOsJwwHLBYu43rhI2kimuEP00RvLwA+78S4x8c5E5haHbk063WzVpFAI5ntyAeANJ5EnEfiXhKV2J7R7YazXP178YOkgSRTBHJpb6CNTiuEtWfLCZ1MgS14vypD/cI20SzgvZovPQ/6kdaneziiNIhVLRPbFfVcg0HtvOxlld2NJwJfnkvWRTuJvp bmansurov@wikimedia.org]
+    ssh_keys: []
     uid: 10570
-    email: bmansurov@wikimedia.org
   west1:
     ensure: present
     gid: 500
