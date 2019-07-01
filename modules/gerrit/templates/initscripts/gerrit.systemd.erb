@@ -7,6 +7,8 @@ User=gerrit2
 Group=gerrit2
 Type=simple
 EnvironmentFile=/etc/default/gerrit
+# TODO: Remove this if proven that it does not prevent threads building up.
+ExecStartPre=/bin/sleep 5
 ExecStart=<%= @java_home %>/bin/java <% @java_options.each do |jvm_opt| %><%= jvm_opt %> <% end %> -jar /var/lib/gerrit2/review_site/bin/gerrit.war daemon -d /var/lib/gerrit2/review_site<%- if @slave -%> --slave<% end %>
 KillSignal=SIGINT
 # NOFILE :  GERRIT_FDS, determined by "core.packedGitOpenFiles" in the script
