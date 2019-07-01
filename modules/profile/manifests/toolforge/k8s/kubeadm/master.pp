@@ -3,6 +3,7 @@ class profile::toolforge::k8s::kubeadm::master(
     Stdlib::Fqdn        $apiserver  = lookup('profile::toolforge::k8s::apiserver'),
     String              $dns_domain = lookup('profile::toolforge::k8s::dns_domain'),
     String              $node_token = lookup('profile::toolforge::k8s::node_token'),
+    Boolean             $swap       = lookup('swap_partition',                      {default_value => true}),
 ) {
     class { 'toolforge::k8s::kubeadm': }
     class { 'toolforge::k8s::kubeadm_init':
@@ -12,5 +13,19 @@ class profile::toolforge::k8s::kubeadm::master(
         service_subnet => '192.168.1.0/24', # TODO: review this
         dns_domain     => $dns_domain,
         node_token     => $node_token,
+    }
+
+    # kubeadm preflight checks:
+    # Ncpu should be >= 2
+    if $facts['processorcount'] < 2 {
+        fail('Please apply this profile into a VM with nCPU >= 2')
+    }
+    # disable swap: kubelet doesn't want it
+    if $swap {
+        fail('Please set the swap_partition hiera key to false for this VM')
+    }
+    exec { 'toolforge_k8s_disable_swap':
+        command => '/sbin/swapoff -a',
+        onlyif  => '/usr/bin/test $(swapon -s | wc -l) -gt 0',
     }
 }
