@@ -8,8 +8,9 @@ AccuracySec=<%= @accuracy %>
 <%- @timer_intervals.each do |timer| -%>
 <%= timer['start'] %>=<%= timer['interval'] %>
 <%- end -%>
+<%- if scope.function_os_version(['debian >= stretch']) -%>
 RandomizedDelaySec=<%= @splay %>
+<%- end -%>
 
 [Install]
 WantedBy=multi-user.target
-
