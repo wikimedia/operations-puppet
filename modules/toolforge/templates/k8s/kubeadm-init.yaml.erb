@@ -5,13 +5,12 @@ bootstrapTokens:
 - token: "<%= @node_token -%>"
   description: "Node Token"
   usages:
-  - authentication
-  - signing
+    - authentication
+    - signing
   groups:
-  - system:bootstrappers:kubeadm:default-node-token
+    - system:bootstrappers:kubeadm:default-node-token
 <% end %>
 localAPIEndpoint:
-  advertiseAddress: "<%= @apiserver -%>"
   bindPort: 6443
 certificateKey: "<%= @encryption_key -%>"
 ---
@@ -21,7 +20,7 @@ etcd:
   external:
     endpoints:
     <% @etcd_hosts.each do |host| -%>
-      - "<%= host -%>:2379"
+      - "https://<%= host -%>:2379"
     <% end -%>
 networking:
   serviceSubnet: "<%= @service_subnet -%>"
@@ -35,11 +34,10 @@ apiServer:
     # By default these admission plugins are enabled (enable-admission-plugins adds to them):
     # (NamespaceLifecycle, LimitRanger, ServiceAccount, TaintNodesByCondition, Priority, DefaultTolerationSeconds, DefaultStorageClass, PersistentVolumeClaimResize, MutatingAdmissionWebhook, ValidatingAdmissionWebhook, ResourceQuota)
     enable-admission-plugins: PodSecurityPolicy
-    anonymous-auth: false
-    advertise-address: "<%= @apiserver -%>"
+    anonymous-auth: "false"
   certSANs:
-  - "<% @apiserver_ip -%>"
-  - "<%= @apiserver -%>"
+  # - "<% @apiserver_ip -%>"
+    - "<%= @apiserver -%>"
   timeoutForControlPlane: 4m0s
 controllerManager:
   extraArgs:
@@ -51,9 +49,9 @@ controllerManager:
   #  mountPath: "/etc/some-pod-path"
   #  readOnly: false
   #  pathType: File
-scheduler:
-  extraArgs:
-    address: "<%= @apiserver -%>"
+# scheduler:
+#   extraArgs:
+#     address: "<%= @apiserver -%>"
 # extraVolumes:
 #- name: "some-volume"
 #  hostPath: "/etc/some-path"
