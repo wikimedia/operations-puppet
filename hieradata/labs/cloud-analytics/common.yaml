@@ -94,7 +94,7 @@ hadoop_clusters:
     mapreduce_history_java_opts: "-Xms128m -Xmx128m -javaagent:/usr/share/java/prometheus/jmx_prometheus_javaagent.jar=%{::ipaddress}:10086:/etc/prometheus/mapreduce_history_jmx_exporter.yaml"
     hadoop_datanode_opts: "-Xms4096m -Xmx4096m -javaagent:/usr/share/java/prometheus/jmx_prometheus_javaagent.jar=%{::ipaddress}:51010:/etc/prometheus/hdfs_datanode_jmx_exporter.yaml"
     hadoop_journalnode_opts: "-javaagent:/usr/share/java/prometheus/jmx_prometheus_javaagent.jar=%{::ipaddress}:10485:/etc/prometheus/hdfs_journalnode_jmx_exporter.yaml"
-    yarn_nodemanager_opts: "-Xms2048m -Xmx2048m -javaagent:/usr/share/java/prometheus/jmx_prometheus_javaagent.jar=%{::ipaddress}:8141:/etc/prometheus/yarn_nodemanager_jmx_exporter.yaml"
+    yarn_nodemanager_opts: "-Xms2048m -Xmx2048m -javaagent:/usr/share/java/prometheus/jmx_prometheus_javaagent.jar=[::]:8141:/etc/prometheus/yarn_nodemanager_jmx_exporter.yaml"
 
     # The HDFS Trash is configured in this way:
     # 1) Once every day a checkpoint is made (that contains all the trash for a day).
