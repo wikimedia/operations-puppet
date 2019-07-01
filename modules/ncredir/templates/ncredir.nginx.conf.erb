@@ -1,0 +1,50 @@
+include /etc/nginx/conf.d/redirection_maps.conf;
+
+<% @acme_certificates.each_with_index do |(cert_name, cert_config), cert_index| -%>
+<% if cert_name.match(@acme_chief_cert_prefix) -%>
+server {
+<% if cert_index == 0 -%>
+    listen [::]:<%= @https_port %> ipv6only=on http2 ssl deferred backlog=4096 reuseport;
+    listen <%= @https_port %> http2 ssl deferred backlog=4096 reuseport;
+<% else -%>
+    listen [::]:<%= @https_port %> http2 ssl;
+    listen <%= @https_port %> http2 ssl;
+<% end -%>
+    server_name
+<% cert_config['SNI'][0...-1].each_with_index do |sni| -%>
+    <%= sni %>
+<% end -%>
+    <%= cert_config['SNI'].last %>;
+
+    <%= @ssl_settings.join("\n    ") %>
+    ssl_certificate <%= @certs_basepath %>/<%= cert_name %>/live/rsa-2048.chained.crt;
+    ssl_certificate_key <%= @certs_basepath %>/<%= cert_name %>/live/rsa-2048.key;
+    ssl_certificate <%= @certs_basepath %>/<%= cert_name %>/live/ec-prime256v1.chained.crt;
+    ssl_certificate_key <%= @certs_basepath %>/<%= cert_name %>/live/ec-prime256v1.key;
+
+    if ($override != '') {
+        return 301 $override;
+    }
+    if ($rewrite != '') {
+        return 301 $rewrite;
+    }
+
+    return 301 https://www.wikimedia.org;
+}
+<% end -%>
+<% end -%>
+
+server {
+    listen [::]:<%= @http_port %> default_server ipv6only=on deferred backlog=4096 reuseport;
+    listen <%= @http_port %> default_server deferred backlog=4096 reuseport;
+    server_name _;
+
+    if ($override != '') {
+        return 301 $override;
+    }
+    if ($rewrite != '') {
+        return 301 $rewrite;
+    }
+
+    return 301 https://www.wikimedia.org;
+}

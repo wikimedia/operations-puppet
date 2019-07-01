@@ -1,0 +1,233 @@
+# domain-redirects.dat -- The oyster knife of URL manipulation
+# vim: ft=conf ts=12
+#
+# Each non-blank line consists of a rule with whitespace-separated
+# parameters. The first parameter is the command name, which may be funnel,
+# rewrite or override.
+#
+# funnel	<domain-wildcard>	<dest>
+#
+#   Redirect a whole domain (or set of domains) to a single URL
+#
+# rewrite	<domain-wildcard>	<dest>
+#
+#   Rewrite the URLs in one domain (or set of domains) to URLs in another
+#   domain with an optional path prefix. A trailing slash in <dest> is ignored.
+#   A leading slash is implied in the source path.
+#
+# override	<domain-wildcard><path>	<dest>
+#
+#   Override a rewrite or funnel rule for a certain domain wildcard by sending
+#   a certain path to a specified destination URL.
+#
+# Where:
+#   <domain-wildcard> may take one of the following forms:
+#
+#        <domain>             -- A simple domain name
+#        *.<domain>           -- Any subdomain of the given domain
+#        *<domain>            -- Matches *.<domain> or <domain>, i.e. the
+#                                specified domain or any subdomain of it.
+#
+#   <dest> is a fully-qualified or protocol-relative URL. If the URL is
+#   protocol-relative, the behaviour will depend on X-Forwarded-Proto. The
+#   path part of the URL is optional, "/" is implied if it is absent.
+#
+#   If the special character "*" is present, it will be substituted with the
+#   subdomain part matched by a *.<domain> style domain wildcard. If "*" occurs
+#   in a rule where such a wildcard is not used, it will be interpreted as a
+#   literal "*".
+#
+#   <path> is the path part of a URL.
+#
+# Double-redirects are not allowed -- the domain part of the destination may
+# not be specified as a source elsewhere in the file. This prevents redirect
+# loops and accidental listing of important domains such as en.wikipedia.org
+# as a source.
+#
+
+# Shop redirects
+funnel	shop.wikipedia.com	https://store.wikimedia.org
+funnel	store.wikipedia.com	https://store.wikimedia.org
+
+
+funnel	*wikijunior.com	https://en.wikibooks.org/wiki/Wikijunior
+funnel	*wikijunior.org	https://en.wikibooks.org/wiki/Wikijunior
+funnel	*wikijunior.net	https://en.wikibooks.org/wiki/Wikijunior
+
+# Language aliases
+
+rewrite	cz.wikipedia.com	https://cs.wikipedia.org
+rewrite	cz.wikibooks.com	https://cs.wikibooks.org
+rewrite	cz.wikiquote.com	https://cs.wikiquote.org
+rewrite	cz.wikisource.com	https://cs.wikisource.org
+rewrite	cz.wikiversity.com	https://cs.wikiversity.org
+rewrite	cz.wiktionary.com	https://cs.wiktionary.org
+rewrite	cz.wikinews.com	https://cs.wikinews.org
+rewrite	dk.wikipedia.com	https://da.wikipedia.org
+rewrite	dk.wikibooks.com	https://da.wikibooks.org
+rewrite	dk.wiktionary.com	https://da.wiktionary.org
+rewrite	jp.wikipedia.com	https://ja.wikipedia.org
+
+# Localised TLDs
+
+rewrite	*wikinews.de	https://de.wikinews.org
+rewrite	*wikipedia.org.il	https://he.wikipedia.org
+rewrite	*wikipedia.co.il	https://he.wikipedia.org
+rewrite	*wikipedia.bg	https://bg.wikipedia.org
+rewrite	*wikipedia.is	https://is.wikipedia.org
+rewrite	*wikipedia.co.za	https://af.wikipedia.org
+rewrite	*wikisource.pl	https://pl.wikisource.org
+
+# wikimedia.ee / wikipedia.ee - T165733#3355736
+rewrite	*wikimedia.ee	https://ee.wikimedia.org
+
+rewrite	*wikipedia.ee	https://et.wikipedia.org
+
+rewrite	*wikipedia.gr	https://el.wikipedia.org
+
+rewrite	*wikimedia.jp.net	https://www.wikimedia.org
+
+rewrite	*wikimedia.lt	https://foundation.wikimedia.org
+rewrite	*wikipedia.lt	https://lt.wikipedia.org
+
+# Wikipedia
+
+rewrite	*en-wp.com	https://en.wikipedia.org
+rewrite	*en-wp.org	https://en.wikipedia.org
+
+rewrite	wikipedia.com	https://www.wikipedia.org
+rewrite	wikipedia.net	https://www.wikipedia.org
+rewrite	wikipedia.info	https://www.wikipedia.org
+
+
+rewrite	*.wikipedia.com	https://*.wikipedia.org
+rewrite	*.wikipedia.net	https://*.wikipedia.org
+rewrite	*.wikipedia.info	https://*.wikipedia.org
+# rewrite	*.wiki-pedia.org	https://*.wikipedia.org
+# rewrite	wiki-pedia.org	https://www.wikipedia.org
+
+# wikipedia typo domains to www. instead of en - T165733#3355736
+# funnel	*wiikipedia.com	https://www.wikipedia.org
+# funnel	*wikiepdia.com	https://www.wikipedia.org
+# funnel	*wikiepdia.org	https://www.wikipedia.org
+funnel	*wikiipedia.org	https://www.wikipedia.org
+funnel	*wikpedia.org	https://www.wikipedia.org
+
+# Wiktionary
+
+rewrite	*.wiktionary.com	https://*.wiktionary.org
+rewrite	wiktionary.com	https://www.wiktionary.org
+funnel	*wiktionary.eu	https://www.wiktionary.org
+
+# Wikibooks - T87039
+
+rewrite	*.wikibook.com	https://*.wikibooks.org
+rewrite	*.wikibooks.com	https://*.wikibooks.org
+
+rewrite	wikibook.com	https://www.wikibooks.org
+rewrite	wikibooks.com	https://www.wikibooks.org
+
+
+# Wikisource
+
+rewrite	*.wikisource.com	https://*.wikisource.org
+rewrite	wikisource.com	https://wikisource.org
+
+# Wikiquote
+
+rewrite	wikiquote.com	https://www.wikiquote.org
+rewrite	*.wikiquote.com	https://*.wikiquote.org
+rewrite	wikiquote.net	https://www.wikiquote.org
+rewrite	*.wikiquote.net	https://*.wikiquote.org
+
+# Wikinews
+
+rewrite	wikinews.com	https://www.wikinews.org
+rewrite	*.wikinews.com	https://*.wikinews.org
+
+# Wikispecies
+
+# Temporarily at species.wikipedia.org until DNS is sorted out
+rewrite	*wikispecies.com	https://species.wikimedia.org
+rewrite	*wikispecies.org	https://species.wikimedia.org
+rewrite	*wikispecies.net	https://species.wikimedia.org
+
+# Wikiversity
+
+rewrite	*.wikiversity.com	https://*.wikiversity.org
+
+rewrite	wikiversity.com	https://www.wikiversity.org
+
+# Wikivoyage
+rewrite	*.wikivoyage.com	https://*.wikivoyage.org
+rewrite	*.wikivoyage.de	https://*.wikivoyage.org
+rewrite	*.wikivoyage.eu	https://*.wikivoyage.org
+rewrite	*.wikivoyage.net	https://*.wikivoyage.org
+rewrite	wikivoyage.com	https://www.wikivoyage.org
+rewrite	wikivoyage.de	https://www.wikivoyage.org
+rewrite	wikivoyage.eu	https://www.wikivoyage.org
+rewrite	wikivoyage.net	https://www.wikivoyage.org
+
+# Wikivoyager (T165733#3355736)
+rewrite	*.wikivoyager.org	https://*.wikivoyage.org
+rewrite	*.wikivoyager.de	https://*.wikivoyage.org
+rewrite	wikivoyager.org	https://www.wikivoyage.org
+rewrite	wikivoyager.de	https://www.wikivoyage.org
+
+# Voyagewiki (T165733#3355736)
+# rewrite	*.voyagewiki.com	https://*.wikivoyage.org
+# rewrite	*.voyagewiki.org	https://*.wikivoyage.org
+# rewrite	voyagewiki.com	https://www.wikivoyage.org
+# rewrite	voyagewiki.org	https://www.wikivoyage.org
+
+# wikimediafoundation
+rewrite	*wikimediafoundation.com	https://foundation.wikimedia.org
+rewrite	*wikimediafoundation.net	https://foundation.wikimedia.org
+rewrite	*wikimediafoundation.info	https://foundation.wikimedia.org
+
+# Commons
+
+# rewrite	*wikimediacommons.net	https://commons.wikimedia.org
+# rewrite	*wikimediacommons.info	https://commons.wikimedia.org
+# rewrite	*wikimediacommons.mobi	https://commons.wikimedia.org
+# rewrite	*wikimediacommons.org	https://commons.wikimedia.org
+# rewrite	*wikimediacommons.jp.net	https://commons.wikimedia.org
+# rewrite	*wikimediacommons.co.uk	https://commons.wikimedia.org
+
+# Other projects
+
+rewrite	quality.wikipedia.com	https://quality.wikimedia.org
+
+rewrite	*mediawiki.com	https://www.mediawiki.org
+
+
+###############
+## chapters
+###############
+
+# Wikimania
+rewrite	*wikimania.org	https://wikimania.wikimedia.org
+rewrite	*wikimania.com	https://wikimania.wikimedia.org
+rewrite	wikimania2019.wikimedia.org	https://wikimania.wikimedia.org
+
+# wikimedia.com redirect
+funnel	*wikimedia.com	https://www.wikimedia.org
+
+# wikimedia.community redirect
+funnel	*wikimedia.community	https://www.wikimedia.org
+
+# wikimedia.us redirect
+funnel	*wikimedia.us	https://www.wikimedia.org
+
+# wikipedia.in
+funnel	*wikipedia.in	http://wikimedia.in/wikipedia.html
+
+
+# wikipediazero.org - T82495
+funnel	*wikipediazero.org	https://foundation.wikimedia.org/wiki/Wikipedia_Zero
+
+# pywikipedia.org (T60803). This domain uses non-WMF DNS servers
+funnel	*pywikipedia.org	//tools.wmflabs.org/pywikibot/
+
+# pywikibot.org (T106311). This domain uses non-WMF DNS servers
+funnel	*pywikibot.org	//tools.wmflabs.org/pywikibot/
