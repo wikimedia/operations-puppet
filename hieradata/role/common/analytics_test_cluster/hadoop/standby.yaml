@@ -23,8 +23,8 @@ profile::hadoop::common::config_override:
   # The default is 1000m, we increase it to 2048m in production.
   yarn_heapsize: 2048
   # Prometheus JMX Exporter config templates.
-  hadoop_namenode_opts: "-Xms12288m -Xmx12288m -XX:+UseParNewGC -XX:+UseConcMarkSweepGC -XX:CMSInitiatingOccupancyFraction=70 -XX:+CMSParallelRemarkEnabled -javaagent:/usr/share/java/prometheus/jmx_prometheus_javaagent.jar=%{::ipaddress}:10080:/etc/prometheus/hdfs_namenode_jmx_exporter.yaml"
-  yarn_resourcemanager_opts: "-Xms4096m -Xmx4096m -javaagent:/usr/share/java/prometheus/jmx_prometheus_javaagent.jar=%{::ipaddress}:10083:/etc/prometheus/yarn_resourcemanager_jmx_exporter.yaml"
+  hadoop_namenode_opts: "-Xms12288m -Xmx12288m -Djava.net.preferIPv4Stack=false -XX:+UseParNewGC -XX:+UseConcMarkSweepGC -XX:CMSInitiatingOccupancyFraction=70 -XX:+CMSParallelRemarkEnabled -javaagent:/usr/share/java/prometheus/jmx_prometheus_javaagent.jar=[::]:10080:/etc/prometheus/hdfs_namenode_jmx_exporter.yaml"
+  yarn_resourcemanager_opts: "-Xms4096m -Xmx4096m -javaagent:/usr/share/java/prometheus/jmx_prometheus_javaagent.jar=[::]:10083:/etc/prometheus/yarn_resourcemanager_jmx_exporter.yaml"
   # The HDFS Trash is configured in this way:
   # 1) Once every day a checkpoint is made (that contains all the trash for a day).
   # 2) After a month a checkpoint is deleted.
