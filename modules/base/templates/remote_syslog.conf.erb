@@ -1,14 +1,8 @@
 # NOTE: This file is managed by Puppet.
 <%- unless @central_hosts_tls.empty? %>
-# make gtls driver the default
-$DefaultNetstreamDriver gtls
-
 $DefaultNetstreamDriverCAFile /var/lib/puppet/ssl/certs/ca.pem
 $DefaultNetstreamDriverCertFile /etc/rsyslog/ssl/cert.pem
 $DefaultNetstreamDriverKeyFile /etc/rsyslog/ssl/server.key
-
-$ActionSendStreamDriverAuthMode x509/certvalid
-$ActionSendStreamDriverMode 1 # run driver in TLS-only mode
 <% end -%>
 
 # By default, rsyslog will truncate programname[pid] to 32 characters.  This
@@ -18,9 +12,21 @@ $ActionSendStreamDriverMode 1 # run driver in TLS-only mode
 
 $template LongTagForwardFormat,"<%%PRI%>%TIMESTAMP:::date-rfc3339% %HOSTNAME% %syslogtag%%msg:::sp-if-no-1st-sp%%msg%"
 
-<% @central_hosts.sort.each do |log_host| %>
-*.info;mail.none;authpriv.none;cron.none @<%= log_host %>;LongTagForwardFormat
-<% end %>
+if ($syslogseverity-text == 'info' and
+    $syslogfacility-text != 'cron' and
+    $syslogfacility-text != 'authpriv' and
+    $syslogfacility-text != 'mail') then {
 <%- @central_hosts_tls.sort.each do |log_host| %>
-*.info;mail.none;authpriv.none;cron.none @@<%= log_host %>;LongTagForwardFormat
+  <% host, port = log_host.split(':') %>
+  action(type="omfwd" name="fwd_<%= log_host %>" Target="<%= host %>" Port="<%= port or '6514' %>"
+    StreamDriver="gtls" StreamDriverAuthMode="x509/certvalid" StreamDriverMode="1"
+    Protocol="tcp" template="LongTagForwardFormat")
 <% end -%>
+
+<%- @central_hosts.sort.each do |log_host| %>
+  <% host, port = log_host.split(':') %>
+  action(type="omfwd" name="fwd_<%= log_host %>" Target="<%= log_host %>" Port="<%= port or '514' %>"
+    StreamDriver="tcp"
+    Protocol="tcp" template="LongTagForwardFormat")
+<% end -%>
+}
