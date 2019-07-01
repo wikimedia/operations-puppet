@@ -674,14 +674,14 @@ node 'db2062.codfw.wmnet' {
 node 'db1065.eqiad.wmnet' {
     class { '::role::mariadb::misc':
         shard  => 'm2',
-        master => true,
+        master => false,
     }
 }
 
 node 'db1132.eqiad.wmnet' {
     class { '::role::mariadb::misc':
         shard  => 'm2',
-        master => false,
+        master => true,
     }
 }
 
