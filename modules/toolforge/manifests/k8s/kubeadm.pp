@@ -9,6 +9,7 @@ class toolforge::k8s::kubeadm(
         'docker-ce',
         'docker-ce-cli',
         'containerd.io',
+        'cri-tools',
     ]
 
     package { $packages:
