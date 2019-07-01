@@ -88,6 +88,11 @@ host an-tool1005 {
     option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/buster-installer/";
 }
 
+host an-tool1006 {
+    hardware ethernet aa:00:00:97:e8:24;
+    fixed-address an-tool1006.eqiad.wmnet;
+}
+
 host argon {
     hardware ethernet aa:00:00:fe:6b:df;
     fixed-address argon.eqiad.wmnet;
