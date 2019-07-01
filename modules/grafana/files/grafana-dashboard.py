@@ -15,7 +15,13 @@ import requests
 log = logging.getLogger(__name__)
 
 
-def dump_dashboard(url, tags=None):
+def dump_dashboard(
+        url,
+        tags=None,
+        rewrite_title=None,
+        rewrite_uid=None,
+        rewrite_filename=None
+):
     parsed = urlparse(url)
     name, uid = get_name_and_uid(parsed)
     api_url = urlunparse(
@@ -31,6 +37,18 @@ def dump_dashboard(url, tags=None):
         for tag in tags:
             if tag not in dashboard['tags']:
                 dashboard['tags'].append(tag)
+
+    if 'id' in dashboard.keys():
+        del dashboard['id']
+
+    if rewrite_title:
+        dashboard['title'] = rewrite_title
+
+    if rewrite_uid:
+        dashboard['uid'] = rewrite_uid
+
+    if rewrite_filename:
+        name = rewrite_filename
 
     log.info('dumping %s into %s', url, name)
     with open(name, 'w') as f:
@@ -56,12 +74,30 @@ def main():
                              '(e.g. https://grafana.wikimedia.org/d/000000001/dashboard-name)',
                         action='append',
                         nargs='+')
+    parser.add_argument('--title',
+                        help='Rewrites title to argument value',
+                        action='store',
+                        default=None)
+    parser.add_argument('--uid',
+                        help='Rewrites uid to argument value',
+                        action='store',
+                        default=None)
+    parser.add_argument('--filename',
+                        help='Saves output file as argument value',
+                        action='store',
+                        default=None)
     args = parser.parse_args()
 
     logging.basicConfig(level=logging.INFO)
 
     for url in args.dashboard[0]:
-        dump_dashboard(url, tags=['source:puppet.git', 'readonly'])
+        dump_dashboard(
+            url,
+            tags=['source:puppet.git', 'readonly'],
+            rewrite_title=args.title,
+            rewrite_uid=args.uid,
+            rewrite_filename=args.filename
+        )
 
 
 if __name__ == '__main__':
