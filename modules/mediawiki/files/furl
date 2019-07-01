@@ -620,7 +620,13 @@ function envFromHeaders($filename) {
 
 
 function doFcgiRequest($server, $docroot, $script, $uri, $timeout, $requestFile) {
-    if (strpos($server, ':') !== false) {
+    // Force port to 0 for unix sockets.
+    if (strpos($server, 'unix://') === 0) {
+        // Please note: the manual for fsockopen suggests to use -1, while
+        // the manual page for the unix:// transport suggests to use port 0...
+        $port = -1;
+        $host = $server;
+    } elseif (strpos($server, ':') !== false) {
         list($host, $port) = explode(':', $server);
     } else {
         $host = $server;
