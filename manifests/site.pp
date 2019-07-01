@@ -1111,7 +1111,7 @@ node 'francium.eqiad.wmnet' {
 }
 
 # Virtualization hosts
-node /^ganeti[12]00[0-9]\.(codfw|eqiad)\.wmnet$/ {
+node /^ganeti[12]00[0-8]\.(codfw|eqiad)\.wmnet$/ {
     role(ganeti)
 }
 
