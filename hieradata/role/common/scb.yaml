@@ -54,6 +54,21 @@ profile::graphoid::error_headers:
 # events delivered when MirrorMaker resumes.
 profile::eventstreams::kafka_cluster_name: main
 profile::eventstreams::monitoring_enabled: true
+# Limit the number of connected clients from the same
+# X-Client-IP per eventstreams worker to 1.  In prod,
+# we run 4 hosts * 24 processors (workers) == 96
+# workers.  If a user is trying to open multiple connections
+# and they happen to be routed to the same worker, they
+# will be denied.  This is unfortunate if the client
+# is only opening a few connections, but they should
+# eventually be able to get through to multiple workers.
+# A malfunctioning client could still use up 96 total
+# connections...and there are only 200 connection slots
+# available in varnish (as of 2019-07).  This is better
+# than being able to use them all up. :/
+# See also: https://phabricator.wikimedia.org/T226808#5292059
+profile::eventstreams::client_ip_connection_limit: 1
+
 # Stream configuration for Public EventStreams service
 # Maps stream route names to composite Kafka topics.
 profile::eventstreams::streams:
@@ -114,7 +129,6 @@ profile::eventstreams::streams:
 profile::eventstreams::rdkafka_config:
   # Send rdkafka stats to statsd once per minute.
   statistics.interval.ms: 60000
-
 
 ### END EVENTSTREAMS ###
 

@@ -461,6 +461,7 @@ profile::webperf::site::server_name: performance-beta.wmflabs.org
 
 # Eventstreams config
 profile::eventstreams::kafka_cluster_name: main
+profile::eventstreams::client_ip_connection_limit: 1
 profile::eventstreams::streams:
   page-create:
     topics: ["%{::site}.mediawiki.page-create"]
