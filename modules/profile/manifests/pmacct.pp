@@ -22,10 +22,6 @@ class profile::pmacct (
     $kafka_cluster     = hiera('profile::pmacct::kafka_cluster'),
     $librdkafka_config = hiera('profile::pmacct::librdkafka_config'),
 ) {
-    system::role { 'pmacct':
-        description => 'pmacct netflow accounting',
-    }
-
     $kafka_config = kafka_config($kafka_cluster)
     $pmacct_librdkafka_conf = $librdkafka_config ? {
         []      => undef,
