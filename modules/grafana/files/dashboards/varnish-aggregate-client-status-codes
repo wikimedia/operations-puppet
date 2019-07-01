@@ -16,7 +16,6 @@
   "editable": true,
   "gnetId": null,
   "graphTooltip": 1,
-  "id": 464,
   "iteration": 1561563517237,
   "links": [],
   "panels": [
@@ -461,6 +460,6 @@
   },
   "timezone": "",
   "title": "Varnish: Aggregate Client Status Codes",
-  "uid": "000000464",
+  "uid": "myRmf1Pik",
   "version": 29
 }
