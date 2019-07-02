@@ -1,0 +1,10 @@
+# Note: This file is managed by Puppet.
+
+<% if @jmx_port -%>
+# Enable JMX connections on port <%= @jmx_port %>
+JMXLOCALONLY=false
+JAVA_OPTS="<%= @java_opts %> -Dcom.sun.management.jmxremote.port=<%= @jmx_port %> -Dcom.sun.management.jmxremote.ssl=false -Dcom.sun.management.jmxremote.authenticate=false"
+<% else -%>
+JMXDISABLE=true
+JAVA_OPTS="<%= @java_opts %>"
+<% end -%>

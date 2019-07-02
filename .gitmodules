@@ -1,6 +1,3 @@
-[submodule "modules/zookeeper"]
-	path = modules/zookeeper
-	url = https://gerrit.wikimedia.org/r/operations/puppet/zookeeper
 [submodule "modules/nginx"]
 	path = modules/nginx
 	url = https://gerrit.wikimedia.org/r/operations/puppet/nginx
