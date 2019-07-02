@@ -12,4 +12,9 @@ class profile::toolforge::k8s::apilb (
         mode    => '0444',
         content => template('profile/toolforge/k8s/apilb/k8s-api-servers.cfg.erb'),
     }
+
+    exec { 'systemctl reload haproxy':
+        subscribe   => File['/etc/haproxy/conf.d/k8s-api-servers.cfg'],
+        refreshonly => true,
+    }
 }
