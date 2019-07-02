@@ -70,4 +70,7 @@ class role::syslog::centralserver (
         port   => '3903',
         srange => "(@resolve((${prometheus_nodes_ferm})) @resolve((${prometheus_nodes_ferm}), AAAA))",
     }
+
+    # https://phabricator.wikimedia.org/T199406
+    include ::toil::rsyslog_tls_remedy # lint:ignore:wmf_styleguide
 }
