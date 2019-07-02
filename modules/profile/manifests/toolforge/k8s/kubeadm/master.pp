@@ -15,6 +15,11 @@ class profile::toolforge::k8s::kubeadm::master(
         node_token     => $node_token,
     }
 
+    class { 'toolforge::k8s::kubeadm_join':
+        apiserver  => $apiserver,
+        node_token => $node_token,
+    }
+
     class { 'toolforge::k8s::kubeadm_calico':
         pod_subnet     => '192.168.0.0/24', # TODO: make this a parameter
     }
