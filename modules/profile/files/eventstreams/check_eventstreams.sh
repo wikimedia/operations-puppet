@@ -15,7 +15,7 @@
 url=${1:-http://localhost:8092/v2/stream/recentchange}
 timeout=${2:-10}
 
-curl -s --max-time $timeout $url | head -n 5 | grep -qE '^data:'
+curl -s --max-time $timeout --header "X-Client-IP: $(hostname -i)" $url | head -n 5 | grep -qE '^data:'
 exitval=$?
 
 if [ $exitval -ne 0 ]; then
