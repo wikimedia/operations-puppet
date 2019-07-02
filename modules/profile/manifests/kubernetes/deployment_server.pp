@@ -29,7 +29,7 @@ class profile::kubernetes::deployment_server(
     systemd::timer::job { 'git_pull_charts':
         ensure                    => present,
         description               => 'Pull changes on deployment-charts repo',
-        command                   => 'cd /srv/deployment-charts && /usr/bin/git pull >/dev/null 2>&1',
+        command                   => '/bin/bash -c "cd /srv/deployment-charts && /usr/bin/git pull >/dev/null 2>&1"',
         interval                  => {
             'start'    => 'OnCalendar',
             'interval' => '*-*-* *:*:00', # every minute
