@@ -34,9 +34,6 @@ class profile::puppetdb::database(
         ssldir           => $ssldir,
     }
 
-    # Monitoring
-    class { '::prometheus::postgres_exporter': }
-
     if $role == 'slave' {
         class { 'postgresql::slave::monitoring':
             pg_master   => $master,
