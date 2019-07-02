@@ -55,7 +55,6 @@ http {
     access_log	/var/log/nginx/access.log;
 
     client_max_body_size <%= @nginx_client_max_body_size %>;
-    large_client_header_buffers 4 16k;
     client_body_buffer_size 64k;
     http2_max_field_size 8k;
 
