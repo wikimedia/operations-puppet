@@ -3654,3 +3654,11 @@ ldap_only_users:
     ensure: present
     realname: Camille de Nes
     email: cdenes@wikimedia.org
+  noa:
+    ensure: present
+    realname: Noa Rave
+    email: noa.rave@wikimedia.de
+  rosalie-wmde:
+    ensure: present
+    realname: Rosalie Perside
+    email: perside.rosalie@wikimedia.de
