@@ -202,7 +202,7 @@ codfw:
     cp2018.codfw.wmnet: [varnish-fe, ats-be, nginx]
     cp2020.codfw.wmnet: [varnish-fe, ats-be, nginx]
     cp2022.codfw.wmnet: [varnish-fe, ats-be, nginx]
-    cp2024.codfw.wmnet: [varnish-fe, varnish-be, nginx]
+    cp2024.codfw.wmnet: [varnish-fe, ats-be, nginx]
     cp2025.codfw.wmnet: [varnish-fe, varnish-be, nginx]
     cp2026.codfw.wmnet: [varnish-fe, varnish-be, nginx]
   phabricator:
