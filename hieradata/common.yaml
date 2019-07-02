@@ -1075,8 +1075,6 @@ cache_hosts:
 - 2620:0:862:102:10:20:0:170     # cp3035.esams.wmnet
 - 10.20.0.171                    # cp3036.esams.wmnet
 - 2620:0:862:102:10:20:0:171     # cp3036.esams.wmnet
-- 10.20.0.172                    # cp3037.esams.wmnet
-- 2620:0:862:102:10:20:0:172     # cp3037.esams.wmnet
 - 10.20.0.173                    # cp3038.esams.wmnet
 - 2620:0:862:102:10:20:0:173     # cp3038.esams.wmnet
 - 10.20.0.174                    # cp3039.esams.wmnet

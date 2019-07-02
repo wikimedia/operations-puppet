@@ -338,7 +338,12 @@ node /^cp30(3[0123]|4[0123])\.esams\.wmnet$/ {
     role(cache::text)
 }
 
-node /^cp30(3[456879]|4[45679])\.esams\.wmnet$/ {
+# Broken host, decom in T227077
+node 'cp3037.esams.wmnet' {
+    role(spare::system)
+}
+
+node /^cp30(3[45689]|4[45679])\.esams\.wmnet$/ {
     interface::add_ip6_mapped { 'main': }
     role(cache::upload_ats)
 }

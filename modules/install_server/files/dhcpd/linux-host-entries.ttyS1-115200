@@ -998,11 +998,6 @@ host cp3036 {
     fixed-address cp3036.esams.wmnet;
 }
 
-host cp3037 {
-    hardware ethernet 44:a8:42:0a:33:25;
-    fixed-address cp3037.esams.wmnet;
-}
-
 host cp3038 {
     hardware ethernet 44:a8:42:0a:58:ae;
     fixed-address cp3038.esams.wmnet;
