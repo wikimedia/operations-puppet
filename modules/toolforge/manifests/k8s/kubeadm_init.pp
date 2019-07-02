@@ -4,7 +4,6 @@ class toolforge::k8s::kubeadm_init(
     String              $service_subnet,
     Array[Stdlib::Fqdn] $etcd_hosts = [],
     String              $kubernetes_version = '1.15.0',
-    String              $dns_domain = 'toolsbeta.eqiad.wmflabs',
     String              $node_token = undef,
 ) {
     $apiserver_ip = ipresolve($apiserver, 4)

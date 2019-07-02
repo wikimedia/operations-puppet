@@ -3,7 +3,7 @@ class profile::toolforge::k8s::kubeadm::master(
     Stdlib::Fqdn        $apiserver  = lookup('profile::toolforge::k8s::apiserver'),
     String              $dns_domain = lookup('profile::toolforge::k8s::dns_domain'),
     String              $node_token = lookup('profile::toolforge::k8s::node_token'),
-    Boolean             $swap       = lookup('swap_partition',                      {default_value => true}),
+    Boolean             $swap       = lookup('swap_partition', {default_value => true}),
 ) {
     class { 'toolforge::k8s::kubeadm': }
     class { 'toolforge::k8s::kubeadm_init':
@@ -11,8 +11,11 @@ class profile::toolforge::k8s::kubeadm::master(
         apiserver      => $apiserver,
         pod_subnet     => '192.168.0.0/24', # TODO: review this
         service_subnet => '192.168.1.0/24', # TODO: review this
-        dns_domain     => $dns_domain,
         node_token     => $node_token,
+    }
+
+    class { 'toolforge::k8s::kubeadm_calico':
+        pod_subnet     => '192.168.0.0/24', # TODO: make this a parameter
     }
 
     # kubeadm preflight checks:
