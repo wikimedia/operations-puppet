@@ -158,7 +158,7 @@ node 'an-tool1005.eqiad.wmnet' {
 # Analytics Hadoop client for the Testing cluster
 # T226844
 node 'an-tool1006.eqiad.wmnet' {
-    role(spare::system)
+    role(analytics_test_cluster::client)
     interface::add_ip6_mapped { 'main': }
 }
 
