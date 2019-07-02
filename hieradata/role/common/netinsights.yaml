@@ -1,4 +1,3 @@
 profile::pmacct::kafka_cluster: 'jumbo-eqiad'
 profile::pmacct::librdkafka_config: []
-profile::kafkatee::webrequest::base::output_config: false
 diamond::remove: true
