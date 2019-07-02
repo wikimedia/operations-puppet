@@ -13,7 +13,7 @@ groups:
               yuvipanda, shrlak, madhuvishy, groovier, khorn, ironholds, katie, chedasaurus,
               cy534, pnorman, mpany, deskana, arnad, nithum, banyek, imarlier, mkroetzsch,
               mtizzoni, panisson, paolotti, ciro, dartar, melodykramer, gtirloni, tbayer, pirroh,
-              bawolff, dkg, juliaglen, dzahn, cwdent, bmansurov]
+              bawolff, dkg, juliaglen, cwdent, bmansurov]
   absent_ldap:
     description: meta group for absented users which had privileged LDAP access in the past, an automatic check verifies it has been really removed from the LDAP (but removal has to be handled separatelly)
     members: [adavenport, siddharth11, albe, audiohazel, tbolliger, jmatazzoni, pbj]
@@ -33,7 +33,7 @@ groups:
               akosiaris, mark, ariel, cmjohnson, otto, robh, tstarling,
               ori, jmm, jynus, ema, elukey, gehel, volans, marostegui,
               ayounsi, herron, aborrero, bstorm, vgutierrez, jiji, cwhite,
-              crusnov, cdanis, fsero, jbond, jeh]
+              crusnov, cdanis, fsero, jbond, jeh, dzahn]
     privileges: ['ALL = (ALL) NOPASSWD: ALL']
   ops-adm-group:
     # No gid for this group on purpose, it's a system provided one
@@ -746,11 +746,11 @@ users:
     uid: 4610
     email: cpettet@wikimedia.org
   dzahn:
-    ensure: absent
+    ensure: present
     gid: 500
     name: dzahn
     realname: Daniel Zahn
-    ssh_keys: []
+    ssh_keys: [ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIHKBourcpbDepSoYOiGL3KmyiL2NDWWL9c3ro/91Jt2q mutante@seaotter]
     uid: 2075
     email: dzahn@wikimedia.org
   jzerebecki:
