@@ -19,6 +19,10 @@ server {
     allow <%= scope.function_ipresolve([node]) %>;
 <% end -%>
     deny all;
+
+    access_log off;
+    error_log /var/log/nginx/tlsproxy-prometheus.error.log;
+
     location /metrics {
         content_by_lua_block {
             local server_status_codes = ngx.shared.prometheus_status_codes
