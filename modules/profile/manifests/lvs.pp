@@ -41,6 +41,16 @@ class profile::lvs(
         notes_url    => 'https://wikitech.wikimedia.org/wiki/Monitoring/check_rp_filter_disabled',
     }
 
+    # TODO: check this for false positives and then consider making it page
+    monitoring::check_prometheus { 'excessive-lvs-rx-traffic':
+        description     => 'Excessive RX traffic on an LVS (units megabits/sec)',
+        warning         => 1600,
+        critical        => 3200,
+        query           => "scalar(sum(rate(node_network_receive_bytes_total{instance=~\"${::hostname}:.*\",device!~\"lo\"}[5m]))) * 8 / 1024 / 1024",
+        prometheus_url  => "http://prometheus.svc.${::site}.wmnet/ops",
+        dashboard_links => ["https://grafana.wikimedia.org/d/000000377/host-overview?var-server=${::hostname}&var-datasource=${::site} prometheus/ops"],
+    }
+
     # Set up tagged interfaces to all subnets with real servers in them
 
     profile::lvs::tagged_interface {$tagged_subnets:
