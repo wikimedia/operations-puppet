@@ -26,6 +26,7 @@
 #  }
 #
 define varnish::logging::statsd(
+    $ensure = 'present',
     $instance_name = '',
     $statsd_server = 'statsd',
     $key_prefix    = 'varnish.backends',
@@ -38,6 +39,7 @@ define varnish::logging::statsd(
 
     if ! defined(File['/usr/local/bin/varnishstatsd']) {
         file { '/usr/local/bin/varnishstatsd':
+            ensure => $ensure,
             source => 'puppet:///modules/varnish/varnishstatsd.py',
             owner  => 'root',
             group  => 'root',
@@ -47,18 +49,17 @@ define varnish::logging::statsd(
     }
 
     systemd::service { $service_unit_name:
-        ensure         => present,
-        content        => systemd_template('varnishstatsd'),
-        require        => File['/usr/local/bin/varnishstatsd'],
-        service_params => {
-            enable => true,
-        },
+        ensure  => $ensure,
+        content => systemd_template('varnishstatsd'),
+        require => File['/usr/local/bin/varnishstatsd'],
     }
 
-    base::service_auto_restart { $service_unit_name: }
+    base::service_auto_restart { $service_unit_name:
+        ensure => $ensure,
+    }
 
     nrpe::monitor_service { 'varnishstatsd':
-        ensure       => present,
+        ensure       => $ensure,
         description  => 'Varnish traffic logger - varnishstatsd',
         nrpe_command => '/usr/lib/nagios/plugins/check_procs -w 1:1 -a "/usr/local/bin/varnishstatsd" -u root',
         notes_url    => 'https://wikitech.wikimedia.org/wiki/Varnish',

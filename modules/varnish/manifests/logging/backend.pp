@@ -48,6 +48,7 @@ class varnish::logging::backend(
     }
 
     ::varnish::logging::statsd { 'default':
+        ensure        => absent,
         statsd_server => $statsd_host,
         key_prefix    => "varnish.${::site}.backends",
     }
