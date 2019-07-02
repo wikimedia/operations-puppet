@@ -1,0 +1,8 @@
+apiVersion: kubeadm.k8s.io/v1beta2
+discovery:
+  bootstrapToken:
+    apiServerEndpoint: <%= @apiserver -%>:6443
+    token: "<%= @node_token -%>"
+    unsafeSkipCAVerification: true
+  timeout: 5m0s
+kind: JoinConfiguration
