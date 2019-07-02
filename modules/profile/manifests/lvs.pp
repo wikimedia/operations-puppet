@@ -46,7 +46,7 @@ class profile::lvs(
         description     => 'Excessive RX traffic on an LVS (units megabits/sec)',
         warning         => 1600,
         critical        => 3200,
-        query           => "scalar(sum(rate(node_network_receive_bytes_total{instance=~\"${::hostname}:.*\",device!~\"lo\"}[5m]))) * 8 / 1024 / 1024",
+        query           => "scalar(sum(rate(node_network_receive_bytes_total{instance=~\"${::hostname}:.*\",device\\!~\"lo\"}[5m]))) * 8 / 1024 / 1024",
         prometheus_url  => "http://prometheus.svc.${::site}.wmnet/ops",
         dashboard_links => ["https://grafana.wikimedia.org/d/000000377/host-overview?var-server=${::hostname}&var-datasource=${::site} prometheus/ops"],
     }
