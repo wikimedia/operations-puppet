@@ -36,6 +36,11 @@ class profile::netbox (
     Stdlib::Fqdn $librenms_db_host = hiera('profile::librenms::dbhost'),
     String $librenms_db_name = hiera('profile::librenms::dbname'),
     Stdlib::Port $librenms_db_port = hiera('profile::librenms::dbport', 3306),
+
+    Optional[Stdlib::HTTPUrl] $swift_auth_url = hiera('netbox::swift_auth_url', undef),
+    Optional[String] $swift_user = hiera('netbox::swift_user', undef),
+    Optional[String] $swift_key = hiera('netbox::swift_key', undef),
+    Optional[String] $swift_container = hiera('netbox::swift_container', undef),
 ) {
 
     include passwords::netbox
@@ -186,11 +191,15 @@ class profile::netbox (
     }
 
     class { '::netbox':
-        directory     => '/srv/deployment/netbox/deploy/src',
-        db_password   => $db_password,
-        secret_key    => $secret_key,
-        ldap_password => $proxypass,
-        reports_path  => $reports_path,
+        directory       => '/srv/deployment/netbox/deploy/src',
+        db_password     => $db_password,
+        secret_key      => $secret_key,
+        ldap_password   => $proxypass,
+        reports_path    => $reports_path,
+        swift_auth_url  => $swift_auth_url,
+        swift_user      => $swift_user,
+        swift_key       => $swift_key,
+        swift_container => $swift_container,
     }
     $ssl_settings = ssl_ciphersuite('apache', 'strong', true)
 

@@ -138,3 +138,13 @@ TIME_FORMAT = 'g:i a'
 SHORT_TIME_FORMAT = 'H:i:s'
 DATETIME_FORMAT = 'N j, Y g:i a'
 SHORT_DATETIME_FORMAT = 'Y-m-d H:i'
+
+<% if @swift_auth_url %>
+# Swift storage settings
+PASSTHROUGH = { 'SWIFT_AUTH_URL': '<%= @swift_auth_url %>/auth/v1.0',
+                'SWIFT_USERNAME': '<%= @swift_user %>',
+                'SWIFT_PASSWORD': '<%= @swift_key %>',
+                'SWIFT_CONTAINER_NAME': '<%= @swift_container %>',
+                'DEFAULT_FILE_STORAGE': 'swift.storage.SwiftStorage',
+}
+<% end %>

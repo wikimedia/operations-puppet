@@ -42,6 +42,10 @@ class netbox(
     Stdlib::Unixpath $directory = '/srv/deployment/netbox/deploy/src',
     Stdlib::Unixpath $reports_path = '/srv/deployment/netbox-reports',
     Wmflib::Ensure $ensure='present',
+    Optional[Stdlib::HTTPUrl] $swift_auth_url = undef,
+    Optional[String] $swift_user = undef,
+    Optional[String] $swift_key = undef,
+    Optional[String] $swift_container = undef,
 ) {
 
   require_package('virtualenv', 'python3-pip')

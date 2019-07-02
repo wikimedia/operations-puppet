@@ -1,0 +1,4 @@
+# This is in Private:
+# netbox::swift_key: 'somekey'
+netbox::swift_user: 'netbox:attachments'
+netbox::swift_container: 'netbox.attachments'
