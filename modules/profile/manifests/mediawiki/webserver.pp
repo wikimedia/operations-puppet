@@ -5,6 +5,7 @@ class profile::mediawiki::webserver(
     String $fcgi_pool = hiera('profile::mediawiki::fcgi_pool', 'www'),
     Mediawiki::Vhost_feature_flags $vhost_feature_flags = hiera('profile::mediawiki::vhost_feature_flags'),
     String $ocsp_proxy = hiera('http_proxy', ''),
+    Array[String] $prometheus_nodes = lookup('prometheus_nodes'),
 ) {
     include ::lvs::configuration
     include ::profile::mediawiki::httpd
@@ -185,4 +186,22 @@ class profile::mediawiki::webserver(
             port    => 'https',
         }
     }
+    # Mtail program to gather latency metrics from application servers, see T226815
+    class { '::mtail':
+        logs => ['/var/log/apache2/other_vhosts_access.log']
+    }
+    mtail::program { 'apache2-mediawiki':
+        ensure => present,
+        notify => undef,
+        source => 'puppet:///modules/mtail/programs/mediawiki_access_log.mtail',
+    }
+
+    $prometheus_nodes_ferm = join($prometheus_nodes, ' ')
+
+    ferm::service { 'mtail':
+        proto  => 'tcp',
+        port   => '3903',
+        srange => "(@resolve((${prometheus_nodes_ferm})) @resolve((${prometheus_nodes_ferm}), AAAA))",
+    }
+
 }

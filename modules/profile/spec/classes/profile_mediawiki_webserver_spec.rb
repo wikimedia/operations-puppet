@@ -29,6 +29,7 @@ describe 'profile::mediawiki::webserver' do
                           } }
       let(:pre_condition) {
         [
+          'exec { "apt-get update": command => "/bin/true"}',
           'class mediawiki::users($web="www-data"){ notice($web) }',
           'class profile::base { $notifications_enabled = false }',
           'include mediawiki::users',

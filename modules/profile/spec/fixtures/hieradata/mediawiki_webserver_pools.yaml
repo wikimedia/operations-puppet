@@ -54,3 +54,4 @@ profile::lvs::realserver::pools:
   api:
     service: hhvm
 profile::lvs::realserver::use_conftool: false
+prometheus_nodes: []

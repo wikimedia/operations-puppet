@@ -16,6 +16,7 @@ fixtures:
         lvs: "../../../../lvs"
         mediawiki: "../../../../mediawiki"
         monitoring: "../../../../monitoring"
+        mtail: "../../../../mtail"
         network: "../../../../network"
         nginx: "../../../../nginx"
         nrpe: "../../../../nrpe"
