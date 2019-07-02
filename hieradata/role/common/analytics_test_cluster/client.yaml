@@ -18,6 +18,22 @@ profile::hive::client::zookeeper_cluster_name: main-eqiad
 profile::hive::client::server_host: analytics1031.eqiad.wmnet
 profile::hive::client::server_port: 10000
 profile::hive::client::metastore_host: 'analytics1031.eqiad.wmnet'
+# These kerberos configs are needed since Hue looks into hive-site.xml
+# to know how to authenticate to Hive.
+profile::hive::client::hive_server2_authentication: 'KERBEROS'
+profile::hive::client::hive_server2_authentication_kerberos_principal: 'hive/_HOST@WIKIMEDIA'
+
+profile::hadoop::spark2::extra_settings:
+  spark.authenticate: true
+  spark.network.crypto.enabled: true
+  spark.network.crypto.keyLength: 128
+  spark.network.crypto.keyFactoryAlgorithm: PBKDF2WithHmacSHA1
+  spark.authenticate.enableSaslEncryption: true
+  spark.network.sasl.serverAlwaysEncrypt: true
+  spark.io.encryption.enabled: true
+  spark.io.encryption.keySizeBits: 128
+  spark.io.encryption.keygen.algorithm: HmacSHA1
+
 diamond::remove: true
 profile::base::debdeploy::exclude_mounts:
   - /mnt/hdfs
