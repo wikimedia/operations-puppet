@@ -1,8 +1,8 @@
 class toolforge::k8s::kubeadm_init(
-    Array[Stdlib::Fqdn] $etcd_hosts,
     Stdlib::Fqdn        $apiserver,
     String              $pod_subnet,
     String              $service_subnet,
+    Array[Stdlib::Fqdn] $etcd_hosts = [],
     String              $kubernetes_version = '1.15.0',
     String              $dns_domain = 'toolsbeta.eqiad.wmflabs',
     String              $node_token = undef,

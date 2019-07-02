@@ -16,12 +16,14 @@ certificateKey: "<%= @encryption_key -%>"
 ---
 apiVersion: kubeadm.k8s.io/v1beta2
 kind: ClusterConfiguration
+<% unless @etcd_hosts.empty? %>
 etcd:
   external:
     endpoints:
     <% @etcd_hosts.each do |host| -%>
       - "https://<%= host -%>:2379"
     <% end -%>
+<% end -%>
 networking:
   serviceSubnet: "<%= @service_subnet -%>"
   podSubnet: "<%= @pod_subnet -%>"
