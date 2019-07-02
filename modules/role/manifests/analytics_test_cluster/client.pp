@@ -8,4 +8,6 @@ class role::analytics_test_cluster::client {
 
     include ::profile::standard
     include ::profile::analytics::cluster::client
+    include ::profile::kerberos::client
+    include ::profile::kerberos::keytabs
 }
