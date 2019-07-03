@@ -51,7 +51,7 @@ swift::params::accounts:
     netbox_attachments:
         access:       '.admin'
         account_name: 'AUTH_netbox'
-        auth:         'https://ms-fe.svc.eqiad.wmnet'
+        auth:         'https://ms-fe.svc.codfw.wmnet'
         user:         'netbox:attachments'
 # keys are to be defined in private repo, e.g.:
 #swift::params::account_keys:
