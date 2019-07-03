@@ -1,0 +1,58 @@
+---
+name: <%= @docker_registry %>/wikimedia-buster:latest
+provider:
+  name: docker
+  labels:
+    description: Debian {system.release} {system.architecture}
+  dockerfile:
+  - CMD /bin/bash
+  - ENV LC_ALL C.UTF-8
+bootstrapper:
+  mirror: http://mirrors.wikimedia.org/debian/
+  workspace: /target
+  variant: minbase
+system:
+  release: buster
+  architecture: amd64
+  bootloader: none
+  charmap: UTF-8
+  locale: C
+  timezone: UTC
+volume:
+  backing: folder
+  partitions:
+    type: none
+    root:
+      filesystem: ext4
+      size: 1GiB
+packages:
+  mirror: http://mirrors.wikimedia.org/debian/
+  sources:
+    wikimedia:
+      - deb  http://apt.wikimedia.org/wikimedia buster-wikimedia main
+    backports:
+      - deb http://mirrors.wikimedia.org/debian/ buster-backports main contrib
+  trusted-keys:
+    - <%= @buster_keyring %>
+  preferences:
+    wikimedia:
+      - package: \*
+        pin: release o=Wikimedia
+        pin-priority: 1001
+  apt.conf.d:
+    00InstallRecommends: APT::Install-Recommends "false";
+plugins:
+<%- if @proxy_address -%>
+  apt_proxy:
+    address: <%= @proxy_address %>
+    port: <%= @proxy_port %>
+<%- end -%>
+  minimize_size:
+    apt:
+      autoclean: true
+      languages: [none]
+      gzip_indexes: true
+      autoremove_suggests: true
+    dpkg:
+      locales: []
+      exclude_docs: true

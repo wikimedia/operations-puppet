@@ -65,6 +65,24 @@ class docker::baseimages(
     }
     ## end stretch
 
+    # Buster
+    $buster_keyring = '/srv/images/base/wikimedia-buster.pub.gpg'
+    file { '/srv/images/base/buster.yaml':
+        content => template('docker/images/buster.yaml.erb'),
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0544',
+    }
+
+    file { $buster_keyring:
+        ensure => present,
+        source => 'puppet:///modules/docker/wikimedia-buster.pub.gpg',
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0444',
+    }
+    ## end buster
+
     if 'alpine' in $distributions {
         if $proxy_address {
             $env = ["https_proxy=http://${proxy_address}:${proxy_port}"]
