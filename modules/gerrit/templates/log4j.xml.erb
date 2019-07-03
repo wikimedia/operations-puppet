@@ -29,14 +29,6 @@
             <param name="ConversionPattern" value="[%d] [%t] %-5p %x: %m%n"/>
         </layout>
     </appender>
-    <appender name="httpd_log" class="org.apache.log4j.DailyRollingFileAppender">
-        <param name="encoding" value="UTF-8"/>
-        <param name="File" value="/var/log/gerrit/httpd_log"/>
-        <!--<param name="fileAppend" value="true"/>-->
-        <param name="immediateFlush" value="true"/>
-        <param name="threshold" value="INFO"/>
-        <layout class="com.google.gerrit.pgm.http.jetty.HttpLogLayout"/>
-    </appender>
     <appender name="replication_log" class="org.apache.log4j.DailyRollingFileAppender">
         <param name="encoding" value="UTF-8"/>
         <param name="File" value="/var/log/gerrit/replication_log"/>
@@ -75,10 +67,6 @@
             <param name="ConversionPattern" value="[%d] [%t] %-5p %x: %m%n"/>
         </layout>
     </appender>
-    <logger name="com.google.gerrit.pgm.http.jetty.HttpLog" additivity="false">
-        <level value="DEBUG"/>
-        <appender-ref ref="httpd_log"/>
-    </logger>
     <logger name="com.google.gerrit.sshd.GerritServerSession">
         <level value="WARN"/>
     </logger>
