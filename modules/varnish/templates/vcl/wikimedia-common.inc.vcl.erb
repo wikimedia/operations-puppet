@@ -133,6 +133,7 @@ becache_seen = {}
 	director = @backend_caches[director_name]
 	be_opts	= director['be_opts']
 	[*director['backends']].each do |backend|
+		next if backend == :undef
 		next if becache_seen.key?(backend)
 		becache_seen[backend] = 1
 		name = 'be_' + backend.gsub(/[-.]/, '_')
@@ -521,3 +522,4 @@ sub wm_common_deliver_error_with_empty_body {
         return(synth(resp.status));
     }
 }
+# vim: set autoindent noexpandtab tabstop=4 shiftwidth=4:
