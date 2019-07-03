@@ -40,6 +40,37 @@ def parse_logstash_server_string(server_string):
 class BaseVarnishLogConsumer(object):
     description = 'Generic varnishlog consumer, must be extended'
 
+    # Request and response headers to be sent to logstash
+    request_headers = (
+        "accept",
+        "accept-encoding",
+        "accept-language",
+        "cookie",
+        "host",
+        "x-cdis",
+        "x-client-ip",
+        "x-seven",
+        "user-agent",
+    )
+    response_headers = (
+        "age",
+        "accept-ranges",
+        "backend-timing",
+        "cache-control",
+        "connection",
+        "content-encoding",
+        "content-type",
+        "date",
+        "etag",
+        "expires",
+        "server",
+        "transfer-encoding",
+        "vary",
+        "x-cache-int",
+        "x-powered-by",
+        "x-cdis",
+    )
+
     def __init__(self, argument_list):
         """Parse CLI arguments.
 
@@ -152,7 +183,8 @@ class BaseVarnishLogConsumer(object):
                 # to empty string if that is the case.
                 header_value = ''
 
-            self.tx['request-' + header_name] = header_value
+            if header_name.lower() in self.request_headers:
+                self.tx['request-' + header_name] = header_value
         elif tag in ('RespHeader', 'BerespHeader'):
             splitagain = value.split(None, 1)
             header_name = splitagain[0][:-1]
@@ -164,20 +196,21 @@ class BaseVarnishLogConsumer(object):
                 # have no associated value.
                 header_value = ''
 
-            self.tx['response-' + header_name] = header_value
+            if header_name.lower() in self.response_headers:
+                self.tx['response-' + header_name] = header_value
 
-            # Log Backend-Timing's D= value as floating seconds for easy
-            # filtering and comparison.  This is set from WMF custom Apache
-            # configurations, and technically only shows the delay from
-            # request reception at Apache until response headers can be sent
-            # by Apache.
-            if header_name == 'Backend-Timing':
-                try:
-                    bt_us_str = header_value.split()[0].replace('D=', '')
-                    bt_s = float(bt_us_str) / 1000000.0
-                    self.tx['time-apache-delay'] = bt_s
-                except ValueError:
-                    pass
+                # Log Backend-Timing's D= value as floating seconds for easy
+                # filtering and comparison.  This is set from WMF custom Apache
+                # configurations, and technically only shows the delay from
+                # request reception at Apache until response headers can be sent
+                # by Apache.
+                if header_name == 'Backend-Timing':
+                    try:
+                        bt_us_str = header_value.split()[0].replace('D=', '')
+                        bt_s = float(bt_us_str) / 1000000.0
+                        self.tx['time-apache-delay'] = bt_s
+                    except ValueError:
+                        pass
         else:
             self.handle_tag(tag, value)
 
