@@ -47,14 +47,14 @@ class profile::kubernetes::deployment_server(
           if $data[$environment] {
             file { "/srv/deployment-charts/helmfile.d/services/${environment}/${svcname}/private":
                 ensure  => directory,
-                owner   => $data['username'],
+                owner   => $data['owner'],
                 group   => $data['group'],
                 require => Git::Clone['operations/deployment-charts'],
             }
             file { "/srv/deployment-charts/helmfile.d/services/${environment}/${svcname}/private/secrets.yaml":
-                owner   => $data['username'],
+                owner   => $data['owner'],
                 group   => $data['group'],
-                mode    => '0440',
+                mode    => $data['mode'],
                 content => ordered_yaml($data[$environment]),
                 require => [ Git::Clone['operations/deployment-charts'], File["/srv/deployment-charts/helmfile.d/services/${environment}/${svcname}/private"], ]
             }
