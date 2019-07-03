@@ -55,6 +55,8 @@ class profile::bird::anycast(
 
   class { '::bird::anycast_healthchecker': }
 
+  require ::profile::bird::anycast_healthchecker_monitoring
+
   class { '::bird':
       config_template => 'bird/bird_anycast.conf.erb',
       neighbors       => $neighbors_list,
