@@ -302,9 +302,14 @@ node /^cp10(7[579]|8[13579])\.eqiad\.wmnet$/ {
     role(cache::text)
 }
 
-node /^cp10(7[68]|8[02468]|90)\.eqiad\.wmnet$/ {
+node /^cp10(78|8[02468]|90)\.eqiad\.wmnet$/ {
     interface::add_ip6_mapped { 'main': }
     role(cache::upload)
+}
+
+node 'cp1076.eqiad.wmnet' {
+    interface::add_ip6_mapped { 'main': }
+    role(cache::upload_ats)
 }
 
 node /^cp20(0[1467]|1[02369]|23)\.codfw\.wmnet$/ {
