@@ -35,7 +35,7 @@ class wdqs::updater(
     }
 
     wdqs::logback_config { 'wdqs-updater':
-        pattern       => '%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg - MDC:%mdc%n',
+        pattern       => '%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg %mdc%n',
         log_dir       => $log_dir,
         logstash_host => $logstash_host,
         logstash_port => $logstash_json_port,
