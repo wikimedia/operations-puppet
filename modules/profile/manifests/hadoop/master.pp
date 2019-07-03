@@ -96,28 +96,44 @@ class profile::hadoop::master(
             notes_url     => 'https://wikitech.wikimedia.org/wiki/Analytics/Systems/Cluster/Hadoop/Administration',
         }
 
+        if $use_kerberos {
+            require ::profile::kerberos::client
+            $kerberos_prefix = "${::profile::kerberos::client::run_command_script} hdfs "
+            $nagios_kerberos_sudo_privileges = [
+                "ALL = NOPASSWD: ${::profile::kerberos::client::run_command_script} hdfs /usr/local/bin/check_hdfs_active_namenode",
+                "ALL = NOPASSWD: ${::profile::kerberos::client::run_command_script} hdfs /usr/local/lib/nagios/plugins/check_hdfs_topology"
+            ]
+        } else {
+            $kerberos_prefix = ''
+            $nagios_kerberos_sudo_privileges = []
+        }
+
+        $nagios_sudo_privileges = [
+            'ALL = NOPASSWD: /usr/local/bin/check_hdfs_active_namenode',
+            'ALL = NOPASSWD: /usr/local/lib/nagios/plugins/check_hdfs_topology'
+        ]
+
         # Allow nagios to run some scripts as hdfs user.
         sudo::user { 'nagios-check_hdfs_active_namenode':
             user       => 'nagios',
-            privileges => [
-                'ALL = NOPASSWD: /usr/local/bin/check_hdfs_active_namenode',
-                'ALL = NOPASSWD: /usr/local/lib/nagios/plugins/check_hdfs_topology',
-            ],
+            privileges => $nagios_sudo_privileges + $nagios_kerberos_sudo_privileges,
         }
+
         # Alert if the HDFS topology shows any inconsistency.
         nrpe::monitor_service { 'check_hdfs_topology':
             description    => 'HDFS topology check',
-            nrpe_command   => '/usr/bin/sudo /usr/local/lib/nagios/plugins/check_hdfs_topology',
+            nrpe_command   => "/usr/bin/sudo ${kerberos_prefix}/usr/local/lib/nagios/plugins/check_hdfs_topology",
             check_interval => 30,
             retries        => 2,
+            contact_group  => 'analytics',
             require        => File['/usr/local/lib/nagios/plugins/check_hdfs_topology'],
             notes_url      => 'https://wikitech.wikimedia.org/wiki/Analytics/Systems/Cluster/Hadoop/Administration',
         }
         # Alert if there is no active NameNode
         nrpe::monitor_service { 'hadoop-hdfs-active-namenode':
             description   => 'At least one Hadoop HDFS NameNode is active',
-            nrpe_command  => '/usr/bin/sudo /usr/local/bin/check_hdfs_active_namenode',
-            contact_group => 'admins,analytics',
+            nrpe_command  => "/usr/bin/sudo ${kerberos_prefix}/usr/local/bin/check_hdfs_active_namenode",
+            contact_group => 'analytics',
             notes_url     => 'https://wikitech.wikimedia.org/wiki/Analytics/Systems/Cluster/Hadoop/Administration',
             require       => [
                 Class['cdh::hadoop::master'],

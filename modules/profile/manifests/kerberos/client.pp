@@ -6,6 +6,8 @@ class profile::kerberos::client (
 
     class { 'kerberos::wrapper': }
 
+    $run_command_script = $::kerberos::wrapper::kerberos_run_command_script
+
     file { '/etc/krb5.conf':
         owner   => 'root',
         group   => 'root',
