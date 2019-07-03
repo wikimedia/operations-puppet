@@ -96,22 +96,6 @@ class profile::hadoop::worker(
             notes_url     => 'https://wikitech.wikimedia.org/wiki/Analytics/Systems/Cluster/Hadoop/Administration',
         }
 
-        # Make sure that this worker node has NodeManager running in a RUNNING state.
-        # Install a custom check command for NodeManager Node-State:
-        file { '/usr/local/lib/nagios/plugins/check_hadoop_yarn_node_state':
-            source => 'puppet:///modules/profile/hadoop/check_hadoop_yarn_node_state',
-            owner  => 'root',
-            group  => 'root',
-            mode   => '0755',
-        }
-        nrpe::monitor_service { 'hadoop_yarn_node_state':
-            description    => 'YARN NodeManager Node-State',
-            nrpe_command   => '/usr/local/lib/nagios/plugins/check_hadoop_yarn_node_state',
-            contact_group  => 'admins,analytics',
-            retry_interval => 3,
-            notes_url      => 'https://wikitech.wikimedia.org/wiki/Analytics/Systems/Cluster/Hadoop/Administration',
-        }
-
         monitoring::check_prometheus { 'analytics_hadoop_hdfs_datanode':
             description     => 'HDFS DataNode JVM Heap usage',
             dashboard_links => ["https://grafana.wikimedia.org/dashboard/db/hadoop?var-hadoop_cluster=${cluster_name}&panelId=1&fullscreen&orgId=1"],

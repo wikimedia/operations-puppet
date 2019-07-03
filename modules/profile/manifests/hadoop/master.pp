@@ -169,6 +169,16 @@ class profile::hadoop::master(
             prometheus_url  => "http://prometheus.svc.${::site}.wmnet/analytics",
         }
 
+        monitoring::check_prometheus { 'hadoop-yarn-unhealthy-workers':
+            description     => 'Yarn Nodemanagers in unhealthy status',
+            dashboard_links => ["https://grafana.wikimedia.org/dashboard/db/hadoop?var-hadoop_cluster=${cluster_name}&orgId=1&panelId=46&fullscreen"],
+            query           => "scalar(Hadoop_ResourceManager_NumUnhealthyNMs{instance=\"${::hostname}:10083\"})",
+            warning         => 1,
+            critical        => 3,
+            contact_group   => 'analytics',
+            prometheus_url  => "http://prometheus.svc.${::site}.wmnet/analytics",
+        }
+
         # Thresholds for the HDFS namenode are higher since it has always
         # filled most of its heap. This is not bad of course, but we'd like to know
         # if the usage stays above 90% over time to see if anything is happening.
