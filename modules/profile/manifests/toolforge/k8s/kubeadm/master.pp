@@ -42,6 +42,7 @@ class profile::toolforge::k8s::kubeadm::master(
             mode      => '0444',
             show_diff => false,
         }
+
         file { '/etc/kubernetes/pki/ca.key':
             content   => secret('toolforge/k8s/ca.key'),
             require   => File['/etc/kubernetes/pki'],
@@ -87,9 +88,16 @@ class profile::toolforge::k8s::kubeadm::master(
             show_diff => false,
         }
 
+        file { '/etc/kubernetes/pki/etcd':
+            ensure => directory,
+            mode   => '0755',
+            owner  => 'root',
+            group  => 'root',
+        }
+
         file { '/etc/kubernetes/pki/etcd/ca.crt':
             content   => secret('toolforge/k8s/etcd-ca.crt'),
-            require   => File['/etc/kubernetes/pki'],
+            require   => File['/etc/kubernetes/pki/etcd'],
             owner     => 'root',
             group     => 'root',
             mode      => '0444',
@@ -98,7 +106,7 @@ class profile::toolforge::k8s::kubeadm::master(
 
         file { '/etc/kubernetes/pki/etcd/ca.key':
             content   => secret('toolforge/k8s/etcd-ca.key'),
-            require   => File['/etc/kubernetes/pki'],
+            require   => File['/etc/kubernetes/pki/etcd'],
             owner     => 'root',
             group     => 'root',
             mode      => '0400',
