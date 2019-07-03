@@ -1,1 +1,4 @@
 profile::cache::varnish::backend::storage_parts: [ 'nvme0n1p1', 'nvme0n1p1' ]
+profile::trafficserver::backend::storage_elements:
+    - devname: nvme0n1p1
+      id: disk.0
