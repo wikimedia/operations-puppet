@@ -3730,21 +3730,6 @@ host sodium {
     option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
 }
 
-host ms-be1013 {
-    hardware ethernet F8:BC:12:3C:7A:EC;
-    fixed-address ms-be1013.eqiad.wmnet;
-}
-
-host ms-be1014 {
-    hardware ethernet F8:BC:12:3C:8A:78;
-    fixed-address ms-be1014.eqiad.wmnet;
-}
-
-host ms-be1015 {
-    hardware ethernet C8:1F:66:E0:E9:B5;
-    fixed-address ms-be1015.eqiad.wmnet;
-}
-
 host ms-be1016 {
     hardware ethernet c4:34:6b:b9:5a:e4;
     fixed-address ms-be1016.eqiad.wmnet;
