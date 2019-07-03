@@ -13,7 +13,8 @@ class profile::toolforge::k8s::apilb (
         content => template('profile/toolforge/k8s/apilb/k8s-api-servers.cfg.erb'),
     }
 
-    exec { 'systemctl reload haproxy':
+    exec { 'toolforge_k8s_apilb_reload_haproxy_service':
+        command     => '/bin/systemctl reload haproxy',
         subscribe   => File['/etc/haproxy/conf.d/k8s-api-servers.cfg'],
         refreshonly => true,
     }
