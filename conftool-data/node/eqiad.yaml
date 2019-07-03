@@ -138,7 +138,7 @@ eqiad:
     cp1089.eqiad.wmnet: [varnish-fe, varnish-be, nginx]
   cache_upload:
     cp1076.eqiad.wmnet: [varnish-fe, ats-be, nginx]
-    cp1078.eqiad.wmnet: [varnish-fe, varnish-be, nginx]
+    cp1078.eqiad.wmnet: [varnish-fe, ats-be, nginx]
     cp1080.eqiad.wmnet: [varnish-fe, varnish-be, nginx]
     cp1082.eqiad.wmnet: [varnish-fe, varnish-be, nginx]
     cp1084.eqiad.wmnet: [varnish-fe, varnish-be, nginx]
