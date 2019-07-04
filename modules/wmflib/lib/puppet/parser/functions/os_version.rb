@@ -23,27 +23,6 @@ require 'puppet/util/package'
 
 module Puppet::Parser::Functions
   os_versions = {
-    'Ubuntu' => {
-      'hardy'    => '8.04',
-      'intrepid' => '8.10',
-      'jaunty'   => '9.04',
-      'karmic'   => '9.10',
-      'lucid'    => '10.04',
-      'maverick' => '10.10',
-      'natty'    => '11.04',
-      'oneiric'  => '11.10',
-      'precise'  => '12.04',
-      'quantal'  => '12.10',
-      'raring'   => '13.04',
-      'saucy'    => '13.10',
-      'trusty'   => '14.04',
-      'utopic'   => '14.10',
-      'vivid'    => '15.04',
-      'wily'     => '15.10',
-      'xenial'   => '16.04',
-      'yakkety'  => '16.10',
-      'zesty'    => '17.04',
-    },
     'Debian' => {
       'wheezy'  => '7',
       'jessie'  => '8',
@@ -56,7 +35,6 @@ module Puppet::Parser::Functions
   # is made against a version lower than these
   min_supported_versions = {
     'Debian' => '8',
-    'Ubuntu' => '14.04',
   }
 
   newfunction(:os_version, :type => :rvalue, :arity => 1) do |args|

@@ -11,63 +11,6 @@ describe 'os_version' do
     end
   end
 
-  context 'when running on Ubuntu Trusty Tahr (14.04)' do
-    let(:facts) do
-      {
-        :lsbdistrelease => '14.04',
-        :lsbdistid => 'Ubuntu',
-      }
-    end
-
-    it 'matches comparing current release' do
-      expect(subject).to run.with_params('Ubuntu trusty').and_return(true)
-      expect(subject).to run.with_params('Ubuntu == trusty').and_return(true)
-      expect(subject).to run.with_params('Ubuntu >= trusty').and_return(true)
-      expect(subject).to run.with_params('Ubuntu <= trusty').and_return(true)
-      expect(subject).to run.with_params('Ubuntu > trusty').and_return(false)
-      expect(subject).to run.with_params('Ubuntu < trusty').and_return(false)
-    end
-
-    it 'matches comparing with next release' do
-      expect(subject).to run.with_params('Ubuntu utopic').and_return(false)
-      expect(subject).to run.with_params('Ubuntu == utopic').and_return(false)
-      expect(subject).to run.with_params('Ubuntu >= utopic').and_return(false)
-      expect(subject).to run.with_params('Ubuntu <= utopic').and_return(true)
-      expect(subject).to run.with_params('Ubuntu > utopic').and_return(false)
-      expect(subject).to run.with_params('Ubuntu < utopic').and_return(true)
-    end
-
-    it 'does not match with another operating system' do
-      expect(subject).to run.with_params('Debian jessie').and_return(false)
-      expect(subject).to run.with_params('Debian == jessie').and_return(false)
-      expect(subject).to run.with_params('Debian >= jessie').and_return(false)
-      expect(subject).to run.with_params('Debian <= jessie').and_return(false)
-      expect(subject).to run.with_params('Debian > jessie').and_return(false)
-      expect(subject).to run.with_params('Debian < jessie').and_return(false)
-    end
-
-    it 'works with compound expressions' do
-      expect(subject).to run.with_params('Ubuntu trusty || Debian jessie').and_return(true)
-      expect(subject).to run.with_params('Debian jessie || Ubuntu trusty').and_return(true)
-      expect(subject).to run.with_params('Ubuntu trusty || Ubuntu utopic').and_return(true)
-      expect(subject).to run.with_params('Ubuntu utopic || Ubuntu trusty').and_return(true)
-
-      expect(subject).to run.with_params('Ubuntu trusty || Ubuntu utopic || Debian jessie').and_return(true)
-      expect(subject).to run.with_params('Ubuntu utopic || Ubuntu xenial || Debian stretch').and_return(false)
-
-      expect(subject).to run.with_params('Ubuntu utopic || Debian jessie').and_return(false)
-      expect(subject).to run.with_params('Debian jessie || Ubuntu utopic').and_return(false)
-
-      expect(subject).to run.with_params('Debian jessie || Debian stretch').and_return(false)
-      expect(subject).to run.with_params('Debian stretch || Debian buster').and_return(false)
-    end
-
-    it 'is case insensitive' do
-      expect(subject).to run.with_params('ubuntu trusty').and_return(true)
-      expect(subject).to run.with_params('debian jessie').and_return(false)
-    end
-  end
-
   context 'when running on Debian 8 "jessie"' do
     let(:facts) do
       {
@@ -94,33 +37,13 @@ describe 'os_version' do
       expect(subject).to run.with_params('Debian < stretch').and_return(true)
     end
 
-    it 'does not match with another operating system' do
-      expect(subject).to run.with_params('Ubuntu trusty').and_return(false)
-      expect(subject).to run.with_params('Ubuntu == trusty').and_return(false)
-      expect(subject).to run.with_params('Ubuntu >= trusty').and_return(false)
-      expect(subject).to run.with_params('Ubuntu <= trusty').and_return(false)
-      expect(subject).to run.with_params('Ubuntu > trusty').and_return(false)
-      expect(subject).to run.with_params('Ubuntu < trusty').and_return(false)
-    end
-
     it 'works with compound expressions' do
-      expect(subject).to run.with_params('Ubuntu trusty || Debian jessie').and_return(true)
-      expect(subject).to run.with_params('Debian jessie || Ubuntu trusty').and_return(true)
-      expect(subject).to run.with_params('Ubuntu trusty || Ubuntu utopic').and_return(false)
-      expect(subject).to run.with_params('Ubuntu utopic || Ubuntu trusty').and_return(false)
-
-      expect(subject).to run.with_params('Ubuntu trusty || Ubuntu utopic || Debian jessie').and_return(true)
-      expect(subject).to run.with_params('Ubuntu utopic || Ubuntu xenial || Debian stretch').and_return(false)
-
-      expect(subject).to run.with_params('Ubuntu utopic || Debian jessie').and_return(true)
-      expect(subject).to run.with_params('Debian jessie || Ubuntu utopic').and_return(true)
-
       expect(subject).to run.with_params('Debian jessie || Debian stretch').and_return(true)
       expect(subject).to run.with_params('Debian stretch || Debian buster').and_return(false)
+      expect(subject).to run.with_params('Debian jessie || Debian stretch || Debian buster').and_return(true)
     end
 
     it 'is case insensitive' do
-      expect(subject).to run.with_params('ubuntu trusty').and_return(false)
       expect(subject).to run.with_params('debian jessie').and_return(true)
     end
   end
