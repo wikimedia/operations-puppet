@@ -46,3 +46,5 @@ profile::phabricator::main::rate_limits:
 # This is the number of concurrent connections per client IP:
   connection: 0
 diamond::remove: true
+
+phabricator_phd_taskmasters: 4
