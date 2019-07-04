@@ -4,7 +4,8 @@
 # with hadoop and other Analytics Cluster services.
 #
 class profile::analytics::cluster::client(
-    $monitoring_enabled = hiera('profile::analytics::cluster::client::monitoring_enabled', true),
+    $monitoring_enabled = lookup('profile::analytics::cluster::client::monitoring_enabled', { 'default_value' => true }),
+    $kerberos_enabled = lookup('profile::analytics::cluster::client::kerberos_enabled', { 'default_value' => false }),
 ) {
     require ::profile::analytics::cluster::packages::hadoop
 
@@ -27,6 +28,19 @@ class profile::analytics::cluster::client(
     class { '::cdh::hadoop::mount': }
 
     if $monitoring_enabled {
+        if $kerberos_enabled {
+            require ::profile::kerberos::client
+
+            # The following requires a keytab for the analytics user deployed on the host.
+            $kerberos_prefix = "${::profile::kerberos::client::run_command_script} analytics "
+            sudo::user { 'nagios-check_hadoop_mount_readability':
+                user       => 'nagios',
+                privileges => "ALL = NOPASSWD: ${::profile::kerberos::client::run_command_script} analytics /usr/local/lib/nagios/plugins/check_mountpoint_readability",
+            }
+        } else {
+            $kerberos_prefix = ''
+        }
+
         file { '/usr/local/lib/nagios/plugins/check_mountpoint_readability':
             ensure => present,
             source => 'puppet:///modules/profile/analytics/check_mountpoint_readability',
@@ -36,7 +50,7 @@ class profile::analytics::cluster::client(
         }
         nrpe::monitor_service { 'check_hadoop_mount_readability':
             description    => 'Check if the Hadoop HDFS Fuse mountpoint is readable',
-            nrpe_command   => "/usr/local/lib/nagios/plugins/check_mountpoint_readability ${cdh::hadoop::mount::mount_point}",
+            nrpe_command   => "${kerberos_prefix}/usr/local/lib/nagios/plugins/check_mountpoint_readability ${cdh::hadoop::mount::mount_point}",
             check_interval => 30,
             retries        => 2,
             contact_group  => 'analytics',
