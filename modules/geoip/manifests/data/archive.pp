@@ -13,9 +13,10 @@ class geoip::data::archive(
     # Puppet assigns 755 permissions to files and dirs, so the script can be ran
     # manually without sudo.
     file { $archive_dir:
-        ensure => directory,
-        owner  => 'root',
-        group  => 'wikidev',
+        ensure  => directory,
+        owner   => 'analytics',
+        group   => 'wikidev',
+        require => User['analytics'],
     }
 
     $archive_script = '/usr/local/bin/geoip_archive.sh'
@@ -28,24 +29,16 @@ class geoip::data::archive(
         content => file('geoip/archive.sh')
     }
 
-    if $use_kerberos {
-        $wrapper = '/usr/local/bin/kerberos-puppet-wrapper hdfs '
-    } else {
-        $wrapper = ''
-    }
+    $archive_command = "${archive_script} ${maxmind_db_source_dir} ${archive_dir} ${hdfs_archive_dir}"
 
-    $archive_command = "${wrapper}${archive_script} ${maxmind_db_source_dir} ${archive_dir} ${hdfs_archive_dir}"
-
-    systemd::timer::job { 'archive-maxmind-geoip-database':
+    kerberos::systemd_timer { 'archive-maxmind-geoip-database':
         description               => 'Archives Maxmind GeoIP files',
         command                   => $archive_command,
-        interval                  => {
-            'start'    => 'OnCalendar',
-            'interval' => 'Tue *-*-* 05:30:00',
-        },
-        user                      => 'root',
+        interval                  => 'Tue *-*-* 05:30:00',
+        user                      => 'analytics',
         monitoring_contact_groups => 'analytics',
         logging_enabled           => false,
-        require                   => File[$archive_script],
+        use_kerberos              => $use_kerberos,
+        require                   => [File[$archive_script], User['analytics']],
     }
 }
