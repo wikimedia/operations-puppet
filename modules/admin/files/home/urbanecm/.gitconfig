@@ -1,0 +1,19 @@
+[alias]
+  co = checkout
+  ci = commit
+  st = status
+  br = branch
+  hist = log --pretty=format:\"%h %ad | %s%d [%an]\" --graph --date=short
+  type = cat-file -t
+  dump = cat-file -p
+  unstage = reset HEAD
+  rbi = rebase -i --autosquash
+  cif = !git commit --fixup=$(git-log-vgrep-most-recent-commit 'fixup!')
+[user]
+	name = Martin Urbanec
+	email = martin.urbanec@wikimedia.cz
+[push]
+	default = matching
+[gitreview]
+	remote = origin
+	username = urbanecm
