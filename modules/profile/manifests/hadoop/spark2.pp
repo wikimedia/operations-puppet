@@ -39,12 +39,22 @@
 #   Force kerberos authentication before executing HDFS commands.
 #   Default: false
 #
+# [*driver_port*]
+#   If specified, it will add two settings to the config:
+#   - spark.driver.port: $driver_port
+#   - spark.port.maxRetries: $port_max_retries
+#   This allows the creation of a 100 port range for the driver,
+#   and it adds it to the ferm config.
+#   Default: undef
+#
 class profile::hadoop::spark2(
     $install_yarn_shuffle_jar = hiera('profile::hadoop::spark2::install_yarn_shuffle_jar', true),
     $install_oozie_sharelib   = hiera('profile::hadoop::spark2::install_oozie_sharelib', false),
     $install_assembly         = hiera('profile::hadoop::spark2::install_assembly', false),
     $extra_settings           = hiera('profile::hadoop::spark2::extra_settings', {}),
     $use_kerberos             = hiera('profile::hadoop::spark2::use_kerberos', false),
+    $driver_port              = hiera('profile::hadoop::spark2::driver_port', undef),
+    $port_max_retries         = hiera('profile::hadoop::spark2::port_max_retries', 100),
 ) {
     require ::profile::hadoop::common
 
@@ -125,6 +135,15 @@ class profile::hadoop::spark2(
             unless       => '/usr/local/bin/spark2_upload_assembly.sh',
             require      => Package['spark2'],
             use_kerberos => $use_kerberos,
+        }
+    }
+
+    if $driver_port {
+        $driver_port_max = $driver_port + $port_max_retries
+        ferm::service { 'spark2-driver':
+            proto  => 'tcp',
+            port   => "${driver_port}:${driver_port_max}",
+            srange => '$ANALYTICS_NETWORKS',
         }
     }
 }

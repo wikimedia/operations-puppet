@@ -33,6 +33,8 @@ profile::hadoop::spark2::extra_settings:
   spark.io.encryption.enabled: true
   spark.io.encryption.keySizeBits: 128
   spark.io.encryption.keygen.algorithm: HmacSHA1
+  spark.driver.port: 12000
+  spark.port.maxRetries: 100
 
 diamond::remove: true
 profile::base::debdeploy::exclude_mounts:
