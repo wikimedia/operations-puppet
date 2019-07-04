@@ -10,6 +10,7 @@ define swift::monitoring::graphite_alerts (
         critical        => 90,
         under           => true,
         nagios_critical => false,
+        notes_link      => 'https://wikitech.wikimedia.org/wiki/Swift/How_To',
     }
 
     monitoring::graphite_threshold { "swift_${cluster}_dispersion_container}":
@@ -21,6 +22,7 @@ define swift::monitoring::graphite_alerts (
         critical        => 88,
         under           => true,
         nagios_critical => false,
+        notes_link      => 'https://wikitech.wikimedia.org/wiki/Swift/How_To',
     }
 
     monitoring::graphite_threshold { "mediawiki_${cluster}_media_uploads":
@@ -32,5 +34,6 @@ define swift::monitoring::graphite_alerts (
         critical        => 3000,
         nagios_critical => false,
         percentage      => 80,
+        notes_link      => 'https://wikitech.wikimedia.org/wiki/Swift/How_To',
     }
 }

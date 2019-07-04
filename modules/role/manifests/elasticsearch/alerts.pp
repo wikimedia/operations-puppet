@@ -8,6 +8,7 @@ class role::elasticsearch::alerts {
         critical        => 1000,
         percentage      => 20,
         contact_group   => 'team-discovery',
+        notes_link      => 'https://wikitech.wikimedia.org/wiki/Search#Health/Activity_Monitoring',
     }
 
     monitoring::graphite_threshold { 'cirrussearch_codfw_95th_percentile':
@@ -19,6 +20,7 @@ class role::elasticsearch::alerts {
         critical        => 2000,
         percentage      => 20,
         contact_group   => 'team-discovery',
+        notes_link      => 'https://wikitech.wikimedia.org/wiki/Search#Health/Activity_Monitoring',
     }
 
     # warning level is ~1% of peak traffic failing
@@ -31,5 +33,6 @@ class role::elasticsearch::alerts {
         critical        => 600,
         percentage      => 20,
         contact_group   => 'team-discovery',
+        notes_link      => 'https://wikitech.wikimedia.org/wiki/Search#Health/Activity_Monitoring',
     }
 }

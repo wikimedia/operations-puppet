@@ -16,6 +16,7 @@ class profile::graphite::alerts::reqstats($graphite_url = hiera('graphite_url'))
         critical        => $settings['critical'],
         from            => $settings['cron'],
         nagios_critical => false,
+        notes_link      => 'https://wikitech.wikimedia.org/wiki/Varnish#Diagnosing_Varnish_alerts',
     }
 
     monitoring::graphite_threshold { 'reqstats-5xx-esams':
@@ -26,6 +27,7 @@ class profile::graphite::alerts::reqstats($graphite_url = hiera('graphite_url'))
         critical        => $settings['critical'],
         from            => $settings['cron'],
         nagios_critical => false,
+        notes_link      => 'https://wikitech.wikimedia.org/wiki/Varnish#Diagnosing_Varnish_alerts',
     }
 
     monitoring::graphite_threshold { 'reqstats-5xx-codfw':
@@ -36,6 +38,7 @@ class profile::graphite::alerts::reqstats($graphite_url = hiera('graphite_url'))
         critical        => $settings['critical'],
         from            => $settings['cron'],
         nagios_critical => false,
+        notes_link      => 'https://wikitech.wikimedia.org/wiki/Varnish#Diagnosing_Varnish_alerts',
     }
 
     monitoring::graphite_threshold { 'reqstats-5xx-ulsfo':
@@ -46,6 +49,7 @@ class profile::graphite::alerts::reqstats($graphite_url = hiera('graphite_url'))
         critical        => $settings['critical'],
         from            => $settings['cron'],
         nagios_critical => false,
+        notes_link      => 'https://wikitech.wikimedia.org/wiki/Varnish#Diagnosing_Varnish_alerts',
     }
 
     monitoring::graphite_threshold { 'reqstats-5xx-eqsin':
@@ -56,6 +60,7 @@ class profile::graphite::alerts::reqstats($graphite_url = hiera('graphite_url'))
         critical        => $settings['critical'],
         from            => $settings['cron'],
         nagios_critical => false,
+        notes_link      => 'https://wikitech.wikimedia.org/wiki/Varnish#Diagnosing_Varnish_alerts',
     }
 
     # per-cache aggregates
@@ -67,6 +72,7 @@ class profile::graphite::alerts::reqstats($graphite_url = hiera('graphite_url'))
         critical        => $settings['critical'],
         from            => $settings['cron'],
         nagios_critical => false,
+        notes_link      => 'https://wikitech.wikimedia.org/wiki/Varnish#Diagnosing_Varnish_alerts',
     }
 
     monitoring::graphite_threshold { 'reqstats-5xx-upload':
@@ -77,6 +83,6 @@ class profile::graphite::alerts::reqstats($graphite_url = hiera('graphite_url'))
         critical        => $settings['critical'],
         from            => $settings['cron'],
         nagios_critical => false,
+        notes_link      => 'https://wikitech.wikimedia.org/wiki/Varnish#Diagnosing_Varnish_alerts',
     }
-
 }

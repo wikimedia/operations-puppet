@@ -41,5 +41,6 @@ class zuul::monitoring::server (
         percentage      => 30,
         warning         => 90,
         critical        => 140,
+        notes_link      => 'https://www.mediawiki.org/wiki/Continuous_integration/Zuul',
     }
 }

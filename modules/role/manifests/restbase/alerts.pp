@@ -8,6 +8,7 @@ class role::restbase::alerts {
         critical        => 3, # 5 5xx/s
         percentage      => 20,
         contact_group   => 'team-services',
+        notes_link      => 'https://wikitech.wikimedia.org/wiki/RESTBase#Debugging',
     }
 
     monitoring::graphite_threshold { 'restbase_html_storage_hit_latency':
@@ -19,6 +20,7 @@ class role::restbase::alerts {
         critical        => 50, # 50ms
         percentage      => 50,
         contact_group   => 'team-services',
+        notes_link      => 'https://wikitech.wikimedia.org/wiki/RESTBase#Debugging',
     }
 
     monitoring::graphite_threshold { 'restbase_html_storage_hit_latency_99p':
@@ -30,6 +32,7 @@ class role::restbase::alerts {
         critical        => 3000, # 3s
         percentage      => 50,
         contact_group   => 'team-services',
+        notes_link      => 'https://wikitech.wikimedia.org/wiki/RESTBase#Debugging',
     }
 
     monitoring::graphite_threshold { 'restbase_cassandra_highest_storage_exceptions':
@@ -41,6 +44,7 @@ class role::restbase::alerts {
         critical        => 10,
         percentage      => 50,
         contact_group   => 'team-services',
+        notes_link      => 'https://wikitech.wikimedia.org/wiki/RESTBase#Debugging',
     }
 
     monitoring::graphite_threshold { 'restbase_cassandra_highest_total_hints':
@@ -52,6 +56,7 @@ class role::restbase::alerts {
         critical        => 1000,
         percentage      => 50,
         contact_group   => 'team-services',
+        notes_link      => 'https://wikitech.wikimedia.org/wiki/RESTBase#Debugging',
     }
 
     monitoring::graphite_threshold { 'restbase_cassandra_highest_pending_compactions':
@@ -63,6 +68,7 @@ class role::restbase::alerts {
         critical        => 5000,
         percentage      => 50,
         contact_group   => 'team-services',
+        notes_link      => 'https://wikitech.wikimedia.org/wiki/RESTBase#Debugging',
     }
 
     # With instance sizes in-flux, and expansions taking place, it is proving
@@ -89,6 +95,7 @@ class role::restbase::alerts {
         critical        => 1500,
         percentage      => 50,
         contact_group   => 'team-services',
+        notes_link      => 'https://wikitech.wikimedia.org/wiki/RESTBase#Debugging',
     }
 
     monitoring::graphite_threshold { 'restbase_cassandra_highest_pending_internal':
@@ -100,6 +107,7 @@ class role::restbase::alerts {
         critical        => 1000,
         percentage      => 50,
         contact_group   => 'team-services',
+        notes_link      => 'https://wikitech.wikimedia.org/wiki/RESTBase#Debugging',
     }
 
     monitoring::graphite_threshold { 'restbase_cassandra_highest_dropped_messages':
@@ -111,5 +119,6 @@ class role::restbase::alerts {
         critical        => 100,
         percentage      => 50,
         contact_group   => 'team-services',
+        notes_link      => 'https://wikitech.wikimedia.org/wiki/RESTBase#Debugging',
     }
 }

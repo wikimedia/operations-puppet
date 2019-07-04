@@ -29,6 +29,7 @@ class profile::cache::kafka::alerts($graphite_url = hiera('graphite_url')) {
         retry_interval  => 1,
         retries         => 3,
         contact_group   => 'admins,analytics',
+        notes_link      => 'https://wikitech.wikimedia.org/wiki/Analytics/Systems/Varnishkafka',
     }
 
     monitoring::graphite_threshold { 'varnishkafka-eventlogging-text-kafka_drerr':
@@ -42,6 +43,7 @@ class profile::cache::kafka::alerts($graphite_url = hiera('graphite_url')) {
         retry_interval  => 1,
         retries         => 3,
         contact_group   => 'admins,analytics',
+        notes_link      => 'https://wikitech.wikimedia.org/wiki/Analytics/Systems/Varnishkafka',
     }
 
     monitoring::graphite_threshold { 'varnishkafka-statsv-text-kafka_drerr':
@@ -55,6 +57,7 @@ class profile::cache::kafka::alerts($graphite_url = hiera('graphite_url')) {
         retry_interval  => 1,
         retries         => 3,
         contact_group   => 'admins,analytics',
+        notes_link      => 'https://wikitech.wikimedia.org/wiki/Analytics/Systems/Varnishkafka',
     }
 
     monitoring::graphite_threshold { 'varnishkafka-webrequest-upload-kafka_drerr':
@@ -68,5 +71,6 @@ class profile::cache::kafka::alerts($graphite_url = hiera('graphite_url')) {
         retry_interval  => 1,
         retries         => 3,
         contact_group   => 'admins,analytics',
+        notes_link      => 'https://wikitech.wikimedia.org/wiki/Analytics/Systems/Varnishkafka',
     }
 }

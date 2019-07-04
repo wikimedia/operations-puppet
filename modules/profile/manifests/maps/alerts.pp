@@ -12,6 +12,7 @@ class profile::maps::alerts($graphite_url = hiera('graphite_url')) {
         from            => '1day',
         percentage      => 90,
         graphite_url    => $graphite_url,
+        notes_link      => 'https://wikitech.wikimedia.org/wiki/Maps/Runbook',
     }
 
     monitoring::check_prometheus { 'maps-osm-sync-lag-eqiad':

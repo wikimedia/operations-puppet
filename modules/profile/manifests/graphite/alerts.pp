@@ -28,6 +28,7 @@ class profile::graphite::alerts($graphite_url = hiera('graphite_url')) {
         until           => '10min',
         contact_group   => 'analytics',
         under           => true,
+        notes_link      => 'https://wikitech.wikimedia.org/wiki/Analytics/Systems/EventLogging/Administration#Mysql_insertion_rate_dropping_to_zero_due_to_db_failures',
     }
 
     # Monitor memcached error rate from MediaWiki. This is commonly a sign of
@@ -42,6 +43,7 @@ class profile::graphite::alerts($graphite_url = hiera('graphite_url')) {
         critical        => 5000,
         from            => '5min',
         percentage      => 40,
+        notes_link      => 'https://wikitech.wikimedia.org/wiki/Memcached',
     }
 
     # Monitor MediaWiki fatals and exceptions.
@@ -53,6 +55,7 @@ class profile::graphite::alerts($graphite_url = hiera('graphite_url')) {
         critical        => 50,
         from            => '10min',
         percentage      => 70,
+        notes_link      => 'https://wikitech.wikimedia.org/wiki/Application_servers',
     }
 
     # Monitor MediaWiki session failures
@@ -65,6 +68,7 @@ class profile::graphite::alerts($graphite_url = hiera('graphite_url')) {
         critical        => 50,
         from            => '15min',
         percentage      => 30,
+        notes_link      => 'https://wikitech.wikimedia.org/wiki/Application_servers',
     }
 
     monitoring::graphite_threshold { 'mediawiki_bad_token':
@@ -75,6 +79,7 @@ class profile::graphite::alerts($graphite_url = hiera('graphite_url')) {
         critical        => 50,
         from            => '15min',
         percentage      => 30,
+        notes_link      => 'https://wikitech.wikimedia.org/wiki/Application_servers',
     }
 
     # Monitor MediaWiki CentralAuth bad tokens
@@ -86,6 +91,7 @@ class profile::graphite::alerts($graphite_url = hiera('graphite_url')) {
         critical        => 1,
         from            => '15min',
         percentage      => 30,
+        notes_link      => 'https://wikitech.wikimedia.org/wiki/Application_servers',
     }
 
     # Monitor EventBus 4xx and 5xx HTTP response rate.
@@ -98,6 +104,7 @@ class profile::graphite::alerts($graphite_url = hiera('graphite_url')) {
         critical        => 10,
         from            => '10min',
         percentage      => 50,
+        notes_link      => 'https://wikitech.wikimedia.org/wiki/Event_Platform/EventBus',
     }
 
     # Percent difference in the number of thumbs between eqiad and codfw
@@ -110,6 +117,7 @@ class profile::graphite::alerts($graphite_url = hiera('graphite_url')) {
         from            => '90min',
         percentage      => 80,
         check_interval  => 30,
+        notes_link      => 'https://wikitech.wikimedia.org/wiki/Event_Platform/EventBus',
     }
     monitoring::graphite_threshold { 'swift_thumbs_codfw_eqiad_diff':
         description     => 'Number of thumbnails in codfw greater than eqiad',
@@ -120,5 +128,6 @@ class profile::graphite::alerts($graphite_url = hiera('graphite_url')) {
         from            => '90min',
         percentage      => 80,
         check_interval  => 30,
+        notes_link      => 'https://wikitech.wikimedia.org/wiki/Event_Platform/EventBus',
     }
 }

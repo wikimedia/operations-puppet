@@ -54,6 +54,7 @@ class confluent::kafka::broker::alerts(
         from            => '30min',
         percentage      => 50,
         group           => $nagios_servicegroup,
+        notes_link      => 'https://wikitech.wikimedia.org/wiki/Kafka/Administration#Recovering_a_laggy_broker_replica',
     }
 
     # Alert if any Kafka Broker replica lag is too high
@@ -69,5 +70,6 @@ class confluent::kafka::broker::alerts(
         from            => '30min',
         percentage      => 50,
         group           => $nagios_servicegroup,
+        notes_link      => 'https://wikitech.wikimedia.org/wiki/Kafka/Administration#Recovering_a_laggy_broker_replica',
     }
 }

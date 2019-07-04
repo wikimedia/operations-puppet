@@ -40,6 +40,9 @@
 # $timeout         - Timeout for the http query to
 #                    graphite. Defaults to 10 seconds
 # $dashboard_links - Links to the Grafana dashboard for this alarm
+# $notes_link      - Link to a wiki article to help resolve issues
+#                    This will be combined with dashboard_links to produce
+#                    the notes_url array.
 # $host
 # $retries
 # $group
@@ -56,6 +59,7 @@ define monitoring::graphite_threshold(
     Numeric                          $warning,
     Numeric                          $critical,
     Array[Monitoring::Graphite::Url] $dashboard_links,
+    Stdlib::HTTPUrl                  $notes_link,
     Boolean                          $series          = false,
     Monitoring::Graphite::Period     $from            = '10min',
     Monitoring::Graphite::Period     $until           = '0min',
@@ -75,15 +79,17 @@ define monitoring::graphite_threshold(
     String                           $contact_group   = 'admins',
 ) {
 
-    # Validate the dashboard_links and generate the notes_urls
-    if size($dashboard_links) == 1 {
-        # Puppet reduce doesn't call the lambda if there is only one element
-        $notes_urls = "'${dashboard_links[0]}'"
-    } else {
-        $notes_urls = $dashboard_links.reduce('') |$urls, $dashboard_link| {
-            "${urls}'${dashboard_link}' "
+    $link_fail_message = 'The $dashboard_links and $notes_links URLs must not be URL-encoded'
+    # notes link always has to com first to ensure the correct icon is used in icinga
+    # we start with `[]` so puppet knows we want a array
+    $links = [] + $notes_link + $dashboard_links
+
+    $notes_urls = $links.reduce('') |$urls, $link| {
+        if $link =~ /%\h\h/ {
+            fail($link_fail_message)
         }
-    }
+        "${urls}'${link}' "
+    }.strip
 
     # checkcommands.cfg's check_graphite_threshold command has
     # many positional arguments that

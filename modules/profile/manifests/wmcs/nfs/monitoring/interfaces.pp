@@ -33,6 +33,7 @@ class profile::wmcs::nfs::monitoring::interfaces (
         critical        => $int_throughput_crit,
         percentage      => 10,        # smooth over peaks
         contact_group   => $contact_groups,
+        notes_link      => 'https://wikitech.wikimedia.org/wiki/Portal:Data_Services/Admin/Labstore#NFS',
     }
 
     monitoring::graphite_threshold { 'network_in_saturated':
@@ -44,6 +45,7 @@ class profile::wmcs::nfs::monitoring::interfaces (
         critical        => $int_throughput_crit,
         percentage      => 10,        # smooth over peaks
         contact_group   => $contact_groups,
+        notes_link      => 'https://wikitech.wikimedia.org/wiki/Portal:Data_Services/Admin/Labstore#NFS',
     }
 
     monitoring::graphite_threshold { 'high_iowait_stalling':
@@ -55,6 +57,7 @@ class profile::wmcs::nfs::monitoring::interfaces (
         critical        => 60,
         percentage      => 50, # Ignore small spikes
         contact_group   => $contact_groups,
+        notes_link      => 'https://wikitech.wikimedia.org/wiki/Portal:Data_Services/Admin/Labstore#NFS',
     }
 
     # Monitor for high load consistently, is a 'catchall'
@@ -67,5 +70,6 @@ class profile::wmcs::nfs::monitoring::interfaces (
         critical        => $::processorcount * $load_crit_ratio,
         percentage      => 85, # Don't freak out on spikes
         contact_group   => $contact_groups,
+        notes_link      => 'https://wikitech.wikimedia.org/wiki/Portal:Data_Services/Admin/Labstore#NFS',
     }
 }

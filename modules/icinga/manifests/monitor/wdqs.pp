@@ -13,6 +13,7 @@ class icinga::monitor::wdqs {
         from            => '10min',
         percentage      => 5,
         contact_group   => 'wdqs-admins',
+        notes_link      => 'https://wikitech.wikimedia.org/wiki/Wikidata_query_service/Runbook#Timeouts',
     }
 
     monitoring::graphite_threshold { 'wdqs-response-time-eqiad':
@@ -25,6 +26,7 @@ class icinga::monitor::wdqs {
         from            => '10min',
         percentage      => 5,
         contact_group   => 'wdqs-admins',
+        notes_link      => 'https://wikitech.wikimedia.org/wiki/Wikidata_query_service/Runbook#Timeouts',
     }
 
 }

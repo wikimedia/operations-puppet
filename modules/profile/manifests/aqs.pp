@@ -51,6 +51,7 @@ class profile::aqs (
             #critical      => <<critical threshold>>, # <<explain>>
             #percentage    => 20,
             #contact_group => 'aqs-admins',
+            #notes_link     => 'https://wikitech.wikimedia.org/wiki/Analytics/Systems/AQS#Monitoring',
         #}
     }
 

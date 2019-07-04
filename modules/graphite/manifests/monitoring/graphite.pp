@@ -19,6 +19,7 @@ class graphite::monitoring::graphite {
         critical        => 100,
         percentage      => 80,
         nagios_critical => false,
+        notes_link      => 'https://wikitech.wikimedia.org/wiki/Graphite#Operations_troubleshooting',
     }
 
     monitoring::graphite_threshold { 'carbon-local-relay_drops':
@@ -33,6 +34,7 @@ class graphite::monitoring::graphite {
         critical        => 100,
         percentage      => 80,
         nagios_critical => false,
+        notes_link      => 'https://wikitech.wikimedia.org/wiki/Graphite#Operations_troubleshooting',
     }
 
     # is carbon-cache able to write to disk (e.g. permissions)
@@ -45,6 +47,7 @@ class graphite::monitoring::graphite {
         critical        => 8,
         percentage      => 80,
         nagios_critical => false,
+        notes_link      => 'https://wikitech.wikimedia.org/wiki/Graphite#Operations_troubleshooting',
     }
 
     # are carbon-cache queues overflowing their capacity?
@@ -57,6 +60,7 @@ class graphite::monitoring::graphite {
         critical        => 8,
         percentage      => 80,
         nagios_critical => false,
+        notes_link      => 'https://wikitech.wikimedia.org/wiki/Graphite#Operations_troubleshooting',
     }
 
     # are we creating too many metrics?
@@ -69,5 +73,6 @@ class graphite::monitoring::graphite {
         critical        => 1000,
         nagios_critical => false,
         percentage      => 80,
+        notes_link      => 'https://wikitech.wikimedia.org/wiki/Graphite#Operations_troubleshooting',
     }
 }
