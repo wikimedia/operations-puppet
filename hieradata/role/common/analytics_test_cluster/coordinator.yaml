@@ -64,6 +64,7 @@ profile::kerberos::keytabs::keytabs_metadata:
     group: 'analytics'
     filename: 'analytics.keytab'
 
+profile::analytics::cluster::client::kerberos_enabled: true
 profile::hadoop::balancer::use_kerberos: true
 profile::oozie::server::use_kerberos: true
 profile::hive::server::use_kerberos: true

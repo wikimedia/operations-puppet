@@ -9,6 +9,10 @@ class role::analytics_test_cluster::client {
     include ::profile::standard
     include ::profile::base::firewall
     include ::profile::analytics::cluster::client
+    # This is a Hadoop client, and should
+    # have any special analytics system users on it
+    # for interacting with HDFS.
+    include ::profile::analytics::cluster::users
     include ::profile::kerberos::client
     include ::profile::kerberos::keytabs
 }

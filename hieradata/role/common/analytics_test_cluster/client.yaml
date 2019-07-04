@@ -34,6 +34,15 @@ profile::hadoop::spark2::extra_settings:
   spark.io.encryption.keySizeBits: 128
   spark.io.encryption.keygen.algorithm: HmacSHA1
 
+# Kerberos config
+profile::kerberos::keytabs::keytabs_metadata:
+  - role: 'analytics'
+    owner: 'analytics'
+    group: 'analytics'
+    filename: 'analytics.keytab'
+
+profile::analytics::cluster::client::kerberos_enabled: true
+
 profile::hadoop::spark2::driver_port: 12000
 
 diamond::remove: true
