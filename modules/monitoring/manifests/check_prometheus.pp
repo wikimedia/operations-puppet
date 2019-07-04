@@ -104,7 +104,7 @@ define monitoring::check_prometheus(
         if $link =~ /%\h\h/ {
             fail($link_fail_message)
         }
-        "${urls} '${link}' "
+        "${urls}'${link}' "
     }.strip
 
     $command = $nan_ok ? {
