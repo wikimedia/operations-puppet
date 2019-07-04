@@ -36,9 +36,6 @@ profile::zuul::merger::ferm_srange: >-
 
 profile::zuul::server::email_server: localhost
 
-profile::ci::docker::settings:
-  iptables: false
-
 # TODO: create specific credentials for CI
 docker::registry: docker-registry.discovery.wmnet
 docker::registry::username: uploader

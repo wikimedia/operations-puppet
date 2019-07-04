@@ -7,3 +7,6 @@ profile::zuul::server::service_enable: false
 
 # Docker requires the overlay / overlayFS kernel module
 profile::base::overlayfs: true
+
+profile::ci::docker::settings:
+  iptables: false
