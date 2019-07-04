@@ -58,7 +58,6 @@ cache::nodes:
       - 'cp2025.codfw.wmnet'
       - 'cp2026.codfw.wmnet'
     eqiad:
-      - 'cp1082.eqiad.wmnet'
       - 'cp1084.eqiad.wmnet'
       - 'cp1086.eqiad.wmnet'
       - 'cp1088.eqiad.wmnet'
@@ -67,6 +66,7 @@ cache::nodes:
       - 'cp1076.eqiad.wmnet'
       - 'cp1078.eqiad.wmnet'
       - 'cp1080.eqiad.wmnet'
+      - 'cp1082.eqiad.wmnet'
     esams_ats:
       - 'cp3034.esams.wmnet'
       - 'cp3035.esams.wmnet'
