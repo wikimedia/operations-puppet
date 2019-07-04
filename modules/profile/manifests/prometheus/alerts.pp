@@ -168,6 +168,12 @@ class profile::prometheus::alerts {
     monitoring::alerts::traffic_drop{'traffic_drop_ulsfo': site => 'ulsfo'}
     monitoring::alerts::traffic_drop{'traffic_drop_eqsin': site => 'eqsin'}
 
+    monitoring::alerts::rsyslog{'rsyslog_eqiad': site => 'eqiad'}
+    monitoring::alerts::rsyslog{'rsyslog_codfw': site => 'codfw'}
+    monitoring::alerts::rsyslog{'rsyslog_esams': site => 'esams'}
+    monitoring::alerts::rsyslog{'rsyslog_ulsfo': site => 'ulsfo'}
+    monitoring::alerts::rsyslog{'rsyslog_eqsin': site => 'eqsin'}
+
     # Alert on unusual day-over-day logstash ingestion rate change - T202307
     monitoring::check_prometheus { 'logstash_ingestion_spike':
         description     => 'Logstash rate of ingestion percent change compared to yesterday',
