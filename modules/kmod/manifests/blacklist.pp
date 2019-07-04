@@ -20,10 +20,6 @@ define kmod::blacklist($modules = [], $ensure = present) {
         group   => 'root',
         mode    => '0444',
         content => template('kmod/blacklist.conf.erb'),
-    }
-
-    # Could be notify=> above, but the exec only exists in base for jessie+...
-    if os_version('debian >= jessie') {
-        File["/etc/modprobe.d/blacklist-${name}.conf"] ~> Exec['update-initramfs']
+        notify  => Exec['update-initramfs'],
     }
 }
