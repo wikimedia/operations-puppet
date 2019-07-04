@@ -58,7 +58,6 @@ class icinga::monitor::elasticsearch::cirrus_cluster_checks{
             critical        => 50,
             under           => true,
             contact_group   => 'admins,team-discovery',
-            notes_url       => 'https://wikitech.wikimedia.org/wiki/Search',
         }
     }
 }
