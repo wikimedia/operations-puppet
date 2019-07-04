@@ -26,11 +26,6 @@ define apache::mod_conf(
 
     include ::apache
 
-    $flags = os_version('debian >= jessie') ? {
-        true    => '-f',
-        default => '',
-    }
-
     if $ensure == present {
         exec { "ensure_${ensure}_mod_${mod}":
             command => "/usr/sbin/a2enmod ${mod}",
@@ -40,7 +35,7 @@ define apache::mod_conf(
         }
     } else {
         exec { "ensure_${ensure}_mod_${mod}":
-            command => "/usr/sbin/a2dismod ${flags} ${mod}",
+            command => "/usr/sbin/a2dismod -f ${mod}",
             onlyif  => "/usr/bin/test -L /etc/apache2/mods-enabled/${loadfile}",
             require => Package['apache2'],
             notify  => Service['apache2'],
