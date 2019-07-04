@@ -9,6 +9,7 @@ class role::statistics::explorer {
     }
 
     include ::profile::standard
+    include ::profile::base::firewall
     include ::profile::statistics::explorer
     include ::profile::analytics::cluster::client
     # This is a Hadoop client, and should
