@@ -47,9 +47,9 @@ class profile::aqs (
             #description   => 'Analytics RESTBase req/s returning 5xx http://grafana.wikimedia.org/#/dashboard/db/restbase',
             #metric        => '<<the metric and any transformations>>',
             #from          => '10min',
-            #warning       => '<<warning threshold>>', # <<explain>>
-            #critical      => '<<critical threshold>>', # <<explain>>
-            #percentage    => '20',
+            #warning       => <<warning threshold>>, # <<explain>>
+            #critical      => <<critical threshold>>, # <<explain>>
+            #percentage    => 20,
             #contact_group => 'aqs-admins',
         #}
     }

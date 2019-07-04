@@ -31,7 +31,7 @@ class profile::wmcs::nfs::monitoring::interfaces (
         from            => $interval,
         warning         => $int_throughput_warn,
         critical        => $int_throughput_crit,
-        percentage      => '10',        # smooth over peaks
+        percentage      => 10,        # smooth over peaks
         contact_group   => $contact_groups,
     }
 
@@ -42,7 +42,7 @@ class profile::wmcs::nfs::monitoring::interfaces (
         from            => $interval,
         warning         => $int_throughput_warn,
         critical        => $int_throughput_crit,
-        percentage      => '10',        # smooth over peaks
+        percentage      => 10,        # smooth over peaks
         contact_group   => $contact_groups,
     }
 
@@ -51,9 +51,9 @@ class profile::wmcs::nfs::monitoring::interfaces (
         dashboard_links => ['https://grafana.wikimedia.org/dashboard/db/labs-monitoring'],
         metric          => "servers.${::hostname}.cpu.total.iowait",
         from            => '10min',
-        warning         => '40', # Based off looking at history of metric
-        critical        => '60',
-        percentage      => '50', # Ignore small spikes
+        warning         => 40, # Based off looking at history of metric
+        critical        => 60,
+        percentage      => 50, # Ignore small spikes
         contact_group   => $contact_groups,
     }
 
@@ -65,7 +65,7 @@ class profile::wmcs::nfs::monitoring::interfaces (
         from            => '10min',
         warning         => $::processorcount * $load_warn_ratio,
         critical        => $::processorcount * $load_crit_ratio,
-        percentage      => '85', # Don't freak out on spikes
+        percentage      => 85, # Don't freak out on spikes
         contact_group   => $contact_groups,
     }
 }

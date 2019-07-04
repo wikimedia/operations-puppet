@@ -51,43 +51,35 @@
 # $nagios_critical
 
 define monitoring::graphite_threshold(
-    $description,
-    $metric,
-    $warning,
-    $critical,
-    $dashboard_links,
-    $series          = false,
-    $from            = '10min',
-    $until           = '0min',
-    $percentage      = 1,
-    $under           = false,
-    $graphite_url    = 'https://graphite.wikimedia.org',
-    $timeout         = 10,
-    $host            = $::hostname,
-    $retries         = 3,
-    $group           = undef,
-    $ensure          = present,
-    $nagios_critical = false,
-    $passive         = false,
-    $freshness       = 36000,
-    $check_interval  = 1,
-    $retry_interval  = 1,
-    $contact_group   = 'admins',
-)
-{
-    validate_array($dashboard_links)
+    String[1]                        $description,
+    String[1]                        $metric,
+    Numeric                          $warning,
+    Numeric                          $critical,
+    Array[Monitoring::Graphite::Url] $dashboard_links,
+    Boolean                          $series          = false,
+    Monitoring::Graphite::Period     $from            = '10min',
+    Monitoring::Graphite::Period     $until           = '0min',
+    Numeric                          $percentage      = 1,
+    Boolean                          $under           = false,
+    Stdlib::HTTPUrl                  $graphite_url    = 'https://graphite.wikimedia.org',
+    Integer[1,60]                    $timeout         = 10,
+    Stdlib::Host                     $host            = $::hostname,
+    Integer[1,10]                    $retries         = 3,
+    Optional[String[1]]              $group           = undef,
+    String[1]                        $ensure          = present,
+    Boolean                          $nagios_critical = false,
+    Boolean                          $passive         = false,
+    Integer[1]                       $freshness       = 36000,
+    Integer[1]                       $check_interval  = 1,
+    Integer[1]                       $retry_interval  = 1,
+    String                           $contact_group   = 'admins',
+) {
 
     # Validate the dashboard_links and generate the notes_urls
-    if size($dashboard_links) < 1 {
-        fail('The $dashboard_links array cannot be empty')
-    } elsif size($dashboard_links) == 1 {
+    if size($dashboard_links) == 1 {
         # Puppet reduce doesn't call the lambda if there is only one element
-        validate_re($dashboard_links[0], '^https:\/\/grafana\.wikimedia\.org')
         $notes_urls = "'${dashboard_links[0]}'"
     } else {
-        $dashboard_links.each |$dashboard_link| {
-            validate_re($dashboard_link, '^https:\/\/grafana\.wikimedia\.org')
-        }
         $notes_urls = $dashboard_links.reduce('') |$urls, $dashboard_link| {
             "${urls}'${dashboard_link}' "
         }

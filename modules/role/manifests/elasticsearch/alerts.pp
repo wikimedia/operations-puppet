@@ -4,9 +4,9 @@ class role::elasticsearch::alerts {
         dashboard_links => ['https://grafana.wikimedia.org/dashboard/db/elasticsearch-percentiles?panelId=19&fullscreen&orgId=1&var-cluster=eqiad&var-smoothing=1'],
         metric          => 'transformNull(MediaWiki.CirrusSearch.eqiad.requestTime.p95, 0)',
         from            => '10min',
-        warning         => '500',
-        critical        => '1000',
-        percentage      => '20',
+        warning         => 500,
+        critical        => 1000,
+        percentage      => 20,
         contact_group   => 'team-discovery',
     }
 
@@ -15,9 +15,9 @@ class role::elasticsearch::alerts {
         dashboard_links => ['https://grafana.wikimedia.org/dashboard/db/elasticsearch-percentiles?panelId=39&fullscreen&orgId=1&var-cluster=codfw&var-smoothing=1'],
         metric          => 'transformNull(MediaWiki.CirrusSearch.codfw.requestTimeMs.more_like.p95, 0)',
         from            => '10min',
-        warning         => '1200',
-        critical        => '2000',
-        percentage      => '20',
+        warning         => 1200,
+        critical        => 2000,
+        percentage      => 20,
         contact_group   => 'team-discovery',
     }
 
@@ -27,9 +27,9 @@ class role::elasticsearch::alerts {
         dashboard_links => ['https://grafana.wikimedia.org/dashboard/db/elasticsearch-percentiles?orgId=1&var-cluster=eqiad&var-smoothing=1&panelId=9&fullscreen'],
         metric          => 'transformNull(MediaWiki.CirrusSearch.eqiad.backend_failure.failed.count, 0)',
         from            => '10min',
-        warning         => '300',
-        critical        => '600',
-        percentage      => '20',
+        warning         => 300,
+        critical        => 600,
+        percentage      => 20,
         contact_group   => 'team-discovery',
     }
 }

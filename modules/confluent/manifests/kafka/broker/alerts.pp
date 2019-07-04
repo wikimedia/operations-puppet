@@ -47,8 +47,8 @@ class confluent::kafka::broker::alerts(
         description     => 'Kafka Broker Under Replicated Partitions',
         dashboard_links => ['https://grafana.wikimedia.org/d/000000523/kafka-graphite?refresh=5m&panelId=29&fullscreen&orgId=1'],
         metric          => "${group_prefix}kafka.${graphite_broker_key}.kafka.server.ReplicaManager.UnderReplicatedPartitions.Value",
-        warning         => '1',
-        critical        => '10',
+        warning         => 1,
+        critical        => 10,
         # Alert if any undereplicated for more than 50%
         # of the time in the last 30 minutes.
         from            => '30min',
