@@ -34,10 +34,17 @@ define elasticsearch::tlsproxy (
         tls_port          => $tls_port,
         ocsp_proxy        => $ocsp_proxy,
         only_get_requests => $read_only,
-    } -> monitoring::service { "elasticsearch-https-${title}":
+    }
+
+    $check_command = $acme_chief ? {
+        true    => 'check_ssl_on_port_letsencrypt',
+        default => 'check_ssl_on_port',
+    }
+
+    monitoring::service { "elasticsearch-https-${title}":
         ensure        => present,
         description   => "Elasticsearch HTTPS for ${title}",
-        check_command => "check_ssl_on_port!${server_name}!${tls_port}",
+        check_command => "${check_command}!${server_name}!${tls_port}",
         notes_url     => 'https://wikitech.wikimedia.org/wiki/Search',
     }
 }
