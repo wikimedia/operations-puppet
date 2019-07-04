@@ -9,7 +9,7 @@
 #   replication_pass
 #       The password the replication user should use
 #   pgversion
-#       Defaults to 9.3 in Ubuntu Trusty and 9.4 in Debian jessie.
+#       Defaults to 9.4 in Debian jessie and 9.6 in Debian Stretch
 #   ensure
 #       Defaults to present
 #   root_dir

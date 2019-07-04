@@ -4,10 +4,6 @@
 # computing, forecasting, Bayesian inference, and machine learning (including
 # deep neural networks). Once it's up and running: get your game on, go play.
 #
-# Due to the outdated version of R on the currently available Ubuntu version
-# (Trusty), it is recommended to only apply this profile (and any profiles or
-# roles that include it) to instances running on Debian (Stretch or newer).
-#
 # filtertags: labs-project-discovery-stats
 class role::product_analytics::allstar_cruncher {
     # include ::profile::standard

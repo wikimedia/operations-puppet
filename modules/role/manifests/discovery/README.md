@@ -2,13 +2,9 @@
 
 ## Roles
 
-- **Discovery Dashboards** (these require Ubuntu)
+- **Discovery Dashboards**
     - `dashboards`: sets up the dashboards using the "master" versions
     - `beta_dashboards`: sets up the dashboards using the "develop" versions
-
-**Notes**: Discovery Dashboards require Ubuntu because that's the only OS we
-have Shiny Server available for. There is a ticket to build that package for
-Debian: [T168967](https://phabricator.wikimedia.org/T168967).
 
 ## Maintenance
 

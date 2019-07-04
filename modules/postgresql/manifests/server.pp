@@ -4,7 +4,7 @@
 #
 # Parameters:
 #   pgversion
-#       Defaults to 9.3 in Ubuntu Trusty and 9.4 in Debian jessie.
+#       Defaults to 9.4 in Debian jessie and 9.6 in Debian Stretch
 #       FIXME: Just use the unversioned package name and let apt
 #       do the right thing.
 #   ensure
