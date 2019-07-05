@@ -26,5 +26,6 @@ class prometheus::node_puppet_agent (
         ensure  => $ensure,
         user    => 'prometheus',
         command => "/usr/local/bin/prometheus-puppet-agent-stats --outfile ${outfile}",
+        require => Package['prometheus-node-exporter'],
     }
 }
