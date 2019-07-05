@@ -498,6 +498,18 @@ host poolcounter1003 {
     option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
 }
 
+host poolcounter1004 {
+    hardware ethernet aa:00:00:fb:32:eb;
+    fixed-address poolcounter1004.eqiad.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/buster-installer/";
+}
+
+host poolcounter1005 {
+    hardware ethernet aa:00:00:dd:33:4b;
+    fixed-address poolcounter1005.eqiad.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/buster-installer/";
+}
+
 host poolcounter2001 {
     hardware ethernet aa:00:00:cb:8a:b8;
     fixed-address poolcounter2001.codfw.wmnet;
@@ -508,6 +520,18 @@ host poolcounter2002 {
     hardware ethernet aa:00:00:09:b0:32;
     fixed-address poolcounter2002.codfw.wmnet;
     option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
+}
+
+host poolcounter2003 {
+    hardware ethernet aa:00:00:18:7f:35;
+    fixed-address poolcounter2003.codfw.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/buster-installer/";
+}
+
+host poolcounter2004 {
+    hardware ethernet aa:00:00:e8:a0:ad;
+    fixed-address poolcounter2004.codfw.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/buster-installer/";
 }
 
 host proton1001 {
