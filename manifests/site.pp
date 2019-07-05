@@ -1817,6 +1817,17 @@ node 'mx2001.wikimedia.org' {
     }
 }
 
+# ncredir instances
+node 'ncredir1001.eqiad.wmnet' {
+    role(ncredir)
+    interface::add_ip6_mapped { 'main': }
+}
+
+node 'ncredir2001.codfw.wmnet' {
+    role(ncredir)
+    interface::add_ip6_mapped { 'main': }
+}
+
 # SWAP (Jupyter Notebook) Servers with Analytics Cluster Access
 node /notebook100[34].eqiad.wmnet/ {
     role(swap)
