@@ -92,7 +92,7 @@ profile::aqs::druid_properties:
   query_path: '/druid/v2/'
 
 profile::aqs::druid_datasources:
-  mediawiki_history: mediawiki_history_reduced_2019_05
+  mediawiki_history: mediawiki_history_reduced_2019_06
 
 profile::aqs::druid_uri_pattern: '^http:\/\/druid-public-broker.svc.eqiad.wmnet:8082\/druid\/v2'
 
