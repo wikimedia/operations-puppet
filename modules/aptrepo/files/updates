@@ -225,3 +225,12 @@ UDebComponents:
 Architectures: amd64
 VerifyRelease: 7EA0A9C3F273FCD8
 ListShellHook: grep-dctrl -e -P '^docker-ce|docker-ce-cli|containerd\.io$' || [ $? -eq 1 ]
+
+Name: amd-rocm
+Method: http://repo.radeon.com/rocm/apt/debian/
+Suite: xenial
+Components: main>thirdparty/amd-rocm
+UDebComponents:
+Architectures: amd64 source
+VerifyRelease: 9386B48A1A693C5C
+ListShellHook: grep-dctrl -e -S '^(cxlactivitylogger|hcc|hsa-ext-rocr-dev|hsa-rocr-dev|hsakmt-roct|libhsail-rt0-dbg|miopen-hip|miopen-opencl|mivisionx|radeontop|rocblas|rocfft|rocm-cmake|rocm-dev|rocm-device-libs|rocm-opencl|rocm-opencl-dev|rocm-utils|rocrand)$' || [ $? -eq 1 ]

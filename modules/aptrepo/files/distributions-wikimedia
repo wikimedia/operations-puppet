@@ -118,7 +118,10 @@ Codename: buster-wikimedia
 AlsoAcceptFor: buster buster-backports
 Version: 10
 Architectures: source amd64 i386
-Components: main thirdparty/hwraid
+Components: main
+# sorted list, leading whitespace matters!
+ thirdparty/amd-rocm
+ thirdparty/hwraid
 UDebComponents: main
 Update: hwraid-stretch hp-mcp-stretch
 Description: Wikimedia packages for Debian buster
