@@ -40,5 +40,6 @@ class profile::mediawiki::videoscaler()
         retry_interval => 5,
         retries        => 10,
         require        => File['/usr/local/lib/nagios/plugins/check_leaked_hhvm_threads'],
+        notes_url      => 'https://wikitech.wikimedia.org/wiki/Application_servers',
     }
 }

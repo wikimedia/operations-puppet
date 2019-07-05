@@ -18,5 +18,6 @@ class profile::mediawiki::api {
         description  => 'High CPU load on API appserver',
         nrpe_command => "/usr/lib/nagios/plugins/check_load -w ${warning} -c ${critical}",
         retries      => 1,
+        notes_url    => 'https://wikitech.wikimedia.org/wiki/Application_servers',
     }
 }
