@@ -48,5 +48,6 @@ class standard::ntp::timesyncd () {
         require        => File['/usr/lib/nagios/plugins/check_timedatectl'],
         contact_group  => 'admins',
         check_interval => 30,
+        notes_url      => 'https://wikitech.wikimedia.org/wiki/NTP',
     }
 }

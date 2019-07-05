@@ -130,6 +130,7 @@ define systemd::timer::job(
             check_interval => 10,
             retries        => 2,
             contact_group  => $monitoring_contact_groups,
+            notes_url      => 'https://wikitech.wikimedia.org/wiki/Analytics/Systems/Managing_systemd_timers',
         }
     }
 }
