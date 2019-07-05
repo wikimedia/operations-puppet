@@ -143,7 +143,7 @@ eqiad:
     cp1082.eqiad.wmnet: [varnish-fe, ats-be, nginx]
     cp1084.eqiad.wmnet: [varnish-fe, ats-be, nginx]
     cp1086.eqiad.wmnet: [varnish-fe, ats-be, nginx]
-    cp1088.eqiad.wmnet: [varnish-fe, varnish-be, nginx]
+    cp1088.eqiad.wmnet: [varnish-fe, ats-be, nginx]
     cp1090.eqiad.wmnet: [varnish-fe, varnish-be, nginx]
   scb:
     scb1001.eqiad.wmnet: [mobileapps, graphoid, apertium, eventstreams, pdfrender, "recommendation-api"]
