@@ -1279,7 +1279,8 @@ shared_acme_certificates:
     staging_time: 604800
     challenge: dns-01
     authorized_hosts:
-    - 'cp1008.wikimedia.org'
+    - 'ncredir1001.eqiad.wmnet'
+    - 'ncredir2001.codfw.wmnet'
     prevalidate: true
     skip_invalid_snis: true
   non-canonical-redirect-2:
@@ -1326,7 +1327,8 @@ shared_acme_certificates:
     staging_time: 604800
     challenge: dns-01
     authorized_hosts:
-    - 'cp1008.wikimedia.org'
+    - 'ncredir1001.eqiad.wmnet'
+    - 'ncredir2001.codfw.wmnet'
     prevalidate: true
     skip_invalid_snis: true
   non-canonical-redirect-3:
@@ -1371,7 +1373,8 @@ shared_acme_certificates:
     staging_time: 604800
     challenge: dns-01
     authorized_hosts:
-    - 'cp1008.wikimedia.org'
+    - 'ncredir1001.eqiad.wmnet'
+    - 'ncredir2001.codfw.wmnet'
     prevalidate: true
     skip_invalid_snis: true
   non-canonical-redirect-4:
@@ -1404,6 +1407,7 @@ shared_acme_certificates:
     staging_time: 604800
     challenge: dns-01
     authorized_hosts:
-    - 'cp1008.wikimedia.org'
+    - 'ncredir1001.eqiad.wmnet'
+    - 'ncredir2001.codfw.wmnet'
     prevalidate: true
     skip_invalid_snis: true
