@@ -402,6 +402,16 @@ host mx2001 {
     fixed-address mx2001.wikimedia.org;
 }
 
+host ncredir1001 {
+    hardware ethernet aa:00:00:a1:a7:44;
+    fixed-address ncredir1001.eqiad.wmnet;
+}
+
+host ncredir2001 {
+    hardware ethernet aa:00:00:8b:d5:4c;
+    fixed-address ncredir2001.codfw.wmnet;
+}
+
 host neon {
     hardware ethernet aa:00:00:7d:1a:57;
     fixed-address neon.eqiad.wmnet;
