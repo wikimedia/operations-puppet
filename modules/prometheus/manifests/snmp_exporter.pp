@@ -16,8 +16,11 @@ class prometheus::snmp_exporter {
         template => 'default',
     }
 
-    systemd::service { 'prometheus-snmp-exporter':
+    base::service_unit { 'prometheus-snmp-exporter':
         ensure    => present,
+        refresh   => true,
+        strict    => false,
+        require   => Package['prometheus-snmp-exporter'],
         subscribe => Exec['prometheus-snmp-exporter-config'],
     }
 
