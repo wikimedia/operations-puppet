@@ -28,7 +28,7 @@ class base::monitoring::host(
     $contact_group = 'admins',
     # the -A -i ... part is a gross hack to workaround Varnish partitions
     # that are purposefully at 99%. Better ideas are welcome.
-    $nrpe_check_disk_options = '-w 6% -c 3% -W 6% -K 3% -l -e -A -i "/srv/sd[a-b][1-3]" -i "/srv/nvme[0-9]n[0-9]p[0-9]" --exclude-type=tracefs',
+    $nrpe_check_disk_options = '-w 6% -c 3% -W 6% -K 3% -l -e -A -i "/srv/sd[a-b][1-3]" -i "/srv/nvme[0-9]n[0-9]p[0-9]" --exclude-type=fuse.fuse_dfs --exclude-type=tracefs',
     $nrpe_check_disk_critical = false,
     $raid_write_cache_policy = undef,
     $raid_check_interval = 10,
