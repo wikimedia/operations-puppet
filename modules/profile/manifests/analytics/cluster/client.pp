@@ -55,6 +55,7 @@ class profile::analytics::cluster::client(
             retries        => 2,
             contact_group  => 'analytics',
             require        => File['/usr/local/lib/nagios/plugins/check_mountpoint_readability'],
+            notes_url      => 'https://wikitech.wikimedia.org/wiki/Analytics/Systems/Cluster/Hadoop/Administration#Fixing_HDFS_mount_at_/mnt/hdfs',
         }
     }
 

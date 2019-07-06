@@ -66,5 +66,6 @@ class profile::analytics::database::meta::backup_dest(
         description   => 'Age of most recent Analytics meta MySQL database backup files',
         nrpe_command  => "/usr/bin/sudo /usr/local/lib/nagios/plugins/check_newest_file_age -V -C --check-dirs -d /srv/backup/mysql/analytics-meta -w ${$warning_threshold_hours} -c ${critical_threshold_hours}",
         contact_group => 'analytics',
+        notes_url     => 'https://wikitech.wikimedia.org/wiki/Analytics/Systems/Cluster/Mysql_Meta',
     }
 }
