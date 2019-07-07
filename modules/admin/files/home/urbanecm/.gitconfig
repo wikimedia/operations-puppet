@@ -9,6 +9,7 @@
   unstage = reset HEAD
   rbi = rebase -i --autosquash
   cif = !git commit --fixup=$(git-log-vgrep-most-recent-commit 'fixup!')
+  lg = log -p HEAD..@{u}
 [user]
 	name = Martin Urbanec
 	email = martin.urbanec@wikimedia.cz
