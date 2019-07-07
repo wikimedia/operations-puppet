@@ -9,7 +9,7 @@ server {
             deny all;
         }
 
-        allow 127.0.0.7;
+        allow 127.0.0.0/8;
 <% @puppetmasters.values.flatten(1).map { |p| p['worker'] }.sort.each do |server| -%>
         allow <%= scope.function_ipresolve([server]) %>;
 <% end -%>
