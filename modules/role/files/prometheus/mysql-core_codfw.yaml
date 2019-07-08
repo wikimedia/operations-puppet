@@ -174,7 +174,7 @@
     shard: x1
     role: slave
   targets:
-  - db2045:9104
+  - db2069:9104
   - db2096:9104
   - db2115:9104
 
@@ -182,7 +182,7 @@
     shard: x1
     role: master
   targets:
-  - db2069:9104
+  - db2045:9104
 
 - labels:
     shard: test-s1
