@@ -79,15 +79,11 @@ define monitoring::graphite_threshold(
     String                           $contact_group   = 'admins',
 ) {
 
-    $link_fail_message = 'The $dashboard_links and $notes_links URLs must not be URL-encoded'
     # notes link always has to com first to ensure the correct icon is used in icinga
     # we start with `[]` so puppet knows we want a array
     $links = [] + $notes_link + $dashboard_links
 
     $notes_urls = $links.reduce('') |$urls, $link| {
-        if $link =~ /%\h\h/ {
-            fail($link_fail_message)
-        }
         "${urls}'${link}' "
     }.strip
 
