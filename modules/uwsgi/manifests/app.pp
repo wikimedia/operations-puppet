@@ -63,6 +63,7 @@ define uwsgi::app(
             description  => "${title} uWSGI web app",
             nrpe_command => "/usr/sbin/service uwsgi-${title} status",
             require      => Base::Service_unit["uwsgi-${title}"],
+            notes_url    => "https://wikitech.wikimedia.org/wiki/Monitoring/Services/${title}",
         }
     } else {
         file { $inipath:
