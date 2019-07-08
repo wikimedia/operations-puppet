@@ -11,8 +11,8 @@
 class labstore::monitoring::interfaces(
     $monitor_iface = 'eth0',
     $contact_groups='wmcs-team,admins',
-    $int_throughput_warn = '93750000',  # 750Mbps
-    $int_throughput_crit = '106250000', # 850Mbps
+    $int_throughput_warn = 93750000,  # 750Mbps
+    $int_throughput_crit = 106250000, # 850Mbps
     $load_warn = $::processorcount * 0.75,
     $load_crit = $::processorcount * 1.25,
 ) {
