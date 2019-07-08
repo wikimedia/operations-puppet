@@ -193,4 +193,15 @@ class profile::prometheus::k8s (
         owner   => 'prometheus',
         group   => 'prometheus',
     }
+
+    monitoring::check_prometheus { 'prometheus_k8s_cache':
+        description    => 'Prometheus k8s cache not updating',
+        query          => 'changes(prometheus_sd_kubernetes_cache_last_resource_version[11m])',
+        method         => 'lt',
+        warning        => 10,
+        critical       => 5,
+        # Check each Prometheus server host individually, not through the LVS service IP
+        prometheus_url => "http://${::fqdn}/k8s",
+        notes_link     => 'https://wikitech.wikimedia.org/wiki/Prometheus#k8s_cache_not_updating',
+    }
 }
