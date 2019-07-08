@@ -10,6 +10,7 @@ server {
     listen [::]:<%= @https_port %> http2 ssl;
     listen <%= @https_port %> http2 ssl;
 <% end -%>
+    access_log /var/log/nginx/ncredir.https.log ncredir;
     server_name
 <% cert_config['SNI'][0...-1].each_with_index do |sni| -%>
     <%= sni %>
@@ -37,6 +38,7 @@ server {
 server {
     listen [::]:<%= @http_port %> default_server ipv6only=on deferred backlog=4096 reuseport;
     listen <%= @http_port %> default_server deferred backlog=4096 reuseport;
+    access_log /var/log/nginx/ncredir.http.log ncredir;
     server_name _;
 
     if ($override != '') {

@@ -37,8 +37,14 @@ class ncredir(
     Stdlib::Port $http_port = 80,
     Stdlib::Port $https_port = 443,
 ) {
-    file {'/etc/nginx/conf.d/redirection_maps.conf':
+    file { '/etc/nginx/conf.d/redirection_maps.conf':
         content => $redirection_maps,
+        require => File['/etc/nginx/conf.d'],
+        notify  => Service['nginx'],
+    }
+
+    file { '/etc/nginx/conf.d/ncredir_log_format.conf':
+        source  => 'puppet:///modules/ncredir/ncredir_log_format.conf',
         require => File['/etc/nginx/conf.d'],
         notify  => Service['nginx'],
     }
