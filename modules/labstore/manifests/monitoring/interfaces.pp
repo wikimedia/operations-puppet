@@ -28,7 +28,7 @@ class labstore::monitoring::interfaces(
         critical        => $int_throughput_crit,
         percentage      => 10,        # smooth over peaks
         contact_group   => $contact_groups,
-        notes_url       => 'https://wikitech.wikimedia.org/wiki/Portal:Data_Services/Admin/Labstore',
+        notes_link      => 'https://wikitech.wikimedia.org/wiki/Portal:Data_Services/Admin/Labstore',
     }
 
     monitoring::graphite_threshold { 'network_in_saturated':
@@ -40,7 +40,7 @@ class labstore::monitoring::interfaces(
         critical        => $int_throughput_crit,
         percentage      => 10,        # smooth over peaks
         contact_group   => $contact_groups,
-        notes_url       => 'https://wikitech.wikimedia.org/wiki/Portal:Data_Services/Admin/Labstore',
+        notes_link      => 'https://wikitech.wikimedia.org/wiki/Portal:Data_Services/Admin/Labstore',
     }
 
     monitoring::graphite_threshold { 'high_iowait_stalling':
@@ -52,7 +52,7 @@ class labstore::monitoring::interfaces(
         critical        => 60,
         percentage      => 50, # Ignore small spikes
         contact_group   => $contact_groups,
-        notes_url       => 'https://wikitech.wikimedia.org/wiki/Portal:Data_Services/Admin/Labstore',
+        notes_link      => 'https://wikitech.wikimedia.org/wiki/Portal:Data_Services/Admin/Labstore',
     }
 
     # Monitor for high load consistently, is a 'catchall'
@@ -65,6 +65,6 @@ class labstore::monitoring::interfaces(
         critical        => $load_crit,
         percentage      => 85, # Don't freak out on spikes
         contact_group   => $contact_groups,
-        notes_url       => 'https://wikitech.wikimedia.org/wiki/Portal:Data_Services/Admin/Labstore',
+        notes_link      => 'https://wikitech.wikimedia.org/wiki/Portal:Data_Services/Admin/Labstore',
     }
 }
