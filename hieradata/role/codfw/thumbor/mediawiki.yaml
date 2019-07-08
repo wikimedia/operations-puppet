@@ -15,7 +15,7 @@ thumbor_memcached_servers_nutcracker:
   - '10.192.16.58:11211:1 "shard03"' # thumbor2003
   - '10.192.16.59:11211:1 "shard04"' # thumbor2004
 
-thumbor::poolcounter_server: 'poolcounter2001.codfw.wmnet'
+thumbor::poolcounter_server: 'poolcounter2003.codfw.wmnet'
 
 thumbor::stl_support: true
 
