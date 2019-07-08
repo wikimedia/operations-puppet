@@ -55,10 +55,6 @@ class profile::analytics::refinery::job::refine {
         'mediawiki_revision_create',
         'mediawiki_revision_score',
         'mediawiki_revision_visibility_change',
-        'mediawiki_page_create',
-        'mediawiki_page_delete',
-        'mediawiki_page_undelete',
-        'mediawiki_page_move',
         'resource_change',
     ]
     $eventbus_table_whitelist_regex = "^(${join($eventbus_tables, '|')})$"
@@ -84,10 +80,15 @@ class profile::analytics::refinery::job::refine {
     $mediawiki_event_tables = [
         'mediawiki_api_request',
         'mediawiki_cirrussearch_request',
+        'mediawiki_page_create',
+        'mediawiki_page_delete',
         'mediawiki_page_links_change',
+        'mediawiki_page_move',
         'mediawiki_page_restrictions_change',
+        'mediawiki_page_undelete',
         'mediawiki_revision_tags_change',
         'mediawiki_user_blocks_change',
+
     ]
     $mediawiki_event_table_whitelist_regex = "^(${join($mediawiki_event_tables, '|')})$"
 
