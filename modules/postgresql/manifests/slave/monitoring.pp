@@ -19,6 +19,7 @@ class postgresql::slave::monitoring(
     nrpe::monitor_service { 'postgres-rep-lag':
         description  => $description,
         nrpe_command => $icinga_command,
+        notes_url    => 'https://wikitech.wikimedia.org/wiki/Postgres#Monitoring',
     }
 
 }
