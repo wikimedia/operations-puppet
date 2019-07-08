@@ -40,6 +40,7 @@ class ncredir(
     file {'/etc/nginx/conf.d/redirection_maps.conf':
         content => $redirection_maps,
         require => File['/etc/nginx/conf.d'],
+        notify  => Service['nginx'],
     }
 
     nginx::site { 'ncredir':
