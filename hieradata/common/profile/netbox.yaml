@@ -7,3 +7,4 @@ profile::netbox::ganeti_sync_profiles:
     - profile: codfw
       url: ganeti01.svc.codfw.wmnet
       port: 5080
+profile::netbox::dump_interval: '*-*-* *:37:00'

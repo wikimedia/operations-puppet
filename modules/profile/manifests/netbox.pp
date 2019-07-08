@@ -25,6 +25,9 @@ class profile::netbox (
     String $redis_password = hiera('profile::netbox::redis::password'),
 
     String $nb_token = hiera('profile::netbox::tokens::read_write'),
+    String $nb_ro_token = hiera('profile::netbox::tokens::read_only'),
+
+    String $nb_dump_interval = hiera('profile::netbox::dump_interval'),
 
     String $ganeti_user = hiera('profile::ganeti::rapi::ro_user'),
     String $ganeti_password = hiera('profile::ganeti::rapi::ro_password'),
@@ -286,6 +289,15 @@ class profile::netbox (
         })
     }
 
+    # configurations for other scripts (migrate to this configuration unless
+    # there are special needs or permissions are complicated).
+    file { '/etc/netbox/scripts.cfg':
+        owner   => 'deploy-librenms',
+        group   => 'deploy-librenms',
+        mode    => '0440',
+        content => template('profile/netbox/netbox-scripts.cfg.erb'),
+    }
+
     # packages required by report checker
     require_package('python3-pynetbox', 'python3-requests')
 
@@ -345,5 +357,27 @@ class profile::netbox (
                 ensure       => absent,
             }
         }
+    }
+
+    # Support directory for dumping tables
+    file { '/srv/netbox-dumps/':
+        ensure => 'directory',
+        owner  => 'deploy-librenms',
+        group  => 'deploy-librenms',
+        mode   => '0770',
+    }
+    # Timer for dumping tables
+    systemd::timer::job { 'netbox_dump_run':
+        ensure                    => present,
+        description               => 'Dump CSVs from Netbox.',
+        command                   => '/srv/deployment/netbox/venv/bin/python /srv/deployment/netbox/deploy/scripts/dumpbackup.py /srv/netbox-dumps',
+        interval                  => {
+            'start'    => 'OnCalendar',
+            'interval' => $nb_dump_interval,
+        },
+        logging_enabled           => false,
+        monitoring_enabled        => false,
+        monitoring_contact_groups => 'admins',
+        user                      => 'deploy-librenms',
     }
 }
