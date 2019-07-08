@@ -1,1 +1,1 @@
-profile::cache::ssl::unified::acme_chief: false
+profile::cache::ssl::unified::acme_chief: true
