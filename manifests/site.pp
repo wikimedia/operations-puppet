@@ -1920,7 +1920,7 @@ node /(dubnium|pollux)\.wikimedia\.org/ {
     role(openldap::corp)
 }
 
-node /poolcounter[12]00[123]\.(codfw|eqiad)\.wmnet/ {
+node /poolcounter[12]00[12345]\.(codfw|eqiad)\.wmnet/ {
     role(poolcounter::server)
 }
 
