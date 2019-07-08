@@ -35,7 +35,7 @@ class profile::mariadb::parsercache (
         datadir => '/srv/sqldata-cache',
         tmpdir  => '/srv/tmp',
         ssl     => 'puppet-cert',
-        p_s     => 'off',
+        p_s     => 'on',
         basedir => $mysqlbasedir,
     }
 

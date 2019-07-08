@@ -43,6 +43,7 @@ class role::mariadb::misc(
         tmpdir    => '/srv/tmp',
         ssl       => 'puppet-cert',
         read_only => $read_only,
+        p_s       => 'on',
     }
 
     class { 'profile::mariadb::grants::production':

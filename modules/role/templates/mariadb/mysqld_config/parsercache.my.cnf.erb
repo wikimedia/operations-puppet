@@ -42,9 +42,6 @@ query_cache_size               = 0
 query_cache_type               = 0
 event_scheduler                = 1
 
-# we are testing impact of performance schema
-performance_schema             = 1
-
 log-warnings                   = 0
 thread_stack                   = 192K
 thread_cache_size              = 300
@@ -131,7 +128,7 @@ performance_schema_max_socket_instances                = 500
 performance_schema_max_table_instances                 = 1000
 <% else %>
 # only enable userstat if p_s is disabled
-performance_schema                                     = 0
+performance_schema                                     = 0 
 userstat                                               = 1
 <% end %>
 

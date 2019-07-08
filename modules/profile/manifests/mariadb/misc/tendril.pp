@@ -20,6 +20,7 @@ class profile::mariadb::misc::tendril {
         basedir       => '/opt/wmf-mariadb101',
         tmpdir        => '/srv/tmp',
         binlog_format => 'ROW',
+        p_s           => 'on',
         ssl           => 'puppet-cert',
     }
 
