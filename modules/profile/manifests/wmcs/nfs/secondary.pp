@@ -72,8 +72,8 @@ class profile::wmcs::nfs::secondary(
 
     class { 'labstore::monitoring::interfaces':
         monitor_iface       => 'eno1',
-        int_throughput_warn => '937500000',  # 7500Mbps
-        int_throughput_crit => '1062500000', # 8500Mbps
+        int_throughput_warn => 937500000,  # 7500Mbps
+        int_throughput_crit => 1062500000, # 8500Mbps
     }
 
     file { '/usr/local/sbin/check_nfs_status':
