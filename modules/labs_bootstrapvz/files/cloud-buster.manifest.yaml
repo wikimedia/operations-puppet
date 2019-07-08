@@ -63,7 +63,9 @@ packages:
     - libfile-next-perl
     - libnss-db
     - libnss-ldapd
-    - libpam-ldapd
+    - libnss-sss
+    - libsss-sudo
+    - libpam-sss
     - lldpd
     - lockfile-progs
     - lshw
@@ -97,6 +99,7 @@ packages:
     - rsyslog
     - screen
     - snmp
+    - sssd
     - ssl-cert
     - strace
     - sysstat
@@ -133,14 +136,11 @@ plugins:
         src: /etc/ldap.conf
         dst: /etc/ldap.conf
       -
+        src: /etc/sssd.conf
+        dst: /etc/sssd.conf
+      -
         src: /etc/bootstrap-vz/nss_ldap.conf
         dst: /etc/ldap/ldap.conf
-      -
-        src: /etc/nscd.conf
-        dst: /etc/nscd.conf
-      -
-        src: /etc/bootstrap-vz/nslcd.conf
-        dst: /etc/nslcd.conf
       -
         src: /etc/nsswitch.conf
         dst: /etc/nsswitch.conf
@@ -190,10 +190,7 @@ plugins:
     #  file_copy; hence the touches and explicit copies below.
     commands:
       - ['chroot', '{root}', 'passwd', '-ld', 'root']
-      - ['SUDO_FORCE_REMOVE=yes chroot {root} apt-get --allow-remove-essential --allow-unauthenticated --assume-yes -o Dpkg::Options::="--force-confold" install sudo-ldap']
       - ['chroot', '{root}', 'rm', '-f', '/etc/ssh/ssh_host*key*']
-      - ['chroot', '{root}', 'rm', '-f', '/etc/sudo-ldap.conf']
-      - ['chroot', '{root}', 'ln', '-s', '/etc/ldap/ldap.conf', '/etc/sudo-ldap.conf']
       - ['chroot', '{root}', 'rm', '-f', '/etc/resolvconf/resolv.conf.d/original']
       #- ['cp', '/etc/default/grub', '{root}/etc/default/grub']
       #- ['chroot', '{root}', 'update-grub']
