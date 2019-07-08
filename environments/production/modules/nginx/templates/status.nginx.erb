@@ -1,0 +1,12 @@
+# Nginx status and server metrics site
+# See <http://wiki.nginx.org/HttpStubStatusModule> for details
+server {
+    listen       127.0.0.1:<%= @port %>;
+    server_name  localhost;
+    location     /nginx_status {
+        stub_status  on;
+        access_log   off;
+        allow        127.0.0.1;
+        deny         all;
+    }
+}

@@ -1,0 +1,24 @@
+# This file is managed by puppet. Do not edit
+server {
+
+    listen <%= @port %> ssl default_server;
+    listen [::]:<%= @port %> ssl default_server ipv6only=on;
+
+    ssl_certificate     /etc/nginx/ssl/cert.pem;
+    ssl_certificate_key /etc/nginx/ssl/server.key;
+
+    access_log   /var/log/nginx/<%= @site_name %>_access.log;
+    error_log    /var/log/nginx/<%= @site_name %>_error.log;
+
+    root /dev/null;
+
+    client_max_body_size 100M;
+
+    location / {
+        proxy_pass http://localhost:<%= @backend_port %>/;
+
+        proxy_set_header    X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header    X-Real-IP $remote_addr;
+    }
+}
+
