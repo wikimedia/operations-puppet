@@ -508,6 +508,7 @@ sub deliver_synth_ {
 		set resp.http.X-Cache-Status = regsuball(resp.http.X-Cache, "cp[0-9]{4} (hit|miss|pass|int)(?:/[0-9]+)?", "\1");
 
 		unset resp.http.X-Cache-Int;
+		unset resp.http.Via;
 
 		if (resp.http.X-Cache-Status ~ "hit$") {
 			set resp.http.X-Cache-Status = "hit-front";
@@ -532,7 +533,6 @@ sub deliver_synth_ {
 		set resp.http.Server-Timing = {"cache;desc=""} + resp.http.X-Cache-Status + {"""};
 	}
 
-	std.collect(resp.http.Via);
 	std.collect(resp.http.X-Varnish);
 
 	call https_deliver_hsts;
