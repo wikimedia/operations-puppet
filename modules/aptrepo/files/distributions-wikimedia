@@ -123,7 +123,7 @@ Components: main
  thirdparty/amd-rocm
  thirdparty/hwraid
 UDebComponents: main
-Update: hwraid-stretch hp-mcp-stretch
+Update: hwraid-stretch hp-mcp-stretch amd-rocm
 Description: Wikimedia packages for Debian buster
 SignWith: 9D392D3FFADF18FB
 DebOverride: deb-override
