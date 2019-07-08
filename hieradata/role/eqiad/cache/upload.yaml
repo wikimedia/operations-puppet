@@ -1,2 +1,0 @@
-cache::backend_warming: false
-profile::cache::base::purge_varnishes: ['127.0.0.1:3128,0.5', '127.0.0.1:3127,1.0']

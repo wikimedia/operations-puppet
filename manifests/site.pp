@@ -304,7 +304,7 @@ node /^cp10(7[579]|8[13579])\.eqiad\.wmnet$/ {
 
 node /^cp10(7[68]|8[02468]|90)\.eqiad\.wmnet$/ {
     interface::add_ip6_mapped { 'main': }
-    role(cache::upload_ats)
+    role(cache::upload)
 }
 
 node /^cp20(0[1467]|1[02369]|23)\.codfw\.wmnet$/ {
@@ -314,7 +314,7 @@ node /^cp20(0[1467]|1[02369]|23)\.codfw\.wmnet$/ {
 
 node /^cp20(0[258]|1[1478]|2[02456])\.codfw\.wmnet$/ {
     interface::add_ip6_mapped { 'main': }
-    role(cache::upload_ats)
+    role(cache::upload)
 }
 
 # ATS Test Cluster -- used for T213263 and not needed anymore
@@ -340,7 +340,7 @@ node 'cp3037.esams.wmnet' {
 
 node /^cp30(3[45689]|4[45679])\.esams\.wmnet$/ {
     interface::add_ip6_mapped { 'main': }
-    role(cache::upload_ats)
+    role(cache::upload)
 }
 
 #
@@ -349,7 +349,7 @@ node /^cp30(3[45689]|4[45679])\.esams\.wmnet$/ {
 
 node /^cp402[1-6]\.ulsfo\.wmnet$/ {
     interface::add_ip6_mapped { 'main': }
-    role(cache::upload_ats)
+    role(cache::upload)
 }
 
 node /^cp40(2[789]|3[012])\.ulsfo\.wmnet$/ {
@@ -363,7 +363,7 @@ node /^cp40(2[789]|3[012])\.ulsfo\.wmnet$/ {
 
 node /^cp500[1-6]\.eqsin\.wmnet$/ {
     interface::add_ip6_mapped { 'main': }
-    role(cache::upload_ats)
+    role(cache::upload)
 }
 
 node /^cp50(0[789]|1[012])\.eqsin\.wmnet$/ {

@@ -221,8 +221,7 @@ class profile::prometheus::ops (
       {
         'job_name'        => 'varnish-upload',
         'file_sd_configs' => [
-          { 'files' => ["${targets_path}/varnish-upload_*.yaml",
-                        "${targets_path}/varnish-upload-ats_*.yaml"] },
+          { 'files' => ["${targets_path}/varnish-upload_*.yaml"] },
         ],
         'metric_relabel_configs' => [$varnish_be_uuid_relabel],
       },
@@ -246,12 +245,6 @@ class profile::prometheus::ops (
         dest       => "${targets_path}/varnish-upload_mtail_${::site}.yaml",
         site       => $::site,
         class_name => 'role::cache::upload',
-        port       => 3903,
-    }
-    prometheus::class_config{ "varnish-upload-ats_mtail_${::site}":
-        dest       => "${targets_path}/varnish-upload-ats_mtail_${::site}.yaml",
-        site       => $::site,
-        class_name => 'role::cache::upload_ats',
         port       => 3903,
     }
     prometheus::class_config{ "varnish-text_mtail_${::site}":

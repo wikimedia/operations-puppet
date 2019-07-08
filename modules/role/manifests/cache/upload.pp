@@ -1,7 +1,7 @@
 # filtertags: labs-project-deployment-prep
 class role::cache::upload {
     system::role { 'cache::upload':
-        description => 'upload Varnish cache server',
+        description => 'upload Varnish/ATS cache server',
     }
 
     include ::profile::standard
@@ -9,10 +9,5 @@ class role::cache::upload {
     include ::profile::cache::base
     include ::profile::cache::ssl::unified
     include ::profile::cache::varnish::frontend
-    include ::profile::cache::varnish::backend
-
-    # TODO: refactor all this so that we have separate roles for production and labs
-    if $::realm == 'production' {
-        include ::role::ipsec
-    }
+    include ::profile::trafficserver::backend
 }
