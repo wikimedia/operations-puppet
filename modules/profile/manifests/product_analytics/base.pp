@@ -3,10 +3,6 @@
 # Install and configure R & Python and install Product Analytics-specific
 # essential R/Python packages.
 #
-# Due to the outdated version of R on the currently available Ubuntu version
-# (Trusty), it is recommended to only apply this profile (and any profiles or
-# roles that include it) to instances running on Debian (Jessie or newer).
-#
 # filtertags: labs-project-discovery-stats
 class profile::product_analytics::base {
     # `include ::r` would not install devtools, which would mean that we could

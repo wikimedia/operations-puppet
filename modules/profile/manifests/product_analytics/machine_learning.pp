@@ -3,10 +3,6 @@
 # Install and configure R and install Product Analytics-specific essential
 # R/Python2 packages for machine learning.
 #
-# Due to the outdated version of R on the currently available Ubuntu version
-# (Trusty), it is recommended to only apply this profile (and any profiles or
-# roles that include it) to instances running on Debian (Stretch or newer).
-#
 # filtertags: labs-project-discovery-stats
 class profile::product_analytics::machine_learning {
     require profile::product_analytics::base

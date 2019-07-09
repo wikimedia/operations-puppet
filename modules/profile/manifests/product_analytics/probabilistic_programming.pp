@@ -4,10 +4,6 @@
 # R/Python packages for statistical inference and modeling with probabilistic
 # programming and Bayesian methods.
 #
-# Due to the outdated version of R on the currently available Ubuntu version
-# (Trusty), it is recommended to only apply this profile (and any profiles or
-# roles that include it) to instances running on Debian (Jessie or newer).
-#
 # filtertags: labs-project-discovery-stats
 class profile::product_analytics::probabilistic_programming {
     require profile::product_analytics::base
