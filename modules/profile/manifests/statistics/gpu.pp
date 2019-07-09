@@ -44,6 +44,7 @@ class profile::statistics::gpu {
             'rocm-opencl-dev',
             'rocm-utils',
             'rocrand',
+            'rocm-smi',
         ]
 
         package { $packages:

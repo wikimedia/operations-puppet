@@ -233,4 +233,4 @@ Components: main>thirdparty/amd-rocm
 UDebComponents:
 Architectures: amd64
 VerifyRelease: 9386B48A1A693C5C
-ListShellHook: grep-dctrl -e -S '^(cxlactivitylogger|hcc|hsa-rocr-dev|hsakmt-roct|miopen-hip|miopen-opencl|mivisionx|rocblas|rocfft|rocm-cmake|rocm-dev|rocm-device-libs|rocm-opencl|rocm-opencl-dev|rocm-utils|rocrand|hsakmt-roct-dev|rocprofiler-dev|hip_hcc|hip_base|rocm-clang-ocl|hip_doc|hip_samples)$' || [ $? -eq 1 ]
+ListShellHook: grep-dctrl -e -S '^(cxlactivitylogger|hcc|hsa-rocr-dev|hsakmt-roct|miopen-hip|miopen-opencl|mivisionx|rocblas|rocfft|rocm-cmake|rocm-dev|rocm-device-libs|rocm-opencl|rocm-opencl-dev|rocm-utils|rocrand|hsakmt-roct-dev|rocprofiler-dev|hip_hcc|hip_base|rocm-clang-ocl|hip_doc|hip_samples|rocm-smi)$' || [ $? -eq 1 ]
