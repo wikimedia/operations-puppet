@@ -4,6 +4,11 @@ all: P{*}
 <%= dc %>: P{P:cumin::target%site = <%= dc %>}
 <% end -%>
 
+# Distros
+<% ['jessie', 'stretch', 'buster'].each do |distro| -%>
+<%= distro %>: P{F:lsbdistcodename = <%= distro %>}
+<% end -%>
+
 # Server group definitions
 acmechief: P{O:acme_chief}
 all-mw-codfw: (A:mw-api or A:mw or A:mw-jobrunner) and A:codfw
