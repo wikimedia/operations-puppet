@@ -84,13 +84,6 @@ class base::standard_packages {
     # Can be dropped once jessie are gone, not installed by default in stretch onwards
     package { 'at': ensure => purged }
 
-    # On Ubuntu, eject is installed via the ubuntu-minimal package
-    # Uninstall in on Debian since it ships a setuid helper and we don't
-    # have servers with installed optical drives
-    if os_version('debian >= jessie') {
-        package { 'eject': ensure => absent }
-    }
-
     # real-hardware specific
     if $facts['is_virtual'] == false {
         # As of September 2015, mcelog still does not support newer AMD processors.
