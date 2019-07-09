@@ -1,4 +1,4 @@
-profile::base::remote_syslog_tls: ['syslog.eqiad.wmnet:6514', 'syslog.codfw.wmnet:6514']
+profile::base::remote_syslog_tls: ['syslog.eqiad.wmnet:6514', 'syslog.codfw.wmnet:6514', 'centrallog1001.eqiad.wmnet:6514']
 profile::base::remote_syslog: []
 
 profile::base::enable_rsyslog_exporter: true
