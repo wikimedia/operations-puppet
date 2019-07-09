@@ -1,5 +1,8 @@
 class sudo::sudoldap
 {
+    # this cannot be used in Debian buster
+    requires_os('debian < buster')
+
     # this assert is here only because it was before in the form of realm if branch.
     # This class only makes sense in CloudVPS anyway
     requires_realm('labs')

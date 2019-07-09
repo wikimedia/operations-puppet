@@ -8,6 +8,11 @@ class profile::ldap::client::labs(
     class { '::ldap::config::labs': }
 
     if ( $::realm == 'labs' ) {
+        if $::lsbdistcodename == 'buster' {
+            $sudo_flavor  = 'sudo'
+            $client_stack = 'sssd'
+        }
+
         notify { 'LDAP client stack':
             message => "The LDAP client stack for this host is: ${client_stack}/${sudo_flavor}",
         }
