@@ -54,13 +54,18 @@ class profile::kubernetes::deployment_server(
           }else {
               fail("unexpected servicename ${svcname}")
           }
+          file { $hfdir:
+            ensure => directory,
+            owner  => $data['owner'],
+            group  => $data['group'],
+          }
           file { $hfenv:
-                        ensure  => present,
-                        owner   => $data['owner'],
-                        group   => $data['group'],
-                        mode    => $data['mode'],
-                        content => template('profile/kubernetes/.hfenv.erb'),
-                        require => File[$hfdir]
+            ensure  => present,
+            owner   => $data['owner'],
+            group   => $data['group'],
+            mode    => $data['mode'],
+            content => template('profile/kubernetes/.hfenv.erb'),
+            require => File[$hfdir]
           }
           # write private section only if there is any secret defined.
           if $data[$environment] {
