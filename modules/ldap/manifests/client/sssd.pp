@@ -18,6 +18,13 @@ class ldap::client::sssd(
         'sssd',
     ]
 
+    # mkhomedir is not enabled automatically; activate it if needed
+    exec { 'pam-auth-enable-mkhomedir':
+        command => '/sbin/pam-auth-update --force --enable mkhomedir',
+        unless  => '/bin/grep pam_mkhomedir.so /etc/pam.d/common-session',
+        require => Package['sssd', 'libpam-sss'],
+    }
+
     package { $packages_present:
         ensure => 'present',
     }
