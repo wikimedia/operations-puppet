@@ -142,7 +142,7 @@ profile::cache::varnish::frontend::fe_vcl_config:
     varnish_probe_ms: 100
     keep: '1d'
 profile::cache::varnish::frontend::fe_jemalloc_conf: 'lg_dirty_mult:8,lg_chunk:16'
-profile::cache::varnish::frontend::fe_extra_vcl: ['text-common', 'misc-common', 'zero', 'normalize_path', 'geoip']
+profile::cache::varnish::frontend::fe_extra_vcl: ['text-common', 'misc-common', 'normalize_path', 'geoip']
 profile::cache::varnish::frontend::transient_gb: 5
 profile::cache::varnish::backend::be_vcl_config:
     pass_random: true

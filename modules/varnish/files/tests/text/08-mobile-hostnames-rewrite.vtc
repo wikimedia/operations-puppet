@@ -71,7 +71,7 @@ client c1 {
     txreq -url "/" -hdr "Host: m.wikipedia.org" -hdr "X-Forwarded-Proto: https"
     rxresp
 
-    txreq -url "/" -hdr "Host: en.zero.wikipedia.org" -hdr "X-Forwarded-Proto: https"
+    txreq -url "/" -hdr "Host: en.m.wikipedia.org" -hdr "X-Forwarded-Proto: https"
     rxresp
 
     txreq -url "/" -hdr "Host: zh-classical.m.wikipedia.org" -hdr "X-Forwarded-Proto: https"

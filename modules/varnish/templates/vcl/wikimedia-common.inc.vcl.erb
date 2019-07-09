@@ -6,9 +6,9 @@ import std;
 import re2;
 <% end -%>
 
-# this is needed by geoip.inc.vcl and zero.inc.vcl, and in general is the only
-#   way to sanely do Set-Cookie in the face of multiple independent cookies
-#   being set from different code.
+# this is needed by geoip.inc.vcl, and in general is the only way to sanely do
+# Set-Cookie in the face of multiple independent cookies being set from
+# different code.
 import header;
 
 import directors;

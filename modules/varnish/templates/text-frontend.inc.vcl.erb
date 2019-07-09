@@ -10,7 +10,6 @@ acl abuse_nets {
 }
 
 include "text-common.inc.vcl";
-include "zero.inc.vcl";
 include "geoip.inc.vcl";
 
 // Note that analytics.inc.vcl will set an X-Analytics value of proxy=IORG
@@ -79,11 +78,6 @@ sub cluster_fe_recv_pre_purge {
 		return (synth(403, "Abuse"));
 	}
 
-	// Forged UAs on zerodot. This largely handles lazywebtools below, incidentally.
-	if (req.http.host ~ "zero\.wikipedia\.org" && req.http.User-Agent && req.http.User-Agent ~ "Facebookbot|Googlebot") {
-		return (synth(403, "Noise"));
-	}
-
 	if (req.http.referer && req.http.referer ~ "^http://(www\.(keeprefreshing|refreshthis|refresh-page|urlreload)\.com|tuneshub\.blogspot\.com|itunes24x7\.blogspot\.com|autoreload\.net|www\.lazywebtools\.co\.uk)/") {
 		return (synth(403, "Noise"));
 	}
@@ -102,19 +96,19 @@ sub cluster_fe_recv_pre_purge {
 		unset req.http.X-Subdomain;
 		unset req.http.x-dt-host; // desktop host, if mobile hostname on request
 
-		if (req.http.host ~ "^([a-z0-9-]+\.)?zero\." && req.http.host != "zero.wikimedia.<%= @vcl_config.fetch('top_domain') %>") {
-			set req.http.X-Subdomain = "ZERO";
-		} else if (req.http.host ~ "^([a-z0-9-]+\.)?m\.") {
+		if (req.http.host ~ "^([a-z0-9-]+\.)?m\.") {
 			set req.http.X-Subdomain = "M";
 		}
 
-		// mobile-subdomains-only for tag-carrier and Host-rewrite
-		if (req.http.X-Subdomain) {
-			// Only do tag_carrier logic on first start, and only for (m|zero).wp
-			if (req.http.host ~ "^([a-z0-9-]+\.)?(m|zero)\.wikipedia\.") {
-				call tag_carrier;
-			}
+		// The following headers were removed by zero's tag_carrier_cleanup.
+		// MediaWiki takes them into account, so make sure they cannot be
+		// injected from the outside
+		unset req.http.X-Forwarded-By;
+		unset req.http.X-CS;
+		unset req.http.X-CS2;
 
+		// mobile-subdomains-only for Host-rewrite
+		if (req.http.X-Subdomain) {
 			// Rewrite mobile hostnames to desktop hostnames as x-dt-host. All
 			// hostnames are being rewritten by the regex in the final else
 			// clause, except for m.mediawiki.org and m.wikidata.org which are
@@ -125,14 +119,13 @@ sub cluster_fe_recv_pre_purge {
 				set req.http.x-dt-host = "www.wikidata.org";
 			} else {
 				// All other hostnames are taken care of here.
-				// Replace <language>.(m|zero).<project>.org by <language>.<project>.org
-				// as well as (m|zero).<project>.org by <project>.org
+				// Replace <language>.m.<project>.org by <language>.<project>.org
+				// as well as m.<project>.org by <project>.org
 				//
 				// Example:
 				// foundation.m.wikimedia.org -> foundation.wikimedia.org
 				// it.m.wikipedia.org -> it.wikipedia.org
-				// en.zero.wikipedia.org -> en.wikipedia.org
-				set req.http.x-dt-host = regsub(req.http.host, "^([a-z0-9-]+\.)?(m|zero)\.", "\1");
+				set req.http.x-dt-host = regsub(req.http.host, "^([a-z0-9-]+\.)?m\.", "\1");
 			}
 
 			if (req.url ~ "^/api/rest_v1/") {
@@ -353,8 +346,6 @@ sub cluster_fe_backend_response {
 }
 
 sub cluster_fe_deliver {
-	call zero_deliver;
-
 	# Other half of X-RB-NOREDIR (see cluster_fe_recv_pre_purge)
 	if (req.http.X-RB-NOREDIR) {
 		if (resp.status == 302) {
