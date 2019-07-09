@@ -60,6 +60,7 @@ class package_builder(
         'dh-systemd',
         'openstack-pkg-tools',
         'git-buildpackage',
+        'equivs',
         'quilt',
         'wdiff',
         'zip',
