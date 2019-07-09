@@ -39,7 +39,7 @@ profile::zuul::server::email_server: localhost
 # TODO: create specific credentials for CI
 docker::registry: docker-registry.discovery.wmnet
 docker::registry::username: uploader
-profile::base::check_disk_options: -w 10% -c 5% -W 6% -K 3% -l -e -A -i '/(var/lib|run)/docker/*' --exclude-type=tracefs
+profile::base::check_disk_options: -w 10% -c 5% -W 6% -K 3% -l -e -A -i '/(var/lib|run|mnt)/docker/*' --exclude-type=tracefs
 
 profile::kubernetes::deployment_server::git_owner: root
 profile::kubernetes::deployment_server::git_group: wikidev
