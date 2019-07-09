@@ -136,8 +136,8 @@ plugins:
         src: /etc/ldap.conf
         dst: /etc/ldap.conf
       -
-        src: /etc/sssd.conf
-        dst: /etc/sssd.conf
+        src: /etc/sssd/sssd.conf
+        dst: /etc/sssd/sssd.conf
       -
         src: /etc/bootstrap-vz/nss_ldap.conf
         dst: /etc/ldap/ldap.conf
