@@ -439,6 +439,18 @@ host orespoolcounter1002 {
     fixed-address orespoolcounter1002.eqiad.wmnet;
 }
 
+host orespoolcounter1003 {
+    hardware ethernet aa:00:00:79:14:8b;
+    fixed-address orespoolcounter1003.eqiad.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/buster-installer/";
+}
+
+host orespoolcounter1004 {
+    hardware ethernet aa:00:00:96:a5:b7;
+    fixed-address orespoolcounter1004.eqiad.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/buster-installer/";
+}
+
 host orespoolcounter2001 {
     hardware ethernet aa:00:00:70:83:52;
     fixed-address orespoolcounter2001.codfw.wmnet;
@@ -447,6 +459,18 @@ host orespoolcounter2001 {
 host orespoolcounter2002 {
     hardware ethernet aa:00:00:c0:d8:01;
     fixed-address orespoolcounter2002.codfw.wmnet;
+}
+
+host orespoolcounter2003 {
+    hardware ethernet aa:00:00:f2:09:cd;
+    fixed-address orespoolcounter2003.codfw.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/buster-installer/";
+}
+
+host orespoolcounter2004 {
+    hardware ethernet aa:00:00:4c:94:74;
+    fixed-address orespoolcounter2004.codfw.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/buster-installer/";
 }
 
 host oresrdb2001 {
