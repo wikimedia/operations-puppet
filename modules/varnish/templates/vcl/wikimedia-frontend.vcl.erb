@@ -263,25 +263,6 @@ sub recv_fe_ip_processing {
 		unset req.http.maybe-xcip;
 	}
 
-	// Now check carrier database for setting X-Carrier based on XCIP
-	set req.http.X-Carrier = netmapper.map("carriers", req.http.X-Client-IP);
-	// normalize to boolean post-netmapper (varnish-3.0.4...)
-	if (req.http.X-Carrier == "") {
-		unset req.http.X-Carrier;
-	}
-	else {
-		// Split X-Carrier data from raw form with optional trailing metadata,
-		// such as "123-45|wap|mobile", so that X-Carrier contains only
-		// MCC-MNC and X-Carrier-Meta contains the trailing attributes
-		set req.http.X-Carrier-Meta = regsub(req.http.X-Carrier, "^[^|]*\|?", "");
-		if (req.http.X-Carrier-Meta != "") {
-			set req.http.X-Carrier = regsub(req.http.X-Carrier, "\|.*$", "");
-		}
-		else {
-			unset req.http.X-Carrier-Meta;
-		}
-	}
-
 	// From this (very early) point forward, regardless of cache tier/layer:
 	// req.http.X-Client-IP ->
 	//     This is our standard notion of the Client/UA's real IP, after
@@ -291,16 +272,6 @@ sub recv_fe_ip_processing {
 	//     If the traffic pass through a trusted proxy in our "proxies"
 	//     database (such as OperaMini), this will be the official name of
 	//     the trusted proxy.  Otherwise it will be unset (boolean false).
-	// req.http.X-Carrier ->
-	//     If X-Client-IP matches a network in our "carriers" database,
-	//     this will contain the MCC-MNC code for that carrier.  Otherwise
-	//     it will be undefined.
-	// req.http.X-Carrier-Meta ->
-	//     If X-Carrier is defined: for some carriers, the database
-	//     contains extra metadata in the form of one or more labels like
-	//     "wap" or "residential".  They'll be separated by "|" if more
-	//     than one, and this header is undefined if there was no such
-	//     metadata.
 }
 
 sub vcl_init {
@@ -541,13 +512,6 @@ sub deliver_synth_ {
 
 	// echo metadata about the client back to the client (analytics looks at this as well)
 	set resp.http.X-Client-IP = req.http.X-Client-IP;
-	// note mobile apps look at X-C + X-C-M below
-	if (req.http.X-Carrier) {
-		set resp.http.X-Carrier = req.http.X-Carrier;
-		if (req.http.X-Carrier-Meta) {
-			set resp.http.X-Carrier-Meta = req.http.X-Carrier-Meta;
-		}
-	}
 }
 
 sub vcl_deliver {

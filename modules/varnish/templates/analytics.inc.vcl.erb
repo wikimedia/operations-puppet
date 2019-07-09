@@ -209,13 +209,6 @@ sub analytics_deliver {
             set resp.http.X-Analytics = resp.http.X-Analytics + ";preview=1";
     }
 
-    if (req.http.X-Carrier) {
-        set resp.http.X-Analytics = resp.http.X-Analytics + ";zero=" + req.http.X-Carrier;
-        if (req.http.X-Carrier-Meta) {
-            set resp.http.X-Analytics = resp.http.X-Analytics + ";zeronet=" + req.http.X-Carrier-Meta;
-        }
-    }
-
     if (req.http.X-Trusted-Proxy) {
         set resp.http.X-Analytics = resp.http.X-Analytics + ";proxy=" + req.http.X-Trusted-Proxy;
     }
