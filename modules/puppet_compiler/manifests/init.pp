@@ -6,7 +6,6 @@ class puppet_compiler(
     $ensure  = 'present',
     $user    = 'jenkins-deploy',
     $homedir = '/srv/home/jenkins-deploy',
-    $puppetdb_major_version = undef,
     ) {
 
     require ::puppet_compiler::packages
@@ -110,22 +109,8 @@ class puppet_compiler(
 
     require_package('openjdk-8-jdk')
 
-    unless $puppetdb_major_version == 4 {
-        class { '::puppet_compiler::legacy_local_database':
-            user   => $user,
-            vardir => $vardir,
-        }
-    }
-
-    $puppetdb_port = $puppetdb_major_version ? {
-        4       => '443',
-        default => '8081',
-    }
-
     class { 'puppetmaster::puppetdb::client':
         host                   => $::fqdn,
-        port                   => $puppetdb_port,
-        puppetdb_major_version => $puppetdb_major_version,
     }
     # puppetdb configuration
     file { "${vardir}/puppetdb.conf":

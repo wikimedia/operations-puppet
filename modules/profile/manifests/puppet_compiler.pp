@@ -1,5 +1,4 @@
 class profile::puppet_compiler(
-    $puppetdb_major_version = hiera('puppetdb_major_version', undef),
     $cloud_puppetmaster = hiera('profile::puppet_compiler::cloud_puppetmaster')
 ) {
 
@@ -31,13 +30,8 @@ class profile::puppet_compiler(
         default     : { fail("Realm ${::realm} NOT supported by this role.") }
     }
 
-    class { '::puppet_compiler':
-        puppetdb_major_version => $puppetdb_major_version,
-    }
-
-    if $puppetdb_major_version == 4 {
-        include ::profile::puppet_compiler::postgres_database
-    }
+    include ::puppet_compiler
+    include ::profile::puppet_compiler::postgres_database
 
     # Conftool + etcd are needed for the conftool function to work
     # do not bother with hiera here, for now.

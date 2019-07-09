@@ -8,7 +8,6 @@ class profile::puppetmaster::backend(
     $prevent_cherrypicks = hiera('profile::puppetmaster::backend::prevent_cherrypicks', true),
     Stdlib::Host $ca_server = lookup('puppet_ca_server'),
     $puppetmasters = hiera('puppetmaster::servers'),
-    $puppetdb_major_version = hiera('puppetdb_major_version', undef),
     $allow_from = [
       '*.wikimedia.org',
       '*.eqiad.wmnet',
@@ -31,13 +30,12 @@ class profile::puppetmaster::backend(
     }
 
     class { '::puppetmaster':
-        server_type            => 'backend',
-        config                 => $::profile::puppetmaster::common::config,
-        secure_private         => $secure_private,
-        prevent_cherrypicks    => $prevent_cherrypicks,
-        allow_from             => $allow_from,
-        extra_auth_rules       => $extra_auth_rules,
-        puppetdb_major_version => $puppetdb_major_version,
+        server_type         => 'backend',
+        config              => $::profile::puppetmaster::common::config,
+        secure_private      => $secure_private,
+        prevent_cherrypicks => $prevent_cherrypicks,
+        allow_from          => $allow_from,
+        extra_auth_rules    => $extra_auth_rules,
     }
 
     $puppetmaster_frontend_ferm = join(keys($puppetmasters), ' ')

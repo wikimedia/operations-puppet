@@ -6,7 +6,6 @@ class puppetmaster::puppetdb(
     $port       = 443,
     $jetty_port = 8080,
     $jvm_opts   ='-Xmx4G',
-    $puppetdb_major_version=undef,
     $ssldir = undef,
     $ca_path = '/etc/ssl/certs/Puppet_Internal_CA.pem',
 ) {
@@ -36,23 +35,20 @@ class puppetmaster::puppetdb(
 
     ## PuppetDB installation
 
-    if $puppetdb_major_version == 4 {
-        apt::repository { 'wikimedia-puppetdb4':
-            uri        => 'http://apt.wikimedia.org/wikimedia',
-            dist       => "${::lsbdistcodename}-wikimedia",
-            components => 'component/puppetdb4',
-            before     => Class['puppetdb::app'],
-        }
+    apt::repository { 'wikimedia-puppetdb4':
+        uri        => 'http://apt.wikimedia.org/wikimedia',
+        dist       => "${::lsbdistcodename}-wikimedia",
+        components => 'component/puppetdb4',
+        before     => Class['puppetdb::app'],
     }
 
     class { 'puppetdb::app':
-        db_rw_host             => $master,
-        db_ro_host             => $::fqdn,
-        db_password            => $puppetdb_pass,
-        perform_gc             => ($master == $::fqdn), # only the master must perform GC
-        jvm_opts               => $jvm_opts,
-        puppetdb_major_version => $puppetdb_major_version,
-        ssldir                 => $ssldir,
-        ca_path                => $ca_path,
+        db_rw_host  => $master,
+        db_ro_host  => $::fqdn,
+        db_password => $puppetdb_pass,
+        perform_gc  => ($master == $::fqdn), # only the master must perform GC
+        jvm_opts    => $jvm_opts,
+        ssldir      => $ssldir,
+        ca_path     => $ca_path,
     }
 }

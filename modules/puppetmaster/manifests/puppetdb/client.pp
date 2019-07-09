@@ -3,15 +3,9 @@
 class puppetmaster::puppetdb::client(
     $host,
     $port=443,
-    $puppetdb_major_version=undef,
 ) {
-    if $puppetdb_major_version == 4 {
-        $puppetdb_terminus_package = 'puppetdb-termini'
-        $puppetdb_conf_template    = 'puppetmaster/puppetdb4.conf.erb'
-    } else {
-        $puppetdb_terminus_package = 'puppetdb-terminus'
-        $puppetdb_conf_template    = 'puppetmaster/puppetdb.conf.erb'
-    }
+    $puppetdb_terminus_package = 'puppetdb-termini'
+    $puppetdb_conf_template    = 'puppetmaster/puppetdb4.conf.erb'
 
     require_package($puppetdb_terminus_package)
 

@@ -3,7 +3,6 @@ class profile::puppetdb(
     Hash[String, Array[Hash]] $puppetmasters = hiera('puppetmaster::servers'),
     String $jvm_opts = hiera('profile::puppetdb::jvm_opts', '-Xmx4G'),
     Array[String] $prometheus_nodes = hiera('prometheus_nodes'),
-    Optional[Integer] $puppetdb_major_version = hiera('puppetdb_major_version', undef),
     Optional[String] $ssldir = hiera('profile::puppetdb::ssldir', undef),
     Optional[String] $ca_path = hiera('profile::puppetdb::ca_path', undef),
     Optional[String] $puppetboard_hosts = hiera('profile::puppetdb::puppetboard_hosts', ''),
@@ -21,11 +20,10 @@ class profile::puppetdb(
 
     # The JVM heap size has been raised to 6G for T170740
     class { '::puppetmaster::puppetdb':
-        master                 => $master,
-        jvm_opts               => "${jvm_opts} ${prometheus_java_opts}",
-        puppetdb_major_version => $puppetdb_major_version,
-        ssldir                 => $ssldir,
-        ca_path                => $ca_path,
+        master   => $master,
+        jvm_opts => "${jvm_opts} ${prometheus_java_opts}",
+        ssldir   => $ssldir,
+        ca_path  => $ca_path,
     }
 
     # Export JMX metrics to prometheus

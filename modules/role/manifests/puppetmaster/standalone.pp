@@ -43,7 +43,6 @@ class role::puppetmaster::standalone(
     $server_name = $::fqdn,
     $use_enc = true,
     $labs_puppet_master = hiera('labs_puppet_master'),
-    $puppetdb_major_version = hiera('puppetdb_major_version', undef),
     $storeconfigs = false,
     $puppetdb_host = undef,
 ) {
@@ -74,19 +73,15 @@ class role::puppetmaster::standalone(
         reports              => 'puppetdb',
     }
 
-    if $puppetdb_major_version == 4 and $storeconfigs == 'puppetdb' {
+    if $storeconfigs == 'puppetdb' {
         apt::repository { 'wikimedia-puppetdb4':
             uri        => 'http://apt.wikimedia.org/wikimedia',
             dist       => "${::lsbdistcodename}-wikimedia",
             components => 'component/puppetdb4',
             before     => Class['puppetmaster::puppetdb::client'],
         }
-    }
-
-    if $storeconfigs == 'puppetdb' {
         class { 'puppetmaster::puppetdb::client':
             host                   => $puppetdb_host,
-            puppetdb_major_version => $puppetdb_major_version,
         }
         $config = merge($base_config, $puppetdb_config, $env_config)
     } else {
@@ -94,13 +89,12 @@ class role::puppetmaster::standalone(
     }
 
     class { '::puppetmaster':
-        server_name            => $server_name,
-        allow_from             => $allow_from,
-        secure_private         => false,
-        prevent_cherrypicks    => $prevent_cherrypicks,
-        extra_auth_rules       => $extra_auth_rules,
-        config                 => $config,
-        puppetdb_major_version => $puppetdb_major_version,
+        server_name         => $server_name,
+        allow_from          => $allow_from,
+        secure_private      => false,
+        prevent_cherrypicks => $prevent_cherrypicks,
+        extra_auth_rules    => $extra_auth_rules,
+        config              => $config,
     }
 
     # Don't attempt to use puppet-master service on stretch, we're using passenger.

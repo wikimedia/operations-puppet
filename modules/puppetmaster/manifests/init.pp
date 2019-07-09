@@ -60,7 +60,6 @@ class puppetmaster(
     $prevent_cherrypicks=true,
     $git_user='gitpuppet',
     $git_group='gitpuppet',
-    $puppetdb_major_version=undef,
 ){
 
     $gitdir = '/var/lib/git'
@@ -75,11 +74,7 @@ class puppetmaster(
 
     # this seems redundant because the puppetdb "termius" package is required in
     # puppetmaster::puppetdb::client, but I don't want to break something -herron
-    if $puppetdb_major_version == 4 {
-        $puppetdb_terminus_package = 'puppetdb-termini'
-    } else {
-        $puppetdb_terminus_package = 'puppetdb-terminus'
-    }
+    $puppetdb_terminus_package = 'puppetdb-termini'
 
     # Install the puppetdb-terminus package, needed for puppetdbquery
     require_package($puppetdb_terminus_package)
