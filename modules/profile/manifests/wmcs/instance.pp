@@ -4,7 +4,8 @@ class profile::wmcs::instance(
     Boolean $diamond_remove = lookup('diamond::remove', {default_value => false}),
     String  $sudo_flavor    = lookup('sudo_flavor', {default_value => 'sudoldap'}),
 ) {
-    if $sudo_flavor == 'sudo' {
+    # force sudo on buster
+    if $sudo_flavor == 'sudo' or os_version('debian >= buster') {
         if ! defined(Class['Sudo']) {
             class { '::sudo': }
         }

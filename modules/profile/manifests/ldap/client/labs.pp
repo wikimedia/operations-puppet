@@ -9,19 +9,22 @@ class profile::ldap::client::labs(
 
     if ( $::realm == 'labs' ) {
         if $::lsbdistcodename == 'buster' {
-            $sudo_flavor  = 'sudo'
-            $client_stack = 'sssd'
+            $_sudo_flavor  = 'sudo'
+            $_client_stack = 'sssd'
+        } else {
+            $_sudo_flavor  = $_sudo_flavor
+            $_client_stack = $_client_stack
         }
 
         notify { 'LDAP client stack':
-            message => "The LDAP client stack for this host is: ${client_stack}/${sudo_flavor}",
+            message => "The LDAP client stack for this host is: ${_client_stack}/${_sudo_flavor}",
         }
 
-        if $client_stack == 'sssd' and $sudo_flavor == 'sudoldap' {
+        if $_client_stack == 'sssd' and $_sudo_flavor == 'sudoldap' {
             fail('to run sssd you need sudo instead of sudoldap')
         }
 
-        $includes = $client_stack ? {
+        $includes = $_client_stack ? {
             'classic' => ['openldap', 'pam', 'nss', 'sudoldap', 'utils', 'nosssd'],
             'sssd'    => ['openldap', 'utils', 'sssd'],
         }
