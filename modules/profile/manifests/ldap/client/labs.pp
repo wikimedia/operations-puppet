@@ -12,8 +12,8 @@ class profile::ldap::client::labs(
             $_sudo_flavor  = 'sudo'
             $_client_stack = 'sssd'
         } else {
-            $_sudo_flavor  = $_sudo_flavor
-            $_client_stack = $_client_stack
+            $_sudo_flavor  = $sudo_flavor
+            $_client_stack = $client_stack
         }
 
         notify { 'LDAP client stack':
