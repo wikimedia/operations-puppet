@@ -96,10 +96,12 @@ class labs_bootstrapvz() {
     ~> exec { "sed -i '${projectregex}' ${bootstrap_filepath}/access.conf":
     }
 
-    exec { "cp /etc/nslcd.conf ${bootstrap_filepath}/nslcd.conf":
-    }
+    if os_version('debian < buster') {
+        exec { "cp /etc/nslcd.conf ${bootstrap_filepath}/nslcd.conf":
+        }
 
-    ~> exec { "sed -i '${projectregex}' ${bootstrap_filepath}/nslcd.conf":
+        ~> exec { "sed -i '${projectregex}' ${bootstrap_filepath}/nslcd.conf":
+        }
     }
 
     exec { "cp /etc/ldap/ldap.conf ${bootstrap_filepath}/nss_ldap.conf":
