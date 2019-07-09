@@ -72,13 +72,6 @@ class puppetmaster(
         server_type => $server_type,
     }
 
-    # this seems redundant because the puppetdb "termius" package is required in
-    # puppetmaster::puppetdb::client, but I don't want to break something -herron
-    $puppetdb_terminus_package = 'puppetdb-termini'
-
-    # Install the puppetdb-terminus package, needed for puppetdbquery
-    require_package($puppetdb_terminus_package)
-
     package { [
         'puppet-master',
         'vim-puppet',
