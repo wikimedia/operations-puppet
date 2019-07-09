@@ -47,8 +47,10 @@ class profile::kubernetes::deployment_server(
           # This is a temporary workaround for hemlfile checkout T212130 for context
           if $svcname != 'admin' and size($svcname) > 1 {
               $hfenv="/srv/deployment-charts/helmfile.d/services/${environment}/${svcname}/.hfenv"
+              $hfdir="/srv/deployment-charts/helmfile.d/services/${environment}/${svcname}"
           }elsif $svcname == 'admin' {
               $hfenv="/srv/deployment-charts/helmfile.d/admin/${environment}/.hfenv"
+              $hfdir="/srv/deployment-charts/helmfile.d/admin/${environment}"
           }else {
               fail("unexpected servicename ${svcname}")
           }
@@ -58,6 +60,7 @@ class profile::kubernetes::deployment_server(
                         group   => $data['group'],
                         mode    => $data['mode'],
                         content => template('profile/kubernetes/.hfenv.erb'),
+                        require => File[$hfdir]
           }
           # write private section only if there is any secret defined.
           if $data[$environment] {
