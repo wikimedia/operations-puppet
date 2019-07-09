@@ -23,6 +23,11 @@ server {
     ssl_certificate <%= @certs_basepath %>/<%= cert_name %>/live/ec-prime256v1.chained.crt;
     ssl_certificate_key <%= @certs_basepath %>/<%= cert_name %>/live/ec-prime256v1.key;
 
+    location /_status {
+        access_log off;
+        return 200 "OK\n";
+    }
+
     if ($override != '') {
         return 301 $override;
     }
@@ -40,6 +45,11 @@ server {
     listen <%= @http_port %> default_server deferred backlog=4096 reuseport;
     access_log /var/log/nginx/ncredir.http.log ncredir;
     server_name _;
+
+    location /_status {
+        access_log off;
+        return 200 "OK\n";
+    }
 
     if ($override != '') {
         return 301 $override;
