@@ -4,7 +4,7 @@ class profile::prometheus::mcrouter_exporter (
     $prometheus_nodes = hiera('prometheus_nodes'),
 ) {
     prometheus::mcrouter_exporter { 'default':
-        arguments => "-mcrouter.address localhost:${mcrouter_port} -web.listen-address :${listen_port}",
+        arguments => "-mcrouter.address localhost:${mcrouter_port} -web.listen-address :${listen_port} -mcrouter.server_metrics",
     }
 
     $prometheus_ferm_nodes = join($prometheus_nodes, ' ')
