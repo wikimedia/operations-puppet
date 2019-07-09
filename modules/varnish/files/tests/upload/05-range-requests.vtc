@@ -16,7 +16,7 @@ varnish v1 -arg "-p vcl_path=${vcl_path} -p vcc_err_unref=false -p vcc_allow_inl
         .host = "${s1_addr}"; .port = "${s1_port}";
     }
 
-    include "${basepath}/usr/share/varnish/tests/wikimedia_upload-backend.vcl";
+    include "${basepath}/usr/share/varnish/tests/wikimedia_upload-frontend.vcl";
 } -start
 
 # Pleonastic precondition
@@ -26,7 +26,7 @@ varnish v1 -expect n_object == 0
 
 client c1 {
     # Range request
-    txreq -url "/test" -hdr "Host: upload.wikimedia.org" -hdr "Range: bytes=0-9"
+    txreq -url "/test" -hdr "X-Forwarded-Proto: https" -hdr "Host: upload.wikimedia.org" -hdr "Range: bytes=0-9"
     rxresp
     # Partial content
     expect resp.status == 206
@@ -48,7 +48,7 @@ varnish v1 -expect n_object == 0
 varnish v1 -expect s_pass == 2
 
 client c2 {
-    txreq -url "/test" -hdr "Host: upload.wikimedia.org" -hdr "Range: bytes=1-4"
+    txreq -url "/test" -hdr "X-Forwarded-Proto: https" -hdr "Host: upload.wikimedia.org" -hdr "Range: bytes=1-4"
     rxresp
     expect resp.status == 206
     expect resp.http.Content-Length == 4
@@ -62,7 +62,7 @@ varnish v1 -expect s_pass == 3
 
 client c3 {
     # unsatisfiable Range request
-    txreq -url "/test" -hdr "Host: upload.wikimedia.org" -hdr "Range: bytes=50-100"
+    txreq -url "/test" -hdr "X-Forwarded-Proto: https" -hdr "Host: upload.wikimedia.org" -hdr "Range: bytes=50-100"
     rxresp
     # Varnish 4 returns a 416 - Range Not Satisfiable
     # Varnish 3 responds with a 200 and the entire selected representation

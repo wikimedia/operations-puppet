@@ -10,23 +10,23 @@ varnish v1 -arg "-p vcl_path=${vcl_path} -p vcc_err_unref=false -p vcc_allow_inl
         .host = "${s1_addr}"; .port = "${s1_port}";
     }
 
-    include "${basepath}/usr/share/varnish/tests/wikimedia_upload-backend.vcl";
+    include "${basepath}/usr/share/varnish/tests/wikimedia_upload-frontend.vcl";
 } -start
 
 client c1 {
     txreq
     rxresp
-    expect resp.status == 404
+    expect resp.status == 400
 }
 
 client c2 {
-    txreq -hdr "Host: example.org"
+    txreq -hdr "X-Forwarded-Proto: https" -hdr "Host: example.org"
     rxresp
     expect resp.status == 404
 }
 
 client c3 {
-    txreq -hdr "Host: upload.wikimedia.org"
+    txreq -url "/banana" -hdr "X-Forwarded-Proto: https" -hdr "Host: upload.wikimedia.org"
     rxresp
     expect resp.status == 200
 }
@@ -35,8 +35,7 @@ varnish v1 -expect cache_miss == 0
 varnish v1 -expect cache_hit == 0
 varnish v1 -expect n_object == 0
 
-# c1 does not send the Host header. We expect to get a 404 "Domain not served
-# here" in that case.
+# c1 does not send the Host header. We expect to get a 400 in that case.
 client c1 -run
 varnish v1 -expect cache_miss == 0
 varnish v1 -expect cache_hit == 0

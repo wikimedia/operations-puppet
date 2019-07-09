@@ -12,12 +12,12 @@ varnish v1 -arg "-p vcl_path=${vcl_path} -p vcc_err_unref=false -p vcc_allow_inl
         .host = "${s1_addr}"; .port = "${s1_port}";
     }
 
-    include "${basepath}/usr/share/varnish/tests/wikimedia_upload-backend.vcl";
+    include "${basepath}/usr/share/varnish/tests/wikimedia_upload-frontend.vcl";
 } -start
 
 client c1 {
     # Range request over a certain threshold
-    txreq -url "/test" -hdr "Host: upload.wikimedia.org" -hdr "Range: bytes=999999999-"
+    txreq -url "/test" -hdr "X-Forwarded-Proto: https" -hdr "Host: upload.wikimedia.org" -hdr "Range: bytes=999999999-"
     rxresp
     expect resp.status == 416
     expect resp.http.Content-Length == 0

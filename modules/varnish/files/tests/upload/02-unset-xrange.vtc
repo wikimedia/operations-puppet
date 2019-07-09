@@ -12,11 +12,11 @@ varnish v1 -arg "-p vcl_path=${vcl_path} -p vcc_err_unref=false -p vcc_allow_inl
         .host = "${s1_addr}"; .port = "${s1_port}";
     }
 
-    include "${basepath}/usr/share/varnish/tests/wikimedia_upload-backend.vcl";
+    include "${basepath}/usr/share/varnish/tests/wikimedia_upload-frontend.vcl";
 } -start
 
 client c1 {
-    txreq -hdr "Host: upload.wikimedia.org" -hdr "X-Range: No" -hdr "X-Range-2: Yes"
+    txreq -url "/banana" -hdr "X-Forwarded-Proto: https" -hdr "Host: upload.wikimedia.org" -hdr "X-Range: No" -hdr "X-Range-2: Yes"
     rxresp
     expect resp.status == 200
 }
