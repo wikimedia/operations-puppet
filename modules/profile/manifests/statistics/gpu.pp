@@ -20,13 +20,19 @@ class profile::statistics::gpu {
             refreshonly => true,
         }
 
+        # Note: the miopen-opencl package is imported
+        # in the amd-rocm component, but not listed
+        # in the packages below for the following reason:
+        # Unpacking miopen-opencl (2.0.0-7a8f787) ...
+        # [..]
+        # trying to overwrite '/opt/rocm/miopen/bin/MIOpenDriver',
+        # which is also in package miopen-hip 2.0.0-7a8f787
         $packages = [
             'cxlactivitylogger',
             'hcc',
             'hsa-rocr-dev',
             'hsakmt-roct',
             'miopen-hip',
-            'miopen-opencl',
             'mivisionx',
             'radeontop',
             'rocblas',
@@ -36,12 +42,12 @@ class profile::statistics::gpu {
             'rocm-device-libs',
             'rocm-opencl',
             'rocm-opencl-dev',
-            'rocm-utilsv',
+            'rocm-utils',
             'rocrand',
         ]
 
         package { $packages:
-            ensure  => 'latest',
+            ensure  => 'present',
             require => [
                 Exec['apt_update_rocm'],
                 Apt::Repository['amd-rocm'],
