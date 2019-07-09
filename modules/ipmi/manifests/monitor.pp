@@ -32,5 +32,6 @@ class ipmi::monitor {
         check_interval => 30,
         retry_interval => 10,
         timeout        => 60,
+        notes_url      => 'https://wikitech.wikimedia.org/wiki/Dc-operations/Hardware_Troubleshooting_Runbook#Power_Supply_Failures',
     }
 }
