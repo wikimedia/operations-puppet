@@ -75,7 +75,7 @@ profile::cassandra::instances:
       jmx_exporter_enabled: true
   "restbase1017.eqiad.wmnet":
     a:
-      listen_address: 10.64.32.130
+      listen_address: 10.64.16.126
       data_file_directories:
         - /srv/sda4/cassandra-a/data
         - /srv/sdb4/cassandra-a/data
@@ -87,7 +87,7 @@ profile::cassandra::instances:
       saved_caches_directory: /srv/cassandra/instance-data/cassandra-a/saved_caches
       jmx_exporter_enabled: true
     b:
-      listen_address: 10.64.32.131
+      listen_address: 10.64.16.127
       data_file_directories:
         - /srv/sda4/cassandra-b/data
         - /srv/sdb4/cassandra-b/data
@@ -99,7 +99,7 @@ profile::cassandra::instances:
       saved_caches_directory: /srv/cassandra/instance-data/cassandra-b/saved_caches
       jmx_exporter_enabled: true
     c:
-      listen_address: 10.64.32.132
+      listen_address: 10.64.16.128
       data_file_directories:
         - /srv/sda4/cassandra-c/data
         - /srv/sdb4/cassandra-c/data
