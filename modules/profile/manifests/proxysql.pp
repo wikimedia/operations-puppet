@@ -58,5 +58,6 @@ class profile::proxysql {
         nrpe_command  => '/usr/lib/nagios/plugins/check_procs -c 1:1 -C proxysql',
         critical      => false,
         contact_group => 'admins', # show on icinga/irc only
+        notes_url     => 'https://wikitech.wikimedia.org/wiki/Proxysql',
     }
 }
