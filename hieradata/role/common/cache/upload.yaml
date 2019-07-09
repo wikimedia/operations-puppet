@@ -22,7 +22,6 @@ cache::req_handling:
 # NOTE: Add the public WMCS IP space when T209011 is done
 profile::cache::base::extra_nets: ['172.16.0.0/12']
 profile::cache::base::admission_policy: 'none'
-profile::cache::base::zero_site: 'https://zero.wikimedia.org'
 profile::cache::base::purge_host_regex: '[um][pa][lp][os]'
 profile::cache::base::purge_multicasts: ['239.128.0.112', '239.128.0.113', '239.128.0.114', '239.128.0.115']
 profile::cache::base::purge_varnishes: ['127.0.0.1:3128', '127.0.0.1:3127,1.0']

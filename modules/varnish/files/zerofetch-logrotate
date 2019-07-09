@@ -1,7 +1,0 @@
-/var/log/zerofetch.log {
-    rotate 7
-    daily
-    compress
-    delaycompress
-    missingok
-}

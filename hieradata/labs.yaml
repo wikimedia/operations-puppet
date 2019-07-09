@@ -61,7 +61,6 @@ jupyterhub::authenticator: dummy
 # Cache-layer stuff
 cache::route_table:
     eqiad: 'eqiad'
-profile::cache::base::zero_site: 'https://zero.wikimedia.beta.wmflabs.org'
 profile::cache::base::fe_runtime_params:
     - default_ttl=3600
 profile::cache::base::be_runtime_params:

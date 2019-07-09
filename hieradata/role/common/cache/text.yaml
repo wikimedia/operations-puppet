@@ -397,7 +397,6 @@ cache::alternate_domains:
 # NOTE: Add the public WMCS IP space when T209011 is done
 profile::cache::base::extra_nets: ['172.16.0.0/12']
 profile::cache::base::admission_policy: 'none'
-profile::cache::base::zero_site: 'https://zero.wikimedia.org'
 profile::cache::varnish::backend::storage_parts: ['sda3', 'sdb3']
 profile::cache::base::purge_host_regex: ''
 profile::cache::base::purge_multicasts: ['239.128.0.112','239.128.0.115']

@@ -8,7 +8,6 @@
 class profile::cache::base(
     $cache_cluster = hiera('cache::cluster'),
     $statsd_host = hiera('statsd'),
-    $zero_site = hiera('profile::cache::base::zero_site'),
     $packages_version = hiera('profile::cache::base::packages_version', 'installed'),
     $varnish_version = hiera('profile::cache::base::varnish_version', 5),
     $purge_host_regex = hiera('profile::cache::base::purge_host_regex', ''),
@@ -80,10 +79,7 @@ class profile::cache::base(
     ]:
     }
 
-    class { 'varnish::zero_update':
-        site         => $zero_site,
-    }
-
+    class { '::varnish::netmapper_update_common': }
     class { 'varnish::trusted_proxies': }
 
     ###########################################################################
