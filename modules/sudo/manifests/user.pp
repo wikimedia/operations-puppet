@@ -32,10 +32,10 @@ define sudo::user(
     Enum['sudo','sudoldap'] $sudo_flavor = lookup('sudo_flavor', {default_value => 'sudo'}),
     # lint:endignore
 ) {
-    if $sudo_flavor == 'sudoldap' {
-        require sudo::sudoldap
-    } else {
+    if $sudo_flavor == 'sudo' or os_version('debian >= buster') {
         require sudo
+    } else {
+        require sudo::sudoldap
     }
 
     validate_ensure($ensure)
