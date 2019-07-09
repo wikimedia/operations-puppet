@@ -3,6 +3,7 @@ parsoid: [eqiad, codfw]
 restbase: [eqiad, codfw]
 restbase-backend: [eqiad, codfw]
 restbase-async: [eqiad, codfw]
+restrouter: [eqiad, codfw]
 search: [eqiad, codfw]
 # All the rest
 apertium: [eqiad, codfw]

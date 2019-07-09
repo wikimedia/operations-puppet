@@ -302,12 +302,12 @@ codfw:
   kubernetes:
     acrab.codfw.wmnet: [kubemaster]
     acrux.codfw.wmnet: [kubemaster]
-    kubernetes2001.codfw.wmnet: [mathoid, zotero, blubberoid, eventgate-analytics, eventgate-main, citoid, cxserver, sessionstore, termbox, wikifeeds]
-    kubernetes2002.codfw.wmnet: [mathoid, zotero, blubberoid, eventgate-analytics, eventgate-main, citoid, cxserver, sessionstore, termbox, wikifeeds]
-    kubernetes2003.codfw.wmnet: [mathoid, zotero, blubberoid, eventgate-analytics, eventgate-main, citoid, cxserver, sessionstore, termbox, wikifeeds]
-    kubernetes2004.codfw.wmnet: [mathoid, zotero, blubberoid, eventgate-analytics, eventgate-main, citoid, cxserver, sessionstore, termbox, wikifeeds]
-    kubernetes2005.codfw.wmnet: [mathoid, zotero, blubberoid, eventgate-analytics, eventgate-main, citoid, cxserver, sessionstore, termbox, wikifeeds]
-    kubernetes2006.codfw.wmnet: [mathoid, zotero, blubberoid, eventgate-analytics, eventgate-main, citoid, cxserver, sessionstore, termbox, wikifeeds]
+    kubernetes2001.codfw.wmnet: [mathoid, zotero, blubberoid, eventgate-analytics, eventgate-main, citoid, cxserver, sessionstore, termbox, wikifeeds, restrouter]
+    kubernetes2002.codfw.wmnet: [mathoid, zotero, blubberoid, eventgate-analytics, eventgate-main, citoid, cxserver, sessionstore, termbox, wikifeeds, restrouter]
+    kubernetes2003.codfw.wmnet: [mathoid, zotero, blubberoid, eventgate-analytics, eventgate-main, citoid, cxserver, sessionstore, termbox, wikifeeds, restrouter]
+    kubernetes2004.codfw.wmnet: [mathoid, zotero, blubberoid, eventgate-analytics, eventgate-main, citoid, cxserver, sessionstore, termbox, wikifeeds, restrouter]
+    kubernetes2005.codfw.wmnet: [mathoid, zotero, blubberoid, eventgate-analytics, eventgate-main, citoid, cxserver, sessionstore, termbox, wikifeeds, restrouter]
+    kubernetes2006.codfw.wmnet: [mathoid, zotero, blubberoid, eventgate-analytics, eventgate-main, citoid, cxserver, sessionstore, termbox, wikifeeds, restrouter]
   ores:
     ores2001.codfw.wmnet: [ores]
     ores2002.codfw.wmnet: [ores]

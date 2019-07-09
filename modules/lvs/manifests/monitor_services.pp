@@ -80,6 +80,22 @@ class lvs::monitor_services($contacts = 'admins,team-services', $critical = fals
         notes_url     => 'https://wikitech.wikimedia.org/wiki/RESTBase',
     }
 
+    # Restrouter
+    monitoring::service { 'check_restrouter_cluster_eqiad':
+        host          => 'restrouter.svc.eqiad.wmnet',
+        group         => 'lvs',
+        description   => 'Restrouter LVS eqiad',
+        check_command => 'check_wmf_service!http://restrouter.svc.eqiad.wmnet:7231/en.wikipedia.org/v1!15',
+        notes_url     => 'https://wikitech.wikimedia.org/wiki/RESTBase',
+    }
+
+    monitoring::service { 'check_restrouter_cluster_codfw':
+        host          => 'restrouter.svc.codfw.wmnet',
+        group         => 'lvs',
+        description   => 'Restrouter LVS codfw',
+        check_command => 'check_wmf_service!http://restrouter.svc.codfw.wmnet:7231/en.wikipedia.org/v1!15',
+        notes_url     => 'https://wikitech.wikimedia.org/wiki/RESTBase',
+    }
 
     # Mathoid
     monitoring::service { 'check_mathoid_cluster_eqiad':

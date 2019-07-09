@@ -327,6 +327,14 @@ kubernetes:
     datacenters:
     - eqiad
     - codfw
+  restrouter:
+    port: 7231
+    default_values:
+      pooled: 'yes'
+      weight: 10
+    datacenters:
+      - eqiad
+      - codfw
   sessionstore:
     port: 8081
     default_values:

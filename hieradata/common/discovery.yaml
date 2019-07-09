@@ -42,6 +42,9 @@ discovery::services:
   restbase-async:
     lvs: restbase
     active_active: true
+  restrouter:
+    lvs: restrouter
+    active_active: true
   search:
     lvs: search
     active_active: true

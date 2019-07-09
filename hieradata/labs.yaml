@@ -6,6 +6,7 @@ discovery::app_routes:
   mediawiki: "%{::site}"
   parsoid: "%{::site}"
   restbase: "%{::site}"
+  restrouter: "%{::site}"
   mobileapps: "%{::site}"
   graphoid: "%{::site}"
   mathoid: "%{::site}"
