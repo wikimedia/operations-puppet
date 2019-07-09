@@ -21,7 +21,7 @@ labsdnsconfig:
   recursor_secondary: 'cloud-recursor1.wikimedia.org'
 
 labsldapconfig:
-  hostname: ldap-ro.eqiad.wikimedia.org
+  hostname: ldap-labs.eqiad.wikimedia.org
 
 # /> Cloud Services
 #
