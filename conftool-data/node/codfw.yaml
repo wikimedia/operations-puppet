@@ -265,12 +265,12 @@ codfw:
     restbase2019.codfw.wmnet: [restbase, cassandra]
     restbase2020.codfw.wmnet: [restbase, cassandra]
   scb:
-    scb2001.codfw.wmnet: [mobileapps, graphoid, apertium, eventstreams, pdfrender, "recommendation-api"]
-    scb2002.codfw.wmnet: [mobileapps, graphoid, apertium, eventstreams, pdfrender, "recommendation-api"]
-    scb2003.codfw.wmnet: [mobileapps, graphoid, apertium, eventstreams, pdfrender, "recommendation-api"]
-    scb2004.codfw.wmnet: [mobileapps, graphoid, apertium, eventstreams, pdfrender, "recommendation-api"]
-    scb2005.codfw.wmnet: [mobileapps, graphoid, apertium, eventstreams, pdfrender, "recommendation-api"]
-    scb2006.codfw.wmnet: [mobileapps, graphoid, apertium, eventstreams, pdfrender, "recommendation-api"]
+    scb2001.codfw.wmnet: [mobileapps, graphoid, apertium, eventstreams, "recommendation-api"]
+    scb2002.codfw.wmnet: [mobileapps, graphoid, apertium, eventstreams, "recommendation-api"]
+    scb2003.codfw.wmnet: [mobileapps, graphoid, apertium, eventstreams, "recommendation-api"]
+    scb2004.codfw.wmnet: [mobileapps, graphoid, apertium, eventstreams, "recommendation-api"]
+    scb2005.codfw.wmnet: [mobileapps, graphoid, apertium, eventstreams, "recommendation-api"]
+    scb2006.codfw.wmnet: [mobileapps, graphoid, apertium, eventstreams, "recommendation-api"]
     # TODO: This is wrong, but is on purpose right now. We want to be able to
     # gradually increase migrating service traffic sent to kubernetes and we currently
     # don't support a service being provided by >1 clusters, so reuse scb for now

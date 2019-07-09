@@ -98,14 +98,6 @@ scb:
     datacenters:
     - eqiad
     - codfw
-  pdfrender:
-    port: 5252
-    default_values:
-      pooled: 'no'
-      weight: 10
-    datacenters:
-    - eqiad
-    - codfw
   "recommendation-api":
     port: 9632
     default_values:

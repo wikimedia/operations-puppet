@@ -6,14 +6,12 @@ admin::groups:
   - graphoid-admin
   - mobileapps-admin
   - changeprop-admin
-  - pdfrender-admin
   - recommendation-admin
 role::lvs::realserver::pools:
   apertium: {}
   mobileapps: {}
   graphoid: {}
   eventstreams: {}
-  pdfrender: {}
   "recommendation-api": {}
 
 ### BEGIN GRAPHOID

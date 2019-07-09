@@ -79,9 +79,6 @@ discovery::services:
   proton:
     lvs: proton
     active_active: true
-  pdfrender:
-    lvs: pdfrender
-    active_active: true
   "recommendation-api":
     lvs: "recommendation-api"
     active_active: true

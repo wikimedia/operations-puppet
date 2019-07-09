@@ -119,9 +119,6 @@ lvs::configuration::lvs_service_ips:
   eventstreams: &ip_block033
     eqiad: 10.2.2.34
     codfw: 10.2.1.34
-  pdfrender: &ip_block034
-    eqiad: 10.2.2.35
-    codfw: 10.2.1.35
   kubemaster: &ip_block036
     eqiad: 10.2.2.8
     codfw: 10.2.1.8
@@ -1113,32 +1110,6 @@ lvs::configuration::lvs_services:
       IdleConnection:
         max-delay: 300
         timeout-clean-reconnect: 3
-  pdfrender:
-    description: PDF rendering service
-    class: low-traffic
-    sites:
-    - eqiad
-    - codfw
-    ip: *ip_block034
-    port: 5252
-    depool-threshold: '.5'
-    monitors:
-      ProxyFetch:
-        url:
-        - http://localhost/
-      IdleConnection:
-        timeout-clean-reconnect: 3
-        max-delay: 300
-    conftool:
-      cluster: scb
-      service: pdfrender
-    icinga:
-      check_command: "check_http_lvs_on_port!pdfrender.svc.%{::site}.wmnet!5252!/"
-      sites:
-        eqiad:
-          hostname: pdfrender.svc.eqiad.wmnet
-        codfw:
-          hostname: pdfrender.svc.codfw.wmnet
   kubemaster:
     description: "Kubernetes master service. kubemaster.svc.%{::site}.wmnet"
     class: low-traffic
