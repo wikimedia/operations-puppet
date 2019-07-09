@@ -5,6 +5,7 @@ all: P{*}
 <% end -%>
 
 # Server group definitions
+acmechief: P{O:acme_chief}
 all-mw-codfw: (A:mw-api or A:mw or A:mw-jobrunner) and A:codfw
 all-mw-eqiad: (A:mw-api or A:mw or A:mw-jobrunner) and A:eqiad
 analytics-all-eqiad: A:hadoop or A:aqs or A:druid or A:notebook or  A:kafka-jumbo or A:misc-analytics
