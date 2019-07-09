@@ -370,7 +370,7 @@ def main():
 
     argparser.add_argument(
         '--image',
-        default='debian-10.0-buster',
+        default='debian-8.10-jessie',
         help='Image to use',
     )
 
