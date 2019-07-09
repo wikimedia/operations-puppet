@@ -23,9 +23,14 @@ server {
     ssl_certificate <%= @certs_basepath %>/<%= cert_name %>/live/ec-prime256v1.chained.crt;
     ssl_certificate_key <%= @certs_basepath %>/<%= cert_name %>/live/ec-prime256v1.key;
 
-    location /_status {
+    location = /_status {
         access_log off;
         return 200 "OK\n";
+    }
+
+    location / {
+        # this return only will be triggered if the if clauses defined below don't match
+        return 301 https://www.wikimedia.org;
     }
 
     if ($override != '') {
@@ -34,8 +39,6 @@ server {
     if ($rewrite != '') {
         return 301 $rewrite;
     }
-
-    return 301 https://www.wikimedia.org;
 }
 <% end -%>
 <% end -%>
@@ -46,9 +49,14 @@ server {
     access_log /var/log/nginx/ncredir.http.log ncredir;
     server_name _;
 
-    location /_status {
+    location = /_status {
         access_log off;
         return 200 "OK\n";
+    }
+
+    location / {
+        # this return only will be triggered if the if clauses defined below don't match
+        return 301 https://www.wikimedia.org;
     }
 
     if ($override != '') {
@@ -57,6 +65,4 @@ server {
     if ($rewrite != '') {
         return 301 $rewrite;
     }
-
-    return 301 https://www.wikimedia.org;
 }
