@@ -734,6 +734,10 @@ groups:
     gid: 812
     description: People able to deploy to analytics misc nodes.
     members: [joal, nuria, mforns, milimetric, fdans, gilles]
+  secteam-users:
+    gid: 813
+    description: members of wikimedia security
+    members: [rush, reedy, dsharpe, sbassett]
 
 users:
   rush:
