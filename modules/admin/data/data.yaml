@@ -464,7 +464,7 @@ groups:
     members: [bd808, eevans, mobrovac, ppchelko, demon, twentyafterfour, thcipriani, dduvall,
               bsitzmann, mholloway-shell, kartik, halfak, ladsgroup, smalyshev, hoo, tgr,
               ssastry, cscott, arlolra, jdlrobson, maxsem, jforrester, niedzielski,
-              pmiazga, phuedx, mbsantos, onimisionipe, mvolz, santhosh]
+              pmiazga, phuedx, mbsantos, onimisionipe, mvolz, santhosh, nikerabbit]
     privileges: []
 
   deploy-aqs:
