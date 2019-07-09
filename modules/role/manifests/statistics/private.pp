@@ -4,6 +4,7 @@ class role::statistics::private {
     }
 
     include ::profile::standard
+    include ::profile::base::firewall
 
     include ::profile::analytics::cluster::gitconfig
 
