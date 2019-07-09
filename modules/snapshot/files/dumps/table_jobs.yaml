@@ -67,6 +67,10 @@ tables:
       job: usergroups
       description: User group assignments.
       type: public
+    user_former_groups:
+      job: userformergroups
+      description: Past user group assignments.
+      type: public
     category:
       job: category
       description: Category information.
@@ -103,6 +107,10 @@ tables:
       job: changetags
       description: List of annotations (tags) for revisions and log entries
       type: public
+    change_tag_def:
+      job: changetagdef
+      description: Annotation (tag) names and ids.
+      type: public
     flaggedpages:
       job: flaggedpages
       description: This contains a row for each flagged article containing the stable revision ID, if the lastest edit was flagged, and how long edits have been pending.
@@ -138,4 +146,8 @@ tables:
     wbc_entity_usage:
       job: wbcentityusage
       description: Tracks which pages use which Wikidata items or properties and what aspect (e.g. item label) is used.
+      type: public
+    babel:
+      job: babel
+      description: Language proficiency information per user.
       type: public
