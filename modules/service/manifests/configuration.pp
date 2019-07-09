@@ -12,10 +12,6 @@
 #   The host/IP where to reach RESTBase. Default:
 #   http://restbase.discovery.wmnet:7231
 #
-# [*pdfrender_key*]
-#   The access key to use when issuing requests to the PDF rendering service.
-#   Default: 'secret'
-#
 # [*http_proxy*]
 #   Full URL of the proxy to use
 #
@@ -48,7 +44,6 @@
 class service::configuration(
     $mwapi_host     = 'https://api-rw.discovery.wmnet',
     $restbase_uri  = 'http://restbase.discovery.wmnet:7231',
-    $pdfrender_key = 'secret',
     $http_proxy    = undef,
     $statsd_host   = 'localhost',
     $statsd_port   = 8125,

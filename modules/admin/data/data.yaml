@@ -581,7 +581,6 @@ groups:
                'ALL = NOPASSWD: /usr/sbin/service graphoid *',
                'ALL = NOPASSWD: /usr/sbin/service mathoid *',
                'ALL = NOPASSWD: /usr/sbin/service mobileapps *',
-               'ALL = NOPASSWD: /usr/sbin/service pdfrender *',
                'ALL = NOPASSWD: /usr/sbin/service proton *',
                'ALL = (proton) NOPASSWD: ALL',
                'ALL = NOPASSWD: /usr/sbin/service recommendation_api *',
@@ -634,12 +633,6 @@ groups:
                  'ALL = NOPASSWD: /bin/systemctl restart zookeeper.service',
                  'ALL = NOPASSWD: /bin/systemctl mask zookeeper.service',
                  'ALL = NOPASSWD: /bin/systemctl unmask zookeeper.service']
-  pdfrender-admin:
-    description: Group of pdfrender admins
-    gid: 790
-    members: [ppchelko, eevans, mobrovac, tgr]
-    privileges: ['ALL = NOPASSWD: /usr/sbin/service pdfrender *',
-                 'ALL = (pdfrender) NOPASSWD: ALL']
   wmcs-roots:
     description: root for cloud services infrastructure
     gid: 792
