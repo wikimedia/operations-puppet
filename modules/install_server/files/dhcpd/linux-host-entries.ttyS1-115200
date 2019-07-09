@@ -5940,7 +5940,6 @@ host restbase1016 {
 host restbase1017 {
     hardware ethernet 18:66:DA:7D:BD:EC;
     fixed-address restbase1017.eqiad.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
 }
 
 host restbase1018 {
