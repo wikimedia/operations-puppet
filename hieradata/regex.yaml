@@ -222,7 +222,6 @@ labtest:
   do_paging: false
   labsldapconfig:
     hostname: cloudservices2002-dev.wikimedia.org
-    secondary_hostname: cloudservices2002-dev.wikimedia.org
   mariadb::monitor_process::is_critical: false
   mariadb::monitor_disk::is_critical: false
 

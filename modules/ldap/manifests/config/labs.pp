@@ -2,7 +2,7 @@ class ldap::config::labs {
     $hieraldapconfig = hiera_hash('labsldapconfig', {})
 
     $basedn = 'dc=wikimedia,dc=org'
-    $servernames = [ $hieraldapconfig['hostname'], $hieraldapconfig['secondary_hostname'] ]
+    $servernames = [ $hieraldapconfig['hostname'] ]
     $sudobasedn = $::realm ? {
         'labs'       => "ou=sudoers,cn=${::labsproject},ou=projects,${basedn}",
         'production' => "ou=sudoers,${basedn}"

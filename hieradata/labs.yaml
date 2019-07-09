@@ -192,8 +192,7 @@ cdh::hadoop::users::groups: project-%{::labsproject}
 
 sudo_flavor: 'sudoldap'
 labsldapconfig:
-  hostname: ldap-labs.eqiad.wikimedia.org
-  secondary_hostname: ldap-labs.codfw.wikimedia.org
+  hostname: ldap-ro.eqiad.wikimedia.org
 
 profile::openldap::hostname: ldap-labs.eqiad.wikimedia.org
 
