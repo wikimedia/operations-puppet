@@ -44,6 +44,22 @@ class profile::kubernetes::deployment_server(
     $clusters = ['staging', 'eqiad', 'codfw']
     $clusters.each |String $environment| {
         $merged_services.map |String $svcname, Hash $data| {
+          # This is a temporary workaround for hemlfile checkout T212130 for context
+          if $svcname != 'admin' and size($svcname) > 1 {
+              $hfenv="/srv/deployment-charts/helmfile.d/services/${environment}/${svcname}/.hfenv"
+          }elsif $svcname == 'admin' {
+              $hfenv="/srv/deployment-charts/helmfile.d/admin/${environment}/.hfenv"
+          }else {
+              fail("unexpected servicename ${svcname}")
+          }
+          file { $hfenv:
+                        ensure  => present,
+                        owner   => $data['owner'],
+                        group   => $data['group'],
+                        mode    => $data['mode'],
+                        content => template('profile/kubernetes/.hfenv.erb'),
+          }
+          # write private section only if there is any secret defined.
           if $data[$environment] {
             file { "/srv/deployment-charts/helmfile.d/services/${environment}/${svcname}/private":
                 ensure  => directory,
