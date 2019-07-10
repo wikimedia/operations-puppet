@@ -75,10 +75,8 @@ class puppetmaster(
     package { [
         'puppet-master',
         'vim-puppet',
-        'puppet-el',
         'rails',
         'ruby-json',
-        'ruby-mysql',
         ]:
         ensure  => present,
     }

@@ -20,9 +20,6 @@ class profile::puppetmaster::common (
         'storeconfigs'      => true,
         'thin_storeconfigs' => true,
     }
-    # Note: We are going to need this anyway regardless of
-    # puppetdb/active_record use for the configuration of servermon report
-    # handler
     $active_record_db = {
         'dbadapter'         => 'mysql',
         'dbuser'            => 'puppet',
@@ -34,7 +31,7 @@ class profile::puppetmaster::common (
     $puppetdb_config = {
         storeconfigs         => true,
         storeconfigs_backend => 'puppetdb',
-        reports              => 'servermon,puppetdb',
+        reports              => 'puppetdb',
     }
 
     if $storeconfigs == 'puppetdb' {
