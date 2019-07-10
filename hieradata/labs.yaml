@@ -232,8 +232,8 @@ ntp_peers:
     eqsin: []
     esams: []
 
-# Scap version is managed via puppet in labs
-scap::version: 3.9.2-1
+scap::version: present
+
 profile::base::debdeploy::exclude_filesystems:
   - nfs4
 
