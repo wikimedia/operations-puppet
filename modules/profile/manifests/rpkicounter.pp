@@ -21,7 +21,7 @@
 #
 class profile::rpkicounter(
   Array[Stdlib::Fqdn] $prometheus_nodes = hiera('prometheus_nodes'),
-  Optional[String] $https_proxy = hiera('https_proxy', undef),
+  Optional[String] $https_proxy = hiera('http_proxy', undef),
   ) {
 
   class { '::rpkicounter': }
