@@ -1,9 +1,12 @@
 #!/bin/bash
-
 set -e
 HOST=$(hostname)
 HELM_HOME=${HELM_HOME:-/etc/helm}
 export HELM_HOME
+
+echo -ne "!!!!!!!!! scap-helm is DEPRECATED !!!!!!!!!\n
+check out https://wikitech.wikimedia.org/wiki/Migrating_from_scap-helm
+for advices for migrating from it\n"
 
 # First argument should be the service
 SERVICE=$1
