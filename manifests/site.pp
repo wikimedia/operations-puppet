@@ -1813,12 +1813,12 @@ node 'mx2001.wikimedia.org' {
 }
 
 # ncredir instances
-node 'ncredir1001.eqiad.wmnet' {
+node /^ncredir100[12]\.eqiad\.wmnet$/ {
     role(ncredir)
     interface::add_ip6_mapped { 'main': }
 }
 
-node 'ncredir2001.codfw.wmnet' {
+node /^ncredir200[12]\.codfw\.wmnet$/ {
     role(ncredir)
     interface::add_ip6_mapped { 'main': }
 }
