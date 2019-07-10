@@ -271,3 +271,8 @@ profile::base::enable_kafka_shipping: false
 
 monitoring_hosts:
 - 172.16.7.178 # shinken-02.shinken.eqiad.wmflabs
+
+# We do not have support for LVS systems in Cloud VPS
+has_lvs: false
+lvs::configuration::lvs_service_ips: {}
+lvs::configuration::lvs_services: {}
