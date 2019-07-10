@@ -1278,9 +1278,9 @@ shared_acme_certificates:
     - 'wikijunior.org'
     staging_time: 604800
     challenge: dns-01
-    authorized_hosts:
-    - 'ncredir1001.eqiad.wmnet'
-    - 'ncredir2001.codfw.wmnet'
+    authorized_regexes:
+    - '^ncredir100[12]\.eqiad\.wmnet$'
+    - '^ncredir200[12]\.codfw\.wmnet$'
     prevalidate: true
     skip_invalid_snis: true
   non-canonical-redirect-2:
@@ -1326,9 +1326,9 @@ shared_acme_certificates:
     - 'wikinews.de'
     staging_time: 604800
     challenge: dns-01
-    authorized_hosts:
-    - 'ncredir1001.eqiad.wmnet'
-    - 'ncredir2001.codfw.wmnet'
+    authorized_regexes:
+    - '^ncredir100[12]\.eqiad\.wmnet$'
+    - '^ncredir200[12]\.codfw\.wmnet$'
     prevalidate: true
     skip_invalid_snis: true
   non-canonical-redirect-3:
@@ -1372,9 +1372,9 @@ shared_acme_certificates:
     - 'wikispecies.com'
     staging_time: 604800
     challenge: dns-01
-    authorized_hosts:
-    - 'ncredir1001.eqiad.wmnet'
-    - 'ncredir2001.codfw.wmnet'
+    authorized_regexes:
+    - '^ncredir100[12]\.eqiad\.wmnet$'
+    - '^ncredir200[12]\.codfw\.wmnet$'
     prevalidate: true
     skip_invalid_snis: true
   non-canonical-redirect-4:
@@ -1406,8 +1406,8 @@ shared_acme_certificates:
     - 'wiktionary.eu'
     staging_time: 604800
     challenge: dns-01
-    authorized_hosts:
-    - 'ncredir1001.eqiad.wmnet'
-    - 'ncredir2001.codfw.wmnet'
+    authorized_regexes:
+    - '^ncredir100[12]\.eqiad\.wmnet$'
+    - '^ncredir200[12]\.codfw\.wmnet$'
     prevalidate: true
     skip_invalid_snis: true
