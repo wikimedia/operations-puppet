@@ -730,7 +730,7 @@ groups:
   secteam-users:
     gid: 813
     description: members of wikimedia security
-    members: [rush, reedy, dsharpe, sbassett]
+    members: [reedy, dsharpe, sbassett]
 
 users:
   rush:
