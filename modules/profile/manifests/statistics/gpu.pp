@@ -59,6 +59,7 @@ class profile::statistics::gpu {
 
     }
 
+    class { 'prometheus::node_amd_rocm': }
     # Wide range of packages that we deploy across all the stat nodes.
     include ::profile::analytics::cluster::packages::statistics
 }
