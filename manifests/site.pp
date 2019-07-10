@@ -247,7 +247,7 @@ node /^cloudstore100[89]\.wikimedia\.org/ {
 }
 
 # All gerrit servers (swap master status in hiera)
-node 'cobalt.wikimedia.org','gerrit1001.wikimedia.org','gerrit2001.wikimedia.org' {
+node 'cobalt.wikimedia.org', 'gerrit2001.wikimedia.org' {
     role(gerrit)
 
     interface::add_ip6_mapped { 'main': }
