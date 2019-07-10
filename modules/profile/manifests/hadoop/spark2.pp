@@ -54,6 +54,7 @@ class profile::hadoop::spark2(
     $extra_settings           = hiera('profile::hadoop::spark2::extra_settings', {}),
     $use_kerberos             = hiera('profile::hadoop::spark2::use_kerberos', false),
     $driver_port              = hiera('profile::hadoop::spark2::driver_port', undef),
+    $ui_port                  = hiera('profile::hadoop::spark2::ui_port', 4040),
     $port_max_retries         = hiera('profile::hadoop::spark2::port_max_retries', 100),
 ) {
     require ::profile::hadoop::common
@@ -143,6 +144,15 @@ class profile::hadoop::spark2(
         ferm::service { 'spark2-driver':
             proto  => 'tcp',
             port   => "${driver_port}:${driver_port_max}",
+            srange => '$ANALYTICS_NETWORKS',
+        }
+    }
+
+    if $ui_port {
+        $ui_port_max = $ui_port + $port_max_retries
+        ferm::service { 'spark2-ui-port':
+            proto  => 'tcp',
+            port   => "${ui_port}:${ui_port_max}",
             srange => '$ANALYTICS_NETWORKS',
         }
     }
