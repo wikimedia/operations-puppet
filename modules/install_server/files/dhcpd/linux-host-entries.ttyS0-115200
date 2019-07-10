@@ -407,9 +407,19 @@ host ncredir1001 {
     fixed-address ncredir1001.eqiad.wmnet;
 }
 
+host ncredir1002 {
+    hardware ethernet aa:00:00:5b:ac:65;
+    fixed-address ncredir1002.eqiad.wmnet;
+}
+
 host ncredir2001 {
     hardware ethernet aa:00:00:8b:d5:4c;
     fixed-address ncredir2001.codfw.wmnet;
+}
+
+host ncredir2002 {
+    hardware ethernet aa:00:00:2e:96:d4;
+    fixed-address ncredir2002.codfw.wmnet;
 }
 
 host neon {
