@@ -19,4 +19,4 @@ phabricator_logmail: true
 
 phabricator_enable_php_fpm: true
 
-profile::phabricator::httpd::enable_forensic_log: true
+profile::phabricator::httpd::enable_forensic_log: false
