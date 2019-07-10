@@ -1,5 +1,12 @@
 profile::docker_registry_ha::registry::swift_auth_url: "https://swift.svc.eqiad.wmnet"
-profile::docker_registry_ha::registry::swift_container: "docker_registry_eqiad"
+profile::docker_registry_ha::registry::swift_container: "docker_registry_codfw"
+# we name the container docker_registry_codfw in eqiad due to the way dinamic large objects and docker-distribution works
+# dymanic large objects in swift: https://docs.openstack.org/swift/latest/overview_large_objects.html
+# TL;DR a manifest file is uploaded including the container_name/file and list of segments.
+# codfw was the "active" DC, so each image uploaded there has a manifest file that includes 'docker_registry_codfw'
+# container synchronization worked and replicated the segments files and the manifest as is, obviously swift
+# would not use a manifest that refers to 'docker_registry_codfw' on 'docker_registry_eqiad'
+# this problem is stated on the Note block in Swift container synchronization docs https://docs.openstack.org/swift/latest/overview_container_sync.html
 #profile::docker_registry_ha::registry::swift_replication_key: setintheprivaterepo
 profile::docker_registry_ha::registry::swift_replication_configuration: //docker_registry/codfw/AUTH_docker/docker_registry_codfw
 profile::docker_registry_ha::registry::redis_host: "rdb1005.eqiad.wmnet"

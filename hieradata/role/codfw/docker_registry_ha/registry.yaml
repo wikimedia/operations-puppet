@@ -1,7 +1,7 @@
 profile::docker_registry_ha::registry::swift_auth_url: "https://swift.svc.codfw.wmnet"
 profile::docker_registry_ha::registry::swift_container: "docker_registry_codfw"
 #profile::docker_registry_ha::registry::swift_replication_key: setintheprivaterepo
-profile::docker_registry_ha::registry::swift_replication_configuration: //docker_registry/eqiad/AUTH_docker/docker_registry_eqiad
+profile::docker_registry_ha::registry::swift_replication_configuration: //docker_registry/eqiad/AUTH_docker/docker_registry_codfw
 profile::docker_registry_ha::registry::redis_host: "rdb2005.codfw.wmnet"
 profile::docker_registry_ha::registry::redis_port: 6382
 #profile::docker_registry_ha::registry::redis_password: setintheprivaterepo
