@@ -11,6 +11,8 @@ Vagrant.configure("2") do |config|
   config.vm.provision :shell, inline: 'apt update'
   config.vm.provision :shell, inline: 'apt -y install varnish varnish-modules libvmod-netmapper libvmod-re2 libmaxminddb-dev python-jenkinsapi -t stretch-wikimedia'
 
+  config.vm.provision :shell, inline: 'mkdir -p /usr/share/varnish/tests/ && cp /vagrant/{carriers,trusted_proxies}.json /usr/share/varnish/tests/'
+
   config.vm.post_up_message = <<-MSG
     Done! Run VTC tests as follows:
 

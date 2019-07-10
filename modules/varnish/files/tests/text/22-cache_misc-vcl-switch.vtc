@@ -21,7 +21,7 @@ varnish v1 -vcl {
     }
 
     sub vcl_recv {
-        if (req.http.Host == "phab.wmfusercontent.org") {
+        if (req.http.Host == "wmfusercontent.org") {
             # Switch to misc-specific VCL
             return (vcl(wikimedia_misc));
         }
@@ -36,9 +36,10 @@ varnish v1 -cliok "vcl.list"
 
 client c1 {
     # Trigger misc-specific behavior
-    txreq -url "/file/data/ybcjrf2omnaelbfhxvsi/PHID-FILE-fqxtwmymtmrufi3riz2i/profile" -hdr "X-Client-IP: 93.184.216.34" -hdr "Host: phab.wmfusercontent.org" -hdr "X-Forwarded-Proto: https"
+    txreq -url "/1" -hdr "Host: wmfusercontent.org" -hdr "X-Forwarded-Proto: https"
     rxresp
-    expect resp.status == 403
+    expect resp.status == 301
+    expect resp.http.Location == "https://www.wikimedia.org"
 
     # Trigger text-specific behavior
     txreq -url "/w/index.php?title=MyPage&action=info" -hdr "User-Agent: nintendo" -hdr "Host: en.wikipedia.org" -hdr "X-Forwarded-Proto: https"

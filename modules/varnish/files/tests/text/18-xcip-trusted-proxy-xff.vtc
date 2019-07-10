@@ -26,7 +26,7 @@ varnish v1 -vcl {
 } -start
 
 client c1 {
-    txreq -hdr "X-Forwarded-For: 93.184.216.34, 93.184.216.35, 127.0.0.1" -hdr "X-Client-IP: 93.184.216.34" -hdr "Host: en.wikipedia.org"
+    txreq -hdr "X-Forwarded-For: 93.184.216.34, 93.184.216.35, 127.0.0.1" -hdr "X-Client-IP: 93.184.216.34" -hdr "Host: en.wikipedia.org" -hdr "X-Forwarded-Proto: https"
     rxresp
     expect resp.http.X-Client-IP == "93.184.216.35"
 } -run

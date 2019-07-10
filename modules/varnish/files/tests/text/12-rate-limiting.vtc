@@ -1,7 +1,7 @@
 varnishtest "cache_text rate limiting"
 
 server s1 {
-    loop 26 {
+    loop 25 {
         rxreq
         # Cached responses are not rate limited, send CC: private
         txresp -hdr "Cache-Control: private"
@@ -43,10 +43,4 @@ client c1 {
     expect resp.body ~ "See the error message at the bottom of this page"
     expect resp.body ~ "<code>Request from"
     expect resp.http.Retry-After == 1
-
-    delay 5
-
-    txreq -hdr "Host: en.wikipedia.org" -hdr "User-Agent: varnishTest" -hdr "X-Forwarded-Proto: https"
-    rxresp
-    expect resp.status == 200
 } -run
