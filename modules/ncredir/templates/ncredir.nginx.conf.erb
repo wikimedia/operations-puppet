@@ -29,15 +29,14 @@ server {
     }
 
     location / {
-        # this return only will be triggered if the if clauses defined below don't match
-        return 301 https://www.wikimedia.org;
-    }
+        if ($override != '') {
+            return 301 $override;
+        }
+        if ($rewrite != '') {
+            return 301 $rewrite;
+        }
 
-    if ($override != '') {
-        return 301 $override;
-    }
-    if ($rewrite != '') {
-        return 301 $rewrite;
+        return 301 https://www.wikimedia.org;
     }
 }
 <% end -%>
@@ -55,14 +54,13 @@ server {
     }
 
     location / {
-        # this return only will be triggered if the if clauses defined below don't match
-        return 301 https://www.wikimedia.org;
-    }
+        if ($override != '') {
+            return 301 $override;
+        }
+        if ($rewrite != '') {
+            return 301 $rewrite;
+        }
 
-    if ($override != '') {
-        return 301 $override;
-    }
-    if ($rewrite != '') {
-        return 301 $rewrite;
+        return 301 https://www.wikimedia.org;
     }
 }
