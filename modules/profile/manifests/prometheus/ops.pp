@@ -9,11 +9,6 @@ class profile::prometheus::ops (
     $memory_chunks = hiera('prometheus::server::memory_chunks', '1048576'),
     $targets_path = '/srv/prometheus/ops/targets',
     $bastion_hosts = hiera('bastion_hosts', []),
-    $mysql_host = hiera('prometheus::server::mysqld_exporter::mysql::host'),
-    $mysql_port = hiera('prometheus::server::mysqld_exporter::mysql::port'),
-    $mysql_database = hiera('prometheus::server::mysqld_exporter::mysql::database'),
-    $mysql_user = hiera('prometheus::server::mysqld_exporter::mysql::user'),
-    $mysql_password = hiera('prometheus::server::mysqld_exporter::mysql::password'),
 ){
 
     include ::passwords::gerrit
@@ -173,7 +168,6 @@ class profile::prometheus::ops (
     # Add one job for each of mysql 'group' (i.e. their broad function)
     # Each job will look for new files matching the glob and load the job
     # configuration automatically.
-    # REMEMBER to change mysqld_exporter_config.py if you change these
     $mysql_jobs = [
       {
         'job_name'        => 'mysql-core',
@@ -1223,20 +1217,23 @@ class profile::prometheus::ops (
         content => $content,
     }
 
-    # Generate configuration files for mysql jobs by querying zarcillo
-    file { '/etc/prometheus/zarcillo.cnf':
-        content   => template('profile/prometheus/zarcillo.cnf.erb'),
-        mode      => '0400',
-        show_diff => false,
+    # Generate static placeholders for mysql jobs
+    # this is only a temporary measure until we generate them from
+    # a template and some exported resources
+    file { "${targets_path}/mysql-core_${::site}.yaml":
+        source => "puppet:///modules/role/prometheus/mysql-core_${::site}.yaml",
     }
-    file { '/usr/local/sbin/mysqld_exporter_config.py':
-        source => 'puppet:///modules/profile/prometheus/mysqld_exporter_config.py',
-        mode   => '0555',
+    file { "${targets_path}/mysql-dbstore_${::site}.yaml":
+        source => "puppet:///modules/role/prometheus/mysql-dbstore_${::site}.yaml",
     }
-    exec { 'generate-mysqld-exporter-config':
-        command  => "/usr/local/sbin/mysqld_exporter_config.py ${::site} '${targets_path}'",
-        requires => [ File['/etc/prometheus/zarcillo.cnf'],
-                      File['/usr/local/sbin/mysqld_exporter_config.py'], ],
+    file { "${targets_path}/mysql-misc_${::site}.yaml":
+        source => "puppet:///modules/role/prometheus/mysql-misc_${::site}.yaml",
+    }
+    file { "${targets_path}/mysql-parsercache_${::site}.yaml":
+        source => "puppet:///modules/role/prometheus/mysql-parsercache_${::site}.yaml",
+    }
+    file { "${targets_path}/mysql-labs_${::site}.yaml":
+        source => "puppet:///modules/role/prometheus/mysql-labs_${::site}.yaml",
     }
 
     prometheus::rule { 'rules_ops.yml':
