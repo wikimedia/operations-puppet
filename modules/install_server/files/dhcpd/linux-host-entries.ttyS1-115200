@@ -2879,6 +2879,11 @@ host ganeti4003 {
     fixed-address ganeti4003.ulsfo.wmnet;
 }
 
+host gerrit1001 {
+    hardware ethernet 4C:D9:8F:60:C4:49;
+    fixed-address gerrit1001.wikimedia.org;
+}
+
 host gerrit2001 {
     hardware ethernet 14:18:77:5B:0D:7E;
     fixed-address gerrit2001.wikimedia.org;
