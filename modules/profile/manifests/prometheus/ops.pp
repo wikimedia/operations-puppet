@@ -1224,6 +1224,10 @@ class profile::prometheus::ops (
     }
 
     # Generate configuration files for mysql jobs by querying zarcillo
+    require_package (
+        'python3-pymysql',
+        'python3-yaml',
+    )
     file { '/etc/prometheus/zarcillo.cnf':
         content   => template('profile/prometheus/zarcillo.cnf.erb'),
         mode      => '0400',
