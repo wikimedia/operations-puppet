@@ -1234,9 +1234,8 @@ class profile::prometheus::ops (
         mode   => '0555',
     }
     exec { 'generate-mysqld-exporter-config':
-        command  => "/usr/local/sbin/mysqld_exporter_config.py ${::site} '${targets_path}'",
-        requires => [ File['/etc/prometheus/zarcillo.cnf'],
-                      File['/usr/local/sbin/mysqld_exporter_config.py'], ],
+        command => "/usr/local/sbin/mysqld_exporter_config.py ${::site} '${targets_path}'",
+        require => [ File['/etc/prometheus/zarcillo.cnf'], File['/usr/local/sbin/mysqld_exporter_config.py'], ],
     }
 
     prometheus::rule { 'rules_ops.yml':
