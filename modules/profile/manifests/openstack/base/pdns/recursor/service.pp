@@ -82,6 +82,7 @@ class profile::openstack::base::pdns::recursor::service(
             max_tcp_per_client       => 10,
             max_cache_entries        => 3000000,
             client_tcp_timeout       => 1,
+            dnssec                   => 'off',  # T226088 - off until 4.1.x
             require                  => Interface::Alias[$title]
     }
 

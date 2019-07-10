@@ -19,6 +19,7 @@ class dnsrecursor(
     $client_tcp_timeout       = 2,
     $export_etc_hosts         = 'off',
     $version_hostname         = false,
+    $dnssec                   = 'process-no-validate',
 ) {
 
     include ::network::constants

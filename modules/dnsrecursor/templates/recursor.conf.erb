@@ -102,3 +102,7 @@ security-poll-suffix=
 
 # Root hints distributed by Debian w/ 4.x
 hint-file=/usr/share/dns/root.hints
+
+# DNSSEC support is new in pdns-recursor 4.x, and buggy until 4.1.x
+# https://doc.powerdns.com/recursor/dnssec.html
+dnssec=<%= @dnssec %>
