@@ -7,3 +7,8 @@ profile::base::domain_search:
   - ulsfo.wmnet
   - eqsin.wmnet
 diamond::remove: true
+prometheus::server::mysqld_exporter::mysql::host: db1115.eqiad.wmnet
+prometheus::server::mysqld_exporter::mysql::port: 3306
+prometheus::server::mysqld_exporter::mysql::database: zarcillo
+prometheus::server::mysqld_exporter::mysql::user: prometheus-mysqld-exporter
+# prometheus::server::mysqld_exporter::mysql::password: stored on the private repo
