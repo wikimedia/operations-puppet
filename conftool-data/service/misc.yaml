@@ -43,3 +43,12 @@ ldap-ro:
       "weight": 10
     datacenters:
       - eqiad
+ncredir:
+  nginx:
+    port: 443
+    default_values:
+      "pooled": "no"
+      "weight": 10
+    datacenters:
+      - eqiad
+      - codfw

@@ -332,3 +332,6 @@ codfw:
   docker-registry:
     registry2001.codfw.wmnet: [docker-registry]
     registry2002.codfw.wmnet: [docker-registry]
+  ncredir:
+    ncredir2001.codfw.wmnet: [nginx]
+    ncredir2002.codfw.wmnet: [nginx]

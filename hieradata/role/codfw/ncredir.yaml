@@ -1,0 +1,3 @@
+lvs::realserver::realserver_ips:
+  - '208.80.153.232'
+  - '2620:0:860:ed1a::9'

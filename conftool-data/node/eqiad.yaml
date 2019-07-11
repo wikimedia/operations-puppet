@@ -318,3 +318,6 @@ eqiad:
   docker-registry:
     registry1001.eqiad.wmnet: [docker-registry]
     registry1002.eqiad.wmnet: [docker-registry]
+  ncredir:
+    ncredir1001.eqiad.wmnet: [nginx]
+    ncredir1002.eqiad.wmnet: [nginx]
