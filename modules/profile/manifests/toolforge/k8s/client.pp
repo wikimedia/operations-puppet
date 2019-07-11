@@ -22,7 +22,7 @@ class profile::toolforge::k8s::client(
     }
 
     # Kubernetes Configuration - See T209627
-    if os_version('ubuntu trusty') or os_version('debian jessie') {
+    if os_version('debian jessie') {
         $etcd_url = join(prefix(suffix($etcd_hosts, ':2379'), 'https://'), ',')
 
         ferm::service { 'flannel-vxlan':
