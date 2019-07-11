@@ -37,7 +37,6 @@ class geoip::data::archive(
         interval                  => 'Tue *-*-* 05:30:00',
         user                      => 'analytics',
         monitoring_contact_groups => 'analytics',
-        logging_enabled           => false,
         use_kerberos              => $use_kerberos,
         require                   => [File[$archive_script], User['analytics']],
     }
