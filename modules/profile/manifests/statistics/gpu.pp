@@ -53,7 +53,7 @@ class profile::statistics::gpu {
             ensure  => 'present',
             require => [
                 Exec['apt_update_rocm'],
-                Apt::Repository['amd-rocm'],
+                Apt::Repository['amd-rocm25'],
             ],
         }
 
