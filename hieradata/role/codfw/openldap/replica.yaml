@@ -1,0 +1,6 @@
+profile::openldap::master: ldap-labs.codfw.wikimedia.org
+profile::openldap::hostname: ldap-ro.codfw.wikimedia.org
+profile::openldap::mirror_mode: false
+profile::openldap::backup: false
+profile::openldap::hash_passwords: SSHA
+profile::openldap::read_only: true

@@ -1398,6 +1398,19 @@ node 'labstore2004.codfw.wmnet' {
     role(wmcs::nfs::primary_backup::misc)
 }
 
+
+# Read-only ldap replicas in eqiad, these were setup with a non-standard naming
+# scheme and will be renamed the next time they are reimaged (e.g. for the
+# buster upgrade)
+node /^ldap-eqiad-replica0[1-2]\.wikimedia\.org$/ {
+    role(openldap::replica)
+}
+
+# Read-only ldap replicas in codfw
+node /^ldap-replica200[1-2]\.wikimedia\.org$/ {
+    role(openldap::replica)
+}
+
 node 'lithium.eqiad.wmnet' {
     role(syslog::centralserver)
 }
@@ -2062,11 +2075,6 @@ node /^scb[12]00[123456]\.(eqiad|codfw)\.wmnet$/ {
 # Codfw, eqiad ldap servers, aka ldap-$::site
 node /^(seaborgium|serpens)\.wikimedia\.org$/ {
     role(openldap::labs)
-}
-
-# Read-only ldap replicas
-node /^ldap-eqiad-replica0[1-2]\.wikimedia\.org$/ {
-    role(openldap::replica)
 }
 
 node 'sodium.wikimedia.org' {
