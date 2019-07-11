@@ -53,9 +53,10 @@ class openstack::designate::dns_floating_ip_updater(
             description               => 'Designate Floating IP PTR records updater',
             command                   => '/usr/local/sbin/wmcs-dns-floating-ip-updater',
             interval                  => {
-            'start'    => 'OnCalendar',
-            'interval' => '*-*-* *:00/10:00', # Every 10 minutes
+                'start'    => 'OnCalendar',
+                'interval' => '*-*-* *:00/10:00', # Every 10 minutes
             },
+            max_runtime_seconds       => 590,  # kill if running after 9m50s
             logging_enabled           => false,
             monitoring_enabled        => true,
             monitoring_contact_groups => 'wmcs-team',

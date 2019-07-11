@@ -72,6 +72,15 @@
 #   the same identifier and rsyslog rules wouldn't work anymore.
 #   Default: undef
 #
+#  [*max_runtime_seconds*]
+#   Add a RuntimeMaxSec=... stanza to the systemd unit triggered by the timer.
+#   This can be useful when setting a timer to run some code every N minutes
+#   and the process run by the unit has a potential for deadlocking rather
+#   than exiting under some internal error condition. See
+#   <https://www.freedesktop.org/software/systemd/man/systemd.service.html#RuntimeMaxSec=>
+#   for more details.
+#   Default: undef (do not add stanza)
+#
 define systemd::timer::job(
     String $description,
     String $command,
@@ -90,6 +99,7 @@ define systemd::timer::job(
     Boolean $syslog_force_stop = true,
     Optional[String] $syslog_identifier = undef,
     Wmflib::Ensure $ensure = 'present',
+    Optional[Integer] $max_runtime_seconds = undef,
 ) {
     $log_owner = $logfile_owner ? {
         undef   => $user,

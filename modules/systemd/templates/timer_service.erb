@@ -12,3 +12,6 @@ Environment=<%= key -%>=<%= @environment[key] %>
 SyslogIdentifier=<%= @syslog_identifier %>
 <%- end -%>
 ExecStart=<%= @command %>
+<%- if @max_runtime_seconds -%>
+RuntimeMaxSec=<%= @max_runtime_seconds %>
+<%- end -%>
