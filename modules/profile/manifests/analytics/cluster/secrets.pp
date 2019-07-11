@@ -64,7 +64,7 @@ class profile::analytics::cluster::secrets(
     $swift_analytics_admin_auth_env_content = "export ST_AUTH=${swift_analytics_admin_auth_url}/auth/v1.0\nexport ST_USER=${swift_analytics_admin_user}\nexport ST_KEY=${swift_analytics_admin_key}\n"
     $swift_analytics_admin_auth_env_path    = "/user/${secrets_user}/swift_auth_analytics_admin.env"
     kerberos::exec { 'hdfs_put_swift_auth_analytics_admin.env':
-        command      => "/bin/echo -n '${swift_analytics_admin_auth_env_content}' | /usr/bin/hdfs dfs -put - ${swift_analytics_admin_auth_env_path} && /usr/bin/hdfs dfs -chmod 600 ${swift_analytics_admin_auth_env_path} && /usr/bin/hdfs dfs -chown ${secrets_user}:${swift_group} ${swift_analytics_admin_auth_env_path}",
+        command      => "/bin/echo -n '${swift_analytics_admin_auth_env_content}' | /usr/bin/hdfs dfs -put - ${swift_analytics_admin_auth_env_path} && /usr/bin/hdfs dfs -chmod 640 ${swift_analytics_admin_auth_env_path} && /usr/bin/hdfs dfs -chown ${secrets_user}:${swift_group} ${swift_analytics_admin_auth_env_path}",
         unless       => "/usr/bin/hdfs dfs -test -e ${swift_analytics_admin_auth_env_path}",
         user         => $secrets_user,
         use_kerberos => $use_kerberos,
