@@ -8,10 +8,10 @@ class profile::statistics::gpu {
     }
 
     if os_version('debian >= buster'){
-        apt::repository { 'amd-rocm':
+        apt::repository { 'amd-rocm25':
             uri        => 'http://apt.wikimedia.org/wikimedia',
             dist       => "${::lsbdistcodename}-wikimedia",
-            components => 'thirdparty/amd-rocm',
+            components => 'thirdparty/amd-rocm25',
             notify     => Exec['apt_update_rocm'],
         }
 
