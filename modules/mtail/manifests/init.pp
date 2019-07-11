@@ -10,18 +10,18 @@
 # [*port*]
 #   TCP port to listen to for Prometheus-style metrics
 #
-# [*ensure*]
-#   Whether mtail should be running or stopped.
+# [*service_ensure*]
+#   Whether mtail.service should be present or absent.
 
 class mtail (
   $logs = ['/var/log/syslog'],
   $port = '3903',
-  $ensure = 'running',
+  $service_ensure = 'present',
   $group = 'root',
 ) {
     validate_array($logs)
     validate_re($port, '^[0-9]+$')
-    validate_re($ensure, '^(running|stopped)$')
+    validate_ensure($service_ensure)
 
     if os_version('debian == stretch') {
         apt::pin { 'mtail':
@@ -48,11 +48,8 @@ class mtail (
     }
 
     systemd::service { 'mtail':
-        ensure         => present,
-        content        => systemd_template('mtail'),
-        restart        => true,
-        service_params => {
-            ensure => $ensure,
-        },
+        ensure  => $service_ensure,
+        content => systemd_template('mtail'),
+        restart => true,
     }
 }

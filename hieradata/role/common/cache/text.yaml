@@ -7,7 +7,7 @@ admin::groups:
 prometheus::node_exporter::collectors_extra:
   - qdisc
   - meminfo_numa
-mtail::ensure: 'stopped'
+mtail::service_ensure: absent
 cache::websocket_support: true
 # The contents of this hash control our DC->DC routing for varnish backend
 # daemons.  There should be a key for every cache datacenter.  The values must

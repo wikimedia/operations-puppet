@@ -7,7 +7,7 @@ admin::groups:
 prometheus::node_exporter::collectors_extra:
   - qdisc
   - meminfo_numa
-mtail::ensure: 'stopped'
+mtail::service_ensure: absent
 cache::tune_for_media: true
 cache::req_handling:
   upload.wikimedia.org:
