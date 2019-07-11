@@ -203,8 +203,6 @@ class DnsManager(object):
         self.tenant = tenant
         self.logger = logging.getLogger('mwopenstackclients.DnsManager')
 
-        self.designateclient = client.designateclient(project=tenant)
-
     def _json_http_kwargs(self, kwargs):
         kwargs['headers'] = {
             'Content-type': 'application/json',
@@ -289,10 +287,10 @@ class DnsManager(object):
         ttl=None, masters=None, attributes=None
     ):
         """Ensure that a zone exists."""
-        r = self.designateclient.zones.list(criterion={'name': name})
+        r = self.zones(name=name)
         if not r:
             self.logger.warning('Creating zone %s', name)
-            z = self.designateclient.zones.create(name, email='root@wmflabs.org', ttl=60)
+            z = self.create_zone(name, email='root@wmflabs.org', ttl=60)
         else:
             z = r[0]
         return z
@@ -337,15 +335,15 @@ class DnsManager(object):
     ):
         """Find or create a recordest and make sure it matches the given
         records."""
-        r = self.designateclient.recordsets.list(zone, criterion={'name': name})
+        r = self.recordsets(zone, name=name)
         if not r:
             self.logger.warning('Creating %s', name)
-            rs = self.designateclient.recordsets.create(zone, name, type_, records)
+            rs = self.create_recordset(zone, name, type_, records)
         else:
             rs = r[0]
         if rs['records'] != records:
             self.logger.info('Updating %s', name)
-            rs = self.designateclient.recordsets.update(zone, rs['id'], records)
+            rs = self.update_recordset(zone, rs['id'], records)
 
     def delete_recordset(self, uuid, rs):
         self._delete('/v2/zones/{}/recordsets/{}'.format(uuid, rs))
