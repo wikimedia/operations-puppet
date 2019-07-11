@@ -7,7 +7,7 @@ class profile::prometheus::ops (
     $storage_retention = hiera('prometheus::server::storage_retention', '2190h'),
     $max_chunks_to_persist = hiera('prometheus::server::max_chunks_to_persist', '524288'),
     $memory_chunks = hiera('prometheus::server::memory_chunks', '1048576'),
-    $targets_path = '/srv/prometheus/ops/targets',
+    $targets_path = lookup('prometheus::server::target_path', String, 'first', '/srv/prometheus/ops/targets'),
     $bastion_hosts = hiera('bastion_hosts', []),
 ){
 
@@ -168,6 +168,7 @@ class profile::prometheus::ops (
     # Add one job for each of mysql 'group' (i.e. their broad function)
     # Each job will look for new files matching the glob and load the job
     # configuration automatically.
+    # REMEMBER to change mysqld_exporter_config.py if you change these
     $mysql_jobs = [
       {
         'job_name'        => 'mysql-core',
@@ -1232,25 +1233,6 @@ class profile::prometheus::ops (
     }
     file { "${targets_path}/node_site_${::site}.yaml":
         content => $content,
-    }
-
-    # Generate static placeholders for mysql jobs
-    # this is only a temporary measure until we generate them from
-    # a template and some exported resources
-    file { "${targets_path}/mysql-core_${::site}.yaml":
-        source => "puppet:///modules/role/prometheus/mysql-core_${::site}.yaml",
-    }
-    file { "${targets_path}/mysql-dbstore_${::site}.yaml":
-        source => "puppet:///modules/role/prometheus/mysql-dbstore_${::site}.yaml",
-    }
-    file { "${targets_path}/mysql-misc_${::site}.yaml":
-        source => "puppet:///modules/role/prometheus/mysql-misc_${::site}.yaml",
-    }
-    file { "${targets_path}/mysql-parsercache_${::site}.yaml":
-        source => "puppet:///modules/role/prometheus/mysql-parsercache_${::site}.yaml",
-    }
-    file { "${targets_path}/mysql-labs_${::site}.yaml":
-        source => "puppet:///modules/role/prometheus/mysql-labs_${::site}.yaml",
     }
 
     prometheus::rule { 'rules_ops.yml':
