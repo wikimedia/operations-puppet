@@ -170,7 +170,7 @@ class profile::hadoop::spark2(
         $driver_blockmanager_port_max = $driver_blockmanager_port + $port_max_retries
         ferm::service { 'spark2-driver-blockmanager':
             proto  => 'tcp',
-            port   => "${driver_blockmanager_port_max}:${driver_blockmanager_port_max}",
+            port   => "${driver_blockmanager_port}:${driver_blockmanager_port_max}",
             srange => '$ANALYTICS_NETWORKS',
         }
     }
