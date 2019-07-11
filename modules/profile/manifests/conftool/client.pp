@@ -10,13 +10,13 @@
 # === Parameters
 #
 class profile::conftool::client(
-    $srv_domain = hiera('etcd_client_srv_domain'),
-    $host = hiera('etcd_host'),
-    $port = hiera('etcd_port'),
-    $namespace      = dirname(hiera('conftool_prefix')),
-    $tcpircbot_host = hiera('tcpircbot_host', 'icinga.wikimedia.org'),
-    $tcpircbot_port = hiera('tcpircbot_port', 9200),
-    $protocol = hiera('profile::conftool::client::protocol', 'https')
+    $srv_domain = lookup('etcd_client_srv_domain'),
+    $host = lookup('etcd_host'),
+    $port = lookup('etcd_port'),
+    $namespace      = dirname(lookup('conftool_prefix')),
+    $tcpircbot_host = lookup('tcpircbot_host', {'default_value' => 'icinga.wikimedia.org'}),
+    $tcpircbot_port = lookup('tcpircbot_port', {'default_value' => 9200}),
+    $protocol = lookup('profile::conftool::client::protocol', {'default_value' => 'https'})
 ) {
 
     if os_version('debian >= stretch') {
