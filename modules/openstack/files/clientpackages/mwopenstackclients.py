@@ -109,7 +109,7 @@ class Clients(object):
         if project not in self.keystoneclients:
             session = self.session(project)
             self.keystoneclients[project] = keystone_client.Client(
-                session=session, interface='public', connect_retries=5)
+                session=session, interface='public', connect_retries=5, timeout=300)
         return self.keystoneclients[project]
 
     def novaclient(self, project=None, region=None):
@@ -125,7 +125,7 @@ class Clients(object):
         if region not in self.novaclients[project]:
             session = self.session(project)
             self.novaclients[project][region] = nova_client.Client(
-                '2', session=session, connect_retries=5,
+                '2', session=session, connect_retries=5, timeout=300,
                 region_name=region)
 
         return self.novaclients[project][region]
@@ -137,7 +137,8 @@ class Clients(object):
         if project not in self.glanceclients:
             session = self.session(project)
             self.glanceclients[project] = glanceclient.Client(
-                '1', session=session, connect_retries=5, region_name=self.region)
+                '1', session=session, connect_retries=5, timeout=300,
+                region_name=self.region)
         return self.glanceclients[project]
 
     def designateclient(self, project=None):
@@ -147,7 +148,8 @@ class Clients(object):
         if project not in self.designateclients:
             session = self.session(project)
             self.designateclients[project] = designateclient.Client(
-                session=session, sudo_project_id=project, region_name=self.region)
+                session=session, timeout=300, sudo_project_id=project,
+                region_name=self.region)
         return self.designateclients[project]
 
     def allprojects(self):
@@ -230,6 +232,7 @@ class DnsManager(object):
             'X-Designate-Edit-Managed-Records': 'true',
         })
         kwargs['headers'] = headers
+        kwargs['timeout'] = 300
         r = map[verb.upper()](*args, **kwargs)
         if r.status_code >= 400:
             logging.warning('Error response from %s:\n%s', args[0], r.text)
