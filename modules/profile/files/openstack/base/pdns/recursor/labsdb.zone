@@ -887,7 +887,6 @@ zawikibooks	1H	IN	CNAME	s3.analytics.db.svc.eqiad.wmflabs.
 zawikiquote	1H	IN	CNAME	s3.analytics.db.svc.eqiad.wmflabs.
 zawiktionary	1H	IN	CNAME	s3.analytics.db.svc.eqiad.wmflabs.
 zeawiki	1H	IN	CNAME	s3.analytics.db.svc.eqiad.wmflabs.
-zerowiki	1H	IN	CNAME	s3.analytics.db.svc.eqiad.wmflabs.
 zh_classicalwiki	1H	IN	CNAME	s3.analytics.db.svc.eqiad.wmflabs.
 zh_min_nanwiki	1H	IN	CNAME	s3.analytics.db.svc.eqiad.wmflabs.
 zh_min_nanwikibooks	1H	IN	CNAME	s3.analytics.db.svc.eqiad.wmflabs.
