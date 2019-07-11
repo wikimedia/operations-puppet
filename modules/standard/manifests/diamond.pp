@@ -19,7 +19,7 @@ class standard::diamond {
         }
     }
 
-    if hiera('diamond::remove', false) { # lint:ignore:wmf_styleguide
+    if $::realm == 'production' { # lint:ignore:wmf_styleguide
         package { ['diamond', 'python-diamond']:
             ensure => purged,
         }
