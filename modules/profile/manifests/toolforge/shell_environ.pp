@@ -23,6 +23,7 @@ class profile::toolforge::shell_environ {
         'elinks',
         'emacs',
         'fakeroot', # for dpkg
+        'fish',                        # T219054
         'flex',                        # T114003.
         'ipython',                     # T58995
         'joe',                         # T64236.
