@@ -10,7 +10,6 @@ class role::prometheus::ops {
     include ::profile::standard
     include ::profile::base::firewall
     include ::profile::prometheus::ops
-    include ::profile::prometheus::ops_mysql
     include ::prometheus::blackbox_exporter
     include ::rsync::server
 }

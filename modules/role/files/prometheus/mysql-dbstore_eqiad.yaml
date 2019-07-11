@@ -1,0 +1,62 @@
+- labels:
+    shard: s1
+    role: slave
+  targets:
+  - db1139:13311
+  - dbstore1003:13311
+
+- labels:
+    shard: s2
+    role: slave
+  targets:
+  - db1095:13312
+  - dbstore1004:13312
+
+- labels:
+    shard: s3
+    role: slave
+  targets:
+  - db1095:13313
+  - dbstore1004:13313
+
+- labels:
+    shard: s4
+    role: slave
+  targets:
+  - db1102:13314
+  - dbstore1004:13314
+
+- labels:
+    shard: s5
+    role: slave
+  targets:
+  - db1102:13315
+  - dbstore1003:13315
+
+- labels:
+    shard: s6
+    role: slave
+  targets:
+  - db1139:13316
+  - dbstore1005:13316
+
+- labels:
+    shard: s7
+    role: slave
+  targets:
+  - db1116:13317
+  - dbstore1003:13317
+
+- labels:
+    shard: s8
+    role: slave
+  targets:
+  - db1116:13318
+  - dbstore1005:13318
+
+- labels:
+    shard: x1
+    role: slave
+  targets:
+  - db1140:13320
+  - dbstore1005:13320
