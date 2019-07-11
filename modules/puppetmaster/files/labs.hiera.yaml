@@ -2,6 +2,12 @@
   - httpyaml
   - mwyaml
   - nuyaml
+  # the nuyaml3 backend searches the private and secret datadir if the hierarchy
+  # entry is prefixed with either private or secret.  newer version of puppet
+  # require all top level keys i.e. backends to be defined in this array
+  # we have also created an empty custom backend to keep the hiera cli happy
+  - private
+  - secret
 :nuyaml:
   :datadir: /etc/puppet/hieradata
 :mwyaml:
