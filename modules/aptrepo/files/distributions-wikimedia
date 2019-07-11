@@ -121,9 +121,15 @@ Architectures: source amd64 i386
 Components: main
 # sorted list, leading whitespace matters!
  thirdparty/amd-rocm
+ thirdparty/amd-rocm25
  thirdparty/hwraid
 UDebComponents: main
-Update: hwraid-stretch hp-mcp-stretch amd-rocm
+Update:
+# sorted list, leading whitespace matters!
+ amd-rocm
+ amd-rocm25
+ hp-mcp-stretch
+ hwraid-stretch
 Description: Wikimedia packages for Debian buster
 SignWith: 9D392D3FFADF18FB
 DebOverride: deb-override
