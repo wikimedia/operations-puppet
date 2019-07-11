@@ -42,10 +42,27 @@
 # [*driver_port*]
 #   If specified, it will add two settings to the config:
 #   - spark.driver.port: $driver_port
+#   Works only if spark.port.maxRetries is also specified.
+#   Default: 12000
+#
+# [*driver_blockmanager_port*]
+#   If specified, it will add the following to the config:
+#   - spark.driver.blockManager.port
+#   Works only if spark.port.maxRetries is also specified.
+#   Default: 13000
+#
+# [*ui_port*]
+#   If specified, it will add the following to the config:
+#   - spark.ui.port
+#   Works only if spark.port.maxRetries is also specified.
+#   Default: 4040
+#
+# [*port_max_retries*]
+#   If specified, it will add two settings to the config:
 #   - spark.port.maxRetries: $port_max_retries
 #   This allows the creation of a 100 port range for the driver,
 #   and it adds it to the ferm config.
-#   Default: undef
+#   Default: 100
 #
 class profile::hadoop::spark2(
     $install_yarn_shuffle_jar = hiera('profile::hadoop::spark2::install_yarn_shuffle_jar', true),
@@ -53,7 +70,8 @@ class profile::hadoop::spark2(
     $install_assembly         = hiera('profile::hadoop::spark2::install_assembly', false),
     $extra_settings           = hiera('profile::hadoop::spark2::extra_settings', {}),
     $use_kerberos             = hiera('profile::hadoop::spark2::use_kerberos', false),
-    $driver_port              = hiera('profile::hadoop::spark2::driver_port', undef),
+    $driver_port              = hiera('profile::hadoop::spark2::driver_port', 12000),
+    $driver_blockmanager_port = hiera('profile::hadoop::spark2::driver_blockmanager_port', 13000),
     $ui_port                  = hiera('profile::hadoop::spark2::ui_port', 4040),
     $port_max_retries         = hiera('profile::hadoop::spark2::port_max_retries', 100),
 ) {
@@ -144,6 +162,15 @@ class profile::hadoop::spark2(
         ferm::service { 'spark2-driver':
             proto  => 'tcp',
             port   => "${driver_port}:${driver_port_max}",
+            srange => '$ANALYTICS_NETWORKS',
+        }
+    }
+
+    if $driver_blockmanager_port {
+        $driver_blockmanager_port_max = $driver_blockmanager_port + $port_max_retries
+        ferm::service { 'spark2-driver-blockmanager':
+            proto  => 'tcp',
+            port   => "${driver_blockmanager_port_max}:${driver_blockmanager_port_max}",
             srange => '$ANALYTICS_NETWORKS',
         }
     }

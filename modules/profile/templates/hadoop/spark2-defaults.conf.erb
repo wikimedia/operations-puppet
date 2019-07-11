@@ -23,10 +23,15 @@ spark.sql.catalogImplementation                     hive
 <% end -%>
 <% if @driver_port -%>
 spark.driver.port                                   <%= @driver_port %>
+<% end -%>
+<% if @port_max_retries -%>
 spark.port.maxRetries                               <%= @port_max_retries %>
 <% end -%>
 <% if @ui_port -%>
 spark.ui.port                                       <%= @ui_port %>
+<% end -%>
+<% if @driver_blockmanager_port -%>
+spark.driver.blockManager.port                      <%= @driver_blockmanager_port %>
 <% end -%>
 spark.yarn.archive                  hdfs:///user/spark/share/lib/spark2-assembly.zip
 <% @extra_settings.sort.each do |key, value| -%>
