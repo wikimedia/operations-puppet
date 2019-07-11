@@ -30,6 +30,11 @@ class varnish::logging(
         priority => 80,
     }
 
+    exec { 'mask_default_mtail':
+        command => '/bin/systemctl mask mtail.service',
+        creates => '/etc/systemd/system/mtail.service',
+    }
+
     file { '/usr/local/bin/varnishmtail':
         ensure => present,
         owner  => 'root',
