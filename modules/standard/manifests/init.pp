@@ -18,7 +18,6 @@ class standard(
         include ::standard::ntp::timesyncd
     }
 
-    include ::standard::diamond
     include ::standard::prometheus
 
     # Some instances have their own exim definition that

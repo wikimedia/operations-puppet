@@ -64,6 +64,26 @@ class profile::wmcs::instance(
     # In production, puppet freshness checks are done by icinga. Labs has no
     # icinga, so collect puppet freshness metrics via diamond/graphite
     if ! $diamond_remove {
+        # Prefix labs metrics with project name
+        $path_prefix   = $::labsproject
+
+        class { '::diamond':
+            path_prefix   => $path_prefix,
+            keep_logs_for => '0',
+            service       => true,
+            settings      => {
+                # lint:ignore:quoted_booleans
+                # Diamond needs its bools in string-literals.
+                enabled => 'true',
+                # lint:endignore
+                host    => '10.64.37.13', # labmon1001
+                port    => '2003',
+                batch   => '20',
+            },
+        }
+
+        base::service_auto_restart { 'diamond': }
+
         diamond::collector::minimalpuppetagent { 'minimal-puppet-agent': }
 
         diamond::collector { 'SSHSessions':
