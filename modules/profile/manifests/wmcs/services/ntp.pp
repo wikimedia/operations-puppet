@@ -6,6 +6,7 @@ class profile::wmcs::services::ntp(
     $networks_acl = hiera('profile::wmcs::services::wmcs_networks_acl',
         [ '172.16.0.0 mask 255.255.248.0', '10.68.16.0 mask 255.255.248.0' ]),
 ) {
+    contain standard::ntp
 
     $server_upstream_pools = ['0.us.pool.ntp.org']
 

@@ -4,6 +4,7 @@
 class profile::ntp (
     Array[String] $monitoring_hosts = hiera('monitoring_hosts', []),
 ) {
+    contain standard::ntp
     # A list of all global peers, used in the core sites' case below
     $wmf_all_peers = array_concat(
         $::ntp_peers['eqiad'],

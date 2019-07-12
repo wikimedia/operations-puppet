@@ -5,6 +5,5 @@ class role::ntp {
 
     system::role { 'ntp': description => 'NTP server' }
 
-    include ::standard::ntp
     include ::profile::ntp
 }
