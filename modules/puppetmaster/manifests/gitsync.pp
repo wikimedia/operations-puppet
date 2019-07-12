@@ -42,16 +42,6 @@ class puppetmaster::gitsync(
         ensure => present,
         source => 'puppet:///modules/puppetmaster/git-sync-upstream.logrotate',
     }
-
-    sudo::user { 'cherry_pick_count':
-        ensure     => present,
-        user       => 'diamond',
-        privileges => [ 'ALL = (root) NOPASSWD: /usr/bin/git --git-dir=/var/lib/git/operations/puppet/.git log --pretty=oneline --abbrev-commit origin/HEAD..HEAD' ],
-    }
-
-    diamond::collector { 'CherryPickCounter':
-        ensure  => present,
-        source  => 'puppet:///modules/puppetmaster/cherry-pick-counter-collector.py',
-        require => Sudo::User['cherry_pick_count'],
-    }
 }
+
+
