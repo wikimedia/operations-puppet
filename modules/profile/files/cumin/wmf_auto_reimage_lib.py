@@ -885,8 +885,14 @@ def wait_puppet_run(host, start=None):
         retries += 1
         logger.debug('Waiting for Puppet ({retries})'.format(retries=retries))
         if retries % WATCHER_LOG_LOOPS == 0:
-            print_line('Still waiting for Puppet after {min} minutes'.format(
-                min=(retries * WATCHER_LONG_SLEEP) // 60.0), host=host)
+            print_line(('Still waiting for a succesful Puppet run '
+                        'after {min} minutes.'
+                        'Either it has not finished yet or the puppet run '
+                        'had errors. You may have to fix the puppet role '
+                        'or reinstall with spare::system first. '
+                        'Check the log file. The path to it was '
+                        'printed at the start of the script.').format(
+                       min=(retries * WATCHER_LONG_SLEEP) // 60.0), host=host)
 
         try:
             exit_code, worker = run_cumin('wait_puppet_run', host, [command])
