@@ -36,6 +36,15 @@ if [[ $TERM == (xterm*) ]]; then
     add-zsh-hook -Uz preexec xterm_preexec
 fi
 
+function _on_wmf_prod() {
+    [[ "$(hostname -f)" = *(wmnet|wikimedia.org) ]]
+    return $?
+}
+
+if _on_wmf_prod ; then
+    alias last-puppet-run='/etc/update-motd.d/97-last-puppet-run'
+fi
+
 # Use modern completion system
 autoload -Uz compinit
 compinit
