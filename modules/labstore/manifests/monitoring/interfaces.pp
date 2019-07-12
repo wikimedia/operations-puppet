@@ -17,54 +17,59 @@ class labstore::monitoring::interfaces(
     $load_crit = $::processorcount * 1.25,
 ) {
 
-    $interval = '10min' # see T188624
+    # In minutes, how long icinga will wait before considering HARD state, see also T188624
+    $retries = 10
 
-    monitoring::graphite_threshold { 'network_out_saturated':
+    monitoring::check_prometheus { 'network_out_saturated':
         description     => 'Outgoing network saturation',
         dashboard_links => ['https://grafana.wikimedia.org/dashboard/db/labs-monitoring'],
-        metric          => "servers.${::hostname}.network.${monitor_iface}.tx_byte",
-        from            => $interval,
+        query           => "sum(irate(node_network_transmit_bytes_total{instance=\"${::hostname}:9100\",device=\"${monitor_iface}\"}[5m]))",
         warning         => $int_throughput_warn,
         critical        => $int_throughput_crit,
-        percentage      => 10,        # smooth over peaks
+        retries         => $retries,
+        method          => 'ge',
         contact_group   => $contact_groups,
         notes_link      => 'https://wikitech.wikimedia.org/wiki/Portal:Data_Services/Admin/Labstore',
+        prometheus_url  => "http://prometheus.svc.${::site}.wmnet/ops",
     }
 
-    monitoring::graphite_threshold { 'network_in_saturated':
+    monitoring::check_prometheus { 'network_in_saturated':
         description     => 'Incoming network saturation',
         dashboard_links => ['https://grafana.wikimedia.org/dashboard/db/labs-monitoring'],
-        metric          => "servers.${::hostname}.network.${monitor_iface}.rx_byte",
-        from            => $interval,
+        query           => "sum(irate(node_network_receive_bytes_total{instance=\"${::hostname}:9100\",device=\"${monitor_iface}\"}[5m]))",
         warning         => $int_throughput_warn,
         critical        => $int_throughput_crit,
-        percentage      => 10,        # smooth over peaks
+        retries         => $retries,
+        method          => 'ge',
         contact_group   => $contact_groups,
         notes_link      => 'https://wikitech.wikimedia.org/wiki/Portal:Data_Services/Admin/Labstore',
+        prometheus_url  => "http://prometheus.svc.${::site}.wmnet/ops",
     }
 
-    monitoring::graphite_threshold { 'high_iowait_stalling':
+    monitoring::check_prometheus { 'high_iowait_stalling':
         description     => 'Persistent high iowait',
         dashboard_links => ['https://grafana.wikimedia.org/dashboard/db/labs-monitoring'],
-        metric          => "servers.${::hostname}.cpu.total.iowait",
-        from            => '10min',
-        warning         => 40, # Based off looking at history of metric
-        critical        => 60,
-        percentage      => 50, # Ignore small spikes
+        query           => "100 * sum(irate(node_cpu_seconds_total{instance=\"${::hostname}:9100\",mode=\"iowait\"}[5m]))",
+        warning         => 5,
+        critical        => 10,
+        retries         => $retries,
+        method          => 'ge',
         contact_group   => $contact_groups,
         notes_link      => 'https://wikitech.wikimedia.org/wiki/Portal:Data_Services/Admin/Labstore',
+        prometheus_url  => "http://prometheus.svc.${::site}.wmnet/ops",
     }
 
     # Monitor for high load consistently, is a 'catchall'
-    monitoring::graphite_threshold { 'high_load':
-        description     => 'High load average',
+    monitoring::check_prometheus { 'high_load':
+        description     => 'High 1m load average',
         dashboard_links => ['https://grafana.wikimedia.org/dashboard/db/labs-monitoring'],
-        metric          => "servers.${::hostname}.loadavg.01",
-        from            => '10min',
+        query           => "node_load1{instance=\"${::hostname}:9100\"}",
         warning         => $load_warn,
         critical        => $load_crit,
-        percentage      => 85, # Don't freak out on spikes
+        retries         => $retries,
+        method          => 'ge',
         contact_group   => $contact_groups,
         notes_link      => 'https://wikitech.wikimedia.org/wiki/Portal:Data_Services/Admin/Labstore',
+        prometheus_url  => "http://prometheus.svc.${::site}.wmnet/ops",
     }
 }
