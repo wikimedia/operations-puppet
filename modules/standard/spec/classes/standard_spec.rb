@@ -1,4 +1,6 @@
-require 'spec_helper'
+# frozen_string_literal: true
+
+require_relative '../../../../rake_modules/spec_helper'
 
 describe 'standard' do
   on_supported_os.each do |os, facts|
