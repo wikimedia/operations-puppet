@@ -22,6 +22,7 @@ class profile::cache::base(
     $allow_iptables = hiera('profile::cache::base::allow_iptables', false),
     $extra_nets = hiera('profile::cache::base::extra_nets', []),
     $extra_trust = hiera('profile::cache::base::extra_trust', []),
+    Boolean $monitoring_enabled = lookup('profile::cache::base::monitoring_enabled', { 'default_value' => false }),
 ) {
     require network::constants
     $wikimedia_nets = flatten(concat($::network::constants::aggregate_networks, $extra_nets))
@@ -35,6 +36,10 @@ class profile::cache::base(
 
     # FIXME: this cannot be required or it will cause a dependency cycle. It might be a good idea not to include it here
     include ::profile::cache::kafka::webrequest
+
+    if ($monitoring_enabled) {
+        include ::profile::prometheus::varnishkafka_exporter
+    }
 
     # Globals we need to include
     include ::lvs::configuration

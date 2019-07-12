@@ -1,0 +1,339 @@
+---
+  profile::prometheus::varnishkafka_exporter::stats_default:
+    kafka: # https://github.com/edenhill/librdkafka/blob/master/STATISTICS.md
+      'metadata_cache_cnt':
+        'type': 'GaugeMetricFamily'
+        'name': 'rdkafka_producer_metadata_cache_cnt'
+        'description': 'Number of topics in the metadata cache.'
+        'labels': ['client_id']
+      'msg_cnt':
+        'type': 'GaugeMetricFamily'
+        'name': 'rdkafka_producer_msg_cnt'
+        'description': 'Current number of messages in producer queues'
+        'labels': ['client_id']
+      'msg_max':
+        'type': 'GaugeMetricFamily'
+        'name': 'rdkafka_producer_msg_max'
+        'description': 'Threshold: maximum number of messages allowed on the producer queues'
+        'labels': ['client_id']
+      'msg_size':
+        'type': 'GaugeMetricFamily'
+        'name': 'rdkafka_producer_msg_size'
+        'description': 'Current total size of messages in producer queues'
+        'labels': ['client_id']
+      'msg_size_max':
+        'type': 'GaugeMetricFamily'
+        'name': 'rdkafka_producer_msg_size_max'
+        'description': 'Threshold: maximum total size of messages allowed on the producer queues'
+        'labels': ['client_id']
+      'replyq':
+        'type': 'GaugeMetricFamily'
+        'name': 'rdkafka_producer_replyq'
+        'description': 'Number of ops (callbacks, events, etc) waiting in queue for application to serve with rd_kafka_poll()'
+        'labels': ['client_id']
+      'simple_cnt':
+        'type': 'GaugeMetricFamily'
+        'name': 'rdkafka_producer_simple_cnt'
+        'description': 'Internal tracking of legacy vs new consumer API state'
+        'labels': ['client_id']
+      'time':
+        'type': 'GaugeMetricFamily'
+        'name': 'rdkafka_producer_time'
+        'description': 'Wall clock time in seconds since the epoch'
+        'labels': ['client_id']
+      'ts':
+        'type': 'GaugeMetricFamily'
+        'name': 'rdkafka_producer_ts'
+        'description': 'librdkafkas internal monotonic clock (micro seconds)'
+        'labels': ['client_id']
+      'brokers':
+        'int_latency':
+          'avg':
+            'type': 'GaugeMetricFamily'
+            'name': 'rdkafka_producer_broker_int_latency_avg'
+            'description': 'Internal producer queue latency in microseconds average value'
+            'labels':  ['client_id', 'broker=name']
+          'cnt':
+            'type': 'GaugeMetricFamily'
+            'name': 'rdkafka_producer_broker_int_latency_cnt'
+            'description': 'Internal producer queue latency in microseconds number of values sampled'
+            'labels':  ['client_id', 'broker=name']
+          'max':
+            'type': 'GaugeMetricFamily'
+            'name': 'rdkafka_producer_broker_int_latency_max'
+            'description': 'Internal producer queue latency in microseconds largest value'
+            'labels':  ['client_id', 'broker=name']
+          'min':
+            'type': 'GaugeMetricFamily'
+            'name': 'rdkafka_producer_broker_int_latency_min'
+            'description': 'Internal producer queue latency in microseconds smallest value'
+            'labels':  ['client_id', 'broker=name']
+          'sum':
+            'type': 'GaugeMetricFamily'
+            'name': 'rdkafka_producer_broker_int_latency_sum'
+            'description': 'Internal producer queue latency in microseconds sum of values'
+            'labels':  ['client_id', 'broker=name']
+        'rtt':
+          'avg':
+            'type': 'GaugeMetricFamily'
+            'name': 'rdkafka_producer_broker_rtt_avg'
+            'description': 'Broker latency / round-trip time in microseconds average value'
+            'labels':  ['client_id', 'broker=name']
+          'cnt':
+            'type': 'GaugeMetricFamily'
+            'name': 'rdkafka_producer_broker_rtt_cnt'
+            'description': 'Broker latency / round-trip time in microseconds number of values sampled'
+            'labels':  ['client_id', 'broker=name']
+          'max':
+            'type': 'GaugeMetricFamily'
+            'name': 'rdkafka_producer_broker_rtt_max'
+            'description': 'Broker latency / round-trip time in microseconds largest value'
+            'labels':  ['client_id', 'broker=name']
+          'min':
+            'type': 'GaugeMetricFamily'
+            'name': 'rdkafka_producer_broker_rtt_min'
+            'description': 'Broker latency / round-trip time in microseconds smallest value'
+            'labels':  ['client_id', 'broker=name']
+          'sum':
+            'type': 'GaugeMetricFamily'
+            'name': 'rdkafka_producer_broker_rtt_sum'
+            'description': 'Broker latency / round-trip time in microseconds sum of values'
+            'labels':  ['client_id', 'broker=name']
+        'throttle':
+          'avg':
+            'type': 'GaugeMetricFamily'
+            'name': 'rdkafka_producer_broker_throttle_avg'
+            'description': 'Broker throttling time in milliseconds average value'
+            'labels':  ['client_id', 'broker=name']
+          'cnt':
+            'type': 'GaugeMetricFamily'
+            'name': 'rdkafka_producer_broker_throttle_cnt'
+            'description': 'Broker throttling time in milliseconds number of values sampled'
+            'labels':  ['client_id', 'broker=name']
+          'max':
+            'type': 'GaugeMetricFamily'
+            'name': 'rdkafka_producer_broker_throttle_max'
+            'description': 'Broker throttling time in milliseconds largest value'
+            'labels':  ['client_id', 'broker=name']
+          'min':
+            'type': 'GaugeMetricFamily'
+            'name': 'rdkafka_producer_broker_throttle_min'
+            'description': 'Broker throttling time in milliseconds smallest value'
+            'labels':  ['client_id', 'broker=name']
+          'sum':
+            'type': 'GaugeMetricFamily'
+            'name': 'rdkafka_producer_broker_throttle_sum'
+            'description': 'Broker throttling time in milliseconds sum of values'
+            'labels':  ['client_id', 'broker=name']
+        'outbuf_cnt':
+          'type': 'GaugeMetricFamily'
+          'name': 'rdkafka_producer_broker_outbuf_cnt'
+          'description': 'Number of requests awaiting transmission to broker'
+          'labels':  ['client_id', 'broker=name']
+        'outbuf_msg_cnt':
+          'type': 'GaugeMetricFamily'
+          'name': 'rdkafka_producer_broker_outbuf_msg_cnt'
+          'description': 'Number of messages awaiting transmission to broker'
+          'labels':  ['client_id', 'broker=name']
+        'req_timeouts':
+          'type': 'GaugeMetricFamily'
+          'name': 'rdkafka_producer_broker_req_timeouts'
+          'description': 'Total number of requests timed out'
+          'labels':  ['client_id', 'broker=name']
+        'rx':
+          'type': 'GaugeMetricFamily'
+          'name': 'rdkafka_producer_broker_rx'
+          'description': 'Total number of responses received'
+          'labels':  ['client_id', 'broker=name']
+        'rxbytes':
+          'type': 'GaugeMetricFamily'
+          'name': 'rdkafka_producer_broker_rxbytes'
+          'description': 'Total number of bytes received'
+          'labels':  ['client_id', 'broker=name']
+        'rxerrs':
+          'type': 'GaugeMetricFamily'
+          'name': 'rdkafka_producer_broker_rxerrs'
+          'description': 'Total number of receive errors'
+          'labels':  ['client_id', 'broker=name']
+        'rxcorriderrs':
+          'type': 'GaugeMetricFamily'
+          'name': 'rdkafka_producer_broker_rxcorriderrs'
+          'description': 'Total number of unmatched correlation ids in response (typically for timed out requests)'
+          'labels':  ['client_id', 'broker=name']
+        'rxpartial':
+          'type': 'GaugeMetricFamily'
+          'name': 'rdkafka_producer_broker_rxpartial'
+          'description': 'Total number of partial MessageSets received. The broker may return partial responses if the full MessageSet could not fit in remaining Fetch response size.'
+          'labels':  ['client_id', 'broker=name']
+        'stateage':
+          'type': 'GaugeMetricFamily'
+          'name': 'rdkafka_producer_broker_stateage'
+          'description': 'Time since last broker state change (microseconds)'
+          'labels':  ['client_id', 'broker=name']
+        'tx':
+          'type': 'GaugeMetricFamily'
+          'name': 'rdkafka_producer_broker_tx'
+          'description': 'Total number of requests sent'
+          'labels':  ['client_id', 'broker=name']
+        'txbytes':
+          'type': 'GaugeMetricFamily'
+          'name': 'rdkafka_producer_broker_txbytes'
+          'description': 'Total number of bytes sent'
+          'labels':  ['client_id', 'broker=name']
+        'txerrs':
+          'type': 'GaugeMetricFamily'
+          'name': 'rdkafka_producer_broker_txerrs'
+          'description': 'Total number of transmission errors'
+          'labels':  ['client_id', 'broker=name']
+        'txretries':
+          'type': 'GaugeMetricFamily'
+          'name': 'rdkafka_producer_broker_txretries'
+          'description': 'Total number of request retries'
+          'labels':  ['client_id', 'broker=name']
+        'waitresp_cnt':
+          'type': 'GaugeMetricFamily'
+          'name': 'rdkafka_producer_broker_waitresp_cnt'
+          'description': 'Number of requests in-flight to broker awaiting response'
+          'labels':  ['client_id', 'broker=name']
+        'waitresp_msg_cnt':
+          'type': 'GaugeMetricFamily'
+          'name': 'rdkafka_producer_broker_waitresp_msg_cnt'
+          'description': 'Number of messages in-flight to broker awaiting response'
+          'labels':  ['client_id', 'broker=name']
+        'wakeups':
+          'type': 'GaugeMetricFamily'
+          'name': 'rdkafka_producer_broker_wakeups'
+          'description': 'Broker thread poll wakeups'
+          'labels':  ['client_id', 'broker=name']
+        'zbuf_grow':
+          'type': 'GaugeMetricFamily'
+          'name': 'rdkafka_producer_broker_zbuf_grow'
+          'description': 'Total number of decompression buffer size increases'
+          'labels':  ['client_id', 'broker=name']
+      'topics':
+        'metadata_age':
+          'type': 'GaugeMetricFamily'
+          'name': 'rdkafka_producer_topic_metadata_age'
+          'description': 'Age of metadata from broker for this topic (milliseconds)'
+          'labels':  ['client_id', 'topic']
+        'partitions':
+          'app_offset':
+            'type': 'GaugeMetricFamily'
+            'name': 'rdkafka_producer_topic_partition_app_offset'
+            'description': 'Offset of last message passed to application + 1'
+            'labels':  ['client_id', 'topic', 'partition']
+          'committed_offset':
+            'type': 'GaugeMetricFamily'
+            'name': 'rdkafka_producer_topic_partition_committed_offset'
+            'description': 'Last committed offset'
+            'labels':  ['client_id', 'topic', 'partition']
+          'consumer_lag':
+            'type': 'GaugeMetricFamily'
+            'name': 'rdkafka_producer_topic_partition_consumer_lag'
+            'description': 'Difference between hi_offset - max(app_offset, committed_offset)'
+            'labels':  ['client_id', 'topic', 'partition']
+          'eof_offset':
+            'type': 'GaugeMetricFamily'
+            'name': 'rdkafka_producer_topic_partition_eof_offset'
+            'description': 'Last PARTITION_EOF signaled offset'
+            'labels':  ['client_id', 'topic', 'partition']
+          'fetchq_cnt':
+            'type': 'GaugeMetricFamily'
+            'name': 'rdkafka_producer_topic_partition_fetchq_cnt'
+            'description': 'Number of pre-fetched messages in fetch queue'
+            'labels':  ['client_id', 'topic', 'partition']
+          'fetchq_size':
+            'type': 'GaugeMetricFamily'
+            'name': 'rdkafka_producer_topic_partition_fetchq_size'
+            'description': 'Bytes in fetchq'
+            'labels':  ['client_id', 'topic', 'partition']
+          'hi_offset':
+            'type': 'GaugeMetricFamily'
+            'name': 'rdkafka_producer_topic_partition_hi_offset'
+            'description': 'Partitions high watermark offset on broker'
+            'labels':  ['client_id', 'topic', 'partition']
+          'lo_offset':
+            'type': 'GaugeMetricFamily'
+            'name': 'rdkafka_producer_topic_partition_lo_offset'
+            'description': 'Partitions low watermark offset on broker'
+            'labels':  ['client_id', 'topic', 'partition']
+          'msgq_bytes':
+            'type': 'GaugeMetricFamily'
+            'name': 'rdkafka_producer_topic_partition_msgq_bytes'
+            'description': 'Number of bytes in msgq_cnt'
+            'labels':  ['client_id', 'topic', 'partition']
+          'msgq_cnt':
+            'type': 'GaugeMetricFamily'
+            'name': 'rdkafka_producer_topic_partition_msgq_cnt'
+            'description': 'Number of messages waiting to be produced in first-level queue'
+            'labels':  ['client_id', 'topic', 'partition']
+          'msgs':
+            'type': 'GaugeMetricFamily'
+            'name': 'rdkafka_producer_topic_partition_msgs'
+            'description': 'Total number of messages received (consumer, same as rxmsgs}, or total number of messages produced (possibly not yet transmitted) (producer).'
+            'labels':  ['client_id', 'topic', 'partition']
+          'next_offset':
+            'type': 'GaugeMetricFamily'
+            'name': 'rdkafka_producer_topic_partition_next_offset'
+            'description': 'Next offset to fetch'
+            'labels':  ['client_id', 'topic', 'partition']
+          'query_offset':
+            'type': 'GaugeMetricFamily'
+            'name': 'rdkafka_producer_topic_partition_query_offset'
+            'description': 'Current/Last logical offset query'
+            'labels':  ['client_id', 'topic', 'partition']
+          'rx_ver_drops':
+            'type': 'GaugeMetricFamily'
+            'name': 'rdkafka_producer_topic_partition_rx_ver_drops'
+            'description': 'Dropped outdated messages'
+            'labels':  ['client_id', 'topic', 'partition']
+          'stored_offset':
+            'type': 'GaugeMetricFamily'
+            'name': 'rdkafka_producer_topic_partition_stored_offset'
+            'description': 'Offset to be committed'
+            'labels':  ['client_id', 'topic', 'partition']
+          'txbytes':
+            'type': 'GaugeMetricFamily'
+            'name': 'rdkafka_producer_topic_partition_txbytes'
+            'description': 'Total number of bytes transmitted for txmsgs'
+            'labels':  ['client_id', 'topic', 'partition']
+          'txmsgs':
+            'type': 'GaugeMetricFamily'
+            'name': 'rdkafka_producer_topic_partition_txmsgs'
+            'description': 'Total number of messages transmitted (produced)'
+            'labels':  ['client_id', 'topic', 'partition']
+          'xmit_msgq_bytes':
+            'type': 'GaugeMetricFamily'
+            'name': 'rdkafka_producer_topic_partition_xmit_msgq_bytes'
+            'description': 'Number of bytes in xmit_msgq'
+            'labels':  ['client_id', 'topic', 'partition']
+          'xmit_msgq_cnt':
+            'type': 'GaugeMetricFamily'
+            'name': 'rdkafka_producer_topic_partition_xmit_msgq_cnt'
+            'description': 'Number of messages ready to be produced in transmit queue'
+            'labels':  ['client_id', 'topic', 'partition']
+    varnishkafka:
+      'kafka_drerr':
+        'type': 'GaugeMetricFamily'
+        'name': 'varnishkafka_delivery_errors_total'
+        'description': 'Kafka message delivery errors'
+      'seq':
+        'type': 'GaugeMetricFamily'
+        'name': 'varnishkafka_seq_number'
+        'description': 'Configured sequence number or time() at startup'
+      'time':
+        'type': 'GaugeMetricFamily'
+        'name': 'varnishkafka_time_seconds'
+        'description': 'time() as of stats generation'
+      'trunc':
+        'type': 'GaugeMetricFamily'
+        'name': 'varnishkafka_tags_truncated_total'
+        'description': 'Truncated tags'
+      'tx':
+        'type': 'GaugeMetricFamily'
+        'name': 'varnishkafka_transmit_lines_total'
+        'description': 'Printed/Transmitted lines'
+      'txerr':
+        'type': 'GaugeMetricFamily'
+        'name': 'varnishkafka_transmit_errors_total'
+        'description': 'Transmit failures'

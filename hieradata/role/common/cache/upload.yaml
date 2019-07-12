@@ -397,3 +397,13 @@ profile::trafficserver::backend::logs:
     filters:
     - purge
     mode: ascii_pipe
+
+prometheus::varnishkafka_exporter::config:
+  stats_files:
+    - '/var/cache/varnishkafka/webrequest.stats.json'
+
+  required_entries:
+    - 'kafka'
+    - 'varnishkafka'
+
+  num_entries_to_get: 2
