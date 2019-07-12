@@ -21,6 +21,21 @@ setopt hist_ignore_space
 # slashes are words.
 WORDCHARS=${WORDCHARS/\/}
 
+# some hooks for xterm for now
+# TODO: screen/tmux
+function xterm_precmd() {
+    print -Pn "\e]0;%n@%m %~\a"
+}
+
+function xterm_preexec() {
+    print -Pn '\e]0;%n@%m %# ' && print -n "${(q)1}\a"
+}
+
+if [[ $TERM == (xterm*) ]]; then
+    add-zsh-hook -Uz precmd xterm_precmd
+    add-zsh-hook -Uz preexec xterm_preexec
+fi
+
 # Use modern completion system
 autoload -Uz compinit
 compinit
