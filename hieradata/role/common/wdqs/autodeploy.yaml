@@ -2,7 +2,7 @@ profile::wdqs::blazegraph_options:
   - '-Dhttp.proxyHost=webproxy.eqiad.wmnet'
   - '-Dhttp.proxyPort=8080'
   - '-XX:+ExitOnOutOfMemoryError'
-profile::wdqs::deploy_mode: 'autodeploy'
+profile::wdqs::deploy_mode: 'manual'  # temporary moving to manual deployment mode to test updates
 profile::wdqs::blazegraph_extra_jvm_opts: []
 profile::wdqs::nodes:
   - 'wdqs1009.eqiad.wmnet'
