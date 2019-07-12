@@ -64,9 +64,7 @@ class planet (
     # creates one planet theme (css/logo) per language
     planet::theme { $languages_keys: }
 
-    if os_version('debian >= stretch') {
-      # creates RSS dir and plugin per language
-      planet::rawdogplugin { $languages_keys: }
-    }
+    # creates RSS dir and plugin per language
+    planet::rawdogplugin { $languages_keys: }
 }
 
