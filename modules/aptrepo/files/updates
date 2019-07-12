@@ -226,6 +226,15 @@ Architectures: amd64
 VerifyRelease: 7EA0A9C3F273FCD8
 ListShellHook: grep-dctrl -e -P '^docker-ce|docker-ce-cli|containerd\.io$' || [ $? -eq 1 ]
 
+Name: thirdparty/docker-ci
+Method: https://download.docker.com/linux/debian/
+Suite: stretch
+Components: stable>thirdparty/ci
+UDebComponents:
+Architectures: amd64
+VerifyRelease: 7EA0A9C3F273FCD8
+ListShellHook: grep-dctrl -e -P '^docker-ce|docker-ce-cli|containerd\.io$' || [ $? -eq 1 ]
+
 Name: amd-rocm
 Method: http://repo.radeon.com/rocm/apt/2.6/
 Suite: xenial

@@ -97,6 +97,7 @@ Update:
  jenkins-stretch
  mono-project-stretch
  tor-stretch
+ thirdparty/docker-ci
  thirdparty/kubeadm-k8s-kubernetes.io
  thirdparty/kubeadm-k8s-docker.com
 # NOTE:  Cloudera does not (yet) provide Stretch packages.  We use the Jessie ones,
