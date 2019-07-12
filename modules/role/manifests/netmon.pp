@@ -13,12 +13,6 @@ class role::netmon {
     include ::profile::netbox
     include ::profile::prometheus::postgres_exporter
 
-    if os_version('debian >= stretch') {
-        $php_module = 'php7.2'
-    } else {
-        $php_module = 'php5'
-    }
-
     class { '::httpd':
         modules => ['headers',
                     'rewrite',
@@ -27,7 +21,7 @@ class role::netmon {
                     'ssl',
                     'wsgi',
                     'fcgid',
-                    $php_module,
+                    'php7.2',
                     ],
     }
 
