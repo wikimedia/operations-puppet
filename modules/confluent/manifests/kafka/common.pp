@@ -30,42 +30,23 @@ class confluent::kafka::common(
 ) {
     $package = "confluent-kafka-${scala_version}"
 
-    if os_version('debian >= stretch') {
-        apt::repository { 'thirdparty-confluent':
-            uri        => 'http://apt.wikimedia.org/wikimedia',
-            dist       => "${::lsbdistcodename}-wikimedia",
-            components => 'thirdparty/confluent',
-        }
+    apt::repository { 'thirdparty-confluent':
+        uri        => 'http://apt.wikimedia.org/wikimedia',
+        dist       => "${::lsbdistcodename}-wikimedia",
+        components => 'thirdparty/confluent',
+    }
 
-        # If $kafka_version was given,
-        # make sure that a specific debian package version was installed.
-        if !$kafka_version {
-            package { $package:
-                require => [ Apt::Repository['thirdparty-confluent'], Exec['apt-get update']],
-            }
+    # If $kafka_version was given,
+    # make sure that a specific debian package version was installed.
+    if !$kafka_version {
+        package { $package:
+            require => [ Apt::Repository['thirdparty-confluent'], Exec['apt-get update']],
         }
-        else {
-            package { $package:
-                ensure  => $kafka_version,
-                require => [ Apt::Repository['thirdparty-confluent'], Exec['apt-get update']],
-            }
-        }
-    } else {
-        # Kafka Confluent packages in Debian Jessie do not have a special
-        # component, but they are stored under thirdparty.
-        # TODO: removed this conditional after the Kafka Analytics cluster
-        # is decommed (last Jessie cluster).
-        # T198092
-        if !$kafka_version {
-            package { $package:
-                require => [ Exec['apt-get update']],
-            }
-        }
-        else {
-            package { $package:
-                ensure  => $kafka_version,
-                require => [ Exec['apt-get update']],
-            }
+    }
+    else {
+        package { $package:
+            ensure  => $kafka_version,
+            require => [ Apt::Repository['thirdparty-confluent'], Exec['apt-get update']],
         }
     }
 
