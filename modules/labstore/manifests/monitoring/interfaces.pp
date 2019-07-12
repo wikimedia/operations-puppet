@@ -49,7 +49,8 @@ class labstore::monitoring::interfaces(
     monitoring::check_prometheus { 'high_iowait_stalling':
         description     => 'Persistent high iowait',
         dashboard_links => ['https://grafana.wikimedia.org/dashboard/db/labs-monitoring'],
-        query           => "100 * sum(irate(node_cpu_seconds_total{instance=\"${::hostname}:9100\",mode=\"iowait\"}[5m]))",
+        # iowait % across all CPUs
+        query           => "100 * sum(irate(node_cpu_seconds_total{instance=\"${::hostname}:9100\",mode=\"iowait\"}[5m])) / scalar(count(node_cpu_seconds_total{mode=\"idle\",instance=\"${::hostname}:9100\"}))",
         warning         => 5,
         critical        => 10,
         retries         => $retries,
