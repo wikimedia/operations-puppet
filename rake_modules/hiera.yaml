@@ -1,0 +1,14 @@
+:backends:
+  - yaml
+:yaml:
+  :datadir: '../../hieradata'
+:hierarchy:
+  - "hosts/%{::hostname}"
+  - "regex/%{::fqdn}"
+  - "%{::site}"
+  - "private/hosts/%{::hostname}" # Currently only used for labtest hosts
+  - "private/%{::site}"
+  - "common"
+  - "private/common"
+  - "common/profile/base/puppet" # fake nuyaml backend
+  - "common/profile/rsyslog/kafka_shipper" # fake nuyaml backend

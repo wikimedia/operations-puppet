@@ -1,0 +1,40 @@
+# TODO: our puppet policy defines theses variables in realm.pp
+# Ideally it would be good to just include that file however
+# that likely mean other work arounds such as assigning an appropriate
+# IP address
+# see: https://tickets.puppetlabs.com/browse/PDK-1151
+nameservers:
+- 192.0.2.53
+realm: production
+site: eqiad
+cluster: misc
+puppet_config_dir: /etc/puppet
+use_puppetdb: false
+ipaddress6: 2001:db8::42
+initsystem: systemd
+ntp_peers:
+  eqiad:
+    - ntp-01.cloudinfra.wmflabs.org
+    - ntp-02.cloudinfra.wmflabs.org
+  codfw: []
+  ulsfo: []
+  eqsin: []
+  esams: []
+wikimail_smarthost:
+  - mx-out01.wmflabs.org
+  - mx-out02.wmflabs.org
+mail_smarthost:
+  - mx-out01.wmflabs.org
+  - mx-out02.wmflabs.org
+# auges is not installed in the test environment
+# so we mock its version fact
+augeasversion: 1.2.0
+raid:
+  - hpsa
+  - md
+  - megaraid
+  - mpt
+  - ssacli
+kernel_details:
+  sysctl_settings:
+    net.ipv4.tcp_min_snd_mss: true

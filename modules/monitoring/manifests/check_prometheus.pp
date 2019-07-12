@@ -80,7 +80,7 @@
 define monitoring::check_prometheus(
     String $description,
     String $query,
-    String $prometheus_url,
+    Stdlib::HTTPUrl $prometheus_url,
     Numeric $warning,
     Numeric $critical,
     Array[Pattern[/^https:\/\/grafana\.wikimedia\.org/], 1] $dashboard_links,
@@ -95,6 +95,10 @@ define monitoring::check_prometheus(
     String $contact_group   = 'admins',
     Stdlib::HTTPUrl $notes_link = 'https://wikitech.wikimedia.org/wiki/Monitoring/Missing_notes_link',
 ) {
+    # don't allow unescaped `!` https://stackoverflow.com/a/28738919/3075306
+    if $query =~ /(?<!\\)(?:(\\\\)*)[!]/ {
+        fail('All exclamation marks in the query parameter must be escaped e.g. \!')
+    }
     $link_fail_message = 'The $dashboard_links and $notes_links URLs must not be URL-encoded'
     # notes link always has to com first to ensure the correct icon is used in icinga
     # we start with `[]` so puppet knows we want a array
