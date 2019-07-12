@@ -161,19 +161,6 @@ class profile::wmcs::nfs::primary(
         group  => 'root',
     }
 
-    file { '/usr/local/sbin/safe-du':
-        source => 'puppet:///modules/labstore/monitor/safe-du.sh',
-        mode   => '0744',
-        owner  => 'root',
-        group  => 'root',
-    }
-
-    sudo::user { 'diamond_dir_size_tracker':
-        user       => 'diamond',
-        privileges => ['ALL = NOPASSWD: /usr/local/sbin/safe-du'],
-        require    => File['/usr/local/sbin/safe-du'],
-    }
-
     if($drbd_role == 'primary') {
 
         class { 'profile::prometheus::node_directory_size':
