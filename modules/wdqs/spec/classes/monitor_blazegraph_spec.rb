@@ -6,7 +6,7 @@ describe 'icinga::monitor::wdqs', :type => :class do
                   :initsystem     => 'systemd',
   } }
 
-  it { is_expected.to contain_monitoring__graphite_threshold('wdqs-response-time-eqiad')
-                          .with_metric('varnish.eqiad.backends.be_wdqs_svc_eqiad_wmnet.GET.p99')
+  it { is_expected.to contain_monitoring__check_prometheus('wdqs-response-time-eqiad')
+                          .with_query('histogram_quantile(0.99, sum (rate(varnish_backend_requests_seconds_bucket{backend=~".*wdqs.*"}[10m])) by (le))')
   }
 end
