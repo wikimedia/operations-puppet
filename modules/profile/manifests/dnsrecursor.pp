@@ -22,11 +22,6 @@ class profile::dnsrecursor (
 
     ::dnsrecursor::monitor { [ $facts['ipaddress'], $facts['ipaddress6'] ]: }
 
-    sudo::user { 'diamond_sudo_for_pdns_recursor':
-        user       => 'diamond',
-        privileges => ['ALL=(root) NOPASSWD: /usr/bin/rec_control get-all'],
-    }
-
     sudo::user { 'prometheus_sudo_for_pdns_recursor':
         user       => 'prometheus',
         privileges => ['ALL=(root) NOPASSWD: /usr/bin/rec_control get-all'],
