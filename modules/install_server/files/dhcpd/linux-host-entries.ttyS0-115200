@@ -316,14 +316,14 @@ host kubernetes2006 {
     fixed-address kubernetes2006.codfw.wmnet;
 }
 
-host ldap-codfw-replica01.wikimedia.org {
+host ldap-replica2001.wikimedia.org {
     hardware ethernet aa:00:00:c9:cc:14;
-    fixed-address ldap-codfw-replica01.wikimedia.org;
+    fixed-address ldap-replica2001.wikimedia.org;
 }
 
-host ldap-codfw-replica02.wikimedia.org {
+host ldap-replica2002.wikimedia.org {
     hardware ethernet aa:00:00:e7:5d:40;
-    fixed-address ldap-codfw-replica02.wikimedia.org;
+    fixed-address ldap-replica2002.wikimedia.org;
 }
 
 host ldap-eqiad-replica01.wikimedia.org {
