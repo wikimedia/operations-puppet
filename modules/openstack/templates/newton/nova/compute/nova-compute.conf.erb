@@ -3,6 +3,9 @@
 #compute_driver=nova.virt.libvirt.LibvirtDriver
 compute_driver=libvirt.LibvirtDriver
 
+# Ensure VMs have the same state after a host reboot
+resume_guests_state_on_host_boot = True
+
 # No plans to use ovs
 # neutron_ovs_bridge=br-int
 

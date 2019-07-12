@@ -1,6 +1,7 @@
 # This file is managed by Puppet
 
-ON_BOOT=start
+# Let OpenStack restart active VMs
+ON_BOOT=ignore
 START_DELAY=15
 
 ON_SHUTDOWN=shutdown
