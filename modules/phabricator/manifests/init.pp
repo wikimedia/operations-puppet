@@ -112,56 +112,29 @@ class phabricator (
     # stretch - PHP (7.2) packages and Apache module
     # warning: currently Phabricator supports PHP 7.1+ but not PHP 7.0
     # https://secure.phabricator.com/rPa2cd3d9a8913d5709e2bc999efb75b63d7c19696
-    if os_version('debian >= stretch') {
-        apt::repository { 'wikimedia-php72':
-            uri        => 'http://apt.wikimedia.org/wikimedia',
-            dist       => "${::lsbdistcodename}-wikimedia",
-            components => 'component/php72',
-            notify     => Exec['apt_update_php'],
-        }
+    apt::repository { 'wikimedia-php72':
+        uri        => 'http://apt.wikimedia.org/wikimedia',
+        dist       => "${::lsbdistcodename}-wikimedia",
+        components => 'component/php72',
+        notify     => Exec['apt_update_php'],
+    }
 
-        # First installs can trip without this
-        exec {'apt_update_php':
-            command     => '/usr/bin/apt-get update',
-            refreshonly => true,
-            logoutput   => true,
-        }
+    # First installs can trip without this
+    exec {'apt_update_php':
+        command     => '/usr/bin/apt-get update',
+        refreshonly => true,
+        logoutput   => true,
+    }
 
-        if !$enable_php_fpm {
-            package { [
-                'php-apcu',
-                'php-mailparse',
-                'php7.2-mysql',
-                'php7.2-gd',
-                'php7.2-dev',
-                'php7.2-curl',
-                'php7.2-cli',
-                'php7.2-json',
-                'php7.2-ldap',
-                'php7.2-mbstring',
-                'libapache2-mod-php7.2']:
-                    ensure  => present,
-                    require => Apt::Repository['wikimedia-php72'],
-            }
-        }
-    } else {
-        # jessie - PHP (5.5/5.6) packages and Apache module
-        package { [
-            'php5-apcu',
-            'php5-mysqlnd',
-            'php5-gd',
-            'php5-mailparse',
-            'php5-dev',
-            'php5-curl',
-            'php5-cli',
-            'php5-json',
-            'php5-ldap',
-            'libapache2-mod-php5']:
-                ensure => present;
+    if !$enable_php_fpm {
+        package { ['php-apcu','php-mailparse','php7.2-mysql','php7.2-gd',
+                  'php7.2-dev','php7.2-curl','php7.2-cli', 'php7.2-json',
+                  'php7.2-ldap','php7.2-mbstring','libapache2-mod-php7.2']:
+            ensure  => present,
+            require => Apt::Repository['wikimedia-php72'],
         }
     }
 
-    # common packages that exist in jessie/stretch
     package { [
         'python-pygments',
         'python-phabricator',
@@ -237,22 +210,12 @@ class phabricator (
         require => $base_requirements,
     }
 
-    if os_version('debian >= stretch') {
-        if !$enable_php_fpm {
-          file { '/etc/php/7.2/apache2/conf.d/php.ini':
-              content => template('phabricator/php72.ini.erb'),
-              notify  => Service['apache2'],
-              require => Package['libapache2-mod-php7.2'],
-          }
+    if !$enable_php_fpm {
+        file { '/etc/php/7.2/apache2/conf.d/php.ini':
+            content => template('phabricator/php72.ini.erb'),
+            notify  => Service['apache2'],
+            require => Package['libapache2-mod-php7.2'],
         }
-    }
-
-    if os_version('debian == jessie') {
-      file { '/etc/php5/apache2/php.ini':
-          content => template('phabricator/php.ini.erb'),
-          notify  => Service['apache2'],
-          require => Package['libapache2-mod-php5'],
-      }
     }
 
     file { '/etc/apache2/phabbanlist.conf':
