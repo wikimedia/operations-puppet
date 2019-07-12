@@ -31,3 +31,8 @@ profile::netbox::netbox_report_checks:
         alert: true
         check_interval: 5
         run_interval: '*-*-* *:06/30:00' # every 30 minutes
+    -   name: librenms
+        classes: 'librenms.LibreNMS'
+        alert: true
+        check_interval: 5
+        run_interval: '*-*-* *:06/30:00' # every 30 minutes
