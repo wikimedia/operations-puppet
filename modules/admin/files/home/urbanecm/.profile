@@ -1,6 +1,5 @@
 #!/bin/bash
 
-umask 0022
 export PATH=$PATH:~/bin
 # enable color support of ls and also add handy aliases
 if [ -x /usr/bin/dircolors ]; then
