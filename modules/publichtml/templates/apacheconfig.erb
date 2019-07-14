@@ -24,4 +24,8 @@
         Require all granted
     </Directory>
 
+    <Location "/">
+        Header set Access-Control-Allow-Origin "*"
+    </Location>
+
 </VirtualHost>
