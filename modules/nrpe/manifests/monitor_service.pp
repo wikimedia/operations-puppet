@@ -20,8 +20,7 @@
 #    $timeout
 #       Defaults to 10. The check timeout in seconds (check_nrpe -t option)
 #    $critical
-#       Defaults to false. It will passed directly to monitoring::service which
-#       will use nagios_service, so extra care, it is not a boolean, it is a string
+#       Defaults to false. If true, this will be a paging alert.
 #    $event_handler
 #       Default to false. If present execute this registered command on the
 #       Nagios server.
@@ -30,16 +29,16 @@
 #    $ensure
 #       Defaults to present
 #
-define nrpe::monitor_service( $description    = undef,
-                              $nrpe_command   = undef,
-                              $contact_group  = hiera('contactgroups', 'admins'),
-                              $retries        = 3,
-                              $timeout        = 10,
-                              $critical       = false,
-                              $event_handler  = undef,
-                              $check_interval = 1,
-                              $retry_interval = 1,
-                              $notes_url      = undef,
+define nrpe::monitor_service( $description      = undef,
+                              $nrpe_command     = undef,
+                              $contact_group    = hiera('contactgroups', 'admins'),
+                              $retries          = 3,
+                              $timeout          = 10,
+                              Boolean $critical = false,
+                              $event_handler    = undef,
+                              $check_interval   = 1,
+                              $retry_interval   = 1,
+                              $notes_url        = undef,
                               Wmflib::Ensure $ensure = present) {
     unless $ensure == 'absent' or ($description and $nrpe_command) {
         fail('Description and nrpe_command parameters are mandatory for ensure != absent')

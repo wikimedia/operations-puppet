@@ -8,7 +8,7 @@ describe 'nrpe::monitor_service', :type => :define do
           :description   => 'this is a description',
           :contact_group => 'none',
           :nrpe_command  => '/usr/local/bin/mycommand -i this -o that',
-          :critical      => 'false',
+          :critical      => false,
           :timeout       => 42,
           }
       end
@@ -24,7 +24,7 @@ describe 'nrpe::monitor_service', :type => :define do
               :retries       => 3,
               :ensure        => 'present',
               :check_command => 'nrpe_check!check_something!42',
-              :critical      => 'false'
+              :critical      => false
           )
       end
     end
@@ -33,7 +33,7 @@ describe 'nrpe::monitor_service', :type => :define do
       let(:params) do {
           :nrpe_command  => '/usr/local/bin/mycommand -i this -o that',
           :contact_group => 'none',
-          :critical      => 'false',
+          :critical      => false,
           :timeout       => 42,
           }
       end
@@ -46,7 +46,7 @@ describe 'nrpe::monitor_service', :type => :define do
       let(:params) do {
           :description   => 'none',
           :contact_group => 'none',
-          :critical      => 'false',
+          :critical      => false,
           :timeout       => 42,
           }
       end
@@ -59,7 +59,7 @@ describe 'nrpe::monitor_service', :type => :define do
       let(:params) do {
           :description   => 'foobar',
           :contact_group => 'none',
-          :critical      => 'false',
+          :critical      => false,
           :timeout       => 42,
           :ensure        => 'absent',
           }
@@ -75,7 +75,7 @@ describe 'nrpe::monitor_service', :type => :define do
             :retries       => 3,
             :ensure        => 'absent',
             :description   => 'foobar',
-            :critical      => 'false'
+            :critical      => false
         )
       end
     end
@@ -84,7 +84,7 @@ describe 'nrpe::monitor_service', :type => :define do
       let(:params) do {
           :nrpe_command  => '/usr/local/bin/mycommand -i this -o that',
           :contact_group => 'none',
-          :critical      => 'false',
+          :critical      => false,
           :timeout       => 42,
           :ensure        => 'absent',
           }
@@ -100,7 +100,7 @@ describe 'nrpe::monitor_service', :type => :define do
             :retries       => 3,
             :ensure        => 'absent',
             :check_command => 'nrpe_check!check_something!42',
-            :critical      => 'false'
+            :critical      => false
         )
       end
     end
