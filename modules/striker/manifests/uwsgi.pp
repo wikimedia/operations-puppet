@@ -89,10 +89,11 @@ class striker::uwsgi(
     require_package(
         'libffi6',
         'libldap-2.4-2',
-        'libsasl2-2',
-        'python3-wheel',
-        'python-virtualenv',
         'libmariadbclient18',
+        'libsasl2-2',
+        'python3-venv',
+        'python3-virtualenv',
+        'python3-wheel',
     )
 
     # Striker is controlled via a custom systemd unit (uwsgi-striker),

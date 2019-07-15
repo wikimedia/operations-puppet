@@ -6,6 +6,7 @@ class striker::build {
     requires_os('debian stretch')
     require_package(
         'build-essential',
+        'git-review',
         'libffi-dev',
         'libldap2-dev',
         'libmariadbclient-dev',
@@ -13,8 +14,9 @@ class striker::build {
         'libssl-dev',
         'python3',
         'python3-dev',
+        'python3-venv',
+        'python3-virtualenv',
         'python3-wheel',
-        'python-virtualenv',
         'realpath',
     )
 }
