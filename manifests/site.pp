@@ -637,12 +637,6 @@ node 'db2041.codfw.wmnet' {
     role(spare::system)
 }
 
-# To be decommissioned # T225090
-node 'db2042.codfw.wmnet' {
-    role(spare::system)
-}
-
-
 ## m1 shard
 
 # See also multiinstance misc hosts db1117 and db2078 below
