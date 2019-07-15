@@ -304,7 +304,10 @@ profile::kubernetes::deployment_server::services:
 #         somekey: somevalue
 #      eqiad:
 #         somekey: somevalue
-
+#profile::kubernetes::deployment_server_secrets::admin_services:
+#  calico:
+#    staging:
+#      somekey: somesecretvalue
 profile::mediawiki::php::php_version: "7.2"
 profile::mediawiki::deployment::server::rsync_host: "deployment.%{::site}.wmnet"
 profile::mediawiki::apc_shm_size: 128M

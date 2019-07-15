@@ -95,6 +95,10 @@ profile::kubernetes::deployment_server::services:
 #      eqiad:
 #         somekey: somevalue
 
+#profile::kubernetes::deployment_server_secrets::admin_services:
+#  calico:
+#    staging:
+#      somekey: somesecretvalue
 
 # Specified in the private repo in this form
 #profile::kubernetes::deployment_server::tokens:
