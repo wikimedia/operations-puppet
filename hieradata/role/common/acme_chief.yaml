@@ -62,6 +62,7 @@ profile::acme_chief::certificates:
         - '^seaborgium\.wikimedia\.org$'
         - '^serpens\.wikimedia\.org$'
         - '^ldap-eqiad-replica0[12]\.wikimedia\.org$'
+        - '^ldap-replica200[12]\.wikimedia\.org$'
     ldap-codfw1dev:
         CN: 'cloudservices2002-dev.wikimedia.org'
         SNI:
