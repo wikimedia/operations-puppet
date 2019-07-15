@@ -8,17 +8,14 @@ class profile::grafana::production {
 
     # On Grafana 5 and later, datasource configurations are stored in Puppet
     # as YAML and pushed to Grafana that way, which reads them at startup.
-    # Being on stretch is a proxy for Grafana>=5.
-    if os_version('debian >= stretch') {
-        file { '/etc/grafana/provisioning/datasources/production-datasources.yaml':
-            ensure  => present,
-            source  => 'puppet:///modules/profile/grafana/production-datasources.yaml',
-            owner   => 'root',
-            group   => 'grafana',
-            mode    => '0440',
-            require => Package['grafana'],
-            notify  => Service['grafana-server'],
-        }
+    file { '/etc/grafana/provisioning/datasources/production-datasources.yaml':
+        ensure  => present,
+        source  => 'puppet:///modules/profile/grafana/production-datasources.yaml',
+        owner   => 'root',
+        group   => 'grafana',
+        mode    => '0440',
+        require => Package['grafana'],
+        notify  => Service['grafana-server'],
     }
 
     grafana::dashboard { 'varnish-http-errors':
