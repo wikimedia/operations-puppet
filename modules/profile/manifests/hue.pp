@@ -5,6 +5,8 @@
 class profile::hue (
     $hive_server_host           = hiera('profile::hue::hive_server_host'),
     $database_host              = hiera('profile::hue::database_host'),
+    $ldap_config                = hiera('ldap'),
+    $ldap_base_dn               = hiera('profile::hue::ldap_base_dn', 'dc=wikimedia,dc=org'),
     $database_engine            = hiera('profile::hue::database_engine', 'mysql'),
     $database_user              = hiera('profile::hue::database_user', 'hue'),
     $database_password          = hiera('profile::hue::database_password', 'hue'),
@@ -37,8 +39,7 @@ class profile::hue (
     class { '::cdh::sqoop': }
     class { '::cdh::mahout': }
 
-    # LDAP Labs config is the same as LDAP in production.
-    class { '::ldap::config::labs': }
+    class { '::passwords::ldap::production': }
 
     # For snappy support with Hue.
     require_package('python-snappy')
@@ -55,10 +56,10 @@ class profile::hue (
         database_port              => $database_port,
         secret_key                 => $session_secret_key,
         smtp_from_email            => "hue@${::fqdn}",
-        ldap_url                   => inline_template('<%= scope.lookupvar("::ldap::config::labs::servernames").collect { |host| "ldaps://#{host}" }.join(" ") %>'),
-        ldap_bind_dn               => $::ldap::config::labs::ldapconfig['proxyagent'],
-        ldap_bind_password         => $::ldap::config::labs::ldapconfig['proxypass'],
-        ldap_base_dn               => $::ldap::config::labs::basedn,
+        ldap_url                   => "ldaps://${ldap_config[ro-server]}",
+        ldap_bind_dn               => "cn=proxyagent,ou=profile,${ldap_base_dn}",
+        ldap_bind_password         => $passwords::ldap::production::proxypass,
+        ldap_base_dn               => $ldap_base_dn,
         ldap_username_pattern      => 'uid=<username>,ou=people,dc=wikimedia,dc=org',
         ldap_user_filter           => 'objectclass=person',
         ldap_user_name_attr        => 'uid',

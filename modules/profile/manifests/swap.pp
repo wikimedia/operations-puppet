@@ -9,8 +9,8 @@
 #       If given, users will authenticate with WMF LDAP, and only be authorized
 #       if they are in these groups.  Default wmf, nda
 #
-#   [*ldap_server*]
-#       LDAP server address.  Default labsldapconfig['hostname']
+#   [*ldap_config*]
+#       LDAP production config containing the read-only endpoint to use.
 #
 #   [*posix_groups*]
 #       Users in these group will be allowed to log into JupyterHub.
@@ -25,7 +25,7 @@ class profile::swap(
         'cn=nda,ou=groups,dc=wikimedia,dc=org',
         'cn=wmf,ou=groups,dc=wikimedia,dc=org',
     ]),
-    $ldap_server         = hiera('labsldapconfig')['hostname'],
+    $ldap_config         = hiera('ldap'),
     $posix_groups        = hiera('admin::groups', undef),
     $rsync_hosts_allow   = hiera('profile::swap::rsync_hosts_allow', undef),
     $dumps_servers       = hiera('dumps_dist_nfs_servers'),
@@ -67,7 +67,7 @@ class profile::swap(
     }
 
     class { 'jupyterhub':
-        ldap_server           => $ldap_server,
+        ldap_server           => $ldap_config['ro-server'],
         ldap_bind_dn_template => 'uid={username},ou=people,dc=wikimedia,dc=org',
         # LDAP authenticate anyone in these groups.
         ldap_groups           => $ldap_groups,
