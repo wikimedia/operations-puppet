@@ -107,7 +107,7 @@ profile::trafficserver::backend::storage_elements:
     size: 256M
 profile::trafficserver::backend::log_formats:
   - name: wmf
-    format: 'ReqMethod:%<cqhm> RespStatus:%<pssc> OriginStatus:%<sssc> ReqURL:%<cquuc> ReqHeader:User-Agent:%<{User-agent}cqh> ReqHeader:Host:%<{Host}cqh> ReqHeader:X-Client-IP:%<{X-Client-IP}cqh> RespHeader:X-Cache-Int:%<{X-Cache-Int}psh>'
+    format: 'Date:%<cqtd> Time:%<cqtt> ConnAttempts:%<sca> ConnReuse:%<sstc> TTFetchHeaders:%<{TS_MILESTONE_SERVER_READ_HEADER_DONE-TS_MILESTONE_SM_START}msdms> OriginServer:%<shn> OriginServerTime:%<stms> CacheResultCode:%<crc> CacheWriteResult:%<cwr> ReqMethod:%<cqhm> RespStatus:%<pssc> OriginStatus:%<sssc> ReqURL:%<cquuc> BereqURL:%<cqtx> ReqHeader:User-Agent:%<{User-agent}cqh> ReqHeader:Host:%<{Host}cqh> ReqHeader:X-Client-IP:%<{X-Client-IP}cqh> RespHeader:X-Cache-Int:%<{X-Cache-Int}psh> RespHeader:Backend-Timing:%<{Backend-Timing}psh>'
 profile::trafficserver::backend::log_filters:
   - name: notpurge
     action: reject
