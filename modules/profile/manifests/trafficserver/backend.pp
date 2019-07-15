@@ -118,6 +118,12 @@ class profile::trafficserver::backend (
         atsmtail_port  => $atsmtail_backend_port,
     }
 
+    mtail::program { 'atsbackend':
+        source      => 'puppet:///modules/mtail/programs/atsbackend.mtail',
+        destination => $atsmtail_backend_progs,
+        notify      => Service["atsmtail@${instance_name}"],
+    }
+
     # Script to depool, restart and repool ATS
     file { '/usr/local/sbin/ats-backend-restart':
         ensure => present,

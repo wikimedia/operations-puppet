@@ -1,0 +1,36 @@
+# Three counters to implement Prometheus histograms.
+counter ats_backend_requests_seconds_bucket by le, method, backend
+counter ats_backend_requests_seconds_sum by status, method, backend
+counter ats_backend_requests_seconds_count by status, method, backend
+
+# Log entries representing cache hits have OriginStatus:000.
+# Match OriginStatus:[1-9][0-9][0-9] to exclude those.
+/TTFetchHeaders:(?P<ttfb>[0-9.]+).*OriginServer:(?P<backend>\S+).*ReqMethod:(?P<method>[A-Z]+).*OriginStatus:(?P<status>[1-9][0-9][0-9])/ {
+  ats_backend_requests_seconds_count[$status][$method][$backend]++
+
+  # ttfb is in milliseconds, and we want seconds.
+  ats_backend_requests_seconds_sum[$status][$method][$backend] += $ttfb / 1000.0
+
+  # these statements "fall through", so the histogram is cumulative. The
+  # collecting system can compute the percentile bands by taking the ratio of
+  # each bucket value over the final bucket.
+  $ttfb < 10 {
+    ats_backend_requests_seconds_bucket["0.01"][$method][$backend]++
+  }
+  $ttfb < 50 {
+    ats_backend_requests_seconds_bucket["0.05"][$method][$backend]++
+  }
+  $ttfb < 100 {
+    ats_backend_requests_seconds_bucket["0.1"][$method][$backend]++
+  }
+  $ttfb < 500 {
+    ats_backend_requests_seconds_bucket["0.5"][$method][$backend]++
+  }
+  $ttfb < 1000 {
+    ats_backend_requests_seconds_bucket["1.0"][$method][$backend]++
+  }
+  $ttfb < 5000 {
+    ats_backend_requests_seconds_bucket["5.0"][$method][$backend]++
+  }
+  ats_backend_requests_seconds_bucket["+Inf"][$method][$backend]++
+}
