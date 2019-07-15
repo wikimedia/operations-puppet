@@ -8,6 +8,8 @@ class role::ci::slave::labs {
     include ::profile::ci::worker_localhost
     include ::profile::zuul::cloner
 
+    include ::apt::unattendedupgrades
+
     # Debian slaves are used to build Debian packages for all our distributions
     system::role { '::package_builder':
         description => 'CI package building',

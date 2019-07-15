@@ -3,8 +3,6 @@
 class contint::packages::labs {
     requires_realm('labs')
 
-    require ::contint::packages::apt
-
     include ::contint::packages::javascript
     include ::contint::packages::ruby
 
