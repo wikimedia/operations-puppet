@@ -94,5 +94,4 @@ profile::elasticsearch::common_settings:
 # profile::mjolnir::kafka_bulk_daemon::group_id: "cirrussearch_updates_cloudelastic"
 # profile::mjolnir::kafka_bulk_daemon::topics:
 #  - eqiad.cirrussearch.page-index-update
-diamond::remove: true
 profile::elasticsearch::cirrus::enable_remote_search: false

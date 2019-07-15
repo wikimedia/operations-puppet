@@ -16,4 +16,3 @@ profile::icinga::virtual_host: icinga.wikimedia.org
 profile::icinga::active_host: icinga1001.wikimedia.org
 profile::icinga::partners:
   - 'icinga2001.wikimedia.org'
-diamond::remove: true

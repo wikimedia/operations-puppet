@@ -24,6 +24,5 @@ profile::hive::client::server_host: an-coord1001.eqiad.wmnet
 profile::hive::client::server_port: 10000
 profile::hive::client::metastore_host: 'an-coord1001.eqiad.wmnet'
 
-diamond::remove: true
 profile::base::debdeploy::exclude_mounts:
   - /mnt/hdfs

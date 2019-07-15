@@ -1,4 +1,3 @@
 cluster: dumps
 admin::groups:
   - htmldumps-admin
-diamond::remove: true

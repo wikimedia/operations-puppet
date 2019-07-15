@@ -1,3 +1,2 @@
 admin::groups:
   - piwik-roots
-diamond::remove: true

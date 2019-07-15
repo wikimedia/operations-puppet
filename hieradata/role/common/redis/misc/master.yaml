@@ -12,4 +12,3 @@ profile::redis::master::settings:
   save: '""'
   stop_writes_on_bgsave_error: false
   slave_read_only: false
-diamond::remove: true

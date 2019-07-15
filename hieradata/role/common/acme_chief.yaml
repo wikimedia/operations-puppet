@@ -203,4 +203,3 @@ profile::acme_chief::accounts:
     directory: "https://acme-v02.api.letsencrypt.org/directory"
 profile::acme_chief::active: acmechief1001.eqiad.wmnet
 profile::acme_chief::passive: acmechief2001.codfw.wmnet
-diamond::remove: true

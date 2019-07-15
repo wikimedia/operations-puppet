@@ -5,4 +5,3 @@ pybaltest::hosts:
 # Conftool
 profile::conftool::client::namespace: "/eqiad.wmnet/conftool"
 profile::conftool::master::sync_dir: "/etc/conftool/data"
-diamond::remove: true

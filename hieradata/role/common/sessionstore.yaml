@@ -75,4 +75,3 @@ profile::cassandra::settings:
 
 admin::groups:
   - sessionstore-roots
-diamond::remove: true

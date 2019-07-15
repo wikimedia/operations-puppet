@@ -51,7 +51,6 @@ role::kibana::ldap_groups:
   - cn=ops,ou=groups,dc=wikimedia,dc=org
   - cn=nda,ou=groups,dc=wikimedia,dc=org
   - cn=wmf,ou=groups,dc=wikimedia,dc=org
-diamond::remove: true
 
 profile::prometheus::statsd_exporter::mappings:
   # In some instances, e.g. mediawiki, the sender and channel are concatenated with a dot separator.  Level is the last field.

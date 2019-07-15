@@ -10,4 +10,3 @@ prometheus::node_exporter::collectors_extra:
 profile::pybal::config_source: etcd
 profile::pybal::bgp: "yes"
 profile::pybal::primary: true
-diamond::remove: true

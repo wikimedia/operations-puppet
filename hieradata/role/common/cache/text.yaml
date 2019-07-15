@@ -462,4 +462,3 @@ profile::cache::kafka::statsv::kafka_cluster_name: main-eqiad
 profile::cache::kafka::eventlogging::monitoring_enabled: true
 profile::cache::kafka::eventlogging::kafka_cluster_name: jumbo-eqiad
 profile::cache::kafka::eventlogging::ssl_enabled: true
-diamond::remove: true

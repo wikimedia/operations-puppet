@@ -51,6 +51,5 @@ profile::analytics::refinery::job::camus::monitoring_enabled: true
 # Http proxy to get project-namespace infos from API using python
 profile::analytics::refinery::job::project_namespace_map::http_proxy: 'http://webproxy.eqiad.wmnet:8080'
 
-diamond::remove: true
 profile::base::debdeploy::exclude_mounts:
   - /mnt/hdfs

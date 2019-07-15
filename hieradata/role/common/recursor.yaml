@@ -2,7 +2,6 @@ cluster: recursor
 
 prometheus::node_exporter::collectors_extra:
   - 'ntp'
-diamond::remove: true
 
 profile::bird::advertise_vips:
   recdns.anycast.wmnet:

@@ -1,4 +1,3 @@
 profile::archiva::enable_backup: true
 profile::archiva::proxy::ssl_enabled: true
 profile::archiva::proxy::monitoring_enabled: true
-diamond::remove: true

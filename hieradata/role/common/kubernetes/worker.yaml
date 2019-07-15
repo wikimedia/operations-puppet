@@ -40,4 +40,3 @@ role::lvs::realserver::pools:
   cxserver: {}
   sessionstore: {}
   termbox: {}
-diamond::remove: true

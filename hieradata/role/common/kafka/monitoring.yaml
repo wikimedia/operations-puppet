@@ -16,4 +16,3 @@ profile::kafka::monitoring::config:
   logging-codfw:
     burrow_port: 8101
     burrow_exporter_port: 9501
-diamond::remove: true

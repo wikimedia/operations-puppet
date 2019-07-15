@@ -37,5 +37,3 @@ profile::hive::client::metastore_host: 'an-coord1001.eqiad.wmnet'
 
 prometheus::node_exporter::collectors_extra:
   - meminfo_numa
-
-diamond::remove: true

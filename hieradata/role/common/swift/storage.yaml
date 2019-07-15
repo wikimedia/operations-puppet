@@ -188,4 +188,3 @@ profile::prometheus::statsd_exporter::mappings:
     labels:
       method: "$3"
       status: "$4"
-diamond::remove: true

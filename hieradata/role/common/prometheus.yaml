@@ -6,7 +6,6 @@ profile::base::domain_search:
   - esams.wmnet
   - ulsfo.wmnet
   - eqsin.wmnet
-diamond::remove: true
 prometheus::server::mysqld_exporter::mysql::host: db1115.eqiad.wmnet
 prometheus::server::mysqld_exporter::mysql::port: 3306
 prometheus::server::mysqld_exporter::mysql::database: zarcillo

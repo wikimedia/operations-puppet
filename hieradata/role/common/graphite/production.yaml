@@ -3,4 +3,3 @@ admin::groups:
   - perf-roots
   - graphite-admins
 graphite::web::uwsgi_processes: 16
-diamond::remove: true

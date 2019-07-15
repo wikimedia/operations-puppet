@@ -7,4 +7,3 @@ profile::labs::db::kill_long_running_queries::pt_kill_match_command: 'Query|Exec
 profile::labs::db::kill_long_running_queries::pt_kill_match_user: '^[spu][0-9]'
 profile::labs::db::kill_long_running_queries::pt_kill_log: '/var/log/wmf-pt-kill/wmf-pt-kill.log'
 profile::labs::db::kill_long_running_queries::pt_kill_socket: '/run/mysqld/mysqld.sock'
-diamond::remove: true

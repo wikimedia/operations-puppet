@@ -29,4 +29,3 @@ profile::mariadb::backup::check::snapshot::sections:
  - s8
  - x1
 monitor_screens: false
-diamond::remove: true

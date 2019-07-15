@@ -169,4 +169,3 @@ profile::druid::overlord::properties:
 profile::druid::overlord::env:
   DRUID_HEAP_OPTS: "-Xmx1g -Xms1g"
   DRUID_EXTRA_JVM_OPTS: "-XX:NewSize=256m -XX:MaxNewSize=256m -XX:+UseConcMarkSweepGC -XX:+PrintGCDetails -XX:+PrintGCTimeStamps"
-diamond::remove: true

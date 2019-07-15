@@ -5,4 +5,3 @@ profile::acme_chief::accounts:
 profile::acme_chief::active: acmechief-test1001.eqiad.wmnet
 profile::acme_chief::passive: acmechief-test2001.codfw.wmnet
 profile::base::notifications: disabled
-diamond::remove: true

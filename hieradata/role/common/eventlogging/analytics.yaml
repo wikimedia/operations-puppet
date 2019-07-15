@@ -43,4 +43,3 @@ profile::eventlogging::analytics::mysql::db: 'm4-master.eqiad.wmnet/log'
 # which is used by the downstream mysql eventlogging-consumer to write
 # events to MySQL.  Only low volume topics are allowed into eventlogging-valid-mixed.
 profile::eventlogging::analytics::processor::valid_mixed_filter_enabled: true
-diamond::remove: true

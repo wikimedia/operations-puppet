@@ -1,2 +1,1 @@
 cluster: graphite
-diamond::remove: true

@@ -15,7 +15,6 @@ profile::ores::web::workers: 135
 profile::ores::web::redis_host: "oresrdb.svc.%{::site}.wmnet"
 # The password is in the private store, this is here for completeness
 # profile::ores::web::redis_password: nothing
-diamond::remove: true
 
 profile::prometheus::statsd_exporter::mappings:
   - match: ores.*.precache_request.*.*

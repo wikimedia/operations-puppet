@@ -6,7 +6,6 @@ admin::groups:
   - snapshot-users
 profile::mediawiki::php::enable_fpm: false
 profile::mediawiki::php::php_version: "7.2"
-diamond::remove: true
 profile::base::debdeploy::filter_services:
   hhvm:
     - '*'

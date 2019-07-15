@@ -5,7 +5,6 @@ profile::netbox::slaves: [ 'netmon2001.wikimedia.org' ]
 profile::netbox::slave_ipv4: '208.80.153.110'
 profile::netbox::slave_ipv6: '2620:0:860:4:208:80:153:110'
 profile::netbox::ganeti_sync_interval: 15
-diamond::remove: true
 profile::netbox::netbox_report_checks:
     -   name: puppetdb
         classes: 'puppetdb.PuppetDB'

@@ -1,4 +1,3 @@
 monitor_screens: false
 profile::mariadb::misc::eventlogging::database::shard: 'm4'
 profile::mariadb::misc::eventlogging::database::master: true
-diamond::remove: true

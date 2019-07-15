@@ -5,4 +5,3 @@ admin::groups:
 # primary node with logging::mediawiki::udp2log role.
 profile::webperf::arclamp::redis_host: 'mwlog1001.eqiad.wmnet'
 profile::webperf::arclamp::redis_port: 6379
-diamond::remove: true

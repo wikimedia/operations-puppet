@@ -305,9 +305,6 @@ profile::kubernetes::deployment_server::services:
 #      eqiad:
 #         somekey: somevalue
 
-
-
-diamond::remove: true
 profile::mediawiki::php::php_version: "7.2"
 profile::mediawiki::deployment::server::rsync_host: "deployment.%{::site}.wmnet"
 profile::mediawiki::apc_shm_size: 128M

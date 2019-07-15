@@ -124,4 +124,3 @@ profile::ci::kubernetes_config::namespace: ci
 profile::ci::kubernetes_config::master: neon.eqiad.wmnet
 # Specified in the private repo:
 # profile::ci::kubernetes_config::token
-diamond::remove: true

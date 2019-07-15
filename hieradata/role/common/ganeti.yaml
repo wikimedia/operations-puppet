@@ -18,7 +18,6 @@ profile::ganeti::ganeti01.svc.eqiad.wmnet::nodes:
   - ganeti1006.eqiad.wmnet
   - ganeti1007.eqiad.wmnet
   - ganeti1008.eqiad.wmnet
-diamond::remove: true
 profile::ganeti::rapi_nodes:
     - netmon1002.wikimedia.org
     - netmon2001.wikimedia.org

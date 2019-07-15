@@ -35,5 +35,3 @@ profile::kafka::broker::group_initial_rebalance_delay: 10000
 
 profile::kafka::broker::max_heap_size: '2g'
 profile::kafka::broker::num_partitions: 3
-
-diamond::remove: true

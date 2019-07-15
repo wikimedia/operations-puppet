@@ -8,7 +8,6 @@ profile::mediawiki::php::enable_fpm: true
 #profile::php_fpm::fcgi_port: 8000
 # Bump the connections per backend to 5 in mcrouter, see T203786
 profile::mediawiki::mcrouter_wancache::num_proxies: 5
-diamond::remove: true
 has_lvs: true
 profile::mediawiki::webserver::has_tls: true
 profile::mediawiki::httpd::logrotate_retention: 12

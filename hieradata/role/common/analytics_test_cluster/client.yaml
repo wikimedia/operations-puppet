@@ -43,6 +43,5 @@ profile::kerberos::keytabs::keytabs_metadata:
 
 profile::analytics::cluster::client::kerberos_enabled: true
 
-diamond::remove: true
 profile::base::debdeploy::exclude_mounts:
   - /mnt/hdfs

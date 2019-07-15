@@ -2,4 +2,3 @@ cluster: management
 admin::groups:
   - datacenter-ops
 monitor_screens: false
-diamond::remove: true

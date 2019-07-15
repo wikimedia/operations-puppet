@@ -1,3 +1,1 @@
 profile::standard::has_default_mail_relay: false
-
-diamond::remove: true

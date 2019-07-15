@@ -30,8 +30,6 @@ profile::hive::client::metastore_host: 'analytics1030.eqiad.wmnet'
 profile::hive::client::hive_server2_authentication: 'KERBEROS'
 profile::hive::client::hive_server2_authentication_kerberos_principal: 'hive/_HOST@WIKIMEDIA'
 
-diamond::remove: true
-
 profile::hive::client::ensure_hive_site_in_hdfs: true
 profile::hive::site_hdfs::use_kerberos: true
 

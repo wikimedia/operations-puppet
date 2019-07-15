@@ -9,7 +9,6 @@ admin::groups:
 
 parsoid::logging_name: parsoid-tests
 parsoid::statsd_prefix: parsoid-tests
-diamond::remove: true
 
 profile::base::notifications: disabled
 

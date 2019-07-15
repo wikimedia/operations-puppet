@@ -116,7 +116,6 @@ profile::prometheus::statsd_exporter::mappings:
       labels:
         port: "$2"
 
-diamond::remove: true
 mtail::logs:
   - /var/log/haproxy/haproxy.log
 mtail::group: 'adm'

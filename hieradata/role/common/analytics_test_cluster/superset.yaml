@@ -8,4 +8,3 @@ admin::groups:
 profile::superset::database_uri: mysql://superset@analytics1030.eqiad.wmnet/superset
 profile::superset::workers: 8
 profile::superset::ldap_proxy_enabled: true
-diamond::remove: true

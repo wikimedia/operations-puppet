@@ -12,4 +12,3 @@ profile::druid::turnilo::druid_clusters:
     type: druid
 
 profile::druid::turnilo::monitoring_enabled: true
-diamond::remove: true

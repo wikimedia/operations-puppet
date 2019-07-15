@@ -4,5 +4,4 @@ profile::base::domain_search:
   - codfw.wmnet
 admin::groups:
   - all-users
-diamond::remove: true
 

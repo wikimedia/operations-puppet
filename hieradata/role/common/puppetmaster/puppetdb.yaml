@@ -14,4 +14,3 @@ profile::puppetdb::slaves: [nihal.codfw.wmnet]
 profile::puppetdb::jvm_opts: '-Xmx6g'
 profile::puppetdb::puppetboard_hosts: 'puppetboard1001.eqiad.wmnet puppetboard2001.codfw.wmnet'
 profile::puppetdb::rsyslog::elk: true
-diamond::remove: true

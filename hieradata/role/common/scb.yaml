@@ -152,5 +152,3 @@ profile::recommendation_api::dbuser: recommendationapiservice
 profile::cpjobqueue::redis_path: "/var/run/nutcracker/redis_%{::site}.sock"
 profile::cpjobqueue::jobrunner_host: https://jobrunner.discovery.wmnet
 profile::cpjobqueue::videoscaler_host: https://videoscaler.discovery.wmnet
-
-diamond::remove: true

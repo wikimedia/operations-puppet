@@ -24,4 +24,3 @@ profile::wdqs::use_revisions: true
 # exclude wdqs hosts from screen monitoring
 # they are often used to monitor logs, for example by smalyshev
 monitor_screens: false
-diamond::remove: true

@@ -1,3 +1,2 @@
 profile::debmonitor::server::public_server_name: debmonitor.wikimedia.org
 profile::debmonitor::server::django_mysql_db_host: m2-master.eqiad.wmnet
-diamond::remove: true

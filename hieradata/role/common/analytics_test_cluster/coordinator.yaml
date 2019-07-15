@@ -94,6 +94,4 @@ profile::hadoop::spark2::extra_settings:
   spark.io.encryption.keySizeBits: 128
   spark.io.encryption.keygen.algorithm: HmacSHA1
 
-diamond::remove: true
-
 profile::base::notifications: disabled

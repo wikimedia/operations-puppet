@@ -6,4 +6,3 @@ profile::microsites::design::server_name: 'design.wikimedia.org'
 profile::microsites::design::server_admin: 'noc@wikimedia.org'
 profile::microsites::sitemaps::server_name: 'sitemaps.wikimedia.org'
 profile::microsites::sitemaps::server_admin: 'noc@wikimedia.org'
-diamond::remove: true

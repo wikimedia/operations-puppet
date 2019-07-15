@@ -22,4 +22,3 @@ profile::memcached::size: '89088'
 profile::memcached::extended_options:
   - 'slab_reassign'
 profile::memcached::port: '11211'
-diamond::remove: true

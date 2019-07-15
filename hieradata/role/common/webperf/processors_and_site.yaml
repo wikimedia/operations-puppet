@@ -7,4 +7,3 @@ graphite_host: graphite-in.eqiad.wmnet
 
 profile::webperf::site::server_name: performance.wikimedia.org
 profile::webperf::site::xhgui_host: tungsten.eqiad.wmnet
-diamond::remove: true

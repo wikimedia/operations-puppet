@@ -18,4 +18,3 @@ profile::kubernetes::master::service_node_port_range: '1-65535'
 # TODO: This needs to become a profile
 role::lvs::realserver::pools:
   kubemaster: {}
-diamond::remove: true

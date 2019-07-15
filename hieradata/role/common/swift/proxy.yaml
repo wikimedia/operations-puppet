@@ -172,4 +172,3 @@ profile::prometheus::statsd_exporter::mappings:
     name: "swift_dispersion_policy_container_$3"
     labels:
       storage_policy: "$2"
-diamond::remove: true

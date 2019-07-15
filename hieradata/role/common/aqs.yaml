@@ -116,4 +116,3 @@ profile::aqs::statsd_host: statsd.eqiad.wmnet
 
 role::lvs::realserver::pools:
   aqs: {}
-diamond::remove: true

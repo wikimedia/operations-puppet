@@ -10,4 +10,3 @@ profile::docker::registry::swift_username: "docker"
 profile::docker::registry::swift_auth_url: "http://ms-fe.svc.codfw.wmnet/v1/"
 profile::docker::swift_container: "docker_registry"
 profile::docker::registry::certname: "docker-registry.discovery.wmnet"
-diamond::remove: true

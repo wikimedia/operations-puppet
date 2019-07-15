@@ -3,4 +3,3 @@ admin::groups:
   - contint-admins
 cluster: ci
 contactgroups: 'admins,contint'
-diamond::remove: true
