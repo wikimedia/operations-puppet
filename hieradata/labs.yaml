@@ -112,6 +112,9 @@ profile::trafficserver::backend::log_filters:
   - name: notpurge
     action: reject
     condition: cqhm MATCH PURGE
+  - name: notvarnishcheck
+    action: reject
+    condition: '%<{User-agent}cqh> MATCH Varnish backend check'
   - name: purge
     action: accept
     condition: cqhm MATCH PURGE
@@ -120,6 +123,7 @@ profile::trafficserver::backend::logs:
     format: wmf
     filters:
     - notpurge
+    - notvarnishcheck
     mode: ascii_pipe
   - filename: purge
     format: wmf
