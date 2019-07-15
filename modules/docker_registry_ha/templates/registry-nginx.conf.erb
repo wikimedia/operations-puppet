@@ -87,8 +87,12 @@ server {
     location /v2 {
       # Require auth for POST, PUT, DELETE, ... requests
       limit_except GET HEAD OPTIONS {
+      <%- if @read_only_mode %>
+        return 405;
+      <%- else -%>
         auth_basic "docker-registry";
         auth_basic_user_file /etc/nginx/htpasswd.registry;
+      <%- end -%>
       }
 
       add_header 'Docker-Distribution-Api-Version' 'registry/2.0' always;

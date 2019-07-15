@@ -20,6 +20,7 @@ class profile::docker_registry_ha::registry(
     $redis_port = hiera('profile::docker_registry_ha::registry::redis_port', undef),
     $redis_password = hiera('profile::docker_registry_ha::registry::redis_password', undef),
     $docker_registry_shared_secret = hiera('profile::docker_registry_ha::registry::shared_secret', undef),
+    $registry_read_only_mode = hiera('profile::docker_registry_ha::registry::read_only_mode', false),
     $metrics_allowed_hosts = hiera('prometheus_nodes'),
     Array[String] $deployment_hosts = hiera('deployment_hosts', []),
 ) {
@@ -81,6 +82,7 @@ class profile::docker_registry_ha::registry(
         ssl_certificate_name => $certname,
         http_endpoint        => true,
         http_allowed_hosts   => $http_allowed_hosts,
+        read_only_mode       => $registry_read_only_mode,
     }
 
     # T209709
