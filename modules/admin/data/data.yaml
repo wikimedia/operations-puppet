@@ -77,7 +77,7 @@ groups:
               musikanimal, jdrewniak, sbisson, jforrester, mbsantos,
               aaron, liw, sbassett, jdl, tarrow, lucaswerkmeister-wmde,
               wmde-leszek, jhuneidi, wmde-fisch, mvolz, dsharpe, brennen, cparle,
-              jfishback, urbanecm, awight]
+              jfishback, urbanecm, awight, jakob]
     privileges: ['ALL = (www-data,mwdeploy,l10nupdate) NOPASSWD: ALL',
                  'ALL = NOPASSWD: /sbin/restart hhvm',
                  'ALL = NOPASSWD: /sbin/start hhvm',
@@ -3211,6 +3211,15 @@ users:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDoseoHpPEYpbXzJZ6FL+R7S3AKk3nv7lGoVzCTJF8Br acraze@Andys-MacBook-Pro.local
     uid: 21437
     email: acraze@wikimedia.org
+  jakob:
+    ensure: present
+    gid: 500
+    name: jakob
+    realname: Jakob Warkotsch
+    ssh_keys:
+      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIAENSef8ugACShtUryIYbII3C0bwJ8DC5byfveXRIrUS jawa@C269
+    uid: 10133
+    email: jakob.warkotsch@wikimedia.de
 ldap_only_users:
   abartov:
     ensure: present
@@ -3512,10 +3521,6 @@ ldap_only_users:
     ensure: present
     realname: Christoph Neuroth
     email: christoph.neuroth+wikimedia@gmail.com
-  jakob:
-    ensure: present
-    realname: Jakob Warkotsch
-    email: jakob.warkotsch@wikimedia.de
   jeroendedauw:
     ensure: present
     realname: Jeroen De Dauw
