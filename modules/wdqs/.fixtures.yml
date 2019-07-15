@@ -2,7 +2,6 @@ fixtures:
     symlinks:
         wdqs: "#{source_dir}"
         base: "../../../../base"
-        diamond: "../../../../diamond"
         ferm: "../../../../ferm"
         java: "../../../../java"
         monitoring: "../../../../monitoring"

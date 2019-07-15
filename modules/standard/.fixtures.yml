@@ -22,7 +22,6 @@ fixtures:
         monitoring: "../../../../monitoring"
         cumin: "../../../../cumin"
         concat: "../../../../concat"
-        diamond: "../../../../diamond"
         systemd: "../../../../systemd"
         role: "../../../../role"
         ferm: "../../../../ferm"
