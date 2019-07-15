@@ -1,7 +1,10 @@
 class toolforge::k8s::kubeadm_init(
     Stdlib::Fqdn        $apiserver,
     String              $pod_subnet,
-    Array[Stdlib::Fqdn] $etcd_hosts = [],
+    Stdlib::Unixpath    $k8s_etcd_cert_pub,
+    Stdlib::Unixpath    $k8s_etcd_cert_priv,
+    Stdlib::Unixpath    $k8s_etcd_cert_ca,
+    Array[Stdlib::Fqdn] $etcd_hosts,
     String              $kubernetes_version = '1.15.0',
     String              $node_token = undef,
 ) {

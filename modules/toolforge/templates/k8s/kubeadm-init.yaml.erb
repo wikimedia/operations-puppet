@@ -15,17 +15,19 @@ localAPIEndpoint:
 <% end %>
 apiVersion: kubeadm.k8s.io/v1beta2
 kind: ClusterConfiguration
-<% unless @etcd_hosts.empty? %>
-etcd:
-  external:
-    endpoints:
-    <% @etcd_hosts.each do |host| -%>
-      - "https://<%= host -%>:2379"
-    <% end -%>
-<% end -%>
 networking:
   podSubnet: "<%= @pod_subnet -%>"
   dnsDomain: <%= @labsproject -%>.local
 kubernetesVersion: "<%= @kubernetes_version -%>"
 controlPlaneEndpoint: "<%= @apiserver -%>:6443"
-clusterName: <%= @labsproject -%>
+clusterName: "<%= @labsproject -%>"
+etcd:
+  external:
+    caFile: "<%= @k8s_etcd_cert_ca -%>"
+    certFile: "<%= @k8s_etcd_cert_pub -%>"
+    keyFile: "<%= @k8s_etcd_cert_priv -%>"
+    endpoints:
+    <% @etcd_hosts.each do |host| -%>
+      - "https://<%= host -%>:2379"
+    <% end -%>
+

@@ -6,14 +6,49 @@ class profile::toolforge::k8s::kubeadm::master(
 ) {
     require profile::toolforge::k8s::kubeadm::preflight_checks
 
+    # use puppet certs to contact etcd
+    $k8s_etcd_cert_pub  = "/etc/kubernetes/pki/puppet_${::fqdn}.pem"
+    $k8s_etcd_cert_priv = "/etc/kubernetes/pki/puppet_${::fqdn}.priv"
+    $k8s_etcd_cert_ca   = '/etc/kubernetes/pki/puppet_ca.pem'
+    $puppet_cert_pub    = "/var/lib/puppet/ssl/certs/${::fqdn}.pem"
+    $puppet_cert_priv   = "/var/lib/puppet/ssl/private_keys/${::fqdn}.pem"
+    $puppet_cert_ca     = '/var/lib/puppet/ssl/certs/ca.pem'
+
+    file { '/etc/kubernetes/pki':
+        ensure => directory,
+        mode   => '0755',
+        owner  => 'root',
+        group  => 'root',
+    }
+
+    file { $k8s_etcd_cert_pub:
+        ensure => present,
+        source => "file://${puppet_cert_pub}",
+    }
+
+    file { $k8s_etcd_cert_priv:
+        ensure    => present,
+        source    => "file://${puppet_cert_priv}",
+        mode      => '0640',
+        show_diff => false,
+    }
+
+    file { $k8s_etcd_cert_ca:
+        ensure => present,
+        source => "file://${puppet_cert_ca}",
+    }
+
     class { 'toolforge::k8s::kubeadm': }
 
     $pod_subnet = '192.168.0.0/16'
     class { 'toolforge::k8s::kubeadm_init':
-        etcd_hosts => $etcd_hosts,
-        apiserver  => $apiserver,
-        pod_subnet => $pod_subnet,
-        node_token => $node_token,
+        etcd_hosts         => $etcd_hosts,
+        apiserver          => $apiserver,
+        pod_subnet         => $pod_subnet,
+        node_token         => $node_token,
+        k8s_etcd_cert_pub  => $k8s_etcd_cert_pub,
+        k8s_etcd_cert_priv => $k8s_etcd_cert_priv,
+        k8s_etcd_cert_ca   => $k8s_etcd_cert_ca,
     }
 
     class { 'toolforge::k8s::kubeadm_join':
@@ -27,13 +62,6 @@ class profile::toolforge::k8s::kubeadm::master(
 
     # If there is an existing, bootstrapped control plane node, distribute certs from it
     if $existing_certs {
-        file { '/etc/kubernetes/pki':
-            ensure => directory,
-            mode   => '0755',
-            owner  => 'root',
-            group  => 'root',
-        }
-
         file { '/etc/kubernetes/pki/ca.crt':
             content   => secret('toolforge/k8s/ca.crt'),
             require   => File['/etc/kubernetes/pki'],
