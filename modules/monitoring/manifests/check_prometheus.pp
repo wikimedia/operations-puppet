@@ -99,17 +99,7 @@ define monitoring::check_prometheus(
     if $query =~ /(?<!\\)(?:(\\\\)*)[!]/ {
         fail('All exclamation marks in the query parameter must be escaped e.g. \!')
     }
-    $link_fail_message = 'The $dashboard_links and $notes_links URLs must not be URL-encoded'
-    # notes link always has to com first to ensure the correct icon is used in icinga
-    # we start with `[]` so puppet knows we want a array
-    $links = [] + $notes_link + $dashboard_links
-
-    $notes_urls = $links.reduce('') |$urls, $link| {
-        if $link =~ /%\h\h/ {
-            fail($link_fail_message)
-        }
-        "${urls}'${link}' "
-    }.strip
+    $notes_urls = monitoring::build_notes_url($notes_link, $dashboard_links)
 
     $command = $nan_ok ? {
         true    => 'check_prometheus_nan_ok',
