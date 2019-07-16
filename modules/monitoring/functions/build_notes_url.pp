@@ -5,8 +5,8 @@
 # In general, users of those resources do not need to worry about this; it's
 # for internal implementations of monitoring resources.
 function monitoring::build_notes_url(
-    Stdlib::HTTPUrl $notes_link,
-    Array[Stdlib::HTTPUrl] $dashboard_links) >> String
+    Stdlib::HTTPSUrl $notes_link,
+    Array[Stdlib::HTTPSUrl,0,4] $dashboard_links) >> String
 {
     $link_fail_message = 'The $dashboard_links and $notes_links URLs must not be URL-encoded'
     # The notes link always has to come first to ensure the correct icon is used in icinga
