@@ -5,9 +5,7 @@ class Hiera
       # This is not a real backend.  We abuse the backend functionality so we
       # can dynamicly change 'datadirs' in the nuyaml3 backend based on the
       # directory prefix 'private/'
-      def lookup(_key, _scope, _order_override, _resolution_type)
-        throw(:no_such_key)
-      end
+      def lookup(_key, _scope, _order_override, _resolution_type); end
     end
   end
 end
