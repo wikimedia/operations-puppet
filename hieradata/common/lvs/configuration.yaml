@@ -168,11 +168,11 @@ lvs::configuration::lvs_service_ips:
     codfw: 10.2.1.46
   ncredir: &ip_block054
     codfw:
-      ncredir: 208.80.153.232
-      ncredir6: 2620:0:860:ed1a::9
+      ncredirlb: 208.80.153.232
+      ncredirlb6: 2620:0:860:ed1a::9
     eqiad:
-      ncredir: 208.80.154.232
-      ncredir6: 2620:0:861:ed1a::9
+      ncredirlb: 208.80.154.232
+      ncredirlb6: 2620:0:861:ed1a::9
 
 lvs::configuration::lvs_services:
   text:
@@ -1656,7 +1656,6 @@ lvs::configuration::lvs_services:
     - eqiad
     - codfw
     ip: *ip_block054
-    port: 80
     depool-threshold: '.5'
     monitors:
       ProxyFetch:
@@ -1666,7 +1665,7 @@ lvs::configuration::lvs_services:
       cluster: ncredir
       service: nginx
     icinga:
-      check_command: 'check_http_lvs_on_port!en.wikipedia.com!80!/_status'
+      uri: 'en.wikipedia.com!/_status'
       critical: false
       sites:
         eqiad:
@@ -1689,11 +1688,3 @@ lvs::configuration::lvs_services:
     conftool:
       cluster: ncredir
       service: nginx
-    icinga:
-      check_command: 'check_https_url!en.wikipedia.com!/_status'
-      critical: false
-      sites:
-        eqiad:
-          hostname: ncredir-lb.eqiad.wikimedia.org
-        codfw:
-          hostname: ncredir-lb.codfw.wikimedia.org
