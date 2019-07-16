@@ -4,7 +4,7 @@ class profile::base(
     $purge_apt_sources = hiera('profile::base::purge_apt_sources', false),
     $domain_search = hiera('profile::base::domain_search', $::domain), # lint:ignore:wmf_styleguide
     $nameservers   = hiera('profile::base::nameservers', $::nameservers), # lint:ignore:wmf_styleguide
-    $remote_syslog = hiera('profile::base::remote_syslog', ['syslog.eqiad.wmnet', 'syslog.codfw.wmnet']),
+    $remote_syslog = hiera('profile::base::remote_syslog', []),
     $remote_syslog_tls = hiera('profile::base::remote_syslog_tls', []),
     $enable_rsyslog_exporter = hiera('profile::base::enable_rsyslog_exporter', false),
     $enable_kafka_shipping = hiera('profile::base::enable_kafka_shipping', true),
