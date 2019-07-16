@@ -4,7 +4,7 @@
   # entry is prefixed with either private.  newer version of puppet
   # require all top level keys i.e. backends to be defined in this array
   # we have also created an empty custom backend to keep the hiera cli happy
-  - private
+  - private3
 :nuyaml:
   :datadir: /etc/puppet/hieradata
   :expand_path:
