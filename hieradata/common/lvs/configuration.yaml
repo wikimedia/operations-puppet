@@ -151,6 +151,7 @@ lvs::configuration::lvs_service_ips:
     codfw: 10.2.1.42
   ldap-ro: &ip_block048
     eqiad: 208.80.154.252
+    codfw: 208.80.153.252
   eventschemas: &ip_block049 # schema.svc.*
     eqiad: 10.2.2.43
     codfw: 10.2.1.43
@@ -1439,6 +1440,7 @@ lvs::configuration::lvs_services:
     description: "Ldap for cloud and developer accounts"
     class: high-traffic2
     sites:
+    - codfw
     - eqiad
     ip: *ip_block048
     port: 389
@@ -1455,6 +1457,7 @@ lvs::configuration::lvs_services:
     description: "Ldap for cloud and developer accounts (ssl access)"
     class: high-traffic2
     sites:
+    - codfw
     - eqiad
     ip: *ip_block048
     port: 636

@@ -36,6 +36,7 @@ ldap-ro:
       "weight": 10
     datacenters:
       - eqiad
+      - codfw
   ldap-ro-ssl:
     port: 636
     default_values:
@@ -43,6 +44,7 @@ ldap-ro:
       "weight": 10
     datacenters:
       - eqiad
+      - codfw
 ncredir:
   nginx:
     port: 443

@@ -325,6 +325,9 @@ codfw:
   proton:
     proton2001.codfw.wmnet: [proton]
     proton2002.codfw.wmnet: [proton]
+  ldap-ro:
+    ldap-replica2001.wikimedia.org: [ldap-ro, ldap-ro-ssl]
+    ldap-replica2002.wikimedia.org: [ldap-ro, ldap-ro-ssl]
   logstash:
     logstash2004.codfw.wmnet: [kibana]
     logstash2005.codfw.wmnet: [kibana]
