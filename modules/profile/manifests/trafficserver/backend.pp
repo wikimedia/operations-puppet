@@ -16,6 +16,8 @@ class profile::trafficserver::backend (
     Array[TrafficServer::Log_filter] $log_filters=hiera('profile::trafficserver::backend::log_filters', []),
     Array[TrafficServer::Log] $logs=hiera('profile::trafficserver::backend::logs', []),
     Wmflib::UserIpPort $prometheus_exporter_port=hiera('profile::trafficserver::backend::prometheus_exporter_port', 9122),
+    Stdlib::Absolutepath $atsmtail_backend_progs=hiera('profile::trafficserver::backend::atsmtail_backend_progs', '/etc/atsmtail-backend'),
+    Wmflib::UserIpPort $atsmtail_backend_port=hiera('profile::trafficserver::backend::atsmtail_backend_port', 3904),
 ){
     # Add hostname as a parameter to the default global Lua plugin
     $global_lua_script = $default_lua_script? {
@@ -108,6 +110,12 @@ class profile::trafficserver::backend (
         user          => $user,
         logs          => $logs,
         paths         => $paths,
+    }
+
+    profile::trafficserver::atsmtail { "trafficserver_${instance_name}_atsmtail":
+        instance_name  => $instance_name,
+        atsmtail_progs => $atsmtail_backend_progs,
+        atsmtail_port  => $atsmtail_backend_port,
     }
 
     # Script to depool, restart and repool ATS

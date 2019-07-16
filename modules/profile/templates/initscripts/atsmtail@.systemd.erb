@@ -1,0 +1,11 @@
+[Unit]
+Description=mtail instance for Apache Traffic Server %i
+Documentation=https://wikitech.wikimedia.org/wiki/Apache_Traffic_Server
+
+[Service]
+SyslogIdentifier=atsmtail-%i
+Restart=always
+ExecStart=/bin/sh -c 'atslog-%i | mtail -progs "<%= @atsmtail_progs %>" -logs /dev/stdin -port "<%= @atsmtail_port %>"'
+
+[Install]
+WantedBy=multi-user.target
