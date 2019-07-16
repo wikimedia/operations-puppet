@@ -16,7 +16,9 @@ profile::citoid::zotero_host: deployment-zotero01.deployment-prep.eqiad.wmflabs
 profile::citoid::zotero_port: 1969
 profile::changeprop::purge_host: deployment-cache-text05.deployment-prep.eqiad.wmflabs
 profile::changeprop::ores_uris: ['http://deployment-ores01.deployment-prep.eqiad.wmflabs:8081']
+# eventbus_uri is deprecated in favor of event_service_uri. Will be removed as part of T226522
 profile::changeprop::eventbus_uri: http://deployment-kafka-main-1.deployment-prep.eqiad.wmflabs:8085
+profile::changeprop::event_service_uri: http://deployment-eventgate-1.deployment-prep.eqiad.wmflabs:8292/v1/events
 profile::changeprop::restbase_uri: http://deployment-restbase02.deployment-prep.eqiad.wmflabs:7231
 profile::changeprop::purge_port: 4827
 # Used to sync the setting between all Kafka clusters and clients.

@@ -137,7 +137,11 @@ profile::changeprop::purge_port: 4827
 profile::changeprop::ores_uris:
   - http://ores.svc.eqiad.wmnet:8081
   - http://ores.svc.codfw.wmnet:8081
+
+# eventbus_uri is deprecated in favor of event_service_uri. Will be removed as part of T226522
 profile::changeprop::eventbus_uri: http://eventbus.discovery.wmnet:8085
+profile::changeprop::event_service_uri: http://eventgate-main.discovery.wmnet:32192/v1/events
+
 ### END CHANGEPROP ###
 profile::nutcracker::memcached_pools: {}
 profile::nutcracker::monitor_port: 0 # we have nothing exposed via tcp
