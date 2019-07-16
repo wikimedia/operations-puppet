@@ -11,11 +11,7 @@ class noc {
 
     include ::noc::php_engine
 
-    if os_version('debian >= stretch') {
-        require_package('libapache2-mod-php')
-    } else {
-        require_package('libapache2-mod-php5')
-    }
+    require_package('libapache2-mod-php')
 
     httpd::site { 'noc.wikimedia.org':
         content => template('noc/noc.wikimedia.org.erb'),
