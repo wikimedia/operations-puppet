@@ -184,4 +184,28 @@ class profile::prometheus::alerts {
         retries         => 5,
         notes_link      => 'https://phabricator.wikimedia.org/T202307',
     }
+
+    monitoring::check_prometheus { 'kafka logging-eqiad consumer lag':
+        description     => 'Too many messages in kafka logging-eqiad',
+        query           => 'kafka_burrow_partition_lag{exported_cluster="logging-eqiad"}',
+        prometheus_url  => 'http://prometheus.svc.eqiad.wmnet/ops',
+        warning         => 1000,
+        critical        => 1500,
+        retries         => 10,
+        method          => 'ge',
+        dashboard_links => ['https://grafana.wikimedia.org/d/000000484/kafka-consumer-lag?from=now-3h&to=now&orgId=1&var-datasource=eqiad%20prometheus%2Fops&var-cluster=logging-eqiad&var-topic=All&var-consumer_group=All'],
+        notes_link      => 'https://wikitech.wikimedia.org/wiki/Logstash#Kafka_consumer_lag',
+    }
+
+    monitoring::check_prometheus { 'kafka logging-codfw consumer lag':
+        description     => 'Too many messages in kafka logging-codfw',
+        query           => 'kafka_burrow_partition_lag{exported_cluster="logging-codfw"}',
+        prometheus_url  => 'http://prometheus.svc.codfw.wmnet/ops',
+        warning         => 1000,
+        critical        => 1500,
+        retries         => 10,
+        method          => 'ge',
+        dashboard_links => ['https://grafana.wikimedia.org/d/000000484/kafka-consumer-lag?from=now-3h&to=now&orgId=1&var-datasource=codfw%20prometheus%2Fops&var-cluster=logging-codfw&var-topic=All&var-consumer_group=All'],
+        notes_link      => 'https://wikitech.wikimedia.org/wiki/Logstash#Kafka_consumer_lag',
+    }
 }
