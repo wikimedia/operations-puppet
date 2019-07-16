@@ -77,7 +77,7 @@ groups:
               musikanimal, jdrewniak, sbisson, jforrester, mbsantos,
               aaron, liw, sbassett, jdl, tarrow, lucaswerkmeister-wmde,
               wmde-leszek, jhuneidi, wmde-fisch, mvolz, dsharpe, brennen, cparle,
-              jfishback, urbanecm, awight, jakob]
+              jfishback, urbanecm, awight, jakob, accraze]
     privileges: ['ALL = (www-data,mwdeploy,l10nupdate) NOPASSWD: ALL',
                  'ALL = NOPASSWD: /sbin/restart hhvm',
                  'ALL = NOPASSWD: /sbin/start hhvm',
@@ -464,7 +464,7 @@ groups:
     members: [bd808, eevans, mobrovac, ppchelko, demon, twentyafterfour, thcipriani, dduvall,
               bsitzmann, mholloway-shell, kartik, halfak, ladsgroup, smalyshev, hoo, tgr,
               ssastry, cscott, arlolra, jdlrobson, maxsem, jforrester, niedzielski,
-              pmiazga, phuedx, mbsantos, onimisionipe, mvolz, santhosh, nikerabbit]
+              pmiazga, phuedx, mbsantos, onimisionipe, mvolz, santhosh, nikerabbit, accraze]
     privileges: []
 
   deploy-aqs:
