@@ -132,13 +132,7 @@ class profile::mediawiki::deployment::server(
     backup::set { 'srv-deployment': }
 
     # tig is a ncurses-based git utility which is useful for
-    # determining the state of git repos during deployments.
-    require_package('percona-toolkit', 'tig')
-    if os_version('debian >= stretch') {
-        require_package('php7.0-readline') # bug T126262
-    } else {
-        require_package('php5-readline') # bug T126262
-    }
-
-
+    #   determining the state of git repos during deployments.
+    # php-readline T126262
+    require_package('percona-toolkit', 'tig', 'php7.0-readline')
 }
