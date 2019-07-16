@@ -1,7 +1,7 @@
 <%- @services.each do |name, svc| -%>
 upstream <%= name %> {
          server <%= svc['hostname'] %>:<%= svc['port'] %>;
-         keepalive <%= @keepalive %>;
+         keepalive <%= svc['keepalive'] || @keepalive %>;
 }
 
 server {
@@ -11,7 +11,7 @@ server {
         proxy_http_version 1.1;
         proxy_set_header Connection "";
         proxy_read_timeout     <%= svc['timeout'] %>;
-        proxy_connect_timeout  <%= @connect_timeout %>;
+        proxy_connect_timeout  <%= svc['connect_timeout'] || @connect_timeout %>;
     }
 }
 <%- end -%>

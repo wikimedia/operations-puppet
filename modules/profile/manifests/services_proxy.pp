@@ -4,7 +4,7 @@
 #
 # === Parameters
 #
-# [*ensure*] Wether the proxy should be present or not. We don't use it in deployment-prep.
+# [*ensure*] Whether the proxy should be present or not. We don't use it in deployment-prep.
 #
 # [*services*] A hash of service definitions.
 #
@@ -16,7 +16,8 @@ class profile::services_proxy(
                         'port' => Stdlib::Port,
                         'scheme' => Enum['http', 'https'],
                         'timeout' => Integer,
-                        }]
+                        'connect_timeout' => Optional[Integer],
+                        'keepalive' => Optional[Integer], }]
     ]] $services = hiera('profile::services_proxy::services', undef),
       ) {
     if $ensure == 'present' {
@@ -27,7 +28,7 @@ class profile::services_proxy(
         require profile::tlsproxy::instance
     }
     # Some parameters that we don't need to parametrize for now
-    # How long to keepalive a connection
+    # The keepalive parameter sets the maximum number of idle keepalive connections
     $keepalive = 100
     # How long to wait for a connection to upstreams
     $connect_timeout = 1
