@@ -18,4 +18,4 @@ FMT="${fmt_http_status}\t${fmt_http_method}\t${fmt_backend}\t${fmt_ttfb}\t${fmt_
 # there is no status and no ttfb.
 VSL_QUERY='BereqMethod ne "PURGE" and VCL_call ne "PIPE"'
 
-/usr/bin/varnishncsa -b -q "${VSL_QUERY}" -F "${FMT}" | mtail -progs "${PROGS}" -logfds 0 -port "${PORT}"
+/usr/bin/varnishncsa -b -q "${VSL_QUERY}" -F "${FMT}" | mtail -progs "${PROGS}" -logs /dev/stdin -port "${PORT}"

@@ -20,4 +20,4 @@ fmt_full_cipher='full_cipher %{VCL_Log:CP-Full-Cipher}x'
 
 FMT="${fmt_url}\t${fmt_cache_status}\t${fmt_http_status}\t${fmt_http_method}\t${fmt_cache_control}\t${fmt_inm}\t${fmt_h2}\t${fmt_tls_version}\t${fmt_session_reused}\t${fmt_key_exchange}\t${fmt_auth}\t${fmt_cipher}\t${fmt_full_cipher}\t"
 
-/usr/bin/varnishncsa -n frontend -F "${FMT}" | mtail -progs "${PROGS}" -logfds 0
+/usr/bin/varnishncsa -n frontend -F "${FMT}" | mtail -progs "${PROGS}" -logs /dev/stdin
