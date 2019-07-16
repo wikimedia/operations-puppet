@@ -15,7 +15,7 @@ thumbor_memcached_servers_nutcracker:
   - '10.64.48.71:11211:1 "shard03"' # thumbor1003
   - '10.64.48.72:11211:1 "shard04"' # thumbor1004
 
-thumbor::poolcounter_server: 'poolcounter1001.eqiad.wmnet'
+thumbor::poolcounter_server: 'poolcounter1004.eqiad.wmnet'
 
 thumbor::stl_support: true
 
