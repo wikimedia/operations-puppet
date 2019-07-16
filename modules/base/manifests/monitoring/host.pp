@@ -115,10 +115,11 @@ class base::monitoring::host(
     }
 
     ::nrpe::monitor_service { 'disk_space':
-        description  => 'Disk space',
-        critical     => $nrpe_check_disk_critical,
-        nrpe_command => "/usr/lib/nagios/plugins/check_disk ${nrpe_check_disk_options}",
-        notes_url    => 'https://wikitech.wikimedia.org/wiki/Monitoring/Disk_space',
+        description     => 'Disk space',
+        critical        => $nrpe_check_disk_critical,
+        nrpe_command    => "/usr/lib/nagios/plugins/check_disk ${nrpe_check_disk_options}",
+        notes_url       => 'https://wikitech.wikimedia.org/wiki/Monitoring/Disk_space',
+        dashboard_links => ["https://grafana.wikimedia.org/dashboard/db/host-overview?var-server=${::hostname}&var-datasource=${::site} prometheus/ops"],
     }
 
     ::nrpe::monitor_service { 'dpkg':

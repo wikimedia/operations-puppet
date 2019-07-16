@@ -7,3 +7,4 @@ fixtures:
         rsyslog: "../../../../rsyslog"
         stdlib: "../../../../stdlib"
         wmflib: "../../../../wmflib"
+        monitoring: "../../../../monitoring"

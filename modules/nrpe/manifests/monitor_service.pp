@@ -26,6 +26,10 @@
 #       Nagios server.
 #    $notes_url
 #       An optional URL used to provide more information about the service.
+#       Must not be URL-encoded.
+#    $dashboard_link
+#       An optional URL to link to grafana or another monitoring dashboard.
+#       Must not be URL-encoded.
 #    $ensure
 #       Defaults to present
 #
@@ -38,7 +42,8 @@ define nrpe::monitor_service( $description      = undef,
                               $event_handler    = undef,
                               $check_interval   = 1,
                               $retry_interval   = 1,
-                              $notes_url        = undef,
+                              $notes_url        = 'https://wikitech.wikimedia.org/wiki/Monitoring/Missing_notes_link',
+                              Optional[Array[Stdlib::HTTPSUrl, 1]] $dashboard_links = undef,
                               Wmflib::Ensure $ensure = present) {
     unless $ensure == 'absent' or ($description and $nrpe_command) {
         fail('Description and nrpe_command parameters are mandatory for ensure != absent')
@@ -48,6 +53,9 @@ define nrpe::monitor_service( $description      = undef,
         command => $nrpe_command,
         before  => Monitoring::Service[$title],
     }
+
+    $notes_urls = monitoring::build_notes_url($notes_url,
+        ($dashboard_links) ? {undef => [], default => $dashboard_links})
 
     monitoring::service { $title:
         ensure         => $ensure,
@@ -59,6 +67,6 @@ define nrpe::monitor_service( $description      = undef,
         event_handler  => $event_handler,
         check_interval => $check_interval,
         retry_interval => $retry_interval,
-        notes_url      => $notes_url,
+        notes_url      => $notes_urls,
     }
 }
