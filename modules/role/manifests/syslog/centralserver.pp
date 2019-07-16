@@ -68,12 +68,4 @@ class role::syslog::centralserver (
         port   => '3903',
         srange => "(@resolve((${prometheus_nodes_ferm})) @resolve((${prometheus_nodes_ferm}), AAAA))",
     }
-
-    rsync::quickdatacopy { 'syslog-archive':
-        ensure      => present,
-        auto_sync   => false,
-        source_host => 'lithium.eqiad.wmnet',
-        dest_host   => 'centrallog1001.eqiad.wmnet',
-        module_path => '/srv/syslog/archive',
-    }
 }
