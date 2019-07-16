@@ -59,8 +59,13 @@ fi
 function download_pbf() {
   echo "starting download of PBF from planet.openstreetmap.org"
   cd ${download_dir}
-  curl ${proxy} -O https://planet.openstreetmap.org/pbf/${filename}.md5
-  curl ${proxy} -O https://planet.openstreetmap.org/pbf/${filename}
+  if [ ! -f "$download_dir/$filename.md5" ]; then
+    curl ${proxy} -O https://planet.openstreetmap.org/pbf/${filename}.md5
+  fi
+  if [ ! -f "$download_dir/$filename" ]; then
+    curl ${proxy} -O https://planet.openstreetmap.org/pbf/${filename}
+  fi
+  echo "starting md5sum check"
   md5sum -c ${filename}.md5
   if [ $? -ne 0 ] ; then
     echo "Download of PBF file failed, md5sum is invalid"
