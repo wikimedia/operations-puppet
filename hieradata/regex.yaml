@@ -299,8 +299,3 @@ mediawiki_test_environment:
     opcache.interned_strings_buffer: 50
     opcache.memory_consumption: 300
   profile::mediawiki::php::restarts::opcache_limit: 100
-
-# T225642
-mediawiki_mcrouter_async_test:
-  __regex: !ruby/regexp /^mw12(61|76).eqiad.wmnet$/
-  profile::mediawiki::mcrouter_wancache::async_replication: true
