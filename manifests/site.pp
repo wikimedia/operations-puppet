@@ -1274,6 +1274,12 @@ node /kafka100[123]\.eqiad\.wmnet/ {
     interface::add_ip6_mapped { 'main': }
 }
 
+# eqiad kafka main servers, pushing into service via T226274
+node /kafka-main100[1-5]\.eqiad\.wmnet/ {
+    role(spare::system)
+    interface::add_ip6_mapped { 'main': }
+}
+
 node /kafka-main200[123]\.codfw\.wmnet/ {
     role(kafka::main)
 }
