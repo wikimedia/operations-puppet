@@ -1666,7 +1666,7 @@ lvs::configuration::lvs_services:
       cluster: ncredir
       service: nginx
     icinga:
-      check_comand: 'check_http_lvs_on_port!en.wikipedia.com!80!/_status'
+      check_command: 'check_http_lvs_on_port!en.wikipedia.com!80!/_status'
       critical: false
       sites:
         eqiad:
@@ -1690,7 +1690,7 @@ lvs::configuration::lvs_services:
       cluster: ncredir
       service: nginx
     icinga:
-      check_comand: 'check_https_url!en.wikipedia.com!/_status'
+      check_command: 'check_https_url!en.wikipedia.com!/_status'
       critical: false
       sites:
         eqiad:
