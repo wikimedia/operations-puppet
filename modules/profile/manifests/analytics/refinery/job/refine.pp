@@ -52,7 +52,6 @@ class profile::analytics::refinery::job::refine {
     # TODO: deprecate this job in favor of the mediawiki_events job;
     # need to make sure JSONSchemas are compatible with existing Hive table schemas.
     $eventbus_tables = [
-        'mediawiki_revision_create',
         'mediawiki_revision_score',
         'resource_change',
     ]
@@ -85,6 +84,7 @@ class profile::analytics::refinery::job::refine {
         'mediawiki_page_move',
         'mediawiki_page_restrictions_change',
         'mediawiki_page_undelete',
+        'mediawiki_revision_create',
         'mediawiki_revision_tags_change',
         'mediawiki_revision_visibility_change',
         'mediawiki_user_blocks_change',
