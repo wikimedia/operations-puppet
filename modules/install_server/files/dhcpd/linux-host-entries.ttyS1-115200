@@ -2995,27 +2995,27 @@ host kafka-jumbo1006 {
 }
 
 host kafka-main1001 {
-    hardware ethernet 4C:D9:8F:6C:B0:02;
+    hardware ethernet B0:26:28:3D:3F:50;
     fixed-address kafka-main1001.eqiad.wmnet;
 }
 
 host kafka-main1002 {
-    hardware ethernet 4C:D9:8F:6C:A7:C1;
+    hardware ethernet B0:26:28:3D:3E:C0;
     fixed-address kafka-main1002.eqiad.wmnet;
 }
 
 host kafka-main1003 {
-    hardware ethernet 4C:D9:8F:6C:AF:FA;
+    hardware ethernet B0:26:28:3D:77:E0;
     fixed-address kafka-main1003.eqiad.wmnet;
 }
 
 host kafka-main1004 {
-    hardware ethernet 4C:D9:8F:6D:97:63;
+    hardware ethernet B0:26:28:3D:3F:00;
     fixed-address kafka-main1004.eqiad.wmnet;
 }
 
 host kafka-main1005 {
-    hardware ethernet 4C:D9:8F:6C:B6:0A;
+    hardware ethernet B0:26:28:3D:A1:60;
     fixed-address kafka-main1005.eqiad.wmnet;
 }
 
