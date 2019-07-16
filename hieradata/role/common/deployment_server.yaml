@@ -306,6 +306,9 @@ profile::kubernetes::deployment_server::services:
 #         somekey: somevalue
 #profile::kubernetes::deployment_server_secrets::admin_services:
 #  calico:
+#    owner: root
+#    group: root
+#    mode: 0440
 #    staging:
 #      somekey: somesecretvalue
 profile::mediawiki::php::php_version: "7.2"
