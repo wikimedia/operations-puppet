@@ -55,14 +55,15 @@ class profile::toolforge::k8s::etcd(
     }
 
     class { '::etcd::v3':
-        member_name   => $::fqdn,
-        cluster_state => $cluster_state,
-        peers_list    => $peers_list,
-        client_cert   => $etcd_cert_pub,
-        client_key    => $etcd_cert_priv,
-        trusted_ca    => $etcd_cert_ca,
-        peer_cert     => $etcd_cert_pub,
-        peer_key      => $etcd_cert_priv,
+        member_name      => $::fqdn,
+        cluster_state    => $cluster_state,
+        peers_list       => $peers_list,
+        client_cert      => $etcd_cert_pub,
+        client_key       => $etcd_cert_priv,
+        trusted_ca       => $etcd_cert_ca,
+        peer_cert        => $etcd_cert_pub,
+        peer_key         => $etcd_cert_priv,
+        use_client_certs => true,
     }
 
     # restart the service if a cert file changes
