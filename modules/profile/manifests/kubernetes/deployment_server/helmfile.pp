@@ -84,8 +84,14 @@ class profile::kubernetes::deployment_server::helmfile(
         }
         $admin_services_secrets.map |String $svcname, Hash $data| {
           if $data[$environment] {
-            $secrets_dir="/srv/deployment-charts/helmfile.d/admin/${environment}/${svcname}/private"
-                file { $secrets_dir:
+            $secrets_dir="/srv/deployment-charts/helmfile.d/admin/${environment}/${svcname}"
+            file { $secrets_dir:
+                ensure  => directory,
+                owner   => $data['owner'],
+                group   => $data['group'],
+                require => Git::Clone['operations/deployment-charts'],
+            }
+            file { "${secrets_dir}/private":
                 ensure  => directory,
                 owner   => $data['owner'],
                 group   => $data['group'],
