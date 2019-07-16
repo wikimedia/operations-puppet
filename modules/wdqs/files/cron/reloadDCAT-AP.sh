@@ -14,5 +14,5 @@ cd $DEPLOY_DIR
 bash createNamespace.sh $newNamespace || exit 1
 # Load the data
 FILENAME=dcatap-${today}.rdf
-loadFileIntoBlazegraph $DCAT_SOURCE $FILENAME "${HOST}${NAMESPACE_URL}${newNamespace}/sparql"
+loadFileIntoBlazegraph $DCAT_SOURCE $FILENAME "http://localhost:9999/${NAMESPACE_URL}${newNamespace}/sparql"
 replaceNamespace dcatap $newNamespace http://localhost:9999
