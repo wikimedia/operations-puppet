@@ -9,6 +9,14 @@ class standard(
     include ::profile::base
     include ::standard::ntp
 
+    # Cloud VPS instances do not use the admin class
+    if $has_admin {
+        # Include this first so we create all the required groups before
+        # something else creates a system group with one of our GID's
+        # e.g. ::profile::debmonitor::client
+        contain ::admin
+    }
+
     if $::realm == 'production' {
         include ::profile::cumin::target
         include ::profile::debmonitor::client  # lint:ignore:wmf_styleguide
@@ -24,12 +32,6 @@ class standard(
     # will conflict with this
     if $has_default_mail_relay {
         include ::standard::mail::sender
-    }
-
-    # Some instances in production (ideally none) and labs do not use
-    # the admin class
-    if $has_admin {
-        include ::admin
     }
 
     # For historical reasons, users in modules/admin/data/data.yaml
