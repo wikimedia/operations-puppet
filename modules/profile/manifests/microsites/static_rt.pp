@@ -1,13 +1,18 @@
 # static HTML archive of old RT tickets (T180641)
-class profile::microsites::static_rt {
+class profile::microsites::static_rt(
+    $ldap_config = lookup('ldap', Hash, hash, {}),
+){
 
     backup::set { 'rt-static' : }
     ensure_resource('file', '/srv/org', {'ensure' => 'directory' })
     ensure_resource('file', '/srv/org/wikimedia', {'ensure' => 'directory' })
     ensure_resource('file', '/srv/org/wikimedia/static-rt', {'ensure' => 'directory' })
 
-    include ::passwords::ldap::wmf_cluster
-    $proxypass = $passwords::ldap::wmf_cluster::proxypass
+    include ::passwords::ldap::production
+
+    $ldap_url = "ldaps://${ldap_config[ro-server]} ${ldap_config[ro-server-fallback]}/ou=people,dc=wikimedia,dc=org?cn"
+    $ldap_pass = $passwords::ldap::production::proxypass
+    $ldap_group = 'cn=ops,ou=groups,dc=wikimedia,dc=org'
 
     file { '/srv/org/wikimedia/static-rt/index.html':
         ensure => present,

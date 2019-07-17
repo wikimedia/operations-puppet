@@ -26,9 +26,9 @@
         AuthType Basic
         AuthBasicProvider ldap
         AuthLDAPBindDN cn=proxyagent,ou=profile,dc=wikimedia,dc=org
-        AuthLDAPBindPassword <%= @proxypass %>
-        AuthLDAPURL "ldaps://ldap-labs.eqiad.wikimedia.org ldap-labs.codfw.wikimedia.org/ou=people,dc=wikimedia,dc=org?cn"
-        Require ldap-group cn=ops,ou=groups,dc=wikimedia,dc=org
+        AuthLDAPBindPassword <%= @ldap_pass %>
+        AuthLDAPURL "<%= @ldap_url %>"
+        Require ldap-group <%= @ldap_group %>
     </Directory>
 
 ErrorLog /var/log/apache2/error.log
