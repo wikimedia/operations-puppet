@@ -19,6 +19,7 @@ profile::restbase::aqs_uri: "http://aqs.svc.%{::aqs_site}.wmnet:7232/analytics.w
 profile::restbase::proton_uri: "http://proton.discovery.wmnet:24766"
 profile::restbase::citoid_uri: "http://citoid.discovery.wmnet:1970"
 profile::restbase::eventlogging_service_uri: "http://eventbus.discovery.wmnet:8085/v1/events"
+profile::restbase::event_service_uri: "http://eventgate-main.discovery.wmnet:32192/v1/events"
 profile::restbase::cxserver_uri: "http://cxserver.discovery.wmnet:8080"
 profile::restbase::recommendation_uri: "http://recommendation-api.discovery.wmnet:9632"
 profile::restbase::cassandra_user: restb

@@ -55,7 +55,10 @@
 #   http://aqs.svc.eqiad.wmnet:7232/analytics.wikimedia.org/v1
 #
 # [*eventlogging_service_uri*]
-#   Eventlogging service URI. Format: http://eventbus.svc.eqiad.wmnet:8085/v1/events
+#   Eventlogging service URI. Format: http://eventbus.svc.eqiad.wmnet:8085/v1/events. Deprecated.
+#
+# [*event_service_uri*]
+#   Eventgate service URI. Format: http://eventbus.svc.eqiad.wmnet:32192/v1/events
 #
 # [*proton_uri*]
 #   Proton PDF Render service URI. Format: http://proton.discovery.wmnet:24766
@@ -86,6 +89,7 @@ class profile::restbase(
     $mathoid_uri    = hiera('profile::restbase::mathoid_uri'),
     $aqs_uri        = hiera('profile::restbase::aqs_uri'),
     $eventlogging_service_uri = hiera('profile::restbase::eventlogging_service_uri'),
+    $event_service_uri = hiera('profile::restbase::event_service_uri'),
     $proton_uri     = hiera('profile::restbase::proton_uri'),
     $citoid_uri     = hiera('profile::restbase::citoid_uri'),
     $cxserver_uri   = hiera('profile::restbase::cxserver_uri'),
@@ -124,6 +128,7 @@ class profile::restbase(
             mobileapps_uri           => $mobileapps_uri,
             citoid_uri               => $citoid_uri,
             eventlogging_service_uri => $eventlogging_service_uri,
+            event_service_uri        => $event_service_uri,
             proton_uri               => $proton_uri,
             cxserver_uri             => $cxserver_uri,
             recommendation_uri       => $recommendation_uri,

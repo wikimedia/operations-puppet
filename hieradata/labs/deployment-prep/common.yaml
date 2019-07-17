@@ -144,6 +144,7 @@ profile::restbase::mobileapps_uri: http://deployment-mcs01.deployment-prep.eqiad
 profile::restbase::mathoid_uri: http://deployment-docker-mathoid01.deployment-prep.eqiad.wmflabs:10044
 profile::restbase::aqs_uri: https://wikimedia.org/api/rest_v1/metrics
 profile::restbase::eventlogging_service_uri: http://deployment-kafka-main-1.deployment-prep.eqiad.wmflabs:8085/v1/events
+profile::restbase::event_service_uri: http://deployment-eventgate-1.deployment-prep.eqiad.wmflabs:8292/v1/events
 profile::restbase::proton_uri: http://deployment-chromium01.deployment-prep.eqiad.wmflabs:24766
 profile::restbase::citoid_uri: http://deployment-docker-citoid01.deployment-prep.eqiad.wmflabs:1970
 profile::restbase::cxserver_uri: http://deployment-docker-cxserver01.deployment-prep.eqiad.wmflabs:8080
