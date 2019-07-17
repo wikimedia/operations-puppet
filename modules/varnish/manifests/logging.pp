@@ -51,6 +51,11 @@ class varnish::logging(
         require => File['/usr/local/bin/varnishmtail'],
     }
 
+    mtail::program { 'varnishreqstats':
+        source => 'puppet:///modules/mtail/programs/varnishreqstats.mtail',
+        notify => Service['varnishmtail'],
+    }
+
     # Client connection stats from the 'X-Connection-Properties'
     # header set by the SSL terminators.
     ::varnish::logging::xcps { 'xcps':
@@ -58,6 +63,7 @@ class varnish::logging(
 
     # Parse varnishlogs for request statistics and send to statsd.
     varnish::logging::reqstats { 'frontend':
+        ensure     => absent,
         key_prefix => "varnish.${::site}.${cache_cluster}.frontend.request",
         statsd     => $statsd_host,
     }

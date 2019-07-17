@@ -36,6 +36,7 @@ define varnish::logging::reqstats(
 
     if ! defined(File['/usr/local/bin/varnishreqstats']) {
         file { '/usr/local/bin/varnishreqstats':
+            ensure => $ensure,
             source => 'puppet:///modules/varnish/varnishreqstats.py',
             owner  => 'root',
             group  => 'root',
@@ -55,17 +56,11 @@ define varnish::logging::reqstats(
         },
     }
 
-    base::service_auto_restart { $service_unit_name: }
-
     nrpe::monitor_service { 'varnishreqstats':
-        ensure       => present,
+        ensure       => $ensure,
         description  => 'Varnish traffic logger - varnishreqstats',
         nrpe_command => '/usr/lib/nagios/plugins/check_procs -w 1:1 -a "/usr/local/bin/varnishreqstats" -u root',
         notes_url    => 'https://wikitech.wikimedia.org/wiki/Varnish',
     }
 
-    mtail::program { 'varnishreqstats':
-        source => 'puppet:///modules/mtail/programs/varnishreqstats.mtail',
-        notify => Service['varnishmtail'],
-    }
 }
