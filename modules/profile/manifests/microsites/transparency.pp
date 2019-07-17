@@ -1,7 +1,9 @@
 # Provisions the Wikimedia Transparency Report static site
 # hosted at <http://transparency.wikimedia.org>.
 #
-class profile::microsites::transparency {
+class profile::microsites::transparency(
+    $ldap_config = lookup('ldap', Hash, hash, {}),
+){
 
     include ::passwords::ldap::production
 
@@ -22,7 +24,7 @@ class profile::microsites::transparency {
         name          => 'ops/wmf/nda',
         bind_dn       => 'cn=proxyagent,ou=profile,dc=wikimedia,dc=org',
         bind_password => $passwords::ldap::production::proxypass,
-        url           => 'ldaps://ldap-labs.eqiad.wikimedia.org ldap-labs.codfw.wikimedia.org/ou=people,dc=wikimedia,dc=org?cn',
+        url           => "ldaps://${ldap_config[ro-server]} ${ldap_config[ro-server-fallback]}/ou=people,dc=wikimedia,dc=org?cn",
         groups        => [
             'cn=ops,ou=groups,dc=wikimedia,dc=org',
             'cn=nda,ou=groups,dc=wikimedia,dc=org',
