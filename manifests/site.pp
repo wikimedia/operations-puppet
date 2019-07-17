@@ -602,6 +602,11 @@ node 'db1064.eqiad.wmnet' {
     role(spare::system)
 }
 
+# To be decommissioned # T227560
+node 'db1065.eqiad.wmnet' {
+    role(spare::system)
+}
+
 # To be decommissioned # T226689
 node 'db1068.eqiad.wmnet' {
     role(spare::system)
@@ -664,13 +669,6 @@ node 'db2062.codfw.wmnet' {
 ## m2 shard
 
 # See also multiinstance misc hosts db1117 and db2078 below
-
-node 'db1065.eqiad.wmnet' {
-    class { '::role::mariadb::misc':
-        shard  => 'm2',
-        master => false,
-    }
-}
 
 node 'db1132.eqiad.wmnet' {
     class { '::role::mariadb::misc':

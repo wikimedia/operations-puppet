@@ -1230,11 +1230,6 @@ host db1063 {
     fixed-address db1063.eqiad.wmnet;
 }
 
-host db1065 {
-    hardware ethernet C8:1F:66:B7:4B:36;
-    fixed-address db1065.eqiad.wmnet;
-}
-
 host db1066 {
     hardware ethernet C8:1F:66:E5:65:5E;
     fixed-address db1066.eqiad.wmnet;
