@@ -199,7 +199,7 @@ class profile::prometheus::alerts {
         critical        => 1500,
         retries         => 10,
         method          => 'ge',
-        dashboard_links => ['https://grafana.wikimedia.org/d/000000484/kafka-consumer-lag?from=now-3h&to=now&orgId=1&var-datasource=eqiad%20prometheus%2Fops&var-cluster=logging-eqiad&var-topic=All&var-consumer_group=All'],
+        dashboard_links => ['https://grafana.wikimedia.org/d/000000484/kafka-consumer-lag?from=now-3h&to=now&orgId=1&var-datasource=eqiad prometheus/ops&var-cluster=logging-eqiad&var-topic=All&var-consumer_group=All'],
         notes_link      => 'https://wikitech.wikimedia.org/wiki/Logstash#Kafka_consumer_lag',
     }
 
@@ -211,7 +211,7 @@ class profile::prometheus::alerts {
         critical        => 1500,
         retries         => 10,
         method          => 'ge',
-        dashboard_links => ['https://grafana.wikimedia.org/d/000000484/kafka-consumer-lag?from=now-3h&to=now&orgId=1&var-datasource=codfw%20prometheus%2Fops&var-cluster=logging-codfw&var-topic=All&var-consumer_group=All'],
+        dashboard_links => ['https://grafana.wikimedia.org/d/000000484/kafka-consumer-lag?from=now-3h&to=now&orgId=1&var-datasource=codfw prometheus/ops&var-cluster=logging-codfw&var-topic=All&var-consumer_group=All'],
         notes_link      => 'https://wikitech.wikimedia.org/wiki/Logstash#Kafka_consumer_lag',
     }
 }
