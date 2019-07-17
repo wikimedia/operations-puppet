@@ -43,7 +43,7 @@ class profile::ncredir(
         monitoring::service { 'https_ncredir':
             description   => 'HTTPS',
             check_command => "check_ssl_http_letsencrypt!${fqdn_monitoring}",
-            notes_url     => ['https://wikitech.wikimedia.org/wiki/Ncredir'],
+            notes_url     => 'https://wikitech.wikimedia.org/wiki/Ncredir',
         }
     }
 }
