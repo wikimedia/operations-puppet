@@ -1666,7 +1666,7 @@ lvs::configuration::lvs_services:
       service: nginx
     icinga:
       uri: 'en.wikipedia.com!/_status'
-      critical: false
+      critical: true
       sites:
         eqiad:
           hostname: ncredir-lb.eqiad.wikimedia.org
