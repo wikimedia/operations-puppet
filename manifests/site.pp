@@ -694,13 +694,13 @@ node 'db2044.codfw.wmnet' {
 
 node 'db1072.eqiad.wmnet' {
     class { '::role::mariadb::misc::phabricator':
-        master => true,
+        master => false,
     }
 }
 
 node 'db1128.eqiad.wmnet' {
     class { '::role::mariadb::misc::phabricator':
-        master => false,
+        master => true,
     }
 }
 
