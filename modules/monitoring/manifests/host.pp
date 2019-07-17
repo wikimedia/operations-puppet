@@ -73,7 +73,7 @@ define monitoring::host (
                     check_command         => 'check_ping!500,20%!2000,100%',
                     check_period          => '24x7',
                     max_check_attempts    => 2,
-                    contact_groups        => $real_contact_groups,
+                    contact_groups        => "${contact_group},admins",
                     notification_interval => 0,
                     notification_period   => '24x7',
                     notification_options  => 'd,u,r,f',
