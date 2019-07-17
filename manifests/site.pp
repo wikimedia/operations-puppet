@@ -1952,8 +1952,7 @@ node /^puppetmaster[12]002\.(codfw|eqiad)\.wmnet$/ {
 }
 
 node 'puppetmaster1003.eqiad.wmnet' {
-    role(spare::system)
-#    role(puppetmaster::backend)
+    role(puppetmaster::backend)
     interface::add_ip6_mapped { 'main': }
 }
 
