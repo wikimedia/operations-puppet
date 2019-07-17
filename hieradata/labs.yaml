@@ -35,7 +35,6 @@ profile::openstack::eqiad1::region: 'eqiad1-r'
 profile::openstack::eqiad1::observer_password: 'Fs6Dq2RtG8KwmM2Z'
 
 # Additional base overrides
-profile::standard::has_admin: false
 profile::base::remote_syslog: []
 
 # Labs statsd instance

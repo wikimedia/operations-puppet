@@ -3,21 +3,16 @@
 
 class standard(
     $has_default_mail_relay = true,
-    $has_admin = true,
     Array[String] $monitoring_hosts = [],
     ) {
     include ::profile::base
     include ::standard::ntp
 
-    # Cloud VPS instances do not use the admin class
-    if $has_admin {
+    if $::realm == 'production' {
         # Include this first so we create all the required groups before
         # something else creates a system group with one of our GID's
         # e.g. ::profile::debmonitor::client
         contain ::admin
-    }
-
-    if $::realm == 'production' {
         include ::profile::cumin::target
         include ::profile::debmonitor::client  # lint:ignore:wmf_styleguide
     }
