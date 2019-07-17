@@ -38,6 +38,7 @@ profile::mediawiki::php::enable_fpm: true
 # Bump the connections per backend to 5 in mcrouter, see T203786
 profile::mediawiki::mcrouter_wancache::num_proxies: 5
 profile::mediawiki::php::php_version: "7.2"
+profile::mediawiki::vhost_feature_flags: {}
 profile::mediawiki::php::monitoring::monitor_page: false
 # we need to allow the scripts to run for 1 day for transcoding.
 profile::mediawiki::php::request_timeout: 86400

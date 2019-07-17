@@ -13,10 +13,15 @@
 #    If true, the jobrunner endpoint is exposed to all clients. Defaults to false, should
 #    only be set to true if no TLS setup is used (as in deployment-prep).
 #
+# @param vhost_feature_flags
+#   A general container for feature flags, that is changes to the
+#   vhosts that we are introducing/testing.
+#
 class profile::mediawiki::jobrunner(
     $statsd = hiera('statsd'),
     Optional[Wmflib::UserIpPort] $fcgi_port = hiera('profile::php_fpm::fcgi_port', undef),
     String $fcgi_pool = hiera('profile::mediawiki::fcgi_pool', 'www'),
+    Mediawiki::Vhost_feature_flags $vhost_feature_flags = hiera('profile::mediawiki::vhost_feature_flags'),
     Boolean $expose_endpoint = hiera('profile::mediawiki::jobrunner::expose_endpoint', false)
 ) {
     # Parameters we don't need to override
