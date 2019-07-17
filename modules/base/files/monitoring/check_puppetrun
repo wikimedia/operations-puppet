@@ -88,11 +88,10 @@ if File.exists?(summaryfile)
             failcount = :failed
         end
 
-        if failcount == 0 && summary["resources"]["total"] == 0
+        if failcount.zero? && summary["resources"]["total"].zero?
             # When Puppet fails due to a dependency cycle all counters are zero, treat it as a failure.
             failcount = :failed_no_resources
         end
-
     rescue
         failcount = :failed_to_parse_summary_file
         summary = nil

@@ -9,7 +9,9 @@ Vagrant.configure("2") do |config|
   config.vm.provision :shell, inline: 'echo "deb http://apt.wikimedia.org/wikimedia stretch-wikimedia main" > /etc/apt/sources.list.d/wikimedia.list'
   config.vm.provision :shell, inline: 'wget "https://wikitech.wikimedia.org/w/index.php?title=APT_repository/Stretch-Key&action=raw" -O - | apt-key add -'
   config.vm.provision :shell, inline: 'apt update'
+  # rubocop:disable Metrics/LineLength
   config.vm.provision :shell, inline: 'apt -y install varnish varnish-modules libvmod-netmapper libvmod-re2 libmaxminddb-dev python-jenkinsapi -t stretch-wikimedia'
+  # rubocop:enable Metrics/LineLength
 
   config.vm.provision :shell, inline: 'mkdir -p /usr/share/varnish/tests/ && cp /vagrant/{carriers,trusted_proxies}.json /usr/share/varnish/tests/'
 
