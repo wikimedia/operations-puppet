@@ -36,6 +36,11 @@ concurrency = 1
 [container-auditor]
 
 [container-sync]
+# You can override the default log routing for this app here (don't
+# use set!):
+log_name = container-sync
+log_facility = LOG_LOCAL1
+log_level = INFO
 # default is one sync each 5 mins. lowering to one per minute
 interval = 60
 # default maximum synchronization time is one minute, increasing it to 5 mins that would help with larger objects like docker layers.
