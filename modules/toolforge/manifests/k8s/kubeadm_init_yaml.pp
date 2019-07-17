@@ -18,4 +18,13 @@ class toolforge::k8s::kubeadm_init_yaml(
         mode    => '0400',
         require => File['/etc/kubernetes'],
     }
+
+    file { '/etc/kubernetes/kubeadm-system-psp.yaml':
+        ensure  => present,
+        source  => 'puppet:///modules/toolforge/k8s/kubeadm-system-psp.yaml',
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0400',
+        require => File['/etc/kubernetes'],
+    }
 }
