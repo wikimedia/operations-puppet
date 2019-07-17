@@ -10,9 +10,9 @@ class tendril (
     $auth_name,
 ) {
 
-    include passwords::ldap::wmf_cluster
+    include passwords::ldap::production
     include passwords::tendril
-    $proxypass = $passwords::ldap::wmf_cluster::proxypass
+    $proxypass = $passwords::ldap::production::proxypass
     $tendril_user_web = $passwords::tendril::db_user_web
     $tendril_pass_web = $passwords::tendril::db_pass_web
 
