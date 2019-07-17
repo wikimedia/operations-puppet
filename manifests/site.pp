@@ -2212,7 +2212,7 @@ node /^cloudvirt10[0-3][0-9]\.eqiad\.wmnet$/ {
 
 # New analytics cloudvirt nodes via T207194
 node /^cloudvirtan100[1-5].eqiad.wmnet$/ {
-    role(wmcs::openstack::eqiad1::virt)
+    role(spare::system)
     interface::add_ip6_mapped { 'main': }
 }
 
