@@ -3,3 +3,9 @@ mtail::logs:
   - /srv/syslog/syslog.log
   - /srv/syslog/apache2.log
   - /srv/syslog/swift.log
+
+profile::bird::advertise_vips:
+  syslog.anycast.wmnet:
+    address: 10.3.0.4 # VIP to advertise (limited to a /32)
+    check_cmd: '/bin/ss -lun | fgrep -q ":10514"'
+    ensure: present

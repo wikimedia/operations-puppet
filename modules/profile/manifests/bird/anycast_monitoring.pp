@@ -27,4 +27,8 @@ class profile::bird::anycast_monitoring{
         notes_url     => 'https://wikitech.wikimedia.org/wiki/Anycast_recursive_DNS#Troubleshooting',
         critical      => true, # Page
     }
+
+    monitoring::host { 'syslog.anycast.wmnet':
+        host_fqdn => 'syslog.anycast.wmnet',
+    }
 }

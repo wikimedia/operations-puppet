@@ -1,1 +1,7 @@
 profile::base::remote_syslog: []
+
+profile::bird::advertise_vips:
+  syslog.anycast.wmnet:
+    address: 10.3.0.4
+    check_cmd: '/bin/false' # Never advertize that VIP (to be decom)
+    ensure: absent # Anyway, don't even have knowledge of that VIP

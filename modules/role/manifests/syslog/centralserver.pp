@@ -13,6 +13,8 @@ class role::syslog::centralserver (
         description => 'Central syslog server'
     }
 
+    include ::profile::bird::anycast
+
     ferm::service { 'rsyslog-receiver_udp':
         proto   => 'udp',
         port    => 514,
