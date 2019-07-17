@@ -204,6 +204,9 @@ auth.require-approval: false
 # Require an email verification for all users
 auth.require-email-verification: true
 
+# Lock edits to auth config, see https://phabricator.wikimedia.org/T220670
+auth.lock-config: true
+
 metamta.user-address-format: 'short'
 
 # Modifies behavior of metamta.maniphest.reply-handler-domain
