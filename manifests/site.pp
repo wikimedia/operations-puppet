@@ -1235,7 +1235,6 @@ node 'graphite1004.eqiad.wmnet' {
     # TODO: move the roles below to ::role::alerting::host
     include ::role::graphite::alerts
     include ::role::restbase::alerts
-    include ::role::graphite::alerts::reqstats
     include ::role::elasticsearch::alerts
 }
 
