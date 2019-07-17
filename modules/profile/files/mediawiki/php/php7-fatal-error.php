@@ -1,6 +1,10 @@
 <?php
 # This file is managed by Puppet.
 
+$err = error_get_last();
+$message = $err['message'];
+$message = preg_replace( "/^.*?exception '.*?' with message '(.*?)'.*$/im", '\1', $message );
+
 // If the output has already been flushed, it may be unsafe to append an error message.
 if ( !headers_sent() ) {
 	header( 'HTTP/1.1 500 Internal Server Error' );
@@ -33,9 +37,6 @@ code { font-family: inherit; }
 <p>If you report this error to the Wikimedia System Administrators, please include the details below.</p>
 <p class="text-muted"><code>
   PHP fatal error<?php
-	$err = error_get_last();
-	$message = $err['message'];
-	$message = preg_replace( "/^.*?exception '.*?' with message '(.*?)'.*$/im", '\1', $message );
 	echo ": <br/> " . htmlspecialchars( $message );
 ?>
 </code></p></div>
