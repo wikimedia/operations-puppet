@@ -302,5 +302,5 @@ mediawiki_test_environment:
 
 # T225642
 mediawiki_mcrouter_async_test:
-  __regex: !ruby/regexp /^mw12(61|76).eqiad.wmnet$/
+  __regex: !ruby/regexp /^(mw12(61|76).eqiad.wmnet|mw2224.codfw.wmnet)$/
   profile::mediawiki::mcrouter_wancache::async_replication: true
