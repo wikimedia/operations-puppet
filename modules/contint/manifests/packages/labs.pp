@@ -4,6 +4,5 @@ class contint::packages::labs {
     requires_realm('labs')
 
     include ::contint::packages::javascript
-    include ::contint::packages::ruby
 
 }
