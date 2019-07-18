@@ -32,13 +32,13 @@
 #   SSLCARevocationCheck documentation for full details.
 #   Valid settings: chain|leaf|none
 define puppetmaster::web_frontend(
-    $workers,
-    $master,
-    $bind_address='*',
-    $priority=90,
-    $alt_names=undef,
-    $cert_secret_path = 'puppetmaster',
-    $ssl_ca_revocation_check = undef,
+    Puppetmaster::Backends                  $workers,
+    Stdlib::Host                            $master,
+    String[1]                               $bind_address            = '*',
+    Integer[1,100]                          $priority                = 90,
+    Optional[Array[String]]                 $alt_names               = undef,
+    String[1]                               $cert_secret_path        = 'puppetmaster',
+    Optional[Enum['chain', 'leaf', 'none']] $ssl_ca_revocation_check = undef,
 ){
     $server_name = $title
     $ssldir = '/var/lib/puppet/ssl'

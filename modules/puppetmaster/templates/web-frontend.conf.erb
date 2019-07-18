@@ -41,12 +41,11 @@
     ProxyPassMatch ^/([^/]+/file_content/volatile/.*)$ https://<%= @master %>:8141
     ProxyPassMatch ^/(puppet/v3/file_content/volatile/.*)$ https://<%= @master %>:8141
     # The rest gets balanced
-    ProxyPass / balancer://mycluster/
-    <Proxy balancer://mycluster>
+    ProxyPass / balancer://backend/
+    <Proxy balancer://backend>
       <%- @workers.each do |workerhash| -%>
-      <%- unless workerhash['offline'] -%>
-        BalancerMember https://<%= workerhash['worker'] %>:8141 ping=1 connectiontimeout=1 retry=500 timeout=900 <%- if workerhash['loadfactor'] -%>loadfactor=<%= workerhash['loadfactor'] %><%- end %>
-      <%- end -%>
+        <%- next if workerhash['offline'] -%>
+        BalancerMember https://<%= workerhash['worker'] %>:8141 ping=1 connectiontimeout=1 retry=500 timeout=900 loadfactor=<%= workerhash['loadfactor'] %>
       <%- end -%>
       Require all granted
     </Proxy>
