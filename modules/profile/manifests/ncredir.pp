@@ -4,11 +4,22 @@ class profile::ncredir(
     Hash[String, Hash[String, Any]] $shared_acme_certificates = lookup('shared_acme_certificates'),
     String $acme_chief_cert_prefix = lookup('profile::ncredir::acme_chief_cert_prefix', {default_value => 'non-canonical-redirect-'}),
     Optional[String] $fqdn_monitoring = lookup('profile::ncredir::fqdn_monitoring', {default_value => undef}),
+    Wmflib::UserIpPort $mtail_access_log_port = lookup('profile::ncredir::mtail_access_log_port', {default_value => 3904}),
 ) {
 
     class { '::sslcert::dhparam': }
     class { 'nginx':
         variant => 'light',
+    }
+
+    mtail::program { 'ncredir':
+        source      => 'puppet:///modules/mtail/programs/ncredir.mtail',
+        destination => '/etc/ncredir.mtail',
+        notify      => Service['ncredirmtail@access_log'],
+    }
+
+    profile::ncredir::log { 'access_log':
+        ncredirmtail_port => $mtail_access_log_port,
     }
 
     class { '::ncredir':
@@ -18,6 +29,7 @@ class profile::ncredir(
         acme_chief_cert_prefix => $acme_chief_cert_prefix,
         http_port              => $http_port,
         https_port             => $https_port,
+        require                => File['/var/log/nginx/ncredir.access_log.pipe'],
     }
 
     $shared_acme_certificates.each |String $cert_name, Hash[String, Any] $cert_details| {

@@ -1,0 +1,7 @@
+#!/bin/sh
+# ncredirlog -- print ncredir/nginx access log to stdout
+
+socket="<%= @socket %>"
+regexp="${1:- }"
+
+fifo-log-tailer -socket "$socket" -regexp "$regexp"

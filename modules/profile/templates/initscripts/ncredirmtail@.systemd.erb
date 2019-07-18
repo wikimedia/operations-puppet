@@ -1,0 +1,12 @@
+[Unit]
+Description=mtail instance for ncredir/nginx %i
+Documentation=https://wikitech.wikimedia.org/wiki/Ncredir
+
+[Service]
+SyslogIdentifier=ncredirmtail-%i
+Restart=always
+ExecStart=/bin/sh -c 'ncredirlog-%i | mtail -progs "/etc/ncredir.mtail" -logs /dev/stdin -port "<%= @ncredirmtail_port %>"'
+
+[Install]
+WantedBy=multi-user.target
+RequiredBy=nginx.service

@@ -1,0 +1,17 @@
+counter ncredir_requests_total by scheme, vhost, method, status
+# log_format ncredir '$remote_addr [$time_local] $scheme '
+#                   '"$request" $status $body_bytes_sent '
+#                   '"$http_user_agent" $host $sent_http_location';
+/^/ +
+/(?P<remote_addr>[0-9A-Za-z\.\-:]+) / +
+/(?P<time_local>\[\d{2}\/\w{3}\/\d{4}:\d{2}:\d{2}:\d{2} \+\d{4}\]) / +
+/(?P<scheme>https?) / +
+/"(?P<method>[A-Z]+) (?P<request_uri>\S+) (?P<http_version>HTTP\/[0-9\.]+)" / +
+/(?P<status>\d{3}) / +
+/(?P<bytes_sent>\d+) / +
+/"(?P<http_user_agent>[[:print:]]+)" / +
+/(?P<vhost>[0-9A-Za-z\.\-:]+) / +
+/(?P<redirection_target>\S+)/ +
+/$/ {
+  ncredir_requests_total[$scheme][$vhost][$method][$status]++
+}
