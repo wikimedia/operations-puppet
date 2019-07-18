@@ -243,8 +243,10 @@ if [ $running_user != $git_user ]; then # only loop through other servers if we'
     <%- end -%>
   <%- end -%>
 
-    # conftool-merge does need to run from >1 frontend, avoid running a second time
-    echo "Now running conftool-merge to sync any changes to conftool data"
-    /usr/local/bin/conftool-merge
+    # Only run this once, and only if we're merging the prod repo
+    if [ $LABS_PRIVATE -eq 0 ]; then
+        echo "Now running conftool-merge to sync any changes to conftool data"
+        /usr/local/bin/conftool-merge
+    fi
 fi
 <%- end -%>
