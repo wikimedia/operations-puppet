@@ -103,13 +103,13 @@ rewrite	wikipedia.info	https://www.wikipedia.org
 rewrite	*.wikipedia.com	https://*.wikipedia.org
 rewrite	*.wikipedia.net	https://*.wikipedia.org
 rewrite	*.wikipedia.info	https://*.wikipedia.org
-# rewrite	*.wiki-pedia.org	https://*.wikipedia.org
-# rewrite	wiki-pedia.org	https://www.wikipedia.org
+rewrite	*.wiki-pedia.org	https://*.wikipedia.org
+rewrite	wiki-pedia.org	https://www.wikipedia.org
 
 # wikipedia typo domains to www. instead of en - T165733#3355736
-# funnel	*wiikipedia.com	https://www.wikipedia.org
-# funnel	*wikiepdia.com	https://www.wikipedia.org
-# funnel	*wikiepdia.org	https://www.wikipedia.org
+funnel	*wiikipedia.com	https://www.wikipedia.org
+funnel	*wikiepdia.com	https://www.wikipedia.org
+funnel	*wikiepdia.org	https://www.wikipedia.org
 funnel	*wikiipedia.org	https://www.wikipedia.org
 funnel	*wikpedia.org	https://www.wikipedia.org
 
