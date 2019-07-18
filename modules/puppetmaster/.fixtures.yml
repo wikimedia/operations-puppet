@@ -10,3 +10,4 @@ fixtures:
         ssh: "../../../../ssh"
         stdlib: "../../../../stdlib"
         wmflib: "../../../../wmflib"
+        apache: "../../../../apache"

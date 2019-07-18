@@ -1,3 +1,18 @@
+<%-
+def get_addresses(hostname)
+  # Resolv.getaddresses will not return IPv6 addreses if the host does not speak IPv6
+  # This is mainly an issues for the spec tests but its more precises either way
+  answers = []
+  Resolv::DNS.open do |dns|
+    [Resolv::DNS::Resource::IN::A, Resolv::DNS::Resource::IN::AAAA].each do |rrtype|
+      answer = dns.getresources(hostname, rrtype)
+      next if answer.empty?
+      answers << answer.map { |ans| ans.address.to_s }
+    end
+  end
+  answers.flatten.sort
+end
+-%>
 # Experimental virtualhost to test new puppetmaster backends
 <VirtualHost <%= @bind_address %>:8140>
     ServerName <%= @server_name %>
@@ -41,10 +56,28 @@
     ProxyPassMatch ^/([^/]+/file_content/volatile/.*)$ https://<%= @master %>:8141
     ProxyPassMatch ^/(puppet/v3/file_content/volatile/.*)$ https://<%= @master %>:8141
     # The rest gets balanced
+
+    <%-# only add canary config if we have a canary worker and canary hosts -%>
+    <%- if @workers.any? { |worker| worker.has_key?('canary') } && @canary_hosts.any? -%>
+      <%- @canary_hosts.each do |canary_host| -%>
+        <%- get_addresses(canary_host).each do |ip| -%>
+    SetEnvIf Remote_Addr <%= ip %> CANARY=yes
+        <%- end -%>
+      <%- end -%>
+    ProxyPass / balancer://canarybackend/ env=CANARY
+    <Proxy balancer://canarybackend>
+      <%- @workers.each do |workerhash| -%>
+        <%- next if workerhash['offline'] || !workerhash['canary'] -%>
+        BalancerMember https://<%= workerhash['worker'] %>:8141 ping=1 connectiontimeout=1 retry=500 timeout=900 loadfactor=<%= workerhash['loadfactor'] %>
+      <%- end -%>
+      Require all granted
+    </Proxy>
+  <%- end -%>
     ProxyPass / balancer://backend/
     <Proxy balancer://backend>
       <%- @workers.each do |workerhash| -%>
-        <%- next if workerhash['offline'] -%>
+        <%-# !! casts nil to boolean i-%>
+        <%- next if workerhash['offline'] || !!workerhash['canary'] -%>
         BalancerMember https://<%= workerhash['worker'] %>:8141 ping=1 connectiontimeout=1 retry=500 timeout=900 loadfactor=<%= workerhash['loadfactor'] %>
       <%- end -%>
       Require all granted

@@ -10,6 +10,7 @@
 #   be equal to 1.
 #   An 'offline' parameter is supported to allow fully depooling a host
 #   without removing it from the stanza.
+#   A 'canary' parameter configures a backend to only receive canary hosts
 #    [{ 'worker' => 'worker1.example.com', loadfactor => '1' }]
 #
 # [*master*]
@@ -31,6 +32,8 @@
 #   CRL-based revocation checking setting in apache. See apache
 #   SSLCARevocationCheck documentation for full details.
 #   Valid settings: chain|leaf|none
+# [*canary_hosts*]
+#  An array of hosts which should be directed to use canary servers
 define puppetmaster::web_frontend(
     Puppetmaster::Backends                  $workers,
     Stdlib::Host                            $master,
@@ -39,6 +42,7 @@ define puppetmaster::web_frontend(
     Optional[Array[String]]                 $alt_names               = undef,
     String[1]                               $cert_secret_path        = 'puppetmaster',
     Optional[Enum['chain', 'leaf', 'none']] $ssl_ca_revocation_check = undef,
+    Optional[Array[Stdlib::Host]]           $canary_hosts            = []
 ){
     $server_name = $title
     $ssldir = '/var/lib/puppet/ssl'
