@@ -43,7 +43,7 @@ class profile::toolforge::k8s::kubeadm::master(
     class { 'toolforge::k8s::kubeadm': }
 
     $pod_subnet = '192.168.0.0/16'
-    class { 'toolforge::k8s::kubeadm_init':
+    class { 'toolforge::k8s::kubeadm_init_yaml':
         etcd_hosts         => $etcd_hosts,
         apiserver          => $apiserver,
         pod_subnet         => $pod_subnet,
@@ -53,13 +53,8 @@ class profile::toolforge::k8s::kubeadm::master(
         k8s_etcd_cert_ca   => $k8s_etcd_cert_ca,
     }
 
-    class { 'toolforge::k8s::kubeadm_join':
-        apiserver  => $apiserver,
-        node_token => $node_token,
-    }
-
-    class { 'toolforge::k8s::kubeadm_calico':
-        pod_subnet     => $pod_subnet,
+    class { 'toolforge::k8s::kubeadm_calico_yaml':
+        pod_subnet => $pod_subnet,
     }
 
     class { '::toolforge::k8s::kubeadm_calico_workaround': }
