@@ -6,11 +6,4 @@ class contint::packages::labs {
     include ::contint::packages::javascript
     include ::contint::packages::ruby
 
-    # Database related
-    package { [
-        'sqlite3',
-        ]:
-        ensure => present,
-    }
-
 }
