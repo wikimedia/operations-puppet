@@ -34,6 +34,7 @@ packages:
     - apt-listchanges
     - apt-show-versions
     - apt-transport-https
+    - augeas-tools
     - ca-certificates
     - cloud-utils
     - command-not-found
@@ -44,6 +45,7 @@ packages:
     - diamond
     - dnsutils
     - dstat
+    - ebtables
     - emacs
     - ethtool
     - euca2ools
@@ -55,6 +57,7 @@ packages:
     - git-fat
     - htop
     - httpry
+    - iotop
     - iperf
     - jfsutils
     - jq
@@ -65,6 +68,7 @@ packages:
     - libnss-ldapd
     - libnss-sss
     - libsss-sudo
+    - libtemplate-perl
     - libpam-sss
     - lldpd
     - lockfile-progs
@@ -84,19 +88,30 @@ packages:
     - nslcd-utils
     - nss-updatedb
     - ntp
+    - numactl
     - openssh-server
     - openssl
     - os-prober
     - parted
+    - pigz
+    - psmisc
     - prometheus-node-exporter
     - puppet
+    - puppet-lint
     - pv
     - python-apt
     - python-ldap
     - python-pycurl
     - python-redis
     - python-statsd
+    - python-designateclient
+    - python-glanceclient
+    - python-keystoneclient
+    - python-novaclient
+    - python-openstackclient
+    - quickstack
     - rsyslog
+    - ruby-safe-yaml
     - screen
     - snmp
     - sssd
@@ -109,6 +124,8 @@ packages:
     - tshark
     - tzdata
     - vim
+    - vim-addon-manager
+    - vim-scripts
     - virt-what
     - wipe
     - wpasupplicant
