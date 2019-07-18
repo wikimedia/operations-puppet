@@ -5,7 +5,8 @@ class profile::tlsproxy::instance(
     Boolean $nginx_tune_for_media = hiera('cache::tune_for_media', false),
     String $nginx_client_max_body_size = hiera('tlsproxy::nginx_client_max_body_size', '100m'),
     Boolean $bootstrap_protection = hiera('profile::tlsproxy::instance::bootstrap_protection', false),
-    Enum['full', 'extras', 'light'] $nginx_variant = hiera('profile::tlsproxy::instance::nginx_variant', 'full')
+    Enum['full', 'extras', 'light'] $nginx_variant = hiera('profile::tlsproxy::instance::nginx_variant', 'full'),
+    Enum['strong', 'mid', 'compat'] $ssl_compatibility_mode = hiera('profile::tlsproxy::instance::ssl_compatibility_mode', 'compat')
 ) {
     # Enable client/server TCP Fast Open (TFO)
     #
@@ -24,7 +25,7 @@ class profile::tlsproxy::instance(
     }
 
     $nginx_worker_connections = '131072'
-    $nginx_ssl_conf = ssl_ciphersuite('nginx', 'compat')
+    $nginx_ssl_conf = ssl_ciphersuite('nginx', $ssl_compatibility_mode)
 
     # If numa_networking is turned on, use interface_primary for NUMA hinting,
     # otherwise use 'lo' for this purpose.  Assumes NUMA data has "lo" interface
