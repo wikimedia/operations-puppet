@@ -5,6 +5,13 @@ Description=Zuul merger
 User=zuul
 Group=zuul
 ExecStart=/usr/bin/zuul-merger -d -c /etc/zuul/zuul-merger.conf
+ExecStop=/bin/kill -USR1 $MAINPID
+<% # systemd in Jessie does not support 'infinity'
+if scope.function_os_version(['debian >= stretch']) -%>
+TimeoutStopSec=infinity
+<%- else -%>
+TimeoutStopSec=0
+<%- end -%>
 EnvironmentFile=/etc/default/zuul-merger
 
 [Install]
