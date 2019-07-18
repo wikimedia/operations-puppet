@@ -5,5 +5,6 @@ blacklistObjectNames:
   # mbeans with hostnames in them, blacklist to avoid metric cardinality explosion
   - 'puppetlabs.puppetdb.http:name=/pdb/query/v4/facts/*'
   - 'puppetlabs.puppetdb.http:name=/pdb/query/v4/nodes/*'
+  - 'puppetlabs.puppetdb.http:name=/pdb/query/v4/catalogs/*'
   - 'com.puppetlabs.puppetdb.http.server:type=/v3/nodes/*,name=*'
   - 'com.puppetlabs.puppetdb.http.server:type=/v4/nodes/*,name=*'
