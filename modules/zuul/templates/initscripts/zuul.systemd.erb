@@ -12,7 +12,12 @@ Environment=STATSD_PORT=8125
 ExecStart=/usr/bin/zuul-server -d -c /etc/zuul/zuul-server.conf
 ExecReload=/bin/kill -HUP $MAINPID
 ExecStop=/bin/kill -USR1 $MAINPID
+<% # systemd in Jessie does not support 'infinity'
+if scope.function_os_version(['debian >= stretch']) -%>
 TimeoutStopSec=infinity
+<%- else -%>
+TimeoutStopSec=0
+<%- end -%>
 
 [Install]
 WantedBy=multi-user.target
