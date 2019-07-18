@@ -18,3 +18,11 @@ profile::hive::client::zookeeper_cluster_name: main-eqiad
 profile::hive::client::server_host: an-coord1001.eqiad.wmnet
 profile::hive::client::server_port: 10000
 profile::hive::client::metastore_host: 'an-coord1001.eqiad.wmnet'
+
+# TLS Terminator settings
+profile::tlsproxy::instance::ssl_compatibility_mode: strong
+profile::tlsproxy::service::name: yarn.wikimedia.org
+profile::tlsproxy::service::upstream_ports:
+  - 80
+profile::tlsproxy::service::check_command: "check_https_url!yarn.wikimedia.org!/"
+profile::tlsproxy::service::notes_url: "https://wikitech.wikimedia.org/wiki/Analytics/Systems/Cluster"
