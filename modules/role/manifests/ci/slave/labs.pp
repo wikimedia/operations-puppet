@@ -24,8 +24,6 @@ class role::ci::slave::labs {
     # Include package unsafe for production
     include contint::packages::labs
 
-    include contint::php
-
     include role::ci::slave::labs::common
 
     include profile::ci::browsers
