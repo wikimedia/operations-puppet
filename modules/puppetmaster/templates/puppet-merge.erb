@@ -16,6 +16,7 @@ QUIET=0
 LABS_PRIVATE=0
 DIFF_ONLY=0
 CONFFILE="/etc/puppet-merge.conf"
+THISSCRIPT=`realpath $0`
 
 usage="$(basename ${0}) [-y|--yes] [SHA1]
 
@@ -60,6 +61,16 @@ sha1=${1:-}
 git_user='gitpuppet'
 # We might be running this as root, or as gitpuppet (from an ssh session to a backend)
 running_user=`whoami`
+
+if [ $running_user != $git_user ]; then
+    if [ $LABS_PRIVATE -eq 0 ]; then
+        echo "Checking for pending merges in /labs/private"
+        $THISSCRIPT --labsprivate
+        if [ $? -ne 0 ]; then
+           exit 1
+        fi
+    fi
+fi
 
 if [ $LABS_PRIVATE -eq 1 ]; then
     BASEDIR="/var/lib/git/labs/private"
