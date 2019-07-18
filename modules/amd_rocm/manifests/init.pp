@@ -15,7 +15,7 @@ class amd_rocm (
     String $version = '25',
 ) {
 
-    $supported_versions = ['25']
+    $supported_versions = ['25', '26']
 
     if ! ($version in $supported_versions) {
         fail('The version of ROCm requested is not supported or misspelled.')
