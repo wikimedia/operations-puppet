@@ -1841,7 +1841,7 @@ node /^ores[12]00[1-9]\.(eqiad|codfw)\.wmnet$/ {
     role(ores)
 }
 
-node /orespoolcounter[12]00[1234]\.(codfw|eqiad)\.wmnet/ {
+node /orespoolcounter[12]00[34]\.(codfw|eqiad)\.wmnet/ {
     role(orespoolcounter)
 }
 
