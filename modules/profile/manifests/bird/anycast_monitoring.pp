@@ -10,6 +10,7 @@ class profile::bird::anycast_monitoring{
 
     monitoring::host { 'recdns.anycast.wmnet':
         host_fqdn => 'recdns.anycast.wmnet',
+        critical  => true, # Page
     }
 
     monitoring::service { 'Recursive DNS anycast VIP':
@@ -17,5 +18,6 @@ class profile::bird::anycast_monitoring{
         description   => 'recursive DNS anycast VIP',
         check_command => 'check_dns!www.wikipedia.org',
         notes_url     => 'https://wikitech.wikimedia.org/wiki/Anycast_recursive_DNS#Troubleshooting',
+        critical      => true, # Page
     }
 }
