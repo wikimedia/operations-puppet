@@ -28,4 +28,7 @@ class puppetmaster::monitoring (
     # Check for unmerged changes that have been sitting for more than one minute.
     # ref: T80100, T83854
     monitoring::icinga::git_merge { 'puppet': }
+    monitoring::icinga::git_merge { 'labs-private':
+        dir => '/var/lib/git/labs/private/',
+    }
 }
