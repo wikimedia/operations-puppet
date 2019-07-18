@@ -31,13 +31,11 @@ packages:
   install:
     - acct
     - ack
-    - apt-listchanges
     - apt-show-versions
     - apt-transport-https
     - augeas-tools
     - ca-certificates
     - cloud-utils
-    - command-not-found
     - coreutils
     - curl
     - debdeploy-client
@@ -128,7 +126,6 @@ packages:
     - vim-scripts
     - virt-what
     - wipe
-    - wpasupplicant
     - xfsprogs
     - zsh
 plugins:
