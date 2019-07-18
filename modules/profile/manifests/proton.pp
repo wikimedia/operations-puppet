@@ -3,6 +3,7 @@
 # This class installs and configures the Chromium-based PDF renderer service.
 #
 class profile::proton(
+    Boolean $use_nodejs10 = hiera('profile::proton::use_nodejs10', false),
 ) {
 
     class { '::mediawiki::packages::fonts': }
@@ -20,6 +21,7 @@ class profile::proton(
             'CHROME_BIN'                      => '/usr/bin/chromium',
             'APP_ENABLE_CANCELLABLE_PROMISES' => true,
         },
+        use_nodejs10      => $use_nodejs10,
     }
 
     # font configuration section
