@@ -5,7 +5,7 @@
 class profile::hue (
     $hive_server_host           = hiera('profile::hue::hive_server_host'),
     $database_host              = hiera('profile::hue::database_host'),
-    $ldap_config                = hiera('ldap'),
+    $ldap_config                = lookup('ldap', Hash, hash, {}),
     $ldap_base_dn               = hiera('profile::hue::ldap_base_dn', 'dc=wikimedia,dc=org'),
     $database_engine            = hiera('profile::hue::database_engine', 'mysql'),
     $database_user              = hiera('profile::hue::database_user', 'hue'),

@@ -39,3 +39,9 @@ public_tls_unified_cert_vendor: "globalsign-2018"
 # Reasonable expected max RTT in ms to furthest core DC
 # (given worst alternate network paths, and plus a small fudge factor)
 max_core_rtt: 60 # to codfw via eqord, ~53ms rounded up to 60
+
+ldap:
+  ro-server: ldap-ro.eqiad.wikimedia.org
+  ro-server-fallback: ldap-ro.codfw.wikimedia.org
+  rw-server: ldap-labs.eqiad.wikimedia.org
+  rw-server-fallback: ldap-labs.codfw.wikimedia.org

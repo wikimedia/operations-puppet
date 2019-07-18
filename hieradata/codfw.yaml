@@ -45,3 +45,9 @@ mail_smarthost:
 wikimail_smarthost:
 - 'wiki-mail-codfw.wikimedia.org'
 - 'wiki-mail-eqiad.wikimedia.org'
+
+ldap:
+  ro-server: ldap-ro.codfw.wikimedia.org
+  ro-server-fallback: ldap-ro.eqiad.wikimedia.org
+  rw-server: ldap-labs.codfw.wikimedia.org
+  rw-server-fallback: ldap-labs.eqiad.wikimedia.org

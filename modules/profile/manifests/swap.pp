@@ -25,7 +25,7 @@ class profile::swap(
         'cn=nda,ou=groups,dc=wikimedia,dc=org',
         'cn=wmf,ou=groups,dc=wikimedia,dc=org',
     ]),
-    $ldap_config         = hiera('ldap'),
+    $ldap_config         = lookup('ldap', Hash, hash, {}),
     $posix_groups        = hiera('admin::groups', undef),
     $rsync_hosts_allow   = hiera('profile::swap::rsync_hosts_allow', undef),
     $dumps_servers       = hiera('dumps_dist_nfs_servers'),

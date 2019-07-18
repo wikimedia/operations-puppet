@@ -16,9 +16,6 @@ statsd_exporter_port: 9125
 # Debmonitor instance
 debmonitor: debmonitor.discovery.wmnet
 
-ldap:
-  ro-server: ldap-ro.eqiad.wikimedia.org
-
 # NOTE: Do *not* add new clusters *per site* anymore,
 # the site name will automatically be appended now,
 # and a different IP prefix will be used.
@@ -1414,3 +1411,8 @@ shared_acme_certificates:
     - '^ncredir200[12]\.codfw\.wmnet$'
     prevalidate: true
     skip_invalid_snis: true
+
+ldap:
+  base-dn: 'dc=wikimedia,dc=org'
+  groups_cn: 'ou=groups'
+  users_cn: 'ou=people'
