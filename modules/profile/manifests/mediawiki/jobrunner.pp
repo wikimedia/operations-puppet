@@ -28,6 +28,7 @@ class profile::mediawiki::jobrunner(
     $port = 9005
     $local_only_port = 9006
     $fcgi_proxy = mediawiki::fcgi_endpoint($fcgi_port, $fcgi_pool)
+    $php72_only = pick($vhost_feature_flags['php72_only'], false)
 
     # Add headers lost by mod_proxy_fastcgi
     # The apache module doesn't pass along to the fastcgi appserver
@@ -123,9 +124,23 @@ class profile::mediawiki::jobrunner(
         content  => inline_template("# This file is managed by Puppet\nListen <%= @port %>\nListen <%= @local_only_port %>\n"),
     }
 
-    httpd::site{ 'hhvm_jobrunner':
-        priority => 1,
-        content  => template('profile/mediawiki/jobrunner/site.conf.erb'),
+    if $php72_only {
+        httpd::site { 'php7_jobrunner':
+            priority => 1,
+            content  => template('profile/mediawiki/jobrunner/site.conf.erb'),
+        }
+        httpd::site { 'hhvm_jobrunner':
+            ensure => absent,
+        }
+    }
+    else {
+        httpd::site { 'php7_jobrunner':
+            ensure => absent,
+        }
+        httpd::site { 'hhvm_jobrunner':
+            priority => 1,
+            content  => template('profile/mediawiki/jobrunner/site.conf.erb'),
+        }
     }
 
     # HHVM admin interface

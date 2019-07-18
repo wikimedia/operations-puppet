@@ -8,17 +8,27 @@
     </Directory>
     RewriteCond  %{REQUEST_URI} !^/w/health-check.php
     RewriteRule ^ - [R=404,L]
+<% if @php72_only %>
+    # This host only serves via PHP7, we are not setting
+    # the PHP_ENGINE cookie
+    # Send all php files to the FCGI backend (PHP7)
+<%- else -%>
     # Set the variable if php7 is required
     SetEnvIf Cookie "PHP_ENGINE=php7" backend=php7
     # Send all php files to the FCGI backend (HHVM/PHP7)
+<%- end -%>
     # This takes precedence over the catchall in the general configuration
     <FilesMatch "\.php$">
+<% if @php72_only %>
+        SetHandler "proxy:<%= @fcgi_proxy %>"
+<%- else -%>
     <If "reqenv('backend') == 'php7'">
         SetHandler "proxy:<%= @fcgi_proxy %>"
     </If>
     <Else>
         SetHandler "proxy:fcgi://127.0.0.1:9000"
     </Else>
+<%- end -%>
     </FilesMatch>
     ErrorLog ${APACHE_LOG_DIR}/jq-public-error.log
     CustomLog ${APACHE_LOG_DIR}/jq-public-access.log wmf
@@ -36,18 +46,24 @@
     # Only selected paths are allowed here
     RewriteCond %{REQUEST_URI} !^/(w/health-check|rpc/RunSingleJob|rpc/RunJobs)\.php
     RewriteRule ^ - [R=404,L]
+<%- if !@php72_only  -%>
     # Set the variable if php7 is required
     SetEnvIf Cookie "PHP_ENGINE=php7" backend=php7
     RewriteCond %{QUERY_STRING} force_php7
     RewriteRule ^ - [E=backend:php7]
+<%- end -%>
 
     <FilesMatch "\.php$">
+<% if @php72_only %>
+        SetHandler "proxy:<%= @fcgi_proxy %>"
+<%- else -%>
     <If "reqenv('backend') == 'php7'">
         SetHandler "proxy:<%= @fcgi_proxy %>"
     </If>
     <Else>
         SetHandler "proxy:fcgi://127.0.0.1:9000"
     </Else>
+<%- end -%>
     </FilesMatch>
     ErrorLog ${APACHE_LOG_DIR}/jobqueue-error.log
     CustomLog ${APACHE_LOG_DIR}/jobqueue-access.log wmf
@@ -69,18 +85,24 @@
     RewriteCond %{REQUEST_URI} !^/(w/health-check|rpc/RunSingleJob|rpc/RunJobs)\.php
     RewriteRule ^ - [R=404,L]
 
+<%- if !@php72_only  -%>
     # Set the variable if php7 is required
     SetEnvIf Cookie "PHP_ENGINE=php7" backend=php7
     RewriteCond %{QUERY_STRING} force_php7
     RewriteRule ^ - [E=backend:php7]
+<%- end -%>
 
     <FilesMatch "\.php$">
+<% if @php72_only %>
+        SetHandler "proxy:<%= @fcgi_proxy %>"
+<%- else -%>
     <If "reqenv('backend') == 'php7'">
         SetHandler "proxy:<%= @fcgi_proxy %>"
     </If>
     <Else>
         SetHandler "proxy:fcgi://127.0.0.1:9000"
     </Else>
+<%- end -%>
     </FilesMatch>
     ErrorLog ${APACHE_LOG_DIR}/videoscaler-error.log
     CustomLog ${APACHE_LOG_DIR}/videoscaler-access.log wmf
