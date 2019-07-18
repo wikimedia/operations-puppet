@@ -9,7 +9,7 @@ class profile::analytics::refinery::job::refine {
 
     # Update this when you want to change the version of the refinery job jar
     # being used for the refine job.
-    $refinery_version = '0.0.92'
+    $refinery_version = '0.0.94'
 
     # Use this value by default
     Profile::Analytics::Refinery::Job::Refine_job {
@@ -38,7 +38,7 @@ class profile::analytics::refinery::job::refine {
             input_path_regex_capture_groups => 'table,year,month,day,hour',
             table_blacklist_regex           => '^Edit|ChangesListHighlights|InputDeviceDynamics|PageIssues$',
             # Deduplicate basd on uuid field and geocode ip in EventLogging analytics data.
-            transform_functions             => 'org.wikimedia.analytics.refinery.job.refine.deduplicate_eventlogging,org.wikimedia.analytics.refinery.job.refine.geocode_ip',
+            transform_functions             => 'org.wikimedia.analytics.refinery.job.refine.deduplicate_eventlogging,org.wikimedia.analytics.refinery.job.refine.geocode_ip,org.wikimedia.analytics.refinery.job.eventlogging_filter_is_allowed_hostname',
             # Get EventLogging JSONSchemas from meta.wikimedia.org.
             schema_base_uri                 => 'eventlogging',
         }),
