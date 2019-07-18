@@ -4,7 +4,6 @@ class profile::toolforge::k8s::kubeadm::master(
     String              $node_token     = lookup('profile::toolforge::k8s::node_token'),
 ) {
     require profile::toolforge::k8s::kubeadm::preflight_checks
-    require profile::toolforge::k8s::kubeadm::calico_workaround
 
     # use puppet certs to contact etcd
     $k8s_etcd_cert_pub  = '/etc/kubernetes/pki/puppet_etcd_client.crt'
@@ -63,4 +62,5 @@ class profile::toolforge::k8s::kubeadm::master(
         pod_subnet     => $pod_subnet,
     }
 
+    class { '::toolforge::k8s::kubeadm_calico_workaround': }
 }

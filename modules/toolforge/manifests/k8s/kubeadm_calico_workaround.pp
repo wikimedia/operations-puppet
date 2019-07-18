@@ -1,5 +1,7 @@
-class profile::toolforge::k8s::kubeadm::calico_workaround(
+class toolforge::k8s::kubeadm_calico_workaround(
 ) {
+    require ::toolforge::k8s::kubeadm
+
     # we require this in Buster because calico hardcodes iptables-legacy
     # calls, but otherwise it could work with the nf_tables backend.
     # We could pretty much do this the other way around: hack calico into
