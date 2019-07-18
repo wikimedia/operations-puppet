@@ -217,6 +217,12 @@ host hassium {
     option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
 }
 
+host idp1001 {
+    hardware ethernet aa:00:00:43:ae:c7;
+    fixed-address idp1001.wikimedia.org;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/buster-installer/";
+}
+
 host install1002 {
     hardware ethernet aa:00:00:3c:d7:80;
     fixed-address install1002.wikimedia.org;
