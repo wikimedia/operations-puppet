@@ -227,7 +227,7 @@ else
     PRIVATE_ARG=""
 fi
 
-if [ -z ${sha1} ]; then # Only loop through the other servers if called without sha1
+if [ $running_user != $git_user ]; then # only loop through other servers if we're the actual user command
   <%- @servers.each do |frontend, workers| -%>
     <%- workers.map{ |w| w['worker']}.select{|name| name != @fqdn}.each do |worker| -%>
     if [ $running_user = $git_user ]; then
@@ -242,11 +242,8 @@ if [ -z ${sha1} ]; then # Only loop through the other servers if called without 
     fi
     <%- end -%>
   <%- end -%>
-  # avoid a syntax error if this list is empty
-  true
-fi
-# conftool-merge does need to run from >1 frontend, avoid running a second time
-if [ $running_user != $git_user ]; then
+
+    # conftool-merge does need to run from >1 frontend, avoid running a second time
     echo "Now running conftool-merge to sync any changes to conftool data"
     /usr/local/bin/conftool-merge
 fi
