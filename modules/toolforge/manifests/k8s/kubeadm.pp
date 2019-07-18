@@ -19,4 +19,6 @@ class toolforge::k8s::kubeadm(
     file { '/etc/kubernetes/':
         ensure => 'directory',
     }
+
+    include ::toolforge::k8s::kubeadm_docker_service
 }
