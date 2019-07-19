@@ -62,8 +62,8 @@ class profile::netbox (
     class { '::postgresql::backup': }
 
     # Used for LDAP auth
-    include passwords::ldap::wmf_cluster
-    $proxypass = $passwords::ldap::wmf_cluster::proxypass
+    include passwords::ldap::production
+    $proxypass = $passwords::ldap::production::proxypass
 
     # Define master postgres server
     $master = $active_server
