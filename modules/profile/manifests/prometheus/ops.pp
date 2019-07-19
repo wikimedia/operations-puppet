@@ -1251,6 +1251,22 @@ class profile::prometheus::ops (
         port       => 9171,
     }
 
+    $ncredir_jobs = [
+        {
+            'job_name'        => 'ncredir',
+            'scheme'          => 'http',
+            'file_sd_configs' => [
+                { 'files'     => [ "${targets_path}/ncredir_*.yaml" ]}
+            ],
+        },
+    ]
+    prometheus::class_config { "ncredir_access_log_${::site}.yaml":
+        dest       => "${targets_path}/ncredir_access_log_${::site}.yaml",
+        site       => $::site,
+        class_name => 'profile::ncredir',
+        port       => 3904,
+    }
+
 
     prometheus::server { 'ops':
         listen_address        => '127.0.0.1:9900',
@@ -1266,7 +1282,7 @@ class profile::prometheus::ops (
             $blazegraph_jobs, $nutcracker_jobs, $postgresql_jobs,
             $kafka_burrow_jobs, $logstash_jobs, $haproxy_jobs, $statsd_exporter_jobs,
             $mjolnir_jobs, $rsyslog_jobs, $php_jobs, $php_fpm_jobs, $icinga_jobs, $docker_registry_jobs,
-            $gerrit_jobs, $routinator_jobs, $rpkicounter_jobs, $varnishkafka_jobs, $bird_jobs
+            $gerrit_jobs, $routinator_jobs, $rpkicounter_jobs, $varnishkafka_jobs, $bird_jobs, $ncredir_jobs,
         ),
         global_config_extra   => $config_extra,
     }
