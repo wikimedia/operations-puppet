@@ -10,7 +10,8 @@
 #       include ::profile::puppetboard
 #
 class profile::puppetboard (
-    String $puppetdb_host = hiera('puppetdb_host'),
+    String $puppetdb_host    = hiera('puppetdb_host'),
+    Hash $ldap_config        = lookup('ldap', Hash, hash, {}),
     String $flask_secret_key = hiera('profile::puppetboard::flask_secret_key'),
 ) {
     include passwords::ldap::production
@@ -22,6 +23,8 @@ class profile::puppetboard (
     $venv_path = "${base_path}/venv"
     $directory = "${venv_path}/lib/python3.5/site-packages/puppetboard"
     $puppet_ssl_dir = puppet_ssldir()
+    $ldap_server_primary = $ldap_config['ro-server']
+    $ldap_server_fallback = $ldap_config['ro-server-fallback']
 
     require_package('make', 'python3-pip', 'virtualenv')
 
