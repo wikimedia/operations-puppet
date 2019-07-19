@@ -10,11 +10,12 @@
 #       include ::profile::debmonitor::server
 #
 class profile::debmonitor::server (
-    String $public_server_name = hiera('profile::debmonitor::server::public_server_name'),
-    String $internal_server_name = hiera('debmonitor'),
-    String $django_secret_key = hiera('profile::debmonitor::server::django_secret_key'),
-    String $django_mysql_db_host = hiera('profile::debmonitor::server::django_mysql_db_host'),
+    String $public_server_name       = hiera('profile::debmonitor::server::public_server_name'),
+    String $internal_server_name     = hiera('debmonitor'),
+    String $django_secret_key        = hiera('profile::debmonitor::server::django_secret_key'),
+    String $django_mysql_db_host     = hiera('profile::debmonitor::server::django_mysql_db_host'),
     String $django_mysql_db_password = hiera('profile::debmonitor::server::django_mysql_db_password'),
+    Hash $ldap_config                = lookup('ldap', Hash, hash, {}),
 ) {
     include ::passwords::ldap::production
 
@@ -38,6 +39,8 @@ class profile::debmonitor::server (
     # Ensure to add FQDN of the current host also the first time the role is applied
     $hosts = unique(concat(query_nodes('Class[Role::Debmonitor::Server]'), [$::fqdn]))
     $proxy_hosts = query_nodes('Class[Role::Cluster::Management]')
+    $ldap_server_primary = $ldap_config['ro-server']
+    $ldap_server_fallback = $ldap_config['ro-server-fallback']
 
     # Configuration file for the Django-based WebUI and API
     file { $config_path:

@@ -22,7 +22,7 @@
         "Netbox": "https://netbox.wikimedia.org/dcim/devices/?obj_type=device&q={hostname}"
     },
     "LDAP": {
-        "SERVER_URI": "ldaps://ldap-labs.eqiad.wikimedia.org ldaps://ldap-labs.codfw.wikimedia.org",
+        "SERVER_URI": "ldaps://<%= @ldap_server_primary %> ldaps://<%= @ldap_server_fallback %>",
         "BIND_DN": "cn=proxyagent,ou=profile,dc=wikimedia,dc=org",
         "BIND_PASSWORD": "<%= @ldap_password %>",
         "USER_SEARCH": {
