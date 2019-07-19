@@ -426,61 +426,61 @@ def self_check():
 
 def start_stop_webservice(tool, backend, wstype):
     """Start a webservice, poll it for a 200 response, shut it down."""
-    success = False
+
+    webservice = [
+        "sudo",
+        "-u",
+        "{}.{}".format(app.config["PROJECT"], tool),
+        "-i",
+        "/usr/bin/webservice",
+        "--backend={}".format(backend),
+        wstype,
+    ]
+
+    # Check for existing webservices
+    for _ in range(0, 3):
+        websvc_status = subprocess.check_output(webservice + ["status"])
+        if "not running" in websvc_status.decode().strip():
+            break
+        time.sleep(3)
+    else:
+        # Waited long enough and unable to proceed
+        app.logger.error("webservice %s: found existing webservice running", backend)
+        return False
 
     # Start webservice
-    subprocess.check_call(
-        [
-            "sudo",
-            "-u", "{}.{}".format(app.config["PROJECT"], tool),
-            "-i",
-            "/usr/bin/webservice",
-            "--backend={}".format(backend),
-            wstype,
-            "start",
-        ]
-    )
+    websvc_start = subprocess.run(webservice + ["start"], stdout=subprocess.DEVNULL)
+    if websvc_start.returncode:
+        app.logger.error("webservice %s: error starting", backend)
+        return False
 
     # Poll webservice for a 200 OK response
     url = "https://{}/{}/".format(app.config["TOOLS_DOMAIN"], tool)
     for i in range(0, 60):
         request = requests.get(url)
         if request.status_code == 200:
-            app.logger.info("start/stop %s: Response at %s", backend, i)
-            success = True
+            app.logger.info("webservice %s: Response at %s", backend, i)
             break
         time.sleep(1)
-
-    # Stop webservice
-    subprocess.check_call(
-        [
-            "sudo",
-            "-u", "{}.{}".format(app.config["PROJECT"], tool),
-            "-i",
-            "/usr/bin/webservice",
-            "--backend={}".format(backend),
-            wstype,
-            "stop",
-        ]
-    )
-
-    # If we never succeeded in the starting of the webservice, fail!
-    # We put this here after the stop so we don't end up with accidental
-    # failures that leave a stray webservice running
-    if not success:
-        app.logger.error("start/stop %s: no response after 60s", backend)
+    else:
+        app.logger.error("webservice %s: No response after 60s", backend)
         return False
 
-    # If we did start it, make sure it really stopped
-    success = False
-    for i in range(0, 10):
+    # Stop webservice
+    websvc_stop = subprocess.run(webservice + ["stop"], stdout=subprocess.DEVNULL)
+    if websvc_stop.returncode:
+        app.logger.error("webservice %s: error stopping", backend)
+        return False
+
+    # Verify webservice is stopped and return True
+    for _ in range(0, 10):
         request = requests.get(url)
         if request.status_code != 200:
-            success = True
-            break
+            return True
         time.sleep(1)
 
-    return success
+    app.logger.error("webservice %s: failed to stop", backend)
+    return False
 
 
 @check("/webservice/gridengine")
