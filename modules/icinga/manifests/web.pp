@@ -24,8 +24,8 @@ class icinga::web (
       port  => 80,
     }
 
-    include ::passwords::ldap::wmf_cluster
-    $proxypass = $passwords::ldap::wmf_cluster::proxypass
+    include ::passwords::ldap::production
+    $proxypass = $passwords::ldap::production::proxypass
 
     file { '/usr/share/icinga/htdocs/images/logos/ubuntu.png':
         source => 'puppet:///modules/icinga/ubuntu.png',
