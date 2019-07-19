@@ -11,6 +11,8 @@ import os
 import shutil
 import sys
 
+LDAP_SERVER_URI = "ldaps://ldap-ro.eqiad.wikimedia.org:636"
+
 
 def flatten(l, a=None):
     '''
@@ -32,7 +34,7 @@ def flatten(l, a=None):
 
 
 def get_ldap_group_members(group_name):
-    ldap_conn = ldap.initialize('ldaps://ldap-labs.eqiad.wikimedia.org:636')
+    ldap_conn = ldap.initialize(LDAP_SERVER_URI)
     ldap_conn.protocol_version = ldap.VERSION3
 
     members = []
@@ -228,7 +230,7 @@ def print_pending_account_expirys(users):
 def check_ssh_keys(yamldata):
     log = ""
 
-    ldap_conn = ldap.initialize('ldaps://ldap-labs.eqiad.wikimedia.org:636')
+    ldap_conn = ldap.initialize(LDAP_SERVER_URI)
     ldap_conn.protocol_version = ldap.VERSION3
 
     # These users use hardware-based key storage and are using the restricted bastion, whitelist
