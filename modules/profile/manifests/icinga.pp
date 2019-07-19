@@ -21,6 +21,7 @@ class profile::icinga(
     Stdlib::Unixpath $status_file = hiera('profile::icinga::status_file', '/var/icinga-tmpfs/status.dat'),
     String $apache2_htpasswd_salt = hiera('profile::icinga::apache2_htpasswd_salt', ''),
     Hash[String, String] $apache2_auth_users = hiera('profile::icinga::apache2_auth_users', {}),
+    Hash $ldap_config = lookup('ldap', Hash, hash, {}),
 ){
     $is_passive = !($::fqdn == $active_host)
 
@@ -130,6 +131,8 @@ class profile::icinga(
         virtual_host          => $virtual_host,
         apache2_htpasswd_salt => $apache2_htpasswd_salt,
         apache2_auth_users    => $apache2_auth_users,
+        ldap_server           => $ldap_config['ro-server'],
+        ldap_server_fallback  => $ldap_config['ro-server-fallback'],
     }
 
     class { '::icinga::naggen':

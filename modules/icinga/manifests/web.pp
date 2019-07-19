@@ -8,6 +8,8 @@ class icinga::web (
     String $virtual_host,
     String $apache2_htpasswd_salt,
     Hash[String, String] $apache2_auth_users,
+    String $ldap_server,
+    String $ldap_server_fallback,
 ) {
 
     # Apparently required for the web interface

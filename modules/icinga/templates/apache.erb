@@ -58,7 +58,7 @@ Alias /icinga /usr/share/icinga/htdocs
         # LDAP based auth for all users
         AuthLDAPBindDN cn=proxyagent,ou=profile,dc=wikimedia,dc=org
         AuthLDAPBindPassword <%= @proxypass %>
-        AuthLDAPURL "ldaps://ldap-labs.eqiad.wikimedia.org ldap-labs.codfw.wikimedia.org/ou=people,dc=wikimedia,dc=org?cn"
+        AuthLDAPURL "ldaps://<%= @ldap_server %> <%= @ldap_server_fallback %>/ou=people,dc=wikimedia,dc=org?cn"
 
         # Implicit RequireAny
         Require user sre-monitoring-bot
