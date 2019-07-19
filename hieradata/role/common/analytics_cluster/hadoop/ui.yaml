@@ -26,3 +26,4 @@ profile::tlsproxy::service::upstream_ports:
   - 80
 profile::tlsproxy::service::check_command: "check_https_url!yarn.wikimedia.org!/health_check"
 profile::tlsproxy::service::notes_url: "https://wikitech.wikimedia.org/wiki/Analytics/Systems/Cluster"
+profile::tlsproxy::service::contact_group: 'analytics'
