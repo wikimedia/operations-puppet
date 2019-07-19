@@ -24,7 +24,7 @@ from novaclient import client
 
 class ScriptConfig():
 
-    def __init__(self, datacenter, destination, mysql_password, nova_db_server, nova_db):
+    def __init__(self, datacenter, destination, mysql_password, nova_db_server, nova_db, cleanup):
         self.datacenter = datacenter
         self.destination = destination
         self.datacenter = datacenter
@@ -32,6 +32,10 @@ class ScriptConfig():
         self.mysql_password = mysql_password
         self.nova_db_server = nova_db_server
         self.nova_db = nova_db
+        if cleanup:
+            self.cleanup = "cleanup"
+        else:
+            self.cleanup = ""
 
 
 class NovaInstance(object):
@@ -176,7 +180,7 @@ class NovaInstance(object):
 
         if host_moved:
             logging.info("instance is active.")
-            confirm = ""
+            confirm = config.cleanup
             while (confirm != "cleanup"):
                 confirm = raw_input(
                     "Verify that %s is healthy, then type "
@@ -262,11 +266,17 @@ if __name__ == "__main__":
         help='datacenter for operations, to calculate FQDNs. Default is eqiad',
         default="eqiad"
     )
+    argparser.add_argument(
+        '--cleanup',
+        dest='cleanup',
+        action='store_true',
+        help='delete source VM without prompting',
+    )
 
     args = argparser.parse_args()
 
     config = ScriptConfig(args.datacenter, args.destination, args.mysql_password,
-                          args.nova_db_server, args.nova_db)
+                          args.nova_db_server, args.nova_db, args.cleanup)
     logging.basicConfig(format="%(filename)s: %(levelname)s: %(message)s",
                         level=logging.INFO, stream=sys.stdout)
 
