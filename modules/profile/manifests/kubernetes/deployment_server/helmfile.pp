@@ -97,12 +97,12 @@ class profile::kubernetes::deployment_server::helmfile(
                 group   => $data['group'],
                 require => Git::Clone['operations/deployment-charts'],
             }
-            file { "${secrets_dir}/secrets.yaml":
+            file { "${secrets_dir}/private/secrets.yaml":
                 owner   => $data['owner'],
                 group   => $data['group'],
                 mode    => $data['mode'],
                 content => ordered_yaml($data[$environment]),
-                require => [ Git::Clone['operations/deployment-charts'], File[$secrets_dir], ]
+                require => [ Git::Clone['operations/deployment-charts'], File[$secrets_dir], File["${secrets_dir}/private"] ]
             }
           }
         }
