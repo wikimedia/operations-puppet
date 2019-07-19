@@ -214,7 +214,7 @@ plugins:
       - ['chroot', '{root}', 'rm', '-f', '/etc/resolvconf/resolv.conf.d/original']
       #- ['cp', '/etc/default/grub', '{root}/etc/default/grub']
       #- ['chroot', '{root}', 'update-grub']
-      - ['cp', '/etc/modprobe.d/*', '{root}/etc/modprobe.d/']
+      - ['cp', '-r', '/etc/modprobe.d', '{root}/etc/']
       - ['chroot', '{root}', 'puppet', 'agent', '--disable']
       - ['chroot', '{root}', 'systemctl', 'enable', 'getty@ttyS1.service']
   unattended_upgrades:
