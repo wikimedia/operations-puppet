@@ -16,6 +16,9 @@
         Options FollowSymLinks
         AllowOverride None
         Require all denied
+        <Files health_check>
+            Require all granted
+        </Files>
     </Directory>
 
     <Location />
@@ -51,14 +54,21 @@
         ProxyHTMLURLMap http://<%= @resourcemanager_primary_host %>:19888/ / L
     </Location>
 
+    <Location /health_check>
+        Require all granted
+        Alias /var/www/health_check
+    </Location>
+
     CustomLog /var/log/apache2/<%= @server_name %>-access.log wmf
     ErrorLog /var/log/apache2/<%= @server_name %>.log
 
     LogLevel warn
 
+    ProxyPass /health_check !
     ProxyPass /jobhistory/ http://<%= @resourcemanager_primary_host %>:19888/jobhistory/
     ProxyPassReverse /jobhistory/ http://<%= @resourcemanager_primary_host %>:19888/jobhistory/
 
+    ProxyPass /health_check !
     ProxyPass / http://<%= @resourcemanager_primary_host %>:8088/
     ProxyPassReverse / http://<%= @resourcemanager_primary_host %>:8088/
 </VirtualHost>

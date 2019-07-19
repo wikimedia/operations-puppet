@@ -24,5 +24,5 @@ profile::tlsproxy::instance::ssl_compatibility_mode: strong
 profile::tlsproxy::service::name: yarn.wikimedia.org
 profile::tlsproxy::service::upstream_ports:
   - 80
-profile::tlsproxy::service::check_command: "check_https_url!yarn.wikimedia.org!/"
+profile::tlsproxy::service::check_command: "check_https_url!yarn.wikimedia.org!/health_check"
 profile::tlsproxy::service::notes_url: "https://wikitech.wikimedia.org/wiki/Analytics/Systems/Cluster"

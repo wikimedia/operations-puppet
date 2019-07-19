@@ -33,6 +33,8 @@ class profile::hue (
     require ::profile::hive::client
     require ::profile::oozie::client
 
+    require ::profile::analytics::httpd::utils
+
     # These don't require any extra configuration,
     # so no role class is needed.
     class { '::cdh::pig': }
@@ -112,5 +114,6 @@ class profile::hue (
     # Set up the VirtualHost
     httpd::site { $server_name:
         content => template('profile/hue/hue.vhost.erb'),
+        require => File['/var/www/health_check'],
     }
 }

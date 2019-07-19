@@ -16,6 +16,9 @@
         Options FollowSymLinks
         AllowOverride None
         Require all denied
+        <Files health_check>
+            Require all granted
+        </Files>
     </Directory>
 
     CustomLog /var/log/apache2/<%= @server_name %>-access.log wmf
@@ -31,6 +34,11 @@
         Require all granted
     </Directory>
 
+    <Location /health_check>
+        Require all granted
+        Alias /var/www/health_check
+    </Location>
+
     # ProxyPreserveHost is needed to avoid CSRF errors like
     # "Referer checking failed -
     #   https://<%= @server_name %>/accounts/[..cut..]/list_oozie_coordinators/
@@ -39,6 +47,7 @@
     # probably due to the secure_proxy_ssl_header=true hue option.
     ProxyPreserveHost On
     ProxyPass /static/ !
+    ProxyPass /health_check !
     ProxyPass / http://localhost:<%= @hue_port %>/
     ProxyPassReverse / https://localhost:<%= @hue_port %>/
 </VirtualHost>
