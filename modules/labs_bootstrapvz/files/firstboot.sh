@@ -130,9 +130,6 @@ puppet agent --onetime --verbose --no-daemonize --no-splay --show_diff --certnam
 # Refresh ldap now that puppet has updated our ldap.conf
 systemctl restart nslcd.service
 
-apt-get update
-puppet agent -t
-
 # Ensure all NFS mounts are mounted
 mount_attempts=1
 until [ $mount_attempts -gt 10 ]

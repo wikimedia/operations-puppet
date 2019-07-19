@@ -82,8 +82,6 @@ packages:
     - nfs-client
     - ngrep
     - nscd
-    - nslcd
-    - nslcd-utils
     - nss-updatedb
     - ntp
     - numactl
@@ -145,6 +143,11 @@ plugins:
         src: /etc/bootstrap-vz/firstscripts/firstbootrc
         dst: /etc/rc.local
         permissions: "755"
+        owner: root
+      -
+        src: /etc/systemd/timesyncd.conf
+        dst: /etc/systemd/timesyncd.conf
+        permissions: "0444"
         owner: root
       -
         src: /etc/ldap.conf
