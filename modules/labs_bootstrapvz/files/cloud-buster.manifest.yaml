@@ -156,6 +156,9 @@ plugins:
         src: /etc/sssd/sssd.conf
         dst: /etc/sssd/sssd.conf
       -
+        src: /etc/initramfs-tools/scripts/init-premount/mdadm-sleep
+        dst: /etc/initramfs-tools/scripts/init-premount/mdadm-sleep
+      -
         src: /etc/bootstrap-vz/nss_ldap.conf
         dst: /etc/ldap/ldap.conf
       -
@@ -211,6 +214,7 @@ plugins:
       - ['chroot', '{root}', 'rm', '-f', '/etc/resolvconf/resolv.conf.d/original']
       #- ['cp', '/etc/default/grub', '{root}/etc/default/grub']
       #- ['chroot', '{root}', 'update-grub']
+      - ['cp', '/etc/modprobe.d/*', '{root}/etc/modprobe.d/']
       - ['chroot', '{root}', 'puppet', 'agent', '--disable']
       - ['chroot', '{root}', 'systemctl', 'enable', 'getty@ttyS1.service']
   unattended_upgrades:
