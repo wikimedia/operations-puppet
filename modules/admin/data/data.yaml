@@ -3233,7 +3233,7 @@ users:
     ensure: present
     gid: 500
     name: mayakpwiki
-    ssh_keys: mayakpwiki
+    ssh_keys:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAILW2QuFPljt+26a3ZnhCFVMpcZVR8dalHSJjjvKEevfU wmfloaner@LoanerWMF1767
     realname: Maya Kampurath
     uid: 21686
