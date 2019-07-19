@@ -5,7 +5,7 @@ profile::trafficserver::backend::mapping_rules:
       #replacement: http://vega.codfw.wmnet
     - type: map
       target: http://analytics.wikimedia.org
-      replacement: http://thorium.eqiad.wmnet
+      replacement: https://thorium.eqiad.wmnet
     - type: map
       target: http://annual.wikimedia.org
       replacement: http://bromine.eqiad.wmnet
@@ -82,7 +82,7 @@ profile::trafficserver::backend::mapping_rules:
       replacement: http://labweb.svc.eqiad.wmnet
     - type: map
       target: http://hue.wikimedia.org
-      replacement: http://analytics-tool1001.eqiad.wmnet
+      replacement: https://analytics-tool1001.eqiad.wmnet
     - type: map
       target: http://iegreview.wikimedia.org
       replacement: http://krypton.eqiad.wmnet
@@ -139,7 +139,7 @@ profile::trafficserver::backend::mapping_rules:
       #replacement: http://phab2001.codfw.wmnet
     - type: map
       target: http://pivot.wikimedia.org
-      replacement: http://analytics-tool1002.eqiad.wmnet
+      replacement: https://analytics-tool1002.eqiad.wmnet
     - type: map
       target: http://piwik.wikimedia.org
       replacement: http://matomo1001.eqiad.wmnet
@@ -197,7 +197,7 @@ profile::trafficserver::backend::mapping_rules:
       replacement: http://eventstreams.discovery.wmnet:8092
     - type: map
       target: http://superset.wikimedia.org
-      replacement: http://analytics-tool1004.eqiad.wmnet
+      replacement: https://analytics-tool1004.eqiad.wmnet
     - type: map
       target: http://ticket.wikimedia.org
       replacement: http://mendelevium.eqiad.wmnet
@@ -214,7 +214,7 @@ profile::trafficserver::backend::mapping_rules:
       #replacement: http://vega.codfw.wmnet
     - type: map
       target: http://turnilo.wikimedia.org
-      replacement: http://analytics-tool1002.eqiad.wmnet
+      replacement: https://analytics-tool1002.eqiad.wmnet
     - type: map
       target: http://upload.wikimedia.org
       replacement: https://swift.discovery.wmnet
@@ -233,7 +233,7 @@ profile::trafficserver::backend::mapping_rules:
       #replacement: http://vega.codfw.wmnet
     - type: map
       target: http://yarn.wikimedia.org
-      replacement: http://analytics-tool1001.eqiad.wmnet
+      replacement: https://analytics-tool1001.eqiad.wmnet
     - type: regex_map
       target: 'http://(.*)/api/rest_v1'
       replacement: http://restbase.discovery.wmnet:7231/api/rest_v1
