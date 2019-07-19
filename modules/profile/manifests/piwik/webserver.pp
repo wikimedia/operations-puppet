@@ -7,6 +7,7 @@
 # we are going to just keep the previous name.
 #
 class profile::piwik::webserver(
+    $ldap_config      = lookup('ldap', Hash, hash, {}),
     $prometheus_nodes = hiera('prometheus_nodes')
 ){
     include ::profile::prometheus::apache_exporter
@@ -19,7 +20,7 @@ class profile::piwik::webserver(
         name          => 'nda/ops/wmf',
         bind_dn       => 'cn=proxyagent,ou=profile,dc=wikimedia,dc=org',
         bind_password => $passwords::ldap::production::proxypass,
-        url           => 'ldaps://ldap-labs.eqiad.wikimedia.org ldap-labs.codfw.wikimedia.org/ou=people,dc=wikimedia,dc=org?cn',
+        url           => "ldaps://${ldap_config[ro-server]} ${ldap_config[ro-server-fallback]}/ou=people,dc=wikimedia,dc=org?cn",
         groups        => [
             'cn=ops,ou=groups,dc=wikimedia,dc=org',
             'cn=nda,ou=groups,dc=wikimedia,dc=org',
