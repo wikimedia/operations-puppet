@@ -1,7 +1,10 @@
-# == Class superset::proxy
+# == Class profile::superset::proxy
+#
 # Sets up a WMF HTTP LDAP auth proxy.
 #
-class superset::proxy {
+class profile::superset::proxy {
+
+    require ::profile::analytics::httpd::utils
 
     class { '::httpd':
         modules => ['proxy_http',
@@ -11,13 +14,14 @@ class superset::proxy {
                     'authnz_ldap']
     }
 
-    include ::passwords::ldap::production
+    class { '::passwords::ldap::production': }
 
     $proxypass = $passwords::ldap::production::proxypass
 
     # Set up the VirtualHost
     httpd::site { 'superset.wikimedia.org':
-        content => template('superset/superset.wikimedia.org.erb'),
+        content => template('profile/superset/proxy/superset.wikimedia.org.erb'),
+        require => File['/var/www/health_check'],
     }
 
     ferm::service { 'superset-http':

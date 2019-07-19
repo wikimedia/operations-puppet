@@ -16,6 +16,9 @@
         Options FollowSymLinks
         AllowOverride None
         Require all denied
+        <Files health_check>
+            Require all granted
+        </Files>
     </Directory>
 
     <Location />
@@ -35,11 +38,17 @@
         RequestHeader set X-Remote-User expr=%{REMOTE_USER}
     </Location>
 
+    <Location /health_check>
+        Require all granted
+        Alias /var/www/health_check
+    </Location>
+
     CustomLog /var/log/apache2/superset.wikimedia.org-access.log wmf
     ErrorLog /var/log/apache2/superset.wikimedia.org-error.log
 
     LogLevel warn
 
+    ProxyPass /health_check !
     ProxyPass / http://localhost:9080/
     ProxyPassReverse / http://localhost:9080/
 </VirtualHost>

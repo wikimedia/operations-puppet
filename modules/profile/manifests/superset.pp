@@ -61,7 +61,7 @@ class profile::superset(
 
     if $ldap_proxy_enabled {
         # Include the Superset HTTP WMF LDAP auth proxy
-        class { '::superset::proxy': }
+        include ::profile::superset::proxy
 
         # Use AUTH_REMOTE_USER if we are using
         # LDAP authenticated HTTP proxy.
