@@ -19,4 +19,13 @@ function monitoring::build_notes_url(
         }
         "${urls}'${link}' "
     }.strip
+    # Backwards compatibility
+    # Split on space and if we have only 1 element, then remove the single
+    # quotes
+    $ar = split($notes_urls, ' ')
+    if size($ar) == 1 {
+        $result = regsubst($ar[0], '\'', '', 'G')
+    } else {
+        $notes_urls
+    }
 }

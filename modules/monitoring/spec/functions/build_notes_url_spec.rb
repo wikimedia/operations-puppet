@@ -20,7 +20,7 @@ describe 'monitoring::build_notes_url' do
   end
   it do
     is_expected.to run.with_params(notes_url_https, []).and_return(
-      "'#{notes_url_https}'"
+      "#{notes_url_https}"
     )
   end
   it do
