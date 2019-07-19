@@ -1,6 +1,6 @@
 source 'https://rubygems.org'
 
-gem 'puppet', ENV['PUPPET_GEM_VERSION'] || '~> 4.8.2'
+gem 'puppet', ENV['PUPPET_GEM_VERSION'] || '~> 4.10.2'
 gem 'xmlrpc' if RUBY_VERSION >= '2.4.0'
 gem 'puppet-strings', '~> 1.0.0'
 gem 'rspec-puppet', '~> 2.6.9'
