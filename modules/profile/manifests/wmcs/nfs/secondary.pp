@@ -89,6 +89,11 @@ class profile::wmcs::nfs::secondary(
         port   => '111',
         srange => "(@resolve((${secondary_servers_ferm})) @resolve((${secondary_servers_ferm}), AAAA))",
     }
+    ferm::service { 'labstore_nfs_cluster_rpc_mountd':
+        proto  => 'tcp',
+        port   => '38466',
+        srange => "(@resolve((${secondary_servers_ferm})) @resolve((${secondary_servers_ferm}), AAAA))",
+    }
 
     sudo::user { 'nagios_check_nfs_status':
         user       => 'nagios',
