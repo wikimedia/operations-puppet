@@ -25,6 +25,7 @@ class profile::graphite::base(
     $cluster_servers  = undef,
     $uwsgi_max_request_duration_seconds = undef,  # lint:ignore:wmf_styleguide
     $uwsgi_max_request_rss_megabytes = undef,     # lint:ignore:wmf_styleguide
+    Hash $ldap_config = lookup('ldap', Hash, hash, {}),
 ) {
     include ::passwords::graphite
 
@@ -232,7 +233,7 @@ class profile::graphite::base(
         # Production
         include ::passwords::ldap::production
 
-        $ldap_authurl  = 'ldaps://ldap-labs.eqiad.wikimedia.org ldap-labs.codfw.wikimedia.org/ou=people,dc=wikimedia,dc=org?cn'
+        $ldap_authurl  = "ldaps://${ldap_config[ro-server]} ${ldap_config[ro-server-fallback]}/ou=people,dc=wikimedia,dc=org?cn"
         $ldap_bindpass = $passwords::ldap::production::proxypass
         $ldap_binddn   = 'cn=proxyagent,ou=profile,dc=wikimedia,dc=org'
         $ldap_groups   = [
