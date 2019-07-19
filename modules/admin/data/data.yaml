@@ -156,7 +156,7 @@ groups:
               jdittrich, chelsyx, ovasileva, debt,
               fdans, mlitn, niharika29, goransm, pmiazga, dsaez, shiladsen, cicalese,
               mirrys, sharvaniharan, mmiller, amire80, rush, tieu, kharlan, gbirke,
-              isaacj, jdl, joewalsh, phuedx, bd808, iflorez]
+              isaacj, jdl, joewalsh, phuedx, bd808, iflorez, mayakpwiki]
   ldap-admins:
     gid: 715
     description: ldap admins
@@ -279,7 +279,7 @@ groups:
               ayounsi, mepps, mmiller, seddon, gilles, tstarling, rush, tieu, karen,
               cicalese, drossi, fsalutari, nathante, gbirke, isaacj, sbassett, jdl,
               niharika29, ryanmax, afandian2, jgleeson, toddleroux, srishakatux, dsharpe,
-              esanders, sukhe, jfishback, iflorez]
+              esanders, sukhe, jfishback, iflorez, mayakpwiki]
     system_members: [analytics-search, analytics]
   analytics-admins:
     gid: 732
@@ -3229,6 +3229,15 @@ users:
     realname: Alaa Sarhan
     uid: 20943
     email: alaa.sarhan@wikimedia.de
+  mayakpwiki:
+    ensure: present
+    gid: 500
+    name: mayakpwiki
+    ssh_keys: mayakpwiki
+      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAILW2QuFPljt+26a3ZnhCFVMpcZVR8dalHSJjjvKEevfU wmfloaner@LoanerWMF1767
+    realname: Maya Kampurath
+    uid: 21686
+    email: mayakp.wiki@gmail.com
 ldap_only_users:
   abartov:
     ensure: present
