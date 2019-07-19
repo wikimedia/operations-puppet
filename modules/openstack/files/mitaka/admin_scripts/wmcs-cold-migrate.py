@@ -27,6 +27,7 @@ class ScriptConfig():
     def __init__(self, datacenter, destination, mysql_password, nova_db_server, nova_db):
         self.datacenter = datacenter
         self.destination = destination
+        self.datacenter = datacenter
         self.destination_fqdn = '{}.{}.wmnet'.format(destination, datacenter)
         self.mysql_password = mysql_password
         self.nova_db_server = nova_db_server
@@ -129,6 +130,9 @@ class NovaInstance(object):
         destination_fqdn = config.destination_fqdn
         source = self.instance._info['OS-EXT-SRV-ATTR:host']
         virshid = self.instance._info['OS-EXT-SRV-ATTR:instance_name']
+        instance_fqdn = '{}.{}.{}.wmflabs'.format(self.instance._info['name'],
+                                                  self.instance._info['tenant_id'],
+                                                  config.datacenter)
         source_fqdn = '{}.{}.wmnet'.format(source, config.datacenter)
 
         logging.info("instance {} ({}) is now on host {} with state {}".format(
@@ -175,8 +179,8 @@ class NovaInstance(object):
             confirm = ""
             while (confirm != "cleanup"):
                 confirm = raw_input(
-                    "Verify that the instance is healthy, then type "
-                    "'cleanup' to delete old instance files:  ")
+                    "Verify that %s is healthy, then type "
+                    "'cleanup' to delete old instance files:  " % instance_fqdn)
 
             logging.info("removing old instance from libvirt on {}".format(source))
             undefine_args = ["ssh", "-i", "/root/.ssh/compute-hosts-key",
