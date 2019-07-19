@@ -21,7 +21,7 @@ profile::grafana::config:
 profile::grafana::ldap:
   servers:
     eqiad:
-      host: ldap-labs.eqiad.wikimedia.org
+      host: ldap-ro.eqiad.wikimedia.org
       port: 636
       use_ssl: true
       ssl_skip_verify: false

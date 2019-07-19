@@ -10,7 +10,8 @@ class profile::grafana (
     $ldap_editor_description=hiera('profile::grafana::ldap_editor_description'),
     $ldap_editor_groups=hiera('profile::grafana::ldap_edit_groups'),
     $config=hiera('profile::grafana::config', {}),
-    $ldap=hiera('profile::grafana::ldap', undef),
+    $ldap=hiera('profile::grafana::ldap', undef), # Grafana-specific LDAP settings, used by >= 5
+    $ldap_config=lookup('ldap', Hash, hash, {}), # Central LDAP settings
 ) {
 
     include ::profile::backup::host
@@ -114,7 +115,7 @@ class profile::grafana (
         name          => $ldap_editor_description,
         bind_dn       => 'cn=proxyagent,ou=profile,dc=wikimedia,dc=org',
         bind_password => $passwords::ldap::production::proxypass,
-        url           => 'ldaps://ldap-labs.eqiad.wikimedia.org ldap-labs.codfw.wikimedia.org/ou=people,dc=wikimedia,dc=org?cn',
+        url           => "ldaps://${ldap_config[ro-server]} ${ldap_config[ro-server-fallback]}/ou=people,dc=wikimedia,dc=org?cn",
         groups        => $ldap_editor_groups,
     }
 
