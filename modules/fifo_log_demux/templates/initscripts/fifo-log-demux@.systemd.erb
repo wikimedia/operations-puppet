@@ -6,6 +6,8 @@ Requires=fifo-log-demux@<%= @title %>.socket
 <% elsif @wanted_by -%>
 Requires=<%= @wanted_by %>
 After=<%= @wanted_by %>
+<% elsif @required_by -%>
+RequiredBy=<%= @required_by %>
 <% end -%>
 
 [Service]
