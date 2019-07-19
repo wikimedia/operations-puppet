@@ -42,6 +42,7 @@ class netbox(
     Stdlib::Unixpath $directory = '/srv/deployment/netbox/deploy/src',
     Stdlib::Unixpath $reports_path = '/srv/deployment/netbox-reports',
     Wmflib::Ensure $ensure='present',
+    $ldap_server = undef,
     Optional[Stdlib::HTTPUrl] $swift_auth_url = undef,
     Optional[String] $swift_user = undef,
     Optional[String] $swift_key = undef,
@@ -49,7 +50,6 @@ class netbox(
 ) {
 
   require_package('virtualenv', 'python3-pip')
-
 
   file { '/etc/netbox-configuration.py':
       ensure  => $ensure,

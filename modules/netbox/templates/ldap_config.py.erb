@@ -2,7 +2,7 @@ import ldap
 from django_auth_ldap.config import LDAPSearch, GroupOfNamesType
 
 # Server URI
-AUTH_LDAP_SERVER_URI = "ldap://ldap-labs.eqiad.wikimedia.org"
+AUTH_LDAP_SERVER_URI = "ldap://<%= @ldap_server %>"
 
 
 # Set the DN and password for the NetBox service account.

@@ -41,6 +41,8 @@ class profile::netbox (
     Optional[String] $swift_user = hiera('netbox::swift_user', undef),
     Optional[String] $swift_key = hiera('netbox::swift_key', undef),
     Optional[String] $swift_container = hiera('netbox::swift_container', undef),
+
+    Hash $ldap_config = lookup('ldap', Hash, hash, {}),
 ) {
 
     include passwords::netbox
@@ -200,6 +202,7 @@ class profile::netbox (
         swift_user      => $swift_user,
         swift_key       => $swift_key,
         swift_container => $swift_container,
+        ldap_server     => $ldap_config['ro-server'],
     }
     $ssl_settings = ssl_ciphersuite('apache', 'strong', true)
 
