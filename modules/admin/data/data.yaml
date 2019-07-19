@@ -3238,6 +3238,8 @@ users:
     realname: Maya Kampurath
     uid: 21686
     email: mayakp.wiki@gmail.com
+    expiry_date: 2020-01-26
+    expiry_contact: kzimmerman@wikimedia.org
 ldap_only_users:
   abartov:
     ensure: present
