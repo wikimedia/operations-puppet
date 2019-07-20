@@ -1,5 +1,5 @@
 class profile::dumps::generation::worker::crontester(
-    $php = hiera('profile::dumps::generation_worker_cron_php'),
+    $php = lookup('profile::dumps::generation_worker_cron_php'),
 ) {
     class { '::snapshot::cron':
         miscdumpsuser => 'dumpsgen',

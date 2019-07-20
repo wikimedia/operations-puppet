@@ -1,5 +1,5 @@
 class profile::dumps::generation::server::statsender(
-    $xmldumpspublicdir  = hiera('profile::dumps::xmldumpspublicdir'),
+    $xmldumpspublicdir  = lookup('profile::dumps::xmldumpspublicdir'),
 ) {
     class {'::dumps::generation::server::statsender':
         dumpsbasedir   => $xmldumpspublicdir,

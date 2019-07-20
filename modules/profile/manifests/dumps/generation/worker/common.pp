@@ -1,9 +1,9 @@
 class profile::dumps::generation::worker::common(
-    $nfs_server = hiera('dumps_nfs_server'),
-    $managed_subdirs = hiera('dumps_managed_subdirs'),
-    $datadir_mount_type = hiera('dumps_datadir_mount_type'),
-    $extra_mountopts = hiera('profile::dumps::generation::worker::common::nfs_extra_mountopts'),
-    $php = hiera('profile::dumps::generation::worker::common::php'),
+    $nfs_server = lookup('dumps_nfs_server'),
+    $managed_subdirs = lookup('dumps_managed_subdirs'),
+    $datadir_mount_type = lookup('dumps_datadir_mount_type'),
+    $extra_mountopts = lookup('profile::dumps::generation::worker::common::nfs_extra_mountopts'),
+    $php = lookup('profile::dumps::generation::worker::common::php'),
 ) {
     # mw packages and dependencies
     require ::profile::mediawiki::scap_proxy

@@ -1,6 +1,6 @@
 class profile::dumps::nfs(
-    Hash $clients_all = hiera('dumps_nfs_clients'),
-    String $clients_wanted = hiera('profile::dumps::nfs::clients_wanted'),
+    Hash $clients_all = lookup('dumps_nfs_clients'),
+    String $clients_wanted = lookup('profile::dumps::nfs::clients_wanted'),
 ) {
     $path    = '/data'
 

@@ -1,5 +1,5 @@
 class profile::dumps::rsyncer_peer(
-    $rsyncer_settings = hiera('profile::dumps::rsyncer'),
+    $rsyncer_settings = lookup('profile::dumps::rsyncer'),
 ) {
     $user = $rsyncer_settings['dumps_user']
     $group = $rsyncer_settings['dumps_group']

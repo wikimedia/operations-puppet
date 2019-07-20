@@ -1,8 +1,8 @@
 class profile::dumps::generation::server::cleanup(
-    $isreplica = hiera('profile::dumps::cleanup::isreplica'),
-    $miscdumpsdir = hiera('profile::dumps::miscdumpsdir'),
-    $xmldumpsdir = hiera('profile::dumps::xmldumpspublicdir'),
-    $dumpstempdir = hiera('profile::dumps::dumpstempdir'),
+    $isreplica = lookup('profile::dumps::cleanup::isreplica'),
+    $miscdumpsdir = lookup('profile::dumps::miscdumpsdir'),
+    $xmldumpsdir = lookup('profile::dumps::xmldumpspublicdir'),
+    $dumpstempdir = lookup('profile::dumps::dumpstempdir'),
 ) {
     class {'::dumps::web::cleanup':
         isreplica    => $isreplica,

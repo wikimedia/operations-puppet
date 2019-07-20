@@ -1,5 +1,5 @@
 class profile::dumps::generation::server::rsync(
-    $rsync_clients = hiera('profile::dumps::rsync_internal_clients'),
+    $rsync_clients = lookup('profile::dumps::rsync_internal_clients'),
 ) {
     # By default the resolve() function in ferm performs only an IPv4/A DNS
     # lookup. It fails if a host only has an IPv6 address. Ferm also provides

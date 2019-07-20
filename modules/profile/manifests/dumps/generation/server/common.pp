@@ -1,8 +1,8 @@
 class profile::dumps::generation::server::common(
-    $datadir = hiera('profile::dumps::basedatadir'),
-    $xmldumpsdir = hiera('profile::dumps::xmldumpspublicdir'),
-    $miscdatasetsdir = hiera('profile::dumps::miscdumpsdir'),
-    $dumpstempdir = hiera('profile::dumps::dumpstempdir'),
+    $datadir = lookup('profile::dumps::basedatadir'),
+    $xmldumpsdir = lookup('profile::dumps::xmldumpspublicdir'),
+    $miscdatasetsdir = lookup('profile::dumps::miscdumpsdir'),
+    $dumpstempdir = lookup('profile::dumps::dumpstempdir'),
 ) {
     class { '::dumpsuser': }
 
