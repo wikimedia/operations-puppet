@@ -1,0 +1,11 @@
+! Managed by puppet
+
+! tag2 used for flow direction (1=in, 2=out)
+! Traffic toward our prefixes=in, from our prefixes=out
+! Doesn't include office range, to be revisited if we sample internal flows
+<% @networks.each do |network| -%>
+set_tag2=1 filter='dst net <%= network %>'
+set_tag2=2 filter='src net <%= network %>'
+<% end -%>
+
+! TODO use 'tag' or 'label' with 'ip' to identify sites

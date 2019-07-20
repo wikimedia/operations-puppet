@@ -17,9 +17,15 @@
 #    Only available for pmacct >= 1.6.2, otherwise the configuration is a no-op.
 #    Default: undef
 #
+#  [*networks*]
+#    List of networks to use to  differentiate in/out traffic
+#    Default: []
+#    Optional
+#
 class pmacct(
   $kafka_brokers     = undef,
   $librdkafka_config = undef,
+  Optional[Array[Stdlib::IP::Address]] $networks = [],
 ) {
     package { 'pmacct':
         ensure => present,
@@ -27,6 +33,24 @@ class pmacct(
 
     # Valid only when librdkafka_config is not undef
     $kafka_config_file = '/etc/pmacct/librdkafka.conf'
+
+    file { '/etc/pmacct/pretag.map':
+        ensure  => present,
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0440',
+        content => template('pmacct/pretag.map.erb'),
+        before  => File['/etc/pmacct/nfacctd.conf'],
+    }
+
+    file { '/etc/pmacct/receivers.lst':
+        ensure => present,
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0440',
+        source => 'puppet:///modules/pmacct/receivers.lst',
+        before => File['/etc/pmacct/nfacctd.conf'],
+    }
 
     file { '/etc/pmacct/nfacctd.conf':
         ensure  => present,

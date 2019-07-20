@@ -1,0 +1,2 @@
+! Mirror netflow to Fastnetmon
+id=1 ip=127.0.0.1:2055
