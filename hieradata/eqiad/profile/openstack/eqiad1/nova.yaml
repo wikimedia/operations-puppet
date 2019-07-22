@@ -48,11 +48,6 @@ profile::openstack::eqiad1::nova::physical_interface_mappings:
 #   cloudvirt1028: pooled
 #   cloudvirt1029: pooled
 #   cloudvirt1030: pooled
-
-#  We're saving 1018 and 1024 as lifeboats 
-#  because they have larger disks that will be big
-#  enough to accept as refugees all the VMs from any other
-#  virt host.
 #
 # There are some hypervisors that are visible to nova
 #  but will never be in the general scheduler pool
