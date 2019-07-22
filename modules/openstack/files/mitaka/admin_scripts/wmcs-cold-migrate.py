@@ -24,7 +24,8 @@ from novaclient import client
 
 class ScriptConfig():
 
-    def __init__(self, datacenter, destination, mysql_password, nova_db_server, nova_db, cleanup):
+    def __init__(self, datacenter, destination, mysql_password,
+                 nova_db_server, nova_db, cleanup, leak):
         self.datacenter = datacenter
         self.destination = destination
         self.datacenter = datacenter
@@ -34,6 +35,8 @@ class ScriptConfig():
         self.nova_db = nova_db
         if cleanup:
             self.cleanup = "cleanup"
+        elif leak:
+            self.cleanup = "leak"
         else:
             self.cleanup = ""
 
@@ -181,28 +184,29 @@ class NovaInstance(object):
         if host_moved:
             logging.info("instance is active.")
             confirm = config.cleanup
-            while (confirm != "cleanup"):
-                confirm = raw_input(
-                    "Verify that %s is healthy, then type "
-                    "'cleanup' to delete old instance files:  " % instance_fqdn)
+            if confirm != "leak":
+                while (confirm != "cleanup"):
+                    confirm = raw_input(
+                        "Verify that %s is healthy, then type "
+                        "'cleanup' to delete old instance files:  " % instance_fqdn)
 
-            logging.info("removing old instance from libvirt on {}".format(source))
-            undefine_args = ["ssh", "-i", "/root/.ssh/compute-hosts-key",
-                             "nova@%s" % source_fqdn,
-                             "virsh", "-c", "qemu:///system", "undefine", virshid]
-            undefine_status = subprocess.call(undefine_args)
-            if undefine_status:
-                logging.error("undefine of {} on {} failed.".format(virshid, source))
-                return(1)
+                logging.info("removing old instance from libvirt on {}".format(source))
+                undefine_args = ["ssh", "-i", "/root/.ssh/compute-hosts-key",
+                                 "nova@%s" % source_fqdn,
+                                 "virsh", "-c", "qemu:///system", "undefine", virshid]
+                undefine_status = subprocess.call(undefine_args)
+                if undefine_status:
+                    logging.error("undefine of {} on {} failed.".format(virshid, source))
+                    return(1)
 
-            logging.info("cleaning up old instance files on {}".format(source))
-            rmimage_args = ["ssh", "-i", "/root/.ssh/compute-hosts-key",
-                            "nova@%s" % source_fqdn,
-                            "rm -rf", imagedir]
-            rmimage_status = subprocess.call(rmimage_args)
-            if rmimage_status:
-                logging.error("cleanup of {} on {} failed.".format(imagedir, source))
-                return(1)
+                logging.info("cleaning up old instance files on {}".format(source))
+                rmimage_args = ["ssh", "-i", "/root/.ssh/compute-hosts-key",
+                                "nova@%s" % source_fqdn,
+                                "rm -rf", imagedir]
+                rmimage_status = subprocess.call(rmimage_args)
+                if rmimage_status:
+                    logging.error("cleanup of {} on {} failed.".format(imagedir, source))
+                    return(1)
 
         if activated_image:
             self.activate_image(image_id, deactivate=True)
@@ -272,11 +276,21 @@ if __name__ == "__main__":
         action='store_true',
         help='delete source VM without prompting',
     )
+    argparser.add_argument(
+        '--leak',
+        dest='leak',
+        action='store_true',
+        help='exit without deleting source VM',
+    )
 
     args = argparser.parse_args()
 
+    if args.cleanup and args.leak:
+        logging.error("--leak and --cleanup are mutually exclusive")
+        exit(1)
+
     config = ScriptConfig(args.datacenter, args.destination, args.mysql_password,
-                          args.nova_db_server, args.nova_db, args.cleanup)
+                          args.nova_db_server, args.nova_db, args.cleanup, args.leak)
     logging.basicConfig(format="%(filename)s: %(levelname)s: %(message)s",
                         level=logging.INFO, stream=sys.stdout)
 
