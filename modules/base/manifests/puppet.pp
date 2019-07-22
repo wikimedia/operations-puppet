@@ -64,6 +64,22 @@ class base::puppet(
         mode   => '0550',
     }
 
+    file { ['/etc/puppetlabs/','/etc/puppetlabs/facter/']:
+        ensure => directory,
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0550',
+    }
+
+    file { '/etc/puppetlabs/facter/facter.conf':
+        ensure  => 'file',
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0444',
+        source  => 'puppet:///modules/base/puppet/facter.conf',
+        require => File['/etc/puppetlabs/facter/'],
+    }
+
     base::puppet::config { 'main':
         prio    => 10,
         content => template('base/puppet.conf.d/10-main.conf.erb'),
