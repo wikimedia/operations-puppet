@@ -6,7 +6,7 @@ class snapshot::dumps::timechecker(
     $wikis = ['arwiki', 'dewiki', 'commonswiki', 'frwiki', 'eswiki',
               'hewiki', 'huwiki', 'itwiki', 'jawiki', 'metawiki',
               'nlwiki', 'plwiki', 'ptwiki', 'ruwiki', 'zhwiki',
-              'enwiki', 'svwiki', 'wikidatawiki']
+              'enwiki', 'svwiki', 'ukwiki', 'viwiki', 'wikidatawiki']
     $wikis_list = join($wikis, ',')
 
     $apachedir = $snapshot::dumps::dirs::apachedir

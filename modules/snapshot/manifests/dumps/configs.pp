@@ -88,6 +88,12 @@ class snapshot::dumps::configs(
                     svwiki => {
                         pagesPerChunkHistory  => '149665,488964,999678,1911420,2515721,2250556',
                     },
+                    ukwiki => {
+                        pagesPerChunkHistory  => '167110,300188,413631,609897,741518,938958',
+                    },
+                    viwiki => {
+                        pagesPerChunkHistory  => '719707,1063490,1741893,2882696,4031680,4715318',
+                    },
                 },
             },
             en => {
