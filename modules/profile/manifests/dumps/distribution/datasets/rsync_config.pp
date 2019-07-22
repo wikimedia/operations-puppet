@@ -1,10 +1,10 @@
 class profile::dumps::distribution::datasets::rsync_config(
-    $rsyncer_settings = hiera('profile::dumps::distribution::rsync_config'),
-    $stats_hosts = hiera('profile::dumps::stats_hosts'),
-    $peer_hosts = hiera('profile::dumps::peer_hosts'),
-    $phab_hosts = hiera('profile::dumps::phab_hosts'),
-    $xmldumpsdir = hiera('profile::dumps::distribution::xmldumpspublicdir'),
-    $miscdatasetsdir = hiera('profile::dumps::distribution::miscdumpsdir'),
+    $rsyncer_settings = lookup('profile::dumps::distribution::rsync_config'),
+    $stats_hosts = lookup('profile::dumps::stats_hosts'),
+    $peer_hosts = lookup('profile::dumps::peer_hosts'),
+    $phab_hosts = lookup('profile::dumps::phab_hosts'),
+    $xmldumpsdir = lookup('profile::dumps::distribution::xmldumpspublicdir'),
+    $miscdatasetsdir = lookup('profile::dumps::distribution::miscdumpsdir'),
 ) {
 
     $user = $rsyncer_settings['dumps_user']

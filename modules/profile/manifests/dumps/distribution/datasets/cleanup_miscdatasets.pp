@@ -1,5 +1,5 @@
 class profile::dumps::distribution::datasets::cleanup_miscdatasets(
-    $miscdumpsdir = hiera('profile::dumps::distribution::miscdumpsdir'),
+    $miscdumpsdir = lookup('profile::dumps::distribution::miscdumpsdir'),
 ) {
 
     $user = 'dumpsgen'

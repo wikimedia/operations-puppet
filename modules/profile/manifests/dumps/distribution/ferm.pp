@@ -4,8 +4,8 @@
 # a AAAA lookup mode for IPv6 addresses, but this equally fails if only
 # an IPv4 address is present.
 class profile::dumps::distribution::ferm(
-    $internal_rsync_clients = hiera('profile::dumps::rsync_internal_clients'),
-    $rsync_mirrors = hiera('profile::dumps::distribution::mirrors'),
+    $internal_rsync_clients = lookup('profile::dumps::rsync_internal_clients'),
+    $rsync_mirrors = lookup('profile::dumps::distribution::mirrors'),
 ) {
     $internal_clients_ipv4 = $internal_rsync_clients['ipv4']
     $internal_clients_ipv6 = $internal_rsync_clients['ipv6']

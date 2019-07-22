@@ -1,8 +1,8 @@
 class profile::dumps::distribution::web (
-    $do_acme = hiera('do_acme'),
-    $datadir = hiera('profile::dumps::distribution::basedatadir'),
-    $xmldumpsdir = hiera('profile::dumps::distribution::xmldumpspublicdir'),
-    $miscdatasetsdir = hiera('profile::dumps::distribution::miscdumpsdir'),
+    $do_acme = lookup('do_acme'),
+    $datadir = lookup('profile::dumps::distribution::basedatadir'),
+    $xmldumpsdir = lookup('profile::dumps::distribution::xmldumpspublicdir'),
+    $miscdatasetsdir = lookup('profile::dumps::distribution::miscdumpsdir'),
 ){
     # includes module for bandwidth limits
     class { '::nginx':

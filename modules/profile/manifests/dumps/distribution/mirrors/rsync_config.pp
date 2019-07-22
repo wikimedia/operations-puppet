@@ -1,8 +1,8 @@
 class profile::dumps::distribution::mirrors::rsync_config(
-    $rsync_mirrors = hiera('profile::dumps::distribution::mirrors'),
-    $rsyncer_settings = hiera('profile::dumps::distribution::rsync_config'),
-    $xmldumpsdir = hiera('profile::dumps::distribution::xmldumpspublicdir'),
-    $miscdatasetsdir = hiera('profile::dumps::distribution::miscdumpsdir'),
+    $rsync_mirrors = lookup('profile::dumps::distribution::mirrors'),
+    $rsyncer_settings = lookup('profile::dumps::distribution::rsync_config'),
+    $xmldumpsdir = lookup('profile::dumps::distribution::xmldumpspublicdir'),
+    $miscdatasetsdir = lookup('profile::dumps::distribution::miscdumpsdir'),
 ) {
     $active_mirrors = $rsync_mirrors.filter |$item| { $item['active'] == 'yes' }
     $ipv4_mirrors = $active_mirrors.reduce([]) |$mirrorlist, $item| { $mirrorlist + $item['ipv4'] }

@@ -2,7 +2,7 @@
 # Firewall rules are managed separately through profile::wmcs::nfs::ferm
 
 class profile::dumps::distribution::nfs (
-    $nfs_clients = hiera('profile::dumps::distribution::nfs_clients')
+    $nfs_clients = lookup('profile::dumps::distribution::nfs_clients')
   ) {
 
     require_package('nfs-kernel-server', 'nfs-common', 'rpcbind')

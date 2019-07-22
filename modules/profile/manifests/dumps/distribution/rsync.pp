@@ -1,6 +1,6 @@
 # Set up rsync server and base config
 class profile::dumps::distribution::rsync(
-    $rsyncer_settings = hiera('profile::dumps::distribution::rsync_config'),
+    $rsyncer_settings = lookup('profile::dumps::distribution::rsync_config'),
 ) {
     $user = $rsyncer_settings['dumps_user']
     $group = $rsyncer_settings['dumps_group']

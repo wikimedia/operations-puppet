@@ -1,7 +1,7 @@
 class profile::dumps::distribution::datasets::fetcher(
-    $xmldumpsdir = hiera('profile::dumps::distribution::xmldumpspublicdir'),
-    $miscdatasetsdir = hiera('profile::dumps::distribution::miscdumpsdir'),
-    $rsyncer_settings = hiera('profile::dumps::distribution::rsync_config'),
+    $xmldumpsdir = lookup('profile::dumps::distribution::xmldumpspublicdir'),
+    $miscdatasetsdir = lookup('profile::dumps::distribution::miscdumpsdir'),
+    $rsyncer_settings = lookup('profile::dumps::distribution::rsync_config'),
 ) {
 
     $user = $rsyncer_settings['dumps_user']
