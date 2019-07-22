@@ -27,3 +27,10 @@ https://www.mediawiki.org:
   assert_status: 301
   assert_headers:
       Location: https://www.mediawiki.org/wiki/Special:MyLanguage/Manual:FAQ
+
+# Redirect zero.wikipedia.org to www.wikipedia.org
+https://zero.wikipedia.org:
+- path: /
+  assert_status: 301
+  assert_headers:
+      Location: https://www.wikipedia.org

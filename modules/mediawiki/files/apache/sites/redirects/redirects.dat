@@ -289,6 +289,9 @@ funnel	stats.wikipedia.org	https://stats.wikimedia.org
 # redirect 2030.wikimedia.org to meta (T158981, T202498, T264797)
 funnel	2030.wikimedia.org	https://meta.wikimedia.org/wiki/Wikimedia_2030
 
+# keep redirect for former Wikipedia Zero destination (T187716)
+funnel	zero.wikipedia.org	https://www.wikipedia.org
+
 # redirect wikimedia.org/resources to meta (T172417)
 override	wikimedia.org/resources	https://meta.wikimedia.org/wiki/Wikimedia_Resource_Center
 

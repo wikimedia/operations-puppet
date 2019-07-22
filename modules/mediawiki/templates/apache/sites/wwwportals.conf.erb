@@ -32,7 +32,6 @@ end
     DocumentRoot /srv/mediawiki/docroot/wwwportal
     ServerName www.wikipedia.<%= @domain_suffix %>
     ServerAlias m.wikipedia.<%= @domain_suffix %>
-    ServerAlias zero.wikipedia.<%= @domain_suffix %>
 
     RewriteEngine On
     RewriteRule . - [E=RW_PROTO:%{HTTP:X-Forwarded-Proto}]
