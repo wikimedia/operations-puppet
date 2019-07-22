@@ -8,7 +8,8 @@
 #
 
 class profile::wmcs::nfs::maintain_dbusers (
-    $ldapconfig = lookup('labsldapconfig', {merge => hash, default => {}})
+    $ldapconfig = lookup('labsldapconfig', {merge => hash, default => {}}),
+    Hash $production_ldap_config = lookup('ldap', Hash, hash, {}),
 ){
 
     package { [
@@ -25,8 +26,8 @@ class profile::wmcs::nfs::maintain_dbusers (
     $creds = {
         'ldap' => {
             'hosts'    => [
-                'ldap-labs.eqiad.wikimedia.org',
-                'ldap-labs.codfw.wikimedia.org'
+                $production_ldap_config['ro-server'],
+                $production_ldap_config['ro-server-fallback'],
             ],
             'username' => 'cn=proxyagent,ou=profile,dc=wikimedia,dc=org',
             'password' => $ldapconfig['proxypass'],
