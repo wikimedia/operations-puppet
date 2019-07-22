@@ -29,7 +29,7 @@
         AuthLDAPBindPassword <%= @proxypass %>
         # Note: uid is used instead of cn since Superset needs the shell username to properly
         # create users when they log in.
-        AuthLDAPURL "ldaps://ldap-labs.eqiad.wikimedia.org ldap-labs.codfw.wikimedia.org/ou=people,dc=wikimedia,dc=org?uid"
+        AuthLDAPURL "ldaps://<%= @ldap_server_primary %> <%= @ldap_server_fallback %>/ou=people,dc=wikimedia,dc=org?uid"
         Require ldap-group cn=wmf,ou=groups,dc=wikimedia,dc=org
         Require ldap-group cn=nda,ou=groups,dc=wikimedia,dc=org
         # Set a header so that superset/flask can authenticate the user.
