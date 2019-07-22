@@ -140,6 +140,7 @@ class profile::mail::mx (
         check_interval => 30,
         retry_interval => 10,
         timeout        => 20,
+        notes_url      => 'https://wikitech.wikimedia.org/wiki/Exim',
     }
 
     mtail::program { 'exim':
