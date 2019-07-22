@@ -241,8 +241,10 @@ db_without_role:
 # Disable screen/tmux monitoring for:
 #  * stat boxes, since researchers/analysts are often doing long running
 #    data crunching sessions.
+#  * notebook boxes, since researchers/analysts are often doing long running
+#    sessions with Jupyter notebooks.
 analytics_no_monitor_screens:
-  __regex: !ruby/regexp /^stat1\d\d\d\.eqiad\.wmnet$/
+  __regex: !ruby/regexp /^(stat1|notebook1)\d\d\d\.eqiad\.wmnet$/
   monitor_screens: false
 
 # Old hosts with mpt controllers and to be decom'd
