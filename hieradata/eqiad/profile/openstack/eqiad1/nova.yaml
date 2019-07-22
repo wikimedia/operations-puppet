@@ -14,6 +14,10 @@ profile::openstack::eqiad1::nova::physical_interface_mappings:
 #  hosts.  Nodes currently allocated for eqiad1 are
 #  cloudvirt1001 through cloudvirt1030.
 #
+# Ideally we would have three empty lifeboat hosts.
+#  That number is reduced due to current rebuilds
+#  and hardware issues in progress.
+#
 #   cloudvirt1001: pooled
 #   cloudvirt1002: pooled
 #   cloudvirt1003: pooled
@@ -27,11 +31,11 @@ profile::openstack::eqiad1::nova::physical_interface_mappings:
 #   cloudvirt1011: does not exist (formerly a leased system)
 #   cloudvirt1012: pooled
 #   cloudvirt1013: pooled
-#   cloudvirt1014: depooled but contains lots of VMs (Jessie, needs rebuild)
-#   cloudvirt1015: depooled due to possible hardware issues -- T220853
-#   cloudvirt1016: depooled but contains lots of VMs (Jessie, needs rebuild)
-#   cloudvirt1017: depooled but contains lots of VMs (Jessie, needs rebuild)
-#   cloudvirt1018: depooled, empty, emergency spare
+#   cloudvirt1014: pooled
+#   cloudvirt1015: depooled due to hardware issues -- T220853
+#   cloudvirt1016: depooled, awaiting re-rack and rebuild
+#   cloudvirt1017: depooled, awaiting re-rack and rebuild
+#   cloudvirt1018: pooled
 #   cloudvirt1019: depooled, active host of database VMs
 #   cloudvirt1020: depooled, active host of database VMs
 #   cloudvirt1021: depooled but contains lots of VMs (Jessie, needs rebuild)
@@ -72,6 +76,8 @@ profile::openstack::eqiad1::nova::scheduler_pool:
   - cloudvirt1009
   - cloudvirt1012
   - cloudvirt1013
+  - cloudvirt1014
+  - cloudvirt1018
   - cloudvirt1025
   - cloudvirt1026
   - cloudvirt1027
