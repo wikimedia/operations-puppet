@@ -6,7 +6,6 @@ class profile::changeprop(
     $purge_host  = hiera('profile::changeprop::purge_host'),
     $purge_port  = hiera('profile::changeprop::purge_port'),
     $ores_uris  = hiera('profile::changeprop::ores_uris'),
-    $eventbus_uri = hiera('profile::changeprop::eventbus_uri'),
     $event_service_uri = hiera('profile::changeprop::event_service_uri'),
     $kafka_msg_max_bytes = hiera('kafka_message_max_bytes', 1048576),
 ) {
@@ -30,7 +29,6 @@ class profile::changeprop(
             broker_list       => $broker_list,
             restbase_uri      => $restbase_uri,
             ores_uris         => $ores_uris,
-            eventbus_uri      => $eventbus_uri,
             event_service_uri => $event_service_uri,
             purge_host        => $purge_host,
             purge_port        => $purge_port,
