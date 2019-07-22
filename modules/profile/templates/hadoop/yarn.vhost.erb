@@ -27,7 +27,7 @@
         AuthBasicProvider ldap
         AuthLDAPBindDN cn=proxyagent,ou=profile,dc=wikimedia,dc=org
         AuthLDAPBindPassword <%= @proxypass %>
-        AuthLDAPURL "ldaps://ldap-labs.eqiad.wikimedia.org ldap-labs.codfw.wikimedia.org/ou=people,dc=wikimedia,dc=org?cn"
+        AuthLDAPURL "ldaps://<%= @ldap_server_primary %> <%= @ldap_server_fallback %>/ou=people,dc=wikimedia,dc=org?cn"
         Require ldap-group cn=wmf,ou=groups,dc=wikimedia,dc=org
         Require ldap-group cn=nda,ou=groups,dc=wikimedia,dc=org
 
