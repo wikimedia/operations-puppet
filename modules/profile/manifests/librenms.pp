@@ -19,6 +19,7 @@ class profile::librenms (
     String $librenms_db_name = hiera('profile::librenms::dbname'),
 
     String $librenms_irc_password = hiera('profile::librenms::irc_password'),
+    Hash $ldap_config = lookup('ldap', Hash, hash, {}),
 ){
 
     include ::network::constants
@@ -103,7 +104,7 @@ class profile::librenms (
         ],
 
         'auth_mechanism'     => 'ldap',
-        'auth_ldap_server'   => 'ldap://ldap-labs.eqiad.wikimedia.org  ldap://ldap-labs.codfw.wikimedia.org',
+        'auth_ldap_server'   => "ldap://${ldap_config[ro-server]} ldap://${ldap_config[ro-server-fallback]}",
         'auth_ldap_starttls' => 'require',
         'auth_ldap_port'     => 389,
 
