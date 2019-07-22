@@ -67,11 +67,13 @@ class profile::otrs(
 
     nrpe::monitor_service{ 'clamd':
         description  => 'clamd running',
-        nrpe_command => '/usr/lib/nagios/plugins/check_procs -w 1:1 -c 1:1 -u clamav -C clamd'
+        nrpe_command => '/usr/lib/nagios/plugins/check_procs -w 1:1 -c 1:1 -u clamav -C clamd',
+        notes_url    => 'https://wikitech.wikimedia.org/wiki/OTRS#ClamAV',
     }
     nrpe::monitor_service{ 'freshclam':
         description  => 'freshclam running',
-        nrpe_command => '/usr/lib/nagios/plugins/check_procs -w 1:1 -c 1:1 -u clamav -C freshclam'
+        nrpe_command => '/usr/lib/nagios/plugins/check_procs -w 1:1 -c 1:1 -u clamav -C freshclam',
+        notes_url    => 'https://wikitech.wikimedia.org/wiki/OTRS#ClamAV',
     }
 
     # can conflict with ferm module
