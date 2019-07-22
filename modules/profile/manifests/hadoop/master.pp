@@ -213,6 +213,17 @@ class profile::hadoop::master(
             notes_link      => 'https://wikitech.wikimedia.org/wiki/Analytics/Systems/Cluster/Hadoop/Administration',
         }
 
+        monitoring::check_prometheus { 'hadoop-hdfs-namenode-oldgen-heap-usage-percentage':
+            description     => 'HDFS Namenode JVM GC CMS (olg gen) Heap usage percentage',
+            dashboard_links => ["https://grafana.wikimedia.org/dashboard/db/hadoop?var-hadoop_cluster=${cluster_name}&panelId=87&fullscreen&orgId=1"],
+            query           => "scalar(avg_over_time(jvm_memory_pool_bytes_used{hadoop_cluster=\"${cluster_name}\",instance=\"${::hostname}:10080\", pool=\"CMS Old Gen\"}[60m])/avg_over_time(jvm_memory_pool_bytes_max{hadoop_cluster=\"${cluster_name}\",instance=\"${::hostname}:10080\", pool=\"CMS Old Gen\"}[60m]))",
+            warning         => 0.75,
+            critical        => 0.80,
+            contact_group   => 'analytics',
+            prometheus_url  => "http://prometheus.svc.${::site}.wmnet/analytics",
+            notes_link      => 'https://wikitech.wikimedia.org/wiki/Analytics/Systems/Cluster/Hadoop/Administration#HDFS_Namenode_Heap_settings',
+        }
+
         monitoring::check_prometheus { 'hadoop-yarn-resourcemananager-heap-usage':
             description     => 'YARN active ResourceManager JVM Heap usage',
             dashboard_links => ["https://grafana.wikimedia.org/dashboard/db/hadoop?var-hadoop_cluster=${cluster_name}&panelId=12&fullscreen&orgId=1"],
