@@ -248,6 +248,7 @@ class acme_chief::server (
         ensure       => $ensure_passive,
         description  => 'Ensure that passive node gets the certificates from the active node as expected',
         nrpe_command => "sudo -u acme-chief /usr/lib/nagios/plugins/check_file_age -w 3600 -c 7200 ${certs_path}/.rsync.status",
+        notes_url    => 'https://wikitech.wikimedia.org/wiki/Acme-chief',
     }
 
     if $is_active {
