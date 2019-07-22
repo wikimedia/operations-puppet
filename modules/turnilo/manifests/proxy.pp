@@ -9,7 +9,9 @@
 # [*server_name*]
 #   VirtualHost ServerName hostname to use.
 class turnilo::proxy(
-    $server_name = 'turnilo.wikimedia.org'
+    Stdlib::Fqdn $ldap_server,
+    Stdlib::Fqdn $ldap_server_fallback,
+    Stdlib::Fqdn $server_name = 'turnilo.wikimedia.org',
 ) {
     Class['turnilo'] -> Class['turnilo::proxy']
 
