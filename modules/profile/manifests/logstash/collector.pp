@@ -84,6 +84,7 @@ class profile::logstash::collector (
     nrpe::monitor_service { 'logstash_syslog_tcp':
         description  => 'logstash syslog TCP port',
         nrpe_command => '/usr/lib/nagios/plugins/check_tcp -H 127.0.0.1 -p 10514',
+        notes_url    => 'https://wikitech.wikimedia.org/wiki/Logstash',
     }
 
     ferm::service { 'grafana_dashboard_definition_storage':
@@ -139,6 +140,7 @@ class profile::logstash::collector (
     nrpe::monitor_service { 'logstash_json_lines_tcp':
         description  => 'logstash JSON linesTCP port',
         nrpe_command => '/usr/lib/nagios/plugins/check_tcp -H 127.0.0.1 -p 11514',
+        notes_url    => 'https://wikitech.wikimedia.org/wiki/Logstash',
     }
 
     # logstash collectors in both sites pull messages from both kafka clusters
