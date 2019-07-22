@@ -308,7 +308,8 @@ class profile::netbox (
         }
         else {
             ::nrpe::monitor_service { "check_netbox_${repname}":
-                ensure       => absent,
+                ensure    => absent,
+                notes_url => 'https://wikitech.wikimedia.org/wiki/Netbox#Report_Alert',
             }
         }
         if $report['run_interval'] {
