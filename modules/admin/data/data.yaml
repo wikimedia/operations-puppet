@@ -2322,7 +2322,7 @@ users:
     ssh_keys:
       - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDCpSTjqJly0lX3xY5TtBwHwcH7kir4hAkVGhDXkPjnfdycvXFCXHjrrONLQh6M+lIy4DIgXrK90aLUOgcPRPFLD2pQl7SrYBSSJKSf2Xv6nz7lc3fCsIk0lK+jWfPvc659z91IFsqizgiMqpNJavZoHqxMvqO6JTnxpJQzJ2Elno2lEJCWIKZ1nP+U8/M6BC45bYEHWRH+RyCfMgCkJ5B6+R7B3u0gPjmeICkS5WF0oiW7ktQ2Fo4Go2n0chRXVWyff0+JUA4twC+8YPkfDZhDgvI0r8dH2MOhln9Ex6xqRfgkqXL6V812z3sTn6O4UIfOq3C5X3JCzww9bUXwvv+IpVpklxJyt/Nll8ux1tGJkRVEmb0u6JUTf7gzdscWuoxNHsPEFHtxEiOwfh2QDjn4nfiNixvWPfV8Q9QEBGtx7NCXbv4wrkpQ4eIrqKH9Y0MyhtZ2LnOH2CB9git/vERIBIcFFiKG7U6fYhsTwbtXPghVoUa6hYqaFQr3WYejjllv0wBYWcs0l+gINhl+lqqmx7yc54jEsdyWRml+InrYCcONeMEnJrqytL/K4fNxcjWQ4s7jnG3zVVe9RKmN1Ab06D2QTLZgg8QNS127sAjyxc+IRqaT/xVHnr29B9ymrKFrh0jDEfJ3+TSFrwb2Lnjwc0W+9hSevhQYUJEmZczBQQ== cxie@wikimedia.org
     uid: 15196
-    email: cxie@wikimedia.org
+    email: xiaoxi.tse@gmail.com
   ovasileva:
     ensure: present
     gid: 500
