@@ -11,6 +11,8 @@ class profile::kubernetes::node(
   $kubeproxy_config = hiera('profile::kubernetes::node::kubeproxy_config', '/etc/kubernetes/kubeconfig'),
   $prod_firewalls   = hiera('profile::kubernetes::node::prod_firewalls', true),
   $prometheus_url   = hiera('profile::kubernetes::node::prometheus_url', "http://prometheus.svc.${::site}.wmnet/k8s"),
+  $kubelet_cluster_domain = hiera('profile::kubernetes::node::kubelet_cluster_domain', 'kube'),
+  $kubelet_cluster_dns = hiera('profile::kubernetes::node::kubelet_cluster_dns', undef),
   $kubelet_username = hiera('profile::kubernetes::node::kubelet_username', undef),
   $kubelet_token = hiera('profile::kubernetes::node::kubelet_token', undef),
   $kubelet_extra_params = hiera('profile::kubernetes::node::kubelet_extra_params', undef),
@@ -44,6 +46,8 @@ class profile::kubernetes::node(
     class { '::k8s::kubelet':
         listen_address            => '0.0.0.0',
         cni                       => $use_cni,
+        cluster_domain            => $kubelet_cluster_domain,
+        cluster_dns               => $kubelet_cluster_dns,
         pod_infra_container_image => $infra_pod,
         tls_cert                  => '/etc/kubernetes/ssl/cert.pem',
         tls_key                   => '/etc/kubernetes/ssl/server.key',

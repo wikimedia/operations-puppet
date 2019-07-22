@@ -3,6 +3,7 @@ class k8s::kubelet(
     Optional[Stdlib::Port] $listen_port = undef,
     String $pod_infra_container_image = 'gcr.io/google_containers/pause:2.0',
     String $cluster_domain = 'kube',
+    Optional[String] $cluster_dns = undef,
     String $tls_cert = '/var/lib/kubernetes/ssl/certs/cert.pem',
     String $tls_key = '/var/lib/kubernetes/ssl/private_keys/server.key',
     Boolean $cni = false,

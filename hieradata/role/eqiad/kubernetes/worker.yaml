@@ -11,3 +11,6 @@ profile::calico::kubernetes::bgp_peers:
 - kubernetes1006.eqiad.wmnet
 - cr1-eqiad.wikimedia.org
 - cr2-eqiad.wikimedia.org
+# enable this when coredns is deployed not before
+# profile::kubernetes::node::kubelet_cluster_dns: "10.64.72.3"
+profile::kubernetes::node::kubelet_cluster_domain: 'cluster.local'

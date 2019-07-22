@@ -31,6 +31,9 @@ end
 if @cluster_domain
 	daemon_args.push("--cluster-domain=#{@cluster_domain}")
 end
+if @cluster_dns
+	daemon_args.push("--cluster-dns=#{@cluster_dns}")
+end
 if @cni
 	daemon_args.push("--network-plugin=cni")
 	daemon_args.push("--cni-bin-dir=#{@cni_bin_dir}")

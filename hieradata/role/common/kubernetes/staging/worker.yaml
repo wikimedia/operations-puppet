@@ -29,6 +29,8 @@ profile::kubernetes::node::masquerade_all: false
 profile::kubernetes::node::username: 'kubelet'
 profile::kubernetes::node::prometheus_url: http://prometheus.svc.eqiad.wmnet/k8s-staging
 profile::kubernetes::node::kubelet_username: kubelet
+profile::kubernetes::node::kubelet_cluster_dns: "10.64.76.3"
+profile::kubernetes::node::kubelet_cluster_domain: 'cluster.local'
 # Defined in the private repo
 #profile::kubernetes::node::kubelet_token:
 profile::kubernetes::node::kubeproxy_username: system:kube-proxy
