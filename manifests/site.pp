@@ -858,7 +858,7 @@ node 'dbprov2002.codfw.wmnet' {
 }
 
 # Active eqiad proxies for misc databases
-node /^dbproxy10(01|02|03|04|05|06|07|08|09)\.eqiad\.wmnet$/ {
+node /^dbproxy10(01|02|03|04|05|06|07|08|09|14)\.eqiad\.wmnet$/ {
     role(mariadb::proxy::master)
 }
 
@@ -879,7 +879,7 @@ node 'dbproxy1011.eqiad.wmnet' {
 }
 
 # new dbproxy hosts to be pressed into service by DBA team T202367
-node /^dbproxy10(12|13|14|15|16|17|18|19|20|21)\.eqiad\.wmnet$/ {
+node /^dbproxy10(12|13|15|16|17|18|19|20|21)\.eqiad\.wmnet$/ {
     role(spare::system)
 }
 
