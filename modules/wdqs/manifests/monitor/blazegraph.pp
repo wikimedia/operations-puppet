@@ -19,6 +19,7 @@ class wdqs::monitor::blazegraph (
         nrpe_command   => '/usr/lib/nagios/plugins/check_wdqs_categories.py --ping',
         check_interval => 720, # every 6 hours
         retry_interval => 60,  # retry after 1 hour
+        notes_url      => 'https://wikitech.wikimedia.org/wiki/Wikidata_query_service',
     }
 
     nrpe::monitor_service { 'WDQS_Categories_Lag':
@@ -26,11 +27,13 @@ class wdqs::monitor::blazegraph (
         nrpe_command   => '/usr/lib/nagios/plugins/check_wdqs_categories.py --lag',
         check_interval => 720, # every 6 hours
         retry_interval => 60,  # retry after 1 hour
+        notes_url      => 'https://wikitech.wikimedia.org/wiki/Wikidata_query_service',
     }
 
     nrpe::monitor_service { 'WDQS_Internal_HTTP_endpoint':
         description  => 'WDQS HTTP Port',
         nrpe_command => '/usr/lib/nagios/plugins/check_http -H 127.0.0.1 -p 80 -w 10 -u /readiness-probe',
+        notes_url    => 'https://wikitech.wikimedia.org/wiki/Wikidata_query_service',
     }
 
     monitoring::service { 'WDQS_External_SPARQL_Endpoint':
