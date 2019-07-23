@@ -8,11 +8,6 @@ mediawiki::hhvm::extra_fcgi:
   hhvm:
     server:
       connection_timeout_seconds: 86400
-  curl:
-    "namedPools.cirrus-codfw":
-      size: 30
-    "namedPools.cirrus-eqiad":
-      size: 30
   max_execution_time: 86400
 
 profile::lvs::realserver::use_safe_restart: true

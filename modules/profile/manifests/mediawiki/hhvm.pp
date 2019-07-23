@@ -66,10 +66,10 @@ class profile::mediawiki::hhvm(
             namedPools   => 'cirrus-eqiad,cirrus-codfw',
             # ugly hack to work around colision in the hash
             'namedPools.cirrus-codfw' => {
-                size => '20',
+                size => '30',
             },
             'namedPools.cirrus-eqiad' => {
-                size => '20',
+                size => '30',
             },
         },
     }
