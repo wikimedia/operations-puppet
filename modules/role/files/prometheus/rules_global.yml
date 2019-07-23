@@ -11,6 +11,9 @@ groups:
   - record: site_job_backend:varnish_backend_requests:avail5m
     expr: sum by(backend, site, job) (job_method_status_backend:varnish_backend_requests_seconds_count:rate5m{status=~"5.."})
       / sum by(backend, site, job) (job_method_status_backend:varnish_backend_requests_seconds_count:rate5m{status=~"[12345].."})
+  - record: site_job_backend:trafficserver_backend_requests:avail5m
+    expr: sum by(backend, site, job) (job_method_status_backend:trafficserver_backend_requests_seconds_count:rate5m{status=~"5.."})
+      / sum by(backend, site, job) (job_method_status_backend:trafficserver_backend_requests_seconds_count:rate5m{status=~"[12345].."})
   - record: site_job:varnish_requests:avg1d
     expr: sum by(site, job) (avg_over_time(job_method_status:varnish_requests:rate5m[1d]))
   - record: site_job:varnish_requests:avg7d

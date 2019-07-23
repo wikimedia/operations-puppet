@@ -241,6 +241,8 @@ groups:
     expr: sum by(cluster, status) (rate(nginx_http_requests_total[5m]))
   - record: job_method_status_backend:varnish_backend_requests_seconds_count:rate5m
     expr: sum by(job, method, status, backend) (rate(varnish_backend_requests_seconds_count[5m]))
+  - record: job_method_status_backend:trafficserver_backend_requests_seconds_count:rate5m
+    expr: sum by(job, method, status, backend) (rate(trafficserver_backend_requests_seconds_count[5m]))
   - record: instance_layer_job:varnish_backend_conn:sum
     expr: sum by(instance, layer, job) (varnish_backend_conn)
   - record: cluster_operation_result:trafficserver_cache_operations_total:rate5m
