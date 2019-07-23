@@ -107,6 +107,16 @@ class apt(
         before   => File['/etc/apt/apt.conf'],
     }
 
+    if os_version('debian >= buster') {
+        apt::conf { 'apt-harden':
+            ensure   => 'present',
+            priority => '30',
+            key      => 'APT::Sandbox::Seccomp',
+            value    => true,
+            before   => File['/etc/apt/apt.conf'],
+        }
+    }
+
     # 00InstallRecommends already provides this.
     # TODO: remove once merged.
     apt::conf { 'no-recommends':
