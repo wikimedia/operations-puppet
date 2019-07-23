@@ -54,9 +54,6 @@
 #   Analytics Query Service URI. Format:
 #   http://aqs.svc.eqiad.wmnet:7232/analytics.wikimedia.org/v1
 #
-# [*eventlogging_service_uri*]
-#   Eventlogging service URI. Format: http://eventbus.svc.eqiad.wmnet:8085/v1/events. Deprecated.
-#
 # [*event_service_uri*]
 #   Eventgate service URI. Format: http://eventbus.svc.eqiad.wmnet:32192/v1/events
 #
@@ -88,7 +85,6 @@ class profile::restbase(
     $mobileapps_uri = hiera('profile::restbase::mobileapps_uri'),
     $mathoid_uri    = hiera('profile::restbase::mathoid_uri'),
     $aqs_uri        = hiera('profile::restbase::aqs_uri'),
-    $eventlogging_service_uri = hiera('profile::restbase::eventlogging_service_uri'),
     $event_service_uri = hiera('profile::restbase::event_service_uri'),
     $proton_uri     = hiera('profile::restbase::proton_uri'),
     $citoid_uri     = hiera('profile::restbase::citoid_uri'),
@@ -114,27 +110,26 @@ class profile::restbase(
         deployment        => 'scap3',
         deployment_config => true,
         deployment_vars   => {
-            ipaddress                => $::ipaddress,
-            rl_seeds                 => reject(reject($hosts, $::hostname), $::ipaddress),
-            seeds_ng                 => $seeds_ng,
-            cassandra_local_dc       => $cassandra_local_dc,
-            cassandra_datacenters    => $cassandra_datacenters,
-            cassandra_user           => $cassandra_user,
-            cassandra_password       => $cassandra_password,
-            cassandra_tls            => $cassandra_tls,
-            parsoid_uri              => $parsoid_uri,
-            graphoid_uri             => $graphoid_uri,
-            mathoid_uri              => $mathoid_uri,
-            mobileapps_uri           => $mobileapps_uri,
-            citoid_uri               => $citoid_uri,
-            eventlogging_service_uri => $eventlogging_service_uri,
-            event_service_uri        => $event_service_uri,
-            proton_uri               => $proton_uri,
-            cxserver_uri             => $cxserver_uri,
-            recommendation_uri       => $recommendation_uri,
-            aqs_uri                  => $aqs_uri,
-            salt_key                 => $salt_key,
-            page_size                => $page_size,
+            ipaddress             => $::ipaddress,
+            rl_seeds              => reject(reject($hosts, $::hostname), $::ipaddress),
+            seeds_ng              => $seeds_ng,
+            cassandra_local_dc    => $cassandra_local_dc,
+            cassandra_datacenters => $cassandra_datacenters,
+            cassandra_user        => $cassandra_user,
+            cassandra_password    => $cassandra_password,
+            cassandra_tls         => $cassandra_tls,
+            parsoid_uri           => $parsoid_uri,
+            graphoid_uri          => $graphoid_uri,
+            mathoid_uri           => $mathoid_uri,
+            mobileapps_uri        => $mobileapps_uri,
+            citoid_uri            => $citoid_uri,
+            event_service_uri     => $event_service_uri,
+            proton_uri            => $proton_uri,
+            cxserver_uri          => $cxserver_uri,
+            recommendation_uri    => $recommendation_uri,
+            aqs_uri               => $aqs_uri,
+            salt_key              => $salt_key,
+            page_size             => $page_size,
         },
         logging_name      => $logging_label,
         statsd_prefix     => $logging_label,
