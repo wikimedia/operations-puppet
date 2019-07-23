@@ -1,0 +1,6 @@
+# m2
+profile::mariadb::proxy::master::primary_name: 'db2044'
+profile::mariadb::proxy::master::primary_addr: '10.192.32.104:3306'
+profile::mariadb::proxy::master::secondary_name: 'db2078:3322'
+profile::mariadb::proxy::master::secondary_addr: '10.192.48.85:3322'
+profile::mariadb::proxy::firewall: 'misc'
