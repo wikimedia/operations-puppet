@@ -8,6 +8,10 @@ class profile::kerberos::kadminserver (
         ensure => present,
     }
 
+    package { 'python3-pexpect':
+        ensure => present,
+    }
+
     if $trusted['certname'] != $krb_kadmin_primary {
         service { 'krb5-admin-server':
             ensure    => stopped,
@@ -33,6 +37,14 @@ class profile::kerberos::kadminserver (
         owner  => 'root',
         group  => 'root',
         source => 'puppet:///modules/profile/kerberos/generate_keytabs.py',
+    }
+
+    file{ '/usr/local/sbin/manage_principals.py':
+        ensure => file,
+        mode   => '0550',
+        owner  => 'root',
+        group  => 'root',
+        source => 'puppet:///modules/profile/kerberos/manage_principals.py',
     }
 
     # Keytabs will be generated manually, via a script that uses kadmin.local,
