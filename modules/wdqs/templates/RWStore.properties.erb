@@ -2,6 +2,8 @@
 com.bigdata.journal.AbstractJournal.file=<%= @data_dir %>/wikidata.jnl
 com.bigdata.journal.AbstractJournal.bufferMode=DiskRW
 com.bigdata.service.AbstractTransactionService.minReleaseAge=1
+# Disable raw records - see https://phabricator.wikimedia.org/T213375
+com.bigdata.rdf.store.AbstractTripleStore.enableRawRecordsSupport=false
 
 com.bigdata.rdf.store.AbstractTripleStore.quads=false
 com.bigdata.rdf.store.AbstractTripleStore.statementIdentifiers=false
@@ -12,8 +14,9 @@ com.bigdata.rdf.store.AbstractTripleStore.textIndex=false
 com.bigdata.rdf.store.AbstractTripleStore.axiomsClass=com.bigdata.rdf.axioms.NoAxioms
 
 # Use our private vocabularies
-com.bigdata.rdf.store.AbstractTripleStore.vocabularyClass=org.wikidata.query.rdf.blazegraph.WikibaseVocabulary$V003
-com.bigdata.rdf.store.AbstractTripleStore.inlineURIFactory=org.wikidata.query.rdf.blazegraph.WikibaseInlineUriFactory
+com.bigdata.rdf.store.AbstractTripleStore.vocabularyClass=org.wikidata.query.rdf.blazegraph.WikibaseVocabulary$V004
+# Enable values inlining - see https://phabricator.wikimedia.org/T213375
+com.bigdata.rdf.store.AbstractTripleStore.inlineURIFactory=org.wikidata.query.rdf.blazegraph.WikibaseInlineUriFactory$V001
 com.bigdata.rdf.store.AbstractTripleStore.extensionFactoryClass=org.wikidata.query.rdf.blazegraph.WikibaseExtensionFactory
 
 # Suggested settings from https://phabricator.wikimedia.org/T92308
@@ -24,12 +27,12 @@ com.bigdata.journal.AbstractJournal.initialExtent=209715200
 com.bigdata.journal.AbstractJournal.maximumExtent=209715200
 # Bump up the branching factor for the lexicon indices on the default kb.
 com.bigdata.namespace.wdq.lex.com.bigdata.btree.BTree.branchingFactor=400
-com.bigdata.namespace.wdq.lex.ID2TERM.com.bigdata.btree.BTree.branchingFactor=800
-com.bigdata.namespace.wdq.lex.TERM2ID.com.bigdata.btree.BTree.branchingFactor=128
+com.bigdata.namespace.wdq.lex.ID2TERM.com.bigdata.btree.BTree.branchingFactor=600
+com.bigdata.namespace.wdq.lex.TERM2ID.com.bigdata.btree.BTree.branchingFactor=330
 # Bump up the branching factor for the statement indices on the default kb.
 com.bigdata.namespace.wdq.spo.com.bigdata.btree.BTree.branchingFactor=1024
-com.bigdata.namespace.wdq.spo.OSP.com.bigdata.btree.BTree.branchingFactor=64
-com.bigdata.namespace.wdq.spo.SPO.com.bigdata.btree.BTree.branchingFactor=600
+com.bigdata.namespace.wdq.spo.OSP.com.bigdata.btree.BTree.branchingFactor=900
+com.bigdata.namespace.wdq.spo.SPO.com.bigdata.btree.BTree.branchingFactor=900
 # larger statement buffer capacity for bulk loading.
 com.bigdata.rdf.sail.bufferCapacity=100000
 # Override the #of write cache buffers to improve bulk load performance. Requires enough native heap!
