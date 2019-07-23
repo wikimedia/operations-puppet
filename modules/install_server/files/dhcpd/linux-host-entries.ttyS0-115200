@@ -510,18 +510,6 @@ host pollux {
     option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
 }
 
-host poolcounter1001 {
-    hardware ethernet aa:00:00:de:ad:e5;
-    fixed-address poolcounter1001.eqiad.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
-}
-
-host poolcounter1003 {
-    hardware ethernet aa:00:00:ce:f1:77;
-    fixed-address poolcounter1003.eqiad.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
-}
-
 host poolcounter1004 {
     hardware ethernet aa:00:00:fb:32:eb;
     fixed-address poolcounter1004.eqiad.wmnet;
@@ -532,18 +520,6 @@ host poolcounter1005 {
     hardware ethernet aa:00:00:dd:33:4b;
     fixed-address poolcounter1005.eqiad.wmnet;
     option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/buster-installer/";
-}
-
-host poolcounter2001 {
-    hardware ethernet aa:00:00:cb:8a:b8;
-    fixed-address poolcounter2001.codfw.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
-}
-
-host poolcounter2002 {
-    hardware ethernet aa:00:00:09:b0:32;
-    fixed-address poolcounter2002.codfw.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
 }
 
 host poolcounter2003 {
