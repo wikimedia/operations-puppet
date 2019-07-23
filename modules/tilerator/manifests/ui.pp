@@ -62,27 +62,12 @@
 # [*osmosis_dir*]
 #   directory in which osmosis keeps its state
 #
-# [*eventlogging_service_uri*]
-#   URI for the eventbus service, for propagating resource change events
-#   upon map tile (re)generation
-#
-# [*sources_to_invalidate*]
-#   tile sources for which invalidation URIs will be generated. should be
-#   kept in sync with the sources marked public in the Kartotherian prod
-#   config
-#
-# [*tile_server_domain*]
-#   domain of the tile server, to be used in generating invalidation URIs
-#
 class tilerator::ui(
     Array[String] $cassandra_servers,
     String $cassandra_pass,
     String $pgsql_pass,
     String $redis_server,
     String $redis_pass,
-    Stdlib::Httpurl $eventlogging_service_uri,
-    Array[String] $sources_to_invalidate,
-    Stdlib::Fqdn $tile_server_domain,
     Stdlib::Port $port               = 6535,
     String  $contact_groups          = 'admins',
     Stdlib::Unixpath  $statefile_dir = '/var/run/tileratorui',
@@ -107,19 +92,16 @@ class tilerator::ui(
         repo              => 'tilerator/deploy',
         deployment        => 'scap3',
         deployment_vars   => {
-            entrypoint               => '""',
-            cassandra_user           => $cassandra_user,
-            cassandra_password       => $cassandra_pass,
-            cassandra_servers        => $cassandra_servers,
-            osmdb_user               => $pgsql_user,
-            osmdb_password           => $pgsql_pass,
-            redis_server             => $redis_url,
-            ui_only                  => true,
-            daemon_only              => false,
-            storage_id               => $storage_id,
-            eventlogging_service_uri => $eventlogging_service_uri,
-            sources_to_invalidate    => $sources_to_invalidate,
-            tile_server_domain       => $tile_server_domain,
+            entrypoint         => '""',
+            cassandra_user     => $cassandra_user,
+            cassandra_password => $cassandra_pass,
+            cassandra_servers  => $cassandra_servers,
+            osmdb_user         => $pgsql_user,
+            osmdb_password     => $pgsql_pass,
+            redis_server       => $redis_url,
+            ui_only            => true,
+            daemon_only        => false,
+            storage_id         => $storage_id,
         },
         contact_groups    => $contact_groups,
         use_nodejs10      => $use_nodejs10,

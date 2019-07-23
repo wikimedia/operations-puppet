@@ -10,9 +10,6 @@ class profile::maps::apps(
     String $redis_pass = hiera('profile::maps::apps::redis_pass'),
     String $kartotherian_storage_id = hiera('profile::maps::apps::kartotherian_storage_id'),
     String $tilerator_storage_id = hiera('profile::maps::apps::tilerator_storage_id'),
-    String $eventlogging_service_uri = hiera('profile::maps::apps::eventlogging_service_uri'),
-    Array[String] $sources_to_invalidate = hiera('profile::maps::apps::sources_to_invalidate'),
-    String $tile_server_domain = hiera('profile::maps::apps::tile_server_domain'),
     String $wikidata_query_service = hiera('profile::maps::apps::wikidata_query_service'),
     Float[0.0, 1.0] $tilerator_ncpu_ratio = hiera('profile::maps::apps::tilerator_ncpu_ratio'),
 ) {
@@ -24,32 +21,26 @@ class profile::maps::apps(
     $num_workers = floor($::processorcount * $tilerator_ncpu_ratio)
 
     class { '::tilerator':
-        cassandra_servers        => $cassandra_hosts,
-        cassandra_pass           => $cassandra_tilerator_pass,
-        pgsql_pass               => $pgsql_tilerator_pass,
-        redis_server             => $redis_server,
-        redis_pass               => $redis_pass,
-        contact_groups           => $contact_groups,
-        storage_id               => $tilerator_storage_id,
-        eventlogging_service_uri => $eventlogging_service_uri,
-        sources_to_invalidate    => $sources_to_invalidate,
-        tile_server_domain       => $tile_server_domain,
-        num_workers              => $num_workers,
-        use_nodejs10             => $use_nodejs10,
+        cassandra_servers => $cassandra_hosts,
+        cassandra_pass    => $cassandra_tilerator_pass,
+        pgsql_pass        => $pgsql_tilerator_pass,
+        redis_server      => $redis_server,
+        redis_pass        => $redis_pass,
+        contact_groups    => $contact_groups,
+        storage_id        => $tilerator_storage_id,
+        num_workers       => $num_workers,
+        use_nodejs10      => $use_nodejs10,
     }
 
     class { '::tilerator::ui':
-        cassandra_servers        => $cassandra_hosts,
-        cassandra_pass           => $cassandra_tileratorui_pass,
-        pgsql_pass               => $pgsql_tileratorui_pass,
-        redis_server             => $redis_server,
-        redis_pass               => $redis_pass,
-        contact_groups           => $contact_groups,
-        storage_id               => $tilerator_storage_id,
-        eventlogging_service_uri => $eventlogging_service_uri,
-        sources_to_invalidate    => $sources_to_invalidate,
-        tile_server_domain       => $tile_server_domain,
-        use_nodejs10             => $use_nodejs10,
+        cassandra_servers => $cassandra_hosts,
+        cassandra_pass    => $cassandra_tileratorui_pass,
+        pgsql_pass        => $pgsql_tileratorui_pass,
+        redis_server      => $redis_server,
+        redis_pass        => $redis_pass,
+        contact_groups    => $contact_groups,
+        storage_id        => $tilerator_storage_id,
+        use_nodejs10      => $use_nodejs10,
     }
 
     class { 'kartotherian':

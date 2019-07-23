@@ -29,10 +29,5 @@ profile::maps::apps::tilerator_ncpu_ratio: 0.3
 
 profile::maps::apps::use_proxy: true
 
-profile::maps::apps::eventlogging_service_uri: http://eventbus.discovery.wmnet:8085/v1/events
-profile::maps::apps::sources_to_invalidate:
-  - osm
-  - osm-intl
-profile::maps::apps::tile_server_domain: maps.wikimedia.org
 profile::maps::apps::wikidata_query_service: http://wdqs.discovery.wmnet/bigdata/namespace/wdq/sparql
 profile::maps::tlsproxy::servicename: kartotherian.discovery.wmnet
