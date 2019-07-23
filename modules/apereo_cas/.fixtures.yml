@@ -1,0 +1,6 @@
+fixtures:
+    symlinks:
+        standard: "#{source_dir}"
+        stdlib: "../../../../stdlib"
+        wmflib: "../../../../wmflib"
+        network: "../../../../git"

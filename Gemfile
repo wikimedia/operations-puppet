@@ -13,3 +13,20 @@ gem 'git', '1.3.0'
 gem 'puppet-lint', '2.3.6'
 gem 'rubocop', '~> 0.49.1', require: false
 gem 'puppet-lint-wmf_styleguide-check', '1.0.4'
+
+# Theses are required for running beaker acceptance test
+# you can forgo installing them using `bundle install --without system_tests`
+group :system_tests do
+  gem 'serverspec',                         :require => false
+  gem 'beaker-rspec',                       :require => false
+  gem 'beaker-hostgenerator', '>= 1.1.22',  :require => false
+  gem 'beaker-docker',                      :require => false
+  gem 'beaker-puppet',                      :require => false
+  gem 'beaker-puppet_install_helper',       :require => false
+  gem 'beaker-module_install_helper',       :require => false
+  gem 'rbnacl', '< 5',                      :require => false
+  # better to install libsodium natively
+  # gem 'rbnacl-libsodium',                   :require => false
+  gem 'bcrypt_pbkdf',                       :require => false
+  gem 'ed25519'
+end

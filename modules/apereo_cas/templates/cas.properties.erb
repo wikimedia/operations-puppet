@@ -1,0 +1,17 @@
+cas.server.name=<%= @server_name %>
+cas.server.prefix=<%= @server_name %><% unless @server_prefix[0] == '/' %>/<% end %><%= @server_prefix %>
+
+logging.config: file:/etc/cas/config/log4j2.xml
+
+cas.serviceRegistry.json.location=file:<%= @services_dir %>
+cas.authn.ldap[0].principalAttributeList=<%= @ldap_attribute_list.join(',') %>
+cas.authn.ldap[0].type=<%= @ldap_auth %>
+cas.authn.ldap[0].connectionStrategy=<%= @ldap_connection %>
+cas.authn.ldap[0].ldapurl=<%= @ldap_uris.join(' ') %>
+cas.authn.ldap[0].useStartTLS=<%= @ldap_start_tls %>
+cas.authn.ldap[0].basedn=<%= @ldap_base_dn %>
+cas.authn.ldap[0].searchFilter=<%= @ldap_search_filter %>
+cas.authn.ldap[0].binddn=<%= @ldap_bind_dn %>
+cas.authn.ldap[0].bindcredential=<%= @ldap_bind_pass %>
+cas.authn.accept.users=
+logging.level.org.apereo=<%= @log_level %>

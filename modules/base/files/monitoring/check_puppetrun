@@ -56,7 +56,7 @@ opt.on("--report-file [FILE]", "-r", "Location of the report file, default #{rep
     reportfile = f
 end
 
-opt.on("--alert-master-fail", "Alert on failures related to Puppet master issues") do |f|
+opt.on("--alert-master-fail", "Alert on failures related to Puppet master issues") do
     alert_master_fail = true
 end
 

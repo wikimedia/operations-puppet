@@ -1,0 +1,11 @@
+[Unit]
+Description=Apereo CAS Identety provider
+After=network.target remote-fs.target nss-lookup.target
+Documentation=https://apereo.github.io/cas/6.0.x/
+
+[Service]
+ExecStart=/usr/bin/java -jar <%= @overlay_dir %>/build/libs/cas.war
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
