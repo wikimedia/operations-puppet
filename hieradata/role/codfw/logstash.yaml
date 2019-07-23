@@ -20,5 +20,5 @@ profile::elasticsearch::dc_settings:
 
 # Kibana
 role::kibana::auth_realm: WMF Labs (use wiki login name not shell) - nda/ops/wmf
-# ldap-labs is the ldap we authenticate against even production services e.g. grafana or icinga.
-role::kibana::ldap_authurl: ldaps://ldap-labs.codfw.wikimedia.org ldap-labs.eqiad.wikimedia.org/ou=people,dc=wikimedia,dc=org?cn
+# TODO: Convert to read the servers from ldap::ro-server and ldap::ro-server-fallback once Kibana converted to a profile
+role::kibana::ldap_authurl: ldaps://ldap-ro.codfw.wikimedia.org ldap-ro.eqiad.wikimedia.org/ou=people,dc=wikimedia,dc=org?cn
