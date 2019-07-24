@@ -20,7 +20,7 @@ labsdnsconfig:
   recursor_secondary: 'ns-recursor1.openstack.eqiad1.wikimediacloud.org'
 
 labsldapconfig:
-  hostname: ldap-labs.eqiad.wikimedia.org
+  hostname: ldap-ro.eqiad.wikimedia.org
 
 # /> Cloud Services
 #
