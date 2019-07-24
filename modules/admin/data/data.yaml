@@ -3680,3 +3680,7 @@ ldap_only_users:
     ensure: present
     realname: Rosalie Perside
     email: perside.rosalie@wikimedia.de
+  dz1:
+    ensure: present
+    realname: Deb Zierten
+    email: dzierten@wikimedia.org
