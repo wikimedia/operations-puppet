@@ -32,6 +32,7 @@ import subprocess
 import sys
 import time
 import yaml
+from datetime import datetime
 
 
 class Timer:
@@ -489,8 +490,8 @@ def main():
         nova_conn = nova_client.Client('2', session=sess, region_name=region)
 
         prepend = args.prepend
-        epoch = int(time.time())
-        name = '{}-{}'.format(prepend, epoch)
+        date = int(datetime.today().strftime('%Y%m%d%H%M%S'))
+        name = '{}-{}'.format(prepend, date)
 
         exist = nova_conn.servers.list()
         logging.debug(exist)
