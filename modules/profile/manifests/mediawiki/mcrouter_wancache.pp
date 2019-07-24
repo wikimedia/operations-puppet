@@ -8,7 +8,6 @@ class profile::mediawiki::mcrouter_wancache(
     Integer $ssl_port = hiera('mcrouter::ssl_port', $port + 1),
     Integer $num_proxies = hiera('profile::mediawiki::mcrouter_wancache::num_proxies', 1),
     Optional[Integer] $timeouts_until_tko = lookup('profile::mediawiki::mcrouter_wancache::timeouts_until_tko', {'default_value' => 10}),
-    Boolean $async_replication = lookup('profile::mediawiki::mcrouter_wancache::async_replication', { 'default_value' => false }),
 ) {
     $servers_by_datacenter = $servers_by_datacenter_category['wancache']
     $proxies_by_datacenter = pick($servers_by_datacenter_category['proxies'], {})
@@ -43,32 +42,24 @@ class profile::mediawiki::mcrouter_wancache(
                 'route'   => {
                     'type'               => 'OperationSelectorRoute',
                     'default_policy'     => "PoolRoute|${::site}", # We want reads to always be local!
-                    # When async_replication is false, every set/delete
-                    # will need to wait the replication to the non-active DC.
-                    # When async_replication is true, AllAsyncRoute will be used
-                    # by mcrouter when replicating data to the non-active DC:
+                    # AllAsyncRoute is used by mcrouter when replicating data to the non-active DC:
                     # https://github.com/facebook/mcrouter/wiki/List-of-Route-Handles#allasyncroute
-                    'operation_policies' => $async_replication ? {
-                        true  => {
-                                    'set'    => {
-                                        'type'     => $region ? {
-                                            $::site => 'AllSyncRoute',
-                                            default => 'AllAsyncRoute'
-                                        },
-                                        'children' => [ "PoolRoute|${region}" ]
-                                    },
-                                    'delete' => {
-                                        'type'     => $region ? {
-                                            $::site => 'AllSyncRoute',
-                                            default => 'AllAsyncRoute'
-                                        },
-                                        'children' => [ "PoolRoute|${region}" ]
-                                    },
+                    # More info in T225642
+                    'operation_policies' => {
+                        'set'    => {
+                            'type'     => $region ? {
+                                $::site => 'AllSyncRoute',
+                                default => 'AllAsyncRoute'
+                            },
+                            'children' => [ "PoolRoute|${region}" ]
                         },
-                        false => {
-                                    'set'    => "PoolRoute|${region}",
-                                    'delete' => "PoolRoute|${region}",
-                        }
+                        'delete' => {
+                            'type'     => $region ? {
+                                $::site => 'AllSyncRoute',
+                                default => 'AllAsyncRoute'
+                            },
+                            'children' => [ "PoolRoute|${region}" ]
+                        },
                     }
                 }
             }
