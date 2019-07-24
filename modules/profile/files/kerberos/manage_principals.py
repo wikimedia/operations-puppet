@@ -33,7 +33,7 @@ def parse_args(argv):
 def create_user_principal(principal, password, realm):
     try:
         kadmin_local = pexpect.spawn(
-            '/usr/sbin/kadmin.local add_principal +needchange '
+            '/usr/sbin/kadmin.local add_principal +needchange +requires_preauth'
             + principal+'@'+realm)
         kadmin_local.expect('Enter password for principal .*:')
         kadmin_local.sendline(password)
