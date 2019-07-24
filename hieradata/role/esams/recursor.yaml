@@ -1,6 +1,3 @@
-profile::bird::neighbors_list:
-  - 91.198.174.245 # cr1-esams loopback
-  - 91.198.174.244 # cr2-esams loopback
 profile::base::nameservers:
   - '208.80.154.254' # eqiad lvs
   - '208.80.153.254' # codfw lvs
