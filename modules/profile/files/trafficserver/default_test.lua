@@ -73,6 +73,42 @@ describe("Busted unit testing framework", function()
       assert.is_nil(_G.ts.server_response.header['Cache-Control'])
     end)
 
+    it("test - do_global_read_response Vary-slotting for PHP7", function()
+      -- No Vary at all, no X-Powered-By
+      do_global_read_response()
+      assert.is_nil(_G.ts.server_response.header['Vary'])
+
+      -- No Vary, powered by PHP
+      _G.ts.server_response.header['X-Powered-By'] = "PHP/7.2.16-1+0~20190307202415.17+stretch~1.gbpa7be82+wmf1"
+      do_global_read_response()
+      assert.are.equals('X-Seven', _G.ts.server_response.header['Vary'])
+
+      -- Empty Vary
+      _G.ts.server_response.header['Vary'] = ""
+      do_global_read_response()
+      assert.are.equals('X-Seven', _G.ts.server_response.header['Vary'])
+
+      -- Vary made entirely of %s
+      _G.ts.server_response.header['Vary'] = "    "
+      do_global_read_response()
+      assert.are.equals('X-Seven', _G.ts.server_response.header['Vary'])
+
+      -- Vary already set to X-Seven
+      _G.ts.server_response.header['Vary'] = "X-Seven"
+      do_global_read_response()
+      assert.are.equals('X-Seven', _G.ts.server_response.header['Vary'])
+
+      -- Vary already set to X-Seven and something else
+      _G.ts.server_response.header['Vary'] = "Cookie, X-Seven"
+      do_global_read_response()
+      assert.are.equals('Cookie, X-Seven', _G.ts.server_response.header['Vary'])
+
+      -- Vary set to something else
+      _G.ts.server_response.header['Vary'] = "Cookie"
+      do_global_read_response()
+      assert.are.equals('Cookie,X-Seven', _G.ts.server_response.header['Vary'])
+    end)
+
     it("test - do_global_send_response cache miss", function()
       _G.ts.http.get_cache_lookup_status = function() return TS_LUA_CACHE_LOOKUP_MISS end
 

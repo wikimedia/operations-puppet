@@ -45,12 +45,35 @@ function do_not_cache()
     ts.server_response.header['Expires'] = nil
 end
 
+--- Add header to Vary
+-- @param old_vary: the original value of the Vary response header as sent by
+--                  the origin server
+-- @param header_name: the header to insert into Vary if not already there
+function add_vary(old_vary, header_name)
+    if not old_vary or string.match(old_vary, "^%s*$") then
+        return header_name
+    end
+
+    local pattern = header_name:lower():gsub('%-', '%%-')
+    if string.match(old_vary:lower(), pattern) then
+        return old_vary
+    end
+
+    return old_vary .. ',' ..header_name
+end
+
 function do_global_read_response()
     -- Various fairly severe privacy/security/uptime risks exist if we allow
     -- possibly compromised or misconfigured internal apps to emit these headers
     -- through our CDN blindly.
     ts.server_response.header['Public-Key-Pins'] = nil
     ts.server_response.header['Public-Key-Pins-Report-Only'] = nil
+
+    -- Vary-slotting for PHP7 T206339
+    local x_powered_by = ts.server_response.header['X-Powered-By'] or ""
+    if string.match(x_powered_by, "^HHVM") or string.match(x_powered_by, "^PHP") then
+        ts.server_response.header['Vary'] = add_vary(ts.server_response.header['Vary'], 'X-Seven')
+    end
 
     local response_status = ts.server_response.get_status()
 
