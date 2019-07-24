@@ -88,7 +88,9 @@ server {
       # Require auth for POST, PUT, DELETE, ... requests
       limit_except GET HEAD OPTIONS {
       <%- if @read_only_mode %>
-        return 405;
+        # this docker registry is in read only mode
+        # and it will not accept pushing new images.
+        deny all;
       <%- else -%>
         auth_basic "docker-registry";
         auth_basic_user_file /etc/nginx/htpasswd.registry;
