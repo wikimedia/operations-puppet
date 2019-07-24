@@ -154,6 +154,25 @@ SELECT DISTINCT CONCAT("https://phabricator.wikimedia.org/p/", u.userName) AS us
 END
 )
 
+# echo "result_cookie_licked_tasks"
+# see https://phabricator.wikimedia.org/T228575
+result_cookie_licked_tasks=$(MYSQL_PWD=${sql_pass} /usr/bin/mysql -h $sql_host -P $sql_port -u$sql_user $sql_name << END
+
+SELECT CONCAT("https://phabricator.wikimedia.org/T", t.id) AS taskID, u.userName, from_unixtime(ta.dateModified) AS since
+    FROM phabricator_maniphest.maniphest_task t
+    JOIN phabricator_user.user u
+    JOIN phabricator_maniphest.maniphest_transaction ta
+    WHERE (ta.transactionType = "reassign"
+    AND ta.dateModified < (UNIX_TIMESTAMP() - 126144000))
+    AND u.phid = SUBSTR(ta.newValue, INSTR(ta.newValue, 'PHID-USER-'), 30)
+    AND ta.objectPHID = t.phid
+    AND t.ownerPHID = u.phid
+    AND (t.status = "open" OR t.status = "stalled")
+    ORDER BY ta.dateModified;
+
+END
+)
+
 # the actual email
 cat <<EOF | /usr/bin/mail -r "${sndr_address}" -s "Phabricator weekly project changes" ${rcpt_address}
 
@@ -190,6 +209,10 @@ ${result_inactive_users_assigned_tasks}
 USER ACCOUNTS WHO BECAME AN ASSIGNEE LAST WEEK AND HAD LESS THAN 5 TASKS EVER ASSIGNED:
 ${result_new_user_assignees}
 
+
+OPEN TASKS THAT HAVE BEEN ASSIGNED TO THE SAME USER FOR MORE THAN FOUR YEARS:
+${result_cookie_licked_tasks}
+Note: Tasks might have been un- and re-assigned to same user in the meantime.
 
 Yours sincerely,
 Fab Rick Aytor
