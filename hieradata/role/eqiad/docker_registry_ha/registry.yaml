@@ -12,4 +12,4 @@ profile::docker_registry_ha::registry::swift_replication_configuration: //docker
 profile::docker_registry_ha::registry::redis_host: "rdb1005.eqiad.wmnet"
 profile::docker_registry_ha::registry::redis_port: 6382
 #profile::docker_registry_ha::registry::redis_password: setintheprivaterepo
-profile::docker_registry_ha::registry::read_only_mode: true
+profile::docker_registry_ha::registry::read_only_mode: false
