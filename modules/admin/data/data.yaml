@@ -3684,3 +3684,7 @@ ldap_only_users:
     ensure: present
     realname: Deb Zierten
     email: dzierten@wikimedia.org
+  jclark:
+    ensure: present
+    realname: John Clark
+    email: jclark-ctr@wikimedia.org
