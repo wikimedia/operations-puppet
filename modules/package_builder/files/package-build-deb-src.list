@@ -1,3 +1,5 @@
 deb-src http://apt.wikimedia.org/wikimedia jessie-wikimedia main backports thirdparty
 deb-src http://mirrors.wikimedia.org/debian/ jessie main non-free contrib
 deb-src http://security.debian.org/ jessie/updates main contrib non-free
+deb-src http://mirrors.wikimedia.org/debian/ buster main non-free contrib
+deb-src http://security.debian.org/ buster/updates main contrib non-free
