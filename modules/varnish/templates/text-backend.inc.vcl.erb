@@ -95,7 +95,9 @@ sub cluster_be_backend_response {
 		return (deliver);
 	}
 
-	// FIXME: Fix up missing Vary headers on Apache redirects
+	// Fix up missing Vary:X-Forwarded-Proto on redirects. Ideally, the applayer
+	// should do this; however in case of misconfigurations it's best to ensure
+	// that Vary:XFP is set here.
 	if ((beresp.status == 301 || beresp.status == 302)
 		&& beresp.http.Location ~ "^http"
 		&& beresp.http.Vary !~ "X-Forwarded-Proto") {
