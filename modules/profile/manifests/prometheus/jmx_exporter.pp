@@ -103,6 +103,6 @@ define profile::prometheus::jmx_exporter (
     ferm::service { "${title}_jmx_exporter":
         proto  => 'tcp',
         port   => $port,
-        srange => "@resolve((${prometheus_nodes_ferm}))",
+        srange => "(@resolve((${prometheus_nodes_ferm})) @resolve((${prometheus_nodes_ferm}), AAAA))",
     }
 }
