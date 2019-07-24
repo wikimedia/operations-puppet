@@ -83,13 +83,9 @@ class profile::mediawiki::nutcracker(
 
     $nutcracker_pools = merge($pools, $additional_pools)
 
-    # In jessie we used a custom nutcracker package which shipped a tmpfiles.d
-    # config to create /run/nutcracker. Starting with stretch we're using the
-    # unmodified Debian package, so ship the tmpfiles.d configuration via systemd::tmpfile
-    if os_version('debian >= stretch') {
-        systemd::tmpfile { 'nutcracker':
-            content => 'd /run/nutcracker 0755 nutcracker nutcracker - -'
-        }
+    # Ship a tmpfiles.d configuration to create /run/nutcracker
+    systemd::tmpfile { 'nutcracker':
+        content => 'd /run/nutcracker 0755 nutcracker nutcracker - -'
     }
 
     class { '::nutcracker':
