@@ -73,14 +73,15 @@ def send_email(email_address, principal, password, realm):
         Hi!
 
         If you are receiving this message it means that you requested
-        a Kerberos account to use the Analytics Hadoop cluster.
+        a Kerberos account to use the Analytics Hadoop Test cluster.
 
         Your kerberos username is {}, that should be the same as the one
         that you use on Analytics Hadoop clients (like stat1007, etc..).
         If not, please reach out to the Analytics team for a follow up.
 
-        Please ssh to any of the Hadoop client hosts (like stat1007, etc..)
-        and set you own password with the following command:
+        Please ssh to any of the Hadoop client test hosts
+        (like an-tool1006.eqiad.wmnet, etc..) and set you own password
+        with the following command:
 
         kinit
 
