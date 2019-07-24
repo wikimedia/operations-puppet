@@ -10,6 +10,7 @@ import socket
 import string
 import subprocess
 import sys
+import textwrap
 
 from email.message import EmailMessage
 
@@ -94,7 +95,7 @@ def send_email(email_address, principal, password, realm):
         If you have any question, please contact the Analytics team.
 
         """.format(principal, password)
-        msg.set_content(text_to_send)
+        msg.set_content(textwrap.dedent(text_to_send))
         smtp_sender = smtplib.SMTP('localhost')
         smtp_sender.send_message(msg)
         print("Successfully sent email to " + email_address)
