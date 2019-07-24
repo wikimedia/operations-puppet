@@ -61,13 +61,6 @@ class varnish::logging(
     ::varnish::logging::xcps { 'xcps':
     }
 
-    # Parse varnishlogs for request statistics and send to statsd.
-    varnish::logging::reqstats { 'frontend':
-        ensure     => absent,
-        key_prefix => "varnish.${::site}.${cache_cluster}.frontend.request",
-        statsd     => $statsd_host,
-    }
-
     ::varnish::logging::xcache { 'xcache':
     }
 

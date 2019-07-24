@@ -46,10 +46,4 @@ class varnish::logging::backend(
         destination => '/etc/varnishmtail-backend',
         notify      => Service['varnishmtail-backend'],
     }
-
-    ::varnish::logging::statsd { 'default':
-        ensure        => absent,
-        statsd_server => $statsd_host,
-        key_prefix    => "varnish.${::site}.backends",
-    }
 }
