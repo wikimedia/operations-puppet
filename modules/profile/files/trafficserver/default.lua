@@ -76,6 +76,9 @@ function do_global_read_response()
     end
 
     local response_status = ts.server_response.get_status()
+    if response_status == 301 or response_status == 302 then
+        ts.server_response.header['Vary'] = add_vary(ts.server_response.header['Vary'], 'X-Forwarded-Proto')
+    end
 
     -------------------------------------------------------------
     -- Force caching responses that would not be cached otherwise

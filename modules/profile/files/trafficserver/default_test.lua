@@ -109,6 +109,21 @@ describe("Busted unit testing framework", function()
       assert.are.equals('Cookie,X-Seven', _G.ts.server_response.header['Vary'])
     end)
 
+    it("test - do_global_read_response Vary-slotting for X-Forwarded-Proto", function()
+      local old_status = _G.ts.server_response.get_status
+      _G.ts.server_response.get_status = function() return 301 end
+
+      _G.ts.server_response.header['Vary'] = nil
+      do_global_read_response()
+      assert.are.equals('X-Seven,X-Forwarded-Proto', _G.ts.server_response.header['Vary'])
+
+      -- Do not add X-Forwarded-Proto on other status codes
+      _G.ts.server_response.get_status = old_status
+      _G.ts.server_response.header['Vary'] = nil
+      do_global_read_response()
+      assert.are.equals('X-Seven', _G.ts.server_response.header['Vary'])
+    end)
+
     it("test - do_global_send_response cache miss", function()
       _G.ts.http.get_cache_lookup_status = function() return TS_LUA_CACHE_LOOKUP_MISS end
 
