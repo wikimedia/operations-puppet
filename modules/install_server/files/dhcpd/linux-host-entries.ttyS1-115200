@@ -6142,7 +6142,6 @@ host restbase-dev1005 {
 host restbase-dev1006 {
     hardware ethernet 30:e1:71:5c:92:54;
     fixed-address restbase-dev1006.eqiad.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
 }
 
 host rhenium {
