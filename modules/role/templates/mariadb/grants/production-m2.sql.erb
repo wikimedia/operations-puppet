@@ -318,3 +318,113 @@ GRANT USAGE
 
 GRANT SELECT
     ON `recommendationapi`.* TO 'recommendationapiservice'@'10.192.16.9';
+
+-- haproxy@dbproxy1013
+
+GRANT USAGE
+    ON *.* TO 'haproxy'@'10.64.0.135';
+
+-- exim
+
+GRANT USAGE
+    ON *.* TO 'exim'@'10.64.0.135'
+    IDENTIFIED BY PASSWORD '*D6452C159A3118B42A0B6CCD079D888CC5EF4B4F'
+    WITH MAX_USER_CONNECTIONS 100;
+
+GRANT SELECT
+    ON `otrs`.* TO 'exim'@'10.64.0.135';
+
+-- frack
+
+GRANT USAGE
+    ON *.* TO 'frack'@'10.64.0.135'
+    IDENTIFIED BY PASSWORD '*BBA9CC17A0D2B26D5CC025DA918624E8D3F550E6'
+    WITH MAX_USER_CONNECTIONS 10;
+
+GRANT ALL PRIVILEGES
+    ON `frimpressions`.* TO 'frack'@'10.64.0.135';
+
+-- gerrit
+GRANT USAGE
+    ON *.* TO 'gerrit'@'10.64.0.135'
+    IDENTIFIED BY PASSWORD '*CC92DED5BE0767E69735BABB2B6A0D7ADC75FDCC'
+    WITH MAX_USER_CONNECTIONS 100;
+
+-- gerritro
+
+GRANT USAGE
+    ON *.* TO 'gerritro'@'10.64.0.135'
+    IDENTIFIED BY PASSWORD '*271311C9CCDDF31F2BCF524885D19684C803683B'
+    WITH MAX_USER_CONNECTIONS 100;
+
+GRANT SELECT
+    ON `reviewdb`.* TO 'gerritro'@'10.64.0.135';
+
+-- iegadmin
+
+GRANT USAGE
+    ON *.* TO 'iegadmin'@'10.64.0.135'
+    IDENTIFIED BY PASSWORD '*10A7DA2BA1C20E0A200C92A8AB7E81F5541D9E20'
+    WITH MAX_USER_CONNECTIONS 10;
+
+GRANT ALL PRIVILEGES
+    ON `iegreview`.* TO 'iegadmin'@'10.64.0.135';
+
+-- iegapp
+
+GRANT USAGE
+    ON *.* TO 'iegapp'@'10.64.0.135'
+    IDENTIFIED BY PASSWORD '*5A01835A89FB3E10052187364B0CCC2C77263CC3'
+    WITH MAX_USER_CONNECTIONS 50;
+
+GRANT DELETE, INSERT, SELECT, UPDATE
+    ON `iegreview`.* TO 'iegapp'@'10.64.0.135';
+
+-- otrs
+
+GRANT USAGE
+    ON *.* TO 'otrs'@'10.64.0.135'
+    IDENTIFIED BY PASSWORD '*55493656B786D34BA1408CA986E55F7FF4522D4D'
+    WITH MAX_USER_CONNECTIONS 100;
+
+GRANT ALL PRIVILEGES
+    ON `otrs`.* TO 'otrs'@'10.64.0.135';
+
+-- scholarships
+
+GRANT USAGE
+    ON *.* TO 'scholarships'@'10.64.0.135'
+    IDENTIFIED BY PASSWORD '*3C360067424B9E199203EBB681E50A1A352086D9'
+    WITH MAX_USER_CONNECTIONS 10;
+
+GRANT ALL PRIVILEGES
+    ON `scholarships`.* TO 'scholarships'@'10.64.0.135';
+
+-- scholarships_app
+
+GRANT USAGE
+    ON *.* TO 'scholarships_app'@'10.64.0.135'
+    IDENTIFIED BY PASSWORD '*BFEB5829004F51D1134870E54A958145F689809A'
+    WITH MAX_USER_CONNECTIONS 50;
+
+GRANT DELETE, INSERT, SELECT, UPDATE
+    ON `scholarships`.* TO 'scholarships_app'@'10.64.0.135';
+
+-- Recommendation API
+-- (admin account)
+GRANT USAGE
+    ON *.* TO 'recommendationapi'@'10.64.0.135'
+    IDENTIFIED BY '<%= @recommendationapi_pass %>'
+    WITH MAX_USER_CONNECTIONS 10;
+
+GRANT ALL PRIVILEGES
+    ON `recommendationapi`.* TO 'recommendationapi'@'10.64.0.135';
+
+-- (service account - read only)
+GRANT USAGE
+    ON *.* TO 'recommendationapiservice'@'10.64.0.135'
+    IDENTIFIED BY '<%= @recommendationapiservice_pass %>'
+    WITH MAX_USER_CONNECTIONS 50;
+
+GRANT SELECT
+    ON `recommendationapi`.* TO 'recommendationapiservice'@'10.64.0.135';
