@@ -21,21 +21,11 @@ class role::alerting_host {
 
     include ::role::authdns::monitoring
 
-
-    if os_version('debian >= stretch') {
-
-        class { '::httpd::mpm':
-            mpm => 'prefork'
-        }
-
-        $httpd_modules = ['headers', 'rewrite', 'authnz_ldap', 'authn_file', 'cgi', 'ssl']
-
-    } else {
-
-        $httpd_modules = ['headers', 'rewrite', 'authnz_ldap', 'authn_file', 'cgi', 'ssl', 'php5']
+    class { '::httpd::mpm':
+        mpm => 'prefork'
     }
 
     class { '::httpd':
-        modules => $httpd_modules,
+        modules => ['headers', 'rewrite', 'authnz_ldap', 'authn_file', 'cgi', 'ssl'],
     }
 }
