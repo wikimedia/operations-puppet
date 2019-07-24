@@ -13,7 +13,7 @@
 
 class fastnetmon(
   Array[Stdlib::IP::Address,1] $networks = [],
-  Optional[Stdlib::Host] $graphite_host,
+  Optional[Stdlib::Host] $graphite_host = undef,
   ) {
 
     require_package('fastnetmon')
