@@ -1984,6 +1984,56 @@ host db2120 {
     fixed-address db2120.codfw.wmnet;
 }
 
+host db2121 {
+    hardware ethernet 4C:D9:8F:7D:7E:0E;
+    fixed-address db2121.codfw.wmnet;
+}
+
+host db2122 {
+    hardware ethernet 4C:D9:8F:7D:82:28;
+    fixed-address db2122.codfw.wmnet;
+}
+
+host db2123 {
+    hardware ethernet 4C:D9:8F:7C:C7:22;
+    fixed-address db2123.codfw.wmnet;
+}
+
+host db2124 {
+    hardware ethernet 4C:D9:8F:7D:78:FC;
+    fixed-address db2124.codfw.wmnet;
+}
+
+host db2125 {
+    hardware ethernet 4C:D9:8F:7D:68:A7;
+    fixed-address db2125.codfw.wmnet;
+}
+
+host db2126 {
+    hardware ethernet 4C:D9:8F:7D:5A:E2;
+    fixed-address db2126.codfw.wmnet;
+}
+
+host db2127 {
+    hardware ethernet 4C:D9:8F:7D:64:38;
+    fixed-address db2127.codfw.wmnet;
+}
+
+host db2128 {
+    hardware ethernet 4C:D9:8F:7C:C1:2D;
+    fixed-address db2128.codfw.wmnet;
+}
+
+host db2129 {
+    hardware ethernet 4C:D9:8F:7C:CD:2C;
+    fixed-address db2129.codfw.wmnet;
+}
+
+host db2130 {
+    hardware ethernet 4C:D9:8F:7D:64:37;
+    fixed-address db2130.codfw.wmnet;
+}
+
 host dbprov1001 {
     hardware ethernet B0:26:28:23:50:90;
     fixed-address dbprov1001.eqiad.wmnet;
