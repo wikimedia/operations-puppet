@@ -13,7 +13,7 @@ admin::groups:
   - deploy-aqs
   - deploy-phabricator
   - analytics-deployers
-  - gerrit-root
+  - gerrit-deployers
 
 # screen sessions are common on deployment servers (T165348)
 monitor_screens: false
@@ -57,7 +57,7 @@ profile::keyholder::server::agents:
 
   gerrit:
     trusted_groups:
-      - gerrit-root
+      - gerrit-deployers
 
   eventlogging:
     trusted_groups:

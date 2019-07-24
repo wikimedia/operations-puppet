@@ -54,7 +54,7 @@ groups:
   gerrit-root:
     gid: 703
     description: manage gerrit server
-    members: [demon, twentyafterfour, hashar, thcipriani]
+    members: &gerrit_root_members [demon, twentyafterfour, hashar, thcipriani]
     privileges: ['ALL = (ALL) NOPASSWD: ALL']
   gerrit-admin:
     gid: 704
@@ -731,6 +731,10 @@ groups:
     gid: 813
     description: members of wikimedia security
     members: [reedy, dsharpe, sbassett]
+  gerrit-deployers:
+    gid: 814
+    description: deploy gerrit
+    members: *gerrit_root_members
 
 users:
   rush:
