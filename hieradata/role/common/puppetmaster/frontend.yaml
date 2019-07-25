@@ -19,3 +19,6 @@ profile::discovery::path: "/srv/config-master/discovery"
 profile::puppetmaster::common::storeconfigs: puppetdb
 profile::puppetmaster::frontend::test_servers:
     - { worker: puppetmaster1001.eqiad.wmnet, loadfactor: 20 }
+puppetmaster::web_frontend::canary_hosts:
+  - sarin.codfw.wmnet
+  - neodymium.eqiad.wmnet
