@@ -58,6 +58,15 @@ class profile::openstack::base::nova::compute::service(
         options => 'hashsize=32768',
     }
 
+    # For OpenStack configure unconditional flushes of the L1 cache during VMENTER
+    # https://www.kernel.org/doc/html/latest/admin-guide/hw-vuln/l1tf.html
+    # Functionality got backported to 4.9.168 (kernel ABI 4.9.0-9)
+    if os_version('debian == stretch') and (versioncmp($::kernelrelease, '4.9.0-9-amd64') >= 0) {
+        kmod::options { 'kvm_intel':
+            options => 'vmentry_l1d_flush=always',
+        }
+    }
+
     # Reuse the puppet cert as the labvirt cert
     #  Note that even though libvirtd.conf claims to let you
     #  configure these libvirt_ paths, it actually seems
