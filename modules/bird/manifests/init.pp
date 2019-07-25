@@ -3,6 +3,7 @@
 # Installs Bird
 #
 # Only supports v4 Bird instance but can be extended to support v6 when the need arises.
+# Installs its prometheus metrics exporter
 #
 # === Parameters
 #
@@ -31,7 +32,7 @@ class bird(
   $routerid= $::ipaddress,
   ){
 
-  require_package('bird')
+  require_package('bird', 'prometheus-bird-exporter')
 
   if $bind_service != '' {
     exec { 'bird-systemd-reload-enable':
@@ -70,6 +71,22 @@ class bird(
       mode    => '0640',
       content => template($config_template),
       notify  => Service['bird'],
+  }
+
+  service { 'prometheus-bird-exporter':
+      ensure     => running,
+      enable     => true,
+      hasrestart => true,
+      require    => Package['prometheus-bird-exporter'],
+  }
+
+  file { '/etc/default/prometheus-bird-exporter':
+      ensure => present,
+      owner  => 'root',
+      group  => 'root',
+      mode   => '0444',
+      source => 'puppet:///modules/bird/prometheus-bird-exporter.default',
+      notify => Service['prometheus-bird-exporter'],
   }
 
   nrpe::monitor_service { 'bird':
