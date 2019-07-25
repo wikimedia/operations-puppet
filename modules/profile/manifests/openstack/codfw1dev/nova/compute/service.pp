@@ -28,7 +28,7 @@ class profile::openstack::codfw1dev::nova::compute::service(
     # For OpenStack configure unconditional flushes of the L1 cache during VMENTER
     # https://www.kernel.org/doc/html/latest/admin-guide/hw-vuln/l1tf.html
     if os_version('debian == stretch') and (versioncmp($::kernelrelease, '4.9.0-9-amd64') >= 0) {
-        kmod::options { 'kvm-vmentry-always':
+        kmod::options { 'kvm_intel':
             options => 'kvm-intel.vmentry_l1d_flush=always',
         }
     }
