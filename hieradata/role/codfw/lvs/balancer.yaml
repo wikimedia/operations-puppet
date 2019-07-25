@@ -8,15 +8,6 @@ profile::lvs::tagged_subnets:
   - public1-b-codfw
   - public1-c-codfw
   - public1-d-codfw
-# lvs200[25] are LVS balancers for the codfw recursive DNS IP,
-#   so they need to use the recursive DNS backends directly
-#   (dns2001 and dns2002) with fallback to eqiad
-# (doing this for all lvs for now, see T103921)
-profile::base::nameservers:
-  - '208.80.153.77' # dns2001
-  - '208.80.153.111' # dns2002
-  - '208.80.154.254' # eqiad lvs
-
 profile::lvs::interface_tweaks:
   eno1:
     txqlen: 10000
@@ -26,3 +17,7 @@ profile::lvs::interface_tweaks:
     txqlen: 10000
   ens1f1:
     txqlen: 10000
+# LVS use the new anycast recdns, to avoid looping into their own LVS
+# services or hardcoding various per-datacenter values here
+profile::base::nameservers:
+  - '10.3.0.1' # anycast recdns
