@@ -17,7 +17,3 @@ profile::lvs::interface_tweaks:
     txqlen: 10000
   ens1f1:
     txqlen: 10000
-# LVS use the new anycast recdns, to avoid looping into their own LVS
-# services or hardcoding various per-datacenter values here
-profile::base::nameservers:
-  - '10.3.0.1' # anycast recdns

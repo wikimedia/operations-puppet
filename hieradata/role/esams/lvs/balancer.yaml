@@ -5,7 +5,3 @@ profile::lvs::tagged_subnets:
 profile::lvs::interface_tweaks:
   eno1:
     txqlen: 20000
-# LVS use the new anycast recdns, to avoid looping into their own LVS
-# services or hardcoding various per-datacenter values here
-profile::base::nameservers:
-  - '10.3.0.1' # anycast recdns
