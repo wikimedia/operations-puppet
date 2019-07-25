@@ -9,8 +9,8 @@
 class profile::bird::anycast_monitoring{
 
     monitoring::host { 'recdns.anycast.wmnet':
-        host_fqdn => 'recdns.anycast.wmnet',
-        critical  => true, # Page
+        ip_address => '10.3.0.1', # Use raw IP, otherwise we're using DNS to check DNS
+        critical   => true, # Page
     }
 
     monitoring::service { 'Recursive DNS anycast VIP':
