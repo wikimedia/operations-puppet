@@ -5,7 +5,7 @@ _G.ts = {
   server_response = { header = {} },
   server_request = { header = {} },
   client_response = { header = {} },
-  client_request = {},
+  client_request = { header = {} },
 }
 
 _G.TS_LUA_CACHE_LOOKUP_MISS = 0

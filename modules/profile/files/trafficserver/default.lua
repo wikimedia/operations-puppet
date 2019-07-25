@@ -103,6 +103,8 @@ function do_global_read_response()
     elseif response_status > 499 then
         -- Do not cache server errors under any circumstances
         do_not_cache()
+    elseif ts.client_request.header['Authorization'] then
+        do_not_cache()
     end
 
     return 0
