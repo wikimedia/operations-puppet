@@ -272,7 +272,7 @@ groups:
               andyrussg, niedzielski, maxsem, hoo, daniel, krinkle, tgr,
               smalyshev, ebernhardson, addshore, jminor, neilpquinn-wmf,
               dcausse, bd808, tjones, mobrovac, jdrewniak, ejegg, jdcc, ori,
-              atgomez, amire80, kartik, pcoombe, foks, jsamra,
+              atgomez, amire80, kartik, pcoombe, foks, jsamra, kemayo,
               jdlrobson, chelsyx, ovasileva, flemmerich, filippo, pmiazga, faidon,
               piccardi, fdans, eevans, anomie, demon, ladsgroup, musikanimal,
               kaldari, goransm, ema, dsaez, shiladsen, rho, mirrys, slaporte, jk,
@@ -3240,6 +3240,15 @@ users:
     email: mayakp.wiki@gmail.com
     expiry_date: 2020-01-26
     expiry_contact: kzimmerman@wikimedia.org
+  kemayo:
+    ensure: present
+    realname: David Lynch
+    email: dlynch@wikimedia.org
+    uid: 13171
+    gid: 500
+    name: kemayo
+    ssh_keys:
+      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQC/HRNjt8+fpXJHGZGZDISYKesd+hfyJGsC9lmISz25SH9n35bQcFkUbsUJC0hbWf3sKiSK7LbbTrbNoyFWYinNbJpdPiMvk8OaX/plZYKrGCrkrdQjeIouOTfO7ONpDWGUteNvsr5/KtWMlreG/QkIPmi0vQjlxTtgaM7StoKWjatR8+8oxpcG6AX2Se2aXYHGPDDAXAB2HQmSfmfmmxqaQJwe5Tn5t/oA8tLJ0w6xaFpRxgTV4WHfR/v5pml0tNOFtkjw9/B1KgNkk4hg0vhiQABS0aQMBIzicX0LPbRZ/Nd+wTtXzsKS0YHtmk+5pDngcckAlr2QW8Zc6825F8gqrlDGbYNlKYt5sPM0/als2IR8+VLAQXhM8nFWESxCr8Hrvf+EIFFhdne8cQLWNXp8SMCHA4FmdnNEWrlwlF69GOFkveFiinyb0sWkTChDgxaL1BobCwExpgPS8BKfGM0JSKmqVNzeCNsC0TU8RG6ppvkdlYqEHMLeVl2+BLfW+vIAQi9sjNTXSsKlmA7O6icZxa0PkRmn1b0EIgUDwh2JSPUx2uzY/Q9cyrd7birolvkI6CjMnb+7cR/LpWTkjK6L3NkfTDnNhi4Y+nAb4gRQdW5mlBhjlTCs6CXipH3Dyx21Aal0Ul6/MqI9D8fWAHgMKWyw+DAPbl91Q42RpuLNRw== dlynch@wikimedia.org
 ldap_only_users:
   abartov:
     ensure: present
@@ -3355,10 +3364,6 @@ ldap_only_users:
     ensure: present
     realname: Kai Nissen
     email: kai.nissen@wikimedia.de
-  kemayo:
-    ensure: present
-    realname: David Lynch
-    email: dlynch@wikimedia.org
   ldoan:
     ensure: present
     realname: Linnea Doan
