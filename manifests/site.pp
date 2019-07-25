@@ -2006,10 +2006,6 @@ node /^restbase-dev100[4-6]\.eqiad\.wmnet$/ {
     role(restbase::dev_cluster)
 }
 
-node 'rhenium.wikimedia.org' {
-    role(spare::system)
-}
-
 # Failoid service (Ganeti VM)
 node 'roentgenium.eqiad.wmnet' {
     role(failoid)

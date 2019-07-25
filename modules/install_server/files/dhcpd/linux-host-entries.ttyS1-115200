@@ -6080,12 +6080,6 @@ host restbase-dev1006 {
     fixed-address restbase-dev1006.eqiad.wmnet;
 }
 
-host rhenium {
-    hardware ethernet 78:2b:cb:2f:df:2f;
-    fixed-address rhenium.wikimedia.org;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
-}
-
 host rhodium {
     hardware ethernet 18:03:73:f1:56:d2;
     fixed-address rhodium.eqiad.wmnet;
