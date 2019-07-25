@@ -61,10 +61,10 @@ end
     <%- if @workers.any? { |worker| worker.has_key?('canary') } && @canary_hosts.any? -%>
       <%- @canary_hosts.each do |canary_host| -%>
         <%- get_addresses(canary_host).each do |ip| -%>
-    SetEnvIf Remote_Addr <%= ip %> CANARY=yes
+    RewriteCond expr "-R '<%= ip %>'"
         <%- end -%>
       <%- end -%>
-    ProxyPass / balancer://canarybackend/ env=CANARY
+    RewriteRule ^ balancer://canarybackend%{REQUEST_URI} [P,QSA]
     <Proxy balancer://canarybackend>
       <%- @workers.each do |workerhash| -%>
         <%- next if workerhash['offline'] || !workerhash['canary'] -%>

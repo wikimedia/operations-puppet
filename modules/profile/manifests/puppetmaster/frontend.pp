@@ -75,6 +75,7 @@ class profile::puppetmaster::frontend(
         allow_from          => $allow_from,
         extra_auth_rules    => $extra_auth_rules,
     }
+    class { 'apache::mod::rewrite': }
 
     # Main site to respond to
     ::puppetmaster::web_frontend { $web_hostname:

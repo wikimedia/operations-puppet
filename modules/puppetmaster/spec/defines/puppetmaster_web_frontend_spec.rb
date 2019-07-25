@@ -83,9 +83,9 @@ describe 'puppetmaster::web_frontend' do
               ensure: 'present',
               priority: '90'
             ).with_content(
-              %r{SetEnvIf\s+Remote_Addr\s+2606:2800:220:1:248:1893:25C8:1946\s+CANARY=yes
-              \s+SetEnvIf\s+Remote_Addr\s+93\.184\.216\.34\s+CANARY=yes
-              \s+ProxyPass\s+/\s+balancer://canarybackend/\s+env=CANARY
+              %r{RewriteCond\s+expr\s+"-R\s+'2606:2800:220:1:248:1893:25C8:1946'"
+              \s+RewriteCond\s+expr\s+"-R\s+'93\.184\.216\.34'"
+              \s+RewriteRule\s+\^\s+balancer://canarybackend%\{REQUEST_URI\}\s+\[P,QSA\]
               \s+<Proxy\s+balancer://canarybackend>
               \s+BalancerMember\s+https://canary_load20.example.com:8141\s+ping=1\sconnectiontimeout=1\s+retry=500\s+timeout=900\s+loadfactor=20
               \s+BalancerMember\s+https://canary_load10.example.com:8141\s+ping=1\sconnectiontimeout=1\s+retry=500\s+timeout=900\s+loadfactor=10
