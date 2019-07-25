@@ -8,13 +8,20 @@
 
 class profile::bird::anycast_monitoring{
 
-    monitoring::host { 'recdns.anycast.wmnet':
-        ip_address => '10.3.0.1', # Use raw IP, otherwise we're using DNS to check DNS
+    # Anycast recdns: Note use of the raw IP in the host title and ip_address -
+    # otherwise the checks end up using local DNS lookups on icinga itself to
+    # find the address of the DNS server being tested, which makes the process
+    # and the results confusing and/or wrong.
+    # For non-DNS anycast services we can probably use the real hostname and
+    # host_fqdn instead, so please don't copypasta this for the next entry!
+
+    monitoring::host { '10.3.0.1':
+        ip_address => '10.3.0.1',
         critical   => true, # Page
     }
 
     monitoring::service { 'Recursive DNS anycast VIP':
-        host          => 'recdns.anycast.wmnet',
+        host          => '10.3.0.1',
         description   => 'recursive DNS anycast VIP',
         check_command => 'check_dns!www.wikipedia.org',
         notes_url     => 'https://wikitech.wikimedia.org/wiki/Anycast_recursive_DNS#Troubleshooting',
