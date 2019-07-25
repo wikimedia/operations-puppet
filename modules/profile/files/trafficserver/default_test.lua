@@ -2,6 +2,7 @@ require("default")
 
 _G.ts = {
   http = {},
+  ctx = {},
   server_response = { header = {} },
   server_request = { header = {} },
   client_response = { header = {} },
@@ -17,9 +18,10 @@ _G.ts.server_response.get_status = function() return 200 end
 
 describe("Busted unit testing framework", function()
   describe("script for ATS Lua Plugin", function()
+    stub(ts, "debug")
+    stub(ts, "hook")
 
     it("test - do_global_read_response Set-Cookie", function()
-      stub(ts, "debug")
 
       -- Without Set-Cookie
       _G.ts.server_response.header['Cache-Control'] = 'public, max-age=10'
@@ -34,8 +36,6 @@ describe("Busted unit testing framework", function()
     end)
 
     it("test - do_global_read_response large Content-Length", function()
-      stub(ts, "debug")
-
       -- No Content-Length
       _G.ts.server_response.header = {}
       _G.ts.server_response.header['Cache-Control'] = 'public, max-age=10'
@@ -71,6 +71,7 @@ describe("Busted unit testing framework", function()
       _G.ts.server_response.get_status = function() return 503 end
       do_global_read_response()
       assert.is_nil(_G.ts.server_response.header['Cache-Control'])
+      assert.are.equals('public, max-age=10', _G.ts.ctx['Cache-Control'])
     end)
 
     it("test - do_global_read_response Vary-slotting for PHP7", function()
@@ -136,6 +137,13 @@ describe("Busted unit testing framework", function()
 
       assert.are.equals(0, do_global_send_response())
       assert.are.equals('pass-test-hostname hit', ts.client_response.header['X-Cache-Int'])
+    end)
+
+    it("test - restore_cc_data restore Cache-Control", function()
+      _G.ts.client_response.header = {}
+      _G.ts.ctx['Cache-Control'] = 'public, max-age=10'
+      restore_cc_data()
+      assert.are.equals('public, max-age=10', _G.ts.client_response.header['Cache-Control'])
     end)
 
     it("test - do_global_send_request", function()
