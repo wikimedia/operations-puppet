@@ -8,6 +8,7 @@ profile::kubernetes::master::admission_controllers:
   DefaultStorageClass: ''
   DefaultTolerationSeconds: ''
   ResourceQuota: ''
+  PodSecurityPolicy: ''
 profile::kubernetes::master::expose_puppet_certs: true
 profile::kubernetes::master::ssl_cert_path: "/etc/kubernetes/ssl/cert.pem"
 profile::kubernetes::master::ssl_key_path: "/etc/kubernetes/ssl/server.key"
