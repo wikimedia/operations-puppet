@@ -1,12 +1,10 @@
 profile::pybal::config_host: conf2003.codfw.wmnet
 profile::lvs::tagged_subnets:
   - public1-eqsin
-# ns override for all lvs for now, see T103921
-profile::base::nameservers:
-  - '103.102.166.8' # dns5001
-  - '103.102.166.9' # dns5002
-  - '208.80.153.254' # codfw lvs
-
 profile::lvs::interface_tweaks:
   enp5s0f0:
     txqlen: 10000
+# LVS use the new anycast recdns, to avoid looping into their own LVS
+# services or hardcoding various per-datacenter values here
+profile::base::nameservers:
+  - '10.3.0.1' # anycast recdns
