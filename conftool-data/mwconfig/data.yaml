@@ -1,6 +1,8 @@
 codfw:
+  - dbconfig
   - ReadOnly
 eqiad:
+  - dbconfig
   - ReadOnly
 common:
   - WMFMasterDatacenter
