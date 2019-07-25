@@ -2,6 +2,7 @@
 class profile::tlsproxy::instance(
     Boolean $websocket_support = hiera('cache::websocket_support', false),
     Boolean $lua_support = hiera('cache::lua_support', false),
+    Boolean $nginx_ssl_dyn_rec = hiera('cache::ssl_dyn_rec', false),
     Boolean $nginx_tune_for_media = hiera('cache::tune_for_media', false),
     String $nginx_client_max_body_size = hiera('tlsproxy::nginx_client_max_body_size', '100m'),
     Boolean $bootstrap_protection = hiera('profile::tlsproxy::instance::bootstrap_protection', false),

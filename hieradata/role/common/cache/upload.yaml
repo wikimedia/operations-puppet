@@ -8,6 +8,7 @@ prometheus::node_exporter::collectors_extra:
   - qdisc
   - meminfo_numa
 mtail::service_ensure: absent
+cache::ssl_dyn_rec: true
 cache::tune_for_media: true
 cache::req_handling:
   upload.wikimedia.org:

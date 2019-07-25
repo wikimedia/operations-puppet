@@ -80,6 +80,7 @@ http {
     # Disable RFC5077 tickets (may revisit later when client support is better)
     ssl_session_tickets off;
 
+<% if @nginx_ssl_dyn_rec -%>
     # dynamic ssl_buffer_size from Cloudflare's patch, with two
     # cases: general-case, and media-specific (faster ramp-in,
     # more idle time before dropping back).  Note the packet
@@ -98,6 +99,7 @@ http {
 <% else -%>
     ssl_dyn_rec_threshold 40; # cf patch default: 40
     ssl_dyn_rec_timeout 1s;   # cf patch default: 1s
+<% end -%>
 <% end -%>
 
     # nginx's $http2 is either 'h2' or '' (empty string) for http/1
