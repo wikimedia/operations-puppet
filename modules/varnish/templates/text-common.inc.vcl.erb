@@ -163,11 +163,6 @@ sub text_common_recv {
 		return (pass);
 	}
 
-	call evaluate_cookie;
-	call pass_authorization;
-}
-
-sub text_common_hash {
 	// The cookies below represent mobile preferences that can be set for anonymous users.
 	if (req.http.X-Subdomain) {
 		// Do not cache the beta variant of the mobile site. T228861
@@ -175,6 +170,9 @@ sub text_common_hash {
 			return (pass);
 		}
 	}
+
+	call evaluate_cookie;
+	call pass_authorization;
 }
 
 sub text_common_backend_response_early {
