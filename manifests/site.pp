@@ -1267,12 +1267,6 @@ node 'iron.wikimedia.org' {
     role(bastionhost::twofa)
 }
 
-# Analytics Kafka Brokers
-node /kafka10(12|13|14|20|22|23)\.eqiad\.wmnet/ {
-    role(spare::system)
-    interface::add_ip6_mapped { 'main': }
-}
-
 # Kafka Brokers - main-eqiad and main-codfw Kafka clusters.
 # For now, eventlogging-service-eventbus is also colocated
 # on these brokers.
