@@ -345,3 +345,8 @@ groups:
     expr: sum by(cluster) (rate(node_netstat_TcpExt_TCPFastOpenPassive[5m]))
   - record: cluster:node_netstat_TcpExt_TCPFastOpenPassiveFail:rate5m
     expr: sum by(cluster) (rate(node_netstat_TcpExt_TCPFastOpenPassiveFail[5m]))
+
+- name: puppet
+  rules:
+  - record: cluster:puppet_agent_failed:percent
+    expr: sum by (cluster) (puppet_agent_failed) / count by (cluster) (puppet_agent_failed)
