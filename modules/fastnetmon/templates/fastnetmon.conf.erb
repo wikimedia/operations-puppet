@@ -51,7 +51,7 @@ ban_for_flows = off
 
 # Limits for Dos/DDoS attacks
 threshold_pps = 500000
-threshold_mbps = 700
+threshold_mbps = 600
 
 # Per protocol attack thresholds
 # We don't implement per protocol flow limits, sorry :(
@@ -98,7 +98,8 @@ sflow = off
 enable_pf_ring_zc_mode = off
 
 # We use average values for traffic speed to certain IP and we calculate average over this time slice
-average_calculation_time = 5
+# See https://fastnetmon.com/docs/junos_integration/
+average_calculation_time = 20
 
 # We use average values for traffic speed for subnet and we calculate average over this time slice
 average_calculation_time_for_subnets = 20
