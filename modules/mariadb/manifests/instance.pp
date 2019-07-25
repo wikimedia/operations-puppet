@@ -35,10 +35,6 @@ define mariadb::instance(
     } else {
         $socket_instance = $socket
     }
-    $contact_group = $is_critical ? {
-        true  => 'sms,admins',
-        false => 'admins',
-    }
 
     file { $datadir_instance:
         ensure => directory,
@@ -62,9 +58,8 @@ define mariadb::instance(
     }
 
     mariadb::monitor_replication{ $title:
-        socket        => $socket_instance,
-        is_critical   => $is_critical,
-        contact_group => $contact_group,
+        socket      => $socket_instance,
+        is_critical => $is_critical,
     }
     mariadb::monitor_readonly{ $title:
         port      => $port,
