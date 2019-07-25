@@ -89,17 +89,6 @@ class profile::mediawiki::hhvm(
         malloc_arenas => $malloc_arenas,
     }
 
-
-    # furl is a cURL-like command-line tool for making FastCGI requests.
-    # See `furl --help` for documentation and usage.
-
-    file { '/usr/local/bin/furl':
-        source => 'puppet:///modules/mediawiki/furl',
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0555',
-    }
-
     $statsd_parts = split($statsd, ':')
     $statsd_host = $statsd_parts[0]
     $statsd_port = $statsd_parts[1]

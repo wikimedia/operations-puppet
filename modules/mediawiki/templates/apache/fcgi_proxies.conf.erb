@@ -1,7 +1,9 @@
 # Configure the proxies
+<%- if @install_hhvm -%>
 <Proxy "fcgi://127.0.0.1:9000">
        ProxySet retry=0
 </Proxy>
+<%- end -%>
 <Proxy "<%= @fcgi_proxy %>">
        ProxySet retry=0
 </Proxy>

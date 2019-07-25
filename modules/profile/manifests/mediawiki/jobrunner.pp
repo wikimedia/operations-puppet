@@ -22,7 +22,7 @@ class profile::mediawiki::jobrunner(
     Optional[Wmflib::UserIpPort] $fcgi_port = hiera('profile::php_fpm::fcgi_port', undef),
     String $fcgi_pool = hiera('profile::mediawiki::fcgi_pool', 'www'),
     Mediawiki::Vhost_feature_flags $vhost_feature_flags = hiera('profile::mediawiki::vhost_feature_flags'),
-    Boolean $expose_endpoint = hiera('profile::mediawiki::jobrunner::expose_endpoint', false)
+    Boolean $expose_endpoint = hiera('profile::mediawiki::jobrunner::expose_endpoint', false),
 ) {
     # Parameters we don't need to override
     $port = 9005
@@ -43,8 +43,6 @@ class profile::mediawiki::jobrunner(
         ensure  => present,
         content => template('mediawiki/apache/fcgi_proxies.conf.erb')
     }
-
-
 
     class { '::httpd':
         period  => 'daily',
@@ -143,15 +141,22 @@ class profile::mediawiki::jobrunner(
         }
     }
 
-    # HHVM admin interface
-    class { '::hhvm::admin': }
-
-
-    ::monitoring::service { 'jobrunner_http_hhvm':
-        description   => 'HHVM jobrunner',
-        check_command => 'check_http_jobrunner',
-        retries       => 2,
-        notes_url     => 'https://wikitech.wikimedia.org/wiki/Jobrunner',
+    unless $php72_only {
+        # HHVM admin interface
+        class { '::hhvm::admin': }
+        ::monitoring::service { 'jobrunner_http_hhvm':
+            description   => 'HHVM jobrunner',
+            check_command => 'check_http_jobrunner',
+            retries       => 2,
+            notes_url     => 'https://wikitech.wikimedia.org/wiki/Jobrunner',
+        }
+    } else {
+        ::monitoring::service { 'jobrunner_http':
+            description   => 'PHP7 jobrunner',
+            check_command => 'check_http_jobrunner',
+            retries       => 2,
+            notes_url     => 'https://wikitech.wikimedia.org/wiki/Jobrunner',
+        }
     }
 
     # TODO: restrict this to monitoring and localhost only.

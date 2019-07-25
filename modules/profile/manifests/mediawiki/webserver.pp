@@ -3,10 +3,18 @@ class profile::mediawiki::webserver(
     Boolean $has_tls = hiera('profile::mediawiki::webserver::has_tls'),
     Optional[Wmflib::UserIpPort] $fcgi_port = hiera('profile::php_fpm::fcgi_port', undef),
     String $fcgi_pool = hiera('profile::mediawiki::fcgi_pool', 'www'),
-    Mediawiki::Vhost_feature_flags $vhost_feature_flags = hiera('profile::mediawiki::vhost_feature_flags'),
+    Mediawiki::Vhost_feature_flags $base_vhost_feature_flags = hiera('profile::mediawiki::vhost_feature_flags'),
     String $ocsp_proxy = hiera('http_proxy', ''),
     Array[String] $prometheus_nodes = lookup('prometheus_nodes'),
+    Boolean $install_hhvm = lookup('profile::mediawiki::install_hhvm', {'default_value' => true}),
 ) {
+    # Inject the php72_only feature flag if we're not installing HHVM
+    if !$install_hhvm {
+        $vhost_feature_flags = merge($base_vhost_feature_flags, {'php72_only' => true})
+    } else {
+        $vhost_feature_flags = $base_vhost_feature_flags
+    }
+    $php72_only = pick($vhost_feature_flags['php72_only'], false)
     include ::lvs::configuration
     include ::profile::mediawiki::httpd
     $fcgi_proxy = mediawiki::fcgi_endpoint($fcgi_port, $fcgi_pool)
@@ -29,8 +37,9 @@ class profile::mediawiki::webserver(
     # Basic web sites
     class { '::mediawiki::web::sites': }
 
-
-    class { '::hhvm::admin': }
+    if $install_hhvm {
+        class { '::hhvm::admin': }
+    }
 
 
     if $::realm == 'labs' {
@@ -128,18 +137,20 @@ class profile::mediawiki::webserver(
         notes_url      => 'https://wikitech.wikimedia.org/wiki/Application_servers',
     }
 
-    monitoring::service { 'appserver_http_hhvm':
-        description    => 'HHVM rendering',
-        check_command  => 'check_http_wikipedia_main',
-        retries        => 2,
-        retry_interval => 2,
-        notes_url      => 'https://wikitech.wikimedia.org/wiki/Application_servers',
-    }
+    if $install_hhvm {
+        monitoring::service { 'appserver_http_hhvm':
+            description    => 'HHVM rendering',
+            check_command  => 'check_http_wikipedia_main',
+            retries        => 2,
+            retry_interval => 2,
+            notes_url      => 'https://wikitech.wikimedia.org/wiki/Application_servers',
+        }
 
-    nrpe::monitor_service { 'hhvm':
-        description  => 'HHVM processes',
-        nrpe_command => '/usr/lib/nagios/plugins/check_procs -c 1: -C hhvm',
-        notes_url    => 'https://wikitech.wikimedia.org/wiki/Application_servers',
+        nrpe::monitor_service { 'hhvm':
+            description  => 'HHVM processes',
+            nrpe_command => '/usr/lib/nagios/plugins/check_procs -c 1: -C hhvm',
+            notes_url    => 'https://wikitech.wikimedia.org/wiki/Application_servers',
+        }
     }
     if $has_tls {
         # TLSproxy instance to accept traffic on port 443

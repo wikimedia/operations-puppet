@@ -2,6 +2,7 @@ class profile::mediawiki::common(
     $logstash_host = hiera('logstash_host'),
     $logstash_syslog_port = hiera('logstash_syslog_port'),
     $log_aggregator = hiera('udp2log_aggregator'),
+    Boolean $install_hhvm = lookup('profile::mediawiki::install_hhvm', {'default_value' => true})
 ){
 
     # GeoIP is needed for MW
@@ -20,8 +21,10 @@ class profile::mediawiki::common(
     # Install scap
     include ::profile::mediawiki::scap_client
 
-    # mwrepl
-    class { '::mediawiki::mwrepl': }
+    # mwrepl is only supported under hhvm at the moment
+    if $install_hhvm {
+        class { '::mediawiki::mwrepl': }
+    }
 
     class { '::mediawiki::syslog':
         log_aggregator => $log_aggregator,
@@ -30,8 +33,21 @@ class profile::mediawiki::common(
     include ::profile::rsyslog::udp_localhost_compat
 
     # These should properly be included in the role. Bear with me for now.
-    include ::profile::mediawiki::hhvm
+    if $install_hhvm {
+        include ::profile::mediawiki::hhvm
+    }
     include ::profile::mediawiki::php
+
+    # furl is a cURL-like command-line tool for making FastCGI requests.
+    # See `furl --help` for documentation and usage.
+
+    file { '/usr/local/bin/furl':
+        source => 'puppet:///modules/mediawiki/furl',
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0555',
+    }
+
 
     file { '/usr/local/bin/mediawiki-firejail-convert':
         source => 'puppet:///modules/mediawiki/mediawiki-firejail-convert.py',

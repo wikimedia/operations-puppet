@@ -40,7 +40,7 @@ describe 'profile::mediawiki::webserver' do
         {
           :has_lvs => false,
           :has_tls => false,
-          :vhost_feature_flags => {},
+          :base_vhost_feature_flags => {},
         }
       }
       context "with default params" do
@@ -57,6 +57,9 @@ describe 'profile::mediawiki::webserver' do
         it { is_expected.to contain_mediawiki__web__vhost('wikipedia.org')
                               .with_feature_flags({})
         }
+      end
+      context "without hhvm" do
+        it { is_expected.to compile.with_all_deps }
       end
       context "with tls" do
         let(:params) {
