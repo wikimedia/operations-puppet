@@ -20,6 +20,7 @@ class profile::puppetmaster::frontend(
       '*.eqsin.wmnet']),
     $extra_auth_rules = '',
     $mcrouter_ca_secret = hiera('profile::puppetmaster::frontend::mcrouter_ca_secret'),
+    Array[Stdlib::Fqdn] $canary_hosts = lookup('profile::puppetmaster::frontend::canary_hosts')
 ) {
     backup::set { 'var-lib-puppet-ssl': }
     backup::set { 'var-lib-puppet-volatile': }
@@ -82,6 +83,7 @@ class profile::puppetmaster::frontend(
         bind_address            => $::puppetmaster::bind_address,
         priority                => 40,
         ssl_ca_revocation_check => $ssl_ca_revocation_check,
+        canary_hosts            => $canary_hosts,
     }
 
     # On all the puppetmasters, we should respond
@@ -92,6 +94,7 @@ class profile::puppetmaster::frontend(
         bind_address            => $::puppetmaster::bind_address,
         priority                => 50,
         ssl_ca_revocation_check => $ssl_ca_revocation_check,
+        canary_hosts            => $canary_hosts,
     }
 
     # We want to be able to test new things on our infrastructure, having a separated
