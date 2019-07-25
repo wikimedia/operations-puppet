@@ -156,7 +156,7 @@ groups:
               jdittrich, chelsyx, ovasileva, debt,
               fdans, mlitn, niharika29, goransm, pmiazga, dsaez, shiladsen, cicalese,
               mirrys, sharvaniharan, mmiller, amire80, rush, tieu, kharlan, gbirke,
-              isaacj, jdl, joewalsh, phuedx, bd808, iflorez, mayakpwiki]
+              isaacj, jdl, joewalsh, phuedx, bd808, iflorez, mayakpwiki, conniecc1]
   ldap-admins:
     gid: 715
     description: ldap admins
@@ -279,7 +279,7 @@ groups:
               ayounsi, mepps, mmiller, seddon, gilles, tstarling, rush, tieu, karen,
               cicalese, drossi, fsalutari, nathante, gbirke, isaacj, sbassett, jdl,
               niharika29, ryanmax, afandian2, jgleeson, toddleroux, srishakatux, dsharpe,
-              esanders, sukhe, jfishback, iflorez, mayakpwiki]
+              esanders, sukhe, jfishback, iflorez, mayakpwiki, conniecc1]
     system_members: [analytics-search, analytics]
   analytics-admins:
     gid: 732
@@ -605,7 +605,7 @@ groups:
   analytics-wmde-users:
     description: Group of WMDE analytics users
     gid: 784
-    members: [addshore, goransm, ladsgroup, lucaswerkmeister-wmde]
+    members: [addshore, goransm, ladsgroup, lucaswerkmeister-wmde, conniecc1]
     privileges: ['ALL = (analytics-wmde) NOPASSWD: ALL']
   eventbus-admins:
     gid: 785
@@ -1001,6 +1001,14 @@ users:
         catrope@catrope-Lenovo-IdeaPad-U300s]
     uid: 546
     email: rkattouw@wikimedia.org
+  conniecc1:
+    ensure: present
+    gid: 500
+    name: conniecc1
+    realname: Connie Chen
+    ssh_keys: [ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKGn8ICH7EqpRV1ADQ9xBZki5AzMlMAbvpGv/3becvam cchen@Connies-MacBook-Pro.local]
+    uid: 21734
+    email: cchen@wikimedia.org
   cmcmahon:
     ensure: absent
     gid: 500
