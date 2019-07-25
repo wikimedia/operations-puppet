@@ -5,9 +5,8 @@ class role::mediawiki::common {
     include ::profile::mediawiki::nutcracker
 
     include ::profile::mediawiki::mcrouter_wancache
-    if os_version('debian >= stretch') {
-        include ::profile::prometheus::mcrouter_exporter
-    }
+    include ::profile::prometheus::mcrouter_exporter
+
     # proxy for connection to other servers
     include ::profile::services_proxy
 }
