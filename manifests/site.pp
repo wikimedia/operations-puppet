@@ -602,11 +602,6 @@ node 'db1064.eqiad.wmnet' {
     role(spare::system)
 }
 
-# To be decommissioned # T226689
-node 'db1068.eqiad.wmnet' {
-    role(spare::system)
-}
-
 # To be decommissioned # T227166
 node 'db1069.eqiad.wmnet' {
     role(spare::system)
