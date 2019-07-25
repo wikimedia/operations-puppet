@@ -1,15 +1,25 @@
 function remap_hook()
+    local orig_uri = ts.client_request.get_uri()
+
     -- RestBASE mangling
-    local orig_path = ts.client_request.get_uri()
-    if string.match(orig_path, "^/api/rest_v1/") then
+    if string.match(orig_uri, "^/api/rest_v1/") then
         local host = ts.client_request.header['Host']
-        new_path = "/" .. host .. string.gsub(orig_path, "^/api/rest_v1/", "/v1/")
+        new_path = "/" .. host .. string.gsub(orig_uri, "^/api/rest_v1/", "/v1/")
         ts.client_request.set_uri(new_path)
+        return
     end
 
     -- MediaWiki mangling
     if ts.client_request.header['X-Subdomain'] then
         ts.client_request.header['Host'] = ts.client_request.header['x-dt-host']
+        return
+    end
+
+    -- w.wiki URL shortener rewrite to meta T133485
+    if ts.client_request.header['Host'] == "w.wiki" and orig_uri ~= "/" then
+        ts.client_request.header['Host'] = "meta.wikimedia.org"
+        ts.client_request.set_uri("/wiki/Special:UrlRedirector" .. orig_uri)
+        return
     end
 end
 

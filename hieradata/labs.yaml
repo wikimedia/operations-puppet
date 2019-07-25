@@ -152,6 +152,8 @@ profile::trafficserver::backend::mapping_rules:
         - '@pparam="3A 2F 40 21 24 28 29 2A 2C 3B"'
         # encode    [  ]  &  '  +  =
         - '@pparam="5B 5D 26 27 2B 3D"'
+        - '@plugin=/usr/lib/trafficserver/modules/tslua.so'
+        - '@pparam=/etc/trafficserver/lua/rb-mw-mangling.lua'
 profile::trafficserver::backend::default_lua_script: 'default'
 varnish::dynamic_backend_caches: false
 # Worst path rtt through our network, used in prod to determine timeouts. Not
