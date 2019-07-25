@@ -83,7 +83,7 @@ define monitoring::check_prometheus(
     Stdlib::HTTPUrl $prometheus_url,
     Numeric $warning,
     Numeric $critical,
-    Array[Pattern[/^https:\/\/grafana\.wikimedia\.org/], 1] $dashboard_links,
+    Array[Pattern[/^https:\/\/(grafana|logstash)\.wikimedia\.org/], 1] $dashboard_links,
     Enum['gt', 'ge', 'lt', 'le', 'eq', 'ne'] $method          = 'ge',
     Boolean $nan_ok          = false,
     Integer $check_interval  = 1,

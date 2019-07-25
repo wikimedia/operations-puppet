@@ -117,7 +117,7 @@ describe 'monitoring::check_prometheus' do
           it do
             is_expected.to raise_error(
               Puppet::Error,
-              %r{Pattern\[/\^https:\\/\\/grafana\\\.wikimedia\\\.org/\]}
+              %r{Pattern\[/\^https:\\/\\/\(grafana\|logstash\)\\\.wikimedia\\\.org/\]}
             )
           end
         end
@@ -135,7 +135,7 @@ describe 'monitoring::check_prometheus' do
           it do
             is_expected.to raise_error(
               Puppet::Error,
-              %r{Pattern\[/\^https:\\/\\/grafana\\\.wikimedia\\\.org/\]}
+              %r{Pattern\[/\^https:\\/\\/\(grafana\|logstash\)\\\.wikimedia\\\.org/\]}
             )
           end
         end
