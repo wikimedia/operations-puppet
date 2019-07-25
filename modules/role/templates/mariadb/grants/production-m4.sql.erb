@@ -1,0 +1,31 @@
+-- haproxy@dbproxy1004
+
+GRANT USAGE
+    ON *.* TO 'haproxy'@'10.64.16.148';
+
+-- haproxy@dbproxy1009
+
+GRANT USAGE
+    ON *.* TO 'haproxy'@'10.64.32.158';
+
+-- eventlog
+
+GRANT USAGE
+    ON *.* TO 'eventlog'@'10.64.16.148'
+    IDENTIFIED BY PASSWORD '*5B5ACB61AB9680B04DC69AE542FA8428137B89C7';
+
+GRANT ALTER, CREATE, CREATE TEMPORARY TABLES, DELETE, DROP, INDEX, INSERT, LOCK TABLES, SELECT, UPDATE
+    ON `log`.* TO 'eventlog'@'10.64.16.148';
+
+GRANT USAGE
+    ON *.* TO 'eventlog'@'10.64.32.158'
+    IDENTIFIED BY PASSWORD '*5B5ACB61AB9680B04DC69AE542FA8428137B89C7';
+
+GRANT ALTER, CREATE, CREATE TEMPORARY TABLES, DELETE, DROP, INDEX, INSERT, LOCK TABLES, SELECT, UPDATE
+    ON `log`.* TO 'eventlog'@'10.64.32.158';
+
+
+-- eventlog script responsible to sanitize/delete sensitive data over time
+
+GRANT ALTER, SELECT, UPDATE, DELETE
+    ON `log`.* TO 'eventlogcleaner'@'localhost' IDENTIFIED VIA unix_socket;
