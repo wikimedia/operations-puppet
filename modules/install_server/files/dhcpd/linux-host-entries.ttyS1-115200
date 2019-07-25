@@ -5938,60 +5938,6 @@ host relforge1002 {
     fixed-address relforge1002.eqiad.wmnet;
 }
 
-host restbase1007 {
-    hardware ethernet 44:A8:42:2D:FE:83;
-    fixed-address restbase1007.eqiad.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
-}
-
-host restbase1008 {
-    hardware ethernet 44:A8:42:2D:F8:AE;
-    fixed-address restbase1008.eqiad.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
-}
-
-host restbase1009 {
-    hardware ethernet 44:A8:42:2E:00:33;
-    fixed-address restbase1009.eqiad.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
-}
-
-host restbase1010 {
-    hardware ethernet 14:02:EC:3F:4D:74;
-    fixed-address restbase1010.eqiad.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
-}
-
-host restbase1011 {
-    hardware ethernet 14:02:EC:41:23:14;
-    fixed-address restbase1011.eqiad.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
-}
-
-host restbase1012 {
-    hardware ethernet 14:02:EC:40:83:74;
-    fixed-address restbase1012.eqiad.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
-}
-
-host restbase1013 {
-    hardware ethernet 14:02:EC:40:83:88;
-    fixed-address restbase1013.eqiad.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
-}
-
-host restbase1014 {
-    hardware ethernet 14:02:EC:3F:4D:94;
-    fixed-address restbase1014.eqiad.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
-}
-
-host restbase1015 {
-    hardware ethernet 14:02:EC:3F:2D:E8;
-    fixed-address restbase1015.eqiad.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
-}
-
 host restbase1016 {
     hardware ethernet 18:66:DA:7F:25:5B;
     fixed-address restbase1016.eqiad.wmnet;
