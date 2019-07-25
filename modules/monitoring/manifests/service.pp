@@ -49,11 +49,20 @@ define monitoring::service(
     case $critical {
         true: {
             case $do_paging {
-                true:    { $real_contact_groups = "${contact_group},sms,admins" }
-                default: { $real_contact_groups = "${contact_group},admins" }
+                true:    {
+                  $real_contact_groups = "${contact_group},sms,admins"
+                  $real_description = "${description_safe} #page"
+                }
+                default: {
+                  $real_contact_groups = "${contact_group},admins"
+                  $real_description = $description_safe
+                }
             }
         }
-        default: { $real_contact_groups = $contact_group }
+        default: {
+          $real_contact_groups = $contact_group
+          $real_description = $description_safe
+        }
     }
 
     $is_active = $passive ? {
@@ -90,7 +99,7 @@ define monitoring::service(
             ensure                 => $ensure,
             host_name              => $host,
             servicegroups          => $servicegroups,
-            service_description    => $description_safe,
+            service_description    => $real_description,
             check_command          => $check_command,
             max_check_attempts     => $retries,
             check_interval         => $check_interval,
