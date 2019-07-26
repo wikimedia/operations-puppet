@@ -488,7 +488,7 @@ groups:
   datacenter-ops:
     gid: 765
     description: Group of datacenter ops engineers
-    members: [pt1979, wpao]
+    members: [pt1979, wpao, jclark]
     privileges: ['ALL = NOPASSWD: /usr/local/sbin/install-console *',
                  'ALL = NOPASSWD: /usr/sbin/megacli *',
                  'ALL = NOPASSWD: /usr/sbin/hpssacli *',
@@ -3253,6 +3253,15 @@ users:
     name: kemayo
     ssh_keys:
       - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQC/HRNjt8+fpXJHGZGZDISYKesd+hfyJGsC9lmISz25SH9n35bQcFkUbsUJC0hbWf3sKiSK7LbbTrbNoyFWYinNbJpdPiMvk8OaX/plZYKrGCrkrdQjeIouOTfO7ONpDWGUteNvsr5/KtWMlreG/QkIPmi0vQjlxTtgaM7StoKWjatR8+8oxpcG6AX2Se2aXYHGPDDAXAB2HQmSfmfmmxqaQJwe5Tn5t/oA8tLJ0w6xaFpRxgTV4WHfR/v5pml0tNOFtkjw9/B1KgNkk4hg0vhiQABS0aQMBIzicX0LPbRZ/Nd+wTtXzsKS0YHtmk+5pDngcckAlr2QW8Zc6825F8gqrlDGbYNlKYt5sPM0/als2IR8+VLAQXhM8nFWESxCr8Hrvf+EIFFhdne8cQLWNXp8SMCHA4FmdnNEWrlwlF69GOFkveFiinyb0sWkTChDgxaL1BobCwExpgPS8BKfGM0JSKmqVNzeCNsC0TU8RG6ppvkdlYqEHMLeVl2+BLfW+vIAQi9sjNTXSsKlmA7O6icZxa0PkRmn1b0EIgUDwh2JSPUx2uzY/Q9cyrd7birolvkI6CjMnb+7cR/LpWTkjK6L3NkfTDnNhi4Y+nAb4gRQdW5mlBhjlTCs6CXipH3Dyx21Aal0Ul6/MqI9D8fWAHgMKWyw+DAPbl91Q42RpuLNRw== dlynch@wikimedia.org
+  jclark:
+    ensure: present
+    realname: John Clark
+    email: jclark-ctr@wikimedia.org
+    uid: 21780
+    gid: 500
+    name: jclark
+    ssh_keys:
+      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC+1duGbT11VE4IV3KKFzdmHhSl2fAA0CkL93edalw2yqroMxzHjah7GwKB5csjrrbqhn+po0478jsU8OG8hgJBRKSq2cG04ryQk8MVSIy6gnqQ75/5gC4U6wJ50y8MKeMyZCHzMsjs+4xdh9WvJH4cfliPRWYp1JBJpE6E22KE+HK07HYX0TkvyfMf2cLaA0pz1Ovbll8gWb9L9vyKDRmv8+NkaJcLTuKoqSFpxz/UCjVGyBJckDyJbX9FEUyjjMclg+c6C8s2aNgfe3gMKmkKxSEfEqbXuNWfJEVAqJ667MhtsGV92pp6rSWdtAgm6IqGE19hUNFqAy3XiX8vEQY3 jclark@LoanerWMF1953
 ldap_only_users:
   abartov:
     ensure: present
@@ -3693,7 +3702,3 @@ ldap_only_users:
     ensure: present
     realname: Deb Zierten
     email: dzierten@wikimedia.org
-  jclark:
-    ensure: present
-    realname: John Clark
-    email: jclark-ctr@wikimedia.org
