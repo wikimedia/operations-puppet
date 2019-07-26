@@ -301,18 +301,6 @@ groups:
     expr: sum by(cluster, segment) (hhvm_process_memory_bytes)
   - record: cluster_segment:hhvm_process_memory_bytes:avg
     expr: avg by(cluster, segment) (hhvm_process_memory_bytes)
-  - record: instance_row:infeedPower:sum
-    expr: sum by(instance, row) (infeedPower)
-  - record: instance_row:infeedVoltage:max
-    expr: max by(instance, row) (infeedVoltage)
-  - record: instance_row:infeedVoltage:min
-    expr: min by(instance, row) (infeedVoltage)
-  - record: instance_row:infeedCapacityUsed:avg
-    expr: avg by(instance, row) (infeedLoadValue / infeedCapacity)
-  - record: instance_row:infeedLoadValue:max
-    expr: max by(instance, row) (infeedLoadValue)
-  - record: instance_row:infeedLoadValue:min
-    expr: min by(instance, row) (infeedLoadValue)
   - record: instance:node_ipvs_backend_connections_active:rate5m
     expr: sum by(instance) (rate(node_ipvs_backend_connections_active[5m]))
   - record: local_port_local_address_instance:node_ipvs_backend_connections_active:rate5m
@@ -356,3 +344,18 @@ groups:
     expr: sum by (cluster) (puppet_agent_failed)
   - record: cluster:puppet_agent_failed:count
     expr: count by (cluster) (puppet_agent_failed)
+
+- name: pdu
+  rules:
+  - record: instance_row:pdu_infeedPower:sum
+    expr: sum by(instance, row) (pdu_infeedPower)
+  - record: instance_row:pdu_infeedVoltage:max
+    expr: max by(instance, row) (pdu_infeedVoltage)
+  - record: instance_row:pdu_infeedVoltage:min
+    expr: min by(instance, row) (pdu_infeedVoltage)
+  - record: instance_row:pdu_infeedCapacityUsed:avg
+    expr: avg by(instance, row) (pdu_infeedLoadValue / pdu_infeedCapacity)
+  - record: instance_row:pdu_infeedLoadValue:max
+    expr: max by(instance, row) (pdu_infeedLoadValue)
+  - record: instance_row:pdu_infeedLoadValue:min
+    expr: min by(instance, row) (pdu_infeedLoadValue)

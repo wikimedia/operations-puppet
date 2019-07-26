@@ -570,6 +570,16 @@ class profile::prometheus::ops (
             'replacement'  => 'netmon1002.wikimedia.org:9116',
           },
         ],
+        # Prefix all metrics with pdu_ (except snmp_ from snmp_exporter itself)
+        # Saves having to tweak the yaml files from snmp-exporter generator
+        # https://github.com/prometheus/snmp_exporter/tree/master/generator
+        'metric_relabel_configs' => [
+          { 'source_labels' => ['__name__'],
+            'regex'         => '^[^s][^n][^m][^p]_',
+            'target_label'  => '__name__',
+            'replacement'   => 'pdu_$1',
+          },
+        ],
       },
     ]
 
