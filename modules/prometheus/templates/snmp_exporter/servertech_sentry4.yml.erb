@@ -1,0 +1,360 @@
+<%= @exporter_module %>:
+<% if @community -%>
+  auth:
+    community: <%= @community %>
+<% end -%>
+  walk:
+  - 1.3.6.1.2.1.1.3
+  - 1.3.6.1.4.1.1718.4.1.3
+  metrics:
+  - name: sysUpTime
+    oid: 1.3.6.1.2.1.1.3
+    type: gauge
+  - name: st4InputCordActivePowerHysteresis
+    oid: 1.3.6.1.4.1.1718.4.1.3.1.1
+    type: gauge
+  - name: st4InputCordApparentPowerHysteresis
+    oid: 1.3.6.1.4.1.1718.4.1.3.1.2
+    type: gauge
+  - name: st4InputCordPowerFactorHysteresis
+    oid: 1.3.6.1.4.1.1718.4.1.3.1.3
+    type: gauge
+  - name: st4InputCordOutOfBalanceHysteresis
+    oid: 1.3.6.1.4.1.1718.4.1.3.1.4
+    type: gauge
+  - name: st4InputCordIndex
+    oid: 1.3.6.1.4.1.1718.4.1.3.2.1.1
+    type: gauge
+    indexes:
+    - labelname: st4UnitIndex
+      type: Integer
+    - labelname: st4InputCordIndex
+      type: Integer
+  - name: st4InputCordID
+    oid: 1.3.6.1.4.1.1718.4.1.3.2.1.2
+    type: string
+    indexes:
+    - labelname: st4UnitIndex
+      type: Integer
+    - labelname: st4InputCordIndex
+      type: Integer
+  - name: st4InputCordName
+    oid: 1.3.6.1.4.1.1718.4.1.3.2.1.3
+    type: string
+    indexes:
+    - labelname: st4UnitIndex
+      type: Integer
+    - labelname: st4InputCordIndex
+      type: Integer
+  - name: st4InputCordInletType
+    oid: 1.3.6.1.4.1.1718.4.1.3.2.1.6
+    type: string
+    indexes:
+    - labelname: st4UnitIndex
+      type: Integer
+    - labelname: st4InputCordIndex
+      type: Integer
+  - name: st4InputCordNominalVoltage
+    oid: 1.3.6.1.4.1.1718.4.1.3.2.1.7
+    type: gauge
+    indexes:
+    - labelname: st4UnitIndex
+      type: Integer
+    - labelname: st4InputCordIndex
+      type: Integer
+  - name: st4InputCordNominalVoltageMin
+    oid: 1.3.6.1.4.1.1718.4.1.3.2.1.8
+    type: gauge
+    indexes:
+    - labelname: st4UnitIndex
+      type: Integer
+    - labelname: st4InputCordIndex
+      type: Integer
+  - name: st4InputCordNominalVoltageMax
+    oid: 1.3.6.1.4.1.1718.4.1.3.2.1.9
+    type: gauge
+    indexes:
+    - labelname: st4UnitIndex
+      type: Integer
+    - labelname: st4InputCordIndex
+      type: Integer
+  - name: st4InputCordCurrentCapacity
+    oid: 1.3.6.1.4.1.1718.4.1.3.2.1.10
+    type: gauge
+    indexes:
+    - labelname: st4UnitIndex
+      type: Integer
+    - labelname: st4InputCordIndex
+      type: Integer
+  - name: st4InputCordCurrentCapacityMax
+    oid: 1.3.6.1.4.1.1718.4.1.3.2.1.11
+    type: gauge
+    indexes:
+    - labelname: st4UnitIndex
+      type: Integer
+    - labelname: st4InputCordIndex
+      type: Integer
+  - name: st4InputCordPowerCapacity
+    oid: 1.3.6.1.4.1.1718.4.1.3.2.1.12
+    type: gauge
+    indexes:
+    - labelname: st4UnitIndex
+      type: Integer
+    - labelname: st4InputCordIndex
+      type: Integer
+  - name: st4InputCordNominalPowerFactor
+    oid: 1.3.6.1.4.1.1718.4.1.3.2.1.13
+    type: gauge
+    indexes:
+    - labelname: st4UnitIndex
+      type: Integer
+    - labelname: st4InputCordIndex
+      type: Integer
+  - name: st4InputCordLineCount
+    oid: 1.3.6.1.4.1.1718.4.1.3.2.1.20
+    type: gauge
+    indexes:
+    - labelname: st4UnitIndex
+      type: Integer
+    - labelname: st4InputCordIndex
+      type: Integer
+  - name: st4InputCordPhaseCount
+    oid: 1.3.6.1.4.1.1718.4.1.3.2.1.21
+    type: gauge
+    indexes:
+    - labelname: st4UnitIndex
+      type: Integer
+    - labelname: st4InputCordIndex
+      type: Integer
+  - name: st4InputCordOcpCount
+    oid: 1.3.6.1.4.1.1718.4.1.3.2.1.22
+    type: gauge
+    indexes:
+    - labelname: st4UnitIndex
+      type: Integer
+    - labelname: st4InputCordIndex
+      type: Integer
+  - name: st4InputCordBranchCount
+    oid: 1.3.6.1.4.1.1718.4.1.3.2.1.23
+    type: gauge
+    indexes:
+    - labelname: st4UnitIndex
+      type: Integer
+    - labelname: st4InputCordIndex
+      type: Integer
+  - name: st4InputCordOutletCount
+    oid: 1.3.6.1.4.1.1718.4.1.3.2.1.24
+    type: gauge
+    indexes:
+    - labelname: st4UnitIndex
+      type: Integer
+    - labelname: st4InputCordIndex
+      type: Integer
+  - name: st4InputCordState
+    oid: 1.3.6.1.4.1.1718.4.1.3.3.1.1
+    type: gauge
+    indexes:
+    - labelname: st4UnitIndex
+      type: Integer
+    - labelname: st4InputCordIndex
+      type: Integer
+  - name: st4InputCordStatus
+    oid: 1.3.6.1.4.1.1718.4.1.3.3.1.2
+    type: gauge
+    indexes:
+    - labelname: st4UnitIndex
+      type: Integer
+    - labelname: st4InputCordIndex
+      type: Integer
+  - name: st4InputCordActivePower
+    oid: 1.3.6.1.4.1.1718.4.1.3.3.1.3
+    type: gauge
+    indexes:
+    - labelname: st4UnitIndex
+      type: Integer
+    - labelname: st4InputCordIndex
+      type: Integer
+  - name: st4InputCordActivePowerStatus
+    oid: 1.3.6.1.4.1.1718.4.1.3.3.1.4
+    type: gauge
+    indexes:
+    - labelname: st4UnitIndex
+      type: Integer
+    - labelname: st4InputCordIndex
+      type: Integer
+  - name: st4InputCordApparentPower
+    oid: 1.3.6.1.4.1.1718.4.1.3.3.1.5
+    type: gauge
+    indexes:
+    - labelname: st4UnitIndex
+      type: Integer
+    - labelname: st4InputCordIndex
+      type: Integer
+  - name: st4InputCordApparentPowerStatus
+    oid: 1.3.6.1.4.1.1718.4.1.3.3.1.6
+    type: gauge
+    indexes:
+    - labelname: st4UnitIndex
+      type: Integer
+    - labelname: st4InputCordIndex
+      type: Integer
+  - name: st4InputCordPowerUtilized
+    oid: 1.3.6.1.4.1.1718.4.1.3.3.1.7
+    type: gauge
+    indexes:
+    - labelname: st4UnitIndex
+      type: Integer
+    - labelname: st4InputCordIndex
+      type: Integer
+  - name: st4InputCordPowerFactor
+    oid: 1.3.6.1.4.1.1718.4.1.3.3.1.8
+    type: gauge
+    indexes:
+    - labelname: st4UnitIndex
+      type: Integer
+    - labelname: st4InputCordIndex
+      type: Integer
+  - name: st4InputCordPowerFactorStatus
+    oid: 1.3.6.1.4.1.1718.4.1.3.3.1.9
+    type: gauge
+    indexes:
+    - labelname: st4UnitIndex
+      type: Integer
+    - labelname: st4InputCordIndex
+      type: Integer
+  - name: st4InputCordEnergy
+    oid: 1.3.6.1.4.1.1718.4.1.3.3.1.10
+    type: gauge
+    indexes:
+    - labelname: st4UnitIndex
+      type: Integer
+    - labelname: st4InputCordIndex
+      type: Integer
+  - name: st4InputCordFrequency
+    oid: 1.3.6.1.4.1.1718.4.1.3.3.1.11
+    type: gauge
+    indexes:
+    - labelname: st4UnitIndex
+      type: Integer
+    - labelname: st4InputCordIndex
+      type: Integer
+  - name: st4InputCordOutOfBalance
+    oid: 1.3.6.1.4.1.1718.4.1.3.3.1.12
+    type: gauge
+    indexes:
+    - labelname: st4UnitIndex
+      type: Integer
+    - labelname: st4InputCordIndex
+      type: Integer
+  - name: st4InputCordOutOfBalanceStatus
+    oid: 1.3.6.1.4.1.1718.4.1.3.3.1.13
+    type: gauge
+    indexes:
+    - labelname: st4UnitIndex
+      type: Integer
+    - labelname: st4InputCordIndex
+      type: Integer
+  - name: st4InputCordNotifications
+    oid: 1.3.6.1.4.1.1718.4.1.3.4.1.1
+    type: string
+    indexes:
+    - labelname: st4UnitIndex
+      type: Integer
+    - labelname: st4InputCordIndex
+      type: Integer
+  - name: st4InputCordActivePowerLowAlarm
+    oid: 1.3.6.1.4.1.1718.4.1.3.4.1.2
+    type: gauge
+    indexes:
+    - labelname: st4UnitIndex
+      type: Integer
+    - labelname: st4InputCordIndex
+      type: Integer
+  - name: st4InputCordActivePowerLowWarning
+    oid: 1.3.6.1.4.1.1718.4.1.3.4.1.3
+    type: gauge
+    indexes:
+    - labelname: st4UnitIndex
+      type: Integer
+    - labelname: st4InputCordIndex
+      type: Integer
+  - name: st4InputCordActivePowerHighWarning
+    oid: 1.3.6.1.4.1.1718.4.1.3.4.1.4
+    type: gauge
+    indexes:
+    - labelname: st4UnitIndex
+      type: Integer
+    - labelname: st4InputCordIndex
+      type: Integer
+  - name: st4InputCordActivePowerHighAlarm
+    oid: 1.3.6.1.4.1.1718.4.1.3.4.1.5
+    type: gauge
+    indexes:
+    - labelname: st4UnitIndex
+      type: Integer
+    - labelname: st4InputCordIndex
+      type: Integer
+  - name: st4InputCordApparentPowerLowAlarm
+    oid: 1.3.6.1.4.1.1718.4.1.3.4.1.6
+    type: gauge
+    indexes:
+    - labelname: st4UnitIndex
+      type: Integer
+    - labelname: st4InputCordIndex
+      type: Integer
+  - name: st4InputCordApparentPowerLowWarning
+    oid: 1.3.6.1.4.1.1718.4.1.3.4.1.7
+    type: gauge
+    indexes:
+    - labelname: st4UnitIndex
+      type: Integer
+    - labelname: st4InputCordIndex
+      type: Integer
+  - name: st4InputCordApparentPowerHighWarning
+    oid: 1.3.6.1.4.1.1718.4.1.3.4.1.8
+    type: gauge
+    indexes:
+    - labelname: st4UnitIndex
+      type: Integer
+    - labelname: st4InputCordIndex
+      type: Integer
+  - name: st4InputCordApparentPowerHighAlarm
+    oid: 1.3.6.1.4.1.1718.4.1.3.4.1.9
+    type: gauge
+    indexes:
+    - labelname: st4UnitIndex
+      type: Integer
+    - labelname: st4InputCordIndex
+      type: Integer
+  - name: st4InputCordPowerFactorLowAlarm
+    oid: 1.3.6.1.4.1.1718.4.1.3.4.1.10
+    type: gauge
+    indexes:
+    - labelname: st4UnitIndex
+      type: Integer
+    - labelname: st4InputCordIndex
+      type: Integer
+  - name: st4InputCordPowerFactorLowWarning
+    oid: 1.3.6.1.4.1.1718.4.1.3.4.1.11
+    type: gauge
+    indexes:
+    - labelname: st4UnitIndex
+      type: Integer
+    - labelname: st4InputCordIndex
+      type: Integer
+  - name: st4InputCordOutOfBalanceHighWarning
+    oid: 1.3.6.1.4.1.1718.4.1.3.4.1.12
+    type: gauge
+    indexes:
+    - labelname: st4UnitIndex
+      type: Integer
+    - labelname: st4InputCordIndex
+      type: Integer
+  - name: st4InputCordOutOfBalanceHighAlarm
+    oid: 1.3.6.1.4.1.1718.4.1.3.4.1.13
+    type: gauge
+    indexes:
+    - labelname: st4UnitIndex
+      type: Integer
+    - labelname: st4InputCordIndex
+      type: Integer

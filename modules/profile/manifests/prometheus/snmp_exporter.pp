@@ -15,6 +15,21 @@ class profile::prometheus::snmp_exporter (
         community => $passwords::network::snmp_ro_community,
     }
 
+    prometheus::snmp_exporter::module { 'pdu_codfw_sentry4':
+        template  => 'servertech_sentry4',
+        community => $passwords::network::snmp_ro_community_pdus_codfw,
+    }
+
+    prometheus::snmp_exporter::module { 'pdu_eqiad_sentry4':
+        template  => 'servertech_sentry4',
+        community => $passwords::network::snmp_ro_community,
+    }
+
+    prometheus::snmp_exporter::module { 'pdu_ulsfo_sentry4':
+        template  => 'servertech_sentry4',
+        community => $passwords::network::snmp_ro_community,
+    }
+
     if $::realm == 'labs' {
         $ferm_srange = '$LABS_NETWORKS'
     } else {
