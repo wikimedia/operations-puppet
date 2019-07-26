@@ -57,4 +57,16 @@ class profile::analytics::refinery::job::test::camus(
         check_topic_whitelist => 'webrequest_test_text',
         interval              => '*-*-* *:00/10:00',
     }
+
+    # Import eventlogging_NavigationTiming topic into /wmf/data/raw/eventlogging
+    # once every hour.
+    camus::job { 'eventlogging_test':
+        kafka_brokers         => $kafka_brokers_jumbo,
+        check                 => true,
+        # Don't need to write _IMPORTED flags for EventLogging data
+        check_dry_run         => true,
+        # Only check these topic, since they should have data every hour.
+        check_topic_whitelist => 'eventlogging_NavigationTiming',
+        interval              => '*-*-* *:05:00',
+    }
 }
