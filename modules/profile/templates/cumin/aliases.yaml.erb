@@ -110,6 +110,9 @@ kafka-main-codfw: A:kafka-main and A:codfw
 kafka-main-eqiad: A:kafka-main and A:eqiad
 kafka-jumbo-canary: P{kafka-jumbo1001.eqiad.wmnet}
 kafka-jumbo: P{O:kafka::jumbo::broker}
+kafka-logging: P{O:kafka::logging}
+kafka-logging-eqiad: A:kafka-logging and A:eqiad
+kafka-logging-codfw: A:kafka-logging and A:codfw
 kafkamon: P{O:kafka::monitoring}
 kubernetes-etcd: P{O:etcd::kubernetes}
 kubernetes-etcd-network: P{O:etcd::networking}
