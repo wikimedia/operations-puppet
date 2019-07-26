@@ -558,12 +558,12 @@ host cloudvirt1015 {
 }
 
 host cloudvirt1016 {
-    hardware ethernet F4:E9:D4:BA:B7:40;
+    hardware ethernet F4:E9:D4:BA:B7:10;
     fixed-address cloudvirt1016.eqiad.wmnet;
 }
 
 host cloudvirt1017 {
-    hardware ethernet F4:E9:D4:BA:B7:10;
+    hardware ethernet F4:E9:D4:BA:B7:40;
     fixed-address cloudvirt1017.eqiad.wmnet;
 }
 
