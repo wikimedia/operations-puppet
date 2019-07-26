@@ -6197,11 +6197,6 @@ host stat1007 {
     fixed-address stat1007.eqiad.wmnet;
 }
 
-host sulfur {
-    hardware ethernet D0:94:66:5F:7C:96;
-    fixed-address sulfur.wikimedia.org;
-}
-
 host theemin {
     hardware ethernet D0:94:66:5F:67:68;
     fixed-address theemin.codfw.wmnet;

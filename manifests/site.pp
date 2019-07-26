@@ -2056,12 +2056,6 @@ node /^rhodium.eqiad.wmnet/ {
     interface::add_ip6_mapped { 'main': }
 }
 
-node 'sulfur.wikimedia.org' {
-    role(spare::system)
-}
-
-
-
 node 'thorium.eqiad.wmnet' {
     # thorium is used to host public Analytics websites like:
     # - https://stats.wikimedia.org (Wikistats)
