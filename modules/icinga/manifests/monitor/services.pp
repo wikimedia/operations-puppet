@@ -2,8 +2,14 @@
 #
 # Monitor various Services-related dashboards
 class icinga::monitor::services {
-    monitoring::grafana_alert { 'restbase':
+    monitoring::grafana_alert { 'restbase-legacy':
         dashboard_uid => '000000068',
+        contact_group => 'team-services',
+        notes_url     => 'https://wikitech.wikimedia.org/wiki/RESTBase#What_to_check_after_a_deploy',
+    }
+
+    monitoring::grafana_alert { 'restbase':
+        dashboard_uid => '000000577',
         contact_group => 'team-services',
         notes_url     => 'https://wikitech.wikimedia.org/wiki/RESTBase#What_to_check_after_a_deploy',
     }
