@@ -558,17 +558,13 @@ host cloudvirt1015 {
 }
 
 host cloudvirt1016 {
-    hardware ethernet 18:66:DA:FC:9C:68;
+    hardware ethernet F4:E9:D4:BA:B7:40;
     fixed-address cloudvirt1016.eqiad.wmnet;
-    option pxelinux.pathprefix "jessie-installer/";
-    filename "jessie-installer/debian-installer/amd64/pxelinux.0";
 }
 
 host cloudvirt1017 {
-    hardware ethernet 18:66:DA:FC:9F:A8;
+    hardware ethernet F4:E9:D4:BA:B7:10;
     fixed-address cloudvirt1017.eqiad.wmnet;
-    option pxelinux.pathprefix "jessie-installer/";
-    filename "jessie-installer/debian-installer/amd64/pxelinux.0";
 }
 
 host cloudvirt1018 {
