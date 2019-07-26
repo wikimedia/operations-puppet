@@ -215,6 +215,19 @@
   dst_ports:
     - 9092
 
+  # Allow schema.svc.{eqiad,codfw} for eventgate-analytics
+- action: allow
+  src_selector: calico/k8s_ns == 'eventgate-analytics'
+  dst_net: 10.2.2.43/32 # schema.svc.eqiad.wmnet
+  protocol: tcp
+  dst_ports:
+    - 8190
+- action: allow
+  src_selector: calico/k8s_ns == 'eventgate-analytics'
+  dst_net: 10.2.1.43/32 # schema.svc.codfw.wmnet
+  protocol: tcp
+  dst_ports:
+    - 8190
 
   # Allow Kafka for eventgate-main
   # main-eqiad:
