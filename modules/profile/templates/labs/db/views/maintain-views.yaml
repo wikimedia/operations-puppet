@@ -222,7 +222,7 @@ customviews:
     view: >
       select afl_id, afl_filter, afl_user, afl_user_text, NULL as
       afl_ip, afl_action, afl_actions, afl_var_dump, afl_timestamp, afl_namespace,
-      afl_title, afl_wiki, afl_deleted, afl_patrolled_by, afl_rev_id, afl_log_id
+      afl_title, afl_wiki, afl_deleted, afl_patrolled_by, afl_rev_id
     where:
       afl_deleted=0
   actor:
