@@ -73,7 +73,9 @@ dns-auth-canary: P{multatuli.wikimedia.org}
 dns-rec: P{O:dnsrecursor}
 docker-registry: P{O:docker::registry or O:docker_registry_ha::registry}
 dns-rec-canary: P{dns2001.wikimedia.org}
-druid: P{O:druid::analytics::worker or O:druid::public::worker}
+druid-analytics: P{O:druid::analytics::worker}
+druid-public: P{O:druid::public::worker}
+druid: A:druid-analytics or A:druid-public
 druid-testcluster: P{O:druid::test_analytics::worker}
 dumps: P{O:dumps::generation::server::primary or O:dumps::generation::server::fallback or O:dumps::web::htmldumps}
 elastic: P{O:elasticsearch::cirrus}
