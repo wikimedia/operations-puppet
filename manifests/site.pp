@@ -1418,10 +1418,6 @@ node /^logstash200[4-6]\.codfw\.wmnet$/ {
     include ::lvs::realserver # lint:ignore:wmf_styleguide
 }
 
-node /lvs100[1-6]\.wikimedia\.org/ {
-    role(spare::system)
-}
-
 node /lvs101[3456]\.eqiad\.wmnet/ {
     role(lvs::balancer)
 }

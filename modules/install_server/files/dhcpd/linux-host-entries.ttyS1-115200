@@ -3367,36 +3367,6 @@ host logstash2003 {
     fixed-address logstash2003.codfw.wmnet;
 }
 
-host lvs1001 {
-    hardware ethernet 18:03:73:f0:89:69;
-    fixed-address lvs1001.wikimedia.org;
-}
-
-host lvs1002 {
-    hardware ethernet 18:03:73:f0:8e:dc;
-    fixed-address lvs1002.wikimedia.org;
-}
-
-host lvs1003 {
-    hardware ethernet 18:03:73:f0:8b:07;
-    fixed-address lvs1003.wikimedia.org;
-}
-
-host lvs1004 {
-    hardware ethernet 18:03:73:f0:8c:30;
-    fixed-address lvs1004.wikimedia.org;
-}
-
-host lvs1005 {
-    hardware ethernet 18:03:73:f0:8e:28;
-    fixed-address lvs1005.wikimedia.org;
-}
-
-host lvs1006 {
-    hardware ethernet 18:03:73:f0:8a:77;
-    fixed-address lvs1006.wikimedia.org;
-}
-
 host lvs1013 {
     hardware ethernet F4:E9:D4:DB:0C:00;
     fixed-address lvs1013.eqiad.wmnet;
