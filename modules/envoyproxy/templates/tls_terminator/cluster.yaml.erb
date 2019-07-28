@@ -1,0 +1,12 @@
+<%- @upstreams.each do |upstream| 
+    cluster_name = "local_port_#{upstream['upstream_port']}"
+-%>
+name: <%= cluster_name %>
+connect_timeout: <%= @connect_timeout %>s
+type: strict_dns
+lb_policy: round_robin
+hosts:
+    - socket_address:
+        address: <%= @ipaddress %>
+        port_value: <%= upstream['upstream_port'] %>
+<%- end -%>

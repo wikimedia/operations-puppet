@@ -1,0 +1,4 @@
+* simple class for discovery service forward-proxying support
+* Use the hot-restarter python wrapper
+** Add a corresponding logrotate rule using SIGUSR1 for that.
+** Ensure it works well with systemd

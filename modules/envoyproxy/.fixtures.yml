@@ -1,0 +1,5 @@
+fixtures:
+    symlinks:
+        envoyproxy: "#{source_dir}"
+        stdlib: "#{source_dir}/../stdlib"
+        wmflib: "#{source_dir}/../wmflib"

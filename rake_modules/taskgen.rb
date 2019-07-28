@@ -352,20 +352,17 @@ class TaskGen < ::Rake::TaskLib
       return tasks if python_files.empty?
       deps = SpecDependencies.new
       deps.tox_to_run(python_files).each do |module_name|
-        test_name = "#{module_name}:run_tox"
+        test_name = "tox:#{module_name}"
         # Test already added
         next if tasks.include? test_name
         tasks << test_name
-        namespace module_name do
-          desc "Run tox in module #{module_name}"
-          task :run_tox do
-            Dir.chdir("modules/#{module_name}") do
-              if @changed_files.include?("modules/#{module_name}/tox.ini")
-                raise "Running tox in #{module_name} failed" unless system('tox -r')
-              else
-                raise "Running tox in #{module_name} failed" unless system('tox')
-              end
-            end
+        desc "Run tox in module #{module_name}"
+        task module_name do
+          tox_ini = "modules/#{module_name}/tox.ini"
+          if @changed_files.include?(tox_ini)
+            raise "Running tox in #{module_name} failed" unless system("tox -r -c #{tox_ini}")
+          else
+            raise "Running tox in #{module_name} failed" unless system("tox 0c #{tox_ini}")
           end
         end
       end

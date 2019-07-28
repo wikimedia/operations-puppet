@@ -1,0 +1,60 @@
+address:
+    socket_address:
+        address: 0.0.0.0
+        port_value: <%= @name %>
+listener_filters:
+- name: "envoy.listener.tls_inspector"
+  typed_config: {}
+filter_chains:
+<%- @upstreams.each do |upstream| -%>
+<%- if upstream['cert_path'] -%>
+- filter_chain_match:
+    server_names: <%= upstream['server_names'] %>
+  tls_context:
+    common_tls_context:
+      tls_certificates:
+      - certificate_chain: { filename: "<%= upstream['cert_path'] %>" }
+        private_key: { filename: "<%= upstream['key_path'] %>" }
+  filters:
+  - name: envoy.http_connection_manager
+    typed_config:
+      "@type": type.googleapis.com/envoy.config.filter.network.http_connection_manager.v2.HttpConnectionManager
+      stat_prefix: ingress_http
+<%- if @access_log -%>
+      access_log:
+        name: "envoy.file_access.log"
+        config: "/var/log/envoy/<%= upstream['server_names'][0] %>".log
+<%- end -%>
+      route_config:
+        virtual_hosts:
+        - name: default
+          domains: ["*"]
+          routes:
+          - match: { prefix: "/" }
+            route: { cluster: local_port_<%= upstream['upstream_port'] %> }
+<%- end -%>
+<%- end -%>
+<%- if @global_cert_path != nil && @global_key_path != nil %>
+# Non-SNI support
+- filter_chain_match:
+    server_names: ["*"]
+  tls_context:
+    common_tls_context:
+      tls_certificates:
+      - certificate_chain: { filename: "<%= @global_cert_path %>" }
+        private_key: { filename: "<%= @global_key_path %>" }
+  filters:
+  - name: envoy.http_connection_manager
+    typed_config:
+      "@type": type.googleapis.com/envoy.config.filter.network.http_connection_manager.v2.HttpConnectionManager
+      stat_prefix: ingress_http
+      route_config:
+        virtual_hosts:
+        <%- @upstreams.each do |upstream| %>
+        - name: non_sni_port_<%= upstream['upstream_port'] %>
+          domains: <%= upstream['server_names'] %>
+          routes:
+          - match: { prefix: "/" }
+            route: { cluster: local_port_<%= upstream['upstream_port'] %> }
+        <%- end -%>
+<%- end -%>

@@ -1,0 +1,5 @@
+access_log_path: /tmp/test.log
+address:
+  socket_address:
+    address: 1.2.3.4
+    port_value: 6667
