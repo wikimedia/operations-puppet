@@ -394,8 +394,7 @@ def main():
             read_only=True,
             user=ldapconfig['user'],
             auto_bind=True,
-            password=ldapconfig['password'],
-            receive_timeout=10,
+            password=ldapconfig['password']
         ) as conn:
             tools = get_tools_from_ldap(conn, args.project)
 
