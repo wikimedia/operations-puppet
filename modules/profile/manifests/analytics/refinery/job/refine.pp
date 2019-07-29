@@ -51,12 +51,10 @@ class profile::analytics::refinery::job::refine {
     # Refine EventBus data.
     # TODO: deprecate this job in favor of the mediawiki_events job;
     # need to make sure JSONSchemas are compatible with existing Hive table schemas.
-    $eventbus_tables = [
-        'mediawiki_revision_score',
-        'resource_change',
-    ]
+    $eventbus_tables = []
     $eventbus_table_whitelist_regex = "^(${join($eventbus_tables, '|')})$"
     profile::analytics::refinery::job::refine_job { 'eventlogging_eventbus':
+        ensure     => 'absent',
         job_config => merge($default_config, {
             input_path                      => '/wmf/data/raw/event',
             input_path_regex                => '.*(eqiad|codfw)_(.+)/hourly/(\\d+)/(\\d+)/(\\d+)/(\\d+)',
@@ -85,10 +83,13 @@ class profile::analytics::refinery::job::refine {
         'mediawiki_page_restrictions_change',
         'mediawiki_page_undelete',
         'mediawiki_revision_create',
+        'mediawiki_revision_score',
         'mediawiki_revision_tags_change',
         'mediawiki_revision_visibility_change',
         'mediawiki_user_blocks_change',
-
+        # resource_change isn't strictly 'mediawiki', but mediawiki is a source of resource changes.
+        # Anyway this job will refine it just fine.
+        'resource_change',
     ]
     $mediawiki_event_table_whitelist_regex = "^(${join($mediawiki_event_tables, '|')})$"
 
