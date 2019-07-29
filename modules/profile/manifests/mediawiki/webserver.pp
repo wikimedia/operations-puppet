@@ -188,7 +188,8 @@ class profile::mediawiki::webserver(
     }
     # Mtail program to gather latency metrics from application servers, see T226815
     class { '::mtail':
-        logs => ['/var/log/apache2/other_vhosts_access.log']
+        logs  => ['/var/log/apache2/other_vhosts_access.log'],
+        group => 'adm',
     }
     mtail::program { 'apache2-mediawiki':
         ensure => present,
