@@ -379,7 +379,7 @@ node /^cumin[12]001\.(eqiad|codfw)\.wmnet$/ {
 # MariaDB 10
 
 # Spare codfw hosts to be provisioned #T227113
-node /^db21(21|22|24|25|26|27|28|29|30)\.codfw\.wmnet/ {
+node /^db21(21|22|24|25|26|27|29|30)\.codfw\.wmnet/ {
     role(spare::system)
 }
 
@@ -492,7 +492,7 @@ node 'db2052.codfw.wmnet' {
 }
 
 # See also db2084 and db2089 below
-node /^db2(038|059|066|075|111|113|123)\.codfw\.wmnet/ {
+node /^db2(038|059|066|075|111|113|123|128)\.codfw\.wmnet/ {
     role(mariadb::core)
 }
 
