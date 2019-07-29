@@ -2,3 +2,6 @@ profile::base::remote_syslog_tls: ['wezen.codfw.wmnet:6514', 'centrallog1001.eqi
 profile::base::remote_syslog: []
 
 profile::base::enable_rsyslog_exporter: true
+
+profile::base::nameservers:
+  - '10.3.0.1' # anycast recdns
