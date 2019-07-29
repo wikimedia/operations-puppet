@@ -2095,9 +2095,12 @@ node 'stat1004.eqiad.wmnet' {
     interface::add_ip6_mapped { 'main': }
 }
 
+# stat1005 contains all the tools and libraries to access
+# the Analytics Cluster services, but should not be used
+# for local data processing.
 # Testing GPU for T148843
 node 'stat1005.eqiad.wmnet' {
-    role(statistics::gpu)
+    role(statistics::explorer::gpu)
     interface::add_ip6_mapped { 'main': }
 }
 

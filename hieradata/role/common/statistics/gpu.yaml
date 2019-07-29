@@ -1,6 +1,0 @@
-cluster: analytics
-admin::groups:
-  - analytics-admins
-  - gpu-testers
-
-profile::base::notifications: disabled
