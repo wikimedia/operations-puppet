@@ -37,6 +37,18 @@ class SpecDependencies
     specs.to_a
   end
 
+  def tox_to_run(filelist)
+    # Scan all the modules with a changed python file for tox.ini,
+    # and return them as a list of modules
+    mods_to_test = Set.new
+    modules = modules_modified(filelist)
+    return [] unless modules
+    modules.each do |mod|
+      mods_to_test.add(mod) if File.exists? "modules/#{mod}/tox.ini"
+    end
+    mods_to_test
+  end
+
   private
 
   def modules_modified(filelist)
