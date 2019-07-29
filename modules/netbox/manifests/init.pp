@@ -47,6 +47,10 @@ class netbox(
     Optional[String] $swift_user = undef,
     Optional[String] $swift_key = undef,
     Optional[String] $swift_container = undef,
+    Stdlib::Host $redis_host = undef,
+    Stdlib::Port $redis_port = undef,
+    String $redis_password = undef,
+    Integer $redis_database = 0,
 ) {
 
   require_package('virtualenv', 'python3-pip')

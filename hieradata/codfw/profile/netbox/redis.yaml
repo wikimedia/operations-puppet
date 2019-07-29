@@ -1,0 +1,4 @@
+profile::netbox::redis::host: rdb2005.codfw.wmnet
+profile::netbox::redis::port: 6381
+# Private key:
+# profile::netbox::redis::password:

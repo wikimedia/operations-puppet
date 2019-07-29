@@ -19,6 +19,10 @@ class profile::netbox (
     Stdlib::Ipv4 $slave_ipv4 = hiera('profile::netbox::slave_ipv4'),
     Stdlib::Ipv6 $slave_ipv6 = hiera('profile::netbox::slave_ipv6'),
 
+    Stdlib::Host $redis_host = hiera('profile::netbox::redis::host'),
+    Stdlib::Port $redis_port = hiera('profile::netbox::redis::port'),
+    String $redis_password = hiera('profile::netbox::redis::password'),
+
     String $nb_token = hiera('profile::netbox::tokens::read_write'),
 
     String $ganeti_user = hiera('profile::ganeti::rapi::ro_user'),
@@ -203,6 +207,9 @@ class profile::netbox (
         swift_key       => $swift_key,
         swift_container => $swift_container,
         ldap_server     => $ldap_config['ro-server'],
+        redis_host      => $redis_host,
+        redis_port      => $redis_port,
+        redis_password  => $redis_password,
     }
     $ssl_settings = ssl_ciphersuite('apache', 'strong', true)
 

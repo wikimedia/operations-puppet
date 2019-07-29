@@ -148,3 +148,14 @@ PASSTHROUGH = { 'SWIFT_AUTH_URL': '<%= @swift_auth_url %>/auth/v1.0',
                 'DEFAULT_FILE_STORAGE': 'swift.storage.SwiftStorage',
 }
 <% end %>
+
+<% if @redis_host %>
+WEBHOOKS_ENABLED = True
+REDIS = {
+    'HOST': '<%= @redis_host %>',
+    'PORT': <%= @redis_port %>,
+    'PASSWORD': '<%= @redis_password %>',
+    'DATABASE': <%= @redis_database %>,
+    'DEFAULT_TIMEOUT': 300,
+}
+<% end %>
