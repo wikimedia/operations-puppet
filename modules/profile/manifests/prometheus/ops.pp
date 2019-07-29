@@ -956,6 +956,13 @@ class profile::prometheus::ops (
         port       => 3903,
     }
 
+    prometheus::class_config{ "mtail_mediawiki_apache_${::site}":
+        dest       => "${targets_path}/mtail_mediawiki_webserver_${::site}.yaml",
+        site       => $::site,
+        class_name => 'profile::mediawiki::webserver',
+        port       => 3903,
+    }
+
     $ldap_jobs = [
       {
         'job_name'        => 'ldap',
