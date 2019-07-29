@@ -474,3 +474,6 @@ prometheus::varnishkafka_exporter::config:
     - 'varnishkafka'
 
   num_entries_to_get: 2
+
+profile::base::nameservers:
+  - '10.3.0.1' # anycast recdns
