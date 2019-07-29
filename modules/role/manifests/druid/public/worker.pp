@@ -16,6 +16,7 @@ class role::druid::public::worker {
     include ::profile::druid::middlemanager
     include ::profile::druid::overlord
     include ::profile::prometheus::druid_exporter
+    include ::profile::druid::conftool
 
     # Zookeeper is co-located on some public druid hosts, but not all.
     if $::fqdn in $::profile::druid::common::zookeeper_hosts {
