@@ -5,9 +5,14 @@ TCPIRCBOT_HOST=${TCPIRCBOT_HOST:-icinga.wikimedia.org}
 TCPIRCBOT_PORT=${TCPIRCBOT_PORT:-9200}
 
 function sal_log {
-		echo "!log ${USER}@${HOST} helmfile $*" \
-			| nc -q 1 "${TCPIRCBOT_HOST}" "${TCPIRCBOT_PORT}" \
-			|| (>&2 echo "WARNING: failed to send message to tcpircbot")
+	if [ -n ${SUDO_USER} ]; then
+		LOG_USER=${SUDO_USER}
+	else
+		LOG_USER=${USER}
+	fi
+	echo "!log ${LOG_USER}@${HOST} helmfile $*" \
+		| nc -q 1 "${TCPIRCBOT_HOST}" "${TCPIRCBOT_PORT}" \
+		|| (>&2 echo "WARNING: failed to send message to tcpircbot")
 }
 
 COMMAND=$1
