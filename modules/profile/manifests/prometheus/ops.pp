@@ -630,23 +630,6 @@ class profile::prometheus::ops (
         port       => 9200,
     }
 
-    $bird_jobs = [
-      {
-        'job_name'        => 'bird',
-        'scheme'          => 'http',
-        'file_sd_configs' => [
-          { 'files' => [ "${targets_path}/bird_*.yaml" ]}
-        ],
-      },
-    ]
-
-    prometheus::class_config{ "bird_${::site}":
-        dest       => "${targets_path}/bird_${::site}.yaml",
-        site       => $::site,
-        class_name => 'profile::bird',
-        port       => 9324,
-    }
-
     $ircd_jobs = [
       {
         'job_name'        => 'ircd',
@@ -1231,7 +1214,7 @@ class profile::prometheus::ops (
             $blazegraph_jobs, $nutcracker_jobs, $postgresql_jobs,
             $kafka_burrow_jobs, $logstash_jobs, $haproxy_jobs, $statsd_exporter_jobs,
             $mjolnir_jobs, $rsyslog_jobs, $php_jobs, $php_fpm_jobs, $icinga_jobs, $docker_registry_jobs,
-            $gerrit_jobs, $routinator_jobs, $rpkicounter_jobs, $varnishkafka_jobs, $bird_jobs
+            $gerrit_jobs, $routinator_jobs, $rpkicounter_jobs, $varnishkafka_jobs
         ),
         global_config_extra   => $config_extra,
     }

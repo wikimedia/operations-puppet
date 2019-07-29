@@ -1,2 +1,0 @@
-# File managed by puppet
-ARGS="-format.new -bird.ipv6=false"

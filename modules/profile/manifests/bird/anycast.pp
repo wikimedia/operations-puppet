@@ -1,4 +1,4 @@
-# == Class: profile::bird::anycast
+# == Class: bird::base
 #
 # Install and configure Bird
 # Configure Ferm
@@ -9,8 +9,7 @@ class profile::bird::anycast(
   Boolean $bfd = lookup('profile::bird::bfd', {'default_value' => true}),
   Optional[Array[Stdlib::IP::Address::V4::Nosubnet]] $neighbors_list = lookup('profile::bird::neighbors_list', {'default_value' => []}),
   Optional[String] $bind_service = lookup('profile::bird::bind_service', {'default_value' => ''}),
-  Optional[Hash[String, Wmflib::Advertise_vip]] $advertise_vips = lookup('profile::bird::advertise_vips', {'default_value' => {}}),
-  Optional[Array[Stdlib::Fqdn]] $prometheus_nodes = hiera('prometheus_nodes', undef),
+  Optional[Hash[String, Wmflib::Advertise_vip]] $advertise_vips = lookup('profile::bird::advertise_vips', {'default_value' => {}})
 ){
   if $neighbors_list {
     $neighbors_for_ferm = join($neighbors_list, ' ')
@@ -41,16 +40,6 @@ class profile::bird::anycast(
         srange => "(${neighbors_for_ferm})",
         before => Class['::bird'],
     }
-  }
-
-  if $prometheus_nodes {
-      $prometheus_nodes_ferm = join($prometheus_nodes, ' ')
-      ferm::service { 'bird-prometheus-acl':
-          desc   => 'Bird prometheus port',
-          proto  => 'tcp',
-          port   => '9324',
-          srange => "(@resolve((${prometheus_nodes_ferm})) @resolve((${prometheus_nodes_ferm}), AAAA))",
-      }
   }
 
   class { '::bird::anycast_healthchecker': }
