@@ -1,3 +1,0 @@
-# db1072
-mariadb::binlog_format: 'ROW'
-profile::base::notifications: disabled
