@@ -135,7 +135,7 @@ define monitoring::host (
         create_resources($rtype, $mgmt_host)
         # We always monitor the BMC so never skip notifications
         monitoring::service { "dns_${title}.mgmt":
-            description           => "DNS ${title}.mgmt",
+            description           => 'DNS',
             host                  => "${title}.mgmt",
             check_command         => "check_fqdn!${title}.mgmt.${::site}.wmnet",
             notifications_enabled => '1',
@@ -145,7 +145,7 @@ define monitoring::host (
             notes_url             => 'https://wikitech.wikimedia.org/wiki/Dc-operations/Hardware_Troubleshooting_Runbook',
         }
         monitoring::service { "ssh_${title}.mgmt":
-            description           => "SSH ${title}.mgmt",
+            description           => 'SSH',
             host                  => "${title}.mgmt",
             check_command         => 'check_ssh',
             notifications_enabled => '1',
