@@ -109,8 +109,9 @@ class NovaInstance(object):
 
 
 if __name__ == "__main__":
-    argparser = argparse.ArgumentParser('live-migrate',
-                                        description='''Move an instance to a different compute node''')
+    argparser = argparse.ArgumentParser(
+        'live-migrate',
+        description='''Move an instance to a different compute node''')
     argparser.add_argument(
         '--nova-user',
         help='username for nova auth',

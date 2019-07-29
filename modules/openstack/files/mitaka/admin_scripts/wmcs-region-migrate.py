@@ -29,6 +29,7 @@ running in the target region.
 - restart dummy VM
 - deactivate glance image
 """
+from __future__ import print_function
 
 import configparser
 import argparse
@@ -109,13 +110,17 @@ class NovaInstance(object):
             project_name='admin')
         self.dest_session = keystone_session.Session(auth=dest_auth)
 
-        self.dest_novaclient = novaclient.Client('2', session=self.dest_session,
-                                                 region_name=dest_config['region'])
-        self.dest_neutronclient = neutronclient.Client(session=self.dest_session,
-                                                       region_name=dest_config['region'])
-        self.dest_keystoneclient = keystoneclient.Client(session=self.dest_session,
-                                                         region_name=dest_config['region'])
-        self.proxy_endpoint = self.get_proxy_endpoint(self.dest_keystoneclient, dest_config['region'])
+        self.dest_novaclient = novaclient.Client(
+            '2', session=self.dest_session,
+            region_name=dest_config['region'])
+        self.dest_neutronclient = neutronclient.Client(
+            session=self.dest_session,
+            region_name=dest_config['region'])
+        self.dest_keystoneclient = keystoneclient.Client(
+            session=self.dest_session,
+            region_name=dest_config['region'])
+        self.proxy_endpoint = self.get_proxy_endpoint(
+            self.dest_keystoneclient, dest_config['region'])
 
     # Returns True if the status changed, otherwise False
     @staticmethod
@@ -189,7 +194,7 @@ class NovaInstance(object):
             if address['OS-EXT-IPS:type'] == 'fixed':
                 return address['addr']
 
-        print "WARNING: no fixed IP found for instance %s" % instance.name
+        print("WARNING: no fixed IP found for instance %s" % instance.name)
 
     def get_floating_ips(self, instance):
         floating = []
@@ -277,7 +282,7 @@ class NovaInstance(object):
             proxy = self.dest_config['proxy']
 
         if instance.status != 'ACTIVE':
-            print ("We can't test ssh to an instance with state %s" % instance.status)
+            print("We can't test ssh to an instance with state %s" % instance.status)
             return False
 
         rootkeyfile = self.common_config['ssh_root_key_path']
@@ -537,7 +542,10 @@ class NovaInstance(object):
                 time.sleep(30)
 
         if i == 10:
-            print("all dns tests failed, giving up.  We probably leaked a DNS record for the source VM.")
+            print(
+                "all dns tests failed, giving up. "
+                "We probably leaked a DNS record for the source VM."
+            )
             exit(1)
 
         # Fix up the IP in /etc/hosts

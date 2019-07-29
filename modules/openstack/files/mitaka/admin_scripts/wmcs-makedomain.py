@@ -15,7 +15,6 @@ Note that this only works with the keystone v2.0 API.
 
 import argparse
 import os
-import time
 
 import designatemakedomain
 if __name__ == "__main__":
