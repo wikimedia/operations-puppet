@@ -352,5 +352,7 @@ groups:
 
 - name: puppet
   rules:
-  - record: cluster:puppet_agent_failed:percent
-    expr: sum by (cluster) (puppet_agent_failed) / count by (cluster) (puppet_agent_failed)
+  - record: cluster:puppet_agent_failed:sum
+    expr: sum by (cluster) (puppet_agent_failed)
+  - record: cluster:puppet_agent_failed:count
+    expr: count by (cluster) (puppet_agent_failed)
