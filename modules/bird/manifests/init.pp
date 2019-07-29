@@ -76,6 +76,6 @@ class bird(
       ensure       => present,
       description  => 'Bird Internet Routing Daemon',
       nrpe_command => '/usr/lib/nagios/plugins/check_procs -c 1:2 -C bird',
-      notes_url    => 'https://wikitech.wikimedia.org/wiki/Anycast_recursive_DNS#Bird_daemon_not_running',
+      notes_url    => 'https://wikitech.wikimedia.org/wiki/Anycast#Bird_daemon_not_running',
   }
 }
