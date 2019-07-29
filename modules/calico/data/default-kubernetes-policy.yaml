@@ -19,6 +19,11 @@
 - action: allow
   dst_ports:
     - 53
+  dst_net: 10.3.0.1/32
+  protocol: udp
+- action: allow
+  dst_ports:
+    - 53
   dst_net: 208.80.153.254/32
   protocol: udp
 - action: allow
