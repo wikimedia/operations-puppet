@@ -79,6 +79,10 @@
 #
 # [*only_get_requests*]
 #  Deny all non-GET requests to this endpoint. Defaults to false.
+#
+# [*ssl_ecdhe_curve*]
+#  Whether or not the nginx package has support for $ssl_ecdhe_curve. Defaults
+#  to true.
 
 define tlsproxy::localssl(
     $certs          = [],
@@ -99,6 +103,7 @@ define tlsproxy::localssl(
     Integer $read_timeout = 180,
     String $ocsp_proxy = '',
     Boolean $only_get_requests = false,
+    Boolean $ssl_ecdhe_curve = true,
 ) {
     if (!empty($certs) and !empty($acme_subjects)) or ($acme_chief and !empty($acme_subjects)) or (empty($certs) and empty($acme_subjects) and !$acme_chief) {
         fail('Specify exactly one of certs (and optionally acme_chief) or acme_subjects')

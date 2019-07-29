@@ -44,11 +44,12 @@ class profile::tlsproxy::service(
     String $contact_group = lookup('profile::tlsproxy::service::contact_group', { 'default_value' => 'admin' }),
 ) {
     tlsproxy::localssl { $cert_domain_name:
-        server_name    => $cert_domain_name,
-        certs          => [$cert_domain_name],
-        upstream_ports => $upstream_ports,
-        default_server => true,
-        ocsp_proxy     => $ocsp_proxy,
+        server_name     => $cert_domain_name,
+        certs           => [$cert_domain_name],
+        upstream_ports  => $upstream_ports,
+        default_server  => true,
+        ocsp_proxy      => $ocsp_proxy,
+        ssl_ecdhe_curve => false,
     }
 
     # In case a single TLS certificate is used for multiple

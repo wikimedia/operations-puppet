@@ -72,7 +72,7 @@ server {
 		proxy_set_header X-Client-IP $remote_addr;
 		proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
 		proxy_set_header X-Forwarded-Proto https;
-		proxy_set_header X-Connection-Properties "H2=$h2; SSR=$session_reused; SSL=$ssl_protocol; C=$ssl_cipher; EC=$ssl_ecdhe_curve;";
+		proxy_set_header X-Connection-Properties "H2=$h2; SSR=$session_reused; SSL=$ssl_protocol; C=$ssl_cipher;<% if @ssl_ecdhe_curve %> EC=$ssl_ecdhe_curve;<% end %>";
 
 		# Don't clobber the Server header from the backend.
 		proxy_pass_header Server;
