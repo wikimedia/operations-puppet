@@ -59,9 +59,11 @@ end
 
     <%-# only add canary config if we have a canary worker and canary hosts -%>
     <%- if @workers.any? { |worker| worker.has_key?('canary') } && @canary_hosts.any? -%>
+    RewriteEngine On
       <%- @canary_hosts.each do |canary_host| -%>
-        <%- get_addresses(canary_host).each do |ip| -%>
-    RewriteCond expr "-R '<%= ip %>'"
+        <%- addresses = get_addresses(canary_host) -%>
+        <%- addresses.each do |ip| -%>
+    RewriteCond expr "-R '<%= ip %>'"<% unless ip == addresses.last %> [OR]<% end %>
         <%- end -%>
       <%- end -%>
     RewriteRule ^ balancer://canarybackend%{REQUEST_URI} [P,QSA]

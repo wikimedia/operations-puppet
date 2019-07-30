@@ -63,7 +63,7 @@ describe 'puppetmaster::web_frontend' do
           ).without_content(
             /SetEnvIf\s+Remote_Host/
           ).without_content(
-            /offline_load20.example.com|canary_load[12]0.example.com|CANARY|canarybackend/
+            /offline_load20.example.com|canary_load[12]0.example.com|CANARY|canarybackend|RewriteEngine/
           )
         end
       end
@@ -83,7 +83,8 @@ describe 'puppetmaster::web_frontend' do
               ensure: 'present',
               priority: '90'
             ).with_content(
-              %r{RewriteCond\s+expr\s+"-R\s+'2606:2800:220:1:248:1893:25C8:1946'"
+              %r{RewriteEngine\s+On
+              \s+RewriteCond\s+expr\s+"-R\s+'2606:2800:220:1:248:1893:25C8:1946'"\s+\[OR\]
               \s+RewriteCond\s+expr\s+"-R\s+'93\.184\.216\.34'"
               \s+RewriteRule\s+\^\s+balancer://canarybackend%\{REQUEST_URI\}\s+\[P,QSA\]
               \s+<Proxy\s+balancer://canarybackend>
