@@ -132,6 +132,12 @@ Update:
  amd-rocm26
  hp-mcp-stretch
  hwraid-stretch
+# NOTE:  Cloudera does not (yet) provide Stretch/Buster packages.  We use the Jessie ones,
+# along with a fake equivs to satisfy hadoop-mapreduce's (unnecessary) dependency on libssl1.0.0
+# which is not available in Stretch.  Once Cloudera releases Stretch/Buster packages, we can
+# use updates to mirror from Cloudera, rather than pulling them into buster from
+# jessie-wikimedia distribution.
+Pull: cloudera-jessie-pull
 Description: Wikimedia packages for Debian buster
 SignWith: 9D392D3FFADF18FB
 DebOverride: deb-override
