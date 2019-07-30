@@ -13,3 +13,6 @@ collapsed_forwarding.so
 <% if @global_lua_script != '' -%>
 tslua.so <%= @global_lua_script %>
 <% end -%>
+<% if @enable_compress -%>
+compress.so <%= @compress_config_path %>
+<% end -%>

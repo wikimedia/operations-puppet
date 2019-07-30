@@ -7,6 +7,7 @@ class profile::trafficserver::backend (
     Stdlib::Port $port=hiera('profile::trafficserver::backend::port', 3128),
     Trafficserver::Outbound_TLS_settings $outbound_tls_settings=hiera('profile::trafficserver::backend::outbound_tls_settings'),
     Boolean $enable_xdebug=hiera('profile::trafficserver::backend::enable_xdebug', false),
+    Boolean $enable_compress=hiera('profile::trafficserver::backend::enable_compress', true),
     Array[TrafficServer::Mapping_rule] $mapping_rules=hiera('profile::trafficserver::backend::mapping_rules', []),
     Array[TrafficServer::Caching_rule] $caching_rules=hiera('profile::trafficserver::backend::caching_rules', []),
     Optional[TrafficServer::Negative_Caching] $negative_caching=hiera('profile::trafficserver::backend::negative_caching', undef),
@@ -62,6 +63,7 @@ class profile::trafficserver::backend (
         port                  => $port,
         outbound_tls_settings => $outbound_tls_settings,
         enable_xdebug         => $enable_xdebug,
+        enable_compress       => $enable_compress,
         global_lua_script     => $global_lua_script,
         storage               => $storage,
         ram_cache_size        => 2147483648, # 2G

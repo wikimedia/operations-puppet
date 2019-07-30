@@ -64,6 +64,10 @@
 #   Enable the XDebug plugin. (default: false)
 #   https://docs.trafficserver.apache.org/en/latest/admin-guide/plugins/xdebug.en.html
 #
+# [*enable_compress*]
+#   Enable the compress plugin. (default: false)
+#   See https://docs.trafficserver.apache.org/en/latest/admin-guide/plugins/compress.en.html
+#
 # [*collapsed_forwarding*]
 #   Enable the Collapsed Forwarding plugin. (default: false)
 #   https://docs.trafficserver.apache.org/en/latest/admin-guide/plugins/collapsed_forwarding.en.html
@@ -162,6 +166,7 @@ define trafficserver::instance(
     Optional[Trafficserver::Inbound_TLS_settings] $inbound_tls_settings = undef,
     Optional[Trafficserver::Outbound_TLS_settings] $outbound_tls_settings = undef,
     Boolean $enable_xdebug = false,
+    Boolean $enable_compress = false,
     Boolean $collapsed_forwarding = false,
     String $global_lua_script = '',
     Array[Trafficserver::Mapping_rule] $mapping_rules = [],
@@ -215,7 +220,10 @@ define trafficserver::instance(
         require => $config_requires,
     }
 
-    $healthchecks_config_path = "${paths['sysconfdir']}/healthchecks.config" # needed by plugin.config.erb
+    # needed by plugin.config.erb
+    $healthchecks_config_path = "${paths['sysconfdir']}/healthchecks.config"
+    $compress_config_path = "${paths['sysconfdir']}/compress.config"
+
     ## Config files
     file {
         default:
@@ -267,6 +275,16 @@ define trafficserver::instance(
         "${error_template_path}/default/default":
           content => $error_page,
           require => File[$error_template_path];
+    }
+
+    if $enable_compress {
+        file { $compress_config_path:
+            owner   => $trafficserver::user,
+            mode    => '0400',
+            require => $config_requires,
+            notify  => Service[$service_name],
+            content => template('trafficserver/compress.config.erb'),
+        }
     }
 
     ## Service

@@ -1,0 +1,20 @@
+cache true
+
+# This is to avoid some corner-cases and bugs as noted in T125938 , e.g.
+# applayer gzip turning 500s into junk-response 503s, applayer gzipping
+# CL:0 bodies into a 20 bytes gzip header, applayer compressing tiny
+# outputs in general, etc.
+# We have also observed Swift returning Content-Type: gzip with
+# non-gzipped content, which confuses varnish-fe making it occasionally
+# return 503.
+remove-accept-encoding true
+
+compressible-content-type *text*
+compressible-content-type *json*
+compressible-content-type *html*
+compressible-content-type *script*
+compressible-content-type *xml*
+compressible-content-type *icon*
+compressible-content-type *ms-fontobject*
+compressible-content-type *x-font*
+compressible-content-type *sla*
