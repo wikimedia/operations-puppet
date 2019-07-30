@@ -34,6 +34,14 @@ profile::openstack::eqiad1::region: 'eqiad1-r'
 # publicly available read-only credentials
 profile::openstack::eqiad1::observer_password: 'Fs6Dq2RtG8KwmM2Z'
 
+profile::prometheus::varnishkafka_exporter::stats_default:
+    kafka: # https://github.com/edenhill/librdkafka/blob/master/STATISTICS.md
+      'metadata_cache_cnt':
+        'type': 'GaugeMetricFamily'
+        'name': 'rdkafka_producer_metadata_cache_cnt'
+        'description': 'Number of topics in the metadata cache.'
+        'labels': ['client_id']
+
 # Additional base overrides
 profile::base::remote_syslog: []
 
