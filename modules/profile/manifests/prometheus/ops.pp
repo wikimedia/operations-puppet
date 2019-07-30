@@ -643,7 +643,7 @@ class profile::prometheus::ops (
     prometheus::class_config{ "bird_${::site}":
         dest       => "${targets_path}/bird_${::site}.yaml",
         site       => $::site,
-        class_name => 'profile::bird',
+        class_name => 'profile::bird::anycast',
         port       => 9324,
     }
 
