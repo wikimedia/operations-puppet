@@ -23,15 +23,16 @@ prompt_cdanis1_setup () {
   prompt_cdanis1_color2=${2:-'cyan'}
   prompt_cdanis1_color3=${3:-'green'}
 
-  base_prompt="%K{%(!.red.$prompt_cdanis1_color1)}%n@$(hostname -f | sed 's/\.local\(domain\)\?//')%k "
+  base_prompt="%(0?,✔️ ,❌)%K{%(!.red.$prompt_cdanis1_color1)}%n@$(hostname -f | sed 's/\.local\(domain\)\?//')%k "
   post_prompt="%b%f%k"
 
   setopt localoptions extendedglob
   base_prompt_no_color="${base_prompt//(%K{[^\\\}]#\}|%k)/}"
   post_prompt_no_color="${post_prompt//(%K{[^\\\}]#\}|%k)/}"
 
+  zmodload zsh/datetime
   # the delta between the server's 'local' time and my usual local time
-  prompt_tz_offset=$(($(date +%H) - $(TZ='America/New_York' date +%H)))
+  prompt_tz_offset=$(( ($(strftime %H) - $(TZ='America/New_York' strftime %H) + 24) % 24 ))
 
   add-zsh-hook precmd prompt_cdanis1_precmd
 }
@@ -41,6 +42,8 @@ prompt_cdanis1_precmd () {
   local base_prompt_expanded_no_color base_prompt_etc_no_color
   local prompt_length
   local hour_prompt hour
+  local minute clock_prompt
+  local clocks_top clocks_bottom
 
   base_prompt_expanded_no_color=$(print -P "$base_prompt_no_color")
   base_prompt_etc_no_color=$(print -P "$base_prompt_no_color%~")
@@ -69,7 +72,21 @@ prompt_cdanis1_precmd () {
     hour_prompt+="%($((($hour + $prompt_tz_offset)%24))T,🍺,)"
   done
 
-  PS1="$base_prompt$path_prompt %(!.⁉️ .$hour_prompt) $post_prompt"
+  clock_prompt=""
+  clocks_top=(🕛 🕐 🕑 🕒 🕓 🕔 🕕 🕖 🕗 🕘 🕙 🕚)
+  clocks_bottom=(🕧 🕜 🕝 🕞 🕟 🕠 🕡 🕢 🕣 🕤 🕥 🕦)
+  hour=$(TZ='America/New_York' strftime %I)
+  minute=$(TZ='America/New_York' strftime %M)
+  case "$minute" in
+    (<45-59>|<0-15>))
+      clock_prompt="$clocks_top[$(( ((12 + $hour + (($minute>44)?1:0) )%12) + 1 ))]"
+    ;;
+    <16-44>)
+      clock_prompt="$clocks_bottom[$(( ((12 + $hour)%12) + 1 ))]"
+    ;;
+  esac
+
+  PS1="$base_prompt$path_prompt $clock_prompt%(!.⁉️ .$hour_prompt) $post_prompt"
   PS2="$base_prompt$path_prompt %_> $post_prompt"
   PS3="$base_prompt$path_prompt ?# $post_prompt"
 }
