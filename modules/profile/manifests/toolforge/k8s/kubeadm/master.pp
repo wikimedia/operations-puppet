@@ -58,4 +58,6 @@ class profile::toolforge::k8s::kubeadm::master(
     }
 
     class { '::toolforge::k8s::kubeadm_calico_workaround': }
+
+    class { '::toolforge::k8s::kubeadm_nginx_ingress_yaml': }
 }
