@@ -3,10 +3,6 @@
 # This module provides a standalone visual diffing service.
 class visualdiff {
 
-    # Fonts included for phantomjs rendering
-    # of indic and other language wiki pages
-    include ::mediawiki::packages::fonts
-
     $visualdiff_packages = [
         'nodejs',
         'npm',
