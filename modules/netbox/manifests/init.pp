@@ -47,6 +47,7 @@ class netbox(
     Optional[String] $swift_user = undef,
     Optional[String] $swift_key = undef,
     Optional[String] $swift_container = undef,
+    Optional[Stdlib::Unixpath] $swift_ca = undef,
     Stdlib::Host $redis_host = undef,
     Stdlib::Port $redis_port = undef,
     String $redis_password = undef,
@@ -84,6 +85,16 @@ class netbox(
       creates => '/etc/systemd/system/uwsgi.service',
   }
 
+  $base_uwsgi_environ=[
+      'LANG=C.UTF-8',
+      'PYTHONENCODING=utf-8',
+  ]
+  if $swift_ca {
+      $uwsgi_environ = concat($base_uwsgi_environ, "REQUESTS_CA_BUNDLE=${swift_ca}")
+  }
+  else {
+      $uwsgi_environ = $base_uwsgi_environ
+  }
   service::uwsgi { 'netbox':
       port            => $port,
       deployment_user => 'deploy-librenms',
@@ -95,10 +106,7 @@ class netbox(
           vacuum       => true,
           http-socket  => "127.0.0.1:${port}",
           # T170189: make sure Python has a sane default encoding
-          env          => [
-              'LANG=C.UTF-8',
-              'PYTHONENCODING=utf-8',
-          ],
+          env          => $uwsgi_environ,
       },
       healthcheck_url => '/login/',
       icinga_check    => false,

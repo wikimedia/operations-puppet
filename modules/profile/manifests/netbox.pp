@@ -55,6 +55,7 @@ class profile::netbox (
     $replication_pass = $passwords::netbox::replication_password
     $nb_ganeti_ca_cert = '/etc/ssl/certs/Puppet_Internal_CA.pem'
     $nb_puppetdb_ca_cert = $nb_ganeti_ca_cert
+    $nb_swift_ca_cert =  $nb_ganeti_ca_cert
     $puppetdb_api = "https://${puppetdb_host}:${puppetdb_microservice_port}/"
 
 
@@ -205,6 +206,7 @@ class profile::netbox (
         swift_auth_url  => $swift_auth_url,
         swift_user      => $swift_user,
         swift_key       => $swift_key,
+        swift_ca        => $nb_swift_ca_cert,
         swift_container => $swift_container,
         ldap_server     => $ldap_config['ro-server'],
         redis_host      => $redis_host,
