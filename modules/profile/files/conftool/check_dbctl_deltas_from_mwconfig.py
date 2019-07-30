@@ -107,6 +107,5 @@ def main():
 
 if __name__ == '__main__':
     rv, message = main()
-    if message:
-        print(message, file=sys.stderr)
+    print(message)
     sys.exit(rv)
