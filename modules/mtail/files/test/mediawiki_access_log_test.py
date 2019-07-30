@@ -25,18 +25,18 @@ class MediaWikiAccessLogTest(unittest.TestCase):
 
     def testByHandler(self):
         """Test requests are correctly divided by handler."""
-        s = self.store.get_samples('apache_http_requests_total')
+        s = self.store.get_samples('mediawiki_http_requests_duration_count')
         self.assertIn((self.id_str('php7'), 5), s)
         self.assertIn((self.id_str('hhvm'), 3), s)
         self.assertIn((self.id_str('static', code=301), 1), s)
 
     def testByBucket(self):
         """Tests requests are correctly divided by bucket."""
-        s = self.store.get_samples('apache_http_requests_duration_seconds')
-        req_id = self.id_str('php7') + ',bucket=0.05'
+        s = self.store.get_samples('mediawiki_http_requests_duration_bucket')
+        req_id = self.id_str('php7') + ',le=0.05'
         self.assertIn((req_id, 2), s)
-        req_id = self.id_str('php7') + ',bucket=0.1'
+        req_id = self.id_str('php7') + ',le=0.1'
         self.assertIn((req_id, 3), s)
         # All similar requests are in bucket +inf
-        req_id = self.id_str('php7') + ',bucket=+Inf'
+        req_id = self.id_str('php7') + ',le=+Inf'
         self.assertIn((req_id, 5), s)

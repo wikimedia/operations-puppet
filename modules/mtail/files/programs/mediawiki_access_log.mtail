@@ -1,21 +1,29 @@
 # Parser for the MediaWiki apache log format, specialized for MediaWiki. See https://wikitech.wikimedia.org/wiki/Apache_log_format
 # LogFormat "%{%Y-%m-%dT%H:%M:%S}t    %D	%a	%R/%>s	%B	%m	http://%{Host}i%U%q	-	%{Content-Type}o	%{Referer}i	%{X-Forwarded-For}i	%{User-Agent}i	%{Accept-Language}i	%{X-Analytics}i	%u	%{c}a" wmf
 
-# Metric: apache_http_response_size_bytes_total
+# Metric: mediawiki_http_response_size_bytes_total
 # Total bytes returned to clients (excluding headers)
-counter apache_http_response_size_bytes_total by handler, method, code
-# Metric: apache_http_requests_duration_seconds
+counter mediawiki_http_response_size_bytes_total by handler, method, code
+
+# TODO: the following metrics are all forming an histogram. Use an histogram
+# in future versions of mtail.
+
+# Metric: mediawiki_http_requests_duration_bucket
 # Counter simulating a histogram of request duration
-counter apache_http_requests_duration_seconds by handler, method, code, bucket
-# Metric: apache_http_requests_total
+counter mediawiki_http_requests_duration_bucket by handler, method, code, le
+
+# Metric: mediawiki_http_requests_duration_count
 # Counter for all requests
-counter apache_http_requests_total            by handler, method, code
-# Metric: apache_http_requests_duration_total_seconds
-# Counter for the total time spent answering requests. Useful to get trends.
-counter apache_http_requests_duration_total_seconds by handler, method, code
-# Metric: apache_http_bad_format_lines
+counter mediawiki_http_requests_duration_count by handler, method, code
+
+# Metric: mediawiki_http_requests_duration_sum
+# Counter for the total time spent answering requests
+counter mediawiki_http_requests_duration_sum by handler, method, code
+
+# Metric: mediawiki_http_bad_format_lines
 # Counter for lines in the log not conforming to our regexp
-counter apache_http_bad_format_lines_total
+counter mediawiki_http_bad_format_lines_total
+
 /^/ +
 /(?P<date>\d{4}\-\d{2}\-\d{2}T\d{2}:\d{2}:\d{2})\t/ + # %{%Y-%m-%dT%H:%M:%S}t the response timestamp, in date format.
 /(?P<time_us>\d+)\t/ +   # %D - The time taken to serve the request, in microseconds.
@@ -27,86 +35,86 @@ counter apache_http_bad_format_lines_total
 /http:\/\/[^\/]+\/\S+\t/ # http://%{Host}i%U%q the http url
 {
     strptime($date, "2006-01-02T15:04:05")
-    apache_http_requests_total[$handler][$method][$code]++
-    apache_http_requests_duration_total_seconds[$handler][$method][$code] += float($time_us) * 0.000001
-    apache_http_response_size_bytes_total[$handler][$method][$code] += $resp_size
+    mediawiki_http_requests_duration_count[$handler][$method][$code]++
+    mediawiki_http_requests_duration_sum[$handler][$method][$code] += float($time_us) * 0.000001
+    mediawiki_http_response_size_bytes_total[$handler][$method][$code] += $resp_size
     # 5ms bucket
     $time_us < 5000 {
-        apache_http_requests_duration_seconds[$handler][$method][$code]["0.005"]++
+        mediawiki_http_requests_duration_bucket[$handler][$method][$code]["0.005"]++
     }
 
     # 10ms bucket.
     $time_us <= 10000 {
-        apache_http_requests_duration_seconds[$handler][$method][$code]["0.01"]++
+        mediawiki_http_requests_duration_bucket[$handler][$method][$code]["0.01"]++
     }
 
     # 25ms bucket.
     $time_us <= 25000 {
-        apache_http_requests_duration_seconds[$handler][$method][$code]["0.025"]++
+        mediawiki_http_requests_duration_bucket[$handler][$method][$code]["0.025"]++
     }
 
     # 50ms bucket.
     $time_us <= 50000 {
-        apache_http_requests_duration_seconds[$handler][$method][$code]["0.05"]++
+        mediawiki_http_requests_duration_bucket[$handler][$method][$code]["0.05"]++
     }
 
     # 100ms bucket.
     $time_us <= 100000 {
-        apache_http_requests_duration_seconds[$handler][$method][$code]["0.1"]++
+        mediawiki_http_requests_duration_bucket[$handler][$method][$code]["0.1"]++
     }
 
     # 250ms bucket.
     $time_us <= 250000 {
-        apache_http_requests_duration_seconds[$handler][$method][$code]["0.25"]++
+        mediawiki_http_requests_duration_bucket[$handler][$method][$code]["0.25"]++
     }
 
     # 500ms bucket.
     $time_us <= 500000 {
-        apache_http_requests_duration_seconds[$handler][$method][$code]["0.5"]++
+        mediawiki_http_requests_duration_bucket[$handler][$method][$code]["0.5"]++
     }
 
     # 1s bucket.
     $time_us <= 1000000 {
-        apache_http_requests_duration_seconds[$handler][$method][$code]["1"]++
+        mediawiki_http_requests_duration_bucket[$handler][$method][$code]["1"]++
     }
 
     # 2.5s bucket.
     $time_us <= 2500000 {
-        apache_http_requests_duration_seconds[$handler][$method][$code]["2.5"]++
+        mediawiki_http_requests_duration_bucket[$handler][$method][$code]["2.5"]++
     }
 
     # 5s bucket.
     $time_us <= 5000000 {
-        apache_http_requests_duration_seconds[$handler][$method][$code]["5"]++
+        mediawiki_http_requests_duration_bucket[$handler][$method][$code]["5"]++
     }
 
     # 10s bucket.
     $time_us <= 10000000 {
-        apache_http_requests_duration_seconds[$handler][$method][$code]["10"]++
+        mediawiki_http_requests_duration_bucket[$handler][$method][$code]["10"]++
     }
 
     # 15s bucket.
     $time_us <= 15000000 {
-        apache_http_requests_duration_seconds[$handler][$method][$code]["15"]++
+        mediawiki_http_requests_duration_bucket[$handler][$method][$code]["15"]++
     }
 
     # 20s bucket.
     $time_us <= 20000000 {
-        apache_http_requests_duration_seconds[$handler][$method][$code]["20"]++
+        mediawiki_http_requests_duration_bucket[$handler][$method][$code]["20"]++
     }
 
     # 30s bucket.
     $time_us <= 30000000 {
-        apache_http_requests_duration_seconds[$handler][$method][$code]["30"]++
+        mediawiki_http_requests_duration_bucket[$handler][$method][$code]["30"]++
     }
 
     # 60s bucket.
     $time_us <= 60000000 {
-        apache_http_requests_duration_seconds[$handler][$method][$code]["60"]++
+        mediawiki_http_requests_duration_bucket[$handler][$method][$code]["60"]++
     }
 
-    apache_http_requests_duration_seconds[$handler][$method][$code]["+Inf"]++
+    mediawiki_http_requests_duration_bucket[$handler][$method][$code]["+Inf"]++
 }
 otherwise {
-    apache_http_bad_format_lines_total++
+    mediawiki_http_bad_format_lines_total++
 }
