@@ -6,6 +6,7 @@ class role::analytics_cluster::turnilo {
     }
 
     include ::profile::druid::turnilo
+    include ::profile::tlsproxy::service
     include ::profile::base::firewall
     include ::profile::standard
 }

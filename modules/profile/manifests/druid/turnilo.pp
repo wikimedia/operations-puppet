@@ -56,10 +56,6 @@ class profile::druid::turnilo(
             'labs'       => "turnilo-${::labsproject}.${::site}.wmflabs",
         }
 
-        class { 'turnilo::proxy':
-            server_name          => $server_name,
-            ldap_server          => $ldap_config['ro-server'],
-            ldap_server_fallback => $ldap_config['ro-server-fallback'],
-        }
+        include ::profile::druid::turnilo::proxy
     }
 }

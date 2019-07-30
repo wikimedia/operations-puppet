@@ -16,6 +16,9 @@
         Options FollowSymLinks
         AllowOverride None
         Require all denied
+        <Files health_check>
+            Require all granted
+        </Files>
     </Directory>
 
     <Location />
@@ -24,7 +27,7 @@
         AuthBasicProvider ldap
         AuthLDAPBindDN cn=proxyagent,ou=profile,dc=wikimedia,dc=org
         AuthLDAPBindPassword <%= @proxypass %>
-        AuthLDAPURL "ldaps://<%= @ldap_server %> <%= @ldap_server_fallback %>/ou=people,dc=wikimedia,dc=org?cn"
+        AuthLDAPURL "ldaps://<%= @ldap_server_primary %> <%= @ldap_server_fallback %>/ou=people,dc=wikimedia,dc=org?cn"
         Require ldap-group cn=wmf,ou=groups,dc=wikimedia,dc=org
         Require ldap-group cn=nda,ou=groups,dc=wikimedia,dc=org
     </Location>
@@ -33,6 +36,7 @@
     ErrorLog /var/log/apache2/<%= @server_name %>-error.log
     LogLevel warn
 
+    ProxyPass /health_check !
     ProxyPass / http://localhost:<%= @turnilo_port %>/
     ProxyPassReverse / http://localhost:<%= @turnilo_port %>/
 </VirtualHost>
