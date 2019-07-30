@@ -408,6 +408,7 @@ puppet_ca_server: puppetmaster1001.eqiad.wmnet
 
 statistics_servers:
   - stat1004.eqiad.wmnet
+  - stat1005.eqiad.wmnet
   - stat1006.eqiad.wmnet
   - stat1007.eqiad.wmnet
   - notebook1003.eqiad.wmnet
