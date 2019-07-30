@@ -123,6 +123,7 @@ Components: main
 # sorted list, leading whitespace matters!
  thirdparty/amd-rocm25
  thirdparty/amd-rocm26
+ thirdparty/cloudera
  thirdparty/hwraid
 UDebComponents: main
 Update:
