@@ -1,3 +1,0 @@
-profile::base::nameservers:
-  - '208.80.153.254' # codfw lvs
-  - '208.80.154.254' # eqiad lvs
