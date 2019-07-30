@@ -31,7 +31,7 @@ class cdh::hive::metastore::mysql(
         }
     }
 
-    # Install the libmysql-java .jar into Hive's classpath so that
+    # Install the Mysql/Mariadb JDBC .jar into Hive's classpath so that
     # hive schematool can run.
     include cdh::hive::metastore::mysql::jar
 

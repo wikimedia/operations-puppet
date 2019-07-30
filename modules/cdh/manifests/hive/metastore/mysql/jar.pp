@@ -9,14 +9,8 @@
 class cdh::hive::metastore::mysql::jar {
     Package['hive'] -> Class['cdh::hive::metastore::mysql::jar']
 
-    if (!defined(Package['libmysql-java'])) {
-        package { 'libmysql-java':
-            ensure => 'installed',
-        }
-    }
-    file { '/usr/lib/hive/lib/libmysql-java.jar':
-        ensure  => 'link',
-        target  => '/usr/share/java/mysql.jar',
-        require => Package['libmysql-java'],
+    cdh::mysql_jdbc { 'hive-mysql-jar':
+        link_path     => '/usr/lib/hive/lib/libmysql-java.jar',
+        use_mysql_jar => true,
     }
 }

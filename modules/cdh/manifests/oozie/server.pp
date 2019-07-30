@@ -212,17 +212,10 @@ class cdh::oozie::server(
 
     if ($jdbc_protocol == 'mysql') {
         # Need libmysql-java in /var/lib/oozie.
-        if (!defined(Package['libmysql-java'])) {
-            package { 'libmysql-java':
-                ensure => 'installed',
-            }
-        }
-
-        # symlink mysql.jar into /var/lib/oozie
-        file { '/var/lib/oozie/mysql.jar':
-            ensure  => 'link',
-            target  => '/usr/share/java/mysql.jar',
-            require => [Package['oozie'], Package['libmysql-java']],
+        cdh::mysql_jdbc { 'oozie-mysql-jar':
+            link_path     => '/var/lib/oozie/mysql.jar',
+            use_mysql_jar => true,
+            require       => Package['oozie'],
         }
 
         # Run ooziedb.sh to create the oozie database schema.

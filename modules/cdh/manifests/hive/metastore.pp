@@ -16,8 +16,8 @@ class cdh::hive::metastore(
     }
 
     # If the metastore will use MySQL for storage, then
-    # we need to make sure the libmysql-java .jar is in
-    # hive-metastore's classpath before it launches.
+    # we need to make sure the Mysql/Mariadb JDBC .jar is
+    # in hive-metastore's classpath before it launches.
     if $::cdh::hive::jdbc_protocol == 'mysql' {
         include cdh::hive::metastore::mysql::jar
         Class['cdh::hive::metastore::mysql::jar'] -> Service['hive-metastore']
