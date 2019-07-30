@@ -68,7 +68,7 @@ class base::puppet(
         ensure => directory,
         owner  => 'root',
         group  => 'root',
-        mode   => '0550',
+        mode   => '0555',
     }
 
     file { '/etc/puppetlabs/facter/facter.conf':
