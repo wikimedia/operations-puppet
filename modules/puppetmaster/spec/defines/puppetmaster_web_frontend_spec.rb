@@ -68,12 +68,24 @@ describe 'puppetmaster::web_frontend' do
         end
       end
       describe 'test canary hosts' do
+        context 'Error if canary_host does not resolve' do
+          before(:each) do
+            params.merge!(
+              canary_hosts: [
+                'nxdomain.example.org', # It may make more senses to use resources we control
+              ]
+            )
+          end
+          it do
+            is_expected.to raise_error(Puppet::Error, /nxdomain.example.org has no IP addresses/)
+          end
+        end
         context 'Add some canary hosts' do
           before(:each) do
             params.merge!(
               canary_hosts: [
                 'www.example.org', # This test hard codes the A/AAAA answers below
-                'nxdomain.example.org', # It may make more senses to use resources we control
+                'www.example.net', # This test hard codes the A/AAAA answers below
               ]
             )
           end
@@ -84,6 +96,8 @@ describe 'puppetmaster::web_frontend' do
               priority: '90'
             ).with_content(
               %r{RewriteEngine\s+On
+              \s+RewriteCond\s+expr\s+"-R\s+'2606:2800:220:1:248:1893:25C8:1946'"\s+\[OR\]
+              \s+RewriteCond\s+expr\s+"-R\s+'93\.184\.216\.34'"\s+\[OR\]
               \s+RewriteCond\s+expr\s+"-R\s+'2606:2800:220:1:248:1893:25C8:1946'"\s+\[OR\]
               \s+RewriteCond\s+expr\s+"-R\s+'93\.184\.216\.34'"
               \s+RewriteRule\s+\^\s+balancer://canarybackend%\{REQUEST_URI\}\s+\[P,QSA\]

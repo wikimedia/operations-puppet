@@ -10,6 +10,7 @@ def get_addresses(hostname)
       answers << answer.map { |ans| ans.address.to_s }
     end
   end
+  raise Puppet::Error, "#{hostname} has no IP addresses" if answers.empty?
   answers.flatten.sort
 end
 -%>
@@ -63,7 +64,7 @@ end
       <%- @canary_hosts.each do |canary_host| -%>
         <%- addresses = get_addresses(canary_host) -%>
         <%- addresses.each do |ip| -%>
-    RewriteCond expr "-R '<%= ip %>'"<% unless ip == addresses.last %> [OR]<% end %>
+    RewriteCond expr "-R '<%= ip %>'"<% unless ip == addresses.last and canary_host == @canary_hosts.last %> [OR]<% end %>
         <%- end -%>
       <%- end -%>
     RewriteRule ^ balancer://canarybackend%{REQUEST_URI} [P,QSA]
