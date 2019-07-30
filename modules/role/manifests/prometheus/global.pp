@@ -39,6 +39,8 @@ class role::prometheus::global {
             '{__name__=~"^.*:xcps_.*"}',
             # blackbox_exporter probes results
             '{__name__=~"^probe_.*"}',
+            # Bird prefix export count
+            '{__name__="bird_protocol_prefix_export_count"}',
           ],
         },
         'static_configs' => [
