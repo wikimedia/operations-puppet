@@ -34,7 +34,7 @@ class profile::puppetmaster::common (
         reports              => 'puppetdb',
     }
 
-    if $storeconfigs == 'puppetdb' {
+    if $storeconfigs == 'puppetdb' and os_version('debian <= stretch') {
         apt::repository { 'wikimedia-puppetdb4':
             uri        => 'http://apt.wikimedia.org/wikimedia',
             dist       => "${::lsbdistcodename}-wikimedia",

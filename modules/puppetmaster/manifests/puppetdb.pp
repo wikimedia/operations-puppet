@@ -35,11 +35,13 @@ class puppetmaster::puppetdb(
 
     ## PuppetDB installation
 
-    apt::repository { 'wikimedia-puppetdb4':
-        uri        => 'http://apt.wikimedia.org/wikimedia',
-        dist       => "${::lsbdistcodename}-wikimedia",
-        components => 'component/puppetdb4',
-        before     => Class['puppetdb::app'],
+    if os_version('debian <= stretch') {
+        apt::repository { 'wikimedia-puppetdb4':
+            uri        => 'http://apt.wikimedia.org/wikimedia',
+            dist       => "${::lsbdistcodename}-wikimedia",
+            components => 'component/puppetdb4',
+            before     => Class['puppetdb::app'],
+        }
     }
 
     class { 'puppetdb::app':
