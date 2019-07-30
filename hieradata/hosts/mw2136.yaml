@@ -1,0 +1,2 @@
+profile::mediawiki::vhost_feature_flags:
+  php72_only: true
