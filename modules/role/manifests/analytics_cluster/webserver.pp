@@ -7,6 +7,8 @@ class role::analytics_cluster::webserver {
     include ::profile::analytics::httpd
     include ::profile::analytics::cluster::gitconfig
 
+    include ::profile::tlsproxy::service
+
     include ::profile::statistics::web
 
     include ::profile::base::firewall

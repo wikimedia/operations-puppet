@@ -2,3 +2,19 @@ cluster: analytics
 admin::groups:
   - statistics-web-users
   - statistics-admins
+
+# TLS Terminator settings
+# Please note: the service name is used to pick up the
+# TLS certificate tha nginx will use. Since the Analytics
+# team has only one certificate for its UIs, then the service
+# name listed does not reflect how the nginx proxy is set up.
+# superset.wikimedia.org is a SAN of the yarn.wikimedia.org
+# TLS certificate.
+profile::tlsproxy::instance::ssl_compatibility_mode: strong
+profile::tlsproxy::service::cert_domain_name: yarn.wikimedia.org
+profile::tlsproxy::service::upstream_ports:
+  - 80
+profile::tlsproxy::service::check_uri: "/"
+profile::tlsproxy::service::check_service: "analytics.wikimedia.org"
+profile::tlsproxy::service::notes_url: "https://wikitech.wikimedia.org/wiki/Analytics/Systems/Cluster"
+profile::tlsproxy::service::contact_group: 'analytics'
