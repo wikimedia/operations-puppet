@@ -38,8 +38,8 @@ class profile::conftool::dbctl_client() {
 
     nrpe::monitor_service { 'dbctl_deltas_from_mwconfig':
         ensure         => present,
-        description    => 'dbctl differs from mediawiki-config, did you forget to update both?',
-        nrpe_command   => $prod_vs_dbctl_filename,
+        description    => "dbctl differs from mediawiki-config in ${::site}, did you forget to update both?",
+        nrpe_command   => "${prod_vs_dbctl_filename} -d ${::site}",
         critical       => false,
         check_interval => 5,
         retry_interval => 5,
