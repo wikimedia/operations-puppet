@@ -18,8 +18,6 @@ volume:
     root:
       filesystem: ext4
       size: 19GiB
-    swap:
-      size: 512MiB
 packages:
   sources:
     wikimedia:
