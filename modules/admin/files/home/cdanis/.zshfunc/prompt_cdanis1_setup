@@ -17,6 +17,11 @@ This theme works best with a dark background.
 EOF
 }
 
+# Wrapper needed at least for zsh 5.3.1 (Debian stretch)
+cd_strftime() {
+  strftime "$1" $EPOCHSECONDS
+}
+
 prompt_cdanis1_setup () {
   setopt localoptions nowarncreateglobal
   prompt_cdanis1_color1=${1:-'blue'}
@@ -32,7 +37,7 @@ prompt_cdanis1_setup () {
 
   zmodload zsh/datetime
   # the delta between the server's 'local' time and my usual local time
-  prompt_tz_offset=$(( ($(strftime %H) - $(TZ='America/New_York' strftime %H) + 24) % 24 ))
+  prompt_tz_offset=$(( ($(cd_strftime %H) - $(TZ='America/New_York' cd_strftime %H) + 24) % 24 ))
 
   add-zsh-hook precmd prompt_cdanis1_precmd
 }
@@ -75,8 +80,8 @@ prompt_cdanis1_precmd () {
   clock_prompt=""
   clocks_top=(🕛 🕐 🕑 🕒 🕓 🕔 🕕 🕖 🕗 🕘 🕙 🕚)
   clocks_bottom=(🕧 🕜 🕝 🕞 🕟 🕠 🕡 🕢 🕣 🕤 🕥 🕦)
-  hour=$(TZ='America/New_York' strftime %I)
-  minute=$(TZ='America/New_York' strftime %M)
+  hour=$(TZ='America/New_York' cd_strftime %I)
+  minute=$(TZ='America/New_York' cd_strftime %M)
   case "$minute" in
     (<45-59>|<0-15>))
       clock_prompt="$clocks_top[$(( ((12 + $hour + (($minute>44)?1:0) )%12) + 1 ))]"
