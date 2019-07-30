@@ -1,11 +1,15 @@
-# Managed by puppet
+# This file is managed by Puppet
+# modules/profile/templates/initscripts/updatetools.systemd.erb
 [Unit]
 Description=toolforge updatetools service, update tools and user tables
+# We need NSS to be fully setup so we can find our User/Group
+Wants=nss-user-lookup.target
+After=nss-user-lookup.target
 
 [Service]
 Type=simple
 Restart=always
-ExecStart=/usr/local/bin/updatetools
+ExecStart=/usr/local/bin/updatetools --project <%= @labsproject %>
 ProtectSystem=full
 ProtectHome=read-only
 PrivateTmp=true

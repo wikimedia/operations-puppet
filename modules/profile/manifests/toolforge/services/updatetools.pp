@@ -2,7 +2,11 @@ class profile::toolforge::services::updatetools(
     $active_node = hiera('profile::toolforge::services::active_node'),
     $updatetools_enabled = hiera('profile::toolforge::services::updatetools_enabled'),
 ) {
-    require_package('python-mysqldb')
+    require_package([
+        'python3-ldap3',
+        'python3-pymysql',
+        'python3-yaml',
+    ])
 
     file { '/usr/local/bin/updatetools':
         ensure => file,
