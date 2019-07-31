@@ -83,6 +83,15 @@ class Hiera
           return Backend.datafile(config_section, scope, 'regex', "yaml")
         end
 
+        # Special case: 'netbox' repository.
+        # We use a different datadir in this case.
+        # Example: netbox/common will search in the common source
+        # within the netbox datadir
+        if %r{netbox/(.*)} =~ source
+          config_section = :netbox
+          source = Regexp.last_match(1)
+        end
+
         # Special case: 'private' repository.
         # We use a different datadir in this case.
         # Example: private/common will search in the common source

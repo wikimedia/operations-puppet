@@ -4,3 +4,4 @@ fixtures:
         apt: "../../../../apt"
         ssh: "../../../../ssh"
         wmflib: "../../../../wmflib"
+        stdlib: "../../../../stdlib"

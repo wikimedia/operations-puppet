@@ -65,3 +65,14 @@ module RSpec::Puppet
     end
   end
 end
+# Helper class for on_supported_os
+class WMFConfig
+  def self.test_on(min = 8, max = 10)
+    {
+      supported_os: [
+        'operatingsystem' => 'Debian',
+        'operatingsystemrelease' => (min.to_i..max.to_i).step(1).to_a.map(&:to_s),
+      ]
+    }
+  end
+end

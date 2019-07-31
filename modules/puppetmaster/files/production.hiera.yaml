@@ -5,6 +5,7 @@
   # require all top level keys i.e. backends to be defined in this array
   # we have also created an empty custom backend to keep the hiera cli happy
   - private3
+  - netbox
 :nuyaml3:
   :datadir: /etc/puppet/hieradata
   :expand_path:
@@ -12,8 +13,11 @@
     - "%{::site}"
 :private3:
   :datadir: /etc/puppet/private/hieradata
+:netbox:
+  :datadir: /etc/puppet/netbox/hieradata
 :hierarchy:
   - "hosts/%{::hostname}"
+  - "netbox/hosts/%{::hostname}"
   - "regex/%{::fqdn}"
   - "%{::site}"
   - "private/hosts/%{::hostname}" # Currently only used for labtest hosts
@@ -24,3 +28,4 @@
   - "private/role/common/%{::_role}"
   - "common"
   - "private/common"
+  - "netbox/common"
