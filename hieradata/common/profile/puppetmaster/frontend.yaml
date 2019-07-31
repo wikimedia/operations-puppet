@@ -1,3 +1,2 @@
 profile::puppetmaster::frontend::canary_hosts:
   - neodymium.eqiad.wmnet
-  - sarin.codfw.wmnet
