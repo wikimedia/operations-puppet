@@ -503,5 +503,40 @@
   dst_ports:
     - 9042
 
+  # Restrouter. Allow access to specific ports for the various services. Do it
+  # for all LVS service IPS to keep this manageable
+- action: allow
+  src_selector: calico/k8s_ns == 'restrouter'
+  dst_net: 10.2.2.0/24 # All of eqiad LVS IPs
+  protocol: tcp
+  dst_ports:
+    - 10042
+    - 19000
+    - 1970
+    - 24766
+    - 32192
+    - 7231
+    - 7232
+    - 7233
+    - 8080
+    - 8888
+    - 9632
+- action: allow
+  src_selector: calico/k8s_ns == 'restrouter'
+  dst_net: 10.2.1.0/24 # All of codfw LVS IPs
+  protocol: tcp
+  dst_ports:
+    - 10042
+    - 19000
+    - 1970
+    - 24766
+    - 32192
+    - 7231
+    - 7232
+    - 7233
+    - 8080
+    - 8888
+    - 9632
+
   # Deny everything else
 - action: deny

@@ -84,6 +84,10 @@ profile::kubernetes::deployment_server::services:
     username: termbox
     group: wikidev
     mode: '0640'
+  restrouter:
+    username: restrouter
+    group: wikidev
+    mode: '0640'
 
 # Specified in the private repo in this form
 #profile::kubernetes::deployment_server_secrets::services:
@@ -124,6 +128,8 @@ profile::kubernetes::deployment_server::services:
 #  sessionstore:
 #    token: dummy
 #  termbox:
+#    token: dummy
+#  restrouter:
 #    token: dummy
 
 profile::ci::kubernetes_config::user: jenkins
