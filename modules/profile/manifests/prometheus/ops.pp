@@ -602,9 +602,15 @@ class profile::prometheus::ops (
       },
     ]
 
-    prometheus::pdu_config { "pdu_${::site}":
+    prometheus::pdu_config { "pdu_sentry3_${::site}":
         dest => "${targets_path}/pdu_sentry3_${::site}.yaml",
         site => $::site,
+    }
+
+    prometheus::pdu_config { "pdu_sentry4_${::site}":
+        dest  => "${targets_path}/pdu_sentry4_${::site}.yaml",
+        site  => $::site,
+        model => 'sentry4',
     }
 
     # T221099
