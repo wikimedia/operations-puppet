@@ -38,13 +38,15 @@ class profile::kubernetes::deployment_server(
     $envs.each |String $env, String $master_host| {
         $real_services.each |String $service, Hash $data| {
             # lint:ignore:variable_scope
-            k8s::kubeconfig { "/etc/kubernetes/${service}-${env}.config":
-                master_host => $master_host,
-                username    => $data['username'],
-                token       => $data['token'],
-                group       => $data['group'],
-                mode        => $data['mode'],
-                namespace   => $data['namespace'],
+            if has_key($data, 'username') and has_key($data, 'token') {
+                k8s::kubeconfig { "/etc/kubernetes/${service}-${env}.config":
+                    master_host => $master_host,
+                    username    => $data['username'],
+                    token       => $data['token'],
+                    group       => $data['group'],
+                    mode        => $data['mode'],
+                    namespace   => $data['namespace'],
+                }
             }
             # lint:endignore
         }
