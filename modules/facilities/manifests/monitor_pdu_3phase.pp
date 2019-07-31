@@ -2,8 +2,9 @@ define facilities::monitor_pdu_3phase(
     $ip,
     $row,
     $site,
-    $breaker  = '30',
-    $redundant= true
+    $breaker   = '30',
+    $redundant = true,
+    $model     = 'sentry3',
 ) {
     @monitoring::host { $title:
         ip_address => $ip,
