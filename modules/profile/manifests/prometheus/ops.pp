@@ -575,9 +575,9 @@ class profile::prometheus::ops (
         # https://github.com/prometheus/snmp_exporter/tree/master/generator
         'metric_relabel_configs' => [
           { 'source_labels' => ['__name__'],
-            'regex'         => '^[^s][^n][^m][^p]_',
+            'regex'         => '(^([^s]|s($|[^n]|n($|[^m]|m($|[^p]|p($|[^_]))))).*$)',
             'target_label'  => '__name__',
-            'replacement'   => 'pdu_$1',
+            'replacement'   => 'pdu_$0',
           },
         ],
       },
@@ -606,9 +606,9 @@ class profile::prometheus::ops (
         # https://github.com/prometheus/snmp_exporter/tree/master/generator
         'metric_relabel_configs' => [
           { 'source_labels' => ['__name__'],
-            'regex'         => '^[^s][^n][^m][^p]_',
+            'regex'         => '(^([^s]|s($|[^n]|n($|[^m]|m($|[^p]|p($|[^_]))))).*$)',
             'target_label'  => '__name__',
-            'replacement'   => 'pdu_$1',
+            'replacement'   => 'pdu_$0',
           },
         ],
       },
