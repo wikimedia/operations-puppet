@@ -10,6 +10,7 @@
   rbi = rebase -i --autosquash
   cif = !git commit --fixup=$(git-log-vgrep-most-recent-commit 'fixup!')
   lg = log -p HEAD..@{u}
+  push-for-review = push origin HEAD:refs/for/master
 [user]
 	name = Martin Urbanec
 	email = martin.urbanec@wikimedia.cz
@@ -18,3 +19,5 @@
 [gitreview]
 	remote = origin
 	username = urbanecm
+[url "ssh://urbanecm@gerrit.wikimedia.org:29418/"]
+	insteadOf = https://gerrit.wikimedia.org/r/
