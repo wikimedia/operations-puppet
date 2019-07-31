@@ -57,7 +57,11 @@ last_run_success() {
     SafeYAML::OPTIONS[:default_mode] = :safe
     begin
         a = YAML.load(STDIN.read)
-        puts a['resources']['failed'] + a['events']['failure']
+        if a['resources']['total'].zero?
+          puts 1
+        else
+          puts a['resources']['failed'] + a['events']['failure']
+        end
     rescue
         # Consider malformed yaml as a failure
         puts 1
