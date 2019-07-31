@@ -32,6 +32,11 @@
         Require ldap-group cn=nda,ou=groups,dc=wikimedia,dc=org
     </Location>
 
+    <Location /health_check>
+        Require all granted
+        Alias /var/www/health_check
+    </Location>
+
     CustomLog /var/log/apache2/<%= @server_name %>-access.log wmf
     ErrorLog /var/log/apache2/<%= @server_name %>-error.log
     LogLevel warn
