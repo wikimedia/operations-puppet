@@ -18,8 +18,8 @@ profile::druid::turnilo::monitoring_enabled: true
 # TLS certificate tha nginx will use. Since the Analytics
 # team has only one certificate for its UIs, then the service
 # name listed does not reflect how the nginx proxy is set up.
-# superset.wikimedia.org is a SAN of the yarn.wikimedia.org
-# TLS certificate.
+# turnilo.wikimedia.org and pivot.wikimedia.org are SANs
+# of the yarn.wikimedia.org TLS certificate.
 profile::tlsproxy::instance::ssl_compatibility_mode: strong
 profile::tlsproxy::service::cert_domain_name: yarn.wikimedia.org
 profile::tlsproxy::service::upstream_ports:

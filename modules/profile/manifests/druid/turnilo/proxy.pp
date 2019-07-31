@@ -19,6 +19,8 @@ class profile::druid::turnilo::proxy(
     Stdlib::Fqdn $server_name = lookup('profile::turnilo::proxy::server_name', { 'default_value' =>'turnilo.wikimedia.org' }),
 ) {
 
+    require ::profile::analytics::httpd::utils
+
     $proxypass = $passwords::ldap::production::proxypass
     $ldap_server_primary = $ldap_config['ro-server']
     $ldap_server_fallback = $ldap_config['ro-server-fallback']
@@ -26,5 +28,6 @@ class profile::druid::turnilo::proxy(
     # Set up the VirtualHost
     httpd::site { $server_name:
         content => template('profile/druid/turnilo/proxy/turnilo.vhost.erb'),
+        require => File['/var/www/health_check'],
     }
 }
