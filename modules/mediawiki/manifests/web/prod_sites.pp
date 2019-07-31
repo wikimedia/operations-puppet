@@ -268,7 +268,9 @@ class mediawiki::web::prod_sites(String $fcgi_proxy) {
             },
             additional_rewrites => {
 
-                'early' => [],
+                'early' => [
+                    '    Include "sites-enabled/wikidata-uris.incl"'
+                ],
                 'late'  => [
                     '    # /data/ path T163922',
                     '    RewriteRule ^/data/(.*)/(.*)$ %{ENV:RW_PROTO}://commons.wikimedia.org/wiki/Special:PageData/$1/$2 [R=301,QSA]'
@@ -296,7 +298,9 @@ class mediawiki::web::prod_sites(String $fcgi_proxy) {
             },
             additional_rewrites => {
 
-                'early' => [],
+                'early' => [
+                    '    Include "sites-enabled/wikidata-uris.incl"'
+                ],
                 'late'  => [
                     '    # /data/ path T163922',
                     '    RewriteRule ^/data/(.*)/(.*)$ %{ENV:RW_PROTO}://test-commons.wikimedia.org/wiki/Special:PageData/$1/$2 [R=301,QSA]'
