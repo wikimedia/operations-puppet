@@ -15,4 +15,7 @@ class role::analytics_test_cluster::client {
     include ::profile::analytics::cluster::users
     include ::profile::kerberos::client
     include ::profile::kerberos::keytabs
+
+    # Need refinery to test Refine jobs
+    include ::profile::analytics::refinery
 }
