@@ -11,13 +11,14 @@
 define prometheus::pdu_config(
     $dest,
     $site,
+    $model = 'sentry3',
     $labels = {},
 ) {
     validate_string($dest)
     validate_string($site)
     validate_hash($labels)
 
-    $pdu_resources = query_resources(false, 'Facilities::Monitor_pdu_3phase[~".*"]', false)
+    $pdu_resources = query_resources(false, "Facilities::Monitor_pdu_3phase[~\".*\"]{model=${model}}", false)
 
     file { $dest:
         ensure  => present,
