@@ -67,6 +67,8 @@ if (@metastore_host == @fqdn)
     <value>SchemaTable</value>
   </property>
 
+<% end -%>
+
 <% if @hive_metastore_kerberos_keytab_file -%>
   <property>
     <name>hive.metastore.kerberos.keytab.file</name>
@@ -86,7 +88,6 @@ if (@metastore_host == @fqdn)
     <name>hive.metastore.sasl.enabled</name>
     <value><%= @hive_metastore_sasl_enabled %></value>
   </property>
-<% end -%>
 <% end -%>
 
   <property>
