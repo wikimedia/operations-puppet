@@ -100,7 +100,6 @@ if $realm == 'labs' {
 } else {
     $nameservers = $site ? {
         'eqiad' => [ '208.80.154.254',  '208.80.153.254' ], # eqiad -> eqiad, codfw
-        'codfw' => [ '208.80.153.254',  '208.80.154.254' ], # codfw -> codfw, eqiad
         default => [ '10.3.0.1' ], # default -> anycast
     }
 }
