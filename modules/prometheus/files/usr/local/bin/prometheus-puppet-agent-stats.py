@@ -39,6 +39,9 @@ def _summary_stats(puppet_state_dir, registry):
     resources_failed = Gauge('resources_failed', 'Number of failed resources on last run',
                              namespace='puppet_agent', registry=registry)
     resources_failed.set(0)
+    resources_total = Gauge('resources_total', 'Number of total resources on last run',
+                            namespace='puppet_agent', registry=registry)
+    resources_total.set(0)
     collection_error = Gauge('collection_error', 'Error collecting data',
                              namespace='puppet_agent', registry=registry)
     collection_error.set(0)
@@ -65,6 +68,7 @@ def _summary_stats(puppet_state_dir, registry):
         last_run.set(summary_yaml['time'].get('last_run', 0))
     if 'resources' in summary_yaml:
         resources_failed.set(summary_yaml['resources'].get('failed', 1))
+        resources_total.set(summary_yaml['resources'].get('total', -1))
     if 'events' in summary_yaml:
         failed.set(summary_yaml['events'].get('failure', 1))
     # Consider puppet failed even when we can't find the failure count
