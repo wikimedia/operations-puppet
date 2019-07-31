@@ -557,7 +557,38 @@ class profile::prometheus::ops (
           'module' => [ "pdu_${::site}" ],
         },
         'file_sd_configs' => [
-          { 'files' => [ "${targets_path}/pdu_*.yaml" ] }
+          { 'files' => [ "${targets_path}/pdu_sentry3_*.yaml" ] }
+        ],
+        'relabel_configs' => [
+          { 'source_labels' => ['__address__'],
+            'target_label'  => '__param_target',
+          },
+          { 'source_labels' => ['__param_target'],
+            'target_label'  => 'instance',
+          },
+          { 'target_label' => '__address__',
+            'replacement'  => 'netmon1002.wikimedia.org:9116',
+          },
+        ],
+        # Prefix all metrics with pdu_ (except snmp_ from snmp_exporter itself)
+        # Saves having to tweak the yaml files from snmp-exporter generator
+        # https://github.com/prometheus/snmp_exporter/tree/master/generator
+        'metric_relabel_configs' => [
+          { 'source_labels' => ['__name__'],
+            'regex'         => '^[^s][^n][^m][^p]_',
+            'target_label'  => '__name__',
+            'replacement'   => 'pdu_$1',
+          },
+        ],
+      },
+      {
+        'job_name'        => 'pdu_sentry4',
+        'metrics_path'    => '/snmp',
+        'params'          => {
+          'module' => [ "pdu_sentry4_${::site}" ],
+        },
+        'file_sd_configs' => [
+          { 'files' => [ "${targets_path}/pdu_sentry4_*.yaml" ] }
         ],
         'relabel_configs' => [
           { 'source_labels' => ['__address__'],
@@ -584,7 +615,7 @@ class profile::prometheus::ops (
     ]
 
     prometheus::pdu_config { "pdu_${::site}":
-        dest => "${targets_path}/pdu_${::site}.yaml",
+        dest => "${targets_path}/pdu_sentry3_${::site}.yaml",
         site => $::site,
     }
 
