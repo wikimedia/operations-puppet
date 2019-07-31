@@ -5,12 +5,12 @@
   # require all top level keys i.e. backends to be defined in this array
   # we have also created an empty custom backend to keep the hiera cli happy
   - private3
-:nuyaml3:
+:nuyaml:
   :datadir: /etc/puppet/hieradata
   :expand_path:
     - common
     - "%{::site}"
-:private3:
+:private:
   :datadir: /etc/puppet/private/hieradata
 :hierarchy:
   - "hosts/%{::hostname}"

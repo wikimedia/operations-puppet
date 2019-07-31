@@ -71,12 +71,12 @@ class Hiera
       def initialize(cache = nil)
         require 'yaml'
         @cache = cache || Filecache.new
-        config = Config[:nuyaml3]
+        config = Config[:nuyaml]
         @expand_path = config[:expand_path] || []
       end
 
       def get_path(key, scope, source, context)
-        config_section = :nuyaml3
+        config_section = :nuyaml
         # Special case: regex
         if %r{^regex/}.match(source)
           Hiera.debug("Regex match going on - using regex.yaml")
@@ -88,7 +88,7 @@ class Hiera
         # Example: private/common will search in the common source
         # within the private datadir
         if %r{private/(.*)} =~ source
-          config_section = :private3
+          config_section = :private
           source = Regexp.last_match(1)
         end
 
@@ -97,7 +97,7 @@ class Hiera
         # Example: private/common will search in the common source
         # within the private datadir
         if %r{secret/(.*)} =~ source
-          config_section = :secret3
+          config_section = :secret
           source = Regexp.last_match(1)
         end
 
