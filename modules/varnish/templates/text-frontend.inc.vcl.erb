@@ -406,6 +406,7 @@ sub cluster_fe_err_synth {
 		set resp.http.Location = req.http.Location;
 		set resp.http.Connection = "keep-alive";
 		set resp.http.Content-Length = "0"; // BZ #62245
+		set resp.http.Access-Control-Allow-Origin = "*"; // Allow client-side JS to follow this redirect
 	}
 
 	if (resp.reason == "Foundation Wiki Moved") {

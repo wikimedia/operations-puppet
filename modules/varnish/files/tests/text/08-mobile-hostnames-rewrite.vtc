@@ -84,6 +84,7 @@ client c1 {
     rxresp
     expect resp.http.location == "https://en.m.wikipedia.org/wiki/Main_Page"
     expect resp.status == 302
+    expect resp.http.Access-Control-Allow-Origin == "*"
 
     txreq -url "/wiki/Main_Page" -hdr "User-Agent: nintendo" -hdr "Host: zh-classical.wikipedia.org" -hdr "X-Forwarded-Proto: https"
     rxresp
