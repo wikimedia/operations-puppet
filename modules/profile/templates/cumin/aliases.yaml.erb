@@ -114,6 +114,10 @@ kafka-logging: P{O:kafka::logging}
 kafka-logging-eqiad: A:kafka-logging and A:eqiad
 kafka-logging-codfw: A:kafka-logging and A:codfw
 kafkamon: P{O:kafka::monitoring}
+kafka-mirror-maker: P{C:profile::kafka::mirror}
+kafka-mirror-maker-jumbo: A:kafka-jumbo and A:kafka-mirror-maker
+kafka-mirror-maker-main-codfw: A:kafka-main-codfw and A:kafka-mirror-maker
+kafka-mirror-maker-main-eqiad: A:kafka-main-eqiad and A:kafka-mirror-maker
 kubernetes-etcd: P{O:etcd::kubernetes}
 kubernetes-etcd-network: P{O:etcd::networking}
 kubernetes-masters: P{O:kubernetes::master}
@@ -244,6 +248,10 @@ wdqs-test: P{O:wdqs::test}
 weblog: P{O:logging::webrequest::ops}
 webperf: P{O:webperf::processors_and_site or O:webperf::profiling_tools}
 yubiauth: P{O:yubiauth_server}
+zookeeper-main-eqiad: P{O:configcluster_stretch} and A:eqiad
+zookeeper-main-codfw: P{O:configcluster} and A:codfw
+zookeeper-druid-public: P{O:druid::public::worker} and P{C:profile::zookeeper::server}
+zookeeper-druid-analytics: P{O:druid::analytics::worker} and P{C:profile::zookeeper::server}
 
 # Miscellaneous groups
 misc-analytics: P{O:statistics::web or O:statistics::cruncher or O:statistics::private or O:piwik or O:analytics_cluster::coordinator or O:kafka::monitoring or O:analytics_cluster::webserver} or A:eventlogging
