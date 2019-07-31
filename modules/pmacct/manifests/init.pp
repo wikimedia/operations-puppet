@@ -43,15 +43,6 @@ class pmacct(
         before  => File['/etc/pmacct/nfacctd.conf'],
     }
 
-    file { '/etc/pmacct/receivers.lst':
-        ensure => present,
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0440',
-        source => 'puppet:///modules/pmacct/receivers.lst',
-        before => File['/etc/pmacct/nfacctd.conf'],
-    }
-
     file { '/etc/pmacct/nfacctd.conf':
         ensure  => present,
         owner   => 'root',

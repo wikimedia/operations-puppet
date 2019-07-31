@@ -11,7 +11,6 @@ nfacctd_disable_checks: true
 
 nfacctd_ext_sampling_rate: 1000
 nfacctd_renormalize: true
-nfprobe_direction: tag2
 pre_tag_map: /etc/pmacct/pretag.map
 
 bgp_daemon: true
@@ -21,7 +20,7 @@ bgp_aspath_radius: 2
 nfacctd_as_new: bgp
 
 <% if @kafka_brokers -%>
-plugins: kafka, tee
+plugins: kafka
 kafka_output: json
 kafka_topic: netflow
 kafka_broker_host: <%= @kafka_brokers %>
@@ -32,7 +31,4 @@ kafka_history_roundoff: m
 <% if @librdkafka_config -%>
 kafka_config_file: <%= @kafka_config_file %>
 <% end -%>
-<% else -%>
-plugins: tee
 <% end -%>
-tee_receivers: /etc/pmacct/receivers.lst
