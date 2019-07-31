@@ -4,7 +4,7 @@ daemonize: true
 pidfile: /var/run/nfacctd.pid
 syslog: daemon
 
-aggregate: src_host, dst_host, src_as, dst_as, src_port, dst_port, proto, tcpflags, as_path, peer_src_as, peer_dst_as
+aggregate: src_host, dst_host, src_as, dst_as, src_port, dst_port, proto, tcpflags, as_path, peer_src_as, peer_dst_as, tag2
 
 ! Disable some warnings due to JunOS bugs
 nfacctd_disable_checks: true
