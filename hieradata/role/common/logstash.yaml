@@ -37,8 +37,6 @@ profile::elasticsearch::common_settings:
 # Logstash specific
 logstash::heap_memory: 1g
 
-role::logstash::collector::statsd_host: statsd.eqiad.wmnet
-
 # Kibana
 role::kibana::vhost: logstash.wikimedia.org
 role::kibana::serveradmin: noc@wikimedia.org
@@ -53,13 +51,18 @@ role::kibana::ldap_groups:
   - cn=wmf,ou=groups,dc=wikimedia,dc=org
 
 profile::prometheus::statsd_exporter::mappings:
-  # In some instances, e.g. mediawiki, the sender and channel are concatenated with a dot separator.  Level is the last field.
-  - match: '^logstash\.rate\.(.*)\.(.*)$'
-    name: logstash_count
-    match_type: regex
+  # MediaWiki-specific metric title - separates on log channel
+  - match: 'logstash.rate.*.*.*'
+    name: logstash_$1_events_total
     labels:
-      sender: "$1"
-      level: "$2"
+      channel: $2
+      level: $3
+  # All others default "channel" to "sender"
+  - match: 'logstash.rate.*.*'
+    name: logstash_events_total
+    labels:
+      channel: $1
+      level: $2
 
 # these checks should not be here - T218691
 profile::elasticsearch::monitor::shard_size_warning: 150

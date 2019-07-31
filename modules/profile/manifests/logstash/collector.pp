@@ -5,13 +5,11 @@
 # Elasticsearch cluster.
 #
 # == Parameters:
-# - $statsd_host: Host to send statsd data to.
 # - $prometheus_nodes: List of prometheus nodes to allow connections from
 # - $input_kafka_ssl_truststore_password: password for jks truststore used by logstash kafka input plugin
 #
 # filtertags: labs-project-deployment-prep
 class profile::logstash::collector (
-    $statsd_host,
     $prometheus_nodes = hiera('prometheus_nodes', []),
     $input_kafka_ssl_truststore_password = hiera('profile::logstash::collector::input_kafka_ssl_truststore_password'),
     $input_kafka_consumer_group_id = hiera('profile::logstash::collector::input_kafka_consumer_group_id', undef),
@@ -428,7 +426,8 @@ class profile::logstash::collector (
     }
 
     logstash::output::statsd { 'MW_channel_rate':
-        host            => $statsd_host,
+        host            => '127.0.0.1',
+        port            => '9125',
         guard_condition => '[type] == "mediawiki" and "es" in [tags]',
         namespace       => 'logstash.rate',
         sender          => 'mediawiki',
@@ -436,7 +435,8 @@ class profile::logstash::collector (
     }
 
     logstash::output::statsd { 'OOM_channel_rate':
-        host            => $statsd_host,
+        host            => '127.0.0.1',
+        port            => '9125',
         guard_condition => '[type] == "hhvm" and [message] =~ "request has exceeded memory limit"',
         namespace       => 'logstash.rate',
         sender          => 'oom',
@@ -444,7 +444,8 @@ class profile::logstash::collector (
     }
 
     logstash::output::statsd { 'HHVM_channel_rate':
-        host            => $statsd_host,
+        host            => '127.0.0.1',
+        port            => '9125',
         guard_condition => '[type] == "hhvm" and [message] !~ "request has exceeded memory limit"',
         namespace       => 'logstash.rate',
         sender          => 'hhvm',
@@ -452,7 +453,8 @@ class profile::logstash::collector (
     }
 
     logstash::output::statsd { 'Apache2_channel_rate':
-        host            => $statsd_host,
+        host            => '127.0.0.1',
+        port            => '9125',
         guard_condition => '[type] == "apache2" and "syslog" in [tags]',
         namespace       => 'logstash.rate',
         sender          => 'apache2',
