@@ -38,7 +38,7 @@ if ! command -v docker > /dev/null; then
     echo "'docker' was not found in your $PATH. Please install docker"
     exit 1
 fi
-if ! docker info > /dev/null 2&>1 ; then
+if ! (docker info > /dev/null); then
     echo "Your current user ($USER) is not authorized to operate on the docker daemon. Please fix that."
     exit 1
 fi
