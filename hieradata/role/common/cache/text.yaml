@@ -421,6 +421,8 @@ profile::cache::varnish::common_vcl_config:
     top_domain: 'org'
     shortener_domain: 'w.wiki'
     pass_random: true
+    upload_domain: 'upload.wikimedia.org'
+    maps_domain: 'maps.wikimedia.org'
 profile::cache::varnish::separate_vcl: ['misc']
 profile::cache::varnish::frontend::fe_vcl_config:
     enable_geoiplookup: true

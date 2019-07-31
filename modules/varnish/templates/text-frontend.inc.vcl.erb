@@ -192,6 +192,12 @@ sub cluster_fe_recv_pre_purge {
 }
 
 sub cluster_fe_recv {
+	// 421 for bad H/2 coalesce (wikimedia-frontend handles synth)
+	if (req.http.Host == "<%= @vcl_config.fetch('upload_domain') %>"
+	    || req.http.Host == "<%= @vcl_config.fetch('maps_domain') %>") {
+		return (synth(421, "Misdirected Request"));
+	}
+
 	// Experiment on dealing with a buggy UA that's spamming requests in T141786
 	if (req.http.User-Agent ~ "Windows NT .*Chrome/41\.0\.2272\.76" && req.url == "/" && req.http.X-Connection-Properties ~ "SSL=TLSv1.1; C=ECDHE-ECDSA-AES128-SHA;") {
 		return (synth(401, "Buggy request, please report at https://phabricator.wikimedia.org/T141786"));

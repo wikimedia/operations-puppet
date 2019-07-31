@@ -39,6 +39,12 @@ sub cluster_fe_recv {
 	unset req.http.Authorization;
 	unset req.http.Cookie;
 
+	// 421 for bad H/2 coalesce (wikimedia-frontend handles synth)
+	if (req.http.Host != "<%= @vcl_config.fetch('upload_domain') %>"
+	    && req.http.Host != "<%= @vcl_config.fetch('maps_domain') %>") {
+		return (synth(421, "Misdirected Request"));
+	}
+
 	if (req.http.host == "<%= @vcl_config.fetch('upload_domain') %>") {
 		// CORS preflight requests
 		if (req.method == "OPTIONS" && req.http.Origin) {

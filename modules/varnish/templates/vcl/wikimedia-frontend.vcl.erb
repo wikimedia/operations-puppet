@@ -531,6 +531,14 @@ sub vcl_synth {
 		call https_error_redirect;
 		call cluster_fe_err_synth;
 
+		// This is for 421 Misdirected for bad HTTP/2 coalescing
+		// between text and upload cluster IPs:
+		if (resp.reason == "Misdirected Request") {
+			set resp.http.Connection = "keep-alive";
+			set resp.http.Content-Length = "0"; // BZ #62245
+			set resp.http.Cache-Control = "private, s-maxage=0, max-age=0, must-revalidate";
+		}
+
 		// Browser sec warning
 		if (resp.reason == "Browser Connection Security Warning") {
 			set resp.http.Connection = "keep-alive";
