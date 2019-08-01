@@ -1,4 +1,3 @@
 # db2126
 mariadb::shard: 's2'
 mariadb::binlog_format: 'ROW'
-profile::base::notifications: disabled
