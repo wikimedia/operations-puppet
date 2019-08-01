@@ -1,4 +1,0 @@
-profile::puppetmaster::frontend::canary_hosts:
-  - neodymium.eqiad.wmnet
-  - bast4002.wikimedia.org
-  - aqs1004.eqiad.wmnet
