@@ -44,7 +44,6 @@ abuse_filter_log,afl_wiki,K
 abuse_filter_log,afl_deleted,K
 abuse_filter_log,afl_patrolled_by,K
 abuse_filter_log,afl_rev_id,K
-abuse_filter_log,afl_log_id,K
 aft_article_answer,aa_feedback_id,K
 aft_article_answer,aa_field_id,K
 aft_article_answer,aa_response_rating,K
