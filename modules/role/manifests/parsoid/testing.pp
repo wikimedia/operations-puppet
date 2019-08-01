@@ -24,7 +24,8 @@ class role::parsoid::testing {
     include ::profile::mediawiki::php::monitoring
     include ::profile::mediawiki::webserver
     # restart php-fpm if the opcache available is too low
-    include ::profile::mediawiki::php::restarts
+    # currently not included because it pulls in LVS
+    # include ::profile::mediawiki::php::restarts
 
     ## Prometheus
     include ::profile::prometheus::apache_exporter
