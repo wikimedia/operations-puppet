@@ -1393,7 +1393,7 @@ node /^ldap-replica200[1-2]\.wikimedia\.org$/ {
 }
 
 node 'lithium.eqiad.wmnet' {
-    role(syslog::centralserver)
+    role(spare::system)
 }
 
 node /^logstash101[0-2]\.eqiad\.wmnet$/ {
