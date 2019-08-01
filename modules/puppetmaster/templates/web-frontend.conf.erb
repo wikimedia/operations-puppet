@@ -1,5 +1,6 @@
 <%-
 def get_addresses(hostname)
+  return [hostname] if hostname =~ Resolv::IPv4::Regex or hostname =~ Resolv::IPv6::Regex
   # Resolv.getaddresses will not return IPv6 addreses if the host does not speak IPv6
   # This is mainly an issues for the spec tests but its more precises either way
   answers = []

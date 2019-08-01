@@ -86,6 +86,8 @@ describe 'puppetmaster::web_frontend' do
               canary_hosts: [
                 'www.example.org', # This test hard codes the A/AAAA answers below
                 'www.example.net', # This test hard codes the A/AAAA answers below
+                '192.0.2.42',
+                '2001:db8::1',
               ]
             )
           end
@@ -99,7 +101,9 @@ describe 'puppetmaster::web_frontend' do
               \s+RewriteCond\s+expr\s+"-R\s+'2606:2800:220:1:248:1893:25C8:1946'"\s+\[OR\]
               \s+RewriteCond\s+expr\s+"-R\s+'93\.184\.216\.34'"\s+\[OR\]
               \s+RewriteCond\s+expr\s+"-R\s+'2606:2800:220:1:248:1893:25C8:1946'"\s+\[OR\]
-              \s+RewriteCond\s+expr\s+"-R\s+'93\.184\.216\.34'"
+              \s+RewriteCond\s+expr\s+"-R\s+'93\.184\.216\.34'"\s+\[OR\]
+              \s+RewriteCond\s+expr\s+"-R\s+'192\.0\.2\.42'"\s+\[OR\]
+              \s+RewriteCond\s+expr\s+"-R\s+'2001:db8::1'"
               \s+RewriteRule\s+\^\s+balancer://canarybackend%\{REQUEST_URI\}\s+\[P,QSA\]
               \s+<Proxy\s+balancer://canarybackend>
               \s+BalancerMember\s+https://canary_load20.example.com:8141\s+ping=1\sconnectiontimeout=1\s+retry=500\s+timeout=900\s+loadfactor=20
