@@ -9,16 +9,6 @@ if !defined('$cluster') {
 
 # Node definitions (alphabetic order)
 
-# to be decommisioned - replaced by dns2001 (T198286)
-node 'acamar.wikimedia.org' {
-    role(spare::system)
-}
-
-# to be decommisioned - replaced by dns2002 (T198286)
-node 'achernar.wikimedia.org' {
-    role(spare::system)
-}
-
 # Ganeti VMs for acme-chief service
 node 'acmechief1001.eqiad.wmnet' {
     role(acme_chief)
