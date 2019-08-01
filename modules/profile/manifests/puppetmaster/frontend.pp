@@ -20,7 +20,7 @@ class profile::puppetmaster::frontend(
       '*.eqsin.wmnet']),
     $extra_auth_rules = '',
     $mcrouter_ca_secret = hiera('profile::puppetmaster::frontend::mcrouter_ca_secret'),
-    Array[Stdlib::Fqdn] $canary_hosts = lookup('profile::puppetmaster::frontend::canary_hosts')
+    Array[Stdlib::Host] $canary_hosts = lookup('profile::puppetmaster::frontend::canary_hosts')
 ) {
     backup::set { 'var-lib-puppet-ssl': }
     backup::set { 'var-lib-puppet-volatile': }
