@@ -962,14 +962,6 @@ bastion_hosts:
 - 2620:0:861:2:208:80:154:151   # iron.wikimedia.org
 
 cache_hosts:
-- 10.64.48.105                   # cp1071.eqiad.wmnet
-- 2620:0:861:107:10:64:48:105    # cp1071.eqiad.wmnet
-- 10.64.48.106                   # cp1072.eqiad.wmnet
-- 2620:0:861:107:10:64:48:106    # cp1072.eqiad.wmnet
-- 10.64.48.107                   # cp1073.eqiad.wmnet
-- 2620:0:861:107:10:64:48:107    # cp1073.eqiad.wmnet
-- 10.64.48.108                   # cp1074.eqiad.wmnet
-- 2620:0:861:107:10:64:48:108    # cp1074.eqiad.wmnet
 - 10.64.0.130                    # cp1075.eqiad.wmnet
 - 2620:0:861:101:10:64:0:130     # cp1075.eqiad.wmnet
 - 10.64.0.131                    # cp1076.eqiad.wmnet
@@ -1002,8 +994,6 @@ cache_hosts:
 - 2620:0:861:107:10:64:48:103    # cp1089.eqiad.wmnet
 - 10.64.48.104                   # cp1090.eqiad.wmnet
 - 2620:0:861:107:10:64:48:104    # cp1090.eqiad.wmnet
-- 10.64.32.81                    # cp1099.eqiad.wmnet
-- 2620:0:861:103:10:64:32:81     # cp1099.eqiad.wmnet
 - 10.192.0.122                   # cp2001.codfw.wmnet
 - 2620:0:860:101:10:192:0:122    # cp2001.codfw.wmnet
 - 10.192.0.123                   # cp2002.codfw.wmnet
@@ -1056,12 +1046,6 @@ cache_hosts:
 - 2620:0:860:104:10:192:48:29    # cp2025.codfw.wmnet
 - 10.192.48.30                   # cp2026.codfw.wmnet
 - 2620:0:860:104:10:192:48:30    # cp2026.codfw.wmnet
-- 10.20.0.107                    # cp3007.esams.wmnet
-- 2620:0:862:102:10:20:0:107     # cp3007.esams.wmnet
-- 10.20.0.108                    # cp3008.esams.wmnet
-- 2620:0:862:102:10:20:0:108     # cp3008.esams.wmnet
-- 10.20.0.110                    # cp3010.esams.wmnet
-- 2620:0:862:102:10:20:0:110     # cp3010.esams.wmnet
 - 10.20.0.165                    # cp3030.esams.wmnet
 - 2620:0:862:102:10:20:0:165     # cp3030.esams.wmnet
 - 10.20.0.166                    # cp3031.esams.wmnet
@@ -1146,8 +1130,6 @@ cache_hosts:
 - 2001:df2:e500:101:10:132:0:112 # cp5012.eqsin.wmnet
 - 10.132.0.106                   # cp5006.eqsin.wmnet
 - 2001:df2:e500:101:10:132:0:106 # cp5006.eqsin.wmnet
-- 208.80.154.42                  # pinkunicorn.wikimedia.org
-- 2620:0:861:1:208:80:154:42     # pinkunicorn.wikimedia.org
 
 kafka_brokers_main:
 - 10.64.0.11                   # kafka1001.eqiad.wmnet

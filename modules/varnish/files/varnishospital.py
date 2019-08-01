@@ -57,9 +57,9 @@ class VarnishHospital(BaseVarnishLogConsumer):
                  |  +---------------------- Status message
                  +------------------------- Backend name
 
-        0 Backend_health - vcl-588a49bd-7406-45ad-ae6e-a9fc9fbcc496.be_cp1008_wikimedia_org \
+        0 Backend_health - vcl-588a49bd-7406-45ad-ae6e-a9fc9fbcc496.be_cp1075_wikimedia_org \
                 Went sick ------- 2 3 5 0.000000 0.000435
-        0 Backend_health - vcl-588a49bd-7406-45ad-ae6e-a9fc9fbcc496.be_cp1008_wikimedia_org \
+        0 Backend_health - vcl-588a49bd-7406-45ad-ae6e-a9fc9fbcc496.be_cp1075_wikimedia_org \
                 Back healthy 4--X-RH 3 3 5 0.000460 0.000494 HTTP/1.1 200 OK
         """
         splitline = line.split(None)

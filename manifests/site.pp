@@ -266,25 +266,20 @@ node /^boron\.eqiad\.wmnet$/ {
     role(builder)
 }
 
-# cp1008: prod-like SSL test host
+# cp1008: to be decommed T229586
 # to be replaced with cp1099 in the near future
 node 'cp1008.wikimedia.org' {
-    role(cache::canary)
-    include ::role::authdns::testns
-    interface::add_ip6_mapped { 'main': }
+    role(spare::system)
 }
 
-# ATS Test Cluster -- used for T213263 and not needed anymore
+# cp107[1-4]: to be decommed T229586
 node /^cp107[1-4]\.eqiad\.wmnet$/ {
-    interface::add_ip6_mapped { 'main': }
-    role(test)
+    role(spare::system)
 }
 
-# new canary, to replace cp1008 in future work
+# cp1099: to be decommed T229586
 node /^cp1099\.eqiad\.wmnet$/ {
-    role(test)
-    include ::role::authdns::testns
-    interface::add_ip6_mapped { 'main': }
+    role(spare::system)
 }
 
 node /^cp10(7[579]|8[13579])\.eqiad\.wmnet$/ {
@@ -307,7 +302,8 @@ node /^cp20(0[258]|1[1478]|2[02456])\.codfw\.wmnet$/ {
     role(cache::upload)
 }
 
-# ATS Test Cluster -- used for T213263 and not needed anymore
+# Actual spares for now, in case of need for cp cluster before next
+# procurements arrive
 node /^cp20(0[39]|15|21)\.codfw\.wmnet$/ {
     interface::add_ip6_mapped { 'main': }
     role(test)

@@ -228,10 +228,7 @@ def main():
     post_puppet(args.host)
 
     # check HTTP response from backend/frontend
-    if args.host != "cp1008.wikimedia.org":
-        # Skip HTTP check if working on pinkunicorn. PU is firewalled and does
-        # not allow us to establish TCP connections to varnish.
-        check_http_responses(args.host)
+    check_http_responses(args.host)
 
     # Repool
     if not run_cumin(args.host, ['pool']):

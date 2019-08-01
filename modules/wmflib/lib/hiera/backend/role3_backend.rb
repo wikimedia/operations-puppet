@@ -38,7 +38,7 @@
 #
 # In site.pp:
 #
-# node /pinkunicorn.wikimedia.org/ {
+# node /asdf.wikimedia.org/ {
 #      role foo::bar, fizzbuzz
 #      notice(hiera('admin::groups'))
 # }

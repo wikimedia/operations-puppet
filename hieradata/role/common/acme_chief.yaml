@@ -113,13 +113,6 @@ profile::acme_chief::certificates:
         challenge: dns-01
         authorized_regexes:
         - '^netmon(1002|2001)\.wikimedia\.org$'
-    pinkunicorn:
-        CN: 'pinkunicorn.wikimedia.org'
-        SNI:
-        - 'pinkunicorn.wikimedia.org'
-        challenge: dns-01
-        authorized_hosts:
-        - 'cp1008.wikimedia.org'
     tendril:
         CN: 'tendril.wikimedia.org'
         SNI:

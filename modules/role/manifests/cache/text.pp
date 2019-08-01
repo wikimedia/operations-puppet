@@ -25,7 +25,7 @@ class role::cache::text {
     include ::profile::cache::kafka::eventlogging
 
     # TODO: refactor all this so that we have separate roles for production and labs
-    if $::realm == 'production' and $::hostname != 'cp1008' {
+    if $::realm == 'production' {
         include ::role::ipsec
     }
 }
