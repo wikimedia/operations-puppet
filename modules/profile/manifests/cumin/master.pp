@@ -103,38 +103,6 @@ class profile::cumin::master (
         group  => 'root',
     }
 
-    file { '/usr/local/sbin/wmf-downtime-host':
-        ensure => present,
-        source => 'puppet:///modules/profile/cumin/wmf_downtime_host.py',
-        mode   => '0544',
-        owner  => 'root',
-        group  => 'root',
-    }
-
-    file { '/usr/local/sbin/wmf-upgrade-varnish':
-        ensure => present,
-        source => 'puppet:///modules/profile/cumin/wmf_upgrade_varnish.py',
-        mode   => '0544',
-        owner  => 'root',
-        group  => 'root',
-    }
-
-    file { '/usr/local/sbin/wmf-upgrade-and-reboot':
-        ensure => present,
-        source => 'puppet:///modules/profile/cumin/wmf_upgrade_and_reboot.py',
-        mode   => '0544',
-        owner  => 'root',
-        group  => 'root',
-    }
-
-    file { '/usr/local/sbin/wmf-decommission-host':
-        ensure => present,
-        source => 'puppet:///modules/profile/cumin/wmf_decommission_host.py',
-        mode   => '0544',
-        owner  => 'root',
-        group  => 'root',
-    }
-
     file { '/usr/local/sbin/check-cumin-aliases':
         ensure => present,
         source => 'puppet:///modules/profile/cumin/check_cumin_aliases.py',
