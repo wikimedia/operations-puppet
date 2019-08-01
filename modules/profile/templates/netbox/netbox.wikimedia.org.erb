@@ -5,10 +5,10 @@
 
 
 <VirtualHost *:80>
-    ServerName netbox.wikimedia.org
+    ServerName <%= @nb_service_hostname %>
     ServerAdmin noc@wikimedia.org
     RewriteEngine on
-    RewriteRule ^/(.*)$ https://netbox.wikimedia.org/$1 [L,R=301]
+    RewriteRule ^/(.*)$ https://<%= @nb_service_hostname %>/$1 [L,R=301]
 </VirtualHost>
 
 <VirtualHost *:443>
@@ -44,9 +44,15 @@
         ProxyPass !
     </Location>
 
+    <%- if @swift_auth_url -%>
+    # Proxy swift image store temporary URLs.
+    # FIXME update for other site(s) that frontend runs on once we figure out syncing.
+    ProxyPassMatch ^(/v1/AUTH_netbox/<%= @swift_container %>/.*) http://swift.svc.eqiad.wmnet$1
+    <%- end -%>
+
     <%- if @port -%>
-    ProxyPass / http://127.0.0.1:<%= @port%>/
-    ProxyPassReverse / http://127.0.0.1:<%= @port%>/
+    ProxyPass / http://127.0.0.1:<%= @port %>/
+    ProxyPassReverse / http://127.0.0.1:<%= @port %>/
     <%- else -%>
     ProxyPass / http://127.0.0.1:8001/
     ProxyPassReverse / http://127.0.0.1:8001/
@@ -55,7 +61,7 @@
     # Possible values include: debug, info, notice, warn, error, crit,
     # alert, emerg.
     LogLevel warn
-    CustomLog /var/log/apache2/netbox.wikimedia.org-access.log wmf
-    ErrorLog /var/log/apache2/netbox.wikimedia.org-error.log
+    CustomLog /var/log/apache2/<%= @nb_service_hostname %>-access.log wmf
+    ErrorLog /var/log/apache2/<%= @nb_nervice_hostname %>-error.log
 
 </VirtualHost>

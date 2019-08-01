@@ -14,6 +14,7 @@
 #       include profile::netbox
 #
 class profile::netbox (
+    Stdlib::Host $nb_service_hostname = hiera('profile::netbox::service_hostname'),
     String $active_server = hiera('profile::netbox::active_server'),
     Optional[Array[String]] $slaves = hiera('profile::netbox::slaves', undef),
     Stdlib::Ipv4 $slave_ipv4 = hiera('profile::netbox::slave_ipv4'),
@@ -198,20 +199,21 @@ class profile::netbox (
     }
 
     class { '::netbox':
-        directory       => '/srv/deployment/netbox/deploy/src',
-        db_password     => $db_password,
-        secret_key      => $secret_key,
-        ldap_password   => $proxypass,
-        reports_path    => $reports_path,
-        swift_auth_url  => $swift_auth_url,
-        swift_user      => $swift_user,
-        swift_key       => $swift_key,
-        swift_ca        => $nb_swift_ca_cert,
-        swift_container => $swift_container,
-        ldap_server     => $ldap_config['ro-server'],
-        redis_host      => $redis_host,
-        redis_port      => $redis_port,
-        redis_password  => $redis_password,
+        service_hostname => $nb_service_hostname,
+        directory        => '/srv/deployment/netbox/deploy/src',
+        db_password      => $db_password,
+        secret_key       => $secret_key,
+        ldap_password    => $proxypass,
+        reports_path     => $reports_path,
+        swift_auth_url   => $swift_auth_url,
+        swift_user       => $swift_user,
+        swift_key        => $swift_key,
+        swift_ca         => $nb_swift_ca_cert,
+        swift_container  => $swift_container,
+        ldap_server      => $ldap_config['ro-server'],
+        redis_host       => $redis_host,
+        redis_port       => $redis_port,
+        redis_password   => $redis_password,
     }
     $ssl_settings = ssl_ciphersuite('apache', 'strong', true)
 

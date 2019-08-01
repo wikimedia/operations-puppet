@@ -1,4 +1,5 @@
-profile::netbox::netbox_api: https://netbox.wikimedia.org/
+profile::netbox::service_hostname: netbox.wikimedia.org
+profile::netbox::netbox_api: https://%{lookup('profile::netbox::service_hostname')}/
 profile::netbox::ganeti_sync_profiles:
     - profile: eqiad
       url: ganeti01.svc.eqiad.wmnet

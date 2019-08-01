@@ -32,6 +32,7 @@
 #   installs/removes config files
 #
 class netbox(
+    Stdlib::Host $service_hostname,
     String $secret_key,
     String $ldap_password,
     String $db_password,
@@ -53,7 +54,6 @@ class netbox(
     String $redis_password = undef,
     Integer $redis_database = 0,
 ) {
-
   require_package('virtualenv', 'python3-pip')
 
   file { '/etc/netbox/configuration.py':

@@ -10,7 +10,7 @@
 # Example: ALLOWED_HOSTS = ['netbox.example.com', 'netbox.internal.local']
 # We are behind an apache httpd server, so use X-Forwarded_Host header
 USE_X_FORWARDED_HOST = True
-ALLOWED_HOSTS = ['netbox.wikimedia.org']
+ALLOWED_HOSTS = ['<%= @service_hostname %>']
 
 # PostgreSQL database configuration.
 DATABASE = {
@@ -150,6 +150,8 @@ PASSTHROUGH = { 'SWIFT_AUTH_URL': '<%= @swift_auth_url %>/auth/v1.0',
                 'SWIFT_CONTAINER_NAME': '<%= @swift_container %>',
                 'DEFAULT_FILE_STORAGE': 'swift.storage.SwiftStorage',
                 'SWIFT_USE_TEMP_URLS': True,
+                'SWIFT_TEMP_URL_KEY': '<%= @swift_url_key %>',
+                'SWIFT_BASE_URL': '<%= @service_hostname %>',
 }
 <% end %>
 
