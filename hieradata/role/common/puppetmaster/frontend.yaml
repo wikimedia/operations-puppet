@@ -27,3 +27,5 @@ profile::puppetmaster::frontend::canary_hosts:
   - 2620:0:861:1:208:80:154:42 # cp1008.wikimedia.org has no AAAA record so we add it staticly
   - multatuli.wikimedia.org
   - dns1002.wikimedia.org
+  - conf1006.eqiad.wmnet
+  - elastic1017.eqiad.wmnet
