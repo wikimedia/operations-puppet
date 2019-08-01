@@ -176,7 +176,7 @@ lvs::configuration::lvs_service_ips:
       ncredirlb6: 2620:0:861:ed1a::9
   cloudelastic: &ip_block055
     eqiad:
-      cloudelasticlb4: 208.80.154.241
+      cloudelasticlb: 208.80.154.241
       cloudelasticlb6: 2620:0:861:1:208:80:154:241
 
 lvs::configuration::lvs_services:
