@@ -73,12 +73,14 @@ class role::puppetmaster::standalone(
         reports              => 'puppetdb',
     }
 
-    if $storeconfigs == 'puppetdb' and os_version('debian <= stretch') {
-        apt::repository { 'wikimedia-puppetdb4':
-            uri        => 'http://apt.wikimedia.org/wikimedia',
-            dist       => "${::lsbdistcodename}-wikimedia",
-            components => 'component/puppetdb4',
-            before     => Class['puppetmaster::puppetdb::client'],
+    if $storeconfigs == 'puppetdb' {
+        if os_version('debian <= stretch') {
+            apt::repository { 'wikimedia-puppetdb4':
+                uri        => 'http://apt.wikimedia.org/wikimedia',
+                dist       => "${::lsbdistcodename}-wikimedia",
+                components => 'component/puppetdb4',
+                before     => Class['puppetmaster::puppetdb::client'],
+            }
         }
         class { 'puppetmaster::puppetdb::client':
             host                   => $puppetdb_host,

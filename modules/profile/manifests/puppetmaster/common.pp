@@ -34,12 +34,14 @@ class profile::puppetmaster::common (
         reports              => 'puppetdb',
     }
 
-    if $storeconfigs == 'puppetdb' and os_version('debian <= stretch') {
-        apt::repository { 'wikimedia-puppetdb4':
-            uri        => 'http://apt.wikimedia.org/wikimedia',
-            dist       => "${::lsbdistcodename}-wikimedia",
-            components => 'component/puppetdb4',
-            before     => Class['puppetmaster::puppetdb::client'],
+    if $storeconfigs == 'puppetdb' {
+        if os_version('debian <= stretch') {
+            apt::repository { 'wikimedia-puppetdb4':
+                uri        => 'http://apt.wikimedia.org/wikimedia',
+                dist       => "${::lsbdistcodename}-wikimedia",
+                components => 'component/puppetdb4',
+                before     => Class['puppetmaster::puppetdb::client'],
+            }
         }
         $puppetdb_host = hiera('profile::puppetmaster::common::puppetdb_host')
         class { 'puppetmaster::puppetdb::client':
