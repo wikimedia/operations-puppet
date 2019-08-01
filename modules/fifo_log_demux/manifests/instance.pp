@@ -2,7 +2,6 @@ define fifo_log_demux::instance(
     String $user = 'root',
     Stdlib::Absolutepath $fifo = '/var/run/fifo.pipe',
     Stdlib::Absolutepath $socket = '/var/run/log.socket',
-    Boolean $socket_activation = false,
     Optional[String] $wanted_by = undef,
     Optional[String] $required_by = undef,
     Boolean $create_fifo = false,
@@ -31,12 +30,5 @@ define fifo_log_demux::instance(
         ensure  => present,
         restart => true,
         content => systemd_template('fifo-log-demux@'),
-    }
-
-    if $socket_activation {
-        systemd::unit { "fifo-log-demux@${title}.socket":
-            ensure  => present,
-            content => systemd_template('fifo-log-demux@.socket'),
-        }
     }
 }

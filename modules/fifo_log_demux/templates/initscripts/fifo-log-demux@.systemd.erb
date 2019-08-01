@@ -1,9 +1,7 @@
 [Unit]
 Description=FIFO log demultiplexer (instance %i)
 Documentation=https://github.com/wikimedia/operations-software-fifo-log-demux
-<% if @socket_activation -%>
-Requires=fifo-log-demux@<%= @title %>.socket
-<% elsif @wanted_by -%>
+<% if @wanted_by -%>
 Requires=<%= @wanted_by %>
 After=<%= @wanted_by %>
 <% elsif @required_by -%>
@@ -11,12 +9,9 @@ RequiredBy=<%= @required_by %>
 <% end -%>
 
 [Service]
-<% if @socket_activation -%>
-Type=simple
-<% end -%>
 Restart=always
 User=<%= @user %>
-ExecStart=/usr/bin/fifo-log-demux <% if @socket_activation %>-log-fifo-fd=3<% else %>-log-fifo <%= @fifo %><% end %> -socket <%= @socket %>
+ExecStart=/usr/bin/fifo-log-demux -log-fifo <%= @fifo %> -socket <%= @socket %>
 
 <% if @wanted_by -%>
 [Install]
