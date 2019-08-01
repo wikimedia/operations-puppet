@@ -51,18 +51,18 @@ role::kibana::ldap_groups:
   - cn=wmf,ou=groups,dc=wikimedia,dc=org
 
 profile::prometheus::statsd_exporter::mappings:
-  # MediaWiki-specific metric title - separates on log channel
-  - match: 'logstash.rate.*.*.*'
-    name: logstash_$1_events_total
-    labels:
-      channel: $2
-      level: $3
   # All others default "channel" to "sender"
   - match: 'logstash.rate.*.*'
-    name: logstash_events_total
+    name: 'logstash_events_total'
     labels:
-      channel: $1
-      level: $2
+      channel: '$1'
+      level: '$2'
+  # Sender.channel delimited rule
+  - match: 'logstash.rate.*.*.*'
+    name: 'logstash_${1}_events_total'
+    labels:
+      channel: '$2'
+      level: '$3'
 
 # these checks should not be here - T218691
 profile::elasticsearch::monitor::shard_size_warning: 150
