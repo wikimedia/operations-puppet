@@ -1322,6 +1322,7 @@ node /^cloudcontrol100[3-4].wikimedia.org$/ {
 # New systems to be placed into service by cloud team via T194186
 node /^cloudelastic100[1-4].wikimedia.org$/ {
     role(elasticsearch::cloudelastic)
+    interface::add_ip6_mapped { 'main': } # lint:ignore:wmf_styleguide
 }
 
 node /^cloudnet100[3-4].eqiad.wmnet$/ {
