@@ -29,4 +29,4 @@ profile::puppetmaster::frontend::canary_hosts:
   - dns1002.wikimedia.org
   - conf1006.eqiad.wmnet
   - elastic1017.eqiad.wmnet
-  - 2620:0:861:101:8218:44ff:fede:fed4 # elastic1017 has no AAAA record we add the SLACC
+  - 2620:0:861:107:b283:feff:fec0:b0d2 # elastic1017 has no AAAA record we add the SLACC
