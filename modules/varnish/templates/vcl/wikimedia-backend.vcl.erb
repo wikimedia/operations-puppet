@@ -192,7 +192,7 @@ sub vcl_pipe {
 		set bereq.http.upgrade = req.http.upgrade;
 	}
 
-<% if @realm == "production" and @hostname != "cp1008" -%>
+<% if @realm == "production" -%>
 	if (req.http.X-Next-Is-Cache) {
 		// Similarly to pass-traffic, pipe-traffic should also pick backends
 		// randomly to avoid focus on a single node
