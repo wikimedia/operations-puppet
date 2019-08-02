@@ -217,7 +217,7 @@
     smtpEncryption = <%= @smtp_encryption %>
     threadPoolSize = 2
 [sshd]
-    listenAddress = <%= @host %>:29418
+    listenAddress = <%= @sshd_host %>:29418
     <%- if @ipv6 %>
     listenAddress = [<%= @ipv6 %>]:29418
     <%- end -%>

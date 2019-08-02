@@ -5,6 +5,7 @@ class gerrit::jetty(
     Stdlib::Ipv4 $ipv4,
     Optional[Stdlib::Ipv6] $ipv6,
     Stdlib::Fqdn $db_host = 'localhost',
+    Array[Stdlib::Fqdn] $slave_hosts = [],
     Hash $replication = {},
     Stdlib::HTTPSUrl $url = "https://${::gerrit::host}/r",
     Stdlib::HTTPSUrl $gitiles_url = "https://${::gerrit::host}/g",
@@ -47,6 +48,12 @@ class gerrit::jetty(
     $ldap_base_dn = $ldapconfig['basedn']
     $ldap_proxyagent = $ldapconfig['proxyagent']
     $ldap_proxyagent_pass = $ldapconfig['proxypass']
+
+    if $slave {
+        $sshd_host = $slave_hosts[0]
+    } else {
+        $sshd_host = $host
+    }
 
     $java_options = [
         '-XX:+UseG1GC',

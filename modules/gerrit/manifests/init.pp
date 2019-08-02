@@ -12,11 +12,12 @@ class gerrit(
 ) {
 
     class { '::gerrit::jetty':
-        host   => $host,
-        ipv4   => $ipv4,
-        ipv6   => $ipv6,
-        slave  => $slave,
-        config => $config,
+        host        => $host,
+        ipv4        => $ipv4,
+        ipv6        => $ipv6,
+        slave       => $slave,
+        slave_hosts => $slave_hosts,
+        config      => $config,
     }
 
     class { '::gerrit::proxy':
