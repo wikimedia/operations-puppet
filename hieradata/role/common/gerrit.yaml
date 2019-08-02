@@ -4,7 +4,7 @@ admin::groups:
 
 gerrit::server::host: 'gerrit.wikimedia.org'
 gerrit::server::slave_hosts:
-    - 'gerrit-slave.wikimedia.org'
+    - 'gerrit-replica.wikimedia.org'
 gerrit::server::avatars_host: 'gerrit.wmfusercontent.org'
 gerrit::server::master_host: 'cobalt.wikimedia.org'
 gerrit::server::bacula: 'srv-gerrit-git'
