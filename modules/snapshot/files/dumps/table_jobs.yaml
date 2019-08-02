@@ -111,21 +111,49 @@ tables:
       job: changetagdef
       description: Annotation (tag) names and ids.
       type: public
+
+# flagged revs extension
     flaggedpages:
       job: flaggedpages
       description: This contains a row for each flagged article containing the stable revision ID, if the lastest edit was flagged, and how long edits have been pending.
       type: public
     flaggedrevs:
       job: flaggedrevs
-      description: This contains a row for each flagged revision containing who flagged it, when it was flagged, reviewer comments, the flag values, and the quality tier those flags fall under.
+      description: This contains a row for each flagged revision containing who flagged it, when it was flagged, the flag values, and the quality tier those flags fall under.
       type: public
+    flaggedimages:
+      job: flaggedimages
+      description: This contains a row for each media file included in a flagged revision containing the rev id and name of the file as well as the rev id of the flagged revision.
+      type: public
+    flaggedpage_config:
+      job: flaggedpageconfig
+      description: This stores settings on how to select the stable/default revision.
+      type: public
+    flaggedpage_pending:
+      job: flaggedpagepending
+      description: This contains tracking information for edits needing review.
+      type: public
+    flaggedrevs_promote:
+      job: flaggedrevspromote
+      description: This contains information about users who were demoted from being able to review flagged revisions, so they do not get autopromoted by mistake.
+      type: public
+    flaggedrevs_statistics:
+      job: flaggedrevsstatistics
+      description: This contains per-namespace, per-user and overall statistics for reviews of revisions.
+      type: public
+    flaggedrevs_tracking:
+      job: flaggedrevstracking
+      description: Tracks links in stable versions.
+      type: public
+    flaggedtemplates:
+      job: flaggedtemplates
+      description: This contains a row for each template included in a flagged revision containing the rev id and name of the template as well as the rev id of the flagged revision.
+      type: public
+
+    # wikibase tables
     wb_items_per_site:
       job: wbitemspersite
       description: For each Wikidata item, this contains rows with the corresponding page name on a given wiki project.
-      type: public
-    wb_terms:
-      job: wbterms
-      description: For each Wikidata item, this contains rows with a label, an alias and a description of the item in a given language.
       type: public
     wb_property_info:
       job: wbpropertyinfo
@@ -135,6 +163,33 @@ tables:
       job: wbchangessubscription
       description: Tracks which Wikibase Client wikis are using which items.
       type: public
+
+    # wikibase wb_term replacement tables
+    wbt_type:
+      job: wbttype
+      description: List of Wikibase term types and ids; example term types are alias, description, and label.
+      type: public
+    wbt_text:
+      job: wbttext
+      description: Text for Wikibase labels, descriptions or aliases in various languages.
+      type: public
+    wbt_text_in_lang:
+      job: wbttextinlang
+      description: List of which entries in wbt_text belong to which language
+      type: public
+    wbt_term_in_lang:
+      job: wbtterminlang
+      description: List of ids from wbt_property_terms or wbt_item_terms mapped to entries in wbt_text_in_lang and wbt_type tables.
+      type: public
+    wbt_property_terms:
+      job: wbtpropertyterms
+      description: List of which property id (P<this number>) goes with which entry in the wbt_term_in_lang table.
+      type: public
+    wbt_item_terms:
+      job: wbtitemterms
+      description: list of which entity id (Q<this number>) goes with which entry in the wbt_term_in_lang table.
+      type: public
+
     sites:
       job: sites
       description: This contains the SiteMatrix information from meta.wikimedia.org provided as a table.
@@ -147,6 +202,11 @@ tables:
       job: wbcentityusage
       description: Tracks which pages use which Wikidata items or properties and what aspect (e.g. item label) is used.
       type: public
+    wbs_propertypairs:
+      job: wbspropertypairs
+      description: Statistics on property usage; used by the PropertySuggester extension.
+      type: public
+
     babel:
       job: babel
       description: Language proficiency information per user.
