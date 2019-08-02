@@ -368,4 +368,8 @@ if (@metastore_host == @fqdn)
     <value><%= @hive_server2_authentication_kerberos_keytab %></value>
   </property>
 <% end -%>
+  <property>
+    <name>hive.server2.logging.operation.enabled</name>
+    <value>true</value>
+  </property>
 </configuration>
