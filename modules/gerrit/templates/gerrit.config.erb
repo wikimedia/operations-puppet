@@ -217,13 +217,9 @@
     smtpEncryption = <%= @smtp_encryption %>
     threadPoolSize = 2
 [sshd]
-    <%- if @slave %>
-    listenAddress = off
-    <%- else -%>
     listenAddress = <%= @host %>:29418
     <%- if @ipv6 %>
     listenAddress = [<%= @ipv6 %>]:29418
-    <%- end -%>
     <%- end -%>
     loginGraceTime = 60 s
     idleTimeout = 3600 s
