@@ -20,7 +20,7 @@ class profile::mariadb::ferm_misc {
         proto   => 'tcp',
         port    => '3306',
         notrack => true,
-        srange  => '@resolve(cobalt.wikimedia.org)',
+        srange  => '@resolve((cobalt.wikimedia.org gerrit2001.wikimedia.org))',
     }
 
     ferm::service { 'exim':
