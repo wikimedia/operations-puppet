@@ -19,16 +19,13 @@ class role::parsoid::testing {
     include ::profile::parsoid::testing
 
     ## Mediawiki
+    # We don't include things like automatic php restarts
+    # or prometheus exporters, as this is just a testing
+    # installation.
     include ::role::mediawiki::common
     include ::profile::mediawiki::php
     include ::profile::mediawiki::php::monitoring
     include ::profile::mediawiki::webserver
-    # restart php-fpm if the opcache available is too low
-    # currently not included because it pulls in LVS
-    # include ::profile::mediawiki::php::restarts
 
-    ## Prometheus
-    include ::profile::prometheus::apache_exporter
-    include ::profile::prometheus::hhvm_exporter
-    include ::profile::prometheus::php_fpm_exporter
+
 }
