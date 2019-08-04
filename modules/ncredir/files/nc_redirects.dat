@@ -68,7 +68,8 @@ rewrite	dk.wikipedia.com	https://da.wikipedia.org
 rewrite	dk.wikibooks.com	https://da.wikibooks.org
 rewrite	dk.wiktionary.com	https://da.wiktionary.org
 rewrite	jp.wikipedia.com	https://ja.wikipedia.org
-rewrite lzh.wikipedia.com	https://zh-classical.wikipedia.org
+rewrite	lzh.wikipedia.com	https://zh-classical.wikipedia.org
+rewrite	nrf.wikipedia.com	https://nrm.wikipedia.org
 
 # Localised TLDs
 
