@@ -6,11 +6,13 @@ class icinga::monitor::toollabs {
     # toolserver.org (redirect page to Toolforge)
     @monitoring::host { 'www.toolserver.org':
         host_fqdn     => 'www.toolserver.org',
+        contact_group => 'wmcs-team',
     }
 
     # monitoring of https://meta.wikimedia.org/wiki/PAWS
     @monitoring::host { 'paws.wmflabs.org':
-        host_fqdn => 'paws.wmflabs.org',
+        host_fqdn     => 'paws.wmflabs.org',
+        contact_group => 'team-paws',
     }
 
     monitoring::service { 'paws_main_page':
@@ -35,6 +37,7 @@ class icinga::monitor::toollabs {
         check_command => 'check_http_slow!20',
         host          => 'tools.wmflabs.org',
         notes_url     => 'https://wikitech.wikimedia.org/wiki/Portal:Toolforge/Admin/Toolschecker',
+        contact_group => 'wmcs-team',
     }
 
     # Monitors the tools nginx proxy by hitting the health endpoint
@@ -43,7 +46,7 @@ class icinga::monitor::toollabs {
         description   => 'toolschecker: tools nginx proxy health',
         check_command => 'check_http_url!tools.wmflabs.org!/.well-known/healthz',
         host          => 'tools.wmflabs.org',
-        contact_group => 'wmcs-team,admins',
+        contact_group => 'wmcs-team',
         notes_url     => 'https://wikitech.wikimedia.org/wiki/Portal:Toolforge/Admin/Toolschecker',
     }
 
@@ -64,6 +67,7 @@ class icinga::monitor::toollabs {
         check_command => "${checker}!/cron!OK",
         host          => $test_entry_host,
         notes_url     => 'https://wikitech.wikimedia.org/wiki/Portal:Toolforge/Admin/Toolschecker',
+        contact_group => 'wmcs-team',
     }
 
     monitoring::service { 'tools-checker-toolsdb':
@@ -71,6 +75,7 @@ class icinga::monitor::toollabs {
         check_command => "${checker}!/db/toolsdb!OK",
         host          => $test_entry_host,
         notes_url     => 'https://wikitech.wikimedia.org/wiki/Portal:Toolforge/Admin/Toolschecker',
+        contact_group => 'wmcs-team',
     }
 
     monitoring::service { 'tools-checker-wikilabelsrw':
@@ -78,13 +83,14 @@ class icinga::monitor::toollabs {
         check_command => "${checker}!/db/wikilabelsrw!OK",
         host          => $test_entry_host,
         notes_url     => 'https://wikitech.wikimedia.org/wiki/Portal:Toolforge/Admin/Toolschecker',
+        contact_group => 'wmcs-team',
     }
 
     monitoring::service { 'tools-checker-labs-dns-private':
         description   => 'toolschecker: Verify internal DNS from within Tools',
         check_command => "${checker}!/dns/private!OK",
         host          => $test_entry_host,
-        contact_group => 'wmcs-team,admins',
+        contact_group => 'wmcs-team',
         notes_url     => 'https://wikitech.wikimedia.org/wiki/Portal:Toolforge/Admin/Toolschecker',
     }
 
@@ -94,7 +100,7 @@ class icinga::monitor::toollabs {
         host           => $test_entry_host,
         check_interval => 5,
         retry_interval => 5,
-        contact_group  => 'wmcs-team,admins',
+        contact_group  => 'wmcs-team',
         notes_url      => 'https://wikitech.wikimedia.org/wiki/Portal:Toolforge/Admin/Toolschecker',
     }
 
@@ -104,7 +110,7 @@ class icinga::monitor::toollabs {
         host           => $test_entry_host,
         check_interval => 5,
         retry_interval => 5,
-        contact_group  => 'wmcs-team,admins',
+        contact_group  => 'wmcs-team',
         notes_url      => 'https://wikitech.wikimedia.org/wiki/Portal:Toolforge/Admin/Toolschecker',
     }
 
@@ -114,7 +120,7 @@ class icinga::monitor::toollabs {
         host           => $test_entry_host,
         check_interval => 5,
         retry_interval => 5,
-        contact_group  => 'wmcs-bots,admins',
+        contact_group  => 'wmcs-bots,wmcs-team',
         notes_url      => 'https://wikitech.wikimedia.org/wiki/portal:toolforge/admin/toolschecker',
     }
 
@@ -126,7 +132,7 @@ class icinga::monitor::toollabs {
         host           => $test_entry_host,
         check_interval => 5,
         retry_interval => 5,
-        contact_group  => 'wmcs-bots,admins',
+        contact_group  => 'wmcs-bots,wmcs-team',
         notes_url      => 'https://wikitech.wikimedia.org/wiki/portal:toolforge/admin/toolschecker',
     }
 
@@ -136,12 +142,11 @@ class icinga::monitor::toollabs {
         host           => $test_entry_host,
         check_interval => 5,
         retry_interval => 5,
-        contact_group  => 'wmcs-team,admins',
+        contact_group  => 'wmcs-team',
         notes_url      => 'https://wikitech.wikimedia.org/wiki/Portal:Toolforge/Admin/Toolschecker',
     }
 
     monitoring::service { 'tools-checker-ldap':
-        critical      => true,
         description   => 'toolschecker: Test LDAP for query',
         check_command => "${checker}!/ldap!OK",
         host          => $test_entry_host,
@@ -154,10 +159,10 @@ class icinga::monitor::toollabs {
         check_command => "${checker}!/nfs/dumps!OK",
         host          => $test_entry_host,
         notes_url     => 'https://wikitech.wikimedia.org/wiki/Portal:Toolforge/Admin/Toolschecker',
+        contact_group => 'wmcs-team',
     }
 
     monitoring::service { 'tools-checker-nfs-home':
-        critical      => true,
         description   => 'toolschecker: NFS read/writeable on labs instances',
         check_command => "${checker}!/nfs/home!OK",
         host          => $test_entry_host,
@@ -171,6 +176,7 @@ class icinga::monitor::toollabs {
         check_command => "${checker}!/nfs/secondary_cluster_showmount!OK",
         host          => $test_entry_host,
         notes_url     => 'https://wikitech.wikimedia.org/wiki/Portal:Toolforge/Admin/Toolschecker',
+        contact_group => 'wmcs-team',
     }
 
     monitoring::service { 'tools-checker-redis':
@@ -178,10 +184,10 @@ class icinga::monitor::toollabs {
         check_command => "${checker}!/redis!OK",
         host          => $test_entry_host,
         notes_url     => 'https://wikitech.wikimedia.org/wiki/Portal:Toolforge/Admin/Toolschecker',
+        contact_group => 'wmcs-team',
     }
 
     monitoring::service { 'tools-checker-self':
-        critical      => true,
         description   => 'toolschecker service itself needs to return OK',
         check_command => "${checker}!/self!OK",
         host          => $test_entry_host,
@@ -190,7 +196,6 @@ class icinga::monitor::toollabs {
     }
 
     monitoring::service { 'tools-checker-webservice-gridengine':
-        critical       => true,
         description    => 'toolschecker: gridengine webservice running',
         check_command  => "${checker}!/webservice/gridengine!OK",
         host           => $test_entry_host,
@@ -201,7 +206,6 @@ class icinga::monitor::toollabs {
     }
 
     monitoring::service { 'tools-checker-webservice-kubernetes':
-        critical       => true,
         description    => 'toolschecker: kubernetes webservice running',
         check_command  => "${checker}!/webservice/kubernetes!OK",
         host           => $test_entry_host,
