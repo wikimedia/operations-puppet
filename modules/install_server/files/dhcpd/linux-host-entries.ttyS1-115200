@@ -2015,6 +2015,11 @@ host db2130 {
     fixed-address db2130.codfw.wmnet;
 }
 
+host db2131 {
+    hardware ethernet 4C:D9:8F:7D:04:E2;
+    fixed-address db2131.codfw.wmnet;
+}
+
 host dbprov1001 {
     hardware ethernet B0:26:28:23:50:90;
     fixed-address dbprov1001.eqiad.wmnet;
