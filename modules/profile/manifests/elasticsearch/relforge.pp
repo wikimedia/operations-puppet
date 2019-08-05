@@ -1,24 +1,25 @@
 class profile::elasticsearch::relforge (
-    $maintenance_hosts = hiera('maintenance_hosts'),
+    Array[Stdlib::IP::Address] $maintenance_hosts = hiera('maintenance_hosts'),
+    Array[Stdlib::IP::Address] $cumin_masters = hiera('cumin_masters'),
 ) {
     include ::profile::elasticsearch::cirrus
     include ::profile::elasticsearch::monitor::base_checks
     include ::profile::mjolnir::kafka_msearch_daemon
 
     # the relforge cluster is serving labs, it should never be connected from
-    # production, except from mwmaint hosts to import production indices.
-    $maintenance_hosts_str = join($maintenance_hosts, ' ')
+    # production, except from mwmaint hosts to import production indices and the
+    # cumin masters to run cookboks
+    $srange = join($maintenance_hosts + $cumin_masters, ' ')
     ::ferm::service {
         default:
             ensure => present,
             proto  => 'tcp',
-            port   => '9243',
-            srange => "(${maintenance_hosts_str})",
+            srange => "(${srange})",
         ;
-        'elastic-main-https-mwmaint-9243':
+        'elastic-main-https-9243':
             port   => '9243',
         ;
-        'elastic-small-alpha-https-mwmaint-9443':
+        'elastic-small-alpha-https-9443':
             port   => '9443',
         ;
     }
