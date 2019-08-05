@@ -37,6 +37,7 @@ profile::acme_chief::certificates:
         SNI:
         - 'gerrit.wikimedia.org'
         - 'gerrit-slave.wikimedia.org'
+        - 'gerrit-replica.wikimedia.org'
         challenge: dns-01
         authorized_hosts:
         - 'cobalt.wikimedia.org'
