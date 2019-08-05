@@ -1346,9 +1346,15 @@ class profile::prometheus::ops (
         cache_name   => 'text',
     }
 
-    prometheus::varnish_2layer{ 'upload':
-        targets_path => $targets_path,
-        cache_name   => 'upload',
+    # Upload has Varnish only on the frontend
+    prometheus::cluster_config{ 'upload_frontend':
+        dest    => "${targets_path}/varnish-upload_${::site}_frontend.yaml",
+        site    => $::site,
+        cluster => 'cache_upload',
+        port    => 9331,
+        labels  => {
+          'layer' => 'frontend',
+        },
     }
 
     prometheus::varnish_2layer{ 'canary':
