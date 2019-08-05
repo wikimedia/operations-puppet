@@ -6,6 +6,6 @@ class mediawiki::maintenance::readinglists( $ensure = present ) {
         user    => $::mediawiki::users::web,
         minute  => 42,
         hour    => 2,
-        command => '/usr/local/bin/mwscript extensions/ReadingLists/maintenance/purge.php --wiki=metawiki > /var/log/mediawiki/readinglists_purge.log',
+        command => 'PHP=php7.2 /usr/local/bin/mwscript extensions/ReadingLists/maintenance/purge.php --wiki=metawiki > /var/log/mediawiki/readinglists_purge.log',
     }
 }
