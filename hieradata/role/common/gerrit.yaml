@@ -24,7 +24,7 @@ gerrit::jetty::replication:
         url: 'git@github.com:wikimedia/${name}'
         authGroup: 'mediawiki-replication'
         remoteNameStyle: 'dash'
-        mirror: true
+        mirror: false
         push:
             - '+refs/heads/*:refs/heads/*'
             - '+refs/tags/*:refs/tags/*'
