@@ -2,6 +2,7 @@
 
 [Unit]
 Description=Kafka MirrorMaker Instance of <%= @mirror_name %>
+PartOf=kafka-mirror.service
 
 [Service]
 User=kafka
