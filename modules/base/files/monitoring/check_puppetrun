@@ -18,6 +18,7 @@ adminlockfile = "/var/lib/puppet/state/agent_disabled.lock"
 summaryfile = "/var/lib/puppet/state/last_run_summary.yaml"
 reportfile = "/var/lib/puppet/state/last_run_report.yaml"
 enabled = true
+alert_master_fail = false
 lastrun = 0
 failcount = 0
 warn = 0
@@ -53,6 +54,10 @@ end
 
 opt.on("--report-file [FILE]", "-r", "Location of the report file, default #{reportfile}") do |f|
     reportfile = f
+end
+
+opt.on("--alert-master-fail", "Alert on failures related to Puppet master issues") do |f|
+    alert_master_fail = true
 end
 
 opt.parse!
@@ -116,13 +121,13 @@ def time_ago(s)
   "Indeterminate amount of time (see time_ago)"
 end
 
-if failcount == :failed_no_resources
+if alert_master_fail && failcount == :failed_no_resources
     puts "CRITICAL: Failed to apply catalog, zero resources tracked by Puppet. " +
          "Could be an interrupted request or a dependency cycle."
     exit 2
 end
 
-if failcount == :failed
+if alert_master_fail && failcount == :failed
     puts "CRITICAL: Catalog fetch fail. " +
          "Either compilation failed or puppetmaster has issues"
     exit 2
