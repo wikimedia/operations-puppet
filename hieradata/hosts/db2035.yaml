@@ -1,4 +1,3 @@
 # db2035
 mariadb::shard: 's2'
-mariadb::mysql_role: 'master'
 mariadb::binlog_format: 'STATEMENT'
