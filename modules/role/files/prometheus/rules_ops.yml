@@ -340,10 +340,16 @@ groups:
 
 - name: puppet
   rules:
+  # Puppet agent has failed altogether
   - record: cluster:puppet_agent_failed:sum
     expr: sum by (cluster) (puppet_agent_failed)
   - record: cluster:puppet_agent_failed:count
     expr: count by (cluster) (puppet_agent_failed)
+  # Certain failures result in zero resources reported, aggregate for alerting
+  - record: cluster:puppet_agent_resources_total:count0
+    expr: count by (cluster) (puppet_agent_resources_total == 0)
+  - record: cluster:puppet_agent_resources_total:count
+    expr: count by (cluster) (puppet_agent_resources_total)
 
 - name: pdu
   rules:
