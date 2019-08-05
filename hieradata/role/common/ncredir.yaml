@@ -1,1 +1,2 @@
+mtail::service_ensure: absent
 profile::ncredir::fqdn_monitoring: 'en.wikipedia.com'
