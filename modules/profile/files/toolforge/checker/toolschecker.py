@@ -438,13 +438,14 @@ def start_stop_webservice(tool, backend, wstype):
     ]
 
     # Check for existing webservices
-    for _ in range(0, 3):
+    for _ in range(0, 5):
         websvc_status = subprocess.check_output(webservice + ["status"])
         if "not running" in websvc_status.decode().strip():
             break
-        time.sleep(3)
+        time.sleep(5)
     else:
-        # Waited long enough and unable to proceed
+        # An existing webservice is still running, either it was started by
+        # hand and needs to be stopped or a concurrent check has not finished
         app.logger.error("webservice %s: found existing webservice running", backend)
         return False
 
@@ -472,12 +473,12 @@ def start_stop_webservice(tool, backend, wstype):
         app.logger.error("webservice %s: error stopping", backend)
         return False
 
-    # Verify webservice is stopped and return True
-    for _ in range(0, 10):
-        request = requests.get(url)
-        if request.status_code != 200:
+    # Verify webservice has fully stopped
+    for _ in range(0, 5):
+        websvc_status = subprocess.check_output(webservice + ["status"])
+        if "not running" in websvc_status.decode().strip():
             return True
-        time.sleep(1)
+        time.sleep(5)
 
     app.logger.error("webservice %s: failed to stop", backend)
     return False
