@@ -70,7 +70,7 @@ class profile::kubernetes::master(
     # Alert us if API requests exceed a certain threshold. TODO: reevaluate
     # after we 've ran a few services
     monitoring::check_prometheus { 'apiserver_request_count':
-        description     => 'Request count to the API',
+        description     => 'k8s requests count to the API',
         query           => "scalar(sum(rate(apiserver_request_count{instance=\"${::ipaddress}:6443\"}[5m])))",
         prometheus_url  => $prometheus_url,
         warning         => 50,
@@ -81,7 +81,7 @@ class profile::kubernetes::master(
     # Alert us if API requests latencies exceed a certain threshold. TODO: reevaluate
     # thresholds
     monitoring::check_prometheus { 'apiserver_request_latencies':
-        description     => 'Request latencies',
+        description     => 'k8s API server requests latencies',
         query           => "instance_verb:apiserver_request_latencies_summary:avg5m{verb\\!~\"(CONNECT|WATCH|WATCHLIST)\",instance=\"${::ipaddress}:6443\"}",
         prometheus_url  => $prometheus_url,
         nan_ok          => true,
