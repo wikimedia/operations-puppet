@@ -37,9 +37,9 @@ class profile::analytics::refinery::job::test::refine {
     profile::analytics::refinery::job::refine_job { 'eventlogging_analytics':
         job_config       => merge($default_config, {
             input_path                      => '/wmf/data/raw/eventlogging',
-            input_path_regex                => 'eventlogging_NavigationTiming/hourly/(\\d+)/(\\d+)/(\\d+)/(\\d+)',
+            input_path_regex                => 'eventlogging_(.+)/hourly/(\\d+)/(\\d+)/(\\d+)/(\\d+)',
             input_path_regex_capture_groups => 'table,year,month,day,hour',
-            table_blacklist_regex           => '^Edit|ChangesListHighlights|InputDeviceDynamics|PageIssues$',
+            table_whitelist_regex           => '^NavigationTiming$',
             # Deduplicate basd on uuid field and geocode ip in EventLogging analytics data.
             transform_functions             => 'org.wikimedia.analytics.refinery.job.refine.deduplicate_eventlogging,org.wikimedia.analytics.refinery.job.refine.geocode_ip,org.wikimedia.analytics.refinery.job.refine.eventlogging_filter_is_allowed_hostname',
             # Get EventLogging JSONSchemas from meta.wikimedia.org.
