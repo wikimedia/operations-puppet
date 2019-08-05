@@ -507,7 +507,7 @@ kafka_clusters:
   main-eqiad:
     zookeeper_cluster_name: main-eqiad
     brokers:
-      kafka1001.eqiad.wmnet:
+      kafka-main1001.eqiad.wmnet:
         id: 1001
         rack: A
       kafka1002.eqiad.wmnet:
@@ -1144,8 +1144,8 @@ cache_hosts:
 - 2001:df2:e500:101:10:132:0:106 # cp5006.eqsin.wmnet
 
 kafka_brokers_main:
-- 10.64.0.11                   # kafka1001.eqiad.wmnet
-- 2620:0:861:101:10:64:0:11    # kafka1001.eqiad.wmnet
+- 10.64.0.200                  # kafka-main1001.eqiad.wmnet
+- 2620:0:861:101:10:64:0:200   # kafka-main1001.eqiad.wmnet
 - 10.64.16.41                  # kafka1002.eqiad.wmnet
 - 2620:0:861:102:10:64:16:41   # kafka1002.eqiad.wmnet
 - 10.64.32.127                 # kafka1003.eqiad.wmnet
