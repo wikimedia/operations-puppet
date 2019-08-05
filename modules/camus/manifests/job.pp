@@ -35,9 +35,9 @@
 # [*check_dry_run*]
 #   If true, no _IMPORTED flags will be written to HDFS during the CamusPartitionChecker run.
 #
-# [*check_email_enabled*]
-#   If true, any errors encountered by CamusPartitionChecker will be sent as an email report
-#   to analytics-alerts@wikimedia.org
+# [*check_email_target*]
+#   If not undef, any errors encountered by CamusPartitionChecker will be sent as an email report
+#   to the email address provided as input.
 #
 # [*check_topic_whitelist*]
 #   If given, only topics matching this regex will be checked by the CamusPartitionChecker.
@@ -75,7 +75,7 @@ define camus::job (
     $check                  = undef,
     $check_jar              = undef,
     $check_dry_run          = undef,
-    $check_email_enabled    = undef,
+    $check_email_target     = undef,
     $check_topic_whitelist  = undef,
     $libjars                = undef,
     $template               = "camus/${title}.erb",
@@ -113,9 +113,9 @@ define camus::job (
         true    => '--check-dry-run ',
         default => '',
     }
-    $check_email_enabled_opt = $check_email_enabled ? {
-        true    => '--check-emails-to analytics-alerts@wikimedia.org ',
-        default => '',
+    $check_email_enabled_opt = $check_email_target ? {
+        undef   => '',
+        default => "--check-emails-to ${check_email_target} ",
     }
     $check_topic_whitelist_opt = $check_topic_whitelist ? {
         undef   => '',
