@@ -70,10 +70,13 @@ profile::mjolnir::kafka_msearch_daemon::output_topic: mjolnir.msearch-prod-respo
 profile::mjolnir::kafka_msearch_daemon::num_workers: 2
 profile::mjolnir::kafka_msearch_daemon::max_concurrent_searches: 2
 
-# Bulk daemon consumes per-datacenter to apply page updates to all clusters.
+# Bulk daemon defines group_id per-datacenter and applies updates to all
+# clusters in that datacenter.
 profile::mjolnir::kafka_bulk_daemon::kafka_cluster: "main-%{::site}"
 profile::mjolnir::kafka_bulk_daemon::group_id: "cirrussearch_updates_%{::site}"
 profile::mjolnir::kafka_bulk_daemon::topics:
-  - eqiad.cirrussearch.page-index-update
-  - codfw.cirrussearch.page-index-update
+  - eqiad.swift.search_glent.upload-complete
+  - codfw.swift.search_glent.upload-complete
+  - eqiad.swift.search_popularity_score.upload-complete
+  - codfw.swift.search_popularity_score.upload-complete
 profile::elasticsearch::cirrus::enable_remote_search: true
