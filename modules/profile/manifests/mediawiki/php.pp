@@ -26,7 +26,9 @@ class profile::mediawiki::php(
     # temporary, for php restarts
     String $cluster = lookup('cluster', {'default_value' => $::cluster}),
     # Needed for wmerrors
-    String $statsd = hiera('statsd'),
+    String $statsd = lookup('statsd'),
+    # Allows to tune up or down the number of workers.
+    Float $fpm_workers_multiplier = lookup('profile::mediawiki::php::fpm_workers_multiplier', {'default_value' => 1.5})
     ) {
 
     # Needed for the restart script
@@ -219,24 +221,14 @@ class profile::mediawiki::php(
         }
 
         # This will add an fpm pool listening on port $port
-        # We found in our benchmarking that having a number of workers slightly
-        # higher than the number of processors is a good compromise at least
-        # during the transition to HHVM.
-        # Also, contrary to popular belief, pm = dynamic didn't pose any significant
-        # performance penalty (quite the contrary).
-        # See T206341
-        # We want a minimum of 8 workers
-        $num_workers = max(floor($facts['processors']['count'] * 1.5), 8)
-        # These numbers need to be positive integers
-        $max_spare = ceiling($num_workers * 0.3)
-        $min_spare = ceiling($num_workers * 0.1)
+        # We want a minimum of 8 workers, and (we default to 1.5 * number of processors.
+        # That number will be raised. Also move to pm = static as pm = dynamic caused some
+        # edge-case spikes in p99 latency
+        $num_workers = max(floor($facts['processors']['count'] * $fpm_workers_multiplier), 8)
         php::fpm::pool { $fcgi_pool:
             port   => $port,
             config => {
-                'pm'                        => 'dynamic',
-                'pm.max_spare_servers'      => $max_spare,
-                'pm.min_spare_servers'      => $min_spare,
-                'pm.start_servers'          => $min_spare,
+                'pm'                        => 'static',
                 'pm.max_children'           => $num_workers,
                 'request_terminate_timeout' => $request_timeout,
             }

@@ -34,7 +34,8 @@ profile::mediawiki::vhost_feature_flags: {}
 # excimer can't throw its exception
 profile::mediawiki::php::request_timeout: 201
 profile::tlsproxy::instance::bootstrap_protection: true
-profile::mediawiki::apc_shm_size: 4096M
+profile::mediawiki::php::fpm_workers_multiplier: 2.0
+profile::mediawiki::apc_shm_size: 6096M
 profile::mediawiki::php::fpm_config:
   opcache.interned_strings_buffer: 96
   opcache.memory_consumption: 1024
