@@ -46,6 +46,7 @@ class profile::netbox (
     Optional[String] $swift_user = hiera('netbox::swift_user', undef),
     Optional[String] $swift_key = hiera('netbox::swift_key', undef),
     Optional[String] $swift_container = hiera('netbox::swift_container', undef),
+    Optional[String] $swift_url_key = hiera('netbox::swift_url_key', undef),
 
     Hash $ldap_config = lookup('ldap', Hash, hash, {}),
 ) {
@@ -210,6 +211,7 @@ class profile::netbox (
         swift_key        => $swift_key,
         swift_ca         => $nb_swift_ca_cert,
         swift_container  => $swift_container,
+        swift_url_key    => $swift_url_key,
         ldap_server      => $ldap_config['ro-server'],
         redis_host       => $redis_host,
         redis_port       => $redis_port,

@@ -48,6 +48,7 @@ class netbox(
     Optional[String] $swift_user = undef,
     Optional[String] $swift_key = undef,
     Optional[String] $swift_container = undef,
+    Optional[String] $swift_url_key = undef,
     Optional[Stdlib::Unixpath] $swift_ca = undef,
     Stdlib::Host $redis_host = undef,
     Stdlib::Port $redis_port = undef,
