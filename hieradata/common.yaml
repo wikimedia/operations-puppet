@@ -675,6 +675,12 @@ hadoop_clusters:
       yarn.nodemanager.container-executor.class: 'org.apache.hadoop.yarn.server.nodemanager.LinuxContainerExecutor'
       yarn.nodemanager.linux-container-executor.group: 'yarn'
       spark.authenticate: true
+      spark.network.crypto.enabled: true
+      spark.network.crypto.keyLength: 128
+      spark.network.crypto.keyFactoryAlgorithm: PBKDF2WithHmacSHA1
+      spark.io.encryption.enabled: true
+      spark.io.encryption.keySizeBits: 128
+      spark.io.encryption.keygen.algorithm: HmacSHA1
 
     yarn_nodemanager_container_executor_config:
       yarn.nodemanager.linux-container-executor.group: 'yarn'
