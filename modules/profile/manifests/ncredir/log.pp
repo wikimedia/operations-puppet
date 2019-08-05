@@ -31,4 +31,9 @@ define profile::ncredir::log(
         restart => true,
         content => systemd_template('ncredirmtail@'),
     }
+
+    exec { 'mask_default_mtail':
+        command => '/bin/systemctl mask mtail.service',
+        creates => '/etc/systemd/system/mtail.service',
+    }
 }
