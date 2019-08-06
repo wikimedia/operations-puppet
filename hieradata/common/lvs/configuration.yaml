@@ -661,11 +661,6 @@ lvs::configuration::lvs_services:
     conftool:
       cluster: cloudelastic
       service: cloudelastic-chi-ssl
-    icinga:
-      check_command: check_https_lvs_on_port!cloudelastic.wikimedia.org!9243!/
-      sites:
-        eqiad:
-          hostname: cloudelastic.wikimedia.org
   cloudelastic-chi-https-public:
     description: Elasticsearch prod replica for WMF Cloud (Chi Cluster) - Public Internet Port - HTTPS
     class: high-traffic2
@@ -684,11 +679,6 @@ lvs::configuration::lvs_services:
     conftool:
       cluster: cloudelastic
       service: cloudelastic-chi-ssl-public
-    icinga:
-      check_command: check_https_lvs_on_port!cloudelastic.wikimedia.org!8243!/
-      sites:
-        eqiad:
-          hostname: cloudelastic.wikimedia.org
   cloudelastic-omega-https:
     description: Elasticsearch prod replica for WMF Cloud (Omega Cluster) - Prod MW AppServer Port - HTTPS
     class: high-traffic2
@@ -707,11 +697,6 @@ lvs::configuration::lvs_services:
     conftool:
       cluster: cloudelastic
       service: cloudelastic-omega-ssl
-    icinga:
-      check_command: check_https_lvs_on_port!cloudelastic.wikimedia.org!9443!/
-      sites:
-        eqiad:
-          hostname: cloudelastic.wikimedia.org
   cloudelastic-omega-https-public:
     description: Elasticsearch prod replica for WMF Cloud (Omega Cluster) - Public Internet Port - HTTPS
     class: high-traffic2
@@ -730,11 +715,6 @@ lvs::configuration::lvs_services:
     conftool:
       cluster: cloudelastic
       service: cloudelastic-omega-ssl-public
-    icinga:
-      check_command: check_https_lvs_on_port!cloudelastic.wikimedia.org!8443!/
-      sites:
-        eqiad:
-          hostname: cloudelastic.wikimedia.org
   cloudelastic-psi-https:
     description: Elasticsearch prod replica for WMF Cloud (Psi Cluster) - Prod MW AppServer Port - HTTPS
     class: high-traffic2
@@ -753,11 +733,6 @@ lvs::configuration::lvs_services:
     conftool:
       cluster: cloudelastic
       service: cloudelastic-psi-ssl
-    icinga:
-      check_command: check_https_lvs_on_port!cloudelastic.wikimedia.org!9643!/
-      sites:
-        eqiad:
-          hostname: cloudelastic.wikimedia.org
   cloudelastic-psi-https-public:
     description: Elasticsearch prod replica for WMF Cloud (Psi Cluster) - Public Internet Port - HTTPS
     class: high-traffic2
@@ -776,11 +751,6 @@ lvs::configuration::lvs_services:
     conftool:
       cluster: cloudelastic
       service: cloudelastic-psi-ssl-public
-    icinga:
-      check_command: check_https_lvs_on_port!cloudelastic.wikimedia.org!8643!/
-      sites:
-        eqiad:
-          hostname: cloudelastic.wikimedia.org
   mathoid:
     description: "Mathematical rendering service, mathoid.svc.%{::site}.wmnet"
     class: low-traffic

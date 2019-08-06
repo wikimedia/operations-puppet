@@ -56,6 +56,11 @@ class profile::icinga(
 
     class { 'icinga::monitor::elasticsearch::cirrus_cluster_checks': }
 
+    # Experimental load-balancer monitoring for cloudelastic service using service-checker
+    # This was isolated from lvs::monitor_services as cloudelastic use case deviates from
+    # the usual use case. see T229621
+    class { 'icinga::monitor::cloudelastic': }
+
     class { 'icinga::monitor::wdqs': }
     class { 'icinga::monitor::performance': }
     class { 'icinga::monitor::services': }
