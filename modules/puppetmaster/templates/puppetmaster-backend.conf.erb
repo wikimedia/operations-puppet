@@ -1,6 +1,7 @@
 # This file is managed by Puppet!
 
 <VirtualHost <%= @bind_address %>:8141>
+    PassengerHighPerformance on
     SSLEngine on
     <%= @ssl_settings.join("\n    ") %>
 
