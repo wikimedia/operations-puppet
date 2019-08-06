@@ -5,7 +5,7 @@ LicenseKey <%= @license_key %>
 UserId <%= @user_id %>
 ProductIds <%= @product_ids.join(' ') %>
 <%- else -%>
-UserId <%= @AccountID %>
+AccountID <%= @user_id %>
 EditionIDs <%= @product_ids.join(' ') %>
 LockFile /var/lock/.geoipupdate.lock
 <%- end -%>
