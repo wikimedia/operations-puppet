@@ -77,6 +77,13 @@ rewrite	*wikipedia.bg	https://bg.wikipedia.org
 rewrite	*wikipedia.is	https://is.wikipedia.org
 rewrite	*wikipedia.co.za	https://af.wikipedia.org
 rewrite	*wikisource.pl	https://pl.wikisource.org
+rewrite *wiktionary.pl	https://pl.wiktionary.org
+rewrite	*wikipedia.es	https://es.wikipedia.org
+rewrite *wikipedia.com.ar	https://es.wikipedia.org
+rewrite	*wikipediya.com	https://kbp.wikipedia.org
+rewrite *wikipedia.co.uk	https://en.wikipedia.org
+rewrite *wikipedia.uk	https://en.wikipedia.org
+rewrite *wikipedia.sk	https://sk.wikipedia.org
 
 # wikimedia.ee / wikipedia.ee - T165733#3355736
 rewrite	*wikimedia.ee	https://ee.wikimedia.org
@@ -112,6 +119,13 @@ funnel	*wikiepdia.com	https://www.wikipedia.org
 funnel	*wikiepdia.org	https://www.wikipedia.org
 funnel	*wikiipedia.org	https://www.wikipedia.org
 funnel	*wikpedia.org	https://www.wikipedia.org
+funnel	*wkipedia.org	https://www.wikipedia.org
+funnel	*wikkipedia.com	https://www.wikipedia.org
+funnel	*wilkipedia.org	https://www.wikipedia.org
+funnel	*wilipedia.com	https://www.wikipedia.org
+funnel	*wikipdia.org	https://www.wikipedia.org
+funnel	*wikipedoa.org	https://www.wikipedia.org
+funnel	*wikipeedia.org	https://www.wikipedia.org
 
 # Wiktionary
 
@@ -218,6 +232,24 @@ funnel	*wikimedia.community	https://www.wikimedia.org
 
 # wikimedia.us redirect
 funnel	*wikimedia.us	https://www.wikimedia.org
+
+# wikimedia.is redirect
+funnel	*wikimedia.is	https://www.wikimedia.org
+
+# wikimedia.com.pt redirect
+funnel	*wikimedia.com.pt	https://www.wikimedia.org
+
+# indianwikimedia.com redirect
+funnel	*indianwikimedia.com	https://www.wikimedia.org
+
+# wikimedia.biz redirect
+funnel	*wikimedia.biz	https://www.wikimedia.org
+
+# wikimedia.xyz redirect
+funnel	*wikimedia.xyz	https://www.wikimedia.org
+
+# wwwwikimedia.com redirect
+funnel	*wwwwikimedia.com	https://www.wikimedia.org
 
 # wikipedia.in
 funnel	*wikipedia.in	http://wikimedia.in/wikipedia.html
