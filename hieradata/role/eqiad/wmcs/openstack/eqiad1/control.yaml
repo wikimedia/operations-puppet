@@ -1,4 +1,4 @@
 admin::groups:
   - wmcs-roots
 
-profile::base::notifications: critical
+contactgroups: wmcs-team

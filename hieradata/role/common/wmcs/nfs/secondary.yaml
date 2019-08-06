@@ -20,6 +20,4 @@ profile::base::ssh_server_settings:
 admin::groups:
   - wmcs-roots
 
-# For after deploy
-profile::base::check_disk_critical: true
-profile::base::notifications: critical
+contactgroups: wmcs-team

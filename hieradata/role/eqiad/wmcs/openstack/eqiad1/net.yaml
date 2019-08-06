@@ -9,4 +9,4 @@ profile::base::ssh_server_settings:
 
 prometheus::node_exporter::web_listen_address: "%{::ipaddress}:9100"
 
-profile::base::notifications: critical
+contactgroups: wmcs-team

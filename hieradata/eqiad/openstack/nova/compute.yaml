@@ -1,1 +1,1 @@
-openstack::nova::compute::base::monitoring::host::nrpe_check_disk_critical: true
+openstack::nova::compute::contactgroups: 'wmcs-team'

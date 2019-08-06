@@ -1,7 +1,6 @@
 admin::groups:
   - wmcs-roots
 
-profile::base::check_disk_critical: true
 profile::base::enable_microcode: true
 
-profile::base::notifications: critical
+contactgroups: wmcs-team
