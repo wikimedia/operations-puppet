@@ -1,5 +1,2 @@
 mariadb::shard: 'es1'
 mariadb::mysql_role: 'standalone'
-
-profile::base::nameservers:
-  - '10.3.0.1' # anycast recdns

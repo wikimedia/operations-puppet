@@ -1,5 +1,2 @@
 # pc1008
 mariadb::parsercache::shard: 'pc2'
-
-profile::base::nameservers:
-  - '10.3.0.1' # anycast recdns

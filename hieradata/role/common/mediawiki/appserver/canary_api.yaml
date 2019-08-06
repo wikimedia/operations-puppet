@@ -42,7 +42,3 @@ profile::mediawiki::php::restarts::ensure: present
 # We set the restart watermark at 200 MB, which is approximately how much
 # opcache one full day of deployments consume.
 profile::mediawiki::php::restarts::opcache_limit: 200
-
-# Temporary while selectively rolling out anycast recdns - T228190
-profile::base::nameservers:
-  - 10.3.0.1 # anycast recdns

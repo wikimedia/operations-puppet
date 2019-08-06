@@ -1,5 +1,2 @@
 do_acme: true
 profile::tcpircbot::ensure: present
-
-profile::base::nameservers:
-  - '10.3.0.1' # anycast recdns

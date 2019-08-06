@@ -99,14 +99,12 @@ else {
 # Set some basic variables
 
 # DNS
+# TODO - factor this and related things better
 if $realm == 'labs' {
     $dnsconfig = hiera_hash('labsdnsconfig', {})
     $nameservers = [ ipresolve($dnsconfig['recursor'],4), ipresolve($dnsconfig['recursor_secondary'],4) ]
 } else {
-    $nameservers = $site ? {
-        'eqiad' => [ '208.80.154.254',  '208.80.153.254' ], # eqiad -> eqiad, codfw
-        default => [ '10.3.0.1' ], # default -> anycast
-    }
+    $nameservers = [ '10.3.0.1' ] # anycast
 }
 
 # Temporary: puppetdb switch

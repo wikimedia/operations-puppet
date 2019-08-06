@@ -1,5 +1,2 @@
 # db1089
 mariadb::shard: 's1'
-
-profile::base::nameservers:
-  - '10.3.0.1' # anycast recdns
