@@ -30,6 +30,9 @@
 
     CustomLog /var/log/apache2/access.log wmf
 
+    # This path is populated by a systemd timer that mirrors data from etcd.
+    Alias /dbconfig /srv/dbconfig
+
     <Directory />
         AllowOverride None
         Require all granted
