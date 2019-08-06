@@ -252,6 +252,7 @@ node /^conf100[456]\.eqiad\.wmnet$/ {
 # Zookeeper and Etcd discovery service nodes in codfw
 node /^conf200[123]\.codfw\.wmnet$/ {
     role(configcluster)
+    interface::add_ip6_mapped { 'main': }
 }
 
 # CI master / CI standby (switch in Hiera)
