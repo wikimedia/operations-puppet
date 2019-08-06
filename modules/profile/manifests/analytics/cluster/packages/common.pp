@@ -59,10 +59,15 @@ class profile::analytics::cluster::packages::common {
             uri        => 'http://apt.wikimedia.org/wikimedia',
             dist       => "${::lsbdistcodename}-wikimedia",
             components => 'component/pyall',
-            before     => Package['python3.7']
+            before     => [Package['python3.7'], Package['libpython3.7']],
         }
         if !defined(Package['python3.7']) {
             package { 'python3.7':
+                ensure => 'installed',
+            }
+        }
+        if !defined(Package['libpython3.7']) {
+            package { 'libpython3.7':
                 ensure => 'installed',
             }
         }
