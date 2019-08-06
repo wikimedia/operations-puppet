@@ -1401,6 +1401,56 @@ shared_acme_certificates:
     - '^ncredir200[12]\.codfw\.wmnet$'
     prevalidate: true
     skip_invalid_snis: true
+  non-canonical-redirect-5:
+    CN: 'wikimedia.is'
+    SNI:
+    - 'wikimedia.is'
+    - '*.wikimedia.is'
+    - 'wikimedia.com.pt'
+    - '*.wikimedia.com.pt'
+    - 'indianwikimedia.com'
+    - '*.indianwikimedia.com'
+    - 'wikimedia.biz'
+    - '*.wikimedia.biz'
+    - 'wikimedia.xyz'
+    - '*.wikimedia.xyz'
+    - 'wwwwikimedia.com'
+    - '*.wwwwikimedia.com'
+    - 'wikipedia.es'
+    - '*.wikipedia.es'
+    - 'wkipedia.org'
+    - '*.wkipedia.org'
+    - 'wikkipedia.com'
+    - '*.wikkipedia.com'
+    - 'wilkipedia.org'
+    - '*.wilkipedia.org'
+    - 'wilipedia.com'
+    - '*.wilipedia.com'
+    - 'wikipediya.com'
+    - '*.wikipediya.com'
+    - 'wikipdia.org'
+    - '*.wikipdia.org'
+    - 'wikipedia.co.uk'
+    - '*.wikipedia.co.uk'
+    - 'wikipedia.uk'
+    - '*.wikipedia.uk'
+    - 'wikipedoa.org'
+    - '*.wikipedoa.org'
+    - 'wikipeedia.org'
+    - '*.wikipeedia.org'
+    - 'wiktionary.pl'
+    - '*.wiktionary.pl'
+    - 'wikipedia.com.ar'
+    - '*.wikipedia.com.ar'
+    - 'wikipedia.sk'
+    - '*.wikipedia.sk'
+    staging_time: 604800
+    challenge: dns-01
+    authorized_regexes:
+    - '^ncredir100[12]\.eqiad\.wmnet$'
+    - '^ncredir200[12]\.codfw\.wmnet$'
+    prevalidate: true
+    skip_invalid_snis: true
 
 ldap:
   base-dn: 'dc=wikimedia,dc=org'
