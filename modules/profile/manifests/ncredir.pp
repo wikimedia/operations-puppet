@@ -5,6 +5,7 @@ class profile::ncredir(
     String $acme_chief_cert_prefix = lookup('profile::ncredir::acme_chief_cert_prefix', {default_value => 'non-canonical-redirect-'}),
     Optional[String] $fqdn_monitoring = lookup('profile::ncredir::fqdn_monitoring', {default_value => undef}),
     Wmflib::UserIpPort $mtail_access_log_port = lookup('profile::ncredir::mtail_access_log_port', {default_value => 3904}),
+    Array[String] $prometheus_nodes = lookup('prometheus_nodes', {default_value => []}),
 ) {
 
     class { '::sslcert::dhparam': }
@@ -49,6 +50,13 @@ class profile::ncredir(
     ferm::service { 'ncredir_https':
         proto => 'tcp',
         port  => $https_port,
+    }
+
+    $prometheus_nodes_ferm = join($prometheus_nodes, ' ')
+    ferm::service { 'mtail':
+      proto  => 'tcp',
+      port   => '3904',
+      srange => "(@resolve((${prometheus_nodes_ferm})) @resolve((${prometheus_nodes_ferm}), AAAA))",
     }
 
     if $fqdn_monitoring {
