@@ -151,7 +151,7 @@ PASSTHROUGH = { 'SWIFT_AUTH_URL': '<%= @swift_auth_url %>/auth/v1.0',
                 'DEFAULT_FILE_STORAGE': 'swift.storage.SwiftStorage',
                 'SWIFT_USE_TEMP_URLS': True,
                 'SWIFT_TEMP_URL_KEY': '<%= @swift_url_key %>',
-                'SWIFT_BASE_URL': '<%= @service_hostname %>',
+                'SWIFT_BASE_URL': 'https://<%= @service_hostname %>',
 }
 <% end %>
 
