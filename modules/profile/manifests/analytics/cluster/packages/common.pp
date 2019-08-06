@@ -51,6 +51,17 @@ class profile::analytics::cluster::packages::common {
     # to figure out if we need to rebuild them or simply copy them over in reprepro.
     if os_version('debian <= stretch') {
         require_package('python3-mmh3')
+
+        # See: https://gerrit.wikimedia.org/r/c/operations/puppet/+/480041/
+        # and: https://phabricator.wikimedia.org/T229347
+        # python3.7 will assist with a Spark & Buster upgrade.
+        apt::repository { 'component-pyall':
+            uri        => 'http://apt.wikimedia.org/wikimedia',
+            dist       => "${::lsbdistcodename}-wikimedia",
+            components => 'component/pyall',
+            before     => Package['python3.7']
+        }
+        require_package('python3.7')
     }
 
     # ores::base for ORES packages
