@@ -61,7 +61,11 @@ class profile::analytics::cluster::packages::common {
             components => 'component/pyall',
             before     => Package['python3.7']
         }
-        require_package('python3.7')
+        if !defined(Package['python3.7']) {
+            package { 'python3.7':
+                ensure => 'installed',
+            }
+        }
     }
 
     # ores::base for ORES packages
