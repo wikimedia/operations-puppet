@@ -175,10 +175,10 @@ rewrite	wikivoyager.org	https://www.wikivoyage.org
 rewrite	wikivoyager.de	https://www.wikivoyage.org
 
 # Voyagewiki (T165733#3355736)
-# rewrite	*.voyagewiki.com	https://*.wikivoyage.org
-# rewrite	*.voyagewiki.org	https://*.wikivoyage.org
-# rewrite	voyagewiki.com	https://www.wikivoyage.org
-# rewrite	voyagewiki.org	https://www.wikivoyage.org
+rewrite	*.voyagewiki.com	https://*.wikivoyage.org
+rewrite	*.voyagewiki.org	https://*.wikivoyage.org
+rewrite	voyagewiki.com	https://www.wikivoyage.org
+rewrite	voyagewiki.org	https://www.wikivoyage.org
 
 # wikimediafoundation
 rewrite	*wikimediafoundation.com	https://foundation.wikimedia.org
