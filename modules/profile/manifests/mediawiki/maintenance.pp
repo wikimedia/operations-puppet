@@ -56,6 +56,7 @@ class profile::mediawiki::maintenance {
     class { 'mediawiki::maintenance::uploads': ensure => $ensure }
     class { 'mediawiki::maintenance::readinglists': ensure => $ensure }
     class { 'mediawiki::maintenance::initsitestats': ensure => $ensure }
+    class { 'mediawiki::maintenance::startupregistrystats': ensure => $ensure }
 
     # Include the cache warmup script; requires node and conftool
     require ::profile::conftool::client
