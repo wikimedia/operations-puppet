@@ -83,6 +83,15 @@ class logstash (
         notify  => Service['logstash'],
     }
 
+    file { '/etc/logstash/log4j2.properties':
+        ensure  => file,
+        owner   => 'root',
+        group   => 'root',
+        content => template('logstash/log4j2.properties.erb'),
+        mode    => '0444',
+        require => Package['logstash'],
+    }
+
     file { '/etc/logstash/logstash.yml':
         content => ordered_yaml({
             'path.data'        => '/var/lib/logstash',
