@@ -83,13 +83,4 @@ profile::oozie::server::oozie_service_kerberos_principal: 'oozie/_HOST@WIKIMEDIA
 profile::oozie::server::oozie_authentication_type: 'kerberos'
 profile::oozie::server::oozie_authentication_kerberos_principal: 'HTTP/_HOST@WIKIMEDIA'
 
-profile::hadoop::spark2::extra_settings:
-  spark.authenticate: true
-  spark.network.crypto.enabled: true
-  spark.network.crypto.keyLength: 128
-  spark.network.crypto.keyFactoryAlgorithm: PBKDF2WithHmacSHA1
-  spark.io.encryption.enabled: true
-  spark.io.encryption.keySizeBits: 128
-  spark.io.encryption.keygen.algorithm: HmacSHA1
-
 profile::base::notifications: disabled
