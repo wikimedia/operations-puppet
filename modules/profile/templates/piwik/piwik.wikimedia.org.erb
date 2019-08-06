@@ -4,6 +4,19 @@
   ServerName piwik.wikimedia.org
   DocumentRoot /usr/share/matomo
 
+  <Directory /var/www>
+      AllowOverride None
+      Require all denied
+      <Files health_check>
+          Require all granted
+      </Files>
+  </Directory>
+
+  <Location /health_check>
+    Require all granted
+    Alias /var/www/health_check
+  </Location>
+
   <Directory "/usr/share/matomo">
     php_admin_flag engine on
 
