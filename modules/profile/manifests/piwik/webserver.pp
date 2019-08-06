@@ -52,8 +52,7 @@ class profile::piwik::webserver(
         source => 'puppet:///modules/profile/piwik/mpm_prefork.conf',
     }
 
-    # Include the Superset HTTP WMF LDAP auth proxy
-    include ::profile::superset::proxy
+    require ::profile::analytics::httpd::utils
 
     httpd::site { 'piwik.wikimedia.org':
         content => template('profile/piwik/piwik.wikimedia.org.erb'),
