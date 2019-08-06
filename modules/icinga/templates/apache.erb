@@ -71,6 +71,8 @@ Alias /icinga /usr/share/icinga/htdocs
         LoadModule alias_module modules/mod_alias.so
     </IfModule>
 
+    # Shortcut to access unhandled (non-acked) alerts
+    RedirectMatch ^/alerts$ https://<%= @virtual_host %>/cgi-bin/icinga/status.cgi?allunhandledproblems&sortobject=services&sorttype=2&sortoption=3
     RedirectMatch ^/$ https://<%= @virtual_host %>/icinga
     ErrorLog /var/log/apache2/icinga.log
     LogLevel warn
