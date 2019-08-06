@@ -1,1 +1,3 @@
 profile::etcd::replication::active: true
+profile::base::nameservers:
+  - '10.3.0.1' # anycast recdns

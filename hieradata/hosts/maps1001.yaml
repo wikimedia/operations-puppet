@@ -1,2 +1,5 @@
 cassandra::rack: a4
 do_paging: false
+
+profile::base::nameservers:
+  - '10.3.0.1' # anycast recdns

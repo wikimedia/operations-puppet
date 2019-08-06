@@ -1,3 +1,6 @@
 # Analytics Query Service - rack1 instances
 
 profile::cassandra::rack: 'rack1'
+
+profile::base::nameservers:
+  - '10.3.0.1' # anycast recdns

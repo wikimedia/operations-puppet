@@ -5,3 +5,6 @@ profile::mariadb::proxy::replicas::servers:
   labsdb1010:
     address: '10.64.37.23:3306'
 profile::mariadb::proxy::firewall: 'disabled'
+
+profile::base::nameservers:
+  - '10.3.0.1' # anycast recdns

@@ -1,1 +1,4 @@
 profile::openldap::server_id: 3
+
+profile::base::nameservers:
+  - '10.3.0.1' # anycast recdns
