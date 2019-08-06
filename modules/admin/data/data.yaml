@@ -33,7 +33,7 @@ groups:
               akosiaris, mark, ariel, cmjohnson, otto, robh, tstarling,
               ori, jmm, jynus, ema, elukey, gehel, volans, marostegui,
               ayounsi, herron, aborrero, bstorm, vgutierrez, jiji, cwhite,
-              crusnov, cdanis, fsero, jbond, jeh, dzahn]
+              crusnov, cdanis, fsero, jbond, jeh, dzahn, hpham]
     privileges: ['ALL = (ALL) NOPASSWD: ALL']
   ops-adm-group:
     # No gid for this group on purpose, it's a system provided one
@@ -2696,6 +2696,15 @@ users:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIInHKi3MxDy91mgCV3x3MBFxCFWbM5QziRGJwdRRiVun aborrero@wikimedia.org production
     uid: 18194
     email: aborrero@wikimedia.org
+  hpham:
+    ensure: present
+    gid: 500
+    name: hpham
+    realname: Hieu Pham
+    ssh_keys:
+      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIHJ+tdR854tJNFXK14dxJFrURxnEpk1rE+KkEUPeXrrZ hpham@wikimedia.org(prod)
+    uid: 21844
+    email: hpham@wikimedia.org
   phedenskog:
     ensure: present
     gid: 500
