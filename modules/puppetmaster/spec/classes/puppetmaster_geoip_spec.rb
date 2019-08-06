@@ -2,6 +2,12 @@ require 'spec_helper'
 
 describe 'puppetmaster::geoip' do
     let(:node_params) { {'site' => 'eqiad'}}
+    let(:facts) do
+      {
+        'lsbdistrelease' => '9.9',
+        'lsbdistid' => 'Debian'
+      }
+    end
     let(:pre_condition) {
         '''
         class puppetmaster { $volatiledir="/tmp" }
