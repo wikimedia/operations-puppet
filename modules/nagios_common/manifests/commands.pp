@@ -18,18 +18,8 @@ class nagios_common::commands(
     $owner = 'icinga',
     $group = 'icinga',
 ) {
-    $nrpe_v2_arg = os_version('debian >= stretch') ? {
-        true    => '-2',
-        default => ''
-    }
-
     # Workaround for T205091
     require_package('python3-snimpy')
-
-    # replaced by libmonitoring-plugin-perl in stretch
-    if os_version('debian == jessie') {
-        require_package('libnagios-plugin-perl')
-    }
 
     require_package([
         # check_ssl
