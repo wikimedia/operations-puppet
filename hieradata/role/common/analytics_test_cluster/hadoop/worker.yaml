@@ -46,7 +46,6 @@ profile::hadoop::spark2::extra_settings:
   spark.io.encryption.enabled: true
   spark.io.encryption.keySizeBits: 128
   spark.io.encryption.keygen.algorithm: HmacSHA1
-  spark.executorEnv.LD_LIBRARY_PATH: '/usr/lib/hadoop/lib/native'
 
 # Hive Client settings.
 # Hive configuration is common to multiple clients, but because of role based
