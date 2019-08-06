@@ -1,0 +1,11 @@
+--- /usr/share/icinga/htdocs/menu.html	2017-05-05 06:57:03.000000000 +0000
++++ menu.html	2019-08-07 15:27:50.695382526 +0000
+@@ -35,7 +35,7 @@
+ 			<li class="menuli_style2">
+ 			<div class="navbarsearch">
+ 			<form method="get" action="/cgi-bin/icinga/status.cgi" target="main">
+-			<input type='text' name='search_string' id="autocomplete" style="width: 150px; padding: 2px; margin-left: 10px; border: 1px solid grey">
++			<input type='text' name='search_string' style="width: 150px; padding: 2px; margin-left: 10px; border: 1px solid grey">
+ 			</form>
+ 			</div>
+ 			</li>

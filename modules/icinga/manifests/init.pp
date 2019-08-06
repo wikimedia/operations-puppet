@@ -257,4 +257,24 @@ class icinga(
     # are declared by the icinga host itself
     resources { 'nagios_host': purge => true, }
     resources { 'nagios_service': purge => true, }
+
+    # Applies a patch to disable autocomplete.js on search text input
+    # `patch` appears to be a system package in stretch
+    $patches_dir = '/usr/share/icinga/patches'
+
+    file { $patches_dir:
+        ensure  => 'directory'
+    }
+
+    file { "${patches_dir}/disable_autocomplete.patch":
+        ensure  => 'present',
+        source  => "puppet:///modules/${module_name}/disable_autocomplete.patch",
+        require => File[$patches_dir]
+    }
+
+    exec { 'apply disable_autocomplete.patch':
+        command => "/usr/bin/patch --forward /usr/share/icinga/htdocs/menu.html ${patches_dir}/disable_autocomplete.patch",
+        unless  => "/usr/bin/patch --reverse --dry-run -f /usr/share/icinga/htdocs/menu.html ${patches_dir}/disable_autocomplete.patch",
+        require => File["${patches_dir}/disable_autocomplete.patch"],
+    }
 }
