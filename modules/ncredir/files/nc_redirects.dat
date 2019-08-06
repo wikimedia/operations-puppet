@@ -187,12 +187,12 @@ rewrite	*wikimediafoundation.info	https://foundation.wikimedia.org
 
 # Commons
 
-# rewrite	*wikimediacommons.net	https://commons.wikimedia.org
-# rewrite	*wikimediacommons.info	https://commons.wikimedia.org
-# rewrite	*wikimediacommons.mobi	https://commons.wikimedia.org
-# rewrite	*wikimediacommons.org	https://commons.wikimedia.org
-# rewrite	*wikimediacommons.jp.net	https://commons.wikimedia.org
-# rewrite	*wikimediacommons.co.uk	https://commons.wikimedia.org
+rewrite	*wikimediacommons.net	https://commons.wikimedia.org
+rewrite	*wikimediacommons.info	https://commons.wikimedia.org
+rewrite	*wikimediacommons.mobi	https://commons.wikimedia.org
+rewrite	*wikimediacommons.org	https://commons.wikimedia.org
+rewrite	*wikimediacommons.jp.net	https://commons.wikimedia.org
+rewrite	*wikimediacommons.co.uk	https://commons.wikimedia.org
 
 # Other projects
 
