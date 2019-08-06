@@ -28,3 +28,5 @@ profile::puppetmaster::frontend::canary_hosts:
   - conf1006.eqiad.wmnet
   - elastic1017.eqiad.wmnet
   - 2620:0:861:107:b283:feff:fec0:b0d2 # elastic1017 has no AAAA record we add the SLACC
+  - analytics1042.eqiad.wmnet
+  - kafka-jumbo1001.eqiad.wmnet
