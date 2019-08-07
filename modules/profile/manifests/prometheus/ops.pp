@@ -541,6 +541,8 @@ class profile::prometheus::ops (
       {
         'job_name'        => 'pdu',
         'metrics_path'    => '/snmp',
+        # PDUs with per-outlet control can take a long time to be scraped
+        'scrape_timeout'  => '15s',
         'params'          => {
           'module' => [ "pdu_${::site}" ],
         },
@@ -572,6 +574,8 @@ class profile::prometheus::ops (
       {
         'job_name'        => 'pdu_sentry4',
         'metrics_path'    => '/snmp',
+        # PDUs with per-outlet control can take a long time to be scraped
+        'scrape_timeout'  => '15s',
         'params'          => {
           'module' => [ "pdu_sentry4_${::site}" ],
         },
