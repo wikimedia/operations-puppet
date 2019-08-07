@@ -848,7 +848,7 @@ node /^dbproxy10(01|02|03|05|06|07|08|13|14)\.eqiad\.wmnet$/ {
 }
 
 # Passive codfw proxies for misc databases
-node /^dbproxy20(01|02)\.codfw\.wmnet$/ {
+node /^dbproxy20(01|02|03)\.codfw\.wmnet$/ {
     role(mariadb::proxy::master)
 }
 
@@ -869,7 +869,7 @@ node /^dbproxy10(12|15|16|17|18|19|20|21)\.eqiad\.wmnet$/ {
 }
 
 # new dbproxy hosts to be productionized T223492
-node /^dbproxy200[3-4]\.codfw\.wmnet$/ {
+node /^dbproxy200[4]\.codfw\.wmnet$/ {
     role(spare::system)
 }
 
