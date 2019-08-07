@@ -28,6 +28,8 @@ modules:
       - 1.3.6.1.4.1.1718.4.1.6.3 # st4OcpMonitorTable
       - 1.3.6.1.4.1.1718.4.1.7.2 # st4BranchConfigTable
       - 1.3.6.1.4.1.1718.4.1.7.3 # st4BranchMonitorTable
+      - 1.3.6.1.4.1.1718.4.1.8.2 # st4OutletConfigTable
+      - 1.3.6.1.4.1.1718.4.1.8.3 # st4OutletMonitorTable
       - 1.3.6.1.4.1.1718.4.1.9.2 # st4TempSensorConfigTable
       - 1.3.6.1.4.1.1718.4.1.9.3 # st4TempSensorMonitorTable
       - 1.3.6.1.4.1.1718.4.1.10.2 # st4HumidSensorConfigTable
