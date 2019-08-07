@@ -2,15 +2,24 @@
 #
 # Sets up a puppetdb instance and the corresponding database server.
 class puppetmaster::puppetdb(
-    $master,
-    $port       = 443,
-    $jetty_port = 8080,
-    $jvm_opts   ='-Xmx4G',
-    $ssldir = undef,
-    $ca_path = '/etc/ssl/certs/Puppet_Internal_CA.pem',
+    Stdlib::Host               $master,
+    Stdlib::Port               $port          = 443,
+    Stdlib::Port               $jetty_port    = 8080,
+    String                     $jvm_opts      ='-Xmx4G',
+    Optional[Stdlib::Unixpath] $ssldir        = undef,
+    Stdlib::Unixpath           $ca_path       = '/etc/ssl/certs/Puppet_Internal_CA.pem',
+    Boolean                    $filter_job_id = false,
 ) {
     $puppetdb_pass = hiera('puppetdb::password::rw')
 
+    # Open to suggestions for a more FHS location
+    file {'/etc/nginx/lua':
+        ensure =>  directory
+    }
+    file{'/etc/nginx/lua/filter_job_id.lua':
+        ensure => file,
+        source => 'puppet:///modules/puppetmaster/filter_job_id.lua'
+    }
     ## TLS Termination
     # Set up nginx as a reverse-proxy
     ::base::expose_puppet_certs { '/etc/nginx':
