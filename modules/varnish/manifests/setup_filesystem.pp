@@ -6,10 +6,6 @@ define varnish::setup_filesystem() {
         # Starting with stretch, we don't use the journal at mke2fs time
         $mount_options = 'noatime,nobarrier'
     }
-    else {
-        # Legacy jessie installs, remove when all are stretch
-        $mount_options = 'noatime,nobarrier,data=writeback'
-    }
 
     if $::realm == 'labs' and $::site == 'eqiad' {
       include ::labs_lvm
