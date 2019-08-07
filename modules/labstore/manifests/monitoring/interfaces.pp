@@ -61,15 +61,10 @@ class labstore::monitoring::interfaces(
     }
 
     # Monitor for high load consistently, is a 'catchall'
-    # Since we don't yet have a sensible prometheus recording rule for this to query,
-    # This is now 5m vs the older 1m check.  That is a TODO because "average" != 85% of all
-    # values over time that we had in graphite.
-    # Also considering making this an "email only" alert because we often want to wait
-    # the condition out rather than immediately respond.
     monitoring::check_prometheus { 'high_load':
-        description     => 'High 5m load average',
+        description     => 'High 1m load average',
         dashboard_links => ['https://grafana.wikimedia.org/dashboard/db/labs-monitoring'],
-        query           => "node_load5{instance=\"${::hostname}:9100\"}",
+        query           => "quantile_over_time(.85, node_load1{instance=\"${::hostname}:9100\"}[10m])",
         warning         => $load_warn,
         critical        => $load_crit,
         retries         => $retries,
