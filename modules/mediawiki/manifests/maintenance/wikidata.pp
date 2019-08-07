@@ -21,7 +21,7 @@ class mediawiki::maintenance::wikidata( $ensure = present, $ensure_testwiki = pr
 
     cron { 'wikibase-dispatch-changes-test':
         ensure  => $ensure_testwiki,
-        command => "echo \"\$\$: Starting dispatcher\" >> ${test_dispatch_log_file}; /usr/local/bin/mwscript extensions/Wikibase/repo/maintenance/dispatchChanges.php --wiki testwikidatawiki >> ${test_dispatch_log_file} 2>&1; echo \"\$\$: Dispatcher exited with $?\" >> ${test_dispatch_log_file}",
+        command => "echo \"\$\$: Starting dispatcher\" >> ${test_dispatch_log_file}; PHP=php7.2 /usr/local/bin/mwscript extensions/Wikibase/repo/maintenance/dispatchChanges.php --wiki testwikidatawiki >> ${test_dispatch_log_file} 2>&1; echo \"\$\$: Dispatcher exited with $?\" >> ${test_dispatch_log_file}",
         user    => $::mediawiki::users::web,
         minute  => '*/15',
         require => File['/var/log/wikidata'],
@@ -38,7 +38,7 @@ class mediawiki::maintenance::wikidata( $ensure = present, $ensure_testwiki = pr
 
     cron { 'wikibase-repo-prune-test':
         ensure  => $ensure_testwiki,
-        command => '/usr/local/bin/mwscript extensions/Wikibase/repo/maintenance/pruneChanges.php --wiki testwikidatawiki --number-of-days=3 >> /var/log/wikidata/prune-testwikidata.log 2>&1',
+        command => 'PHP=php7.2 /usr/local/bin/mwscript extensions/Wikibase/repo/maintenance/pruneChanges.php --wiki testwikidatawiki --number-of-days=3 >> /var/log/wikidata/prune-testwikidata.log 2>&1',
         user    => $::mediawiki::users::web,
         minute  => [0,15,30,45],
         require => File['/var/log/wikidata'],
