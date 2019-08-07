@@ -10,7 +10,7 @@ CMD=$2
 shift
 shift
 
-RUNNER=php
+RUNNER=php7.2
 if [ "$(whoami)" != "$MEDIAWIKI_WEB_USER" ] ; then
 	RUNNER="sudo -u $MEDIAWIKI_WEB_USER $RUNNER"
 fi
