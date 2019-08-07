@@ -2,6 +2,7 @@ cluster: analytics
 admin::groups:
   - analytics-admins
   - gpu-testers
+  - gpu-users
 
 profile::base::notifications: disabled
 
