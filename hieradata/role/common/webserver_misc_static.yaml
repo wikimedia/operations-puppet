@@ -6,3 +6,14 @@ profile::microsites::design::server_name: 'design.wikimedia.org'
 profile::microsites::design::server_admin: 'noc@wikimedia.org'
 profile::microsites::sitemaps::server_name: 'sitemaps.wikimedia.org'
 profile::microsites::sitemaps::server_admin: 'noc@wikimedia.org'
+
+# Envoy TLS termination configuration.
+# Configures a full sink of all requests to https to the http port
+# cert_name is omitted in the service definition so that we only
+# configure the non-sni version.
+profile::tlsproxy::envoy::ensure: present
+profile::tlsproxy::envoy::services:
+  - server_names: ['*']
+    port: 80
+profile::tlsproxy::envoy::global_cert_name: "webserver-misc-static.discovery.wmnet"
+profile::tlsproxy::envoy::sni_support: "no"
