@@ -142,7 +142,7 @@ profile::trafficserver::backend::mapping_rules:
       replacement: https://analytics-tool1002.eqiad.wmnet
     - type: map
       target: http://piwik.wikimedia.org
-      replacement: http://matomo1001.eqiad.wmnet
+      replacement: https://matomo1001.eqiad.wmnet
     - type: regex_map
       target: 'http://([^.]+\.)?planet\.wikimedia\.org'
       replacement: http://planet1001.eqiad.wmnet
