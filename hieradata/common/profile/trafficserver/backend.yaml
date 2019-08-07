@@ -27,11 +27,11 @@ profile::trafficserver::backend::mapping_rules:
       replacement: http://cxserver.discovery.wmnet:8080
     - type: map
       target: http://datasets.wikimedia.org
-      replacement: http://thorium.eqiad.wmnet
+      replacement: https://thorium.eqiad.wmnet
     - type: map
       target: http://dbtree.wikimedia.org
-      replacement: http://dbmonitor1001.wikimedia.org
-      #replacement: http://dbmonitor2001.wikimedia.org
+      replacement: https://dbmonitor1001.wikimedia.org
+      #replacement: https://dbmonitor2001.wikimedia.org
     - type: map
       target: http://debmonitor.wikimedia.org
       replacement: https://debmonitor.discovery.wmnet
@@ -53,7 +53,7 @@ profile::trafficserver::backend::mapping_rules:
       replacement: ws://etherpad1001.eqiad.wmnet:9001
     - type: map
       target: http://gerrit.wmfusercontent.org
-      replacement: http://gerrit.wikimedia.org
+      replacement: https://gerrit.wikimedia.org
     - type: map
       target: http://git.wikimedia.org
       replacement: http://phab1003.eqiad.wmnet
@@ -104,7 +104,7 @@ profile::trafficserver::backend::mapping_rules:
       replacement: https://kartotherian.discovery.wmnet
     - type: map
       target: http://metrics.wikimedia.org
-      replacement: http://thorium.eqiad.wmnet
+      replacement: https://thorium.eqiad.wmnet
     - type: map
       target: http://noc.wikimedia.org
       replacement: http://mwmaint1002.eqiad.wmnet
@@ -183,14 +183,14 @@ profile::trafficserver::backend::mapping_rules:
       #replacement: http://vega.codfw.wmnet
     - type: map
       target: http://smokeping.wikimedia.org
-      replacement: http://netmon1002.wikimedia.org
+      replacement: https://netmon1002.wikimedia.org
     - type: map
       target: http://static-bugzilla.wikimedia.org
       replacement: http://bromine.eqiad.wmnet
       #replacement: http://vega.codfw.wmnet
     - type: map
       target: http://stats.wikimedia.org
-      replacement: http://thorium.eqiad.wmnet
+      replacement: https://thorium.eqiad.wmnet
     - type: map
       target: http://stream.wikimedia.org
       # XXX pipe requests to /v2/stream/.+ ?
