@@ -1,0 +1,42 @@
+# Input file for snmp_exporter's generator program
+# Output is a single snmp.yml file that we split up in different modules and
+# turn into templates (to be able to add communities)
+#
+# See also https://www.servertech.com/support/sentry-mib-oid-tree-downloads
+modules:
+  servertech_sentry3:
+    walk:
+      - sysUpTime
+        # The "capabilities" OIDs (BITS syntax) will need to be skipped/deleted
+        # in the generated output, newer releases of snmp_exporter can
+        # correctly handle those.
+      - 1.3.6.1.4.1.1718.3.2 # systemTables
+  servertech_sentry4:
+    walk:
+      - sysUpTime
+        # Ideally we'd walk the top OID, however some BITS syntax isn't handled
+        # correctly so we're skipping those OIDs and walking only the Config +
+        # Monitor tables for each "feature".
+        # https://github.com/prometheus/snmp_exporter/issues/443
+      - 1.3.6.1.4.1.1718.4.1.3.2 # st4InputCordConfigTable
+      - 1.3.6.1.4.1.1718.4.1.3.3 # st4InputCordMonitorTable
+      - 1.3.6.1.4.1.1718.4.1.4.2 # st4LineConfigTable
+      - 1.3.6.1.4.1.1718.4.1.4.3 # st4LineMonitorTable
+      - 1.3.6.1.4.1.1718.4.1.5.2 # st4PhaseConfigTable
+      - 1.3.6.1.4.1.1718.4.1.5.3 # st4PhaseMonitorTable
+      - 1.3.6.1.4.1.1718.4.1.6.2 # st4OcpConfigTable
+      - 1.3.6.1.4.1.1718.4.1.6.3 # st4OcpMonitorTable
+      - 1.3.6.1.4.1.1718.4.1.7.2 # st4BranchConfigTable
+      - 1.3.6.1.4.1.1718.4.1.7.3 # st4BranchMonitorTable
+      - 1.3.6.1.4.1.1718.4.1.9.2 # st4TempSensorConfigTable
+      - 1.3.6.1.4.1.1718.4.1.9.3 # st4TempSensorMonitorTable
+      - 1.3.6.1.4.1.1718.4.1.10.2 # st4HumidSensorConfigTable
+      - 1.3.6.1.4.1.1718.4.1.10.3 # st4HumidSensorMonitorTable
+      - 1.3.6.1.4.1.1718.4.1.11.2 # st4WaterSensorConfigTable
+      - 1.3.6.1.4.1.1718.4.1.11.3 # st4WaterSensorMonitorTable
+      - 1.3.6.1.4.1.1718.4.1.12.2 # st4CcSensorConfigTable
+      - 1.3.6.1.4.1.1718.4.1.12.3 # st4CcSensorMonitorTable
+      - 1.3.6.1.4.1.1718.4.1.13.2 # st4AdcSensorConfigTable
+      - 1.3.6.1.4.1.1718.4.1.13.3 # st4AdcSensorMonitorTable
+      - 1.3.6.1.4.1.1718.4.1.14.2 # st4FanSensorConfigTable
+      - 1.3.6.1.4.1.1718.4.1.14.3 # st4FanSensorMonitorTable

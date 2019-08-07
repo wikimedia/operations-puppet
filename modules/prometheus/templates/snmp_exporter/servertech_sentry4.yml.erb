@@ -5,23 +5,216 @@
 <% end -%>
   walk:
   - 1.3.6.1.2.1.1.3
-  - 1.3.6.1.4.1.1718.4.1.3
+  - 1.3.6.1.4.1.1718.4.1.10.2
+  - 1.3.6.1.4.1.1718.4.1.10.3
+  - 1.3.6.1.4.1.1718.4.1.11.2
+  - 1.3.6.1.4.1.1718.4.1.11.3
+  - 1.3.6.1.4.1.1718.4.1.12.2
+  - 1.3.6.1.4.1.1718.4.1.12.3
+  - 1.3.6.1.4.1.1718.4.1.13.2
+  - 1.3.6.1.4.1.1718.4.1.13.3
+  - 1.3.6.1.4.1.1718.4.1.14.2
+  - 1.3.6.1.4.1.1718.4.1.14.3
+  - 1.3.6.1.4.1.1718.4.1.3.2
+  - 1.3.6.1.4.1.1718.4.1.3.3
+  - 1.3.6.1.4.1.1718.4.1.4.2
+  - 1.3.6.1.4.1.1718.4.1.4.3
+  - 1.3.6.1.4.1.1718.4.1.5.2
+  - 1.3.6.1.4.1.1718.4.1.5.3
+  - 1.3.6.1.4.1.1718.4.1.6.2
+  - 1.3.6.1.4.1.1718.4.1.6.3
+  - 1.3.6.1.4.1.1718.4.1.7.2
+  - 1.3.6.1.4.1.1718.4.1.7.3
+  - 1.3.6.1.4.1.1718.4.1.9.2
+  - 1.3.6.1.4.1.1718.4.1.9.3
   metrics:
   - name: sysUpTime
     oid: 1.3.6.1.2.1.1.3
     type: gauge
-  - name: st4InputCordActivePowerHysteresis
-    oid: 1.3.6.1.4.1.1718.4.1.3.1.1
+  - name: st4HumidSensorIndex
+    oid: 1.3.6.1.4.1.1718.4.1.10.2.1.1
     type: gauge
-  - name: st4InputCordApparentPowerHysteresis
-    oid: 1.3.6.1.4.1.1718.4.1.3.1.2
+    indexes:
+    - labelname: st4UnitIndex
+      type: Integer
+    - labelname: st4HumidSensorIndex
+      type: Integer
+  - name: st4HumidSensorID
+    oid: 1.3.6.1.4.1.1718.4.1.10.2.1.2
+    type: string
+    indexes:
+    - labelname: st4UnitIndex
+      type: Integer
+    - labelname: st4HumidSensorIndex
+      type: Integer
+  - name: st4HumidSensorName
+    oid: 1.3.6.1.4.1.1718.4.1.10.2.1.3
+    type: string
+    indexes:
+    - labelname: st4UnitIndex
+      type: Integer
+    - labelname: st4HumidSensorIndex
+      type: Integer
+  - name: st4HumidSensorValue
+    oid: 1.3.6.1.4.1.1718.4.1.10.3.1.1
     type: gauge
-  - name: st4InputCordPowerFactorHysteresis
-    oid: 1.3.6.1.4.1.1718.4.1.3.1.3
+    indexes:
+    - labelname: st4UnitIndex
+      type: Integer
+    - labelname: st4HumidSensorIndex
+      type: Integer
+  - name: st4HumidSensorStatus
+    oid: 1.3.6.1.4.1.1718.4.1.10.3.1.2
     type: gauge
-  - name: st4InputCordOutOfBalanceHysteresis
-    oid: 1.3.6.1.4.1.1718.4.1.3.1.4
+    indexes:
+    - labelname: st4UnitIndex
+      type: Integer
+    - labelname: st4HumidSensorIndex
+      type: Integer
+  - name: st4WaterSensorIndex
+    oid: 1.3.6.1.4.1.1718.4.1.11.2.1.1
     type: gauge
+    indexes:
+    - labelname: st4UnitIndex
+      type: Integer
+    - labelname: st4WaterSensorIndex
+      type: Integer
+  - name: st4WaterSensorID
+    oid: 1.3.6.1.4.1.1718.4.1.11.2.1.2
+    type: string
+    indexes:
+    - labelname: st4UnitIndex
+      type: Integer
+    - labelname: st4WaterSensorIndex
+      type: Integer
+  - name: st4WaterSensorName
+    oid: 1.3.6.1.4.1.1718.4.1.11.2.1.3
+    type: string
+    indexes:
+    - labelname: st4UnitIndex
+      type: Integer
+    - labelname: st4WaterSensorIndex
+      type: Integer
+  - name: st4WaterSensorStatus
+    oid: 1.3.6.1.4.1.1718.4.1.11.3.1.1
+    type: gauge
+    indexes:
+    - labelname: st4UnitIndex
+      type: Integer
+    - labelname: st4WaterSensorIndex
+      type: Integer
+  - name: st4CcSensorIndex
+    oid: 1.3.6.1.4.1.1718.4.1.12.2.1.1
+    type: gauge
+    indexes:
+    - labelname: st4UnitIndex
+      type: Integer
+    - labelname: st4CcSensorIndex
+      type: Integer
+  - name: st4CcSensorID
+    oid: 1.3.6.1.4.1.1718.4.1.12.2.1.2
+    type: string
+    indexes:
+    - labelname: st4UnitIndex
+      type: Integer
+    - labelname: st4CcSensorIndex
+      type: Integer
+  - name: st4CcSensorName
+    oid: 1.3.6.1.4.1.1718.4.1.12.2.1.3
+    type: string
+    indexes:
+    - labelname: st4UnitIndex
+      type: Integer
+    - labelname: st4CcSensorIndex
+      type: Integer
+  - name: st4CcSensorStatus
+    oid: 1.3.6.1.4.1.1718.4.1.12.3.1.1
+    type: gauge
+    indexes:
+    - labelname: st4UnitIndex
+      type: Integer
+    - labelname: st4CcSensorIndex
+      type: Integer
+  - name: st4AdcSensorIndex
+    oid: 1.3.6.1.4.1.1718.4.1.13.2.1.1
+    type: gauge
+    indexes:
+    - labelname: st4UnitIndex
+      type: Integer
+    - labelname: st4AdcSensorIndex
+      type: Integer
+  - name: st4AdcSensorID
+    oid: 1.3.6.1.4.1.1718.4.1.13.2.1.2
+    type: string
+    indexes:
+    - labelname: st4UnitIndex
+      type: Integer
+    - labelname: st4AdcSensorIndex
+      type: Integer
+  - name: st4AdcSensorName
+    oid: 1.3.6.1.4.1.1718.4.1.13.2.1.3
+    type: string
+    indexes:
+    - labelname: st4UnitIndex
+      type: Integer
+    - labelname: st4AdcSensorIndex
+      type: Integer
+  - name: st4AdcSensorValue
+    oid: 1.3.6.1.4.1.1718.4.1.13.3.1.1
+    type: gauge
+    indexes:
+    - labelname: st4UnitIndex
+      type: Integer
+    - labelname: st4AdcSensorIndex
+      type: Integer
+  - name: st4AdcSensorStatus
+    oid: 1.3.6.1.4.1.1718.4.1.13.3.1.2
+    type: gauge
+    indexes:
+    - labelname: st4UnitIndex
+      type: Integer
+    - labelname: st4AdcSensorIndex
+      type: Integer
+  - name: st4FanSensorIndex
+    oid: 1.3.6.1.4.1.1718.4.1.14.2.1.1
+    type: gauge
+    indexes:
+    - labelname: st4UnitIndex
+      type: Integer
+    - labelname: st4FanSensorIndex
+      type: Integer
+  - name: st4FanSensorID
+    oid: 1.3.6.1.4.1.1718.4.1.14.2.1.2
+    type: string
+    indexes:
+    - labelname: st4UnitIndex
+      type: Integer
+    - labelname: st4FanSensorIndex
+      type: Integer
+  - name: st4FanSensorName
+    oid: 1.3.6.1.4.1.1718.4.1.14.2.1.3
+    type: string
+    indexes:
+    - labelname: st4UnitIndex
+      type: Integer
+    - labelname: st4FanSensorIndex
+      type: Integer
+  - name: st4FanSensorValue
+    oid: 1.3.6.1.4.1.1718.4.1.14.3.1.1
+    type: gauge
+    indexes:
+    - labelname: st4UnitIndex
+      type: Integer
+    - labelname: st4FanSensorIndex
+      type: Integer
+  - name: st4FanSensorStatus
+    oid: 1.3.6.1.4.1.1718.4.1.14.3.1.2
+    type: gauge
+    indexes:
+    - labelname: st4UnitIndex
+      type: Integer
+    - labelname: st4FanSensorIndex
+      type: Integer
   - name: st4InputCordIndex
     oid: 1.3.6.1.4.1.1718.4.1.3.2.1.1
     type: gauge
@@ -254,99 +447,549 @@
       type: Integer
     - labelname: st4InputCordIndex
       type: Integer
-  - name: st4InputCordActivePowerLowAlarm
-    oid: 1.3.6.1.4.1.1718.4.1.3.4.1.2
+  - name: st4LineIndex
+    oid: 1.3.6.1.4.1.1718.4.1.4.2.1.1
     type: gauge
     indexes:
     - labelname: st4UnitIndex
       type: Integer
     - labelname: st4InputCordIndex
       type: Integer
-  - name: st4InputCordActivePowerLowWarning
-    oid: 1.3.6.1.4.1.1718.4.1.3.4.1.3
+    - labelname: st4LineIndex
+      type: Integer
+  - name: st4LineID
+    oid: 1.3.6.1.4.1.1718.4.1.4.2.1.2
+    type: string
+    indexes:
+    - labelname: st4UnitIndex
+      type: Integer
+    - labelname: st4InputCordIndex
+      type: Integer
+    - labelname: st4LineIndex
+      type: Integer
+  - name: st4LineLabel
+    oid: 1.3.6.1.4.1.1718.4.1.4.2.1.4
+    type: string
+    indexes:
+    - labelname: st4UnitIndex
+      type: Integer
+    - labelname: st4InputCordIndex
+      type: Integer
+    - labelname: st4LineIndex
+      type: Integer
+  - name: st4LineCurrentCapacity
+    oid: 1.3.6.1.4.1.1718.4.1.4.2.1.6
     type: gauge
     indexes:
     - labelname: st4UnitIndex
       type: Integer
     - labelname: st4InputCordIndex
       type: Integer
-  - name: st4InputCordActivePowerHighWarning
-    oid: 1.3.6.1.4.1.1718.4.1.3.4.1.4
+    - labelname: st4LineIndex
+      type: Integer
+  - name: st4LineState
+    oid: 1.3.6.1.4.1.1718.4.1.4.3.1.1
     type: gauge
     indexes:
     - labelname: st4UnitIndex
       type: Integer
     - labelname: st4InputCordIndex
       type: Integer
-  - name: st4InputCordActivePowerHighAlarm
-    oid: 1.3.6.1.4.1.1718.4.1.3.4.1.5
+    - labelname: st4LineIndex
+      type: Integer
+  - name: st4LineStatus
+    oid: 1.3.6.1.4.1.1718.4.1.4.3.1.2
     type: gauge
     indexes:
     - labelname: st4UnitIndex
       type: Integer
     - labelname: st4InputCordIndex
       type: Integer
-  - name: st4InputCordApparentPowerLowAlarm
-    oid: 1.3.6.1.4.1.1718.4.1.3.4.1.6
+    - labelname: st4LineIndex
+      type: Integer
+  - name: st4LineCurrent
+    oid: 1.3.6.1.4.1.1718.4.1.4.3.1.3
     type: gauge
     indexes:
     - labelname: st4UnitIndex
       type: Integer
     - labelname: st4InputCordIndex
       type: Integer
-  - name: st4InputCordApparentPowerLowWarning
-    oid: 1.3.6.1.4.1.1718.4.1.3.4.1.7
+    - labelname: st4LineIndex
+      type: Integer
+  - name: st4LineCurrentStatus
+    oid: 1.3.6.1.4.1.1718.4.1.4.3.1.4
     type: gauge
     indexes:
     - labelname: st4UnitIndex
       type: Integer
     - labelname: st4InputCordIndex
       type: Integer
-  - name: st4InputCordApparentPowerHighWarning
-    oid: 1.3.6.1.4.1.1718.4.1.3.4.1.8
+    - labelname: st4LineIndex
+      type: Integer
+  - name: st4LineCurrentUtilized
+    oid: 1.3.6.1.4.1.1718.4.1.4.3.1.5
     type: gauge
     indexes:
     - labelname: st4UnitIndex
       type: Integer
     - labelname: st4InputCordIndex
       type: Integer
-  - name: st4InputCordApparentPowerHighAlarm
-    oid: 1.3.6.1.4.1.1718.4.1.3.4.1.9
+    - labelname: st4LineIndex
+      type: Integer
+  - name: st4PhaseIndex
+    oid: 1.3.6.1.4.1.1718.4.1.5.2.1.1
     type: gauge
     indexes:
     - labelname: st4UnitIndex
       type: Integer
     - labelname: st4InputCordIndex
       type: Integer
-  - name: st4InputCordPowerFactorLowAlarm
-    oid: 1.3.6.1.4.1.1718.4.1.3.4.1.10
+    - labelname: st4PhaseIndex
+      type: Integer
+  - name: st4PhaseID
+    oid: 1.3.6.1.4.1.1718.4.1.5.2.1.2
+    type: string
+    indexes:
+    - labelname: st4UnitIndex
+      type: Integer
+    - labelname: st4InputCordIndex
+      type: Integer
+    - labelname: st4PhaseIndex
+      type: Integer
+  - name: st4PhaseLabel
+    oid: 1.3.6.1.4.1.1718.4.1.5.2.1.4
+    type: string
+    indexes:
+    - labelname: st4UnitIndex
+      type: Integer
+    - labelname: st4InputCordIndex
+      type: Integer
+    - labelname: st4PhaseIndex
+      type: Integer
+  - name: st4PhaseNominalVoltage
+    oid: 1.3.6.1.4.1.1718.4.1.5.2.1.6
     type: gauge
     indexes:
     - labelname: st4UnitIndex
       type: Integer
     - labelname: st4InputCordIndex
       type: Integer
-  - name: st4InputCordPowerFactorLowWarning
-    oid: 1.3.6.1.4.1.1718.4.1.3.4.1.11
+    - labelname: st4PhaseIndex
+      type: Integer
+  - name: st4PhaseBranchCount
+    oid: 1.3.6.1.4.1.1718.4.1.5.2.1.20
     type: gauge
     indexes:
     - labelname: st4UnitIndex
       type: Integer
     - labelname: st4InputCordIndex
       type: Integer
-  - name: st4InputCordOutOfBalanceHighWarning
-    oid: 1.3.6.1.4.1.1718.4.1.3.4.1.12
+    - labelname: st4PhaseIndex
+      type: Integer
+  - name: st4PhaseOutletCount
+    oid: 1.3.6.1.4.1.1718.4.1.5.2.1.21
     type: gauge
     indexes:
     - labelname: st4UnitIndex
       type: Integer
     - labelname: st4InputCordIndex
       type: Integer
-  - name: st4InputCordOutOfBalanceHighAlarm
-    oid: 1.3.6.1.4.1.1718.4.1.3.4.1.13
+    - labelname: st4PhaseIndex
+      type: Integer
+  - name: st4PhaseState
+    oid: 1.3.6.1.4.1.1718.4.1.5.3.1.1
     type: gauge
     indexes:
     - labelname: st4UnitIndex
       type: Integer
     - labelname: st4InputCordIndex
+      type: Integer
+    - labelname: st4PhaseIndex
+      type: Integer
+  - name: st4PhaseStatus
+    oid: 1.3.6.1.4.1.1718.4.1.5.3.1.2
+    type: gauge
+    indexes:
+    - labelname: st4UnitIndex
+      type: Integer
+    - labelname: st4InputCordIndex
+      type: Integer
+    - labelname: st4PhaseIndex
+      type: Integer
+  - name: st4PhaseVoltage
+    oid: 1.3.6.1.4.1.1718.4.1.5.3.1.3
+    type: gauge
+    indexes:
+    - labelname: st4UnitIndex
+      type: Integer
+    - labelname: st4InputCordIndex
+      type: Integer
+    - labelname: st4PhaseIndex
+      type: Integer
+  - name: st4PhaseVoltageStatus
+    oid: 1.3.6.1.4.1.1718.4.1.5.3.1.4
+    type: gauge
+    indexes:
+    - labelname: st4UnitIndex
+      type: Integer
+    - labelname: st4InputCordIndex
+      type: Integer
+    - labelname: st4PhaseIndex
+      type: Integer
+  - name: st4PhaseVoltageDeviation
+    oid: 1.3.6.1.4.1.1718.4.1.5.3.1.5
+    type: gauge
+    indexes:
+    - labelname: st4UnitIndex
+      type: Integer
+    - labelname: st4InputCordIndex
+      type: Integer
+    - labelname: st4PhaseIndex
+      type: Integer
+  - name: st4PhaseCurrent
+    oid: 1.3.6.1.4.1.1718.4.1.5.3.1.6
+    type: gauge
+    indexes:
+    - labelname: st4UnitIndex
+      type: Integer
+    - labelname: st4InputCordIndex
+      type: Integer
+    - labelname: st4PhaseIndex
+      type: Integer
+  - name: st4PhaseCurrentCrestFactor
+    oid: 1.3.6.1.4.1.1718.4.1.5.3.1.7
+    type: gauge
+    indexes:
+    - labelname: st4UnitIndex
+      type: Integer
+    - labelname: st4InputCordIndex
+      type: Integer
+    - labelname: st4PhaseIndex
+      type: Integer
+  - name: st4PhaseActivePower
+    oid: 1.3.6.1.4.1.1718.4.1.5.3.1.8
+    type: gauge
+    indexes:
+    - labelname: st4UnitIndex
+      type: Integer
+    - labelname: st4InputCordIndex
+      type: Integer
+    - labelname: st4PhaseIndex
+      type: Integer
+  - name: st4PhaseApparentPower
+    oid: 1.3.6.1.4.1.1718.4.1.5.3.1.9
+    type: gauge
+    indexes:
+    - labelname: st4UnitIndex
+      type: Integer
+    - labelname: st4InputCordIndex
+      type: Integer
+    - labelname: st4PhaseIndex
+      type: Integer
+  - name: st4PhasePowerFactor
+    oid: 1.3.6.1.4.1.1718.4.1.5.3.1.10
+    type: gauge
+    indexes:
+    - labelname: st4UnitIndex
+      type: Integer
+    - labelname: st4InputCordIndex
+      type: Integer
+    - labelname: st4PhaseIndex
+      type: Integer
+  - name: st4PhasePowerFactorStatus
+    oid: 1.3.6.1.4.1.1718.4.1.5.3.1.11
+    type: gauge
+    indexes:
+    - labelname: st4UnitIndex
+      type: Integer
+    - labelname: st4InputCordIndex
+      type: Integer
+    - labelname: st4PhaseIndex
+      type: Integer
+  - name: st4PhaseReactance
+    oid: 1.3.6.1.4.1.1718.4.1.5.3.1.12
+    type: gauge
+    indexes:
+    - labelname: st4UnitIndex
+      type: Integer
+    - labelname: st4InputCordIndex
+      type: Integer
+    - labelname: st4PhaseIndex
+      type: Integer
+  - name: st4PhaseEnergy
+    oid: 1.3.6.1.4.1.1718.4.1.5.3.1.13
+    type: gauge
+    indexes:
+    - labelname: st4UnitIndex
+      type: Integer
+    - labelname: st4InputCordIndex
+      type: Integer
+    - labelname: st4PhaseIndex
+      type: Integer
+  - name: st4OcpIndex
+    oid: 1.3.6.1.4.1.1718.4.1.6.2.1.1
+    type: gauge
+    indexes:
+    - labelname: st4UnitIndex
+      type: Integer
+    - labelname: st4InputCordIndex
+      type: Integer
+    - labelname: st4OcpIndex
+      type: Integer
+  - name: st4OcpID
+    oid: 1.3.6.1.4.1.1718.4.1.6.2.1.2
+    type: string
+    indexes:
+    - labelname: st4UnitIndex
+      type: Integer
+    - labelname: st4InputCordIndex
+      type: Integer
+    - labelname: st4OcpIndex
+      type: Integer
+  - name: st4OcpLabel
+    oid: 1.3.6.1.4.1.1718.4.1.6.2.1.4
+    type: string
+    indexes:
+    - labelname: st4UnitIndex
+      type: Integer
+    - labelname: st4InputCordIndex
+      type: Integer
+    - labelname: st4OcpIndex
+      type: Integer
+  - name: st4OcpType
+    oid: 1.3.6.1.4.1.1718.4.1.6.2.1.6
+    type: gauge
+    indexes:
+    - labelname: st4UnitIndex
+      type: Integer
+    - labelname: st4InputCordIndex
+      type: Integer
+    - labelname: st4OcpIndex
+      type: Integer
+  - name: st4OcpCurrentCapacity
+    oid: 1.3.6.1.4.1.1718.4.1.6.2.1.7
+    type: gauge
+    indexes:
+    - labelname: st4UnitIndex
+      type: Integer
+    - labelname: st4InputCordIndex
+      type: Integer
+    - labelname: st4OcpIndex
+      type: Integer
+  - name: st4OcpCurrentCapacityMax
+    oid: 1.3.6.1.4.1.1718.4.1.6.2.1.8
+    type: gauge
+    indexes:
+    - labelname: st4UnitIndex
+      type: Integer
+    - labelname: st4InputCordIndex
+      type: Integer
+    - labelname: st4OcpIndex
+      type: Integer
+  - name: st4OcpBranchCount
+    oid: 1.3.6.1.4.1.1718.4.1.6.2.1.20
+    type: gauge
+    indexes:
+    - labelname: st4UnitIndex
+      type: Integer
+    - labelname: st4InputCordIndex
+      type: Integer
+    - labelname: st4OcpIndex
+      type: Integer
+  - name: st4OcpOutletCount
+    oid: 1.3.6.1.4.1.1718.4.1.6.2.1.21
+    type: gauge
+    indexes:
+    - labelname: st4UnitIndex
+      type: Integer
+    - labelname: st4InputCordIndex
+      type: Integer
+    - labelname: st4OcpIndex
+      type: Integer
+  - name: st4OcpStatus
+    oid: 1.3.6.1.4.1.1718.4.1.6.3.1.1
+    type: gauge
+    indexes:
+    - labelname: st4UnitIndex
+      type: Integer
+    - labelname: st4InputCordIndex
+      type: Integer
+    - labelname: st4OcpIndex
+      type: Integer
+  - name: st4BranchIndex
+    oid: 1.3.6.1.4.1.1718.4.1.7.2.1.1
+    type: gauge
+    indexes:
+    - labelname: st4UnitIndex
+      type: Integer
+    - labelname: st4InputCordIndex
+      type: Integer
+    - labelname: st4BranchIndex
+      type: Integer
+  - name: st4BranchID
+    oid: 1.3.6.1.4.1.1718.4.1.7.2.1.2
+    type: string
+    indexes:
+    - labelname: st4UnitIndex
+      type: Integer
+    - labelname: st4InputCordIndex
+      type: Integer
+    - labelname: st4BranchIndex
+      type: Integer
+  - name: st4BranchLabel
+    oid: 1.3.6.1.4.1.1718.4.1.7.2.1.4
+    type: string
+    indexes:
+    - labelname: st4UnitIndex
+      type: Integer
+    - labelname: st4InputCordIndex
+      type: Integer
+    - labelname: st4BranchIndex
+      type: Integer
+  - name: st4BranchCurrentCapacity
+    oid: 1.3.6.1.4.1.1718.4.1.7.2.1.6
+    type: gauge
+    indexes:
+    - labelname: st4UnitIndex
+      type: Integer
+    - labelname: st4InputCordIndex
+      type: Integer
+    - labelname: st4BranchIndex
+      type: Integer
+  - name: st4BranchPhaseID
+    oid: 1.3.6.1.4.1.1718.4.1.7.2.1.20
+    type: string
+    indexes:
+    - labelname: st4UnitIndex
+      type: Integer
+    - labelname: st4InputCordIndex
+      type: Integer
+    - labelname: st4BranchIndex
+      type: Integer
+  - name: st4BranchOcpID
+    oid: 1.3.6.1.4.1.1718.4.1.7.2.1.21
+    type: string
+    indexes:
+    - labelname: st4UnitIndex
+      type: Integer
+    - labelname: st4InputCordIndex
+      type: Integer
+    - labelname: st4BranchIndex
+      type: Integer
+  - name: st4BranchOutletCount
+    oid: 1.3.6.1.4.1.1718.4.1.7.2.1.30
+    type: gauge
+    indexes:
+    - labelname: st4UnitIndex
+      type: Integer
+    - labelname: st4InputCordIndex
+      type: Integer
+    - labelname: st4BranchIndex
+      type: Integer
+  - name: st4BranchState
+    oid: 1.3.6.1.4.1.1718.4.1.7.3.1.1
+    type: gauge
+    indexes:
+    - labelname: st4UnitIndex
+      type: Integer
+    - labelname: st4InputCordIndex
+      type: Integer
+    - labelname: st4BranchIndex
+      type: Integer
+  - name: st4BranchStatus
+    oid: 1.3.6.1.4.1.1718.4.1.7.3.1.2
+    type: gauge
+    indexes:
+    - labelname: st4UnitIndex
+      type: Integer
+    - labelname: st4InputCordIndex
+      type: Integer
+    - labelname: st4BranchIndex
+      type: Integer
+  - name: st4BranchCurrent
+    oid: 1.3.6.1.4.1.1718.4.1.7.3.1.3
+    type: gauge
+    indexes:
+    - labelname: st4UnitIndex
+      type: Integer
+    - labelname: st4InputCordIndex
+      type: Integer
+    - labelname: st4BranchIndex
+      type: Integer
+  - name: st4BranchCurrentStatus
+    oid: 1.3.6.1.4.1.1718.4.1.7.3.1.4
+    type: gauge
+    indexes:
+    - labelname: st4UnitIndex
+      type: Integer
+    - labelname: st4InputCordIndex
+      type: Integer
+    - labelname: st4BranchIndex
+      type: Integer
+  - name: st4BranchCurrentUtilized
+    oid: 1.3.6.1.4.1.1718.4.1.7.3.1.5
+    type: gauge
+    indexes:
+    - labelname: st4UnitIndex
+      type: Integer
+    - labelname: st4InputCordIndex
+      type: Integer
+    - labelname: st4BranchIndex
+      type: Integer
+  - name: st4TempSensorIndex
+    oid: 1.3.6.1.4.1.1718.4.1.9.2.1.1
+    type: gauge
+    indexes:
+    - labelname: st4UnitIndex
+      type: Integer
+    - labelname: st4TempSensorIndex
+      type: Integer
+  - name: st4TempSensorID
+    oid: 1.3.6.1.4.1.1718.4.1.9.2.1.2
+    type: string
+    indexes:
+    - labelname: st4UnitIndex
+      type: Integer
+    - labelname: st4TempSensorIndex
+      type: Integer
+  - name: st4TempSensorName
+    oid: 1.3.6.1.4.1.1718.4.1.9.2.1.3
+    type: string
+    indexes:
+    - labelname: st4UnitIndex
+      type: Integer
+    - labelname: st4TempSensorIndex
+      type: Integer
+  - name: st4TempSensorValueMin
+    oid: 1.3.6.1.4.1.1718.4.1.9.2.1.4
+    type: gauge
+    indexes:
+    - labelname: st4UnitIndex
+      type: Integer
+    - labelname: st4TempSensorIndex
+      type: Integer
+  - name: st4TempSensorValueMax
+    oid: 1.3.6.1.4.1.1718.4.1.9.2.1.5
+    type: gauge
+    indexes:
+    - labelname: st4UnitIndex
+      type: Integer
+    - labelname: st4TempSensorIndex
+      type: Integer
+  - name: st4TempSensorValue
+    oid: 1.3.6.1.4.1.1718.4.1.9.3.1.1
+    type: gauge
+    indexes:
+    - labelname: st4UnitIndex
+      type: Integer
+    - labelname: st4TempSensorIndex
+      type: Integer
+  - name: st4TempSensorStatus
+    oid: 1.3.6.1.4.1.1718.4.1.9.3.1.2
+    type: gauge
+    indexes:
+    - labelname: st4UnitIndex
+      type: Integer
+    - labelname: st4TempSensorIndex
       type: Integer

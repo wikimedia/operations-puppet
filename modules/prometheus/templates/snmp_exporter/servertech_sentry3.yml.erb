@@ -5,12 +5,95 @@
 <% end -%>
   walk:
   - 1.3.6.1.2.1.1.3
-  - 1.3.6.1.4.1.1718.3.2.2
-  - 1.3.6.1.4.1.1718.3.2.3
+  - 1.3.6.1.4.1.1718.3.2
   metrics:
   - name: sysUpTime
     oid: 1.3.6.1.2.1.1.3
     type: gauge
+  - name: towerIndex
+    oid: 1.3.6.1.4.1.1718.3.2.1.1.1
+    type: gauge
+    indexes:
+    - labelname: towerIndex
+      type: Integer
+  - name: towerID
+    oid: 1.3.6.1.4.1.1718.3.2.1.1.2
+    type: string
+    indexes:
+    - labelname: towerIndex
+      type: Integer
+  - name: towerName
+    oid: 1.3.6.1.4.1.1718.3.2.1.1.3
+    type: string
+    indexes:
+    - labelname: towerIndex
+      type: Integer
+  - name: towerStatus
+    oid: 1.3.6.1.4.1.1718.3.2.1.1.4
+    type: gauge
+    indexes:
+    - labelname: towerIndex
+      type: Integer
+  - name: towerInfeedCount
+    oid: 1.3.6.1.4.1.1718.3.2.1.1.5
+    type: gauge
+    indexes:
+    - labelname: towerIndex
+      type: Integer
+  - name: towerProductSN
+    oid: 1.3.6.1.4.1.1718.3.2.1.1.6
+    type: string
+    indexes:
+    - labelname: towerIndex
+      type: Integer
+  - name: towerModelNumber
+    oid: 1.3.6.1.4.1.1718.3.2.1.1.7
+    type: string
+    indexes:
+    - labelname: towerIndex
+      type: Integer
+  - name: towerVACapacity
+    oid: 1.3.6.1.4.1.1718.3.2.1.1.9
+    type: gauge
+    indexes:
+    - labelname: towerIndex
+      type: Integer
+  - name: towerVACapacityUsed
+    oid: 1.3.6.1.4.1.1718.3.2.1.1.10
+    type: gauge
+    indexes:
+    - labelname: towerIndex
+      type: Integer
+  - name: towerActivePower
+    oid: 1.3.6.1.4.1.1718.3.2.1.1.11
+    type: gauge
+    indexes:
+    - labelname: towerIndex
+      type: Integer
+  - name: towerApparentPower
+    oid: 1.3.6.1.4.1.1718.3.2.1.1.12
+    type: gauge
+    indexes:
+    - labelname: towerIndex
+      type: Integer
+  - name: towerPowerFactor
+    oid: 1.3.6.1.4.1.1718.3.2.1.1.13
+    type: gauge
+    indexes:
+    - labelname: towerIndex
+      type: Integer
+  - name: towerEnergy
+    oid: 1.3.6.1.4.1.1718.3.2.1.1.14
+    type: gauge
+    indexes:
+    - labelname: towerIndex
+      type: Integer
+  - name: towerLineFrequency
+    oid: 1.3.6.1.4.1.1718.3.2.1.1.15
+    type: gauge
+    indexes:
+    - labelname: towerIndex
+      type: Integer
   - name: infeedIndex
     oid: 1.3.6.1.4.1.1718.3.2.2.1.1
     type: gauge
@@ -392,4 +475,314 @@
     - labelname: infeedIndex
       type: Integer
     - labelname: outletIndex
+      type: Integer
+  - name: envMonIndex
+    oid: 1.3.6.1.4.1.1718.3.2.4.1.1
+    type: gauge
+    indexes:
+    - labelname: envMonIndex
+      type: Integer
+  - name: envMonID
+    oid: 1.3.6.1.4.1.1718.3.2.4.1.2
+    type: string
+    indexes:
+    - labelname: envMonIndex
+      type: Integer
+  - name: envMonName
+    oid: 1.3.6.1.4.1.1718.3.2.4.1.3
+    type: string
+    indexes:
+    - labelname: envMonIndex
+      type: Integer
+  - name: envMonStatus
+    oid: 1.3.6.1.4.1.1718.3.2.4.1.4
+    type: gauge
+    indexes:
+    - labelname: envMonIndex
+      type: Integer
+  - name: envMonWaterSensorName
+    oid: 1.3.6.1.4.1.1718.3.2.4.1.5
+    type: string
+    indexes:
+    - labelname: envMonIndex
+      type: Integer
+  - name: envMonWaterSensorStatus
+    oid: 1.3.6.1.4.1.1718.3.2.4.1.6
+    type: gauge
+    indexes:
+    - labelname: envMonIndex
+      type: Integer
+  - name: envMonADCName
+    oid: 1.3.6.1.4.1.1718.3.2.4.1.7
+    type: string
+    indexes:
+    - labelname: envMonIndex
+      type: Integer
+  - name: envMonADCStatus
+    oid: 1.3.6.1.4.1.1718.3.2.4.1.8
+    type: gauge
+    indexes:
+    - labelname: envMonIndex
+      type: Integer
+  - name: envMonADCCount
+    oid: 1.3.6.1.4.1.1718.3.2.4.1.9
+    type: gauge
+    indexes:
+    - labelname: envMonIndex
+      type: Integer
+  - name: envMonADCLowThresh
+    oid: 1.3.6.1.4.1.1718.3.2.4.1.10
+    type: gauge
+    indexes:
+    - labelname: envMonIndex
+      type: Integer
+  - name: envMonADCHighThresh
+    oid: 1.3.6.1.4.1.1718.3.2.4.1.11
+    type: gauge
+    indexes:
+    - labelname: envMonIndex
+      type: Integer
+  - name: envMonTempHumidSensorCount
+    oid: 1.3.6.1.4.1.1718.3.2.4.1.12
+    type: gauge
+    indexes:
+    - labelname: envMonIndex
+      type: Integer
+  - name: envMonContactClosureCount
+    oid: 1.3.6.1.4.1.1718.3.2.4.1.13
+    type: gauge
+    indexes:
+    - labelname: envMonIndex
+      type: Integer
+  - name: tempHumidSensorIndex
+    oid: 1.3.6.1.4.1.1718.3.2.5.1.1
+    type: gauge
+    indexes:
+    - labelname: envMonIndex
+      type: Integer
+    - labelname: tempHumidSensorIndex
+      type: Integer
+  - name: tempHumidSensorID
+    oid: 1.3.6.1.4.1.1718.3.2.5.1.2
+    type: string
+    indexes:
+    - labelname: envMonIndex
+      type: Integer
+    - labelname: tempHumidSensorIndex
+      type: Integer
+  - name: tempHumidSensorName
+    oid: 1.3.6.1.4.1.1718.3.2.5.1.3
+    type: string
+    indexes:
+    - labelname: envMonIndex
+      type: Integer
+    - labelname: tempHumidSensorIndex
+      type: Integer
+  - name: tempHumidSensorStatus
+    oid: 1.3.6.1.4.1.1718.3.2.5.1.4
+    type: gauge
+    indexes:
+    - labelname: envMonIndex
+      type: Integer
+    - labelname: tempHumidSensorIndex
+      type: Integer
+  - name: tempHumidSensorTempStatus
+    oid: 1.3.6.1.4.1.1718.3.2.5.1.5
+    type: gauge
+    indexes:
+    - labelname: envMonIndex
+      type: Integer
+    - labelname: tempHumidSensorIndex
+      type: Integer
+  - name: tempHumidSensorTempValue
+    oid: 1.3.6.1.4.1.1718.3.2.5.1.6
+    type: gauge
+    indexes:
+    - labelname: envMonIndex
+      type: Integer
+    - labelname: tempHumidSensorIndex
+      type: Integer
+  - name: tempHumidSensorTempLowThresh
+    oid: 1.3.6.1.4.1.1718.3.2.5.1.7
+    type: gauge
+    indexes:
+    - labelname: envMonIndex
+      type: Integer
+    - labelname: tempHumidSensorIndex
+      type: Integer
+  - name: tempHumidSensorTempHighThresh
+    oid: 1.3.6.1.4.1.1718.3.2.5.1.8
+    type: gauge
+    indexes:
+    - labelname: envMonIndex
+      type: Integer
+    - labelname: tempHumidSensorIndex
+      type: Integer
+  - name: tempHumidSensorHumidStatus
+    oid: 1.3.6.1.4.1.1718.3.2.5.1.9
+    type: gauge
+    indexes:
+    - labelname: envMonIndex
+      type: Integer
+    - labelname: tempHumidSensorIndex
+      type: Integer
+  - name: tempHumidSensorHumidValue
+    oid: 1.3.6.1.4.1.1718.3.2.5.1.10
+    type: gauge
+    indexes:
+    - labelname: envMonIndex
+      type: Integer
+    - labelname: tempHumidSensorIndex
+      type: Integer
+  - name: tempHumidSensorHumidLowThresh
+    oid: 1.3.6.1.4.1.1718.3.2.5.1.11
+    type: gauge
+    indexes:
+    - labelname: envMonIndex
+      type: Integer
+    - labelname: tempHumidSensorIndex
+      type: Integer
+  - name: tempHumidSensorHumidHighThresh
+    oid: 1.3.6.1.4.1.1718.3.2.5.1.12
+    type: gauge
+    indexes:
+    - labelname: envMonIndex
+      type: Integer
+    - labelname: tempHumidSensorIndex
+      type: Integer
+  - name: tempHumidSensorTempScale
+    oid: 1.3.6.1.4.1.1718.3.2.5.1.13
+    type: gauge
+    indexes:
+    - labelname: envMonIndex
+      type: Integer
+    - labelname: tempHumidSensorIndex
+      type: Integer
+  - name: tempHumidSensorTempRecDelta
+    oid: 1.3.6.1.4.1.1718.3.2.5.1.14
+    type: gauge
+    indexes:
+    - labelname: envMonIndex
+      type: Integer
+    - labelname: tempHumidSensorIndex
+      type: Integer
+  - name: tempHumidSensorHumidRecDelta
+    oid: 1.3.6.1.4.1.1718.3.2.5.1.15
+    type: gauge
+    indexes:
+    - labelname: envMonIndex
+      type: Integer
+    - labelname: tempHumidSensorIndex
+      type: Integer
+  - name: contactClosureIndex
+    oid: 1.3.6.1.4.1.1718.3.2.6.1.1
+    type: gauge
+    indexes:
+    - labelname: envMonIndex
+      type: Integer
+    - labelname: contactClosureIndex
+      type: Integer
+  - name: contactClosureID
+    oid: 1.3.6.1.4.1.1718.3.2.6.1.2
+    type: string
+    indexes:
+    - labelname: envMonIndex
+      type: Integer
+    - labelname: contactClosureIndex
+      type: Integer
+  - name: contactClosureName
+    oid: 1.3.6.1.4.1.1718.3.2.6.1.3
+    type: string
+    indexes:
+    - labelname: envMonIndex
+      type: Integer
+    - labelname: contactClosureIndex
+      type: Integer
+  - name: contactClosureStatus
+    oid: 1.3.6.1.4.1.1718.3.2.6.1.4
+    type: gauge
+    indexes:
+    - labelname: envMonIndex
+      type: Integer
+    - labelname: contactClosureIndex
+      type: Integer
+  - name: branchIndex
+    oid: 1.3.6.1.4.1.1718.3.2.7.1.1
+    type: gauge
+    indexes:
+    - labelname: towerIndex
+      type: Integer
+    - labelname: infeedIndex
+      type: Integer
+    - labelname: branchIndex
+      type: Integer
+  - name: branchID
+    oid: 1.3.6.1.4.1.1718.3.2.7.1.2
+    type: string
+    indexes:
+    - labelname: towerIndex
+      type: Integer
+    - labelname: infeedIndex
+      type: Integer
+    - labelname: branchIndex
+      type: Integer
+  - name: branchName
+    oid: 1.3.6.1.4.1.1718.3.2.7.1.3
+    type: string
+    indexes:
+    - labelname: towerIndex
+      type: Integer
+    - labelname: infeedIndex
+      type: Integer
+    - labelname: branchIndex
+      type: Integer
+  - name: branchStatus
+    oid: 1.3.6.1.4.1.1718.3.2.7.1.5
+    type: gauge
+    indexes:
+    - labelname: towerIndex
+      type: Integer
+    - labelname: infeedIndex
+      type: Integer
+    - labelname: branchIndex
+      type: Integer
+  - name: branchLoadStatus
+    oid: 1.3.6.1.4.1.1718.3.2.7.1.6
+    type: gauge
+    indexes:
+    - labelname: towerIndex
+      type: Integer
+    - labelname: infeedIndex
+      type: Integer
+    - labelname: branchIndex
+      type: Integer
+  - name: branchLoadValue
+    oid: 1.3.6.1.4.1.1718.3.2.7.1.7
+    type: gauge
+    indexes:
+    - labelname: towerIndex
+      type: Integer
+    - labelname: infeedIndex
+      type: Integer
+    - labelname: branchIndex
+      type: Integer
+  - name: branchLoadHighThresh
+    oid: 1.3.6.1.4.1.1718.3.2.7.1.8
+    type: gauge
+    indexes:
+    - labelname: towerIndex
+      type: Integer
+    - labelname: infeedIndex
+      type: Integer
+    - labelname: branchIndex
+      type: Integer
+  - name: branchCapacity
+    oid: 1.3.6.1.4.1.1718.3.2.7.1.9
+    type: gauge
+    indexes:
+    - labelname: towerIndex
+      type: Integer
+    - labelname: infeedIndex
+      type: Integer
+    - labelname: branchIndex
       type: Integer
