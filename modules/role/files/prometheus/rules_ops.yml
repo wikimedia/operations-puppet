@@ -365,3 +365,18 @@ groups:
     expr: max by(instance, row) (pdu_infeedLoadValue)
   - record: instance_row:pdu_infeedLoadValue:min
     expr: min by(instance, row) (pdu_infeedLoadValue)
+
+- name: mediawiki
+  rules:
+  - record: cluster_code_method_handler:mediawiki_http_requests_duration:avg2m
+    expr: sum by (cluster, code, method, handler) (rate(mediawiki_http_requests_duration_sum[2m]))
+              /
+          sum by (cluster, code, method, handler) (rate(mediawiki_http_requests_duration_count[2m]))
+
+  - record: cluster_method_code_handler:mediawiki_http_requests_duration:75p2m
+    expr: histogram_quantile(0.75,
+             sum by (cluster, le, method, code, handler) (rate(mediawiki_http_requests_duration_bucket[2m])))
+
+  - record: cluster_method_code_handler:mediawiki_http_requests_duration:95p2m
+    expr: histogram_quantile(0.95,
+             sum by (cluster, le, method, code, handler) (rate(mediawiki_http_requests_duration_bucket[2m])))
