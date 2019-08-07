@@ -38,6 +38,7 @@ class noc {
 
     file { $fetch_dbconfig_path:
         source => 'puppet:///modules/noc/fetch_dbconfig.sh',
+        mode   => '0755',
     }
 
     systemd::timer::job { 'fetch_dbconfig':
