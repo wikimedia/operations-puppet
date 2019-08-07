@@ -717,7 +717,11 @@ groups:
   gpu-testers:
     description: People with access to Analytics hosts with GPUs.
     gid: 810
-    members: [ebernhardson, mirrys, gilles, dr0ptp4kt]
+    members: &gpu_testers_members [ebernhardson, mirrys, gilles, dr0ptp4kt]
+  gpu-users:
+    description: Use the standard system provided render group to allow Analytics users to access the GPU on the host.
+    members: *gpu_testers_members
+    posix_name: render
   sessionstore-roots:
     gid: 811
     description: people who have full root on session storage cluster nodes
