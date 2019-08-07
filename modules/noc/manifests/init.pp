@@ -41,14 +41,15 @@ class noc {
     }
 
     systemd::timer::job { 'fetch_dbconfig':
-        description => 'Fetch the dbconfig from etcd and store it locally',
-        command     => $fetch_dbconfig_path,
-        interval    => {
+        description     => 'Fetch the dbconfig from etcd and store it locally',
+        command         => $fetch_dbconfig_path,
+        interval        => {
             'start'    => 'OnUnitInactiveSec',
             'interval' => '60s',
         },
-        user        => $fetch_dbconfig_user,
-        require     => [File[$fetch_dbconfig_path], File['/srv/dbconfig']],
+        user            => $fetch_dbconfig_user,
+        require         => [File[$fetch_dbconfig_path], File['/srv/dbconfig']],
+        logging_enabled => false,
     }
 
     # Monitoring
