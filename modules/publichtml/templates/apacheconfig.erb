@@ -26,6 +26,10 @@
 
     <Location "/">
         Header set Access-Control-Allow-Origin "*"
+        # Nothing should set Allow-Credentials, and even if it gets set
+        # it should not be exploitable, but this is a wikimedia.org
+        # domain with user-defined content so let's be extra paranoid.
+        Header unset Access-Control-Allow-Credentials
     </Location>
 
 </VirtualHost>
