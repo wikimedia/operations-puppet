@@ -83,7 +83,7 @@ class profile::mediawiki::webserver(
         # first load the list of all nodes in the current DC
         $pool_nodes = profile::lvs_pool_nodes(keys($::profile::lvs::realserver::pools), $::lvs::configuration::lvs_services)
         # If we are not in a pool it's not savy to restart hhvm
-        if member($pool_nodes, $::fqdn) {
+        if member($pool_nodes, $::fqdn) and $install_hhvm {
             $times = cron_splay($pool_nodes, 'daily', 'hhvm-conditional-restarts')
             cron { 'hhvm-conditional-restart':
                 command => '/usr/local/bin/hhvm-needs-restart > /dev/null && /usr/local/sbin/run-no-puppet /usr/local/bin/restart-hhvm > /dev/null',
