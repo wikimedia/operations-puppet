@@ -26,6 +26,7 @@ password = whitelist
 <% @labs_networks.each do |subnet| -%>
 password_whitelist = novaobserver:<%=subnet%>
 password_whitelist = deployment-prep-dns-manager:<%=subnet%>
+password_whitelist = traffic-cloud-dns-manager:<%=subnet%>
 <% end -%>
 <% @prod_networks.each do |subnet| -%>
 password_whitelist = *:<%=subnet%>
