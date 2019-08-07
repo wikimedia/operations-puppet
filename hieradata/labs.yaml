@@ -113,6 +113,16 @@ profile::trafficserver::backend::storage_elements:
   - devname: vdb
   - pathname: /var/cache/trafficserver
     size: 256M
+profile::trafficserver::backend::outbound_tls_settings:
+  cacert_dirpath: /etc/ssl/certs
+  cacert_filename: Puppet_Internal_CA.pem
+  common:
+    cipher_suite: -ALL:ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384
+    enable_tlsv1: 0
+    enable_tlsv1_1: 0
+    enable_tlsv1_2: 1
+    enable_tlsv1_3: 0
+  verify_origin: true
 profile::trafficserver::backend::log_formats:
   - name: wmf
     format: 'Date:%<cqtd> Time:%<cqtt> ConnAttempts:%<sca> ConnReuse:%<sstc> TTFetchHeaders:%<{TS_MILESTONE_SERVER_READ_HEADER_DONE-TS_MILESTONE_SM_START}msdms> OriginServer:%<shn> OriginServerTime:%<stms> CacheResultCode:%<crc> CacheWriteResult:%<cwr> ReqMethod:%<cqhm> RespStatus:%<pssc> OriginStatus:%<sssc> ReqURL:%<cquuc> BereqURL:%<cqtx> ReqHeader:User-Agent:%<{User-agent}cqh> ReqHeader:Host:%<{Host}cqh> ReqHeader:X-Client-IP:%<{X-Client-IP}cqh> RespHeader:X-Cache-Int:%<{X-Cache-Int}psh> RespHeader:Backend-Timing:%<{Backend-Timing}psh>'
