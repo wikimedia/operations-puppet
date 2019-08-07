@@ -5,6 +5,6 @@ class mediawiki::maintenance::purge_checkuser( $ensure = present ) {
         minute  => 0,
         hour    => 0,
         weekday => 0,
-        command => '/usr/local/bin/foreachwiki extensions/CheckUser/maintenance/purgeOldData.php >/dev/null 2>&1',
+        command => 'PHP=php7.2 /usr/local/bin/foreachwiki extensions/CheckUser/maintenance/purgeOldData.php >/dev/null 2>&1',
     }
 }
