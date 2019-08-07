@@ -537,6 +537,24 @@ class profile::prometheus::ops (
         port       => 9180,
     }
 
+    # envoy proxy
+    $envoy_jobs = [
+        {
+        'job_name'        => 'php-fpm',
+        'metrics_path'    => '/stats/prometheus',
+        'scheme'          => 'http',
+        'file_sd_configs' => [
+            { 'files' => [ "${targets_path}/_*.yaml" ]}
+        ],
+        },
+    ]
+    prometheus::class_config{ "envoy_${::site}":
+        dest       => "${targets_path}/envoy_${::site}.yaml",
+        site       => $::site,
+        class_name => 'profile::tlsproxy::envoy',
+        port       => 9631,
+    }
+
     $pdu_jobs = [
       {
         'job_name'        => 'pdu',
