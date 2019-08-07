@@ -74,7 +74,7 @@ class labstore::monitoring::interfaces(
         critical        => $load_crit,
         retries         => $retries,
         method          => 'ge',
-        contact_group   => $contact_groups,
+        contact_group   => 'wmcs-team-email,wmcs-bots',
         notes_link      => 'https://wikitech.wikimedia.org/wiki/Portal:Data_Services/Admin/Labstore',
         prometheus_url  => "http://prometheus.svc.${::site}.wmnet/ops",
     }

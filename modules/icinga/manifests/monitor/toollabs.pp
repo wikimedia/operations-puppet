@@ -100,7 +100,7 @@ class icinga::monitor::toollabs {
         host           => $test_entry_host,
         check_interval => 5,
         retry_interval => 5,
-        contact_group  => 'wmcs-team',
+        contact_group  => 'wmcs-team-email,wmcs-bots',
         notes_url      => 'https://wikitech.wikimedia.org/wiki/Portal:Toolforge/Admin/Toolschecker',
     }
 
@@ -110,7 +110,7 @@ class icinga::monitor::toollabs {
         host           => $test_entry_host,
         check_interval => 5,
         retry_interval => 5,
-        contact_group  => 'wmcs-team',
+        contact_group  => 'wmcs-team-email,wmcs-bots',
         notes_url      => 'https://wikitech.wikimedia.org/wiki/Portal:Toolforge/Admin/Toolschecker',
     }
 
@@ -120,7 +120,7 @@ class icinga::monitor::toollabs {
         host           => $test_entry_host,
         check_interval => 5,
         retry_interval => 5,
-        contact_group  => 'wmcs-bots,wmcs-team',
+        contact_group  => 'wmcs-bots,wmcs-team-email',
         notes_url      => 'https://wikitech.wikimedia.org/wiki/portal:toolforge/admin/toolschecker',
     }
 
@@ -132,7 +132,7 @@ class icinga::monitor::toollabs {
         host           => $test_entry_host,
         check_interval => 5,
         retry_interval => 5,
-        contact_group  => 'wmcs-bots,wmcs-team',
+        contact_group  => 'wmcs-bots,wmcs-team-email',
         notes_url      => 'https://wikitech.wikimedia.org/wiki/portal:toolforge/admin/toolschecker',
     }
 
@@ -142,7 +142,7 @@ class icinga::monitor::toollabs {
         host           => $test_entry_host,
         check_interval => 5,
         retry_interval => 5,
-        contact_group  => 'wmcs-team',
+        contact_group  => 'wmcs-team-email,wmcs-bots',
         notes_url      => 'https://wikitech.wikimedia.org/wiki/Portal:Toolforge/Admin/Toolschecker',
     }
 
@@ -150,7 +150,7 @@ class icinga::monitor::toollabs {
         description   => 'toolschecker: Test LDAP for query',
         check_command => "${checker}!/ldap!OK",
         host          => $test_entry_host,
-        contact_group => 'wmcs-team',
+        contact_group => 'wmcs-team-email,wmcs-bots',
         notes_url     => 'https://wikitech.wikimedia.org/wiki/Portal:Toolforge/Admin/Toolschecker',
     }
 
@@ -201,7 +201,7 @@ class icinga::monitor::toollabs {
         host           => $test_entry_host,
         check_interval => 5,
         retry_interval => 5,
-        contact_group  => 'wmcs-team',
+        contact_group  => 'wmcs-team-email,wmcs-bots',
         notes_url      => 'https://wikitech.wikimedia.org/wiki/Portal:Toolforge/Admin/Toolschecker',
     }
 
@@ -211,7 +211,7 @@ class icinga::monitor::toollabs {
         host           => $test_entry_host,
         check_interval => 5,
         retry_interval => 5,
-        contact_group  => 'wmcs-team',
+        contact_group  => 'wmcs-team-email,wmcs-bots',
         notes_url      => 'https://wikitech.wikimedia.org/wiki/Portal:Toolforge/Admin/Toolschecker',
     }
 }

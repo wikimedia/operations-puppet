@@ -1,2 +1,2 @@
 cluster: wmcs
-contactgroups: wmcs-team
+contactgroups: 'wmcs-team-email,wmcs-bots'
