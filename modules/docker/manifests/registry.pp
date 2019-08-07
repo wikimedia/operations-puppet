@@ -57,7 +57,7 @@ class docker::registry(
 
 
     file { '/etc/docker/registry/config.yml':
-        content => ordered_yaml(merge($config, $base_config)),
+        content => ordered_yaml(deep_merge($config, $base_config)),
         owner   => 'docker-registry',
         group   => 'docker-registry',
         mode    => '0440',
