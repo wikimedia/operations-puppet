@@ -52,7 +52,6 @@ class profile::openstack::eqiad1::designate::service(
 
     class {'::openstack::designate::monitor':
         active         => true,
-        critical       => true,
         contact_groups => 'wmcs-team',
     }
 

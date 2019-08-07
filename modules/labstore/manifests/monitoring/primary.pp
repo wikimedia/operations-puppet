@@ -13,7 +13,7 @@ class labstore::monitoring::primary(
     $drbd_role,
     $cluster_iface,
     $cluster_ip,
-    $critical=true,
+    $critical=false,
     $resource = 'all',
     $contact_groups='wmcs-team',
     ) {

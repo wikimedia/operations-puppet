@@ -79,7 +79,6 @@ class profile::openstack::eqiad1::keystone::service(
         active         => $::fqdn == $keystone_host,
         auth_port      => $auth_port,
         public_port    => $public_port,
-        critical       => true,
         contact_groups => 'wmcs-team',
     }
     contain '::openstack::keystone::monitor::services'

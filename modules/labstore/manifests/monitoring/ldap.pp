@@ -1,5 +1,5 @@
 class labstore::monitoring::ldap(
-    $critical=true,
+    $critical=false,
     $contact_groups='wmcs-team',
     ) {
 

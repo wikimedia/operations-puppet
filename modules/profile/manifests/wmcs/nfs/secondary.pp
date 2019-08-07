@@ -101,7 +101,6 @@ class profile::wmcs::nfs::secondary(
     }
 
     nrpe::monitor_service { 'check_nfs_status':
-        critical      => true,
         description   => 'NFS served over cluster IP',
         nrpe_command  => "/usr/bin/sudo /usr/local/sbin/check_nfs_status ${cluster_ip}",
         contact_group => 'wmcs-team',
