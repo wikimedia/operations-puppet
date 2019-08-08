@@ -39,7 +39,7 @@ class envoyproxy(
     # has changed.
     file { '/usr/local/sbin/build-envoy-config':
         ensure => $ensure,
-        source => 'puppet:///modules/envoyproxy/files/build_envoy_config.py',
+        source => 'puppet:///modules/envoyproxy/build_envoy_config.py',
         owner  => 'root',
         group  => 'root',
         mode   => '0555',
@@ -62,10 +62,11 @@ class envoyproxy(
     exec { 'verify-envoy-config':
         command     => "/usr/local/sbin/build-envoy-config -c '${envoy_directory}' --verify-only",
         user        => 'root',
-        refreshonly => true
+        refreshonly => true,
+        notify      => Systemd::Service['envoyproxy.service'],
     }
 
-    systemd::service { 'envoy.service':
+    systemd::service { 'envoyproxy.service':
         ensure   => $ensure,
         content  => template('envoyproxy/systemd.conf.erb'),
         override => true,
