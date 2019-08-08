@@ -3731,3 +3731,7 @@ ldap_only_users:
     ensure: present
     realname: Deb Zierten
     email: dzierten@wikimedia.org
+  janstee:
+    ensure: present
+    realname: Jaime Anstee
+    email: janstee@wikimedia.org
