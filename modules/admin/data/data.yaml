@@ -286,7 +286,7 @@ groups:
     description: Admin access to analytics cluster.
                  This will grant shell access on all Analytics Cluster nodes, as well
                  as the ability to sudo to certain Analytics Cluster system users.
-    members: [joal, nuria, mforns, milimetric, fdans]
+    members: &analytics_admins_members [joal, nuria, mforns, milimetric, fdans]
     privileges: ['ALL = (hdfs)  NOPASSWD: ALL',
                  'ALL = (yarn)  NOPASSWD: ALL',
                  'ALL = (oozie) NOPASSWD: ALL',
@@ -720,7 +720,7 @@ groups:
     members: &gpu_testers_members [ebernhardson, mirrys, gilles, dr0ptp4kt]
   gpu-users:
     description: Use the standard system provided render group to allow Analytics users to access the GPU on the host.
-    members: *gpu_testers_members
+    members: [*gpu_testers_members, *analytics_admins_members, *ops_members]
     posix_name: render
   sessionstore-roots:
     gid: 811
