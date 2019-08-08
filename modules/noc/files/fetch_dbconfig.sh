@@ -25,6 +25,6 @@ for DC in eqiad codfw; do
     # Extract and unescape the value from the response of etcd's JSON API.
     # That yields a dbconfig JSON dict with val: <data we want>; extract that
     # and write it out.
-    curl -s -m15 "https://${ETCD}/v2/keys/${ETCD_KEY}" | jq -er .node.value | jq -er .val > ${OUTPUT_PATH}/.${DC}.json.tmp
+    curl -s -m15 "https://${ETCD}/v2/keys/${ETCD_KEY}" | jq -er .node.value | jq -Ser .val > ${OUTPUT_PATH}/.${DC}.json.tmp
     [ $? -eq 0 ] && mv $OUTPUT_PATH/.${DC}.json.tmp $OUTPUT_PATH/${DC}.json
 done
