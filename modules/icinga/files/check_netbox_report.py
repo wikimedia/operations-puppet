@@ -64,6 +64,7 @@ def parse_args():
     parser.add_argument(
         "-r", "--run", help="Run the report before returning the result.", action="store_true"
     )
+    parser.add_argument("-n", "--noalert", help="Always return OK status.", action="store_true")
     parser.add_argument(
         "-w",
         "--warn",
@@ -91,11 +92,11 @@ def run_report(report_result):
     """
     logger.info("Running report %s", report_result.name)
     # for some reason the URL field switches the scheme, but we know better
-    url = (report_result.url + "run/").replace('http://', 'https://')
+    url = (report_result.url + "run/").replace("http://", "https://")
     headers = {
         "Authorization": "Token {}".format(report_result.api.token),
         "Accept": "application/json",
-        'User-agent': 'wmf-icinga/{} (root@wikimedia.org)'.format(os.path.basename(__file__)),
+        "User-agent": "wmf-icinga/{} (root@wikimedia.org)".format(os.path.basename(__file__)),
     }
     result = requests.post(url, headers=headers)
     if result.status_code != 200:
@@ -117,6 +118,8 @@ def main():
     failedstatus = STATUS_CRITICAL
     if args.warn:
         failedstatus = STATUS_WARNING
+    if args.noalert:
+        failedstatus = STATUS_OK
 
     netboxconfig = safe_load(open(args.config, "r"))
     api = pynetbox.api(url=netboxconfig["url"], token=netboxconfig["token"])

@@ -329,7 +329,7 @@ class profile::netbox (
             systemd::timer::job { "netbox_report_${repname}_run":
                 ensure                    => $active_ensure,
                 description               => "Run reports ${reports} in Netbox.",
-                command                   => "/usr/bin/python3 /usr/local/lib/nagios/plugins/check_netbox_report.py -r ${reports}",
+                command                   => "/usr/bin/python3 /usr/local/lib/nagios/plugins/check_netbox_report.py -n -r ${reports}",
                 interval                  => {
                     'start'    => 'OnCalendar',
                     'interval' => $report['run_interval']
