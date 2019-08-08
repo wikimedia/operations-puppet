@@ -23,7 +23,8 @@ filter_chains:
 <%- if @access_log -%>
       access_log:
         name: "envoy.file_access.log"
-        config: "/var/log/envoy/<%= upstream['server_names'][0] %>".log
+        config:
+          path: "/var/log/envoy/<%= upstream['server_names'][0] %>".log
 <%- end -%>
       route_config:
         virtual_hosts:
@@ -55,4 +56,5 @@ filter_chains:
           - match: { prefix: "/" }
             route: { cluster: local_port_<%= upstream['upstream_port'] %> }
         <%- end -%>
+      http_filters: [{name: envoy.router}, typed_config: {}]
 <%- end -%>

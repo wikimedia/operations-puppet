@@ -81,11 +81,14 @@ define envoyproxy::tls_terminator(
 
     # As this is a fundamental function, install it with high priority
     # Please note they will be removed if we remove the terminator declaration.
-    #
-    # Please note: envoy will NOT be restarted automatically.
-    envoyproxy::cluster { "cluster_local_tls_${name}":
-        priority => 0,
-        content  => template('envoyproxy/tls_terminator/cluster.yaml.erb'),
+
+    # We need a separate definition for each upstream cluster
+    $upstreams.each |$upstream| {
+        $upstream_name = "local_port_${upstream['upstream_port']}"
+        envoyproxy::cluster { "cluster_${upstream_name}":
+            priority => 0,
+            content  => template('envoyproxy/tls_terminator/cluster.yaml.erb'),
+        }
     }
     envoyproxy::listener { "tls_terminator_${name}":
         priority => 0,

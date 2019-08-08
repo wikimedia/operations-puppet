@@ -26,8 +26,9 @@
 /Gemfile.lock
 /.bundle/
 
-# python venv wrapper
-/.tox
+# python venv wrapper + test artifacts
+**/.tox
+**/.coverage
 
 # Jetbrain's IDEA editor settings
 /.idea
