@@ -30,6 +30,7 @@ define trafficserver::lua_script(
     if !defined(Trafficserver::Lua_infra["infra-${service_name}"]) {
         trafficserver::lua_infra{ "infra-${service_name}":
             service_name  => $service_name,
+            config_prefix => $config_prefix,
         }
     }
 
