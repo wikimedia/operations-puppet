@@ -10,4 +10,5 @@ class role::cache::upload {
     include ::profile::cache::ssl::unified
     include ::profile::cache::varnish::frontend
     include ::profile::trafficserver::backend
+    include ::profile::trafficserver::tls
 }

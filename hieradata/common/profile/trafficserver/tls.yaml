@@ -1,0 +1,51 @@
+profile::trafficserver::tls::port: 8443
+profile::trafficserver::tls::mapping_rules:
+  - type: map
+    target: /
+    replacement: 'http://127.0.0.2:3120'
+profile::trafficserver::tls::inbound_tls_settings:
+  common:
+    cipher_suite: '-ALL:ECDHE-ECDSA-CHACHA20-POLY1305:ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-CHACHA20-POLY1305:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES128-SHA:ECDHE-RSA-AES128-SHA:DHE-RSA-AES128-SHA'
+    enable_tlsv1: 1
+    enable_tlsv1_1: 1
+    enable_tlsv1_2: 1
+    enable_tlsv1_3: 0
+  cert_path: '/etc/ssl/localcerts'
+  private_key_path: '/etc/ssl/private'
+  ocsp_stapling_path: '/var/cache/ocsp'
+  certificates:
+    - cert_files: ['globalsign-2018-ecdsa-unified.chained.crt', 'globalsign-2018-rsa-unified.chained.crt']
+      private_key_files: ['globalsign-2018-ecdsa-unified.key', 'globalsign-2018-rsa-unified.key']
+      ocsp_stapling_files: ['globalsign-2018-ecdsa-unified.ocsp', 'globalsign-2018-rsa-unified.ocsp']
+      default: true
+  dhparams_file: '/etc/ssl/dhparam.pem'
+  max_record_size: 16383
+  session_cache: 2
+  session_cache_auto_clear: 1
+  session_cache_size: 102400
+  session_cache_buckets: 256
+  load_elevated: 1
+  do_ocsp: 1
+profile::trafficserver::tls::log_formats:
+  - name: wmf-tls
+    format: 'Date:%<cqtd> Time:%<cqtt> HTTPVersion:%<cqhv> SSL:%<cqssl> SSLVersion:%<cqssv> SSLCipher:%<cqssc> SSLCurve:%<cqssu> ReqMethod:%<cqhm> RespStatus:%<pssc> OriginStatus:%<sssc> ReqURL:%<cquuc> BereqURL:%<cqtx> ReqHeader:User-Agent:%<{User-agent}cqh> ReqHeader:Host:%<{Host}cqh> ReqHeader:X-Client-IP:%<{X-Client-IP}cqh> RespHeader:X-Cache-Int:%<{X-Cache-Int}psh>'
+profile::trafficserver::tls::logs:
+  - filename: tls
+    format: wmf-tls
+    mode: ascii_pipe
+profile::trafficserver::tls::parent_rules:
+  - dest_domain: '.'
+    parent:
+    - '127.0.0.2:3120'
+    - '127.0.0.3:3121'
+    - '127.0.0.4:3122'
+    - '127.0.0.5:3123'
+    - '127.0.0.6:3124'
+    - '127.0.0.7:3125'
+    - '127.0.0.8:3126'
+    - '127.0.0.9:3127'
+    parent_is_proxy: 'false'
+    round_robin: 'strict'
+profile::trafficserver::tls::unified_certs:
+  - 'globalsign-2018-ecdsa-unified'
+  - 'globalsign-2018-rsa-unified'

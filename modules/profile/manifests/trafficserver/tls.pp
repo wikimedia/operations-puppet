@@ -8,12 +8,13 @@ class profile::trafficserver::tls (
     Trafficserver::Inbound_TLS_settings $inbound_tls_settings=hiera('profile::trafficserver::tls::inbound_tls_settings'),
     Boolean $enable_xdebug=hiera('profile::trafficserver::tls::enable_xdebug', false),
     Array[TrafficServer::Mapping_rule] $mapping_rules=hiera('profile::trafficserver::tls::mapping_rules', []),
-    String $default_lua_script=hiera('profile::trafficserver::tls::default_lua_script', ''),
     Array[TrafficServer::Log_format] $log_formats=hiera('profile::trafficserver::tls::log_formats', []),
     Array[TrafficServer::Log_filter] $log_filters=hiera('profile::trafficserver::tls::log_filters', []),
     Array[TrafficServer::Log] $logs=hiera('profile::trafficserver::tls::logs', []),
     Array[TrafficServer::Parent_rule] $parent_rules=hiera('profile::trafficserver::tls::parent_rules'),
     Wmflib::UserIpPort $prometheus_exporter_port=hiera('profile::trafficserver::tls::prometheus_exporter_port', 9322),
+    Optional[Array[String]] $unified_certs = hiera('profile::trafficserver::tls::unified_certs', undef),
+    Boolean $unified_acme_chief = hiera('profile::trafficserver::tls::unified_acme_chief', false),
     Optional[String] $ocsp_proxy=hiera('http_proxy'),
 ){
     $errorpage = {
@@ -45,12 +46,14 @@ class profile::trafficserver::tls (
     }
 
     $paths = trafficserver::get_paths(false, $instance_name)
+    $tls_lua_script_path = "${paths['sysconfdir']}/lua/tls.lua"
 
     profile::trafficserver::tls_material { 'unified':
         instance_name      => $instance_name,
         service_name       => $service_name,
         ssl_multicert_path => $paths['ssl_multicert'],
-        certs              => ['globalsign-2018-ecdsa-unified', 'globalsign-2018-rsa-unified'],
+        certs              => $unified_certs,
+        acme_chief         => $unified_acme_chief,
         do_ocsp            => num2bool($inbound_tls_settings['do_ocsp']),
         ocsp_proxy         => $ocsp_proxy,
     }
@@ -61,12 +64,21 @@ class profile::trafficserver::tls (
         inbound_tls_settings => $inbound_tls_settings,
         enable_xdebug        => $enable_xdebug,
         mapping_rules        => $mapping_rules,
+        global_lua_script    => $tls_lua_script_path,
         enable_caching       => false,
         log_formats          => $log_formats,
         log_filters          => $log_filters,
         logs                 => $logs,
         parent_rules         => $parent_rules,
         error_page           => template('mediawiki/errorpage.html.erb'),
+        x_forwarded_for      => 1,
+    }
+
+    trafficserver::lua_script { 'tls':
+        source        => 'puppet:///modules/profile/trafficserver/tls.lua',
+        unit_test     => 'puppet:///modules/profile/trafficserver/tls_test.lua',
+        service_name  => $service_name,
+        config_prefix => $paths['sysconfdir'],
     }
 
     # Monitoring

@@ -72,13 +72,13 @@ define profile::trafficserver::monitoring(
     if $do_ocsp {
         $check_args = '-c 259500 -w 173100 -d /var/cache/ocsp -g "*.ocsp"'
         $check_args_acme_chief = '-c 259500 -w 173100 -d /var/cache/ocsp -g "*/*.ocsp"'
-        nrpe::monitor_service { 'ocsp-freshness':
+        nrpe::monitor_service { "trafficserver_${instance_name}_ocsp_freshness":
             description  => 'Freshness of OCSP Stapling files',
             nrpe_command => "/usr/lib/nagios/plugins/check-fresh-files-in-dir.py ${check_args}",
             require      => File['/usr/lib/nagios/plugins/check-fresh-files-in-dir.py'],
             notes_url    => 'https://wikitech.wikimedia.org/wiki/HTTPS/Unified_Certificates',
         }
-        nrpe::monitor_service { 'ocsp-freshness-acme-chief':
+        nrpe::monitor_service { "trafficserver_${instance_name}_ocsp_freshness_acme_chief":
             description  => 'Freshness of OCSP Stapling files',
             nrpe_command => "/usr/lib/nagios/plugins/check-fresh-files-in-dir.py ${check_args_acme_chief}",
             require      => File['/usr/lib/nagios/plugins/check-fresh-files-in-dir.py'],
