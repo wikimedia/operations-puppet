@@ -24,8 +24,7 @@ describe 'apereo_cas' do
         end
       end
       it do
-        is_expected.to contain_git__clone('cas-overlay-template').with(
-          origin: 'https://github.com/b4ldr/cas-overlay-template',
+        is_expected.to contain_git__clone('operations/software/cas-overlay-template').with(
           directory: '/srv/cas/overlay-template'
         )
         is_expected.to contain_file('/etc/cas/config/cas.properties').with(
@@ -45,7 +44,7 @@ describe 'apereo_cas' do
         ).with_content(
           /^cas.authn.ldap\[0\].connectionStrategy=ACTIVE_PASSIVE$/
         ).with_content(
-          %r{^cas.authn.ldap\[0\].ldapurl=ldap://ldap.example.org:389$}
+          /^cas.authn.ldap\[0\].ldapurl=$/
         ).with_content(
           /^cas.authn.ldap\[0\].useStartTLS=true$/
         ).with_content(

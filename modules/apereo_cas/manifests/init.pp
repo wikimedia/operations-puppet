@@ -2,13 +2,13 @@
 class apereo_cas (
     Stdlib::Filesource         $keystore_source,
     Stdlib::Filesource         $log4j_source        = 'puppet:///modules/apereo_cas/log4j2.xml',
-    String                     $overlay_repo        = 'https://github.com/b4ldr/cas-overlay-template',
+    String                     $overlay_repo        = 'operations/software/cas-overlay-template',
     Stdlib::Unixpath           $overlay_dir         = '/srv/cas/overlay-template',
     Stdlib::Unixpath           $base_dir            = '/etc/cas',
     Stdlib::HTTPSUrl           $server_name         = "https://${facts['fqdn']}:8443",
     String                     $server_prefix       = 'cas',
     Array[String[1]]           $ldap_attribute_list = ['cn', 'memberOf', 'mail'],
-    Array[Apereo_cas::LDAPUri] $ldap_uris           = ['ldap://ldap.example.org:389'],
+    Array[Apereo_cas::LDAPUri] $ldap_uris           = [],
     Apereo_cas::Ldapauth       $ldap_auth           = 'AUTHENTICATED',
     Apereo_cas::Ldapconnection $ldap_connection     = 'ACTIVE_PASSIVE',
     Boolean                    $ldap_start_tls      = true,
@@ -25,10 +25,8 @@ class apereo_cas (
     file {wmflib::dirtree($overlay_dir) + [$base_dir, $services_dir, $config_dir, $overlay_dir]:
         ensure => directory,
     }
-    git::clone {'cas-overlay-template':
-        origin    => $overlay_repo,
+    git::clone {$overlay_repo:
         directory => $overlay_dir,
-        branch    => '6.0',
     }
     file {"${config_dir}/cas.properties":
         ensure  => file,
@@ -58,13 +56,13 @@ class apereo_cas (
         command => "${overlay_dir}/build.sh package",
         creates => "${overlay_dir}/build/libs/cas.war",
         cwd     => $overlay_dir,
-        require => Git::Clone['cas-overlay-template']
+        require => Git::Clone[$overlay_repo]
     }
     exec{'update cas war':
         command     => "${overlay_dir}/build.sh update",
         cwd         => $overlay_dir,
         require     => Exec['build cas war' ],
-        subscribe   => Git::Clone['cas-overlay-template'],
+        subscribe   => Git::Clone[$overlay_repo],
         notify      => Systemd::Service['cas'],
         refreshonly => true,
     }
