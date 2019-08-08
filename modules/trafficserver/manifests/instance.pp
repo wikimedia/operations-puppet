@@ -137,6 +137,9 @@
 #   problems with the HTTP transactions. (default: '<html><head><title>Error</title></head><body><p>Something went wrong</p></body></html>').
 #   See https://docs.trafficserver.apache.org/en/latest/admin-guide/monitoring/error-messages.en.html#body-factory
 #
+# [*x_forwarded_for*]
+#   When enabled (1), Traffic Server adds the client IP address to the X-Forwarded-For header. (default: 0).
+#
 # === Examples
 #
 #  trafficserver::instance { 'backend':
@@ -181,6 +184,7 @@ define trafficserver::instance(
     Array[Trafficserver::Log] $logs = [],
     Optional[Array[Trafficserver::Parent_rule]] $parent_rules = undef,
     String $error_page = '<html><head><title>Error</title></head><body><p>Something went wrong</p></body></html>',
+    Integer[0,1] $x_forwarded_for = 0,
 ) {
 
     require ::trafficserver
