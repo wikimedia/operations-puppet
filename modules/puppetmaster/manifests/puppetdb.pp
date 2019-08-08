@@ -12,6 +12,7 @@ class puppetmaster::puppetdb(
 ) {
     $puppetdb_pass = hiera('puppetdb::password::rw')
 
+    ensure_packages(['libnginx-mod-http-lua'])
     # Open to suggestions for a more FHS location
     file {'/etc/nginx/lua':
         ensure =>  directory
