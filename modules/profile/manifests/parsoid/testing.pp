@@ -2,7 +2,6 @@
 class profile::parsoid::testing (
     Stdlib::Port $parsoid_port = hiera('parsoid::testing::parsoid_port'),
     Stdlib::Httpurl $default_api_proxy_uri = hiera('parsoid::testing::default_api_proxy_uri'),
-    Boolean $use_parsoid_php = hiera('parsoid::testing::use_parsoid_php', false),
 ) {
 
     class { '::parsoid':

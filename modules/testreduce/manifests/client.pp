@@ -5,9 +5,16 @@
 # [*instance_name*]
 #   Name of the testreduce client service
 #
+# [*parsoid_port*]
+#   Port number on localhost when using Parsoid/JS
+#
+# [*use_parsoid_php*]
+#   Whether to use Parsoid/PHP (true) or Parsoid/JS (false)
+#
 define testreduce::client(
     $instance_name,
-    $parsoid_port,
+    Stdlib::Port $parsoid_port,
+    Boolean $use_parsoid_php,
 ) {
     file { "/etc/testreduce/${instance_name}.config.js":
         content => template("testreduce/${instance_name}.config.js.erb"),
