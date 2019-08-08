@@ -73,7 +73,7 @@ class TestEnvoyConfig:
             subp.assert_called_with(
                 [
                     '/usr/bin/envoy', '-c', '/tmp/envoy-build-test/envoy.yaml',
-                    '--mode=verify'
+                    '--mode validate'
                 ]
             )
             subp.side_effect = subprocess.CalledProcessError(

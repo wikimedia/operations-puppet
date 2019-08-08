@@ -2,10 +2,13 @@
 # TODO: support hot restarts, see for instance https://www.envoyproxy.io/docs/envoy/latest/operations/hot_restarter
 # Ensure envoy can handle enough file descriptors
 LimitNOFILE=65536
+# Allow envoy to bind on a privileged port
+AmbientCapabilities=CAP_NET_BIND_SERVICE
+
 # We build the configuration from the separate files defined in
 # $dir/listeners.d and $dir/clusters.d
 # If that fails, we will stil start with the old configuration.
-ExecStartPre=-/usr/local/sbin/build-envoy-config -c <%= @envoy_directory %> --mode validate
+ExecStartPre=-/usr/local/sbin/build-envoy-config -c <%= @envoy_directory %>
 ExecStart=
-ExecStart=/usr/bin/envoy -c <%= @envoy_directory %>
+ExecStart=/usr/bin/envoy -c <%= @envoy_directory %>/envoy.yaml
 

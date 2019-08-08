@@ -115,7 +115,7 @@ class EnvoyConfig:
             tmpconfig = os.path.join(tmpdir, "envoy.yaml")
             self.write_config(config_file=tmpconfig)
             subprocess.check_output(
-                ['/usr/bin/envoy', '-c', tmpconfig, '--mode=verify'])
+                ['/usr/bin/envoy', '-c', tmpconfig, '--mode validate'])
             return True
         except subprocess.CalledProcessError as e:
             logger.error("Error encountered while verifying the configuration")
@@ -123,8 +123,9 @@ class EnvoyConfig:
                 "verification exited with return code %d", e.returncode)
             logger.info("== Stdout:")
             logger.info(e.stdout)
-            logger.info("== Stderr:")
-            logger.info(e.stderr)
+            if e.stderr is not None:
+                logger.info("== Stderr:")
+                logger.info(e.stderr)
             return False
         except Exception as e:
             logger.exception("Error while verifying the configuration: %s", e)

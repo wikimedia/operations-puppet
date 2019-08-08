@@ -7,7 +7,7 @@ listener_filters:
   typed_config: {}
 filter_chains:
 <%- @upstreams.each do |upstream| -%>
-<%- if upstream['cert_path'] -%>
+<%- if upstream['cert_path'] != nil -%>
 - filter_chain_match:
     server_names: <%= upstream['server_names'] %>
   tls_context:
@@ -36,9 +36,7 @@ filter_chains:
 <%- end -%>
 <%- if @global_cert_path != nil && @global_key_path != nil %>
 # Non-SNI support
-- filter_chain_match:
-    server_names: ["*"]
-  tls_context:
+- tls_context:
     common_tls_context:
       tls_certificates:
       - certificate_chain: { filename: "<%= @global_cert_path %>" }

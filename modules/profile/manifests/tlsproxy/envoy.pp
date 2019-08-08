@@ -56,6 +56,7 @@ class profile::tlsproxy::envoy(
         if $service['cert_name'] {
             sslcert::certificate { $service['cert_name']:
                 ensure => $ensure,
+                group  => 'envoy',
                 before => Systemd::Service['envoyproxy.service'],
             }
         }
@@ -64,7 +65,7 @@ class profile::tlsproxy::envoy(
         $certname = $service['cert_name']
         if $certname and $sni_support != 'no' {
             $cert = "/etc/ssl/localcerts/${service['cert_name']}.crt"
-            $key = "/etc/ssl/localcerts/${service['cert_name']}.key"
+            $key = "/etc/ssl/private/${service['cert_name']}.key"
         } else {
             $cert = undef
             $key = undef
@@ -88,10 +89,11 @@ class profile::tlsproxy::envoy(
         }
         sslcert::certificate { $global_cert_name:
             ensure => $ensure,
+            group  => 'envoy',
             before => Systemd::Service['envoyproxy.service'],
         }
         $global_cert_path = "/etc/ssl/localcerts/${global_cert_name}.crt"
-        $global_key_path = "/etc/ssl/localcerts/${global_cert_name}.key"
+        $global_key_path = "/etc/ssl/private/${global_cert_name}.key"
     }
 
     envoyproxy::tls_terminator{ '443':
