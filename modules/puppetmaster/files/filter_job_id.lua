@@ -8,6 +8,6 @@ if ngx.req.get_method() == "POST" then
       body = string.gsub(ngx.req.get_body_data(), '"job_id":null,','')
       ngx.log(ngx.ERR, body)
       ngx.req.set_body_data(body)
-    end 
-  end 
+    end
+  end
 end

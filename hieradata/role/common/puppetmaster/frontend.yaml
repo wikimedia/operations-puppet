@@ -21,12 +21,12 @@ profile::puppetmaster::frontend::test_servers:
     - { worker: puppetmaster1001.eqiad.wmnet, loadfactor: 20 }
 profile::puppetmaster::frontend::canary_hosts:
   - neodymium.eqiad.wmnet
-  - bast4002.wikimedia.org
-  - aqs1004.eqiad.wmnet
-  - multatuli.wikimedia.org
-  - dns1002.wikimedia.org
-  - conf1006.eqiad.wmnet
-  - elastic1017.eqiad.wmnet
-  - 2620:0:861:107:b283:feff:fec0:b0d2 # elastic1017 has no AAAA record we add the SLACC
-  - analytics1042.eqiad.wmnet
-  - kafka-jumbo1001.eqiad.wmnet
+# - bast4002.wikimedia.org
+# - aqs1004.eqiad.wmnet
+# - multatuli.wikimedia.org
+# - dns1002.wikimedia.org
+# - conf1006.eqiad.wmnet
+# - elastic1017.eqiad.wmnet
+# - 2620:0:861:107:b283:feff:fec0:b0d2 # elastic1017 has no AAAA record we add the SLACC
+# - analytics1042.eqiad.wmnet
+#  - kafka-jumbo1001.eqiad.wmnet
