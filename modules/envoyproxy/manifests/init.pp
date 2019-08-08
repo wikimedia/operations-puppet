@@ -61,7 +61,7 @@ class envoyproxy(
 
     # Used by defines to verify the configuration.
     exec { 'verify-envoy-config':
-        command     => "/usr/local/sbin/build-envoy-config -c '${envoy_directory}' --verify-only",
+        command     => "/usr/local/sbin/build-envoy-config -c '${envoy_directory}'",
         user        => 'root',
         refreshonly => true,
         notify      => Systemd::Service['envoyproxy.service'],

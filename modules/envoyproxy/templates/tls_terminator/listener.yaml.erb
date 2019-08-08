@@ -7,7 +7,7 @@ listener_filters:
   typed_config: {}
 filter_chains:
 <%- @upstreams.each do |upstream| -%>
-<%- if upstream['cert_path'] != nil -%>
+<%- if upstream['cert_path'] != :undef -%>
 - filter_chain_match:
     server_names: <%= upstream['server_names'] %>
   tls_context:

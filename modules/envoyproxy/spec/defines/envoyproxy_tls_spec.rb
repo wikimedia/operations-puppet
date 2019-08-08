@@ -22,7 +22,9 @@ describe 'envoyproxy::tls_terminator' do
                 :upstreams => [
                     {
                         :server_names  => ['*'],
-                        :upstream_port => 80
+                        :upstream_port => 80,
+                        :cert_path => :undef,
+                        :key_path => :undef
                     },
                 ],
                 :global_cert_path     => '/etc/ssl/localcerts/appservers.crt',
