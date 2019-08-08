@@ -33,9 +33,10 @@ filter_chains:
           routes:
           - match: { prefix: "/" }
             route: { cluster: local_port_<%= upstream['upstream_port'] %> }
+      http_filters: [{name: envoy.router, typed_config: {}}]
 <%- end -%>
 <%- end -%>
-<%- if @global_cert_path != nil && @global_key_path != nil %>
+<%- if @global_cert_path != nil && @global_key_path != nil -%>
 # Non-SNI support
 - tls_context:
     common_tls_context:
@@ -47,14 +48,20 @@ filter_chains:
     typed_config:
       "@type": type.googleapis.com/envoy.config.filter.network.http_connection_manager.v2.HttpConnectionManager
       stat_prefix: ingress_http
+<%- if @access_log -%>
+      access_log:
+        name: "envoy.file_access.log"
+        config:
+          path: "/var/log/envoy/tls_termination.log"
+<%- end -%>
       route_config:
         virtual_hosts:
-        <%- @upstreams.each do |upstream| %>
+        <%- @upstreams.each do |upstream| -%>
         - name: non_sni_port_<%= upstream['upstream_port'] %>
           domains: <%= upstream['server_names'] %>
           routes:
           - match: { prefix: "/" }
             route: { cluster: local_port_<%= upstream['upstream_port'] %> }
         <%- end -%>
-      http_filters: [{name: envoy.router}, typed_config: {}]
+      http_filters: [{name: envoy.router, typed_config: {}}]
 <%- end -%>

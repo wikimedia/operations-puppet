@@ -3,10 +3,11 @@ connect_timeout: <%= @connect_timeout %>s
 type: strict_dns
 lb_policy: round_robin
 load_assignment:
+  cluster_name: <%= @upstream_name %>
   endpoints:
   - lb_endpoints:
     - endpoint:
-      address:
-        socket_address:
-          address: <%= @fqdn %>
-          port_value: <%= @upstream['upstream_port'] %>
+        address:
+          socket_address:
+            address: <%= @fqdn %>
+            port_value: <%= @upstream['upstream_port'] %>
