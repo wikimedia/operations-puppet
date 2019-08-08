@@ -28,7 +28,8 @@ git log -n 1
 # deploy repo so that autoloading works as expected for the
 # files in this directory.
 # Temporary hack till we integrate Parsoid more fully into core.
-ln -s ../vendor
+# -f is needed to ensure we don't fail if the symlink already exists.
+ln -s -f ../vendor
 
 echo 'Restarting parsoid ...'
 sudo service parsoid restart
