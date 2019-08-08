@@ -362,7 +362,7 @@ class TaskGen < ::Rake::TaskLib
           if @changed_files.include?(tox_ini)
             raise "Running tox in #{module_name} failed" unless system("tox -r -c #{tox_ini}")
           else
-            raise "Running tox in #{module_name} failed" unless system("tox 0c #{tox_ini}")
+            raise "Running tox in #{module_name} failed" unless system("tox -c #{tox_ini}")
           end
         end
       end
@@ -434,7 +434,11 @@ class TaskGen < ::Rake::TaskLib
           end
           tasks << 'tox:sonofgridengine'
         end
+        # Get all python files that don't have a tox.ini in their module
         tox_files = filter_files_by("*.py")
+        deps = SpecDependencies.new
+        have_own_tox = deps.files_with_own_tox(tox_files)
+        tox_files.reject!{ |py_file| have_own_tox.include?(py_file)  }
         unless tox_files.empty?
           desc 'Run flake8 on python files via tox'
           task :flake8 do

@@ -49,6 +49,15 @@ class SpecDependencies
     mods_to_test
   end
 
+  def files_with_own_tox(filelist)
+    # Given a list of files, get the list of
+    # files that have a tox.ini file in their
+    # module.
+    filelist.select do |file|
+      File.exists? "modules/#{module_from_filename(file)}/tox.ini"
+    end
+  end
+
   private
 
   def modules_modified(filelist)
