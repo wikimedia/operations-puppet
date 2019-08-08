@@ -116,7 +116,7 @@ log4j.appender.DRFAS.DatePattern=.yyyy-MM-dd
 #
 hdfs.audit.logger=INFO,console
 hdfs.audit.log.maxfilesize=256MB
-hdfs.audit.log.maxbackupindex=10
+hdfs.audit.log.maxbackupindex=20
 log4j.logger.org.apache.hadoop.hdfs.server.namenode.FSNamesystem.audit=${hdfs.audit.logger}
 log4j.additivity.org.apache.hadoop.hdfs.server.namenode.FSNamesystem.audit=false
 log4j.appender.RFAAUDIT=org.apache.log4j.RollingFileAppender
