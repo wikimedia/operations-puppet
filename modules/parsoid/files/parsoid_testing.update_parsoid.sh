@@ -24,6 +24,11 @@ cd src
 git checkout master
 git pull
 git log -n 1
+# For Parsoid/PHP, symlink to the vendor/ directory in the
+# deploy repo so that autoloading works as expected for the
+# files in this directory.
+# Temporary hack till we integrate Parsoid more fully into core.
+ln -s ../vendor
 
 echo 'Restarting parsoid ...'
 sudo service parsoid restart
