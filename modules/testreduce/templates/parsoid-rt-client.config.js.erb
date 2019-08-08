@@ -20,7 +20,8 @@
 			opts: {
 				// Talk to the existing Parsoid service.
 				// No need to spin up our own private Parsoid service.
-				<% if @use_parsoid_php %>parsoidURL: 'http://localhost/rest.php',<% else %>parsoidURL: 'http://localhost:<%= @parsoid_port %>',<% end %>
+				parsoidPHPURL: 'http://localhost/rest.php',
+				parsoidURL: 'http://localhost:<%= @parsoid_port %>',
 			},
 
 			runTest: require('/srv/deployment/parsoid/deploy/src/tests/testreduce/rtTestWrapper.js').runRoundTripTest,
