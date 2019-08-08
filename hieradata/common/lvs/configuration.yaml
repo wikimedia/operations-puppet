@@ -1166,6 +1166,25 @@ lvs::configuration::lvs_services:
           hostname: wdqs.svc.eqiad.wmnet
         codfw:
           hostname: wdqs.svc.codfw.wmnet
+  wdqs-heavy-queries:
+    description: Wikidata Query Service for heavy queries
+    class: low-traffic
+    sites:
+      - eqiad
+      - codfw
+    ip: *ip_block031
+    port: 8888
+    depool-threshold: '.5'
+    monitors:
+      ProxyFetch:
+        url:
+          - http://localhost/readiness-probe
+      IdleConnection:
+        timeout-clean-reconnect: 3
+        max-delay: 300
+    conftool:
+      cluster: wdqs
+      service: wdqs-heavy-queries
   kibana:
     description: Kibana
     class: low-traffic
