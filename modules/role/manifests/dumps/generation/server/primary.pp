@@ -9,4 +9,5 @@ class role::dumps::generation::server::primary {
     include ::profile::dumps::nfs
     include ::profile::dumps::generation::server::cleanup
     include ::profile::dumps::generation::server::jobswatcher
+    include ::profile::dumps::generation::server::exceptionchecker
 }
