@@ -23,6 +23,10 @@ class profile::cache::ssl::wikibase(
         }
 
     } else {
+        if !defined(Class['sslcert::dhparam']) {
+            class { '::sslcert::dhparam': }
+        }
+
         tlsproxy::localssl { 'wikibase':
             server_name    => 'wikiba.se',
             server_aliases => ['www.wikiba.se'],
