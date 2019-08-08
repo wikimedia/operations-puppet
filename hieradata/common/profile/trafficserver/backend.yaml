@@ -1,19 +1,16 @@
 profile::trafficserver::backend::mapping_rules:
     - type: map
       target: http://15.wikipedia.org
-      replacement: http://bromine.eqiad.wmnet
-      #replacement: http://vega.codfw.wmnet
+      replacement: https://webserver-misc-static.discovery.wmnet
     - type: map
       target: http://analytics.wikimedia.org
       replacement: https://thorium.eqiad.wmnet
     - type: map
       target: http://annual.wikimedia.org
-      replacement: http://bromine.eqiad.wmnet
-      #replacement: http://vega.codfw.wmnet
+      replacement: https://webserver-misc-static.discovery.wmnet
     - type: map
       target: http://bienvenida.wikimedia.org
-      replacement: http://bromine.eqiad.wmnet
-      #replacement: http://vega.codfw.wmnet
+      replacement: https://webserver-misc-static.discovery.wmnet
     - type: map
       target: http://bugzilla.wikimedia.org
       replacement: http://phab1003.eqiad.wmnet
@@ -37,8 +34,7 @@ profile::trafficserver::backend::mapping_rules:
       replacement: https://debmonitor.discovery.wmnet
     - type: map
       target: http://design.wikimedia.org
-      replacement: http://bromine.eqiad.wmnet
-      #replacement: http://vega.codfw.wmnet
+      replacement: https://webserver-misc-static.discovery.wmnet
     - type: map
       target: http://docker-registry.wikimedia.org
       replacement: https://docker-registry.discovery.wmnet
@@ -169,8 +165,7 @@ profile::trafficserver::backend::mapping_rules:
       replacement: http://releases1001.eqiad.wmnet
     - type: map
       target: http://research.wikimedia.org
-      replacement: http://bromine.eqiad.wmnet
-      #replacement: http://vega.codfw.wmnet
+      replacement: https://webserver-misc-static.discovery.wmnet
     - type: map
       target: http://rt.wikimedia.org
       replacement: http://ununpentium.wikimedia.org
@@ -179,15 +174,13 @@ profile::trafficserver::backend::mapping_rules:
       replacement: http://krypton.eqiad.wmnet
     - type: map
       target: http://sitemaps.wikimedia.org
-      replacement: http://bromine.eqiad.wmnet
-      #replacement: http://vega.codfw.wmnet
+      replacement: https://webserver-misc-static.discovery.wmnet
     - type: map
       target: http://smokeping.wikimedia.org
       replacement: https://netmon1002.wikimedia.org
     - type: map
       target: http://static-bugzilla.wikimedia.org
-      replacement: http://bromine.eqiad.wmnet
-      #replacement: http://vega.codfw.wmnet
+      replacement: https://webserver-misc-static.discovery.wmnet
     - type: map
       target: http://stats.wikimedia.org
       replacement: https://thorium.eqiad.wmnet
@@ -206,12 +199,10 @@ profile::trafficserver::backend::mapping_rules:
       replacement: http://labweb.svc.eqiad.wmnet
     - type: map
       target: http://transparency.wikimedia.org
-      replacement: http://bromine.eqiad.wmnet
-      #replacement: http://vega.codfw.wmnet
+      replacement: https://webserver-misc-static.discovery.wmnet
     - type: map
       target: http://transparency-private.wikimedia.org
-      replacement: http://bromine.eqiad.wmnet
-      #replacement: http://vega.codfw.wmnet
+      replacement: https://webserver-misc-static.discovery.wmnet
     - type: map
       target: http://turnilo.wikimedia.org
       replacement: https://analytics-tool1002.eqiad.wmnet
@@ -229,8 +220,7 @@ profile::trafficserver::backend::mapping_rules:
           - '@pparam=/etc/trafficserver/lua/x-mediawiki-original.lua'
     - type: map
       target: http://wikiba.se
-      replacement: http://bromine.eqiad.wmnet
-      #replacement: http://vega.codfw.wmnet
+      replacement: https://webserver-misc-static.discovery.wmnet
     - type: map
       target: http://yarn.wikimedia.org
       replacement: https://analytics-tool1001.eqiad.wmnet
