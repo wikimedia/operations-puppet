@@ -89,15 +89,6 @@ class wdqs::crontasks(
         hour    => 7
     }
 
-    cron { 'reload-dcatap':
-        ensure  => present,
-        command => "/usr/local/bin/reloadDCAT-AP.sh >> ${log_dir}/dcat.log 2>&1",
-        user    => $username,
-        weekday => 4,
-        minute  => 0,
-        hour    => 10,
-    }
-
     $ensure_tests = $run_tests ? {
         true    => present,
         default => absent,
@@ -122,14 +113,4 @@ class wdqs::crontasks(
         create       => "0640 ${username} wikidev",
     }
 
-    logrotate::rule { 'wdqs-reload-dcat':
-        ensure       => present,
-        file_glob    => "${log_dir}/dcatap.log",
-        frequency    => 'monthly',
-        missing_ok   => true,
-        not_if_empty => true,
-        rotate       => 3,
-        compress     => true,
-        create       => "0640 ${username} wikidev",
-    }
 }
