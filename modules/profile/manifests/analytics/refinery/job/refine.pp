@@ -3,7 +3,9 @@
 # transform data imported into Hadoop into augmented Parquet backed
 # Hive tables.
 #
-class profile::analytics::refinery::job::refine {
+class profile::analytics::refinery::job::refine(
+    $use_kerberos = lookup('profile::analytics::refinery::job::refine::use_kerberos', { 'default_value' => false }),
+) {
     require ::profile::analytics::refinery
     require ::profile::hive::client
 
@@ -45,6 +47,7 @@ class profile::analytics::refinery::job::refine {
         # Use webproxy so that this job can access meta.wikimedia.org to retrive JSONSchemas.
         spark_extra_opts => '--driver-java-options=\'-Dhttp.proxyHost=webproxy.eqiad.wmnet -Dhttp.proxyPort=8080 -Dhttps.proxyHost=webproxy.eqiad.wmnet -Dhttps.proxyPort=8080\'',
         interval         => '*-*-* *:30:00',
+        use_kerberos     => $use_kerberos,
     }
 
 
@@ -74,7 +77,7 @@ class profile::analytics::refinery::job::refine {
     # Refine Mediawiki event data.
     # This will replace the eventlogging_eventbus job above.
     profile::analytics::refinery::job::refine_job { 'mediawiki_events':
-        job_config => merge($default_config, {
+        job_config   => merge($default_config, {
             input_path                      => '/wmf/data/raw/event',
             input_path_regex                => '.*(eqiad|codfw)_(.+)/hourly/(\\d+)/(\\d+)/(\\d+)/(\\d+)',
             input_path_regex_capture_groups => 'datacenter,table,year,month,day,hour',
@@ -85,7 +88,8 @@ class profile::analytics::refinery::job::refine {
             # Schema URIs are extracted from the $schema field in each event.
             schema_base_uri                 => "http://schema.svc.${::site}.wmnet:8190/repositories/mediawiki/jsonschema",
         }),
-        interval   => '*-*-* *:20:00',
+        interval     => '*-*-* *:20:00',
+        use_kerberos => $use_kerberos,
     }
 
 
@@ -117,7 +121,7 @@ class profile::analytics::refinery::job::refine {
     $job_table_blacklist = sprintf('.*(%s)$', join($problematic_jobs, '|'))
 
     profile::analytics::refinery::job::refine_job { 'eventlogging_eventbus_job_queue':
-        job_config => merge($default_config, {
+        job_config   => merge($default_config, {
             input_path                      => '/wmf/data/raw/mediawiki_job',
             input_path_regex                => '.*(eqiad|codfw)_(.+)/hourly/(\\d+)/(\\d+)/(\\d+)/(\\d+)',
             input_path_regex_capture_groups => 'datacenter,table,year,month,day,hour',
@@ -125,7 +129,8 @@ class profile::analytics::refinery::job::refine {
             # Deduplicate eventbus based data based on meta.id field
             transform_functions             => 'org.wikimedia.analytics.refinery.job.refine.deduplicate_eventbus',
         }),
-        interval   => '*-*-* *:25:00',
+        interval     => '*-*-* *:25:00',
+        use_kerberos => $use_kerberos,
     }
 
     # Netflow data
@@ -141,5 +146,6 @@ class profile::analytics::refinery::job::refine {
         interval               => '*-*-* *:45:00',
         monitoring_enabled     => false,
         refine_monitor_enabled => false,
+        use_kerberos           => $use_kerberos,
     }
 }

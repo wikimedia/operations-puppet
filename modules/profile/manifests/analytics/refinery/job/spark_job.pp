@@ -40,6 +40,7 @@ define profile::analytics::refinery::job::spark_job(
     $environment         = undef,
     $ensure              = 'present',
     $monitoring_enabled  = true,
+    $use_kerberos        = false,
 )
 {
     require ::profile::analytics::refinery
@@ -55,19 +56,16 @@ define profile::analytics::refinery::job::spark_job(
         mode    => '0555',
     }
 
-    systemd::timer::job { $title:
+    kerberos::systemd_timer { $title:
         ensure                    => $ensure,
         description               => "Spark job for ${title}",
         command                   => $script,
-        interval                  => {
-            'start'    => 'OnCalendar',
-            'interval' => $interval
-        },
+        interval                  => $interval,
         user                      => $user,
+        use_kerberos              => $use_kerberos,
         environment               => $environment,
         monitoring_enabled        => $monitoring_enabled,
         monitoring_contact_groups => 'analytics',
-        logging_enabled           => true,
         logfile_basedir           => '/var/log/refinery',
         logfile_name              => "${title}.log",
         logfile_owner             => $user,

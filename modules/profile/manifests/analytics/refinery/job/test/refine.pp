@@ -48,5 +48,6 @@ class profile::analytics::refinery::job::test::refine {
         # Use webproxy so that this job can access meta.wikimedia.org to retrive JSONSchemas.
         spark_extra_opts => '--driver-java-options=\'-Dhttp.proxyHost=webproxy.eqiad.wmnet -Dhttp.proxyPort=8080 -Dhttps.proxyHost=webproxy.eqiad.wmnet -Dhttps.proxyPort=8080\'',
         interval         => '*-*-* *:30:00',
+        use_kerberos     => true,
     }
 }

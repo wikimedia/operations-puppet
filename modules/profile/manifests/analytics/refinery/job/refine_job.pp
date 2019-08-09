@@ -38,6 +38,7 @@ define profile::analytics::refinery::job::refine_job (
     $spark_extra_opts       = '',
     $user                   = 'analytics',
     $interval               = '*-*-* *:00:00',
+    $use_kerberos           = false,
     $ensure                 = 'present',
 ) {
     require ::profile::analytics::refinery
@@ -89,6 +90,7 @@ define profile::analytics::refinery::job::refine_job (
         user               => $user,
         interval           => $interval,
         monitoring_enabled => $monitoring_enabled,
+        use_kerberos       => $use_kerberos,
     }
 
     # Look back over a 24 period before 4 hours ago and ensure that all expected
@@ -121,6 +123,7 @@ define profile::analytics::refinery::job::refine_job (
         user               => $user,
         interval           => $monitor_interval,
         monitoring_enabled => $monitoring_enabled,
+        use_kerberos       => $use_kerberos,
     }
 
 }
