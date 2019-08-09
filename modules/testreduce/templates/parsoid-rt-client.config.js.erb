@@ -4,6 +4,7 @@
 'use strict';
 
 (function() {
+	var testWrapper = require('/srv/deployment/parsoid/deploy/src/tests/testreduce/rtTestWrapper.js');
 	if (typeof module === 'object') {
 		module.exports = {
 			server: {
@@ -20,14 +21,27 @@
 			opts: {
 				// Talk to the existing Parsoid service.
 				// No need to spin up our own private Parsoid service.
-				parsoidPHPURL: 'http://localhost/rest.php',
 				parsoidURL: 'http://localhost:<%= @parsoid_port %>',
+				parsoidPHP: {
+					baseUrl: 'http://DOMAIN/w/rest.php',
+					proxy: {
+						host: 'scandium.eqiad.wmnet',
+						port: 80
+					}
+				}
 			},
 
-			runTest: require('/srv/deployment/parsoid/deploy/src/tests/testreduce/rtTestWrapper.js').runRoundTripTest,
+			// The return value of this function is the key for parsoid-rt test runs
+			// You can start new test runs by updating the string this function returns.
+			//
+			// If the string has a "PHP:" prefix, the wrapper will run tests with the
+			// Parsoid/PHP endpoint. If not, it will run tests with the Parsoid/JS endpoint.
+			//
+			// Set "gitRepoPath: <directory-here>" if you want to control this automatically
+			// based on when code in a git repo is updated.
+			gitCommitFetch: testWrapper.getTestRunId,
 
-			// Path of the git repo
-			gitRepoPath: '/srv/deployment/parsoid/deploy/src',
+			runTest: testWrapper.runRoundTripTest,
 		};
 	}
 }());
