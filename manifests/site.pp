@@ -579,7 +579,7 @@ node 'db2096.codfw.wmnet' {
 }
 
 # x1 codfw slaves
-node /^db2(069|115|131)\.codfw\.wmnet/ {
+node /^db2(115|131)\.codfw\.wmnet/ {
     role(mariadb::core)
 }
 
@@ -635,6 +635,11 @@ node 'db2045.codfw.wmnet' {
 
 # To be decommissioned # T229543
 node 'db2058.codfw.wmnet' {
+    role(spare::system)
+}
+
+# To be decommissioned # T230107
+node 'db2069.codfw.wmnet' {
     role(spare::system)
 }
 
