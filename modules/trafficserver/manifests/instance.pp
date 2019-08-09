@@ -292,7 +292,7 @@ define trafficserver::instance(
     }
 
     ## Service
-    $do_ocsp = !empty($inbound_tls_settings) and !empty($inbound_tls_settings['ocsp_stapling_path']) # used in the systemd template
+    $do_ocsp = !empty($inbound_tls_settings) and num2bool($inbound_tls_settings['do_ocsp']) # used in the systemd template
 
     systemd::service { $service_name:
         content        => init_template('trafficserver', 'systemd_override'),

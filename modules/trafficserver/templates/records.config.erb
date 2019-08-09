@@ -114,8 +114,8 @@ CONFIG proxy.config.ssl.max_record_size INT <%= @inbound_tls_settings['max_recor
 <% if @inbound_tls_settings['dhparams_file'] -%>
 CONFIG proxy.config.ssl.server.dhparams_file STRING <%= @inbound_tls_settings['dhparams_file'] %>
 <% end -%>
-<% if @inbound_tls_settings['ocsp_stapling_path'] and @inbound_tls_settings['ocsp_stapling_files'] -%>
-CONFIG proxy.config.ssl.ocsp.enabled INT 1
+CONFIG proxy.config.ssl.ocsp.enabled INT <%= @inbound_tls_settings['do_ocsp'] %>
+<% if @inbound_tls_settings['do_ocsp'] == 1 and @inbound_tls_settings['ocsp_stapling_path'] -%>
 CONFIG proxy.config.ssl.ocsp.response.path STRING <%= @inbound_tls_settings['ocsp_stapling_path'] %>
 <% end -%>
 CONFIG proxy.config.ssl.session_cache INT <%= @inbound_tls_settings['session_cache'] %>

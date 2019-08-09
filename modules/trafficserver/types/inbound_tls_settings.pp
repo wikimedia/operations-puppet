@@ -51,6 +51,9 @@
 #
 # [*load_elevated*]
 #   Enables (1) or disables (0) elevation of traffic_server privileges during loading of SSL certificates.
+#
+# [*do_ocsp*]
+#   Enables (1) or disables (0) OCSP stapling.
 
 type Trafficserver::Inbound_TLS_settings = Struct[{
     'common'                   => Trafficserver::TLS_settings,
@@ -66,4 +69,5 @@ type Trafficserver::Inbound_TLS_settings = Struct[{
     'session_cache_size'       => Integer[0],
     'session_cache_buckets'    => Integer[0],
     'load_elevated'            => Optional[Integer[0, 1]],
+    'do_ocsp'                  => Integer[0, 1],
 }]
