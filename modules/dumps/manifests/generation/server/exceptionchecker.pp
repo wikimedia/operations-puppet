@@ -13,7 +13,7 @@ class dumps::generation::server::exceptionchecker(
     cron { 'dumps-exception-checker':
         ensure      => 'present',
         environment => 'MAILTO=ops-dumps@wikimedia.org',
-        command     => "/bin/bash /usr/local/bin/dumps_exception_checker.py ${dumpsbasedir} 480 latest",
+        command     => "/usr/bin/python3 /usr/local/bin/dumps_exception_checker.py ${dumpsbasedir} 480 latest",
         user        => $user,
         minute      => '40',
         hour        => '*/8',
