@@ -5,7 +5,7 @@ class profile::microsites::design(
 ) {
 
     httpd::site { 'design.wikimedia.org':
-        content => template('profile/design/apache-design.wikimedia.org.erb'),
+        content => template('profile/design/design.wikimedia.org-httpd.erb'),
     }
 
     ensure_resource('file', '/srv/org', {'ensure' => 'directory' })
