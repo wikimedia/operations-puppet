@@ -837,7 +837,7 @@ node 'db1108.eqiad.wmnet' {
 node 'db1073.eqiad.wmnet' {
     class { '::role::mariadb::misc':
         shard  => 'm5',
-        master => true,
+        master => false,
     }
     interface::add_ip6_mapped { 'main': }
 }
@@ -845,7 +845,7 @@ node 'db1073.eqiad.wmnet' {
 node 'db1133.eqiad.wmnet' {
     class { '::role::mariadb::misc':
         shard  => 'm5',
-        master => false,
+        master => true,
     }
     interface::add_ip6_mapped { 'main': }
 }
