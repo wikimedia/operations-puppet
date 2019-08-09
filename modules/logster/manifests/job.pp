@@ -11,9 +11,13 @@
 # These are used for scheduling how often you want logster to parse the logfile
 # and send metrics.
 #
+# NOTE: When defining job as 'absent', the package will become unmanaged
+# and will need to be removed manually.
+#
 define logster::job(
     $parser,
     $logfile,
+    $ensure          = 'present',
     $logster_options = undef,
     $minute          = '*/5',
     $hour            = undef,
@@ -22,9 +26,12 @@ define logster::job(
     $monthday        = undef,
 ) {
 
-    require ::logster
+    if ($ensure == 'present') {
+        require ::logster
+    }
 
     cron { "logster-${title}":
+        ensure   => $ensure,
         command  => "/usr/bin/logster ${logster_options} ${parser} ${logfile} > /dev/null 2>&1",
         user     => 'root',
         minute   => $minute,
