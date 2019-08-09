@@ -13,12 +13,10 @@ profile::trafficserver::backend::mapping_rules:
       replacement: https://webserver-misc-static.discovery.wmnet
     - type: map
       target: http://bugs.wikimedia.org
-      replacement: http://phab1003.eqiad.wmnet
-      #replacement: http://phab2001.codfw.wmnet
+      replacement: https://phabricator.discovery.wmnet
     - type: map
       target: http://bugzilla.wikimedia.org
-      replacement: http://phab1003.eqiad.wmnet
-      #replacement: http://phab2001.codfw.wmnet
+      replacement: https://phabricator.discovery.wmnet
     - type: map
       target: http://config-master.wikimedia.org
       replacement: http://puppetmaster1001.eqiad.wmnet
@@ -56,8 +54,7 @@ profile::trafficserver::backend::mapping_rules:
       replacement: https://gerrit.wikimedia.org
     - type: map
       target: http://git.wikimedia.org
-      replacement: http://phab1003.eqiad.wmnet
-      #replacement: http://phab2001.codfw.wmnet
+      replacement: https://phabricator.discovery.wmnet
     - type: map
       target: http://grafana-labs-admin.wikimedia.org
       replacement: http://labmon1001.eqiad.wmnet
@@ -131,12 +128,10 @@ profile::trafficserver::backend::mapping_rules:
       #replacement: ws://phab2001-aphlict.codfw.wmnet:22280/ws/
     - type: map
       target: http://phabricator.wikimedia.org
-      replacement: http://phab1003.eqiad.wmnet
-      #replacement: http://phab2001.codfw.wmnet
+      replacement: https://phabricator.discovery.wmnet
     - type: map
       target: http://phab.wmfusercontent.org
-      replacement: http://phab1003.eqiad.wmnet
-      #replacement: http://phab2001.codfw.wmnet
+      replacement: https://phabricator.discovery.wmnet
     - type: map
       target: http://pivot.wikimedia.org
       replacement: https://analytics-tool1002.eqiad.wmnet
