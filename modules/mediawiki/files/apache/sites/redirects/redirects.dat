@@ -98,6 +98,10 @@ rewrite	et.wikimedia.org	https://ee.wikimedia.org
 rewrite	be-x-old.wikipedia.org	https://be-tarask.wikipedia.org
 
 rewrite	nan.wikipedia.org	https://zh-min-nan.wikipedia.org
+rewrite	nan.wiktionary.org	https://zh-min-nan.wiktionary.org
+rewrite	nan.wikiquote.org	https://zh-min-nan.wikiquote.org
+rewrite	nan.wikibooks.org	https://zh-min-nan.wikibooks.org
+rewrite	nan.wikisource.org	https://zh-min-nan.wikisource.org
 
 rewrite	zh-tw.wikipedia.org	https://zh.wikipedia.org
 
