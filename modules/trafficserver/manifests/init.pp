@@ -10,9 +10,20 @@ class trafficserver(
   String $user = 'trafficserver',
   Array[String] $packages = ['trafficserver', 'trafficserver-experimental-plugins'],
 ) {
+
+    # Mask trafficserver.service if the package is not installed yet. The
+    # unless is deplorable but there is no way in Puppet to execute a command
+    # only if a package is being installed but before package installation.
+    systemd::mask { 'trafficserver.service':
+        unless => '/usr/bin/dpkg -s trafficserver | /bin/grep -q "^Status: install ok installed$"',
+    }
+
     ## Packages
     package { $packages:
         ensure  => present,
-        require => Exec['apt-get update'],
+        require => [ Exec['apt-get update'], Systemd::Mask['trafficserver.service'] ],
+        notify  => Systemd::Unmask['trafficserver.service'],
     }
+
+    systemd::unmask { 'trafficserver.service': }
 }
