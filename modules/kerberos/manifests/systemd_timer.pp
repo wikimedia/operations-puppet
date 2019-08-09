@@ -34,7 +34,7 @@
 #  [*logfile_basedir*]
 #   Base directory where to store the syslog output of the
 #   running unit.
-#   Default: "/var/log/${title}"
+#   Default: "/var/log/"
 #
 #  [*logfile_name*]
 #   The filename of the file storing the syslog output of
@@ -75,7 +75,7 @@ define kerberos::systemd_timer(
     $environment = {},
     $monitoring_enabled = true,
     $monitoring_contact_groups = 'analytics',
-    $logfile_basedir = "/var/log/${title}",
+    $logfile_basedir = '/var/log/',
     $logfile_name = undef,
     $logfile_owner = 'analytics',
     $logfile_group = 'analytics',

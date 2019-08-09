@@ -22,21 +22,40 @@ describe 'systemd::timer::job' do
         facts.merge({initsystem: 'systemd'})
       end
       let(:pre_condition) { mock }
-      let(:title) { 'dummy' }
-      let(:params) {
-        {
-          description: 'Some description',
-          command: '/bin/true',
-          interval: {start: 'OnCalendar', interval: 'Mon,Tue *-*-* 00:00:00'},
-          user: 'root',
+      let(:title) { 'dummy-test' }
+      context "with logging" do
+       let(:params) {
+          {
+            description: 'Some description',
+            command: '/bin/true',
+            interval: {start: 'OnCalendar', interval: 'Mon,Tue *-*-* 00:00:00'},
+            user: 'root',
+          }
+       }
+       it { is_expected.to compile.with_all_deps }
+       it {
+         is_expected.to contain_systemd__unit('dummy-test.service')
+                          .with_ensure('present')
+                          .with_content(/Description=Some description/)
         }
-      }
-      it { is_expected.to compile.with_all_deps }
-      it {
-        is_expected.to contain_systemd__unit('dummy.service')
-                         .with_ensure('present')
-                         .with_content(/Description=Some description/)
-      }
+       it { is_expected.to contain_systemd__syslog('dummy-test')
+                             .with_base_dir('/var/log')
+                             .with_log_filename('syslog.log')
+       }
+      end
+      context "without logging" do
+        let(:params) {
+          {
+            description: 'Some description',
+            command: '/bin/true',
+            interval: {start: 'OnCalendar', interval: 'Mon,Tue *-*-* 00:00:00'},
+            user: 'root',
+            logging_enabled: false,
+          }
+        }
+        it { is_expected.to compile.with_all_deps }
+        it { is_expected.not_to contain_systemd__syslog('dummy-test') }
+      end
     end
   end
 end

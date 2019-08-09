@@ -34,14 +34,14 @@
 #   Default: true
 #
 #  [*logfile_basedir*]
-#   Base directory where to store the syslog output of the
-#   running unit.
-#   Default: "/var/log/${title}"
+#   Base directory for log files, to which /$title will be appended.
+#   Logs will be saved at $logfile_basedir/$title/$logfile_name
+#   Default: "/var/log"
 #
 #  [*logfile_name*]
 #   The filename of the file storing the syslog output of
 #   the running unit.
-#   Default: $title.log
+#   Default: syslog.log
 #
 #  [*logfile_owner*]
 #   The user that owns the logfile. If undef, the value of $user will be used.
@@ -91,8 +91,8 @@ define systemd::timer::job(
     Boolean $monitoring_enabled = true,
     String $monitoring_contact_groups = 'admins',
     Boolean $logging_enabled = true,
-    String $logfile_basedir = "/var/log/${title}",
-    String $logfile_name = "${title}.log",
+    String $logfile_basedir = '/var/log',
+    String $logfile_name = 'syslog.log',
     Optional[String] $logfile_owner = undef,
     String $logfile_group = 'root',
     Enum['user', 'group', 'all'] $logfile_perms = 'all',
@@ -101,10 +101,9 @@ define systemd::timer::job(
     Wmflib::Ensure $ensure = 'present',
     Optional[Integer] $max_runtime_seconds = undef,
 ) {
-    $log_owner = $logfile_owner ? {
-        undef   => $user,
-        default => $logfile_owner
-    }
+    # Sanitize the title for use on the filesystem
+    $safe_title = regsubst($title, '[^\w\-]', '_', 'G')
+
     systemd::unit { "${title}.service":
         ensure  => $ensure,
         content => template('systemd/timer_service.erb'),
@@ -117,7 +116,13 @@ define systemd::timer::job(
     }
 
     if $logging_enabled {
-        systemd::syslog { $title:
+        # The owner of the log files
+        $log_owner = $logfile_owner ? {
+            undef   => $user,
+            default => $logfile_owner
+        }
+
+        systemd::syslog { $safe_title:
             ensure       => $ensure,
             base_dir     => $logfile_basedir,
             log_filename => $logfile_name,
