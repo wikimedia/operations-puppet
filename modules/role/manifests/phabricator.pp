@@ -16,4 +16,5 @@ class role::phabricator {
     include ::profile::phabricator::monitoring
     include ::profile::prometheus::apache_exporter
     include ::profile::waf::apache2::administrative
+    include ::profile::tlsproxy::envoy # TLS termination
 }
