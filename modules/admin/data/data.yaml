@@ -13,7 +13,7 @@ groups:
               yuvipanda, shrlak, madhuvishy, groovier, khorn, ironholds, katie, chedasaurus,
               cy534, pnorman, mpany, deskana, arnad, nithum, banyek, imarlier, mkroetzsch,
               mtizzoni, panisson, paolotti, ciro, dartar, melodykramer, gtirloni, tbayer, pirroh,
-              bawolff, dkg, juliaglen, cwdent, bmansurov]
+              bawolff, dkg, juliaglen, cwdent, bmansurov, hpham]
   absent_ldap:
     description: meta group for absented users which had privileged LDAP access in the past, an automatic check verifies it has been really removed from the LDAP (but removal has to be handled separatelly)
     members: [adavenport, siddharth11, albe, audiohazel, tbolliger, jmatazzoni, pbj]
@@ -33,7 +33,7 @@ groups:
               akosiaris, mark, ariel, cmjohnson, otto, robh, tstarling,
               ori, jmm, jynus, ema, elukey, gehel, volans, marostegui,
               ayounsi, herron, aborrero, bstorm, vgutierrez, jiji, cwhite,
-              crusnov, cdanis, fsero, jbond, jeh, dzahn, hpham, sukhe]
+              crusnov, cdanis, fsero, jbond, jeh, dzahn, phamhi, sukhe]
     privileges: ['ALL = (ALL) NOPASSWD: ALL']
   ops-adm-group:
     # No gid for this group on purpose, it's a system provided one
@@ -2709,9 +2709,17 @@ users:
     uid: 18194
     email: aborrero@wikimedia.org
   hpham:
-    ensure: present
+    ensure: absent
     gid: 500
     name: hpham
+    realname: Hieu Pham
+    ssh_keys: []
+    uid: 21844
+    email: hpham@wikimedia.org
+  phamhi:
+    ensure: present
+    gid: 500
+    name: phamhi
     realname: Hieu Pham
     ssh_keys:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIHJ+tdR854tJNFXK14dxJFrURxnEpk1rE+KkEUPeXrrZ hpham@wikimedia.org(prod)
