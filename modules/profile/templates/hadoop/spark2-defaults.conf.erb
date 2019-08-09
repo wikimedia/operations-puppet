@@ -18,6 +18,9 @@ spark.dynamicAllocation.enabled                     true
 spark.shuffle.service.enabled                       true
 spark.dynamicAllocation.executorIdleTimeout         60s
 spark.dynamicAllocation.cachedExecutorIdleTimeout   3600s
+<% if @executor_env_ld_lib_path -%>
+spark.executorEnv.LD_LIBRARY_PATH                   <%= @executor_env_ld_lib_path %>
+<% end -%>
 <% if @hive_enabled -%>
 spark.sql.catalogImplementation                     hive
 <% end -%>

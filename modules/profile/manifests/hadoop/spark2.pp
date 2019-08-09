@@ -64,6 +64,14 @@
 #   and it adds it to the ferm config.
 #   Default: 100
 #
+# [*executor_env_ld_lib_path*]
+#   Explicitly set the LD_LIBRARY_PATH of Spark executors to avoid any errors
+#   related to missing Hadoop native libraries (like Snappy for example). We already
+#   have a similar setting in yarns-site.xml for the Application Master, but having
+#   it stated in the Spark2's defaults has been proven in the past to work well
+#   (especially when testing Kerberos in the Hadoop Test cluster).
+#   Default: /usr/lib/hadoop/lib/native
+#
 class profile::hadoop::spark2(
     $install_yarn_shuffle_jar = hiera('profile::hadoop::spark2::install_yarn_shuffle_jar', true),
     $install_oozie_sharelib   = hiera('profile::hadoop::spark2::install_oozie_sharelib', false),
@@ -74,6 +82,7 @@ class profile::hadoop::spark2(
     $driver_blockmanager_port = hiera('profile::hadoop::spark2::driver_blockmanager_port', 13000),
     $ui_port                  = hiera('profile::hadoop::spark2::ui_port', 4040),
     $port_max_retries         = hiera('profile::hadoop::spark2::port_max_retries', 100),
+    $executor_env_ld_lib_path = hiera('profile::hadoop::spark2::executor_env_ld_lib_path', '/usr/lib/hadoop/lib/native'),
 ) {
     require ::profile::hadoop::common
 
