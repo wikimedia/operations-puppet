@@ -46,3 +46,6 @@ ProtectSystem=strict
 ReadWritePaths=<%= @paths['logdir'] %>
 ReadWritePaths=<%= @paths['runtimedir'] %>
 ReadWritePaths=<%= @paths['cachedir'] %>
+<% if @do_ocsp -%>
+ReadWritePaths=/etc/acmecerts
+<% end -%>
