@@ -389,11 +389,6 @@ mark_as_helpful,mah_timestamp,K
 mark_as_helpful,mah_system_type,F
 mark_as_helpful,mah_user_agent,F
 mark_as_helpful,mah_locale,F
-math,math_inputhash,K
-math,math_outputhash,K
-math,math_html_conservativeness,K
-math,math_html,K
-math,math_mathml,K
 module_deps,md_module,K
 module_deps,md_skin,K
 module_deps,md_deps,K
