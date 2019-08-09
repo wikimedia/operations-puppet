@@ -78,7 +78,7 @@ class profile::kerberos::kdc (
 
     systemd::timer::job { 'delete-old-backups-kdc-database':
         description        => 'Daily clean up of old backups of the KDC database',
-        command            => 'find /srv/backup -name "kdc_database_.*" -mtime +30 -delete',
+        command            => '/usr/bin/find /srv/backup -name "kdc_database_.*" -mtime +30 -delete',
         interval           => {
             'start'    => 'OnCalendar',
             'interval' => '*-*-* 01:00:00'
