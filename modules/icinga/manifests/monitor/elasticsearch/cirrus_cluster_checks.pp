@@ -49,11 +49,14 @@ class icinga::monitor::elasticsearch::cirrus_cluster_checks{
             notes_link      => 'https://wikitech.wikimedia.org/wiki/Search',
         }
 
+        # this is checking for update rate over the last 60 minutes. Ideally, we'd like a shorter window for this
+        # check, but T224425 makes it generate too much noise.
+        # FIXME: reduce moving average to 10 minutes once T224425 is fixed.
         monitoring::graphite_threshold { "mediawiki_cirrus_update_rate_${site}":
             description     => "Mediawiki Cirrussearch update rate - ${site}",
             dashboard_links => ['https://grafana.wikimedia.org/d/JLK3I_siz/elasticsearch-indexing?panelId=44&fullscreen&orgId=1'],
             host            => $host,
-            metric          => "movingAverage(transformNull(MediaWiki.CirrusSearch.${site}.updates.all.sent.rate),\"10minutes\")",
+            metric          => "movingAverage(transformNull(MediaWiki.CirrusSearch.${site}.updates.all.sent.rate),\"60minutes\")",
             warning         => 80,
             critical        => 50,
             under           => true,
