@@ -57,7 +57,7 @@ class profile::kerberos::kdc (
         owner  => 'root',
         group  => 'root',
         mode   => '0550',
-        source => 'puppet:///modules/profile/kdc/dump_kdc_database',
+        source => 'puppet:///modules/profile/kerberos/kdc/dump_kdc_database',
     }
 
     systemd::timer::job { 'backup-kdc-database':
