@@ -5,7 +5,9 @@ upstream <%= name %> {
 }
 
 server {
-    listen <%= svc['localport'] %>;
+    listen 127.0.0.1:<%= svc['localport'] %>;
+    listen [::1]:<%= svc['localport'] %>;
+
     location / {
         proxy_pass <%= svc['scheme'] %>://<%= name %>;
         proxy_http_version 1.1;
