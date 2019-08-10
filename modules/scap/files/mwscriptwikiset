@@ -36,7 +36,7 @@ do
 	echo "-------------------------------------"
 	echo "$DBNAME"
 	echo "-------------------------------------"
-	$MWSCRIPT "$SCRIPTFILE" "$DBNAME" $SCRIPTARGS
+	PHP=php7.2 $MWSCRIPT "$SCRIPTFILE" "$DBNAME" $SCRIPTARGS
 	test $? -gt 128 && break; # make Ctrl-C actually work
 	echo "-------------------------------------"
 	echo ""
