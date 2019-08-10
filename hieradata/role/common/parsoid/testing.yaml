@@ -12,9 +12,6 @@ parsoid::statsd_prefix: parsoid-tests
 
 profile::base::notifications: disabled
 
-# switch between Parsoid/JS and Parsoid/PHP (T229363)
-parsoid::testing::use_parsoid_php: false
-
 profile::mediawiki::php::php_version: "7.2"
 profile::mediawiki::install_hhvm: false
 profile::mediawiki::webserver::has_tls: false
