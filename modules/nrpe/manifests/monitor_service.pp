@@ -33,7 +33,7 @@
 #    $ensure
 #       Defaults to present
 #
-define nrpe::monitor_service( Stdlib::HTTPSUrl $notes_url,
+define nrpe::monitor_service( Optional[Stdlib::HTTPSUrl] $notes_url = undef,
                               $description      = undef,
                               $nrpe_command     = undef,
                               $contact_group    = hiera('contactgroups', 'admins'),
@@ -45,8 +45,8 @@ define nrpe::monitor_service( Stdlib::HTTPSUrl $notes_url,
                               $retry_interval   = 1,
                               Optional[Array[Stdlib::HTTPSUrl, 1]] $dashboard_links = undef,
                               Wmflib::Ensure $ensure = present) {
-    unless $ensure == 'absent' or ($description and $nrpe_command) {
-        fail('Description and nrpe_command parameters are mandatory for ensure != absent')
+    unless $ensure == 'absent' or ($description and $nrpe_command and $notes_url) {
+        fail('Description, nrpe_command, and notes_url parameters are mandatory for ensure != absent')
     }
     nrpe::check { "check_${title}":
         ensure  => $ensure,

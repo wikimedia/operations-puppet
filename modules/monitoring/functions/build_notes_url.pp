@@ -5,13 +5,17 @@
 # In general, users of those resources do not need to worry about this; it's
 # for internal implementations of monitoring resources.
 function monitoring::build_notes_url(
-    Stdlib::HTTPSUrl $notes_link,
+    Optional[Stdlib::HTTPSUrl] $notes_link,
     Array[Stdlib::HTTPSUrl,0,4] $dashboard_links) >> String
 {
     $link_fail_message = 'The $dashboard_links and $notes_links URLs must not be URL-encoded'
     # The notes link always has to come first to ensure the correct icon is used in icinga
     # we start with `[]` so puppet knows we want a array
-    $links = [] + $notes_link + $dashboard_links
+    if $notes_link {
+        $links = [] + $notes_link + $dashboard_links
+    } else {
+        $links = [] + $dashboard_links
+    }
 
     $notes_urls = $links.reduce('') |$urls, $link| {
         if $link =~ /%\h\h/ {
