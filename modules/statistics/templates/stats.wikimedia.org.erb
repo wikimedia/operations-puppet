@@ -11,6 +11,18 @@
         Require all granted
     </Directory>
 
+    # Wikistats V2 is a single page (index.html) website.
+    # Caching of the default page should not happen for long
+    # periods of time, since changes to its content (CSS, js, etc..)
+    # due to a deployment may end up in a broken user experience
+    # (until the cache revalidates its content or the operator manually
+    # drops it).
+    <Directory "/srv/stats.wikimedia.org/htdocs/v2">
+        <Files "index.html">
+            Header set Cache-Control "max-age=10"
+        </Files>
+    </Directory>
+
     # Allow CGI scripts for this site
     <Directory "/srv/stats.wikimedia.org/cgi-bin">
         Require all granted
