@@ -635,6 +635,14 @@ class profile::prometheus::ops (
         model => 'sentry4',
     }
 
+    # PoPs might have single phase PDUs (e.g. ulsfo)
+    prometheus::pdu_config { "pdu_sentry4_1phase_${::site}":
+        dest     => "${targets_path}/pdu_sentry4_1phase_${::site}.yaml",
+        site     => $::site,
+        model    => 'sentry4',
+        resource => 'Facilities::Monitor_pdu_1phase',
+    }
+
     # T221099
     $docker_registry_jobs = [
       {
