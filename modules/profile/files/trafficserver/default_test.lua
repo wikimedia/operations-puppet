@@ -145,5 +145,11 @@ describe("Busted unit testing framework", function()
       restore_cc_data()
       assert.are.equals('public, max-age=10', _G.ts.client_response.header['Cache-Control'])
     end)
+
+    it("test - do_global_send_request", function()
+      _G.ts.server_request.header['Accept-Encoding'] = 'gzip'
+      do_global_send_request()
+      assert.are.equals(nil, _G.ts.server_request.header['Accept-Encoding'])
+    end)
   end)
 end)
