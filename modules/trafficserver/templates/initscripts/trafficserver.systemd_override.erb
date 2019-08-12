@@ -27,6 +27,7 @@ SuccessExitStatus=15
 LimitNOFILE=500000
 LimitMEMLOCK=90000
 
+<% if @systemd_hardening -%>
 # Security options
 ProtectKernelModules=yes
 ProtectKernelTunables=yes
@@ -48,4 +49,5 @@ ReadWritePaths=<%= @paths['runtimedir'] %>
 ReadWritePaths=<%= @paths['cachedir'] %>
 <% if @do_ocsp -%>
 ReadWritePaths=/etc/acmecerts
+<% end -%>
 <% end -%>

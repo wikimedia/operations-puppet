@@ -19,6 +19,7 @@ class profile::trafficserver::backend (
     Wmflib::UserIpPort $prometheus_exporter_port=hiera('profile::trafficserver::backend::prometheus_exporter_port', 9122),
     Stdlib::Absolutepath $atsmtail_backend_progs=hiera('profile::trafficserver::backend::atsmtail_backend_progs', '/etc/atsmtail-backend'),
     Wmflib::UserIpPort $atsmtail_backend_port=hiera('profile::trafficserver::backend::atsmtail_backend_port', 3904),
+    Boolean $systemd_hardening=hiera('profile::trafficserver::backend::systemd_hardening', true),
 ){
     # Add hostname as a parameter to the default global Lua plugin
     $global_lua_script = $default_lua_script? {
@@ -74,6 +75,7 @@ class profile::trafficserver::backend (
         log_filters           => $log_filters,
         logs                  => $logs,
         error_page            => template('mediawiki/errorpage.html.erb'),
+        systemd_hardening     => $systemd_hardening,
     }
 
     # Install default Lua script

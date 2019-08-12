@@ -140,6 +140,9 @@
 # [*x_forwarded_for*]
 #   When enabled (1), Traffic Server adds the client IP address to the X-Forwarded-For header. (default: 0).
 #
+# [*systemd_hardening*]
+#   Whether or not to enable systemd unit security features. (default: true).
+#
 # === Examples
 #
 #  trafficserver::instance { 'backend':
@@ -185,6 +188,7 @@ define trafficserver::instance(
     Optional[Array[Trafficserver::Parent_rule]] $parent_rules = undef,
     String $error_page = '<html><head><title>Error</title></head><body><p>Something went wrong</p></body></html>',
     Integer[0,1] $x_forwarded_for = 0,
+    Boolean $systemd_hardening = true,
 ) {
 
     require ::trafficserver
