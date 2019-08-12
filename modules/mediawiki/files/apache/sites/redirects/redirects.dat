@@ -97,8 +97,6 @@ rewrite	et.wikimedia.org	https://ee.wikimedia.org
 
 rewrite	be-x-old.wikipedia.org	https://be-tarask.wikipedia.org
 
-rewrite	zh-cfr.wikipedia.org	https://zh-min-nan.wikipedia.org
-rewrite	minnan.wikipedia.org	https://zh-min-nan.wikipedia.org
 rewrite	nan.wikipedia.org	https://zh-min-nan.wikipedia.org
 
 rewrite	zh-tw.wikipedia.org	https://zh.wikipedia.org
