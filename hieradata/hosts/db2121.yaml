@@ -1,0 +1,5 @@
+# db2121
+# future candidate master for s7
+mariadb::shard: 's7'
+mariadb::binlog_format: 'STATEMENT'
+profile::base::notifications: disabled
