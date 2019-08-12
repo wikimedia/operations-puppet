@@ -93,7 +93,6 @@ rewrite	nb.wikisource.org	//no.wikisource.org
 rewrite	nb.wikinews.org	//no.wikinews.org
 funnel	nb.wikiversity.org	//beta.wikiversity.org/wiki/Hovedside
 rewrite	lzh.wikipedia.org	//zh-classical.wikipedia.org
-rewrite	lzh.m.wikipedia.org	//zh-classical.m.wikipedia.org
 # Although there is a rename of zh-yue pending (T30441), content
 # already exists at zh-yue so the rewrite must go that way for now (T105999)
 rewrite	yue.wikipedia.org	//zh-yue.wikipedia.org
