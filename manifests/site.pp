@@ -425,11 +425,11 @@ node /^db1(078|112|123)\.eqiad\.wmnet/ {
 
 # s3 (default) core production dbs on codfw
 # codfw master
-node 'db2043.codfw.wmnet' {
+node 'db2105.codfw.wmnet' {
     role(mariadb::core)
 }
 
-node /^db2(050|057|074|105|109|127)\.codfw\.wmnet/ {
+node /^db2(043|050|057|074|109|127)\.codfw\.wmnet/ {
     role(mariadb::core)
 }
 
