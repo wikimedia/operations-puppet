@@ -35,7 +35,7 @@ PrivateTmp=yes
 
 RestrictAddressFamilies=AF_INET AF_INET6 AF_UNIX AF_NETLINK
 
-CapabilityBoundingSet=CAP_DAC_OVERRIDE CAP_SETGID CAP_SETUID <% if @port < 1024 -%>CAP_NET_BIND_SERVICE<% end -%>
+CapabilityBoundingSet=CAP_DAC_OVERRIDE CAP_SETGID CAP_SETUID CAP_SYS_PTRACE CAP_FOWNER <% if @port < 1024 -%>CAP_NET_BIND_SERVICE<% end -%>
 
 SystemCallFilter=~@keyring @clock @cpu-emulation @obsolete @module @raw-io @debug
 
