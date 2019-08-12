@@ -1,5 +1,7 @@
 export HELM_HOME=/etc/helm
 export KUBECONFIG=/etc/kubernetes/<%= @svcname %>-<%=@environment%>.config
-<% if @svcname != "admin" %>
+<% if @svcname != "admin" -%>
 export TILLER_NAMESPACE=<%= @svcname %>
+<% else -%>
+export TILLER_NAMESPACE='kube-system'
 <% end %>
