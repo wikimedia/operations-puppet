@@ -3,6 +3,7 @@ class profile::kerberos::kadminserver (
     Stdlib::Fqdn $krb_kadmin_primary = lookup('kerberos_kadmin_server_primary'),
     Stdlib::Fqdn $krb_kadmin_keytabs_repo = lookup('kerberos_kadmin_keytabs_repo'),
     Array[String] $rsync_secrets_file_auth_users = lookup('profile::kerberos::kadminserver', { 'default_value' => ['kerb'] }),
+    Optional[Boolean] $enable_replication = lookup('profile::kerberos::kadminserver::enable_replication', {'default_value' => false} ),
 ) {
     package { 'krb5-admin-server':
         ensure => present,
@@ -94,5 +95,9 @@ class profile::kerberos::kadminserver (
         auth_users     => $rsync_secrets_file_auth_users,
         secrets_file   => $rsync_secrets_file,
         require        => File[$rsync_secrets_file],
+    }
+
+    if $enable_replication {
+        include ::profile::kerberos::replication
     }
 }
