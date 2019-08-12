@@ -6,6 +6,7 @@ define icinga::monitor::elasticsearch::base_checks(
     Array[Stdlib::Port] $ports = [9200],
     Integer $shard_size_warning = 50,
     Integer $shard_size_critical = 60,
+    Integer $timeout = 4,
     Boolean $use_nrpe = false,
 ) {
     $ports.each |$port| {
@@ -21,18 +22,18 @@ define icinga::monitor::elasticsearch::base_checks(
                     notes_url     => 'https://wikitech.wikimedia.org/wiki/Search#Administration',
                 ;
                 "elasticsearch_shards_${host}:${port}":
-                    check_command => "check_elasticsearch_shards_threshold!${scheme}!${port}!${threshold}",
+                    check_command => "check_elasticsearch_shards_threshold!${scheme}!${port}!${threshold}!${timeout}",
                     description   => "ElasticSearch health check for shards on ${port}",
                 ;
                 "elasticsearch_unassigned_shard_check_${host}:${port}":
-                    check_command  => "check_elasticsearch_unassigned_shards!${scheme}!${port}",
+                    check_command  => "check_elasticsearch_unassigned_shards!${scheme}!${port}!${timeout}",
                     description    => "ElasticSearch unassigned shard check - ${port}",
                     check_interval => 720, # 12h
                     retry_interval => 120, # 2h
                     retries        => 1,
                 ;
                 "elasticsearch_shard_size_check_${host}:${port}":
-                    check_command  => "check_elasticsearch_shard_size!${scheme}!${port}!${shard_size_warning}!${shard_size_critical}",
+                    check_command  => "check_elasticsearch_shard_size!${scheme}!${port}!${shard_size_warning}!${shard_size_critical}${timeout}",
                     description    => "ElasticSearch shard size check - ${port}",
                     check_interval => 1440, # 24h
                     retry_interval => 180, # 3h
@@ -49,18 +50,18 @@ define icinga::monitor::elasticsearch::base_checks(
                     notes_url     => 'https://wikitech.wikimedia.org/wiki/Search#Administration',
                 ;
                 "elasticsearch_shards_${port}":
-                    nrpe_command => "/usr/lib/nagios/plugins/check_elasticsearch.py --ignore-status --url http://localhost:${port} --shards-inactive '${threshold}'",
+                    nrpe_command => "/usr/lib/nagios/plugins/check_elasticsearch.py --ignore-status --url http://localhost:${port} --shards-inactive '${threshold}' --timeout ${timeout}",
                     description  => "ElasticSearch health check for shards on ${port}",
                 ;
                 "elasticsearch_unassigned_shard_check_${port}":
-                    nrpe_command   => "/usr/lib/nagios/plugins/check_elasticsearch_unassigned_shards.py --url http://localhost:${port}",
+                    nrpe_command   => "/usr/lib/nagios/plugins/check_elasticsearch_unassigned_shards.py --url http://localhost:${port} --timeout ${timeout}",
                     description    => "ElasticSearch unassigned shard check - ${port}",
                     check_interval => 720, # 12h
                     retry_interval => 120, # 2h
                     retries        => 1,
                 ;
                 "elasticsearch_shard_size_check_${port}":
-                    nrpe_command   => "/usr/lib/nagios/plugins/check_elasticsearch_shard_size.py --url http://localhost:${port} --shard-size-warning ${shard_size_warning} --shard-size-critical ${shard_size_critical}",
+                    nrpe_command   => "/usr/lib/nagios/plugins/check_elasticsearch_shard_size.py --url http://localhost:${port} --shard-size-warning ${shard_size_warning} --shard-size-critical ${shard_size_critical} --timeout ${timeout}",
                     description    => "ElasticSearch shard size check - ${port}",
                     check_interval => 1440, # 24h
                     retry_interval => 180, # 3h

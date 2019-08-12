@@ -490,27 +490,27 @@ define command {
 
 define command {
     command_name    check_cirrus_frozen_writes
-    command_line    $USER1$/check_cirrus_frozen_writes.py --url $ARG1$://$HOSTNAME$:$ARG2$
+    command_line    $USER1$/check_cirrus_frozen_writes.py --url $ARG1$://$HOSTNAME$:$ARG2$ --timeout $ARG3$
 }
 
 define command {
     command_name    check_elasticsearch_shards_threshold
-    command_line    $USER1$/check_elasticsearch.py --ignore-status --url $ARG1$://$HOSTNAME$:$ARG2$ --shards-inactive "$ARG3$"
+    command_line    $USER1$/check_elasticsearch.py --ignore-status --url $ARG1$://$HOSTNAME$:$ARG2$ --shards-inactive "$ARG3$" --timeout $ARG4$
 }
 
 define command {
     command_name    check_elasticsearch_shard_size
-    command_line    $USER1$/check_elasticsearch_shard_size.py --url $ARG1$://$HOSTNAME$:$ARG2$ --shard-size-warning $ARG3$ --shard-size-critical $ARG4$
+    command_line    $USER1$/check_elasticsearch_shard_size.py --url $ARG1$://$HOSTNAME$:$ARG2$ --shard-size-warning $ARG3$ --shard-size-critical $ARG4$ --timeout $ARG5$
 }
 
 define command {
     command_name    check_elasticsearch_unassigned_shards
-    command_line    $USER1$/check_elasticsearch_unassigned_shards.py --url $ARG1$://$HOSTNAME$:$ARG2$
+    command_line    $USER1$/check_elasticsearch_unassigned_shards.py --url $ARG1$://$HOSTNAME$:$ARG2$ --timeout $ARG3$
 }
 
 define command {
     command_name    check_masters_eligible
-    command_line    $USER1$/check_masters_eligible.py --url $ARG1$://$HOSTNAME$:$ARG2$
+    command_line    $USER1$/check_masters_eligible.py --url $ARG1$://$HOSTNAME$:$ARG2$ --timeout $ARG3$
 }
 
 # Analytics Cluster Checks
