@@ -1,8 +1,83 @@
+# == Class: profile::kerberos::kdc
+#
+# This class sets up a kdc/kadmind environment preseeding
+# Debian package questions to automate as much as possible
+# the first deployment. The only thing that it is not automated
+# is the first run of the krb5_newrealm command, that is needed
+# after installing the krb5-kadmin-server package (dependency of
+# krb5-kdc). The user must execute the command upon first run of
+# puppet on the host.
+#
+# == Parameters
+#
+# [*krb_realm_name*]
+#   Kerberos realm name to set.
+#
+# [*krb_kdc_servers*]
+#   List of fully qualified hostnames of the KDC servers.
+#
+# [*monitoring_enabled*]
+#   If monitoring needs to be enabled.
+#   Default: false
+#
 class profile::kerberos::kdc (
     Stdlib::Fqdn $krb_realm_name = lookup('kerberos_realm_name'),
     Array[Stdlib::Fqdn] $krb_kdc_servers = lookup('kerberos_kdc_servers'),
     Optional[Boolean] $monitoring_enabled = lookup('profile::kerberos::kdc::monitoring_enabled', { 'default_value' => false }),
 ) {
+
+    # Debconf preseed values to automate the deployment of the
+    # krb5-kdc package without user inputs when the package
+    # is installed.
+    debconf::set { 'krb5-kdc/purge_data_too':
+        type   => 'boolean',
+        value  => false,
+        before => Package['krb5-kdc'],
+    }
+
+    # Instruct debconf to not create the kdc.conf file
+    # since we want to use Puppet instead.
+    debconf::set { 'krb5-kdc/debconf':
+        type   => 'boolean',
+        value  => false,
+        before => Package['krb5-kdc'],
+    }
+
+    # Debconf preseed values to automate the deployment of the
+    # krb5-config (dep of krb5-kdc) package without user inputs
+    # when the package is installed.
+    debconf::set { 'krb5-config/default_realm':
+        value  => $krb_realm_name,
+        before => Package['krb5-kdc'],
+    }
+
+    debconf::set { 'krb5-config/kerberos_servers':
+        value  => inline_template('<%= @krb_kdc_servers.join(" ") %>'),
+        before => Package['krb5-kdc'],
+    }
+
+    debconf::set { 'krb5-config/add_servers':
+        type   => 'boolean',
+        value  => true,
+        before => Package['krb5-kdc'],
+    }
+
+    debconf::set { 'krb5-config/add_servers_realm':
+        value  => $krb_realm_name,
+        before => Package['krb5-kdc'],
+    }
+
+    debconf::set { 'krb5-config/read_conf':
+        type   => 'boolean',
+        value  => true,
+        before => Package['krb5-kdc'],
+    }
+
+    debconf::set { 'krb5-config/admin_server':
+        value  => '',
+        before => Package['krb5-kdc'],
+    }
+
     package { 'krb5-kdc':
         ensure => present,
         before => Service['krb5-kdc'],
