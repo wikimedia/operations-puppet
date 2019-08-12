@@ -9,15 +9,22 @@ class facilities {
         ensure => installed,
     }
 
-    # ulsfo
-    @monitoring::host { 'ps1-22-ulsfo':
-        ip_address => '10.128.128.12',
-        group      => 'pdus',
+    # ulsfo, single phase PDUs
+    facilities::monitor_pdu_1phase { 'ps1-22-ulsfo':
+        ip    => '10.128.128.12',
+        # PoPs don't have row diversity, using rack
+        row   => '22',
+        site  => 'ulsfo',
+        model => 'sentry4',
     }
-    @monitoring::host { 'ps1-23-ulsfo':
-        ip_address => '10.128.128.13',
-        group      => 'pdus',
+    facilities::monitor_pdu_1phase { 'ps1-23-ulsfo':
+        ip    => '10.128.128.13',
+        # PoPs don't have row diversity, using rack
+        row   => '23',
+        site  => 'ulsfo',
+        model => 'sentry4',
     }
+
     # eqiad
     # A
     facilities::monitor_pdu_3phase { 'ps1-a1-eqiad':
