@@ -9,6 +9,7 @@ class profile::prometheus::ops (
     $memory_chunks = hiera('prometheus::server::memory_chunks', '1048576'),
     $targets_path = lookup('prometheus::server::target_path', String, 'first', '/srv/prometheus/ops/targets'),
     $bastion_hosts = hiera('bastion_hosts', []),
+    $netmon_server = hiera('netmon_server'),
 ){
 
     include ::passwords::gerrit
@@ -575,7 +576,7 @@ class profile::prometheus::ops (
             'target_label'  => 'instance',
           },
           { 'target_label' => '__address__',
-            'replacement'  => 'netmon1002.wikimedia.org:9116',
+            'replacement'  => "${netmon_server}:9116",
           },
         ],
         # Prefix all metrics with pdu_ (except snmp_ from snmp_exporter itself)
@@ -608,7 +609,7 @@ class profile::prometheus::ops (
             'target_label'  => 'instance',
           },
           { 'target_label' => '__address__',
-            'replacement'  => 'netmon1002.wikimedia.org:9116',
+            'replacement'  => "${netmon_server}:9116",
           },
         ],
         # Prefix all metrics with pdu_ (except snmp_ from snmp_exporter itself)
