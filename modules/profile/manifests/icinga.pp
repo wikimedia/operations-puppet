@@ -86,6 +86,7 @@ class profile::icinga(
     class { '::profile::maps::alerts': }
     class { '::profile::cache::kafka::alerts': }
     class { '::profile::prometheus::icinga_exporter': }
+    class { '::profile::mediawiki::alerts': }
 
     # Check that the public eventstreams endpoint's recentchange stream has data.
     # See also: T215013. (The default params use the public endpoint.)
