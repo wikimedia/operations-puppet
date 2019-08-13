@@ -3,3 +3,4 @@
 # netbox::swift_url_key: 'somekey'
 netbox::swift_user: 'netbox:attachments'
 netbox::swift_container: 'netbox.attachments'
+netbox::api_url: https://netbox.wikimedia.org/

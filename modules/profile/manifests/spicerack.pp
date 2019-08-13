@@ -29,6 +29,9 @@ class profile::spicerack(
     String $ganeti_user = hiera('profile::ganeti::rapi::ro_user'),
     String $ganeti_password = hiera('profile::ganeti::rapi::ro_password'),
     Integer $ganeti_timeout = hiera('profile::spicerack::ganeti_rapi_timeout', 30),
+    Stdlib::HTTPUrl $netbox_api = lookup('netbox::api_url'),
+    String $netbox_token = lookup('netbox::rw_token'),
+
 ) {
     # Ensure pre-requisite profiles are included
     require ::profile::conftool::client
@@ -110,5 +113,23 @@ class profile::spicerack(
         group   => 'ops',
         mode    => '0440',
         content => ordered_yaml($ganeti_auth_data),
+    }
+    # Install Netbox backend configuration
+    file { '/etc/spicerack/netbox':
+        ensure => directory,
+        owner  => 'root',
+        group  => 'ops',
+        mode   => '0550',
+    }
+    $netbox_config_data = {
+        'api_url'   => $netbox_api,
+        'api_token' => $netbox_token,
+    }
+    file { '/etc/spicerack/netbox/config.yaml':
+        ensure  => present,
+        owner   => 'root',
+        group   => 'ops',
+        mode    => '0440',
+        content => ordered_yaml($netbox_config_data),
     }
 }
