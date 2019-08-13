@@ -151,7 +151,7 @@ profile::trafficserver::backend::logs:
 profile::trafficserver::backend::mapping_rules:
   - type: map
     target: http://upload.wmflabs.org
-    replacement: http://deployment-ms-fe02.deployment-prep.eqiad.wmflabs
+    replacement: http://deployment-ms-fe03.deployment-prep.eqiad.wmflabs
     params:
         - '@plugin=/usr/lib/trafficserver/modules/tslua.so'
         - '@pparam=/etc/trafficserver/lua/normalize-path.lua'
