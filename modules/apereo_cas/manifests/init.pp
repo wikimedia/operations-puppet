@@ -1,23 +1,30 @@
 #
 class apereo_cas (
-    Stdlib::Filesource         $keystore_source,
-    Stdlib::Filesource         $log4j_source        = 'puppet:///modules/apereo_cas/log4j2.xml',
-    String                     $overlay_repo        = 'operations/software/cas-overlay-template',
-    Stdlib::Unixpath           $overlay_dir         = '/srv/cas/overlay-template',
-    Stdlib::Unixpath           $base_dir            = '/etc/cas',
-    Stdlib::HTTPSUrl           $server_name         = "https://${facts['fqdn']}:8443",
-    String                     $server_prefix       = 'cas',
-    Array[String[1]]           $ldap_attribute_list = ['cn', 'memberOf', 'mail'],
-    Array[Apereo_cas::LDAPUri] $ldap_uris           = [],
-    Apereo_cas::Ldapauth       $ldap_auth           = 'AUTHENTICATED',
-    Apereo_cas::Ldapconnection $ldap_connection     = 'ACTIVE_PASSIVE',
-    Boolean                    $ldap_start_tls      = true,
-    String                     $ldap_base_dn        = 'dc=,example,dc=org',
-    String                     $ldap_search_filter  = 'cn={user}',
-    String                     $ldap_bind_dn        = 'cn=user,dc=example,dc=org',
-    String                     $ldap_bind_pass      = 'changeme',
-    Apereo_cas::LogLevel       $log_level           = 'WARN',
+    Optional[Stdlib::Filesource] $keystore_source     = undef,
+    Optional[String[1]]          $keystore_content    = undef,
+    Stdlib::Filesource           $log4j_source        = 'puppet:///modules/apereo_cas/log4j2.xml',
+    String                       $overlay_repo        = 'operations/software/cas-overlay-template',
+    Stdlib::Unixpath             $overlay_dir         = '/srv/cas/overlay-template',
+    Stdlib::Unixpath             $base_dir            = '/etc/cas',
+    Stdlib::HTTPSUrl             $server_name         = "https://${facts['fqdn']}:8443",
+    String                       $server_prefix       = 'cas',
+    Array[String[1]]             $ldap_attribute_list = ['cn', 'memberOf', 'mail'],
+    Array[Apereo_cas::LDAPUri]   $ldap_uris           = [],
+    Apereo_cas::Ldapauth         $ldap_auth           = 'AUTHENTICATED',
+    Apereo_cas::Ldapconnection   $ldap_connection     = 'ACTIVE_PASSIVE',
+    Boolean                      $ldap_start_tls      = true,
+    String                       $ldap_base_dn        = 'dc=,example,dc=org',
+    String                       $ldap_search_filter  = 'cn={user}',
+    String                       $ldap_bind_dn        = 'cn=user,dc=example,dc=org',
+    String                       $ldap_bind_pass      = 'changeme',
+    Apereo_cas::LogLevel         $log_level           = 'WARN',
 ) {
+    if $keystore_source == undef and $keystore_content == undef {
+        error('you must provide either $keystore_source or $keystore_content')
+    }
+    if $keystore_source == undef and $keystore_content == undef {
+        error('you cannot provide $keystore_source and $keystore_content')
+    }
     $config_dir = "${base_dir}/config"
     $services_dir = "${base_dir}/services"
 
@@ -45,12 +52,13 @@ class apereo_cas (
         before => Systemd::Service['cas'],
     }
     file {"${base_dir}/thekeystore":
-        ensure => file,
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0400',
-        source => $keystore_source,
-        before => Systemd::Service['cas'],
+        ensure  => file,
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0400',
+        content => $keystore_content,
+        source  => $keystore_source,
+        before  => Systemd::Service['cas'],
     }
     exec{'build cas war':
         command => "${overlay_dir}/build.sh package",

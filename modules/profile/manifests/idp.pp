@@ -8,7 +8,7 @@ class profile::idp(
     class { 'apereo_cas':
         server_name         => 'https://idp.wikimedia.org:8443',
         server_prefix       => 'https://idp.wikimedia.org:8443/cas',
-        keystore_source     => secret('casserver/thekeystore'),
+        keystore_content    => secret('casserver/thekeystore'),
         ldap_uris           => ["ldaps://${ldap_config[ro-server]}:636",
                                 "ldaps://${ldap_config[ro-server-fallback]}:636",
                                 ],
