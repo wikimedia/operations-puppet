@@ -176,7 +176,7 @@ class icinga::monitor::toollabs {
         check_command => "${checker}!/nfs/secondary_cluster_showmount!OK",
         host          => $test_entry_host,
         notes_url     => 'https://wikitech.wikimedia.org/wiki/Portal:Toolforge/Admin/Toolschecker',
-        contact_group => 'wmcs-team',
+        contact_group => 'wmcs-team-email,wmcs-bots',
     }
 
     monitoring::service { 'tools-checker-redis':
