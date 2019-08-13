@@ -5,9 +5,20 @@ LimitNOFILE=65536
 # Allow envoy to bind on a privileged port
 AmbientCapabilities=CAP_NET_BIND_SERVICE
 
-# Ensure we're using the correct directory.
 ExecStart=
+<%- if @use_hot_restarter -%>
+# We use the hot-restarter script to start envoy. Please note that "restart"
+# in systemd terms is stop + start, so it will not hot-restart envoy.
+# We will have to use "reload" to obtain the desired result -
+# and have puppet run 'systemctl reload envoyproxy.service' instead.
+Environment="ENVOY_CONFIG=<%= @envoy_directory %>/envoy.yaml"
+ExecStart=/usr/local/sbin/envoyproxy-hot-restarter /usr/local/sbin/envoyproxy-start 
+ExecReload=
+ExecReload=/bin/kill -s HUP $MAINPID
+<%- else -%>
+# Ensure we're using the correct directory.
 ExecStart=/usr/bin/envoy -c <%= @envoy_directory %>/envoy.yaml
+<%- end -%>
 
 # Security settings
 ProtectKernelModules=yes

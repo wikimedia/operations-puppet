@@ -3,6 +3,7 @@ class envoyproxy(
     Stdlib::Port $admin_port,
     Enum['envoy', 'envoyproxy', 'getenvoy-envoy'] $pkg_name,
     Boolean $use_override = true,
+    Boolean $use_hot_restarter = false,
 ) {
     package { $pkg_name:
         ensure => $ensure
@@ -86,6 +87,7 @@ class envoyproxy(
         notify      => Systemd::Service['envoyproxy.service'],
     }
 
+
     if $use_override {
         $tpl = 'envoyproxy/systemd.override.conf.erb'
     }
@@ -93,9 +95,35 @@ class envoyproxy(
         $tpl = 'envoyproxy/systemd.full.conf.erb'
     }
 
+    # hot restarter script, taken from the envoy repository directly.
+    file { '/usr/local/sbin/envoyproxy-hot-restarter':
+        ensure => $ensure,
+        source => 'puppet:///modules/envoyproxy/hot_restarter/hot-restarter.py',
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0555',
+    }
+
+    file { '/usr/local/sbin/envoyproxy-start':
+        ensure => $ensure,
+        source => 'puppet:///modules/envoyproxy/hot_restarter/start-envoy.sh',
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0555',
+    }
+
+    if $use_hot_restarter {
+        # We override the restart from puppet to become a reload, which sends
+        # SIGHUP to the hot restarter.
+        $service_params = {'restart' => '/bin/systemctl reload envoyproxy.service',  }
+    }
+    else {
+        $service_params = {}
+    }
     systemd::service { 'envoyproxy.service':
-        ensure   => $ensure,
-        content  => template($tpl),
-        override => $use_override,
+        ensure         => $ensure,
+        content        => template($tpl),
+        override       => $use_override,
+        service_params => $service_params,
     }
 }
