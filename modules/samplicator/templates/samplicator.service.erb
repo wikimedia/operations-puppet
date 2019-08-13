@@ -1,0 +1,14 @@
+# Managed by Puppet
+[Unit]
+Description=Samplicator
+After=network.target
+
+[Service]
+Type=forking
+ExecStart=/usr/bin/samplicate -S -p <%= @port %> -d 0 -4 -f <%= @targets.join(' ') %>
+Restart=on-failure
+RestartSec=0
+SyslogIdentifier=samplicator
+
+[Install]
+WantedBy=multi-user.target
