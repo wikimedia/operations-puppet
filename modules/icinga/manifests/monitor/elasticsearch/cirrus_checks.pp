@@ -21,6 +21,7 @@ define icinga::monitor::elasticsearch::cirrus_checks(
             critical      => false,
             contact_group => 'admins,team-discovery',
             notes_url     => 'https://wikitech.wikimedia.org/wiki/Search#Expected_eligible_masters_check_and_alert',
+            retries       => 10,  # it is fine if we are missing a master for a short time (during reboots / restarts)
         }
     }
 }
