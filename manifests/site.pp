@@ -1243,7 +1243,7 @@ node 'graphite2003.codfw.wmnet' {
 }
 
 node 'idp1001.wikimedia.org' {
-    role(spare::system)
+    role(idp)
 }
 
 # replaced carbon and install1001/install2001 (T132757, T84380, T156440)
