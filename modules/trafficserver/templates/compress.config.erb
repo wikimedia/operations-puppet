@@ -1,4 +1,18 @@
+# When set to true, cache both the compressed and uncompressed versions of the
+# content as alternates. When set to false, Traffic Server will cache only the
+# compressed or decompressed variant returned by the origin.
 cache true
+
+# Avoid compressing objects smaller than 860 bytes. We've seen varnish do
+# gzipping on CL:0 302 responses, resulting in output that has CE:gzip
+# and CL:20 and sends a pointless gzip header.
+# Very small content may actually inflate from gzipping, and
+# sub-one-packet content isn't saving a lot of latency for the gzip
+# costs (to the server and the client, who must also decompress it).
+# The magic 860 number comes from Akamai, Google recommends anywhere
+# from 150-1000.  See also:
+# https://webmasters.stackexchange.com/questions/31750/what-is-recommended-minimum-object-size-for-gzip-performance-benefits
+minimum-content-length 860
 
 # This is to avoid some corner-cases and bugs as noted in T125938 , e.g.
 # applayer gzip turning 500s into junk-response 503s, applayer gzipping
