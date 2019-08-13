@@ -3,6 +3,7 @@ class profile::idp(
 ){
 
     $ldap_base = $ldap_config['base-dn']
+    include passwords
 
     class { 'apereo_cas':
         server_name         => 'https://idp.wikimedia.org:8443',
