@@ -10,7 +10,7 @@ class mediawiki::maintenance::pagetriage( $ensure = present ) {
         minute   => 55,
         hour     => 20,
         monthday => '*/2',
-        command  => 'PHP=php7.2 /usr/local/bin/mwscript extensions/PageTriage/cron/updatePageTriageQueue.php enwiki > /var/log/mediawiki/updatePageTriageQueue.en.log',
+        command  => '/usr/local/bin/mwscript extensions/PageTriage/cron/updatePageTriageQueue.php enwiki > /var/log/mediawiki/updatePageTriageQueue.en.log',
     }
 
     cron { 'pagetriage_cleanup_testwiki':
@@ -19,7 +19,7 @@ class mediawiki::maintenance::pagetriage( $ensure = present ) {
         minute   => 55,
         hour     => 14,
         monthday => '*/2',
-        command  => 'PHP=php7.2 /usr/local/bin/mwscript extensions/PageTriage/cron/updatePageTriageQueue.php testwiki > /var/log/mediawiki/updatePageTriageQueue.test.log',
+        command  => '/usr/local/bin/mwscript extensions/PageTriage/cron/updatePageTriageQueue.php testwiki > /var/log/mediawiki/updatePageTriageQueue.test.log',
     }
 
     cron { 'pagetriage_cleanup_test2wiki':
@@ -28,6 +28,6 @@ class mediawiki::maintenance::pagetriage( $ensure = present ) {
         minute   => 55,
         hour     => 8,
         monthday => '*/2',
-        command  => 'PHP=php7.2 /usr/local/bin/mwscript extensions/PageTriage/cron/updatePageTriageQueue.php test2wiki > /var/log/mediawiki/updatePageTriageQueue.test2.log',
+        command  => '/usr/local/bin/mwscript extensions/PageTriage/cron/updatePageTriageQueue.php test2wiki > /var/log/mediawiki/updatePageTriageQueue.test2.log',
     }
 }

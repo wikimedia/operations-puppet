@@ -8,7 +8,7 @@ class mediawiki::maintenance::db_lag_stats( $ensure = present ) {
 
     cron { 'db_lag_stats_reporter':
         ensure  => $ensure,
-        command => 'PHP=php7.2 /usr/local/bin/mwscript maintenance/getLagTimes.php --wiki aawiki --report 2>/dev/null >/dev/null',
+        command => '/usr/local/bin/mwscript maintenance/getLagTimes.php --wiki aawiki --report 2>/dev/null >/dev/null',
         user    => $::mediawiki::users::web,
         minute  => '*',
     }

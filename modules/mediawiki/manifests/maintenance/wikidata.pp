@@ -13,7 +13,7 @@ class mediawiki::maintenance::wikidata( $ensure = present, $ensure_testwiki = pr
 
     cron { 'wikibase-dispatch-changes4':
         ensure  => $ensure,
-        command => "echo \"\$\$: Starting dispatcher\" >> ${dispatch_log_file}; PHP=php7.2 /usr/local/bin/mwscript extensions/Wikibase/repo/maintenance/dispatchChanges.php --wiki wikidatawiki >> ${dispatch_log_file} 2>&1; echo \"\$\$: Dispatcher exited with $?\" >> ${dispatch_log_file}",
+        command => "echo \"\$\$: Starting dispatcher\" >> ${dispatch_log_file}; /usr/local/bin/mwscript extensions/Wikibase/repo/maintenance/dispatchChanges.php --wiki wikidatawiki >> ${dispatch_log_file} 2>&1; echo \"\$\$: Dispatcher exited with $?\" >> ${dispatch_log_file}",
         user    => $::mediawiki::users::web,
         minute  => '*/3',
         require => File['/var/log/wikidata'],
@@ -21,7 +21,7 @@ class mediawiki::maintenance::wikidata( $ensure = present, $ensure_testwiki = pr
 
     cron { 'wikibase-dispatch-changes-test':
         ensure  => $ensure_testwiki,
-        command => "echo \"\$\$: Starting dispatcher\" >> ${test_dispatch_log_file}; PHP=php7.2 /usr/local/bin/mwscript extensions/Wikibase/repo/maintenance/dispatchChanges.php --wiki testwikidatawiki >> ${test_dispatch_log_file} 2>&1; echo \"\$\$: Dispatcher exited with $?\" >> ${test_dispatch_log_file}",
+        command => "echo \"\$\$: Starting dispatcher\" >> ${test_dispatch_log_file}; /usr/local/bin/mwscript extensions/Wikibase/repo/maintenance/dispatchChanges.php --wiki testwikidatawiki >> ${test_dispatch_log_file} 2>&1; echo \"\$\$: Dispatcher exited with $?\" >> ${test_dispatch_log_file}",
         user    => $::mediawiki::users::web,
         minute  => '*/15',
         require => File['/var/log/wikidata'],
@@ -30,7 +30,7 @@ class mediawiki::maintenance::wikidata( $ensure = present, $ensure_testwiki = pr
     # Prune wb_changes entries no longer needed from (test)wikidata
     cron { 'wikibase-repo-prune2':
         ensure  => $ensure,
-        command => 'PHP=php7.2 /usr/local/bin/mwscript extensions/Wikibase/repo/maintenance/pruneChanges.php --wiki wikidatawiki --number-of-days=3 >> /var/log/wikidata/prune2.log 2>&1',
+        command => '/usr/local/bin/mwscript extensions/Wikibase/repo/maintenance/pruneChanges.php --wiki wikidatawiki --number-of-days=3 >> /var/log/wikidata/prune2.log 2>&1',
         user    => $::mediawiki::users::web,
         minute  => [0,15,30,45],
         require => File['/var/log/wikidata'],
@@ -38,7 +38,7 @@ class mediawiki::maintenance::wikidata( $ensure = present, $ensure_testwiki = pr
 
     cron { 'wikibase-repo-prune-test':
         ensure  => $ensure_testwiki,
-        command => 'PHP=php7.2 /usr/local/bin/mwscript extensions/Wikibase/repo/maintenance/pruneChanges.php --wiki testwikidatawiki --number-of-days=3 >> /var/log/wikidata/prune-testwikidata.log 2>&1',
+        command => '/usr/local/bin/mwscript extensions/Wikibase/repo/maintenance/pruneChanges.php --wiki testwikidatawiki --number-of-days=3 >> /var/log/wikidata/prune-testwikidata.log 2>&1',
         user    => $::mediawiki::users::web,
         minute  => [0,15,30,45],
         require => File['/var/log/wikidata'],
@@ -61,7 +61,7 @@ class mediawiki::maintenance::wikidata( $ensure = present, $ensure_testwiki = pr
     # clear term_search_key field in wb_terms table
     cron { 'wikidata-rebuildItemTerms':
         ensure  => absent,
-        command => 'PHP=php7.2 /usr/bin/timeout 3500s /usr/local/bin/mwscript extensions/Wikibase/repo/maintenance/rebuildItemTerms.php --wiki wikidatawiki --sleep 2 --from-id $(/bin/sed -n \'/Rebuilding Q[[:digit:]]\+ till Q\([[:digit:]]\+\)/ { s//\1/; p; }\' /var/log/wikidata/wikidata-rebuildItemTerms.log* | /usr/bin/sort -rn | /usr/bin/head -1) >> /var/log/wikidata/wikidata-rebuildItemTerms.log 2>&1',
+        command => '/usr/bin/timeout 3500s /usr/local/bin/mwscript extensions/Wikibase/repo/maintenance/rebuildItemTerms.php --wiki wikidatawiki --sleep 2 --from-id $(/bin/sed -n \'/Rebuilding Q[[:digit:]]\+ till Q\([[:digit:]]\+\)/ { s//\1/; p; }\' /var/log/wikidata/wikidata-rebuildItemTerms.log* | /usr/bin/sort -rn | /usr/bin/head -1) >> /var/log/wikidata/wikidata-rebuildItemTerms.log 2>&1',
         user    => $::mediawiki::users::web,
         minute  => 30,
         hour    => '*',

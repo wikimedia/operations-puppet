@@ -7,12 +7,12 @@
   # Pick the main multilingual Translate wikis, all closely related to Meta
   for wiki in commonswiki incubatorwiki mediawikiwiki metawiki outreachwiki ; do
     echo -e "== $wiki ==\n=== Last 30 days ===\n<pre>\n"
-    PHP=php7.2 /usr/local/bin/mwscript extensions/Translate/scripts/characterEditStats.php \
+    /usr/local/bin/mwscript extensions/Translate/scripts/characterEditStats.php \
         --wiki $wiki --top 50 --days 30
     echo -e "</pre>\n=== Last year ===\n<pre>"
     /usr/local/bin/mwscript extensions/Translate/scripts/characterEditStats.php \
         --wiki $wiki --days 365
     echo -e "</pre>\n"
   done
-} | PHP=php7.2 /usr/local/bin/mwscript edit.php --wiki=metawiki --user "FuzzyBot" \
+} | /usr/local/bin/mwscript edit.php --wiki=metawiki --user "FuzzyBot" \
     --bot --summary "Update stats" "Meta:Babylon/Translation_stats"
