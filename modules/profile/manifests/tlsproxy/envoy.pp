@@ -43,10 +43,22 @@ class profile::tlsproxy::envoy(
     Optional[String] $global_cert_name = lookup('profile::tlsproxy::envoy::global_cert_name', {'default_value' => undef}),
     Array[String] $prometheus_nodes = lookup('prometheus_nodes'),
 ) {
+    if os_version('debian jessie') {
+        $pkg_name = 'envoy'
+        apt::repository { 'getenvoy-jessie':
+            uri        => 'http://apt.wikimedia.org/wikimedia',
+            dist       => 'jessie-wikimedia',
+            components => 'thirdparty/envoyproxy',
+            before     => Package['envoy']
+        }
+    } else {
+        $pkg_name = 'envoyproxy'
+    }
     $admin_port = 9631
     class { '::envoyproxy':
         ensure     => $ensure,
         admin_port => $admin_port,
+        pkg_name   => $pkg_name,
     }
 
     # ensure all the needed certs are present. Given these are internal services,

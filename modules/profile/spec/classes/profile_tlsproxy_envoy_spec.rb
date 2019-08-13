@@ -18,6 +18,12 @@ describe 'profile::tlsproxy::envoy' do
         }
       end
       let(:facts) { facts.merge({ initsystem: 'systemd' }) }
+      let(:pre_condition) {
+        [
+          'exec { "apt-get update": command => "/bin/true"}',
+        ]
+      }
+
       context "global TLS, non-SNI" do
         let(:params) {
           {
@@ -54,6 +60,7 @@ describe 'profile::tlsproxy::envoy' do
             prometheus_nodes: ['foo.example.com'],
           }
         }
+        it { is_expected.to compile.with_all_deps }
         it {
           is_expected.to contain_sslcert__certificate('blubberoid')
                            .with_ensure('present')

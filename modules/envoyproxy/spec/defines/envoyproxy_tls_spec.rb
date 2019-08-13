@@ -14,7 +14,7 @@ describe 'envoyproxy::tls_terminator' do
       let(:facts) { facts.merge({:initsystem => 'systemd'})}
       let(:title) { '443' }
       context 'when envoyproxy is defined' do
-        let(:pre_condition) {'class { "envoyproxy": ensure => present, admin_port => 9191 }'}
+        let(:pre_condition) {'class { "envoyproxy": ensure => present, admin_port => 9191, pkg_name => "envoyproxy" }'}
 
         context 'simple http termination (no SNI)' do
           let(:params) do

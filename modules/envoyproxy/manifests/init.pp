@@ -1,8 +1,9 @@
 class envoyproxy(
     Wmflib::Ensure $ensure,
     Stdlib::Port $admin_port,
-    ) {
-    package { 'envoyproxy':
+    Enum['envoy', 'envoyproxy'] $pkg_name,
+) {
+    package { $pkg_name:
         ensure => $ensure
     }
     $envoy_directory = '/etc/envoy'
