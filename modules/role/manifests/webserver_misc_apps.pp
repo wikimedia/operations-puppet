@@ -12,4 +12,5 @@ class role::webserver_misc_apps {
     include ::profile::wikimania_scholarships # https://scholarships.wikimedia.org
     include ::profile::iegreview              # https://iegreview.wikimedia.org
     include ::profile::racktables             # https://racktables.wikimedia.org
+    include ::profile::tlsproxy::envoy        # TLS termination
 }
