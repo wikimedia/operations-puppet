@@ -5,3 +5,22 @@ profile::openstack::base::nova::compute_dev: '/dev/md1'
 profile::openstack::base::nova::rabbit_user: 'nova'
 profile::openstack::base::nova::compute_workers: '8'
 profile::openstack::base::nova::metadata_workers: '8'
+
+# The order of this list directly affects scheduler performance
+# This list is ordered to follow:
+# - Operational state
+# - Most to least restrictive filtering out hosts as soon as possible.
+# - Resource/overcommit checks
+profile::openstack::base::nova::scheduler_filters: [
+  'ComputeFilter', # operational and enabled
+  'SchedulerPoolFilter', # wmcs available hosts
+  'AvailabilityZoneFilter', # matches requested zone
+  'ServerGroupAffinityFilter', # has group members instances
+  'ServerGroupAntiAffinityFilter', # does NOT have group member instances
+  'ImagePropertiesFilter', # supports requested image properties
+  'ComputeCapabilitiesFilter', # matches requested extra specs
+  'AggregateInstanceExtraSpecsFilter', # matches host aggregate extra specs
+  'RamFilter', # under overcommit ratios
+  'CoreFilter', # under overcommit ratios
+  'DiskFilter', # under overcommit ratios
+]

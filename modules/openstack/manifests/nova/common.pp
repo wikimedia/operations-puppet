@@ -7,6 +7,7 @@ class openstack::nova::common(
     $db_name_api,
     $nova_controller,
     $keystone_host,
+    $scheduler_filters,
     $scheduler_pool,
     $ldap_user_pass,
     $rabbit_user,

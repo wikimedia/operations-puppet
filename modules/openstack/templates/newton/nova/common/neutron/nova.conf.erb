@@ -53,7 +53,7 @@ max_age = 30
 # nova-scheduler
 scheduler_driver=filter_scheduler
 wmf_scheduler_hosts_pool = <%= @scheduler_pool.join(",") %>
-scheduler_default_filters=AvailabilityZoneFilter,RamFilter,ComputeFilter,ComputeCapabilitiesFilter,ImagePropertiesFilter,ServerGroupAntiAffinityFilter,ServerGroupAffinityFilter,AggregateInstanceExtraSpecsFilter,AvailabilityZoneFilter,SchedulerPoolFilter,DiskFilter
+scheduler_default_filters = <%= @scheduler_filters.join(",") %>
 scheduler_weight_classes=nova.scheduler.weights.metrics.MetricsWeigher
 scheduler_host_subset_size = 2
 ram_allocation_ratio=1.0
