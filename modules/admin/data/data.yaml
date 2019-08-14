@@ -3735,3 +3735,7 @@ ldap_only_users:
     ensure: present
     realname: Jaime Anstee
     email: janstee@wikimedia.org
+  clarakosi:
+    ensure: present
+    realname: Clara Andrew-Wani
+    email: candrew@wikimedia.org
