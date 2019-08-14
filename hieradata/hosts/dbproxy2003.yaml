@@ -3,4 +3,3 @@ profile::mariadb::proxy::master::primary_name: 'db2065'
 profile::mariadb::proxy::master::primary_addr: '10.192.48.17:3306'
 profile::mariadb::proxy::master::secondary_name: 'db2078:3323'
 profile::mariadb::proxy::master::secondary_addr: '10.192.48.85:3323'
-profile::base::notifications: disabled
