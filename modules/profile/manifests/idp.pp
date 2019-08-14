@@ -12,6 +12,7 @@ class profile::idp(
         keystore_content  => secret('casserver/thekeystore'),
         keystore_password => $keystore_password,
         key_password      => $key_password,
+        ldap_start_tls    => false,
         ldap_uris         => ["ldaps://${ldap_config[ro-server]}:636",
                               "ldaps://${ldap_config[ro-server-fallback]}:636",],
         ldap_base_dn      => $ldap_config['base-dn'],
