@@ -36,6 +36,7 @@ class apereo_cas (
         ensure => directory,
     }
     git::clone {$overlay_repo:
+        ensure    => 'latest',
         directory => $overlay_dir,
     }
     file {"${config_dir}/cas.properties":
@@ -45,6 +46,7 @@ class apereo_cas (
         mode    => '0400',
         content => template('apereo_cas/cas.properties.erb'),
         before  => Systemd::Service['cas'],
+        notify  => Service['cas'],
     }
     file {"${config_dir}/log4j2.xml":
         ensure => file,
@@ -53,6 +55,7 @@ class apereo_cas (
         mode   => '0400',
         source => $log4j_source,
         before => Systemd::Service['cas'],
+        notify => Service['cas'],
     }
     file {$keystore_path:
         ensure  => file,
@@ -62,6 +65,7 @@ class apereo_cas (
         content => $keystore_content,
         source  => $keystore_source,
         before  => Systemd::Service['cas'],
+        notify  => Service['cas'],
     }
     exec{'build cas war':
         command => "${overlay_dir}/build.sh package",
@@ -74,7 +78,7 @@ class apereo_cas (
         cwd         => $overlay_dir,
         require     => Exec['build cas war' ],
         subscribe   => Git::Clone[$overlay_repo],
-        notify      => Systemd::Service['cas'],
+        notify      => Service['cas'],
         refreshonly => true,
     }
     systemd::service {'cas':
