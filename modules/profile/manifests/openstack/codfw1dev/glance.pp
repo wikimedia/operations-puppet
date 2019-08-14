@@ -7,6 +7,7 @@ class profile::openstack::codfw1dev::glance(
     $db_host = hiera('profile::openstack::codfw1dev::glance::db_host'),
     $ldap_user_pass = hiera('profile::openstack::codfw1dev::ldap_user_pass'),
     $labs_hosts_range = hiera('profile::openstack::codfw1dev::labs_hosts_range'),
+    $glance_image_dir = hiera('profile::openstack::base::glance::image_dir'),
     ) {
 
     class {'::profile::openstack::base::glance':
@@ -20,4 +21,10 @@ class profile::openstack::codfw1dev::glance(
         labs_hosts_range        => $labs_hosts_range,
     }
     contain '::profile::openstack::base::glance'
+
+    class {'openstack::glance::image_sync':
+        active                  => ($::fqdn == $nova_controller),
+        glance_image_dir        => $glance_image_dir,
+        nova_controller_standby => $nova_controller_standby,
+    }
 }
