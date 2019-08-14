@@ -1,9 +1,15 @@
+server.ssl.keyStore=file:<%= @keystore_path %>
+server.ssl.keyStorePassword=<%= @keystore_password %>
+server.ssl.keyPassword=<%= @key_password %>
+
 cas.server.name=<%= @server_name %>
 cas.server.prefix=<%= @server_name %><% unless @server_prefix[0] == '/' %>/<% end %><%= @server_prefix %>
 
 logging.config: file:/etc/cas/config/log4j2.xml
 
 cas.serviceRegistry.json.location=file:<%= @services_dir %>
+
+cas.authn.ldap[0].providerClass=org.ldaptive.provider.unboundid.UnboundIDProvider
 cas.authn.ldap[0].principalAttributeList=<%= @ldap_attribute_list.join(',') %>
 cas.authn.ldap[0].type=<%= @ldap_auth %>
 cas.authn.ldap[0].connectionStrategy=<%= @ldap_connection %>

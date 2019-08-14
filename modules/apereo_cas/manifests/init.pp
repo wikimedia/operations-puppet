@@ -2,6 +2,9 @@
 class apereo_cas (
     Optional[Stdlib::Filesource] $keystore_source     = undef,
     Optional[String[1]]          $keystore_content    = undef,
+    Stdlib::Unixpath             $keystore_path       = '/etc/cas/thekeystore',
+    String[1]                    $keystore_password   = 'changeit',
+    String[1]                    $key_password        = 'changeit',
     Stdlib::Filesource           $log4j_source        = 'puppet:///modules/apereo_cas/log4j2.xml',
     String                       $overlay_repo        = 'operations/software/cas-overlay-template',
     Stdlib::Unixpath             $overlay_dir         = '/srv/cas/overlay-template',
@@ -51,7 +54,7 @@ class apereo_cas (
         source => $log4j_source,
         before => Systemd::Service['cas'],
     }
-    file {"${base_dir}/thekeystore":
+    file {$keystore_path:
         ensure  => file,
         owner   => 'root',
         group   => 'root',

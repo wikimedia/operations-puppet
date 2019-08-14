@@ -1,0 +1,2 @@
+profile::idp::key_password: changeit
+profile::idp::keystore_password: changeit

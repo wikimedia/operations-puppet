@@ -292,6 +292,8 @@ cache_hosts:
 # perhaps this doesn't work with our current version of puppet
 # profile::base::puppet::puppetmaster: "%{alias('puppetmaster')}"
 profile::base::enable_kafka_shipping: false
+profile::idp::key_password: changeit
+profile::idp::keystore_password: changeit
 
 monitoring_hosts:
 - 172.16.7.178 # shinken-02.shinken.eqiad.wmflabs
