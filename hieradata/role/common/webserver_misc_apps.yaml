@@ -1,5 +1,5 @@
 profile::standard::has_default_mail_relay: false
-profile::tlsproxy::envoy::ensure: present
+profile::tlsproxy::envoy::ensure: absent
 profile::tlsproxy::envoy::services:
   - server_names: ['*']
     port: 80
