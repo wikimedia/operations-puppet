@@ -403,7 +403,7 @@ node 'db2107.codfw.wmnet' {
     role(mariadb::core)
 }
 
-node /^db2(049|051|056|063|104|108|125|126)\.codfw\.wmnet/ {
+node /^db2(049|051|056|104|108|125|126)\.codfw\.wmnet/ {
     role(mariadb::core)
 }
 
@@ -689,6 +689,12 @@ node 'db1132.eqiad.wmnet' {
 }
 
 node 'db2044.codfw.wmnet' {
+    class { '::role::mariadb::misc':
+        shard => 'm2',
+    }
+}
+
+node 'db2063.codfw.wmnet' {
     class { '::role::mariadb::misc':
         shard => 'm2',
     }
