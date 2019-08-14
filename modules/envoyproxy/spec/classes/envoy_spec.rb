@@ -17,6 +17,7 @@ describe 'envoyproxy' do
         it { is_expected.to compile.with_all_deps }
         it { is_expected.to contain_package('envoyproxy') }
         it { is_expected.to contain_file('/etc/envoy').with_ensure('directory')}
+        it { is_expected.to contain_file('/etc/envoy/envoy.yaml').with_owner('root') }
       end
       context "On ensure absent" do
         let(:params) { {:ensure => 'absent', :admin_port => 8081 }}

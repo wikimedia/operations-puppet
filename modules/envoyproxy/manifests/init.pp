@@ -10,17 +10,26 @@ class envoyproxy(
 
     file { $envoy_directory:
         ensure => $dir_ensure,
-        owner  => 'envoy',
-        group  => 'envoy',
+        owner  => 'root',
+        group  => 'root',
         mode   => '0755'
+    }
+
+    # Ensure envoy.yaml has the correct permissions.
+    # It will be overwritten by the exec below.
+    file { "${envoy_directory}/envoy.yaml":
+        ensure => $ensure,
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0644',
     }
 
     # Create the subdirectories where we will store:
     # Listener and cluster definitions
     file { ["${envoy_directory}/listeners.d", "${envoy_directory}/clusters.d"]:
         ensure  => $dir_ensure,
-        owner   => 'envoy',
-        group   => 'envoy',
+        owner   => 'root',
+        group   => 'root',
         mode    => '0755',
         recurse => true,
     }
@@ -62,7 +71,7 @@ class envoyproxy(
     # Used by defines to verify the configuration.
     exec { 'verify-envoy-config':
         command     => "/usr/local/sbin/build-envoy-config -c '${envoy_directory}'",
-        user        => 'envoy',
+        user        => 'root',
         refreshonly => true,
         notify      => Systemd::Service['envoyproxy.service'],
     }
