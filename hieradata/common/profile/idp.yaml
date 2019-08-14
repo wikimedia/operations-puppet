@@ -1,2 +1,6 @@
 profile::idp::key_password: changeit
 profile::idp::keystore_password: changeit
+profile::idp::tgc_encryption_key: changeit
+profile::idp::tgc_signing_key: changeit
+profile::idp::webflow_encryption_key: changeit
+profile::idp::webflow_signing_key: changeit

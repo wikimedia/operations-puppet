@@ -2,8 +2,13 @@ server.ssl.keyStore=file:<%= @keystore_path %>
 server.ssl.keyStorePassword=<%= @keystore_password %>
 server.ssl.keyPassword=<%= @key_password %>
 
+
 cas.server.name=<%= @server_name %>
 cas.server.prefix=<%= @server_name %><% unless @server_prefix[0] == '/' %>/<% end %><%= @server_prefix %>
+<% if @tgc_signing_key %>cas.tgc.crypto.signing.key=<%= @tgc_signing_key %><% end %>
+<% if @tgc_encryption_key %>cas.tgc.crypto.encryption.key=<%= @tgc_encryption_key %><% end %>
+<% if @webflow_signing_key %>cas.webflow.crypto.signing.key=<%= @webflow_signing_key %><% end %>
+<% if @webflow_encryption_key %>cas.webflow.crypto.encryption.key=<%= @webflow_encryption_key %><% end %>
 
 logging.config: file:/etc/cas/config/log4j2.xml
 
