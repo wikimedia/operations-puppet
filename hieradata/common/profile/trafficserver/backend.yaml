@@ -63,7 +63,7 @@ profile::trafficserver::backend::mapping_rules:
       replacement: http://labmon1001.eqiad.wmnet
     - type: map
       target: http://grafana.wikimedia.org
-      replacement: http://krypton.eqiad.wmnet
+      replacement: http://grafana1001.eqiad.wmnet
     - type: map
       target: http://graphite-labs.wikimedia.org
       replacement: http://labmon1001.eqiad.wmnet
@@ -265,6 +265,9 @@ profile::trafficserver::backend::caching_rules:
       action: never-cache
     - primary_destination: dest_host
       value: krypton.eqiad.wmnet
+      action: never-cache
+    - primary_destination: dest_host
+      value: grafana1001.eqiad.wmnet
       action: never-cache
     - primary_destination: dest_host
       value: labmon1001.eqiad.wmnet
