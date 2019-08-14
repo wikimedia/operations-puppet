@@ -6,6 +6,8 @@ class profile::idp(
     String $tgc_encryption_key     = lookup('profile::idp::tgc_encryption_key'),
     String $webflow_signing_key    = lookup('profile::idp::webflow_signing_key'),
     String $webflow_encryption_key = lookup('profile::idp::webflow_encryption_key'),
+    String $u2f_signing_key        = lookup('profile::idp::u2f_signing_key'),
+    String $u2f_encryption_key     = lookup('profile::idp::u2f_encryption_key'),
 ){
 
     include passwords::ldap::production
@@ -20,6 +22,8 @@ class profile::idp(
         tgc_encryption_key     => $tgc_encryption_key,
         webflow_signing_key    => $webflow_signing_key,
         webflow_encryption_key => $webflow_encryption_key,
+        u2f_signing_key        => $u2f_signing_key,
+        u2f_encryption_key     => $u2f_encryption_key,
         ldap_start_tls         => false,
         ldap_uris              => ["ldaps://${ldap_config[ro-server]}:636",
                                     "ldaps://${ldap_config[ro-server-fallback]}:636",],

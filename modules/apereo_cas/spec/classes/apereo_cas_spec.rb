@@ -33,35 +33,35 @@ describe 'apereo_cas' do
             group: 'root',
             mode: '0400'
           ).with_content(
-            %r{^cas.server.name=https://foo.example.com:8443$}
+            %r{^cas\.server\.name=https://foo.example.com:8443$}
           ).with_content(
-            %r{^cas.server.prefix=https://foo.example.com:8443/cas$}
+            %r{^cas\.server\.prefix=https://foo.example.com:8443/cas$}
           ).with_content(
-            %r{^cas.serviceRegistry.json.location=file:/etc/cas/services$}
+            %r{^cas\.serviceRegistry\.json\.location=file:/etc/cas/services$}
           ).with_content(
-            /^cas.authn.ldap\[0\].principalAttributeList=cn,memberOf,mail$/
+            /^cas\.authn\.ldap\[0\]\.principalAttributeList=cn,memberOf,mail$/
           ).with_content(
-            /^cas.authn.ldap\[0\].type=AUTHENTICATED$/
+            /^cas\.authn\.ldap\[0\]\.type=AUTHENTICATED$/
           ).with_content(
-            /^cas.authn.ldap\[0\].connectionStrategy=ACTIVE_PASSIVE$/
+            /^cas\.authn\.ldap\[0\]\.connectionStrategy=ACTIVE_PASSIVE$/
           ).with_content(
-            /^cas.authn.ldap\[0\].ldapurl=$/
+            /^cas\.authn\.ldap\[0\]\.ldapurl=$/
           ).with_content(
-            /^cas.authn.ldap\[0\].useStartTLS=true$/
+            /^cas\.authn\.ldap\[0\]\.useStartTLS=true$/
           ).with_content(
-            /^cas.authn.ldap\[0\].basedn=dc=example,dc=org/
+            /^cas\.authn\.ldap\[0\]\.basedn=dc=example,dc=org/
           ).with_content(
-            /^cas.authn.ldap\[0\].searchFilter=cn={user}$/
+            /^cas\.authn\.ldap\[0\]\.searchFilter=cn={user}$/
           ).with_content(
-            /^cas.authn.ldap\[0\].binddn=cn=user,dc=example,dc=org$/
+            /^cas\.authn\.ldap\[0\]\.binddn=cn=user,dc=example,dc=org$/
           ).with_content(
-            /^cas.authn.ldap\[0\].bindcredential=changeme$/
+            /^cas\.authn\.ldap\[0\]\.bindcredential=changeme$/
           ).with_content(
-            /^cas.authn.accept.users=$/
+            /^cas\.authn\.accept.users=$/
           ).with_content(
-            /^logging.level.org.apereo=WARN$/
+            /^logging\.level\.org\.apereo=WARN$/
           ).without_content(
-            /cas.(tgc|webflow).crypto.(signing|encryption).key/
+            /cas\.(tgc|webflow|authn\.mfa\.u2f)\.crypto\.(signing|encryption)\.key/
           )
           is_expected.to contain_file('/etc/cas/config/log4j2.xml').with(
             owner: 'root',
@@ -122,6 +122,24 @@ describe 'apereo_cas' do
           it do
             is_expected.to contain_file('/etc/cas/config/cas.properties').with_content(
               /cas.webflow.crypto.encryption.key=foobar/
+            )
+          end
+        end
+        context 'u2f_signing_key' do
+          before(:each) { params.merge!(u2f_signing_key: 'foobar') }
+          it { is_expected.to compile }
+          it do
+            is_expected.to contain_file('/etc/cas/config/cas.properties').with_content(
+              /cas.authn.mfa.u2f.crypto.signing.key=foobar/
+            )
+          end
+        end
+        context 'u2f_encryption_key' do
+          before(:each) { params.merge!(u2f_encryption_key: 'foobar') }
+          it { is_expected.to compile }
+          it do
+            is_expected.to contain_file('/etc/cas/config/cas.properties').with_content(
+              /cas.authn.mfa.u2f.crypto.encryption.key=foobar/
             )
           end
         end
