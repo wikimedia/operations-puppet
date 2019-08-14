@@ -16,7 +16,7 @@ class apereo_cas (
     Apereo_cas::Ldapauth         $ldap_auth           = 'AUTHENTICATED',
     Apereo_cas::Ldapconnection   $ldap_connection     = 'ACTIVE_PASSIVE',
     Boolean                      $ldap_start_tls      = true,
-    String                       $ldap_base_dn        = 'dc=,example,dc=org',
+    String                       $ldap_base_dn        = 'dc=example,dc=org',
     String                       $ldap_search_filter  = 'cn={user}',
     String                       $ldap_bind_dn        = 'cn=user,dc=example,dc=org',
     String                       $ldap_bind_pass      = 'changeme',

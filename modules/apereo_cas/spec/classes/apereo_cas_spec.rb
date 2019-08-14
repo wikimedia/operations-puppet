@@ -48,7 +48,7 @@ describe 'apereo_cas' do
         ).with_content(
           /^cas.authn.ldap\[0\].useStartTLS=true$/
         ).with_content(
-          /^cas.authn.ldap\[0\].basedn=dc=,example,dc=org/
+          /^cas.authn.ldap\[0\].basedn=dc=example,dc=org/
         ).with_content(
           /^cas.authn.ldap\[0\].searchFilter=cn={user}$/
         ).with_content(
