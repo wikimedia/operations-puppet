@@ -1,4 +1,4 @@
-class profile::toolforge::k8s::kubeadm::master(
+class profile::toolforge::k8s::kubeadm::control(
     Array[Stdlib::Fqdn] $etcd_hosts     = lookup('profile::toolforge::k8s::etcd_hosts'),
     Stdlib::Fqdn        $apiserver      = lookup('profile::toolforge::k8s::apiserver'),
     String              $node_token     = lookup('profile::toolforge::k8s::node_token'),
