@@ -96,26 +96,27 @@ class profile::tlsproxy::envoy(
         $global_key_path = "/etc/ssl/private/${global_cert_name}.key"
     }
 
-    envoyproxy::tls_terminator{ '443':
-        upstreams        => $upstreams,
-        access_log       => false,
-        global_cert_path => $global_cert_path,
-        global_key_path  => $global_key_path,
-    }
-    ferm::service { 'envoy_tls_termination':
-        proto   => 'tcp',
-        notrack => true,
-        port    => 'https',
-    }
-    # metrics collection from prometheus can just fetch data pulling via GET from
-    # /stats/prometheus on the admin port
-    $prometheus_ferm_nodes = join($prometheus_nodes, ' ')
-    $ferm_srange = "(@resolve((${prometheus_ferm_nodes})) @resolve((${prometheus_ferm_nodes}), AAAA))"
+    if $ensure == 'present' {
+        envoyproxy::tls_terminator{ '443':
+            upstreams        => $upstreams,
+            access_log       => false,
+            global_cert_path => $global_cert_path,
+            global_key_path  => $global_key_path,
+        }
+        ferm::service { 'envoy_tls_termination':
+            proto   => 'tcp',
+            notrack => true,
+            port    => 'https',
+        }
+        # metrics collection from prometheus can just fetch data pulling via GET from
+        # /stats/prometheus on the admin port
+        $prometheus_ferm_nodes = join($prometheus_nodes, ' ')
+        $ferm_srange = "(@resolve((${prometheus_ferm_nodes})) @resolve((${prometheus_ferm_nodes}), AAAA))"
 
-    ferm::service { 'prometheus-envoy-admin':
-        proto  => 'tcp',
-        port   => $admin_port,
-        srange => $ferm_srange,
+        ferm::service { 'prometheus-envoy-admin':
+            proto  => 'tcp',
+            port   => $admin_port,
+            srange => $ferm_srange,
+        }
     }
-
 }
