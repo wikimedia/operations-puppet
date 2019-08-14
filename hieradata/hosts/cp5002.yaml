@@ -1,2 +1,1 @@
 profile::trafficserver::backend::systemd_hardening: false
-profile::trafficserver::backend::enable_compress: true
