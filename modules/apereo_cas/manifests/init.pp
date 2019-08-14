@@ -6,6 +6,8 @@ class apereo_cas (
     Optional[String[1]]          $webflow_encryption_key = undef,
     Optional[String[1]]          $u2f_signing_key        = undef,
     Optional[String[1]]          $u2f_encryption_key     = undef,
+    Optional[String[1]]          $gauth_signing_key      = undef,
+    Optional[String[1]]          $gauth_encryption_key   = undef,
     Optional[Stdlib::Filesource] $keystore_source        = undef,
     Optional[String[1]]          $keystore_content       = undef,
     Stdlib::Unixpath             $u2f_devices_path       = '/etc/cas/config/u2fdevices.json',

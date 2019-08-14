@@ -6,3 +6,5 @@ profile::idp::webflow_encryption_key: changeit
 profile::idp::webflow_signing_key: changeit
 profile::idp::u2f_encryption_key: changeit
 profile::idp::u2f_signing_key: changeit
+profile::idp::gauth_encryption_key: changeit
+profile::idp::gauth_signing_key: changeit

@@ -9,8 +9,12 @@ cas.server.prefix=<%= @server_name %><% unless @server_prefix[0] == '/' %>/<% en
 <% if @tgc_encryption_key %>cas.tgc.crypto.encryption.key=<%= @tgc_encryption_key %><% end %>
 <% if @webflow_signing_key %>cas.webflow.crypto.signing.key=<%= @webflow_signing_key %><% end %>
 <% if @webflow_encryption_key %>cas.webflow.crypto.encryption.key=<%= @webflow_encryption_key %><% end %>
+
 cas.authn.mfa.globalProviderId=mfa-gauth
 cas.authn.mfa.gauth.json.location=file://<%= @gauth_devices_path %>
+<% if @gauth_signing_key %>cas.authn.mfa.gauth.crypto.signing.key=<%= @gauth_signing_key %><% end %>
+<% if @gauth_encryption_key %>cas.authn.mfa.gauth.crypto.encryption.key=<%= @gauth_encryption_key %><% end %>
+
 cas.authn.mfa.u2f.json.location=file://<%= @u2f_devices_path %>
 <% if @u2f_signing_key %>cas.authn.mfa.u2f.crypto.signing.key=<%= @u2f_signing_key %><% end %>
 <% if @u2f_encryption_key %>cas.authn.mfa.u2f.crypto.encryption.key=<%= @u2f_encryption_key %><% end %>
