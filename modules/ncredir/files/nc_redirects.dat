@@ -97,6 +97,7 @@ rewrite	*wikimedia.jp.net	https://www.wikimedia.org
 
 rewrite	*wikimedia.lt	https://foundation.wikimedia.org
 rewrite	*wikipedia.lt	https://lt.wikipedia.org
+rewrite	*wikipedia.fi	https://fi.wikipedia.org
 
 # Wikipedia
 
