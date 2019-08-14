@@ -66,6 +66,7 @@ class envoyproxy(
         owner   => 'root',
         group   => 'root',
         mode    => '0555',
+        notify  => Exec['verify-envoy-config'],
     }
 
     # Used by defines to verify the configuration.
