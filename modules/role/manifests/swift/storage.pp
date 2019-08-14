@@ -16,13 +16,18 @@ class role::swift::storage {
         object_replicator_interval    => hiera('swift::storage::object_replicator_interval', undef),  # lint:ignore:wmf_styleguide
     }
     include ::swift::container_sync
-    include ::swift::storage::monitoring
 
     include ::toil::systemd_scope_cleanup
 
     include ::profile::statsite
     class { '::profile::prometheus::statsd_exporter':
         relay_address => 'localhost:8125',
+    }
+
+    nrpe::monitor_service { 'load_average':
+        description  => 'very high load average likely xfs',
+        nrpe_command => '/usr/lib/nagios/plugins/check_load -w 80,80,80 -c 200,100,100',
+        notes_url    => 'https://wikitech.wikimedia.org/wiki/Swift',
     }
 
     $all_drives = hiera('swift_storage_drives')
