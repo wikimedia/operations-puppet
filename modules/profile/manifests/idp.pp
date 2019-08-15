@@ -13,7 +13,7 @@ class profile::idp(
 ){
 
     include passwords::ldap::production
-    tlsproxy::localssl {'idp.wikimedia.org':
+    tlsproxy::localssl {'idp':
         upstream_ports => ['8080'],
         default_server => true,
         acme_chief     => true,
