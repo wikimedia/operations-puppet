@@ -28,7 +28,7 @@ clients = mwopenstackclients.clients()
 
 
 def url_template():
-    return "http://labpuppetmaster1001.wikimedia.org:8101/v1/"
+    return "http://puppetmaster.cloudinfra.wmflabs.org:8101/v1/"
 
 
 def all_prefixes(project):
