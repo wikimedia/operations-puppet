@@ -1,7 +1,7 @@
 # When set to true, cache both the compressed and uncompressed versions of the
 # content as alternates. When set to false, Traffic Server will cache only the
 # compressed or decompressed variant returned by the origin.
-cache true
+cache false
 
 # Avoid compressing objects smaller than 860 bytes. We've seen varnish do
 # gzipping on CL:0 302 responses, resulting in output that has CE:gzip
