@@ -52,3 +52,9 @@ profile::grafana::ldap:
 # In private repo
 #profile::grafana::secret_key:
 #profile::grafana::admin_password:
+profile::tlsproxy::envoy::ensure: present
+profile::tlsproxy::envoy::services:
+  - server_names: ['*']
+    port: 80
+profile::tlsproxy::envoy::global_cert_name: "grafana.discovery.wmnet"
+profile::tlsproxy::envoy::sni_support: "no"

@@ -11,4 +11,5 @@ class role::grafana {
     }
 
     include ::profile::grafana::production
+    include ::profile::tlsproxy::envoy # TLS termination
 }
