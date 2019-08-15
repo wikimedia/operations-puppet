@@ -22,7 +22,7 @@ client c1 {
 client c2 {
     txreq -hdr "X-Forwarded-Proto: https" -hdr "Host: example.org"
     rxresp
-    expect resp.status == 404
+    expect resp.status == 421
 }
 
 client c3 {
