@@ -5,14 +5,23 @@ server.port=<%= @server_port %>
 server.servlet.context-path=<%= @server_prefix %>
 cas.server.name=<%= @server_name %>
 cas.server.prefix=<%= @server_name %><%= @server_prefix %>
+server.ssl.enabled=<%= @server_enable_ssl %>
+<%- if @tomcat_proxy -%>
+cas.server.tomcat.http.enabled=false
+cas.server.tomcat.httpProxy.enabled=true
+cas.server.tomcat.httpProxy.secure=true
+cas.server.tomcat.httpProxy.scheme=https
+cas.server.tomcat.httpProxy.protocol=HTTP/1.1
+<%- end -%>
+
 cas.serviceRegistry.json.location=file:<%= @services_dir %>
 logging.config: file:/etc/cas/config/log4j2.xml
 logging.level.org.apereo=<%= @log_level %>
-cas.authn.accept.users=
-
-cas.httpWebRequest.header.hsts=<%= @enable_hsts %>
-
 management.metrics.export.prometheus.enabled=<%= @enable_prometheus %>
+
+
+
+cas.authn.accept.users=
 
 cas.authn.ldap[0].providerClass=org.ldaptive.provider.unboundid.UnboundIDProvider
 cas.authn.ldap[0].principalAttributeList=<%= @ldap_attribute_list.join(',') %>

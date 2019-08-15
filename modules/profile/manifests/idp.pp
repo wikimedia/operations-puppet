@@ -13,6 +13,7 @@ class profile::idp(
 ){
 
     include passwords::ldap::production
+    include profile::tlsproxy::service
 
     ferm::service {'cas-https':
         proto => 'tcp',
@@ -22,7 +23,9 @@ class profile::idp(
     class { 'apereo_cas':
         server_name            => 'https://idp.wikimedia.org',
         server_prefix          => '/',
-        server_port            => 443,
+        server_port            => 8080,
+        server_enable_ssl      => false,
+        tomcat_proxy           => true,
         keystore_content       => secret('casserver/thekeystore'),
         keystore_password      => $keystore_password,
         key_password           => $key_password,

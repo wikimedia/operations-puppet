@@ -1,0 +1,6 @@
+profile::tlsproxy::service::check_uri: /login
+profile::tlsproxy::service::check_service: idp.wikimedia.org
+profile::tlsproxy::service::notes_url: https://wikitech.wikimedia.org/wiki/idp
+profile::tlsproxy::service::contact_group: admin
+profile::tlsproxy::service::upstream_ports: 8080
+
