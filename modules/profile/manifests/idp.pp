@@ -14,9 +14,14 @@ class profile::idp(
 
     include passwords::ldap::production
 
+    ferm::service {'cas-https':
+        proto => 'tcp',
+        port  => 443,
+    }
+
     class { 'apereo_cas':
-        server_name            => 'https://idp.wikimedia.org:8443',
-        server_prefix          => 'https://idp.wikimedia.org:8443/cas',
+        server_name            => 'https://idp.wikimedia.org',
+        server_prefix          => '/',
         keystore_content       => secret('casserver/thekeystore'),
         keystore_password      => $keystore_password,
         key_password           => $key_password,
