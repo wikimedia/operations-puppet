@@ -7,7 +7,7 @@ profile::openstack::eqiad1::designate_host: 'cloudservices1003.wikimedia.org'
 profile::openstack::eqiad1::designate_host_standby: 'cloudservices1004.wikimedia.org'
 profile::openstack::eqiad1::second_region_designate_host: 'cloudservices1003.wikimedia.org'
 profile::openstack::eqiad1::second_region_designate_host_standby: 'cloudservices1004.wikimedia.org'
-profile::openstack::eqiad1::puppetmaster_hostname: 'labs-puppetmaster.wikimedia.org'
+profile::openstack::eqiad1::puppetmaster_hostname: 'puppetmaster.cloudinfra.wmflabs.org'
 profile::openstack::eqiad1::osm_host: 'wikitech.wikimedia.org'
 profile::openstack::eqiad1::rabbit_monitor_user: 'monitoring'
 profile::openstack::eqiad1::rabbit_file_handles: 8192

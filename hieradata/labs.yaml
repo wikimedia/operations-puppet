@@ -191,7 +191,40 @@ profile::base::ssh_server_settings:
 
 labs_puppet_master: "puppetmaster.cloudinfra.wmflabs.org"
 labs_keystone_host: "cloudcontrol1003.wikimedia.org"
-puppetmaster: "labs-puppetmaster.wikimedia.org"
+puppetmaster: "puppetmaster.cloudinfra.wmflabs.org"
+profile::base::certificates::puppet_ca_content:
+  puppetmaster.cloudinfra.wmflabs.org: |
+    -----BEGIN CERTIFICATE-----
+    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
+    -----END CERTIFICATE-----
 puppet_ca_server: ""
 keystone_public_port: '5000'
 
