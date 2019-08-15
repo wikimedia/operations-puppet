@@ -1,4 +1,4 @@
-class openstack::nova::common::base::mitaka::jessie(
+class openstack::nova::common::mitaka::jessie(
 ) {
     require ::openstack::serverpackages::mitaka::jessie
 

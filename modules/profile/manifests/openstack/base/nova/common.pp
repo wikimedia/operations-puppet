@@ -1,4 +1,4 @@
-class profile::openstack::base::nova::common::neutron(
+class profile::openstack::base::nova::common(
     $version = hiera('profile::openstack::base::version'),
     $db_user = hiera('profile::openstack::base::nova::db_user'),
     $db_pass = hiera('profile::openstack::base::nova::db_pass'),
@@ -18,7 +18,7 @@ class profile::openstack::base::nova::common::neutron(
     $metadata_proxy_shared_secret = hiera('profile::openstack::base::neutron::metadata_proxy_shared_secret'),
     ) {
 
-    class {'::openstack::nova::common::neutron':
+    class {'::openstack::nova::common':
         version                      => $version,
         db_user                      => $db_user,
         db_pass                      => $db_pass,
@@ -38,5 +38,5 @@ class profile::openstack::base::nova::common::neutron(
         compute_workers              => $compute_workers,
         metadata_workers             => $metadata_workers,
     }
-    contain '::openstack::nova::common::neutron'
+    contain '::openstack::nova::common'
 }

@@ -1,4 +1,4 @@
-class openstack::nova::common::base::mitaka::stretch(
+class openstack::nova::common::mitaka::stretch(
 ) {
     require ::openstack::serverpackages::mitaka::stretch
 

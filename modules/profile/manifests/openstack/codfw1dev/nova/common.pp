@@ -15,7 +15,7 @@ class profile::openstack::codfw1dev::nova::common(
     $metadata_proxy_shared_secret = hiera('profile::openstack::codfw1dev::neutron::metadata_proxy_shared_secret')
     ) {
 
-    class {'::profile::openstack::base::nova::common::neutron':
+    class {'::profile::openstack::base::nova::common':
         version                      => $version,
         db_pass                      => $db_pass,
         db_host                      => $db_host,
@@ -31,5 +31,5 @@ class profile::openstack::codfw1dev::nova::common(
         rabbit_pass                  => $rabbit_pass,
         metadata_proxy_shared_secret => $metadata_proxy_shared_secret,
     }
-    contain '::profile::openstack::base::nova::common::neutron'
+    contain '::profile::openstack::base::nova::common'
 }
