@@ -63,7 +63,7 @@ profile::trafficserver::backend::mapping_rules:
       replacement: http://labmon1001.eqiad.wmnet
     - type: map
       target: http://grafana.wikimedia.org
-      replacement: http://grafana1001.eqiad.wmnet
+      replacement: https://grafana1001.eqiad.wmnet
     - type: map
       target: http://graphite-labs.wikimedia.org
       replacement: http://labmon1001.eqiad.wmnet
