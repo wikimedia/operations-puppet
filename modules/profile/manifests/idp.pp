@@ -13,10 +13,12 @@ class profile::idp(
 ){
 
     include passwords::ldap::production
+    class{ 'slcert::dhparam': }
     tlsproxy::localssl {'idp':
-        upstream_ports => ['8080'],
-        default_server => true,
-        acme_chief     => true,
+        upstream_ports  => ['8080'],
+        default_server  => true,
+        acme_chief      => true,
+        ssl_ecdhe_curve => false,
     }
 
     ferm::service {'cas-https':
