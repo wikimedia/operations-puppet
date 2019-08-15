@@ -2,12 +2,17 @@ server.ssl.keyStore=file:<%= @keystore_path %>
 server.ssl.keyStorePassword=<%= @keystore_password %>
 server.ssl.keyPassword=<%= @key_password %>
 server.port=<%= @server_port %>
+server.servlet.context-path=<%= @server_prefix %>
 cas.server.name=<%= @server_name %>
 cas.server.prefix=<%= @server_name %><%= @server_prefix %>
 cas.serviceRegistry.json.location=file:<%= @services_dir %>
 logging.config: file:/etc/cas/config/log4j2.xml
 logging.level.org.apereo=<%= @log_level %>
 cas.authn.accept.users=
+
+cas.httpWebRequest.header.hsts=<%= @enable_hsts %>
+
+management.metrics.export.prometheus.enabled=<%= @enable_prometheus %>
 
 cas.authn.ldap[0].providerClass=org.ldaptive.provider.unboundid.UnboundIDProvider
 cas.authn.ldap[0].principalAttributeList=<%= @ldap_attribute_list.join(',') %>

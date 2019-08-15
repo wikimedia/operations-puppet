@@ -22,6 +22,8 @@ class apereo_cas (
     Stdlib::HTTPSUrl             $server_name            = "https://${facts['fqdn']}:8443",
     Stdlib::Port                 $server_port            = 8443,
     Stdlib::Unixpath             $server_prefix          = '/cas',
+    Boolean                      $enable_prometheus      = false,
+    Boolean                      $enable_hsts            = true,
     Array[String[1]]             $ldap_attribute_list    = ['cn', 'memberOf', 'mail'],
     Array[Apereo_cas::LDAPUri]   $ldap_uris              = [],
     Apereo_cas::Ldapauth         $ldap_auth              = 'AUTHENTICATED',
