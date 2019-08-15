@@ -57,8 +57,8 @@ profile::acme_chief::certificates:
         - 'idp.wikimedia.org'
         - 'idp1001.wikimedia.org'
         challenge: dns-01
-        authorized_regexes:
-        - '^icinga1001\.wikimedia\.org$'
+        authorized_hosts:
+        - 'idp1001.wikimedia.org'
     ldap:
         CN: 'ldap-labs.eqiad.wikimedia.org'
         SNI:
