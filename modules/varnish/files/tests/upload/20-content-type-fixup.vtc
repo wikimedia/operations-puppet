@@ -1,0 +1,31 @@
+varnishtest "Workaround for broken Content-Type due to Swift bug T162035/T188831"
+
+server s1 {
+    rxreq
+    txresp -hdr "Content-Type: application/x-www-form-urlencoded"
+
+    rxreq
+    txresp -hdr "Content-Type: application/x-www-form-urlencoded"
+} -start
+
+varnish v1 -arg "-p vcl_path=${vcl_path} -p vcc_err_unref=false -p vcc_allow_inline_c=true -p cc_command='${cc_command}'" -vcl+backend {
+    backend vtc_backend {
+        .host = "${s1_addr}"; .port = "${s1_port}";
+    }
+
+    include "${basepath}/usr/share/varnish/tests/wikimedia_upload-frontend.vcl";
+} -start
+
+client c1 {
+    txreq -url "/wikipedia/commons/thumb/0/03/Flag_of_Italy.svg/22px-Flag_of_Italy.svg.png" -hdr "Host: upload.wikimedia.org" -hdr "X-Forwarded-Proto: https"
+    rxresp
+
+    expect resp.status == 200
+    expect resp.http.Content-Type == "image/png"
+
+    txreq -url "/wikipedia/commons/thumb/7/7e/Gail_Ann_Dorsey.jpg/300px-Gail_Ann_Dorsey.jpg" -hdr "Host: upload.wikimedia.org" -hdr "X-Forwarded-Proto: https"
+    rxresp
+
+    expect resp.status == 200
+    expect resp.http.Content-Type == "image/jpeg"
+} -run

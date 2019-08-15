@@ -242,6 +242,17 @@ sub cluster_fe_deliver {
 		set resp.http.Content-Disposition = "attachment";
 	}
 
+	// Workaround for broken Content-Type due to Swift bug T162035/T188831
+	if (resp.http.Content-Type == "application/x-www-form-urlencoded") {
+		if (req.url ~ "(?i)\.(jpg|jpeg|jpe)$") {
+			set resp.http.Content-Type = "image/jpeg";
+		} else if (req.url ~ "(?i)\.png$") {
+			set resp.http.Content-Type = "image/png";
+		} else if (req.url ~ "(?i)\.webp$") {
+			set resp.http.Content-Type = "image/webp";
+		}
+	}
+
 	if (req.http.host == "<%= @vcl_config.fetch('upload_domain') %>") {
 		set resp.http.Access-Control-Allow-Origin = "*";
 
