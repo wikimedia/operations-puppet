@@ -20,7 +20,7 @@ class apereo_cas (
     Stdlib::Unixpath             $overlay_dir            = '/srv/cas/overlay-template',
     Stdlib::Unixpath             $base_dir               = '/etc/cas',
     Stdlib::HTTPSUrl             $server_name            = "https://${facts['fqdn']}:8443",
-    String                       $server_prefix          = 'cas',
+    Stdlib::Unixpath             $server_prefix          = '/cas',
     Array[String[1]]             $ldap_attribute_list    = ['cn', 'memberOf', 'mail'],
     Array[Apereo_cas::LDAPUri]   $ldap_uris              = [],
     Apereo_cas::Ldapauth         $ldap_auth              = 'AUTHENTICATED',
