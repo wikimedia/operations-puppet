@@ -51,6 +51,14 @@ profile::acme_chief::certificates:
         challenge: dns-01
         authorized_regexes:
         - '^icinga[12]001\.wikimedia\.org$'
+    idp:
+        CN: 'idp.wikimedia.org'
+        SNI:
+        - 'idp.wikimedia.org'
+        - 'idp1001.wikimedia.org'
+        challenge: dns-01
+        authorized_regexes:
+        - '^icinga1001\.wikimedia\.org$'
     ldap:
         CN: 'ldap-labs.eqiad.wikimedia.org'
         SNI:
