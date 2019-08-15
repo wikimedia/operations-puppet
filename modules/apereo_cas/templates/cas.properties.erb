@@ -23,7 +23,6 @@ management.metrics.export.prometheus.enabled=<%= @enable_prometheus %>
 
 cas.authn.accept.users=
 
-cas.authn.ldap[0].providerClass=org.ldaptive.provider.unboundid.UnboundIDProvider
 cas.authn.ldap[0].principalAttributeList=<%= @ldap_attribute_list.join(',') %>
 cas.authn.ldap[0].type=<%= @ldap_auth %>
 cas.authn.ldap[0].connectionStrategy=<%= @ldap_connection %>
