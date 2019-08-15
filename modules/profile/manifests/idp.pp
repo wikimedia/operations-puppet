@@ -22,6 +22,7 @@ class profile::idp(
     class { 'apereo_cas':
         server_name            => 'https://idp.wikimedia.org',
         server_prefix          => '/',
+        server_port            => 443,
         keystore_content       => secret('casserver/thekeystore'),
         keystore_password      => $keystore_password,
         key_password           => $key_password,
