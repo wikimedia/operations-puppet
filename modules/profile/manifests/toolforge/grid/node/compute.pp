@@ -9,6 +9,7 @@ class profile::toolforge::grid::node::compute (
 ){
     include ::profile::toolforge::grid::exec_environ
     include ::profile::toolforge::grid::hba
+    include ::profile::toolforge::grid::submit_host
 
     motd::script { 'exechost-banner':
         ensure => present,

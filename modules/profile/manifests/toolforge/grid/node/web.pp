@@ -17,7 +17,6 @@ class profile::toolforge::grid::node::web (
     $etcdir = hiera('profile::toolforge::etcdir'),
 ){
     include profile::toolforge::grid::node::compute
-    include profile::toolforge::grid::submit_host
     include profile::toolforge::k8s::client
 
     # We have a tmp file problem to clean up
