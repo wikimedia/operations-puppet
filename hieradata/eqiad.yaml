@@ -8,7 +8,7 @@ puppetdb_host: puppetdb1001.eqiad.wmnet
 
 # Cloud Services <
 #
-labs_puppet_master: &labspuppetmaster "labs-puppetmaster.wikimedia.org"
+labs_puppet_master: &labspuppetmaster "puppetmaster.cloudinfra.wmflabs.org"
 labs_keystone_host: &labskeystonehost "cloudcontrol1003.wikimedia.org"
 
 # These are the up-and-coming, better dns servers:

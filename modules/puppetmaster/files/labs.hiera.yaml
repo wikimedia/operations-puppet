@@ -18,7 +18,7 @@
 :secret:
   :datadir: /etc/puppet/secret/hieradata
 :httpyaml:
-  :url_prefix: http://labs-puppetmaster.wikimedia.org:8100/v1/
+  :url_prefix: http://puppetmaster.cloudinfra.wmflabs.org:8100/v1/
 :hierarchy:
   - "labs/hosts/%{::hostname}"
   - "labs/%{::labsproject}/host/%{::hostname}"
