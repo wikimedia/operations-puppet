@@ -91,7 +91,7 @@ groups:
     members: [bearloga, tjones, cparle, pearley, bpirkle, ktsouroupidou,
               ezachte, jamesur, jdlrobson, smalyshev, sguebo, thargrove,
               leila, santhosh, amire80, foks, chelsyx, dbarratt, karen,
-              onimisionipe, kharlan]
+              onimisionipe, kharlan, abi]
     privileges: ['ALL = (www-data) NOPASSWD: ALL']
   cassandra-test-roots:
     gid: 708
@@ -156,7 +156,7 @@ groups:
               jdittrich, chelsyx, ovasileva, debt,
               fdans, mlitn, niharika29, goransm, pmiazga, dsaez, shiladsen, cicalese,
               mirrys, sharvaniharan, mmiller, amire80, rush, tieu, kharlan, gbirke,
-              isaacj, jdl, joewalsh, phuedx, bd808, iflorez, mayakpwiki, conniecc1]
+              isaacj, jdl, joewalsh, phuedx, bd808, iflorez, mayakpwiki, conniecc1, abi]
   ldap-admins:
     gid: 715
     description: ldap admins
@@ -240,7 +240,7 @@ groups:
               dduvall, nettrom, mforns, jkatz, ebernhardson,
               mlitn, joal, kartik, nikerabbit, pcoombe,
               neilpquinn-wmf, maxsem, jminor, atgomez, dstrine,
-              ladsgroup, ovasileva, shiladsen]
+              ladsgroup, ovasileva, shiladsen, abi]
   statistics-admins:
     posix_name: stats
     description: access files created by stats user cron jobs
@@ -279,7 +279,7 @@ groups:
               ayounsi, mepps, mmiller, seddon, gilles, tstarling, rush, tieu, karen,
               cicalese, drossi, fsalutari, nathante, gbirke, isaacj, sbassett, jdl,
               niharika29, ryanmax, afandian2, jgleeson, toddleroux, srishakatux, dsharpe,
-              esanders, sukhe, jfishback, iflorez, mayakpwiki, conniecc1]
+              esanders, sukhe, jfishback, iflorez, mayakpwiki, conniecc1, abi]
     system_members: [analytics-search, analytics]
   analytics-admins:
     gid: 732
@@ -3291,6 +3291,15 @@ users:
     name: jclark
     ssh_keys:
       - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC+1duGbT11VE4IV3KKFzdmHhSl2fAA0CkL93edalw2yqroMxzHjah7GwKB5csjrrbqhn+po0478jsU8OG8hgJBRKSq2cG04ryQk8MVSIy6gnqQ75/5gC4U6wJ50y8MKeMyZCHzMsjs+4xdh9WvJH4cfliPRWYp1JBJpE6E22KE+HK07HYX0TkvyfMf2cLaA0pz1Ovbll8gWb9L9vyKDRmv8+NkaJcLTuKoqSFpxz/UCjVGyBJckDyJbX9FEUyjjMclg+c6C8s2aNgfe3gMKmkKxSEfEqbXuNWfJEVAqJ667MhtsGV92pp6rSWdtAgm6IqGE19hUNFqAy3XiX8vEQY3 jclark@LoanerWMF1953
+  abi:
+    ensure: present
+    realname: Abijeet Patro
+    email: apatro@wikimedia.org
+    uid: 21104
+    gid: 500
+    name: abi
+    ssh_keys:
+      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIL6AxLdtHiuDHXR1/55Bp2eJOxEQjkrGN6xftQP8jHYJ apatro@wikimedia.org
 ldap_only_users:
   abartov:
     ensure: present
