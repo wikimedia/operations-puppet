@@ -2,6 +2,11 @@ class role::ipsec ($hosts = undef) {
     include strongswan::monitoring::host
     $puppet_certname = $::fqdn
 
+    # deploy to ulsfo only initially. then, remove this if for full deployment
+    if $::domain == 'ulsfo.wmnet' {
+        include profile::prometheus::ipsec_exporter
+    }
+
     if $hosts != undef {
         $targets = $hosts
     } else {

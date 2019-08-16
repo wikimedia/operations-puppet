@@ -1310,6 +1310,22 @@ class profile::prometheus::ops (
         port       => 3904,
     }
 
+    $ipsec_jobs= [
+        {
+            'job_name'        => 'ipsec',
+            'scheme'          => 'http',
+            'file_sd_configs' => [
+                { 'files' => [ "${targets_path}/ipsec_*.yaml" ]}
+            ],
+        },
+    ]
+    prometheus::class_config { "ipsec_${::site}":
+        dest       => "${targets_path}/ipsec_${::site}.yaml",
+        site       => $::site,
+        class_name => 'profile::prometheus::ipsec_exporter',
+        port       => 9536,
+    }
+
 
     prometheus::server { 'ops':
         listen_address        => '127.0.0.1:9900',
@@ -1322,7 +1338,7 @@ class profile::prometheus::ops (
             $nginx_jobs, $pybal_jobs, $blackbox_jobs, $jmx_exporter_jobs,
             $redis_jobs, $mtail_jobs, $ldap_jobs, $ircd_jobs, $pdns_rec_jobs,
             $etherpad_jobs, $elasticsearch_jobs, $wmf_elasticsearch_jobs,
-            $blazegraph_jobs, $nutcracker_jobs, $postgresql_jobs,
+            $blazegraph_jobs, $nutcracker_jobs, $postgresql_jobs, $ipsec_jobs,
             $kafka_burrow_jobs, $logstash_jobs, $haproxy_jobs, $statsd_exporter_jobs,
             $mjolnir_jobs, $rsyslog_jobs, $php_jobs, $php_fpm_jobs, $icinga_jobs, $docker_registry_jobs,
             $gerrit_jobs, $routinator_jobs, $rpkicounter_jobs, $varnishkafka_jobs, $bird_jobs, $ncredir_jobs,
