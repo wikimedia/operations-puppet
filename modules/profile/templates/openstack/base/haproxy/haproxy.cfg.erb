@@ -1,0 +1,24 @@
+# Note: This file is managed by puppet.
+
+global
+    chroot /var/lib/haproxy
+    daemon
+    group haproxy
+    log /dev/log local0
+    stats socket <%= @socket %> mode 666 level user
+    user haproxy
+
+defaults
+    log global
+    maxconn 4096
+    mode http
+    option dontlognull
+    option forceclose
+    option forwardfor
+    option httplog
+    option redispatch
+    retries 3
+    timeout client 50s
+    timeout connect 10s
+    timeout http-request 5s
+    timeout server 50s

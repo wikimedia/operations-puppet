@@ -1,7 +1,8 @@
 class profile::openstack::base::haproxy(
-    $logging = lookup('profile::openstack::base::haproxy::logging', {'default_value' => true}),
+    Boolean $logging = lookup('profile::openstack::base::haproxy::logging'),
 ) {
     class { 'haproxy':
-        logging => $logging,
+        logging  => $logging,
+        template => 'profile/openstack/base/haproxy/haproxy.cfg.erb',
     }
 }

@@ -1,0 +1,14 @@
+# Note: This file is managed by puppet.
+
+frontend <%= @title %>_frontend
+    bind *:<%= @port_frontend %>
+    default_backend <%= @title %>_backend
+
+backend <%= @title %>_backend
+    balance leastconn
+    option httpchk HEAD / HTTP/1.0\r\nUser-agent:\ haproxy-healthcheck
+<% @servers.each do |server| -%>
+    server <%= server %> <%= scope.function_ipresolve([server]) %>:<%= @port_backend %> check inter 1s rise 2 fall 4
+<% end -%>
+    stick store-request src
+    stick-table type ip size 256k expire 30m

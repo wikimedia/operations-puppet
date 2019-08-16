@@ -5,9 +5,11 @@ profile::openstack::codfw1dev::nova::db_user: 'nova'
 profile::openstack::codfw1dev::nova::dhcp_domain: 'codfw.labtest'
 profile::openstack::codfw1dev::nova::dhcp_start: '172.16.128.10'
 profile::openstack::codfw1dev::nova::quota_floating_ips: '0'
+profile::openstack::codfw1dev::nova::metadata_listen_port: 18775
 profile::openstack::codfw1dev::nova::network_flat_tagged_base_interface: 'eth1'
 profile::openstack::codfw1dev::nova::network_flat_interface_vlan: '2105'
 profile::openstack::codfw1dev::nova::network_flat_interface: 'eth1.2105'
+profile::openstack::codfw1dev::nova::osapi_compute_listen_port: 18774
 profile::openstack::codfw1dev::nova::flat_network_bridge: 'br2105'
 profile::openstack::codfw1dev::nova::fixed_range: '172.16.128.0/21'
 profile::openstack::codfw1dev::nova::zone: 'codfw'

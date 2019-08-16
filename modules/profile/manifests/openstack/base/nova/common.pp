@@ -17,6 +17,8 @@ class profile::openstack::base::nova::common(
     $rabbit_user = hiera('profile::openstack::base::nova::rabbit_user'),
     $rabbit_pass = hiera('profile::openstack::base::rabbit_pass'),
     $metadata_proxy_shared_secret = hiera('profile::openstack::base::neutron::metadata_proxy_shared_secret'),
+    Stdlib::Port $metadata_listen_port = lookup('profile::openstack::base::nova::metadata_listen_port'),
+    Stdlib::Port $osapi_compute_listen_port = lookup('profile::openstack::base::nova::osapi_compute_listen_port'),
     ) {
 
     class {'::openstack::nova::common':
@@ -38,7 +40,9 @@ class profile::openstack::base::nova::common(
         glance_host                  => $glance_host,
         metadata_proxy_shared_secret => $metadata_proxy_shared_secret,
         compute_workers              => $compute_workers,
+        metadata_listen_port         => $metadata_listen_port,
         metadata_workers             => $metadata_workers,
+        osapi_compute_listen_port    => $osapi_compute_listen_port,
     }
     contain '::openstack::nova::common'
 }

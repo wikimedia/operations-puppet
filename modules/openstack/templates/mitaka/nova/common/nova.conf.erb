@@ -2,6 +2,8 @@
 # nova general settings
 my_ip = <%= @ipaddress %>
 osapi_compute_workers = <%= @compute_workers %>
+osapi_compute_listen_port = <%= @osapi_compute_listen_port %>
+metadata_listen_port = <%= @metadata_listen_port %>
 metadata_workers = <%= @metadata_workers %>
 #verbose=True ### FIXME deprecated?
 state_path = /var/lib/nova
