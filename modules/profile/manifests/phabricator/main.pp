@@ -279,24 +279,20 @@ class profile::phabricator::main (
 
         # Extensions that require configuration.
         php::extension {
+            default:
+                sapis        => ['cli', 'fpm'];
+            'apcu':
+                ;
             'mailparse':
-                package_name => 'php-mailparse',
-                sapis        => ['cli', 'fpm'],
                 priority     => 21;
             'mysqlnd':
-                package_name => 'php7.2-mysqlnd',
-                sapis        => ['cli', 'fpm'],
+                package_name => '',
                 priority     => 10;
             'xml':
                 package_name => 'php7.2-xml',
-                sapis        => ['cli', 'fpm'],
                 priority     => 15;
             'mysqli':
-                package_name => 'php7.2-mysql',
-                sapis        => ['cli', 'fpm'];
-            'apcu':
-                package_name => 'php-apcu',
-                sapis        => ['cli', 'fpm'];
+                package_name => 'php7.2-mysql';
         }
 
         class { '::php::fpm':
