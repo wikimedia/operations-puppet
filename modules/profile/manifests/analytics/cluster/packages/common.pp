@@ -21,7 +21,7 @@ class profile::analytics::cluster::packages::common {
         'ipython',                'ipython3',
         'python-sympy',
         'python-matplotlib',      'python3-matplotlib',
-        'python-tk',              'python3-tk',
+        'python-tk',              # 'python3-tk', temporary removed, please check T229347#5405511
         'python-geoip',           'python3-geoip',
         'python-geoip2',          'python3-geoip2',
         'python-pandas',          'python3-pandas',
