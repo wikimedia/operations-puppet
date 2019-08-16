@@ -93,6 +93,7 @@ class profile::toolforge::grid::exec_environ {
         'pngquant',                  # T204422
         'qpdf',                      # T204422
         'unpaper',                   # T204422
+        'zstd',                      # T225380
     )
 
     if os_version('debian == jessie') {
