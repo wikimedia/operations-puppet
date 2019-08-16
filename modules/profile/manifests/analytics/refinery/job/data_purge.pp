@@ -13,8 +13,6 @@ class profile::analytics::refinery::job::data_purge (
 ) {
     require ::profile::analytics::refinery
 
-    $mediawiki_private_log_file      = "${profile::analytics::refinery::log_dir}/drop-mediawiki-private-partitions.log"
-    $geoeditors_log_file             = "${profile::analytics::refinery::log_dir}/drop-geoeditor-daily-partitions.log"
     $query_clicks_log_file           = "${profile::analytics::refinery::log_dir}/drop-query-clicks.log"
     $public_druid_snapshots_log_file = "${profile::analytics::refinery::log_dir}/drop-druid-public-snapshots.log"
     $mediawiki_xmldumps_log_file     = "${profile::analytics::refinery::log_dir}/drop-mediawiki-xmldumps.log"
@@ -229,7 +227,7 @@ class profile::analytics::refinery::job::data_purge (
     $geoeditors_private_retention_days = 80
     kerberos::systemd_timer { 'mediawiki-raw-cu-changes-drop-month':
         description  => 'Drop raw Mediawiki cu_changes from Hive/HDFS following data retention policies.',
-        command      => "${refinery_path}/bin/refinery-drop-older-than --database='wmf_raw' --tables='mediawiki_private_cu_changes' --base-path='/wmf/data/raw/mediawiki_private/tables/cu_changes' --path-format='month=(?P<year>[0-9]+)-(?P<month>[0-9]+)' --older-than='${geoeditors_private_retention_days}' --execute='bfb4121e49522dff5c7708fcca1ab76b' > ${mediawiki_private_log_file}",
+        command      => "${refinery_path}/bin/refinery-drop-older-than --database='wmf_raw' --tables='mediawiki_private_cu_changes' --base-path='/wmf/data/raw/mediawiki_private/tables/cu_changes' --path-format='month=(?P<year>[0-9]+)-(?P<month>[0-9]+)' --older-than='${geoeditors_private_retention_days}' --execute='bfb4121e49522dff5c7708fcca1ab76b'",
         environment  => $systemd_env,
         interval     => '*-*-16 05:00:00',
         user         => 'analytics',
@@ -242,7 +240,7 @@ class profile::analytics::refinery::job::data_purge (
     kerberos::systemd_timer { 'mediawiki-geoeditors-drop-month':
         ensure       => absent,
         description  => 'Drop Geo-editors data from Hive/HDFS following data retention policies.',
-        command      => "${refinery_path}/bin/refinery-drop-older-than --database='wmf' --tables='geoeditors_daily' --base-path='/wmf/data/wmf/mediawiki_private/geoeditors_daily' --path-format='month=(?P<year>[0-9]+)-(?P<month>[0-9]+)' --older-than='${geoeditors_private_retention_days}' --execute='17868542cc12c5d14822f490f39f164a' > ${geoeditors_log_file}",
+        command      => "${refinery_path}/bin/refinery-drop-older-than --database='wmf' --tables='geoeditors_daily' --base-path='/wmf/data/wmf/mediawiki_private/geoeditors_daily' --path-format='month=(?P<year>[0-9]+)-(?P<month>[0-9]+)' --older-than='${geoeditors_private_retention_days}' --execute='17868542cc12c5d14822f490f39f164a'",
         environment  => $systemd_env,
         interval     => '*-*-16 06:00:00',
         user         => 'analytics',
