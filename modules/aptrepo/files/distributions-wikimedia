@@ -20,6 +20,7 @@ Components: main backports thirdparty experimental openstack-mitaka-jessie
  thirdparty/ci
  thirdparty/cloudera
  thirdparty/elastic55
+ thirdparty/envoyproxy
  thirdparty/mono-project-jessie
 UDebComponents: main backports thirdparty experimental
 Update:
@@ -30,6 +31,7 @@ Update:
  docker
  elastic
  elastic55
+ envoyproxy
  grafana
  hp-mcp-jessie
  hwraid
