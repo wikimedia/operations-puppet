@@ -76,6 +76,7 @@ profile::druid::broker::properties:
   druid.emitter: composing
   druid.emitter.composing.emitters: ["logging","http"]
   druid.emitter.http.recipientBaseUrl: "http://localhost:8000/"
+  druid.monitoring.monitors: ["io.druid.server.metrics.QueryCountStatsMonitor"]
   druid.processing.numThreads: 10
   druid.processing.buffer.sizeBytes: 268435456 # 1024 * 1024 * 256
   # Set numMergeBuffers to use v2 groupBy engine
@@ -130,7 +131,7 @@ profile::druid::historical::properties:
   druid.historical.cache.populateCache: false
   # Sane value to abort a query that takes more than 5s to complete
   druid.server.http.defaultQueryTimeout: 5000
-  druid.monitoring.monitors: ["io.druid.server.metrics.HistoricalMetricsMonitor"]
+  druid.monitoring.monitors: ["io.druid.server.metrics.HistoricalMetricsMonitor", "io.druid.server.metrics.QueryCountStatsMonitor"]
 profile::druid::historical::env:
   DRUID_HEAP_OPTS: "-Xmx8g -Xms4g"
   DRUID_EXTRA_JVM_OPTS: "-XX:NewSize=2g -XX:MaxNewSize=2g -XX:MaxDirectMemorySize=12g -XX:+UseConcMarkSweepGC -XX:+PrintGCDetails -XX:+PrintGCTimeStamps -Djava.util.logging.manager=org.apache.logging.log4j.jul.LogManager"
