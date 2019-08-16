@@ -55,6 +55,17 @@ class profile::tlsproxy::instance(
         }
     }
 
+    # Make sure nginx.service is not automatically started upon package install
+    systemd::mask { 'nginx.service':
+        unless => "/usr/bin/dpkg -s nginx-${nginx_variant} | /bin/grep -q '^Status: install ok installed$'",
+    }
+
+    systemd::unmask { 'nginx.service': }
+
+    # Ensure systemctl mask happens before the package is installed, and that
+    # package installation triggers service unmask
+    Systemd::Mask['nginx.service'] -> Package["nginx-${nginx_variant}"] ~> Systemd::Unmask['nginx.service']
+
     class { 'nginx':
         variant => $nginx_variant,
         managed => false,
