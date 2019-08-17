@@ -8,7 +8,6 @@ class varnish::common::errorpage {
         logo_width  => '135',
         logo_height => '101',
         logo_alt    => 'Wikimedia',
-        content     => template('varnish/errorpage.body.html.erb'),
         # Placeholder "%error%" substituted at runtime in errorpage.inc.vcl
         footer      => template('varnish/errorpage.footer.html.erb'),
     }

@@ -81,7 +81,7 @@ define mediawiki::errorpage(
     Integer $logo_width = 135,
     Integer $logo_height = 101,
     String $logo_alt = 'Wikimedia',
-    Optional[String] $content = '',
+    Optional[String] $content = undef,
     Optional[String] $footer = undef,
 ) {
     $errorpage = {

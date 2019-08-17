@@ -45,7 +45,6 @@ class profile::trafficserver::backend (
         logo_width  => '135',
         logo_height => '101',
         logo_alt    => 'Wikimedia',
-        content     => template('varnish/errorpage.body.html.erb'),
         # An explanation for these (and more) fields is available here:
         # https://docs.trafficserver.apache.org/en/latest/admin-guide/logging/formatting.en.html
         # Rendered example:
