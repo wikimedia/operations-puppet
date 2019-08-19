@@ -255,8 +255,8 @@ ListShellHook: grep-dctrl -e -S '^(cxlactivitylogger|hcc|hsa-rocr-dev|hsakmt-roc
 
 Name: envoyproxy
 Method: https://dl.bintray.com/tetrate/getenvoy-deb/
-Suite: jessie>thirdparty/envoyproxy
-Components: stable
+Suite: jessie
+Components: stable>thirdparty/envoyproxy
 UDebComponents:
 Architectures: amd64
 VerifyRelease: 0253D0B26FF974DB
