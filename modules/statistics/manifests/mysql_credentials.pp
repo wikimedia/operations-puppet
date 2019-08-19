@@ -4,13 +4,16 @@
 define statistics::mysql_credentials(
     $group,
 ) {
-    include ::passwords::mysql::research
-    # This file will render at
-    # /etc/mysql/conf.d/research-client.cnf.
-    mariadb::config::client { $title:
-        user  => $::passwords::mysql::research::user,
-        pass  => $::passwords::mysql::research::pass,
-        group => $group,
-        mode  => '0440',
+
+    if defined(Group[$group]) {
+        include ::passwords::mysql::research
+        # This file will render at
+        # /etc/mysql/conf.d/research-client.cnf.
+        mariadb::config::client { $title:
+            user  => $::passwords::mysql::research::user,
+            pass  => $::passwords::mysql::research::pass,
+            group => $group,
+            mode  => '0440',
+        }
     }
 }
