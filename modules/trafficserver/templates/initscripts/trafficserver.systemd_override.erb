@@ -49,5 +49,6 @@ ReadWritePaths=<%= @paths['runtimedir'] %>
 ReadWritePaths=<%= @paths['cachedir'] %>
 <% if @do_ocsp -%>
 ReadWritePaths=/etc/acmecerts
+ReadWritePaths=/var/cache/ocsp
 <% end -%>
 <% end -%>
