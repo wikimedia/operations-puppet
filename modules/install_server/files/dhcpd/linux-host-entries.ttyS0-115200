@@ -94,7 +94,7 @@ host an-tool1006 {
 }
 
 host an-tool1007 {
-    hardware ethernet aa:00:00:e0:06:28;
+    hardware ethernet aa:00:00:7c:c5:b3;
     fixed-address an-tool1007.eqiad.wmnet;
 }
 
