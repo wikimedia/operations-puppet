@@ -72,7 +72,7 @@ profile::mjolnir::kafka_msearch_daemon::max_concurrent_searches: 2
 
 # Bulk daemon defines group_id per-datacenter and applies updates to all
 # clusters in that datacenter.
-profile::mjolnir::kafka_bulk_daemon::kafka_cluster: "main-%{::site}"
+profile::mjolnir::kafka_bulk_daemon::kafka_cluster: "jumbo-eqiad"
 profile::mjolnir::kafka_bulk_daemon::group_id: "cirrussearch_updates_%{::site}"
 profile::mjolnir::kafka_bulk_daemon::topics:
   - eqiad.swift.search_glent.upload-complete
