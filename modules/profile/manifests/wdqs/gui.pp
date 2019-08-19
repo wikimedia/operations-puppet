@@ -23,10 +23,10 @@ class profile::wdqs::gui (
 
     if $high_query_time_port {
         # port 8888 accepts queries and runs them with a higher time limit.
-        ferm::service { 'wdqs_internal_http':
+        ferm::service { 'wdqs_heavy_queries_http':
             proto  => 'tcp',
             port   => '8888',
-            srange => '$DOMAIN_NETWORKS';
+            srange => '$ANALYTICS_NETWORKS';
         }
     }
 
