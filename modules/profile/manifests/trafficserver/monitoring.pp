@@ -22,7 +22,7 @@ define profile::trafficserver::monitoring(
         $check_trafficserver_config_status_args = $paths['records']
     } else {
         $traffic_manager_nrpe_command = "/usr/lib/nagios/plugins/check_procs -c 1:1 -a '/usr/bin/traffic_manager --run-root=${paths['prefix']} --nosyslog'"
-        $traffic_server_nrpe_command = "/usr/lib/nagios/plugins/check_procs -c 1:1 -a '/usr/bin/traffic_server --run-root=${paths['prefix']}/runroot.yaml -M --httpport ${port}'"
+        $traffic_server_nrpe_command = "/usr/lib/nagios/plugins/check_procs -c 1:1 -a '${paths['bindir']}/traffic_server -M --run-root=${paths['prefix']}/runroot.yaml --httpport ${port}'"
         $check_trafficserver_config_status_args = "${paths['records']} ${paths['prefix']}"
     }
 
