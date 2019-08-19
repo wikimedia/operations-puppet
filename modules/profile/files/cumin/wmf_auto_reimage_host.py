@@ -174,8 +174,8 @@ def run(args, user, log_path):
         if args.debug:
             downtime_debug = '-v '
         downtime_command = ('/bin/sleep 120 && /usr/bin/cookbook {verbose}sre.hosts.downtime '
-                            '--force-puppet -H 2 -t {task} -r REIMAGE {host}').format(
-                                verbose=downtime_debug, task=args.phab_task_id, host=args.host)
+                            '--force-puppet -H 2 -r REIMAGE {host}').format(
+                                verbose=downtime_debug, host=args.host)
 
         downtime = subprocess.Popen(downtime_command, shell=True)
         lib.print_line('Scheduled delayed downtime on Icinga', host=args.host)
