@@ -170,13 +170,14 @@ def run(args, user, log_path):
 
         # Downtime the host on Icinga with delay to give time to compile the Puppet catalog
         # and export its resources
-        downtime_command = ['/usr/local/sbin/wmf-downtime-host', '-s', '120',
-                            '-p', str(args.phab_task_id)]
+        downtime_debug = ''
         if args.debug:
-            downtime_command.append('-d')
+            downtime_debug = '-v '
+        downtime_command = ('/bin/sleep 120 && /usr/bin/cookbook {verbose}sre.hosts.downtime '
+                            '--force-puppet -H 2 -t {task} -r REIMAGE {host}').format(
+                                verbose=downtime_debug, task=args.phab_task_id, host=args.host)
 
-        downtime_command.append(args.host)
-        downtime = subprocess.Popen(downtime_command)
+        downtime = subprocess.Popen(downtime_command, shell=True)
         lib.print_line('Scheduled delayed downtime on Icinga', host=args.host)
 
         lib.puppet_first_run(args.host)
