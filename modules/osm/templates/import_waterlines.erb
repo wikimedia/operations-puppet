@@ -21,7 +21,7 @@ else
 fi
 
 cd ${temp_dir}
-curl <%= @proxy_opt %> -O http://data.openstreetmapdata.com/water-polygons-split-3857.zip
+curl <%= @proxy_opt %> -O https://osmdata.openstreetmap.de/download/water-polygons-split-3857.zip
 unzip water-polygons-split-3857.zip
 rm water-polygons-split-3857.zip
 shp2pgsql ${SHP2PGSQL_OPERATION} -s 3857 -g way water-polygons-split-3857/water_polygons.shp water_polygons | sed "${TRANSFORMATION}" | psql <%= @database %>
