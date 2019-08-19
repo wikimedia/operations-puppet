@@ -93,6 +93,11 @@ host an-tool1006 {
     fixed-address an-tool1006.eqiad.wmnet;
 }
 
+host an-tool1007 {
+    hardware ethernet aa:00:00:e0:06:28;
+    fixed-address an-tool1007.eqiad.wmnet;
+}
+
 host argon {
     hardware ethernet aa:00:00:fe:6b:df;
     fixed-address argon.eqiad.wmnet;

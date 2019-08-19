@@ -152,6 +152,13 @@ node 'an-tool1006.eqiad.wmnet' {
     interface::add_ip6_mapped { 'main': }
 }
 
+# turnilo.wikimedia.org
+# https://wikitech.wikimedia.org/wiki/Analytics/Systems/Turnilo-Pivot
+node 'an-tool1007.eqiad.wmnet' {
+    role(analytics_cluster::turnilo)
+    interface::add_ip6_mapped { 'main': }
+}
+
 # Analytics Query Service
 node /aqs100[456789]\.eqiad\.wmnet/ {
     role(aqs)
