@@ -89,6 +89,7 @@ class profile::trafficserver::tls (
         inbound_tls              => true,
         do_ocsp                  => num2bool($inbound_tls_settings['do_ocsp']),
         instance_name            => $instance_name,
+        acme_chief               => $unified_acme_chief,
         user                     => $user,
     }
 

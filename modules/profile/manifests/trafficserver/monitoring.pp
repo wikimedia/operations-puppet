@@ -5,6 +5,7 @@ define profile::trafficserver::monitoring(
     Boolean $inbound_tls = false,
     Boolean $default_instance = false,
     Boolean $do_ocsp = false,
+    Boolean $acme_chief = false,
     String $instance_name = 'backend',
     String $user = 'trafficserver',
 ){
@@ -73,13 +74,14 @@ define profile::trafficserver::monitoring(
         $check_args = '-c 259500 -w 173100 -d /var/cache/ocsp -g "*.ocsp"'
         $check_args_acme_chief = '-c 259500 -w 173100 -d /var/cache/ocsp -g "*/*.ocsp"'
         nrpe::monitor_service { "trafficserver_${instance_name}_ocsp_freshness":
-            description  => 'Freshness of OCSP Stapling files',
+            description  => 'Freshness of OCSP Stapling files (ATS-TLS)',
             nrpe_command => "/usr/lib/nagios/plugins/check-fresh-files-in-dir.py ${check_args}",
             require      => File['/usr/lib/nagios/plugins/check-fresh-files-in-dir.py'],
             notes_url    => 'https://wikitech.wikimedia.org/wiki/HTTPS/Unified_Certificates',
         }
         nrpe::monitor_service { "trafficserver_${instance_name}_ocsp_freshness_acme_chief":
-            description  => 'Freshness of OCSP Stapling files',
+            ensure       => bool2str($acme_chief, 'present', 'absent'),
+            description  => 'Freshness of OCSP Stapling files (ATS-TLS acme-chief)',
             nrpe_command => "/usr/lib/nagios/plugins/check-fresh-files-in-dir.py ${check_args_acme_chief}",
             require      => File['/usr/lib/nagios/plugins/check-fresh-files-in-dir.py'],
             notes_url    => 'https://wikitech.wikimedia.org/wiki/HTTPS/Unified_Certificates',
