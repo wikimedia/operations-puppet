@@ -1,1 +1,2 @@
 profile::cache::ssl::unified::acme_chief: true
+profile::trafficserver::backend::enable_compress: true
