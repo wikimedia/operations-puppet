@@ -23,6 +23,7 @@ profile::elasticsearch::instances:
     tls_port: 9243
     tls_ro_port: 8243
     transport_tcp_port: 9300
+    tune_gc_larger_old_gen: true
   cloudelastic-omega-eqiad:
     cluster_name: cloudelastic-omega-eqiad
     short_cluster_name: omega

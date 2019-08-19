@@ -86,7 +86,11 @@
 #        want the API exposed outside of localhost, so using just localhost
 #        is useful in those cases.
 #        Default: true (use all hosts defined in unicast_hosts)
-#
+# - $tune_gc_larger_old_gen: Tune the GC to keep a larger than standard
+#        old generation. If the GC wants a smaller old generation than
+#        possible it will constantly run full GC's trying to find that
+#        space. Set this to true if that space will never be available
+#        and the GC should not try and find it.
 # == Sample usage:
 #
 #   class { "elasticsearch":
@@ -133,6 +137,7 @@ define elasticsearch::instance(
     Optional[Integer[0]] $script_max_compilations_per_minute = undef,
     Optional[String] $ltr_cache_size                         = undef,
     Boolean $curator_uses_unicast_hosts                      = true,
+    Boolean $tune_gc_larger_old_gen                          = false,
 
     #  Dummy parameters consumed upstream of elasticsearch::instance,
     # but convenient to unify per-cluster configuration
@@ -168,6 +173,13 @@ define elasticsearch::instance(
         ],
         default => [],
     }
+
+    $gc_tune_flags = $tune_gc_larger_old_gen ? {
+        true    => ['-XX:NewRatio=3'],
+        default => []
+    }
+
+    $gc_flags = $gc_log_flags + $gc_tune_flags
 
     $curator_hosts = $curator_uses_unicast_hosts ? {
         true    => concat($unicast_hosts, '127.0.0.1'),

@@ -130,7 +130,7 @@
 # Exit on OutOfMemoryError, since in most cases the JVM does not recover
 -XX:+ExitOnOutOfMemoryError
 
-# Custom flags for GC logging.
-<% @gc_log_flags.each do |gc_log_flag| -%>
-<%= gc_log_flag %>
+# Custom WMF GC flags
+<% @gc_flags.each do |gc_flag| -%>
+<%= gc_flag %>
 <% end -%>
