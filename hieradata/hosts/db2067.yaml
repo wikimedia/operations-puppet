@@ -1,2 +1,3 @@
 # db2067
-mariadb::shard: 's6'
+# m2
+profile::base::notifications: disabled
