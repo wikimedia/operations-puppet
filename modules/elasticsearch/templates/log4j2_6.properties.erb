@@ -28,7 +28,7 @@ logger.search_slowlog.appenderRef.ship_to_logstash.ref = ship_to_logstash
 logger.indexing_slowlog.name = index.indexing.slowlog
 logger.indexing_slowlog.level = info
 logger.indexing_slowlog.additivity = false
-logger.indexing_slowlog.appenderRef.slowlog.ref = index_search_slow_log_file
+logger.indexing_slowlog.appenderRef.slowlog.ref = index_indexing_slow_log_file
 <% if @send_logs_to_logstash %>
 logger.indexing_slowlog.appenderRef.ship_to_logstash.ref = ship_to_logstash
 <% end %>
