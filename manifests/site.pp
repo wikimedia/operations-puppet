@@ -1607,6 +1607,7 @@ node /^mc10(19|2[0-9]|3[0-6])\.eqiad\.wmnet/ {
 
 node /^mc20(19|2[0-9]|3[0-6])\.codfw\.wmnet/ {
     role(mediawiki::memcached)
+    interface::add_ip6_mapped { 'main': }
 }
 
 # OTRS - ticket.wikimedia.org
