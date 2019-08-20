@@ -450,6 +450,7 @@ node /^db1(084|091|121|138)\.eqiad\.wmnet/ {
 # s4-test hosts on eqiad
 node /^db1(077|111)\.eqiad\.wmnet/ {
     role(mariadb::core_test)
+    interface::add_ip6_mapped { 'main': }
 }
 
 # s4 (commons) core production dbs on codfw
@@ -849,10 +850,12 @@ node 'db2101.codfw.wmnet' {
 # backup testing hosts
 node 'db1114.eqiad.wmnet' {
     role(mariadb::core_test)
+    interface::add_ip6_mapped { 'main': }
 }
 
 node 'db2102.codfw.wmnet' {
     role(mariadb::core_test)
+    interface::add_ip6_mapped { 'main': }
 }
 
 # old eqiad dbstores
