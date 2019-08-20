@@ -1531,16 +1531,20 @@ node /^cloudnet100[3-4].eqiad.wmnet$/ {
 ## labsdb dbs
 node 'labsdb1009.eqiad.wmnet' {
     role(labs::db::wikireplica_web)
+    interface::add_ip6_mapped { 'main': }
 }
 node 'labsdb1010.eqiad.wmnet' {
     role(labs::db::wikireplica_web)
+    interface::add_ip6_mapped { 'main': }
 }
 node 'labsdb1011.eqiad.wmnet' {
     role(labs::db::wikireplica_analytics)
+    interface::add_ip6_mapped { 'main': }
 }
 
 node 'labsdb1012.eqiad.wmnet'{
     role(labs::db::wikireplica_analytics::dedicated)
+    interface::add_ip6_mapped { 'main': }
 }
 
 node /labstore100[45]\.eqiad\.wmnet/ {
