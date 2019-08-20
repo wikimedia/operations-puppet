@@ -1167,6 +1167,7 @@ node 'kerberos1001.eqiad.wmnet' {
 # TODO: Rename the eqiad etcds to the codfw etcds naming scheme
 node /^(kub)?etcd[12]00[123]\.(eqiad|codfw)\.wmnet$/ {
     role(etcd::kubernetes)
+    interface::add_ip6_mapped { 'main': }
 }
 
 # Etcd cluster for kubernetes staging
