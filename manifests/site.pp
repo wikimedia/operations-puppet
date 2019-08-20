@@ -636,6 +636,11 @@ node 'db2043.codfw.wmnet' {
     role(spare::system)
 }
 
+# To be decommissioned # T230761
+node 'db2044.codfw.wmnet' {
+    role(spare::system)
+}
+
 # To be decommissioned # T228281
 node 'db2045.codfw.wmnet' {
     role(spare::system)
@@ -704,12 +709,6 @@ node 'db1132.eqiad.wmnet' {
     class { '::role::mariadb::misc':
         shard  => 'm2',
         master => true,
-    }
-}
-
-node 'db2044.codfw.wmnet' {
-    class { '::role::mariadb::misc':
-        shard => 'm2',
     }
 }
 
