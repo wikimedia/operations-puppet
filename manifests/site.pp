@@ -2009,18 +2009,22 @@ node 'netflow1001.eqiad.wmnet' {
 
 node /^ores[12]00[1-9]\.(eqiad|codfw)\.wmnet$/ {
     role(ores)
+    interface::add_ip6_mapped { 'main': }
 }
 
 node /orespoolcounter[12]00[34]\.(codfw|eqiad)\.wmnet/ {
     role(orespoolcounter)
+    interface::add_ip6_mapped { 'main': }
 }
 
 node /^oresrdb100[12]\.eqiad\.wmnet$/ {
     role(ores::redis)
+    interface::add_ip6_mapped { 'main': }
 }
 
 node /^oresrdb200[12]\.codfw\.wmnet$/ {
     role(ores::redis)
+    interface::add_ip6_mapped { 'main': }
 }
 
 # parser cache databases
