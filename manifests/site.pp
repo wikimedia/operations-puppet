@@ -1384,6 +1384,7 @@ node /kafka-main100[1-5]\.eqiad\.wmnet/ {
 
 node /kafka-main200[123]\.codfw\.wmnet/ {
     role(kafka::main)
+    interface::add_ip6_mapped { 'main': }
 }
 
 node /kafka200[123]\.codfw\.wmnet/ {
