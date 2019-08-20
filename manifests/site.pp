@@ -1137,6 +1137,7 @@ node /^es200[1-4]\.codfw\.wmnet/ {
 
 node /^failoid[12]001\.(eqiad|codfw)\.wmnet$/ {
     role(failoid)
+    interface::add_ip6_mapped { 'main': }
 }
 
 # Backup system, see T176505.
