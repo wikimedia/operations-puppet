@@ -532,7 +532,7 @@ my @o_querykey=();		# query this key, this option maybe repeated so its an array
 my $o_prevperf= undef;		# performance data given with $SERVICEPERFDATA$ macro
 my $o_prevtime= undef;		# previous time plugin was run $LASTSERVICECHECK$ macro
 my $o_ratelabel=undef;		# prefix and suffix for creating rate variables
-my $o_rsuffix='_rate';		# default suffix	
+my $o_rsuffix='_rate';		# default suffix
 my $o_rprefix='';
 
 ## Additional global variables
@@ -775,7 +775,7 @@ EOT
 #	       also added for regex matching with PATTERN option spec. Also added NAME spec.
 #	       License changed to LGPL from GPL for this code.
 # [0.21 - Sep 3, 2012] Fix bug in handling absent data
-# [0.22 - Mar 23, 2013] Fix bug in parse_threshold functon
+# [0.22 - Mar 23, 2013] Fix bug in parse_threshold function
 #
 # ================================== LIBRARY TODO =================================================
 #

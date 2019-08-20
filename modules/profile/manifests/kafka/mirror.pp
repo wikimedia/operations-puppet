@@ -282,7 +282,7 @@ class profile::kafka::mirror(
         # from hiera, with some sane defaults, to the mirror::instance without declaring
         # every possible mirror::instance parameter here.  Any that aren't defined in $mirror_parameters
         # will just use the confluent::kafka::mirror::instance defaults.
-        # If we didn't do this, we'd have to add around 8 more paramters to this profile
+        # If we didn't do this, we'd have to add around 8 more parameters to this profile
         # now, and possibly more as needed later.
         create_resources(
             'confluent::kafka::mirror::instance',

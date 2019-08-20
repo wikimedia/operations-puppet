@@ -3,7 +3,7 @@
 # Sets up dsh config files alone, without actually
 # setting up dsh. Useful primarily for monitoring and deploy servers.
 #
-# == Paramters:
+# == Parameters:
 #
 # [*scap_proxies*]
 #   List of FQDNs for servers to be used as scap rsync proxies. Default []

@@ -26,7 +26,7 @@
 # - removed -y flag from call since iostat doesn't know about it any more (June 2014)
 # - only needed executions of iostat are done now (save cpu time whenever you can)
 # - fixed the obvious problems of missing input values (probably because of the now unimplemented "-y") with -x values
-# - made perfomance data optional (I like to have choice in the matter)
+# - made performance data optional (I like to have choice in the matter)
 #
 # by Frederic Krueger / fkrueger-dev-checkiostat@holics.at
 #
