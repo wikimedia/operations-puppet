@@ -968,6 +968,7 @@ node 'dbprov2002.codfw.wmnet' {
 # Active eqiad proxies for misc databases
 node /^dbproxy10(01|02|03|05|06|07|08|13|14)\.eqiad\.wmnet$/ {
     role(mariadb::proxy::master)
+    interface::add_ip6_mapped { 'main': }
 }
 
 # Passive codfw proxies for misc databases
@@ -981,11 +982,13 @@ node /^dbproxy20(01|02|03)\.codfw\.wmnet$/ {
 # analytics proxy
 node 'dbproxy1010.eqiad.wmnet' {
     role(mariadb::proxy::master)
+    interface::add_ip6_mapped { 'main': }
 }
 # web proxy
 # dbproxy1011 will be decommissioned at some point
 node 'dbproxy1011.eqiad.wmnet' {
     role(mariadb::proxy::replicas)
+    interface::add_ip6_mapped { 'main': }
 }
 
 node 'dbproxy1019.eqiad.wmnet' {
