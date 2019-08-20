@@ -134,7 +134,7 @@ profile::trafficserver::backend::mapping_rules:
       replacement: https://phabricator.discovery.wmnet
     - type: map
       target: http://pivot.wikimedia.org
-      replacement: https://analytics-tool1002.eqiad.wmnet
+      replacement: https://an-tool1007.eqiad.wmnet
     - type: map
       target: http://piwik.wikimedia.org
       replacement: https://matomo1001.eqiad.wmnet
@@ -204,7 +204,7 @@ profile::trafficserver::backend::mapping_rules:
       replacement: https://webserver-misc-static.discovery.wmnet
     - type: map
       target: http://turnilo.wikimedia.org
-      replacement: https://analytics-tool1002.eqiad.wmnet
+      replacement: https://an-tool1007.eqiad.wmnet
     - type: map
       target: http://upload.wikimedia.org
       replacement: https://swift.discovery.wmnet

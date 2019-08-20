@@ -186,7 +186,7 @@ cache::app_directors:
       eqiad: 'thorium.eqiad.wmnet'
   turnilo:
     backends:
-      eqiad: 'analytics-tool1002.eqiad.wmnet'
+      eqiad: 'an-tool1007.eqiad.wmnet'
   ununpentium:
     backends:
       eqiad: 'ununpentium.wikimedia.org'
