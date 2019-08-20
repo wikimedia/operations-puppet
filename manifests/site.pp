@@ -391,11 +391,13 @@ node /^db1(080|083|089|106|118|119|134)\.eqiad\.wmnet/ {
 # codfw master
 node 'db2048.codfw.wmnet' {
     role(mariadb::core)
+    interface::add_ip6_mapped { 'main': }
 }
 
 # codfw replicas
 node /^db2(055|071|072|092|103|112|116|130)\.codfw\.wmnet/ {
     role(mariadb::core)
+    interface::add_ip6_mapped { 'main': }
 }
 
 # s2 (large wikis) core production dbs on eqiad
@@ -414,10 +416,12 @@ node /^db1(074|076|122|129)\.eqiad\.wmnet/ {
 # codfw master
 node 'db2107.codfw.wmnet' {
     role(mariadb::core)
+    interface::add_ip6_mapped { 'main': }
 }
 
 node /^db2(104|108|125|126)\.codfw\.wmnet/ {
     role(mariadb::core)
+    interface::add_ip6_mapped { 'main': }
 }
 
 # s3 (default) core production dbs on eqiad
@@ -435,10 +439,12 @@ node /^db1(078|112|123)\.eqiad\.wmnet/ {
 # codfw master
 node 'db2105.codfw.wmnet' {
     role(mariadb::core)
+    interface::add_ip6_mapped { 'main': }
 }
 
 node /^db2(074|109|127)\.codfw\.wmnet/ {
     role(mariadb::core)
+    interface::add_ip6_mapped { 'main': }
 }
 
 # s4 (commons) core production dbs on eqiad
@@ -462,11 +468,13 @@ node /^db1(077|111)\.eqiad\.wmnet/ {
 # codfw master
 node 'db2090.codfw.wmnet' {
     role(mariadb::core)
+    interface::add_ip6_mapped { 'main': }
 }
 
 # see also db2084 and db2091 below
 node /^db2(073|106|110|119)\.codfw\.wmnet/ {
     role(mariadb::core)
+    interface::add_ip6_mapped { 'main': }
 }
 
 # s5 (dewiki and others) core production dbs on eqiad
@@ -484,11 +492,13 @@ node /^db1(082|100|110|130)\.eqiad\.wmnet/ {
 # codfw master
 node 'db2123.codfw.wmnet' {
     role(mariadb::core)
+    interface::add_ip6_mapped { 'main': }
 }
 
 # See also db2084 and db2089 below
 node /^db2(075|111|113|128)\.codfw\.wmnet/ {
     role(mariadb::core)
+    interface::add_ip6_mapped { 'main': }
 }
 
 # s6 core production dbs on eqiad
@@ -506,10 +516,12 @@ node /^db1(085|088|093|131)\.eqiad\.wmnet/ {
 # codfw master
 node 'db2046.codfw.wmnet' {
     role(mariadb::core)
+    interface::add_ip6_mapped { 'main': }
 }
 
 node /^db2(053|060|076|114|117|124|129)\.codfw\.wmnet/ {
     role(mariadb::core)
+    interface::add_ip6_mapped { 'main': }
 }
 
 # s7 (centralauth, meta et al.) core production dbs on eqiad
@@ -528,10 +540,12 @@ node /^db1(069|079|086|094|136)\.eqiad\.wmnet/ {
 # codfw master
 node 'db2047.codfw.wmnet' {
     role(mariadb::core)
+    interface::add_ip6_mapped { 'main': }
 }
 
 node /^db2(054|061|068|077|118|120|121|122)\.codfw\.wmnet/ {
     role(mariadb::core)
+    interface::add_ip6_mapped { 'main': }
 }
 
 # s8 (wikidata) core production dbs on eqiad
@@ -549,11 +563,13 @@ node /^db1(092|087|109|126)\.eqiad\.wmnet/ {
 # codfw master
 node 'db2079.codfw.wmnet' {
     role(mariadb::core)
+    interface::add_ip6_mapped { 'main': }
 }
 
 # See also db2085 and db2086 below
 node /^db20(80|81|82|83)\.codfw\.wmnet/ {
     role(mariadb::core)
+    interface::add_ip6_mapped { 'main': }
 }
 
 # hosts with multiple shards
@@ -586,11 +602,13 @@ node 'db1137.eqiad.wmnet' {
 # x1 codfw master
 node 'db2096.codfw.wmnet' {
     role(mariadb::core)
+    interface::add_ip6_mapped { 'main': }
 }
 
 # x1 codfw slaves
 node /^db2(115|131)\.codfw\.wmnet/ {
     role(mariadb::core)
+    interface::add_ip6_mapped { 'main': }
 }
 
 # To be decommissioned T229381
@@ -1108,6 +1126,7 @@ node /^es101[268]\.eqiad\.wmnet/ {
 ## codfw servers
 node /^es201[123]\.codfw\.wmnet/ {
     role(mariadb::core)
+    interface::add_ip6_mapped { 'main': }
 }
 
 # External Storage, Shard 2 (es2) databases
@@ -1124,10 +1143,12 @@ node /^es101[13]\.eqiad\.wmnet/ {
 ## codfw servers
 node 'es2016.codfw.wmnet' {
     role(mariadb::core)
+    interface::add_ip6_mapped { 'main': }
 }
 
 node /^es201[45]\.codfw\.wmnet/ {
     role(mariadb::core)
+    interface::add_ip6_mapped { 'main': }
 }
 
 # External Storage, Shard 3 (es3) databases
@@ -1144,10 +1165,12 @@ node /^es101[49]\.eqiad\.wmnet/ {
 ## codfw servers
 node 'es2017.codfw.wmnet' {
     role(mariadb::core)
+    interface::add_ip6_mapped { 'main': }
 }
 
 node /^es201[89]\.codfw\.wmnet/ {
     role(mariadb::core)
+    interface::add_ip6_mapped { 'main': }
 }
 
 # Disaster recovery hosts for external storage
