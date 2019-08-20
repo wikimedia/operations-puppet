@@ -1607,11 +1607,13 @@ node /^ms-fe2005\.codfw\.wmnet$/ {
     role(swift::proxy)
     include ::role::swift::stats_reporter
     include ::lvs::realserver
+    interface::add_ip6_mapped { 'main': }
 }
 
 node /^ms-fe200[6-8]\.codfw\.wmnet$/ {
     role(swift::proxy)
     include ::lvs::realserver
+    interface::add_ip6_mapped { 'main': }
 }
 
 # Legacy Dell machines with partitioning scheme - T189633
@@ -1621,6 +1623,7 @@ node /^ms-be201[3-5]\.codfw\.wmnet$/ {
 
 node /^ms-be20(1[6-9]|[2345][0-9])\.codfw\.wmnet$/ {
     role(swift::storage)
+    interface::add_ip6_mapped { 'main': }
 }
 
 
