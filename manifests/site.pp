@@ -845,21 +845,26 @@ node 'db2093.codfw.wmnet' {
 # eqiad backup sources
 node 'db1095.eqiad.wmnet' {
     role(mariadb::dbstore_multiinstance)
+    interface::add_ip6_mapped { 'main': }
 }
 
 node 'db1102.eqiad.wmnet' {
     role(mariadb::dbstore_multiinstance)
+    interface::add_ip6_mapped { 'main': }
 }
 
 node 'db1116.eqiad.wmnet' {
     role(mariadb::dbstore_multiinstance)
+    interface::add_ip6_mapped { 'main': }
 }
 
 node 'db1139.eqiad.wmnet' {
     role(mariadb::dbstore_multiinstance)
+    interface::add_ip6_mapped { 'main': }
 }
 node 'db1140.eqiad.wmnet' {
     role(mariadb::dbstore_multiinstance)
+    interface::add_ip6_mapped { 'main': }
 }
 
 # codfw backup sources
@@ -913,6 +918,7 @@ node 'dbstore2002.codfw.wmnet' {
 # Analytics production replicas
 node /^dbstore100(3|4|5)\.eqiad\.wmnet$/ {
     role(mariadb::dbstore_multiinstance)
+    interface::add_ip6_mapped { 'main': }
 }
 
 
