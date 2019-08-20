@@ -2074,6 +2074,7 @@ node /(dubnium|pollux)\.wikimedia\.org/ {
 
 node /poolcounter[12]00[345]\.(codfw|eqiad)\.wmnet/ {
     role(poolcounter::server)
+    interface::add_ip6_mapped { 'main': }
 }
 
 node /^prometheus200[34]\.codfw\.wmnet$/ {
