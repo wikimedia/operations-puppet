@@ -386,10 +386,12 @@ node /^cumin[12]001\.(eqiad|codfw)\.wmnet$/ {
 # eqiad master
 node 'db1067.eqiad.wmnet' {
     role(mariadb::core)
+    interface::add_ip6_mapped { 'main': }
 }
 # eqiad replicas
 node /^db1(080|083|089|106|118|119|134)\.eqiad\.wmnet/ {
     role(mariadb::core)
+    interface::add_ip6_mapped { 'main': }
 }
 
 # s1 (enwiki) core production dbs on codfw
@@ -409,12 +411,14 @@ node /^db2(055|071|072|092|103|112|116|130)\.codfw\.wmnet/ {
 # eqiad master
 node 'db1066.eqiad.wmnet' {
     role(mariadb::core)
+    interface::add_ip6_mapped { 'main': }
 }
 
 # eqiad replicas
 # see also db1090, db1103, db1105 bellow
 node /^db1(074|076|122|129)\.eqiad\.wmnet/ {
     role(mariadb::core)
+    interface::add_ip6_mapped { 'main': }
 }
 
 # s2 (large wikis) core production dbs on codfw
@@ -434,10 +438,12 @@ node /^db2(104|108|125|126)\.codfw\.wmnet/ {
 # eqiad master
 node 'db1075.eqiad.wmnet' {
     role(mariadb::core)
+    interface::add_ip6_mapped { 'main': }
 }
 
 node /^db1(078|112|123)\.eqiad\.wmnet/ {
     role(mariadb::core)
+    interface::add_ip6_mapped { 'main': }
 }
 
 # s3 (default) core production dbs on codfw
@@ -456,11 +462,13 @@ node /^db2(074|109|127)\.codfw\.wmnet/ {
 # eqiad master
 node 'db1081.eqiad.wmnet' {
     role(mariadb::core)
+    interface::add_ip6_mapped { 'main': }
 }
 
 # see also db1097 and db1103 below
 node /^db1(084|091|121|138)\.eqiad\.wmnet/ {
     role(mariadb::core)
+    interface::add_ip6_mapped { 'main': }
 }
 
 # s4-test hosts on eqiad
@@ -486,11 +494,13 @@ node /^db2(073|106|110|119)\.codfw\.wmnet/ {
 # eqiad master
 node 'db1070.eqiad.wmnet' {
     role(mariadb::core)
+    interface::add_ip6_mapped { 'main': }
 }
 
 # See also db1096 db1097 and db1113 below
 node /^db1(082|100|110|130)\.eqiad\.wmnet/ {
     role(mariadb::core)
+    interface::add_ip6_mapped { 'main': }
 }
 
 # s5 (dewiki and others) core production dbs on codfw
@@ -510,11 +520,13 @@ node /^db2(075|111|113|128)\.codfw\.wmnet/ {
 # eqiad master
 node 'db1061.eqiad.wmnet' {
     role(mariadb::core)
+    interface::add_ip6_mapped { 'main': }
 }
 
 # See also db1096 db1098 and db1113 below
 node /^db1(085|088|093|131)\.eqiad\.wmnet/ {
     role(mariadb::core)
+    interface::add_ip6_mapped { 'main': }
 }
 
 # s6 core production dbs on codfw
@@ -533,11 +545,13 @@ node /^db2(046|053|060|076|114|117|124)\.codfw\.wmnet/ {
 # eqiad master
 node 'db1062.eqiad.wmnet' {
     role(mariadb::core)
+    interface::add_ip6_mapped { 'main': }
 }
 
 # See also db1090, db1098 and db1101 bellow
 node /^db1(069|079|086|094|136)\.eqiad\.wmnet/ {
     role(mariadb::core)
+    interface::add_ip6_mapped { 'main': }
 }
 
 #
@@ -557,11 +571,13 @@ node /^db2(054|061|068|077|118|120|121|122)\.codfw\.wmnet/ {
 # eqiad master
 node 'db1104.eqiad.wmnet' {
     role(mariadb::core)
+    interface::add_ip6_mapped { 'main': }
 }
 
 # See also db1099 and db1101 below
 node /^db1(092|087|109|126)\.eqiad\.wmnet/ {
     role(mariadb::core)
+    interface::add_ip6_mapped { 'main': }
 }
 
 # s8 (wikidata) core production dbs on codfw
@@ -592,14 +608,17 @@ node /^db20(84|85|86|87|88|89|91)\.codfw\.wmnet/ {
 # x1 eqiad master
 node 'db1120.eqiad.wmnet' {
     role(mariadb::core)
+    interface::add_ip6_mapped { 'main': }
 }
 
 node 'db1127.eqiad.wmnet' {
     role(mariadb::core)
+    interface::add_ip6_mapped { 'main': }
 }
 
 node 'db1137.eqiad.wmnet' {
     role(mariadb::core)
+    interface::add_ip6_mapped { 'main': }
 }
 
 
@@ -1120,6 +1139,7 @@ node 'elnath.codfw.wmnet' {
 ## eqiad servers
 node /^es101[268]\.eqiad\.wmnet/ {
     role(mariadb::core)
+    interface::add_ip6_mapped { 'main': }
 }
 
 ## codfw servers
@@ -1133,10 +1153,12 @@ node /^es201[123]\.codfw\.wmnet/ {
 ## eqiad servers
 node 'es1015.eqiad.wmnet' {
     role(mariadb::core)
+    interface::add_ip6_mapped { 'main': }
 }
 
 node /^es101[13]\.eqiad\.wmnet/ {
     role(mariadb::core)
+    interface::add_ip6_mapped { 'main': }
 }
 
 ## codfw servers
@@ -1155,10 +1177,12 @@ node /^es201[45]\.codfw\.wmnet/ {
 ## eqiad servers
 node 'es1017.eqiad.wmnet' {
     role(mariadb::core)
+    interface::add_ip6_mapped { 'main': }
 }
 
 node /^es101[49]\.eqiad\.wmnet/ {
     role(mariadb::core)
+    interface::add_ip6_mapped { 'main': }
 }
 
 ## codfw servers
