@@ -2069,6 +2069,7 @@ node /^releases[12]001\.(codfw|eqiad)\.wmnet$/ {
 
 node /^relforge100[1-2]\.eqiad\.wmnet/ {
     role(elasticsearch::relforge)
+    interface::add_ip6_mapped { 'main': }
 }
 
 # restbase eqiad cluster
