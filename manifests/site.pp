@@ -1181,6 +1181,7 @@ node 'fermium.wikimedia.org' {
 # HTML dumps from Restbase
 node 'francium.eqiad.wmnet' {
     role(dumps::web::htmldumps)
+    interface::add_ip6_mapped { 'main': }
 }
 
 # Virtualization hosts
