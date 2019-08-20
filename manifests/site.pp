@@ -2122,10 +2122,12 @@ node /^pybal-test200[123]\.codfw\.wmnet$/ {
 # New rdb servers T206450
 node /^rdb100[59]\.eqiad\.wmnet$/ {
     role(redis::misc::master)
+    interface::add_ip6_mapped { 'main': }
 }
 
 node /^(rdb1006|rdb1010)\.eqiad\.wmnet$/ {
     role(redis::misc::slave)
+    interface::add_ip6_mapped { 'main': }
 }
 
 node /^rdb200[35]\.codfw\.wmnet$/ {
