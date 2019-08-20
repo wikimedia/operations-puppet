@@ -1381,6 +1381,7 @@ node 'cloudweb2001-dev.wikimedia.org' {
 
 node /^cloudnet200[23]-dev\.codfw\.wmnet$/ {
     role(wmcs::openstack::codfw1dev::net)
+    interface::add_ip6_mapped { 'main': }
 }
 
 node /^labtestvirt2003\.codfw\.wmnet$/ {
@@ -1544,6 +1545,7 @@ node 'cloudcontrol2001-dev.wikimedia.org' {
 
 node /cloudvirt200[1-3]-dev\.codfw\.wmnet/ {
     role(wmcs::openstack::codfw1dev::virt)
+    interface::add_ip6_mapped { 'main': }
 }
 
 # WMCS Graphite and StatsD hosts
