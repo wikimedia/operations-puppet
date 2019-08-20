@@ -2304,10 +2304,12 @@ node 'mwmaint2001.codfw.wmnet' {
 # Thumbor servers for MediaWiki image scaling
 node /^thumbor100[1234]\.eqiad\.wmnet/ {
     role(thumbor::mediawiki)
+    interface::add_ip6_mapped { 'main': }
 }
 
 node /^thumbor200[1234]\.codfw\.wmnet/ {
     role(thumbor::mediawiki)
+    interface::add_ip6_mapped { 'main': }
 }
 
 # deployment servers
