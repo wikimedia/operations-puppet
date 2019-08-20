@@ -14,7 +14,7 @@ class profile::mediawiki::alerts {
         method          => 'gt',
         warning         => 0.2, # seconds
         critical        => 0.3, # seconds
-        dashboard_links => ["https://grafana.wikimedia.org/d/RIA1lzDZk/application-servers-red-dashboard?panelId=9&fullscreen&orgId=1&from=now-3h&to=now&var-datasource=${site}%20prometheus%2Fops&var-cluster=${cluster}&var-method=GET"],
+        dashboard_links => ["https://grafana.wikimedia.org/d/RIA1lzDZk/application-servers-red-dashboard?panelId=9&fullscreen&orgId=1&from=now-3h&to=now&var-datasource=${site} prometheus/ops&var-cluster=${cluster}&var-method=GET"],
       }
 
       monitoring::check_prometheus { "mediawiki_http_requests_${cluster}_${site}_post":
@@ -24,7 +24,7 @@ class profile::mediawiki::alerts {
         method          => 'gt',
         warning         => 0.25, # seconds
         critical        => 0.3, # seconds
-        dashboard_links => ["https://grafana.wikimedia.org/d/RIA1lzDZk/application-servers-red-dashboard?panelId=9&fullscreen&orgId=1&from=now-3h&to=now&var-datasource=${site}%20prometheus%2Fops&var-cluster=${cluster}&var-method=POST"],
+        dashboard_links => ["https://grafana.wikimedia.org/d/RIA1lzDZk/application-servers-red-dashboard?panelId=9&fullscreen&orgId=1&from=now-3h&to=now&var-datasource=${site} prometheus/ops&var-cluster=${cluster}&var-method=POST"],
       }
 
     }
