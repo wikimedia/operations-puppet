@@ -2205,6 +2205,7 @@ node 'sarin.codfw.wmnet' {
 # But, we are likely going to split them into different boxes soon.
 node 'scandium.eqiad.wmnet' {
     role(parsoid::testing)
+    interface::add_ip6_mapped { 'main': }
 }
 
 node /schema[12]00[12].(eqiad|codfw).wmnet/ {
@@ -2432,10 +2433,12 @@ node 'wezen.codfw.wmnet' {
 # https://www.mediawiki.org/wiki/Parsoid
 node /^wtp10(2[5-9]|[34][0-9])\.eqiad\.wmnet$/ {
     role(parsoid)
+    interface::add_ip6_mapped { 'main': }
 }
 
 node /^wtp20(0[1-9]|1[0-9]|2[0-4])\.codfw\.wmnet$/ {
     role(parsoid)
+    interface::add_ip6_mapped { 'main': }
 }
 
 node default {
