@@ -2078,14 +2078,17 @@ node /^oresrdb200[12]\.codfw\.wmnet$/ {
 # pc1
 node /^pc10(07|10)\.eqiad\.wmnet$/ {
     role(mariadb::parsercache)
+    interface::add_ip6_mapped { 'main': }
 }
 # pc2
 node /^pc10(08)\.eqiad\.wmnet$/ {
     role(mariadb::parsercache)
+    interface::add_ip6_mapped { 'main': }
 }
 # pc3
 node /^pc10(09)\.eqiad\.wmnet$/ {
     role(mariadb::parsercache)
+    interface::add_ip6_mapped { 'main': }
 }
 
 # codfw
