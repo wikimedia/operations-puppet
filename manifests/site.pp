@@ -1594,6 +1594,7 @@ node /labstore100[45]\.eqiad\.wmnet/ {
     role(wmcs::nfs::primary)
     # Do not enable yet
     # include ::profile::base::firewall
+    interface::add_ip6_mapped { 'main': }
 }
 
 node /labstore100[67]\.wikimedia\.org/ {
@@ -1606,10 +1607,12 @@ node /labstore200[1-2]\.codfw\.wmnet/ {
 
 node 'labstore2003.codfw.wmnet' {
     role(wmcs::nfs::primary_backup::tools)
+    interface::add_ip6_mapped { 'main': }
 }
 
 node 'labstore2004.codfw.wmnet' {
     role(wmcs::nfs::primary_backup::misc)
+    interface::add_ip6_mapped { 'main': }
 }
 
 # Will become corp replicas, initially adding as spare role to ensure ferm is applied
