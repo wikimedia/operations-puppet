@@ -51,14 +51,18 @@ class profile::tlsproxy::envoy(
             components => 'thirdparty/envoyproxy',
             before     => Package['envoy']
         }
+        # We need to install a full systemd unit as the package doesn't have one.
+        $use_override = false
     } else {
         $pkg_name = 'envoyproxy'
+        $use_override = true
     }
     $admin_port = 9631
     class { '::envoyproxy':
-        ensure     => $ensure,
-        admin_port => $admin_port,
-        pkg_name   => $pkg_name,
+        ensure       => $ensure,
+        admin_port   => $admin_port,
+        pkg_name     => $pkg_name,
+        use_override => $use_override,
     }
 
     # ensure all the needed certs are present. Given these are internal services,

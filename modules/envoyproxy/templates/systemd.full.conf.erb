@@ -1,0 +1,28 @@
+[Unit]
+Description=Envoy proxy
+Documentation=https://www.envoyproxy.io/docs/envoy/
+After=network.target
+
+[Service]
+User=envoy
+Restart=on-failure
+Type=simple
+
+# TODO: support hot restarts, see for instance https://www.envoyproxy.io/docs/envoy/latest/operations/hot_restarter
+# Ensure envoy can handle enough file descriptors
+LimitNOFILE=65536
+# Allow envoy to bind on a privileged port
+AmbientCapabilities=CAP_NET_BIND_SERVICE
+
+# Ensure we're using the correct directory.
+ExecStart=/usr/bin/envoy -c <%= @envoy_directory %>/envoy.yaml
+
+# Security settings
+ProtectKernelModules=yes
+ProtectKernelTunables=yes
+PrivateTmp=yes
+ProtectSystem=strict
+ReadWritePaths=/var/log/envoy/
+
+[Install]
+WantedBy=multi-user.target

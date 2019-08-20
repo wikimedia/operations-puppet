@@ -2,6 +2,7 @@ class envoyproxy(
     Wmflib::Ensure $ensure,
     Stdlib::Port $admin_port,
     Enum['envoy', 'envoyproxy'] $pkg_name,
+    Boolean $use_override = true,
 ) {
     package { $pkg_name:
         ensure => $ensure
@@ -78,9 +79,16 @@ class envoyproxy(
         notify      => Systemd::Service['envoyproxy.service'],
     }
 
+    if $use_override {
+        $tpl = 'envoyproxy/systemd.override.conf.erb'
+    }
+    else {
+        $tpl = 'envoyproxy/systemd.full.conf.erb'
+    }
+
     systemd::service { 'envoyproxy.service':
         ensure   => $ensure,
-        content  => template('envoyproxy/systemd.conf.erb'),
-        override => true,
+        content  => template($tpl),
+        override => $use_override,
     }
 }
