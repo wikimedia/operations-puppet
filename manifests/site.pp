@@ -1035,14 +1035,17 @@ node /^elastic105[0-2]\.eqiad\.wmnet/ {
 
 node /^elastic202[5-9]\.codfw\.wmnet/ {
     role(elasticsearch::cirrus)
+    interface::add_ip6_mapped { 'main': }
 }
 
 node /^elastic20[3-4][0-9]\.codfw\.wmnet/ {
     role(elasticsearch::cirrus)
+    interface::add_ip6_mapped { 'main': }
 }
 
 node /^elastic205[0-4]\.codfw\.wmnet/ {
     role(elasticsearch::cirrus)
+    interface::add_ip6_mapped { 'main': }
 }
 
 node 'elnath.codfw.wmnet' {
