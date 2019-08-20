@@ -821,10 +821,12 @@ node 'db2078.codfw.wmnet' {
 # sanitarium hosts
 node /^db1(124|125)\.eqiad\.wmnet/ {
     role(mariadb::sanitarium_multiinstance)
+    interface::add_ip6_mapped { 'main': }
 }
 
 node /^db2(094|095)\.codfw\.wmnet/ {
     role(mariadb::sanitarium_multiinstance)
+    interface::add_ip6_mapped { 'main': }
 }
 
 # tendril db
