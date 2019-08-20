@@ -34,12 +34,14 @@
 # But in the meantime...
 #
 # The temporary solution:
+#
 # Issue 1) Make this module install 2 loading jobs for each given datasource:
 #    one hourly and one daily. The hourly one will load data as soon as
 #    possible with the mentioned potential issues. The daily one, will load
-#    data with a lag of 3-4 days, to automatically cover up any hourly load
-#    issues that happened during that lag. A desirable side-effect of this
-#    hack is that Druid hourly data gets compacted in daily segments.
+#    data with a lag of 3-4 days (configurable), to automatically cover up any
+#    hourly load issues that happened during that lag. A desirable side-effect
+#    of this hack is that Druid hourly data gets compacted in daily segments.
+#
 # Issue 2) Instead of passing relative time offsets (hours ago), calculate
 #    absolute timestamps for since and until using bash. To allow bash to
 #    interpret date commands since and until params can not be passed via
@@ -72,6 +74,10 @@ define profile::analytics::refinery::job::eventlogging_to_druid_job (
     $job_class           = 'org.wikimedia.analytics.refinery.job.HiveToDruid',
     $queue               = 'production',
     $user                = 'analytics',
+    $hourly_hours_since  = 6,
+    $hourly_hours_until  = 5,
+    $daily_days_since    = 4,
+    $daily_days_until    = 3,
     $ensure              = 'present',
 ) {
     require ::profile::analytics::refinery
@@ -119,7 +125,7 @@ define profile::analytics::refinery::job::eventlogging_to_druid_job (
         jar        => $_refinery_job_jar,
         class      => $job_class,
         spark_opts => "${default_spark_opts} --files /etc/hive/conf/hive-site.xml,${hourly_job_config_file} --conf spark.dynamicAllocation.maxExecutors=32 --driver-memory 2G",
-        job_opts   => "--config_file ${job_name}_hourly.properties --since $(date --date '-6hours' -u +'%Y-%m-%dT%H:00:00') --until $(date --date '-5hours' -u +'%Y-%m-%dT%H:00:00')",
+        job_opts   => "--config_file ${job_name}_hourly.properties --since $(date --date '-${hourly_hours_since}hours' -u +'%Y-%m-%dT%H:00:00') --until $(date --date '-${hourly_hours_until}hours' -u +'%Y-%m-%dT%H:00:00')",
         require    => Profile::Analytics::Refinery::Job::Config[$hourly_job_config_file],
         user       => $user,
         interval   => '*-*-* *:00:00',
@@ -140,7 +146,7 @@ define profile::analytics::refinery::job::eventlogging_to_druid_job (
         jar        => $_refinery_job_jar,
         class      => $job_class,
         spark_opts => "${default_spark_opts} --files /etc/hive/conf/hive-site.xml,${daily_job_config_file} --conf spark.dynamicAllocation.maxExecutors=64 --driver-memory 2G",
-        job_opts   => "--config_file ${job_name}_daily.properties --since $(date --date '-4days' -u +'%Y-%m-%dT00:00:00') --until $(date --date '-3days' -u +'%Y-%m-%dT00:00:00')",
+        job_opts   => "--config_file ${job_name}_daily.properties --since $(date --date '-${daily_days_since}days' -u +'%Y-%m-%dT00:00:00') --until $(date --date '-${daily_days_until}days' -u +'%Y-%m-%dT00:00:00')",
         require    => Profile::Analytics::Refinery::Job::Config[$daily_job_config_file],
         user       => $user,
         interval   => '*-*-* 00:00:00',
