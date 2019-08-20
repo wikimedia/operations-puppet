@@ -759,6 +759,7 @@ node 'db1128.eqiad.wmnet' {
     class { '::role::mariadb::misc::phabricator':
         master => true,
     }
+    interface::add_ip6_mapped { 'main': }
 }
 
 
