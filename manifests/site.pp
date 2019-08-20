@@ -1179,6 +1179,7 @@ node /^etcd100[456]\.eqiad\.wmnet$/ {
 # Etherpad (virtual machine)
 node 'etherpad1001.eqiad.wmnet' {
     role(etherpad)
+    interface::add_ip6_mapped { 'main': }
 }
 
 # Receives log data from Kafka processes it, and broadcasts
