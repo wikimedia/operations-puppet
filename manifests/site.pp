@@ -1320,6 +1320,7 @@ node 'francium.eqiad.wmnet' {
 # Virtualization hosts
 node /^ganeti[12]00[0-8]\.(codfw|eqiad)\.wmnet$/ {
     role(ganeti)
+    interface::add_ip6_mapped { 'main': }
 }
 
 # new ulsfo ganeti hosts T226444
