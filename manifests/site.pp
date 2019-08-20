@@ -1918,11 +1918,13 @@ node /^mw22(7[8-9]|8[0-2])\.codfw\.wmnet$/ {
 # mw logging host codfw
 node 'mwlog2001.codfw.wmnet' {
     role(logging::mediawiki::udp2log)
+    interface::add_ip6_mapped { 'main': }
 }
 
 # mw logging host eqiad
 node 'mwlog1001.eqiad.wmnet' {
     role(logging::mediawiki::udp2log)
+    interface::add_ip6_mapped { 'main': }
 }
 
 node 'mx1001.wikimedia.org' {
