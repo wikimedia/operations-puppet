@@ -1298,6 +1298,7 @@ node 'helium.eqiad.wmnet' {
 # Bacula storage
 node 'heze.codfw.wmnet' {
     role(backup::offsite)
+    interface::add_ip6_mapped { 'main': }
 }
 
 # irc.wikimedia.org
