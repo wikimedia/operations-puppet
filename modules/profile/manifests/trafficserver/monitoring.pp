@@ -6,6 +6,7 @@ define profile::trafficserver::monitoring(
     Boolean $default_instance = false,
     Boolean $do_ocsp = false,
     Boolean $acme_chief = false,
+    Boolean $disable_config_check = false,
     String $instance_name = 'backend',
     String $user = 'trafficserver',
 ){
@@ -64,6 +65,7 @@ define profile::trafficserver::monitoring(
     }
 
     profile::trafficserver::nrpe_monitor_script { "check_trafficserver_${instance_name}_config_status":
+        ensure    => bool2str(!$disable_config_check, 'present', 'absent'),
         sudo_user => $user,
         checkname => 'check_trafficserver_config_status',
         args      => $check_trafficserver_config_status_args,

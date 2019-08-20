@@ -15,6 +15,7 @@
 #
 define profile::trafficserver::nrpe_monitor_script(
     String $sudo_user,
+    Wmflib::Ensure $ensure = present,
     String $checkname = $title,
     String $args = '',
 ){
@@ -22,7 +23,7 @@ define profile::trafficserver::nrpe_monitor_script(
 
     unless defined(File[$full_path]) {
         file { $full_path:
-            ensure => present,
+            ensure => $ensure,
             source => "puppet:///modules/profile/trafficserver/${checkname}.sh",
             mode   => '0555',
             owner  => 'root',
@@ -31,11 +32,13 @@ define profile::trafficserver::nrpe_monitor_script(
     }
 
     sudo::user { "nagios_trafficserver_${title}":
+        ensure     => $ensure,
         user       => 'nagios',
         privileges => ["ALL = (${sudo_user}) NOPASSWD: ${full_path}"],
     }
 
     nrpe::monitor_service { $title:
+        ensure       => $ensure,
         description  => $title,
         nrpe_command => "sudo -u ${sudo_user} ${full_path} ${args}",
         require      => File[$full_path],
