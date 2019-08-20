@@ -716,6 +716,7 @@ node 'db1063.eqiad.wmnet' {
         shard  => 'm1',
         master => true,
     }
+    interface::add_ip6_mapped { 'main': }
 }
 
 node 'db1135.eqiad.wmnet' {
@@ -723,6 +724,7 @@ node 'db1135.eqiad.wmnet' {
         shard  => 'm1',
         master => false,
     }
+    interface::add_ip6_mapped { 'main': }
 }
 
 node 'db2062.codfw.wmnet' {
@@ -742,6 +744,7 @@ node 'db1132.eqiad.wmnet' {
         shard  => 'm2',
         master => true,
     }
+    interface::add_ip6_mapped { 'main': }
 }
 
 node 'db2067.codfw.wmnet' {
@@ -793,6 +796,7 @@ node 'db1073.eqiad.wmnet' {
         shard  => 'm5',
         master => true,
     }
+    interface::add_ip6_mapped { 'main': }
 }
 
 node 'db1133.eqiad.wmnet' {
@@ -800,6 +804,7 @@ node 'db1133.eqiad.wmnet' {
         shard  => 'm5',
         master => false,
     }
+    interface::add_ip6_mapped { 'main': }
 }
 
 node /^db20(70)\.codfw\.wmnet/ {
