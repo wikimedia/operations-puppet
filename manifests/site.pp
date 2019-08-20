@@ -563,6 +563,7 @@ node /^db1(090|096|097|098|099|101|103|105|113)\.eqiad\.wmnet/ {
 }
 node /^db20(84|85|86|87|88|89|91)\.codfw\.wmnet/ {
     role(mariadb::core_multiinstance)
+    interface::add_ip6_mapped { 'main': }
 }
 
 ## x1 shard
