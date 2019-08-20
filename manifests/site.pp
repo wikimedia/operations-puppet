@@ -1603,6 +1603,7 @@ node 'matomo1001.eqiad.wmnet' {
 
 node /^mc10(19|2[0-9]|3[0-6])\.eqiad\.wmnet/ {
     role(mediawiki::memcached)
+    interface::add_ip6_mapped { 'main': }
 }
 
 node /^mc20(19|2[0-9]|3[0-6])\.codfw\.wmnet/ {
