@@ -1955,14 +1955,17 @@ node /^pc10(09)\.eqiad\.wmnet$/ {
 # pc1
 node /^pc20(07|10)\.codfw\.wmnet$/ {
     role(mariadb::parsercache)
+    interface::add_ip6_mapped { 'main': }
 }
 # pc2
 node /^pc20(08)\.codfw\.wmnet$/ {
     role(mariadb::parsercache)
+    interface::add_ip6_mapped { 'main': }
 }
 # pc3
 node /^pc20(09)\.codfw\.wmnet$/ {
     role(mariadb::parsercache)
+    interface::add_ip6_mapped { 'main': }
 }
 
 # virtual machines for https://wikitech.wikimedia.org/wiki/Ping_offload
