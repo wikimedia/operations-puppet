@@ -750,12 +750,14 @@ node 'db2065.codfw.wmnet' {
 
 node 'db1107.eqiad.wmnet' {
     role(mariadb::misc::eventlogging::master)
+    interface::add_ip6_mapped { 'main': }
 }
 
 # These replicas have an m4 custom replication protocol.
 
 node 'db1108.eqiad.wmnet' {
     role(mariadb::misc::eventlogging::replica)
+    interface::add_ip6_mapped { 'main': }
 }
 
 ## m5 shard
