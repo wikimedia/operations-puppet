@@ -21,15 +21,16 @@
 #       to rsync between home directories.
 #
 class profile::swap(
-    $ldap_groups         = hiera('profile::swap::allowed_ldap_groups', [
+    $ldap_groups             = hiera('profile::swap::allowed_ldap_groups', [
         'cn=nda,ou=groups,dc=wikimedia,dc=org',
         'cn=wmf,ou=groups,dc=wikimedia,dc=org',
     ]),
-    $ldap_config         = lookup('ldap', Hash, hash, {}),
-    $posix_groups        = hiera('admin::groups', undef),
-    $rsync_hosts_allow   = hiera('profile::swap::rsync_hosts_allow', undef),
-    $dumps_servers       = hiera('dumps_dist_nfs_servers'),
-    $dumps_active_server = hiera('dumps_dist_active_web'),
+    $ldap_config             = lookup('ldap', Hash, hash, {}),
+    $posix_groups            = hiera('admin::groups', undef),
+    $rsync_hosts_allow       = hiera('profile::swap::rsync_hosts_allow', undef),
+    $dumps_servers           = hiera('dumps_dist_nfs_servers'),
+    $dumps_active_server     = hiera('dumps_dist_active_web'),
+    $push_published_datasets = lookup('profile::swap::push_published_datasets', { 'default_value' => true }),
 
 ) {
 
@@ -57,10 +58,12 @@ class profile::swap(
             group => 'researchers',
         }
 
-        # Include an rsync from /srv/published-datasets to
-        # thorium.eqiad.wmnet to publish datasets at
-        # analytics.wikimedia.org/datasets.
-        class { '::statistics::rsync::published_datasets': }
+        if $push_published_datasets {
+            # Include an rsync from /srv/published-datasets to
+            # thorium.eqiad.wmnet to publish datasets at
+            # analytics.wikimedia.org/datasets.
+            class { '::statistics::rsync::published_datasets': }
+        }
     }
     else {
         $web_proxy = undef
