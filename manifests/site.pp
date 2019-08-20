@@ -1085,6 +1085,10 @@ node /^es200[1-4]\.codfw\.wmnet/ {
     role(mariadb::temporary_storage)
 }
 
+node /^failoid[12]001\.(eqiad|codfw)\.wmnet$/ {
+    role(failoid)
+}
+
 # Backup system, see T176505.
 # This is a reserved system. Ask Otto or Faidon.
 node 'flerovium.eqiad.wmnet' {
