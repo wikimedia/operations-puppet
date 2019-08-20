@@ -1497,6 +1497,7 @@ node /^logstash101[0-2]\.eqiad\.wmnet$/ {
 node /^logstash100[7-9]\.eqiad\.wmnet$/ {
     role(logstash)
     include ::lvs::realserver
+    interface::add_ip6_mapped { 'main': }
 }
 
 # codfw logstash kafka/elasticsearch
@@ -1511,6 +1512,7 @@ node /^logstash200[1-3]\.codfw\.wmnet$/ {
 node /^logstash200[4-6]\.codfw\.wmnet$/ {
     role(logstash)
     include ::lvs::realserver # lint:ignore:wmf_styleguide
+    interface::add_ip6_mapped { 'main': }
 }
 
 node /lvs101[3456]\.eqiad\.wmnet/ {
