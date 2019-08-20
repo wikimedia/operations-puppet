@@ -1592,15 +1592,18 @@ node /^ms-fe1005\.eqiad\.wmnet$/ {
     role(swift::proxy)
     include ::role::swift::stats_reporter
     include ::lvs::realserver
+    interface::add_ip6_mapped { 'main': }
 }
 
 node /^ms-fe100[6-8]\.eqiad\.wmnet$/ {
     role(swift::proxy)
     include ::lvs::realserver
+    interface::add_ip6_mapped { 'main': }
 }
 
 node /^ms-be10(1[6-9]|[2345][0-9])\.eqiad\.wmnet$/ {
     role(swift::storage)
+    interface::add_ip6_mapped { 'main': }
 }
 
 node /^ms-fe2005\.codfw\.wmnet$/ {
