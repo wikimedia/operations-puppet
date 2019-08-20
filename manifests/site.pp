@@ -2130,9 +2130,11 @@ node /^(rdb1006|rdb1010)\.eqiad\.wmnet$/ {
 
 node /^rdb200[35]\.codfw\.wmnet$/ {
     role(redis::misc::master)
+    interface::add_ip6_mapped { 'main': }
 }
 node /^rdb200[46]\.codfw\.wmnet$/ {
     role(redis::misc::slave)
+    interface::add_ip6_mapped { 'main': }
 }
 
 node /^registry[12]00[12]\.(eqiad|codfw)\.wmnet$/ {
