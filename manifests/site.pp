@@ -2142,6 +2142,7 @@ node /^rdb200[46]\.codfw\.wmnet$/ {
 
 node /^registry[12]00[12]\.(eqiad|codfw)\.wmnet$/ {
     role(docker_registry_ha::registry)
+    interface::add_ip6_mapped { 'main': }
 }
 
 
