@@ -1619,6 +1619,7 @@ node /^ms-be20(1[6-9]|[2345][0-9])\.codfw\.wmnet$/ {
 # Debug servers
 node /^mwdebug100[12]\.eqiad\.wmnet$/ {
     role(mediawiki::canary_appserver)
+    interface::add_ip6_mapped { 'main': }
 }
 
 # Appservers (serving normal website traffic)
@@ -1628,6 +1629,7 @@ node /^mwdebug100[12]\.eqiad\.wmnet$/ {
 # mw1261 - mw1275 are in rack A7
 node /^mw126[1-5]\.eqiad\.wmnet$/ {
     role(mediawiki::canary_appserver)
+    interface::add_ip6_mapped { 'main': }
 }
 node /^mw12(6[6-9]|7[0-5])\.eqiad\.wmnet$/ {
     role(mediawiki::appserver)
@@ -1654,6 +1656,7 @@ node /^mw12(3[8-9]|4[0-9]|5[0-8])\.eqiad\.wmnet$/ {
 # mw1276 - mw1283 are in rack A7
 node /^mw127[6-9]\.eqiad\.wmnet$/ {
     role(mediawiki::appserver::canary_api)
+    interface::add_ip6_mapped { 'main': }
 }
 node /^mw128[0-3]\.eqiad\.wmnet$/ {
     role(mediawiki::appserver::api)
