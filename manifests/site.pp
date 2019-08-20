@@ -1481,11 +1481,13 @@ node 'labstore2004.codfw.wmnet' {
 # buster upgrade)
 node /^ldap-eqiad-replica0[1-2]\.wikimedia\.org$/ {
     role(openldap::replica)
+    interface::add_ip6_mapped { 'main': }
 }
 
 # Read-only ldap replicas in codfw
 node /^ldap-replica200[1-2]\.wikimedia\.org$/ {
     role(openldap::replica)
+    interface::add_ip6_mapped { 'main': }
 }
 
 node 'lithium.eqiad.wmnet' {
@@ -2045,6 +2047,7 @@ node /^planet[12]001\.(eqiad|codfw)\.wmnet$/ {
 # LDAP servers relied on by OIT for mail
 node /(dubnium|pollux)\.wikimedia\.org/ {
     role(openldap::corp)
+    interface::add_ip6_mapped { 'main': }
 }
 
 node /poolcounter[12]00[345]\.(codfw|eqiad)\.wmnet/ {
@@ -2198,6 +2201,7 @@ node /^scb[12]00[123456]\.(eqiad|codfw)\.wmnet$/ {
 # Codfw, eqiad ldap servers, aka ldap-$::site
 node /^(seaborgium|serpens)\.wikimedia\.org$/ {
     role(openldap::labs)
+    interface::add_ip6_mapped { 'main': }
 }
 
 node 'sodium.wikimedia.org' {
