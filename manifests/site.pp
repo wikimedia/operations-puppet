@@ -1214,6 +1214,7 @@ node /^ganeti400[1-3]\.ulsfo.wmnet$/ {
 # Virtual machine being turned up to run Grafana (T210416)
 node 'grafana1001.eqiad.wmnet' {
     role(grafana)
+    interface::add_ip6_mapped { 'main': }
 }
 
 # debug_proxy hosts; Varnish backend for X-Wikimedia-Debug reqs
