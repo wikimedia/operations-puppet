@@ -2074,16 +2074,19 @@ node /^relforge100[1-2]\.eqiad\.wmnet/ {
 # restbase eqiad cluster
 node /^restbase10(1[6-9]|2[0-7])\.eqiad\.wmnet$/ {
     role(restbase::production)
+    interface::add_ip6_mapped { 'main': }
 }
 
 # restbase codfw cluster
 node /^restbase20(09|1[0-9]|20)\.codfw\.wmnet$/ {
     role(restbase::production)
+    interface::add_ip6_mapped { 'main': }
 }
 
 # cassandra/restbase dev cluster
 node /^restbase-dev100[4-6]\.eqiad\.wmnet$/ {
     role(restbase::dev_cluster)
+    interface::add_ip6_mapped { 'main': }
 }
 
 # Failoid service (Ganeti VM)
