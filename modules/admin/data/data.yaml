@@ -83,7 +83,8 @@ groups:
                  'ALL = NOPASSWD: /sbin/start hhvm',
                  'ALL = NOPASSWD: /usr/sbin/apache2ctl',
                  'ALL = NOPASSWD: /etc/init.d/apache2',
-                 'ALL = NOPASSWD: /usr/bin/renice']
+                 'ALL = NOPASSWD: /usr/bin/renice',
+                 'ALL = NOPASSWD: /usr/local/sbin/fix-staging-perms']
   restricted:
     gid: 706
     description: access to mwmaint hosts, mwlog hosts (private data) and bastion hosts
