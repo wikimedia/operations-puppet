@@ -1103,6 +1103,7 @@ node /^es201[89]\.codfw\.wmnet/ {
 
 node /^es200[1-4]\.codfw\.wmnet/ {
     role(mariadb::temporary_storage)
+    interface::add_ip6_mapped { 'main': }
 }
 
 node /^failoid[12]001\.(eqiad|codfw)\.wmnet$/ {
