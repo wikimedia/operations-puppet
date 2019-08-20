@@ -1220,6 +1220,7 @@ node 'grafana1001.eqiad.wmnet' {
 # debug_proxy hosts; Varnish backend for X-Wikimedia-Debug reqs
 node /^(hassaleh|hassium)\.(codfw|eqiad)\.wmnet$/ {
     role(debug_proxy)
+    interface::add_ip6_mapped { 'main': }
 }
 
 node 'helium.eqiad.wmnet' {
