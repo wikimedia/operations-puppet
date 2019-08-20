@@ -2205,14 +2205,17 @@ node 'stat1007.eqiad.wmnet' {
 # and to hieradata/hosts/ if running dumps for enwiki or wikidata.
 node /^snapshot100[569]\.eqiad\.wmnet/ {
     role(dumps::generation::worker::dumper)
+    interface::add_ip6_mapped { 'main': }
 }
 
 node /^snapshot1007\.eqiad\.wmnet/ {
     role(dumps::generation::worker::dumper_monitor)
+    interface::add_ip6_mapped { 'main': }
 }
 
 node /^snapshot1008\.eqiad\.wmnet/ {
     role(dumps::generation::worker::dumper_misc_crons_only)
+    interface::add_ip6_mapped { 'main': }
 }
 
 node 'mwmaint2001.codfw.wmnet' {
