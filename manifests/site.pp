@@ -2317,29 +2317,35 @@ node /^cloudvirtan100[1-5].eqiad.wmnet$/ {
 # Wikidata query service
 node /^wdqs100[4-6]\.eqiad\.wmnet$/ {
     role(wdqs)
+    interface::add_ip6_mapped { 'main': }
 }
 
 node /^wdqs200[1-3]\.codfw\.wmnet$/ {
     role(wdqs)
+    interface::add_ip6_mapped { 'main': }
 }
 
 # Wikidata query service internal
 node /^wdqs100[378]\.eqiad\.wmnet$/ {
     role(wdqs::internal)
+    interface::add_ip6_mapped { 'main': }
 }
 
 node /^wdqs200[4-6]\.codfw\.wmnet$/ {
     role(wdqs::internal)
+    interface::add_ip6_mapped { 'main': }
 }
 
 # Wikidata query service automated deployment
 node 'wdqs1009.eqiad.wmnet' {
     role(wdqs::autodeploy)
+    interface::add_ip6_mapped { 'main': }
 }
 
 # Wikidata query service test
 node 'wdqs1010.eqiad.wmnet' {
     role(wdqs::test)
+    interface::add_ip6_mapped { 'main': }
 }
 
 node 'weblog1001.eqiad.wmnet'
