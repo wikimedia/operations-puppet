@@ -1098,12 +1098,14 @@ node /^failoid[12]001\.(eqiad|codfw)\.wmnet$/ {
 # This is a reserved system. Ask Otto or Faidon.
 node 'flerovium.eqiad.wmnet' {
     role(analytics_cluster::hadoop::client)
+    interface::add_ip6_mapped { 'main': }
 }
 
 # Backup system, see T176506.
 # This is a reserved system. Ask Otto or Faidon.
 node 'furud.codfw.wmnet' {
     role(analytics_cluster::hadoop::client)
+    interface::add_ip6_mapped { 'main': }
 }
 
 # Test Ganeti instance aimed to iron out all
