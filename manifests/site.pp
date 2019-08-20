@@ -272,6 +272,7 @@ node /^(contint1001|contint2001)\.wikimedia\.org$/ {
 # Debian package/docker images building host in production
 node /^boron\.eqiad\.wmnet$/ {
     role(builder)
+    interface::add_ip6_mapped { 'main': }
 }
 
 # cp1008: to be decommed T229586
