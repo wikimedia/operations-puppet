@@ -916,6 +916,7 @@ node /^dbproxy10(01|02|03|05|06|07|08|13|14)\.eqiad\.wmnet$/ {
 # Passive codfw proxies for misc databases
 node /^dbproxy20(01|02|03)\.codfw\.wmnet$/ {
     role(mariadb::proxy::master)
+    interface::add_ip6_mapped { 'main': }
 }
 
 
