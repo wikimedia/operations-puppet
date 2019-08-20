@@ -3076,7 +3076,7 @@ users:
     ssh_keys:
       - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQCiNDB55aZMkiwZXVa6PH54ab/DFMKKAJ37E4WUMg0j7YqHbsX74IcObe/hXgvqkzxQ+yrIt1oVeG2g0qD42PMikITY86SuLj71xPGnh8HAU4Hu44+kFePn/LSgdBhZm0jXMMebhuVfv6gZebjWq1cB4bFgks1dsIvHka0BjZK+IKeZM8g0EyiRSuItxGsoMxDbwJQDznMZqWjSOgTuv0JXmDNqiSNQhhW8mQbE4YI/sf2VjdorSoGUn+6REtqNp4McKXaQ5S981KF5+ejbWTx7ZGfv5eWivH7bGLUd5pj5TWMbly2dognx7QbbuuyaR7yhaBUSmUM1w+ocu6J8HCuD7WpB6+3h5RJeix5TwQsc74/ws+FQMQzpN0Z9B/B5yD7VSk6b2g79UzkUFdxTESLid5LpyJki6wmYBGxZ0STJovleRY1BDSiQvEKgC51GGrIqhht3wdOXgaaAm3rzK9ZINidxr+wBB5fOGdk7tassvhtromRlKhfpDoZgVzeI69Z7i5GS/r+eU2236NyCiWpY2Pkeg5wHz1x+1c3ZVwXIhf+lUqD9u8C1yIzyrHCpJedvR+TSWMUutrN34zC60dqGqMKNj1k8a9AjZHL3oTcDsRrRBo6a/SIxN8/zCw17qowhPGcNmkMdZ46BsE0sFlYWRkhUcsahXxY42rxFdH/+qQ== fselles@wikimedia.org
     uid: 20429
-    email: fselles@wikimedia.org
+    email: fabian.sellesrosa@gmail.com
   cdanis:
     ensure: present
     realname: Chris Danis
