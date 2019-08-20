@@ -863,18 +863,23 @@ node 'db1140.eqiad.wmnet' {
 
 node 'db2097.codfw.wmnet' {
     role(mariadb::dbstore_multiinstance)
+    interface::add_ip6_mapped { 'main': }
 }
 node 'db2098.codfw.wmnet' {
     role(mariadb::dbstore_multiinstance)
+    interface::add_ip6_mapped { 'main': }
 }
 node 'db2099.codfw.wmnet' {
     role(mariadb::dbstore_multiinstance)
+    interface::add_ip6_mapped { 'main': }
 }
 node 'db2100.codfw.wmnet' {
     role(mariadb::dbstore_multiinstance)
+    interface::add_ip6_mapped { 'main': }
 }
 node 'db2101.codfw.wmnet' {
     role(mariadb::dbstore_multiinstance)
+    interface::add_ip6_mapped { 'main': }
 }
 
 # backup testing hosts
