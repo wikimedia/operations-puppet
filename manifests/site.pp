@@ -1117,6 +1117,7 @@ node 'furud.codfw.wmnet' {
 # More details: T211836
 node 'kerberos1001.eqiad.wmnet' {
     role(kerberos::kdc)
+    interface::add_ip6_mapped { 'main': }
 }
 
 # Etcd cluster for kubernetes
