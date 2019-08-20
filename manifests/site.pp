@@ -172,16 +172,14 @@ node 'archiva1001.wikimedia.org' {
     interface::add_ip6_mapped { 'main': }
 }
 
-node 'auth1001.eqiad.wmnet' {
+node /auth100[12]\.eqiad\.wmnet/ {
     role('yubiauth_server')
-}
-
-node 'auth1002.eqiad.wmnet' {
-    role('yubiauth_server')
+    interface::add_ip6_mapped { 'main': }
 }
 
 node 'auth2001.codfw.wmnet' {
     role('yubiauth_server')
+    interface::add_ip6_mapped { 'main': }
 }
 
 node /^authdns[12]001\.wikimedia\.org$/ {
