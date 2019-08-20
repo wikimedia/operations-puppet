@@ -2213,6 +2213,7 @@ node 'scandium.eqiad.wmnet' {
 
 node /schema[12]00[12].(eqiad|codfw).wmnet/ {
     role(eventschemas::service)
+    interface::add_ip6_mapped { 'main': }
 }
 
 # new sessionstore servers via T209393 & T209389
