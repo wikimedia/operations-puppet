@@ -1,3 +1,4 @@
+# lint:ignore:wmf_styleguide
 # This is a role for systems which are in the process of being reclaimed
 # or decommissioned. IOW. the host once had a feature role assigned, but
 # currently no has it. If such hosts are simply reset to "include
@@ -11,6 +12,12 @@
 class role::spare::system {
     include ::profile::standard
     include ::profile::base::firewall
+    # This is a style validation however it makes senses in this instance as
+    # a) people will likely forget to add this parameter when moving hosts to
+    # the spare role
+    # b) We will hopefully move this to profile::standard shortly
+    interface::add_ip6_mapped { 'main': }
 
     system::role { 'spare::system': description => 'Unused spare system' }
 }
+# lint:endignore
