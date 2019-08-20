@@ -587,9 +587,21 @@ host puppetdb1001 {
     fixed-address puppetdb1001.eqiad.wmnet;
 }
 
+host puppetdb1002 {
+    hardware ethernet aa:00:00:63:08:62;
+    fixed-address puppetdb1002.eqiad.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/buster-installer/";
+}
+
 host puppetdb2001 {
     hardware ethernet aa:00:00:e8:86:f7;
     fixed-address puppetdb2001.codfw.wmnet;
+}
+
+host puppetdb2002 {
+    hardware ethernet aa:00:00:94:67:50;
+    fixed-address puppetdb2002.codfw.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/buster-installer/";
 }
 
 host elnath {
