@@ -2016,10 +2016,12 @@ node 'puppetmaster1003.eqiad.wmnet' {
 
 node /^puppetboard[12]001\.(codfw|eqiad)\.wmnet$/ {
     role(puppetboard)
+    interface::add_ip6_mapped { 'main': }
 }
 
 node /^puppetdb[12]001\.(codfw|eqiad)\.wmnet$/ {
     role(puppetmaster::puppetdb)
+    interface::add_ip6_mapped { 'main': }
 }
 
 # pybal-test200X VMs are used for pybal testing/development
