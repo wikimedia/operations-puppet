@@ -1311,11 +1311,13 @@ node 'graphite1004.eqiad.wmnet' {
     # TODO: move the roles below to ::role::alerting::host
     include ::role::graphite::alerts
     include ::role::elasticsearch::alerts
+    interface::add_ip6_mapped { 'main': }
 }
 
 # Standby graphite host
 node 'graphite2003.codfw.wmnet' {
     role(graphite::production)
+    interface::add_ip6_mapped { 'main': }
 }
 
 node 'idp1001.wikimedia.org' {
