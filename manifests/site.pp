@@ -726,6 +726,7 @@ node 'db2062.codfw.wmnet' {
     class { '::role::mariadb::misc':
         shard  => 'm1',
     }
+    interface::add_ip6_mapped { 'main': }
 }
 
 
@@ -744,6 +745,7 @@ node 'db2067.codfw.wmnet' {
     class { '::role::mariadb::misc':
         shard => 'm2',
     }
+    interface::add_ip6_mapped { 'main': }
 }
 
 ## m3 shard
@@ -800,6 +802,7 @@ node /^db20(70)\.codfw\.wmnet/ {
     class { '::role::mariadb::misc':
         shard => 'm5',
     }
+    interface::add_ip6_mapped { 'main': }
 }
 
 # misc multiinstance
