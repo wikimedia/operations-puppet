@@ -944,6 +944,7 @@ node /^dbmonitor[12]001\.wikimedia\.org$/ {
 
 node /^debmonitor[12]001\.(codfw|eqiad)\.wmnet$/ {
     role(debmonitor::server)
+    interface::add_ip6_mapped { 'main': }
 }
 
 node /^dns100[12]\.wikimedia\.org$/ {
