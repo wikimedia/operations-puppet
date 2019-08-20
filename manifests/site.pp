@@ -1610,6 +1610,7 @@ node /^mc20(19|2[0-9]|3[0-6])\.codfw\.wmnet/ {
 # OTRS - ticket.wikimedia.org
 node 'mendelevium.eqiad.wmnet' {
     role(otrs)
+    interface::add_ip6_mapped { 'main': }
 }
 
 node 'multatuli.wikimedia.org' {
