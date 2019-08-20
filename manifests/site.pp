@@ -1749,6 +1749,7 @@ node /^mw133[4-8]\.eqiad\.wmnet$/ {
 # mwdebug2001 is in row A, mwdebug2002 is in row B
 node /^mwdebug200[12]\.codfw\.wmnet$/ {
     role(mediawiki::canary_appserver)
+    interface::add_ip6_mapped { 'main': }
 }
 
 
@@ -1760,6 +1761,7 @@ node /^mwdebug200[12]\.codfw\.wmnet$/ {
 # mw2239-42 are in rack A4
 node /^mw22(2[4-9]|3[0-9]|4[0-2])\.codfw\.wmnet$/ {
     role(mediawiki::appserver)
+    interface::add_ip6_mapped { 'main': }
 }
 
 # Row B
@@ -1767,11 +1769,13 @@ node /^mw22(2[4-9]|3[0-9]|4[0-2])\.codfw\.wmnet$/ {
 #mw2254-2258 are in rack B3
 node /^mw225[4-8]\.codfw\.wmnet$/ {
     role(mediawiki::appserver)
+    interface::add_ip6_mapped { 'main': }
 }
 
 #mw2268-70 are in rack B3
 node /^mw22(6[8-9]|70)\.codfw\.wmnet$/ {
     role(mediawiki::appserver)
+    interface::add_ip6_mapped { 'main': }
 }
 
 # Row C
@@ -1780,6 +1784,7 @@ node /^mw22(6[8-9]|70)\.codfw\.wmnet$/ {
 # mw2187-mw2199 are in rack C4
 node /^mw21(6[3-9]|[7-9][0-9])\.codfw\.wmnet$/ {
     role(mediawiki::appserver)
+    interface::add_ip6_mapped { 'main': }
 }
 
 # Row D
@@ -1787,6 +1792,7 @@ node /^mw21(6[3-9]|[7-9][0-9])\.codfw\.wmnet$/ {
 #mw2271-77 are in rack D3
 node /^mw227[1-7]\.codfw\.wmnet$/ {
     role(mediawiki::appserver)
+    interface::add_ip6_mapped { 'main': }
 }
 
 # Api
@@ -1796,11 +1802,13 @@ node /^mw227[1-7]\.codfw\.wmnet$/ {
 # mw2215-2223 are in rack A3
 node /^mw22(1[5-9]|2[0123])\.codfw\.wmnet$/ {
     role(mediawiki::appserver::api)
+    interface::add_ip6_mapped { 'main': }
 }
 
 # mw2244-mw2245,mw2251-2253 are rack A4
 node /^mw22(4[45]|5[1-3])\.codfw\.wmnet$/ {
     role(mediawiki::appserver::api)
+    interface::add_ip6_mapped { 'main': }
 }
 
 # Row B
@@ -1808,11 +1816,13 @@ node /^mw22(4[45]|5[1-3])\.codfw\.wmnet$/ {
 # mw2135-2147 are in rack B4
 node /^mw21([3][5-9]|4[0-7])\.codfw\.wmnet$/ {
     role(mediawiki::appserver::api)
+    interface::add_ip6_mapped { 'main': }
 }
 
 # mw2261-mw2262 are in rack B3
 node /^mw226[1-2]\.codfw\.wmnet$/ {
     role(mediawiki::appserver::api)
+    interface::add_ip6_mapped { 'main': }
 }
 
 # Row C
@@ -1820,6 +1830,7 @@ node /^mw226[1-2]\.codfw\.wmnet$/ {
 # mw2200-2214 are in rack C4
 node /^mw22(0[0-9]|1[0124])\.codfw\.wmnet$/ {
     role(mediawiki::appserver::api)
+    interface::add_ip6_mapped { 'main': }
 }
 
 # Row D
@@ -1827,6 +1838,7 @@ node /^mw22(0[0-9]|1[0124])\.codfw\.wmnet$/ {
 #mw2283-90 are in rack D4
 node /^mw22(8[3-9]|90)\.codfw\.wmnet$/ {
     role(mediawiki::appserver::api)
+    interface::add_ip6_mapped { 'main': }
 }
 
 # Jobrunners
@@ -1836,6 +1848,7 @@ node /^mw22(8[3-9]|90)\.codfw\.wmnet$/ {
 # mw2243, mw2246-mw2250 are in rack A4
 node /^mw22(4[36789]|50)\.codfw\.wmnet$/ {
     role(mediawiki::jobrunner)
+    interface::add_ip6_mapped { 'main': }
 }
 
 # Row B
@@ -1843,6 +1856,7 @@ node /^mw22(4[36789]|50)\.codfw\.wmnet$/ {
 # mw2259-60 are in rack B3
 node /^mw22(59|60)\.codfw\.wmnet$/ {
     role(mediawiki::jobrunner)
+    interface::add_ip6_mapped { 'main': }
 }
 
 # mw2263-7 are in rack B3
@@ -1855,6 +1869,7 @@ node /^mw226[3-7]\.codfw\.wmnet$/ {
 # mw2150-62 are in rack C3
 node /^mw21(5[0-9]|6[0-2])\.codfw\.wmnet$/ {
     role(mediawiki::jobrunner)
+    interface::add_ip6_mapped { 'main': }
 }
 
 # Row D
@@ -1862,6 +1877,7 @@ node /^mw21(5[0-9]|6[0-2])\.codfw\.wmnet$/ {
 # mw2278-80 are in rack D3, mw2281-2 are in rack D4
 node /^mw22(7[8-9]|8[0-2])\.codfw\.wmnet$/ {
     role(mediawiki::jobrunner)
+    interface::add_ip6_mapped { 'main': }
 }
 
 ## END MEDIAWIKI APPLICATION SERVERS
