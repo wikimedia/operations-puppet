@@ -1953,6 +1953,7 @@ node /^pc20(09)\.codfw\.wmnet$/ {
 # virtual machines for https://wikitech.wikimedia.org/wiki/Ping_offload
 node /^ping[12]001\.(eqiad|codfw)\.wmnet$/ {
     role(ping_offload)
+    interface::add_ip6_mapped { 'main': }
 }
 
 # virtual machines hosting https://wikitech.wikimedia.org/wiki/Planet.wikimedia.org
