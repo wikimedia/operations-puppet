@@ -235,6 +235,7 @@ node 'bromine.eqiad.wmnet', 'vega.codfw.wmnet' {
 # Replacement to Lithium T195416
 node 'centrallog1001.eqiad.wmnet' {
     role(syslog::centralserver)
+    interface::add_ip6_mapped { 'main': }
 }
 
 node /^cloudstore100[89]\.wikimedia\.org/ {
@@ -2292,6 +2293,7 @@ node /^webperf[12]002\.(codfw|eqiad)\.wmnet/ {
 
 node 'wezen.codfw.wmnet' {
     role(syslog::centralserver)
+    interface::add_ip6_mapped { 'main': }
 }
 
 # https://www.mediawiki.org/wiki/Parsoid
