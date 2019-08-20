@@ -18,6 +18,8 @@ CONFIG proxy.config.http.response_server_enabled INT 2
 CONFIG proxy.config.url_remap.pristine_host_hdr INT 1
 CONFIG proxy.config.disable_configuration_modification INT 1
 
+CONFIG proxy.config.net.sock_option_flag_in INT <%= @inbound_socket_options %>
+
 <% if @enable_caching -%>
 <% if @required_headers -%>
 CONFIG proxy.config.http.cache.required_headers INT <%= @required_headers %>

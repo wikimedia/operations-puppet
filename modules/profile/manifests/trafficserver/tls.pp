@@ -59,19 +59,20 @@ class profile::trafficserver::tls (
     }
 
     trafficserver::instance { $instance_name:
-        paths                => $paths,
-        port                 => $port,
-        inbound_tls_settings => $inbound_tls_settings,
-        enable_xdebug        => $enable_xdebug,
-        mapping_rules        => $mapping_rules,
-        global_lua_script    => $tls_lua_script_path,
-        enable_caching       => false,
-        log_formats          => $log_formats,
-        log_filters          => $log_filters,
-        logs                 => $logs,
-        parent_rules         => $parent_rules,
-        error_page           => template('mediawiki/errorpage.html.erb'),
-        x_forwarded_for      => 1,
+        paths                  => $paths,
+        port                   => $port,
+        inbound_socket_options => 0xd,
+        inbound_tls_settings   => $inbound_tls_settings,
+        enable_xdebug          => $enable_xdebug,
+        mapping_rules          => $mapping_rules,
+        global_lua_script      => $tls_lua_script_path,
+        enable_caching         => false,
+        log_formats            => $log_formats,
+        log_filters            => $log_filters,
+        logs                   => $logs,
+        parent_rules           => $parent_rules,
+        error_page             => template('mediawiki/errorpage.html.erb'),
+        x_forwarded_for        => 1,
     }
 
     trafficserver::lua_script { 'tls':
