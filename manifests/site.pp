@@ -808,9 +808,11 @@ node /^db20(70)\.codfw\.wmnet/ {
 # misc multiinstance
 node 'db1117.eqiad.wmnet' {
     role(mariadb::misc::multiinstance)
+    interface::add_ip6_mapped { 'main': }
 }
 node 'db2078.codfw.wmnet' {
     role(mariadb::misc::multiinstance)
+    interface::add_ip6_mapped { 'main': }
 }
 
 # sanitarium hosts
