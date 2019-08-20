@@ -569,13 +569,13 @@ node /^db2(047|054|061|068|077|120|121|122)\.codfw\.wmnet/ {
 
 # s8 (wikidata) core production dbs on eqiad
 # eqiad master
-node 'db1104.eqiad.wmnet' {
+node 'db1109.eqiad.wmnet' {
     role(mariadb::core)
     interface::add_ip6_mapped { 'main': }
 }
 
 # See also db1099 and db1101 below
-node /^db1(092|087|109|126)\.eqiad\.wmnet/ {
+node /^db1(092|087|104|126)\.eqiad\.wmnet/ {
     role(mariadb::core)
     interface::add_ip6_mapped { 'main': }
 }

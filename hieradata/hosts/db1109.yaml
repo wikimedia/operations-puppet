@@ -1,4 +1,4 @@
 # db1109
-# candidate master for s8
 mariadb::shard: 's8'
+mariadb::mysql_role: 'master'
 mariadb::binlog_format: 'STATEMENT'
