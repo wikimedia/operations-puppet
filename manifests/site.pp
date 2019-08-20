@@ -921,9 +921,11 @@ node /^dbstore100(3|4|5)\.eqiad\.wmnet$/ {
 # eqiad ones pending full setup
 node 'dbprov1001.eqiad.wmnet' {
     role(mariadb::backups)
+    interface::add_ip6_mapped { 'main': }
 }
 node 'dbprov1002.eqiad.wmnet' {
     role(mariadb::backups)
+    interface::add_ip6_mapped { 'main': }
 }
 node 'dbprov2001.codfw.wmnet' {
     role(mariadb::backups)
