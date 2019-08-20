@@ -49,8 +49,8 @@ profile::elasticsearch::common_settings:
     # Increase the per-node cache for compiled LTR models from default 10MB
     ltr_cache_size: '100mb'
 
-    # Let apifeatureusage create their indices
-    auto_create_index: '+apifeatureusage-*,-*'
+    # Let apifeatureusage and glent (via mjolnir) create their indices
+    auto_create_index: '+apifeatureusage-*,+glent_*,-*'
 
     script_max_compilations_per_minute: 10000
     bulk_thread_pool_executors: 6
