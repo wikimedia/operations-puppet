@@ -1395,6 +1395,7 @@ node /kafkamon[12]001\.(codfw|eqiad)\.wmnet/ {
 # profile::racktables             - https://racktables.wikimedia.org
 node 'krypton.eqiad.wmnet', 'miscweb2001.codfw.wmnet' {
     role(webserver_misc_apps)
+    interface::add_ip6_mapped { 'main': }
 }
 
 node /kubernetes[12]00[1-6]\.(codfw|eqiad)\.wmnet/ {
