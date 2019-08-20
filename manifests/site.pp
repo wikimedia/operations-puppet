@@ -1019,18 +1019,22 @@ node 'eeden.wikimedia.org' {
 
 node /^elastic101[7-9]\.eqiad\.wmnet/ {
     role(elasticsearch::cirrus)
+    interface::add_ip6_mapped { 'main': }
 }
 
 node /^elastic102[023456789]\.eqiad\.wmnet/ {
     role(elasticsearch::cirrus)
+    interface::add_ip6_mapped { 'main': }
 }
 
 node /^elastic10[3-4][0-9]\.eqiad\.wmnet/ {
     role(elasticsearch::cirrus)
+    interface::add_ip6_mapped { 'main': }
 }
 
 node /^elastic105[0-2]\.eqiad\.wmnet/ {
     role(elasticsearch::cirrus)
+    interface::add_ip6_mapped { 'main': }
 }
 
 node /^elastic202[5-9]\.codfw\.wmnet/ {
