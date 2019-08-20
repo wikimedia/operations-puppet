@@ -816,11 +816,13 @@ node /^db2(094|095)\.codfw\.wmnet/ {
 # tendril db
 node 'db1115.eqiad.wmnet' {
     role(mariadb::misc::tendril_and_zarcillo)
+    interface::add_ip6_mapped { 'main': }
 }
 
 # Standby tendril host
 node 'db2093.codfw.wmnet' {
     role(mariadb::misc::tendril)
+    interface::add_ip6_mapped { 'main': }
 }
 
 # eqiad backup sources
