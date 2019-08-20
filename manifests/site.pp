@@ -1190,6 +1190,7 @@ node 'neon.eqiad.wmnet' {
 # Etcd cluster for "virtual" networking
 node /^etcd100[456]\.eqiad\.wmnet$/ {
     role(etcd::networking)
+    interface::add_ip6_mapped { 'main': }
 }
 
 # Etherpad (virtual machine)
