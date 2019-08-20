@@ -1958,6 +1958,7 @@ node /^ncredir200[12]\.codfw\.wmnet$/ {
 # SWAP (Jupyter Notebook) Servers with Analytics Cluster Access
 node /notebook100[34].eqiad.wmnet/ {
     role(swap)
+    interface::add_ip6_mapped { 'main': }
 }
 
 
