@@ -8,9 +8,9 @@ class profile::mediawiki::alerts {
   ['eqiad', 'codfw'].each |String $site| {
     ['appserver', 'api_appserver'].each |String $cluster| {
       monitoring::check_prometheus { "mediawiki_http_requests_${cluster}_${site}_get":
-        description     => "High average GET latency for mediawiki requests on cluster ${cluster} in ${site}",
+        description     => "High average GET latency for mw requests on ${cluster} in ${site}",
         # Filter out NaN values
-        query           => "cluster_code_method_handler:mediawiki_http_requests_duration:avg2m{cluster=\"${cluster}\",method=\"GET\"} > 0",
+        query           => "cluster_code_method_handler:mediawiki_http_requests_duration:avg2m{cluster=\"${cluster}\",method=\"GET\",code=~\"[1-4]..\"} > 0",
         prometheus_url  => "http://prometheus.svc.${site}.wmnet/ops",
         method          => 'gt',
         warning         => 0.2, # seconds
@@ -19,9 +19,9 @@ class profile::mediawiki::alerts {
       }
 
       monitoring::check_prometheus { "mediawiki_http_requests_${cluster}_${site}_post":
-        description     => "High average POST latency for mediawiki requests on cluster ${cluster} in ${site}",
+        description     => "High average POST latency for mw requests on ${cluster} in ${site}",
         # Filter out NaN values
-        query           => "cluster_code_method_handler:mediawiki_http_requests_duration:avg2m{cluster=\"${cluster}\",method=\"POST\"} > 0",
+        query           => "cluster_code_method_handler:mediawiki_http_requests_duration:avg2m{cluster=\"${cluster}\",method=\"POST\",code=~\"[1-4]..\"} > 0",
         prometheus_url  => "http://prometheus.svc.${site}.wmnet/ops",
         method          => 'gt',
         warning         => 0.25, # seconds
