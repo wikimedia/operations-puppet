@@ -12,6 +12,7 @@ class profile::mediawiki::alerts {
         # Filter out NaN values
         query           => "cluster_code_method_handler:mediawiki_http_requests_duration:avg2m{cluster=\"${cluster}\",method=\"GET\",code=~\"[1-4]..\"} > 0",
         prometheus_url  => "http://prometheus.svc.${site}.wmnet/ops",
+        retries         => 2,
         method          => 'gt',
         warning         => 0.2, # seconds
         critical        => 0.3, # seconds
@@ -23,9 +24,10 @@ class profile::mediawiki::alerts {
         # Filter out NaN values
         query           => "cluster_code_method_handler:mediawiki_http_requests_duration:avg2m{cluster=\"${cluster}\",method=\"POST\",code=~\"[1-4]..\"} > 0",
         prometheus_url  => "http://prometheus.svc.${site}.wmnet/ops",
+        retries         => 2,
         method          => 'gt',
-        warning         => 0.25, # seconds
-        critical        => 0.3, # seconds
+        warning         => 1, # seconds
+        critical        => 1.3, # seconds
         dashboard_links => ["https://grafana.wikimedia.org/d/RIA1lzDZk/application-servers-red-dashboard?panelId=9&fullscreen&orgId=1&from=now-3h&to=now&var-datasource=${site} prometheus/ops&var-cluster=${cluster}&var-method=POST"],
       }
 
