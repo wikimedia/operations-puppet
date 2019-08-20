@@ -755,6 +755,7 @@ node 'db1128.eqiad.wmnet' {
 # codfw
 node 'db2065.codfw.wmnet' {
     role(mariadb::misc::phabricator)
+    interface::add_ip6_mapped { 'main': }
 }
 
 
