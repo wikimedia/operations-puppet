@@ -1561,10 +1561,12 @@ node 'maps1004.eqiad.wmnet' {
 
 node /^maps200[1-3]\.codfw\.wmnet/ {
     role(maps::slave)
+    interface::add_ip6_mapped { 'main': }
 }
 
 node 'maps2004.codfw.wmnet' {
     role(maps::master)
+    interface::add_ip6_mapped { 'main': }
 }
 
 node 'matomo1001.eqiad.wmnet' {
