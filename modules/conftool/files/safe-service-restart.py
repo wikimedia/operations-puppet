@@ -45,7 +45,7 @@ class ServiceRestarter(ToolCliBase):
         Finds if a service for a host is pooled or not.
         """
         pooled = self._get_objects()
-        if not len(pooled):
+        if not pooled:
             logger.info("The server is depooled from all services. Restarting the service directly")
             # Everything is depooled, we can just restart the services
             return self._restart_services()
@@ -57,12 +57,40 @@ class ServiceRestarter(ToolCliBase):
         rc = self._restart_services()
         # If the restart fails, we don't really want to repool.
         if rc != 0:
-            logger.warn('Service restart failed. NOT repooling')
+            logger.warning('Service restart failed. NOT repooling')
             return rc
         logger.info("Repooling previously pooled services")
         if not self.pool(pooled):
             return self.DEFAULT_RC
         return rc
+
+    def run_depool(self):
+        """
+        Only depools a service if it is pooled
+        """
+        pooled = self._get_objects("yes")
+        logger.info("Depooling currently pooled services")
+        if not pooled:
+            logger.info("Services already depooled")
+        elif not self.depool(pooled):
+            logger.warning('Service depool failed.')
+            return self.DEFAULT_RC
+
+        return 0
+
+    def run_pool(self):
+        """
+        Only depools a service if it is depooled (NOT inactive)
+        """
+        depooled = self._get_objects("no")
+        logger.info("Pooling currently depooled services")
+        if not depooled:
+            logger.info("No service to pool.")
+        elif not self.pool(depooled):
+            logger.warning('Service pool failed.')
+            return self.DEFAULT_RC
+
+        return 0
 
     def _restart_services(self):
         for svc in self.services:
@@ -76,11 +104,11 @@ class ServiceRestarter(ToolCliBase):
                 logger.error('Executing command %s failed: %s', cmd_str, e)
                 return e.returncode
 
-    def _get_objects(self):
+    def _get_objects(self, pooled_state="yes"):
         """Gets the objects corresponding to the services we're operating on"""
         selector = {'service': re.compile('|'.join(self.pools)), 'name': re.compile(self.fqdn)}
         objects = list(self.entity.query(selector))
-        pooled = [o for o in objects if o.pooled == 'yes']
+        pooled = [o for o in objects if o.pooled == pooled_state]
         return pooled
 
     def depool(self, pooled):
@@ -93,7 +121,7 @@ class ServiceRestarter(ToolCliBase):
             self._verify_status(False)
             return True
         except (BackendError, PoolStatusError) as e:
-            logger.error('Error depooling the servers: {}'.format(e))
+            logger.error('Error depooling the servers: %s', e)
             return False
 
     def pool(self, pooled):
@@ -104,7 +132,7 @@ class ServiceRestarter(ToolCliBase):
             self._verify_status(True)
             return True
         except (BackendError, PoolStatusError) as e:
-            logger.error('Error depooling the servers: {}'.format(e))
+            logger.error("Error depooling the servers: %s", e)
             return False
 
     def _verify_status(self, want_pooled):
@@ -134,7 +162,7 @@ class ServiceRestarter(ToolCliBase):
                 # This will account for servers that are inactive (which will
                 # return 404) and for backing off if pybal is unable to respond
                 # (5xx errors)
-                logger.debug('Invalid response (status code %s) for % - aborting',
+                logger.debug('Invalid response (status code %s) for %s - aborting',
                              r.status_code, url)
                 return
             except requests.exceptions.Timeout:
@@ -165,16 +193,15 @@ class ServiceRestarter(ToolCliBase):
                     status
                 )
                 return
-            else:
-                logger.warning(
-                    'LB %s reports pool %s as %s, should be %s',
-                    parsed.netloc,
-                    parsed.path.replace('/pools/', ''),
-                    status,
-                    desired_status
-                    )
-                # now wait before retrying
-                time.sleep(self.wait)
+            logger.warning(
+                'LB %s reports pool %s as %s, should be %s',
+                parsed.netloc,
+                parsed.path.replace('/pools/', ''),
+                status,
+                desired_status
+            )
+            # now wait before retrying
+            time.sleep(self.wait)
         # We ran out of retries, raise an exception.
         raise PoolStatusError(str(status))
 
@@ -205,7 +232,8 @@ class PoolStatusError(Exception):
 
 def parse_args():
     parser = argparse.ArgumentParser(
-        description='Safe script to restart services while depooled'
+        description='Safe script to restart services while depooled. '
+        'Optionally, it can just depool/pool services.'
     )
     parser.add_argument('--config', help='Conftool config file',
                         default='/etc/conftool/config.yaml')
@@ -239,8 +267,13 @@ def parse_args():
     )
     parser.add_argument('--pools', nargs='+', metavar='POOL',
                         help='LVS services to depool')
-    parser.add_argument('--services', nargs='+', metavar='SVC',
-                        help='Systemd service to restart')
+    simple_actions = parser.add_mutually_exclusive_group(required=True)
+    simple_actions.add_argument('--services', nargs='+', metavar='SVC',
+                                help='Systemd service to restart')
+    simple_actions.add_argument('--pool', action='store_true', default=False,
+                                help='Just repool (with verification) the indicated services')
+    simple_actions.add_argument('--depool', action='store_true', default=False,
+                                help='Just depool (with verification) the indicated services')
     return parser.parse_args()
 
 
@@ -256,6 +289,10 @@ def main():
             logging.getLogger(lbl).setLevel(logging.WARNING)
     sr = ServiceRestarter(args)
     sr.setup()
+    if args.depool:
+        return sr.run_depool()
+    if args.pool:
+        return sr.run_pool()
     return sr.run()
 
 
