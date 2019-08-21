@@ -36,6 +36,9 @@
         # This requires that middlewhere pull the HTTP_X_REMOTE_USER
         # from the app environ and set environ['REMOTE_USER'] to it.
         RequestHeader set X-Remote-User expr=%{REMOTE_USER}
+        # Needed for Superset 0.34+, since for some reason without it
+        # the authentication workflow ends up into a endless loop of HTTP redirects.
+        RequestHeader set X-Forwarded-Proto "http"
     </Location>
 
     <Location /health_check>
