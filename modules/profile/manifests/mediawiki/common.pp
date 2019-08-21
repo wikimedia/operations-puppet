@@ -2,7 +2,9 @@ class profile::mediawiki::common(
     $logstash_host = hiera('logstash_host'),
     $logstash_syslog_port = hiera('logstash_syslog_port'),
     $log_aggregator = hiera('udp2log_aggregator'),
-    Boolean $install_hhvm = lookup('profile::mediawiki::install_hhvm', {'default_value' => true})
+    Boolean $install_hhvm = lookup('profile::mediawiki::install_hhvm', {'default_value' => true}),
+    $php_version = lookup('profile::mediawiki::php::php_version', {'default_value' => undef}),
+    $php_restarts = lookup('profile::mediawiki::php::restarts::ensure', {'default_value' => undef})
 ){
 
     # GeoIP is needed for MW
@@ -15,8 +17,17 @@ class profile::mediawiki::common(
     # Install all basic support packages for MediaWiki
     class { '::mediawiki::packages': }
     # Install the users needed for MediaWiki
-    class { '::mediawiki::users':
-        web => 'www-data'
+    if $php_restarts {
+        class { '::mediawiki::users':
+            web              => 'www-data',
+            extra_privileges => [
+              "ALL = (root) NOPASSWD: /usr/local/sbin/check-and-restart-php php${php_version}-fpm *",
+            ]
+        }
+    } else {
+        class { '::mediawiki::users':
+            web => 'www-data'
+        }
     }
     # Install scap
     include ::profile::mediawiki::scap_client
