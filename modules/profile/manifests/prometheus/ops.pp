@@ -1339,6 +1339,46 @@ class profile::prometheus::ops (
         port       => 9536,
     }
 
+    # cloud-dev metrics
+    #
+    #  Currently we don't have a prometheus host for codfw1dev, so adding these metrics to
+    #   codfwdev for now.
+    #
+    #  (Be sure to check for naming collisions when adding things here; we don't want cloud-dev metrics
+    #   showing up on production dashboards)
+    $cloud_dev_pdns_jobs = [
+        {
+            'job_name'        => 'cloud_dev_pdns',
+            'scheme'          => 'http',
+            'file_sd_configs' => [
+                { 'files' => [ "${targets_path}/cloud-dev-pdns_*.yaml" ] }
+            ],
+        },
+    ]
+
+    prometheus::class_config{ "cloud_dev_pdns_${::site}":
+        dest       => "${targets_path}/cloud-dev-pdns_${::site}.yaml",
+        site       => $::site,
+        class_name => 'role::wmcs::openstack::codfw1dev::services',
+        port       => 9192,
+    }
+
+    $cloud_dev_pdns_rec_jobs = [
+        {
+            'job_name'        => 'cloud_dev_pdns_rec',
+            'scheme'          => 'http',
+            'file_sd_configs' => [
+                { 'files' => [ "${targets_path}/cloud-dev-pdns-rec_*.yaml" ] }
+            ],
+        },
+    ]
+
+    prometheus::class_config{ "cloud-dev-pdns-rec_${::site}":
+        dest       => "${targets_path}/cloud-dev-pdns-rec_${::site}.yaml",
+        site       => $::site,
+        class_name => 'role::wmcs::openstack::codfw1dev::services',
+        port       => 9199,
+    }
 
     prometheus::server { 'ops':
         listen_address        => '127.0.0.1:9900',
@@ -1355,6 +1395,7 @@ class profile::prometheus::ops (
             $kafka_burrow_jobs, $logstash_jobs, $haproxy_jobs, $statsd_exporter_jobs,
             $mjolnir_jobs, $rsyslog_jobs, $php_jobs, $php_fpm_jobs, $icinga_jobs, $docker_registry_jobs,
             $gerrit_jobs, $routinator_jobs, $rpkicounter_jobs, $varnishkafka_jobs, $bird_jobs, $ncredir_jobs,
+            $cloud_dev_pdns_jobs, $cloud_dev_pdns_rec_jobs,
         ),
         global_config_extra   => $config_extra,
     }
