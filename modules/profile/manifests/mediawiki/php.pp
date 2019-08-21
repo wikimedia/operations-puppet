@@ -268,11 +268,7 @@ class profile::mediawiki::php(
 
         # TODO: remove once we're done with the transition
         file { '/usr/local/bin/restart-php-fpm':
-            ensure  => present,
-            mode    => '0555',
-            owner   => 'root',
-            group   => 'root',
-            content => template('profile/mediawiki/restart-php-fpm.sh.erb')
+            ensure  => absent,
         }
     }
     ## Install excimer, our php profiler, if we're on a newer version of php
