@@ -24,6 +24,7 @@ class profile::analytics::refinery::job::druid_load {
 
     # Load event.ReadingDepth
     profile::analytics::refinery::job::eventlogging_to_druid_job { 'readingdepth':
+        ensure     => absent,
         job_config => {
             dimensions    => 'event.action,event.default_sample,event.isAnon,event.namespaceId,event.skin,revision,useragent.browser_family,useragent.browser_major,useragent.browser_minor,useragent.device_family,useragent.is_bot,useragent.os_family,useragent.os_major,useragent.os_minor,wiki,event.page_issues_a_sample,event.page_issues_b_sample',
             time_measures => 'event.domInteractiveTime,event.firstPaintTime,event.totalLength,event.visibleLength',
