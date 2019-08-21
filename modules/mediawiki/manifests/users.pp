@@ -5,6 +5,8 @@
 #
 class mediawiki::users(
     String $web = 'www-data',
+    Optional[Array[String]] $extra_privileges = [],
+
 ) {
 
     # The mwdeploy account is used by various scripts in the MediaWiki
@@ -36,7 +38,7 @@ class mediawiki::users(
             'ALL = (root) NOPASSWD: /usr/sbin/service apache2 start',
             'ALL = (root) NOPASSWD: /usr/sbin/service hhvm start',
             'ALL = (root) NOPASSWD: /usr/sbin/apache2ctl graceful-stop',
-        ],
+        ]+$extra_privileges,
     }
 
     # The pybal-check account is used by PyBal to monitor server health
