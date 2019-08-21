@@ -1,3 +1,0 @@
-# db2052
-mariadb::shard: 's5'
-mariadb::binlog_format: 'STATEMENT'
