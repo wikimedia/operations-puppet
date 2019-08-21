@@ -1651,6 +1651,7 @@ node /^mw126[1-5]\.eqiad\.wmnet$/ {
 }
 node /^mw12(6[6-9]|7[0-5])\.eqiad\.wmnet$/ {
     role(mediawiki::appserver)
+    interface::add_ip6_mapped { 'main': }
 }
 
 # Row C
@@ -1658,6 +1659,7 @@ node /^mw12(6[6-9]|7[0-5])\.eqiad\.wmnet$/ {
 # mw1319-33 are in rack C6
 node /^mw13(19|2[0-9]|3[0-3])\.eqiad\.wmnet$/ {
     role(mediawiki::appserver)
+    interface::add_ip6_mapped { 'main': }
 }
 
 # Row D
@@ -1665,6 +1667,7 @@ node /^mw13(19|2[0-9]|3[0-3])\.eqiad\.wmnet$/ {
 #mw1238-mw1258 are in rack D5
 node /^mw12(3[8-9]|4[0-9]|5[0-8])\.eqiad\.wmnet$/ {
     role(mediawiki::appserver)
+    interface::add_ip6_mapped { 'main': }
 }
 
 # API (serving api traffic)
@@ -1678,11 +1681,13 @@ node /^mw127[6-9]\.eqiad\.wmnet$/ {
 }
 node /^mw128[0-3]\.eqiad\.wmnet$/ {
     role(mediawiki::appserver::api)
+    interface::add_ip6_mapped { 'main': }
 }
 
 # mw1312 is in rack A6
 node 'mw1312.eqiad.wmnet' {
     role(mediawiki::appserver::api)
+    interface::add_ip6_mapped { 'main': }
 }
 
 # Row B
@@ -1690,11 +1695,13 @@ node 'mw1312.eqiad.wmnet' {
 # mw1284-1290,mw1297 are in rack B6
 node /^mw12(8[4-9]|9[07])\.eqiad\.wmnet$/ {
     role(mediawiki::appserver::api)
+    interface::add_ip6_mapped { 'main': }
 }
 
 # mw1313-17 are in rack B7
 node /^mw13(1[3-7])\.eqiad\.wmnet$/ {
     role(mediawiki::appserver::api)
+    interface::add_ip6_mapped { 'main': }
 }
 
 # Row C
@@ -1702,12 +1709,14 @@ node /^mw13(1[3-7])\.eqiad\.wmnet$/ {
 # mw1339-48 are in rack C6
 node /^mw13(39|4[0-8])\.eqiad\.wmnet$/ {
     role(mediawiki::appserver::api)
+    interface::add_ip6_mapped { 'main': }
 }
 
 # Row D
 # mw1221-mw1235 are in rack D5
 node /^mw12(2[1-9]|3[0-5])\.eqiad\.wmnet$/ {
     role(mediawiki::appserver::api)
+    interface::add_ip6_mapped { 'main': }
 }
 
 # mediawiki maintenance server (cron jobs)
@@ -1730,6 +1739,7 @@ node /^mw1298\.eqiad\.wmnet$/ {
 # mw1307-mw1311 are in rack A6
 node /^mw13(0[7-9]|1[01])\.eqiad\.wmnet$/ {
     role(mediawiki::jobrunner)
+    interface::add_ip6_mapped { 'main': }
 }
 
 # Row B
@@ -1737,11 +1747,13 @@ node /^mw13(0[7-9]|1[01])\.eqiad\.wmnet$/ {
 # mw1293-6,mw1299-mw1306 are in rack B6
 node /^mw1(29[34569]|30[0-6])\.eqiad\.wmnet$/ {
     role(mediawiki::jobrunner)
+    interface::add_ip6_mapped { 'main': }
 }
 
 # Rack B7
 node 'mw1318.eqiad.wmnet' {
     role(mediawiki::jobrunner)
+    interface::add_ip6_mapped { 'main': }
 }
 
 # Row C
@@ -1749,6 +1761,7 @@ node 'mw1318.eqiad.wmnet' {
 # mw1334-mw1338 are in rack C6
 node /^mw133[4-8]\.eqiad\.wmnet$/ {
     role(mediawiki::jobrunner)
+    interface::add_ip6_mapped { 'main': }
 }
 
 ## DATACENTER: CODFW
