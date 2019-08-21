@@ -53,6 +53,9 @@ describe 'profile::lvs::realserver' do
         it { is_expected.to contain_file('/usr/local/sbin/restart-apache2')
                               .with_content(%r{http:\/\/lvs1016:9090\/pools\/apaches_80})
         }
+        it { is_expected.to contain_file('/usr/local/bin/depool-nginx')
+                              .with_content(/\-\-depool/)
+        }
       end
     end
   end
