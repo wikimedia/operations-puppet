@@ -245,20 +245,20 @@ groups:
     expr: sum by(cluster, status) (rate(nginx_http_requests_total[2m]))
   - record: job_method_status_backend:varnish_backend_requests_seconds_count:rate5m
     expr: sum by(job, method, status, backend) (rate(varnish_backend_requests_seconds_count[5m]))
-  - record: job_method_status_backend:trafficserver_backend_requests_seconds_count:rate5m
-    expr: sum by(job, method, status, backend) (rate(trafficserver_backend_requests_seconds_count[5m]))
+  - record: job_method_status_backend_layer:trafficserver_backend_requests_seconds_count:rate5m
+    expr: sum by(job, method, status, backend, layer) (rate(trafficserver_backend_requests_seconds_count[5m]))
   - record: instance_layer_job:varnish_backend_conn:sum
     expr: sum by(instance, layer, job) (varnish_backend_conn)
-  - record: cluster_operation_result:trafficserver_cache_operations_total:rate5m
-    expr: sum by(cluster, operation, result) (rate(trafficserver_cache_operations_total[5m]))
-  - record: cluster_source:trafficserver_transactions_total:rate5m
-    expr: sum by(cluster, source) (rate(trafficserver_transactions_total[5m]))
-  - record: cluster_state:trafficserver_transaction_hits_total:rate5m
-    expr: sum by(cluster, state) (rate(trafficserver_transaction_hits_total[5m]))
-  - record: cluster_state:trafficserver_transaction_misses_total:rate5m
-    expr: sum by(cluster, state) (rate(trafficserver_transaction_misses_total[5m]))
-  - record: cluster_state:trafficserver_transaction_errors_total:rate5m
-    expr: sum by(cluster, state) (rate(trafficserver_transaction_errors_total[5m]))
+  - record: cluster_operation_result_layer:trafficserver_cache_operations_total:rate5m
+    expr: sum by(cluster, operation, result, layer) (rate(trafficserver_cache_operations_total[5m]))
+  - record: cluster_source_layer:trafficserver_transactions_total:rate5m
+    expr: sum by(cluster, source, layer) (rate(trafficserver_transactions_total[5m]))
+  - record: cluster_state_layer:trafficserver_transaction_hits_total:rate5m
+    expr: sum by(cluster, state, layer) (rate(trafficserver_transaction_hits_total[5m]))
+  - record: cluster_state_layer:trafficserver_transaction_misses_total:rate5m
+    expr: sum by(cluster, state, layer) (rate(trafficserver_transaction_misses_total[5m]))
+  - record: cluster_state_layer:trafficserver_transaction_errors_total:rate5m
+    expr: sum by(cluster, state, layer) (rate(trafficserver_transaction_errors_total[5m]))
   - record: job_role_shard:mysql_global_status_queries:rate5m
     expr: sum by(job, role, shard) (rate(mysql_global_status_queries[5m]))
   - record: job_role_shard:mysql_global_status_handlers_write_total:rate5m
