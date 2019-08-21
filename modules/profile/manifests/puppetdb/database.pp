@@ -14,8 +14,8 @@ class profile::puppetdb::database(
     include ::passwords::postgres
 
     $pgversion = $::lsbdistcodename ? {
+        'buster'  => '11',
         'stretch' => '9.6',
-        'jessie'  => '9.4',
     }
     $slave_range = join($slaves, ' ')
 

@@ -17,7 +17,7 @@
 #
 class puppetmaster::puppetdb::database(
     String $master,
-    Enum['9.4', '9.6'] $pgversion,
+    Enum['9.6', '11'] $pgversion,
     String $shared_buffers,
     String $replication_pass,
     String $puppetdb_pass,
