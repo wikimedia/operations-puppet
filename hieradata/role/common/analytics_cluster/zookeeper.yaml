@@ -1,0 +1,6 @@
+cluster: analytics
+
+profile::zookeeper::cluster_name: "analytics-%{::site}"
+profile::zookeeper::zookeeper_version: 'installed'
+profile::zookeeper::firewall::srange: '$ANALYTICS_NETWORKS'
+profile::zookeeper::monitoring_enabled: false

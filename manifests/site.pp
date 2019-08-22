@@ -160,8 +160,10 @@ node 'an-tool1007.eqiad.wmnet' {
 }
 
 # New Analytics Zookepeer cluster - T227025
+# Not yet taking traffic for the Hadoop cluster.
 node /an-conf100[1-3]\.eqiad\.wmnet/ {
-    role(spare::system)
+    role(analytics_cluster::zookeeper)
+    interface::add_ip6_mapped { 'main': }
 }
 
 # Analytics Query Service

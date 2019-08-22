@@ -492,6 +492,13 @@ zookeeper_clusters:
     hosts:
       analytics1041.eqiad.wmnet: '1001'
 
+  # ZK Cluster dedicated to the Hadoop cluster (and its satellite systems)
+  analytics-eqiad:
+    hosts:
+      an-conf1001.eqiad.wmnet: '1001'
+      an-conf1002.eqiad.wmnet: '1002'
+      an-conf1003.eqiad.wmnet: '1003'
+
 # Used to sync the setting between all Kafka clusters and clients.
 kafka_message_max_bytes: 4194304
 
