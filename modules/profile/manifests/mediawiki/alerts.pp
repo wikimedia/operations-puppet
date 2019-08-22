@@ -10,7 +10,7 @@ class profile::mediawiki::alerts {
       monitoring::check_prometheus { "mediawiki_http_requests_${cluster}_${site}_get":
         description     => "High average GET latency for mw requests on ${cluster} in ${site}",
         # Filter out NaN values
-        query           => "cluster_code_method_handler:mediawiki_http_requests_duration:avg2m{cluster=\"${cluster}\",method=\"GET\",code=~\"[1-4]..\"} > 0",
+        query           => "cluster_code_method_handler:mediawiki_http_requests_duration:avg2m{cluster=\"${cluster}\",method=\"GET\",code=~\"2..\"} > 0",
         prometheus_url  => "http://prometheus.svc.${site}.wmnet/ops",
         retries         => 2,
         method          => 'gt',
@@ -22,7 +22,7 @@ class profile::mediawiki::alerts {
       monitoring::check_prometheus { "mediawiki_http_requests_${cluster}_${site}_post":
         description     => "High average POST latency for mw requests on ${cluster} in ${site}",
         # Filter out NaN values
-        query           => "cluster_code_method_handler:mediawiki_http_requests_duration:avg2m{cluster=\"${cluster}\",method=\"POST\",code=~\"[1-4]..\"} > 0",
+        query           => "cluster_code_method_handler:mediawiki_http_requests_duration:avg2m{cluster=\"${cluster}\",method=\"POST\",code=~\"2..\"} > 0",
         prometheus_url  => "http://prometheus.svc.${site}.wmnet/ops",
         retries         => 2,
         method          => 'gt',
