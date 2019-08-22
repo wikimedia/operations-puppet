@@ -162,7 +162,6 @@ node 'an-tool1007.eqiad.wmnet' {
 # New Analytics Zookepeer cluster - T227025
 node /an-conf100[1-3]\.eqiad\.wmnet/ {
     role(spare::system)
-    interface::add_ip6_mapped { 'main': }
 }
 
 # Analytics Query Service
