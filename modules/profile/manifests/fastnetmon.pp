@@ -4,6 +4,8 @@ class profile::fastnetmon () {
 
     include network::constants
 
+    class { '::geoip': }
+
     class { '::fastnetmon':
         networks      => $::network::constants::external_networks,
     }
