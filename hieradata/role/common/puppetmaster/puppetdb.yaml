@@ -1,16 +1,4 @@
 cluster: puppet
-profile::puppetdb::database::users:
-  replication@nihal-v4:
-    user: replication
-    database: all
-    cidr: 10.192.16.184/32
-    attrs: REPLICATION
-  puppetdb@nihal-v4:
-    user: puppetdb
-    database: puppetdb
-    cidr: 10.192.16.184/32
-profile::puppetdb::master: nitrogen.eqiad.wmnet
-profile::puppetdb::slaves: [nihal.codfw.wmnet]
 profile::puppetdb::jvm_opts: '-Xmx6g'
 profile::puppetdb::puppetboard_hosts: 'puppetboard1001.eqiad.wmnet puppetboard2001.codfw.wmnet'
 profile::puppetdb::rsyslog::elk: true
