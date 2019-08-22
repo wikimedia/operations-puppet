@@ -28,6 +28,8 @@ class profile::pmacct (
         default => $librdkafka_config,
     }
 
+    ensure_resource('class', 'geoip')
+
     class { '::pmacct':
         kafka_brokers     => $kafka_config['brokers']['string'],
         librdkafka_config => $pmacct_librdkafka_conf,
