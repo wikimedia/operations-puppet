@@ -934,12 +934,17 @@ node 'dbproxy1010.eqiad.wmnet' {
     role(mariadb::proxy::master)
 }
 # web proxy
+# dbproxy1011 will be decommissioned at some point
 node 'dbproxy1011.eqiad.wmnet' {
     role(mariadb::proxy::replicas)
 }
 
+node 'dbproxy1019.eqiad.wmnet' {
+    role(mariadb::proxy::replicas)
+}
+
 # new dbproxy hosts to be pressed into service by DBA team T202367
-node /^dbproxy10(12|15|16|17|18|19|20|21)\.eqiad\.wmnet$/ {
+node /^dbproxy10(12|15|16|17|18|20|21)\.eqiad\.wmnet$/ {
     role(spare::system)
 }
 

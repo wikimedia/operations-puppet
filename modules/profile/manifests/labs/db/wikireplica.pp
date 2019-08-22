@@ -18,7 +18,7 @@ class profile::labs::db::wikireplica (
         proto   => 'tcp',
         port    => '3306',
         notrack => true,
-        srange  => '(@resolve((dbproxy1010.eqiad.wmnet)) @resolve((dbproxy1011.eqiad.wmnet)))',
+        srange  => '(@resolve((dbproxy1010.eqiad.wmnet)) @resolve((dbproxy1011.eqiad.wmnet)) @resolve((dbproxy1019.eqiad.wmnet)))',
     }
 
     ferm::service { 'mysql_labs_db_admin':
