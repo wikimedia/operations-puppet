@@ -249,6 +249,13 @@ node 'cobalt.wikimedia.org', 'gerrit2001.wikimedia.org' {
     interface::add_ip6_mapped { 'main': }
 }
 
+# gerrit1001 to replace cobalt T231046
+node 'gerrit1001.wikimedia.org' {
+    role(spare::system)
+
+    interface::add_ip6_mapped { 'main': }
+}
+
 # Zookeeper and Etcd discovery service nodes in eqiad
 node /^conf100[456]\.eqiad\.wmnet$/ {
     role(configcluster_stretch)
