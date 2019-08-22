@@ -122,13 +122,6 @@ node 'analytics-tool1001.eqiad.wmnet' {
     interface::add_ip6_mapped { 'main': }
 }
 
-# turnilo.wikimedia.org
-# https://wikitech.wikimedia.org/wiki/Analytics/Systems/Turnilo-Pivot
-node 'analytics-tool1002.eqiad.wmnet' {
-    role(analytics_cluster::turnilo)
-    interface::add_ip6_mapped { 'main': }
-}
-
 # superset.wikimedia.org
 # https://wikitech.wikimedia.org/wiki/Analytics/Systems/Superset
 # T212243

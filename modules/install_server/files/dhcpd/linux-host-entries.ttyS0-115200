@@ -71,11 +71,6 @@ host analytics-tool1001 {
     fixed-address analytics-tool1001.eqiad.wmnet;
 }
 
-host analytics-tool1002 {
-    hardware ethernet aa:00:00:a0:6f:1d;
-    fixed-address analytics-tool1002.eqiad.wmnet;
-}
-
 host analytics-tool1004 {
     hardware ethernet aa:00:00:cc:a2:a4;
     fixed-address analytics-tool1004.eqiad.wmnet;
