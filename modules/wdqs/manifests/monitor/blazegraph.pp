@@ -43,7 +43,7 @@ class wdqs::monitor::blazegraph (
     }
 
     monitoring::check_prometheus { 'WDQS_Lag':
-        description     => 'High lag',
+        description     => 'WDQS high update lag',
         dashboard_links => ['https://grafana.wikimedia.org/dashboard/db/wikidata-query-service?orgId=1&panelId=8&fullscreen'],
         query           => "scalar(time() - blazegraph_lastupdated{instance=\"${::hostname}:9193\"})",
         prometheus_url  => "http://prometheus.svc.${::site}.wmnet/ops",
