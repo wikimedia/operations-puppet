@@ -16,7 +16,7 @@ class fastnetmon(
   Optional[Stdlib::Host] $graphite_host = undef,
   ) {
 
-    require_package('fastnetmon')
+    require_package('fastnetmon','python3-geoip2')
 
     file { '/etc/fastnetmon.conf':
         ensure  => present,
