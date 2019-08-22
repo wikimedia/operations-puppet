@@ -4,6 +4,7 @@
 # and push them to statsd.
 #
 define varnishkafka::monitor::statsd(
+    $ensure                  = 'present',
     $log_statistics_file     = "/var/cache/varnishkafka/${name}.stats.json",
     $graphite_metric_prefix  = 'varnishkafka.stats',
     $statsd_host_port        = 'localhost:8125',
@@ -15,6 +16,7 @@ define varnishkafka::monitor::statsd(
     # Send varnishkafka stats to statsd -> graphite using Logster.
     # Logster runs every minute using a cronjob.
     logster::job { "varnishkafka-${name}":
+        ensure          => $ensure,
         minute          => '*/1',
         parser          => 'JsonLogster',
         logfile         => $log_statistics_file,

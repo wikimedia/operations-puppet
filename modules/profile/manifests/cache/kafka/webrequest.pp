@@ -184,6 +184,7 @@ class profile::cache::kafka::webrequest(
         # Sets up Logster to read from the Varnishkafka instance stats JSON file
         # and report metrics to statsd.
         varnishkafka::monitor::statsd { 'webrequest':
+            ensure                 => 'absent',
             graphite_metric_prefix => "varnishkafka.${::hostname}.webrequest.${cache_cluster}",
             statsd_host_port       => $statsd,
         }

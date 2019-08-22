@@ -63,6 +63,7 @@ class profile::cache::kafka::statsv(
         # Sets up Logster to read from the Varnishkafka instance stats JSON file
         # and report metrics to statsd.
         varnishkafka::monitor::statsd { 'statsv':
+            ensure                 => 'absent',
             graphite_metric_prefix => "varnishkafka.${::hostname}.statsv.${cache_cluster}",
             statsd_host_port       => hiera('statsd'),
         }

@@ -108,6 +108,7 @@ class profile::cache::kafka::eventlogging(
         # Sets up Logster to read from the Varnishkafka instance stats JSON file
         # and report metrics to statsd.
         varnishkafka::monitor::statsd { 'eventlogging':
+            ensure                 => 'absent',
             graphite_metric_prefix => "varnishkafka.${::hostname}.eventlogging.${cache_cluster}",
             statsd_host_port       => $statsd,
         }
