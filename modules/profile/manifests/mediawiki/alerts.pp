@@ -14,8 +14,8 @@ class profile::mediawiki::alerts {
         prometheus_url  => "http://prometheus.svc.${site}.wmnet/ops",
         retries         => 2,
         method          => 'gt',
-        warning         => 0.2, # seconds
-        critical        => 0.3, # seconds
+        warning         => 0.35, # seconds
+        critical        => 0.4, # seconds
         dashboard_links => ["https://grafana.wikimedia.org/d/RIA1lzDZk/application-servers-red-dashboard?panelId=9&fullscreen&orgId=1&from=now-3h&to=now&var-datasource=${site} prometheus/ops&var-cluster=${cluster}&var-method=GET"],
       }
 
@@ -26,8 +26,8 @@ class profile::mediawiki::alerts {
         prometheus_url  => "http://prometheus.svc.${site}.wmnet/ops",
         retries         => 2,
         method          => 'gt',
-        warning         => 1, # seconds
-        critical        => 1.3, # seconds
+        warning         => 1.4, # seconds
+        critical        => 2.0, # seconds
         dashboard_links => ["https://grafana.wikimedia.org/d/RIA1lzDZk/application-servers-red-dashboard?panelId=9&fullscreen&orgId=1&from=now-3h&to=now&var-datasource=${site} prometheus/ops&var-cluster=${cluster}&var-method=POST"],
       }
 
