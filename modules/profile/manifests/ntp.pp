@@ -89,8 +89,9 @@ class profile::ntp (
     }
 
     ferm::service { 'ntp':
-        proto => 'udp',
-        port  => 'ntp',
+        proto  => 'udp',
+        port   => 'ntp',
+        srange => '($PRODUCTION_NETWORKS $FRACK_NETWORKS $MGMT_NETWORKS $NETWORK_INFRA)',
     }
 
     monitoring::service { 'ntp peers':
