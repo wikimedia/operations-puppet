@@ -90,8 +90,17 @@ define profile::trafficserver::monitoring(
         }
     }
 
-    # XXX: Avoid `traffic_server -C verify_config` for now
-    #profile::trafficserver::nrpe_monitor_script { 'check_trafficserver_verify_config':
-    #    sudo_user => $user,
-    #}
+    $prometheus_labels = "instance=~\"${::hostname}:.*\",layer=\"${instance_name}\""
+
+    # In normal conditions, restart count is 1. Alert if it is >= 2.
+    monitoring::check_prometheus { "trafficserver_${instance_name}_restart_count":
+        description     => "traffic_server ${instance_name} process restarted",
+        dashboard_links => ["https://grafana.wikimedia.org/d/000000610/ats-instance-drilldown?orgId=1&var-site=${::site} prometheus/ops&var-instance=${::hostname}&var-layer=${instance_name}"],
+        query           => "scalar(trafficserver_restart_count{${prometheus_labels}})",
+        method          => 'ge',
+        warning         => 2,
+        critical        => 2,
+        prometheus_url  => "http://prometheus.svc.${::site}.wmnet/ops",
+        notes_link      => 'https://wikitech.wikimedia.org/wiki/Apache_Traffic_Server',
+    }
 }
