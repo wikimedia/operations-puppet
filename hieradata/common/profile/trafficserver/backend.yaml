@@ -326,4 +326,3 @@ profile::trafficserver::backend::logs:
     filters:
     - purge
     mode: ascii_pipe
-profile::trafficserver::backend::enable_compress: false
