@@ -17,6 +17,15 @@ class varnish::common::vcl($vcl_config={}) {
         content => template('varnish/analytics.inc.vcl.erb'),
     }
 
+    # ACL blocked_nets to be found on the private puppet repo under
+    # modules/secret/secrets/varnish/blocked-nets.inc.vcl
+    file { '/etc/varnish/blocked-nets.inc.vcl':
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0444',
+        content => secret('varnish/blocked-nets.inc.vcl'),
+    }
+
     # Directory with test versions of VCL files to run VTC tests
     file { '/usr/share/varnish/tests':
         ensure => directory,

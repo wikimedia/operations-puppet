@@ -28,6 +28,9 @@ include "wikimedia-common_<%= @vcl %>.inc.vcl";
 include "analytics.inc.vcl";
 include "browsersec.inc.vcl";
 include "translation-engine.inc.vcl";
+// provides the acl "blocked_nets". The file can be found on the private puppet
+// repo under modules/secret/secrets/varnish/blocked-nets.inc.vcl
+include "blocked-nets.inc.vcl";
 
 /* Include the VCL file for this role */
 include "<%= @vcl %>.inc.vcl";
@@ -308,6 +311,14 @@ sub vcl_recv {
 
 		// IP processing is req->req mangling that shouldn't be re-done on restart
 		call recv_fe_ip_processing;
+
+		// Block requests from IPs in blocked_nets. It is important to do this
+		// early but after recv_fe_ip_processing has been called, as the procedure
+		// takes care of writing X-Client-IP if it the request did not come
+		// through the TLS terminator
+		if (std.ip(req.http.X-Client-IP, "192.0.2.1") ~ blocked_nets) {
+			return (synth(403, "Requests from your IP have been blocked, please contact noc@wikimedia.org"));
+		}
 	}
 
 	call wm_common_recv_early;
