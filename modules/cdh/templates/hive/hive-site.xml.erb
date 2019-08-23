@@ -344,9 +344,19 @@ if (@metastore_host == @fqdn)
     <description> Stop hive from printing the table name when printing column headers </description>
   </property>
 
-  <!-- https://phabricator.wikimedia.org/T209536 -->
+  <!--
+    Context: hive.auto.convert.join values set in the past (we don't explicitly set now, default = true)
+      https://phabricator.wikimedia.org/T209536
+    Context: hive.exec.submit.local.task.via.child
+      https://gerrit.wikimedia.org/r/#/c/analytics/refinery/+/528167/
+    In hive2 the local optimizations (example: hive.auto.convert.join=true)
+    are done in the Hive Server2's local environment, by default spawning a new JVM (for safety).
+    The main problem with this is that any HADOOP_OPTS that holds state (like Prometheus' jmx javaagent
+    that binds a network port) will be inherited by the new JVM that will fail
+    (in the Prometheus example due to the port already used/bound).
+  -->
   <property>
-    <name>hive.auto.convert.join</name>
+    <name>hive.exec.submit.local.task.via.child</name>
     <value>false</value>
   </property>
 
