@@ -5,6 +5,7 @@
 # multiple-wildcard cert is needed, as in production).
 #
 class profile::cache::ssl::unified(
+    $tls_port=hiera('profile::cache::ssl::unified::tls_port', 443),
     $monitoring=hiera('profile::cache::ssl::unified::monitoring'),
     $acme_chief=hiera('profile::cache::ssl::unified::acme_chief'),
     $certs_hiera=hiera('profile::cache::ssl::unified::certs', undef),
@@ -23,6 +24,7 @@ class profile::cache::ssl::unified(
             do_ocsp        => false,
             skip_private   => true,
             upstream_ports => [3120, 3121, 3122, 3123, 3124, 3125, 3126, 3127],
+            tls_port       => $tls_port,
             redir_port     => 8080,
             ocsp_proxy     => $ocsp_proxy,
         }
