@@ -1290,7 +1290,6 @@ node /^cloudservices100[34]\.wikimedia\.org$/ {
 
 node 'cloudweb2001-dev.wikimedia.org' {
     role(spare::system)
-    interface::add_ip6_mapped { 'main': }
 }
 
 node /^cloudnet200[23]-dev\.codfw\.wmnet$/ {
@@ -1323,7 +1322,6 @@ node 'cloudservices2002-dev.wikimedia.org' {
 
 node 'labtestservices2003.wikimedia.org' {
     role(spare::system)
-    interface::add_ip6_mapped { 'main': }
 }
 
 node /labweb100[12]\.wikimedia\.org/ {
@@ -1392,7 +1390,6 @@ node /kafka100[123]\.eqiad\.wmnet/ {
 # eqiad kafka main servers, pushing into service via T226274
 node /kafka-main100[1-5]\.eqiad\.wmnet/ {
     role(spare::system)
-    interface::add_ip6_mapped { 'main': }
 }
 
 node /kafka-main200[123]\.codfw\.wmnet/ {
@@ -2002,7 +1999,6 @@ node /notebook100[34].eqiad.wmnet/ {
 # cluster management (cumin master) + other management tools
 node 'neodymium.eqiad.wmnet' {
     role(spare::system)
-    interface::add_ip6_mapped { 'main': }
 }
 
 node 'nescio.wikimedia.org' {
@@ -2218,8 +2214,6 @@ node 'people1001.eqiad.wmnet' {
 # cluster management (cumin master)
 node 'sarin.codfw.wmnet' {
     role(spare::system)
-
-    interface::add_ip6_mapped { 'main': }
 }
 
 # scandium is a parsoid regression test server. it replaced ruthenium.
@@ -2391,7 +2385,6 @@ node /^cloudvirt10[0-3][0-9]\.eqiad\.wmnet$/ {
 # New analytics cloudvirt nodes via T207194
 node /^cloudvirtan100[1-5].eqiad.wmnet$/ {
     role(spare::system)
-    interface::add_ip6_mapped { 'main': }
 }
 
 # Wikidata query service
