@@ -32,6 +32,13 @@
 #     TCP_FASTOPEN = 0x8
 #   Default value: TCP_NODELAY | SO_LINGER = 0x5
 #
+# [*origin_ttfb_timeout*]
+#   The timeout value (in seconds) for time to first byte for an origin server connection. (default: 30 secs)
+#
+# [*origin_post_ttfb_timeout*]
+#   The timeout value (in seconds) for time to first byte for an origin server connection when the client request
+#   is a POST or PUT request. (default: 1800 secs)
+#
 # [*inbound_tls_settings*]
 #   Inbound TLS settings. (default: undef).
 #   for example:
@@ -177,6 +184,8 @@ define trafficserver::instance(
     Boolean $default_instance = false,
     Stdlib::Port $port = 8080,
     Integer[0, 0xF] $inbound_socket_options = 0x5,
+    Integer[0] $origin_ttfb_timeout = 30,
+    Integer[0] $origin_post_ttfb_timeout = 1800,
     Optional[Trafficserver::Inbound_TLS_settings] $inbound_tls_settings = undef,
     Optional[Trafficserver::Outbound_TLS_settings] $outbound_tls_settings = undef,
     Boolean $enable_xdebug = false,

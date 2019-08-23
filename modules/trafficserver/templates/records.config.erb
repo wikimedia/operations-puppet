@@ -20,6 +20,9 @@ CONFIG proxy.config.disable_configuration_modification INT 1
 
 CONFIG proxy.config.net.sock_option_flag_in INT <%= @inbound_socket_options %>
 
+CONFIG proxy.config.http.connect_attempts_timeout INT <%= @origin_ttfb_timeout %>
+CONFIG proxy.config.http.post_connect_attempts_timeout INT <%= @origin_post_ttfb_timeout %>
+
 <% if @enable_caching -%>
 <% if @required_headers -%>
 CONFIG proxy.config.http.cache.required_headers INT <%= @required_headers %>
