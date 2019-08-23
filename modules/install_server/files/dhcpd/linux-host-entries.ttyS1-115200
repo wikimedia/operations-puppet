@@ -2838,12 +2838,6 @@ host graphite2001 {
     option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/buster-installer/";
 }
 
-host graphite2002 {
-    hardware ethernet 14:18:77:5B:2C:CA;
-    fixed-address graphite2002.codfw.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/buster-installer/";
-}
-
 host graphite2003 {
     hardware ethernet D0:94:66:5F:85:61;
     fixed-address graphite2003.codfw.wmnet;

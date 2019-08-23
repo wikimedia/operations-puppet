@@ -1370,7 +1370,7 @@ node /labweb100[12]\.wikimedia\.org/ {
     interface::add_ip6_mapped { 'main': }
 }
 
-node /^graphite200[12]\.codfw\.wmnet/ {
+node 'graphite2001.codfw.wmnet' {
     role(spare::system)
 }
 
