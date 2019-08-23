@@ -1,3 +1,15 @@
+local WEBSOCKET_SUPPORT=false
+
+function __init__(argtb)
+    if argtb[1] == 'true' then
+        WEBSOCKET_SUPPORT = true
+    end
+end
+
+function get_websocket_support()
+    return WEBSOCKET_SUPPORT
+end
+
 function do_global_send_request()
     local ssl_reused = ts.client_request.get_ssl_reused()
     local ssl_protocol = ts.client_request.get_ssl_protocol()
@@ -17,7 +29,13 @@ function do_global_send_request()
     ts.server_request.header['X-Client-IP'] = client_ip
     ts.server_request.header['X-Connection-Properties'] = header_content
     ts.server_request.header['X-Forwarded-Proto'] = 'https'
-    ts.server_request.header['Connection'] = 'close'
     -- Avoid propagating Proxy-Connection to varnish-fe and ats-be
     ts.server_request.header['Proxy-Connection'] = nil
+
+    if get_websocket_support() and ts.client_request.header['Upgrade'] and ts.client_request.header['Connection'] then
+        ts.server_request.header['Upgrade'] = ts.client_request.header['Upgrade']
+        ts.server_request.header['Connection'] = ts.client_request.header['Connection']
+    else
+        ts.server_request.header['Connection'] = 'close'
+    end
 end

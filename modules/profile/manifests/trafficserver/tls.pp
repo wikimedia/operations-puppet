@@ -17,6 +17,7 @@ class profile::trafficserver::tls (
     Wmflib::UserIpPort $prometheus_exporter_port=hiera('profile::trafficserver::tls::prometheus_exporter_port', 9322),
     Optional[Array[String]] $unified_certs = hiera('profile::trafficserver::tls::unified_certs', undef),
     Boolean $unified_acme_chief = hiera('profile::trafficserver::tls::unified_acme_chief', false),
+    Boolean $websocket_support = hiera('profile::trafficserver::tls::websocket_support', false),
     Optional[String] $ocsp_proxy=hiera('http_proxy'),
     Boolean $systemd_hardening=hiera('profile::trafficserver::tls::systemd_hardening', true),
 ){
@@ -50,6 +51,8 @@ class profile::trafficserver::tls (
 
     $paths = trafficserver::get_paths(false, $instance_name)
     $tls_lua_script_path = "${paths['sysconfdir']}/lua/tls.lua"
+    $websocket_arg = bool2str($websocket_support)
+    $global_lua_script = "${tls_lua_script_path} ${websocket_arg}"
 
     profile::trafficserver::tls_material { 'unified':
         instance_name      => $instance_name,
@@ -74,7 +77,7 @@ class profile::trafficserver::tls (
         inbound_tls_settings      => $inbound_tls_settings,
         enable_xdebug             => $enable_xdebug,
         mapping_rules             => $mapping_rules,
-        global_lua_script         => $tls_lua_script_path,
+        global_lua_script         => $global_lua_script,
         enable_caching            => false,
         log_formats               => $log_formats,
         log_filters               => $log_filters,
