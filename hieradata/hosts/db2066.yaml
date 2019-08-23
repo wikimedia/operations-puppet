@@ -1,3 +1,0 @@
-# db2066
-mariadb::shard: 's5'
-mariadb::binlog_format: 'ROW'
