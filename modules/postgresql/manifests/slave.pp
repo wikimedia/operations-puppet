@@ -9,7 +9,8 @@
 #   replication_pass
 #       The password the replication user should use
 #   pgversion
-#       Defaults to 9.4 in Debian jessie and 9.6 in Debian Stretch
+#       Defaults to 9.4 in Debian jessie, 9.6 in Debian Stretch
+#       and 11 in Buster
 #   ensure
 #       Defaults to present
 #   root_dir
@@ -33,6 +34,7 @@ class postgresql::slave(
     $replication_pass,
     $includes=[],
     $pgversion = $::lsbdistcodename ? {
+        'buster'  => '11',
         'stretch' => '9.6',
         'jessie'  => '9.4',
     },

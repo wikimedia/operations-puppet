@@ -8,7 +8,8 @@
 #   includes
 #       An array of files to be included by the main configuration
 #   pgversion
-#       Defaults to 9.4 in Debian jessie and 9.6 in Debian Stretch
+#       Defaults to 9.4 in Debian jessie, 9.6 in Debian Stretch
+#       and 11 in Buster
 #   ensure
 #       Defaults to present
 #   max_wal_senders
@@ -38,6 +39,7 @@ class postgresql::master(
     $master_server=$::fqdn,
     $includes=[],
     $pgversion = $::lsbdistcodename ? {
+        'buster'  => '11',
         'stretch' => '9.6',
         'jessie'  => '9.4',
     },

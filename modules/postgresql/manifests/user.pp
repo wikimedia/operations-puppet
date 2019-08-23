@@ -32,6 +32,7 @@ define postgresql::user(
     $method = 'md5',
     $cidr = '127.0.0.1/32',
     $pgversion = $::lsbdistcodename ? {
+        'buster'  => '11',
         'stretch' => '9.6',
         'jessie'  => '9.4',
     },
