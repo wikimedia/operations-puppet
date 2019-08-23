@@ -1466,11 +1466,7 @@ node /^(phab1003\.eqiad|phab2001\.codfw)\.wmnet$/ {
 }
 
 node 'iron.wikimedia.org' {
-    system::role { 'misc':
-        description => 'Experimental Yubico two factor authentication bastion',
-    }
-    interface::add_ip6_mapped { 'main': }
-    role(bastionhost::twofa)
+    role(spare::system)
 }
 
 # Kafka Brokers - main-eqiad and main-codfw Kafka clusters.

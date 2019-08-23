@@ -2840,12 +2840,6 @@ host icinga2001 {
     fixed-address icinga2001.wikimedia.org;
 }
 
-host iron {
-    hardware ethernet 78:2b:cb:09:0d:5c;
-    fixed-address iron.wikimedia.org;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
-}
-
 host kafka1001 {
     hardware ethernet 14:18:77:33:52:42;
     fixed-address kafka1001.eqiad.wmnet;
