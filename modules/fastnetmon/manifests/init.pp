@@ -38,6 +38,14 @@ class fastnetmon(
         notify  => Service['fastnetmon'],
     }
 
+    file { '/usr/local/bin/fastnetmon_notify.py':
+        ensure => present,
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0555',
+        source => 'puppet:///modules/fastnetmon/fastnetmon_notify.py',
+    }
+
     service { 'fastnetmon':
         ensure => running,
         enable => true,
