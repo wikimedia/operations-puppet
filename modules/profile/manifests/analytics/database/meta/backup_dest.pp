@@ -98,8 +98,8 @@ class profile::analytics::database::meta::backup_dest(
         description               => 'Copies mylvmbackup snapshots of the analytics-meta MySQL instance to HDFS',
         command                   => "${hdfs_backup_script} ${analytics_meta_backup_dir} ${analytics_meta_hdfs_backup_dir}",
         interval                  => '*-*-* 00:30:00',
-        user                      => 'analytics',
-        monitoring_contact_groups => 'analytics',
+        user                      => 'root',
+        monitoring_contact_groups => 'root',
         use_kerberos              => $use_kerberos,
         require                   => [
             Cdh::Hadoop::Directory[$analytics_meta_hdfs_backup_dir],
