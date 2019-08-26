@@ -1,6 +1,6 @@
 define profile::trafficserver::monitoring(
     Trafficserver::Paths $paths,
-    Wmflib::UserIpPort $port,
+    Stdlib::Port $port,
     Wmflib::UserIpPort $prometheus_exporter_port,
     Boolean $inbound_tls = false,
     Boolean $default_instance = false,
