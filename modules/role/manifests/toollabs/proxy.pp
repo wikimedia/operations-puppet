@@ -6,6 +6,7 @@ class role::toollabs::proxy {
     include ::profile::toolforge::toolviews
     include ::role::toollabs::k8s::webproxy
     include ::profile::base::firewall
+    include ::profile::toolforge::prometheus_fixup
     include ::toollabs::ferm_handlers
 
     ferm::service { 'proxymanager':

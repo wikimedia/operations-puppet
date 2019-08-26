@@ -5,6 +5,7 @@ class role::toollabs::k8s::master(
     include ::toollabs::base
     include ::toollabs::infrastructure
     include ::profile::base::firewall
+    include ::profile::toolforge::prometheus_fixup
 
     $master_host = hiera('k8s::master_host', $::fqdn)
     $etcd_url = prefix(suffix(hiera('k8s::etcd_hosts'), ':2379'), 'https://')

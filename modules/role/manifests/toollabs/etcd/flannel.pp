@@ -6,6 +6,7 @@ class role::toollabs::etcd::flannel {
 
     include ::profile::base::firewall
     include ::role::toollabs::etcd::expose_metrics
+    include ::profile::toolforge::prometheus_fixup
 
     $worker_hosts = join(hiera('k8s::worker_hosts'), ' ')
     $bastion_hosts = join(hiera('k8s::bastion_hosts'), ' ')

@@ -6,6 +6,7 @@ class role::toollabs::etcd::k8s {
     include ::profile::base::firewall
 
     include ::role::toollabs::etcd::expose_metrics
+    include ::profile::toolforge::prometheus_fixup
 
     $peer_nodes = join(hiera('k8s::etcd_hosts'), ' ')
     $checker_hosts = join(hiera('toollabs::checker_hosts'), ' ')
