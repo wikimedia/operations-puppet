@@ -4,5 +4,5 @@ realm = scope.lookupvar('::realm')
 if realm != 'production' || @lvs_pools == nil -%>
 echo "No depooling needed!"
 <%- else -%>
-/usr/local/bin/safe-service-restart @base_cli_args --depool --retries 10 --wait 5
+/usr/local/bin/safe-service-restart <%= @base_cli_args %> --depool --retries 10 --wait 5
 <%- end -%>
