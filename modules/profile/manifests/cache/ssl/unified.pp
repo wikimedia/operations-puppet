@@ -54,6 +54,7 @@ class profile::cache::ssl::unified(
             default_server => true,
             do_ocsp        => true,
             upstream_ports => [3120, 3121, 3122, 3123, 3124, 3125, 3126, 3127],
+            tls_port       => $tls_port,
             redir_port     => 8080,
             ocsp_proxy     => $ocsp_proxy,
         }
