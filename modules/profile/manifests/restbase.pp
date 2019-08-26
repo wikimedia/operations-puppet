@@ -166,9 +166,13 @@ class profile::restbase(
         srange => "@resolve((${rb_hosts_ferm}))",
     }
 
+    # TEMP for T223953
+    # Allow access to 7233 as well. Once RESTRouter is used, remove
+    # this block and entirely and change the port to 7233
     ferm::service {'restbase_web':
         proto => 'tcp',
-        port  => '7231',
+        port  => '7233',
     }
+    # END TEMP
 
 }
