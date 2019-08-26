@@ -88,7 +88,7 @@ class profile::analytics::database::meta::backup_dest(
 
     $analytics_meta_hdfs_backup_dir = '/wmf/data/archive/backup/mysql/analytics-meta'
     cdh::hadoop::directory { $analytics_meta_hdfs_backup_dir:
-        owner        => 'analytics',
+        owner        => 'root',
         group        => $backup_dir_group,
         mode         => '0750',
         use_kerberos => $use_kerberos,
