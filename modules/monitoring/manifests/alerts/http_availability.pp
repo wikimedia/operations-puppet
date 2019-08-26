@@ -7,7 +7,7 @@ define monitoring::alerts::http_availability(
     # Varnish HTTP availability as seen by looking at status codes
     monitoring::check_prometheus { "varnish_${title}":
         description     => "HTTP availability for Varnish at ${site}",
-        query           => "100 * (1 - site_job:varnish_requests:avail5m{job=~\"varnish-(text|upload)\",site=\"${site}\"})",
+        query           => "100 * (1 - site_job:varnish_requests:avail2m{job=~\"varnish-(text|upload)\",site=\"${site}\"})",
         prometheus_url  => 'http://prometheus.svc.eqiad.wmnet/global',
         method          => 'le',
         retries         => 1,
@@ -21,7 +21,7 @@ define monitoring::alerts::http_availability(
     # Nginx (on Varnish hosts) HTTP availability as seen by looking at status codes
     monitoring::check_prometheus { "nginx_${title}":
         description     => "HTTP availability for Nginx (SSL terminators) at ${site}",
-        query           => "100 * (1 - site_cluster:nginx_requests:avail5m{cluster=~\"cache_(text|upload)\",site=\"${site}\"})",
+        query           => "100 * (1 - site_cluster:nginx_requests:avail2m{cluster=~\"cache_(text|upload)\",site=\"${site}\"})",
         prometheus_url  => 'http://prometheus.svc.eqiad.wmnet/global',
         method          => 'le',
         retries         => 1,
