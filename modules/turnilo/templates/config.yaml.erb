@@ -2063,3 +2063,19 @@ dataCubes:
       # - name: usa_revenue
       #   title: USA Revenue
       #   formula: $main.filter($country == 'United States').sum($revenue)
+
+
+  # Edits hourly data set
+  - name: edits_hourly
+    title: edits_hourly
+    source: edits_hourly
+    description: Hourly cube for Wikimedia editing stats.
+    clusterName: druid-analytics-eqiad
+    introspection: autofill-dimensions-only
+    measures:
+      - name: count
+        title: Edit Count
+        formula: $main.sum($edit_count)
+      - name: text_bytes_diff
+        title: Text Bytes Diff
+        formula: $main.sum($text_bytes_diff)
