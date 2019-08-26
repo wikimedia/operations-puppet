@@ -81,7 +81,7 @@ class profile::analytics::database::meta::backup_dest(
     $hdfs_backup_script = '/usr/local/bin/analytics-meta-backup-to-hdfs'
     file { $hdfs_backup_script:
         source => 'puppet:///modules/profile/analytics/database/meta/backup_dest/backup_to_hdfs.sh',
-        mode   => '0744',
+        mode   => '0755',
         owner  => 'root',
         group  => 'root',
     }
@@ -106,5 +106,4 @@ class profile::analytics::database::meta::backup_dest(
             File['/usr/local/bin/analytics-meta-backup-to-hdfs'],
         ],
     }
-
 }
