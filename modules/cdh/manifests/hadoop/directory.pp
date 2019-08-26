@@ -45,7 +45,7 @@ define cdh::hadoop::directory (
 
     if $ensure == 'present' {
         kerberos::exec { "cdh::hadoop::directory ${title}":
-            command      => "/usr/bin/hdfs dfs -mkdir ${path} && /usr/bin/hdfs dfs -chmod ${mode} ${path} && /usr/bin/hdfs dfs -chown ${owner}:${group} ${path}",
+            command      => "/usr/bin/hdfs dfs -mkdir -p ${path} && /usr/bin/hdfs dfs -chmod ${mode} ${path} && /usr/bin/hdfs dfs -chown ${owner}:${group} ${path}",
             unless       => "/usr/bin/hdfs dfs -test -e ${path}",
             user         => 'hdfs',
             timeout      => 30,
