@@ -22,8 +22,8 @@ fi
 /usr/bin/test -f /etc/profile.d/oozie.sh && source /etc/profile.d/oozie.sh
 test -n "${OOZIE_URL}" || die "must set \$OOZIE_URL to talk to Oozie server"
 
-# Ensure that spark-core (spark 1) is installed so we can use its oozie sharelib jar for spark 2.
-dpkg -l spark-core >/dev/null || die "spark-core package is not installed"
+# Ensure that oozie is installed so we can use its oozie sharelib jar for spark 2.
+dpkg -l oozie >/dev/null || die "oozie package is not installed"
 
 # Ensure that spark2 is installed.
 dpkg -l spark2 >/dev/null || die "spark2 package is not installed"
