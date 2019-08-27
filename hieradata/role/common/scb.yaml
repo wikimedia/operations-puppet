@@ -7,12 +7,22 @@ admin::groups:
   - mobileapps-admin
   - changeprop-admin
   - recommendation-admin
-role::lvs::realserver::pools:
-  apertium: {}
-  mobileapps: {}
-  graphoid: {}
-  eventstreams: {}
-  "recommendation-api": {}
+profile::lvs::realserver::pools:
+  apertium:
+    services:
+      - "apertium-apy"
+  mobileapps:
+    services:
+      - mobileapps
+  graphoid:
+    services:
+      - graphoid
+  eventstreams:
+    services:
+      - eventstreams
+  "recommendation-api":
+    services:
+      - "recommendation-api"
 
 ### BEGIN GRAPHOID
 profile::graphoid::allowed_domains:
