@@ -16,8 +16,12 @@ admin::groups:
   - wdqs-roots
 cluster: wdqs
 contactgroups: admins,wdqs-admins
-role::lvs::realserver::pools:
-  wdqs: {}
+profile::lvs::realserver::pools:
+  wdqs:
+    services:
+      - wdqs-blazegraph
+      - nginx
+
 profile::wdqs::use_revisions: true
 
 # exclude wdqs hosts from screen monitoring
