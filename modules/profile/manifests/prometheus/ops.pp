@@ -228,6 +228,12 @@ class profile::prometheus::ops (
         'metric_relabel_configs' => [$varnish_be_uuid_relabel],
       },
       {
+        'job_name'        => 'trafficserver-text',
+        'file_sd_configs' => [
+          { 'files' => ["${targets_path}/trafficserver-text_*.yaml"] },
+        ],
+      },
+      {
         'job_name'        => 'trafficserver-upload',
         'file_sd_configs' => [
           { 'files' => ["${targets_path}/trafficserver-upload_*.yaml"] },
@@ -269,6 +275,13 @@ class profile::prometheus::ops (
         dest       => "${targets_path}/trafficserver-upload_backendmtail_${::site}.yaml",
         site       => $::site,
         class_name => 'role::cache::upload',
+        port       => 3904,
+    }
+
+    prometheus::class_config{ "trafficserver-text_backendmtail_${::site}":
+        dest       => "${targets_path}/trafficserver-text_backendmtail_${::site}.yaml",
+        site       => $::site,
+        class_name => 'role::cache::text_ats',
         port       => 3904,
     }
 
