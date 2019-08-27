@@ -1483,7 +1483,7 @@ node /kafkamon[12]001\.(codfw|eqiad)\.wmnet/ {
 # profile::wikimania_scholarships - https://scholarships.wikimedia.org/
 # profile::iegreview              - https://iegreview.wikimedia.org
 # profile::racktables             - https://racktables.wikimedia.org
-node 'krypton.eqiad.wmnet', 'miscweb2001.codfw.wmnet' {
+node 'krypton.eqiad.wmnet', 'miscweb1001.eqiad.wmnet', 'miscweb2001.codfw.wmnet' {
     role(webserver_misc_apps)
     interface::add_ip6_mapped { 'main': }
 }
