@@ -1,8 +1,0 @@
-<%-
-lvs_ips = scope.lookupvar('::lvs::configuration::service_ips')
-site = scope.lookupvar('::site')
-ips = @lvs_pools.map do |svc, pool|
-  name = pool['lvs_name'] || svc
-  lvs_ips[name][site]
-end
--%><%= ips.join(',') -%>
