@@ -48,10 +48,6 @@ class profile::lvs::realserver(
                 lvs_class_hosts => $::lvs::configuration::lvs_class_hosts,
                 lvs_services    => $::lvs::configuration::lvs_services
             }
-            # Remove the old-style restart script, temporary
-            file { "/usr/local/bin/restart-${service}":
-                ensure => absent,
-            }
         }
     }
 }
