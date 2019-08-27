@@ -260,3 +260,4 @@ prometheus::varnishkafka_exporter::config:
 profile::base::nameservers:
   - '10.3.0.1' # anycast recdns
 diamond::remove: true
+profile::cache::varnish::frontend::backend_services: [ats-be,varnish-be]
