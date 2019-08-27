@@ -335,7 +335,8 @@ define trafficserver::instance(
         override       => $service_override,
         restart        => true,
         service_params => {
-            restart    => "systemctl reload ${service_name}",
+            restart => "systemctl reload ${service_name}",
+            enable  => true,
         },
         subscribe      => Package[$trafficserver::packages],
     }
