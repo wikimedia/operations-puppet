@@ -7,7 +7,7 @@ class role::wmcs::openstack::eqiad1::labweb {
     include ::profile::ldap::client::labs
     include ::profile::base::firewall
     include ::profile::openstack::eqiad1::nutcracker
-    include ::role::lvs::realserver
+    include ::profile::lvs::realserver
 
     # Wikitech:
     include ::profile::openstack::eqiad1::wikitech::web

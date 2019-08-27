@@ -53,11 +53,17 @@ apache::logrotate::rotate: 30
 
 profile::openstack::eqiad1::version: ocata
 
-lvs::realserver::realserver_ips:
-    - '10.2.2.40' # labweb.svc.eqiad.wmnet
+#lvs::realserver::realserver_ips:
+#    - '10.2.2.40' # labweb.svc.eqiad.wmnet
 
-role::lvs::realserver::pools:
-  labweb: {}
+profile::lvs::realserver::pools:
+  labweb:
+    services:
+      - apache2
+      - php7.2-fpm
+      - hhvm
+      - nutcracker
+      - nginx
 
 profile::openstack::base::nutcracker::redis::shards:
   jobqueue:

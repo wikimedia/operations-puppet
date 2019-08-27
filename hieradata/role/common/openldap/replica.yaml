@@ -1,4 +1,6 @@
 profile::openldap::certname: ldap
 
-role::lvs::realserver::pools:
-  ldap-ro: {}
+profile::lvs::realserver::pools:
+  ldap-ro:
+    services:
+      - slapd
