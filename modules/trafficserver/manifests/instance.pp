@@ -24,13 +24,8 @@
 # [*port*]
 #   Bind trafficserver to this port (default: 8080).
 #
-# [*inbound_socket_options*]
-#   Socket options for incoming connections. The provided value is a bitmask:
-#     TCP_NODELAY  = 0x1
-#     SO_KEEPALIVE = 0x2
-#     SO_LINGER    = 0x4
-#     TCP_FASTOPEN = 0x8
-#   Default value: TCP_NODELAY | SO_LINGER = 0x5
+# [*network_settings*]
+#   Instance of Trafficserver::Network_settings. (default:undef).
 #
 # [*origin_ttfb_timeout*]
 #   The timeout value (in seconds) for time to first byte for an origin server connection. (default: 30 secs)
@@ -183,7 +178,7 @@ define trafficserver::instance(
     Trafficserver::Paths $paths,
     Boolean $default_instance = false,
     Stdlib::Port $port = 8080,
-    Integer[0, 0xF] $inbound_socket_options = 0x5,
+    Optional[Trafficserver::Network_settings] $network_settings = undef,
     Integer[0] $origin_ttfb_timeout = 30,
     Integer[0] $origin_post_ttfb_timeout = 1800,
     Optional[Trafficserver::Inbound_TLS_settings] $inbound_tls_settings = undef,
@@ -211,7 +206,7 @@ define trafficserver::instance(
     require ::trafficserver
     $user = $trafficserver::user  # needed by udev_storage.rules.erb and records.config.erb
 
-    if $inbound_socket_options >= 0x8 { # TCP_FASTOPEN is enabled
+    if $network_settings and $network_settings['sock_option_flag_in'] >= 0x8 { # TCP_FASTOPEN is enabled
         if !defined(Sysctl::Parameters['TCP Fast Open']) {  # TODO: Get rid of this as soon as nginx
                                                             # is not deployed in the cache cluster
             sysctl::parameters { 'TCP Fast Open':

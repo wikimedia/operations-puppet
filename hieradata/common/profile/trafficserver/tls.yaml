@@ -1,4 +1,7 @@
 profile::trafficserver::tls::port: 8443
+profile::trafficserver::tls::network_settings:
+  connections_throttle: 0
+  sock_option_flag_in: 0xd
 profile::trafficserver::tls::mapping_rules:
   - type: map
     target: /

@@ -5,6 +5,7 @@
 class profile::trafficserver::tls (
     String $user=hiera('profile::trafficserver::tls::user', 'trafficserver'),
     Stdlib::Port $port=hiera('profile::trafficserver::tls::port', 8443),
+    Optional[Trafficserver::Network_settings] $network_settings=hiera('profile::trafficserver::tls::network_settings', undef),
     Trafficserver::Inbound_TLS_settings $inbound_tls_settings=hiera('profile::trafficserver::tls::inbound_tls_settings'),
     Boolean $enable_xdebug=hiera('profile::trafficserver::tls::enable_xdebug', false),
     Array[TrafficServer::Mapping_rule] $mapping_rules=hiera('profile::trafficserver::tls::mapping_rules', []),
@@ -61,9 +62,9 @@ class profile::trafficserver::tls (
     trafficserver::instance { $instance_name:
         paths                    => $paths,
         port                     => $port,
+        network_settings         => $network_settings,
         origin_ttfb_timeout      => 180,
         origin_post_ttfb_timeout => 180,
-        inbound_socket_options   => 0xd,
         inbound_tls_settings     => $inbound_tls_settings,
         enable_xdebug            => $enable_xdebug,
         mapping_rules            => $mapping_rules,

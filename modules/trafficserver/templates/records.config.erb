@@ -18,7 +18,11 @@ CONFIG proxy.config.http.response_server_enabled INT 2
 CONFIG proxy.config.url_remap.pristine_host_hdr INT 1
 CONFIG proxy.config.disable_configuration_modification INT 1
 
-CONFIG proxy.config.net.sock_option_flag_in INT <%= @inbound_socket_options %>
+<% if @network_settings -%>
+# Network settings
+CONFIG proxy.config.net.connections_throttle INT <%= @network_settings['connections_throttle'] %>
+CONFIG proxy.config.net.sock_option_flag_in INT <%= @network_settings['sock_option_flag_in'] %>
+<% end -%>
 
 CONFIG proxy.config.http.connect_attempts_timeout INT <%= @origin_ttfb_timeout %>
 CONFIG proxy.config.http.post_connect_attempts_timeout INT <%= @origin_post_ttfb_timeout %>
