@@ -10,5 +10,5 @@ class role::kubernetes::worker {
     # Setup calico
     include ::profile::calico::kubernetes
     # Setup LVS
-    include ::role::lvs::realserver
+    include ::profile::lvs::realserver
 }

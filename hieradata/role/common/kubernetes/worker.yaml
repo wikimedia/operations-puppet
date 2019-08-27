@@ -30,7 +30,9 @@ profile::kubernetes::node::kubeproxy_username: system:kube-proxy
 #profile::kubernetes::node::kubeproxy_token:
 profile::kubernetes::node::kubelet_config: /etc/kubernetes/kubelet_config
 profile::kubernetes::node::kubeproxy_config: /etc/kubernetes/kubeproxy_config
-role::lvs::realserver::pools:
+# We don't need conftool safe restart scripts on k8s.
+profile::lvs::realserver::use_conftool: false
+profile::lvs::realserver::pools:
   mathoid: {}
   zotero: {}
   blubberoid: {}
