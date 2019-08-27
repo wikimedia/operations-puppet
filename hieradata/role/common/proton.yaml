@@ -3,8 +3,10 @@ cluster: proton
 admin::groups:
   - proton-admins
 
-role::lvs::realserver::pools:
-    proton: {}
+profile::lvs::realserver::pools:
+    proton:
+      services:
+        - proton
 
 # TODO: Ugly ugly hack. Uses implicit hiera looks, needs to be removed
 service::configuration::mwapi_host: http://api-rw.discovery.wmnet
