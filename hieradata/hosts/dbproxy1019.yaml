@@ -8,4 +8,3 @@ profile::mariadb::proxy::firewall: 'disabled'
 
 profile::base::nameservers:
   - '10.3.0.1' # anycast recdns
-profile::base::notifications: disabled
