@@ -291,12 +291,6 @@ host kerberos1001 {
     fixed-address kerberos1001.eqiad.wmnet;
 }
 
-host krypton {
-    hardware ethernet aa:00:00:7e:e0:22;
-    fixed-address krypton.eqiad.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
-}
-
 host kubetcd2001 {
     hardware ethernet aa:00:00:70:df:e9;
     fixed-address kubetcd2001.codfw.wmnet;
