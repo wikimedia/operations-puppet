@@ -70,8 +70,5 @@ profile::cassandra::settings:
 #
 # General
 #
-# role::lvs::realserver::pools:
-#   sessionstore: {}
-
 admin::groups:
   - sessionstore-roots

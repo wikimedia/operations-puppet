@@ -901,8 +901,11 @@ profile::cassandra::settings:
 #
 # General
 #
-role::lvs::realserver::pools:
-  restbase: {}
+profile::lvs::realserver::pools:
+  restbase:
+    services:
+      - restbase
+    # TODO: add cassandra instances?
 service::configuration::log_dir: "/var/log"
 
 admin::groups:
