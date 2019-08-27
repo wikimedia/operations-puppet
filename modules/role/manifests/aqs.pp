@@ -17,5 +17,5 @@ class role::aqs {
     include ::profile::cassandra
     include ::profile::aqs
 
-    include role::lvs::realserver
+    include profile::lvs::realserver
 }

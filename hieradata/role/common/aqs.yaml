@@ -114,5 +114,7 @@ profile::aqs::cassandra_default_consistency: localQuorum
 profile::aqs::cassandra_local_dc: "%{::site}"
 profile::aqs::statsd_host: statsd.eqiad.wmnet
 
-role::lvs::realserver::pools:
-  aqs: {}
+profile::lvs::realserver::pools:
+  aqs:
+    services:
+      - aqs
