@@ -180,8 +180,8 @@ class profile::prometheus::alerts {
         # Divide rate of input now vs yesterday, multiplied by 100
         query           => '100 * (sum (rate(logstash_node_plugin_events_out_total{plugin_id=~"input/.*"}[5m])) / sum (rate(logstash_node_plugin_events_out_total{plugin_id=~"input/.*"}[5m] offset 1d)))',
         prometheus_url  => 'http://prometheus.svc.eqiad.wmnet/ops',
-        warning         => 110,
-        critical        => 130,
+        warning         => 150,
+        critical        => 210,
         method          => 'ge',
         dashboard_links => ['https://grafana.wikimedia.org/dashboard/db/logstash?orgId=1&panelId=2&fullscreen'],
         # Check every 120 minutes, once in breach check every 10 minutes up to 5 times
