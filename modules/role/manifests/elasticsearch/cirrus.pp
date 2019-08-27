@@ -5,7 +5,7 @@
 class role::elasticsearch::cirrus {
     include ::profile::standard
     include ::profile::base::firewall
-    include ::role::lvs::realserver
+    include ::profile::lvs::realserver
     include ::profile::elasticsearch::cirrus
     include ::profile::mjolnir::kafka_bulk_daemon
     include ::profile::mjolnir::kafka_msearch_daemon
