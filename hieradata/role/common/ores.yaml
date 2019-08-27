@@ -1,8 +1,10 @@
 cluster: ores
 admin::groups:
   - ores-admin
-role::lvs::realserver::pools:
-  ores: {}
+profile::lvs::realserver::pools:
+  ores:
+    services:
+      - uwsgi-ores
 
 profile::ores::celery::workers: 90
 
