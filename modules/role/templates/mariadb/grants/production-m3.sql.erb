@@ -224,3 +224,44 @@ GRANT USAGE
 
 GRANT SELECT
     ON `phabricator_maniphest`.* TO 'phmanifest'@'10.192.32.137';
+
+-- haproxy@dbproxy1016
+
+GRANT USAGE
+    ON *.* TO 'haproxy'@'10.64.48.42';
+
+-- phadmin@dbproxy1016
+GRANT USAGE
+    ON *.* TO 'phadmin'@'10.64.48.42'
+    IDENTIFIED BY '<%= @phab_admin_pass %>';
+
+GRANT ALL PRIVILEGES
+    ON `phabricator%`.* TO 'phadmin'@'10.64.48.42';
+
+-- phuser@dbproxy1016
+
+GRANT REPLICATION CLIENT
+    ON *.* TO 'phuser'@'10.64.48.42'
+    IDENTIFIED BY '<%= @phab_app_pass %>';
+
+GRANT DELETE, EXECUTE, INSERT, SELECT, SHOW VIEW, UPDATE
+    ON `phabricator%`.* TO 'phuser'@'10.64.48.42';
+
+-- phstats@dbproxy1016
+
+GRANT USAGE
+    ON *.* TO 'phstats'@'10.64.48.42'
+    IDENTIFIED BY '<%= @phab_metrics_pass %>';
+GRANT SELECT ON `phabricator_maniphest`.* TO 'phstats'@'10.64.48.42';
+GRANT SELECT ON `phabricator_user`.* TO 'phstats'@'10.64.48.42';
+GRANT SELECT ON `phabricator_project`.* TO 'phstats'@'10.64.48.42';
+GRANT SELECT ON `phabricator_differential`.* TO 'phstats'@'10.64.48.42';
+
+-- phmanifest@dbproxy1016
+
+GRANT USAGE
+    ON *.* TO 'phmanifest'@'10.64.48.42'
+    IDENTIFIED BY '<%= @phab_manifest_pass %>';
+
+GRANT SELECT
+    ON `phabricator_maniphest`.* TO 'phmanifest'@'10.64.48.42';
