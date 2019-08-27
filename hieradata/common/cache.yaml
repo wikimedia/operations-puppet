@@ -12,7 +12,6 @@ cache::nodes:
       - 'cp2019.codfw.wmnet'
       - 'cp2023.codfw.wmnet'
     eqiad:
-      - 'cp1075.eqiad.wmnet'
       - 'cp1077.eqiad.wmnet'
       - 'cp1079.eqiad.wmnet'
       - 'cp1081.eqiad.wmnet'
@@ -20,6 +19,8 @@ cache::nodes:
       - 'cp1085.eqiad.wmnet'
       - 'cp1087.eqiad.wmnet'
       - 'cp1089.eqiad.wmnet'
+    eqiad_ats:
+      - 'cp1075.eqiad.wmnet'
     esams:
       - 'cp3030.esams.wmnet'
       # - 'cp3031.esams.wmnet' hw issues: T200806
