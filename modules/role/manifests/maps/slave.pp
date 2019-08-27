@@ -2,7 +2,7 @@
 class role::maps::slave {
     include ::profile::standard
     include ::profile::base::firewall
-    include ::role::lvs::realserver
+    include ::profile::lvs::realserver
 
     include ::profile::maps::apps
     include ::profile::maps::cassandra

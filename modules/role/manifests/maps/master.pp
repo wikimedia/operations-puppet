@@ -2,7 +2,7 @@
 class role::maps::master {
     include ::profile::standard
     include ::profile::base::firewall
-    include ::role::lvs::realserver
+    include ::profile::lvs::realserver
 
     include ::profile::maps::apps
     include ::profile::maps::cassandra
@@ -17,4 +17,3 @@ class role::maps::master {
     }
 
 }
-

@@ -8,8 +8,10 @@
 #profile::maps::cassandra::tileratorui_pass: some_password
 #profile::cassandra::single_instance::super_pass: some_password
 
-role::lvs::realserver::pools:
-  kartotherian: {}
+profile::lvs::realserver::pools:
+  kartotherian:
+    services:
+      - kartotherian
 
 admin::groups:
   - maps-roots
