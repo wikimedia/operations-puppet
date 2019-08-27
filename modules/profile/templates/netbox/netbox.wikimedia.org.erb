@@ -48,6 +48,10 @@
     # Proxy swift image store temporary URLs.
     # FIXME update for other site(s) that frontend runs on once we figure out syncing.
     ProxyPassMatch ^(/v1/AUTH_netbox/<%= @swift_container %>/.*) http://swift.svc.eqiad.wmnet$1
+    <Location /v1/AUTH_netbox/>
+       # We strip Content-disposition to make images viewable, since swift sets this header.
+       Header unset Content-Disposition
+    </Location>
     <%- end -%>
 
     <%- if @port -%>
