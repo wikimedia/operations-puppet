@@ -1,5 +1,7 @@
 # setup a webserver for misc. apps
-class profile::misc_apps::httpd {
+class profile::misc_apps::httpd (
+    $deployment_server = hiera('deployment_server'),
+){
 
     $apache_modules_common = ['rewrite', 'headers', 'authnz_ldap', 'proxy', 'proxy_http']
 
@@ -12,5 +14,11 @@ class profile::misc_apps::httpd {
 
     class { '::httpd':
         modules => $apache_modules,
+    }
+
+    ferm::service { 'miscweb-http-deployment':
+        proto  => 'tcp',
+        port   => '80',
+        srange => "(@resolve((${deployment_server})) @resolve((${deployment_server}), AAAA))"
     }
 }
