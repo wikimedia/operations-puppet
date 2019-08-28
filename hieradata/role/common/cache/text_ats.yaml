@@ -217,8 +217,6 @@ profile::cache::varnish::frontend::transient_gb: 5
 profile::cache::ssl::unified::monitoring: true
 profile::cache::ssl::unified::letsencrypt: false
 profile::cache::ssl::unified::acme_chief: false
-# Profile::cache::ssl::wikibase
-profile::cache::ssl::wikibase::monitoring: true
 
 # Enable varnishkafka-* instance monitoring.
 profile::cache::kafka::webrequest::monitoring_enabled: true
