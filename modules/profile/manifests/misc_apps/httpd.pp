@@ -1,7 +1,7 @@
 # setup a webserver for misc. apps
 class profile::misc_apps::httpd {
 
-    $apache_modules_common = ['ssl', 'rewrite', 'headers', 'authnz_ldap', 'proxy', 'proxy_http']
+    $apache_modules_common = ['rewrite', 'headers', 'authnz_ldap', 'proxy', 'proxy_http']
 
     if os_version('debian == stretch') {
         require_package('libapache2-mod-php7.0')
