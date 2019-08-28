@@ -999,6 +999,12 @@ node 'dbproxy1010.eqiad.wmnet' {
     role(mariadb::proxy::master)
     interface::add_ip6_mapped { 'main': }
 }
+
+node 'dbproxy1018.eqiad.wmnet' {
+    role(mariadb::proxy::master)
+    interface::add_ip6_mapped { 'main': }
+}
+
 # web proxy
 # dbproxy1011 will be decommissioned at some point
 node 'dbproxy1011.eqiad.wmnet' {
@@ -1011,7 +1017,7 @@ node 'dbproxy1019.eqiad.wmnet' {
 }
 
 # new dbproxy hosts to be pressed into service by DBA team T202367
-node /^dbproxy10(12|15|17|18|20|21)\.eqiad\.wmnet$/ {
+node /^dbproxy10(12|15|17|20|21)\.eqiad\.wmnet$/ {
     role(spare::system)
 }
 
