@@ -190,6 +190,7 @@ class profile::phabricator::main (
     ]
 
     $cache_text_nodes = pick($cache_nodes['text'], {})
+    $trusted_proxies = $cache_text_nodes[$::site] + pick($cache_text_nodes["${::site}_ats"], [])
 
     # lint:ignore:arrow_alignment
     class { '::phabricator':
@@ -198,7 +199,7 @@ class profile::phabricator::main (
         serveraliases    => [ $altdom,
                               'bugzilla.wikimedia.org',
                               'bugs.wikimedia.org' ],
-        trusted_proxies  => $cache_text_nodes[$::site],
+        trusted_proxies  => $trusted_proxies,
         mysql_admin_user => $mysql_admin_user,
         mysql_admin_pass => $mysql_admin_pass,
         libraries        => [ "${phab_root_dir}/libext/Sprint/src",
