@@ -21,5 +21,7 @@ class profile::iegreview {
         port   => '80',
         srange => '$CACHES',
     }
+
+    require_package('mysql-client')
 }
 # vim:sw=4 ts=4 sts=4 et:
