@@ -35,9 +35,9 @@ class profile::docker_registry_ha::registry(
         $builders = $image_builders
     }
 
-    if has_key($cache_nodes, 'text') {
-        $http_allowed_hosts = pick($cache_nodes['text'][$::site], [])
-    }
+    $varnish_hosts = pick($cache_nodes['text']['eqiad'], []) + pick($cache_nodes['text']['codfw'], [])
+    $ats_hosts = pick($cache_nodes['text']['eqiad_ats'], []) + pick($cache_nodes['text']['codfw_ats'], [])
+    $http_allowed_hosts = $varnish_hosts + $ats_hosts
 
     # Nginx frontend
     class { '::sslcert::dhparam': }
