@@ -137,7 +137,7 @@ cache::alternate_domains:
       '^/bigdata/ldf.*':
         director: 'wdqs_director_ldf'
   racktables.wikimedia.org:
-    director: 'krypton'
+    director: 'miscweb'
   releases.wikimedia.org:
     director: 'releases'
   releases-jenkins.wikimedia.org:

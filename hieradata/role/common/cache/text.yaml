@@ -122,6 +122,9 @@ cache::app_directors:
   matomo1001:
     backends:
       eqiad: 'matomo1001.eqiad.wmnet'
+  miscweb:
+    backends:
+      eqiad: 'miscweb1001.eqiad.wmnet'
   netmon1002:
     backends:
       eqiad: 'netmon1002.wikimedia.org'
@@ -350,7 +353,7 @@ cache::alternate_domains:
       '^/bigdata/ldf.*':
         director: 'wdqs_director_ldf'
   racktables.wikimedia.org:
-    director: 'krypton'
+    director: 'miscweb'
   releases.wikimedia.org:
     director: 'releases'
   releases-jenkins.wikimedia.org:
