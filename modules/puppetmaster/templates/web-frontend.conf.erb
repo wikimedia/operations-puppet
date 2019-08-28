@@ -47,6 +47,8 @@ end
     RewriteEngine On
     # Certificates requests should only be in the master.
     RewriteRule ^/puppet-ca/.*$ https://<%= @master %>:8141%{REQUEST_URI} [P,QSA]
+    # This legacy API is still used by cergen, and only the master can serve it.
+    RewriteRule ^/[^/]+/certificate.*$ https://<%= @master %>:8141%{REQUEST_URI} [P,QSA]
     # File buckets should only be in one place. Choosing the frontend by default for simplicity
     RewriteRule ^/puppet/v3/file_bucket_file/md5/ https://<%= @fqdn %>:8141%{REQUEST_URI} [P,QSA]
     # Volatile should only be in one place. Choosing the master by default for simplicity
