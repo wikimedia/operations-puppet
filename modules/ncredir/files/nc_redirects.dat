@@ -71,20 +71,27 @@ rewrite lzh.wikipedia.com	https://zh-classical.wikipedia.org
 
 # Localised TLDs
 
+rewrite	*wikibooks.pt	https://pt.wikibooks.org
 rewrite	*wikinews.de	https://de.wikinews.org
+rewrite	*wikinews.pt	https://pt.wikinews.org
 rewrite	*wikipedia.org.il	https://he.wikipedia.org
 rewrite	*wikipedia.co.il	https://he.wikipedia.org
 rewrite	*wikipedia.bg	https://bg.wikipedia.org
+rewrite	*wikipedia.id	https://id.wikipedia.org
 rewrite	*wikipedia.is	https://is.wikipedia.org
 rewrite	*wikipedia.co.za	https://af.wikipedia.org
 rewrite	*wikisource.pl	https://pl.wikisource.org
-rewrite *wiktionary.pl	https://pl.wiktionary.org
+rewrite	*wikisource.pt	https://pt.wikisource.org
+rewrite	*wiktionary.pl	https://pl.wiktionary.org
+rewrite	*wiktionary.pt	https://pt.wiktionary.org
 rewrite	*wikipedia.es	https://es.wikipedia.org
-rewrite *wikipedia.com.ar	https://es.wikipedia.org
+rewrite	*wikipedia.com.ar	https://es.wikipedia.org
 rewrite	*wikipediya.com	https://kbp.wikipedia.org
-rewrite *wikipedia.co.uk	https://en.wikipedia.org
-rewrite *wikipedia.uk	https://en.wikipedia.org
-rewrite *wikipedia.sk	https://sk.wikipedia.org
+rewrite	*wikipedia.co.uk	https://en.wikipedia.org
+rewrite	*wikipedia.uk	https://en.wikipedia.org
+rewrite	*wikipedia.sk	https://sk.wikipedia.org
+rewrite	*wikiquote.pt	https://pt.wikiquote.org
+rewrite	*wikiversity.pt	https://pt.wikiversity.org
 
 # wikimedia.ee / wikipedia.ee - T165733#3355736
 rewrite	*wikimedia.ee	https://ee.wikimedia.org
@@ -128,6 +135,12 @@ funnel	*wilipedia.com	https://www.wikipedia.org
 funnel	*wikipdia.org	https://www.wikipedia.org
 funnel	*wikipedoa.org	https://www.wikipedia.org
 funnel	*wikipeedia.org	https://www.wikipedia.org
+funnel	*wikjpedia.org	https://www.wikipedia.org
+funnel	*wikipedial.org	https://www.wikipedia.org
+funnel	*wikidpedia.org	https://www.wikipedia.org
+funnel	*wekipedia.com	https://www.wikipedia.org
+funnel	*wikipaedia.net	https://www.wikipedia.org
+funnel	*wikepedia.org	https://www.wikipedia.org
 
 # Wiktionary
 
@@ -143,6 +156,11 @@ rewrite	*.wikibooks.com	https://*.wikibooks.org
 rewrite	wikibook.com	https://www.wikibooks.org
 rewrite	wikibooks.com	https://www.wikibooks.org
 
+# Wikidata
+rewrite	*wikidata.es	https://wikidata.org
+rewrite	*wikidata.pt	https://wikidata.org
+rewrite	*wikidata.us	https://wikidata.org
+
 
 # Wikisource
 
@@ -155,6 +173,8 @@ rewrite	wikiquote.com	https://www.wikiquote.org
 rewrite	*.wikiquote.com	https://*.wikiquote.org
 rewrite	wikiquote.net	https://www.wikiquote.org
 rewrite	*.wikiquote.net	https://*.wikiquote.org
+rewrite	wikiquotes.info	https://www.wikiquote.org
+rewrite	*.wikiquotes.info	https://*.wikiquote.org
 
 # Wikinews
 
@@ -179,10 +199,12 @@ rewrite	*.wikivoyage.com	https://*.wikivoyage.org
 rewrite	*.wikivoyage.de	https://*.wikivoyage.org
 rewrite	*.wikivoyage.eu	https://*.wikivoyage.org
 rewrite	*.wikivoyage.net	https://*.wikivoyage.org
+rewrite	*.wiki.voyage	https://*.wikivoyage.org
 rewrite	wikivoyage.com	https://www.wikivoyage.org
 rewrite	wikivoyage.de	https://www.wikivoyage.org
 rewrite	wikivoyage.eu	https://www.wikivoyage.org
 rewrite	wikivoyage.net	https://www.wikivoyage.org
+rewrite	wiki.voyage	https://www.wikivoyage.org
 
 # Wikivoyager (T165733#3355736)
 rewrite	*.wikivoyager.org	https://*.wikivoyage.org
@@ -200,6 +222,7 @@ rewrite	voyagewiki.org	https://www.wikivoyage.org
 rewrite	*wikimediafoundation.com	https://foundation.wikimedia.org
 rewrite	*wikimediafoundation.net	https://foundation.wikimedia.org
 rewrite	*wikimediafoundation.info	https://foundation.wikimedia.org
+rewrite	*wikipediafoundation.org	https://foundation.wikimedia.org
 
 # Commons
 
