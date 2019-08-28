@@ -1,3 +1,11 @@
 profile::cache::ssl::unified::tls_port: 4443
 profile::cache::ssl::unified::use_trafficserver_tls: true
 profile::trafficserver::tls::port: 443
+profile::trafficserver::tls::h2_settings:
+  stream_priority_enabled: 0
+  max_settings_per_frame: 7
+  max_settings_per_minute: 14
+  max_settings_frames_per_minute: 14
+  max_ping_frames_per_minute: 60
+  max_priority_frames_per_minute: 0
+  min_avg_window_update: 2560.0
