@@ -39,8 +39,7 @@ profile::trafficserver::backend::mapping_rules:
       replacement: https://webserver-misc-static.discovery.wmnet
     - type: map
       target: http://docker-registry.wikimedia.org
-      replacement: http://registry2001.codfw.wmnet:81
-      #replacement: https://docker-registry.discovery.wmnet
+      replacement: https://docker-registry.discovery.wmnet
     - type: map
       target: http://doc.wikimedia.org
       replacement: http://doc1001.eqiad.wmnet
