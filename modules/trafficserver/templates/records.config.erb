@@ -23,6 +23,16 @@ CONFIG proxy.config.disable_configuration_modification INT 1
 CONFIG proxy.config.net.connections_throttle INT <%= @network_settings['connections_throttle'] %>
 CONFIG proxy.config.net.sock_option_flag_in INT <%= @network_settings['sock_option_flag_in'] %>
 <% end -%>
+<% if @h2_settings -%>
+# HTTP/2 settings
+CONFIG proxy.config.http2.stream_priority_enabled INT <%= @h2_settings['stream_priority_enabled'] %>
+CONFIG proxy.config.http2.max_settings_per_frame INT <%= @h2_settings['max_settings_per_frame'] %>
+CONFIG proxy.config.http2.max_settings_per_minute INT <%= @h2_settings['max_settings_per_minute'] %>
+CONFIG proxy.config.http2.max_settings_frames_per_minute INT <%= @h2_settings['max_settings_frames_per_minute'] %>
+CONFIG proxy.config.http2.max_ping_frames_per_minute INT <%= @h2_settings['max_ping_frames_per_minute'] %>
+CONFIG proxy.config.http2.max_priority_frames_per_minute INT <%= @h2_settings['max_priority_frames_per_minute'] %>
+CONFIG proxy.config.http2.min_avg_window_update FLOAT <%= @h2_settings['min_avg_window_update'] %>
+<% end -%>
 
 CONFIG proxy.config.http.connect_attempts_timeout INT <%= @origin_ttfb_timeout %>
 CONFIG proxy.config.http.post_connect_attempts_timeout INT <%= @origin_post_ttfb_timeout %>

@@ -27,6 +27,9 @@
 # [*network_settings*]
 #   Instance of Trafficserver::Network_settings. (default:undef).
 #
+# [*h2_settings*]
+#   Instance of Trafficserver::H2_settings. (default:undef).
+#
 # [*origin_ttfb_timeout*]
 #   The timeout value (in seconds) for time to first byte for an origin server connection. (default: 30 secs)
 #
@@ -179,6 +182,7 @@ define trafficserver::instance(
     Boolean $default_instance = false,
     Stdlib::Port $port = 8080,
     Optional[Trafficserver::Network_settings] $network_settings = undef,
+    Optional[Trafficserver::H2_settings] $h2_settings = undef,
     Integer[0] $origin_ttfb_timeout = 30,
     Integer[0] $origin_post_ttfb_timeout = 1800,
     Optional[Trafficserver::Inbound_TLS_settings] $inbound_tls_settings = undef,
