@@ -24,6 +24,8 @@ function remap_hook()
 end
 
 function do_remap()
-    ts.hook(TS_LUA_HOOK_POST_REMAP, remap_hook)
+    -- Use TS_LUA_HOOK_CACHE_LOOKUP_COMPLETE, so that the mangling happens
+    -- after cache lookup and before fetching the response from the origin
+    ts.hook(TS_LUA_HOOK_CACHE_LOOKUP_COMPLETE, remap_hook)
     return 0
 end
