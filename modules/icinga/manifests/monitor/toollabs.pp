@@ -170,15 +170,6 @@ class icinga::monitor::toollabs {
         notes_url     => 'https://wikitech.wikimedia.org/wiki/Portal:Toolforge/Admin/Toolschecker',
     }
 
-    # new instances will block on this for spinup if failing
-    monitoring::service { 'tools-checker-nfs-showmount':
-        description   => 'toolschecker: showmount succeeds on a labs instance',
-        check_command => "${checker}!/nfs/secondary_cluster_showmount!OK",
-        host          => $test_entry_host,
-        notes_url     => 'https://wikitech.wikimedia.org/wiki/Portal:Toolforge/Admin/Toolschecker',
-        contact_group => 'wmcs-team-email,wmcs-bots',
-    }
-
     monitoring::service { 'tools-checker-redis':
         description   => 'toolschecker: Redis set/get',
         check_command => "${checker}!/redis!OK",
