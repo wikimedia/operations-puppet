@@ -93,9 +93,7 @@ rewrite	*wikipedia.sk	https://sk.wikipedia.org
 rewrite	*wikiquote.pt	https://pt.wikiquote.org
 rewrite	*wikiversity.pt	https://pt.wikiversity.org
 
-# wikimedia.ee / wikipedia.ee - T165733#3355736
-rewrite	*wikimedia.ee	https://ee.wikimedia.org
-
+# wikipedia.ee - T165733#3355736
 rewrite	*wikipedia.ee	https://et.wikipedia.org
 
 rewrite	*wikipedia.gr	https://el.wikipedia.org
