@@ -4,31 +4,15 @@
   description: Pool built from configuration on cloudservices2002-dev
   id: 794ccc2c-d751-44fe-b57f-8894c9f5c842
   nameservers:
-  - host: 208.80.153.48
-    port: 53
   - host: 208.80.153.76
     port: 53
   ns_records:
   - hostname: codfw1dev-ns0.wikimedia.org.
     priority: 1
-  - hostname: codfw1dev-ns1.wikimedia.org.
-    priority: 2
 
   targets:
   - masters:
-    - host: 208.80.153.48
-      port: 5354
     - host: 208.80.153.76
-      port: 5354
-    options:
-      connection: mysql://pdns:<password>@208.80.153.48/pdns
-      host: 208.80.153.48
-      port: '53'
-    type: powerdns
-  - masters:
-    - host: 208.80.153.76
-      port: 5354
-    - host: 208.80.153.48
       port: 5354
     options:
       connection: mysql://pdns:<password>@208.80.153.76/pdns
