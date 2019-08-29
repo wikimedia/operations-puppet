@@ -58,13 +58,8 @@ class iegreview(
         deploy_user  => 'deploy-service',
     }
 
-    if os_version('debian == jessie') {
-        require_package('php5-mysql')
-        require_package('php5-curl')
-    } else {
-        require_package('php-mysql')
-        require_package('php-curl')
-    }
+    require_package('php-mysql')
+    require_package('php-curl')
 
     httpd::site { $hostname:
         content => template('iegreview/apache.conf.erb'),
