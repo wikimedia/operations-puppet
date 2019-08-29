@@ -473,6 +473,30 @@ host neon {
     fixed-address neon.eqiad.wmnet;
 }
 
+host netbox1001 {
+   hardware ethernet aa:00:00:84:f1:9d;
+   fixed-address netbox1001.wikimedia.org;
+   option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/buster-installer/";
+}
+
+host netbox2001 {
+   hardware ethernet aa:00:00:30:be:b1;
+   fixed-address netbox2001.wikimedia.org;
+   option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/buster-installer/";
+}
+
+host netboxdb1001 {
+   hardware ethernet aa:00:00:6e:fd:09;
+   fixed-address netboxdb1001.eqiad.wmnet;
+   option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/buster-installer/";
+}
+
+host netboxdb2001 {
+   hardware ethernet aa:00:00:cd:7d:3c;
+   fixed-address netboxdb2001.codfw.wmnet;
+   option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/buster-installer/";
+}
+
 host netflow1001 {
     hardware ethernet aa:00:00:3a:1d:c3;
     fixed-address netflow1001.eqiad.wmnet;
