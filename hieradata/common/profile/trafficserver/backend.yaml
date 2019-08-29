@@ -170,7 +170,7 @@ profile::trafficserver::backend::mapping_rules:
       replacement: http://ununpentium.wikimedia.org
     - type: map
       target: http://scholarships.wikimedia.org
-      replacement: http://krypton.eqiad.wmnet
+      replacement: https://webserver-misc-apps.discovery.wmnet
     - type: map
       target: http://sitemaps.wikimedia.org
       replacement: https://webserver-misc-static.discovery.wmnet

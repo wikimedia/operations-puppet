@@ -147,7 +147,7 @@ cache::alternate_domains:
   rt.wikimedia.org:
     director: 'ununpentium'
   scholarships.wikimedia.org:
-    director: 'krypton'
+    director: 'miscweb'
   sitemaps.wikimedia.org:
     director: 'webserver_misc_static'
   smokeping.wikimedia.org:
