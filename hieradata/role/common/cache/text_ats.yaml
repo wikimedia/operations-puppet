@@ -86,7 +86,7 @@ cache::alternate_domains:
   hue.wikimedia.org:
     director: 'hadoop_ui'
   iegreview.wikimedia.org:
-    director: 'krypton'
+    director: 'miscweb'
   integration.wikimedia.org:
     director: 'contint1001'
   labtesthorizon.wikimedia.org:
