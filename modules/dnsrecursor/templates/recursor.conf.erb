@@ -1,6 +1,6 @@
 # This file is managed by puppet - don't edit it locally!
 # recursor.conf
-# https://doc.powerdns.com/3/recursor/settings/
+# https://doc.powerdns.com/md/recursor/settings/
 
 <%
     def flatten_ips(ips)
@@ -43,6 +43,7 @@ log-common-errors=yes
 quiet=yes
 # trace	if we should output heaps of logging
 trace=off
+max-mthreads=512
 
 # which domains we only accept delegations from
 delegation-only=com,net
