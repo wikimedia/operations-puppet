@@ -24,7 +24,6 @@ class labstore::monitoring::primary(
                       'ALL = NOPASSWD: /usr/local/sbin/check_drbd_status',
                       'ALL = NOPASSWD: /usr/local/sbin/check_drbd_role',
                       'ALL = NOPASSWD: /usr/local/sbin/check_drbd_cluster_ip',
-                      'ALL = NOPASSWD: /usr/local/sbin/check_nfs_status',
                       ],
     }
 
@@ -84,19 +83,11 @@ class labstore::monitoring::primary(
         notes_url     => 'https://wikitech.wikimedia.org/wiki/Portal:Data_Services/Admin/Labstore',
     }
 
-    file { '/usr/local/sbin/check_nfs_status':
-        source => 'puppet:///modules/labstore/monitor/check_nfs_status.py',
-        mode   => '0755',
-        owner  => 'root',
-        group  => 'root',
-    }
-
     nrpe::monitor_service { 'check_nfs_status':
         critical      => $critical,
         description   => 'NFS served over cluster IP',
-        nrpe_command  => "/usr/bin/sudo /usr/local/sbin/check_nfs_status ${cluster_ip}",
+        nrpe_command  => "/usr/lib/nagios/plugins/check_rpc -H ${cluster_ip} -C nfs -c4 -t",
         contact_group => $contact_groups,
-        require       => File['/usr/local/sbin/check_nfs_status'],
         notes_url     => 'https://wikitech.wikimedia.org/wiki/Portal:Data_Services/Admin/Labstore',
     }
 }

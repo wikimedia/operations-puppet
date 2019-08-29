@@ -76,13 +76,6 @@ class profile::wmcs::nfs::secondary(
         int_throughput_crit => 1062500000, # 8500Mbps
     }
 
-    file { '/usr/local/sbin/check_nfs_status':
-        source => 'puppet:///modules/labstore/monitor/check_nfs_status.py',
-        mode   => '0755',
-        owner  => 'root',
-        group  => 'root',
-    }
-
     $secondary_servers_ferm = join($secondary_servers, ' ')
     ferm::service { 'labstore_nfs_portmapper_udp_monitor':
         proto  => 'udp',
@@ -95,17 +88,10 @@ class profile::wmcs::nfs::secondary(
         srange => "(@resolve((${secondary_servers_ferm})) @resolve((${secondary_servers_ferm}), AAAA))",
     }
 
-    sudo::user { 'nagios_check_nfs_status':
-        user       => 'nagios',
-        privileges => ['ALL = NOPASSWD: /usr/local/sbin/check_nfs_status'],
-    }
-
     nrpe::monitor_service { 'check_nfs_status':
         description   => 'NFS served over cluster IP',
-        nrpe_command  => "/usr/bin/sudo /usr/local/sbin/check_nfs_status ${cluster_ip}",
+        nrpe_command  => "/usr/lib/nagios/plugins/check_rpc -H ${cluster_ip} -C nfs -c4 -t",
         contact_group => 'wmcs-team',
-        require       => File['/usr/local/sbin/check_nfs_status'],
         notes_url     => 'https://wikitech.wikimedia.org/wiki/Portal:Data_Services/Admin/Labstore',
     }
-
 }
