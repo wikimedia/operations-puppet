@@ -293,3 +293,189 @@ trafficserver_transactions_total:
     value: proxy.node.http.origin_server_total_transactions_count
   - labels: {protocol: http, source: user_agent}
     value: proxy.node.http.user_agents_total_transactions_count
+trafficserver_connections_origin_failed_total:
+  documentation: Count number of failed connections to origin servers
+  type: counter
+  values:
+    - labels: {protocol: http}
+      value: proxy.process.http.broken_server_connections
+trafficserver_network_bytes_total:
+  documentation: Total network bytes
+  type: counter
+  values:
+    - labels: {operation: read}
+      value: proxy.process.net.read_bytes
+    - labels: {operation: write}
+      value: proxy.process.net.write_bytes
+trafficserver_throttled_connections_total:
+  documentation: Total throttled connections
+  type: counter
+  values:
+    - labels: {direction: inbound}
+      value: proxy.process.net.connections_throttled_in
+    - labels: {direction: outbound}
+      value: proxy.process.net.connections_throttled_out
+trafficserver_ssl_errors_total:
+  documentation: Total SSL/TLS errors
+  type: counter
+  values:
+    - labels: {protocol: ssl, error: want_write}
+      value: proxy.process.ssl.ssl_error_want_write
+    - labels: {protocol: ssl, error: want_read}
+      value: proxy.process.ssl.ssl_error_want_write
+    - labels: {protocol: ssl, error: want_x509_lookup}
+      value: proxy.process.ssl.ssl_error_want_x509_lookup
+    - labels: {protocol: ssl, error: error_syscall}
+      value: proxy.process.ssl.ssl_error_syscall
+    - labels: {protocol: ssl, error: error_read_eos}
+      value: proxy.process.ssl.ssl_error_read_eos
+    - labels: {protocol: ssl, error: error_zero_return}
+      value: proxy.process.ssl.ssl_error_zero_return
+    - labels: {protocol: ssl, error: error_ssl}
+      value: proxy.process.ssl.ssl_error_ssl
+trafficserver_ssl_session_cache_count:
+  documentation: SSL/TLS session cache counts
+  type: counter
+  values:
+    - labels: {protocol: ssl, session_cache: hit}
+      value: proxy.process.ssl.ssl_session_cache_hit
+    - labels: {protocol: ssl, session_cache: new_session}
+      value: proxy.process.ssl.ssl_session_cache_new_session
+    - labels: {protocol: ssl, session_cache: miss}
+      value: proxy.process.ssl.ssl_session_cache_miss
+    - labels: {protocol: ssl, session_cache: eviction}
+      value: proxy.process.ssl.ssl_session_cache_eviction
+    - labels: {protocol: ssl, session_cache: lock_contention}
+      value: proxy.process.ssl.ssl_session_cache_lock_contention
+trafficserver_ssl_tickets_count:
+  documentation: Count SSL tickets
+  type: counter
+  values:
+    - labels: {protocol: ssl, state: created}
+      value: proxy.process.ssl.total_tickets_created
+    - labels: {protocol: ssl, state: verified}
+      value: proxy.process.ssl.total_tickets_verified
+    - labels: {protocol: ssl, state: not_found}
+      value: proxy.process.ssl.total_tickets_not_found
+    - labels: {protocol: ssl, state: renewed}
+      value: proxy.process.ssl.total_tickets_renewed
+    - labels: {protocol: ssl, state: verified_old_key}
+      value: proxy.process.ssl.total_tickets_verified_old_key
+trafficserver_ssl_cipher_count:
+  documentation: Count SSL/TLS cipher suite usage
+  type: counter
+  values:
+    - labels: {protocol: ssl, cipher: ECDHE-ECDSA-AES256-GCM-SHA384}
+      value: proxy.process.ssl.cipher.user_agent.ECDHE-ECDSA-AES256-GCM-SHA384
+    - labels: {protocol: ssl, cipher: ECDHE-RSA-AES256-GCM-SHA384}
+      value: proxy.process.ssl.cipher.user_agent.ECDHE-RSA-AES256-GCM-SHA384
+    - labels: {protocol: ssl, cipher: DHE-RSA-AES256-GCM-SHA384}
+      value: proxy.process.ssl.cipher.user_agent.DHE-RSA-AES256-GCM-SHA384
+    - labels: {protocol: ssl, cipher: ECDHE-ECDSA-CHACHA20-POLY1305}
+      value: proxy.process.ssl.cipher.user_agent.ECDHE-ECDSA-CHACHA20-POLY1305
+    - labels: {protocol: ssl, cipher: ECDHE-RSA-CHACHA20-POLY1305}
+      value: proxy.process.ssl.cipher.user_agent.ECDHE-RSA-CHACHA20-POLY1305
+    - labels: {protocol: ssl, cipher: DHE-RSA-CHACHA20-POLY1305}
+      value: proxy.process.ssl.cipher.user_agent.DHE-RSA-CHACHA20-POLY1305
+    - labels: {protocol: ssl, cipher: ECDHE-ECDSA-AES128-GCM-SHA256}
+      value: proxy.process.ssl.cipher.user_agent.ECDHE-ECDSA-AES128-GCM-SHA256
+    - labels: {protocol: ssl, cipher: ECDHE-RSA-AES128-GCM-SHA256}
+      value: proxy.process.ssl.cipher.user_agent.ECDHE-RSA-AES128-GCM-SHA256
+    - labels: {protocol: ssl, cipher: DHE-RSA-AES128-GCM-SHA256}
+      value: proxy.process.ssl.cipher.user_agent.DHE-RSA-AES128-GCM-SHA256
+    - labels: {protocol: ssl, cipher: ECDHE-ECDSA-AES256-SHA384}
+      value: proxy.process.ssl.cipher.user_agent.ECDHE-ECDSA-AES256-SHA384
+    - labels: {protocol: ssl, cipher: ECDHE-RSA-AES256-SHA384}
+      value: proxy.process.ssl.cipher.user_agent.ECDHE-RSA-AES256-SHA384
+    - labels: {protocol: ssl, cipher: DHE-RSA-AES256-SHA256}
+      value: proxy.process.ssl.cipher.user_agent.DHE-RSA-AES256-SHA256
+    - labels: {protocol: ssl, cipher: ECDHE-ECDSA-AES128-SHA256}
+      value: proxy.process.ssl.cipher.user_agent.ECDHE-ECDSA-AES128-SHA256
+    - labels: {protocol: ssl, cipher: ECDHE-RSA-AES128-SHA256}
+      value: proxy.process.ssl.cipher.user_agent.ECDHE-RSA-AES128-SHA256
+    - labels: {protocol: ssl, cipher: DHE-RSA-AES128-SHA256}
+      value: proxy.process.ssl.cipher.user_agent.DHE-RSA-AES128-SHA256
+    - labels: {protocol: ssl, cipher: ECDHE-ECDSA-AES256-SHA}
+      value: proxy.process.ssl.cipher.user_agent.ECDHE-ECDSA-AES256-SHA
+    - labels: {protocol: ssl, cipher: ECDHE-RSA-AES256-SHA}
+      value: proxy.process.ssl.cipher.user_agent.ECDHE-RSA-AES256-SHA
+    - labels: {protocol: ssl, cipher: DHE-RSA-AES256-SHA}
+      value: proxy.process.ssl.cipher.user_agent.DHE-RSA-AES256-SHA
+    - labels: {protocol: ssl, cipher: ECDHE-ECDSA-AES128-SHA}
+      value: proxy.process.ssl.cipher.user_agent.ECDHE-ECDSA-AES128-SHA
+    - labels: {protocol: ssl, cipher: ECDHE-RSA-AES128-SHA}
+      value: proxy.process.ssl.cipher.user_agent.ECDHE-RSA-AES128-SHA
+    - labels: {protocol: ssl, cipher: DHE-RSA-AES128-SHA}
+      value: proxy.process.ssl.cipher.user_agent.DHE-RSA-AES128-SHA
+    - labels: {protocol: ssl, cipher: RSA-PSK-AES256-GCM-SHA384}
+      value: proxy.process.ssl.cipher.user_agent.RSA-PSK-AES256-GCM-SHA384
+    - labels: {protocol: ssl, cipher: DHE-PSK-AES256-GCM-SHA384}
+      value: proxy.process.ssl.cipher.user_agent.DHE-PSK-AES256-GCM-SHA384
+    - labels: {protocol: ssl, cipher: RSA-PSK-CHACHA20-POLY1305}
+      value: proxy.process.ssl.cipher.user_agent.RSA-PSK-CHACHA20-POLY1305
+    - labels: {protocol: ssl, cipher: DHE-PSK-CHACHA20-POLY1305}
+      value: proxy.process.ssl.cipher.user_agent.DHE-PSK-CHACHA20-POLY1305
+    - labels: {protocol: ssl, cipher: ECDHE-PSK-CHACHA20-POLY1305}
+      value: proxy.process.ssl.cipher.user_agent.ECDHE-PSK-CHACHA20-POLY1305
+    - labels: {protocol: ssl, cipher: AES256-GCM-SHA384}
+      value: proxy.process.ssl.cipher.user_agent.AES256-GCM-SHA384
+    - labels: {protocol: ssl, cipher: PSK-AES256-GCM-SHA384}
+      value: proxy.process.ssl.cipher.user_agent.PSK-AES256-GCM-SHA384
+    - labels: {protocol: ssl, cipher: PSK-CHACHA20-POLY1305}
+      value: proxy.process.ssl.cipher.user_agent.PSK-CHACHA20-POLY1305
+    - labels: {protocol: ssl, cipher: RSA-PSK-AES128-GCM-SHA256}
+      value: proxy.process.ssl.cipher.user_agent.RSA-PSK-AES128-GCM-SHA256
+    - labels: {protocol: ssl, cipher: DHE-PSK-AES128-GCM-SHA256}
+      value: proxy.process.ssl.cipher.user_agent.DHE-PSK-AES128-GCM-SHA256
+    - labels: {protocol: ssl, cipher: AES128-GCM-SHA256}
+      value: proxy.process.ssl.cipher.user_agent.AES128-GCM-SHA256
+    - labels: {protocol: ssl, cipher: PSK-AES128-GCM-SHA256}
+      value: proxy.process.ssl.cipher.user_agent.PSK-AES128-GCM-SHA256
+    - labels: {protocol: ssl, cipher: AES256-SHA256}
+      value: proxy.process.ssl.cipher.user_agent.AES256-SHA256
+    - labels: {protocol: ssl, cipher: AES128-SHA256}
+      value: proxy.process.ssl.cipher.user_agent.AES128-SHA256
+    - labels: {protocol: ssl, cipher: ECDHE-PSK-AES256-CBC-SHA384}
+      value: proxy.process.ssl.cipher.user_agent.ECDHE-PSK-AES256-CBC-SHA384
+    - labels: {protocol: ssl, cipher: ECDHE-PSK-AES256-CBC-SHA}
+      value: proxy.process.ssl.cipher.user_agent.ECDHE-PSK-AES256-CBC-SHA
+    - labels: {protocol: ssl, cipher: SRP-RSA-AES-256-CBC-SHA}
+      value: proxy.process.ssl.cipher.user_agent.SRP-RSA-AES-256-CBC-SHA
+    - labels: {protocol: ssl, cipher: SRP-AES-256-CBC-SHA}
+      value: proxy.process.ssl.cipher.user_agent.SRP-AES-256-CBC-SHA
+    - labels: {protocol: ssl, cipher: RSA-PSK-AES256-CBC-SHA384}
+      value: proxy.process.ssl.cipher.user_agent.RSA-PSK-AES256-CBC-SHA384
+    - labels: {protocol: ssl, cipher: DHE-PSK-AES256-CBC-SHA384}
+      value: proxy.process.ssl.cipher.user_agent.DHE-PSK-AES256-CBC-SHA384
+    - labels: {protocol: ssl, cipher: RSA-PSK-AES256-CBC-SHA}
+      value: proxy.process.ssl.cipher.user_agent.RSA-PSK-AES256-CBC-SHA
+    - labels: {protocol: ssl, cipher: DHE-PSK-AES256-CBC-SHA}
+      value: proxy.process.ssl.cipher.user_agent.DHE-PSK-AES256-CBC-SHA
+    - labels: {protocol: ssl, cipher: AES256-SHA}
+      value: proxy.process.ssl.cipher.user_agent.AES256-SHA
+    - labels: {protocol: ssl, cipher: PSK-AES256-CBC-SHA384}
+      value: proxy.process.ssl.cipher.user_agent.PSK-AES256-CBC-SHA384
+    - labels: {protocol: ssl, cipher: PSK-AES256-CBC-SHA}
+      value: proxy.process.ssl.cipher.user_agent.PSK-AES256-CBC-SHA
+    - labels: {protocol: ssl, cipher: ECDHE-PSK-AES128-CBC-SHA256}
+      value: proxy.process.ssl.cipher.user_agent.ECDHE-PSK-AES128-CBC-SHA256
+    - labels: {protocol: ssl, cipher: ECDHE-PSK-AES128-CBC-SHA}
+      value: proxy.process.ssl.cipher.user_agent.ECDHE-PSK-AES128-CBC-SHA
+    - labels: {protocol: ssl, cipher: SRP-RSA-AES-128-CBC-SHA}
+      value: proxy.process.ssl.cipher.user_agent.SRP-RSA-AES-128-CBC-SHA
+    - labels: {protocol: ssl, cipher: SRP-AES-128-CBC-SHA}
+      value: proxy.process.ssl.cipher.user_agent.SRP-AES-128-CBC-SHA
+    - labels: {protocol: ssl, cipher: RSA-PSK-AES128-CBC-SHA256}
+      value: proxy.process.ssl.cipher.user_agent.RSA-PSK-AES128-CBC-SHA256
+    - labels: {protocol: ssl, cipher: DHE-PSK-AES128-CBC-SHA256}
+      value: proxy.process.ssl.cipher.user_agent.DHE-PSK-AES128-CBC-SHA256
+    - labels: {protocol: ssl, cipher: RSA-PSK-AES128-CBC-SHA}
+      value: proxy.process.ssl.cipher.user_agent.RSA-PSK-AES128-CBC-SHA
+    - labels: {protocol: ssl, cipher: DHE-PSK-AES128-CBC-SHA}
+      value: proxy.process.ssl.cipher.user_agent.DHE-PSK-AES128-CBC-SHA
+    - labels: {protocol: ssl, cipher: AES128-SHA}
+      value: proxy.process.ssl.cipher.user_agent.AES128-SHA
+    - labels: {protocol: ssl, cipher: PSK-AES128-CBC-SHA256}
+      value: proxy.process.ssl.cipher.user_agent.PSK-AES128-CBC-SHA256
+    - labels: {protocol: ssl, cipher: PSK-AES128-CBC-SHA}
+      value: proxy.process.ssl.cipher.user_agent.PSK-AES128-CBC-SHA
