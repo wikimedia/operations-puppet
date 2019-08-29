@@ -31,11 +31,7 @@ class wikimania_scholarships(
 
     include ::passwords::mysql::wikimania_scholarships
 
-    if os_version('debian == stretch') {
-        require_package('php7.0-mysql')
-    } else {
-        require_package('php5-mysql')
-    }
+    require_package('php7.0-mysql')
 
     $mysql_user = $passwords::mysql::wikimania_scholarships::app_user
     $mysql_pass = $passwords::mysql::wikimania_scholarships::app_password
@@ -70,6 +66,5 @@ class wikimania_scholarships(
         group  => 'root',
     }
 }
-
 
 # vim:sw=4 ts=4 sts=4 et:
