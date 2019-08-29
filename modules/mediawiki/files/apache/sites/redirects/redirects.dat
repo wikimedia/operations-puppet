@@ -180,8 +180,8 @@ rewrite	nostalgia.wikimedia.org	https://nostalgia.wikipedia.org
 
 rewrite	mail.wikipedia.org	https://lists.wikimedia.org
 
-funnel	cs.wikimedia.org	http://www.wikimedia.cz
-funnel	cz.wikimedia.org	http://www.wikimedia.cz
+funnel	cs.wikimedia.org	https://www.wikimedia.cz
+funnel	cz.wikimedia.org	https://www.wikimedia.cz
 
 ###############
 ## projects
@@ -202,20 +202,20 @@ rewrite	www.wikisource.org	https://wikisource.org
 ###############
 ## chapters
 ###############
-funnel	ch.wikimedia.org	//www.wikimedia.ch
+funnel	ch.wikimedia.org	https://www.wikimedia.ch
 
-rewrite	hu.wikimedia.org	http://wiki.media.hu
+rewrite	hu.wikimedia.org	https://wikimedia.hu
 
-rewrite	it.wikimedia.org	http://www.wikimedia.it
+rewrite	it.wikimedia.org	https://www.wikimedia.it
 
 funnel	kr.wikimedia.org	https://meta.wikimedia.org/wiki/위키미디어_한국
 
 # pk.wikimedia.org (T56780)
-funnel	pk.wikimedia.org	http://wikimediapakistan.org
+funnel	pk.wikimedia.org	https://wikimediapakistan.org
 
 rewrite	uk.wikimedia.org	https://wikimedia.org.uk/
 
-rewrite	ve.wikimedia.org	http://wikimedia.org.ve
+rewrite	ve.wikimedia.org	https://wikimedia.org.ve
 
 # Wikimania
 rewrite	wikimania2019.wikimedia.org	https://wikimania.wikimedia.org
