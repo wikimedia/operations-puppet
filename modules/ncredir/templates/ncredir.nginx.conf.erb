@@ -29,14 +29,28 @@ server {
     }
 
     location / {
+        set $allowed_method 0;
+
+        if ($request_method = GET) {
+            set $allowed_method 1;
+        }
+        if ($request_method = HEAD) {
+            set $allowed_method 1;
+        }
+        set $redirection_target https://www.wikimedia.org;
+
         if ($override != '') {
-            return 301 $override;
+            set $redirection_target $override;
         }
         if ($rewrite != '') {
-            return 301 $rewrite;
+            set $redirection_target $rewrite;
         }
 
-        return 301 https://www.wikimedia.org;
+        if ($allowed_method = 1) {
+            return 301 $redirection_target;
+        }
+
+        return 403 "Insecure request forbidden - Send your request to $redirection_target";
     }
 }
 <% end -%>
@@ -54,13 +68,14 @@ server {
     }
 
     location / {
-        if ($override != '') {
-            return 301 $override;
-        }
-        if ($rewrite != '') {
-            return 301 $rewrite;
+        if ($request_method = GET) {
+            return 301 https://$host$request_uri;
         }
 
-        return 301 https://www.wikimedia.org;
+        if ($request_method = HEAD) {
+            return 301 https://$host$request_uri;
+        }
+
+        return 403 "Insecure Request Forbidden - use HTTPS";
     }
 }
