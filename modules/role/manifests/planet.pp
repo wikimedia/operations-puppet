@@ -5,6 +5,8 @@ class role::planet {
     include ::profile::base::firewall
     include ::profile::planet
 
+    include ::profile::tlsproxy::envoy # TLS termination
+
     # locales are essential for planet
     # if a new language is added check these too
     include ::profile::locales::extended
