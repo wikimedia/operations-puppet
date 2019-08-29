@@ -194,24 +194,4 @@ class icinga::monitor::toollabs {
         contact_group => 'wmcs-team',
         notes_url     => 'https://wikitech.wikimedia.org/wiki/Portal:Toolforge/Admin/Toolschecker',
     }
-
-    monitoring::service { 'tools-checker-webservice-gridengine':
-        description    => 'toolschecker: gridengine webservice running',
-        check_command  => "${checker}!/webservice/gridengine!OK",
-        host           => $test_entry_host,
-        check_interval => 5,
-        retry_interval => 5,
-        contact_group  => 'wmcs-team-email,wmcs-bots',
-        notes_url      => 'https://wikitech.wikimedia.org/wiki/Portal:Toolforge/Admin/Toolschecker',
-    }
-
-    monitoring::service { 'tools-checker-webservice-kubernetes':
-        description    => 'toolschecker: kubernetes webservice running',
-        check_command  => "${checker}!/webservice/kubernetes!OK",
-        host           => $test_entry_host,
-        check_interval => 5,
-        retry_interval => 5,
-        contact_group  => 'wmcs-team-email,wmcs-bots',
-        notes_url      => 'https://wikitech.wikimedia.org/wiki/Portal:Toolforge/Admin/Toolschecker',
-    }
 }
