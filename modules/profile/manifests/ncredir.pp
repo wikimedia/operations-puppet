@@ -6,6 +6,7 @@ class profile::ncredir(
     Optional[String] $fqdn_monitoring = lookup('profile::ncredir::fqdn_monitoring', {default_value => undef}),
     Wmflib::UserIpPort $mtail_access_log_port = lookup('profile::ncredir::mtail_access_log_port', {default_value => 3904}),
     Array[String] $prometheus_nodes = lookup('prometheus_nodes', {default_value => []}),
+    Integer[0] $hsts_max_age = lookup('profile::ncredir::hsts_max_age', {default_value => 106384710}),
 ) {
 
     class { '::sslcert::dhparam': }
@@ -30,6 +31,7 @@ class profile::ncredir(
         acme_chief_cert_prefix => $acme_chief_cert_prefix,
         http_port              => $http_port,
         https_port             => $https_port,
+        hsts_max_age           => $hsts_max_age,
         require                => File['/var/log/nginx/ncredir.access_log.pipe'],
     }
 

@@ -27,6 +27,9 @@
 #
 # [*https_port*]
 #   Port used to serve HTTPS requests (default: 443)
+#
+# [*hsts_max_age*]
+#   Value used to set the max-age directive of the HSTS header (default: 106384710)
 
 class ncredir(
     Tuple[String, 1, default] $ssl_settings,
@@ -36,6 +39,7 @@ class ncredir(
     Stdlib::AbsolutePath $certs_basepath = '/etc/acmecerts',
     Stdlib::Port $http_port = 80,
     Stdlib::Port $https_port = 443,
+    Integer $hsts_max_age = 106384710,
 ) {
     file { '/etc/nginx/conf.d/redirection_maps.conf':
         content => $redirection_maps,

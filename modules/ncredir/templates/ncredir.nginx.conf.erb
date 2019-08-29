@@ -22,6 +22,7 @@ server {
     ssl_certificate_key <%= @certs_basepath %>/<%= cert_name %>/live/rsa-2048.key;
     ssl_certificate <%= @certs_basepath %>/<%= cert_name %>/live/ec-prime256v1.chained.crt;
     ssl_certificate_key <%= @certs_basepath %>/<%= cert_name %>/live/ec-prime256v1.key;
+    add_header Strict-Transport-Security "max-age=<%= @hsts_max_age %>; includeSubDomains; preload" always;
 
     location = /_status {
         access_log off;
