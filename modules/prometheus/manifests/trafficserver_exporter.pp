@@ -24,12 +24,21 @@ define prometheus::trafficserver_exporter (
     require_package('prometheus-trafficserver-exporter')
 
     $service_name = "prometheus-trafficserver-${instance_name}-exporter"
+    $metrics_file = '/etc/prometheus-trafficserver-exporter-metrics.yaml'
+    if !defined(File[$metrics_file]) {
+        file { $metrics_file:
+            ensure => present,
+            source => 'puppet:///modules/prometheus/trafficserver_exporter/metrics.yaml',
+        }
+    }
 
     systemd::service { $service_name:
         ensure  => present,
         restart => true,
         content => systemd_template('prometheus-trafficserver-exporter@'),
     }
+
+    File[$metrics_file] ~> Service[$service_name]
 
     monitoring::service { "trafficserver_${instance_name}_exporter_check_http":
         description   => "Ensure traffic_exporter binds on port ${listen_port} and responds to HTTP requests",

@@ -1,0 +1,295 @@
+trafficserver_client_requests_invalid_total:
+  documentation: Invalid client requests.
+  type: counter
+  values:
+  - labels: {protocol: http}
+    value: proxy.process.http.invalid_client_requests
+trafficserver_client_requests_missing_host_hdr_total:
+  documentation: Client requests missing host header.
+  type: counter
+  values:
+  - labels: {protocol: http}
+    value: proxy.process.http.missing_host_hdr
+trafficserver_connect_failures_total:
+  documentation: Connect failures.
+  type: counter
+  values:
+  - labels: {protocol: http}
+    value: proxy.process.http.err_connect_fail_count_stat
+trafficserver_connections_total:
+  documentation: Connection count.
+  type: counter
+  values:
+  - labels: {protocol: http, source: client}
+    value: proxy.process.http.total_client_connections
+  - labels: {protocol: http, source: server}
+    value: proxy.process.http.total_server_connections
+  - labels: {protocol: http, source: parent_proxy}
+    value: proxy.process.http.total_parent_proxy_connections
+trafficserver_error_client_aborts_total:
+  documentation: Client aborts.
+  type: counter
+  values:
+  - labels: {protocol: http}
+    value: proxy.process.http.err_client_abort_count_stat
+trafficserver_error_transaction_time_ms_total:
+  documentation: Total cache error transaction time (ms).
+  type: counter
+  values:
+  - labels: {protocol: http, state: abort}
+    value: proxy.process.http.transaction_totaltime.errors.aborts
+  - labels: {protocol: http, state: possible_abort}
+    value: proxy.process.http.transaction_totaltime.errors.possible_aborts
+  - labels: {protocol: http, state: connect_failed}
+    value: proxy.process.http.transaction_totaltime.errors.connect_failed
+  - labels: {protocol: http, state: other}
+    value: proxy.process.http.transaction_totaltime.errors.other
+trafficserver_hit_transaction_time_ms_total:
+  documentation: Total cache hit transaction time (ms).
+  type: counter
+  values:
+  - labels: {protocol: http, state: fresh}
+    value: proxy.process.http.transaction_totaltime.hit_fresh
+  - labels: {protocol: http, state: revalidated}
+    value: proxy.process.http.transaction_totaltime.hit_revalidated
+trafficserver_miss_transaction_time_ms_total:
+  documentation: Total cache miss transaction time (ms).
+  type: counter
+  values:
+  - labels: {protocol: http, state: cold}
+    value: proxy.process.http.transaction_totaltime.miss_cold
+  - labels: {protocol: http, state: not_cacheable}
+    value: proxy.process.http.transaction_totaltime.miss_not_cacheable
+  - labels: {protocol: http, state: changed}
+    value: proxy.process.http.transaction_totaltime.miss_changed
+  - labels: {protocol: http, state: no_cache}
+    value: proxy.process.http.transaction_totaltime.miss_client_no_cache
+trafficserver_other_transaction_time_ms_total:
+  documentation: Total other/unclassified transaction time (ms).
+  type: counter
+  values:
+  - labels: {protocol: http, state: connect_failed}
+    value: proxy.process.http.transaction_totaltime.errors.connect_failed
+  - labels: {protocol: http, state: other}
+    value: proxy.process.http.transaction_totaltime.errors.other
+  - labels: {protocol: http, state: possible_abort}
+    value: proxy.process.http.transaction_totaltime.errors.possible_aborts
+
+trafficserver_ram_cache_avail_size_bytes_total:
+  documentation: RAM cache available in bytes.
+  type: gauge
+  values:
+  - labels: {}
+    value: proxy.process.cache.ram_cache.total_bytes
+trafficserver_ram_cache_misses_total:
+  documentation: RAM cache miss count.
+  type: counter
+  values:
+  - labels: {}
+    value: proxy.process.cache.ram_cache.misses
+trafficserver_ram_cache_used_bytes_total:
+  documentation: RAM cache used in bytes.
+  type: gauge
+  values:
+  - labels: {}
+    value: proxy.process.cache.ram_cache.bytes_used
+trafficserver_requests_incoming:
+  documentation: Incoming requests.
+  type: gauge
+  values:
+  - labels: {protocol: http}
+    value: proxy.process.http.incoming_requests
+trafficserver_requests_outgoing_total:
+  documentation: Outgoing requests.
+  type: counter
+  values:
+  - labels: {protocol: http}
+    value: proxy.process.http.outgoing_requests
+trafficserver_requests_total:
+  documentation: Request count.
+  type: counter
+  values:
+  - labels: {method: connect, protocol: http}
+    value: proxy.process.http.connect_requests
+  - labels: {method: delete, protocol: http}
+    value: proxy.process.http.delete_requests
+  - labels: {method: get, protocol: http}
+    value: proxy.process.http.get_requests
+  - labels: {method: head, protocol: http}
+    value: proxy.process.http.head_requests
+  - labels: {method: post, protocol: http}
+    value: proxy.process.http.post_requests
+  - labels: {method: purge, protocol: http}
+    value: proxy.process.http.purge_requests
+  - labels: {method: push, protocol: http}
+    value: proxy.process.http.push_requests
+  - labels: {method: put, protocol: http}
+    value: proxy.process.http.put_requests
+trafficserver_response_classes_total:
+  documentation: Response count by class, i.e. 2xx, 3xx.
+  type: counter
+  values:
+  - labels: {code: 1xx, protocol: http}
+    value: proxy.process.http.1xx_responses
+  - labels: {code: 2xx, protocol: http}
+    value: proxy.process.http.1xx_responses
+  - labels: {code: 3xx, protocol: http}
+    value: proxy.process.http.1xx_responses
+  - labels: {code: 4xx, protocol: http}
+    value: proxy.process.http.1xx_responses
+  - labels: {code: 5xx, protocol: http}
+    value: proxy.process.http.1xx_responses
+trafficserver_responses_incoming_total:
+  documentation: Incoming responses.
+  type: counter
+  values:
+  - labels: {protocol: http}
+    value: proxy.process.http.incoming_responses
+trafficserver_responses_total:
+  documentation: Response count.
+  type: counter
+  values:
+  - labels: {code: "100", protocol: http}
+    value: proxy.process.http.100_responses
+  - labels: {code: "101", protocol: http}
+    value: proxy.process.http.101_responses
+  - labels: {code: "200", protocol: http}
+    value: proxy.process.http.200_responses
+  - labels: {code: "201", protocol: http}
+    value: proxy.process.http.201_responses
+  - labels: {code: "202", protocol: http}
+    value: proxy.process.http.202_responses
+  - labels: {code: "203", protocol: http}
+    value: proxy.process.http.203_responses
+  - labels: {code: "204", protocol: http}
+    value: proxy.process.http.204_responses
+  - labels: {code: "205", protocol: http}
+    value: proxy.process.http.205_responses
+  - labels: {code: "206", protocol: http}
+    value: proxy.process.http.206_responses
+  - labels: {code: "300", protocol: http}
+    value: proxy.process.http.300_responses
+  - labels: {code: "301", protocol: http}
+    value: proxy.process.http.301_responses
+  - labels: {code: "302", protocol: http}
+    value: proxy.process.http.302_responses
+  - labels: {code: "303", protocol: http}
+    value: proxy.process.http.303_responses
+  - labels: {code: "304", protocol: http}
+    value: proxy.process.http.304_responses
+  - labels: {code: "305", protocol: http}
+    value: proxy.process.http.305_responses
+  - labels: {code: "307", protocol: http}
+    value: proxy.process.http.307_responses
+  - labels: {code: "400", protocol: http}
+    value: proxy.process.http.400_responses
+  - labels: {code: "401", protocol: http}
+    value: proxy.process.http.401_responses
+  - labels: {code: "402", protocol: http}
+    value: proxy.process.http.402_responses
+  - labels: {code: "403", protocol: http}
+    value: proxy.process.http.403_responses
+  - labels: {code: "404", protocol: http}
+    value: proxy.process.http.404_responses
+  - labels: {code: "405", protocol: http}
+    value: proxy.process.http.405_responses
+  - labels: {code: "406", protocol: http}
+    value: proxy.process.http.406_responses
+  - labels: {code: "407", protocol: http}
+    value: proxy.process.http.407_responses
+  - labels: {code: "408", protocol: http}
+    value: proxy.process.http.408_responses
+  - labels: {code: "409", protocol: http}
+    value: proxy.process.http.409_responses
+  - labels: {code: "410", protocol: http}
+    value: proxy.process.http.410_responses
+  - labels: {code: "411", protocol: http}
+    value: proxy.process.http.411_responses
+  - labels: {code: "412", protocol: http}
+    value: proxy.process.http.412_responses
+  - labels: {code: "413", protocol: http}
+    value: proxy.process.http.413_responses
+  - labels: {code: "414", protocol: http}
+    value: proxy.process.http.414_responses
+  - labels: {code: "415", protocol: http}
+    value: proxy.process.http.415_responses
+  - labels: {code: "416", protocol: http}
+    value: proxy.process.http.416_responses
+  - labels: {code: "500", protocol: http}
+    value: proxy.process.http.500_responses
+  - labels: {code: "501", protocol: http}
+    value: proxy.process.http.501_responses
+  - labels: {code: "502", protocol: http}
+    value: proxy.process.http.502_responses
+  - labels: {code: "503", protocol: http}
+    value: proxy.process.http.503_responses
+  - labels: {code: "504", protocol: http}
+    value: proxy.process.http.504_responses
+  - labels: {code: "505", protocol: http}
+    value: proxy.process.http.505_responses
+trafficserver_restart_count:
+  documentation: Count of traffic_server restarts.
+  type: counter
+  values:
+  - labels: {}
+    value: proxy.node.restarts.proxy.restart_count
+trafficserver_transaction_errors_total:
+  documentation: Transaction error counts.
+  type: counter
+  values:
+  - labels: {protocol: http, state: abort}
+    value: proxy.process.http.transaction_counts.errors.aborts
+  - labels: {protocol: http, state: possible_abort}
+    value: proxy.process.http.transaction_counts.errors.possible_aborts
+  - labels: {protocol: http, state: connect_failed}
+    value: proxy.process.http.transaction_counts.errors.connect_failed
+  - labels: {protocol: http, state: other}
+    value: proxy.process.http.transaction_counts.errors.other
+trafficserver_transaction_hits_total:
+  documentation: Transaction hit counts.
+  type: counter
+  values:
+  - labels: {protocol: http, state: fresh}
+    value: proxy.process.http.transaction_counts.hit_fresh
+  - labels: {protocol: http, state: revalidated}
+    value: proxy.process.http.transaction_counts.hit_revalidated
+  - labels: {protocol: http, state: cold}
+    value: 0.0
+  - labels: {protocol: http, state: not_cacheable}
+    value: 0.0
+  - labels: {protocol: http, state: changed}
+    value: 0.0
+trafficserver_transaction_misses_total:
+  documentation: Transaction miss counts.
+  type: counter
+  values:
+  - labels: {protocol: http, state: cold}
+    value: proxy.process.http.transaction_counts.miss_cold
+  - labels: {protocol: http, state: not_cacheable}
+    value: proxy.process.http.transaction_counts.miss_not_cacheable
+  - labels: {protocol: http, state: changed}
+    value: proxy.process.http.transaction_counts.miss_changed
+  - labels: {protocol: http, state: fresh}
+    value: 0.0
+  - labels: {protocol: http, state: revalidated}
+    value: 0.0
+trafficserver_transaction_others_total:
+  documentation: Transaction other/unclassified counts.
+  type: counter
+  values:
+  - labels: {protocol: http, state: unclassified}
+    value: proxy.process.http.transaction_counts.other.unclassified
+trafficserver_transactions_time_ms_total:
+  documentation: Total transaction time (ms).
+  type: counter
+  values:
+  - labels: {}
+    value: proxy.process.http.total_transactions_time
+trafficserver_transactions_total:
+  documentation: Total transactions.
+  type: counter
+  values:
+  - labels: {protocol: http, source: origin_server}
+    value: proxy.node.http.origin_server_total_transactions_count
+  - labels: {protocol: http, source: user_agent}
+    value: proxy.node.http.user_agents_total_transactions_count
