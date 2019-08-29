@@ -58,6 +58,7 @@ class profile::openstack::base::pdns::auth::db(
         datadir   => '/srv/sqldata',
         tmpdir    => '/srv/tmp',
         read_only => 'off',
+        basedir   => "/opt/${mariadb_pkg}",
     }
 
     file { '/etc/mysql/production-grants-dns.sql':
