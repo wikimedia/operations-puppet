@@ -44,46 +44,31 @@
 # loops and accidental listing of important domains such as en.wikipedia.org
 # as a source.
 #
+# Please add redirects from non canonical domains to
+# modules/ncredir/files/nc_redirects.dat
 
 # Shop redirects
 funnel	shop.wikimedia.org	//store.wikimedia.org
 funnel	shop.wikipedia.org	//store.wikimedia.org
 funnel	store.wikipedia.org	//store.wikimedia.org
-funnel	shop.wikipedia.com	//store.wikimedia.org
-funnel	store.wikipedia.com	//store.wikimedia.org
 
 funnel	sep11.wikipedia.org	https://wayback.archive.org/web/20030315000000*/http://sep11.wikipedia.org/wiki/In_Memoriam
-
-funnel	*wikijunior.com	//en.wikibooks.org/wiki/Wikijunior
-funnel	*wikijunior.org	//en.wikibooks.org/wiki/Wikijunior
-funnel	*wikijunior.net	//en.wikibooks.org/wiki/Wikijunior
 
 # Language aliases
 rewrite	be-x-old.wikisource.org	//be.wikisource.org # T43755
 
 rewrite	cz.wikipedia.org	//cs.wikipedia.org
-rewrite	cz.wikipedia.com	//cs.wikipedia.org
 rewrite	cz.wikibooks.org	//cs.wikibooks.org
-rewrite	cz.wikibooks.com	//cs.wikibooks.org
 rewrite	cz.wikiquote.org	//cs.wikiquote.org
-rewrite	cz.wikiquote.com	//cs.wikiquote.org
 rewrite	cz.wikisource.org	//cs.wikisource.org
-rewrite	cz.wikisource.com	//cs.wikisource.org
 rewrite	cz.wikiversity.org	//cs.wikiversity.org
-rewrite	cz.wikiversity.com	//cs.wikiversity.org
 rewrite	cz.wiktionary.org	//cs.wiktionary.org
-rewrite	cz.wiktionary.com	//cs.wiktionary.org
 rewrite	cz.wikinews.org	//cs.wikinews.org
-rewrite	cz.wikinews.com	//cs.wikinews.org
 rewrite	dk.wikipedia.org	//da.wikipedia.org
-rewrite	dk.wikipedia.com	//da.wikipedia.org
 rewrite	dk.wikibooks.org	//da.wikibooks.org
-rewrite	dk.wikibooks.com	//da.wikibooks.org
 rewrite	dk.wiktionary.org	//da.wiktionary.org
-rewrite	dk.wiktionary.com	//da.wiktionary.org
 rewrite	epo.wikipedia.org	//eo.wikipedia.org
 rewrite	jp.wikipedia.org	//ja.wikipedia.org
-rewrite	jp.wikipedia.com	//ja.wikipedia.org
 rewrite	nb.wikipedia.org	//no.wikipedia.org
 rewrite	nb.wiktionary.org	//no.wiktionary.org
 rewrite	nb.wikiquote.org	//no.wikiquote.org
@@ -148,137 +133,23 @@ override	education.wikimedia.org/instructorbasics	//commons.wikimedia.org/wiki/F
 
 funnel	education.wikimedia.org	//outreach.wikimedia.org/wiki/Special:MyLanguage/Education
 
-# Localised TLDs
-
-rewrite	*wikinews.de	//de.wikinews.org
-rewrite	*wikipedia.org.il	//he.wikipedia.org
-rewrite	*wikipedia.co.il	//he.wikipedia.org
-rewrite	*wikipedia.bg	//bg.wikipedia.org
-rewrite	*wikipedia.is	//is.wikipedia.org
-rewrite	*wikipedia.co.za	//af.wikipedia.org
-rewrite	*wikisource.pl	//pl.wikisource.org
-
-# wikimedia.ee / wikipedia.ee - T165733#3355736
-rewrite	*wikimedia.ee	//ee.wikimedia.org
-
-rewrite	*wikipedia.ee	//et.wikipedia.org
-
-rewrite	*wikipedia.gr	//el.wikipedia.org
-
-rewrite	*wikimedia.jp.net	//www.wikimedia.org
-
-rewrite	*wikimedia.lt	//foundation.wikimedia.org
-rewrite	*wikipedia.lt	//lt.wikipedia.org
-
-# Wikipedia
-
-rewrite	*en-wp.com	//en.wikipedia.org
-rewrite	*en-wp.org	//en.wikipedia.org
-
-rewrite	wikipedia.com	//www.wikipedia.org
-rewrite	wikipedia.net	//www.wikipedia.org
-rewrite	wikipedia.info	//www.wikipedia.org
-
-
-rewrite	*.wikipedia.com	//*.wikipedia.org
-rewrite	*.wikipedia.net	//*.wikipedia.org
-rewrite	*.wikipedia.info	//*.wikipedia.org
-# rewrite	*.wiki-pedia.org	//*.wikipedia.org
-# rewrite	wiki-pedia.org	//www.wikipedia.org
-
-# wikipedia typo domains to www. instead of en - T165733#3355736
-# funnel	*wiikipedia.com	//www.wikipedia.org
-# funnel	*wikiepdia.com	//www.wikipedia.org
-# funnel	*wikiepdia.org	//www.wikipedia.org
-funnel	*wikiipedia.org	//www.wikipedia.org
-funnel	*wikpedia.org	//www.wikipedia.org
-
-# Wiktionary
-
-rewrite	*.wiktionary.com	//*.wiktionary.org
-rewrite	wiktionary.com	//www.wiktionary.org
-funnel	*wiktionary.eu	//www.wiktionary.org
-
 # Wikibooks - T87039
-
-rewrite	*.wikibook.com	//*.wikibooks.org
-rewrite	*.wikibooks.com	//*.wikibooks.org
-
-rewrite	wikibook.com	//www.wikibooks.org
-rewrite	wikibooks.com	//www.wikibooks.org
 
 rewrite	textbook.wikipedia.org	//www.wikibooks.org
 
 # Wikisource
 
 rewrite	sources.wikipedia.org	//wikisource.org
-rewrite	*.wikisource.com	//*.wikisource.org
-rewrite	wikisource.com	//wikisource.org
 
 # Wikiquote
 
 rewrite	quote.wikipedia.org	//en.wikiquote.org
-rewrite	wikiquote.com	//www.wikiquote.org
-rewrite	*.wikiquote.com	//*.wikiquote.org
-rewrite	wikiquote.net	//www.wikiquote.org
-rewrite	*.wikiquote.net	//*.wikiquote.org
-
-# Wikinews
-
-rewrite	wikinews.com	//www.wikinews.org
-rewrite	*.wikinews.com	//*.wikinews.org
 
 # Wikispecies
 
-# Temporarily at species.wikipedia.org until DNS is sorted out
-rewrite	*wikispecies.com	//species.wikimedia.org
-rewrite	*wikispecies.org	//species.wikimedia.org
-rewrite	*wikispecies.net	//species.wikimedia.org
-
 rewrite	species.wikipedia.org	//species.wikimedia.org
 
-# Wikiversity
-
-rewrite	*.wikiversity.com	//*.wikiversity.org
-
-rewrite	wikiversity.com	//www.wikiversity.org
-
-# Wikivoyage
-rewrite	*.wikivoyage.com	//*.wikivoyage.org
-rewrite	*.wikivoyage.de	//*.wikivoyage.org
-rewrite	*.wikivoyage.eu	//*.wikivoyage.org
-rewrite	*.wikivoyage.net	//*.wikivoyage.org
-rewrite	wikivoyage.com	//www.wikivoyage.org
-rewrite	wikivoyage.de	//www.wikivoyage.org
-rewrite	wikivoyage.eu	//www.wikivoyage.org
-rewrite	wikivoyage.net	//www.wikivoyage.org
-
-# Wikivoyager (T165733#3355736)
-rewrite	*.wikivoyager.org	//*.wikivoyage.org
-rewrite	*.wikivoyager.de	//*.wikivoyage.org
-rewrite	wikivoyager.org	//www.wikivoyage.org
-rewrite	wikivoyager.de	//www.wikivoyage.org
-
-# Voyagewiki (T165733#3355736)
-# rewrite	*.voyagewiki.com	//*.wikivoyage.org
-# rewrite	*.voyagewiki.org	//*.wikivoyage.org
-# rewrite	voyagewiki.com	//www.wikivoyage.org
-# rewrite	voyagewiki.org	//www.wikivoyage.org
-
-# wikimediafoundation
-rewrite	*wikimediafoundation.com	//foundation.wikimedia.org
-rewrite	*wikimediafoundation.net	//foundation.wikimedia.org
-rewrite	*wikimediafoundation.info	//foundation.wikimedia.org
-rewrite	*.wikimediafoundation.org	//foundation.wikimedia.org
-
 # Commons
-
-# rewrite	*wikimediacommons.net	//commons.wikimedia.org
-# rewrite	*wikimediacommons.info	//commons.wikimedia.org
-# rewrite	*wikimediacommons.mobi	//commons.wikimedia.org
-# rewrite	*wikimediacommons.org	//commons.wikimedia.org
-# rewrite	*wikimediacommons.jp.net	//commons.wikimedia.org
-# rewrite	*wikimediacommons.co.uk	//commons.wikimedia.org
 
 rewrite	commons.wikipedia.org	//commons.wikimedia.org
 
@@ -290,13 +161,11 @@ rewrite	bookshelf.wikimedia.org	//outreach.wikimedia.org/wiki/Bookshelf
 rewrite	meta.wikipedia.org	//meta.wikimedia.org
 
 rewrite	quality.wikipedia.org	//quality.wikimedia.org
-rewrite	quality.wikipedia.com	//quality.wikimedia.org
 
 rewrite	bugzilla.wikipedia.org	https://bugzilla.wikimedia.org
 rewrite	bugs.mediawiki.org	https://bugzilla.wikimedia.org
 rewrite	bugzilla.mediawiki.org	https://bugzilla.wikimedia.org
 
-rewrite	*mediawiki.com	//www.mediawiki.org
 rewrite	wiki.mediawiki.org	//www.mediawiki.org
 
 # Continuous Integration T83381, T83399
@@ -349,34 +218,17 @@ rewrite	uk.wikimedia.org	https://wikimedia.org.uk/
 rewrite	ve.wikimedia.org	http://wikimedia.org.ve
 
 # Wikimania
-rewrite	*wikimania.org	//wikimania.wikimedia.org
-rewrite	*wikimania.com	//wikimania.wikimedia.org
 rewrite	wikimania2019.wikimedia.org	//wikimania.wikimedia.org
 
 # Labs redirects -> wikitech
 funnel	labs.wikimedia.org	https://wikitech.wikimedia.org
 funnel	labsconsole.wikimedia.org	https://wikitech.wikimedia.org
 
-# wikimedia.com redirect
-funnel	*wikimedia.com	//www.wikimedia.org
-
-# wikimedia.community redirect
-funnel	*wikimedia.community	//www.wikimedia.org
-
-# wikimedia.us redirect
-funnel	*wikimedia.us	//www.wikimedia.org
-
-# wikipedia.in
-funnel	*wikipedia.in	http://wikimedia.in/wikipedia.html
-
 # coffee - keep for historic reasons:)
 funnel	coffee.wikimedia.org	//en.wikipedia.org/wiki/Hyper_Text_Coffee_Pot_Control_Protocol
 
 # moon - T136557
 funnel	moon.wikimedia.org	//meta.wikimedia.org/wiki/Wikipedia_to_the_Moon
-
-# wikipediazero.org - T82495
-funnel	*wikipediazero.org	//foundation.wikimedia.org/wiki/Wikipedia_Zero
 
 # jobs/careers - T82975
 rewrite	careers.wikimedia.org	//wikimediafoundation.org/about/jobs/
@@ -387,12 +239,6 @@ override	careers.wikimedia.org/	//wikimediafoundation.org/about/jobs/
 override	careers.wikipedia.org/	//wikimediafoundation.org/about/jobs/
 override	jobs.wikimedia.org/	//wikimediafoundation.org/about/jobs/
 override	jobs.wikipedia.org/	//wikimediafoundation.org/about/jobs/
-
-# pywikipedia.org (T60803). This domain uses non-WMF DNS servers
-funnel	*pywikipedia.org	//tools.wmflabs.org/pywikibot/
-
-# pywikibot.org (T106311). This domain uses non-WMF DNS servers
-funnel	*pywikibot.org	//tools.wmflabs.org/pywikibot/
 
 # w.wiki - upcoming URL shortener
 funnel	*w.wiki	//meta.wikimedia.org/wiki/Special:UrlShortener
