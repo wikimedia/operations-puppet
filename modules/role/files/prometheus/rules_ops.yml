@@ -380,3 +380,20 @@ groups:
   - record: cluster_method_code_handler:mediawiki_http_requests_duration:95p2m
     expr: histogram_quantile(0.95,
              sum by (cluster, le, method, code, handler) (rate(mediawiki_http_requests_duration_bucket[2m])))
+
+- name: systemd
+  rules:
+  - record: cluster:node_systemd_unit_state_failed:sum
+    expr: sum by (cluster) (node_systemd_unit_state{state="failed"})
+  - record: cluster:node_systemd_unit_state_failed:count
+    expr: count by (cluster) (node_systemd_unit_state{state="failed"})
+  - record: instance:node_systemd_unit_state_failed:count
+    expr: count by (instance) (node_systemd_unit_state{state="failed"})
+  - record: instance:node_systemd_unit_state_failed:count1
+    expr: count by (instance) (node_systemd_unit_state{state="failed"} == 1)
+  - record: instance_name:node_systemd_unit_state_failed:count
+    expr: count by (instance, name) (node_systemd_unit_state{state="failed"})
+  - record: instance_name:node_systemd_unit_state_failed:count1
+    expr: count by (instance, name) (node_systemd_unit_state{state="failed"} == 1)
+  - record: instance_name:node_systemd_unit_state_failed:sum
+    expr: sum by (instance, name) (node_systemd_unit_state{state="failed"})
