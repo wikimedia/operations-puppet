@@ -284,6 +284,9 @@ profile::trafficserver::backend::caching_rules:
     - primary_destination: dest_host
       value: thorium.eqiad.wmnet
       action: never-cache
+    - primary_destination: dest_host
+      value: webserver-misc-apps.discovery.wmnet
+      action: never-cache
 profile::trafficserver::backend::default_lua_script: 'default'
 profile::trafficserver::backend::outbound_tls_settings:
   common:
