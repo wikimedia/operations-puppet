@@ -5,14 +5,8 @@
 ## http://racktables.org/ and unzipped into /srv/org/wikimedia/racktables
 class racktables ($racktables_host, $racktables_db_host, $racktables_db) {
 
-    if os_version('debian == jessie') {
-        require_package('php5-mysql', 'php5-gd')
-        $php_ini = '/etc/php5/apache2/php.ini'
-
-    } else {
-        require_package('php-mysql', 'php-gd')
-        $php_ini = '/etc/php/7.0/apache2/php.ini'
-    }
+    require_package('php-mysql', 'php-gd')
+    $php_ini = '/etc/php/7.0/apache2/php.ini'
 
     file { [
         '/srv/org',
