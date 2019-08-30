@@ -2093,6 +2093,14 @@ node 'nescio.wikimedia.org' {
     interface::add_ip6_mapped { 'main': }
 }
 
+node /^netbox[12]00[1-9]\.wikimedia\.org$/ {
+    role(spare::system)
+}
+
+node /^netboxdb[12]00[1-9]\.(eqiad|codfw)\.wmnet$/ {
+    role(spare::system)
+}
+
 # network monitoring tools, stretch (T125020, T166180)
 node /^netmon(1002|2001)\.wikimedia\.org$/ {
     role(netmon)
