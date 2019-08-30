@@ -35,6 +35,41 @@ describe("Busted unit testing framework", function()
       assert.is_nil(_G.ts.server_response.header['Cache-Control'])
     end)
 
+    it("test - do_global_read_response cacheable Cookie", function()
+      _G.ts.server_response.header = {}
+      _G.ts.server_response.header['Cache-Control'] = 'public, max-age=10'
+      -- Cookie does not contain Session / Token
+      _G.ts.client_request.header['Cookie'] = 'WMF-Last-Access=30-Aug-2019; WMF-Last-Access-Global=30-Aug-2019'
+      do_global_read_response()
+      assert.are.equals('public, max-age=10', _G.ts.server_response.header['Cache-Control'])
+    end)
+
+    it("test - do_global_read_response uncacheable Cookie but no Vary", function()
+      _G.ts.server_response.header['Cache-Control'] = 'public, max-age=10'
+      -- Cookie contains Session / Token but there is no Vary
+      _G.ts.client_request.header['Cookie'] = 'centralauth_Token=BANANA; WMF-Last-Access=30-Aug-2019; WMF-Last-Access-Global=30-Aug-2019'
+      do_global_read_response()
+      assert.are.equals('public, max-age=10', _G.ts.server_response.header['Cache-Control'])
+    end)
+
+    it("test - do_global_read_response uncacheable Cookie and not Vary:Cookie", function()
+      _G.ts.server_response.header['Cache-Control'] = 'public, max-age=10'
+      -- Cookie contains Session / Token and the response is NOT Vary:Cookie
+      _G.ts.server_response.header['Vary'] = 'Accept-Encoding,Authorization,X-Seven'
+      _G.ts.client_request.header['Cookie'] = 'centralauth_Token=BANANA; WMF-Last-Access=30-Aug-2019; WMF-Last-Access-Global=30-Aug-2019'
+      do_global_read_response()
+      assert.are.equals('public, max-age=10', _G.ts.server_response.header['Cache-Control'])
+    end)
+
+    it("test - do_global_read_response uncacheable Cookie and Vary:Cookie", function()
+      _G.ts.server_response.header['Cache-Control'] = 'public, max-age=10'
+      -- Cookie contains Session / Token and the response is Vary:Cookie
+      _G.ts.server_response.header['Vary'] = 'Accept-Encoding,Cookie,Authorization,X-Seven'
+      _G.ts.client_request.header['Cookie'] = 'centralauth_Token=BANANA; WMF-Last-Access=30-Aug-2019; WMF-Last-Access-Global=30-Aug-2019'
+      do_global_read_response()
+      assert.is_nil(_G.ts.server_response.header['Cache-Control'])
+    end)
+
     it("test - do_global_read_response large Content-Length", function()
       -- No Content-Length
       _G.ts.server_response.header = {}

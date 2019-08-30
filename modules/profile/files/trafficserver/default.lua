@@ -87,6 +87,20 @@ function add_vary(old_vary, header_name)
     return old_vary .. ',' ..header_name
 end
 
+function uncacheable_cookie(cookie, vary)
+    if cookie and vary then
+        cookie = cookie:lower()
+        vary = vary:lower()
+
+        -- Vary:Cookie and Cookie ~ "session|token"
+        if string.find(vary, 'cookie') and (string.find(cookie, 'session') or string.find(cookie, 'token')) then
+            return true
+        end
+    end
+
+    return false
+end
+
 function do_global_read_response()
     -- Various fairly severe privacy/security/uptime risks exist if we allow
     -- possibly compromised or misconfigured internal apps to emit these headers
@@ -117,9 +131,14 @@ function do_global_read_response()
     -- Avoid caching responses that might get cached otherwise
     ----------------------------------------------------------
     local content_length = ts.server_response.header['Content-Length']
+    local cookie = ts.client_request.header['Cookie']
+    local vary = ts.server_response.header['Vary']
 
     if ts.server_response.header['Set-Cookie'] then
         ts.debug("Do not cache response with Set-Cookie for uri " ..  ts.client_request.get_uri())
+        do_not_cache()
+    elseif uncacheable_cookie(cookie, vary) then
+        ts.debug("Do not cache response with Vary: " .. vary .. ", request has Cookie: " .. cookie)
         do_not_cache()
     elseif content_length and tonumber(content_length) > 1024 * 16 * 16 * 16 * 16 * 16 then
         -- Do not cache files bigger than 1GB
