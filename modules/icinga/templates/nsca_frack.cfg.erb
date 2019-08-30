@@ -156,6 +156,35 @@ define host {
     hostgroups               fundraising-reporting
 }
 
+# FUNDRAISING-MONITORING
+
+define host {
+    host_name                frmon1001
+    address                  10.64.40.73
+    check_command            check_ping!500,20%!2000,100%
+    max_check_attempts       2
+    notification_options     d,u,r,f
+    contact_groups           fr-tech-ops
+    notification_interval    0
+    notification_period      24x7
+    check_period             24x7
+    hostgroups               fundraising-monitoring
+}
+
+
+define host {
+    host_name                frmon2001
+    address                  10.195.0.66
+    check_command            check_ping!500,20%!2000,100%
+    max_check_attempts       2
+    notification_options     d,u,r,f
+    contact_groups           fr-tech-ops
+    notification_interval    0
+    notification_period      24x7
+    check_period             24x7
+    hostgroups               fundraising-monitoring
+}
+
 # PAYMENTS
 
 define host {
@@ -443,11 +472,24 @@ define host {
     hostgroups               fundraising-listener
 }
 
-# NETWORK-SECURITY
+# FUNDRAISING-NETWORK
 
 define host {
     host_name                bismuth
     address                  10.64.40.69
+    check_command            check_ping!500,20%!2000,100%
+    max_check_attempts       2
+    notification_options     d,u,r,f
+    contact_groups           fr-tech-ops
+    notification_interval    0
+    notification_period      24x7
+    check_period             24x7
+    hostgroups               fundraising-network
+}
+
+define host {
+    host_name                frav1002
+    address                  10.64.40.74
     check_command            check_ping!500,20%!2000,100%
     max_check_attempts       2
     notification_options     d,u,r,f
@@ -746,6 +788,68 @@ define service {
     use                      passive-service
     service_description      check_zombie
     hostgroup_name           fundraising-build
+}
+
+
+# fundraising-monitoring hostgroup
+
+define hostgroup {
+    hostgroup_name           fundraising-monitoring
+    alias                    Fundraising Monitoring
+}
+
+define service {
+    use                      passive-service
+    service_description      check_disk
+    hostgroup_name           fundraising-monitoring
+}
+
+define service {
+    use                      passive-service
+    service_description      check_load
+    hostgroup_name           fundraising-monitoring
+}
+
+define service {
+    use                      passive-service
+    service_description      check_procs
+    hostgroup_name           fundraising-monitoring
+}
+
+define service {
+    use                      passive-service
+    service_description      check_puppetrun
+    hostgroup_name           fundraising-monitoring
+}
+
+define service {
+    use                      passive-service
+    service_description      check_raid
+    hostgroup_name           fundraising-monitoring
+}
+
+define service {
+    use                      passive-service
+    service_description      check_rsyslog_backlog
+    hostgroup_name           fundraising-monitoring
+}
+
+define service {
+    use                      passive-service
+    service_description      check_swap
+    hostgroup_name           fundraising-monitoring
+}
+
+define service {
+    use                      passive-service
+    service_description      check_timesync
+    hostgroup_name           fundraising-monitoring
+}
+
+define service {
+    use                      passive-service
+    service_description      check_zombie
+    hostgroup_name           fundraising-monitoring
 }
 
 
