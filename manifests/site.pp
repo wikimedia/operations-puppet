@@ -536,7 +536,7 @@ node 'db2129.codfw.wmnet' {
     interface::add_ip6_mapped { 'main': }
 }
 
-node /^db2(046|060|076|114|117|124)\.codfw\.wmnet/ {
+node /^db2(046|076|114|117|124)\.codfw\.wmnet/ {
     role(mariadb::core)
     interface::add_ip6_mapped { 'main': }
 }
@@ -728,6 +728,11 @@ node 'db2058.codfw.wmnet' {
 
 # To be decommissioned # T230884
 node 'db2059.codfw.wmnet' {
+    role(spare::system)
+}
+
+# To be decommissioned # T231625
+node 'db2060.codfw.wmnet' {
     role(spare::system)
 }
 
