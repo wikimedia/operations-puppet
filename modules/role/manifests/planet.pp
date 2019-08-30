@@ -9,6 +9,8 @@ class role::planet {
     # if a new language is added check these too
     include ::profile::locales::extended
 
+    include ::profile::tlsproxy::envoy # TLS termination
+
     system::role { 'planet':
         description => 'Planet (rawdog) RSS feed aggregator'
     }

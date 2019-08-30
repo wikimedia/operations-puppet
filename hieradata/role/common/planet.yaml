@@ -2,3 +2,9 @@ cluster: misc
 profile::planet::domain_name: 'wikimedia.org'
 profile::planet::meta_link: 'https://meta.wikimedia.org/wiki/Planet_Wikimedia'
 profile::planet::http_proxy: "http://url-downloader.%{::site}.wikimedia.org:8080"
+profile::tlsproxy::envoy::ensure: present
+profile::tlsproxy::envoy::services:
+  - server_names: ['*']
+    port: 80
+profile::tlsproxy::envoy::global_cert_name: "planet.discovery.wmnet"
+profile::tlsproxy::envoy::sni_support: "no"
