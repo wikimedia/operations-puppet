@@ -140,8 +140,7 @@ profile::trafficserver::backend::mapping_rules:
       replacement: https://matomo1001.eqiad.wmnet
     - type: regex_map
       target: 'http://([^.]+\.)?planet\.wikimedia\.org'
-      replacement: http://planet1001.eqiad.wmnet
-      #replacement: http://planet2001.codfw.wmnet
+      replacement: https://planet.discovery.wmnet
     - type: map
       target: http://puppetboard.wikimedia.org
       replacement: http://puppetboard1001.eqiad.wmnet
