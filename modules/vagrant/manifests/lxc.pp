@@ -112,6 +112,7 @@ class vagrant::lxc {
             'ALL=(root) NOPASSWD: /usr/bin/env lxc-start -d --name *',
             'ALL=(root) NOPASSWD: /usr/bin/env lxc-stop --name *',
             'ALL=(root) NOPASSWD: /usr/bin/env lxc-update-config -c /var/lib/lxc/*',
+            'ALL=(root) NOPASSWD: /usr/bin/env lxc-update-config -c /srv/vagrant-data/*',
             'ALL=(root) NOPASSWD: /usr/bin/env lxc-version',
             # Cleanup tmp files
             'ALL=(root) NOPASSWD: /usr/bin/env rm -rf /var/lib/lxc/*/rootfs/tmp/*',
