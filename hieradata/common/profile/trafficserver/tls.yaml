@@ -4,6 +4,12 @@ profile::trafficserver::tls::network_settings:
   sock_option_flag_in: 0xd
 profile::trafficserver::tls::mapping_rules:
   - type: map
+    target: wss://etherpad.wikimedia.org
+    replacement: 'ws://127.0.0.2:3120'
+  - type: map
+    target: wss://phabricator.wikimedia.org/ws/
+    replacement: 'ws://127.0.0.2:3120'
+  - type: map
     target: /
     replacement: 'http://127.0.0.2:3120'
 profile::trafficserver::tls::inbound_tls_settings:
