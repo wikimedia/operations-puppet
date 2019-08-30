@@ -13,6 +13,7 @@ class profile::openstack::base::neutron::common(
     $tld = hiera('profile::openstack::base::neutron::tld'),
     $agent_down_time = hiera('profile::openstack::base::neutron::agent_down_time'),
     $log_agent_heartbeats = hiera('profile::openstack::base::neutron::log_agent_heartbeats'),
+    Stdlib::Port $bind_port = lookup('profile::openstack::base::neutron::bind_port'),
     ) {
 
     class {'::openstack::neutron::common':
@@ -30,6 +31,7 @@ class profile::openstack::base::neutron::common(
         tld                     => $tld,
         agent_down_time         => $agent_down_time,
         log_agent_heartbeats    => $log_agent_heartbeats,
+        bind_port               => $bind_port,
     }
     contain '::openstack::neutron::common'
 }

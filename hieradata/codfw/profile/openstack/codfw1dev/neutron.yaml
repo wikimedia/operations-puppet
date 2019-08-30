@@ -20,3 +20,4 @@ profile::openstack::codfw1dev::neutron::l3_agent_bridge_mappings:
 profile::openstack::codfw1dev::neutron::report_interval: '30'
 profile::openstack::codfw1dev::neutron::agent_down_time: '64'
 profile::openstack::codfw1dev::neutron::log_agent_heartbeats: 'True'
+profile::openstack::codfw1dev::neutron::bind_port: 19696

@@ -12,6 +12,7 @@ class openstack::neutron::common::mitaka(
     $tld,
     $log_agent_heartbeats,
     $agent_down_time,
+    Stdlib::Port $bind_port,
     ) {
 
     class { "openstack::neutron::common::mitaka::${::lsbdistcodename}": }

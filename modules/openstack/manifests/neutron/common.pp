@@ -13,6 +13,7 @@ class openstack::neutron::common(
     $tld,
     $log_agent_heartbeats,
     $agent_down_time,
+    Stdlib::Port $bind_port,
     ) {
 
     class { "openstack::neutron::common::${version}":
@@ -29,6 +30,7 @@ class openstack::neutron::common(
         tld                     => $tld,
         log_agent_heartbeats    => $log_agent_heartbeats,
         agent_down_time         => $agent_down_time,
+        bind_port               => $bind_port,
     }
 
     $invalid_files = [
