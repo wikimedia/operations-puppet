@@ -18,7 +18,27 @@ class toollabs::maintain_kubeusers(
     }
 
     systemd::service { 'maintain-kubeusers':
-        ensure  => present,
+        ensure  => 'absent',
         content => systemd_template('maintain-kubeusers'),
+    }
+
+    systemd::timer::job { 'maintain-kubeusers-timer':
+        ensure                    => 'present',
+        description               => 'Automate the process of generating users',
+        command                   => @(KEY/L),
+          /usr/local/bin/maintain-kubeusers \
+          --once --infrastructure-users /etc/kubernetes/infrastructure-users \
+          --project ${labsproject} https://${k8s_master}:6443 \
+          /etc/kubernetes/tokenauth /etc/kubernetes/abac
+          |-KEY
+        interval                  => {
+            'start'    => 'OnCalendar',
+            'interval' => '*-*-* *:00/1:00', # Every 1 minute
+        },
+        max_runtime_seconds       => 300,  # kill if running after 5m
+        logging_enabled           => true,
+        monitoring_enabled        => true,
+        monitoring_contact_groups => 'wmcs-team',
+        user                      => 'root',
     }
 }
