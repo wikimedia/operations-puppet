@@ -38,6 +38,10 @@ class profile::openstack::base::pdns::auth::db(
         $mariadb_pkg = 'wmf-mariadb10'
     }
 
+    file { '/etc/cron.d/mdadm':
+        ensure => absent,     # See T224828
+    }
+
     class { 'mariadb::packages_wmf':
         package => $mariadb_pkg,
     }
