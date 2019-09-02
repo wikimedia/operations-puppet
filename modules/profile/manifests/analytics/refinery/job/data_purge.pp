@@ -35,7 +35,7 @@ class profile::analytics::refinery::job::data_purge (
     $raw_retention_days = 31
     kerberos::systemd_timer { 'refinery-drop-webrequest-raw-partitions':
         description  => 'Drop Webrequest raw data imported on HDFS following data retention policies.',
-        command      => "${refinery_path}/bin/refinery-drop-older-than --database='wmf_raw' --tables='webrequest' --base-path='/wmf/data/raw/webrequest' --path-format='.+/hourly/(?P<year>[0-9]+)(/(?P<month>[0-9]+)(/(?P<day>[0-9]+)(/(?P<hour>[0-9]+))?)?)?' --older-than='${raw_retention_days}' --execute='dcb2ec14c134ce3b1311ea1147947396'",
+        command      => "${refinery_path}/bin/refinery-drop-older-than --database='wmf_raw' --tables='webrequest' --base-path='/wmf/data/raw/webrequest' --path-format='.+/hourly/(?P<year>[0-9]+)(/(?P<month>[0-9]+)(/(?P<day>[0-9]+)(/(?P<hour>[0-9]+))?)?)?' --older-than='${raw_retention_days}' --skip-trash --execute='96726ec893174544fc9bd7c7fa0083ea'",
         interval     => '*-*-* 00/4:15:00',
         environment  => $systemd_env,
         user         => 'analytics',
@@ -46,7 +46,7 @@ class profile::analytics::refinery::job::data_purge (
     $refined_retention_days = 90
     kerberos::systemd_timer { 'refinery-drop-webrequest-refined-partitions':
         description  => 'Drop Webrequest refined data imported on HDFS following data retention policies.',
-        command      => "${refinery_path}/bin/refinery-drop-older-than --database='wmf' --tables='webrequest' --base-path='/wmf/data/wmf/webrequest' --path-format='.+/year=(?P<year>[0-9]+)(/month=(?P<month>[0-9]+)(/day=(?P<day>[0-9]+)(/hour=(?P<hour>[0-9]+))?)?)?' --older-than='${refined_retention_days}' --execute='9aaf45fad57c31a725bfd8f7f099feaa'",
+        command      => "${refinery_path}/bin/refinery-drop-older-than --database='wmf' --tables='webrequest' --base-path='/wmf/data/wmf/webrequest' --path-format='.+/year=(?P<year>[0-9]+)(/month=(?P<month>[0-9]+)(/day=(?P<day>[0-9]+)(/hour=(?P<hour>[0-9]+))?)?)?' --older-than='${refined_retention_days}' --skip-trash --execute='cf16215b8158e765b623db7b3f345d36'",
         interval     => '*-*-* 00/4:45:00',
         environment  => $systemd_env,
         user         => 'analytics',
@@ -57,7 +57,7 @@ class profile::analytics::refinery::job::data_purge (
     $eventlogging_retention_days = 90
     kerberos::systemd_timer { 'refinery-drop-eventlogging-partitions':
         description  => 'Drop Eventlogging data imported on HDFS following data retention policies.',
-        command      => "${refinery_path}/bin/refinery-drop-older-than --base-path='/wmf/data/raw/eventlogging' --path-format='.+/hourly/(?P<year>[0-9]+)(/(?P<month>[0-9]+)(/(?P<day>[0-9]+)(/(?P<hour>[0-9]+))?)?)?' --older-than='${eventlogging_retention_days}' --execute='49fe6dfef6a2b00927ee8c989e72a33e'",
+        command      => "${refinery_path}/bin/refinery-drop-older-than --base-path='/wmf/data/raw/eventlogging' --path-format='.+/hourly/(?P<year>[0-9]+)(/(?P<month>[0-9]+)(/(?P<day>[0-9]+)(/(?P<hour>[0-9]+))?)?)?' --older-than='${eventlogging_retention_days}' --skip-trash --execute='bb7022b36bcf0d75bdd03b6f836f09e6'",
         interval     => '*-*-* 00/4:15:00',
         environment  => $systemd_env,
         user         => 'analytics',
@@ -66,7 +66,7 @@ class profile::analytics::refinery::job::data_purge (
 
     kerberos::systemd_timer { 'refinery-drop-eventlogging-client-side-partitions':
         description  => 'Drop Eventlogging Client Side data imported on HDFS following data retention policies.',
-        command      => "${refinery_path}/bin/refinery-drop-older-than --base-path='/wmf/data/raw/eventlogging_client_side' --path-format='eventlogging-client-side/hourly/(?P<year>[0-9]+)(/(?P<month>[0-9]+)(/(?P<day>[0-9]+)(/(?P<hour>[0-9]+))?)?)?' --older-than='${eventlogging_retention_days}' --execute='301c767c9cdffa69a797e65543f3621e'",
+        command      => "${refinery_path}/bin/refinery-drop-older-than --base-path='/wmf/data/raw/eventlogging_client_side' --path-format='eventlogging-client-side/hourly/(?P<year>[0-9]+)(/(?P<month>[0-9]+)(/(?P<day>[0-9]+)(/(?P<hour>[0-9]+))?)?)?' --older-than='${eventlogging_retention_days}' --skip-trash --execute='1fcad629ec569645ff864686e523029d'",
         interval     => '*-*-* 00/4:30:00',
         environment  => $systemd_env,
         user         => 'analytics',
@@ -77,7 +77,7 @@ class profile::analytics::refinery::job::data_purge (
     $mediawiki_log_retention_days = 90
     kerberos::systemd_timer { 'refinery-drop-apiaction-partitions':
         description  => 'Drop API action data imported on HDFS following data retention policies.',
-        command      => "${refinery_path}/bin/refinery-drop-older-than --database='wmf_raw' --tables='apiaction' --base-path='/wmf/data/raw/mediawiki/mediawiki_ApiAction' --path-format='hourly/(?P<year>[0-9]+)(/(?P<month>[0-9]+)(/(?P<day>[0-9]+)(/(?P<hour>[0-9]+))?)?)?' --older-than='${mediawiki_log_retention_days}' --execute='7b23bc5ba9222501c96c6a138fc7a130'",
+        command      => "${refinery_path}/bin/refinery-drop-older-than --database='wmf_raw' --tables='apiaction' --base-path='/wmf/data/raw/mediawiki/mediawiki_ApiAction' --path-format='hourly/(?P<year>[0-9]+)(/(?P<month>[0-9]+)(/(?P<day>[0-9]+)(/(?P<hour>[0-9]+))?)?)?' --older-than='${mediawiki_log_retention_days}' --skip-trash --execute='51eb7c7bed06738502a721619ced5b6a'",
         interval     => '*-*-* 00/4:15:00',
         environment  => $systemd_env,
         user         => 'analytics',
@@ -87,7 +87,7 @@ class profile::analytics::refinery::job::data_purge (
 
     kerberos::systemd_timer { 'refinery-drop-cirrussearchrequestset-partitions':
         description  => 'Drop CirrusSearch request data imported on HDFS following data retention policies.',
-        command      => "${refinery_path}/bin/refinery-drop-older-than --database='wmf_raw' --tables='cirrussearchrequestset' --base-path='/wmf/data/raw/mediawiki/mediawiki_CirrusSearchRequestSet' --path-format='hourly/(?P<year>[0-9]+)(/(?P<month>[0-9]+)(/(?P<day>[0-9]+)(/(?P<hour>[0-9]+))?)?)?' --older-than='${mediawiki_log_retention_days}' --execute='81b857ad25536ccfd96f574c0b8f20fd'",
+        command      => "${refinery_path}/bin/refinery-drop-older-than --database='wmf_raw' --tables='cirrussearchrequestset' --base-path='/wmf/data/raw/mediawiki/mediawiki_CirrusSearchRequestSet' --path-format='hourly/(?P<year>[0-9]+)(/(?P<month>[0-9]+)(/(?P<day>[0-9]+)(/(?P<hour>[0-9]+))?)?)?' --older-than='${mediawiki_log_retention_days}' --skip-trash --execute='228d759e52307f6631658859706507bd'",
         interval     => '*-*-* 00/4:25:00',
         environment  => $systemd_env,
         user         => 'analytics',
@@ -140,7 +140,7 @@ class profile::analytics::refinery::job::data_purge (
     $banner_activity_retention_days = 90
     kerberos::systemd_timer { 'refinery-drop-banner-activity':
         description  => 'Clean old Banner Activity _SUCCESS flags from HDFS.',
-        command      => "${refinery_path}/bin/refinery-drop-older-than --base-path='/wmf/data/wmf/banner_activity' --path-format='daily/year=(?P<year>[0-9]+)(/month=(?P<month>[0-9]+)(/day=(?P<day>[0-9]+))?)?' --older-than='${banner_activity_retention_days}' --execute='375ad8c358676ee1bd8bf166ee82d050'",
+        command      => "${refinery_path}/bin/refinery-drop-older-than --base-path='/wmf/data/wmf/banner_activity' --path-format='daily/year=(?P<year>[0-9]+)(/month=(?P<month>[0-9]+)(/day=(?P<day>[0-9]+))?)?' --older-than='${banner_activity_retention_days}' --skip-trash --execute='39b7f84330a54c2128f6ade41feba28b'",
         environment  => $systemd_env,
         interval     => '*-*-* 02:00:00',
         user         => 'analytics',
@@ -215,7 +215,7 @@ class profile::analytics::refinery::job::data_purge (
     # Runs once a day.
     kerberos::systemd_timer { 'drop-el-unsanitized-events':
         description  => 'Drop unsanitized EventLogging data from the event database after retention period.',
-        command      => "${refinery_path}/bin/refinery-drop-older-than --database='event' --tables='^(?!wmdebanner)[A-Za-z0-9]+$$' --base-path='/wmf/data/event' --path-format='(?!WMDEBanner)[A-Za-z0-9]+/year=(?P<year>[0-9]+)(/month=(?P<month>[0-9]+)(/day=(?P<day>[0-9]+)(/hour=(?P<hour>[0-9]+))?)?)?' --older-than='90' --execute='05c2f816807c528cf138bd0be2bdaba4' --log-file='${el_unsanitized_log_file}'",
+        command      => "${refinery_path}/bin/refinery-drop-older-than --database='event' --tables='^(?!wmdebanner)[A-Za-z0-9]+$$' --base-path='/wmf/data/event' --path-format='(?!WMDEBanner)[A-Za-z0-9]+/year=(?P<year>[0-9]+)(/month=(?P<month>[0-9]+)(/day=(?P<day>[0-9]+)(/hour=(?P<hour>[0-9]+))?)?)?' --older-than='90' --skip-trash --execute='15b56cab8d8920a73c0aad0085c6dd36' --log-file='${el_unsanitized_log_file}'",
         interval     => '*-*-* 00:00:00',
         environment  => $systemd_env,
         user         => 'analytics',
@@ -227,7 +227,7 @@ class profile::analytics::refinery::job::data_purge (
     $geoeditors_private_retention_days = 60
     kerberos::systemd_timer { 'mediawiki-raw-cu-changes-drop-month':
         description  => 'Drop raw Mediawiki cu_changes from Hive/HDFS following data retention policies.',
-        command      => "${refinery_path}/bin/refinery-drop-older-than --database='wmf_raw' --tables='mediawiki_private_cu_changes' --base-path='/wmf/data/raw/mediawiki_private/tables/cu_changes' --path-format='month=(?P<year>[0-9]+)-(?P<month>[0-9]+)' --older-than='${geoeditors_private_retention_days}' --execute='0d7d7ae5ec9094527969715fe2196e5c'",
+        command      => "${refinery_path}/bin/refinery-drop-older-than --database='wmf_raw' --tables='mediawiki_private_cu_changes' --base-path='/wmf/data/raw/mediawiki_private/tables/cu_changes' --path-format='month=(?P<year>[0-9]+)-(?P<month>[0-9]+)' --older-than='${geoeditors_private_retention_days}' --skip-trash --execute='9d9f8adf2eb7de69c9c3634e45e1f7d9'",
         environment  => $systemd_env,
         interval     => '*-*-* 05:00:00',
         user         => 'analytics',
@@ -240,7 +240,7 @@ class profile::analytics::refinery::job::data_purge (
     kerberos::systemd_timer { 'mediawiki-geoeditors-drop-month':
         ensure       => absent,
         description  => 'Drop Geo-editors data from Hive/HDFS following data retention policies.',
-        command      => "${refinery_path}/bin/refinery-drop-older-than --database='wmf' --tables='geoeditors_daily' --base-path='/wmf/data/wmf/mediawiki_private/geoeditors_daily' --path-format='month=(?P<year>[0-9]+)-(?P<month>[0-9]+)' --older-than='${geoeditors_private_retention_days}' --execute='686b04fb54173a89187419e4681a38f0'",
+        command      => "${refinery_path}/bin/refinery-drop-older-than --database='wmf' --tables='geoeditors_daily' --base-path='/wmf/data/wmf/mediawiki_private/geoeditors_daily' --path-format='month=(?P<year>[0-9]+)-(?P<month>[0-9]+)' --older-than='${geoeditors_private_retention_days}' --skip-trash --execute='5faa519abce3840e7718cfbde8779078'",
         environment  => $systemd_env,
         interval     => '*-*-* 06:00:00',
         user         => 'analytics',
