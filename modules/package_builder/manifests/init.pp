@@ -50,9 +50,20 @@ class package_builder(
             priority => '1001',
             before   => Package['debhelper'],
         }
+        # debhelper 12 depends on dh-autoreconf >= 17
+        apt::pin { 'dh-autoreconf':
+            pin      => "release a=${::lsbdistcodename}-backports",
+            package  => 'dh-autoreconf',
+            priority => '1001',
+            before   => Package['dh-autoreconf'],
+        }
     }
 
     package { 'lintian':
+        ensure => present,
+    }
+
+    package { 'dh-autoreconf':
         ensure => present,
     }
 
@@ -69,7 +80,6 @@ class package_builder(
         'patchutils',
         'debian-keyring',
         'dh-make',
-        'dh-autoreconf',
         'dh-golang',
         'dh-systemd',
         'openstack-pkg-tools',
