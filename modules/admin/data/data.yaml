@@ -90,7 +90,7 @@ groups:
     description: access to mwmaint hosts, mwlog hosts (private data) and bastion hosts
                  restricted folks use sudo to access www-data resources
     members: [bearloga, tjones, cparle, pearley, bpirkle, ktsouroupidou,
-              ezachte, jamesur, jdlrobson, smalyshev, sguebo, thargrove,
+              ezachte, jamesur, jdlrobson, sguebo, thargrove,
               leila, santhosh, amire80, foks, chelsyx, dbarratt, karen,
               onimisionipe, kharlan, abi]
     privileges: ['ALL = (www-data) NOPASSWD: ALL']
@@ -271,7 +271,7 @@ groups:
               ezachte, mforns, reedy, west1, phuedx, awight,
               joal, akosiaris, jkatz, tonina, pearley, ktsouroupidou,
               andyrussg, niedzielski, maxsem, hoo, daniel, krinkle, tgr,
-              smalyshev, ebernhardson, addshore, jminor, neilpquinn-wmf,
+              ebernhardson, addshore, jminor, neilpquinn-wmf,
               dcausse, bd808, tjones, mobrovac, jdrewniak, ejegg, jdcc, ori,
               atgomez, amire80, kartik, pcoombe, foks, jsamra, kemayo,
               jdlrobson, chelsyx, ovasileva, flemmerich, filippo, pmiazga, faidon,
@@ -533,7 +533,7 @@ groups:
   analytics-search-users:
     gid: 771
     description: Group of users for managing search related analytics jobs
-    members: [ebernhardson, smalyshev, dcausse, gehel, bearloga, chelsyx]
+    members: [ebernhardson, dcausse, gehel, bearloga, chelsyx]
     privileges: ['ALL = (analytics-search) NOPASSWD: ALL']
     system_members: [analytics-search]
   parsoid-test-roots:
@@ -1763,7 +1763,7 @@ users:
     realname: Stas Malyshev
     ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDhcNceq0HNQ70kv7VOi15N7KXkvAosYVUp+LfcyK4QMxZqL4vdzQKZx/7/TI+rT53jKFG05dTAlDCYt3oGK8r8KgHyl0hZLNBrz0CUj2benFwOFz5RGlQ9YRnBg6VTHPositftJF+eLuV86ezw5K/GPd4HqLRy75IvfRapOB/Pf0XIQ4fdhcEwPE132tUGYhcrpWOwI+TCUJ56nYFWJGM4gKwBQIK6bo/f1oyEtDu0QXbCyyC1/eWOLVQhr5v4xDPEGg2uelULxc5D3OVrDA4/4cia5+t2xnDfx/FeLyQh5UEo6W7oBXWI1G1yrDba6CcyRyNsVjeteRVv5XQVPM3j smalyshev@Stas-Pro-2021.local]
     uid: 10977
-    email: smalyshev@wikimedia.org
+    email: smalyshev@gmail.com
   jdouglas:
     ensure: absent
     gid: 500
