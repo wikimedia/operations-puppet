@@ -41,7 +41,22 @@ class package_builder(
         before   => Package['lintian'],
     }
 
+    # Install debhelper from backports to be able to build packages requiring
+    # debhelper > 10
+    if os_version('debian == stretch') {
+        apt::pin { 'debhelper':
+            pin      => "release a=${::lsbdistcodename}-backports",
+            package  => 'debhelper',
+            priority => '1001',
+            before   => Package['debhelper'],
+        }
+    }
+
     package { 'lintian':
+        ensure => present,
+    }
+
+    package { 'debhelper':
         ensure => present,
     }
 
@@ -49,7 +64,6 @@ class package_builder(
         'cowbuilder',
         'build-essential',
         'fakeroot',
-        'debhelper',
         'cdbs',
         'devscripts',
         'patchutils',
