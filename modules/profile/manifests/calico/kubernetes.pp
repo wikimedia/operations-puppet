@@ -9,6 +9,7 @@ class profile::calico::kubernetes(
     $calico_version = hiera('profile::calico::kubernetes::calico_version'),
     $registry = hiera('profile::calico::kubernetes::docker::registry'),
     $kubeconfig = hiera('profile::kubernetes::node::kubelet_config'),
+    $prometheus_nodes = hiera('prometheus_nodes', []),
 ) {
 
     class { '::calico':
@@ -22,9 +23,16 @@ class profile::calico::kubernetes(
     }
 
     $bgp_peers_ferm = join($bgp_peers, ' ')
+    $prometheus_nodes_ferm = join($prometheus_nodes, ' ')
+
     ferm::service { 'calico-bird':
         proto  => 'tcp',
         port   => '179', # BGP
         srange => "(@resolve((${bgp_peers_ferm})) @resolve((${bgp_peers_ferm}), AAAA))",
+    }
+    ferm::service { 'calico-felix-prometheus':
+        proto  => 'tcp',
+        port   => '9091', # prometheus
+        srange => "(@resolve((${prometheus_nodes_ferm})) @resolve((${prometheus_nodes_ferm}), AAAA))",
     }
 }

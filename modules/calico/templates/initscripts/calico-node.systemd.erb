@@ -26,6 +26,9 @@ ExecStart=/usr/bin/docker run \
   -e ETCD_SCHEME=https \
   -e CALICO_LIBNETWORK_ENABLED=true \
   -e CALICO_NETWORKING_BACKEND=bird \
+  -e FELIX_PROMETHEUSMETRICSENABLED=true \
+  -e FELIX_PROMETHEUSMETRICSPORT=9091 \
+  -e FELIX_USAGEREPORTINGENABLED=false \
   -v /var/run/calico:/var/run/calico \
   -v /lib/modules:/lib/modules \
   -v /run/docker/plugins:/run/docker/plugins \
