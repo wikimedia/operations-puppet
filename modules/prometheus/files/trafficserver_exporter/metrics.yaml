@@ -132,13 +132,13 @@ trafficserver_response_classes_total:
   - labels: {code: 1xx, protocol: http}
     value: proxy.process.http.1xx_responses
   - labels: {code: 2xx, protocol: http}
-    value: proxy.process.http.1xx_responses
+    value: proxy.process.http.2xx_responses
   - labels: {code: 3xx, protocol: http}
-    value: proxy.process.http.1xx_responses
+    value: proxy.process.http.3xx_responses
   - labels: {code: 4xx, protocol: http}
-    value: proxy.process.http.1xx_responses
+    value: proxy.process.http.4xx_responses
   - labels: {code: 5xx, protocol: http}
-    value: proxy.process.http.1xx_responses
+    value: proxy.process.http.5xx_responses
 trafficserver_responses_incoming_total:
   documentation: Incoming responses.
   type: counter
