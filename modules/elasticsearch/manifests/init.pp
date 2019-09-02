@@ -8,6 +8,8 @@
 # - $version: Version of elasticsearch to configure. Either 5 or 6. Default: 5.
 # - $logstash_host: Host to send logs to
 # - $logstash_gelf_port: Tcp port on $logstash_host to send gelf formatted logs to.
+# - $logstash_logback_port: Tcp port on localhost to send structured logs to.
+# - $logstash_transport: Transport mechanism for logs.
 #
 # == Sample usage:
 #
@@ -24,7 +26,9 @@ class elasticsearch (
     Enum['5', '6'] $version                                          = '5',
     Stdlib::Absolutepath $base_data_dir                              = '/srv/elasticsearch',
     Optional[String] $logstash_host                                  = undef,
-    Optional[Stdlib::Port] $logstash_gelf_port                     = 12201,
+    Optional[Stdlib::Port] $logstash_gelf_port                       = 12201,
+    Optional[Stdlib::Port] $logstash_logback_port                    = 11514,
+    Enum['Gelf', 'syslog'] $logstash_transport                       = 'Gelf',
     Optional[String] $rack                                           = undef,
     Optional[String] $row                                            = undef,
 ) {
@@ -141,13 +145,15 @@ class elasticsearch (
 
     $configured_instances.each |$instance_title, $instance_params| {
         elasticsearch::instance { $instance_title:
-            version            => $version,
-            base_data_dir      => $base_data_dir,
-            logstash_host      => $logstash_host,
-            logstash_gelf_port => $logstash_gelf_port,
-            rack               => $rack,
-            row                => $row,
-            *                  => $instance_params
+            version               => $version,
+            base_data_dir         => $base_data_dir,
+            logstash_host         => $logstash_host,
+            logstash_gelf_port    => $logstash_gelf_port,
+            logstash_logback_port => $logstash_logback_port,
+            logstash_transport    => $logstash_transport,
+            rack                  => $rack,
+            row                   => $row,
+            *                     => $instance_params
         }
     }
 

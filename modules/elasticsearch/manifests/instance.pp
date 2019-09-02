@@ -19,6 +19,8 @@
 #       must also be provided. Default: true.
 # - $logstash_host: host to which logs will be sent. If `undef` no logs will be shipped.
 # - $logstash_gelf_port: Port on $logstash_host accepting logs in gelf format.
+# - $logstash_logback_port: Port on localhost accepting logs from log4j.
+# - $logstash_transport: Logstash transport method. This can only be one of 'Gelf' or 'syslog'.
 # - $heap_memory:   amount of memory to allocate to elasticsearch.  Defaults to
 #       "2G".  Should be set to about half of ram or a 30G, whichever is
 #       smaller.
@@ -106,7 +108,9 @@ define elasticsearch::instance(
     Stdlib::Absolutepath $base_data_dir,
     String $short_cluster_name,
     Optional[String] $logstash_host                          = undef,
-    Optional[Stdlib::Port] $logstash_gelf_port             = 12201,
+    Optional[Stdlib::Port] $logstash_gelf_port               = 12201,
+    Optional[Stdlib::Port] $logstash_logback_port            = 11514,
+    Enum['Gelf', 'syslog']  $logstash_transport              = 'Gelf',
     Optional[String] $row                                    = undef,
     Optional[String] $rack                                   = undef,
 

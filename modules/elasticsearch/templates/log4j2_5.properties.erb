@@ -73,10 +73,20 @@ appender.index_indexing_slow_log_file.layout.pattern = [%d{ISO8601}][%-5p][%-25c
 <% if @send_logs_to_logstash %>
 # ship_to_logstash needs to also be added to rootLogger and slow loggers to actually ship logs
 appender.ship_to_logstash.name = ship_to_logstash
-appender.ship_to_logstash.type = Gelf
+appender.ship_to_logstash.type = <%= @logstash_transport %>
+<% if @logstash_transport == 'syslog' %>
+appender.ship_to_logstash.threshold=WARN
+appender.ship_to_logstash.syslogHost="localhost: <%= @logstash_logback_port %>"
+appender.ship_to_logstash.protocol=udp
+appender.ship_to_logstash.facility=LOCAL0
+appender.ship_to_logstash.layout=org.apache.log4j.JsonLayout
+appender.ship_to_logstash.layout.compact=true
+appender.ship_to_logstash.layout.complete=true
+<% elsif @logstash_transport == 'Gelf' %>
 appender.ship_to_logstash.host = udp:<%= @logstash_host %>
 appender.ship_to_logstash.port = <%= @logstash_gelf_port %>
 appender.ship_to_logstash.originHost = <%= @hostname %>
 appender.ship_to_logstash.facility = elasticsearch
 appender.ship_to_logstash.extractStackTrace = true
+<% end %>
 <% end %>

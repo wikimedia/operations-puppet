@@ -6,6 +6,8 @@
 # - $common_settings: global overrides for ::elasticsearch::instance
 # - $logstash_host: Host to send logs to
 # - $logstash_gelf_port: Tcp port on $logstash_host to send gelf formatted logs to.
+# - $logstash_logback_port: Tcp port on localhost to send structured logs to.
+# - $logstash_transport: Transport mechanism for logs.
 # - $rack: Rack server is in. Used for allocation awareness.
 # - $row: Row server is in. Used for allocation awareness.
 # - $version: version of the package to install
@@ -22,11 +24,17 @@ class profile::elasticsearch(
 
     String $logstash_host = hiera('logstash_host'),
     Stdlib::Port $logstash_gelf_port = hiera('logstash_gelf_port'),
+    Stdlib::Port $logstash_logback_port = hiera('logstash_logback_port'),
+    Enum['Gelf', 'syslog'] $logstash_transport = hiera('profile::elasticsearch::logstash_transport', 'Gelf'),
     String $rack = hiera('profile::elasticsearch::rack'),
     String $row = hiera('profile::elasticsearch::row'),
     Enum['5.5', '5.6', '6.5'] $version = hiera('profile::elasticsearch::version', '5.5'),
     Enum['5', '6'] $config_version = hiera('profile::elasticsearch::config_version', '5'),
 ) {
+
+    # syslog logstash transport type depends on this. See T225125.
+    include ::profile::rsyslog::udp_json_logback_compat
+
     # Rather than asking hiera to magically merge these settings for us, we
     # explicitly take two sets of defaults for global defaults and per-dc
     # defaults. Per cluster overrides are then provided in $instances.
@@ -109,12 +117,14 @@ class profile::elasticsearch(
 
     # Install
     class { '::elasticsearch':
-        version            => $config_version,
-        instances          => $filtered_instances,
-        base_data_dir      => $base_data_dir,
-        logstash_host      => $logstash_host,
-        logstash_gelf_port => $logstash_gelf_port,
-        rack               => $rack,
-        row                => $row,
+        version               => $config_version,
+        instances             => $filtered_instances,
+        base_data_dir         => $base_data_dir,
+        logstash_host         => $logstash_host,
+        logstash_gelf_port    => $logstash_gelf_port,
+        logstash_logback_port => $logstash_logback_port,
+        logstash_transport    => $logstash_transport,
+        rack                  => $rack,
+        row                   => $row,
     }
 }
