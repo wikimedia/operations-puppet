@@ -557,12 +557,12 @@ node /^db1(069|079|086|094|136)\.eqiad\.wmnet/ {
 #
 # s7 (centralauth, meta et al.) core production dbs on codfw
 # codfw master
-node 'db2047.codfw.wmnet' {
+node 'db2118.codfw.wmnet' {
     role(mariadb::core)
     interface::add_ip6_mapped { 'main': }
 }
 
-node /^db2(054|061|068|077|118|120|121|122)\.codfw\.wmnet/ {
+node /^db2(047|054|061|068|077|120|121|122)\.codfw\.wmnet/ {
     role(mariadb::core)
     interface::add_ip6_mapped { 'main': }
 }

@@ -1,4 +1,3 @@
 # db2047
 mariadb::shard: 's7'
-mariadb::mysql_role: 'master'
 mariadb::binlog_format: 'STATEMENT'
