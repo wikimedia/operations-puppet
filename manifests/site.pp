@@ -2298,7 +2298,7 @@ node 'xhgui1001.eqiad.wmnet', 'xhgui2001.codfw.wmnet' {
 
 node default {
     if $::realm == 'production' {
-        include ::profile::standard
+        fail('No puppet role has been assigned to this node.')
     } else {
         # Require instead of include so we get NFS and other
         # base things setup properly
