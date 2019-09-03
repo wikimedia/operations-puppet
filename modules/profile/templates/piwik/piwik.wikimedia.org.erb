@@ -12,6 +12,19 @@
       </Files>
   </Directory>
 
+
+# We deploy piwik rarely perhaps once a quarter so do cache
+# piwik javascript for a week
+ <Directory "/usr/share/matomo">
+    <Files "piwik.js">
+        Header set Cache-Control "max-age=604800"
+    </Files>
+
+    <Files "matomo.js">
+        Header set Cache-Control "max-age=604800"
+    </Files>
+</Directory>
+
   <Location /health_check>
     Require all granted
     Alias /var/www/health_check
