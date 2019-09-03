@@ -1,7 +1,7 @@
 class envoyproxy(
     Wmflib::Ensure $ensure,
     Stdlib::Port $admin_port,
-    Enum['envoy', 'envoyproxy'] $pkg_name,
+    Enum['envoy', 'envoyproxy', 'getenvoy-envoy'] $pkg_name,
     Boolean $use_override = true,
 ) {
     package { $pkg_name:

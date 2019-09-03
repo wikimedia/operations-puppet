@@ -44,12 +44,12 @@ class profile::tlsproxy::envoy(
     Array[String] $prometheus_nodes = lookup('prometheus_nodes'),
 ) {
     if os_version('debian jessie') {
-        $pkg_name = 'envoy'
+        $pkg_name = 'getenvoy-envoy'
         apt::repository { 'getenvoy-jessie':
             uri        => 'http://apt.wikimedia.org/wikimedia',
             dist       => 'jessie-wikimedia',
             components => 'thirdparty/envoyproxy',
-            before     => Package['envoy']
+            before     => Package[$pkg_name]
         }
         # We need to install a full systemd unit as the package doesn't have one.
         $use_override = false
