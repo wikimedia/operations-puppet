@@ -1,2 +1,4 @@
 # db2112
+# future master
 mariadb::shard: 's1'
+mariadb::binlog_format: 'STATEMENT'
