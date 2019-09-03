@@ -703,11 +703,6 @@ host releases2001 {
     hardware ethernet aa:00:00:ae:36:40;
     fixed-address releases2001.codfw.wmnet;
 }
-host roentgenium {
-    hardware ethernet aa:00:00:d9:85:e2;
-    fixed-address roentgenium.eqiad.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
-}
 
 host rpki1001 {
     hardware ethernet aa:00:00:64:75:b9;
@@ -748,12 +743,6 @@ host schema2002 {
 host serpens {
     hardware ethernet aa:00:00:0e:a4:81;
     fixed-address serpens.wikimedia.org;
-}
-
-host tureis {
-    hardware ethernet aa:00:00:45:62:2d;
-    fixed-address tureis.codfw.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
 }
 
 host ununpentium {

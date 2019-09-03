@@ -2010,11 +2010,6 @@ node /^restbase-dev100[4-6]\.eqiad\.wmnet$/ {
     role(restbase::dev_cluster)
 }
 
-# Failoid service (Ganeti VM)
-node 'roentgenium.eqiad.wmnet' {
-    role(failoid)
-}
-
 # virtual machines for https://wikitech.wikimedia.org/wiki/RPKI#Validation
 node /^rpki[12]001\.(eqiad|codfw)\.wmnet$/ {
     role(rpkivalidator)
@@ -2083,12 +2078,6 @@ node 'thorium.eqiad.wmnet' {
 # new tor relay server, replaced radium T196701
 node 'torrelay1001.wikimedia.org' {
     role(tor_relay)
-}
-
-
-# Failoid service (Ganeti VM)
-node 'tureis.codfw.wmnet' {
-    role(failoid)
 }
 
 # stat1004 contains all the tools and libraries to access
