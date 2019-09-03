@@ -7,5 +7,6 @@ class role::microsites::peopleweb {
     include ::profile::base::firewall
     include ::profile::backup::host
     include ::profile::microsites::peopleweb
-}
+    include ::profile::tlsproxy::envoy # TLS termination
 
+}
