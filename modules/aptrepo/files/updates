@@ -261,4 +261,4 @@ UDebComponents:
 Architectures: amd64
 GetInRelease: no
 VerifyRelease: 0253D0B26FF974DB
-ListShellHook: grep-dctrl -X -S envoy || [ $? -eq 1 ]
+ListShellHook: grep-dctrl -X -S getenvoy-envoy || [ $? -eq 1 ]
