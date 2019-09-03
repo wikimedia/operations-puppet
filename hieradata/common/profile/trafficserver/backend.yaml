@@ -117,7 +117,7 @@ profile::trafficserver::backend::mapping_rules:
       replacement: http://scandium.eqiad.wmnet:8001
     - type: map
       target: http://people.wikimedia.org
-      replacement: http://people1001.eqiad.wmnet
+      replacement: https://peopleweb.discovery.wmnet
     - type: map
       target: http://performance.wikimedia.org
       replacement: http://webperf1001.eqiad.wmnet
