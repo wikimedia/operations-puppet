@@ -251,9 +251,6 @@ profile::trafficserver::backend::mapping_rules:
           - '@pparam=/etc/trafficserver/lua/rb-mw-mangling.lua'
 profile::trafficserver::backend::caching_rules:
     - primary_destination: dest_host
-      value: matomo1001.eqiad.wmnet
-      action: never-cache
-    - primary_destination: dest_host
       value: cxserver.discovery.wmnet
       action: never-cache
     - primary_destination: dest_host

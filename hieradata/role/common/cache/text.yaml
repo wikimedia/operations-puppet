@@ -340,7 +340,6 @@ cache::alternate_domains:
     director: 'turnilo'
   piwik.wikimedia.org:
     director: 'matomo1001'
-    caching: 'pass'
   '^([^.]+\.)?planet\.wikimedia\.org$':
     director: 'planet'
     regex_key: true
