@@ -5,9 +5,10 @@
 # === Examples
 # Example hiera setups for common use-cases.
 #
-# Set up a global TLS proxy to apache.
+# Set up a global TLS proxy to apache listening on TCP port 444.
 #   profile::tlsproxy::envoy::ensure: present
 #   profile::tlsproxy::envoy::sni_support: no
+#   profile::tlsproxy::envoy::tls_port: 444
 #   profile::tlsproxy::envoy::services:
 #      - server_names: ['*']
 #        port: 80
@@ -33,6 +34,7 @@
 class profile::tlsproxy::envoy(
     Wmflib::Ensure $ensure = lookup('profile::tlsproxy::envoy::ensure'),
     Enum['strict', 'yes', 'no'] $sni_support = lookup('profile::tlsproxy::envoy::sni_support'),
+    Stdlib::Port $tls_port = lookup('profile::tlsproxy::envoy::tls_port', { 'default_value' => 443 }),
     Array[Struct[
         {
         'server_names' => Array[Variant[Stdlib::Fqdn, Enum['*']]],
@@ -126,7 +128,7 @@ class profile::tlsproxy::envoy(
     }
 
     if $ensure == 'present' {
-        envoyproxy::tls_terminator{ '443':
+        envoyproxy::tls_terminator{ "${tls_port}": # lint:ignore:only_variable_string
             upstreams        => $upstreams,
             access_log       => false,
             global_cert_path => $global_cert_path,
