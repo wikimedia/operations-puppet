@@ -49,9 +49,16 @@ class envoyproxy(
     # It will also verify the new configuration and only put it in place if something
     # has changed.
     require_package('python3-yaml')
+    # Jessie has python 3.4, with no typing support.
+    if os_version('debian jessie') {
+        $build_source = 'puppet:///modules/envoyproxy/build_envoy_config.jessie.py'
+    }
+    else {
+        $build_source = 'puppet:///modules/envoyproxy/build_envoy_config.py'
+    }
     file { '/usr/local/sbin/build-envoy-config':
         ensure => $ensure,
-        source => 'puppet:///modules/envoyproxy/build_envoy_config.py',
+        source => $build_source,
         owner  => 'root',
         group  => 'root',
         mode   => '0555',
