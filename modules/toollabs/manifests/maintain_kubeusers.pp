@@ -25,7 +25,7 @@ class toollabs::maintain_kubeusers(
     $timer_command = "/usr/local/bin/maintain-kubeusers \
                         --once \
                         --infrastructure-users \
-                        --/etc/kubernetes/infrastructure-users \
+                        /etc/kubernetes/infrastructure-users \
                         --project ${::labsproject} \
                         https://${k8s_master}:6443 \
                         /etc/kubernetes/tokenauth \
