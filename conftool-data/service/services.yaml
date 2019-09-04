@@ -158,6 +158,14 @@ restbase:
     datacenters:
     - eqiad
     - codfw
+  restbase-ssl:
+    port: 7443
+    default_values:
+      pooled: 'no'
+      weight: 10
+    datacenters:
+    - eqiad
+    - codfw
   cassandra:
     default_values:
       pooled: 'no'

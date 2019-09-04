@@ -902,6 +902,10 @@ profile::cassandra::settings:
 # General
 #
 profile::lvs::realserver::pools:
+  "restbase-https":
+    services:
+      - restbase
+      - envoyproxy
   restbase:
     services:
       - restbase
