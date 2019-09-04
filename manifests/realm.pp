@@ -182,7 +182,6 @@ $private_tables = [
     'email_capture',
     'exarchive',
     'exrevision',
-    'filejournal',
     'globalnames',
     'hidden',
     'image_old',
