@@ -80,7 +80,7 @@ class profile::netbox::postgres (
 
         }
 
-        if $frontends {
+        if !empty($frontends) {
             $frontends_ferm = join($frontends, ' ')
 
             ferm::service { 'netbox_fe':
@@ -137,7 +137,7 @@ class profile::netbox::postgres (
             method   => 'peer',
         }
 
-        if $db_secondaries {
+        if !empty($db_secondaries) {
             $secondaries_ferm = join($db_secondaries, ' ')
             # Access to postgres primary from postgres secondaries
             ferm::service { 'netbox_postgres':
