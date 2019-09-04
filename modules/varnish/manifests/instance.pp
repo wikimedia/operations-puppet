@@ -164,7 +164,10 @@ define varnish::instance(
         File["/etc/varnish/wikimedia_${vcl}.vcl"],
         File["/etc/varnish/wikimedia-common_${vcl}.inc.vcl"],
         File[suffix(prefix($extra_vcl, '/etc/varnish/'),'.inc.vcl')],
-    ], $separate_vcl.map |$vcl_name| { File["/etc/varnish/wikimedia_${vcl_name}.vcl"] })
+    ], $separate_vcl.map |$vcl_name| {
+        [ File["/etc/varnish/wikimedia_${vcl_name}.vcl"],
+          File["/etc/varnish/wikimedia-common_${vcl_name}.inc.vcl"] ]
+    })
 
     systemd::service { "varnish${instancesuffix}":
         content        => systemd_template('varnish'),
