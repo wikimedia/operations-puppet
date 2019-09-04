@@ -23,7 +23,7 @@ class openstack::nova::compute::monitor(
         source => 'puppet:///modules/nagios_common/check_commands/check_ssl_certfile',
     }
 
-    # Having multiple nova-compute process running long term has been known to happen
+    # Having multiple nova-compute parent process running long term has been known to happen
     # when puppet staggers a restart and nova gets very confused with dualing processes
     # pulling from rabbimq and potentially executing conflicting instructions.  A transient
     # value of 2 process can be fine during graceful restart though so ensure only 1 but
@@ -34,7 +34,7 @@ class openstack::nova::compute::monitor(
     nrpe::monitor_service { 'ensure_single_nova_compute_proc':
         ensure        => $ensure,
         description   => 'nova-compute proc maximum',
-        nrpe_command  => "/usr/lib/nagios/plugins/check_procs -c 1:1 --ereg-argument-array '^/usr/bin/pytho[n] /usr/bin/nova-compute'",
+        nrpe_command  => "/usr/lib/nagios/plugins/check_procs -c 1:1 -p 1 --ereg-argument-array '^/usr/bin/pytho[n] /usr/bin/nova-compute'",
         retries       => 5,
         contact_group => $contact_groups,
         notes_url     => 'https://wikitech.wikimedia.org/wiki/Portal:Cloud_VPS/Admin/Troubleshooting',
