@@ -80,6 +80,16 @@ class profile::netbox::postgres (
 
         }
 
+        if $frontends {
+            $frontends_ferm = join($frontends, ' ')
+
+            ferm::service { 'netbox_fe':
+                proto  => 'tcp',
+                port   => '5432',
+                srange => "(@resolve((${frontends_ferm})) @resolve((${frontends_ferm}), AAAA))",
+            }
+        }
+
         $frontends.each |$frontend| {
             # this cannot fail
             $fe_ip4 = ipresolve($frontend, 4)
@@ -92,7 +102,6 @@ class profile::netbox::postgres (
                 cidr     => "${fe_ip4}/32",
                 master   => $on_primary,
             }
-
             if $ipv6_ok {
                 $fe_ip6 = ipresolve($frontend, 6)
                 postgresql::user { "netbox@${frontend}-ipv6":
@@ -131,7 +140,6 @@ class profile::netbox::postgres (
         if $db_secondaries {
             $secondaries_ferm = join($db_secondaries, ' ')
             # Access to postgres primary from postgres secondaries
-            # FIXME allow access to named frontend hosts too
             ferm::service { 'netbox_postgres':
                 proto  => 'tcp',
                 port   => '5432',
