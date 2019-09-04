@@ -166,6 +166,14 @@ restbase:
     datacenters:
     - eqiad
     - codfw
+  restbase-backend:
+    port: 7233
+    default_values:
+      pooled: 'no'
+      weight: 10
+    datacenters:
+    - eqiad
+    - codfw
   cassandra:
     default_values:
       pooled: 'no'
