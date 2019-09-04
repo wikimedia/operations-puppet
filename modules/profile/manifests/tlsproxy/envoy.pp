@@ -137,7 +137,7 @@ class profile::tlsproxy::envoy(
         ferm::service { 'envoy_tls_termination':
             proto   => 'tcp',
             notrack => true,
-            port    => 'https',
+            port    => $tls_port,
         }
         # metrics collection from prometheus can just fetch data pulling via GET from
         # /stats/prometheus on the admin port
