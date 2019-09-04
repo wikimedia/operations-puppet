@@ -44,6 +44,19 @@ class profile::tlsproxy::envoy(
     Array[String] $prometheus_nodes = lookup('prometheus_nodes'),
 ) {
     if os_version('debian jessie') {
+
+        group { 'envoy':
+            ensure => present,
+        }
+        user { 'envoy':
+            ensure     => present,
+            gid        => 'envoy',
+            shell      => '/bin/false',
+            home       => '/nonexistent',
+            system     => true,
+            managehome => false,
+        }
+
         $pkg_name = 'getenvoy-envoy'
         apt::repository { 'getenvoy-jessie':
             uri        => 'http://apt.wikimedia.org/wikimedia',
