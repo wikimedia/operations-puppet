@@ -181,7 +181,8 @@ class ServiceRestarter(ToolCliBase):
             # Now let's parse the response
             try:
                 status = PoolStatus(**r.json())
-            except Exception:
+            except Exception as e:
+                logger.warning("Malformed response from the LB: %s", e)
                 # Malformed response. We bail out as well
                 return
 
@@ -207,10 +208,11 @@ class ServiceRestarter(ToolCliBase):
 
 
 class PoolStatus:
-    def __init__(self, enabled=True, pooled=True, up=True):
+    def __init__(self, enabled=True, pooled=True, up=True, weight=0):
         self.enabled = enabled
         self.pooled = pooled
         self.up = up
+        self.weight = weight
 
     def has_state(self, want_pooled):
         # A server we want in the pool must be enabled/up/pooled
