@@ -319,10 +319,6 @@ cache::alternate_domains:
     director: 'noc'
   ores.wikimedia.org:
     director: 'ores'
-  parsoid-rt-tests.wikimedia.org:
-    director: 'parsoid_testing'
-  parsoid-vd-tests.wikimedia.org:
-    director: 'parsoid_testing'
   people.wikimedia.org:
     director: 'people'
     caching: 'pass'
