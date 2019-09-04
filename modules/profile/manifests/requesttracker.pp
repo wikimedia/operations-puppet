@@ -5,7 +5,7 @@ class profile::requesttracker {
     include ::passwords::misc::rt
 
     class { '::httpd':
-        modules => ['headers', 'rewrite', 'ssl', 'perl', 'fastcgi'],
+        modules => ['headers', 'rewrite', 'perl', 'fastcgi'],
     }
 
     class { '::requesttracker':
