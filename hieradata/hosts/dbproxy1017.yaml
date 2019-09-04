@@ -1,0 +1,6 @@
+profile::mariadb::proxy::master::primary_name: 'db1133'
+profile::mariadb::proxy::master::primary_addr: '10.64.32.72:3306'
+profile::mariadb::proxy::master::secondary_name: 'db1117:3325'
+profile::mariadb::proxy::master::secondary_addr: '10.64.0.15:3325'
+profile::mariadb::proxy::firewall: 'cloud'
+profile::base::notifications: disabled

@@ -1,28 +1,28 @@
 -- haproxy
-CREATE USER 'haproxy'@'10.64.16.155';
+CREATE USER 'haproxy'@'10.64.48.43';
 
 -- parsoid testing database from scandium
-CREATE USER 'testreduce'@'10.64.16.155'
+CREATE USER 'testreduce'@'10.64.48.43'
 IDENTIFIED BY '<%= @testreduce_pass %>';
 
 GRANT SELECT, INSERT, UPDATE, DELETE, CREATE, DROP, ALTER,
       CREATE TEMPORARY TABLES
-ON `testreduce`.* TO 'testreduce'@'10.64.16.155';
+ON `testreduce`.* TO 'testreduce'@'10.64.48.43';
 GRANT SELECT, INSERT, UPDATE, DELETE, CREATE, DROP, ALTER,
       CREATE TEMPORARY TABLES
-ON `testreduce_0715`.* TO 'testreduce'@'10.64.16.155';
+ON `testreduce_0715`.* TO 'testreduce'@'10.64.48.43';
 GRANT SELECT, INSERT, UPDATE, DELETE, CREATE, DROP, ALTER,
       CREATE TEMPORARY TABLES
-ON `testreduce_vd`.* TO 'testreduce'@'10.64.16.155';
+ON `testreduce_vd`.* TO 'testreduce'@'10.64.48.43';
 
 -- parsoid testing database from scandium
 -- (command line access for ssastry)
-CREATE USER 'ssastry'@'10.64.16.155'
+CREATE USER 'ssastry'@'10.64.48.43'
 IDENTIFIED BY '<%= @testreduce_cli_pass %>';
 GRANT SELECT, INSERT, UPDATE, DELETE, ALTER
-ON `testreduce_0715`.* TO 'ssastry'@'10.64.16.155';
+ON `testreduce_0715`.* TO 'ssastry'@'10.64.48.43';
 GRANT SELECT, INSERT, UPDATE, DELETE, ALTER
-ON `testreduce_vd`.* TO 'ssastry'@'10.64.16.155';
+ON `testreduce_vd`.* TO 'ssastry'@'10.64.48.43';
 
 -- keystone --
 
@@ -173,7 +173,7 @@ ON `labspuppet`.* TO 'labspuppet'@'208.80.155.120'
 IDENTIFIED BY '<%= @labspuppet_pass %>';
 
 GRANT SELECT, INSERT, UPDATE, DELETE, ALTER
-ON `labspuppet`.* TO 'labspuppet'@'10.64.16.155'
+ON `labspuppet`.* TO 'labspuppet'@'10.64.48.43'
 IDENTIFIED BY '<%= @labspuppet_pass %>';
 
 -- labsdbaccounts user, will run from labstore1004 and 1005
@@ -184,7 +184,7 @@ IDENTIFIED BY '<%= @labsdbaccounts_pass %>';
 GRANT ALL ON labsdbaccounts.* TO 'labsdbaccounts'@'10.64.37.20'
 IDENTIFIED BY '<%= @labsdbaccounts_pass %>';
 
-GRANT ALL ON labsdbaccounts.* TO 'labsdbaccounts'@'10.64.16.155'
+GRANT ALL ON labsdbaccounts.* TO 'labsdbaccounts'@'10.64.48.43'
 IDENTIFIED BY '<%= @labsdbaccounts_pass %>';
 
 -- Access to nova-eqiad1 and nova-api-eqiad1 from cloudcontrol1003.wikimedia.org and cloudcontrol1004.wikimedia.org
