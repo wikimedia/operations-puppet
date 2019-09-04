@@ -41,6 +41,7 @@ class profile::openstack::base::designate::service(
         active                     => true,
         version                    => $version,
         designate_host             => $designate_host,
+        designate_host_standby     => $designate_host_standby,
         keystone_host              => $keystone_host,
         db_user                    => $db_user,
         db_pass                    => $db_pass,

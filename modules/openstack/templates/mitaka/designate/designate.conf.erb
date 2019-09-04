@@ -218,7 +218,7 @@ options = connection: mysql://<%= @pdns_db_user %>:<%= @pdns_db_pass %>@<%=@prim
 # This is a comma separated list of the mdns servers.
 #  Note that for this to take effect, the list of masters must also be set in the pdns database:
 #  UPDATE pdns.domains SET master="<comman-separated list of masters>"
-masters = <%= @designate_host_ip %>:5354
+masters = <%= @designate_host_ip %>:5354 <%= @designate_host_standby_ip %>:5354
 type = powerdns
 # These next two settings are /probably/ unused, it's unclear:
 host = <%= @primary_pdns_ip %>
@@ -234,7 +234,7 @@ options = connection: mysql://<%= @pdns_db_user %>:<%= @pdns_db_pass %>@<%=@seco
 # This is a comma separated list of the mdns servers.
 #  Note that for this to take effect, the list of masters must also be set in the pdns database:
 #  UPDATE pdns.domains SET master="<comman-separated list of masters>"
-masters = <%= @designate_host_ip %>:5354
+masters = <%= @designate_host_ip %>:5354 <%= @designate_host_standby_ip %>:5354
 type = powerdns
 # These next two settings are /probably/ unused, it's unclear:
 host = <%= @secondary_pdns_ip %>

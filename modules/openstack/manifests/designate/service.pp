@@ -5,6 +5,7 @@ class openstack::designate::service(
     $active,
     $version,
     $designate_host,
+    $designate_host_standby,
     $keystone_host,
     $db_user,
     $db_pass,
@@ -38,6 +39,7 @@ class openstack::designate::service(
     $keystone_public_uri = "http://${keystone_host}:${keystone_public_port}"
     $keystone_admin_uri = "http://${keystone_host}:${keystone_auth_port}"
     $designate_host_ip = ipresolve($designate_host,4)
+    $designate_host_standby_ip = ipresolve($designate_host_standby,4)
     $puppetmaster_hostname_ip = ipresolve($puppetmaster_hostname,4)
 
     class { "openstack::designate::service::${version}": }
