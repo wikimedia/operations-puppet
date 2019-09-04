@@ -46,7 +46,9 @@ class profile::tlsproxy::envoy(
     Array[String] $prometheus_nodes = lookup('prometheus_nodes'),
 ) {
     if os_version('debian jessie') {
-
+        if $tls_port !~ Stdlib::Port::Unprivileged {
+            fail('Envoy can only work with unprivileged ports under jessie.')
+        }
         group { 'envoy':
             ensure => present,
         }

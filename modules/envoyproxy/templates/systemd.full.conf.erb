@@ -18,11 +18,8 @@ AmbientCapabilities=CAP_NET_BIND_SERVICE
 ExecStart=/usr/bin/envoy -c <%= @envoy_directory %>/envoy.yaml
 
 # Security settings
-ProtectKernelModules=yes
-ProtectKernelTunables=yes
 PrivateTmp=yes
-ProtectSystem=strict
-ReadWritePaths=/var/log/envoy/
+ProtectSystem=full
 
 [Install]
 WantedBy=multi-user.target
