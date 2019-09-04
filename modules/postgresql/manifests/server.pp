@@ -28,6 +28,7 @@
 #
 class postgresql::server(
     $pgversion        = $::lsbdistcodename ? {
+        'buster'  => '11',
         'stretch' => '9.6',
         'jessie'  => '9.4',
     },
@@ -47,7 +48,10 @@ class postgresql::server(
         "postgresql-contrib-${pgversion}",
         'libdbi-perl',
         'libdbd-pg-perl',
-        'ptop',
+        $::lsbdistcodename ? {
+            'buster' => 'pgtop',
+            default  => 'ptop',
+        },
         'check-postgres',
     ]:
         ensure => $ensure,
