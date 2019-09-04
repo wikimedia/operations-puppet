@@ -28,7 +28,8 @@ class profile::mediawiki::php(
     # Needed for wmerrors
     String $statsd = lookup('statsd'),
     # Allows to tune up or down the number of workers.
-    Float $fpm_workers_multiplier = lookup('profile::mediawiki::php::fpm_workers_multiplier', {'default_value' => 1.5})
+    Float $fpm_workers_multiplier = lookup('profile::mediawiki::php::fpm_workers_multiplier', {'default_value' => 1.5}),
+    Boolean $enable_request_profiling = lookup('profile::mediawiki::php::enable_request_profiling', {'default_value' => false}),
     ) {
 
     # Needed for the restart script
@@ -247,17 +248,21 @@ class profile::mediawiki::php(
             log_filename => 'error.log'
         }
 
+        $profiling_ensure =  $enable_request_profiling ? {
+            true    => 'present',
+            default => 'absent'
+        }
         # Set up profiling (T206152)
         # Install tideways-xhprof and mongodb
         php::extension {  'mongodb':
-            ensure   => present,
+            ensure   => $profiling_ensure,
             priority => 30,
             sapis    => ['fpm']
         }
 
         # Install tideways-xhprof
         php::extension { 'tideways-xhprof':
-            ensure   => present,
+            ensure   => $profiling_ensure,
             priority => 30,
             sapis    => ['fpm'],
             config   => {
@@ -272,6 +277,8 @@ class profile::mediawiki::php(
         }
     }
     ## Install excimer, our php profiler, if we're on a newer version of php
+    # Please note this is not a single request profiler, it is rather a profiling sampler.
+    # Thus, it  is active on all appserver and not just on the ones that allow running profiling.
     if $php_version != '7.0' {
         php::extension { 'excimer':
             ensure => present,
