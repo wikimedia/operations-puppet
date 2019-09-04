@@ -99,6 +99,9 @@ profile::keyholder::server::agents:
     trusted_groups:
       - ops
 
+  homer:
+    trusted_groups:
+      - ops
 
 # scap::source declarations.  These are created
 # by the scap::server class.  Each source listed here
@@ -180,6 +183,8 @@ scap::sources:
   # Cassandra metrics collection
   cassandra/metrics-collector:
     repository: operations/software/cassandra-metrics-collector
+  homer/deploy:
+    repository: operations/software/homer/deploy
   # Librenms software
   librenms/librenms:
     repository: operations/software/librenms

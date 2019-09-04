@@ -25,4 +25,5 @@ class role::cluster::management {
     include ::profile::mariadb::backup::transfer
 
     include ::profile::netops::ripeatlas::cli
+    include ::profile::homer
 }
