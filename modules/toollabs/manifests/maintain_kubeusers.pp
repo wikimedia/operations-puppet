@@ -22,15 +22,19 @@ class toollabs::maintain_kubeusers(
         content => systemd_template('maintain-kubeusers'),
     }
 
+    $timer_command = "/usr/local/bin/maintain-kubeusers \
+                        --once \
+                        --infrastructure-users \
+                        --/etc/kubernetes/infrastructure-users \
+                        --project ${::labsproject} \
+                        https://${k8s_master}:6443 \
+                        /etc/kubernetes/tokenauth \
+                        /etc/kubernetes/abac"
+
     systemd::timer::job { 'maintain-kubeusers-timer':
         ensure                    => 'present',
         description               => 'Automate the process of generating users',
-        command                   => @(KEY/L),
-          /usr/local/bin/maintain-kubeusers \
-          --once --infrastructure-users /etc/kubernetes/infrastructure-users \
-          --project ${labsproject} https://${k8s_master}:6443 \
-          /etc/kubernetes/tokenauth /etc/kubernetes/abac
-          |-KEY
+        command                   => $timer_command,
         interval                  => {
             'start'    => 'OnCalendar',
             'interval' => '*-*-* *:00/1:00', # Every 1 minute
