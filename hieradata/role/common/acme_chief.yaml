@@ -123,6 +123,7 @@ profile::acme_chief::certificates:
         challenge: dns-01
         authorized_regexes:
         - '^netmon(1002|2001)\.wikimedia\.org$'
+        - '^netbox(1001|2001)\.wikimedia\.org$'
     tendril:
         CN: 'tendril.wikimedia.org'
         SNI:
