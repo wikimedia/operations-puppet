@@ -17,6 +17,8 @@
   - masters:
     - host: 208.80.154.135
       port: 5354
+    - host: 208.80.154.11
+      port: 5354
     options:
       connection: mysql://pdns:<password>@208.80.154.135/pdns
       host: 208.80.154.135
@@ -24,6 +26,8 @@
     type: powerdns
   - masters:
     - host: 208.80.154.135
+      port: 5354
+    - host: 208.80.154.11
       port: 5354
     options:
       connection: mysql://pdns:<password>@208.80.154.11/pdns
