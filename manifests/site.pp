@@ -991,9 +991,14 @@ node 'dbprov2002.codfw.wmnet' {
 }
 
 # Active eqiad proxies for misc databases
-node /^dbproxy10(01|02|03|05|06|07|08|13|14|16|17)\.eqiad\.wmnet$/ {
+node /^dbproxy10(01|02|03|06|07|08|13|14|16|17)\.eqiad\.wmnet$/ {
     role(mariadb::proxy::master)
     interface::add_ip6_mapped { 'main': }
+}
+
+# dbproxy1005 to be decommissioned T231967
+node 'dbproxy1005.wmnet' {
+    role(spare::system)
 }
 
 # Passive codfw proxies for misc databases
