@@ -5488,6 +5488,12 @@ host mwmaint2001 {
     fixed-address mwmaint2001.codfw.wmnet;
 }
 
+host moscovium {
+    hardware ethernet aa:00:00:14:25:cb;
+    fixed-address moscovium.eqiad.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/buster-installer/";
+}
+
 host nescio {
     hardware ethernet a4:ba:db:30:d0:df;
     fixed-address nescio.wikimedia.org;
