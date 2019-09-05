@@ -14,13 +14,6 @@ class profile::toolforge::docker::registry(
     class { '::docker::registry':
         storage_backend => 'filebackend',
         datapath        => '/srv/registry',
-        config          => {
-            'http' => {
-                'headers' => {
-                    'Access-Control-Allow-Origin' => "['*']",
-                },
-            },
-        },
     }
 
     class { '::docker::registry::web':
