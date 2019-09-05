@@ -113,7 +113,9 @@ class netbox(
     user { 'netbox':
         ensure  => $ensure,
         comment => 'This is the global owner for all Netbox things.',
-        system  => true
+        system  => true,
+        home    => '/var/lib/netbox',
+        shell   => '/bin/bash'
     }
 
     file { '/etc/netbox/configuration.py':
