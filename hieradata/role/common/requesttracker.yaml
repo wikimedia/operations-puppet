@@ -4,3 +4,4 @@ profile::tlsproxy::envoy::services:
     port: 80
 profile::tlsproxy::envoy::global_cert_name: "rt.discovery.wmnet"
 profile::tlsproxy::envoy::sni_support: "no"
+profile::tlsproxy::envoy::tls_port: 1443
