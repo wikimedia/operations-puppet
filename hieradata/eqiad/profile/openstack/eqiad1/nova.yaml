@@ -38,10 +38,10 @@ profile::openstack::eqiad1::nova::physical_interface_mappings:
 #   cloudvirt1018: pooled
 #   cloudvirt1019: depooled, active host of database VMs
 #   cloudvirt1020: depooled, active host of database VMs
-#   cloudvirt1021: depooled, awaiting rebuild for T216195
-#   cloudvirt1022: depooled, awaiting rebuild for T216195
-#   cloudvirt1023: depooled, awaiting rebuild for T216195
-#   cloudvirt1024: depooled, empty, emergency spare
+#   cloudvirt1021: depooled, emergency spare
+#   cloudvirt1022: depooled, emergency spare
+#   cloudvirt1023: depooled, emergency spare
+#   cloudvirt1024: depooled due to hardware issues -- T230289
 #   cloudvirt1025: pooled
 #   cloudvirt1026: pooled
 #   cloudvirt1027: pooled
@@ -55,8 +55,6 @@ profile::openstack::eqiad1::nova::physical_interface_mappings:
 #  instances.  They are:
 #
 # cloudvirt1019 and 1020: reserved for cloud-wide DB instances
-#
-# cloudvirtanXXXX: reserved for gigantic cloud-analytics worker nodes
 #
 #
 profile::openstack::eqiad1::nova::scheduler_pool:
