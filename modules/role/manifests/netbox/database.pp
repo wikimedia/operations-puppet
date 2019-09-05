@@ -16,4 +16,5 @@ class role::netbox::database {
 
     include ::profile::netbox::postgres
     include ::profile::prometheus::postgres_exporter
+    include ::profile::base::firewall
 }

@@ -20,9 +20,6 @@ class profile::netbox::postgres (
     Array[Stdlib::Host] $frontends = lookup('profile::netbox::frontends', {'default_value' => []}),
     Boolean $ipv6_ok = lookup('profile::netbox::db::ipv6_ok', {'default_value' => true})
 ) {
-
-    include ::profile::base::firewall
-
     # Inspired by modules/puppetprimary/manifests/puppetdb/database.pp
     if $db_primary == $::fqdn {
         # We do this for the require in postgres::db
