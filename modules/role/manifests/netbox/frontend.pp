@@ -12,7 +12,12 @@
 #
 
 class role::netbox::frontend {
+    include ::profile::standard
     system::role { 'netbox::frontend': description => 'Netbox frontend server' }
 
     include ::profile::netbox
+    include ::profile::base::firewall
+    # Fixme consider adding this later
+    # include ::profile::backup::host
+
 }
