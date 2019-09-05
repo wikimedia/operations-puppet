@@ -5942,12 +5942,6 @@ host rhodium {
     fixed-address rhodium.eqiad.wmnet;
 }
 
-host sarin {
-    hardware ethernet 90:B1:1C:2D:85:40;
-    fixed-address sarin.codfw.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/buster-installer/";
-}
-
 host scandium {
     hardware ethernet D0:94:66:5E:C8:32;
     fixed-address scandium.eqiad.wmnet;

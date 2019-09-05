@@ -2315,7 +2315,6 @@ node 'people1001.eqiad.wmnet' {
     interface::add_ip6_mapped { 'main': }
 }
 
-# cluster management (cumin master)
 node 'sarin.codfw.wmnet' {
     role(spare::system)
 }
