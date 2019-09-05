@@ -94,6 +94,7 @@ class profile::netbox (
         redis_password   => $redis_password,
     }
     $ssl_settings = ssl_ciphersuite('apache', 'strong', true)
+    class { '::sslcert::dhparam': }
 
     class { '::httpd':
         modules => ['headers',
