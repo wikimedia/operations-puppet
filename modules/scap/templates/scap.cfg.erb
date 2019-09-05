@@ -108,3 +108,16 @@ wmf_realm: labs
 # No pybal in labs, but pretend that there is anyway
 pybal_interface: lo
 canary_dashboard_url: https://logstash-beta.wmflabs.org/goto/ff3530979bc5a54b9779ac9cbd4fc819
+
+# Restart php-fpm only when running from the deployment servers for now.
+# Further explanations at https://phabricator.wikimedia.org/T224857#5467370
+[deploy1001.eqiad.wmnet]
+# Restart php-fpm if the opcache is critically low
+php_fpm: php7.2-fpm
+php_fpm_restart_script: /usr/local/sbin/check-and-restart-php
+
+[deploy2001.codfw.wmnet]
+# Restart php-fpm if the opcache is critically low
+php_fpm: php7.2-fpm
+php_fpm_restart_script: /usr/local/sbin/check-and-restart-php
+
