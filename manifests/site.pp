@@ -997,7 +997,7 @@ node /^dbproxy10(01|02|03|06|07|08|13|14|16|17)\.eqiad\.wmnet$/ {
 }
 
 # dbproxy1005 to be decommissioned T231967
-node 'dbproxy1005.wmnet' {
+node 'dbproxy1005.eqiad.wmnet' {
     role(spare::system)
 }
 
