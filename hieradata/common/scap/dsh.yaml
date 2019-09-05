@@ -113,6 +113,10 @@ scap::dsh::groups:
   maps-canaries:
     hosts:
       - maps2004.codfw.wmnet
+  netbox:
+    hosts:
+      - netbox1001.wikimedia.org
+      - netbox2001.wikimedia.org
   ores:
     conftool:
       - {'cluster': 'ores', 'service': 'ores'}
