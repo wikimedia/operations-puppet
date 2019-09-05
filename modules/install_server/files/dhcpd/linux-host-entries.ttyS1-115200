@@ -5504,12 +5504,6 @@ host mwmaint2001 {
     fixed-address mwmaint2001.codfw.wmnet;
 }
 
-host neodymium {
-    hardware ethernet 90:B1:1C:2D:79:8C;
-    fixed-address neodymium.eqiad.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
-}
-
 host nescio {
     hardware ethernet a4:ba:db:30:d0:df;
     fixed-address nescio.wikimedia.org;

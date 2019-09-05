@@ -20,7 +20,6 @@ profile::puppetmaster::common::storeconfigs: puppetdb
 profile::puppetmaster::frontend::test_servers:
     - { worker: puppetmaster1001.eqiad.wmnet, loadfactor: 20 }
 profile::puppetmaster::frontend::canary_hosts:
-  - neodymium.eqiad.wmnet
   - bast4002.wikimedia.org
   - aqs1004.eqiad.wmnet
   - multatuli.wikimedia.org

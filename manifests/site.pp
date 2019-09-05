@@ -2086,8 +2086,6 @@ node /notebook100[34].eqiad.wmnet/ {
     interface::add_ip6_mapped { 'main': }
 }
 
-
-# cluster management (cumin master) + other management tools
 node 'neodymium.eqiad.wmnet' {
     role(spare::system)
 }
