@@ -13,6 +13,8 @@ class profile::openstack::base::glance(
     $glance_data = hiera('profile::openstack::base::glance::data_dir'),
     $glance_image_dir = hiera('profile::openstack::base::glance::image_dir'),
     $labs_hosts_range = hiera('profile::openstack::base::labs_hosts_range'),
+    Stdlib::Port $api_bind_port = lookup('profile::openstack::base::glance::api_bind_port'),
+    Stdlib::Port $registry_bind_port = lookup('profile::openstack::base::glance::registry_bind_port'),
     ) {
 
     $keystone_admin_uri = "http://${keystone_host}:${auth_port}"
@@ -31,6 +33,8 @@ class profile::openstack::base::glance(
         nova_controller_standby => $nova_controller_standby,
         glance_data             => $glance_data,
         glance_image_dir        => $glance_image_dir,
+        api_bind_port           => $api_bind_port,
+        registry_bind_port      => $registry_bind_port,
     }
     contain '::openstack::glance::service'
 

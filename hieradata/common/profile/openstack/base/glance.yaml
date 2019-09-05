@@ -1,4 +1,6 @@
-profile::openstack::base::glance::db_user: 'glance'
-profile::openstack::base::glance::db_name: 'glance'
+profile::openstack::base::glance::api_bind_port: 9292
 profile::openstack::base::glance::data_dir: '/srv/glance'
+profile::openstack::base::glance::db_name: 'glance'
+profile::openstack::base::glance::db_user: 'glance'
 profile::openstack::base::glance::image_dir: '/srv/glance/images'
+profile::openstack::base::glance::registry_bind_port: 9191

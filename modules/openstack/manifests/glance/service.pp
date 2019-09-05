@@ -11,6 +11,8 @@ class openstack::glance::service(
     $ldap_user_pass,
     $keystone_admin_uri,
     $keystone_public_uri,
+    Stdlib::Port $api_bind_port,
+    Stdlib::Port $registry_bind_port,
 ) {
 
     class { "openstack::glance::service::${version}":
@@ -22,6 +24,8 @@ class openstack::glance::service(
         ldap_user_pass      => $ldap_user_pass,
         keystone_admin_uri  => $keystone_admin_uri,
         keystone_public_uri => $keystone_public_uri,
+        api_bind_port       => $api_bind_port,
+        registry_bind_port  => $registry_bind_port,
     }
 
     file { $glance_data:

@@ -7,6 +7,8 @@ class openstack::glance::service::mitaka(
     $ldap_user_pass,
     $keystone_admin_uri,
     $keystone_public_uri,
+    Stdlib::Port $api_bind_port,
+    Stdlib::Port $registry_bind_port,
 ) {
     require "openstack::serverpackages::mitaka::${::lsbdistcodename}"
 

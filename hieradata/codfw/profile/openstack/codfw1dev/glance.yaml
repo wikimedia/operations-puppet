@@ -1,1 +1,3 @@
+profile::openstack::codfw1dev::glance::api_bind_port: 19292
 profile::openstack::codfw1dev::glance::db_host: 'clouddb2001-dev.codfw.wmnet'
+profile::openstack::codfw1dev::glance::registry_bind_port: 19191

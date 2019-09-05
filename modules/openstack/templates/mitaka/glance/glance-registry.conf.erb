@@ -9,7 +9,7 @@ debug = False
 bind_host = <%= @ipaddress %>
 
 # Port the bind the registry server to
-bind_port = 9191
+bind_port = <%= @registry_bind_port %>
 
 # Log to this file. Make sure you do not set the same log
 # file for both the API and registry servers!
