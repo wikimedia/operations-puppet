@@ -5815,7 +5815,6 @@ host restbase1017 {
 host restbase1018 {
     hardware ethernet 18:66:DA:7F:37:21;
     fixed-address restbase1018.eqiad.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
 }
 
 host restbase1019 {
@@ -5866,25 +5865,21 @@ host restbase1027 {
 host restbase2009 {
     hardware ethernet 14:02:ec:06:9a:fc;
     fixed-address restbase2009.codfw.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
 }
 
 host restbase2010 {
     hardware ethernet 18:66:DA:7F:26:CF;
     fixed-address restbase2010.codfw.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
 }
 
 host restbase2011 {
     hardware ethernet 18:66:DA:7F:25:C1;
     fixed-address restbase2011.codfw.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
 }
 
 host restbase2012 {
     hardware ethernet 18:66:DA:7F:32:64;
     fixed-address restbase2012.codfw.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
 }
 
 host restbase2013 {
@@ -5930,13 +5925,11 @@ host restbase2020 {
 host restbase-dev1004 {
     hardware ethernet 30:e1:71:5c:a2:f8;
     fixed-address restbase-dev1004.eqiad.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
 }
 
 host restbase-dev1005 {
     hardware ethernet 30:e1:71:5c:a2:dc;
     fixed-address restbase-dev1005.eqiad.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
 }
 
 host restbase-dev1006 {
