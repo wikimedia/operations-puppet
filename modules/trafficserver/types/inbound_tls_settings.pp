@@ -49,6 +49,9 @@
 #   This configuration specifies the number of buckets to use with the Traffic Server SSL session cache implementation.
 #   The TS implementation is a fixed size hash map where each bucket is protected by a mutex.
 #
+# [*session_ticket_enable*]
+#   Enables (1) or disables (0) SSL Session tickets (RFC 5077)
+#
 # [*load_elevated*]
 #   Enables (1) or disables (0) elevation of traffic_server privileges during loading of SSL certificates.
 #
@@ -68,6 +71,7 @@ type Trafficserver::Inbound_TLS_settings = Struct[{
     'session_cache_auto_clear' => Integer[0, 1],
     'session_cache_size'       => Integer[0],
     'session_cache_buckets'    => Integer[0],
+    'session_ticket_enable'    => Integer[0, 1],
     'load_elevated'            => Optional[Integer[0, 1]],
     'do_ocsp'                  => Integer[0, 1],
 }]

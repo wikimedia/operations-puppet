@@ -28,6 +28,7 @@ profile::trafficserver::tls::inbound_tls_settings:
   session_cache_auto_clear: 1
   session_cache_size: 4096000
   session_cache_buckets: 10240
+  session_ticket_enable: 0
   load_elevated: 1
   do_ocsp: 1
 profile::trafficserver::tls::log_formats:

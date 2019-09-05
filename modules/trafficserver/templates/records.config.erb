@@ -147,6 +147,7 @@ CONFIG proxy.config.ssl.session_cache.num_buckets INT <%= @inbound_tls_settings[
 <% if @inbound_tls_settings['load_elevated'] -%>
 CONFIG proxy.config.ssl.cert.load_elevated INT <%= @inbound_tls_settings['load_elevated'] %>
 <% end -%>
+CONFIG proxy.config.ssl.server.session_ticket.enable INT <%= @inbound_tls_settings['session_ticket_enable'] %>
 <% end -%>
 <% if @outbound_tls_settings -%>
 # Outbound TLS settings
