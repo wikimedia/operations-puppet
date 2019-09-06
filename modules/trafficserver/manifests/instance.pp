@@ -27,6 +27,15 @@
 # [*keep_alive_origin_servers*]
 #   Enables (1) or disables (0) keep alive on connections with origin servers. (default: 1)
 #
+# [*server_session_sharing*]
+#   Enable and set the ability to re-use server connections across client connections. (default: both)
+#   Valid values:
+#     none
+#     both
+#     ip
+#     host
+#   More details can be found in https://docs.trafficserver.apache.org/en/8.0.x/admin-guide/files/records.config.en.html#proxy-config-http-server-session-sharing-match
+#
 # [*disable_dns_resolution*]
 #   Disables (1) or enables (0) DNS resolution of hosts defined on remapping rules (default: 0)
 #
@@ -189,6 +198,7 @@ define trafficserver::instance(
     Stdlib::Port $port = 8080,
     Integer[0, 1] $keep_alive_origin_servers = 1,
     Integer[0, 1] $disable_dns_resolution = 0,
+    Enum['none', 'both', 'ip', 'host'] $server_session_sharing = 'both',
     Optional[Trafficserver::Network_settings] $network_settings = undef,
     Optional[Trafficserver::H2_settings] $h2_settings = undef,
     Integer[0] $origin_ttfb_timeout = 30,

@@ -66,6 +66,7 @@ class profile::trafficserver::tls (
         port                      => $port,
         keep_alive_origin_servers => 0,
         disable_dns_resolution    => 1,
+        server_session_sharing    => 'none',
         network_settings          => $network_settings,
         h2_settings               => $h2_settings,
         origin_ttfb_timeout       => 180,

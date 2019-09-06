@@ -42,6 +42,8 @@ CONFIG proxy.config.http.post_connect_attempts_timeout INT <%= @origin_post_ttfb
 CONFIG proxy.config.http.keep_alive_enabled_out INT <%= @keep_alive_origin_servers %>
 CONFIG proxy.config.http.keep_alive_post_out INT <%= @keep_alive_origin_servers %>
 
+CONFIG proxy.config.http.server_session_sharing.match STRING <%= @server_session_sharing %>
+
 <% if @enable_caching -%>
 <% if @required_headers -%>
 CONFIG proxy.config.http.cache.required_headers INT <%= @required_headers %>
