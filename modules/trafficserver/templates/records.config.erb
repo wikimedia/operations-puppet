@@ -38,6 +38,10 @@ CONFIG proxy.config.http.no_dns_just_forward_to_parent INT <%= @disable_dns_reso
 CONFIG proxy.config.http.connect_attempts_timeout INT <%= @origin_ttfb_timeout %>
 CONFIG proxy.config.http.post_connect_attempts_timeout INT <%= @origin_post_ttfb_timeout %>
 
+# keep-alive configuration for connections against origin servers
+CONFIG proxy.config.http.keep_alive_enabled_out INT <%= @keep_alive_origin_servers %>
+CONFIG proxy.config.http.keep_alive_post_out INT <%= @keep_alive_origin_servers %>
+
 <% if @enable_caching -%>
 <% if @required_headers -%>
 CONFIG proxy.config.http.cache.required_headers INT <%= @required_headers %>
