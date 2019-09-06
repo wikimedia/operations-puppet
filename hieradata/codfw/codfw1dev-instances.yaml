@@ -14,12 +14,12 @@ labsldapconfig:
   hostname: "cloudservices2002-dev.wikimedia.org"
   secondary_hostname: "cloudservices2002-dev.wikimedia.org"
 
-labs_tld: "labtest"
+labs_tld: "cloud"
 
 ntp_peers:
     eqiad: []
     codfw:
-    - 'ntp-1.cloudinfra.codfw.labtest'
+    - 'ntp-1.cloudinfra.codfw1dev.cloud'
     ulsfo: []
     eqsin: []
     esams: []

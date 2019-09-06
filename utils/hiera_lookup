@@ -52,7 +52,7 @@ def determine_scope
   scope = Hash[ARGV.map { |kv| "::#{kv.sub('--', '')}".split('=') }]
   abort(usage "Error: --fqdn=FQDN is required.") unless scope['::fqdn']
   scope['::hostname'] = scope['::fqdn'][/^[^.]+/]
-  if scope['::fqdn'].end_with?('.wmflabs') || scope['::fqdn'].end_with?('.labtest')
+  if scope['::fqdn'].end_with?('.wmflabs') || scope['::fqdn'].end_with?('.labtest') || scope['::fqdn'].end_with?('.cloud')
     scope['::realm'] = 'labs'
   else
     scope['::realm'] = 'production'
@@ -62,7 +62,7 @@ def determine_scope
   if scope['::realm'] == 'labs'
     bits = scope['::fqdn'].split('.')
     unless bits.length == 4
-      Kernel.abort('labs FQDN must be <hostname>.<project>.<site>.(wmflabs|labtest)')
+      Kernel.abort('labs FQDN must be <hostname>.<project>.<site>.(wmflabs|labtest|cloud)')
     end
     scope['::labsproject'] = bits[1]
     scope['::site'] = bits[2]

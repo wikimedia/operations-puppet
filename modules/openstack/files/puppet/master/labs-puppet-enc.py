@@ -19,10 +19,10 @@ def _is_valid_hostname(name):
     domain = host_parts.pop(0)
     realm = host_parts.pop(0)
 
-    if domain != 'wmflabs' and domain != 'labtest':
+    if domain != 'wmflabs' and domain != 'labtest' and domain != 'cloud':
         return False
 
-    if realm != 'codfw' and realm != 'eqiad':
+    if realm != 'codfw' and realm != 'eqiad' and realm != 'codfw1dev' and realm != 'wikimedia':
         return False
 
     hostname = [x.replace('-', '').replace('_', '') for x in host_parts]

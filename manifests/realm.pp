@@ -29,7 +29,7 @@ if $realm == 'labs' {
     # Labs certs are <hostname>.<projname>.<site>.wmflabs
     $pieces = split($trusted['certname'], '[.]')
 
-    if $pieces[3] != 'wmflabs' and $pieces[3] != 'labtest' {
+    if $pieces[3] != 'wmflabs' and $pieces[3] != 'labtest' and $pieces[3] != 'cloud' {
         fail("Badly-formed puppet certname: ${trusted['certname']}")
     }
     if $pieces[2] != $site {

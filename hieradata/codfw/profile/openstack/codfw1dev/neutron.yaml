@@ -8,7 +8,7 @@ profile::openstack::codfw1dev::neutron::network_public_ip: '172.16.129.254'
 profile::openstack::codfw1dev::neutron::dmz_cidr:
  - 172.16.128.0/24:10.0.0.0/8
  - 172.16.128.0/24:208.80.155.0/22
-profile::openstack::codfw1dev::neutron::tld: 'labtest'
+profile::openstack::codfw1dev::neutron::tld: 'cloud'
 profile::openstack::codfw1dev::neutron::l3_agent_bridges:
   br-external:
     addif: 'eno2.2120'

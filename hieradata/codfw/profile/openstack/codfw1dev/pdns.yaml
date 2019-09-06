@@ -1,8 +1,6 @@
-profile::openstack::codfw1dev::pdns::tld: 'labtest'
+profile::openstack::codfw1dev::pdns::tld: 'cloud'
 profile::openstack::codfw1dev::pdns::private_reverse_zones:
   - '16.172.in-addr.arpa'
-  - '196.10.in-addr.arpa'
-  - '17.196.10.in-addr.arpa'
 profile::openstack::codfw1dev::pdns::host: 'codfw1dev-ns0.wikimedia.org'
 profile::openstack::codfw1dev::pdns::host_secondary: 'codfw1dev-ns0.wikimedia.org'
 profile::openstack::codfw1dev::pdns::recursor: 'codfw1dev-recursor0.wikimedia.org'
