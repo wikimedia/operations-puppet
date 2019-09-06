@@ -15,8 +15,8 @@
 :hierarchy:
   - "labs/%{::labsproject}/host/%{::hostname}"
   - "labs/%{::labsproject}/common"
-  - "%{::site}/labtest-instances"
-  - "private/%{::site}/labtest-instances"
+  - "%{::site}/codfw1dev-instances"
+  - "private/%{::site}/codfw1dev-instances"
   - "labs"
   - "secret/%{::labsproject}"
   - "private/%{::labsproject}"
