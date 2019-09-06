@@ -1608,6 +1608,10 @@ node 'labstore2004.codfw.wmnet' {
     role(wmcs::nfs::primary_backup::misc)
 }
 
+# Will become corp replicas, initially adding as spare role to ensure ferm is applied
+node /^ldap-corp[1-2]001\.wikimedia\.org$/ {
+    role(spare::system)
+}
 
 # Read-only ldap replicas in eqiad, these were setup with a non-standard naming
 # scheme and will be renamed the next time they are reimaged (e.g. for the
