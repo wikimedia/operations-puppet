@@ -63,6 +63,7 @@ class profile::trafficserver::tls (
     trafficserver::instance { $instance_name:
         paths                    => $paths,
         port                     => $port,
+        disable_dns_resolution   => 1,
         network_settings         => $network_settings,
         h2_settings              => $h2_settings,
         origin_ttfb_timeout      => 180,

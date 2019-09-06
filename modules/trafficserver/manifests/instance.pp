@@ -24,6 +24,9 @@
 # [*port*]
 #   Bind trafficserver to this port (default: 8080).
 #
+# [*disable_dns_resolution*]
+#   Disables (1) or enables (0) DNS resolution of hosts defined on remapping rules (default: 0)
+#
 # [*network_settings*]
 #   Instance of Trafficserver::Network_settings. (default:undef).
 #
@@ -181,6 +184,7 @@ define trafficserver::instance(
     Trafficserver::Paths $paths,
     Boolean $default_instance = false,
     Stdlib::Port $port = 8080,
+    Integer[0, 1] $disable_dns_resolution = 0,
     Optional[Trafficserver::Network_settings] $network_settings = undef,
     Optional[Trafficserver::H2_settings] $h2_settings = undef,
     Integer[0] $origin_ttfb_timeout = 30,
