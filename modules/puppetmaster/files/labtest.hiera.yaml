@@ -1,6 +1,5 @@
 :backends:
   - httpyaml
-  - mwyaml
   - nuyaml
 :nuyaml:
   :datadir: /etc/puppet/hieradata
