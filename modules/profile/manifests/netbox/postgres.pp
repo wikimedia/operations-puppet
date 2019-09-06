@@ -105,7 +105,7 @@ class profile::netbox::postgres (
                 $fe_ip6 = ipresolve($frontend, 6)
                 postgresql::user { "netbox@${frontend}-ipv6":
                     ensure   => present,
-                    user     => 'replication',
+                    user     => 'netbox',
                     database => 'netbox',
                     password => $replication_password,
                     cidr     => "${fe_ip6}/128",
