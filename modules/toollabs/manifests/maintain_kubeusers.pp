@@ -22,7 +22,8 @@ class toollabs::maintain_kubeusers(
         content => systemd_template('maintain-kubeusers'),
     }
 
-    $timer_command = "/usr/local/bin/maintain-kubeusers \
+    $timer_command = "/usr/bin/timeout 5m \
+                        /usr/local/bin/maintain-kubeusers \
                         --once \
                         --infrastructure-users \
                         /etc/kubernetes/infrastructure-users \
@@ -39,7 +40,7 @@ class toollabs::maintain_kubeusers(
             'start'    => 'OnCalendar',
             'interval' => '*-*-* *:00/1:00', # Every 1 minute
         },
-        max_runtime_seconds       => 300,  # kill if running after 5m
+        # max_runtime_seconds       => 300,  # kill if running after 5m (not supported on jessie)
         logging_enabled           => true,
         monitoring_enabled        => true,
         monitoring_contact_groups => 'wmcs-team',
