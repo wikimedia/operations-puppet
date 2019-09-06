@@ -29,11 +29,16 @@ if $realm == 'labs' {
     # Labs certs are <hostname>.<projname>.<site>.wmflabs
     $pieces = split($trusted['certname'], '[.]')
 
-    if $pieces[3] != 'wmflabs' and $pieces[3] != 'labtest' and $pieces[3] != 'cloud' {
-        fail("Badly-formed puppet certname: ${trusted['certname']}")
-    }
-    if $pieces[2] != $site {
-        fail("Incorrect site in certname.  Should be ${site} but is ${pieces[2]}")
+    if $pieces[3] == 'wmflabs' {
+        if $pieces[2] != $site {
+            fail("Incorrect site in certname.  Should be ${site} but is ${pieces[2]}")
+        }
+    } elsif $pieces[3] == 'cloud' {
+        if $pieces[2] != 'codfw1dev' and $pieces[2] != 'wikimedia' {
+            fail("Incorrect site in certname.  Should be wikimedia but is ${pieces[2]}")
+        }
+    } else {
+        fail("Badly-formed puppet certname. Unknown tld in ${trusted['certname']}")
     }
     if $pieces[0] != $::hostname {
         fail("Cert hostname ${pieces[0]} does not match reported hostname ${::hostname}")
