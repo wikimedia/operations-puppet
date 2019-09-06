@@ -30,7 +30,6 @@ define profile::openstack::base::haproxy::site(
     Array[Stdlib::Fqdn] $servers,
     Stdlib::Port $port_backend,
     Stdlib::Port $port_frontend,
-    Stdlib::String $healthcheck_path,
     $ensure = present,
 ) {
     include profile::openstack::base::haproxy
