@@ -49,6 +49,7 @@ class profile::lvs(
         query           => "scalar(sum(rate(node_network_receive_bytes_total{instance=~\"${::hostname}:.*\",device\\!~\"lo\"}[5m]))) * 8 / 1024 / 1024",
         prometheus_url  => "http://prometheus.svc.${::site}.wmnet/ops",
         dashboard_links => ["https://grafana.wikimedia.org/d/000000377/host-overview?var-server=${::hostname}&var-datasource=${::site} prometheus/ops"],
+        nagios_critical => true,
     }
 
     # Set up tagged interfaces to all subnets with real servers in them
