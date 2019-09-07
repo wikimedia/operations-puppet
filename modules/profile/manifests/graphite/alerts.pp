@@ -36,7 +36,7 @@ class profile::graphite::alerts($graphite_url = hiera('graphite_url')) {
     # https://logstash.wikimedia.org/#/dashboard/elasticsearch/memcached
     monitoring::graphite_threshold { 'mediawiki-memcached-threshold':
         description     => 'MediaWiki memcached error rate',
-        dashboard_links => ['https://grafana.wikimedia.org/dashboard/db/mediawiki-graphite-alerts?orgId=1&panelId=1&fullscreen'],
+        dashboard_links => ['https://grafana.wikimedia.org/d/000000438/mediawiki-alerts?panelId=1&fullscreen&orgId=1'],
         metric          => 'transformNull(logstash.rate.mediawiki.memcached.ERROR.sum, 0)',
         # Nominal error rate in production is <150/min
         warning         => 1000,
@@ -49,7 +49,7 @@ class profile::graphite::alerts($graphite_url = hiera('graphite_url')) {
     # Monitor MediaWiki fatals and exceptions.
     monitoring::graphite_threshold { 'mediawiki_error_rate':
         description     => 'MediaWiki exceptions and fatals per minute',
-        dashboard_links => ['https://grafana.wikimedia.org/dashboard/db/mediawiki-graphite-alerts?orgId=1&panelId=2&fullscreen'],
+        dashboard_links => ['https://grafana.wikimedia.org/d/000000438/mediawiki-alerts?panelId=2&fullscreen&orgId=1'],
         metric          => 'transformNull(sumSeries(logstash.rate.mediawiki.fatal.ERROR.sum, logstash.rate.mediawiki.exception.ERROR.sum), 0)',
         warning         => 25,
         critical        => 50,
@@ -85,7 +85,7 @@ class profile::graphite::alerts($graphite_url = hiera('graphite_url')) {
     # Monitor MediaWiki CentralAuth bad tokens
     monitoring::graphite_threshold { 'mediawiki_centralauth_errors':
         description     => 'MediaWiki centralauth errors',
-        dashboard_links => ['https://grafana.wikimedia.org/dashboard/db/mediawiki-graphite-alerts?orgId=1&panelId=3&fullscreen'],
+        dashboard_links => ['https://grafana.wikimedia.org/d/000000438/mediawiki-alerts?panelId=3&fullscreen&orgId=1'],
         metric          => 'transformNull(sumSeries(MediaWiki.centralauth.centrallogin_errors.*.rate), 0)',
         warning         => 0.5,
         critical        => 1,
