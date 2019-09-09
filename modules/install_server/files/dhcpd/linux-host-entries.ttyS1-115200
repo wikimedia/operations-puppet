@@ -5190,7 +5190,7 @@ host mw2230 {
 }
 
 host mw2231 {
-    hardware ethernet 14:18:77:6A:38:C6;
+    hardware ethernet 14:18:77:5B:2C:CA;
     fixed-address mw2231.codfw.wmnet;
 }
 
