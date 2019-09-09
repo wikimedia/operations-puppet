@@ -378,12 +378,6 @@ scap::sources:
   phabricator/deployment:
     repository: phabricator/deployment
 
-  # eventbus runs eventlogging-service.
-  # See: https://wikitech.wikimedia.org/wiki/EventBus
-  eventlogging/eventbus:
-    repository: eventlogging
-    scap_repository: eventlogging/scap/eventbus
-
   # eventlogging/analytics is the original EventLogging server deployment.
   eventlogging/analytics:
     repository: eventlogging
