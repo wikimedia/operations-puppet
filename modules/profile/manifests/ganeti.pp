@@ -72,6 +72,11 @@ class profile::ganeti (
         source => 'puppet:///modules/profile/ganeti/makevm.sh',
     }
 
+    motd::script { 'ganeti-master-motd':
+        ensure  => present,
+        content => "#!/bin/sh\necho 'The Ganeti master node for this cluster is $(/usr/sbin/gnt-cluster getmaster)'\n"
+    }
+
     if defined('$rapi_ro_user') and defined('$rapi_ro_password') {
         $ro_password_hash = md5("${rapi_ro_user}:Ganeti Remote API:${rapi_ro_password}")
         # Authentication for RAPI (for now just a single read-only user)
