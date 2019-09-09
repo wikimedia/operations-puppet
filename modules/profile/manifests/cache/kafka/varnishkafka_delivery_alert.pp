@@ -9,7 +9,7 @@ define profile::cache::kafka::varnishkafka_delivery_alert(
 
 ) {
     monitoring::check_prometheus { "varnishkafka-${instance}-${cache_segment}-eqiad-kafka_drerr":
-        description     => "cache_${cache_segment}: Varnishkafka Webrequest Delivery Errors per second (eqiad)",
+        description     => "cache_${cache_segment}: Varnishkafka ${instance} Delivery Errors per second (eqiad)",
         dashboard_links => ["https://grafana.wikimedia.org/d/000000253/varnishkafka?panelId=20&fullscreen&orgId=1&var-datasource=eqiad prometheus/ops&var-source=${instance}&var-cp_cluster=cache_${cache_segment}&var-instance=All"],
         query           => "scalar(sum(irate(varnishkafka_delivery_errors_total{cluster=\"cache_${cache_segment}\", source=\"${instance}\"}[5m])))",
         prometheus_url  => 'http://prometheus.svc.eqiad.wmnet/ops',
@@ -19,7 +19,7 @@ define profile::cache::kafka::varnishkafka_delivery_alert(
         notes_link      => 'https://wikitech.wikimedia.org/wiki/Analytics/Systems/Varnishkafka',
     }
     monitoring::check_prometheus { "varnishkafka-${instance}-${cache_segment}-codfw-kafka_drerr":
-        description     => "cache_${cache_segment}: Varnishkafka Webrequest Delivery Errors per second (codfw)",
+        description     => "cache_${cache_segment}: Varnishkafka ${instance} Delivery Errors per second (codfw)",
         dashboard_links => ["https://grafana.wikimedia.org/d/000000253/varnishkafka?panelId=20&fullscreen&orgId=1&var-datasource=codfw prometheus/ops&prometheus/ops&var-source=${instance}&var-cp_cluster=cache_${cache_segment}&var-instance=All"],
         query           => "scalar(sum(irate(varnishkafka_delivery_errors_total{cluster=\"cache_${cache_segment}\", source=\"${instance}\"}[5m])))",
         prometheus_url  => 'http://prometheus.svc.codfw.wmnet/ops',
@@ -29,7 +29,7 @@ define profile::cache::kafka::varnishkafka_delivery_alert(
         notes_link      => 'https://wikitech.wikimedia.org/wiki/Analytics/Systems/Varnishkafka',
     }
     monitoring::check_prometheus { "varnishkafka-${instance}-${cache_segment}-esams-kafka_drerr":
-        description     => "cache_${cache_segment}: Varnishkafka Webrequest Delivery Errors per second (esams)",
+        description     => "cache_${cache_segment}: Varnishkafka ${instance} Delivery Errors per second (esams)",
         dashboard_links => ["https://grafana.wikimedia.org/d/000000253/varnishkafka?panelId=20&fullscreen&orgId=1&var-datasource=esams prometheus/ops&var-source=${instance}&var-cp_cluster=cache_${cache_segment}&var-instance=All"],
         query           => "scalar(sum(irate(varnishkafka_delivery_errors_total{cluster=\"cache_${cache_segment}\", source=\"${instance}\"}[5m])))",
         prometheus_url  => 'http://prometheus.svc.esams.wmnet/ops',
@@ -39,7 +39,7 @@ define profile::cache::kafka::varnishkafka_delivery_alert(
         notes_link      => 'https://wikitech.wikimedia.org/wiki/Analytics/Systems/Varnishkafka',
     }
     monitoring::check_prometheus { "varnishkafka-${instance}-${cache_segment}-ulsfo-kafka_drerr":
-        description     => "cache_${cache_segment}: Varnishkafka Webrequest Delivery Errors per second (ulsfo)",
+        description     => "cache_${cache_segment}: Varnishkafka ${instance} Delivery Errors per second (ulsfo)",
         dashboard_links => ["https://grafana.wikimedia.org/d/000000253/varnishkafka?panelId=20&fullscreen&orgId=1&var-datasource=ulsfo prometheus/ops&var-source=${instance}&var-cp_cluster=cache_${cache_segment}&var-instance=All"],
         query           => "scalar(sum(irate(varnishkafka_delivery_errors_total{cluster=\"cache_${cache_segment}\", source=\"${instance}\"}[5m])))",
         prometheus_url  => 'http://prometheus.svc.ulsfo.wmnet/ops',
@@ -49,7 +49,7 @@ define profile::cache::kafka::varnishkafka_delivery_alert(
         notes_link      => 'https://wikitech.wikimedia.org/wiki/Analytics/Systems/Varnishkafka',
     }
     monitoring::check_prometheus { "varnishkafka-${instance}-${cache_segment}-eqsin-kafka_drerr":
-        description     => "cache_${cache_segment}: Varnishkafka Webrequest Delivery Errors per second (eqsin)",
+        description     => "cache_${cache_segment}: Varnishkafka ${instance} Delivery Errors per second (eqsin)",
         dashboard_links => ["https://grafana.wikimedia.org/d/000000253/varnishkafka?panelId=20&fullscreen&orgId=1&var-datasource=eqsin prometheus/ops&var-source=${instance}&var-cp_cluster=cache_${cache_segment}&var-instance=All"],
         query           => "scalar(sum(irate(varnishkafka_delivery_errors_total{cluster=\"cache_${cache_segment}\", source=\"${instance}\"}[5m])))",
         prometheus_url  => 'http://prometheus.svc.eqsin.wmnet/ops',
