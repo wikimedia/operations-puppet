@@ -106,28 +106,4 @@ class profile::graphite::alerts($graphite_url = hiera('graphite_url')) {
         percentage      => 50,
         notes_link      => 'https://wikitech.wikimedia.org/wiki/Event_Platform/EventBus',
     }
-
-    # Percent difference in the number of thumbs between eqiad and codfw
-    monitoring::graphite_threshold { 'swift_thumbs_eqiad_codfw_diff':
-        description     => 'Number of thumbnails in eqiad greater than codfw',
-        dashboard_links => ['https://grafana.wikimedia.org/d/OPgmB1Eiz/swift?var-DC=eqiad&var-prometheus=eqiad%20prometheus%2Fops'],
-        metric          => 'divideSeries(keepLastValue(swift.eqiad-prod.containers.mw-media.thumb.objects, 20), keepLastValue(swift.codfw-prod.containers.mw-media.thumb.objects, 20))',
-        warning         => 1.02,
-        critical        => 1.05,
-        from            => '90min',
-        percentage      => 80,
-        check_interval  => 30,
-        notes_link      => 'https://wikitech.wikimedia.org/wiki/Event_Platform/EventBus',
-    }
-    monitoring::graphite_threshold { 'swift_thumbs_codfw_eqiad_diff':
-        description     => 'Number of thumbnails in codfw greater than eqiad',
-        dashboard_links => ['https://grafana.wikimedia.org/d/OPgmB1Eiz/swift?var-DC=codfw&var-prometheus=codfw%20prometheus%2Fops'],
-        metric          => 'divideSeries(keepLastValue(swift.codfw-prod.containers.mw-media.thumb.objects, 20), keepLastValue(swift.eqiad-prod.containers.mw-media.thumb.objects, 20))',
-        warning         => 1.02,
-        critical        => 1.05,
-        from            => '90min',
-        percentage      => 80,
-        check_interval  => 30,
-        notes_link      => 'https://wikitech.wikimedia.org/wiki/Event_Platform/EventBus',
-    }
 }
