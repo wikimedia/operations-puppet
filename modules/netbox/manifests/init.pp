@@ -108,7 +108,7 @@ class netbox(
     String $redis_password = undef,
     Integer $redis_database = 0,
 ) {
-    require_package('virtualenv', 'python3-pip')
+    require_package('virtualenv', 'python3-pip', 'python3-pynetbox')
 
     user { 'netbox':
         ensure  => $ensure,
