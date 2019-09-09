@@ -35,8 +35,9 @@ class postgresql::slave(
     Stdlib::Host $master_server,
     String $replication_pass,
     # this should probably be an array and properly fixed to match the semantics
-    # of postgresql::server / postgresql::master
-    String $includes='',
+    # of postgresql::server / postgresql::master (also it is used inconsistently).
+    # T232358
+    $includes='',
     String $pgversion = $::lsbdistcodename ? {
         'buster'  => '11',
         'stretch' => '9.6',
