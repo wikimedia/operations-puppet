@@ -74,6 +74,7 @@ class profile::eventlogging::analytics::mysql(
     # The schemas for these types of events are managed differently, and we don't
     # want bugs in one to affect the other.
     eventlogging::service::consumer { 'mysql-eventbus':
+        ensure       => 'absent',  # https://phabricator.wikimedia.org/T232349
         # auto commit offsets to kafka more often for mysql consumer
         input        => "${kafka_consumer_uri_eventbus}&auto_commit_interval_ms=1000",
         output       => "mysql://${mysql_user}:${mysql_pass}@${mysql_db}?charset=utf8&statsd_host=${statsd_host}&replace=True",
