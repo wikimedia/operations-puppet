@@ -223,7 +223,7 @@ schema-codfw: A:schema and A:codfw
 sessionstore: P{O:sessionstore}
 snapshot: P{O:dumps::generation::worker::dumper or O:dumps::generation::worker::dumper_monitor or O:dumps::generation::worker::dumper_misc_crons_only}
 #snapshot-canary: P{O:dumps::generation::worker::testbed}
-stat: P{O:statistics::private or O:statistics::cruncher or O:statistics::gpu or O:statistics::explorer}
+stat: P{O:statistics::private or O:statistics::cruncher or O:statistics::explorer::gpu or O:statistics::explorer}
 stat-hdfs: P{O:statistics::private or O:statistics::explorer}
 swift: A:swift-fe or A:swift-be
 swift-be: P{O:swift::storage}
