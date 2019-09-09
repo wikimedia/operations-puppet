@@ -89,11 +89,12 @@ define eventlogging::service::consumer(
     }
 
     rsyslog::conf { $service_name:
+        ensure   => $ensure,
         content  => template('eventlogging/rsyslog.conf.erb'),
         priority => 80,
     }
     systemd::service { $service_name:
-        ensure  => present,
+        ensure  => $ensure,
         content => systemd_template('eventlogging-consumer@'),
         restart => true,
         require => File[$config_file],
