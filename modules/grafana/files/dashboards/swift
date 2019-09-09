@@ -26,7 +26,7 @@
   "editable": true,
   "gnetId": null,
   "graphTooltip": 0,
-  "iteration": 1553510952031,
+  "iteration": 1568030109624,
   "links": [],
   "panels": [
     {
@@ -51,7 +51,7 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "graphite",
+      "datasource": "$prometheus",
       "fill": 1,
       "grid": {
         "max": null,
@@ -79,7 +79,7 @@
       "lines": true,
       "linewidth": 1,
       "links": [],
-      "nullPointMode": "null",
+      "nullPointMode": "null as zero",
       "options": false,
       "percentage": false,
       "pointradius": 5,
@@ -94,16 +94,11 @@
       "steppedLine": false,
       "targets": [
         {
-          "refId": "A",
-          "target": "alias(movingAverage(sumSeries(swift.$DC-prod.*.proxy-server.object.GET.2*.timing.sample_rate), 5), 'GET 2xx')"
-        },
-        {
-          "refId": "B",
-          "target": "alias(movingAverage(sumSeries(swift.$DC-prod.*.proxy-server.object.HEAD.2*.timing.sample_rate), 5), 'HEAD 2xx')"
-        },
-        {
-          "refId": "C",
-          "target": "alias(movingAverage(sumSeries(swift.$DC-prod.*.proxy-server.object.GET.3*.timing.sample_rate), 5), 'GET 3xx')"
+          "expr": "sum(rate(swift_proxy_server_object_seconds_count{method=~\"(GET|HEAD)\",status=~\"[123]..\"}[5m])) by (method, status) > 0",
+          "format": "time_series",
+          "intervalFactor": 1,
+          "legendFormat": "{{method}}/{{status}}",
+          "refId": "B"
         }
       ],
       "thresholds": [],
@@ -115,7 +110,7 @@
       "tooltip": {
         "query_as_alias": true,
         "shared": true,
-        "sort": 0,
+        "sort": 2,
         "value_type": "individual"
       },
       "type": "graph",
@@ -157,7 +152,7 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "graphite",
+      "datasource": "$prometheus",
       "fill": 1,
       "grid": {
         "max": null,
@@ -185,7 +180,7 @@
       "lines": true,
       "linewidth": 1,
       "links": [],
-      "nullPointMode": "null",
+      "nullPointMode": "null as zero",
       "options": false,
       "percentage": false,
       "pointradius": 5,
@@ -200,12 +195,11 @@
       "steppedLine": false,
       "targets": [
         {
-          "refId": "A",
-          "target": "alias(movingAverage(sumSeries(swift.$DC-prod.*.proxy-server.object.PUT.2*.timing.sample_rate), 5), 'PUT 2xx')"
-        },
-        {
-          "refId": "B",
-          "target": "alias(movingAverage(sumSeries(swift.$DC-prod.*.proxy-server.object.DELETE.2*.timing.sample_rate), 5), 'DELETE 2xx')"
+          "expr": "sum(rate(swift_proxy_server_object_seconds_count{method=~\"(PUT|POST|DELETE)\",status=~\"[123]..\"}[5m])) by (method, status) > 0",
+          "format": "time_series",
+          "intervalFactor": 1,
+          "legendFormat": "{{method}}/{{status}}",
+          "refId": "A"
         }
       ],
       "thresholds": [],
@@ -259,7 +253,7 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "graphite",
+      "datasource": "$prometheus",
       "fill": 1,
       "grid": {
         "max": null,
@@ -288,7 +282,7 @@
       "lines": true,
       "linewidth": 1,
       "links": [],
-      "nullPointMode": "null",
+      "nullPointMode": "null as zero",
       "options": false,
       "percentage": false,
       "pointradius": 5,
@@ -303,32 +297,11 @@
       "steppedLine": false,
       "targets": [
         {
-          "refId": "A",
-          "target": "alias(sumSeries(swift.$DC-prod.*.proxy-server.*.GET.4[0-8]*.timing.sample_rate), 'GET 4xx')"
-        },
-        {
-          "refId": "B",
-          "target": "alias(sumSeries(swift.$DC-prod.*.proxy-server.*.HEAD.4*.timing.sample_rate), 'HEAD 4xx')"
-        },
-        {
-          "refId": "C",
-          "target": "alias(sumSeries(swift.$DC-prod.*.proxy-server.*.DELETE.4*.timing.sample_rate), 'DELETE 4xx')"
-        },
-        {
-          "refId": "D",
-          "target": "alias(sumSeries(swift.$DC-prod.*.proxy-server.*.PUT.4[0-8]*.timing.sample_rate), 'PUT 4xx')"
-        },
-        {
-          "refId": "E",
-          "target": "alias(sumSeries(swift.$DC-prod.*.proxy-server.*.POST.4*.timing.sample_rate), 'POST 4xx')"
-        },
-        {
-          "refId": "F",
-          "target": "alias(sumSeries(swift.$DC-prod.*.proxy-server.*.GET.499.timing.sample_rate), 'GET 499')"
-        },
-        {
-          "refId": "G",
-          "target": "alias(sumSeries(swift.$DC-prod.*.proxy-server.*.PUT.499.timing.sample_rate), 'PUT 499')"
+          "expr": "\nsum(rate(swift_proxy_server_object_seconds_count{status=~\"4..\"}[5m])) by (method, status) > 0",
+          "format": "time_series",
+          "intervalFactor": 1,
+          "legendFormat": "{{method}}/{{status}}",
+          "refId": "A"
         }
       ],
       "thresholds": [],
@@ -340,7 +313,7 @@
       "tooltip": {
         "query_as_alias": true,
         "shared": true,
-        "sort": 0,
+        "sort": 2,
         "value_type": "individual"
       },
       "type": "graph",
@@ -382,7 +355,7 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "graphite",
+      "datasource": "$prometheus",
       "fill": 1,
       "grid": {
         "max": null,
@@ -425,28 +398,32 @@
       "steppedLine": false,
       "targets": [
         {
-          "refId": "A",
-          "target": "alias(sumSeries(swift.$DC-prod.*.proxy-server.*.GET.5*.timing.sample_rate), 'GET 5xx')"
+          "expr": "sum(rate(swift_proxy_server_object_seconds_count{status=~\"5..\"}[5m])) by (method, status) > 0",
+          "format": "time_series",
+          "intervalFactor": 1,
+          "legendFormat": "object {{method}}/{{status}}",
+          "refId": "A"
         },
         {
-          "refId": "B",
-          "target": "alias(sumSeries(swift.$DC-prod.*.proxy-server.*.HEAD.5*.timing.sample_rate), 'HEAD 5xx')"
+          "expr": "sum(rate(swift_proxy_server_errors_total[5m]))",
+          "format": "time_series",
+          "intervalFactor": 1,
+          "legendFormat": "proxy-server errors",
+          "refId": "B"
         },
         {
-          "refId": "C",
-          "target": "alias(sumSeries(swift.$DC-prod.*.proxy-server.*.DELETE.select metric), 'DELETE 5xx')"
+          "expr": "sum(rate(swift_proxy_server_container_seconds_count{status=~\"5..\"}[5m])) by (method, status) > 0",
+          "format": "time_series",
+          "intervalFactor": 1,
+          "legendFormat": "container {{method}}/{{status}}",
+          "refId": "C"
         },
         {
-          "refId": "D",
-          "target": "alias(sumSeries(swift.$DC-prod.*.proxy-server.*.PUT.5*.timing.sample_rate), 'PUT 5xx')"
-        },
-        {
-          "refId": "E",
-          "target": "alias(sumSeries(swift.$DC-prod.*.proxy-server.*.POST.5*.timing.sample_rate), 'POST 5xx')"
-        },
-        {
-          "refId": "F",
-          "target": "alias(sumSeries(swift.$DC-prod.*.proxy-server.errors.rate), 'proxy-server errors')"
+          "expr": "sum(rate(swift_proxy_server_account_seconds_count{status=~\"5..\"}[5m])) by (method, status) > 0",
+          "format": "time_series",
+          "intervalFactor": 1,
+          "legendFormat": "account {{method}}/{{status}}",
+          "refId": "D"
         }
       ],
       "thresholds": [],
@@ -458,7 +435,7 @@
       "tooltip": {
         "query_as_alias": true,
         "shared": true,
-        "sort": 0,
+        "sort": 2,
         "value_type": "individual"
       },
       "type": "graph",
@@ -514,8 +491,8 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "graphite",
-      "fill": 1,
+      "datasource": "$prometheus",
+      "fill": 0,
       "grid": {
         "max": null,
         "min": null
@@ -557,13 +534,18 @@
       "steppedLine": false,
       "targets": [
         {
-          "hide": false,
-          "refId": "A",
-          "target": "alias(keepLastValue(swift.$DC-prod.dispersion.container.pct_found), 'container')"
+          "expr": "min(swift_dispersion_container_pct_found)",
+          "format": "time_series",
+          "intervalFactor": 1,
+          "legendFormat": "container",
+          "refId": "A"
         },
         {
-          "refId": "B",
-          "target": "alias(keepLastValue(swift.$DC-prod.dispersion.object.pct_found), 'object')"
+          "expr": "min(swift_dispersion_object_pct_found)",
+          "format": "time_series",
+          "intervalFactor": 1,
+          "legendFormat": "object",
+          "refId": "B"
         }
       ],
       "thresholds": [],
@@ -617,8 +599,8 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "graphite",
-      "fill": 1,
+      "datasource": "$prometheus",
+      "fill": 0,
       "grid": {
         "max": null,
         "min": null
@@ -673,16 +655,25 @@
       "steppedLine": false,
       "targets": [
         {
-          "refId": "A",
-          "target": "alias(swift.$DC-prod.stats.AUTH_mw.bytes, 'used')"
+          "expr": "swift_account_stats_bytes_total{account=\"AUTH_mw\"}",
+          "format": "time_series",
+          "intervalFactor": 1,
+          "legendFormat": "bytes",
+          "refId": "A"
         },
         {
-          "refId": "B",
-          "target": "alias(swift.$DC-prod.stats.AUTH_mw.containers, 'containers')"
+          "expr": "swift_account_stats_containers_total{account=\"AUTH_mw\"}",
+          "format": "time_series",
+          "intervalFactor": 1,
+          "legendFormat": "containers",
+          "refId": "B"
         },
         {
-          "refId": "C",
-          "target": "alias(swift.$DC-prod.stats.AUTH_mw.objects, 'objects')"
+          "expr": "swift_account_stats_objects_total{account=\"AUTH_mw\"}",
+          "format": "time_series",
+          "intervalFactor": 1,
+          "legendFormat": "objects",
+          "refId": "C"
         }
       ],
       "thresholds": [],
@@ -736,7 +727,7 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "graphite",
+      "datasource": "$prometheus",
       "fill": 1,
       "grid": {
         "max": null,
@@ -779,9 +770,11 @@
       "steppedLine": false,
       "targets": [
         {
-          "refId": "A",
-          "target": "alias(summarize(nonNegativeDerivative(keepLastValue(swift.$DC-prod.containers.mw-media.originals.objects, 100)), '1h', 'sum', false), 'Uploads')",
-          "textEditor": false
+          "expr": "swift_container_stats_objects_total{class=\"originals\"} - swift_container_stats_objects_total{class=\"originals\"} offset 1h",
+          "format": "time_series",
+          "intervalFactor": 1,
+          "legendFormat": "Originals (now - 1h)",
+          "refId": "A"
         }
       ],
       "thresholds": [],
@@ -835,7 +828,7 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "graphite",
+      "datasource": "$prometheus",
       "fill": 0,
       "grid": {
         "max": null,
@@ -878,9 +871,11 @@
       "steppedLine": false,
       "targets": [
         {
-          "refId": "A",
-          "target": "aliasByNode(keepLastValue(swift.$DC-prod.containers.mw-media.*.objects, 100), 4)",
-          "textEditor": true
+          "expr": "swift_container_stats_objects_total{account=\"mw-media\"}",
+          "format": "time_series",
+          "intervalFactor": 1,
+          "legendFormat": "{{class}}",
+          "refId": "A"
         }
       ],
       "thresholds": [],
@@ -1422,6 +1417,7 @@
         "allValue": null,
         "current": {
           "selected": true,
+          "tags": [],
           "text": "eqiad",
           "value": "eqiad"
         },
@@ -1469,7 +1465,6 @@
       },
       {
         "current": {
-          "selected": true,
           "text": "eqiad prometheus/ops",
           "value": "eqiad prometheus/ops"
         },
@@ -1516,5 +1511,5 @@
   "timezone": "utc",
   "title": "Swift",
   "uid": "OPgmB1Eiz",
-  "version": 1
+  "version": 3
 }
