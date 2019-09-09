@@ -12,4 +12,4 @@ profile::openstack::eqiad1::pdns::monitor_target_fqdn: 'tools-sgegrid-master.too
 # Extra records that the Labs DNS recursor should respond to.
 # REMEMBER THE TRAILING DOT.
 profile::openstack::eqiad1::pdns::recursor_aliaser_extra_records:
-  puppet.: 185.15.56.64 # instance-cloud-puppetmaster-01.cloudinfra.wmflabs.org
+  puppet.: 172.16.4.166 # instance-cloud-puppetmaster-01.cloudinfra.wmflabs.org
