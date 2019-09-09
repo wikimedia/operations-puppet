@@ -105,10 +105,10 @@ class profile::netbox (
                     ],
     }
 
-    ferm::service { 'netbox_http':
-        proto  => 'tcp',
-        port   => '80',
-        srange => '$CACHES',
+    ferm::service { 'netbox_https':
+        proto => 'tcp',
+        port  => '443',
+        desc  => 'Public HTTPS for Netbox',
     }
 
     httpd::site { $nb_service_hostname:
