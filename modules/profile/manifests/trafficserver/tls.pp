@@ -18,6 +18,7 @@ class profile::trafficserver::tls (
     Optional[Array[String]] $unified_certs = hiera('profile::trafficserver::tls::unified_certs', undef),
     Boolean $unified_acme_chief = hiera('profile::trafficserver::tls::unified_acme_chief', false),
     Optional[String] $ocsp_proxy=hiera('http_proxy'),
+    Boolean $systemd_hardening=hiera('profile::trafficserver::tls::systemd_hardening', true),
 ){
     $errorpage = {
         title       => 'Wikimedia Error',
@@ -79,6 +80,7 @@ class profile::trafficserver::tls (
         parent_rules             => $parent_rules,
         error_page               => template('mediawiki/errorpage.html.erb'),
         x_forwarded_for          => 1,
+        systemd_hardening        => $systemd_hardening,
     }
 
     trafficserver::lua_script { 'tls':
