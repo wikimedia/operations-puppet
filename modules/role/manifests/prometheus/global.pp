@@ -42,6 +42,9 @@ class role::prometheus::global {
             '{__name__=~"^probe_.*"}',
             # Bird prefix export count
             '{__name__="bird_protocol_prefix_export_count"}',
+            # Swift container/account stats
+            '{__name__=~"^swift_account_stats.*"}',
+            '{__name__=~"^swift_container_stats.*"}',
           ],
         },
         'static_configs' => [
