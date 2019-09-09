@@ -214,7 +214,7 @@ profile::trafficserver::backend::mapping_rules:
       replacement: https://analytics-tool1001.eqiad.wmnet
     - type: regex_map
       target: 'http://(.*)/api/rest_v1'
-      replacement: http://restbase.discovery.wmnet:7231/api/rest_v1
+      replacement: https://restbase.discovery.wmnet:7443/api/rest_v1
       params:
           - '@plugin=/usr/lib/trafficserver/modules/tslua.so'
           - '@pparam=/etc/trafficserver/lua/normalize-path.lua'
