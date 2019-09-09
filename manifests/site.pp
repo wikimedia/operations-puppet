@@ -137,6 +137,12 @@ node /an-conf100[1-3]\.eqiad\.wmnet/ {
     role(analytics_cluster::zookeeper)
 }
 
+
+# Analytics Presto nodes.
+node /^an-presto100[1-5].eqiad.wmnet$/ {
+    role(spare::system)
+}
+
 # Analytics Query Service
 node /aqs100[456789]\.eqiad\.wmnet/ {
     role(aqs)
@@ -2162,10 +2168,6 @@ node /^cloudvirt10[0-3][0-9]\.eqiad\.wmnet$/ {
     role(wmcs::openstack::eqiad1::virt)
 }
 
-# New analytics cloudvirt nodes via T207194
-node /^cloudvirtan100[1-5].eqiad.wmnet$/ {
-    role(spare::system)
-}
 
 # Wikidata query service
 node /^wdqs100[4-6]\.eqiad\.wmnet$/ {
