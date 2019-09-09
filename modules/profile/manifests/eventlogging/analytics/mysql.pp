@@ -55,40 +55,4 @@ class profile::eventlogging::analytics::mysql(
         group  => 'eventlogging',
         mode   => '0640',
     }
-
-    $eventbus_topics_to_consume = [
-        # Various mediawiki events (via EventBus)
-        'eqiad.mediawiki.page-create',
-        'codfw.mediawiki.page-create',
-        'eqiad.mediawiki.page-move',
-        'codfw.mediawiki.page-move',
-        'eqiad.mediawiki.page-delete',
-        'codfw.mediawiki.page-delete',
-        'eqiad.mediawiki.page-undelete',
-        'codfw.mediawiki.page-undelete',
-    ]
-    $eventbus_topics_string = join($eventbus_topics_to_consume, ',')
-    $kafka_consumer_uri_eventbus = "${kafka_consumer_scheme}/${kafka_brokers_string}?topics=${eventbus_topics_string}&auto_offset_reset=earliest"
-
-    # Use a separate mysql consumer process to insert eventbus events.
-    # The schemas for these types of events are managed differently, and we don't
-    # want bugs in one to affect the other.
-    eventlogging::service::consumer { 'mysql-eventbus':
-        ensure       => 'absent',  # https://phabricator.wikimedia.org/T232349
-        # auto commit offsets to kafka more often for mysql consumer
-        input        => "${kafka_consumer_uri_eventbus}&auto_commit_interval_ms=1000",
-        output       => "mysql://${mysql_user}:${mysql_pass}@${mysql_db}?charset=utf8&statsd_host=${statsd_host}&replace=True",
-        # Load and cache local (EventBus) schemas so those events can be inserted into MySQL too.
-        # This will require a restart of the consumer process(es) when there are any new schemas.
-        schemas_path => "${::eventschemas::mediawiki::path}/jsonschema",
-        sid          => 'eventlogging_consumer_mysql_eventbus_00',
-        # Restrict permissions on this config file since it contains a password.
-        owner        => 'root',
-        group        => 'eventlogging',
-        mode         => '0640',
-        # The consumer will be reloaded (SIGHUPed, not restarted)
-        # if any of these resources change.
-        # Reload if mediawiki/event-schemas has a change.
-        reload_on    =>  Class['::eventschemas::mediawiki'],
-    }
 }
