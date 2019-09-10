@@ -25,7 +25,7 @@ openstack:
     client_params:
         region_name: <%= @region %>
     <%- end -%>
-    <%- if @labsproject -%>
+    <%- if @is_project -%>
     query_params:
         project: <%= @labsproject %>
     <%- end -%>
