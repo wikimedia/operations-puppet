@@ -11,11 +11,18 @@ JAVA_ARGS="<%= @jvm_opts %>"
 # These normally shouldn't need to be edited if using OS packages
 USER="puppetdb"
 GROUP="puppetdb"
+<%- if scope.function_os_version(['debian >= buster']) -%>
+CONFIG="/etc/puppetdb/conf.d"
+
+# Bootstrap path
+BOOTSTRAP_CONFIG="/etc/puppetdb/bootstrap.cfg"
+<%- else -%>
 INSTALL_DIR="/opt/puppetlabs/server/apps/puppetdb"
 CONFIG="/etc/puppetlabs/puppetdb/conf.d"
 
 # Bootstrap path
 BOOTSTRAP_CONFIG="/etc/puppetlabs/puppetdb/bootstrap.cfg"
+<%- end -%>
 
 # SERVICE_STOP_RETRIES can be set here to alter the default stop timeout in
 # seconds.  For systemd, the shorter of this setting or 'TimeoutStopSec' in
