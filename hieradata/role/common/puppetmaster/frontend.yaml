@@ -39,3 +39,9 @@ profile::puppetmaster::frontend::canary_hosts:
   - 2620:0:861:101:10:64:0:130 # cp1075 has no AAAA
   - cp1076.eqiad.wmnet # cache::upload
   - 2620:0:861:101:10:64:0:131 # cp1076 has no AAAA
+  - mw1311.eqiad.wmnet # jobrunner
+  - 2620:0:861:101:10:64:0:173 # mw1311 has no AAAA
+  - mw1276.eqiad.wmnet # appserver
+  - 2620:0:861:101:10:64:0:71 # mw1276 has no AAAA
+  - lvs3004.esams.wmnet
+
