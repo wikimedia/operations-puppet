@@ -21,6 +21,4 @@ class role::netmon {
                     'php7.2',
                     ],
     }
-
-    interface::add_ip6_mapped { 'main': }
 }

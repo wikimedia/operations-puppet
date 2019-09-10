@@ -1,2 +1,3 @@
 cluster: wmcs
 contactgroups: wmcs-team
+profile::standard::enable_ip6_mapped: false

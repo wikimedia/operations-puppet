@@ -27,6 +27,4 @@ class role::puppetmaster::frontend {
 
     # Installs a script to update the netboot images in volatile with firmware
     include ::profile::puppetmaster::updatenetboot
-
-    interface::add_ip6_mapped { 'main': }
 }

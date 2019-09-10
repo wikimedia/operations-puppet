@@ -14,6 +14,4 @@ class role::prometheus {
     class { '::httpd':
         modules => ['proxy', 'proxy_http'],
     }
-
-    interface::add_ip6_mapped { 'main': }
 }

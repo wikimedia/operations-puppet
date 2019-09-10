@@ -42,6 +42,8 @@ profile::prometheus::varnishkafka_exporter::stats_default:
         'description': 'Number of topics in the metadata cache.'
         'labels': ['client_id']
 
+profile::standard::has_default_mail_relay: true
+profile::standard::enable_ip6_mapped: false
 # Additional base overrides
 profile::base::remote_syslog: []
 

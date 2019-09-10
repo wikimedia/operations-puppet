@@ -17,9 +17,6 @@ class profile::lvs(
     # kernel-level parameters
     class { '::lvs::kernel_config': }
 
-    # Network interfaces setup
-    interface::add_ip6_mapped { 'main': }
-
     ## LVS IPs setup
     # Obtain all the IPs configured for this class of load-balancers,
     # as a string. This is based on

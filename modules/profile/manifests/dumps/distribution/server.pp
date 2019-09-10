@@ -18,6 +18,4 @@ class profile::dumps::distribution::server {
         device  => '/dev/data/dumps',
         require => File['/srv/dumps'],
     }
-
-    interface::add_ip6_mapped { 'main': }
 }

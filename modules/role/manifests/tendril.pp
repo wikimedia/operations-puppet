@@ -6,8 +6,6 @@ class role::tendril {
     include ::profile::base::firewall
     include ::profile::standard
 
-    interface::add_ip6_mapped { 'main': }
-
     system::role { 'tendril': description => 'tendril server' }
 
     include ::profile::tendril

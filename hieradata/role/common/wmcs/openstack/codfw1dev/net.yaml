@@ -1,3 +1,4 @@
 profile::base::notifications: disabled
+profile::standard::enable_ip6_mapped: false
 admin::groups:
   - labtest-roots

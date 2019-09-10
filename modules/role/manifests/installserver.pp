@@ -11,7 +11,4 @@ class role::installserver {
     include ::profile::installserver::proxy
     include ::profile::installserver::preseed
     include ::profile::aptrepo::wikimedia
-
-    interface::add_ip6_mapped { 'main': }
-
 }
