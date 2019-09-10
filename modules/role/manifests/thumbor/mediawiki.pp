@@ -8,12 +8,16 @@ class role::thumbor::mediawiki {
     include ::profile::standard
     include ::profile::base::firewall
     include ::mediawiki::packages::fonts
-    include ::profile::statsite
     include ::profile::prometheus::haproxy_exporter
     include ::profile::prometheus::nutcracker_exporter
     include ::profile::thumbor
     include ::lvs::realserver
     include ::threedtopng::deploy # lint:ignore:wmf_styleguide
+
+
+    class { '::profile::statsite':
+      ensure => absent,
+    }
 
     class { '::memcached':
         size => 100,
@@ -24,7 +28,7 @@ class role::thumbor::mediawiki {
 
     include ::profile::prometheus::memcached_exporter
     class { '::profile::prometheus::statsd_exporter':
-        relay_address => 'localhost:8125',
+        relay_address => '',
     }
 
     $thumbor_memcached_servers_ferm = join(hiera('thumbor_memcached_servers'), ' ')
