@@ -16,12 +16,7 @@ class profile::openstack::eqiad1::puppetmaster::frontend(
     $labweb_hosts = hiera('profile::openstack::eqiad1::labweb_hosts'),
     $cert_secret_path = hiera('profile::openstack::eqiad1::puppetmaster::cert_secret_path'),
     $nova_controller = hiera('profile::openstack::eqiad1::nova_controller'),
-    $enable_cumin = hiera('profile::openstack::eqiad1::puppetmaster::enable_cumin'),
     ) {
-
-    if $enable_cumin {
-        include ::profile::openstack::eqiad1::cumin::master
-    }
     class {'::profile::openstack::base::puppetmaster::frontend':
         designate_host                       => $designate_host,
         designate_host_standby               => $designate_host_standby,
