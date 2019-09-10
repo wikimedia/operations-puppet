@@ -73,6 +73,7 @@ define eventlogging::service::service(
     $statsd_prefix       = "eventlogging.service.${title}",
     $statsd_use_hostname = false,
     $reload_on           = undef,
+    $ensure              = 'present',
 )
 {
     Class['eventlogging::server'] -> Eventlogging::Service::Service[$title]
@@ -115,6 +116,7 @@ define eventlogging::service::service(
 
     # Rsyslog configuration that routes logs to a file.
     rsyslog::conf { $service_name:
+        ensure   => $ensure,
         content  => template('eventlogging/rsyslog.conf.erb'),
         priority => 80,
         before   => Systemd::Service[$service_name],
@@ -123,11 +125,13 @@ define eventlogging::service::service(
     # output with $programname prefix so that rsyslog
     # can properly route logs.
     file { $log_config_file:
+        ensure  => $ensure,
         content => template($log_config_template),
         mode    => '0444',
     }
     # Python argparse config file for eventlogging-service
     file { $config_file:
+        ensure  => $ensure,
         content => template('eventlogging/service.erb'),
         mode    => '0444',
         require => File[$log_config_file],
@@ -135,6 +139,7 @@ define eventlogging::service::service(
 
     # Use systemd for this eventlogging-service instance.
     systemd::service { $service_name:
+        ensure  => $ensure,
         content => systemd_template('service'),
         require => [
             File[$config_file],
@@ -157,6 +162,7 @@ define eventlogging::service::service(
 
     # Generate icinga alert if eventlogging-service-$basename is not running.
     nrpe::monitor_service { $service_name:
+        ensure       => $ensure,
         description  => "Check that ${service_name} is running",
         nrpe_command => "/usr/lib/nagios/plugins/check_procs -c 1: -C python -a '${eventlogging_path}/bin/eventlogging-service @${config_file}'",
         require      => Systemd::Service[$service_name],
@@ -166,6 +172,7 @@ define eventlogging::service::service(
     # Spec-based monitoring
     $monitor_url = "http://${::ipaddress}:${port}"
     nrpe::monitor_service{ "endpoints_${service_name}":
+        ensure       => $ensure,
         description  => "${service_name} endpoints health",
         nrpe_command => "/usr/bin/service-checker-swagger -t 5 ${::ipaddress} ${monitor_url}",
         notes_url    => 'https://wikitech.wikimedia.org/wiki/Analytics/Systems/EventLogging',

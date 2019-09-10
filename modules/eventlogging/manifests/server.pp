@@ -51,17 +51,18 @@
 #
 class eventlogging::server(
     $eventlogging_path   = '/srv/deployment/eventlogging/eventlogging',
-    $log_dir             = '/srv/log/eventlogging/systemd'
+    $log_dir             = '/srv/log/eventlogging/systemd',
+    $ensure              = 'present',
 )
 {
     require ::eventlogging::dependencies
 
     group { 'eventlogging':
-        ensure => present,
+        ensure => $ensure,
     }
 
     user { 'eventlogging':
-        ensure     => 'present',
+        ensure     => $ensure,
         gid        => 'eventlogging',
         shell      => '/bin/bash',
         home       => '/nonexistent',
@@ -81,7 +82,7 @@ class eventlogging::server(
 
     # Instance definition files.
     file { $eventlogging_directories:
-        ensure  => directory,
+        ensure  => ensure_directory($ensure),
         recurse => true,
         purge   => true,
         force   => true,
@@ -90,7 +91,7 @@ class eventlogging::server(
 
     # Plug-ins placed in this directory are loaded automatically.
     file { '/usr/local/lib/eventlogging':
-        ensure => directory,
+        ensure => ensure_directory($ensure)
     }
 
     # This directory is useful for various components of
@@ -99,7 +100,7 @@ class eventlogging::server(
     # everywhere.
     if !defined(File['/srv/log']) {
         file { '/srv/log':
-            ensure => 'directory',
+            ensure => ensure_directory($ensure),
             mode   => '0755',
             owner  => 'root',
             group  => 'root',
@@ -108,7 +109,7 @@ class eventlogging::server(
 
     # Logs are collected in <$log_dir> and rotated daily.
     file { $log_dir:
-        ensure  => 'directory',
+        ensure  => ensure_directory($ensure),
         owner   => 'eventlogging',
         group   => 'eventlogging',
         recurse => true,
@@ -117,7 +118,7 @@ class eventlogging::server(
     }
 
     logrotate::rule { 'eventlogging':
-        ensure       => present,
+        ensure       => $ensure,
         file_glob    => "${log_dir}/*.log",
         not_if_empty => true,
         max_age      => 30,
@@ -129,13 +130,14 @@ class eventlogging::server(
     }
 
     systemd::service { 'eventlogging':
-        ensure  => present,
+        ensure  => $ensure,
         content => systemd_template('eventlogging'),
         restart => true,
         require => User['eventlogging'],
     }
 
     file { '/sbin/eventloggingctl':
+        ensure => $ensure,
         source => 'puppet:///modules/eventlogging/eventloggingctl.systemd',
         mode   => '0755',
     }

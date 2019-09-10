@@ -11,34 +11,49 @@ class profile::eventbus(
     $statsd_host             = hiera('statsd'),
     $logstash_host           = hiera('logstash_host'),
     $logstash_port           = hiera('logstash_gelf_port', 12201),
+    $ensure                  = hiera('profile::eventbus::ensure::', 'present'),
 ) {
-    class { '::eventschemas::mediawiki': }
+    $eventschemas_ensure = $ensure ? {
+        'absent' => 'absent',
+        default  => 'latest',
+    }
+    class { '::eventschemas::mediawiki':
+        ensure => $eventschemas_ensure,
+    }
 
     # for /srv/log dir creation
-    class { '::service::configuration': }
-
-    if $has_lvs {
-        include ::profile::lvs::realserver
-    }
-    $config = kafka_config('main')
-
-    class { '::eventlogging::dependencies': }
-
-    # eventlogging code for eventbus is configured to deploy
-    # from the eventlogging/eventbus deploy target
-    # via scap/scap.cfg on the deployment host.
-    scap::target { 'eventlogging/eventbus':
-        deploy_user  => 'deploy-service',
-        service_name => 'eventlogging-service-eventbus',
+    class { '::service::configuration':
+        ensure => $ensure,
     }
 
-    # The deploy-service user needs to be able to depool/pool
-    # during the deployment.
-    class { '::scap::conftool': }
+    if ($ensure == 'present') {
 
+        # These resources don't have ensure parameters, so we
+        # will have to clean them up manually.
+        if $has_lvs {
+            include ::profile::lvs::realserver
+        }
+        $config = kafka_config('main')
+
+        class { '::eventlogging::dependencies': }
+
+        # eventlogging code for eventbus is configured to deploy
+        # from the eventlogging/eventbus deploy target
+        # via scap/scap.cfg on the deployment host.
+        scap::target { 'eventlogging/eventbus':
+            deploy_user  => 'deploy-service',
+            service_name => 'eventlogging-service-eventbus',
+        }
+
+        # The deploy-service user needs to be able to depool/pool
+        # during the deployment.
+        class { '::scap::conftool': }
+
+    }
     # Include eventlogging server configuration, including
     # /etc/eventlogging.d directories and eventlogging user and group.
     class { 'eventlogging::server':
+        ensure            => $ensure,
         eventlogging_path => '/srv/deployment/eventlogging/eventbus',
         log_dir           => '/var/log/eventlogging',
     }
@@ -75,7 +90,7 @@ class profile::eventbus(
 
     if !defined(File['/srv/log/eventlogging']) {
         file { '/srv/log/eventlogging':
-            ensure => 'directory',
+            ensure => ensure_directory($ensure),
             mode   => '0755',
             owner  => 'eventlogging',
             group  => 'eventlogging',
@@ -85,11 +100,12 @@ class profile::eventbus(
     # but we want to be sure we don't have some fluke where we fill up
     # disks with error logs.
     logrotate::conf { 'eventlogging-service-eventbus.failed_events':
-        ensure => 'present',
+        ensure => $ensure,
         source => 'puppet:///modules/profile/eventbus/failed_events.logrotate',
     }
 
     eventlogging::service::service { 'eventbus':
+        ensure          => $ensure,
         schemas_path    => "${::eventschemas::mediawiki::path}/jsonschema",
         topic_config    => "${::eventschemas::mediawiki::path}/config/eventbus-topics.yaml",
         outputs         => $outputs,
@@ -112,6 +128,7 @@ class profile::eventbus(
 
     # Allow traffic to eventlogging-service on $port
     ferm::service { 'eventlogging-service-eventbus':
+        ensure => $ensure,
         proto  => 'tcp',
         port   => '8085',
         srange => '$DOMAIN_NETWORKS',

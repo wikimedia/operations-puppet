@@ -7,11 +7,11 @@
 # This should be eventually be replaced with an eventschemas::repository define
 # and used out of /srv/schemas/repositories/mediawiki.
 #
-class eventschemas::mediawiki {
+class eventschemas::mediawiki($ensure = 'latest') {
     $path = '/srv/event-schemas'
 
     git::clone { 'mediawiki/event-schemas':
-        ensure    => 'latest',
+        ensure    => $ensure,
         directory => $path,
     }
 }
