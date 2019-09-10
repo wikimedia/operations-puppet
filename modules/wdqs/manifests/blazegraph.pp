@@ -8,6 +8,7 @@
 # - $data_dir: Directory where the database should be stored
 # - $logstash_host: hostname where to send logs
 # - $logstash_json_port: port on which to send logs in json format
+# - $logstash_logback_port: port which rsyslog server is listening on
 # - $log_dir: Directory where the logs go
 # - $heap_size: heapsize for blazegraph
 # - $username: Username owning the service
@@ -15,6 +16,7 @@
 # - $use_deployed_config: Whether we should use config in deployed repo or our own
 # - $options: options for Blazegraph startup script
 # - $extra_jvm_opts: Extra JVM configs for wdqs-blazegraph
+# - $logstash_transport: send logs directly or via rsyslog
 define wdqs::blazegraph(
     Stdlib::Port $port,
     String $config_file_name,
@@ -22,12 +24,14 @@ define wdqs::blazegraph(
     Stdlib::Unixpath $data_dir,
     String $logstash_host,
     Stdlib::Port $logstash_json_port,
+    Stdlib::Port $logstash_logback_port,
     Stdlib::Unixpath $log_dir,
     String $heap_size,
     String $username,
     Boolean $use_deployed_config,
     Array[String] $options,
     Array[String] $extra_jvm_opts,
+    Enum['logstash-direct', 'syslog'] $logstash_transport = 'logstash-direct',
 ) {
     if ($use_deployed_config) {
         $config_file = $config_file_name
@@ -53,11 +57,13 @@ define wdqs::blazegraph(
     }
 
     wdqs::logback_config { $title:
-        logstash_host => $logstash_host,
-        logstash_port => $logstash_json_port,
-        log_dir       => $log_dir,
-        pattern       => '%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg %mdc%n%rEx{1,QUERY_TIMEOUT,SYNTAX_ERROR}',
-        evaluators    => true,
+        logstash_host         => $logstash_host,
+        logstash_port         => $logstash_json_port,
+        logstash_logback_port => $logstash_logback_port,
+        logstash_transport    => $logstash_transport,
+        log_dir               => $log_dir,
+        pattern               => '%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg %mdc%n%rEx{1,QUERY_TIMEOUT,SYNTAX_ERROR}',
+        evaluators            => true,
     }
 
     # Blazegraph service

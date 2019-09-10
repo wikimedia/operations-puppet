@@ -19,6 +19,7 @@ describe 'wdqs::blazegraph', :type => :define do
         :use_deployed_config => false,
         :logstash_host => 'localhost',
         :logstash_json_port => 11_514,
+        :logstash_logback_port => 11_514,
         :options => [],
         :extra_jvm_opts => [],
         }
@@ -59,6 +60,7 @@ describe 'wdqs::blazegraph', :type => :define do
         :use_deployed_config => true,
         :logstash_host => 'localhost',
         :logstash_json_port => 11_514,
+        :logstash_logback_port => 11_514,
         :options => [],
         :extra_jvm_opts => [],
         }
@@ -96,6 +98,7 @@ describe 'wdqs::blazegraph', :type => :define do
         :use_deployed_config => false,
         :logstash_host => 'localhost',
         :logstash_json_port => 11_514,
+        :logstash_logback_port => 11_514,
         :options => [],
         :extra_jvm_opts => [],
         }

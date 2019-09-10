@@ -2,6 +2,8 @@ class profile::wdqs::updater (
     String $options = hiera('profile::wdqs::updater_options', '-n wdq'),
     String $logstash_host = hiera('logstash_host'),
     Stdlib::Port $logstash_json_port = hiera('logstash_json_lines_port'),
+    Stdlib::Port $logstash_logback_port = hiera('logstash_logback_port'),
+    Enum['logstash-direct', 'syslog'] $logstash_transport = hiera('profile::wdqs::logstash_transport', 'logstash-direct'),
     Stdlib::Unixpath $package_dir = hiera('profile::wdqs::package_dir', '/srv/deployment/wdqs/wdqs'),
     Stdlib::Unixpath $data_dir = hiera('profile::wdqs::data_dir', '/srv/wdqs'),
     Stdlib::Unixpath $log_dir = hiera('profile::wdqs::log_dir', '/var/log/wdqs'),
@@ -66,15 +68,17 @@ class profile::wdqs::updater (
     $extra_updater_options = $poller_options + $fetch_constraints_options + $dump_options + $revision_options + [ '--entityNamespaces', '0,120,146' ]
 
     class { 'wdqs::updater':
-        package_dir        => $package_dir,
-        data_dir           => $data_dir,
-        log_dir            => $log_dir,
-        username           => $username,
-        logstash_host      => $logstash_host,
-        logstash_json_port => $logstash_json_port,
-        options            => split($options, ' ') + ['--'] + $extra_updater_options,
-        extra_jvm_opts     => $default_jvm_options + $kafka_jvm_opts,
-        log_sparql         => $log_sparql,
+        package_dir           => $package_dir,
+        data_dir              => $data_dir,
+        log_dir               => $log_dir,
+        username              => $username,
+        logstash_host         => $logstash_host,
+        logstash_json_port    => $logstash_json_port,
+        logstash_logback_port => $logstash_logback_port,
+        logstash_transport    => $logstash_transport,
+        options               => split($options, ' ') + ['--'] + $extra_updater_options,
+        extra_jvm_opts        => $default_jvm_options + $kafka_jvm_opts,
+        log_sparql            => $log_sparql,
     }
 
     class { 'wdqs::monitor::updater':

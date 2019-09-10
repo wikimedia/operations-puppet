@@ -13,6 +13,9 @@ class profile::wdqs::common(
     $username = 'blazegraph'
     $deploy_user = 'deploy-service'
 
+    # Let's migrate to the new logging pipeline. See T232184.
+    include ::profile::rsyslog::udp_json_logback_compat
+
     class { '::wdqs::common':
         deploy_mode         => $deploy_mode,
         username            => $username,
