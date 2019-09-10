@@ -1,4 +1,4 @@
 # -*- text -*-
 # File managed by puppet, do not edit by hand
 standby_mode = on
-primary_conninfo = 'host=<%= @master_server %> user=replication password=<%= @replication_pass %><%if @use_ssl %> sslmode=require<% end %><%if @rep_app %>application=<%= @rep_app %><%end %>'
+primary_conninfo = 'host=<%= @master_server %> user=replication password=<%= @replication_pass %><%if @use_ssl %> sslmode=require<% end %><%if @rep_app %> application_name=<%= @rep_app %><%end %>'

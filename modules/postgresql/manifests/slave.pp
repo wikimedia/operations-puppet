@@ -37,7 +37,7 @@ class postgresql::slave(
     # this should probably be an array and properly fixed to match the semantics
     # of postgresql::server / postgresql::master (also it is used inconsistently).
     # T232358
-    $includes='',
+    $includes=undef,
     String $pgversion = $::lsbdistcodename ? {
         'buster'  => '11',
         'stretch' => '9.6',
@@ -53,10 +53,17 @@ class postgresql::slave(
 
     $data_dir = "${root_dir}/${pgversion}/main"
 
+    if $includes {
+        $fullincludes = [ $includes, 'slave.conf']
+    }
+    else {
+        $fullincludes = ['slave.conf']
+    }
+
     class { '::postgresql::server':
         ensure    => $ensure,
         pgversion => $pgversion,
-        includes  => [ $includes, 'slave.conf'],
+        includes  => $fullincludes,
         root_dir  => $root_dir,
         use_ssl   => $use_ssl,
         ssldir    => $ssldir,
