@@ -125,6 +125,7 @@ Components: main
 # sorted list, leading whitespace matters!
  thirdparty/amd-rocm25
  thirdparty/amd-rocm26
+ thirdparty/amd-rocm27
  thirdparty/cloudera
  thirdparty/hwraid
 UDebComponents: main
@@ -132,6 +133,7 @@ Update:
 # sorted list, leading whitespace matters!
  amd-rocm25
  amd-rocm26
+ amd-rocm27
  hp-mcp-stretch
  hwraid-stretch
 # NOTE:  Cloudera does not (yet) provide Stretch/Buster packages.  We use the Jessie ones,
