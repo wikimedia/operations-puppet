@@ -7,3 +7,4 @@ fixtures:
         ferm: "../../../../ferm"
         stdlib: "../../../../stdlib"
         wmflib: "../../../../wmflib"
+        git: "../../../../git"

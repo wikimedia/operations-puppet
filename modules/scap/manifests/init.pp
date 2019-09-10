@@ -15,6 +15,8 @@ class scap (
     $version = 'present',
     Stdlib::Port::Unprivileged $php7_admin_port = 9181,
 ) {
+    require git::lfs
+
     package { 'scap':
         ensure => $version,
     }
@@ -33,8 +35,4 @@ class scap (
         'python-requests',
         'python-jinja2',
     ])
-
-    if os_version('debian >= stretch') {
-        require_package('git-lfs')
-    }
 }

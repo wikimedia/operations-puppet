@@ -1,5 +1,6 @@
 # filtertags: labs-project-ores-staging
 class role::labs::ores::staging {
+    class { '::git::lfs': }
     include ::ores::base
     class { '::ores::web':
         ores_config_user  => 'nobody',

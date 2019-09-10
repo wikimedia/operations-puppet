@@ -14,3 +14,4 @@ fixtures:
         ssh: "../../../../ssh"
         sudo: "../../../../sudo"
         etcd: "../../../../etcd"
+        git: "../../../../git"

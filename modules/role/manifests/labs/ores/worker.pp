@@ -1,7 +1,7 @@
 # filtertags: labs-project-ores
 class role::labs::ores::worker {
-    include ::ores::worker
-    include ::role::labs::ores::redisproxy
+    include ::profile::ores::worker
+    include ::role::labs::ores::redisproxy # lint:ignore:wmf_styleguide
 
     file { '/etc/ores/':
         ensure => 'directory',

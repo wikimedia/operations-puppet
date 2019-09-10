@@ -12,6 +12,10 @@ class profile::ores::web(
     $ores_config_group = hiera('profile::ores::web::ores_config_group', 'deploy-service'),
 ){
     $statsd_parts = split($statsd, ':')
+    # NOTE: The following is an include to avoid duplicate declaration issues
+    # when both profile::ores::worker and profile::ores::web are included in the
+    # same role class. scap::target also ends up using it
+    include ::git::lfs # lint:ignore:wmf_styleguide
 
     class { '::ores::web':
         redis_password       => $redis_password,
