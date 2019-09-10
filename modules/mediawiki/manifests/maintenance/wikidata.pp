@@ -58,9 +58,9 @@ class mediawiki::maintenance::wikidata( $ensure = present, $ensure_testwiki = pr
         content => template('mediawiki/maintenance/logrotate.d_wikidata.erb'),
     }
 
-    # clear term_search_key field in wb_terms table
+    # Migrating item terms for the new term store
     cron { 'wikidata-rebuildItemTerms':
-        ensure  => absent,
+        ensure  => $ensure,
         command => '/usr/bin/timeout 3500s /usr/local/bin/mwscript extensions/Wikibase/repo/maintenance/rebuildItemTerms.php --wiki wikidatawiki --sleep 2 --from-id $(/bin/sed -n \'/Rebuilding Q[[:digit:]]\+ till Q\([[:digit:]]\+\)/ { s//\1/; p; }\' /var/log/wikidata/wikidata-rebuildItemTerms.log* | /usr/bin/sort -rn | /usr/bin/head -1) >> /var/log/wikidata/wikidata-rebuildItemTerms.log 2>&1',
         user    => $::mediawiki::users::web,
         minute  => 30,
