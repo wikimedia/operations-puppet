@@ -240,6 +240,7 @@ node 'centrallog1001.eqiad.wmnet' {
 
 node /^cloudstore100[89]\.wikimedia\.org/ {
     role(wmcs::nfs::secondary)
+    interface::add_ip6_mapped { 'main': }
 }
 
 # All gerrit servers (swap master status in hiera)
@@ -1039,6 +1040,7 @@ node 'dbproxy1011.eqiad.wmnet' {
 
 node 'dbproxy1019.eqiad.wmnet' {
     role(mariadb::proxy::replicas)
+    interface::add_ip6_mapped { 'main': }
 }
 
 # new dbproxy hosts to be pressed into service by DBA team T202367
@@ -1488,6 +1490,7 @@ node /kafka-main100[2-5]\.eqiad\.wmnet/ {
 
 node /kafka-main1001\.eqiad\.wmnet/ {
     role(kafka::main)
+    interface::add_ip6_mapped { 'main': }
 }
 
 node /kafka-main200[123]\.codfw\.wmnet/ {
@@ -2322,6 +2325,7 @@ node /^restbase-dev100[4-6]\.eqiad\.wmnet$/ {
 # Failoid service (Ganeti VM)
 node 'roentgenium.eqiad.wmnet' {
     role(failoid)
+    interface::add_ip6_mapped { 'main': }
 }
 
 # virtual machines for https://wikitech.wikimedia.org/wiki/RPKI#Validation
@@ -2409,6 +2413,7 @@ node 'torrelay1001.wikimedia.org' {
 # Failoid service (Ganeti VM)
 node 'tureis.codfw.wmnet' {
     role(failoid)
+    interface::add_ip6_mapped { 'main': }
 }
 
 # stat1004 contains all the tools and libraries to access
