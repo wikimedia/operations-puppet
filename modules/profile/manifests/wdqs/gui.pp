@@ -23,11 +23,10 @@ class profile::wdqs::gui (
 
     if $high_query_time_port {
         # port 8888 accepts queries and runs them with a higher time limit.
-        # Let's also allow lvs to perform health checks on this port.
         ferm::service { 'wdqs_heavy_queries_http':
             proto  => 'tcp',
             port   => '8888',
-            srange => '($ANALYTICS_NETWORKS $CODFW_PRIVATE_PRIVATE1_LVS_CODFW $EQIAD_PRIVATE_PRIVATE1_LVS_EQIAD)';
+            srange => '$ANALYTICS_NETWORKS';
         }
     }
 

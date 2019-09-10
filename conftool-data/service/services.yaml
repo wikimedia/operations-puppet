@@ -246,14 +246,6 @@ wdqs:
     default_values:
       pooled: 'no'
       weight: 10
-  wdqs-heavy-queries:
-    port: 8888
-    datacenters:
-      - eqiad
-      - codfw
-    default_values:
-      pooled: 'no'
-      weight: 10
 wdqs-internal:
   wdqs:
     port: 80
