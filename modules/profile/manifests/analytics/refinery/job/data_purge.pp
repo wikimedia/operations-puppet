@@ -218,7 +218,7 @@ class profile::analytics::refinery::job::data_purge (
     # single $ sign, to get the correct checksum. And then add the double $$ sign here.
     kerberos::systemd_timer { 'drop-el-unsanitized-events':
         description  => 'Drop unsanitized EventLogging data from the event database after retention period.',
-        command      => "${refinery_path}/bin/refinery-drop-older-than --database='event' --tables='^(?!wmdebanner)[A-Za-z0-9]+$$' --base-path='/wmf/data/event' --path-format='(?!WMDEBanner)[A-Za-z0-9]+/year=(?P<year>[0-9]+)(/month=(?P<month>[0-9]+)(/day=(?P<day>[0-9]+)(/hour=(?P<hour>[0-9]+))?)?)?' --older-than='90' --skip-trash --execute='05c2f816807c528cf138bd0be2bdaba4' --log-file='${el_unsanitized_log_file}'",
+        command      => "${refinery_path}/bin/refinery-drop-older-than --database='event' --tables='^(?!wmdebanner)[A-Za-z0-9]+$$' --base-path='/wmf/data/event' --path-format='(?!WMDEBanner)[A-Za-z0-9]+/year=(?P<year>[0-9]+)(/month=(?P<month>[0-9]+)(/day=(?P<day>[0-9]+)(/hour=(?P<hour>[0-9]+))?)?)?' --older-than='90' --skip-trash --execute='dc3b5e020579ae5516b7f372081d1fac' --log-file='${el_unsanitized_log_file}'",
         interval     => '*-*-* 00:00:00',
         environment  => $systemd_env,
         user         => 'analytics',
