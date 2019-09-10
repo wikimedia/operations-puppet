@@ -8,11 +8,6 @@ environment:
 clustershell:
     ssh_options:
         - '-F <%= @ssh_config_path %>'
-    <%- if ! @is_project -%>
-    # If passing through a proxy must be lower than MaxSessions and MaxStartups
-    # in sshd_config, see hiera profile::base::ssh_server_settings
-    fanout: 15
-    <%- end -%>
 
 openstack:
     auth_url: <%= @keystone_protocol %>://<%= @keystone_host %>:<%= @keystone_port %>
