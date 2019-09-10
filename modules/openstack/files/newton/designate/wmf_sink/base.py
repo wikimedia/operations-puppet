@@ -116,13 +116,17 @@ class BaseAddressWMFHandler(BaseAddressHandler):
 
     @staticmethod
     def _run_remote_command(server, username, command):
-        ssh_command = ['/usr/bin/ssh', '-l%s' % username, server, command]
+        ssh_command = ['/usr/bin/ssh', '-o', 'StrictHostKeyChecking=no',
+                       '-l%s' % username, server, command]
 
         p = subprocess.Popen(ssh_command,
                              stdout=subprocess.PIPE,
                              stderr=subprocess.PIPE)
         (out, error) = p.communicate()
         rcode = p.wait()
+        if rcode:
+            LOG.warning("Remote command %s failed with output %s and err %s" %
+                        (ssh_command, out, error))
         return out, error, rcode
 
     def _delete_puppet_config(self, projectid, fqdn):
