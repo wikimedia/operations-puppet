@@ -2079,3 +2079,57 @@ dataCubes:
       - name: text_bytes_diff
         title: Text Bytes Diff
         formula: $main.sum($text_bytes_diff)
+
+
+  # Netflow data
+  - name: wmf_netflow
+    title: wmf_netflow
+    clusterName: druid-analytics-eqiad
+    source: wmf_netflow
+    description: Network data
+    defaultSortMeasure: packets
+    introspection: none
+    dimensions:
+       - name: as_src
+         title: AS src
+         formula: $as_src
+       - name: as_dst
+         title: AS dst
+         formula: $as_dst
+       - name: as_path
+         title: AS path
+         formula: $as_path
+       - name: ip_src
+         title: IP src
+         formula: $ip_src
+       - name: ip_dst
+         title: IP dst
+         formula: $ip_dst
+       - name: ip_proto
+         title: IP proto
+         formula: $ip_proto
+       - name: peer_as_src
+         title: Peer AS src
+         formula: $peer_as_src
+       - name: peer_as_dst
+         title: Peer AS dst
+         formula: $peer_as_dst
+       - name: port_src
+         title: Port src
+         formula: $port_src
+       - name: port_dst
+         title: Port dst
+         formula: $port_dst
+       - name: tag2
+         title: Direction
+         formula: $tag2
+       - name: tcp_flags
+         title: TCP flags
+         formula: $tcp_flags
+    measures:
+       - name: bytes
+         title: Bytes
+         formula: $main.sum($bytes)
+       - name: packets
+         title: Packets
+         formula: $main.sum($packets)
