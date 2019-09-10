@@ -41,7 +41,7 @@ class profile::swift::alerts {
         description     => 'Number of mw swift objects in eqiad greater than codfw',
         dashboard_links => ['https://grafana.wikimedia.org/d/OPgmB1Eiz/swift?var-DC=eqiad'],
         # No temp containers, https://phabricator.wikimedia.org/T232448
-        query           => 'swift_container_stats_objects_total{site="eqiad",class!="temp"} / on(account, class) swift_container_stats_objects_total{site="codfw"}',
+        query           => 'swift_container_stats_objects_total{site="eqiad",class\!="temp"} / on(account, class) swift_container_stats_objects_total{site="codfw"}',
         warning         => 1.02,
         critical        => 1.05,
         method          => 'ge',
@@ -53,7 +53,7 @@ class profile::swift::alerts {
         description     => 'Number of mw swift objects in codfw greater than eqiad',
         dashboard_links => ['https://grafana.wikimedia.org/d/OPgmB1Eiz/swift?var-DC=codfw'],
         # No temp containers, https://phabricator.wikimedia.org/T232448
-        query           => 'swift_container_stats_objects_total{site="codfw",class!="temp"} / on(account, class) swift_container_stats_objects_total{site="eqiad"}',
+        query           => 'swift_container_stats_objects_total{site="codfw",class\!="temp"} / on(account, class) swift_container_stats_objects_total{site="eqiad"}',
         warning         => 1.02,
         critical        => 1.05,
         method          => 'ge',
