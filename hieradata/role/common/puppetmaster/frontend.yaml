@@ -30,6 +30,12 @@ profile::puppetmaster::frontend::canary_hosts:
   - analytics1042.eqiad.wmnet
   - kafka-jumbo1001.eqiad.wmnet
   - mw1261.eqiad.wmnet
-  - 2620:0:861:101:10:64:0:56 # mw1261.eqiad.wmnet has no AAAA
+  - 2620:0:861:101:10:64:0:56 # mw1261 has no AAAA
   - mwdebug1001.eqiad.wmnet
-  - 2620:0:861:103:10:64:32:123 # mwdebug1001.eqiad.wmnet has no AAAA
+  - 2620:0:861:103:10:64:32:123 # mwdebug1001 has no AAAA
+  - cp1077.eqiad.wmnet # cache::text
+  - 2620:0:861:101:10:64:0:132 # cp1077
+  - cp1075.eqiad.wmnet # cache::text_ats
+  - 2620:0:861:101:10:64:0:130 # cp1075 has no AAAA
+  - cp1076.eqiad.wmnet # cache::upload
+  - 2620:0:861:101:10:64:0:131 # cp1076 has no AAAA
