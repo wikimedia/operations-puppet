@@ -45,10 +45,10 @@ profile::trafficserver::backend::mapping_rules:
       replacement: http://doc1001.eqiad.wmnet
     - type: map
       target: http://etherpad.wikimedia.org
-      replacement: http://etherpad1001.eqiad.wmnet:9001
+      replacement: https://etherpad1001.eqiad.wmnet:7443
     - type: map
       target: ws://etherpad.wikimedia.org
-      replacement: ws://etherpad1001.eqiad.wmnet:9001
+      replacement: wss://etherpad1001.eqiad.wmnet:7443
     - type: map
       target: http://gerrit.wmfusercontent.org
       replacement: https://gerrit.wikimedia.org
