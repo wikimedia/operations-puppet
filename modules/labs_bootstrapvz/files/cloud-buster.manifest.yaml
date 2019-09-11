@@ -215,6 +215,8 @@ plugins:
       - ['cp', '-r', '/etc/modprobe.d', '{root}/etc/']
       - ['chroot', '{root}', 'puppet', 'agent', '--disable']
       - ['chroot', '{root}', 'systemctl', 'enable', 'getty@ttyS1.service']
+      #  without DNS working.  Puppet will re-enable it.
+      - ['chroot', '{root}', 'systemctl', 'disable', 'systemd-timesyncd']
   unattended_upgrades:
     update_interval: 1
     download_interval: 1
