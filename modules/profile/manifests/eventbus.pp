@@ -23,9 +23,10 @@ class profile::eventbus(
     # for /srv/log dir creation
     class { 'service::configuration': }
 
+    $config = kafka_config('main')
+
     if ($ensure == 'present') {
 
-        $config = kafka_config('main')
 
         class { '::eventlogging::dependencies': }
 
