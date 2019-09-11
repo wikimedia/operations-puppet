@@ -210,15 +210,6 @@ aqs:
       weight: 10
     datacenters:
     - eqiad
-eventbus:
-  eventbus:
-    port: 8085
-    datacenters:
-    - eqiad
-    - codfw
-    default_values:
-      pooled: 'yes'
-      weight: 10
 eventschemas:
   eventschemas:
     port: 8190

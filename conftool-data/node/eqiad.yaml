@@ -261,10 +261,6 @@ eqiad:
     aqs1007.eqiad.wmnet: [aqs, cassandra]
     aqs1008.eqiad.wmnet: [aqs, cassandra]
     aqs1009.eqiad.wmnet: [aqs, cassandra]
-  eventbus:
-    kafka-main1001.eqiad.wmnet: [eventbus]
-    kafka1002.eqiad.wmnet: [eventbus]
-    kafka1003.eqiad.wmnet: [eventbus]
   eventschemas:
     schema1001.eqiad.wmnet: [eventschemas]
     schema1002.eqiad.wmnet: [eventschemas]
