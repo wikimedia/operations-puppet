@@ -5489,7 +5489,7 @@ host mwmaint2001 {
 }
 
 host moscovium {
-    hardware ethernet aa:00:00:14:25:cb;
+    hardware ethernet aa:00:00:15:79:95;
     fixed-address moscovium.eqiad.wmnet;
     option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/buster-installer/";
 }
