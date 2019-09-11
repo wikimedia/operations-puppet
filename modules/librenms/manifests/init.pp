@@ -56,6 +56,7 @@ class librenms(
         ensure  => 'directory',
         owner   => 'www-data',
         group   => 'librenms',
+        recurse => true,
         mode    => '0775',
         require => Group['librenms'],
     }
@@ -103,6 +104,14 @@ class librenms(
 
     file { "${install_dir}/.ircbot.alert":
         mode  => 'a+w',
+    }
+
+    file { "${install_dir}/logs":
+        ensure  => directory,
+        owner   => 'www-data',
+        group   => 'librenms',
+        mode    => '0775',
+        recurse => true,
     }
 
     logrotate::conf { 'librenms':
