@@ -2,27 +2,28 @@
 # Init settings for puppetdb
 ###########################################
 
+<%- if scope.function_os_version(['debian <= buster']) -%>
 # Location of your Java binary (version 7 or higher)
 JAVA_BIN="/usr/bin/java"
+<%- end -%>
 
 # Modify this if you'd like to change the memory allocation, enable JMX, etc
 JAVA_ARGS="<%= @jvm_opts %>"
 
 # These normally shouldn't need to be edited if using OS packages
-USER="puppetdb"
-GROUP="puppetdb"
 <%- if scope.function_os_version(['debian >= buster']) -%>
 CONFIG="/etc/puppetdb/conf.d"
 
 # Bootstrap path
 BOOTSTRAP_CONFIG="/etc/puppetdb/bootstrap.cfg"
 <%- else -%>
+USER="puppetdb"
+GROUP="puppetdb"
 INSTALL_DIR="/opt/puppetlabs/server/apps/puppetdb"
 CONFIG="/etc/puppetlabs/puppetdb/conf.d"
 
 # Bootstrap path
 BOOTSTRAP_CONFIG="/etc/puppetlabs/puppetdb/bootstrap.cfg"
-<%- end -%>
 
 # SERVICE_STOP_RETRIES can be set here to alter the default stop timeout in
 # seconds.  For systemd, the shorter of this setting or 'TimeoutStopSec' in
@@ -39,3 +40,4 @@ START_TIMEOUT=300
 # Maximum number of seconds that can expire for a service reload attempt before
 # the result of the attempt is interpreted as a failure.
 RELOAD_TIMEOUT=120
+<%- end -%>
