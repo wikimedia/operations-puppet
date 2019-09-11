@@ -44,4 +44,10 @@ profile::puppetmaster::frontend::canary_hosts:
   - mw1276.eqiad.wmnet # appserver
   - 2620:0:861:101:10:64:0:71 # mw1276 has no AAAA
   - lvs3004.esams.wmnet
+  - dubnium.wikimedia.org
+  - 2620:0:861:1:208:80:154:13 # dubnium
+  - ores1001.eqiad.wmnet
+  - 2620:0:861:101:10:64:0:51 # ores1001
+  - wtp1025.eqiad.wmnet # parsoid
+  - 2620:0:861:101:10:64:0:239 # wtp1025
 
