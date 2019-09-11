@@ -6,7 +6,7 @@
 # to Kafka.
 #
 class profile::eventbus(
-    $has_lvs                 = hiera('has_lvs', true),
+    $has_lvs                 = hiera('has_lvs', false),
     $kafka_message_max_bytes = hiera('kafka_message_max_bytes', 1048576),
     $statsd_host             = hiera('statsd'),
     $logstash_host           = hiera('logstash_host'),
