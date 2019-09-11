@@ -66,10 +66,10 @@ menu = dns1002
 title = dns1002.wikimedia.org [D1]
 host = dns1002.wikimedia.org
 
-+++ cobalt
-menu = cobalt
-title = cobalt.wikimedia.org [C4]
-host = cobalt.wikimedia.org
++++ gerrit
+menu = gerrit1001
+title = gerrit1001.wikimedia.org [B8]
+host = gerrit1001.wikimedia.org
 
 +++ authdns1001
 menu = authdns1001
