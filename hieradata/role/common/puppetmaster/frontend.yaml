@@ -50,4 +50,9 @@ profile::puppetmaster::frontend::canary_hosts:
   - 2620:0:861:101:10:64:0:51 # ores1001
   - wtp1025.eqiad.wmnet # parsoid
   - 2620:0:861:101:10:64:0:239 # wtp1025
-
+  - rdb1006.eqiad.wmnet
+  - 2620:0:861:107:10:64:48:55 # rdb1006
+  - restbase1016.eqiad.wmnet
+  - 2620:0:861:101:10:64:0:31 # restbase1016
+  - scb1001.eqiad.wmnet
+  - 2620:0:861:101:10:64:0:16 # scb1001
