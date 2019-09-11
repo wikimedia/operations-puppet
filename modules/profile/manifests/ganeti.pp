@@ -73,8 +73,8 @@ class profile::ganeti (
     }
 
     motd::script { 'ganeti-master-motd':
-        ensure  => present,
-        content => 'puppet:///modules/profile/ganeti/motd',
+        ensure => present,
+        source => 'puppet:///modules/profile/ganeti/motd',
     }
 
     if defined('$rapi_ro_user') and defined('$rapi_ro_password') {
