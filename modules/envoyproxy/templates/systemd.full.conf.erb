@@ -16,7 +16,8 @@ LimitNOFILE=65536
 # in systemd terms is stop + start, so it will not hot-restart envoy.
 # We will have to use "reload" to obtain the desired result -
 # and have puppet run 'systemctl reload envoyproxy.service' instead.
-ExecStart=/usr/local/sbin/envoyproxy-hot-restarter /usr/local/sbin/envoyproxy-start <%= @envoy_directory %>/envoy.yaml
+Environment="ENVOY_CONFIG=<%= @envoy_directory %>/envoy.yaml"
+ExecStart=/usr/local/sbin/envoyproxy-hot-restarter /usr/local/sbin/envoyproxy-start
 ExecReload=
 ExecReload=/bin/kill -s HUP $MAINPID
 <%- else -%>
