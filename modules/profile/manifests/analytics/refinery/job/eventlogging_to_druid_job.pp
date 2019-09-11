@@ -79,10 +79,22 @@ define profile::analytics::refinery::job::eventlogging_to_druid_job (
     $daily_days_since    = 4,
     $daily_days_until    = 3,
     $use_kerberos        = false,
+    $ensure_hourly       = 'present',
+    $ensure_daily        = 'present',
     $ensure              = 'present',
 ) {
     require ::profile::analytics::refinery
     $refinery_path = $profile::analytics::refinery::path
+
+    # Override specific ensures, in case global ensure is absent.
+    $_ensure_hourly = $ensure ? {
+        'absent' => 'absent',
+        default  => $ensure_hourly
+    }
+    $_ensure_daily = $ensure ? {
+        'absent' => 'absent',
+        default  => $ensure_daily
+    }
 
     # If $refinery_job_jar not given, use the symlink at artifacts/refinery-job.jar
     $_refinery_job_jar = $refinery_job_jar ? {
@@ -114,7 +126,7 @@ define profile::analytics::refinery::job::eventlogging_to_druid_job (
     # Hourly job
     $hourly_job_config_file = "${job_config_dir}/${job_name}_hourly.properties"
     profile::analytics::refinery::job::config { $hourly_job_config_file:
-        ensure     => $ensure,
+        ensure     => $_ensure_hourly,
         properties => merge($default_config, $job_config, {
             'segment_granularity' => 'hour',
             'num_shards'          => 1,
@@ -122,7 +134,7 @@ define profile::analytics::refinery::job::eventlogging_to_druid_job (
         }),
     }
     profile::analytics::refinery::job::spark_job { "${job_name}_hourly":
-        ensure       => $ensure,
+        ensure       => $_ensure_hourly,
         jar          => $_refinery_job_jar,
         class        => $job_class,
         spark_opts   => "${default_spark_opts} --files /etc/hive/conf/hive-site.xml,${hourly_job_config_file} --conf spark.dynamicAllocation.maxExecutors=32 --driver-memory 2G",
@@ -136,7 +148,7 @@ define profile::analytics::refinery::job::eventlogging_to_druid_job (
     # Daily job
     $daily_job_config_file = "${job_config_dir}/${job_name}_daily.properties"
     profile::analytics::refinery::job::config { $daily_job_config_file:
-        ensure     => $ensure,
+        ensure     => $_ensure_daily,
         properties => merge($default_config, $job_config, {
             'segment_granularity' => 'day',
             'num_shards'          => $daily_shards,
@@ -144,7 +156,7 @@ define profile::analytics::refinery::job::eventlogging_to_druid_job (
         }),
     }
     profile::analytics::refinery::job::spark_job { "${job_name}_daily":
-        ensure       => $ensure,
+        ensure       => $_ensure_daily,
         jar          => $_refinery_job_jar,
         class        => $job_class,
         spark_opts   => "${default_spark_opts} --files /etc/hive/conf/hive-site.xml,${daily_job_config_file} --conf spark.dynamicAllocation.maxExecutors=64 --driver-memory 2G",

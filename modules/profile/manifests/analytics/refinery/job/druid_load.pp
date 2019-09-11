@@ -52,4 +52,18 @@ class profile::analytics::refinery::job::druid_load(
             hourly_hours_until => 3,
         },
     }
+    # This second round serves as sanitization, after 90 days of data loading.
+    # Note that some dimensions are not present, thus nullifying their values.
+    profile::analytics::refinery::job::eventlogging_to_druid_job { 'netflow-sanitization':
+        job_config => {
+            ensure_hourly    => 'absent',
+            database         => 'wmf',
+            table            => 'netflow',
+            timestamp_column => 'stamp_inserted',
+            dimensions       => 'as_dst,as_path,peer_as_dst,as_src,peer_as_src,tag2,country_ip_src,country_ip_dst',
+            metrics          => 'bytes,packets',
+            daily_days_since => 91,
+            daily_days_until => 90,
+        },
+    }
 }
