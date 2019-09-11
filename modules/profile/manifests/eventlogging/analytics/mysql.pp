@@ -10,13 +10,6 @@ class profile::eventlogging::analytics::mysql(
 
     include profile::eventlogging::analytics::server
 
-    # We use the mediawiki/event-schemas to support insertion of events from EventBus
-    # that use those schemas not on meta.wikimedia.org.
-    # NOTE: If an event schema changes, the eventlogging-consumer process(es) will
-    # not be automatically restarted.  You must manually restart this for the consumer
-    # process to pick up changes to local schemas.
-    class { '::eventschemas::mediawiki': }
-
     ## MySQL / MariaDB
 
     # Log strictly valid events to the 'log' database on m4-master.

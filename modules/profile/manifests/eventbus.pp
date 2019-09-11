@@ -10,7 +10,7 @@ class profile::eventbus(
     $statsd_host             = hiera('statsd'),
     $logstash_host           = hiera('logstash_host'),
     $logstash_port           = hiera('logstash_gelf_port', 12201),
-    $ensure                  = hiera('profile::eventbus::ensure::', 'present'),
+    $ensure                  = hiera('profile::eventbus::ensure', 'absent'),
 ) {
     $eventschemas_ensure = $ensure ? {
         'absent' => 'absent',

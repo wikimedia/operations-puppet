@@ -3,7 +3,7 @@
 # filtertags: labs-project-deployment-prep
 class role::changeprop {
     system::role { 'changeprop':
-        description => 'propagates events from the EventBus',
+        description => 'propagates events from the EventBus extension',
     }
 
     include ::profile::changeprop

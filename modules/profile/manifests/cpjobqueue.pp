@@ -2,7 +2,7 @@
 #
 # profile::cpjobqueue is the profile class for ChangeProp for JobQueue, a
 # special instance of ChangePropagation that is used to pick up job definitions
-# from the main Kafka cluster (EventBus) and sends them for execution on the
+# from the main Kafka cluster and sends them for execution on the
 # jobrunners.
 #
 # === Parameters

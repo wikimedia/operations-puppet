@@ -1282,8 +1282,6 @@ node 'iron.wikimedia.org' {
 }
 
 # Kafka Brokers - main-eqiad and main-codfw Kafka clusters.
-# For now, eventlogging-service-eventbus is also colocated
-# on these brokers.
 node /kafka100[23]\.eqiad\.wmnet/ {
     role(kafka::main)
 }
