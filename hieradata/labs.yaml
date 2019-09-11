@@ -276,7 +276,8 @@ profile::openstack::base::keystone::public_port: 5000
 profile::openstack::eqiad1::nova::dhcp_domain: 'eqiad.wmflabs'
 cumin_masters:
 - 172.16.1.135 # bastion-restricted-eqiad1-01.eqiad.wmflabs
-- 172.16.4.46 # cloud-cumin-01.cloudinfra.eqiad.wmflabs
+- 172.16.4.46  # cloud-cumin-01.cloudinfra.eqiad.wmflabs
+- 172.16.6.133 # cloud-cumin-02.cloudinfra.eqiad.wmflabs
 
 # Url to use for reaching graphite
 graphite_url: 'https://graphite-labs.wikimedia.org'
