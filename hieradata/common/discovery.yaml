@@ -55,9 +55,6 @@ discovery::services:
   cxserver:
     lvs: cxserver
     active_active: true
-  eventbus:
-    lvs: eventbus
-    active_active: true
   eventstreams:
     lvs: eventstreams
     active_active: true
