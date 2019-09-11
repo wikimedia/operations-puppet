@@ -18,6 +18,17 @@
     # Lower caching length (T184255)
     Header set Cache-Control "s-maxage=3600, must-revalidate, max-age=0"
 
+    # Strict CSP (T213223)
+    Header always set Content-Security-Policy "\
+        default-src 'self'; \
+        img-src 'self' data:; \
+        object-src 'none'; \
+        script-src 'unsafe-inline' 'self'; \
+        sandbox allow-scripts allow-forms allow-popups; \
+        form-action 'self'; \
+        report-uri  https://meta.wikimedia.org/w/api.php?action=cspreport&format=none&source=doc.wikimedia.org& \
+        "
+
     # Back-compat for T73060: Redirect mediawiki-core/master/php/html/ to mediawiki-core/master/php/
     RewriteRule ^mediawiki-core/master/php/html/(.*)$ https://doc.wikimedia.org/mediawiki-core/master/php/$1 [L,QSA]
 
