@@ -22,9 +22,7 @@ class profile::eventbus(
     }
 
     # for /srv/log dir creation
-    class { '::service::configuration':
-        ensure => $ensure,
-    }
+    class { 'service::configuration': }
 
     if ($ensure == 'present') {
 
