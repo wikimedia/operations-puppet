@@ -118,7 +118,7 @@ profile::trafficserver::backend::mapping_rules:
       replacement: https://peopleweb.discovery.wmnet
     - type: map
       target: http://performance.wikimedia.org
-      replacement: http://webperf1001.eqiad.wmnet
+      replacement: https://performance.discovery.wmnet
       #replacement: http://webperf2001.codfw.wmnet
     - type: map
       target: ws://phabricator.wikimedia.org/ws/
