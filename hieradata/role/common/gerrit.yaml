@@ -14,6 +14,7 @@ gerrit::server::use_acmechief: true
 # list of gerrit servers used in firewall rules
 gerrit::servers:
  - cobalt.wikimedia.org
+ - gerrit1001.wikimedia.org
  - gerrit2001.wikimedia.org
 
 # Assume all production nodes are slaves
