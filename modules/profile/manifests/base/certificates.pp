@@ -5,7 +5,7 @@
 # A puppetmaster's CA cert can be found at /var/lib/puppet/server/ssl/certs/ca.pem
 class profile::base::certificates (
     $puppet_ca_content = hiera('profile::base::certificates::puppet_ca_content', {}),
-    $puppetmaster = hiera('puppetmaster', undef),
+    $puppetmaster_key = hiera('puppetmaster', undef),
 ) {
     include ::sslcert
 
@@ -25,13 +25,13 @@ class profile::base::certificates (
         source  => 'puppet:///modules/base/ca/GlobalSign_Organization_Validation_CA_-_SHA256_-_G2.crt',
     }
 
-    if has_key($puppet_ca_content, $puppetmaster) {
+    if has_key($puppet_ca_content, $puppetmaster_key) {
         exec { 'clear-old-puppet-ssl':
             command     => "/bin/bash -c '/bin/mv /var/lib/puppet/ssl /var/lib/puppet/ssl.\$(/bin/date +%Y-%m-%dT%H:%M)'",
             refreshonly => true,
         }
         sslcert::ca { 'Puppet_Internal_CA':
-            content => $puppet_ca_content[$puppetmaster],
+            content => $puppet_ca_content[$puppetmaster_key],
             notify  => Exec['clear-old-puppet-ssl'],
         }
     } else {
