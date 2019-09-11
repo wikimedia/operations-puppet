@@ -303,4 +303,7 @@ class profile::netbox (
         monitoring_contact_groups => 'admins',
         user                      => 'netbox',
     }
+
+    include ::profile::backup::host
+    backup::set { 'netbox': }
 }

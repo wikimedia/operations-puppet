@@ -167,8 +167,6 @@ class profile::netbox::postgres (
 
     # Have backups because Netbox is used as a source of truth (T190184)
     include ::profile::backup::host
-    backup::set { 'netbox': }
+    backup::set { 'netbox-postgres': }
     class { '::postgresql::backup': }
-
-    # FIXME we need all databases to open their port to all netbox frontends.
 }

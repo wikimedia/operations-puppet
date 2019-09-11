@@ -242,8 +242,12 @@ class profile::backup::director(
     }
 
     bacula::director::fileset { 'netbox':
+        includes => [ '/srv/netbox-dumps/',
+                    ]
+    }
+
+    bacula::director::fileset { 'netbox-postgres':
         includes => [ '/srv/postgres-backup/',
-                      '/srv/netbox-dumps/',
                     ]
     }
 

@@ -8,7 +8,12 @@ class profile::mariadb::ferm_misc {
         notrack => true,
         srange  => '@resolve(netmon1002.wikimedia.org)',
     }
-
+    ferm::service { 'netbox-librenms':
+        proto   => 'tcp',
+        port    => '3306',
+        notrack => true,
+        srange  => '@resolve((netbox1001.wikimedia.org netbox2001.wikimedia.org))',
+    }
     ferm::service { 'rt':
         proto   => 'tcp',
         port    => '3306',
