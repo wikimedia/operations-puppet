@@ -38,7 +38,7 @@ class profile::ci::firewall (
     ferm::service { 'gerrit_ssh':
         proto  => 'tcp',
         port   => '29418',
-        srange => '@resolve((gerrit2001.wikimedia.org cobalt.wikimedia.org gerrit.wikimedia.org))',
+        srange => '@resolve((gerrit1001.wikimedia.org gerrit2001.wikimedia.org cobalt.wikimedia.org gerrit.wikimedia.org))',
     }
 
     # ALLOWS:
