@@ -3,7 +3,6 @@ class envoyproxy(
     Stdlib::Port $admin_port,
     Enum['envoy', 'envoyproxy', 'getenvoy-envoy'] $pkg_name,
     Boolean $use_override = true,
-    Boolean $use_hot_restarter = false,
 ) {
     package { $pkg_name:
         ensure => $ensure
@@ -112,18 +111,12 @@ class envoyproxy(
         mode   => '0555',
     }
 
-    if $use_hot_restarter {
-        # We override the restart from puppet to become a reload, which sends
-        # SIGHUP to the hot restarter.
-        $service_params = {'restart' => '/bin/systemctl reload envoyproxy.service',  }
-    }
-    else {
-        $service_params = {}
-    }
+    # We override the restart from puppet to become a reload, which sends
+    # SIGHUP to the hot restarter.
     systemd::service { 'envoyproxy.service':
         ensure         => $ensure,
         content        => template($tpl),
         override       => $use_override,
-        service_params => $service_params,
+        service_params => {'restart' => '/bin/systemctl reload envoyproxy.service',  },
     }
 }

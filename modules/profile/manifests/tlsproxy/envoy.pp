@@ -44,7 +44,6 @@ class profile::tlsproxy::envoy(
     ]] $services = lookup('profile::tlsproxy::envoy::services'),
     Optional[String] $global_cert_name = lookup('profile::tlsproxy::envoy::global_cert_name', {'default_value' => undef}),
     Array[String] $prometheus_nodes = lookup('prometheus_nodes'),
-    Boolean $use_hot_restarter = lookup('profile::tlsproxy::envoy::use_hot_restarter', {'default_value' => false}),
 ) {
     if os_version('debian jessie') {
         if $tls_port !~ Stdlib::Port::Unprivileged {
@@ -77,11 +76,10 @@ class profile::tlsproxy::envoy(
     }
     $admin_port = 9631
     class { '::envoyproxy':
-        ensure            => $ensure,
-        admin_port        => $admin_port,
-        pkg_name          => $pkg_name,
-        use_override      => $use_override,
-        use_hot_restarter => $use_hot_restarter,
+        ensure       => $ensure,
+        admin_port   => $admin_port,
+        pkg_name     => $pkg_name,
+        use_override => $use_override,
     }
 
     # ensure all the needed certs are present. Given these are internal services,

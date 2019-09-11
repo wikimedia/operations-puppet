@@ -1,2 +1,1 @@
 do_acme: false
-profile::tlsproxy::envoy::use_hot_restarter: true
