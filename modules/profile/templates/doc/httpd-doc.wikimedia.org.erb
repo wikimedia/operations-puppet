@@ -18,8 +18,8 @@
     # Lower caching length (T184255)
     Header set Cache-Control "s-maxage=3600, must-revalidate, max-age=0"
 
-    # Strict CSP (T213223)
-    Header always set Content-Security-Policy "\
+    # CSP reporting until the rules have been tweaked (T213223)
+    Header always set Content-Security-Policy-Report-Only "\
         default-src 'self'; \
         img-src 'self' data:; \
         object-src 'none'; \
