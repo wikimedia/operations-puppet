@@ -53,11 +53,10 @@ class service::configuration(
     $log_dir       = '/srv/log',
     $rsyslog_udp_port = 10514,
     $use_dev_pkgs  = false,
-    $ensure        = 'present',
 ){
 
     file { $log_dir:
-        ensure => ensure_directory($ensure),
+        ensure => 'directory',
         owner  => 'root',
         group  => 'root',
         mode   => '0755',
