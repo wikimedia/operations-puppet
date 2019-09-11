@@ -9,7 +9,7 @@ class profile::puppetdb(
     Boolean $microservice_enabled = hiera('profile::puppetdb::microservice::enabled'),
     Integer $microservice_port = hiera('profile::puppetdb::microservice::port', 0),
     Integer $microservice_uwsgi_port = hiera('profile::puppetdb::microservice::uwsgi_port', 0),
-    String $microservice_allowed_hosts = hiera('netmon_server', ''),
+    Optional[Array] $microservice_allowed_hosts = lookup('profile::netbox::frontends', {'default_value' => undef}),
     Boolean $elk_logging = lookup('profile::puppetdb::rsyslog::elk', {'default_value' => false}),
     Boolean $filter_job_id = lookup('profile::puppetdb::filter_job_id'),
 ) {
@@ -98,11 +98,21 @@ class profile::puppetdb(
 
             },
         }
-        ferm::service { 'puppetdb-microservice':
-            ensure => present,
-            proto  => 'tcp',
-            port   => $microservice_port,
-            srange => "@resolve((${microservice_allowed_hosts}))",
+        if $microservice_allowed_hosts {
+            $allowed_hosts = join($microservice_allowed_hosts, ' ')
+            ferm::service { 'puppetdb-microservice':
+                ensure => present,
+                proto  => 'tcp',
+                port   => $microservice_port,
+                srange => "@resolve((${allowed_hosts}))",
+            }
+        }
+        else {
+            ferm::service { 'puppetdb-microservice':
+                ensure => absent,
+                proto  => 'tcp',
+                port   => $microservice_port,
+            }
         }
     }
     else {
