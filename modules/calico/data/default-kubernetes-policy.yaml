@@ -116,18 +116,6 @@
   dst_net: 10.2.1.22/32
   protocol: tcp
 
-  # Allow EventBus
-- action: allow
-  dst_ports:
-    - 8085
-  dst_net: 10.2.1.23/32
-  protocol: tcp
-- action: allow
-  dst_ports:
-    - 8085
-  dst_net: 10.2.2.23/32
-  protocol: tcp
-
   # Cached API
   # NOTE: We want to deny this for most services as it makes operations difficult
   # but we have zotero which we don't currently control
