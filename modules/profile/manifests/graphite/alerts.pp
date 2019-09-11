@@ -96,6 +96,7 @@ class profile::graphite::alerts($graphite_url = hiera('graphite_url')) {
 
     # Monitor EventBus 4xx and 5xx HTTP response rate.
     monitoring::graphite_threshold { 'eventbus_http_error_rate':
+        ensure          => 'absent',
         description     => 'EventBus HTTP Error Rate (4xx + 5xx)',
         dashboard_links => ['https://grafana.wikimedia.org/dashboard/db/eventbus?panelId=1&fullscreen&orgId=1'],
         metric          => 'transformNull(sumSeries(eventbus.counters.eventlogging.service.EventHandler.POST.[45]*.rate))',
