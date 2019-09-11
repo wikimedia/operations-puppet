@@ -19,6 +19,8 @@ profile::ganeti::ganeti01.svc.eqiad.wmnet::nodes:
   - ganeti1007.eqiad.wmnet
   - ganeti1008.eqiad.wmnet
 profile::ganeti::rapi_nodes:
+    - netbox1001.wikimedia.org
+    - netbox2001.wikimedia.org
     - netmon1002.wikimedia.org
     - netmon2001.wikimedia.org
     - cumin1001.eqiad.wmnet
