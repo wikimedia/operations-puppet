@@ -56,3 +56,9 @@ profile::puppetmaster::frontend::canary_hosts:
   - 2620:0:861:101:10:64:0:31 # restbase1016
   - scb1001.eqiad.wmnet
   - 2620:0:861:101:10:64:0:16 # scb1001
+  - ms-be1016.eqiad.wmnet
+  - 2620:0:861:102:10:64:16:163 # ms-be1016
+  - ms-fe1005.eqiad.wmnet
+  - 2620:0:861:101:10:64:0:38 # ms-fe1005
+  - thumbor1001.eqiad.wmnet
+  - 2620:0:861:102:10:64:16:56 # thumbor1001
