@@ -300,11 +300,6 @@ puppetmaster_puppetdb4:
   profile::base::puppet::facter_major_version: 2
   profile::base::puppet::puppet_major_version: 4
 
-puppetmaster_labs:
-  __regex: !ruby/regexp /^labpuppetmaster100[12].wikimedia.org$/
-  profile::base::puppet::facter_major_version: 2
-  profile::base::puppet::puppet_major_version: 4
-
 puppetmaster_labtest:
   __regex: !ruby/regexp /^labtestpuppetmaster2001.wikimedia.org$/
   profile::base::puppet::facter_major_version: 2
