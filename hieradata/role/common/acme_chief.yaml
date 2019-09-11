@@ -40,6 +40,7 @@ profile::acme_chief::certificates:
         challenge: dns-01
         authorized_hosts:
         - 'cobalt.wikimedia.org'
+        - 'gerrit1001.wikimedia.org'
         - 'gerrit2001.wikimedia.org'
     icinga:
         CN: 'icinga.wikimedia.org'
