@@ -1,4 +1,4 @@
 # db2103
-# future candidate master
+# candidate master
 mariadb::shard: 's1'
 mariadb::binlog_format: 'STATEMENT'
