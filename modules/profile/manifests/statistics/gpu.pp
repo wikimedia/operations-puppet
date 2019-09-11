@@ -3,7 +3,7 @@
 class profile::statistics::gpu {
 
     class { 'amd_rocm':
-        version => '26',
+        version => '271',
     }
 
     class { 'prometheus::node_amd_rocm': }
