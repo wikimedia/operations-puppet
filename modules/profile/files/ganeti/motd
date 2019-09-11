@@ -1,0 +1,2 @@
+#!/bin/sh
+echo "The Ganeti master node for this cluster is $(/usr/sbin/gnt-cluster getmaster)"

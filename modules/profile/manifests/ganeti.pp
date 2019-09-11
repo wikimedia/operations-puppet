@@ -74,7 +74,7 @@ class profile::ganeti (
 
     motd::script { 'ganeti-master-motd':
         ensure  => present,
-        content => "#!/bin/sh\necho 'The Ganeti master node for this cluster is $(/usr/sbin/gnt-cluster getmaster)'\n"
+        content => 'puppet:///modules/profile/ganeti/motd',
     }
 
     if defined('$rapi_ro_user') and defined('$rapi_ro_password') {
