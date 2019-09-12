@@ -25,6 +25,7 @@ define statsite::instance(
     $graphite_port     = hiera('statsite::instance::graphite_port', 2003),
     $input_counter     = "statsd.${::hostname}.received",
     $extended_counters = hiera('statsite::instance::extended_counters', 1),
+    $ensure            = present,
 ) {
     $stream_cmd = "python /usr/lib/statsite/sinks/graphite.py ${graphite_host} ${graphite_port} \"\""
 
@@ -35,7 +36,7 @@ define statsite::instance(
     }
 
     service { "statsite@${port}":
-        ensure   => 'running',
+        ensure   => ensure_service($ensure),
         provider => 'systemd',
         enable   => true,
         require  => File['/lib/systemd/system/statsite@.service'],

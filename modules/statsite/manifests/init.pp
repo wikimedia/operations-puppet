@@ -20,13 +20,16 @@
 # [*extended_counters*]
 #   Export additional metrics for counters
 
-class statsite {
+class statsite (
+  Wmflib::Ensure $ensure = present,
+) {
     package { 'statsite':
-        ensure => present,
+        ensure => $ensure,
     }
 
     file { '/etc/statsite':
-        ensure => 'directory',
+        ensure => ensure_directory($ensure),
+        force  => true,
         owner  => 'root',
         group  => 'root',
         mode   => '0555',
@@ -41,18 +44,19 @@ class statsite {
     }
 
     systemd::unit { 'statsite@':
-        ensure  => present,
+        ensure  => $ensure,
         restart => true,
         content => systemd_template('statsite@')
     }
 
     systemd::unit { 'statsite-instances':
-        ensure  => present,
+        ensure  => $ensure,
         restart => true,
         content => systemd_template('statsite-instances')
     }
 
     rsyslog::conf { 'statsite':
+        ensure   => $ensure,
         source   => 'puppet:///modules/statsite/rsyslog.conf',
         priority => 20,
     }
