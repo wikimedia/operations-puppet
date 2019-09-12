@@ -4,7 +4,9 @@
 # NOTE to be included only from one host, icinga will generate different alerts
 # for all hosts that include this class.
 #
-class profile::prometheus::alerts {
+class profile::prometheus::alerts (
+    $datacenters = hiera('datacenters'),
+) {
 
     # Monitor Druid realtime ingestion event rate.
     # Experimental, only alerting the Analytics alias.
@@ -237,16 +239,9 @@ class profile::prometheus::alerts {
         prometheus_url  => "http://prometheus.svc.${::site}.wmnet/global",
     }
 
-    monitoring::check_prometheus { 'aggregate-ipsec-tunnel-status':
-        description     => 'Aggregate IPsec Tunnel Status',
-        dashboard_links => ['https://grafana.wikimedia.org/d/B9JpocKZz/ipsec-tunnel-status'],
-        # A value of 4+ represents ignored, so exclude this from the query
-        query           => 'instance_tunnel:ipsec_status:sum < 4',
-        warning         => 1,
-        critical        => 2,
-        method          => 'ge',
-        # Icinga will query the site-local Prometheus 'global' instance
-        prometheus_url  => "http://prometheus.svc.${::site}.wmnet/global",
+    # Perform aggregate ipsec checks per-datacenter (site) to ease downtimes/maintenance
+    $datacenters.each |String $datacenter| {
+        monitoring::alerts::aggregate_ipsec{"aggregate_ipsec_${datacenter}": site => $datacenter }
     }
 
 }
