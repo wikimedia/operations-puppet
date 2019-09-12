@@ -1,5 +1,6 @@
 cluster: swift
 nagios_group: swift
+profile::statsite::ensure: 'absent'
 profile::prometheus::statsd_exporter::mappings:
   # Account-related services
   - match: swift.*.*.account-auditor.passes
