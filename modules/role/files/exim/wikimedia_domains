@@ -35,3 +35,7 @@ civicrm.wikimedia.org
 rt.wikimedia.org
 phabricator.wikimedia.org
 benefactors.wikimedia.org
+
+# pr.wikimedia.org outbound mail is delegated to MuckRack (https://muckrack.com)
+# with inbound mail handled via aliases - T231387
+pr.wikimedia.org
