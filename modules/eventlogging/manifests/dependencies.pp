@@ -26,7 +26,6 @@ class eventlogging::dependencies {
         'python-dateutil',
         'python-jsonschema',
         'python-confluent-kafka',
-        'python-kafka',
         # Python snappy allows python-kafka to consume Snappy compressed data.
         'python-snappy',
         'python-mysqldb',
@@ -39,4 +38,18 @@ class eventlogging::dependencies {
         'python-zmq',
         'python-ua-parser'
     ])
+
+    # Ensure python-kafka for eventlogging
+    # is at 1.4.1.  There is an upstream bug
+    # https://github.com/dpkp/kafka-python/issues/1418.
+    # Our apt repo (as of 2019-09) has python-kafka 1.4.6
+    # for use with coal.  We want to ensure we
+    # don't accidentally upgrade on eventloggging
+    # until this is fixed.
+    # See also: https://phabricator.wikimedia.org/T222941
+    if !defined(Package['python-kafka']) {
+        package { 'python-kafka':
+            ensure => '1.4.1-1~stretch1'
+        }
+    }
 }
