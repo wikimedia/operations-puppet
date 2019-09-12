@@ -32,35 +32,6 @@ class profile::graphite::alerts(
         notes_link      => 'https://wikitech.wikimedia.org/wiki/Analytics/Systems/EventLogging/Administration#Mysql_insertion_rate_dropping_to_zero_due_to_db_failures',
     }
 
-    # Monitor memcached error rate from MediaWiki. This is commonly a sign of
-    # a failing nutcracker instance that can be tracked down via
-    # https://logstash.wikimedia.org/#/dashboard/elasticsearch/memcached
-    monitoring::graphite_threshold { 'mediawiki-memcached-threshold':
-        description     => 'MediaWiki memcached error rate',
-        graphite_url    => $graphite_url,
-        dashboard_links => ['https://grafana.wikimedia.org/d/000000438/mediawiki-alerts?panelId=1&fullscreen&orgId=1'],
-        metric          => 'transformNull(logstash.rate.mediawiki.memcached.ERROR.sum, 0)',
-        # Nominal error rate in production is <150/min
-        warning         => 1000,
-        critical        => 5000,
-        from            => '5min',
-        percentage      => 40,
-        notes_link      => 'https://wikitech.wikimedia.org/wiki/Memcached',
-    }
-
-    # Monitor MediaWiki fatals and exceptions.
-    monitoring::graphite_threshold { 'mediawiki_error_rate':
-        description     => 'MediaWiki exceptions and fatals per minute',
-        graphite_url    => $graphite_url,
-        dashboard_links => ['https://grafana.wikimedia.org/d/000000438/mediawiki-alerts?panelId=2&fullscreen&orgId=1'],
-        metric          => 'transformNull(sumSeries(logstash.rate.mediawiki.fatal.ERROR.sum, logstash.rate.mediawiki.exception.ERROR.sum), 0)',
-        warning         => 25,
-        critical        => 50,
-        from            => '10min',
-        percentage      => 70,
-        notes_link      => 'https://wikitech.wikimedia.org/wiki/Application_servers',
-    }
-
     # Monitor MediaWiki session failures
     # See https://grafana.wikimedia.org/dashboard/db/edit-count
     monitoring::graphite_threshold { 'mediawiki_session_loss':
