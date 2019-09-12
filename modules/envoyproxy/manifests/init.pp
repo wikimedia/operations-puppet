@@ -1,9 +1,14 @@
 class envoyproxy(
     Wmflib::Ensure $ensure,
     Stdlib::Port $admin_port,
+    String $service_cluster,
     Enum['envoy', 'envoyproxy', 'getenvoy-envoy'] $pkg_name,
     Boolean $use_override = true,
 ) {
+
+    # Variables for zone-aware routing, useful if that is used.
+    $service_node = $::fqdn
+    $service_zone = $::site
     package { $pkg_name:
         ensure => $ensure
     }
