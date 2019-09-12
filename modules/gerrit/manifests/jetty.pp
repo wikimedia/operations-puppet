@@ -81,13 +81,15 @@ class gerrit::jetty(
 
     if os_version('debian == buster') {
         $jdk_package = 'openjdk-11-jdk'
+        $db_driver_package = 'libmariadb-java'
     } else {
         $jdk_package = 'openjdk-8-jdk'
+        $db_driver_package = 'libmysql-java'
     }
 
     require_package([
         $jdk_package,
-        'libmysql-java',
+        $db_driver_package,
         'python3',
         'python3-virtualenv',
         'virtualenv',
