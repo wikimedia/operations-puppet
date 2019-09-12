@@ -10,11 +10,15 @@
 #
 # [*value*]
 #   preseeded answer to the debconf question
-
-define debconf::set($value) {
-    exec { "debconf-communicate set ${title}":
+#
+# [*type*]
+#   type of the value to set.
+#   Default: string
+#
+define debconf::set($value, $type = 'string') {
+    exec { "debconf-set-selections set ${type} ${title}":
         path    => '/usr/bin:/usr/sbin:/bin:/sbin',
-        command => "echo set ${title} \"${value}\" | debconf-communicate",
+        command => "echo set ${title} ${type} \"${value}\" | debconf-set-selections",
         unless  => "test \"$(echo get ${title} | debconf-communicate)\" = \"0 ${value}\"",
     }
 }
