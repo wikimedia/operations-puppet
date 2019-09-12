@@ -21,15 +21,16 @@ class profile::pybal(
         $bgp_med = 100
     }
 
-    # TODO: move bgp-peer-address to a parameter? it will require
-    # regex hiera, so maybe not
     $global_options = {
         'bgp' => $bgp,
+        # This is being transitioned to a fixed list of all local routers,
+        # per-DC.  Perhaps we can pull this from other shared site hieradata
+        # instead after we're done with the conversion?
         'bgp-peer-address' => $::hostname ? {
             /^lvs101[36]$/  => '208.80.154.196', # cr1-eqiad
             /^lvs101[45]$/  => '208.80.154.197', # cr2-eqiad
             /^lvs200[1-3]$/ => '208.80.153.192', # cr1-codfw
-            /^lvs200[4-6]$/ => '208.80.153.193', # cr2-codfw
+            /^lvs200[4-6]$/ => "[ '208.80.153.192', '208.80.153.193' ]", # cr1-codfw,cr2-codfw
             /^lvs300[12]$/  => '91.198.174.244',  # cr2-esams
             /^lvs300[34]$/  => '91.198.174.245',  # cr1-esams
             /^lvs400[56]$/  => '198.35.26.192',   # cr3-ulsfo
