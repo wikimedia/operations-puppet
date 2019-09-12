@@ -85,6 +85,14 @@ class gerrit::jetty(
     } else {
         $jdk_package = 'openjdk-8-jdk'
         $db_driver_package = 'libmysql-java'
+
+        # before buster we used the mysql-connector from distro package
+        file { '/var/lib/gerrit2/review_site/lib/mysql-connector-java.jar':
+            ensure  => 'link',
+            target  => '/usr/share/java/mysql-connector-java.jar',
+            require => [File['/var/lib/gerrit2/review_site/lib'], Package['libmysql-java']],
+        }
+
     }
 
     require_package([
@@ -197,12 +205,6 @@ class gerrit::jetty(
         group   => 'gerrit2',
         mode    => '0555',
         require => File['/var/lib/gerrit2'],
-    }
-
-    file { '/var/lib/gerrit2/review_site/lib/mysql-connector-java.jar':
-        ensure  => 'link',
-        target  => '/usr/share/java/mysql-connector-java.jar',
-        require => [File['/var/lib/gerrit2/review_site/lib'], Package['libmysql-java']],
     }
 
     file { '/var/lib/gerrit2/review_site/lib/javamelody-deps_deploy.jar':
