@@ -79,8 +79,14 @@ class gerrit::jetty(
         '-XX:GCLogFileSize=2M',
     ]
 
+    if os_version('debian == buster') {
+        $jdk_package = 'openjdk-11-jdk'
+    } else {
+        $jdk_package = 'openjdk-8-jdk'
+    }
+
     require_package([
-        'openjdk-8-jdk',
+        $jdk_package,
         'libmysql-java',
         'python3',
         'python3-virtualenv',
