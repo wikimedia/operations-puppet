@@ -3754,3 +3754,7 @@ ldap_only_users:
     ensure: present
     realname: Anne Tomasevich
     email: atomasevich@wikimedia.org
+  ahollender:
+    ensure: present
+    realname: Alex Hollender
+    email: ahollender@wikimedia.org
