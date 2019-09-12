@@ -13,7 +13,7 @@ class role::piwik {
     include ::profile::tlsproxy::service
     include ::profile::piwik::instance
     # override profile::backup::enable to disable regular backups
-    include ::profile::piwik::backup
+    include ::profile::analytics::backup::database
     include ::profile::piwik::database
 
 }
