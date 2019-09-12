@@ -19,7 +19,7 @@
 
 class prometheus::statsd_exporter (
     Array[Hash] $mappings = [],
-    String $relay_address = '',
+    String $relay_address = undef,
     String $listen_address = ':9112',
     String $arguments = '',
 ) {
@@ -60,7 +60,12 @@ class prometheus::statsd_exporter (
         mode    => '0444',
         owner   => 'root',
         group   => 'root',
-        content => "ARGS=\"--statsd.mapping-config=${config} --statsd.relay-address=${relay_address} --web.listen-address=${listen_address} ${arguments}\"",
+        content => inline_template(join(['ARGS="',
+            '--statsd.mapping-config=<%= @config %>',
+            '<% if @relay_address %>--statsd.relay-address=<%= @relay_address %><% end %>',
+            '--web.listen-address=<%= @listen_address %>',
+            '<%= @arguments %>',
+        '"'], ' ')),
         notify  => Service['prometheus-statsd-exporter'],
     }
 
