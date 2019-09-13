@@ -5666,7 +5666,7 @@ host pc2010 {
 host phab1001 {
     hardware ethernet 14:18:77:5B:23:4C;
     fixed-address phab1001.eqiad.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/buster-installer/";
 }
 
 host phab1003 {
