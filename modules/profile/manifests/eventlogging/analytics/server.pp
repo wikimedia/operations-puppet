@@ -17,6 +17,14 @@ class profile::eventlogging::analytics::server(
         content => secret('keyholder/eventlogging.pub'),
     }
 
+    # Ensure python-kafka for eventlogging
+    # is at 1.4.1.  There is an upstream bug
+    # https://github.com/dpkp/kafka-python/issues/1418.
+    # Our apt repo (as of 2019-09) has python-kafka 1.4.6
+    # for use with coal.  We want to ensure we
+    # don't accidentally upgrade on eventloggging
+    # until this is fixed.
+    # See also: https://phabricator.wikimedia.org/T222941
     class { 'eventlogging::server':
         eventlogging_path    => '/srv/deployment/eventlogging/analytics',
         log_dir              => '/srv/log/eventlogging/systemd',

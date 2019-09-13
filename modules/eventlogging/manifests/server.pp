@@ -56,14 +56,7 @@ class eventlogging::server(
     $python_kafka_version = 'present',
 )
 {
-    # Ensure python-kafka for eventlogging
-    # is at 1.4.1.  There is an upstream bug
-    # https://github.com/dpkp/kafka-python/issues/1418.
-    # Our apt repo (as of 2019-09) has python-kafka 1.4.6
-    # for use with coal.  We want to ensure we
-    # don't accidentally upgrade on eventloggging
-    # until this is fixed.
-    # See also: https://phabricator.wikimedia.org/T222941
+
     class { '::eventlogging::dependencies':
         python_kafka_version => $python_kafka_version,
     }
