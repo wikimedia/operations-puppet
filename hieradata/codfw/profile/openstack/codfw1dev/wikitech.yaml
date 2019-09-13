@@ -1,0 +1,2 @@
+profile::openstack::codfw1dev::wikitech::webserver_hostname_aliases: ''
+profile::openstack::codfw1dev::wikitech::db_name: 'labtestwiki'

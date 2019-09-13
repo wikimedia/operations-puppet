@@ -1203,7 +1203,7 @@ node /^cloudservices100[34]\.wikimedia\.org$/ {
 }
 
 node 'cloudweb2001-dev.wikimedia.org' {
-    role(spare::system)
+    role(wmcs::openstack::codfw1dev::cloudweb)
 }
 
 node /^cloudnet200[23]-dev\.codfw\.wmnet$/ {
