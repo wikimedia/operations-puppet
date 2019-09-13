@@ -31,6 +31,7 @@ class openstack::keystone::service(
     $wiki_consumer_secret,
     $wiki_access_token,
     $wiki_access_secret,
+    String $wsgi_server,
 ) {
     class { "openstack::keystone::service::${version}":
         keystone_host               => $keystone_host,
@@ -59,6 +60,7 @@ class openstack::keystone::service(
         wiki_consumer_secret        => $wiki_consumer_secret,
         wiki_access_token           => $wiki_access_token,
         wiki_access_secret          => $wiki_access_secret,
+        wsgi_server                 => $wsgi_server,
     }
 
     group { 'keystone':

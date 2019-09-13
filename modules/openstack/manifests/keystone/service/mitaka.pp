@@ -25,6 +25,7 @@ class openstack::keystone::service::mitaka(
     $wiki_consumer_secret,
     $wiki_access_token,
     $wiki_access_secret,
+    String $wsgi_server,
 ) {
     class { "openstack::keystone::service::mitaka::${::lsbdistcodename}": }
 
@@ -46,7 +47,7 @@ class openstack::keystone::service::mitaka(
             group   => 'keystone',
             mode    => '0444',
             content => template('openstack/mitaka/keystone/keystone.conf.erb'),
-            notify  => Service['keystone'],
+            notify  => Service[$wsgi_server],
             require => Package['keystone'];
         '/etc/keystone/keystone-paste.ini':
             ensure  => 'present',
@@ -54,7 +55,7 @@ class openstack::keystone::service::mitaka(
             group   => 'root',
             mode    => '0644',
             source  => 'puppet:///modules/openstack/mitaka/keystone/keystone-paste.ini',
-            notify  => Service['keystone'],
+            notify  => Service[$wsgi_server],
             require => Package['keystone'];
         '/etc/keystone/policy.json':
             ensure  => 'present',
@@ -62,7 +63,7 @@ class openstack::keystone::service::mitaka(
             owner   => 'root',
             group   => 'root',
             source  => 'puppet:///modules/openstack/mitaka/keystone/policy.json',
-            notify  => Service['keystone'],
+            notify  => Service[$wsgi_server],
             require => Package['keystone'];
         '/etc/keystone/logging.conf':
             ensure  => 'present',
@@ -70,7 +71,7 @@ class openstack::keystone::service::mitaka(
             owner   => 'root',
             group   => 'root',
             mode    => '0644',
-            notify  => Service['keystone'],
+            notify  => Service[$wsgi_server],
             require => Package['keystone'];
         '/etc/keystone/keystone.my.cnf':
             ensure  => 'present',
@@ -84,7 +85,7 @@ class openstack::keystone::service::mitaka(
             group   => 'root',
             mode    => '0644',
             source  => 'puppet:///modules/openstack/mitaka/keystone/wmfkeystoneauth',
-            notify  => Service['keystone'],
+            notify  => Service[$wsgi_server],
             recurse => true;
         '/usr/lib/python2.7/dist-packages/wmfkeystoneauth.egg-info':
             ensure  => 'present',
@@ -92,7 +93,7 @@ class openstack::keystone::service::mitaka(
             owner   => 'root',
             group   => 'root',
             mode    => '0644',
-            notify  => Service['keystone'],
+            notify  => Service[$wsgi_server],
             recurse => true;
     }
 }

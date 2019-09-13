@@ -1,7 +1,8 @@
 # Hook keystone notification events for custom
 #  project swizzling
 class openstack::keystone::hooks(
-    $version,
+    String $version,
+    String $wsgi_server,
     ) {
     include openstack::designate::makedomain
     include openstack::keystone::service
@@ -12,7 +13,7 @@ class openstack::keystone::hooks(
         group   => 'root',
         mode    => '0644',
         recurse => true,
-        notify  => Service['keystone'],
+        notify  => Service[$wsgi_server],
     }
 
     file { '/usr/lib/python2.7/dist-packages/wmfkeystonehooks.egg-info':
@@ -21,6 +22,6 @@ class openstack::keystone::hooks(
         group   => 'root',
         mode    => '0644',
         recurse => true,
-        notify  => Service['keystone'],
+        notify  => Service[$wsgi_server],
     }
 }

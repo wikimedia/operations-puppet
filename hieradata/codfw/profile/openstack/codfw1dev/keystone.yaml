@@ -1,3 +1,4 @@
-profile::openstack::codfw1dev::keystone::daemon_active: true
+profile::openstack::codfw1dev::keystone::daemon_active: false
 profile::openstack::codfw1dev::keystone::db_host: 'clouddb2001-dev.codfw.wmnet'
 profile::openstack::codfw1dev::keystone::token_driver: 'normal'
+profile::openstack::codfw1dev::keystone::wsgi_server: 'apache2'

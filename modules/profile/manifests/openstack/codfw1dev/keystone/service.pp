@@ -30,9 +30,12 @@ class profile::openstack::codfw1dev::keystone::service(
     $puppetmaster_hostname = hiera('profile::openstack::codfw1dev::puppetmaster_hostname'),
     $auth_port = hiera('profile::openstack::base::keystone::auth_port'),
     $public_port = hiera('profile::openstack::base::keystone::public_port'),
+    Boolean $daemon_active = lookup('profile::openstack::codfw1dev::keystone::daemon_active'),
+    String $wsgi_server = lookup('profile::openstack::codfw1dev::keystone::wsgi_server'),
     ) {
 
     class {'::profile::openstack::base::keystone::service':
+        daemon_active                        => $daemon_active,
         version                              => $version,
         region                               => $region,
         nova_controller                      => $nova_controller,
@@ -61,11 +64,13 @@ class profile::openstack::codfw1dev::keystone::service(
         second_region_designate_host         => $second_region_designate_host,
         second_region_designate_host_standby => $second_region_designate_host_standby,
         labweb_hosts                         => $labweb_hosts,
+        wsgi_server                          => $wsgi_server,
     }
     contain '::profile::openstack::base::keystone::service'
 
     class {'::profile::openstack::base::keystone::hooks':
-        version => $version,
+        version     => $version,
+        wsgi_server => $wsgi_server,
     }
     contain '::profile::openstack::base::keystone::hooks'
 

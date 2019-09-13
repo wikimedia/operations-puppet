@@ -41,6 +41,7 @@ class profile::openstack::base::keystone::service(
     $second_region_designate_host = hiera('profile::openstack::base::second_region_designate_host'),
     $second_region_designate_host_standby = hiera('profile::openstack::base::second_region_designate_host_standby'),
     $labweb_hosts = hiera('profile::openstack::base::labweb_hosts'),
+    String $wsgi_server = lookup('profile::openstack::base::keystone::wsgi_server'),
     ) {
 
     include ::network::constants
@@ -77,6 +78,7 @@ class profile::openstack::base::keystone::service(
         wiki_consumer_secret        => $wiki_consumer_secret,
         wiki_access_token           => $wiki_access_token,
         wiki_access_secret          => $wiki_access_secret,
+        wsgi_server                 => $wsgi_server,
     }
     contain '::openstack::keystone::service'
 
