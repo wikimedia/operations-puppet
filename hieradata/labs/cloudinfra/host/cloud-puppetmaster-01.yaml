@@ -23,4 +23,5 @@ profile::puppetmaster::common::storeconfigs: none
 profile::puppetmaster::frontend::allow_from: [.wmflabs]
 puppetmaster: cloudinfra-internal-puppetmaster01.cloudinfra.eqiad.wmflabs
 puppetmaster::hiera_config: labs
+profile::openstack::eqiad1::statsd_host: labmon1002.eqiad.wmnet
 
