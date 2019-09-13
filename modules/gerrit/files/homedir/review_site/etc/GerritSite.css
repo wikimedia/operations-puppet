@@ -407,6 +407,120 @@ table.changeTable a.gwt-Anchor {
     min-width: 400px;
 }
 
+/**
+ * Why are we changing themes?
+ * As of writing, Gerrit does not have a convenient interface for adding
+ * new themes and/or variants of themes. As such, we've picked themes
+ * that are most similar to the 'default' and re-purposed them with
+ * CSS overrides. These are chosen so as to be least upsetting to anyone
+ * who may've been using these, giving them the choice between 1) use
+ * our modifications (which only affect diff colors, none of the syntax
+ * highlight styles are overridden), or 2) to switch back to 'default'
+ * which is still very similar (T232893).
+ */
+
+/**
+ * Augment 'eclipse' theme to be more high-contrast friendly.
+ *
+ * This theme was chosen as base because it nearly identical to the 'default'
+ * theme, all the same tokens have the same kinds of colors.
+ * The only difference is that Eclipse already gives these slightly darker
+ * colors for better contrast.
+ *
+ * Differences:
+ *
+ * - Make the diff-removed background less red and more orange-yellow.
+ *   This is to make red keywords in syntax-highlighted code easier to read.
+ *
+ * - Make the diff-added background green less warm/yellow and more cold/blue.
+ *   This is to make the color easier to distinguish from red.
+ *
+ * - Make both the diff-removed and diff-added backgrounds more bright.
+ *   This is to provide better contrast with some of the bright-colored
+ *   text colors, such as blue (for string literals) and green (comments).
+ *
+ * Screenshot: <https://phabricator.wikimedia.org/T232893#5492128>
+ */
+.com-google-gerrit-client-diff-SideBySideTable_BinderImpl_GenCss_style-a .cm-s-eclipse .com-google-gerrit-client-diff-SideBySideTable_BinderImpl_GenCss_style-intralineBg {
+  background-color: #ffeedb; /* diff removed line, background */
+}
+.com-google-gerrit-client-diff-SideBySideTable_BinderImpl_GenCss_style-a .cm-s-eclipse .com-google-gerrit-client-diff-SideBySideTable_BinderImpl_GenCss_style-diff {
+  background-color: #ffcf9e; /* diff removed chars, background */
+}
+.com-google-gerrit-client-diff-SideBySideTable_BinderImpl_GenCss_style-b .cm-s-eclipse .com-google-gerrit-client-diff-SideBySideTable_BinderImpl_GenCss_style-intralineBg {
+  background-color: #d5ffe6; /* diff added line, background */
+}
+.com-google-gerrit-client-diff-SideBySideTable_BinderImpl_GenCss_style-b .cm-s-eclipse .com-google-gerrit-client-diff-SideBySideTable_BinderImpl_GenCss_style-diff {
+  background-color: #97ffb8; /* diff added chars, background */
+}
+
+
+/**
+ * Augment 'elegant' to be colorblind friendly.
+ *
+ * This theme was chosen as base because overall it is similar to the 'default'
+ * with most tokens have a similar color. The main difference is that the text
+ * is brighter overall, uses italics for comments, and uses no bold letters.
+ *
+ * This makes it more suitable for use on a white backgrounds, which is
+ * what the below changes add to this theme.
+ *
+ * Screenshot: <https://phabricator.wikimedia.org/T232893#5493378>
+ */
+.cm-s-elegant div:not(.com-google-gerrit-client-diff-SideBySideTable_BinderImpl_GenCss_style-intralineBg):not(.com-google-gerrit-client-diff-SideBySideTable_BinderImpl_GenCss_style-diff) > .CodeMirror-line {
+  /* diff context line */
+  background-color: #f8f9fa;
+}
+.cm-s-elegant .com-google-gerrit-client-diff-SideBySideTable_BinderImpl_GenCss_style-intralineBg {
+  /* diff changed (lines or chars) */
+  background-color: #fff;
+}
+.cm-s-elegant div.com-google-gerrit-client-diff-SideBySideTable_BinderImpl_GenCss_style-intralineBg {
+  /* diff changed (any whole line) */
+  border: 1px solid transparent;
+  border-bottom: 0;
+}
+.cm-s-elegant div.com-google-gerrit-client-diff-SideBySideTable_BinderImpl_GenCss_style-intralineBg + div.com-google-gerrit-client-diff-SideBySideTable_BinderImpl_GenCss_style-intralineBg {
+  /* diff changed (N+1 line) */
+  border-top: 0;
+}
+.cm-s-elegant div.com-google-gerrit-client-diff-SideBySideTable_BinderImpl_GenCss_style-intralineBg + div:not(.com-google-gerrit-client-diff-SideBySideTable_BinderImpl_GenCss_style-intralineBg) {
+  /* diff changed (first line after block, virtual bottom) */
+  border-top: 1px solid transparent;
+}
+.com-google-gerrit-client-diff-SideBySideTable_BinderImpl_GenCss_style-a .cm-s-elegant div.com-google-gerrit-client-diff-SideBySideTable_BinderImpl_GenCss_style-intralineBg,
+.com-google-gerrit-client-diff-SideBySideTable_BinderImpl_GenCss_style-a .cm-s-elegant div.com-google-gerrit-client-diff-SideBySideTable_BinderImpl_GenCss_style-intralineBg + div:not(.com-google-gerrit-client-diff-SideBySideTable_BinderImpl_GenCss_style-intralineBg) {
+  /* diff removed block */
+  border-color: #e0b141;
+}
+.com-google-gerrit-client-diff-SideBySideTable_BinderImpl_GenCss_style-a .cm-s-elegant .com-google-gerrit-client-diff-SideBySideTable_BinderImpl_GenCss_style-diff {
+  /* diff removed chars */
+  background-color: #ffe49c;
+}
+.com-google-gerrit-client-diff-SideBySideTable_BinderImpl_GenCss_style-b .cm-s-elegant div.com-google-gerrit-client-diff-SideBySideTable_BinderImpl_GenCss_style-intralineBg,
+.com-google-gerrit-client-diff-SideBySideTable_BinderImpl_GenCss_style-b .cm-s-elegant div.com-google-gerrit-client-diff-SideBySideTable_BinderImpl_GenCss_style-intralineBg + div:not(.com-google-gerrit-client-diff-SideBySideTable_BinderImpl_GenCss_style-intralineBg) {
+  /* diff added block */
+  border-color: #5698d6;
+}
+.com-google-gerrit-client-diff-SideBySideTable_BinderImpl_GenCss_style-b .cm-s-elegant .com-google-gerrit-client-diff-SideBySideTable_BinderImpl_GenCss_style-diff {
+  /* diff added chars */
+  background-color: #d8ecff;
+}
+.cm-s-elegant .com-google-gerrit-client-diff-Scrollbar-Style-delete {
+  /* scrollbar diff removed */
+  background-color: #e0b141;
+}
+.cm-s-elegant .com-google-gerrit-client-diff-Scrollbar-Style-edit {
+  /* scrollbar diff changed (left removed, right added) */
+  border-left-color: #e0b141;
+  background-color: #5698d6;
+}
+.cm-s-elegant .com-google-gerrit-client-diff-Scrollbar-Style-insert {
+  /* scrollbar diff added */
+  background-color: #5698d6;
+}
+
+
 #change_infoTable {
   border-collapse: collapse;
 }
