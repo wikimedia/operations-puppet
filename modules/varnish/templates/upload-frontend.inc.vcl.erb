@@ -147,7 +147,7 @@ sub cluster_fe_ratelimit {
 				return (synth(429, "Too Many Requests"));
 			}
 			# Only process uri's maps understands
-			if (req.url !~ "^/(robots\.txt|main\.(js|css)|favicon.ico|lib|leaflet|geoshape|geoline|babel|(img/)?(osm|babel|v4))") {
+			if (req.url !~ "^/($|\?|robots\.txt|main\.(js|css)|favicon.ico|lib|leaflet|geoshape|geoline|babel|(img/)?(osm|babel|v4))") {
 				return (synth(400, "Bad Request"));
 			}
 			// Also basic validation of tile URI patterns
