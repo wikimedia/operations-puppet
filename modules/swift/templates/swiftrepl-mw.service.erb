@@ -1,0 +1,6 @@
+[Unit]
+Description=Ensure mediawiki containers are synchronized across sites
+After=network.target
+
+[Service]
+ExecStart=/usr/local/bin/swiftrepl-mw repl commons notcommons unsharded global timeline transcoded
