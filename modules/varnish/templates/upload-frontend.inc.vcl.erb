@@ -150,7 +150,11 @@ sub cluster_fe_ratelimit {
 			if (req.url ~ "^/osm-intl/" && req.url !~ "^/osm-intl/\d+/\d+/\d+(@\d+x)?\.(png|json|headers|svg|jpeg)(\?|$)") {
 				return (synth(400, "Bad Request"));
 			}
+			if (req.url ~ "^/img/osm-intl" && req.url !~ "^/img/osm-intl(,([\d\.-]+|a)){3},\d+x\d+(@\d+x)?.(png|json|headers|svg|jpeg)(\?|$)") {
+				return (synth(400, "Bad Request"));
+			}
 		}
+
 
 		// Thumbor rate limiting: 1000/10s (100/s long term, with 1000 burst)
 		if (req.url ~ "/thumb/") {
