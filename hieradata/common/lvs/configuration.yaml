@@ -358,11 +358,6 @@ lvs::configuration::lvs_services:
       IdleConnection:
         timeout-clean-reconnect: 3
         max-delay: 300
-      RunCommand:
-        command: /bin/sh
-        arguments: "[ '/etc/pybal/runcommand/check-apache', server.host ]"
-        interval: 60
-        timeout: 10
     conftool:
       cluster: appserver
       service: apache2
@@ -418,11 +413,6 @@ lvs::configuration::lvs_services:
       IdleConnection:
         timeout-clean-reconnect: 3
         max-delay: 300
-      RunCommand:
-        command: /bin/sh
-        arguments: "[ '/etc/pybal/runcommand/check-apache', server.host ]"
-        interval: 60
-        timeout: 10
     conftool:
       cluster: api_appserver
       service: apache2
