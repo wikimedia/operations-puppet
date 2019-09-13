@@ -25,6 +25,7 @@ profile::trafficserver::tls::inbound_tls_settings:
   dhparams_file: '/etc/ssl/dhparam.pem'
   max_record_size: 16383
   session_cache: 2
+  session_cache_timeout: 7200
   session_cache_auto_clear: 1
   session_cache_size: 512000
   session_cache_buckets: 32768
