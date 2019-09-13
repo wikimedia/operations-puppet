@@ -73,6 +73,7 @@ class phabricator (
     String $deploy_target     = 'phabricator/deployment',
     Boolean $enable_php_fpm   = false,
     Integer $opcache_validate = 0,
+    Stdlib::Ensure::Service $phd_service_ensure = running,
 ) {
     validate_hash($conf_files)
 
@@ -309,19 +310,10 @@ class phabricator (
         require  => $base_requirements,
     }
 
-    # phd service is only running on active server set in Hiera
-    # will be changed after cluster setup is finished
-    $phabricator_active_server = hiera('phabricator_active_server')
-    if $::hostname == $phabricator_active_server {
-        $phd_service_ensure = 'running'
-    } else {
-        $phd_service_ensure = 'stopped'
-    }
-
     systemd::service { 'phd':
         ensure         => 'present',
         content        => systemd_template('phd'),
-        require        => $base_requirements,
+        require        => Class['::phabricator::phd'],
         service_params => {
             ensure     => $phd_service_ensure,
             hasrestart => true,

@@ -30,6 +30,7 @@ class profile::phabricator::main (
     Boolean $enable_php_fpm = hiera('phabricator_enable_php_fpm', false),
     Integer $opcache_validate = hiera('phabricator_opcache_validate', 0),
     String $timezone = hiera('phabricator_timezone', 'UTC'),
+    Stdlib::Ensure::Service $phd_service_ensure = hiera('profile::phabricator::main::phd_service_ensure', 'running'),
 ) {
 
     mailalias { 'root':
@@ -225,10 +226,11 @@ class profile::phabricator::main (
             'gitblit.hostname'                       => 'git.wikimedia.org',
             'notification.servers'                   => $notification_servers,
         },
-        conf_files       => $conf_files,
-        enable_php_fpm   => $enable_php_fpm,
-        opcache_validate => $opcache_validate,
-        timezone         => $timezone,
+        conf_files          => $conf_files,
+        enable_php_fpm      => $enable_php_fpm,
+        opcache_validate    => $opcache_validate,
+        timezone            => $timezone,
+        phd_service_ensure  => $phd_service_ensure
     }
     # lint:endignore
 
