@@ -23,6 +23,10 @@ class kafkatee(
         ensure => 'directory',
     }
 
+    # Mask the (default) package provided systemd config
+    # The "real" ones are created with instance.pp
+    systemd::mask { 'kafkatee.service':  }
+
     if $configure_rsyslog {
         # Basic logrotate.d configuration to rotate /var/log/kafkatee.log
         logrotate::conf { 'kafkatee':
