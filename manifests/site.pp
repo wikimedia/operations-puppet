@@ -1275,6 +1275,10 @@ node /^(phab1003\.eqiad|phab2001\.codfw)\.wmnet$/ {
     role(phabricator)
 }
 
+node 'phab1001.eqiad.wmnet' {
+    role(spare::system)
+}
+
 node 'iron.wikimedia.org' {
     role(spare::system)
 }
