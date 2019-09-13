@@ -134,6 +134,13 @@ sub cluster_fe_ratelimit {
 			}
 		}
 
+		// geoshape limit rate: 10/10s (1/s long term, with 10 burst)
+		if (req.http.Host == "<%= @vcl_config.fetch('maps_domain') %>" && req.url ~ "/geoshape") {
+			if (vsthrottle.is_denied("maps-geoshape:" + req.http.X-Client-IP, 10, 10s)) {
+				return (synth(429, "Too Many Requests"));
+			}
+		}
+
 		// Maps rate limiting: 1000/10s (100/s long term, with 1000 burst)
 		if (req.http.Host == "<%= @vcl_config.fetch('maps_domain') %>") {
 			if (vsthrottle.is_denied("maps:" + req.http.X-Client-IP, 1000, 10s)) {
