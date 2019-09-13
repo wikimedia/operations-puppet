@@ -15,6 +15,8 @@ class profile::gerrit::server(
     Optional[Stdlib::Ipv6] $ipv6 = hiera('gerrit::service::ipv6', undef),
     Enum['11', '8'] $java_version = hiera('gerrit::server::java_version', '8'),
     Boolean $is_replica = hiera('gerrit::server::is_replica', false),
+    Optional[String] $scap_user = hiera('gerrit::server::scap_user', 'gerrit2'),
+    Optional[String] $scap_key_name = hiera('gerrit::server::scap_key_name', 'gerrit'),
 ) {
 
     interface::alias { 'gerrit server':
@@ -90,6 +92,8 @@ class profile::gerrit::server(
         use_acmechief    => $use_acmechief,
         ldap_config      => $ldap_config,
         java_version     => $java_version,
+        scap_user        => $scap_user,
+        scap_key_name    => $scap_key_name,
     }
 
     class { '::gerrit::replication_key':

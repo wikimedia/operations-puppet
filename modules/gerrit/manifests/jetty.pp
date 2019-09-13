@@ -22,6 +22,8 @@ class gerrit::jetty(
     Optional[Hash] $ldap_config = undef,
     # You must also change $java_home when changing versions.
     Enum['11', '8'] $java_version = '8',
+    Optional[String] $scap_user = undef,
+    Optional[String] $scap_key_name = undef,
     ) {
 
     group { 'gerrit2':
@@ -108,52 +110,52 @@ class gerrit::jetty(
     ])
 
     scap::target { 'gerrit/gerrit':
-        deploy_user => 'gerrit2',
+        deploy_user => $scap_user,
         manage_user => false,
-        key_name    => 'gerrit',
+        key_name    => $scap_key_name,
     }
 
     scap::target { 'gervert/deploy':
-        deploy_user => 'gerrit2',
+        deploy_user => $scap_user,
         manage_user => false,
-        key_name    => 'gerrit',
+        key_name    => $scap_key_name,
     }
 
     file { '/srv/gerrit':
         ensure => directory,
-        owner  => 'gerrit2',
-        group  => 'gerrit2',
+        owner  => $scap_user,
+        group  => $scap_user,
         mode   => '0664',
     }
 
     file { '/srv/gerrit/jvmlogs':
         ensure  => directory,
-        owner   => 'gerrit2',
-        group   => 'gerrit2',
+        owner   => $scap_user,
+        group   => $scap_user,
         mode    => '0664',
         require => File['/srv/gerrit'],
     }
 
     file { '/srv/gerrit/git':
         ensure  => directory,
-        owner   => 'gerrit2',
-        group   => 'gerrit2',
+        owner   => $scap_user,
+        group   => $scap_user,
         mode    => '0775',
         require => File['/srv/gerrit'],
     }
 
     file { '/srv/gerrit/plugins':
         ensure  => directory,
-        owner   => 'gerrit2',
-        group   => 'gerrit2',
+        owner   => $scap_user,
+        group   => $scap_user,
         mode    => '0775',
         require => File['/srv/gerrit'],
     }
 
     file { '/srv/gerrit/plugins/lfs':
         ensure  => directory,
-        owner   => 'gerrit2',
-        group   => 'gerrit2',
+        owner   => $scap_user,
+        group   => $scap_user,
         mode    => '0775',
         require => File['/srv/gerrit/plugins'],
     }
@@ -162,23 +164,23 @@ class gerrit::jetty(
         ensure  => directory,
         recurse => 'remote',
         mode    => '0755',
-        owner   => 'gerrit2',
-        group   => 'gerrit2',
+        owner   => $scap_user,
+        group   => $scap_user,
         source  => 'puppet:///modules/gerrit/homedir',
     }
 
     file { '/var/lib/gerrit2/review_site/bin':
         ensure  => directory,
-        owner   => 'gerrit2',
-        group   => 'gerrit2',
+        owner   => $scap_user,
+        group   => $scap_user,
         mode    => '0775',
         require => File['/var/lib/gerrit2'],
     }
 
     file { '/var/lib/gerrit2/review_site/tmp':
         ensure  => directory,
-        owner   => 'gerrit2',
-        group   => 'gerrit2',
+        owner   => $scap_user,
+        group   => $scap_user,
         mode    => '0700',
         require => File['/var/lib/gerrit2'],
     }
@@ -190,8 +192,8 @@ class gerrit::jetty(
     }
 
     file { '/var/lib/gerrit2/.ssh/id_rsa':
-        owner     => 'gerrit2',
-        group     => 'gerrit2',
+        owner     => $scap_user,
+        group     => $scap_user,
         mode      => '0400',
         require   => File['/var/lib/gerrit2'],
         content   => secret('gerrit/id_rsa'),
@@ -200,15 +202,15 @@ class gerrit::jetty(
 
     ssh::userkey { 'gerrit2-scap':
         ensure  => present,
-        user    => 'gerrit2',
+        user    => $scap_user,
         skey    => 'gerrit-scap',
         content => secret('keyholder/gerrit.pub'),
     }
 
     file { '/var/lib/gerrit2/review_site/lib':
         ensure  => directory,
-        owner   => 'gerrit2',
-        group   => 'gerrit2',
+        owner   => $scap_user,
+        group   => $scap_user,
         mode    => '0555',
         require => File['/var/lib/gerrit2'],
     }
@@ -221,32 +223,32 @@ class gerrit::jetty(
 
     file { '/var/lib/gerrit2/review_site/etc/gerrit.config':
         content => template("gerrit/${config}"),
-        owner   => 'gerrit2',
-        group   => 'gerrit2',
+        owner   => $scap_user,
+        group   => $scap_user,
         mode    => '0444',
         require => File['/var/lib/gerrit2'],
     }
 
     file { '/var/lib/gerrit2/review_site/etc/gitiles.config':
         content => template('gerrit/gitiles.config.erb'),
-        owner   => 'gerrit2',
-        group   => 'gerrit2',
+        owner   => $scap_user,
+        group   => $scap_user,
         mode    => '0444',
         require => File['/var/lib/gerrit2'],
     }
 
     file { '/var/lib/gerrit2/review_site/etc/lfs.config':
         content => template('gerrit/lfs.config.erb'),
-        owner   => 'gerrit2',
-        group   => 'gerrit2',
+        owner   => $scap_user,
+        group   => $scap_user,
         mode    => '0444',
         require => File['/var/lib/gerrit2'],
     }
 
     file { '/var/lib/gerrit2/review_site/etc/secure.config':
         content => template('gerrit/secure.config.erb'),
-        owner   => 'gerrit2',
-        group   => 'gerrit2',
+        owner   => $scap_user,
+        group   => $scap_user,
         mode    => '0440',
         require => File['/var/lib/gerrit2'],
     }
@@ -259,8 +261,8 @@ class gerrit::jetty(
 
     file { '/var/lib/gerrit2/review_site/etc/log4j.xml':
         content => template('gerrit/log4j.xml.erb'),
-        owner   => 'gerrit2',
-        group   => 'gerrit2',
+        owner   => $scap_user,
+        group   => $scap_user,
         mode    => '0444',
         require => File['/var/lib/gerrit2'],
     }
@@ -268,8 +270,8 @@ class gerrit::jetty(
     if $ssh_host_key != undef {
         file { '/var/lib/gerrit2/review_site/etc/ssh_host_key':
             content   => secret("gerrit/${ssh_host_key}"),
-            owner     => 'gerrit2',
-            group     => 'gerrit2',
+            owner     => $scap_user,
+            group     => $scap_user,
             mode      => '0440',
             require   => File['/var/lib/gerrit2'],
             show_diff => false,
@@ -283,8 +285,8 @@ class gerrit::jetty(
     file { '/var/lib/gerrit2/review_site/etc/replication.config':
         ensure  => $ensure_replication,
         content => template('gerrit/replication.config.erb'),
-        owner   => 'gerrit2',
-        group   => 'gerrit2',
+        owner   => $scap_user,
+        group   => $scap_user,
         mode    => '0444',
         require => File['/var/lib/gerrit2'],
     }
@@ -292,15 +294,15 @@ class gerrit::jetty(
     file { '/var/lib/gerrit2/review_site/logs':
         ensure  => 'link',
         target  => '/var/log/gerrit',
-        owner   => 'gerrit2',
-        group   => 'gerrit2',
+        owner   => $scap_user,
+        group   => $scap_user,
         require => [File['/var/lib/gerrit2'], Scap::Target['gerrit/gerrit'], File['/var/log/gerrit']],
     }
 
     file { '/var/log/gerrit':
         ensure => directory,
-        owner  => 'gerrit2',
-        group  => 'gerrit2',
+        owner  => $scap_user,
+        group  => $scap_user,
         mode   => '0755',
     }
 

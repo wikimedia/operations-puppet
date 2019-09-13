@@ -10,6 +10,8 @@ class gerrit(
     Optional[Hash] $ldap_config = undef,
     Optional[Stdlib::Ipv6] $ipv6,
     Enum['11', '8'] $java_version = '8',
+    Optional[String] $scap_user = undef,
+    Optional[String] $scap_key_name = undef,
 ) {
 
     class { '::gerrit::jetty':
@@ -21,6 +23,8 @@ class gerrit(
         config        => $config,
         ldap_config   => $ldap_config,
         java_version  => $java_version,
+        scap_user     => $scap_user,
+        scap_key_name => $scap_key_name,
     }
 
     class { '::gerrit::proxy':
