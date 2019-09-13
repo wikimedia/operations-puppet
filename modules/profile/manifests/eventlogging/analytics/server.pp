@@ -18,8 +18,9 @@ class profile::eventlogging::analytics::server(
     }
 
     class { 'eventlogging::server':
-        eventlogging_path => '/srv/deployment/eventlogging/analytics',
-        log_dir           => '/srv/log/eventlogging/systemd',
+        eventlogging_path    => '/srv/deployment/eventlogging/analytics',
+        log_dir              => '/srv/log/eventlogging/systemd',
+        python_kafka_version => '1.4.1-1~stretch1',
     }
 
     # Get the Kafka configuration
