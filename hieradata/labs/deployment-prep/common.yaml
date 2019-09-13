@@ -252,6 +252,7 @@ scap::dsh::groups:
             - deployment-deploy01.deployment-prep.eqiad.wmflabs
             - deployment-deploy02.deployment-prep.eqiad.wmflabs
             - deployment-mwmaint01.deployment-prep.eqiad.wmflabs
+            - deployment-mediawiki-parsoid10.deployment-prep.eqiad.wmflabs # For Parsoid/PHP
     mediawiki-appserver-canaries:
         hosts:
             - deployment-mediawiki-07.deployment-prep.eqiad.wmflabs
