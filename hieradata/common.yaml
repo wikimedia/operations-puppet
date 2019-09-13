@@ -510,7 +510,7 @@ kafka_clusters:
       kafka-main1001.eqiad.wmnet:
         id: 1001
         rack: A
-      kafka1002.eqiad.wmnet:
+      kafka-main1002.eqiad.wmnet:
         id: 1002
         rack: B
       kafka1003.eqiad.wmnet:
@@ -1144,8 +1144,8 @@ cache_hosts:
 kafka_brokers_main:
 - 10.64.0.200                  # kafka-main1001.eqiad.wmnet
 - 2620:0:861:101:10:64:0:200   # kafka-main1001.eqiad.wmnet
-- 10.64.16.41                  # kafka1002.eqiad.wmnet
-- 2620:0:861:102:10:64:16:41   # kafka1002.eqiad.wmnet
+- 10.64.16.37                  # kafka-main1002.eqiad.wmnet
+- 2620:0:861:102:10:64:16:37   # kafka-main1002.eqiad.wmnet
 - 10.64.32.127                 # kafka1003.eqiad.wmnet
 - 2620:0:861:103:10:64:32:127  # kafka1003.eqiad.wmnet
 - 10.192.0.17                  # kafka-main2001.codfw.wmnet
