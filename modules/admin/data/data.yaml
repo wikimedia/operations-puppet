@@ -13,7 +13,7 @@ groups:
               yuvipanda, shrlak, madhuvishy, groovier, khorn, ironholds, katie, chedasaurus,
               cy534, pnorman, mpany, deskana, arnad, nithum, banyek, imarlier, mkroetzsch,
               mtizzoni, panisson, paolotti, ciro, dartar, melodykramer, gtirloni, tbayer, pirroh,
-              bawolff, dkg, juliaglen, cwdent, bmansurov, hpham]
+              bawolff, dkg, juliaglen, cwdent, bmansurov, hpham, atgomez]
   absent_ldap:
     description: meta group for absented users which had privileged LDAP access in the past, an automatic check verifies it has been really removed from the LDAP (but removal has to be handled separatelly)
     members: [adavenport, siddharth11, albe, audiohazel, tbolliger, jmatazzoni, pbj]
@@ -228,7 +228,7 @@ groups:
                  DO NOT EQUAL Hadoop/Hive cluster access.
     members: [ezachte, milimetric, halfak, awight, dr0ptp4kt, nuria,
               leila, nettrom, mforns, joal,
-              tjones, legoktm, dcausse, bearloga, atgomez, dstrine,
+              tjones, legoktm, dcausse, bearloga, dstrine,
               marktraceur, accraze,
               fdans, shiladsen, esanders, risler, nathante, chelsyx, jdl]
   statistics-users:
@@ -240,7 +240,7 @@ groups:
               dbrant, tgr, dr0ptp4kt, brion, bsitzmann, amire80,
               dduvall, nettrom, mforns, jkatz, ebernhardson,
               mlitn, joal, kartik, nikerabbit, pcoombe,
-              neilpquinn-wmf, maxsem, jminor, atgomez, dstrine,
+              neilpquinn-wmf, maxsem, jminor, dstrine,
               ladsgroup, ovasileva, shiladsen, abi]
   statistics-admins:
     posix_name: stats
@@ -273,7 +273,7 @@ groups:
               andyrussg, niedzielski, maxsem, hoo, daniel, krinkle, tgr,
               ebernhardson, addshore, jminor, neilpquinn-wmf,
               dcausse, bd808, tjones, mobrovac, jdrewniak, ejegg, jdcc, ori,
-              atgomez, amire80, kartik, pcoombe, foks, jsamra, kemayo,
+              amire80, kartik, pcoombe, foks, jsamra, kemayo,
               jdlrobson, chelsyx, ovasileva, flemmerich, filippo, pmiazga, faidon,
               piccardi, fdans, eevans, anomie, demon, ladsgroup, musikanimal,
               kaldari, goransm, ema, dsaez, shiladsen, rho, mirrys, slaporte, jk,
@@ -2125,13 +2125,12 @@ users:
     ssh_keys: []
     uid: 13214
   atgomez:
-    ensure: present
+    ensure: absent
     gid: 500
     name: atgomez
     realname: Anne Gomez
-    ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC+rFSx3I00yhYMJzgg3IthAqLBEnE9nab3DF9l+QKT2pWFQP7adRDOz5FqI5nPKNrTl122q8xm4qErbXLb07momy2gFYCGNTtCTiyV4z7+Ckmvqc42FKJ3qjzAI2BFsBK/2A9RAdXDgbkmd7nyiEIEhL1r+rdL2W0VYa1exhMjeXme8ckfYDpCxcWtHz4+4OXe6tO+K4SVfzlhfqMrQCzBRRaIrjhvV1WrxNddPS2+CWQ03v/2l6RSjftc2ibzKiq1uvtrN99Hi6OYt9j6pUsXaG/z0WpLuT5ekaxyeKcEHwFMI32zn6+Pw/kRCGBFA9rOKdtYpQYarFsZsM43MVP9 agomez@Annes-MacBook-Air-2.local]
+    ssh_keys: []
     uid: 4891
-    email: agomez@wikimedia.org
   jgirault:
     ensure: absent
     gid: 500
