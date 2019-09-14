@@ -151,7 +151,7 @@
     commentOnPatchSetCreated = false
     commentOnRefUpdatedGitWeb = false
 [ldap]
-    server =<% @ldap_hosts.each do |ldap_host| %> ldaps://<%= ldap_host %><% end %>
+    server = ldaps://<%= @ldap_host %>
     accountBase = ou=people,<%= @ldap_base_dn %>
     accountPattern = (&(objectClass=person)(cn=${username})(!(pwdPolicySubentry=cn=disabled,ou=ppolicies,dc=wikimedia,dc=org)))
     accountFullName = cn

@@ -41,18 +41,8 @@ class gerrit::jetty(
     $phab_token = $passwords::gerrit::gerrit_phab_token
     $prometheus_bearer_token = $passwords::gerrit::prometheus_bearer_token
 
-    # Setup LDAP
-    if $ldap_config {
-        $ldapconfig = $ldap_config
-    } else {
-        include ::ldap::config::labs
-        $ldapconfig = $::ldap::config::labs::ldapconfig
-    }
-
-    $ldap_hosts = $ldapconfig['servernames']
-    $ldap_base_dn = $ldapconfig['basedn']
-    $ldap_proxyagent = $ldapconfig['proxyagent']
-    $ldap_proxyagent_pass = $ldapconfig['proxypass']
+    $ldap_host = $ldap_config['ro-server']
+    $ldap_base_dn = $ldap_config['base-dn']
 
     if $slave {
         $sshd_host = $slave_hosts[0]
