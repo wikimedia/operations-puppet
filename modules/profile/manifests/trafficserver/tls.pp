@@ -39,11 +39,11 @@ class profile::trafficserver::tls (
 
     $instance_name = 'tls'
     $service_name = "trafficserver-${instance_name}"
-    if $inbound_tls_settings['do_ocsp'] and empty($inbound_tls_settings['ocsp_stapling_path']) {
+    if $inbound_tls_settings['do_ocsp'] == 1 and empty($inbound_tls_settings['ocsp_stapling_path']) {
         fail('The provided Inbound TLS settings are insufficient to ensure prefetched OCSP stapling responses')
     }
     $inbound_tls_settings['certificates'].each |Trafficserver::TLS_certificate $certificate| {
-        if $inbound_tls_settings['do_ocsp'] and empty($certificate['ocsp_stapling_files']) {
+        if $inbound_tls_settings['do_ocsp'] == 1 and empty($certificate['ocsp_stapling_files']) {
             fail('The provided Inbound TLS settings are insufficient to ensure prefetched OCSP stapling responses')
         }
     }
