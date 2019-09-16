@@ -3,7 +3,7 @@ class profile::ncredir(
     Stdlib::Port $https_port = lookup('profile::ncredir::https_port', {default_value => 443}),
     Hash[String, Hash[String, Any]] $shared_acme_certificates = lookup('shared_acme_certificates'),
     String $acme_chief_cert_prefix = lookup('profile::ncredir::acme_chief_cert_prefix', {default_value => 'non-canonical-redirect-'}),
-    Optional[String] $fqdn_monitoring = lookup('profile::ncredir::fqdn_monitoring', {default_value => undef}),
+    Boolean $monitoring = lookup('profile::ncredir::monitoring', {default_value => false}),
     Wmflib::UserIpPort $mtail_access_log_port = lookup('profile::ncredir::mtail_access_log_port', {default_value => 3904}),
     Array[String] $prometheus_nodes = lookup('prometheus_nodes', {default_value => []}),
     Integer[0] $hsts_max_age = lookup('profile::ncredir::hsts_max_age', {default_value => 106384710}),
@@ -41,6 +41,17 @@ class profile::ncredir(
                 puppet_svc => 'nginx',
                 before     => Service['nginx'],
             }
+
+            if $monitoring {
+                # Common name could be a wildcard
+                $check_hostname = regsubst($cert_details['CN'], '^\*', 'www')
+
+                monitoring::service { "https_ncredir_${cert_name}":
+                    description   => "HTTPS ${cert_name}",
+                    check_command => "check_ssl_http_letsencrypt_ocsp!${check_hostname}",
+                    notes_url     => 'https://wikitech.wikimedia.org/wiki/Ncredir',
+                }
+            }
         }
     }
 
@@ -59,13 +70,5 @@ class profile::ncredir(
       proto  => 'tcp',
       port   => '3904',
       srange => "(@resolve((${prometheus_nodes_ferm})) @resolve((${prometheus_nodes_ferm}), AAAA))",
-    }
-
-    if $fqdn_monitoring {
-        monitoring::service { 'https_ncredir':
-            description   => 'HTTPS',
-            check_command => "check_ssl_http_letsencrypt_ocsp!${fqdn_monitoring}",
-            notes_url     => 'https://wikitech.wikimedia.org/wiki/Ncredir',
-        }
     }
 }
