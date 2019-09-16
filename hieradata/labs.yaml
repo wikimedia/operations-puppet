@@ -88,7 +88,7 @@ profile::cache::varnish::cache_be_opts:
     probe: 'varnish'
 profile::cache::varnish::common_vcl_config:
     allowed_methods: '^(GET|HEAD|OPTIONS|POST|PURGE|PUT|DELETE)$'
-    purge_host_regex: ''
+    purge_host_regex: '^(?!(upload|maps)\.beta\.wmflabs\.org)'
     static_host: 'en.wikipedia.beta.wmflabs.org'
     top_domain: 'beta.wmflabs.org'
     shortener_domain: 'w-beta.wmflabs.org'
