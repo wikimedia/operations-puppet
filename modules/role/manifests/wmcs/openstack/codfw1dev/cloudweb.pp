@@ -9,9 +9,9 @@ class role::wmcs::openstack::codfw1dev::cloudweb {
     include ::profile::openstack::codfw1dev::nutcracker
     include ::profile::lvs::realserver
 
-    # Wikitech:
-    include ::profile::openstack::codfw1dev::wikitech::web
-    include ::profile::openstack::codfw1dev::wikitech::monitor
+    # Wikitech (disabled, probably not useful these days):
+    #include ::profile::openstack::codfw1dev::wikitech::web
+    #include ::profile::openstack::codfw1dev::wikitech::monitor
 
     # Horizon:
     include ::profile::openstack::codfw1dev::horizon::dashboard_source_deploy
