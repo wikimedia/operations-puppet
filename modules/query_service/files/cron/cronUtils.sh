@@ -1,11 +1,14 @@
 #!/bin/bash
 # Cron helper functions
-if [ -r /etc/wdqs/vars.sh ]; then
-  . /etc/wdqs/vars.sh
+
+deploy_name=$1
+
+if [ -r /etc/$deploy_name/vars.sh ]; then
+  . /etc/$deploy_name/vars.sh
 fi
 
-if [ -r /etc/wdqs/gui_vars.sh ]; then
-  . /etc/wdqs/gui_vars.sh
+if [ -r /etc/$deploy_name/gui_vars.sh ]; then
+  . /etc/$deploy_name/gui_vars.sh
 fi
 
 if [ -z "${DATA_DIR}" -o -z "${LOG_DIR}" -o -z "${DEPLOY_DIR}" ]; then

@@ -1,14 +1,15 @@
-# the query_service package is managed by scap
+# the query service package is managed by scap
 class query_service::deploy::scap(
     String $deploy_user,
     String $username,
+    String $deploy_name,
     Stdlib::Absolutepath $package_dir,
 ) {
     # Deployment
     scap::target { 'wdqs/wdqs':
-        service_name              => 'wdqs-blazegraph',
+        service_name              => "${deploy_name}-blazegraph",
         deploy_user               => $deploy_user,
-        additional_services_names => ['wdqs-updater', 'wdqs-categories'],
+        additional_services_names => ["${deploy_name}-updater", "${deploy_name}-categories"],
         manage_user               => true,
     }
 

@@ -3,7 +3,7 @@ set -e
 # This script is reloading categories into a new namespace
 # NOTE: This should be run under user that has rights to
 # sudo systemctl reload nginx
-. /usr/local/bin/cronUtils.sh
+. /usr/local/bin/cronUtils.sh $1
 ENDPOINT=${CATEGORY_ENDPOINT:-"http://localhost:9999"}
 
 echo "$(date --iso-8601=seconds) starting categories reload"

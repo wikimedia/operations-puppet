@@ -17,6 +17,7 @@ class profile::wdqs::gui (
         data_dir              => $data_dir,
         log_dir               => $log_dir,
         username              => $username,
+        deploy_name           => 'wdqs',
         enable_ldf            => $enable_ldf,
         max_query_time_millis => $max_query_time_millis,
     }

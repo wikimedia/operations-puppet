@@ -10,6 +10,7 @@ describe 'query_service::deploy::manual', :type => :class do
    let(:params) { {
         :deploy_user => 'deploy-service',
         :package_dir => '/srv/deployment/wdqs/wdqs',
+        :deploy_name => 'wdqs',
         }
    }
 

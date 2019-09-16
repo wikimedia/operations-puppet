@@ -1,11 +1,11 @@
 # Monitor single instance of Blazegraph
-define query_service::monitor::blazegraph_instance (
+define  query_service::monitor::blazegraph_instance (
     Stdlib::Port $port,
     Stdlib::Port $prometheus_port,
     String $username,
     String $contact_groups,
 ) {
-    nrpe::monitor_service { "WDQS_Local_Blazegraph_endpoint-${title}":
+    nrpe::monitor_service { "Query_Service_Local_Blazegraph_endpoint-${title}":
         description  => "Blazegraph Port for ${title}",
         nrpe_command => "/usr/lib/nagios/plugins/check_tcp -H 127.0.0.1 -p ${port}",
         notes_url    => 'https://wikitech.wikimedia.org/wiki/Wikidata_query_service/Runbook',
@@ -26,7 +26,7 @@ define query_service::monitor::blazegraph_instance (
         warning         => 1000,
         critical        => 800,
         contact_group   => $contact_groups,
-        notes_link      => 'https://wikitech.wikimedia.org/wiki/Wikidata_query_service/Runbook',
+        notes_link      => 'https://wikitech.wikimedia.org/wiki/Wikidata_query_service/Runbook'
     }
 
 }

@@ -1,8 +1,8 @@
-# === Class query_servuce::updater
+# === Class query_service::updater
 #
 # Query Service updater service.
 #
-# Note: Installs and start the wdqs-updater service.
+# Note: Installs and start the query service updater service.
 # == Parameters:
 # - $options: extra updater options, passed to runUpdate.sh script.
 # - $package_dir:  Directory where the service should be installed.
@@ -19,32 +19,34 @@ class query_service::updater(
     Stdlib::Unixpath $log_dir,
     Stdlib::Port $logstash_logback_port,
     String $username,
+    String $deploy_name,
     Array[String] $extra_jvm_opts,
     Boolean $log_sparql = false,
 ) {
-    file { '/etc/default/wdqs-updater':
+    file { "/etc/default/${deploy_name}-updater":
         ensure  => present,
         content => template('query_service/updater-default.erb'),
         owner   => 'root',
         group   => 'root',
         mode    => '0644',
-        before  => Systemd::Unit['wdqs-updater'],
-        notify  => Service['wdqs-updater'],
+        before  => Systemd::Unit["${deploy_name}-updater"],
+        notify  => Service["${deploy_name}-updater"],
     }
 
-    query_service::logback_config { 'wdqs-updater':
+    query_service::logback_config { "${deploy_name}-updater":
         pattern               => '%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg %mdc%n',
         log_dir               => $log_dir,
         logstash_logback_port => $logstash_logback_port,
+        deploy_name           => $deploy_name,
         sparql                => $log_sparql,
     }
 
-    systemd::unit { 'wdqs-updater':
-        content => template('query_service/initscripts/wdqs-updater.systemd.erb'),
-        notify  => Service['wdqs-updater'],
+    systemd::unit { "${deploy_name}-updater":
+        content => template('query_service/initscripts/updater.systemd.erb'),
+        notify  => Service["${deploy_name}-updater"],
     }
 
-    service { 'wdqs-updater':
+    service { "${deploy_name}-updater":
         ensure => 'running',
     }
 }

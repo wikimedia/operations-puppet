@@ -7,8 +7,8 @@ from datetime import datetime, timedelta
 import requests
 from requests import HTTPError, ConnectionError
 
-LAG_DESCRIPTION = 'wdqs categories lag'
-PING_DESCRIPTION = 'wdqs categories ping'
+LAG_DESCRIPTION = 'Categories lag'
+PING_DESCRIPTION = 'Categories ping'
 
 EX_OK = 0
 EX_WARNING = 1
@@ -17,7 +17,7 @@ EX_UNKNOWN = 3
 
 CATEGORIES_DATE_QUERY = 'SELECT (min(?date) as ?mindate) { ?wiki schema:dateModified ?date }'
 
-HEADERS = {'User-Agent': 'wmf-icinga/check_wdqs_categories (root@wikimedia.org)'}
+HEADERS = {'User-Agent': 'wmf-icinga/check_query_service_categories (root@wikimedia.org)'}
 
 
 def check_categories_lag(base_url, timeout, warning_delay, critical_delay):
@@ -36,7 +36,7 @@ def check_categories_lag(base_url, timeout, warning_delay, critical_delay):
             return EX_CRITICAL
 
     except ConnectionError:
-        icinga_output('UNKNOWN', LAG_DESCRIPTION, 'Could not connect to WDQS')
+        icinga_output('UNKNOWN', LAG_DESCRIPTION, 'Could not connect to Categories endpoint')
     except (HTTPError, ValueError) as e:
         icinga_output('UNKNOWN', LAG_DESCRIPTION, e)
     return EX_UNKNOWN
@@ -78,7 +78,7 @@ def main():
     parser = argparse.ArgumentParser(
         formatter_class=argparse.ArgumentDefaultsHelpFormatter)
     parser.add_argument('--url', default='http://localhost:80/bigdata/namespace/categories/sparql',
-                        help='WDQS Categories SPARQL endpoint')
+                        help='Categories SPARQL endpoint')
     parser.add_argument('--timeout', default=2, type=int, metavar='SECONDS',
                         help='Timeout for the request to complete')
     parser.add_argument('--warning', default=3600*24*8, type=int, metavar='SECONDS',

@@ -1,6 +1,7 @@
 # the query_service package is checked out initially, but not automatically upgraded
 class query_service::deploy::manual(
     String $deploy_user,
+    String $deploy_name,
     Stdlib::Absolutepath $package_dir,
 ) {
     if !defined(Group[$deploy_user]) {
@@ -73,7 +74,7 @@ class query_service::deploy::manual(
         require => Exec['wdqs_git_fat_init'],
     }
 
-    [ 'wdqs-blazegraph', 'wdqs-categories', 'wdqs-updater'].each |String $service_name| {
+    [ "${deploy_name}-blazegraph", "${deploy_name}-categories", "${deploy_name}-updater"].each |String $service_name| {
         sudo::user { "${deploy_user}_${service_name}":
             user       => $deploy_user,
             privileges => [

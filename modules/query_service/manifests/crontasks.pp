@@ -14,6 +14,7 @@ class query_service::crontasks(
     String $data_dir,
     String $log_dir,
     String $username,
+    String $deploy_name,
     Enum['none', 'daily', 'weekly'] $load_categories,
     Boolean $run_tests,
 ) {
@@ -72,7 +73,7 @@ class query_service::crontasks(
     # do not want them to be too far from one another.
     cron { 'reload-categories':
         ensure  => $ensure_reload_categories,
-        command => "/usr/local/bin/reloadCategories.sh >> ${reload_categories_log} 2>&1",
+        command => "/usr/local/bin/reloadCategories.sh ${deploy_name} >> ${reload_categories_log} 2>&1",
         user    => $username,
         weekday => 1,
         minute  => fqdn_rand(60),
@@ -83,7 +84,7 @@ class query_service::crontasks(
     # it ever takes longer, start at 7:00.
     cron { 'load-categories-daily':
         ensure  => $ensure_daily_categories,
-        command => "/usr/local/bin/loadCategoriesDaily.sh >> ${reload_categories_log} 2>&1",
+        command => "/usr/local/bin/loadCategoriesDaily.sh ${deploy_name} >> ${reload_categories_log} 2>&1",
         user    => $username,
         minute  => fqdn_rand(60),
         hour    => 7
@@ -94,7 +95,7 @@ class query_service::crontasks(
         default => absent,
     }
 
-    cron { 'run-wdqs-test-queries':
+    cron { 'run-query-service-test-queries':
         ensure      => $ensure_tests,
         environment => 'MAILTO=wdqs-admins',
         command     => "${package_dir}/queries/test.sh > /dev/null",
@@ -102,7 +103,7 @@ class query_service::crontasks(
         minute      => '*/30',
     }
 
-    logrotate::rule { 'wdqs-reload-categories':
+    logrotate::rule { 'query-service-reload-categories':
         ensure       => present,
         file_glob    => $reload_categories_log,
         frequency    => 'monthly',

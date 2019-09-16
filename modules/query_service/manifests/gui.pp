@@ -15,6 +15,7 @@ class query_service::gui(
     String $package_dir,
     String $data_dir,
     String $log_dir,
+    String $deploy_name,
     String $username,
     Query_service::DeployMode $deploy_mode,
     Boolean $enable_ldf,
@@ -24,7 +25,7 @@ class query_service::gui(
     $additional_port = 8888
     $alias_map = "${data_dir}/aliases.map"
 
-    ::nginx::site { 'wdqs':
+    ::nginx::site { $deploy_name:
         content => template('query_service/nginx.erb'),
         require => File[$alias_map],
     }

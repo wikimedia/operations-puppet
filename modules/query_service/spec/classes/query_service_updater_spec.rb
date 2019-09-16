@@ -13,6 +13,7 @@ describe 'query_service::updater', :type => :class do
         :package_dir => '/srv/deployment/wdqs/wdqs',
         :data_dir => '/srv/wdqs',
         :username => 'blazegraph',
+        :deploy_name => 'wdqs',
         :logstash_logback_port => 11_514,
         :extra_jvm_opts => [],
         }

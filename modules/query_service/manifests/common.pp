@@ -15,6 +15,7 @@ class query_service::common(
     String $username,
     String $deploy_user,
     String $endpoint,
+    String $deploy_name,
     Stdlib::Unixpath $package_dir,
     Stdlib::Unixpath $data_dir,
     Stdlib::Unixpath $log_dir,
@@ -22,7 +23,7 @@ class query_service::common(
 ) {
     include ::query_service::packages
 
-    $autodeploy_log_dir = '/var/log/wdqs-autodeploy'
+    $autodeploy_log_dir = "/var/log/${deploy_name}-autodeploy"
 
     case $deploy_mode {
 
@@ -31,6 +32,7 @@ class query_service::common(
                 deploy_user => $deploy_user,
                 username    => $username,
                 package_dir => $package_dir,
+                deploy_name => $deploy_name,
             }
         }
 
@@ -38,6 +40,7 @@ class query_service::common(
             class {'::query_service::deploy::manual':
                 deploy_user => $deploy_user,
                 package_dir => $package_dir,
+                deploy_name => $deploy_name,
             }
         }
 
@@ -46,6 +49,7 @@ class query_service::common(
                 deploy_user        => $deploy_user,
                 package_dir        => $package_dir,
                 autodeploy_log_dir => $autodeploy_log_dir,
+                deploy_name        => $deploy_name,
             }
         }
 
@@ -118,14 +122,14 @@ class query_service::common(
         default => 'root',
     }
 
-    file { '/etc/wdqs':
+    file { "/etc/${deploy_name}":
         ensure => directory,
         owner  => 'root',
         group  => $config_dir_group,
         mode   => '0775',
     }
 
-    file { '/etc/wdqs/vars.yaml':
+    file { "/etc/${deploy_name}/vars.yaml":
         ensure  => present,
         content => template('query_service/vars.yaml.erb'),
         owner   => 'root',
@@ -136,11 +140,11 @@ class query_service::common(
     # GC logs rotation is done by the JVM, but on JVM restart, the logs left by
     # the previous instance are left alone. This cron takes care of cleaning up
     # GC logs older than 30 days.
-    cron { 'wdqs-gc-log-cleanup':
+    cron { 'query-service-gc-log-cleanup':
       ensure  => present,
       minute  => 12,
       hour    => 2,
-      command => "find /var/log/wdqs -name 'wdqs-*_jvm_gc.*.log*' -mtime +30 -delete",
+      command => "find /var/log/${deploy_name} -name '${deploy_name}-*_jvm_gc.*.log*' -mtime +30 -delete",
     }
 
 }

@@ -12,6 +12,7 @@ class profile::wdqs::common(
 
     $username = 'blazegraph'
     $deploy_user = 'deploy-service'
+    $deploy_name = 'wdqs'
 
     # Let's migrate to the new logging pipeline. See T232184.
     include ::profile::rsyslog::udp_json_logback_compat
@@ -19,6 +20,7 @@ class profile::wdqs::common(
     class { '::query_service::common':
         deploy_mode         => $deploy_mode,
         username            => $username,
+        deploy_name         => $deploy_name,
         deploy_user         => $deploy_user,
         package_dir         => $package_dir,
         data_dir            => $data_dir,
@@ -31,6 +33,7 @@ class profile::wdqs::common(
         package_dir     => $package_dir,
         data_dir        => $data_dir,
         log_dir         => $log_dir,
+        deploy_name     => $deploy_name,
         username        => $username,
         load_categories => $load_categories,
         run_tests       => $run_tests,

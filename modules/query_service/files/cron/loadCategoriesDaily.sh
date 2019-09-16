@@ -1,6 +1,6 @@
 #!/bin/bash
 # This script loads latest categories daily dump into current namespace
-. /usr/local/bin/cronUtils.sh
+. /usr/local/bin/cronUtils.sh $1
 
 echo "$(date --iso-8601=seconds) starting categories daily load"
 

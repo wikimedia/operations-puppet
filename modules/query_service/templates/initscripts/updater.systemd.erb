@@ -1,7 +1,7 @@
 [Unit]
-Description=Wikidate Query Service Updater
-Wants=wdqs-blazegraph.service
-After=wdqs-blazegraph.service
+Description=Query Service Updater
+Wants=<%= @deploy_name %>-blazegraph.service
+After=<%= @deploy_name %>-blazegraph.service
 ConditionPathExists=<%= @data_dir %>/wikidata.jnl
 ConditionPathExists=<%= @data_dir %>/data_loaded
 StartLimitIntervalSec=300

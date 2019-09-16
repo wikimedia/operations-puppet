@@ -2,7 +2,7 @@
 # This script is reloading DCAT-AP data from Wikidata
 # NOTE: This should be run under user that has rights to
 # sudo systemctl reload nginx
-. /usr/local/bin/cronUtils.sh
+. /usr/local/bin/cronUtils.sh $1
 
 DCAT_SOURCE=${DCAT_SOURCE:-"https://dumps.wikimedia.org/wikidatawiki/entities/dcatap.rdf"}
 

@@ -71,6 +71,7 @@ class profile::wdqs::blazegraph(
             logstash_logback_port => $logstash_logback_port,
             log_dir               => $log_dir,
             username              => $username,
+            deploy_name           => 'wdqs',
             options               => $options,
             use_deployed_config   => $use_deployed_config,
             ;

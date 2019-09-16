@@ -69,6 +69,7 @@ class profile::wdqs::updater (
         data_dir              => $data_dir,
         log_dir               => $log_dir,
         username              => $username,
+        deploy_name           => 'wdqs',
         logstash_logback_port => $logstash_logback_port,
         options               => split($options, ' ') + ['--'] + $extra_updater_options,
         extra_jvm_opts        => $default_jvm_options + $kafka_jvm_opts,

@@ -11,6 +11,7 @@ describe 'query_service::deploy::scap', :type => :class do
         :deploy_user => 'deploy-service',
         :username    => 'blazegraph',
         :package_dir => '/srv/deployment/wdqs/wdqs',
+        :deploy_name => 'wdqs'
         }
    }
 
