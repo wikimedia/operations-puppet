@@ -418,11 +418,13 @@ host authdns2001 {
 host backup1001 {
     hardware ethernet b0:26:28:29:5b:70;
     fixed-address backup1001.eqiad.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/buster-installer/";
 }
 
 host backup2001 {
     hardware ethernet B0:26:28:29:56:90;
     fixed-address backup2001.codfw.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/buster-installer/";
 }
 
 host bast1002 {
