@@ -30,6 +30,7 @@ class profile::mediawiki::php(
     # Allows to tune up or down the number of workers.
     Float $fpm_workers_multiplier = lookup('profile::mediawiki::php::fpm_workers_multiplier', {'default_value' => 1.5}),
     Boolean $enable_request_profiling = lookup('profile::mediawiki::php::enable_request_profiling', {'default_value' => false}),
+    Optional[Boolean] $enable_php_core_dumps = lookup('profile::mediawiki::php:::enable_php_core_dumps', {'default_value' => false}),
     ) {
 
     # Needed for the restart script
@@ -224,14 +225,19 @@ class profile::mediawiki::php(
         # This will add an fpm pool listening on port $port
         # We want a minimum of 8 workers, and (we default to 1.5 * number of processors.
         # That number will be raised. Also move to pm = static as pm = dynamic caused some
-        # edge-case spikes in p99 latency
+        # edge-case spikes in p99 latency.
         $num_workers = max(floor($facts['processors']['count'] * $fpm_workers_multiplier), 8)
+        $rlimit_core = $enable_php_core_dumps ? {
+            true    => 'unlimited',
+            default => '0',
+        }
         php::fpm::pool { $fcgi_pool:
             port   => $port,
             config => {
                 'pm'                        => 'static',
                 'pm.max_children'           => $num_workers,
                 'request_terminate_timeout' => $request_timeout,
+                'rlimit_core'               => $rlimit_core,
             }
         }
 
