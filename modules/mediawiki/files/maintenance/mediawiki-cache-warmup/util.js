@@ -17,7 +17,7 @@ function fetchHttpsUrl( url ) {
 			resp.on( 'data', function ( chunk ) {
 				data += chunk;
 			} );
-			resp.on( 'end', function() {
+			resp.on( 'end', function () {
 				resolve( data );
 			} );
 		} );
@@ -45,7 +45,7 @@ function fetchUrl( options ) {
 		var req = request.get( options, function ( resp ) {
 			// Discard data
 			resp.resume();
-			resp.on( 'end', function() {
+			resp.on( 'end', function () {
 				resolve();
 			} );
 		} );
@@ -219,7 +219,9 @@ function worker( options, dataset, handler ) {
 		stats.count.total++;
 		stats.count.min = Math.min( stats.count.min, concurrency.global );
 		stats.count.max = Math.max( stats.count.max, concurrency.global );
-		stats.count.avg = ( ( stats.count.avg * oldTotal ) + concurrency.global ) / ( oldTotal + 1 );
+		stats.count.avg = (
+			( ( stats.count.avg * oldTotal ) + concurrency.global ) / ( oldTotal + 1 )
+		);
 	}
 	if ( !options.groupConcurrency ) {
 		options.groupConcurrency = options.globalConcurrency;
