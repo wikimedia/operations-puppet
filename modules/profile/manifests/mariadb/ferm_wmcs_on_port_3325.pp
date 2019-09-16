@@ -27,13 +27,6 @@ class profile::mariadb::ferm_wmcs_on_port_3325(
         srange  => "(@resolve(${designate_host}) @resolve(${designate_host_standby}))",
     }
 
-    ferm::service{ 'wmcs_puppetmasters':
-        proto   => 'tcp',
-        port    => $port,
-        notrack => true,
-        srange  => '(@resolve(labpuppetmaster1001.wikimedia.org) @resolve(labpuppetmaster1002.wikimedia.org))',
-    }
-
     ferm::service{ 'wikitech':
         proto   => 'tcp',
         port    => $port,
