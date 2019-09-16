@@ -64,7 +64,7 @@ class profile::ncredir(
     if $fqdn_monitoring {
         monitoring::service { 'https_ncredir':
             description   => 'HTTPS',
-            check_command => "check_ssl_http_letsencrypt!${fqdn_monitoring}",
+            check_command => "check_ssl_http_letsencrypt_ocsp!${fqdn_monitoring}",
             notes_url     => 'https://wikitech.wikimedia.org/wiki/Ncredir',
         }
     }
