@@ -1194,11 +1194,11 @@ node 'kraz.wikimedia.org' {
 
 
 node 'labpuppetmaster1001.wikimedia.org' {
-    role(wmcs::openstack::eqiad1::cumin_controller)
+    role(spare::system)
 }
 
 node 'labpuppetmaster1002.wikimedia.org' {
-    role(wmcs::openstack::eqiad1::cumin_controller)
+    role(spare::system)
 }
 
 # cloudservices1003/1004 hosts openstack-designate
