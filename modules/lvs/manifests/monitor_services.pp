@@ -300,4 +300,20 @@ class lvs::monitor_services($contacts = 'admins,team-services', $critical = fals
         check_command => 'check_wmf_service!http://termbox.svc.codfw.wmnet:3030!15!',
         notes_url     => 'https://wikitech.wikimedia.org/wiki/WMDE/Wikidata/SSR_Service',
     }
+
+    #wikifeeds
+    monitoring::service { 'check_wikifeeds_eqiad':
+        host          => 'wikifeeds.svc.eqiad.wmnet',
+        group         => 'lvs',
+        description   => 'wikifeeds eqiad',
+        check_command => 'check_wmf_service!http://wikifeeds.svc.eqiad.wmnet:8889!15!',
+        notes_url     => 'https://wikitech.wikimedia.org/wiki/Wikifeeds',
+    }
+    monitoring::service { 'check_wikifeeds_codfw':
+        host          => 'wikifeeds.svc.codfw.wmnet',
+        group         => 'lvs',
+        description   => 'wikifeeds codfw',
+        check_command => 'check_wmf_service!http://wikifeeds.svc.codfw.wmnet:8889!15!',
+        notes_url     => 'https://wikitech.wikimedia.org/wiki/Wikifeeds',
+    }
 }

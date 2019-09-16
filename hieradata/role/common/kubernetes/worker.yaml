@@ -42,3 +42,4 @@ profile::lvs::realserver::pools:
   cxserver: {}
   sessionstore: {}
   termbox: {}
+  wikifeeds: {}

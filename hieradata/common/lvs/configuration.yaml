@@ -175,6 +175,9 @@ lvs::configuration::lvs_service_ips:
     eqiad:
       cloudelasticlb: 208.80.154.241
       cloudelasticlb6: 2620:0:861:ed1a::3:241
+  wikifeeds: &ip_block056
+    eqiad: 10.2.2.47
+    codfw: 10.2.1.47
 
 lvs::configuration::lvs_services:
   text:
@@ -1811,3 +1814,30 @@ lvs::configuration::lvs_services:
     conftool:
       cluster: ncredir
       service: nginx
+  wikifeeds:
+    description: "A node webservice supporting featured wiki content feeds. termbox.svc.%{::site}.wmnet"
+    class: low-traffic
+    sites:
+    - eqiad
+    - codfw
+    ip: *ip_block056
+    port: 8889
+    depool-threshold: '.5'
+    monitors:
+      ProxyFetch:
+        url:
+        - http://localhost/_info
+      IdleConnection:
+        timeout-clean-reconnect: 3
+        max-delay: 300
+    conftool:
+      cluster: kubernetes
+      service: wikfeeds
+    icinga:
+      critical: false
+      check_command: "check_http_lvs_on_port!wikifeeds.svc.%{::site}.wmnet!8889!/_info"
+      sites:
+        eqiad:
+          hostname: wikifeeds.svc.eqiad.wmnet
+        codfw:
+          hostname: wikifeeds.svc.codfw.wmnet

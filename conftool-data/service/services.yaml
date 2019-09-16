@@ -335,6 +335,14 @@ kubernetes:
     datacenters:
     - eqiad
     - codfw
+  wikifeeds:
+    port: 8889
+    default_values:
+      pooled: 'yes'
+      weight: 10
+    datacenters:
+    - eqiad
+    - codfw
 logstash:
   kibana:
     port: 80
