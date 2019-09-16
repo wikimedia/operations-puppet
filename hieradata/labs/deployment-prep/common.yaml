@@ -130,13 +130,15 @@ aqs_hosts:
   - deployment-aqs03.deployment-prep.eqiad.wmflabs
 aqs::cassandra_default_consistency: localOne
 # END AQS
+# Parsoid
+profile::parsoid::port: 8001
 # Restbase (profile::restbase)
 profile::restbase::salt_key: secretkey
 profile::restbase::logging_label: restbase
 profile::restbase::cassandra_datacenters:
     - "datacenter1"
 profile::restbase::cassandra_local_dc: "datacenter1"
-profile::restbase::parsoid_uri: http://deployment-parsoid09.deployment-prep.eqiad.wmflabs:8000
+profile::restbase::parsoid_uri: http://deployment-parsoid09.deployment-prep.eqiad.wmflabs:8001
 profile::restbase::graphoid_uri: http://deployment-sca01.deployment-prep.eqiad.wmflabs:19000
 profile::restbase::mobileapps_uri: http://deployment-mcs01.deployment-prep.eqiad.wmflabs:8888
 profile::restbase::mathoid_uri: http://deployment-docker-mathoid01.deployment-prep.eqiad.wmflabs:10044
