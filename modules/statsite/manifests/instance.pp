@@ -36,10 +36,19 @@ define statsite::instance(
         notify  => Service["statsite@${port}"],
     }
 
+    case $ensure {
+      'absent': {
+        $service_enable = false
+      }
+      default: {
+        $service_enable = true
+      }
+    }
+
     service { "statsite@${port}":
         ensure   => ensure_service($ensure),
         provider => 'systemd',
-        enable   => true,
+        enable   => $service_enable,
         require  => File['/lib/systemd/system/statsite@.service'],
     }
 }
