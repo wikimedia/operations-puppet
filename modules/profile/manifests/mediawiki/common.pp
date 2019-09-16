@@ -12,6 +12,14 @@ class profile::mediawiki::common(
 
     class { '::tmpreaper': }
 
+    # Enable systemd coredump on all servers running mediawiki
+    # Whether php7 will produce coredumps is configurable through
+    # rlimit_core in php.ini. Coredumps will be found under
+    # /var/lib/systemd/coredump
+    class { '::systemd::coredump':
+        ensure => present,
+    }
+
     # Configure cgroups used by MediaWiki
     class { '::mediawiki::cgroup': }
     # Install all basic support packages for MediaWiki
