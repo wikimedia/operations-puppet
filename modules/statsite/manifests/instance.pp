@@ -30,6 +30,7 @@ define statsite::instance(
     $stream_cmd = "python /usr/lib/statsite/sinks/graphite.py ${graphite_host} ${graphite_port} \"\""
 
     file { "/etc/statsite/${port}.ini":
+        ensure  => $ensure,
         content => template('statsite/statsite.ini.erb'),
         require => Package['statsite'],
         notify  => Service["statsite@${port}"],
