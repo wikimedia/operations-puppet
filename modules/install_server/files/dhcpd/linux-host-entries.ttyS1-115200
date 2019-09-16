@@ -635,26 +635,31 @@ host cloudvirt1030 {
 host an-presto1001 {
     hardware ethernet F4:E9:D4:DB:AF:B0;
     fixed-address an-presto1001.eqiad.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/buster-installer/";
 }
 
 host an-presto1002 {
     hardware ethernet F4:E9:D4:DB:A4:50;
     fixed-address an-presto1002.eqiad.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/buster-installer/";
 }
 
 host an-presto1003 {
     hardware ethernet F4:E9:D4:DB:E0:B0;
     fixed-address an-presto1003.eqiad.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/buster-installer/";
 }
 
 host an-presto1004 {
     hardware ethernet F4:E9:D4:DB:7E:30;
     fixed-address an-presto1004.eqiad.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/buster-installer/";
 }
 
 host an-presto1005 {
     hardware ethernet F4:E9:D4:DB:9A:F0;
     fixed-address an-presto1005.eqiad.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/buster-installer/";
 }
 
 host cobalt {
