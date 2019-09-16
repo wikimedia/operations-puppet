@@ -118,6 +118,14 @@ class role::prometheus::tools {
                 }
             ]
             },
+            {
+            'job_name'        => 'toolsdb',
+            'file_sd_configs' => [
+                {
+                    'files' => [ "${targets_path}/toolsdb.yml" ]
+                }
+            ]
+            },
         ]
     }
 
@@ -134,6 +142,14 @@ class role::prometheus::tools {
         mode    => '0400',
         owner   => 'prometheus',
         group   => 'prometheus',
+    }
+
+    file { "${targets_path}/toolsdb.yaml":
+      content => ordered_yaml([{
+        'targets' => ['clouddb1001.clouddb-services.eqiad.wmflabs:9104',
+                      'clouddb1002.clouddb-services.eqiad.wmflabs:9104',
+            ]
+        }]),
     }
 
     include ::role::prometheus::blackbox_exporter
