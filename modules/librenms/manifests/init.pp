@@ -83,7 +83,10 @@ class librenms(
     file { "${install_dir}/storage":
         ensure  => directory,
         owner   => 'www-data',
+        group   => 'librenms',
+        mode    => '0440',
         recurse => true,
+        require => Group['librenms'],
     }
 
     file { $rrd_dir:
