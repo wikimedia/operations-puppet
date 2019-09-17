@@ -30,6 +30,7 @@ class profile::mediawiki::php(
     # Allows to tune up or down the number of workers.
     Float $fpm_workers_multiplier = lookup('profile::mediawiki::php::fpm_workers_multiplier', {'default_value' => 1.5}),
     Boolean $enable_request_profiling = lookup('profile::mediawiki::php::enable_request_profiling', {'default_value' => false}),
+    Optional[Boolean] $enable_php_core_dumps = lookup('profile::mediawiki::php:::enable_php_core_dumps', {'default_value' => false}),
     ) {
 
     # Needed for the restart script
@@ -76,6 +77,10 @@ class profile::mediawiki::php(
 
     # Custom config for php-fpm
     # basic optimizations for opcache. See T206341
+    $rlimit_core = $enable_php_core_dumps ? {
+        true    => 'unlimited',
+        default => '0',
+    }
     $base_config_fpm = {
         'opcache.enable'                  => 1,
         'opcache.interned_strings_buffer' => 50,
@@ -89,6 +94,7 @@ class profile::mediawiki::php(
         'session.upload_progress.enabled' => 0,
         'enable_dl'                       => 0,
         'apc.shm_size'                    => $apc_shm_size,
+        'rlimit_core'                     => $rlimit_core,
     }
     if $enable_fpm {
         $_sapis = ['cli', 'fpm']
