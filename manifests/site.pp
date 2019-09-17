@@ -76,7 +76,7 @@ node 'analytics1032.eqiad.wmnet' {
 }
 
 # Hadoop Test cluster's workers
-node /analytics10(31|[33-38]|40).eqiad.wmnet/ {
+node /analytics10(31|3[3-8]|40).eqiad.wmnet/ {
     role(analytics_test_cluster::hadoop::worker)
 }
 
