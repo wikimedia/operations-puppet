@@ -1293,11 +1293,7 @@ node 'iron.wikimedia.org' {
 }
 
 # Kafka Brokers - main-eqiad and main-codfw Kafka clusters.
-node /kafka1003\.eqiad\.wmnet/ {
-    role(kafka::main)
-}
-
-node /kafka100[12]\.eqiad\.wmnet/ {
+node /kafka100[123]\.eqiad\.wmnet/ {
     role(spare::system)
 }
 
