@@ -33,7 +33,7 @@ class icinga::monitor::ores (
         notes_url     => 'https://wikitech.wikimedia.org/wiki/ORES',
     }
 
-    $web_nodes = [ 'ores-web-01', 'ores-web-02' ]
+    $web_nodes = [ 'ores-web-04', 'ores-web-05', 'ores-web-06' ]
 
     icinga::monitor::ores_labs_web_node { $web_nodes: }
 
