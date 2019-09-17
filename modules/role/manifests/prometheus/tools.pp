@@ -144,7 +144,7 @@ class role::prometheus::tools {
         group   => 'prometheus',
     }
 
-    file { "${targets_path}/toolsdb.yaml":
+    file { "${targets_path}/toolsdb.yml":
       content => ordered_yaml([{
         'targets' => ['clouddb1001.clouddb-services.eqiad.wmflabs:9104',
                       'clouddb1002.clouddb-services.eqiad.wmflabs:9104',
