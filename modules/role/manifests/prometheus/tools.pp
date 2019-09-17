@@ -119,10 +119,18 @@ class role::prometheus::tools {
             ]
             },
             {
-            'job_name'        => 'toolsdb',
+            'job_name'        => 'toolsdb-mariadb',
             'file_sd_configs' => [
                 {
-                    'files' => [ "${targets_path}/toolsdb.yml" ]
+                    'files' => [ "${targets_path}/toolsdb-mariadb.yml" ]
+                }
+            ]
+            },
+            {
+            'job_name'        => 'toolsdb-node',
+            'file_sd_configs' => [
+                {
+                    'files' => [ "${targets_path}/toolsdb-node.yml" ]
                 }
             ]
             },
@@ -144,10 +152,18 @@ class role::prometheus::tools {
         group   => 'prometheus',
     }
 
-    file { "${targets_path}/toolsdb.yml":
+    file { "${targets_path}/toolsdb-mariadb.yml":
       content => ordered_yaml([{
         'targets' => ['clouddb1001.clouddb-services.eqiad.wmflabs:9104',
                       'clouddb1002.clouddb-services.eqiad.wmflabs:9104',
+            ]
+        }]),
+    }
+
+    file { "${targets_path}/toolsdb-node.yml":
+      content => ordered_yaml([{
+        'targets' => ['clouddb1001.clouddb-services.eqiad.wmflabs:9100',
+                      'clouddb1002.clouddb-services.eqiad.wmflabs:9100',
             ]
         }]),
     }
