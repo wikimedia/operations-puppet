@@ -50,6 +50,8 @@ role::kibana::ldap_groups:
   - cn=nda,ou=groups,dc=wikimedia,dc=org
   - cn=wmf,ou=groups,dc=wikimedia,dc=org
 
+profile::prometheus::statsd_exporter::relay_address: ''  # unset to disable relaying
+
 profile::prometheus::statsd_exporter::mappings:
   # All others default "channel" to "sender"
   - match: 'logstash.rate.*.*'
