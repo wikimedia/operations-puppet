@@ -2089,6 +2089,22 @@ dataCubes:
     description: Network data
     defaultSortMeasure: packets
     introspection: none
+    options:
+      customTransforms:
+        direction:
+          extractionFn:
+            type: lookup
+            lookup:
+              type: map
+              map: {"1":"inbound", "2":"outbound","0":"unknown"}
+              retainMissingValue: true
+        tcp:
+          extractionFn:
+            type: lookup
+            lookup:
+              type: map
+              map: {"49":"ACK+URG+FIN","48":"ACK+URG","40":"PSH+URG","36":"RST+URG","34":"SYN+URG","33":"FIN+URG","29":"PSH+ACK+RST+FIN","28":"PSH+ACK+RST","26":"PSH+ACK+SYN","25":"PSH+ACK+FIN","24":"PSH+ACK","22":"RST+ACK+SYN","21":"RST+ACK+FIN","20":"RST+ACK","19":"SYN+ACK+FIN","18":"SYN+ACK","17":"FIN+ACK","12":"RST+PSH","10":"SYN+PSH","9":"FIN+PSH","6":"SYN+RST","5":"FIN+RST","3":"FIN+SYN","32":"URG","16":"ACK","8":"PSH","4":"RST","2":"SYN","1":"FIN"}
+              retainMissingValue: true
     dimensions:
        - name: as_src
          title: AS src
@@ -2122,10 +2138,10 @@ dataCubes:
          formula: $port_dst
        - name: tag2
          title: Direction
-         formula: $tag2
+         formula: $tag2.customTransform('direction')
        - name: tcp_flags
          title: TCP flags
-         formula: $tcp_flags
+         formula: $tcp_flags.customTransform('tcp')
     measures:
        - name: bytes
          title: Bytes
