@@ -120,15 +120,6 @@ class profile::mediawiki::common(
         source => 'puppet:///modules/mediawiki/decommission_appserver.sh',
     }
 
-
-    # TODO: move to profile::mediawiki::webserver ?
-    ferm::service{ 'ssh_pybal':
-        proto  => 'tcp',
-        port   => '22',
-        srange => '$PRODUCTION_NETWORKS',
-        desc   => 'Allow incoming SSH for pybal health checks',
-    }
-
     # Allow sockets in TIME_WAIT state to be re-used.
     # This helps prevent exhaustion of ephemeral port or conntrack sessions.
     # See <http://vincent.bernat.im/en/blog/2014-tcp-time-wait-state-linux.html>
