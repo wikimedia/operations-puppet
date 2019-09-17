@@ -277,7 +277,7 @@ puppetdb6_servers:
   profile::puppetdb::database::users:
     replication@puppetdb2002-ipv4:
       user: replication
-      database: all
+      database: replication
       cidr: 10.192.0.147/32
       attrs: REPLICATION
     puppetdb@puppetdb2002-ipv4:
