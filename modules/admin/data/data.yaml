@@ -154,7 +154,7 @@ groups:
               neilpquinn-wmf, dbrant, maxsem,
               jminor, etonkovidova, sbisson, addshore, matmarex, elukey,
               nikerabbit, dstrine, jsamra,
-              jdittrich, chelsyx, ovasileva, debt,
+              jdittrich, chelsyx, ovasileva, debt, mgerlach,
               fdans, mlitn, niharika29, goransm, pmiazga, dsaez, shiladsen, cicalese,
               mirrys, sharvaniharan, mmiller, amire80, rush, tieu, kharlan, gbirke,
               isaacj, jdl, joewalsh, phuedx, bd808, iflorez, mayakpwiki, conniecc1, abi]
@@ -280,7 +280,7 @@ groups:
               ayounsi, mepps, mmiller, seddon, gilles, tstarling, rush, tieu, karen,
               cicalese, drossi, fsalutari, nathante, gbirke, isaacj, sbassett, jdl,
               niharika29, ryanmax, afandian2, jgleeson, toddleroux, srishakatux, dsharpe,
-              esanders, sukhe, jfishback, iflorez, mayakpwiki, conniecc1, abi]
+              esanders, sukhe, jfishback, iflorez, mayakpwiki, conniecc1, abi, mgerlach]
     system_members: [analytics-search, analytics]
   analytics-admins:
     gid: 732
@@ -3301,6 +3301,15 @@ users:
     name: abi
     ssh_keys:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIL6AxLdtHiuDHXR1/55Bp2eJOxEQjkrGN6xftQP8jHYJ apatro@wikimedia.org
+  mgerlach:
+    ensure: present
+    realname: Martin Gerlach
+    email: mgerlach@wikimedia.org
+    uid: 22071
+    gid: 500
+    name: mgerlach
+    ssh_keys:
+      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAINj/yFpJoyyIYy8DaRkA92YOQbsZyNh/l3OfQSezZ5t6 martin@nitram
 ldap_only_users:
   abartov:
     ensure: present
