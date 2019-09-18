@@ -22,8 +22,5 @@ class trafficserver(
     package { $packages:
         ensure  => present,
         require => [ Exec['apt-get update'], Systemd::Mask['trafficserver.service'] ],
-        notify  => Systemd::Unmask['trafficserver.service'],
     }
-
-    systemd::unmask { 'trafficserver.service': }
 }
