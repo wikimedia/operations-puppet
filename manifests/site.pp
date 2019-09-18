@@ -1638,12 +1638,6 @@ node 'mwmaint1002.eqiad.wmnet' {
     role(mediawiki::maintenance)
 }
 
-# Former imagescaler (replaced by thumbor) T192457
-# Row B (B6)
-node /^mw1298\.eqiad\.wmnet$/ {
-    role(spare::system)
-}
-
 # Jobrunners (now mostly used via changepropagation as a LVS endpoint)
 
 # Row A
@@ -1655,8 +1649,8 @@ node /^mw13(0[7-9]|1[01])\.eqiad\.wmnet$/ {
 
 # Row B
 
-# mw1293-6,mw1299-mw1306 are in rack B6
-node /^mw1(29[34569]|30[0-6])\.eqiad\.wmnet$/ {
+# mw1293-6,mw1298-mw1306 are in rack B6
+node /^mw1(29[345689]|30[0-6])\.eqiad\.wmnet$/ {
     role(mediawiki::jobrunner)
 }
 
