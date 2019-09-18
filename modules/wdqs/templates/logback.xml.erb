@@ -83,13 +83,8 @@
         <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
             <level>info</level>
         </filter>
-        <% if @logstash_transport == 'syslog' %>
         <host>localhost</host>
         <port><%= @logstash_logback_port %></port>
-        <% elsif @logstash_transport == 'logstash-direct' %>
-        <host><%= @logstash_host %></host>
-        <port><%= @logstash_port %></port>
-        <% end %>
         <customFields>{"program":"<%= @title %>"}</customFields>
     </appender>
     <appender name="async-logstash" class="ch.qos.logback.classic.AsyncAppender">
