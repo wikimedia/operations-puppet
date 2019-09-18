@@ -93,18 +93,4 @@ class profile::graphite::alerts($graphite_url = hiera('graphite_url')) {
         percentage      => 30,
         notes_link      => 'https://wikitech.wikimedia.org/wiki/Application_servers',
     }
-
-    # Monitor EventBus 4xx and 5xx HTTP response rate.
-    monitoring::graphite_threshold { 'eventbus_http_error_rate':
-        ensure          => 'absent',
-        description     => 'EventBus HTTP Error Rate (4xx + 5xx)',
-        dashboard_links => ['https://grafana.wikimedia.org/dashboard/db/eventbus?panelId=1&fullscreen&orgId=1'],
-        metric          => 'transformNull(sumSeries(eventbus.counters.eventlogging.service.EventHandler.POST.[45]*.rate))',
-        # If > 50% of datapoints over last 10 minutes is over thresholds, then alert.
-        warning         => 1,
-        critical        => 10,
-        from            => '10min',
-        percentage      => 50,
-        notes_link      => 'https://wikitech.wikimedia.org/wiki/Event_Platform/EventBus',
-    }
 }
