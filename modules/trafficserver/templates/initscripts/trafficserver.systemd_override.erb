@@ -55,3 +55,7 @@ ReadWritePaths=/var/cache/ocsp
 ReadWritePaths=<%= @paths['sysconfdir'] %>
 <% end -%>
 <% end -%>
+<% if @service_name != 'trafficserver' -%>
+[Install]
+WantedBy=multi-user.target
+<% end -%>
