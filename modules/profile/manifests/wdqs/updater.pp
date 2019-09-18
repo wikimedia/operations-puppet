@@ -3,7 +3,7 @@ class profile::wdqs::updater (
     String $logstash_host = hiera('logstash_host'),
     Stdlib::Port $logstash_json_port = hiera('logstash_json_lines_port'),
     Stdlib::Port $logstash_logback_port = hiera('logstash_logback_port'),
-    Enum['logstash-direct', 'syslog'] $logstash_transport = hiera('profile::wdqs::logstash_transport', 'logstash-direct'),
+    Enum['logstash-direct', 'syslog'] $logstash_transport = hiera('profile::wdqs::logstash_transport', 'syslog'),
     Stdlib::Unixpath $package_dir = hiera('profile::wdqs::package_dir', '/srv/deployment/wdqs/wdqs'),
     Stdlib::Unixpath $data_dir = hiera('profile::wdqs::data_dir', '/srv/wdqs'),
     Stdlib::Unixpath $log_dir = hiera('profile::wdqs::log_dir', '/var/log/wdqs'),

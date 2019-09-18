@@ -5,7 +5,7 @@ class profile::wdqs::blazegraph(
     String $logstash_host = hiera('logstash_host'),
     Stdlib::Port $logstash_json_port = hiera('logstash_json_lines_port'),
     Stdlib::Port $logstash_logback_port = hiera('logstash_logback_port'),
-    Enum['logstash-direct', 'syslog'] $logstash_transport = hiera('profile::wdqs::logstash_transport', 'logstash-direct'),
+    Enum['logstash-direct', 'syslog'] $logstash_transport = hiera('profile::wdqs::logstash_transport', 'syslog'),
     String $endpoint = hiera('profile::wdqs::endpoint', 'https://query.wikidata.org'),
     String $heap_size = hiera('profile::wdqs::blazegraph_heap_size', '31g'),
     Boolean $use_deployed_config = hiera('profile::wdqs::blazegraph_use_deployed_config', false),
