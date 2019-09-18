@@ -16,7 +16,7 @@ groups:
               bawolff, dkg, juliaglen, cwdent, bmansurov, hpham, atgomez]
   absent_ldap:
     description: meta group for absented users which had privileged LDAP access in the past, an automatic check verifies it has been really removed from the LDAP (but removal has to be handled separatelly)
-    members: [adavenport, siddharth11, albe, audiohazel, tbolliger, jmatazzoni, pbj, nirzar]
+    members: [adavenport, siddharth11, albe, audiohazel, tbolliger, jmatazzoni, pbj, nirzar, marble, mmarble]
   wikidev:
     gid: 500
     description: container group for primary user groups.
@@ -3433,10 +3433,6 @@ ldap_only_users:
     ensure: present
     realname: Lydia Pintscher
     email: lydia.pintscher@wikimedia.de
-  marble:
-    ensure: present
-    realname: Michal Anna Marble
-    email: mmarble@wikimedia.org
   mhernandez:
     ensure: present
     realname: Megan Hernandez
@@ -3682,10 +3678,6 @@ ldap_only_users:
     ensure: present
     realname: Marcella L. Florence
     email: mflorence@wikimedia.org
-  mmarble:
-    ensure: present
-    realname: Michal Marble
-    email: mmarble@wikimedia.org
   kchapman:
     ensure: present
     realname: Kate Chapman
