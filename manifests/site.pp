@@ -1378,6 +1378,7 @@ node 'multatuli.wikimedia.org' {
 node /^ms-fe1005\.eqiad\.wmnet$/ {
     role(swift::proxy)
     include ::role::swift::stats_reporter
+    include ::role::swift::swiftrepl # lint:ignore:wmf_styleguide
     include ::lvs::realserver
 }
 
@@ -1393,6 +1394,7 @@ node /^ms-be10(1[6-9]|[2345][0-9])\.eqiad\.wmnet$/ {
 node /^ms-fe2005\.codfw\.wmnet$/ {
     role(swift::proxy)
     include ::role::swift::stats_reporter
+    include ::role::swift::swiftrepl # lint:ignore:wmf_styleguide
     include ::lvs::realserver
 }
 
