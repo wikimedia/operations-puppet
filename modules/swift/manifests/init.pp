@@ -45,38 +45,27 @@ class swift (
 
     require_package('python-statsd')
 
-    File {
-        owner => 'swift',
-        group => 'swift',
-        mode  => '0440',
+    file {
+        default:
+            owner   => 'swift',
+            group   => 'swift',
+            mode    => '0440',
+            require => Package['swift'];
+        '/etc/swift':
+            ensure  => directory,
+            recurse => true;
+        '/etc/swift/swift.conf':
+            ensure  => file,
+            content => template('swift/swift.conf.erb');
+        '/var/cache/swift':
+            ensure => directory,
+            mode   => '0755';
+        # Create swift user home. Once T123918 is resolved this should be moved as
+        # part of a user resource declaration.
+        '/var/lib/swift':
+            ensure => directory,
+            mode   => '0755',
     }
-
-    file { '/etc/swift':
-        ensure  => directory,
-        require => Package['swift'],
-        recurse => true,
-    }
-
-    file { '/etc/swift/swift.conf':
-        ensure  => present,
-        require => Package['swift'],
-        content => template('swift/swift.conf.erb'),
-    }
-
-    file { '/var/cache/swift':
-        ensure  => directory,
-        require => Package['swift'],
-        mode    => '0755',
-    }
-
-    # Create swift user home. Once T123918 is resolved this should be moved as
-    # part of a user resource declaration.
-    file { '/var/lib/swift':
-        ensure  => directory,
-        require => Package['swift'],
-        mode    => '0755',
-    }
-
     file { '/var/log/swift':
         ensure  => directory,
         require => Package['swift'],

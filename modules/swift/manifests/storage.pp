@@ -48,35 +48,24 @@ class swift::storage (
     }
 
     # set up swift specific configs
-    File {
-        owner => 'swift',
-        group => 'swift',
-        mode  => '0440',
-    }
-
-    file { '/etc/swift/account-server.conf':
-        content => template('swift/account-server.conf.erb'),
-    }
-
-    file { '/etc/swift/container-server.conf':
-        content => template('swift/container-server.conf.erb'),
-    }
-
-    file { '/etc/swift/object-server.conf':
-        content => template('swift/object-server.conf.erb'),
-    }
-
-    file { '/etc/swift/container-reconciler.conf':
-        content => template('swift/container-reconciler.conf.erb'),
-    }
-
-    file { '/srv/swift-storage':
-        ensure  => directory,
-        require => Package['swift'],
-        owner   => 'swift',
-        group   => 'swift',
-        # the 1 is to allow nagios to read the drives for check_disk
-        mode    => '0751',
+    file {
+        default:
+            owner => 'swift',
+            group => 'swift',
+            mode  => '0440';
+        '/etc/swift/account-server.conf':
+            content => template('swift/account-server.conf.erb');
+        '/etc/swift/container-server.conf':
+            content => template('swift/container-server.conf.erb');
+        '/etc/swift/object-server.conf':
+            content => template('swift/object-server.conf.erb');
+        '/etc/swift/container-reconciler.conf':
+            content => template('swift/container-reconciler.conf.erb');
+        '/srv/swift-storage':
+            ensure  => directory,
+            require => Package['swift'],
+            # the 1 is to allow nagios to read the drives for check_disk
+            mode    => '0751';
     }
 
     service { [
