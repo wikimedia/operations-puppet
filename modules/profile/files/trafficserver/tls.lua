@@ -18,4 +18,6 @@ function do_global_send_request()
     ts.server_request.header['X-Connection-Properties'] = header_content
     ts.server_request.header['X-Forwarded-Proto'] = 'https'
     ts.server_request.header['Connection'] = 'close'
+    -- Avoid propagating Proxy-Connection to varnish-fe and ats-be
+    ts.server_request.header['Proxy-Connection'] = nil
 end

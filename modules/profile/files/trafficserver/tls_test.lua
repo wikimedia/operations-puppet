@@ -21,11 +21,13 @@ describe("Busted unit testing framework", function()
 
       -- With HTTP2 in the stack
       _G.ts.http.get_client_protocol_stack = function() return "ipv4", "tcp", "tls/1.2", "h2" end
+      _G.ts.server_request.header['Proxy-Connection'] = 'close'
       do_global_send_request()
       assert.are.equals('127.0.0.1', _G.ts.server_request.header['X-Client-IP'])
       assert.are.equals('H2=1; SSR=0; SSL=TLSv1.2; C=ECDHE-ECDSA-AES256-GCM-SHA384; EC=X25519;', _G.ts.server_request.header['X-Connection-Properties'])
       assert.are.equals('close', _G.ts.server_request.header['Connection'])
       assert.are.equals('https', _G.ts.server_request.header['X-Forwarded-Proto'])
+      assert.is_nil(_G.ts.server_request.header['Proxy-Connection'])
 
       -- With HTTP1.1 in the stack
       _G.ts.http.get_client_protocol_stack = function() return "ipv4", "tcp", "tls/1.2", "http/1.1" end
