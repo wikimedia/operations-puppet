@@ -66,13 +66,6 @@ monitoring::groups:
   etcd_codfw:
     description: codfw Etcd
 
-  # Eventbus
-  eventbus_eqiad:
-    description: eventbus eqiad servers
-
-  eventbus_codfw:
-    description: eventbus codfw servers
-
   # eventschemas (schema.svc.$site.wmnet backend servers)
   eventschemas_eqiad:
     description: Event Schemas HTTP eqiad servers
@@ -88,6 +81,13 @@ monitoring::groups:
 # Kafka jumbo
   kafka_jumbo_eqiad:
     description: Kafka jumbo cluster in eqiad
+
+# Kafka main
+  kafka_main_eqiad:
+    description: eventbus eqiad servers
+
+  kafka_main_codfw:
+    description: eventbus codfw servers
 
 # Kubernetes
   kubernetes_eqiad:

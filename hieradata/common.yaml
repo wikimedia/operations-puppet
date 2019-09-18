@@ -54,8 +54,8 @@ wikimedia_clusters:
     sites:
       eqiad: []
       codfw: []
-  eventbus:
-    description: "Eventbus"
+  kafka_main:
+    description: "Kafka main cluster"
     id: 7
     sites:
       eqiad: []
