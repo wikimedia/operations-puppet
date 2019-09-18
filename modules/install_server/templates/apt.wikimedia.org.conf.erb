@@ -25,6 +25,9 @@ server {
    ssl_certificate_key /etc/acmecerts/apt/live/ec-prime256v1.key;
    ssl_certificate /etc/acmecerts/apt/live/rsa-2048.chained.crt;
    ssl_certificate_key /etc/acmecerts/apt/live/rsa-2048.key;
+   ssl_stapling on;
+   ssl_stapling_file /etc/acmecerts/apt/live/ec-prime256v1.ocsp;
+   ssl_stapling_file /etc/acmecerts/apt/live/rsa-2048.ocsp;
    <%= @ssl_settings.join("\n   ") %>
 
    root /srv;
