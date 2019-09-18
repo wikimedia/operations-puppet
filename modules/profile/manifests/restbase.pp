@@ -70,6 +70,9 @@
 #   Recommendation API service URI. Format:
 #   http://recommendation-api.discovery.wmnet:9632
 #
+# [*wikifeeds_uri*]
+#   Wikifeeds service URI. Format: http://wikifeeds.discovery.wmnet:8889
+#
 class profile::restbase(
     $cassandra_user = hiera('profile::restbase::cassandra_user'),
     $cassandra_password = hiera('profile::restbase::cassandra_password'),
@@ -90,6 +93,7 @@ class profile::restbase(
     $citoid_uri     = hiera('profile::restbase::citoid_uri'),
     $cxserver_uri   = hiera('profile::restbase::cxserver_uri'),
     $recommendation_uri = hiera('profile::restbase::recommendation_uri'),
+    $wikifeeds_uri  = hiera('profile::restbase::wikifeeds_uri'),
     $monitor_restbase = hiera('profile::restbase::monitor_restbase', true),
     $monitor_domain = hiera('profile::restbase::monitor_domain'),
 ) {
@@ -127,6 +131,7 @@ class profile::restbase(
             proton_uri            => $proton_uri,
             cxserver_uri          => $cxserver_uri,
             recommendation_uri    => $recommendation_uri,
+            wikifeeds_uri         => $wikifeeds_uri,
             aqs_uri               => $aqs_uri,
             salt_key              => $salt_key,
             page_size             => $page_size,
