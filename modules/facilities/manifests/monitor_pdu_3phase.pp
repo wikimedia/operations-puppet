@@ -20,6 +20,7 @@ define facilities::monitor_pdu_3phase(
         infeed    => '1',
         breaker   => $breaker,
         redundant => $redundant,
+        model     => $model,
     }
 
     facilities::monitor_pdu_service { "${title}-infeed-load-tower-A-phase-Y":
@@ -31,6 +32,7 @@ define facilities::monitor_pdu_3phase(
         infeed    => '2',
         breaker   => $breaker,
         redundant => $redundant,
+        model     => $model,
     }
     facilities::monitor_pdu_service { "${title}-infeed-load-tower-A-phase-Z":
         host      => $title,
@@ -41,6 +43,7 @@ define facilities::monitor_pdu_3phase(
         infeed    => '3',
         breaker   => $breaker,
         redundant => $redundant,
+        model     => $model,
     }
 
     if $redundant == true {
@@ -53,6 +56,7 @@ define facilities::monitor_pdu_3phase(
             infeed    => '1',
             breaker   => $breaker,
             redundant => $redundant,
+            model     => $model,
         }
         facilities::monitor_pdu_service { "${title}-infeed-load-tower-B-phase-Y":
             host      => $title,
@@ -63,6 +67,7 @@ define facilities::monitor_pdu_3phase(
             infeed    => '2',
             breaker   => $breaker,
             redundant => $redundant,
+            model     => $model,
         }
         facilities::monitor_pdu_service { "${title}-infeed-load-tower-B-phase-Z":
             host      => $title,
@@ -73,6 +78,7 @@ define facilities::monitor_pdu_3phase(
             infeed    => '3',
             breaker   => $breaker,
             redundant => $redundant,
+            model     => $model,
         }
     }
 }
