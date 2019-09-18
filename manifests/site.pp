@@ -1337,11 +1337,6 @@ node 'miscweb1001.eqiad.wmnet', 'miscweb2001.codfw.wmnet' {
     role(webserver_misc_apps)
 }
 
-# replaced by miscweb servers
-node 'krypton.eqiad.wmnet' {
-    role(spare::system)
-}
-
 node /kubernetes[12]00[1-6]\.(codfw|eqiad)\.wmnet/ {
     role(kubernetes::worker)
 }
