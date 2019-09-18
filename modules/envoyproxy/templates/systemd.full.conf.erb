@@ -16,6 +16,9 @@ LimitNOFILE=65536
 # We will have to use "reload" to obtain the desired result -
 # and have puppet run 'systemctl reload envoyproxy.service' instead.
 Environment="ENVOY_CONFIG=<%= @envoy_directory %>/envoy.yaml"
+Environment="SERVICE_ZONE=<%= @service_zone %>"
+Environment="SERVICE_CLUSTER=<%= @service_cluster %>"
+Environment="SERVICE_NODE=<%= @service_node %>"
 ExecStart=/usr/local/sbin/envoyproxy-hot-restarter /usr/local/sbin/envoyproxy-start
 ExecReload=
 ExecReload=/bin/kill -s HUP $MAINPID
