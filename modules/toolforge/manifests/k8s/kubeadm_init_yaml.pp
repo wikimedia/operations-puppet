@@ -19,22 +19,19 @@ class toolforge::k8s::kubeadm_init_yaml(
         require => File['/etc/kubernetes'],
     }
 
-    # TODO: move these into /etc/kubernetes/psp or perhaps all in one file
-    file { '/etc/kubernetes/kubeadm-system-psp.yaml':
-        ensure  => present,
-        source  => 'puppet:///modules/toolforge/k8s/kubeadm-system-psp.yaml',
+    file{ '/etc/kubernetes/psp':
+        ensure  => directory,
         owner   => 'root',
         group   => 'root',
-        mode    => '0400',
         require => File['/etc/kubernetes'],
     }
 
-    file { '/etc/kubernetes/kubeadm-default-psp.yaml':
+    file { '/etc/kubernetes/psp/base-pod-security-policies.yaml':
         ensure  => present,
-        source  => 'puppet:///modules/toolforge/k8s/kubeadm-default-psp.yaml',
+        source  => 'puppet:///modules/toolforge/k8s/psp/base-pod-security-policies.yaml',
         owner   => 'root',
         group   => 'root',
         mode    => '0400',
-        require => File['/etc/kubernetes'],
+        require => File['/etc/kubernetes/psp'],
     }
 }

@@ -2,9 +2,9 @@ class toolforge::k8s::kubeadm_nginx_ingress_yaml(
 ) {
     require ::toolforge::k8s::kubeadm
 
-    file { '/etc/kubernetes/kubeadm-nginx-ingress-psp.yaml':
+    file { '/etc/kubernetes/psp/kubeadm-nginx-ingress-psp.yaml':
         ensure  => present,
-        source  => 'puppet:///modules/toolforge/k8s/kubeadm-nginx-ingress-psp.yaml',
+        source  => 'puppet:///modules/toolforge/k8s/psp/kubeadm-nginx-ingress-psp.yaml',
         require => File['/etc/kubernetes'],
     }
 
