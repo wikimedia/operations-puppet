@@ -91,9 +91,14 @@ define camus::job (
 
     $properties_file = "${camus::config_directory}/${title}.properties"
 
+    $properties_content = $ensure ? {
+        'present' => template($template),
+        default   => '',
+    }
+
     file { $properties_file:
         ensure  => $ensure,
-        content => template($template),
+        content => $properties_content,
     }
 
     $camus_jar_opt = $camus_jar ? {
