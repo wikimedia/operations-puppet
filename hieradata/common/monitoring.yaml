@@ -84,10 +84,10 @@ monitoring::groups:
 
 # Kafka main
   kafka_main_eqiad:
-    description: eventbus eqiad servers
+    description: Kafka main cluster in eqiad
 
   kafka_main_codfw:
-    description: eventbus codfw servers
+    description: Kafka main cluster in codfw
 
 # Kubernetes
   kubernetes_eqiad:
