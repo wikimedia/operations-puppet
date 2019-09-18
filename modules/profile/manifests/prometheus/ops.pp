@@ -131,17 +131,6 @@ class profile::prometheus::ops (
       },
     ]
 
-    # Ping and SSH probes for all bastions from all machines running
-    # prometheus::ops
-    file { "${targets_path}/blackbox_icmp_bastions.yaml":
-      content => ordered_yaml([{'targets' => $bastion_hosts}]),
-    }
-    file { "${targets_path}/blackbox_ssh_bastions.yaml":
-      content => ordered_yaml([{
-        'targets' => regsubst($bastion_hosts, '(.*)', '[\0]:22')
-        }]),
-    }
-
     $gerrit_jobs = [
       {
           'job_name'          => 'gerrit',
@@ -157,14 +146,6 @@ class profile::prometheus::ops (
           },
       },
     ]
-
-    $gerrit_targets = {
-      'targets' => ['gerrit.wikimedia.org:443'],
-      'labels'  => {'cluster' => 'misc', 'site' => 'eqiad'},
-    }
-    file { "${targets_path}/gerrit.yaml":
-      content => ordered_yaml([$gerrit_targets]),
-    }
 
     # Add one job for each of mysql 'group' (i.e. their broad function)
     # Each job will look for new files matching the glob and load the job
@@ -1422,6 +1403,7 @@ class profile::prometheus::ops (
         mode    => '0400',
         owner   => 'prometheus',
         group   => 'prometheus',
+        backup  => false,
     }
 
     ferm::service { 'prometheus-web':
@@ -1430,23 +1412,37 @@ class profile::prometheus::ops (
         srange => '$DOMAIN_NETWORKS',
     }
 
-    File {
-        backup  => false,
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0444',
-    }
-
     # Query puppet exported resources and generate a list of hosts for
     # prometheus to poll metrics from. Ganglia::Cluster is used to generate the
     # mapping from cluster to a list of its members.
-    $content = $::use_puppetdb ? {
+    $node_site_content = $::use_puppetdb ? {
         true => template('role/prometheus/node_site.yaml.erb'),
         default => generate('/usr/local/bin/prometheus-ganglia-gen',
         "--site=${::site}"),
     }
-    file { "${targets_path}/node_site_${::site}.yaml":
-        content => $content,
+    $gerrit_targets = {
+      'targets' => ['gerrit.wikimedia.org:443'],
+      'labels'  => {'cluster' => 'misc', 'site' => 'eqiad'},
+    }
+
+    file {
+        default:
+            backup => false,
+            owner  => 'root',
+            group  => 'root',
+            mode   => '0444';
+        "${targets_path}/node_site_${::site}.yaml":
+            content => $node_site_content;
+        # Ping and SSH probes for all bastions from all machines running
+        # prometheus::ops
+        "${targets_path}/blackbox_icmp_bastions.yaml":
+            content => ordered_yaml([{'targets' => $bastion_hosts}]);
+        "${targets_path}/blackbox_ssh_bastions.yaml":
+            content => ordered_yaml([{
+                'targets' => regsubst($bastion_hosts, '(.*)', '[\0]:22')
+            }]);
+        "${targets_path}/gerrit.yaml":
+            content => ordered_yaml([$gerrit_targets]);
     }
 
     prometheus::rule { 'rules_ops.yml':
