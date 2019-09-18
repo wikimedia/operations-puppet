@@ -14,8 +14,6 @@ class icinga::monitor::services {
         notes_url     => 'https://wikitech.wikimedia.org/wiki/RESTBase#What_to_check_after_a_deploy',
     }
 
-    # TODO: change this name to 'change-prop'.  eventbus service is gone.
-    # https://phabricator.wikimedia.org/T232122
     monitoring::grafana_alert { 'change-propagation':
         dashboard_uid => '000000201',
         contact_group => 'team-services',

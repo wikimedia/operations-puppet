@@ -22,8 +22,6 @@ class profile::eventlogging::analytics::mysql(
     $kafka_brokers_string  = $profile::eventlogging::analytics::server::kafka_brokers_string
 
     # Add more here as requested.
-    # NOTE: The datacenter prefixed topics are produced via EventBus, and are of
-    # schemas in the mediawiki/event-schemas repository.
     $topics_to_consume = [
         # Valid eventlogging analytics events are all in this one topic.
         'eventlogging-valid-mixed',

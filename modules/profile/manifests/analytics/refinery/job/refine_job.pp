@@ -1,8 +1,7 @@
 # == Define profile::analytics::refinery::job::refine_job
 #
 # Installs a cron job to run the Refine Spark job.  This is
-# used to import arbitrary JSON data (EventLogging, EventBus, etc.)
-# into Hive.
+# used to import arbitrary (schemaed) JSON data into Hive.
 #
 # If $refine_monitor_enabled is true, a daily RefineMonitor job will be
 # scheduled to look back over a 24 hour period to ensure that all

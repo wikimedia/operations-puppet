@@ -79,8 +79,8 @@ class profile::analytics::refinery::job::camus(
         interval              => '*-*-* *:05:00',
     }
 
-    # Import eventbus topics into /wmf/data/raw/eventbus
-    # once every hour.
+    # Import Mediawiki EventBus extension topics into
+    # /wmf/data/raw/event once every hour.
     # Also check that camus is always finding data in the revision-create
     # topic from the primary mediawiki datacenter.
     # NOTE: Using mediawiki::state is a bit of a hack; this data should
@@ -90,6 +90,7 @@ class profile::analytics::refinery::job::camus(
         default => mediawiki::state('primary_dc'),
     }
 
+    # TODO: rename this to mediawiki_events
     camus::job { 'eventbus':
         kafka_brokers         => $kafka_brokers_jumbo,
         check                 => $monitoring_enabled,
@@ -100,7 +101,7 @@ class profile::analytics::refinery::job::camus(
         interval              => '*-*-* *:05:00',
     }
 
-    # Import eventbus mediawiki.job queue topics into /wmf/data/raw/mediawiki_job
+    # Import mediawiki.job queue topics into /wmf/data/raw/mediawiki_job
     # once every hour.
     camus::job { 'mediawiki_job':
         kafka_brokers => $kafka_brokers_jumbo,
