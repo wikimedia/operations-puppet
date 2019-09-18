@@ -1,8 +1,7 @@
 cluster: kafka_main
-# TODO remove this group from this role; eventbus service is gone.
-# https://phabricator.wikimedia.org/T232122
 admin::groups:
-  - eventbus-admins
+  - changeprop-admin
+  - cpjobqueue-admin
 
 profile::kafka::broker::kafka_cluster_name: main
 

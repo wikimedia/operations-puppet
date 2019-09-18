@@ -610,12 +610,8 @@ groups:
     privileges: ['ALL = (analytics-wmde) NOPASSWD: ALL']
   eventbus-admins:
     gid: 785
-    description: admins for the eventbus clusters
-    members: [nuria, milimetric, joal, mforns, eevans, ppchelko, mobrovac]
-    privileges: ['ALL = NOPASSWD: /bin/systemctl start eventlogging-service-eventbus.service',
-                 'ALL = NOPASSWD: /bin/systemctl stop eventlogging-service-eventbus.service',
-                 'ALL = NOPASSWD: /bin/systemctl restart eventlogging-service-eventbus.service',
-                 'ALL = NOPASSWD: /bin/journalctl *']
+    description: admins for the eventbus clusters - unsed after T232122
+    members: []
   gitpuppet:
     gid: 998
     description: Private repo users
