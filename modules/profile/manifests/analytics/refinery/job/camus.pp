@@ -79,7 +79,7 @@ class profile::analytics::refinery::job::camus(
         interval              => '*-*-* *:05:00',
     }
 
-    # Import Mediawiki EventBus extension topics into
+    # Import Mediawiki events into
     # /wmf/data/raw/event once every hour.
     # Also check that camus is always finding data in the revision-create
     # topic from the primary mediawiki datacenter.
@@ -92,6 +92,17 @@ class profile::analytics::refinery::job::camus(
 
     # TODO: rename this to mediawiki_events
     camus::job { 'eventbus':
+        ensure                => 'absent',
+        kafka_brokers         => $kafka_brokers_jumbo,
+        check                 => $monitoring_enabled,
+        # Don't need to write _IMPORTED flags for EventBus data
+        check_dry_run         => true,
+        # Only check this topic, since it should always have data for every hour
+        check_topic_whitelist => "${primary_mediawiki_dc}.mediawiki.revision-create",
+        interval              => '*-*-* *:05:00',
+    }
+
+    camus::job { 'mediawiki_events':
         kafka_brokers         => $kafka_brokers_jumbo,
         check                 => $monitoring_enabled,
         # Don't need to write _IMPORTED flags for EventBus data
