@@ -92,6 +92,7 @@ define camus::job (
     $properties_file = "${camus::config_directory}/${title}.properties"
 
     file { $properties_file:
+        ensure  => $ensure,
         content => template($template),
     }
 
