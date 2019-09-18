@@ -2,7 +2,9 @@
 #
 # This class provisions the IEG grant review application.
 #
-class profile::iegreview {
+class profile::iegreview (
+    $iegreview_db_host = lookup('profile::iegreview::db_host'),
+){
 
     class { '::iegreview':
         hostname   => 'iegreview.wikimedia.org',
@@ -11,7 +13,7 @@ class profile::iegreview {
         # Send logs to udp2log relay
         log_dest   => 'udp://udplog.eqiad.wmnet:8420/iegreview',
         # Misc MySQL shard
-        mysql_host => 'm2-master.eqiad.wmnet',
+        mysql_host => $iegreview_db_host,
         mysql_db   => 'iegreview',
         smtp_host  => 'localhost',
     }
