@@ -5,7 +5,8 @@
 ## http://racktables.org/ and unzipped into /srv/org/wikimedia/racktables
 #
 class profile::racktables (
-    $racktables_host = hiera('profile::racktables::racktables_host'),
+    $racktables_host = lookup('profile::racktables::racktables_host'),
+    $racktables_db_host = lookup('profile::racktables::racktables_db_host'),
 ){
     system::role { 'racktables': description => 'Racktables server' }
 
@@ -20,7 +21,7 @@ class profile::racktables (
 
     class { '::racktables':
         racktables_host    => $racktables_host,
-        racktables_db_host => 'm1-master.eqiad.wmnet',
+        racktables_db_host => $racktables_db_host,
         racktables_db      => 'racktables',
     }
 }
