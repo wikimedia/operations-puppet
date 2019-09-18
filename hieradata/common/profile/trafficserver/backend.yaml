@@ -250,9 +250,6 @@ profile::trafficserver::backend::caching_rules:
       value: debmonitor.discovery.wmnet
       action: never-cache
     - primary_destination: dest_host
-      value: krypton.eqiad.wmnet
-      action: never-cache
-    - primary_destination: dest_host
       value: grafana1001.eqiad.wmnet
       action: never-cache
     - primary_destination: dest_host

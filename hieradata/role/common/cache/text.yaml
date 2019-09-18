@@ -113,9 +113,6 @@ cache::app_directors:
   hadoop_ui:
     backends:
       eqiad: 'analytics-tool1001.eqiad.wmnet'
-  krypton:
-    backends:
-      eqiad: 'krypton.eqiad.wmnet'
   labmon1001:
     backends:
       eqiad: 'labmon1001.eqiad.wmnet'
