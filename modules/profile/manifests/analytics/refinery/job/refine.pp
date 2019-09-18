@@ -120,20 +120,6 @@ class profile::analytics::refinery::job::refine(
     ]
     $job_table_blacklist = sprintf('.*(%s)$', join($problematic_jobs, '|'))
 
-    profile::analytics::refinery::job::refine_job { 'eventlogging_eventbus_job_queue':
-        ensure       => 'absent',
-        job_config   => merge($default_config, {
-            input_path                      => '/wmf/data/raw/mediawiki_job',
-            input_path_regex                => '.*(eqiad|codfw)_(.+)/hourly/(\\d+)/(\\d+)/(\\d+)/(\\d+)',
-            input_path_regex_capture_groups => 'datacenter,table,year,month,day,hour',
-            table_blacklist_regex           => $job_table_blacklist,
-            # Deduplicate eventbus based data based on meta.id field
-            transform_functions             => 'org.wikimedia.analytics.refinery.job.refine.deduplicate_eventbus',
-        }),
-        interval     => '*-*-* *:25:00',
-        use_kerberos => $use_kerberos,
-    }
-
     profile::analytics::refinery::job::refine_job { 'mediawiki_job_events':
         job_config   => merge($default_config, {
             input_path                      => '/wmf/data/raw/mediawiki_job',
