@@ -90,18 +90,6 @@ class profile::analytics::refinery::job::camus(
         default => mediawiki::state('primary_dc'),
     }
 
-    # TODO: rename this to mediawiki_events
-    camus::job { 'eventbus':
-        ensure                => 'absent',
-        kafka_brokers         => $kafka_brokers_jumbo,
-        check                 => $monitoring_enabled,
-        # Don't need to write _IMPORTED flags for EventBus data
-        check_dry_run         => true,
-        # Only check this topic, since it should always have data for every hour
-        check_topic_whitelist => "${primary_mediawiki_dc}.mediawiki.revision-create",
-        interval              => '*-*-* *:05:00',
-    }
-
     camus::job { 'mediawiki_events':
         kafka_brokers         => $kafka_brokers_jumbo,
         check                 => $monitoring_enabled,
