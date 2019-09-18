@@ -16,15 +16,15 @@ class icinga::monitor::services {
 
     # TODO: change this name to 'change-prop'.  eventbus service is gone.
     # https://phabricator.wikimedia.org/T232122
-    monitoring::grafana_alert { 'eventbus':
+    monitoring::grafana_alert { 'change-propagation':
         dashboard_uid => '000000201',
         contact_group => 'team-services',
-        notes_url     => 'https://wikitech.wikimedia.org/wiki/EventBus',
+        notes_url     => 'https://www.mediawiki.org/wiki/Change_propagation',
     }
 
     monitoring::grafana_alert { 'jobqueue-eventbus':
       dashboard_uid => '000000400',
       contact_group => 'team-services',
-      notes_url     => 'https://wikitech.wikimedia.org/wiki/EventBus',
+      notes_url     => 'https://wikitech.wikimedia.org/wiki/Kafka_Job_Queue',
     }
 }
