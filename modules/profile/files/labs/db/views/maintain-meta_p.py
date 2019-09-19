@@ -251,7 +251,13 @@ def main():
     if 'jbowiki' in dbs:
         dbs['jbowiki']['sensitive'] = True
 
-    initialise_settings = '{}/wmf-config/InitialiseSettings.php'.format(args.mediawiki_config)
+    # Per T219374, temporarily changing to VariantSettings.php since that is
+    # the current file for this information.  Fall back to the original file
+    # when that file goes away.
+    initialise_settings = '{}/wmf-config/VariantSettings.php'.format(args.mediawiki_config)
+    if not os.path.isfile(initialise_settings):
+        initialise_settings = '{}/wmf-config/InitialiseSettings.php'.format(args.mediawiki_config)
+
     canonical = parse_php_canonical(initialise_settings)
 
     for db, dbInfo in dbs.items():
