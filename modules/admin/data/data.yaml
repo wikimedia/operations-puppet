@@ -33,7 +33,7 @@ groups:
               akosiaris, mark, ariel, cmjohnson, otto, robh, tstarling,
               ori, jmm, jynus, ema, elukey, gehel, volans, marostegui,
               ayounsi, herron, aborrero, bstorm, vgutierrez, jiji, cwhite,
-              crusnov, cdanis, fsero, jbond, jeh, dzahn, phamhi, sukhe]
+              crusnov, cdanis, fsero, jbond, jeh, dzahn, phamhi, sukhe, pt1979]
     privileges: ['ALL = (ALL) NOPASSWD: ALL']
   ops-adm-group:
     # No gid for this group on purpose, it's a system provided one
@@ -489,7 +489,7 @@ groups:
   datacenter-ops:
     gid: 765
     description: Group of datacenter ops engineers, managed by Willy Pao T229124#5393773
-    members: [pt1979, wpao, jclark]
+    members: [wpao, jclark]
     privileges: ['ALL = NOPASSWD: /usr/local/sbin/install-console *',
                  'ALL = NOPASSWD: /usr/sbin/megacli *',
                  'ALL = NOPASSWD: /usr/sbin/hpssacli *',
