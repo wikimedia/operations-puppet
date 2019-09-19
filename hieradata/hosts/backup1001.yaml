@@ -1,0 +1,3 @@
+# Temporary parallel database to test new bacula version
+profile::backup::director::dbschema: bacula9
+profile::backup::director::dbuser: bacula9
