@@ -2,7 +2,7 @@
 Description=designate producer (create/setup/delete)
 
 [Service]
-ExecStart=/usr/bin/designate-producer
+ExecStart=/usr/bin/designate-producer --config-file=/etc/designate/designate.conf --log-file=/var/log/designate/designate-producer.log
 
 [Install]
 WantedBy=multi-user.target
