@@ -53,13 +53,26 @@ class openstack::designate::monitor (
         notes_url     => 'https://wikitech.wikimedia.org/wiki/Portal:Cloud_VPS/Admin/Troubleshooting',
     }
 
-    nrpe::monitor_service { 'check_designate_pool-manager':
+    nrpe::monitor_service { 'check_designate_worker':
         ensure        => $ensure,
         critical      => $critical,
-        description   => 'designate-pool-manager process',
-        nrpe_command  => "/usr/lib/nagios/plugins/check_procs -c 1: --ereg-argument-array '^/usr/bin/python /usr/bin/designate-pool-manager'",
+        description   => 'designate-worker process',
+        nrpe_command  => "/usr/lib/nagios/plugins/check_procs -c 1: --ereg-argument-array '^/usr/bin/python /usr/bin/designate-worker'",
         contact_group => $contact_groups,
         notes_url     => 'https://wikitech.wikimedia.org/wiki/Portal:Cloud_VPS/Admin/Troubleshooting',
+    }
+
+    nrpe::monitor_service { 'check_designate_producer':
+        ensure        => $ensure,
+        critical      => $critical,
+        description   => 'designate-producer process',
+        nrpe_command  => "/usr/lib/nagios/plugins/check_procs -c 1: --ereg-argument-array '^/usr/bin/python /usr/bin/designate-producer'",
+        contact_group => $contact_groups,
+        notes_url     => 'https://wikitech.wikimedia.org/wiki/Portal:Cloud_VPS/Admin/Troubleshooting',
+    }
+
+    nrpe::monitor_service { 'check_designate_pool-manager':
+        ensure        => absent,
     }
 
     monitoring::service { 'designate-api-http':
