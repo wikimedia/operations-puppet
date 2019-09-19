@@ -39,8 +39,8 @@ server {
 	ssl_stapling_file /var/cache/ocsp/<%= cert %>.ocsp;
 	  <%- end -%>
 	<%- if @acme_chief and @certs_nginx.empty? -%>
-	ssl_stapling_file /etc/acmecerts/<%= @acme_certname %>/live/rsa-2048.client.ocsp;
-	ssl_stapling_file /etc/acmecerts/<%= @acme_certname %>/live/ec-prime256v1.client.ocsp;
+	ssl_stapling_file /etc/acmecerts/<%= @acme_certname %>/live/rsa-2048.ocsp;
+	ssl_stapling_file /etc/acmecerts/<%= @acme_certname %>/live/ec-prime256v1.ocsp;
 	<%- end -%>
 	<%- end -%>
 

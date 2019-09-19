@@ -342,15 +342,6 @@ define trafficserver::instance(
 
     ## Service
     $do_ocsp = !empty($inbound_tls_settings) and num2bool($inbound_tls_settings['do_ocsp']) # used in the systemd template
-    if $do_ocsp {
-      $acme_chief = defined(Acme_chief::Cert['unified'])  # if acme_chief unified cert is there, update-ocsp may try to
-                                                          # write on /etc/acmecerts and we need to allow it
-                                                          # this can be triggered by tlsproxy::localssl configuration
-                                                          # and we can get rid of this as soon as we don't need
-                                                          # ats-tls and nginx living on the same instance
-    } else {
-      $acme_chief = false
-    }
 
     systemd::service { $service_name:
         content        => init_template('trafficserver', 'systemd_override'),
