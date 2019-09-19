@@ -473,3 +473,6 @@ prometheus::varnishkafka_exporter::config:
     - 'varnishkafka'
 
   num_entries_to_get: 2
+
+# trafficserver settings
+profile::trafficserver::tls::websocket_support: true
