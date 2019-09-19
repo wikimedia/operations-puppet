@@ -71,10 +71,6 @@ class openstack::designate::monitor (
         notes_url     => 'https://wikitech.wikimedia.org/wiki/Portal:Cloud_VPS/Admin/Troubleshooting',
     }
 
-    nrpe::monitor_service { 'check_designate_pool-manager':
-        ensure        => absent,
-    }
-
     monitoring::service { 'designate-api-http':
         ensure        => $ensure,
         description   => 'designate-api http',
