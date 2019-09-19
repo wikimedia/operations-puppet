@@ -1,0 +1,77 @@
+# vim: filetype=apache
+<%-
+def bool_2_on_off(value)
+  if value.is_a?(TrueClass)
+    return 'On'
+  elsif value.is_a?(FalseClass)
+    return 'On'
+  end
+  return value
+end
+-%>
+<VirtualHost *:443>
+    ServerName <%= @virtual_host %>
+    ServerAdmin noc@wikimedia.org
+    # https://httpoxy.org/
+    RequestHeader unset Proxy early
+    SSLEngine On
+    SSLCertificateFile /etc/acmecerts/icinga/live/ec-prime256v1.crt
+    SSLCertificateChainFile /etc/acmecerts/icinga/live/ec-prime256v1.chain.crt
+    SSLCertificateKeyFile /etc/acmecerts/icinga/live/ec-prime256v1.key
+    SSLCertificateFile /etc/acmecerts/icinga/live/rsa-2048.crt
+    SSLCertificateChainFile /etc/acmecerts/icinga/live/rsa-2048.chain.crt
+    SSLCertificateKeyFile /etc/acmecerts/icinga/live/rsa-2048.key
+    <%= @ssl_settings.join("\n    ") %>
+    CASCertificate <%= @certificate_path %>
+    CASCookiePath <%= @cookie_path %>
+    CASLoginURL <%= @login_url %>
+    CASValidateURL <%= @validate_url %>
+    CASAuthNHeader <%= @authn_header %>
+    CASAttributePrefix <%= @attribute_prefix %>
+    CASDebug <%= bool_2_on_off(@debug) %>
+    CASValidateSAML <%= bool_2_on_off(@validate_saml) %>
+
+    DocumentRoot /usr/share/icinga/htdocs
+
+    <DirectoryMatch (/usr/share/icinga/htdocs|/usr/lib/cgi-bin/icinga|/etc/icinga/stylesheets)>
+        Options FollowSymLinks
+        SSLRequireSSL
+        Options ExecCGI
+        DirectoryIndex index.html
+        AllowOverride None
+
+        AuthType CAS
+<%- if @required_groups.empty? -%>
+        Require valid-user
+<%- else -%>
+        # Implicit RequireAny
+<%-   @required_groups.each do |required_group| -%>
+        Require cas-attribute memberOf:<%= group %>
+<%-   end -%>
+<%- end -%>
+
+    </DirectoryMatch>
+
+    <IfModule !mod_alias.c>
+        LoadModule alias_module modules/mod_alias.so
+    </IfModule>
+
+    # Shortcut to access unhandled (non-acked) alerts
+    RedirectMatch ^/alerts$ https://<%= @virtual_host %>/cgi-bin/icinga/status.cgi?allunhandledproblems&sortobject=services&sorttype=2&sortoption=3
+    RedirectMatch ^/$ https://<%= @virtual_host %>/icinga
+    ErrorLog /var/log/apache2/icinga.log
+    LogLevel warn
+</VirtualHost>
+
+<VirtualHost *:80>
+    ServerName cas-<%= @virtual_host %>
+    ServerAdmin noc@wikimedia.org
+    DocumentRoot /usr/share/icinga/htdocs
+
+    RewriteEngine on
+    RewriteCond %{SERVER_PORT} !^443$
+    RewriteRule ^/(.*)$ https://<%= @virtual_host %>/$1 [L,R=301]
+
+    ErrorLog /var/log/apache2/icinga.log
+    LogLevel warn
+</VirtualHost>

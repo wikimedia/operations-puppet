@@ -6,22 +6,26 @@
 # = Parameters
 #
 class profile::icinga(
-    Hash[String, Hash]         $monitoring_groups     = lookup('monitoring::groups'),
-    String                     $active_host           = lookup('profile::icinga::active_host'),
-    Array[String]              $partners              = lookup('profile::icinga::partners'),
-    Enum['stopped', 'running'] $ensure_service        = lookup('profile::icinga::ensure_service'),
-    String                     $virtual_host          = lookup('profile::icinga::virtual_host'),
-    String                     $icinga_user           = lookup('profile::icinga::icinga_user'),
-    String                     $icinga_group          = lookup('profile::icinga::icinga_group'),
-    Stdlib::Unixpath           $retention_file        = lookup('profile::icinga::retention_file'),
-    Integer                    $max_concurrent_checks = lookup('profile::icinga::max_concurrent_checks'),
-    Stdlib::Unixpath           $check_result_path     = lookup('profile::icinga::check_result_path'),
-    Stdlib::Unixpath           $temp_path             = lookup('profile::icinga::temp_path'),
-    Stdlib::Unixpath           $temp_file             = lookup('profile::icinga::temp_file'),
-    Stdlib::Unixpath           $status_file           = lookup('profile::icinga::status_file'),
-    String                     $apache2_htpasswd_salt = lookup('profile::icinga::apache2_htpasswd_salt'),
-    Hash[String, String]       $apache2_auth_users    = lookup('profile::icinga::apache2_auth_users'),
-    Hash[String, String]       $ldap_config           = lookup('ldap', {'merge' => 'hash'}),
+    Hash[String, Hash]            $monitoring_groups     = lookup('monitoring::groups'),
+    Hash[String, String]          $ldap_config           = lookup('ldap', {'merge' => 'hash'}),
+    Hash[String, Stdlib::HTTPUrl] $cas                   = lookup('apereo_cas'),
+    String                        $active_host           = lookup('profile::icinga::active_host'),
+    Array[String]                 $partners              = lookup('profile::icinga::partners'),
+    Enum['stopped', 'running']    $ensure_service        = lookup('profile::icinga::ensure_service'),
+    String                        $virtual_host          = lookup('profile::icinga::virtual_host'),
+    String                        $icinga_user           = lookup('profile::icinga::icinga_user'),
+    String                        $icinga_group          = lookup('profile::icinga::icinga_group'),
+    Stdlib::Unixpath              $retention_file        = lookup('profile::icinga::retention_file'),
+    Integer                       $max_concurrent_checks = lookup('profile::icinga::max_concurrent_checks'),
+    Stdlib::Unixpath              $check_result_path     = lookup('profile::icinga::check_result_path'),
+    Stdlib::Unixpath              $temp_path             = lookup('profile::icinga::temp_path'),
+    Stdlib::Unixpath              $temp_file             = lookup('profile::icinga::temp_file'),
+    Stdlib::Unixpath              $status_file           = lookup('profile::icinga::status_file'),
+    String                        $apache2_htpasswd_salt = lookup('profile::icinga::apache2_htpasswd_salt'),
+    Hash[String, String]          $apache2_auth_users    = lookup('profile::icinga::apache2_auth_users'),
+    Stdlib::Host                  $cas_virtual_host      = lookup('profile::icinga::cas_virtual_host'),
+    Boolean                       $cas_debug             = lookup('profile::icinga::cas_debug'),
+    Array[String]                 $cas_required_groups   = lookup('profile::icinga::cas_required_groups')
 ){
     $is_passive = !($::fqdn == $active_host)
 
@@ -141,6 +145,13 @@ class profile::icinga(
         apache2_auth_users    => $apache2_auth_users,
         ldap_server           => $ldap_config['ro-server'],
         ldap_server_fallback  => $ldap_config['ro-server-fallback'],
+    }
+    class {'icinga::cas':
+        virtual_host        => $cas_virtual_host,
+        login_url           => $cas['login_url'],
+        validate_url        => $cas['validate_url'],
+        debug               => $cas_debug,
+        cas_required_groups => $cas_required_groups,
     }
 
     class { '::icinga::naggen':

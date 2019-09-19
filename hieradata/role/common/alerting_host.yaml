@@ -16,3 +16,8 @@ profile::icinga::virtual_host: icinga.wikimedia.org
 profile::icinga::active_host: icinga1001.wikimedia.org
 profile::icinga::partners:
   - 'icinga2001.wikimedia.org'
+profile::icinga::cas_virtual_host: icinga.wikimedia.org
+profile::icinga::cas_required_groups:
+  - 'cn=ops,ou=groups,dc=wikimedia,dc=org'
+  - 'cn=wmf,ou=groups,dc=wikimedia,dc=org'
+  - 'cn=nda,ou=groups,dc=wikimedia,dc=org'
