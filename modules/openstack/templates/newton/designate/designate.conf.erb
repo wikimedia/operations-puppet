@@ -168,22 +168,6 @@ enabled_notification_handlers = nova_fixed_multi, wmf_sink
 #backend_driver = fake
 
 
-#-----------------------
-# Pool Manager Service
-#-----------------------
-[service:pool_manager]
-#workers = None
-#pool_id = 794ccc2c-d751-44fe-b57f-8894c9f5c842
-#threshold_percentage = 100
-#poll_timeout = 30
-#poll_retry_interval = 2
-#poll_max_retries = 3
-#poll_delay = 1
-#periodic_recovery_interval = 120
-#periodic_sync_interval = 300
-#periodic_sync_seconds = None
-#cache_driver = sqlalchemy
-
 [pool:794ccc2c-d751-44fe-b57f-8894c9f5c842]
 <% if @secondary_pdns_ip != @primary_pdns_ip %>
 nameservers = 0f66b842-96c2-4189-93fc-1dc95a08b012, 17474d59-a989-48fb-9f8b-19fbdaeff243
@@ -322,21 +306,6 @@ region = "<%= @region %>"
 #control_exchange = 'neutron'
 #format = '%(octet0)s-%(octet1)s-%(octet2)s-%(octet3)s.%(domain)s'
 
-###################################
-## Pool Manager Cache Configuration
-###################################
-#-----------------------
-# SQLAlchemy Pool Manager Cache
-#-----------------------
-[pool_manager_cache:sqlalchemy]
-connection = mysql://<%= @db_user %>:<%= @db_pass %>@<%= @db_host %>/<%= @pool_manager_db_name %>
-#connection_debug = 100
-#connection_trace = False
-#sqlite_synchronous = True
-#idle_timeout = 3600
-#max_retries = 10
-#retry_interval = 10
-
 [oslo_messaging_rabbit]
 rabbit_hosts=<%= @rabbit_host_primary %>:5672,<%= @rabbit_host_secondary %>:5672
 rabbit_retry_interval=1
@@ -352,3 +321,32 @@ rabbit_password = <%= @rabbit_pass %>
 [coordination]
 backend_url = memcached://<%= @coordination_host %>:11000
 <% end %>
+
+[service:worker]
+enabled = True
+#workers = None
+#threads = 1000
+#threshold_percentage = 100
+#poll_timeout = 30
+#poll_retry_interval = 15
+#poll_max_retries = 10
+#poll_delay = 5
+notify = True
+
+[service:producer]
+#workers = None
+#threads = 1000
+# Can be any/all of: periodic_exists, delayed_notify, worker_periodic_recovery
+# None => All tasks enabled
+#enabled_tasks = None
+
+[producer_task:domain_purge]
+#interval = 3600  # 1h
+#batch_size = 100
+#time_threshold = 604800  # 7 days
+
+[producer_task:delayed_notify]
+#interval = 5
+
+[producer_task:worker_periodic_recovery]
+#interval = 120

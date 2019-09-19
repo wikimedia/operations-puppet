@@ -82,7 +82,13 @@ class openstack::designate::service(
             group   => 'designate',
             mode    => '0440',
             content => template("openstack/${version}/designate/designate.conf.erb"),
-            notify  => Service['designate-api','designate-sink','designate-central','designate-mdns','designate-pool-manager'],
+            notify  => Service[
+              'designate-api',
+              'designate-sink',
+              'designate-central',
+              'designate-mdns',
+              'designate-producer',
+              'designate-worker'],
             require => Package['designate-common'];
         '/etc/designate/api-paste.ini':
             content => template("openstack/${version}/designate/api-paste.ini.erb"),
@@ -175,7 +181,30 @@ class openstack::designate::service(
     }
 
     service {'designate-pool-manager':
-        ensure  => $active,
+        ensure  => stopped,
+    }
+
+    $systemd_ensure = $active ? {
+        true => 'present',
+        default => 'absent',
+    }
+
+    # The Newton designate packages don't include service defs for
+    #  the -worker or -producer services.  Hopefully we can replace these
+    #  with simple service defines in O.
+    systemd::service { 'designate-producer':
+        ensure  => $systemd_ensure,
+        content => systemd_template('designate-producer'),
+        restart => true,
+        require =>  [
+            Package['designate'],
+        ],
+    }
+
+    systemd::service { 'designate-worker':
+        ensure  => $systemd_ensure,
+        content => systemd_template('designate-worker'),
+        restart => true,
         require =>  [
             Package['designate'],
         ],

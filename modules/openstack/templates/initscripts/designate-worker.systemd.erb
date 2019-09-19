@@ -1,0 +1,8 @@
+[Unit]
+Description=designate worker (create/setup/delete)
+
+[Service]
+ExecStart=/usr/bin/designate-worker
+
+[Install]
+WantedBy=multi-user.target
