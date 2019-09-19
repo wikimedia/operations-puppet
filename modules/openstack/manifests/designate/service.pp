@@ -184,6 +184,10 @@ class openstack::designate::service(
         ensure  => stopped,
     }
 
+    service {'designate-zone-manager':
+        ensure  => stopped,
+    }
+
     $systemd_ensure = $active ? {
         true => 'present',
         default => 'absent',
