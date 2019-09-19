@@ -45,25 +45,4 @@ define acme_chief::cert (
         notify    => Service[$puppet_svc],
     }
     # lint:endignore
-
-    if $ocsp {
-        # This will dissapear as soon as acme-chief performs OCSP stapling centrally
-
-        ['ec-prime256v1', 'rsa-2048'].each |String $type| {
-            ['live', 'new'].each |String $version| {
-                $config = "/etc/update-ocsp.d/${title}-${version}-${type}.conf"
-                $output = "/etc/acmecerts/${title}/${version}/${type}.client.ocsp"
-                file { $config:
-                    ensure  => absent, # cleaning update-ocsp.d config, it will be removed in a following commit
-                    owner   => 'root',
-                    group   => 'root',
-                    mode    => '0444',
-                    require => File["/etc/acmecerts/${title}"],
-                }
-                file { $output:
-                    ensure => absent,
-                }
-            }
-        }
-    }
 }
