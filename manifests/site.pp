@@ -1292,10 +1292,6 @@ node 'phab1001.eqiad.wmnet' {
     role(spare::system)
 }
 
-node 'iron.wikimedia.org' {
-    role(spare::system)
-}
-
 # Kafka Brokers - main-eqiad and main-codfw Kafka clusters.
 node /kafka100[123]\.eqiad\.wmnet/ {
     role(spare::system)
