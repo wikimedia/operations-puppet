@@ -35,6 +35,7 @@ class apereo_cas (
     String                       $ldap_bind_dn           = 'cn=user,dc=example,dc=org',
     String                       $ldap_bind_pass         = 'changeme',
     Apereo_cas::LogLevel         $log_level              = 'WARN',
+    Hash[String, Hash]           $services               = {}
 ) {
     if $keystore_source == undef and $keystore_content == undef {
         error('you must provide either $keystore_source or $keystore_content')
@@ -98,5 +99,11 @@ class apereo_cas (
     systemd::service {'cas':
         content => template('apereo_cas/cas.service.erb'),
         require => Exec['build cas war' ],
+    }
+    $services.each |String $service, Hash $config| {
+        apereo_cas::service {$service:
+            notify => Service['cas'],
+            *      => $config
+        }
     }
 }

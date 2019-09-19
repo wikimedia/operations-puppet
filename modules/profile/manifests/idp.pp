@@ -1,15 +1,16 @@
 class profile::idp(
-    Hash   $ldap_config            = lookup('ldap', Hash, hash, {}),
-    String $keystore_password      = lookup('profile::idp::keystore_password'),
-    String $key_password           = lookup('profile::idp::key_password'),
-    String $tgc_signing_key        = lookup('profile::idp::tgc_signing_key'),
-    String $tgc_encryption_key     = lookup('profile::idp::tgc_encryption_key'),
-    String $webflow_signing_key    = lookup('profile::idp::webflow_signing_key'),
-    String $webflow_encryption_key = lookup('profile::idp::webflow_encryption_key'),
-    String $u2f_signing_key        = lookup('profile::idp::u2f_signing_key'),
-    String $u2f_encryption_key     = lookup('profile::idp::u2f_encryption_key'),
-    String $gauth_signing_key      = lookup('profile::idp::gauth_signing_key'),
-    String $gauth_encryption_key   = lookup('profile::idp::gauth_encryption_key'),
+    Hash              $ldap_config            = lookup('ldap', Hash, hash, {}),
+    String            $keystore_password      = lookup('profile::idp::keystore_password'),
+    String            $key_password           = lookup('profile::idp::key_password'),
+    String            $tgc_signing_key        = lookup('profile::idp::tgc_signing_key'),
+    String            $tgc_encryption_key     = lookup('profile::idp::tgc_encryption_key'),
+    String            $webflow_signing_key    = lookup('profile::idp::webflow_signing_key'),
+    String            $webflow_encryption_key = lookup('profile::idp::webflow_encryption_key'),
+    String            $u2f_signing_key        = lookup('profile::idp::u2f_signing_key'),
+    String            $u2f_encryption_key     = lookup('profile::idp::u2f_encryption_key'),
+    String            $gauth_signing_key      = lookup('profile::idp::gauth_signing_key'),
+    String            $gauth_encryption_key   = lookup('profile::idp::gauth_encryption_key'),
+    Hash[String,Hash] $services               = lookup('profile::idp::services'),
 ){
 
     include passwords::ldap::production
@@ -50,5 +51,6 @@ class profile::idp(
         log_level              => 'DEBUG',
         ldap_bind_pass         => $passwords::ldap::production::proxypass,
         ldap_bind_dn           => "cn=proxyagent,ou=profile,${ldap_config['base-dn']}",
+        services               => $services,
     }
 }
