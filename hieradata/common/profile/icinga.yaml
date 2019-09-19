@@ -1,0 +1,16 @@
+profile::icinga::status_file: '/var/icinga-tmpfs/status.dat'
+profile::icinga::temp_file: '/var/icinga-tmpfs/icinga.tmp'
+profile::icinga::temp_path: '/var/icinga-tmpfs'
+profile::icinga::check_result_path: '/var/icinga-tmpfs'
+profile::icinga::max_concurrent_checks: 0
+profile::icinga::retention_file: '/var/lib/icinga/retention.dat'
+profile::icinga::icinga_group: 'nagios'
+profile::icinga::icinga_user: 'nagios'
+profile::icinga::ensure_service: 'running'
+# The following are defined in hieradata/role/common/alerting_host.yaml
+# profile::icinga::partners: []
+# profile::icinga::virtual_host: 'icinga.wikimedia.org'
+# profile::icinga::active_host: 'icinga1001.wikimedia.org'
+# The following are set in the private repo
+# profile::icinga::apache2_auth_users: {}
+# profile::icinga::apache2_htpasswd_salt: ''

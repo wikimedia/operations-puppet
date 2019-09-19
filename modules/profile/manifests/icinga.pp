@@ -6,22 +6,22 @@
 # = Parameters
 #
 class profile::icinga(
-    Hash[String, Hash] $monitoring_groups = hiera('monitoring::groups'),
-    String $active_host = hiera('profile::icinga::active_host'),
-    Array[String] $partners = hiera('profile::icinga::partners', []),
-    Enum['stopped', 'running'] $ensure_service = hiera('profile::icinga::ensure_service', 'running'),
-    String $virtual_host = hiera('profile::icinga::virtual_host'),
-    String $icinga_user = hiera('profile::icinga::icinga_user', 'nagios'),
-    String $icinga_group = hiera('profile::icinga::icinga_group', 'nagios'),
-    Stdlib::Unixpath $retention_file = hiera('profile::icinga::retention_file', '/var/lib/icinga/retention.dat'),
-    Integer $max_concurrent_checks = hiera('profile::icinga::max_concurrent_checks', 0),
-    Stdlib::Unixpath $check_result_path = hiera('profile::icinga::check_result_path', '/var/icinga-tmpfs'),
-    Stdlib::Unixpath $temp_path = hiera('profile::icinga::temp_path', '/var/icinga-tmpfs'),
-    Stdlib::Unixpath $temp_file = hiera('profile::icinga::temp_file', '/var/icinga-tmpfs/icinga.tmp'),
-    Stdlib::Unixpath $status_file = hiera('profile::icinga::status_file', '/var/icinga-tmpfs/status.dat'),
-    String $apache2_htpasswd_salt = hiera('profile::icinga::apache2_htpasswd_salt', ''),
-    Hash[String, String] $apache2_auth_users = hiera('profile::icinga::apache2_auth_users', {}),
-    Hash $ldap_config = lookup('ldap', Hash, hash, {}),
+    Hash[String, Hash]         $monitoring_groups     = lookup('monitoring::groups'),
+    String                     $active_host           = lookup('profile::icinga::active_host'),
+    Array[String]              $partners              = lookup('profile::icinga::partners'),
+    Enum['stopped', 'running'] $ensure_service        = lookup('profile::icinga::ensure_service'),
+    String                     $virtual_host          = lookup('profile::icinga::virtual_host'),
+    String                     $icinga_user           = lookup('profile::icinga::icinga_user'),
+    String                     $icinga_group          = lookup('profile::icinga::icinga_group'),
+    Stdlib::Unixpath           $retention_file        = lookup('profile::icinga::retention_file'),
+    Integer                    $max_concurrent_checks = lookup('profile::icinga::max_concurrent_checks'),
+    Stdlib::Unixpath           $check_result_path     = lookup('profile::icinga::check_result_path'),
+    Stdlib::Unixpath           $temp_path             = lookup('profile::icinga::temp_path'),
+    Stdlib::Unixpath           $temp_file             = lookup('profile::icinga::temp_file'),
+    Stdlib::Unixpath           $status_file           = lookup('profile::icinga::status_file'),
+    String                     $apache2_htpasswd_salt = lookup('profile::icinga::apache2_htpasswd_salt'),
+    Hash[String, String]       $apache2_auth_users    = lookup('profile::icinga::apache2_auth_users'),
+    Hash[String, String]       $ldap_config           = lookup('ldap', {'merge' => 'hash'}),
 ){
     $is_passive = !($::fqdn == $active_host)
 
