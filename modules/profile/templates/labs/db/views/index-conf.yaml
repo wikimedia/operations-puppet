@@ -4,9 +4,8 @@ mysql_password: "<%= @idx_pass %>"
 
 indexes:
   - table: archive
-    name: user_timestamp
+    name: timestamp
     columns:
-      - ar_user
       - ar_timestamp
   - table: page_props
     name: pp_value_prefix
