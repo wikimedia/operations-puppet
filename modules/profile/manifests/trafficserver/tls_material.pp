@@ -86,7 +86,6 @@ define profile::trafficserver::tls_material(
     if $acme_chief {
         if !defined(Acme_chief::Cert[$acme_certname]) {
             acme_chief::cert { $acme_certname:
-                ocsp   => $do_ocsp,
                 before => Trafficserver::Instance[$instance_name],
             }
         }
