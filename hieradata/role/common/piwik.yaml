@@ -18,3 +18,5 @@ profile::tlsproxy::service::notes_url: "https://wikitech.wikimedia.org/wiki/Anal
 profile::tlsproxy::service::contact_group: 'analytics'
 
 profile::analytics::backup::database::db_instance: 'piwik'
+
+profile::piwik::database::backup_hosts_ferm_range: "((@resolve((dbprov1001.eqiad.wmnet dbprov1002.eqiad.wmnet)) @resolve((dbprov1001.eqiad.wmnet dbprov1002.eqiad.wmnet), AAAA))))"

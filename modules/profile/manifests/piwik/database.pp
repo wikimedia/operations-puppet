@@ -5,7 +5,10 @@
 # but it will refactored in the future. For the moment it contains the very
 # basic configs added to the standard Debian mysql deployment.
 #
-class profile::piwik::database {
+class profile::piwik::database(
+    $database_port           = lookup('profile::piwik::database', { 'default_value' => 3306 }),
+    $backup_hosts_ferm_range = lookup('profile::piwik::database::backup_hosts_ferm_range', { 'default_value' => undef }),
+) {
 
     package { 'mysql-server':
         ensure => absent,
@@ -18,7 +21,7 @@ class profile::piwik::database {
     class { '::mariadb::config':
         config    => 'profile/piwik/my.cnf.erb',
         socket    => $mariadb_socket,
-        port      => 3306,
+        port      => $database_port ,
         datadir   => '/var/lib/mysql',
         basedir   => '/opt/wmf-mariadb101',
         read_only => false,
@@ -30,6 +33,14 @@ class profile::piwik::database {
         manage  => true,
         enable  => true,
         require => Class['mariadb::config'],
+    }
+
+    if $backup_hosts_ferm_range {
+        ferm::service { 'mariadb':
+            proto  => 'tcp',
+            port   => $database_port,
+            srange => $backup_hosts_ferm_range,
+        }
     }
 
     profile::prometheus::mysqld_exporter_instance {'matomo':
