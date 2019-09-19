@@ -3201,12 +3201,6 @@ host labweb1002 {
     fixed-address labweb1002.wikimedia.org;
 }
 
-host lithium {
-    hardware ethernet C8:1F:66:BF:7F:EA;
-    fixed-address lithium.eqiad.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
-}
-
 host logstash1010 {
     hardware ethernet 4C:D9:8F:3F:A7:EF;
     fixed-address logstash1010.eqiad.wmnet;

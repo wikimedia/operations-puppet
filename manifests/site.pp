@@ -211,7 +211,6 @@ node 'bromine.eqiad.wmnet', 'vega.codfw.wmnet' {
     role(webserver_misc_static)
 }
 
-# Replacement to Lithium T195416
 node 'centrallog1001.eqiad.wmnet' {
     role(syslog::centralserver)
 }
@@ -1428,10 +1427,6 @@ node /^ldap-eqiad-replica0[1-2]\.wikimedia\.org$/ {
 # Read-only ldap replicas in codfw
 node /^ldap-replica200[1-2]\.wikimedia\.org$/ {
     role(openldap::replica)
-}
-
-node 'lithium.eqiad.wmnet' {
-    role(spare::system)
 }
 
 node /^logstash101[0-2]\.eqiad\.wmnet$/ {
