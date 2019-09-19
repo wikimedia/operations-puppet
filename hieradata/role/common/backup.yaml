@@ -1,5 +1,8 @@
 profile::backup::director::offsite_pool: offsite
 profile::backup::director::onsite_sd: helium
 profile::backup::director::offsite_sd: heze
-profile::backup::director::database: m1-master.eqiad.wmnet
+profile::backup::director::dbhost: m1-master.eqiad.wmnet
+profile::backup::director::dbschema: bacula
+profile::backup::director::dbuser: bacula
+profile::backup::director::dbport: 3306
 #profile::backup::director::dbpass: In the private repo

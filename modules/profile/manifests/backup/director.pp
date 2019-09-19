@@ -9,7 +9,10 @@ class profile::backup::director(
     $offsite_pool = hiera('profile::backup::director::offsite_pool'),
     $onsite_sd = hiera('profile::backup::director::onsite_sd'),
     $offsite_sd = hiera('profile::backup::director::offsite_sd'),
-    $dbhost = hiera('profile::backup::director::database'),
+    $dbhost = hiera('profile::backup::director::dbhost'),
+    $dbschema = hiera('profile::backup::director::dbschema'),
+    $dbport = hiera('profile::backup::director::dbport'),
+    $dbuser = hiera('profile::backup::director::dbuser'),
     $dbpass = hiera('profile::backup::director::dbpass'),
 ){
     include ::profile::base::firewall
@@ -68,10 +71,10 @@ class profile::backup::director(
     }
 
     bacula::director::catalog { 'production':
-        dbname     => 'bacula',
-        dbuser     => 'bacula',
+        dbname     => $dbschema,
+        dbuser     => $dbuser,
         dbhost     => $dbhost,
-        dbport     => '3306',
+        dbport     => $dbport,
         dbpassword => $dbpass,
     }
 
