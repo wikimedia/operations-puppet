@@ -1,3 +1,7 @@
-profile::openstack::eqiad1::keystone::db_user: 'keystone'
+profile::openstack::eqiad1::keystone::admin_bind_port: 35357
+profile::openstack::eqiad1::keystone::daemon_active: false
 profile::openstack::eqiad1::keystone::db_host: 'm5-master.eqiad.wmnet'
+profile::openstack::eqiad1::keystone::db_user: 'keystone'
+profile::openstack::eqiad1::keystone::public_bind_port: 5000
 profile::openstack::eqiad1::keystone::token_driver: 'normal'
+profile::openstack::eqiad1::keystone::wsgi_server: 'apache2'

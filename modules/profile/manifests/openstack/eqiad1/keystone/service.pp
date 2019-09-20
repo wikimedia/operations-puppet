@@ -1,5 +1,4 @@
 class profile::openstack::eqiad1::keystone::service(
-    $daemon_active = hiera('profile::openstack::eqiad1::keystone::daemon_active'),
     $version = hiera('profile::openstack::eqiad1::version'),
     $region = hiera('profile::openstack::eqiad1::region'),
     $nova_controller = hiera('profile::openstack::eqiad1::nova_controller'),
@@ -34,6 +33,8 @@ class profile::openstack::eqiad1::keystone::service(
     $auth_port = hiera('profile::openstack::base::keystone::auth_port'),
     $public_port = hiera('profile::openstack::base::keystone::public_port'),
     $glance_host = hiera('profile::openstack::eqiad1::glance_host'),
+    Boolean $daemon_active = lookup('profile::openstack::eqiad1::keystone::daemon_active'),
+    String $wsgi_server = lookup('profile::openstack::eqiad1::keystone::wsgi_server'),
     ) {
 
     require ::profile::openstack::eqiad1::clientpackages
@@ -67,6 +68,7 @@ class profile::openstack::eqiad1::keystone::service(
         second_region_designate_host         => $second_region_designate_host,
         second_region_designate_host_standby => $second_region_designate_host_standby,
         labweb_hosts                         => $labweb_hosts,
+        wsgi_server                          => $wsgi_server,
     }
     contain '::profile::openstack::base::keystone::service'
 
