@@ -25,16 +25,16 @@ describe 'bacula::storage', :type => :class do
         'recurse' => 'true',
         'force'   => 'true',
         'purge'   => 'true',
-        'mode'    => '0444',
-        'owner'   => 'root',
-        'group'   => 'bacula',
+        'mode'    => '0550',
+        'owner'   => 'bacula',
+        'group'   => 'tape',
         })
     end
     it 'should generate valid content for /etc/bacula/bacula-sd.conf' do
         should contain_file('/etc/bacula/bacula-sd.conf').with({
             'ensure'  => 'present',
-            'owner'   => 'root',
-            'group'   => 'root',
+            'owner'   => 'bacula',
+            'group'   => 'tape',
             'mode'    => '0400',
         }) \
         .with_content(/Name = "testdirector"/) \

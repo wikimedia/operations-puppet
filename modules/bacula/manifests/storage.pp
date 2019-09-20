@@ -51,9 +51,9 @@ class bacula::storage(
 
     file { '/etc/bacula/sd':
         ensure  => directory,
-        mode    => '0400',
+        mode    => '0550',
         owner   => 'bacula',
-        group   => 'bacula',
+        group   => 'tape',
         require => Package[$package],
     }
 
@@ -70,16 +70,16 @@ class bacula::storage(
         recurse => true,
         force   => true,
         purge   => true,
-        mode    => '0444',
-        owner   => 'root',
-        group   => 'bacula',
+        mode    => '0550',
+        owner   => 'bacula',
+        group   => 'tape',
         require => File['/etc/bacula/bacula-sd.conf'],
     }
 
     file { '/etc/bacula/bacula-sd.conf':
         ensure  => present,
-        owner   => 'root',
-        group   => 'root',
+        owner   => 'bacula',
+        group   => 'tape',
         mode    => '0400',
         notify  => Service['bacula-sd'],
         content => template('bacula/bacula-sd.conf.erb'),

@@ -18,8 +18,8 @@ describe 'bacula::director', :type => :class do
         'recurse' => 'true',
         'force'   => 'true',
         'purge'   => 'true',
-        'mode'    => '0444',
-        'owner'   => 'root',
+        'mode'    => '0550',
+        'owner'   => 'bacula',
         'group'   => 'bacula',
         })
     end
@@ -29,8 +29,8 @@ describe 'bacula::director', :type => :class do
         'recurse' => 'true',
         'force'   => 'true',
         'purge'   => 'true',
-        'mode'    => '0444',
-        'owner'   => 'root',
+        'mode'    => '0550',
+        'owner'   => 'bacula',
         'group'   => 'bacula',
         })
     end
@@ -40,8 +40,8 @@ describe 'bacula::director', :type => :class do
         'recurse' => 'true',
         'force'   => 'true',
         'purge'   => 'true',
-        'mode'    => '0444',
-        'owner'   => 'root',
+        'mode'    => '0550',
+        'owner'   => 'bacula',
         'group'   => 'bacula',
         })
     end
@@ -51,17 +51,17 @@ describe 'bacula::director', :type => :class do
         'recurse' => 'true',
         'force'   => 'true',
         'purge'   => 'true',
-        'mode'    => '0444',
-        'owner'   => 'root',
+        'mode'    => '0550',
+        'owner'   => 'bacula',
         'group'   => 'bacula',
         })
     end
     it 'should generate valid content for /etc/bacula/bacula-dir.conf' do
         should contain_file('/etc/bacula/bacula-dir.conf').with({
             'ensure'  => 'present',
-            'owner'   => 'root',
+            'owner'   => 'bacula',
             'group'   => 'bacula',
-            'mode'    => '0440',
+            'mode'    => '0400',
         }) \
         .with_content(/Name = "testhost.example.com"/) \
         .with_content(/Password = "bconsolepass"/) \
@@ -73,9 +73,9 @@ describe 'bacula::director', :type => :class do
     it 'should generate valid content for /etc/bacula/jobs.d/restore-migrate-jobs.conf' do
         should contain_file('/etc/bacula/jobs.d/restore-migrate-jobs.conf').with({
             'ensure'  => 'file',
-            'owner'   => 'root',
+            'owner'   => 'bacula',
             'group'   => 'bacula',
-            'mode'    => '0444',
+            'mode'    => '0400',
         }) \
         .with_content(/Client = testhost.example.com-fd/) \
         .with_content(/Type = Restore/) \

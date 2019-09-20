@@ -14,9 +14,9 @@ describe 'bacula::storage::device', :type => :define do
         it 'should create /etc/bacula/sd-devices.d/something.conf' do
             should contain_file('/etc/bacula/sd-devices.d/something.conf').with({
                 'ensure'  => 'present',
-                'owner'   => 'root',
-                'group'   => 'root',
-                'mode'    => '0400',
+                'owner'   => 'bacula',
+                'group'   => 'tape',
+                'mode'    => '0440',
             }) \
             .with_content(/Name = something/) \
             .with_content(/Device Type = File/) \

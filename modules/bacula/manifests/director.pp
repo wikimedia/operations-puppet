@@ -47,16 +47,16 @@ class bacula::director(
 
     file { '/etc/bacula/bacula-dir.conf':
         ensure  => present,
-        owner   => 'root',
+        owner   => 'bacula',
         group   => 'bacula',
-        mode    => '0440',
+        mode    => '0400',
         notify  => Service['bacula-director'],
         content => template('bacula/bacula-dir.conf.erb'),
         require => Package["bacula-director-${sqlvariant}"],
     }
     file { '/etc/bacula/director':
         ensure  => directory,
-        mode    => '0400',
+        mode    => '0550',
         owner   => 'bacula',
         group   => 'bacula',
         require => Package["bacula-director-${sqlvariant}"],
@@ -75,8 +75,8 @@ class bacula::director(
         recurse => true,
         force   => true,
         purge   => true,
-        mode    => '0444',
-        owner   => 'root',
+        mode    => '0550',
+        owner   => 'bacula',
         group   => 'bacula',
         require => Package["bacula-director-${sqlvariant}"],
     }
@@ -87,8 +87,8 @@ class bacula::director(
         recurse => true,
         force   => true,
         purge   => true,
-        mode    => '0444',
-        owner   => 'root',
+        mode    => '0550',
+        owner   => 'bacula',
         group   => 'bacula',
         require => Package["bacula-director-${sqlvariant}"],
     }
@@ -98,8 +98,8 @@ class bacula::director(
         recurse => true,
         force   => true,
         purge   => true,
-        mode    => '0444',
-        owner   => 'root',
+        mode    => '0550',
+        owner   => 'bacula',
         group   => 'bacula',
         require => Package["bacula-director-${sqlvariant}"],
     }
@@ -107,8 +107,8 @@ class bacula::director(
     # Populating restore template/migrate jobs
     file { '/etc/bacula/jobs.d/restore-migrate-jobs.conf':
         ensure  => file,
-        mode    => '0444',
-        owner   => 'root',
+        mode    => '0400',
+        owner   => 'bacula',
         group   => 'bacula',
         require => File['/etc/bacula/jobs.d'],
         content => template('bacula/restore-migrate-jobs.conf.erb'),
@@ -120,8 +120,8 @@ class bacula::director(
         recurse => true,
         force   => true,
         purge   => true,
-        mode    => '0444',
-        owner   => 'root',
+        mode    => '0550',
+        owner   => 'bacula',
         group   => 'bacula',
         require => Package["bacula-director-${sqlvariant}"],
     }
@@ -129,8 +129,8 @@ class bacula::director(
     # Exporting configuration for console users
     @@file { '/etc/bacula/bconsole.conf':
         ensure  => present,
-        mode    => '0440',
-        owner   => 'root',
+        mode    => '0400',
+        owner   => 'bacula',
         group   => 'bacula',
         content => template('bacula/bconsole.conf.erb'),
         tag     => "bacula-console-${::fqdn}",
