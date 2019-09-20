@@ -1826,10 +1826,6 @@ node /notebook100[34].eqiad.wmnet/ {
     role(swap)
 }
 
-node 'neodymium.eqiad.wmnet' {
-    role(spare::system)
-}
-
 node 'nescio.wikimedia.org' {
     role(recursor)
 
@@ -2010,10 +2006,6 @@ node /^rpki[12]001\.(eqiad|codfw)\.wmnet$/ {
 # replaced rutherfordium in T210036
 node 'people1001.eqiad.wmnet' {
     role(microsites::peopleweb)
-}
-
-node 'sarin.codfw.wmnet' {
-    role(spare::system)
 }
 
 # scandium is a parsoid regression test server. it replaced ruthenium.
