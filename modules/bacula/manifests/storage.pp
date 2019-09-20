@@ -83,6 +83,6 @@ class bacula::storage(
         mode    => '0400',
         notify  => Service['bacula-sd'],
         content => template('bacula/bacula-sd.conf.erb'),
-        require => Package["bacula-sd-${sqlvariant}"],
+        require => Package[$package],
     }
 }
