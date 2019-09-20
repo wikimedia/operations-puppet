@@ -15,6 +15,10 @@ class profile::zuul::server(
         ensure => $monitoring_active,
     }
 
+    $service_enable_real = $service_enable ? {
+        false   => 'mask',
+        default => true,
+    }
     class { '::zuul::server':
         # Shared settings
         gerrit_server        => $conf_common['gerrit_server'],
@@ -26,6 +30,7 @@ class profile::zuul::server(
         url_pattern          => $conf_server['url_pattern'],
         status_url           => $conf_server['status_url'],
         statsd_host          => $conf_server['statsd_host'],
+        service_enable       => $service_enable_real,
         service_ensure       => $service_ensure,
 
         # Enable email configuration

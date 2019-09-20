@@ -27,7 +27,7 @@
 #
 # [*service_enable*]
 #
-# Passed to Puppet Service['jenkins'] as 'enable'. Default: true.
+# Passed to Service['zuul'] as 'enable'. Default: true.
 #
 class zuul::server (
     $gerrit_server,
@@ -127,6 +127,7 @@ class zuul::server (
         content        => systemd_template('zuul'),
         restart        => false,
         service_params => {
+            enable     => $service_enable,
             ensure     => ensure_service($service_ensure),
             hasrestart => true,
         },
