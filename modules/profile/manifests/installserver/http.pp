@@ -20,7 +20,7 @@ class profile::installserver::http {
     }
     monitoring::service { 'https':
         description   => 'HTTPS',
-        check_command => 'check_ssl_http_letsencrypt_ocsp!$apt.wikimedia.org',
+        check_command => 'check_ssl_http_letsencrypt_ocsp!apt.wikimedia.org',
         notes_url     => 'https://wikitech.wikimedia.org/wiki/APT_repository',
     }
 }
