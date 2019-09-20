@@ -33,8 +33,6 @@ cas.authn.ldap[0].searchFilter=<%= @ldap_search_filter %>
 cas.authn.ldap[0].binddn=<%= @ldap_bind_dn %>
 cas.authn.ldap[0].bindcredential=<%= @ldap_bind_pass %>
 
-cas.authn.mfa.globalProviderId=mfa-gauth
-
 cas.authn.mfa.gauth.json.location=file://<%= @gauth_devices_path %>
 <% if @gauth_signing_key %>cas.authn.mfa.gauth.crypto.signing.key=<%= @gauth_signing_key %><% end %>
 <% if @gauth_encryption_key %>cas.authn.mfa.gauth.crypto.encryption.key=<%= @gauth_encryption_key %><% end %>
