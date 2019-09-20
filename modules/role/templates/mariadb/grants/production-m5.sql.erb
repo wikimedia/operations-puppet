@@ -180,28 +180,6 @@ IDENTIFIED BY '<%= @wikiadmin_pass %>';
 GRANT DELETE, INSERT, SELECT, UPDATE ON `labtestwiki`.* TO 'wikiuser'@'208.80.153.14'
 IDENTIFIED BY '<%= @wikiuser_pass %>';
 
--- labspuppetbackend user, will run on the labs puppetmaster host --
-
-GRANT SELECT, INSERT, UPDATE, DELETE, ALTER
-ON `labspuppet`.* TO 'labspuppet'@'208.80.154.92'
-IDENTIFIED BY '<%= @labspuppet_pass %>';
-
-GRANT SELECT, INSERT, UPDATE, DELETE, ALTER
-ON `labspuppet`.* TO 'labspuppet'@'208.80.154.158'
-IDENTIFIED BY '<%= @labspuppet_pass %>';
-
-GRANT SELECT, INSERT, UPDATE, DELETE, ALTER
-ON `labspuppet`.* TO 'labspuppet'@'208.80.155.120'
-IDENTIFIED BY '<%= @labspuppet_pass %>';
-
-GRANT SELECT, INSERT, UPDATE, DELETE, ALTER
-ON `labspuppet`.* TO 'labspuppet'@'10.64.48.43'
-IDENTIFIED BY '<%= @labspuppet_pass %>';
-
-GRANT SELECT, INSERT, UPDATE, DELETE, ALTER
-ON `labspuppet`.* TO 'labspuppet'@'10.64.32.180'
-IDENTIFIED BY '<%= @labspuppet_pass %>';
-
 -- labsdbaccounts user, will run from labstore1004 and 1005
 
 GRANT ALL ON labsdbaccounts.* TO 'labsdbaccounts'@'10.64.37.19'
