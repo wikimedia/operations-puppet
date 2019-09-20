@@ -15,6 +15,16 @@ class profile::zuul::server(
         ensure => $monitoring_active,
     }
 
+    if $service_enable == false {
+        systemd::mask { 'zuul.service':
+            before => Class['::Zuul::Server']
+        }
+    } else {
+        systemd::unmask { 'zuul.service':
+            before => Class['::Zuul::Server']
+        }
+    }
+
     class { '::zuul::server':
         # Shared settings
         gerrit_server        => $conf_common['gerrit_server'],
