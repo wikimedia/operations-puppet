@@ -12,6 +12,10 @@ profile::trafficserver::backend::mapping_rules:
       target: http://bienvenida.wikimedia.org
       replacement: https://webserver-misc-static.discovery.wmnet
     - type: map
+      target: http://blubberoid.wikimedia.org
+      #replacement: http://blubberoid.svc.eqiad.wmnet:8748
+      replacement: http://blubberoid.svc.codfw.wmnet:8748
+    - type: map
       target: http://bugs.wikimedia.org
       replacement: https://phabricator.discovery.wmnet
     - type: map
