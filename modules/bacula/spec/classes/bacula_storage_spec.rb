@@ -2,6 +2,12 @@ require 'spec_helper'
 
 describe 'bacula::storage', :type => :class do
     let(:node) { 'testhost.example.com' }
+    let(:facts) do
+      {
+        'lsbdistrelease' => '10.1',
+        'lsbdistid' => 'Debian'
+      }
+    end
     let(:params) { {
         :director => 'testdirector',
         :sd_max_concur_jobs => '10',
@@ -11,7 +17,7 @@ describe 'bacula::storage', :type => :class do
         }
     }
 
-    it { should contain_package('bacula-sd-testsql') }
+    it { should contain_package('bacula-sd') }
     it { should contain_service('bacula-sd') }
     it do
         should contain_file('/etc/bacula/sd-devices.d').with({

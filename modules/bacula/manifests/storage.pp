@@ -33,15 +33,20 @@ class bacula::storage(
                     $sd_port='9103',
                     $directorpassword=sha1($::uniqueid)){
 
-    # bacula-sd depends on bacula-sd-sqlvariant. Let's rely on dependencies to
-    # install it
-    package { "bacula-sd-${sqlvariant}":
+    # before buster, bacula-sd depended on bacula-sd-sqlvariant.
+    # Now there is only one package that substitutes all variants
+    if os_version('debian >= buster') {
+        $package = 'bacula-sd'
+    } else {
+        $package = "bacula-sd-${sqlvariant}"
+    }
+    package { $package:
         ensure  => installed,
     }
 
     service { 'bacula-sd':
         ensure  => running,
-        require => Package["bacula-sd-${sqlvariant}"],
+        require => Package[$package],
     }
 
     file { '/etc/bacula/sd':
@@ -49,7 +54,7 @@ class bacula::storage(
         mode    => '0400',
         owner   => 'bacula',
         group   => 'bacula',
-        require => Package["bacula-sd-${sqlvariant}"],
+        require => Package[$package],
     }
 
     base::expose_puppet_certs { '/etc/bacula/sd':
