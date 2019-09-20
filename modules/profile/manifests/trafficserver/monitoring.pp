@@ -74,7 +74,7 @@ define profile::trafficserver::monitoring(
 
     if $do_ocsp {
         $check_args = '-c 259500 -w 173100 -d /var/cache/ocsp -g "*.ocsp"'
-        $check_args_acme_chief = '-c 259500 -w 173100 -d /var/cache/ocsp -g "*/*.ocsp"'
+        $check_args_acme_chief = '-c 518400 -w 432000 -d /etc/acmecerts -g "*/live/*.ocsp"'
         nrpe::monitor_service { "trafficserver_${instance_name}_ocsp_freshness":
             description  => 'Freshness of OCSP Stapling files (ATS-TLS)',
             nrpe_command => "/usr/lib/nagios/plugins/check-fresh-files-in-dir.py ${check_args}",
