@@ -15,4 +15,30 @@ define facilities::monitor_pdu_1phase(
         ip_address => $ip,
         group      => 'pdus',
     }
+
+    facilities::monitor_pdu_service { "${title}-infeed-load-tower-A-single-phase":
+        host      => $title,
+        ip        => $ip,
+        row       => $row,
+        site      => $site,
+        tower     => '1',
+        infeed    => '1',
+        breaker   => $breaker,
+        redundant => $redundant,
+        model     => $model,
+    }
+
+    if $redundant == true {
+        facilities::monitor_pdu_service { "${title}-infeed-load-tower-B-single-phase":
+            host      => $title,
+            ip        => $ip,
+            row       => $row,
+            site      => $site,
+            tower     => '2',
+            infeed    => '1',
+            breaker   => $breaker,
+            redundant => $redundant,
+            model     => $model,
+        }
+    }
 }
