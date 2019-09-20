@@ -47,7 +47,7 @@ class snapshot::dumps::cron(
         command     => "/usr/local/bin/fulldumps.sh 20 25 ${runtype} partial ${maxjobs} > /dev/null",
         minute      => '05',
         hour        => [8, 20],
-        monthday    => '20-25',
+        monthday    => '21-25',
     }
 
 }
