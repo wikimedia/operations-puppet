@@ -85,6 +85,14 @@ class dumps::web::html(
         source => 'puppet:///modules/dumps/web/html/clickstream_readme.html',
     }
 
+    file { "${miscdatasetsdir}/mediawiki_history/readme.html":
+        ensure => 'present',
+        path   => "${miscdatasetsdir}/mediawiki_history/readme.html",
+        mode   => '0644',
+        owner  => 'root',
+        group  => 'root',
+        source => 'puppet:///modules/dumps/web/html/mediawiki_history_readme.html',
+    }
 
     file { "${miscdatasetsdir}/poty/index.html":
         ensure => 'present',

@@ -1,0 +1,124 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en" dir="ltr">
+<!-- This file is maintained by puppet! -->
+<!-- modules/dumps/files/web/html/mediawiki_history_readme.html -->
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Analytics: MediaWiki History</title>
+    <link rel="stylesheet" type="text/css" href="/dumps.css" />
+</head>
+<body>
+    <div id="globalWrapper">
+        <div id="content">
+            <h1>Analytics Datasets: MediaWiki History</h1>
+
+            <h3>Contents</h3>
+            <p>
+                This data set contains a historical record of all*
+                events and states of Wikimedia wikis since 2001.
+                (*) It includes data about revisions (reverts, tags, ...),
+                users (renames, groups, blocks, bot/human, registered/anonymous, edit count, ...)
+                and pages (moves, redirects, deletions, restores, ...).
+                For further details visit the Wikitech page with the
+                <a href="https://wikitech.wikimedia.org/wiki/Analytics/Data_Lake/Edits/Mediawiki_history#Schema">
+                data set schema and other important information</a>.
+            </p>
+
+            <h3>Updates</h3>
+            <p>
+                The updates for this data set are monthly, around the end of the month's first week.
+                And each update contains a full dump since 2001 (the beginning of MediaWiki-time) up to the current month.
+                The reason for this particularity is the underlying data, the MediaWiki databases.
+                Every time a user gets renamed, a revision reverted, a page moved, etc. the
+                existing related records in the logging table are updated accordingly.
+                So an event triggered today may change the state of that table 10 years ago.
+                And it turns out the logging table is the base of the MediaWiki history reconstruction process.
+                Thus, note that incremental downloads of these dumps may generate inconsistent data.
+                Consider using <a href="https://wikitech.wikimedia.org/wiki/Event_Platform/EventStreams">EventStreams</a>
+                for real time updates on MediaWiki changes
+                (<a href="https://stream.wikimedia.org/?doc#/Streams">API docs</a>).
+            </p>
+
+            <h3>Versioning</h3>
+            <p>
+                Each update receives the name of the last featured month, in YYYY-MM format.
+                For example: if the dump spans from 2001 to August 2019, it will be named 2019-08
+                (even if it will be released on the first days of September 2019).
+                There will be a folder for each version at the root of the download URL.
+                Note that, for storage reasons, only a short number of versions will be available.
+                Versions older than 6 months will be removed.
+            </p>
+
+            <h3>Partitioning</h3>
+            <p>
+                The data is organized by wiki and time range. This way it can be
+                downloaded for a single wiki (or set of wikis). The time split is
+                necessary because of file size reasons. There are 3 different time range splits:
+                monthly, yearly and all-time. Very big wikis are partitioned monthly, while
+                medium wikis are partitioned yearly, and small wikis are dumped in one
+                single file. This way we ensure that files are not larger than ~2GB,
+                and at the same time we prevent generating a very large number of files.
+                <ul>
+                    <li>Wikis partitioned monthly: wikidatawiki, commonswiki, enwiki.</li>
+                    <li>
+                        Wikis partitioned yearly: dewiki, frwiki, eswiki, itwiki, ruwiki, jawiki, viwiki,
+                        zhwiki, ptwiki, enwiktionary, plwiki, nlwiki, svwiki, metawiki, arwiki, shwiki,
+                        cebwiki, mgwiktionary, fawiki, frwiktionary, ukwiki, hewiki, kowiki, srwiki, trwiki,
+                        loginwiki, huwiki, cawiki, nowiki, mediawikiwiki, fiwiki, cswiki, idwiki, rowiki,
+                        enwikisource, frwikisource, ruwiktionary, dawiki, bgwiki, incubatorwiki, enwikinews,
+                        specieswiki, thwiki.
+                    </li>
+                    <li>Wikis in one single file: all the others.</li>
+                </ul>
+            </p>
+
+            <h3>File format</h3>
+            <p>
+                The file format is TSV, because it doesn't contain meta-data (like JSON), thus making the download lighter.
+                Even if MediaWiki history data is pretty flat, it has some fields that are arrays of strings.
+                The encoding of such arrays is the following:
+                <span class="code">array(&lt;value1&gt;,&lt;value2&gt;,...,&lt;valueN&gt;)</span>.
+                The compression algorithm is Bzip2, for it being widely used, free software,
+                and having a high compression rate. Note that with Bzip2, you can concatenate
+                several compressed files and treat them as a single Bzip2 file.
+            </p>
+
+            <h3>Directory structure</h3>
+            <p>
+                When choosing a file (or set of files) for download, the URL should look like this:<br/>
+                <span class="code">/&lt;version&gt;/&lt;wiki&gt;/&lt;time range&gt;.tsv.bz2</span><br/>
+                Where &lt;snapshot&gt; is YYYY-MM, i.e. 2019-08;
+                &lt;wiki&gt; is the wiki_db, i.e. enwiki or commonswiki;
+                and &lt;time_range&gt; is either YYYY-MM for big wikis, YYYY for medium wikis, or all-time for the rest.
+                Examples of dump files:
+                <ul>
+                    <li class="code">/2019-08/wikidatawiki/2019-05.tsv.bz2</li>
+                    <li class="code">/2019-08/ptwiki/2018.tsv.bz2</li>
+                    <li class="code">/2019-08/cawikinews/all-time.tsv.bz2</li>
+                </ul>
+            </p>
+
+            <h2><a href="/other/mediawiki_history">Download MediaWiki History Data</a></h2>
+
+            <p>
+                If you're interested in how this data set is generated, have a look at the following articles:
+                <ul>
+                    <li><a href="https://wikitech.wikimedia.org/wiki/Analytics/Systems/Cluster/Edit_data_loading">
+                        Loading source data from MediaWiki databases.
+                    </a></li>
+                    <li><a href="https://wikitech.wikimedia.org/wiki/Analytics/Systems/Cluster/Page_and_user_history_reconstruction">
+                        Reconstructing page and user history.
+                    </a></li>
+                    <li><a href="https://wikitech.wikimedia.org/wiki/Analytics/Systems/Cluster/Revision_augmentation_and_denormalization">
+                        Augmenting and denormalizing revision data.
+                    </a></li>
+                </ul>
+            </p>
+
+            <h4>Back to all <a href="/other/analytics">Analytics Datasets</a></h4>
+            <div class="visualClear"></div>
+            <hr/>
+        </div>
+    </div>
+</body>
+</html>

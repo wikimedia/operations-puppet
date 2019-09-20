@@ -85,3 +85,6 @@ table.wikitable {
     border-collapse: collapse;
     color: #000;
 }
+.code {
+    font-family: monospace;
+}
