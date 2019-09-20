@@ -23,4 +23,6 @@ class role::cluster::management {
 
     include ::profile::mariadb::wmf_root_client
     include ::profile::mariadb::backup::transfer
+
+    include ::profile::netops::ripeatlas::cli
 }
