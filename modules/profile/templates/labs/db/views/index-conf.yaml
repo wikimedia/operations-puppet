@@ -3,10 +3,6 @@ mysql_user: "<%= @idx_user %>"
 mysql_password: "<%= @idx_pass %>"
 
 indexes:
-  - table: archive
-    name: timestamp
-    columns:
-      - ar_timestamp
   - table: page_props
     name: pp_value_prefix
     columns:
