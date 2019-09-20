@@ -5,3 +5,9 @@ profile::idp::services:
     service_id: 'https://(cas-)?icinga.wikimedia.org'
     attribute_release_policy:
       '@class': 'org.apereo.cas.services.ReturnAllAttributeReleasePolicy'
+  'debmonitor':
+    class: 'org.apereo.cas.services.RegexRegisteredService'
+    id: 2
+    service_id: '^https://debmonitor.wikimedia.org'
+    attribute_release_policy:
+      '@class': 'org.apereo.cas.services.ReturnAllAttributeReleasePolicy'
