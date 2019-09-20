@@ -1,0 +1,3 @@
+<%- @utils.each do |u| -%>
+<%= "alias #{u}='sudo --set-home --user=atlas /usr/bin/#{u}'" %>
+<%- end -%>
