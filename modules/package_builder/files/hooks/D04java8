@@ -1,0 +1,9 @@
+#!/bin/sh
+
+if [ "$JDK8" = "yes" ] && [ "$DIST" = "buster" ]; then
+    cat > /etc/apt/sources.list.d/wikimedia-jdk8.list <<-'EOF'
+    deb http://apt.wikimedia.org/wikimedia buster-wikimedia component/jdk8
+    deb-src http://apt.wikimedia.org/wikimedia buster-wikimedia component/jdk8
+EOF
+    apt-get update
+fi

@@ -89,6 +89,15 @@ define package_builder::pbuilder_hook(
         source => 'puppet:///modules/package_builder/hooks/D04vp9'
     }
 
+    # on buster, add a hook for building JDK 8 forward port dependencies from a dedicated component
+    file { "${basepath}/hooks/${distribution}/D04java8":
+        ensure => present,
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0555',
+        source => 'puppet:///modules/package_builder/hooks/D04java8'
+    }
+
     # Dependency info
     File["${basepath}/hooks/${distribution}"] -> File["${basepath}/hooks/${distribution}/C10shell.wikimedia.org"]
     File["${basepath}/hooks/${distribution}"] -> File["${basepath}/hooks/${distribution}/D01apt.wikimedia.org"]
