@@ -3753,3 +3753,7 @@ ldap_only_users:
     ensure: present
     realname: Alex Hollender
     email: ahollender@wikimedia.org
+  raja_wmde:
+    ensure: present
+    realname: Raja Gumienny
+    email: raja.gumienny@wikimedia.de
