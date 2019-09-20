@@ -2,9 +2,8 @@ define profile::trafficserver::monitoring(
     Trafficserver::Paths $paths,
     Stdlib::Port $port,
     Wmflib::UserIpPort $prometheus_exporter_port,
-    Boolean $inbound_tls = false,
+    Optional[Trafficserver::Inbound_TLS_settings] $inbound_tls = undef,
     Boolean $default_instance = false,
-    Boolean $do_ocsp = false,
     Boolean $acme_chief = false,
     Boolean $disable_config_check = false,
     String $instance_name = 'backend',
@@ -72,21 +71,45 @@ define profile::trafficserver::monitoring(
         require   => Trafficserver::Instance[$instance_name],
     }
 
-    if $do_ocsp {
-        $check_args = '-c 259500 -w 173100 -d /var/cache/ocsp -g "*.ocsp"'
-        $check_args_acme_chief = '-c 518400 -w 432000 -d /etc/acmecerts -g "*/live/*.ocsp"'
-        nrpe::monitor_service { "trafficserver_${instance_name}_ocsp_freshness":
-            description  => 'Freshness of OCSP Stapling files (ATS-TLS)',
-            nrpe_command => "/usr/lib/nagios/plugins/check-fresh-files-in-dir.py ${check_args}",
-            require      => File['/usr/lib/nagios/plugins/check-fresh-files-in-dir.py'],
-            notes_url    => 'https://wikitech.wikimedia.org/wiki/HTTPS/Unified_Certificates',
+    if $inbound_tls {
+        $inbound_tls['certificates'].each |Trafficserver::TLS_certificate $certificate| {
+            if $certificate['common_name'] and $certificate['sni'] and $certificate['warning_threshold'] and $certificate['critical_threshold'] {
+                if $inbound_tls['do_ocsp'] == 1 {
+                    $check_ocsp = 'check_ssl_ats_ocsp'
+                } else {
+                    $check_ocsp = 'check_ssl_ats'
+                }
+                if $certificate['default'] {
+                    $check = "${check_ocsp}_default"
+                } else {
+                    $check = $check_ocsp
+                }
+                $check_sni_str = join($certificate['sni'], ',')
+                ['ECDSA', 'RSA'].each |String $algorithm| {
+                    monitoring::service { "trafficserver_${instance_name}_https_${certificate['common_name']}_${algorithm}":
+                        description   => "ats-${instance_name} HTTPS ${certificate['common_name']} ${algorithm}",
+                        check_command => "${check}!${certificate['warning_threshold']}!${certificate['critical_threshold']}!${certificate['common_name']}!${check_sni_str}!${port}!${algorithm}",
+                        notes_url     => 'https://wikitech.wikimedia.org/wiki/HTTPS',
+                    }
+                }
+            }
         }
-        nrpe::monitor_service { "trafficserver_${instance_name}_ocsp_freshness_acme_chief":
-            ensure       => bool2str($acme_chief, 'present', 'absent'),
-            description  => 'Freshness of OCSP Stapling files (ATS-TLS acme-chief)',
-            nrpe_command => "/usr/lib/nagios/plugins/check-fresh-files-in-dir.py ${check_args_acme_chief}",
-            require      => File['/usr/lib/nagios/plugins/check-fresh-files-in-dir.py'],
-            notes_url    => 'https://wikitech.wikimedia.org/wiki/HTTPS/Unified_Certificates',
+        if $inbound_tls['do_ocsp'] == 1 {
+            $check_args = '-c 259500 -w 173100 -d /var/cache/ocsp -g "*.ocsp"'
+            $check_args_acme_chief = '-c 518400 -w 432000 -d /etc/acmecerts -g "*/live/*.ocsp"'
+            nrpe::monitor_service { "trafficserver_${instance_name}_ocsp_freshness":
+                description  => 'Freshness of OCSP Stapling files (ATS-TLS)',
+                nrpe_command => "/usr/lib/nagios/plugins/check-fresh-files-in-dir.py ${check_args}",
+                require      => File['/usr/lib/nagios/plugins/check-fresh-files-in-dir.py'],
+                notes_url    => 'https://wikitech.wikimedia.org/wiki/HTTPS/Unified_Certificates',
+            }
+            nrpe::monitor_service { "trafficserver_${instance_name}_ocsp_freshness_acme_chief":
+                ensure       => bool2str($acme_chief, 'present', 'absent'),
+                description  => 'Freshness of OCSP Stapling files (ATS-TLS acme-chief)',
+                nrpe_command => "/usr/lib/nagios/plugins/check-fresh-files-in-dir.py ${check_args_acme_chief}",
+                require      => File['/usr/lib/nagios/plugins/check-fresh-files-in-dir.py'],
+                notes_url    => 'https://wikitech.wikimedia.org/wiki/HTTPS/Unified_Certificates',
+            }
         }
     }
 

@@ -18,9 +18,27 @@
 #   Array containing the file names of the OCSP stapling responses. Not setting this parameter will result in
 #   OCSP stapling being disabled.
 #
+# [*common_name*]
+#   Common name of the certificate. Only used for monitoring purposes. Not setting this parameter
+#   disables the monitoring.
+#
+# [*sni*]
+#   List of Subject Name Indication of the certificate. Only used for monitoring purposes.
+#   Not setting this parameter disables the monitoring.
+#
+# [*warning_threshold*]
+#   Warning threshold for the certificate expire date. Not setting this parameter disables the monitoring.
+#
+# [*critical_threshold*]
+#   Critical threshold for the certificate expire date. Not setting this parameter disables the monitoring.
+#
 type Trafficserver::TLS_certificate = Struct[{
     'default'                  => Boolean,
     'cert_files'               => Array[String],
     'private_key_files'        => Array[String],
     'ocsp_stapling_files'      => Optional[Array[String]],
+    'common_name'              => Optional[String],
+    'sni'                      => Optional[Array[String]],
+    'warning_threshold'        => Optional[Integer[0]],
+    'critical_threshold'       => Optional[Integer[0]],
 }]
