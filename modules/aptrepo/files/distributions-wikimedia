@@ -123,6 +123,7 @@ Version: 10
 Architectures: source amd64 i386
 Components: main
 # sorted list, leading whitespace matters!
+ component/jdk8
  thirdparty/amd-rocm25
  thirdparty/amd-rocm26
  thirdparty/amd-rocm271
