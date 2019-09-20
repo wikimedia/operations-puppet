@@ -19,9 +19,13 @@ class profile::ci::docker(
     class { '::docker::configuration':
         settings => $settings,
     }
+    $docker_version = $::lsbdistcodename ? {
+        'jessie'  => '18.06.2~ce~3-0~debian',
+        'stretch' => '5:18.09.7~3-0~debian-stretch',
+    }
     class { '::docker':
         package_name => 'docker-ce',
-        version      => '18.06.2~ce~3-0~debian',
+        version      => $docker_version,
         require      => [
             Apt::Repository['thirdparty-ci'],
             Exec['apt-get update']
