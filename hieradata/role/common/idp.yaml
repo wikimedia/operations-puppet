@@ -1,7 +1,7 @@
 profile::idp::services:
   'icinga':
     class: 'org.apereo.cas.services.RegexRegisteredService'
-    id: '10000001'
+    id: 1
     service_id: 'https://(cas-)?icinga.wikimedia.org'
     attribute_release_policy:
       '@class': 'org.apereo.cas.services.ReturnAllAttributeReleasePolicy'
