@@ -59,14 +59,14 @@ def check_whitelist(user_id, remote_addr):
 
 class PasswordWhitelist(password.Password):
 
-    def authenticate(self, context, auth_payload, auth_context):
+    def authenticate(self, request, auth_payload, auth_context):
         """Verify username and password but only allow access for configured
            accounts and from configured IP ranges."""
 
         user_info = auth_plugins.UserAuthInfo.create(auth_payload, METHOD_NAME)
         check_whitelist(user_info.user_id,
-                        context['environment']['REMOTE_ADDR'])
+                        request.environ['REMOTE_ADDR'])
 
-        return super(PasswordWhitelist, self).authenticate(context,
+        return super(PasswordWhitelist, self).authenticate(request,
                                                            auth_payload,
                                                            auth_context)
