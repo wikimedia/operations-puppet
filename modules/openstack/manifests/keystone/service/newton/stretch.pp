@@ -55,4 +55,11 @@ class openstack::keystone::service::newton::stretch(
     package { $packages:
         ensure  => 'present',
     }
+
+    # keystone in stretch can't work with python-ldap, which could be
+    # declared by ldap::client::utils
+    package { 'python-ldap':
+        ensure => 'absent',
+        before => Class['::ldap::client::utils'],
+    }
 }
