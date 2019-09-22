@@ -17,7 +17,7 @@
 from oslo_log import log
 from oslo_config import cfg
 
-from keystone import auth
+from keystone.auth.plugins import base
 from keystone.auth import plugins as auth_plugins
 import password_whitelist
 from keystone.common import dependency
@@ -58,7 +58,7 @@ for option in oathoptions:
 
 
 @dependency.requires('identity_api')
-class Wmtotp(auth.AuthMethodHandler):
+class Wmtotp(base.AuthMethodHandler):
 
     method = METHOD_NAME
 
