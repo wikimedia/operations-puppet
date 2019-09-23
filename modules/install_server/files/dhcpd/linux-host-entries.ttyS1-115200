@@ -2937,6 +2937,11 @@ host kafka-main2005 {
     fixed-address kafka-main2005.codfw.wmnet;
 }
 
+host krb1001 {
+     hardware ethernet 4C:D9:8F:60:C4:49;
+     fixed-address krb1001.eqiad.wmnet;
+}
+
 host kubernetes1001 {
      hardware ethernet 18:66:DA:56:64:A1;
      fixed-address kubernetes1001.eqiad.wmnet;
