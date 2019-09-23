@@ -8,7 +8,7 @@ class profile::swift::alerts {
             critical        => 90,
             method          => 'lt',
             retries         => 10,
-            prometheus_url  => "http://prometheus.svc.${::site}.wmnet/ops",
+            prometheus_url  => "http://prometheus.svc.${site}.wmnet/ops",
             notes_link      => 'https://wikitech.wikimedia.org/wiki/Swift/How_To',
         }
 
@@ -20,7 +20,7 @@ class profile::swift::alerts {
             critical        => 90,
             method          => 'lt',
             retries         => 10,
-            prometheus_url  => "http://prometheus.svc.${::site}.wmnet/ops",
+            prometheus_url  => "http://prometheus.svc.${site}.wmnet/ops",
             notes_link      => 'https://wikitech.wikimedia.org/wiki/Swift/How_To',
         }
 
@@ -31,7 +31,7 @@ class profile::swift::alerts {
             warning         => 2000,
             critical        => 3000,
             method          => 'ge',
-            prometheus_url  => "http://prometheus.svc.${::site}.wmnet/ops",
+            prometheus_url  => "http://prometheus.svc.${site}.wmnet/ops",
             notes_link      => 'https://wikitech.wikimedia.org/wiki/Swift/How_To',
         }
     }
