@@ -1000,7 +1000,10 @@ node 'eeden.wikimedia.org' {
     role(test)
 }
 
-node /^elastic101[7-9]\.eqiad\.wmnet/ {
+node 'elastic1017.eqiad.wmnet' {
+    role(spare::system)
+}
+node /^elastic101[8-9]\.eqiad\.wmnet/ {
     role(elasticsearch::cirrus)
 }
 
