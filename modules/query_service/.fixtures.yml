@@ -1,6 +1,6 @@
 fixtures:
     symlinks:
-        wdqs: "#{source_dir}"
+        query_service: "#{source_dir}"
         base: "../../../../base"
         ferm: "../../../../ferm"
         java: "../../../../java"

@@ -1,11 +1,11 @@
-# the wdqs package is cloned from git and kept up to date via a cron
-class wdqs::deploy::autodeploy(
+# the query_service package is cloned from git and kept up to date via a cron
+class query_service::deploy::autodeploy(
     String $deploy_user,
     Stdlib::Absolutepath $package_dir,
     Stdlib::Absolutepath $autodeploy_log_dir
 ){
 
-    class { '::wdqs::deploy::manual':
+    class { '::query_service::deploy::manual':
         deploy_user => $deploy_user,
         package_dir => $package_dir,
     }
@@ -21,7 +21,7 @@ class wdqs::deploy::autodeploy(
 
     file { '/usr/local/bin/wdqs-autodeploy':
         ensure => present,
-        source => 'puppet:///modules/wdqs/cron/wdqs-autodeploy.sh',
+        source => 'puppet:///modules/query_service/cron/wdqs-autodeploy.sh',
         owner  => 'root',
         group  => 'root',
         mode   => '0555',

@@ -1,6 +1,6 @@
-# == Class: wdqs::crontasks
+# == Class: query_service::crontasks
 #
-# Installs all the major cron jobs for WDQS
+# Installs all the major cron jobs for Query service
 #
 # == Parameters:
 # - $package_dir:  Directory where the service is installed.
@@ -9,7 +9,7 @@
 # - $username: Username owning the service
 # - $load_categories: frequency of loading categories
 # - $run_tests: run test queries periodically (usefull for test servers)
-class wdqs::crontasks(
+class query_service::crontasks(
     String $package_dir,
     String $data_dir,
     String $log_dir,
@@ -19,7 +19,7 @@ class wdqs::crontasks(
 ) {
     file { '/usr/local/bin/cronUtils.sh':
         ensure => present,
-        source => 'puppet:///modules/wdqs/cron/cronUtils.sh',
+        source => 'puppet:///modules/query_service/cron/cronUtils.sh',
         owner  => 'root',
         group  => 'root',
         mode   => '0755',
@@ -27,7 +27,7 @@ class wdqs::crontasks(
 
     file { '/usr/local/bin/reloadCategories.sh':
         ensure => present,
-        source => 'puppet:///modules/wdqs/cron/reloadCategories.sh',
+        source => 'puppet:///modules/query_service/cron/reloadCategories.sh',
         owner  => 'root',
         group  => 'root',
         mode   => '0755',
@@ -35,7 +35,7 @@ class wdqs::crontasks(
 
     file { '/usr/local/bin/loadCategoriesDaily.sh':
         ensure => present,
-        source => 'puppet:///modules/wdqs/cron/loadCategoriesDaily.sh',
+        source => 'puppet:///modules/query_service/cron/loadCategoriesDaily.sh',
         owner  => 'root',
         group  => 'root',
         mode   => '0755',
@@ -43,7 +43,7 @@ class wdqs::crontasks(
 
     file { '/usr/local/bin/reloadDCAT-AP.sh':
         ensure => present,
-        source => 'puppet:///modules/wdqs/cron/reloadDCAT-AP.sh',
+        source => 'puppet:///modules/query_service/cron/reloadDCAT-AP.sh',
         owner  => 'root',
         group  => 'root',
         mode   => '0755',

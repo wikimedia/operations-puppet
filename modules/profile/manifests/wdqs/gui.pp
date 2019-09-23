@@ -2,7 +2,7 @@ class profile::wdqs::gui (
     Stdlib::Unixpath $package_dir = hiera('profile::wdqs::package_dir', '/srv/deployment/wdqs/wdqs'),
     Stdlib::Unixpath $data_dir = hiera('profile::wdqs::data_dir', '/srv/wdqs'),
     Stdlib::Unixpath $log_dir = hiera('profile::wdqs::log_dir', '/var/log/wdqs'),
-    Wdqs::DeployMode $deploy_mode = hiera('profile::wdqs::deploy_mode'),
+    Query_service::DeployMode $deploy_mode = hiera('profile::wdqs::deploy_mode'),
     Boolean $enable_ldf = hiera('profile::wdqs::enable_ldf', false),
     Integer $max_query_time_millis = hiera('profile::wdqs::max_query_time_millis', 60000),
     Boolean $high_query_time_port = hiera('profile::wdqs::high_query_time_port', false),
@@ -11,7 +11,7 @@ class profile::wdqs::gui (
 
     $username = 'blazegraph'
 
-    class { 'wdqs::gui':
+    class { 'query_service::gui':
         deploy_mode           => $deploy_mode,
         package_dir           => $package_dir,
         data_dir              => $data_dir,
@@ -33,5 +33,5 @@ class profile::wdqs::gui (
         }
     }
 
-    class { 'wdqs::monitor::gui': }
+    class { 'query_service::monitor::gui': }
 }

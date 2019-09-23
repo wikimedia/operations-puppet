@@ -1,5 +1,5 @@
 # Monitor single instance of Blazegraph
-define wdqs::monitor::blazegraph_instance (
+define query_service::monitor::blazegraph_instance (
     Stdlib::Port $port,
     Stdlib::Port $prometheus_port,
     String $username,

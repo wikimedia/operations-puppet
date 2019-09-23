@@ -1,6 +1,6 @@
-require 'spec_helper'
+require_relative '../../../../rake_modules/spec_helper'
 
-describe 'wdqs::updater', :type => :class do
+describe 'query_service::deploy::manual', :type => :class do
    before(:each) do
         Puppet::Parser::Functions.newfunction(:secret, :type => :rvalue) { |_|
             'fake_secret'
@@ -8,13 +8,8 @@ describe 'wdqs::updater', :type => :class do
    end
 
    let(:params) { {
-        :options => ['-opt'],
-        :log_dir => '/var/log/wdqs',
+        :deploy_user => 'deploy-service',
         :package_dir => '/srv/deployment/wdqs/wdqs',
-        :data_dir => '/srv/wdqs',
-        :username => 'blazegraph',
-        :logstash_logback_port => 11_514,
-        :extra_jvm_opts => [],
         }
    }
 
@@ -25,6 +20,7 @@ describe 'wdqs::updater', :type => :class do
         :lsbdistid => 'Debian',
     } }
 
-    it { is_expected.to contain_file('/lib/systemd/system/wdqs-updater.service').with_content(/runUpdate.sh -opt/) }
+    it { is_expected.to contain_sudo__user('deploy-service_wdqs-updater').with('user' => 'deploy-service') }
+    it { is_expected.to contain_sudo__user('deploy-service_wdqs-blazegraph').with('user' => 'deploy-service') }
   end
 end

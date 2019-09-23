@@ -64,7 +64,7 @@ class profile::wdqs::updater (
     # 0 - Main, 120 - Property, 146 - Lexeme
     $extra_updater_options = $poller_options + $fetch_constraints_options + $dump_options + $revision_options + [ '--entityNamespaces', '0,120,146' ]
 
-    class { 'wdqs::updater':
+    class { 'query_service::updater':
         package_dir           => $package_dir,
         data_dir              => $data_dir,
         log_dir               => $log_dir,
@@ -75,7 +75,7 @@ class profile::wdqs::updater (
         log_sparql            => $log_sparql,
     }
 
-    class { 'wdqs::monitor::updater':
+    class { 'query_service::monitor::updater':
         username => $username,
     }
 

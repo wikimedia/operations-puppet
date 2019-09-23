@@ -1,5 +1,5 @@
-# === define: wdqs::blazegraph
-# Note: This resource installs and start the blazegraph service for WDQS
+# === define: query_service::blazegraph
+# Note: This resource installs and start the blazegraph service
 #
 # == Parameters:
 # - $port: Blazegraph port to run on
@@ -17,7 +17,7 @@
 # - $options: options for Blazegraph startup script
 # - $extra_jvm_opts: Extra JVM configs for wdqs-blazegraph
 # - $logstash_transport: send logs directly or via rsyslog
-define wdqs::blazegraph(
+define query_service::blazegraph(
     Stdlib::Port $port,
     String $config_file_name,
     Stdlib::Unixpath $package_dir,
@@ -36,7 +36,7 @@ define wdqs::blazegraph(
         $config_file = "/etc/wdqs/${config_file_name}"
         file { $config_file:
             ensure  => file,
-            content => template("wdqs/${config_file_name}.erb"),
+            content => template("query_service/${config_file_name}.erb"),
             owner   => 'root',
             group   => 'root',
             mode    => '0644',
@@ -46,14 +46,14 @@ define wdqs::blazegraph(
 
     file { "/etc/default/${title}":
         ensure  => present,
-        content => template('wdqs/blazegraph-default.erb'),
+        content => template('query_service/blazegraph-default.erb'),
         owner   => 'root',
         group   => 'root',
         mode    => '0644',
         before  => Systemd::Unit[$title],
     }
 
-    wdqs::logback_config { $title:
+    query_service::logback_config { $title:
         logstash_logback_port => $logstash_logback_port,
         log_dir               => $log_dir,
         pattern               => '%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg %mdc%n%rEx{1,QUERY_TIMEOUT,SYNTAX_ERROR}',
@@ -62,7 +62,7 @@ define wdqs::blazegraph(
 
     # Blazegraph service
     systemd::unit { $title:
-        content => template('wdqs/initscripts/wdqs-blazegraph.systemd.erb'),
+        content => template('query_service/initscripts/wdqs-blazegraph.systemd.erb'),
     }
 
     service { $title:

@@ -1,6 +1,6 @@
-require 'spec_helper'
+require_relative '../../../../rake_modules/spec_helper'
 
-describe 'wdqs::blazegraph', :type => :define do
+describe 'query_service::blazegraph', :type => :define do
    before(:each) do
         Puppet::Parser::Functions.newfunction(:secret, :type => :rvalue) { |_|
             'fake_secret'
@@ -39,7 +39,7 @@ describe 'wdqs::blazegraph', :type => :define do
   end
 end
 
-describe 'wdqs::blazegraph', :type => :define do
+describe 'query_service::blazegraph', :type => :define do
    before(:each) do
         Puppet::Parser::Functions.newfunction(:secret, :type => :rvalue) { |_|
             'fake_secret'
@@ -75,7 +75,7 @@ describe 'wdqs::blazegraph', :type => :define do
   end
 end
 
-describe 'wdqs::blazegraph', :type => :define do
+describe 'query_service::blazegraph', :type => :define do
    before(:each) do
         Puppet::Parser::Functions.newfunction(:secret, :type => :rvalue) { |_|
             'fake_secret'

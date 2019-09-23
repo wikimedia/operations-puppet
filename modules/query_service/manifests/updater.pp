@@ -1,6 +1,6 @@
-# === Class wdqs::updater
+# === Class query_servuce::updater
 #
-# Wikidata Query Service updater service.
+# Query Service updater service.
 #
 # Note: Installs and start the wdqs-updater service.
 # == Parameters:
@@ -12,7 +12,7 @@
 # - $username: Username owning the service.
 # - $extra_jvm_opts: extra JVM options for updater.
 # - $log_sparql: enable SPARQL logging.
-class wdqs::updater(
+class query_service::updater(
     Array[String] $options,
     Stdlib::Unixpath $package_dir,
     Stdlib::Unixpath $data_dir,
@@ -24,7 +24,7 @@ class wdqs::updater(
 ) {
     file { '/etc/default/wdqs-updater':
         ensure  => present,
-        content => template('wdqs/updater-default.erb'),
+        content => template('query_service/updater-default.erb'),
         owner   => 'root',
         group   => 'root',
         mode    => '0644',
@@ -32,7 +32,7 @@ class wdqs::updater(
         notify  => Service['wdqs-updater'],
     }
 
-    wdqs::logback_config { 'wdqs-updater':
+    query_service::logback_config { 'wdqs-updater':
         pattern               => '%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg %mdc%n',
         log_dir               => $log_dir,
         logstash_logback_port => $logstash_logback_port,
@@ -40,7 +40,7 @@ class wdqs::updater(
     }
 
     systemd::unit { 'wdqs-updater':
-        content => template('wdqs/initscripts/wdqs-updater.systemd.erb'),
+        content => template('query_service/initscripts/wdqs-updater.systemd.erb'),
         notify  => Service['wdqs-updater'],
     }
 

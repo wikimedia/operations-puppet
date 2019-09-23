@@ -1,6 +1,6 @@
-# == Class: wdqs::gui
+# == Class: query_service::gui
 #
-# Provisions WDQS GUI
+# Provisions Query Service GUI
 #
 # == Parameters:
 # - $package_dir:  Directory where the service is installed.
@@ -11,12 +11,12 @@
 # - $deploy_mode: deployment mode. e.g scap3, manual etc
 # - enable_ldf: boolean flag for enabling or disabling ldf
 # - $max_query_time_millis: maximum query time in milliseconds
-class wdqs::gui(
+class query_service::gui(
     String $package_dir,
     String $data_dir,
     String $log_dir,
     String $username,
-    Wdqs::DeployMode $deploy_mode,
+    Query_service::DeployMode $deploy_mode,
     Boolean $enable_ldf,
     Integer $max_query_time_millis,
 ) {
@@ -25,7 +25,7 @@ class wdqs::gui(
     $alias_map = "${data_dir}/aliases.map"
 
     ::nginx::site { 'wdqs':
-        content => template('wdqs/nginx.erb'),
+        content => template('query_service/nginx.erb'),
         require => File[$alias_map],
     }
 
@@ -52,7 +52,7 @@ class wdqs::gui(
 
     file { '/etc/wdqs/gui_vars.sh':
         ensure  => present,
-        content => template('wdqs/gui_vars.erb'),
+        content => template('query_service/gui_vars.erb'),
         owner   => 'root',
         group   => 'root',
         mode    => '0644',

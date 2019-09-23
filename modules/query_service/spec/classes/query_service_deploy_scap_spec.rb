@@ -1,6 +1,6 @@
-require 'spec_helper'
+require_relative '../../../../rake_modules/spec_helper'
 
-describe 'wdqs::deploy::scap', :type => :class do
+describe 'query_service::deploy::scap', :type => :class do
    before(:each) do
         Puppet::Parser::Functions.newfunction(:secret, :type => :rvalue) { |_|
             'fake_secret'

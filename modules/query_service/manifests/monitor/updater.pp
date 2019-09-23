@@ -1,4 +1,4 @@
-class wdqs::monitor::updater (
+class query_service::monitor::updater (
     String $username,
 ){
     nrpe::monitor_service { 'WDQS_Updater_process':

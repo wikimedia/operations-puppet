@@ -48,7 +48,7 @@ class profile::wdqs::blazegraph(
     require_package('python3-dateutil', 'python3-prometheus-client')
     file { '/usr/local/bin/prometheus-blazegraph-exporter':
         ensure => present,
-        source => 'puppet:///modules/wdqs/monitor/prometheus-blazegraph-exporter.py',
+        source => 'puppet:///modules/query_service/monitor/prometheus-blazegraph-exporter.py',
         mode   => '0555',
         owner  => 'root',
         group  => 'root',
@@ -64,7 +64,7 @@ class profile::wdqs::blazegraph(
         prometheus_nodes => $prometheus_nodes,
     }
 
-    wdqs::blazegraph {
+    query_service::blazegraph {
         default:
             package_dir           => $package_dir,
             data_dir              => $data_dir,
@@ -87,14 +87,14 @@ class profile::wdqs::blazegraph(
             extra_jvm_opts   => $default_extra_jvm_opts + $extra_jvm_opts +  "-javaagent:${prometheus_agent_path}=${prometheus_agent_port_categories}:${prometheus_agent_config_categories}"
     }
 
-    class { 'wdqs::monitor::blazegraph':
+    class { 'query_service::monitor::blazegraph':
         username       => $username,
         contact_groups => $contact_groups,
         lag_warning    => $lag_warning,
         lag_critical   => $lag_critical,
     }
 
-    wdqs::monitor::blazegraph_instance {
+    query_service::monitor::blazegraph_instance {
         default:
             username       => $username,
             contact_groups => $contact_groups,

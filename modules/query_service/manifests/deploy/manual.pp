@@ -1,5 +1,5 @@
-# the wdqs package is checked out initially, but not automatically upgraded
-class wdqs::deploy::manual(
+# the query_service package is checked out initially, but not automatically upgraded
+class query_service::deploy::manual(
     String $deploy_user,
     Stdlib::Absolutepath $package_dir,
 ) {

@@ -1,5 +1,5 @@
 # Monitor exteral blazegraph settings
-class wdqs::monitor::blazegraph (
+class query_service::monitor::blazegraph (
     String $username,
     String $contact_groups,
     Integer[0] $lag_warning,
@@ -7,7 +7,7 @@ class wdqs::monitor::blazegraph (
 ) {
     require_package('python3-requests')
     file { '/usr/lib/nagios/plugins/check_wdqs_categories.py':
-        source => 'puppet:///modules/wdqs/nagios/check_wdqs_categories.py',
+        source => 'puppet:///modules/query_service/nagios/check_wdqs_categories.py',
         mode   => '0555',
         owner  => 'root',
         group  => 'root',

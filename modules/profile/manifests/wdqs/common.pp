@@ -1,5 +1,5 @@
 class profile::wdqs::common(
-    Wdqs::DeployMode $deploy_mode = hiera('profile::wdqs::deploy_mode'),
+    Query_service::DeployMode $deploy_mode = hiera('profile::wdqs::deploy_mode'),
     Stdlib::Unixpath $package_dir = hiera('profile::wdqs::package_dir', '/srv/deployment/wdqs/wdqs'),
     Stdlib::Unixpath $data_dir = hiera('profile::wdqs::data_dir', '/srv/wdqs'),
     Stdlib::Unixpath $log_dir = hiera('profile::wdqs::log_dir', '/var/log/wdqs'),
@@ -16,7 +16,7 @@ class profile::wdqs::common(
     # Let's migrate to the new logging pipeline. See T232184.
     include ::profile::rsyslog::udp_json_logback_compat
 
-    class { '::wdqs::common':
+    class { '::query_service::common':
         deploy_mode         => $deploy_mode,
         username            => $username,
         deploy_user         => $deploy_user,
@@ -27,7 +27,7 @@ class profile::wdqs::common(
         categories_endpoint => $categories_endpoint,
     }
 
-    class { 'wdqs::crontasks':
+    class { 'query_service::crontasks':
         package_dir     => $package_dir,
         data_dir        => $data_dir,
         log_dir         => $log_dir,

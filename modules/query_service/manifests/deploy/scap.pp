@@ -1,5 +1,5 @@
-# the wdqs package is managed by scap
-class wdqs::deploy::scap(
+# the query_service package is managed by scap
+class query_service::deploy::scap(
     String $deploy_user,
     String $username,
     Stdlib::Absolutepath $package_dir,

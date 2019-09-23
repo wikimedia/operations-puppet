@@ -1,5 +1,5 @@
-# = Class: wdqs::common
-# Note: setup environment for wdqs.
+# = Class: query_service::common
+# Note: setup environment for query service.
 # Dump data must be loaded manually.
 #
 # == Parameters:
@@ -10,8 +10,8 @@
 # - $data_dir: Directory where the database should be stored.
 # - $log_dir: Directory where the logs go.
 # - $categories_endpoint: Endpoint which category scripts will be using.
-class wdqs::common(
-    Wdqs::DeployMode $deploy_mode,
+class query_service::common(
+    Query_service::DeployMode $deploy_mode,
     String $username,
     String $deploy_user,
     String $endpoint,
@@ -20,14 +20,14 @@ class wdqs::common(
     Stdlib::Unixpath $log_dir,
     Stdlib::Httpurl $categories_endpoint,
 ) {
-    include ::wdqs::packages
+    include ::query_service::packages
 
     $autodeploy_log_dir = '/var/log/wdqs-autodeploy'
 
     case $deploy_mode {
 
         'scap3': {
-            class {'::wdqs::deploy::scap':
+            class {'::query_service::deploy::scap':
                 deploy_user => $deploy_user,
                 username    => $username,
                 package_dir => $package_dir,
@@ -35,14 +35,14 @@ class wdqs::common(
         }
 
         'manual': {
-            class {'::wdqs::deploy::manual':
+            class {'::query_service::deploy::manual':
                 deploy_user => $deploy_user,
                 package_dir => $package_dir,
             }
         }
 
         'autodeploy': {
-            class { '::wdqs::deploy::autodeploy':
+            class { '::query_service::deploy::autodeploy':
                 deploy_user        => $deploy_user,
                 package_dir        => $package_dir,
                 autodeploy_log_dir => $autodeploy_log_dir,
@@ -127,7 +127,7 @@ class wdqs::common(
 
     file { '/etc/wdqs/vars.yaml':
         ensure  => present,
-        content => template('wdqs/vars.yaml.erb'),
+        content => template('query_service/vars.yaml.erb'),
         owner   => 'root',
         group   => 'root',
         mode    => '0644',
