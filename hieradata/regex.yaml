@@ -318,3 +318,9 @@ mediawiki_test_environment:
     opcache.memory_consumption: 300
   profile::mediawiki::php::restarts::opcache_limit: 100
   profile::mediawiki::php::enable_request_profiling: true
+
+mediawiki_php7_only_api:
+  __regex: !ruby/regexp /^mw13(1[2-7]|39|4[0-7])\.eqiad\.wmnet$/
+  profile::mediawiki::apc_shm_size: 4096M
+  profile::mediawiki::vhost_feature_flags:
+    php72_only: true
