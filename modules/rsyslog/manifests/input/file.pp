@@ -17,6 +17,7 @@ define rsyslog::input::file(
     Pattern[/[a-zA-Z0-9_-]+/] $syslog_tag        = $title,
     Integer $priority                            = 10,
     Optional[String] $startmsg_regex             = undef,
+    Enum['on','off'] $addmetadata                = 'off',
 ) {
 
     rsyslog::conf { "${syslog_tag_prefix}-${syslog_tag}":

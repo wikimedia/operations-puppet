@@ -6,4 +6,5 @@ input(type="imfile"
 <% if @startmsg_regex -%>
       startmsg.regex="<%= @startmsg_regex %>"
 <% end -%>
+      addMetadata="<%= @addmetadata %>"
       Tag="<%= @syslog_tag_prefix %>-<%= @syslog_tag %>")
