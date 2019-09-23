@@ -5,7 +5,7 @@ class profile::installserver::http {
     class { '::sslcert::dhparam': }
 
     acme_chief::cert { 'apt':
-        puppet_svc => 'nginx',
+        puppet_rsc => Exec['nginx-reload'],
     }
 
     ferm::service { 'install_http':
