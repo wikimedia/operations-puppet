@@ -9,7 +9,6 @@ class profile::puppetmaster::frontend(
     $prevent_cherrypicks = hiera('profile::puppetmaster::frontend::prevent_cherrypicks', true),
     Stdlib::Host $ca_server = lookup('puppet_ca_server'),
     Hash[String, Puppetmaster::Backends] $servers = hiera('puppetmaster::servers', {}),
-    Hash[Stdlib::Host, Stdlib::Host] $locale_servers = lookup('puppetmaster::locale_servers'),
     Puppetmaster::Backends $test_servers = hiera('profile::puppetmaster::frontend::test_servers', []),
     $ssl_ca_revocation_check = hiera('profile::puppetmaster::frontend::ssl_ca_revocation_check', 'chain'),
     $allow_from = hiera('profile::puppetmaster::frontend::allow_from', [
@@ -78,23 +77,21 @@ class profile::puppetmaster::frontend(
     }
     class { 'apache::mod::rewrite': }
 
-    $locale_server = $locale_servers[$facts['fqdn']]
     # Main site to respond to
     ::puppetmaster::web_frontend { $web_hostname:
         master                  => $ca_server,
         workers                 => $workers,
-        locale_server           => $locale_server,
         bind_address            => $::puppetmaster::bind_address,
         priority                => 40,
         ssl_ca_revocation_check => $ssl_ca_revocation_check,
         canary_hosts            => $canary_hosts,
     }
+
     # On all the puppetmasters, we should respond
     # to the FQDN too, in case we point them explicitly
     ::puppetmaster::web_frontend { $::fqdn:
         master                  => $ca_server,
         workers                 => $workers,
-        locale_server           => $locale_server,
         bind_address            => $::puppetmaster::bind_address,
         priority                => 50,
         ssl_ca_revocation_check => $ssl_ca_revocation_check,
