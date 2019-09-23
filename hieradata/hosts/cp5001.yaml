@@ -9,4 +9,3 @@ profile::trafficserver::tls::h2_settings:
   max_ping_frames_per_minute: 60
   max_priority_frames_per_minute: 0
   min_avg_window_update: 2560.0
-profile::trafficserver::tls::systemd_hardening: false
