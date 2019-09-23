@@ -11,6 +11,7 @@
 define acme_chief::cert (
     $ensure = present,
     Optional[String] $puppet_svc = undef,
+    Optional[Type] $puppet_rsc = undef,
     String $key_group = 'root',
     Optional[Boolean] $ocsp = undef, # deprecated, it will be removed soon
     Optional[String] $ocsp_proxy = undef, # deprecated, it will be removed soon
@@ -33,6 +34,21 @@ define acme_chief::cert (
         }
     }
 
+    $notify_svc = $puppet_svc? {
+        undef   => [],
+        default => [Service[$puppet_svc]],
+    }
+    $notify_rsc = $puppet_rsc? {
+        undef   => $notify_svc,
+        default => concat($notify_svc, [$puppet_rsc])
+    }
+
+    if !empty($notify_rsc) {
+        $notify = $notify_rsc
+    } else {
+        $notify = undef
+    }
+
     # lint:ignore:puppet_url_without_modules
     file { "/etc/acmecerts/${title}":
         ensure    => ensure_directory($ensure),
@@ -42,7 +58,7 @@ define acme_chief::cert (
         recurse   => true,
         show_diff => false,
         source    => "puppet://${::acmechief_host}/acmedata/${title}",
-        notify    => Service[$puppet_svc],
+        notify    => $notify,
     }
     # lint:endignore
 }
