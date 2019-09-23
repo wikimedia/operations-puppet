@@ -45,7 +45,7 @@ class profile::analytics::refinery::job::druid_load {
         job_config => {
             database           => 'wmf',
             timestamp_column   => 'stamp_inserted',
-            dimensions         => 'as_dst,as_path,peer_as_dst,as_src,ip_dst,ip_proto,ip_src,peer_as_src,port_dst,port_src,tag2,tcp_flags',
+            dimensions         => 'as_dst,as_path,peer_as_dst,as_src,ip_dst,ip_proto,ip_src,peer_as_src,port_dst,port_src,tag2,tcp_flags,country_ip_src,country_ip_dst',
             metrics            => 'bytes,packets',
             hourly_hours_until => 3,
         },
