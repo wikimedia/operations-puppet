@@ -1,4 +1,6 @@
-class netops::ripeatlas::cli {
+class netops::ripeatlas::cli (
+  String $http_proxy = undef,
+) {
     require_package('ripe-atlas-tools')
 
     include ::passwords::netops # lint:ignore:wmf_styleguide
@@ -8,10 +10,11 @@ class netops::ripeatlas::cli {
     $home = '/var/lib/atlas'
 
     user { 'atlas':
-        ensure => present,
-        system => true,
-        home   => $home,
-        shell  => '/bin/bash',
+        ensure     => present,
+        system     => true,
+        home       => $home,
+        shell      => '/bin/bash',
+        managehome => true,
     }
 
     file { ["${home}/.config", "${home}/.config/ripe-atlas-tools"]:

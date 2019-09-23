@@ -1,3 +1,7 @@
 <%- @utils.each do |u| -%>
+<% if @http_proxy -%>
+<%= "alias #{u}='sudo --set-home --user=atlas https_proxy=#{@http_proxy} /usr/bin/#{u}'" %>
+<% else -%>
 <%= "alias #{u}='sudo --set-home --user=atlas /usr/bin/#{u}'" %>
+<% end -%>
 <%- end -%>
