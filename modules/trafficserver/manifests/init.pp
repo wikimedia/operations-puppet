@@ -10,6 +10,14 @@ class trafficserver(
   String $user = 'trafficserver',
   Array[String] $packages = ['trafficserver', 'trafficserver-experimental-plugins'],
 ) {
+    # ATS is built against libhwloc5 1.11.12 from stretch-backports. Ensure we
+    # install that version and not the earlier one from stretch.
+    apt::pin { 'libhwloc5':
+        pin      => 'release a=stretch-backports',
+        package  => 'libhwloc5',
+        priority => '1001',
+        before   => Package[$packages],
+    }
 
     # Mask trafficserver.service if the package is not installed yet. The
     # unless is deplorable but there is no way in Puppet to execute a command
