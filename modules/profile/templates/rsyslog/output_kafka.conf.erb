@@ -5,6 +5,9 @@ module(load="omkafka")
 # (leading space breaks existing grok/regex message filters)
 module(load="mmrm1stspace")
 
+# load mmutf8fix to convert non-utf8 charsets to utf8
+module(load="mmutf8fix")
+
 # parse json messages when @cee cookie is found
 module(load="mmjsonparse")
 
@@ -17,6 +20,9 @@ if ( $.log_outputs contains "kafka" ) then {
 
     # remove leading white space from msg field
     action(type="mmrm1stspace")
+
+    # attempt to convert log charset to utf8
+    action(type="mmutf8fix")
 
     # try parsing the message as json if @cee cookie is found
     action(type="mmjsonparse" name="mmjsonparse_kafka")
