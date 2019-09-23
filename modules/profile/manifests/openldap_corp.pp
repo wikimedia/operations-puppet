@@ -1,12 +1,14 @@
 class profile::openldap_corp (
-    String $master = lookup('profile::openldap_corp::master_server'),
+    String $master             = lookup('profile::openldap_corp::master_server'),
+    Integer $server_id         = lookup('profile::openldap_corp::server_id'),
+    Array[String] $ldap_access = lookup('profile::openldap_corp::ldap_access'),
 ){
     include passwords::openldap::corp
 
     $sync_pass = $passwords::openldap::corp::sync_pass
 
     class { '::openldap':
-        server_id     => 3, # 1 and 2 used in OIT
+        server_id     => $server_id,   # 1 and 2 used in OIT
         suffix        => 'dc=corp,dc=wikimedia,dc=org',
         datadir       => '/var/lib/ldap/corp',
         master        => $master,
@@ -23,10 +25,11 @@ class profile::openldap_corp (
         group => 'openldap',
     }
 
+    $ldap_corp_ferm = join($ldap_access, ' ')
     ferm::service { 'corp_ldap':
         proto  => 'tcp',
         port   => '389', # Yes, explicitly not supporting LDAPS (port 636)
-        srange => '@resolve((dubnium.wikimedia.org pollux.wikimedia.org mx1001.wikimedia.org mx2001.wikimedia.org))',
+        srange => "@resolve((${ldap_corp_ferm}))",
     }
 
     monitoring::service { 'corp_ldap_mirror':
