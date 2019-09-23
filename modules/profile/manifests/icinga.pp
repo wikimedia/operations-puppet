@@ -147,11 +147,11 @@ class profile::icinga(
         ldap_server_fallback  => $ldap_config['ro-server-fallback'],
     }
     class {'icinga::cas':
-        virtual_host        => $cas_virtual_host,
-        login_url           => $cas['login_url'],
-        validate_url        => $cas['validate_url'],
-        debug               => $cas_debug,
-        cas_required_groups => $cas_required_groups,
+        virtual_host    => $cas_virtual_host,
+        login_url       => $cas['login_url'],
+        validate_url    => $cas['validate_url'],
+        debug           => $cas_debug,
+        required_groups => $cas_required_groups,
     }
 
     class { '::icinga::naggen':
