@@ -62,13 +62,15 @@ log_agent_heartbeats = <%= @log_agent_heartbeats %>
 connection = mysql://<%= @db_user %>:<%= @db_pass %>@<%= @db_host %>/neutron
 
 [keystone_authtoken]
+auth_plugin = password
+auth_uri = <%= @keystone_public_uri %>
+auth_url = <%= @keystone_admin_uri %>
+password = <%= @ldap_user_pass %>
+project_domain_id = default
+project_name = admin
 region_name = <%= @region %>
-auth_host = <%= @keystone_host %>
-auth_protocol = http
-# Change to neutron user
-admin_user = novaadmin
-admin_password = <%= @ldap_user_pass %>
-admin_tenant_name = admin
+user_domain_id = default
+username = novaadmin
 
 [matchmaker_redis]
 
