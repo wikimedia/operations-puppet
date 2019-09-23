@@ -48,6 +48,7 @@ describe 'icinga::cas' do
         it do
           is_expected.to contain_httpd__site('icinga.example.com').with_content(
             /AuthType\s+CAS
+            \s+CASAuthNHeader\s+CAS-User
             \s+\#\s+Implicit\s+RequireAny
             \s+Require\s+cas-attribute\s+memberOf:foo
             \s+Require\s+cas-attribute\s+memberOf:bar
