@@ -6,3 +6,4 @@ fixtures:
         nrpe: "../../../../nrpe"
         elasticsearch: "../../../../elasticsearch"
         monitoring: "../../../../monitoring"
+        httpd: "../../../../httpd"

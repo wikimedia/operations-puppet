@@ -21,7 +21,7 @@ class icinga::cas (
         owner  => $apache_owner,
         group  => $apache_group,
     }
-    http::site {$virtual_host:
+    httpd::site {$virtual_host:
         content => template('icinga/apache-cas.erb')
     }
 }

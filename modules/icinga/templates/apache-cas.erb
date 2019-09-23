@@ -46,7 +46,7 @@ end
 <%- else -%>
         # Implicit RequireAny
 <%-   @required_groups.each do |required_group| -%>
-        Require cas-attribute memberOf:<%= group %>
+        Require cas-attribute memberOf:<%= required_group %>
 <%-   end -%>
 <%- end -%>
 
