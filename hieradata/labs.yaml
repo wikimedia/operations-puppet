@@ -65,7 +65,7 @@ profile::puppetmaster::frontend::canary_hosts: []
 puppetmaster::servers:
   "%{hiera('puppetmaster')}":
     - { worker: "%{hiera('puppetmaster')}", loadfactor: 10 }
-
+puppetmaster::locale_servers: {}
 # Default to Dummy authenticator in JupyterHubs in labs
 jupyterhub::authenticator: dummy
 
