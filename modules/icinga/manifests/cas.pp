@@ -12,6 +12,8 @@ class icinga::cas (
     String[1]                  $apache_group     = 'www-data',
     Optional[Array[String[1]]] $required_groups  = [],
 ) {
+    $ssl_settings = ssl_ciphersuite('apache', 'strong', true)
+
     ensure_packages(['libapache2-mod-auth-cas'])
     httpd::mod_conf{'auth_cas':}
     file{$cookie_path:
