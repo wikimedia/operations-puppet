@@ -1,13 +1,14 @@
 class base::puppet(
-    String                 $ca_server                   = '',
-    Stdlib::Host           $server                      = 'puppet',
-    Optional[String]       $certname                    = undef,
-    Optional[String]       $dns_alt_names               = undef,
-    Optional[String]       $environment                 = undef,
-    Integer                $interval                    = 30,
-    Boolean                $auto_puppetmaster_switching = false,
-    Integer[4,5]           $puppet_major_version        = 5,
-    Integer[2,3]           $facter_major_version        = 3,
+    String                          $ca_server                   = '',
+    Stdlib::Host                    $server                      = 'puppet',
+    Optional[String]                $certname                    = undef,
+    Optional[String]                $dns_alt_names               = undef,
+    Optional[String]                $environment                 = undef,
+    Integer                         $interval                    = 30,
+    Boolean                         $auto_puppetmaster_switching = false,
+    Integer[4,5]                    $puppet_major_version        = 5,
+    Integer[2,3]                    $facter_major_version        = 3,
+    Enum['pson', 'json', 'msgpack'] $serialization_format        = 'pson',
 ) {
     include ::passwords::puppet::database # lint:ignore:wmf_styleguide
 

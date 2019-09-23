@@ -23,6 +23,7 @@ splay = true
 pluginsync = true
 report = true
 stringify_facts = false
+preferred_serialization_format = <%= @serialization_format %>
 <%- unless @environment.nil? || @environment == '' -%>
 environment = <%= @environment %>
 <%- end -%>
