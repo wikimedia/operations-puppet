@@ -392,11 +392,11 @@ node /^db2(104|108|125|126)\.codfw\.wmnet/ {
 # s3 (default) core production dbs on eqiad
 # Lots of tables!
 # eqiad master
-node 'db1075.eqiad.wmnet' {
+node 'db1123.eqiad.wmnet' {
     role(mariadb::core)
 }
 
-node /^db1(078|112|123)\.eqiad\.wmnet/ {
+node /^db1(075|078|112)\.eqiad\.wmnet/ {
     role(mariadb::core)
 }
 
