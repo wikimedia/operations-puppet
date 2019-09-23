@@ -19,8 +19,8 @@ etl.execution.base.path=hdfs://<%= @template_variables['hadoop_cluster_name'] %>
 # where completed Camus job output directories are kept, usually a sub-dir in the base.path
 etl.execution.history.path=hdfs://<%= @template_variables['hadoop_cluster_name'] %>/wmf/camus/webrequest-00/history
 
-# Our timestamps look like 2013-09-20T15:40:17
-camus.message.timestamp.format=yyyy-MM-dd'T'HH:mm:ss
+# Our timestamps look like 2013-09-20T15:40:17Z
+camus.message.timestamp.format=yyyy-MM-dd'T'HH:mm:ss'Z'
 
 # use the dt field
 camus.message.timestamp.field=dt

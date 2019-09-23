@@ -9,7 +9,7 @@
 #
 
 # submit this job in the WMF Analytics Cluster's 'default' queue.
-mapreduce.job.queuename=default
+mapreduce.job.queuename=essential
 
 # final top-level data output directory, sub-directory will be dynamically
 # created for each topic pulled
@@ -25,9 +25,8 @@ etl.execution.base.path=hdfs://<%= @template_variables['hadoop_cluster_name'] %>
 # where completed Camus job output directories are kept, usually a sub-dir in the base.path
 etl.execution.history.path=hdfs://<%= @template_variables['hadoop_cluster_name'] %>/wmf/camus/eventbus-00/history
 
-# Our
-# Our timestamps look like 2013-09-20T15:40:17+00:00
-camus.message.timestamp.format=yyyy-MM-dd'T'HH:mm:ssXXX
+# Our timestamps look like 2013-09-20T15:40:17+00:00Z
+camus.message.timestamp.format=yyyy-MM-dd'T'HH:mm:ss'Z'
 
 # use the dt field
 camus.message.timestamp.field=meta.dt
@@ -49,7 +48,8 @@ camus.message.decoder.class=com.linkedin.camus.etl.kafka.coders.JsonStringMessag
 # in /etc/hadoop/conf/mapred-site.xml.
 etl.record.writer.provider.class=com.linkedin.camus.etl.kafka.common.SequenceFileRecordWriterProvider
 
-mapred.map.tasks=10
+# Set this to at least the number of topic/partitions you will be importing.
+mapred.map.tasks=50
 
 # Connection parameters.
 kafka.brokers=<%= Array(@kafka_brokers).join(',') %>
@@ -63,10 +63,10 @@ kafka.max.pull.hrs=168
 # events with a timestamp older than this will be discarded.  (-1 means no limit)
 kafka.max.historical.days=-1
 # Max minutes for each mapper to pull messages (-1 means no limit)
-# Let each mapper run for no more than 55 minutes.
+# Let each mapper run for no more than 14 minutes.
 # Camus creates hourly directories, and we don't want a single
 # long running mapper keep other Camus jobs from being launched.
-kafka.max.pull.minutes.per.task=55
+kafka.max.pull.minutes.per.task=14
 
 # if whitelist has values, only whitelisted topic are pulled.  nothing on the blacklist is pulled
 kafka.blacklist.topics=

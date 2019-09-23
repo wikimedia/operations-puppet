@@ -95,9 +95,9 @@ class profile::analytics::refinery::job::camus(
         check                 => $monitoring_enabled,
         # Don't need to write _IMPORTED flags for EventBus data
         check_dry_run         => true,
-        # Only check this topic, since it should always have data for every hour
-        check_topic_whitelist => "${primary_mediawiki_dc}.mediawiki.revision-create",
-        interval              => '*-*-* *:05:00',
+        # Only check high volume topics that will almost certainly have data every hour.
+        check_topic_whitelist => "${primary_mediawiki_dc}.mediawiki.(revision-create|api-request|cirrussearch-request)",
+        interval              => '*-*-* *:*:00/15:00',
     }
 
     # Import mediawiki.job queue topics into /wmf/data/raw/mediawiki_job
