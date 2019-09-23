@@ -13,14 +13,21 @@ class profile::openstack::base::neutron::common(
     $tld = hiera('profile::openstack::base::neutron::tld'),
     $agent_down_time = hiera('profile::openstack::base::neutron::agent_down_time'),
     $log_agent_heartbeats = hiera('profile::openstack::base::neutron::log_agent_heartbeats'),
+    Stdlib::Port $auth_port = lookup('profile::openstack::base::keystone::auth_port'),
     Stdlib::Port $bind_port = lookup('profile::openstack::base::neutron::bind_port'),
+    Stdlib::Port $public_port = lookup('profile::openstack::base::keystone::public_port'),
     ) {
+
+    $keystone_admin_uri = "http://${keystone_host}:${auth_port}"
+    $keystone_public_uri = "http://${keystone_host}:${public_port}"
 
     class {'::openstack::neutron::common':
         version                 => $version,
         nova_controller         => $nova_controller,
         nova_controller_standby => $nova_controller_standby,
+        keystone_admin_uri      => $keystone_admin_uri,
         keystone_host           => $keystone_host,
+        keystone_public_uri     => $keystone_public_uri,
         db_pass                 => $db_pass,
         db_user                 => $db_user,
         db_host                 => $db_host,

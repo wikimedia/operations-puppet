@@ -13,6 +13,8 @@ class openstack::neutron::common::mitaka(
     $log_agent_heartbeats,
     $agent_down_time,
     Stdlib::Port $bind_port,
+    Stdlib::HTTPUrl $keystone_admin_uri,
+    Stdlib::HTTPUrl $keystone_public_uri,
     ) {
 
     class { "openstack::neutron::common::mitaka::${::lsbdistcodename}": }

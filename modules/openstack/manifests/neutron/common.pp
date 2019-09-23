@@ -14,12 +14,16 @@ class openstack::neutron::common(
     $log_agent_heartbeats,
     $agent_down_time,
     Stdlib::Port $bind_port,
+    Stdlib::HTTPUrl $keystone_admin_uri,
+    Stdlib::HTTPUrl $keystone_public_uri,
     ) {
 
     class { "openstack::neutron::common::${version}":
         nova_controller         => $nova_controller,
         nova_controller_standby => $nova_controller_standby,
+        keystone_admin_uri      => $keystone_admin_uri,
         keystone_host           => $keystone_host,
+        keystone_public_uri     => $keystone_public_uri,
         db_pass                 => $db_pass,
         db_user                 => $db_user,
         db_host                 => $db_host,
