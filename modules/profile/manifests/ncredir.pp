@@ -38,7 +38,7 @@ class profile::ncredir(
     $shared_acme_certificates.each |String $cert_name, Hash[String, Any] $cert_details| {
         if $cert_name =~ $acme_chief_cert_prefix {
             acme_chief::cert { $cert_name:
-                puppet_svc => 'nginx',
+                puppet_rsc => Exec['nginx-reload'],
                 before     => Service['nginx'],
             }
 
