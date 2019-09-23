@@ -276,10 +276,15 @@ scrub_time = 43200
 image_cache_dir = /var/lib/glance/image-cache/
 
 [keystone_authtoken]
+auth_type = password
 auth_uri = <%= @keystone_public_uri %>
-identity_uri = <%= @keystone_admin_uri %>
-admin_user = novaadmin
-admin_password = <%= @ldap_user_pass %>
+auth_url = <%= @keystone_admin_uri %>
+password = <%= @ldap_user_pass %>
+project_domain_id = default
+project_name = admin
+region_name = <%= @region %>
+user_domain_id = default
+username = novaadmin
 
 [paste_deploy]
 # Name of the paste configuration file that defines the available pipelines
