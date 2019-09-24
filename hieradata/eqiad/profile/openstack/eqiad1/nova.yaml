@@ -38,7 +38,7 @@ profile::openstack::eqiad1::nova::physical_interface_mappings:
 #   cloudvirt1018: pooled
 #   cloudvirt1019: depooled, active host of database VMs
 #   cloudvirt1020: depooled, active host of database VMs
-#   cloudvirt1021: depooled, emergency spare
+#   cloudvirt1021: pooled
 #   cloudvirt1022: depooled, emergency spare
 #   cloudvirt1023: depooled, emergency spare
 #   cloudvirt1024: depooled due to hardware issues -- T230289
@@ -73,6 +73,7 @@ profile::openstack::eqiad1::nova::scheduler_pool:
   - cloudvirt1016
   - cloudvirt1017
   - cloudvirt1018
+  - cloudvirt1021
   - cloudvirt1025
   - cloudvirt1026
   - cloudvirt1027
