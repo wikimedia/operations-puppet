@@ -13,7 +13,6 @@ class profile::analytics::cluster::packages::statistics {
     class { '::imagemagick::install': }
 
     require_package([
-        'openjdk-8-jdk',
         'time',
         'emacs',
         'mc',
@@ -39,7 +38,6 @@ class profile::analytics::cluster::packages::statistics {
         'libmaxminddb-dev',
         'build-essential',        # Requested by halfak to install SciPy
         'nodejs',
-        'openjdk-8-jdk',
         'libssl-dev',             # Requested by bearloga; necessary for an essential R package (openssl)
         'libcurl4-openssl-dev',   # Requested by bearloga for an essential R package (devtools)
         'libicu-dev',             # ^

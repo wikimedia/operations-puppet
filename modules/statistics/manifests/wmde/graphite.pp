@@ -28,7 +28,6 @@ class statistics::wmde::graphite(
     # Path in which all crons will log to.
     $log_dir = "${dir}/log"
 
-    require_package('openjdk-8-jdk')
     require_package(
         'php',
         'php-cli',

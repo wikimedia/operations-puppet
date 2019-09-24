@@ -7,7 +7,32 @@
 #
 class profile::java::analytics {
 
-    require_package('openjdk-8-jdk')
+    if os_version('debian == buster') {
+
+        apt::repository { 'openjdk-8':
+            uri        => 'http://apt.wikimedia.org/wikimedia',
+            dist       => 'buster-wikimedia',
+            components => 'component/jdk8',
+            notify     => Exec['apt_update_java8'],
+        }
+
+        exec {'component/jdk8':
+            command     => '/usr/bin/apt-get update',
+            refreshonly => true,
+        }
+
+        package { 'openjdk-8-jdk':
+            ensure  => present,
+            require => [
+                Apt::Repository['openjdk-8'],
+                Exec['component/jdk8'],
+            ],
+        }
+    } else {
+        package { 'openjdk-8-jdk':
+            ensure  => present,
+        }
+    }
 
     # Make sure file.encoding is UTF-8 for all java processes.
     # This should help avoid bugs like T128295.
