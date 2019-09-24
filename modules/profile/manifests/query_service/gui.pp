@@ -1,4 +1,4 @@
-class profile::wdqs::gui (
+class profile::query_service::gui (
     Stdlib::Unixpath $package_dir = hiera('profile::wdqs::package_dir', '/srv/deployment/wdqs/wdqs'),
     Stdlib::Unixpath $data_dir = hiera('profile::wdqs::data_dir', '/srv/wdqs'),
     Stdlib::Unixpath $log_dir = hiera('profile::wdqs::log_dir', '/var/log/wdqs'),
@@ -7,7 +7,7 @@ class profile::wdqs::gui (
     Integer $max_query_time_millis = hiera('profile::wdqs::max_query_time_millis', 60000),
     Boolean $high_query_time_port = hiera('profile::wdqs::high_query_time_port', false),
 ) {
-    require ::profile::wdqs::common
+    require ::profile::query_service::common
 
     $username = 'blazegraph'
 

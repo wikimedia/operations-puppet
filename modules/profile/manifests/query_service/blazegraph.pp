@@ -1,4 +1,4 @@
-class profile::wdqs::blazegraph(
+class profile::query_service::blazegraph(
     Stdlib::Unixpath $package_dir = hiera('profile::wdqs::package_dir', '/srv/deployment/wdqs/wdqs'),
     Stdlib::Unixpath $data_dir = hiera('profile::wdqs::data_dir', '/srv/wdqs'),
     Stdlib::Unixpath $log_dir = hiera('profile::wdqs::log_dir', '/var/log/wdqs'),
@@ -13,7 +13,7 @@ class profile::wdqs::blazegraph(
     Integer[0] $lag_warning  = hiera('profile::wdqs::lag_warning', 1200),
     Integer[0] $lag_critical = hiera('profile::wdqs::lag_critical', 3600),
 ) {
-    require ::profile::wdqs::common
+    require ::profile::query_service::common
 
     $username = 'blazegraph'
     $prometheus_agent_path = '/usr/share/java/prometheus/jmx_prometheus_javaagent.jar'
@@ -32,7 +32,7 @@ class profile::wdqs::blazegraph(
         default:
             hostname         => $::hostname,
             prometheus_nodes => $prometheus_nodes,
-            source           => 'puppet:///modules/profile/wdqs/wdqs-blazegraph-prometheus-jmx.yaml',
+            source           => 'puppet:///modules/profile/query_service/blazegraph-prometheus-jmx.yaml',
             ;
         'wdqs_blazegraph':
             port        => $prometheus_agent_port_wdqs,

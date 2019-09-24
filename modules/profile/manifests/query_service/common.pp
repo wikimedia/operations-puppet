@@ -1,4 +1,4 @@
-class profile::wdqs::common(
+class profile::query_service::common(
     Query_service::DeployMode $deploy_mode = hiera('profile::wdqs::deploy_mode'),
     Stdlib::Unixpath $package_dir = hiera('profile::wdqs::package_dir', '/srv/deployment/wdqs/wdqs'),
     Stdlib::Unixpath $data_dir = hiera('profile::wdqs::data_dir', '/srv/wdqs'),

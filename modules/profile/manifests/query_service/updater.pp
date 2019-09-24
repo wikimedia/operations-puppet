@@ -1,4 +1,4 @@
-class profile::wdqs::updater (
+class profile::query_service::updater (
     String $options = hiera('profile::wdqs::updater_options', '-n wdq'),
     Stdlib::Port $logstash_logback_port = hiera('logstash_logback_port'),
     Stdlib::Unixpath $package_dir = hiera('profile::wdqs::package_dir', '/srv/deployment/wdqs/wdqs'),
@@ -15,7 +15,7 @@ class profile::wdqs::updater (
     Boolean $enable_rdf_dump = hiera('profile::wdqs::enable_rdf_dump', false),
     Boolean $use_revisions = hiera('profile::wdqs::use_revisions'),
 ) {
-    require ::profile::wdqs::common
+    require ::profile::query_service::common
 
     $username = 'blazegraph'
     $prometheus_agent_path = '/usr/share/java/prometheus/jmx_prometheus_javaagent.jar'
@@ -26,7 +26,7 @@ class profile::wdqs::updater (
         port             => $prometheus_agent_port,
         prometheus_nodes => $prometheus_nodes,
         config_file      => $prometheus_agent_config,
-        source           => 'puppet:///modules/profile/wdqs/wdqs-updater-prometheus-jmx.yaml',
+        source           => 'puppet:///modules/profile/query_service/updater-prometheus-jmx.yaml',
         before           => Service['wdqs-updater'],
     }
 

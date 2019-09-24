@@ -8,10 +8,10 @@ class role::wdqs::labs () {
 
     include ::profile::standard
     include ::profile::base::firewall
-    require ::profile::wdqs::common
-    require ::profile::wdqs::blazegraph
-    require ::profile::wdqs::updater
-    require ::profile::wdqs::gui
+    require ::profile::query_service::common
+    require ::profile::query_service::blazegraph
+    require ::profile::query_service::updater
+    require ::profile::query_service::gui
 
     system::role { 'wdqs':
         ensure      => 'present',
