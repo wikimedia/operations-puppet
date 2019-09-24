@@ -93,7 +93,7 @@ class role::mariadb::core_test {
 
     mariadb::monitor_replication { [ $shard ]:
         multisource   => false,
-        is_critical   => $replication_is_critical,
+        is_critical   => false,
         contact_group => $contact_group,
         socket        => $socket,
     }

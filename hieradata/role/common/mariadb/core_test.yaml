@@ -1,1 +1,2 @@
 monitor_screens: false
+mariadb::monitor_process::is_critical: false
