@@ -12,9 +12,14 @@ class icinga::cas (
     String[1]                  $apache_group     = 'www-data',
     Optional[Array[String[1]]] $required_groups  = [],
 ) {
+    ensure_packages(['libapache2-mod-auth-cas'])
+
     $ssl_settings = ssl_ciphersuite('apache', 'strong', true)
 
-    ensure_packages(['libapache2-mod-auth-cas'])
+    acme_chief::cert { 'cas-icinga':
+        puppet_svc => 'apache2',
+    }
+
     httpd::mod_conf{'auth_cas':}
     file{$cookie_path:
         ensure => directory,

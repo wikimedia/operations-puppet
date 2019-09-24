@@ -7,3 +7,4 @@ fixtures:
         elasticsearch: "../../../../elasticsearch"
         monitoring: "../../../../monitoring"
         httpd: "../../../../httpd"
+        acme_chief: "../../../../acme_chief"

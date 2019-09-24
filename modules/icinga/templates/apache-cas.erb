@@ -15,12 +15,12 @@ end
     # https://httpoxy.org/
     RequestHeader unset Proxy early
     SSLEngine On
-    SSLCertificateFile /etc/acmecerts/icinga/live/ec-prime256v1.crt
-    SSLCertificateChainFile /etc/acmecerts/icinga/live/ec-prime256v1.chain.crt
-    SSLCertificateKeyFile /etc/acmecerts/icinga/live/ec-prime256v1.key
-    SSLCertificateFile /etc/acmecerts/icinga/live/rsa-2048.crt
-    SSLCertificateChainFile /etc/acmecerts/icinga/live/rsa-2048.chain.crt
-    SSLCertificateKeyFile /etc/acmecerts/icinga/live/rsa-2048.key
+    SSLCertificateFile /etc/acmecerts/cas-icinga/live/ec-prime256v1.crt
+    SSLCertificateChainFile /etc/acmecerts/cas-icinga/live/ec-prime256v1.chain.crt
+    SSLCertificateKeyFile /etc/acmecerts/cas-icinga/live/ec-prime256v1.key
+    SSLCertificateFile /etc/acmecerts/cas-icinga/live/rsa-2048.crt
+    SSLCertificateChainFile /etc/acmecerts/cas-icinga/live/rsa-2048.chain.crt
+    SSLCertificateKeyFile /etc/acmecerts/cas-icinga/live/rsa-2048.key
     <%= @ssl_settings.join("\n    ") %>
     CASCertificatePath <%= @certificate_path %>
     CASCookiePath <%= @cookie_path %>

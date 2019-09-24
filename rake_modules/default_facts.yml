@@ -38,3 +38,4 @@ raid:
 kernel_details:
   sysctl_settings:
     net.ipv4.tcp_min_snd_mss: true
+acmechief_host: 'acmechief1001.eqiad.wmnet'
