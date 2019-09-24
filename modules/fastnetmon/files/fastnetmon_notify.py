@@ -83,7 +83,7 @@ def parse_stdin(stdin, geoip_dir=''):
                 break
             netflow_human.append('    {value} : {count}'.format(value=str(value), count=str(count)))
     netflow_human.append('\nUse this dashboard for real time data '
-                         'and drill-down abilities: https://w.wiki/7N6')
+                         'and drill-down abilities: https://w.wiki/8oU')
     output = ''.join(stdin_clean) + '\n'.join(netflow_human) + '\n'.join(errors)
     return output
 
