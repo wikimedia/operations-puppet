@@ -109,7 +109,7 @@ class profile::analytics::refinery::job::camus(
         # Don't need to write _IMPORTED flags for event data
         check_dry_run         => true,
         # Only check high volume topics that will almost certainly have data every hour.
-        check_topic_whitelist => "${primary_mediawiki_dc}.mediawiki.(api-request|cirrussearch-request)",
+        check_topic_whitelist => "${primary_mediawiki_dc}.mediawiki.(cirrussearch-request)",
         interval              => '*-*-* *:00/15:00',
     }
 
