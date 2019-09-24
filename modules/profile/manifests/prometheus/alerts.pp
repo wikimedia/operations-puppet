@@ -221,8 +221,8 @@ class profile::prometheus::alerts (
         description     => 'Widespread puppet agent failures',
         dashboard_links => ['https://grafana.wikimedia.org/d/yOxVDGvWk/puppet'],
         query           => 'sum(cluster:puppet_agent_failed:sum) / sum(cluster:puppet_agent_failed:count)',
-        warning         => 0.02,
-        critical        => 0.05,
+        warning         => 0.006,
+        critical        => 0.01,
         method          => 'ge',
         retries         => 2,
         # Icinga will query the site-local Prometheus 'global' instance
@@ -233,8 +233,8 @@ class profile::prometheus::alerts (
         description     => 'Widespread puppet agent failures, no resources reported',
         dashboard_links => ['https://grafana.wikimedia.org/d/yOxVDGvWk/puppet'],
         query           => 'sum(cluster:puppet_agent_resources_total:count0) / sum(cluster:puppet_agent_resources_total:count)',
-        warning         => 0.02,
-        critical        => 0.05,
+        warning         => 0.006,
+        critical        => 0.01,
         method          => 'ge',
         retries         => 2,
         # Icinga will query the site-local Prometheus 'global' instance
