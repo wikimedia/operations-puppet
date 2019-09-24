@@ -10,8 +10,6 @@ class profile::mediawiki::common(
     # GeoIP is needed for MW
     class { '::geoip': }
 
-    class { '::tmpreaper': }
-
     # Enable systemd coredump on all servers running mediawiki
     # Whether php7 will produce coredumps is configurable through
     # rlimit_core in php.ini. Coredumps will be found under
