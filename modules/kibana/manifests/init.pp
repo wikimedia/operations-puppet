@@ -47,6 +47,4 @@ class kibana (
             File['/etc/kibana/kibana.yml'],
         ],
     }
-
-    class { '::kibana::phatality': }
 }
