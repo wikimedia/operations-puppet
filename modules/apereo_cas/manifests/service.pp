@@ -10,6 +10,7 @@ define apereo_cas::service (
         'name'                   => $title,
         'serviceId'              => $service_id,
         'attributeReleasePolicy' => $attribute_release_policy,
+        'id'                     => $id,
     }
     file {"${apereo_cas::services_dir}/${title}-${id}.json":
         ensure  => file,
