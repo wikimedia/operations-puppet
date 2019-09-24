@@ -27,7 +27,8 @@ class icinga::cas (
         group  => $apache_group,
     }
     httpd::site {$virtual_host:
-        content => template('icinga/apache-cas.erb')
+        content  => template('icinga/apache-cas.erb'),
+        priority => 99,
     }
 }
 
