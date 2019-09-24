@@ -375,7 +375,7 @@ node 'db1122.eqiad.wmnet' {
 
 # eqiad replicas
 # see also db1090, db1103, db1105 below
-node /^db1(066|074|076|129)\.eqiad\.wmnet/ {
+node /^db1(074|076|129)\.eqiad\.wmnet/ {
     role(mariadb::core)
 }
 
@@ -562,6 +562,11 @@ node /^db2(115|131)\.codfw\.wmnet/ {
 
 # To be decommissioned T232564
 node 'db1063.eqiad.wmnet' {
+    role(spare::system)
+}
+
+# To be decommissioned T233071
+node 'db1066.eqiad.wmnet' {
     role(spare::system)
 }
 
