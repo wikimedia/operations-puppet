@@ -8,8 +8,8 @@
 #
 
 class profile::wmcs::nfs::maintain_dbusers (
-    $ldapconfig = lookup('labsldapconfig', {merge => hash, default => {}}),
-    Hash $production_ldap_config = lookup('ldap', Hash, hash, {}),
+    Hash $ldapconfig            = lookup('labsldapconfig', {'merge' => hash}),
+    Hash $production_ldap_config = lookup('ldap', {'merge' => hash}),
 ){
 
     package { [

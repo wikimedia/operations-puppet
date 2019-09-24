@@ -219,6 +219,7 @@ cdh::hadoop::datanode_mounts:
 cdh::hadoop::users::groups: project-%{::labsproject}
 
 sudo_flavor: 'sudoldap'
+ldap: {}
 labsldapconfig:
   hostname: ldap-ro.eqiad.wikimedia.org
 
