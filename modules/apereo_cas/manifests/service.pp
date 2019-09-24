@@ -11,7 +11,7 @@ define apereo_cas::service (
         'serviceId'              => $service_id,
         'attributeReleasePolicy' => $attribute_release_policy,
     }
-    file {"${cas::services_dir}/${title}-${id}.json":
+    file {"${apereo_cas::services_dir}/${title}-${id}.json":
         ensure  => file,
         content => $data.to_json()
     }
