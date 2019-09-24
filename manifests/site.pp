@@ -625,11 +625,6 @@ node 'db2047.codfw.wmnet' {
     role(spare::system)
 }
 
-# To be decommissioned # T230721
-node 'db2049.codfw.wmnet' {
-    role(spare::system)
-}
-
 # To be decommissioned # T230391
 node 'db2050.codfw.wmnet' {
     role(spare::system)
