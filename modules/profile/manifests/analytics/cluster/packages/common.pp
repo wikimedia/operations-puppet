@@ -17,22 +17,41 @@ class profile::analytics::cluster::packages::common {
     # Note: RMariaDB (https://github.com/rstats-db/RMariaDB) will replace RMySQL, but is currently not on CRAN
     require_package('r-cran-rmysql')
 
+    # Python 2 deprecation
+    # Note: 'python-requests' is not explicitly absented
+    # since it is a reverse dependency of scap.
+    package {[
+            'ipython',
+            'python-sympy',
+            'python-matplotlib',
+            'python-tk',
+            'python-geoip',
+            'python-geoip2',
+            'python-pandas',
+            'python-pycountry',
+            'python-scipy',
+            'python-docopt',
+            'python-numpy',
+            'python-sklearn',
+            'python-yaml',
+        ]:
+        ensure => absent,
+    }
+
     require_package(
-        'ipython',                'ipython3',
-        'python-sympy',
-        'python-matplotlib',      'python3-matplotlib',
-        'python-tk',              # 'python3-tk', temporary removed, please check T229347#5405511
-        'python-geoip',           'python3-geoip',
-        'python-geoip2',          'python3-geoip2',
-        'python-pandas',          'python3-pandas',
-        'python-pycountry',       'python3-pycountry',
-        'python-scipy',           'python3-scipy',
-        'python-requests',        'python3-requests',
-        'python-dateutil',        'python3-dateutil',
-        'python-docopt',          'python3-docopt',
-        'python-numpy',           'python3-numpy',
-        'python-sklearn',         'python3-sklearn',
-        'python-yaml',            'python3-yaml',
+        'ipython3',
+        'python3-matplotlib',
+        'python3-geoip',
+        'python3-geoip2',
+        'python3-pandas',
+        'python3-pycountry',
+        'python3-scipy',
+        'python3-requests',
+        'python3-dateutil',
+        'python3-docopt',
+        'python3-numpy',
+        'python3-sklearn',
+        'python3-yaml',
         'python3-tabulate',
         'python3-enchant',
         'python3-tz',
