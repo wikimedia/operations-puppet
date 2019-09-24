@@ -38,6 +38,11 @@ camus.message.decoder.class=com.linkedin.camus.etl.kafka.coders.JsonStringMessag
 # in /etc/hadoop/conf/mapred-site.xml.
 etl.record.writer.provider.class=com.linkedin.camus.etl.kafka.common.SequenceFileRecordWriterProvider
 
+# Disable speculative map tasks.
+# There is no need to consume the same data from Kafka multiple times.
+mapreduce.map.speculative=false
+
+# Set this to at least the number of topic/partitions you will be importing.
 mapred.map.tasks=5
 
 # Connection parameters.
