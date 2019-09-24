@@ -404,6 +404,13 @@ class profile::logstash::collector (
         priority => 70,
     }
 
+    ## Throttles (rate limiting) (75) (rate limit after filtering for consistency with field conventions)
+
+    logstash::conf { 'filter_throttle_errors':
+        source   => 'puppet:///modules/profile/logstash/filter-throttle-errors.conf',
+        priority => 75,
+    }
+
     ## Outputs (90)
     # Template for Elasticsearch index creation
     file { '/etc/logstash/elasticsearch-template.json':
