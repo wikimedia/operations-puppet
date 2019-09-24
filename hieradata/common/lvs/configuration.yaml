@@ -353,8 +353,6 @@ lvs::configuration::lvs_services:
       ProxyFetch:
         url:
         - http://en.wikipedia.org/wiki/Special:BlankPage
-        - "http://en.wikipedia.org/wiki/Special:BlankPage?force_php7=1"
-        check_all: true
       IdleConnection:
         timeout-clean-reconnect: 3
         max-delay: 300
@@ -381,8 +379,6 @@ lvs::configuration::lvs_services:
       ProxyFetch:
         url:
         - https://en.wikipedia.org/wiki/Special:BlankPage
-        - "https://en.wikipedia.org/wiki/Special:BlankPage?force_php7=1"
-        check_all: true
       IdleConnection:
         timeout-clean-reconnect: 3
         max-delay: 300
@@ -408,8 +404,6 @@ lvs::configuration::lvs_services:
       ProxyFetch:
         url:
         - http://en.wikipedia.org/w/api.php
-        - "http://en.wikipedia.org/wiki/Special:BlankPage?force_php7=1"
-        check_all: true
       IdleConnection:
         timeout-clean-reconnect: 3
         max-delay: 300
@@ -436,8 +430,6 @@ lvs::configuration::lvs_services:
       ProxyFetch:
         url:
         - https://en.wikipedia.org/w/api.php
-        - "https://en.wikipedia.org/wiki/Special:BlankPage?force_php7=1"
-        check_all: true
       IdleConnection:
         timeout-clean-reconnect: 3
         max-delay: 300
@@ -1423,8 +1415,6 @@ lvs::configuration::lvs_services:
       ProxyFetch:
         url:
         - https://localhost/w/health-check.php
-        - "https://localhost/w/health-check.php?force_php7=1"
-        check_all: true
       IdleConnection:
         timeout-clean-reconnect: 3
         max-delay: 300
@@ -1452,8 +1442,6 @@ lvs::configuration::lvs_services:
       ProxyFetch:
         url:
         - https://localhost/w/health-check.php
-        - "https://localhost/w/health-check.php?force_php7=1"
-        check_all: true
       IdleConnection:
         timeout-clean-reconnect: 3
         max-delay: 300
