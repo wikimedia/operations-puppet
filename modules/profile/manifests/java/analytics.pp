@@ -16,7 +16,7 @@ class profile::java::analytics {
             notify     => Exec['apt_update_java8'],
         }
 
-        exec {'component/jdk8':
+        exec {'apt_update_java8':
             command     => '/usr/bin/apt-get update',
             refreshonly => true,
         }
@@ -25,7 +25,7 @@ class profile::java::analytics {
             ensure  => present,
             require => [
                 Apt::Repository['openjdk-8'],
-                Exec['component/jdk8'],
+                Exec['apt_update_java8'],
             ],
         }
     } else {
