@@ -1,4 +1,4 @@
 # db1081
+# candidate master
 mariadb::shard: 's4'
-mariadb::mysql_role: 'master'
 mariadb::binlog_format: 'STATEMENT'
