@@ -15,3 +15,6 @@ profile::idp::services:
       '@class': 'org.apereo.cas.services.ReturnAllAttributeReleasePolicy'
     access_strategy:
       '@class': 'org.apereo.cas.services.DefaultRegisteredServiceAccessStrategy'
+      'requiredAttributes':
+        '@class': 'java.util.HashMap'
+        'memberOf': ['java.util.HashSet', ['cn=wmf,ou=groups,dc=wikimedia,dc=org', 'cn=nda,ou=groups,dc=wikimedia,dc=org']]
