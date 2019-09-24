@@ -202,6 +202,8 @@ scap::sources:
     repository: operations/software/puppetboard/deploy
   debmonitor/deploy:
     repository: operations/software/debmonitor/deploy
+  releng/phatality:
+    repository: releng/phatality
 
 profile::kubernetes::deployment_server::git_owner: trebuchet
 profile::kubernetes::deployment_server::git_group: wikidev
