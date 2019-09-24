@@ -11,6 +11,7 @@ class profile::openstack::eqiad1::neutron::common(
     $tld = hiera('profile::openstack::eqiad1::neutron::tld'),
     $agent_down_time = hiera('profile::openstack::eqiad1::neutron::agent_down_time'),
     $log_agent_heartbeats = hiera('profile::openstack::eqiad1::neutron::log_agent_heartbeats'),
+    Stdlib::Port $bind_port = lookup('profile::openstack::eqiad1::neutron::bind_port'),
     ) {
 
     require ::profile::openstack::eqiad1::clientpackages
@@ -27,6 +28,7 @@ class profile::openstack::eqiad1::neutron::common(
         tld                     => $tld,
         agent_down_time         => $agent_down_time,
         log_agent_heartbeats    => $log_agent_heartbeats,
+        bind_port               => $bind_port,
     }
     contain '::profile::openstack::base::neutron::common'
 }

@@ -11,7 +11,9 @@ class profile::openstack::eqiad1::nova::common(
     $scheduler_pool = hiera('profile::openstack::eqiad1::nova::scheduler_pool'),
     $ldap_user_pass = hiera('profile::openstack::eqiad1::ldap_user_pass'),
     $rabbit_pass = hiera('profile::openstack::eqiad1::nova::rabbit_pass'),
-    $metadata_proxy_shared_secret = hiera('profile::openstack::eqiad1::neutron::metadata_proxy_shared_secret')
+    $metadata_proxy_shared_secret = hiera('profile::openstack::eqiad1::neutron::metadata_proxy_shared_secret'),
+    Stdlib::Port $metadata_listen_port = lookup('profile::openstack::eqiad1::nova::metadata_listen_port'),
+    Stdlib::Port $osapi_compute_listen_port = lookup('profile::openstack::eqiad1::nova::osapi_compute_listen_port'),
     ) {
 
     require ::profile::openstack::eqiad1::clientpackages
@@ -28,7 +30,9 @@ class profile::openstack::eqiad1::nova::common(
         scheduler_pool               => $scheduler_pool,
         ldap_user_pass               => $ldap_user_pass,
         rabbit_pass                  => $rabbit_pass,
+        metadata_listen_port         => $metadata_listen_port,
         metadata_proxy_shared_secret => $metadata_proxy_shared_secret,
+        osapi_compute_listen_port    => $osapi_compute_listen_port,
     }
     contain '::profile::openstack::base::nova::common'
 }

@@ -8,6 +8,8 @@ class profile::openstack::eqiad1::glance (
     $ldap_user_pass = hiera('profile::openstack::eqiad1::ldap_user_pass'),
     $labs_hosts_range = hiera('profile::openstack::eqiad1::labs_hosts_range'),
     $glance_image_dir = hiera('profile::openstack::base::glance::image_dir'),
+    Stdlib::Port $api_bind_port = lookup('profile::openstack::eqiad1::glance::api_bind_port'),
+    Stdlib::Port $registry_bind_port = lookup('profile::openstack::eqiad1::glance::registry_bind_port'),
     ) {
 
     require ::profile::openstack::eqiad1::clientpackages
@@ -20,6 +22,8 @@ class profile::openstack::eqiad1::glance (
         db_host                 => $db_host,
         ldap_user_pass          => $ldap_user_pass,
         labs_hosts_range        => $labs_hosts_range,
+        api_bind_port           => $api_bind_port,
+        registry_bind_port      => $registry_bind_port,
     }
     contain '::profile::openstack::base::glance'
 
