@@ -2935,6 +2935,7 @@ host kafka-main2005 {
 host krb1001 {
      hardware ethernet 4C:D9:8F:60:C4:49;
      fixed-address krb1001.eqiad.wmnet;
+     option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/buster-installer/";
 }
 
 host kubernetes1001 {
