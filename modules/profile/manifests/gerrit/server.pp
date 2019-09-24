@@ -14,6 +14,7 @@ class profile::gerrit::server(
     Hash $ldap_config = lookup('ldap', Hash, hash, {}),
     Optional[Stdlib::Ipv6] $ipv6 = hiera('gerrit::service::ipv6', undef),
     Optional[Stdlib::Fqdn] $avatars_host = hiera('gerrit::server::avatars_host', undef),
+    Enum['11', '8'] $java_version = hiera('gerrit::server::java_version', '8'),
 ) {
 
     interface::alias { 'gerrit server':
@@ -99,6 +100,7 @@ class profile::gerrit::server(
         cache_text_nodes => pick($cache_nodes['text'], {}),
         use_acmechief    => $use_acmechief,
         ldap_config      => $ldap_config,
+        java_version     => $java_version,
     }
 
     class { '::gerrit::replication_key':

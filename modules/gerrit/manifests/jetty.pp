@@ -20,6 +20,8 @@ class gerrit::jetty(
     Integer $git_open_files = 20000,
     String $smtp_encryption = 'none',
     Optional[Hash] $ldap_config = undef,
+    # You must also change $java_home when changing versions.
+    Enum['11', '8'] $java_version = '8',
     ) {
 
     group { 'gerrit2':
@@ -70,11 +72,33 @@ class gerrit::jetty(
     ]
 
     if os_version('debian == buster') {
-        $jdk_package = 'openjdk-11-jdk'
-        $db_driver_package = 'libmariadb-java'
+        if $java_version == '11' {
+            require_package('openjdk-11-jdk')
+        } else {
+            apt::repository { 'wikimedia-openjdk8':
+                uri        => 'http://apt.wikimedia.org/wikimedia',
+                dist       => 'buster-wikimedia',
+                components => 'component/jdk8',
+                notify     => Exec['apt_update_jdk8'],
+            }
+
+            # First installs can trip without this
+            exec {'apt_update_jdk8':
+                command     => '/usr/bin/apt-get update',
+                refreshonly => true,
+                logoutput   => true,
+            }
+
+            package { 'openjdk-8-jdk':
+                ensure  => present,
+                require => Apt::Repository['wikimedia-openjdk8'],
+            }
+        }
     } else {
-        $jdk_package = 'openjdk-8-jdk'
-        $db_driver_package = 'libmysql-java'
+        require_package([
+            'openjdk-8-jdk',
+            'libmysql-java',
+        ])
 
         # before buster we used the mysql-connector from distro package
         file { '/var/lib/gerrit2/review_site/lib/mysql-connector-java.jar':
@@ -86,8 +110,6 @@ class gerrit::jetty(
     }
 
     require_package([
-        $jdk_package,
-        $db_driver_package,
         'python3',
         'python3-virtualenv',
         'virtualenv',
