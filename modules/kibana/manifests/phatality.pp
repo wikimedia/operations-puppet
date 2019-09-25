@@ -15,7 +15,7 @@ class kibana::phatality () {
     sudo::user { 'kibana-deploy-plugin':
         user       => 'deploy-service',
         privileges => [
-            "ALL = (root) NOPASSWD: ${installcmd} ${deploydir}/*",
+            "ALL = (kibana) NOPASSWD: ${installcmd} ${deploydir}/*",
         ]
     }
 }
