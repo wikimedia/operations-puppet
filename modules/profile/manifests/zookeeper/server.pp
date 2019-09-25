@@ -17,12 +17,8 @@ class profile::zookeeper::server (
 
     require_package('default-jdk')
 
-    if $monitoring_enabled {
-        require ::profile::zookeeper::monitoring::server
-        $extra_java_opts = $::profile::zookeeper::monitoring::server::java_opts
-    } else {
-        $extra_java_opts = ''
-    }
+    require ::profile::zookeeper::monitoring::server
+    $extra_java_opts = $::profile::zookeeper::monitoring::server::java_opts
 
     # The zookeeper349 component for jessie-wikimedia has been created to
     # support a more flexible transition to Debian Stretch.
