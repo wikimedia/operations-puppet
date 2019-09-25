@@ -70,7 +70,7 @@ define reportupdater::job(
     systemd::timer::job { "reportupdater-${title}":
         ensure                    => $ensure,
         description               => "Report Updater job for ${title}",
-        command                   => "/usr/bin/python ${::reportupdater::path}/update_reports.py -l info ${query_path} ${output_path}",
+        command                   => "/usr/bin/python3 ${::reportupdater::path}/update_reports.py -l info ${query_path} ${output_path}",
         interval                  => {
             'start'    => 'OnCalendar',
             'interval' => $interval
