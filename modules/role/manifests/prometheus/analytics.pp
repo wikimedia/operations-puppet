@@ -46,6 +46,13 @@ class role::prometheus::analytics {
         ],
       },
       {
+        'job_name'        => 'jmx_zookeper',
+        'scheme'          => 'http',
+        'file_sd_configs' => [
+          { 'files' => [ "${targets_path}/jmx_zookeeper_*.yaml" ]}
+        ],
+      },
+      {
         'job_name'        => 'cassandra',
         'scrape_timeout'  => '25s',
         'scheme'          => 'http',
@@ -163,6 +170,12 @@ class role::prometheus::analytics {
     prometheus::jmx_exporter_config{ "cassandra_aqs_${::site}":
         dest       => "${targets_path}/jmx_aqs_cassandra_${::site}.yaml",
         class_name => 'role::aqs',
+        site       => $::site,
+    }
+
+    prometheus::jmx_exporter_config{ "zookeeper_analytics_${::site}":
+        dest       => "${targets_path}/jmx_zookeeper_analytics_${::site}.yaml",
+        class_name => 'role::analytics_cluster::zookeeper',
         site       => $::site,
     }
 
