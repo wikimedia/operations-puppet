@@ -15,7 +15,35 @@ class profile::zookeeper::server (
     $prometheus_instance    = hiera('profile::zookeeper::prometheus_instance', 'ops'),
 ) {
 
-    require_package('default-jdk')
+
+    # Zookeeper clients are "thick", namely they usually need
+    # a Java library to contact a certain cluster. Buster offers
+    # only Java 11 and this might mean serialization issues between
+    # clients and servers if they don't run the same JVM version.
+    if os_version('debian == buster') {
+
+        apt::repository { 'openjdk-8':
+            uri        => 'http://apt.wikimedia.org/wikimedia',
+            dist       => 'buster-wikimedia',
+            components => 'component/jdk8',
+            notify     => Exec['apt_update_java8'],
+        }
+
+        exec {'apt_update_java8':
+            command     => '/usr/bin/apt-get update',
+            refreshonly => true,
+        }
+
+        package { 'openjdk-8-jdk':
+            ensure  => present,
+            require => [
+                Apt::Repository['openjdk-8'],
+                Exec['apt_update_java8'],
+            ],
+        }
+    } else {
+        require_package('default-jdk')
+    }
 
     if $monitoring_enabled {
         require ::profile::zookeeper::monitoring::server
