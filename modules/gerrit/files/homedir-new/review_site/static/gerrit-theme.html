@@ -18,62 +18,18 @@ limitations under the License.
   <script>
     if (window.Polymer) {
       Gerrit.install((plugin) => {
-          plugin.registerCustomComponent(
-              'footer-left', 'wm-custom-links');
+        if (!window.localStorage.getItem('dark-theme')) {
+          plugin.registerStyleModule('app-theme', 'wm-style');
+        }
+        plugin.registerCustomComponent(
+            'footer-left', 'wm-custom-links');
+        plugin.registerCustomComponent(
+            'header-title', 'wm-custom-header', {replace: true});
       });
     }
   </script>
   <style>
-    .gr-app-0 gr-main-header.gr-app {
-     background-color: white;
-    }
-
-    .gr-app-0 gr-main-header.gr-app,
-    .gr-app-1 gr-main-header.gr-app {
-       border-width: 0 0 3px 0;
-       border-style: solid;
-       box-shadow: 0 3px 3px 2px rgba(0,0,0,0.075), 0 0 2px rgba(0,0,0,0.2);
-       padding: 0 0.5em;
-       border-bottom: 0px;
-    }
-
-    #header:after {
-       content: '';
-       height: 2px;
-       display: block;
-       background-image: linear-gradient(to right, #990000 15%, #006699 15%, #006699 85%, #339966 85%);
-    }
-
-    .gr-main-header-0 .linksTitle.gr-main-header,
-    .gr-main-header-0 .bigTitle.gr-main-header,
-    .gr-main-header-0 .loginButton.gr-main-header,
-    .gr-main-header-0 .registerButton.gr-main-header,
-    .gr-main-header-0 .gr-account-dropdown {
-     color: #001133;
-    }
-
-
-    .gr-main-header-0 .titleText.gr-main-header::after,
-    .gr-main-header-1 .titleText.gr-main-header::after {
-     content: 'Wikimedia Code Review';
-    }
-
-    .gr-main-header-0 .titleText.gr-main-header::before,
-    .gr-main-header-1 .titleText.gr-main-header::before {
-     /* We use svg here as all browsers polygerrit supports, support svg. */
-     background-image: url(/r/static/wikimedia-codereview-logo.cache.svg);
-     background-size: 1.3em 1.3em;
-     background-repeat: no-repeat;
-     content: "";
-     display: inline-block;
-     height: 1.3em;
-     margin-right: calc(1em / 2);
-     margin-left: calc(1em / 3);
-     margin-bottom: calc(0em / 7);
-     vertical-align: middle;
-     width: 1.3em;
-    }
-
+    /* These styles will not work under Polymer 2 */
     #output span.wmf-badge-logo,
     .wmf-badge-logo {
      display: inline-block;
@@ -123,6 +79,55 @@ limitations under the License.
      text-shadow: 1px 1px 1px black;
     }
   </style>
+</dom-module>
+
+<dom-module id="wm-style">
+  <template>
+    <style>
+      html {
+        --header-background: white;
+        --header-text-color: #001133;
+        --border-width: 0 0 3px 0;
+        --border-style: solid;
+        --box-shadow: 0 3px 3px 2px rgba(0,0,0,0.075), 0 0 2px rgba(0,0,0,0.2);
+        --header-border-bottom: 4px solid;
+        --header-border-image: linear-gradient(to right, #990000 15%, #006699 15%, #006699 85%, #339966 85%) 1;
+      }
+    </style>
+  </template>
+</dom-module>
+
+<dom-module id="wm-custom-header">
+  <template>
+    <style>
+      .wmHeader::before {
+        background-image: url('/r/static/wikimedia-codereview-logo.cache.svg');
+        background-size: 1.3em 1.3em;
+        background-repeat: no-repeat;
+        content: "";
+        display: inline-block;
+        height: 1.3em;
+        margin-right: 0.5em;
+        margin-left: calc(1em / 3);
+        margin-bottom: 0;
+        vertical-align: middle;
+        width: 1.3em;
+      }
+      .wmHeader::after {
+        content: 'Wikimedia Code Review';
+      }
+    </style>
+    <span class="wmHeader"></span>
+  </template>
+  <script>
+    (function() {
+      'use strict';
+
+      Polymer({
+        is: 'wm-custom-header',
+      });
+    })();
+  </script>
 </dom-module>
 
 <dom-module id="wm-custom-links">
