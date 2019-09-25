@@ -91,6 +91,7 @@ class profile::analytics::cluster::packages::statistics {
         'python-oauth2client',          'python3-oauth2client',         # T197896
         'python-oauthlib',              'python3-oauthlib',             # T197896
         'python-requests-oauthlib',     'python3-requests-oauthlib',    # T197896
+                                        'python3-mock',
     ])
 
 
