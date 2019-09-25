@@ -9,18 +9,16 @@ class profile::prometheus::alerts (
 ) {
 
     # Monitor Druid realtime ingestion event rate.
-    # Experimental, only alerting the Analytics alias.
-    # Temporary disabled
-    # monitoring::check_prometheus { 'druid_realtime_banner_activity':
-    #     description     => 'Number of banner_activity realtime events received by Druid over a 30 minutes period',
-    #     query           => 'scalar(sum(sum_over_time(druid_realtime_ingest_events_processed_count{cluster="druid_analytics", instance=~"druid.*:8000", datasource=~"banner_activity_minutely"}[30m])))',
-    #     prometheus_url  => 'http://prometheus.svc.eqiad.wmnet/analytics',
-    #     method          => 'le',
-    #     warning         => 10,
-    #     critical        => 0,
-    #     contact_group   => 'analytics',
-    #     dashboard_links => ['https://grafana.wikimedia.org/dashboard/db/druid?refresh=1m&panelId=41&fullscreen&orgId=1']
-    # }
+    monitoring::check_prometheus { 'druid_netflow_supervisor':
+        description     => 'Number of Netflow realtime events received by Druid over a 30 minutes period',
+        query           => 'scalar(sum(sum_over_time(druid_realtime_ingest_events_processed_count{cluster="druid_analytics", instance=~"druid.*:8000", datasource=~"wmf_netflow"}[30m])))',
+        prometheus_url  => 'http://prometheus.svc.eqiad.wmnet/analytics',
+        method          => 'le',
+        warning         => 10,
+        critical        => 0,
+        contact_group   => 'analytics',
+        dashboard_links => ['https://grafana.wikimedia.org/dashboard/db/druid?refresh=1m&var-cluster=druid_analytics&panelId=41&fullscreen&orgId=1']
+    }
 
     # Monitor Druid segments reported as unavailable by the Coordinator
     monitoring::check_prometheus { 'druid_coordinator_segments_unavailable_analytics':
