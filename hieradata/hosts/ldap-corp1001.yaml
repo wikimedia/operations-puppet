@@ -1,0 +1,6 @@
+profile::openldap_corp::server_id: 4
+profile::openldap_corp::ldap_access:
+- 'ldap-corp1001.wikimedia.org'
+- 'ldap-corp2001.wikimedia.org'
+- 'mx1001.wikimedia.org'
+- 'mx2001.wikimedia.org'
