@@ -397,12 +397,13 @@ host auth1001 {
 host auth1002 {
     hardware ethernet D0:94:66:5F:55:90;
     fixed-address auth1002.eqiad.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/buster-installer/";
 }
 
 host auth2001 {
     hardware ethernet 14:18:77:33:1D:1C;
     fixed-address auth2001.codfw.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/buster-installer/";
 }
 
 host authdns1001 {

@@ -161,11 +161,11 @@ node 'archiva1001.wikimedia.org' {
 }
 
 node /auth100[12]\.eqiad\.wmnet/ {
-    role('yubiauth_server')
+    role(test)
 }
 
 node 'auth2001.codfw.wmnet' {
-    role('yubiauth_server')
+    role(test)
 }
 
 node /^authdns[12]001\.wikimedia\.org$/ {
