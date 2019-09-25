@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 # Copyright 2017 Filippo Giunchedi
 #                Wikimedia Foundation
 # Licensed under the Apache License, Version 2.0 (the "License");
