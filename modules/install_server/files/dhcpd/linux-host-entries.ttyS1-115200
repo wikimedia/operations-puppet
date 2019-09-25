@@ -3663,11 +3663,6 @@ host ms-be1026 {
     fixed-address ms-be1026.eqiad.wmnet;
 }
 
-host ms-be1027 {
-    hardware ethernet 14:02:ec:3c:9c:c8;
-    fixed-address ms-be1027.eqiad.wmnet;
-}
-
 host ms-be1028 {
     hardware ethernet E0:07:1B:EF:16:60;
     fixed-address ms-be1028.eqiad.wmnet;
