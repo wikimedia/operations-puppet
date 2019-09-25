@@ -268,20 +268,6 @@ class profile::analytics::refinery::job::data_purge (
         require      => File['/usr/local/bin/refinery-drop-mediawiki-xmldumps-pages_meta_history'],
     }
 
-    # keep this many days of search query click files
-    # runs once a day
-    $query_clicks_retention_days = 90
-    kerberos::systemd_timer { 'refinery-drop-query-clicks':
-        ensure                    => absent,
-        description               => 'Drop cirrus click logs from Hive/HDFS following data retention policies.',
-        command                   => "${refinery_path}/bin/refinery-drop-hive-partitions -d ${query_clicks_retention_days} -D discovery -t query_clicks_hourly,query_clicks_daily -f ${query_clicks_log_file}",
-        monitoring_contact_groups => 'team-discovery',
-        environment               => $systemd_env,
-        interval                  => '*-*-* 03:30:00',
-        user                      => 'hdfs',
-        use_kerberos              => $use_kerberos,
-    }
-
     # Drop old records in data quality hourly table. Runs once a day.
     kerberos::systemd_timer { 'drop-data-quality-hourly':
         description  => 'Drop old records in data quality hourly table.',
