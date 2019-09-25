@@ -588,7 +588,7 @@ kafka_clusters:
 # have a single place in hiera to check/modify.
 hadoop_clusters:
   analytics-test-hadoop:
-    zookeeper_cluster_name: main-eqiad
+    zookeeper_cluster_name: analytics-eqiad
     resourcemanager_hosts:
       - analytics1028.eqiad.wmnet
       - analytics1029.eqiad.wmnet
