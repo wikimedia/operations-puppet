@@ -1510,11 +1510,6 @@ node /^ms-fe200[6-8]\.codfw\.wmnet$/ {
     include ::lvs::realserver
 }
 
-# Legacy Dell machines with partitioning scheme - T189633
-node /^ms-be201[3-5]\.codfw\.wmnet$/ {
-    role(spare::system)
-}
-
 node /^ms-be20(1[6-9]|[2345][0-9])\.codfw\.wmnet$/ {
     role(swift::storage)
 }

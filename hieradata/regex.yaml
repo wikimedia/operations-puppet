@@ -162,17 +162,6 @@ labs:
   __regex: !ruby/regexp /^lab((net|mon)100[1-9]\.eqiad\.wmnet|(services|control)100[1-9]\.wikimedia\.org)$/
   cluster: labs
 
-# Legacy ms-be partitioning scheme, using sdm/sdn as boot devices T189633
-swift_be_codfw_sdm:
-  __regex: !ruby/regexp /^ms-be201[3-5]\.codfw\.wmnet$/
-  swift_storage_drives: [
-          '/dev/sda', '/dev/sdb', '/dev/sdc', '/dev/sdd',
-          '/dev/sde', '/dev/sdf', '/dev/sdg', '/dev/sdh',
-          '/dev/sdi', '/dev/sdj', '/dev/sdk', '/dev/sdl'
-  # no trailing comma!
-  ]
-  swift_aux_partitions: ['/dev/sdm3', '/dev/sdn3', '/dev/sdm4', '/dev/sdn4']
-
 swift_be_eqiad_sdm:
   __regex: !ruby/regexp /^ms-be101[3-5]\.eqiad\.wmnet$/
   swift_storage_drives: [

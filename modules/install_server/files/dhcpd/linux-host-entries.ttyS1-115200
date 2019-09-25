@@ -3783,21 +3783,6 @@ host ms-be1050 {
     fixed-address ms-be1050.eqiad.wmnet;
 }
 
-host ms-be2013 {
-    hardware ethernet 54:9F:35:08:4A:18;
-    fixed-address ms-be2013.codfw.wmnet;
-}
-
-host ms-be2014 {
-    hardware ethernet 54:9F:35:08:38:10;
-    fixed-address ms-be2014.codfw.wmnet;
-}
-
-host ms-be2015 {
-    hardware ethernet 54:9F:35:08:40:F0;
-    fixed-address ms-be2015.codfw.wmnet;
-}
-
 host ms-be2016 {
     hardware ethernet 3C:A8:2A:17:85:B8;
     fixed-address ms-be2016.codfw.wmnet;
