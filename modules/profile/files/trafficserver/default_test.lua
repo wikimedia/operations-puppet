@@ -55,7 +55,7 @@ describe("Busted unit testing framework", function()
     it("test - do_global_read_response uncacheable Cookie and not Vary:Cookie", function()
       _G.ts.server_response.header['Cache-Control'] = 'public, max-age=10'
       -- Cookie contains Session / Token and the response is NOT Vary:Cookie
-      _G.ts.server_response.header['Vary'] = 'Accept-Encoding,Authorization,X-Seven'
+      _G.ts.server_response.header['Vary'] = 'Accept-Encoding,Authorization'
       _G.ts.client_request.header['Cookie'] = 'centralauth_Token=BANANA; WMF-Last-Access=30-Aug-2019; WMF-Last-Access-Global=30-Aug-2019'
       do_global_read_response()
       assert.are.equals('public, max-age=10', _G.ts.server_response.header['Cache-Control'])
@@ -64,7 +64,7 @@ describe("Busted unit testing framework", function()
     it("test - do_global_read_response uncacheable Cookie and Vary:Cookie", function()
       _G.ts.server_response.header['Cache-Control'] = 'public, max-age=10'
       -- Cookie contains Session / Token and the response is Vary:Cookie
-      _G.ts.server_response.header['Vary'] = 'Accept-Encoding,Cookie,Authorization,X-Seven'
+      _G.ts.server_response.header['Vary'] = 'Accept-Encoding,Cookie,Authorization'
       _G.ts.client_request.header['Cookie'] = 'centralauth_Token=BANANA; WMF-Last-Access=30-Aug-2019; WMF-Last-Access-Global=30-Aug-2019'
       do_global_read_response()
       assert.is_nil(_G.ts.server_response.header['Cache-Control'])
@@ -109,55 +109,19 @@ describe("Busted unit testing framework", function()
       assert.are.equals('public, max-age=10', _G.ts.ctx['Cache-Control'])
     end)
 
-    it("test - do_global_read_response Vary-slotting for PHP7", function()
-      -- No Vary at all, no X-Powered-By
-      do_global_read_response()
-      assert.is_nil(_G.ts.server_response.header['Vary'])
-
-      -- No Vary, powered by PHP
-      _G.ts.server_response.header['X-Powered-By'] = "PHP/7.2.16-1+0~20190307202415.17+stretch~1.gbpa7be82+wmf1"
-      do_global_read_response()
-      assert.are.equals('X-Seven', _G.ts.server_response.header['Vary'])
-
-      -- Empty Vary
-      _G.ts.server_response.header['Vary'] = ""
-      do_global_read_response()
-      assert.are.equals('X-Seven', _G.ts.server_response.header['Vary'])
-
-      -- Vary made entirely of %s
-      _G.ts.server_response.header['Vary'] = "    "
-      do_global_read_response()
-      assert.are.equals('X-Seven', _G.ts.server_response.header['Vary'])
-
-      -- Vary already set to X-Seven
-      _G.ts.server_response.header['Vary'] = "X-Seven"
-      do_global_read_response()
-      assert.are.equals('X-Seven', _G.ts.server_response.header['Vary'])
-
-      -- Vary already set to X-Seven and something else
-      _G.ts.server_response.header['Vary'] = "Cookie, X-Seven"
-      do_global_read_response()
-      assert.are.equals('Cookie, X-Seven', _G.ts.server_response.header['Vary'])
-
-      -- Vary set to something else
-      _G.ts.server_response.header['Vary'] = "Cookie"
-      do_global_read_response()
-      assert.are.equals('Cookie,X-Seven', _G.ts.server_response.header['Vary'])
-    end)
-
     it("test - do_global_read_response Vary-slotting for X-Forwarded-Proto", function()
       local old_status = _G.ts.server_response.get_status
       _G.ts.server_response.get_status = function() return 301 end
 
       _G.ts.server_response.header['Vary'] = nil
       do_global_read_response()
-      assert.are.equals('X-Seven,X-Forwarded-Proto', _G.ts.server_response.header['Vary'])
+      assert.are.equals('X-Forwarded-Proto', _G.ts.server_response.header['Vary'])
 
       -- Do not add X-Forwarded-Proto on other status codes
       _G.ts.server_response.get_status = old_status
       _G.ts.server_response.header['Vary'] = nil
       do_global_read_response()
-      assert.are.equals('X-Seven', _G.ts.server_response.header['Vary'])
+      assert.are.equals(nil, _G.ts.server_response.header['Vary'])
     end)
 
     it("test - do_global_send_response cache miss", function()

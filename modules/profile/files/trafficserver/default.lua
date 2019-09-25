@@ -70,6 +70,7 @@ function do_not_cache()
     end
 end
 
+
 --- Add header to Vary
 -- @param old_vary: the original value of the Vary response header as sent by
 --                  the origin server
@@ -107,12 +108,6 @@ function do_global_read_response()
     -- through our CDN blindly.
     ts.server_response.header['Public-Key-Pins'] = nil
     ts.server_response.header['Public-Key-Pins-Report-Only'] = nil
-
-    -- Vary-slotting for PHP7 T206339
-    local x_powered_by = ts.server_response.header['X-Powered-By'] or ""
-    if string.match(x_powered_by, "^HHVM") or string.match(x_powered_by, "^PHP") then
-        ts.server_response.header['Vary'] = add_vary(ts.server_response.header['Vary'], 'X-Seven')
-    end
 
     local response_status = ts.server_response.get_status()
     if response_status == 301 or response_status == 302 then
