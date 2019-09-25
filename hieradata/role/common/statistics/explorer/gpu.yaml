@@ -3,6 +3,8 @@ admin::groups:
   - analytics-admins
   - gpu-testers
   - gpu-users
+  - analytics-users
+  - analytics-privatedata-users
 
 profile::base::notifications: disabled
 
