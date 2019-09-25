@@ -124,6 +124,9 @@ scap::dsh::groups:
     hosts:
       - ores1001.eqiad.wmnet
       - ores2001.codfw.wmnet
+  phatality:
+    hosts:
+      - {'cluster': 'logstash', 'service': 'kibana'}
   puppetboard:
     hosts:
       - puppetboard1001.eqiad.wmnet
