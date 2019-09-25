@@ -5,13 +5,13 @@ profile::trafficserver::tls::network_settings:
 profile::trafficserver::tls::mapping_rules:
   - type: map
     target: wss://etherpad.wikimedia.org
-    replacement: 'ws://127.0.0.2:3120'
+    replacement: "ws://%{::ipaddress}:3120"
   - type: map
     target: wss://phabricator.wikimedia.org/ws/
-    replacement: 'ws://127.0.0.2:3120'
+    replacement: "ws://%{::ipaddress}:3120"
   - type: map
     target: /
-    replacement: 'http://127.0.0.2:3120'
+    replacement: "http://%{::ipaddress}:3120"
 profile::trafficserver::tls::inbound_tls_settings:
   common:
     cipher_suite: '-ALL:ECDHE-ECDSA-CHACHA20-POLY1305:ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-CHACHA20-POLY1305:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES128-SHA:ECDHE-RSA-AES128-SHA:DHE-RSA-AES128-SHA'
@@ -67,14 +67,14 @@ profile::trafficserver::tls::logs:
 profile::trafficserver::tls::parent_rules:
   - dest_domain: '.'
     parent:
-    - '127.0.0.2:3120'
-    - '127.0.0.3:3121'
-    - '127.0.0.4:3122'
-    - '127.0.0.5:3123'
-    - '127.0.0.6:3124'
-    - '127.0.0.7:3125'
-    - '127.0.0.8:3126'
-    - '127.0.0.9:3127'
+    - "%{::ipaddress}:3120"
+    - "%{::ipaddress}:3121"
+    - "%{::ipaddress}:3122"
+    - "%{::ipaddress}:3123"
+    - "%{::ipaddress}:3124"
+    - "%{::ipaddress}:3125"
+    - "%{::ipaddress}:3126"
+    - "%{::ipaddress}:3127"
     parent_is_proxy: 'false'
     round_robin: 'strict'
 profile::trafficserver::tls::unified_certs:

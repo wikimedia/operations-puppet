@@ -78,6 +78,7 @@ CONFIG proxy.config.http.cache.http INT 0
 <% if @parent_rules -%>
 # Parent proxy
 CONFIG proxy.config.http.parent_proxy_routing_enable INT 1
+CONFIG proxy.config.http.parent_proxy.self_detect INT 0
 CONFIG proxy.config.http.parent_proxy.connect_attempts_timeout INT <%= @origin_ttfb_timeout %>
 <% end -%>
 
