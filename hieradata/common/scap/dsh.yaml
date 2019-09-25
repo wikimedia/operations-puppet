@@ -97,7 +97,7 @@ scap::dsh::groups:
       - netmon1002.wikimedia.org
       - netmon2001.wikimedia.org
   logstash:
-    hosts:
+    conftool:
       - {'cluster': 'logstash', 'service': 'logstash'}
   relforge:
     hosts:
@@ -125,7 +125,7 @@ scap::dsh::groups:
       - ores1001.eqiad.wmnet
       - ores2001.codfw.wmnet
   phatality:
-    hosts:
+    conftool:
       - {'cluster': 'logstash', 'service': 'kibana'}
   puppetboard:
     hosts:
