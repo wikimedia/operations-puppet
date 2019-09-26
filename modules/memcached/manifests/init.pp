@@ -57,6 +57,7 @@ class memcached(
         nrpe::monitor_service { 'memcached':
             description  => 'Memcached',
             nrpe_command => "/usr/lib/nagios/plugins/check_tcp -H ${ip} -p ${port}",
+            notes_url    => 'https://wikitech.wikimedia.org/wiki/Memcached',
         }
     } else {
         monitoring::service { 'memcached':
