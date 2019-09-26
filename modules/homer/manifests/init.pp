@@ -47,4 +47,13 @@ class homer(){
       require => File['/etc/homer'],
   }
 
+  file { '/usr/local/bin/homer':
+      ensure  => present,
+      owner   => 'root',
+      group   => 'ops',
+      mode    => '0550',
+      source  => 'puppet:///modules/homer/homer.sh',
+      require => Scap::Target['homer/deploy'],
+  }
+
 }
