@@ -99,7 +99,7 @@ profile::keyholder::server::agents:
     trusted_groups:
       - ops
 
-  homer:
+  deploy-homer:
     trusted_groups:
       - ops
 
