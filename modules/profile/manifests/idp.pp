@@ -27,12 +27,14 @@ class profile::idp(
         port  => 443,
     }
 
+    $groovy_source = 'puppet:///modules/profile/idp/files/idp/global_principala_attribute_predicate.groovy'
     class { 'apereo_cas':
         server_name            => 'https://idp.wikimedia.org',
         server_prefix          => '/',
         server_port            => 8080,
         server_enable_ssl      => false,
         tomcat_proxy           => true,
+        groovy_source          => $groovy_source,
         keystore_content       => secret('casserver/thekeystore'),
         keystore_password      => $keystore_password,
         key_password           => $key_password,

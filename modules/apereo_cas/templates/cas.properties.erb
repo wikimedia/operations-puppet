@@ -19,8 +19,6 @@ logging.config: file:/etc/cas/config/log4j2.xml
 logging.level.org.apereo=<%= @log_level %>
 management.metrics.export.prometheus.enabled=<%= @enable_prometheus %>
 
-
-
 cas.authn.accept.users=
 
 cas.authn.ldap[0].principalAttributeList=<%= @ldap_attribute_list.join(',') %>
@@ -33,12 +31,17 @@ cas.authn.ldap[0].searchFilter=<%= @ldap_search_filter %>
 cas.authn.ldap[0].binddn=<%= @ldap_bind_dn %>
 cas.authn.ldap[0].bindcredential=<%= @ldap_bind_pass %>
 
+<%- if @groovy_source -%>
+cas.authn.mfa.globalPrincipalAttributePredicate=<%= @groovy_file -%>
+<%- else -%>
 cas.authn.mfa.globalPrincipalAttributeNameTriggers=<%= @mfa_attribute_trigger %>
 cas.authn.mfa.globalPrincipalAttributeValueRegex=<%= @mfa_attribut_value.join('|') %>
+<%- end -%>
+
 <%- if @enable_totp -%>
-cas.authn.mfa.totp.json.location=file://<%= @totp_devices_path %>
-<% if @totp_signing_key %>cas.authn.mfa.totp.crypto.signing.key=<%= @totp_signing_key %><% end %>
-<% if @totp_encryption_key %>cas.authn.mfa.totp.crypto.encryption.key=<%= @totp_encryption_key %><% end %>
+cas.authn.mfa.gauth.json.location=file://<%= @totp_devices_path %>
+<% if @totp_signing_key %>cas.authn.mfa.gauth.crypto.signing.key=<%= @totp_signing_key %><% end %>
+<% if @totp_encryption_key %>cas.authn.mfa.gauth.crypto.encryption.key=<%= @totp_encryption_key %><% end %>
 <%- end -%>
 
 <%- if @enable_u2f -%>

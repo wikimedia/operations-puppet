@@ -12,6 +12,7 @@ class apereo_cas (
     Optional[String[1]]          $totp_encryption_key    = undef,
     Optional[Stdlib::Filesource] $keystore_source        = undef,
     Optional[String[1]]          $keystore_content       = undef,
+    Optional[Stdlib::Filesource] $groovy_source          = undef,
     Stdlib::Unixpath             $u2f_devices_path       = '/etc/cas/config/u2fdevices.json',
     Stdlib::Unixpath             $totp_devices_path      = '/etc/cas/config/totpdevices.json',
     Stdlib::Unixpath             $keystore_path          = '/etc/cas/thekeystore',
@@ -44,13 +45,19 @@ class apereo_cas (
     if $keystore_source == undef and $keystore_content == undef {
         error('you must provide either $keystore_source or $keystore_content')
     }
-    if $keystore_source == undef and $keystore_content == undef {
+    if $keystore_source and $keystore_content {
         error('you cannot provide $keystore_source and $keystore_content')
     }
     $config_dir = "${base_dir}/config"
     $services_dir = "${base_dir}/services"
 
     ensure_packages(['openjdk-11-jdk'])
+    $groovy_file = '/etc/cas/global_principala_attribute_predicate.groovy'
+    if $groovy_source {
+        file{$groovy_file:
+            source => $groovy_file,
+        }
+    }
     file {wmflib::dirtree($overlay_dir) + [$base_dir, $services_dir, $config_dir, $overlay_dir]:
         ensure => directory,
     }
