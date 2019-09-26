@@ -18,8 +18,9 @@ class profile::analytics::cluster::packages::common {
     require_package('r-cran-rmysql')
 
     # Python 2 deprecation
-    # Note: 'python-requests' is not explicitly absented
-    # since it is a reverse dependency of scap.
+    # Note:
+    # - python-requests is not explicitly absented since it is a reverse dependency of scap.
+    # - python-yaml is not explicitly absented since it is a reverse dependency of scap.
     package {[
             'ipython',
             'python-sympy',
@@ -33,7 +34,6 @@ class profile::analytics::cluster::packages::common {
             'python-docopt',
             'python-numpy',
             'python-sklearn',
-            'python-yaml',
         ]:
         ensure => absent,
     }
