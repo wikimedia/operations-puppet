@@ -13,12 +13,11 @@ class profile::homer (
 
     # Install the app itself
     scap::target { 'homer/deploy':
-        deploy_user => 'homer',
+        deploy_user => 'deploy-homer',
     }
 
     ::keyholder::agent { 'homer':
-        require        => Group['homer'],
-        trusted_groups => ['homer', 'ops'],
+        trusted_groups => ['ops'],
     }
 
     class { '::homer':  }

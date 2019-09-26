@@ -6,15 +6,15 @@ class homer(){
 
   file { '/srv/homer':
       ensure  => directory,
-      owner   => 'homer',
+      owner   => 'root',
       group   => 'ops',
-      mode    => '0770',
+      mode    => '0550',
       require => Scap::Target['homer/deploy'],
   }
 
   file { '/srv/homer/output':
       ensure  => directory,
-      owner   => 'homer',
+      owner   => 'root',
       group   => 'ops',
       mode    => '0770',
       require => File['/srv/homer'],
@@ -24,23 +24,24 @@ class homer(){
   git::clone { 'operations/homer/public':
       ensure    => 'latest',
       directory => '/srv/homer/public',
-      owner     => 'homer',
+      owner     => 'root',
       group     => 'ops',
+      mode      => '0440',
       require   => File['/srv/homer'],
   }
 
   file { '/etc/homer':
       ensure  => directory,
-      owner   => 'homer',
+      owner   => 'root',
       group   => 'ops',
-      mode    => '0770',
+      mode    => '0550',
       require => Scap::Target['homer/deploy'],
   }
 
   file { '/etc/homer/config.yaml':
       ensure  => present,
       source  => 'puppet:///modules/homer/config.yaml',
-      owner   => 'homer',
+      owner   => 'root',
       group   => 'ops',
       mode    => '0440',
       require => File['/etc/homer'],
