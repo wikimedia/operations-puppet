@@ -6,6 +6,6 @@ puppetmaster::servers:
     - { worker: rhodium.eqiad.wmnet, loadfactor: 20 }
   puppetmaster2001.codfw.wmnet:
     - { worker: puppetmaster2001.codfw.wmnet, loadfactor: 10 }
-    - { worker: puppetmaster2002.codfw.wmnet, loadfactor: 20 }
+    - { worker: puppetmaster2002.codfw.wmnet, loadfactor: 20, offline: true }
 puppetmaster::locale_servers:
   puppetmaster1001.eqiad.wmnet: puppetmaster1003.eqiad.wmnet
