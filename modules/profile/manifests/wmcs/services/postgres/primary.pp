@@ -8,7 +8,7 @@ class profile::wmcs::services::postgres::primary (
     include ::profile::prometheus::postgres_exporter
 
     class { 'postgresql::master':
-        includes => 'tuning.conf',
+        includes => ['tuning.conf'],
         root_dir => $root_dir,
     }
 
