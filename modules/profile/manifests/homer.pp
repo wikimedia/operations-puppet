@@ -5,9 +5,7 @@
 # == Parameters
 #
 # $primary_server: server containing the source of truth for private data
-class profile::homer (
-  Stdlib::Fqdn $primary_server = lookup('profile::homer::primary_server')
-  ){
+class profile::homer (){
 
     require_package('virtualenv', 'make')
 
@@ -21,17 +19,4 @@ class profile::homer (
     }
 
     class { '::homer':  }
-
-    if $primary_server == $::fqdn {
-      $rsync_ensure = absent
-    } else {
-      $rsync_ensure = present
-    }
-    rsync::quickdatacopy { 'homer-private':
-        ensure      => $rsync_ensure,
-        source_host => $primary_server,
-        dest_host   => $::fqdn,
-        module_path => '/srv/homer/private',
-    }
-
 }
