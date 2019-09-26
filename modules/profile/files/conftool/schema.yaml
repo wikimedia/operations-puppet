@@ -1,8 +1,6 @@
 # Discovery objects. they will represent a sequence of cluster/service/dc combinations
 discovery:
   path: "discovery"
-  depends:
-    - service
   tags:
     - dnsdisc
   schema:
@@ -57,9 +55,11 @@ dbconfig-instance:
     host_ip:
       default: "0.0.0.0"
     port:
-      default: 3306
+      default: 3306  # This must be the same as assumed default by Mediawiki!
     sections:
       default: {}
+    note:
+      default: ""
 dbconfig-section:
   path: "dbconfig-section"
   tags:
