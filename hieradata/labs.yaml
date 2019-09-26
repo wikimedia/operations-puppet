@@ -195,7 +195,9 @@ profile::base::ssh_server_settings:
   challenge_response_auth: false
 
 labs_puppet_master: "puppetmaster.cloudinfra.wmflabs.org"
-labs_keystone_host: "cloudcontrol1003.wikimedia.org"
+labs_keystone_hosts:
+    - "cloudcontrol1003.wikimedia.org"
+    - "cloudcontrol1004.wikimedia.org"
 puppetmaster: "puppetmaster.cloudinfra.wmflabs.org"
 puppet_ca_server: ""
 keystone_public_port: '5000'

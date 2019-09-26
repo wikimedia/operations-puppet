@@ -9,7 +9,9 @@ puppetdb_host: puppetdb2001.codfw.wmnet
 # Cloud Services <
 #
 labs_puppet_master: "labtest-puppetmaster.wikimedia.org"
-labs_keystone_host: "cloudcontrol1003.wikimedia.org"
+labs_keystone_hosts:
+    - "cloudcontrol1003.wikimedia.org"
+    - "cloudcontrol1004.wikimedia.org"
 
 labsdnsconfig:
   host: 'cloud-ns0.wikimedia.org'
