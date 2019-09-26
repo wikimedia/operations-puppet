@@ -1292,6 +1292,11 @@ node 'krb1001.eqiad.wmnet' {
     role(kerberos::kdc)
 }
 
+# T233142
+node 'krb2001.codfw.wmnet' {
+    role(spare::system)
+}
+
 
 node /kubernetes[12]00[1-6]\.(codfw|eqiad)\.wmnet/ {
     role(kubernetes::worker)

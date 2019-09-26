@@ -2938,6 +2938,12 @@ host krb1001 {
      option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/buster-installer/";
 }
 
+host krb2001 {
+     hardware ethernet 18:66:DA:AA:1E:8F;
+     fixed-address krb2001.codfw.wmnet;
+     option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/buster-installer/";
+}
+
 host kubernetes1001 {
      hardware ethernet 18:66:DA:56:64:A1;
      fixed-address kubernetes1001.eqiad.wmnet;
