@@ -3,6 +3,7 @@ class profile::query_service::common(
     Stdlib::Unixpath $package_dir = hiera('profile::wdqs::package_dir', '/srv/deployment/wdqs/wdqs'),
     Stdlib::Unixpath $data_dir = hiera('profile::wdqs::data_dir', '/srv/wdqs'),
     Stdlib::Unixpath $log_dir = hiera('profile::wdqs::log_dir', '/var/log/wdqs'),
+    String $deploy_name = hiera('profile::wdqs::deploy_name', 'wdqs'),
     String $endpoint = hiera('profile::wdqs::endpoint', 'https://query.wikidata.org'),
     Boolean $run_tests = hiera('profile::wdqs::run_tests', false),
     Enum['none', 'daily', 'weekly'] $load_categories = hiera('profile::wdqs::load_categories', 'daily'),
@@ -12,7 +13,6 @@ class profile::query_service::common(
 
     $username = 'blazegraph'
     $deploy_user = 'deploy-service'
-    $deploy_name = 'wdqs'
 
     # Let's migrate to the new logging pipeline. See T232184.
     include ::profile::rsyslog::udp_json_logback_compat
@@ -37,6 +37,15 @@ class profile::query_service::common(
         username        => $username,
         load_categories => $load_categories,
         run_tests       => $run_tests,
+    }
+
+    require_package('python3-dateutil', 'python3-prometheus-client')
+    file { '/usr/local/bin/prometheus-blazegraph-exporter':
+        ensure => present,
+        source => 'puppet:///modules/query_service/monitor/prometheus-blazegraph-exporter.py',
+        mode   => '0555',
+        owner  => 'root',
+        group  => 'root',
     }
 
     # Firewall
