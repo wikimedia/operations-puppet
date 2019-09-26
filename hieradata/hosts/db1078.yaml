@@ -1,4 +1,3 @@
 # db1078
-# candidate master for s3
 mariadb::shard: 's3'
-mariadb::binlog_format: 'STATEMENT'
+mariadb::binlog_format: 'ROW'
