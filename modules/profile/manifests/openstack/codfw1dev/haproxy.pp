@@ -1,4 +1,6 @@
 class profile::openstack::codfw1dev::haproxy(
+    Stdlib::Fqdn $designate_host = lookup('profile::openstack::codfw1dev::designate_host'),
+    Stdlib::Fqdn $designate_host_standby = lookup('profile::openstack::codfw1dev::designate_host_standby'),
     Stdlib::Fqdn $nova_controller = lookup('profile::openstack::codfw1dev::nova_controller'),
     Stdlib::Fqdn $nova_controller_standby = lookup('profile::openstack::codfw1dev::nova_controller_standby'),
     Stdlib::Port $glance_api_bind_port = lookup('profile::openstack::codfw1dev::glance::api_bind_port'),
@@ -9,6 +11,13 @@ class profile::openstack::codfw1dev::haproxy(
     Stdlib::Port $nova_metadata_listen_port = lookup('profile::openstack::codfw1dev::nova::metadata_listen_port'),
     Stdlib::Port $nova_osapi_compute_listen_port = lookup('profile::openstack::codfw1dev::nova::osapi_compute_listen_port'),
 ) {
+    profile::openstack::base::haproxy::site { 'designate':
+        servers          => [$designate_host, $designate_host_standby],
+        healthcheck_path => '/',
+        port_frontend    => 9001,
+        port_backend     => 9001,
+    }
+
     profile::openstack::base::haproxy::site { 'keystone_admin':
         servers          => [$nova_controller, $nova_controller_standby],
         healthcheck_path => '/',
