@@ -9,7 +9,7 @@ class profile::homer (
   Stdlib::Fqdn $primary_server = lookup('profile::homer::primary_server')
   ){
 
-    require_package('virtualenv')
+    require_package('virtualenv', 'make')
 
     # Install the app itself
     scap::target { 'homer/deploy':
