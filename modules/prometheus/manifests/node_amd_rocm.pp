@@ -15,8 +15,8 @@ class prometheus::node_amd_rocm (
     validate_ensure($ensure)
 
     require_package( [
-        'python-prometheus-client',
-        'python-requests',
+        'python3-prometheus-client',
+        'python3-requests',
     ] )
 
     file { '/usr/local/bin/prometheus-amd-rocm-stats':
