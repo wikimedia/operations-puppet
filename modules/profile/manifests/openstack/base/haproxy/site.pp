@@ -6,16 +6,20 @@
 # === Parameters
 #
 # [*ensure*]
+#   Wmflib Ensure (string)
 #   'present' or 'absent'; whether the site configuration is
 #   installed or removed in conf.d/
 #
 # [*port_backend*]
+#   Port (int)
 #   The backend port HAProxy will use to connect to the backend servers.
 #
 # [*port_frontend*]
+#   Port (int)
 #   The frontend port HAproxy will bind to for this service.
 #
 # [*servers*]
+#   Array of Stdlib::Fqdn
 #   A list of backend servers providing the service.
 #
 # === Examples
@@ -31,16 +35,20 @@ define profile::openstack::base::haproxy::site(
     Stdlib::Port $port_backend,
     Stdlib::Port $port_frontend,
     Stdlib::Compat::String $healthcheck_path,
-    $ensure = present,
+    Wmflib::Ensure $ensure = present,
 ) {
     include profile::openstack::base::haproxy
 
-    # Allow traffic to peers on backend ports
-    $peers = join(delete($servers, $::fqdn), ' ')
-    ferm::service { "${title}_haproxy_backend":
-        proto  => 'tcp',
-        port   => $port_backend,
-        srange => "@resolve(${peers})",
+    # If the host's FQDN is in $servers configure FERM to allow peer
+    # connections on the backend service port.
+    if $::fqdn in $servers {
+        # Allow traffic to peers on backend ports
+        $peers = join(delete($servers, $::fqdn), ' ')
+        ferm::service { "${title}_haproxy_backend":
+            proto  => 'tcp',
+            port   => $port_backend,
+            srange => "@resolve(${peers})",
+        }
     }
 
     file { "/etc/haproxy/conf.d/${title}.cfg":
