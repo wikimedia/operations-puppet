@@ -68,10 +68,18 @@
             },
             "additionalProperties": false
         },
+        "hostsByName": {
+            "type": "object",
+            "patternProperties": {
+                "^([a-z]+[0-9]+)(:[0-9]+)?$": {"type": "string"}
+            },
+            "additionalProperties": false
+        },
         "config": {
             "type": "object",
             "properties": {
                 "groupLoadsBySection": { "$ref": "#/definitions/groupLoadsBySection" },
+                "hostsByName": { "$ref": "#/definitions/hostsByName" },
                 "readOnlyBySection":  { "$ref": "#/definitions/readOnlyBySection" },
                 "sectionLoads": { "$ref": "#/definitions/sectionLoads" }
             },

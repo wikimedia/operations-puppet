@@ -24,7 +24,8 @@
                     },
                     "additionalProperties": false
                 },
-                "comment": {"type": "string"}
+                "comment": {"type": "string"},
+                "candidate_master": {"type": "boolean"}
             },
             "required": ["pooled", "weight", "percentage"],
             "additionalProperties": false
@@ -47,7 +48,8 @@
                 "^(s[1-8]|wikitech)$": {"$ref": "#/definitions/section"}
             },
             "additionalProperties": false
-        }
+        },
+        "note": {"type": "string"}
     },
     "required": ["host_ip", "port", "sections"],
     "additionalProperties": false
