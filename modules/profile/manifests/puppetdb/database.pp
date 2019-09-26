@@ -39,6 +39,7 @@ class profile::puppetdb::database(
             pg_master   => $master,
             pg_user     => 'replication',
             pg_password => $replication_password,
+            pg_database => 'puppetdb',
         }
     }
 
