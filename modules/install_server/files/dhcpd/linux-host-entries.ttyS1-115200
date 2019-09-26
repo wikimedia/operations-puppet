@@ -5679,12 +5679,13 @@ host puppetmaster1001 {
 host puppetmaster1002 {
     hardware ethernet 18:66:DA:64:45:99;
     fixed-address puppetmaster1002.eqiad.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/buster-installer/";
 }
 
 host puppetmaster1003 {
     hardware ethernet D0:94:66:5E:C8:02;
     fixed-address puppetmaster1003.eqiad.wmnet;
-   option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/buster-installer/";
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/buster-installer/";
 
 }
 
