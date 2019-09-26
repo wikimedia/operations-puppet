@@ -13,7 +13,7 @@ limits dn.exact="uid=novaadmin,ou=people,dc=wikimedia,dc=org" time=unlimited siz
 # novaobserver is an account used only for keystone access.  We don't want it
 #  to appear on wikitech, gerrit, etc. so limit access only to the keystone host
 access to dn=uid=novaobserver,ou=people,dc=wikimedia,dc=org
-<% scope.call_function(:hiera, ['labs_keystone_hosts']).each do |keystone_host| %>
+<% scope.call_function(:hiera, ['labs_keystone_hosts']).each do |keystone_host| -%>
 	by peername.ip=<%=scope.function_ipresolve([keystone_host, 4])%> anonymous read
 	by peername.ipv6=<%=scope.function_ipresolve([keystone_host, 6])%> anonymous read
-<% end %>
+<% end -%>
