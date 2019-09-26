@@ -9,13 +9,13 @@ class profile::analytics::cluster::packages::hadoop {
     include ::profile::analytics::cluster::packages::common
 
     require_package(
-        'python-kafka',           'python3-kafka',
-        'python-confluent-kafka', 'python3-confluent-kafka',
+        'python3-kafka',
+        'python3-confluent-kafka',
     )
 
     if os_version('debian <= stretch') {
         package { 'snakebite':  # Really nice pure python hdfs client
-            ensure => present,
+            ensure => absent,
         }
     }
 }
