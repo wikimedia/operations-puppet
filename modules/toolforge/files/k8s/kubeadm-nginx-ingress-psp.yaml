@@ -10,4 +10,4 @@ roleRef:
 subjects:
 - kind: ServiceAccount
   name: nginx-ingress
-  namespace: nginx-ingress
+  namespace: ingress-nginx
