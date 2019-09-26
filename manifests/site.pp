@@ -1286,9 +1286,10 @@ node 'miscweb1001.eqiad.wmnet', 'miscweb2001.codfw.wmnet' {
     role(webserver_misc_apps)
 }
 
-# setup via T233141
+# This node will eventually replace kerberos1001
+# It is part of the Kerberos eqiad/codfw infrastructure.
 node 'krb1001.eqiad.wmnet' {
-    role(spare::system)
+    role(kerberos::kdc)
 }
 
 
