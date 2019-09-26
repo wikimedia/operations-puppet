@@ -13,22 +13,16 @@
 #    If true, the jobrunner endpoint is exposed to all clients. Defaults to false, should
 #    only be set to true if no TLS setup is used (as in deployment-prep).
 #
-# @param vhost_feature_flags
-#   A general container for feature flags, that is changes to the
-#   vhosts that we are introducing/testing.
-#
 class profile::mediawiki::jobrunner(
     $statsd = hiera('statsd'),
     Optional[Wmflib::UserIpPort] $fcgi_port = hiera('profile::php_fpm::fcgi_port', undef),
     String $fcgi_pool = hiera('profile::mediawiki::fcgi_pool', 'www'),
-    Mediawiki::Vhost_feature_flags $vhost_feature_flags = hiera('profile::mediawiki::vhost_feature_flags'),
     Boolean $expose_endpoint = hiera('profile::mediawiki::jobrunner::expose_endpoint', false),
 ) {
     # Parameters we don't need to override
     $port = 9005
     $local_only_port = 9006
     $fcgi_proxy = mediawiki::fcgi_endpoint($fcgi_port, $fcgi_pool)
-    $php72_only = pick($vhost_feature_flags['php72_only'], false)
 
     # Add headers lost by mod_proxy_fastcgi
     # The apache module doesn't pass along to the fastcgi appserver
@@ -122,41 +116,19 @@ class profile::mediawiki::jobrunner(
         content  => inline_template("# This file is managed by Puppet\nListen <%= @port %>\nListen <%= @local_only_port %>\n"),
     }
 
-    if $php72_only {
-        httpd::site { 'php7_jobrunner':
-            priority => 1,
-            content  => template('profile/mediawiki/jobrunner/site.conf.erb'),
-        }
-        httpd::site { 'hhvm_jobrunner':
-            ensure => absent,
-        }
+    httpd::site { 'php7_jobrunner':
+        priority => 1,
+        content  => template('profile/mediawiki/jobrunner/site.conf.erb'),
     }
-    else {
-        httpd::site { 'php7_jobrunner':
-            ensure => absent,
-        }
-        httpd::site { 'hhvm_jobrunner':
-            priority => 1,
-            content  => template('profile/mediawiki/jobrunner/site.conf.erb'),
-        }
+    httpd::site { 'hhvm_jobrunner':
+        ensure => absent,
     }
 
-    unless $php72_only {
-        # HHVM admin interface
-        class { '::hhvm::admin': }
-        ::monitoring::service { 'jobrunner_http_hhvm':
-            description   => 'HHVM jobrunner',
-            check_command => 'check_http_jobrunner',
-            retries       => 2,
-            notes_url     => 'https://wikitech.wikimedia.org/wiki/Jobrunner',
-        }
-    } else {
-        ::monitoring::service { 'jobrunner_http':
-            description   => 'PHP7 jobrunner',
-            check_command => 'check_http_jobrunner',
-            retries       => 2,
-            notes_url     => 'https://wikitech.wikimedia.org/wiki/Jobrunner',
-        }
+    ::monitoring::service { 'jobrunner_http':
+        description   => 'PHP7 jobrunner',
+        check_command => 'check_http_jobrunner',
+        retries       => 2,
+        notes_url     => 'https://wikitech.wikimedia.org/wiki/Jobrunner',
     }
 
     # TODO: restrict this to monitoring and localhost only.

@@ -29,8 +29,6 @@ profile::lvs::realserver::pools:
       - nutcracker
       - nginx
 profile::mediawiki::php::php_version: "7.2"
-profile::mediawiki::vhost_feature_flags:
-  php72_only: true
 # bail out in case a long-lasting C function is called and
 # excimer can't throw its exception
 profile::mediawiki::php::request_timeout: 201

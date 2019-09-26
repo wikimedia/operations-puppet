@@ -3,18 +3,11 @@ class profile::mediawiki::webserver(
     Boolean $has_tls = hiera('profile::mediawiki::webserver::has_tls'),
     Optional[Wmflib::UserIpPort] $fcgi_port = hiera('profile::php_fpm::fcgi_port', undef),
     String $fcgi_pool = hiera('profile::mediawiki::fcgi_pool', 'www'),
-    Mediawiki::Vhost_feature_flags $base_vhost_feature_flags = hiera('profile::mediawiki::vhost_feature_flags'),
+    Mediawiki::Vhost_feature_flags $vhost_feature_flags = lookup('profile::mediawiki::vhost_feature_flags', {'default_value' => {}}),
     String $ocsp_proxy = hiera('http_proxy', ''),
     Array[String] $prometheus_nodes = lookup('prometheus_nodes'),
     Boolean $install_hhvm = lookup('profile::mediawiki::install_hhvm', {'default_value' => true}),
 ) {
-    # Inject the php72_only feature flag if we're not installing HHVM
-    if !$install_hhvm {
-        $vhost_feature_flags = merge($base_vhost_feature_flags, {'php72_only' => true})
-    } else {
-        $vhost_feature_flags = $base_vhost_feature_flags
-    }
-    $php72_only = pick($vhost_feature_flags['php72_only'], false)
     include ::lvs::configuration
     include ::profile::mediawiki::httpd
     $fcgi_proxy = mediawiki::fcgi_endpoint($fcgi_port, $fcgi_pool)

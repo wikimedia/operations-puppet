@@ -6,6 +6,5 @@
 # mediawiki::web::vhost
 type Mediawiki::Vhost_feature_flags = Struct[
     {
-    'php72_only'  => Optional[Boolean],
     }
 ]

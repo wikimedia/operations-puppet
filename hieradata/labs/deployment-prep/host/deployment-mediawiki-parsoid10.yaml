@@ -5,8 +5,6 @@ has_lvs: false
 
 # Bump the connections per backend to 5 in mcrouter, see T203786
 profile::mediawiki::mcrouter_wancache::num_proxies: 5
-profile::mediawiki::vhost_feature_flags:
-  php72_only: true
 # bail out in case a long-lasting C function is called and
 # excimer can't throw its exception
 profile::mediawiki::php::request_timeout: 201
@@ -21,4 +19,3 @@ profile::mediawiki::php::restarts::ensure: present
 # We set the restart watermark at 200 MB, which is approximately how much
 # opcache one full day of deployments consume.
 profile::mediawiki::php::restarts::opcache_limit: 200
-

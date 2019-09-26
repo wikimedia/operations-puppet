@@ -47,7 +47,7 @@
 #   all vhosts. The list will vary with time, and must be reflected in the
 #   corresponding puppet type. Here is the list of currently effective feature
 #   flags:
-#   - php7_only
+#   []
 define mediawiki::web::vhost(
     String $docroot,
     Wmflib::Ensure $ensure = present,
@@ -68,8 +68,6 @@ define mediawiki::web::vhost(
     String $php_fpm_fcgi_endpoint = 'fcgi://127.0.0.1:8000',
     Mediawiki::Vhost_feature_flags $feature_flags = {},
 ) {
-    # Feature flags. Remove them once the change is applied everywhere.
-    $php72_only = pick($feature_flags['php72_only'], false)
     # The vhost content
     $content = template('mediawiki/apache/mediawiki-vhost.conf.erb')
 

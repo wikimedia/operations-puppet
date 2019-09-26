@@ -40,7 +40,7 @@ describe 'profile::mediawiki::webserver' do
         {
           :has_lvs => false,
           :has_tls => false,
-          :base_vhost_feature_flags => {},
+          :vhost_feature_flags => {},
         }
       }
       context "with default params" do
