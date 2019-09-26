@@ -12,6 +12,7 @@ fi
 alias mysqlbinlog='mysqlbinlog -vv --base64-output=DECODE-ROWS --skip-ssl'
 alias ls='ls --color=auto'
 alias skip-slave-start='systemctl set-environment MYSQLD_OPTS="--skip-slave-start"'
+alias zarcillo='mysql.py -h db1115 -A zarcillo'
 
 function my() {
     local instances socket socket_count has_mysql skip_ssl
