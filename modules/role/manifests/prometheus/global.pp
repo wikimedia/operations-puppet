@@ -57,6 +57,16 @@ class role::prometheus::global {
             ],
           },
         ],
+        # The following labels are external_labels added for Thanos to pick up.
+        # Discard them here for backwards compatibility, and because 'replica'
+        # would flip depending on which Prometheus replica replies, creating
+        # new metrics in the process.
+        'metric_relabel_configs' => [
+          { 'source_labels' => ['prometheus', 'replica'],
+            'regex'         => '.*',
+            'action'        => 'labeldrop',
+          },
+        ],
       },
     ]
 
