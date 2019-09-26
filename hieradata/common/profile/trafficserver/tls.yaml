@@ -7,7 +7,7 @@ profile::trafficserver::tls::mapping_rules:
     target: wss://etherpad.wikimedia.org
     replacement: "ws://%{::ipaddress}:3120"
   - type: map
-    target: wss://phabricator.wikimedia.org/ws/
+    target: wss://phabricator.wikimedia.org
     replacement: "ws://%{::ipaddress}:3120"
   - type: map
     target: /
