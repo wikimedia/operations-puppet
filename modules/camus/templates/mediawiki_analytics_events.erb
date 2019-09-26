@@ -20,10 +20,10 @@ etl.destination.overwrite=true
 
 # HDFS location where you want to keep execution files, i.e. offsets,
 # error logs, and count files
-etl.execution.base.path=hdfs://<%= @template_variables['hadoop_cluster_name'] %>/wmf/camus/mediawiki_analytics_events-00
+etl.execution.base.path=hdfs://<%= @template_variables['hadoop_cluster_name'] %>/wmf/camus/mediawiki_analytics_events-01
 
 # where completed Camus job output directories are kept, usually a sub-dir in the base.path
-etl.execution.history.path=hdfs://<%= @template_variables['hadoop_cluster_name'] %>/wmf/camus/mediawiki_analytics_events-00/history
+etl.execution.history.path=hdfs://<%= @template_variables['hadoop_cluster_name'] %>/wmf/camus/mediawiki_analytics_events-01/history
 
 # Our timestamps look like 2013-09-20T15:40:17+00:00Z
 camus.message.timestamp.format=yyyy-MM-dd'T'HH:mm:ss'Z'
@@ -78,10 +78,10 @@ kafka.blacklist.topics=
 # These are the kafka topics camus brings to HDFS
 # The datacenter names are extracted out into Hive partitions
 # during refinement.
-kafka.whitelist.topics=(eqiad|codfw)\.mediawiki\.(cirrussearch-request)
+kafka.whitelist.topics=(eqiad|codfw)\.mediawiki\.(api-request|cirrussearch-request)
 
 # Name of the client as seen by kafka
-kafka.client.name=camus-mediawiki_analytics_events-00
+kafka.client.name=camus-mediawiki_analytics_events-01
 
 # Fetch Request Parameters
 #kafka.fetch.buffer.size=
