@@ -12,6 +12,7 @@ class role::mediawiki::maintenance {
 
     # NOC - https://noc.wikimedia.org/
     include ::role::noc::site
+    include ::profile::tlsproxy::envoy # TLS termination
 
     # LDAP
     include ::profile::openldap::management
