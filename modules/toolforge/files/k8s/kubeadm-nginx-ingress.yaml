@@ -222,6 +222,7 @@ spec:
           image: quay.io/kubernetes-ingress-controller/nginx-ingress-controller:0.25.1
           args:
             - /nginx-ingress-controller
+            - --http-port=8080
             - --configmap=$(POD_NAMESPACE)/nginx-configuration
             - --tcp-services-configmap=$(POD_NAMESPACE)/tcp-services
             - --udp-services-configmap=$(POD_NAMESPACE)/udp-services
