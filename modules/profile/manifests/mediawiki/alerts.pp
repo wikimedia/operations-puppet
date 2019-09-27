@@ -32,34 +32,39 @@ class profile::mediawiki::alerts {
       }
 
     }
+  }
 
-    # Monitor memcached error rate from MediaWiki. This is commonly a sign of
-    # a failing nutcracker instance that can be tracked down via
-    # https://logstash.wikimedia.org/#/dashboard/elasticsearch/memcached
-    monitoring::check_prometheus { "mediawiki-${site}-memcached-threshold":
-      description     => "MediaWiki ${site} memcached error rate",
-      query           => 'sum(irate(logstash_mediawiki_events_total{channel="memcached", level="ERROR"}[5m])) * 60',
-      prometheus_url  => "http://prometheus.svc.${site}.wmnet/ops",
-      retries         => 2,
-      method          => 'gt',
-      # Nominal error rate in production is <150/min
-      warning         => 1000,
-      critical        => 5000,
-      notes_link      => 'https://wikitech.wikimedia.org/wiki/Memcached',
-      dashboard_links => ["https://grafana.wikimedia.org/d/000000438/mediawiki-alerts?panelId=1&fullscreen&orgId=1&var-datasource=${site} prometheus/ops"],
-    }
+  ### Logstash-based MediaWiki alerts: these don't need to iterate over sites.
+  ### Logstash in codfw/eqiad site reads logs from all other sites' kafka,
+  ### making the metrics we calculate from it effectively global. Thus icinga
+  ### in each site only needs to check its local prometheus instance.
 
-    # Monitor MediaWiki fatals and exceptions.
-    monitoring::check_prometheus { "mediawiki_${site}_error_rate":
-      description     => "MediaWiki ${site} exceptions and fatals per minute",
-      prometheus_url  => "http://prometheus.svc.${site}.wmnet/ops",
-      retries         => 2,
-      method          => 'gt',
-      query           => 'sum(irate(logstash_mediawiki_events_total{channel=~"(fatal|exception)",level="ERROR"}[10m])) without (channel, instance) * 60',
-      warning         => 25,
-      critical        => 50,
-      notes_link      => 'https://wikitech.wikimedia.org/wiki/Application_servers',
-      dashboard_links => ["https://grafana.wikimedia.org/d/000000438/mediawiki-alerts?panelId=2&fullscreen&orgId=1&var-datasource=${site} prometheus/ops"],
-    }
+  # Monitor memcached error rate from MediaWiki. This is commonly a sign of
+  # a failing nutcracker instance that can be tracked down via
+  # https://logstash.wikimedia.org/#/dashboard/elasticsearch/memcached
+  monitoring::check_prometheus { 'mediawiki-memcached-threshold':
+    description     => 'MediaWiki memcached error rate',
+    query           => 'sum(irate(logstash_mediawiki_events_total{channel="memcached", level="ERROR"}[5m])) * 60',
+    prometheus_url  => "http://prometheus.svc.${::site}.wmnet/ops",
+    retries         => 2,
+    method          => 'gt',
+    # Nominal error rate in production is <150/min
+    warning         => 1000,
+    critical        => 5000,
+    notes_link      => 'https://wikitech.wikimedia.org/wiki/Memcached',
+    dashboard_links => ["https://grafana.wikimedia.org/d/000000438/mediawiki-alerts?panelId=1&fullscreen&orgId=1&var-datasource=${::site} prometheus/ops"],
+  }
+
+  # Monitor MediaWiki fatals and exceptions.
+  monitoring::check_prometheus { 'mediawiki-error-rate':
+    description     => 'MediaWiki exceptions and fatals per minute',
+    prometheus_url  => "http://prometheus.svc.${::site}.wmnet/ops",
+    retries         => 2,
+    method          => 'gt',
+    query           => 'sum(irate(logstash_mediawiki_events_total{channel=~"(fatal|exception)",level="ERROR"}[10m])) without (channel, instance) * 60',
+    warning         => 25,
+    critical        => 50,
+    notes_link      => 'https://wikitech.wikimedia.org/wiki/Application_servers',
+    dashboard_links => ["https://grafana.wikimedia.org/d/000000438/mediawiki-alerts?panelId=2&fullscreen&orgId=1&var-datasource=${::site} prometheus/ops"],
   }
 }
