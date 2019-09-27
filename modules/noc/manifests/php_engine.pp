@@ -1,5 +1,5 @@
 # === Class noc::php_engine
-# Configures httpd to serve requests via HHVM/any other FastCGI backend
+# Configures httpd to serve requests via PHP7 other FastCGI backend
 class noc::php_engine($catchall_ensure=present) {
 
     httpd::mod_conf { 'proxy_fcgi':
@@ -10,10 +10,16 @@ class noc::php_engine($catchall_ensure=present) {
         ensure => absent,
     }
 
-    # HHVM catchall, and removal of mod_php
+    # We are removing hhvm_catchall
     httpd::conf { 'hhvm_catchall':
-        ensure   => $catchall_ensure,
+        ensure   => absent,
         source   => 'puppet:///modules/mediawiki/apache/configs/hhvm_catchall.conf',
+        priority => 50,
+    }
+
+    httpd::conf { 'php_catchall':
+        ensure   => $catchall_ensure,
+        source   => 'puppet:///modules/mediawiki/apache/configs/php_catchall.conf',
         priority => 50,
     }
 
