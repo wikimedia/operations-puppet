@@ -30,7 +30,7 @@ profile::openldap::management::cron_active: false
 profile::mediawiki::php::enable_fpm: true
 profile::mediawiki::php::php_version: "7.2"
 profile::mediawiki::apc_shm_size: 128M
-
+profile::mediawiki::php::fpm_workers_multiplier: 0.32
 
 # maintenance servers need conftool state to determine the
 # active data center and decide whether periodic jobs should run
