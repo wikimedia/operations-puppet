@@ -4,3 +4,4 @@ kerberos_kadmin_keytabs_repo: 'puppetmaster1001.eqiad.wmnet'
 kerberos_kdc_servers:
     - 'krb1001.eqiad.wmnet'
     - 'krb2001.codfw.wmnet'
+profile::kerberos::kadminserver::enable_replication: true
