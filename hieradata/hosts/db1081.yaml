@@ -1,4 +1,4 @@
 # db1081
-# candidate master s4
+# candidate master for s4
 mariadb::shard: 's4'
 mariadb::binlog_format: 'STATEMENT'
