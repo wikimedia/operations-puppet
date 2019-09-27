@@ -33,13 +33,19 @@ cas.authn.ldap[0].searchFilter=<%= @ldap_search_filter %>
 cas.authn.ldap[0].binddn=<%= @ldap_bind_dn %>
 cas.authn.ldap[0].bindcredential=<%= @ldap_bind_pass %>
 
-cas.authn.mfa.gauth.json.location=file://<%= @gauth_devices_path %>
-<% if @gauth_signing_key %>cas.authn.mfa.gauth.crypto.signing.key=<%= @gauth_signing_key %><% end %>
-<% if @gauth_encryption_key %>cas.authn.mfa.gauth.crypto.encryption.key=<%= @gauth_encryption_key %><% end %>
+cas.authn.mfa.globalPrincipalAttributeNameTriggers=<%= @mfa_attribute_trigger %>
+cas.authn.mfa.globalPrincipalAttributeValueRegex=<%= @mfa_attribut_value.join('|') %>
+<%- if @enable_totp -%>
+cas.authn.mfa.totp.json.location=file://<%= @totp_devices_path %>
+<% if @totp_signing_key %>cas.authn.mfa.totp.crypto.signing.key=<%= @totp_signing_key %><% end %>
+<% if @totp_encryption_key %>cas.authn.mfa.totp.crypto.encryption.key=<%= @totp_encryption_key %><% end %>
+<%- end -%>
 
+<%- if @enable_u2f -%>
 cas.authn.mfa.u2f.json.location=file://<%= @u2f_devices_path %>
 <% if @u2f_signing_key %>cas.authn.mfa.u2f.crypto.signing.key=<%= @u2f_signing_key %><% end %>
 <% if @u2f_encryption_key %>cas.authn.mfa.u2f.crypto.encryption.key=<%= @u2f_encryption_key %><% end %>
+<%- end -%>
 
 <% if @tgc_signing_key %>cas.tgc.crypto.signing.key=<%= @tgc_signing_key %><% end %>
 <% if @tgc_encryption_key %>cas.tgc.crypto.encryption.key=<%= @tgc_encryption_key %><% end %>

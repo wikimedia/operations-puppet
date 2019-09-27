@@ -4,14 +4,16 @@ class apereo_cas (
     Optional[String[1]]          $tgc_encryption_key     = undef,
     Optional[String[1]]          $webflow_signing_key    = undef,
     Optional[String[1]]          $webflow_encryption_key = undef,
+    Boolean                      $enable_u2f             = true,
     Optional[String[1]]          $u2f_signing_key        = undef,
     Optional[String[1]]          $u2f_encryption_key     = undef,
-    Optional[String[1]]          $gauth_signing_key      = undef,
-    Optional[String[1]]          $gauth_encryption_key   = undef,
+    Boolean                      $enable_totp            = false,
+    Optional[String[1]]          $totp_signing_key       = undef,
+    Optional[String[1]]          $totp_encryption_key    = undef,
     Optional[Stdlib::Filesource] $keystore_source        = undef,
     Optional[String[1]]          $keystore_content       = undef,
     Stdlib::Unixpath             $u2f_devices_path       = '/etc/cas/config/u2fdevices.json',
-    Stdlib::Unixpath             $gauth_devices_path     = '/etc/cas/config/gauthdevices.json',
+    Stdlib::Unixpath             $totp_devices_path      = '/etc/cas/config/totpdevices.json',
     Stdlib::Unixpath             $keystore_path          = '/etc/cas/thekeystore',
     String[1]                    $keystore_password      = 'changeit',
     String[1]                    $key_password           = 'changeit',
@@ -35,6 +37,8 @@ class apereo_cas (
     String                       $ldap_bind_dn           = 'cn=user,dc=example,dc=org',
     String                       $ldap_bind_pass         = 'changeme',
     Apereo_cas::LogLevel         $log_level              = 'WARN',
+    String                       $mfa_attribute_trigger  = 'memberOf',
+    Array[String[1]]             $mfa_attribut_value     = ['mfa'],
     Hash[String, Hash]           $services               = {}
 ) {
     if $keystore_source == undef and $keystore_content == undef {
