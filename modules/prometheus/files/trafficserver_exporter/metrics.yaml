@@ -74,7 +74,30 @@ trafficserver_other_transaction_time_ms_total:
     value: proxy.process.http.transaction_totaltime.errors.other
   - labels: {protocol: http, state: possible_abort}
     value: proxy.process.http.transaction_totaltime.errors.possible_aborts
-
+trafficserver_parent_marked_down_total:
+  documentation: Total parent marked down
+  type: counter
+  values:
+  - labels: {}
+    value: proxy.process.http.total_parent_marked_down_count
+trafficserver_parent_retries_total:
+  documentation: Total parent retries
+  type: counter
+  values:
+  - labels: {}
+    value: proxy.process.http.total_parent_retries
+trafficserver_parent_retries_exhausted_total:
+  documentation: Total parent exhausted retries
+  type: counter
+  values:
+  - labels: {}
+    value: proxy.process.http.total_parent_retries_exhausted
+trafficserver_parent_switches_total:
+  documentation: Total parent switches
+  type: counter
+  values:
+  - labels: {}
+    value: proxy.process.http.total_parent_switches
 trafficserver_ram_cache_avail_size_bytes_total:
   documentation: RAM cache available in bytes.
   type: gauge
