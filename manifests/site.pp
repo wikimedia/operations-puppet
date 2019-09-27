@@ -1581,7 +1581,7 @@ node /^mw12(2[1-9]|3[0-5])\.eqiad\.wmnet$/ {
 
 # mediawiki maintenance server (cron jobs)
 # replaced mwmaint1001 (T201343) which replaced terbium (T192185)
-node 'mwmaint1002.eqiad.wmnet' {
+node 'mwmaint1002.eqiad.wmnet', 'mwmaint2001.codfw.wmnet' {
     role(mediawiki::maintenance)
 }
 
@@ -2059,10 +2059,6 @@ node /^snapshot1007\.eqiad\.wmnet/ {
 
 node /^snapshot1008\.eqiad\.wmnet/ {
     role(dumps::generation::worker::dumper_misc_crons_only)
-}
-
-node 'mwmaint2001.codfw.wmnet' {
-    role(mediawiki::maintenance)
 }
 
 # Thumbor servers for MediaWiki image scaling
