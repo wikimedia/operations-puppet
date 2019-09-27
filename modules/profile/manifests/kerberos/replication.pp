@@ -30,11 +30,11 @@ class profile::kerberos::replication (
         }
 
         file { '/etc/krb5kdc/kpropd.acl':
-            owner  => 'root',
-            group  => 'root',
-            mode   => '0444',
-            conent => template('profile/kerberos/kpropd.acl.erb'),
-            before => Package['krb5-kpropd'],
+            owner   => 'root',
+            group   => 'root',
+            mode    => '0444',
+            content => template('profile/kerberos/kpropd.acl.erb'),
+            before  => Package['krb5-kpropd'],
         }
     } else {
         package { 'krb5-kpropd':
