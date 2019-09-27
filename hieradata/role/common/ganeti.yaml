@@ -28,3 +28,6 @@ profile::ganeti::rapi_nodes:
 profile::base::debdeploy::filter_services:
   qemu-system-x86:
     - '*'
+# Disable setting the IPv6 token on ganeti hosts
+# T233906
+profile::standard::enable_ip6_mapped: false
