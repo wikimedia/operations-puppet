@@ -50,6 +50,16 @@ class role::swift::storage {
         srange  => "@resolve((${swift_access_ferm}))",
     }
 
+    # Per-disk object-server ports T222366
+    range(6010, 6030).each |$port| {
+        ferm::service { "swift-object-server-${port}":
+            proto   => 'tcp',
+            port    => $port,
+            notrack => true,
+            srange  => "@resolve((${swift_access_ferm}))",
+        }
+    }
+
     ferm::service { 'swift-container-server':
         proto   => 'tcp',
         port    => '6001',
