@@ -412,14 +412,13 @@ def ensure_crt_self(id, cert_dir, tls_key, csr, subjects, force):
     def cert_create():
         info('Creating self-signed cert ' + tls_crt)
         with tempfile.NamedTemporaryFile() as extfile:
-            extfile.write(
-                '[v3_req]\n'
-                'keyUsage=critical,digitalSignature,keyEncipherment\n'
-                'basicConstraints=CA:FALSE\n'
-                'extendedKeyUsage=serverAuth\n'
-                'subjectAltName='
-                ','.join(['DNS:' + s for s in subjects]) + '\n'
-            )
+            extfile.write('\n'.join([
+                '[v3_req]',
+                'keyUsage=critical,digitalSignature,keyEncipherment',
+                'basicConstraints=CA:FALSE',
+                'extendedKeyUsage=serverAuth',
+                'subjectAltName=' + ','.join(['DNS:' + s for s in subjects]),
+            ]))
             extfile.flush()
             check_output_errtext([
                 OSSL, 'x509', '-req', '-sha256', '-out', tls_crt, '-in', csr,
