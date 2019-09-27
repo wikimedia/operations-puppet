@@ -17,6 +17,7 @@ class profile::query_service::blazegraph(
     require ::profile::query_service::common
 
     $username = 'blazegraph'
+    $instance_name = "${deploy_name}-blazegraph"
     $prometheus_agent_path = '/usr/share/java/prometheus/jmx_prometheus_javaagent.jar'
     $default_extra_jvm_opts = [
         '-XX:+UseNUMA',
@@ -25,15 +26,15 @@ class profile::query_service::blazegraph(
         '-XX:+ParallelRefProcEnabled',
     ]
 
-    $prometheus_agent_port_wdqs = 9102
-    $prometheus_agent_config_wdqs = '/etc/wdqs/wdqs-blazegraph-prometheus-jmx.yaml'
-    profile::prometheus::jmx_exporter { 'wdqs_blazegraph':
+    $prometheus_agent_port_blazegraph = 9102
+    $prometheus_agent_config_blazegraph = "/etc/${deploy_name}/${instance_name}-prometheus-jmx.yaml"
+    profile::prometheus::jmx_exporter { $instance_name:
         hostname         => $::hostname,
         prometheus_nodes => $prometheus_nodes,
         source           => 'puppet:///modules/profile/query_service/blazegraph-prometheus-jmx.yaml',
-        port             => $prometheus_agent_port_wdqs,
-        before           => Service['wdqs-blazegraph'],
-        config_file      => $prometheus_agent_config_wdqs,
+        port             => $prometheus_agent_port_blazegraph,
+        before           => Service[$instance_name],
+        config_file      => $prometheus_agent_config_blazegraph,
     }
 
     prometheus::blazegraph_exporter { 'wdqs-blazegraph':
@@ -42,7 +43,7 @@ class profile::query_service::blazegraph(
         prometheus_nodes => $prometheus_nodes,
     }
 
-    query_service::blazegraph { 'wdqs-blazegraph':
+    query_service::blazegraph { $instance_name:
         package_dir           => $package_dir,
         data_dir              => $data_dir,
         logstash_logback_port => $logstash_logback_port,
@@ -54,7 +55,7 @@ class profile::query_service::blazegraph(
         port                  => 9999,
         config_file_name      => 'RWStore.properties',
         heap_size             => $heap_size,
-        extra_jvm_opts        => $default_extra_jvm_opts + $extra_jvm_opts +  "-javaagent:${prometheus_agent_path}=${prometheus_agent_port_wdqs}:${prometheus_agent_config_wdqs}"
+        extra_jvm_opts        => $default_extra_jvm_opts + $extra_jvm_opts +  "-javaagent:${prometheus_agent_path}=${prometheus_agent_port_blazegraph}:${prometheus_agent_config_blazegraph}"
     }
 
     class { 'query_service::monitor::blazegraph':
@@ -64,7 +65,7 @@ class profile::query_service::blazegraph(
         lag_critical   => $lag_critical,
     }
 
-    query_service::monitor::blazegraph_instance { 'wdqs-blazegraph':
+    query_service::monitor::blazegraph_instance { $instance_name:
         username        => $username,
         contact_groups  => $contact_groups,
         port            => 9999,

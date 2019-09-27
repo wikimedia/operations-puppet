@@ -4,6 +4,7 @@ class profile::query_service::updater (
     Stdlib::Unixpath $package_dir = hiera('profile::wdqs::package_dir', '/srv/deployment/wdqs/wdqs'),
     Stdlib::Unixpath $data_dir = hiera('profile::wdqs::data_dir', '/srv/wdqs'),
     Stdlib::Unixpath $log_dir = hiera('profile::wdqs::log_dir', '/var/log/wdqs'),
+    String $deploy_name = hiera('profile::wdqs::deploy_name', 'wdqs'),
     Boolean $log_sparql = hiera('profile::wdqs::log_sparql', false),
     Array[String] $prometheus_nodes = hiera('prometheus_nodes'),
     Boolean $use_kafka_for_updates = hiera('profile::wdqs::use_kafka_for_updates', true),
@@ -18,16 +19,17 @@ class profile::query_service::updater (
     require ::profile::query_service::common
 
     $username = 'blazegraph'
+    $instance_name = "${deploy_name}-updater"
     $prometheus_agent_path = '/usr/share/java/prometheus/jmx_prometheus_javaagent.jar'
     $prometheus_agent_port = '9101'
-    $prometheus_agent_config = '/etc/wdqs/wdqs-updater-prometheus-jmx.yaml'
-    profile::prometheus::jmx_exporter { 'wdqs_updater':
+    $prometheus_agent_config = "/etc/${deploy_name}/${instance_name}-prometheus-jmx.yaml"
+    profile::prometheus::jmx_exporter { $instance_name:
         hostname         => $::hostname,
         port             => $prometheus_agent_port,
         prometheus_nodes => $prometheus_nodes,
         config_file      => $prometheus_agent_config,
         source           => 'puppet:///modules/profile/query_service/updater-prometheus-jmx.yaml',
-        before           => Service['wdqs-updater'],
+        before           => Service[$instance_name],
     }
 
     $default_jvm_options = ['-XX:+UseNUMA', "-javaagent:${prometheus_agent_path}=${prometheus_agent_port}:${prometheus_agent_config}"]
@@ -68,8 +70,8 @@ class profile::query_service::updater (
         package_dir           => $package_dir,
         data_dir              => $data_dir,
         log_dir               => $log_dir,
+        deploy_name           => $deploy_name,
         username              => $username,
-        deploy_name           => 'wdqs',
         logstash_logback_port => $logstash_logback_port,
         options               => split($options, ' ') + ['--'] + $extra_updater_options,
         extra_jvm_opts        => $default_jvm_options + $kafka_jvm_opts,

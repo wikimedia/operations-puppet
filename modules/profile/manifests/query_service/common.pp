@@ -50,14 +50,14 @@ class profile::query_service::common(
 
     # Firewall
     ferm::service {
-        'wdqs_http':
+        'query_service_http':
             proto => 'tcp',
             port  => '80';
-        'wdqs_https':
+        'query_service_https':
             proto => 'tcp',
             port  => '443';
         # temporary port to transfer data file between wdqs nodes via netcat
-        'wdqs_file_transfer':
+        'query_service_file_transfer':
             proto  => 'tcp',
             port   => '9876',
             srange => inline_template("@resolve((<%= @nodes.join(' ') %>))");

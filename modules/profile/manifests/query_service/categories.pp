@@ -13,6 +13,7 @@ class profile::query_service::categories(
     require ::profile::query_service::common
 
     $username = 'blazegraph'
+    $instance_name = "${deploy_name}-categories"
     $prometheus_agent_path = '/usr/share/java/prometheus/jmx_prometheus_javaagent.jar'
     $default_extra_jvm_opts = [
         '-XX:+UseNUMA',
@@ -22,13 +23,13 @@ class profile::query_service::categories(
     ]
 
     $prometheus_agent_port_categories = 9103
-    $prometheus_agent_config_categories = '/etc/wdqs/wdqs-categories-prometheus-jmx.yaml'
-    profile::prometheus::jmx_exporter { 'wdqs_categories':
+    $prometheus_agent_config_categories = "/etc/${deploy_name}/${instance_name}-prometheus-jmx.yaml"
+    profile::prometheus::jmx_exporter { $instance_name:
         hostname         => $::hostname,
         prometheus_nodes => $prometheus_nodes,
         source           => 'puppet:///modules/profile/query_service/blazegraph-prometheus-jmx.yaml',
         port             => $prometheus_agent_port_categories,
-        before           => Service['wdqs-categories'],
+        before           => Service[$instance_name],
         config_file      => $prometheus_agent_config_categories,
     }
 
@@ -38,7 +39,7 @@ class profile::query_service::categories(
         prometheus_nodes => $prometheus_nodes,
     }
 
-    query_service::blazegraph { 'wdqs-categories':
+    query_service::blazegraph { $instance_name:
         package_dir           => $package_dir,
         data_dir              => $data_dir,
         logstash_logback_port => $logstash_logback_port,
@@ -55,7 +56,7 @@ class profile::query_service::categories(
 
     class { 'query_service::monitor::categories':   }
 
-    query_service::monitor::blazegraph_instance { 'wdqs-categories':
+    query_service::monitor::blazegraph_instance { $instance_name:
         username        => $username,
         contact_groups  => $contact_groups,
         port            => 9990,

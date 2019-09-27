@@ -2,6 +2,7 @@ class profile::query_service::gui (
     Stdlib::Unixpath $package_dir = hiera('profile::wdqs::package_dir', '/srv/deployment/wdqs/wdqs'),
     Stdlib::Unixpath $data_dir = hiera('profile::wdqs::data_dir', '/srv/wdqs'),
     Stdlib::Unixpath $log_dir = hiera('profile::wdqs::log_dir', '/var/log/wdqs'),
+    String $deploy_name = hiera('profile::wdqs::deploy_name', 'wdqs'),
     Query_service::DeployMode $deploy_mode = hiera('profile::wdqs::deploy_mode'),
     Boolean $enable_ldf = hiera('profile::wdqs::enable_ldf', false),
     Integer $max_query_time_millis = hiera('profile::wdqs::max_query_time_millis', 60000),
@@ -16,8 +17,8 @@ class profile::query_service::gui (
         package_dir           => $package_dir,
         data_dir              => $data_dir,
         log_dir               => $log_dir,
+        deploy_name           => $deploy_name,
         username              => $username,
-        deploy_name           => 'wdqs',
         enable_ldf            => $enable_ldf,
         max_query_time_millis => $max_query_time_millis,
     }
@@ -27,7 +28,7 @@ class profile::query_service::gui (
         # Let's allow $DOMAIN_NETWORKS access this port for now while
         # we find a way around limiting access to only
         # $ANALYTICS_NETWORKS and LVSes.
-        ferm::service { 'wdqs_heavy_queries_http':
+        ferm::service { 'query_service_heavy_queries_http':
             proto  => 'tcp',
             port   => '8888',
             srange => '$DOMAIN_NETWORKS';
