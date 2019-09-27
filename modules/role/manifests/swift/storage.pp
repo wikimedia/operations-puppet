@@ -14,6 +14,7 @@ class role::swift::storage {
         memcached_servers             => hiera('swift::proxy::memcached_servers'),
         object_replicator_concurrency => hiera('swift::storage::object_replicator_concurrency'),  # lint:ignore:wmf_styleguide
         object_replicator_interval    => hiera('swift::storage::object_replicator_interval', undef),  # lint:ignore:wmf_styleguide
+        servers_per_port              => hiera('swift::storage::servers_per_port', undef),  # lint:ignore:wmf_styleguide
     }
     include ::swift::container_sync
 

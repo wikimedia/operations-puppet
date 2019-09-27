@@ -9,6 +9,7 @@ class swift::storage (
     $object_replicator_concurrency    = undef,
     $object_replicator_interval       = undef,
     $object_server_default_workers    = undef,
+    $servers_per_port                 = undef,
 ) {
     package {
         [ 'swift-account',
