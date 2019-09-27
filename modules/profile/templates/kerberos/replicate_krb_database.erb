@@ -1,10 +1,12 @@
 #!/bin/bash
 
+set -e
+
 #####################################################################
 ##### THIS FILE IS MANAGED BY PUPPET
 ######################################################################
 
-KRB_DATABASE_FILE=$(/srv/backup/kdc_database_krepl_$(date +%Y%m%d%H%M%S))
+KRB_DATABASE_FILE=/srv/backup/kdc_database_krepl_$(date +%Y%m%d%H%M%S)
 /usr/sbin/kdb5_util dump $KRB_DATABASE_FILE
 <%- @krb_kdc_slave_servers.each do |kdc_server| -%>
 /usr/sbin/kprop -d -f $KRB_DATABASE_FILE <%= kdc_server %>
