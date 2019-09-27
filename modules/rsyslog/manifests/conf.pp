@@ -30,7 +30,8 @@ define rsyslog::conf (
     Wmflib::Ensure $ensure    = present,
     Optional[String] $content = undef,
     Optional[String] $source  = undef,
-    Integer[0, 99] $priority  = 60
+    Integer[0, 99] $priority  = 60,
+    Stdlib::Filemode $mode    = '0444',
 ) {
     include ::rsyslog
 
@@ -49,7 +50,7 @@ define rsyslog::conf (
         source  => $source,
         owner   => 'root',
         group   => 'root',
-        mode    => '0444',
+        mode    => $mode,
         notify  => Service['rsyslog'],
     }
 }
