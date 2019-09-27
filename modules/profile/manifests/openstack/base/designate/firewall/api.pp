@@ -2,7 +2,7 @@ class profile::openstack::base::designate::firewall::api(
     Array[Stdlib::Fqdn] $labweb_hosts = lookup('profile::openstack::base::labweb_hosts'),
     Array[Stdlib::Fqdn] $prometheus_nodes = lookup('prometheus_nodes'),
     Stdlib::Fqdn $nova_controller = lookup('profile::openstack::base::nova_controller'),
-    Stdlib::Fqdn $nova_controller_standby = lookup('profile::openstack::base::nova_controller'),
+    Stdlib::Fqdn $nova_controller_standby = lookup('profile::openstack::base::nova_controller_standby'),
     Stdlib::Fqdn $osm_host = lookup('profile::openstack::base::osm_host'),
 ) {
     # Open designate API to WMCS web UIs and the commandline on control servers, also prometheus
