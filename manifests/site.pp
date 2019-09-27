@@ -1285,7 +1285,7 @@ node 'krb1001.eqiad.wmnet' {
 # Kerberos KDC in codfw, replicates from krb1001
 # It is part of the Kerberos eqiad/codfw infrastructure.
 node 'krb2001.codfw.wmnet' {
-    role(spare::system)
+    role(kerberos::kdc)
 }
 
 
