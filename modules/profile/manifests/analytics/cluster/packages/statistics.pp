@@ -12,25 +12,6 @@ class profile::analytics::cluster::packages::statistics {
 
     class { '::imagemagick::install': }
 
-    # Python 2 deprecation
-    package {[
-            'python-mysqldb',
-            'python-boto',
-            'python-netaddr',
-            'python-pymysql',
-            'python-virtualenv',
-            'python-dev',
-            'python-protobuf',
-            'python-unidecode',
-            'python-oauth2client',
-            'python-oauthlib',
-            'python-requests-oauthlib',
-            'python-google-api',
-            'python-ua-parser',
-        ]:
-        ensure => absent,
-    }
-
     require_package([
         'time',
         'emacs',

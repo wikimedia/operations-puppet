@@ -17,27 +17,6 @@ class profile::analytics::cluster::packages::common {
     # Note: RMariaDB (https://github.com/rstats-db/RMariaDB) will replace RMySQL, but is currently not on CRAN
     require_package('r-cran-rmysql')
 
-    # Python 2 deprecation
-    # Note:
-    # - python-requests is not explicitly absented since it is a reverse dependency of scap.
-    # - python-yaml is not explicitly absented since it is a reverse dependency of scap.
-    package {[
-            'ipython',
-            'python-sympy',
-            'python-matplotlib',
-            'python-tk',
-            'python-geoip',
-            'python-geoip2',
-            'python-pandas',
-            'python-pycountry',
-            'python-scipy',
-            'python-docopt',
-            'python-numpy',
-            'python-sklearn',
-        ]:
-        ensure => absent,
-    }
-
     require_package(
         'ipython3',
         'python3-matplotlib',
