@@ -570,11 +570,6 @@ node 'db1073.eqiad.wmnet' {
     role(spare::system)
 }
 
-# To be decommissioned # T231852
-node 'db2047.codfw.wmnet' {
-    role(spare::system)
-}
-
 # To be decommissioned # T230391
 node 'db2050.codfw.wmnet' {
     role(spare::system)
