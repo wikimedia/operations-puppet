@@ -1,0 +1,11 @@
+[core]
+	repositoryformatversion = 0
+	filemode = true
+	bare = false
+	logallrefupdates = true
+[remote "peer"]
+	url = ssh://<%= @private_git_peer %>/srv/homer/private
+	fetch = +refs/heads/*:refs/remotes/origin/*
+[branch "master"]
+[receive]
+	denyCurrentBranch = ignore

@@ -1,0 +1,5 @@
+#!/bin/sh
+unset GIT_DIR # Otherwise git commands will work on the wrong place
+cd ../
+git reset --hard HEAD --
+git checkout HEAD -- .

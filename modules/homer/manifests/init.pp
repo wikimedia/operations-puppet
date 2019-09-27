@@ -2,8 +2,12 @@
 #
 # This class installs & manages Homer, a network configuration management tool
 #
-class homer(){
-
+# == Parameters:
+# - $private_git_peer: FQDN or IP of the private repo peer to sync to at each commit.
+#
+class homer(
+    Stdlib::Host $private_git_peer,
+) {
   file { '/srv/homer':
       ensure  => directory,
       owner   => 'root',
@@ -56,4 +60,22 @@ class homer(){
       require => Scap::Target['homer/deploy'],
   }
 
+  # Set git config and hooks for the private repo
+  $private_repo_git_dir = '/srv/homer/private/.git'
+  file { "${private_repo_git_dir}/config":
+      ensure  => present,
+      owner   => 'root',
+      group   => 'root',
+      mode    => '0644',
+      content => template('homer/private-git/config.erb'),
+  }
+
+  file { "${private_repo_git_dir}/hooks":
+      ensure => present,
+      owner  => 'root',
+      group  => 'root',
+      mode   => '0755',
+      source => 'puppet:///modules/homer/private-git/hooks',
+  }
 }
+

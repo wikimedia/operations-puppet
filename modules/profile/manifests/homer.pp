@@ -2,10 +2,12 @@
 #
 # This class installs & manages Homer, a network configuration management tool.
 
-# == Parameters
-#
-# $primary_server: server containing the source of truth for private data
 class profile::homer (){
+
+    $homer_peers = query_nodes('Class[profile::homer]').filter |$value| { $value != $::fqdn }
+    if $homer_peers.length > 1 {
+        fail('Profile::Homer supports only two hosts.')
+    }
 
     require_package('virtualenv', 'make')
 
@@ -18,5 +20,16 @@ class profile::homer (){
         trusted_groups => ['ops'],
     }
 
-    class { '::homer':  }
+    class { '::homer':
+        private_git_peer => $homer_peers[0],
+    }
+
+    # TODO: remove once absented
+    rsync::quickdatacopy { 'homer-private':
+        ensure      => absent,
+        source_host => 'cumin1001.eqiad.wmnet',
+        dest_host   => $::fqdn,
+        module_path => '/srv/homer/private',
+    }
+
 }
