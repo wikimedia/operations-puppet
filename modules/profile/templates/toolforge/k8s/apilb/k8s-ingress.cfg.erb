@@ -1,0 +1,18 @@
+# Note: This file is managed by puppet.
+frontend k8s-ingress
+    bind 0.0.0.0:80
+    mode tcp
+    option tcplog
+    timeout client 1h
+    default_backend k8s-ingress
+
+backend k8s-ingress
+    mode tcp
+    option tcplog
+    option tcp-check
+    balance roundrobin
+    timeout server 1h
+    default-server inter 10s downinter 5s rise 2 fall 2 slowstart 60s maxconn 250 maxqueue 256 weight 100
+<% @k8s_nodes.each do |server| -%>
+    server <%= server %> <%= server %>:<%= @ingress_port %> check
+<% end -%>
