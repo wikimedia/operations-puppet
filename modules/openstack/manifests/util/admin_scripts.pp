@@ -7,8 +7,6 @@ class openstack::util::admin_scripts(
     #  are used to store an instance volume.  That's important for
     #  when we rsync files via this host.
     $libvirt = $facts['lsbdistcodename'] ? {
-        'trusty'  => 'libvirt-bin',
-        'jessie'  => 'libvirt-bin',
         'stretch' => 'libvirt-clients',
     }
 
@@ -133,11 +131,7 @@ class openstack::util::admin_scripts(
     }
 
     file { '/usr/local/sbin/wmcs-novastats-alltrusty':
-        ensure => 'present',
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0755',
-        source => "puppet:///modules/openstack/${version}/admin_scripts/wmcs-novastats/wmcs-novastats-alltrusty.py",
+        ensure => 'absent',
     }
 
     file { '/usr/local/sbin/wmcs-wikitech-grep':

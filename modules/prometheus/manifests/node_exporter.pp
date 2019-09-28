@@ -51,48 +51,31 @@ class prometheus::node_exporter (
       ensure => 'present'
     }
 
-    # Configuration compatibile less than 0.16
-    # TODO: remove after Trusty is gone.
-    if ($::lsbdistcodename == 'trusty') {
-        $collectors_enabled = join(sort(concat($collectors_default, $collectors_extra)), ',')
+    $collectors_enabled = concat($collectors_default, $collectors_extra)
 
-        file { '/etc/default/prometheus-node-exporter':
-            ensure  => present,
-            mode    => '0444',
-            owner   => 'root',
-            group   => 'root',
-            content => template('prometheus/etc/default/prometheus-node-exporter.erb'),
-            notify  => Service['prometheus-node-exporter'],
-        }
+    file { '/etc/default/prometheus-node-exporter':
+        ensure  => present,
+        mode    => '0444',
+        owner   => 'root',
+        group   => 'root',
+        content => template('prometheus/etc/default/prometheus-node-exporter-0.17.erb'),
+        notify  => Service['prometheus-node-exporter'],
     }
-    # New configuration style (0.16+)
-    else {
-        $collectors_enabled = concat($collectors_default, $collectors_extra)
 
-        file { '/etc/default/prometheus-node-exporter':
-              ensure  => present,
-              mode    => '0444',
-              owner   => 'root',
-              group   => 'root',
-              content => template('prometheus/etc/default/prometheus-node-exporter-0.17.erb'),
-              notify  => Service['prometheus-node-exporter'],
-        }
+    # Disabled because broken (https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=922803)
+    service { 'prometheus-node-exporter-ipmitool-sensor.timer':
+        ensure   => 'stopped',
+        provider => 'systemd',
+        enable   => 'mask',
+        require  => Package['prometheus-node-exporter'],
+    }
 
-        # Disabled because broken (https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=922803)
-        service { 'prometheus-node-exporter-ipmitool-sensor.timer':
-            ensure   => 'stopped',
-            provider => 'systemd',
-            enable   => 'mask',
-            require  => Package['prometheus-node-exporter'],
-        }
-
-        # Disabled in favor of internal smart module (smart-data-dump.py)
-        service { 'prometheus-node-exporter-smartmon.timer':
-            ensure   => 'stopped',
-            provider => 'systemd',
-            enable   => 'mask',
-            require  => Package['prometheus-node-exporter'],
-        }
+    # Disabled in favor of internal smart module (smart-data-dump.py)
+    service { 'prometheus-node-exporter-smartmon.timer':
+        ensure   => 'stopped',
+        provider => 'systemd',
+        enable   => 'mask',
+        require  => Package['prometheus-node-exporter'],
     }
 
     # members of this group are able to publish metrics
