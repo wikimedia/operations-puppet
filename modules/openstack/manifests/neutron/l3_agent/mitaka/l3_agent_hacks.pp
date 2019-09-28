@@ -5,21 +5,19 @@
 #
 # T167357 T168580
 
-class openstack::neutron::l3_agent_hacks(
-    $version,
-    ) {
+class openstack::neutron::l3_agent::mitaka::l3_agent_hacks() {
 
     file { '/usr/lib/python2.7/dist-packages/neutron/agent/l3/config.py':
             owner  => 'root',
             group  => 'root',
             mode   => '0644',
-            source => "puppet:///modules/openstack/${version}/neutron/l3/config.py",
+            source => 'puppet:///modules/openstack/mitaka/neutron/l3/config.py',
     }
 
     file { '/usr/lib/python2.7/dist-packages/neutron/agent/l3/router_info.py':
             owner  => 'root',
             group  => 'root',
             mode   => '0644',
-            source => "puppet:///modules/openstack/${version}/neutron/l3/router_info.py",
+            source => 'puppet:///modules/openstack/mitaka/neutron/l3/router_info.py',
     }
 }
