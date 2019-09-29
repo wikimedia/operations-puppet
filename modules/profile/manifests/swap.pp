@@ -79,6 +79,13 @@ class profile::swap(
         web_proxy             => $web_proxy,
     }
 
+    # Files deleted via the notebook interface are moved to a special
+    # Trash directory and never removed.
+    cron { 'clean_jupyter_local_trash':
+        command => '/usr/bin/find /srv/home -type d -regex "/srv/home/.+/\.local/share/Trash" -exec rm -rf {} >/dev/null \;',
+        minute  => 0,
+    }
+
     if $rsync_hosts_allow {
         # Allow rsyncing between home directories.
         class { '::rsync::server': }
