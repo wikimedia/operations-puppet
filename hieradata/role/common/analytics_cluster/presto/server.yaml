@@ -11,11 +11,6 @@ profile::presto::cluster_name: analytics-presto
 profile::presto::discovery_uri: http://an-coord1001.eqiad.wmnet:8280
 profile::presto::server::heap_max: 124G
 profile::presto::server::config_properties:
-  coordinator: false
-  node-scheduler.include-coordinator: false
-
-  # The following settings should be synced in coordinator.yaml
-  discovery-server.enabled: true
   # Set network-topology to legacy since we are not (yet?) running
   # presto co-located with HDFS nodes. If we were, we would
   # set this to 'flat'.

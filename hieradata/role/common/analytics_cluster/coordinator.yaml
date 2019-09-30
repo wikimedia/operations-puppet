@@ -36,16 +36,11 @@ profile::presto::server::heap_max: 4G
 profile::presto::server::config_properties:
   coordinator: true
   node-scheduler.include-coordinator: false
-
-  # The following settings should be synced in presto/server.yaml
   discovery-server.enabled: true
   # Set network-topology to legacy since we are not (yet?) running
   # presto co-located with HDFS nodes. If we were, we would
   # set this to 'flat'.
   node-scheduler.network-topology: legacy
-  query.max-memory: 62GB
-  query.max-memory-per-node: 12GB
-  query.max-total-memory-per-node: 24GB
 profile::presto::server::catalogs:
   # Each catalog hash should contain a single properties has that will
   # end up being passed to the presto::properties define.  This will render
