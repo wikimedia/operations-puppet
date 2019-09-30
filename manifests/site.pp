@@ -1119,6 +1119,11 @@ node 'grafana1001.eqiad.wmnet' {
     role(grafana)
 }
 
+# Virtual machine being turned up to run Grafana 6.x (T220838)
+node 'grafana1002.eqiad.wmnet' {
+    role(grafana)
+}
+
 # debug_proxy hosts; Varnish backend for X-Wikimedia-Debug reqs
 node /^(hassaleh|hassium)\.(codfw|eqiad)\.wmnet$/ {
     role(debug_proxy)

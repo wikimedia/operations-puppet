@@ -236,6 +236,12 @@ host grafana1001 {
     fixed-address grafana1001.eqiad.wmnet;
 }
 
+host grafana1002 {
+    hardware ethernet aa:00:00:52:b7:27;
+    fixed-address grafana1002.eqiad.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/buster-installer/";
+}
+
 host hassaleh {
     hardware ethernet aa:00:00:3f:8c:a0;
     fixed-address hassaleh.codfw.wmnet;
