@@ -4,7 +4,6 @@
 class mariadb::packages {
 
     package { [
-        'libmariadbclient18',
         'mariadb-client',
         'mariadb-server',
         'percona-toolkit',
