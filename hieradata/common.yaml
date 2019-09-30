@@ -708,6 +708,8 @@ hadoop_clusters:
       hadoop.proxyuser.hive.groups: '*'
       hadoop.proxyuser.oozie.hosts: '*'
       hadoop.proxyuser.oozie.groups: '*'
+      hadoop.proxyuser.presto.hosts: '*'
+      hadoop.proxyuser.presto.groups: '*'
 
   analytics-hadoop:
     zookeeper_cluster_name: main-eqiad
@@ -852,6 +854,12 @@ hadoop_clusters:
     yarn_resourcemanager_zk_timeout_ms: 20000
 
     yarn_resourcemanager_zk_state_store_parent_path: '/yarn-rmstore/analytics-hadoop'
+
+    core_site_extra_properties:
+      # Allow presto-server to impersonate users.
+      # This is what allows presto to access files as users running queries.
+      hadoop.proxyuser.presto.hosts: '*'
+      hadoop.proxyuser.presto.groups: '*'
 
 deployment_server: deploy1001.eqiad.wmnet
 
