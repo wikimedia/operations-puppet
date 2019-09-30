@@ -24,12 +24,4 @@ class profile::homer (){
         private_git_peer => $homer_peers[0],
     }
 
-    # TODO: remove once absented
-    rsync::quickdatacopy { 'homer-private':
-        ensure      => absent,
-        source_host => 'cumin1001.eqiad.wmnet',
-        dest_host   => $::fqdn,
-        module_path => '/srv/homer/private',
-    }
-
 }
