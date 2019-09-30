@@ -28,6 +28,8 @@ class profile::base(
     $debdeploy_exclude_filesystems = hiera('profile::base::debdeploy::exclude_filesystems', []),
     $debdeploy_filter_services = lookup('profile::base::debdeploy::filter_services', Hash, 'hash', {}),
     $monitoring_hosts = hiera('monitoring_hosts', []),
+    Hash $wikimedia_clusters = lookup('wikimedia_clusters'),
+    String $cluster = lookup('cluster'),
 ) {
     require ::profile::base::certificates
     class { '::apt':
@@ -40,6 +42,15 @@ class profile::base(
         owner  => 'root',
         group  => 'root',
         mode   => '0755',
+    }
+
+    # Sanity checks for cluster - T234232
+    if ! has_key($wikimedia_clusters, $cluster) {
+        fail("Cluster ${cluster} not defined in wikimedia_clusters")
+    }
+
+    if ! has_key($wikimedia_clusters[$cluster]['sites'], $::site) {
+        fail("Site ${::site} not found in cluster ${cluster}")
     }
 
     include ::profile::base::puppet
