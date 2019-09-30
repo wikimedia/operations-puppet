@@ -3755,3 +3755,7 @@ ldap_only_users:
     ensure: present
     realname: Raja Gumienny
     email: raja.gumienny@wikimedia.de
+  eyener:
+    ensure: present
+    realname: Erin Yener
+    email: eyener-ctr@wikimedia.org
