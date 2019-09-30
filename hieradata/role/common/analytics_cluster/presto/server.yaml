@@ -22,9 +22,9 @@ profile::presto::server::catalogs:
   # Each catalog hash should contain a single properties has that will
   # end up being passed to the presto::properties define.  This will render
   # a properties file at /etc/presto/catalog/$name.properties.
-  hive:
+  analytics_hive:
     properties:
-      connector.name: analytics-hive
+      connector.name: hive-hadoop2
       # Add Hadoop config files so Hive connector can work with HA Hadoop NameNodes.
       hive.config.resources: /etc/hadoop/conf/core-site.xml,/etc/hadoop/conf/hdfs-site.xml
       hive.metastore.uri: thrift://an-coord1001.eqiad.wmnet:9083
