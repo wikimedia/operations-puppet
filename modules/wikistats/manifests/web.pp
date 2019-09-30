@@ -3,10 +3,13 @@ class wikistats::web (
     Stdlib::Fqdn $wikistats_host,
 ) {
 
-    $php_version = '7.0'
-    require_package('php7.0-xml')
-
-    $apache_php_package = "libapache2-mod-php${php_version}"
+    if os_version('debian == buster') {
+        require_package('php7.3-xml')
+        $apache_php_package = 'libapache2-mod-php7.3'
+    } else {
+        require_package('php7.0-xml')
+        $apache_php_package = 'libapache2-mod-php7.0'
+    }
 
     require_package($apache_php_package)
 

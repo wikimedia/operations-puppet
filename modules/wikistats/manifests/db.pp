@@ -4,7 +4,13 @@ class wikistats::db (
     Stdlib::Unixpath $backupdir = '/usr/lib/wikistats/backup',
 ) {
 
-    require_package('mariadb-server', 'php7.0-mysql')
+    if os_version('debian == buster') {
+        require_package('php7.3-mysql')
+    } else {
+        require_package('php7.0-mysql')
+    }
+
+    require_package('mariadb-server')
 
     # db backup
     cron { 'mysql-dump-wikistats':

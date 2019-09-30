@@ -4,7 +4,11 @@ class wikistats::updates (
     String $db_pass,
 ) {
 
-    require_package('php7.0-cli')
+    if os_version('debian == buster') {
+        require_package('php7.3-cli')
+    } else {
+        require_package('php7.0-cli')
+    }
 
     # log dir for wikistats
     file { '/var/log/wikistats':
