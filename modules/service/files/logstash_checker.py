@@ -116,8 +116,9 @@ class CheckService(object):
         """Return a query that tracks MediaWiki deploy problems."""
         query = ('host:("%(host)s") '
                  'AND ((type:mediawiki AND '
-                 '(channel:(fatal OR exception OR error))) '
-                 'OR (type:hhvm AND NOT level:INFO))') % vars(self)
+                 '(channel:(fatal OR exception OR error))) OR '
+                 '(type:syslog AND program:php7.2-fpm AND level:ERR))'
+                 ) % vars(self)
 
         return {
             "size": 0,
