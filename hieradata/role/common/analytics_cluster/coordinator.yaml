@@ -61,6 +61,7 @@ profile::presto::server::catalogs:
       # TODO: do we want to disable non managed tables?
       hive.non-managed-table-writes-enabled: true
       hive.non-managed-table-creates-enabled: true
+profile::presto::server::ferm_srange: $ANALYTICS_NETWORKS
 
 
 profile::analytics::database::meta::monitoring_enabled: true

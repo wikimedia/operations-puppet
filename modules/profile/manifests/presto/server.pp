@@ -38,6 +38,8 @@ class profile::presto::server(
     Hash   $catalogs          = hiera('profile::presto::server::catalogs',          {}),
     Hash   $log_properties    = hiera('profile::presto::server::log_properties',    {}),
     String $heap_max          = hiera('profile::presto::server::heap_max',          '2G'),
+    String $ferm_srange       = hiera('profile::presto::server::ferm_srange',       '$DOMAIN_NETWORKS'),
+
 ) {
 
     $default_node_properties = {
@@ -46,7 +48,8 @@ class profile::presto::server(
     }
 
     $default_config_properties = {
-        'http-server.http.port'              => 8280,
+        'http-server.http.port'              => '8280',
+        'jmx.rmiregistry.port'               => '8279',
         'discovery.uri'                      => $discovery_uri,
         # flat will try to schedule splits on the host where the data is located by reserving
         # 50% of the work queue for local splits. It is recommended to use flat for clusters
@@ -55,12 +58,26 @@ class profile::presto::server(
         'node-scheduler.network-topology'    => 'flat',
     }
 
+    # Merge in any overrides for properties
+    $_node_properties = $default_node_properties + $node_properties
+    $_config_properties = $default_config_properties + $config_properties
+
     class { '::presto::server':
-        # Merge in any overrides for config.properties
-        node_properties   => $default_node_properties + $node_properties,
-        config_properties => $default_config_properties + $config_properties,
+        node_properties   => $_node_properties,
+        config_properties => $_config_properties,
         log_properties    => $log_properties,
         catalogs          => $catalogs,
         heap_max          => $heap_max,
+    }
+
+    ferm::service{ 'presto-http':
+        proto  => 'tcp',
+        port   => $_config_properties['http-server.http.port'],
+        srange => $ferm_srange,
+    }
+    ferm::service{ 'presto-jmx-rmiregistry':
+        proto  => 'tcp',
+        port   => $_config_properties['jmx.rmiregistry.port'],
+        srange => $ferm_srange,
     }
 }
