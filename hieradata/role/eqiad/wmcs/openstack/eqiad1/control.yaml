@@ -3,4 +3,4 @@ admin::groups:
 
 contactgroups: wmcs-team
 
-prometheus::haproxy_exporter::endpoint: 'http://localhost:9900/?stats;csv'
+prometheus::haproxy_exporter::endpoint: 'http://localhost:9900/stats;csv'
