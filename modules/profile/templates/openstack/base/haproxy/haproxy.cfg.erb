@@ -22,3 +22,9 @@ defaults
     timeout connect 10s
     timeout http-request 5s
     timeout server 50s
+
+listen stats
+    bind 127.0.0.1:9900
+    mode http
+    stats enable
+    stats uri /%
