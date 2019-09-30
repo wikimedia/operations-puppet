@@ -3759,3 +3759,7 @@ ldap_only_users:
     ensure: present
     realname: Erin Yener
     email: eyener-ctr@wikimedia.org
+  jkumalah:
+    ensure: present
+    realname: Jerrie Kumalah
+    email: jkumalah@wikimedia.org
