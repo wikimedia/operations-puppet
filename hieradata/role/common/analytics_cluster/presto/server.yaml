@@ -1,0 +1,45 @@
+nagios_group: analytics_eqiad
+cluster: analytics
+admin::groups:
+  - analytics-admins
+
+# Hadoop settings, presto server needs Hadoop client configs
+profile::hadoop::common::hadoop_cluster_name: 'analytics-hadoop'
+
+# Presto (worker) Server settings
+profile::presto::cluster_name: analytics-presto
+profile::presto::discovery_uri: http://an-coord1001.eqiad.wmnet:8280
+profile::presto::server::heap_max: 124G
+profile::presto::server::config_properties:
+  coordinator: false
+  node-scheduler.include-coordinator: false
+
+  # The following settings should be synced in coordinator.yaml
+  discovery-server.enabled: true
+  # Set network-topology to legacy since we are not (yet?) running
+  # presto co-located with HDFS nodes. If we were, we would
+  # set this to 'flat'.
+  node-scheduler.network-topology: legacy
+  query.max-memory: 62GB
+  query.max-memory-per-node: 12GB
+  query.max-total-memory-per-node: 24GB
+profile::presto::server::catalogs:
+  # Each catalog hash should contain a single properties has that will
+  # end up being passed to the presto::properties define.  This will render
+  # a properties file at /etc/presto/catalog/$name.properties.
+  hive:
+    properties:
+      connector.name: analytics-hive
+      # Add Hadoop config files so Hive connector can work with HA Hadoop NameNodes.
+      hive.config.resources: /etc/hadoop/conf/core-site.xml,/etc/hadoop/conf/hdfs-site.xml
+      hive.metastore.uri: thrift://an-coord1001.eqiad.wmnet:9083
+      hive.metastore.username: presto
+      hive.storage-format: PARQUET
+      hive.compression-codec: SNAPPY
+      # We do not (yet) colocate workers with Hadoop DataNodes.
+      hive.force-local-scheduling: false
+      # Allow presto-cli to impersonate the user running the process
+      hive.hdfs.impersonation.enabled: true
+      # TODO: do we want to disable non managed tables?
+      hive.non-managed-table-writes-enabled: true
+      hive.non-managed-table-creates-enabled: true

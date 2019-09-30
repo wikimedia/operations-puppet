@@ -100,7 +100,7 @@ class presto::server(
         }
     }
 
-    # By default Presto writes its logs out to $data_dir/log.
+    # By default Presto writes its logs out to $data_dir/var/log.
     # Symlink /var/log/presto to this location.
     if !defined(File['/var/log/presto']) {
         file { '/var/log/presto':

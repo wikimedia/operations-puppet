@@ -146,7 +146,7 @@ node /an-conf100[1-3]\.eqiad\.wmnet/ {
 
 # Analytics Presto nodes.
 node /^an-presto100[1-5].eqiad.wmnet$/ {
-    role(spare::system)
+    role(analytics_cluster::presto::server)
 }
 
 # Analytics Query Service

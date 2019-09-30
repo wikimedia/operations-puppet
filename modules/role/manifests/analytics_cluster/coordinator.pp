@@ -41,6 +41,12 @@ class role::analytics_cluster::coordinator {
     include ::profile::hive::server
     include ::profile::hive::metastore::database
 
+    # (Faster) SQL-like queries to data stored in HDFS and elsewhere
+    # coordinator only runs the Presto server as a coordinator process.
+    # The actual workers are configured in the presto::server role.
+    # This node is marked as a coordinator in hiera.
+    include ::profile::presto::server
+
     # The Hadoop job scheduler
     include ::profile::oozie::server
     include ::profile::oozie::server::database
