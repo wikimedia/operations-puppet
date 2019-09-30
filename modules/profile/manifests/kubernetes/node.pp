@@ -1,27 +1,26 @@
 class profile::kubernetes::node(
-    $master_fqdn = hiera('profile::kubernetes::master_fqdn'),
-    $master_hosts = hiera('profile::kubernetes::master_hosts'),
-    $infra_pod = hiera('profile::kubernetes::infra_pod'),
-    $use_cni = hiera('profile::kubernetes::use_cni'),
-    $masquerade_all = hiera('profile::kubernetes::node::masquerade_all', true),
-    # $username is deprecated, was a flawed approach
-    $username = hiera('profile::kubernetes::node::username', 'client-infrastructure'),
-    $prometheus_nodes = hiera('prometheus_nodes', []),
-    $kubelet_config = hiera('profile::kubernetes::node::kubelet_config', '/etc/kubernetes/kubeconfig'),
-    $kubeproxy_config = hiera('profile::kubernetes::node::kubeproxy_config', '/etc/kubernetes/kubeconfig'),
-    $prod_firewalls   = hiera('profile::kubernetes::node::prod_firewalls', true),
-    $prometheus_url   = hiera('profile::kubernetes::node::prometheus_url', "http://prometheus.svc.${::site}.wmnet/k8s"),
-    $kubelet_cluster_domain = hiera('profile::kubernetes::node::kubelet_cluster_domain', 'kube'),
-    $kubelet_cluster_dns = hiera('profile::kubernetes::node::kubelet_cluster_dns', undef),
-    $kubelet_username = hiera('profile::kubernetes::node::kubelet_username', undef),
-    $kubelet_token = hiera('profile::kubernetes::node::kubelet_token', undef),
-    $kubelet_extra_params = hiera('profile::kubernetes::node::kubelet_extra_params', undef),
-    $kubelet_node_labels = hiera('profile::kubernetes::node::kubelet_node_labels', []),
-    $kubelet_node_taints = hiera('profile::kubernetes::node::kubelet_node_taints', []),
-    $kubeproxy_username = hiera('profile::kubernetes::node::kubeproxy_username', undef),
-    $kubeproxy_token = hiera('profile::kubernetes::node::kubeproxy_token', undef),
-) {
-    require ::profile::rsyslog::kubernetes
+  $master_fqdn = hiera('profile::kubernetes::master_fqdn'),
+  $master_hosts = hiera('profile::kubernetes::master_hosts'),
+  $infra_pod = hiera('profile::kubernetes::infra_pod'),
+  $use_cni = hiera('profile::kubernetes::use_cni'),
+  $masquerade_all = hiera('profile::kubernetes::node::masquerade_all', true),
+  # $username is deprecated, was a flawed approach
+  $username = hiera('profile::kubernetes::node::username', 'client-infrastructure'),
+  $prometheus_nodes = hiera('prometheus_nodes', []),
+  $kubelet_config = hiera('profile::kubernetes::node::kubelet_config', '/etc/kubernetes/kubeconfig'),
+  $kubeproxy_config = hiera('profile::kubernetes::node::kubeproxy_config', '/etc/kubernetes/kubeconfig'),
+  $prod_firewalls   = hiera('profile::kubernetes::node::prod_firewalls', true),
+  $prometheus_url   = hiera('profile::kubernetes::node::prometheus_url', "http://prometheus.svc.${::site}.wmnet/k8s"),
+  $kubelet_cluster_domain = hiera('profile::kubernetes::node::kubelet_cluster_domain', 'kube'),
+  $kubelet_cluster_dns = hiera('profile::kubernetes::node::kubelet_cluster_dns', undef),
+  $kubelet_username = hiera('profile::kubernetes::node::kubelet_username', undef),
+  $kubelet_token = hiera('profile::kubernetes::node::kubelet_token', undef),
+  $kubelet_extra_params = hiera('profile::kubernetes::node::kubelet_extra_params', undef),
+  $kubelet_node_labels = hiera('profile::kubernetes::node::kubelet_node_labels', []),
+  $kubelet_node_taints = hiera('profile::kubernetes::node::kubelet_node_taints', []),
+  $kubeproxy_username = hiera('profile::kubernetes::node::kubeproxy_username', undef),
+  $kubeproxy_token = hiera('profile::kubernetes::node::kubeproxy_token', undef),
+  ) {
 
     base::expose_puppet_certs { '/etc/kubernetes':
         provide_private => true,
@@ -120,14 +119,5 @@ class profile::kubernetes::node(
         critical        => 850000,
         dashboard_links => ['https://grafana.wikimedia.org/dashboard/db/kubernetes-kubelets?orgId=1'],
         notes_link      => 'https://wikitech.wikimedia.org/wiki/Kubernetes',
-    }
-
-    rsyslog::input::file { 'kubernetes-json':
-        path               => '/var/log/containers/*.log',
-        reopen_on_truncate => 'on',
-        addmetadata        => 'on',
-        addceetag          => 'on',
-        syslog_tag         => 'kubernetes',
-        priority           => 8,
     }
 }

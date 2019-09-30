@@ -14,6 +14,3 @@ profile::calico::kubernetes::bgp_peers:
 # enable this when coredns has been deployed not before.
 profile::kubernetes::node::kubelet_cluster_dns: "10.192.72.3"
 profile::kubernetes::node::kubelet_cluster_domain: 'cluster.local'
-profile::rsyslog::kubernetes::kubernetes_url: https://kubemaster.svc.codfw.wmnet:6443
-# Define in the private repo
-# profile::rsyslog::kubernetes::token
