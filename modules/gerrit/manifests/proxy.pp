@@ -2,17 +2,17 @@
 class gerrit::proxy(
     Stdlib::Ipv4 $ipv4,
     Stdlib::Fqdn $host                           = $::gerrit::host,
-    Boolean $slave                               = false,
+    Boolean $replica                             = false,
     Boolean $maint_mode                          = false,
     Stdlib::Fqdn $avatars_host                   = $::gerrit::avatars_host,
     Hash $cache_text_nodes                       = $::gerrit::cache_text_nodes,
     Boolean $use_acmechief                       = false,
     Optional[Stdlib::Ipv6] $ipv6,
-    Optional[Array[Stdlib::Fqdn]] $slave_hosts   = $::gerrit::slave_hosts,
+    Optional[Array[Stdlib::Fqdn]] $replica_hosts   = $::gerrit::reploca_hosts,
     ) {
 
-    if $slave {
-        $tls_host = $slave_hosts[0]
+    if $replica {
+        $tls_host = $replica_hosts[0]
     } else {
         $tls_host = $host
     }

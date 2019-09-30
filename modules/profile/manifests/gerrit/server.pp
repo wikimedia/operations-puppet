@@ -4,7 +4,7 @@
 class profile::gerrit::server(
     Stdlib::Ipv4 $ipv4 = hiera('gerrit::service::ipv4'),
     Stdlib::Fqdn $host = hiera('gerrit::server::host'),
-    Array[Stdlib::Fqdn] $slave_hosts = hiera('gerrit::server::slave_hosts'),
+    Array[Stdlib::Fqdn] $replica_hosts = hiera('gerrit::server::replica_hosts'),
     Stdlib::Fqdn $master_host = hiera('gerrit::server::master_host'),
     String $bacula = hiera('gerrit::server::bacula'),
     Array[Stdlib::Fqdn] $gerrit_servers = hiera('gerrit::servers'),
@@ -15,6 +15,7 @@ class profile::gerrit::server(
     Optional[Stdlib::Ipv6] $ipv6 = hiera('gerrit::service::ipv6', undef),
     Optional[Stdlib::Fqdn] $avatars_host = hiera('gerrit::server::avatars_host', undef),
     Enum['11', '8'] $java_version = hiera('gerrit::server::java_version', '8'),
+    Boolean $is_replica = hiera('gerrit::server::is_replica', false),
 ) {
 
     interface::alias { 'gerrit server':
@@ -22,17 +23,7 @@ class profile::gerrit::server(
         ipv6 => $ipv6,
     }
 
-    # Detect if we're a master or a slave. If we're been given a master host
-    # and it's not us, we're not a master. If we are that host, we are
-    # (obviously). If we're not given any master, assume we're working by
-    # ourselves (safest).
-    $slave = $master_host ? {
-        $::fqdn => false,
-        undef   => false,
-        default => true,
-    }
-
-    if !$slave {
+    if !$is_replica {
         monitoring::service { 'gerrit_ssh':
             description   => 'SSH access',
             check_command => "check_ssh_port_ip!29418!${ipv4}",
@@ -65,7 +56,7 @@ class profile::gerrit::server(
         port  => 'https',
     }
 
-    if $bacula != undef and !$slave {
+    if $bacula != undef and !$is_replica {
         backup::set { $bacula:
             jobdefaults => "Hourly-${profile::backup::host::day}-${profile::backup::host::pool}"
         }
@@ -77,8 +68,8 @@ class profile::gerrit::server(
             puppet_svc => 'apache2',
         }
     } else {
-        if $slave {
-            $tls_host = $slave_hosts[0]
+        if $is_replica {
+            $tls_host = $replica_hosts[0]
         } else {
             $tls_host = $host
         }
@@ -93,8 +84,8 @@ class profile::gerrit::server(
         host             => $host,
         ipv4             => $ipv4,
         ipv6             => $ipv6,
-        slave            => $slave,
-        slave_hosts      => $slave_hosts,
+        replica          => $is_replica,
+        replica_hosts    => $replica_hosts,
         config           => $config,
         avatars_host     => $avatars_host,
         cache_text_nodes => pick($cache_nodes['text'], {}),

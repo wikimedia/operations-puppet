@@ -92,8 +92,8 @@
     javaHome = <%= @java_home %>
     javaOptions = <% @java_options.each do |jvm_opt| %><%= jvm_opt %> <% end %>
     heapLimit = <%= @heap_limit %>
-    slave = <%= @slave %>
-    <%- if @slave %>
+    slave = <%= @replica %>
+    <%- if @replica %>
     daemonOpt = --enable-httpd --enable-sshd
     <%- end -%>
 [core]

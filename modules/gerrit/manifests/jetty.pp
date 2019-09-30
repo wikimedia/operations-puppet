@@ -5,7 +5,7 @@ class gerrit::jetty(
     Stdlib::Ipv4 $ipv4,
     Optional[Stdlib::Ipv6] $ipv6,
     Stdlib::Fqdn $db_host = 'localhost',
-    Array[Stdlib::Fqdn] $slave_hosts = [],
+    Array[Stdlib::Fqdn] $replica_hosts = [],
     Hash $replication = {},
     Stdlib::HTTPSUrl $url = "https://${::gerrit::host}/r",
     Stdlib::HTTPSUrl $gitiles_url = "https://${::gerrit::host}/g",
@@ -14,7 +14,7 @@ class gerrit::jetty(
     String $git_dir = 'git',
     Optional[String] $ssh_host_key = undef,
     String $heap_limit = '20g',
-    Boolean $slave = false,
+    Boolean $replica = false,
     Stdlib::Unixpath $java_home = '/usr/lib/jvm/java-8-openjdk-amd64/jre',
     String $config = 'gerrit.config.erb',
     Integer $git_open_files = 20000,
@@ -46,8 +46,8 @@ class gerrit::jetty(
     $ldap_host = $ldap_config['ro-server']
     $ldap_base_dn = $ldap_config['base-dn']
 
-    if $slave {
-        $sshd_host = $slave_hosts[0]
+    if $replica {
+        $sshd_host = $replica_hosts[0]
     } else {
         $sshd_host = $host
     }
@@ -282,7 +282,7 @@ class gerrit::jetty(
         }
     }
 
-    $ensure_replication = $slave ? {
+    $ensure_replication = $replica ? {
         false   => present,
         default => absent,
     }
@@ -339,7 +339,7 @@ class gerrit::jetty(
     }
 
     # TEMP - revert and always enable once T176532 is resolved
-    $ensure_monitor_process = $slave ? {
+    $ensure_monitor_process = $replica ? {
         false   => present,
         default => absent,
     }

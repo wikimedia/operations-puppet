@@ -11,8 +11,8 @@ MaxClients 50
 <VirtualHost *:80>
     ServerAdmin noc@wikimedia.org
     ServerName <%= @host %>
-    <%- if @slave_hosts -%>
-    ServerAlias <%= Array(@slave_hosts).join(' ') %>
+    <%- if @replica_hosts -%>
+    ServerAlias <%= Array(@replica_hosts).join(' ') %>
     <%- end -%>
 
     DocumentRoot /var/www
@@ -47,8 +47,8 @@ MaxClients 50
 <VirtualHost *:443>
     ServerAdmin noc@wikimedia.org
     ServerName <%= @host %>
-    <%- if @slave_hosts -%>
-    ServerAlias <%= Array(@slave_hosts).join(' ') %>
+    <%- if @replica_hosts -%>
+    ServerAlias <%= Array(@replica_hosts).join(' ') %>
     <%- end -%>
 
     # https://httpoxy.org/
