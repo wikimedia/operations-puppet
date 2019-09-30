@@ -14,9 +14,15 @@ class profile::kerberos::kadminserver (
     }
 
     if $trusted['certname'] != $krb_kadmin_primary {
-        service { 'krb5-admin-server':
-            ensure    => stopped,
-        }
+        $ensure_motd = 'present'
+    } else {
+        $ensure_motd = 'absent'
+    }
+
+    motd::script { 'inactive_warning':
+        ensure   => $ensure_motd,
+        priority => 1,
+        content  => template('profile/kerberos/kadminserver/inactive.motd.erb'),
     }
 
     ferm::service { 'kerberos_kpasswd_tcp':

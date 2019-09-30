@@ -1,0 +1,23 @@
+#!/bin/sh
+
+cat <<'MOTD'
+     _         _   _  ___ _____                    _   _     _
+  __| | ___   | \ | |/ _ \_   _|  _   _ ___  ___  | |_| |__ (_)___
+/  _` |/ _ \  |  \| | | | || |   | | | / __|/ _ \ | __| '_ \| / __|
+| (_| | (_) | | |\  | |_| || |   | |_| \__ \  __/ | |_| | | | \__ \
+ \__,_|\___/  |_| \_|\___/ |_|    \__,_|___/\___|  \__|_| |_|_|___/
+
+                              _
+ ___  ___ _ ____   _____ _ __| |
+/ __|/ _ \ '__\ \ / / _ \ '__| |
+\__ \  __/ |   \ V /  __/ |  |_|
+|___/\___|_|    \_/ \___|_|  (_)
+
+
+This host is a KDC replica server, please do not run any kadmin-related
+
+commands since credentials are kept in sync via kprod replication.
+
+The current active kadmin host is <%- @kerberos_kadmin_server_primary %>
+
+MOTD
