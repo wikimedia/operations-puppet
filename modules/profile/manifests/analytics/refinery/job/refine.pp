@@ -117,6 +117,7 @@ class profile::analytics::refinery::job::refine(
         'CentralAuthCreateLocalAccountJob',
         'gwtoolsetUploadMediafileJob',
         'gwtoolsetUploadMetadataJob',
+        'MessageGroupStatsRebuildJob',
     ]
     $job_table_blacklist = sprintf('.*(%s)$', join($problematic_jobs, '|'))
 
