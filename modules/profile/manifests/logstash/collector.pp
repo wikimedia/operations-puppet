@@ -325,6 +325,12 @@ class profile::logstash::collector (
         priority => 25,
     }
 
+    # Process nested JSON from Docker -> Kubernetes -> rsyslog
+    logstash::conf { 'filter_kubernetes_docker':
+        source   => 'puppet:///modules/profile/logstash/filter-kubernetes-docker.conf',
+        priority => 30,
+    }
+
     ## Application specific processing (50)
 
     logstash::conf { 'filter_mediawiki':
