@@ -14,11 +14,11 @@
 #    License for the specific language governing permissions and limitations
 #    under the License.
 
+from neutron_lib import constants
 from oslo_config import cfg
 
 from neutron._i18n import _
 from neutron.agent.common import config
-from neutron.common import constants
 
 
 OPTS = [
@@ -45,10 +45,6 @@ OPTS = [
                default=3,
                help=_("Send this many gratuitous ARPs for HA setup, if "
                       "less than or equal to 0, the feature is disabled")),
-    cfg.StrOpt('router_id', default='',
-               deprecated_for_removal=True,
-               help=_("If non-empty, the l3 agent can only configure a router "
-                      "that has the matching router ID.")),
     cfg.BoolOpt('handle_internal_only_routers',
                 default=True,
                 help=_("Indicates that this L3 agent should also handle "
@@ -100,10 +96,10 @@ OPTS = [
                help=_('Iptables mangle mark used to mark ingress from '
                       'external network. This mark will be masked with '
                       '0xffff so that only the lower 16 bits will be used.')),
-    cfg.StrOpt('routing_source_ip', default='',
-               help=_('WMF defined src nat IP option')),
-    cfg.StrOpt('dmz_cidr', default='',
-               help=_('WMF defined src nat exclusions "src_range:dst_range,<repeat>')),
 ]
 
 OPTS += config.EXT_NET_BRIDGE_OPTS
+
+
+def register_l3_agent_config_opts(opts, cfg=cfg.CONF):
+    cfg.register_opts(opts)
