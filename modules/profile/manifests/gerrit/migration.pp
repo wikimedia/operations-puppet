@@ -1,6 +1,7 @@
 # temp allow rsyncing gerrit data to new server
 class profile::gerrit::migration (
-    $source_host = lookup(gerrit::server::master_host)
+    $source_host = lookup(gerrit::server::master_host),
+    $data_dir  = lookup(gerrit::server::data_dir),
 ) {
 
     $source_ip = ipresolve($source_host, 4)
@@ -11,10 +12,12 @@ class profile::gerrit::migration (
         srange => "${source_ip}/32",
     }
 
+    ensure_resource('file', $data_dir, {'ensure' => 'directory' })
+
     class { '::rsync::server': }
 
-    rsync::server::module { 'srv-gerrit':
-        path        => '/srv/gerrit',
+    rsync::server::module { 'gerrit-data':
+        path        => $data_dir,
         read_only   => 'no',
         hosts_allow => $source_ip,
     }

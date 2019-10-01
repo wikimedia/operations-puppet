@@ -1,1 +1,2 @@
 gerrit::server::master_host: 'cobalt.wikimedia.org'
+gerrit::server::data_dir: '/srv/gerrit'
