@@ -38,11 +38,6 @@ host analytics1031 {
     fixed-address analytics1031.eqiad.wmnet;
 }
 
-host analytics1032 {
-    hardware ethernet C8:1F:66:F1:0D:9E;
-    fixed-address analytics1032.eqiad.wmnet;
-}
-
 host analytics1033 {
     hardware ethernet C8:1F:66:F1:13:DA;
     fixed-address analytics1033.eqiad.wmnet;

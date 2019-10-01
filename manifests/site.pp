@@ -69,12 +69,6 @@ node 'analytics1030.eqiad.wmnet' {
     role(analytics_test_cluster::coordinator)
 }
 
-# Hadoop Test cluster - host to decom
-# T233080
-node 'analytics1032.eqiad.wmnet' {
-    role(spare::system)
-}
-
 # Hadoop Test cluster's workers
 node /analytics10(31|3[3-8]|40).eqiad.wmnet/ {
     role(analytics_test_cluster::hadoop::worker)
