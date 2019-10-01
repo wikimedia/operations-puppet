@@ -37,4 +37,13 @@ class profile::ores::web(
         port   => '8081',
         srange => '$DOMAIN_NETWORKS',
     }
+
+    $min_crit = $celery_workers - 2
+    $max_crit = $celery_workers + 2
+    nrpe::monitor_service { 'ores_workers':
+        description  => 'ores_workers_running',
+        retries      => 10,
+        nrpe_command => "/usr/lib/nagios/plugins/check_procs -C celery -c ${min_crit}:${max_crit}",
+        notes_url    => 'https://wikitech.wikimedia.org/wiki/ORES',
+    }
 }
