@@ -183,6 +183,12 @@ swift_be_eqiad_sda:
   ]
   swift_aux_partitions: ['/dev/sda3', '/dev/sdb3', '/dev/sda4', '/dev/sdb4']
 
+# Experimental swift setting to run with one port per disk
+# https://phabricator.wikimedia.org/T222366
+swift_servers_per_port_codfw:
+  __regex: !ruby/regexp /^ms-be205[1-6]\.codfw\.wmnet$/
+  swift::storage::servers_per_port: 3
+
 lvs_codfw_backup:
   __regex: !ruby/regexp /^lvs200[4-6]\.codfw\.wmnet$/
   profile::pybal::primary: false
