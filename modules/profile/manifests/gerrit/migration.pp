@@ -2,6 +2,7 @@
 class profile::gerrit::migration (
     $source_host = lookup(gerrit::server::master_host),
     $data_dir  = lookup(gerrit::server::data_dir),
+    $user_name = lookup(gerrit::server::user_name),
 ) {
 
     $source_ip = ipresolve($source_host, 4)
@@ -12,7 +13,25 @@ class profile::gerrit::migration (
         srange => "${source_ip}/32",
     }
 
-    ensure_resource('file', $data_dir, {'ensure' => 'directory' })
+    group { $user_name:
+        ensure => present,
+    }
+
+    user { $user_name:
+        ensure     => 'present',
+        gid        => $user_name,
+        shell      => '/bin/bash',
+        home       => "/var/lib/${user_name}",
+        system     => true,
+        managehome => true,
+    }
+
+    file { $data_dir:
+        ensure => directory,
+        owner  => 'gerrit2',
+        group  => 'gerrit2',
+        mode   => '0664',
+    }
 
     class { '::rsync::server': }
 
