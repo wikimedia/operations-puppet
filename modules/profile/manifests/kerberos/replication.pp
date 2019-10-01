@@ -36,6 +36,12 @@ class profile::kerberos::replication (
             content => template('profile/kerberos/kpropd.acl.erb'),
             before  => Package['krb5-kpropd'],
         }
+
+        service { 'krb5-kpropd':
+            ensure  => running,
+            require => Package['krb5-kpropd'],
+        }
+
     } else {
         package { 'krb5-kpropd':
             ensure => absent,

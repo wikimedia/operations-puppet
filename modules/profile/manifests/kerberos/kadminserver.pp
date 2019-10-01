@@ -9,6 +9,11 @@ class profile::kerberos::kadminserver (
         ensure => present,
     }
 
+    service { 'krb5-admin-server':
+        ensure  => running,
+        require => Package['krb5-admin-server'],
+    }
+
     package { 'python3-pexpect':
         ensure => present,
     }

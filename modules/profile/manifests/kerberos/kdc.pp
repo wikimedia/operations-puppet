@@ -80,7 +80,6 @@ class profile::kerberos::kdc (
 
     package { 'krb5-kdc':
         ensure => present,
-        before => Service['krb5-kdc'],
     }
 
     file {'/etc/krb5kdc':
@@ -105,7 +104,8 @@ class profile::kerberos::kdc (
     }
 
     service { 'krb5-kdc':
-        ensure    => running,
+        ensure  => running,
+        require => Package['krb5-kdc'],
     }
 
     ferm::service { 'kerberos_kdc_tcp':
