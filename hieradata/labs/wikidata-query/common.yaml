@@ -1,18 +1,18 @@
-profile::wdqs::logstash_host: 'deployment-logstash2.deployment-prep.eqiad.wmflabs'
-profile::wdqs::deploy_mode: 'manual'
-profile::wdqs::package_dir: '/srv/wdqs/blazegraph'
-profile::wdqs::data_dir: '/srv/wdqs/blazegraph'
-profile::wdqs::endpoint: ''
-profile::wdqs::use_kafka_for_updates: false
-profile::wdqs::cluster_names: []
-profile::wdqs::updater_options: '-n wdq -s -l en'
-profile::wdqs::rc_updater_options: ''
-profile::wdqs::kafka_updater_options: '-b 700'
-profile::wdqs::blazegraph_use_deployed_config: true
-profile::wdqs::blazegraph_heap_size: '8g'
-profile::wdqs::enable_ldf: true
-profile::wdqs::high_query_time_port: true
-profile::wdqs::nodes: []
-profile::wdqs::blazegraph_extra_jvm_opts: []
-profile::wdqs::blazegraph_options: []
-profile::wdqs::use_revisions: false
+profile::query_service::logstash_host: 'deployment-logstash2.deployment-prep.eqiad.wmflabs'
+profile::query_service::deploy_mode: 'manual'
+profile::query_service::package_dir: '/srv/wdqs/blazegraph'
+profile::query_service::data_dir: '/srv/wdqs/blazegraph'
+profile::query_service::endpoint: ''
+profile::query_service::use_kafka_for_updates: false
+profile::query_service::cluster_names: []
+profile::query_service::updater_options: '-n wdq -s -l en'
+profile::query_service::rc_updater_options: ''
+profile::query_service::kafka_updater_options: '-b 700'
+profile::query_service::blazegraph_use_deployed_config: true
+profile::query_service::blazegraph_heap_size: '8g'
+profile::query_service::enable_ldf: true
+profile::query_service::high_query_time_port: true
+profile::query_service::nodes: []
+profile::query_service::blazegraph_extra_jvm_opts: []
+profile::query_service::blazegraph_options: []
+profile::query_service::use_revisions: false

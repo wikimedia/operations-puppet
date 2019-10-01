@@ -1,4 +1,4 @@
-profile::wdqs::blazegraph_options:
+profile::query_service::blazegraph_options:
   - '-Dhttp.proxyHost=webproxy.eqiad.wmnet'
   - '-Dhttp.proxyPort=8080'
   # decrease ban time and increase ban threshold, since we don't want too much impact on the internal cluster

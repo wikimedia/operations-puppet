@@ -1,11 +1,17 @@
-profile::wdqs::deploy_mode: 'scap3'
-profile::wdqs::max_query_time_millis: 30000
-profile::wdqs::blazegraph_extra_jvm_opts:
+profile::query_service::package_dir: '/srv/deployment/wdqs/wdqs'
+profile::query_service::data_dir: '/srv/wdqs'
+profile::query_service::log_dir: '/var/log/wdqs'
+profile::query_service::deploy_name: 'wdqs'
+profile::query_service::endpoint: 'https://query.wikidata.org'
+profile::query_service::updater_options: '-n wdq'
+profile::query_service::deploy_mode: 'scap3'
+profile::query_service::max_query_time_millis: 30000
+profile::query_service::blazegraph_extra_jvm_opts:
   # throttling configuration (see https://gerrit.wikimedia.org/r/plugins/gitiles/wikidata/query/rdf/+/refs/heads/master/blazegraph/src/main/java/org/wikidata/query/rdf/blazegraph/throttling/ThrottlingFilter.java for details)
   - '-Dwdqs.throttling-filter.time-bucket-capacity-in-seconds=240'
   - '-Dwdqs.throttling-filter.time-bucket-refill-amount-in-seconds=120'
   - '-Dwdqs.throttling-filter.ban-duration-in-minutes=60'
-profile::wdqs::nodes:
+profile::query_service::nodes:
   - 'wdqs1003.eqiad.wmnet'
   - 'wdqs1007.eqiad.wmnet'
   - 'wdqs1008.eqiad.wmnet'
@@ -22,7 +28,7 @@ profile::lvs::realserver::pools:
     services:
       - wdqs-blazegraph
       - nginx
-profile::wdqs::use_revisions: true
+profile::query_service::use_revisions: true
 
 # exclude wdqs hosts from screen monitoring
 # they are often used to monitor logs, for example by smalyshev

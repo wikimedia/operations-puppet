@@ -1,14 +1,14 @@
 class profile::query_service::common(
-    Query_service::DeployMode $deploy_mode = hiera('profile::wdqs::deploy_mode'),
-    Stdlib::Unixpath $package_dir = hiera('profile::wdqs::package_dir', '/srv/deployment/wdqs/wdqs'),
-    Stdlib::Unixpath $data_dir = hiera('profile::wdqs::data_dir', '/srv/wdqs'),
-    Stdlib::Unixpath $log_dir = hiera('profile::wdqs::log_dir', '/var/log/wdqs'),
-    String $deploy_name = hiera('profile::wdqs::deploy_name', 'wdqs'),
-    String $endpoint = hiera('profile::wdqs::endpoint', 'https://query.wikidata.org'),
-    Boolean $run_tests = hiera('profile::wdqs::run_tests', false),
-    Enum['none', 'daily', 'weekly'] $load_categories = hiera('profile::wdqs::load_categories', 'daily'),
-    Array[String] $nodes = hiera('profile::wdqs::nodes'),
-    Stdlib::Httpurl $categories_endpoint =  hiera('profile::wdqs::categories_endpoint', 'http://localhost:9990'),
+    Query_service::DeployMode $deploy_mode = hiera('profile::query_service::deploy_mode'),
+    Stdlib::Unixpath $package_dir = hiera('profile::query_service::package_dir'),
+    Stdlib::Unixpath $data_dir = hiera('profile::query_service::data_dir'),
+    Stdlib::Unixpath $log_dir = hiera('profile::query_service::log_dir'),
+    String $deploy_name = hiera('profile::query_service::deploy_name'),
+    String $endpoint = hiera('profile::query_service::endpoint'),
+    Boolean $run_tests = hiera('profile::query_service::run_tests', false),
+    Enum['none', 'daily', 'weekly'] $load_categories = hiera('profile::query_service::load_categories', 'daily'),
+    Array[String] $nodes = hiera('profile::query_service::nodes'),
+    Stdlib::Httpurl $categories_endpoint =  hiera('profile::query_service::categories_endpoint', 'http://localhost:9990'),
 ) {
 
     $username = 'blazegraph'

@@ -1,12 +1,12 @@
 class profile::query_service::gui (
-    Stdlib::Unixpath $package_dir = hiera('profile::wdqs::package_dir', '/srv/deployment/wdqs/wdqs'),
-    Stdlib::Unixpath $data_dir = hiera('profile::wdqs::data_dir', '/srv/wdqs'),
-    Stdlib::Unixpath $log_dir = hiera('profile::wdqs::log_dir', '/var/log/wdqs'),
-    String $deploy_name = hiera('profile::wdqs::deploy_name', 'wdqs'),
-    Query_service::DeployMode $deploy_mode = hiera('profile::wdqs::deploy_mode'),
-    Boolean $enable_ldf = hiera('profile::wdqs::enable_ldf', false),
-    Integer $max_query_time_millis = hiera('profile::wdqs::max_query_time_millis', 60000),
-    Boolean $high_query_time_port = hiera('profile::wdqs::high_query_time_port', false),
+    Stdlib::Unixpath $package_dir = hiera('profile::query_service::package_dir'),
+    Stdlib::Unixpath $data_dir = hiera('profile::query_service::data_dir'),
+    Stdlib::Unixpath $log_dir = hiera('profile::query_service::log_dir'),
+    Query_service::DeployMode $deploy_mode = hiera('profile::query_service::deploy_mode'),
+    String $deploy_name = hiera('profile::query_service::deploy_name'),
+    Boolean $enable_ldf = hiera('profile::query_service::enable_ldf', false),
+    Integer $max_query_time_millis = hiera('profile::query_service::max_query_time_millis', 60000),
+    Boolean $high_query_time_port = hiera('profile::query_service::high_query_time_port', false),
 ) {
     require ::profile::query_service::common
 

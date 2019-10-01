@@ -1,10 +1,16 @@
-profile::wdqs::blazegraph_options:
+profile::query_service::package_dir: '/srv/deployment/wdqs/wdqs'
+profile::query_service::data_dir: '/srv/wdqs'
+profile::query_service::log_dir: '/var/log/wdqs'
+profile::query_service::deploy_name: 'wdqs'
+profile::query_service::endpoint: 'https://query.wikidata.org'
+profile::query_service::updater_options: '-n wdq'
+profile::query_service::blazegraph_options:
   - '-Dhttp.proxyHost=webproxy.eqiad.wmnet'
   - '-Dhttp.proxyPort=8080'
   - '-XX:+ExitOnOutOfMemoryError'
-profile::wdqs::deploy_mode: 'autodeploy'
-profile::wdqs::blazegraph_extra_jvm_opts: []
-profile::wdqs::nodes:
+profile::query_service::deploy_mode: 'autodeploy'
+profile::query_service::blazegraph_extra_jvm_opts: []
+profile::query_service::nodes:
   - 'wdqs1009.eqiad.wmnet'
   - 'wdqs1010.eqiad.wmnet'
 admin::groups:
@@ -13,7 +19,7 @@ admin::groups:
   - wdqs-test-roots
 cluster: wdqs-test
 contactgroups: admins,wdqs-admins
-profile::wdqs::use_revisions: true
+profile::query_service::use_revisions: true
 
 # exclude wdqs hosts from screen monitoring
 # they are often used to monitor logs, for example by smalyshev
