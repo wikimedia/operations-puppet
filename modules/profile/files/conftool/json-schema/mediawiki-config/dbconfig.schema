@@ -6,7 +6,7 @@
             "type": "object",
             "patternProperties": {
                 "DEFAULT": {"type": "string"},
-                "^s[1-8]$": {"type": "string"},
+                "^s[124-8]$": {"type": "string"},
                 "wikitech": {"type": "string"}
             },
             "additionalProperties": false
@@ -29,7 +29,7 @@
             "type": "object",
             "patternProperties": {
                 "DEFAULT": {"$ref": "#/definitions/sectionGroups"},
-                "^s[1-8]$": {"$ref": "#/definitions/sectionGroups"}
+                "^s[124-8]$": {"$ref": "#/definitions/sectionGroups"}
             },
             "additionalProperties": false
         },
@@ -63,7 +63,7 @@
             "type": "object",
             "patternProperties": {
                 "DEFAULT": {"$ref": "#/definitions/sectionInstances"},
-                "^s[1-8]$": {"$ref": "#/definitions/sectionInstances"},
+                "^s[124-8]$": {"$ref": "#/definitions/sectionInstances"},
                 "wikitech": {"$ref": "#/definitions/sectionInstances"}
             },
             "additionalProperties": false
