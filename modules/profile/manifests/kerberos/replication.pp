@@ -14,6 +14,7 @@
 # kprop tool that is provided by the krb5-admin-server package.
 #
 class profile::kerberos::replication (
+    Stdlib::Fqdn $krb_realm_name = lookup('kerberos_realm_name'),
     Array[Stdlib::Fqdn] $krb_kdc_servers = lookup('kerberos_kdc_servers'),
     Stdlib::Fqdn $krb_kadmin_primary = lookup('kerberos_kadmin_server_primary'),
     Optional[Boolean] $monitoring_enabled = lookup('profile::kerberos::replication::monitoring_enabled', { 'default_value' => false }),
