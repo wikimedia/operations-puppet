@@ -27,7 +27,7 @@ class profile::kerberos::replication (
         ferm::service { 'kerberos_kpropd_tcp':
             proto  => 'tcp',
             port   => '754',
-            srange => "@resolve((${krb_kadmin_primary}))",
+            srange => "(@resolve((${krb_kadmin_primary})) @resolve((${krb_kadmin_primary}), AAAA))",
         }
 
         file { '/etc/krb5kdc/kpropd.acl':
