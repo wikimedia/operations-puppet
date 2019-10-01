@@ -34,8 +34,6 @@ class profile::gerrit::migration (
 
     class { '::rsync::server': }
 
-    $source_ip = ipresolve($source_host, 4)
-
     rsync::server::module { 'gerrit-data':
         path        => $data_dir,
         read_only   => 'no',
