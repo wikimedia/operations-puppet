@@ -14,11 +14,11 @@ pieces = certname.split('.')
 if len(pieces) != 4:
     sys.exit('certname %s is formatted incorrectly' % certname)
 
-if pieces[2] != 'eqiad':
+if pieces[2] != 'eqiad' and pieces[2] != 'codfw1dev' and pieces[2] != 'wikimedia':
     sys.exit('certname %s is for an invalid site' % certname)
 
-if pieces[3] != 'wmflabs':
-    sys.exit('certname %s does not end with wmflabs' % certname)
+if pieces[3] != 'wmflabs' and pieces[3] != 'cloud':
+    sys.exit('certname %s does not end with wmflabs or cloud' % certname)
 
 certhostname = pieces[0]
 certproject = pieces[1]
