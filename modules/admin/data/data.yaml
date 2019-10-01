@@ -3764,6 +3764,8 @@ ldap_only_users:
     ensure: present
     realname: Erin Yener
     email: eyener-ctr@wikimedia.org
+    expiry_date: 2020-09-16
+    expiry_contact: jrobell@wikimedia.org
   jkumalah:
     ensure: present
     realname: Jerrie Kumalah
