@@ -9,9 +9,8 @@ class kibana::phatality () {
         ],
     }
 
-    $upgradecmd = '/usr/share/kibana/bin/upgrade-phatality.sh'
     $plugincmd = '/usr/share/kibana/bin/kibana-plugin'
-    $deploydir = '/srv/deployment/releng/phatality/deploy/'
+    $deploydir = '/srv/deployment/releng/phatality/deploy'
 
     sudo::user { 'kibana-deploy-phatality':
         user       => 'deploy-service',
@@ -21,7 +20,7 @@ class kibana::phatality () {
         ]
     }
 
-    file { $upgradecmd:
+    file { '/usr/share/kibana/bin/upgrade-phatality.sh':
         ensure => 'file',
         mode   => '0555',
         source => 'puppet:///modules/kibana/upgrade-phatality.sh',
