@@ -75,6 +75,7 @@ class gerrit::jetty(
     if os_version('debian == buster') {
         if $java_version == '11' {
             require_package('openjdk-11-jdk')
+            require_package('openjdk-11-dbg')
         } else {
             apt::repository { 'wikimedia-openjdk8':
                 uri        => 'http://apt.wikimedia.org/wikimedia',
@@ -94,10 +95,15 @@ class gerrit::jetty(
                 ensure  => present,
                 require => Apt::Repository['wikimedia-openjdk8'],
             }
+            package { 'openjdk-8-dbg':
+                ensure  => present,
+                require => Apt::Repository['wikimedia-openjdk8'],
+            }
         }
     } else {
         require_package([
             'openjdk-8-jdk',
+            'openjdk-8-dbg',
             'libmysql-java',
         ])
 
