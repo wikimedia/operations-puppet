@@ -95,7 +95,7 @@ def main():
     parser.add_argument('--timeout', default=4, type=int, metavar='SECONDS',
                         help='Timeout for the request to complete'),
     parser.add_argument('--bytes', default='gb', metavar='BYTES',
-                        help='Unit of shard size. E.g:%(choices)',
+                        help='Unit of shard size. One of %(choices)s',
                         choices=['b', 'kb', 'mb', 'gb'])
     parser.add_argument('--shard-size-warning', default=50, type=int,
                         dest='shard_size_warning', metavar='WARNING',
