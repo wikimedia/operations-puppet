@@ -1,0 +1,21 @@
+# temp allow rsyncing gerrit data to new server
+class profile::gerrit::migration (
+    $source_host = lookup(gerrit::server::master_host)
+) {
+
+    $source_ip = ipresolve($source_host, 4)
+
+    ferm::service { 'gerrit-migration-rsync':
+        proto  => 'tcp',
+        port   => '873',
+        srange => "${source_ip}/32",
+    }
+
+    class { '::rsync::server': }
+
+    rsync::server::module { 'srv-gerrit':
+        path        => '/srv/gerrit',
+        read_only   => 'no',
+        hosts_allow => $source_ip,
+    }
+}

@@ -226,7 +226,7 @@ node 'cobalt.wikimedia.org', 'gerrit2001.wikimedia.org' {
 
 # gerrit1001 to replace cobalt T231046
 node 'gerrit1001.wikimedia.org' {
-    role(spare::system)
+    role(gerrit::migration)
 }
 
 # Zookeeper and Etcd discovery service nodes in eqiad
