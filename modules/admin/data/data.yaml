@@ -77,7 +77,7 @@ groups:
               musikanimal, jdrewniak, sbisson, jforrester, mbsantos,
               aaron, liw, sbassett, jdl, tarrow, lucaswerkmeister-wmde,
               wmde-leszek, jhuneidi, wmde-fisch, mvolz, dsharpe, brennen, cparle,
-              jfishback, urbanecm, awight, jakob, accraze, alaasarhan]
+              jfishback, urbanecm, awight, jakob, accraze, alaasarhan, andrew-wmde]
     privileges: ['ALL = (www-data,mwdeploy,l10nupdate) NOPASSWD: ALL',
                  'ALL = NOPASSWD: /sbin/restart hhvm',
                  'ALL = NOPASSWD: /sbin/start hhvm',
@@ -3304,6 +3304,15 @@ users:
     name: mgerlach
     ssh_keys:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAINj/yFpJoyyIYy8DaRkA92YOQbsZyNh/l3OfQSezZ5t6 martin@nitram
+  andrew-wmde:
+    ensure: present
+    realname: Andrew Kostka
+    email: andrew.kostka@wikimedia.de
+    uid: 12439
+    gid: 500
+    name: andrew-wmde
+    ssh_keys:
+      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQC+POWSebb+Fiyxuw2qqMhMHt7DW5i6ZJ7h4H0pea+HRWf9BmuxfrIPESqgZ1j3hYyxP+mqB3zE/4lQky2ZMYoB04ullkww7t3Y46hIuJqVcjFzAWoOkZTvON3Zmtu3xAf8p9zxgT2NXWMLYFErcwgBE6JjO16KMqWASrLU8op+gyavh+DofZE+WhxMM5jnHy+Ofa28pFzC41eguovCgGnSyp2rTbAS0WhbsRukcMbsf3LNRVQKf7ZXJXNAAUZtpJnM1wgdTXZezlMoPmRTIjbp5YmQNOXgepBC5VoGzDEctiju/N+BIwFs9Z/pJkqfxyc2KvUcd6J44odHol8NvhABQt6dRMRfCHaTY2WHmkEfIDjXudaJO11jl5zP0nixYeiIO4FNEIYF2Y/tFGB5WTfsE4lB/6nkKVGB/7bCtfA404qkci6Zye8v7rk+hm/SWlZW724PwNQzBaqqnuz+xzf8U65vqsURcP4V3kupW4OZpOWkNALlaM6wbq50kAhQSLJ6Ed2RwTckoCD5u2xgQXwehQS81oIY17lXV0OcJvXR8L8lm+82o3PxJouPo6byczvqd5RUFbysjku7u2u0gbRI47jYEuH/gARBUAG3zNZ+EWIMXe4+gLrQzu6d9doIiW3w6GbfR62VqfqQf2H4sh6zR2IOrPfV8EpnIwnnKLjKmw==
 ldap_only_users:
   abartov:
     ensure: present
@@ -3324,10 +3333,6 @@ ldap_only_users:
     ensure: present
     realname: Angela Muigai
     email: angie@wikimedia.org
-  andrew-wmde:
-    ensure: present
-    realname: Andrew Kostka
-    email: andrew.kostka@wikimedia.de
   apalmer:
     ensure: present
     realname: Aeryn Palmer
