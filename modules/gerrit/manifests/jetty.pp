@@ -54,12 +54,13 @@ class gerrit::jetty(
 
     $java_options = [
         '-XX:+UseG1GC',
-        '-XX:MaxGCPauseMillis=300',
         "-Xmx${heap_limit} -Xms${heap_limit}",
         '-Dflogger.backend_factory=com.google.common.flogger.backend.log4j.Log4jBackendFactory#getInstance',
         '-Dlog4j.configuration=file:///var/lib/gerrit2/review_site/etc/log4j.xml',
         # These settings apart from the bottom control logging for gc
         '-Xloggc:/srv/gerrit/jvmlogs/jvm_gc.%p.log',
+        '-XX:+UnlockExperimentalVMOptions',
+        '-XX:G1NewSizePercent=15',
         '-XX:+UseStringDeduplication',
         '-XX:+PrintGCApplicationStoppedTime',
         '-XX:+PrintGCDetails',
