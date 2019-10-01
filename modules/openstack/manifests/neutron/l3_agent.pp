@@ -34,6 +34,11 @@ class openstack::neutron::l3_agent(
             # Disable RA
             'net.ipv6.conf.all.accept_ra'        => 0,
 
+            # Tune arp cache table
+            'net.ipv4.neigh.default.gc_thresh1'  => 1024,
+            'net.ipv4.neigh.default.gc_thresh2'  => 2048,
+            'net.ipv4.neigh.default.gc_thresh3'  => 4096,
+
             # Increase connection tracking size
             # and bucket since all of CloudVPS VM instances ingress/egress
             # are flowing through cloudnet servers
