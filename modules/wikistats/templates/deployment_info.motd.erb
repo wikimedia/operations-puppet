@@ -1,0 +1,15 @@
+This is a wikistats (cloud) instance.
+
+After applying the puppet role for the first time you
+have to deploy the wikistats app files.
+
+run 'deploy-wikistats deploy'
+
+deploy-wikistats <action>
+
+deploy: syncs file from /srv/wikistats (where puppet git pulls to automatically) into the right places.
+
+backup: syncs files currently used to a backup location at /usr/lib/wikistats/backup.
+
+restore: syncs file from the backup location {/usr/lib/wikistats/backup} into the right places.
+

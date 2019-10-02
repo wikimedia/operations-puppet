@@ -8,4 +8,9 @@ class profile::wikistats {
         wikistats_host => $::fqdn,
     }
 
+    motd::script { 'deployment_info':
+        ensure   => 'present',
+        priority => 1,
+        content  => template('modules/wikistats/deployment_info.motd.erb'),
+    }
 }
