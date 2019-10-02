@@ -46,6 +46,7 @@ class dumps::web::fetches::stats(
 
     # Copies over mediawiki history dumps from an rsyncable location.
     dumps::web::fetches::job { 'mediawiki_history_dumps':
+        ensure      => absent,
         source      => "${src}/mediawiki/history",
         destination => "${miscdatasetsdir}/mediawiki_history",
         hour        => '5',
