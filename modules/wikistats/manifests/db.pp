@@ -10,8 +10,6 @@ class wikistats::db (
         require_package('php7.0-mysql')
     }
 
-    require_package('mariadb-server')
-
     # db backup
     cron { 'mysql-dump-wikistats':
         ensure  => 'present',
