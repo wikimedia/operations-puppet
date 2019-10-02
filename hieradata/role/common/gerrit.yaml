@@ -45,6 +45,8 @@ gerrit::jetty::replication:
         mirror: true
         replicateProjectDeletions: true
         replicateHiddenProjects: true
+        defaultForceUpdate: true
+        replicationDelay: 5
 
 # Allow use of supplemental key for scap deployment
 profile::base::ssh_server_settings:
