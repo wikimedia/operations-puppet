@@ -2160,11 +2160,6 @@ host eeden {
     option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
 }
 
-host elastic1017 {
-    hardware ethernet B0:83:FE:C0:B0:D2;
-    fixed-address elastic1017.eqiad.wmnet;
-}
-
 host elastic1018 {
     hardware ethernet B0:83:FE:BE:E6:93;
     fixed-address elastic1018.eqiad.wmnet;
