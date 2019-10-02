@@ -16,8 +16,8 @@
     lockfile-create /tmp/hdfs-balancer && \
     # Set the balancer bandwidth
     hdfs dfsadmin -setBalancerBandwidth $((40*1048576)) && \
-    # Run the hdfs balancer.
-    /usr/bin/hdfs balancer
+    # Run the hdfs balancer with a 5% threshold.
+    /usr/bin/hdfs balancer -threshold 5
 
     # Remove the lockfile
     lockfile-remove /tmp/hdfs-balancer
