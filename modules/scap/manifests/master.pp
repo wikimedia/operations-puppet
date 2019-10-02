@@ -10,7 +10,7 @@ class scap::master(
 ) {
     include network::constants
 
-    require_package('python-service-checker', 'python-pygerrit2')
+    require_package('python3-service-checker', 'python-pygerrit2')
 
     git::clone { 'operations/mediawiki-config':
         ensure             => present,

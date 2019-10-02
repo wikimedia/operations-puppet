@@ -116,7 +116,7 @@ class nagios_common::commands(
     }
 
     # Used for cluster checks of "modern" wmf services
-    require_package('python-service-checker')
+    require_package('python3-service-checker')
 
     nagios_common::check_command::config { 'check_wmf_service':
         ensure     => present,
