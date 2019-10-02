@@ -487,6 +487,8 @@ define host {
     hostgroups               fundraising-network
 }
 
+# FUNDRAISING-SIEM
+
 define host {
     host_name                frav1002
     address                  10.64.40.74
@@ -497,7 +499,7 @@ define host {
     notification_interval    0
     notification_period      24x7
     check_period             24x7
-    hostgroups               fundraising-network
+    hostgroups               fundraising-siem
 }
 
 # BANNER-LOGGER
@@ -575,7 +577,7 @@ define service {
 
 define service {
     use                      passive-service
-    service_description      check_gcsip
+    service_description      check_endpoints
     hostgroup_name           fundraising-payments
     contact_groups           fr-tech,fr-tech-ops
 }
@@ -584,20 +586,6 @@ define service {
     use                      passive-service
     service_description      check_load
     hostgroup_name           fundraising-payments
-}
-
-define service {
-    use                      passive-service
-    service_description      check_minfraud_primary
-    hostgroup_name           fundraising-payments
-    contact_groups           fr-tech,fr-tech-ops
-}
-
-define service {
-    use                      passive-service
-    service_description      check_minfraud_secondary
-    hostgroup_name           fundraising-payments
-    contact_groups           fr-tech,fr-tech-ops
 }
 
 define service {
@@ -1312,6 +1300,13 @@ define service {
 
 define service {
     use                      passive-service
+    service_description      check_endpoints
+    hostgroup_name           fundraising-listener
+    contact_groups           fr-tech,fr-tech-ops
+}
+
+define service {
+    use                      passive-service
     service_description      check_ipn_redir
     hostgroup_name           fundraising-listener
 }
@@ -1665,6 +1660,73 @@ define service {
     hostgroup_name           fundraising-network
 }
 
+# fundraising-siem hostgroup
+
+define hostgroup {
+    hostgroup_name           fundraising-siem
+    alias                    Fundraising Network
+}
+
+define service {
+    use                      passive-service
+    service_description      check_disk
+    hostgroup_name           fundraising-siem
+}
+
+define service {
+    use                      passive-service
+    service_description      check_load
+    hostgroup_name           fundraising-siem
+}
+
+define service {
+    use                      passive-service
+    service_description      check_procs
+    hostgroup_name           fundraising-siem
+}
+
+define service {
+    use                      passive-service
+    service_description      check_puppetrun
+    hostgroup_name           fundraising-siem
+}
+
+define service {
+    use                      passive-service
+    service_description      check_raid
+    hostgroup_name           fundraising-siem
+}
+
+define service {
+    use                      passive-service
+    service_description      check_rsyslog_backlog
+    hostgroup_name           fundraising-siem
+}
+
+define service {
+    use                      passive-service
+    service_description      check_swap
+    hostgroup_name           fundraising-siem
+}
+
+define service {
+    use                      passive-service
+    service_description      check_timesync
+    hostgroup_name           fundraising-siem
+}
+
+define service {
+    use                      passive-service
+    service_description      check_zombie
+    hostgroup_name           fundraising-siem
+}
+
+define service {
+    use                      passive-service
+    service_description      check_log_messages
+    hostgroup_name           fundraising-siem
+    contact_groups           fr-tech,fr-tech-ops
+}
 
 # fundraising-banner-logger hostgroup
 
