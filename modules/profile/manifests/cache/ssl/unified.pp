@@ -51,6 +51,7 @@ class profile::cache::ssl::unified(
             # ready for use in $certs_active as options
             $certs = [
                 'globalsign-2018-ecdsa-unified', 'globalsign-2018-rsa-unified',
+                'digicert-2019-ecdsa-unified', 'digicert-2019-rsa-unified',
             ]
         }
         tlsproxy::localssl { 'unified':

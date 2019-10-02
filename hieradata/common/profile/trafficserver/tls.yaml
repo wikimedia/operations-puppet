@@ -80,3 +80,5 @@ profile::trafficserver::tls::parent_rules:
 profile::trafficserver::tls::unified_certs:
   - 'globalsign-2018-ecdsa-unified'
   - 'globalsign-2018-rsa-unified'
+  - 'digicert-2019-ecdsa-unified'
+  - 'digicert-2019-rsa-unified'
