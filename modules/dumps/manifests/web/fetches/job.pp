@@ -1,6 +1,11 @@
 # == Define dumps::web::fetches
 # Regularly copies files from $source to $destination.
 #
+# == Parameters
+#
+# [*ensure*]
+#   Ensure status of cron job. ensure => absent will not remove any existent data.
+#
 define dumps::web::fetches::job(
     $source,
     $destination,
@@ -13,6 +18,7 @@ define dumps::web::fetches::job(
     $month       = undef,
     $monthday    = undef,
     $weekday     = undef,
+    $ensure      = 'present',
 ) {
     file { $destination:
         ensure => 'directory',
@@ -31,7 +37,7 @@ define dumps::web::fetches::job(
     }
 
     cron { "dumps-fetch-${title}":
-        ensure      => 'present',
+        ensure      => $ensure,
         # Run command via bash instead of sh so that $source can be fancier
         # wildcards or globs (e.g. /path/to/{dir1,dir1}/ok/data/ )
         command     => "bash -c '/usr/bin/rsync -rt ${delete_option}${exclude_option} --chmod=go-w ${source}/ ${destination}/'",
