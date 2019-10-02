@@ -20,6 +20,9 @@ class profile::elasticsearch::cirrus(
 ) {
     include ::profile::elasticsearch
 
+    # syslog logstash transport type depends on this. See T225125.
+    include ::profile::rsyslog::udp_json_logback_compat
+
     package {'wmf-elasticsearch-search-plugins':
         ensure => present,
     }

@@ -32,9 +32,6 @@ class profile::elasticsearch(
     Enum['5', '6'] $config_version = hiera('profile::elasticsearch::config_version', '5'),
 ) {
 
-    # syslog logstash transport type depends on this. See T225125.
-    include ::profile::rsyslog::udp_json_logback_compat
-
     # Rather than asking hiera to magically merge these settings for us, we
     # explicitly take two sets of defaults for global defaults and per-dc
     # defaults. Per cluster overrides are then provided in $instances.
