@@ -6,8 +6,6 @@ prometheus_nodes:
     - prometheus2003.codfw.wmnet
     - prometheus2004.codfw.wmnet
 
-profile::openstack::codfw1dev::version: 'newton'
-
 labs_keystone_hosts:
     - "cloudcontrol2001-dev.wikimedia.org"
     - "cloudcontrol2003-dev.wikimedia.org"
