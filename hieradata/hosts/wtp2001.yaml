@@ -1,1 +1,2 @@
 profile::parsoid::use_php: true
+has_lvs: true
