@@ -13,7 +13,6 @@ class openstack::designate::service(
     $db_name,
     $domain_id_internal_forward,
     $domain_id_internal_reverse,
-    $pool_manager_db_name,
     $puppetmaster_hostname,
     $nova_controller,
     $ldap_user_pass,

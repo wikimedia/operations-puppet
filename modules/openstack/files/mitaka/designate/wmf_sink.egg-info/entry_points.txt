@@ -1,2 +1,0 @@
-[designate.notification.handler]
-wmf_sink = wmf_sink.wmfsink:NovaFixedWMFHandler
