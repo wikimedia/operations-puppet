@@ -77,4 +77,14 @@ class openstack::glance::image_sync(
             require                   => User['glancesync'],
         }
     }
+
+    # If we are the standby server, fix file ownership (glancesync->glance)
+    if !($active) and ($::fqdn == $nova_controller_standby) {
+        file { $glance_image_dir:
+            ensure  => directory,
+            owner   => 'glance',
+            group   => 'glance',
+            recurse => true,
+        }
+    }
 }

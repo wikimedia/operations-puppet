@@ -36,16 +36,15 @@ class openstack::glance::service(
         mode    => '0755',
     }
 
-    # The glance user and group require read, write on files and execute on dirs
-    # This allows the glancesync user access to rsync images between the primary
-    # and secondary controllers.
-    file { $glance_image_dir:
-        ensure  => directory,
-        owner   => 'glance',
-        group   => 'glance',
-        require => Package['glance'],
-        mode    => 'ug=rwX,o=rX',
-        recurse => true,
+    #  This is 775 so that the glancesync user can rsync to it.
+    if ($active) and ($::fqdn != $nova_controller_standby) {
+        file { $glance_image_dir:
+            ensure  => directory,
+            owner   => 'glance',
+            group   => 'glance',
+            require => Package['glance'],
+            mode    => '0775',
+        }
     }
 
     # Glance expects some images that are actually in /srv/glance/images to
