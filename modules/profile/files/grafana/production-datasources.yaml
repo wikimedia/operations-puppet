@@ -192,3 +192,16 @@ datasources:
    withCredentials: false
    version: 1
 
+# External graphite instance used by performance-team for recording the
+# results of synthetic measurements.
+# See also https://phabricator.wikimedia.org/T231870.
+ - name: graphite-synthetic-testing
+   type: graphite
+   access: proxy
+   orgId: 1
+   url: http://127.0.0.1:33333  # Must match profile::grafana::wpt_graphite_proxy_port
+   database:
+   isDefault: false
+   editable: false
+   withCredentials: false
+   version: 1
