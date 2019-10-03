@@ -1,3 +1,3 @@
-gerrit::service::ipv4: '208.80.154.87'
-gerrit::service::ipv6: '2620:0:861:3:208:80:154:87'
+gerrit::service::ipv4: '208.80.154.137'
+gerrit::service::ipv6: '2620:0:861:2:208:80:154:137'
 gerrit::server::host: 'gerrit-new.wikimedia.org'
