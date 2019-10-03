@@ -62,13 +62,6 @@ class openstack::glance::image_sync(
 
     # If we are the master Glance server, then sync images to the standby
     if $active and $nova_controller_standby {
-
-        # TODO: Remove after change is applied
-        cron { 'rsync_glance_images':
-            ensure => absent,
-            user   => 'glancesync',
-        }
-
         systemd::timer::job { 'glance_rsync_images':
             ensure                    => $ensure,
             description               => 'Copy Glance images to standby server',
