@@ -1,5 +1,5 @@
 profile::openstack::eqiad1::region: 'eqiad1-r'
-profile::openstack::eqiad1::version: 'mitaka'
+profile::openstack::eqiad1::version: 'newton'
 profile::openstack::eqiad1::nova_controller: 'cloudcontrol1003.wikimedia.org'
 profile::openstack::eqiad1::nova_controller_standby: 'cloudcontrol1004.wikimedia.org'
 profile::openstack::eqiad1::nova_api_host: 'cloudcontrol1003.wikimedia.org'
