@@ -1,12 +1,22 @@
 groups:
 - name: traffic
   rules:
+  # **DO NOT** simply take a sum(site_job:varnish_requests:availXm) or a sum(site_cluster:nginx_requests:availXm)
+  # expecting those aggregate values to be meaningful!
+  # By doing so, you are taking a sum of ratios that have wildly different denominators.
+  # Use the 'job:foo_requests:availXm' aggregates instead of 'site_job:'.
   - record: site_job:varnish_requests:avail5m
     expr: sum by(site, job) (job_method_status:varnish_requests:rate5m{status=~"5.."})
       / sum by(site, job) (job_method_status:varnish_requests:rate5m{status=~"[12345].."})
+  - record: job:varnish_requests:avail5m
+    expr: sum by(job) (job_method_status:varnish_requests:rate5m{status=~"5.."})
+      / sum by(job) (job_method_status:varnish_requests:rate5m{status=~"[12345].."})
   - record: site_cluster:nginx_requests:avail5m
     expr: sum by(site, cluster) (cluster_status:nginx_http_requests_total:rate5m{status=~"5.."})
       / sum by(site, cluster) (cluster_status:nginx_http_requests_total:rate5m{status=~"[12345].."})
+  - record: job:nginx_requests:avail5m
+    expr: sum by(cluster) (cluster_status:nginx_http_requests_total:rate5m{status=~"5.."})
+      / sum by(cluster) (cluster_status:nginx_http_requests_total:rate5m{status=~"[12345].."})
   - record: site_job_backend:varnish_backend_requests:avail5m
     expr: sum by(backend, site, job) (job_method_status_backend:varnish_backend_requests_seconds_count:rate5m{status=~"5.."})
       / sum by(backend, site, job) (job_method_status_backend:varnish_backend_requests_seconds_count:rate5m{status=~"[12345].."})
@@ -20,6 +30,12 @@ groups:
   - record: site_job:varnish_requests:avail2m
     expr: sum by(site, job) (job_method_status:varnish_requests:rate2m{status=~"5.."})
       / sum by(site, job) (job_method_status:varnish_requests:rate2m{status=~"[12345].."})
+  - record: job:varnish_requests:avail2m
+    expr: sum by(job) (job_method_status:varnish_requests:rate2m{status=~"5.."})
+      / sum by(job) (job_method_status:varnish_requests:rate2m{status=~"[12345].."})
   - record: site_cluster:nginx_requests:avail2m
     expr: sum by(site, cluster) (cluster_status:nginx_http_requests_total:rate2m{status=~"5.."})
       / sum by(site, cluster) (cluster_status:nginx_http_requests_total:rate2m{status=~"[12345].."})
+  - record: job:nginx_requests:avail2m
+    expr: sum by(cluster) (cluster_status:nginx_http_requests_total:rate2m{status=~"5.."})
+      / sum by(cluster) (cluster_status:nginx_http_requests_total:rate2m{status=~"[12345].."})
