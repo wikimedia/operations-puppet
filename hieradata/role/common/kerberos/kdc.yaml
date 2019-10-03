@@ -1,0 +1,1 @@
+profile::kerberos::kadminserver::enable_replication: true
