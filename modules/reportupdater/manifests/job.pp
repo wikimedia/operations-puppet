@@ -16,6 +16,10 @@
 #                  repositories must be in analytics/
 #                  E.g. analytics/reportupdater-queries
 #
+#  config_file   - string. [optional] Absolute path of the config file.
+#                  If not specified, reportupdater will use the 'config.yaml'
+#                  file inside the query folder.
+#
 #   output_dir   - string. [optional] Relative path where to write the reports.
 #                  This will be relative to $::reportupdater::base_path/output
 #                  Default: $title
@@ -33,6 +37,7 @@
 #
 define reportupdater::job(
     $repository = 'reportupdater-queries',
+    $config_file = undef,
     $output_dir = $title,
     $interval = '*-*-* *:00:00',
     $monitoring_enabled = true,
@@ -66,11 +71,16 @@ define reportupdater::job(
         }
     }
 
+    # Prepare config file parameter in case it's defined.
+    $_config_file = $config_file ? {
+        undef   => '',
+        default => "--config-file ${config_file}",
+    }
 
     systemd::timer::job { "reportupdater-${title}":
         ensure                    => $ensure,
         description               => "Report Updater job for ${title}",
-        command                   => "/usr/bin/python3 ${::reportupdater::path}/update_reports.py -l info ${query_path} ${output_path}",
+        command                   => "/usr/bin/python3 ${::reportupdater::path}/update_reports.py ${_config_file} -l info ${query_path} ${output_path}",
         interval                  => {
             'start'    => 'OnCalendar',
             'interval' => $interval

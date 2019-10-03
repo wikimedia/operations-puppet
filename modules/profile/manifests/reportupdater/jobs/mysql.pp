@@ -10,9 +10,12 @@ class profile::reportupdater::jobs::mysql {
     require statistics::compute
     require ::profile::analytics::cluster::packages::common
 
+    $base_path = '/srv/reportupdater'
+
     # Set up reportupdater to be executed on this machine
     class { 'reportupdater':
         user      => $::statistics::user::username,
+        base_path => $base_path,
     }
 
     # And set up a link for periodic jobs to be included in published reports.
@@ -26,16 +29,12 @@ class profile::reportupdater::jobs::mysql {
     }
     file { "${::statistics::compute::published_datasets_path}/periodic/reports":
         ensure  => 'link',
-        target  => '/srv/reportupdater/output',
+        target  => "${base_path}/output",
         require => Class['reportupdater'],
     }
 
     # Set up various jobs to be executed by reportupdater
     # creating several reports on mysql research db.
-    reportupdater::job { 'flow':
-        ensure     => absent,
-        output_dir => 'flow/datafiles',
-    }
     reportupdater::job { 'flow-beta-features':
         output_dir => 'metrics/beta-feature-enables',
     }
@@ -46,8 +45,8 @@ class profile::reportupdater::jobs::mysql {
         output_dir => 'metrics/beta-feature-enables',
     }
     reportupdater::job { 'published_cx2_translations':
-        ensure     => absent,
-        output_dir => 'metrics/published_cx2_translations',
+        config_file => "${base_path}/jobs/reportupdater-queries/published_cx2_translations/config-mysql.yaml",
+        output_dir  => 'metrics/published_cx2_translations',
     }
     reportupdater::job { 'mt_engines':
         output_dir => 'metrics/mt_engines',
@@ -63,9 +62,5 @@ class profile::reportupdater::jobs::mysql {
     }
     reportupdater::job { 'page-creation':
         output_dir => 'metrics/page-creation',
-    }
-    reportupdater::job { 'pingback':
-        ensure     => absent,
-        output_dir => 'metrics/pingback',
     }
 }

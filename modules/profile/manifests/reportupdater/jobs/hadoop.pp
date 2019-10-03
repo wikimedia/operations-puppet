@@ -5,7 +5,6 @@
 # This requires that a Hadoop client is installed and the statistics compute role
 # for the published_datasets_path.
 class profile::reportupdater::jobs::hadoop {
-
     require ::profile::analytics::cluster::packages::hadoop
     require ::profile::analytics::cluster::client
     require ::statistics::compute
@@ -43,5 +42,14 @@ class profile::reportupdater::jobs::hadoop {
 
     reportupdater::job { 'interlanguage':
         output_dir => 'metrics/interlanguage',
+    }
+
+    reportupdater::job { 'pingback':
+        output_dir => 'metrics/pingback',
+    }
+
+    reportupdater::job { 'published_cx2_translations':
+        config_file => "${base_path}/jobs/reportupdater-queries/published_cx2_translations/config-hive.yaml",
+        output_dir  => 'metrics/published_cx2_translations',
     }
 }
