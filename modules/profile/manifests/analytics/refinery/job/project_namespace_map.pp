@@ -47,7 +47,7 @@ class profile::analytics::refinery::job::project_namespace_map(
         logfile_group             => 'analytics',
         logfile_perms             => 'all',
         syslog_force_stop         => true,
-        syslog_identifier         => $title,
+        syslog_identifier         => 'refinery-download-project-namespace-map',
         require                   => File['/usr/local/bin/refinery-download-project-namespace-map'],
     }
 
