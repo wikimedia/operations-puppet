@@ -46,6 +46,7 @@ class profile::reportupdater::jobs::mysql {
         output_dir => 'metrics/beta-feature-enables',
     }
     reportupdater::job { 'published_cx2_translations':
+        ensure     => absent,
         output_dir => 'metrics/published_cx2_translations',
     }
     reportupdater::job { 'mt_engines':
@@ -64,6 +65,7 @@ class profile::reportupdater::jobs::mysql {
         output_dir => 'metrics/page-creation',
     }
     reportupdater::job { 'pingback':
+        ensure     => absent,
         output_dir => 'metrics/pingback',
     }
 }
