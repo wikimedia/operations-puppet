@@ -79,16 +79,6 @@ GRANT SELECT, INSERT, UPDATE, DELETE, CREATE, DROP, ALTER,
       CREATE TEMPORARY TABLES
 ON `designate`.* TO 'designate'@'208.80.154.11';
 
--- designate_pool_manager, cloudservices1003
-
-GRANT SELECT, INSERT, UPDATE, DELETE, CREATE, DROP, ALTER, CREATE TEMPORARY TABLES
-    ON `designate\_pool\_manager`.* TO 'designate'@'208.80.154.135';
-
--- designate_pool_manager, cloudservices1004
-
-GRANT SELECT, INSERT, UPDATE, DELETE, CREATE, DROP, ALTER, CREATE TEMPORARY TABLES
-    ON `designate\_pool\_manager`.* TO 'designate'@'208.80.154.11';
-
 -- parsoid testing database from scandium
 CREATE USER 'testreduce'@'10.64.48.94'
 IDENTIFIED BY '<%= @testreduce_pass %>';
