@@ -33,10 +33,11 @@ class profile::reportupdater::jobs::mysql {
     # Set up various jobs to be executed by reportupdater
     # creating several reports on mysql research db.
     reportupdater::job { 'flow':
-        output_dir =>  'flow/datafiles',
+        ensure     => absent,
+        output_dir => 'flow/datafiles',
     }
     reportupdater::job { 'flow-beta-features':
-        output_dir =>  'metrics/beta-feature-enables',
+        output_dir => 'metrics/beta-feature-enables',
     }
     reportupdater::job { 'edit-beta-features':
         output_dir => 'metrics/beta-feature-enables',
