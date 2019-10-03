@@ -75,7 +75,7 @@ class profile::openstack::codfw1dev::keystone::service(
     contain '::profile::openstack::base::keystone::hooks'
 
     class {'::openstack::keystone::monitor::services':
-        active      => $::fqdn == $keystone_host,
+        active      => true,
         auth_port   => $auth_port,
         public_port => $public_port,
     }
