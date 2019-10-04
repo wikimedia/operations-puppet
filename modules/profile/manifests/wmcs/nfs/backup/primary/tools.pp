@@ -5,6 +5,9 @@ class profile::wmcs::nfs::backup::primary::tools (
         'first',
         'labstore1005.eqiad.wmnet'
     ),
+    String $backup_interval = lookup(
+        'profile::wmcs::nfs::primary_backup::tools::backup_interval',
+    ),
 ){
     file { '/srv/backup/tools':
         ensure  => 'directory',
@@ -20,6 +23,6 @@ class profile::wmcs::nfs::backup::primary::tools (
         local_lv            => 'tools-project',
         local_snapshot      => 'tools-project-backup',
         local_snapshot_size => '2T',
-        interval            => 'Tue *-*-* 20:00:00',
+        interval            => $backup_interval,
     }
 }

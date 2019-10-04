@@ -1,1 +1,3 @@
 contactgroups: wmcs-team
+
+profile::wmcs::nfs::primary_backup::misc::backup_interval: 'Wed *-*-* 20:00:00'

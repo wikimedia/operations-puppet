@@ -5,6 +5,9 @@ class profile::wmcs::nfs::backup::primary::misc (
         'first',
         'labstore1005.eqiad.wmnet'
     ),
+    String $backup_interval = lookup(
+        'profile::wmcs::nfs::primary_backup::misc::backup_interval',
+    ),
 ){
 
     include ::profile::standard
@@ -23,7 +26,7 @@ class profile::wmcs::nfs::backup::primary::misc (
         local_lv            => 'misc-project',
         local_snapshot      => 'misc-project-backup',
         local_snapshot_size => '2T',
-        interval            => 'Wed *-*-* 20:00:00',
+        interval            => $backup_interval,
     }
 
 }
