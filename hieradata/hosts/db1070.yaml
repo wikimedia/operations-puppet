@@ -1,4 +1,3 @@
 # db1070
 mariadb::shard: 's5'
-mariadb::mysql_role: 'master'
 mariadb::binlog_format: 'STATEMENT'

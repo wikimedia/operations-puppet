@@ -1,4 +1,4 @@
 # db1100
-# candidate master for s5
 mariadb::shard: 's5'
+mariadb::mysql_role: 'master'
 mariadb::binlog_format: 'STATEMENT'

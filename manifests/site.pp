@@ -424,12 +424,12 @@ node /^db2(073|106|110|119)\.codfw\.wmnet/ {
 
 # s5 (dewiki and others) core production dbs on eqiad
 # eqiad master
-node 'db1070.eqiad.wmnet' {
+node 'db1100.eqiad.wmnet' {
     role(mariadb::core)
 }
 
 # See also db1096 db1097 and db1113 below
-node /^db1(082|100|110|130)\.eqiad\.wmnet/ {
+node /^db1(070|082|110|130)\.eqiad\.wmnet/ {
     role(mariadb::core)
 }
 
