@@ -1,0 +1,1 @@
+profile::wmcs::nfs::primary_backup::tools::backup_interval: 'Mon *-*-* 20:00:00'
