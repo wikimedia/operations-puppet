@@ -292,11 +292,6 @@ host kraz {
     option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
 }
 
-host kerberos1001 {
-    hardware ethernet aa:00:00:c1:72:d9;
-    fixed-address kerberos1001.eqiad.wmnet;
-}
-
 host kubetcd2001 {
     hardware ethernet aa:00:00:70:df:e9;
     fixed-address kubetcd2001.codfw.wmnet;

@@ -1012,17 +1012,6 @@ node 'furud.codfw.wmnet' {
     role(analytics_cluster::hadoop::client)
 }
 
-# Test Ganeti instance aimed to iron out all
-# the details related to a Kerberos service for
-# the Hadoop test cluster. This instance has a
-# generic name and it might be confusing, but its
-# sole purpose is to reach a point in which we know
-# what hardware to get etc..
-# More details: T211836
-node 'kerberos1001.eqiad.wmnet' {
-    role(kerberos::kdc)
-}
-
 # Etcd cluster for kubernetes
 # TODO: Rename the eqiad etcds to the codfw etcds naming scheme
 node /^(kub)?etcd[12]00[123]\.(eqiad|codfw)\.wmnet$/ {
