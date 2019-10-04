@@ -7,7 +7,7 @@ SyslogIdentifier=mjolnir-kafka-msearch-daemon
 User=nobody
 Group=nogroup
 Environment=REQUESTS_CA_BUNDLE=/etc/ssl/certs/ca-certificates.crt
-ExecStart=/srv/deployment/search/mjolnir/venv/bin/mjolnir-utilities.py kafka_msearch_daemon \
+ExecStart=/srv/deployment/search/mjolnir/deploy/venv/bin/mjolnir-utilities.py kafka_msearch_daemon \
     --brokers <%= @kafka_config['brokers']['string'] %> \
     --input-topic <%= @input_topic %> \
     --output-topic <%= @output_topic %> \

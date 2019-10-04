@@ -72,6 +72,6 @@ profile::elasticsearch::common_settings:
 profile::mjolnir::kafka_msearch_daemon::kafka_cluster: jumbo-eqiad
 profile::mjolnir::kafka_msearch_daemon::input_topic: mjolnir.msearch-relforge-request
 profile::mjolnir::kafka_msearch_daemon::output_topic: mjolnir.msearch-relforge-response
-profile::mjolnir::kafka_msearch_daemon::num_workers: 5
+profile::mjolnir::kafka_msearch_daemon::num_workers: 7
 profile::mjolnir::kafka_msearch_daemon::max_concurrent_searches: 10
 profile::elasticsearch::cirrus::enable_remote_search: false

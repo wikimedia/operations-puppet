@@ -7,7 +7,7 @@ SyslogIdentifier=mjolnir-kafka-bulk-daemon
 User=nobody
 Group=nogroup
 Environment=REQUESTS_CA_BUNDLE=/etc/ssl/certs/ca-certificates.crt
-ExecStart=/srv/deployment/search/mjolnir/venv/bin/mjolnir-utilities.py kafka_bulk_daemon \
+ExecStart=/srv/deployment/search/mjolnir/deploy/venv/bin/mjolnir-utilities.py kafka_bulk_daemon \
         --brokers <%= @kafka_config['brokers']['string'] %> \
         --es-clusters localhost:9200 \
         --group-id <%= @group_id %> \
