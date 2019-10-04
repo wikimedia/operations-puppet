@@ -191,6 +191,7 @@
     "os_compute_api:servers:index": "",
     "os_compute_api:servers:detail": "",
     "os_compute_api:extensions": "rule:admin_or_member",
+    "os_compute_api:servers:create:forced_host": "rule:admin_or_projectadmin",
     "os_compute_api:servers:show": "",
     "os_compute_api:servers:start": "rule:admin_or_projectadmin",
     "os_compute_api:servers:stop": "rule:admin_or_projectadmin",
