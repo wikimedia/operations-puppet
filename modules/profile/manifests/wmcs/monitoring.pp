@@ -67,12 +67,6 @@ class profile::wmcs::monitoring (
         }
     }
 
-    # TODO: Remove after change is applied
-    cron { 'wmcs_monitoring_rsync_cronjob':
-        ensure => absent,
-        user   => '_graphite',
-    }
-
     $whisper_dir = '/srv/carbon/whisper/'
     systemd::timer::job { 'wmcs_monitoring_graphite_rsync':
         ensure                    => $rsync_ensure,
