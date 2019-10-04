@@ -4,9 +4,6 @@ if @interval
 else
    opts = "-watch"
 end
-if @prefix and !@prefix.empty?
-   opts += " -prefix=#{@prefix}"
-end
 -%>
 [Unit]
 Description=confd
