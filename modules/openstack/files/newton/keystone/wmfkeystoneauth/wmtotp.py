@@ -69,7 +69,7 @@ class Wmtotp(base.AuthMethodHandler):
         # Before we do anything else, make sure that this user is allowed
         #  access from their source IP
         password_whitelist.check_whitelist(user_info.user_id,
-                                           request.environ['environment']['REMOTE_ADDR'])
+                                           request.environ['REMOTE_ADDR'])
 
         # FIXME(gyee): identity.authenticate() can use some refactoring since
         # all we care is password matches
