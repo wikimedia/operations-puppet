@@ -75,7 +75,7 @@ connection = mysql://<%= @db_user %>:<%= @db_pass %>@<%= @db_host %>/<%= @db_nam
 [database]
 connection = mysql://<%= @db_user %>:<%= @db_pass %>@<%= @db_host %>/<%= @db_name %>
 max_overflow = 25
-max_pool_size = 4
+max_pool_size = 3
 pool_timeout = 60
 idle_timeout = 1800
 
@@ -125,7 +125,7 @@ agent_enabled=True
 keymap=en-us
 
 [conductor]
-workers = 8
+workers = 6
 
 [METRICS]
 weight_setting = cpu.percent=-1.0
