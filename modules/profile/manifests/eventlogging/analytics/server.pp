@@ -2,8 +2,16 @@
 #
 # Common profile class that all other eventlogging analytics profile classes should include.
 #
+# Note:
+# We ensure that python-kafka for eventlogging is at 1.4.1. There is an upstream bug:
+#   - https://github.com/dpkp/kafka-python/issues/1418.
+# Our apt repo (as of 2019-09) has python-kafka 1.4.6 for use with coal. We want to ensure we
+# don't accidentally upgrade on eventloggging until this is fixed.
+# See also: https://phabricator.wikimedia.org/T222941
+#
 class profile::eventlogging::analytics::server(
-    $kafka_cluster = hiera('profile::eventlogging::analytics::server::kafka_cluster'),
+    $kafka_cluster = lookup('profile::eventlogging::analytics::server::kafka_cluster'),
+    $python_kafka_version = lookup('profile::eventlogging::analytics::python_kafka_version', { 'default_value' => '1.4.1-1~stretch1' }),
 ) {
 
     scap::target { 'eventlogging/analytics':
@@ -17,18 +25,10 @@ class profile::eventlogging::analytics::server(
         content => secret('keyholder/eventlogging.pub'),
     }
 
-    # Ensure python-kafka for eventlogging
-    # is at 1.4.1.  There is an upstream bug
-    # https://github.com/dpkp/kafka-python/issues/1418.
-    # Our apt repo (as of 2019-09) has python-kafka 1.4.6
-    # for use with coal.  We want to ensure we
-    # don't accidentally upgrade on eventloggging
-    # until this is fixed.
-    # See also: https://phabricator.wikimedia.org/T222941
     class { 'eventlogging::server':
         eventlogging_path    => '/srv/deployment/eventlogging/analytics',
         log_dir              => '/srv/log/eventlogging/systemd',
-        python_kafka_version => '1.4.1-1~stretch1',
+        python_kafka_version => $python_kafka_version,
     }
 
     # Get the Kafka configuration
