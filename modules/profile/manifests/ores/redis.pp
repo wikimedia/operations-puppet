@@ -5,6 +5,7 @@ class profile::ores::redis(
     $redis_clients = hiera('profile::ores::redis::client_hosts'),
     $slaveof  = hiera('profile::ores::redis::slaveof', undef),
     $prometheus_nodes = hiera('prometheus_nodes'),
+    $appendonly = hiera('profile::ores::redis::appendonly', undef),
 ){
     include ::profile::standard
     include ::profile::base::firewall
@@ -12,8 +13,9 @@ class profile::ores::redis(
     $instances = ['6379', '6380']
 
     class { '::ores::redis':
-        password => $password,
-        slaveof  => $slaveof,
+        password   => $password,
+        slaveof    => $slaveof,
+        appendonly => $appendonly,
     }
 
     ::profile::prometheus::redis_exporter{ $instances:

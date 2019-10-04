@@ -1,3 +1,4 @@
 ores::redis::queue_maxmemory: 1G
 ores::redis::cache_maxmemory: 6G
+profile::ores::redis::appendonly: true
 #profile::ores::redis::password: actually in the private repo

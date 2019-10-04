@@ -3,10 +3,11 @@ class ores::redis(
     $cache_maxmemory,
     $password=undef,
     $slaveof=undef,
+    $appendonly=false,
 ) {
     $common_settings = {
             bind                        => '0.0.0.0',
-            appendonly                  => true,
+            appendonly                  => $appendonly,
             auto_aof_rewrite_min_size   => '512mb',
             client_output_buffer_limit  => 'slave 512mb 200mb 60',
             dir                         => '/srv/redis',
