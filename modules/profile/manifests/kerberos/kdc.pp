@@ -151,6 +151,9 @@ class profile::kerberos::kdc (
         ],
     }
 
+    include ::profile::backup::host
+    backup::set { 'krb-srv-backup': }
+
     systemd::timer::job { 'delete-old-backups-kdc-database':
         description        => 'Daily clean up of old backups of the KDC database',
         command            => '/usr/bin/find /srv/backup -name "kdc_database_.*" -mtime +30 -delete',

@@ -153,6 +153,9 @@ class profile::backup::director(
     bacula::director::fileset { 'mysql-srv-backups':
         includes => [ '/srv/backups' ]
     }
+    bacula::director::fileset { 'krb-srv-backup':
+        includes => [ '/srv/backup' ]
+    }
     bacula::director::fileset { 'mysql-srv-backups-dumps-latest':
         includes => [ '/srv/backups/dumps/latest' ]
     }
