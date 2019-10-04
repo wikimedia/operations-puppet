@@ -50,6 +50,7 @@ agent_down_time = <%= @agent_down_time %>
 
 # db connection contention
 api_workers = 10
+rpc_workers = 25
 
 [agent]
 root_helper = sudo neutron-rootwrap /etc/neutron/rootwrap.conf
