@@ -36,6 +36,8 @@ abuse_filter_log,afl_user_text,K
 abuse_filter_log,afl_ip,F
 abuse_filter_log,afl_action,K
 abuse_filter_log,afl_actions,K
+abuse_filter_log,afl_filter_id,K
+abuse_filter_log,afl_global,K
 abuse_filter_log,afl_var_dump,K
 abuse_filter_log,afl_timestamp,K
 abuse_filter_log,afl_namespace,K
