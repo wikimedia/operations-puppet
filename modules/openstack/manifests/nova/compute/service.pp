@@ -85,16 +85,6 @@ class openstack::nova::compute::service(
         }
     }
 
-    file {'/etc/libvirt/original':
-        ensure  => 'directory',
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0444',
-        recurse => true,
-        source  => 'puppet:///modules/openstack/newton/nova/libvirt/original',
-        require => Package['nova-compute'],
-    }
-
     file { '/etc/libvirt/libvirtd.conf':
         owner   => 'root',
         group   => 'root',
