@@ -118,10 +118,10 @@
 # resize them at runtime.
 -XX:+UseTLAB
 -XX:+ResizeTLAB
+-XX:+UseNUMA
 
 # http://www.evanjones.ca/jvm-mmap-pause.html
-# XXX: This will break cassandra-metrics-collector
-#-XX:+PerfDisableSharedMem
+-XX:+PerfDisableSharedMem
 
 # Prefer binding to IPv4 network intefaces (when net.ipv6.bindv6only=1). See
 # http://bugs.sun.com/bugdatabase/view_bug.do?bug_id=6342561 (short version:
