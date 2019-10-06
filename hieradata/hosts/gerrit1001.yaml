@@ -1,4 +1,4 @@
 gerrit::service::ipv4: '208.80.154.137'
 gerrit::service::ipv6: '2620:0:861:2:208:80:154:137'
-# TODO: Change this to gerrit.wikimedia.org
-gerrit::server::host: 'gerrit-new.wikimedia.org'
+
+gerrit::server::is_replica: false

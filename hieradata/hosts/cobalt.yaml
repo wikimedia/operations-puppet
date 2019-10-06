@@ -1,4 +1,2 @@
 gerrit::service::ipv4: '208.80.154.85'
 gerrit::service::ipv6: '2620:0:861:3:208:80:154:85'
-
-gerrit::server::is_replica: false
