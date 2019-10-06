@@ -5,7 +5,6 @@ class profile::gerrit::server(
     Stdlib::Ipv4 $ipv4 = hiera('gerrit::service::ipv4'),
     Stdlib::Fqdn $host = hiera('gerrit::server::host'),
     Array[Stdlib::Fqdn] $replica_hosts = hiera('gerrit::server::replica_hosts'),
-    Stdlib::Fqdn $master_host = hiera('gerrit::server::master_host'),
     String $bacula = hiera('gerrit::server::bacula'),
     Array[Stdlib::Fqdn] $gerrit_servers = hiera('gerrit::servers'),
     String $config = hiera('gerrit::server::config'),
