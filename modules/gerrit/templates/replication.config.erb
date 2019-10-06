@@ -3,7 +3,9 @@
 ####################################
 [gerrit]
   replicateOnStartup = true
-  autoReload = true
+  # Re-enable this once the bug is fixed
+  # todo with reloading the replication config.
+  autoReload = false
   defaultForceUpdate = true
 <%
 # replication is a hash which maps remote "names" to their URLs
