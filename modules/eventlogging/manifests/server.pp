@@ -53,13 +53,10 @@ class eventlogging::server(
     $eventlogging_path    = '/srv/deployment/eventlogging/eventlogging',
     $log_dir              = '/srv/log/eventlogging/systemd',
     $ensure               = 'present',
-    $python_kafka_version = 'present',
 )
 {
 
-    class { '::eventlogging::dependencies':
-        python_kafka_version => $python_kafka_version,
-    }
+    class { '::eventlogging::dependencies': }
 
     group { 'eventlogging':
         ensure => $ensure,

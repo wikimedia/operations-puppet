@@ -11,9 +11,7 @@
 # If you want just a unmanaged clone of eventlogging source code to use,
 # use the eventlogging class.
 #
-class eventlogging::dependencies(
-    $python_kafka_version = 'present',
-) {
+class eventlogging::dependencies {
     # Use newer  librdkafka versions from stretch backports
     if os_version('debian == stretch') {
         apt::pin { 'librdkafka1':
@@ -38,12 +36,12 @@ class eventlogging::dependencies(
         'python-statsd',
         'python-yaml',
         'python-zmq',
-        'python-ua-parser'
+        'python-ua-parser',
     ])
 
     if !defined(Package['python-kafka']) {
         package { 'python-kafka':
-            ensure => $python_kafka_version,
+            ensure => installed,
         }
     }
 }
