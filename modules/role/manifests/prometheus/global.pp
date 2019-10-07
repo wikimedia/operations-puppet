@@ -62,8 +62,7 @@ class role::prometheus::global {
         # would flip depending on which Prometheus replica replies, creating
         # new metrics in the process.
         'metric_relabel_configs' => [
-          { 'source_labels' => ['prometheus', 'replica'],
-            'regex'         => '.*',
+          { 'regex'         => '(prometheus|replica)',
             'action'        => 'labeldrop',
           },
         ],
