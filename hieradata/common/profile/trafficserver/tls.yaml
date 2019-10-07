@@ -20,33 +20,6 @@ profile::trafficserver::tls::inbound_tls_settings:
     enable_tlsv1_1: 1
     enable_tlsv1_2: 1
     enable_tlsv1_3: 0
-  cert_path: '/etc/ssl/localcerts'
-  private_key_path: '/etc/ssl/private'
-  ocsp_stapling_path: '/var/cache/ocsp'
-  certificates:
-    - cert_files: ['globalsign-2018-ecdsa-unified.chained.crt', 'globalsign-2018-rsa-unified.chained.crt']
-      private_key_files: ['globalsign-2018-ecdsa-unified.key', 'globalsign-2018-rsa-unified.key']
-      ocsp_stapling_files: ['globalsign-2018-ecdsa-unified.ocsp', 'globalsign-2018-rsa-unified.ocsp']
-      default: true
-      common_name: 'en.wikipedia.org'
-      sni: [
-        'wikipedia.org',   '*.wikipedia.org',   '*.m.wikipedia.org',
-        'wikimedia.org',   '*.wikimedia.org',   '*.m.wikimedia.org', '*.planet.wikimedia.org',
-        'mediawiki.org',   '*.mediawiki.org',   '*.m.mediawiki.org',
-        'wikibooks.org',   '*.wikibooks.org',   '*.m.wikibooks.org',
-        'wikidata.org',    '*.wikidata.org',    '*.m.wikidata.org',
-        'wikinews.org',    '*.wikinews.org',    '*.m.wikinews.org',
-        'wikiquote.org',   '*.wikiquote.org',   '*.m.wikiquote.org',
-        'wikisource.org',  '*.wikisource.org',  '*.m.wikisource.org',
-        'wikiversity.org', '*.wikiversity.org', '*.m.wikiversity.org',
-        'wikivoyage.org',  '*.wikivoyage.org',  '*.m.wikivoyage.org',
-        'wiktionary.org',  '*.wiktionary.org',  '*.m.wiktionary.org',
-        'wikimediafoundation.org', '*.wikimediafoundation.org',
-        'wmfusercontent.org', '*.wmfusercontent.org',
-        'w.wiki',
-      ]
-      warning_threshold: 30
-      critical_threshold: 15
   dhparams_file: '/etc/ssl/dhparam.pem'
   max_record_size: 16383
   session_cache: 2
@@ -82,3 +55,80 @@ profile::trafficserver::tls::unified_certs:
   - 'globalsign-2018-rsa-unified'
   - 'digicert-2019-ecdsa-unified'
   - 'digicert-2019-rsa-unified'
+
+profile::trafficserver::tls::available_unified_certs:
+  globalsign-2018:
+    acme_chief: false
+    cert_files: ['globalsign-2018-ecdsa-unified.chained.crt', 'globalsign-2018-rsa-unified.chained.crt']
+    private_key_files: ['globalsign-2018-ecdsa-unified.key', 'globalsign-2018-rsa-unified.key']
+    ocsp_stapling_files: ['globalsign-2018-ecdsa-unified.ocsp', 'globalsign-2018-rsa-unified.ocsp']
+    default: true
+    common_name: 'en.wikipedia.org'
+    sni: [
+      'wikipedia.org',   '*.wikipedia.org',   '*.m.wikipedia.org',
+      'wikimedia.org',   '*.wikimedia.org',   '*.m.wikimedia.org', '*.planet.wikimedia.org',
+      'mediawiki.org',   '*.mediawiki.org',   '*.m.mediawiki.org',
+      'wikibooks.org',   '*.wikibooks.org',   '*.m.wikibooks.org',
+      'wikidata.org',    '*.wikidata.org',    '*.m.wikidata.org',
+      'wikinews.org',    '*.wikinews.org',    '*.m.wikinews.org',
+      'wikiquote.org',   '*.wikiquote.org',   '*.m.wikiquote.org',
+      'wikisource.org',  '*.wikisource.org',  '*.m.wikisource.org',
+      'wikiversity.org', '*.wikiversity.org', '*.m.wikiversity.org',
+      'wikivoyage.org',  '*.wikivoyage.org',  '*.m.wikivoyage.org',
+      'wiktionary.org',  '*.wiktionary.org',  '*.m.wiktionary.org',
+      'wikimediafoundation.org', '*.wikimediafoundation.org',
+      'wmfusercontent.org', '*.wmfusercontent.org',
+      'w.wiki',
+    ]
+    warning_threshold: 30
+    critical_threshold: 15
+  digicert-2019:
+    acme_chief: false
+    cert_files: ['digicert-2019-ecdsa-unified.chained.crt', 'digicert-2019-rsa-unified.chained.crt']
+    private_key_files: ['digicert-2019-ecdsa-unified.key', 'digicert-2019-rsa-unified.key']
+    ocsp_stapling_files: ['digicert-2019-ecdsa-unified.ocsp', 'digicert-2019-rsa-unified.ocsp']
+    default: true
+    common_name: 'en.wikipedia.org'
+    sni: [
+      'wikipedia.org',   '*.wikipedia.org',   '*.m.wikipedia.org',
+      'wikimedia.org',   '*.wikimedia.org',   '*.m.wikimedia.org', '*.planet.wikimedia.org',
+      'mediawiki.org',   '*.mediawiki.org',   '*.m.mediawiki.org',
+      'wikibooks.org',   '*.wikibooks.org',   '*.m.wikibooks.org',
+      'wikidata.org',    '*.wikidata.org',    '*.m.wikidata.org',
+      'wikinews.org',    '*.wikinews.org',    '*.m.wikinews.org',
+      'wikiquote.org',   '*.wikiquote.org',   '*.m.wikiquote.org',
+      'wikisource.org',  '*.wikisource.org',  '*.m.wikisource.org',
+      'wikiversity.org', '*.wikiversity.org', '*.m.wikiversity.org',
+      'wikivoyage.org',  '*.wikivoyage.org',  '*.m.wikivoyage.org',
+      'wiktionary.org',  '*.wiktionary.org',  '*.m.wiktionary.org',
+      'wikimediafoundation.org', '*.wikimediafoundation.org',
+      'wmfusercontent.org', '*.wmfusercontent.org',
+      'w.wiki',
+    ]
+    warning_threshold: 30
+    critical_threshold: 15
+  lets-encrypt:
+    acme_chief: true
+    cert_files: ['unified/live/rsa-2048.chained.crt', 'unified/live/ec-prime256v1.chained.crt']
+    private_key_files: ['unified/live/rsa-2048.key', 'unified/live/ec-prime256v1.key']
+    ocsp_stapling_files: ['unified/live/rsa-2048.ocsp', 'unified/live/ec-prime256v1.ocsp']
+    default: true
+    common_name: 'en.wikipedia.org'
+    sni: [
+      'wikipedia.org',   '*.wikipedia.org',   '*.m.wikipedia.org',
+      'wikimedia.org',   '*.wikimedia.org',   '*.m.wikimedia.org', '*.planet.wikimedia.org',
+      'mediawiki.org',   '*.mediawiki.org',   '*.m.mediawiki.org',
+      'wikibooks.org',   '*.wikibooks.org',   '*.m.wikibooks.org',
+      'wikidata.org',    '*.wikidata.org',    '*.m.wikidata.org',
+      'wikinews.org',    '*.wikinews.org',    '*.m.wikinews.org',
+      'wikiquote.org',   '*.wikiquote.org',   '*.m.wikiquote.org',
+      'wikisource.org',  '*.wikisource.org',  '*.m.wikisource.org',
+      'wikiversity.org', '*.wikiversity.org', '*.m.wikiversity.org',
+      'wikivoyage.org',  '*.wikivoyage.org',  '*.m.wikivoyage.org',
+      'wiktionary.org',  '*.wiktionary.org',  '*.m.wiktionary.org',
+      'wikimediafoundation.org', '*.wikimediafoundation.org',
+      'wmfusercontent.org', '*.wmfusercontent.org',
+      'w.wiki',
+    ]
+    warning_threshold: 30
+    critical_threshold: 15

@@ -60,10 +60,10 @@
 
 type Trafficserver::Inbound_TLS_settings = Struct[{
     'common'                   => Trafficserver::TLS_settings,
-    'cert_path'                => Stdlib::Absolutepath,
-    'private_key_path'         => Stdlib::Absolutepath,
+    'cert_path'                => Optional[Stdlib::Absolutepath],
+    'private_key_path'         => Optional[Stdlib::Absolutepath],
     'ocsp_stapling_path'       => Optional[Stdlib::Absolutepath],
-    'certificates'             => Array[Trafficserver::TLS_certificate],
+    'certificates'             => Optional[Array[Trafficserver::TLS_certificate]],
     'dhparams_file'            => Optional[Stdlib::Absolutepath],
     'max_record_size'          => Integer[-1, 16383],
     'session_cache'            => Integer[0, 2],

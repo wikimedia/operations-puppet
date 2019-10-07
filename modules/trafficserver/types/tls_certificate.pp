@@ -8,6 +8,9 @@
 # [*default*]
 #   Sets the default certificate to be used when SNI doesn't match any existing certificate
 #
+# [*acme_chief*]
+#   Boolean signaling whether the certificate is being managed by acme-chief.
+#
 # [*cert_files*]
 #   Array containing the file names of the SSL certificates.
 #
@@ -34,6 +37,7 @@
 #
 type Trafficserver::TLS_certificate = Struct[{
     'default'                  => Boolean,
+    'acme_chief'               => Boolean,
     'cert_files'               => Array[String],
     'private_key_files'        => Array[String],
     'ocsp_stapling_files'      => Optional[Array[String]],

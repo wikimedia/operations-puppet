@@ -7,7 +7,7 @@ class profile::trafficserver::tls (
     Stdlib::Port $port=hiera('profile::trafficserver::tls::port', 8443),
     Optional[Trafficserver::Network_settings] $network_settings=hiera('profile::trafficserver::tls::network_settings', undef),
     Optional[Trafficserver::H2_settings] $h2_settings=hiera('profile::trafficserver::tls::h2_settings', undef),
-    Trafficserver::Inbound_TLS_settings $inbound_tls_settings=hiera('profile::trafficserver::tls::inbound_tls_settings'),
+    Trafficserver::Inbound_TLS_settings $tls_settings=hiera('profile::trafficserver::tls::inbound_tls_settings'),
     Boolean $enable_xdebug=hiera('profile::trafficserver::tls::enable_xdebug', false),
     Array[TrafficServer::Mapping_rule] $mapping_rules=hiera('profile::trafficserver::tls::mapping_rules', []),
     Array[TrafficServer::Log_format] $log_formats=hiera('profile::trafficserver::tls::log_formats', []),
@@ -20,6 +20,8 @@ class profile::trafficserver::tls (
     Boolean $websocket_support = hiera('profile::trafficserver::tls::websocket_support', false),
     Optional[String] $ocsp_proxy=hiera('http_proxy'),
     Boolean $systemd_hardening=hiera('profile::trafficserver::tls::systemd_hardening', true),
+    Hash[String, Trafficserver::TLS_certificate] $available_unified_certs=hiera('profile::trafficserver::tls::available_unified_certs'),
+    String $public_tls_unified_cert_vendor=hiera('public_tls_unified_cert_vendor'),
 ){
     $errorpage = {
         title       => 'Wikimedia Error',
@@ -40,6 +42,24 @@ class profile::trafficserver::tls (
 
     $instance_name = 'tls'
     $service_name = "trafficserver-${instance_name}"
+    if !$available_unified_certs[$public_tls_unified_cert_vendor] {
+        fail('The specified TLS unified cert vendor is not available')
+    }
+    if $available_unified_certs[$public_tls_unified_cert_vendor]['acme_chief'] {
+        $tls_paths = {
+            'cert_path'          => '/etc/acmecerts',
+            'private_key_path'   => '/etc/acmecerts',
+            'ocsp_stapling_path' => '/etc/acmecerts',
+        }
+    } else {
+        $tls_paths = {
+            'cert_path'          => '/etc/ssl/localcerts',
+            'private_key_path'   => '/etc/ssl/private',
+            'ocsp_stapling_path' => '/var/cache/ocsp',
+        }
+    }
+    $paths_tls_settings = merge($tls_settings, $tls_paths)
+    $inbound_tls_settings = merge($paths_tls_settings, {'certificates' => [$available_unified_certs[$public_tls_unified_cert_vendor]]})
     if $inbound_tls_settings['do_ocsp'] == 1 and empty($inbound_tls_settings['ocsp_stapling_path']) {
         fail('The provided Inbound TLS settings are insufficient to ensure prefetched OCSP stapling responses')
     }
