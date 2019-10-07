@@ -98,7 +98,7 @@ scap::dsh::groups:
       - netmon2001.wikimedia.org
   logstash:
     conftool:
-      - {'cluster': 'logstash', 'service': 'logstash'}
+      - {'cluster': 'logstash', 'service': 'kibana'}
   relforge:
     hosts:
       - relforge1001.eqiad.wmnet
@@ -139,4 +139,3 @@ scap::dsh::groups:
     hosts:
       - cumin1001.eqiad.wmnet
       - cumin2001.codfw.wmnet
-
