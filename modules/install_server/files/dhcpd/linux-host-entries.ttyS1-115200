@@ -2811,34 +2811,34 @@ host icinga2001 {
     fixed-address icinga2001.wikimedia.org;
 }
 
-host kafka1001 {
+host logstash1020 {
     hardware ethernet 14:18:77:33:52:42;
-    fixed-address kafka1001.eqiad.wmnet;
+    fixed-address logstash1020.eqiad.wmnet;
 }
 
-host kafka1002 {
+host logstash1021 {
     hardware ethernet 14:18:77:33:4A:4E;
-    fixed-address kafka1002.eqiad.wmnet;
+    fixed-address logstash1021.eqiad.wmnet;
 }
 
-host kafka1003 {
+host logstash1022 {
     hardware ethernet 14:18:77:33:4A:D2;
-    fixed-address kafka1003.eqiad.wmnet;
+    fixed-address logstash1022.eqiad.wmnet;
 }
 
-host kafka2001 {
+host logstash2020 {
     hardware ethernet 14:18:77:39:6F:37;
-    fixed-address kafka2001.codfw.wmnet;
+    fixed-address logstash2020.codfw.wmnet;
 }
 
-host kafka2002 {
+host logstash2021{
     hardware ethernet 14:18:77:33:50:0D;
-    fixed-address kafka2002.codfw.wmnet;
+    fixed-address logstash2021.codfw.wmnet;
 }
 
-host kafka2003 {
+host logstash2022 {
     hardware ethernet 18:66:DA:7F:23:F0;
-    fixed-address kafka2003.codfw.wmnet;
+    fixed-address logstash2022.codfw.wmnet;
 }
 
 host kafka-jumbo1001 {
