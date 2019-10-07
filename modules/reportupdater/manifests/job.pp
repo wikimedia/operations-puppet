@@ -71,16 +71,16 @@ define reportupdater::job(
         }
     }
 
-    # Prepare config file parameter in case it's defined.
-    $_config_file = $config_file ? {
+    # Prepare config path parameter in case it's defined.
+    $config_path = $config_file ? {
         undef   => '',
-        default => "--config-file ${config_file}",
+        default => "--config-path ${config_file}",
     }
 
     systemd::timer::job { "reportupdater-${title}":
         ensure                    => $ensure,
         description               => "Report Updater job for ${title}",
-        command                   => "/usr/bin/python3 ${::reportupdater::path}/update_reports.py ${_config_file} -l info ${query_path} ${output_path}",
+        command                   => "/usr/bin/python3 ${::reportupdater::path}/update_reports.py ${config_path} -l info ${query_path} ${output_path}",
         interval                  => {
             'start'    => 'OnCalendar',
             'interval' => $interval
