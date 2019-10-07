@@ -8,6 +8,7 @@ fixture_path = File.expand_path(File.join(__FILE__, '..', 'fixtures'))
 RSpec.configure do |c|
   c.module_path = File.join(fixture_path, 'modules')
   c.manifest_dir = File.join(fixture_path, 'manifests')
+  c.hiera_config = File.join(fixture_path, 'hiera.yaml')
 end
 # Force usage of the systemd provider by overriding the stupid defaults
 # set by puppetlabs. This is the same thing that the debian package does,

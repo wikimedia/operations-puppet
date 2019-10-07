@@ -14,7 +14,7 @@
 class profile::openstack::eqiad1::cumin::target(
     $project_masters = hiera('profile::openstack::eqiad1::cumin::project_masters'),
     $project_pub_key = hiera('profile::openstack::eqiad1::cumin::project_pub_key'),
-    $cluster = hiera('cluster', 'misc'),
+    $cluster = lookup('cluster'),
     $site = $::site,  # lint:ignore:wmf_styleguide
     Array[Stdlib::IP::Address] $cumin_masters = hiera('cumin_masters', []),
     Boolean $permit_port_forwarding = hiera('profile::openstack::eqiad1::cumin::permit_port_forwarding', false),

@@ -1,7 +1,17 @@
 require 'spec_helper'
 
+stretch_facts = {
+    # For wmflib.os_version()
+    :lsbdistid      => 'Debian',
+    :lsbdistrelease => '9.4',
+
+    :initsystem => 'systemd',
+}
 describe 'nrpe::monitor_service', :type => :define do
     let(:title) { 'something' }
+    let(:facts) {
+        stretch_facts.merge({ :realm => 'production' })
+    }
 
     context 'with ensure present' do
       let(:params) do {

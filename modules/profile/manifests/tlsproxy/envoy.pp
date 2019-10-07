@@ -44,7 +44,7 @@ class profile::tlsproxy::envoy(
     ]] $services = lookup('profile::tlsproxy::envoy::services'),
     Optional[String] $global_cert_name = lookup('profile::tlsproxy::envoy::global_cert_name', {'default_value' => undef}),
     Array[String] $prometheus_nodes = lookup('prometheus_nodes'),
-    String $cluster = lookup('cluster', {'default_value' => 'misc'}),
+    String $cluster = lookup('cluster'),
 ) {
     if os_version('debian jessie') {
         if $tls_port !~ Stdlib::Port::Unprivileged {

@@ -2,6 +2,7 @@
 ## See also https://phabricator.wikimedia.org/T209265
 
 # General variables that once would have been in realm.pp
+cluster: misc
 datacenters:
   - eqiad
   - codfw

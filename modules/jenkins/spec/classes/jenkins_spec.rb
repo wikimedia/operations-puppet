@@ -7,7 +7,7 @@ class profile::base {
 }
 include ::profile::base
 EOF
-    let(:node_params) { {'cluster' => 'ci', 'site' => 'eqiad'} }
+    let(:node_params) { {'site' => 'eqiad'} }
     let(:pre_condition) { precondition }
     let(:params) { {
         :prefix => '/ci',

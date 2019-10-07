@@ -1,1 +1,2 @@
+cluster: misc
 nrpe::allowed_hosts: '127.0.42.42'

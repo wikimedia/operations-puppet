@@ -1,0 +1,7 @@
+:backends:
+  - yaml
+:yaml:
+  :datadir: 'spec/fixtures/hieradata'
+:hierarchy:
+  - "%{::test_name}" # This should be used to perform specific tests
+  - common # This should include common values or test defaults

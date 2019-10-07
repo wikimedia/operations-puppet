@@ -1,4 +1,5 @@
 # General variables that once would have been in realm.pp
+cluster: misc
 realm: labs
 datacenters: [eqiad]
 has_nrpe: false

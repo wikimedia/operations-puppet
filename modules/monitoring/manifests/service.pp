@@ -29,7 +29,7 @@ define monitoring::service(
         fail("Parameter ${host} not defined!")
     }
 
-    $cluster_name = hiera('cluster', $::cluster)
+    $cluster_name = lookup('cluster')
 
     $servicegroups = $group ? {
         /.+/    => $group,

@@ -2,11 +2,6 @@
 # site.pp
 # Base nodes
 
-# Default variables. this way, they work with an ENC (as in labs) as well.
-if !defined('$cluster') {
-    $cluster = 'misc'
-}
-
 # Node definitions (alphabetic order)
 
 # Ganeti VMs for acme-chief service

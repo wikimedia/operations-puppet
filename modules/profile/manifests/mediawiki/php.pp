@@ -24,7 +24,7 @@ class profile::mediawiki::php(
     Integer $request_timeout = hiera('profile::mediawiki::php::request_timeout', 240),
     String $apc_shm_size = hiera('profile::mediawiki::apc_shm_size'),
     # temporary, for php restarts
-    String $cluster = lookup('cluster', {'default_value' => $::cluster}),
+    String $cluster = lookup('cluster'),
     # Needed for wmerrors
     String $statsd = lookup('statsd'),
     # Allows to tune up or down the number of workers.

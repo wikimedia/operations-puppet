@@ -1,7 +1,17 @@
 require 'spec_helper'
 
+stretch_facts = {
+    # For wmflib.os_version()
+    :lsbdistid      => 'Debian',
+    :lsbdistrelease => '9.4',
+
+    :initsystem => 'systemd',
+}
 describe 'nrpe::check', :type => :define do
     let(:title) { 'something' }
+    let(:facts) {
+        stretch_facts.merge({ :realm => 'production' })
+    }
     let(:params) { { :command => '/usr/local/bin/mycommand -i this -o that' } }
 
     context 'with nrpe class not defined' do

@@ -4,7 +4,7 @@
 # Note that once the role/profile transition is complete, we should not need
 # those anymore.
 class profile::cumin::target(
-    $cluster = hiera('cluster', 'misc'),
+    $cluster = lookup('cluster'),
     $site = $::site,  # lint:ignore:wmf_styleguide
     Array[Stdlib::IP::Address] $cumin_masters = hiera('cumin_masters', []),
 ) {

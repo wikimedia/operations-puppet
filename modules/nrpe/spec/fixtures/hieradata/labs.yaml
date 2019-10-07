@@ -1,1 +1,2 @@
+cluster: misc
 nrpe::allowed_hosts: '10.68.42.42'

@@ -1,4 +1,5 @@
 # openldap::management
+cluster: misc
 profile::openldap::management::cron_active: false
 profile::ldap::client::labs::restricted_to: false
 profile::ldap::client::labs::restricted_from: false
