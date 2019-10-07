@@ -11,8 +11,6 @@ class profile::puppetdb::database(
     $users = hiera('profile::puppetdb::database::users', {}),
     $ssldir = hiera('profile::puppetdb::database::ssldir', undef),
 ) {
-    include ::passwords::postgres
-
     $pgversion = $::lsbdistcodename ? {
         'buster'  => '11',
         'stretch' => '9.6',
