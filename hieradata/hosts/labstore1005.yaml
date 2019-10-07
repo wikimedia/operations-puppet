@@ -1,1 +1,1 @@
-profile::openstack::base::version: 'mitaka'
+profile::openstack::eqiad1::version: 'mitaka'
