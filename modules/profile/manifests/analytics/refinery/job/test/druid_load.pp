@@ -16,9 +16,10 @@ class profile::analytics::refinery::job::test::druid_load {
 
     # Load event.NavigationTiming
     profile::analytics::refinery::job::eventlogging_to_druid_job { 'navigationtiming':
-        job_config => {
+        job_config   => {
             dimensions    => 'event.action,event.isAnon,event.isOversample,event.mediaWikiVersion,event.mobileMode,event.namespaceId,event.netinfoEffectiveConnectionType,event.originCountry,recvFrom,revision,useragent.browser_family,useragent.browser_major,useragent.device_family,useragent.is_bot,useragent.os_family,useragent.os_major,wiki',
             time_measures => 'event.connectEnd,event.connectStart,event.dnsLookup,event.domComplete,event.domInteractive,event.fetchStart,event.firstPaint,event.loadEventEnd,event.loadEventStart,event.redirecting,event.requestStart,event.responseEnd,event.responseStart,event.secureConnectionStart,event.unload,event.gaps,event.mediaWikiLoadEnd,event.RSI',
         },
+        use_kerberos => true,
     }
 }

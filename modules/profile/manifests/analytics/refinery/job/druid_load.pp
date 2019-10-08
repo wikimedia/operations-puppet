@@ -2,7 +2,9 @@
 #
 # Installs spark jobs to load data sets to Druid.
 #
-class profile::analytics::refinery::job::druid_load {
+class profile::analytics::refinery::job::druid_load(
+    $use_kerberos = lookup('profile::analytics::refinery::job::druid_load::use_kerberos', { 'default_value' => false }),
+) {
     require ::profile::analytics::refinery
 
     # Update this when you want to change the version of the refinery job jar

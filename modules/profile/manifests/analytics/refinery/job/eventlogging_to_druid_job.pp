@@ -78,6 +78,7 @@ define profile::analytics::refinery::job::eventlogging_to_druid_job (
     $hourly_hours_until  = 5,
     $daily_days_since    = 4,
     $daily_days_until    = 3,
+    $use_kerberos        = false,
     $ensure              = 'present',
 ) {
     require ::profile::analytics::refinery
@@ -121,14 +122,15 @@ define profile::analytics::refinery::job::eventlogging_to_druid_job (
         }),
     }
     profile::analytics::refinery::job::spark_job { "${job_name}_hourly":
-        ensure     => $ensure,
-        jar        => $_refinery_job_jar,
-        class      => $job_class,
-        spark_opts => "${default_spark_opts} --files /etc/hive/conf/hive-site.xml,${hourly_job_config_file} --conf spark.dynamicAllocation.maxExecutors=32 --driver-memory 2G",
-        job_opts   => "--config_file ${job_name}_hourly.properties --since $(date --date '-${hourly_hours_since}hours' -u +'%Y-%m-%dT%H:00:00') --until $(date --date '-${hourly_hours_until}hours' -u +'%Y-%m-%dT%H:00:00')",
-        require    => Profile::Analytics::Refinery::Job::Config[$hourly_job_config_file],
-        user       => $user,
-        interval   => '*-*-* *:00:00',
+        ensure       => $ensure,
+        jar          => $_refinery_job_jar,
+        class        => $job_class,
+        spark_opts   => "${default_spark_opts} --files /etc/hive/conf/hive-site.xml,${hourly_job_config_file} --conf spark.dynamicAllocation.maxExecutors=32 --driver-memory 2G",
+        job_opts     => "--config_file ${job_name}_hourly.properties --since $(date --date '-${hourly_hours_since}hours' -u +'%Y-%m-%dT%H:00:00') --until $(date --date '-${hourly_hours_until}hours' -u +'%Y-%m-%dT%H:00:00')",
+        require      => Profile::Analytics::Refinery::Job::Config[$hourly_job_config_file],
+        user         => $user,
+        interval     => '*-*-* *:00:00',
+        use_kerberos => $use_kerberos,
     }
 
     # Daily job
@@ -142,13 +144,14 @@ define profile::analytics::refinery::job::eventlogging_to_druid_job (
         }),
     }
     profile::analytics::refinery::job::spark_job { "${job_name}_daily":
-        ensure     => $ensure,
-        jar        => $_refinery_job_jar,
-        class      => $job_class,
-        spark_opts => "${default_spark_opts} --files /etc/hive/conf/hive-site.xml,${daily_job_config_file} --conf spark.dynamicAllocation.maxExecutors=64 --driver-memory 2G",
-        job_opts   => "--config_file ${job_name}_daily.properties --since $(date --date '-${daily_days_since}days' -u +'%Y-%m-%dT00:00:00') --until $(date --date '-${daily_days_until}days' -u +'%Y-%m-%dT00:00:00')",
-        require    => Profile::Analytics::Refinery::Job::Config[$daily_job_config_file],
-        user       => $user,
-        interval   => '*-*-* 00:00:00',
+        ensure       => $ensure,
+        jar          => $_refinery_job_jar,
+        class        => $job_class,
+        spark_opts   => "${default_spark_opts} --files /etc/hive/conf/hive-site.xml,${daily_job_config_file} --conf spark.dynamicAllocation.maxExecutors=64 --driver-memory 2G",
+        job_opts     => "--config_file ${job_name}_daily.properties --since $(date --date '-${daily_days_since}days' -u +'%Y-%m-%dT00:00:00') --until $(date --date '-${daily_days_until}days' -u +'%Y-%m-%dT00:00:00')",
+        require      => Profile::Analytics::Refinery::Job::Config[$daily_job_config_file],
+        user         => $user,
+        interval     => '*-*-* 00:00:00',
+        use_kerberos => $use_kerberos,
     }
 }
