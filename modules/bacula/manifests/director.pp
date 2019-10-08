@@ -28,9 +28,13 @@ class bacula::director(
                     $max_dir_concur_jobs,
                     $dir_port='9101',
                     $bconsolepassword=sha1($::uniqueid)) {
-    # bacula-director depends on bacula-director-sqlvariant
+    # bacula-director depends on bacula-director-sqlvariant for
+    # stretch and lower, but *NOT* on buster
+    package { 'bacula-director':
+        ensure => installed,
+    }
     package { "bacula-director-${sqlvariant}":
-        ensure    => installed,
+        ensure => installed,
     }
 
     service { 'bacula-director':
