@@ -3773,6 +3773,11 @@ host ms-be1050 {
     fixed-address ms-be1050.eqiad.wmnet;
 }
 
+host ms-be1051 {
+    hardware ethernet 48:df:37:89:53:90;
+    fixed-address ms-be1051.eqiad.wmnet;
+}
+
 host ms-be1052 {
     hardware ethernet 48:df:37:89:54:60;
     fixed-address ms-be1052.eqiad.wmnet;
@@ -3786,6 +3791,11 @@ host ms-be1053 {
 host ms-be1054 {
     hardware ethernet 48:df:37:89:53:60;
     fixed-address ms-be1054.eqiad.wmnet;
+}
+
+host ms-be1055 {
+    hardware ethernet 48:df:37:89:53:b0;
+    fixed-address ms-be1055.eqiad.wmnet;
 }
 
 host ms-be1056 {
