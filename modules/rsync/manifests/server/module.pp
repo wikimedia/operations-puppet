@@ -19,6 +19,7 @@
 #   $auth_users      - list of usernames that will be allowed to connect to this module (must be undef or an array)
 #   $hosts_allow     - list of patterns allowed to connect to this module (man 5 rsyncd.conf for details, must be undef or an array)
 #   $hosts_deny      - list of patterns allowed to connect to this module (man 5 rsyncd.conf for details, must be undef or an array)
+#   $chroot          - chroot to the destination before starting the rsync.  enabled by default.
 #   $auto_ferm       - If enabled and if $hosts_allow is set, generate a ferm service which restricts access to the allowed hosts
 #   $auto_ferm_ipv6  - If auto_ferm is used and this option is enabled, ferm rules are also generated for ipv6
 #
@@ -47,6 +48,7 @@ define rsync::server::module (
   $outgoing_chmod  = '0644',
   $max_connections = '0',
   $lock_file       = '/var/run/rsyncd.lock',
+  $chroot          = true,
   $auto_ferm       = false,
   $auto_ferm_ipv6  = false,
   $secrets_file    = undef,
@@ -54,6 +56,7 @@ define rsync::server::module (
   $hosts_allow     = undef,
   $hosts_deny      = undef,
 ){
+  include ::rsync::server
 
   file { "${rsync::server::rsync_fragments}/frag-${name}":
     ensure  => $ensure,

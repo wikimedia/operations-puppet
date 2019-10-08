@@ -29,6 +29,7 @@ describe 'rsync::server::module', :type => :define do
     it { should contain_file(fragment_file).with_content(/^list\s*=\s*yes$/) }
     it { should contain_file(fragment_file).with_content(/^uid\s*=\s*0$/) }
     it { should contain_file(fragment_file).with_content(/^gid\s*=\s*0$/) }
+    it { should contain_file(fragment_file).with_content(/^use chroot\s*=\s*yes$/) }
     it { should contain_file(fragment_file).with_content(/^max connections\s*=\s*0$/) }
     it { should_not contain_file(fragment_file).with_content(/^lock file\s*=.*$/) }
     it { should_not contain_file(fragment_file).with_content(/^secrets file\s*=.*$/) }
@@ -69,6 +70,12 @@ describe 'rsync::server::module', :type => :define do
       mandatory_params.merge({ :auth_users     => ['me', 'you', 'them'] })
     end
     it { should contain_file(fragment_file).with_content(/^auth users\s*=\s*me, you, them$/)}
+  end
+  describe "when overriding chroot" do
+    let :params do
+      mandatory_params.merge(chroot: false)
+    end
+    it { should contain_file(fragment_file).with_content(/^use chroot\s*=\s*no$/)}
   end
 
 end
