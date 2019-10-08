@@ -22,10 +22,18 @@ class profile::backup::director(
         max_dir_concur_jobs => '10',
     }
 
+    if os_version('debian >= buster') {
+        $file_storage_production = 'FileStorageProduction'
+        $file_storage_archive = 'FileStorageArchive'
+    } else {
+        $file_storage_production = 'FileStorage1'
+        $file_storage_archive = 'FileStorage2'
+    }
+
     # One pool for all
     bacula::director::pool { $pool:
         max_vols         => 60,
-        storage          => "${onsite_sd}-FileStorage1",
+        storage          => "${onsite_sd}-${file_storage_production}",
         volume_retention => '30 days',
         label_fmt        => $pool,
         max_vol_bytes    => '536870912000',
@@ -35,14 +43,14 @@ class profile::backup::director(
     # Default pool needed internally by bacula
     bacula::director::pool { 'Default':
         max_vols         => 1,
-        storage          => "${onsite_sd}-FileStorage1",
+        storage          => "${onsite_sd}-${file_storage_production}",
         volume_retention => '1800 days',
     }
 
     # Archive pool for long term archival.
     bacula::director::pool { 'Archive':
         max_vols         => 5,
-        storage          => "${onsite_sd}-FileStorage2",
+        storage          => "${onsite_sd}-${file_storage_archive}",
         volume_retention => '5 years',
         label_fmt        => 'archive',
         max_vol_bytes    => '536870912000',
@@ -51,7 +59,7 @@ class profile::backup::director(
     # Off site pool for off site backups
     bacula::director::pool { $offsite_pool:
         max_vols         => 60,
-        storage          => "${offsite_sd}-FileStorage1",
+        storage          => "${offsite_sd}-${file_storage_production}",
         volume_retention => '30 days',
         label_fmt        => $offsite_pool,
         max_vol_bytes    => '536870912000',

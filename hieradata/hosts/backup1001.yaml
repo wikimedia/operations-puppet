@@ -1,3 +1,6 @@
 # Temporary parallel database to test new bacula version
+profile::backup::director::offsite_pool: offsite
+profile::backup::director::onsite_sd: backup1001
+profile::backup::director::offsite_sd: backup2001
 profile::backup::director::dbschema: bacula9
 profile::backup::director::dbuser: bacula9
