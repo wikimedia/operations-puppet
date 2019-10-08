@@ -290,6 +290,12 @@ profile::kubernetes::deployment_server::services:
     mode: '0640'
     namespace: wikifeeds
     owner: mwdeploy
+  echostore:
+    username: echostore
+    group: wikidev
+    mode: '0640'
+    namespace: echostore
+    owner: mwdeploy
 
 # Specified in the private repo in this form
 #profile::kubernetes::deployment_server::tokens:
@@ -319,6 +325,9 @@ profile::kubernetes::deployment_server::services:
 #    token: dummy
 #  wikifeeds:
 #    token: dummy
+#  echostore:
+#    token: dummy
+#
 
 # Specified in the private repo in this form
 #profile::kubernetes::deployment_server_secrets::services:
