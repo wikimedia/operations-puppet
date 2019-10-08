@@ -13,11 +13,6 @@ class profile::hadoop::master::standby(
 ) {
     require ::profile::hadoop::common
 
-    # Ensure that druid user exists on standby namenodes nodes.
-    class { '::druid::cdh::hadoop::user':
-        use_kerberos => $use_kerberos,
-    }
-
     if $monitoring_enabled {
         # Prometheus exporters
         require ::profile::hadoop::monitoring::namenode

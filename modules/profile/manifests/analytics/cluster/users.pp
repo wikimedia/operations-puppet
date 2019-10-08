@@ -32,4 +32,8 @@ class profile::analytics::cluster::users {
         ensure => present,
         system => true,
     }
+
+    # When Kerberos is enabled, indexation jobs will run on workers
+    # as user 'druid'.
+    class { '::druid::cdh::hadoop::user': }
 }
