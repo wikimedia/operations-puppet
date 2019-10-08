@@ -24,6 +24,12 @@
 #   Specifies the minimum average window increment Traffic Server allows.
 #   The average will be calculated based on the last 5 WINDOW_UPDATE frames
 #
+# [*accept_no_activity_timeout*]
+#   The timeout interval in seconds before Traffic Server closes a connection that has no activity.
+#
+# [*no_activity_timeout_in*]
+#   Specifies how long Traffic Server keeps connections to clients open if a transaction stalls.
+#
 type Trafficserver::H2_settings = Struct[{
     'stream_priority_enabled'        => Integer[0, 1],
     'max_settings_per_frame'         => Integer[0],
@@ -32,4 +38,6 @@ type Trafficserver::H2_settings = Struct[{
     'max_ping_frames_per_minute'     => Integer[0],
     'max_priority_frames_per_minute' => Integer[0],
     'min_avg_window_update'          => Float[0.0],
+    'accept_no_activity_timeout'     => Integer[0],
+    'no_activity_timeout_in'         => Integer[0],
 }]

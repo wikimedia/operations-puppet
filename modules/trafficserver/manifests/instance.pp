@@ -40,17 +40,16 @@
 #   Disables (1) or enables (0) DNS resolution of hosts defined on remapping rules (default: 0)
 #
 # [*network_settings*]
-#   Instance of Trafficserver::Network_settings. (default:undef).
+#   Instance of Trafficserver::Network_settings. (default: undef).
+#
+# [*http_settings*]
+#   Instance of Trafficserver::HTTP_settings. (default: undef).
 #
 # [*h2_settings*]
-#   Instance of Trafficserver::H2_settings. (default:undef).
+#   Instance of Trafficserver::H2_settings. (default: undef).
 #
-# [*origin_ttfb_timeout*]
-#   The timeout value (in seconds) for time to first byte for an origin server connection. (default: 30 secs)
-#
-# [*origin_post_ttfb_timeout*]
-#   The timeout value (in seconds) for time to first byte for an origin server connection when the client request
-#   is a POST or PUT request. (default: 1800 secs)
+# [*ttfb_timeout*]
+#   The timeout value (in seconds) for time to first byte for HTTP and HTTP2 connections. (default: 180 secs)
 #
 # [*inbound_tls_settings*]
 #   Inbound TLS settings. (default: undef).
@@ -200,9 +199,8 @@ define trafficserver::instance(
     Integer[0, 1] $disable_dns_resolution = 0,
     Enum['none', 'both', 'ip', 'host'] $server_session_sharing = 'both',
     Optional[Trafficserver::Network_settings] $network_settings = undef,
+    Optional[Trafficserver::HTTP_settings] $http_settings = undef,
     Optional[Trafficserver::H2_settings] $h2_settings = undef,
-    Integer[0] $origin_ttfb_timeout = 30,
-    Integer[0] $origin_post_ttfb_timeout = 1800,
     Optional[Trafficserver::Inbound_TLS_settings] $inbound_tls_settings = undef,
     Optional[Trafficserver::Outbound_TLS_settings] $outbound_tls_settings = undef,
     Boolean $enable_xdebug = false,

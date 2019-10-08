@@ -132,3 +132,22 @@ profile::trafficserver::tls::available_unified_certs:
     ]
     warning_threshold: 30
     critical_threshold: 15
+
+profile::trafficserver::tls::http_settings:
+  accept_no_activity_timeout: 180
+  connect_attempts_timeout: 180
+  keep_alive_no_activity_timeout_in: 120
+  keep_alive_no_activity_timeout_out: 120
+  post_connect_attempts_timeout: 180
+  transaction_no_activity_timeout_in: 200
+  transaction_no_activity_timeout_out: 200
+profile::trafficserver::tls::h2_settings:
+  stream_priority_enabled: 0
+  max_settings_per_frame: 7
+  max_settings_per_minute: 14
+  max_settings_frames_per_minute: 14
+  max_ping_frames_per_minute: 60
+  max_priority_frames_per_minute: 0
+  min_avg_window_update: 2560.0
+  accept_no_activity_timeout: 180
+  no_activity_timeout_in: 180
