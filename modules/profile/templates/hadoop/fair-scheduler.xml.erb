@@ -9,9 +9,17 @@
     <weight>1.0</weight>
     <maxRunningApps>50</maxRunningApps>
     <schedulingMode>fair</schedulingMode>
+
+    <queue name="sequential">
+      <!--
+        Applications submitted to this queue will be run sequentially. This
+        is for heavy jobs that might be automatically scheduled concurrently
+        and are not concerned with timeliness.
+      -->
+      <maxRunningApps>1</maxRunningApps>
+      <weight>1.0</weight>
+    </queue>
   </queue>
-
-
 
   <queue name="default">
     <weight>2.0</weight>
