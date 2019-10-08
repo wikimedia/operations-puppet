@@ -11,7 +11,4 @@ class lvs::monitor {
     $yaml_tmp_var = template('lvs/monitor_lvs.erb')
     $monitors = parseyaml($yaml_tmp_var)
     create_resources(lvs::monitor_service_http_https, $monitors)
-
-    # Experimental load-balancer monitoring for services using service-checker
-    include ::lvs::monitor_services
 }

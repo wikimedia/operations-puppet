@@ -25,7 +25,8 @@ class profile::icinga(
     Hash[String, String]          $apache2_auth_users    = lookup('profile::icinga::apache2_auth_users'),
     Stdlib::Host                  $cas_virtual_host      = lookup('profile::icinga::cas_virtual_host'),
     Boolean                       $cas_debug             = lookup('profile::icinga::cas_debug'),
-    Array[String]                 $cas_required_groups   = lookup('profile::icinga::cas_required_groups')
+    Array[String]                 $cas_required_groups   = lookup('profile::icinga::cas_required_groups'),
+    Array[String]                 $datacenters           = lookup('datacenters'),
 ){
     $is_passive = !($::fqdn == $active_host)
 
@@ -39,6 +40,11 @@ class profile::icinga(
     class { 'netops::monitoring': }
     class { 'facilities': }
     class { 'lvs::monitor': }
+    # Experimental load-balancer monitoring for services using service-checker
+    class { '::lvs::monitor_services':
+        main_datacenters => ['eqiad', 'codfw'],
+        all_datacenters  => $datacenters,
+    }
     class { 'icinga::monitor::checkpaging': }
 
     class { 'icinga::nsca::daemon':

@@ -2,334 +2,130 @@
 #
 # Monitor services using service_checker
 
-class lvs::monitor_services($contacts = 'admins,team-services', $critical = false) {
-
-    Monitoring::Service {
-        critical      => $critical,
-        contact_group => $contacts,
+class lvs::monitor_services(
+    String $contacts                = 'admins,team-services',
+    Boolean $critical               = false,
+    Array[String] $main_datacenters = [],
+    Array[String] $all_datacenters  = [],
+) {
+    $main_datacenters.each |$dc| {
+        monitoring::service {
+            default:
+                critical      => $critical,
+                contact_group => $contacts,
+                group         => 'lvs',
+                ;
+            "check_mobileapps_cluster_${dc}":
+                host          => "mobileapps.svc.${dc}.wmnet",
+                description   => "Mobileapps LVS ${dc}",
+                check_command => "check_wmf_service!http://mobileapps.svc.${dc}.wmnet:8888!15",
+                contact_group => 'admins,mobileapps',
+                notes_url     => 'https://wikitech.wikimedia.org/wiki/Mobileapps_(service)',
+                ;
+            "check_graphoid_cluster_${dc}":
+                host          => "graphoid.svc.${dc}.wmnet",
+                description   => "Graphoid LVS ${dc}",
+                check_command => "check_wmf_service!http://graphoid.svc.${dc}.wmnet:19000!15",
+                notes_url     => 'https://wikitech.wikimedia.org/wiki/Graphoid',
+                ;
+            "check_citoid_cluster_${dc}":
+                host          => "citoid.svc.${dc}.wmnet",
+                description   => "Citoid LVS ${dc}",
+                check_command => "check_wmf_service!http://citoid.svc.${dc}.wmnet:1970!15",
+                notes_url     => 'https://wikitech.wikimedia.org/wiki/Citoid',
+                ;
+            "check_restbase_cluster_${dc}":
+                host          => "restbase.svc.${dc}.wmnet",
+                description   => "Restbase LVS ${dc}",
+                check_command => "check_wmf_service!http://restbase.svc.${dc}.wmnet:7231/en.wikipedia.org/v1!15",
+                notes_url     => 'https://wikitech.wikimedia.org/wiki/RESTBase',
+                ;
+            "check_restrouter_cluster_${dc}":
+                host          => "restrouter.svc.${dc}.wmnet",
+                description   => "Restrouter LVS ${dc}",
+                check_command => "check_wmf_service!http://restrouter.svc.${dc}.wmnet:7231/en.wikipedia.org/v1!15",
+                notes_url     => 'https://wikitech.wikimedia.org/wiki/RESTBase',
+                ;
+            "check_mathoid_cluster_${dc}":
+                host          => "mathoid.svc.${dc}.wmnet",
+                description   => "Mathoid LVS ${dc}",
+                check_command => "check_wmf_service!http://mathoid.svc.${dc}.wmnet:10042!15",
+                notes_url     => 'https://wikitech.wikimedia.org/wiki/Mathoid',
+                ;
+            "check_cxserver_cluster_${dc}":
+                host          => "cxserver.svc.${dc}.wmnet",
+                description   => "Cxserver LVS ${dc}",
+                check_command => "check_wmf_service!http://cxserver.svc.${dc}.wmnet:8080!15",
+                notes_url     => 'https://wikitech.wikimedia.org/wiki/CX',
+                ;
+            "check_kartotherian_cluster_${dc}":
+                host          => "kartotherian.svc.${dc}.wmnet",
+                description   => "Kartotherian LVS ${dc}",
+                check_command => "check_wmf_service!http://kartotherian.svc.${dc}.wmnet:6533!15",
+                contact_group => 'admins,team-interactive',
+                notes_url     => 'https://wikitech.wikimedia.org/wiki/Maps#Kartotherian',
+                critical      => true,
+                ;
+            "check_eventgate_analytics_cluster_${dc}":
+                host          => "eventgate-analytics.svc.${dc}.wmnet",
+                description   => "eventgate-analytics LVS ${dc}",
+                check_command => "check_wmf_service!http://eventgate-analytics.svc.${dc}.wmnet:31192!15",
+                notes_url     => 'https://wikitech.wikimedia.org/wiki/Event*#EventGate_(repository)',
+                ;
+            "check_eventgate_main_cluster_${dc}":
+                host          => "eventgate-main.svc.${dc}.wmnet",
+                description   => "eventgate-main LVS ${dc}",
+                check_command => "check_wmf_service!http://eventgate-main.svc.${dc}.wmnet:32192!15",
+                notes_url     => 'https://wikitech.wikimedia.org/wiki/Event*#EventGate_(repository)',
+                ;
+            "check_docker_registry_cluster_${dc}":
+                host          => "docker-registry.svc.${dc}.wmnet",
+                description   => "docker-registry LVS ${dc}",
+                check_command => "check_https_url!docker-registry.svc.${dc}.wmnet!/v2/",
+                notes_url     => 'https://wikitech.wikimedia.org/wiki/Docker-registry-runbook',
+                ;
+            "check_sessionstore_${dc}":
+                host          => "sessionstore.svc.${dc}.wmnet",
+                description   => "Sessionstore ${dc}",
+                check_command => "check_wmf_service_url!https1://sessionstore.svc.${dc}.wmnet:8081!15!/openapi",
+                notes_url     => 'https://www.mediawiki.org/wiki/Kask',
+                ;
+            "check_termbox_${dc}":
+                host          => "termbox.svc.${dc}.wmnet",
+                description   => "termbox ${dc}",
+                check_command => "check_wmf_service!http://termbox.svc.${dc}.wmnet:3030!15!",
+                notes_url     => 'https://wikitech.wikimedia.org/wiki/WMDE/Wikidata/SSR_Service',
+                ;
+            "check_wikifeeds_${dc}":
+                host          => "wikifeeds.svc.${dc}.wmnet",
+                description   => "wikifeeds ${dc}",
+                check_command => "check_wmf_service!http://wikifeeds.svc.${dc}.wmnet:8889!15!",
+                notes_url     => 'https://wikitech.wikimedia.org/wiki/Wikifeeds',
+                ;
+        }
     }
 
-    # Mobileapps
-    monitoring::service { 'check_mobileapps_cluster_eqiad':
-        host          => 'mobileapps.svc.eqiad.wmnet',
-        group         => 'lvs',
-        description   => 'Mobileapps LVS eqiad',
-        check_command => 'check_wmf_service!http://mobileapps.svc.eqiad.wmnet:8888!15',
-        contact_group => 'admins,mobileapps',
-        notes_url     => 'https://wikitech.wikimedia.org/wiki/Mobileapps_(service)',
-    }
-
-    monitoring::service { 'check_mobileapps_cluster_codfw':
-        host          => 'mobileapps.svc.codfw.wmnet',
-        group         => 'lvs',
-        description   => 'Mobileapps LVS codfw',
-        check_command => 'check_wmf_service!http://mobileapps.svc.codfw.wmnet:8888!15',
-        contact_group => 'admins,mobileapps',
-        notes_url     => 'https://wikitech.wikimedia.org/wiki/Mobileapps_(service)',
-    }
-
-    # Graphoid
-    monitoring::service { 'check_graphoid_cluster_eqiad':
-        host          => 'graphoid.svc.eqiad.wmnet',
-        group         => 'lvs',
-        description   => 'Graphoid LVS eqiad',
-        check_command => 'check_wmf_service!http://graphoid.svc.eqiad.wmnet:19000!15',
-        notes_url     => 'https://wikitech.wikimedia.org/wiki/Graphoid',
-    }
-
-    monitoring::service { 'check_graphoid_cluster_codfw':
-        host          => 'graphoid.svc.codfw.wmnet',
-        group         => 'lvs',
-        description   => 'Graphoid LVS codfw',
-        check_command => 'check_wmf_service!http://graphoid.svc.codfw.wmnet:19000!15',
-        notes_url     => 'https://wikitech.wikimedia.org/wiki/Graphoid',
-    }
-
-    # Citoid
-    monitoring::service { 'check_citoid_cluster_eqiad':
-        host          => 'citoid.svc.eqiad.wmnet',
-        group         => 'lvs',
-        description   => 'Citoid LVS eqiad',
-        check_command => 'check_wmf_service!http://citoid.svc.eqiad.wmnet:1970!15',
-        notes_url     => 'https://wikitech.wikimedia.org/wiki/Citoid',
-    }
-
-    monitoring::service { 'check_citoid_cluster_codfw':
-        host          => 'citoid.svc.codfw.wmnet',
-        group         => 'lvs',
-        description   => 'Citoid LVS codfw',
-        check_command => 'check_wmf_service!http://citoid.svc.codfw.wmnet:1970!15',
-        notes_url     => 'https://wikitech.wikimedia.org/wiki/Citoid',
-    }
-
-
-    # Restbase
-    monitoring::service { 'check_restbase_cluster_eqiad':
-        host          => 'restbase.svc.eqiad.wmnet',
-        group         => 'lvs',
-        description   => 'Restbase LVS eqiad',
-        check_command => 'check_wmf_service!http://restbase.svc.eqiad.wmnet:7231/en.wikipedia.org/v1!15',
-        notes_url     => 'https://wikitech.wikimedia.org/wiki/RESTBase',
-    }
-
-    monitoring::service { 'check_restbase_cluster_codfw':
-        host          => 'restbase.svc.codfw.wmnet',
-        group         => 'lvs',
-        description   => 'Restbase LVS codfw',
-        check_command => 'check_wmf_service!http://restbase.svc.codfw.wmnet:7231/en.wikipedia.org/v1!15',
-        notes_url     => 'https://wikitech.wikimedia.org/wiki/RESTBase',
-    }
-
-    # Restrouter
-    monitoring::service { 'check_restrouter_cluster_eqiad':
-        host          => 'restrouter.svc.eqiad.wmnet',
-        group         => 'lvs',
-        description   => 'Restrouter LVS eqiad',
-        check_command => 'check_wmf_service!http://restrouter.svc.eqiad.wmnet:7231/en.wikipedia.org/v1!15',
-        notes_url     => 'https://wikitech.wikimedia.org/wiki/RESTBase',
-    }
-
-    monitoring::service { 'check_restrouter_cluster_codfw':
-        host          => 'restrouter.svc.codfw.wmnet',
-        group         => 'lvs',
-        description   => 'Restrouter LVS codfw',
-        check_command => 'check_wmf_service!http://restrouter.svc.codfw.wmnet:7231/en.wikipedia.org/v1!15',
-        notes_url     => 'https://wikitech.wikimedia.org/wiki/RESTBase',
-    }
-
-    # Mathoid
-    monitoring::service { 'check_mathoid_cluster_eqiad':
-        host          => 'mathoid.svc.eqiad.wmnet',
-        group         => 'lvs',
-        description   => 'Mathoid LVS eqiad',
-        check_command => 'check_wmf_service!http://mathoid.svc.eqiad.wmnet:10042!15',
-        notes_url     => 'https://wikitech.wikimedia.org/wiki/Mathoid',
-    }
-
-    monitoring::service { 'check_mathoid_cluster_codfw':
-        host          => 'mathoid.svc.codfw.wmnet',
-        group         => 'lvs',
-        description   => 'Mathoid LVS codfw',
-        check_command => 'check_wmf_service!http://mathoid.svc.codfw.wmnet:10042!15',
-        notes_url     => 'https://wikitech.wikimedia.org/wiki/Mathoid',
-    }
-
-    # Cxserver
-    monitoring::service { 'check_cxserver_cluster_eqiad':
-        host          => 'cxserver.svc.eqiad.wmnet',
-        group         => 'lvs',
-        description   => 'Cxserver LVS eqiad',
-        check_command => 'check_wmf_service!http://cxserver.svc.eqiad.wmnet:8080!15',
-        notes_url     => 'https://wikitech.wikimedia.org/wiki/CX',
-    }
-
-    monitoring::service { 'check_cxserver_cluster_codfw':
-        host          => 'cxserver.svc.codfw.wmnet',
-        group         => 'lvs',
-        description   => 'Cxserver LVS codfw',
-        check_command => 'check_wmf_service!http://cxserver.svc.codfw.wmnet:8080!15',
-        notes_url     => 'https://wikitech.wikimedia.org/wiki/CX'
-    }
-
-    # Kartotherian
-    monitoring::service { 'check_kartotherian_cluster_eqiad':
-        host          => 'kartotherian.svc.eqiad.wmnet',
-        group         => 'lvs',
-        description   => 'Kartotherian LVS eqiad',
-        check_command => 'check_wmf_service!http://kartotherian.svc.eqiad.wmnet:6533!15',
-        contact_group => 'admins,team-interactive',
-        critical      => true,
-        notes_url     => 'https://wikitech.wikimedia.org/wiki/Maps#Kartotherian',
-    }
-
-    monitoring::service { 'check_kartotherian_cluster_codfw':
-        host          => 'kartotherian.svc.codfw.wmnet',
-        group         => 'lvs',
-        description   => 'Kartotherian LVS codfw',
-        check_command => 'check_wmf_service!http://kartotherian.svc.codfw.wmnet:6533!15',
-        contact_group => 'admins,team-interactive',
-        critical      => true,
-        notes_url     => 'https://wikitech.wikimedia.org/wiki/Maps#Kartotherian',
-    }
-
-    # eventgate-analytics
-    monitoring::service { 'check_eventgate_analytics_cluster_eqiad':
-        host          => 'eventgate-analytics.svc.eqiad.wmnet',
-        group         => 'lvs',
-        description   => 'eventgate-analytics LVS eqiad',
-        check_command => 'check_wmf_service!http://eventgate-analytics.svc.eqiad.wmnet:31192!15',
-        notes_url     => 'https://wikitech.wikimedia.org/wiki/Event*#EventGate_(repository)',
-    }
-
-    monitoring::service { 'check_eventgate_analytics_cluster_codfw':
-        host          => 'eventgate-analytics.svc.codfw.wmnet',
-        group         => 'lvs',
-        description   => 'eventgate-analytics LVS codfw',
-        check_command => 'check_wmf_service!http://eventgate-analytics.svc.codfw.wmnet:31192!15',
-        notes_url     => 'https://wikitech.wikimedia.org/wiki/Event*#EventGate_(repository)',
-    }
-
-    # eventgate-main
-    monitoring::service { 'check_eventgate_main_cluster_eqiad':
-        host          => 'eventgate-main.svc.eqiad.wmnet',
-        group         => 'lvs',
-        description   => 'eventgate-main LVS eqiad',
-        check_command => 'check_wmf_service!http://eventgate-main.svc.eqiad.wmnet:32192!15',
-        notes_url     => 'https://wikitech.wikimedia.org/wiki/Event*#EventGate_(repository)',
-    }
-
-    monitoring::service { 'check_eventgate_main_cluster_codfw':
-        host          => 'eventgate-main.svc.codfw.wmnet',
-        group         => 'lvs',
-        description   => 'eventgate-main LVS codfw',
-        check_command => 'check_wmf_service!http://eventgate-main.svc.codfw.wmnet:32192!15',
-        notes_url     => 'https://wikitech.wikimedia.org/wiki/Event*#EventGate_(repository)',
-    }
-
-    # docker-registry
-    monitoring::service { 'check_docker_registry_cluster_eqiad':
-        host          => 'docker-registry.svc.eqiad.wmnet',
-        group         => 'lvs',
-        description   => 'docker-registry LVS eqiad',
-        check_command => 'check_https_url!docker-registry.svc.eqiad.wmnet!/v2/',
-        notes_url     => 'https://wikitech.wikimedia.org/wiki/Docker-registry-runbook',
-    }
-
-    monitoring::service { 'check_docker_registry_cluster_codfw':
-        host          => 'docker-registry.svc.codfw.wmnet',
-        group         => 'lvs',
-        description   => 'docker-registry LVS codfw',
-        check_command => 'check_https_url!docker-registry.svc.codfw.wmnet!/v2/',
-        notes_url     => 'https://wikitech.wikimedia.org/wiki/Docker-registry-runbook',
-    }
 
     # External monitoring for restbase and kartotherian, at the TLS terminators
-
-    monitoring::service { 'check_maps_eqiad':
-        host          => 'upload-lb.eqiad.wikimedia.org',
-        group         => 'lvs',
-        description   => 'Maps edge eqiad',
-        check_command => 'check_wmf_service!https://maps.wikimedia.org!15',
-        notes_url     => 'https://wikitech.wikimedia.org/wiki/Maps/RunBook',
+    $all_datacenters.each |$dc| {
+        monitoring::service {
+            default:
+                contact_group => $contacts,
+                group         => 'lvs',
+                critical      => $critical,
+                ;
+            "check_maps_${dc}":
+                host          => "upload-lb.${dc}.wikimedia.org",
+                description   => "Maps edge ${dc}",
+                check_command => 'check_wmf_service!https://maps.wikimedia.org!15',
+                notes_url     => 'https://wikitech.wikimedia.org/wiki/Maps/RunBook',
+                ;
+            "check_restbase_${dc}":
+                host          => "text-lb.${dc}.wikimedia.org",
+                description   => "Restbase edge ${dc}",
+                check_command => 'check_wmf_service!https://en.wikipedia.org/api/rest_v1!15',
+                notes_url     => 'https://wikitech.wikimedia.org/wiki/RESTBase',
+        }
     }
 
-    monitoring::service { 'check_restbase_eqiad':
-        host          => 'text-lb.eqiad.wikimedia.org',
-        group         => 'lvs',
-        description   => 'Restbase edge eqiad',
-        check_command => 'check_wmf_service!https://en.wikipedia.org/api/rest_v1!15',
-        notes_url     => 'https://wikitech.wikimedia.org/wiki/RESTBase',
-    }
-
-    monitoring::service { 'check_maps_codfw':
-        host          => 'upload-lb.codfw.wikimedia.org',
-        group         => 'lvs',
-        description   => 'Maps edge codfw',
-        check_command => 'check_wmf_service!https://maps.wikimedia.org!15',
-        notes_url     => 'https://wikitech.wikimedia.org/wiki/Maps/RunBook',
-    }
-
-    monitoring::service { 'check_restbase_codfw':
-        host          => 'text-lb.codfw.wikimedia.org',
-        group         => 'lvs',
-        description   => 'Restbase edge codfw',
-        check_command => 'check_wmf_service!https://en.wikipedia.org/api/rest_v1!15',
-        notes_url     => 'https://wikitech.wikimedia.org/wiki/RESTBase',
-    }
-
-    monitoring::service { 'check_maps_esams':
-        host          => 'upload-lb.esams.wikimedia.org',
-        group         => 'lvs',
-        description   => 'Maps edge esams',
-        check_command => 'check_wmf_service!https://maps.wikimedia.org!15',
-        notes_url     => 'https://wikitech.wikimedia.org/wiki/Maps/RunBook',
-    }
-
-    monitoring::service { 'check_restbase_esams':
-        host          => 'text-lb.esams.wikimedia.org',
-        group         => 'lvs',
-        description   => 'Restbase edge esams',
-        check_command => 'check_wmf_service!https://en.wikipedia.org/api/rest_v1!15',
-        notes_url     => 'https://wikitech.wikimedia.org/wiki/RESTBase',
-    }
-
-    monitoring::service { 'check_maps_ulsfo':
-        host          => 'upload-lb.ulsfo.wikimedia.org',
-        group         => 'lvs',
-        description   => 'Maps edge ulsfo',
-        check_command => 'check_wmf_service!https://maps.wikimedia.org!15',
-        notes_url     => 'https://wikitech.wikimedia.org/wiki/Maps/RunBook',
-    }
-
-    monitoring::service { 'check_restbase_ulsfo':
-        host          => 'text-lb.ulsfo.wikimedia.org',
-        group         => 'lvs',
-        description   => 'Restbase edge ulsfo',
-        check_command => 'check_wmf_service!https://en.wikipedia.org/api/rest_v1!15',
-        notes_url     => 'https://wikitech.wikimedia.org/wiki/RESTBase',
-    }
-
-    monitoring::service { 'check_maps_eqsin':
-        host          => 'upload-lb.eqsin.wikimedia.org',
-        group         => 'lvs',
-        description   => 'Maps edge eqsin',
-        check_command => 'check_wmf_service!https://maps.wikimedia.org!15',
-        notes_url     => 'https://wikitech.wikimedia.org/wiki/Maps/RunBook',
-    }
-
-    monitoring::service { 'check_restbase_eqsin':
-        host          => 'text-lb.eqsin.wikimedia.org',
-        group         => 'lvs',
-        description   => 'Restbase edge eqsin',
-        check_command => 'check_wmf_service!https://en.wikipedia.org/api/rest_v1!15',
-        notes_url     => 'https://wikitech.wikimedia.org/wiki/RESTBase',
-    }
-
-    #sessionstore
-    monitoring::service { 'check_sessionstore_eqiad':
-        host          => 'sessionstore.svc.eqiad.wmnet',
-        group         => 'lvs',
-        description   => 'Sessionstore eqiad',
-        check_command => 'check_wmf_service_url!https://sessionstore.svc.eqiad.wmnet:8081!15!/openapi',
-        notes_url     => 'https://www.mediawiki.org/wiki/Kask',
-    }
-    monitoring::service { 'check_sessionstore_codfw':
-        host          => 'sessionstore.svc.codfw.wmnet',
-        group         => 'lvs',
-        description   => 'Sessionstore codfw',
-        check_command => 'check_wmf_service_url!https://sessionstore.svc.codfw.wmnet:8081!15!/openapi',
-        notes_url     => 'https://www.mediawiki.org/wiki/Kask',
-    }
-
-    #termbox
-    monitoring::service { 'check_termbox_eqiad':
-        host          => 'termbox.svc.eqiad.wmnet',
-        group         => 'lvs',
-        description   => 'termbox eqiad',
-        check_command => 'check_wmf_service!http://termbox.svc.eqiad.wmnet:3030!15!',
-        notes_url     => 'https://wikitech.wikimedia.org/wiki/WMDE/Wikidata/SSR_Service',
-    }
-    monitoring::service { 'check_termbox_codfw':
-        host          => 'termbox.svc.codfw.wmnet',
-        group         => 'lvs',
-        description   => 'termbox codfw',
-        check_command => 'check_wmf_service!http://termbox.svc.codfw.wmnet:3030!15!',
-        notes_url     => 'https://wikitech.wikimedia.org/wiki/WMDE/Wikidata/SSR_Service',
-    }
-
-    #wikifeeds
-    monitoring::service { 'check_wikifeeds_eqiad':
-        host          => 'wikifeeds.svc.eqiad.wmnet',
-        group         => 'lvs',
-        description   => 'wikifeeds eqiad',
-        check_command => 'check_wmf_service!http://wikifeeds.svc.eqiad.wmnet:8889!15!',
-        notes_url     => 'https://wikitech.wikimedia.org/wiki/Wikifeeds',
-    }
-    monitoring::service { 'check_wikifeeds_codfw':
-        host          => 'wikifeeds.svc.codfw.wmnet',
-        group         => 'lvs',
-        description   => 'wikifeeds codfw',
-        check_command => 'check_wmf_service!http://wikifeeds.svc.codfw.wmnet:8889!15!',
-        notes_url     => 'https://wikitech.wikimedia.org/wiki/Wikifeeds',
-    }
 }
