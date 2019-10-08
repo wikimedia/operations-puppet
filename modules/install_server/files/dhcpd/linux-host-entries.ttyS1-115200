@@ -3774,22 +3774,22 @@ host ms-be1050 {
 }
 
 host ms-be1052 {
-    hardware ethernet 08:f1:ea:f5:dd:42;
+    hardware ethernet 48:df:37:89:54:60;
     fixed-address ms-be1052.eqiad.wmnet;
 }
 
 host ms-be1053 {
-    hardware ethernet 08:f1:ea:f5:dc:e8;
+    hardware ethernet 48:df:37:89:80:40;
     fixed-address ms-be1053.eqiad.wmnet;
 }
 
 host ms-be1054 {
-    hardware ethernet 08:f1:ea:f5:c0:aa;
+    hardware ethernet 48:df:37:89:53:60;
     fixed-address ms-be1054.eqiad.wmnet;
 }
 
 host ms-be1056 {
-    hardware ethernet 08:f1:ea:f5:e0:0c;
+    hardware ethernet 48:df:37:89:4f:30;
     fixed-address ms-be1056.eqiad.wmnet;
 }
 
