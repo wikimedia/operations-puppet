@@ -181,6 +181,9 @@ lvs::configuration::lvs_service_ips:
   restrouter: &ip_block057
     eqiad: 10.2.2.48
     codfw: 10.2.1.48
+  echostore: &ip_block058
+    eqiad: 10.2.2.49
+    codfw: 10.2.1.49
 
 lvs::configuration::lvs_services:
   text:
@@ -1868,3 +1871,30 @@ lvs::configuration::lvs_services:
           hostname: wikifeeds.svc.eqiad.wmnet
         codfw:
           hostname: wikifeeds.svc.codfw.wmnet
+  echostore:
+    description: "Echo store, echostore.svc.%{::site}.wmnet"
+    class: low-traffic
+    sites:
+    - eqiad
+    - codfw
+    ip: *ip_block058
+    port: 8082
+    depool-threshold: '.5'
+    monitors:
+      ProxyFetch:
+        url:
+        - https://localhost/healthz
+      IdleConnection:
+        timeout-clean-reconnect: 3
+        max-delay: 300
+    conftool:
+      cluster: kubernetes
+      service: echostore
+    icinga:
+      critical: false
+      check_command: check_https_port_status!8082!200!/healthz
+      sites:
+        eqiad:
+          hostname: echostore.svc.eqiad.wmnet
+        codfw:
+          hostname: echostore.svc.codfw.wmnet

@@ -45,3 +45,4 @@ profile::lvs::realserver::pools:
   sessionstore: {}
   termbox: {}
   wikifeeds: {}
+  echostore: {}
