@@ -91,11 +91,11 @@ profile::druid::broker::properties:
   druid.broker.http.numConnections: 20
   # To avoid excessive queueing on the Historicals,
   # the Broker fails fast if it doesn't receive any data
-  # from the Historical after 5s (as opposed to minutes
+  # from the Historical after 10s (as opposed to minutes
   # like set in the defaults) or if a query takes more than
-  # 5s to complete.
-  druid.broker.http.readTimeout: PT5S
-  druid.server.http.defaultQueryTimeout: 5000
+  # 10s to complete.
+  druid.broker.http.readTimeout: PT10S
+  druid.server.http.defaultQueryTimeout: 10000
   # Increase druid broker query cache size to 2G.
   # TBD: Perhaps we should also try using memcached?
   druid.cache.sizeInBytes: 2147483648
@@ -135,8 +135,8 @@ profile::druid::historical::properties:
   # See: http://druid.io/docs/latest/querying/caching.html
   druid.historical.cache.useCache: false
   druid.historical.cache.populateCache: false
-  # Sane value to abort a query that takes more than 5s to complete
-  druid.server.http.defaultQueryTimeout: 5000
+  # Sane value to abort a query that takes more than 10s to complete
+  druid.server.http.defaultQueryTimeout: 10000
   druid.monitoring.monitors: ["io.druid.server.metrics.HistoricalMetricsMonitor", "io.druid.server.metrics.QueryCountStatsMonitor"]
 profile::druid::historical::env:
   DRUID_HEAP_OPTS: "-Xmx8g -Xms4g"
