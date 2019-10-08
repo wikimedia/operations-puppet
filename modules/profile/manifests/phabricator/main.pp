@@ -252,17 +252,6 @@ class profile::phabricator::main (
             'upload_max_filesize' => '10M',
         }
 
-        # Install the runtime
-        class { '::php':
-            ensure         => present,
-            version        => '7.2',
-            sapis          => ['cli', 'fpm'],
-            config_by_sapi => {
-                'fpm' => $fpm_config,
-            },
-            require        => Apt::Repository['wikimedia-php72'],
-        }
-
         $core_extensions =  [
             'curl',
             'gd',
@@ -272,11 +261,64 @@ class profile::phabricator::main (
             'ldap',
         ]
 
-        $core_extensions.each |$extension| {
-            php::extension { $extension:
-                package_name => "php7.2-${extension}",
-                require      => Apt::Repository['wikimedia-php72'],
-                sapis        => ['cli', 'fpm'],
+        if os_version('debian == buster') {
+            $php_version='7.3'
+
+            # Install the runtime
+            class { '::php':
+                ensure         => present,
+                version        => $php_version,
+                sapis          => ['cli', 'fpm'],
+                config_by_sapi => {
+                    'fpm' => $fpm_config,
+                },
+            }
+
+            $core_extensions.each |$extension| {
+                php::extension { $extension:
+                    package_name => "php${php_version}-${extension}",
+                    sapis        => ['cli', 'fpm'],
+                }
+            }
+
+            class { '::php::fpm':
+                ensure => present,
+                config => {
+                    'emergency_restart_interval' => '60s',
+                    'process.priority'           => -19,
+                },
+            }
+
+        } else {
+
+            $php_version='7.2'
+
+            # Install the runtime
+            class { '::php':
+                ensure         => present,
+                version        => $php_version,
+                sapis          => ['cli', 'fpm'],
+                config_by_sapi => {
+                    'fpm' => $fpm_config,
+                },
+                require        => Apt::Repository['wikimedia-php72'],
+            }
+
+            $core_extensions.each |$extension| {
+                php::extension { $extension:
+                    package_name => "php${php_version}-${extension}",
+                    require      => Apt::Repository['wikimedia-php72'],
+                    sapis        => ['cli', 'fpm'],
+                }
+            }
+
+            class { '::php::fpm':
+                ensure  => present,
+                config  => {
+                    'emergency_restart_interval' => '60s',
+                    'process.priority'           => -19,
+                },
+                require => Apt::Repository['wikimedia-php72'],
             }
         }
 
@@ -292,19 +334,10 @@ class profile::phabricator::main (
                 package_name => '',
                 priority     => 10;
             'xml':
-                package_name => 'php7.2-xml',
+                package_name => "php${php_version}-xml",
                 priority     => 15;
             'mysqli':
-                package_name => 'php7.2-mysql';
-        }
-
-        class { '::php::fpm':
-            ensure  => present,
-            config  => {
-                'emergency_restart_interval' => '60s',
-                'process.priority'           => -19,
-            },
-            require => Apt::Repository['wikimedia-php72'],
+                package_name => "php${php_version}-mysql";
         }
 
         $num_workers = max(floor($facts['processors']['count'] * 1.5), 8)
