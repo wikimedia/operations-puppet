@@ -60,6 +60,7 @@ class role::analytics_test_cluster::coordinator {
     # from Kafka into HDFS.
     include ::profile::analytics::refinery::job::test::camus
     #include ::profile::analytics::refinery::job::test::data_purge
+    include ::profile::analytics::refinery::job::test::druid_load
     include ::profile::analytics::refinery::job::test::refine
 
     include ::profile::kerberos::keytabs
