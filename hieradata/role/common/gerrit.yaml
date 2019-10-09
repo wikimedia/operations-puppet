@@ -41,7 +41,7 @@ gerrit::jetty::replication:
             - '^(?:(?!apps\\/ios\\/).)*$'
             - '^(?:(?!apps\\/android\\/).)*$'
     replica_codfw:
-        url: 'gerrit2@gerrit-replica.wikimedia.org:/srv/gerrit/git/${name}.git'
+        url: 'gerrit2@gerrit2001.wikimedia.org:/srv/gerrit/git/${name}.git'
         mirror: true
         replicateProjectDeletions: true
         replicateHiddenProjects: true
