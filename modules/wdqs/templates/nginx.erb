@@ -35,9 +35,7 @@ server {
         root <%= @package_dir %>/gui;
         rewrite ^(.*)$ /maint.html break;
     }
-    if (-f /var/lib/nginx/wdqs/maintenance) {
-        return 503;
-    }
+
     # Rate limit error
     error_page 429 @rate_limit;
     location @rate_limit {
