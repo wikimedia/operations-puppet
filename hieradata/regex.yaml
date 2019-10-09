@@ -185,8 +185,8 @@ swift_be_eqiad_sda:
 
 # Experimental swift setting to run with one port per disk
 # https://phabricator.wikimedia.org/T222366
-swift_servers_per_port_codfw:
-  __regex: !ruby/regexp /^ms-be205[1-6]\.codfw\.wmnet$/
+swift_servers_per_port:
+  __regex: !ruby/regexp /^ms-be[12]05[1-6]\.(codfw|eqiad)\.wmnet$/
   swift::storage::servers_per_port: 3
 
 lvs_codfw_backup:
