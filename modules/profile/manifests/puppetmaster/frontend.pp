@@ -10,7 +10,6 @@ class profile::puppetmaster::frontend(
     Stdlib::Host $ca_server = lookup('puppet_ca_server'),
     Hash[String, Puppetmaster::Backends] $servers = hiera('puppetmaster::servers', {}),
     Hash[Stdlib::Host, Stdlib::Host] $locale_servers = lookup('puppetmaster::locale_servers'),
-    Puppetmaster::Backends $test_servers = hiera('profile::puppetmaster::frontend::test_servers', []),
     $ssl_ca_revocation_check = hiera('profile::puppetmaster::frontend::ssl_ca_revocation_check', 'chain'),
     $allow_from = hiera('profile::puppetmaster::frontend::allow_from', [
       '*.wikimedia.org',
@@ -102,23 +101,6 @@ class profile::puppetmaster::frontend(
         canary_hosts            => $canary_hosts,
     }
 
-    # We want to be able to test new things on our infrastructure, having a separated
-    # frontend for testing
-    if $test_servers != [] {
-        $alt_names = prefix(
-            ['codfw.wmnet', 'eqiad.wmnet', 'eqsin.wmnet', 'esams.wmnet', 'ulsfo.wmnet'],
-            'puppetmaster.test.'
-        )
-
-        ::puppetmaster::web_frontend { 'puppetmaster.test.eqiad.wmnet':
-            master                  => $ca_server,
-            workers                 => $test_servers,
-            alt_names               => $alt_names,
-            bind_address            => $::puppetmaster::bind_address,
-            priority                => 60,
-            ssl_ca_revocation_check => $ssl_ca_revocation_check,
-        }
-    }
     # Run the rsync servers on all puppetmaster frontends, and activate
     # crons syncing from the master
     class { '::puppetmaster::rsync':
