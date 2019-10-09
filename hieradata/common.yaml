@@ -415,7 +415,7 @@ wikimedia_clusters:
       codfw: []
 
 puppetmaster: "puppet"
-puppet_ca_server: puppetmaster2001.codfw.wmnet
+puppet_ca_server: puppetmaster1001.eqiad.wmnet
 
 statistics_servers:
   - stat1004.eqiad.wmnet
