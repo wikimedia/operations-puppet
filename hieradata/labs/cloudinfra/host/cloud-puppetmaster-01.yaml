@@ -4,6 +4,7 @@ profile::openstack::eqiad1::designate_host: cloudservices1003.wikimedia.org
 profile::openstack::eqiad1::designate_host_standby: cloudservices1004.wikimedia.org
 profile::openstack::eqiad1::labweb_hosts: [labweb1001.wikimedia.org, labweb1002.wikimedia.org]
 profile::openstack::eqiad1::nova_controller: cloudcontrol1003.wikimedia.org
+profile::openstack::eqiad1::nova_controller_standby: cloudcontrol1004.wikimedia.org
 profile::openstack::eqiad1::puppetmaster::ca: cloud-puppetmaster-01.cloudinfra.eqiad.wmflabs
 profile::openstack::eqiad1::puppetmaster::cert_secret_path: puppetmaster
 profile::openstack::eqiad1::puppetmaster::encapi::db_host: cloudinfra-db01.cloudinfra.eqiad.wmflabs

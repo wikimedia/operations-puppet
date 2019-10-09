@@ -16,6 +16,7 @@ class profile::openstack::base::puppetmaster::frontend(
     $labweb_hosts = hiera('profile::openstack::base::labweb_hosts'),
     $cert_secret_path = hiera('profile::openstack::base::puppetmaster::cert_secret_path'),
     $nova_controller = hiera('profile::openstack::base::nova_controller'),
+    $nova_controller_standby = hiera('profile::openstack::base::nova_controller_standby'),
     ) {
 
     include ::network::constants
@@ -60,6 +61,10 @@ class profile::openstack::base::puppetmaster::frontend(
         $cleaner3_ip6 = ipresolve($second_region_designate_host, 6)
         $cleaner4_ip = ipresolve($second_region_designate_host_standby, 4)
         $cleaner4_ip6 = ipresolve($second_region_designate_host_standby, 6)
+        $cleaner5_ip = ipresolve($nova_controller, 4)
+        $cleaner5_ip6 = ipresolve($nova_controller, 6)
+        $cleaner6_ip = ipresolve($nova_controller_standby, 4)
+        $cleaner6_ip6 = ipresolve($nova_controller_standby, 6)
         class { 'puppetmaster::certmanager':
             remote_cert_cleaners => [
                 $cleaner1_ip,
@@ -69,7 +74,11 @@ class profile::openstack::base::puppetmaster::frontend(
                 $cleaner3_ip,
                 $cleaner3_ip6,
                 $cleaner4_ip,
-                $cleaner4_ip6
+                $cleaner4_ip6,
+                $cleaner5_ip,
+                $cleaner5_ip6,
+                $cleaner6_ip,
+                $cleaner6_ip6,
             ]
         }
     }

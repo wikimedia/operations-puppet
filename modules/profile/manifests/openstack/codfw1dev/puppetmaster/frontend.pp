@@ -16,6 +16,7 @@ class profile::openstack::codfw1dev::puppetmaster::frontend(
     $labweb_hosts = hiera('profile::openstack::codfw1dev::labweb_hosts'),
     $cert_secret_path = hiera('profile::openstack::codfw1dev::puppetmaster::cert_secret_path'),
     $nova_controller = hiera('profile::openstack::codfw1dev::nova_controller'),
+    $nova_controller_standby = hiera('profile::openstack::codfw1dev::nova_controller'),
     ) {
 
     require ::profile::openstack::codfw1dev::clientpackages
@@ -37,5 +38,6 @@ class profile::openstack::codfw1dev::puppetmaster::frontend(
         labweb_hosts                         => $labweb_hosts,
         cert_secret_path                     => $cert_secret_path,
         nova_controller                      => $nova_controller,
+        nova_controller_standby              => $nova_controller,
     }
 }

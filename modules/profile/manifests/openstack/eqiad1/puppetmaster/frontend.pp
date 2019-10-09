@@ -16,6 +16,7 @@ class profile::openstack::eqiad1::puppetmaster::frontend(
     $labweb_hosts = hiera('profile::openstack::eqiad1::labweb_hosts'),
     $cert_secret_path = hiera('profile::openstack::eqiad1::puppetmaster::cert_secret_path'),
     $nova_controller = hiera('profile::openstack::eqiad1::nova_controller'),
+    $nova_controller_standby = hiera('profile::openstack::eqiad1::nova_controller_standby'),
     ) {
     class {'::profile::openstack::base::puppetmaster::frontend':
         designate_host                       => $designate_host,
@@ -35,5 +36,6 @@ class profile::openstack::eqiad1::puppetmaster::frontend(
         labweb_hosts                         => $labweb_hosts,
         cert_secret_path                     => $cert_secret_path,
         nova_controller                      => $nova_controller,
+        nova_controller_standby              => $nova_controller_standby,
     }
 }
