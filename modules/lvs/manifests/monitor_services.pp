@@ -87,7 +87,7 @@ class lvs::monitor_services(
             "check_sessionstore_${dc}":
                 host          => "sessionstore.svc.${dc}.wmnet",
                 description   => "Sessionstore ${dc}",
-                check_command => "check_wmf_service_url!https1://sessionstore.svc.${dc}.wmnet:8081!15!/openapi",
+                check_command => "check_wmf_service_url!https://sessionstore.svc.${dc}.wmnet:8081!15!/openapi",
                 notes_url     => 'https://www.mediawiki.org/wiki/Kask',
                 ;
             "check_termbox_${dc}":
