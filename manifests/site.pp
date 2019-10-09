@@ -154,7 +154,7 @@ node 'archiva1001.wikimedia.org' {
     role(archiva)
 }
 
-node /auth100[12]\.eqiad\.wmnet/ {
+node 'auth1002.eqiad.wmnet' {
     role(test)
 }
 

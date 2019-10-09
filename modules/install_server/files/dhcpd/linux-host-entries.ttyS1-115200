@@ -383,12 +383,6 @@ host aqs1009 {
     fixed-address aqs1009.eqiad.wmnet;
 }
 
-host auth1001 {
-    hardware ethernet C8:1F:66:BF:71:5A;
-    fixed-address auth1001.eqiad.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
-}
-
 host auth1002 {
     hardware ethernet D0:94:66:5F:55:90;
     fixed-address auth1002.eqiad.wmnet;
