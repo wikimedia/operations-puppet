@@ -8,12 +8,21 @@ class profile::phabricator::httpd (
     $httpd_base_modules = [ 'headers', 'rewrite', 'remoteip' ]
 
     if $enable_php_fpm {
-        $httpd_extra_modules = [ 'proxy', 'proxy_fcgi' ]
-        $php_lib = 'php7.2-fpm'
-    } else {
-        $httpd_extra_modules = [ 'php7.2' ]
-        $php_lib = 'libapache2-mod-php7.2'
+        if os_version('debian == buster') {
+            $php_lib = 'php7.3-fpm'
+        } else {
+            $php_lib = 'php7.2-fpm'
         }
+        $httpd_extra_modules = [ 'proxy', 'proxy_fcgi' ]
+    } else {
+        if os_version('debian == buster') {
+            $php_lib = 'libapache2-mod-php7.3'
+            $httpd_extra_modules = [ 'php7.3' ]
+        } else {
+            $php_lib = 'libapache2-mod-php7.2'
+            $httpd_extra_modules = [ 'php7.2' ]
+        }
+    }
 
     $httpd_modules = concat($httpd_base_modules, $httpd_extra_modules)
 
