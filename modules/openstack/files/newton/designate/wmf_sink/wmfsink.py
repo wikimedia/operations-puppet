@@ -52,8 +52,8 @@ cfg.CONF.register_group(cfg.OptGroup(
 cfg.CONF.register_opts([
     cfg.StrOpt('auth_uri', default=''),
     cfg.StrOpt('identity_uri', default=''),
-    cfg.StrOpt('admin_user', default=''),
-    cfg.StrOpt('admin_password', default=''),
+    cfg.StrOpt('username', default=''),
+    cfg.StrOpt('password', default=''),
 ], group='keystone_authtoken')
 
 
