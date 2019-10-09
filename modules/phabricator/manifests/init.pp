@@ -158,9 +158,14 @@ class phabricator (
         'python-pygments',
         'python-phabricator',
         'apachetop',
-        'subversion',
-        'heirloom-mailx']:
+        'subversion']:
             ensure => present;
+    }
+
+    if os_version('debian == buster') {
+        require_package('s-nail')
+    } else {
+        require_package('heirloom-mailx')
     }
 
     $docroot = "${phabdir}/phabricator/webroot"
