@@ -8,12 +8,15 @@ class openstack::nova::fullstack::service(
     $active,
     $password,
     $region,
+    $puppetmaster,
     $interval = 300,
     $max_pool = 11,
     $creation_timeout = 900,
     $ssh_timeout = 900,
     $puppet_timeout = 900,
     $keyfile = '/var/lib/osstackcanary/osstackcanary_id',
+    $certkeyfile = '/var/lib/osstackcanary/puppetcertmanager_id',
+    $certmanager = 'certmanager',
     $network = '',
     ) {
 
@@ -46,6 +49,15 @@ class openstack::nova::fullstack::service(
         owner     => 'osstackcanary',
         group     => 'osstackcanary',
         content   => secret('nova/osstackcanary'),
+        show_diff => false,
+    }
+
+    file { $certkeyfile:
+        ensure    => 'present',
+        mode      => '0600',
+        owner     => 'osstackcanary',
+        group     => 'osstackcanary',
+        content   => secret('ssh/puppet_cert_manager/cert_manager'),
         show_diff => false,
     }
 

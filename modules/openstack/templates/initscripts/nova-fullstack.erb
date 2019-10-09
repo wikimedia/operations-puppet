@@ -15,4 +15,7 @@ export OS_REGION_NAME="<%= @region %>"
                                    --image debian-10.0-buster \
                                    --flavor m1.small \
                                    --keyfile <%= @keyfile %> \
+                                   --certkeyfile <%= @certkeyfile %> \
+                                   --certmanager <%= @certmanager %> \
+                                   --puppetmaster <%= @puppetmaster %> \
                                    --statsd statsd.eqiad.wmnet
