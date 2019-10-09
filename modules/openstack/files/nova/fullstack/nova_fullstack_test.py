@@ -140,6 +140,31 @@ def verify_dns(hostname, nameservers, timeout=2.0):
     return ns.interval
 
 
+def verify_dns_cleanup(hostname, nameservers, timeout=2.0):
+    """ ensure the DNS entry was cleared
+    :param hostame: str
+    :param nameservers: list
+    :return: obj
+    """
+    with Timer() as ns:
+        logging.info("Resolving {} from {}, waiting for cleanup".format(hostname, nameservers))
+        while True:
+            time.sleep(10)
+            dig_query = []
+            dig_query.append('/usr/bin/dig')
+            for server in nameservers:
+                dig_query.append('@{}'.format(server))
+            dig_query.append(hostname)
+            dig_options = ['+short', '+time=2', '+tries=1']
+            out = run_local(dig_query + dig_options)
+            if not out:
+                break
+            dnscleanupwait = ns.progress()
+            if dnscleanupwait >= timeout:
+                raise Exception("Failed to clean up dns for {}".format(hostname))
+    return ns.interval
+
+
 def verify_ssh(address, user, keyfile, timeout):
     """ ensure SSH works to an instance
     :param address: str
@@ -591,6 +616,14 @@ def main():
                 stat('verify.deletion', vd)
                 loop_end = time.time()
                 stat('verify.fullstack', round(loop_end - loop_start, 2))
+
+            if not args.skip_dns:
+                host = '{}.{}.eqiad.wmnet'.format(server.name, server.tenant_id)
+                dnsd = args.dns_resolvers.split(',')
+                vdns = verify_dns_cleanup(host,
+                                          dnsd,
+                                          timeout=60.0)
+                stat('verify.dns-cleanup', vdns)
 
             if not args.interval:
                 return
