@@ -10,19 +10,23 @@ class profile::kerberos::kadminserver (
         ensure => present,
     }
 
-    service { 'krb5-admin-server':
-        ensure  => running,
-        require => Package['krb5-admin-server'],
-    }
-
     package { 'python3-pexpect':
         ensure => present,
     }
 
-    if $trusted['certname'] != $krb_kadmin_primary {
-        $ensure_motd = 'present'
-    } else {
+    $is_krb_master = $trusted['certname'] == $krb_kadmin_primary
+
+    if $is_krb_master {
         $ensure_motd = 'absent'
+
+        # The kadmin server shutsdown by itself if
+        # not running on the master/primary node.
+        service { 'krb5-admin-server':
+            ensure  => running,
+            require => Package['krb5-admin-server'],
+        }
+    } else {
+        $ensure_motd = 'present'
     }
 
     motd::script { 'inactive_warning':
@@ -78,17 +82,21 @@ class profile::kerberos::kadminserver (
 
     # Add the rsync server configuration only to the
     # active kerberos host.
-    if $trusted['certname'] == $krb_kadmin_primary {
+    if $is_krb_master {
         $ensure_rsync = 'present'
+        $ensure_rsync_secrets_file = 'present'
     } else {
         $ensure_rsync = 'absent'
+        $ensure_rsync_secrets_file = 'absent'
     }
 
-    class { 'rsync::server': }
+    if $is_krb_master {
+        class { 'rsync::server': }
+    }
 
     $rsync_secrets_file = '/srv/kerberos/rsync_secrets_file'
     file { $rsync_secrets_file:
-        ensure    => 'present',
+        ensure    => $ensure_rsync_secrets_file,
         owner     => 'root',
         group     => 'root',
         mode      => '0400',
@@ -113,7 +121,7 @@ class profile::kerberos::kadminserver (
         include ::profile::kerberos::replication
     }
 
-    if $monitoring_enabled {
+    if $monitoring_enabled and $is_krb_master {
         nrpe::monitor_service { 'krb-kadmin-server':
             description   => 'Kerberos KAdmin daemon',
             nrpe_command  => '/usr/lib/nagios/plugins/check_procs -c 1:1 -a " /usr/sbin/kadmind"',
