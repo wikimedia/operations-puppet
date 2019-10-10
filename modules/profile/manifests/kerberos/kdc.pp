@@ -154,6 +154,16 @@ class profile::kerberos::kdc (
     include ::profile::backup::host
     backup::set { 'krb-srv-backup': }
 
+    if $monitoring_enabled {
+        nrpe::monitor_service { 'krb-kdc':
+            description   => 'Kerberos KDC daemon',
+            nrpe_command  => '/usr/lib/nagios/plugins/check_procs -c 1:1 -a "/usr/sbin/krb5kdc"',
+            contact_group => 'admins,analytics',
+            require       => Service['krb5-kdc'],
+            notes_url     => 'https://wikitech.wikimedia.org/wiki/Analytics/Systems/Kerberos#Daemons_and_their_roles',
+        }
+    }
+
     systemd::timer::job { 'delete-old-backups-kdc-database':
         description        => 'Daily clean up of old backups of the KDC database',
         command            => '/usr/bin/find /srv/backup -name "kdc_database_.*" -mtime +30 -delete',

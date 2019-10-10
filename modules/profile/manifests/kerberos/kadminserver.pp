@@ -4,6 +4,7 @@ class profile::kerberos::kadminserver (
     Stdlib::Fqdn $krb_kadmin_keytabs_repo = lookup('kerberos_kadmin_keytabs_repo'),
     Array[String] $rsync_secrets_file_auth_users = lookup('profile::kerberos::kadminserver', { 'default_value' => ['kerb'] }),
     Optional[Boolean] $enable_replication = lookup('profile::kerberos::kadminserver::enable_replication', {'default_value' => false} ),
+    Optional[Boolean] $monitoring_enabled = lookup('profile::kerberos::kadminserver::monitoring_enabled', { 'default_value' => false }),
 ) {
     package { 'krb5-admin-server':
         ensure => present,
@@ -110,5 +111,15 @@ class profile::kerberos::kadminserver (
 
     if $enable_replication {
         include ::profile::kerberos::replication
+    }
+
+    if $monitoring_enabled {
+        nrpe::monitor_service { 'krb-kadmin-server':
+            description   => 'Kerberos KAdmin daemon',
+            nrpe_command  => '/usr/lib/nagios/plugins/check_procs -c 1:1 -a " /usr/sbin/kadmind"',
+            contact_group => 'admins,analytics',
+            require       => Service['krb5-admin-server'],
+            notes_url     => 'https://wikitech.wikimedia.org/wiki/Analytics/Systems/Kerberos#Daemons_and_their_roles',
+        }
     }
 }
