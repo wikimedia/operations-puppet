@@ -32,4 +32,12 @@ client c1 {
     txreq -url "/" -hdr "Host: en.wikipedia.org" -hdr "X-Forwarded-Proto: https" -hdr "X-Client-IP: 93.184.216.34"
     rxresp
     expect resp.status == 403
+
+    txreq -url "/" -hdr "Host: en.wikipedia.org" -hdr "X-Forwarded-Proto: https" -hdr "X-Client-IP: 192.241.194.113"
+    rxresp
+    expect resp.status == 200
+
+    txreq -url "/" -hdr "Host: en.wikipedia.org" -hdr "X-Forwarded-Proto: https" -hdr "X-Client-IP: 192.241.194.113" -hdr "User-Agent: python-requests/2.19.1"
+    rxresp
+    expect resp.status == 403
 } -run

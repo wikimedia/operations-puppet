@@ -28,8 +28,9 @@ include "wikimedia-common_<%= @vcl %>.inc.vcl";
 include "analytics.inc.vcl";
 include "browsersec.inc.vcl";
 include "translation-engine.inc.vcl";
-// provides the acl "blocked_nets". The file can be found on the private puppet
-// repo under modules/secret/secrets/varnish/blocked-nets.inc.vcl
+// provides the acl "blocked_nets" and "bot_blocked_nets".
+// The file can be found on the private puppet repo under
+// modules/secret/secrets/varnish/blocked-nets.inc.vcl
 include "blocked-nets.inc.vcl";
 
 /* Include the VCL file for this role */
@@ -318,6 +319,13 @@ sub vcl_recv {
 		// through the TLS terminator
 		if (std.ip(req.http.X-Client-IP, "192.0.2.1") ~ blocked_nets) {
 			return (synth(403, "Requests from your IP have been blocked, please contact noc@wikimedia.org"));
+		}
+
+		// Block requests from common bot User-Agents that originate from bot_blocked_nets.
+		// For now, we define our list of common bot UAs as just one that has often been
+		// associated with trouble in the past.
+		if (std.ip(req.http.X-Client-IP, "192.0.2.1") ~ bot_blocked_nets && req.http.User-Agent ~ "^python-requests") {
+			return (synth(403, "Scripted requests from your IP have been blocked, please contact noc@wikimedia.org, and see also https://meta.wikimedia.org/wiki/User-Agent_policy"));
 		}
 	}
 
