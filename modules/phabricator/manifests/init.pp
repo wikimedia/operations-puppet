@@ -39,9 +39,6 @@
 # [*deploy_target*]
 #     The name of the scap3 deployment repo, e.g. phabricator/deployment
 #
-# [*enable_php_fpm*]
-#     Weather to enable php-fpm, defaults to false.
-#
 # [*opcache_validate*]
 #     Allows you to enable opcache revalidation.
 #
@@ -71,7 +68,6 @@ class phabricator (
     Array $serveraliases      = [],
     String $deploy_user       = 'phab-deploy',
     String $deploy_target     = 'phabricator/deployment',
-    Boolean $enable_php_fpm   = false,
     Integer $opcache_validate = 0,
     Stdlib::Ensure::Service $phd_service_ensure = running,
 ) {
@@ -116,42 +112,6 @@ class phabricator (
         command     => '/usr/bin/apt-get update',
         refreshonly => true,
         logoutput   => true,
-    }
-
-    if !$enable_php_fpm {
-        if os_version('debian == buster') {
-            $php_packages = [
-                'php-apcu',
-                'php-mailparse',
-                'php7.3-mysql',
-                'php7.3-gd',
-                'php7.3-dev',
-                'php7.3-curl',
-                'php7.3-cli',
-                'php7.3-json',
-                'php7.3-ldap',
-                'php7.3-mbstring',
-                'libapache2-mod-php7.3'
-            ]
-            require_package($php_packages)
-        } else {
-            # stretch - PHP (7.2) packages and Apache module
-            # warning: currently Phabricator supports PHP 7.1+ but not PHP 7.0
-            # https://secure.phabricator.com/rPa2cd3d9a8913d5709e2bc999efb75b63d7c19696
-            apt::repository { 'wikimedia-php72':
-                uri        => 'http://apt.wikimedia.org/wikimedia',
-                dist       => "${::lsbdistcodename}-wikimedia",
-                components => 'component/php72',
-                notify     => Exec['apt_update_php'],
-            }
-
-            package { ['php-apcu','php-mailparse','php7.2-mysql','php7.2-gd',
-                  'php7.2-dev','php7.2-curl','php7.2-cli', 'php7.2-json',
-                  'php7.2-ldap','php7.2-mbstring','libapache2-mod-php7.2']:
-                ensure  => present,
-                require => Apt::Repository['wikimedia-php72'],
-            }
-        }
     }
 
     package { [
@@ -232,14 +192,6 @@ class phabricator (
         mode    => '0755',
         recurse => true,
         require => $base_requirements,
-    }
-
-    if !$enable_php_fpm {
-        file { '/etc/php/7.2/apache2/conf.d/php.ini':
-            content => template('phabricator/php72.ini.erb'),
-            notify  => Service['apache2'],
-            require => Package['libapache2-mod-php7.2'],
-        }
     }
 
     file { '/etc/apache2/phabbanlist.conf':

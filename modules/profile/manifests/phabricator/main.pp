@@ -27,7 +27,6 @@ class profile::phabricator::main (
     Boolean $aphlict_enabled = hiera('phabricator_aphlict_enabled', false),
     Hash $rate_limits = hiera('profile::phabricator::main::rate_limits'),
     Integer $phd_taskmasters = hiera('phabricator_phd_taskmasters', 10),
-    Boolean $enable_php_fpm = hiera('phabricator_enable_php_fpm', false),
     Integer $opcache_validate = hiera('phabricator_opcache_validate', 0),
     String $timezone = hiera('phabricator_timezone', 'UTC'),
     Stdlib::Ensure::Service $phd_service_ensure = hiera('profile::phabricator::main::phd_service_ensure', 'running'),
@@ -227,131 +226,137 @@ class profile::phabricator::main (
             'notification.servers'                   => $notification_servers,
         },
         conf_files          => $conf_files,
-        enable_php_fpm      => $enable_php_fpm,
         opcache_validate    => $opcache_validate,
         timezone            => $timezone,
         phd_service_ensure  => $phd_service_ensure
     }
     # lint:endignore
 
-    # only supports stretch, do not use on jessie
-    if $enable_php_fpm {
-        $fpm_config = {
-            'date'                   => {
-                'timezone' => $timezone,
+    $fpm_config = {
+        'date'                   => {
+            'timezone' => $timezone,
+        },
+        'opcache'                   => {
+            'memory_consumption'      => 128,
+            'interned_strings_buffer' => 16,
+            'max_accelerated_files'   => 10000,
+            'validate_timestamps'     => $opcache_validate,
+        },
+        'max_execution_time'  => 30,
+        'post_max_size'       => '10M',
+        'track_errors'        => 'Off',
+        'upload_max_filesize' => '10M',
+    }
+
+    $core_extensions =  [
+        'curl',
+        'gd',
+        'gmp',
+        'intl',
+        'mbstring',
+        'ldap',
+    ]
+
+    if os_version('debian == buster') {
+        $php_version='7.3'
+
+        # Install the runtime
+        class { '::php':
+            ensure         => present,
+            version        => $php_version,
+            sapis          => ['cli', 'fpm'],
+            config_by_sapi => {
+                'fpm' => $fpm_config,
             },
-            'opcache'                   => {
-                'memory_consumption'      => 128,
-                'interned_strings_buffer' => 16,
-                'max_accelerated_files'   => 10000,
-                'validate_timestamps'     => $opcache_validate,
-            },
-            'max_execution_time'  => 30,
-            'post_max_size'       => '10M',
-            'track_errors'        => 'Off',
-            'upload_max_filesize' => '10M',
         }
 
-        $core_extensions =  [
-            'curl',
-            'gd',
-            'gmp',
-            'intl',
-            'mbstring',
-            'ldap',
-        ]
-
-        if os_version('debian == buster') {
-            $php_version='7.3'
-
-            # Install the runtime
-            class { '::php':
-                ensure         => present,
-                version        => $php_version,
-                sapis          => ['cli', 'fpm'],
-                config_by_sapi => {
-                    'fpm' => $fpm_config,
-                },
-            }
-
-            $core_extensions.each |$extension| {
-                php::extension { $extension:
-                    package_name => "php${php_version}-${extension}",
-                    sapis        => ['cli', 'fpm'],
-                }
-            }
-
-            class { '::php::fpm':
-                ensure => present,
-                config => {
-                    'emergency_restart_interval' => '60s',
-                    'process.priority'           => -19,
-                },
-            }
-
-        } else {
-
-            $php_version='7.2'
-
-            # Install the runtime
-            class { '::php':
-                ensure         => present,
-                version        => $php_version,
-                sapis          => ['cli', 'fpm'],
-                config_by_sapi => {
-                    'fpm' => $fpm_config,
-                },
-                require        => Apt::Repository['wikimedia-php72'],
-            }
-
-            $core_extensions.each |$extension| {
-                php::extension { $extension:
-                    package_name => "php${php_version}-${extension}",
-                    require      => Apt::Repository['wikimedia-php72'],
-                    sapis        => ['cli', 'fpm'],
-                }
-            }
-
-            class { '::php::fpm':
-                ensure  => present,
-                config  => {
-                    'emergency_restart_interval' => '60s',
-                    'process.priority'           => -19,
-                },
-                require => Apt::Repository['wikimedia-php72'],
+        $core_extensions.each |$extension| {
+            php::extension { $extension:
+                package_name => "php${php_version}-${extension}",
+                sapis        => ['cli', 'fpm'],
             }
         }
 
-        # Extensions that require configuration.
-        php::extension {
-            default:
-                sapis        => ['cli', 'fpm'];
-            'apcu':
-                ;
-            'mailparse':
-                priority     => 21;
-            'mysqlnd':
-                package_name => '',
-                priority     => 10;
-            'xml':
-                package_name => "php${php_version}-xml",
-                priority     => 15;
-            'mysqli':
-                package_name => "php${php_version}-mysql";
-        }
-
-        $num_workers = max(floor($facts['processors']['count'] * 1.5), 8)
-        # These numbers need to be positive integers
-        $max_spare = ceiling($num_workers * 0.3)
-        $min_spare = ceiling($num_workers * 0.1)
-        php::fpm::pool { 'www':
+        class { '::php::fpm':
+            ensure => present,
             config => {
-                'pm'                   => 'dynamic',
-                'pm.max_spare_servers' => $max_spare,
-                'pm.min_spare_servers' => $min_spare,
-                'pm.start_servers'     => $min_spare,
-                'pm.max_children'      => $num_workers,
+                'emergency_restart_interval' => '60s',
+                'process.priority'           => -19,
+            },
+        }
+
+    } else {
+
+        $php_version='7.2'
+
+        # stretch - PHP (7.2) packages and Apache module
+        # warning: currently Phabricator supports PHP 7.1+ but not PHP 7.0
+        # https://secure.phabricator.com/rPa2cd3d9a8913d5709e2bc999efb75b63d7c19696
+        apt::repository { 'wikimedia-php72':
+            uri        => 'http://apt.wikimedia.org/wikimedia',
+            dist       => "${::lsbdistcodename}-wikimedia",
+            components => 'component/php72',
+            notify     => Exec['apt_update_php'],
+        }
+
+        # Install the runtime
+        class { '::php':
+            ensure         => present,
+            version        => $php_version,
+            sapis          => ['cli', 'fpm'],
+            config_by_sapi => {
+                'fpm' => $fpm_config,
+            },
+            require        => Apt::Repository['wikimedia-php72'],
+        }
+
+        $core_extensions.each |$extension| {
+            php::extension { $extension:
+                package_name => "php${php_version}-${extension}",
+                require      => Apt::Repository['wikimedia-php72'],
+                sapis        => ['cli', 'fpm'],
             }
+        }
+
+        class { '::php::fpm':
+            ensure  => present,
+            config  => {
+                'emergency_restart_interval' => '60s',
+                'process.priority'           => -19,
+            },
+            require => Apt::Repository['wikimedia-php72'],
+        }
+    }
+
+    # Extensions that require configuration.
+    php::extension {
+        default:
+            sapis        => ['cli', 'fpm'];
+        'apcu':
+            ;
+        'mailparse':
+            priority     => 21;
+        'mysqlnd':
+            package_name => '',
+            priority     => 10;
+        'xml':
+            package_name => "php${php_version}-xml",
+            priority     => 15;
+        'mysqli':
+            package_name => "php${php_version}-mysql";
+    }
+
+    $num_workers = max(floor($facts['processors']['count'] * 1.5), 8)
+    # These numbers need to be positive integers
+    $max_spare = ceiling($num_workers * 0.3)
+    $min_spare = ceiling($num_workers * 0.1)
+    php::fpm::pool { 'www':
+        config => {
+            'pm'                   => 'dynamic',
+            'pm.max_spare_servers' => $max_spare,
+            'pm.min_spare_servers' => $min_spare,
+            'pm.start_servers'     => $min_spare,
+            'pm.max_children'      => $num_workers,
         }
     }
 

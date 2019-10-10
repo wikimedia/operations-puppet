@@ -8,8 +8,6 @@ apache::logrotate::rotate: 3
 phabricator_active_server: 'phab1003'
 phabricator_active_server_fqdn: 'phab1003.eqiad.wmnet'
 
-phabricator_enable_php_fpm: true
-
 phabricator_servers:
   - phab1001.eqiad.wmnet
   - phab1003.eqiad.wmnet
