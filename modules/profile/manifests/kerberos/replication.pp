@@ -43,6 +43,16 @@ class profile::kerberos::replication (
             require => Package['krb5-kpropd'],
         }
 
+        if $monitoring_enabled {
+            nrpe::monitor_service { 'krb-kpropd':
+                description   => 'Kerberos Kpropd daemon',
+                nrpe_command  => '/usr/lib/nagios/plugins/check_procs -c 1:1 -a "/usr/sbin/kpropd"',
+                contact_group => 'admins,analytics',
+                require       => Service['krb5-kpropd'],
+                notes_url     => 'https://wikitech.wikimedia.org/wiki/Analytics/Systems/Kerberos#Daemons_and_their_roles',
+            }
+        }
+
     } else {
         package { 'krb5-kpropd':
             ensure => absent,
