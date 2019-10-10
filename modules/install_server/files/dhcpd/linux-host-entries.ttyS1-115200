@@ -5723,6 +5723,7 @@ host promethium {
 host puppetmaster1001 {
     hardware ethernet 18:66:DA:63:3D:08;
     fixed-address puppetmaster1001.eqiad.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/buster-installer/";
 }
 
 host puppetmaster1002 {
