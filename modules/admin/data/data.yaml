@@ -156,7 +156,7 @@ groups:
               nikerabbit, dstrine, jsamra,
               jdittrich, chelsyx, ovasileva, debt, mgerlach,
               fdans, mlitn, niharika29, goransm, pmiazga, dsaez, shiladsen, cicalese,
-              mirrys, sharvaniharan, mmiller, amire80, rush, tieu, kharlan, gbirke,
+              mirrys, sharvaniharan, mmiller, amire80, rush, tieu, kharlan, gbirke, dedcode,
               isaacj, jdl, joewalsh, phuedx, bd808, iflorez, mayakpwiki, conniecc1, abi]
   ldap-admins:
     gid: 715
@@ -280,7 +280,7 @@ groups:
               ayounsi, mepps, mmiller, seddon, gilles, tstarling, rush, tieu, karen,
               cicalese, drossi, fsalutari, nathante, gbirke, isaacj, sbassett, jdl,
               niharika29, ryanmax, afandian2, jgleeson, toddleroux, srishakatux, dsharpe,
-              esanders, sukhe, jfishback, iflorez, mayakpwiki, conniecc1, abi, mgerlach]
+              esanders, sukhe, jfishback, iflorez, mayakpwiki, conniecc1, abi, mgerlach, dedcode]
     system_members: [analytics-search, analytics]
   analytics-admins:
     gid: 732
@@ -3313,6 +3313,15 @@ users:
     name: andrew-wmde
     ssh_keys:
       - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQC+POWSebb+Fiyxuw2qqMhMHt7DW5i6ZJ7h4H0pea+HRWf9BmuxfrIPESqgZ1j3hYyxP+mqB3zE/4lQky2ZMYoB04ullkww7t3Y46hIuJqVcjFzAWoOkZTvON3Zmtu3xAf8p9zxgT2NXWMLYFErcwgBE6JjO16KMqWASrLU8op+gyavh+DofZE+WhxMM5jnHy+Ofa28pFzC41eguovCgGnSyp2rTbAS0WhbsRukcMbsf3LNRVQKf7ZXJXNAAUZtpJnM1wgdTXZezlMoPmRTIjbp5YmQNOXgepBC5VoGzDEctiju/N+BIwFs9Z/pJkqfxyc2KvUcd6J44odHol8NvhABQt6dRMRfCHaTY2WHmkEfIDjXudaJO11jl5zP0nixYeiIO4FNEIYF2Y/tFGB5WTfsE4lB/6nkKVGB/7bCtfA404qkci6Zye8v7rk+hm/SWlZW724PwNQzBaqqnuz+xzf8U65vqsURcP4V3kupW4OZpOWkNALlaM6wbq50kAhQSLJ6Ed2RwTckoCD5u2xgQXwehQS81oIY17lXV0OcJvXR8L8lm+82o3PxJouPo6byczvqd5RUFbysjku7u2u0gbRI47jYEuH/gARBUAG3zNZ+EWIMXe4+gLrQzu6d9doIiW3w6GbfR62VqfqQf2H4sh6zR2IOrPfV8EpnIwnnKLjKmw==
+  dedcode:
+    ensure: present
+    realname: Djellel Difallah
+    email: ddifallah@wikimedia.org
+    uid: 22235
+    gid: 500
+    name: dedcode
+    ssh_keys:
+      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAICXUWuz8fmG9LkK3vLeAFJF1+uQV7eNR1eiDdfpYcTIq djellel@dedmac.local
 ldap_only_users:
   abartov:
     ensure: present
