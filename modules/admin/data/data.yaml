@@ -153,7 +153,7 @@ groups:
               daisy, mholloway-shell, ebernhardson, niedzielski,
               neilpquinn-wmf, dbrant, maxsem,
               jminor, etonkovidova, sbisson, addshore, matmarex, elukey,
-              nikerabbit, dstrine, jsamra,
+              nikerabbit, dstrine, jsamra, jkumalah,
               jdittrich, chelsyx, ovasileva, debt, mgerlach,
               fdans, mlitn, niharika29, goransm, pmiazga, dsaez, shiladsen, cicalese,
               mirrys, sharvaniharan, mmiller, amire80, rush, tieu, kharlan, gbirke, dedcode,
@@ -273,7 +273,7 @@ groups:
               andyrussg, niedzielski, maxsem, hoo, daniel, krinkle, tgr,
               ebernhardson, addshore, jminor, neilpquinn-wmf,
               dcausse, bd808, tjones, mobrovac, jdrewniak, ejegg, jdcc, ori,
-              amire80, kartik, pcoombe, foks, jsamra, kemayo,
+              amire80, kartik, pcoombe, foks, jsamra, kemayo, jkumalah,
               jdlrobson, chelsyx, ovasileva, flemmerich, filippo, pmiazga, faidon,
               piccardi, fdans, eevans, anomie, demon, ladsgroup, musikanimal,
               kaldari, goransm, ema, dsaez, shiladsen, rho, mirrys, slaporte, jk,
@@ -3304,6 +3304,15 @@ users:
     name: mgerlach
     ssh_keys:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAINj/yFpJoyyIYy8DaRkA92YOQbsZyNh/l3OfQSezZ5t6 martin@nitram
+  jkumalah:
+    ensure: present
+    realname: Jerrie Kumalah
+    email: jkumalah@wikimedia.org
+    uid: 22085
+    gid: 500
+    name: jkumalah
+    ssh_keys:
+      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKtmaRXYmgqNYVDr+ISthBNCwkgo0eAvfKgw20PTuzD+ jkumalah@Jerries-MacBook-Pro.local
   andrew-wmde:
     ensure: present
     realname: Andrew Kostka
@@ -3775,7 +3784,3 @@ ldap_only_users:
     email: eyener-ctr@wikimedia.org
     expiry_date: 2020-09-16
     expiry_contact: jrobell@wikimedia.org
-  jkumalah:
-    ensure: present
-    realname: Jerrie Kumalah
-    email: jkumalah@wikimedia.org
