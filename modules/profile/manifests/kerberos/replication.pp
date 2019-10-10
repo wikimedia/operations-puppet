@@ -19,7 +19,10 @@ class profile::kerberos::replication (
     Stdlib::Fqdn $krb_kadmin_primary = lookup('kerberos_kadmin_server_primary'),
     Optional[Boolean] $monitoring_enabled = lookup('profile::kerberos::replication::monitoring_enabled', { 'default_value' => false }),
 ) {
-    if $trusted['certname'] != $krb_kadmin_primary {
+
+    $is_krb_master = $trusted['certname'] == $krb_kadmin_primary
+
+    if $is_krb_master == false {
         package { 'krb5-kpropd':
             ensure => present,
         }
@@ -42,6 +45,8 @@ class profile::kerberos::replication (
             ensure  => running,
             require => Package['krb5-kpropd'],
         }
+
+        $ensure_replication_timer = 'absent'
 
         if $monitoring_enabled {
             nrpe::monitor_service { 'krb-kpropd':
@@ -66,29 +71,32 @@ class profile::kerberos::replication (
             ensure => absent,
         }
 
-        $krb_kdc_slave_servers = $krb_kdc_servers.filter |$krb_kdc_server| { $krb_kdc_server != $krb_kadmin_primary }
-        file { '/usr/local/sbin/replicate_krb_database':
-            ensure  => 'present',
-            owner   => 'root',
-            group   => 'root',
-            mode    => '0550',
-            content => template('profile/kerberos/replicate_krb_database.erb'),
-        }
+        $ensure_replication_timer = 'present'
+    }
 
-        systemd::timer::job { 'replicate-krb-database':
-            description        => 'Replication of the KDC database to the Kerberos slaves',
-            command            => '/usr/local/sbin/replicate_krb_database',
-            interval           => {
-                'start'    => 'OnCalendar',
-                'interval' => '*-*-* *:00:00'
-            },
-            user               => 'root',
-            monitoring_enabled => $monitoring_enabled,
-            logging_enabled    => false,
-            require            => [
-                File['/usr/local/sbin/replicate_krb_database'],
-                File['/srv/backup'],
-            ],
-        }
+    $krb_kdc_slave_servers = $krb_kdc_servers.filter |$krb_kdc_server| { $krb_kdc_server != $krb_kadmin_primary }
+    file { '/usr/local/sbin/replicate_krb_database':
+        ensure  => $ensure_replication_timer,
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0550',
+        content => template('profile/kerberos/replicate_krb_database.erb'),
+    }
+
+    systemd::timer::job { 'replicate-krb-database':
+        ensure             => $ensure_replication_timer,
+        description        => 'Replication of the KDC database to the Kerberos slaves',
+        command            => '/usr/local/sbin/replicate_krb_database',
+        interval           => {
+            'start'    => 'OnCalendar',
+            'interval' => '*-*-* *:00:00'
+        },
+        user               => 'root',
+        monitoring_enabled => $monitoring_enabled,
+        logging_enabled    => false,
+        require            => [
+            File['/usr/local/sbin/replicate_krb_database'],
+            File['/srv/backup'],
+        ],
     }
 }
