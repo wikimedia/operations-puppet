@@ -78,15 +78,17 @@ class profile::openstack::eqiad1::keystone::service(
     contain '::profile::openstack::base::keystone::hooks'
 
     class {'::openstack::keystone::monitor::services':
-        active         => $::fqdn == $keystone_host,
+        active         => true,
         auth_port      => $auth_port,
         public_port    => $public_port,
         contact_groups => 'wmcs-team',
     }
     contain '::openstack::keystone::monitor::services'
 
+    # to avoid race conditions only do cleanup maintenance operations on the
+    # controller servicing the primary endpoints
     class {'::openstack::keystone::cleanup':
-        active  => $::fqdn == $keystone_host,
+        active  => $::ipaddress == ipresolve($keystone_host,4),
         db_user => $db_user,
         db_pass => $db_pass,
         db_host => $db_host,
@@ -97,8 +99,10 @@ class profile::openstack::eqiad1::keystone::service(
         active        => $::fqdn == $nova_controller,
     }
 
+    # monitor projects and users only on the controller servicing the
+    # primary endpoints
     class {'::openstack::keystone::monitor::projects_and_users':
-        active         => $::fqdn == $keystone_host,
+        active         => $::ipaddress == ipresolve($keystone_host,4),
         contact_groups => 'wmcs-team-email,admins',
     }
     contain '::openstack::keystone::monitor::projects_and_users'
