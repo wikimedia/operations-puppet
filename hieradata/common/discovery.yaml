@@ -36,6 +36,9 @@ discovery::services:
   parsoid:
     lvs: parsoid
     active_active: true
+  parsoid-php:
+    lvs: parsoid-php
+    active_active: false
   restbase:
     lvs: restbase
     active_active: true
