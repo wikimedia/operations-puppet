@@ -99,7 +99,7 @@ class profile::openstack::eqiad1::keystone::service(
 
     class {'::openstack::keystone::monitor::projects_and_users':
         active         => $::fqdn == $keystone_host,
-        contact_groups => 'wmcs-team,admins',
+        contact_groups => 'wmcs-team-email,admins',
     }
     contain '::openstack::keystone::monitor::projects_and_users'
 
