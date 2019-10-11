@@ -2980,13 +2980,13 @@ host kubestage1002 {
 host labpuppetmaster1001 {
     hardware ethernet 30:e1:71:5d:23:48;
     fixed-address labpuppetmaster1001.wikimedia.org;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/buster-installer/";
 }
 
 host labpuppetmaster1002 {
     hardware ethernet 30:e1:71:5d:23:4c;
     fixed-address labpuppetmaster1002.wikimedia.org;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/buster-installer/";
 }
 
 host labmon1001 {
