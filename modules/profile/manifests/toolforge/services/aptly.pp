@@ -2,6 +2,9 @@ class profile::toolforge::services::aptly(
     $active_node = lookup('profile::toolforge::services::active_node'),
     $standby_node = lookup('profile::toolforge::services::standby_node'),
 ) {
+    aptly::repo { 'buster-tools':
+        publish      => true,
+    }
     aptly::repo { 'stretch-tools':
         publish      => true,
     }
