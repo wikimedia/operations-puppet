@@ -37,7 +37,26 @@ class eventlogging::dependencies {
         'python-yaml',
         'python-zmq',
         'python-ua-parser',
+        # Deploy Python3 dependencies alongside with Python2 ones
+        'python3-dateutil',
+        'python3-jsonschema',
+        'python3-confluent-kafka',
+        # Python snappy allows python-kafka to consume Snappy compressed data.
+        'python3-snappy',
+        'python3-mysqldb',
+        'python3-pygments',
+        'python3-pykafka',
+        'python3-sqlalchemy',
+        'python3-statsd',
+        'python3-yaml',
+        'python3-ua-parser',
     ])
+
+    if !defined(Package['python3-kafka']) {
+        package { 'python3-kafka':
+            ensure => installed,
+        }
+    }
 
     if !defined(Package['python-kafka']) {
         package { 'python-kafka':
