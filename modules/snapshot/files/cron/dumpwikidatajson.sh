@@ -63,8 +63,6 @@ while [ $i -lt $shards ]; do
 			setPerBatchVars
 
 			echo "(`date --iso-8601=minutes`) Starting batch $batch" >> $errorLog
-			# Remove --no-cache once this runs on hhvm (or everything is back on Zend), see T180048.
-
 			# This separates the run-parts by ,\n. For this we assume the last run to not be empty, which should
 			# always be the case for Wikidata (given the number of runs needed is rounded down and new pages are
 			# added all the time).
@@ -76,7 +74,6 @@ while [ $i -lt $shards ]; do
 				--snippet 2 \
 				--entity-type item \
 				--entity-type property \
-				--no-cache \
 				--dbgroupdefault dump \
 				$firstPageIdParam \
 				$lastPageIdParam; \

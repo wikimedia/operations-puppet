@@ -122,7 +122,6 @@ while [ $i -lt $shards ]; do
 			setPerBatchVars
 
 			echo "(`date --iso-8601=minutes`) Starting batch $batch" >> $errorLog
-			# Remove --no-cache once this runs on hhvm (or everything is back on Zend), see T180048.
 			$php $multiversionscript extensions/Wikibase/repo/maintenance/dumpRdf.php \
 				--wiki ${projectName}wiki \
 				--shard $i \
@@ -130,7 +129,6 @@ while [ $i -lt $shards ]; do
 				--batch-size $(($shards * 250)) \
 				--format $dumpFormat ${dumpFlavor:+--flavor} ${dumpFlavor:+"$dumpFlavor"} \
 				$entityTypes \
-				--no-cache \
 				--dbgroupdefault dump \
 				--part-id $i-$batch \
 				$firstPageIdParam \
