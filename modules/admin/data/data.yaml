@@ -154,7 +154,7 @@ groups:
               neilpquinn-wmf, dbrant, maxsem,
               jminor, etonkovidova, sbisson, addshore, matmarex, elukey,
               nikerabbit, dstrine, jsamra, jkumalah,
-              jdittrich, chelsyx, ovasileva, debt, mgerlach,
+              jdittrich, chelsyx, ovasileva, debt, mgerlach, eyener,
               fdans, mlitn, niharika29, goransm, pmiazga, dsaez, shiladsen, cicalese,
               mirrys, sharvaniharan, mmiller, amire80, rush, tieu, kharlan, gbirke, dedcode,
               isaacj, jdl, joewalsh, phuedx, bd808, iflorez, mayakpwiki, conniecc1, abi]
@@ -279,7 +279,7 @@ groups:
               kaldari, goransm, ema, dsaez, shiladsen, rho, mirrys, slaporte, jk,
               ayounsi, mepps, mmiller, seddon, gilles, tstarling, rush, tieu, karen,
               cicalese, drossi, fsalutari, nathante, gbirke, isaacj, sbassett, jdl,
-              niharika29, ryanmax, afandian2, jgleeson, toddleroux, srishakatux, dsharpe,
+              niharika29, ryanmax, afandian2, jgleeson, toddleroux, srishakatux, dsharpe, eyener,
               esanders, sukhe, jfishback, iflorez, mayakpwiki, conniecc1, abi, mgerlach, dedcode]
     system_members: [analytics-search, analytics]
   analytics-admins:
@@ -3331,6 +3331,17 @@ users:
     name: dedcode
     ssh_keys:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAICXUWuz8fmG9LkK3vLeAFJF1+uQV7eNR1eiDdfpYcTIq djellel@dedmac.local
+  eyener:
+    ensure: present
+    realname: Erin Yener
+    email: eyener-ctr@wikimedia.org
+    expiry_date: 2020-09-16
+    expiry_contact: jrobell@wikimedia.org
+    uid: 22127
+    gid: 500
+    name: eyener
+    ssh_keys:
+      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBLrqCmWRtknGqk3RLECTbNP0QY/oIOImBi22qhDdqoz eyener@Erins-MacBook-Pro.local
 ldap_only_users:
   abartov:
     ensure: present
@@ -3778,9 +3789,3 @@ ldap_only_users:
     ensure: present
     realname: Raja Gumienny
     email: raja.gumienny@wikimedia.de
-  eyener:
-    ensure: present
-    realname: Erin Yener
-    email: eyener-ctr@wikimedia.org
-    expiry_date: 2020-09-16
-    expiry_contact: jrobell@wikimedia.org
