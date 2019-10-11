@@ -45,7 +45,6 @@ class eventlogging::dependencies {
         'python3-snappy',
         'python3-mysqldb',
         'python3-pygments',
-        'python3-pykafka',
         'python3-sqlalchemy',
         'python3-statsd',
         'python3-yaml',
