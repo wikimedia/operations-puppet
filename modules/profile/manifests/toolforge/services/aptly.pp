@@ -11,11 +11,12 @@ class profile::toolforge::services::aptly(
     aptly::repo { 'jessie-tools':
         publish      => true,
     }
-    # delete next two once migrations end
-    aptly::repo { 'trusty-tools':
+
+    # its interesting to serve some packages to toolsbeta for testing purposes
+    aptly::repo { 'stretch-toolsbeta':
         publish      => true,
     }
-    aptly::repo { 'stretch-toolsbeta':
+    aptly::repo { 'buster-toolsbeta':
         publish      => true,
     }
 
