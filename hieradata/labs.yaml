@@ -24,6 +24,7 @@ labsdnsconfig:
   recursor: 'cloud-recursor0.wikimedia.org'
   recursor_secondary: 'cloud-recursor1.wikimedia.org'
 
+profile::base::enable_adduser: false
 profile::base::overlayfs: true
 profile::base::labs::unattended_wmf: 'present'
 profile::base::labs::unattended_distro: 'present'

@@ -30,6 +30,7 @@ class profile::base(
     $monitoring_hosts = hiera('monitoring_hosts', []),
     Hash $wikimedia_clusters = lookup('wikimedia_clusters'),
     String $cluster = lookup('cluster'),
+    Boolean $enable_adduser = lookup('profile::base::enable_adduser')
 ) {
     require ::profile::base::certificates
     class { '::apt':
@@ -51,6 +52,10 @@ class profile::base(
 
     if ! has_key($wikimedia_clusters[$cluster]['sites'], $::site) {
         fail("Site ${::site} not found in cluster ${cluster}")
+    }
+
+    if $enable_adduser {
+        class {'adduser': }
     }
 
     include ::profile::base::puppet
