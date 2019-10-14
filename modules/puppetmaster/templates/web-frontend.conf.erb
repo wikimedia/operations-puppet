@@ -53,10 +53,10 @@ end
     RewriteRule ^/puppet-ca/.*$ https://<%= @master %>:8141%{REQUEST_URI} [P,QSA]
     # This legacy API is still used by cergen, and only the master can serve it.
     RewriteRule ^/[^/]+/certificate.*$ https://<%= @master %>:8141%{REQUEST_URI} [P,QSA]
-    # File buckets should only be in one place. Choosing the frontend by default for simplicity
+    # File buckets should only be in one place per site. Choosing the frontend by default for simplicity
     RewriteRule ^/puppet/v3/file_bucket_file/md5/ https://<%= @fqdn %>:8141%{REQUEST_URI} [P,QSA]
-    # Volatile should only be in one place. Choosing the master by default for simplicity
-    RewriteRule ^/puppet/v3/(file_content|file_metadatas?)/volatile/ https://<%= @master %>:8141%{REQUEST_URI} [P,QSA]
+    # volatile should only be in one place per site. Choosing the frontend by default for simplicity
+    RewriteRule ^/puppet/v3/(file_content|file_metadatas?)/volatile/ https://<%= @fqdn %>:8141%{REQUEST_URI} [P,QSA]
     # The rest gets balanced
 
     <%-# only add canary config if we have a canary worker and canary hosts -%>
