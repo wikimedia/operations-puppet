@@ -98,6 +98,15 @@ define package_builder::pbuilder_hook(
         source => 'puppet:///modules/package_builder/hooks/D04java8'
     }
 
+    # on buster, add a hook for building cergen with some dependencies in a dedicated component
+    file { "${basepath}/hooks/${distribution}/D04cergen":
+        ensure => present,
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0555',
+        source => 'puppet:///modules/package_builder/hooks/D04cergen'
+    }
+
     # Dependency info
     File["${basepath}/hooks/${distribution}"] -> File["${basepath}/hooks/${distribution}/C10shell.wikimedia.org"]
     File["${basepath}/hooks/${distribution}"] -> File["${basepath}/hooks/${distribution}/D01apt.wikimedia.org"]
