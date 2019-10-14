@@ -65,17 +65,6 @@ class profile::analytics::cluster::client(
     require_package(
         'kafkacat',
         'jupyter-notebook',
+        's-nail',
     )
-
-    # heirloom-mailx has been a transitional
-    # package up to Stretch.
-    if os_version('debian < buster') {
-        package { 'heirloom-mailx':
-            ensure => present,
-        }
-    } else {
-        package { 's-nail':
-            ensure => present,
-        }
-    }
 }
