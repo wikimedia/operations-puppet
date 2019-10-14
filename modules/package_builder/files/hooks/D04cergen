@@ -1,0 +1,9 @@
+#!/bin/sh
+
+if [ "$CERGEN" = "yes" ] && [ "$DIST" = "buster" ]; then
+    cat > /etc/apt/sources.list.d/wikimedia-cergen.list <<-'EOF'
+    deb http://apt.wikimedia.org/wikimedia buster-wikimedia component/cergen
+    deb-src http://apt.wikimedia.org/wikimedia buster-wikimedia component/cergen
+EOF
+    apt-get update
+fi
