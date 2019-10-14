@@ -129,6 +129,36 @@ profile::trafficserver::backend::outbound_tls_settings:
     enable_tlsv1_2: 1
     enable_tlsv1_3: 0
   verify_origin: true
+profile::trafficserver::tls::inbound_tls_settings:
+  cert_path: /etc/acmecerts
+  certificates:
+  - cert_files:
+    - unified/live/ec-prime256v1.chained.crt
+    - unified/live/rsa-2048.chained.crt
+    default: true
+    ocsp_stapling_files:
+    - unified/live/ec-prime256v1.client.ocsp
+    - unified/live/rsa-2048.client.ocsp
+    private_key_files:
+    - unified/live/ec-prime256v1.key
+    - unified/live/rsa-2048.key
+  common:
+    cipher_suite: -ALL:ECDHE-ECDSA-CHACHA20-POLY1305:ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-CHACHA20-POLY1305:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES128-SHA:ECDHE-RSA-AES128-SHA:DHE-RSA-AES128-SHA
+    enable_tlsv1: 1
+    enable_tlsv1_1: 1
+    enable_tlsv1_2: 1
+    enable_tlsv1_3: 0
+  dhparams_file: /etc/ssl/dhparam.pem
+  do_ocsp: 1
+  load_elevated: 1
+  max_record_size: 16383
+  ocsp_stapling_path: /etc/acmecerts
+  private_key_path: /etc/acmecerts
+  session_cache: 2
+  session_cache_auto_clear: 1
+  session_cache_buckets: 256
+  session_cache_size: 102400
+  session_ticket_enable: 0
 profile::trafficserver::backend::log_formats:
   - name: wmf
     format: 'Date:%<cqtd> Time:%<cqtt> ConnAttempts:%<sca> ConnReuse:%<sstc> TTFetchHeaders:%<{TS_MILESTONE_SERVER_READ_HEADER_DONE-TS_MILESTONE_SM_START}msdms> OriginServer:%<shn> OriginServerTime:%<stms> CacheResultCode:%<crc> CacheWriteResult:%<cwr> ReqMethod:%<cqhm> RespStatus:%<pssc> OriginStatus:%<sssc> ReqURL:%<cquuc> BereqURL:%<cqtx> ReqHeader:User-Agent:%<{User-agent}cqh> ReqHeader:Host:%<{Host}cqh> ReqHeader:X-Client-IP:%<{X-Client-IP}cqh> ReqHeader:Cookie:%<{Cookie}cqh> RespHeader:X-Cache-Int:%<{X-Cache-Int}psh> RespHeader:Backend-Timing:%<{Backend-Timing}psh>'
