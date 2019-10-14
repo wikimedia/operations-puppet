@@ -1,5 +1,4 @@
 class profile::base(
-    $puppetmaster  = hiera('puppetmaster'),
     $use_apt_proxy = hiera('profile::base::use_apt_proxy', true),
     $purge_apt_sources = hiera('profile::base::purge_apt_sources', false),
     $domain_search = hiera('profile::base::domain_search', $::domain), # lint:ignore:wmf_styleguide
