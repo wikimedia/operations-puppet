@@ -32,4 +32,6 @@ class profile::webperf::arclamp (
         proto => 'tcp',
         port  => '80',
     }
+
+    backup::set { 'arclamp-application-data': }
 }

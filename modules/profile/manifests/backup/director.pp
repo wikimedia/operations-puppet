@@ -269,6 +269,10 @@ class profile::backup::director(
         includes => [ '/var/lib/tor/', '/var/lib/tor-instances/' ]
     }
 
+    bacula::director::fileset { 'arclamp-application-data':
+        includes => [ '/srv/xenon/' ]
+    }
+
     # The console should be on the director
     class { 'bacula::console':
         director   => $::fqdn,

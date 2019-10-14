@@ -11,6 +11,7 @@ class role::webperf::profiling_tools {
 
     include ::profile::standard
     include ::profile::base::firewall
+    include ::profile::backup::host
     include ::profile::webperf::arclamp
     include ::profile::webperf::xhgui
 
