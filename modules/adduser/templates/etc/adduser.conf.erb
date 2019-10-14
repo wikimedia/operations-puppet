@@ -1,0 +1,39 @@
+<%-
+def bool2yesno(value)
+  if value.is_a?(TrueClass)
+    return 'yes'
+  elsif value.is_a?(FalseClass)
+    return 'no'
+  else
+    # we should never get here
+    return value
+  end
+end
+-%>
+### MANAGED BY PUPPET
+DSHELL=<%= @default_shell %>
+DHOME=<%= @default_home %>
+GROUPHOMES=<%= bool2yesno(@use_group_homes) %>
+LETTERHOMES=<%= bool2yesno(@use_letter_homes) %>
+SKEL=<%= @skel_dir %>
+FIRST_SYSTEM_UID=<%= @first_system_uid %>
+LAST_SYSTEM_UID=<%= @last_system_uid %>
+FIRST_SYSTEM_GID=<%= @first_system_gid %>
+LAST_SYSTEM_GID=<%= @last_system_gid%>
+FIRST_UID=<%= @first_uid %>
+LAST_UID=<%= @last_uid %>
+FIRST_GID=<%= @first_gid %>
+LAST_GID=<%= @last_gid %>
+USERGROUPS=<%= bool2yesno(@use_usergroups) %>
+USERS_GID=<%= @users_gid %>
+DIR_MODE=<%= @dir_mode %>
+SETGID_HOME=<%= bool2yesno(@home_setgid) %>
+QUOTAUSER="<%= @quota_user %>"
+SKEL_IGNORE_REGEX="<%= @skel_ignore_regex %>"
+<%- if @extra_groups.any? -%>
+EXTRA_GROUPS="<%= @extra_groups.join(' ') %>"
+ADD_EXTRA_GROUPS=1
+<%- end -%>
+<%- if @name_regex -%>
+NAME_REGEX="<%= @name_regex %>"
+<%- end -%>
