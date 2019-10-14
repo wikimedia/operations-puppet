@@ -94,24 +94,6 @@ host an-tool1007 {
     option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/buster-installer/";
 }
 
-host an-conf1001 {
-    hardware ethernet 4c:d9:8f:6c:a6:aa;
-    fixed-address an-conf1001.eqiad.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/buster-installer/";
-}
-
-host an-conf1002 {
-    hardware ethernet 4c:d9:8f:6c:aa:4c;
-    fixed-address an-conf1002.eqiad.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/buster-installer/";
-}
-
-host an-conf1003 {
-    hardware ethernet 4c:d9:8f:6c:79:9e;
-    fixed-address an-conf1003.eqiad.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/buster-installer/";
-}
-
 host argon {
     hardware ethernet aa:00:00:fe:6b:df;
     fixed-address argon.eqiad.wmnet;

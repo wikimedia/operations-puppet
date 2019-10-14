@@ -263,6 +263,24 @@ host analytics1077 {
     fixed-address analytics1077.eqiad.wmnet;
 }
 
+host an-conf1001 {
+    hardware ethernet 4c:d9:8f:6c:a6:aa;
+    fixed-address an-conf1001.eqiad.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/buster-installer/";
+}
+
+host an-conf1002 {
+    hardware ethernet 4c:d9:8f:6c:aa:4c;
+    fixed-address an-conf1002.eqiad.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/buster-installer/";
+}
+
+host an-conf1003 {
+    hardware ethernet 4c:d9:8f:6c:79:9e;
+    fixed-address an-conf1003.eqiad.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/buster-installer/";
+}
+
 host an-worker1078 {
     hardware ethernet F4:E9:D4:DB:AB:C0;
     fixed-address an-worker1078.eqiad.wmnet;
