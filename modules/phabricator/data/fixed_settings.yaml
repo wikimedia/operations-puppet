@@ -248,6 +248,7 @@ translation.override:
 phabricator.uninstalled-applications:
   PhabricatorPhrictionApplication: true
   PhabricatorDivinerApplication: true
+  PhabricatorConpherenceApplication: true
 
 phd.log-directory: "/var/log/phd"
 phd.user: 'phd'
