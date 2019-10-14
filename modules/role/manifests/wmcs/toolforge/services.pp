@@ -6,5 +6,4 @@ class role::wmcs::toolforge::services {
     include profile::toolforge::grid::base
     include profile::toolforge::services::basic
     include profile::toolforge::services::aptly
-    include profile::toolforge::services::updatetools
 }
