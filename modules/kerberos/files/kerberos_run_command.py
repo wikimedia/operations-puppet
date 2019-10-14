@@ -6,8 +6,10 @@ import subprocess
 
 keytabs = {
     'hdfs': '/etc/security/keytabs/hadoop/hdfs.keytab',
-    'oozie': '/etc/security/keytabs/oozie/oozie.keytab',
-    'analytics': '/etc/security/keytabs/analytics/analytics.keytab'
+    'yarn': '/etc/security/keytabs/hadoop/yarn.keytab',
+    'oozie': '/etc/security/keytabs/oozie/HTTP-oozie.keytab',
+    'druid': '/etc/security/keytabs/druid/druid.keytab',
+    'analytics': '/etc/security/keytabs/analytics/analytics.keytab',
 }
 
 realm_name = ""
