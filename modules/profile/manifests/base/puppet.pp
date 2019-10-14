@@ -1,19 +1,15 @@
 class profile::base::puppet(
-  String           $puppetmaster  = lookup('puppetmaster'),
-  String           $ca_server     = lookup('puppet_ca_server'),
-  Integer[1,59]    $interval      = lookup('profile::base::puppet::interval',
-                                          {'default_value' => 30}),
-  Optional[String] $dns_alt_names = lookup('profile::base::puppet::dns_alt_names',
-                                          {'default_value' => undef}),
-  String           $environment   = lookup('profile::base::puppet::environment',
-                                          {'default_value' => 'production'}),
-  Integer[2,3]     $facter_major_version = lookup('profile::base::puppet::facter_major_version',
-                                                  {'default_value' => 3}),
-  Integer[4,5]     $puppet_major_version = lookup('profile::base::puppet::puppet_major_version',
-                                                  {'default_value' => 5}),
+  String           $puppetmaster         = lookup('puppetmaster'),
+  String           $ca_server            = lookup('puppet_ca_server'),
+  Integer[1,59]    $interval             = lookup('profile::base::puppet::interval'),
+  String           $environment          = lookup('profile::base::puppet::environment'),
+  Integer[2,3]     $facter_major_version = lookup('profile::base::puppet::facter_major_version'),
+  Integer[4,5]     $puppet_major_version = lookup('profile::base::puppet::puppet_major_version'),
   # is the below paramater still used?
-  Boolean $auto_puppetmaster_switching = lookup('profile::base::puppet::auto_puppetmaster_switching',
-                                                {'default_value' => false}),
+  Boolean $auto_puppetmaster_switching   = lookup('profile::base::puppet::auto_puppetmaster_switching'),
+  # Looks like we need hiera version 5 to pass undef via hiera
+  Optional[String] $dns_alt_names        = lookup('profile::base::puppet::dns_alt_names',
+                                                  {'default_value' => undef})
 ) {
 
   class { '::base::puppet':

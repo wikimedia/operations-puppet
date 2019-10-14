@@ -1,0 +1,6 @@
+profile::base::puppet::interval: 30
+profile::base::puppet::dns_alt_names: ~
+profile::base::puppet::environment: production
+profile::base::puppet::facter_major_version: 3
+profile::base::puppet::puppet_major_version: 5
+profile::base::puppet::auto_puppetmaster_switching: false
