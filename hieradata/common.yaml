@@ -713,7 +713,7 @@ hadoop_clusters:
       hadoop.proxyuser.presto.groups: '*'
 
   analytics-hadoop:
-    zookeeper_cluster_name: main-eqiad
+    zookeeper_cluster_name: analytics-eqiad
     resourcemanager_hosts:
       - an-master1001.eqiad.wmnet
       - an-master1002.eqiad.wmnet
