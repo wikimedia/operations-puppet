@@ -10,7 +10,6 @@ class base::firewall (
     Array[Stdlib::IP::Address] $kafka_brokers_jumbo = [],
     Array[Stdlib::IP::Address] $kafka_brokers_logging = [],
     Array[Stdlib::IP::Address] $zookeeper_hosts_main = [],
-    Array[Stdlib::IP::Address] $hadoop_masters = [],
     Array[Stdlib::IP::Address] $druid_public_hosts = [],
     Array[Stdlib::IP::Address] $mysql_root_clients = [],
     Array[Stdlib::IP::Address] $deployment_hosts = [],

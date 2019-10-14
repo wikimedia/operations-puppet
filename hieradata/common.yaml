@@ -1209,15 +1209,6 @@ zookeeper_hosts_main:
 - 2620:0:860:103:10:192:32:141 # conf2002.codfw.wmnet
 - 10.192.48.52                 # conf2003.codfw.wmnet
 - 2620:0:860:104:10:192:48:52  # conf2003.codfw.wmnet
-hadoop_masters:
-- 10.64.5.26                  # an-master1001.eqiad.wmnet
-- 2620:0:861:104:10:64:5:26   # an-master1001.eqiad.wmnet
-- 10.64.21.110                # an-master1002.eqiad.wmnet
-- 2620:0:861:105:10:64:21:110 # an-master1002.eqiad.wmnet
-- 10.64.36.128                # analytics1028.eqiad.wmnet
-- 2620:0:861:106:10:64:36:128 # analytics1028.eqiad.wmnet
-- 10.64.36.129                # analytics1029.eqiad.wmnet
-- 2620:0:861:106:10:64:36:129 # analytics1029.eqiad.wmnet
 druid_public_hosts:
 - 10.64.0.35                  # druid1004.eqiad.wmnet
 - 2620:0:861:101:10:64:0:35   # druid1004.eqiad.wmnet
