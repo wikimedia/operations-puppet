@@ -12,6 +12,10 @@ class cergen {
                         ],
         }
 
+        package { 'python3-lib2to3':
+            ensure => 'present',
+        }
+
         apt::repository { 'buster-cergen':
             uri        => 'http://apt.wikimedia.org/wikimedia',
             dist       => 'buster-wikimedia',
