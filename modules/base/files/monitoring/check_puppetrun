@@ -124,17 +124,23 @@ def time_ago(s)
   end
   "Indeterminate amount of time (see time_ago)"
 end
-
-if alert_master_fail && failcount == :failed_no_resources
-    puts "CRITICAL: Failed to apply catalog, zero resources tracked by Puppet. " +
+if alert_master_fail
+  STATUS = 'CRITICAL'
+  EXIT = 2
+else
+  STATUS = 'WARNING'
+  EXIT = 1
+end
+if failcount == :failed_no_resources
+    puts STATUS + ": Failed to apply catalog, zero resources tracked by Puppet. " +
          "Could be an interrupted request or a dependency cycle."
-    exit 2
+    exit EXIT
 end
 
-if alert_master_fail && failcount == :failed
-    puts "CRITICAL: Catalog fetch fail. " +
+if failcount == :failed
+    puts STATUS + ": Catalog fetch fail. " +
          "Either compilation failed or puppetmaster has issues"
-    exit 2
+    exit EXIT
 end
 
 if failcount == :failed_to_parse_summary_file || failcount == :no_summary_file
