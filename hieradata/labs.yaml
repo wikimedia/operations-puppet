@@ -159,6 +159,19 @@ profile::trafficserver::tls::inbound_tls_settings:
   session_cache_buckets: 256
   session_cache_size: 102400
   session_ticket_enable: 0
+profile::trafficserver::tls::parent_rules:
+  - dest_domain: '.'
+    parent:
+    - "%{::ipaddress}:3120"
+    - "%{::ipaddress}:3121"
+    - "%{::ipaddress}:3122"
+    - "%{::ipaddress}:3123"
+    - "%{::ipaddress}:3124"
+    - "%{::ipaddress}:3125"
+    - "%{::ipaddress}:3126"
+    - "%{::ipaddress}:3127"
+    parent_is_proxy: 'false'
+    round_robin: 'strict'
 profile::trafficserver::backend::log_formats:
   - name: wmf
     format: 'Date:%<cqtd> Time:%<cqtt> ConnAttempts:%<sca> ConnReuse:%<sstc> TTFetchHeaders:%<{TS_MILESTONE_SERVER_READ_HEADER_DONE-TS_MILESTONE_SM_START}msdms> OriginServer:%<shn> OriginServerTime:%<stms> CacheResultCode:%<crc> CacheWriteResult:%<cwr> ReqMethod:%<cqhm> RespStatus:%<pssc> OriginStatus:%<sssc> ReqURL:%<cquuc> BereqURL:%<cqtx> ReqHeader:User-Agent:%<{User-agent}cqh> ReqHeader:Host:%<{Host}cqh> ReqHeader:X-Client-IP:%<{X-Client-IP}cqh> ReqHeader:Cookie:%<{Cookie}cqh> RespHeader:X-Cache-Int:%<{X-Cache-Int}psh> RespHeader:Backend-Timing:%<{Backend-Timing}psh>'
