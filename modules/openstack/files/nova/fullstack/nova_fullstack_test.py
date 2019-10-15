@@ -200,7 +200,11 @@ def verify_puppet_cert_cleanup(puppetmaster, fqdn, user, keyfile, timeout):
         logging.info('SSH to {} to check puppet cert'.format(puppetmaster))
         while True:
             try:
-                out = run_remote(puppetmaster, user, keyfile, 'puppet cert list {}'.format(fqdn))
+                # The 'echo' gymanstics here are to capture the output but also return 0 (if the
+                #  cert is missing) so we can check the output rather than having run_remote
+                #  throw an exception.
+                out = run_remote(puppetmaster, user, keyfile,
+                                 'echo `sudo puppet cert list {}`'.format(fqdn))
                 break
             except subprocess.CalledProcessError as e:
                 logging.debug('SSH wait for {}'.format(vs.progress()))
