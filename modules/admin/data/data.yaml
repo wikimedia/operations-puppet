@@ -3524,6 +3524,10 @@ ldap_only_users:
     ensure: present
     realname: Raz Shuty
     email: raz.shuty@wikimedia.de
+  rzl:
+    ensure: present
+    realname: Reuven Lazarus
+    email: rlazarus@wikimedia.org
   rmaung:
     ensure: present
     realname: Rebecca Maung
