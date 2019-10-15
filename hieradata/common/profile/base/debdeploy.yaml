@@ -13,3 +13,5 @@ profile::base::debdeploy::filter_services:
     - '*'
   (sd-pam:
     - '*'
+  (sd-pam):
+    - '*'
