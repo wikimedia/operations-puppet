@@ -98,10 +98,7 @@ class role::logging::mediawiki::udp2log(
     }
 
     file { '/usr/local/bin/fatalmonitor':
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0555',
-        source => 'puppet:///modules/role/logging/fatalmonitor',
+        ensure => absent
     }
 
     # This Redis instance is used to receive PHP stack traces from

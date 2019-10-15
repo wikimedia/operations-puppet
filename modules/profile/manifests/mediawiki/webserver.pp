@@ -135,6 +135,7 @@ class profile::mediawiki::webserver(
 
     if $install_hhvm {
         monitoring::service { 'appserver_http_hhvm':
+            ensure         => absent,
             description    => 'HHVM rendering',
             check_command  => 'check_http_wikipedia_main',
             retries        => 2,
@@ -143,6 +144,7 @@ class profile::mediawiki::webserver(
         }
 
         nrpe::monitor_service { 'hhvm':
+            ensure       => absent,
             description  => 'HHVM processes',
             nrpe_command => '/usr/lib/nagios/plugins/check_procs -c 1: -C hhvm',
             notes_url    => 'https://wikitech.wikimedia.org/wiki/Application_servers',
