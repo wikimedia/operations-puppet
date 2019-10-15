@@ -33,7 +33,7 @@ groups:
               akosiaris, mark, ariel, cmjohnson, otto, robh, tstarling,
               ori, jmm, jynus, ema, elukey, gehel, volans, marostegui,
               ayounsi, herron, aborrero, bstorm, vgutierrez, jiji, cwhite,
-              crusnov, cdanis, fsero, jbond, jeh, dzahn, phamhi, sukhe, pt1979]
+              crusnov, cdanis, fsero, jbond, jeh, dzahn, phamhi, sukhe, pt1979, rzl]
     privileges: ['ALL = (ALL) NOPASSWD: ALL']
   ops-adm-group:
     # No gid for this group on purpose, it's a system provided one
@@ -3342,6 +3342,15 @@ users:
     name: eyener
     ssh_keys:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBLrqCmWRtknGqk3RLECTbNP0QY/oIOImBi22qhDdqoz eyener@Erins-MacBook-Pro.local
+  rzl:
+    ensure: present
+    realname: Reuven Lazarus
+    email: rlazarus@wikimedia.org
+    uid: 22313
+    gid: 500
+    name: rzl
+    ssh_keys:
+      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPtpkeKO3QRiK4rGMkCX5u3T55PPWGId+GFPraW0aNLR rlazarus@rlazarus
 ldap_only_users:
   abartov:
     ensure: present
@@ -3524,10 +3533,6 @@ ldap_only_users:
     ensure: present
     realname: Raz Shuty
     email: raz.shuty@wikimedia.de
-  rzl:
-    ensure: present
-    realname: Reuven Lazarus
-    email: rlazarus@wikimedia.org
   rmaung:
     ensure: present
     realname: Rebecca Maung
