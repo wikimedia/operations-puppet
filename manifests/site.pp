@@ -1113,10 +1113,6 @@ node /labweb100[12]\.wikimedia\.org/ {
 
 }
 
-node 'graphite2001.codfw.wmnet' {
-    role(spare::system)
-}
-
 # Primary graphite host
 node 'graphite1004.eqiad.wmnet' {
     role(graphite::production)
