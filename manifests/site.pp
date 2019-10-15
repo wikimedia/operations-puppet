@@ -729,11 +729,6 @@ node 'dbstore1001.eqiad.wmnet' {
     role(spare::system)
 }
 
-# old codfw dbstores
-node 'dbstore2001.codfw.wmnet' {
-    role(spare::system)
-}
-
 node 'dbstore2002.codfw.wmnet' {
     role(spare::system)
 }
