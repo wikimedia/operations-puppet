@@ -11,7 +11,7 @@ xdebug.so --header=X-ATS-Debug
 collapsed_forwarding.so
 <% end -%>
 <% if @global_lua_script != '' -%>
-tslua.so <%= @global_lua_script %>
+tslua.so --enable-reload <%= @global_lua_script %>
 <% end -%>
 <% if @enable_compress -%>
 compress.so <%= @compress_config_path %>
