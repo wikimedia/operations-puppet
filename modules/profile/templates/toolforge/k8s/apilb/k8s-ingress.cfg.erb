@@ -1,6 +1,6 @@
 # Note: This file is managed by puppet.
 frontend k8s-ingress
-    bind 0.0.0.0:80
+    bind 0.0.0.0:<%= @ingress_port %>
     mode tcp
     option tcplog
     timeout client 1h
