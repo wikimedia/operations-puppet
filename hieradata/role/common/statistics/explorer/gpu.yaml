@@ -6,8 +6,6 @@ admin::groups:
   - analytics-users
   - analytics-privatedata-users
 
-profile::base::notifications: disabled
-
 profile::hadoop::common::hadoop_cluster_name: 'analytics-hadoop'
 
 profile::oozie::client::oozie_host: 'an-coord1001.eqiad.wmnet'
