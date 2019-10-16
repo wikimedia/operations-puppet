@@ -412,8 +412,8 @@ class profile::logstash::collector (
 
     ## Throttles (rate limiting) (75) (rate limit after filtering for consistency with field conventions)
 
-    logstash::conf { 'filter_throttle_errors':
-        source   => 'puppet:///modules/profile/logstash/filter-throttle-errors.conf',
+    logstash::conf { 'filter_throttle':
+        source   => 'puppet:///modules/profile/logstash/filter-throttle.conf',
         priority => 75,
     }
 
