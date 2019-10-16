@@ -77,13 +77,6 @@ class profile::puppetmaster::frontend(
         extra_auth_rules    => $extra_auth_rules,
     }
     class { 'apache::mod::rewrite': }
-    # /var/lib/puppet/server/ssl/certs is created in puppetmaster::ssl
-    # puppets automatic requires will ensure the dependencies are correct
-    file{'/var/lib/puppet/server/ssl/certs/ca.pem':
-        ensure => file,
-        source => 'puppet:///modules/profile/puppetmaster/frontend/ca.pem',
-        mode   => '0444',
-    }
 
     $locale_server = $locale_servers[$facts['fqdn']]
     # Main site to respond to
