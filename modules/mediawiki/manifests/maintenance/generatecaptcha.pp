@@ -30,6 +30,13 @@ class mediawiki::maintenance::generatecaptcha( $ensure = present ) {
         group  => $::mediawiki::users::web,
     }
 
+    file { '/usr/local/bin/captchaloop':
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0555',
+        source => 'puppet:///modules/mediawiki/captchaloop',
+    }
+
     $log_ownership_user = $::mediawiki::users::web
     $log_ownership_group = $::mediawiki::users::web
     logrotate::conf { 'generate-fancycaptcha':
@@ -44,6 +51,6 @@ class mediawiki::maintenance::generatecaptcha( $ensure = present ) {
         hour    => 1,
         minute  => 0,
         require => File['/etc/fancycaptcha/words', '/etc/fancycaptcha/badwords'],
-        command => '/usr/local/bin/mwscript extensions/ConfirmEdit/maintenance/GenerateFancyCaptchas.php enwiki --wordlist=/etc/fancycaptcha/words --font=/usr/share/fonts/truetype/freefont/FreeMonoBoldOblique.ttf --blacklist=/etc/fancycaptcha/badwords --fill=10000 --oldcaptcha --delete --threads=4 >/var/log/mediawiki/generate-fancycaptcha/cron.log 2>&1',
+        command => '/usr/local/bin/captchaloop >/var/log/mediawiki/generate-fancycaptcha/cron.log 2>&1',
     }
 }
