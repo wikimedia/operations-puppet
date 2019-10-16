@@ -198,6 +198,9 @@ logstash_logback_port: 11514
       shard02:
         host: deployment-memc05
         port: 11211
+      shard03:
+        host: deployment-memc08
+        port: 11211
 mcrouter::port: 11213
 mcrouter::has_ssl: false
 profile::memcached::version: 'present'
