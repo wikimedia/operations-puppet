@@ -9,6 +9,21 @@ attributetype ( 1.3.6.1.4.1.33298.1.1.1 NAME 'YubikeyVPN'
 	EQUALITY caseIgnoreIA5Match
 	SYNTAX 1.3.6.1.4.1.1466.115.121.1.26 )
 
+attributetype ( 1.3.6.1.4.1.33298.1.1.2 NAME 'mfa-enable-selection'
+	DESC 'Let me user choose between configured multifactor authentication methods'
+        EQUALITY booleanMatch
+        SYNTAX 1.3.6.1.4.1.1466.115.121.1.7 SINGLE-VALUE )
+
+attributetype ( 1.3.6.1.4.1.33298.1.1.3 NAME 'mfa-additional-method'
+	DESC 'Add an additional multifactor authentication provider for the user'
+	EQUALITY caseIgnoreIA5Match
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.26 )
+
+attributetype ( 1.3.6.1.4.1.33298.1.1.4 NAME 'mfa-force-method'
+	DESC 'Force a specific authentication provider for the user'
+	EQUALITY caseIgnoreIA5Match
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.26 SINGLE-VALUE)
+
 objectclass ( 1.3.6.1.4.1.33298.1.2.1 NAME 'wikimediaPerson' SUP top AUXILIARY
 	DESC 'Object class for user attributes specific to Wikimedia Foundation staff'
-	MAY YubikeyVPN )
+	MAY ( YubikeyVPN $ mfa-enable-selection $ mfa-additional-method $ mfa-force-method ))
