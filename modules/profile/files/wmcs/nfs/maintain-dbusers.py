@@ -553,7 +553,7 @@ def main():
 
     argparser.add_argument(
         'action',
-        choices=['harvest', 'maintain', 'delete'],
+        choices=['harvest', 'harvest-replicas', 'maintain', 'delete'],
         help="""
         What action to take.
 
@@ -562,6 +562,12 @@ def main():
         Collect information about all existing users from replica.my.cnf files
         and accounts already created in legacy databases, and put them into the
         account database. Runs as a one shot script.
+
+        harvest-replicas:
+
+        Collect information about all existing users account status on the database
+        replicas and set the status to absent or present in the account host
+        metadata tables.
 
         maintain:
 
@@ -600,6 +606,8 @@ def main():
 
     if args.action == 'harvest':
         harvest_cnf_files(config, args.account_type)
+        harvest_replica_accts(config)
+    elif args.action == 'harvest-replicas':
         harvest_replica_accts(config)
     elif args.action == 'maintain':
         while True:
