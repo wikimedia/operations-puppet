@@ -39,6 +39,7 @@ scap::dsh::groups:
       - {'cluster': 'api_appserver', 'service': 'apache2'}
       - {'cluster': 'jobrunner', 'service': 'apache2'}
       - {'cluster': 'testserver', 'service': 'apache2'}
+      - {'cluster': 'parsoid', 'service': 'parsoid-php'}
     hosts:
       - snapshot1005.eqiad.wmnet
       - deploy1001.eqiad.wmnet
@@ -62,6 +63,9 @@ scap::dsh::groups:
       - wtp1026.eqiad.wmnet
       - wtp2001.codfw.wmnet
       - wtp2002.codfw.wmnet
+  parsoid_php:
+    conftool:
+      - {'cluster': 'parsoid', 'service': 'parsoid-php'}
   mediawiki-api-canaries:
     hosts:
       - mw1276.eqiad.wmnet
