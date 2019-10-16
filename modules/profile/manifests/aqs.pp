@@ -9,7 +9,7 @@ class profile::aqs (
         $cassandra_user                = hiera('profile::aqs::cassandra_user'),
         $cassandra_password            = hiera('profile::aqs::cassandra_password'),
         $cassandra_seeds               = hiera('profile::aqs::seeds'),
-        $logstash_host                 = hiera('logstash_host', undef),
+        $rsyslog_port                  = hiera('rsyslog_port', 10514),
         $cassandra_default_consistency = hiera('profile::aqs::cassandra_default_consistency'),
         $cassandra_local_dc            = hiera('profile::aqs::cassandra_local_dc'),
         $statsd_host                   = hiera('profile::aqs::statsd_host', undef),
@@ -26,7 +26,7 @@ class profile::aqs (
         cassandra_default_consistency => $cassandra_default_consistency,
         cassandra_local_dc            => $cassandra_local_dc,
         statsd_host                   => $statsd_host,
-        logstash_host                 => $logstash_host,
+        rsyslog_port                  => $rsyslog_port,
         use_nodejs10                  => $use_nodejs10,
     }
 

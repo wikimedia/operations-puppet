@@ -27,11 +27,8 @@
 # [*port*]
 #   Port where to run the AQS service. Default: 7232
 #
-# [*logstash_host*]
-#   GELF logging host. Default: localhost
-#
-# [*logstash_port*]
-#   GELF logging port. Default: 12201
+# [*rsyslog_port*]
+#   Rsyslog localhost port. Default: 10514
 #
 # [*logging_level*]
 #   The logging level. One of ['trace','debug','info','warn','error','fatal']
@@ -68,8 +65,7 @@ class aqs(
     $port                          = 7232,
     $salt_key                      = 'secretkey',
     $page_size                     = 250,
-    $logstash_host                 = 'localhost',
-    $logstash_port                 = 12201,
+    $rsyslog_port                  = 10514,
     $logging_level                 = 'warn',
     $statsd_host                   = 'localhost',
     $statsd_port                   = 8125,

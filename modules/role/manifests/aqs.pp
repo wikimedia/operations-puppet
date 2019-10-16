@@ -17,5 +17,6 @@ class role::aqs {
     include ::profile::cassandra
     include ::profile::aqs
 
+    include ::profile::rsyslog::udp_localhost_compat
     include profile::lvs::realserver
 }

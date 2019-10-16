@@ -65,10 +65,11 @@ logging:
   name: aqs
   level: <%= @logging_level %>
   streams:
-  # XXX: Use gelf-stream -> logstash
-  - type: gelf
-    host: <%= @logstash_host %>
-    port: <%= @logstash_port %>
+  - type: syslog
+    host: localhost
+    port: <%= @rsyslog_port %>
+    prefix: '@cee: '
+    name: node
 
 # StatsD metrics collection
 metrics:
