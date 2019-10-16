@@ -168,8 +168,8 @@ class cassandra (
         '2.2' => os_version('debian >= stretch') ? {
             true  => hiera('cassandra::version', '2.2.6-wmf5'),
             false => hiera('cassandra::version', '2.2.6-wmf3'), },
-        '3.x' => hiera('cassandra::version', '3.11.2'),
-        'dev' => hiera('cassandra::version', '3.11.2')
+        '3.x' => hiera('cassandra::version', '3.11.4'),
+        'dev' => hiera('cassandra::version', '3.11.4')
     }
 
     # Cassandra 3.x is installed using the newer component convention, (and
