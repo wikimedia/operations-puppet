@@ -269,10 +269,6 @@ puppetdb6_servers:
       user: puppetdb
       database: puppetdb
       cidr: 10.192.0.147/32
-    replication_access@puppetdb2002-ipv4:
-      user: replication
-      database: all
-      cidr: 10.192.0.147/32
   profile::puppetdb::master: puppetdb1002.eqiad.wmnet
   profile::puppetdb::slaves: [puppetdb2002.codfw.wmnet]
   profile::puppetdb::rsyslog::elk: false
