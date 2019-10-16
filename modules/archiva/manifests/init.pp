@@ -16,11 +16,21 @@ class archiva($port = 8080)
         require => Package['archiva'],
     }
 
+    # The Archiva systemd unit requires /var/run/archiva
+    # to be present before starting. In some cases /var/run
+    # is deployed on tmpfs mountpoints, so everything gets
+    # cleared after a reboot. The directory is created by
+    # the package during deb install.
+    systemd::tmpfile { 'archiva':
+        content => 'd /var/run/archiva 0755 archiva archiva',
+    }
+
     service { 'archiva':
         ensure     => 'running',
         enable     => true,
         hasstatus  => true,
         hasrestart => true,
         subscribe  => File['/etc/archiva/jetty.xml'],
+        require    => Package['archiva'],
     }
 }
