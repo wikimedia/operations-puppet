@@ -37,6 +37,7 @@ spark.ui.port                                       <%= @ui_port %>
 spark.driver.blockManager.port                      <%= @driver_blockmanager_port %>
 <% end -%>
 spark.yarn.archive                                  hdfs:///user/spark/share/lib/spark-<%= @spark_version %>-assembly.zip
+
 <% @extra_settings.sort.each do |key, value| -%>
 <%= key %>   <%= value %>
 <% end -%>
