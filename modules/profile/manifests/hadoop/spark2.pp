@@ -20,7 +20,7 @@
 #   Oozie server).
 #   Default: false
 #
-# [*install_assembly]
+# [*install_assembly*]
 #   Deploy the spark2-assembly.zip to HDFS if not already present.
 #   Set this to true on a single Hadoop client node.
 #   Default: false
@@ -87,6 +87,12 @@ class profile::hadoop::spark2(
     require ::profile::hadoop::common
 
     require_package('spark2')
+
+    # Get spark_verison from facter.  Fail if not set.
+    $spark_version = $::spark_version
+    if !$spark_version or $spark_version == '' {
+        fail('Failed getting spark version via facter.')
+    }
 
     # Ensure that a symlink to hive-site.xml exists so that
     # spark2 will automatically get Hive support.

@@ -29,9 +29,9 @@ dpkg -l oozie >/dev/null || die "oozie package is not installed"
 dpkg -l spark2 >/dev/null || die "spark2 package is not installed"
 
 # Get the currently installed spark2 version from dpkg.
-spark2_version=$(dpkg -s spark2 | grep Version | awk -F ': ' '{print $2}' | awk -F '-' '{print $1}')
+spark2_version=$(dpkg-query -W -f='${Version}' spark2 | awk -F '-' '{print $1}')
 
-spark2_sharelib="spark${spark2_version}"
+spark2_sharelib="spark-${spark2_version}"
 
 # Find the (latest) oozie sharelib directory.
 sharelib_dir=$(/usr/bin/hdfs dfs -ls -d /user/oozie/share/lib/lib_* | tail -n 1 | awk '{print $NF}')
