@@ -10,6 +10,7 @@ test_on = {
     }
   ]
 }
+
 describe 'adduser' do
   let(:node) { 'foobar.example.com' }
   let(:params) do

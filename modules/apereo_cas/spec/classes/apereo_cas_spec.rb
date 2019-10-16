@@ -10,7 +10,6 @@ test_on = {
     }
   ]
 }
-
 describe 'apereo_cas' do
   on_supported_os(test_on).each do |os, facts|
     context "on #{os}" do
