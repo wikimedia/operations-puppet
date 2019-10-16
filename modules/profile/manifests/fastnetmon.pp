@@ -16,4 +16,15 @@ class profile::fastnetmon () {
         desc  => 'FNM-netflow',
       srange  => '($NETWORK_INFRA $MGMT_NETWORKS)',
     }
+
+    logrotate::rule { 'fastnetmon':
+        ensure        => present,
+        file_glob     => '/var/log/fastnetmon.log',
+        frequency     => 'daily',
+        copy_truncate => true,
+        missing_ok    => true,
+        compress      => true,
+        not_if_empty  => true,
+        rotate        => 15,
+    }
 }
