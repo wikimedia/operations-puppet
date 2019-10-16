@@ -87,9 +87,11 @@ class profile::wmcs::instance(
         diamond::collector::minimalpuppetagent { 'minimal-puppet-agent': }
 
         diamond::collector { 'SSHSessions':
-            source => 'puppet:///modules/diamond/collector/sshsessions.py',
+            ensure => 'absent',
         }
     }
+
+    class { '::prometheus::node_ssh_open_sessions': }
 
     hiera_include('classes', [])
 
