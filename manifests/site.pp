@@ -1125,6 +1125,10 @@ node 'idp1001.wikimedia.org' {
     role(idp)
 }
 
+node 'idp2001.wikimedia.org' {
+    role(spare::system)
+}
+
 # replaced carbon and install1001/install2001 (T132757, T84380, T156440)
 node /^install[12]002\.wikimedia\.org$/ {
     role(installserver)

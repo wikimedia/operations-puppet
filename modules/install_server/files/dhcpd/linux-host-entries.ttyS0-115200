@@ -242,6 +242,12 @@ host idp1001 {
     option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/buster-installer/";
 }
 
+host idp2001 {
+    hardware ethernet aa:00:00:f6:e9:2b;
+    fixed-address idp2001.wikimedia.org;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/buster-installer/";
+}
+
 host install1002 {
     hardware ethernet aa:00:00:3c:d7:80;
     fixed-address install1002.wikimedia.org;
