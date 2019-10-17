@@ -5,11 +5,14 @@ class profile::requesttracker {
     include ::passwords::misc::rt
 
     if os_version('debian == buster') {
-        require_package('libapache2-mod-perl2')
+        require_package('libapache2-mod-perl2', 'libapache2-mod-scgi')
+        $cgi_module = 'scgi'
+    } else {
+        $cgi_module = 'fastcgi'
     }
 
     class { '::httpd':
-        modules => ['headers', 'rewrite', 'perl', 'fastcgi'],
+        modules => ['headers', 'rewrite', 'perl', $cgi_module],
     }
 
     class { '::requesttracker':
