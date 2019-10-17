@@ -336,6 +336,11 @@ node /^db21(32|33|34|35)\.codfw\.wmnet/ {
     role(spare::system)
 }
 
+# Spare external store eqiad hosts to be provisioned #T235659
+node /^es10(20|21|22|23|24|25)\.eqiad\.wmnet/ {
+    role(spare::system)
+}
+
 # s1 (enwiki) core production dbs on eqiad
 # eqiad master
 node 'db1067.eqiad.wmnet' {
