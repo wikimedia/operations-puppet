@@ -1387,6 +1387,11 @@ node 'mendelevium.eqiad.wmnet' {
     role(otrs)
 }
 
+# RT, replacing ununpentium
+node 'moscovium.eqiad.wmnet' {
+    role(spare::system)
+}
+
 node 'multatuli.wikimedia.org' {
     role(authdns::server)
 }
