@@ -1,5 +1,6 @@
 admin::groups:
   - analytics-admins
+  - analytics-privatedata-users
 cluster: analytics
 
 # Configure hive client profile to copy hive-site.xml from stat1004
