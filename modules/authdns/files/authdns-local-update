@@ -30,15 +30,14 @@ fi
 
 cd $WORKINGDIR
 
-# setup locking; only one copy of this may be running at the same time
+# Simple flock locking against other instances on the same host
 LOCKFILE=/var/lock/authdns-local-update
 LOCKFD=9
-lock()   { flock -xn $LOCKFD; }
 unlock() { rm -f $LOCKFILE; }
 eval "exec $LOCKFD>\"$LOCKFILE\""; trap unlock EXIT
-
 if ! flock -xn $LOCKFD; then
-    die "failed to lock, another update running?"
+    trap EXIT
+    die "failed to lock, another authdns-local-update running on this host?"
 fi
 
 DEPLOY_SKIP_RELOAD=""
