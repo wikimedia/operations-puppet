@@ -73,3 +73,6 @@ profile::openstack::codfw1dev::wikitech::web::db_name: 'labtestwiki'
 
 profile::mediawiki::php::php_version: "7.2"
 profile::mediawiki::apc_shm_size: 128M
+
+lvs::realserver::realserver_ips:
+    - '208.80.153.60' # cloudweb2001-dev.wikimedia.org
