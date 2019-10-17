@@ -550,11 +550,6 @@ node /^db2(115|131)\.codfw\.wmnet/ {
     role(mariadb::core)
 }
 
-# To be decommissioned # T230883
-node 'db2052.codfw.wmnet' {
-    role(spare::system)
-}
-
 # To be decommissioned # T231407
 node 'db2053.codfw.wmnet' {
     role(spare::system)
