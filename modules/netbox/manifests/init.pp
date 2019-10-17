@@ -172,6 +172,7 @@ class netbox(
           http-socket  => "127.0.0.1:${port}",
           # T170189: make sure Python has a sane default encoding
           env          => $uwsgi_environ,
+          max-requests => 300,
       },
       healthcheck_url => '/login/',
       icinga_check    => false,
