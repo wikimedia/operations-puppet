@@ -1389,7 +1389,7 @@ node 'mendelevium.eqiad.wmnet' {
 
 # RT, replacing ununpentium
 node 'moscovium.eqiad.wmnet' {
-    role(spare::system)
+    role(requesttracker)
 }
 
 node 'multatuli.wikimedia.org' {
