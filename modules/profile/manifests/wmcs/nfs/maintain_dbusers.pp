@@ -46,6 +46,9 @@ class profile::wmcs::nfs::maintain_dbusers (
                 'labsdb1011.eqiad.wmnet' => {
                     'grant-type' => 'role',
                 },
+                'labsdb1012.eqiad.wmnet' => {
+                    'grant-type' => 'role',
+                },
             },
             'username' => $::passwords::mysql::labsdb::user,
             'password' => $::passwords::mysql::labsdb::password,
