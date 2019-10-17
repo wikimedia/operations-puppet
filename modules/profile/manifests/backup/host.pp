@@ -11,8 +11,11 @@
 # where backup is not set up. In that case we shortcircuit the class to be
 # effectively a noop
 class profile::backup::host(
-    $enable = hiera('profile::backup::enable', false)
+    Boolean $enable = hiera('profile::backup::enable', false),
+    Array[String] $ferm_directors = hiera('profile::backup::ferm_directors')
 ){
+    # TODO: $ferm_directors is temporary to help with the migration, we should
+    # fall back to $director and remove this hiera call when done
     if $enable {
         $pool     = hiera('profile::backup::pool')
         $director = hiera('profile::backup::director')
@@ -37,12 +40,12 @@ class profile::backup::host(
         File <| tag == 'backup-motd' |>
 
         # If the machine includes ::profile::base::firewall then let director connect to us
-        # TODO The IPv6 IP should be converted into a DNS AAAA resolve once we
-        # enabled the DNS record on the director
-        ferm::service { 'bacula-file-demon':
-            proto  => 'tcp',
-            port   => '9102',
-            srange => "(@resolve(${director}) 2620:0:861:101:10:64:0:179)",
+        $ferm_directors.each |$ferm_director| {
+            ferm::service { "bacula-file-daemon-${ferm_director}":
+                proto  => 'tcp',
+                port   => '9102',
+                srange => "(@resolve(${ferm_director}) @resolve(${ferm_director}, AAAA))",
+            }
         }
     }
 }
