@@ -26,6 +26,7 @@
 #
 class base::monitoring::host(
     $contact_group = 'admins',
+    $mgmt_contact_group = 'admins',
     # the -A -i ... part is a gross hack to workaround Varnish partitions
     # that are purposefully at 99%. Better ideas are welcome.
     $nrpe_check_disk_options = '-w 6% -c 3% -W 6% -K 3% -l -e -A -i "/srv/sd[a-b][1-3]" -i "/srv/nvme[0-9]n[0-9]p[0-9]" --exclude-type=fuse.fuse_dfs --exclude-type=tracefs',
@@ -50,7 +51,8 @@ class base::monitoring::host(
 
     ::monitoring::host { $::hostname:
         notifications_enabled => $notifications_enabled,
-        critical              => $is_critical
+        critical              => $is_critical,
+        mgmt_contact_group    => $mgmt_contact_group
     }
 
     ::monitoring::service { 'ssh':

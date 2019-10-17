@@ -12,6 +12,7 @@ class profile::base(
     $core_dump_pattern = hiera('profile::base::core_dump_pattern', '/var/tmp/core/core.%h.%e.%p.%t'),
     $ssh_server_settings = hiera('profile::base::ssh_server_settings', {}),
     $group_contact = hiera('contactgroups', 'admins'),
+    String $mgmt_group_contact = lookup('mgmt_contactgroups', {default_value => 'admins'}),
     $check_disk_options = hiera('profile::base::check_disk_options', '-w 6% -c 3% -W 6% -K 3% -l -e -A -i "/srv/sd[a-b][1-3]" -i "/srv/nvme[0-9]n[0-9]p[0-9]" --exclude-type=fuse.fuse_dfs --exclude-type=tracefs'),
     $check_disk_critical = hiera('profile::base::check_disk_critical', false),
     # TODO/puppet4: revert to using "undef"
@@ -137,6 +138,7 @@ class profile::base(
 
     class { '::base::monitoring::host':
         contact_group            => $group_contact,
+        mgmt_contact_group       => $mgmt_group_contact,
         nrpe_check_disk_options  => $check_disk_options,
         nrpe_check_disk_critical => $check_disk_critical,
         raid_write_cache_policy  => $check_raid_policy,

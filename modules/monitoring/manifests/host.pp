@@ -10,6 +10,7 @@ define monitoring::host (
     $critical              = false,
     $parents               = undef,
     $contact_group         = hiera('contactgroups', 'admins'),
+    $mgmt_contact_group    = 'admins',
     $notifications_enabled = '1',
     ) {
 
@@ -73,7 +74,7 @@ define monitoring::host (
                     check_command         => 'check_ping!500,20%!2000,100%',
                     check_period          => '24x7',
                     max_check_attempts    => 2,
-                    contact_groups        => "${contact_group},admins",
+                    contact_groups        => "${mgmt_contact_group},admins",
                     notification_interval => 0,
                     notification_period   => '24x7',
                     notification_options  => 'd,u,r,f',
