@@ -251,3 +251,4 @@ prometheus::varnishkafka_exporter::config:
   num_entries_to_get: 2
 diamond::remove: true
 profile::cache::varnish::frontend::backend_services: [ats-be,varnish-be]
+profile::trafficserver::tls::websocket_support: true

@@ -9,6 +9,7 @@ class role::cache::text_ats {
     include ::profile::cache::varnish::frontend
     include ::profile::cache::varnish::frontend::text
     include ::profile::trafficserver::backend
+    include ::profile::trafficserver::tls
 
     # varnishkafka statsv listens for special stats related requests
     # and sends them to the 'statsv' topic in Kafka. A kafka consumer
