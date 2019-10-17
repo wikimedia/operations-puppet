@@ -52,4 +52,8 @@ class profile::reportupdater::jobs::hadoop {
         config_file => "${base_path}/jobs/reportupdater-queries/published_cx2_translations/config-hive.yaml",
         output_dir  => 'metrics/published_cx2_translations',
     }
+
+    reportupdater::job { 'wmcs':
+        output_dir => 'metrics/wmcs',
+    }
 }
