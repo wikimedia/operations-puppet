@@ -2,7 +2,7 @@ class profile::openstack::codfw1dev::wikitech::web(
     $osm_host = hiera('profile::openstack::codfw1dev::wikitech::web::osm_host'),
     $webserver_hostname_aliases = hiera('profile::openstack::codfw1dev::wikitech::webserver_hostname_aliases'),
     $wikidb = hiera('profile::openstack::codfw1dev::wikitech::db_name'),
-    $wikitech_nova_ldap_proxyagent_pass = hiera('profile::openstack::base::ldap_proxyuser_pass'),
+    $wikitech_nova_ldap_proxyagent_pass = hiera('profile::openstack::codfw1dev::ldap_proxyuser_pass'),
     $wikitech_nova_ldap_user_pass = hiera('profile::openstack::codfw1dev::ldap_user_pass'),
     ) {
 
