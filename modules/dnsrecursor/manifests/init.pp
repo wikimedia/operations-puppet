@@ -61,16 +61,6 @@ class dnsrecursor(
         before      => Service['pdns-recursor'],
     }
 
-    if os_version('debian == jessie') {
-        # jessie uses backports for v4
-        apt::pin { 'pdns-recursor':
-            package  => 'pdns-recursor',
-            pin      => 'release a=openstack-mitaka-jessie',
-            priority => '1001',
-            before   => Package['pdns-recursor'],
-        }
-    }
-
     package { 'pdns-recursor':
         ensure => 'present',
     }
