@@ -1,4 +1,4 @@
-class profile::toolforge::k8s::kubeadm::preflight_checks(
+class profile::toolforge::k8s::preflight_checks(
     Boolean $swap = lookup('swap_partition', {default_value => true}),
 ) {
     # kubeadm preflight checks:

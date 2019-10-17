@@ -1,9 +1,9 @@
-class profile::toolforge::k8s::kubeadm::control(
+class profile::toolforge::k8s::control(
     Array[Stdlib::Fqdn] $etcd_hosts     = lookup('profile::toolforge::k8s::etcd_hosts'),
     Stdlib::Fqdn        $apiserver      = lookup('profile::toolforge::k8s::apiserver'),
     String              $node_token     = lookup('profile::toolforge::k8s::node_token'),
 ) {
-    require profile::toolforge::k8s::kubeadm::preflight_checks
+    require profile::toolforge::k8s::preflight_checks
 
     # use puppet certs to contact etcd
     $k8s_etcd_cert_pub  = '/etc/kubernetes/pki/puppet_etcd_client.crt'
