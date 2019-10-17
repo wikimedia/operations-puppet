@@ -331,6 +331,11 @@ node /^cumin[12]001\.(eqiad|codfw)\.wmnet$/ {
 
 # MariaDB 10
 
+# Spare codfw hosts to be provisioned #T234608
+node /^db21(32|33|34|35)\.codfw\.wmnet/ {
+    role(spare::system)
+}
+
 # s1 (enwiki) core production dbs on eqiad
 # eqiad master
 node 'db1067.eqiad.wmnet' {
