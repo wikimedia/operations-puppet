@@ -1,6 +1,6 @@
 ulsfo:
   cache_text:
-    cp4027.ulsfo.wmnet: [varnish-fe, varnish-be, nginx]
+    cp4027.ulsfo.wmnet: [varnish-fe, ats-be, nginx]
     cp4028.ulsfo.wmnet: [varnish-fe, varnish-be, nginx]
     cp4029.ulsfo.wmnet: [varnish-fe, varnish-be, nginx]
     cp4030.ulsfo.wmnet: [varnish-fe, varnish-be, nginx]
