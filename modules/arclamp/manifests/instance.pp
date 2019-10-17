@@ -18,7 +18,7 @@ define arclamp::instance(
     logs      => [
         # 336 hours is 14 days * 24 hours (T166624)
         { period => 'hourly',  format => "%Y-%m-%d_%H${label}", retain => 336 },
-        { period => 'daily',   format => "%Y-%m-%d${label}",    retain => 90 },
+        { period => 'daily',   format => "%Y-%m-%d${label}",    retain => 45 },
     ],
     }
 
