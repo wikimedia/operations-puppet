@@ -27,8 +27,7 @@ profile::openstack::codfw1dev::wikitech::web::osm_host: 'labtestwikitech.wikimed
 profile::openstack::codfw1dev::wikitech::web::webserver_hostname_aliases: 'labtestwikitech.m.wikimedia.org'
 profile::openstack::codfw1dev::wikitech::web::db_name: 'labtestwiki'
 
-# We still don't enable fpm here
-profile::mediawiki::php::enable_fpm: false
+profile::mediawiki::php::enable_fpm: true
 profile::mediawiki::apc_shm_size: 128M
 # Striker things
 striker::uwsgi::config:
