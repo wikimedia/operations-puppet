@@ -1,7 +1,6 @@
 # == Class: base::kernel
 #
-# Settings related to the Linux kernel (currently only blacklisting
-# risky kernel modules)
+# Settings related to the Linux kernel and microcode loading
 #
 # [*overlayfs*]
 #  bool for whether overlay module is needed
@@ -86,5 +85,12 @@ class base::kernel(
             'net.ipv6.ip6frag_high_thresh' => '262144',
         },
         priority => 11,
+    }
+
+    file { '/usr/lib/nagios/plugins/check_microcode':
+        source => 'puppet:///modules/base/check-microcode.py',
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0555',
     }
 }
