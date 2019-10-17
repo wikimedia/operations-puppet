@@ -110,7 +110,7 @@ class puppet_compiler(
     require_package('openjdk-8-jdk')
 
     class { 'puppetmaster::puppetdb::client':
-        host                   => $::fqdn,
+        hosts => [$::fqdn],
     }
     # puppetdb configuration
     file { "${vardir}/puppetdb.conf":

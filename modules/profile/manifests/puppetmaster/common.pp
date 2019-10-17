@@ -7,7 +7,9 @@
 #
 class profile::puppetmaster::common (
     $base_config,
-    $storeconfigs = hiera('profile::puppetmaster::common::storeconfigs', 'activerecord'),
+    $storeconfigs = lookup('profile::puppetmaster::common::storeconfigs', 'activerecord'),
+    Array[Stdlib::Host] $puppetdb_hosts    = lookup('profile::puppetmaster::common::puppetdb_hosts'),
+    Boolean             $command_broadcast = lookup('profile::puppetmaster::common::command_broadcast'),
 ) {
     include passwords::puppet::database
 
@@ -43,9 +45,9 @@ class profile::puppetmaster::common (
                 before     => Class['puppetmaster::puppetdb::client'],
             }
         }
-        $puppetdb_host = hiera('profile::puppetmaster::common::puppetdb_host')
         class { 'puppetmaster::puppetdb::client':
-            host => $puppetdb_host,
+            hosts             => $puppetdb_hosts,
+            command_broadcast => $command_broadcast,
         }
         $config = merge($base_config, $puppetdb_config, $env_config)
     } elsif $storeconfigs == 'activerecord' {

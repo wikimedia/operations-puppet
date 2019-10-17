@@ -83,7 +83,7 @@ class role::puppetmaster::standalone(
             }
         }
         class { 'puppetmaster::puppetdb::client':
-            host                   => $puppetdb_host,
+            hosts => [$puppetdb_host],
         }
         $config = merge($base_config, $puppetdb_config, $env_config)
     } else {
