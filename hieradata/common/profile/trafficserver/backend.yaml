@@ -260,6 +260,9 @@ profile::trafficserver::backend::caching_rules:
       value: grafana1001.eqiad.wmnet
       action: never-cache
     - primary_destination: dest_host
+      value: grafana1002.eqiad.wmnet
+      action: never-cache
+    - primary_destination: dest_host
       value: labmon1001.eqiad.wmnet
       action: never-cache
     - primary_destination: dest_host
