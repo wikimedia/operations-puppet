@@ -31,13 +31,13 @@ cache::nodes:
       - 'cp3042.esams.wmnet'
       - 'cp3043.esams.wmnet'
     ulsfo:
-      - 'cp4028.ulsfo.wmnet'
       - 'cp4029.ulsfo.wmnet'
       - 'cp4030.ulsfo.wmnet'
       - 'cp4031.ulsfo.wmnet'
       - 'cp4032.ulsfo.wmnet'
     ulsfo_ats:
       - 'cp4027.ulsfo.wmnet'
+      - 'cp4028.ulsfo.wmnet'
     eqsin:
       - 'cp5007.eqsin.wmnet'
       - 'cp5008.eqsin.wmnet'
