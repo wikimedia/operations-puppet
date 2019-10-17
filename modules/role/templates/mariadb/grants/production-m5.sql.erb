@@ -146,30 +146,6 @@ IDENTIFIED BY '<%= @wikiuser_pass %>';
 GRANT DELETE, INSERT, SELECT, UPDATE ON `labswiki`.* TO 'wikiuser'@'208.80.155.109'
 IDENTIFIED BY '<%= @wikiuser_pass %>';
 
--- wikiadmin user for labtestwikitech aka 'labtestwiki' --
--- Will connect from cloudweb2001-dev, mwmaint1002/mwmaint2001, deployment --
-
-GRANT ALL ON `labtestwiki`.* TO 'wikiadmin'@'208.80.153.14'
-IDENTIFIED BY '<%= @wikiadmin_pass %>';
-
-GRANT ALL ON `labtestwiki`.* TO 'wikiadmin'@'10.192.48.45'
-IDENTIFIED BY '<%= @wikiadmin_pass %>';
-GRANT ALL ON `labtestwiki`.* TO 'wikiadmin'@'10.64.16.77'
-IDENTIFIED BY '<%= @wikiadmin_pass %>';
-
-GRANT ALL ON `labtestwiki`.* TO 'wikiadmin'@'10.192.32.24'
-IDENTIFIED BY '<%= @wikiadmin_pass %>';
-GRANT ALL ON `labtestwiki`.* TO 'wikiadmin'@'10.64.0.196'
-IDENTIFIED BY '<%= @wikiadmin_pass %>';
-GRANT ALL ON `labtestwiki`.* TO 'wikiadmin'@'10.64.32.16'
-IDENTIFIED BY '<%= @wikiadmin_pass %>';
-
--- wikiuser for labtestwikitech aka 'labtestwiki' --
--- Will connect from latestweb2001 --
-
-GRANT DELETE, INSERT, SELECT, UPDATE ON `labtestwiki`.* TO 'wikiuser'@'208.80.153.14'
-IDENTIFIED BY '<%= @wikiuser_pass %>';
-
 -- labsdbaccounts user, will run from labstore1004 and 1005
 
 GRANT ALL ON labsdbaccounts.* TO 'labsdbaccounts'@'10.64.37.19'
