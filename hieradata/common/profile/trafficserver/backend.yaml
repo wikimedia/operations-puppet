@@ -60,6 +60,9 @@ profile::trafficserver::backend::mapping_rules:
       target: http://git.wikimedia.org
       replacement: https://phabricator.discovery.wmnet
     - type: map
+      target: http://grafana-beta.wikimedia.org
+      replacement: https://grafana1002.eqiad.wmnet
+    - type: map
       target: http://grafana-labs-admin.wikimedia.org
       replacement: http://labmon1001.eqiad.wmnet
     - type: map
