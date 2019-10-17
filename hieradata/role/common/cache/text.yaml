@@ -106,6 +106,9 @@ cache::app_directors:
   grafana1001:
     backends:
       eqiad: 'grafana1001.eqiad.wmnet'
+  grafana1002:
+    backends:
+      eqiad: 'grafana1002.eqiad.wmnet'
   graphite:
     backends:
       eqiad: 'graphite1004.eqiad.wmnet'
@@ -277,7 +280,7 @@ cache::alternate_domains:
   git.wikimedia.org:
     director: 'phabricator'
   grafana-beta.wikimedia.org:
-    director: 'grafana1001'
+    director: 'grafana1002'
     caching: 'pass'
   grafana-labs-admin.wikimedia.org:
     director: 'labmon1001'
