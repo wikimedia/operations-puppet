@@ -36,7 +36,7 @@ define logstash::conf(
         source  => $source,
         owner   => 'logstash',
         group   => 'logstash',
-        mode    => '0444',
+        mode    => '0440',
         notify  => Service['logstash'],
     }
 }
