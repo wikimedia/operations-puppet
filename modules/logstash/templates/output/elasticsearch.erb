@@ -8,9 +8,10 @@ output {
         idle_flush_time => <%= @idle_flush_time %>
         index           => "<%= @index %>"
 <% if @template %>
-        manage_template => true
-        template        => "<%= @template %>"
-        template_name   => "<%= @template_name %>"
+        manage_template    => true
+        template           => "<%= @template %>"
+        template_name      => "<%= @template_name %>"
+        template_overwrite => true
 <% else %>
         manage_template => false
 <% end %>
