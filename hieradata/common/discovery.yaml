@@ -112,3 +112,6 @@ discovery::services:
   wikifeeds:
     lvs: wikifeeds
     active_active: true
+  echostore:
+    lvs: echostore
+    active_active: true
