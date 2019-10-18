@@ -33,6 +33,7 @@ wikimedia_clusters:
       codfw: []
       esams: []
       ulsfo: []
+      eqsin: []
   puppet:
     description: "Puppetmasters"
     id: 3
@@ -60,6 +61,7 @@ wikimedia_clusters:
     id: 7
     sites:
       eqiad: []
+      codfw: []
   misc:
     description: "Miscellaneous"
     id: 8
@@ -93,6 +95,7 @@ wikimedia_clusters:
       codfw: []
       esams: []
       ulsfo: []
+      eqsin: []
   cache_canary:
     description: "Canary caches"
     id: 21
@@ -109,6 +112,7 @@ wikimedia_clusters:
       codfw: []
       esams: []
       ulsfo: []
+      eqsin: []
   payments:
     description: "Fundraiser payments"
     id: 23
@@ -191,6 +195,7 @@ wikimedia_clusters:
     id: 43
     sites:
       eqiad: []
+      codfw: []
   restbase:
     description: "Restbase"
     id: 48
@@ -202,6 +207,7 @@ wikimedia_clusters:
     id: 49
     sites:
       eqiad: []
+      codfw: []
   maps:
     description: "Maps Cluster"
     id: 50
@@ -411,6 +417,12 @@ wikimedia_clusters:
   acmechief:
     description: "acme-chief hosts"
     id: 87
+    sites:
+      eqiad: []
+      codfw: []
+  eventschemas:
+    description: "Event platform schemas"
+    id: 88
     sites:
       eqiad: []
       codfw: []
