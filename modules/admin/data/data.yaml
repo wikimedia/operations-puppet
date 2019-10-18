@@ -3798,3 +3798,7 @@ ldap_only_users:
     ensure: present
     realname: Raja Gumienny
     email: raja.gumienny@wikimedia.de
+  verenali:
+    ensure: present
+    realname: Verena Lindner
+    email: verena.lindner@wikimedia.de
