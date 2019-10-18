@@ -1,4 +1,4 @@
-require 'spec_helper'
+require_relative '../../../../rake_modules/spec_helper'
 
 describe 'icinga::monitor::elasticsearch::cirrus_settings_check', :type => :define do
   let(:facts) { { :lsbdistrelease => 'debian',
