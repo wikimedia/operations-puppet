@@ -1363,7 +1363,7 @@ node 'mendelevium.eqiad.wmnet' {
     role(otrs)
 }
 
-# RT, replacing ununpentium
+# RT, replaced ununpentium
 node 'moscovium.eqiad.wmnet' {
     role(requesttracker)
 }
@@ -1968,11 +1968,6 @@ node 'deploy1001.eqiad.wmnet', 'deploy2001.codfw.wmnet' {
 # test system for performance team (T117888)
 node 'tungsten.eqiad.wmnet' {
     role(xhgui::app)
-}
-
-# replaced magnesium (RT) (T119112 T123713)
-node 'ununpentium.wikimedia.org' {
-    role(requesttracker)
 }
 
 # To see cloudvirt nodes active in the scheduler look at hiera:

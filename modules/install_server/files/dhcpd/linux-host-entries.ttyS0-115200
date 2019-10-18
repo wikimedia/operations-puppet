@@ -752,12 +752,6 @@ host serpens {
     fixed-address serpens.wikimedia.org;
 }
 
-host ununpentium {
-    hardware ethernet aa:00:00:66:fb:d9;
-    fixed-address ununpentium.wikimedia.org;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
-}
-
 host vega {
     hardware ethernet aa:00:00:26:27:bf;
     fixed-address vega.codfw.wmnet;
