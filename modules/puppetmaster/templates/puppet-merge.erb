@@ -1,20 +1,9 @@
 #!/bin/sh
 
+# TODO
+# - add locking with flock so that multiple users can't run this script simultaneously.
+
 set -e
-
-# die() is used by flock below, could be used elsewhere as well
-die() { echo >&2 "E: $*"; exit 1; }
-
-# Simple flock locking against other instances on the same host
-# (Copypasta from faidon's variant in authdns-local-update)
-LOCKFILE=/var/lock/puppet-merge-lock
-LOCKFD=9
-unlock() { rm -f $LOCKFILE; }
-eval "exec $LOCKFD>\"$LOCKFILE\""; trap unlock EXIT
-if ! flock -xn $LOCKFD; then
-    trap EXIT
-    die "failed to lock, another puppet-merge running on this host?"
-fi
 
 # Colorized output helpers
 RED=$(tput bold; tput setaf 1)
