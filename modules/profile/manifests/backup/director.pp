@@ -284,6 +284,18 @@ class profile::backup::director(
         notes_url    => 'https://wikitech.wikimedia.org/wiki/Bacula',
     }
 
+    # install the general backup check and set it up to run every hour
+    class { 'bacula::director::check': }
+    nrpe::monitor_service { 'backup_freshness':
+        description    => 'Backup freshness',
+        nrpe_command   => '/usr/bin/python3 /usr/sbin/check_bacula.py',
+        critical       => false,
+        contact_group  => 'admins',
+        check_interval => 60,  # check every hour
+        timeout        => 60,  # 1 minute of timeout, the check is not fast
+        notes_url      => 'https://wikitech.wikimedia.org/wiki/Backups#Monitoring',
+    }
+
     ferm::service { 'bacula-director':
         proto  => 'tcp',
         port   => '9101',
